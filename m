@@ -4,51 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3EB9C3601A
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC882C36014
 	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 06:05:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 620BC10E6BF;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8FA3210E6BE;
 	Wed,  2 Apr 2025 06:05:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m1mwIkgL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kfNTrk9H";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F268D10E6BE
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 06:05:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6196110E6B8
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 06:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743573909; x=1775109909;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=EOWp0XeFwmd/PneFc9K3235XzhSuG3CqE5OAEaDCXww=;
- b=m1mwIkgLNTeIpoWtQdo1jUsm4WTEmHSO+REHJB+w0+55tpMx1qOvmnmg
- d6lw0i/0dikOUdzepWnGE4ne6ykl+D5S865IEkZ/zJMkgqnD6boksFS4e
- 3tG5khiQSFkAocZIcmX5w90rBZ27t7ssSPcvDrOlcaEyu981VLydzOiUZ
- fQb1gFMV50H63il55BD0h+s3La52u2n5s9extH3lNqHzwND+I88b43vbP
- ttweOqWXr/JvtP+SnAaClCWW2jnKButoXaC8KhYmieHIB6dTHnXpagKz4
- XKSIPqRBGZQiq8T/3+aH/ER1WLTbXUU9DthGn0xkfr+XZpgk3w8wACJAc A==;
-X-CSE-ConnectionGUID: lxYH7X3UTFmOORfq3a1ARQ==
-X-CSE-MsgGUID: 1FpksixmShynHTWyGgItGw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="45090423"
-X-IronPort-AV: E=Sophos;i="6.14,295,1736841600"; d="scan'208";a="45090423"
+ t=1743573907; x=1775109907;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Xj4DoI0DtqTRLcvmQ9J57WR4wJ+tVUQRYDyfs+Pp2IQ=;
+ b=kfNTrk9HFH07Qy4Yxo2RaxBGkwqzbw+y0UY9JttZX0xfjRCRDuWfgrgE
+ QRP5TKkqucaX76/zNWdRIthpvQRF4KqI2OypFZdOi+8C0knyZcX7wBi/1
+ d6K90YdUInRXYR2La02uEX2aaXi+5hDJpXkxqKKzgF3oV6diduIYO9gL8
+ tTDKX4iN/bnmFQ3PpvWRYsdaeRklKFM+rABVBOKUYeiJEQgSdEPuOc0P3
+ 0s7itB8H0dvE7rsaJBvpPrJfQwJ5m5NND5QyfWJltFxMAH8aB7Xq6v8Sy
+ 9O+CYgK0gvSJRfy84xcbOf1ocn+VWPBYqPTIsAZuLHTtOgMGbFQ+P7ZuT g==;
+X-CSE-ConnectionGUID: UVyLlRhxTuWYQWKKf0buaQ==
+X-CSE-MsgGUID: PjHgXDQXRvSspi63fYo0BQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="45090410"
+X-IronPort-AV: E=Sophos;i="6.14,295,1736841600"; d="scan'208";a="45090410"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2025 23:05:08 -0700
-X-CSE-ConnectionGUID: DrXX/pflSvKcynnKNbipOg==
-X-CSE-MsgGUID: KsPg76NUQ5CYV+BCAAlqsw==
+ 01 Apr 2025 23:05:06 -0700
+X-CSE-ConnectionGUID: E3nzMp9hQEaE/KJtBk5Wrw==
+X-CSE-MsgGUID: nVEugdykS8uESoPQWv2ZbA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,295,1736841600"; d="scan'208";a="126552503"
+X-IronPort-AV: E=Sophos;i="6.14,295,1736841600"; d="scan'208";a="126552497"
 Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
- by orviesa006.jf.intel.com with ESMTP; 01 Apr 2025 23:05:08 -0700
+ by orviesa006.jf.intel.com with ESMTP; 01 Apr 2025 23:05:05 -0700
 From: Pravalika Gurram <pravalika.gurram@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Pravalika Gurram <pravalika.gurram@intel.com>
-Subject: [PATCH 3/4] benchmarks: create xe_exec_ctx
-Date: Wed,  2 Apr 2025 11:40:32 +0530
-Message-Id: <20250402061033.659931-3-pravalika.gurram@intel.com>
+Subject: [PATCH 1/4] benchmarks: Measure BLT performance
+Date: Wed,  2 Apr 2025 11:40:30 +0530
+Message-Id: <20250402061033.659931-1-pravalika.gurram@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250402061033.659931-1-pravalika.gurram@intel.com>
-References: <20250402061033.659931-1-pravalika.gurram@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -67,48 +65,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Measure the overhead of execution when doing nothing, switching between
-a pair of contexts, or creating a new context every time.
+Execute N blits and time how long they complete to measure both GPU
+limited bandwidth and submission overhead.
 
 Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
 ---
- benchmarks/meson.build   |   1 +
- benchmarks/xe_blt.c      |   2 +-
- benchmarks/xe_exec_ctx.c | 332 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 334 insertions(+), 1 deletion(-)
- create mode 100644 benchmarks/xe_exec_ctx.c
+ benchmarks/meson.build |   1 +
+ benchmarks/xe_blt.c    | 369 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 370 insertions(+)
+ create mode 100644 benchmarks/xe_blt.c
 
 diff --git a/benchmarks/meson.build b/benchmarks/meson.build
-index 00203c62e..f29d5a288 100644
+index 2c9a88fd3..4421ede86 100644
 --- a/benchmarks/meson.build
 +++ b/benchmarks/meson.build
-@@ -23,6 +23,7 @@ benchmark_progs = [
+@@ -21,6 +21,7 @@ benchmark_progs = [
+ 	'kms_vblank',
+ 	'prime_lookup',
  	'vgem_mmap',
-         'xe_blt',
-         'xe_create',
-+        'xe_exec_ctx',
++        'xe_blt',
  ]
  
  benchmarksdir = join_paths(libexecdir, 'benchmarks')
 diff --git a/benchmarks/xe_blt.c b/benchmarks/xe_blt.c
-index b6fd290a3..00f8be87d 100644
---- a/benchmarks/xe_blt.c
-+++ b/benchmarks/xe_blt.c
-@@ -39,7 +39,7 @@
- #define BLT_SRC_TILED		(1<<15)
- #define BLT_DST_TILED		(1<<11)
- 
--	static double
-+static double
- elapsed(const struct timespec *start, const struct timespec *end)
- {
- 	return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
-diff --git a/benchmarks/xe_exec_ctx.c b/benchmarks/xe_exec_ctx.c
 new file mode 100644
-index 000000000..f84d018d0
+index 000000000..b6fd290a3
 --- /dev/null
-+++ b/benchmarks/xe_exec_ctx.c
-@@ -0,0 +1,332 @@
++++ b/benchmarks/xe_blt.c
+@@ -0,0 +1,369 @@
 +/*
 + * Copyright © 2025 Intel Corporation
 + *
@@ -135,297 +119,324 @@ index 000000000..f84d018d0
 + *    Pravalika Gurram <pravalika.gurram@intel.com>
 + *
 + */
-+#include <stdio.h>
-+#include "intel_reg.h"
-+#include "ioctl_wrappers.h"
-+#include "lib/igt_syncobj.h"
 +
++#include "drm.h"
++#include "igt_syncobj.h"
++#include "intel_blt.h"
 +#include "xe/xe_ioctl.h"
 +#include "xe/xe_query.h"
 +#include "xe/xe_util.h"
-+#include "xe/xe_spin.h"
 +
-+#define MAX_N_EXEC_QUEUES        16
-+enum mode { NOP, CREATE, SWITCH };
 +
-+static double elapsed(const struct timespec *start,
-+			const struct timespec *end)
++#define COPY_BLT_CMD		(2<<29|0x53<<22|0x6)
++#define BLT_WRITE_ALPHA		(1<<21)
++#define BLT_WRITE_RGB		(1<<20)
++#define BLT_SRC_TILED		(1<<15)
++#define BLT_DST_TILED		(1<<11)
++
++	static double
++elapsed(const struct timespec *start, const struct timespec *end)
 +{
 +	return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
 +}
 +
-+static void
-+test_exec(int fd, struct drm_xe_engine_class_instance *eci,
-+		int n_exec_queues, int n_execs, int n_vm, unsigned int flags)
++static void *bo_map(int fd, uint32_t handle, uint64_t size,
++		enum intel_driver driver)
 +{
-+	struct drm_xe_sync sync[2] = {
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 2,
-+		.syncs = to_user_pointer(sync),
-+	};
++	if (driver == INTEL_DRIVER_XE)
++		return xe_bo_map(fd, handle, size);
 +
-+	uint64_t addr[MAX_N_EXEC_QUEUES];
-+	uint64_t sparse_addr[MAX_N_EXEC_QUEUES];
-+	uint32_t vm[MAX_N_EXEC_QUEUES];
-+	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
-+	uint32_t bind_exec_queues[MAX_N_EXEC_QUEUES];
-+	uint32_t syncobjs[MAX_N_EXEC_QUEUES];
-+	uint32_t bind_syncobjs[MAX_N_EXEC_QUEUES];
-+	struct drm_gem_flink flink;
-+	struct drm_gem_open open_struct;
-+
-+	size_t bo_size;
-+	uint32_t bo = 0;
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+	} *data;
-+	int i, b;
-+	int ret;
-+
-+	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
-+	igt_assert_lte(n_vm, MAX_N_EXEC_QUEUES);
-+
-+	for (i = 0; i < n_vm; ++i)
-+		vm[i] = xe_vm_create(fd, 0, 0);
-+	bo_size = sizeof(*data) * n_execs;
-+	bo_size = xe_bb_size(fd, bo_size);
-+
-+	addr[0] = 0x1a0000;
-+	sparse_addr[0] = 0x301a0000;
-+	for (i = 1; i < MAX_N_EXEC_QUEUES; ++i) {
-+		addr[i] = addr[i - 1] + (0x1ull << 32);
-+		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
-+	}
-+
-+
-+	uint32_t bo_flags;
-+
-+	bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-+
-+	bo = xe_bo_create(fd, n_vm == 1 ? vm[0] : 0, bo_size,
-+			vram_if_possible(fd, 0), bo_flags);
-+
-+	flink.handle = bo;
-+	ret = igt_ioctl(fd, DRM_IOCTL_GEM_FLINK, &flink);
-+	igt_assert_eq(ret, 0);
-+
-+	open_struct.name = flink.name;
-+	ret = igt_ioctl(fd, DRM_IOCTL_GEM_OPEN, &open_struct);
-+	igt_assert_eq(ret, 0);
-+	igt_assert(open_struct.handle != 0);
-+
-+	data = xe_bo_map(fd, bo, bo_size);
-+
-+	for (i = 0; i < n_exec_queues; i++) {
-+		uint32_t __vm = vm[i % n_vm];
-+
-+		exec_queues[i] = xe_exec_queue_create(fd, __vm, eci, 0);
-+
-+		bind_exec_queues[i] = 0;
-+		syncobjs[i] = syncobj_create(fd, 0);
-+		bind_syncobjs[i] = syncobj_create(fd, 0);
-+	};
-+
-+	for (i = 0; i < n_vm; ++i) {
-+		sync[0].handle = bind_syncobjs[i];
-+		xe_vm_bind_async(fd, vm[i], bind_exec_queues[i], bo, 0,
-+				addr[i], bo_size, sync, 1);
-+
-+	}
-+
-+	for (i = 0; i < n_execs; i++) {
-+		int cur_vm = i % n_vm;
-+		uint64_t __addr = addr[cur_vm];
-+		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
-+		uint64_t batch_addr = __addr + batch_offset;
-+		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
-+		uint64_t sdi_addr = __addr + sdi_offset;
-+		int e = i % n_exec_queues;
-+
-+		b = 0;
-+		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data[i].batch[b++] = sdi_addr;
-+		data[i].batch[b++] = sdi_addr >> 32;
-+		data[i].batch[b++] = 0xc0ffee;
-+		data[i].batch[b++] = MI_BATCH_BUFFER_END;
-+		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[0].handle = bind_syncobjs[cur_vm];
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].handle = syncobjs[e];
-+
-+		exec.exec_queue_id = exec_queues[e];
-+		exec.address = batch_addr;
-+		if (e != i)
-+			syncobj_reset(fd, &syncobjs[e], 1);
-+		xe_exec(fd, &exec);
-+
-+		if (i + 1 != n_execs) {
-+			uint32_t __vm = vm[cur_vm];
-+
-+			sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+			xe_vm_unbind_async(fd, __vm, bind_exec_queues[e], 0,
-+					__addr, bo_size, sync + 1, 1);
-+
-+			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+			addr[i % n_vm] += bo_size;
-+			__addr = addr[i % n_vm];
-+			xe_vm_bind_async(fd, __vm, bind_exec_queues[e], bo,
-+					0, __addr, bo_size, sync, 1);
-+
-+		}
-+	}
-+
-+	for (i = 0; i < n_exec_queues && n_execs; i++)
-+		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
-+					NULL));
-+
-+	for (i = 0; i < n_vm; i++)
-+		igt_assert(syncobj_wait(fd, &bind_syncobjs[i], 1, INT64_MAX, 0,
-+					NULL));
-+
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	for (i = 0; i < n_vm; ++i) {
-+		syncobj_reset(fd, &sync[0].handle, 1);
-+		xe_vm_unbind_async(fd, vm[i], bind_exec_queues[i], 0, addr[i],
-+				bo_size, sync, 1);
-+		igt_assert(syncobj_wait(fd, &sync[0].handle, 1,
-+					INT64_MAX, 0, NULL));
-+	}
-+
-+	for (i = 0; i < n_exec_queues; i++) {
-+		syncobj_destroy(fd, syncobjs[i]);
-+		xe_exec_queue_destroy(fd, exec_queues[i]);
-+		if (bind_exec_queues[i])
-+			xe_exec_queue_destroy(fd, bind_exec_queues[i]);
-+	}
-+
-+
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+
-+	for (i = 0; i < n_vm; ++i) {
-+		syncobj_destroy(fd, bind_syncobjs[i]);
-+		xe_vm_destroy(fd, vm[i]);
-+	}
++	return gem_mmap__device_coherent(fd, handle, 0, size,
++			PROT_READ | PROT_WRITE);
 +}
 +
-+static int loop(unsigned ring,
-+		int reps,
-+		enum mode mode,
-+		int ncpus,
-+		unsigned flags)
++static uint64_t emit_blt_src_copy(int fd,
++		uint64_t ahnd,
++		const struct blt_copy_data *blt,
++		uint64_t bb_pos,
++		bool emit_bbe,
++		uint64_t dst_offset,
++		uint64_t src_offset,
++		uint64_t bb_offset,
++		uint32_t height)
 +{
-+	int fd;
-+	struct drm_xe_engine_class_instance *hwe;
++	uint32_t *b;
++	uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t *bb;
++	int i = 0;
++
++	src_offset += blt->src.plane_offset;
++	dst_offset += blt->dst.plane_offset;
++	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
++
++	b[i++] = COPY_BLT_CMD | BLT_WRITE_ALPHA | BLT_WRITE_RGB;
++	b[i-1] += 2;
++	b[i++] = 0xcc << 16 | 1 << 25 | 1 << 24 | (16*1024);
++	b[i++] = 0;
++	b[i++] = height << 16 | (4*1024);
++	b[i++] = dst_offset;
++	b[i++] = dst_offset >> 32; /* FIXME */
++	b[i++] = 0;
++	b[i++] = 16*1024;
++	b[i++] = src_offset;
++	b[i++] = src_offset >> 32; /* FIXME */
++
++	bb = bo_map(fd, blt->bb.handle, blt->bb.size, blt->driver);
++
++	igt_assert(bb_pos + sizeof(b) < blt->bb.size);
++	memcpy(bb + bb_pos, &b, sizeof(b));
++	bb_pos += sizeof(b);
++
++	if (emit_bbe) {
++		igt_assert(bb_pos + sizeof(uint32_t) < blt->bb.size);
++		memcpy(bb + bb_pos, &bbe, sizeof(bbe));
++		bb_pos += sizeof(uint32_t);
++	}
++
++	igt_info("[SRC COPY]\n");
++	igt_info("src offset: %" PRIx64 ", dst offset: %" PRIx64
++			", bb offset: %" PRIx64 "\n",
++			src_offset, dst_offset, bb_offset);
++	munmap(bb, blt->bb.size);
++
++	return bb_pos;
++
++}
++
++static int count;
++/*
++ * val = True To check BB is working fine or not
++ * count_val = To get the counter value how many buffers we can send in 0.1 sec
++ * loop_count = count_val time we have to submit the buffers
++ */
++static int blt_src_copy(int fd,
++		const intel_ctx_t *ctx,
++		const struct intel_execution_engine2 *e,
++		uint64_t ahnd,
++		const struct blt_copy_data *blt, uint32_t height,
++		bool val, bool count_val, bool loop_count)
++{
++	uint64_t dst_offset = 0, src_offset = 0, bb_offset = 0;
++	int ret = 0;
++	uint64_t bb_pos = 0;
++	struct timespec start, end;
++
++	igt_assert_f(ahnd, "src-copy supports softpin only\n");
++	igt_assert_f(blt, "src-copy requires data to do src-copy blit\n");
++	igt_assert_neq(blt->driver, 0);
++
++	if (!val) {
++		src_offset = get_offset_pat_index(ahnd, blt->src.handle, blt->src.size,
++				0, blt->src.pat_index);
++		dst_offset = get_offset_pat_index(ahnd, blt->dst.handle, blt->dst.size,
++				0, blt->dst.pat_index);
++		bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
++	}
++
++	bb_pos = emit_blt_src_copy(fd, ahnd, blt, 0, true, src_offset, dst_offset, bb_offset, height);
++
++	if (count_val) {
++		clock_gettime(CLOCK_MONOTONIC, &start);
++		do {
++			if (blt->driver == INTEL_DRIVER_XE)
++				intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
++			count++;
++			clock_gettime(CLOCK_MONOTONIC, &end);
++			if (elapsed(&start, &end) > (100 / 1000.))
++				break;
++		} while (1);
++	} else if (loop_count) {
++		for (int loop = 0; loop < count; loop++) {
++			if (blt->driver == INTEL_DRIVER_XE) 
++				intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
++		}
++
++	} else {
++		if (blt->driver == INTEL_DRIVER_XE) 
++			intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
++	}
++	return ret;
++}
++
++static int src_copy(int xe, const intel_ctx_t *ctx,
++		uint32_t width, uint32_t height,
++		uint32_t region1, uint32_t region2, bool val, bool count, bool loop)
++{
++	struct blt_copy_data blt = {};
++	struct blt_copy_object *src, *mid, *dst;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
++	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
++			INTEL_ALLOCATOR_SIMPLE,
++			ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	uint32_t bb;
++	int ret = 0;
++
++	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
++
++	blt_copy_init(xe, &blt);
++	src = blt_create_object(&blt, region1, width, height, bpp, 0,
++			T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	dst = blt_create_object(&blt, region1, width, height, bpp, 0,
++			T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	igt_assert(src->size == dst->size);
++
++	blt_set_copy_object(&blt.src, src);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++
++	ret = blt_src_copy(xe, ctx, NULL, ahnd, &blt, height, val, count, loop);
++
++	put_offset(ahnd, src->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(xe, src);
++	blt_destroy_object(xe, dst);
++	gem_close(xe, bb);
++	put_ahnd(ahnd);
++	return ret;
++
++}
++
++#define SYNC 0x1
++
++static int run(int width, int batch, int time, int reps, int ncpus, unsigned flags)
++{
++	struct igt_collection *set;
++	int xe;
++	int height = width / (16 * 1024);
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	intel_ctx_t *ctx;
 +	double *shared;
-+	fd = drm_open_driver(DRIVER_XE);
++	uint32_t region1, region2;
++	uint32_t vm, exec_queue;
++	int ret;
++
 +	shared = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
 +
-+	if (ring) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->engine_class == ring) {
-+				test_exec(fd, hwe, 1, 1, 1, 0);
-+			}
++	xe = drm_open_driver(DRIVER_XE);
++	igt_require(blt_has_xy_src_copy(xe));
++	xe_device_get(xe);
++	set = xe_get_memory_region_set(xe,
++			DRM_XE_MEM_REGION_CLASS_SYSMEM,
++			DRM_XE_MEM_REGION_CLASS_VRAM);
++	intel_allocator_multiprocess_start();
++
++	region1 = 1;
++	region2 = 2;
++
++	vm = xe_vm_create(xe, 0, 0);
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++	ret = src_copy(xe, ctx, width, height, region1, region2, true,
++								false, false);
++	xe_exec_queue_destroy(xe, exec_queue);
++	xe_vm_destroy(xe, vm);
++	free(ctx);
++	if (!ret) {
++		vm = xe_vm_create(xe, 0, 0);
++		exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++		ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++		ret = src_copy(xe, ctx, width, height, region1, region2,
++							false, false, false);
++		xe_exec_queue_destroy(xe, exec_queue);
++		xe_vm_destroy(xe, vm);
++		free(ctx);
++	}
++	if (batch > 1) {
++		for (int i = 1; i < batch; i++) {
++			vm = xe_vm_create(xe, 0, 0);
++			exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++			ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++			ret = src_copy(xe, ctx, width, height, region1, region2,
++							false, false, false);
++			xe_exec_queue_destroy(xe, exec_queue);
++			xe_vm_destroy(xe, vm);
++			free(ctx);
 +		}
-+	} else {
-+		xe_for_each_engine(fd, hwe)
-+			test_exec(fd, hwe, 1, 1, 1, 0);
++	}
++	vm = xe_vm_create(xe, 0, 0);
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++	ret = src_copy(xe, ctx, width, height, region1, region2,
++						false, true, false);
++	xe_exec_queue_destroy(xe, exec_queue);
++	xe_vm_destroy(xe, vm);
++	free(ctx);
++	if (flags & SYNC) {
++		time *= count / 2;
++		count = 1;
 +	}
 +
 +	while (reps--) {
-+		sleep(1); /* wait for the hw to go back to sleep */
-+
 +		memset(shared, 0, 4096);
 +
 +		igt_fork(child, ncpus) {
-+			struct timespec start, end;
-+			unsigned count = 0;
++			double min = HUGE_VAL;
 +
-+			clock_gettime(CLOCK_MONOTONIC, &start);
-+			do {
-+				switch (mode) {
-+				case CREATE:
-+					xe_for_each_engine(fd, hwe)
-+						if (hwe->engine_class == ring) {
-+							test_exec(fd, hwe, 1, 1, 1, 0);
-+						}
-+					break;
++			for (int s = 0; s <= time / 100; s++) {
++				struct timespec start, end;
++				double t;
 +
-+				case SWITCH:
-+					xe_for_each_engine(fd, hwe)
-+						if (hwe->engine_class == ring) {
-+							test_exec(fd, hwe, 16, 64, 1, 1);
-+						}
-+					break;
-+
-+				case NOP:
-+					break;
-+				}
-+				count++;
++				clock_gettime(CLOCK_MONOTONIC, &start);
++				vm = xe_vm_create(xe, 0, 0);
++				exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++				ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++				ret = src_copy(xe, ctx, width, height, region1,
++						region2, false, false, true);
++				free(ctx);
++				xe_exec_queue_destroy(xe, exec_queue);
++				xe_vm_destroy(xe, vm);
 +				clock_gettime(CLOCK_MONOTONIC, &end);
-+			} while (elapsed(&start, &end) < 2.);
 +
-+			clock_gettime(CLOCK_MONOTONIC, &end);
-+			shared[child] = 1e6*elapsed(&start, &end) / count;
-+
++				t = elapsed(&start, &end);
++				if (t < min)
++					min = t;
 +			}
++
++			shared[child] = width/(1024*1024.)*batch*count/min;
 +		}
 +		igt_waitchildren();
 +
 +		for (int child = 0; child < ncpus; child++)
 +			shared[ncpus] += shared[child];
-+		printf("%7.3f\n", shared[ncpus] / ncpus);
++	}
++	intel_allocator_multiprocess_stop();
 +
++	close(xe);
 +	return 0;
 +}
 +
 +int main(int argc, char **argv)
 +{
-+	unsigned ring = DRM_XE_ENGINE_CLASS_RENDER;
-+	unsigned flags = 0;
-+	enum mode mode = NOP;
-+	int reps = 1;
++	int size = 1024*1024;
++	int reps = 13;
++	int time = 2000;
 +	int ncpus = 1;
++	int batch = 1;
++	unsigned flags = 0;
 +	int c;
 +
-+	while ((c = getopt (argc, argv, "e:r:b:sf")) != -1) {
++	while ((c = getopt (argc, argv, "s:S:t:r:b:f")) != -1) {
 +		switch (c) {
-+		case 'e':
-+			if (strcmp(optarg, "rcs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_RENDER;
-+			else if (strcmp(optarg, "vcs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
-+			else if (strcmp(optarg, "bcs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_COPY;
-+			else if (strcmp(optarg, "vecs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
-+			else if (strcmp(optarg, "ccs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_COMPUTE;
-+			else
-+				ring = atoi(optarg);
++		case 's':
++			size = atoi(optarg);
++			size = ALIGN(size, 4);
++			if (size < 4)
++				size = 4;
 +			break;
 +
-+		case 'b':
-+			if (strcmp(optarg, "create") == 0)
-+				mode = CREATE;
-+			else if (strcmp(optarg, "switch") == 0)
-+				mode = SWITCH;
-+			else if (strcmp(optarg, "nop") == 0)
-+				mode = NOP;
-+			else
-+				abort();
++		case 'S':
++			flags |= SYNC;
 +			break;
 +
-+		case 'f':
-+			ncpus = sysconf(_SC_NPROCESSORS_ONLN);
++		case 't':
++			time = atoi(optarg);
++			if (time < 1)
++				time = 1;
 +			break;
 +
 +		case 'r':
@@ -434,12 +445,22 @@ index 000000000..f84d018d0
 +				reps = 1;
 +			break;
 +
++		case 'b':
++			batch = atoi(optarg);
++			if (batch < 1)
++				batch = 1;
++			break;
++
++		case 'f':
++			ncpus = sysconf(_SC_NPROCESSORS_ONLN);
++			break;
++
 +		default:
 +			break;
 +		}
 +	}
 +
-+	return loop(ring, reps, mode, ncpus, flags);
++	return run(size, batch, time, reps, ncpus, flags);
 +}
 -- 
 2.34.1
