@@ -4,66 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 070B6C28B20
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 10:52:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9B29C28B20
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 11:15:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1DA4E10E727;
-	Wed,  2 Apr 2025 10:52:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 606B510E70B;
+	Wed,  2 Apr 2025 11:15:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OwcOVhLm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e7atYVta";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AB5810E727
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 10:52:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9BA010E70B
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 11:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743591138; x=1775127138;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Bp6ZXKVxojfpe8oxEDnf+LnaoOlJ/fqmkPfc05YhrkY=;
- b=OwcOVhLmcGXkaXM7y90P2TsCqqQf41TcOonkCioEXpfDCrVreyKm5qtd
- 3G0ci/+YEz+QE+P5M8khyzFvGaepm60Mz/jRcblsByRS5sNSOyEmv8Bq9
- fnW1cwpZv9ddlPshap4HsbPkWgJl41ibTtIwSQYm4IIp2mVxshiHOU5Vd
- hFlfvSkLcqCKaflBog3GFm5072vD8+P+m3Q0wK2VquKNjGfmUBCX/hLYp
- H7kZp+xHHuEBBYdL/6pZiV+fOSWkfch/zbXLTs5nhJIE3d3Umgrp4YXtV
- ZjdCxkrpn9i4ip50VFXrtg3hMn1ZdaZqJO2IbgcdLWBxiVJojQFqOYPY9 A==;
-X-CSE-ConnectionGUID: 2r5p0y3SSWOCj0PkNaOjBg==
-X-CSE-MsgGUID: mwQw02onQ9+P2cThVBhIag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="48737408"
-X-IronPort-AV: E=Sophos;i="6.14,182,1736841600"; d="scan'208";a="48737408"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2025 03:52:18 -0700
-X-CSE-ConnectionGUID: lAnl94/8TDCU0FIcwlah5Q==
-X-CSE-MsgGUID: GtHYAAY/RoeE7s0yucxaQw==
+ t=1743592552; x=1775128552;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=Hqo+wRibWUrx+d3N+mIR41Bkskta89B1/ozQrzZVcOg=;
+ b=e7atYVtaDNeerdFqBpySupsCpAh6/hzDEzp5XshvMokbsujU6lyitgJr
+ SjyIY039Ir5Qybpu8Lpr9v1vXORQLaZCckNE7rlwqEv19mSDgCxeD4eEs
+ ENldoJ/UvhhG0qkMpK2fUQL1FjMRGB/wItmLbELsEXJltv+WN6322JKeS
+ +f3femD3LrRSC5q4qt8kbMkMog8m/ta+IBcEMsLD+6Dtg71Xl+NThCuzW
+ e6wfZ5zcFYl135gue1HR48AVMX5U1ZdyveNUzm8iNKBnhaxFt5aog7ea7
+ ZCUkGE3NOkeU07y7CngVYj6FNqwpG66WXG3CCMQVfkzTxuWQDWSArLdFl Q==;
+X-CSE-ConnectionGUID: rbGcgMIlSTyFo5qtS9r6pA==
+X-CSE-MsgGUID: OvMw7IoCQ0mqCE/3JNAhNg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="55943496"
+X-IronPort-AV: E=Sophos;i="6.14,182,1736841600"; d="scan'208";a="55943496"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2025 04:15:51 -0700
+X-CSE-ConnectionGUID: EGOv/n29Q1aM1P99Sy98Lw==
+X-CSE-MsgGUID: kQtWIlMyQVqF95fm+G5UwA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,182,1736841600"; d="scan'208";a="126564888"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2025 03:52:15 -0700
-Date: Wed, 2 Apr 2025 12:51:54 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: vitaly prosyak <vprosyak@amd.com>
-Cc: Sunil Khatri <sunil.khatri@amd.com>, igt-dev@lists.freedesktop.org,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: Re: [PATCH v3 13/19] drm-uapi/amdgpu: sync with drm-next
-Message-ID: <20250402105154.rnsupynkdb57ti2m@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- vitaly prosyak <vprosyak@amd.com>,
- Sunil Khatri <sunil.khatri@amd.com>, igt-dev@lists.freedesktop.org,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-References: <20250328082416.1469810-1-sunil.khatri@amd.com>
- <20250328082416.1469810-13-sunil.khatri@amd.com>
- <20250401160634.pttztce2lrj2tver@kamilkon-DESK.igk.intel.com>
- <1782e784-ee49-4f9f-b90e-fa7718f7276d@amd.com>
+X-IronPort-AV: E=Sophos;i="6.14,182,1736841600"; d="scan'208";a="131647449"
+Received: from dkreft-mobl3.ger.corp.intel.com (HELO [10.246.0.151])
+ ([10.246.0.151])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Apr 2025 04:15:50 -0700
+Message-ID: <8e72dab2-1bb0-41c4-8a1d-d409689cd61c@linux.intel.com>
+Date: Wed, 2 Apr 2025 13:15:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1782e784-ee49-4f9f-b90e-fa7718f7276d@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v1 1/1] runner/executor: Use bootime for time checks
+To: igt-dev@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <20250328163342.119140-1-kamil.konieczny@linux.intel.com>
+ <20250328163342.119140-2-kamil.konieczny@linux.intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20250328163342.119140-2-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,89 +71,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vitaly,
-On 2025-04-01 at 19:52:45 -0400, vitaly prosyak wrote:
-> 
-> On 2025-04-01 12:06, Kamil Konieczny wrote:
-> > Hi Sunil,
-> > On 2025-03-28 at 13:54:10 +0530, Sunil Khatri wrote:
-> >> Sync with drm-next commit ("866fc4f7e772c4a397f9459754ed1b1872b3a3c6")
-> >>
-> Hi Kamil,
->
-> I removed this line
->
-> 
-> Sync with drm-next commit ("866fc4f7e772c4a397f9459754ed1b1872b3a3c6")
-> 
-> as I believe it's internal information. If there are no objections, I'd like to merge without it.
->
-> I just saw your reply, but I'll wait until tomorrow.
->
-> Thanks, Vitaly
+Hi Kamil,
 
-Yes looks reasonable, please give at least link(s) to lore.kernel.org for
-drm-uapi changes you are introducing, in case they are still discussed
-and do not get into drm-next nor drm-tip.
-Also when giving link(s) add also a subject of patch with a change.
+On 3/28/2025 5:33 PM, Kamil Konieczny wrote:
+> Runner is printing time to stdout/stderr with CLOCK_BOOTTIME but
+> when measuring time for a test it is using an igt library which
+> uses CLOCK_MONOTONIC. This leads to an errors when calculating
+> time left for tests using suspend or hibernate. For example log:
+> 
+> [77.376851] [020/123] (932s left) kms_flip (2x-flip-vs-suspend)
+> [77.592412] Starting subtest: 2x-flip-vs-suspend
+> [77.604996] Starting dynamic subtest: AB-DP2-HDMI-A3
+> [115.135795] Dynamic subtest AB-DP2-HDMI-A3: SUCCESS (6.776s)
+> 
+> shows test runs for around 6 seconds, while wall time shows
+> it took around 38 seconds.
+> 
+>   Create a separate, runner specific function for time measure
+> and use it where current time is needed.
+> 
+> Cc: Ewelina Musial <ewelina.musial@intel.com>
+> Cc: Petri Latvala <adrinael@adrinael.net>
+> Reported-by: Karol Krol <karol.krol@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  runner/executor.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/runner/executor.c b/runner/executor.c
+> index 9c8bf90f0..30e2420af 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -47,6 +47,12 @@ static struct {
+>  	size_t num_dogs;
+>  } watchdogs;
+>  
+> +static void runner_gettime(struct timespec *tv)
+> +{
+> +	if (clock_gettime(CLOCK_BOOTTIME, tv))
+> +		clock_gettime(CLOCK_REALTIME, tv);
+> +}
 
-Regards,
-Kamil
+Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 
-> > I could not find this commit in drm-next nor drm-tip,
-> > please add also subject to hash, like
-> >
-> > Align with kernel commit cd5bbb2532f2 ("drm/xe/uapi: Add a device query to
-> > get EU stall sampling information").
-> >
-> > One more point, you could also consider adding all in one patch
-> > unless they come from different trees, then please indicate from which
-> > ones they come.
-> >
-> > Regards,
-> > Kamil
-> >> Adds a new subquery (AMDGPU_INFO_UQ_FW_AREAS) in
-> >> AMDGPU_INFO_IOCTL to get the size and alignment of shadow
-> >> and csa objects from the FW setup. This information is
-> >> required for the userqueue consumers.
-> >>
-> >> Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
-> >> ---
-> >>  include/drm-uapi/amdgpu_drm.h | 21 +++++++++++++++++++++
-> >>  1 file changed, 21 insertions(+)
-> >>
-> >> diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-> >> index fed39c9b4..8108c0c8a 100644
-> >> --- a/include/drm-uapi/amdgpu_drm.h
-> >> +++ b/include/drm-uapi/amdgpu_drm.h
-> >> @@ -1439,6 +1439,27 @@ struct drm_amdgpu_info_hw_ip {
-> >>  	__u32  ip_discovery_version;
-> >>  };
-> >>  
-> >> +/* GFX metadata BO sizes and alignment info (in bytes) */
-> >> +struct drm_amdgpu_info_uq_fw_areas_gfx {
-> >> +	/* shadow area size */
-> >> +	__u32 shadow_size;
-> >> +	/* shadow area base virtual mem alignment */
-> >> +	__u32 shadow_alignment;
-> >> +	/* context save area size */
-> >> +	__u32 csa_size;
-> >> +	/* context save area base virtual mem alignment */
-> >> +	__u32 csa_alignment;
-> >> +};
-> >> +
-> >> +/* IP specific metadata related information used in the
-> >> + * subquery AMDGPU_INFO_UQ_FW_AREAS
-> >> + */
-> >> +struct drm_amdgpu_info_uq_fw_areas {
-> >> +	union {
-> >> +		struct drm_amdgpu_info_uq_fw_areas_gfx gfx;
-> >> +	};
-> >> +};
-> >> +
-> >>  struct drm_amdgpu_info_num_handles {
-> >>  	/** Max handles as supported by firmware for UVD */
-> >>  	__u32  uvd_max_handles;
-> >> -- 
-> >> 2.43.0
-> >>
+
+
+> +
+>  __attribute__((format(printf, 2, 3)))
+>  static void __logf__(FILE *stream, const char *fmt, ...)
+>  {
+> @@ -54,8 +60,7 @@ static void __logf__(FILE *stream, const char *fmt, ...)
+>  	struct timespec tv;
+>  	va_list ap;
+>  
+> -	if (clock_gettime(CLOCK_BOOTTIME, &tv))
+> -		clock_gettime(CLOCK_REALTIME, &tv);
+> +	runner_gettime(&tv);
+>  	fprintf(stream, "[%ld.%06ld] ", tv.tv_sec, tv.tv_nsec / 1000);
+>  
+>  	va_start(ap, fmt);
+> @@ -961,7 +966,7 @@ static int monitor_output(pid_t child,
+>  	bool socket_comms_used = false; /* whether the test actually uses comms */
+>  	bool results_received = false; /* whether we already have test results that might need overriding if we detect an abort condition */
+>  
+> -	igt_gettime(&time_beg);
+> +	runner_gettime(&time_beg);
+>  	time_last_activity = time_last_subtest = time_killed = time_beg;
+>  
+>  	if (errfd > nfds)
+> @@ -1024,7 +1029,7 @@ static int monitor_output(pid_t child,
+>  			return -1;
+>  		}
+>  
+> -		igt_gettime(&time_now);
+> +		runner_gettime(&time_now);
+>  
+>  		/* TODO: Refactor these handlers to their own functions */
+>  		if (outfd >= 0 && FD_ISSET(outfd, &set)) {
+
