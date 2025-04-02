@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA441C3601C
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 16:32:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81663C28B20
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Apr 2025 17:06:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8D86510E85B;
-	Wed,  2 Apr 2025 16:32:27 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G76BvOjU";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B92110E856
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Apr 2025 16:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743611545; x=1775147545;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=EOWp0XeFwmd/PneFc9K3235XzhSuG3CqE5OAEaDCXww=;
- b=G76BvOjUtyt1yLltNlRjwoRGOEeJl57fcLgC730x3PrezKr/HGlkVACS
- dpeq6VJugUboJSzzx2hU7hYyA+5rzwL6z5sQz3lPjorXUCvbrjERYM4u7
- saBAVvKv5TjmCykisXFARIiDxK4RGvjzEhEMddjFHj0vEY8TZKF547BMZ
- F5Pfohbde0Y+4LyArqwbwfa5HJ5HoWwSHzQhUrjVILn1/c9ImUrPa8R1Y
- YaZR7eOJ438SoeeBAi9Iu9l8jaf2csnQwycuDLEQqSpVh6+sVJESeyBXi
- yqJPZimPSq+WLiasz/jUTbwZ2dCRwb48A0RzEIWjlgatDrosW5ypkz4H3 g==;
-X-CSE-ConnectionGUID: ZxzXC5pNRr6wzLbuatTAfg==
-X-CSE-MsgGUID: jI0Lmep1Qp6zOvfeYQkWyQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="44885009"
-X-IronPort-AV: E=Sophos;i="6.15,182,1739865600"; d="scan'208";a="44885009"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2025 09:32:20 -0700
-X-CSE-ConnectionGUID: Z0DASzVMStykqwS7Km6WTQ==
-X-CSE-MsgGUID: vwLrv/E1S9qHqorhCz5oJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,182,1739865600"; d="scan'208";a="126508885"
-Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
- by orviesa009.jf.intel.com with ESMTP; 02 Apr 2025 09:32:19 -0700
-From: Pravalika Gurram <pravalika.gurram@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Pravalika Gurram <pravalika.gurram@intel.com>
-Subject: [PATCH i-g-t 3/4] benchmarks: create xe_exec_ctx
-Date: Wed,  2 Apr 2025 22:10:50 +0530
-Message-Id: <20250402164051.671184-4-pravalika.gurram@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250402164051.671184-1-pravalika.gurram@intel.com>
-References: <20250402164051.671184-1-pravalika.gurram@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3569110E861;
+	Wed,  2 Apr 2025 17:06:57 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84BAB10E7F4;
+ Wed,  2 Apr 2025 17:06:56 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0078709777098596760=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Added_benchmark_test_case?=
+ =?utf-8?q?s_for_xe?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pravalika Gurram" <pravalika.gurram@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 02 Apr 2025 17:06:56 -0000
+Message-ID: <174361361653.28365.2422294345191628168@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250402063723.660112-1-pravalika.gurram@intel.com>
+In-Reply-To: <20250402063723.660112-1-pravalika.gurram@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,383 +37,287 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Measure the overhead of execution when doing nothing, switching between
-a pair of contexts, or creating a new context every time.
+--===============0078709777098596760==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
----
- benchmarks/meson.build   |   1 +
- benchmarks/xe_blt.c      |   2 +-
- benchmarks/xe_exec_ctx.c | 332 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 334 insertions(+), 1 deletion(-)
- create mode 100644 benchmarks/xe_exec_ctx.c
+== Series Details ==
 
-diff --git a/benchmarks/meson.build b/benchmarks/meson.build
-index 00203c62e..f29d5a288 100644
---- a/benchmarks/meson.build
-+++ b/benchmarks/meson.build
-@@ -23,6 +23,7 @@ benchmark_progs = [
- 	'vgem_mmap',
-         'xe_blt',
-         'xe_create',
-+        'xe_exec_ctx',
- ]
- 
- benchmarksdir = join_paths(libexecdir, 'benchmarks')
-diff --git a/benchmarks/xe_blt.c b/benchmarks/xe_blt.c
-index b6fd290a3..00f8be87d 100644
---- a/benchmarks/xe_blt.c
-+++ b/benchmarks/xe_blt.c
-@@ -39,7 +39,7 @@
- #define BLT_SRC_TILED		(1<<15)
- #define BLT_DST_TILED		(1<<11)
- 
--	static double
-+static double
- elapsed(const struct timespec *start, const struct timespec *end)
- {
- 	return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
-diff --git a/benchmarks/xe_exec_ctx.c b/benchmarks/xe_exec_ctx.c
-new file mode 100644
-index 000000000..f84d018d0
---- /dev/null
-+++ b/benchmarks/xe_exec_ctx.c
-@@ -0,0 +1,332 @@
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ *
-+ * Authors:
-+ *    Pravalika Gurram <pravalika.gurram@intel.com>
-+ *
-+ */
-+#include <stdio.h>
-+#include "intel_reg.h"
-+#include "ioctl_wrappers.h"
-+#include "lib/igt_syncobj.h"
-+
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe/xe_util.h"
-+#include "xe/xe_spin.h"
-+
-+#define MAX_N_EXEC_QUEUES        16
-+enum mode { NOP, CREATE, SWITCH };
-+
-+static double elapsed(const struct timespec *start,
-+			const struct timespec *end)
-+{
-+	return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
-+}
-+
-+static void
-+test_exec(int fd, struct drm_xe_engine_class_instance *eci,
-+		int n_exec_queues, int n_execs, int n_vm, unsigned int flags)
-+{
-+	struct drm_xe_sync sync[2] = {
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 2,
-+		.syncs = to_user_pointer(sync),
-+	};
-+
-+	uint64_t addr[MAX_N_EXEC_QUEUES];
-+	uint64_t sparse_addr[MAX_N_EXEC_QUEUES];
-+	uint32_t vm[MAX_N_EXEC_QUEUES];
-+	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
-+	uint32_t bind_exec_queues[MAX_N_EXEC_QUEUES];
-+	uint32_t syncobjs[MAX_N_EXEC_QUEUES];
-+	uint32_t bind_syncobjs[MAX_N_EXEC_QUEUES];
-+	struct drm_gem_flink flink;
-+	struct drm_gem_open open_struct;
-+
-+	size_t bo_size;
-+	uint32_t bo = 0;
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+	} *data;
-+	int i, b;
-+	int ret;
-+
-+	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
-+	igt_assert_lte(n_vm, MAX_N_EXEC_QUEUES);
-+
-+	for (i = 0; i < n_vm; ++i)
-+		vm[i] = xe_vm_create(fd, 0, 0);
-+	bo_size = sizeof(*data) * n_execs;
-+	bo_size = xe_bb_size(fd, bo_size);
-+
-+	addr[0] = 0x1a0000;
-+	sparse_addr[0] = 0x301a0000;
-+	for (i = 1; i < MAX_N_EXEC_QUEUES; ++i) {
-+		addr[i] = addr[i - 1] + (0x1ull << 32);
-+		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
-+	}
-+
-+
-+	uint32_t bo_flags;
-+
-+	bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-+
-+	bo = xe_bo_create(fd, n_vm == 1 ? vm[0] : 0, bo_size,
-+			vram_if_possible(fd, 0), bo_flags);
-+
-+	flink.handle = bo;
-+	ret = igt_ioctl(fd, DRM_IOCTL_GEM_FLINK, &flink);
-+	igt_assert_eq(ret, 0);
-+
-+	open_struct.name = flink.name;
-+	ret = igt_ioctl(fd, DRM_IOCTL_GEM_OPEN, &open_struct);
-+	igt_assert_eq(ret, 0);
-+	igt_assert(open_struct.handle != 0);
-+
-+	data = xe_bo_map(fd, bo, bo_size);
-+
-+	for (i = 0; i < n_exec_queues; i++) {
-+		uint32_t __vm = vm[i % n_vm];
-+
-+		exec_queues[i] = xe_exec_queue_create(fd, __vm, eci, 0);
-+
-+		bind_exec_queues[i] = 0;
-+		syncobjs[i] = syncobj_create(fd, 0);
-+		bind_syncobjs[i] = syncobj_create(fd, 0);
-+	};
-+
-+	for (i = 0; i < n_vm; ++i) {
-+		sync[0].handle = bind_syncobjs[i];
-+		xe_vm_bind_async(fd, vm[i], bind_exec_queues[i], bo, 0,
-+				addr[i], bo_size, sync, 1);
-+
-+	}
-+
-+	for (i = 0; i < n_execs; i++) {
-+		int cur_vm = i % n_vm;
-+		uint64_t __addr = addr[cur_vm];
-+		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
-+		uint64_t batch_addr = __addr + batch_offset;
-+		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
-+		uint64_t sdi_addr = __addr + sdi_offset;
-+		int e = i % n_exec_queues;
-+
-+		b = 0;
-+		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data[i].batch[b++] = sdi_addr;
-+		data[i].batch[b++] = sdi_addr >> 32;
-+		data[i].batch[b++] = 0xc0ffee;
-+		data[i].batch[b++] = MI_BATCH_BUFFER_END;
-+		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[0].handle = bind_syncobjs[cur_vm];
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].handle = syncobjs[e];
-+
-+		exec.exec_queue_id = exec_queues[e];
-+		exec.address = batch_addr;
-+		if (e != i)
-+			syncobj_reset(fd, &syncobjs[e], 1);
-+		xe_exec(fd, &exec);
-+
-+		if (i + 1 != n_execs) {
-+			uint32_t __vm = vm[cur_vm];
-+
-+			sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+			xe_vm_unbind_async(fd, __vm, bind_exec_queues[e], 0,
-+					__addr, bo_size, sync + 1, 1);
-+
-+			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+			addr[i % n_vm] += bo_size;
-+			__addr = addr[i % n_vm];
-+			xe_vm_bind_async(fd, __vm, bind_exec_queues[e], bo,
-+					0, __addr, bo_size, sync, 1);
-+
-+		}
-+	}
-+
-+	for (i = 0; i < n_exec_queues && n_execs; i++)
-+		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
-+					NULL));
-+
-+	for (i = 0; i < n_vm; i++)
-+		igt_assert(syncobj_wait(fd, &bind_syncobjs[i], 1, INT64_MAX, 0,
-+					NULL));
-+
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	for (i = 0; i < n_vm; ++i) {
-+		syncobj_reset(fd, &sync[0].handle, 1);
-+		xe_vm_unbind_async(fd, vm[i], bind_exec_queues[i], 0, addr[i],
-+				bo_size, sync, 1);
-+		igt_assert(syncobj_wait(fd, &sync[0].handle, 1,
-+					INT64_MAX, 0, NULL));
-+	}
-+
-+	for (i = 0; i < n_exec_queues; i++) {
-+		syncobj_destroy(fd, syncobjs[i]);
-+		xe_exec_queue_destroy(fd, exec_queues[i]);
-+		if (bind_exec_queues[i])
-+			xe_exec_queue_destroy(fd, bind_exec_queues[i]);
-+	}
-+
-+
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+
-+	for (i = 0; i < n_vm; ++i) {
-+		syncobj_destroy(fd, bind_syncobjs[i]);
-+		xe_vm_destroy(fd, vm[i]);
-+	}
-+}
-+
-+static int loop(unsigned ring,
-+		int reps,
-+		enum mode mode,
-+		int ncpus,
-+		unsigned flags)
-+{
-+	int fd;
-+	struct drm_xe_engine_class_instance *hwe;
-+	double *shared;
-+	fd = drm_open_driver(DRIVER_XE);
-+	shared = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+
-+	if (ring) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->engine_class == ring) {
-+				test_exec(fd, hwe, 1, 1, 1, 0);
-+			}
-+		}
-+	} else {
-+		xe_for_each_engine(fd, hwe)
-+			test_exec(fd, hwe, 1, 1, 1, 0);
-+	}
-+
-+	while (reps--) {
-+		sleep(1); /* wait for the hw to go back to sleep */
-+
-+		memset(shared, 0, 4096);
-+
-+		igt_fork(child, ncpus) {
-+			struct timespec start, end;
-+			unsigned count = 0;
-+
-+			clock_gettime(CLOCK_MONOTONIC, &start);
-+			do {
-+				switch (mode) {
-+				case CREATE:
-+					xe_for_each_engine(fd, hwe)
-+						if (hwe->engine_class == ring) {
-+							test_exec(fd, hwe, 1, 1, 1, 0);
-+						}
-+					break;
-+
-+				case SWITCH:
-+					xe_for_each_engine(fd, hwe)
-+						if (hwe->engine_class == ring) {
-+							test_exec(fd, hwe, 16, 64, 1, 1);
-+						}
-+					break;
-+
-+				case NOP:
-+					break;
-+				}
-+				count++;
-+				clock_gettime(CLOCK_MONOTONIC, &end);
-+			} while (elapsed(&start, &end) < 2.);
-+
-+			clock_gettime(CLOCK_MONOTONIC, &end);
-+			shared[child] = 1e6*elapsed(&start, &end) / count;
-+
-+			}
-+		}
-+		igt_waitchildren();
-+
-+		for (int child = 0; child < ncpus; child++)
-+			shared[ncpus] += shared[child];
-+		printf("%7.3f\n", shared[ncpus] / ncpus);
-+
-+	return 0;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	unsigned ring = DRM_XE_ENGINE_CLASS_RENDER;
-+	unsigned flags = 0;
-+	enum mode mode = NOP;
-+	int reps = 1;
-+	int ncpus = 1;
-+	int c;
-+
-+	while ((c = getopt (argc, argv, "e:r:b:sf")) != -1) {
-+		switch (c) {
-+		case 'e':
-+			if (strcmp(optarg, "rcs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_RENDER;
-+			else if (strcmp(optarg, "vcs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
-+			else if (strcmp(optarg, "bcs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_COPY;
-+			else if (strcmp(optarg, "vecs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
-+			else if (strcmp(optarg, "ccs") == 0)
-+				ring = DRM_XE_ENGINE_CLASS_COMPUTE;
-+			else
-+				ring = atoi(optarg);
-+			break;
-+
-+		case 'b':
-+			if (strcmp(optarg, "create") == 0)
-+				mode = CREATE;
-+			else if (strcmp(optarg, "switch") == 0)
-+				mode = SWITCH;
-+			else if (strcmp(optarg, "nop") == 0)
-+				mode = NOP;
-+			else
-+				abort();
-+			break;
-+
-+		case 'f':
-+			ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+			break;
-+
-+		case 'r':
-+			reps = atoi(optarg);
-+			if (reps < 1)
-+				reps = 1;
-+			break;
-+
-+		default:
-+			break;
-+		}
-+	}
-+
-+	return loop(ring, reps, mode, ncpus, flags);
-+}
--- 
-2.34.1
+Series: Added benchmark test cases for xe
+URL   : https://patchwork.freedesktop.org/series/147105/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8301 -> IGTPW_12905
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12905 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12905, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/index.html
+
+Participating hosts (44 -> 43)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12905:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-twl-2:          [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-twl-2/igt@i915_selftest@live@slpc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-twl-2/igt@i915_selftest@live@slpc.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_8301 and IGTPW_12905:
+
+### New IGT tests (5) ###
+
+  * igt@i915_selftest@all-tests:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_selftest@all-tests@dma_fence:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_selftest@all-tests@dma_fence_chain:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_selftest@all-tests@sanitycheck:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_selftest@load@slpc:
+    - Statuses :
+    - Exec time: [None] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12905 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-rpls-4:         [PASS][3] -> [DMESG-WARN][4] ([i915#13400])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-dg2-8/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-dg2-8/igt@i915_selftest@live.html
+    - bat-dg2-11:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061] / [i915#12435])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-dg2-11/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-dg2-11/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-11:         [PASS][9] -> [DMESG-FAIL][10] ([i915#12061])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+    - bat-dg2-14:         [PASS][11] -> [DMESG-FAIL][12] ([i915#12061]) +1 other test dmesg-fail
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+    - bat-arls-6:         [PASS][13] -> [DMESG-FAIL][14] ([i915#12061]) +1 other test dmesg-fail
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@load:
+    - bat-mtlp-9:         [DMESG-WARN][15] ([i915#13494]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-mtlp-9/igt@i915_module_load@load.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-mtlp-9/igt@i915_module_load@load.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8301 -> IGTPW_12905
+
+  CI-20190529: 20190529
+  CI_DRM_16364: 6deef7a0418bc26082804287b18c8db1e0810686 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12905: 5b42f78e9aa26b04fddd216d565de68d7f864e72 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8301: 8301
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/index.html
+
+--===============0078709777098596760==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Added benchmark test cases for xe</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147105/">https://patchwork.freedesktop.org/series/147105/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8301 -&gt; IGTPW_12905</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12905 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12905, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12905:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-twl-2/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-twl-2/igt@i915_selftest@live@slpc.html">INCOMPLETE</a> +1 other test incomplete</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_8301 and IGTPW_12905:</p>
+<h3>New IGT tests (5)</h3>
+<ul>
+<li>
+<p>igt@i915_selftest@all-tests:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@all-tests@dma_fence:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@all-tests@dma_fence_chain:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@all-tests@sanitycheck:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@load@slpc:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12905 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-dg2-11/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-dg2-11/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435">i915#12435</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_module_load@load:<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8301/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12905/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8301 -&gt; IGTPW_12905</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16364: 6deef7a0418bc26082804287b18c8db1e0810686 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12905: 5b42f78e9aa26b04fddd216d565de68d7f864e72 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8301: 8301</p>
+
+</body>
+</html>
+
+--===============0078709777098596760==--
