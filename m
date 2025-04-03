@@ -4,17 +4,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80C28C3601E
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Apr 2025 15:28:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC544C3600C
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Apr 2025 15:34:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2141010E247;
-	Thu,  3 Apr 2025 15:28:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 843F610E247;
+	Thu,  3 Apr 2025 15:34:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="peZWayCG";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="Gl0DGh3F";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9700E10E247
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Apr 2025 15:28:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DFB110E247
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Apr 2025 15:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
@@ -22,32 +22,33 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=hUdLT5FfsAMAQ/oDfP9ikhZcK0HVKj+Dtm8iIjDNTGk=; b=peZWayCGIR6m8SY79WFgIW5xxg
- G3cFjNeUZB3h54NZEU7fje/D68qYjFm2Nz6ehh5uAoTbxwKSm1tWdRWXueoJgif5T05AvKIQelIqv
- +M1vawkdjY5AGh46ImeNe8c2IhqFf0j3WYdaeBwnV8k7R3EU6X/tT/sDTaNMpUDefXXAl1yQExCdf
- DiIhzSI/AN7jv4BRCaDeqkTZdD1rMjb5xfz4aiYnDH6U8d4FT6DcWGtRDVvELWg+m7Fsw4Gcu3Vco
- oVpsexCy7yZ9gD6eo04J9EA/UoHQQD48rRpakm/+Z1cmP0XlVzKx+zTfu3enCu1aC3rYMUbXlizoV
- t0+xhS8w==;
+ bh=U19e/dInm5BjUdh7UYE+pn1fseqhOGAkqdP4GP/XWDc=; b=Gl0DGh3F1gMmsEiX8BgEKjG/uV
+ ILDDL1To5g0GNYoo7DfKbP3J5a9ENLZXY7fr74YpXWSXTX1pnFgqrotOSGbYsZKe0HjZQm8W2LOW7
+ Ukif7RBBRyzMhWnyfCAje3VtaVojHvhqTyDQDE/bcUpDlC6kQeRhHThpmxCd1d9EaFhZClvQ8Y0jF
+ 2374JNDsUS7LUjyxuJPQRJfTPDUnwydmx7+lIauTdQ3vbnbJwtu9eE2Zakg7DtzQygHvXrqm1yqrh
+ nV4/HYWLivCRSuSIV7TNjRaHPp9DqHfw7+fpm87T7daLRMeebMagKdBFhof+mmgXEjFFmb5VWgvlc
+ DVsMA+WA==;
 Received: from [189.6.35.67] (helo=mail.igalia.com)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1u0MUq-00At8M-Ri; Thu, 03 Apr 2025 17:28:49 +0200
-Date: Thu, 3 Apr 2025 12:28:41 -0300
+ id 1u0Mam-00AtH8-2d; Thu, 03 Apr 2025 17:34:56 +0200
+Date: Thu, 3 Apr 2025 12:34:48 -0300
 From: Melissa Wen <mwen@igalia.com>
 To: =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
 Cc: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, kernel-dev@igalia.com,
  Vitaly Prosyak <vitaly.prosyak@amd.com>, 
  Alex Hung <alex.hung@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>
-Subject: Re: [PATCH v5 3/4] kms_async_flips: Refactor data options
-Message-ID: <k2ungxhiueumwdzrpiyfmk4mom35wjf3swuxi42zfjx5r3ucus@l4kvjbhqt66l>
+Subject: Re: [PATCH v5 4/4] tests/kms_async_flips: Create subtest for overlay
+ planes
+Message-ID: <gzspghgah5uyelk5x7wpxfzmnroimdskke3ws5qx34ed4jrmyf@n5vke4yop6cm>
 References: <20250402022922.210495-1-andrealmeid@igalia.com>
- <20250402022922.210495-4-andrealmeid@igalia.com>
+ <20250402022922.210495-5-andrealmeid@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250402022922.210495-4-andrealmeid@igalia.com>
+In-Reply-To: <20250402022922.210495-5-andrealmeid@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,159 +65,248 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On 04/01, André Almeida wrote:
-> Setting the test data options as true and false for every test is error
-> prone. Instead, reset all the data to false at the end of a test and
-> just set the needed options to true before running a test.
+> amdgpu can perform async flips in overlay planes as well, so create a
+> test for that.
 > 
 > Signed-off-by: André Almeida <andrealmeid@igalia.com>
-
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-
 > ---
->  tests/kms_async_flips.c | 27 +++++++++++++++++++--------
->  1 file changed, 19 insertions(+), 8 deletions(-)
+>  tests/kms_async_flips.c | 73 +++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 67 insertions(+), 6 deletions(-)
 > 
 > diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index d2a1f60f9..6986278d7 100644
+> index 6986278d7..98000fc92 100644
 > --- a/tests/kms_async_flips.c
 > +++ b/tests/kms_async_flips.c
-> @@ -230,6 +230,12 @@ static void test_init(data_t *data)
->  	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+> @@ -85,6 +85,9 @@
+>   *
+>   * SUBTEST: async-flip-suspend-resume
+>   * Description: Verify the async flip functionality with suspend and resume cycle
+> + *
+> + * SUBTEST: overlay-atomic
+> + * Description: Verify overlay planes with async flips in atomic API
+>   */
+>  
+>  #define CURSOR_POS 128
+> @@ -105,12 +108,14 @@ typedef struct {
+>  	uint32_t crtc_id;
+>  	uint32_t refresh_rate;
+>  	struct igt_fb bufs[NUM_FBS];
+> +	struct igt_fb bufs_overlay[NUM_FBS];
+>  	igt_display_t display;
+>  	igt_output_t *output;
+>  	unsigned long flip_timestamp_us;
+>  	double flip_interval;
+>  	uint64_t modifier;
+>  	igt_plane_t *plane;
+> +	igt_plane_t *plane_overlay;
+>  	igt_pipe_crc_t *pipe_crc;
+>  	igt_crc_t ref_crc;
+>  	int flip_count;
+> @@ -122,6 +127,7 @@ typedef struct {
+>  	bool allow_fail;
+>  	struct buf_ops *bops;
+>  	bool atomic_path;
+> +	bool overlay_path;
+>  } data_t;
+>  
+>  static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+> @@ -213,6 +219,25 @@ static void require_atomic_async_cap(data_t *data)
+>  		      "Atomic flip async flip not supported\n");
 >  }
 >  
-> +static void test_init_ops(data_t *data)
+> +static void require_overlay_flip_support(data_t *data)
 > +{
-> +	data->alternate_sync_async = false;
-> +	data->atomic_path = false;
+> +	struct igt_fb *bufs = data->bufs_overlay;
+> +	igt_plane_t *plane = data->plane_overlay;
+> +	int flags = DRM_MODE_PAGE_FLIP_EVENT;
+> +
+> +	igt_plane_set_fb(plane, &bufs[0]);
+> +
+> +	igt_require_f(!igt_display_try_commit_atomic(&data->display, flags, data),
+> +		      "Overlay planes not supported\n");
+> +
+> +	flags |= DRM_MODE_PAGE_FLIP_ASYNC;
+> +
+> +	igt_plane_set_fb(plane, &bufs[1]);
+> +
+> +	igt_require_f(!igt_display_try_commit_atomic(&data->display, flags, data),
+> +		      "Async flip for overlay planes not supported\n");
 > +}
 > +
->  static void test_init_fbs(data_t *data)
+>  static void test_init(data_t *data)
 >  {
->  	int i;
-> @@ -778,8 +784,7 @@ igt_main
+>  	drmModeModeInfo *mode;
+> @@ -228,12 +253,15 @@ static void test_init(data_t *data)
+>  	igt_output_set_pipe(data->output, data->pipe);
 >  
->  		igt_describe("Wait for page flip events in between successive asynchronous flips");
->  		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
-> -			data.alternate_sync_async = false;
-> -			data.atomic_path = false;
-> +			test_init_ops(&data);
->  			if (is_intel_device(data.drm_fd))
->  				run_test_with_modifiers(&data, test_async_flip);
->  			else
-> @@ -789,7 +794,7 @@ igt_main
->  		igt_describe("Wait for page flip events in between successive "
->  			     "asynchronous flips using atomic path");
->  		igt_subtest_with_dynamic("async-flip-with-page-flip-events-atomic") {
-> -			data.alternate_sync_async = false;
-> +			test_init_ops(&data);
->  			data.atomic_path = true;
->  			if (is_intel_device(data.drm_fd))
->  				run_test_with_modifiers(&data, test_async_flip);
-> @@ -799,13 +804,14 @@ igt_main
+>  	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+> +	if (data->overlay_path)
+> +		data->plane_overlay = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_OVERLAY);
+>  }
 >  
->  		igt_describe("Alternate between sync and async flips");
->  		igt_subtest_with_dynamic("alternate-sync-async-flip") {
-> +			test_init_ops(&data);
->  			data.alternate_sync_async = true;
-> -			data.atomic_path = false;
+>  static void test_init_ops(data_t *data)
+>  {
+>  	data->alternate_sync_async = false;
+>  	data->atomic_path = false;
+> +	data->overlay_path = false;
+>  }
+>  
+>  static void test_init_fbs(data_t *data)
+> @@ -242,6 +270,7 @@ static void test_init_fbs(data_t *data)
+>  	uint32_t width, height;
+>  	static uint32_t prev_output_id;
+>  	static uint64_t prev_modifier;
+> +	static bool prev_overlay;
+>  	drmModeModeInfo *mode;
+>  
+>  	mode = igt_output_get_mode(data->output);
+> @@ -249,21 +278,35 @@ static void test_init_fbs(data_t *data)
+>  	height = mode->vdisplay;
+>  
+>  	if (prev_output_id != data->output->id ||
+> -	    prev_modifier != data->modifier) {
+> +	    prev_modifier != data->modifier ||
+> +	    prev_overlay != data->overlay_path) {
+>  		prev_output_id = data->output->id;
+>  		prev_modifier = data->modifier;
+> +		prev_overlay = data->overlay_path;
+>  
+>  		if (data->bufs[0].fb_id) {
+> -			for (i = 0; i < NUM_FBS; i++)
+> +			for (i = 0; i < NUM_FBS; i++) {
+>  				igt_remove_fb(data->drm_fd, &data->bufs[i]);
+> +				if (data->overlay_path)
+> +					igt_remove_fb(data->drm_fd, &data->bufs_overlay[i]);
+> +			}
+>  		}
+>  
+> -		for (i = 0; i < NUM_FBS; i++)
+> +		for (i = 0; i < NUM_FBS; i++) {
+>  			make_fb(data, &data->bufs[i], width, height, i);
+> +			if (data->overlay_path) {
+> +				make_fb(data, &data->bufs_overlay[i], width, height, i);
+> +			}
+> +		}
+
+I don't think this logic is correct.
+
+In the way it is implemented, if we are running a subtest just after the
+overlay-atomic, but with `data->overlay_path = false`, bufs_overlays
+won't be removed.
+In addition, if we are running the overlay-atomic subtest, where
+`prev_overlay != data->overlay_path`, data->bufs will be recreated
+unnecessarily (because both `prev_overlay != data->overlay_path` and
+`data->bufs[0].fb_id` conditions are satisfied).
+
+I understand that what you intended to do would be something like this:
+
+	if (prev_output_id != data->output->id ||
+	    prev_modifier != data->modifier) {
+		prev_output_id = data->output->id;
+		prev_modifier = data->modifier;
+
+		if (data->bufs[0].fb_id) {
+			for (i = 0; i < NUM_FBS; i++)
+				igt_remove_fb(data->drm_fd, &data->bufs[i]);
+		}
+
+		for (i = 0; i < NUM_FBS; i++)
+			make_fb(data, &data->bufs[i], width, height, i);
+	}
+
+	if (prev_overlay != data->overlay_path) {
+		prev_overlay = data->overlay_path;
+
+		if (data->bufs_overlay[0].fb_id) {
+			for (i = 0; i < NUM_FBS; i++)
+				igt_remove_fb(data->drm_fd, &data->bufs_overlay[i]);
+		}
+
+		for (i = 0; i < NUM_FBS; i++) {
+			if (data->overlay_path)
+				make_fb(data, &data->bufs_overlay[i], width, height, i);
+		}
+	}
+
+Then I undertand we will only create bufs_overlays if we are running
+overlay-atomic for the first time and remove those fbs in the first
+execution of the next subtest that doesn't need it. And
+`data->overlay_path` doesn't affect primary fbs if not needed.
+
+>  	}
+>  
+>  	igt_plane_set_fb(data->plane, &data->bufs[0]);
+>  	igt_plane_set_size(data->plane, width, height);
+> +
+> +	if (data->overlay_path) {
+> +		igt_plane_set_fb(data->plane_overlay, &data->bufs_overlay[0]);
+> +		igt_plane_set_size(data->plane_overlay, width, height);
+> +	}
+>  }
+>  
+>  static bool async_flip_needs_extra_frame(data_t *data)
+> @@ -291,12 +334,17 @@ static bool async_flip_needs_extra_frame(data_t *data)
+>  static int perform_flip(data_t *data, int frame, int flags)
+>  {
+>  	int ret;
+> +	igt_plane_t *plane;
+> +	struct igt_fb *bufs;
+> +
+> +	plane = data->overlay_path ? data->plane_overlay : data->plane;
+> +	bufs = data->overlay_path ? data->bufs_overlay : data->bufs;
+>  
+>  	if (!data->atomic_path) {
+>  		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+> -				      data->bufs[frame % NUM_FBS].fb_id, flags, data);
+> +				     bufs[frame % NUM_FBS].fb_id, flags, data);
+>  	} else {
+> -		igt_plane_set_fb(data->plane, &data->bufs[frame % NUM_FBS]);
+> +		igt_plane_set_fb(plane, &bufs[frame % NUM_FBS]);
+>  		ret = igt_display_try_commit_atomic(&data->display, flags, data);
+>  	}
+>  
+> @@ -312,6 +360,9 @@ static void test_async_flip(data_t *data)
+>  
+>  	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>  
+> +	if (data->overlay_path)
+> +		require_overlay_flip_support(data);
+> +
+>  	gettimeofday(&start, NULL);
+>  	frame = 1;
+>  	do {
+> @@ -817,6 +868,14 @@ igt_main
 >  			run_test(&data, test_async_flip);
 >  		}
 >  
->  		igt_describe("Alternate between sync and async flips using atomic path");
->  		igt_subtest_with_dynamic("alternate-sync-async-flip-atomic") {
-> +			test_init_ops(&data);
->  			data.alternate_sync_async = true;
->  			data.atomic_path = true;
->  			run_test(&data, test_async_flip);
-> @@ -814,13 +820,14 @@ igt_main
+> +		igt_describe("Verify overlay planes with async flips in atomic API");
+> +		igt_subtest_with_dynamic("overlay-atomic") {
+
+Missing `test_init_ops()` here.
+
+Melissa
+
+> +			igt_require(is_amdgpu_device(data.drm_fd));
+> +			data.atomic_path = true;
+> +			data.overlay_path = true;
+> +			run_test(&data, test_async_flip);
+> +		}
+> +
 >  		igt_describe("Verify that the async flip timestamp does not "
 >  			     "coincide with either previous or next vblank");
 >  		igt_subtest_with_dynamic("test-time-stamp") {
-> -			data.atomic_path = false;
-> +			test_init_ops(&data);
->  			run_test(&data, test_timestamp);
->  		}
->  
->  		igt_describe("Verify that the async flip timestamp does not coincide "
->  			     "with either previous or next vblank with atomic path");
->  		igt_subtest_with_dynamic("test-time-stamp-atomic") {
-> +			test_init_ops(&data);
->  			data.atomic_path = true;
->  			run_test(&data, test_timestamp);
->  		}
-> @@ -828,6 +835,7 @@ igt_main
->  
->  	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
->  	igt_subtest_with_dynamic("test-cursor") {
-> +		test_init_ops(&data);
->  		/*
->  		 * Intel's PSR2 selective fetch adds other planes to state when
->  		 * necessary, causing the async flip to fail because async flip is not
-> @@ -837,13 +845,13 @@ igt_main
->  			      "PSR2 sel fetch causes cursor to be added to primary plane "
->  			      "pages flips and async flip is not supported in cursor\n");
->  
-> -		data.atomic_path = false;
->  		run_test(&data, test_cursor);
+> @@ -920,8 +979,10 @@ igt_main
 >  	}
 >  
->  	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after "
->  		     "async flip with atomic commit");
->  	igt_subtest_with_dynamic("test-cursor-atomic") {
-> +		test_init_ops(&data);
->  		/*
->  		 * Intel's PSR2 selective fetch adds other planes to state when
->  		 * necessary, causing the async flip to fail because async flip is not
-> @@ -858,6 +866,7 @@ igt_main
+>  	igt_fixture {
+> -		for (i = 0; i < NUM_FBS; i++)
+> +		for (i = 0; i < NUM_FBS; i++) {
+>  			igt_remove_fb(data.drm_fd, &data.bufs[i]);
+> +			igt_remove_fb(data.drm_fd, &data.bufs_overlay[i]);
+> +		}
 >  
->  	igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
->  	igt_subtest_with_dynamic("invalid-async-flip") {
-> +		test_init_ops(&data);
->  		/* TODO: support more vendors */
->  		igt_require(is_intel_device(data.drm_fd));
->  		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
-> @@ -865,13 +874,13 @@ igt_main
->  		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
->  						       I915_FORMAT_MOD_Y_TILED));
->  
-> -		data.atomic_path = false;
->  		run_test(&data, test_invalid);
->  	}
->  
->  	igt_describe("Negative case to verify if changes in fb are rejected "
->  		     "from kernel as expected when async flip is done using atomic path");
->  	igt_subtest_with_dynamic("invalid-async-flip-atomic") {
-> +		test_init_ops(&data);
->  		data.atomic_path = true;
->  		/* TODO: support more vendors */
->  		igt_require(is_intel_device(data.drm_fd));
-> @@ -885,16 +894,17 @@ igt_main
->  
->  	igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
->  	igt_subtest_with_dynamic("crc") {
-> +		test_init_ops(&data);
->  		/* Devices without CRC can't run this test */
->  		igt_require_pipe_crc(data.drm_fd);
->  
-> -		data.atomic_path = false;
->  		run_test(&data, test_crc);
->  	}
->  
->  	igt_describe("Use CRC to verify async flip scans out the correct framebuffer "
->  		     "with atomic commit");
->  	igt_subtest_with_dynamic("crc-atomic") {
-> +		test_init_ops(&data);
->  		/* Devices without CRC can't run this test */
->  		igt_require_pipe_crc(data.drm_fd);
->  
-> @@ -904,6 +914,7 @@ igt_main
->  
->  	igt_describe("Verify the async flip functionality after suspend and resume cycle");
->  	igt_subtest_with_dynamic("async-flip-suspend-resume") {
-> +		test_init_ops(&data);
->  		data.suspend_resume = true;
->  		run_test(&data, test_async_flip);
->  	}
+>  		if (is_intel_device(data.drm_fd))
+>  			buf_ops_destroy(data.bops);
 > -- 
 > 2.49.0
 > 
