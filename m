@@ -4,181 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C29B8C3600C
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Apr 2025 10:22:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94DE5C3600C
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Apr 2025 10:23:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 77A3310E98A;
-	Thu,  3 Apr 2025 10:22:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4556F10E996;
+	Thu,  3 Apr 2025 10:23:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DDgJj76M";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YVXv0Svn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C76910E995
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Apr 2025 10:22:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11F1310E99C
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Apr 2025 10:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743675738; x=1775211738;
- h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=PvnTjlgXUxWDUzX+ybqI93qE8XNpyEarnRxw5gYWqBc=;
- b=DDgJj76MuLZpHHw5RWKd+tpDPq7igvQcq8eBiKeMJhOrfJiUQQ6ruXss
- zwktGKIVtxIBjRXnfXgDzad8Ec3JERLbw+yFsOUnSTCTp2/tprogl9CID
- sx6rTVTJiOrqcX2IeY88uW1ct7nJ5bvNOa/rkbLurhrGwWt7gnxApSQOp
- qOyw3U3OY53k6aCDLi6Q4jD+yRorMMVKtJMhur8bpmkH//R9UeV+WlSxw
- tTrQoMyInEAJQzJASNDlW2IrKXngQoKbqagv9aB5wSYhE5jfUFwFBXw6H
- ZksaUc/mkZMhL0adjvy1jnAkfKCyiGOrYY07p6bfyUogic3ejD5RAvnGz w==;
-X-CSE-ConnectionGUID: byBJkMY6SByyJ6boplszOw==
-X-CSE-MsgGUID: arrMcV0xR2W8eyR4qqtIxw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="56447503"
-X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; d="scan'208";a="56447503"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2025 03:22:18 -0700
-X-CSE-ConnectionGUID: Ht3JYX3QS7mEVrtrR5Nviw==
-X-CSE-MsgGUID: qZoMk3bmSVK21v7ZAH8iUw==
+ t=1743675837; x=1775211837;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/tJyX902B1QuyQl1QUBGiFasCrC/VqSxZGymTSAREOQ=;
+ b=YVXv0SvnNxFicBfUsQrooLs62N5bE4gZxRaPV6va0mcW4VClZp3qlwUo
+ uJ5za3ELvLUaoxlIGqWEyxlFM2V4AuxySSAO4R/dhs67YN2qRGApzzPBH
+ ZvMoQXmRk1blIfk9CKfJbgtbb6T6YPYGMHhgaYbR/fvreLetRlzo/Ly3L
+ E4pMuElITD3u/wvTTnteTvoZhKERC/hvXuEI4o4fpLGk5SqIalryCaBxh
+ CrXNUdzQ+Ta/tPKdYPCD5UmWhcUVd71KMtkVSyE/qpD8vVkscx5jF/w1d
+ x8noWzn0br96K06DO92qBtfjiNdZhgZfjkBYoe2fh/UcUyqTvduAH4ioZ A==;
+X-CSE-ConnectionGUID: CXK8KdQUR4mi62Y823K34g==
+X-CSE-MsgGUID: JsTRHGypSR+QvGYk4YS/Qg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="62475363"
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; d="scan'208";a="62475363"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2025 03:23:57 -0700
+X-CSE-ConnectionGUID: u2oZJdUET2ad1Vc9og07hA==
+X-CSE-MsgGUID: I8Ondf1zTguulxodEEaEqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; d="scan'208";a="127818238"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmviesa009.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 03 Apr 2025 03:22:18 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 3 Apr 2025 03:22:17 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Thu, 3 Apr 2025 03:22:17 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.40) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 3 Apr 2025 03:22:16 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RMZ6zl6xSFmyL4nR/DbfmScRwDRk/aLBjb3gtBqV2RDfqJAQaFdYZPJ+Udi7QeD81hPRl7+NYbrvYc7rldkcq7H2JS+GTFriFAD0LSOwjT3jFmiMK5KRXBs0yEhECiZp48wXdztQWdjGzBT27PcwhHykZC+mYtpix0o8j689EruT3cP8snnphkBeWwmzfzkjB5YYqbSgcEOOZvSQ6cOEUMWif8CXQLbIdDjSBaru39eSqQGCsoLWlPNFmWTJVc/FkrNJTK08230hJg0nAqhQmrR4nj9RAdclV7IpmSm6bUAroup5EfdV9HI2+CDvGwn72i6gy12w3YvJoln2gp9q4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pPQOqKXkd6xEvRnOBXzYnDD4Ogm4YVysABlha5Y+eHU=;
- b=na0IcE6BaGVNPYBtlWuIuf4zesRSOEpI4zl5Her+g3lkIQ2MLn85/TEPaO7fIl9EySCGTo4by0fLGo0QxRYfllwTK8YA3a3h6hbrpvqlGlbfcv8oseGZSewtd69xf55oUUIn6XJjo/69gWZ6eA4bnrqv5uhEuphZ86SyKZpqJVbvlse6yP2eZ/Bxjhx74q3ZiOpuM0erdda7GgQ9S4MrZ35EITle+SsIZjXtEJZGFXVp1OiS7HTGkDGt9Tr8GnJ4jopgC9gr83mbLP/Rk/nL/qD1cJiikuob/Xm7RMvHQShG7QrE3sqE1pJE0NvqLfFCAHZ2NQ5o+DrMlk15JUFCnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
- by CO1PR11MB5169.namprd11.prod.outlook.com (2603:10b6:303:95::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.47; Thu, 3 Apr
- 2025 10:22:01 +0000
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::5461:fa8c:58b8:e10d]) by CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::5461:fa8c:58b8:e10d%4]) with mapi id 15.20.8534.052; Thu, 3 Apr 2025
- 10:22:01 +0000
-Date: Thu, 3 Apr 2025 12:21:53 +0200
-From: Francois Dugast <francois.dugast@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t] lib/intel_allocator: protect binding for
- multithreaded tests
-Message-ID: <Z-5hQTpKGtTSLuvl@fdugast-desk>
-References: <20250403083438.132035-1-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250403083438.132035-1-zbigniew.kempczynski@intel.com>
-Organization: Intel Corporation
-X-ClientProxiedBy: WA1P291CA0018.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:19::25) To CY8PR11MB7828.namprd11.prod.outlook.com
- (2603:10b6:930:78::8)
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; d="scan'208";a="132166631"
+Received: from mstancu-mobl1.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.118.0])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2025 03:23:53 -0700
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ himanshu.girotra@intel.com, aditya.chauhan@intel.com,
+ pravalika.gurram@intel.com, sai.gowtham.ch@intel.com,
+ ramadevi.gandi@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
+ kamil.konieczny@linux.intel.com, katarzyna.piecielska@intel.com
+Subject: [PATCH i-g-t] tests/intel: Remove debugfs_test and xe_debugfs
+Date: Thu,  3 Apr 2025 12:23:12 +0200
+Message-ID: <20250403102313.181408-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|CO1PR11MB5169:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f3ac2b0-0b9a-40c9-f799-08dd72995f25
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZGptb01jT2c2all6TGw5K2dWYjZJYUlBVjJVcHMzQUFBQW92U2d0SGFrSzBn?=
- =?utf-8?B?TkhPZkg5bVdycjNKak5sNkZLdFh4WTN5c1VhQW9vYi9UWnZKdi8vbFZ2YWFs?=
- =?utf-8?B?UlNkano3cUE3U3ljSVc5QVhFN211ZHBxdHM0TUNiUit5SDZKNEhrd21HUEhM?=
- =?utf-8?B?RGNYRUNXRk04bGlqSUlmUTh5VUh2aGlmc3VaUEVtN2J0WGdFOE5ma3hyNFg0?=
- =?utf-8?B?RjFoUVVaWTNHcTBDcXlnQXVvZ1VXMy9EUTdDa3lXTUh5bEtXTG9JMzVNWVJE?=
- =?utf-8?B?aDNtSHlTTkZrMDFuc1REbjZxWlVmSit1MVp3d2cwSXdWNi9aLzg3VU44eXAy?=
- =?utf-8?B?SlpaV0kyRGhPWVZOTUxOYWFNVElYZlkyUXZkSG9XTUhPSE5OZkZOZ3lKcEgz?=
- =?utf-8?B?MXpBeGxQRmpEdUF6QzhwejJHYjBKai9zSGRCdk1MTzlJbXB4QzJoTUtuOU5u?=
- =?utf-8?B?ZUhIdTZsYndGSktMd05veEVUZGk3WnVSeU45M3BYRTRCZzFsNlJSWmZ6Z0VR?=
- =?utf-8?B?VlY2NnVBbXpxSlQ2eXpkeEJTekxuUUViajBUaFlMcHFxTWRqSEJsR2c5QnZJ?=
- =?utf-8?B?ai80Q1pQbzU2aGd5WGJTTDF2WG53OEwvZ2dNUWRaYy8zZDVyS2RsODFhL2lm?=
- =?utf-8?B?UFpvejNpRTkzRXBFQWF6cXRFTjVsRnc2Zit2UWRWdUw4TWpaWVhlTDd6M0lC?=
- =?utf-8?B?eUk1ZEkxMDM1ZE10V3NRUjZOOUQyKzBNWk1JVW42RkdxcDNqRlpuSU1XODRa?=
- =?utf-8?B?eFU4SFVtVElKang2MXN1VW93Wng0SUZHSHpvcUNQMHFLSHBTMVdjLzJhU0pW?=
- =?utf-8?B?aWhTYVZ4SWNGUVlqMExzZ2MzclNQcklNdEdMUFA0dlVyRWF5WUsxdXpMUlky?=
- =?utf-8?B?bm1IVnFCWnZkRWpOaWRScGFsZ2RORW9xRGxOdCs2Mm1SUHFqeE5ITHVZUkNJ?=
- =?utf-8?B?eHc4Q3pxMjNZWjVFMnVPTGhrMDZBZmRwTm1RL0pEd0psK045ZWMzMUJ6aGl4?=
- =?utf-8?B?eng1UVF5Wmo5VTBWcVRFTTVRZ3MrWkExSG9GdU1abForb29xNTE2MHVPNml5?=
- =?utf-8?B?eWRveDJvVmorcWRHNjd3ZnZkOG5yVzY0dnByQ2tDdW5hR2IvTlRtc0dxemY2?=
- =?utf-8?B?cy9tR1Z1d1duZ1V4Ti93dFNwSkp5dlVCbWtPeWZPQVM5ZlVKSm5FcDJPb2xr?=
- =?utf-8?B?c2tIdGx0OHhFZUcra25aaDNpRk8wb29KM1NXV3pQTXZmdFE5KzE3akJWZzgy?=
- =?utf-8?B?WWxsUWZHRzhDNHF5QU1DczdRNUxEdEk5WDdXb0hsMWdCSE1TRDV1Ukk1MHY2?=
- =?utf-8?B?bnJZdzdxVTY2eVZnV3hlYjZRK1NDYThRQ2piMzlxaHBYUlFQb1BEMW5YcjFY?=
- =?utf-8?B?RjVpaTJ3NEMzVzh3RGdUUkdNa0RRU2phdFJVTTRQaGJ2SDBMenVFWktkaXJ5?=
- =?utf-8?B?MXl3MDNTenJzdGZpZVMzM0twSG9PSllyTldLcVVaZ1dQL2pyMjJqa0tXR1hV?=
- =?utf-8?B?aGZpQ1JYNkRDUUw2Q0s4K051VjREYnRWcDVMb3R4a0h4UUxJSTBWb1Y4YURt?=
- =?utf-8?B?eHFDamF0M0NHRERORklSUHJtTThnck9vbldHc0VQWlFuY2xsYWZGb3l6d1NE?=
- =?utf-8?B?VzlJUHhVakNwSkJkRVllZmNCcUNjeTZuaVRsdHJ4Y0N4ZCttMlp5NkI4YWpF?=
- =?utf-8?B?TGdET0NHYVhlSWd1VzQvcDBUVmxhNTFhZXcwU1AyN2F4NnZsN215MGx0UFFn?=
- =?utf-8?B?aTVXSDRCTjQzVWVhUGJVeUtCZ2Y2RWxEUWlJRWZCSDkwb2hIQ0x1dHZXV21a?=
- =?utf-8?B?YUdsd25zR1o4Z3J0dkh1UT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bCtLYmg0aEZzU2RpYnBIN25IbmhtbFNXVHNaZ2RkaGJaTTdrQkFIcnlsaFd5?=
- =?utf-8?B?QTh5eFdtYTBJQlBBbEExR2lQTlZPblRMN3dZVkwzTlFRS05ZU25pMlJWaWdr?=
- =?utf-8?B?TWFLcy90N2g2eEMzblZyVWV2cWZoZnF5bXM0VUUxK0pueUZ1UDJOTE5aUzFE?=
- =?utf-8?B?WXNTSm94ckEzTUtZUXFoSUw3S3MyTWcycndYNmpEc1hSYmFGSFIxaTVGaDZS?=
- =?utf-8?B?a01RS01vQ3hRWGt5bWpNdnRiSmg0SGRMdHEwOFlYTEFNUVFKTTh5VmJUd0Jj?=
- =?utf-8?B?bktVaFBlbE5qWWpOVzArL2laUDJwQ3hlazZNMnVSMUtRYmRoTzJlSnpKOHd0?=
- =?utf-8?B?K1JDSjdEL3RuKys5SkR5OTBLWi9XVmNrVzhWVWxqNWhEbUhkVW9SVE55V3BJ?=
- =?utf-8?B?Qy9ia1hzK1BLWlhEcHhrWjd0N3BYSndTSytxMTBxWVV0SUE2U00vVFlPVUNj?=
- =?utf-8?B?c3Z2YndGdHptMzg3MlIva3poVThzTllITkhnalVCeEFrRHZIb2hiakkvbkdw?=
- =?utf-8?B?QlViYktEK3RzRDkzYmdyMXk2dmV0ZEkvSnFjNlM3VXBvRW82b21iT1FJM2Jk?=
- =?utf-8?B?MTNSMUZvQnNLU3RPM1pEbzcrRUR4TjVCelJ1U1NkV1BreFRneFZEOVJ0Zzkr?=
- =?utf-8?B?N3Z1b0N3NTJFL01peU40c2Y2NTJRbjlUR1NwaUV0UXRnOWpiazNJQVlYNG5y?=
- =?utf-8?B?cXMwMGJyOXljT3VlMHduVXAwdEd4SlQxd3hmSU9GVXBuWWJDeGNmUDhMQXB1?=
- =?utf-8?B?Z1pvM0xVSGp6dDBBeFduL084ZlFIUlY3dDJoT3FHaG0wVE03Yy9xZkpKSitF?=
- =?utf-8?B?WmsyRGtoM3ZvbXFHYlAweXg0QWZ6WXNUd3psRkQ0QnM1TmxzTDdSdkpDamhV?=
- =?utf-8?B?YXpNcURoT00zWHREeU1tamR2b1NTRmF2bWh1ZVJpZzRuWEkzOWFFRm9URmlT?=
- =?utf-8?B?b1hVY2tnUktyelZmc3lQdnVvUDFHdW1mNXAyU1hqSmxIY1pVc1kvTDhEZ0tI?=
- =?utf-8?B?N1YwKzM4RmRWblFaUEViOVVIYTlTRGRoTkZwcUJROER1MytrOGl6Um9Va1hR?=
- =?utf-8?B?ZGpnWWdOR2Z1UXNGUEt6U3o1VHp1SWhpMzhBWkI1SC96aGN3djdTSjAzNjl0?=
- =?utf-8?B?YlVkeEszYWMwa0NvKzJUNlltenFXYm9EaCtYdmd2aHVVT3lObjZSU1MzQk1n?=
- =?utf-8?B?d3dGTFI0R1pqbEVzQXNNbU1vdVdaMW1vdUs2OHNmWW1zQmRKYjVYZ2dYLzVV?=
- =?utf-8?B?aVdmTk0xa1cybXZnRVVFdGNDeEFZdXNVQVEyUFZGU1hxSzRUOWIwSlNnZC9U?=
- =?utf-8?B?Q3E5aWZjZit0cUZrREJZZng5R1lqL3VWclk1WGFRai9jLzZ3djJ2TWI4YVRa?=
- =?utf-8?B?elh2TktKcWYxcDJIYnVNaGZZSkdKZE81RTBPRFNmbVBqWlBqcm5JZkdYZitN?=
- =?utf-8?B?aFJTYVFKQWpNV3MwQ1RIMTU3K0RySi9uV2pLcllYSThtWENzd2JSY3NyUXIw?=
- =?utf-8?B?VU9wZ3l1MW5KOG90bmFnTDhDWm5pNHVsRFZ5NzAvNzA1amlVa3FMN29HQkdG?=
- =?utf-8?B?Z1pQdnNvN29MWUZvOHRMWTZMRlJJbmFBSkRER3VoK0ZnZHNhSVhDaVdQR2JI?=
- =?utf-8?B?M3J4aFVSTFdVZGp3dTZ5RHp4OXMvRmFzYzVabnQ1WmhyRGp5S2FjdlN2Yklj?=
- =?utf-8?B?SnlQKzUvK0hhalJ0Z1BzNjQ5VGxiN0ZZNGpSdWxQTDNIYTZraXRqOEUvQTZa?=
- =?utf-8?B?ODBFLzBONzVnSGpid3Z2ZXV1MGJaMFBKM2hlOEUzQmszMGw4S0lSSmlCNVI0?=
- =?utf-8?B?MUlxY1pPemc4Z09iVGtnenRGbkNlY3lQQzd1bzBsS2w5WWhqbkNNZlZ5RmRQ?=
- =?utf-8?B?NmhFd3JuQUVqZ0JZWmlxdU9YVkdSa3ZnNFlDY0JVbXpaNWVONnRIY1pPVVFP?=
- =?utf-8?B?MFdsYnJ2Wk9hTThtbCtMb3BpVHpVa29VempoQlBLWUlScTBIVnZBblRKTWE2?=
- =?utf-8?B?bXJMY2xwSVAwTkh0K3BFanExS1poNVEwTkJ3amorVFFGOXBLNFIwL092TUtT?=
- =?utf-8?B?L25VNFhabmc5RDB1Q05nUTRheFJZS25abDg3czh0WXEvRE82b21PWmI4bk9w?=
- =?utf-8?B?WkUva3VRY25GS01zZlhMVjd3TVB5MzVQa1YxcmJBVmVGUGhKa2V4UXBJczVH?=
- =?utf-8?B?NHc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f3ac2b0-0b9a-40c9-f799-08dd72995f25
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2025 10:22:00.9517 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Wd/Gkh3f56/lTurM1YrBgut5ZcBIu7EQ8CGuH7n0gPBXLshsdfEMpRafMLQVzz89d0ep+NgUctuK9RsuzYltz2LeulE+JNmzy8sbyhCA5wY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5169
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -194,58 +71,738 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Apr 03, 2025 at 10:34:38AM +0200, Zbigniew Kempczyński wrote:
-> Upcoming render-copy stress test reveals problem where multiple
-> threads enter binding code. Before binding/unbinding threads calls
-> alloc/free which collects operations to be executed in single vm_bind
-> ioctl. If first thread which fetches all binding operations from the
-> allocator will be interleaved by second thread which in turn sees no
-> operations are necessary to complete, it will start to execute jobs
-> without properly bounded offsets in the vm (it thinks addresses are
-> already there as there's no operations in the allocator).
-> 
-> Avoid this situation by migrating mutex lock to the place where thread
-> performing binding will finish its job. This will ensure any other
-> threads will wait until all binding operations are completed.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
+With the introduction of intel_sysfs_debugfs both debugfs_test and
+xe_debugfs became redundant. It is also important to notice that
+igt@debugfs_test@basic-hwmon was already redundant because intel_hwmon
+covers both i915 and Xe. So:
+ - remove debugfs_test
+ - remove xe_debugfs
+ - update meson.build
+ - update code_coverage.md and code_cov_selftest.sh to use
+   igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries
+ - update fast-feedback.testlist to use intel_sysfs_debugfs and
+   intel_hwmon
+ - update xe-fast-feedback.testlist to use intel_sysfs_debugfs and
+   include xe-debugfs-read-all-entries and xe-sysfs-read-all-entries
+ - update xe-sriov-vf.blocklist.txt to use intel_sysfs_debugfs
+ - remove reference to debugfs_test.c from i915_test_config.json
 
-I confirm this solves the problem seen with another series [1] on LNL:
+Cc: himanshu.girotra@intel.com
+Cc: aditya.chauhan@intel.com
+Cc: pravalika.gurram@intel.com
+Cc: sai.gowtham.ch@intel.com
+Cc: ramadevi.gandi@intel.com
+Cc: lucas.demarchi@intel.com
+Cc: rodrigo.vivi@intel.com
+Cc: kamil.konieczny@linux.intel.com
+Cc: katarzyna.piecielska@intel.com
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+---
+ docs/code_coverage.md                    |  18 +-
+ scripts/code_cov_selftest.sh             |   2 +-
+ tests/intel-ci/fast-feedback.testlist    |   6 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   8 +-
+ tests/intel-ci/xe-sriov-vf.blocklist.txt |   2 +-
+ tests/intel/debugfs_test.c               | 244 ---------------------
+ tests/intel/i915_test_config.json        |   2 +-
+ tests/intel/xe_debugfs.c                 | 268 -----------------------
+ tests/meson.build                        |   2 -
+ 9 files changed, 20 insertions(+), 532 deletions(-)
+ delete mode 100644 tests/intel/debugfs_test.c
+ delete mode 100644 tests/intel/xe_debugfs.c
 
-    (xe_render_copy:8244) [thread:8970] intel_ctx-CRITICAL: Test assertion failure function intel_ctx_xe_exec, file ../lib/intel_ctx.c:467:
-    (xe_render_copy:8244) [thread:8970] intel_ctx-CRITICAL: Failed assertion: __intel_ctx_xe_exec(ctx, ahnd, bb_offset) == 0
-    (xe_render_copy:8244) [thread:8970] intel_ctx-CRITICAL: error: -125 != 0
+diff --git a/docs/code_coverage.md b/docs/code_coverage.md
+index 915e800ed..031611e69 100644
+--- a/docs/code_coverage.md
++++ b/docs/code_coverage.md
+@@ -162,23 +162,23 @@ For each script, the igt_runner passes just one parameter: the results
+ directory + the test name.
+ 
+ For instance, if it is needed to run a test called
+-`debugfs_test (read_all_entries)` using `code_cov_capture`
++`intel_sysfs_debugfs (i915-debugfs-read-all-entries)` using `code_cov_capture`
+ parameter, e. g.:
+ 
+ ```
+-$ echo "igt@debugfs_test@read_all_entries" > my.testlist
++$ echo "igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries" > my.testlist
+ $ ./scripts/run-tests.sh -T my.testlist -k ~/linux -c code_cov_capture -P
+ Found test list: "/basedir/igt/build/tests/test-list.txt"
+-[31410.499969] [1/1] debugfs_test (read_all_entries)
++[31410.499969] [1/1] intel_sysfs_debugfs (i915-debugfs-read-all-entries)
+ [31411.060446] Storing code coverage results...
+-[31418.01]     Code coverage wrote to /basedir/igt/results/code_cov/debugfs_test_read_all_entries.info
++[31418.01]     Code coverage wrote to /basedir/igt/results/code_cov/intel_sysfs_debugfs_i915_debugfs_read_all_entries.info
+ Done.
+ ```
+ 
+ The script will be called as:
+ 
+ ```
+-code_cov_capture results/code_cov/debugfs_test_read_all_entries
++code_cov_capture results/code_cov/intel_sysfs_debugfs_i915_debugfs_read_all_entries
+ ```
+ 
+ Please notice that any character that it is not a number nor a letter at the
+@@ -376,7 +376,7 @@ OUT_DIR="${HOME}/results"
+ 
+ mkdir -p $OUT_DIR/html
+ 
+-echo "igt@debugfs_test@read_all_entries" > $TESTLIST
++echo "igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries" > $TESTLIST
+ echo "igt@core_auth@basic-auth" >> $TESTLIST
+ echo "igt@gem_exec_basic@basic" >> $TESTLIST
+ 
+@@ -401,8 +401,8 @@ genhtml -q -s --legend --branch-coverage $OUT_DIR/results.info
+ Running such script produces the following output:
+ 
+ ```
+-[3622.993304] [1/3] debugfs_test (read_all_entries)
+-[3631.95]     Code coverage wrote to results/code_cov/debugfs_test_read_all_entries.info
++[3622.993304] [1/3] intel_sysfs_debugfs (i915-debugfs-read-all-entries)
++[3631.95]     Code coverage wrote to results/code_cov/intel_sysfs_debugfs_i915_debugfs_read_all_entries.info
+ [3626.217016] Storing code coverage results...
+ [3631.957998] [2/3] core_auth (basic-auth)
+ [3638.03]     Code coverage wrote to results/code_cov/core_auth_basic_auth.info
+@@ -419,7 +419,7 @@ core_auth_basic_auth.info:
+ Ignored......: non-drm headers and source files where none of its code ran.
+ Source files.: 23.27% (165 of 709 total), 29.57% (165 of 558 filtered)
+ 
+-debugfs_test_read_all_entries.info:
++intel_sysfs_debugfs_i915_debugfs_read_all_entries.info:
+   lines......: 19.3% (20266 of 104802 lines)
+   functions..: 17.5% (1922 of 10971 functions)
+   branches...: 12.7% (9462 of 74555 branches)
+diff --git a/scripts/code_cov_selftest.sh b/scripts/code_cov_selftest.sh
+index c834fb5a7..bc5ef7458 100755
+--- a/scripts/code_cov_selftest.sh
++++ b/scripts/code_cov_selftest.sh
+@@ -13,7 +13,7 @@ if [ -z "$IGT_KERNEL_TREE" ] ; then
+         exit 1
+ fi
+ 
+-TEST="igt@debugfs_test@read_all_entries"
++TEST="igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries"
+ 
+ TESTLIST="my_tests.testlist"
+ GATHER="scripts/code_cov_gather_on_test.py"
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index be0965110..82395e7ea 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -3,9 +3,6 @@ igt@i915_module_load@load
+ 
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@debugfs_test@basic-hwmon
+-igt@debugfs_test@sysfs
+ igt@fbdev@eof
+ igt@fbdev@info
+ igt@fbdev@nullptr
+@@ -55,6 +52,9 @@ igt@i915_getparams_basic@basic-eu-total
+ igt@i915_getparams_basic@basic-subslice-total
+ igt@i915_hangman@error-state-basic
+ igt@i915_pciid
++igt@intel_hwmon
++igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries
++igt@intel_sysfs_debugfs@i915-sysfs-read-all-entries
+ igt@kms_addfb_basic@addfb25-4-tiled
+ igt@kms_addfb_basic@addfb25-bad-modifier
+ igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 0234d3e72..adc0c1b21 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -7,6 +7,11 @@ igt@fbdev@nullptr
+ igt@fbdev@read
+ igt@fbdev@write
+ 
++igt@intel_sysfs_debugfs@xe-base
++igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries
++igt@intel_sysfs_debugfs@xe-forcewake
++igt@intel_sysfs_debugfs@xe-gt
++igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries
+ igt@kms_addfb_basic@addfb25-4-tiled
+ igt@kms_addfb_basic@addfb25-bad-modifier
+ igt@kms_addfb_basic@addfb25-modifier-no-flag
+@@ -72,9 +77,6 @@ igt@xe_create@create-execqueues-noleak
+ igt@xe_create@create-execqueues-leak
+ igt@xe_create@create-invalid-mbz
+ igt@xe_create@create-massive-size
+-igt@xe_debugfs@base
+-igt@xe_debugfs@gt
+-igt@xe_debugfs@forcewake
+ igt@xe_dma_buf_sync@export-dma-buf-once-write-sync
+ igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
+ igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync
+diff --git a/tests/intel-ci/xe-sriov-vf.blocklist.txt b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+index 0c5bc631a..3ee71bd83 100644
+--- a/tests/intel-ci/xe-sriov-vf.blocklist.txt
++++ b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+@@ -8,4 +8,4 @@ igt@xe_module_load
+ #
+ # Blocked because of abort
+ #
+-igt@xe_debugfs@gt
++igt@intel_sysfs_debugfs@xe-gt
+diff --git a/tests/intel/debugfs_test.c b/tests/intel/debugfs_test.c
+deleted file mode 100644
+index f2b6fb334..000000000
+--- a/tests/intel/debugfs_test.c
++++ /dev/null
+@@ -1,244 +0,0 @@
+-/*
+- * Copyright © 2017 Intel Corporation
+- *
+- * Permission is hereby granted, free of charge, to any person obtaining a
+- * copy of this software and associated documentation files (the "Software"),
+- * to deal in the Software without restriction, including without limitation
+- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+- * and/or sell copies of the Software, and to permit persons to whom the
+- * Software is furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice (including the next
+- * paragraph) shall be included in all copies or substantial portions of the
+- * Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+- * IN THE SOFTWARE.
+- */
+-#include "config.h"
+-
+-#include "i915/gem.h"
+-#include "igt.h"
+-#include "igt_hwmon.h"
+-#include "igt_sysfs.h"
+-#include <fcntl.h>
+-#include <sys/types.h>
+-#include <dirent.h>
+-/**
+- * TEST: debugfs test
+- * Description: Read entries from debugfs, hwmon and sysfs paths.
+- * Category: Core
+- * Mega feature: General Core features
+- * Sub-category: uapi
+- * Functionality: debugfs
+- * Feature: core
+- * Test category: uapi
+- *
+- * SUBTEST: basic-hwmon
+- * Description: Read all entries from hwmon path validating debugfs entries
+- *
+- * SUBTEST: read_all_entries
+- * Description: Read all entries from debugfs path validating debugfs entries
+- *
+- * SUBTEST: read_all_entries_display_off
+- * Description: Read all debugfs entries with display on/off.
+- *
+- * SUBTEST: read_all_entries_display_on
+- * Description: Read all debugfs entries with display on/off.
+- *
+- * SUBTEST: sysfs
+- * Description: Read all entries from sysfs path validating debugfs entries
+- *
+- */
+-
+-IGT_TEST_DESCRIPTION("Read entries from debugfs, hwmon and sysfs paths.");
+-
+-static void read_and_discard_sysfs_entries(int path_fd, int indent)
+-{
+-	struct dirent *dirent;
+-	DIR *dir;
+-	char tabs[8];
+-	int i;
+-
+-	igt_assert(indent < sizeof(tabs) - 1);
+-
+-	for (i = 0; i < indent; i++)
+-		tabs[i] = '\t';
+-	tabs[i] = '\0';
+-
+-	dir = fdopendir(path_fd);
+-	if (!dir)
+-		return;
+-
+-	while ((dirent = readdir(dir))) {
+-		if (!strcmp(dirent->d_name, ".") ||
+-		    !strcmp(dirent->d_name, ".."))
+-			continue;
+-
+-		if (dirent->d_type == DT_DIR) {
+-			int sub_fd;
+-
+-			sub_fd = openat(path_fd, dirent->d_name,
+-					O_RDONLY | O_DIRECTORY);
+-			if (sub_fd < 0)
+-				continue;
+-
+-			igt_debug("%sEntering subdir %s\n", tabs, dirent->d_name);
+-			read_and_discard_sysfs_entries(sub_fd, indent + 1);
+-			close(sub_fd);
+-		} else if (dirent->d_type == DT_REG) {
+-			char buf[512];
+-			int sub_fd;
+-			ssize_t ret;
+-
+-			igt_kmsg(KMSG_DEBUG "Reading file \"%s\"\n", dirent->d_name);
+-			igt_debug("%sReading file \"%s\"\n", tabs, dirent->d_name);
+-			igt_set_timeout(5, "reading sysfs entry");
+-
+-			sub_fd = openat(path_fd, dirent->d_name, O_RDONLY | O_NONBLOCK);
+-			if (sub_fd == -1) {
+-				igt_debug("%sCould not open file \"%s\" with error: %m\n",
+-					  tabs, dirent->d_name);
+-				continue;
+-			}
+-
+-			do {
+-				ret = read(sub_fd, buf, sizeof(buf));
+-			} while (ret == sizeof(buf));
+-
+-			if (ret == -1)
+-				igt_debug("%sCould not read file \"%s\" with error: %m\n",
+-					  tabs, dirent->d_name);
+-
+-			igt_reset_timeout();
+-			close(sub_fd);
+-		}
+-	}
+-	closedir(dir);
+-}
+-
+-static void kms_tests(int fd, int debugfs)
+-{
+-	igt_display_t display;
+-	struct igt_fb fb[IGT_MAX_PIPES];
+-	enum pipe pipe;
+-	int ret;
+-
+-	igt_fixture
+-		igt_display_require(&display, fd);
+-
+-	igt_subtest("read_all_entries_display_on") {
+-		/* try to light all pipes */
+-retry:
+-		for_each_pipe(&display, pipe) {
+-			igt_output_t *output;
+-
+-			for_each_valid_output_on_pipe(&display, pipe, output) {
+-				igt_plane_t *primary;
+-				drmModeModeInfo *mode;
+-
+-				if (output->pending_pipe != PIPE_NONE)
+-					continue;
+-
+-				igt_output_set_pipe(output, pipe);
+-				primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-				mode = igt_output_get_mode(output);
+-				igt_create_pattern_fb(display.drm_fd,
+-						      mode->hdisplay, mode->vdisplay,
+-						      DRM_FORMAT_XRGB8888,
+-						      DRM_FORMAT_MOD_LINEAR, &fb[pipe]);
+-
+-				/* Set a valid fb as some debugfs like to inspect it on a active pipe */
+-				igt_plane_set_fb(primary, &fb[pipe]);
+-				break;
+-			}
+-		}
+-
+-		if (display.is_atomic)
+-			ret = igt_display_try_commit_atomic(&display,
+-					DRM_MODE_ATOMIC_TEST_ONLY |
+-					DRM_MODE_ATOMIC_ALLOW_MODESET,
+-					NULL);
+-		else
+-			ret = igt_display_try_commit2(&display, COMMIT_LEGACY);
+-
+-		if (ret) {
+-			igt_output_t *output;
+-			bool found = igt_override_all_active_output_modes_to_fit_bw(&display);
+-			igt_require_f(found, "No valid mode combo found.\n");
+-
+-			for_each_connected_output(&display, output)
+-				igt_output_set_pipe(output, PIPE_NONE);
+-
+-			goto retry;
+-		}
+-
+-		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+-
+-		read_and_discard_sysfs_entries(debugfs, 0);
+-	}
+-
+-	igt_subtest("read_all_entries_display_off") {
+-		igt_output_t *output;
+-		igt_plane_t *plane;
+-
+-		for_each_connected_output(&display, output)
+-			igt_output_set_pipe(output, PIPE_NONE);
+-
+-		for_each_pipe(&display, pipe)
+-			for_each_plane_on_pipe(&display, pipe, plane)
+-				igt_plane_set_fb(plane, NULL);
+-
+-		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+-
+-		read_and_discard_sysfs_entries(debugfs, 0);
+-	}
+-
+-	igt_fixture
+-		igt_display_fini(&display);
+-}
+-
+-igt_main
+-{
+-	int fd = -1, debugfs, sysfs, hwmon_fd;
+-
+-	igt_fixture {
+-		fd = drm_open_driver_master(DRIVER_INTEL);
+-		igt_require_gem(fd);
+-		debugfs = igt_debugfs_dir(fd);
+-		sysfs = igt_sysfs_open(fd);
+-
+-		kmstest_set_vt_graphics_mode();
+-	}
+-
+-	igt_describe("Read all entries from sysfs path.");
+-	igt_subtest("sysfs")
+-		read_and_discard_sysfs_entries(sysfs, 0);
+-	igt_describe("Read all entries from debugfs path.");
+-	igt_subtest("read_all_entries")
+-		read_and_discard_sysfs_entries(debugfs, 0);
+-
+-	igt_describe("Read all entries from hwmon path");
+-	igt_subtest("basic-hwmon") {
+-		igt_require_f(gem_has_lmem(fd), "Test applicable only for dgfx\n");
+-		hwmon_fd = igt_hwmon_open(fd);
+-		igt_assert(hwmon_fd >= 0);
+-		read_and_discard_sysfs_entries(hwmon_fd, 0);
+-		close(hwmon_fd);
+-	}
+-
+-	igt_describe("Read all debugfs entries with display on/off.");
+-	igt_subtest_group
+-		kms_tests(fd, debugfs);
+-
+-	igt_fixture {
+-		close(sysfs);
+-		close(debugfs);
+-		drm_close_driver(fd);
+-	}
+-}
+diff --git a/tests/intel/i915_test_config.json b/tests/intel/i915_test_config.json
+index 1a1c1aafa..04bf1fa68 100644
+--- a/tests/intel/i915_test_config.json
++++ b/tests/intel/i915_test_config.json
+@@ -5,7 +5,7 @@
+     "files": [ "*.c", "../core_auth.c", "../core_getclient.c",
+                "../core_getstats.c", "../core_getversion.c",
+                "../core_hotunplug.c", "../core_setmaster.c",
+-               "../core_setmaster_vs_auth.c", "../debugfs_test.c",
++               "../core_setmaster_vs_auth.c",
+                "../device_reset.c", "../dmabuf.c",
+                "../drm_import_export.c", "../drm_mm.c",
+                "../dumb_buffer.c", "../prime_busy.c", "../prime_mmap.c",
+diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+deleted file mode 100644
+index ec8b0d0b5..000000000
+--- a/tests/intel/xe_debugfs.c
++++ /dev/null
+@@ -1,268 +0,0 @@
+-// SPDX-License-Identifier: MIT
+-/*
+- * Copyright © 2023 Intel Corporation
+- */
+-
+-/**
+- * TEST: Check debugfs userspace API
+- * Category: Core
+- * Mega feature: General Core features
+- * Sub-category: uapi
+- * Functionality: debugfs
+- * Description: Validate debugfs entries
+- * Test category: functionality test
+- */
+-
+-#include <fcntl.h>
+-#include <dirent.h>
+-#include <limits.h>
+-#include <string.h>
+-#include <sys/types.h>
+-
+-#include "igt.h"
+-#include "igt_sysfs.h"
+-#include "xe_drm.h"
+-#include "xe/xe_ioctl.h"
+-#include "xe/xe_query.h"
+-
+-struct {
+-	bool warn_on_not_hit;
+-} opt = { 0 };
+-
+-static int validate_entries(int fd, const char *add_path, const char * const str_val[], int str_cnt)
+-{
+-	int i;
+-	int hit;
+-	int found = 0;
+-	int not_found = 0;
+-	DIR *dir;
+-	struct dirent *de;
+-	char path[PATH_MAX];
+-
+-	if (!igt_debugfs_path(fd, path, sizeof(path)))
+-		return -1;
+-
+-	strcat(path, add_path);
+-	dir = opendir(path);
+-	if (!dir)
+-		return -1;
+-
+-	while ((de = readdir(dir))) {
+-		if (de->d_name[0] == '.')
+-			continue;
+-		hit = 0;
+-		for (i = 0; i < str_cnt; i++) {
+-			if (!strcmp(str_val[i], de->d_name)) {
+-				hit = 1;
+-				break;
+-			}
+-		}
+-		if (hit) {
+-			found++;
+-		} else if (opt.warn_on_not_hit) {
+-			not_found++;
+-			igt_warn("no test for: %s/%s\n", path, de->d_name);
+-		}
+-	}
+-	closedir(dir);
+-	return 0;
+-}
+-
+-/**
+- * SUBTEST: base
+- * Description: Check if various debugfs devnodes exist and test reading them.
+- */
+-static void
+-test_base(int fd, struct drm_xe_query_config *config)
+-{
+-	uint16_t devid = intel_get_drm_devid(fd);
+-	static const char * const expected_files[] = {
+-		"gt0",
+-		"gt1",
+-		"stolen_mm",
+-		"gtt_mm",
+-		"vram0_mm",
+-		"forcewake_all",
+-		"info",
+-		"gem_names",
+-		"clients",
+-		"name"
+-	};
+-	char reference[4096];
+-	int val = 0;
+-
+-	igt_assert(config);
+-	sprintf(reference, "devid 0x%llx",
+-			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
+-	igt_assert(igt_debugfs_search(fd, "info", reference));
+-
+-	sprintf(reference, "revid %lld",
+-			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
+-	igt_assert(igt_debugfs_search(fd, "info", reference));
+-
+-	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
+-		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "yes" : "no");
+-
+-	igt_assert(igt_debugfs_search(fd, "info", reference));
+-
+-	if (intel_gen(devid) < 20) {
+-		switch (config->info[DRM_XE_QUERY_CONFIG_VA_BITS]) {
+-		case 48:
+-			val = 3;
+-			break;
+-		case 57:
+-			val = 4;
+-			break;
+-		}
+-
+-		sprintf(reference, "vm_max_level %d", val);
+-		igt_assert(igt_debugfs_search(fd, "info", reference));
+-	}
+-
+-	snprintf(reference, sizeof(reference), "tile_count %d", xe_sysfs_get_num_tiles(fd));
+-	igt_assert(igt_debugfs_search(fd, "info", reference));
+-
+-	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
+-
+-	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
+-	igt_debugfs_dump(fd, "gtt_mm");
+-
+-	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM) {
+-		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
+-		igt_debugfs_dump(fd, "vram0_mm");
+-	}
+-
+-	if (igt_debugfs_exists(fd, "stolen_mm", O_RDONLY))
+-		igt_debugfs_dump(fd, "stolen_mm");
+-
+-	igt_assert(igt_debugfs_exists(fd, "clients", O_RDONLY));
+-	igt_debugfs_dump(fd, "clients");
+-
+-	igt_assert(igt_debugfs_exists(fd, "gem_names", O_RDONLY));
+-	igt_debugfs_dump(fd, "gem_names");
+-
+-	validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
+-}
+-
+-/**
+- * SUBTEST: gt
+- * Description: Check all gt debugfs devnodes
+- * TODO: add support for ``force_reset`` entries
+- */
+-static void
+-test_gt(int fd, int gt_id)
+-{
+-	char name[256];
+-	static const char * const expected_files[] = {
+-		"uc",
+-		"steering",
+-		"topology",
+-		"sa_info",
+-		"hw_engines",
+-		"pat",
+-		"mocs",
+-//		"force_reset"
+-		"ggtt",
+-		"register-save-restore",
+-		"workarounds",
+-		"default_lrc_rcs",
+-		"default_lrc_ccs",
+-		"default_lrc_bcs",
+-		"default_lrc_vcs",
+-		"default_lrc_vecs",
+-		"hwconfig"
+-
+-	};
+-	static const char * const expected_files_uc[] = {
+-		"huc_info",
+-		"guc_log",
+-		"guc_info",
+-//		"guc_ct_selftest"
+-	};
+-
+-	for (int i = 0; i < ARRAY_SIZE(expected_files); i++) {
+-		sprintf(name, "gt%d/%s", gt_id, expected_files[i]);
+-		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
+-		if (igt_debugfs_is_dir(fd, expected_files[i], gt_id))
+-			continue;
+-		igt_debugfs_dump(fd, name);
+-	}
+-
+-	for (int i = 0; i < ARRAY_SIZE(expected_files_uc); i++) {
+-		sprintf(name, "gt%d/uc/%s", gt_id, expected_files_uc[i]);
+-		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
+-		igt_debugfs_dump(fd, name);
+-	}
+-
+-	sprintf(name, "/gt%d", gt_id);
+-	validate_entries(fd, name, expected_files, ARRAY_SIZE(expected_files));
+-
+-	sprintf(name, "/gt%d/uc", gt_id);
+-	validate_entries(fd, name, expected_files_uc, ARRAY_SIZE(expected_files_uc));
+-}
+-
+-/**
+- * SUBTEST: forcewake
+- * Description: check forcewake debugfs devnode
+- */
+-static void
+-test_forcewake(int fd)
+-{
+-	int handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
+-
+-	igt_assert_neq(handle, -1);
+-	close(handle);
+-}
+-
+-const char *help_str =
+-	"  -w\t--warn-not-hit Produce warnings if it founds a devfs node without tests";
+-
+-struct option long_options[] = {
+-	{ "--warn-not-hit", no_argument, NULL, 'w'},
+-	{ 0, 0, 0, 0 }
+-};
+-
+-static int opt_handler(int option, int option_index, void *input)
+-{
+-	switch (option) {
+-	case 'w':
+-		opt.warn_on_not_hit = true;
+-		break;
+-	default:
+-		return IGT_OPT_HANDLER_ERROR;
+-	}
+-
+-	return IGT_OPT_HANDLER_SUCCESS;
+-}
+-
+-igt_main_args("", long_options, help_str, opt_handler, NULL)
+-{
+-	char devnode[PATH_MAX];
+-	int fd;
+-	int gt;
+-
+-	igt_fixture {
+-		fd = drm_open_driver(DRIVER_XE);
+-		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
+-	}
+-
+-	igt_subtest("base") {
+-		test_base(fd, xe_config(fd));
+-	}
+-
+-
+-	igt_subtest("gt") {
+-		xe_for_each_gt(fd, gt) {
+-			snprintf(devnode, sizeof(devnode), "gt%d", gt);
+-			igt_require(igt_debugfs_exists(fd, devnode, O_RDONLY));
+-			test_gt(fd, gt);
+-		}
+-	}
+-
+-	igt_subtest("forcewake") {
+-		test_forcewake(fd);
+-	}
+-
+-	igt_fixture
+-		drm_close_driver(fd);
+-}
+diff --git a/tests/meson.build b/tests/meson.build
+index 5eaa072fd..2c9c5736d 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -88,7 +88,6 @@ intel_i915_xe_progs = [
+ 
+ intel_i915_progs = [
+ 	'api_intel_bb',
+-	'debugfs_test',
+ 	'drm_fdinfo',
+ 	'gen3_mixed_blits',
+ 	'gen3_render_linear_blits',
+@@ -281,7 +280,6 @@ intel_xe_progs = [
+ 	'xe_compute_preempt',
+ 	'xe_copy_basic',
+ 	'xe_dma_buf_sync',
+-	'xe_debugfs',
+ 	'xe_drm_fdinfo',
+ 	'xe_eu_stall',
+ 	'xe_evict',
+-- 
+2.43.0
 
-So:
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-
-[1] https://patchwork.freedesktop.org/patch/646197/?series=145831&rev=7#comment_1182552
-
-Thanks,
-Francois
-
-> ---
->  lib/intel_allocator.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-> index 341db2a502..d22c70f1f7 100644
-> --- a/lib/intel_allocator.c
-> +++ b/lib/intel_allocator.c
-> @@ -1535,10 +1535,11 @@ static void __xe_op_bind(struct ahnd_info *ainfo, uint32_t sync_in, uint32_t syn
->  			igt_map_remove(ainfo->bind_map, &obj->handle,
->  				       map_entry_free_func);
->  	}
-> -	pthread_mutex_unlock(&ainfo->bind_map_mutex);
->  
->  	xe_bind_unbind_async(ainfo->fd, ainfo->vm, 0, &obj_list, sync_in, sync_out);
->  
-> +	pthread_mutex_unlock(&ainfo->bind_map_mutex);
-> +
->  	igt_list_for_each_entry_safe(entry, tmp, &obj_list, link) {
->  		igt_list_del(&entry->link);
->  		free(entry);
-> -- 
-> 2.34.1
-> 
