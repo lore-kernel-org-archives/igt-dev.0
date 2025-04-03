@@ -4,55 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FA99C3601B
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Apr 2025 08:34:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8402C3601B
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Apr 2025 08:37:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B10E010E066;
-	Thu,  3 Apr 2025 08:34:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 883A610E24A;
+	Thu,  3 Apr 2025 08:37:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kvSPIeCO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S6Jd3fHy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4164110E066
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Apr 2025 08:34:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A58810E24A
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Apr 2025 08:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743669284; x=1775205284;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=uRpaQ5MRL2VlQ+GJ7mhDsrlppsD9Jj2VEEsX5weY0ME=;
- b=kvSPIeCO0tSl9E5TeEb4kD915rw99jeztJlFbMwfbZF+XNXYbUU9+zqF
- vMwYH0q1XsQIj9gJAl4aiujEapEyMXN3l1WcwrKccxN9WZLV/utyf7Pp/
- EEGYViK00TcK/02PnJm/OvOZu6D7I/fSw8DGgxI/JwmA3A9r82va5B3qB
- 2EFFslBnnW3LdFaedoBFhYwCqNo4UJrHmcghNMcpf1+h2Z79Nil5xeqgK
- 360utMrdFY/s6EaRzH9jBvtonZOlSiEgout1G5Ho5yF7zQh5bKl6FBMu3
- IPoYe4z9P5RceT9wMQqRlZi50rLd+aJ0K0tvoAJGGPOfRVDipIAtpH9I7 w==;
-X-CSE-ConnectionGUID: FaNQnttNSoCCIbc2ZKdZ1Q==
-X-CSE-MsgGUID: OQO8+ylHRXSw+DuaFDDi1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="55733059"
-X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; d="scan'208";a="55733059"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2025 01:34:44 -0700
-X-CSE-ConnectionGUID: Wc6cxjxGQO6//Sbt6ZhxXg==
-X-CSE-MsgGUID: Ecn9Ycb4QDWFN0JhbgNa1w==
+ t=1743669441; x=1775205441;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=YdhHQS0a7LDRvkLTWkjswPOOZjXgDxvgViESuLddNxs=;
+ b=S6Jd3fHy9X4ofpUhn8cuN2AYyCe/K1O9d0RmjJMmt2+6/MVjVoUB+Iiu
+ y4CELUfhOl5bW/jArOfCiMEuAETX9Zkj44P6W/9IWEvaA0LzjN/+UFb3n
+ FrcLJZCoImEqU8k/SVRKOPJ93uhoYTjBZ874oLl25AJkxrFU/sOsMr+kh
+ r6l1ob+si1wsUJ+od10RbM8fOfSlYj+PXF6NblMmtTCfOncjhztNMilIk
+ nQCo9w9QmTcg/l9FDqL2szJ8JbT3QpcOu3xyWO3GZ8YO/uG1xq6ELIh4Y
+ 0zHnrTQNu6MfqWXomBocNdNYL8CRDQGZO+mTDaTe6yphOxtDoSqVsJvF/ A==;
+X-CSE-ConnectionGUID: ZrKPZBN8TbCHV4n5c3jQVA==
+X-CSE-MsgGUID: yoY99MLeTW+MdVQ4+79Ctw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="62462431"
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; d="scan'208";a="62462431"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2025 01:37:21 -0700
+X-CSE-ConnectionGUID: GHbJcvxBQXWStdjxWsqAzA==
+X-CSE-MsgGUID: 1GrBCCc4SeyhjY5rXNCHlQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; d="scan'208";a="126746435"
-Received: from opintica-mobl1 (HELO localhost) ([10.245.244.96])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2025 01:34:42 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t] lib/intel_allocator: protect binding for multithreaded
- tests
-Date: Thu,  3 Apr 2025 10:34:38 +0200
-Message-Id: <20250403083438.132035-1-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; d="scan'208";a="164167139"
+Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
+ ([10.245.118.0])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2025 01:37:19 -0700
+Message-ID: <429c92c1-a49c-469f-9be6-743e969925d3@linux.intel.com>
+Date: Thu, 3 Apr 2025 10:37:16 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v1 1/2] intel-ci/i915: Block more Xe tests in i915
+ runs
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250402161207.66601-1-kamil.konieczny@linux.intel.com>
+ <20250402161207.66601-2-kamil.konieczny@linux.intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20250402161207.66601-2-kamil.konieczny@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,42 +72,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Upcoming render-copy stress test reveals problem where multiple
-threads enter binding code. Before binding/unbinding threads calls
-alloc/free which collects operations to be executed in single vm_bind
-ioctl. If first thread which fetches all binding operations from the
-allocator will be interleaved by second thread which in turn sees no
-operations are necessary to complete, it will start to execute jobs
-without properly bounded offsets in the vm (it thinks addresses are
-already there as there's no operations in the allocator).
 
-Avoid this situation by migrating mutex lock to the place where thread
-performing binding will finish its job. This will ensure any other
-threads will wait until all binding operations are completed.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
----
- lib/intel_allocator.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index 341db2a502..d22c70f1f7 100644
---- a/lib/intel_allocator.c
-+++ b/lib/intel_allocator.c
-@@ -1535,10 +1535,11 @@ static void __xe_op_bind(struct ahnd_info *ainfo, uint32_t sync_in, uint32_t syn
- 			igt_map_remove(ainfo->bind_map, &obj->handle,
- 				       map_entry_free_func);
- 	}
--	pthread_mutex_unlock(&ainfo->bind_map_mutex);
- 
- 	xe_bind_unbind_async(ainfo->fd, ainfo->vm, 0, &obj_list, sync_in, sync_out);
- 
-+	pthread_mutex_unlock(&ainfo->bind_map_mutex);
-+
- 	igt_list_for_each_entry_safe(entry, tmp, &obj_list, link) {
- 		igt_list_del(&entry->link);
- 		free(entry);
--- 
-2.34.1
+On 4/2/2025 6:12 PM, Kamil Konieczny wrote:
+> There was recently added new generic Intel test
+> intel_sysfs_debugfs@xe-debugfs-read-all-entries which is causing
+> a valid skip on DG2. Lets block all similar Xe tests from i915
+> runs.
+> 
+> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13983
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>> ---
+>  tests/intel-ci/blacklist.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+> index 9917bf46a..1afea1c86 100644
+> --- a/tests/intel-ci/blacklist.txt
+> +++ b/tests/intel-ci/blacklist.txt
+> @@ -2,6 +2,7 @@
+>  # This file is for non-Xe tests only
+>  ###############################################
+>  igt@xe.*
+> +igt@.*@xe.*
+>  
+>  igt@meta_test(@.*)?
+>  
 
