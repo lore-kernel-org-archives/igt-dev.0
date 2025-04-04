@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA17C3600C
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Apr 2025 03:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC23C3600C
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Apr 2025 03:26:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04C1510E090;
-	Fri,  4 Apr 2025 03:26:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F394110E25D;
+	Fri,  4 Apr 2025 03:26:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f4vKSqfT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HGQHXKNf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 515AD10E090
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Apr 2025 03:26:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34CEC10E25D
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Apr 2025 03:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743737171; x=1775273171;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=AK3Z59uqB4LEDV5qpXR8xaaO/ggLeC5mHuNmqZhfByE=;
- b=f4vKSqfTJkjTMQhZMvA3rC8AkICis0nqDKtBSuX86VA9vv5mVxs9f3FQ
- BzGPKGhL4VHbY8cC73Ge0k0T6Bd29QnD7dXnh73MVyb3UVNshV+SRv1me
- De+OcN1ygjiQaD+CYOTrvwpVga9sseKwGCmTUpOpUEnhItOdW3gkOm8qo
- 61FRI3FL0UNF6S3dLboo9CaDH9z9K/6UL+8M4SMwDA76rJg8KOvOZ6bJK
- lylNyAOJLfbLN1nzsG4B1fIhFx/BN4T+mdGArSdcdyGXmMx9PmPP60ngH
- FIDwoqo8Ralx/bJPlDLvSFytUgDEt9gjhRi1nsos15lR/6K+GOh6yzEnV A==;
-X-CSE-ConnectionGUID: R9Hmr1YeRcOL2lVcDP3QsA==
-X-CSE-MsgGUID: aAOa8DPcRnKSR+LRwyKoFw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="48965347"
-X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; d="scan'208";a="48965347"
+ t=1743737186; x=1775273186;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=9MGNsBKIj6Tod2rBwPO392oNJ4NkQhWlW74wmdmwSqQ=;
+ b=HGQHXKNf6IKxZiqvLYq+TiyDzNTU3I+A9ntOt2p564WORqYTSCo+ZgqA
+ QNnk55Ykd+YvecE5YTRaWSuXY5Q7+bETW/OwIEKyxL7cevUtbUsS7oNfa
+ OfDYHEwsYtyU6Y+R54rNR7fF+ukUrRbXlyBTRHuy5sacANrik3RnEhH33
+ K1j7PLXghomqat0pmzAVCv/lAo0yVSlWGDj1CXBgklDSoV3Xc/aHFmBXy
+ z0z+0DLMeMW21HUl9G85gocfYLzIe01PGVI557ipWMz7PgEizzTHQe6JQ
+ rXp7jlGnj7MLoiIB5oFjxc1yYyn4IfgbQkjJbxjGvzpByHXItOUDptZJX Q==;
+X-CSE-ConnectionGUID: Lvu3CXPQQMW8dUBei7F9tQ==
+X-CSE-MsgGUID: +Vp48sT3Qda/2zdfHFXSMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="48965359"
+X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; d="scan'208";a="48965359"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2025 20:26:10 -0700
-X-CSE-ConnectionGUID: jtW7ormHTF+hGig4cin3hw==
-X-CSE-MsgGUID: PNS8r9MHSmm674pDfida2g==
+ 03 Apr 2025 20:26:26 -0700
+X-CSE-ConnectionGUID: di5U6J9+QIeb9GJ/QyydxQ==
+X-CSE-MsgGUID: X5RRIbf5TzajMG4VpdpCVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; d="scan'208";a="131904358"
+X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; d="scan'208";a="131904411"
 Received: from gsd-build.iind.intel.com ([10.190.229.173])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2025 20:26:09 -0700
+ 03 Apr 2025 20:26:24 -0700
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: dominik.karol.piatkowski@intel.com,
 	kamil.konieczny@intel.com
-Subject: [PATCH i-g-t 0/1] tests/intel/xe_fault_injection: Inject errors for
+Subject: [PATCH i-g-t 1/1] tests/intel/xe_fault_injection: Inject errors for
  xe_hw_engine_class_to_str
-Date: Fri,  4 Apr 2025 03:10:51 +0000
-Message-Id: <20250404031052.1848936-1-sobin.thomas@intel.com>
+Date: Fri,  4 Apr 2025 03:10:52 +0000
+Message-Id: <20250404031052.1848936-2-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250404031052.1848936-1-sobin.thomas@intel.com>
+References: <20250404031052.1848936-1-sobin.thomas@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -72,14 +74,31 @@ functions xe_hw_engine_class_to_str and check the error handling in the
 xe_hw_engine_class_sysfs_init() so that more code paths involving error
 handling is tested.
 
-Sobin Thomas (1):
-  tests/intel/xe_fault_injection: Inject errors for
-    xe_hw_engine_class_to_str
-
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+---
  tests/intel/xe_fault_injection.c | 2 ++
  1 file changed, 2 insertions(+)
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 24c114ba7..94c1bbf38 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -173,6 +173,7 @@ static void set_retval(const char function_name[], long long retval)
+  * @xe_guc_ct_init:		xe_guc_ct_init
+  * @xe_guc_log_init:		xe_guc_log_init
+  * @xe_guc_relay_init:		xe_guc_relay_init
++ * @xe_hw_engine_class_to_str:	xe_hw_engine_class_to_str
+  * @xe_mmio_probe_early:	xe_mmio_probe_early
+  * @xe_pcode_probe_early:	xe_pcode_probe_early
+  * @xe_pm_init_early:		xe_pm_init_early
+@@ -388,6 +389,7 @@ igt_main
+ 		{ "xe_guc_ct_init" },
+ 		{ "xe_guc_log_init" },
+ 		{ "xe_guc_relay_init" },
++		{ "xe_hw_engine_class_to_str" },
+ 		{ "xe_mmio_probe_early" },
+ 		{ "xe_pcode_probe_early" },
+ 		{ "xe_pm_init_early" },
 -- 
 2.34.1
 
