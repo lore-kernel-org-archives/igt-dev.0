@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC23C3600C
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Apr 2025 03:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 873E2C3DA4A
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Apr 2025 04:39:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F394110E25D;
-	Fri,  4 Apr 2025 03:26:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2710010E127;
+	Fri,  4 Apr 2025 04:39:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HGQHXKNf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CrVxX1oW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34CEC10E25D
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Apr 2025 03:26:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DA9310E127
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Apr 2025 04:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1743737186; x=1775273186;
+ t=1743741571; x=1775277571;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9MGNsBKIj6Tod2rBwPO392oNJ4NkQhWlW74wmdmwSqQ=;
- b=HGQHXKNf6IKxZiqvLYq+TiyDzNTU3I+A9ntOt2p564WORqYTSCo+ZgqA
- QNnk55Ykd+YvecE5YTRaWSuXY5Q7+bETW/OwIEKyxL7cevUtbUsS7oNfa
- OfDYHEwsYtyU6Y+R54rNR7fF+ukUrRbXlyBTRHuy5sacANrik3RnEhH33
- K1j7PLXghomqat0pmzAVCv/lAo0yVSlWGDj1CXBgklDSoV3Xc/aHFmBXy
- z0z+0DLMeMW21HUl9G85gocfYLzIe01PGVI557ipWMz7PgEizzTHQe6JQ
- rXp7jlGnj7MLoiIB5oFjxc1yYyn4IfgbQkjJbxjGvzpByHXItOUDptZJX Q==;
-X-CSE-ConnectionGUID: Lvu3CXPQQMW8dUBei7F9tQ==
-X-CSE-MsgGUID: +Vp48sT3Qda/2zdfHFXSMQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="48965359"
-X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; d="scan'208";a="48965359"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2025 20:26:26 -0700
-X-CSE-ConnectionGUID: di5U6J9+QIeb9GJ/QyydxQ==
-X-CSE-MsgGUID: X5RRIbf5TzajMG4VpdpCVg==
+ bh=eXK6lXg5uhu0dsnHRZVPYvXCv2plKwm5mdkLBHxIhkg=;
+ b=CrVxX1oWA5Bl8WGxndCdN7OJFC872DfrutbTUeKLIu4IwXSbhPlol22M
+ SpgrmNjU9/pM51f/noAAR2O6EInshcLGx6ueC5xIpv74TxkNVDDCwvXQI
+ EObe0wqxb14uCaFELp3Ow28qLzEK4kNwFeq5NWsZBo5gdSBhViInb4rS1
+ Cxv+glnl+NQwa86CUY8QxLVjLcG/lUNd1alLjhrSUOl9gqTBB2nqrieyc
+ SeQHOiKRxj3lH5kbWmorRlaYx6BjE/ZfQtGn13oVTsqE0aMLLyH32yNgR
+ oGfDIOuzMQm7wARffIKbBQF2JVFZqke9ASZCF56NorxFkB4THmn2DocfI g==;
+X-CSE-ConnectionGUID: 83VQAg7ORW6s3ocjwy8XMg==
+X-CSE-MsgGUID: IAP0tuLtTbeWyqcssNc4rw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="45294692"
+X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; d="scan'208";a="45294692"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Apr 2025 21:39:29 -0700
+X-CSE-ConnectionGUID: qujYqLxjQRyPjAcFs9n23g==
+X-CSE-MsgGUID: CCVqodItTlO+vEbm4/igIg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; d="scan'208";a="131904411"
-Received: from gsd-build.iind.intel.com ([10.190.229.173])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Apr 2025 20:26:24 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; d="scan'208";a="128062179"
+Received: from mgolanimitul-x299-ud4-pro.iind.intel.com ([10.190.239.114])
+ by fmviesa009.fm.intel.com with ESMTP; 03 Apr 2025 21:39:27 -0700
+From: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: dominik.karol.piatkowski@intel.com,
-	kamil.konieczny@intel.com
-Subject: [PATCH i-g-t 1/1] tests/intel/xe_fault_injection: Inject errors for
- xe_hw_engine_class_to_str
-Date: Fri,  4 Apr 2025 03:10:52 +0000
-Message-Id: <20250404031052.1848936-2-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250404031052.1848936-1-sobin.thomas@intel.com>
-References: <20250404031052.1848936-1-sobin.thomas@intel.com>
+Cc: uma.shankar@intel.com, ramanaidu.naladala@intel.com,
+ mitulkumar.ajitkumar.golani@intel.com, ankit.k.nautiyal@intel.com
+Subject: [PATCH v3 1/3] tests/kms_vrr: Bucketize refresh rate tolerance
+Date: Fri,  4 Apr 2025 10:07:06 +0530
+Message-ID: <20250404043709.955109-2-mitulkumar.ajitkumar.golani@intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250404043709.955109-1-mitulkumar.ajitkumar.golani@intel.com>
+References: <20250404043709.955109-1-mitulkumar.ajitkumar.golani@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,36 +68,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the fault injection infrastructure to make targeted fault injection in
-functions xe_hw_engine_class_to_str and check the error handling in the
-xe_hw_engine_class_sysfs_init() so that more code paths involving error
-handling is tested.
+Reduce false failures while preserving timing accuracy. Introduce
+a small tolerance buffer based on refresh rate which accounts for
+HW/SW latency without compromising validation on HRR panel.
+Although an imperical number but already IGT is living with that.
+This also ensures that asked refresh rate is not too off and always
+catch the real HW/software issues.
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+--v2:
+- Refresh rate criteria changes.
+
+--v3:
+- Comment changes (Uma).
+- Add FIXME
+
+Signed-off-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 ---
- tests/intel/xe_fault_injection.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/kms_vrr.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 56 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 24c114ba7..94c1bbf38 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -173,6 +173,7 @@ static void set_retval(const char function_name[], long long retval)
-  * @xe_guc_ct_init:		xe_guc_ct_init
-  * @xe_guc_log_init:		xe_guc_log_init
-  * @xe_guc_relay_init:		xe_guc_relay_init
-+ * @xe_hw_engine_class_to_str:	xe_hw_engine_class_to_str
-  * @xe_mmio_probe_early:	xe_mmio_probe_early
-  * @xe_pcode_probe_early:	xe_pcode_probe_early
-  * @xe_pm_init_early:		xe_pm_init_early
-@@ -388,6 +389,7 @@ igt_main
- 		{ "xe_guc_ct_init" },
- 		{ "xe_guc_log_init" },
- 		{ "xe_guc_relay_init" },
-+		{ "xe_hw_engine_class_to_str" },
- 		{ "xe_mmio_probe_early" },
- 		{ "xe_pcode_probe_early" },
- 		{ "xe_pm_init_early" },
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index c4bb30f6a..ccf32f453 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -410,6 +410,52 @@ do_flip(data_t *data, igt_fb_t *fb)
+ 	igt_reset_timeout();
+ }
+ 
++static void
++calculate_tolerance(uint64_t *threshold_hi, uint64_t *threshold_lo, uint64_t rates_ns)
++{
++	uint32_t refresh_rate = NSECS_PER_SEC / rates_ns;
++
++	if (refresh_rate < 0)
++		return;
++
++	/*
++	 * Current IGT implementation follows this sequence:
++	 * 1. Perform a page flip (`do_flip`).
++	 * 2. Wait for the flip completion event.
++	 * 3. Compare the timestamp of the flip completion event with the previous frame’s
++	 *    completion timestamp.
++	 * 4. Adjust CPU cycle burning based on the relative frame time.
++	 *
++	 * If a flip completes too early or too late, it is marked as out of tolerance.
++	 * As a result, additional CPU cycles are burned to match the `target_ns`.
++	 * Even if the next frame is on time, the total frame time now includes:
++	 * Burned CPU cycle time (from the previous frame) + Flip completion event time.
++	 * This leads to miscalculation, causing **false out-of-range detections**.
++	 * The impact is more significant on High Refresh Rate (HRR) panels, where:
++	 * The allowed tolerance window is smaller and more correction time is required.
++	 * i.e. for 210hz (4.762ms), allowed range is 209hz(4.784ms) to 211hz(4.739ms).
++	 * This comes just 23 microsecond tolerance, which is much lesser
++	 * for accounting HW/SW latency, CPU burn cycle latency and correction logic
++	 * applied in igt for validation.
++	 *
++	 * To address this implement a Bucketing Strategy:
++	 * Provide a small tolerance buffer to allow IGT tests to account for correction.
++	 * Based on range of asked refresh rate. This prevents excessive failures due to minor
++	 * timing adjustments.
++	 */
++
++	if (refresh_rate <= 120) {
++		*threshold_hi = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) + 1);
++		*threshold_lo = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) - 1);
++	} else if (refresh_rate >= 120 && refresh_rate <= 240) {
++		*threshold_hi = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) + 5);
++		*threshold_lo = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) - 5);
++	} else {
++		*threshold_hi = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) + 10);
++		*threshold_lo = NSECS_PER_SEC / (((float)NSECS_PER_SEC / rates_ns) - 10);
++	}
++}
++
+ /*
+  * Flips at the given rate and measures against the expected value.
+  * Returns the pass rate as a percentage from 0 - 100.
+@@ -439,9 +485,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		else
+ 			exp_rate_ns = vtest_ns.max;
+ 
+-		/* Allow ~1 Hz deviation for different reasons causing delay. */
+-		threshold_hi[i] = NSECS_PER_SEC / (((float)NSECS_PER_SEC / exp_rate_ns) + 1);
+-		threshold_lo[i] = NSECS_PER_SEC / (((float)NSECS_PER_SEC / exp_rate_ns) - 1);
++		calculate_tolerance(&threshold_hi[i], &threshold_lo[i], exp_rate_ns);
+ 
+ 		igt_info("Requested rate[%d]: %"PRIu64" ns, Expected rate between: %"PRIu64" ns to %"PRIu64" ns\n",
+ 				i, rates_ns[i], threshold_hi[i], threshold_lo[i]);
+@@ -497,6 +541,15 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		wait_ns -= diff_ns;
+ 		target_ns = event_ns + wait_ns;
+ 
++		/*
++		 * FIXME: This logic makes next immediate frame time calculation
++		 * in inconsistent state, even if next flip comes on correct time,
++		 * it will be marked as fail due to time difference from previous
++		 * flip. Needs to reset at every cycle for correct measurement.
++		 * Once this is corrected, igt can ask for more stricter pass
++		 * criteria.
++		 */
++
+ 		while (get_time_ns() < target_ns - 10);
+ 	}
+ 
 -- 
-2.34.1
+2.48.1
 
