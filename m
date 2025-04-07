@@ -4,62 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D80FC3601A
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Apr 2025 10:32:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 306BCC3601A
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Apr 2025 10:44:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D746F10E422;
-	Mon,  7 Apr 2025 10:32:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D887010E3A4;
+	Mon,  7 Apr 2025 10:44:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="edM42CYw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l0YimD/h";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDF5D10E422
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Apr 2025 10:32:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5750F10E3A4
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Apr 2025 10:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744021953; x=1775557953;
+ t=1744022646; x=1775558646;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=5t22GvSSnZcsdTSjIJOaQQLhc0JyDFo/Ad47HKRhL3Y=;
- b=edM42CYwO1lZlZwZu6B02UwI+Pw8crfOjADJ+tYeS/CX6UmdBFq3othb
- 1qKKCYUliloTaa+iNdLfUEflt9vFGckGItswythBtJlYJVR9T6wNnN0Q4
- 7siohIw6l0SOUYwg4GlpY4OkIh6mjty8psrqbfnAdkEFnCXmtTcRP7rZj
- Y9oqPiEZr3ovQ3RYqdw1mgAU/h9IFWBpQHiCk4TdtAt1SkXwDTETHSwYO
- O5/NcDd8grswmvFzn02f5boP4UkdalQnSxzOdlvH6irtbjDcaVTft43Cm
- DCWBIsCRWfJk6iTfWkmeIoio6fKrGFfADVgrcE1mXYnQQy+zHXiF5urnO g==;
-X-CSE-ConnectionGUID: dDudGne1SRyKsOEEPaifNQ==
-X-CSE-MsgGUID: BjcJFouWQcqnAKQvHlyOlQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="45289591"
-X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; d="scan'208";a="45289591"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Apr 2025 03:32:33 -0700
-X-CSE-ConnectionGUID: zR+dMay+TzahlrVFLJyCWA==
-X-CSE-MsgGUID: JxEKVmrKTouFe9D/iwqAjA==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=ciBTmedeNEo3FpXw0CUa1EYx/BTb91pzPuELcsZNaOM=;
+ b=l0YimD/h7YdtQZxT/CE15wP+B39f31VcFf+j7lAny4o3zGs6ahyjiVP1
+ LNGNrqarqaeQm3WqSEvxaIm2l2m0YdVcooJsVef55IC9xOqZcK2oEBRgv
+ 6x6s0uE2q4ohDjKq2THHwRNBbQbBjXZPOFM2bMhZPD2fuE2GyC1E5yA5X
+ x7rwSj4KRgRSKSM3EFs7kMGvL1HuGf3sbh4w3XYNqnecUe16yL2LhFMnl
+ 4QkJUQn6N7zURU/dxWcI7NslPSRxcDj8EEjKuJ14FG8bpdZK34RDIg3ya
+ laHuZbkEJYvf6jsrf96MudPFhAb68WjLKugAfZXJ1mc434vcxgkLQCFQu w==;
+X-CSE-ConnectionGUID: wyUGiliSSyCwGx217oRF4g==
+X-CSE-MsgGUID: UzIUIAYvRWuZQf3ivA/gZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="56764431"
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; d="scan'208";a="56764431"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Apr 2025 03:43:10 -0700
+X-CSE-ConnectionGUID: h/kzBVHWRxK/OidpTnBm9g==
+X-CSE-MsgGUID: 3dlTAr34RD6Ij8xUnQ6ZdQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; d="scan'208";a="127667012"
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; d="scan'208";a="128850845"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 03:32:32 -0700
-Date: Mon, 7 Apr 2025 12:32:01 +0200
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 03:43:08 -0700
+Date: Mon, 7 Apr 2025 12:43:06 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jan Sokolowski <jan.sokolowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: Re: [PATCH i-g-t v4 1/1] tests/intel/xe_*: Add missing test
- documentation
-Message-ID: <20250407103201.65rdy7ow6m3psocy@kamilkon-DESK.igk.intel.com>
+To: igt-dev <igt-dev@lists.freedesktop.org>
+Cc: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>,
+ "Thomas, Sobin" <sobin.thomas@intel.com>
+Subject: Re: [PATCH v3 i-g-t 1/1] tests/intel/xe_sysfs_scheduler: Add invalid
+ string test for engine sysfs properties
+Message-ID: <20250407104306.mbjnkftieh3lea33@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jan Sokolowski <jan.sokolowski@intel.com>,
- igt-dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-References: <20250407072635.286850-1-jan.sokolowski@intel.com>
+ igt-dev <igt-dev@lists.freedesktop.org>,
+ "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>,
+ "Thomas, Sobin" <sobin.thomas@intel.com>
+References: <20250401114529.1828868-1-sobin.thomas@intel.com>
+ <20250401114529.1828868-2-sobin.thomas@intel.com>
+ <DS0PR11MB7264FED822E028577EF4062AD9AC2@DS0PR11MB7264.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250407072635.286850-1-jan.sokolowski@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DS0PR11MB7264FED822E028577EF4062AD9AC2@DS0PR11MB7264.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,523 +76,128 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jan,
-On 2025-04-07 at 07:26:35 +0000, Jan Sokolowski wrote:
-> Add missing Mega features, Sub-categories and Functionality
-> tags to various eu debug tests.
+Hi,
+On 2025-04-01 at 12:59:54 +0000, Piatkowski, Dominik Karol wrote:
+> Hi Sobin,
 > 
-> v2: Updated according to comments on v1 made by Katarzyna Piecielska
-> v3: Updated according to comments on v1 made by Cristoph Manszewski
+> > -----Original Message-----
+> > From: Thomas, Sobin <sobin.thomas@intel.com>
+> > Sent: Tuesday, April 1, 2025 1:45 PM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Piatkowski, Dominik Karol <dominik.karol.piatkowski@intel.com>
+> > Subject: [PATCH v3 i-g-t 1/1] tests/intel/xe_sysfs_scheduler: Add invalid string
+> > test for engine sysfs properties
+> > 
+> > From: Sobin Thomas <sobin.thomas@intel.com>
+> > 
+> > This test validates that invalid string inputs are correctly rejected
+> > by engine sysfs write. It ensures that the property values remain
+> > unchanged when invalid inputs are provided.
+> > 
+> > v3: Fixed the test logic. Fixed the tabs
+> > 
+> > v2: Added error check for return values for igt_sysfs_scanf and
+> > igt_sysfs_printf. Removed the changes for fault injection in
+> > tests/intel/xe_fault_injection.c
+> > 
+> > v1: Initial changes for checking error string.
+> > 
+> > Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+> > ---
+> >  tests/intel/xe_sysfs_scheduler.c | 28 ++++++++++++++++++++++++++++
+> >  1 file changed, 28 insertions(+)
+> > 
+> > diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_scheduler.c
+> > index 4fc764f82..eb95d0d6e 100644
+> > --- a/tests/intel/xe_sysfs_scheduler.c
+> > +++ b/tests/intel/xe_sysfs_scheduler.c
+> > @@ -10,6 +10,11 @@
+> >   * Sub-category: SysMan tests
+> >   * Functionality: scheduler control interface
+> >   *
+> > + * SUBTEST: %s-invalid-string
+> > + * Description: Test to check if %s arg[1] schedule parameter checks for
+> > + *		min max values.
+> > + * Test category: Negative string test
+> > + *
+> >   * SUBTEST: %s-invalid
+> >   * Description: Test to check if %s arg[1] schedule parameter rejects any
+> >   *		unrepresentable intervals.
+> > @@ -121,6 +126,28 @@ static void test_min_max(int xe, int engine, const
+> > char **property,
+> >  	igt_assert_eq(set, default_max);
+> >  }
+> > 
+> > +static void test_invalid_string(int xe, int engine, const char **property,
+> > +			uint16_t class, int gt)
 > 
-> Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-> Reviewed-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
-> Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+> One tab disappeared from this indent, it was present in v2, please fix.
+> 
+> > +{
+> > +	unsigned int saved, set;
+> > +	char invalid_input[] = "999abc";
+> > +
+> > +	for (int i = 0; i < 3; i++) {
+> > +		igt_assert(igt_sysfs_scanf(engine, property[i], "%u", &saved)
+> > == 1);
+> > +		igt_info("Initial %s: %u\n", property[i], saved);
+> > +		if (igt_sysfs_printf(engine, property[i], "%s", invalid_input) >
+> > 0) {
+> > +			igt_critical("invalid value %s can be set to property
+> > %s\n",
+> > +					invalid_input, property[i]);
+> 
+> Please replace the last indenting tab with 5 spaces for perfect alignment.
+> 
+> > +		}
+> 
+> We don't use braces for single statements - please remove them from this if.
+> 
+> > +
+> > +		igt_assert(igt_sysfs_scanf(engine, property[i], "%u", &set) ==
+> > 0);
 
-Merged with small fixes in description, thank you for contribution.
+Here also it is better to use _eq macro:
+
+	igt_assert_eq(igt_sysfs_scanf(engine, property[i], "%u", &set), 0);
+
+> > +
+> > +		//Check if the values are unchanged.
+> 
+> I believe we prefer /* C-style comments */
+> +cc Kamil
+
+Yes, please use C-style comments. Also for white space errors please
+use checkpatch.pl script from Linux kernel source, for some oprtions
+for its usage look into CONTRIBUTING.md
+
+> 
+> With mentioned changes,
+> LGTM,
+> Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+
+After fixing above nits please add Dominik's r-b and resend.
 
 Regards,
 Kamil
 
-> ---
->  tests/intel/xe_eudebug.c          | 48 +++++++++++++++++++++++++------
->  tests/intel/xe_eudebug_online.c   | 26 +++++++++++++++--
->  tests/intel/xe_eudebug_sriov.c    |  6 ++++
->  tests/intel/xe_exec_sip_eudebug.c | 12 ++++++++
->  4 files changed, 82 insertions(+), 10 deletions(-)
 > 
-> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-> index 76870805c..d1583fd84 100644
-> --- a/tests/intel/xe_eudebug.c
-> +++ b/tests/intel/xe_eudebug.c
-> @@ -7,7 +7,7 @@
->   * TEST: Test EU Debugger functionality
->   * Category: Core
->   * Mega feature: EUdebug
-> - * Sub-category: EUdebug tests
-> + * Sub-category: EUdebug framework
->   * Functionality: eu debugger framework
->   * Test category: functionality test
->   */
-> @@ -28,6 +28,7 @@
->  
->  /**
->   * SUBTEST: sysfs-toggle
-> + * Functionality: enable
->   * Description:
->   *	Exercise the debugger enable/disable sysfs toggle logic
->   */
-> @@ -542,6 +543,7 @@ static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect *
->  
->  /**
->   * SUBTEST: basic-connect
-> + * Functionality: attach
->   * Description:
->   *	Exercise XE_EUDEBUG_CONNECT ioctl with passing
->   *	valid and invalid params.
-> @@ -622,6 +624,7 @@ static void switch_user(__uid_t uid, __gid_t gid)
->  
->  /**
->   * SUBTEST: connect-user
-> + * Functionality: attach
->   * Description:
->   *	Verify unprivileged XE_EUDEBUG_CONNECT ioctl.
->   *	Check:
-> @@ -758,6 +761,7 @@ static void test_connect_user(int fd)
->  
->  /**
->   * SUBTEST: basic-close
-> + * Functionality: attach
->   * Description:
->   *	Test whether eudebug can be reattached after closure.
->   */
-> @@ -786,6 +790,7 @@ static void test_close(int fd)
->  
->  /**
->   * SUBTEST: basic-read-event
-> + * Functionality: events
->   * Description:
->   *	Synchronously exercise eu debugger event polling and reading.
->   */
-> @@ -881,50 +886,59 @@ static void test_read_event(int fd)
->  
->  /**
->   * SUBTEST: basic-client
-> + * Functionality: attach
->   * Description:
->   *	Attach the debugger to process which opens and closes xe drm client.
->   *
->   * SUBTEST: basic-client-th
-> + * Functionality: attach
->   * Description:
->   *	Create client basic resources (vms) in multiple threads
->   *
->   * SUBTEST: multiple-sessions
-> + * Functionality: multisessions
->   * Description:
->   *	Simultaneously attach many debuggers to many processes.
->   *	Each process opens and closes xe drm client and creates few resources.
->   *
-> - * SUBTEST: basic-%s
-> + * SUBTEST: basic-exec-queues
-> + * Functionality: exec queues events
->   * Description:
-> - *	Attach the debugger to process which creates and destroys a few %arg[1].
-> + *	Attach the debugger to process which creates and destroys a few exec-queues.
-> + *
-> + * SUBTEST: basic-vms
-> + * Functionality: VM events
-> + * Description:
-> + *	Attach the debugger to process which creates and destroys a few vms.
->   *
->   * SUBTEST: basic-vm-bind
-> + * Functionality: VM bind event
->   * Description:
->   *	Attach the debugger to a process that performs synchronous vm bind
->   *	and vm unbind.
->   *
->   * SUBTEST: basic-vm-bind-vm-destroy
-> + * Functionality: VM bind event
->   * Description:
->   *	Attach the debugger to a process that performs vm bind, and destroys
->   *	the vm without unbinding. Make sure that we don't get unbind events.
->   *
->   * SUBTEST: basic-vm-bind-extended
-> + * Functionality: VM bind event
->   * Description:
->   *	Attach the debugger to a process that performs bind, bind array, rebind,
->   *	partial unbind, unbind and unbind all operations.
->   *
->   * SUBTEST: multigpu-basic-client
-> + * Functionality: attach multiGPU
->   * Description:
->   *	Attach the debugger to process which opens and closes xe drm client on all Xe devices.
->   *
->   * SUBTEST: multigpu-basic-client-many
-> + * Functionality: attach multiGPU
->   * Description:
->   *	Simultaneously attach many debuggers to many processes on all Xe devices.
->   *	Each process opens and closes xe drm client and creates few resources.
-> - *
-> - * arg[1]:
-> - *
-> - * @vms: vms
-> - * @exec-queues: exec queues
->   */
->  
->  static void test_basic_sessions(int fd, unsigned int flags, int count, bool match_opposite)
-> @@ -951,22 +965,26 @@ static void test_basic_sessions(int fd, unsigned int flags, int count, bool matc
->  
->  /**
->   * SUBTEST: basic-vm-bind-discovery
-> + * Functionality: VM bind event
->   * Description:
->   *	Attach the debugger to a process that performs vm-bind before attaching
->   *	and check if the discovery process reports it.
->   *
->   * SUBTEST: basic-vm-bind-metadata-discovery
-> + * Functionality: VM bind metadata
->   * Description:
->   *	Attach the debugger to a process that performs vm-bind with metadata attached
->   *	before attaching and check if the discovery process reports it.
->   *
->   * SUBTEST: basic-vm-bind-vm-destroy-discovery
-> + * Functionality: VM bind event
->   * Description:
->   *	Attach the debugger to a process that performs vm bind, and destroys
->   *	the vm without unbinding before attaching. Make sure that we don't get
->   *	any bind/unbind and vm create/destroy events.
->   *
->   * SUBTEST: basic-vm-bind-extended-discovery
-> + * Functionality: VM bind event
->   * Description:
->   *	Attach the debugger to a process that performs bind, bind array, rebind,
->   *	partial unbind, and unbind all operations before attaching. Ensure that
-> @@ -1077,6 +1095,7 @@ static void run_discovery_client(struct xe_eudebug_client *c)
->  
->  /**
->   * SUBTEST: discovery-%s
-> + * Functionality: event discovery
->   * Description: Race discovery against %arg[1] and the debugger dettach.
->   *
->   * arg[1]:
-> @@ -1562,12 +1581,14 @@ static void vm_trigger(struct xe_eudebug_debugger *d,
->  
->  /**
->   * SUBTEST: basic-vm-access
-> + * Functionality: VM access
->   * Description:
->   *      Exercise XE_EUDEBUG_VM_OPEN with pread and pwrite into the
->   *      vm fd, concerning many different offsets inside the vm,
->   *      and many virtual addresses of the vm_bound object.
->   *
->   * SUBTEST: basic-vm-access-userptr
-> + * Functionality: VM access
->   * Description:
->   *      Exercise XE_EUDEBUG_VM_OPEN with pread and pwrite into the
->   *      vm fd, concerning many different offsets inside the vm,
-> @@ -1713,11 +1734,13 @@ static void vm_trigger_access_parameters(struct xe_eudebug_debugger *d,
->  
->  /**
->   * SUBTEST: basic-vm-access-parameters
-> + * Functionality: VM access
->   * Description:
->   *      Check negative scenarios of VM_OPEN ioctl and pread/pwrite usage
->   *      with bo backing storage.
->   *
->   * SUBTEST: basic-vm-access-parameters-userptr
-> + * Functionality: VM access
->   * Description:
->   *      Check negative scenarios of VM_OPEN ioctl and pread/pwrite usage
->   *      with userptr backing storage.
-> @@ -1845,6 +1868,7 @@ static void metadata_read_on_vm_bind_trigger(struct xe_eudebug_debugger *d,
->  
->  /**
->   * SUBTEST: read-metadata
-> + * Functionality: metadata
->   * Description:
->   *      Exercise DRM_XE_EUDEBUG_IOCTL_READ_METADATA and debug metadata create|destroy events.
->   */
-> @@ -1857,6 +1881,7 @@ static void test_metadata_read(int fd, unsigned int flags, int num_clients)
->  
->  /**
->   * SUBTEST: attach-debug-metadata
-> + * Functionality: metadata
->   * Description:
->   *      Read debug metadata when vm_bind has it attached.
->   */
-> @@ -2073,19 +2098,23 @@ static int wait_for_ufence_events(struct ufence_priv *priv, int timeout_ms)
->  
->  /**
->   * SUBTEST: basic-vm-bind-ufence
-> + * Functionality: VM bind event
->   * Description:
->   *      Give user fence in application and check if ufence ack works
->   *
->   * SUBTEST: basic-vm-bind-ufence-delay-ack
-> + * Functionality: VM bind event
->   * Description:
->   *	Give user fence in application and check if delayed ufence ack works
->   *
->   * SUBTEST: basic-vm-bind-ufence-reconnect
-> + * Functionality: VM bind event
->   * Description:
->   *	Give user fence in application, hold it, drop the debugger connection and check if anything
->   *	breaks. Expect that held acks are released when connection is dropped.
->   *
->   * SUBTEST: basic-vm-bind-ufence-sigint-client
-> + * Functionality: SIGINT
->   * Description:
->   *	Give user fence in application, hold it, send SIGINT to client and check if anything breaks.
->   */
-> @@ -2395,6 +2424,7 @@ static void vm_bind_clear_ack_trigger(struct xe_eudebug_debugger *d,
->  
->  /**
->   * SUBTEST: vm-bind-clear
-> + * Functionality: memory access
->   * Description:
->   *      Check that fresh buffers we vm_bind into the ppGTT are always clear.
->   */
-> @@ -2610,6 +2640,7 @@ static void vma_ufence_trigger(struct xe_eudebug_debugger *d,
->  
->  /**
->   * SUBTEST: vma-ufence
-> + * Functionality: check ufence blocking
->   * Description:
->   *      Intercept vm bind after receiving ufence event, then access target vm and write to it.
->   *      Then check on client side if the write was successful.
-> @@ -2647,6 +2678,7 @@ static void test_vma_ufence(int fd, unsigned int flags)
->  
->  /**
->   * SUBTEST: basic-exec-queues-enable
-> + * Functionality: exec queues events
->   * Description:
->   *      Test the exec queue property of enabling eudebug
->   */
-> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-> index 84ba748c1..582a26dca 100644
-> --- a/tests/intel/xe_eudebug_online.c
-> +++ b/tests/intel/xe_eudebug_online.c
-> @@ -7,7 +7,7 @@
->   * TEST: Tests for eudebug online functionality
->   * Category: Core
->   * Mega feature: EUdebug
-> - * Sub-category: EUdebug tests
-> + * Sub-category: EUdebug online
->   * Functionality: eu kernel debug
->   * Test category: functionality test
->   */
-> @@ -1430,23 +1430,27 @@ static void pagefault_trigger(struct xe_eudebug_debugger *d,
->  
->  /**
->   * SUBTEST: basic-breakpoint
-> + * Functionality: EU attention event
->   * Description:
->   *	Check whether KMD sends attention events
->   *	for workload in debug mode stopped on breakpoint.
->   *
->   * SUBTEST: breakpoint-not-in-debug-mode
-> + * Functionality: EU attention event
->   * Description:
->   *	Check whether KMD resets the GPU when it spots an attention
->   *	coming from workload not in debug mode.
->   *
->   * SUBTEST: stopped-thread
-> + * Functionality: EU attention event
->   * Description:
->   *	Hits breakpoint on runalone workload and
->   *	reads attention for fixed time.
->   *
->   * SUBTEST: resume-%s
-> + * Functionality: EU control
->   * Description:
-> - *	Resumes stopped on a breakpoint workload
-> + *	Workload stopped on a breakpoint is resumed
->   *	with granularity of %arg[1].
->   *
->   *
-> @@ -1479,6 +1483,7 @@ static void test_basic_online(int fd, struct drm_xe_engine_class_instance *hwe,
->  
->  /**
->   * SUBTEST: set-breakpoint
-> + * Functionality: dynamic breakpoint
->   * Description:
->   *	Checks for attention after setting a dynamic breakpoint in the ufence event.
->   */
-> @@ -1511,6 +1516,7 @@ static void test_set_breakpoint_online(int fd, struct drm_xe_engine_class_instan
->  
->  /**
->   * SUBTEST: set-breakpoint-sigint-debugger
-> + * Functionality: SIGINT
->   * Description:
->   *	A variant of set-breakpoint that sends SIGINT to the debugger thread with random timing
->   *	and checks if nothing breaks, exercising the scenario multiple times.
-> @@ -1603,11 +1609,13 @@ static void test_set_breakpoint_online_sigint_debugger(int fd,
->  
->  /**
->   * SUBTEST: pagefault-read
-> + * Functionality: page faults
->   * Description:
->   *     Check whether KMD sends pagefault event for workload in debug mode that
->   *     triggers a read pagefault.
->   *
->   * SUBTEST: pagefault-write
-> + * Functionality: page faults
->   * Description:
->   *     Check whether KMD sends pagefault event for workload in debug mode that
->   *     triggers a write pagefault.
-> @@ -1646,6 +1654,7 @@ static void test_pagefault_online(int fd, struct drm_xe_engine_class_instance *h
->  
->  /**
->   * SUBTEST: preempt-breakpoint
-> + * Functionality: EUdebug preemption timeout
->   * Description:
->   *	Verify that eu debugger disables preemption timeout to
->   *	prevent reset of workload stopped on breakpoint.
-> @@ -1691,6 +1700,7 @@ static void test_preemption(int fd, struct drm_xe_engine_class_instance *hwe)
->  
->  /**
->   * SUBTEST: reset-with-attention
-> + * Functionality: EUdebug preemption timeout
->   * Description:
->   *	Check whether GPU is usable after resetting with attention raised
->   *	(stopped on breakpoint) by running the same workload again.
-> @@ -1728,12 +1738,14 @@ static void test_reset_with_attention_online(int fd, struct drm_xe_engine_class_
->  
->  /**
->   * SUBTEST: interrupt-all
-> + * Functionality: EU control
->   * Description:
->   *	Schedules EU workload which should last about a few seconds, then
->   *	interrupts all threads, checks whether attention event came, and
->   *	resumes stopped threads back.
->   *
->   * SUBTEST: interrupt-all-set-breakpoint
-> + * Functionality: dynamic breakpoint
->   * Description:
->   *	Schedules EU workload which should last about a few seconds, then
->   *	interrupts all threads, once attention event come it sets breakpoint on
-> @@ -1815,12 +1827,14 @@ static void reset_debugger_log(struct xe_eudebug_debugger *d)
->  
->  /**
->   * SUBTEST: interrupt-other-debuggable
-> + * Functionality: EU control
->   * Description:
->   *	Schedules EU workload in runalone mode with never ending loop, while
->   *	it is not under debug, tries to interrupt all threads using the different
->   *	client attached to debugger.
->   *
->   * SUBTEST: interrupt-other
-> + * Functionality: EU control
->   * Description:
->   *	Schedules EU workload with a never ending loop and, while it is not
->   *	configured for debugging, tries to interrupt all threads using the client
-> @@ -1909,6 +1923,7 @@ static void test_interrupt_other(int fd, struct drm_xe_engine_class_instance *hw
->  
->  /**
->   * SUBTEST: tdctl-parameters
-> + * Functionality: EU control
->   * Description:
->   *	Schedules EU workload which should last about a few seconds, then
->   *	checks negative scenarios of EU_THREADS ioctl usage, interrupts all threads,
-> @@ -2061,6 +2076,7 @@ static void eu_attention_debugger_detach_trigger(struct xe_eudebug_debugger *d,
->  
->  /**
->   * SUBTEST: interrupt-reconnect
-> + * Functionality: reopen connection
->   * Description:
->   *	Schedules EU workload which should last about a few seconds,
->   *	interrupts all threads and detaches debugger when attention is
-> @@ -2134,12 +2150,14 @@ static void test_interrupt_reconnect(int fd, struct drm_xe_engine_class_instance
->  
->  /**
->   * SUBTEST: single-step
-> + * Functionality: EU control
->   * Description:
->   *	Schedules EU workload with 16 nops after breakpoint, then single-steps
->   *	through the shader, advances all threads each step, checking if all
->   *	threads advanced every step.
->   *
->   * SUBTEST: single-step-one
-> + * Functionality: EU control
->   * Description:
->   *	Schedules EU workload with 16 nops after breakpoint, then single-steps
->   *	through the shader, advances one thread each step, checking if one
-> @@ -2191,6 +2209,7 @@ static void eu_attention_debugger_ndetach_trigger(struct xe_eudebug_debugger *d,
->  
->  /**
->   * SUBTEST: debugger-reopen
-> + * Functionality: reopen connection
->   * Description:
->   *	Check whether the debugger is able to reopen the connection and
->   *	capture the events of already running client.
-> @@ -2221,6 +2240,7 @@ static void test_debugger_reopen(int fd, struct drm_xe_engine_class_instance *hw
->  
->  /**
->   * SUBTEST: writes-caching-%s-bb-%s-target-%s
-> + * Functionality: cache coherency
->   * Description:
->   *	Write incrementing values to 2-page-long target surface, poisoning the data one breakpoint
->   *	before each write instruction and restoring it when the poisoned instruction breakpoint
-> @@ -2346,12 +2366,14 @@ static uint64_t timespecs_diff_us(struct timespec *ts1, struct timespec *ts2)
->  
->  /**
->   * SUBTEST: breakpoint-many-sessions-single-tile
-> + * Functionality: multisession
->   * Description:
->   *	Schedules EU workload with preinstalled breakpoint on every compute engine
->   *	available on the tile. Checks if the contexts hit breakpoint in sequence
->   *	and resumes them.
->   *
->   * SUBTEST: breakpoint-many-sessions-tiles
-> + * Functionality: multisession multiTile
->   * Description:
->   *	Schedules EU workload with preinstalled breakpoint on selected compute
->   *      engines, with one per tile. Checks if each context hit breakpoint and
-> diff --git a/tests/intel/xe_eudebug_sriov.c b/tests/intel/xe_eudebug_sriov.c
-> index eb13981bc..4f20a3e49 100644
-> --- a/tests/intel/xe_eudebug_sriov.c
-> +++ b/tests/intel/xe_eudebug_sriov.c
-> @@ -37,6 +37,9 @@ static bool has_vf_enable_eudebug_attr(int fd, unsigned int vf_num)
->  
->  /**
->   * SUBTEST: deny-eudebug
-> + * Mega feature: EUdebug
-> + * Sub-category: EUdebug framework
-> + * Functionality: EU debug and SR-IOV
->   * Description:
->   *	Check that eudebug toggle is not available for VFs, and that enabling
->   *	eudebug with VFs enabled is not permitted.
-> @@ -74,6 +77,9 @@ static void test_deny_eudebug(int fd)
->  
->  /**
->   * SUBTEST: deny-sriov
-> + * Mega feature: EUdebug
-> + * Sub-category: EUdebug framework
-> + * Functionality: EU debug and SR-IOV
->   * Description:
->   *	Check that VFs cannot be enabled when eudebug is enabled.
->   */
-> diff --git a/tests/intel/xe_exec_sip_eudebug.c b/tests/intel/xe_exec_sip_eudebug.c
-> index c317112b4..e5b8ba418 100644
-> --- a/tests/intel/xe_exec_sip_eudebug.c
-> +++ b/tests/intel/xe_exec_sip_eudebug.c
-> @@ -217,22 +217,34 @@ xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
->  
->  /**
->   * SUBTEST: wait-writesip-nodebug
-> + * Sub-category: EUdebug HW
-> + * Functionality: EU debugger SIP interaction
->   * Description: verify that we don't enter SIP after wait with debugging disabled.
->   *
->   * SUBTEST: breakpoint-writesip-nodebug
-> + * Sub-category: EUdebug HW
-> + * Functionality: EU debugger SIP interaction
->   * Description: verify that we don't enter SIP after hitting breakpoint in shader
->   *		when debugging is disabled.
->   *
->   * SUBTEST: breakpoint-writesip
-> + * Sub-category: EUdebug HW
-> + * Functionality: EU debugger SIP interaction
->   * Description: Test that we enter SIP after hitting breakpoint in shader.
->   *
->   * SUBTEST: breakpoint-writesip-twice
-> + * Sub-category: EUdebug HW
-> + * Functionality: EU debugger SIP interaction
->   * Description: Test twice that we enter SIP after hitting breakpoint in shader.
->   *
->   * SUBTEST: breakpoint-waitsip
-> + * Sub-category: EUdebug HW
-> + * Functionality: EU debugger SIP interaction
->   * Description: Test that we reset after seeing the attention without the debugger.
->   *
->   * SUBTEST: breakpoint-waitsip-heavy
-> + * Sub-category: EUdebug HW
-> + * Functionality: EU debugger SIP interaction
->   * Description:
->   *	Test that we reset after seeing the attention from heavy SIP, that resembles
->   *	the production one, without the debugger.
-> -- 
-> 2.34.1
+> > +		igt_assert_eq(set, saved);
+> > +	}
+> > +}
+> > +
+> > +
+> >  #define MAX_GTS 8
+> >  igt_main
+> >  {
+> > @@ -130,6 +157,7 @@ igt_main
+> >  	} tests[] = {
+> >  		{ "invalid", test_invalid },
+> >  		{ "min-max", test_min_max },
+> > +		{ "invalid-string", test_invalid_string },
+> >  		{ }
+> >  	};
+> > 
+> > --
+> > 2.34.1
 > 
