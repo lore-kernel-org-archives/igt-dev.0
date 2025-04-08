@@ -4,51 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8961EC36010
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 00:05:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6EFDC36010
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 00:35:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4451310E58C;
-	Tue,  8 Apr 2025 00:05:33 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="abocSvLs";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B4DC10E58C
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 00:05:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=2lF+0a2YI1ptkxPrwuFSkS36ZA2ykKNe8Jo12zKDO8U=; b=abocSvLsQsLNudSRQrwGeOm106
- D0BBgucJWSgG+/gs1km3OhfSMHihIURU2XQEQwyMf91OgsEZ69DZoDtEZCwNyQzpSbk5ylQzENOGL
- DWQ5wXmAr/SPp3hP/B6GMVb8NBVCOJuM7+T3SsMw6ok1jUpmaZBMlqWnFx8k+qd2gwqrQLbiY8+oC
- 566b7AtUFIq0CiCWn5TwJwg0guy4xOr03x74eexTQnfkidZ37CDnPY8I2F9g5LYon6sgQcu7JADMs
- vcCwm6iJiRnhjuqoleVLK6IrkRmMqptzgEAZ6hXP6JAZX4IF+fWbF+2RR0KrtcGULQ8nB3l+idsRd
- bjs9+h4A==;
-Received: from [187.57.129.172] (helo=[192.168.15.100])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1u1wT1-00D5eZ-Rg; Tue, 08 Apr 2025 02:05:28 +0200
-Message-ID: <a549192c-4e69-428f-869d-ba61b6605c0f@igalia.com>
-Date: Mon, 7 Apr 2025 21:05:22 -0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4503A10E194;
+	Tue,  8 Apr 2025 00:35:11 +0000 (UTC)
+Received: from e6b6f09ec485 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 35A1A10E194;
+ Tue,  8 Apr 2025 00:35:10 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8436805255645337180=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/4] tests/kms_async_flips: Create subtest for overlay
- planes
-To: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: kernel-dev@igalia.com, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Hung <alex.hung@amd.com>, Melissa Wen <mwen@igalia.com>,
- Rodrigo Siqueira <siqueira@igalia.com>
-References: <20250408000221.140459-1-andrealmeid@igalia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-In-Reply-To: <20250408000221.140459-1-andrealmeid@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_PMU_test_for_GT_frequ?=
+ =?utf-8?q?ency?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vinay Belgaumkar" <vinay.belgaumkar@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 08 Apr 2025 00:35:10 -0000
+Message-ID: <174407251019.45543.7075150459334920189@e6b6f09ec485>
+X-Patchwork-Hint: ignore
+References: <20250407234406.4084642-1-vinay.belgaumkar@intel.com>
+In-Reply-To: <20250407234406.4084642-1-vinay.belgaumkar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,20 +37,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Em 07/04/2025 21:02, André Almeida escreveu:
-> This patchset creates a subtest for overlay planes. This is supported by amdgpu
-> and is merged in the kernel:
-> 
-> https://lore.kernel.org/lkml/173948734065.719858.7405160715916126757.b4-ty@linaro.org/
-> 
-> v6:
->   - Added missing `test_init_ops()` for "overlay-atomic" test
->   - Reworked `test_init_fbs()`: it destroys all buffers when the modifier
->   changes, and recreate then if they are need for the next test. It also destroys
->   overlay buffers if they are not needed anymore
+--===============8436805255645337180==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-- Also changed `igt_has_drm_cap()` function return to distinguish ioctl 
-errors (like bad fd) from unsupported caps.
+== Series Details ==
+
+Series: Add PMU test for GT frequency
+URL   : https://patchwork.freedesktop.org/series/147350/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_8310 -> IGTPW_12935
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/index.html
+
+Participating hosts (44 -> 43)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12935 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7567u:       [DMESG-WARN][1] ([i915#13735]) -> [PASS][2] +81 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8310/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8310/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-dg2-11:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8310/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-7567u:       [DMESG-WARN][7] ([i915#13735] / [i915#180]) -> [PASS][8] +53 other tests pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8310/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8310 -> IGTPW_12935
+
+  CI-20190529: 20190529
+  CI_DRM_16377: a33da369e8cde6c7208381a592866cd61f1ce188 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12935: 2a12cf4e5884b584a568c0a75e4546e1d95672a1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8310: 4b22256d016daa2f133092b62c03230ff121a3fe @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/index.html
+
+--===============8436805255645337180==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add PMU test for GT frequency</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147350/">https://patchwork.freedesktop.org/series/147350/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8310 -&gt; IGTPW_12935</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12935 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8310/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +81 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8310/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8310/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8310/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12935/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +53 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8310 -&gt; IGTPW_12935</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16377: a33da369e8cde6c7208381a592866cd61f1ce188 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12935: 2a12cf4e5884b584a568c0a75e4546e1d95672a1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8310: 4b22256d016daa2f133092b62c03230ff121a3fe @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8436805255645337180==--
