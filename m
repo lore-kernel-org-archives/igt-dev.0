@@ -4,17 +4,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB970C369A4
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 16:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96A52C369A4
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 16:16:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6EEF810E6F3;
-	Tue,  8 Apr 2025 16:09:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 513EB10E275;
+	Tue,  8 Apr 2025 16:16:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="g+TFJ89t";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="IDSIwULn";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5977410E6F3
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 16:09:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FF7910E257
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 16:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
@@ -22,33 +22,33 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=nEYCU61JT1U/fRe6BDXAs2LJ81LY2qOfv4FSTNzaEiI=; b=g+TFJ89tH3anlw8DFXGmBFtsb5
- wSgn7uSQVuQJnq3Tn/Qheyry8MvF8fnKZM5ffLQpmo9HveBlkrxckzPYZ04J/gz1c1O2hLbVB4qMG
- BUrqnyQH6IjI/h288SjlcWcyn7aqyLejnaiy+puipuIt9/TpPv0XbNJ/1B3uyseQ2mAOlWU1bGkBi
- aG8Ai48+qltb65UWmfleUF6NkSApJ4OIDPdkCiGr//R/Q75q97geqI20Zzkzp6TjDax1fsO6MK+HJ
- /XQnQBqz72ARtjMrRTvYota4ZgEiTk4flq+NYPEpzMWKBkHCS+RzxEoq4sI9rLniljcBHqpbWboir
- IN8IuLJw==;
+ bh=WpgY9whb2jwnzhYUze6LtTjBDigWkChlCGvsPkopnqs=; b=IDSIwULn83ylUdwotZ+CJPO1AD
+ sbpf9BRdyWlv4hcC9VmAEYwkMQWowQPXeWJ95IL1OO6sdaY8VpuCZFPRQKYQqqflAZ1cCuV7WCzOR
+ TaYcb3VH/TdOnZKRtI3TWk6/aIS1pgKOUaTNvk9LkrFD/eD9EGWJ/NzHSCgK8y0TgFz31Iql4PTT7
+ iDEEVZDfljenD/hgSGqK492JDu2hS8qJrDO29lSDVHgevVEmYBBgerUI9nddqaCXBwscP10/wVrVa
+ Cp6s3ypknM4Nxmt4TaA+DGYkUH4UG9mzxC1wwCLTpRRagLPBskjdDaOJ+nxqzC8hDj3fQBlj+oAkH
+ V6zbWrfQ==;
 Received: from [189.6.35.67] (helo=mail.igalia.com)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1u2BW4-00DOBj-OY; Tue, 08 Apr 2025 18:09:37 +0200
-Date: Tue, 8 Apr 2025 13:09:27 -0300
+ id 1u2Bck-00DOMy-2d; Tue, 08 Apr 2025 18:16:30 +0200
+Date: Tue, 8 Apr 2025 13:16:20 -0300
 From: Melissa Wen <mwen@igalia.com>
 To: =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
 Cc: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, kernel-dev@igalia.com,
  Vitaly Prosyak <vitaly.prosyak@amd.com>, 
  Alex Hung <alex.hung@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>
-Subject: Re: [PATCH v6 1/4] lib/ioctl_wrappers: let the caller handle
- capability check result
-Message-ID: <4hqr35hajbr5425glxkm62e434xk7b6hpf6mvq4fzo6e4qhai5@74qbaypgznwr>
+Subject: Re: [PATCH v6 4/4] tests/kms_async_flips: Create subtest for overlay
+ planes
+Message-ID: <afnz6bdd4ocgkhj372owmzarejsrsyfbtettjhhsj73eqv4pxz@mt3phtr6l3wp>
 References: <20250408000221.140459-1-andrealmeid@igalia.com>
- <20250408000221.140459-2-andrealmeid@igalia.com>
+ <20250408000221.140459-5-andrealmeid@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250408000221.140459-2-andrealmeid@igalia.com>
+In-Reply-To: <20250408000221.140459-5-andrealmeid@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,110 +65,206 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On 04/07, André Almeida wrote:
-> From: Melissa Wen <mwen@igalia.com>
+> amdgpu can perform async flips in overlay planes as well, so create a
+> test for that.
+
+Hey,
+
+LGTM. Thanks!
+
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+
+Alex,
+
+Can you check if it's fine for AMD too?
+
 > 
-> Rework igt_has_drm_cap to just check if a DRM capability is supported
-> and let the called decide what to do from this check. It prevents the
-> test fails because of an assert done when it's called in
-> igt_subtest_with_dynamics.
-> 
-> Signed-off-by: Melissa Wen <mwen@igalia.com>
-Nice to have your `Co-dev: André` here.
 > Signed-off-by: André Almeida <andrealmeid@igalia.com>
 > ---
->  lib/ioctl_wrappers.c    | 13 ++++++++-----
->  lib/ioctl_wrappers.h    |  2 +-
->  tests/kms_async_flips.c | 13 +++++++++----
->  3 files changed, 18 insertions(+), 10 deletions(-)
+>  tests/kms_async_flips.c | 77 +++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 71 insertions(+), 6 deletions(-)
 > 
-> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> index 146973f0d..33f593295 100644
-> --- a/lib/ioctl_wrappers.c
-> +++ b/lib/ioctl_wrappers.c
-> @@ -1288,14 +1288,17 @@ int __kms_addfb(int fd, uint32_t handle,
->   * This helper verifies if the passed capability is
->   * supported by the kernel
->   *
-> - * Returns: Whether the capability is supported or not.
-> + * Returns: negative value if error, 0 if cap is not supported, 1 if cap is
-
-Returns: negative if the given cap doesn't exist
-
-> + * supported.
->   */
-> -bool igt_has_drm_cap(int fd, uint64_t capability)
-> +int igt_has_drm_cap(int fd, uint64_t capability)
->  {
-> -	struct drm_get_cap cap = { .capability = capability };
-> +	uint64_t value = 0;
-> +
-> +	if (drmGetCap(fd, capability, &value))
-> +		return -errno;
->  
-> -	igt_assert(drmIoctl(fd, DRM_IOCTL_GET_CAP, &cap) == 0);
-> -	return cap.value;
-> +	return value ? 1 : 0;
->  }
->  
->  /**
-> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> index b7d7c2ad9..7cf05e626 100644
-> --- a/lib/ioctl_wrappers.h
-> +++ b/lib/ioctl_wrappers.h
-> @@ -144,7 +144,7 @@ void prime_sync_end(int dma_buf_fd, bool write);
->  
->  bool igt_has_fb_modifiers(int fd);
->  void igt_require_fb_modifiers(int fd);
-> -bool igt_has_drm_cap(int fd, uint64_t capability);
-> +int igt_has_drm_cap(int fd, uint64_t capability);
->  bool igt_has_set_caching(uint32_t devid);
->  
->  /**
 > diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index da426f753..126b96d6b 100644
+> index 3535817b4..40773260a 100644
 > --- a/tests/kms_async_flips.c
 > +++ b/tests/kms_async_flips.c
-> @@ -203,8 +203,10 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+> @@ -85,6 +85,9 @@
+>   *
+>   * SUBTEST: async-flip-suspend-resume
+>   * Description: Verify the async flip functionality with suspend and resume cycle
+> + *
+> + * SUBTEST: overlay-atomic
+> + * Description: Verify overlay planes with async flips in atomic API
+>   */
 >  
->  static void require_monotonic_timestamp(int fd)
->  {
-> -	igt_require_f(igt_has_drm_cap(fd, DRM_CAP_TIMESTAMP_MONOTONIC),
-> -		      "Monotonic timestamps not supported\n");
-> +	int ret = igt_has_drm_cap(fd, DRM_CAP_TIMESTAMP_MONOTONIC);
-> +
-> +	igt_assert(ret >= 0);
-> +	igt_require_f(ret, "Monotonic timestamps not supported\n");
+>  #define CURSOR_POS 128
+> @@ -105,12 +108,14 @@ typedef struct {
+>  	uint32_t crtc_id;
+>  	uint32_t refresh_rate;
+>  	struct igt_fb bufs[NUM_FBS];
+> +	struct igt_fb bufs_overlay[NUM_FBS];
+>  	igt_display_t display;
+>  	igt_output_t *output;
+>  	unsigned long flip_timestamp_us;
+>  	double flip_interval;
+>  	uint64_t modifier;
+>  	igt_plane_t *plane;
+> +	igt_plane_t *plane_overlay;
+>  	igt_pipe_crc_t *pipe_crc;
+>  	igt_crc_t ref_crc;
+>  	int flip_count;
+> @@ -122,6 +127,7 @@ typedef struct {
+>  	bool allow_fail;
+>  	struct buf_ops *bops;
+>  	bool atomic_path;
+> +	bool overlay_path;
+>  } data_t;
+>  
+>  static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+> @@ -217,6 +223,25 @@ static void require_atomic_async_cap(data_t *data)
+>  	igt_require_f(ret, "Atomic async flip not supported\n");
 >  }
 >  
+> +static void require_overlay_flip_support(data_t *data)
+> +{
+> +	struct igt_fb *bufs = data->bufs_overlay;
+> +	igt_plane_t *plane = data->plane_overlay;
+> +	int flags = DRM_MODE_PAGE_FLIP_EVENT;
+> +
+> +	igt_plane_set_fb(plane, &bufs[0]);
+> +
+> +	igt_require_f(!igt_display_try_commit_atomic(&data->display, flags, data),
+> +		      "Overlay planes not supported\n");
+> +
+> +	flags |= DRM_MODE_PAGE_FLIP_ASYNC;
+> +
+> +	igt_plane_set_fb(plane, &bufs[1]);
+> +
+> +	igt_require_f(!igt_display_try_commit_atomic(&data->display, flags, data),
+> +		      "Async flip for overlay planes not supported\n");
+> +}
+> +
 >  static void test_init(data_t *data)
-> @@ -747,13 +749,16 @@ igt_main
->  	int i;
+>  {
+>  	drmModeModeInfo *mode;
+> @@ -232,12 +257,15 @@ static void test_init(data_t *data)
+>  	igt_output_set_pipe(data->output, data->pipe);
+>  
+>  	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+> +	if (data->overlay_path)
+> +		data->plane_overlay = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_OVERLAY);
+>  }
+>  
+>  static void test_init_ops(data_t *data)
+>  {
+>  	data->alternate_sync_async = false;
+>  	data->atomic_path = false;
+> +	data->overlay_path = false;
+>  }
+>  
+>  static void test_init_fbs(data_t *data)
+> @@ -252,22 +280,40 @@ static void test_init_fbs(data_t *data)
+>  	width = mode->hdisplay;
+>  	height = mode->vdisplay;
+>  
+> +	/* if the modifier or the output changed, we need to recreate the buffers */
+>  	if (prev_output_id != data->output->id ||
+>  	    prev_modifier != data->modifier) {
+>  		prev_output_id = data->output->id;
+>  		prev_modifier = data->modifier;
+>  
+> -		if (data->bufs[0].fb_id) {
+> +		if (data->bufs[0].fb_id)
+>  			for (i = 0; i < NUM_FBS; i++)
+>  				igt_remove_fb(data->drm_fd, &data->bufs[i]);
+> -		}
+>  
+> +		if (data->bufs_overlay[0].fb_id)
+> +			for (i = 0; i < NUM_FBS; i++)
+> +				igt_remove_fb(data->drm_fd, &data->bufs_overlay[i]);
+> +	}
+> +
+> +	if (!data->bufs[0].fb_id)
+>  		for (i = 0; i < NUM_FBS; i++)
+>  			make_fb(data, &data->bufs[i], width, height, i);
+> -	}
+>  
+>  	igt_plane_set_fb(data->plane, &data->bufs[0]);
+>  	igt_plane_set_size(data->plane, width, height);
+> +
+> +	if (!data->bufs_overlay[0].fb_id && data->overlay_path) {
+> +		for (i = 0; i < NUM_FBS; i++)
+> +			make_fb(data, &data->bufs_overlay[i], width, height, i);
+> +
+> +		igt_plane_set_fb(data->plane_overlay, &data->bufs_overlay[0]);
+> +		igt_plane_set_size(data->plane_overlay, width, height);
+> +	}
+> +
+> +	/* remove unused buffers */
+> +	if (data->bufs_overlay[0].fb_id && !data->overlay_path)
+> +		for (i = 0; i < NUM_FBS; i++)
+> +			igt_remove_fb(data->drm_fd, &data->bufs_overlay[i]);
+>  }
+>  
+>  static bool async_flip_needs_extra_frame(data_t *data)
+> @@ -295,12 +341,17 @@ static bool async_flip_needs_extra_frame(data_t *data)
+>  static int perform_flip(data_t *data, int frame, int flags)
+>  {
+>  	int ret;
+> +	igt_plane_t *plane;
+> +	struct igt_fb *bufs;
+> +
+> +	plane = data->overlay_path ? data->plane_overlay : data->plane;
+> +	bufs = data->overlay_path ? data->bufs_overlay : data->bufs;
+>  
+>  	if (!data->atomic_path) {
+>  		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+> -				      data->bufs[frame % NUM_FBS].fb_id, flags, data);
+> +				     bufs[frame % NUM_FBS].fb_id, flags, data);
+>  	} else {
+> -		igt_plane_set_fb(data->plane, &data->bufs[frame % NUM_FBS]);
+> +		igt_plane_set_fb(plane, &bufs[frame % NUM_FBS]);
+>  		ret = igt_display_try_commit_atomic(&data->display, flags, data);
+>  	}
+>  
+> @@ -316,6 +367,9 @@ static void test_async_flip(data_t *data)
+>  
+>  	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>  
+> +	if (data->overlay_path)
+> +		require_overlay_flip_support(data);
+> +
+>  	gettimeofday(&start, NULL);
+>  	frame = 1;
+>  	do {
+> @@ -824,6 +878,15 @@ igt_main
+>  			run_test(&data, test_async_flip);
+>  		}
+>  
+> +		igt_describe("Verify overlay planes with async flips in atomic API");
+> +		igt_subtest_with_dynamic("overlay-atomic") {
+> +			test_init_ops(&data);
+> +			igt_require(is_amdgpu_device(data.drm_fd));
+> +			data.atomic_path = true;
+> +			data.overlay_path = true;
+> +			run_test(&data, test_async_flip);
+> +		}
+> +
+>  		igt_describe("Verify that the async flip timestamp does not "
+>  			     "coincide with either previous or next vblank");
+>  		igt_subtest_with_dynamic("test-time-stamp") {
+> @@ -927,8 +990,10 @@ igt_main
+>  	}
 >  
 >  	igt_fixture {
-> +		int ret;
-> +
->  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->  		kmstest_set_vt_graphics_mode();
->  		igt_display_require(&data.display, data.drm_fd);
->  		igt_display_require_output(&data.display);
->  
-> -		igt_require_f(igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP),
-> -			      "Async Flip is not supported\n");
-> +		ret = igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP);
-> +		igt_assert(ret >= 0);
-> +		igt_require_f(ret, "Async Flip is not supported\n");
-
-Same thing I mentioned in the atomic async cap patch. But in this case I think it's
-a matter of taste. I prefer if we don't put an assert here,
-otherwise the test fails instead of skipping in a kernel that async flip
-wasn't introduced yet, but no strong opinion for this case, failing
-early sounds fine too.
-
-Melissa
-
+> -		for (i = 0; i < NUM_FBS; i++)
+> +		for (i = 0; i < NUM_FBS; i++) {
+>  			igt_remove_fb(data.drm_fd, &data.bufs[i]);
+> +			igt_remove_fb(data.drm_fd, &data.bufs_overlay[i]);
+> +		}
 >  
 >  		if (is_intel_device(data.drm_fd))
->  			data.bops = buf_ops_create(data.drm_fd);
+>  			buf_ops_destroy(data.bops);
 > -- 
 > 2.49.0
 > 
