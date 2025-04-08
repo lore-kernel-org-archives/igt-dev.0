@@ -4,66 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E90FC3600C
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 12:12:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 202EAC369A2
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 12:41:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DFA0E10E67F;
-	Tue,  8 Apr 2025 12:12:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C727A10E6B7;
+	Tue,  8 Apr 2025 12:41:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cprEvBcb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VVEZEIEY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E47D10E684
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 12:12:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 262B110E6B7
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 12:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744114327; x=1775650327;
+ t=1744116077; x=1775652077;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Uu/IaUXQCy988XuIoaCaWa0vLwA/BCVxQ+TVXcyh+9A=;
- b=cprEvBcbZQirZ5ELepwh2pVTnGVjzMqKlBgi4K2ydv9A2ddp3NkCim0d
- kcZbk05Xh7GZvBt2+x7pQ40je9sMGzbwQujeCbYsItoKnoiZksASO07Nl
- +0ewLWQ8tKiFDGnpqtphyF+3WiuSk4kAgHnNC6ihtuDRMowD9oKtwK/3c
- 3hRk2buyhUf6kkTDDkkIOJHgeA47Dj3WhoYZse3eaupmS4uQTl/+FsQSU
- M/vsXTBA5/xU9ko0Hu6Zz19bQgMxBFj/20/1wid9GjRlpOe60UBxEThva
- VcE8Pyq8jwSQpJSdcja2CXbZTfbObTY/GVZJVgLW4+7X8MTyAadzoevoN A==;
-X-CSE-ConnectionGUID: or7uIQMUShqaqUZ6aqMwHA==
-X-CSE-MsgGUID: CKglkTwzRUmyzWBBPyUg5g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="44683931"
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="44683931"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2025 05:12:07 -0700
-X-CSE-ConnectionGUID: iT4RGdeQRreMIfxMHShurw==
-X-CSE-MsgGUID: POE+WG3mSu6DLYNWTepQYw==
+ mime-version:in-reply-to;
+ bh=FlOV+adMzUxhi1z877TcQPS5jgX9ytZhzl15EDE5R28=;
+ b=VVEZEIEYAXfCko6Wy+mAiS4XCXCmIkdcC4vfI2QXHvUMtRlqMB2syaz8
+ F5SpedMMiF7aw/a4yrE0suUSYO0Uqqx6KFvRTvfKFykpNbUjbhhM5b/wV
+ mrfUERbosUQ4x7qdbLx8J2fP126XzWzmDnVkIpqH0DHyvSscVtXz3GUzu
+ dsHiTWnj9GtoTUW6k5ClZqZXpEm6tiODjqIsETcntZLxcWuqHEv7FZgyg
+ 0A5xOBm4Sf2I2e/lxhMmpKcpJuCwTb/DfHUNMBI/Db8WMTbbPsfV2LoZ+
+ PnK5kV5wkM4Pak9phd/d44uHe4d5TmgRGgmYH68sTUDv38gjx8ODQl+jX g==;
+X-CSE-ConnectionGUID: 6aLbWp2bT2SPQYY0clYZ5Q==
+X-CSE-MsgGUID: CSqFfRIiR6yajdrzAM1orA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="56915404"
+X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="56915404"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Apr 2025 05:41:16 -0700
+X-CSE-ConnectionGUID: /SperINRQ+u+qPiVHfBfHg==
+X-CSE-MsgGUID: vFXmSkKnSyyX4B/FG4li5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="128117679"
+X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="133228559"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 05:12:05 -0700
-Date: Tue, 8 Apr 2025 14:12:03 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 05:41:15 -0700
+Date: Tue, 8 Apr 2025 14:41:12 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Dugast, Francois" <francois.dugast@intel.com>
-Subject: Re: [PATCH i-g-t v2 4/5] tests/xe_compute_preempt: adjust number of
- children according to ram size
-Message-ID: <20250408121203.dun3oj7w6dlqk6s4@kamilkon-DESK.igk.intel.com>
+To: replace_with Sobin Thomas <sobin.thomas@intel.com>
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ dominik.karol.piatkowski@intel.com
+Subject: Re: [PATCH v1 i-g-t 1/1] tests/intel/xe_fault_injection: Inject
+ fault for xe_hw_engine_class_to_str
+Message-ID: <20250408124112.z6h5ow5q4ywi4cfy@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Dugast, Francois" <francois.dugast@intel.com>
-References: <20250404123140.260143-1-zbigniew.kempczynski@intel.com>
- <20250404123140.260143-5-zbigniew.kempczynski@intel.com>
- <CH3PR11MB843489EE72E7408D26B634D38DAA2@CH3PR11MB8434.namprd11.prod.outlook.com>
- <20250407190143.sude4kvlag3kmtrp@zkempczy-mobl2>
+ replace_with Sobin Thomas <sobin.thomas@intel.com>,
+ igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ dominik.karol.piatkowski@intel.com
+References: <20250401120657.1829327-1-sobin.thomas@intel.com>
+ <20250401120657.1829327-2-sobin.thomas@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250407190143.sude4kvlag3kmtrp@zkempczy-mobl2>
+In-Reply-To: <20250401120657.1829327-2-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,45 +74,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
-On 2025-04-07 at 21:01:43 +0200, Zbigniew Kempczyński wrote:
-> On Mon, Apr 07, 2025 at 10:49:38AM +0200, Dandamudi, Priyanka wrote:
+Hi replace_with,
+On 2025-04-01 at 12:06:57 +0000, replace_with Sobin Thomas wrote:
+> From: Sobin Thomas <sobin.thomas@intel.com>
 > 
-> <cut>
+> Use the fault injection infrastructure to make targeted fault injection in
+> functions xe_hw_engine_class_to_str and check the error handling in the
+> xe_hw_engine_class_sysfs_init() so that more code paths involving error
+> handling is tested.
 > 
-> > > +				 * Get half of ram / 2, then divide by
-> > > +				 * CONTEXT_MB * 2 (long and short) job
-> > > +				 */
-> > > +				child_count = ram_mb / 2 / CONTEXT_MB / 2;
-> > Here it should be CONTEXT_MB* 2 or CONTEXT_MB/2 ??
-> > -- Priyanka
-> 
-> child_count = ram_mb / 2 / CONTEXT_MB / 2;
-> 
-> or
-> 
-> child_count = ram_mb / 2 / (CONTEXT_MB * 2);
-> 
-> are equal.
+> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
 
-Also:
+Why you did not added here r-b from Priyanka?
 
-child_count = ram_mb / (CONTEXT_MB * 4);
+Also please look at report from CI for Xe.Full - there are failures
+for your newly added subtest, do it wait for kernel patch to be merged?
+Please reply to failure mails from CI and add also CI-bug-filing team
+on Cc (address is given in there).
 
 Regards,
 Kamil
 
+> ---
+>  tests/intel/xe_fault_injection.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> --
-> Zbigniew
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index 24c114ba7..94c1bbf38 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -173,6 +173,7 @@ static void set_retval(const char function_name[], long long retval)
+>   * @xe_guc_ct_init:		xe_guc_ct_init
+>   * @xe_guc_log_init:		xe_guc_log_init
+>   * @xe_guc_relay_init:		xe_guc_relay_init
+> + * @xe_hw_engine_class_to_str:	xe_hw_engine_class_to_str
+>   * @xe_mmio_probe_early:	xe_mmio_probe_early
+>   * @xe_pcode_probe_early:	xe_pcode_probe_early
+>   * @xe_pm_init_early:		xe_pm_init_early
+> @@ -388,6 +389,7 @@ igt_main
+>  		{ "xe_guc_ct_init" },
+>  		{ "xe_guc_log_init" },
+>  		{ "xe_guc_relay_init" },
+> +		{ "xe_hw_engine_class_to_str" },
+>  		{ "xe_mmio_probe_early" },
+>  		{ "xe_pcode_probe_early" },
+>  		{ "xe_pm_init_early" },
+> -- 
+> 2.34.1
 > 
-> 
-> > > +
-> > > +				igt_debug("RAM: %zd, child count: %d\n",
-> > > +					  ram_mb, child_count);
-> > > 
-> > >  				test_compute_preempt(xe, hwe, false);
-> > >  				igt_fork(child, child_count)
-> > > --
-> > > 2.34.1
-> > 
