@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C070C369A7
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BFF6C369A6
 	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 18:12:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DCC4D10E2C6;
-	Tue,  8 Apr 2025 18:12:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 23F9810E2D2;
+	Tue,  8 Apr 2025 18:12:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FJDYquS+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GnZMkPE/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7335710E2BE
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A47D10E29E
  for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 18:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1744135946; x=1775671946;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oKu5Qc68PewP/BygUxfOWEBPGCh3LrzvZUQ5pz4ow/U=;
- b=FJDYquS+5jvlxIlewB2k4DfMZEf3gYyCEa3n5LvfOkw012ihstP0PypV
- zhempV3u2FfswE9hQLYCydVaa0BUwmXrl3wbNDLW83Tn2UiR0ccpRyaxl
- PtCbHeHHHuxwdQfAI/6HkuQibs2CKU9d0iYrjf3CdoIRnyX0zp+99NmRI
- ItLEY7Zoz08huRvgWFogp7mpfeNhW0TMkYxbmlCCF3W6ENxSjzZat3mfp
- 5PAdCWMOkfszwMlsd9eBfS/f1x/hVDQrr8L2YmXho5vz8rokkhkyBOUWH
- BLXC+zKmjKBG35g/cRAYumZ9KSfFi0Ih/RPKnKZttna+mkmJwh6SliNjj w==;
-X-CSE-ConnectionGUID: VuDDcb4nSFed/7H43RR51g==
-X-CSE-MsgGUID: 3wVcGcmBR4eci9O6hkm0+Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45479359"
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="45479359"
+ bh=Xg/Zy8dwumLi2c4/7lxRPSn2Mv0knj/VTjbkNuKh/1A=;
+ b=GnZMkPE/aeKCsFEi4r8MTVqiO0jXH/VpPg3C9CBoJ45SVqGHlvAeTKo6
+ 2ztIZVkODTQORBUODXT2n6xfIcM92UXeqZ4jrAmo0I3rvBq8STZdmwA3H
+ TfwFFvWkb+PbxA4I1nm2ddbUA4aFtPStpQFOoMwlN1Byj9zkLAQQOKoSh
+ ac1qS1zRrPdu04Uc27sYtBpsI3QUKjven9+EW1h1K2eDky+WO1Ovjn5bE
+ rDVx8SwBuVhM2H2roqFiFZPiqf7fpNU6sYwvkcAT4FgP2pwKi1+Zjyg3N
+ 0VixZcjPsYm1xlT8Mh0HaUdNzDX5v7DFm7M2pkOyeedJGi7LPzwLVVuB2 w==;
+X-CSE-ConnectionGUID: qDV9z9T5TeeTXGEj1ELhAw==
+X-CSE-MsgGUID: 9ghCAf0KS4ekTFC5bNrdMg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45479357"
+X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="45479357"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  08 Apr 2025 11:12:25 -0700
-X-CSE-ConnectionGUID: LYuHuV0qQpKkmfUwnWguBA==
-X-CSE-MsgGUID: AobNK4ilQ5+nyosgJSRy3g==
+X-CSE-ConnectionGUID: Ti+2a7r3ScK+9nKoNNPLFA==
+X-CSE-MsgGUID: 5JEzosnbS82SgJ5qf/tjAQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="128683614"
+X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="128683611"
 Received: from orsosgc001.jf.intel.com ([10.165.21.142])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2025 11:12:25 -0700
+ 08 Apr 2025 11:12:24 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t 5/6] tests/intel/xe_oa: Reduce test_non_zero_reason
- execution time
-Date: Tue,  8 Apr 2025 11:12:09 -0700
-Message-ID: <20250408181210.1052760-6-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 4/6] tests/intel/xe_oa: Only sanity check timer PEC
+ reports
+Date: Tue,  8 Apr 2025 11:12:08 -0700
+Message-ID: <20250408181210.1052760-5-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250408181210.1052760-1-ashutosh.dixit@intel.com>
 References: <20250408181210.1052760-1-ashutosh.dixit@intel.com>
@@ -68,48 +68,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Only check every 128th report to reduce test execution time. Without this
-patch execution times for buffer-size subtest for OA buffer sizes > 16
-M (with PEC report sanity checks) are excessive. E.g. for 128 MB size:
-
-	Starting subtest: buffer-size
-	Starting dynamic subtest: ccs-0-128M
-	Dynamic subtest ccs-0-128M: SUCCESS (133.654s)
-	Subtest buffer-size: SUCCESS (133.654s)
-
-With this patch:
-
-	Starting subtest: buffer-size
-	Starting dynamic subtest: ccs-0-128M
-	Dynamic subtest ccs-0-128M: SUCCESS (11.209s)
-	Subtest buffer-size: SUCCESS (11.209s)
+Empirical testing revealed that when reports of different types/reasons are
+intermixed, this throws off gpu_ticks and test_event1_cycles_xecore* in PEC
+data, causing test failures. To avoid this, restrict testing to only
+timer/periodic reports.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/intel/xe_oa.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index cc9702322d..f3ce37ff5a 100644
+index eaf97ae0df..cc9702322d 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -2646,13 +2646,14 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
- 	igt_debug("Got %u bytes\n", total_len);
+@@ -1031,6 +1031,19 @@ static void pec_sanity_check_two(const u32 *report0, const u32 *report1,
+ 	u64 *pec0 = (u64 *)(report0 + 8);
+ 	u64 *pec1 = (u64 *)(report1 + 8);
  
- 	last_report = NULL;
--	for (uint32_t offset = 0; offset < total_len; offset += report_size) {
-+	for (uint32_t offset = 0, n = 0; offset < total_len; offset += report_size) {
- 		const uint32_t *report = (void *) (buf + offset);
- 		uint32_t reason = (report[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
++	/*
++	 * Empirical testing revealed that when reports of different types/reasons are
++	 * intermixed, this throws off gpu_ticks and test_event1_cycles_xecore* in PEC
++	 * data, causing test failures. To avoid this, restrict testing to only
++	 * timer/periodic reports.
++	 */
++	if (strcmp(read_report_reason(report0), "timer") ||
++	    strcmp(read_report_reason(report1), "timer")) {
++		igt_debug("Only checking timer reports: %s->%s\n",
++		  read_report_reason(report0), read_report_reason(report1));
++		return;
++	}
++
+ 	igt_debug("tick delta = %#lx\n", tick_delta);
  
- 		igt_assert_neq(reason, 0);
- 
--		if (last_report) {
-+		/* Only check every 128th report to reduce test execution time */
-+		if (last_report && !(n++ % 128)) {
- 			sanity_check_reports(last_report, report, fmt);
- 			pec_sanity_check_reports(last_report, report, metric_set(hwe));
- 		}
+ 	/* Difference in test_event1_cycles_xecore* values should be close to tick_delta */
 -- 
 2.48.1
 
