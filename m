@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79457C369A2
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 17:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D61C369A4
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 17:04:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 316B710E26F;
-	Tue,  8 Apr 2025 17:04:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09D0F10E28D;
+	Tue,  8 Apr 2025 17:04:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dTprgM3q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IqNPawWe";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C2AE10E23D
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 17:04:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4543A10E28D
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 17:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744131856; x=1775667856;
+ t=1744131859; x=1775667859;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PwCeiJS7SsFLcXbb/Tq/0HI1FtP/3uSdp7FHX/jh4hU=;
- b=dTprgM3qWyRRTiYylAALwc1VeOvSxkEwAvIweoa+C5bjhb+ZnUAvd9jx
- z4KwpEmkVtWH5JCVBNK/bbm+ASxEMbvD54QXFOeX3WJZEqKESSWQ36jWn
- 7sJyrjsVJJsFoOwAUiqna4vauKyC0Lnu5sp6DNwA60mJTpgjApzfQoQed
- nQU5zyRBaVBJFcc4FrePtj+wijLvKknIEACkAsZk+G9AYqQiSjD3rV5DL
- Ku8h+FMXeTuj6OWZ3I0nbYlS8oY5BMQCNV7XpwMfvZI5uW6hXcQtGgNlS
- v2ySmOu6yj5lN1X+9QR1oCVZN+bA+rTQZQXTJJlsQ+uBaNNCQOTcezVkC Q==;
-X-CSE-ConnectionGUID: P3UkmBiBQmi5WVrFtTJEgQ==
-X-CSE-MsgGUID: cvAjhhnaRy+gr65+KoyRDA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45742048"
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="45742048"
+ bh=WggnkahuMaRLxnDEa0KL5bPiHDqzaFT3mih1SWM/cAI=;
+ b=IqNPawWeJEbQ0nOQyZvX75mx4IcxLe7dew3lJOAu8TMWomaUdVe6GRwO
+ YIRVVU0ZYP1el5JbvNHeT9lK/zv5xxgGI7kv1KE+g1y/0qOgZ2VscjFJK
+ 8Dv08Rlepw0b6e8aMGTxG8/a2UnW+3edzmeX8f/o3Ynxdgo4tj39pE5qg
+ A/aIC43posgzpRzKvHZsuVG2xE/5KIqA3nMpy1bgvQG6dx6RUMAzs9r3i
+ TBnYwGqTPA7WkIT0jez/z20ZkyW0K9cX2RkCd6oLRwHcIoSmm8nOFwk2h
+ paFUbJ+vESDJ7xv+imXE7Qy1vSrGaQCDl9EJgTqD/NSi9SGyueTj98yMS w==;
+X-CSE-ConnectionGUID: 5P1MpHtVSWK4WOcqp9m7rQ==
+X-CSE-MsgGUID: iKnx/ctrRvajI0Bupqv2Qg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45742073"
+X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="45742073"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2025 10:03:53 -0700
-X-CSE-ConnectionGUID: SHKFVlOvSKmFlfCdCnNOkw==
-X-CSE-MsgGUID: ENeZt3f+S6eHCS2RhXlyHA==
+ 08 Apr 2025 10:03:54 -0700
+X-CSE-ConnectionGUID: MaquMoxoTnukUm6ZCmTFBQ==
+X-CSE-MsgGUID: PGbk3EKVQ/+WR0UMB2Dd9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="128226574"
+X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; d="scan'208";a="128226592"
 Received: from unknown (HELO rgsanthosh-System-Product-Name.iind.intel.com)
  ([10.190.238.65])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2025 10:03:50 -0700
+ 08 Apr 2025 10:03:53 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevan.b@intel.com, swati2.sharma@intel.com,
  Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v2 1/3] lib/igt_kms: Add mode restriction check for
- Intel scaling
-Date: Tue,  8 Apr 2025 22:33:27 +0530
-Message-ID: <20250408170329.523539-2-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v2 2/3] tests/kms_plane_scaling: Reduce Log Level by
+ Skipping Unsupported Modes in Scaling Tests
+Date: Tue,  8 Apr 2025 22:33:28 +0530
+Message-ID: <20250408170329.523539-3-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250408170329.523539-1-ramanaidu.naladala@intel.com>
 References: <20250408170329.523539-1-ramanaidu.naladala@intel.com>
@@ -70,72 +70,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add function to verify display mode parameters (horizontal
-resolution, vertical resolution, refresh rate) within 4K
-limits for scaling operation.
-
-Bspec: 49199
-
-v2: Add Bspec number. (Jeevan)
+Implement a check to bypass modes that do not support scaling on
+Intel hardware. Added a condition to skip tests if no compatible
+mode is found, thereby reducing unnecessary log entries.
 
 Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 ---
- lib/igt_kms.c | 23 +++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 24 insertions(+)
+ tests/kms_plane_scaling.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 99c8707c7..332f6dbf3 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -93,6 +93,10 @@
- #define MAX_EDID 2
- #define DISPLAY_TILE_BLOCK 0x12
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 63d35d76b..40a5b098a 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -578,9 +578,15 @@ check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+ 	int commit_ret;
+ 	int w, h;
+ 	int width, height;
++	bool found_mode = 0;
  
-+#define HDISPLAY_SCALING_MAX 3840
-+#define VDISPLAY_SCALING_MAX 2160
-+#define VREFRESH_SCALING_MAX 60
+ 	for_each_connector_mode(output) {
+ 		mode = &output->config.connector->modes[j__];
 +
- typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
- 
- struct igt_connector_attr {
-@@ -6998,6 +7002,25 @@ int get_num_scalers(igt_display_t *display, enum pipe pipe)
- 	return num_scalers;
++		if (is_intel_device(display->drm_fd) &&
++		    !is_intel_support_scaling(mode))
++			continue;
++
+ 		igt_output_override_mode(output, mode);
+ 		igt_debug("Trying mode %dx%d\n",
+ 			  mode->hdisplay, mode->vdisplay);
+@@ -629,9 +635,12 @@ check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+ 		igt_plane_set_fb(plane, NULL);
+ 		igt_plane_set_position(plane, 0, 0);
+ 		cleanup_fbs(d);
+-		if (commit_ret == 0)
++		if (commit_ret == 0) {
++			found_mode = 1;
+ 			break;
++		}
+ 	}
++	igt_skip_on_f(found_mode == 0, "No suitable mode found for required scaling operation\n");
+ 	return commit_ret;
  }
  
-+/**
-+ * is_intel_support_scaling:
-+ * @drmModeModeInfo *mode: Pointer to a structure with display mode information.
-+ *
-+ * Finds the display mode's horizontal resolution, vertical resolution, and refresh
-+ * rate are within the specified maximum limits.
-+ *
-+ * Returns: true on success, false  on failure
-+ */
-+bool is_intel_support_scaling(drmModeModeInfo *mode)
-+{
-+	if ((mode->hdisplay <= HDISPLAY_SCALING_MAX) &&
-+	    (mode->vdisplay <= VDISPLAY_SCALING_MAX) &&
-+	    (mode->vrefresh <= VREFRESH_SCALING_MAX))
-+		return true;
-+
-+	return false;
-+}
-+
- /**
-  * igt_parse_marked_value:
-  * @buf: Buffer containing the content to parse
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 0381c82ad..0e3d1297d 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1279,5 +1279,6 @@ void igt_set_link_params(int drm_fd, igt_output_t *output,
- 			   char *link_rate, char *lane_count);
- int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
- int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
-+bool is_intel_support_scaling(drmModeModeInfo *mode);
+@@ -942,12 +951,19 @@ test_planes_scaling_combo(data_t *d, double sf_plane1,
+ 	int n_planes;
+ 	int w1, h1, w2, h2;
+ 	int ret;
++	bool found_mode = 0;
  
- #endif /* __IGT_KMS_H__ */
+ 	cleanup_crtc(d);
+ 
+ 	igt_output_set_pipe(output, pipe);
+ 	for_each_connector_mode(output) {
+ 		mode = &output->config.connector->modes[j__];
++
++		if (is_intel_device(display->drm_fd) &&
++		    !is_intel_support_scaling(mode)) {
++			continue;
++		}
++
+ 		igt_output_override_mode(output, mode);
+ 		igt_debug("Trying mode %dx%d\n",
+ 			  mode->hdisplay, mode->vdisplay);
+@@ -998,9 +1014,12 @@ test_planes_scaling_combo(data_t *d, double sf_plane1,
+ 				break;
+ 		}
+ 		cleanup_fbs(d);
+-		if (ret == 0)
++		if (ret == 0) {
++			found_mode = 1;
+ 			break;
++		}
+ 	}
++	igt_skip_on_f(found_mode == 0, "No suitable mode found for required scaling operation\n");
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
