@@ -4,17 +4,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9092CC369A1
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB02CC36010
 	for <igt-dev@archiver.kernel.org>; Tue,  8 Apr 2025 00:02:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2C4110E590;
-	Tue,  8 Apr 2025 00:02:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0E84910E591;
+	Tue,  8 Apr 2025 00:02:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="Rc7xXjwD";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="C8wqMpN+";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A9EC10E58C
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 00:02:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FAF810E58E
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Apr 2025 00:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
@@ -22,16 +22,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=14OiKpIhBivBKs2vXldLVSfE64khL4DrFaFIVf9UJB4=; b=Rc7xXjwDUhZFZMUpYmCkJq4Jjw
- 7t0kq6V/p5k0Df+SdXvijbupNKWp2CBM++kBBNjRHva3EFJXueQn6a1hjoUm5mLQOzFAAegnxDGN8
- Wd8CLu9pnUz9pnlvmusZPMEmEpjIPkMnTpsJ1ABBr5e5joz5+lHSkLEWt7UJS8UuJJlraK87WEpYY
- FJbFunGSJvLbMxpRFRDXFG2GYztY4JRESCjF35h2ej+P8AVYbPaUKGcsApBfruSJXt4OmVjj+wI2j
- M7j6lpYjhLMo2XUEnxUEbILu8vvp6yg8+IS6UZG0ShX8GRSwFeZUKUlCIZ2F4yIJrgBOjd6ISdwIx
- 5+aDuCRQ==;
+ bh=TeO15pTnC+hcOCguRxH/+h7ft1JK5+bR2A3QwwvRpR8=; b=C8wqMpN+2GMGwNkqtSt1c6g6LX
+ G8A7J0i8mklxULPoF2EWWWHSh+nJIRuEBZU2BdaVc4t2p/RO3f250/BtFrwyAVNYWojYyQonK7Bul
+ d5oBBRVhj5u7953hPGKS037/seRHtio/Vwo3pf7rL+Uib3BEunyoPNRRBs5OwoubzEy9GiJ8SR78S
+ aefuSBWl0bJtLU5queVeVxKL0vsYxWP91M1qFntNaIwNsk5EXwjMDJgf/WuwHifvZhblagOEdAun/
+ n1qPYb6q+Ek6UV5NaMSkMBBpAA3L2hqM/IV3GZXb9AF5u+Lil0vyshNw8zexgvUZqnq2ZjfW3bC4o
+ Ze751ygQ==;
 Received: from [187.57.129.172] (helo=localhost.localdomain)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1u1wQG-00D5aL-SM; Tue, 08 Apr 2025 02:02:37 +0200
+ id 1u1wQJ-00D5aL-NL; Tue, 08 Apr 2025 02:02:40 +0200
 From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
 To: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -39,9 +39,9 @@ Cc: kernel-dev@igalia.com, Vitaly Prosyak <vitaly.prosyak@amd.com>,
  Alex Hung <alex.hung@amd.com>, Melissa Wen <mwen@igalia.com>,
  Rodrigo Siqueira <siqueira@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
-Subject: [PATCH v6 2/4] tests/kms_async_flips: Check for atomic async flip cap
-Date: Mon,  7 Apr 2025 21:02:19 -0300
-Message-ID: <20250408000221.140459-3-andrealmeid@igalia.com>
+Subject: [PATCH v6 3/4] kms_async_flips: Refactor data options
+Date: Mon,  7 Apr 2025 21:02:20 -0300
+Message-ID: <20250408000221.140459-4-andrealmeid@igalia.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250408000221.140459-1-andrealmeid@igalia.com>
 References: <20250408000221.140459-1-andrealmeid@igalia.com>
@@ -63,55 +63,157 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-If a driver doesn't support doing an async flip through the atomic uAPI,
-the atomic tests fails. Instead of failing, create a function that
-checks for this capability and skip the test if is unsupported.
+Setting the test data options as true and false for every test is error
+prone. Instead, reset all the data to false at the end of a test and
+just set the needed options to true before running a test.
 
 Signed-off-by: André Almeida <andrealmeid@igalia.com>
 Reviewed-by: Melissa Wen <mwen@igalia.com>
 ---
- tests/kms_async_flips.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tests/kms_async_flips.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
 diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 126b96d6b..fc9cbd3f1 100644
+index fc9cbd3f1..3535817b4 100644
 --- a/tests/kms_async_flips.c
 +++ b/tests/kms_async_flips.c
-@@ -209,6 +209,14 @@ static void require_monotonic_timestamp(int fd)
- 	igt_require_f(ret, "Monotonic timestamps not supported\n");
+@@ -234,6 +234,12 @@ static void test_init(data_t *data)
+ 	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
  }
  
-+static void require_atomic_async_cap(data_t *data)
++static void test_init_ops(data_t *data)
 +{
-+	int ret = igt_has_drm_cap(data->drm_fd, DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP);
-+
-+	igt_assert(ret >= 0);
-+	igt_require_f(ret, "Atomic async flip not supported\n");
++	data->alternate_sync_async = false;
++	data->atomic_path = false;
 +}
 +
- static void test_init(data_t *data)
+ static void test_init_fbs(data_t *data)
  {
- 	drmModeModeInfo *mode;
-@@ -689,6 +697,9 @@ static void run_test(data_t *data, void (*test)(data_t *))
- {
- 	igt_display_t *display = &data->display;
+ 	int i;
+@@ -785,8 +791,7 @@ igt_main
  
-+	if (data->atomic_path)
-+		require_atomic_async_cap(data);
-+
- 	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
- 		igt_display_reset(display);
+ 		igt_describe("Wait for page flip events in between successive asynchronous flips");
+ 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
+-			data.alternate_sync_async = false;
+-			data.atomic_path = false;
++			test_init_ops(&data);
+ 			if (is_intel_device(data.drm_fd))
+ 				run_test_with_modifiers(&data, test_async_flip);
+ 			else
+@@ -796,7 +801,7 @@ igt_main
+ 		igt_describe("Wait for page flip events in between successive "
+ 			     "asynchronous flips using atomic path");
+ 		igt_subtest_with_dynamic("async-flip-with-page-flip-events-atomic") {
+-			data.alternate_sync_async = false;
++			test_init_ops(&data);
+ 			data.atomic_path = true;
+ 			if (is_intel_device(data.drm_fd))
+ 				run_test_with_modifiers(&data, test_async_flip);
+@@ -806,13 +811,14 @@ igt_main
  
-@@ -714,6 +725,9 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 		igt_describe("Alternate between sync and async flips");
+ 		igt_subtest_with_dynamic("alternate-sync-async-flip") {
++			test_init_ops(&data);
+ 			data.alternate_sync_async = true;
+-			data.atomic_path = false;
+ 			run_test(&data, test_async_flip);
+ 		}
  
- static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
- {
-+	if (data->atomic_path)
-+		require_atomic_async_cap(data);
-+
- 	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
- 		test_init(data);
+ 		igt_describe("Alternate between sync and async flips using atomic path");
+ 		igt_subtest_with_dynamic("alternate-sync-async-flip-atomic") {
++			test_init_ops(&data);
+ 			data.alternate_sync_async = true;
+ 			data.atomic_path = true;
+ 			run_test(&data, test_async_flip);
+@@ -821,13 +827,14 @@ igt_main
+ 		igt_describe("Verify that the async flip timestamp does not "
+ 			     "coincide with either previous or next vblank");
+ 		igt_subtest_with_dynamic("test-time-stamp") {
+-			data.atomic_path = false;
++			test_init_ops(&data);
+ 			run_test(&data, test_timestamp);
+ 		}
  
+ 		igt_describe("Verify that the async flip timestamp does not coincide "
+ 			     "with either previous or next vblank with atomic path");
+ 		igt_subtest_with_dynamic("test-time-stamp-atomic") {
++			test_init_ops(&data);
+ 			data.atomic_path = true;
+ 			run_test(&data, test_timestamp);
+ 		}
+@@ -835,6 +842,7 @@ igt_main
+ 
+ 	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
+ 	igt_subtest_with_dynamic("test-cursor") {
++		test_init_ops(&data);
+ 		/*
+ 		 * Intel's PSR2 selective fetch adds other planes to state when
+ 		 * necessary, causing the async flip to fail because async flip is not
+@@ -844,13 +852,13 @@ igt_main
+ 			      "PSR2 sel fetch causes cursor to be added to primary plane "
+ 			      "pages flips and async flip is not supported in cursor\n");
+ 
+-		data.atomic_path = false;
+ 		run_test(&data, test_cursor);
+ 	}
+ 
+ 	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after "
+ 		     "async flip with atomic commit");
+ 	igt_subtest_with_dynamic("test-cursor-atomic") {
++		test_init_ops(&data);
+ 		/*
+ 		 * Intel's PSR2 selective fetch adds other planes to state when
+ 		 * necessary, causing the async flip to fail because async flip is not
+@@ -865,6 +873,7 @@ igt_main
+ 
+ 	igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
+ 	igt_subtest_with_dynamic("invalid-async-flip") {
++		test_init_ops(&data);
+ 		/* TODO: support more vendors */
+ 		igt_require(is_intel_device(data.drm_fd));
+ 		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
+@@ -872,13 +881,13 @@ igt_main
+ 		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
+ 						       I915_FORMAT_MOD_Y_TILED));
+ 
+-		data.atomic_path = false;
+ 		run_test(&data, test_invalid);
+ 	}
+ 
+ 	igt_describe("Negative case to verify if changes in fb are rejected "
+ 		     "from kernel as expected when async flip is done using atomic path");
+ 	igt_subtest_with_dynamic("invalid-async-flip-atomic") {
++		test_init_ops(&data);
+ 		data.atomic_path = true;
+ 		/* TODO: support more vendors */
+ 		igt_require(is_intel_device(data.drm_fd));
+@@ -892,16 +901,17 @@ igt_main
+ 
+ 	igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
+ 	igt_subtest_with_dynamic("crc") {
++		test_init_ops(&data);
+ 		/* Devices without CRC can't run this test */
+ 		igt_require_pipe_crc(data.drm_fd);
+ 
+-		data.atomic_path = false;
+ 		run_test(&data, test_crc);
+ 	}
+ 
+ 	igt_describe("Use CRC to verify async flip scans out the correct framebuffer "
+ 		     "with atomic commit");
+ 	igt_subtest_with_dynamic("crc-atomic") {
++		test_init_ops(&data);
+ 		/* Devices without CRC can't run this test */
+ 		igt_require_pipe_crc(data.drm_fd);
+ 
+@@ -911,6 +921,7 @@ igt_main
+ 
+ 	igt_describe("Verify the async flip functionality after suspend and resume cycle");
+ 	igt_subtest_with_dynamic("async-flip-suspend-resume") {
++		test_init_ops(&data);
+ 		data.suspend_resume = true;
+ 		run_test(&data, test_async_flip);
+ 	}
 -- 
 2.49.0
 
