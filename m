@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71267C369A2
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 23:35:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC58CC369A2
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 23:53:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5E3E610E2A1;
-	Wed,  9 Apr 2025 23:34:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F67E10E340;
+	Wed,  9 Apr 2025 23:53:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FWvwjxOa";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="UNfDQw+x";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A2CB10E2A1
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 23:34:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744241696; x=1775777696;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=DzBgjCE4FYU5fDAgT7oA1WtwEad++0J34sQDJxIM3io=;
- b=FWvwjxOa0JfP0Vt338dNZo3HeNSnUNUlfd4GTr+hz/BeN3zDjV475tvP
- fMCH/CC5w6+bv7EHwKHvVFDGLXcwtD/PIpfzBCX5hIXMFTVZGRlr6cbCS
- qgVo8jxc2BL4XiNlxPttgsFul31HCkBjQmhBESuEyqBd0TbEwvDPLrF2L
- QzqYTnNWloPw4seRu+T52hE7jJ6Vyz+LFLfqtCKLAZG2igYOGTyQ1RXdm
- lGVPbTW87gGuwqMkYxYPn8vpTNzFgz2HqX8gJA3RMogvRJpdfPDKIwfRF
- 1prl77bD0ZdVNiflYJNkw4vjiL/iSmdiqT6FjwRgfoi8kK8m3LBrdoFJp A==;
-X-CSE-ConnectionGUID: 866IRUzMSgiPux592Alsfw==
-X-CSE-MsgGUID: nsCCCbXaQieJFtk18cPKgA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="44880526"
-X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; d="scan'208";a="44880526"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2025 16:34:52 -0700
-X-CSE-ConnectionGUID: kgzYDD87R1qwgeDEnZTIeQ==
-X-CSE-MsgGUID: krH49A8HTVK/DiPNUeH9LA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; d="scan'208";a="128585028"
-Received: from dut4463arlhx.fm.intel.com ([10.105.10.215])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2025 16:34:52 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_oa: Get stream status on read error
-Date: Wed,  9 Apr 2025 16:34:41 -0700
-Message-ID: <20250409233441.143402-1-umesh.nerlige.ramappa@intel.com>
-X-Mailer: git-send-email 2.43.0
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E6BA10E340
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 23:53:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=jYfavz1GguqALVn7LslPNK1xqUSNt8Rsn9Tk3gxSTUM=; b=UNfDQw+xG4EvPRJKs8FsH506D8
+ hz3AT2BDOTAPJEwcpDVs5+SLOlw5eKTITtIyRNz4psr8k4N4DILSPocpWW6g4hgiwGfNHQk2jHoej
+ 4N6IWkwWnVrdd3UUZ4+fJgEiwvaDQnWZS4rwJs6huEqO9Z4zyvcSyzMv9peg/Iuh8dSnrC5j9IKA1
+ aN13lB5WEQYB1v3f0BFholIOnZEszFr4Zb6ji+aGqWrlQf8Oa7KJC1FOFhsRGgfty5Icrt4ccqOWQ
+ 4RbIYTd9CMGe8OBmqvEm2/2bN7LdjnRRSiOZlm1PMXoSRNY1rM9MJOua+rDxWs5uMzqS3QPNKS0qp
+ hluHwJrg==;
+Received: from [189.6.35.67] (helo=[192.168.0.55])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1u2fE0-00ENx4-7n; Thu, 10 Apr 2025 01:52:56 +0200
+Message-ID: <b5452e79-84ab-40aa-949a-efc050a8e5d7@igalia.com>
+Date: Wed, 9 Apr 2025 20:52:51 -0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/4] tests/kms_async_flips: Create subtest for overlay
+ planes
+To: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
+ igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: kernel-dev@igalia.com, Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Hung <alex.hung@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>
+References: <20250409152206.132022-1-andrealmeid@igalia.com>
+Content-Language: en-US
+From: Melissa Wen <mwen@igalia.com>
+In-Reply-To: <20250409152206.132022-1-andrealmeid@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,66 +64,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Whenever read fails, get stream status so we know the state of OA status
-bits.
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tests/intel/xe_oa.c | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 67acc74b3279..f3521c3d602e 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -2294,6 +2294,7 @@ static void test_polling_small_buf(void)
- 	errno = 0;
- 	ret = read(stream_fd, buf, sizeof(buf));
- 	igt_assert_eq(ret, -1);
-+	get_stream_status(stream_fd);
- 	igt_assert_eq(errno, ENOSPC);
- 
- 	/* Poll with 0 timeout and expect POLLIN flag to be set */
-@@ -2568,6 +2569,7 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
- 	errno = 0;
- 	ret = read(stream_fd, buf, sizeof(buf));
- 	igt_assert_eq(ret, -1);
-+	get_stream_status(stream_fd);
- 	igt_assert_eq(errno, EINVAL);
- 
- 	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-@@ -2584,6 +2586,7 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
- 	/* Ensure num_reports can be read */
- 	while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 && errno == EINTR)
- 		;
-+	get_stream_status(stream_fd);
- 	igt_assert_eq(ret, sizeof(buf));
- 
- 	__perf_close(stream_fd);
-@@ -2727,6 +2730,7 @@ test_non_sampling_read_error(void)
- 
- 	ret = read(stream_fd, buf, sizeof(buf));
- 	igt_assert_eq(ret, -1);
-+	get_stream_status(stream_fd);
- 	igt_assert_eq(errno, EINVAL);
- 
- 	__perf_close(stream_fd);
-@@ -2768,6 +2772,7 @@ test_disabled_read_error(void)
- 
- 	ret = read(stream_fd, buf, sizeof(buf));
- 	igt_assert_eq(ret, -1);
-+	get_stream_status(stream_fd);
- 	igt_assert_eq(errno, EINVAL);
- 
- 	__perf_close(stream_fd);
-@@ -2786,6 +2791,7 @@ test_disabled_read_error(void)
- 
- 	ret = read(stream_fd, buf, sizeof(buf));
- 	igt_assert_eq(ret, -1);
-+	get_stream_status(stream_fd);
- 	igt_assert_eq(errno, EINVAL);
- 
- 	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
--- 
-2.43.0
+On 09/04/2025 12:22, André Almeida wrote:
+> This patchset creates a subtest for overlay planes. This is supported by amdgpu
+> and is merged in the kernel:
+>
+> https://lore.kernel.org/lkml/173948734065.719858.7405160715916126757.b4-ty@linaro.org/
+Hi,
+
+I just waited a while for CI results and they look good.
+So I applied this series to master.
+
+Thanks!
+
+Melissa
+
+>
+> v8:
+>   - Make "Async page flip" name consistent in patch 1
+>   - Clarify documentation about asserting with a bad fd in igt_has_drm_cap()
+>
+> v7:
+>   - igt_has_drm_cap() asserts only if it was a bad fd. The rest is up to the
+>   caller to assert or require.
+>   - we now have different errors for when the cap is not supported by the driver,
+>   and when the cap doesn't exist in the kernel
+>
+> v6:
+>   - Added missing `test_init_ops()` for "overlay-atomic" test
+>   - Reworked `test_init_fbs()`: it destroys all buffers when the modifier
+>   changes, and recreate then if they are need for the next test. It also destroys
+>   overlay buffers if they are not needed anymore
+>
+> v5:
+>   - Added a new patch "lib/ioctl_wrappers: let the caller handle capability check
+>     result" by Melissa Wen
+>   - This patch solved an issue that the test was exiting instead of skipping when
+>     the driver did not support ATOMIC_ASYNC_PAGE_FLIP
+>   - test_finish() is now called test_init_ops() and is called in the beginning of
+>     every test. This was done because some asserts prevented the test to reach
+>     the final of the run_test() function.
+>   - Fixed a typo to correctly set the overlay fb to the overlay plane
+>   - Added code to remove the overlay fb by the end of the test
+>   - Fixed a bug that test_init_fbs() was skipping the fb creation for overlay
+>     planes
+>   - Fixed require_overlay_flip_support() by changing the fb to be flipped with
+>     the async flip
+>
+> v4:
+>   - Created a patch to check for DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP, so drivers
+>   without support for it, skips instead of failing (Melissa)
+>   - Encapsulated all test paths options into a function to easy maintenance (Melissa)
+>   - Brought back test description for GitLab compilation
+>
+> v3:
+>   - Fixed a bug that was mixing `alternate_sync_async = true` with the overlay path
+>   - Refactored how the test parameters are being set/unset (patch 1/2)
+>   - Fixed a bug where a primary buffer was being used with an overlay plane
+>
+> v2: Add test description for GitLab compilation
+>
+> André Almeida (4):
+>    lib/ioctl_wrappers: let the caller handle capability check result
+>    tests/kms_async_flips: Check for atomic async flip cap
+>    kms_async_flips: Refactor data options
+>    tests/kms_async_flips: Create subtest for overlay planes
+>
+>   lib/ioctl_wrappers.c    |  21 ++++---
+>   lib/ioctl_wrappers.h    |   2 +-
+>   tests/kms_async_flips.c | 131 ++++++++++++++++++++++++++++++++++------
+>   3 files changed, 128 insertions(+), 26 deletions(-)
+>
 
