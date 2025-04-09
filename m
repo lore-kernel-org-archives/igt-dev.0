@@ -4,55 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04F0EC369A1
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 14:55:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35AE9C36002
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 15:22:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B047B10E92D;
-	Wed,  9 Apr 2025 14:55:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E747410E93A;
+	Wed,  9 Apr 2025 15:22:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ep4b/wiv";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="UspcWb32";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CCB410E92D
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 14:55:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744210519; x=1775746519;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=HEIkAIQz5x1tLQGu2n/FLx4DObTcqnTG2pA9HmeZ7Y0=;
- b=ep4b/wiv2WeWOwp+1TSikavcAkcq7CRdjNYi3EYpuoE/5Q9zIa1+P543
- pAEDPER/gH1q3HPXFXXQUY1ufX3CEtlh3v0wsEkpB7iZR6GhsaWxSck5X
- X4zQODR1TX2mGMvA2/212fS28t0Ayxks3h7ffq11dJyeQHDt3Dpw8EK/K
- Gn2R1ixDe3gvIDdEjkfUwVGFSIf8rYfhUpfGwG+Vu9btqhOD/2afmmlry
- AHOADY/GZKL7z1LY6WW923oQ/bfKdmWSe5LFy0NyCwBGUoSnC5owuJ5BR
- bh7Ihu0L3vP/4jr2FAccBor3+xBZnhtSjgIZlIYpyQ5g1YrUHjD7KTXE5 g==;
-X-CSE-ConnectionGUID: 5Nfc9gFoTKSOm47y3bmwdQ==
-X-CSE-MsgGUID: SfeU+2MEQl2Nr96pw4kKRg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="57062055"
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="57062055"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2025 07:55:19 -0700
-X-CSE-ConnectionGUID: saoUtw02S+6nqbMn+w5rog==
-X-CSE-MsgGUID: GmeFWqI3T5SUOQyWTw+F5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="151785154"
-Received: from unknown (HELO anirban-Z690I-A-ULTRA-PLUS.iind.intel.com)
- ([10.190.216.83])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2025 07:55:17 -0700
-From: sk.anirban@intel.com
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [i-g-t,v4,2/2] HAX: Add rc6-idle tests to fast feedback list
-Date: Wed,  9 Apr 2025 20:21:03 +0530
-Message-Id: <20250409145103.456797-3-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250409145103.456797-1-sk.anirban@intel.com>
-References: <20250409145103.456797-1-sk.anirban@intel.com>
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A36010E942
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 15:22:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+ In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=mDhsM1TWtH5qyHKQf/B/donWMH6o3rWY7+HI0Iqo1GA=; b=UspcWb32SevYi7VXflbzs3kfBi
+ OZkjKk2I9us9hoNPGCnoGeID5n3Uq8EkL38Mc3F/FHE4b46dJQoRZNzS4WJyOexF+9zWoxK9L3U5l
+ quhd83twPuy+ScUnuot2+mZPUfTZ5Z1paQp/Q+PHd5sHEWtZGAuc0/bZmwfn2dMMn6jivENf918ks
+ Kyp4Jcngx5Y3I5FVgXqyvQQ23EbmyRcGyAeuFbWC+BeaKhPog6xTHnCkzfi+OCngG8mtPwGG3By5e
+ QxbsYSZWlN4D/1FjCq6P87kiNkMX6ukEUuIBMwElJ/bPyygIzdaHULXtP9gNyVeOFaYXhteLQQJFe
+ uZxQCI6A==;
+Received: from [191.204.192.64] (helo=localhost.localdomain)
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1u2XFn-00EC3q-7y; Wed, 09 Apr 2025 17:22:15 +0200
+From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
+To: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: kernel-dev@igalia.com, Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Hung <alex.hung@amd.com>, Melissa Wen <mwen@igalia.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
+Subject: [PATCH v8 1/4] lib/ioctl_wrappers: let the caller handle capability
+ check result
+Date: Wed,  9 Apr 2025 12:22:03 -0300
+Message-ID: <20250409152206.132022-2-andrealmeid@igalia.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250409152206.132022-1-andrealmeid@igalia.com>
+References: <20250409152206.132022-1-andrealmeid@igalia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,27 +64,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Sk Anirban <sk.anirban@intel.com>
+Rework igt_has_drm_cap to just check if a DRM capability is supported
+and let the called decide what to do from this check. It prevents the
+test fails because of an assert done when it's called in
+igt_subtest_with_dynamics.
 
-Add pm_rc6_residency-rc6@idle to i915-fast-feedback
-
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+Co-Developed-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+ lib/ioctl_wrappers.c    | 21 ++++++++++++++-------
+ lib/ioctl_wrappers.h    |  2 +-
+ tests/kms_async_flips.c | 13 +++++++++----
+ 3 files changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..f37dbf769 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -51,6 +51,7 @@ igt@gem_tiled_fence_blits@basic
- igt@gem_tiled_pread_basic
- igt@gem_wait@busy@all-engines
- igt@gem_wait@wait@all-engines
-+igt@i915_pm_rc6_residency@rc6-idle
- igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 146973f0d..176cbdacc 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -1285,17 +1285,24 @@ int __kms_addfb(int fd, uint32_t handle,
+  * @fd: Open DRM file descriptor.
+  * @capability: DRM capability
+  *
+- * This helper verifies if the passed capability is
+- * supported by the kernel
++ * This helper verifies if the passed capability is supported by the kernel.
++ * This function asserts in case of a bad file descriptor.
+  *
+- * Returns: Whether the capability is supported or not.
++ * Returns: negative value if error (e.g. cap does not exist), 0 if cap is
++ * not supported, 1 if cap is supported.
+  */
+-bool igt_has_drm_cap(int fd, uint64_t capability)
++int igt_has_drm_cap(int fd, uint64_t capability)
+ {
+-	struct drm_get_cap cap = { .capability = capability };
++	uint64_t value = 0;
++	int ret;
++
++	ret = drmGetCap(fd, capability, &value);
++	if (ret) {
++		igt_assert_neq(errno, EBADF);
++		return -errno;
++	}
+ 
+-	igt_assert(drmIoctl(fd, DRM_IOCTL_GET_CAP, &cap) == 0);
+-	return cap.value;
++	return value ? 1 : 0;
+ }
+ 
+ /**
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index b7d7c2ad9..7cf05e626 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -144,7 +144,7 @@ void prime_sync_end(int dma_buf_fd, bool write);
+ 
+ bool igt_has_fb_modifiers(int fd);
+ void igt_require_fb_modifiers(int fd);
+-bool igt_has_drm_cap(int fd, uint64_t capability);
++int igt_has_drm_cap(int fd, uint64_t capability);
+ bool igt_has_set_caching(uint32_t devid);
+ 
+ /**
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index da426f753..c1637104e 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -203,8 +203,10 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+ 
+ static void require_monotonic_timestamp(int fd)
+ {
+-	igt_require_f(igt_has_drm_cap(fd, DRM_CAP_TIMESTAMP_MONOTONIC),
+-		      "Monotonic timestamps not supported\n");
++	int ret = igt_has_drm_cap(fd, DRM_CAP_TIMESTAMP_MONOTONIC);
++
++	igt_require_f(ret >= 0, "Monotonic timestamps cap doesn't exist in this kernel\n");
++	igt_require_f(ret == 1, "Monotonic timestamps not supported\n");
+ }
+ 
+ static void test_init(data_t *data)
+@@ -747,13 +749,16 @@ igt_main
+ 	int i;
+ 
+ 	igt_fixture {
++		int ret;
++
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+ 
+-		igt_require_f(igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP),
+-			      "Async Flip is not supported\n");
++		ret = igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP);
++		igt_require_f(ret >= 0, "Async page flip cap doesn't exist in this kernel\n");
++		igt_require_f(ret == 1, "Async page flip is not supported\n");
+ 
+ 		if (is_intel_device(data.drm_fd))
+ 			data.bops = buf_ops_create(data.drm_fd);
 -- 
-2.34.1
+2.49.0
 
