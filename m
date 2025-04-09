@@ -4,51 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69FABC369A4
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 15:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34062C36002
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 15:29:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2004810E948;
-	Wed,  9 Apr 2025 15:22:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D931B10E06E;
+	Wed,  9 Apr 2025 15:29:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="sQDhYyMR";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="ltyUWAS9";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE2D710E948
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 15:22:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
- In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=7stf7KNstmXATk9pL12/pMJXg2jeW+RdXxcCt1XCKSU=; b=sQDhYyMR5ju81N3f8WFSD7wjnl
- f/unJViPasgQuzHYIVHe+95Eb7g58CLFP1WVl3wWsDVNo4sb+BGoMRdhlKlJxTrw3t7iiQBSOsMuV
- MQriP8zcptOnAltQ+ALz0ffc/QHTwnpedJ+64CrBuIFr8NNiuW2l1t6fiFeMfrIVSm59guj4ZC64Y
- Ni1MtgYbzyufpbp8N1HgesOujC00o+sHIc1ucDGhMPYKnzFMX1cztR1lNFCJZ9mio9jdhRRYoXVHx
- 1bMCvLXWqquS7ntI48TxCrK0x4E8klGqRvUbkr9dbWPz1pxUrpDgojr+2jEWdIIm5C76EfwJ9shTX
- WqWMF/Vg==;
-Received: from [191.204.192.64] (helo=localhost.localdomain)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1u2XFv-00EC3q-Nr; Wed, 09 Apr 2025 17:22:24 +0200
-From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
-To: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam04on2062.outbound.protection.outlook.com [40.107.101.62])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9A9310E06E
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 15:29:28 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jwyR0Srztm0zstl/Dm5N6S/WanlkOda3/QDLmGMfgI57fvmiFrPvONa3NZbQSn8GoZZTrcYmxp+8qPRXv8E+H+cooMjiAQbZKvgmwTdjw1p/i1mWfyt80mriibuMdjzseGtPNCtvqVEREs1Wp83v3mBBOn1EfUZuI2qFFLdqg7lIpRu6fV02qIpyIdJagcbUx7DE+rl+8POrtJzGyntbBpqXIZq6snUdIqMgcYTBBLhC0FOyeFag1I+IEg3UBnIuzAZls+qGl78VaHVLSyoJ8krIoOVVCU0H4P9YT8cT3XVL5WfZ8qXMpjc6BVBxTaDZ6QuEm/YxLDB0EwBXqgzrHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ze0UB99oH4Bl20iwiwYA50PR4sbnyQSaxkqF/ebbN5w=;
+ b=HcPSw2spYZ77fAmXOYSLrAcgpvvuBxZlZkPn3lICF7J+85JCXbirWBXOqVbg80NObHwpZZNj7Aa07xtsrd8Tgo2EPouz0i5TmTSE/drPGcUrhCo6vBUVVXN74BpWkNjkBUHdwy5WXDFyxZQyQ13DHQxYNyK8pGz5bxfAHP5i+Yp/on5qydsXwg/SrfjJYPrVEjtyWfmGqlr4gKAh9YUm/rpqm/mJ6pAV0VaeodS01rwiIVOFz61beAyOPMYufqp1X5dnl1TUPtNqxq/VjUnRwoNIzloFT/0wb+G7KfyChsu9hLmik5XnqHzWtLncWU3Bb+Yix1Y/+NrgV61l+Gwhcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ze0UB99oH4Bl20iwiwYA50PR4sbnyQSaxkqF/ebbN5w=;
+ b=ltyUWAS929NKxfgHFM354KTPREk6W9E2ngdMWOkyzYQRt6q4/o+Wc0yJWQ68ZmGfuVR1u4AymG64PYU3fPI39pyFUHWbWhyQu8UOnKQWSi8TTvGJnYOhNaQklqrp4Pqfp+hNArkccm4Xdraj9jWimxtJRumqAWmCnhnn92tcUgU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
+ by DS0PR12MB8296.namprd12.prod.outlook.com (2603:10b6:8:f7::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8606.34; Wed, 9 Apr 2025 15:29:25 +0000
+Received: from DM4PR12MB8476.namprd12.prod.outlook.com
+ ([fe80::2ed6:28e6:241e:7fc1]) by DM4PR12MB8476.namprd12.prod.outlook.com
+ ([fe80::2ed6:28e6:241e:7fc1%4]) with mapi id 15.20.8632.017; Wed, 9 Apr 2025
+ 15:29:25 +0000
+Message-ID: <eb7c4637-0ed0-48c4-aedf-4aa953a20544@amd.com>
+Date: Wed, 9 Apr 2025 09:29:22 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 3/4] kms_async_flips: Refactor data options
+To: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
+ igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: kernel-dev@igalia.com, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Hung <alex.hung@amd.com>, Melissa Wen <mwen@igalia.com>,
- Rodrigo Siqueira <siqueira@igalia.com>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
-Subject: [PATCH v8 4/4] tests/kms_async_flips: Create subtest for overlay
- planes
-Date: Wed,  9 Apr 2025 12:22:06 -0300
-Message-ID: <20250409152206.132022-5-andrealmeid@igalia.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250409152206.132022-1-andrealmeid@igalia.com>
+ Melissa Wen <mwen@igalia.com>, Rodrigo Siqueira <siqueira@igalia.com>
 References: <20250409152206.132022-1-andrealmeid@igalia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ <20250409152206.132022-4-andrealmeid@igalia.com>
+Content-Language: en-US
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <20250409152206.132022-4-andrealmeid@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YQZPR01CA0065.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:88::20) To DM4PR12MB8476.namprd12.prod.outlook.com
+ (2603:10b6:8:17e::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|DS0PR12MB8296:EE_
+X-MS-Office365-Filtering-Correlation-Id: e656f2e7-12e7-4da6-06c2-08dd777b4f71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?aGN1ODRLK2d0ZW5FdlFSSUNaQ1VCc3FIc1Z4SWFLZ2E5QlhOeFhvazJTbk5L?=
+ =?utf-8?B?RGRzT29UaXRsc2kwYnpZK0JuOXNFNzlSeGczbTN1UnBCZWcrNnovMGN0YlBh?=
+ =?utf-8?B?VWZrandYd2psd2NneE1jOGtzTk1pUEIzeXRSSW9oSGY4bWtOcUl1dGZablBt?=
+ =?utf-8?B?ZlJ5ZmN6OG04Y1JtdmRPbDQyQUpFUk1ab0cwZ3VGTlFTZlpWOXVFZ2NjWkJz?=
+ =?utf-8?B?VXBhRU1GdlVKTUlGb0oyQXJMWk5hM0s4bCtNeGQrTit2OHV6UDJ4TWN1UHk5?=
+ =?utf-8?B?Z0ZyVG04cVdCNUlZNFdEblhXdk9reXJ6NTg2UGNuVTdHUnBIdGRYdHdaQzRz?=
+ =?utf-8?B?ZURDSzdvVWV3VEZnSkhJOG5JMmZueDJKbW82NDMwSUU1OWdhamU2Nm41YnND?=
+ =?utf-8?B?VFE1MzA1S3hqOGFjOW56b0k0MHpZeEViRnVDL3lrUC8zRG9CV0MwSXQ2RjlN?=
+ =?utf-8?B?NEZodVZFaFdQamJKWEllN2tUOWtqeHFlQ0RtaldMZ0NQTDd2bkttTU1Hc09X?=
+ =?utf-8?B?YmVKd2xzQzZrNkowaSt4T1dKOExoQ0t5ZGNBNUkyZUN2RkJCVHNvV1RUaldk?=
+ =?utf-8?B?eU04VjVsdGFsNTRTdHp3T0p3dWlMNnYybHhFaE1EOHlNY0cvSXlBSkVTbFFO?=
+ =?utf-8?B?MmJIemVGQktIQ2tvZ3hiUTlidXk2RnZacCs0OCtmZU5jQUxSOCtZemFiV3ps?=
+ =?utf-8?B?dWZEalFIZzdYNU11L2JoUkZEZGVSczRmdFQwTHpjbG9BSGlRTHMyc2Nzbk4v?=
+ =?utf-8?B?TUtMVW9TbzhCVTVRa0kvNTNlTXg0ZWpycUhJNTVQMC8rb28rbENzRjdBRTd5?=
+ =?utf-8?B?TlV2aTIrMWJ2ZGp0ekxObkhBMmVqZFAyZG9wT2xMdzJMWlluc1hwSXYvMEVp?=
+ =?utf-8?B?RC9EUUUyNjhqc1VTQjNCY0EvTDRSMlovczJ6TmJ4THVEdXphblg0TFFDWXpr?=
+ =?utf-8?B?TkZsdG5UdnhzV1E5YUQ0UUF4YWZGeG5sNGRqRExuTk9PaG9vOWZUT2VweWRJ?=
+ =?utf-8?B?alFISHo3aXpVS0p1UHZHOEIzcDNrUzJzYUlnVjBVZFRjL1hsMkpySXFrRkIz?=
+ =?utf-8?B?U2JHTk9uK3UrSXlwZndGeTJlRlFlZ29HajFvbkF3cmx1b2o5L2gwZlIyTFVl?=
+ =?utf-8?B?ejBjeFVEV0ppV004cjhubmxQWnBIYzM1bjhaY3FuVWIzYllvTkNwRU1SbzlG?=
+ =?utf-8?B?ZHFRdi92Znl2VGNOYjJIb1NVS2pxL0pkczNxM0RXcW1TVGdvVlM5NGgrS3JP?=
+ =?utf-8?B?OHN2Qm8yNnFPVEhodHhIeWp3VnpjeDhxdkF4THEvbndvdUFFMUlBL2VHaG1P?=
+ =?utf-8?B?RlBvaWFsclprSkF3ZDhscmpiWUs2Q1lQWFhQNkFsRmVUZ2tLeWxWWjUwK2ZF?=
+ =?utf-8?B?RTJjd3lCVTljSmlPQW82bUtqREJ6cGMwWTNmOUVPZjN5TnZ1Z1VhM0ZvVmVF?=
+ =?utf-8?B?dkppRVNiTW5wa0prVDZoM3pjZUJxSDJSRURGcy93WDY2SmFpMW10Y3pQbmFm?=
+ =?utf-8?B?Q21lL1cvdGhTb1hYMWI2SzFOVlNuaE5hZy80U3doUi9FL0FLZXJtY2ExTFU1?=
+ =?utf-8?B?Vk9xMzJrTk9SbkVEc1VUR0hWeEh5VkpjMFMvNDZFZXVneDF1QXRPSVA5UzU1?=
+ =?utf-8?B?OTBtWFZheXF1SVUxd0xFNTZnSGpCZzZic0d3TnVkNGlNUWFSWXRqbyt4VGJv?=
+ =?utf-8?B?djFyYm5QVGo0VGtvQ0I0UHA1NTQvMW5hbE83aG9BeXBjQS9tdmhLZDZoWUlp?=
+ =?utf-8?B?a2Mvd3RTWUoxaUdGL1o4ZGdFclcrS0JvVTZxUTc0b2Z4ZTlyR01YRk1PRzYw?=
+ =?utf-8?B?RkRTS0RUWlA1aFhudWMyeWxSOUVtQVF3L05kYW9kVjFTYXhsa0EyM0VEUWw2?=
+ =?utf-8?B?MWJ4bEhvdTEzTDFUN2I4OFFnM2JaN1N2TU9Ed0RkSk9iUE8rTFJtWjRRTlVH?=
+ =?utf-8?Q?veZH4muDD7E=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB8476.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?alRqdUtIUWFPdzFBb0RFMWRCZjhucS9DZWc1Skd3UHc5d1hTRXVPS25SVTdX?=
+ =?utf-8?B?NFh0RTYxNHE4QTF1UnpwSWtGRTIxR2JHUFNNV1FjZnBSNTFWUktXTVV4b1B0?=
+ =?utf-8?B?UXlVc3lnMEVTYkFhb1VNODdMM3VZZWdHbmxPdDNqTFpkenZiQk5JQjUrNWJD?=
+ =?utf-8?B?a2FpU2dndnFJZG9ETWNtRXJZbFNVSVdMRnpyb1YreFgrZFV5NkczYUNTSHhW?=
+ =?utf-8?B?ejdxK1B0RXRmcDNoTWVyV2xhWU91Y205N2lyRm5zb3N4bjhybzJUbjFVYkdU?=
+ =?utf-8?B?U2J0TlpIV2tISTdsQ01ZWGtqSTRwS2pvZUNTQkh0YnVCd3dtWVk2eWdTMmtl?=
+ =?utf-8?B?eEE2cW1zK25GeHNKNDBoLy9sbXBPc0k0SWZMcnQvdEpwTkJIRWgxMGc5Vjhr?=
+ =?utf-8?B?S0lUK21JcnFFejFTcWxsd1h4RlRFaHJKMUthd2NyZjB4TXpGVUU2alcxUGFB?=
+ =?utf-8?B?VjAvd1V1bmtYVHVsSW5Fa3ZUYTBvcGROaUc5UkYrVnNua3dxdlZveFNIaURM?=
+ =?utf-8?B?Y3R5Z3RjekR4eGdiNG1NWkdRKzA0d1VNU1VZMnE3QUlIQ0g1RnZEQ3NKMUdS?=
+ =?utf-8?B?RDFXa3J6L29VTWpqT1JzaXV3czN2Vzk1c1hhZWMvRElvakdwOW5EMWJubUdv?=
+ =?utf-8?B?QXRXcG5hbWZqUElScnZveUJaL0ZyUXlJUndWK1FwemtybWoxdVpENEx2QldC?=
+ =?utf-8?B?Y1poYzR6OXl3Z2JwSC85TCttYndoNEw1TmpLNHJ5dUlHWlJvdWRNWVV5N2Fj?=
+ =?utf-8?B?b0xaQVBNajBTUjQ5UkcwRS9rUkxaNEZjOXBvcW40TGZ1TFdsWG9HQU9wbUNX?=
+ =?utf-8?B?Wjl6SXU4U1oyaUw2ZGJHTStIcHhtN21hdHhDS0dBV3hBVWRZNVZYKzkyWUdx?=
+ =?utf-8?B?SzhrZ3g5OFV3Vm85MEdEa3VtbnZaQkFpTVJzRHVPVlVudWk3Nk9tTkRZemFr?=
+ =?utf-8?B?alFTb2dNYmh6SjJaQkNMeHVKb2V0TGdpekxmbDVQU2VYdGgxMDJiUWE4Y2tl?=
+ =?utf-8?B?TmhqTGlKeC92Zll4Q0w1dmxoZDVyNi9VMEswWURWVnUyREVuVU5oRGdWSjFQ?=
+ =?utf-8?B?Z000R3U4bWQzK2Rsa25QYUpDS0ExQm9iMGhVMFlBaEMvdm5TaDVyeTJYTFJs?=
+ =?utf-8?B?ZmpaVVRzaDVtM2o4YU9KQ0NmdUtmaGFoQ0hjeG1KN3lXTzRmVHFkUVZUS3RI?=
+ =?utf-8?B?NlNOcEdpZmhyNjIyZzlqaWkvNVA5S053RDBDWStWNXYvMEQ1UWVTbk9UdUV3?=
+ =?utf-8?B?UEQzZlAvVTkyRzkrS08rdlVOdW5CWW05Ujh1aTR0WXlDMzVIcnFOWlBZZU9a?=
+ =?utf-8?B?RDI2Zi9ZZFpHZWVJaDljQWl1QkdCa1Vremd4Mjd3azFFN3pUUmxhekRnYTVp?=
+ =?utf-8?B?Skp0eFVRTEZPUDNJM1NWU3E2N3RkcURtQXJRUzVMcy9ra1dXUlVRay9EMitl?=
+ =?utf-8?B?Z3JsdFg1U24zcVgzYVhRSXkxcWZHOC85dTMrMTJIamtvQzhyQXIwc3lhSHVV?=
+ =?utf-8?B?d0h2Njl5cDRHYkMwYnN6emo5eWNhZDRqVHJaV01rRHZBOWdFNEt3dU1MYnA3?=
+ =?utf-8?B?N0w2Mm43cFRGMDhSbVM3Tkgrd2VPNUo5WmlZazFORmovajRNc3JDelpXTXQ2?=
+ =?utf-8?B?UituN1ZLQ0Iwbk9oQ1Byd1RxZWFEeXJoSGcxc2xtQ1h4UVkwbWZNbmx2NXo5?=
+ =?utf-8?B?NGdBK3lWSXN2ZnBRdnJWeEdybDl3bXEzMjZ6Skh2eFd6cDBkNlI1dWVXUlVh?=
+ =?utf-8?B?QVFzeDYwSElwNWdEdXdqdVVwNVoxUzNvclk2ckVpcHh0SnV6R1dNeHZhM01V?=
+ =?utf-8?B?cmRFbDBJampiS3VleWl3UDQ0dGI0LzZ2eXB0NXR4U0tKK1Y4UFMzQklkR2NL?=
+ =?utf-8?B?T0xjUGZ5NFdTMFdFb25Jci9jbnh5b2s5UVdmSTlBZUsraU1pd3QvakgyY3RU?=
+ =?utf-8?B?Y1FzM2V3SDVmNUw0ZFpZM0xpOFAyY0dXU1VQZXZDVHhBRTBpL2tIY2Jkck5q?=
+ =?utf-8?B?cCtUempTRVMrS0V3SXZlNGJLenNsbkpiaUhNTWFVbGJtb0g3UElQSnBtc3lG?=
+ =?utf-8?B?MndzcFhkZmZ5SkNjYXNhMjNFVU5WSWxFRDdWQXZZSHRnL3NCMzZ2c05QRkc2?=
+ =?utf-8?Q?xQSCi0rqEQ6LCnzw1wlKroTPu?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e656f2e7-12e7-4da6-06c2-08dd777b4f71
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 15:29:25.5200 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /pcKAsOthPRHkRADqm4GTlCB/zPSK6mUoXNHd2WQLG4meYzCbC0N2M5EP1e14L6fRi8SYJl8mhRrOdFblDIUHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8296
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,197 +164,158 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-amdgpu can perform async flips in overlay planes as well, so create a
-test for that.
-
-Signed-off-by: André Almeida <andrealmeid@igalia.com>
-Reviewed-by: Melissa Wen <mwen@igalia.com>
 Reviewed-by: Alex Hung <alex.hung@amd.com>
----
- tests/kms_async_flips.c | 77 +++++++++++++++++++++++++++++++++++++----
- 1 file changed, 71 insertions(+), 6 deletions(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 19c781925..031417ed8 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -85,6 +85,9 @@
-  *
-  * SUBTEST: async-flip-suspend-resume
-  * Description: Verify the async flip functionality with suspend and resume cycle
-+ *
-+ * SUBTEST: overlay-atomic
-+ * Description: Verify overlay planes with async flips in atomic API
-  */
- 
- #define CURSOR_POS 128
-@@ -105,12 +108,14 @@ typedef struct {
- 	uint32_t crtc_id;
- 	uint32_t refresh_rate;
- 	struct igt_fb bufs[NUM_FBS];
-+	struct igt_fb bufs_overlay[NUM_FBS];
- 	igt_display_t display;
- 	igt_output_t *output;
- 	unsigned long flip_timestamp_us;
- 	double flip_interval;
- 	uint64_t modifier;
- 	igt_plane_t *plane;
-+	igt_plane_t *plane_overlay;
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_crc_t ref_crc;
- 	int flip_count;
-@@ -122,6 +127,7 @@ typedef struct {
- 	bool allow_fail;
- 	struct buf_ops *bops;
- 	bool atomic_path;
-+	bool overlay_path;
- } data_t;
- 
- static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-@@ -217,6 +223,25 @@ static void require_atomic_async_cap(data_t *data)
- 	igt_require_f(ret == 1, "Atomic async flip not supported by this driver\n");
- }
- 
-+static void require_overlay_flip_support(data_t *data)
-+{
-+	struct igt_fb *bufs = data->bufs_overlay;
-+	igt_plane_t *plane = data->plane_overlay;
-+	int flags = DRM_MODE_PAGE_FLIP_EVENT;
-+
-+	igt_plane_set_fb(plane, &bufs[0]);
-+
-+	igt_require_f(!igt_display_try_commit_atomic(&data->display, flags, data),
-+		      "Overlay planes not supported\n");
-+
-+	flags |= DRM_MODE_PAGE_FLIP_ASYNC;
-+
-+	igt_plane_set_fb(plane, &bufs[1]);
-+
-+	igt_require_f(!igt_display_try_commit_atomic(&data->display, flags, data),
-+		      "Async flip for overlay planes not supported\n");
-+}
-+
- static void test_init(data_t *data)
- {
- 	drmModeModeInfo *mode;
-@@ -232,12 +257,15 @@ static void test_init(data_t *data)
- 	igt_output_set_pipe(data->output, data->pipe);
- 
- 	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-+	if (data->overlay_path)
-+		data->plane_overlay = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_OVERLAY);
- }
- 
- static void test_init_ops(data_t *data)
- {
- 	data->alternate_sync_async = false;
- 	data->atomic_path = false;
-+	data->overlay_path = false;
- }
- 
- static void test_init_fbs(data_t *data)
-@@ -252,22 +280,40 @@ static void test_init_fbs(data_t *data)
- 	width = mode->hdisplay;
- 	height = mode->vdisplay;
- 
-+	/* if the modifier or the output changed, we need to recreate the buffers */
- 	if (prev_output_id != data->output->id ||
- 	    prev_modifier != data->modifier) {
- 		prev_output_id = data->output->id;
- 		prev_modifier = data->modifier;
- 
--		if (data->bufs[0].fb_id) {
-+		if (data->bufs[0].fb_id)
- 			for (i = 0; i < NUM_FBS; i++)
- 				igt_remove_fb(data->drm_fd, &data->bufs[i]);
--		}
- 
-+		if (data->bufs_overlay[0].fb_id)
-+			for (i = 0; i < NUM_FBS; i++)
-+				igt_remove_fb(data->drm_fd, &data->bufs_overlay[i]);
-+	}
-+
-+	if (!data->bufs[0].fb_id)
- 		for (i = 0; i < NUM_FBS; i++)
- 			make_fb(data, &data->bufs[i], width, height, i);
--	}
- 
- 	igt_plane_set_fb(data->plane, &data->bufs[0]);
- 	igt_plane_set_size(data->plane, width, height);
-+
-+	if (!data->bufs_overlay[0].fb_id && data->overlay_path) {
-+		for (i = 0; i < NUM_FBS; i++)
-+			make_fb(data, &data->bufs_overlay[i], width, height, i);
-+
-+		igt_plane_set_fb(data->plane_overlay, &data->bufs_overlay[0]);
-+		igt_plane_set_size(data->plane_overlay, width, height);
-+	}
-+
-+	/* remove unused buffers */
-+	if (data->bufs_overlay[0].fb_id && !data->overlay_path)
-+		for (i = 0; i < NUM_FBS; i++)
-+			igt_remove_fb(data->drm_fd, &data->bufs_overlay[i]);
- }
- 
- static bool async_flip_needs_extra_frame(data_t *data)
-@@ -295,12 +341,17 @@ static bool async_flip_needs_extra_frame(data_t *data)
- static int perform_flip(data_t *data, int frame, int flags)
- {
- 	int ret;
-+	igt_plane_t *plane;
-+	struct igt_fb *bufs;
-+
-+	plane = data->overlay_path ? data->plane_overlay : data->plane;
-+	bufs = data->overlay_path ? data->bufs_overlay : data->bufs;
- 
- 	if (!data->atomic_path) {
- 		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
--				      data->bufs[frame % NUM_FBS].fb_id, flags, data);
-+				     bufs[frame % NUM_FBS].fb_id, flags, data);
- 	} else {
--		igt_plane_set_fb(data->plane, &data->bufs[frame % NUM_FBS]);
-+		igt_plane_set_fb(plane, &bufs[frame % NUM_FBS]);
- 		ret = igt_display_try_commit_atomic(&data->display, flags, data);
- 	}
- 
-@@ -316,6 +367,9 @@ static void test_async_flip(data_t *data)
- 
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
-+	if (data->overlay_path)
-+		require_overlay_flip_support(data);
-+
- 	gettimeofday(&start, NULL);
- 	frame = 1;
- 	do {
-@@ -824,6 +878,15 @@ igt_main
- 			run_test(&data, test_async_flip);
- 		}
- 
-+		igt_describe("Verify overlay planes with async flips in atomic API");
-+		igt_subtest_with_dynamic("overlay-atomic") {
-+			test_init_ops(&data);
-+			igt_require(is_amdgpu_device(data.drm_fd));
-+			data.atomic_path = true;
-+			data.overlay_path = true;
-+			run_test(&data, test_async_flip);
-+		}
-+
- 		igt_describe("Verify that the async flip timestamp does not "
- 			     "coincide with either previous or next vblank");
- 		igt_subtest_with_dynamic("test-time-stamp") {
-@@ -927,8 +990,10 @@ igt_main
- 	}
- 
- 	igt_fixture {
--		for (i = 0; i < NUM_FBS; i++)
-+		for (i = 0; i < NUM_FBS; i++) {
- 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
-+			igt_remove_fb(data.drm_fd, &data.bufs_overlay[i]);
-+		}
- 
- 		if (is_intel_device(data.drm_fd))
- 			buf_ops_destroy(data.bops);
--- 
-2.49.0
+On 4/9/25 09:22, André Almeida wrote:
+> Setting the test data options as true and false for every test is error
+> prone. Instead, reset all the data to false at the end of a test and
+> just set the needed options to true before running a test.
+> 
+> Signed-off-by: André Almeida <andrealmeid@igalia.com>
+> Reviewed-by: Melissa Wen <mwen@igalia.com>
+> ---
+>   tests/kms_async_flips.c | 27 +++++++++++++++++++--------
+>   1 file changed, 19 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index f7a233045..19c781925 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -234,6 +234,12 @@ static void test_init(data_t *data)
+>   	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+>   }
+>   
+> +static void test_init_ops(data_t *data)
+> +{
+> +	data->alternate_sync_async = false;
+> +	data->atomic_path = false;
+> +}
+> +
+>   static void test_init_fbs(data_t *data)
+>   {
+>   	int i;
+> @@ -785,8 +791,7 @@ igt_main
+>   
+>   		igt_describe("Wait for page flip events in between successive asynchronous flips");
+>   		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
+> -			data.alternate_sync_async = false;
+> -			data.atomic_path = false;
+> +			test_init_ops(&data);
+>   			if (is_intel_device(data.drm_fd))
+>   				run_test_with_modifiers(&data, test_async_flip);
+>   			else
+> @@ -796,7 +801,7 @@ igt_main
+>   		igt_describe("Wait for page flip events in between successive "
+>   			     "asynchronous flips using atomic path");
+>   		igt_subtest_with_dynamic("async-flip-with-page-flip-events-atomic") {
+> -			data.alternate_sync_async = false;
+> +			test_init_ops(&data);
+>   			data.atomic_path = true;
+>   			if (is_intel_device(data.drm_fd))
+>   				run_test_with_modifiers(&data, test_async_flip);
+> @@ -806,13 +811,14 @@ igt_main
+>   
+>   		igt_describe("Alternate between sync and async flips");
+>   		igt_subtest_with_dynamic("alternate-sync-async-flip") {
+> +			test_init_ops(&data);
+>   			data.alternate_sync_async = true;
+> -			data.atomic_path = false;
+>   			run_test(&data, test_async_flip);
+>   		}
+>   
+>   		igt_describe("Alternate between sync and async flips using atomic path");
+>   		igt_subtest_with_dynamic("alternate-sync-async-flip-atomic") {
+> +			test_init_ops(&data);
+>   			data.alternate_sync_async = true;
+>   			data.atomic_path = true;
+>   			run_test(&data, test_async_flip);
+> @@ -821,13 +827,14 @@ igt_main
+>   		igt_describe("Verify that the async flip timestamp does not "
+>   			     "coincide with either previous or next vblank");
+>   		igt_subtest_with_dynamic("test-time-stamp") {
+> -			data.atomic_path = false;
+> +			test_init_ops(&data);
+>   			run_test(&data, test_timestamp);
+>   		}
+>   
+>   		igt_describe("Verify that the async flip timestamp does not coincide "
+>   			     "with either previous or next vblank with atomic path");
+>   		igt_subtest_with_dynamic("test-time-stamp-atomic") {
+> +			test_init_ops(&data);
+>   			data.atomic_path = true;
+>   			run_test(&data, test_timestamp);
+>   		}
+> @@ -835,6 +842,7 @@ igt_main
+>   
+>   	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
+>   	igt_subtest_with_dynamic("test-cursor") {
+> +		test_init_ops(&data);
+>   		/*
+>   		 * Intel's PSR2 selective fetch adds other planes to state when
+>   		 * necessary, causing the async flip to fail because async flip is not
+> @@ -844,13 +852,13 @@ igt_main
+>   			      "PSR2 sel fetch causes cursor to be added to primary plane "
+>   			      "pages flips and async flip is not supported in cursor\n");
+>   
+> -		data.atomic_path = false;
+>   		run_test(&data, test_cursor);
+>   	}
+>   
+>   	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after "
+>   		     "async flip with atomic commit");
+>   	igt_subtest_with_dynamic("test-cursor-atomic") {
+> +		test_init_ops(&data);
+>   		/*
+>   		 * Intel's PSR2 selective fetch adds other planes to state when
+>   		 * necessary, causing the async flip to fail because async flip is not
+> @@ -865,6 +873,7 @@ igt_main
+>   
+>   	igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
+>   	igt_subtest_with_dynamic("invalid-async-flip") {
+> +		test_init_ops(&data);
+>   		/* TODO: support more vendors */
+>   		igt_require(is_intel_device(data.drm_fd));
+>   		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
+> @@ -872,13 +881,13 @@ igt_main
+>   		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
+>   						       I915_FORMAT_MOD_Y_TILED));
+>   
+> -		data.atomic_path = false;
+>   		run_test(&data, test_invalid);
+>   	}
+>   
+>   	igt_describe("Negative case to verify if changes in fb are rejected "
+>   		     "from kernel as expected when async flip is done using atomic path");
+>   	igt_subtest_with_dynamic("invalid-async-flip-atomic") {
+> +		test_init_ops(&data);
+>   		data.atomic_path = true;
+>   		/* TODO: support more vendors */
+>   		igt_require(is_intel_device(data.drm_fd));
+> @@ -892,16 +901,17 @@ igt_main
+>   
+>   	igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
+>   	igt_subtest_with_dynamic("crc") {
+> +		test_init_ops(&data);
+>   		/* Devices without CRC can't run this test */
+>   		igt_require_pipe_crc(data.drm_fd);
+>   
+> -		data.atomic_path = false;
+>   		run_test(&data, test_crc);
+>   	}
+>   
+>   	igt_describe("Use CRC to verify async flip scans out the correct framebuffer "
+>   		     "with atomic commit");
+>   	igt_subtest_with_dynamic("crc-atomic") {
+> +		test_init_ops(&data);
+>   		/* Devices without CRC can't run this test */
+>   		igt_require_pipe_crc(data.drm_fd);
+>   
+> @@ -911,6 +921,7 @@ igt_main
+>   
+>   	igt_describe("Verify the async flip functionality after suspend and resume cycle");
+>   	igt_subtest_with_dynamic("async-flip-suspend-resume") {
+> +		test_init_ops(&data);
+>   		data.suspend_resume = true;
+>   		run_test(&data, test_async_flip);
+>   	}
 
