@@ -4,34 +4,34 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B1C9C369A6
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 15:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE59BC369A4
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 15:22:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 15F4C10E941;
-	Wed,  9 Apr 2025 15:22:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6908110E942;
+	Wed,  9 Apr 2025 15:22:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="Oe7pfu3x";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="DDluyTj2";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FCB310E93A
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 15:22:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 300EF10E942
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 15:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
- Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+ In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=GWqptqsw059TTanBpCQr/F4/iu76tS1R5mhc118kg7M=; b=Oe7pfu3xqQ+SXfjPXYVRizw16I
- zcB9ZLJMH34vmc4QhN1XPJrGXnHJyH1YwBCNwQ8ZrTf5Mf85RXf42QFnqzFvSy4otvU7eBu8RQhXE
- YbwQdYUbVE4pKKfOHCXTYXVjEgvgBd0seF/YEGEYBOruFdlzA4clKPOhACqxyh13ddTkdpE7jA9r6
- W677bVHaINvPUYcxFsnkfWd4XUbT8JHXNxKLP2qzjjjBA7HYXeIirt5FuHgHPDA9onlV/i7SIlI6F
- aUdRF6LNRIU1gTCNyAZjXkaTI8jkpkbRm5LCPniXdPmOsSMQywcNdvPpEIch4uPThYu5qjkL8Q1Ci
- G+9BgfDA==;
+ bh=YkFgOP5aso+NoC96+pzhkolTHnhuDhaHCaQ18/Qakhg=; b=DDluyTj2ZePYLi03ebo+bJEu2D
+ zGYe/E9pk8W4yGecpIrL2JRhmiAmQrjDxLXh5j1Xg0jKfp1+H8dIAFpt8QmGKlBlvNA789i3wNZUW
+ GHxbJ9fMXWO8DM8Pc0Du0Qno05rQL8WmXBg2rdcMkK6jeEQ+ZLpuhHRcM6OgQseg1drDJhz0vIRX+
+ qjIz6iVsymPO06DOUmKeg+FwcK9kKkT6cjGELP8FC9Ppd486J33GYKPURrUE+aqLKnJkAQ3o4qGLv
+ t3+x8KHDLKqOw1wb8HQFQyKKxbeUsnsgMsUHMkCA7NS79oMajUCf5TrGBWOIPsTOAP7DJbTdnxpHt
+ apc+0e6w==;
 Received: from [191.204.192.64] (helo=localhost.localdomain)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1u2XFk-00EC3q-DS; Wed, 09 Apr 2025 17:22:12 +0200
+ id 1u2XFq-00EC3q-2U; Wed, 09 Apr 2025 17:22:18 +0200
 From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
 To: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -39,11 +39,12 @@ Cc: kernel-dev@igalia.com, Vitaly Prosyak <vitaly.prosyak@amd.com>,
  Alex Hung <alex.hung@amd.com>, Melissa Wen <mwen@igalia.com>,
  Rodrigo Siqueira <siqueira@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
-Subject: [PATCH v8 0/4] tests/kms_async_flips: Create subtest for overlay
- planes
-Date: Wed,  9 Apr 2025 12:22:02 -0300
-Message-ID: <20250409152206.132022-1-andrealmeid@igalia.com>
+Subject: [PATCH v8 2/4] tests/kms_async_flips: Check for atomic async flip cap
+Date: Wed,  9 Apr 2025 12:22:04 -0300
+Message-ID: <20250409152206.132022-3-andrealmeid@igalia.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250409152206.132022-1-andrealmeid@igalia.com>
+References: <20250409152206.132022-1-andrealmeid@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -62,66 +63,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patchset creates a subtest for overlay planes. This is supported by amdgpu
-and is merged in the kernel:
+If a driver doesn't support doing an async flip through the atomic uAPI,
+the atomic tests fails. Instead of failing, create a function that
+checks for this capability and skip the test if is unsupported.
 
-https://lore.kernel.org/lkml/173948734065.719858.7405160715916126757.b4-ty@linaro.org/
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+---
+ tests/kms_async_flips.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-v8:
- - Make "Async page flip" name consistent in patch 1
- - Clarify documentation about asserting with a bad fd in igt_has_drm_cap()
-
-v7:
- - igt_has_drm_cap() asserts only if it was a bad fd. The rest is up to the
- caller to assert or require.
- - we now have different errors for when the cap is not supported by the driver,
- and when the cap doesn't exist in the kernel
-
-v6:
- - Added missing `test_init_ops()` for "overlay-atomic" test
- - Reworked `test_init_fbs()`: it destroys all buffers when the modifier
- changes, and recreate then if they are need for the next test. It also destroys
- overlay buffers if they are not needed anymore
-
-v5:
- - Added a new patch "lib/ioctl_wrappers: let the caller handle capability check
-   result" by Melissa Wen
- - This patch solved an issue that the test was exiting instead of skipping when
-   the driver did not support ATOMIC_ASYNC_PAGE_FLIP
- - test_finish() is now called test_init_ops() and is called in the beginning of
-   every test. This was done because some asserts prevented the test to reach
-   the final of the run_test() function.
- - Fixed a typo to correctly set the overlay fb to the overlay plane
- - Added code to remove the overlay fb by the end of the test
- - Fixed a bug that test_init_fbs() was skipping the fb creation for overlay
-   planes
- - Fixed require_overlay_flip_support() by changing the fb to be flipped with
-   the async flip
-
-v4:
- - Created a patch to check for DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP, so drivers
- without support for it, skips instead of failing (Melissa)
- - Encapsulated all test paths options into a function to easy maintenance (Melissa)
- - Brought back test description for GitLab compilation
-
-v3:
- - Fixed a bug that was mixing `alternate_sync_async = true` with the overlay path
- - Refactored how the test parameters are being set/unset (patch 1/2)
- - Fixed a bug where a primary buffer was being used with an overlay plane
-
-v2: Add test description for GitLab compilation
-
-André Almeida (4):
-  lib/ioctl_wrappers: let the caller handle capability check result
-  tests/kms_async_flips: Check for atomic async flip cap
-  kms_async_flips: Refactor data options
-  tests/kms_async_flips: Create subtest for overlay planes
-
- lib/ioctl_wrappers.c    |  21 ++++---
- lib/ioctl_wrappers.h    |   2 +-
- tests/kms_async_flips.c | 131 ++++++++++++++++++++++++++++++++++------
- 3 files changed, 128 insertions(+), 26 deletions(-)
-
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index c1637104e..f7a233045 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -209,6 +209,14 @@ static void require_monotonic_timestamp(int fd)
+ 	igt_require_f(ret == 1, "Monotonic timestamps not supported\n");
+ }
+ 
++static void require_atomic_async_cap(data_t *data)
++{
++	int ret = igt_has_drm_cap(data->drm_fd, DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP);
++
++	igt_require_f(ret >= 0, "Atomic async flip cap doesn't exist in this kernel\n");
++	igt_require_f(ret == 1, "Atomic async flip not supported by this driver\n");
++}
++
+ static void test_init(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
+@@ -689,6 +697,9 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ {
+ 	igt_display_t *display = &data->display;
+ 
++	if (data->atomic_path)
++		require_atomic_async_cap(data);
++
+ 	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
+ 		igt_display_reset(display);
+ 
+@@ -714,6 +725,9 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 
+ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+ {
++	if (data->atomic_path)
++		require_atomic_async_cap(data);
++
+ 	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
+ 		test_init(data);
+ 
 -- 
 2.49.0
 
