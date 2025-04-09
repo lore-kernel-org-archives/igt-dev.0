@@ -4,60 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CD96C36002
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 11:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 619FAC369A2
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 11:50:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AFA2210E845;
-	Wed,  9 Apr 2025 11:13:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E3D0C10E85F;
+	Wed,  9 Apr 2025 11:50:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UCIyHXCV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C3tvcC7Z";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB4CC10E067;
- Wed,  9 Apr 2025 11:13:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B78F610E11F
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 11:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744197193; x=1775733193;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=RI1ANVU7iP+KQOb84izxVs+fDJyucAHCJKsb9pm9D9U=;
- b=UCIyHXCVKRLsNyiy7FnDuFVUNJsIN3qjAmOQ9GMooAbKp3qKh1ToaOSV
- t9hr9V8X+Cjof6FCnghhJCtcZxvuAxwnqF4dSsSMm6H6PGbWPM7tIngM3
- +Tssat5tViNGz5gJynpuXoHTmU5iVxscpkfXfqXiOki7oq7DWPOf0nSGu
- ai2owedHrp+mFztqPefxgptEB89vsubxX0Nl+dXwHkCaYR8PShSdxAzBL
- LcADO0DbV2bFxHEpb2zq7h1Tm2JrYQaBW2R1XglXNs1Hpms3OKNY0CZVN
- 619y2tF8OpEcr5zSeyz3TpyF+WmGXdAvN56YTUQeVB3AcypxlrDWL+4Tf A==;
-X-CSE-ConnectionGUID: +f6y0EdFShmNuV/YQYA/RQ==
-X-CSE-MsgGUID: KNdy7iEfRd2zGbmHP7T38g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="57036378"
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="57036378"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2025 04:13:11 -0700
-X-CSE-ConnectionGUID: aoFhCMk/Q8SRQVroMBagvA==
-X-CSE-MsgGUID: fobkKhoFRVqFYH7dnz4vow==
+ t=1744199426; x=1775735426;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=8S2vDf4VJOJBwcC6vx9oAXg8qs/958KVtx/iBGy7Gyo=;
+ b=C3tvcC7Z2okn5SuDXA6zQSGsnQMfWm/K7GVWAIsLG20G1x9+zTzoocP9
+ hNIXTeQQ1Dp0dNlv5cw/AEPbYwjoJCEYMNR2XZELqdWm12uzZcnsR2qD2
+ ZXAEwkNsGXb4+QFgzKNF8GeVGk55bgWH8Wk5EhzIt/hlY83e0EJUGyPbA
+ jiB1W+HxdbVd+0FHIGbuJlBFSDieqzIYF2mnz0kwjySCBU40mp4zlnpjN
+ PTecsWtGDz20mBi5xI5hnY7Ib6AxXt8RI5S9flfMcVCmLfVeofQOIg9gc
+ DvfTkpx13s7O2jfHw+3oSg7FUtS5OUpM6iwL76ywrdyqB3sz09qTq+M6s g==;
+X-CSE-ConnectionGUID: 0PvhJJ8wQDyTnfQd651Jhw==
+X-CSE-MsgGUID: UQFdzqwZRq+KRGgpW0VaKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45561269"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="45561269"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2025 04:50:25 -0700
+X-CSE-ConnectionGUID: P+SrH3QER1KoInR0eNdhtA==
+X-CSE-MsgGUID: kd9BG2j0RM24Smi34rECbg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="133538973"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 04:13:09 -0700
-Date: Wed, 9 Apr 2025 13:13:06 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- Riana Tauro <riana.tauro@intel.com>
-Subject: Re: [PATCH i-g-t 1/2] lib/xe_gt: Move get/set GT freq utils to lib
-Message-ID: <20250409111306.p5zba3pmq2kkllad@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
- intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- Riana Tauro <riana.tauro@intel.com>
-References: <20250407234406.4084642-1-vinay.belgaumkar@intel.com>
- <20250407234406.4084642-2-vinay.belgaumkar@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="128426990"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2025 04:50:24 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 9 Apr 2025 04:50:24 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Wed, 9 Apr 2025 04:50:24 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.173)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 9 Apr 2025 04:50:24 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ROvsju3qXzDjpzMEDwZVFcLt7nrnkZF5LsDcLjVuro+I8WnNR3h3rbL7zJ1HCypAJJPrM/eyvdl0yToegOEjEkhP/IUbhmYJoX+zz6wBmdLXWt3gnb2kDpdxzE1c5oD7+lmrdvrGfmyj6xur/I/Sh1TZGkw3zeqyrFPZqcONKrmoY6kX+XgJ6sY0r/vkcABhxiscbPZth2Jfx25zhwXY0GmXqMQSqKd/K1etpDFVZVymlKFfeJImHJ8jCBMiKD3l3+vMoQ02NJGhq6K1l9wnsZEUrJZixOHYhd1MULoLM38tDLn3K3VR+Ojf7WgHXFtAwHs1jHSwTtx/HfmPrwWyzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pRXEfFNb8nrLA8OB8LXKz58nyr6NRb0DYnByltrwpfk=;
+ b=L4bFF+hQ40/4Gta+l3oYTInLSsbLFkvIiHwp7Xs+683V+qvmNxUp/rSTfwPZNpx94bbleBAjGL4yq8Fa0DvjTbVPFnze/ECrGObGGpK2Pirfa0uPINxW+SlON5zKTqzuRD7V2IWqloerNQvtZGauPIueQ+i+/A6/qoDeDdbPMrx3V4xSLjxL+5YdzFnvQLa0rQQD3APqKQ0K5K+lwDuv1tRM9wcoyo1ku9OvtTA2LkK+P4VYBNBJq1MFLUQG7XNcpqkkiqdn2UlC46T0jOqIAAi6eI6jBT8PJuchmnlB211r+9IN95WfWc/Q7teCkkHG2nh/uRFTF4rq4JeNBZ/leA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DS0PR11MB7264.namprd11.prod.outlook.com (2603:10b6:8:13b::5) by
+ BL1PR11MB6049.namprd11.prod.outlook.com (2603:10b6:208:391::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.35; Wed, 9 Apr
+ 2025 11:50:22 +0000
+Received: from DS0PR11MB7264.namprd11.prod.outlook.com
+ ([fe80::d250:d70b:55aa:5ff7]) by DS0PR11MB7264.namprd11.prod.outlook.com
+ ([fe80::d250:d70b:55aa:5ff7%5]) with mapi id 15.20.8632.017; Wed, 9 Apr 2025
+ 11:50:21 +0000
+From: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>
+To: "Thomas, Sobin" <sobin.thomas@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "Konieczny, Kamil" <kamil.konieczny@intel.com>
+Subject: RE: [PATCH v5 i-g-t 1/1] tests/intel/xe_sysfs_scheduler: Add invalid
+ string test for engine sysfs properties
+Thread-Topic: [PATCH v5 i-g-t 1/1] tests/intel/xe_sysfs_scheduler: Add invalid
+ string test for engine sysfs properties
+Thread-Index: AQHbqPhs/8PFNtSfy0ySGl3mc8QiyrObOMOg
+Date: Wed, 9 Apr 2025 11:50:21 +0000
+Message-ID: <DS0PR11MB7264042E8655F25CD8DCD7D3D9B42@DS0PR11MB7264.namprd11.prod.outlook.com>
+References: <20250409022217.2292395-1-sobin.thomas@intel.com>
+ <20250409022217.2292395-2-sobin.thomas@intel.com>
+In-Reply-To: <20250409022217.2292395-2-sobin.thomas@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS0PR11MB7264:EE_|BL1PR11MB6049:EE_
+x-ms-office365-filtering-correlation-id: 98e57ddb-af2b-4a28-1d85-08dd775cb541
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|376014|1800799024|38070700018|7053199007; 
+x-microsoft-antispam-message-info: =?iso-8859-2?Q?qIGfEbfcWbVud5O6ZlFmUKSMXZSwo7O1wszjI6CLD20U3ZMkC7ISHz2Qzg?=
+ =?iso-8859-2?Q?Q82wZQpTcWNKIY3IvKvW8+H3HMB34deB5npqCj1gOpTO0IrjGV2X0+AtWX?=
+ =?iso-8859-2?Q?Pzct7EXup5c2ZSIbC+GMDYyO0QxBoAVwTlUp9yPGtnef7CeS9y2jf03o+E?=
+ =?iso-8859-2?Q?QTdJ7KdbJPCBUz8ebQsjNNTA6rAH8kstIudooMtqv7KF3VKlcg1YrqfGc0?=
+ =?iso-8859-2?Q?4geraR5DF7o8ZnLinuROCK5LjvrQA1QWfsDOE6hnsEccIMGtcN9ykRQ6wS?=
+ =?iso-8859-2?Q?e9CkiJHCYv4Y4ojTwT02fC9LTDAaf5TFAQYx+8Y+3mA/g2OK+tUujeoeEY?=
+ =?iso-8859-2?Q?JrUjvWB/lZl0Yt4QhF+WZmA0YvR5U0f4wjQs5t51xfZ0LSoehErY1yBzPH?=
+ =?iso-8859-2?Q?9Zc+5LcPysXZZ84LG8GtDCcci0JaHQiU9oyJT12ffk4An3NrK8wVMZOhDN?=
+ =?iso-8859-2?Q?EEF3SLdSelmxeiVKwELfOB+pxkyksL5aQ9n8nzxr4EY6BZMhUb9666SVJ6?=
+ =?iso-8859-2?Q?tbosUFBP+5rm7oNNYu5f3u2Ol4tifHIUDHQWIrEIfc8EkDwqGf80Izljy5?=
+ =?iso-8859-2?Q?gtSHAAffvfoiTBu9waghtzLK5tWvSPzX3dq9L54xrlZma8uDkieeniPNF3?=
+ =?iso-8859-2?Q?1TK89Wy3Au1rT3ohp6eOZCS3WeAaipTWkZS3or3qidSoZnuupNPH6OGIfn?=
+ =?iso-8859-2?Q?1xgZsFKNYa2QA4m0hMdLkUnYEZCODgUORwbxv+9AVDbHFxj0+rYxEaIi2t?=
+ =?iso-8859-2?Q?MTvkzHQ0gd3RWoaA83jKrV17gXdo2NwzHtvSrUx78AQDcRNVOhKG+dFvCE?=
+ =?iso-8859-2?Q?aPWbu99YK2Rago2Iwb9m6SGys3Ef52txLMI5iEYh2hTM9aJGOUPR0fqlO7?=
+ =?iso-8859-2?Q?L59hhS2QT1rDcKfz1SQ2rJtHtPePx+JeYfrUdTKgh3uP4UmSwXdB+vOg3A?=
+ =?iso-8859-2?Q?gdvJTFIJA1cXj0z03f0mB1Lny1Q4IS2+wDGe7+tVgaAfefXNWDjZ88toDS?=
+ =?iso-8859-2?Q?PA5oQFwSRtLEcN7Aetx9mFIKA9kQhMAQrewpYtYhV1zcqCN7q2S9ZWsgj9?=
+ =?iso-8859-2?Q?pBzhO2JQtKMYsMpC+bi2XWOYMxP6izZ3Ljl13VBEQuZQZyWLFKD+DSIz4Q?=
+ =?iso-8859-2?Q?eUM+4s9iW9U3gx8Kduxywq2RqSztTZO8e4IQeXRMXiBl4Fs/5tVsvJQqXW?=
+ =?iso-8859-2?Q?+2zxj1rAmV3Fm3eg6AzDqlVaYxZbVyOY6TupEo99xXdJTCt14Q5fMRrHoH?=
+ =?iso-8859-2?Q?JuXcjOswQ9ZU1mqvZX46uVo+8lVIUJfM4rEJ0MXDBXZ90U3WZduosDqIII?=
+ =?iso-8859-2?Q?pYLV2RrZvlDcfso4BnXOagHy5HrA0VkRuteyXNOFqHCE2o4ApwTwh/rfVl?=
+ =?iso-8859-2?Q?0sjUnCx98NIBR0HYJl+Qp0AXYDPo5x0c/mAY+lQ0bWWQUTswLkb+sqvLMr?=
+ =?iso-8859-2?Q?245mYTfn7nB7mpCTlE0R2cBpw+5q2CF/niloJyaknAzS7OI5H9PdId4v1q?=
+ =?iso-8859-2?Q?GhDoN6bdswiKnRpZditSwa?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7264.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(38070700018)(7053199007); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?87yDpIzf1upYZRVOH2BVV85BAGiomfj0hl46jRPADsUiOC7lbbhBhhMplc?=
+ =?iso-8859-2?Q?KiSkMu3NRpIzwxM8SsTtFEJhd0T0XIHz9Q+0gDUjcv6VDbHg6D/ToorpMP?=
+ =?iso-8859-2?Q?RhMK+b+JLEqEq8QBjlpbH4M090zhkBa2UFV0wNbsnYjexSRa8B5SlDFATv?=
+ =?iso-8859-2?Q?EaEtxhhjVn8DyZn9C2/AplCTFcGQQIfomLkAofwm3mInSKDpCd9nKYyj1h?=
+ =?iso-8859-2?Q?46rya5FzjHYe5OSNz6P0pAf27CXuwm8RvIyob/aipbor2fSPhC9c7hPvZx?=
+ =?iso-8859-2?Q?ICSg0T0r5tBaUc6fnrwqSASvbDTngHLoFOpmB351dOvMgpHkwAUf4D6EYj?=
+ =?iso-8859-2?Q?79nIoknHaXO2rdsti+BUCP3pPPb+zd8iCwe9Nud+buVHRIpIjVRp4AKYJc?=
+ =?iso-8859-2?Q?O7SqxpiPi7PuR9nEV+cTqHIhrasX6c0AQY/QIb8t5SnxCR6Q2aszyjOUUL?=
+ =?iso-8859-2?Q?QPJbRu7GlMbdsZKkIuFqyyQSzQAhhvu5+IVadxJXhY0khHZlDnTAWAoYd0?=
+ =?iso-8859-2?Q?rT7TjdsAxpJHsKxBH8Mw6I2TTS2iwp+jQTe2+m2zJ9kHt+nX7LFYpojoov?=
+ =?iso-8859-2?Q?B37aRRDn6sPC0neqpfvH8/yTzetH2RyAUA5btk9VUs3/99xZOH3Hg15HxU?=
+ =?iso-8859-2?Q?dHHJuM4eusyRTBjRLT6d0s6K39VVxJBtbs3PQSJzEj2pRJ2gyf3tkuadsl?=
+ =?iso-8859-2?Q?x3+BYUGGpWQvQiYPimUik1jy8fcrW4SmrB7VcWVmLr++YJiD2/3mXmyn1s?=
+ =?iso-8859-2?Q?OUZryuUFy6YPCXfkb8tTg9ASqV12wX/eck/zPTIbpAY5SBi/GRfO248nlR?=
+ =?iso-8859-2?Q?oeSZU1iwqMYViNQIJYzSTK+ay+dyXYZ9R6FCCvNXiYnanUegKKc/9H6nFd?=
+ =?iso-8859-2?Q?p1NUyittWbW6Y8gSnU/iwmVwnwvSUfDnuVJWy46E4aBwOtUyavbgk4DNXi?=
+ =?iso-8859-2?Q?n4pwYzFpnFD7S7TG1BHfloEaNJL1D6WUCTMc4F5IR6IpTXQ17VElC036JO?=
+ =?iso-8859-2?Q?I+xitl1eXJhuuHR8dxQF22ZisvTkPRlpYVXhLYEyxKCFJ2d/WGQUhfB7Rt?=
+ =?iso-8859-2?Q?FCnyd5BH1Lczld0bRT4QgHiRyjnttCkck9rWpKTRqPRPqf1/E4u2Al6Ow2?=
+ =?iso-8859-2?Q?HriJW+M6dyvduEEO2Ye0LY8XG3mHLy1SWOzp9quOZOzfY7yHBdds8Xi2JY?=
+ =?iso-8859-2?Q?Q0pxTXGB1XWlzvNJ032vcaQpipJzQ/GR7fJk8VsbMNlGQyvf9B3U6RlXGL?=
+ =?iso-8859-2?Q?voR3U///atS3q9ycIqNvzJRI/p8GX6eMrA9z4bb9kORPc26+k9j44D1kc8?=
+ =?iso-8859-2?Q?lOgqsm0EauLLQU4XrXiiuoOZh9jU1bUfPNkrAv97Oclmcl1hHj2KCjAbUY?=
+ =?iso-8859-2?Q?A0x0eA5bg+/nCyd6E4CYAF0kizeOtbHUKsKzqvog9uF7EilHeJpo9R1W4c?=
+ =?iso-8859-2?Q?FW3n12Qd8zcF0GRoEXLcC2LsOqIEjFHdU1QbdSklafkOtERrNl0yyQzN28?=
+ =?iso-8859-2?Q?llXC49nYIsFKWlrtSoIVtTL0QbNweLzz5Ek3bKo9TtgxIUYYO1Ydpzjaow?=
+ =?iso-8859-2?Q?UyScPzqFVYXpgpUkYWYXAX51E6a4/GnI+Lthr95OBmiVSVdlFUQCBtdPOv?=
+ =?iso-8859-2?Q?e4joWYga4e3ffWsZzEQ2qzArdTtU9sdWFa2ggtUKtr9grkunwceb9TOA?=
+ =?iso-8859-2?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250407234406.4084642-2-vinay.belgaumkar@intel.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7264.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98e57ddb-af2b-4a28-1d85-08dd775cb541
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2025 11:50:21.7946 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: V4zmMhHct9LLE7F0CWLHIyABgfPi1iHAoAM/VCEuia0g1Cotb31lurZa26puF5RBZtGHdEZY9P/XGryBLBmKYIA3qrFza09b1zSfvqc7PeWxXKloYTR/YaUf8QPIY+Zx
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB6049
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,448 +187,183 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vinay,
-On 2025-04-07 at 16:44:05 -0700, Vinay Belgaumkar wrote:
-> Add utils to get/set GT frequency attributes. These ar per GT
+LGTM,
+Reviewed-by: Dominik Karol Pi=B1tkowski <dominik.karol.piatkowski@intel.com=
+>
 
-s/ar/are/
-
-> and exposed via sysfs already.
-> 
-> Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> -----Original Message-----
+> From: Thomas, Sobin <sobin.thomas@intel.com>
+> Sent: Wednesday, April 9, 2025 4:22 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Piatkowski, Dominik Karol <dominik.karol.piatkowski@intel.com>;
+> Konieczny, Kamil <kamil.konieczny@intel.com>
+> Subject: [PATCH v5 i-g-t 1/1] tests/intel/xe_sysfs_scheduler: Add invalid=
+ string
+> test for engine sysfs properties
+>=20
+> This test validates that invalid string inputs are correctly rejected
+> by engine sysfs write. It ensures that the property values remain
+> unchanged when invalid inputs are provided.
+>=20
+> v5: Fixed documentation and fixed error.
+>=20
+> v4: Added subtests to test large (4k) random strings (kamil).
+> Replaced igt macro.
+>=20
+> v3: Fixed the test logic. Fixed the tabs
+>=20
+> v2: Added error check for return values for igt_sysfs_scanf and
+> igt_sysfs_printf. Removed the changes for fault injection in
+> tests/intel/xe_fault_injection.c
+>=20
+> v1: Initial changes for checking error string.
+>=20
+> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
 > ---
->  lib/xe/xe_gt.c           |  59 ++++++++++++++
->  lib/xe/xe_gt.h           |   2 +
->  tests/intel/xe_gt_freq.c | 164 +++++++++++++++------------------------
->  3 files changed, 125 insertions(+), 100 deletions(-)
-> 
-> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-> index 6f1475be0..bd6d1800b 100644
-> --- a/lib/xe/xe_gt.c
-> +++ b/lib/xe/xe_gt.c
-> @@ -4,6 +4,7 @@
->   */
->  
->  #include <fcntl.h>
-> +#include <limits.h>
->  #include <sys/stat.h>
->  
->  #include "igt_core.h"
-> @@ -241,3 +242,61 @@ int xe_gt_count_engines_by_class(int fd, int gt, int class)
->  
->  	return n;
->  }
-> +
-> +/**
-> + * xe_gt_set_freq:
-> + * @fd: pointer to xe drm fd
-> + * @gt_id: GT id
-> + * @freq_name: which GT freq(min, max) to change
-> + * @freq: value of freq to set
+>  tests/intel/xe_sysfs_scheduler.c | 98
+> ++++++++++++++++++++++++++++++++
+>  1 file changed, 98 insertions(+)
+>=20
+> diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_sche=
+duler.c
+> index 4fc764f82..c4386ffce 100644
+> --- a/tests/intel/xe_sysfs_scheduler.c
+> +++ b/tests/intel/xe_sysfs_scheduler.c
+> @@ -15,6 +15,16 @@
+>   *		unrepresentable intervals.
+>   * Test category: negative test
+>   *
+> + * SUBTEST: %s-invalid-string
+> + * Description: Test to check if %s arg[1] schedule parameter checks for
+> + *		invalid string values.
+> + * Test category: negative test
 > + *
-> + * Set GT min/max frequency
-
-Add a note about an assert in case of unsuccesfull open.
-
+> + * SUBTEST: %s-invalid-large-string
+> + * Description: Test to check if %s arg[1] schedule parameter checks for
+> + *		large invalid strings (4k).
+> + * Test category: negative test
 > + *
-> + * Return: success or failure
-> + */
-> +int xe_gt_set_freq(int fd, int gt_id, const char *freq_name, uint32_t freq)
-> +{
-> +	int ret = -EAGAIN;
-> +	char freq_attr[NAME_MAX];
-> +	int gt_fd;
-> +
-> +	snprintf(freq_attr, sizeof(freq_attr), "freq0/%s_freq", freq_name);
-> +	gt_fd = xe_sysfs_gt_open(fd, gt_id);
-> +	igt_assert_lte(0, gt_fd);
-> +
-> +	while (ret == -EAGAIN)
-> +		ret = igt_sysfs_printf(gt_fd, freq_attr, "%u", freq);
-> +
-> +	close(gt_fd);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * xe_gt_get_freq:
-> + * @fd: pointer to xe drm fd
-> + * @gt_id: GT id
-> + * @freq_name: which GT freq(min, max, act, cur) to read
-> + *
-> + * Read the min/max/act/cur/rp0/rpn/rpe GT frequencies
-
-Add a note about an assert in case of unsuccesfull open.
-
-> + *
-> + * Return: GT frequency value
-> + */
-> +uint32_t xe_gt_get_freq(int fd, int gt_id, const char *freq_name)
-> +{
-> +	uint32_t freq;
-> +	int err = -EAGAIN;
-> +	char freq_attr[NAME_MAX];
-> +	int gt_fd;
-> +
-> +	snprintf(freq_attr, sizeof(freq_attr), "freq0/%s_freq", freq_name);
-> +	gt_fd = xe_sysfs_gt_open(fd, gt_id);
-> +	igt_assert_lte(0, gt_fd);
-> +
-> +	while (err == -EAGAIN)
-> +		err = igt_sysfs_scanf(gt_fd, freq_attr, "%u", &freq);
-> +
-> +	igt_debug("gt%d: %s freq %u\n", gt_id, freq_name, freq);
-> +
-> +	close(gt_fd);
-> +	return freq;
-> +}
-> diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
-> index 511b31149..06a59281c 100644
-> --- a/lib/xe/xe_gt.h
-> +++ b/lib/xe/xe_gt.h
-> @@ -23,4 +23,6 @@ int xe_gt_fill_engines_by_class(int fd, int gt, int class,
->  				struct drm_xe_engine_class_instance eci[static XE_MAX_ENGINE_INSTANCE]);
->  int xe_gt_count_engines_by_class(int fd, int gt, int class);
->  
-> +int xe_gt_set_freq(int fd, int gt_id, const char *freq_name, uint32_t freq);
-> +uint32_t xe_gt_get_freq(int fd, int gt_id, const char *freq_name);
->  #endif
-> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-> index 843144ad2..4adb205c9 100644
-> --- a/tests/intel/xe_gt_freq.c
-> +++ b/tests/intel/xe_gt_freq.c
-> @@ -14,6 +14,7 @@
->  
->  #include "igt.h"
->  #include "lib/igt_syncobj.h"
-> +#include "lib/xe/xe_gt.h"
-
-While it is here could you move both includes 'lib/'
-after 'igt_sysfs.h'? So they will be sorted.
-
-Regards,
-Kamil
-
->  #include "igt_sysfs.h"
->  
+>   * SUBTEST: %s-min-max
+>   * Description: Test to check if %s arg[1] schedule parameter checks for
+>   *		min max values.
+> @@ -39,6 +49,46 @@
 >  #include "xe_drm.h"
-> @@ -36,43 +37,6 @@
->   */
->  #define SLPC_FREQ_LATENCY_US 100000
->  
-> -static int set_freq(int fd, int gt_id, const char *freq_name, uint32_t freq)
-> -{
-> -	int ret = -EAGAIN;
-> -	char freq_attr[22];
-> -	int gt_fd;
-> -
-> -	snprintf(freq_attr, sizeof(freq_attr), "freq0/%s_freq", freq_name);
-> -	gt_fd = xe_sysfs_gt_open(fd, gt_id);
-> -	igt_assert_lte(0, gt_fd);
-> -
-> -	while (ret == -EAGAIN)
-> -		ret = igt_sysfs_printf(gt_fd, freq_attr, "%u", freq);
-> -
-> -	close(gt_fd);
-> -	return ret;
-> -}
-> -
-> -static uint32_t get_freq(int fd, int gt_id, const char *freq_name)
-> -{
-> -	uint32_t freq;
-> -	int err = -EAGAIN;
-> -	char freq_attr[22];
-> -	int gt_fd;
-> -
-> -	snprintf(freq_attr, sizeof(freq_attr), "freq0/%s_freq", freq_name);
-> -	gt_fd = xe_sysfs_gt_open(fd, gt_id);
-> -	igt_assert_lte(0, gt_fd);
-> -
-> -	while (err == -EAGAIN)
-> -		err = igt_sysfs_scanf(gt_fd, freq_attr, "%u", &freq);
-> -
-> -	igt_debug("gt%d: %s freq %u\n", gt_id, freq_name, freq);
-> -
-> -	close(gt_fd);
-> -	return freq;
-> -}
-> -
->  static bool within_expected_range(uint32_t freq, uint32_t val)
+>  #include "xe/xe_query.h"
+>=20
+> +#define STR_LENGTH 4096
+> +
+> +/**
+> + * generate_random_string:
+> + * @str: pointer to string buffer that will be having random string gene=
+rated.
+> + * @length: length of string to generate, excluding null termination
+> + *
+> + * Generates random string that will always contain non-numerical
+> characters.
+> + */
+> +static void generate_random_string(char *str, size_t length)
+> +{
+> +	int type =3D 0;
+> +	int digit_count =3D 0;
+> +	int max_digits =3D length / 4;
+> +
+> +	for (size_t i =3D 0; i < length; i++) {
+> +		if (digit_count >=3D max_digits)
+> +			type =3D rand() % 2;
+> +		else
+> +			type =3D rand() % 3;
+> +
+> +		switch (type) {
+> +		case 0:
+> +			str[i] =3D 'A' + (rand() % 26);
+> +			break;
+> +		case 1:
+> +			str[i] =3D 'a' + (rand() % 26);
+> +			break;
+> +		case 2:
+> +			str[i] =3D '0' + (rand() % 10);
+> +			digit_count++;
+> +			break;
+> +		default:
+> +			str[i] =3D '_';
+> +			break;
+> +		}
+> +	}
+> +	str[length] =3D '\0';
+> +}
+> +
+>  static void test_invalid(int xe, int engine, const char **property,
+>  			 uint16_t class, int gt)
 >  {
->  	/*
-> @@ -134,8 +98,8 @@ static void test_throttle_basic_api(int fd, int gt_id)
->  
->  static void test_freq_basic_api(int fd, int gt_id)
->  {
-> -	uint32_t rpn = get_freq(fd, gt_id, "rpn");
-> -	uint32_t rp0 = get_freq(fd, gt_id, "rp0");
-> +	uint32_t rpn = xe_gt_get_freq(fd, gt_id, "rpn");
-> +	uint32_t rp0 = xe_gt_get_freq(fd, gt_id, "rp0");
->  	uint32_t rpmid = (rp0 + rpn) / 2;
->  	uint32_t min_freq, max_freq;
->  
-> @@ -144,29 +108,29 @@ static void test_freq_basic_api(int fd, int gt_id)
->  	 * RPn is the floor
->  	 * RP0 is the ceiling
->  	 */
-> -	igt_assert_lt(set_freq(fd, gt_id, "min", rpn - 1), 0);
-> -	igt_assert_lt(set_freq(fd, gt_id, "min", rp0 + 1), 0);
-> -	igt_assert_lt(set_freq(fd, gt_id, "max", rpn - 1), 0);
-> -	igt_assert_lt(set_freq(fd, gt_id, "max", rp0 + 1), 0);
-> +	igt_assert_lt(xe_gt_set_freq(fd, gt_id, "min", rpn - 1), 0);
-> +	igt_assert_lt(xe_gt_set_freq(fd, gt_id, "min", rp0 + 1), 0);
-> +	igt_assert_lt(xe_gt_set_freq(fd, gt_id, "max", rpn - 1), 0);
-> +	igt_assert_lt(xe_gt_set_freq(fd, gt_id, "max", rp0 + 1), 0);
->  
->  	/* Assert min requests are respected from rp0 to rpn */
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "min", rp0));
-> -	igt_assert_eq_u32(get_freq(fd, gt_id, "min"), rp0);
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpmid));
-> -	min_freq = get_freq(fd, gt_id, "min");
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "min", rp0));
-> +	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "min"), rp0);
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "min", rpmid));
-> +	min_freq = xe_gt_get_freq(fd, gt_id, "min");
->  	/* SLPC can set min higher than rpmid - as it follows RPe */
->  	igt_assert_lte_u32((rpmid - FREQ_UNIT_MHZ), min_freq);
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpn));
-> -	igt_assert_eq_u32(get_freq(fd, gt_id, "min"), rpn);
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "min", rpn));
-> +	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "min"), rpn);
->  
->  	/* Assert max requests are respected from rpn to rp0 */
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpn));
-> -	igt_assert_eq_u32(get_freq(fd, gt_id, "max"), rpn);
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpmid));
-> -	max_freq = get_freq(fd, gt_id, "max");
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "max", rpn));
-> +	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "max"), rpn);
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "max", rpmid));
-> +	max_freq = xe_gt_get_freq(fd, gt_id, "max");
->  	igt_assert(within_expected_range(max_freq, rpmid));
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "max", rp0));
-> -	igt_assert_eq_u32(get_freq(fd, gt_id, "max"), rp0);
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "max", rp0));
-> +	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "max"), rp0);
+> @@ -121,6 +171,52 @@ static void test_min_max(int xe, int engine, const
+> char **property,
+>  	igt_assert_eq(set, default_max);
 >  }
->  
->  /**
-> @@ -179,8 +143,8 @@ static void test_freq_basic_api(int fd, int gt_id)
->  
->  static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+>=20
+> +static void test_invalid_string(int xe, int engine, const char **propert=
+y,
+> +				 uint16_t class, int gt)
+> +{
+> +	unsigned int saved, set;
+> +	static const char invalid_input[] =3D "999abc";
+> +
+> +	for (int i =3D 0; i < 3; i++) {
+> +		igt_assert_eq(igt_sysfs_scanf(engine, property[i], "%u",
+> &saved), 1);
+> +		igt_info("Initial %s: %u\n", property[i], saved);
+> +		/* Assert if the invalid write is returning negative error */
+> +		igt_assert_lt(igt_sysfs_printf(engine, property[i], "%s",
+> +			      invalid_input), 0);
+> +
+> +		igt_assert_eq(igt_sysfs_scanf(engine, property[i], "%u",
+> &set), 1);
+> +		/* Check if the values are unchanged. */
+> +		igt_assert_eq(set, saved);
+> +	}
+> +}
+> +
+> +static void test_invalid_large_string(int xe, int engine, const char **p=
+roperty,
+> +				       uint16_t class, int gt)
+> +{
+> +	unsigned int saved, set;
+> +	char *random_str;
+> +
+> +	random_str =3D (char *)malloc(sizeof(char) * (STR_LENGTH + 1));
+> +	igt_assert_f(random_str, "Memory allocation failed\n");
+> +
+> +	generate_random_string(random_str, STR_LENGTH);
+> +	igt_debug("Generated random string: %.10s...\n", random_str);
+> +
+> +	for (int i =3D 0; i < 3; i++) {
+> +		igt_assert_eq(igt_sysfs_scanf(engine, property[i], "%u",
+> &saved), 1);
+> +		igt_info("Initial %s: %u\n", property[i], saved);
+> +
+> +		/* Assert if the invalid write is returning negative error */
+> +		igt_assert_lt(igt_sysfs_printf(engine, property[i], "%s",
+> +			      random_str), 0);
+> +
+> +		igt_assert_eq(igt_sysfs_scanf(engine, property[i], "%u",
+> &set), 1);
+> +		/* Check if the values are unchanged. */
+> +		igt_assert_eq(set, saved);
+> +	}
+> +	free(random_str);
+> +}
+> +
+>  #define MAX_GTS 8
+>  igt_main
 >  {
-> -	uint32_t rpn = get_freq(fd, gt_id, "rpn");
-> -	uint32_t rp0 = get_freq(fd, gt_id, "rp0");
-> +	uint32_t rpn = xe_gt_get_freq(fd, gt_id, "rpn");
-> +	uint32_t rp0 = xe_gt_get_freq(fd, gt_id, "rp0");
->  	uint32_t rpmid = (rp0 + rpn) / 2;
->  	uint32_t cur_freq, act_freq;
->  
-> @@ -192,50 +156,50 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
->  	 * And let's do this for all the 2 known Render Performance (RP) values
->  	 * RP0 and RPn and something in between.
->  	 */
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpn));
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpn));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "min", rpn));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "max", rpn));
->  	usleep(SLPC_FREQ_LATENCY_US);
-> -	igt_assert_eq_u32(get_freq(fd, gt_id, "cur"), rpn);
-> +	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "cur"), rpn);
->  
->  	if (gt_idle) {
-> -		/* Wait for GT to go in C6 as previous get_freq wakes up GT*/
-> +		/* Wait for GT to go in C6 as previous xe_gt_get_freq wakes up GT*/
->  		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
->  			     "GT %d should be in C6\n", gt_id);
-> -		igt_assert(get_freq(fd, gt_id, "act") == 0);
-> +		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
->  	} else {
-> -		igt_assert_eq_u32(get_freq(fd, gt_id, "act"), rpn);
-> +		igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "act"), rpn);
->  	}
->  
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpmid));
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpmid));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "min", rpmid));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "max", rpmid));
->  	usleep(SLPC_FREQ_LATENCY_US);
-> -	cur_freq = get_freq(fd, gt_id, "cur");
-> +	cur_freq = xe_gt_get_freq(fd, gt_id, "cur");
->  	/* If rpmid is around RPe, we could see SLPC follow it */
->  	igt_assert_lte_u32((rpmid - FREQ_UNIT_MHZ), cur_freq);
->  
->  	if (gt_idle) {
->  		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
->  			     "GT %d should be in C6\n", gt_id);
-> -		igt_assert(get_freq(fd, gt_id, "act") == 0);
-> +		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
->  	} else {
-> -		act_freq = get_freq(fd, gt_id, "act");
-> +		act_freq = xe_gt_get_freq(fd, gt_id, "act");
->  		igt_assert_lte_u32(act_freq, cur_freq + FREQ_UNIT_MHZ);
->  	}
->  
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "min", rp0));
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "max", rp0));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "min", rp0));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "max", rp0));
->  	usleep(SLPC_FREQ_LATENCY_US);
->  	/*
->  	 * It is unlikely that PCODE will *always* respect any request above RPe
->  	 * So for this level let's only check if GuC PC is doing its job
->  	 * and respecting our request, by propagating it to the hardware.
->  	 */
-> -	igt_assert_eq_u32(get_freq(fd, gt_id, "cur"), rp0);
-> +	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "cur"), rp0);
->  
->  	if (gt_idle) {
->  		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
->  			     "GT %d should be in C6\n", gt_id);
-> -		igt_assert(get_freq(fd, gt_id, "act") == 0);
-> +		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
->  	}
->  
->  	igt_debug("Finished testing fixed request\n");
-> @@ -250,25 +214,25 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
->   */
->  static void test_freq_range(int fd, int gt_id, bool gt_idle)
->  {
-> -	uint32_t rpn = get_freq(fd, gt_id, "rpn");
-> -	uint32_t rp0 = get_freq(fd, gt_id, "rp0");
-> +	uint32_t rpn = xe_gt_get_freq(fd, gt_id, "rpn");
-> +	uint32_t rp0 = xe_gt_get_freq(fd, gt_id, "rp0");
->  	uint32_t rpmid = (rp0 + rpn) / 2;
->  	uint32_t cur, act;
->  
->  	igt_debug("Starting testing range request\n");
->  
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpn));
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpmid));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "min", rpn));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "max", rpmid));
->  	usleep(SLPC_FREQ_LATENCY_US);
-> -	cur = get_freq(fd, gt_id, "cur");
-> +	cur = xe_gt_get_freq(fd, gt_id, "cur");
->  	igt_assert(rpn <= cur && cur <= rpmid + FREQ_UNIT_MHZ);
->  
->  	if (gt_idle) {
->  		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
->  			     "GT %d should be in C6\n", gt_id);
-> -		igt_assert(get_freq(fd, gt_id, "act") == 0);
-> +		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
->  	} else {
-> -		act = get_freq(fd, gt_id, "act");
-> +		act = xe_gt_get_freq(fd, gt_id, "act");
->  		igt_assert((rpn <= act) && (act <= cur + FREQ_UNIT_MHZ));
->  	}
->  
-> @@ -282,21 +246,21 @@ static void test_freq_range(int fd, int gt_id, bool gt_idle)
->  
->  static void test_freq_low_max(int fd, int gt_id)
->  {
-> -	uint32_t rpn = get_freq(fd, gt_id, "rpn");
-> -	uint32_t rp0 = get_freq(fd, gt_id, "rp0");
-> +	uint32_t rpn = xe_gt_get_freq(fd, gt_id, "rpn");
-> +	uint32_t rp0 = xe_gt_get_freq(fd, gt_id, "rp0");
->  	uint32_t rpmid = (rp0 + rpn) / 2;
->  
->  	/*
->  	 *  When max request < min request, max is ignored and min works like
->  	 * a fixed one. Let's assert this assumption
->  	 */
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpmid));
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpn));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "min", rpmid));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "max", rpn));
->  	usleep(SLPC_FREQ_LATENCY_US);
->  
->  	/* Cur freq will follow RPe, which could be higher than min freq */
->  	igt_assert_lte_u32((rpmid - FREQ_UNIT_MHZ),
-> -			   get_freq(fd, gt_id, "cur"));
-> +			   xe_gt_get_freq(fd, gt_id, "cur"));
->  }
->  
->  /**
-> @@ -306,18 +270,18 @@ static void test_freq_low_max(int fd, int gt_id)
->  
->  static void test_suspend(int fd, int gt_id)
->  {
-> -	uint32_t rpn = get_freq(fd, gt_id, "rpn");
-> +	uint32_t rpn = xe_gt_get_freq(fd, gt_id, "rpn");
->  
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpn));
-> -	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpn));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "min", rpn));
-> +	igt_assert_lt(0, xe_gt_set_freq(fd, gt_id, "max", rpn));
->  	usleep(SLPC_FREQ_LATENCY_US);
-> -	igt_assert_eq_u32(get_freq(fd, gt_id, "cur"), rpn);
-> +	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "cur"), rpn);
->  
->  	igt_system_suspend_autoresume(SUSPEND_STATE_S3,
->  				      SUSPEND_TEST_NONE);
->  
-> -	igt_assert_eq_u32(get_freq(fd, gt_id, "min"), rpn);
-> -	igt_assert_eq_u32(get_freq(fd, gt_id, "max"), rpn);
-> +	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "min"), rpn);
-> +	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "max"), rpn);
->  }
->  
->  /**
-> @@ -330,24 +294,24 @@ static void test_suspend(int fd, int gt_id)
->  
->  static void test_reset(int fd, int gt_id, int cycles)
->  {
-> -	uint32_t rpn = get_freq(fd, gt_id, "rpn");
-> +	uint32_t rpn = xe_gt_get_freq(fd, gt_id, "rpn");
->  
->  	for (int i = 0; i < cycles; i++) {
-> -		igt_assert_f(set_freq(fd, gt_id, "min", rpn) > 0,
-> +		igt_assert_f(xe_gt_set_freq(fd, gt_id, "min", rpn) > 0,
->  			     "Failed after %d good cycles\n", i);
-> -		igt_assert_f(set_freq(fd, gt_id, "max", rpn) > 0,
-> +		igt_assert_f(xe_gt_set_freq(fd, gt_id, "max", rpn) > 0,
->  			     "Failed after %d good cycles\n", i);
->  		usleep(SLPC_FREQ_LATENCY_US);
-> -		igt_assert_f(get_freq(fd, gt_id, "cur") == rpn,
-> +		igt_assert_f(xe_gt_get_freq(fd, gt_id, "cur") == rpn,
->  			     "Failed after %d good cycles\n", i);
->  
->  		xe_force_gt_reset_sync(fd, gt_id);
->  
->  		usleep(SLPC_FREQ_LATENCY_US);
->  
-> -		igt_assert_f(get_freq(fd, gt_id, "min") == rpn,
-> +		igt_assert_f(xe_gt_get_freq(fd, gt_id, "min") == rpn,
->  			     "Failed after %d good cycles\n", i);
-> -		igt_assert_f(get_freq(fd, gt_id, "max") == rpn,
-> +		igt_assert_f(xe_gt_get_freq(fd, gt_id, "max") == rpn,
->  			     "Failed after %d good cycles\n", i);
->  	}
->  }
-> @@ -448,8 +412,8 @@ igt_main
->  		stash_max = (uint32_t *) malloc(sizeof(uint32_t) * num_gts);
->  
->  		xe_for_each_gt(fd, gt) {
-> -			stash_min[gt] = get_freq(fd, gt, "min");
-> -			stash_max[gt] = get_freq(fd, gt, "max");
-> +			stash_min[gt] = xe_gt_get_freq(fd, gt, "min");
-> +			stash_max[gt] = xe_gt_get_freq(fd, gt, "max");
->  		}
->  	}
->  
-> @@ -525,8 +489,8 @@ igt_main
->  
->  	igt_fixture {
->  		xe_for_each_gt(fd, gt) {
-> -			set_freq(fd, gt, "max", stash_max[gt]);
-> -			set_freq(fd, gt, "min", stash_min[gt]);
-> +			xe_gt_set_freq(fd, gt, "max", stash_max[gt]);
-> +			xe_gt_set_freq(fd, gt, "min", stash_min[gt]);
->  		}
->  		free(stash_min);
->  		free(stash_max);
-> -- 
-> 2.38.1
-> 
+> @@ -129,6 +225,8 @@ igt_main
+>  		void (*fn)(int, int, const char **, uint16_t, int);
+>  	} tests[] =3D {
+>  		{ "invalid", test_invalid },
+> +		{ "invalid-string", test_invalid_string },
+> +		{ "invalid-large-string", test_invalid_large_string },
+>  		{ "min-max", test_min_max },
+>  		{ }
+>  	};
+> --
+> 2.34.1
+
