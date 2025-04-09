@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1180DC36002
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 10:41:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB25C36002
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Apr 2025 10:50:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A9B610E31C;
-	Wed,  9 Apr 2025 10:41:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED6E410E0EE;
+	Wed,  9 Apr 2025 10:50:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gMqKmcpH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IvsH2ddm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC8F510E31C
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 10:41:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 444B710E0EE
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Apr 2025 10:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744195317; x=1775731317;
+ t=1744195858; x=1775731858;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=pugQCWBpEWfHoM7wVXMLZ6e1xtUvQceafI9bqpCepvk=;
- b=gMqKmcpHjerdz1Vx9n7gFlXuWGqt0RMBR6J3jnrxCG+VjB0YGqqvRMOb
- JvnginIKIW/R6FxwdCujUiotyIAgy8GEa7b60dmvISE33Yj7kHrK+Cdjw
- ayc8SUPaBNa+JIV/sPBTnV5tXtSczy7P3P8GlRmw7nYfjy2mydXFt0F5q
- 7D/bqKf3uTfnTcQnq5UPNAe9ceeZgNuKhrz6hG2WvDQmBp34q+WYSH7Mc
- 1efeFjRnTYV2qAXPUZcKHcDCtGLzbjMkoYTXsrFIR8mRnGfXUjxpd+oqa
- E5fQN1EjFV3cy8MG03h6Lu9Wr8R1zyuOBt6GXI6+HyeLNzhOTpyIFQKYD A==;
-X-CSE-ConnectionGUID: CclKZIbkSI69VTZOdYMuPQ==
-X-CSE-MsgGUID: U2YCcCDQSrqskZ9XWXstWw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="56646830"
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="56646830"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2025 03:41:56 -0700
-X-CSE-ConnectionGUID: bV8te0GNQ+SmpxPfIIInyg==
-X-CSE-MsgGUID: gVT1b7ceTbyRRZAyF6BmOA==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=2r8giVb/hJT8HD4qvJv3qRI1Zx0P5/tvuBqP75wpBEM=;
+ b=IvsH2ddm1xZFOcplRNT/bDRveVqUt+LCEqJnDi8ZQRKsRi6/Yhb+u3X7
+ ADzj2u4o3vghcgEtMNtkqgrFvlTTy5wzGnbjhTAod7ghAv0SDxpVDhTD+
+ KQTOOAU/frTxqp8q3+bLWPlIeRjJD+enazL/2KNxdAokhb2NXCp6Em9C9
+ m8Sw81Va2ba7XjGDP8/rvar9o0TDWES5uLfyoYopn7VZ3pVq2aJlxoxy7
+ CEip5y/Lh2PsLzJhr6pBvvboruXGNRay6s7Lx1By+KOk0qG5IGU6jje+d
+ qDN1CPvVgxWSB1FK2PXRFvG1Q9+VwVl3VV+mmYaTbi5FtCQkQ3WNmYsxR w==;
+X-CSE-ConnectionGUID: TyS4ihWqRrSIw2aLPNRunA==
+X-CSE-MsgGUID: unqXnSk0TbuHHRYDoF08oA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45677020"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="45677020"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2025 03:50:57 -0700
+X-CSE-ConnectionGUID: zPiI4ZOFQrK83a9Qqo9DKA==
+X-CSE-MsgGUID: S3X+unnmRxW6yap1uuROqw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="128895450"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; d="scan'208";a="159525482"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 03:41:54 -0700
-Date: Wed, 9 Apr 2025 12:41:39 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Apr 2025 03:50:55 -0700
+Date: Wed, 9 Apr 2025 12:50:52 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: "Manszewski, Christoph" <christoph.manszewski@intel.com>,
- Jan Sokolowski <jan.sokolowski@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/1] tests/intel/xe_exec_sip_eudebug: skip
- eudebug tests on VF
-Message-ID: <20250409104139.4svoq22traw4tenk@kamilkon-DESK.igk.intel.com>
+To: =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>
+Cc: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
+ kernel-dev@igalia.com, Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Hung <alex.hung@amd.com>, Melissa Wen <mwen@igalia.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>
+Subject: Re: [PATCH v7 1/4] lib/ioctl_wrappers: let the caller handle
+ capability check result
+Message-ID: <20250409105052.asvi4qgt6z3ib7ur@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- "Manszewski, Christoph" <christoph.manszewski@intel.com>,
- Jan Sokolowski <jan.sokolowski@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>
-References: <20250403115307.232213-1-jan.sokolowski@intel.com>
- <c1cd94bb-303c-450e-95ad-e34f07af99a6@intel.com>
+ =?utf-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>,
+ igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>,
+ kernel-dev@igalia.com, Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Hung <alex.hung@amd.com>, Melissa Wen <mwen@igalia.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>
+References: <20250408223604.289309-1-andrealmeid@igalia.com>
+ <20250408223604.289309-2-andrealmeid@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <c1cd94bb-303c-450e-95ad-e34f07af99a6@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250408223604.289309-2-andrealmeid@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,77 +79,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
-On 2025-04-09 at 11:08:38 +0200, Manszewski, Christoph wrote:
-> Hi Jan,
+Hi André,
+On 2025-04-08 at 19:36:01 -0300, André Almeida wrote:
+> Rework igt_has_drm_cap to just check if a DRM capability is supported
+> and let the called decide what to do from this check. It prevents the
+> test fails because of an assert done when it's called in
+> igt_subtest_with_dynamics.
 > 
-> On 3.04.2025 13:53, Jan Sokolowski wrote:
-> > Tests using eudebug are not compatible with VF functionality.
-> > A way to check for that scenario is to check eudebug toggle
-> > capability.
-> > 
-> > Skip a test that tries to use eudebug toggle if it doesn't
-> > exist.
+> Co-Developed-by: Melissa Wen <mwen@igalia.com>
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
+> Signed-off-by: André Almeida <andrealmeid@igalia.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/ioctl_wrappers.c    | 17 ++++++++++++-----
+>  lib/ioctl_wrappers.h    |  2 +-
+>  tests/kms_async_flips.c | 13 +++++++++----
+>  3 files changed, 22 insertions(+), 10 deletions(-)
 > 
-> I think that the commit message is not quite appropriate. The title should
-> be something like:
-> 'lib/xe/xe_eudebug: Skip when disabling eudebug with no eudebug support.'
+> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+> index 146973f0d..26748450e 100644
+> --- a/lib/ioctl_wrappers.c
+> +++ b/lib/ioctl_wrappers.c
+> @@ -1288,14 +1288,21 @@ int __kms_addfb(int fd, uint32_t handle,
+>   * This helper verifies if the passed capability is
+>   * supported by the kernel
 
-Small nit - no dot '.' at end of subject, so
-s/support\./support/
+Small nit: imho write here about asserting in case of bad file descriptor.
 
-> 
-> And the description then should somehow capture what we have currently and
-> what this change brings.
-> 
-> > 
-> > v2: Changed the idea from disabling a single test to disabling
-> > all possible tests.
-> 
-> Personally I am not a fan of having versions in a commit message. IMO it
-> should describe the commit itself. Cover letters are a better place to track
-> something like this for the sake of discussion. Ofc this is simple change so
-> just skipping the version history and cover letter should be ok.
-> 
+>   *
+> - * Returns: Whether the capability is supported or not.
+> + * Returns: negative value if error (bad fd, cap does not exist), 0 if cap is
+> + * not supported, 1 if cap is supported.
+>   */
+> -bool igt_has_drm_cap(int fd, uint64_t capability)
+> +int igt_has_drm_cap(int fd, uint64_t capability)
+>  {
+> -	struct drm_get_cap cap = { .capability = capability };
+> +	uint64_t value = 0;
+> +	int ret;
+> +
+> +	ret = drmGetCap(fd, capability, &value);
+> +	if (ret) {
+> +		igt_assert_neq(errno, EBADF);
+> +		return -errno;
+> +	}
+>  
+> -	igt_assert(drmIoctl(fd, DRM_IOCTL_GET_CAP, &cap) == 0);
+> -	return cap.value;
+> +	return value ? 1 : 0;
+>  }
+>  
+>  /**
+> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+> index b7d7c2ad9..7cf05e626 100644
+> --- a/lib/ioctl_wrappers.h
+> +++ b/lib/ioctl_wrappers.h
+> @@ -144,7 +144,7 @@ void prime_sync_end(int dma_buf_fd, bool write);
+>  
+>  bool igt_has_fb_modifiers(int fd);
+>  void igt_require_fb_modifiers(int fd);
+> -bool igt_has_drm_cap(int fd, uint64_t capability);
+> +int igt_has_drm_cap(int fd, uint64_t capability);
+>  bool igt_has_set_caching(uint32_t devid);
+>  
+>  /**
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index da426f753..63598bd95 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -203,8 +203,10 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+>  
+>  static void require_monotonic_timestamp(int fd)
+>  {
+> -	igt_require_f(igt_has_drm_cap(fd, DRM_CAP_TIMESTAMP_MONOTONIC),
+> -		      "Monotonic timestamps not supported\n");
+> +	int ret = igt_has_drm_cap(fd, DRM_CAP_TIMESTAMP_MONOTONIC);
+> +
+> +	igt_require_f(ret >= 0, "Monotonic timestamps cap doesn't exist in this kernel\n");
+> +	igt_require_f(ret == 1, "Monotonic timestamps not supported\n");
+>  }
+>  
+>  static void test_init(data_t *data)
+> @@ -747,13 +749,16 @@ igt_main
+>  	int i;
+>  
+>  	igt_fixture {
+> +		int ret;
+> +
+>  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>  		kmstest_set_vt_graphics_mode();
+>  		igt_display_require(&data.display, data.drm_fd);
+>  		igt_display_require_output(&data.display);
+>  
+> -		igt_require_f(igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP),
+> -			      "Async Flip is not supported\n");
+> +		ret = igt_has_drm_cap(data.drm_fd, DRM_CAP_ASYNC_PAGE_FLIP);
+> +		igt_require_f(ret >= 0, "Async flip cap doesn't exist in this kernel\n");
+> +		igt_require_f(ret == 1, "Async Flip is not supported\n");
 
-Or just place versioning after '---' so git am will ignore it
-and it will not be added at merge.
+Be consistent here, either 'Async Flip' or 'Async flip' in both
+igt_require. You could keep my r-b for these changes, looks fine.
+Btw why not fuller name? 'Async Page Flip' looks better.
 
-Sometimes they bring some info about why/what was changes
-but I agree they are usally optional.
+Also if you will go with 'Async Flip', consider also change in
+above lines for 'Monotonic Timestamps'.
 
 Regards,
 Kamil
 
-> > 
-> > Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-> > Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> > Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> > Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> > Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
-> 
-> Please don't include r-b without explicit consent.
-> 
-> Regards,
-> Christoph
-> 
-> > Cc: Christoph Manszewski <christoph.manszewski@intel.com>
-> > ---
-> >   lib/xe/xe_eudebug.c | 5 +----
-> >   1 file changed, 1 insertion(+), 4 deletions(-)
-> > 
-> > diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-> > index ec946058b..667c31c6e 100644
-> > --- a/lib/xe/xe_eudebug.c
-> > +++ b/lib/xe/xe_eudebug.c
-> > @@ -1794,10 +1794,7 @@ bool xe_eudebug_enable(int fd, bool enable)
-> >   	bool old = false;
-> >   	int ret = __xe_eudebug_enable_getset(fd, &old, &enable);
-> > -	if (ret) {
-> > -		igt_skip_on(enable);
-> > -		old = false;
-> > -	}
-> > +	igt_skip_on(ret);
-> >   	return old;
-> >   }
+>  
+>  		if (is_intel_device(data.drm_fd))
+>  			data.bops = buf_ops_create(data.drm_fd);
+> -- 
+> 2.49.0
 > 
