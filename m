@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2206C3601E
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 09:12:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D1DCC369A4
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 09:30:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5964310E801;
-	Thu, 10 Apr 2025 09:12:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 181EA10E84F;
+	Thu, 10 Apr 2025 09:30:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lgYR4EPr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fnw2hTv5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0CB010E801
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 09:12:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 499FC10E84F
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 09:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744276361; x=1775812361;
+ t=1744277435; x=1775813435;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=6Da78ajX9JKjGh6IOQAGYf2FH4Tz4pOKfu5n6iQDtlc=;
- b=lgYR4EPrxue9JicdGVvNOwuMVHOrDgFoucAQeGLn5nkS3RpPZQd1atZ4
- ryI9/GrrKqvT+CYqi7E1+Rdi2FhtnShFa8n2ezKDBUHsC2ImZHzjt6gYR
- HoYLm8Kx88UjAphqZ0krGgino7GyqTCiQ1p1wTvNM1Yn4iNNfNoEQKmua
- d0SomAKNftOoiQmXnIOOdngl/rB/My87I2ot7V9sxoOYVttyJ8OAuOidH
- 7ewT6dkiurl/GQo+QMe893fVUCOn2do6R137F0XzioCfKq8NrLuREyAGj
- abhKi07jy5K7YwJq41icAjt7ypu6L1S9GWJG7k02/NDM5k7bhi/qZ/yrb A==;
-X-CSE-ConnectionGUID: wb4mWhqvRgm+K1Odyliuog==
-X-CSE-MsgGUID: thFv0NGwQIy/7VOMSlG8Cw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="71163607"
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="71163607"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2025 02:12:40 -0700
-X-CSE-ConnectionGUID: 1jLTuMIFR2+W5CsdrkGJ8g==
-X-CSE-MsgGUID: lKotem3XTCuELx8kMx2RHw==
+ bh=NzmXf8qfYNzkRa7GoVMIDsj3Hw+s+OOKSyDvxdlF61c=;
+ b=fnw2hTv5yon9MhI8sPyLCy8ENUeTN3ytCeQhXRg4ehFGsuiJRyD0/sZT
+ z7sOUMgRrxl8WrNVBdLhzEHfl0DZWJV0rvdG0iA1AJCtQdfgPSOtu9NyS
+ O2pzuyRKTeAv57lLyf4wUBxkcAwpnx1RKzB9WpjKrjTDrqtOz8nbLxqvh
+ zkly+l2ecwdeOVFcqoAlVU7j/XRsRPcS4q2J1+b0j+tJJzMUoSHUACFEN
+ k3fpVu06dOtincGQ28jg9WbAPpn9i46zHMAFgSEaT4eKn4tOCV0/BVCRk
+ nun4f6Ksw3yp8AEoWPnAfLhG8CGAe0EMwxZ9/Aw9EN0RwWNPCqxMcob48 w==;
+X-CSE-ConnectionGUID: nlyvzhoISLWpgdXVIkVQHw==
+X-CSE-MsgGUID: zKjjPzd5RbK422mw7a6jng==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="55964101"
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="55964101"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2025 02:30:34 -0700
+X-CSE-ConnectionGUID: N+NzLjLMRdaynzj0/qbuNQ==
+X-CSE-MsgGUID: Yiv/7E+3QpCCvUlAxBRsFA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="128588752"
-Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
- ([10.245.118.0])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2025 02:12:39 -0700
-Message-ID: <b27b886e-bf65-4225-8a9f-8fc1dd8943b1@linux.intel.com>
-Date: Thu, 10 Apr 2025 11:12:35 +0200
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="129395681"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.80.203])
+ ([10.245.80.203])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2025 02:30:32 -0700
+Message-ID: <99c5f0aa-c2ca-422a-b0fe-5ee591402e41@linux.intel.com>
+Date: Thu, 10 Apr 2025 11:30:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/1] runner/executor: sync outputs after tests end
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+Subject: Re: [PATCH i-g-t] tests/intel/intel_sysfs_debugfs: Remove xe-gt
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>
-References: <20250409125543.49920-1-kamil.konieczny@linux.intel.com>
- <20250409125543.49920-2-kamil.konieczny@linux.intel.com>
+Cc: marcin.bernatowicz@intel.com, matthew.brost@intel.com,
+ pravalika.gurram@intel.com, kamil.konieczny@linux.intel.com
+References: <20250410090315.4201-1-peter.senna@linux.intel.com>
 Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250409125543.49920-2-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250410090315.4201-1-peter.senna@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -74,67 +73,111 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 
-On 4/9/2025 2:55 PM, Kamil Konieczny wrote:
-> We observe that sometimes tests are reported as incomplete after
-> a crash and there are more such incompletes before a one that
-> caused actual crash. It turns out that there were missing ends
-> of tests dmesg logs gathered in a test subdirectory. After cross
-> checks with a global dmesg log saved outside of igt_runner, it
-> seems that all tests before crushed one properly reported its end
-> to kernel kmsg.
+On 4/10/2025 11:03 AM, Peter Senna Tschudin wrote:
+> The intel_sysfs_debugfs test now includes functionality to read all Xe
+> debugfs files, making the older xe-gt test redundant. Additionally,
+> xe-gt causes issues when testing Virtual Functions (VFs) in SR-IOV
+> setups, as some of the debugfs files it expects are not present for VFs.
 > 
->   Try to remediate this and create additional syncs for logs just
-> after end of execution, with additional syncs for directories.
+> Rather than extending the overlapping and problematic xe-gt, this commit
+> removes it entirely.
 > 
-> Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: marcin.bernatowicz@intel.com
+> Cc: matthew.brost@intel.com
+> Cc: pravalika.gurram@intel.com
+> Cc: kamil.konieczny@linux.intel.com
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > ---
->  runner/executor.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
+>   tests/intel/intel_sysfs_debugfs.c | 66 -------------------------------
+>   1 file changed, 66 deletions(-)
 > 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 30e2420af..69227a5f2 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -615,6 +615,16 @@ void close_outputs(int *fds)
->  	}
->  }
->  
-> +void fsync_outputs(int *fds)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < _F_LAST; i++) {
-> +		if (fds[i] >= 0)
-> +			fsync(fds[i]);
-> +	}
-> +}
-> +
->  const char *get_out_filename(int fid)
->  {
->  	if (fid >= 0 && fid < _F_LAST)
-> @@ -1871,14 +1881,19 @@ static int execute_next_entry(struct execute_state *state,
->  out_kmsgfd:
->  	close(kmsgfd);
->  out_pipe:
-> -	close_outputs(outputs);
->  	close(outpipe[0]);
->  	close(outpipe[1]);
->  	close(errpipe[0]);
->  	close(errpipe[1]);
-> +	if (settings->sync)
-> +		fsync_outputs(outputs);
->  	close_outputs(outputs);
->  out_dirfd:
-> +	if (settings->sync)
-> +		fsync(dirfd);
->  	close(dirfd);
-> +	if (settings->sync)
-> +		fsync(resdirfd);
->  
->  	return result;
->  }
+> diff --git a/tests/intel/intel_sysfs_debugfs.c b/tests/intel/intel_sysfs_debugfs.c
+> index 6beb94109..431934aee 100644
+> --- a/tests/intel/intel_sysfs_debugfs.c
+> +++ b/tests/intel/intel_sysfs_debugfs.c
+> @@ -322,63 +322,6 @@ xe_test_base(int fd, struct drm_xe_query_config *config)
+>   	xe_validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
+>   }
+>   
+> -/**
+> - * SUBTEST: xe-gt
+> - * Description: Check all gt debugfs devnodes
+> - * TODO: add support for ``force_reset`` entries
+> - */
+> -static void
+> -xe_test_gt(int fd, int gt_id)
+> -{
+> -	char name[256];
+> -	static const char * const expected_files[] = {
+> -		"uc",
+> -		"steering",
+> -		"topology",
+> -		"sa_info",
+> -		"hw_engines",
+> -		"pat",
+> -		"mocs",
+> -//		"force_reset"
+> -		"ggtt",
+> -		"register-save-restore",
+> -		"workarounds",
+> -		"default_lrc_rcs",
+> -		"default_lrc_ccs",
+> -		"default_lrc_bcs",
+> -		"default_lrc_vcs",
+> -		"default_lrc_vecs",
+> -		"hwconfig"
+> -
+> -	};
+> -	static const char * const expected_files_uc[] = {
+> -		"huc_info",
+> -		"guc_log",
+> -		"guc_info",
+> -//		"guc_ct_selftest"
+> -	};
+> -
+> -	for (int i = 0; i < ARRAY_SIZE(expected_files); i++) {
+> -		sprintf(name, "gt%d/%s", gt_id, expected_files[i]);
+> -		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
+> -		if (igt_debugfs_is_dir(fd, expected_files[i], gt_id))
+> -			continue;
+> -		igt_debugfs_dump(fd, name);
+> -	}
+> -
+> -	for (int i = 0; i < ARRAY_SIZE(expected_files_uc); i++) {
+> -		sprintf(name, "gt%d/uc/%s", gt_id, expected_files_uc[i]);
+> -		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
+> -		igt_debugfs_dump(fd, name);
+> -	}
+> -
+> -	sprintf(name, "/gt%d", gt_id);
+> -	xe_validate_entries(fd, name, expected_files, ARRAY_SIZE(expected_files));
+> -
+> -	sprintf(name, "/gt%d/uc", gt_id);
+> -	xe_validate_entries(fd, name, expected_files_uc, ARRAY_SIZE(expected_files_uc));
+> -}
+> -
+>   /**
+>    * SUBTEST: xe-forcewake
+>    * Description: Check forcewake debugfs devnode
+> @@ -475,15 +418,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   			xe_test_base(fd, xe_config(fd));
+>   		}
+>   
+> -		igt_describe("Check all gt debugfs devnodes");
+> -		igt_subtest("xe-gt") {
+> -			xe_for_each_gt(fd, gt) {
+> -				snprintf(devnode, sizeof(devnode), "gt%d", gt);
+> -				igt_require(igt_debugfs_exists(fd, devnode, O_RDONLY));
+> -				xe_test_gt(fd, gt);
+> -			}
+> -		}
+> -
+
+LGTM,
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+
+>   		igt_describe("Check forcewake debugfs devnode");
+>   		igt_subtest("xe-forcewake") {
+>   			xe_test_forcewake(fd);
 
