@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D77B6C369AA
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5090C369A8
 	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 22:49:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7AC0D10EA81;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 824C710EA83;
 	Thu, 10 Apr 2025 22:49:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IsnQtRUI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A9IvV6Rr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AE4110EA7E
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56C5D10EA81
  for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 22:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1744325338; x=1775861338;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dwybRxgUnI5PIHJ7TbE1DrrkGWjBC4Yt5Mmtf4dWSPs=;
- b=IsnQtRUIAWaCBNqrCqDjO6IkwznnatbUOsNG64jqKho3L3r85ap5hUUd
- sxEuiM7o5Uw8AajhLwd/n7wNWl8IFMBl8lMbKIpZWy5del6IBrbSMitht
- 9IzdBbdHPkb1J4ujhONlq8GzqTG5cADOEqrzNGFpbhutHMmapiLOhsFB4
- r3/o4MHmW+vsgSncoJv9suptHYbOh8IwiXMY03IzvczMDCXKuZQBX9+24
- rMijdeIbyQ0eUZpepkkxzgR9+fVi6cqI3ZMjXfrT52rnaihyROW+VXYiO
- qNTMskINZaO2gLUUYGED+XFMpBIF34/lOlLxfwyITzFUZgiFQEMNZkX6V A==;
-X-CSE-ConnectionGUID: V4EO8dhJSPGUoe1R9OFKQw==
-X-CSE-MsgGUID: AeB8ddzFRXqIvMk6AbEFcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45757020"
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="45757020"
+ bh=/8XDhqoaF5HNF26kqfolNsqGNjp+UCPZUISAQ2VEnPo=;
+ b=A9IvV6RrZPT9sH4ZgjFXMdRwqis5ww9PXlTWxm8wOsgWVMuZTEFacqnF
+ /OJJqMHoP6cm4/ujVBjkQuJLD+kyQxODvDsk4vOKFoqxP0S4jE2FbPV8s
+ NX6OXg2PR4LCfIOjIViKf0X0XGPYGLBS1Fc0bJ38ra0ug6W2YVxSVNqx2
+ seyTylk88YCH8Q1f4rm8Ln4KNHL+ULgOALLWIO4L7TpAyJoJaw7MNac5P
+ ppEkDgvMzQejzZsSpcGzSttxY8yprk41AscDDt9WwBEnAwk393Eis2kAi
+ +f9vqYxs833yn/XXt3lBB7GGCZ36kItKlTYlugvvMkP+MeKGAe+eXCGo8 A==;
+X-CSE-ConnectionGUID: stGzCnQYSsqmgsUed8WrEA==
+X-CSE-MsgGUID: nmmHQY3vQ1CzRcxfwm0I4A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45757018"
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="45757018"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 Apr 2025 15:48:57 -0700
-X-CSE-ConnectionGUID: s7CRlQ2+RmCxoWeXUadCKA==
-X-CSE-MsgGUID: o7GDxhxoTTGw4yViwD9N0g==
+X-CSE-ConnectionGUID: O+gBGnycQ6eAkU6zS+LY9Q==
+X-CSE-MsgGUID: V9gMKU57QOmdHF+w+ojtYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="159998321"
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="159998324"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 Apr 2025 15:48:55 -0700
@@ -45,10 +45,9 @@ From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 06/10] tests/intel/xe_fault_injection: Use
- igt_kmod_bind()
-Date: Thu, 10 Apr 2025 15:48:35 -0700
-Message-ID: <20250410-lib-kmod-v1-6-84b1ad0b8075@intel.com>
+Subject: [PATCH i-g-t 07/10] lib/igt_kmod: Add rebind abstraction
+Date: Thu, 10 Apr 2025 15:48:36 -0700
+Message-ID: <20250410-lib-kmod-v1-7-84b1ad0b8075@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250410-lib-kmod-v1-0-84b1ad0b8075@intel.com>
 References: <20250410-lib-kmod-v1-0-84b1ad0b8075@intel.com>
@@ -71,36 +70,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The following sequence is very odd:
-
-	drm_close_driver(fd);
-	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_BIND);
-
-When the second call is done, fd is invalid. It's not a bug since
-xe_sysfs_driver_do() does nothing with that other than returning.
-However, now that we have igt_kmod_bind(), use it.
-
-While at it, remove some trailing newlines.
+Abstract the "set one file in the drivers dir" and share the
+implementation with unbind/rebind.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_fault_injection.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ lib/igt_kmod.c | 11 +++++++++++
+ lib/igt_kmod.h |  2 ++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index fdd11ffe6..61d5fa872 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -481,8 +481,6 @@ igt_main
- 	igt_fixture {
- 		close(sysfs);
- 		drm_close_driver(fd);
--		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_BIND);
-+		igt_kmod_bind("xe", pci_slot);
- 	}
--
--
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 14b6b957a..6d7f5705c 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -665,6 +665,17 @@ int igt_kmod_bind(const char *mod_name, const char *pci_device)
+ 	return ret;
  }
+ 
++/**
++ * igt_kmod_rebind: Unbind driver from devices and bind it again
++ * @mod_name: name of the module to rebind
++ * @pci_device: device to rebind to
++ */
++int igt_kmod_rebind(const char *mod_name, const char *pci_device)
++{
++	return igt_kmod_unbind(mod_name, pci_device) ||
++		igt_kmod_bind(mod_name, pci_device);
++}
++
+ /**
+  * igt_intel_driver_unload:
+  *
+diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+index e3a4ce671..905070897 100644
+--- a/lib/igt_kmod.h
++++ b/lib/igt_kmod.h
+@@ -39,6 +39,8 @@ int igt_kmod_unload(const char *mod_name);
+ int igt_kmod_unbind(const char *mod_name, const char *pci_device);
+ __attribute__((nonnull)) int igt_kmod_bind(const char *mod_name,
+ 					   const char *pci_device);
++__attribute__((nonnull)) int igt_kmod_rebind(const char *mod_name,
++					     const char *pci_device);
+ 
+ int igt_audio_driver_unload(char **whom);
+ 
 
 -- 
 2.49.0
