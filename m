@@ -4,56 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1E64C369A4
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 09:34:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D1CC3601E
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 10:05:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6656310E872;
-	Thu, 10 Apr 2025 09:34:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 217DC10E8E1;
+	Thu, 10 Apr 2025 10:05:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cAKRoWnJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LDmVK8Pc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81C9110E872
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 09:34:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0148510E8E1
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 10:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744277645; x=1775813645;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=fzdKTvGCTUDqyaeEEouX19Yqz9JWzr86kSRhEBkFsnE=;
- b=cAKRoWnJMkt/v2SV7seETQIc5E7cQwqyLsD8ymx5Dko76jtdFnNzvnvL
- y4PXbAe8Lc+3e6aBzx9I3S9pPPce4KgH+hOxdHKqLxuoF1rC7V09ytgaQ
- 0Y+fdYr1Ula+pm2JEwXDDSbaEH14V8e+zk/dlXRw/3q7NCBqHydMZcMQ9
- YrsgtbjId1tomEMolDap0eX2g9vdQgTvzKUIU5qaPjElDKcnUIxoedTH0
- gRa6FEbXBHVZfftbzmP6y2pHRYjxlsjMcmZPKbwgwweqaD4LiwP3+qnU+
- 2ljucJL6cT0uZ2991+NuxmgfZrjK1taJYyYxt1U9DSK/dzx8wKZzHEqPZ g==;
-X-CSE-ConnectionGUID: dxdCTlBORhqCXmWm/CrA7w==
-X-CSE-MsgGUID: SkJaoP4bQ9WtYA7vrAMGnw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="49626024"
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="49626024"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2025 02:33:11 -0700
-X-CSE-ConnectionGUID: wk5XJdqHSC+nmnWY8K+QCw==
-X-CSE-MsgGUID: X8GTLTpcTyekIUoOH18RHA==
+ t=1744279545; x=1775815545;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/cEeRGAuT5SVyuUFecLyib+1yDWqG2Q2VWp/vzqHe3E=;
+ b=LDmVK8PcwWKKsYRLFGiPOpoMrfMXydpQ35BDaVHRN86YosrapsWUzOKZ
+ Wl/Pw1qLrbTUDC6+9dGCFOEDiLj/CNWmVDL1P5ja4T02fdY0/ewtabqTd
+ OIHXL1n5lAU9IE9om6Id1iwLrAQZ0i/doWSPlDEQkD6hkTXNXomDDH0Nd
+ 3QV0wh+qPliSR44GIFopmtP+xyddjxS+IiZztCLSP+W45jpkqx7AM/9j5
+ 2TMcNfqCPfi3bcqDFVJGzhAdueGfcogNJZUQWKPvoXIofd7Jo+lmsa5zd
+ t6LhO2dNGAj4vS0/65i+Abr8jlWTcoqNysyWOqP4h/7OYPsq2/cnpZwKL w==;
+X-CSE-ConnectionGUID: PxxgoTtrREKk7kMyX8Avbg==
+X-CSE-MsgGUID: CnQWqu7VSfKIPxCvrBXy2Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="55967324"
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="55967324"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2025 03:05:43 -0700
+X-CSE-ConnectionGUID: yDWwc3ZOR3aY/bsOkRVvSQ==
+X-CSE-MsgGUID: /B0tP0KjTpySBjnNQvlT7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="133571304"
-Received: from gsd-build.iind.intel.com ([10.190.229.173])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2025 02:33:10 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="133835623"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.138])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2025 03:05:42 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: dominik.karol.piatkowski@intel.com,
-	kamil.konieczny@intel.com
-Subject: [PATCH i-g-t 1/1] tests/intel/xe_sysfs_scheduler: Add invalid string
- test for engine sysfs properties
-Date: Thu, 10 Apr 2025 09:17:15 +0000
-Message-Id: <20250410091715.2611957-2-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250410091715.2611957-1-sobin.thomas@intel.com>
-References: <20250410091715.2611957-1-sobin.thomas@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 0/1] Runner: sync files and dirs after execution
+Date: Thu, 10 Apr 2025 12:05:36 +0200
+Message-ID: <20250410100537.61489-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,163 +66,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test validates that invalid string inputs are correctly rejected
-by engine sysfs write. It ensures that the property values remain
-unchanged when invalid inputs are provided.
+In runs with crashes or reboots some dmesg files collected by
+igt_runner are truncated. They are saved in folders NNN/ where NNN
+is a number of a test in testlist, started with 0.
 
-v6: Fixed string termination logic in generate_random_string. (kamil)
+If such crash happens then after a reboot one could run igt_result
+to recreate valid result.json file. It turns out that few last tests
+before one that caused actual crash are marked as incompletes, as
+their NNN/dmesg.txt files are cut.
 
-v5: Fixed documentation and fixed error.
+Try to remediate this and make additional file and dir sync to disk
+just after a test was run. This should help us unless there is a
+bug in kernel filesystem code.
 
-v4: Added subtests to test large (4k) random strings (kamil).
-Replaced igt macro.
+For reference these problems could be seen in:
 
-v3: Fixed the test logic. Fixed the tabs
+https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8281/shard-dg2-10/igt@gem_ctx_shared@q-smoketest@ccs0.html
 
-v2: Added error check for return values for igt_sysfs_scanf and
-igt_sysfs_printf. Removed the changes for fault injection in
-tests/intel/xe_fault_injection.c
+https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8271/shard-dg2-435/igt@xe_exec_compute_mode@many-userptr-invalidate-race.html
 
-v1: Initial changes for checking error string.
+v2: added 'static' and applied r-b
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- tests/intel/xe_sysfs_scheduler.c | 99 ++++++++++++++++++++++++++++++++
- 1 file changed, 99 insertions(+)
+Kamil Konieczny (1):
+  runner/executor: sync outputs after tests end
 
-diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_scheduler.c
-index 4fc764f82..faafabd29 100644
---- a/tests/intel/xe_sysfs_scheduler.c
-+++ b/tests/intel/xe_sysfs_scheduler.c
-@@ -15,6 +15,16 @@
-  *		unrepresentable intervals.
-  * Test category: negative test
-  *
-+ * SUBTEST: %s-invalid-string
-+ * Description: Test to check if %s arg[1] schedule parameter checks for
-+ *		invalid string values.
-+ * Test category: negative test
-+ *
-+ * SUBTEST: %s-invalid-large-string
-+ * Description: Test to check if %s arg[1] schedule parameter checks for
-+ *		large invalid strings (4k).
-+ * Test category: negative test
-+ *
-  * SUBTEST: %s-min-max
-  * Description: Test to check if %s arg[1] schedule parameter checks for
-  *		min max values.
-@@ -39,6 +49,47 @@
- #include "xe_drm.h"
- #include "xe/xe_query.h"
- 
-+#define STR_LENGTH 4096
-+
-+/**
-+ * generate_random_string:
-+ * @str: pointer to string buffer that will be having random string generated.
-+ * @length: length of string to generate.
-+ *
-+ * Generates random string that will always contain non-numerical characters.
-+ */
-+static void generate_random_string(char *str, size_t length)
-+{
-+	int type = 0;
-+	int digit_count = 0;
-+	int max_digits = length / 4;
-+	int loop_count = length - 1;
-+
-+	for (size_t i = 0; i < loop_count; i++) {
-+		if (digit_count >= max_digits)
-+			type = rand() % 2;
-+		else
-+			type = rand() % 3;
-+
-+		switch (type) {
-+		case 0:
-+			str[i] = 'A' + (rand() % 26);
-+			break;
-+		case 1:
-+			str[i] = 'a' + (rand() % 26);
-+			break;
-+		case 2:
-+			str[i] = '0' + (rand() % 10);
-+			digit_count++;
-+			break;
-+		default:
-+			str[i] = '_';
-+			break;
-+		}
-+	}
-+	str[length - 1] = '\0';
-+}
-+
- static void test_invalid(int xe, int engine, const char **property,
- 			 uint16_t class, int gt)
- {
-@@ -121,6 +172,52 @@ static void test_min_max(int xe, int engine, const char **property,
- 	igt_assert_eq(set, default_max);
- }
- 
-+static void test_invalid_string(int xe, int engine, const char **property,
-+				 uint16_t class, int gt)
-+{
-+	unsigned int saved, set;
-+	static const char invalid_input[] = "999abc";
-+
-+	for (int i = 0; i < 3; i++) {
-+		igt_assert_eq(igt_sysfs_scanf(engine, property[i], "%u", &saved), 1);
-+		igt_info("Initial %s: %u\n", property[i], saved);
-+		/* Assert if the invalid write is returning negative error */
-+		igt_assert_lt(igt_sysfs_printf(engine, property[i], "%s",
-+			      invalid_input), 0);
-+
-+		igt_assert_eq(igt_sysfs_scanf(engine, property[i], "%u", &set), 1);
-+		/* Check if the values are unchanged. */
-+		igt_assert_eq(set, saved);
-+	}
-+}
-+
-+static void test_invalid_large_string(int xe, int engine, const char **property,
-+				       uint16_t class, int gt)
-+{
-+	unsigned int saved, set;
-+	char *random_str;
-+
-+	random_str = (char *)malloc(sizeof(char) * (STR_LENGTH));
-+	igt_assert_f(random_str, "Memory allocation failed\n");
-+
-+	generate_random_string(random_str, STR_LENGTH);
-+	igt_debug("Generated random string: %.10s...\n", random_str);
-+
-+	for (int i = 0; i < 3; i++) {
-+		igt_assert_eq(igt_sysfs_scanf(engine, property[i], "%u", &saved), 1);
-+		igt_info("Initial %s: %u\n", property[i], saved);
-+
-+		/* Assert if the invalid write is returning negative error */
-+		igt_assert_lt(igt_sysfs_printf(engine, property[i], "%s",
-+			      random_str), 0);
-+
-+		igt_assert_eq(igt_sysfs_scanf(engine, property[i], "%u", &set), 1);
-+		/* Check if the values are unchanged. */
-+		igt_assert_eq(set, saved);
-+	}
-+	free(random_str);
-+}
-+
- #define MAX_GTS 8
- igt_main
- {
-@@ -129,6 +226,8 @@ igt_main
- 		void (*fn)(int, int, const char **, uint16_t, int);
- 	} tests[] = {
- 		{ "invalid", test_invalid },
-+		{ "invalid-string", test_invalid_string },
-+		{ "invalid-large-string", test_invalid_large_string },
- 		{ "min-max", test_min_max },
- 		{ }
- 	};
+ runner/executor.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
 -- 
-2.34.1
-
+2.49.0
