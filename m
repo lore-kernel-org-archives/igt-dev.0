@@ -4,59 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96E7CC3601E
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 18:11:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8497C3601E
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 18:19:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3D0ED10E05A;
-	Thu, 10 Apr 2025 18:11:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 493B910E0E6;
+	Thu, 10 Apr 2025 18:19:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZvCWQQU3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R6QrTrhE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53EAF10E05A
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 18:11:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70EF510E0E6
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 18:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744308681; x=1775844681;
+ t=1744309192; x=1775845192;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ZBsO6jBw5ofmk7dQ1FfiHJxANFLuUaERu7uyJXAlvwk=;
- b=ZvCWQQU3BNjFF9q9rINKSD/d4gj5/7nzccaaHt6rS9WRVTOUNOVTTp5B
- /y/+sd/ZgkoPJmedwM6KWq+RWZe/fBf9KDQmxjHXJ663GJlxnIhU2YOOk
- 7XsIjkYCInoZriXI6rE4HoNcYrr0YQzypm3tGHxKGH6UbH2wjPL5ilrlV
- elPRaJQmIqVHOqW35TvMLJndKWMq7y0e1SAt7ApDZpOS6gDg4xb7fAC1T
- dpS9warIcdCLgGsvCAzzqik+F94CPmYZebP0Z0tjOjCQNcn88mZF05MGA
- +GQrE8f2SetqNytJfU6txLgLtVElbjc4n8NOL8ZQF/5tjYShqoRpU2JzS Q==;
-X-CSE-ConnectionGUID: ZvIoVYgrSju5s3wOcsRDIA==
-X-CSE-MsgGUID: +wFIlzuzScOW+ebVlQYG1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="57219627"
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="57219627"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Apr 2025 11:11:21 -0700
-X-CSE-ConnectionGUID: tgfDD8V8Qxa9SVTyE4uY+g==
-X-CSE-MsgGUID: fo4iWZZNR9Sn0T341hmaYA==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=VsxN1kPIgdZEnmbWPxowkXI5uK6fBHn5sWNj5GLotZE=;
+ b=R6QrTrhERJHNkglgrCUSSg7Z0q6rXNY/xrQmdxwR9oQJyXK3iBbGU+3B
+ 1g5gLCtIOz7JWQ7AMZXa/xsLG4V+a45rY4boQnnFKSf1ugZtMxdIKu5k2
+ FwmDN0ilvw9hLMPztWlNV0UtEFVD6OXLXOqPI6AKZfmFkX6yK9SaWg3I+
+ ZQZKaScQ0+VBnoMS9SzsJoFY0ZsAnIB626vC1La4T4He2sVFEem2BwDp7
+ ExhJxGQVZy/SSiVbH7F3/SEglINmd2l6RWpj3JPZClFGV8rNWiTb5bKQS
+ aAfFEIoSgUMex6Ja2hDASlesctJYNOk2HA3Q4X0Tpvedt1ZKygLZIE6YC A==;
+X-CSE-ConnectionGUID: 1DbpNTZOTnqfpSxJYSR39w==
+X-CSE-MsgGUID: 51tAMteERTWm37tLRPJ1og==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45746024"
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="45746024"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2025 11:19:51 -0700
+X-CSE-ConnectionGUID: rXqRZ4LcTxCqmqLBOFwryg==
+X-CSE-MsgGUID: gaQZLb9ITsKBcB+QTQtx4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="128840158"
+X-IronPort-AV: E=Sophos;i="6.15,202,1739865600"; d="scan'208";a="152157899"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 11:11:20 -0700
-Date: Thu, 10 Apr 2025 20:11:17 +0200
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 11:19:49 -0700
+Date: Thu, 10 Apr 2025 20:19:46 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, marcin.bernatowicz@intel.com,
- matthew.brost@intel.com, pravalika.gurram@intel.com
-Subject: Re: [PATCH i-g-t] tests/intel/intel_sysfs_debugfs: Remove xe-gt
-Message-ID: <20250410181117.6ovckutjog7wleah@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>,
+ "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+Subject: Re: [PATCH i-g-t 2/4] benchmark: Measure allocation time for objects
+Message-ID: <20250410181946.dj6yo7sgtvdpgqmr@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- igt-dev@lists.freedesktop.org, marcin.bernatowicz@intel.com,
- matthew.brost@intel.com, pravalika.gurram@intel.com
-References: <20250410090315.4201-1-peter.senna@linux.intel.com>
+ igt-dev@lists.freedesktop.org,
+ Pravalika Gurram <pravalika.gurram@intel.com>,
+ "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+References: <20250402164051.671184-1-pravalika.gurram@intel.com>
+ <20250402164051.671184-3-pravalika.gurram@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250410090315.4201-1-peter.senna@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250402164051.671184-3-pravalika.gurram@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,127 +74,297 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2025-04-10 at 11:03:15 +0200, Peter Senna Tschudin wrote:
-> The intel_sysfs_debugfs test now includes functionality to read all Xe
-> debugfs files, making the older xe-gt test redundant. Additionally,
-> xe-gt causes issues when testing Virtual Functions (VFs) in SR-IOV
-> setups, as some of the debugfs files it expects are not present for VFs.
+Hi Pravalika,
+On 2025-04-02 at 22:10:49 +0530, Pravalika Gurram wrote:
+> A basic measurement, how fast can we create and populate an object with
+> backing storage
+
+I have few nits, see below.
+
 > 
-> Rather than extending the overlapping and problematic xe-gt, this commit
-> removes it entirely.
+> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+> ---
+>  benchmarks/meson.build |   1 +
+>  benchmarks/xe_create.c | 233 +++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 234 insertions(+)
+>  create mode 100644 benchmarks/xe_create.c
+> 
+> diff --git a/benchmarks/meson.build b/benchmarks/meson.build
+> index 4421ede86..00203c62e 100644
+> --- a/benchmarks/meson.build
+> +++ b/benchmarks/meson.build
+> @@ -22,6 +22,7 @@ benchmark_progs = [
+>  	'prime_lookup',
+>  	'vgem_mmap',
+>          'xe_blt',
+> +        'xe_create',
+>  ]
+>  
+>  benchmarksdir = join_paths(libexecdir, 'benchmarks')
+> diff --git a/benchmarks/xe_create.c b/benchmarks/xe_create.c
+> new file mode 100644
+> index 000000000..cd97d6920
+> --- /dev/null
+> +++ b/benchmarks/xe_create.c
+> @@ -0,0 +1,233 @@
+> +/*
 
-I agree on removing reading part but not on existence checks.
-Imho start with small refactor:
+Use SPDX here.
 
-- remove readings
-- change existing checks so they will print _all_ missing
-  debugfs nodes and only after that test will fail if there
-  were misses
+> + * Copyright © 2025 Intel Corporation
+> + *
 
-Final step should be:
-- adding a flag for those nodes which should not exist on VF,
-  detect that and ignore this on VFs.
+Remove 'Permission...' - there is SPDX for it.
 
-These could be done in one or in two patches.
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + *
+> + * Authors:
+
+'Author:'
+
+> + *    Pravalika Gurram <pravalika.gurram@intel.com>
+> + *
+> + */
+> +
+> +#include <unistd.h>
+
+unistd.h could stay here
+
+> +#include <stdlib.h>
+
+Please sort rest of standard headers, first here should be
+fcntl.h
+
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +#include <fcntl.h>
+> +#include <inttypes.h>
+> +#include <errno.h>
+> +#include <sys/stat.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/time.h>
+> +#include <time.h>
+> +
+> +#include "drm.h"
+> +#include "drmtest.h"
+> +#include "i915/gem_create.h"
+> +#include "igt_aux.h"
+> +#include "igt_stats.h"
+> +#include "intel_reg.h"
+> +#include "ioctl_wrappers.h"
+> +
+
+Remove this blank line, also sort igt headers.
+
+> +#include "igt.h"
+> +#include "igt_core.h"
+> +#include "igt_syncobj.h"
+> +#include "intel_reg.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +
+> +
+> +#define OBJECT_SIZE (1<<23)
+> +
+> +struct data {
+> +	uint32_t batch[16];
+> +	uint64_t pad;
+> +	uint32_t data;
+> +	uint64_t addr;
+> +};
+> +
+> +static double elapsed(const struct timespec *start,
+> +				const struct timespec *end)
+> +{
+> +	return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
+> +}
+> +
+> +static void store_dword_batch(struct data *data, uint64_t addr, int value)
+> +{
+> +	int b;
+> +	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
+> +	uint64_t batch_addr = addr + batch_offset;
+> +	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
+> +	uint64_t sdi_addr = addr + sdi_offset;
+> +
+> +	b = 0;
+> +
+> +	data->batch[b++] = MI_BATCH_BUFFER_END;
+> +	igt_assert(b <= ARRAY_SIZE(data->batch));
+> +
+> +	data->addr = batch_addr;
+> +}
+> +static void test_exec(int fd, int busy)
+> +{
+> +	uint32_t vm;
+> +	size_t bo_size;
+> +	uint32_t bo = 0;
+> +	struct data *data;
+> +	uint32_t exec_queue;
+> +	uint32_t syncobj;
+> +	int value = 0x123456;
+> +	uint64_t addr = 0x100000;
+> +
+> +	struct drm_xe_sync sync = {
+> +		.flags = DRM_XE_SYNC_TYPE_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(&sync),
+> +	};
+> +
+> +	struct drm_xe_engine_class_instance inst = {
+> +		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +	};
+> +
+> +	vm = xe_vm_create(fd, 0, 0);
+> +	bo_size = sizeof(*data);
+> +	bo_size = xe_bb_size(fd, bo_size);
+> +
+> +	bo = xe_bo_create(fd, vm, bo_size,
+> +			vram_if_possible(fd, 0),
+> +			DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	if (busy) {
+> +		syncobj = syncobj_create(fd, 0);
+> +		sync.handle = syncobj;
+> +
+> +		xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, &sync, 1);
+> +		data = xe_bo_map(fd, bo, bo_size);
+> +		store_dword_batch(data, addr, value);
+> +
+> +		igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
+> +		syncobj_reset(fd, &syncobj, 1);
+> +
+> +		exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
+> +		exec.exec_queue_id = exec_queue;
+> +		exec.address = data->addr;
+> +		sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
+> +		xe_exec(fd, &exec);
+> +
+> +		igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
+> +
+> +		syncobj_destroy(fd, syncobj);
+> +
+> +		xe_exec_queue_destroy(fd, exec_queue);
+> +	}
+> +	munmap(data, bo_size);
+> +	gem_close(fd, bo);
+> +
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +int main(int argc, char **argv)
+> +{
+> +	int fd = drm_open_driver(DRIVER_XE);
+> +	int size = 0;
+> +	int busy = 0;
+> +	int reps = 13;
+> +	int ncpus = 1;
+> +	int c, n, s;
+> +
+> +	while ((c = getopt (argc, argv, "bs:r:f")) != -1) {
+> +		switch (c) {
+> +		case 's':
+> +			size = atoi(optarg);
+> +			break;
+> +
+> +		case 'r':
+> +			reps = atoi(optarg);
+> +			if (reps < 1)
+> +				reps = 1;
+> +			break;
+> +
+> +		case 'f':
+> +			ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> +			break;
+> +
+> +		case 'b':
+> +			busy = true;
+> +			break;
+> +
+> +		default:
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (size == 0) {
+> +		for (s = 4096; s <=  OBJECT_SIZE; s <<= 1) {
+> +			igt_stats_t stats;
+> +
+> +			igt_stats_init_with_size(&stats, reps);
+> +			for (n = 0; n < reps; n++) {
+> +				struct timespec start, end;
+> +				uint64_t count = 0;
+> +
+> +				clock_gettime(CLOCK_MONOTONIC, &start);
+> +				do {
+> +					for (c = 0; c < 1000; c++)
+> +						test_exec(fd, busy);
+> +					count += c;
+> +					clock_gettime(CLOCK_MONOTONIC, &end);
+> +				} while (end.tv_sec - start.tv_sec < 2);
+> +
+> +				igt_stats_push_float(&stats, count / elapsed(&start, &end));
+> +			}
+> +			printf("%f\n", igt_stats_get_trimean(&stats));
+> +			igt_stats_fini(&stats);
+> +		}
+> +	} else {
+
+Maybe split this into two functions?
 
 Regards,
 Kamil
 
-> 
-> Cc: marcin.bernatowicz@intel.com
-> Cc: matthew.brost@intel.com
-> Cc: pravalika.gurram@intel.com
-> Cc: kamil.konieczny@linux.intel.com
-> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> ---
->  tests/intel/intel_sysfs_debugfs.c | 66 -------------------------------
->  1 file changed, 66 deletions(-)
-> 
-> diff --git a/tests/intel/intel_sysfs_debugfs.c b/tests/intel/intel_sysfs_debugfs.c
-> index 6beb94109..431934aee 100644
-> --- a/tests/intel/intel_sysfs_debugfs.c
-> +++ b/tests/intel/intel_sysfs_debugfs.c
-> @@ -322,63 +322,6 @@ xe_test_base(int fd, struct drm_xe_query_config *config)
->  	xe_validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
->  }
->  
-> -/**
-> - * SUBTEST: xe-gt
-> - * Description: Check all gt debugfs devnodes
-> - * TODO: add support for ``force_reset`` entries
-> - */
-> -static void
-> -xe_test_gt(int fd, int gt_id)
-> -{
-> -	char name[256];
-> -	static const char * const expected_files[] = {
-> -		"uc",
-> -		"steering",
-> -		"topology",
-> -		"sa_info",
-> -		"hw_engines",
-> -		"pat",
-> -		"mocs",
-> -//		"force_reset"
-> -		"ggtt",
-> -		"register-save-restore",
-> -		"workarounds",
-> -		"default_lrc_rcs",
-> -		"default_lrc_ccs",
-> -		"default_lrc_bcs",
-> -		"default_lrc_vcs",
-> -		"default_lrc_vecs",
-> -		"hwconfig"
-> -
-> -	};
-> -	static const char * const expected_files_uc[] = {
-> -		"huc_info",
-> -		"guc_log",
-> -		"guc_info",
-> -//		"guc_ct_selftest"
-> -	};
-> -
-> -	for (int i = 0; i < ARRAY_SIZE(expected_files); i++) {
-> -		sprintf(name, "gt%d/%s", gt_id, expected_files[i]);
-> -		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> -		if (igt_debugfs_is_dir(fd, expected_files[i], gt_id))
-> -			continue;
-> -		igt_debugfs_dump(fd, name);
-> -	}
-> -
-> -	for (int i = 0; i < ARRAY_SIZE(expected_files_uc); i++) {
-> -		sprintf(name, "gt%d/uc/%s", gt_id, expected_files_uc[i]);
-> -		igt_assert(igt_debugfs_exists(fd, name, O_RDONLY));
-> -		igt_debugfs_dump(fd, name);
-> -	}
-> -
-> -	sprintf(name, "/gt%d", gt_id);
-> -	xe_validate_entries(fd, name, expected_files, ARRAY_SIZE(expected_files));
-> -
-> -	sprintf(name, "/gt%d/uc", gt_id);
-> -	xe_validate_entries(fd, name, expected_files_uc, ARRAY_SIZE(expected_files_uc));
-> -}
-> -
->  /**
->   * SUBTEST: xe-forcewake
->   * Description: Check forcewake debugfs devnode
-> @@ -475,15 +418,6 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  			xe_test_base(fd, xe_config(fd));
->  		}
->  
-> -		igt_describe("Check all gt debugfs devnodes");
-> -		igt_subtest("xe-gt") {
-> -			xe_for_each_gt(fd, gt) {
-> -				snprintf(devnode, sizeof(devnode), "gt%d", gt);
-> -				igt_require(igt_debugfs_exists(fd, devnode, O_RDONLY));
-> -				xe_test_gt(fd, gt);
-> -			}
-> -		}
-> -
->  		igt_describe("Check forcewake debugfs devnode");
->  		igt_subtest("xe-forcewake") {
->  			xe_test_forcewake(fd);
+> +		double *shared;
+> +
+> +		shared = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> +		for (n = 0; n < reps; n++) {
+> +			memset(shared, 0, 4096);
+> +
+> +			igt_fork(child, ncpus) {
+> +				struct timespec start, end;
+> +				uint64_t count = 0;
+> +
+> +				clock_gettime(CLOCK_MONOTONIC, &start);
+> +				do {
+> +					for (c = 0; c < 1000; c++)
+> +						test_exec(fd, busy);
+> +					count += c;
+> +					clock_gettime(CLOCK_MONOTONIC, &end);
+> +				} while (end.tv_sec - start.tv_sec < 2);
+> +
+> +				shared[child] = count / elapsed(&start, &end);
+> +			}
+> +			igt_waitchildren();
+> +
+> +			for (int child = 0; child < ncpus; child++)
+> +				shared[ncpus] += shared[child];
+> +
+> +			printf("%7.3f\n", shared[ncpus]);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
 > -- 
-> 2.43.0
+> 2.34.1
 > 
