@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B8B8C369AB
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CBFCC369A6
 	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 22:49:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E5B6010EA84;
-	Thu, 10 Apr 2025 22:49:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0100B10EA85;
+	Thu, 10 Apr 2025 22:49:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d9nJl+sX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i7RIPbI4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39AA910EA7E
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AEC810EA7F
  for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 22:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1744325338; x=1775861338;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2CxL8VjddbljmOapyfkfbk1CK54KKF8deZrnR+eROjc=;
- b=d9nJl+sXBO9ba5U1R3K7m4e7HONTKZBdT2cQoHBH7vsnpzuf+HKwAr4M
- Z7aO9aWv9VKMgSG1ANisz3CsbRQ2mfKAAGuynIug9aKqlyYL9gxO1IJ6+
- UkE6J3krcUVn9LR3/A8EV/ydegyICnt0UgdZfWsZbIqFeipf8RhV9taF1
- c7U71z+o/l2Z9jOeSBecH5LH7jU8RQec7fnIJfEaxg3eAa0l5d/UEX2va
- PVDtTnQHGCSuXvup25pgcwkf9a+X7bPNwq3jUUNdqqOxLIml1zqT3UXPR
- hNEaIv2+NMi2hxo75WuyUDQvTFbOcegNdbU9CgUXrt2hpWQYOPKZmqzY+ w==;
-X-CSE-ConnectionGUID: TFYqXbX4QGOmhbxT7SYquQ==
-X-CSE-MsgGUID: G/UGrLfvRAiaRffmBpNoxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45757015"
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="45757015"
+ bh=DXrS9HNwSEkyTD1lJOhiuuGLdO4LBg0dlzqlcLQGLjM=;
+ b=i7RIPbI4zoRuk0IxarRxmjOMZ+XA7fwVL9p2yf6L8F92tTjLOS4eyS3K
+ Ej5YKbQ5A53+KDt0WX3a4WHWPzbXY9CeboUdv5og0ejsEQ9MP+Y1ZypJ2
+ 2AlUHuG2dMWjG+KIUvs8iHtxKlRS/uxMQTQlfuHBso6wjDh5Yy1O+dKEi
+ CBItOOPvzi7u+9OXPFkm2HF1bCQyj0z1/Jz/MwOijCH1A58fuH/LbEXNN
+ bgotKvTeZqEuc+S7aj68DYUTRZSDjFze4CT4yMLtObcmVpyun0XL3qLgW
+ uv+1kYaSxjm5pPpi8/5K5mqtFoCvg3hzweT3Vppu+JkQ2UbdvXQCJx3Nv A==;
+X-CSE-ConnectionGUID: woyf4UfgQP6s/E9kggqvEQ==
+X-CSE-MsgGUID: TSerfx5QTsye8SCI/ldUjw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45757017"
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="45757017"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 Apr 2025 15:48:57 -0700
-X-CSE-ConnectionGUID: AUguBfYkQ6yENbsi2/yuZA==
-X-CSE-MsgGUID: UpwnzCaLQyqmYSq7LV7eeQ==
+X-CSE-ConnectionGUID: 0ot9VaErSLCsbxf0I7dKcg==
+X-CSE-MsgGUID: tXJvS4iOR26CIbXzXbX9hw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="159998327"
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="159998330"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 Apr 2025 15:48:55 -0700
@@ -45,10 +45,10 @@ From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 08/10] tests/intel/xe_fault_injection: Drop
- XE_SYSFS_DRIVER_TRY_BIND usage
-Date: Thu, 10 Apr 2025 15:48:37 -0700
-Message-ID: <20250410-lib-kmod-v1-8-84b1ad0b8075@intel.com>
+Subject: [PATCH i-g-t 09/10] tests/intel/xe_wedged: Drop
+ XE_SYSFS_DRIVER_REBIND usage
+Date: Thu, 10 Apr 2025 15:48:38 -0700
+Message-ID: <20250410-lib-kmod-v1-9-84b1ad0b8075@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250410-lib-kmod-v1-0-84b1ad0b8075@intel.com>
 References: <20250410-lib-kmod-v1-0-84b1ad0b8075@intel.com>
@@ -71,27 +71,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use igt_kmod_bind() instead.
+Replace with XE_SYSFS_DRIVER_REBIND with igt_kmod_rebind().
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_fault_injection.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/intel/xe_wedged.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 61d5fa872..24d3df572 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -195,7 +195,9 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
- 	ignore_faults_in_dmesg(function_name);
- 	injection_list_add(function_name);
- 	set_retval(function_name, INJECT_ERRNO);
--	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
+diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+index 22ff75367..1d2c510b7 100644
+--- a/tests/intel/xe_wedged.c
++++ b/tests/intel/xe_wedged.c
+@@ -228,7 +228,11 @@ igt_main
+ 
+ 		force_wedged(fd);
+ 		igt_assert_neq(simple_ioctl(fd), 0);
+-		fd = xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_REBIND);
 +
-+	igt_kmod_bind("xe", pci_slot);
++		drm_close_driver(fd);
++		igt_kmod_rebind("xe", pci_slot);
++		fd = drm_open_driver(DRIVER_XE);
 +
- 	igt_assert_eq(-errno, INJECT_ERRNO);
- 	injection_list_remove(function_name);
+ 		igt_assert_eq(simple_ioctl(fd), 0);
+ 		xe_for_each_engine(fd, hwe)
+ 			simple_exec(fd, hwe);
+@@ -266,7 +270,10 @@ igt_main
+ 		 * Rebind the device and ensure proper operation is restored
+ 		 * for all engines.
+ 		 */
+-		fd = xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_REBIND);
++		drm_close_driver(fd);
++		igt_kmod_rebind("xe", pci_slot);
++		fd = drm_open_driver(DRIVER_XE);
++
+ 		igt_assert_eq(simple_ioctl(fd), 0);
+ 		xe_for_each_engine(fd, hwe)
+ 			simple_exec(fd, hwe);
+@@ -299,8 +306,7 @@ igt_main
+ 		}
+ 
+ 		/* Tests might have failed, force a rebind before exiting */
+-		fd = xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_REBIND);
+-
+ 		drm_close_driver(fd);
++		igt_kmod_rebind("xe", pci_slot);
+ 	}
  }
 
 -- 
