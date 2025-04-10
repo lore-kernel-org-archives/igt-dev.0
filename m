@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2008C3601E
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 22:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005E9C369A6
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 22:47:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A05C10E030;
-	Thu, 10 Apr 2025 22:31:21 +0000 (UTC)
-Received: from 32c37dd7f93d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCDB910E030;
- Thu, 10 Apr 2025 22:31:19 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6689665373676884791=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7CC9510EA7B;
+	Thu, 10 Apr 2025 22:47:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="adQGqBKs";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2633510EA7B
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 22:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1744325272; x=1775861272;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=wQVPeSYCVgAsFZCg3jizdsxOic2wDHsCPvTfB/o3Ci0=;
+ b=adQGqBKs7zZQuo9eLulbGS3AnMrKDAjRS1gITymdd2N1nO5+869QwNPb
+ tT/S7z+CgTvP0nB/Zv3HMI7OxHw/RQgnQyrg0MJ1+Vg5onDlMeuiBcR3c
+ tkXjgrlYQkxOJRiVcCukRCbPVEmdWlkLZjQ4vLD9HJR5eyWtU/EG+jC0A
+ m40dgfCT1A9LditC0EI2iDHbwiDMm7XXhQ1iqfCngcxKblHqbbJ4W8NGP
+ ASyfT1ZkfbkoY9Wy7bXfNEc6kodJsfcirMEgP5q+8HvTuisqmuZ4jT1OU
+ 9mtxNBVxyvXZTmWqQcR4NggHV7nwenSdW21kA4H5YaN0Pms8RfMtyTncu A==;
+X-CSE-ConnectionGUID: fI6TGyFuQmmGtx5gcSmnuQ==
+X-CSE-MsgGUID: C57KTEQLRh2iqe5fmgLccA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="49666955"
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="49666955"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2025 15:47:52 -0700
+X-CSE-ConnectionGUID: M+xb4ETeROOboGgRVD7KUA==
+X-CSE-MsgGUID: kKbYZvYXReGKMFGjurnBSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="152211639"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Apr 2025 15:47:52 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t 00/10] lib/kmod: unbind, bind, rebind
+Date: Thu, 10 Apr 2025 15:47:42 -0700
+Message-ID: <20250410-lib-kmod-v1-0-84b1ad0b8075@intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/gem=5Fexec=5Fca?=
- =?utf-8?q?pture=3A_Deal_with_DG1_recoverable_vs=2E_capture_uapi_changes?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Apr 2025 22:31:19 -0000
-Message-ID: <174432427976.2041.4165911580533362872@32c37dd7f93d>
-X-Patchwork-Hint: ignore
-References: <20250410194643.20558-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20250410194643.20558-1-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20250410-lib-kmod-fd3a52338d4a
+X-Mailer: b4 0.15-dev-9a9c7
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +66,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6689665373676884791==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/intel/gem_exec_capture: Deal with DG1 recoverable vs. capture uapi changes
-URL   : https://patchwork.freedesktop.org/series/147558/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8315_BAT -> XEIGTPW_12959_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8315 -> IGTPW_12959
-  * Linux: xe-2932-c56353870b17912f7d08fee2736fe7a740421b07 -> xe-2933-00a3cb4f4ab069fae5ccd844f89f2962cc0283bb
-
-  IGTPW_12959: 7389f11fe4e9068b04a9ee4d1a2dc0e3ed808e29 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8315: c85ef0df47b498f999b43dad6a5cc509228f953a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2932-c56353870b17912f7d08fee2736fe7a740421b07: c56353870b17912f7d08fee2736fe7a740421b07
-  xe-2933-00a3cb4f4ab069fae5ccd844f89f2962cc0283bb: 00a3cb4f4ab069fae5ccd844f89f2962cc0283bb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12959/index.html
-
---===============6689665373676884791==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/gem_exec_capture: Deal with DG1 recoverable vs. capture uapi changes</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147558/">https://patchwork.freedesktop.org/series/147558/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12959/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12959/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8315_BAT -&gt; XEIGTPW_12959_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8315 -&gt; IGTPW_12959</li>
-<li>Linux: xe-2932-c56353870b17912f7d08fee2736fe7a740421b07 -&gt; xe-2933-00a3cb4f4ab069fae5ccd844f89f2962cc0283bb</li>
-</ul>
-<p>IGTPW_12959: 7389f11fe4e9068b04a9ee4d1a2dc0e3ed808e29 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8315: c85ef0df47b498f999b43dad6a5cc509228f953a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2932-c56353870b17912f7d08fee2736fe7a740421b07: c56353870b17912f7d08fee2736fe7a740421b07<br />
-  xe-2933-00a3cb4f4ab069fae5ccd844f89f2962cc0283bb: 00a3cb4f4ab069fae5ccd844f89f2962cc0283bb</p>
-
-</body>
-</html>
-
---===============6689665373676884791==--
+Improve and simplify igt_kmod_unbind(). Add igt_kmod_bind() and=0D
+igt_kmod_rebind(), replacing the current users of xe_sysfs_driver_do().=0D
+=0D
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>=0D
+---=0D
+Lucas De Marchi (10):=0D
+      lib/igt_kmod: Fix leaking dir=0D
+      lib/igt_kmod: Fix comment about unbound devices=0D
+      lib/igt_kmod: Simplify igt_kmod_unbind()=0D
+      lib/igt_kmod: Use igt_kmod_unbind() to kick snd_hda_intel=0D
+      lib/igt_kmod: Add igt_kmod_bind()=0D
+      tests/intel/xe_fault_injection: Use igt_kmod_bind()=0D
+      lib/igt_kmod: Add rebind abstraction=0D
+      tests/intel/xe_fault_injection: Drop XE_SYSFS_DRIVER_TRY_BIND usage=0D
+      tests/intel/xe_wedged: Drop XE_SYSFS_DRIVER_REBIND usage=0D
+      lib/igt_sysfs: Drop xe_sysfs_driver_do()=0D
+=0D
+ lib/igt_kmod.c                   | 111 +++++++++++++++++------------------=
+----=0D
+ lib/igt_kmod.h                   |   4 ++=0D
+ lib/igt_sysfs.c                  |  50 ------------------=0D
+ lib/igt_sysfs.h                  |   8 ---=0D
+ tests/intel/xe_fault_injection.c |   8 +--=0D
+ tests/intel/xe_wedged.c          |  14 +++--=0D
+ 6 files changed, 65 insertions(+), 130 deletions(-)=0D
+=0D
+base-commit: e5e2b60a847cd4f044360a9495c59f21f0652087=0D
+change-id: 20250410-lib-kmod-fd3a52338d4a=0D
+=0D
+Lucas De Marchi=0D
+=0D
