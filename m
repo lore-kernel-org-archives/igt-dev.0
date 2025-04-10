@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5090C369A8
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 22:49:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B8B8C369AB
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Apr 2025 22:49:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 824C710EA83;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E5B6010EA84;
 	Thu, 10 Apr 2025 22:49:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A9IvV6Rr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d9nJl+sX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 56C5D10EA81
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 39AA910EA7E
  for <igt-dev@lists.freedesktop.org>; Thu, 10 Apr 2025 22:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1744325338; x=1775861338;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/8XDhqoaF5HNF26kqfolNsqGNjp+UCPZUISAQ2VEnPo=;
- b=A9IvV6RrZPT9sH4ZgjFXMdRwqis5ww9PXlTWxm8wOsgWVMuZTEFacqnF
- /OJJqMHoP6cm4/ujVBjkQuJLD+kyQxODvDsk4vOKFoqxP0S4jE2FbPV8s
- NX6OXg2PR4LCfIOjIViKf0X0XGPYGLBS1Fc0bJ38ra0ug6W2YVxSVNqx2
- seyTylk88YCH8Q1f4rm8Ln4KNHL+ULgOALLWIO4L7TpAyJoJaw7MNac5P
- ppEkDgvMzQejzZsSpcGzSttxY8yprk41AscDDt9WwBEnAwk393Eis2kAi
- +f9vqYxs833yn/XXt3lBB7GGCZ36kItKlTYlugvvMkP+MeKGAe+eXCGo8 A==;
-X-CSE-ConnectionGUID: stGzCnQYSsqmgsUed8WrEA==
-X-CSE-MsgGUID: nmmHQY3vQ1CzRcxfwm0I4A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45757018"
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="45757018"
+ bh=2CxL8VjddbljmOapyfkfbk1CK54KKF8deZrnR+eROjc=;
+ b=d9nJl+sXBO9ba5U1R3K7m4e7HONTKZBdT2cQoHBH7vsnpzuf+HKwAr4M
+ Z7aO9aWv9VKMgSG1ANisz3CsbRQ2mfKAAGuynIug9aKqlyYL9gxO1IJ6+
+ UkE6J3krcUVn9LR3/A8EV/ydegyICnt0UgdZfWsZbIqFeipf8RhV9taF1
+ c7U71z+o/l2Z9jOeSBecH5LH7jU8RQec7fnIJfEaxg3eAa0l5d/UEX2va
+ PVDtTnQHGCSuXvup25pgcwkf9a+X7bPNwq3jUUNdqqOxLIml1zqT3UXPR
+ hNEaIv2+NMi2hxo75WuyUDQvTFbOcegNdbU9CgUXrt2hpWQYOPKZmqzY+ w==;
+X-CSE-ConnectionGUID: TFYqXbX4QGOmhbxT7SYquQ==
+X-CSE-MsgGUID: G/UGrLfvRAiaRffmBpNoxg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45757015"
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="45757015"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 Apr 2025 15:48:57 -0700
-X-CSE-ConnectionGUID: O+gBGnycQ6eAkU6zS+LY9Q==
-X-CSE-MsgGUID: V9gMKU57QOmdHF+w+ojtYA==
+X-CSE-ConnectionGUID: AUguBfYkQ6yENbsi2/yuZA==
+X-CSE-MsgGUID: UpwnzCaLQyqmYSq7LV7eeQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="159998324"
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; d="scan'208";a="159998327"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 Apr 2025 15:48:55 -0700
@@ -45,9 +45,10 @@ From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 07/10] lib/igt_kmod: Add rebind abstraction
-Date: Thu, 10 Apr 2025 15:48:36 -0700
-Message-ID: <20250410-lib-kmod-v1-7-84b1ad0b8075@intel.com>
+Subject: [PATCH i-g-t 08/10] tests/intel/xe_fault_injection: Drop
+ XE_SYSFS_DRIVER_TRY_BIND usage
+Date: Thu, 10 Apr 2025 15:48:37 -0700
+Message-ID: <20250410-lib-kmod-v1-8-84b1ad0b8075@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250410-lib-kmod-v1-0-84b1ad0b8075@intel.com>
 References: <20250410-lib-kmod-v1-0-84b1ad0b8075@intel.com>
@@ -70,50 +71,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Abstract the "set one file in the drivers dir" and share the
-implementation with unbind/rebind.
+Use igt_kmod_bind() instead.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- lib/igt_kmod.c | 11 +++++++++++
- lib/igt_kmod.h |  2 ++
- 2 files changed, 13 insertions(+)
+ tests/intel/xe_fault_injection.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 14b6b957a..6d7f5705c 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -665,6 +665,17 @@ int igt_kmod_bind(const char *mod_name, const char *pci_device)
- 	return ret;
- }
- 
-+/**
-+ * igt_kmod_rebind: Unbind driver from devices and bind it again
-+ * @mod_name: name of the module to rebind
-+ * @pci_device: device to rebind to
-+ */
-+int igt_kmod_rebind(const char *mod_name, const char *pci_device)
-+{
-+	return igt_kmod_unbind(mod_name, pci_device) ||
-+		igt_kmod_bind(mod_name, pci_device);
-+}
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 61d5fa872..24d3df572 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -195,7 +195,9 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+ 	ignore_faults_in_dmesg(function_name);
+ 	injection_list_add(function_name);
+ 	set_retval(function_name, INJECT_ERRNO);
+-	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
 +
- /**
-  * igt_intel_driver_unload:
-  *
-diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index e3a4ce671..905070897 100644
---- a/lib/igt_kmod.h
-+++ b/lib/igt_kmod.h
-@@ -39,6 +39,8 @@ int igt_kmod_unload(const char *mod_name);
- int igt_kmod_unbind(const char *mod_name, const char *pci_device);
- __attribute__((nonnull)) int igt_kmod_bind(const char *mod_name,
- 					   const char *pci_device);
-+__attribute__((nonnull)) int igt_kmod_rebind(const char *mod_name,
-+					     const char *pci_device);
- 
- int igt_audio_driver_unload(char **whom);
- 
++	igt_kmod_bind("xe", pci_slot);
++
+ 	igt_assert_eq(-errno, INJECT_ERRNO);
+ 	injection_list_remove(function_name);
+ }
 
 -- 
 2.49.0
