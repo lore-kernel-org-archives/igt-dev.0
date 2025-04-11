@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70C27C369A2
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77CC9C36010
 	for <igt-dev@archiver.kernel.org>; Fri, 11 Apr 2025 08:30:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1E3EA10EB33;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2710210EB35;
 	Fri, 11 Apr 2025 08:30:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="oDWCeaC+";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="MI1DRzwG";
 	dkim-atps=neutral
 Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0AE310EB35
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE49B10EB33
  for <igt-dev@lists.freedesktop.org>; Fri, 11 Apr 2025 08:30:41 +0000 (UTC)
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [IPv6:2001:4b98:dc4:8::225])
- by mslow3.mail.gandi.net (Postfix) with ESMTP id 6238158223B
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Apr 2025 07:54:43 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A72F34435D;
- Fri, 11 Apr 2025 07:54:28 +0000 (UTC)
+ [217.70.183.197])
+ by mslow3.mail.gandi.net (Postfix) with ESMTP id 15DF1581C79
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Apr 2025 07:54:28 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1519E4434D;
+ Fri, 11 Apr 2025 07:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1744358081;
+ t=1744358066;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=9nkro1X7096VcvJGDJNZXFfUlZE9lV2ekyxaA4BOCD8=;
- b=oDWCeaC+WMZV4LLFycR+Yf7v/03So14O6GqTP+S1FfDkvSWEAlaS/JFb/cQnxgNefoc/BH
- yXF6CIsRUV9gTRKG1TgIyWOZuKMEAcOLU5ZwImj2lUuKyb++IFdxX/5zonkSNHYWMEvW2m
- VGgBh4BGih84jAl1l1T5nc5PCV/E4pVjGhSYpA2mBmUEn6bEYVsDQZjENR4AmUhdu4jPxY
- Y+Inf6EnQ0u6OfIa0NDKxwDZw7lxeflXjEnbxQT2FqPZHPbW3U3pmNlNfxLqK3j0fihzIt
- FScKkzUqap+OIFXJWDESeC9D7vo/k2ZAcKWv9HWH3Z8Bbb5uvwFE1bhABINEGw==
-Message-ID: <b1240c51-3a5c-4e5d-b6b7-afd14edbc6fc@bootlin.com>
+ bh=zkL2bLZ5tPPz2sCbk034xNoXVUS86XX5u7Ibx6rZbDk=;
+ b=MI1DRzwGaOrc+hD9oEfX5f5gOWFcYBKbq3CrxGinHmvAx52u6TE6GLFwmUyWIPIpWU5NF8
+ ycqDAeXGhidH+ZN57Y1J1gXE/wm4CFV7YMYnVo8kFOWGBZRxl6HZXwZ48ry9lY4Ffct8D3
+ GBFD3s2Q7MRArhMiHnlkeCSrmlV7fWq8iZjo4b7DhpfvvdafjC/CDyWcqkQrzRUOwes8QJ
+ 7S/dznvjfX3aWi/YovuSPJiHute0dg8z3IDItV5lL45hlTUW0k9a3L6NAM7DF19EGY+7gi
+ OiwZO12hX38zcLn68HcXqno/YL4LD1MiX8NZM1E2RfKl6KyV8OA49MxYTQ+GdA==
+Message-ID: <4edbe1e1-b8d4-4598-bd9e-2a72cf18feaa@bootlin.com>
 Date: Fri, 11 Apr 2025 09:53:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_configfs: Add library for configfs
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_configfs: Add test to validate
+ survivability mode
 To: Riana Tauro <riana.tauro@intel.com>, igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com,
  rodrigo.vivi@intel.com, kamil.konieczny@linux.intel.com,
- katarzyna.piecielska@intel.com, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?=
- <jose.exposito89@gmail.com>
+ katarzyna.piecielska@intel.com
 References: <20250410060727.1857299-1-riana.tauro@intel.com>
- <20250410060727.1857299-2-riana.tauro@intel.com>
+ <20250410060727.1857299-3-riana.tauro@intel.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -101,13 +101,13 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250410060727.1857299-2-riana.tauro@intel.com>
+In-Reply-To: <20250410060727.1857299-3-riana.tauro@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvudduvdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeejgeejgedutdekhfffgfegudeutdetgfeuveegteeftddtfeevueffgfevgfevkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegludelvddrudeikedrtddrvddtngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeekpdhrtghpthhtoheprhhirghnrgdrthgruhhrohesihhnthgvlhdrtghomhdprhgtphhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtoheprghnshhhuhhmrghnrdhguhhpthgrsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhutggrshdruggvm
- hgrrhgthhhisehinhhtvghlrdgtohhmpdhrtghpthhtoheprhhoughrihhgohdrvhhivhhisehinhhtvghlrdgtohhmpdhrtghpthhtohepkhgrmhhilhdrkhhonhhivggtiihnhieslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehkrghtrghriiihnhgrrdhpihgvtghivghlshhkrgesihhnthgvlhdrtghomhdprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvudduvdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeekieevtdefgedtkeehteehtddttdefhffhgeejleejjeeluddvhfdugedvkeehveenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepjedprhgtphhtthhopehrihgrnhgrrdhtrghurhhosehinhhtvghlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopegrnhhshhhumhgrnhdrghhuphhtrgesihhnthgvlhdrtghomhdprhgtphhtthhopehluhgtrghsrdguvghmrghrtghhihesihhnthgvl
+ hdrtghomhdprhgtphhtthhopehrohgurhhighhordhvihhvihesihhnthgvlhdrtghomhdprhgtphhtthhopehkrghmihhlrdhkohhnihgvtgiinhihsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepkhgrthgrrhiihihnrgdrphhivggtihgvlhhskhgrsehinhhtvghlrdgtohhm
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -124,180 +124,182 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Riana,
+
 
 Le 10/04/2025 à 08:07, Riana Tauro a écrit :
-> Add library functions to open configfs and create
-> and remove configfs directories.
-
-Can you take a look at [1], something similar was proposed few weeks 
-ago? The main difference is that [1] checks that /sys/kernel/config is 
-actually a mount point.
-
-+Cc: José Exposito
-
-[1]:https://lore.kernel.org/all/20250218165011.9123-4-jose.exposito89@gmail.com/
-
+> The test validates if survivability mode is enabled on supported
+> platforms when configured using configfs attribute.
+> 
 > Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 > ---
->   lib/igt_configfs.c | 88 ++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_configfs.h | 13 +++++++
->   lib/meson.build    |  1 +
->   3 files changed, 102 insertions(+)
->   create mode 100644 lib/igt_configfs.c
->   create mode 100644 lib/igt_configfs.h
+>   tests/intel/xe_configfs.c | 138 ++++++++++++++++++++++++++++++++++++++
+>   tests/meson.build         |   1 +
+>   2 files changed, 139 insertions(+)
+>   create mode 100644 tests/intel/xe_configfs.c
 > 
-> diff --git a/lib/igt_configfs.c b/lib/igt_configfs.c
+> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
 > new file mode 100644
-> index 000000000..57d59f1c4
+> index 000000000..8954ed87c
 > --- /dev/null
-> +++ b/lib/igt_configfs.c
-> @@ -0,0 +1,88 @@
+> +++ b/tests/intel/xe_configfs.c
+> @@ -0,0 +1,138 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
 > + * Copyright © 2025 Intel Corporation
 > + */
-> +#include <sys/mount.h>
-> +#include <sys/stat.h>
-> +
-> +#include <errno.h>
-> +#include <fcntl.h>
 > +#include <limits.h>
 > +
+> +#include "igt.h"
 > +#include "igt_configfs.h"
-> +#include "igt_core.h"
-> +
-> +static const char *igt_configfs_mount(void)
-> +{
-> +	struct stat st;
-> +
-> +	if (stat("/sys/kernel/debug", &st) == 0)
-> +		return "/sys/kernel/config";
-> +
-> +	if (mount("none", "/sys/kernel/config", "configfs", 0, 0))
-> +		return NULL;
-> +
-> +	return "/sys/kernel/config";
-> +}
+> +#include "igt_device.h"
+> +#include "igt_sysfs.h"
 > +
 > +/**
-> + * igt_configfs_open: open configfs path
-> + * @name: name of the configfs directory
-> + *
-> + * Opens the configfs directory corresponding to the name
-> + *
-> + * Returns:
-> + * The directory fd, or -1 on failure.
+> + * TEST: Check configfs userspace API
+> + * Category: Core
+> + * Mega feature: General Core features
+> + * Sub-category: uapi
+> + * Functionality: configfs
+> + * Description: validate configfs entries
+> + * Test category: functionality test
 > + */
-> +int igt_configfs_open(const char *name)
+> +
+> +static char bus_addr[NAME_MAX];
+> +static uint32_t dev_id;
+> +
+> +static int driver_fd(void)
 > +{
-> +	char path[PATH_MAX];
-> +	const char *configfs_path;
+> +	int fd;
 > +
-> +	configfs_path = igt_configfs_mount();
-> +	igt_assert(configfs_path);
+> +	fd = open("/sys/bus/pci/drivers/xe", O_RDONLY);
+> +	igt_assert_f(fd >= 0, "Can't open path\n");
 > +
-> +	snprintf(path, sizeof(path), "%s/%s", configfs_path, name);
-> +
-> +	return open(path, O_RDONLY);
-> +}
-
-The usage of file descriptors for folders is nice here!
-
-@José, I think this may reduce the complexity of the vkms tests. At 
-least it will avoid having snprintf(%s/%s, vkms_root, vkms_item). What 
-do you think?
-
-> +
-> +/**
-> + * igt_configfs_create_directory: creates configfs group
-> + * @fd: fd of configfs parent directory
-> + * @name: name of the directory to create
-> + *
-> + * creates a directory under configfs parent directory
-> + *
-> + * Returns: 0 on success, -errno otherwise
-
-This seems wrong, as the function returns a file descriptor, did I miss 
-something?
-
-> + */
-> +int igt_configfs_create_directory(int fd, const char *name)
-> +{
-> +	int ret;
-> +	int dirfd;
-> +
-> +	ret = mkdirat(fd, name, 0755);
-> +	if (ret)
-> +		return -errno;
-> +
-> +	dirfd = openat(fd, name, O_DIRECTORY);
-> +	if (dirfd < 0)
-> +		return -errno;
-> +
-> +	return dirfd;
+> +	return fd;
 > +}
 > +
-> +/**
-> + * igt_configfs_remove_directory: removes configfs group
-> + * @fd: fd of configfs parent directory
-> + * @name: name of directory to create
-> + *
-> + * removes directory under configfs parent directory
-> + */
-> +void igt_configfs_remove_directory(int fd, const char *name)
+> +static void driver_bind(void)
 > +{
-> +	int ret = unlinkat(fd, name, AT_REMOVEDIR);
+> +	int fd;
 > +
-> +	if (ret)
-> +		igt_warn("Unable to remove %s directory: %s\n", name, strerror(errno));
+> +	fd = driver_fd();
+> +	igt_sysfs_write(fd, "bind", bus_addr, sizeof(bus_addr));
+> +	close(fd);
+> +}
+> +
+> +static void driver_unbind(void)
+> +{
+> +	int fd;
+> +
+> +	fd = driver_fd();
+> +	igt_sysfs_write(fd, "unbind", bus_addr, sizeof(bus_addr));
+> +	close(fd);
 > +}
 
-I completely understand the point of those helpers, but I don't think 
-they are configfs-specific. The file descriptor is passed by argument, 
-so you could use it for any interface (configfs, debugfs, sysfs...).
+Did you see the functions xe_sysfs_driver_do in igt_sysfs.c? It seems to 
+do the same thing as driver_bind/unbind here.
 
-I don't see any igt_fs.c, do you think it beneficial to create such file?
-
-@José, do you think it make sense to also reuse igt_sysfs helpers for 
-the VKMS tests? (igt_sysfs_get/set_s32/u32/boolean only use a directory 
-fd + path, if you decide to use fd for vkms, it will avoid code duplication)
-
-Thanks a lot Riana for this implementation and new ideas.
-
+Thanks,
 Louis Chauvet
 
-> diff --git a/lib/igt_configfs.h b/lib/igt_configfs.h
-> new file mode 100644
-> index 000000000..d839db49a
-> --- /dev/null
-> +++ b/lib/igt_configfs.h
-> @@ -0,0 +1,13 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2025 Intel Corporation
+> +
+> +static void restore(int sig)
+> +{
+> +	/* Restore after survivability mode */
+> +	driver_unbind();
+> +	driver_bind();
+> +}
+> +
+> +static void set_survivability_mode(int dir_fd, bool value)
+> +{
+> +	driver_unbind();
+> +	igt_sysfs_set_boolean(dir_fd, "survivability_mode", value);
+> +	driver_bind();
+> +}
+> +
+> +static void check_survivability_mode(void)
+> +{
+> +	char path[PATH_MAX], buf[4096];
+> +	int fd, len;
+> +
+> +	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s", bus_addr);
+> +	fd = open(path, O_RDONLY);
+> +	igt_assert_f(fd >= 0, "Cannot open %s\n", path);
+> +
+> +	len = igt_sysfs_read(fd, "survivability_mode", buf, sizeof(buf) - 1);
+> +	if (len > 0) {
+> +		buf[len] = '\0';
+> +		igt_info("Survivability Mode:\n%s", buf);
+> +	}
+> +	close(fd);
+> +
+> +	if (IS_BATTLEMAGE(dev_id))
+> +		igt_assert_f(len > 0, "Survivability mode not set\n");
+> +}
+> +
+> +/**
+> + * SUBTEST: survivability-mode
+> + * Description: Validate survivability mode by setting configfs
 > + */
+> +static void test_survivability_mode(int dir_fd)
+> +{
+> +	/* Enable survivability mode */
+> +	set_survivability_mode(dir_fd, true);
 > +
-> +#ifndef IGT_CONFIGFS_H
-> +#define IGT_CONFIGFS_H
+> +	check_survivability_mode();
+> +}
 > +
-> +int igt_configfs_open(const char *name);
-> +int igt_configfs_create_directory(int fd, const char *name);
-> +void igt_configfs_remove_directory(int fd, const char *name);
+> +static int create_device_configfs(int configfs_fd, int fd)
+> +{
+> +	int dir_fd;
+> +	struct pci_device *pci_dev;
 > +
-> +#endif /* IGT_CONFIGFS_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index d7bb72c57..f087947e7 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -19,6 +19,7 @@ lib_sources = [
->   	'igt_collection.c',
->   	'igt_color_encoding.c',
->   	'igt_facts.c',
-> +	'igt_configfs.c',
->   	'igt_crc.c',
->   	'igt_debugfs.c',
->   	'igt_device.c',
+> +	pci_dev = igt_device_get_pci_device(fd);
+> +	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
+> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +
+> +	dir_fd = igt_configfs_create_directory(configfs_fd, bus_addr);
+> +	igt_assert(dir_fd);
+> +
+> +	return dir_fd;
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd, configfs_fd, dir_fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		dev_id = intel_get_drm_devid(fd);
+> +		configfs_fd = igt_configfs_open("xe");
+> +		igt_require(configfs_fd != -1);
+> +		dir_fd = create_device_configfs(configfs_fd, fd);
+> +	}
+> +
+> +	igt_describe("Validate survivability mode");
+> +	igt_subtest("survivability-mode") {
+> +		igt_install_exit_handler(restore);
+> +		test_survivability_mode(dir_fd);
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_configfs_remove_directory(configfs_fd, bus_addr);
+> +		close(dir_fd);
+> +		close(configfs_fd);
+> +		close(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 2a63d888f..74684ea35 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -279,6 +279,7 @@ intel_xe_progs = [
+>   	'xe_create',
+>   	'xe_compute',
+>   	'xe_compute_preempt',
+> +        'xe_configfs',
+>   	'xe_copy_basic',
+>   	'xe_dma_buf_sync',
+>   	'xe_debugfs',
 
 -- 
 Louis Chauvet, Bootlin
