@@ -4,53 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAC7FC369B2
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 08:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F000C369B5
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 09:22:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7EAE210E4E0;
-	Mon, 14 Apr 2025 08:36:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E42DB10E4FD;
+	Mon, 14 Apr 2025 09:22:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MaKyo6Qp";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="q5UquWGz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B76210E4E0
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 08:36:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744619809; x=1776155809;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=x93m/KX1u+eAPjpNzIUaEOA/08G84in/CV2yRebad4M=;
- b=MaKyo6Qp6KUpLr186U3Cno4XsYHSVhK+c7p04gIHb72AkwGl12C0z9iu
- 30HtWqgGRYEdkKRA8MUPJJ5KcwakofGIbykqhOtX/xTRw4vb4eQrZFAdU
- M8bn+jmJp9PIL3QqDGwcD4/5WOCu3Gd9TTtEoooV5Cc5RRniUzrcDiCfU
- 8nLwHr/IvRneBXeCjf5dEVoZR5QQpyZmDjcXm39aXIMjfsKduzhTLVQIX
- h5HE38SyT2WiI9LAx+K8CZRQgG8d4ACMG3DqaQgPVxgIp2yIx4sfARvD+
- KtZCZKkKRcqkEsRNMBOMBQXkUr30m3KHKpAim/giT/EoSAAJ+/MqMtz2i A==;
-X-CSE-ConnectionGUID: fUx4J2rJTduqfDiNWOYedA==
-X-CSE-MsgGUID: WJPz51e9TESgL5rug3SeTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="46243009"
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; d="scan'208";a="46243009"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 01:36:45 -0700
-X-CSE-ConnectionGUID: nCAWIy53QzWh/8o4HVv3NA==
-X-CSE-MsgGUID: QzIQQ2bTQiKy8wW3Yimdzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; d="scan'208";a="129695325"
-Received: from unknown (HELO nakshtra-System-Product-Name.iind.intel.com)
- ([10.190.238.69])
- by orviesa010.jf.intel.com with ESMTP; 14 Apr 2025 01:36:43 -0700
-From: nakshtra.goyal@intel.com
-To: igt-dev@lists.freedesktop.org,
-	ramadevi.gandi@intel.com
-Cc: dwarakanath.ramadeva@intel.com
-Subject: [PATCH] tests/intel/xe_mmap: Adding igt exercise for RO page
-Date: Mon, 14 Apr 2025 14:06:27 +0530
-Message-Id: <20250414083627.3264121-1-nakshtra.goyal@intel.com>
-X-Mailer: git-send-email 2.34.1
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2069.outbound.protection.outlook.com [40.107.237.69])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5881D10E4FD
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 09:22:19 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aDW+UeOWjpn8O8kMeRhRZt6Auo6tDoKPOWS/e6KXty7jEpv7FY0+NUjr+/ASuHvEdUhyU+QSJYsDQlgfcqxaiHdo5dHcsBbGlcwyadiMWRo2Hkp+IkltBYRX9K14HHdRvdOpR0R/zSeLDmd8i6u0beMnFgMcLrg7UnPL5+NwMB0N+N0VSx4GtYwFPtS01hkHF+wSDUnCmmecpsswgBInl3shwWA4R6O477v1/53mPsTWmV+bSoCpgNADRvfvcgYv1YAMWfvly4nGNSb3hzyHiRGwqiuBa6ElAXipQB+neFfxn7J5IaHbHSqnskE3bx7ZydpLg+ZTrZITdHij3KIEtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G9Kbuou9mE/E2++6Uh8cRFLsU+/MkGmNs5yVFksSN0s=;
+ b=jQ4ct/dNXhoBumgRH3noYCDP+56FHSsjS8civKDe3Kej0FZPfH8UvvB0PHyitijTJS7lJYkC7xu2Pfbk2EkhbOwrXb3aY+SiSu3SrSA5fNZNciPxLEBVDIPVjAF6gL+b90SYjP2qDH7kBMMyom7b6in07XlyduRo3Te4JFq+GlzVEhHlrXu8Kijyhu65Z8+QN4vtMDlGhcxWYYTl+j2bqDjAq9xn9+8URez5Hshy5cw3T1D0hvQwlvOHUqgwAO96XQGOja6uAx9HPHrs7m57dJ/R2RJEYcN5X6ZoB4q0Rr6UHc527ayLXd2DZhfZq4iIaAM2Mdc2BBetZQqBmHpY9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G9Kbuou9mE/E2++6Uh8cRFLsU+/MkGmNs5yVFksSN0s=;
+ b=q5UquWGzINupjZY1db1wPuIJip/nwR3bj78uH0t24n2SG+/wE7VYnb0Bz/IPs6JuJNRzwKdkO4JxjaAHm9/oP3WtekKK7+wVLsHnyaINKM4XfxsaGG/IVHdR33sR7zzkzUr/k1EFy0CKxQPkuTkMG2yHT3Akss55V4WuXXiui0g=
+Received: from BL0PR05CA0026.namprd05.prod.outlook.com (2603:10b6:208:91::36)
+ by DM6PR12MB4123.namprd12.prod.outlook.com (2603:10b6:5:21f::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.33; Mon, 14 Apr
+ 2025 09:22:16 +0000
+Received: from BL02EPF00021F69.namprd02.prod.outlook.com
+ (2603:10b6:208:91:cafe::52) by BL0PR05CA0026.outlook.office365.com
+ (2603:10b6:208:91::36) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.12 via Frontend Transport; Mon,
+ 14 Apr 2025 09:22:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ BL02EPF00021F69.mail.protection.outlook.com (10.167.249.5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8655.12 via Frontend Transport; Mon, 14 Apr 2025 09:22:15 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 14 Apr
+ 2025 04:22:15 -0500
+Received: from tom-BIRMANPLUS.amd.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Mon, 14 Apr 2025 04:22:13 -0500
+From: Tom Chung <chiahsuan.chung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: <alex.hung@amd.com>, <sunpeng.li@amd.com>, <chiahsuan.chung@amd.com>
+Subject: [PATCH i-g-t] tests/amdgpu/amd_vrr_range: Fix test may fail on
+ non-zero card index
+Date: Mon, 14 Apr 2025 17:21:33 +0800
+Message-ID: <20250414092207.7830-1-chiahsuan.chung@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB03.amd.com: chiahsuan.chung@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F69:EE_|DM6PR12MB4123:EE_
+X-MS-Office365-Filtering-Correlation-Id: b239f6d8-6d6b-4fb3-c517-08dd7b35d8dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|82310400026|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?pkBz6N9+kIB9YpCVeAfKzuwU9uX3eMYJHR1Tbu2O20W4UdeErSoN38zqhJQB?=
+ =?us-ascii?Q?MyNExEZS7ug2S6Pt+SNTu1uCGwwsbEcoLG8Z3VUKFYSEdk4olY1CWmS7xa5/?=
+ =?us-ascii?Q?OeNrPBWqzfoFhXbo+7sDr6kYVt19wM+xUiN4yDlqGi1+RcpMAT9nh0cQ0bjZ?=
+ =?us-ascii?Q?k5+y+QBPOIHK/316gzgVJ+0G8YfEk/kSdVto53WMk7SLA0F36QezVcIZGhhP?=
+ =?us-ascii?Q?GHJgMkHCMirNS8ttEkKNlK1Hp0tUOBYHamEd5umYTFMKbU2cSOkmU6chdyqO?=
+ =?us-ascii?Q?lAwXkGLxibHd0wQ474Y0l9U67FPrDxvzQfqi+Zy5rqn+nfAPw33h8YaY4nL7?=
+ =?us-ascii?Q?5E6mlVY11kI/48wn24PKYTQeoynAueFsV2wpIkhzDPPUKMsdf08jehb6rx8M?=
+ =?us-ascii?Q?Bngvb4QtGcNQUKakiRQPhy0HFGcEl6tz63DzFpNs4dwlo9iBhtfz70x6o/Lh?=
+ =?us-ascii?Q?tVR5ViGW09FMbf2U7rLx8yN/IL6l227ZOMGVZ/WRz14ttC3AW1UaoewVfudp?=
+ =?us-ascii?Q?EpQNVBNM3cP7T9610WKa/xw7Oks+lZsrbUf5NcD3/j9JOjmgTk0ZKmMal0ts?=
+ =?us-ascii?Q?seEohiLSt7UbcAQC47H9CWFw/GC2LNqPTPIHAYCIRWE0T6Rm075fYM7zKtax?=
+ =?us-ascii?Q?Pl2Jx3L/OXwqxpAlwKDtYe9hyrpD+4MxQwxM7s3lg6CUTL6hAtnPFrXkBUCF?=
+ =?us-ascii?Q?CUxo4ZCyIRMTrFV63Q7X4PcVtmQ6JKsvwnx8+p78cWKQ2P+EYLuGfrZwsrXR?=
+ =?us-ascii?Q?L0wQALkBZOgdunTnhHSnap2Uv+8SfbBzzQ3su2D45+xXDEpWEO0ZKnwok5bQ?=
+ =?us-ascii?Q?2oOazMTjk0cGFOT+WQlzD9tTwS1F0zsl57HzZriEddo8qLzCaEQJ5TyL3NJD?=
+ =?us-ascii?Q?ODrUkChPf5R2uKpEeoB5MbAIP+zBUpNIkCXUNBjbQStyc7sExSorNCdICfqU?=
+ =?us-ascii?Q?8hOafgx+WxPmwEFd9V6VHX5Mfm4h0IwIQiy/ojOdwg/1Rr6ZaDu9PhEJc5ha?=
+ =?us-ascii?Q?odz4Y2EFWP7uRu3MgQttDWbsTNvjON4yDw59QaIWYprJ23QUXmTfJZthPiRl?=
+ =?us-ascii?Q?jZzBkusG2r0sj2Iyc+oVd/ZZaHgldkkJ0vSXz0EyhpnarI26ePvPZP5Rszyt?=
+ =?us-ascii?Q?XeKfES+31s4PMk1SldA0vDRC1dyIqJgwO4OS73bntN3y6qCUiyj61UMUf+s9?=
+ =?us-ascii?Q?GVJ7UBUF2BDQ2VEKAucC7kZZyvAGcPRuFYESju8sqvW7xy0scdOkcs7VNCfk?=
+ =?us-ascii?Q?+zinzNA/JlbIDFwwWq2TsaNsRKi9DIMBc7QaQgMO59y8isvx6dpFwAzWTI+5?=
+ =?us-ascii?Q?pUfxBXxclwQV6QyJRbOykPDG9Wpcuq5AQdZZiiTpBKotQsyd6sHxaPm9nWSz?=
+ =?us-ascii?Q?DMpXE1A3lvv4TgfOlE9hd3UoXl9+R3dArdIudowKofU20ytCZc92czsDEhbb?=
+ =?us-ascii?Q?7brFFnBSzRlmOHstiOu6TajFvMzyPSjf/muOVW28AAJSZAehrgpin28kQ1Gw?=
+ =?us-ascii?Q?vCh5FXHCK/PC8qkVtodtrHzjwVcp7GpNzKYf?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 09:22:15.7905 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b239f6d8-6d6b-4fb3-c517-08dd7b35d8dd
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF00021F69.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4123
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,62 +134,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nakshtra Goyal <nakshtra.goyal@intel.com>
+[Why]
+Current test use hard code for card index.
+If the card index is not 0, the test will be failed.
 
-Map a memory then make it read-only and verify kernel out for read-only
-memory
+[How]
+Get the card index dynamically during the test.
 
-Signed-off-by: Nakshtra Goyal <nakshtra.goyal@intel.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 ---
- tests/intel/xe_mmap.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ tests/amdgpu/amd_vrr_range.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-index 5fd641075..649a11544 100644
---- a/tests/intel/xe_mmap.c
-+++ b/tests/intel/xe_mmap.c
-@@ -338,6 +338,24 @@ static void test_small_bar(int fd)
- 	gem_close(fd, bo);
- }
+diff --git a/tests/amdgpu/amd_vrr_range.c b/tests/amdgpu/amd_vrr_range.c
+index 9d2462e5e..38ef1d27f 100644
+--- a/tests/amdgpu/amd_vrr_range.c
++++ b/tests/amdgpu/amd_vrr_range.c
+@@ -22,6 +22,7 @@
  
-+static int
-+__xe_query(int fd, struct drm_xe_device_query *q)
-+{
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, q))
-+		return -errno;
-+	return 0;
-+}
-+
-+static int
-+__xe_query_items(int fd, uint32_t *items, uint32_t n_items)
-+{
-+	struct drm_xe_device_query q = {
-+		.size = n_items,
-+		.data = to_user_pointer(items),
-+	};
-+	return __xe_query(fd, &q);
-+}
-+
- static void assert_caching(int fd, uint64_t placement, uint32_t flags,
- 			   uint16_t cpu_caching, bool fail)
- {
-@@ -357,7 +375,16 @@ static void assert_caching(int fd, uint64_t placement, uint32_t flags,
- 	map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fd, mmo);
- 	igt_assert(map != MAP_FAILED);
- 	map[0] = 0xdeadbeaf;
-+	munmap(map, size);
- 	gem_close(fd, handle);
-+
-+	/* Adding a Read-Only page check exercise */
-+	map = mmap(0, size, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-+	igt_assert(map != MAP_FAILED);
-+	igt_assert_eq(0, mprotect(map, size, PROT_READ));
-+	igt_assert_lt(__xe_query_items(fd, map, 1), 0);
-+	munmap(map, size);
-+
- }
+ #include "igt.h"
+ #include "igt_sysfs.h"
++#include "igt_device.h"
+ #include "igt_amd.h"
+ #include <fcntl.h>
  
- /**
+@@ -30,7 +31,7 @@ IGT_TEST_DESCRIPTION("Test EDID parsing and debugfs reporting on Freesync displa
+ /* Maximumm pipes on any AMD ASIC. */
+ #define MAX_PIPES 6
+ #define EDID_SIZE 256
+-#define EDID_PATH "/sys/class/drm/card0-%s/edid"
++#define EDID_PATH "/sys/class/drm/card%d-%s/edid"
+ 
+ /* Common test data. */
+ struct vrr_range {
+@@ -295,7 +296,7 @@ static bool find_vrr_range_from_edid(data_t *data, igt_output_t *output)
+ 
+ 	/* Get EDID */
+ 	igt_assert(snprintf(edid_path, PATH_MAX, EDID_PATH,
+-			   output->name) < PATH_MAX);
++			   igt_device_get_card_index(data->fd), output->name) < PATH_MAX);
+ 
+ 	fd = open(edid_path, O_RDONLY);
+ 	if (fd == -1)
 -- 
-2.34.1
+2.43.0
 
