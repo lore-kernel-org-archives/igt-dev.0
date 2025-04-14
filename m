@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14541C369B2
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 10:18:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBE19C369B2
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 10:33:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C024910E53D;
-	Mon, 14 Apr 2025 10:18:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D94A10E0A7;
+	Mon, 14 Apr 2025 10:33:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dfLWJOZ7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jnudj+nA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53E6410E53D
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 10:18:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEB0010E0A7
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 10:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744625902; x=1776161902;
+ t=1744626808; x=1776162808;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=N8qPRp2JyJWFRlBn5sELKhKd6FI4ze3f7+TVwKVa7iY=;
- b=dfLWJOZ78Uq1XjhWnoEDQZ/4fPWnDN/QmmgkLWIxk8kIQzt4kuUfAP1l
- +atD1mG3UVNb7F2PXLwWOKsO7xpcymB4/jmrbBLipNfNYX3oGkS+HrYtk
- GQhY4nkI/oSW3AyDVZd85CcicZwdjD4rYaI9vp3CVoXoqEXDetfks2LYc
- 5758tBJlM21/RsGLf/PDHkYxBP5q0eflAt6I/vyNVGm0JoIvHpNAaaBbb
- 39FJl81mSuNxFjxKBmJBT2AMhCILIpgGGSmePir5uEOW8nIb/3fy1wuHA
- 0sJLr6yRGIJnxsEMQaDmZFr5NKvuetoLoCZEBL27NJqs3Vf+lMyPGvahm A==;
-X-CSE-ConnectionGUID: kDSYxSQ6SMqY9aG0ABk8ug==
-X-CSE-MsgGUID: WOT8C6rPTl6rjfQyP19ZKg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="71473937"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="71473937"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 03:18:22 -0700
-X-CSE-ConnectionGUID: 2VC02i/dSIuWcEGtYga8TQ==
-X-CSE-MsgGUID: r6RP3gOKSMao5sOlNHKqZw==
+ bh=TborzrykOMhMFx3vG3NkEwHelO+VEOrpe7GOMWSuS+U=;
+ b=jnudj+nA0ci+R5KG7QGOLvhWiaHgIH5NuqUOcv9rex82QWCZinG/3zxH
+ oKEVyZsLPtplySOwd3mMQHrUPCz70qeXg0jLzdJ3ItIntM+QMEqxVYxBY
+ I9rxcXV4+5PJ25m6Pt7SnlZsQ3XFxE0FTNcCf7J5dBSch8DRqKR7iGJr9
+ I6MDuNA00c3mDk021gDrXqU+gp+ZyapG/Uoxz5bWR2Nij7mTzqJyR7JNK
+ 6DSg8t5de3GfNcZAp46UecaFN/Coq5dmnlYUugIPr9V9/0WKhwsa+RUIB
+ VtfzQ/qjpSPQ2sNUmzlN6bryjktCtWZECW5Ktj6caMUO09x4aSIP0dQUl Q==;
+X-CSE-ConnectionGUID: YWJUxd0VScC1l1IiuBVbHw==
+X-CSE-MsgGUID: iBqlwUMbSkSo7UtJCD0TcA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="57474332"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="57474332"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2025 03:33:27 -0700
+X-CSE-ConnectionGUID: W8xkrrrhTdOQQHJxypS0IA==
+X-CSE-MsgGUID: gV9nsJDCRlueEzGi0jfJQw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="133878623"
-Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
- by fmviesa003.fm.intel.com with ESMTP; 14 Apr 2025 03:18:21 -0700
-From: Pravalika Gurram <pravalika.gurram@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	chris.p.wilson@intel.com
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
- Pravalika Gurram <pravalika.gurram@intel.com>
-Subject: [PATCH] prime_mmap: Limit aperture testing to machines with an
- aperture
-Date: Mon, 14 Apr 2025 15:56:40 +0530
-Message-Id: <20250414102640.755085-1-pravalika.gurram@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="166961127"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO fdugast-desk.home)
+ ([10.245.246.184])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2025 03:33:26 -0700
+From: Francois Dugast <francois.dugast@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t, v6 0/5] Stress copy engines during render
+Date: Mon, 14 Apr 2025 12:31:40 +0200
+Message-ID: <20250414103316.27082-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,43 +66,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+This series adds new tests to stress the copy engines with multiple jobs
+in parallel, while measuring the impact on the execution duration of a
+rendering job. This has been tested on BMG, where a typical run looks like
+this:
 
-The test_aperture_limit looks at the handling of internal GGTT mmaps for
-the dmabuf and checking what happens if we try to mmap more than we can
-fit inside the aperture. Thus if we have no aperture, there is no corner
-case regarding the mmapable aperture that requires validation.
+    $ ./build/tests/xe_render_copy --r render-stress-*
+    IGT-Version: 2.0-g9357110dd (x86_64) (Linux: 6.14.0-rc3+ x86_64)
+    Using IGT_SRANDOM=1743593972 for randomisation
+    Opened device: /dev/dri/card0
+    Starting subtest: render-stress-0-copies
+    461 render() loops in 3 seconds
+    Render duration: avg = 3283131 ns, min = 2164366 ns, max = 6409991 ns
+    Subtest render-stress-0-copies: SUCCESS (3.228s)
+    Starting subtest: render-stress-1-copies
+    616 render() loops in 3 seconds
+    Render duration: avg = 2055815 ns, min = 1894560 ns, max = 4476194 ns
+    Subtest render-stress-1-copies: SUCCESS (3.228s)
+    Starting subtest: render-stress-2-copies
+    456 render() loops in 3 seconds
+    Render duration: avg = 3475385 ns, min = 2506288 ns, max = 5031407 ns
+    Subtest render-stress-2-copies: SUCCESS (3.233s)
+    Starting subtest: render-stress-4-copies
+    186 render() loops in 3 seconds
+    Render duration: avg = 10001653 ns, min = 8279572 ns, max = 12589235 ns
+    Subtest render-stress-4-copies: SUCCESS (3.245s)
 
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
----
- tests/intel/prime_mmap.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+v3: Rename to xe_blt_mem_copy() and promote to xe_util instead of
+    lib/intel_blt as this is xe-specific
 
-diff --git a/tests/intel/prime_mmap.c b/tests/intel/prime_mmap.c
-index 6de54b840..ae0c74dfe 100644
---- a/tests/intel/prime_mmap.c
-+++ b/tests/intel/prime_mmap.c
-@@ -490,6 +490,10 @@ test_aperture_limit(uint32_t region, uint64_t size)
- 	uint64_t size1 = (gem_mappable_aperture_size(fd) * 7) / 8;
- 	uint64_t size2 = (gem_mappable_aperture_size(fd) * 3) / 8;
- 
-+	igt_require(gem_has_mappable_ggtt(fd));
-+	igt_require(size1 >= size2);
-+	igt_require(size2 >= size);
-+
- 	handle1 = gem_create(fd, size1);
- 	dma_buf_fd1 = prime_handle_to_fd_for_mmap(fd, handle1);
- 	igt_assert(errno == 0);
-@@ -498,7 +502,7 @@ test_aperture_limit(uint32_t region, uint64_t size)
- 	fill_bo_cpu(ptr1, size);
- 	igt_assert(memcmp(ptr1, pattern, sizeof(pattern)) == 0);
- 
--	handle2 = gem_create(fd, size1);
-+	handle2 = gem_create(fd, size2);
- 	dma_buf_fd2 = prime_handle_to_fd_for_mmap(fd, handle2);
- 	igt_assert(errno == 0);
- 	ptr2 = mmap(NULL, size2, PROT_READ | PROT_WRITE, MAP_SHARED, dma_buf_fd2, 0);
+v4: Follow Zbigniew's recommendation and adopt a new approach: the spinner
+    is extended to optionnally perform copies. In the test, rndering only
+    starts when copies are running. It runs for a defined time thanks to
+    igt_until_timeout().
+
+v5: Add XE2_ prefix to MEM_COPY_MOCS_SHIFT to make purpose clearer, fix
+    documentation, use mutex to protect spinner initialization and avoid
+    race
+
+v6: Use /* */ for comment, add igt_require(blt_has_mem_copy(fd))
+
+Francois Dugast (5):
+  lib/intel_blt: Promote MEM_COPY_MOCS_SHIFT
+  lib/xe/xe_spin: Add mem copy capability to spinner
+  tests/intel/xe_spin_batch: Add basic test for mem copy from spinner
+  tests/intel/xe_render_copy: Expose render duration
+  tests/intel/xe_render_copy: Add new test for render under copy stress
+
+ lib/intel_blt.c              |   3 +-
+ lib/intel_blt.h              |   1 +
+ lib/xe/xe_spin.c             |  14 +++
+ lib/xe/xe_spin.h             |  19 +++
+ tests/intel/xe_render_copy.c | 234 ++++++++++++++++++++++++++++++++++-
+ tests/intel/xe_spin_batch.c  | 109 +++++++++++++++-
+ 6 files changed, 375 insertions(+), 5 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
