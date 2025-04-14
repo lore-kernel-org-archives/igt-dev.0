@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CED4FC369A2
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8D7FC369B2
 	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 16:40:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7D92E10E1A6;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B9B210E206;
 	Mon, 14 Apr 2025 16:40:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CTudHm09";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mCIH1zMd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 57DF710E1A6
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 16:40:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 752FE10E1A6
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 16:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744648835; x=1776184835;
+ t=1744648833; x=1776184833;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Z1Ste2kzfYJdQYuxwxIM0WOnR6C1QlBTtumH9Zr2SKQ=;
- b=CTudHm09D90aXooBrPpJbbJQXJI0Cc262cQHUR49MIBi9LJ0JtyGwpTx
- 5TfI5BZFa1KanAriX05WUqd7b8BSfEobJJJmPCUdwLhkgI7O0vDoC3ygP
- uKl/mr1PLzxQ4cm0WlBE1PU6259Syr77YozSsSgHJplYwn+Uj5D6+Ax3d
- CgOsl676fwWilz6BloPtBGj8w9YYY6spw6MhoVIdERrh2MmlL7yiUW7bI
- I7ji4lgun+Yp/A0gCYuZZ2/HrBGBiSCYgC9JnPUjWZfAVvT6S+sAqSLe9
- F3vh/mrba+HDLNJ8Tr5LrIms9eIcfKto72et2HdZ4fcn6yFLnQnfb8wu6 w==;
-X-CSE-ConnectionGUID: PBVHmvzVRveK/i4jvhc5/w==
-X-CSE-MsgGUID: Ud05gU5jSMS2qNzQmtWBBg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56789138"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="56789138"
+ bh=L4iqDGRZB+O33VZPXRgdSRvJWGETyla9e3U+Fwo9cTA=;
+ b=mCIH1zMd3HR3wqhkBTH72In3SrT2KDGnnEeoCPwgwCcLCHE9VcbK49ND
+ Oe0PpGYSvnX4fmSriFMMB2siH9W5Bp1cL3PikK9GZ7giCqQ6v0jkfv8aT
+ 8DG9q1MjpUcAulAphtdx0JDvYylZrmss4ounJlYpabDiTkdURAVuKzezl
+ /qIRuYd8/QP6p3JNlgGPzJQD7UL75jBje1HOPUZupSNa2JXRwFVaYdpaL
+ dconQGfDhEjrR9wK4zi708U1mq561LcSFzTgsYU7S2zsNZZI4vOsOjydV
+ MWinK7tijNOqbhpqBBZ/nzVS2WSi0R7Sj7s/tGwVLbAXItGRQX+m3Ldgi w==;
+X-CSE-ConnectionGUID: MYSOgtg7T4e/zwlhSeAVBQ==
+X-CSE-MsgGUID: ORMzCQI2RBOh2oXn7RktEg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56789134"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="56789134"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 09:40:35 -0700
-X-CSE-ConnectionGUID: GEsGkdcwSnS2xAYy7abbnA==
-X-CSE-MsgGUID: 9umHC1KRSgmkh58SpYZryw==
+ 14 Apr 2025 09:40:33 -0700
+X-CSE-ConnectionGUID: e3zEJQ0HQM24zwSDr49Zzw==
+X-CSE-MsgGUID: naagK1S9RceT+1E12h6f8w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="134717151"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="134717146"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO fdugast-desk.home)
  ([10.245.246.184])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 09:40:33 -0700
+ 14 Apr 2025 09:40:32 -0700
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Francois Dugast <francois.dugast@intel.com>,
  =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 Subject: [PATCH i-g-t,
- v3 05/11] lib/intel_compute: Use common constant for general state
+ v3 04/11] lib/intel_compute: Use common constant for binding table
  size
-Date: Mon, 14 Apr 2025 18:39:00 +0200
-Message-ID: <20250414164007.57713-6-francois.dugast@intel.com>
+Date: Mon, 14 Apr 2025 18:38:59 +0200
+Message-ID: <20250414164007.57713-5-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250414164007.57713-1-francois.dugast@intel.com>
 References: <20250414164007.57713-1-francois.dugast@intel.com>
@@ -80,71 +80,57 @@ future.
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- lib/intel_compute.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ lib/intel_compute.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 4cea5388f..d64ac72ec 100644
+index e7ccf4f27..4cea5388f 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -32,6 +32,7 @@
+@@ -31,6 +31,7 @@
+ #define SIZE_SURFACE_STATE		0x10000
  #define SIZE_DYNAMIC_STATE		0x100000
  #define SIZE_INDIRECT_OBJECT		0x10000
- #define SIZE_BINDING_TABLE		0x10000
-+#define SIZE_GENERAL_STATE		0x100000
++#define SIZE_BINDING_TABLE		0x10000
  
  #define ADDR_SYNC			0x010000ULL
  #define ADDR_SYNC2			0x020000ULL
-@@ -991,7 +992,8 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 		  .name = "addr input"},
- 		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
- 		  .name = "addr output" },
--		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
-+		{ .addr = ADDR_GENERAL_STATE_BASE,
-+		  .size = SIZE_GENERAL_STATE,
+@@ -993,7 +994,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
  		  .name = "general state base" },
  		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
- 		  .size = SIZE_BINDING_TABLE,
-@@ -1208,7 +1210,8 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 		  .name = "addr input"},
- 		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
- 		  .name = "addr output" },
--		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x10000,
-+		{ .addr = ADDR_GENERAL_STATE_BASE,
-+		  .size = SIZE_GENERAL_STATE,
- 		  .name = "general state base" },
+-		  .size = 0x10000,
++		  .size = SIZE_BINDING_TABLE,
+ 		  .name = "binding table" },
  		{ .addr = ADDR_BATCH, .size = SIZE_BATCH,
  		  .name = "batch" },
-@@ -1566,7 +1569,8 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 		  .name = "addr input"},
- 		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
- 		  .name = "addr output" },
--		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
-+		{ .addr = ADDR_GENERAL_STATE_BASE,
-+		  .size = SIZE_GENERAL_STATE,
+@@ -1568,7 +1569,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
  		  .name = "general state base" },
  		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
- 		  .size = SIZE_BINDING_TABLE,
-@@ -1656,7 +1660,8 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 		  .name = "addr input"},
- 		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
- 		  .name = "addr output" },
--		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
-+		{ .addr = ADDR_GENERAL_STATE_BASE,
-+		  .size = SIZE_GENERAL_STATE,
+-		  .size = 0x10000,
++		  .size = SIZE_BINDING_TABLE,
+ 		  .name = "binding table" },
+ 		{ .addr = ADDR_BATCH,
+ 		  .size = SIZE_BATCH,
+@@ -1658,7 +1659,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
  		  .name = "general state base" },
  		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
- 		  .size = SIZE_BINDING_TABLE,
-@@ -1911,7 +1916,8 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 		  .name = "addr input"},
- 		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
- 		  .name = "addr output" },
--		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
-+		{ .addr = ADDR_GENERAL_STATE_BASE,
-+		  .size = SIZE_GENERAL_STATE,
+-		  .size = 0x1000,
++		  .size = SIZE_BINDING_TABLE,
+ 		  .name = "binding table" },
+ 		{ .addr = ADDR_BATCH,
+ 		  .size = SIZE_BATCH,
+@@ -1913,7 +1914,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 		{ .addr = ADDR_GENERAL_STATE_BASE, .size = 0x100000,
  		  .name = "general state base" },
  		{ .addr = ADDR_SURFACE_STATE_BASE + OFFSET_BINDING_TABLE,
- 		  .size = SIZE_BINDING_TABLE,
+-		  .size = 0x1000,
++		  .size = SIZE_BINDING_TABLE,
+ 		  .name = "binding table" },
+ 		{ .addr = ADDR_BATCH,
+ 		  .size = SIZE_BATCH,
 -- 
 2.43.0
 
