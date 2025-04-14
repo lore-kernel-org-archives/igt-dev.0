@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15BEEC369B9
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 16:40:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 323ADC369A2
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 16:40:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B732B10E2E5;
-	Mon, 14 Apr 2025 16:40:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6B1E10E0A9;
+	Mon, 14 Apr 2025 16:40:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KQE+PQ2a";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NZzt2C5/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8B0410E2E5
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 16:40:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 665F510E0A9
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 16:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744648844; x=1776184844;
+ t=1744648845; x=1776184845;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XT4OBi9EZBIIGDg/893AUeuNCGvbufXj5Ut55KpfXBE=;
- b=KQE+PQ2aFT1MpqHb4ahpTNt7aJM8JX89o2qSgEYp9gx2/qnNgVhPrkXa
- Ei5kM+ccC14gGidWGncA/heR7KarxJKBRrVXUYzDfNG4830UiFW8V1GPi
- sR4vF/cxh2SEDzL4qGI+DnhwOUSQng9tjfRJbhYm7JsDB2u4tsBhN7Oxw
- vIEH5g0xnsKFVMZkNjXwpx3Z3XY/W/B7uMz7Q3HYg3xVJq7r0F5AuuJ7D
- n2toJB3OGz2jxnaIEfpP1nbAOs3bXpt9bBorJxLo9iFlDuHKlYr9N9zYR
- zLEXGYuBTF/BXdYSbvyD6v6dm2+b4gMZ+i/A0x9fNLq6ymzIAXkn4Jv+Z g==;
-X-CSE-ConnectionGUID: RNkSGb+hSDSoGRrO5nCn2g==
-X-CSE-MsgGUID: BPssjtyHSKeY4Z1MjPc4Sg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56789145"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="56789145"
+ bh=MZnspcEjV0ydfshaxSdiecEobloiN9qOAizyO/8DodI=;
+ b=NZzt2C5/PX8QzOWk0R5prAfC2WUXArNmmjFLJujmW5LvtNvJSVcGgnHU
+ EQ8EikX4tZI/SMzDbAb6UtU4lwO9GBRzqdxYDifT9O9VCTR/xrGa/s0es
+ pkHqj6izkNaKMtCWI6KIUZaIE9pJwCvsjFdlWmqd9o9kGS/Nmv95nnk+x
+ aaujq68CzCB0IN3Nrr5YH2WPaARwnXrnD3cSWKXVk/twTA7XUWNK/4/Np
+ u9661Jjmhq1r4dELz5YoRnsK7c0ByBUhIucVAGbt3PmNwRMuoT/cwqzmJ
+ at69YSLdp9c+kWA1F3fMy4InySTpi5dkDvEpRC1rWPaZOQMZoq/Z1Qlup Q==;
+X-CSE-ConnectionGUID: NTafzuZfQU25sgxlYVdkSQ==
+X-CSE-MsgGUID: Bde3Gq0vS5yFHiixl9IhZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56789148"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="56789148"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 09:40:43 -0700
-X-CSE-ConnectionGUID: Fop070sTQUq9EAyRhowvnw==
-X-CSE-MsgGUID: gq0ufQwDSEunr3eU6mkGhw==
+ 14 Apr 2025 09:40:45 -0700
+X-CSE-ConnectionGUID: vf9xMS2dSxy1xXDmwdJIwg==
+X-CSE-MsgGUID: O8LHXakFTkeQ17ObCArU9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="134717168"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="134717171"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO fdugast-desk.home)
  ([10.245.246.184])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 09:40:42 -0700
+ 14 Apr 2025 09:40:43 -0700
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 Subject: [PATCH i-g-t,
- v3 10/11] lib/intel_compute: Use constants for thread groups and
- local work size
-Date: Mon, 14 Apr 2025 18:39:05 +0200
-Message-ID: <20250414164007.57713-11-francois.dugast@intel.com>
+ v3 11/11] lib/intel_compute: Make array size a dynamic parameter
+Date: Mon, 14 Apr 2025 18:39:06 +0200
+Message-ID: <20250414164007.57713-12-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250414164007.57713-1-francois.dugast@intel.com>
 References: <20250414164007.57713-1-francois.dugast@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,185 +71,445 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Define new constants and use them to build the pipeline instead of
-magic values. This also helps homogenize the code to enforce a
-similar execution across GPUs. Having them grouped together in the
-file makes it easier to experiment with different values, as they
-depend on each other but where previously distributed.
+Give the users of run_intel_compute_kernel() the possibility to change
+the default size of the input and output arrays by adding a custom
+size in struct user_execenv::array_size.
+
+If no value is provided, the existing default value of SIZE_DATA will
+be used.
+
+Example:
+
+    struct user_execenv env = {};
+    env.array_size = 1024 * 1024;
+    run_intel_compute_kernel(fd, &env);
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- lib/intel_compute.c | 71 ++++++++++++++++++++++++++-------------------
- 1 file changed, 41 insertions(+), 30 deletions(-)
+ lib/intel_compute.c | 144 +++++++++++++++++++++++++++-----------------
+ lib/intel_compute.h |   2 +
+ 2 files changed, 90 insertions(+), 56 deletions(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 6b779c340..d4609da15 100644
+index d4609da15..2d21e9799 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -55,6 +55,17 @@
+@@ -26,8 +26,6 @@
  
- #define USER_FENCE_VALUE			0xdeadbeefdeadbeefull
+ #define SIZE_DATA			64
+ #define SIZE_BATCH			0x10000
+-#define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x10000)
+-#define SIZE_BUFFER_OUTPUT		MAX(sizeof(float) * SIZE_DATA, 0x10000)
+ #define SIZE_SURFACE_STATE		0x10000
+ #define SIZE_DYNAMIC_STATE		0x100000
+ #define SIZE_INDIRECT_OBJECT		0x10000
+@@ -57,9 +55,6 @@
  #define MAGIC_LOOP_STOP			0x12341234
+ 
+ #define THREADS_PER_GROUP		32
+-#define THREAD_GROUP_X			MAX(1, SIZE_DATA / (ENQUEUED_LOCAL_SIZE_X * \
+-							    ENQUEUED_LOCAL_SIZE_Y * \
+-							    ENQUEUED_LOCAL_SIZE_Z))
+ #define THREAD_GROUP_Y			1
+ #define THREAD_GROUP_Z			1
+ #define ENQUEUED_LOCAL_SIZE_X		1024
+@@ -92,6 +87,7 @@ struct bo_execenv {
+ 	/* Xe part */
+ 	uint32_t vm;
+ 	uint32_t exec_queue;
++	uint32_t array_size;
+ 
+ 	/* i915 part */
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+@@ -119,6 +115,11 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
+ 		else
+ 			execenv->vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+ 
++		if (user && user->array_size)
++			execenv->array_size = user->array_size;
++		else
++			execenv->array_size = SIZE_DATA;
 +
-+#define THREADS_PER_GROUP		32
-+#define THREAD_GROUP_X			MAX(1, SIZE_DATA / (ENQUEUED_LOCAL_SIZE_X * \
-+							    ENQUEUED_LOCAL_SIZE_Y * \
-+							    ENQUEUED_LOCAL_SIZE_Z))
-+#define THREAD_GROUP_Y			1
-+#define THREAD_GROUP_Z			1
-+#define ENQUEUED_LOCAL_SIZE_X		1024
-+#define ENQUEUED_LOCAL_SIZE_Y		1
-+#define ENQUEUED_LOCAL_SIZE_Z		1
-+
- /*
-  * TGP  - ThreadGroup Preemption
-  * WMTP - Walker Mid Thread Preemption
-@@ -784,9 +795,9 @@ static void xehp_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x00000400;
--	addr_bo_buffer_batch[b++] = 0x00000001;
--	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_X;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Y;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Z;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -1061,9 +1072,9 @@ static void xehpc_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x00000400;
--	addr_bo_buffer_batch[b++] = 0x00000001;
--	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_X;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Y;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Z;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = addr_input & 0xffffffff;
-@@ -1071,9 +1082,9 @@ static void xehpc_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
- 	addr_bo_buffer_batch[b++] = addr_output >> 32;
- 	addr_bo_buffer_batch[b++] = loop_count;
--	addr_bo_buffer_batch[b++] = 0x00000400;
--	addr_bo_buffer_batch[b++] = 0x00000001;
--	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_X;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Y;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Z;
+ 		if (eci) {
+ 			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
+ 								   eci, 0);
+@@ -307,6 +308,23 @@ static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
+ 	}
  }
  
- static void xehpc_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-@@ -1164,7 +1175,7 @@ static void xehpc_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = 0x00180000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x0c000020;
-+	addr_bo_buffer_batch[b++] = 0x0c000000 | THREADS_PER_GROUP;
++static uint32_t size_thread_group_x(uint32_t work_size)
++{
++	return MAX(1, work_size / (ENQUEUED_LOCAL_SIZE_X *
++				   ENQUEUED_LOCAL_SIZE_Y *
++				   ENQUEUED_LOCAL_SIZE_Z));
++}
++
++static size_t size_input(uint32_t work_size)
++{
++	return MAX(sizeof(float) * work_size, 0x10000);
++}
++
++static size_t size_output(uint32_t work_size)
++{
++	return MAX(sizeof(float) * work_size, 0x10000);
++}
++
+ /*
+  * TGL compatible batch
+  */
+@@ -716,10 +734,8 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect data start" },
+ 		{ .addr = ADDR_INPUT,
+-		  .size = SIZE_BUFFER_INPUT,
+ 		  .name = "input" },
+ 		{ .addr = ADDR_OUTPUT,
+-		  .size = SIZE_BUFFER_OUTPUT,
+ 		  .name = "output" },
+ 		{ .addr = ADDR_BATCH,
+ 		  .size = SIZE_BATCH,
+@@ -731,8 +747,10 @@ static void compute_exec(int fd, const unsigned char *kernel,
  
- 	addr_bo_buffer_batch[b++] = 0x00000008;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -1275,9 +1286,9 @@ static void xelpg_create_indirect_data(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
- 	addr_bo_buffer_batch[b++] = addr_output >> 32;
- 	addr_bo_buffer_batch[b++] = loop_count;
--	addr_bo_buffer_batch[b++] = 0x00000400; // Enqueued local size X
--	addr_bo_buffer_batch[b++] = 0x00000001; // Enqueued local size Y
--	addr_bo_buffer_batch[b++] = 0x00000001; // Enqueued local size Z
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_X;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Y;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Z;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -1357,10 +1368,10 @@ static void xelpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+-	/* Sets Kernel size */
++	/* Set dynamic sizes */
+ 	bo_dict[0].size = ALIGN(size, 0x1000);
++	bo_dict[4].size = size_input(execenv.array_size);
++	bo_dict[5].size = size_output(execenv.array_size);
+ 
+ 	bo_execenv_bind(&execenv, bo_dict, BO_DICT_ENTRIES);
+ 
+@@ -740,13 +758,13 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
+ 	create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
+ 	create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT,
+-			     IS_DG1(devid) ? 0x200 : 0x40, SIZE_DATA);
++			     IS_DG1(devid) ? 0x200 : 0x40, execenv.array_size);
+ 
+ 	input_data = (float *) bo_dict[4].data;
+ 	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
+ 
+-	for (int i = 0; i < SIZE_DATA; i++)
++	for (int i = 0; i < execenv.array_size; i++)
+ 		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	if (IS_DG1(devid))
+@@ -764,7 +782,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+-	for (int i = 0; i < SIZE_DATA; i++) {
++	for (int i = 0; i < execenv.array_size; i++) {
+ 		float input = input_data[i];
+ 		float output = output_data[i];
+ 		float expected_output = input * input;
+@@ -1000,9 +1018,9 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+-		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
++		{ .addr = ADDR_INPUT,
+ 		  .name = "addr input"},
+-		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
++		{ .addr = ADDR_OUTPUT,
+ 		  .name = "addr output" },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+@@ -1018,22 +1036,24 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+-	/* Sets Kernel size */
++	/* Set dynamic sizes */
+ 	bo_dict[0].size = ALIGN(size, xe_get_default_alignment(fd));
++	bo_dict[4].size = size_input(execenv.array_size);
++	bo_dict[5].size = size_output(execenv.array_size);
+ 
+ 	bo_execenv_bind(&execenv, bo_dict, XEHP_BO_DICT_ENTRIES);
+ 
+ 	memcpy(bo_dict[0].data, kernel, size);
+ 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
+ 	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
+-	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
++	xehp_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, execenv.array_size);
+ 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 
+ 	input_data = (float *) bo_dict[4].data;
+ 	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
+ 
+-	for (int i = 0; i < SIZE_DATA; i++)
++	for (int i = 0; i < execenv.array_size; i++)
+ 		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xehp_compute_exec_compute(bo_dict[8].data,
+@@ -1046,7 +1066,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+-	for (int i = 0; i < SIZE_DATA; i++) {
++	for (int i = 0; i < execenv.array_size; i++) {
+ 		float input = input_data[i];
+ 		float output = output_data[i];
+ 		float expected_output = input * input;
+@@ -1218,9 +1238,9 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+-		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
++		{ .addr = ADDR_INPUT,
+ 		  .name = "addr input"},
+-		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
++		{ .addr = ADDR_OUTPUT,
+ 		  .name = "addr output" },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+@@ -1233,19 +1253,21 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+-	/* Sets Kernel size */
++	/* Set dynamic sizes */
+ 	bo_dict[0].size = ALIGN(size, xe_get_default_alignment(fd));
++	bo_dict[2].size = size_input(execenv.array_size);
++	bo_dict[3].size = size_output(execenv.array_size);
+ 
+ 	bo_execenv_bind(&execenv, bo_dict, XEHPC_BO_DICT_ENTRIES);
+ 
+ 	memcpy(bo_dict[0].data, kernel, size);
+-	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
++	xehpc_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT, execenv.array_size);
+ 
+ 	input_data = (float *) bo_dict[2].data;
+ 	output_data = (float *) bo_dict[3].data;
+ 	srand(time(NULL));
+ 
+-	for (int i = 0; i < SIZE_DATA; i++)
++	for (int i = 0; i < execenv.array_size; i++)
+ 		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xehpc_compute_exec_compute(bo_dict[5].data,
+@@ -1258,7 +1280,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+-	for (int i = 0; i < SIZE_DATA; i++) {
++	for (int i = 0; i < execenv.array_size; i++) {
+ 		float input = input_data[i];
+ 		float output = output_data[i];
+ 		float expected_output = input * input;
+@@ -1300,12 +1322,13 @@ static void xelpg_create_indirect_data(uint32_t *addr_bo_buffer_batch,
+ }
+ 
+ static void xelpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+-					uint64_t addr_general_state_base,
+-					uint64_t addr_surface_state_base,
+-					uint64_t addr_dynamic_state_base,
+-					uint64_t addr_instruction_state_base,
+-					uint64_t offset_indirect_data_start,
+-					uint64_t kernel_start_pointer)
++				       uint64_t addr_general_state_base,
++				       uint64_t addr_surface_state_base,
++				       uint64_t addr_dynamic_state_base,
++				       uint64_t addr_instruction_state_base,
++				       uint64_t offset_indirect_data_start,
++				       uint64_t kernel_start_pointer,
++				       uint32_t work_size)
+ {
+ 	int b = 0;
+ 
+@@ -1368,7 +1391,7 @@ static void xelpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
  	addr_bo_buffer_batch[b++] = 0xbe040000;
  	addr_bo_buffer_batch[b++] = 0xffffffff;
  	addr_bo_buffer_batch[b++] = 0x000003ff;
--	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = THREAD_GROUP_X;
+-	addr_bo_buffer_batch[b++] = THREAD_GROUP_X;
++	addr_bo_buffer_batch[b++] = size_thread_group_x(work_size);
  
--	addr_bo_buffer_batch[b++] = 0x00000001;
--	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = THREAD_GROUP_Y;
-+	addr_bo_buffer_batch[b++] = THREAD_GROUP_Z;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -1375,7 +1386,7 @@ static void xelpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00010080;
--	addr_bo_buffer_batch[b++] = 0x0c000020;
-+	addr_bo_buffer_batch[b++] = 0x0c000000 | THREADS_PER_GROUP;
+ 	addr_bo_buffer_batch[b++] = THREAD_GROUP_Y;
+ 	addr_bo_buffer_batch[b++] = THREAD_GROUP_Z;
+@@ -1424,7 +1447,8 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+ 					uint64_t offset_indirect_data_start,
+ 					uint64_t kernel_start_pointer,
+ 					uint64_t sip_start_pointer,
+-					bool	 threadgroup_preemption)
++					bool	 threadgroup_preemption,
++					uint32_t work_size)
+ {
+ 	int b = 0;
  
- 	addr_bo_buffer_batch[b++] = 0x00000008;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -1388,9 +1399,9 @@ static void xelpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x00000400;
--	addr_bo_buffer_batch[b++] = 0x00000001;
--	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_X;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Y;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Z;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 
-@@ -1495,10 +1506,10 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+@@ -1506,7 +1530,7 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
  		 */
  		addr_bo_buffer_batch[b++] = 0x00200000; // Thread Group ID X Dimension
  	else
--		addr_bo_buffer_batch[b++] = 0x00000002;
-+		addr_bo_buffer_batch[b++] = THREAD_GROUP_X;
+-		addr_bo_buffer_batch[b++] = THREAD_GROUP_X;
++		addr_bo_buffer_batch[b++] = size_thread_group_x(work_size);
  
--	addr_bo_buffer_batch[b++] = 0x00000001; // Thread Group ID Y Dimension
--	addr_bo_buffer_batch[b++] = 0x00000001; // Thread Group ID Z Dimension
-+	addr_bo_buffer_batch[b++] = THREAD_GROUP_Y;
-+	addr_bo_buffer_batch[b++] = THREAD_GROUP_Z;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -1519,7 +1530,7 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+ 	addr_bo_buffer_batch[b++] = THREAD_GROUP_Y;
+ 	addr_bo_buffer_batch[b++] = THREAD_GROUP_Z;
+@@ -1602,9 +1626,9 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+-		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
++		{ .addr = ADDR_INPUT,
+ 		  .name = "addr input"},
+-		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
++		{ .addr = ADDR_OUTPUT,
+ 		  .name = "addr output" },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+@@ -1622,8 +1646,10 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
  
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x0c000020;
-+	addr_bo_buffer_batch[b++] = 0x0c000000 | THREADS_PER_GROUP;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00001047;
-@@ -1530,9 +1541,9 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x00000400;
--	addr_bo_buffer_batch[b++] = 0x00000001;
--	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_X;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Y;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Z;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
+ 	bo_execenv_create(fd, &execenv, eci, user);
  
-@@ -1554,9 +1565,9 @@ static void xe2_create_indirect_data_inc_kernel(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x00000400;
--	addr_bo_buffer_batch[b++] = 0x00000001;
--	addr_bo_buffer_batch[b++] = 0x00000001;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_X;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Y;
-+	addr_bo_buffer_batch[b++] = ENQUEUED_LOCAL_SIZE_Z;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
+-	/* Sets Kernel size */
++	/* Set dynamic sizes */
+ 	bo_dict[0].size = ALIGN(size, 0x10000);
++	bo_dict[4].size = size_input(execenv.array_size);
++	bo_dict[5].size = size_output(execenv.array_size);
+ 
+ 	bo_execenv_bind(&execenv, bo_dict, XELPG_BO_DICT_ENTRIES);
+ 
+@@ -1631,14 +1657,14 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 
+ 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
+ 	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
+-	xelpg_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
++	xelpg_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, execenv.array_size);
+ 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 
+ 	input_data = (float *) bo_dict[4].data;
+ 	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
+ 
+-	for (int i = 0; i < SIZE_DATA; i++)
++	for (int i = 0; i < execenv.array_size; i++)
+ 		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xelpg_compute_exec_compute(bo_dict[8].data,
+@@ -1647,11 +1673,12 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 				   ADDR_DYNAMIC_STATE_BASE,
+ 				   ADDR_INSTRUCTION_STATE_BASE,
+ 				   OFFSET_INDIRECT_DATA_START,
+-				   OFFSET_KERNEL);
++				   OFFSET_KERNEL,
++				   execenv.array_size);
+ 
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+-	for (int i = 0; i < SIZE_DATA; i++) {
++	for (int i = 0; i < execenv.array_size; i++) {
+ 		float input = input_data[i];
+ 		float output = output_data[i];
+ 		float expected_output = input * input;
+@@ -1693,9 +1720,9 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+-		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
++		{ .addr = ADDR_INPUT,
+ 		  .name = "addr input"},
+-		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
++		{ .addr = ADDR_OUTPUT,
+ 		  .name = "addr output" },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+@@ -1716,36 +1743,39 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+-	/* Sets Kernel size */
++	/* Set dynamic sizes */
+ 	bo_dict[0].size = ALIGN(size, 0x1000);
++	bo_dict[4].size = size_input(execenv.array_size);
++	bo_dict[5].size = size_output(execenv.array_size);
+ 
+ 	bo_execenv_bind(&execenv, bo_dict, XE2_BO_DICT_ENTRIES);
+ 
+ 	memcpy(bo_dict[0].data, kernel, size);
+ 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
+ 	xehp_create_surface_state(bo_dict[2].data, ADDR_INPUT, ADDR_OUTPUT);
+-	xelpg_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, SIZE_DATA);
++	xelpg_create_indirect_data(bo_dict[3].data, ADDR_INPUT, ADDR_OUTPUT, execenv.array_size);
+ 	xehp_create_surface_state(bo_dict[7].data, ADDR_INPUT, ADDR_OUTPUT);
+ 
+ 	input_data = (float *) bo_dict[4].data;
+ 	output_data = (float *) bo_dict[5].data;
+ 	srand(time(NULL));
+ 
+-	for (int i = 0; i < SIZE_DATA; i++)
++	for (int i = 0; i < execenv.array_size; i++)
+ 		input_data[i] = rand() / (float)RAND_MAX;
+ 
+ 	xe2lpg_compute_exec_compute(bo_dict[8].data,
+-				  ADDR_GENERAL_STATE_BASE,
+-				  ADDR_SURFACE_STATE_BASE,
+-				  ADDR_DYNAMIC_STATE_BASE,
+-				  ADDR_INSTRUCTION_STATE_BASE,
+-				  XE2_ADDR_STATE_CONTEXT_DATA_BASE,
+-				  OFFSET_INDIRECT_DATA_START,
+-				  OFFSET_KERNEL, 0, false);
++				    ADDR_GENERAL_STATE_BASE,
++				    ADDR_SURFACE_STATE_BASE,
++				    ADDR_DYNAMIC_STATE_BASE,
++				    ADDR_INSTRUCTION_STATE_BASE,
++				    XE2_ADDR_STATE_CONTEXT_DATA_BASE,
++				    OFFSET_INDIRECT_DATA_START,
++				    OFFSET_KERNEL, 0, false,
++				    execenv.array_size);
+ 
+ 	bo_execenv_exec(&execenv, ADDR_BATCH);
+ 
+-	for (int i = 0; i < SIZE_DATA; i++) {
++	for (int i = 0; i < execenv.array_size; i++) {
+ 		float input = input_data[i];
+ 		float output = output_data[i];
+ 		float expected_output = input * input;
+@@ -1949,9 +1979,9 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+-		{ .addr = ADDR_INPUT, .size = SIZE_BUFFER_INPUT,
++		{ .addr = ADDR_INPUT, .size = MAX(sizeof(float) * SIZE_DATA, 0x10000),
+ 		  .name = "addr input"},
+-		{ .addr = ADDR_OUTPUT, .size = SIZE_BUFFER_OUTPUT,
++		{ .addr = ADDR_OUTPUT, .size = MAX(sizeof(float) * SIZE_DATA, 0x10000),
+ 		  .name = "addr output" },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+@@ -2076,12 +2106,14 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 	xe2lpg_compute_exec_compute(bo_dict_long[8].data, ADDR_GENERAL_STATE_BASE,
+ 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
+ 				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
+-				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP, threadgroup_preemption);
++				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
++				    threadgroup_preemption, SIZE_DATA);
+ 
+ 	xe2lpg_compute_exec_compute(bo_dict_short[8].data, ADDR_GENERAL_STATE_BASE,
+ 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
+ 				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
+-				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP, false);
++				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
++				    false, SIZE_DATA);
+ 
+ 	xe_exec_sync(fd, execenv_long.exec_queue, ADDR_BATCH, &sync_long, 1);
+ 
+diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+index 8310536a9..a79c3172c 100644
+--- a/lib/intel_compute.h
++++ b/lib/intel_compute.h
+@@ -57,6 +57,8 @@ struct user_execenv {
+ 	unsigned int kernel_size;
+ 	/** @skip_results_check: do not verify correctness of the results if true */
+ 	bool skip_results_check;
++	/** @array_size: size of input and output arrays */
++	uint32_t array_size;
+ };
+ 
+ extern const struct intel_compute_kernels intel_compute_square_kernels[];
 -- 
 2.43.0
 
