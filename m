@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 547FCC369B2
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 14:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B7B5C369B4
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 14:22:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E570510E5F4;
-	Mon, 14 Apr 2025 14:22:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8E3C10E5F5;
+	Mon, 14 Apr 2025 14:22:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IIjkJdVJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LKZhxGdA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B28810E5F4
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 14:22:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2005210E5F5
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 14:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744640562; x=1776176562;
+ t=1744640564; x=1776176564;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gc7snQWHQa8ooiT8Gapk9s0nEAtyLRbeiOYifOBZyko=;
- b=IIjkJdVJXlYxvZUpiSouhtolAHmoRSzsRE/1+yNB3vyrIb/cMJDvKn53
- XCVJswmvdfWOUO7KxnqX3hOLxGZXd2VKBmRXIUDGDeTxnP2GZtu663ND7
- uX7CjKDqAo+f2uLoerGLWbEEfm6ENRqDreHm8ZAOlYmIFV2mY55oYcSBS
- QTPW6L8dn5fD6Rufsw0CY2XduJC5J7XaHc/oN9LqESRRPH81pKUl/dVA7
- m3uL339037UPwMiEcmu8yn6hyhpZY78IL7xEUqwk2xga9BpFZA6+89j+y
- 8Gkt+up46UJJ6omOY+B9KXz9zTyecuni7nqQR2oSBgNSDJ0As09N9ygz9 A==;
-X-CSE-ConnectionGUID: ww0zkosBRcCjxzomSs4e2w==
-X-CSE-MsgGUID: 3Xe6J0WrTKOMi0ZUmFariQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56770813"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="56770813"
+ bh=lQr2ug8x7ExWx8wAih44HRe9U9j7/KwRjgUX5qH6cko=;
+ b=LKZhxGdA6md8dfOXEfqr1d9pBtOUySQg915d0y/Xxe12ioUuc44sIDky
+ +nV9pTENAZ0mnUO6E5PRJmOBgBAm3tnK+JKUj8B7JwoILoGp41Ba4MrIy
+ Iu+dwGWSliOo3NZ05dYK+48cmPBUYjMBF8nRapmCe9a41d/X0ChrTEM5N
+ d2KrHKTKA4ELnQcF1K/2sLc+Oj4xqguOUIj0s8mV5wXiaVVnIgXK7iY+V
+ kSLl/YqcqmWe2prMoWNirE1EPO1sMWDpPlTvzhvE9hPGkkf2w5j3HLtDc
+ r3DRBt+Z1eFsWw5NRPqlc5jomPUud9bxfpTUHLvnjA1/+DUjyMXOtuPBF A==;
+X-CSE-ConnectionGUID: DCU9XhTYR8Wb4syR48uihg==
+X-CSE-MsgGUID: lEHBiAG9SFijIXLmUN1YOA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56770817"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="56770817"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 07:22:42 -0700
-X-CSE-ConnectionGUID: AMY2KYvnQkGoFO20yEnHZA==
-X-CSE-MsgGUID: aAdiAYWCRxKUsyc+FFjVSA==
+ 14 Apr 2025 07:22:44 -0700
+X-CSE-ConnectionGUID: tBNC7SzMRA2+ajk2Q98F0g==
+X-CSE-MsgGUID: NJxgw31YSseATxs3cv3WKQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="130707477"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="130707480"
 Received: from labhost1.iind.intel.com ([10.190.230.69])
- by fmviesa009.fm.intel.com with ESMTP; 14 Apr 2025 07:22:40 -0700
+ by fmviesa009.fm.intel.com with ESMTP; 14 Apr 2025 07:22:42 -0700
 From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v5 2/3] tests/intel/xe_fault_injection: Inject errors in
- xe_guc_* calls
-Date: Mon, 14 Apr 2025 20:08:41 +0530
-Message-ID: <20250414143842.14981-3-satyanarayana.k.v.p@intel.com>
+ Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t v5 3/3] tests/intel/xe_fault_injection: Do not assert
+ for probe_guc_fail_* functions.
+Date: Mon, 14 Apr 2025 20:08:42 +0530
+Message-ID: <20250414143842.14981-4-satyanarayana.k.v.p@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250414143842.14981-1-satyanarayana.k.v.p@intel.com>
 References: <20250414143842.14981-1-satyanarayana.k.v.p@intel.com>
@@ -72,155 +70,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the kernel fault injection infrastructure to test error handling
-of xe during driver probe when executing xe_guc_ct_send_recv() /
-xe_guc_mmio_send_recv() so that more code paths are tested, such as
-error handling and unwinding.
+In the current implementation, test asserts if the captured error is not same as
+injected error. It is possible that the error received is translated to other
+error which can be returned to application and in some scenarios driver retries
+in case of failure and so, no error might be captured.
 
-All xe_init() kind of functions are called just once during driver probe,
-so it is sufficient to fail first/all calls to them. Driver communicates
-with the GuC multiple times, and the real failure can happen at different
-call, hence the need to inject failure in GuC communication functions,
-like guc_mmio_send() or guc_ct_send(), but it can't be just first call or
-all calls, but we need to be able to select specific iteration to fail.
-
-To address this problem, an optional input argument is introduced. If the
-argument is not set, an error will be injected in every possible function
-call starting from first up to the max number of iteration defined by
-INJECT_ITERATIONS, currently hardcoded as 100. If the input argument is
-set, an error can be injected at specific function call.
-
-Error can be injected using:
-igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv
-igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv
+Considering above cases, added flags to control the assertion after injecting
+error. Test does not assert for probe_guc_fail_* functions as driver some times
+retries in case of failure. The main idea of injecting errors for these guc
+functions is to check the robustness of the driver.
 
 Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
 ---
- tests/intel/xe_fault_injection.c | 75 +++++++++++++++++++++++++++++++-
- 1 file changed, 74 insertions(+), 1 deletion(-)
+ tests/intel/xe_fault_injection.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 44c42e83a..adcab2e4d 100644
+index adcab2e4d..19353c29a 100644
 --- a/tests/intel/xe_fault_injection.c
 +++ b/tests/intel/xe_fault_injection.c
-@@ -26,7 +26,9 @@
- #define INJECT_ERRNO	-ENOMEM
- #define BO_ADDR		0x1a0000
+@@ -28,6 +28,11 @@
  #define BO_SIZE		(1024*1024)
-+#define INJECT_ITERATIONS	100
+ #define INJECT_ITERATIONS	100
  
-+int32_t inject_iters_raw;
++enum assert_flags {
++	INJECT_ASSERT_ON_FAIL,
++	INJECT_NOASSERT_ON_FAIL,
++};
++
+ int32_t inject_iters_raw;
  struct fault_injection_params {
  	/* @probability: Likelihood of failure injection, in percent. */
- 	uint32_t probability;
-@@ -233,6 +235,38 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+@@ -222,7 +227,7 @@ static void set_retval(const char function_name[], long long retval)
+  * @xe_wopcm_init:			xe_wopcm_init
+  */
+ static void
+-inject_fault_probe(int fd, char pci_slot[], const char function_name[])
++inject_fault_probe(int fd, int flags, char pci_slot[], const char function_name[])
+ {
+ 	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
+ 		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
+@@ -231,7 +236,8 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+ 	injection_list_add(function_name);
+ 	set_retval(function_name, INJECT_ERRNO);
+ 	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
+-	igt_assert_eq(-errno, INJECT_ERRNO);
++	if (flags & INJECT_ASSERT_ON_FAIL)
++		igt_assert_eq(-errno, INJECT_ERRNO);
  	injection_list_remove(function_name);
  }
  
-+/**
-+ * SUBTEST: probe-fail-guc-%s
-+ * Description: inject an error in the injectable function %arg[1] then reprobe driver
-+ * Functionality: fault
-+ *
-+ * arg[1]:
-+ * @xe_guc_mmio_send_recv:     Inject an error when calling xe_guc_mmio_send_recv
-+ * @xe_guc_ct_send_recv:       Inject an error when calling xe_guc_ct_send_recv
-+ */
-+static void probe_fail_guc(int fd, char pci_slot[], const char function_name[],
-+               struct fault_injection_params *fault_params)
-+{
-+	int iter_start = 0, iter_end = 0, iter = 0;
-+
-+	igt_assert(fault_params);
-+
-+	/* inject_iters_raw will have zero if unset / set to <=0 or malformed.
-+	   When set to > 0 it will have iteration number and will run single n-th
-+	   iteration only.
-+	*/
-+	iter = inject_iters_raw;
-+	iter_start = iter ? : 0;
-+	iter_end = iter ? iter + 1 : INJECT_ITERATIONS;
-+	igt_debug("Injecting error for %d - %d iterations\n", iter_start, iter_end);
-+	for (int i = iter_start; i < iter_end; i++) {
-+		fault_params->space = i;
-+		setup_injection_fault(fault_params);
-+		inject_fault_probe(fd, pci_slot, function_name);
-+		igt_kmod_unbind("xe", pci_slot);
-+	}
-+}
-+
- /**
-  * SUBTEST: exec-queue-create-fail-%s
-  * Description: inject an error in function %arg[1] used in exec queue create IOCTL to make it fail
-@@ -407,10 +441,36 @@ oa_add_config_fail(int fd, int sysfs, int devid, const char function_name[])
- 	igt_assert_eq(intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_REMOVE_CONFIG, &config_id), 0);
+@@ -262,7 +268,7 @@ static void probe_fail_guc(int fd, char pci_slot[], const char function_name[],
+ 	for (int i = iter_start; i < iter_end; i++) {
+ 		fault_params->space = i;
+ 		setup_injection_fault(fault_params);
+-		inject_fault_probe(fd, pci_slot, function_name);
++		inject_fault_probe(fd, INJECT_NOASSERT_ON_FAIL, pci_slot, function_name);
+ 		igt_kmod_unbind("xe", pci_slot);
+ 	}
  }
+@@ -575,7 +581,7 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
  
--igt_main
-+static int opt_handler(int opt, int opt_index, void *data)
-+{
-+	int in_param;
-+	switch (opt) {
-+	case 'I':
-+		/* Update to 0 if not exported / -ve value */
-+		in_param = atoi(optarg);
-+		if (!in_param || in_param <= 0 || in_param > INJECT_ITERATIONS)
-+			inject_iters_raw = 0;
-+		else
-+			inject_iters_raw = in_param;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -I\tIf set, an error will be injected at specific function call.\n\
-+	If not set, an error will be injected in every possible function call\
-+	starting from first up to 100."
-+	;
-+
-+igt_main_args("I:", NULL, help_str, opt_handler, NULL)
- {
- 	int fd, sysfs;
- 	struct drm_xe_engine_class_instance *hwe;
-+	struct fault_injection_params fault_params;
- 	static uint32_t devid;
- 	char pci_slot[NAME_MAX];
- 	const struct section {
-@@ -469,6 +529,12 @@ igt_main
- 		{ }
- 	};
- 
-+	const struct section guc_fail_functions[] = {
-+		{ "xe_guc_mmio_send_recv" },
-+		{ "xe_guc_ct_send_recv" },
-+		{ }
-+	};
-+
- 	igt_fixture {
- 		igt_require(fail_function_injection_enabled());
- 		fd = drm_open_driver(DRIVER_XE);
-@@ -511,6 +577,13 @@ igt_main
+ 	for (const struct section *s = probe_fail_functions; s->name; s++)
  		igt_subtest_f("inject-fault-probe-function-%s", s->name)
- 			inject_fault_probe(fd, pci_slot, s->name);
+-			inject_fault_probe(fd, pci_slot, s->name);
++			inject_fault_probe(fd, INJECT_ASSERT_ON_FAIL, pci_slot,	s->name);
  
-+	for (const struct section *s = guc_fail_functions; s->name; s++)
-+		igt_subtest_f("probe-fail-guc-%s", s->name) {
-+			memcpy(&fault_params, &default_fault_params,
-+					sizeof(struct fault_injection_params));
-+			probe_fail_guc(fd, pci_slot, s->name, &fault_params);
-+		}
-+
- 	igt_fixture {
- 		close(sysfs);
- 		drm_close_driver(fd);
+ 	for (const struct section *s = guc_fail_functions; s->name; s++)
+ 		igt_subtest_f("probe-fail-guc-%s", s->name) {
 -- 
 2.43.0
 
