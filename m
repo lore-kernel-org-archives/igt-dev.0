@@ -4,58 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1D42C369A2
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 17:23:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F03D0C369A2
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Apr 2025 17:23:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6575310E08E;
-	Mon, 14 Apr 2025 17:23:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A763B10E1A5;
+	Mon, 14 Apr 2025 17:23:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gohi4acf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QX1iZ8PF";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDE9610E08E
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 17:23:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D072910E1A5
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Apr 2025 17:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744651427; x=1776187427;
+ t=1744651431; x=1776187431;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BZB8h6LSlyDbJqkzRZ3Pxw+n6IGIqCzVE12tbFVjxTU=;
- b=gohi4acfC+YvPq5VQtWmXTgkVHWp4jeUU7sRqJbMQxrvdE9UNgkFOZkU
- zRcZxYccPdJ7iFMt0tvUOpEx8MxgwlOO6flk6giTFnNW8mN+DqvlLjmJB
- 59RAs5UxCgnSNRLoQnCaB0MXOaUJFk4ZOGj4Xya/YzDMCSJULimEEo1Ti
- doZwUJJHdPnke+Zh3ivH12naAevbfZfH87NlTBaqqe/nMpiPYWJeKNCsK
- 6EQMNfUpZFXDLqCTYUYJ3/nhcWc8V9hCD1h9wUnlYmvtzgAUgy8zPdOFw
- wMVu1l4HJRfqdEdRAaDTA46zP0Mt+Be2Bd7XZQgYEKGCZ9FYINARgL8XK w==;
-X-CSE-ConnectionGUID: CsF2v/QqRS2u53Ys9hBzjg==
-X-CSE-MsgGUID: C7afCd3nSkiPXNm7CRTEbQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="46223194"
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="46223194"
+ bh=D4wlzERtCTkJ4vPvX2mUWnnZ8PPorw6M9TRN3cmv4jA=;
+ b=QX1iZ8PF5hojxME1xeug9QWuOgdlx6JYaquWvs4mNyo7Ja9BSwtaYRFX
+ ntU/ZHZpA5SWDdSFYouiojTThFTXDJdEkEoH+fbHF/F+ykXtoA6+TPXpR
+ 9cAzMyFnd/PiLiuZXZbF1rIcat2sOXzegzRnqC7Ww1urjFLHovfLi7swf
+ MKTrDuKQVf95jwRciBVWVY/VtF9X0BWoskTQp0zNGNQ1+fZ8ZMGwggrlN
+ rR8zylPpVEZSMMq7ZAM1HglwqY7+/nEYQMhSgQVdolLvxK4ucEwW7WNUz
+ cEjIIZ0FhYuWOhPG42/z9r4aAf7AseSB8H2fn9DS4hacCxR6OIAFB03BS A==;
+X-CSE-ConnectionGUID: WDT1cfNNSmuMJPxbxVpYUA==
+X-CSE-MsgGUID: QteSoigySF6wHdMubY9+mQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="46223203"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="46223203"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 10:23:46 -0700
-X-CSE-ConnectionGUID: RrY9Fq7sRXOYEt7ocXSGmg==
-X-CSE-MsgGUID: sVmw4xelRFCka52VsQueEg==
+ 14 Apr 2025 10:23:50 -0700
+X-CSE-ConnectionGUID: wkRLUkaQRPiCmTG4myLEZA==
+X-CSE-MsgGUID: MB32OMa+Q2+hkRgCwfz6dA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="130852571"
+X-IronPort-AV: E=Sophos;i="6.15,212,1739865600"; d="scan'208";a="130852580"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.251])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 10:23:45 -0700
+ 14 Apr 2025 10:23:50 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v5 1/2] tests/intel: rename drm_fdinfo into i915_fdinfo
-Date: Mon, 14 Apr 2025 19:23:34 +0200
-Message-ID: <20250414172336.59158-2-kamil.konieczny@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v5 2/2] HAX/DO_NOT_MERGE: test drm/i915_fdinfo
+Date: Mon, 14 Apr 2025 19:23:35 +0200
+Message-ID: <20250414172336.59158-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250414172336.59158-1-kamil.konieczny@linux.intel.com>
 References: <20250414172336.59158-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -72,90 +69,1258 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test works only for i915 driver and also uses i915 specific
-workload to validate fdinfo so rename it to avoid confusion.
+DO_NOT_MERGE: Check for any regression in test rename.
 
-v2: correct Tvrto address (Kamil)
-v3: removed from xe.blocklist and squashed into one patch (Lucas)
-v4: corrected lib dependency in meson.build (Kamil)
-v5: drop sorting other tests in meson.build (Kamil)
+These runs both tests in a BAT run to make sure no
+regression was introduced.
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel-ci/xe.blocklist.txt             | 1 -
- tests/intel/{drm_fdinfo.c => i915_fdinfo.c} | 2 +-
- tests/meson.build                           | 4 ++--
- 3 files changed, 3 insertions(+), 4 deletions(-)
- rename tests/intel/{drm_fdinfo.c => i915_fdinfo.c} (99%)
+ tests/intel-ci/fast-feedback.testlist |   56 ++
+ tests/intel/drm_fdinfo.c              | 1146 +++++++++++++++++++++++++
+ tests/meson.build                     |    2 +
+ 3 files changed, 1204 insertions(+)
+ create mode 100644 tests/intel/drm_fdinfo.c
 
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index d02d0f73e..506a6001e 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -38,7 +38,6 @@ igt@xe_live_ktest@xe_bo_shrink
- ##################################################################
- igt@debugfs.*
- igt@device_reset
--igt@drm_fdinfo
- igt@drm_read
- igt@dumb.*
- igt@prime_.*
-diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/i915_fdinfo.c
-similarity index 99%
-rename from tests/intel/drm_fdinfo.c
-rename to tests/intel/i915_fdinfo.c
-index 3c1f0a739..2ca3e0428 100644
---- a/tests/intel/drm_fdinfo.c
-+++ b/tests/intel/i915_fdinfo.c
-@@ -34,7 +34,7 @@
- #include "i915/gem_vm.h"
- #include "intel_ctx.h"
- /**
-- * TEST: drm fdinfo
-+ * TEST: i915 fdinfo
-  * Description: Test the i915 drm fdinfo data
-  * Category: Core
-  * Mega feature: General Core features
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 82395e7ea..500d9fa75 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,6 +1,62 @@
+ # Try to load the driver if it's not available yet.
+ igt@i915_module_load@load
+ 
++igt@core_getversion@basic
++
++igt@drm_fdinfo@all-busy-check-all
++igt@drm_fdinfo@all-busy-idle-check-all
++igt@drm_fdinfo@basics
++igt@drm_fdinfo@busy
++igt@drm_fdinfo@busy-check-all
++igt@drm_fdinfo@busy-hang
++igt@drm_fdinfo@busy-idle
++igt@drm_fdinfo@busy-idle-check-all
++igt@drm_fdinfo@context-close-stress
++igt@drm_fdinfo@idle
++igt@drm_fdinfo@isolation
++igt@drm_fdinfo@memory-info-active
++igt@drm_fdinfo@memory-info-idle
++igt@drm_fdinfo@memory-info-purgeable
++igt@drm_fdinfo@memory-info-resident
++igt@drm_fdinfo@memory-info-shared
++igt@drm_fdinfo@most-busy-check-all
++igt@drm_fdinfo@most-busy-idle-check-all
++igt@drm_fdinfo@virtual-busy
++igt@drm_fdinfo@virtual-busy-all
++igt@drm_fdinfo@virtual-busy-hang
++igt@drm_fdinfo@virtual-busy-hang-all
++igt@drm_fdinfo@virtual-busy-idle
++igt@drm_fdinfo@virtual-busy-idle-all
++igt@drm_fdinfo@virtual-idle
++
++igt@core_getversion@all-cards
++
++igt@i915_fdinfo@all-busy-check-all
++igt@i915_fdinfo@all-busy-idle-check-all
++igt@i915_fdinfo@basics
++igt@i915_fdinfo@busy
++igt@i915_fdinfo@busy-check-all
++igt@i915_fdinfo@busy-hang
++igt@i915_fdinfo@busy-idle
++igt@i915_fdinfo@busy-idle-check-all
++igt@i915_fdinfo@context-close-stress
++igt@i915_fdinfo@idle
++igt@i915_fdinfo@isolation
++igt@i915_fdinfo@memory-info-active
++igt@i915_fdinfo@memory-info-idle
++igt@i915_fdinfo@memory-info-purgeable
++igt@i915_fdinfo@memory-info-resident
++igt@i915_fdinfo@memory-info-shared
++igt@i915_fdinfo@most-busy-check-all
++igt@i915_fdinfo@most-busy-idle-check-all
++igt@i915_fdinfo@virtual-busy
++igt@i915_fdinfo@virtual-busy-all
++igt@i915_fdinfo@virtual-busy-hang
++igt@i915_fdinfo@virtual-busy-hang-all
++igt@i915_fdinfo@virtual-busy-idle
++igt@i915_fdinfo@virtual-busy-idle-all
++igt@i915_fdinfo@virtual-idle
++
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
+ igt@fbdev@eof
+diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+new file mode 100644
+index 000000000..b66ac9e1b
+--- /dev/null
++++ b/tests/intel/drm_fdinfo.c
+@@ -0,0 +1,1146 @@
++/*
++ * Copyright © 2022 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ *
++ */
++
++#include <fcntl.h>
++#include <sys/ioctl.h>
++
++#include "igt.h"
++#include "igt_core.h"
++#include "igt_device.h"
++#include "igt_drm_fdinfo.h"
++#include "i915/gem.h"
++#include "i915/gem_create.h"
++#include "i915/gem_vm.h"
++#include "intel_ctx.h"
++/**
++ * TEST: drm fdinfo
++ * Description: Test the i915 drm fdinfo data
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: driver
++ * Functionality: Per client memory statistics
++ * Feature: client_busyness
++ *
++ * SUBTEST: all-busy-check-all
++ *
++ * SUBTEST: all-busy-idle-check-all
++ *
++ * SUBTEST: basics
++ *
++ * SUBTEST: busy
++ *
++ * SUBTEST: busy-check-all
++ *
++ * SUBTEST: busy-hang
++ *
++ * SUBTEST: busy-idle
++ *
++ * SUBTEST: busy-idle-check-all
++ *
++ * SUBTEST: idle
++ *
++ * SUBTEST: isolation
++ *
++ * SUBTEST: most-busy-check-all
++ *
++ * SUBTEST: most-busy-idle-check-all
++ *
++ * SUBTEST: virtual-busy
++ *
++ * SUBTEST: virtual-busy-all
++ *
++ * SUBTEST: virtual-busy-hang
++ *
++ * SUBTEST: virtual-busy-hang-all
++ *
++ * SUBTEST: virtual-busy-idle
++ *
++ * SUBTEST: virtual-busy-idle-all
++ *
++ * SUBTEST: virtual-idle
++ *
++ * SUBTEST: memory-info-idle
++ *
++ * SUBTEST: memory-info-active
++ *
++ * SUBTEST: memory-info-resident
++ *
++ * SUBTEST: memory-info-purgeable
++ *
++ * SUBTEST: memory-info-shared
++ *
++ * SUBTEST: context-close-stress
++ */
++
++IGT_TEST_DESCRIPTION("Test the i915 drm fdinfo data");
++
++const double tolerance = 0.05f;
++const unsigned long batch_duration_ns = 500e6;
++
++static const char *engine_map[] = {
++	"render",
++	"copy",
++	"video",
++	"video-enhance",
++	"compute",
++};
++
++#define __assert_within_epsilon(x, ref, tol_up, tol_down) \
++	do { \
++		igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
++			     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
++			     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
++			     #x, #ref, (double)(x), \
++			     (tol_up) * 100.0, (tol_down) * 100.0, \
++			     (double)(ref)); \
++		igt_debug("%f within +%.1f%%/-%.1f%% tolerance of %f\n",\
++			  (double)(x), \
++			  (tol_up) * 100.0, (tol_down) * 100.0, \
++			  (double)(ref)); \
++	} while (0)
++
++#define assert_within_epsilon(x, ref, tolerance) \
++	__assert_within_epsilon(x, ref, tolerance, tolerance)
++
++static void basics(int i915, unsigned int num_classes)
++{
++	struct drm_client_fdinfo info = { };
++	unsigned int ret;
++
++	ret = igt_parse_drm_fdinfo(i915, &info, engine_map,
++				   ARRAY_SIZE(engine_map), NULL, 0);
++	igt_assert(ret);
++
++	igt_assert(!strcmp(info.driver, "i915"));
++
++	igt_assert_eq(info.num_engines, num_classes);
++}
++
++/*
++ * Helper for cases where we assert on time spent sleeping (directly or
++ * indirectly), so make it more robust by ensuring the system sleep time
++ * is within test tolerance to start with.
++ */
++static unsigned int measured_usleep(unsigned int usec)
++{
++	struct timespec ts = { };
++	unsigned int slept;
++
++	slept = igt_nsec_elapsed(&ts);
++	igt_assert(slept == 0);
++	do {
++		usleep(usec - slept);
++		slept = igt_nsec_elapsed(&ts) / 1000;
++	} while (slept < usec);
++
++	return igt_nsec_elapsed(&ts);
++}
++
++#define TEST_BUSY (1)
++#define FLAG_SYNC (2)
++#define TEST_TRAILING_IDLE (4)
++#define FLAG_HANG (8)
++#define TEST_ISOLATION (16)
++
++#define TEST_ACTIVE TEST_BUSY
++#define TEST_RESIDENT (32)
++#define TEST_PURGEABLE (64)
++#define TEST_SHARED (128)
++
++static void end_spin(int fd, igt_spin_t *spin, unsigned int flags)
++{
++	if (!spin)
++		return;
++
++	igt_spin_end(spin);
++
++	if (flags & FLAG_SYNC)
++		gem_sync(fd, spin->handle);
++
++	if (flags & TEST_TRAILING_IDLE) {
++		unsigned long t, timeout = 0;
++		struct timespec start = { };
++
++		igt_nsec_elapsed(&start);
++
++		do {
++			t = igt_nsec_elapsed(&start);
++
++			if (gem_bo_busy(fd, spin->handle) &&
++			    (t - timeout) > 10e6) {
++				timeout = t;
++				igt_warn("Spinner not idle after %.2fms\n",
++					 (double)t / 1e6);
++			}
++
++			usleep(1e3);
++		} while (t < batch_duration_ns / 5);
++	}
++}
++
++static uint64_t read_engine_time(int i915, unsigned int class)
++{
++	struct drm_client_fdinfo info = { };
++
++	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
++					ARRAY_SIZE(engine_map), NULL, 0));
++
++	return info.engine_time[class];
++}
++
++static void
++single(int gem_fd, const intel_ctx_t *ctx,
++       const struct intel_execution_engine2 *e, unsigned int flags)
++{
++	unsigned long slept;
++	igt_spin_t *spin;
++	uint64_t val;
++	int spin_fd;
++	uint64_t ahnd;
++
++	gem_quiescent_gpu(gem_fd);
++
++	if (flags & TEST_BUSY)
++		igt_require(!gem_using_guc_submission(gem_fd));
++
++	if (flags & TEST_ISOLATION) {
++		spin_fd = drm_reopen_driver(gem_fd);
++		ctx = intel_ctx_create_all_physical(spin_fd);
++	} else {
++		spin_fd = gem_fd;
++	}
++
++	ahnd = get_reloc_ahnd(spin_fd, ctx->id);
++
++	if (flags & TEST_BUSY)
++		spin = igt_sync_spin(spin_fd, ahnd, ctx, e);
++	else
++		spin = NULL;
++
++	val = read_engine_time(gem_fd, e->class);
++	slept = measured_usleep(batch_duration_ns / 1000);
++	if (flags & TEST_TRAILING_IDLE)
++		end_spin(spin_fd, spin, flags);
++	val = read_engine_time(gem_fd, e->class) - val;
++
++	if (flags & FLAG_HANG)
++		igt_force_gpu_reset(spin_fd);
++	else
++		end_spin(spin_fd, spin, FLAG_SYNC);
++
++	assert_within_epsilon((flags & TEST_BUSY) && !(flags & TEST_ISOLATION) ? val : slept - val,
++			      slept, tolerance);
++
++	/* Check for idle after hang. */
++	if (flags & FLAG_HANG) {
++		gem_quiescent_gpu(spin_fd);
++		igt_assert(!gem_bo_busy(spin_fd, spin->handle));
++
++		val = read_engine_time(gem_fd, e->class);
++		slept = measured_usleep(batch_duration_ns / 1000);
++		val = read_engine_time(gem_fd, e->class) - val;
++
++		assert_within_epsilon(slept - val, slept, tolerance);
++	}
++
++	igt_spin_free(spin_fd, spin);
++	put_ahnd(ahnd);
++
++	gem_quiescent_gpu(spin_fd);
++}
++
++static void log_busy(unsigned int num_engines, uint64_t *val)
++{
++	char buf[1024];
++	int rem = sizeof(buf);
++	unsigned int i;
++	char *p = buf;
++
++	for (i = 0; i < num_engines; i++) {
++		int len;
++
++		len = snprintf(p, rem, "%u=%" PRIu64 "\n",  i, val[i]);
++		igt_assert_lt(0, len);
++		rem -= len;
++		p += len;
++	}
++
++	igt_info("%s", buf);
++}
++
++static void read_engine_time_all(int i915, uint64_t *val)
++{
++	struct drm_client_fdinfo info = { };
++
++	igt_assert(igt_parse_drm_fdinfo(i915, &info, engine_map,
++					ARRAY_SIZE(engine_map), NULL, 0));
++
++	memcpy(val, info.engine_time, sizeof(info.engine_time));
++}
++
++static void
++busy_check_all(int gem_fd, const intel_ctx_t *ctx,
++	       const struct intel_execution_engine2 *e,
++	       const unsigned int num_engines,
++	       const unsigned int classes[16], const unsigned int num_classes,
++	       unsigned int flags)
++{
++	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
++	uint64_t tval[2][16];
++	unsigned long slept;
++	uint64_t val[16];
++	igt_spin_t *spin;
++	unsigned int i;
++
++	igt_require(!gem_using_guc_submission(gem_fd));
++
++	memset(tval, 0, sizeof(tval));
++
++	spin = igt_sync_spin(gem_fd, ahnd, ctx, e);
++
++	read_engine_time_all(gem_fd, tval[0]);
++	slept = measured_usleep(batch_duration_ns / 1000);
++	if (flags & TEST_TRAILING_IDLE)
++		end_spin(gem_fd, spin, flags);
++	read_engine_time_all(gem_fd, tval[1]);
++
++	end_spin(gem_fd, spin, FLAG_SYNC);
++	igt_spin_free(gem_fd, spin);
++	put_ahnd(ahnd);
++
++	for (i = 0; i < num_classes; i++)
++		val[i] = tval[1][i] - tval[0][i];
++
++	log_busy(num_classes, val);
++
++	for (i = 0; i < num_classes; i++)
++		assert_within_epsilon(i == e->class ? val[i] : slept - val[i], slept, tolerance);
++
++	gem_quiescent_gpu(gem_fd);
++}
++
++static void
++__submit_spin(int gem_fd, igt_spin_t *spin,
++	      const struct intel_execution_engine2 *e,
++	      int offset)
++{
++	struct drm_i915_gem_execbuffer2 eb = spin->execbuf;
++
++	eb.flags &= ~(0x3f | I915_EXEC_BSD_MASK);
++	eb.flags |= e->flags | I915_EXEC_NO_RELOC;
++	eb.batch_start_offset += offset;
++
++	gem_execbuf(gem_fd, &eb);
++}
++
++static void
++most_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
++		    const struct intel_execution_engine2 *e,
++		    const unsigned int num_engines,
++		    const unsigned int classes[16],
++		    const unsigned int num_classes,
++		    unsigned int flags)
++{
++	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
++	unsigned int busy_class[num_classes];
++	struct intel_execution_engine2 *e_;
++	igt_spin_t *spin = NULL;
++	uint64_t tval[2][16];
++	unsigned long slept;
++	uint64_t val[16];
++	unsigned int i;
++
++	igt_require(!gem_using_guc_submission(gem_fd));
++
++	memset(busy_class, 0, sizeof(busy_class));
++	memset(tval, 0, sizeof(tval));
++
++	gem_quiescent_gpu(gem_fd);
++
++	for_each_ctx_engine(gem_fd, ctx, e_) {
++		if (e->class == e_->class && e->instance == e_->instance) {
++			continue;
++		} else if (spin) {
++			__submit_spin(gem_fd, spin, e_, 64);
++			busy_class[e_->class]++;
++		} else {
++			spin = __igt_sync_spin_poll(gem_fd, ahnd, ctx, e_);
++			busy_class[e_->class]++;
++		}
++	}
++	igt_require(spin); /* at least one busy engine */
++
++	/* Small delay to allow engines to start. */
++	usleep(__igt_sync_spin_wait(gem_fd, spin) * num_engines / 1e3);
++
++	read_engine_time_all(gem_fd, tval[0]);
++	slept = measured_usleep(batch_duration_ns / 1000);
++	if (flags & TEST_TRAILING_IDLE)
++		end_spin(gem_fd, spin, flags);
++	read_engine_time_all(gem_fd, tval[1]);
++
++	end_spin(gem_fd, spin, FLAG_SYNC);
++	igt_spin_free(gem_fd, spin);
++	put_ahnd(ahnd);
++
++	for (i = 0; i < num_classes; i++)
++		val[i] = tval[1][i] - tval[0][i];
++
++	log_busy(num_classes, val);
++
++	for (i = 0; i < num_classes; i++) {
++		double target = slept * busy_class[i] ?: slept;
++
++		assert_within_epsilon(busy_class[i] ? val[i] : slept - val[i], target, tolerance);
++	}
++	gem_quiescent_gpu(gem_fd);
++}
++
++static void
++all_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
++		   const unsigned int num_engines,
++		   const unsigned int classes[16],
++		   const unsigned int num_classes,
++		   unsigned int flags)
++{
++	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id);
++	unsigned int busy_class[num_classes];
++	struct intel_execution_engine2 *e;
++	igt_spin_t *spin = NULL;
++	uint64_t tval[2][16];
++	unsigned long slept;
++	uint64_t val[16];
++	unsigned int i;
++
++	igt_require(!gem_using_guc_submission(gem_fd));
++
++	memset(busy_class, 0, sizeof(busy_class));
++	memset(tval, 0, sizeof(tval));
++
++	for_each_ctx_engine(gem_fd, ctx, e) {
++		if (spin)
++			__submit_spin(gem_fd, spin, e, 64);
++		else
++			spin = __igt_sync_spin_poll(gem_fd, ahnd, ctx, e);
++		busy_class[e->class]++;
++	}
++
++	/* Small delay to allow engines to start. */
++	usleep(__igt_sync_spin_wait(gem_fd, spin) * num_engines / 1e3);
++
++	read_engine_time_all(gem_fd, tval[0]);
++	slept = measured_usleep(batch_duration_ns / 1000);
++	if (flags & TEST_TRAILING_IDLE)
++		end_spin(gem_fd, spin, flags);
++	read_engine_time_all(gem_fd, tval[1]);
++
++	end_spin(gem_fd, spin, FLAG_SYNC);
++	igt_spin_free(gem_fd, spin);
++	put_ahnd(ahnd);
++
++	for (i = 0; i < num_classes; i++)
++		val[i] = tval[1][i] - tval[0][i];
++
++	log_busy(num_classes, val);
++
++	for (i = 0; i < num_classes; i++) {
++		double target = slept * busy_class[i] ?: slept;
++
++		assert_within_epsilon(busy_class[i] ? val[i] : slept - val[i], target, tolerance);
++	}
++	gem_quiescent_gpu(gem_fd);
++}
++
++static struct i915_engine_class_instance *
++list_engines(const intel_ctx_cfg_t *cfg,
++	     unsigned int class, unsigned int *out)
++{
++	struct i915_engine_class_instance *ci;
++	unsigned int count = 0, i;
++
++	ci = malloc(cfg->num_engines * sizeof(*ci));
++	igt_assert(ci);
++
++	for (i = 0; i < cfg->num_engines; i++) {
++		if (class == cfg->engines[i].engine_class)
++			ci[count++] = cfg->engines[i];
++	}
++
++	if (!count) {
++		free(ci);
++		ci = NULL;
++	}
++
++	*out = count;
++	return ci;
++}
++
++static size_t sizeof_load_balance(int count)
++{
++	return offsetof(struct i915_context_engines_load_balance,
++			engines[count]);
++}
++
++static size_t sizeof_param_engines(int count)
++{
++	return offsetof(struct i915_context_param_engines,
++			engines[count]);
++}
++
++#define alloca0(sz) ({ size_t sz__ = (sz); memset(alloca(sz__), 0, sz__); })
++
++static int __set_load_balancer(int i915, uint32_t ctx,
++			       const struct i915_engine_class_instance *ci,
++			       unsigned int count,
++			       void *ext)
++{
++	struct i915_context_engines_load_balance *balancer =
++		alloca0(sizeof_load_balance(count));
++	struct i915_context_param_engines *engines =
++		alloca0(sizeof_param_engines(count + 1));
++	struct drm_i915_gem_context_param p = {
++		.ctx_id = ctx,
++		.param = I915_CONTEXT_PARAM_ENGINES,
++		.size = sizeof_param_engines(count + 1),
++		.value = to_user_pointer(engines)
++	};
++
++	balancer->base.name = I915_CONTEXT_ENGINES_EXT_LOAD_BALANCE;
++	balancer->base.next_extension = to_user_pointer(ext);
++
++	igt_assert(count);
++	balancer->num_siblings = count;
++	memcpy(balancer->engines, ci, count * sizeof(*ci));
++
++	engines->extensions = to_user_pointer(balancer);
++	engines->engines[0].engine_class =
++		I915_ENGINE_CLASS_INVALID;
++	engines->engines[0].engine_instance =
++		I915_ENGINE_CLASS_INVALID_NONE;
++	memcpy(engines->engines + 1, ci, count * sizeof(*ci));
++
++	return __gem_context_set_param(i915, &p);
++}
++
++static void set_load_balancer(int i915, uint32_t ctx,
++			      const struct i915_engine_class_instance *ci,
++			      unsigned int count,
++			      void *ext)
++{
++	igt_assert_eq(__set_load_balancer(i915, ctx, ci, count, ext), 0);
++}
++
++static void
++virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
++{
++	intel_ctx_cfg_t cfg = {};
++
++	if (flags & TEST_BUSY)
++		igt_require(!gem_using_guc_submission(i915));
++
++	cfg.vm = gem_vm_create(i915);
++
++	for (int class = 0; class < 32; class++) {
++		struct i915_engine_class_instance *ci;
++		unsigned int count;
++
++		if (!gem_class_can_store_dword(i915, class))
++			continue;
++
++		ci = list_engines(base_cfg, class, &count);
++		if (!ci)
++			continue;
++
++		for (unsigned int pass = 0; pass < count; pass++) {
++			const intel_ctx_t *ctx;
++			unsigned long slept;
++			uint64_t ahnd, val;
++			igt_spin_t *spin;
++			igt_hang_t hang;
++
++			igt_assert(sizeof(*ci) == sizeof(int));
++			igt_permute_array(ci, count, igt_exchange_int);
++
++			igt_debug("class %u, pass %u/%u...\n", class, pass, count);
++
++			ctx = intel_ctx_create(i915, &cfg);
++			set_load_balancer(i915, ctx->id, ci, count, NULL);
++			if (flags & FLAG_HANG)
++				hang = igt_allow_hang(i915, ctx->id, 0);
++			ahnd = get_reloc_ahnd(i915, ctx->id);
++
++			if (flags & TEST_BUSY)
++				spin = igt_sync_spin(i915, ahnd, ctx, NULL);
++			else
++				spin = NULL;
++
++			val = read_engine_time(i915, class);
++			slept = measured_usleep(batch_duration_ns / 1000);
++			if (flags & TEST_TRAILING_IDLE)
++				end_spin(i915, spin, flags);
++			val = read_engine_time(i915, class) - val;
++
++			if (flags & FLAG_HANG)
++				igt_force_gpu_reset(i915);
++			else
++				end_spin(i915, spin, FLAG_SYNC);
++
++			assert_within_epsilon(flags & TEST_BUSY ? val : slept - val,
++					      slept, tolerance);
++
++			/* Check for idle after hang. */
++			if (flags & FLAG_HANG) {
++				gem_quiescent_gpu(i915);
++				igt_assert(!gem_bo_busy(i915, spin->handle));
++
++				val = read_engine_time(i915, class);
++				slept = measured_usleep(batch_duration_ns /
++							1000);
++				val = read_engine_time(i915, class) - val;
++
++				assert_within_epsilon(slept - val, slept, tolerance);
++			}
++
++			igt_spin_free(i915, spin);
++			put_ahnd(ahnd);
++			if (flags & FLAG_HANG)
++				igt_disallow_hang(i915, hang);
++			intel_ctx_destroy(i915, ctx);
++
++			gem_quiescent_gpu(i915);
++		}
++
++		free(ci);
++	}
++}
++
++static void
++__virt_submit_spin(int i915, igt_spin_t *spin,
++		   const intel_ctx_t *ctx,
++		   int offset)
++{
++	struct drm_i915_gem_execbuffer2 eb = spin->execbuf;
++
++	eb.flags &= ~(0x3f | I915_EXEC_BSD_MASK);
++	eb.flags |= I915_EXEC_NO_RELOC;
++	eb.batch_start_offset += offset;
++	eb.rsvd1 = ctx->id;
++
++	gem_execbuf(i915, &eb);
++}
++
++static void
++virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
++{
++	const unsigned int num_engines = base_cfg->num_engines;
++	intel_ctx_cfg_t cfg = {};
++
++	igt_require(!gem_using_guc_submission(i915));
++
++	cfg.vm = gem_vm_create(i915);
++
++	for (int class = 0; class < 32; class++) {
++		struct i915_engine_class_instance *ci;
++		const intel_ctx_t *ctx[num_engines];
++		igt_hang_t hang[num_engines];
++		igt_spin_t *spin = NULL;
++		unsigned int count;
++		unsigned long slept;
++		uint64_t val;
++
++		if (!gem_class_can_store_dword(i915, class))
++			continue;
++
++		ci = list_engines(base_cfg, class, &count);
++		if (!ci)
++			continue;
++		igt_assert(count <= num_engines);
++
++		if (count < 2)
++			continue;
++
++		igt_debug("class %u, %u engines...\n", class, count);
++
++		for (unsigned int i = 0; i < count; i++) {
++			uint64_t ahnd;
++
++			igt_assert(sizeof(*ci) == sizeof(int));
++			igt_permute_array(ci, count, igt_exchange_int);
++
++			ctx[i] = intel_ctx_create(i915, &cfg);
++			set_load_balancer(i915, ctx[i]->id, ci, count, NULL);
++			if (flags & FLAG_HANG)
++				hang[i] = igt_allow_hang(i915, ctx[i]->id, 0);
++			ahnd = get_reloc_ahnd(i915, ctx[i]->id);
++
++			if (spin)
++				__virt_submit_spin(i915, spin, ctx[i], 64);
++			else
++				spin = __igt_sync_spin_poll(i915, ahnd, ctx[i],
++							    NULL);
++		}
++
++		/* Small delay to allow engines to start. */
++		usleep(__igt_sync_spin_wait(i915, spin) * count / 1e3);
++
++		val = read_engine_time(i915, class);
++		slept = measured_usleep(batch_duration_ns / 1000);
++		if (flags & TEST_TRAILING_IDLE)
++			end_spin(i915, spin, flags);
++		val = read_engine_time(i915, class) - val;
++
++		if (flags & FLAG_HANG)
++			igt_force_gpu_reset(i915);
++		else
++			end_spin(i915, spin, FLAG_SYNC);
++
++		assert_within_epsilon(val, slept * count, tolerance);
++
++		/* Check for idle after hang. */
++		if (flags & FLAG_HANG) {
++			gem_quiescent_gpu(i915);
++			igt_assert(!gem_bo_busy(i915, spin->handle));
++
++			val = read_engine_time(i915, class);
++			slept = measured_usleep(batch_duration_ns /
++						1000);
++			val = read_engine_time(i915, class) - val;
++
++			assert_within_epsilon(slept - val, slept, tolerance);
++		}
++
++		igt_spin_free(i915, spin);
++		put_ahnd(spin->opts.ahnd);
++		for (unsigned int i = 0; i < count; i++) {
++			if (flags & FLAG_HANG)
++				igt_disallow_hang(i915, hang[i]);
++			intel_ctx_destroy(i915, ctx[i]);
++		}
++
++		gem_quiescent_gpu(i915);
++
++		free(ci);
++	}
++}
++
++static void stress_context_close(int i915)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	struct igt_helper_process reader = { };
++	struct drm_client_fdinfo info;
++	uint32_t batch;
++	int dir, ret;
++	char buf[64];
++
++	ret = snprintf(buf, sizeof(buf), "%u", i915);
++	igt_assert(ret > 0 && ret < sizeof(buf));
++
++	dir = open("/proc/self/fdinfo", O_DIRECTORY | O_RDONLY);
++	igt_assert_fd(dir);
++
++	memset(&info, 0, sizeof(info));
++	ret = __igt_parse_drm_fdinfo(dir, buf, &info, NULL, 0, NULL, 0);
++	igt_assert(ret > 0);
++	igt_require(info.num_regions);
++
++	batch = gem_create(i915, 4096);
++	gem_write(i915, batch, 0, &bbe, sizeof(bbe));
++
++	igt_fork_helper(&reader) {
++		for (;;) {
++			memset(&info, 0, sizeof(info));
++			ret = __igt_parse_drm_fdinfo(dir, buf, &info,
++						     NULL, 0, NULL, 0);
++			igt_assert(ret > 0);
++		}
++	}
++
++	igt_until_timeout(10) {
++		struct drm_i915_gem_exec_object2 obj = {
++			.handle = batch,
++		};
++		struct drm_i915_gem_execbuffer2 eb = {
++			.buffers_ptr = to_user_pointer(&obj),
++			.buffer_count = 1,
++		};
++
++		eb.rsvd1 = gem_context_create(i915);
++		igt_assert(eb.rsvd1);
++		gem_execbuf(i915, &eb);
++		gem_context_destroy(i915, eb.rsvd1);
++	}
++
++	igt_stop_helper(&reader);
++}
++
++static size_t read_fdinfo(char *buf, const size_t sz, int at, const char *name)
++{
++	size_t count;
++	int fd;
++
++	fd = openat(at, name, O_RDONLY);
++	if (fd < 0)
++		return 0;
++
++	count = read(fd, buf, sz - 1);
++	if (count > 0)
++		buf[count - 1] = 0;
++	close(fd);
++
++	return max_t(typeof(count), count, 0);
++}
++
++/*
++ * At least this much, but maybe less if we started with a driver internal
++ * baseline which can go away behind our back.
++ */
++#define fdinfo_assert_gte(cur, prev, sz, base) \
++({ \
++	int64_t __sz = (sz) - (base); \
++	int64_t __d = (cur) - (prev); \
++	igt_assert_f(__d >= __sz, \
++		     "prev=%"PRIu64" cur=%"PRIu64" delta=%"PRId64" sz=%"PRIu64" baseline=%"PRIu64"\n%s\n", \
++		     (prev), (cur), __d, (sz), (base), fdinfo_buf); \
++})
++
++#define fdinfo_assert_eq(cur, prev, sz, base) \
++({ \
++	int64_t __d = (cur) - (prev); \
++	igt_assert_f(__d == 0, \
++		     "prev=%"PRIu64" cur=%"PRIu64" delta=%"PRId64" sz=%"PRIu64" baseline=%"PRIu64"\n%s\n", \
++		     (prev), (cur), __d, (sz), (base), fdinfo_buf); \
++})
++
++static void
++test_memory(int i915, struct gem_memory_region *mr, unsigned int flags)
++{
++	const unsigned int r = mr->ci.memory_class == I915_MEMORY_CLASS_SYSTEM ? 0 : 1; /* See region map */
++	const uint64_t max_mem = 512ull * 1024 * 1024;
++	const uint64_t max_bo = 16ull * 1024 * 1024;
++	struct drm_client_fdinfo base_info, prev_info = { };
++	struct drm_client_fdinfo info = { };
++	char buf[64], fdinfo_buf[4096];
++	igt_spin_t *spin = NULL;
++	uint64_t total = 0, sz;
++	uint64_t ahnd;
++	int ret, dir;
++
++	i915 = drm_reopen_driver(i915);
++
++	ahnd = get_reloc_ahnd(i915, 0);
++
++	ret = snprintf(buf, sizeof(buf), "%u", i915);
++	igt_assert(ret > 0 && ret < sizeof(buf));
++
++	dir = open("/proc/self/fdinfo", O_DIRECTORY | O_RDONLY);
++	igt_assert_fd(dir);
++
++	gem_quiescent_gpu(i915);
++	ret =  __igt_parse_drm_fdinfo(dir, buf, &info, NULL, 0, NULL, 0);
++	igt_assert_lt(0, ret);
++	igt_require(info.num_regions);
++	memcpy(&prev_info, &info, sizeof(info));
++	memcpy(&base_info, &info, sizeof(info));
++
++	while (total < max_mem) {
++		static const char *region_map[] = {
++			"system0",
++			"local0",
++		};
++		uint32_t bo;
++
++		sz = random() % max_bo;
++		ret = __gem_create_in_memory_region_list(i915, &bo, &sz, 0,
++							 &mr->ci, 1);
++		igt_assert_eq(ret, 0);
++		total += sz;
++
++		if (flags & (TEST_RESIDENT | TEST_PURGEABLE | TEST_ACTIVE))
++			spin = igt_spin_new(i915,
++					    .dependency = bo,
++					    .ahnd = ahnd);
++		else
++			spin = NULL;
++
++		if (flags & TEST_PURGEABLE) {
++			gem_madvise(i915, bo, I915_MADV_DONTNEED);
++			igt_spin_free(i915, spin);
++			gem_quiescent_gpu(i915);
++			spin = NULL;
++		}
++
++		if (flags & TEST_SHARED) {
++			struct drm_gem_open open_struct;
++			struct drm_gem_flink flink;
++
++			flink.handle = bo;
++			ret = ioctl(i915, DRM_IOCTL_GEM_FLINK, &flink);
++			igt_assert_eq(ret, 0);
++
++			open_struct.name = flink.name;
++			ret = ioctl(i915, DRM_IOCTL_GEM_OPEN, &open_struct);
++			igt_assert_eq(ret, 0);
++			igt_assert(open_struct.handle != 0);
++		}
++
++		memset(&info, 0, sizeof(info));
++		ret =  __igt_parse_drm_fdinfo(dir, buf, &info,
++					      NULL, 0,
++					      region_map, ARRAY_SIZE(region_map));
++		igt_assert_lt(0, ret);
++		igt_assert(info.num_regions);
++
++		read_fdinfo(fdinfo_buf, sizeof(fdinfo_buf), dir, buf);
++
++		/* >= to account for objects out of our control */
++		fdinfo_assert_gte(info.region_mem[r].total,
++				  prev_info.region_mem[r].total,
++				  sz,
++				  base_info.region_mem[r].total);
++
++		if (flags & TEST_SHARED)
++			fdinfo_assert_gte(info.region_mem[r].shared,
++					  prev_info.region_mem[r].shared,
++					  sz,
++					  base_info.region_mem[r].shared);
++		else
++			fdinfo_assert_eq(info.region_mem[r].shared,
++					 prev_info.region_mem[r].shared,
++					 sz,
++					 base_info.region_mem[r].shared);
++
++		if (flags & (TEST_RESIDENT | TEST_PURGEABLE | TEST_ACTIVE))
++			fdinfo_assert_gte(info.region_mem[r].resident,
++					  (uint64_t)0, /* We can only be sure the current buffer is resident. */
++					  sz,
++					  (uint64_t)0);
++
++		if (flags & TEST_PURGEABLE)
++			fdinfo_assert_gte(info.region_mem[r].purgeable,
++					  (uint64_t)0, /* We can only be sure the current buffer is purgeable (subset of resident). */
++					  sz,
++					  (uint64_t)0);
++
++		if (flags & TEST_ACTIVE)
++			fdinfo_assert_gte(info.region_mem[r].active,
++					  (uint64_t)0, /* We can only be sure the current buffer is active. */
++					  sz,
++					  (uint64_t)0);
++
++		memcpy(&prev_info, &info, sizeof(info));
++
++		if (spin) {
++			igt_spin_free(i915, spin);
++			gem_quiescent_gpu(i915);
++		}
++	}
++
++	put_ahnd(ahnd);
++	close(i915);
++}
++
++#define test_each_engine(T, i915, ctx, e) \
++	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
++		igt_dynamic_f("%s", e->name)
++
++igt_main
++{
++	unsigned int num_engines = 0, num_classes = 0;
++	const struct intel_execution_engine2 *e;
++	unsigned int classes[16] = { };
++	const intel_ctx_t *ctx = NULL;
++	int i915 = -1;
++
++	igt_fixture {
++		struct drm_client_fdinfo info = { };
++		unsigned int i;
++
++		i915 = __drm_open_driver(DRIVER_INTEL);
++
++		igt_require_gem(i915);
++		igt_require(igt_parse_drm_fdinfo(i915, &info, NULL, 0, NULL, 0));
++		igt_require(info.num_engines);
++
++		ctx = intel_ctx_create_all_physical(i915);
++
++		for_each_ctx_engine(i915, ctx, e) {
++			num_engines++;
++			igt_assert(e->class < ARRAY_SIZE(classes));
++			classes[e->class]++;
++		}
++		igt_require(num_engines);
++
++		for (i = 0; i < ARRAY_SIZE(classes); i++) {
++			if (classes[i])
++				num_classes++;
++		}
++		igt_assert(num_classes);
++	}
++
++	/**
++	 * Test basic fdinfo content.
++	 */
++	igt_subtest("basics")
++		basics(i915, num_classes);
++
++	/**
++	 * Test that engines show no load when idle.
++	 */
++	test_each_engine("idle", i915, ctx, e)
++		single(i915, ctx, e, 0);
++
++	igt_subtest("virtual-idle")
++		virtual(i915, &ctx->cfg, 0);
++
++	/**
++	 * Test that a single engine reports load correctly.
++	 */
++	test_each_engine("busy", i915, ctx, e)
++		single(i915, ctx, e, TEST_BUSY);
++
++	igt_subtest("virtual-busy")
++		virtual(i915, &ctx->cfg, TEST_BUSY);
++
++	test_each_engine("busy-idle", i915, ctx, e)
++		single(i915, ctx, e, TEST_BUSY | TEST_TRAILING_IDLE);
++
++	igt_subtest("virtual-busy-idle")
++		virtual(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
++
++	test_each_engine("busy-hang", i915, ctx, e) {
++		igt_hang_t hang = igt_allow_hang(i915, ctx->id, 0);
++
++		single(i915, ctx, e, TEST_BUSY | FLAG_HANG);
++
++		igt_disallow_hang(i915, hang);
++	}
++
++	igt_subtest("virtual-busy-hang")
++		virtual(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
++
++	/**
++	 * Test that when one engine is loaded other report no
++	 * load.
++	 */
++	test_each_engine("busy-check-all", i915, ctx, e)
++		busy_check_all(i915, ctx, e, num_engines, classes, num_classes,
++			       TEST_BUSY);
++
++	test_each_engine("busy-idle-check-all", i915, ctx, e)
++		busy_check_all(i915, ctx, e, num_engines, classes, num_classes,
++			       TEST_BUSY | TEST_TRAILING_IDLE);
++
++	/**
++	 * Test that when all except one engine are loaded all
++	 * loads are correctly reported.
++	 */
++	test_each_engine("most-busy-check-all", i915, ctx, e)
++		most_busy_check_all(i915, ctx, e, num_engines,
++				    classes, num_classes,
++				    TEST_BUSY);
++
++	test_each_engine("most-busy-idle-check-all", i915, ctx, e)
++		most_busy_check_all(i915, ctx, e, num_engines,
++				    classes, num_classes,
++				    TEST_BUSY | TEST_TRAILING_IDLE);
++
++	/**
++	 * Test that when all engines are loaded all loads are
++	 * correctly reported.
++	 */
++	igt_subtest("all-busy-check-all")
++		all_busy_check_all(i915, ctx, num_engines, classes, num_classes,
++				   TEST_BUSY);
++
++	igt_subtest("all-busy-idle-check-all")
++		all_busy_check_all(i915, ctx, num_engines, classes, num_classes,
++				   TEST_BUSY | TEST_TRAILING_IDLE);
++
++	igt_subtest("virtual-busy-all")
++		virtual_all(i915, &ctx->cfg, TEST_BUSY);
++
++	igt_subtest("virtual-busy-idle-all")
++		virtual_all(i915, &ctx->cfg, TEST_BUSY | TEST_TRAILING_IDLE);
++
++	igt_subtest("virtual-busy-hang-all")
++		virtual_all(i915, &ctx->cfg, TEST_BUSY | FLAG_HANG);
++	/**
++	 * Test for no cross-client contamination.
++	 */
++	test_each_engine("isolation", i915, ctx, e)
++		single(i915, ctx, e, TEST_BUSY | TEST_ISOLATION);
++
++	igt_subtest_with_dynamic("memory-info-idle") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, 0);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-resident") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_RESIDENT);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-purgeable") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_PURGEABLE);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-active") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_ACTIVE);
++		}
++	}
++
++	igt_subtest_with_dynamic("memory-info-shared") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				test_memory(i915, r, TEST_SHARED);
++		}
++	}
++
++	igt_subtest_group {
++		int newfd;
++
++		igt_fixture
++			newfd = drm_reopen_driver(i915);
++
++		igt_subtest("context-close-stress")
++			stress_context_close(newfd);
++
++		igt_fixture
++			drm_close_driver(newfd);
++	}
++
++	igt_fixture {
++		intel_ctx_destroy(i915, ctx);
++		drm_close_driver(i915);
++	}
++}
 diff --git a/tests/meson.build b/tests/meson.build
-index 9224145cf..872678d9a 100644
+index 872678d9a..f57775a35 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -88,7 +88,6 @@ intel_i915_xe_progs = [
- 
- intel_i915_progs = [
- 	'api_intel_bb',
--	'drm_fdinfo',
- 	'gen3_mixed_blits',
- 	'gen3_render_linear_blits',
- 	'gen3_render_mixed_blits',
-@@ -214,6 +213,7 @@ intel_i915_progs = [
+@@ -213,6 +213,7 @@ intel_i915_progs = [
  	'perf',
  	'perf_pmu',
  	'i915_fb_tiling',
-+	'i915_fdinfo',
++	'drm_fdinfo',
+ 	'i915_fdinfo',
  	'i915_getparams_basic',
  	'i915_pm_freq_api',
- 	'i915_hangman',
-@@ -386,7 +386,6 @@ extra_sources = {
- # Extra dependencies used on core and Intel drivers
- extra_dependencies = {
- 	'core_hotunplug': [ lib_igt_i915_perf ],
--	'drm_fdinfo': [ lib_igt_drm_fdinfo ],
- 	'dumb_buffer':  [ libatomic ],
- 	'gem_barrier_race': [ lib_igt_i915_perf ],
- 	'gem_create': [ libatomic ],
-@@ -395,6 +394,7 @@ extra_dependencies = {
+@@ -394,6 +395,7 @@ extra_dependencies = {
  	'gem_eio': [ realtime ],
  	'gem_exec_balancer': [ lib_igt_perf ],
  	'gem_mmap_offset': [ libatomic ],
-+	'i915_fdinfo': [ lib_igt_drm_fdinfo ],
++	'drm_fdinfo': [ lib_igt_drm_fdinfo ],
+ 	'i915_fdinfo': [ lib_igt_drm_fdinfo ],
  	'i915_pm_freq_mult': [ lib_igt_perf ],
  	'i915_pm_rc6_residency': [ lib_igt_perf ],
- 	'perf': [ lib_igt_i915_perf ],
 -- 
 2.49.0
 
