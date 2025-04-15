@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BF6FC369B5
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 10:14:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84E01C369AB
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 10:14:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3EC9B10E6FC;
-	Tue, 15 Apr 2025 10:14:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4349A10E700;
+	Tue, 15 Apr 2025 10:14:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OFCb+3B7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="chdRJ8NM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF3F910E6FC
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 10:14:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA3F610E6FF
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 10:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744712092; x=1776248092;
+ t=1744712095; x=1776248095;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=JOq+9EGG6o39hRb7GSe8hx/VkaAmSih3snQERiRQIwE=;
- b=OFCb+3B784JFdLRDJoVX4yoj3lMDU/24641VuKobreUCfy5wLYjrXXeX
- FVdR0maEQ1NhBfrR4xa85rxxp8HDdDe3XnV5oB5qCvAHcFyPnysCFlJvh
- CCDmKfn5sZRCNTIL+H/tj4Us82j3i4lFgFoy16A2izkFAcBh/QDaJZm6m
- XYjTc5CEP2RnMINBJT4RQSIQAaAdzJs+5mqAxil4B1/pJsGQS60n7gCTX
- vl6Rdm1zJGMmDIcb4rRBbSgblOZbI5MKB2VhN5j9Y5DCTvA9vG+d/pUM3
- 4x+HbJ9/stF24pfsHRy7fIaKyNMOp3oP2hBtwMUpe+GXdOoFJElz9ZUCG w==;
-X-CSE-ConnectionGUID: U49Noea7ThWjGaZCs43iVw==
-X-CSE-MsgGUID: DnnE3qccTqWQb015H9M9cA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="50014748"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="50014748"
+ bh=fQsCKNI8teNCrKY+K9wUdDKEonDtLn27CchR4rlc3ZE=;
+ b=chdRJ8NMPAtPoSHCKiDLof+6ZNQ5VWz0qODt3DfgpcxcvHkxXNTr6BaQ
+ bIlONSn0pzGMPFvZC79/uZmmqIpeslfmS/p77mx8MxukO6TlR/rfBsP6I
+ YTAYj0BMa8a5j/JYSpqYOXyR5wtc6a4/qa4YNEYrT1GoEg8bRZL48u6dz
+ ACVmzYxtu98o1/K3xUK7xT/6ZHdfazS4IJi0LPg9hB5KObAa5yU3KxCcx
+ dhZZ4tP2SFhTMGq6OhwM54CNTUQ9hltTOpop1O5mJ+nWgxHz0IspBGsSr
+ GteVAcdeCckHjNTl+twFpXAqOjKySuXxPS88JSAXH+oG1FNCn191jgcs+ A==;
+X-CSE-ConnectionGUID: bd1m3vFSTsKEGITeoxy3rA==
+X-CSE-MsgGUID: m0eIYS7pSjSQaoZeAfz2hA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="50014756"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="50014756"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 03:14:52 -0700
-X-CSE-ConnectionGUID: sLLYX60uR8WErvXKSdzCUg==
-X-CSE-MsgGUID: dIaS2ogCS8ysDF+E5awXLQ==
+ 15 Apr 2025 03:14:55 -0700
+X-CSE-ConnectionGUID: 6dOwmHCkR4GkLf5fIeDD0A==
+X-CSE-MsgGUID: vmaW+WSHT5SO1Hvd7mgtGQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="129933283"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="129933289"
 Received: from artdev273.igk.intel.com ([172.28.176.8])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 03:14:51 -0700
+ 15 Apr 2025 03:14:54 -0700
 From: Jan Sokolowski <jan.sokolowski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
  Jan Sokolowski <jan.sokolowski@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t v3 1/2] tests/xe_eudebug: Implement faultable variations
- of some testcases
-Date: Tue, 15 Apr 2025 10:13:39 +0000
-Message-Id: <20250415101340.13275-2-jan.sokolowski@intel.com>
+Subject: [PATCH i-g-t v3 2/2] tests/xe_eudebug_online: Implement faultable
+ variations of some testcases
+Date: Tue, 15 Apr 2025 10:13:40 +0000
+Message-Id: <20250415101340.13275-3-jan.sokolowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250415101340.13275-1-jan.sokolowski@intel.com>
 References: <20250415101340.13275-1-jan.sokolowski@intel.com>
@@ -79,240 +79,93 @@ Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
 Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- tests/intel/xe_eudebug.c | 98 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 78 insertions(+), 20 deletions(-)
+ tests/intel/xe_eudebug_online.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index d1583fd84..3d030cf23 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -65,6 +65,7 @@ static void test_sysfs_toggle(int fd)
- #define VM_BIND_DELAY_UFENCE_ACK	(1 << 8)
- #define VM_BIND_UFENCE_RECONNECT	(1 << 9)
- #define VM_BIND_UFENCE_SIGINT_CLIENT	(1 << 10)
-+#define TEST_FAULTABLE			(1 << 30)
- #define TEST_DISCOVERY			(1 << 31)
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index af90b9b70..1f72e3e44 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -38,6 +38,7 @@
+ #define TARGET_IN_VRAM			(1 << 13)
+ #define SHADER_PAGEFAULT_READ		(1 << 14)
+ #define SHADER_PAGEFAULT_WRITE		(1 << 15)
++#define FAULTABLE_VM			(1 << 16)
+ #define TRIGGER_UFENCE_SET_BREAKPOINT	(1 << 24)
+ #define TRIGGER_RESUME_SINGLE_WALK	(1 << 25)
+ #define TRIGGER_RESUME_PARALLEL_WALK	(1 << 26)
+@@ -1100,7 +1101,8 @@ static void run_online_client(struct xe_eudebug_client *c)
+ 							   2 * sizeof(**metadata), metadata[1]);
  
- #define PAGE_SIZE SZ_4K
-@@ -1274,7 +1275,7 @@ static void test_race_discovery(int fd, unsigned int flags, int clients)
- 			igt_assert_eq(sessions[i].client->seqno - 1,
- 				      sessions[i].debugger->event_count);
+ 	vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE;
+-	vm_flags |= c->flags & SHADER_PAGEFAULT ? DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
++	vm_flags |= c->flags & (SHADER_PAGEFAULT | FAULTABLE_VM) ?
++			DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
  
--			xe_eudebug_event_log_compare(sessions[0].debugger->log,
-+			xe_eudebug_event_log_compare(sessions[0].debugger->log,
- 						     sessions[i].debugger->log,
- 						     XE_EUDEBUG_FILTER_EVENT_VM_BIND);
+ 	create.vm_id = xe_eudebug_client_vm_create(c, fd, vm_flags, 0);
  
-@@ -1464,16 +1465,19 @@ static void test_basic_sessions_th(int fd, unsigned int flags, int num_clients,
- static void vm_access_client(struct xe_eudebug_client *c)
- {
- 	struct drm_xe_engine_class_instance *hwe = c->ptr;
-+	uint32_t vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE;
- 	uint32_t bo_placement;
- 	struct bind_list *bl;
- 	uint32_t vm;
- 	int fd, i, j;
- 
-+
- 	igt_debug("Using %s\n", xe_engine_class_string(hwe->engine_class));
- 
- 	fd = xe_eudebug_client_open_driver(c);
- 
--	vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+	vm_flags |= (c->flags & TEST_FAULTABLE) ? DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
-+	vm = xe_eudebug_client_vm_create(c, fd, vm_flags, 0);
- 
- 	if (c->flags & VM_BIND_OP_MAP_USERPTR)
- 		bo_placement = 0;
-@@ -1587,6 +1591,11 @@ static void vm_trigger(struct xe_eudebug_debugger *d,
-  *      vm fd, concerning many different offsets inside the vm,
-  *      and many virtual addresses of the vm_bound object.
-  *
-+ * SUBTEST: basic-vm-access-faultable
-+ * Functionality: VM access with FAULTABLE_VM
-+ * Description:
-+ *      Fault variation of test basic-vm-access.
-+ *
-  * SUBTEST: basic-vm-access-userptr
-  * Functionality: VM access
+@@ -1487,6 +1489,11 @@ static void test_basic_online(int fd, struct drm_xe_engine_class_instance *hwe,
+  * Functionality: dynamic breakpoint
   * Description:
-@@ -1594,11 +1603,18 @@ static void vm_trigger(struct xe_eudebug_debugger *d,
-  *      vm fd, concerning many different offsets inside the vm,
-  *      and many virtual addresses of the vm_bound object, but backed
-  *      by userptr.
+  *	Checks for attention after setting a dynamic breakpoint in the ufence event.
 + *
-+ * SUBTEST: basic-vm-access-userptr-faultable
-+ * Functionality: VM access with FAULTABLE_VM
++ * SUBTEST: set-breakpoint-faultable
++ * Functionality: dynamic breakpoint with FAULTABLE_VM
 + * Description:
-+ *      Fault variation of test basic-vm-access-userptr.
++ *	Faultable variation of test set-breakpoint.
   */
- static void test_vm_access(int fd, unsigned int flags, int num_clients)
- {
- 	struct drm_xe_engine_class_instance *hwe;
  
-+	igt_require(!(flags & TEST_FAULTABLE) || !xe_supports_faults(fd));
-+
- 	xe_eudebug_for_each_engine(fd, hwe)
- 		test_client_with_trigger(fd, flags, num_clients,
- 					 vm_access_client,
-@@ -1739,16 +1755,28 @@ static void vm_trigger_access_parameters(struct xe_eudebug_debugger *d,
-  *      Check negative scenarios of VM_OPEN ioctl and pread/pwrite usage
-  *      with bo backing storage.
-  *
-+ * SUBTEST: basic-vm-access-parameters-faultable
-+ * Functionality: VM access with FAULTABLE_VM
-+ * Description:
-+ *	Fault variation of test basic-vm-access-parameters.
-+ *
-  * SUBTEST: basic-vm-access-parameters-userptr
-  * Functionality: VM access
-  * Description:
-  *      Check negative scenarios of VM_OPEN ioctl and pread/pwrite usage
-  *      with userptr backing storage.
-+ *
-+ * SUBTEST: basic-vm-access-parameters-userptr-faultable
-+ * Functionality: VM access with FAULTABLE_VM
-+ * Description:
-+ *      Fault variation of test basic-vm-access-parameters-userptr.
-  */
- static void test_vm_access_parameters(int fd, unsigned int flags, int num_clients)
- {
- 	struct drm_xe_engine_class_instance *hwe;
- 
-+	igt_require(!(flags & TEST_FAULTABLE) || !xe_supports_faults(fd));
-+
- 	xe_eudebug_for_each_engine(fd, hwe)
- 		test_client_with_trigger(fd, flags, num_clients,
- 					 vm_access_client,
-@@ -2214,10 +2242,14 @@ static void *vm_bind_clear_thread(void *data)
- 	struct vm_bind_clear_thread_priv *priv = data;
- 	int fd = xe_eudebug_client_open_driver(priv->c);
- 	uint32_t gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
--	uint32_t vm = xe_eudebug_client_vm_create(priv->c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+	uint32_t vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE;
- 	size_t bo_size = xe_bb_size(fd, batch_size);
- 	unsigned long count = 0;
- 	uint64_t *fence_data;
-+	uint32_t vm;
-+
-+	vm_flags |= (priv->c->flags & TEST_FAULTABLE) ? DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
-+	vm = xe_eudebug_client_vm_create(priv->c, fd, vm_flags, 0);
- 
- 	/* init uf_sync */
- 	fence_data = aligned_alloc(xe_get_default_alignment(fd), sizeof(*fence_data));
-@@ -2427,14 +2459,21 @@ static void vm_bind_clear_ack_trigger(struct xe_eudebug_debugger *d,
-  * Functionality: memory access
-  * Description:
-  *      Check that fresh buffers we vm_bind into the ppGTT are always clear.
-+ *
-+ * SUBTEST: vm-bind-clear-faultable
-+ * Functionality: memory access with FAULTABLE_VM
-+ * Description:
-+ *      Fault variation of test vm-bind-clear.
-  */
--static void test_vm_bind_clear(int fd)
-+static void test_vm_bind_clear(int fd, uint32_t flags)
- {
- 	struct vm_bind_clear_priv *priv;
+ static void test_set_breakpoint_online(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
+@@ -1494,6 +1501,8 @@ static void test_set_breakpoint_online(int fd, struct drm_xe_engine_class_instan
  	struct xe_eudebug_session *s;
+ 	struct online_debug_data *data;
  
-+	igt_require(!(flags & TEST_FAULTABLE) || !xe_supports_faults(fd));
++	igt_require(!(flags & FAULTABLE_VM) || !xe_supports_faults(fd));
 +
- 	priv = vm_bind_clear_priv_create();
--	s = xe_eudebug_session_create(fd, vm_bind_clear_client, 0, priv);
-+	s = xe_eudebug_session_create(fd, vm_bind_clear_client, flags, priv);
- 
- 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
- 					vm_bind_clear_test_trigger);
-@@ -2463,11 +2502,15 @@ static void vma_ufence_client(struct xe_eudebug_client *c)
- 	const unsigned int n = UFENCE_EVENT_COUNT_EXPECTED;
- 	int fd = xe_eudebug_client_open_driver(c);
- 	struct ufence_bind *binds = create_binds_with_ufence(fd, n);
--	uint32_t vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+	uint32_t vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE;
- 	size_t bo_size = xe_get_default_alignment(fd);
- 	uint64_t items = bo_size / sizeof(uint32_t);
- 	uint32_t bo[UFENCE_EVENT_COUNT_EXPECTED];
- 	uint32_t *ptr[UFENCE_EVENT_COUNT_EXPECTED];
-+	uint32_t vm;
-+
-+	vm_flags |= (c->flags & TEST_FAULTABLE) ? DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0;
-+	vm = xe_eudebug_client_vm_create(c, fd, vm_flags, 0);
- 
- 	for (int i = 0; i < n; i++) {
- 		bo[i] = xe_bo_create(fd, 0, bo_size,
-@@ -2644,12 +2687,19 @@ static void vma_ufence_trigger(struct xe_eudebug_debugger *d,
-  * Description:
-  *      Intercept vm bind after receiving ufence event, then access target vm and write to it.
-  *      Then check on client side if the write was successful.
+ 	data = online_debug_data_create(hwe);
+ 	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
+@@ -1752,6 +1761,11 @@ static void test_reset_with_attention_online(int fd, struct drm_xe_engine_class_
+  *	interrupts all threads, once attention event come it sets breakpoint on
+  *	the very next instruction and resumes stopped threads back. It expects
+  *	that every thread hits the breakpoint.
 + *
-+ * SUBTEST: vma-ufence-faultable
-+ * Functionality: check ufence blocking with FAULTABLE_VM
++ * SUBTEST: interrupt-all-set-breakpoint-faultable
++ * Functionality: dynamic breakpoint with FAULTABLE_VM
 + * Description:
-+ *      Fault variation of test vma-ufence.
++ *	Faultable variation of test interrupt-all-set-breakpoint.
   */
- static void test_vma_ufence(int fd, unsigned int flags)
+ static void test_interrupt_all(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
  {
- 	struct xe_eudebug_session *s;
- 	struct ufence_priv *priv;
+@@ -1759,6 +1773,8 @@ static void test_interrupt_all(int fd, struct drm_xe_engine_class_instance *hwe,
+ 	struct online_debug_data *data;
+ 	uint32_t val;
  
-+	igt_require(!(flags & TEST_FAULTABLE) || !xe_supports_faults(fd));
++	igt_require(!(flags & FAULTABLE_VM) || !xe_supports_faults(fd));
 +
- 	priv = ufence_priv_create();
- 	s = xe_eudebug_session_create(fd, vma_ufence_client, flags, priv);
+ 	data = online_debug_data_create(hwe);
+ 	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
  
-@@ -2774,17 +2824,31 @@ igt_main
- 	igt_subtest("basic-client-th")
- 		test_basic_sessions_th(fd, 0, 1, true);
+@@ -2544,6 +2560,10 @@ igt_main
+ 	test_gt_render_or_compute("set-breakpoint", fd, hwe)
+ 		test_set_breakpoint_online(fd, hwe, SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT);
  
--	igt_subtest("basic-vm-access")
--		test_vm_access(fd, 0, 1);
- 
--	igt_subtest("basic-vm-access-userptr")
--		test_vm_access(fd, VM_BIND_OP_MAP_USERPTR, 1);
-+	igt_subtest_group {
-+		uint32_t flags[] = {0, TEST_FAULTABLE};
-+		const char *suffix[] = {"", "-faultable"};
++	test_gt_render_or_compute("set-breakpoint-faultable", fd, hwe)
++		test_set_breakpoint_online(fd, hwe,
++					   SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT | FAULTABLE_VM);
 +
-+		for (int i = 0; i < ARRAY_SIZE(flags); i++) {
-+			igt_subtest_f("basic-vm-access%s", suffix[i])
-+				test_vm_access(fd, flags[i], 1);
+ 	test_gt_render_or_compute("set-breakpoint-sigint-debugger", fd, hwe)
+ 		test_set_breakpoint_online_sigint_debugger(fd, hwe,
+ 							   SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT);
+@@ -2586,6 +2606,9 @@ igt_main
+ 	test_gt_render_or_compute("interrupt-all-set-breakpoint", fd, hwe)
+ 		test_interrupt_all(fd, hwe, SHADER_LOOP | TRIGGER_RESUME_SET_BP);
+ 
++	test_gt_render_or_compute("interrupt-all-set-breakpoint-faultable", fd, hwe)
++		test_interrupt_all(fd, hwe, SHADER_LOOP | TRIGGER_RESUME_SET_BP | FAULTABLE_VM);
 +
-+			igt_subtest_f("basic-vm-access-userptr%s", suffix[i])
-+				test_vm_access(fd, VM_BIND_OP_MAP_USERPTR | flags[i], 1);
-+
-+			igt_subtest_f("basic-vm-access-parameters%s", suffix[i])
-+				test_vm_access_parameters(fd, flags[i], 1);
-+
-+			igt_subtest_f("basic-vm-access-parameters-userptr%s", suffix[i])
-+				test_vm_access_parameters(fd, VM_BIND_OP_MAP_USERPTR | flags[i], 1);
- 
--	igt_subtest("basic-vm-access-parameters")
--		test_vm_access_parameters(fd, 0, 1);
-+			igt_subtest_f("vma-ufence%s", suffix[i])
-+				test_vma_ufence(fd, flags[i]);
- 
--	igt_subtest("basic-vm-access-parameters-userptr")
--		test_vm_access_parameters(fd, VM_BIND_OP_MAP_USERPTR, 1);
-+			igt_subtest_f("vm-bind-clear%s", suffix[i])
-+				test_vm_bind_clear(fd, flags[i]);
-+		}
-+	}
- 
- 	igt_subtest("multiple-sessions")
- 		test_basic_sessions(fd, CREATE_VMS | CREATE_EXEC_QUEUES, 4, true);
-@@ -2813,12 +2877,6 @@ igt_main
- 	igt_subtest("basic-vm-bind-ufence-sigint-client")
- 		test_basic_ufence(fd, VM_BIND_UFENCE_SIGINT_CLIENT);
- 
--	igt_subtest("vma-ufence")
--		test_vma_ufence(fd, 0);
--
--	igt_subtest("vm-bind-clear")
--		test_vm_bind_clear(fd);
--
- 	igt_subtest("basic-vm-bind-discovery")
- 		test_basic_discovery(fd, VM_BIND, true);
+ 	test_gt_render_or_compute("tdctl-parameters", fd, hwe)
+ 		test_tdctl_parameters(fd, hwe, SHADER_LOOP);
  
 -- 
 2.34.1
