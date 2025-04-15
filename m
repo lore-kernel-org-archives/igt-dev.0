@@ -4,58 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D84F0C369AB
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 20:06:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2692DC369AB
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 20:19:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 884E410E37F;
-	Tue, 15 Apr 2025 20:06:40 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="gNq4OLZ7";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D7B710E37F
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 20:06:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=giPncOFQ1gF2gcatm+W/sLn/9+2aOjrEZ4b0mGlPVvA=; b=gNq4OLZ7p3txb4iYZl3D7j4j5y
- DBkh/ILexKWtOQXUZQ/NZSbOcqEHV/44LE7FV97vrqGtd2lDkSPe8U5UBT4YxouwVa4ISmFdZlBvB
- U0NfXazqMdVPI64ICTgPkovWEDqUcaqo4hgN3Dyc17hcm21jJxM7WG4ccpQLS9XM8SZbbr8757ShZ
- iig2LK3rDV/dZkd0UlCLUCkoDdpLK6v3HBY2ZLSJoXILG9FQfJ+k2yz088NsmXV1I4PDRMq8vUk7v
- EB1T9zc8CeZKicvyDAp1VOsga6hk6bkzKf2oIiQAtZot1V4IUf11fpatbAUNOyTdzyqlQ0Bk4a6Iw
- qfSenfUw==;
-Received: from [189.6.35.67] (helo=killbill.home)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1u4mY2-00H5M2-86; Tue, 15 Apr 2025 22:06:22 +0200
-From: Melissa Wen <mwen@igalia.com>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
- Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- Rodrigo Siqueira <siqueira@igalia.com>,
- Andre Almeida <andrealmeid@igalia.com>, Alex Hung <alex.hung@amd.com>,
- Leo Li <sunpeng.li@amd.com>, Simon Ser <contact@emersion.fr>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Ville Syrjala <ville.syrjala@linux.intel.com>,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
- Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- Xaver Hugl <xaver.hugl@gmail.com>, kernel-dev@igalia.com
-Subject: [PATCH i-g-t] tests/kms_async_flip: skip subtest if invalid
- driver-specific condition
-Date: Tue, 15 Apr 2025 16:47:54 -0300
-Message-ID: <20250415200529.31722-1-mwen@igalia.com>
-X-Mailer: git-send-email 2.47.2
+	by gabe.freedesktop.org (Postfix) with ESMTP id C9E9B10E167;
+	Tue, 15 Apr 2025 20:19:35 +0000 (UTC)
+Received: from b68e5b3b99e1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE1CF10E167;
+ Tue, 15 Apr 2025 20:19:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6312545663319537731=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2Cv3=2C1/1=5D_lib/xe/xe=5Feudebug=3A_skip_when_disabling_eud?=
+ =?utf-8?q?ebug_with_no_eudebug_support?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jan Sokolowski" <jan.sokolowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 15 Apr 2025 20:19:34 -0000
+Message-ID: <174474837490.8170.10701912136495200986@b68e5b3b99e1>
+X-Patchwork-Hint: ignore
+References: <20250415092217.11835-1-jan.sokolowski@intel.com>
+In-Reply-To: <20250415092217.11835-1-jan.sokolowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,81 +38,220 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Async page flips can fail for any driver-specific reasons, i.e. when the
-driver can't commit to async page flip request for hw limitations, the
-commit is rejected with -EINVAL since there is one or more conditions
-that make the request invalid. These limitations varies between vendors
-and hw versions. Skip a subtest if any invalid driver-specific condition
-happens. This behavior is in line with userspace expectations and fits
-better the plurality of drivers in the DRM subsystem.
+--===============6312545663319537731==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Melissa Wen <mwen@igalia.com>
+== Series Details ==
 
----
+Series: series starting with [i-g-t,v3,1/1] lib/xe/xe_eudebug: skip when disabling eudebug with no eudebug support
+URL   : https://patchwork.freedesktop.org/series/147740/
+State : success
 
-Hi,
+== Summary ==
 
-Recent changes to async page flip conditions and limitations in the DRM
-subsystem shed light on unexpected restrictions of async page flip
-tests. The current approach doesn't make the test generic enough to
-correctly deal with the diversity of reasons for a async page flip being
-rejected by drivers of any HW vendor.
+CI Bug Log - changes from IGT_8320 -> IGTPW_12978
+====================================================
 
-As an example, AMD display driver can't perform async flip when the
-memory type changes [1][2][3]. After further investigation performed by
-my colleague Thadeu Cascardo, he elucidated that this situation can
-happen whenever there is not enough space for FBs in VRAM, so they are
-allocated in GTT. Moreover, the space available in VRAM varies between
-hw families and other system needs. Therefore, the driver rejects the
-async flip due to memory type change, instead of silently downgrade the
-page flip from async to sync - which seems correct.
+Summary
+-------
 
-The userspace expects the rejection (-EINVAL), but not the downgrade.
-So, I understand the test_async_flip should just validate if async page
-flips aren't downgrade in acceptable conditions and skip for any invalid
-driver-specific condition.
+  **SUCCESS**
 
-[1] https://lore.kernel.org/amd-gfx/20230621202459.979661-2-andrealmeid@igalia.com/
-[2] https://lore.kernel.org/amd-gfx/20230804182054.142988-1-hamza.mahfooz@amd.com/
-[3] https://lore.kernel.org/amd-gfx/20250107152855.2953302-17-chiahsuan.chung@amd.com/
+  No regressions found.
 
-Let me know your thoughts!
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/index.html
 
-Melissa
+Participating hosts (45 -> 44)
+------------------------------
 
----
- tests/kms_async_flips.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+  Missing    (1): fi-snb-2520m 
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 031417ed8..0de299c2b 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -397,8 +397,10 @@ static void test_async_flip(data_t *data)
- 
- 		ret = perform_flip(data, frame, flags);
- 
--		if (frame == 1 && data->allow_fail)
--			igt_skip_on(ret == -EINVAL);
-+		if (data->allow_fail)
-+			igt_skip_on_f(ret == -EINVAL,
-+				      "Skipping, async flip not supported at frame %d " \
-+				      "due to invalid driver-specific conditions.\n", frame);
- 		else
- 			igt_assert_eq(ret, 0);
- 
-@@ -768,7 +770,7 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 			continue;
- 
- 		test_init(data);
--		data->allow_fail = false;
-+		data->allow_fail = true;
- 		data->modifier = default_modifier(data);
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
- 			/*
--- 
-2.47.2
+Known issues
+------------
 
+  Here are the changes found in IGTPW_12978 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-adlp-6:         [PASS][1] -> [ABORT][2] ([i915#13696]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-adlp-6/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-adlp-6/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [INCOMPLETE][5] ([i915#12904]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-mtlp-8/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-mtlp-8/igt@i915_selftest@live.html
+    - bat-arlh-2:         [INCOMPLETE][9] ([i915#14046]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-arlh-2/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-arlh-2/igt@i915_selftest@live.html
+    - bat-adlp-11:        [ABORT][11] ([i915#13696]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-adlp-11/igt@i915_selftest@live.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-adlp-11/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7567u:       [DMESG-WARN][13] ([i915#13735]) -> [PASS][14] +81 other tests pass
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-dg2-14:         [DMESG-FAIL][17] ([i915#12061]) -> [PASS][18] +1 other test pass
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+    - bat-arls-6:         [DMESG-FAIL][19] ([i915#12061]) -> [PASS][20] +1 other test pass
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-7567u:       [DMESG-WARN][21] ([i915#13735] / [i915#180]) -> [PASS][22] +53 other tests pass
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13696]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#14046]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8320 -> IGTPW_12978
+  * Linux: CI_DRM_16421 -> CI_DRM_16422
+
+  CI-20190529: 20190529
+  CI_DRM_16421: f031245c01c722de43e8a02c2358140de0685428 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16422: b61f5de7570012cb79e72624a97b216d395f7380 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12978: 6e7bd3190cb51cea418987e59517f319614e25c0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8320: cd3b5612be3cef838f16e074bf1bc421399d584d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/index.html
+
+--===============6312545663319537731==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v3,1/1] lib/xe/xe_eudebug: skip when disabling eudebug with no eudebug support</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147740/">https://patchwork.freedesktop.org/series/147740/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8320 -&gt; IGTPW_12978</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12978 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-adlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-adlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696">i915#13696</a>) +1 other test abort</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-arlh-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046">i915#14046</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-arlh-2/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-adlp-11/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696">i915#13696</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-adlp-11/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +81 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12978/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +53 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8320 -&gt; IGTPW_12978</li>
+<li>Linux: CI_DRM_16421 -&gt; CI_DRM_16422</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16421: f031245c01c722de43e8a02c2358140de0685428 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16422: b61f5de7570012cb79e72624a97b216d395f7380 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12978: 6e7bd3190cb51cea418987e59517f319614e25c0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8320: cd3b5612be3cef838f16e074bf1bc421399d584d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6312545663319537731==--
