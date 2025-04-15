@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE6DC369AB
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 08:48:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A475C369AB
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 08:50:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4E90010E094;
-	Tue, 15 Apr 2025 08:48:39 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gsGaUyvi";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B89C810E094
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 08:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744706918; x=1776242918;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=A8klyiiv7yL+Wcf26Vtdx595LOkn6dhVMHzA9zyvHD8=;
- b=gsGaUyvipZR723mK+bHLJxABMNx8kTv05tKqRvDDzdJzJ6tpG65yJ1A5
- NFB+kBHUJMStSePPLTi7BmLCQl8UltKJRKRaFwJFt4fIEhERQv3zBiPwm
- 1l7F3mWRVVQh2x/yi4Fe7LssSs916+Rn5pl1Sa+hZ5Mv18tXAJj2b4dAK
- RGGcC13Ck4lEqk3p8wm/6W5YgX4C4r/S19ARzE3ODjF13rb3ykEpXg+ps
- c9C20TUXdwKjSfscdKCTkMT88Jk191/bztSoA9bUAI5NvT2Rhq4BKhicT
- RR8vTYHE+R258o183DAyIlTo8FGsAHVJlXM8hsjKVugwcDJsY9Q2tU+7/ Q==;
-X-CSE-ConnectionGUID: FfO36AXrS+2vb52bwhHXQA==
-X-CSE-MsgGUID: qwkdipuhQOyC7870wQfwKA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="46120219"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="46120219"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 01:48:37 -0700
-X-CSE-ConnectionGUID: 5cl8Wh0ESey2X+bEkV6CQA==
-X-CSE-MsgGUID: cgSTtHV8RAyptK1ianba7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="167225625"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 01:48:36 -0700
-Date: Tue, 15 Apr 2025 10:48:33 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Pravalika Gurram <pravalika.gurram@intel.com>
-Cc: igt-dev@lists.freedesktop.org, chris.p.wilson@intel.com,
- Chris Wilson <chris.p.wilson@linux.intel.com>
-Subject: Re: [PATCH] prime_mmap: Limit aperture testing to machines with an
- aperture
-Message-ID: <20250415084833.s5bjbwx6bbmoualx@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Pravalika Gurram <pravalika.gurram@intel.com>,
- igt-dev@lists.freedesktop.org, chris.p.wilson@intel.com,
- Chris Wilson <chris.p.wilson@linux.intel.com>
-References: <20250414102640.755085-1-pravalika.gurram@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 20C8010E094;
+	Tue, 15 Apr 2025 08:50:16 +0000 (UTC)
+Received: from b68e5b3b99e1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3C4410E094;
+ Tue, 15 Apr 2025 08:50:14 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6563982632125017150=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250414102640.755085-1-pravalika.gurram@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/chamelium/kms=5Fchame?=
+ =?utf-8?q?lium=5Fcolor=3A_force_connector_reprobe_after_plugging_ports?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 15 Apr 2025 08:50:14 -0000
+Message-ID: <174470701485.4607.830172995230697202@b68e5b3b99e1>
+X-Patchwork-Hint: ignore
+References: <20250415063742.3026718-1-kunal1.joshi@intel.com>
+In-Reply-To: <20250415063742.3026718-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,60 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pravalika,
-On 2025-04-14 at 15:56:40 +0530, Pravalika Gurram wrote:
-> From: Chris Wilson <chris.p.wilson@linux.intel.com>
-> 
-> The test_aperture_limit looks at the handling of internal GGTT mmaps for
-> the dmabuf and checking what happens if we try to mmap more than we can
-> fit inside the aperture. Thus if we have no aperture, there is no corner
-> case regarding the mmapable aperture that requires validation.
-> 
-> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
-> ---
->  tests/intel/prime_mmap.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/prime_mmap.c b/tests/intel/prime_mmap.c
-> index 6de54b840..ae0c74dfe 100644
-> --- a/tests/intel/prime_mmap.c
-> +++ b/tests/intel/prime_mmap.c
-> @@ -490,6 +490,10 @@ test_aperture_limit(uint32_t region, uint64_t size)
->  	uint64_t size1 = (gem_mappable_aperture_size(fd) * 7) / 8;
->  	uint64_t size2 = (gem_mappable_aperture_size(fd) * 3) / 8;
->  
-> +	igt_require(gem_has_mappable_ggtt(fd));
-> +	igt_require(size1 >= size2);
-> +	igt_require(size2 >= size);
-> +
+--===============6563982632125017150==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Looks good.
+== Series Details ==
 
->  	handle1 = gem_create(fd, size1);
->  	dma_buf_fd1 = prime_handle_to_fd_for_mmap(fd, handle1);
->  	igt_assert(errno == 0);
-> @@ -498,7 +502,7 @@ test_aperture_limit(uint32_t region, uint64_t size)
->  	fill_bo_cpu(ptr1, size);
->  	igt_assert(memcmp(ptr1, pattern, sizeof(pattern)) == 0);
->  
-> -	handle2 = gem_create(fd, size1);
-> +	handle2 = gem_create(fd, size2);
+Series: tests/chamelium/kms_chamelium_color: force connector reprobe after plugging ports
+URL   : https://patchwork.freedesktop.org/series/147727/
+State : success
 
-After a second read this looks like a separate fix, especially
-that it is not described in commit.
+== Summary ==
 
-Please split this into a separate patch.
+CI Bug Log - changes from XEIGT_8319_BAT -> XEIGTPW_12974_BAT
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
->  	dma_buf_fd2 = prime_handle_to_fd_for_mmap(fd, handle2);
->  	igt_assert(errno == 0);
->  	ptr2 = mmap(NULL, size2, PROT_READ | PROT_WRITE, MAP_SHARED, dma_buf_fd2, 0);
-> -- 
-> 2.34.1
-> 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8319 -> IGTPW_12974
+  * Linux: xe-2950-ee6ca91bfc76e36e7520d3603772b55fcc3837b8 -> xe-2952-08045a4121ee058ead3c4483e6c217be20ab86d4
+
+  IGTPW_12974: c2e882e0897f548351ecd782e614c21f9820e010 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8319: db9eca9df70fbb72589fcaf689dd92784b06a9c0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2950-ee6ca91bfc76e36e7520d3603772b55fcc3837b8: ee6ca91bfc76e36e7520d3603772b55fcc3837b8
+  xe-2952-08045a4121ee058ead3c4483e6c217be20ab86d4: 08045a4121ee058ead3c4483e6c217be20ab86d4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12974/index.html
+
+--===============6563982632125017150==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/chamelium/kms_chamelium_color: force connector reprobe after plugging ports</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147727/">https://patchwork.freedesktop.org/series/147727/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12974/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12974/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8319_BAT -&gt; XEIGTPW_12974_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8319 -&gt; IGTPW_12974</li>
+<li>Linux: xe-2950-ee6ca91bfc76e36e7520d3603772b55fcc3837b8 -&gt; xe-2952-08045a4121ee058ead3c4483e6c217be20ab86d4</li>
+</ul>
+<p>IGTPW_12974: c2e882e0897f548351ecd782e614c21f9820e010 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8319: db9eca9df70fbb72589fcaf689dd92784b06a9c0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2950-ee6ca91bfc76e36e7520d3603772b55fcc3837b8: ee6ca91bfc76e36e7520d3603772b55fcc3837b8<br />
+  xe-2952-08045a4121ee058ead3c4483e6c217be20ab86d4: 08045a4121ee058ead3c4483e6c217be20ab86d4</p>
+
+</body>
+</html>
+
+--===============6563982632125017150==--
