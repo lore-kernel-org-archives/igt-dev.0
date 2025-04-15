@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CE2EC369AB
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 16:49:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B241C369BA
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 16:57:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB71F10E323;
-	Tue, 15 Apr 2025 16:49:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D745810E7FE;
+	Tue, 15 Apr 2025 16:57:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RkpyGzjD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FUjeJTQk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9EE6610E0BC
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 16:49:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6567110E7FE
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 16:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744735769; x=1776271769;
+ t=1744736265; x=1776272265;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=oybOErI6dSaPY5ZXWOkK0SywgTE2lDQ9rKHGrpP7bF8=;
- b=RkpyGzjDbSRnwUoePUSqL0NFP6p+UMu7qzakvzt0HbTg5tSSAqm5Isn7
- 9ACTtycjLbfUB9xcFA9F6gyrrbWTbA9EFoc5EEU9H/p1pp0Xk52T90v+F
- ptVX3nvQsTczue1FaitWzPwsxivwZYT+ZgQrBLr9Emd6bwKOBjydHpNgT
- rzSLBA5q2PgunMYPjIT6zmoPn55XiaJU2K8d4X3OplVnPitdseF6z9IhP
- KH77XrlqWJgChyHxw2U7bPd3WMnyaI8XqTJRih2uzhr2fk5K90Go/Q3+u
- Xxr8QEhTjFEfcdPhtGRU9XjuPI6PtkfFiC9ThMP5BFowB/8j2A/Ce+OAW g==;
-X-CSE-ConnectionGUID: qxRStiR8RYu48J9dEit0/Q==
-X-CSE-MsgGUID: zxOCNkL6TyywhVu5i9PpxQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="45491109"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="45491109"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 09:49:28 -0700
-X-CSE-ConnectionGUID: E9yS5ryQRbiS2SHUAJn1wQ==
-X-CSE-MsgGUID: EKhHmS7ZRLCmVkkPMIfKAQ==
+ bh=Xm/va+mQQytX6yrkuho6jKnIhT3kiu4zP21X+O+UtdE=;
+ b=FUjeJTQkiIVw0mLN4jCpHH08XSYZSJQ2tOvnBnS+GwQYFheiRXasdLWA
+ wxQmr81o+Zzz5DwFeEGHxUq7o5Ilv6URhki6jq6Ie7gkmwRVxRzMnKQZJ
+ hmY7TwhkmGrbMk7A2EoFFa5uu8gG1vhtQ/6q8ld2nHTFvgD2DT9LzVH5G
+ QcZSWF+I2yB/mWQGm90FgtI9xgNGz8dkacPGCyCDmBbrmOZlVmzeQ7CYT
+ mLp4THws7ojKKkgMgX0hxAou5yLOCJPPWyiTkncos75a6np6WYV6s57ON
+ TB+SV/pS2LoQ9+sClnS6JGkta563XoSrkCg7zlEhCNoZ+pk4QFAqiMjoT A==;
+X-CSE-ConnectionGUID: LhYUvp+KRC2toM87HTVcBg==
+X-CSE-MsgGUID: KI/nWnWdQlesLOZluzXJoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="49908106"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="49908106"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Apr 2025 09:57:44 -0700
+X-CSE-ConnectionGUID: vTu97LxkRmi2T2LwA8fDwA==
+X-CSE-MsgGUID: YZtzTg8xQjeKHIJW5zMlpQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="130720868"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="130195811"
 Received: from mhammerv-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.94.93])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 09:49:28 -0700
-Date: Tue, 15 Apr 2025 09:49:26 -0700
-Message-ID: <87fri9gyjt.wl-ashutosh.dixit@intel.com>
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Apr 2025 09:57:43 -0700
+Date: Tue, 15 Apr 2025 09:57:42 -0700
+Message-ID: <87ecxtgy61.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 5/6] tests/intel/xe_oa: Reduce test_non_zero_reason
- execution time
-In-Reply-To: <Z_2O5_Z6uHJLR-67@unerlige-desk.amr.corp.intel.com>
+Subject: Re: [PATCH i-g-t 3/6] tests/intel/xe_oa: Sanity check PEC report data
+ for TestOa metric set
+In-Reply-To: <Z_2XPsn5Up9KGb6T@unerlige-desk.amr.corp.intel.com>
 References: <20250408181210.1052760-1-ashutosh.dixit@intel.com>
- <20250408181210.1052760-6-ashutosh.dixit@intel.com>
- <Z_2O5_Z6uHJLR-67@unerlige-desk.amr.corp.intel.com>
+ <20250408181210.1052760-4-ashutosh.dixit@intel.com>
+ <Z_2XPsn5Up9KGb6T@unerlige-desk.amr.corp.intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -73,59 +73,140 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 14 Apr 2025 15:40:39 -0700, Umesh Nerlige Ramappa wrote:
+On Mon, 14 Apr 2025 16:16:14 -0700, Umesh Nerlige Ramappa wrote:
 >
-> On Tue, Apr 08, 2025 at 11:12:09AM -0700, Ashutosh Dixit wrote:
-> > Only check every 128th report to reduce test execution time. Without this
->
-> Since you have already read the entire buffer into memory, you could just
-> check 2 reports at random location. I am thinking random would be better
-> than fixed intervals to catch strange issues.
-
-OK, will change this.
-
->
-> > patch execution times for buffer-size subtest for OA buffer sizes > 16
-> > M (with PEC report sanity checks) are excessive. E.g. for 128 MB size:
-> >
-> >	Starting subtest: buffer-size
-> >	Starting dynamic subtest: ccs-0-128M
-> >	Dynamic subtest ccs-0-128M: SUCCESS (133.654s)
-> >	Subtest buffer-size: SUCCESS (133.654s)
-> >
-> > With this patch:
-> >
-> >	Starting subtest: buffer-size
-> >	Starting dynamic subtest: ccs-0-128M
-> >	Dynamic subtest ccs-0-128M: SUCCESS (11.209s)
-> >	Subtest buffer-size: SUCCESS (11.209s)
+> On Tue, Apr 08, 2025 at 11:12:07AM -0700, Ashutosh Dixit wrote:
+> > Implement sanity checking for Xe2 PEC OA reports. Previously there was
+> > sanity checking only for Xe1 OA reports, but no sanity checking for Xe2 PEC
+> > OA reports.
 > >
 > > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > > ---
-> > tests/intel/xe_oa.c | 5 +++--
-> > 1 file changed, 3 insertions(+), 2 deletions(-)
+> > tests/intel/xe_oa.c | 121 +++++++++++++++++++++++++++++++++++++++++++-
+> > 1 file changed, 119 insertions(+), 2 deletions(-)
 > >
 > > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> > index cc9702322d..f3ce37ff5a 100644
+> > index 2440101900..eaf97ae0df 100644
 > > --- a/tests/intel/xe_oa.c
 > > +++ b/tests/intel/xe_oa.c
-> > @@ -2646,13 +2646,14 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
-> >	igt_debug("Got %u bytes\n", total_len);
+> > @@ -966,6 +966,115 @@ accumulator_print(struct accumulator *accumulator, const char *title)
+> >		igt_debug("\tC%u = %"PRIu64"\n", i, deltas[idx++]);
+> > }
 > >
-> >	last_report = NULL;
-> > -	for (uint32_t offset = 0; offset < total_len; offset += report_size) {
-> > +	for (uint32_t offset = 0, n = 0; offset < total_len; offset += report_size) {
-> >		const uint32_t *report = (void *) (buf + offset);
-> >		uint32_t reason = (report[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
-> >
-> >		igt_assert_neq(reason, 0);
-> >
-> > -		if (last_report) {
-> > +		/* Only check every 128th report to reduce test execution time */
-> > +		if (last_report && !(n++ % 128)) {
-> >			sanity_check_reports(last_report, report, fmt);
-> >			pec_sanity_check_reports(last_report, report, metric_set(hwe));
-> >		}
-> > --
-> > 2.48.1
-> >
+> > +
+> > +/*
+> > + * pec_sanity_check_reports() uses the following properties of the TestOa
+> > + * metric set with the "576B_PEC64LL" or XE_OA_FORMAT_PEC64u64 format. See
+> > + * e.g. lib/xe/oa-configs/oa-lnl.xml.
+> > + *
+> > + * If pec[] is the array of pec qwords following the report header (Bspec
+> > + * 60942) then we have:
+> > + *
+> > + *	pec[2]  : test_event1_cycles
+> > + *	pec[3]  : test_event1_cycles_xecore0
+> > + *	pec[4]  : test_event1_cycles_xecore1
+> > + *	pec[5]  : test_event1_cycles_xecore2
+> > + *	pec[6]  : test_event1_cycles_xecore3
+> > + *	pec[21] : test_event1_cycles_xecore4
+> > + *	pec[22] : test_event1_cycles_xecore5
+> > + *	pec[23] : test_event1_cycles_xecore6
+> > + *	pec[24] : test_event1_cycles_xecore7
+> > + *
+> > + * test_event1_cycles_xecore* increment with every clock, so they increment
+> > + * the same as gpu_ticks in report headers in successive reports. And
+> > + * test_event1_cycles increment by 'gpu_ticks * num_xecores'.
+> > + *
+> > + * These equations are not exact due to fluctuations, but are precise when
+> > + * averaged over long periods.
+> > + */
+> > +static void pec_sanity_check_one(const u32 *report)
+> > +{
+> > +	int xecore_idx[] = {3, 4, 5, 6, 21, 22, 23, 24};
+> > +	u64 first, *pec = (u64 *)(report + 8);
+> > +
+> > +	igt_debug("\ttest_event1_cycles: %#lx\n", pec[2]);
+> > +	for (int i = 0; i < ARRAY_SIZE(xecore_idx); i++)
+> > +		igt_debug("\ttest_event1_cycles_xecore %d: %#lx\n", i, pec[xecore_idx[i]]);
+> > +
+> > +	/* Compare against the first non-zero test_event1_cycles_xecore* */
+> > +	for (int i = 0; i < ARRAY_SIZE(xecore_idx); i++) {
+> > +		first = pec[xecore_idx[i]];
+> > +		if (first)
+> > +			break;
+> > +	}
+> > +
+> > +	/* test_event1_cycles_xecore* should be within an epsilon of each other */
+> > +	for (int i = 0; i < ARRAY_SIZE(xecore_idx); i++) {
+> > +		igt_debug("n %d: pec[n] %#lx, first %#lx\n",
+> > +			  xecore_idx[i], pec[xecore_idx[i]], first);
+> > +		/* 0 value for pec[xecore_idx[i]] indicates missing xecore */
+> > +		if (pec[xecore_idx[i]])
+> > +			assert_within_epsilon(pec[xecore_idx[i]], first,
+> > 0.1);
+> > +	}
+> > +
+> > +	igt_debug("first * num_xecores: %#lx, pec[2] %#lx\n",
+> > +		  first * intel_xe_perf->devinfo.n_eu_sub_slices, pec[2]);
+> > +	/* test_event1_cycles should be close to (test_event1_cycles_xecore* * num_xecores) */
+> > +	assert_within_epsilon(first * intel_xe_perf->devinfo.n_eu_sub_slices, pec[2], 0.1);
+> > +}
+> > +
+> > +static void pec_sanity_check_two(const u32 *report0, const u32 *report1,
+> > +				 struct intel_xe_perf_metric_set *set)
+>
+> I would just s/pec_sanity_check_two/pec_sanity_check/ to validate 2 reports
+> and drop the "pec_sanity_check_one" altogether. We only care about delta
+> between 2 counters.
+
+Not sure I agree with this. Because checks in check_one and check_two are
+really independent. And checks in both functions seem to work (checked with
+checking all reports for non_zero_reason). And check_one allows a way to
+check each report independently. Can you explain what problem you see with
+check_one?
+
+Even if we remove check_one, I still want to retain the unused function, so
+I would want to add a '__attribute__ ((unused))' and retain it. Just in
+case someone wants to use it later. I at least want to get into git. And
+then maybe remove it later, if needed.
+
+> > +{
+> > +	u64 tick_delta = oa_tick_delta(report1, report0, set->perf_oa_format);
+> > +	int xecore_idx[] = {3, 4, 5, 6, 21, 22, 23, 24};
+> > +	u64 *pec0 = (u64 *)(report0 + 8);
+> > +	u64 *pec1 = (u64 *)(report1 + 8);
+> > +
+> > +	igt_debug("tick delta = %#lx\n", tick_delta);
+> > +
+> > +	/* Difference in test_event1_cycles_xecore* values should be close to tick_delta */
+> > +	for (int i = 0; i < ARRAY_SIZE(xecore_idx); i++) {
+>
+> Maybe, within the loop you can have,
+>
+> n = xecore_idx[i];
+>
+> and that can be used in the below code, for ex:
+>
+>		igt_debug("pec1[%d] - pec0[%d] %#lx, tick delta %#lx\n", n, pec1[n] - pec0[n], tick_delta);
+
+OK, this is probably a little bit cleaner.
+
+>
+> > +		igt_debug("n %d: pec1[n] - pec0[n] %#lx, tick delta %#lx\n",
+> > +			  xecore_idx[i], pec1[xecore_idx[i]] - pec0[xecore_idx[i]], tick_delta);
+>
+>
+> > +		/* 0 value for pec[xecore_idx[i]] indicates missing xecore */
+> > +		if (pec1[xecore_idx[i]] && pec0[xecore_idx[i]])
+> > +			assert_within_epsilon(pec1[xecore_idx[i]] - pec0[xecore_idx[i]],
+> > +					      tick_delta, 0.1);
+> > +		/* Same test_event1_cycles_xecore* should be present in all reports */
+> > +		if (pec1[xecore_idx[i]])
+> > +			igt_assert(pec0[xecore_idx[i]]);
+> > +	}
+> > +
+> > +	igt_debug("pec1[2] - pec0[2] %#lx, tick_delta * num_xecores: %#lx\n",
+> > +		  pec1[2] - pec0[2], tick_delta * intel_xe_perf->devinfo.n_eu_sub_slices);
+> > +	/* Difference in test_event1_cycles should be close to (tick_delta * num_xecores) */
+> > +	assert_within_epsilon(pec1[2] - pec0[2],
+> > +			      tick_delta * intel_xe_perf->devinfo.n_eu_sub_slices, 0.1);
+> > +}
