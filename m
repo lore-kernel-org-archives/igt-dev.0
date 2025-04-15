@@ -4,57 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC750C369C1
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 15:58:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CE2EC369AB
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 16:49:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C67110E7EA;
-	Tue, 15 Apr 2025 15:58:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB71F10E323;
+	Tue, 15 Apr 2025 16:49:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hP2+CM0+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RkpyGzjD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EB9D10E7ED
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 15:58:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EE6610E0BC
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 16:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744732722; x=1776268722;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7VjyVDVNXYfvO9XwjD09LHzJl+WwSpamQnMycDoYXHE=;
- b=hP2+CM0+xWL1jzzuOsAPnwV9YmbUOk2qYHBlMJUiF2SqiHDiYqGdmKUL
- aMigg8JZaBViDbPMe81TwDzOhruYH2XLsy1+Bs2O7wIwOy7M71J+BWdNa
- pB9WUUCaVw8W4urm3bh4s8ooiWJNKmxsR3qhXJpzW8broUArQi8Xp1kcY
- 1Gkn6ZXgd4wdwGJDWDGVoi4nlTGGpYUWYigvwPsvHT4+ddvrWW61DWPd6
- gUDydvjP+KjGZUBVNqWi2m0UXaprmWGPaYfyNN4ABZDaODQ7rX54iAaPy
- r3IR2WL4dfrFGvDvRsyjpgDUB+7GcrY3Eq1TFzC7JzVl+5xunVLbfCeK8 Q==;
-X-CSE-ConnectionGUID: WYTSo/qvQg6yhwuy3ulprA==
-X-CSE-MsgGUID: 4Uqyk5OMRKyHtkE49+enTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="45965017"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="45965017"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 08:58:41 -0700
-X-CSE-ConnectionGUID: 4uOVBF5xQR2Y+mYnadpXsQ==
-X-CSE-MsgGUID: DIw3+i6IQY2OzgyZ+FKn0g==
+ t=1744735769; x=1776271769;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=oybOErI6dSaPY5ZXWOkK0SywgTE2lDQ9rKHGrpP7bF8=;
+ b=RkpyGzjDbSRnwUoePUSqL0NFP6p+UMu7qzakvzt0HbTg5tSSAqm5Isn7
+ 9ACTtycjLbfUB9xcFA9F6gyrrbWTbA9EFoc5EEU9H/p1pp0Xk52T90v+F
+ ptVX3nvQsTczue1FaitWzPwsxivwZYT+ZgQrBLr9Emd6bwKOBjydHpNgT
+ rzSLBA5q2PgunMYPjIT6zmoPn55XiaJU2K8d4X3OplVnPitdseF6z9IhP
+ KH77XrlqWJgChyHxw2U7bPd3WMnyaI8XqTJRih2uzhr2fk5K90Go/Q3+u
+ Xxr8QEhTjFEfcdPhtGRU9XjuPI6PtkfFiC9ThMP5BFowB/8j2A/Ce+OAW g==;
+X-CSE-ConnectionGUID: qxRStiR8RYu48J9dEit0/Q==
+X-CSE-MsgGUID: zxOCNkL6TyywhVu5i9PpxQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="45491109"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="45491109"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Apr 2025 09:49:28 -0700
+X-CSE-ConnectionGUID: E9yS5ryQRbiS2SHUAJn1wQ==
+X-CSE-MsgGUID: EKhHmS7ZRLCmVkkPMIfKAQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="130135095"
-Received: from ifwibot07.gar.corp.intel.com (HELO
- rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 08:58:39 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
- chaitanya.kumar.borah@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1 2/2] tests/kms_async_flips: Use tiling modifiers
-Date: Tue, 15 Apr 2025 21:21:36 +0530
-Message-Id: <20250415155136.2879045-3-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250415155136.2879045-1-santhosh.reddy.guddati@intel.com>
-References: <20250415155136.2879045-1-santhosh.reddy.guddati@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="130720868"
+Received: from mhammerv-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.94.93])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Apr 2025 09:49:28 -0700
+Date: Tue, 15 Apr 2025 09:49:26 -0700
+Message-ID: <87fri9gyjt.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 5/6] tests/intel/xe_oa: Reduce test_non_zero_reason
+ execution time
+In-Reply-To: <Z_2O5_Z6uHJLR-67@unerlige-desk.amr.corp.intel.com>
+References: <20250408181210.1052760-1-ashutosh.dixit@intel.com>
+ <20250408181210.1052760-6-ashutosh.dixit@intel.com>
+ <Z_2O5_Z6uHJLR-67@unerlige-desk.amr.corp.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,29 +73,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As async with linear modifiers is not a practical and common use case,
-override the default modifier with tiled for all the async flip subtests
+On Mon, 14 Apr 2025 15:40:39 -0700, Umesh Nerlige Ramappa wrote:
+>
+> On Tue, Apr 08, 2025 at 11:12:09AM -0700, Ashutosh Dixit wrote:
+> > Only check every 128th report to reduce test execution time. Without this
+>
+> Since you have already read the entire buffer into memory, you could just
+> check 2 reports at random location. I am thinking random would be better
+> than fixed intervals to catch strange issues.
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/kms_async_flips.c | 4 ++++
- 1 file changed, 4 insertions(+)
+OK, will change this.
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index df3e136b7..5d84df49a 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -780,6 +780,10 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 		test_init(data);
- 		data->allow_fail = false;
- 		data->modifier = default_modifier(data);
-+
-+		if (is_intel_device(data->drm_fd) && data->modifier == DRM_FORMAT_MOD_LINEAR)
-+			data->modifier = I915_FORMAT_MOD_4_TILED;
-+
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
- 			/*
- 			 * FIXME: joiner+async flip is busted currently in KMD.
--- 
-2.34.1
-
+>
+> > patch execution times for buffer-size subtest for OA buffer sizes > 16
+> > M (with PEC report sanity checks) are excessive. E.g. for 128 MB size:
+> >
+> >	Starting subtest: buffer-size
+> >	Starting dynamic subtest: ccs-0-128M
+> >	Dynamic subtest ccs-0-128M: SUCCESS (133.654s)
+> >	Subtest buffer-size: SUCCESS (133.654s)
+> >
+> > With this patch:
+> >
+> >	Starting subtest: buffer-size
+> >	Starting dynamic subtest: ccs-0-128M
+> >	Dynamic subtest ccs-0-128M: SUCCESS (11.209s)
+> >	Subtest buffer-size: SUCCESS (11.209s)
+> >
+> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> > tests/intel/xe_oa.c | 5 +++--
+> > 1 file changed, 3 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> > index cc9702322d..f3ce37ff5a 100644
+> > --- a/tests/intel/xe_oa.c
+> > +++ b/tests/intel/xe_oa.c
+> > @@ -2646,13 +2646,14 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
+> >	igt_debug("Got %u bytes\n", total_len);
+> >
+> >	last_report = NULL;
+> > -	for (uint32_t offset = 0; offset < total_len; offset += report_size) {
+> > +	for (uint32_t offset = 0, n = 0; offset < total_len; offset += report_size) {
+> >		const uint32_t *report = (void *) (buf + offset);
+> >		uint32_t reason = (report[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
+> >
+> >		igt_assert_neq(reason, 0);
+> >
+> > -		if (last_report) {
+> > +		/* Only check every 128th report to reduce test execution time */
+> > +		if (last_report && !(n++ % 128)) {
+> >			sanity_check_reports(last_report, report, fmt);
+> >			pec_sanity_check_reports(last_report, report, metric_set(hwe));
+> >		}
+> > --
+> > 2.48.1
+> >
