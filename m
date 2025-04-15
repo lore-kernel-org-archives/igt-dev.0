@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 129D2C369B9
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 06:22:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD2ECC369AB
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 06:36:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2F26910E34C;
-	Tue, 15 Apr 2025 06:22:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5709F10E2A5;
+	Tue, 15 Apr 2025 06:36:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OjRRAYqB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="chs8BTpM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CD1610E35D
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 06:22:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1E6010E2A5
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 06:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744698127; x=1776234127;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=sD69aYDQPPbKd3/XMsuNYL2hhmA12CXA7xbDZ+MY8X8=;
- b=OjRRAYqBPF93xd5VpaeKiTzfVIbmD1iSixnQkml+gP2H4uD45iLzFj/R
- oABpHCMm50mgfQ5zAgzhpEuRtn/eTEyyvKoYdp0MoCZRazwyrNBrD0snF
- kGZsqGiukhHJNXnYfps05E+Icy/VI9ISZ2twyPwbCWJtIXq6Lf1tq71ia
- IHMnefL3l/dPbgAa3n0saiF1vhq3Olz3kFF6fAa0NPgFzaqeIFvWNXbzl
- UeKKbZZwxduDoqouB12Rhe8q6FJ2H0DyAzXI/cBEYzrk2WRb8QPx42slK
- cdh2Qq9UihN5AEPLTOfEDq4yBeNmijR3LWGfckK0/998nuw2bLzIIs/BE g==;
-X-CSE-ConnectionGUID: 5PsCL9oISwWd50nUKerBrQ==
-X-CSE-MsgGUID: frsJoM+YSzKayY7182Id1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56367851"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="56367851"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 23:22:06 -0700
-X-CSE-ConnectionGUID: 3buVnXGmQd2lYQ9Z8xqO+A==
-X-CSE-MsgGUID: 34ScrTQwTiGDFqTY0iI35w==
+ t=1744698962; x=1776234962;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=+Z+zYgxWn5rT6dUz7kQ3k2FHdy46L98ghIg+qFly8fM=;
+ b=chs8BTpM1bLg0DIXOtdBfxCspQ9g1GbCPiyBGpGbrRjX32hVcChkSmKI
+ T2uAHbZurSjL5ayE2tGobXiYxisMV92H6H3o0plEyvOoUTa1Ae7icIn+O
+ iSc+b2SSFXiVJY0IrA7HtAoFPvZB7/FKCOWr4Yymwhv04ySn7dztS7V2k
+ 3t4A+pofvWxRkSWybda2YIxS8wlQBQ11f5W1e3B7E8FnEi9hl7lE03e0O
+ c8aLzpb/qz+DlF5M5cRsfdBImhJlcB15zdisqx7OuHrGUG9xgjbKvma4A
+ 595aiWgpz5czKaBe68YW2Xvkdu23Q8lss0AJsdTyiRJXC+XxO2aYCaLHr g==;
+X-CSE-ConnectionGUID: Z/NOcKClQnG+7oWkckY/8Q==
+X-CSE-MsgGUID: r5JymW3uTvuSsOKie4XYvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="57555385"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="57555385"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2025 23:36:01 -0700
+X-CSE-ConnectionGUID: eEmlXKsES2yuoM6WS0ybLA==
+X-CSE-MsgGUID: UgDZhAVrQwW9yRxiDZmdKg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="129993273"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 23:22:04 -0700
-From: Kunal Joshi <kunal1.joshi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="129880041"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2025 23:35:59 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/chamelium/kms_chamelium_color: print output
- name in assert
-Date: Tue, 15 Apr 2025 12:07:42 +0530
-Message-Id: <20250415063742.3026718-3-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250415063742.3026718-1-kunal1.joshi@intel.com>
-References: <20250415063742.3026718-1-kunal1.joshi@intel.com>
+Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
+ chaitanya.kumar.borah@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v1] tests/kms_async_flips: Split subtest to handle
+ linear buffers separately
+Date: Tue, 15 Apr 2025 11:59:01 +0530
+Message-Id: <20250415062901.2872752-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,222 +69,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Print output name in assert
+As linear buffers are considered corner cases, split the existing subtests
+run_with_modifiers to handle as a separate subtest.
 
-v2: print output name for better log readability (Swati)
-
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- lib/igt_chamelium.c                   | 62 --------------------------
- lib/igt_chamelium.h                   | 64 ++++++++++++++++++++++++---
- lib/intel_compute.c                   |  2 +
- tests/chamelium/kms_chamelium_color.c |  2 +-
- 4 files changed, 61 insertions(+), 69 deletions(-)
+ tests/kms_async_flips.c | 41 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index a96e36b5b..87ac1a1ca 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -24,28 +24,7 @@
-  *  Lyude Paul <lyude@redhat.com>
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 031417ed8..df3e136b7 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -88,6 +88,14 @@
+  *
+  * SUBTEST: overlay-atomic
+  * Description: Verify overlay planes with async flips in atomic API
++ *
++ * SUBTEST: async-flip-with-page-flip-events-linear
++ * Description: Verify the async flip functionality and the fps during async flips
++ *		with linear modifier
++ *
++ * SUBTEST: async-flip-with-page-flip-events-atomic-linear
++ * Description: Verify the async flip functionality and the fps during async flips
++ *		with linear modifier in Atomic API
   */
  
--#include "config.h"
--
--#include <stdbool.h>
--#include <string.h>
--#include <errno.h>
--#include <math.h>
--#include <xmlrpc-c/base.h>
--#include <xmlrpc-c/client.h>
--#include <pthread.h>
--#include <glib.h>
--#include <pixman.h>
--#include <cairo.h>
--
- #include "igt_chamelium.h"
--#include "igt_core.h"
--#include "igt_aux.h"
--#include "igt_edid.h"
--#include "igt_frame.h"
--#include "igt_list.h"
--#include "igt_kms.h"
--#include "igt_pipe_crc.h"
--#include "igt_rc.h"
+ #define CURSOR_POS 128
+@@ -128,6 +136,7 @@ typedef struct {
+ 	struct buf_ops *bops;
+ 	bool atomic_path;
+ 	bool overlay_path;
++	bool linear_modifier;
+ } data_t;
  
- /**
-  * SECTION:igt_chamelium
-@@ -90,47 +69,6 @@
-  * Especially with modern, more complex hardware where we may have LSPcons and
-  * USB controllers in the way.
-  */
--#define CHAMELIUM_HOTPLUG_DETECTION_DELAY 10
--
--struct chamelium_port {
--	unsigned int type;
--	int id;
--	int connector_id;
--	char *name;
--	bool adapter_allowed;
--	char *connector_path;
--	bool is_mapped;
--};
--
--struct chamelium_frame_dump {
--	unsigned char *bgr;
--	size_t size;
--	int width;
--	int height;
--	struct chamelium_port *port;
--};
--
--struct chamelium_fb_crc_async_data {
--	cairo_surface_t *fb_surface;
--
--	pthread_t thread_id;
--	igt_crc_t *ret;
--};
--
--struct chamelium {
--	xmlrpc_env env;
--	xmlrpc_client *client;
--	char *url;
--
--	/* Indicates the last port to have been used for capturing video */
--	struct chamelium_port *capturing_port;
--
--	int drm_fd;
--
--	struct igt_list_head edids;
--	struct chamelium_port ports[CHAMELIUM_MAX_PORTS];
--	int port_count;
--};
+ static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+@@ -266,6 +275,7 @@ static void test_init_ops(data_t *data)
+ 	data->alternate_sync_async = false;
+ 	data->atomic_path = false;
+ 	data->overlay_path = false;
++	data->linear_modifier = false;
+ }
  
- bool igt_chamelium_allow_fsm_handling = true;
+ static void test_init_fbs(data_t *data)
+@@ -792,15 +802,23 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+ 		test_init(data);
  
-diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-index 8882e13fb..b2b97434f 100644
---- a/lib/igt_chamelium.h
-+++ b/lib/igt_chamelium.h
-@@ -28,23 +28,35 @@
- 
- #include "config.h"
- 
--#include <stdbool.h>
-+#include <cairo.h>
-+#include <errno.h>
-+#include <glib.h>
-+#include <math.h>
-+#include <pixman.h>
-+#include <pthread.h>
- #include <stddef.h>
-+#include <stdbool.h>
-+#include <string.h>
- #include <xf86drmMode.h>
-+#include <xmlrpc-c/base.h>
-+#include <xmlrpc-c/client.h>
- 
-+#include "igt_aux.h"
-+#include "igt_core.h"
- #include "igt_debugfs.h"
-+#include "igt_edid.h"
-+#include "igt_frame.h"
- #include "igt_kms.h"
- #include "igt_list.h"
-+#include "igt_pipe_crc.h"
-+#include "igt_rc.h"
+ 		for (int i = 0; i < data->plane->format_mod_count; i++) {
++			uint64_t modifier = data->plane->modifiers[i];
 +
-+#define CHAMELIUM_HOTPLUG_DETECTION_DELAY 10
+ 			if (data->plane->formats[i] != DRM_FORMAT_XRGB8888)
+ 				continue;
  
- struct igt_fb;
- struct edid;
- typedef struct _igt_crc igt_crc_t;
++			if (data->linear_modifier && modifier != DRM_FORMAT_MOD_LINEAR)
++				continue;
++
++			if (!data->linear_modifier && modifier == DRM_FORMAT_MOD_LINEAR)
++				continue;
++
+ 			data->allow_fail = true;
+-			data->modifier = data->plane->modifiers[i];
++			data->modifier = modifier;
  
--struct chamelium;
--struct chamelium_port;
--struct chamelium_frame_dump;
--struct chamelium_fb_crc_async_data;
--
- /**
-  * chamelium_check:
-  * @CHAMELIUM_CHECK_ANALOG: Fuzzy checking method for analog interfaces
-@@ -107,6 +119,46 @@ extern bool igt_chamelium_allow_fsm_handling;
- 
- #define CHAMELIUM_HOTPLUG_TIMEOUT 20 /* seconds */
- 
-+struct chamelium_port {
-+        unsigned int type;
-+        int id;
-+        int connector_id;
-+        char *name;
-+        bool adapter_allowed;
-+        char *connector_path;
-+        bool is_mapped;
-+};
-+
-+struct chamelium_frame_dump {
-+        unsigned char *bgr;
-+        size_t size;
-+        int width;
-+        int height;
-+        struct chamelium_port *port;
-+};
-+
-+struct chamelium_fb_crc_async_data {
-+        cairo_surface_t *fb_surface;
-+
-+        pthread_t thread_id;
-+        igt_crc_t *ret;
-+};
-+
-+struct chamelium {
-+        xmlrpc_env env;
-+        xmlrpc_client *client;
-+        char *url;
-+
-+        /* Indicates the last port to have been used for capturing video */
-+        struct chamelium_port *capturing_port;
-+
-+        int drm_fd;
-+
-+        struct igt_list_head edids;
-+        struct chamelium_port ports[CHAMELIUM_MAX_PORTS];
-+        int port_count;
-+};
-+
- /**
-  * chamelium_edid:
-  * @chamelium: instance of the chamelium where the EDID will be applied
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 825bfb110..827b72f54 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -22,7 +22,9 @@
- 
- #define PIPE_CONTROL			0x7a000004
- #define MEDIA_STATE_FLUSH		0x0
-+#ifndef MAX
- #define MAX(X, Y)			(((X) > (Y)) ? (X) : (Y))
-+#endif
- #define SIZE_DATA			64
- #define SIZE_BATCH			0x10000
- #define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x10000)
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index bf6510969..88b3717d4 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -758,7 +758,7 @@ igt_main
- 			igt_assert_f(chamelium_reprobe_connector(&data.display,
- 								 data.chamelium,
- 								 data.ports[i]) == DRM_MODE_CONNECTED,
--								 "Output not connected\n");
-+								 "%s not connected\n", data.chamelium->ports[i].name);
+ 			igt_dynamic_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
+ 				      data->output->name,
+-				      igt_fb_modifier_name(data->modifier)) {
++				      igt_fb_modifier_name(modifier)) {
+ 				      /*
+ 				       * FIXME: joiner+async flip is busted currently in KMD.
+ 				       * Remove this check once the issues are fixed in KMD.
+@@ -863,6 +881,25 @@ igt_main
+ 				run_test(&data, test_async_flip);
  		}
  
- 		kmstest_set_vt_graphics_mode();
++		igt_describe("Wait for page flip events in between successive asynchronous "
++			     "flips with linear modifiers");
++		igt_subtest_with_dynamic("async-flip-with-page-flip-events-linear") {
++			test_init_ops(&data);
++			data.linear_modifier = true;
++			igt_require(is_intel_device(data.drm_fd));
++			run_test_with_modifiers(&data, test_async_flip);
++		}
++
++		igt_describe("Wait for page flip events in between successive asynchronous "
++			     "flips using atomic path with linear modifiers");
++		igt_subtest_with_dynamic("async-flip-with-page-flip-events-atomic-linear") {
++			test_init_ops(&data);
++			data.atomic_path = true;
++			data.linear_modifier = true;
++			igt_require(is_intel_device(data.drm_fd));
++			run_test_with_modifiers(&data, test_async_flip);
++		}
++
+ 		igt_describe("Alternate between sync and async flips");
+ 		igt_subtest_with_dynamic("alternate-sync-async-flip") {
+ 			test_init_ops(&data);
 -- 
-2.25.1
+2.34.1
 
