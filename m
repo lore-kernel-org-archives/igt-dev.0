@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C562C369AB
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 07:39:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3560EC369B8
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 07:39:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3FCCB10E671;
+	by gabe.freedesktop.org (Postfix) with ESMTP id D724710E672;
 	Tue, 15 Apr 2025 07:39:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A/5yBP1J";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H1qxnRsP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5CBF10E671
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 07:39:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19CF010E670
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 07:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744702745; x=1776238745;
+ t=1744702743; x=1776238743;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=c6M/1LYAWJT7g5FXAYozRaSYfeCQl3gzhlogCXl5aRc=;
- b=A/5yBP1Jz1+sHIuaRr0vLWA9U+2xhzd65W1QXdgoCGjMWIZOlVJMJxEs
- UPOTcVR5DbDu4MuevBXQXx6jnGmepBVnPnNJ7T2VEURNzDZjT3f1BfWwX
- AAMcjFmb7p7hCICWXL7O0LgJFyuPMFHC3ecCODPNL0m7DrrBuZMspQDJ4
- TpvKu983C7n9iFRXeLJBr2GooB+L5cAMWZgmlE8VZD7Nc5jHdafOnHA6V
- EelRCCFlm5GF2Ekod4VD34+eXyhbbCsePCPUCfG5K54n4Q4h22WqZM9Fw
- iGiJX9enEXOQZRTTbBdjWXtzWEa0MSuTrUJ3Ad/isv9kbPPLvQjgJ3D4L g==;
-X-CSE-ConnectionGUID: cFhLUjFRQ8eE9+zjpSjLyA==
-X-CSE-MsgGUID: jmlFqmIyQke+qx78K8werA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="46076404"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="46076404"
+ bh=cbN5N1PyAkcVX4BsmSZrjweukYmIsmOkzs0H79mYT2Q=;
+ b=H1qxnRsPjRemo1y8lz6ZrAN76cc4Zk+rjbqw5lf2tTPoSkF4m56U9fXu
+ AN2shirT/rjs2v3paPjFdxEBGLLREpGO2xzqAj6EFk+0VYbDqyRe5yyv8
+ gQcLH+Yal4KlOEThDZE7hJ+sZ0J8hQKidijUwqPBfKEDtzWhDWQcC1YYI
+ BeYB2h6cr1sfIMLbG0Vr0YZ6F9jA37MltOoTMVWiPSEsECpRbsU50Dlxj
+ BEZxLh/ODXHaW7gcYsijSMgUzU/NIyddIhT8/zMS6lYXihbNAxsuumowY
+ kgd+3kYFKUXwr3ig7J5k+QH1a8lAP+m2wDbu1zSCASFfABU6I0SynPpCP g==;
+X-CSE-ConnectionGUID: k0vibeHeR0OQ90OQlnJjAw==
+X-CSE-MsgGUID: fNKTi/3wTS+sZ14Axpyt4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="46076401"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="46076401"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 00:39:05 -0700
-X-CSE-ConnectionGUID: vLN4IC90SxaTiR0hWDG8qA==
-X-CSE-MsgGUID: QU4XYh1qTMWm5urZmpA9fA==
+ 15 Apr 2025 00:39:03 -0700
+X-CSE-ConnectionGUID: GCD+fSTGQNmAHBh3amYzhg==
+X-CSE-MsgGUID: DtFx/WxxQLyj6vcKwW+BaQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="129806732"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="129806719"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO fdugast-desk.intel.com)
  ([10.245.246.8])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2025 00:39:03 -0700
+ 15 Apr 2025 00:39:01 -0700
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Francois Dugast <francois.dugast@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+ =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 Subject: [PATCH i-g-t,
- v7 5/5] tests/intel/xe_render_copy: Add new test for render under
- copy stress
-Date: Tue, 15 Apr 2025 09:36:05 +0200
-Message-ID: <20250415073833.121611-6-francois.dugast@intel.com>
+ v7 4/5] tests/intel/xe_render_copy: Expose render duration
+Date: Tue, 15 Apr 2025 09:36:04 +0200
+Message-ID: <20250415073833.121611-5-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250415073833.121611-1-francois.dugast@intel.com>
 References: <20250415073833.121611-1-francois.dugast@intel.com>
@@ -72,282 +71,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new series of tests which use the spinner with mem copy to keep
-the copy functions busy and perform memory accesses, while a regular
-render job is running. The objective of the test is to ensure that
-both the copies and the rendering are correct. Some information about
-rendering duration is provided in the logs, which can help monitor if
-copies have an impact on render.
+If the argument duration_ns is provided (not NULL), render() writes
+into it the duration of the rendering execution, which is only a part
+of the overall function. It can be used to observe the relative change
+of rendering duration under various hardware stressing conditions.
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- tests/intel/xe_render_copy.c | 224 +++++++++++++++++++++++++++++++++++
- 1 file changed, 224 insertions(+)
+ tests/intel/xe_render_copy.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
-index e2fbbc0f8..fadfd162c 100644
+index a9a3821ab..e2fbbc0f8 100644
 --- a/tests/intel/xe_render_copy.c
 +++ b/tests/intel/xe_render_copy.c
-@@ -12,8 +12,12 @@
- #include "igt.h"
- #include "intel_blt.h"
- #include "intel_bufops.h"
-+#include "intel_mocs.h"
-+#include "intel_pat.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_spin.h"
-+#include "xe/xe_util.h"
+@@ -260,7 +260,8 @@ static const char * const testname[] = {
  
- /**
-  * TEST: Copy memory using 3d engine
-@@ -437,6 +441,208 @@ static int render(struct buf_ops *bops, uint32_t tiling,
- 	return fails;
- }
- 
-+static void mem_copy_busy(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm,
-+			  uint64_t ahnd, uint32_t region, struct xe_spin **spin,
-+			  pthread_mutex_t *lock_init_spin)
-+{
-+	uint32_t copy_size = SZ_4M;
-+	/* Keep below 5 s timeout */
-+	uint64_t duration_ns = NSEC_PER_SEC * 4.5;
-+	intel_ctx_t *ctx;
-+	uint32_t exec_queue;
-+	uint32_t width = copy_size;
-+	uint32_t height = 1;
-+	uint32_t bo_size = ALIGN(SZ_4K, xe_get_default_alignment(fd));
-+	uint32_t bo;
-+	uint64_t spin_addr;
-+	int32_t src_handle, dst_handle;
-+	struct blt_mem_object src, dst;
-+	struct xe_spin_mem_copy mem_copy = {
-+		.src = &src,
-+		.dst = &dst,
-+	};
-+
-+	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
-+	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
-+
-+	/* Create source and destination objects used for the copy */
-+	src_handle = xe_bo_create(fd, 0, copy_size, region, 0);
-+	dst_handle = xe_bo_create(fd, 0, copy_size, region, 0);
-+	blt_set_mem_object(mem_copy.src, src_handle, copy_size, 0, width, height, region,
-+			   intel_get_uc_mocs_index(fd), DEFAULT_PAT_INDEX,
-+			   M_LINEAR, COMPRESSION_DISABLED);
-+	blt_set_mem_object(mem_copy.dst, dst_handle, copy_size, 0, width, height, region,
-+			   intel_get_uc_mocs_index(fd), DEFAULT_PAT_INDEX,
-+			   M_LINEAR, COMPRESSION_DISABLED);
-+	mem_copy.src->ptr = xe_bo_map(fd, src_handle, copy_size);
-+	mem_copy.dst->ptr = xe_bo_map(fd, dst_handle, copy_size);
-+	mem_copy.src_offset = get_offset_pat_index(ahnd, mem_copy.src->handle,
-+						   mem_copy.src->size, 0, mem_copy.src->pat_index);
-+	mem_copy.dst_offset = get_offset_pat_index(ahnd, mem_copy.dst->handle,
-+						   mem_copy.dst->size, 0, mem_copy.dst->pat_index);
-+
-+	/* Create spinner */
-+	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0), 0);
-+	*spin = xe_bo_map(fd, bo, bo_size);
-+	spin_addr = intel_allocator_alloc_with_strategy(ahnd, bo, bo_size, 0,
-+							ALLOC_STRATEGY_LOW_TO_HIGH);
-+	xe_vm_bind_sync(fd, vm, bo, 0, spin_addr, bo_size);
-+	xe_spin_init_opts(*spin, .addr = spin_addr, .preempt = true,
-+			  .ctx_ticks = xe_spin_nsec_to_ticks(fd, 0, duration_ns),
-+			  .mem_copy = &mem_copy);
-+	igt_assert_eq(pthread_mutex_unlock(lock_init_spin), 0);
-+
-+	while (true) {
-+		src.ptr[0] = 0xdeadbeaf;
-+		intel_ctx_xe_exec(ctx, ahnd, spin_addr);
-+		/* Abort if the spinner was stopped, otherwise continue looping */
-+		if ((*spin)->end == 0)
-+			break;
-+		igt_assert_f(!memcmp(mem_copy.src->ptr, mem_copy.dst->ptr, mem_copy.src->size),
-+			     "source and destination differ\n");
-+		dst.ptr[0] = 0;
-+	}
-+
-+	/* Cleanup */
-+	xe_vm_unbind_sync(fd, vm, 0, spin_addr, bo_size);
-+	gem_munmap(*spin, bo_size);
-+	gem_close(fd, bo);
-+	gem_munmap(mem_copy.dst->ptr, copy_size);
-+	gem_munmap(mem_copy.src->ptr, copy_size);
-+	gem_close(fd, dst_handle);
-+	gem_close(fd, src_handle);
-+	intel_ctx_destroy(fd, ctx);
-+	xe_exec_queue_destroy(fd, exec_queue);
-+}
-+
-+typedef struct {
-+	int fd;
-+	struct drm_xe_engine_class_instance *hwe;
-+	uint32_t vm;
-+	uint64_t ahnd;
-+	uint32_t region;
-+	struct xe_spin *spin;
-+	pthread_mutex_t lock_init_spin;
-+} data_thread_mem_copy;
-+
-+static void *run_thread_mem_copy(void *arg)
-+{
-+	data_thread_mem_copy *data = (data_thread_mem_copy *)arg;
-+
-+	mem_copy_busy(data->fd, data->hwe, data->vm, data->ahnd, data->region,
-+		      &data->spin, &data->lock_init_spin);
-+	pthread_exit(NULL);
-+}
-+
-+static bool has_copy_function(struct drm_xe_engine_class_instance *hwe)
-+{
-+	return hwe->engine_class == DRM_XE_ENGINE_CLASS_COPY;
-+}
-+
-+/**
-+ * TEST: Render while stressing copy functions
-+ * Category: Core
-+ * Mega feature: Render
-+ * Sub-category: 3d
-+ * Functionality: copy
-+ * Test category: stress test
-+ *
-+ * SUBTEST: render-stress-%s-copies
-+ * Description: Render while running %arg[1] parallel copies per supported engine.
-+ *		Even under stress from concurrent memory accesses, the render buffer
-+ *		and the copies must all be correct.
-+ *
-+ * arg[1]:
-+ * @0: 0 parallel copies
-+ * @1: 1 parallel copies
-+ * @2: 2 parallel copies
-+ * @4: 4 parallel copies
-+ */
-+#define MAX_COPY_THREADS 64
-+static void render_stress_copy(int fd, struct igt_collection *set,
-+			       uint32_t nparallel_copies_per_engine)
-+{
-+	struct igt_collection *regions;
-+	struct drm_xe_engine_class_instance *hwe;
-+	uint32_t vm;
-+	uint64_t ahnd;
-+	data_thread_mem_copy data_mem_copy[MAX_COPY_THREADS];
-+	pthread_t thread_mem_copy[MAX_COPY_THREADS];
-+	int thread_copy_count = 0;
-+	struct buf_ops *bops;
-+	int render_timeout = 3;
-+	int render_count = 0;
-+	uint64_t render_duration_total = 0, render_duration_min = -1, render_duration_max = 0;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	ahnd = intel_allocator_open_full(fd, vm, 0, 0,
-+					 INTEL_ALLOCATOR_SIMPLE,
-+					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+	for_each_variation_r(regions, 1, set) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (!has_copy_function(hwe))
-+				continue;
-+			for (int i = 0; i < nparallel_copies_per_engine; i++) {
-+				data_thread_mem_copy *data = &data_mem_copy[thread_copy_count];
-+
-+				data->fd = fd;
-+				data->hwe = hwe;
-+				data->vm = vm;
-+				data->ahnd = ahnd;
-+				data->region = igt_collection_get_value(regions, 0);
-+				/*
-+				 * lock_init_spin is held by the newly created thread until the
-+				 * spinner is initialized and ready to be waited on with
-+				 * xe_spin_wait_started().
-+				 */
-+				igt_assert_eq(pthread_mutex_init(&data->lock_init_spin, NULL), 0);
-+				igt_assert_eq(pthread_mutex_lock(&data->lock_init_spin), 0);
-+				igt_assert_eq(pthread_create(
-+						   &thread_mem_copy[thread_copy_count],
-+						   NULL,
-+						   run_thread_mem_copy,
-+						   data),
-+					      0);
-+				thread_copy_count++;
-+			}
-+		}
-+	}
-+
-+	/* Wait for all mem copy spinners to be initialized and started */
-+	for (int i = 0; i < thread_copy_count; i++) {
-+		igt_assert_eq(pthread_mutex_lock(&data_mem_copy[i].lock_init_spin), 0);
-+		xe_spin_wait_started(data_mem_copy[i].spin);
-+		igt_assert_eq(pthread_mutex_unlock(&data_mem_copy[i].lock_init_spin), 0);
-+	}
-+
-+	bops = buf_ops_create(fd);
-+	igt_until_timeout(render_timeout) {
-+		uint64_t duration;
-+
-+		render(bops, T_LINEAR, WIDTH, HEIGHT, COPY_FULL, &duration);
-+		render_count++;
-+		render_duration_total += duration;
-+		if (duration < render_duration_min)
-+			render_duration_min = duration;
-+		if (duration > render_duration_max)
-+			render_duration_max = duration;
-+	}
-+	igt_info("%d render() loops in %d seconds\n", render_count, render_timeout);
-+	igt_info("Render duration: avg = %ld ns, min = %ld ns, max = %ld ns\n",
-+		 render_duration_total / render_count,
-+		 render_duration_min, render_duration_max);
-+
-+	/* End all mem copy threads */
-+	for (int i = 0; i < thread_copy_count; i++)
-+		xe_spin_end(data_mem_copy[i].spin);
-+	for (int i = 0; i < thread_copy_count; i++)
-+		pthread_join(thread_mem_copy[i], NULL);
-+
-+	put_ahnd(ahnd);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- static int opt_handler(int opt, int opt_index, void *data)
+ static int render(struct buf_ops *bops, uint32_t tiling,
+ 		  uint32_t width, uint32_t height,
+-		  enum render_copy_testtype testtype)
++		  enum render_copy_testtype testtype,
++		  uint64_t *duration_ns)
  {
- 	switch (opt) {
-@@ -477,11 +683,23 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
- 	struct buf_ops *bops;
- 	const char *tiling_name;
- 	int tiling;
-+	struct igt_collection *set;
-+	const struct section {
-+		const char *name;
-+		unsigned int nparallel_copies_per_engine;
-+	} sections[] = {
-+		{ "0", 0 },
-+		{ "1", 1 },
-+		{ "2", 2 },
-+		{ "4", 4 },
-+		{ NULL },
-+	};
+ 	struct intel_bb *ibb;
+ 	struct intel_buf src, dst, final, grfs;
+@@ -270,6 +271,7 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 	int compression = testtype == COPY_FULL_COMPRESSED ? I915_COMPRESSION_RENDER :
+ 							     I915_COMPRESSION_NONE;
+ 	bool is_compressed;
++	struct timespec tv;
+ 	struct posrc {
+ 		uint32_t x0, y0;
+ 		uint32_t x1, y1;
+@@ -328,6 +330,8 @@ static int render(struct buf_ops *bops, uint32_t tiling,
+ 	render_copy = igt_get_render_copyfunc(xe);
+ 	igt_assert(render_copy);
  
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
- 		bops = buf_ops_create(xe);
- 		srand(time(NULL));
-+		set = xe_get_memory_region_set(xe, DRM_XE_MEM_REGION_CLASS_SYSMEM);
++	if (duration_ns)
++		igt_gettime(&tv);
+ 	switch (testtype) {
+ 	case COPY_SQUARE:
+ 	case COPY_VSTRIPES:
+@@ -403,6 +407,8 @@ static int render(struct buf_ops *bops, uint32_t tiling,
  	}
  
- 	for (int id = 0; id <= COPY_FULL_COMPRESSED; id++) {
-@@ -501,6 +719,12 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
+ 	intel_bb_sync(ibb);
++	if (duration_ns)
++		*duration_ns = igt_nsec_elapsed(&tv);
+ 	intel_bb_destroy(ibb);
+ 
+ 	if (write_png) {
+@@ -490,7 +496,7 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
+ 				tiling_name = blt_tiling_name(tiling);
+ 				tiling = blt_tile_to_i915_tile(tiling);
+ 				igt_dynamic_f("render-%s-%ux%u", tiling_name, surfwidth, surfheight)
+-					render(bops, tiling, surfwidth, surfheight, id);
++					render(bops, tiling, surfwidth, surfheight, id, NULL);
+ 			}
  		}
  	}
- 
-+	for (const struct section *s = sections; s->name; s++)
-+		igt_subtest_f("render-stress-%s-copies", s->name) {
-+			igt_require(blt_has_mem_copy(xe));
-+			render_stress_copy(xe, set, s->nparallel_copies_per_engine);
-+		}
-+
- 	igt_fixture {
- 		buf_ops_destroy(bops);
- 		drm_close_driver(xe);
 -- 
 2.43.0
 
