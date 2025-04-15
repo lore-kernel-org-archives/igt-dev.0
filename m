@@ -4,54 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8536FC369B8
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 06:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87823C369BA
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 06:22:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0CA6510E32A;
-	Tue, 15 Apr 2025 06:22:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B7D110E66E;
+	Tue, 15 Apr 2025 06:22:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NgZYkCps";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K8eZc6D3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04A2210E34C
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 06:22:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0A5610E32A
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 06:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1744698126; x=1776234126;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=3pKFPzUpjD3bKEsW9vHQJQAxKNNdT0znXyU6hmvfLJI=;
- b=NgZYkCpsDeN4qPaLURIDLSLFyIgf2GShURKuz94eLvoCnX/YpUa5DQ7H
- 93rnVmRB2KZPg5A9wqk7XcfnDyEe9/f8Aquy2Sw9e99i0gvVRHH7WHu+z
- A/tbVycDwQXzdkXWLjXG4wmmHxasGMW9amRkd8BhShdJcuT1GiQVNSn69
- hyp3kSAhVGU37ddpR5/W1ZN9PPVbgHYhy7XbaE4SmR1Z9leJARKuErDZF
- gIzeMXqVwbRB/mLUf8TZw/wmW6EroJt9fIwTu994/oX2zMNrNaaiVHP0w
- wcBjpBa5paDtZ5O6WriRDcmfElZuE4SpdVAZqvklqzRs9zNQeGk9NNuZb Q==;
-X-CSE-ConnectionGUID: Dq83V3kpTpeCHzIgsnCkmw==
-X-CSE-MsgGUID: gnlrumoPRoWhcupehSZV8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56367841"
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="56367841"
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1QAiO10QyhncKTC4uO/HcnjgtJoTTPtBn30TtxF1p2s=;
+ b=K8eZc6D3gOvbWDIE7oaiNVKEjYxYI+DWnw6v6rgQ//Kus7saqn/gUvsi
+ DtH7ubkdtxAs41ptKergedi7DZlwtuRA8aJZiGjlRhTDiVhrmyYVCCFF+
+ IB7UH0hveiLmqwC6G0QjcIACQPa2faeFZCro3W4RI40pxHzZAYXnTV8tp
+ wJUoAPQFOrHyPZ1cIyWtz2e4J1IbqJwcZJSp1XOMJtspYBmDjNecpkypH
+ YdB2EuAcedvhV3wlDFg4Tsqr56cPUH2wdtucdqxOgVyAbHgfbfiqW1hn3
+ NcPuZMLRTHgGr/KuBozK4oZa2IUuvOnN/O/ov5abR38eZ5AOHZy+/zUQf Q==;
+X-CSE-ConnectionGUID: gF8R3NnLQEmXMmRnNETSYQ==
+X-CSE-MsgGUID: DKFFRCMFSqmWerbpSCs3Jw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11403"; a="56367839"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="56367839"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Apr 2025 23:22:04 -0700
-X-CSE-ConnectionGUID: bFg6rvxRQRyFrQcQCzo5dw==
-X-CSE-MsgGUID: 8URUC7MeRfevfjTWojxKfw==
+ 14 Apr 2025 23:22:03 -0700
+X-CSE-ConnectionGUID: kN7S5EvOQzu9sg3acI8Uwg==
+X-CSE-MsgGUID: bdVPJhaaTSa+Lp5bndUi9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="129993265"
+X-IronPort-AV: E=Sophos;i="6.15,213,1739865600"; d="scan'208";a="129993258"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 23:22:02 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 23:22:01 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/chamelium/kms_chamelium_color: force
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 0/2] tests/chamelium/kms_chamelium_color: force
  connector reprobe after plugging ports
-Date: Tue, 15 Apr 2025 12:07:41 +0530
-Message-Id: <20250415063742.3026718-2-kunal1.joshi@intel.com>
+Date: Tue, 15 Apr 2025 12:07:40 +0530
+Message-Id: <20250415063742.3026718-1-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250415063742.3026718-1-kunal1.joshi@intel.com>
-References: <20250415063742.3026718-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,75 +70,20 @@ Force reprobe connector status after plugging to assure
 we always have DRM_MODE_CONNECTED status for the connector
 before proceding with the test.
 
-v2: use Closes tag (Swati)
-
 Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2371
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/chamelium/kms_chamelium_color.c | 25 +++++++++++++++++++++----
- tests/meson.build                     |  2 +-
- 2 files changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index 5f61bc2ec..bf6510969 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -31,6 +31,7 @@
-  */
- 
- #include "kms_color_helper.h"
-+#include "kms_chamelium_helper.h"
- 
- /**
-  * SUBTEST: degamma
-@@ -736,13 +737,29 @@ igt_main
- 
- 		if (!data.port_count)
- 			igt_skip("No ports connected\n");
-+
- 		/*
--		 * We don't cause any harm by plugging
--		 * discovered ports, just incase they are not plugged
--		 * we currently skip in test_setup
-+		 * The behavior differs based on the availability of port mappings:
-+		 * - When using port mappings (chamelium_read_port_mappings),
-+		 *   ports are not plugged
-+		 * - During autodiscovery, all ports are plugged at the end.
-+		 *
-+		 * This quick workaround (unplug, plug, and re-probe the connectors)
-+		 * prevents any ports from being unintentionally skipped in test_setup.
- 		 */
--		for( i = 0; i < data.port_count; i++)
-+		for(i = 0; i < data.port_count; i++) {
-+			struct udev_monitor *mon;
-+			int timeout = CHAMELIUM_HOTPLUG_TIMEOUT;
-+			chamelium_unplug(data.chamelium, data.ports[i]);
-+			mon = igt_watch_uevents();
- 			chamelium_plug(data.chamelium, data.ports[i]);
-+			igt_assert(chamelium_wait_for_hotplug(mon, &timeout));
-+			igt_cleanup_uevents(mon);
-+			igt_assert_f(chamelium_reprobe_connector(&data.display,
-+								 data.chamelium,
-+								 data.ports[i]) == DRM_MODE_CONNECTED,
-+								 "Output not connected\n");
-+		}
- 
- 		kmstest_set_vt_graphics_mode();
- 	}
-diff --git a/tests/meson.build b/tests/meson.build
-index 9224145cf..6f0beeb0a 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -368,7 +368,7 @@ extra_sources = {
- 	'testdisplay': [ 'testdisplay_hotplug.c' ],
- 	'kms_color':  [ 'kms_color_helper.c' ],
- 	'kms_chamelium_audio': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
--	'kms_chamelium_color':  [ 'kms_color_helper.c' ],
-+	'kms_chamelium_color':  [ 'kms_color_helper.c', join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+Kunal Joshi (2):
+  tests/chamelium/kms_chamelium_color: force connector reprobe after
+    plugging ports
+  tests/chamelium/kms_chamelium_color: print output name is assert
+
+ lib/igt_chamelium.c                   | 62 --------------------------
+ lib/igt_chamelium.h                   | 64 ++++++++++++++++++++++++---
+ lib/intel_compute.c                   |  2 +
+ tests/chamelium/kms_chamelium_color.c | 25 +++++++++--
+ tests/meson.build                     |  2 +-
+ 5 files changed, 82 insertions(+), 73 deletions(-)
+
 -- 
 2.25.1
 
