@@ -4,28 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37D2EC369AB
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 19:54:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D84F0C369AB
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Apr 2025 20:06:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 44A1610E384;
-	Tue, 15 Apr 2025 19:54:35 +0000 (UTC)
-Received: from b68e5b3b99e1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2460510E151;
- Tue, 15 Apr 2025 19:54:34 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4722372413694926505=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 884E410E37F;
+	Tue, 15 Apr 2025 20:06:40 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="gNq4OLZ7";
+	dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D7B710E37F
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Apr 2025 20:06:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=giPncOFQ1gF2gcatm+W/sLn/9+2aOjrEZ4b0mGlPVvA=; b=gNq4OLZ7p3txb4iYZl3D7j4j5y
+ DBkh/ILexKWtOQXUZQ/NZSbOcqEHV/44LE7FV97vrqGtd2lDkSPe8U5UBT4YxouwVa4ISmFdZlBvB
+ U0NfXazqMdVPI64ICTgPkovWEDqUcaqo4hgN3Dyc17hcm21jJxM7WG4ccpQLS9XM8SZbbr8757ShZ
+ iig2LK3rDV/dZkd0UlCLUCkoDdpLK6v3HBY2ZLSJoXILG9FQfJ+k2yz088NsmXV1I4PDRMq8vUk7v
+ EB1T9zc8CeZKicvyDAp1VOsga6hk6bkzKf2oIiQAtZot1V4IUf11fpatbAUNOyTdzyqlQ0Bk4a6Iw
+ qfSenfUw==;
+Received: from [189.6.35.67] (helo=killbill.home)
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1u4mY2-00H5M2-86; Tue, 15 Apr 2025 22:06:22 +0200
+From: Melissa Wen <mwen@igalia.com>
+To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>,
+ Andre Almeida <andrealmeid@igalia.com>, Alex Hung <alex.hung@amd.com>,
+ Leo Li <sunpeng.li@amd.com>, Simon Ser <contact@emersion.fr>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Ville Syrjala <ville.syrjala@linux.intel.com>,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ Xaver Hugl <xaver.hugl@gmail.com>, kernel-dev@igalia.com
+Subject: [PATCH i-g-t] tests/kms_async_flip: skip subtest if invalid
+ driver-specific condition
+Date: Tue, 15 Apr 2025 16:47:54 -0300
+Message-ID: <20250415200529.31722-1-mwen@igalia.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-Subject: =?utf-8?b?4pyTIFhlLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMvaW50ZWwveGVfZmF1bHRf?=
- =?utf-8?b?aW5qZWN0aW9uOiBJbmplY3QgZXJyb3JzIGR1cmluZyB4ZV9ndWNfY3Rfc2VuZF9y?=
- =?utf-8?b?ZWN2KCkgeGVfZ3VjX21taW9fc2VuZF9yZWN2KCkgKHJldjcp?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Satyanarayana K V P" <satyanarayana.k.v.p@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Apr 2025 19:54:34 -0000
-Message-ID: <174474687414.8071.9047065809414399244@b68e5b3b99e1>
-X-Patchwork-Hint: ignore
-References: <20250415082711.4831-1-satyanarayana.k.v.p@intel.com>
-In-Reply-To: <20250415082711.4831-1-satyanarayana.k.v.p@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,129 +68,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4722372413694926505==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Async page flips can fail for any driver-specific reasons, i.e. when the
+driver can't commit to async page flip request for hw limitations, the
+commit is rejected with -EINVAL since there is one or more conditions
+that make the request invalid. These limitations varies between vendors
+and hw versions. Skip a subtest if any invalid driver-specific condition
+happens. This behavior is in line with userspace expectations and fits
+better the plurality of drivers in the DRM subsystem.
 
-== Series Details ==
+Signed-off-by: Melissa Wen <mwen@igalia.com>
 
-Series: tests/intel/xe_fault_injection: Inject errors during xe_guc_ct_send_recv() xe_guc_mmio_send_recv() (rev7)
-URL   : https://patchwork.freedesktop.org/series/144466/
-State : success
+---
 
-== Summary ==
+Hi,
 
-CI Bug Log - changes from XEIGT_8320_BAT -> XEIGTPW_12977_BAT
-====================================================
+Recent changes to async page flip conditions and limitations in the DRM
+subsystem shed light on unexpected restrictions of async page flip
+tests. The current approach doesn't make the test generic enough to
+correctly deal with the diversity of reasons for a async page flip being
+rejected by drivers of any HW vendor.
 
-Summary
--------
+As an example, AMD display driver can't perform async flip when the
+memory type changes [1][2][3]. After further investigation performed by
+my colleague Thadeu Cascardo, he elucidated that this situation can
+happen whenever there is not enough space for FBs in VRAM, so they are
+allocated in GTT. Moreover, the space available in VRAM varies between
+hw families and other system needs. Therefore, the driver rejects the
+async flip due to memory type change, instead of silently downgrade the
+page flip from async to sync - which seems correct.
 
-  **SUCCESS**
+The userspace expects the rejection (-EINVAL), but not the downgrade.
+So, I understand the test_async_flip should just validate if async page
+flips aren't downgrade in acceptable conditions and skip for any invalid
+driver-specific condition.
 
-  No regressions found.
+[1] https://lore.kernel.org/amd-gfx/20230621202459.979661-2-andrealmeid@igalia.com/
+[2] https://lore.kernel.org/amd-gfx/20230804182054.142988-1-hamza.mahfooz@amd.com/
+[3] https://lore.kernel.org/amd-gfx/20250107152855.2953302-17-chiahsuan.chung@amd.com/
 
-  
+Let me know your thoughts!
 
-Participating hosts (8 -> 8)
-------------------------------
+Melissa
 
-  No changes in participating hosts
+---
+ tests/kms_async_flips.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Known issues
-------------
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 031417ed8..0de299c2b 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -397,8 +397,10 @@ static void test_async_flip(data_t *data)
+ 
+ 		ret = perform_flip(data, frame, flags);
+ 
+-		if (frame == 1 && data->allow_fail)
+-			igt_skip_on(ret == -EINVAL);
++		if (data->allow_fail)
++			igt_skip_on_f(ret == -EINVAL,
++				      "Skipping, async flip not supported at frame %d " \
++				      "due to invalid driver-specific conditions.\n", frame);
+ 		else
+ 			igt_assert_eq(ret, 0);
+ 
+@@ -768,7 +770,7 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 			continue;
+ 
+ 		test_init(data);
+-		data->allow_fail = false;
++		data->allow_fail = true;
+ 		data->modifier = default_modifier(data);
+ 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
+ 			/*
+-- 
+2.47.2
 
-  Here are the changes found in XEIGTPW_12977_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@intel_sysfs_debugfs@xe-forcewake:
-    - bat-lnl-1:          [PASS][1] -> [ABORT][2] ([Intel XE#4624])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8320/bat-lnl-1/igt@intel_sysfs_debugfs@xe-forcewake.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12977/bat-lnl-1/igt@intel_sysfs_debugfs@xe-forcewake.html
-
-  
-  [Intel XE#4624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4624
-
-
-Build changes
--------------
-
-  * IGT: IGT_8320 -> IGTPW_12977
-  * Linux: xe-2954-22c34bd976f4b047263dafa7b88f60f953ccddd3 -> xe-2956-b61f5de7570012cb79e72624a97b216d395f7380
-
-  IGTPW_12977: 649251c8a694557d0f6910459ee28184d14c8e45 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8320: cd3b5612be3cef838f16e074bf1bc421399d584d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2954-22c34bd976f4b047263dafa7b88f60f953ccddd3: 22c34bd976f4b047263dafa7b88f60f953ccddd3
-  xe-2956-b61f5de7570012cb79e72624a97b216d395f7380: b61f5de7570012cb79e72624a97b216d395f7380
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12977/index.html
-
---===============4722372413694926505==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_fault_injection: Inject errors during xe_guc_ct_send_recv() xe_guc_mmio_send_recv() (rev7)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/144466/">https://patchwork.freedesktop.org/series/144466/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12977/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12977/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8320_BAT -&gt; XEIGTPW_12977_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12977_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@intel_sysfs_debugfs@xe-forcewake:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8320/bat-lnl-1/igt@intel_sysfs_debugfs@xe-forcewake.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12977/bat-lnl-1/igt@intel_sysfs_debugfs@xe-forcewake.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4624">Intel XE#4624</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8320 -&gt; IGTPW_12977</li>
-<li>Linux: xe-2954-22c34bd976f4b047263dafa7b88f60f953ccddd3 -&gt; xe-2956-b61f5de7570012cb79e72624a97b216d395f7380</li>
-</ul>
-<p>IGTPW_12977: 649251c8a694557d0f6910459ee28184d14c8e45 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8320: cd3b5612be3cef838f16e074bf1bc421399d584d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2954-22c34bd976f4b047263dafa7b88f60f953ccddd3: 22c34bd976f4b047263dafa7b88f60f953ccddd3<br />
-  xe-2956-b61f5de7570012cb79e72624a97b216d395f7380: b61f5de7570012cb79e72624a97b216d395f7380</p>
-
-</body>
-</html>
-
---===============4722372413694926505==--
