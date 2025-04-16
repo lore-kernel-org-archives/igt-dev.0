@@ -4,54 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B049C369B1
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 09:31:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01E73C369BD
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 10:17:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 186EC10E8AA;
-	Wed, 16 Apr 2025 09:31:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F26C10E8BB;
+	Wed, 16 Apr 2025 10:17:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aSNh89Ej";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j5nbEmFQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2600F10E8AA
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Apr 2025 09:31:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24B6010E8BB;
+ Wed, 16 Apr 2025 10:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744795896; x=1776331896;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=u731nChm2fzoQpzHOBbDcfJTKkpQhDHFYGvbmIF7vTQ=;
- b=aSNh89EjwSjWI/rFFbeiXmSvlUJeF/fWWdlCc5IddhWj48W3JgU/7twU
- w1Fn/wkvYLOvj8ACHI29JGGcx4+5EMy0D0lWb/YalhT2b0s8uBM/1Stge
- eZn7KUYcHD9npj/6WoccaAXqsRUyPSXvFZGvuyHf9wyWEm9OBNrA9tnVT
- nUK6LmHD1Qw2pUynH+kEfgoj1gBcrhAT0JTCbL7gur/yFBgRgLnBz0owP
- J4/CbDm3QIKfIqtWOhhdAlkL3/CXQcZUuUOOHqqj/Uw7mfV2qDu9oPjzc
- MAemCtKlSdpZPDiYwaQcxhWg83FxZE25e9tqkesYYvpKMVn5A9cmwFhXp w==;
-X-CSE-ConnectionGUID: Q/BaFhjXQ1mw+0sazMz4Rw==
-X-CSE-MsgGUID: JrtXAmV0SGCFqr3bHFVmWg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="68823845"
-X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; d="scan'208";a="68823845"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2025 02:31:36 -0700
-X-CSE-ConnectionGUID: OkgGl8emT/W4EBOgFEwKWA==
-X-CSE-MsgGUID: T4mZhZ26Sg22bRAO9zTc6Q==
+ t=1744798634; x=1776334634;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=fYZRSJuOiBLlZdUHLgjWki7LRZg3p7cIcHgSOR2V+l0=;
+ b=j5nbEmFQhBliNVp6ZILr+jR+PcGMUEDTFJ/18wcQMIn1B6eZAlUYOsMD
+ eUGmgb5QsuqCrk9y1y2rlKGxCs35bpVdFg/e3XgILFPAdtzOluMfGJCXy
+ 0XMz+2DsuEMlkZcVLDkT6uH484XYy1BEmiS0PpPbLb9wU5QUnswODwWsD
+ 6aOCBPA1rgyMcNmMxb1UZp1JKWV/E4adzXLyBOtnSbQCAOL3yTiABro2l
+ VFrI5/j3E52uHTT0sNgvgDnWkFF4Nx5wz48X+rFEBZP/ZVnaMYX6XnSWq
+ Q4o+HPyiUAi6BFveXTvgslZ6ElSHjtRhkdsRfAAWzT9oECE3lLlVTcGBw g==;
+X-CSE-ConnectionGUID: /2DKVg9uTw2XVKziAM1BpQ==
+X-CSE-MsgGUID: +90c9enMTCi2p52Y3Q5ZPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="56517123"
+X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; d="scan'208";a="56517123"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2025 03:17:14 -0700
+X-CSE-ConnectionGUID: zC7TprOyTV+tlod1WtkL7w==
+X-CSE-MsgGUID: c1RkJM2FR6OjC3qIrda8ow==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; d="scan'208";a="130711845"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 02:31:33 -0700
-From: Jeevan B <jeevan.b@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; d="scan'208";a="134516164"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 03:17:12 -0700
+Date: Wed, 16 Apr 2025 12:16:58 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: santhosh.reddy.guddati@intel.com,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/kms_display_modes: Fit modes within MST bandwidth
- constraints
-Date: Wed, 16 Apr 2025 15:17:18 +0530
-Message-Id: <20250416094718.3114024-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.25.1
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFU?= =?utf-8?Q?=3A?= failure for
+ rename drm_fdinfo into i915_fdinfo (rev8)
+Message-ID: <20250416101658.wapkbhke34mp4tlv@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20250415170208.198730-1-kamil.konieczny@linux.intel.com>
+ <174476428290.8471.243075617871389404@b68e5b3b99e1>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <174476428290.8471.243075617871389404@b68e5b3b99e1>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,178 +71,654 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Instead of checking only the current modes, find a combination of
-modes in the MST topology that can be accommodated within the
-available link bandwidth.
+Hi igt-dev,
+On 2025-04-16 at 00:44:42 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: rename drm_fdinfo into i915_fdinfo (rev8)
+> URL   : https://patchwork.freedesktop.org/series/140053/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_8320 -> IGTPW_12984
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_12984 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_12984, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/index.html
+> 
+> Participating hosts (45 -> 44)
+> ------------------------------
+> 
+>   Missing    (1): fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_12984:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
 
-v2: move fit_modes_in_bw to lib/igt_kms
-v3: update tag from fixes to closes
-v4: remove igt_assert from fit_modes_in_bw call.
+All below skips are the same as in old test drm_fdinfo,
+this is a test rename into new i915_drm_fdinfo.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1542
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- lib/igt_kms.c                           | 24 ++++++++++++++++++++++++
- lib/igt_kms.h                           |  1 +
- tests/intel/kms_dp_link_training.c      | 24 +-----------------------
- tests/intel/kms_dp_linktrain_fallback.c | 18 +-----------------
- tests/kms_display_modes.c               |  4 ++++
- 5 files changed, 31 insertions(+), 40 deletions(-)
+> 
+>   * igt@i915_drm_fdinfo@all-busy-idle-check-all (NEW):
+>     - bat-mtlp-8:         NOTRUN -> [SKIP][1] +63 other tests skip
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-mtlp-8/igt@i915_drm_fdinfo@all-busy-idle-check-all.html
+> 
+>   * igt@i915_drm_fdinfo@busy-hang@vcs1 (NEW):
+>     - bat-mtlp-9:         NOTRUN -> [SKIP][2] +63 other tests skip
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-mtlp-9/igt@i915_drm_fdinfo@busy-hang@vcs1.html
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all@rcs0 (NEW):
+>     - bat-dg2-14:         NOTRUN -> [SKIP][3] +71 other tests skip
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-dg2-14/igt@i915_drm_fdinfo@busy-idle-check-all@rcs0.html
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all@vcs0 (NEW):
+>     - bat-dg1-6:          NOTRUN -> [SKIP][4] +55 other tests skip
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-dg1-6/igt@i915_drm_fdinfo@busy-idle-check-all@vcs0.html
+> 
+>   * igt@i915_drm_fdinfo@busy-idle@vcs0 (NEW):
+>     - bat-adlp-11:        NOTRUN -> [SKIP][5] +55 other tests skip
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-adlp-11/igt@i915_drm_fdinfo@busy-idle@vcs0.html
+> 
+>   * {igt@i915_drm_fdinfo@busy-idle@vecs1} (NEW):
+>     - bat-dg2-8:          NOTRUN -> [SKIP][6] +71 other tests skip
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-dg2-8/igt@i915_drm_fdinfo@busy-idle@vecs1.html
+> 
+>   * igt@i915_drm_fdinfo@busy@bcs0 (NEW):
+>     - bat-dg1-7:          NOTRUN -> [SKIP][7] +55 other tests skip
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-dg1-7/igt@i915_drm_fdinfo@busy@bcs0.html
+> 
+>   * {igt@i915_drm_fdinfo@busy@ccs0} (NEW):
+>     - bat-arls-5:         NOTRUN -> [SKIP][8] +63 other tests skip
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-arls-5/igt@i915_drm_fdinfo@busy@ccs0.html
+> 
+>   * igt@i915_drm_fdinfo@busy@vecs0 (NEW):
+>     - bat-twl-1:          NOTRUN -> [SKIP][9] +47 other tests skip
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-twl-1/igt@i915_drm_fdinfo@busy@vecs0.html
+> 
+>   * igt@i915_drm_fdinfo@isolation (NEW):
+>     - bat-adlp-6:         NOTRUN -> [SKIP][10] +55 other tests skip
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-adlp-6/igt@i915_drm_fdinfo@isolation.html
+> 
+>   * igt@i915_drm_fdinfo@isolation@vcs1 (NEW):
+>     - bat-adlp-9:         NOTRUN -> [SKIP][11] +55 other tests skip
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-adlp-9/igt@i915_drm_fdinfo@isolation@vcs1.html
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@bcs0 (NEW):
+>     - bat-mtlp-6:         NOTRUN -> [SKIP][12] +63 other tests skip
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-mtlp-6/igt@i915_drm_fdinfo@most-busy-check-all@bcs0.html
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@vecs0 (NEW):
+>     - bat-rplp-1:         NOTRUN -> [SKIP][13] +55 other tests skip
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-rplp-1/igt@i915_drm_fdinfo@most-busy-check-all@vecs0.html
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@rcs0 (NEW):
+>     - bat-twl-2:          NOTRUN -> [SKIP][14] +47 other tests skip
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-twl-2/igt@i915_drm_fdinfo@most-busy-idle-check-all@rcs0.html
+>     - bat-dg2-11:         NOTRUN -> [SKIP][15] +71 other tests skip
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-dg2-11/igt@i915_drm_fdinfo@most-busy-idle-check-all@rcs0.html
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@vcs0 (NEW):
+>     - bat-arlh-3:         NOTRUN -> [SKIP][16] +63 other tests skip
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-arlh-3/igt@i915_drm_fdinfo@most-busy-idle-check-all@vcs0.html
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@vecs0 (NEW):
+>     - bat-atsm-1:         NOTRUN -> [SKIP][17] +71 other tests skip
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-atsm-1/igt@i915_drm_fdinfo@most-busy-idle-check-all@vecs0.html
+> 
+>   * {igt@i915_drm_fdinfo@most-busy-idle-check-all@vecs1} (NEW):
+>     - bat-dg2-9:          NOTRUN -> [SKIP][18] +71 other tests skip
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-dg2-9/igt@i915_drm_fdinfo@most-busy-idle-check-all@vecs1.html
+> 
+>   * igt@i915_drm_fdinfo@virtual-busy-hang (NEW):
+>     - bat-arls-6:         NOTRUN -> [SKIP][19] +63 other tests skip
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-arls-6/igt@i915_drm_fdinfo@virtual-busy-hang.html
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 99c8707c7..f8274f49a 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5046,6 +5046,30 @@ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display)
- 	return __override_all_active_output_modes_to_fit_bw(display, outputs, n_outputs, 0);
- }
- 
-+/*
-+ * fit_modes_in_bw :
-+ * @display: a pointer to an #igt_display_t structure
-+ *
-+ * Tries atomic TEST_ONLY commit; if it fails, overrides
-+ * output modes to fit bandwidth.
-+ */
-+bool fit_modes_in_bw(igt_display_t *display)
-+{
-+	bool found;
-+	int ret;
-+
-+	ret = igt_display_try_commit_atomic(display,
-+					    DRM_MODE_ATOMIC_TEST_ONLY |
-+					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	if (ret != 0) {
-+		found = igt_override_all_active_output_modes_to_fit_bw(display);
-+		igt_require_f(found,
-+			      "No valid mode combo found for modeset\n");
-+	}
-+
-+	return true;
-+}
-+
- /**
-  * igt_pipe_refresh:
-  * @display: a pointer to an #igt_display_t structure
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 0381c82ad..fe01eaf3f 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1226,6 +1226,7 @@ void igt_require_pipe(igt_display_t *display,
- void igt_dump_connectors_fd(int drmfd);
- void igt_dump_crtcs_fd(int drmfd);
- bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
-+bool fit_modes_in_bw(igt_display_t *display);
- bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
- unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
- unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
-diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
-index 9e9b1e6db..9b6248c6f 100644
---- a/tests/intel/kms_dp_link_training.c
-+++ b/tests/intel/kms_dp_link_training.c
-@@ -140,28 +140,6 @@ static void setup_planes_fbs(data_t *data, igt_output_t *outs[],
- 	}
- }
- 
--/*
-- * fit_modes_in_bw - Tries atomic TEST_ONLY commit; if it fails, overrides
-- * output modes to fit bandwidth.
-- */
--static bool fit_modes_in_bw(data_t *data)
--{
--	int ret;
--
--	ret = igt_display_try_commit_atomic(&data->display,
--					    DRM_MODE_ATOMIC_TEST_ONLY |
--					    DRM_MODE_ATOMIC_ALLOW_MODESET,
--					    NULL);
--	if (ret != 0) {
--		bool found;
--
--		found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
--		igt_require_f(found, "No valid mode combo found for modeset\n");
--	}
--
--	return true;
--}
--
- static void do_modeset(data_t *data, bool mst)
- {
- 	uint32_t master_pipes_mask = 0;
-@@ -204,7 +182,7 @@ static void do_modeset(data_t *data, bool mst)
- 						  "Unable to assign pipes for outputs\n");
- 
- 	setup_planes_fbs(data, outs, out_count, modes, fbs, planes);
--	fit_modes_in_bw(data);
-+	fit_modes_in_bw(&data->display);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- }
- 
-diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
-index 6a872efd2..64f21ec6f 100644
---- a/tests/intel/kms_dp_linktrain_fallback.c
-+++ b/tests/intel/kms_dp_linktrain_fallback.c
-@@ -151,22 +151,6 @@ static void set_connector_link_status_good(data_t *data, igt_output_t *outputs[]
- 							  DRM_MODE_LINK_STATUS_GOOD);
- }
- 
--static bool fit_modes_in_bw(data_t *data)
--{
--	bool found;
--	int ret;
--
--	ret = igt_display_try_commit_atomic(&data->display,
--					    DRM_MODE_ATOMIC_TEST_ONLY |
--					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
--	if (ret != 0) {
--		found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
--		igt_require_f(found,
--			      "No valid mode combo found for modeset\n");
--	}
--	return true;
--}
--
- static bool validate_modeset_for_outputs(data_t *data,
- 					igt_output_t *outputs[],
- 					int *output_count,
-@@ -176,7 +160,7 @@ static bool validate_modeset_for_outputs(data_t *data,
- {
- 	igt_require_f(*output_count > 0, "Require at least 1 output\n");
- 	setup_pipe_on_outputs(data, outputs, output_count);
--	igt_assert_f(fit_modes_in_bw(data), "Unable to fit modes in bw\n");
-+	igt_assert_f(fit_modes_in_bw(&data->display), "Unable to fit modes in bw\n");
- 	setup_modeset_on_outputs(data, outputs,
- 				 output_count,
- 				 mode, fb, primary);
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index 588820170..ccfdce0bd 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -93,6 +93,8 @@ static void run_extendedmode_basic(data_t *data,
- 	mode[0] = igt_output_get_mode(output1);
- 	mode[1] = igt_output_get_mode(output2);
- 
-+	fit_modes_in_bw(display);
-+
- 	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
- 	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
- 
-@@ -138,6 +140,7 @@ static void run_extendedmode_basic(data_t *data,
- 	igt_fb_set_size(&fb, plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
- 	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
- 
-+	fit_modes_in_bw(display);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]);
-@@ -158,6 +161,7 @@ static void run_extendedmode_basic(data_t *data,
- 			  DRM_PLANE_TYPE_PRIMARY), NULL);
- 	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe2],
- 			  DRM_PLANE_TYPE_PRIMARY), NULL);
-+	fit_modes_in_bw(display);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	/*Compare CRC*/
--- 
-2.25.1
+This i915_selftest regressions are unrelated.
 
+> 
+>   * igt@i915_selftest@live@execlists:
+>     - bat-mtlp-8:         [PASS][20] -> [INCOMPLETE][21]
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-mtlp-8/igt@i915_selftest@live@execlists.html
+>    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-mtlp-8/igt@i915_selftest@live@execlists.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-mtlp-8:         [DMESG-FAIL][22] ([i915#12061]) -> [INCOMPLETE][23]
+>    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-mtlp-8/igt@i915_selftest@live.html
+>    [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-mtlp-8/igt@i915_selftest@live.html
+> 
+
+Regards,
+Kamil
+
+>   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between IGT_8320 and IGTPW_12984:
+> 
+> ### New IGT tests (98) ###
+> 
+>   * igt@i915_drm_fdinfo@all-busy-check-all:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 0.57] s
+> 
+>   * igt@i915_drm_fdinfo@all-busy-idle-check-all:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 0.64] s
+> 
+>   * igt@i915_drm_fdinfo@basics:
+>     - Statuses : 37 pass(s) 6 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 2.71] s
+> 
+>   * igt@i915_drm_fdinfo@busy-check-all:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 2.68] s
+> 
+>   * igt@i915_drm_fdinfo@busy-check-all@bcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.60] s
+> 
+>   * igt@i915_drm_fdinfo@busy-check-all@ccs0:
+>     - Statuses : 12 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy-check-all@rcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.00, 0.55] s
+> 
+>   * igt@i915_drm_fdinfo@busy-check-all@vcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.55] s
+> 
+>   * igt@i915_drm_fdinfo@busy-check-all@vcs1:
+>     - Statuses : 4 pass(s) 18 skip(s)
+>     - Exec time: [0.0, 0.54] s
+> 
+>   * igt@i915_drm_fdinfo@busy-check-all@vecs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.55] s
+> 
+>   * igt@i915_drm_fdinfo@busy-check-all@vecs1:
+>     - Statuses : 5 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy-hang:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 5.32] s
+> 
+>   * igt@i915_drm_fdinfo@busy-hang@bcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 1.08] s
+> 
+>   * igt@i915_drm_fdinfo@busy-hang@ccs0:
+>     - Statuses : 12 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy-hang@rcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.00, 1.08] s
+> 
+>   * igt@i915_drm_fdinfo@busy-hang@vcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 1.07] s
+> 
+>   * igt@i915_drm_fdinfo@busy-hang@vcs1:
+>     - Statuses : 4 pass(s) 18 skip(s)
+>     - Exec time: [0.0, 1.07] s
+> 
+>   * igt@i915_drm_fdinfo@busy-hang@vecs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 1.08] s
+> 
+>   * igt@i915_drm_fdinfo@busy-hang@vecs1:
+>     - Statuses : 5 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 3.16] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 3.30] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all@bcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.66] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all@ccs0:
+>     - Statuses : 12 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all@rcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.00, 0.65] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all@vcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.75] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all@vcs1:
+>     - Statuses : 4 pass(s) 18 skip(s)
+>     - Exec time: [0.0, 0.65] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all@vecs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.65] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle-check-all@vecs1:
+>     - Statuses : 5 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle@bcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.67] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle@ccs0:
+>     - Statuses : 12 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle@rcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.65] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle@vcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.66] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle@vcs1:
+>     - Statuses : 4 pass(s) 18 skip(s)
+>     - Exec time: [0.0, 0.65] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle@vecs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.66] s
+> 
+>   * igt@i915_drm_fdinfo@busy-idle@vecs1:
+>     - Statuses : 5 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy@bcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.56] s
+> 
+>   * igt@i915_drm_fdinfo@busy@ccs0:
+>     - Statuses : 12 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@busy@rcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.00, 1.54] s
+> 
+>   * igt@i915_drm_fdinfo@busy@vcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.57] s
+> 
+>   * igt@i915_drm_fdinfo@busy@vcs1:
+>     - Statuses : 4 pass(s) 18 skip(s)
+>     - Exec time: [0.0, 0.55] s
+> 
+>   * igt@i915_drm_fdinfo@busy@vecs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.59] s
+> 
+>   * igt@i915_drm_fdinfo@busy@vecs1:
+>     - Statuses : 5 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@context-close-stress:
+>     - Statuses : 37 pass(s) 6 skip(s)
+>     - Exec time: [0.0, 10.81] s
+> 
+>   * igt@i915_drm_fdinfo@idle:
+>     - Statuses : 37 pass(s) 6 skip(s)
+>     - Exec time: [0.0, 4.70] s
+> 
+>   * igt@i915_drm_fdinfo@idle@bcs0:
+>     - Statuses : 37 pass(s)
+>     - Exec time: [0.50, 0.54] s
+> 
+>   * igt@i915_drm_fdinfo@idle@ccs0:
+>     - Statuses : 12 pass(s)
+>     - Exec time: [0.50, 0.51] s
+> 
+>   * igt@i915_drm_fdinfo@idle@rcs0:
+>     - Statuses : 37 pass(s)
+>     - Exec time: [0.50, 1.66] s
+> 
+>   * igt@i915_drm_fdinfo@idle@vcs0:
+>     - Statuses : 37 pass(s)
+>     - Exec time: [0.50, 0.53] s
+> 
+>   * igt@i915_drm_fdinfo@idle@vcs1:
+>     - Statuses : 22 pass(s)
+>     - Exec time: [0.50, 0.52] s
+> 
+>   * igt@i915_drm_fdinfo@idle@vecs0:
+>     - Statuses : 37 pass(s)
+>     - Exec time: [0.50, 0.52] s
+> 
+>   * igt@i915_drm_fdinfo@idle@vecs1:
+>     - Statuses : 5 pass(s)
+>     - Exec time: [0.50, 0.52] s
+> 
+>   * igt@i915_drm_fdinfo@isolation:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 2.72] s
+> 
+>   * igt@i915_drm_fdinfo@isolation@bcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.57] s
+> 
+>   * igt@i915_drm_fdinfo@isolation@ccs0:
+>     - Statuses : 12 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@isolation@rcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.56] s
+> 
+>   * igt@i915_drm_fdinfo@isolation@vcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.57] s
+> 
+>   * igt@i915_drm_fdinfo@isolation@vcs1:
+>     - Statuses : 4 pass(s) 18 skip(s)
+>     - Exec time: [0.0, 0.54] s
+> 
+>   * igt@i915_drm_fdinfo@isolation@vecs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.57] s
+> 
+>   * igt@i915_drm_fdinfo@isolation@vecs1:
+>     - Statuses : 5 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-active:
+>     - Statuses : 37 pass(s) 6 skip(s)
+>     - Exec time: [0.0, 9.98] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-active@lmem0:
+>     - Statuses : 7 pass(s)
+>     - Exec time: [3.09, 4.21] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-active@smem0:
+>     - Statuses : 37 pass(s)
+>     - Exec time: [1.73, 8.24] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-idle:
+>     - Statuses : 37 pass(s) 6 skip(s)
+>     - Exec time: [0.0, 0.26] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-idle@lmem0:
+>     - Statuses : 7 pass(s)
+>     - Exec time: [0.07, 0.16] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-idle@smem0:
+>     - Statuses : 37 pass(s)
+>     - Exec time: [0.03, 0.16] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-purgeable:
+>     - Statuses : 37 pass(s) 6 skip(s)
+>     - Exec time: [0.0, 9.59] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-purgeable@lmem0:
+>     - Statuses : 7 pass(s)
+>     - Exec time: [2.93, 5.25] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-purgeable@smem0:
+>     - Statuses : 37 pass(s)
+>     - Exec time: [1.58, 8.25] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-resident:
+>     - Statuses : 37 pass(s) 6 skip(s)
+>     - Exec time: [0.0, 9.23] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-resident@lmem0:
+>     - Statuses : 7 pass(s)
+>     - Exec time: [3.07, 5.14] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-resident@smem0:
+>     - Statuses : 37 pass(s)
+>     - Exec time: [1.64, 8.14] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-shared:
+>     - Statuses : 37 pass(s) 6 skip(s)
+>     - Exec time: [0.0, 0.23] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-shared@lmem0:
+>     - Statuses : 7 pass(s)
+>     - Exec time: [0.07, 0.13] s
+> 
+>   * igt@i915_drm_fdinfo@memory-info-shared@smem0:
+>     - Statuses : 37 pass(s)
+>     - Exec time: [0.03, 0.13] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 2.76] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@bcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.55] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@ccs0:
+>     - Statuses : 12 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@rcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.00, 0.59] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@vcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.56] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@vcs1:
+>     - Statuses : 4 pass(s) 18 skip(s)
+>     - Exec time: [0.0, 0.54] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@vecs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.56] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@vecs1:
+>     - Statuses : 5 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 3.26] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@bcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.66] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@ccs0:
+>     - Statuses : 12 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@rcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.00, 0.70] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@vcs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.66] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@vcs1:
+>     - Statuses : 4 pass(s) 18 skip(s)
+>     - Exec time: [0.0, 0.64] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@vecs0:
+>     - Statuses : 15 pass(s) 22 skip(s)
+>     - Exec time: [0.0, 0.66] s
+> 
+>   * igt@i915_drm_fdinfo@most-busy-idle-check-all@vecs1:
+>     - Statuses : 5 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
+>   * igt@i915_drm_fdinfo@virtual-busy:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 2.77] s
+> 
+>   * igt@i915_drm_fdinfo@virtual-busy-all:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 0.53] s
+> 
+>   * igt@i915_drm_fdinfo@virtual-busy-hang:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 5.62] s
+> 
+>   * igt@i915_drm_fdinfo@virtual-busy-hang-all:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 1.09] s
+> 
+>   * igt@i915_drm_fdinfo@virtual-busy-idle:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 3.32] s
+> 
+>   * igt@i915_drm_fdinfo@virtual-busy-idle-all:
+>     - Statuses : 15 pass(s) 28 skip(s)
+>     - Exec time: [0.0, 0.63] s
+> 
+>   * igt@i915_drm_fdinfo@virtual-idle:
+>     - Statuses : 37 pass(s) 6 skip(s)
+>     - Exec time: [0.0, 3.66] s
+> 
+>   
+> 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_12984 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@i915_drm_fdinfo@busy-check-all@bcs0 (NEW):
+>     - bat-arlh-2:         NOTRUN -> [SKIP][24] ([i915#11346]) +63 other tests skip
+>    [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-arlh-2/igt@i915_drm_fdinfo@busy-check-all@bcs0.html
+> 
+>   * igt@i915_drm_fdinfo@busy-hang (NEW):
+>     - fi-pnv-d510:        NOTRUN -> [SKIP][25] +24 other tests skip
+>    [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-pnv-d510/igt@i915_drm_fdinfo@busy-hang.html
+> 
+>   * igt@i915_drm_fdinfo@busy-hang@vcs0 (NEW):
+>     - fi-kbl-guc:         NOTRUN -> [SKIP][26] +47 other tests skip
+>    [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-kbl-guc/igt@i915_drm_fdinfo@busy-hang@vcs0.html
+> 
+>   * igt@i915_drm_fdinfo@isolation (NEW):
+>     - fi-blb-e6850:       NOTRUN -> [SKIP][27] +24 other tests skip
+>    [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-blb-e6850/igt@i915_drm_fdinfo@isolation.html
+> 
+>   * {igt@i915_drm_fdinfo@memory-info-resident} (NEW):
+>     - fi-ivb-3770:        NOTRUN -> [SKIP][28] +24 other tests skip
+>    [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-ivb-3770/igt@i915_drm_fdinfo@memory-info-resident.html
+> 
+>   * {igt@i915_drm_fdinfo@memory-info-shared} (NEW):
+>     - fi-hsw-4770:        NOTRUN -> [SKIP][29] +24 other tests skip
+>    [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-hsw-4770/igt@i915_drm_fdinfo@memory-info-shared.html
+> 
+>   * igt@i915_drm_fdinfo@most-busy-check-all@bcs0 (NEW):
+>     - fi-cfl-guc:         NOTRUN -> [SKIP][30] +47 other tests skip
+>    [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-cfl-guc/igt@i915_drm_fdinfo@most-busy-check-all@bcs0.html
+> 
+>   * igt@i915_drm_fdinfo@virtual-busy-all (NEW):
+>     - fi-ilk-650:         NOTRUN -> [SKIP][31] +24 other tests skip
+>    [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-ilk-650/igt@i915_drm_fdinfo@virtual-busy-all.html
+> 
+>   * igt@i915_drm_fdinfo@virtual-idle (NEW):
+>     - fi-elk-e7500:       NOTRUN -> [SKIP][32] +24 other tests skip
+>    [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-elk-e7500/igt@i915_drm_fdinfo@virtual-idle.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@dmabuf@all-tests@dma_fence_chain:
+>     - fi-bsw-nick:        [INCOMPLETE][33] ([i915#12904]) -> [PASS][34] +1 other test pass
+>    [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+>    [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+> 
+>   * igt@i915_selftest@live:
+>     - bat-adlp-11:        [ABORT][35] ([i915#13696]) -> [PASS][36] +1 other test pass
+>    [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-adlp-11/igt@i915_selftest@live.html
+>    [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-adlp-11/igt@i915_selftest@live.html
+> 
+>   * igt@i915_selftest@live@sanitycheck:
+>     - fi-kbl-7567u:       [DMESG-WARN][37] ([i915#13735]) -> [PASS][38] +81 other tests pass
+>    [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+>    [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+> 
+>   * igt@i915_selftest@live@workarounds:
+>     - bat-arlh-3:         [DMESG-FAIL][39] ([i915#12061]) -> [PASS][40] +1 other test pass
+>    [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+>    [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+>     - bat-arls-5:         [DMESG-FAIL][41] ([i915#12061]) -> [PASS][42] +1 other test pass
+>    [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-arls-5/igt@i915_selftest@live@workarounds.html
+>    [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-arls-5/igt@i915_selftest@live@workarounds.html
+>     - bat-dg2-14:         [DMESG-FAIL][43] ([i915#12061]) -> [PASS][44] +1 other test pass
+>    [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+>    [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+>     - bat-mtlp-8:         [DMESG-FAIL][45] ([i915#12061]) -> [PASS][46]
+>    [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/bat-mtlp-8/igt@i915_selftest@live@workarounds.html
+>    [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/bat-mtlp-8/igt@i915_selftest@live@workarounds.html
+> 
+>   * igt@kms_pm_rpm@basic-pci-d3-state:
+>     - fi-kbl-7567u:       [DMESG-WARN][47] ([i915#13735] / [i915#180]) -> [PASS][48] +53 other tests pass
+>    [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8320/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+>    [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
+>   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+>   [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+>   [i915#13696]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696
+>   [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+>   [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_8320 -> IGTPW_12984
+>   * Linux: CI_DRM_16421 -> CI_DRM_16423
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_16421: f031245c01c722de43e8a02c2358140de0685428 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   CI_DRM_16423: b8f79cb562e983515cf827f0f336f79423b8d5a7 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_12984: 404b44c48552eacc7a3b1c0a2e165b61fb4e39d1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8320: cd3b5612be3cef838f16e074bf1bc421399d584d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12984/index.html
