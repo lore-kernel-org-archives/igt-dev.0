@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A2FDC369C7
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 21:16:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B3B2C369C9
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 21:17:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1CEAD10E9C9;
-	Wed, 16 Apr 2025 21:16:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 508E210E9C2;
+	Wed, 16 Apr 2025 21:17:23 +0000 (UTC)
 Received: from b68e5b3b99e1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6545010E9C2;
- Wed, 16 Apr 2025 21:16:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D32C210E9C2;
+ Wed, 16 Apr 2025 21:17:21 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3055458921740514487=="
+ boundary="===============8196188351761662315=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_lib/xe/spin=3A_Use_READ=5FO?=
- =?utf-8?q?NCE=2C_WRITE=5FONCE_macros_in_Xe_spin_library?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Async_flips_with_tiled_modi?=
+ =?utf-8?q?fiers?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Brost" <matthew.brost@intel.com>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Apr 2025 21:16:54 -0000
-Message-ID: <174483821440.11538.14477824815676107691@b68e5b3b99e1>
+Date: Wed, 16 Apr 2025 21:17:21 -0000
+Message-ID: <174483824185.11588.13980739458968214550@b68e5b3b99e1>
 X-Patchwork-Hint: ignore
-References: <20250416161025.361516-1-matthew.brost@intel.com>
-In-Reply-To: <20250416161025.361516-1-matthew.brost@intel.com>
+References: <20250416150348.2901159-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250416150348.2901159-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,24 +41,57 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3055458921740514487==
+--===============8196188351761662315==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/xe/spin: Use READ_ONCE, WRITE_ONCE macros in Xe spin library
-URL   : https://patchwork.freedesktop.org/series/147841/
-State : failure
+Series: Async flips with tiled modifiers
+URL   : https://patchwork.freedesktop.org/series/147837/
+State : success
 
 == Summary ==
 
-Series 147841 revision 1 was fully merged or fully failed: no git log
+CI Bug Log - changes from XEIGT_8324_BAT -> XEIGTPW_12991_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
 
 
+Changes
+-------
 
---===============3055458921740514487==
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8324 -> IGTPW_12991
+
+  IGTPW_12991: 12991
+  IGT_8324: 8a49d9fa87e4de87afd3c3ec6828caf27e07b254 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2962-34472c052bf7c482187a422340b2b228d4d0fe69: 34472c052bf7c482187a422340b2b228d4d0fe69
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12991/index.html
+
+--===============8196188351761662315==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,16 +111,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/xe/spin: Use READ_ONCE, WRITE_ONCE macros in Xe spin library</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147841/">https://patchwork.freedesktop.org/series/147841/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>Async flips with tiled modifiers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147837/">https://patchwork.freedesktop.org/series/147837/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12991/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12991/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 147841 revision 1 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from XEIGT_8324_BAT -&gt; XEIGTPW_12991_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8324 -&gt; IGTPW_12991</li>
+</ul>
+<p>IGTPW_12991: 12991<br />
+  IGT_8324: 8a49d9fa87e4de87afd3c3ec6828caf27e07b254 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2962-34472c052bf7c482187a422340b2b228d4d0fe69: 34472c052bf7c482187a422340b2b228d4d0fe69</p>
 
 </body>
 </html>
 
---===============3055458921740514487==--
+--===============8196188351761662315==--
