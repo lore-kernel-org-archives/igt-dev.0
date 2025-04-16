@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6B0BC369BD
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 12:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B16B6C369C2
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 12:43:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A84110E267;
-	Wed, 16 Apr 2025 12:42:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6331710E8ED;
+	Wed, 16 Apr 2025 12:43:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XjX/Tom4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SuACcNU+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E3B010E267
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Apr 2025 12:42:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E2F510E8EE
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Apr 2025 12:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744807369; x=1776343369;
+ t=1744807412; x=1776343412;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=IqVi+Dw7gSbBaSHvoTYUaDiUGHAWpZlygG3v5/l0viA=;
- b=XjX/Tom4sBQecMF9yzbuZjxCd+Zutp1fiUnaoDiQyQIxBqEoqswM9K9K
- N+nTjmHX0FEBPVPlfa/3gTt+GIliX7YzWCBXCfE2IyYnVxlP/23pnyAo+
- MexYJZyh3M3uH/a8hnDVWIvtbDMvM9exIBnPNxvTbZglXtDjZZ/sx9Lr7
- eI8e85CWIRMe1fI/D4c1VzxWmCWXystbiulVC3cmm2w05RfuFudhJEupk
- Ki1E7gPbIAlWOzT0sl+mj26Cg3jb52hN4Qv9iUeGXYNjNACUm4xnnvUEP
- C+M8MW/jFE/DKc5MDIVnkMrO/GWcN0GMWJKQ3187wqOy6ktslkLbjb5AA g==;
-X-CSE-ConnectionGUID: djkwW99lRU2ftEmIsA5vaQ==
-X-CSE-MsgGUID: LIyEZLTaQ8mFsGXTcFMKAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="45584307"
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="45584307"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2025 05:42:49 -0700
-X-CSE-ConnectionGUID: 9lKEUjqTS+6+HKfIM4Kj2g==
-X-CSE-MsgGUID: ZFozAVUgRsmAMXqhnkoOZw==
+ bh=+rnQmXX/5yisbdLKfaA5SA24M690JgFasWAFHBrsLbs=;
+ b=SuACcNU+qhlRK5hwXAgKjOwQYTbaCWJhBaZOFpQnRotI/HnxOax7gIOj
+ xJm9Ec8HC1xRi9eaY7yHaBh5MoGkd8lTXOjAVjwbqxNrpsu/2MzPGSW1R
+ jj8ZVKjJls8JngOJCY0yW5cv2EhhjcBqRvNAXeI1HrGt4wXwu0JEnHJDw
+ OCBU7PxTDC2VkFx+2hI32KQLKiaexE1ZynDEbLfegxpSZHFVOv1ATN9o8
+ 4Z0Dja46SQ2z8M82/NhseEJB1RC3JJdbIFqQ89snMWFlUulZfC6AYsSxl
+ hGF5oThF4beJYllxqTNFORQ45qieSSNBM4oHgUxZngchYZiIng1H834v6 A==;
+X-CSE-ConnectionGUID: M/PZZbjBTKKoZqzdwVQeSg==
+X-CSE-MsgGUID: h3IzaLrMSN6BEotoNF8w8g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="50173366"
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="50173366"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2025 05:43:32 -0700
+X-CSE-ConnectionGUID: 49rjPM4gTAuR55sv0Tnq/A==
+X-CSE-MsgGUID: V+TH4BztRRqkgZuE2I0UhQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="131023119"
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="134569395"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 05:42:47 -0700
-Date: Wed, 16 Apr 2025 14:42:32 +0200
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 05:43:30 -0700
+Date: Wed, 16 Apr 2025 14:43:28 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Karthik B S <karthik.b.s@intel.com>
 Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
  jari.tahvanainen@intel.com, aditya.chauhan@intel.com
-Subject: Re: [PATCH i-g-t 1/2] tests/intel-ci: Add platform blocklists to
- enable platform testlist creation
-Message-ID: <20250416124232.ztxkng7m66keqol6@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/test_config: Add GPU excluded
+ platform definition for LNL/BMG
+Message-ID: <20250416124328.w7rbaxpxxrhlubgh@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org,
  kamil.konieczny@intel.com, jari.tahvanainen@intel.com,
  aditya.chauhan@intel.com
 References: <20250416102806.1362020-1-karthik.b.s@intel.com>
- <20250416102806.1362020-2-karthik.b.s@intel.com>
+ <20250416102806.1362020-3-karthik.b.s@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250416102806.1362020-2-karthik.b.s@intel.com>
+In-Reply-To: <20250416102806.1362020-3-karthik.b.s@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,543 +75,68 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Karthik,
-On 2025-04-16 at 15:58:05 +0530, Karthik B S wrote:
-> Add BMG/LNL platform blocklists to enable platform testlist creation.
-> Blocklists are defining test cases that are not supported by LNL/BMG platforms.
+On 2025-04-16 at 15:58:06 +0530, Karthik B S wrote:
+> With config definitions added, the blocklists for LNL and BMG platform on xe
+> can be used used to generate platform testlists.
 > 
 > Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 > Signed-off-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
 > Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
+> ---
+>  tests/intel/kms_test_config.json | 10 +++++++++-
+>  tests/intel/xe_test_config.json  | 12 ++++++++++--
+>  2 files changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+> index e11c7f4fe..65d6eb07d 100644
+> --- a/tests/intel/kms_test_config.json
+> +++ b/tests/intel/kms_test_config.json
+> @@ -54,7 +54,15 @@
+>          },
+>  	"GPU excluded platform": {
+>  	    "_properties_": {
+> -		"description": "Provides a list of GPUs not capable of running the subtest (or the test as a whole)."
+> +		"description": "Provides a list of GPUs not capable of running the subtest (or the test as a whole).",
+> +		"update-from-file": {
+> +		    "include-type": "regex-ignorecase",
+> +		    "include": [
+> +			{ "LNL": "../intel-ci/xe.lnl.display.blocklist.txt" },
+> +			{ "BMG": "../intel-ci/xe.bmg.display.blocklist.txt" },
+> +			{ "all": "../intel-ci/xe.blocklist.txt" }
+> +		    ]
+> +		}
+>  	    }
+>  	},
+>          "Description": {
+> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+> index 4556025f7..446d59a95 100644
+> --- a/tests/intel/xe_test_config.json
+> +++ b/tests/intel/xe_test_config.json
+> @@ -71,8 +71,16 @@
+>          },
+>          "GPU excluded platform": {
+>              "_properties_": {
+> -                "description": "Provides a list of GPUs not capable of running the subtest (or the test as a hole)."
+> -            }
+> +                "description": "Provides a list of GPUs not capable of running the subtest (or the test as a hole).",
 
+s/hole/whole/
+
+with this fixed
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> ---
->  tests/intel-ci/xe.bmg.core.blocklist.txt    |  78 +++++++++
->  tests/intel-ci/xe.bmg.display.blocklist.txt | 158 ++++++++++++++++++
->  tests/intel-ci/xe.lnl.core.blocklist.txt    |  85 ++++++++++
->  tests/intel-ci/xe.lnl.display.blocklist.txt | 171 ++++++++++++++++++++
->  4 files changed, 492 insertions(+)
->  create mode 100644 tests/intel-ci/xe.bmg.core.blocklist.txt
->  create mode 100644 tests/intel-ci/xe.bmg.display.blocklist.txt
->  create mode 100644 tests/intel-ci/xe.lnl.core.blocklist.txt
->  create mode 100644 tests/intel-ci/xe.lnl.display.blocklist.txt
-> 
-> diff --git a/tests/intel-ci/xe.bmg.core.blocklist.txt b/tests/intel-ci/xe.bmg.core.blocklist.txt
-> new file mode 100644
-> index 000000000..a43e43a62
-> --- /dev/null
-> +++ b/tests/intel-ci/xe.bmg.core.blocklist.txt
-> @@ -0,0 +1,78 @@
-> +##################################################################
-> +# Tests NA for Native
-> +##################################################################
-> +igt@.*iov.*
-> +##################################################################
-> +# KMS - Display related tests
-> +# Other Display specific tests
-> +##################################################################
-> +igt@.*kms.*
-> +igt@testdisplay
-> +igt@xe_pat@display-vs-wb-transient
-> +igt@fbdev@.*
-> +##################################################################
-> +# Expected Skip for xe2+ platforms
-> +##################################################################
-> +igt@xe_pat@pat-index-xehpc
-> +igt@xe_pat@pat-index-xelp
-> +igt@xe_pat@pat-index-xelpg
-> +igt@xe_media_fill@media-fill
-> +##################################################################
-> +# Expected skip on xe1 & xe2 Platforms
-> +##################################################################
-> +igt@xe_pat@pat-index-xe3p-xpc
-> +##################################################################
-> +# Expected skip on single card machines
-> +##################################################################
-> +igt@xe_peer2peer@.*
-> +igt@xe_query@multigpu-query-.*
-> +igt@xe_create@multigpu-create-massive-size
-> +igt@xe_exec_basic@.*multigpu.*
-> +##################################################################
-> +# Expected skip - small bar not supported
-> +##################################################################
-> +igt@xe_mmap@small-bar
-> +##################################################################
-> +# Expected skip: CPU host pcieport not supported
-> +##################################################################
-> +igt@xe_pm@.*d3cold.*
-> +##################################################################
-> +# Expected behavior - CCS mode enabled only for platforms
-> +# which have more than 1 COMPUTE ENGINE instance per tile.
-> +##################################################################
-> +igt@xe_compute@ccs-mode-basic
-> +##################################################################
-> +# Expected skip as tests not applicable for the platform
-> +##################################################################
-> +igt@xe_vm@.*export.*
-> +##################################################################
-> +# Tests not applicable for the platform
-> +##################################################################
-> +igt@xe_exec_multi_queue@.*
-> +igt@xe_evict@.*multi(-)?queue.*
-> +igt@.*@.*-multi_queue
-> +igt@.*@.*multi-queue.*
-> +##################################################################
-> +# Expected skips, Kernel support not available
-> +##################################################################
-> +igt@xe_eudebug@.*
-> +igt@xe_eudebug_online@.*
-> +igt@xe_exec_sip@.*
-> +igt@xe_exec_sip_eudebug@.*
-> +igt@xe_live_ktest@xe_eudebug
-> +##################################################################
-> +# Expected Skip as per the current behaviour
-> +##################################################################
-> +igt@xe_oa@oa-tlb-invalidate
-> +igt@xe_oa@unprivileged-single-ctx-counters
-> +##################################################################
-> +# Temporarily blocking the tests until we have
-> +# support for exhaustive eviction
-> +##################################################################
-> +igt@xe_evict@evict-(beng-)?cm-threads-large$
-> +igt@xe_evict@evict-(beng-)?mixed-many-threads-large$
-> +igt@xe_evict@evict-(beng-)?mixed-many-threads-small$
-> +igt@xe_evict@evict-(beng-)?mixed-threads-large$
-> +igt@xe_evict@evict-(beng-)?threads-large$
-> +igt@xe_evict@evict-(beng-)?large-multi-vm-cm$
-> +##################################################################
-> diff --git a/tests/intel-ci/xe.bmg.display.blocklist.txt b/tests/intel-ci/xe.bmg.display.blocklist.txt
-> new file mode 100644
-> index 000000000..f145d6c0d
-> --- /dev/null
-> +++ b/tests/intel-ci/xe.bmg.display.blocklist.txt
-> @@ -0,0 +1,158 @@
-> +#########################################
-> +# non-KMS tests
-> +#########################################
-> +igt@(?!.*kms|testdisplay|.*display-vs-wb-transient)(.*)
-> +
-> +#########################################
-> +# Valid skip :- Y and Yf-Tiling are not supported
-> +#########################################
-> +igt@kms_(big_fb|ccs|rotation_crc)@.*(y|yf)-(tiled|tile).*
-> +igt@kms_(plane_lowres|frontbuffer_tracking|plane_multiple)@.*tiling-y.*
-> +igt@kms_flip_scaled_crc@.*(yf|y)tile.*
-> +igt@kms_async_flips@invalid-async-flip
-> +igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
-> +#########################################
-> +# Valid skip :- 90/270 rotation is not supported
-> +##########################################
-> +igt@kms_big_fb@.*rotate-(90|270)
-> +igt@kms_rotation_crc@.*rotation-(90|270)
-> +igt@kms_rotation_crc@bad-(pixel-format|tiling)
-> +igt@kms_rotation_crc@sprite-rotation-90-pos-100-0
-> +##########################################
-> +# Valid skip :- Mutable zpos is not supported
-> +##########################################
-> +igt@kms_atomic@plane-primary-overlay-mutable-zpos
-> +##########################################
-> +# Valid skip :- Requires TV connector not present on BMG
-> +##########################################
-> +igt@kms_tv_load_detect@load-detect
-> +##########################################
-> +# Valid skip :- Scaling mode none is not supported
-> +##########################################
-> +igt@kms_scaling_modes@scaling-mode-none
-> +##########################################
-> +# Valid skip :- Valid for display ver > 13
-> +##########################################
-> +igt@kms_psr2_su@.*
-> +##########################################
-> +# Valid skip :-  Cursor sizes of 32 and greater than 256 are not supported
-> +##########################################
-> +igt@kms_cursor_crc@.*-max-size
-> +igt@kms_cursor_crc@.*-(32x10|32x32|512x)
-> +##########################################
-> +# Valid skip :- Downscaling factor is not supported
-> +##########################################
-> +igt@kms_plane_scaling@.*downscale-factor-0-25.*
-> +igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-(5|75)
-> +igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-(5|75)
-> +##########################################
-> +# Valid skip :- Downscaling is not supported on second plane MTL+
-> +##########################################
-> +igt@kms_plane_scaling@planes-downscale-factor-0-(5|75)$
-> +igt@kms_plane_scaling@planes-.*upscale-.*downscale
-> +##########################################
-> +# Valid skip :- Unsupported cursor size
-> +##########################################
-> +igt@kms_cursor_crc@.*64x21
-> +igt@kms_cursor_crc@.*128x42
-> +igt@kms_cursor_crc@.*256x85
-> +igt@kms_cursor_crc@cursor-(offscreen|onscreen|random|rapid-movement|sliding)-512x(512|170)
-> +##########################################
-> +# Valid skip as BMG doesn't have eDP supported
-> +##########################################
-> +igt@kms_vrr@seamless-rr-switch-vrr
-> +#########################################
-> +# no VGA connectors in BMG
-> +#########################################
-> +igt@.*chamelium.*vga.*
-> +##########################################
-> +# Expected skip as GSC not present in BMG
-> +##########################################
-> +igt@kms_content_protection@content-type-change
-> +igt@kms_content_protection@lic-type-1
-> +igt@kms_content_protection@type1
-> +#########################################
-> +# Expected skip as BMG doesn't have PORT_A/B
-> +#########################################
-> +igt@kms_pm_rpm@modeset-lpsp
-> +igt@kms_pm_rpm@modeset-lpsp-stress
-> +igt@kms_pm_rpm@dpms-mode-unset-lpsp
-> +igt@kms_pm_rpm@dpms-lpsp
-> +igt@kms_pm_lpsp@kms-lpsp
-> +igt@kms_pm_rpm@modeset-lpsp-stress-no-wait
-> +#########################################
-> +# Expected Skip : flat ccs has only one buffer
-> +#########################################
-> +igt@kms_getfb@getfb-reject-ccs
-> +#########################################
-> +# Expected skip for graphics ver >= 20
-> +#########################################
-> +igt@kms_getfb@getfb2-accept-ccs
-> +##########################################
-> +# Valid skip :- Feature is not enabled on kernel
-> +##########################################
-> +igt@kms_writeback@.*
-> +##########################################
-> +# Valid skip :- dc6 is not supported by dgfx
-> +#########################################
-> +igt@kms_pm_dc@deep-pkgc
-> +igt@kms_pm_dc@dc6-dpms
-> +
-> +##########################################
-> +# Valid skip :- DG2 & MTL specific
-> +##########################################
-> +igt@kms_ccs@.*-dg2-.*
-> +igt@kms_ccs@.*-mtl-.*
-> +igt@kms_flip_scaled_crc@.*dg2rcccs.*
-> +##########################################
-> +# Valid skip :- Simulation specific
-> +##########################################
-> +igt@kms_pm_dc@dc3co-vpb-simulation
-> +igt@kms_simulation_hpd@sim-hpd
-> +#########################################
-> +# Chamelium v1 HDMI receiver doesn't support 4k
-> +#########################################
-> +igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
-> +#########################################
-> +# Valid skip on non-hybrid configuration
-> +#########################################
-> +igt@kms_addfb_basic@invalid-smem-bo-on-discrete
-> +#########################################
-> +# crc-random cases are resource intensive
-> +#########################################
-> +igt@.*chamelium.*random.*
-> +
-> +##########################################
-> +# Valid skip :- cursor moving doesn't take slowpath
-> +##########################################
-> +igt@kms_cursor_legacy@(short|basic)-busy-flip-before
-> +igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-(transitions|transitions-varying-size)
-> +igt@kms_cursor_legacy@short-busy-flip-before-cursor-toggle
-> +igt@kms_cursor_legacy@basic-busy-flip-before-cursor-(atomic|legacy|varying-size)
-> +##########################################
-> +# Valid skip :- Use of a single CRTC for two connectors
-> +##########################################
-> +igt@kms_setmode@basic-clone-single-crtc
-> +##########################################
-> +# Valid skip :- Connector uses CRTC that is incompatible
-> +#		with the connector
-> +##########################################
-> +igt@kms_setmode@invalid-clone-exclusive-crtc
-> +##########################################
-> +# Valid skip for display ver < 20
-> +##########################################
-> +igt@kms_frontbuffer_tracking@plane-fbc-rte
-> +#########################################
-> +Unsupported for platform with Wa_16023588340
-> +#########################################
-> +igt@kms.*fbc.*
-> +#########################################
-> +# Use either of linear-tiling or
-> +# connected-linear-tiling
-> +#########################################
-> +igt@kms_bw@linear-tiling-.*-display.*
-> +#########################################
-> +# Linear + hflip combination is not supported on BMG
-> +#########################################
-> +igt@kms_big_fb@linear-max-hw-stride.*hflip
-> +#########################################
-> diff --git a/tests/intel-ci/xe.lnl.core.blocklist.txt b/tests/intel-ci/xe.lnl.core.blocklist.txt
-> new file mode 100644
-> index 000000000..1e69170d8
-> --- /dev/null
-> +++ b/tests/intel-ci/xe.lnl.core.blocklist.txt
-> @@ -0,0 +1,85 @@
-> +##################################################################
-> +# Tests NA for Native
-> +##################################################################
-> +igt@.*iov.*
-> +##################################################################
-> +# KMS - Display related tests
-> +# Other Display specific tests
-> +##################################################################
-> +igt@.*kms.*
-> +igt@testdisplay
-> +igt@xe_pat@display-vs-wb-transient
-> +igt@fbdev@.*
-> +##################################################################
-> +# Expected skip as platform has no vram support
-> +##################################################################
-> +igt@xe_create@create-big-vram
-> +igt@xe_evict@.*
-> +igt@xe_evict_ccs@.*
-> +igt@xe_mmap@small-bar
-> +igt@xe_mmap@vram$
-> +igt@xe_noexec_ping_pong
-> +igt@xe_pm@d3-mmap-vram
-> +igt@xe_pm@d3hot-mmap-vram
-> +igt@xe_sysfs_tile@physical_vram_size_bytes
-> +##################################################################
-> +# No d3cold support for LNL
-> +##################################################################
-> +igt@xe_pm@.*d3cold.*
-> +##################################################################
-> +# Expected skip, S3 is not supported on the platform
-> +##################################################################
-> +igt@xe_gt_freq@freq_suspend
-> +igt@xe_pm@s3.*
-> +igt@xe_pm_residency@cpg-basic
-> +##################################################################
-> +# Hwmon feature isn't applicable for Integrated Platforms
-> +##################################################################
-> +igt@intel_hwmon@.*
-> +##################################################################
-> +# Expected Skip for xe2+ paltforms
-> +##################################################################
-> +igt@xe_media_fill@media-fill
-> +igt@xe_pat@pat-index-xehpc
-> +igt@xe_pat@pat-index-xelp
-> +igt@xe_pat@pat-index-xelpg
-> +##################################################################
-> +# Expected skip on xe1 & xe2 Platforms
-> +##################################################################
-> +igt@xe_pat@pat-index-xe3p-xpc
-> +##################################################################
-> +# Expected skip on integrated platforms
-> +##################################################################
-> +igt@.*@.*multigpu.*
-> +igt@xe_peer2peer@.*
-> +#######################################################
-> +# Expected behavior - CCS mode enabled only for platforms
-> +# which have more than 1 COMPUTE ENGINE instance per tile.
-> +##################################################################
-> +igt@xe_compute@ccs-mode-basic
-> +igt@xe_compute@ccs-mode-compute-kernel
-> +##################################################################
-> +# Expected skips as tests are xe-internal specific
-> +##################################################################
-> +igt@xe_vm@.*export.*
-> +##################################################################
-> +# Tests not applicable for the platform
-> +##################################################################
-> +igt@xe_evict@.*multiqueue.*
-> +igt@xe_exec_multi_queue@.*
-> +igt@.*@.*-multi_queue
-> +igt@.*@.*multi-queue.*
-> +##################################################################
-> +# Kernel support not available
-> +##################################################################
-> +igt@xe_eudebug@.*
-> +igt@xe_eudebug_online@.*
-> +igt@xe_exec_sip@.*
-> +igt@xe_exec_sip_eudebug@.*
-> +igt@xe_live_ktest@xe_eudebug
-> +##################################################################
-> +# Expected Skip as per the current behaviour
-> +##################################################################
-> +igt@xe_oa@oa-tlb-invalidate
-> +igt@xe_oa@unprivileged-single-ctx-counters
-> +##################################################################
-> diff --git a/tests/intel-ci/xe.lnl.display.blocklist.txt b/tests/intel-ci/xe.lnl.display.blocklist.txt
-> new file mode 100644
-> index 000000000..1c6ea8c14
-> --- /dev/null
-> +++ b/tests/intel-ci/xe.lnl.display.blocklist.txt
-> @@ -0,0 +1,171 @@
-> +#########################################
-> +# non-KMS tests
-> +#########################################
-> +igt@(?!.*kms|testdisplay|.*display-vs-wb-transient)(.*)
-> +
-> +#########################################
-> +# Valid skip :- Y and Yf-Tiling are not supported
-> +#########################################
-> +igt@kms_(big_fb|ccs|rotation_crc)@.*(y|yf)-tiled.*
-> +igt@kms_(plane_lowres|frontbuffer_tracking|plane_multiple)@.*tiling-y.*
-> +igt@kms_flip_scaled_crc@.*(yf|y)tile.*
-> +igt@kms_async_flips@invalid-async-flip
-> +igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
-> +#########################################
-> +# Valid skip :- 90/270 rotations are not supported
-> +##########################################
-> +igt@kms_big_fb@.*rotate-(90|270)
-> +igt@kms_rotation_crc@.*rotation-(90|270).*
-> +igt@kms_rotation_crc@bad-(pixel-format|tiling)
-> +##########################################
-> +# Valid skip :-  Cursor sizes of 32 and greater than 256 are not supported
-> +##########################################
-> +igt@kms_cursor_crc@.*-max-size
-> +igt@kms_cursor_crc@.*-(32x10|32x32|512x).*
-> +igt@kms_cursor_crc@cursor.*(21|42|85)
-> +##########################################
-> +# Valid skip :- Mutable zpos is not supported
-> +##########################################
-> +igt@kms_atomic@plane-primary-overlay-mutable-zpos
-> +##########################################
-> +# Valid skip :- Requires TV connector, which is not supported
-> +##########################################
-> +igt@kms_tv_load_detect@load-detect
-> +##########################################
-> +# Valid skip :- Scaling mode none is not supported
-> +##########################################
-> +igt@kms_scaling_modes@scaling-mode-none
-> +##########################################
-> +# Valid skip :- Downscaling factor is not supported
-> +##########################################
-> +igt@kms_plane_scaling@.*downscale-factor-0-25.*
-> +#########################################
-> +# Mei interface is not supported for LNL
-> +#########################################
-> +igt@kms_content_protection@mei-interface
-> +##########################################
-> +# Valid skip :- Downscaling is not supported on second plane MTL+
-> +##########################################
-> +igt@kms_plane_scaling@planes-downscale-factor-0-(5|75)$
-> +igt@kms_plane_scaling@planes-.*upscale-.*downscale.*
-> +#########################################
-> +# Expected skip for graphics ver >= 20
-> +#########################################
-> +igt@kms_getfb@getfb2-accept-ccs
-> +#########################################
-> +# Retention flops are not supported on LNL
-> +#########################################
-> +igt@kms_pm_dc@dc5-retention-flops
-> +#########################################
-> +# Horizontal flip is not supported with
-> +# tile4 surface formats
-> +#########################################
-> +igt@kms_big_fb@4-tiled.*hflip.*
-> +igt@kms_rotation_crc@primary-4-tiled-reflect-x.*
-> +##########################################
-> +# Valid skip :- LNL on CI supports only 3 pipes
-> +##########################################
-> +igt@kms_ccs@.*pipe-d.*
-> +igt@kms_feature_discovery@display-4x
-> +igt@.*@.*pipe-(d|D)($|-.*)
-> +igt@kms_bw@.*-4-displays-.*
-> +#########################################
-> +# Ultrajoiner is not supported with only 3 pipes
-> +#########################################
-> +igt@kms_joiner@.*ultra-joiner.*
-> +##########################################
-> +# Valid skip :- Feature is not enabled on kernel
-> +##########################################
-> +igt@kms_writeback@.*
-> +
-> +##########################################
-> +# Valid skip :- DG2 & MTL & BMG specific
-> +##########################################
-> +igt@kms_ccs@.*-dg2-.*
-> +igt@kms_ccs@.*-mtl-.*
-> +igt@kms_flip_scaled_crc@.*dg2rcccs.*
-> +igt@kms_ccs@.*4-tiled-bmg-ccs
-> +
-> +##########################################
-> +# Valid skip :- Simulation specific
-> +##########################################
-> +igt@kms_pm_dc@dc3co-vpb-simulation
-> +igt@kms_simulation_hpd@sim-hpd
-> +#########################################
-> +# HDMI/VGA subtests on chamelium are
-> +# expected skips for LNL on CI
-> +#########################################
-> +igt@kms_chamelium.*@.*(hdmi|vga).*
-> +#########################################
-> +# Valid skip when HDMI is not enabled in VBT
-> +#########################################
-> +igt@kms_force_connector_basic@force-connector-state
-> +igt@kms_force_connector_basic@force-edid
-> +igt@kms_force_connector_basic@prune-stale-modes
-> +igt@kms_hdmi_inject@inject-audio
-> +igt@kms_hdmi_inject@inject-4k
-> +igt@kms_3d
-> +#########################################
-> +# Valid skip for non-hybrid configuration
-> +#########################################
-> +igt@kms_addfb_basic@invalid-smem-bo-on-discrete
-> +#########################################
-> +# Valid skip on non-tiled display configuration
-> +#########################################
-> +igt@kms_tiled_display@.*
-> +
-> +##########################################
-> +# Valid skip :- cursor moving doesn't take slowpath
-> +##########################################
-> +igt@kms_cursor_legacy@(short|basic)-busy-flip-before.*
-> +##########################################
-> +# Valid skip :- Use of a single CRTC for two connectors
-> +##########################################
-> +igt@kms_setmode@basic-clone-single-crtc
-> +##########################################
-> +# Valid skip :- Connector uses CRTC that is incompatible
-> +#               with the connector
-> +##########################################
-> +igt@kms_setmode@invalid-clone-exclusive-crtc
-> +##########################################
-> +# Valid skip :- Valid for display ver > 13
-> +##########################################
-> +igt@kms_psr2_su@.*
-> +#########################################
-> +# Valid skip :- ccs modifiers not supported on Xe2
-> +#########################################
-> +igt@kms_getfb@.*ccs
-> +#########################################
-> +# Use either of connected/non-connected
-> +#########################################
-> +igt@kms_bw@linear-tiling-.*-display.*
-> +#########################################
-> +# Valid skip :- linear + hflip combination is a new
-> +                capability supported on display_ver >= 35
-> +#########################################
-> +igt@kms_big_fb@linear-max-hw-stride.*hflip
-> +
-> +#########################################
-> +# Expected skip/fail on CI
-> +#########################################
-> +igt@kms_pm_dc@.*dc6.*
-> +igt@kms_content_protection@.*dp-mst.*type-1.*
-> +igt@kms_pm_dc@deep-pkgc
-> +#########################################
-> +# Expected skip/fail on CI TypeC configuration
-> +#########################################
-> +igt@kms_chamelium_color@.*
-> +igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode
-> +igt@kms_chamelium_hpd@dp-hpd-with-enabled-mode
-> +igt@kms_chamelium_hpd@dp-hpd-for-each-pipe
-> +#########################################
-> +# Expected skip as config missing on CI
-> +#########################################
-> +igt@kms_joiner@basic-max-non-joiner
-> +#########################################
-> +# FBC with PR/PSR2 is a valid skip
-> +#########################################
-> +igt@kms_psr2_sf@fbc-pr-.*
-> +igt@kms_psr2_sf@fbc-psr2.*
-> +igt@kms_psr@fbc-psr2.*
-> +'igt@kms_psr@fbc-pr.*
+> +		"update-from-file": {
+> +		    "include-type": "regex-ignorecase",
+> +		    "include": [
+> +			{ "LNL": "../intel-ci/xe.lnl.display.blocklist.txt" },
+> +			{ "BMG": "../intel-ci/xe.bmg.display.blocklist.txt" },
+> +			{ "all": "../intel-ci/xe.blocklist.txt" }
+> +		    ]
+> +		}
+> +	    }
+>          },
+>          "GPU requirement": {
+>              "_properties_": {
 > -- 
 > 2.43.0
 > 
