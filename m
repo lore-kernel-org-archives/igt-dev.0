@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94D2C369C2
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 13:20:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85A0FC369C2
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 15:11:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 90E5410E913;
-	Wed, 16 Apr 2025 13:20:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3859710E96B;
+	Wed, 16 Apr 2025 15:11:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fjMFbR7P";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XwmcXzBH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 400BC10E928
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Apr 2025 13:20:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9528C10E96A
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Apr 2025 15:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744809645; x=1776345645;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Sxqy1XXoHWPWBRFPi9AMYrxOQ5xppmITrip6s9YbeeM=;
- b=fjMFbR7PA97rPN4E9rKKwqKjK8ag3Ncp3ghCBBUfakaOxDfxI2OaT3kU
- b3YMqNSsJp5jYDb5ZbWJ1ttsIJEGKD5ov4mGdwlhswzMOr6Btgha6M/7z
- BkG4NAl1YYvgrffoQSuP9PyUVEaRk2QNBDWWCVtxHMaHEdN0o+1mX0uhI
- 7mLr4VGIWCtFz3PVWewIqS1UA1SYY0tCCbxTPVTkzo0EaFIvJV59KD52K
- k7O65MbP7d8imdkFNl+qP52N3cRwJOaFIha27UEyRatkJLSUPsP5WLQaV
- VER6Zs15njNBm0sEGB9Gno+2g36EdoB5bqgPPZizitT8dLps/t5Bw7X6N Q==;
-X-CSE-ConnectionGUID: EX8dkdQNQ86m57vRTUKeUQ==
-X-CSE-MsgGUID: 7Cc8QCYoRh2LIs11E1ZqKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="57348822"
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="57348822"
+ t=1744816262; x=1776352262;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=kbvwNyD/2878mdhB5hgPIcJ9m/AMyBmcNJ2V2/vy0GE=;
+ b=XwmcXzBHSZRFda8pY5b6KaK3XFEKCNXOj7om1Y4wvWoX3xxeeyX9P7Mf
+ F/Y2C5QgVLLIvhK9GyzSIv9/Nl1B9GuWjmZHXAqjdiVC2qmMJDakBQhrj
+ PAlc4kshYMz6ILZtX5MxPWH0WtfXhxkwvhZmWGAKRGMJVzkNFprAjMSmt
+ DwJ0mORMrGPUn8daa68F7ptTiC2dEaZpzxT2lfv3/fdOWbg+1pXOCxE5p
+ yBGYoV1LJPPly57xTN1Wr4Z7FNQ9WFTb83X1UnBoDnY5h+D8mXrTu4Ocf
+ SEhLh2LpHCEcIeNsRcT1Gk7/9qt0NTFUILbq2ShG00pMMrfQqpI00uwAb A==;
+X-CSE-ConnectionGUID: TN2Sj7t5RyKKhN6cNmCXMA==
+X-CSE-MsgGUID: falM4N7gRuaLW7LE6Ecx/Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="68859621"
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="68859621"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2025 06:20:45 -0700
-X-CSE-ConnectionGUID: LTEQoK7bT1O3rGkF3NK+nQ==
-X-CSE-MsgGUID: joUzO+plR4OGVu37SZQOmA==
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2025 08:11:02 -0700
+X-CSE-ConnectionGUID: ALqiftjTRpCUQdBd1ha7zg==
+X-CSE-MsgGUID: TwOfzaFQTFCIlaf43fms5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="130787987"
-Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="130828761"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2025 06:20:43 -0700
-From: Karthik B S <karthik.b.s@intel.com>
+ 16 Apr 2025 08:10:50 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@intel.com, jari.tahvanainen@intel.com,
- aditya.chauhan@intel.com, Karthik B S <karthik.b.s@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/intel/test_config: Add GPU excluded
- platform definition for LNL/BMG
-Date: Wed, 16 Apr 2025 18:51:28 +0530
-Message-ID: <20250416132129.1363764-3-karthik.b.s@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250416132129.1363764-1-karthik.b.s@intel.com>
-References: <20250416132129.1363764-1-karthik.b.s@intel.com>
+Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
+ chaitanya.kumar.borah@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2 0/2] Async flips with tiled modifiers
+Date: Wed, 16 Apr 2025 20:33:46 +0530
+Message-Id: <20250416150348.2901159-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,64 +68,17 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With config definitions added, the blocklists for LNL and BMG platform on xe
-can be used used to generate platform testlists.
+Async flips with linear modifiers combination is a corner and not practical to use,
+update the existing subtests to use the tiled modifiers.
 
-v2: Fix Typo.
+Santhosh Reddy Guddati (2):
+  tests/kms_async_flips: Split subtest to handle linear buffers
+    separately
+  tests/kms_async_flips: Use tiling modifiers
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Signed-off-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
-Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/intel/kms_test_config.json | 10 +++++++++-
- tests/intel/xe_test_config.json  | 12 ++++++++++--
- 2 files changed, 19 insertions(+), 3 deletions(-)
+ tests/kms_async_flips.c | 56 +++++++++++++++++++++++++++++++++++------
+ 1 file changed, 48 insertions(+), 8 deletions(-)
 
-diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-index e11c7f4fe..65d6eb07d 100644
---- a/tests/intel/kms_test_config.json
-+++ b/tests/intel/kms_test_config.json
-@@ -54,7 +54,15 @@
-         },
- 	"GPU excluded platform": {
- 	    "_properties_": {
--		"description": "Provides a list of GPUs not capable of running the subtest (or the test as a whole)."
-+		"description": "Provides a list of GPUs not capable of running the subtest (or the test as a whole).",
-+		"update-from-file": {
-+		    "include-type": "regex-ignorecase",
-+		    "include": [
-+			{ "LNL": "../intel-ci/xe.lnl.display.blocklist.txt" },
-+			{ "BMG": "../intel-ci/xe.bmg.display.blocklist.txt" },
-+			{ "all": "../intel-ci/xe.blocklist.txt" }
-+		    ]
-+		}
- 	    }
- 	},
-         "Description": {
-diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-index 4556025f7..eb0a7d905 100644
---- a/tests/intel/xe_test_config.json
-+++ b/tests/intel/xe_test_config.json
-@@ -71,8 +71,16 @@
-         },
-         "GPU excluded platform": {
-             "_properties_": {
--                "description": "Provides a list of GPUs not capable of running the subtest (or the test as a hole)."
--            }
-+                "description": "Provides a list of GPUs not capable of running the subtest (or the test as a whole).",
-+		"update-from-file": {
-+		    "include-type": "regex-ignorecase",
-+		    "include": [
-+			{ "LNL": "../intel-ci/xe.lnl.core.blocklist.txt" },
-+			{ "BMG": "../intel-ci/xe.bmg.core.blocklist.txt" },
-+			{ "all": "../intel-ci/xe.blocklist.txt" }
-+		    ]
-+		}
-+	    }
-         },
-         "GPU requirement": {
-             "_properties_": {
 -- 
-2.43.0
+2.34.1
 
