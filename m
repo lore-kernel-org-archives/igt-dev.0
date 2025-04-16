@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74B04C369C4
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 16:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2FEAC369BA
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Apr 2025 17:09:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2F43B10E296;
-	Wed, 16 Apr 2025 16:31:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 66E7D10E96F;
+	Wed, 16 Apr 2025 17:09:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gCEy9BG5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Iy3O3FCY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C87410E972
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Apr 2025 16:31:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9B3310E96F
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Apr 2025 17:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744821103; x=1776357103;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=TkAyQlup/KPYUNrDI5wLFJbLd3JP2eoWpUIfuHQtjs8=;
- b=gCEy9BG56M6pV3ghs7iYNgaYrZG/257XsUdPoBKl6r4kNahZHEnb8yyQ
- LNLrDo/YBx+39gkqFSVxhoj7UdZTHyZj5wYl7MjgYRy9CBr6ZmPkc+2Kh
- seqHGV74MoHgiNKr8N1YOrTaS+GTvboAsm4ki1B9yH25fjiFgjSgCAWR+
- It0Nr3DY+CaYBIYx9huhXCGB103OrtiGeFNOcD3qGP8rd1CUZvlTz2Xxu
- leG1cq/tfpX2t/cVWWS5dT9oXsczvdaFT2xqJzjxbMyaS4zatkHWQuetC
- 8CSxHJ6qRWS1Mi2a78WBp1yfSntFgCcEx3kEvZwov4XHErRcWImPdgtix w==;
-X-CSE-ConnectionGUID: IjxSQEzLRVmUmJUjx3Pszg==
-X-CSE-MsgGUID: FPfjuZ3SR++Mc5A260oSLQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="45515119"
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="45515119"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2025 09:31:43 -0700
-X-CSE-ConnectionGUID: gTYEvGbESzeX+PB85IhLHw==
-X-CSE-MsgGUID: c2NFKvoOQN+/7p4X+5sJkA==
+ t=1744823384; x=1776359384;
+ h=message-id:subject:from:to:date:in-reply-to:references:
+ content-transfer-encoding:mime-version;
+ bh=eFLKcN77QlD+mLBpaIjOIBk1bWeV/9xeqB00uFu2tdw=;
+ b=Iy3O3FCYGItzSUhadydT5V+OWSvXsVkmUphfjMMVHgD3ZA0QUnJ0LjK0
+ rJMH0uiLn8lcbPjO5Tk2GryuyMRzk3WeNK7Bc/l1d2KR/sZz0k9YK4N4U
+ WduK6hGbUdL1ngYXiTbn14zsDop2nsydpTXuYeuo2/fmpZ8LAK2kNwbvk
+ N5WW8RD77c0TWDnljA4gPR06J53vkJBtb5kFzoy1eUAJr8H6AxISJ/K+N
+ j7AVi3BmMMvHOGeQqmYuJp1CpdTCG+GkBzEb85nUnVam+5frmd5AAd1q9
+ dm3kndDA78Ywb/3vNtt1bjSTzAhOoTCEMELWKr5n0LQhpclAHNEy/q6zO w==;
+X-CSE-ConnectionGUID: 4py432yYT8KA2rneoKi8qw==
+X-CSE-MsgGUID: vYlwVN0eT9+QfqstWZO+Aw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="46306879"
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="46306879"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2025 10:09:44 -0700
+X-CSE-ConnectionGUID: wkFadsfDS0igo7RpDa4Sfw==
+X-CSE-MsgGUID: gVTuq4/aS6qjDF+aqmDaMA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="130380218"
-Received: from osgc-linux-buildserver.sh.intel.com ([10.112.232.103])
- by fmviesa006.fm.intel.com with ESMTP; 16 Apr 2025 09:31:42 -0700
-From: Shuicheng Lin <shuicheng.lin@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
- Matt Roper <matthew.d.roper@intel.com>
-Subject: [PATCH i-g-t 3/3] benchmarks/gem_wsim: replace div64_u64_round_up()
- with DIV_ROUND_UP
-Date: Wed, 16 Apr 2025 16:30:53 +0000
-Message-Id: <20250416163053.117425-4-shuicheng.lin@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250416163053.117425-1-shuicheng.lin@intel.com>
-References: <20250416163053.117425-1-shuicheng.lin@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; d="scan'208";a="130541376"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO [10.245.246.121])
+ ([10.245.246.121])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2025 10:09:42 -0700
+Message-ID: <ac738d56a54052862f5e9fc74f905d05315c33c4.camel@linux.intel.com>
+Subject: Re: [PATCH] tests/xe: Add system_allocator test
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>, igt-dev@lists.freedesktop.org
+Date: Wed, 16 Apr 2025 19:09:40 +0200
+In-Reply-To: <20250416022040.355100-1-matthew.brost@intel.com>
+References: <20250416022040.355100-1-matthew.brost@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,40 +69,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-DIV_ROUND_UP is defined in igt_aux.h with the same function as
-div64_u64_round_up().
+Hi, Matt,
 
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
----
- benchmarks/gem_wsim.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+On Tue, 2025-04-15 at 19:20 -0700, Matthew Brost wrote:
+> Test various uses of system allocator in single thread, multiple
+> threads, and multiple processes.
+>=20
+> Features tested:
+> =C2=A0- Malloc with various size
+> =C2=A0- Mmap with various sizes and flags including file backed mappings
+> =C2=A0- Mixing BO allocations with system allocator
+> =C2=A0- Various page sizes
+> =C2=A0- Dynamically freeing / unmapping memory
+> =C2=A0- Sharing VM across threads
+> =C2=A0- Faults racing on different hardware engines / GTs / Tiles
+> =C2=A0- GPU faults and CPU faults racing
+> =C2=A0- CPU faults on multiple threads racing
+> =C2=A0- CPU faults on multiple process racing
+> =C2=A0- GPU faults of memory not faulted in by CPU
+> =C2=A0- Partial unmap of allocations
+> =C2=A0- Attempting to unmap system allocations when GPU has mappings
+> =C2=A0- Eviction of both system allocations and BOs
+> =C2=A0- Forking child processes and reading data from VRAM
+> =C2=A0- mremap data in VRAM
+> =C2=A0- Protection changes
+> =C2=A0- Multiple faults per execbuf
+>=20
+> Running on LNL, BMG, PVC 1 tile, and PVC 2 tile.
+>=20
+> v2:
+> =C2=A0- Rebase
+> =C2=A0- Fix memory allocation to not interfear with malloc (Thomas)
+>=20
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 7a6b10028..d791ea584 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -344,11 +344,6 @@ static int read_timestamp_frequency(int i915)
- 	return value;
- }
- 
--static uint64_t div64_u64_round_up(uint64_t x, uint64_t y)
--{
--	return (x + y - 1) / y;
--}
--
- static uint64_t ns_to_ctx_ticks(uint64_t ns)
- {
- 	static long f;
-@@ -359,7 +354,7 @@ static uint64_t ns_to_ctx_ticks(uint64_t ns)
- 			f = 12500000; /* icl!!! are you feeling alright? */
- 	}
- 
--	return div64_u64_round_up(ns * f, NSEC_PER_SEC);
-+	return DIV_ROUND_UP(ns * f, NSEC_PER_SEC);
- }
- 
- #define MI_STORE_DWORD_INDEX	MI_INSTR(0x21, 1)
--- 
-2.25.1
+Did you have a chance to look at the memory (or rather virtual
+adddress) leaks on the tests as well? =20
+With the old version it would exceed 1GB after some time, which I
+believe caused some slowdown.
+
+Unfortunately the igt library funcs also leaks memory so running the
+test under valgrind was a bit noisy, but helped to some extent.
+
+/Thomas
 
