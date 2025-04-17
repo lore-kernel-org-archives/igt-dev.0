@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ACEAC369C2
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 13:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EBFDC369B2
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 13:13:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3057410EB09;
-	Thu, 17 Apr 2025 13:13:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 153F810EB07;
+	Thu, 17 Apr 2025 13:13:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SBbueU/G";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fbXcBnNK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1798410EB03
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Apr 2025 13:13:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CB6E10EB16
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Apr 2025 13:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744895607; x=1776431607;
+ t=1744895611; x=1776431611;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=HyxSdISgE3bLnk8/IzdFW3OuNC2gxLr0PL9rFPmpIWI=;
- b=SBbueU/GdUGM0QXPPBWzCb045OPJGVZTHVURj5IZUGethxl0S2Jn1QA1
- z+mEm/C2tLVq11SRPpAHpYctk1/Dnmeoio0TBUWMtcIq0K54Lb5rTH/9N
- 1eFxP94sRh6qeFerJGyTTre58n6oM9xi478G8CdBpuQfu+vMGwB7zTPyQ
- WpM9eGtI0PB/y9wUdt9ZJkApf0xNDefztY1xKXjGvD5xN2c4qxEhL5nBH
- /PmZmekZZSrl2a8i2t2Fv/jCWizT+hfTH6O+zE6kJaCVEcmnX4Rxj/V34
- DkMprSapp5j8as7Ukg1Sjg1noURwsFobH7/tVtuJA/c+d5jo9L95FvqrW A==;
-X-CSE-ConnectionGUID: MfLpflLBS5aDGkJ9ih6yBg==
-X-CSE-MsgGUID: p7ygr9NQSB+nc72QQqsxWw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="68972705"
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; d="scan'208";a="68972705"
+ bh=q7jeAnaxdx6NEhKZIFa1IViuTwDAV9Vux9nuntqoVVs=;
+ b=fbXcBnNKRd+RVPkPAuAkUEnUvw3w20yPK1FPkAa+gABgezbdg7cbjSJz
+ HBhu/UB20PwT0SUPaVun/wgHaCWMgJMFsy5cWQyMdeEAfwMh564o3Irov
+ NAWtroS2DqpiUxqhHaPAuuykE4mSMMssHm5db0Qo8Ky05WPiaBIL1C8yC
+ 2uXZ6ZFs3uGgKv/mskB0M+FvcsQJbqFs80si73dia/k/ENarUZZNTftst
+ 1uRNZxsk5nJqbRkerAhoNMsjwOfA7Y1+SpPmvsn2io3xGGKeuu7joYYou
+ eNoO+7RB/1RNlQmWxzLURAOMBTLifEnoVejB386xes5ooDgzp4ypZf5cV Q==;
+X-CSE-ConnectionGUID: L9R6eOdiTpinvKHi/hP+wQ==
+X-CSE-MsgGUID: naNAp/isRme5m1wMj4IZ3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="68972711"
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; d="scan'208";a="68972711"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2025 06:13:26 -0700
-X-CSE-ConnectionGUID: a7WVTksyQrqaipoGdRReGQ==
-X-CSE-MsgGUID: Bz8sDjboSdKIgmxSZDPRvg==
+ 17 Apr 2025 06:13:31 -0700
+X-CSE-ConnectionGUID: o0tFhm+XQ3ay79TT+QTHCw==
+X-CSE-MsgGUID: N6PRi2PqQrigmwVBFqoPxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; d="scan'208";a="130802700"
+X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; d="scan'208";a="130802740"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.80.165])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2025 06:13:25 -0700
+ 17 Apr 2025 06:13:30 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  Francois Dugast <francois.dugast@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/intel/xe_fault_injection: Return probe result
- from inject_fault_probe
-Date: Thu, 17 Apr 2025 15:13:11 +0200
-Message-Id: <20250417131312.1016503-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/xe_fault_injection: Make
+ inject-fault-probe-function* tests VF-aware
+Date: Thu, 17 Apr 2025 15:13:12 +0200
+Message-Id: <20250417131312.1016503-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20250417131312.1016503-1-marcin.bernatowicz@linux.intel.com>
 References: <20250417131312.1016503-1-marcin.bernatowicz@linux.intel.com>
@@ -71,66 +71,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Refactor inject_fault_probe() to return the result of the probe instead
-of asserting internally. This defers the decision of whether to assert
-or how to handle the result to the caller.
+Not all probe functions are invoked and cause a failure when fault
+injection is performed in a Virtual Function (VF) context. Some of
+these functions are only relevant for Physical Function (PF).
 
-This change allows more flexibility for test cases that may expect the
-probe to succeed despite an injected fault. If strict checking is still
-desired, a wrapper such as:
+Mark such functions with a `pf_only` flag and update the fault injection
+test logic to handle VF environments appropriately. When a PF-only
+function is tested on a VF device, expect the probe to succeed and
+validate accordingly.
 
-  static void assert_inject_fault_probe(...) {
-      igt_assert_eq(INJECT_ERRNO, inject_fault_probe(...));
-  }
-
-can be introduced to preserve the old behavior.
-
-Follow-up patches will demonstrate use cases where fault injection does
-not cause the probe to fail, justifying this change in behavior.
+This ensures that tests do not produce false failures when run on VFs.
 
 Cc: Francois Dugast <francois.dugast@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- tests/intel/xe_fault_injection.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tests/intel/xe_fault_injection.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
 diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 24d3df572..dc8005dc8 100644
+index dc8005dc8..818f62ceb 100644
 --- a/tests/intel/xe_fault_injection.c
 +++ b/tests/intel/xe_fault_injection.c
-@@ -186,9 +186,11 @@ static void set_retval(const char function_name[], long long retval)
-  * @xe_wa_init:				xe_wa_init
-  * @xe_wopcm_init:			xe_wopcm_init
-  */
--static void
-+static int
- inject_fault_probe(int fd, char pci_slot[], const char function_name[])
- {
-+	int err = 0;
-+
- 	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
- 		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
+@@ -16,6 +16,7 @@
+ #include "igt.h"
+ #include "igt_device.h"
+ #include "igt_kmod.h"
++#include "igt_sriov_device.h"
+ #include "igt_sysfs.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_pat.h"
+@@ -385,18 +386,20 @@ igt_main
+ 	struct drm_xe_engine_class_instance *hwe;
+ 	static uint32_t devid;
+ 	char pci_slot[NAME_MAX];
++	bool is_vf_device;
+ 	const struct section {
+ 		const char *name;
+ 		unsigned int flags;
++		bool pf_only;
+ 	} probe_fail_functions[] = {
+ 		{ "wait_for_lmem_ready" },
+ 		{ "xe_add_hw_engine_class_defaults" },
+ 		{ "xe_device_create" },
+ 		{ "xe_device_probe_early" },
+ 		{ "xe_ggtt_init_early" },
+-		{ "xe_guc_ads_init" },
++		{ "xe_guc_ads_init", 0, true },
+ 		{ "xe_guc_ct_init" },
+-		{ "xe_guc_log_init" },
++		{ "xe_guc_log_init", 0, true },
+ 		{ "xe_guc_relay_init" },
+ 		{ "xe_mmio_probe_early" },
+ 		{ "xe_pcode_probe_early" },
+@@ -405,7 +408,7 @@ igt_main
+ 		{ "xe_tile_init_early" },
+ 		{ "xe_uc_fw_init" },
+ 		{ "xe_wa_init" },
+-		{ "xe_wopcm_init" },
++		{ "xe_wopcm_init", 0, true },
+ 		{ }
+ 	};
+ 	const struct section vm_create_fail_functions[] = {
+@@ -449,6 +452,7 @@ igt_main
+ 		igt_device_get_pci_slot_name(fd, pci_slot);
+ 		setup_injection_fault();
+ 		igt_install_exit_handler(cleanup_injection_fault);
++		is_vf_device = intel_is_vf_device(fd);
+ 	}
  
-@@ -197,9 +199,10 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
- 	set_retval(function_name, INJECT_ERRNO);
- 
- 	igt_kmod_bind("xe", pci_slot);
--
--	igt_assert_eq(-errno, INJECT_ERRNO);
-+	err = -errno;
- 	injection_list_remove(function_name);
-+
-+	return err;
- }
- 
- /**
-@@ -478,7 +481,7 @@ igt_main
+ 	for (const struct section *s = vm_create_fail_functions; s->name; s++)
+@@ -480,8 +484,15 @@ igt_main
+ 	}
  
  	for (const struct section *s = probe_fail_functions; s->name; s++)
- 		igt_subtest_f("inject-fault-probe-function-%s", s->name)
--			inject_fault_probe(fd, pci_slot, s->name);
-+			igt_assert_eq(INJECT_ERRNO, inject_fault_probe(fd, pci_slot, s->name));
+-		igt_subtest_f("inject-fault-probe-function-%s", s->name)
+-			igt_assert_eq(INJECT_ERRNO, inject_fault_probe(fd, pci_slot, s->name));
++		igt_subtest_f("inject-fault-probe-function-%s", s->name) {
++			bool should_pass = s->pf_only && is_vf_device;
++			int err;
++
++			err = inject_fault_probe(fd, pci_slot, s->name);
++
++			igt_assert_eq(should_pass ? 0 : INJECT_ERRNO, err);
++			igt_kmod_unbind("xe", pci_slot);
++		}
  
  	igt_fixture {
  		close(sysfs);
