@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5590C369C2
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 23:56:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B401C369C2
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 23:57:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 787A910E1A9;
-	Thu, 17 Apr 2025 23:56:41 +0000 (UTC)
-Received: from b68e5b3b99e1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3DF9210E1A9;
- Thu, 17 Apr 2025 23:56:40 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4069183627410718435=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C923E10E1A9;
+	Thu, 17 Apr 2025 23:57:29 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MmZvl5jU";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 555D310E1A9
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Apr 2025 23:57:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1744934249; x=1776470249;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=gd8wnZeT/6FlxOZwy7CFcoAZsfxwHjBKTpfcshlgvQs=;
+ b=MmZvl5jUJnswRHXcNq8ix3FsXnf0y2F/6+lKn8MArNvRqIq3ZcbOeRTe
+ seekfggQ4ReiF7NQRLD5DSiAT5IC3nIpv4qJg/x6G5GrTtlmNX7QaaDB/
+ 9MeNoV68APgMw9+ODl4J/7WoAcF3eDJEt6QOdhaaq/kyHqJSXjjZeIfgO
+ evfkawcp6OOn+IKKtGFXlZaX+/gAtJUjfXiS2GC+6wePG/mBOWPOm12Wc
+ wTzAJ6ltZM/GlxJBqGoPsI4vgzhkucJckqmP4BPAPTeVo3efZSQZ+vTNq
+ sRAP70sMWo0F3ZmoVjeZwytyneM6sZZarWBPG2Q/1KoDTQOl6/gLq2KDy g==;
+X-CSE-ConnectionGUID: FKLszsSfTFa1PM/s6k4smw==
+X-CSE-MsgGUID: PcA4Vn/pQEe1HIk+UBzibA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="46683058"
+X-IronPort-AV: E=Sophos;i="6.15,220,1739865600"; d="scan'208";a="46683058"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2025 16:57:29 -0700
+X-CSE-ConnectionGUID: q5WsIseJSHWEi3HtjQKBVA==
+X-CSE-MsgGUID: sMLMDeivRc+XEBhc0JJzcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,220,1739865600"; d="scan'208";a="131504505"
+Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2025 16:57:29 -0700
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+ Alan Previn <alan.previn.teres.alexis@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_pxp: Terminate PXP on exit
+Date: Thu, 17 Apr 2025 16:57:19 -0700
+Message-ID: <20250417235720.1379479-1-daniele.ceraolospurio@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Foa=3A_Save?=
- =?utf-8?q?_and_restore_errno_in_get=5Fstream=5Fstatus?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 17 Apr 2025 23:56:40 -0000
-Message-ID: <174493420024.16585.15089815704662541286@b68e5b3b99e1>
-X-Patchwork-Hint: ignore
-References: <20250417223931.5504-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20250417223931.5504-1-umesh.nerlige.ramappa@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,153 +63,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4069183627410718435==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Most of out tests expect to start their execution from a clean GPU state.
+However, the PXP tests currently leave a PXP session running when they
+complete, so follow up tests will not have a clean starting state; given
+that PXP can impact the timing of some operations (e.g. suspend/resume),
+this could pollute the results of those tests. Therefore, let's make
+sure that PXP is de-activated before we exit.
 
-== Series Details ==
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+---
+ tests/intel/xe_pxp.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-Series: tests/intel/xe_oa: Save and restore errno in get_stream_status
-URL   : https://patchwork.freedesktop.org/series/147945/
-State : failure
+diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
+index 458d32322..3442396b2 100644
+--- a/tests/intel/xe_pxp.c
++++ b/tests/intel/xe_pxp.c
+@@ -1140,9 +1140,23 @@ static void termination_tests(int fd, bool pxp_supported, drmModeResPtr res,
+ 		}
+ }
+ 
++int xe_fd = -1;
++
++static void exit_handler(int sig)
++{
++	/*
++	 * PXP can interact with some operations (e.g. suspend/resume), which
++	 * could impact the behavior of other tests if they unknowingly start
++	 * when PXP is already active. Therefore, let's make sure PXP is
++	 * de-activated before we exit.
++	 */
++	trigger_termination(xe_fd, PXP_TERMINATION_IRQ);
++	drm_close_driver(xe_fd);
++	usleep(50 * 1000); /* give time for the termination to be processed */
++}
++
+ igt_main
+ {
+-	int xe_fd = -1;
+ 	bool pxp_supported = true;
+ 	drmModeResPtr res;
+ 
+@@ -1151,6 +1165,7 @@ igt_main
+ 		igt_require(xe_has_engine_class(xe_fd, DRM_XE_ENGINE_CLASS_RENDER));
+ 		pxp_supported = is_pxp_hw_supported(xe_fd);
+ 		res = drmModeGetResources(xe_fd);
++		igt_install_exit_handler(exit_handler);
+ 	}
+ 
+ 	igt_subtest_group {
+@@ -1213,8 +1228,6 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_fixture {
++	igt_fixture
+ 		drmModeFreeResources(res);
+-		close(xe_fd);
+-	}
+ }
+-- 
+2.43.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8326_BAT -> XEIGTPW_13005_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_13005_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_13005_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_13005_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc:
-    - bat-dg2-oem2:       [PASS][1] -> [DMESG-WARN][2] +55 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8326/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13005/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
-
-  
-#### Warnings ####
-
-  * igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries:
-    - bat-lnl-2:          [ABORT][3] ([Intel XE#4749]) -> [ABORT][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8326/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13005/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html
-
-  
-  [Intel XE#4749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4749
-
-
-Build changes
--------------
-
-  * IGT: IGT_8326 -> IGTPW_13005
-  * Linux: xe-2965-1afb38d5acb616dc76381ec0d80b081106146bbd -> xe-2970-5cd835ef6352a207fa4177184b397dfd82989e5d
-
-  IGTPW_13005: 95e2fe40d0b9c365740e15ab6eb5647cda88cfd6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8326: 8326
-  xe-2965-1afb38d5acb616dc76381ec0d80b081106146bbd: 1afb38d5acb616dc76381ec0d80b081106146bbd
-  xe-2970-5cd835ef6352a207fa4177184b397dfd82989e5d: 5cd835ef6352a207fa4177184b397dfd82989e5d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13005/index.html
-
---===============4069183627410718435==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_oa: Save and restore errno in get_stream_status</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147945/">https://patchwork.freedesktop.org/series/147945/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13005/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13005/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8326_BAT -&gt; XEIGTPW_13005_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_13005_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_13005_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_13005_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@nonblocking-crc:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8326/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13005/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html">DMESG-WARN</a> +55 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries:<ul>
-<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8326/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4749">Intel XE#4749</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13005/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8326 -&gt; IGTPW_13005</li>
-<li>Linux: xe-2965-1afb38d5acb616dc76381ec0d80b081106146bbd -&gt; xe-2970-5cd835ef6352a207fa4177184b397dfd82989e5d</li>
-</ul>
-<p>IGTPW_13005: 95e2fe40d0b9c365740e15ab6eb5647cda88cfd6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8326: 8326<br />
-  xe-2965-1afb38d5acb616dc76381ec0d80b081106146bbd: 1afb38d5acb616dc76381ec0d80b081106146bbd<br />
-  xe-2970-5cd835ef6352a207fa4177184b397dfd82989e5d: 5cd835ef6352a207fa4177184b397dfd82989e5d</p>
-
-</body>
-</html>
-
---===============4069183627410718435==--
