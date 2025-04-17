@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3074C369C7
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 09:51:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CC7FC369B2
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 09:51:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6AAD210EA7E;
-	Thu, 17 Apr 2025 09:51:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B142710EA80;
+	Thu, 17 Apr 2025 09:51:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ASba2Nc3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L5MdqSGq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AC5A10EA7E
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Apr 2025 09:51:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4E6C10EA80
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Apr 2025 09:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744883478; x=1776419478;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=8f9NSJ4FZCElZG8gi2NW2tm7caFCLnb5bb7oDMJvOC8=;
- b=ASba2Nc3FSXt9GVSYhqD1v/ETxgwPR70+p1pVJ/Hgo62QMC5910BjZ3v
- 8vm2c2hjBqG02Mt+hELlplOxyzWB0HcgqhsHgCVspJS4eEEv11nQJmyGp
- 3OzKsh+4Jdh70EcjecPs8vy5WAnexZuwiHc7qfuz1WVztVz83STT39gIe
- m+3TTeJ7G2JqnW8K5ElMgSsl8B+UQArktq97jjhfu9XTv5hAi3yx8hIFi
- WkRMXiJAdk5SdOr1hZm/72NY4z2CSySTqb9h6RK9cABn722wxpfKwpT4D
- pbYH4Yl7C5OlOF93j3znbqlSAFLHkjYL1YqzaWPacEBaO7uGwUs5PrmAh A==;
-X-CSE-ConnectionGUID: /kxLcbIWQlOrujWXFYbJhg==
-X-CSE-MsgGUID: 8zSislUOT7e8BdX2Cn1CuA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="45695993"
-X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; d="scan'208";a="45695993"
+ t=1744883480; x=1776419480;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=tkgoqB6vouAnY4v2VsI++aouPODA6Bg3qbc3NYAvgK4=;
+ b=L5MdqSGq/YKvS3OLhHUwZ0iWHxihY2CIuHxKpZuaorZdd9gLHVLyljzF
+ 7tuPDgv9j6Csvk2jACf+E7NyFEJpl5oFW2l9DJ/lKWkNtZBLlvzAH/Adi
+ wdX5m4qexgSFR3IJB8EmN+tauI346wahXbi1HIzxDbXcFMAMFi3x9/AK0
+ O2IQrAd3rf+Wonz2kHL0ZcqEckfQ1rI+bNwJ2W9izfodHrnpYmtp59E43
+ PDqry3B8Vn99fYEW7A77rW0MRXHER64wCjl76spWFkx3pb2jpi7A4dTXV
+ +M0VYAQ93QMiDGlu/KoOgWHg8YSu087YsYOigCyPN6BKyKfOItfbErvp3 A==;
+X-CSE-ConnectionGUID: gp6DOfA9RoCKDQUpasjj3g==
+X-CSE-MsgGUID: agHqlvkBQuKJl6fW27QivQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="45695998"
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; d="scan'208";a="45695998"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2025 02:51:17 -0700
-X-CSE-ConnectionGUID: gBTW7YyoS06+l4a95ZxWtg==
-X-CSE-MsgGUID: RIkLXEG9Qs2Wa8cPxEJPLQ==
+ 17 Apr 2025 02:51:20 -0700
+X-CSE-ConnectionGUID: h/Zt5nEgSd2M/lZcqrgTnQ==
+X-CSE-MsgGUID: +AY73cDCQpm77zLbyOmZfg==
+X-Ironport-Invalid-End-Of-Message: True
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; d="scan'208";a="135564763"
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; d="scan'208";a="135564776"
 Received: from mgolanimitul-x299-ud4-pro.iind.intel.com ([10.190.239.114])
- by fmviesa005.fm.intel.com with ESMTP; 17 Apr 2025 02:51:16 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 17 Apr 2025 02:51:19 -0700
 From: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com,
 	ramanaidu.naladala@intel.com
-Subject: [PATCH v5 0/2] Bucketize refresh rate tolerance
-Date: Thu, 17 Apr 2025 15:19:05 +0530
-Message-ID: <20250417094908.1795432-1-mitulkumar.ajitkumar.golani@intel.com>
+Subject: [PATCH v5 2/2] tests/kms_vrr: Increase readability of kms_vrr
+Date: Thu, 17 Apr 2025 15:19:07 +0530
+Message-ID: <20250417094908.1795432-3-mitulkumar.ajitkumar.golani@intel.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250417094908.1795432-1-mitulkumar.ajitkumar.golani@intel.com>
+References: <20250417094908.1795432-1-mitulkumar.ajitkumar.golani@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,17 +68,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reduce false failures while preserving timing accuracy. Introduce
-a small tolerance buffer based on refresh rate which accounts for
-HW/SW latency without compromising validation on HRR panel.
+Add converted refresh rate value apart from nanosecond time prints
+to increase readability of debug logs.
 
-Mitul Golani (2):
-  tests/kms_vrr: Bucketize refresh rate tolerance
-  tests/kms_vrr: Increase readability of kms_vrr
+Signed-off-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Reviewed-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+---
+ tests/kms_vrr.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
- tests/kms_vrr.c | 95 +++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 88 insertions(+), 7 deletions(-)
-
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 182e7c2fa..15bc1e250 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -512,8 +512,10 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 
+ 		calculate_tolerance(&threshold_hi[i], &threshold_lo[i], exp_rate_ns);
+ 
+-		igt_info("Requested rate[%d]: %"PRIu64" ns, Expected rate between: %"PRIu64" ns to %"PRIu64" ns\n",
+-				i, rates_ns[i], threshold_hi[i], threshold_lo[i]);
++		igt_info("Requested rate[%d]: %" PRIu64 " ns (%.2f Hz), Expected rate between: %" PRIu64 " ns (%.2f Hz) to %" PRIu64 " ns (%.2f Hz)\n",
++			 i, rates_ns[i], (float)NSECS_PER_SEC / rates_ns[i], threshold_hi[i],
++			 (float)NSECS_PER_SEC / threshold_hi[i], threshold_lo[i],
++			 (float)NSECS_PER_SEC / threshold_lo[i]);
+ 	}
+ 
+ 	/* Align with the flip completion event to speed up convergence. */
+@@ -538,8 +540,9 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		 */
+ 		event_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
+ 
+-		igt_debug("event_ns - last_event_ns: %"PRIu64"\n",
+-						(event_ns - last_event_ns));
++		igt_debug("event_ns - last_event_ns: %" PRIu64 " (%.2f Hz)\n",
++			  event_ns - last_event_ns,
++			  (float)NSECS_PER_SEC / (event_ns - last_event_ns));
+ 
+ 		/*
+ 		 * Check if the difference between the two flip timestamps
 -- 
 2.48.1
 
