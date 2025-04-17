@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD30CC369B2
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 07:00:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 531FDC369B2
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 07:01:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6EB5410EA10;
-	Thu, 17 Apr 2025 07:00:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0324A10EA12;
+	Thu, 17 Apr 2025 07:01:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fqiYQa+y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mbw20Mdc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1ABC210EA10
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Apr 2025 07:00:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57D6B10EA12
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Apr 2025 07:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744873228; x=1776409228;
+ t=1744873299; x=1776409299;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=sSChLiHzzD59XbM5gwGxWUyfvYym3ml8w6NYXoF9D54=;
- b=fqiYQa+yoyoKgrbfsH7rCAXVBUjavAB1jbp+VtHstg1UuUeyGCrthinm
- gMFCbfJhYoCzc2MLYqqCW+PSzxxiNBSOqBzbj1vVyH3XSoqmV1nJm2nVJ
- 7Q6TcJ7YvPACQpDU5g3xLl4RqhO8NUFBNNUXtStRBcpD3ORMZk2gwJ6FF
- MFkmxsfJJwkDIrO8T/EnnacDmvZv4IH+vVitz3529ikuWYw9/4kqON/rL
- YiCpZhX46vfqbdpkT8bjQZOHBblMF9uJNTvOytzdbjWFRyNtD0phkJ6ec
- MgFIhsdyUX+qH8CoLq/h1Ky9KDhY7MiNuovh396AMQDPPrA9+f8XYCPx4 A==;
-X-CSE-ConnectionGUID: rz+eIOdIQLGARrJXYIWiRg==
-X-CSE-MsgGUID: 7ODlEFwiSua6Zm60BGfuLw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="45681364"
-X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; d="scan'208";a="45681364"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2025 00:00:27 -0700
-X-CSE-ConnectionGUID: ha2viSfURdKYFVj30M7dVw==
-X-CSE-MsgGUID: Q2URbf8dSfCMr2RmKJW83w==
+ bh=iff8DzMpInpPnyixVv04wMHk5W3EsqZb6eErTmJE4AA=;
+ b=Mbw20MdcRmGvudVFpII6B46DwL3ifIR+AfunYiawEQRA2syfeiMVb6fb
+ uR6R27HhOpi2T+LwSH0B9uaWJBi2C6sBG/+tN6i98zDRKYuy6yKurdZqd
+ Av/2RUKiCb927zM3B2nP3u6GF7Q1K3S9vBJolhAskuwgRMzaYfzfsxNfv
+ +XEYYqz9fxrOTF3GCiULfRnP34BXl/sTzQH5QFmRsbcxfQbbsxFlHbEWS
+ E7ob9cp5r+YrnCw3ZLx2PahzVr5+z4qtWkhR6sCVNpT5jwZnQhpvBN1KM
+ tV6aOczk455i3JIwH5r6J8qdfNxJ4Iz+7LHh2iNoHu2a1sfHBPFXFxk03 A==;
+X-CSE-ConnectionGUID: C78CeJlZT1mmeW4u5CQFLA==
+X-CSE-MsgGUID: da11fQv3Quq/e8CQMC0fig==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="46369965"
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; d="scan'208";a="46369965"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2025 00:01:39 -0700
+X-CSE-ConnectionGUID: zjLOoQ2gR6CAvQkN94cxqQ==
+X-CSE-MsgGUID: gdrrHeZdQsuoOfTAsUb+Iw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; d="scan'208";a="161671644"
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; d="scan'208";a="161757922"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.151])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2025 00:00:26 -0700
-Date: Thu, 17 Apr 2025 09:00:24 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2025 00:01:37 -0700
+Date: Thu, 17 Apr 2025 09:01:36 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Matthew Brost <matthew.brost@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 Subject: Re: [PATCH] lib/xe/spin: Use READ_ONCE, WRITE_ONCE macros in Xe spin
  library
-Message-ID: <20250417070024.agimkumvc2yxn2so@zkempczy-mobl2>
+Message-ID: <20250417070136.wrhvv44cgz723ww3@zkempczy-mobl2>
 References: <20250416161025.361516-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -75,6 +75,14 @@ On Wed, Apr 16, 2025 at 09:10:25AM -0700, Matthew Brost wrote:
 > xe_spin_started(). If the initial read is before the GPU batch execution
 > flips spin->start to a non-zero value, the test will hang forever. This
 > was shown on Chrome.
+
+I missed this explanation about Chrome. May you point out the affected
+code? I'm really curious about how it looks like.
+
+--
+Zbigniew
+
+
 > 
 > For uniformity, update xe_spin_end to use WRITE_ONCE too.
 > 
@@ -93,16 +101,6 @@ On Wed, Apr 16, 2025 at 09:10:25AM -0700, Matthew Brost wrote:
 >  {
 > -	return spin->start != 0;
 > +	return READ_ONCE(spin->start) != 0;
-
-For dynamic libries in userspace compiler won't optimize the read
-if function is extern. I had a discussion about it with Lucas some
-time ago.
-
-Where's the case you observe invalid behavior of this?
-
---
-Zbigniew
-
 >  }
 >  
 >  /**
