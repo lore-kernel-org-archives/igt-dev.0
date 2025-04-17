@@ -4,58 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EBFDC369B2
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 13:13:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 533FCC369B2
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Apr 2025 13:21:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 153F810EB07;
-	Thu, 17 Apr 2025 13:13:33 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fbXcBnNK";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CB6E10EB16
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Apr 2025 13:13:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744895611; x=1776431611;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=q7jeAnaxdx6NEhKZIFa1IViuTwDAV9Vux9nuntqoVVs=;
- b=fbXcBnNKRd+RVPkPAuAkUEnUvw3w20yPK1FPkAa+gABgezbdg7cbjSJz
- HBhu/UB20PwT0SUPaVun/wgHaCWMgJMFsy5cWQyMdeEAfwMh564o3Irov
- NAWtroS2DqpiUxqhHaPAuuykE4mSMMssHm5db0Qo8Ky05WPiaBIL1C8yC
- 2uXZ6ZFs3uGgKv/mskB0M+FvcsQJbqFs80si73dia/k/ENarUZZNTftst
- 1uRNZxsk5nJqbRkerAhoNMsjwOfA7Y1+SpPmvsn2io3xGGKeuu7joYYou
- eNoO+7RB/1RNlQmWxzLURAOMBTLifEnoVejB386xes5ooDgzp4ypZf5cV Q==;
-X-CSE-ConnectionGUID: L9R6eOdiTpinvKHi/hP+wQ==
-X-CSE-MsgGUID: naNAp/isRme5m1wMj4IZ3w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="68972711"
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; d="scan'208";a="68972711"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2025 06:13:31 -0700
-X-CSE-ConnectionGUID: o0tFhm+XQ3ay79TT+QTHCw==
-X-CSE-MsgGUID: N6PRi2PqQrigmwVBFqoPxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; d="scan'208";a="130802740"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.80.165])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2025 06:13:30 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_fault_injection: Make
- inject-fault-probe-function* tests VF-aware
-Date: Thu, 17 Apr 2025 15:13:12 +0200
-Message-Id: <20250417131312.1016503-3-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20250417131312.1016503-1-marcin.bernatowicz@linux.intel.com>
-References: <20250417131312.1016503-1-marcin.bernatowicz@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id D371610EB02;
+	Thu, 17 Apr 2025 13:21:26 +0000 (UTC)
+Received: from b68e5b3b99e1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7328D10E0D0;
+ Thu, 17 Apr 2025 13:21:26 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3145442455082109484=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2Cv2=2C1/2=5D_drm-uapi/amdgpu=3A_Add_queue_priority_and_secure?=
+ =?utf-8?q?_flags_definitions?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 17 Apr 2025 13:21:26 -0000
+Message-ID: <174489608646.14498.11259437349245956557@b68e5b3b99e1>
+X-Patchwork-Hint: ignore
+References: <20250417085247.592557-1-jesse.zhang@amd.com>
+In-Reply-To: <20250417085247.592557-1-jesse.zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,97 +38,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Not all probe functions are invoked and cause a failure when fault
-injection is performed in a Virtual Function (VF) context. Some of
-these functions are only relevant for Physical Function (PF).
+--===============3145442455082109484==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Mark such functions with a `pf_only` flag and update the fault injection
-test logic to handle VF environments appropriately. When a PF-only
-function is tested on a VF device, expect the probe to succeed and
-validate accordingly.
+== Series Details ==
 
-This ensures that tests do not produce false failures when run on VFs.
+Series: series starting with [i-g-t,v2,1/2] drm-uapi/amdgpu: Add queue priority and secure flags definitions
+URL   : https://patchwork.freedesktop.org/series/147878/
+State : failure
 
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- tests/intel/xe_fault_injection.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+== Summary ==
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index dc8005dc8..818f62ceb 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -16,6 +16,7 @@
- #include "igt.h"
- #include "igt_device.h"
- #include "igt_kmod.h"
-+#include "igt_sriov_device.h"
- #include "igt_sysfs.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_pat.h"
-@@ -385,18 +386,20 @@ igt_main
- 	struct drm_xe_engine_class_instance *hwe;
- 	static uint32_t devid;
- 	char pci_slot[NAME_MAX];
-+	bool is_vf_device;
- 	const struct section {
- 		const char *name;
- 		unsigned int flags;
-+		bool pf_only;
- 	} probe_fail_functions[] = {
- 		{ "wait_for_lmem_ready" },
- 		{ "xe_add_hw_engine_class_defaults" },
- 		{ "xe_device_create" },
- 		{ "xe_device_probe_early" },
- 		{ "xe_ggtt_init_early" },
--		{ "xe_guc_ads_init" },
-+		{ "xe_guc_ads_init", 0, true },
- 		{ "xe_guc_ct_init" },
--		{ "xe_guc_log_init" },
-+		{ "xe_guc_log_init", 0, true },
- 		{ "xe_guc_relay_init" },
- 		{ "xe_mmio_probe_early" },
- 		{ "xe_pcode_probe_early" },
-@@ -405,7 +408,7 @@ igt_main
- 		{ "xe_tile_init_early" },
- 		{ "xe_uc_fw_init" },
- 		{ "xe_wa_init" },
--		{ "xe_wopcm_init" },
-+		{ "xe_wopcm_init", 0, true },
- 		{ }
- 	};
- 	const struct section vm_create_fail_functions[] = {
-@@ -449,6 +452,7 @@ igt_main
- 		igt_device_get_pci_slot_name(fd, pci_slot);
- 		setup_injection_fault();
- 		igt_install_exit_handler(cleanup_injection_fault);
-+		is_vf_device = intel_is_vf_device(fd);
- 	}
- 
- 	for (const struct section *s = vm_create_fail_functions; s->name; s++)
-@@ -480,8 +484,15 @@ igt_main
- 	}
- 
- 	for (const struct section *s = probe_fail_functions; s->name; s++)
--		igt_subtest_f("inject-fault-probe-function-%s", s->name)
--			igt_assert_eq(INJECT_ERRNO, inject_fault_probe(fd, pci_slot, s->name));
-+		igt_subtest_f("inject-fault-probe-function-%s", s->name) {
-+			bool should_pass = s->pf_only && is_vf_device;
-+			int err;
-+
-+			err = inject_fault_probe(fd, pci_slot, s->name);
-+
-+			igt_assert_eq(should_pass ? 0 : INJECT_ERRNO, err);
-+			igt_kmod_unbind("xe", pci_slot);
-+		}
- 
- 	igt_fixture {
- 		close(sysfs);
--- 
-2.31.1
+CI Bug Log - changes from XEIGT_8326_BAT -> XEIGTPW_12998_BAT
+====================================================
 
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_12998_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_12998_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_12998_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-dg2-oem2:       [PASS][1] -> [DMESG-WARN][2] +56 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8326/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12998/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8326 -> IGTPW_12998
+  * Linux: xe-2965-1afb38d5acb616dc76381ec0d80b081106146bbd -> xe-2967-830407db6fa5a871d1a6fcba1e51b42899ff57f6
+
+  IGTPW_12998: 12998
+  IGT_8326: 8326
+  xe-2965-1afb38d5acb616dc76381ec0d80b081106146bbd: 1afb38d5acb616dc76381ec0d80b081106146bbd
+  xe-2967-830407db6fa5a871d1a6fcba1e51b42899ff57f6: 830407db6fa5a871d1a6fcba1e51b42899ff57f6
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12998/index.html
+
+--===============3145442455082109484==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/2] drm-uapi/amdgpu: Add queue priority and secure flags definitions</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147878/">https://patchwork.freedesktop.org/series/147878/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12998/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12998/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8326_BAT -&gt; XEIGTPW_12998_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_12998_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_12998_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_12998_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@nonblocking-crc:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8326/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12998/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html">DMESG-WARN</a> +56 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8326 -&gt; IGTPW_12998</li>
+<li>Linux: xe-2965-1afb38d5acb616dc76381ec0d80b081106146bbd -&gt; xe-2967-830407db6fa5a871d1a6fcba1e51b42899ff57f6</li>
+</ul>
+<p>IGTPW_12998: 12998<br />
+  IGT_8326: 8326<br />
+  xe-2965-1afb38d5acb616dc76381ec0d80b081106146bbd: 1afb38d5acb616dc76381ec0d80b081106146bbd<br />
+  xe-2967-830407db6fa5a871d1a6fcba1e51b42899ff57f6: 830407db6fa5a871d1a6fcba1e51b42899ff57f6</p>
+
+</body>
+</html>
+
+--===============3145442455082109484==--
