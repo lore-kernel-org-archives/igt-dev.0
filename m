@@ -4,63 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C331DC369AB
-	for <igt-dev@archiver.kernel.org>; Fri, 18 Apr 2025 14:30:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76052C369AB
+	for <igt-dev@archiver.kernel.org>; Fri, 18 Apr 2025 14:55:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 74FBA10EBAB;
-	Fri, 18 Apr 2025 14:30:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3F87710EBAB;
+	Fri, 18 Apr 2025 14:55:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hjU1GwK6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZUcl4BoB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4949910EBAB
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Apr 2025 14:30:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFB8F10EBAB
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Apr 2025 14:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744986626; x=1776522626;
+ t=1744988110; x=1776524110;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=pWATxfBWFrz8dBRtYg1Hwl2kFR2cqNkRq6tvrrPiNXk=;
- b=hjU1GwK6gFtmV3gyHphkISthdEe6iUnJWgqljtFnkirlD5FEoODnsoB5
- zd0WSG1zciOFwg9WehrlrErKvp1B/hMZcMfcOF/b16YAQEMUrEcOD3fHh
- mF1n3zaR0iYv0tF63Vzc8ZZ7K3ZZb12xSCfKM5dFD/O6oqQf8q3YoZtgx
- OGhDas1e1wTlY5Y4HTuukBcCV9MfjvcAe8w2JPS8vdnKHXe0/6+5pS34W
- XszncaV1DNHrANCB/VzGj2G4gofJg8pHEtf6jIjLRjZxxc/O7dYfOeoha
- wM/bjC7Jzhl6lXhWVWvG3lz2BlEuslgtjeHNc9cz/U+OYHFprH69oSswd A==;
-X-CSE-ConnectionGUID: 3ZQDYt+JQryxLrtvb8Xzvg==
-X-CSE-MsgGUID: 9bj5OluuQJexscMguAma9g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11407"; a="46779042"
-X-IronPort-AV: E=Sophos;i="6.15,222,1739865600"; d="scan'208";a="46779042"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2025 07:30:26 -0700
-X-CSE-ConnectionGUID: +hD4nElcQaqFj0eWvZe2Ew==
-X-CSE-MsgGUID: zUP6uXtHQTGBkIPQlfijtw==
+ mime-version:in-reply-to;
+ bh=SMrrljlhi9gJ6WBhoR4TtdFCpg2KAiEG5L45Usg01II=;
+ b=ZUcl4BoBbjBWyE2sEUNsWQq4hro4yZfNU20tUpBcA9PrrSLTg4S5tOfr
+ xwLUrWUoP70SWdLrO7JSej9QNEetlvtLqm5plpqZ44qSx9hHot2jJ9RNQ
+ JQ0FuHTgU7hTzM0c6MjLJE4vZzFlM48koF9iCwewDVZQkbPsEsiIqSuhn
+ Ed3UpN2/msklRSEHmz3yJxfHJMEWv22dcUeoZBWCBNGahUlmn9ceu15MU
+ Lz4mppqF+VHdvzK+6N8tlD5DYAJzL/0piK1ptJyVBhd5APgxZRa5EkJxt
+ qtd3St7vq/TkEiTzXEIjKGuR34V5mJzVRYgBTMq6ksGZpZcDvwCzc+HSH g==;
+X-CSE-ConnectionGUID: c5GCHJVeTWWygUsXmEYFww==
+X-CSE-MsgGUID: DH4ik2AkSQm1zPI0p6GNJg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11407"; a="69109450"
+X-IronPort-AV: E=Sophos;i="6.15,222,1739865600"; d="scan'208";a="69109450"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Apr 2025 07:55:04 -0700
+X-CSE-ConnectionGUID: qfOmnwP5Q1yyrJUECFO0Ag==
+X-CSE-MsgGUID: fYFZnUCFQ7Ofn/T7DpBgjw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,222,1739865600"; d="scan'208";a="131073085"
+X-IronPort-AV: E=Sophos;i="6.15,222,1739865600"; d="scan'208";a="162096166"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2025 07:30:25 -0700
-Date: Fri, 18 Apr 2025 16:30:21 +0200
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2025 07:55:02 -0700
+Date: Fri, 18 Apr 2025 16:54:47 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
+To: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 Cc: igt-dev@lists.freedesktop.org,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH i-g-t v2] tests/intel/xm_vm: add coverage for userptr
- transparent huge pages
-Message-ID: <20250418143021.oy3zjw2ukfpg3guv@kamilkon-DESK.igk.intel.com>
+ Alan Previn <alan.previn.teres.alexis@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_pxp: Terminate PXP on exit
+Message-ID: <20250418145447.h4kpkferveojdrvx@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Matthew Auld <matthew.auld@intel.com>,
+ Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
  igt-dev@lists.freedesktop.org,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>
-References: <20250328181937.293014-1-matthew.auld@intel.com>
+ Alan Previn <alan.previn.teres.alexis@intel.com>
+References: <20250417235720.1379479-1-daniele.ceraolospurio@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250328181937.293014-1-matthew.auld@intel.com>
+In-Reply-To: <20250417235720.1379479-1-daniele.ceraolospurio@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,183 +72,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Matthew,
-On 2025-03-28 at 18:19:37 +0000, Matthew Auld wrote:
+Hi Daniele,
+On 2025-04-17 at 16:57:19 -0700, Daniele Ceraolo Spurio wrote:
+> Most of out tests expect to start their execution from a clean GPU state.
+> However, the PXP tests currently leave a PXP session running when they
+> complete, so follow up tests will not have a clean starting state; given
+> that PXP can impact the timing of some operations (e.g. suspend/resume),
 
-small nit in subjetc:
+What kind of problems could occur? Is it longer wakeup or refusing
+to enter sleep?
 
-[PATCH i-g-t v2] tests/intel/xm_vm: add coverage for userptr transparent huge pages
-
-s/xm_vm:/xe_vm:/
-
-so it will read:
-
-[PATCH i-g-t v2] tests/intel/xe_vm: add coverage for userptr transparent huge pages
-
-> In particular we are missing something to test partially mapping a
-> huge-page, including being misaligned, such that the mm start and end
-> address don't sit on the huge-page boundary.
+> this could pollute the results of those tests. Therefore, let's make
+> sure that PXP is de-activated before we exit.
 > 
-> v2:
->   - Fully expand thp term (Kamil)
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
+> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+> Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 > ---
->  tests/intel/xe_vm.c | 55 +++++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 51 insertions(+), 4 deletions(-)
+>  tests/intel/xe_pxp.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
 > 
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index fdf74c114..af4013f5e 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -1281,6 +1281,7 @@ test_bind_array_conflict(int fd, struct drm_xe_engine_class_instance *eci,
->  #define LARGE_BIND_FLAG_MISALIGNED	(0x1 << 0)
->  #define LARGE_BIND_FLAG_SPLIT		(0x1 << 1)
->  #define LARGE_BIND_FLAG_USERPTR		(0x1 << 2)
-> +#define LARGE_BIND_FLAG_USERPTR_THP	(0x1 << 3)
->  
->  /**
->   * SUBTEST: %s-%ld
-> @@ -1312,6 +1313,9 @@ test_bind_array_conflict(int fd, struct drm_xe_engine_class_instance *eci,
->   * @large-userptr-split-binds: large-userptr-split-binds
->   * @large-userptr-misaligned-binds: large-userptr-misaligned-binds
->   * @large-userptr-split-misaligned-binds: large-userptr-split-misaligned-binds
-> + * @large-userptr-thp-split-binds: large-userptr-split-binds with transparent-huge-page
-> + * @large-userptr-thp-misaligned-binds: large-userptr-misaligned-binds with transparent-huge-page
-> + * @large-userptr-thp-split-misaligned-binds: large-userptr-split-misaligned-binds with transparent-huge-page
->   *
->   * arg[2].values: 2097152, 4194304, 8388608, 16777216, 33554432
->   * arg[2].values: 67108864, 134217728, 268435456, 536870912, 1073741824
-> @@ -1363,7 +1367,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
->  		.num_syncs = 2,
->  		.syncs = to_user_pointer(sync),
->  	};
-> -	size_t bo_size_prefetch, padding;
-> +	size_t bo_size_prefetch, padding, map_padding = 0;
->  	uint64_t addr = 0x1ull << 30, base_addr = 0x1ull << 30;
->  	uint32_t vm;
->  	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
-> @@ -1387,8 +1391,23 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
->  
->  	if (flags & LARGE_BIND_FLAG_USERPTR) {
->  		bo_size_prefetch = xe_bb_size(fd, bo_size);
-> -		map = aligned_alloc(xe_get_default_alignment(fd), bo_size_prefetch);
-> -		igt_assert(map);
-> +
-> +		if (flags & LARGE_BIND_FLAG_USERPTR_THP) {
-> +			/* Ensure we try to partially map a transparent-huge-page */
-> +			if (flags & LARGE_BIND_FLAG_MISALIGNED)
-> +				map_padding = xe_get_default_alignment(fd);
-> +
-> +			map = aligned_alloc(xe_get_default_alignment(fd),
-> +					    bo_size_prefetch + map_padding * 2);
-
-Please calculate this for debug printing like:
-
-	size_t align_size = xe_get_default_alignment(fd);
-	size_t mem_wanted;
-	size_t alloc_size;
-
-	if (flags & LARGE_BIND_FLAG_MISALIGNED)
-		map_padding = align_size;
-
-	mem_wanted = bo_size_prefetch + map_padding * 2;
-	alloc_size = DIV_ROUND_UP(mem_wanted, align_size) * align_size;
-	igt_debug("Transparent huge pages for mem size %dKB padding %dKB\n", alloc_size / 1024, map_padding / 1024);
-	map = aligned_alloc(align_size, alloc_size);
-
-Btw in this test you assume that alloc_size should be big, like 2MB?
-Or at least larger then PAGE_SIZE (4KB) ?
-
-
-> +			igt_assert(map);
-> +			madvise(map, bo_size_prefetch + map_padding * 2,
-> +				MADV_HUGEPAGE);
-
-			ret = madvise(map, alloc_size, MADV_HUGEPAGE);
-			igt_assert_eq(ret, 0);
-
-
-> +			map += map_padding;
-> +		} else {
-> +			map = aligned_alloc(xe_get_default_alignment(fd),
-> +					    bo_size_prefetch);
-> +			igt_assert(map);
-> +		}
->  	} else {
->  		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
->  			    xe_visible_vram_size(fd, 0));
-> @@ -1500,7 +1519,7 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
->  		munmap(map, bo_size);
->  		gem_close(fd, bo);
->  	} else {
-> -		free(map);
-> +		free(map - map_padding);
->  	}
->  	xe_vm_destroy(fd, vm);
+> diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
+> index 458d32322..3442396b2 100644
+> --- a/tests/intel/xe_pxp.c
+> +++ b/tests/intel/xe_pxp.c
+> @@ -1140,9 +1140,23 @@ static void termination_tests(int fd, bool pxp_supported, drmModeResPtr res,
+>  		}
 >  }
-> @@ -2620,6 +2639,34 @@ igt_main
->  						 LARGE_BIND_FLAG_USERPTR);
->  				break;
->  			}
-> +		igt_subtest_f("large-userptr-thp-split-binds-%lld",
-> +			      (long long)bind_size)
-> +			xe_for_each_engine(fd, hwe) {
-
-imho check before starting each test if madvise will return error and
-in that case test should skip with message, here and below at other
-tests.
-
-void require_madvise_hugepage(void) {
-	int ret;
-
-	ret = madvise(0, 0, MADV_HUGEPAGE);
-	igt_require(ret == 0, "Madvise hugepage not supported, errno=%d\n", ret);
-}
-
-so in each subtest make it like:
-		igt_subtest_f("large-userptr-thp-split-binds-%lld",
-			      (long long)bind_size)
-			{
-			require_madvise_hugepage();
-			xe_for_each_engine(fd, hwe) {
-...
-
-Regards,
-Kamil
-
-
-> +				test_large_binds(fd, hwe, 4, 16, bind_size,
-> +						 LARGE_BIND_FLAG_SPLIT |
-> +						 LARGE_BIND_FLAG_USERPTR |
-> +						 LARGE_BIND_FLAG_USERPTR_THP);
-> +				break;
-> +			}
-> +		igt_subtest_f("large-userptr-thp-misaligned-binds-%lld",
-> +			      (long long)bind_size)
-> +			xe_for_each_engine(fd, hwe) {
-> +				test_large_binds(fd, hwe, 4, 16, bind_size,
-> +						 LARGE_BIND_FLAG_MISALIGNED |
-> +						 LARGE_BIND_FLAG_USERPTR |
-> +						 LARGE_BIND_FLAG_USERPTR_THP);
-> +				break;
-> +			}
-> +		igt_subtest_f("large-userptr-thp-split-misaligned-binds-%lld",
-> +			      (long long)bind_size)
-> +			xe_for_each_engine(fd, hwe) {
-> +				test_large_binds(fd, hwe, 4, 16, bind_size,
-> +						 LARGE_BIND_FLAG_SPLIT |
-> +						 LARGE_BIND_FLAG_MISALIGNED |
-> +						 LARGE_BIND_FLAG_USERPTR |
-> +						 LARGE_BIND_FLAG_USERPTR_THP);
-> +				break;
-> +			}
+>  
+> +int xe_fd = -1;
+> +
+> +static void exit_handler(int sig)
+> +{
+> +	/*
+> +	 * PXP can interact with some operations (e.g. suspend/resume), which
+> +	 * could impact the behavior of other tests if they unknowingly start
+> +	 * when PXP is already active. Therefore, let's make sure PXP is
+> +	 * de-activated before we exit.
+> +	 */
+> +	trigger_termination(xe_fd, PXP_TERMINATION_IRQ);
+> +	drm_close_driver(xe_fd);
+> +	usleep(50 * 1000); /* give time for the termination to be processed */
+> +}
+> +
+>  igt_main
+>  {
+> -	int xe_fd = -1;
+>  	bool pxp_supported = true;
+>  	drmModeResPtr res;
+>  
+> @@ -1151,6 +1165,7 @@ igt_main
+>  		igt_require(xe_has_engine_class(xe_fd, DRM_XE_ENGINE_CLASS_RENDER));
+>  		pxp_supported = is_pxp_hw_supported(xe_fd);
+>  		res = drmModeGetResources(xe_fd);
+> +		igt_install_exit_handler(exit_handler);
 >  	}
 >  
->  	bind_size = (0x1ull << 21) + (0x1ull << 20);
+>  	igt_subtest_group {
+> @@ -1213,8 +1228,6 @@ igt_main
+>  		}
+>  	}
+>  
+> -	igt_fixture {
+> +	igt_fixture
+>  		drmModeFreeResources(res);
+> -		close(xe_fd);
+
+Looks like you are fixing a bug here, it should be
+drm_close_driver(xe_fd);
+
+LGTM,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+
+> -	}
+>  }
 > -- 
-> 2.48.1
+> 2.43.0
 > 
