@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 794C2C369AB
-	for <igt-dev@archiver.kernel.org>; Fri, 18 Apr 2025 09:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0555C369AB
+	for <igt-dev@archiver.kernel.org>; Fri, 18 Apr 2025 09:22:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F58810E0D4;
-	Fri, 18 Apr 2025 09:21:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA13410E44C;
+	Fri, 18 Apr 2025 09:22:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VlTkgjWx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kObBhXDB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F35510E0D4;
- Fri, 18 Apr 2025 09:21:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC4BF10E0D4;
+ Fri, 18 Apr 2025 09:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1744968062; x=1776504062;
+ t=1744968122; x=1776504122;
  h=message-id:date:mime-version:subject:to:references:from:
  in-reply-to:content-transfer-encoding;
- bh=BtFDHg8epKVr7+S+aBY3slHDEgLO07bsopH2ZhLobik=;
- b=VlTkgjWxm8rTVAkpxfVVJiuC51VTTeQAhpL79ihyKPbalt1u5XAsuF1v
- Lildcjd09uxWWElYu7nWTRIbe2nzo2Cza+5+HN8kppiH/1IaAXS8WeWT6
- HLP3lTCHkZam1kfXnBvfCai1ORhEzflAWLt/n1CItitvpZr1l+DQu1kDa
- BOdi7abSCsjmWOVe7N1ey9yieuXqqhAjQxrprOQSXkbfs1l7fcq8VX18O
- Zh/aEi079aTDyeXKC0gqiCi7HJLfpABsu4dP+uP+2EzUPJGJR0B6sFwJh
- 6MUM0RkmnB0RLpS9Np6Fwiy6Q65qG+pnm7RP9myVHT9v/CefTNBf5U2Z6 w==;
-X-CSE-ConnectionGUID: lpbm+4WESvurICgEuIfjXA==
-X-CSE-MsgGUID: KGOwYEYcQA6zb6iJAIcG5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="50261067"
-X-IronPort-AV: E=Sophos;i="6.15,221,1739865600"; d="scan'208";a="50261067"
+ bh=FaYxyGnUQtfDbBLMHWSVX7IUtxJOmEAu4KVFNTCOhCA=;
+ b=kObBhXDBvZhvjRu1AkdS2mk3KFBkUNnGvrN8ZrEXLKESJ2LgJI7yyOxS
+ FtTiBdx3QJaLRkZL5xJyLt6/SU1n3e3mu03gjs0hfTywlAmDYpt2h2dLv
+ iC/+pQ5OPpDZA1AM7qY5+bDVwcdG/H3uGcvRDnNhQ2M5MUuFiBUS4ak9d
+ pEqFEkUp8kmC/SKW1kRDdcujBe1hcU2c9sSVagolIC4t3NmnOh8bW+fuU
+ WJkaGj1dtqzTMvXTuuUAKVbmCcDx0fN8/dxrtyyh+aBlc8fNw4YMTPU7c
+ i0c3yCxQPvThd0h3JkQaO7XKUFJfEnJ9rFrgpQkx+U1KG98SYs5941Z9M w==;
+X-CSE-ConnectionGUID: SoWOASl0QQSedH5RUyWSSw==
+X-CSE-MsgGUID: ZnOg6X3wTs+LrVPjWv2pow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="50261118"
+X-IronPort-AV: E=Sophos;i="6.15,221,1739865600"; d="scan'208";a="50261118"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2025 02:21:01 -0700
-X-CSE-ConnectionGUID: 1zTLGfUmQViokY2M2Ch3mA==
-X-CSE-MsgGUID: x0Q/QAiETzSILVCVfhzSqQ==
+ 18 Apr 2025 02:22:01 -0700
+X-CSE-ConnectionGUID: tiUUkCzoQViyGgxhmDc4BQ==
+X-CSE-MsgGUID: mgIsXlcKTmWGQJjJ5jmN+g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,221,1739865600"; d="scan'208";a="162029903"
+X-IronPort-AV: E=Sophos;i="6.15,221,1739865600"; d="scan'208";a="162030042"
 Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
  ([10.245.118.0])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2025 02:21:00 -0700
-Message-ID: <6e47ccae-5219-4a8c-8d70-7b1fa7a20ddc@linux.intel.com>
-Date: Fri, 18 Apr 2025 11:20:54 +0200
+ 18 Apr 2025 02:22:01 -0700
+Message-ID: <e1f151be-b065-4a46-8631-a6b5ba113ec1@linux.intel.com>
+Date: Fri, 18 Apr 2025 11:21:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?B?UmU6IOKclyBYZS5DSS5CQVQ6IGZhaWx1cmUgZm9yIGxpYi94ZS94ZV9s?=
- =?UTF-8?Q?egacy=3A_Move_test=5Flegacy=5Fmode_to_lib/?=
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/xe/xe?=
+ =?UTF-8?Q?=5Flegacy=3A_Move_test=5Flegacy=5Fmode_to_lib/?=
 To: igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20250417193032.329-1-peter.senna@linux.intel.com>
- <174492724911.16387.17476383132774158865@b68e5b3b99e1>
+ <174492616955.16326.17505699909884413079@b68e5b3b99e1>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <174492724911.16387.17476383132774158865@b68e5b3b99e1>
+In-Reply-To: <174492616955.16326.17505699909884413079@b68e5b3b99e1>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,7 +73,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Dear I915,
 
-On 4/18/2025 12:00 AM, Patchwork wrote:
+On 4/17/2025 11:42 PM, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: lib/xe/xe_legacy: Move test_legacy_mode to lib/
@@ -82,7 +82,7 @@ On 4/18/2025 12:00 AM, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from XEIGT_8326_BAT -> XEIGTPW_13004_BAT
+> CI Bug Log - changes from IGT_8326 -> IGTPW_13004
 > ====================================================
 > 
 > Summary
@@ -90,44 +90,37 @@ On 4/18/2025 12:00 AM, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with XEIGTPW_13004_BAT absolutely need to be
+>   Serious unknown changes coming with IGTPW_13004 absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_13004_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_13004, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/index.html
 > 
-> Participating hosts (8 -> 8)
+> Participating hosts (45 -> 44)
 > ------------------------------
 > 
->   No changes in participating hosts
+>   Missing    (1): fi-snb-2520m 
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in XEIGTPW_13004_BAT:
+>   Here are the unknown changes that may have been introduced in IGTPW_13004:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@kms_pipe_crc_basic@nonblocking-crc:
->     - bat-dg2-oem2:       [PASS][1] -> [DMESG-WARN][2] +56 other tests dmesg-warn
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8326/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13004/bat-dg2-oem2/igt@kms_pipe_crc_basic@nonblocking-crc.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries:
->     - bat-lnl-2:          [ABORT][3] ([Intel XE#4749]) -> [ABORT][4]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8326/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13004/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html
-> 
->   
->   [Intel XE#4749]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4749
+>   * igt@i915_selftest@live@workarounds:
+>     - bat-rplp-1:         [PASS][1] -> [ABORT][2] +1 other test abort
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-rplp-1/igt@i915_selftest@live@workarounds.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-rplp-1/igt@i915_selftest@live@workarounds.html
 > 
 
-These are unrelated. Please fix and re-run.
+Unrelated to my change. Please fix and re-run.
+
+Thank you,
+
+Peter
