@@ -4,50 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30FEEC369AB
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Apr 2025 07:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93C09C369D2
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Apr 2025 07:29:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A5B4910E033;
-	Mon, 21 Apr 2025 07:29:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 407C710E347;
+	Mon, 21 Apr 2025 07:29:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C/28RyOS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LMHtoZQf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20F2410E033
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Apr 2025 07:29:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAEDC10E347
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Apr 2025 07:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745220584; x=1776756584;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=E1l301WWlO+iR8j3md+yogMS0aYz+HO7rHDV49xjFQ8=;
- b=C/28RyOSuuhM9LJmZ1YOSp5oAGY7FPN2+pzlbs1huQdYXc1HhOzjIn5V
- 4joKkda1Gvs2oaxJmVTgM3LtmeazhSEyXZKcjFvGFi3z0uT1IGvb9DZae
- b0JTtnSbN6qY75wcFxmUPPKYeto4RhjgAYflpj76Ca7wLPthEsF2mJoqQ
- dH64xEVJ36TSmRfb8+CSLKQgPPzoISPCOC1eXtIx/ifbjKoqaVakxCmZK
- 7qJpPzUMXuwnD/NuQTdGhVs8gAopWrMO3Vfm1a/PKVVsZmK+S6vfKstIX
- iWh8RL7vEL/YonuwtZYxTYY/l3J1wOUsGeHPwNpG2MRFE2LdQ99KN8q9Y g==;
-X-CSE-ConnectionGUID: KyfsUZ1aSaOBBZLm3fYlnw==
-X-CSE-MsgGUID: vEr1CtHdQMuUxYHXDljsxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11409"; a="50411566"
-X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; d="scan'208";a="50411566"
+ t=1745220588; x=1776756588;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=zYsturBd3EYyarGzv1J54AFbCJAmkIwzyVLSc3E1KMM=;
+ b=LMHtoZQfYm3s+8MgfpKkEZg07AXt0wtfTjFM2DYc140z12F5qcpAbRGl
+ LTn3ZAVXg44Chryx5HAJZiEPf7C0iV4C/SbeqCw3yGvSjvV0tAG0FjebL
+ RvZ7yIBFJ1P0xLV4kYZ6vKeMhU837hOXqHhEbA3qp82Dz5WacK9AlS46M
+ JaE90BYOnc23wsoGVjHVztEahSkgU7Nu13JtVDXaJSgHDHkqBBKK6H7z4
+ sDYxkNCgbSUOa2TOpZXr6PIj79G84ZXmj7BBx1EK8UJMwqRgBYCPvyq97
+ AIMln4h5s/h0/TulfIrNSVCQ/AAoVSagls4MB1J/bOLQfAJeBU402V7oo A==;
+X-CSE-ConnectionGUID: mxFIj6fvRI+Tf3Kltg6shg==
+X-CSE-MsgGUID: 1zXOwoTrSWyHBeZGkgVX4g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11409"; a="50411580"
+X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; d="scan'208";a="50411580"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Apr 2025 00:29:44 -0700
-X-CSE-ConnectionGUID: KTS/eGB5SkSD2XlsGFXxaQ==
-X-CSE-MsgGUID: tbHDnvzHRHSjY86jHu1QUA==
+ 21 Apr 2025 00:29:48 -0700
+X-CSE-ConnectionGUID: cvx7GzSBSlS4z1QBUOU6xQ==
+X-CSE-MsgGUID: q9Wk7eonQl+c3hyw8Y6pZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; d="scan'208";a="136508790"
+X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; d="scan'208";a="136508814"
 Received: from labhost1.iind.intel.com ([10.190.230.69])
- by orviesa003.jf.intel.com with ESMTP; 21 Apr 2025 00:29:43 -0700
+ by orviesa003.jf.intel.com with ESMTP; 21 Apr 2025 00:29:46 -0700
 From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Subject: [PATCH i-g-t v7 0/3] tests/intel/xe_fault_injection: Inject errors
- during xe_guc_ct_send_recv() xe_guc_mmio_send_recv()
-Date: Mon, 21 Apr 2025 13:15:42 +0530
-Message-ID: <20250421074545.5549-1-satyanarayana.k.v.p@intel.com>
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
+ Cavitt Jonathan <jonathan.cavitt@intel.com>
+Subject: [PATCH i-g-t v7 1/3] tests/intel/xe_fault_injection: Make
+ setup_injection_fault() programmable.
+Date: Mon, 21 Apr 2025 13:15:43 +0530
+Message-ID: <20250421074545.5549-2-satyanarayana.k.v.p@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250421074545.5549-1-satyanarayana.k.v.p@intel.com>
+References: <20250421074545.5549-1-satyanarayana.k.v.p@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -66,37 +71,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the kernel fault injection infrastructure to test error handling of xe
-at probe time when error is injected for functions xe_guc_mmio_send_recv()
-and xe_guc_ct_send_recv().
+The current setup_injection_fault() is always programming fixed fault
+injection parameters. Update this function to accept fault injection
+parameters for better injection capabilities.
 
-Error can be injected using:
-igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv
-igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv
+Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+---
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Cavitt Jonathan <jonathan.cavitt@intel.com>
+---
+ tests/intel/xe_fault_injection.c | 48 ++++++++++++++++++++++++++++----
+ 1 file changed, 42 insertions(+), 6 deletions(-)
 
-All xe_init() kind of functions are called just once during driver probe,
-so it is sufficient to fail first/all calls to them. Driver communicates
-with the GuC multiple times, and the real failure can happen at different
-call, hence the need to inject failure in GuC communication functions,
-like guc_mmio_send() or guc_ct_send(), but it can't be just first call or
-all calls, but we need to be able to select specific iteration to fail.
-
-To address this problem, an optional input argument is introduced. If the
-argument is not set, an error will be injected in every possible function
-call starting from first up to the max number of iteration defined by
-INJECT_ITERATIONS, currently hardcoded as 100. If the input argument is
-set, an error can be injected at specific function call.
-
-Satyanarayana K V P (3):
-  tests/intel/xe_fault_injection: Make setup_injection_fault()
-    programmable.
-  tests/intel/xe_fault_injection: Inject errors in xe_guc_* calls
-  tests/intel/xe_fault_injection: Do not assert for probe_guc_fail_*
-    functions.
-
- tests/intel/xe_fault_injection.c | 134 ++++++++++++++++++++++++++++---
- 1 file changed, 122 insertions(+), 12 deletions(-)
-
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index fdd11ffe6..4eead2a14 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -27,6 +27,20 @@
+ #define BO_ADDR		0x1a0000
+ #define BO_SIZE		(1024*1024)
+ 
++struct fault_injection_params {
++	/* @probability: Likelihood of failure injection, in percent. */
++	uint32_t probability;
++	/* @interval: Specifies the interval between failures */
++	uint32_t interval;
++	/* @times: Specifies how many times failures may happen at most */
++	int32_t times;
++	/*
++	 * @space: Specifies how many times fault injection is suppressed before
++	 * first injection
++	 */
++	uint32_t space;
++};
++
+ static int fail_function_open(void)
+ {
+ 	int debugfs_fail_function_dir_fd;
+@@ -122,21 +136,43 @@ static void injection_list_clear(void)
+ 	return injection_list_add("");
+ }
+ 
++/*
++ * Default fault injection parameters which injects fault on first call to the
++ * configured fail_function.
++ */
++static const struct fault_injection_params default_fault_params = {
++	.probability = 100,
++	.interval = 0,
++	.times = -1,
++	.space = 0
++};
++
+ /*
+  * See https://docs.kernel.org/fault-injection/fault-injection.html#application-examples
+  */
+-static void setup_injection_fault(void)
++static void setup_injection_fault(const struct fault_injection_params *fault_params)
+ {
+ 	int dir;
+ 
++	if (!fault_params)
++		fault_params = &default_fault_params;
++
++	igt_assert(fault_params->probability >= 0);
++	igt_assert(fault_params->probability <= 100);
++
++
+ 	dir = fail_function_open();
+ 	igt_assert_lte(0, dir);
+ 
++	igt_debug("probability = %d, interval = %d, times = %d, space = %u\n",
++			fault_params->probability, fault_params->interval,
++			fault_params->times, fault_params->space);
++
+ 	igt_assert_lte(0, igt_sysfs_printf(dir, "task-filter", "N"));
+-	igt_sysfs_set_u32(dir, "probability", 100);
+-	igt_sysfs_set_u32(dir, "interval", 0);
+-	igt_sysfs_set_s32(dir, "times", -1);
+-	igt_sysfs_set_u32(dir, "space", 0);
++	igt_sysfs_set_u32(dir, "probability", fault_params->probability);
++	igt_sysfs_set_u32(dir, "interval", fault_params->interval);
++	igt_sysfs_set_s32(dir, "times", fault_params->times);
++	igt_sysfs_set_u32(dir, "space", fault_params->space);
+ 	igt_sysfs_set_u32(dir, "verbose", 1);
+ 
+ 	close(dir);
+@@ -442,7 +478,7 @@ igt_main
+ 		devid = intel_get_drm_devid(fd);
+ 		sysfs = igt_sysfs_open(fd);
+ 		igt_device_get_pci_slot_name(fd, pci_slot);
+-		setup_injection_fault();
++		setup_injection_fault(&default_fault_params);
+ 		igt_install_exit_handler(cleanup_injection_fault);
+ 	}
+ 
 -- 
 2.43.0
 
