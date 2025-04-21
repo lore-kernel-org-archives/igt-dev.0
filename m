@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B48EEC369AB
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Apr 2025 10:32:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81088C369AB
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Apr 2025 11:02:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6951C10E36B;
-	Mon, 21 Apr 2025 10:32:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C6CB610E36E;
+	Mon, 21 Apr 2025 11:02:41 +0000 (UTC)
 Received: from b68e5b3b99e1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D70BB10E36B;
- Mon, 21 Apr 2025 10:32:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F64410E36E;
+ Mon, 21 Apr 2025 11:02:41 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3531873231781640668=="
+ boundary="===============1045290641961871243=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/xe/xe=5Flegacy=3A_Mov?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/xe/xe=5Flegacy=3A_Mov?=
  =?utf-8?q?e_test=5Flegacy=5Fmode_to_lib/?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 21 Apr 2025 10:32:27 -0000
-Message-ID: <174523154787.21818.3821073338790141706@b68e5b3b99e1>
+Date: Mon, 21 Apr 2025 11:02:41 -0000
+Message-ID: <174523336125.21876.2943628564258879114@b68e5b3b99e1>
 X-Patchwork-Hint: ignore
 References: <20250417193032.329-1-peter.senna@linux.intel.com>
 In-Reply-To: <20250417193032.329-1-peter.senna@linux.intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3531873231781640668==
+--===============1045290641961871243==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,7 +50,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: lib/xe/xe_legacy: Move test_legacy_mode to lib/
 URL   : https://patchwork.freedesktop.org/series/147939/
-State : failure
+State : success
 
 == Summary ==
 
@@ -60,14 +60,9 @@ CI Bug Log - changes from IGT_8326 -> IGTPW_13004
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_13004 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_13004, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/index.html
 
@@ -76,21 +71,6 @@ Participating hosts (45 -> 44)
 
   Missing    (1): fi-snb-2520m 
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_13004:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-rplp-1:         [PASS][1] -> [ABORT][2] +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-rplp-1/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-rplp-1/igt@i915_selftest@live@workarounds.html
-
-  
 Known issues
 ------------
 
@@ -101,19 +81,22 @@ Known issues
 #### Issues hit ####
 
   * igt@dmabuf@all-tests:
-    - bat-apl-1:          [PASS][3] -> [INCOMPLETE][4] ([i915#12904]) +1 other test incomplete
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-apl-1/igt@dmabuf@all-tests.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-apl-1/igt@dmabuf@all-tests.html
+    - bat-apl-1:          [PASS][1] -> [INCOMPLETE][2] ([i915#12904]) +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-apl-1/igt@dmabuf@all-tests.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-apl-1/igt@dmabuf@all-tests.html
 
   * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-dg2-8/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-dg2-8/igt@i915_selftest@live.html
+    - bat-dg2-8:          [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-dg2-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-dg2-8/igt@i915_selftest@live.html
 
   * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-arlh-3:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-rplp-1:         [PASS][7] -> [ABORT][8] ([i915#13696]) +1 other test abort
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-rplp-1/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-rplp-1/igt@i915_selftest@live@workarounds.html
 
   
 #### Possible fixes ####
@@ -143,6 +126,7 @@ Known issues
   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
   [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
   [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  [i915#13696]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696
   [i915#14046]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046
 
 
@@ -163,7 +147,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/index.html
 
---===============3531873231781640668==
+--===============1045290641961871243==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -185,7 +169,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>lib/xe/xe_legacy: Move test_legacy_mode to lib/</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147939/">https://patchwork.freedesktop.org/series/147939/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/index.html</a></td></tr>
 
@@ -194,25 +178,11 @@ Content-Transfer-Encoding: 7bit
 
     <h1>CI Bug Log - changes from IGT_8326 -&gt; IGTPW_13004</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_13004 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_13004, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
 <p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/index.html</p>
 <h2>Participating hosts (45 -&gt; 44)</h2>
 <p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_13004:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-rplp-1/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-rplp-1/igt@i915_selftest@live@workarounds.html">ABORT</a> +1 other test abort</li>
-</ul>
-</li>
-</ul>
 <h2>Known issues</h2>
 <p>Here are the changes found in IGTPW_13004 that come from known issues:</p>
 <h3>IGT changes</h3>
@@ -234,6 +204,7 @@ Content-Transfer-Encoding: 7bit
 <p>igt@i915_selftest@live@workarounds:</p>
 <ul>
 <li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8326/bat-rplp-1/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13004/bat-rplp-1/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696">i915#13696</a>) +1 other test abort</li>
 </ul>
 </li>
 </ul>
@@ -275,4 +246,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============3531873231781640668==--
+--===============1045290641961871243==--
