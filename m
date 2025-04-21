@@ -4,124 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F08D6C369D3
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Apr 2025 01:39:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47B00C369AB
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Apr 2025 06:59:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2BFE510E09A;
-	Mon, 21 Apr 2025 01:39:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EC95E10E210;
+	Mon, 21 Apr 2025 06:59:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="42H2Fdyb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ct4VRW5F";
 	dkim-atps=neutral
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2052.outbound.protection.outlook.com [40.107.220.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DD3C10E09A
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Apr 2025 01:39:31 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ksF6MeDH4GMI39xOwKyWqJMSTghU84SUDxs4SREQAzaU1I2RxGt0LwHcDsKyMOETyOfgjeouAIooUsOdGN9VWIEbB5a/+VlSbTsW4jFs01tdIs69yVzheQ1igbqd0fCG7ajoDfhzlcPO7+djKQmXHE2wUu/Lgwr8qHOKkDvBiN9IrlLtHDNlGzwsH7YNW7SEcAZ4h6O0P+4koI6b2MSfYJ8FvMQdKnsQ80EwGZ2Gt1H918vJldC+x6kTdbUgByjFQtRcfmgHMpMmdQdgcohetTLNkgBJybiXjg58BkL+EP20SHGv+x72b8rAM8SioqUfWhY5nhq/Mcfq6S0FEe1q3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lSpLrwgZuW6PJqykbkpVyCbN6zsxFQB3K65q/UXO3p8=;
- b=WgAexjpmY6MOqO1/ty2xL+CvdWdNUYTmIiAd7jeaq3B1H2IVqAN3UixGyqb/cPDGPIKy/bZWil5+h8Tl/zQBdlug6XVnuwemac8qrCBHRUHQAuhtjNRkihXz7okyYxpjIz9CZLPqIawKlfCqHo7Ic2NXOj8K5zkgMbnPBSxyaBTHL/RFyJxsHNO4X0EZzoLzxlYOafnmXNTtAaHTQn73Do17FuqLuo7zW/nj2lE/AuGWZ7ypMwu1PKFp/DxlAv915GFMe/syChnytC5xdHKwRJIgHQwoeSxFGOPEvK1yXftyyz6GPQp/59acmNt9ZNKxIwS12bXKxcC0r9rg1Ox5Yg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lSpLrwgZuW6PJqykbkpVyCbN6zsxFQB3K65q/UXO3p8=;
- b=42H2FdybdN97gUD+WNx2zk0Oxdf8IlqxXLmNOTxDL1HU9KzPQSOpOch1piK7YuXdYILBWGTiq9GzIj3vjIE5a5eBe8A0tOfiucglZcBLsOZDh4EYuXUIF0gnWqQziwY4il2rwUECJXUYY+oHURAYq6745ur40UTbDQ7fiEHsBMQ=
-Received: from SA9PR13CA0003.namprd13.prod.outlook.com (2603:10b6:806:21::8)
- by CYXPR12MB9427.namprd12.prod.outlook.com (2603:10b6:930:d6::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.27; Mon, 21 Apr
- 2025 01:39:19 +0000
-Received: from SA2PEPF0000150A.namprd04.prod.outlook.com
- (2603:10b6:806:21:cafe::ba) by SA9PR13CA0003.outlook.office365.com
- (2603:10b6:806:21::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.15 via Frontend Transport; Mon,
- 21 Apr 2025 01:39:19 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- SA2PEPF0000150A.mail.protection.outlook.com (10.167.242.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8655.12 via Frontend Transport; Mon, 21 Apr 2025 01:39:18 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 20 Apr
- 2025 20:39:18 -0500
-Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
- SATLEXMB03.amd.com (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Sun, 20 Apr 2025 20:39:11 -0500
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, "Jesse . Zhang"
- <Jesse.Zhang@amd.com>, Jesse.Zhang <Jesse.zhang@amd.com>, Sunil Khatri
- <sunil.khatri@amd.com>
-Subject: [PATCH i-g-t v3 1/2] drm-uapi/amdgpu: Add queue priority and secure
- flags definitions
-Date: Mon, 21 Apr 2025 09:37:32 +0800
-Message-ID: <20250421013910.796313-1-Jesse.Zhang@amd.com>
-X-Mailer: git-send-email 2.49.0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD5A210E210
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Apr 2025 06:59:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745218786; x=1776754786;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=pMTb+oSLNDlAVAeXX/OfwgJSOIhvMIWccrgCcMh1s20=;
+ b=ct4VRW5FH1l1EpkDqRkO1P1+WLVU1DDTNlk6VVk94ZCsUG1dZGzFnfX+
+ nzZzmgD+PKsJvPV+RaLnoDQkncpKcNo54JZ2tQQh4WnnbLuc9Vdii+kUT
+ Y0zggjaSxNMrzlXjsIIxlAfbyJeCmi026CTlMYjfhHAJWNHxYxuRe2P4I
+ VYaVFsgOKUg9c4CnKHQbTyqGZ0MWKG7tP7sCWztwE/hcztrMG064zMacD
+ j7j/Qg046LsFFmjck2kA9UnbjznZENuC8sTmUgX2AXxK3ilTUuhFE+gzF
+ mdy8ygJralR8o1uciilX+wAnHn/t2cCvQCiWRWcdBe5hKIbPrSS1RrYaN A==;
+X-CSE-ConnectionGUID: lqh91MbVSaSokYLZZOYBjg==
+X-CSE-MsgGUID: SR9j3p+qR0idFSIBl7CKGw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11409"; a="46877473"
+X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; d="scan'208";a="46877473"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Apr 2025 23:59:45 -0700
+X-CSE-ConnectionGUID: +03qrviLShWg/LsXa52vsg==
+X-CSE-MsgGUID: wRiFlc8STWmB6GGN/dx4DA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; d="scan'208";a="135730370"
+Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
+ by fmviesa003.fm.intel.com with ESMTP; 20 Apr 2025 23:59:43 -0700
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: dwarakanath.ramadeva@intel.com, nishit.sharma@intel.com,
+ Pravalika Gurram <pravalika.gurram@intel.com>
+Subject: [PATCH] benchmarks: create xe_exec_ctx
+Date: Mon, 21 Apr 2025 12:37:52 +0530
+Message-Id: <20250421070752.806333-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: Jesse.Zhang@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF0000150A:EE_|CYXPR12MB9427:EE_
-X-MS-Office365-Filtering-Correlation-Id: 696b39fe-457a-498e-ce6a-08dd8075557a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|82310400026|13003099007; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?vGnQr3a09yvYv0rsko1K3kTI69TD1dMqv2eWQi33EskgK907yGIPFH2Gm9Sj?=
- =?us-ascii?Q?8SbtkK+GsJlVz7oAIs+vZ7wveQGIEQv00YQzB6W2F0AdyIZeIYgkudGC+pks?=
- =?us-ascii?Q?oSc1uJJrPPLzO2N8fKZamokWllLbqJGmhbXKMq28FE4DLiMXyLvtJyvsgJTl?=
- =?us-ascii?Q?WSZxi9akNxoMJ1ldrMQ8B1vkCzWHsR86G7nemQKWB4DTDAGiHcwzjMTj3PLh?=
- =?us-ascii?Q?xIW4B/TX88aPbzvEg61zK5Ct9wQKEpzYA1z7Oov9PC/IG8rGBC8nWKs6yKXC?=
- =?us-ascii?Q?XR/IA9G0TSDgdYNHsGkE4k21EUVBbzjcQn8uG4YbEXyYcy8zID82TLe0v/A0?=
- =?us-ascii?Q?wscERMxsAq+P8kWw5N1St60gW0F7gBQMsAHiDM6yFO1E2IEjyzM78uFlsNpm?=
- =?us-ascii?Q?mvOXIpmh9zJ/AZWqXTYzjPS/5758aIwYaXt0v3j+SQxwoBbew0LC+S2Mfs6S?=
- =?us-ascii?Q?4F/3bm3nkSnWyxuRAGjFC4gFkjaD+lO0xfux8upT8HkLkzjSLjVg5GMWp+CD?=
- =?us-ascii?Q?Lz3srZZLWVOAo95E1QUE3k8Zn3B9tqIe/QXzEX5gxqn9T9vNI2wSBrUooiCL?=
- =?us-ascii?Q?4oUzaLMuLzY2GfUUt8WhI5QeEWNgVma1LTtCDULmE/mGiICFZp1MtC7agrRG?=
- =?us-ascii?Q?L9PcQIeUcEIzwQfdGhVOG3yl6MljKUVkJNWMucYSX1fvTeag8KW3k8WZl+ez?=
- =?us-ascii?Q?SFfp/vP4+nhBHfBg0AWgq+1HeltUqcAuacaNwp6mROClCwooTQqVUBgs7Lwx?=
- =?us-ascii?Q?aK5hc9JFntKKwZ9Pr5jMINXs1YmIpZmwxA5X0Er0YSWqKPqFQ/fM9QhXRVd1?=
- =?us-ascii?Q?L2+YqNmBRTFbYm0w+2LjwTQDcPU6O3Iv9yC0kWyL2boTZdsJUBJZ4TlkZH10?=
- =?us-ascii?Q?NmtKtC0PWRuIVG44ypPmRm4pdCfq1s9kRl21shJE5kpTvZXlHmwKsB2fvBPE?=
- =?us-ascii?Q?zPQ0TX99TchjAK9dTpHzGWJCCHCzopUzmqU6dhC9jwNs3B6URhzbwWJqqcsk?=
- =?us-ascii?Q?jLMYdbu7WQyrcTPowAUAowG1Jf4x0Xb2d4cBhTU9k6ZIg9PBfCw4jp12oQIj?=
- =?us-ascii?Q?EyPtwi3Jzz+tlxh+Q4kBloySkMj5vVqE18byiBeOxCLrSAUnVk09jGRXbrur?=
- =?us-ascii?Q?trQ1Ud37Wio2Gkw8LVTxdPre25CS85WX3Slc+LZ5EyOL0p/mBLXQULsQvG6f?=
- =?us-ascii?Q?GsHUkYQHevXKpZ8abkRL2LKK/E+gpDuWfswo82RELY4tQrg0Z+hcmEZTYJ7z?=
- =?us-ascii?Q?9pvqpN0yJOhUoHItYHwvc6ZX10++J7QI5O8vMdgQ3KofbCXO/y5f81A4p5CG?=
- =?us-ascii?Q?/nTgeKvTMMSxH//PJJQHLyuEW6qchRqVyL4eURrd/o0Y0CAwVctzp6J5oboU?=
- =?us-ascii?Q?nKmbsjf892Bjdvhk3Y8ZXVS7GDOYfbKIueTXX3XYpQZAvWiIA2yKMHOM7Kmv?=
- =?us-ascii?Q?LR7HEruZT43ESU2xqfhoppQR7WyHtFpgjBK9a0gAeaVtQvT0IE1ylw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026)(13003099007);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2025 01:39:18.9494 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 696b39fe-457a-498e-ce6a-08dd8075557a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF0000150A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9427
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,54 +66,352 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add UAPI definitions for queue priority levels (NORMAL_LOW, LOW, etc.)
-and secure queue flag in amdgpu_drm.h. This matches the libdrm changes
-in commit fdf384d4b546 ("amdgpu: add priority and secure flags for user queues").
-https://gitlab.freedesktop.org/mesa/drm/-/commit/fdf384d4b546850bc4c200541c42d29a62b2eca7
+Measure the overhead of execution when doing nothing, switching between
+a pair of contexts, or creating a new context every time.
 
-Related driver patches provided by Alex:
-https://lists.freedesktop.org/archives/amd-gfx/2025-April/122782.html
-https://lists.freedesktop.org/archives/amd-gfx/2025-April/122780.html
-https://lists.freedesktop.org/archives/amd-gfx/2025-April/122786.html
-
-v2: In general, UAPI changes should be part of a different change and only uapi should be part of it (Sunil)
-
-Signed-off-by: Jesse.Zhang <Jesse.zhang@amd.com>
-Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
 ---
- include/drm-uapi/amdgpu_drm.h | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ benchmarks/meson.build   |   1 +
+ benchmarks/xe_exec_ctx.c | 318 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 319 insertions(+)
+ create mode 100644 benchmarks/xe_exec_ctx.c
 
-diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-index 8191d0bd0..3f4813879 100644
---- a/include/drm-uapi/amdgpu_drm.h
-+++ b/include/drm-uapi/amdgpu_drm.h
-@@ -329,6 +329,16 @@ union drm_amdgpu_ctx {
- #define AMDGPU_USERQ_OP_CREATE	1
- #define AMDGPU_USERQ_OP_FREE	2
+diff --git a/benchmarks/meson.build b/benchmarks/meson.build
+index 0e41eed06..3b8cbbb35 100644
+--- a/benchmarks/meson.build
++++ b/benchmarks/meson.build
+@@ -22,6 +22,7 @@ benchmark_progs = [
+ 	'prime_lookup',
+ 	'vgem_mmap',
+         'xe_create',
++        'xe_exec_ctx',
+ ]
  
-+/* queue priority levels */
-+#define AMDGPU_USERQ_CREATE_FLAGS_QUEUE_PRIORITY_MASK  0x3
-+#define AMDGPU_USERQ_CREATE_FLAGS_QUEUE_PRIORITY_SHIFT 0
-+#define AMDGPU_USERQ_CREATE_FLAGS_QUEUE_PRIORITY_NORMAL_LOW 0
-+#define AMDGPU_USERQ_CREATE_FLAGS_QUEUE_PRIORITY_LOW 1
-+#define AMDGPU_USERQ_CREATE_FLAGS_QUEUE_PRIORITY_NORMAL_HIGH 2
-+#define AMDGPU_USERQ_CREATE_FLAGS_QUEUE_PRIORITY_HIGH 3 /* admin only */
-+/* for queues that need access to protected content */
-+#define AMDGPU_USERQ_CREATE_FLAGS_QUEUE_SECURE  (1 << 2)
+ benchmarksdir = join_paths(libexecdir, 'benchmarks')
+diff --git a/benchmarks/xe_exec_ctx.c b/benchmarks/xe_exec_ctx.c
+new file mode 100644
+index 000000000..08c647723
+--- /dev/null
++++ b/benchmarks/xe_exec_ctx.c
+@@ -0,0 +1,318 @@
++/*
++ * Copyright © 2025 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ *
++ * Author:
++ *    Pravalika Gurram <pravalika.gurram@intel.com>
++ *
++ */
++#include <stdio.h>
++#include "intel_reg.h"
++#include "ioctl_wrappers.h"
++#include "lib/igt_syncobj.h"
 +
- /*
-  * This structure is a container to pass input configuration
-  * info for all supported userqueue related operations.
-@@ -355,7 +365,7 @@ struct drm_amdgpu_userq_in {
- 	 * and doorbell_offset in the doorbell bo.
- 	 */
- 	__u32   doorbell_offset;
--	__u32 _pad;
-+	__u32 flags;
- 	/**
- 	 * @queue_va: Virtual address of the GPU memory which holds the queue
- 	 * object. The queue holds the workload packets.
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_util.h"
++#include "xe/xe_spin.h"
++
++#define MAX_N_EXEC_QUEUES        16
++enum mode { NOP, CREATE, SWITCH };
++
++static double elapsed(const struct timespec *start,
++			const struct timespec *end)
++{
++	return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
++}
++
++static void
++test_exec(int fd, struct drm_xe_engine_class_instance *eci,
++		int n_exec_queues, int n_execs, int n_vm, unsigned int flags)
++{
++	struct drm_xe_sync sync[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(sync),
++	};
++
++	uint64_t addr[MAX_N_EXEC_QUEUES];
++	uint64_t sparse_addr[MAX_N_EXEC_QUEUES];
++	uint32_t vm[MAX_N_EXEC_QUEUES];
++	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
++	uint32_t bind_exec_queues[MAX_N_EXEC_QUEUES];
++	uint32_t syncobjs[MAX_N_EXEC_QUEUES];
++	uint32_t bind_syncobjs[MAX_N_EXEC_QUEUES];
++	struct drm_gem_flink flink;
++	struct drm_gem_open open_struct;
++	uint32_t bo_flags;
++	size_t bo_size;
++	uint32_t bo = 0;
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++	} *data;
++	int i, b;
++	int ret;
++
++	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
++	igt_assert_lte(n_vm, MAX_N_EXEC_QUEUES);
++
++	for (i = 0; i < n_vm; ++i)
++		vm[i] = xe_vm_create(fd, 0, 0);
++	bo_size = sizeof(*data) * n_execs;
++	bo_size = xe_bb_size(fd, bo_size);
++
++	addr[0] = 0x1a0000;
++	sparse_addr[0] = 0x301a0000;
++	for (i = 1; i < MAX_N_EXEC_QUEUES; ++i) {
++		addr[i] = addr[i - 1] + (0x1ull << 32);
++		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
++	}
++
++	bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
++
++	bo = xe_bo_create(fd, n_vm == 1 ? vm[0] : 0, bo_size,
++			vram_if_possible(fd, 0), bo_flags);
++
++	flink.handle = bo;
++	ret = igt_ioctl(fd, DRM_IOCTL_GEM_FLINK, &flink);
++	igt_assert_eq(ret, 0);
++
++	open_struct.name = flink.name;
++	ret = igt_ioctl(fd, DRM_IOCTL_GEM_OPEN, &open_struct);
++	igt_assert_eq(ret, 0);
++	igt_assert(open_struct.handle != 0);
++
++	data = xe_bo_map(fd, bo, bo_size);
++
++	for (i = 0; i < n_exec_queues; i++) {
++		uint32_t __vm = vm[i % n_vm];
++
++		exec_queues[i] = xe_exec_queue_create(fd, __vm, eci, 0);
++
++		bind_exec_queues[i] = 0;
++		syncobjs[i] = syncobj_create(fd, 0);
++		bind_syncobjs[i] = syncobj_create(fd, 0);
++	};
++
++	for (i = 0; i < n_vm; ++i) {
++		sync[0].handle = bind_syncobjs[i];
++		xe_vm_bind_async(fd, vm[i], bind_exec_queues[i], bo, 0,
++				addr[i], bo_size, sync, 1);
++	}
++
++	for (i = 0; i < n_execs; i++) {
++		int cur_vm = i % n_vm;
++		uint64_t __addr = addr[cur_vm];
++		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
++		uint64_t batch_addr = __addr + batch_offset;
++		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
++		uint64_t sdi_addr = __addr + sdi_offset;
++		int e = i % n_exec_queues;
++
++		b = 0;
++		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data[i].batch[b++] = sdi_addr;
++		data[i].batch[b++] = sdi_addr >> 32;
++		data[i].batch[b++] = 0xc0ffee;
++		data[i].batch[b++] = MI_BATCH_BUFFER_END;
++		igt_assert(b <= ARRAY_SIZE(data[i].batch));
++
++		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[0].handle = bind_syncobjs[cur_vm];
++		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[1].handle = syncobjs[e];
++
++		exec.exec_queue_id = exec_queues[e];
++		exec.address = batch_addr;
++		if (e != i)
++			syncobj_reset(fd, &syncobjs[e], 1);
++		xe_exec(fd, &exec);
++
++		if (i + 1 != n_execs) {
++			uint32_t __vm = vm[cur_vm];
++
++			sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++			xe_vm_unbind_async(fd, __vm, bind_exec_queues[e], 0,
++					__addr, bo_size, sync + 1, 1);
++
++			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++			addr[i % n_vm] += bo_size;
++			__addr = addr[i % n_vm];
++			xe_vm_bind_async(fd, __vm, bind_exec_queues[e], bo,
++					0, __addr, bo_size, sync, 1);
++		}
++	}
++
++	for (i = 0; i < n_exec_queues && n_execs; i++)
++		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
++					NULL));
++
++	for (i = 0; i < n_vm; i++)
++		igt_assert(syncobj_wait(fd, &bind_syncobjs[i], 1, INT64_MAX, 0,
++					NULL));
++
++	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	for (i = 0; i < n_vm; ++i) {
++		syncobj_reset(fd, &sync[0].handle, 1);
++		xe_vm_unbind_async(fd, vm[i], bind_exec_queues[i], 0, addr[i],
++				bo_size, sync, 1);
++		igt_assert(syncobj_wait(fd, &sync[0].handle, 1,
++					INT64_MAX, 0, NULL));
++	}
++
++	for (i = 0; i < n_exec_queues; i++) {
++		syncobj_destroy(fd, syncobjs[i]);
++		xe_exec_queue_destroy(fd, exec_queues[i]);
++		if (bind_exec_queues[i])
++			xe_exec_queue_destroy(fd, bind_exec_queues[i]);
++	}
++
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++
++	for (i = 0; i < n_vm; ++i) {
++		syncobj_destroy(fd, bind_syncobjs[i]);
++		xe_vm_destroy(fd, vm[i]);
++	}
++}
++
++static int loop(unsigned int ring,
++		int reps,
++		enum mode mode,
++		int ncpus,
++		unsigned int flags)
++{
++	int fd;
++	struct drm_xe_engine_class_instance *hwe;
++	double *shared;
++
++	fd = drm_open_driver(DRIVER_XE);
++	shared = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++
++	xe_for_each_engine(fd, hwe)
++		if (hwe->engine_class == ring)
++			test_exec(fd, hwe, 1, 1, 1, 0);
++
++	while (reps--) {
++		sleep(1); /* wait for the hw to go back to sleep */
++
++		memset(shared, 0, 4096);
++
++		igt_fork(child, ncpus) {
++			struct timespec start, end;
++			unsigned int count = 0;
++
++		clock_gettime(CLOCK_MONOTONIC, &start);
++		do {
++			switch (mode) {
++			case CREATE:
++				xe_for_each_engine(fd, hwe)
++					if (hwe->engine_class == ring)
++						test_exec(fd, hwe, 1, 1, 1, 0);
++				break;
++
++			case SWITCH:
++				xe_for_each_engine(fd, hwe)
++					if (hwe->engine_class == ring)
++						test_exec(fd, hwe, 16, 64, 1, 1);
++				break;
++
++			case NOP:
++				break;
++			}
++			count++;
++			clock_gettime(CLOCK_MONOTONIC, &end);
++		} while (elapsed(&start, &end) < 2.);
++
++		clock_gettime(CLOCK_MONOTONIC, &end);
++		shared[child] = 1e6*elapsed(&start, &end) / count;
++
++		}
++	}
++	igt_waitchildren();
++
++	for (int child = 0; child < ncpus; child++)
++		shared[ncpus] += shared[child];
++	printf("%7.3f\n", shared[ncpus] / ncpus);
++
++	return 0;
++}
++
++int main(int argc, char **argv)
++{
++	unsigned int ring = DRM_XE_ENGINE_CLASS_RENDER;
++	unsigned int flags = 0;
++	enum mode mode = NOP;
++	int reps = 1;
++	int ncpus = 1;
++	int c;
++
++	while ((c = getopt(argc, argv, "e:r:b:f")) != -1) {
++		switch (c) {
++		case 'e':
++			if (strcmp(optarg, "rcs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_RENDER;
++			else if (strcmp(optarg, "vcs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
++			else if (strcmp(optarg, "bcs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_COPY;
++			else if (strcmp(optarg, "vecs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
++			else if (strcmp(optarg, "ccs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_COMPUTE;
++			else
++				ring = atoi(optarg);
++			break;
++
++		case 'b':
++			if (strcmp(optarg, "create") == 0)
++				mode = CREATE;
++			else if (strcmp(optarg, "switch") == 0)
++				mode = SWITCH;
++			else if (strcmp(optarg, "nop") == 0)
++				mode = NOP;
++			else
++				abort();
++			break;
++
++		case 'f':
++			ncpus = sysconf(_SC_NPROCESSORS_ONLN);
++			break;
++
++		case 'r':
++			reps = atoi(optarg);
++			if (reps < 1)
++				reps = 1;
++			break;
++
++		default:
++			break;
++		}
++	}
++
++	return loop(ring, reps, mode, ncpus, flags);
++}
 -- 
-2.49.0
+2.34.1
 
