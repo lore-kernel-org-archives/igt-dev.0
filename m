@@ -4,59 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19EB9C369CB
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 17:15:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0758CC369D1
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 17:40:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC31310E5E9;
-	Tue, 22 Apr 2025 17:15:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 92FB310E168;
+	Tue, 22 Apr 2025 17:40:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y8Ge2HZh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nc1B147W";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BC8710E612
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 17:15:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D0D810E168
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 17:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745342144; x=1776878144;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=L7RM+dAjc+0kR7gSETcVulNLGcohLXj59lnQ7C5HDZE=;
- b=Y8Ge2HZhxzGyqP+F2ubbNzu81zB/uzOHq1S1J3rYMLKi0NhzRxGuHnWN
- RoDFhU/F+88YG1L6/1uwFaPV6BSNbgHkHSHEf1nJNI7ohOpSr7We1E7Db
- p+7s/6qZY1fvg3sjK5ETfoHsHwJ2vs+2APCqmSafJQnJTc6S74qVn9MSj
- hipeJwEtEfapnA4RkzZgj/lTiMPlQZ2UXqE3+iVJ1wA1WZN6q4J0rl6/t
- LHq6fKIs2hj5VDUQYCHGg0U6cI9PfGWf5MGER0HzBVusldbWaeGrMTUen
- iScCAP8jDyh6ClJV8Bd7rthKpqCAnVsKDzUHRBkF9J+QhrmYtIihcmCo9 w==;
-X-CSE-ConnectionGUID: cIH1cw2aRM+vrev8sp6e2w==
-X-CSE-MsgGUID: ATQqoL81QnKbcIEDos9aBQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50715535"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="50715535"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 10:15:44 -0700
-X-CSE-ConnectionGUID: vKH8e0WuSVy7GFhoCZj+BA==
-X-CSE-MsgGUID: +yMPwOe5RFi+CSymT/Djpg==
+ t=1745343618; x=1776879618;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=Bo/j4n9Yd2n2QPjZHGhHoj19/titt5ZDngzih9lfEyY=;
+ b=nc1B147W9iM4Bcpv5G0h6BOY2+cHk8jh+609dVL56H2DwdQ1ZGh0ZUm1
+ GOleez+Wg9qC0O0bQy7GUnAvin+GAETrKyj8r3dh9bw/6CelGXL78btwU
+ hQG53pjJE8AV5bP0/S/AHtBEyCM8S8H4q4H3wY7kjg8tGMvCCqUPiuxpb
+ XfFxtwIE+85I1zckdB/Zt9OX9AMCaUOl00cQLLulKtJKCktOQAMOMkphG
+ 3iHeUOmiDAh81wS1cmnnhwLoStkpLIOLtppq4Bh3UrQSg8XO6BN+j6qDC
+ krK/0JCQPA/KCxh8t/lArPBgi3Hx6Yft69YrHLKw31YUhjDWjuo6LdE2+ A==;
+X-CSE-ConnectionGUID: UVG6+lrES/qXMNco6xjrCg==
+X-CSE-MsgGUID: XzYBQCpCTZKSPNDSOEv/vA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="64445033"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="64445033"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2025 10:40:18 -0700
+X-CSE-ConnectionGUID: +Vp8Hq4AQKeuZZKLNrzkMA==
+X-CSE-MsgGUID: PKVsOa2aQhyucPlRZMzExQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="133022728"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 10:15:41 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com, kamil.konieczny@intel.com,
- krzysztof.karas@intel.com, zbigniew.kempczynski@intel.com
-Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- soham.purkait@intel.com, ashutosh.dixit@intel.com
-Subject: [PATCH i-g-t v9 5/5] tools/gputop/gputop: Enable support for multiple
- GPUs and instances
-Date: Tue, 22 Apr 2025 22:41:08 +0530
-Message-Id: <20250422171108.2170758-6-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250422171108.2170758-1-soham.purkait@intel.com>
-References: <20250422171108.2170758-1-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="163043698"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2025 10:40:18 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Tue, 22 Apr 2025 10:40:17 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Tue, 22 Apr 2025 10:40:17 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.176)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 22 Apr 2025 10:40:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kEy9A4O5kKjwilNczb7n6/iOTAOkmNnJhQUvrAtD7aUvINJWXwJvH3tdetMPYlwl4f4WsNCe684qSqMkPfR3CjzeQYoQ3eqHJXOi+FXTxpd56qlr+1+I01ZaXyEfePgnjUiCanjLxxKmzGD7KNWuk21MFY6XCBWIILVfI0GH4vuT00euWoz7EhgLgmSHhcgIczxC0jgbaWKT4d7MZo0lZefxTDEWuuFDKb7HyBUgozXtFuWX40qduGLbZJD3BlT4ljc4vblSlS0aV1FrBOGZShqqASq4j7xwvCOanjq1zkqEzH/NrS9gtSuf+eNNbR50Jd88C8oQAmympBT6LvdUbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RJDC8MAJ88MWtEdvBhbrlQ1TP1JNZeIMxzUWQMBfoTU=;
+ b=o5ltwdaD+5lt5ozMWbLkDb47mURBbvgk5r8eH8+0E5D1b6nIBBUDX5PSfMmLnP0VlG+mDgvsBznqcX1OOzkfs4+qGb1N9pGF1ZKcCDadXaYy1NEs5a4dvuzYeWz3pRCKEmUmdKZJlVzXlQU+jHOXp3vImjsYI21kDOPqZy/NmDHcvr14pSzx90Lh+5cMlmUKM/b+FWkOHp9JpWMipgBDUd4ZxTQD0f0DtoPQjF0gdOSOt+afetPHckG6MnuXrtsjBeTPCKzf9PlijwT6ZFMksW1qRLYlZ5PPOSUT6jCJCalqMfj7lz/fJdwIxoDQG7Ms2AroBJ/x9VvE8HoqXT1jPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SA1PR11MB5947.namprd11.prod.outlook.com (2603:10b6:806:23b::7)
+ by SA1PR11MB8523.namprd11.prod.outlook.com (2603:10b6:806:3b5::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.35; Tue, 22 Apr
+ 2025 17:39:55 +0000
+Received: from SA1PR11MB5947.namprd11.prod.outlook.com
+ ([fe80::8a1a:daf4:47b9:9bbb]) by SA1PR11MB5947.namprd11.prod.outlook.com
+ ([fe80::8a1a:daf4:47b9:9bbb%7]) with mapi id 15.20.8655.030; Tue, 22 Apr 2025
+ 17:39:55 +0000
+From: "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, "Piecielska, Katarzyna"
+ <katarzyna.piecielska@intel.com>, Peter Senna Tschudin
+ <peter.senna@linux.intel.com>
+Subject: RE: [PATCH i-g-t] intel/xe_test_config.json: add intel_sysfs_debugfs
+Thread-Topic: [PATCH i-g-t] intel/xe_test_config.json: add intel_sysfs_debugfs
+Thread-Index: AQHbs6mgljYMPdbro063X9W8AqkIOrOv8q+w
+Date: Tue, 22 Apr 2025 17:39:55 +0000
+Message-ID: <SA1PR11MB594712B524ADADC95128571385BB2@SA1PR11MB5947.namprd11.prod.outlook.com>
+References: <20250422171125.137275-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20250422171125.137275-1-kamil.konieczny@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR11MB5947:EE_|SA1PR11MB8523:EE_
+x-ms-office365-filtering-correlation-id: 79396a11-2649-4d08-784b-08dd81c4b1e6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?4LbiML4gmDycTOrlv4QfLdvJx+HOPkICkIMTR0rPLpL+oXWGyBDKT5CkPOzD?=
+ =?us-ascii?Q?iUMwr3O3J8TqtBAao3kiuncYo9iRXcxfWNsGepzJNbxCPWAArctmz7xmn/EU?=
+ =?us-ascii?Q?35D5qlTr162HvkUF/ORkUVgqd0w+MptgTsJV9WR/4nLt7v3UzJskfCtcprWI?=
+ =?us-ascii?Q?foZSYfU5M7PLDGVxRIsJ07UhPVBGlMHJaRBFkZ9A9jLS6J9Ry3A7aSBsS1CS?=
+ =?us-ascii?Q?Vryv/ZhNyMHerUKyZlzw1dnK6yp3wdnb3bj6xiaHBbGE0Xl6axgfGx115jjz?=
+ =?us-ascii?Q?2X58cPn+F1d4mHhrgglJWrSs1RcbnqdS5LPxNkerdg4Ao3ZhhKqGLGfTnRM7?=
+ =?us-ascii?Q?wM7CR5cu7J/xLE7PYVF6DgyV1SO2vmQnMOwFf8WcBfJn092osqDs3WOTU+aV?=
+ =?us-ascii?Q?OCCZbeddxqV1MdUFlGPQTIaEKs8ZQzQwj9apY3DQvSNIoPl6oinTEmvMi/ER?=
+ =?us-ascii?Q?PdcbXFDfgIfv4KLfWKfhMVHWeUtpeziYgoOpPSBTO3CBnQIEAKxB3gp2DHyq?=
+ =?us-ascii?Q?pzR+Hr7RXE8TZqzrMgkjF9O4M+dlPGKYxH5rmpGfwlpFzaoVs8HSryCoBVdi?=
+ =?us-ascii?Q?vjdPIF8tXNODxytu3ebQ1NwsEG2m6DMNSdDULTcrT/KvfcwEFE5AaLsJiStl?=
+ =?us-ascii?Q?FcCeFnpWpMnP1EPJRkAUZiVJXpNDeL3tBSQb/TRcrjkgB/yG5vJW9ffB70L+?=
+ =?us-ascii?Q?ulANa4KNO7v1zeG9uvHLO5/W3w4XZe1l/lf/vmgXAw4WaYJ8io9ByPVHm24s?=
+ =?us-ascii?Q?mqOC1nW4loJiSWwCPiUkirbkrHGRz84fL/f2kUJhbMjhUFCkBpW9ST35sEpS?=
+ =?us-ascii?Q?iNAnmJ/v/vFuidbgHL8UYozJjajuCNO2Mi0P546AkHT9nT0zU1bHbrcF1KAN?=
+ =?us-ascii?Q?BUZduc+VepUQERiS13QX/uqT+FbWKRx/C4gatGJdTDwoV9T9ZhTxf0aZvTJ6?=
+ =?us-ascii?Q?uj/1FmmkxJxvcnJt3rWwa1bBcT/2XK+5Z586+DQhEWl6Q/+ijSXIDw0hdEIM?=
+ =?us-ascii?Q?jOMv4OHKQ1Cl/0pFyToPBQZK/6norMEeYfzr/Z7F8r9ECo7c+EeNz85esxBG?=
+ =?us-ascii?Q?sJ7F6V+uTCGaH28B/FQkaYv8KAPYimR2w6D2dZIJ0fVTaE/JXWvikxW9QYGv?=
+ =?us-ascii?Q?g1O1hqTY6zmMLHvnVQS1AN85uWw7W8Ly89n3OHiajNQqP2NcsFrnWNUmiJnR?=
+ =?us-ascii?Q?K9VJNVRf+StKqKtpRcDKXvobWpj955HkfIV/cMSzEwKdrGPWrWv+NfC43s1+?=
+ =?us-ascii?Q?KvP7m0PbpafgcOasuqUMcKsRaRBBpjcSOzvmvznInwGWFEMaizHAZ49GQmQE?=
+ =?us-ascii?Q?xO85JOrR4exgxTKTU4OHy4R4mloTMQcAXoBqI2BRyBgi6Fxmw0t76ieyc8EF?=
+ =?us-ascii?Q?gKswEVcF3t9aD837dqaAHS/vHhx5bEO+rMsTURxcVIu9SAwSvhZ068J/zT8b?=
+ =?us-ascii?Q?gffFXCn58Dva35eF6BXtSF8WfNobKt7yn5eqPN22qbOozFcPMd77O7KxjSyX?=
+ =?us-ascii?Q?HHNbvfLUjUhWY9A=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA1PR11MB5947.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?caVyZN4CnSAhwMuyF+sqhS3xaMsqAeLnBub6/bGSWc9JzIQU0JyKxZi+8rcn?=
+ =?us-ascii?Q?RQkXrRJo3eJczrfJeLEp7HwxYZbYZ3DqPMuq8Ohn9rWTDl5p0VZ2SuzIR+YB?=
+ =?us-ascii?Q?RFG6baMLzySZnRBiFXNqD1PDGv6XayFJvWrPBuZ5hoPqMSONS7IZA7Amtfe9?=
+ =?us-ascii?Q?cxx3j+CNT0UhSe1qbxgLIqdToVhZLg/8bgthGsegfWuq3Bk7bIhMxfH4FAXP?=
+ =?us-ascii?Q?GvvPrQKnztklSHPj335VCxjy2xxzO21u3nn5p9KIj8pqkl2ZdKbNttHMAkEa?=
+ =?us-ascii?Q?ZOCXlo4ycyBvRW2flLBlv2DjI2eacPitGOjGw0yIXBnRV+DfS7ox0+IWCrhU?=
+ =?us-ascii?Q?CjP4Nzv/VOmk7gAwETmU8gTWClQv02s7xcJJxuXn+stIvZNqy28SrgJe418y?=
+ =?us-ascii?Q?z/s5aEspG66uvQ5X9F2hKsbI5cABiFHOLSiz18+58EiuIjoIFHPUz7MPoKKm?=
+ =?us-ascii?Q?w9rD7lLU9uJzcB3gwPDXpI8iA9xDzprWHSUIA+e3/RNvtFxYtbedhgmK7N/g?=
+ =?us-ascii?Q?fZHhpVpkX1sCyIIFmQNfAIUfUx89B/APzd1j03GL09CGQXtdtPdXuD6rcSKq?=
+ =?us-ascii?Q?P0ZlWgvgNLtezYiR0tXy2agXbwTmO5wXTDx3SD/Jj39sKtfFjp3YxLoPC6Cb?=
+ =?us-ascii?Q?Be00kj9ThIEzQhludXjuidv0J7f8We38F0g66B1VwtHuA2wkGnHcVL+oNYfx?=
+ =?us-ascii?Q?PeANuOukMXNJltBZ9LN+dGLtJqtZP69jcKZHpuSL0yKig36Mtbp8ATafV1fU?=
+ =?us-ascii?Q?K0CtTmmpPVBZCN2O/9qKhMZ39hFg3mcyEETNWQi6uX+QvenKLHP+v9Ae0+N6?=
+ =?us-ascii?Q?s0NGAouAamM/Dkadrtbq+emzOUYvcY/fmv0YPIc6Xq3gJrsh0hDrLjNpusKN?=
+ =?us-ascii?Q?JqvK56wQmY8yb+M3RPHOwKDyQdhaXBPkvOiBUEFu1BF2wQAAu1Z0gzO/aZIb?=
+ =?us-ascii?Q?l4blu4kWjJmvc39x8AiH72NVYD4JF/kx7ZV7ce7gtI1EpjPMD59+rGVBrlrE?=
+ =?us-ascii?Q?buGkbYstM1D66HZGu0GDUcQh+E6OYMiCO1pQDmyfm86hN/O50pn6lnAYVGa5?=
+ =?us-ascii?Q?FvzMQikQ6l9qxJiaoxq9B3DhFyyfy9+fDtsWcsSffXP3wCHtOul7KI+RJ6fY?=
+ =?us-ascii?Q?N+XTY3UHDbfhsludOPq/YZx/Q5etxJxv2NmwEBKhVEzTTBeG0Z7pvsK6Y261?=
+ =?us-ascii?Q?qAuepUNLhRDWMNwcjVb3DlvcWq3YIQc/wfbFrvjQv1oAcyyttGNgDZM8k817?=
+ =?us-ascii?Q?Zb5q9huhTS3ofPle9Zhe1POKIJBZaaSNpcvpulnDkHwf3DOUEGg0fWnF2Qbu?=
+ =?us-ascii?Q?AQzg6Jj8wDI3AeN6++1FfkVHpRLBOxK/Oz/WIE3iix1IcuMAkOmk0UnHSkO9?=
+ =?us-ascii?Q?6yLVN/3QJ2tI426i0omkbH/pvgadOMzzUZLwc7N7QqtWjxRCKZEi/APLGfzv?=
+ =?us-ascii?Q?hzxTQiSX+nCkykcj5Bnn20KNwuzuAwcptku93J/60w9BHCWcVers8Xu6GPNN?=
+ =?us-ascii?Q?wfoxpjE3ZuDn54iq+YStvaf2717G5acZlrtcUDll/cnVaMJIdtyWZCnjfK5b?=
+ =?us-ascii?Q?NgOqLBwrU/FyyUlt03+NUw2YmaJmrw8xhInQlAF6?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB5947.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79396a11-2649-4d08-784b-08dd81c4b1e6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Apr 2025 17:39:55.4304 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: AnPX1/Gbb+Qx1uvQJlot31ogI3ljibU6SEMi+lQXwsQYQ16QSi0RfISckClGwMookCaqiOAfwreUNuVyMy/SVt03eILdeag/z4UFweQf2Ic=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8523
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,426 +182,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce vendor-agnostic support for
-handling multiple GPUs and instances
-in gputop. Improve the tool's adaptability
-to various GPU configurations.
+LGTM.
+Reviewed-by: Gandi Ramadevi <ramadevi.gandi@intel.com>
 
-v2 : Fix for refactoring GPUTOP into a
-     vendor-agnostic tool. (Lucas)
-
-v3 : New year included in copyright. (Kamil, Riana)
-     Removed caps in function name. (Riana)
-     Struct for driver specific operations. (Riana)
-     Headers in alphabetical order. (Kamil, Riana)
-
-v4 : Commit description and signed-off included.
-
-v5 : Fix for proper resource cleanup. (Riana)
-     Use "dev_type" enum for card_type. (Krzysztof)
-     Add new filter to return collection
-     of matching devices.               (Zbigniew)
-
-v6 : Use device filter to populate the array of
-     cards for all supported drivers.   (Zbigniew)
-
-v7 : Use filter to find all the cards.  (Zbigniew)
-
-v8 : Removed 'drivers' array parameter from
-     card match function.               (Zbigniew)
-
-v9 : Resolved 'populate_devices' call.
-                                  (Zbigniew)
-
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
----
- tools/{ => gputop}/gputop.c | 224 ++++++++++++++++++++++++++++++------
- tools/gputop/meson.build    |   6 +
- tools/meson.build           |   6 +-
- 3 files changed, 193 insertions(+), 43 deletions(-)
- rename tools/{ => gputop}/gputop.c (67%)
- create mode 100644 tools/gputop/meson.build
-
-diff --git a/tools/gputop.c b/tools/gputop/gputop.c
-similarity index 67%
-rename from tools/gputop.c
-rename to tools/gputop/gputop.c
-index 43b01f566..eab415ab5 100644
---- a/tools/gputop.c
-+++ b/tools/gputop/gputop.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: MIT
- /*
-- * Copyright © 2023 Intel Corporation
-+ * Copyright © 2023-2025 Intel Corporation
-  */
- 
- #include <assert.h>
-@@ -14,66 +14,148 @@
- #include <math.h>
- #include <poll.h>
- #include <signal.h>
-+#include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <sys/sysmacros.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
- #include <sys/types.h>
--#include <unistd.h>
- #include <termios.h>
--#include <sys/sysmacros.h>
--#include <stdbool.h>
-+#include <unistd.h>
- 
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_drm_clients.h"
- #include "igt_drm_fdinfo.h"
-+#include "igt_perf.h"
- #include "igt_profiling.h"
--#include "drmtest.h"
-+#include "xe_gputop.h"
-+#include "xe/xe_query.h"
-+
-+/**
-+ * Supported Drivers
-+ *
-+ * Adhere to the following requirements
-+ * when implementing support for the
-+ * new driver:
-+ * @drivers: Update drivers[] with
-+ * driver string.
-+ * @total_count: Update NUM_DRIVER with
-+ * the total number of supported drivers.
-+ * @operations: Update the respective
-+ * operations of the new driver:
-+ * gputop_init,
-+ * discover_engines,
-+ * pmu_init,
-+ * pmu_sample,
-+ * print_engines,
-+ * clean_up
-+ * @devices: Update devices[] array
-+ * of type "struct gputop_device" with
-+ * the initial values.
-+ */
-+static const char * const drivers[] = {
-+	"xe",
-+    /*Keep the last one as NULL*/
-+	NULL
-+};
-+
-+/**
-+ * Number of supported drivers needs to be adjusted
-+ * as per the letgth of the drivers[] array.
-+ */
-+#define NUM_DRIVER 1
-+
-+/**
-+ * Supported operations on driver instances.
-+ * Update the oprs[] array for
-+ * each individual driver specific function.
-+ * Maintain the sequence as per drivers[] array.
-+ */
-+struct device_operations oprs[NUM_DRIVER] = {
-+	{
-+		xe_gputop_init,
-+		xe_populate_engines,
-+		xe_pmu_init,
-+		xe_pmu_sample,
-+		xe_print_engines,
-+		xe_clean_up
-+	}
-+};
-+
-+/*
-+ * devices[] array of type
-+ * struct gputop_device
-+ */
-+struct gputop_device devices[] = {
-+	{false, 0, NULL}
-+};
- 
- enum utilization_type {
- 	UTILIZATION_TYPE_ENGINE_TIME,
- 	UTILIZATION_TYPE_TOTAL_CYCLES,
- };
- 
--static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
--
--#define ANSI_HEADER "\033[7m"
--#define ANSI_RESET "\033[0m"
--
--static void n_spaces(const unsigned int n)
-+static void gputop_clean_up(void)
- {
--	unsigned int i;
--
--	for (i = 0; i < n; i++)
--		putchar(' ');
-+	for (int i = 0; drivers[i]; i++) {
-+		oprs[i].clean_up(devices[i].instances, devices[i].len);
-+		free(devices[i].instances);
-+		devices[i].driver_present = false;
-+		devices[i].len = 0;
-+	}
- }
- 
--static void print_percentage_bar(double percent, int max_len)
-+static int find_driver(struct igt_device_card *card)
- {
--	int bar_len, i, len = max_len - 1;
--	const int w = 8;
--
--	len -= printf("|%5.1f%% ", percent);
--
--	/* no space left for bars, do what we can */
--	if (len < 0)
--		len = 0;
-+	for (int i = 0; drivers[i]; i++) {
-+		if (strcmp(drivers[i], card->driver) == 0)
-+			return i;
-+	}
-+	return -1;
-+}
- 
--	bar_len = ceil(w * percent * len / 100.0);
--	if (bar_len > w * len)
--		bar_len = w * len;
-+/*
-+ * If filter is not NULL i will be ignored.
-+ */
-+static int populate_device_instances(const char *filter)
-+{
-+	struct igt_device_card *cards = NULL;
-+	struct igt_device_card *card_inplace = NULL;
-+	struct gputop_device *dev =  NULL;
-+	int count;
- 
--	for (i = bar_len; i >= w; i -= w)
--		printf("%s", bars[w]);
--	if (i)
--		printf("%s", bars[i]);
-+	count = igt_device_card_match_all(filter, &cards);
-+	for (int j = 0; j < count; j++) {
-+		int driver_no = find_driver(cards + j);
- 
--	len -= (bar_len + (w - 1)) / w;
--	n_spaces(len);
-+		if (driver_no < 0)
-+			continue;
- 
--	putchar('|');
-+		dev = devices + driver_no;
-+		if (!dev->driver_present)
-+			dev->driver_present = true;
-+		dev->len++;
-+		dev->instances = realloc(dev->instances,
-+					 dev->len * sizeof(struct xe_gputop));
-+		if (!dev->instances) {
-+			fprintf(stderr,
-+				"Device instance realloc failed (%s)\n",
-+				strerror(errno));
-+			exit(EXIT_FAILURE);
-+		}
-+		card_inplace = (struct igt_device_card *)
-+				calloc(1, sizeof(struct igt_device_card));
-+		memcpy(card_inplace, cards + j, sizeof(struct igt_device_card));
-+		oprs[driver_no].gputop_init((struct xe_gputop *)(dev->instances + dev->len - 1),
-+			card_inplace);
-+	}
-+	if (count)
-+		free(cards);
-+	return count;
- }
- 
- static int
-@@ -333,6 +415,7 @@ static void clrscr(void)
- struct gputop_args {
- 	long n_iter;
- 	unsigned long delay_usec;
-+	char *device;
- };
- 
- static void help(void)
-@@ -343,16 +426,18 @@ static void help(void)
- 	       "\t-h, --help                show this help\n"
- 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
- 	       "\t-n, --iterations =NUMBER  number of executions\n"
-+	       "\t-D, --device              Device filter\n"
- 	       , program_invocation_short_name);
- }
- 
- static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- {
--	static const char cmdopts_s[] = "hn:d:";
-+	static const char cmdopts_s[] = "hn:d:D:";
- 	static const struct option cmdopts[] = {
- 	       {"help", no_argument, 0, 'h'},
- 	       {"delay", required_argument, 0, 'd'},
- 	       {"iterations", required_argument, 0, 'n'},
-+	       {"device", required_argument, 0, 'D'},
- 	       { }
- 	};
- 
-@@ -360,6 +445,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 	memset(args, 0, sizeof(*args));
- 	args->n_iter = -1;
- 	args->delay_usec = 2 * USEC_PER_SEC;
-+	args->device = NULL;
- 
- 	for (;;) {
- 		int c, idx = 0;
-@@ -383,6 +469,9 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 				return -1;
- 			}
- 			break;
-+		case 'D':
-+			args->device = optarg;
-+			break;
- 		case 'h':
- 			help();
- 			return 0;
-@@ -422,6 +511,52 @@ int main(int argc, char **argv)
- 	n = args.n_iter;
- 	period_us = args.delay_usec;
- 
-+	if (!populate_device_instances(args.device ? args.device
-+				       : "device:card=all")) {
-+		printf("No device found.\n");
-+		gputop_clean_up();
-+		exit(1);
-+	}
-+
-+	for (int i = 0; drivers[i]; i++) {
-+		if (devices[i].driver_present) {
-+			for (int j = 0; j < devices[i].len; j++) {
-+				if (!oprs[i].init_engines(devices[i].instances + j)) {
-+					fprintf(stderr,
-+						"Failed to initialize engines! (%s)\n",
-+						strerror(errno));
-+						gputop_clean_up();
-+					return EXIT_FAILURE;
-+				}
-+				ret = oprs[i].pmu_init(devices[i].instances + j);
-+
-+				if (ret) {
-+					fprintf(stderr,
-+						"Failed to initialize PMU! (%s)\n",
-+						strerror(errno));
-+					if (errno == EACCES && geteuid())
-+						fprintf(stderr,
-+							"\n"
-+							"When running as a normal user CAP_PERFMON is required to access performance\n"
-+							"monitoring. See \"man 7 capabilities\", \"man 8 setcap\", or contact your\n"
-+							"distribution vendor for assistance.\n"
-+							"\n"
-+							"More information can be found at 'Perf events and tool security' document:\n"
-+							"https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
-+
-+					igt_devices_free();
-+					gputop_clean_up();
-+					return EXIT_FAILURE;
-+				}
-+			}
-+		}
-+	}
-+
-+	for (int i = 0; drivers[i]; i++) {
-+		for (int j = 0; devices[i].driver_present && j < devices[i].len; j++)
-+			oprs[i].pmu_sample(devices[i].instances + j);
-+	}
-+
- 	clients = igt_drm_clients_init(NULL);
- 	if (!clients)
- 		exit(1);
-@@ -442,14 +577,27 @@ int main(int argc, char **argv)
- 
- 	while ((n != 0) && !stop_top) {
- 		struct igt_drm_client *c, *prevc = NULL;
--		int i, engine_w = 0, lines = 0;
-+		int k, engine_w = 0, lines = 0;
- 
- 		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-+
-+		for (int i = 0; drivers[i]; i++) {
-+			for (int j = 0; devices[i].driver_present && j < devices[i].len; j++)
-+				oprs[i].pmu_sample(devices[i].instances + j);
-+		}
-+
- 		igt_drm_clients_sort(clients, client_cmp);
- 
- 		update_console_size(&con_w, &con_h);
- 		clrscr();
- 
-+		for (int i = 0; drivers[i]; i++) {
-+			for (int j = 0; devices[i].driver_present && j < devices[i].len; j++) {
-+				lines = oprs[i].print_engines(devices[i].instances + j,
-+							 lines, con_w, con_h);
-+			}
-+		}
-+
- 		if (!clients->num_clients) {
- 			const char *msg = " (No GPU clients yet. Start workload to see stats)";
- 
-@@ -457,7 +605,7 @@ int main(int argc, char **argv)
- 			       (int)(con_w - strlen(msg) - 1), msg);
- 		}
- 
--		igt_for_each_drm_client(clients, c, i) {
-+		igt_for_each_drm_client(clients, c, k) {
- 			assert(c->status != IGT_DRM_CLIENT_PROBE);
- 			if (c->status != IGT_DRM_CLIENT_ALIVE)
- 				break; /* Active clients are first in the array. */
-@@ -481,11 +629,11 @@ int main(int argc, char **argv)
- 	}
- 
- 	igt_drm_clients_free(clients);
-+	gputop_clean_up();
- 
- 	if (profiled_devices != NULL) {
- 		igt_devices_configure_profiling(profiled_devices, false);
- 		igt_devices_free_profiling(profiled_devices);
- 	}
--
- 	return 0;
- }
-diff --git a/tools/gputop/meson.build b/tools/gputop/meson.build
-new file mode 100644
-index 000000000..4766d8496
---- /dev/null
-+++ b/tools/gputop/meson.build
-@@ -0,0 +1,6 @@
-+gputop_src = [ 'gputop.c', 'utils.c', 'xe_gputop.c']
-+executable('gputop', sources : gputop_src,
-+           install : true,
-+           install_rpath : bindir_rpathdir,
-+           dependencies : [igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math],
-+	   install: true)
-diff --git a/tools/meson.build b/tools/meson.build
-index de866c392..8002f707d 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -69,11 +69,6 @@ if libudev.found()
- 		   install : true)
- endif
- 
--executable('gputop', 'gputop.c',
--           install : true,
--           install_rpath : bindir_rpathdir,
--           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
--
- intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
- executable('intel_l3_parity', sources : intel_l3_parity_src,
- 	   dependencies : tool_deps,
-@@ -122,3 +117,4 @@ endif
- subdir('i915-perf')
- subdir('xe-perf')
- subdir('null_state_gen')
-+subdir('gputop')
--- 
-2.34.1
+> -----Original Message-----
+> From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Sent: Tuesday, April 22, 2025 10:41 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>; Dixit, Ashutosh
+> <ashutosh.dixit@intel.com>; Gandi, Ramadevi <ramadevi.gandi@intel.com>;
+> Piecielska, Katarzyna <katarzyna.piecielska@intel.com>; Peter Senna
+> Tschudin <peter.senna@linux.intel.com>
+> Subject: [PATCH i-g-t] intel/xe_test_config.json: add intel_sysfs_debugfs
+>=20
+> Add missing intel_sysfs_debugfs, after a unify it was missing in testlist
+> generated for Xe.
+>=20
+> Fixes: 68f75d1dd410 ("tests/intel/intel_sysfs_debugfs Unify sysfs and
+> debugfs testing")
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
+> Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/intel/xe_test_config.json | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config=
+.json
+> index 4556025f7..b33485c96 100644
+> --- a/tests/intel/xe_test_config.json
+> +++ b/tests/intel/xe_test_config.json
+> @@ -2,7 +2,7 @@
+>      "description": "JSON file to be used to parse Xe documentation",
+>      "name": "Tests for Xe Driver",
+>      "drivers": [ "xe" ],
+> -    "files": [ "xe_*.c", "../core_*.c", "../sriov_basic.c", "intel_hwmon=
+.c" ],
+> +    "files": [ "xe_*.c", "../core_*.c", "../sriov_basic.c",
+> + "intel_hwmon.c", "intel_sysfs_debugfs.c" ],
+>      "fields": {
+>          "Run type": {
+>              "_properties_": {
+> --
+> 2.49.0
 
