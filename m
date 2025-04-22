@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E74C369C2
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 09:33:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B4AC369C2
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 09:33:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7F46B10E2C1;
-	Tue, 22 Apr 2025 09:33:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D11E410E552;
+	Tue, 22 Apr 2025 09:33:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lHI3vvny";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bEkStCb0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F36B110E2C1
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 09:33:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E93FF10E552
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 09:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745314432; x=1776850432;
+ t=1745314435; x=1776850435;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Onlk2XDdaGvc8KDu8eyZ2vlsvV3Fy459A4UzKwx2/Ds=;
- b=lHI3vvnyaWedW3oOh5xGoOT1eruhAZZPAmqTjfm2PhHPqk9kTMZ5Cd9l
- lBSbbhQBAxjNtu+fP8ZGhAkjPpZC3fiYJ161wd0U/Ss8TElGZ/dk2du+p
- tbFpqe/EzQFsNROSrmcPZX6/RvjFDpaAh07u/l+pfvZ/+lbJC6h5ok0h2
- mj9lZW2m09z1jJKesifbZEa3vmZriCCg9i0tYqMQaaLGEiAmzMgH1nUvn
- EJpZzDPQM9IURUhrx84GcMIBnuLL4JXAbTHBAMsAAC+Pl/foGiIz7NyJj
- wLRPWoZCvctTHKRAO/x+V0pOVXjhOdaqdsaDa6n0KOTWJa/PdpPOTDEJV g==;
-X-CSE-ConnectionGUID: 9dST793HQ0O+MWuzmAnUsQ==
-X-CSE-MsgGUID: beyb+gqQSg2V/v8kRhuSMQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="58232869"
-X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="58232869"
+ bh=dOCT0NFsxZGlcHUVfnCAZPHuUkz7P19/10Tw7A2oxqA=;
+ b=bEkStCb0Tmlkwd09j4Yb2d5k3zFS5ca0kDjVCgkaf/CoIVdLMKhexQr/
+ tOzwcqKNuM9/1sEwH4CXJe0PA0F1ZgQhw1j0qC4eqotKD2FLlMMqknQv3
+ UtVyzdKgy/BgnJjnXjdC4AhGMcedN9xA3tmDpUlsRrs4MHXdT7RYHRl2W
+ KvyPRJbKWmIXHxH+BU2qvNQc5uPKbFqwq3Xzc+tg6mpgmthUv+fGQ3XRQ
+ Qkam6Yaai4xjK4buKk87FiH1xHKC3N6DbhHszhQX3TUIaw2FQoJ3Eme47
+ Pw0wv486QPfRS2LKOln3SsxVdw/sKQSEiBcOI4bRuefJrclkwM0sRIWd/ g==;
+X-CSE-ConnectionGUID: WfD1bTMmSE6DUvGBeUF1ag==
+X-CSE-MsgGUID: 43e20GaqRlSWi8LR4V+CXA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="58232872"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="58232872"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 02:33:51 -0700
-X-CSE-ConnectionGUID: bUxTjHdbR3KVvlHW4xZTEA==
-X-CSE-MsgGUID: 7k87/KdhQ3iTVdzkE7d3aA==
+ 22 Apr 2025 02:33:55 -0700
+X-CSE-ConnectionGUID: SCKdxGUMRJWV32y3Egvn8A==
+X-CSE-MsgGUID: r52cdrfsRH2VRImp5TW1eA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="131874854"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="131874878"
 Received: from unknown (HELO rtauro-desk.iind.intel.com) ([10.190.239.27])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 02:33:47 -0700
+ 22 Apr 2025 02:33:51 -0700
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com, lucas.demarchi@intel.com,
  rodrigo.vivi@intel.com, kamil.konieczny@linux.intel.com,
- aravind.iddamsetty@linux.intel.com, louis.chauvet@bootlin.com,
- =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t 4/5] lib/igt_fs: Add helper functions to create and
- remove directories
-Date: Tue, 22 Apr 2025 15:26:00 +0530
-Message-ID: <20250422095602.55041-5-riana.tauro@intel.com>
+ aravind.iddamsetty@linux.intel.com, louis.chauvet@bootlin.com
+Subject: [PATCH i-g-t 5/5] tests/intel/xe_configfs: Add test to validate
+ survivability mode
+Date: Tue, 22 Apr 2025 15:26:01 +0530
+Message-ID: <20250422095602.55041-6-riana.tauro@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250422095602.55041-1-riana.tauro@intel.com>
 References: <20250422095602.55041-1-riana.tauro@intel.com>
@@ -72,96 +71,146 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helper function to create directory and return fd of
-the created directory. Also add a function to remove
-directories. This will be used by configfs
+The test validates if survivability mode is enabled on supported
+platforms when configured using configfs attribute.
 
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: José Expósito <jose.exposito89@gmail.com>
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- lib/igt_fs.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_fs.h |  2 ++
- 2 files changed, 50 insertions(+)
+ tests/intel/xe_configfs.c | 112 ++++++++++++++++++++++++++++++++++++++
+ tests/meson.build         |   1 +
+ 2 files changed, 113 insertions(+)
+ create mode 100644 tests/intel/xe_configfs.c
 
-diff --git a/lib/igt_fs.c b/lib/igt_fs.c
-index f6a2530cd..1fa281315 100644
---- a/lib/igt_fs.c
-+++ b/lib/igt_fs.c
-@@ -21,8 +21,10 @@
-  * IN THE SOFTWARE.
-  *
-  */
-+#include <sys/stat.h>
- 
- #include <errno.h>
-+#include <fcntl.h>
- #include <stdlib.h>
- #include <unistd.h>
- 
-@@ -94,3 +96,49 @@ ssize_t igt_writen(int fd, const char *buf, size_t len)
- 	} while (total != len);
- 	return total ?: ret;
- }
+diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+new file mode 100644
+index 000000000..414af4a86
+--- /dev/null
++++ b/tests/intel/xe_configfs.c
+@@ -0,0 +1,112 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++#include <limits.h>
++
++#include "igt.h"
++#include "igt_configfs.h"
++#include "igt_device.h"
++#include "igt_fs.h"
++#include "igt_kmod.h"
++#include "igt_sysfs.h"
 +
 +/**
-+ * igt_fs_create_dir: creates and opens directory
-+ * @fd: file descriptor of parent directory
-+ * @name: name of the directory to create
-+ * @mode: permissions for the directory
-+ *
-+ * creates a directory under parent directory and returns
-+ * the fd
-+ *
-+ * Returns: directory fd on success, -errno otherwise
++ * TEST: Check configfs userspace API
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: uapi
++ * Functionality: configfs
++ * Description: validate configfs entries
++ * Test category: functionality test
 + */
-+int igt_fs_create_dir(int fd, const char *name, mode_t mode)
++
++static char bus_addr[NAME_MAX];
++static uint32_t dev_id;
++
++static void restore(int sig)
 +{
-+	int ret;
-+	int dirfd;
++	/* Restore after survivability mode */
++	igt_kmod_unbind("xe", bus_addr);
++	igt_kmod_bind("xe", bus_addr);
++}
 +
-+	ret = mkdirat(fd, name, mode);
-+	if (ret)
-+		return -errno;
++static void set_survivability_mode(int dir_fd, bool value)
++{
++	igt_kmod_unbind("xe", bus_addr);
++	igt_sysfs_set_boolean(dir_fd, "survivability_mode", value);
++	igt_kmod_bind("xe", bus_addr);
++}
 +
-+	dirfd = openat(fd, name, O_DIRECTORY);
-+	if (dirfd < 0)
-+		return -errno;
++static void check_survivability_mode(void)
++{
++	char path[PATH_MAX], buf[4096];
++	int fd, len;
 +
-+	return dirfd;
++	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s", bus_addr);
++	fd = open(path, O_RDONLY);
++	igt_assert_f(fd >= 0, "Cannot open %s\n", path);
++
++	len = igt_sysfs_read(fd, "survivability_mode", buf, sizeof(buf) - 1);
++	if (len > 0) {
++		buf[len] = '\0';
++		igt_info("Survivability Mode:\n%s", buf);
++	}
++	close(fd);
++
++	if (IS_BATTLEMAGE(dev_id))
++		igt_assert_f(len > 0, "Survivability mode not set\n");
 +}
 +
 +/**
-+ * igt_fs_remove_directory: removes directory
-+ * @fd: fd of parent directory
-+ * @name: name of directory to remove
-+ *
-+ * removes directory under parent directory
-+ *
-+ * Returns: 0 on success, -errno otherwise
++ * SUBTEST: survivability-mode
++ * Description: Validate survivability mode by setting configfs
 + */
-+int igt_fs_remove_dir(int fd, const char *name)
++static void test_survivability_mode(int dir_fd)
 +{
-+	int ret = unlinkat(fd, name, AT_REMOVEDIR);
++	/* Enable survivability mode */
++	set_survivability_mode(dir_fd, true);
 +
-+	if (ret)
-+		return -errno;
-+
-+	return 0;
++	check_survivability_mode();
 +}
-diff --git a/lib/igt_fs.h b/lib/igt_fs.h
-index 84c3fed62..ee3e7593b 100644
---- a/lib/igt_fs.h
-+++ b/lib/igt_fs.h
-@@ -27,6 +27,8 @@
- 
- #include <stdio.h>
- 
-+int igt_fs_create_dir(int fd, const char *name, mode_t mode);
-+int igt_fs_remove_dir(int fd, const char *name);
- ssize_t igt_readn(int fd, char *buf, size_t len);
- ssize_t igt_writen(int fd, const char *buf, size_t len);
- 
++
++static int create_device_configfs(int configfs_fd, int fd)
++{
++	int dir_fd;
++	struct pci_device *pci_dev;
++
++	pci_dev = igt_device_get_pci_device(fd);
++	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
++		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
++
++	dir_fd = igt_fs_create_dir(configfs_fd, bus_addr, 0755);
++	igt_assert(dir_fd);
++
++	return dir_fd;
++}
++
++igt_main
++{
++	int fd, configfs_fd, dir_fd;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		dev_id = intel_get_drm_devid(fd);
++		configfs_fd = igt_configfs_open("xe");
++		igt_require(configfs_fd != -1);
++		dir_fd = create_device_configfs(configfs_fd, fd);
++	}
++
++	igt_describe("Validate survivability mode");
++	igt_subtest("survivability-mode") {
++		igt_install_exit_handler(restore);
++		test_survivability_mode(dir_fd);
++	}
++
++	igt_fixture {
++		igt_fs_remove_dir(configfs_fd, bus_addr);
++		close(dir_fd);
++		close(configfs_fd);
++		close(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 8cb3fc4d2..e0e9ed299 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -279,6 +279,7 @@ intel_xe_progs = [
+ 	'xe_compute',
+ 	'xe_compute_preempt',
+ 	'xe_copy_basic',
++	'xe_configfs',
+ 	'xe_dma_buf_sync',
+ 	'xe_drm_fdinfo',
+ 	'xe_eu_stall',
 -- 
 2.47.1
 
