@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79CBAC369C2
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 15:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7184CC369C2
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 15:13:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 29B4C10E5F3;
-	Tue, 22 Apr 2025 15:12:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 022D310E5F7;
+	Tue, 22 Apr 2025 15:13:57 +0000 (UTC)
 Received: from b68e5b3b99e1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39BF610E5F7;
- Tue, 22 Apr 2025 15:12:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D00898951B;
+ Tue, 22 Apr 2025 15:13:55 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_benchmarks=3A_create_xe?=
- =?utf-8?q?=5Fexec=5Fctx_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/amdgpu=3A_add_missi?=
+ =?utf-8?q?ng_user_queue_destroy_for_cs=5Fnops_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pravalika Gurram" <pravalika.gurram@intel.com>
+To: "Khatri, Sunil" <sunil.khatri@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Apr 2025 15:12:35 -0000
-Message-ID: <174533475522.26213.11076903266623417119@b68e5b3b99e1>
+Date: Tue, 22 Apr 2025 15:13:55 -0000
+Message-ID: <174533483584.26148.15179814374968846817@b68e5b3b99e1>
 X-Patchwork-Hint: ignore
-References: <20250421070752.806333-1-pravalika.gurram@intel.com>
-In-Reply-To: <20250421070752.806333-1-pravalika.gurram@intel.com>
+References: <20250421075926.31094-1-sunil.khatri@amd.com>
+In-Reply-To: <20250421075926.31094-1-sunil.khatri@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,19 +43,14 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: benchmarks: create xe_exec_ctx (rev2)
-URL   : https://patchwork.freedesktop.org/series/147897/
+Series: tests/amdgpu: add missing user queue destroy for cs_nops (rev2)
+URL   : https://patchwork.freedesktop.org/series/148008/
 State : failure
 
 == Summary ==
 
-Applying: benchmarks: create xe_exec_ctx
-Using index info to reconstruct a base tree...
-M	benchmarks/meson.build
-Falling back to patching base and 3-way merge...
-Auto-merging benchmarks/meson.build
-CONFLICT (content): Merge conflict in benchmarks/meson.build
-Patch failed at 0001 benchmarks: create xe_exec_ctx
+Applying: tests/amdgpu: add missing user queue destroy for cs_nops
+Patch failed at 0001 tests/amdgpu: add missing user queue destroy for cs_nops
 When you have resolved this problem, run "git am --continue".
 If you prefer to skip this patch, run "git am --skip" instead.
 To restore the original branch and stop patching, run "git am --abort".
