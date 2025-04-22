@@ -4,56 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E728CC369D1
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 10:50:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F809C369C2
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 11:13:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9BA4510E560;
-	Tue, 22 Apr 2025 10:50:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1827810E562;
+	Tue, 22 Apr 2025 11:13:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gxIlkdf/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m8Z7Wz/A";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5606110E560
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 10:50:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C159C10E562
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 11:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745319039; x=1776855039;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/CsEUK+bP3i2PMgxS+HCOt3NE+RerIlL+68d9PuGiBA=;
- b=gxIlkdf/L43XrAR+hH8IGyvts+bwxpBIxDwNli/ypcWifcLl0Rd4/y8f
- I2xilFl4TluVE1SVIbSOhryFcSOyHvr0HRT58MZLqGm3ZcGyxrOyAjk2o
- X5v3OqfaDDlaQ0bYhuv8lf9Sljv8rtof9YGvOzx/6pHmynSfM+VWivw67
- XiipoBjvlcNeInZbVroLD8WhBczrAOLeSa+rrl+Zd/pXcohmGlDo7H2Gg
- dDhvMyFeaoXPWP1J8G+kuXQgdoZlVyQkMijGZUkgPE6TpZ34/C9SshTN7
- 8X2pbD76lfxmh9EqCZhAFEeZruWu2fp/gR1PRy3ACVJ9CytjlIWcvkFtd w==;
-X-CSE-ConnectionGUID: 1aDEkk7uRDuSRGVfK9Cbtg==
-X-CSE-MsgGUID: KANU4ociQ6yv3EaoY4rLeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="46971675"
-X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="46971675"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 03:50:38 -0700
-X-CSE-ConnectionGUID: vfErd8r+SG62yUbaOsGd/Q==
-X-CSE-MsgGUID: LXKhY9WRQ1qk8JRyp7zv9A==
+ t=1745320391; x=1776856391;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=FQ5N3kCc+Ip7QQg/bpTcXZEw2ToTewf29cC9rHqYA9w=;
+ b=m8Z7Wz/AvliDbgxzBmEqmwabxqsxisfTuOCTUlKwdZqkXnGc/Dx20pOT
+ ygwRITRTfUm5AJyMNlIbZTEKOddgc+PWAtGi85g3Ni8ROK4MvD9w3b1z8
+ cy1kxwK2H7SUykPRKmlZiFaaz+XKaRuECyZM3SfehtXh/a6zv/G6/dW5e
+ 7nvYcJ4eZ03sTznISLb+pFeuVWJ4ixGdUcPalFdtJl9/nIu8zPUSP1Ndi
+ tHFoLZVLO92vOOipFya2y1YF5RiF39dMshjyVbFAsP2ugz2Ynxmq18MjB
+ 553wbxWWq0CUhkm81XeIcKfzyYhZkvX+tSOSh18Tf+CvB+y1vwqKYYj1z Q==;
+X-CSE-ConnectionGUID: w4mmz04vR9ud/9MNsQ2WcA==
+X-CSE-MsgGUID: 3A0jMboIRlK/Nfu6H1PoAA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="46789652"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="46789652"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2025 04:13:11 -0700
+X-CSE-ConnectionGUID: pAS5WsB+TXqZnp+g56mdjQ==
+X-CSE-MsgGUID: +HrlxrHMTCKCuFOqDqQfXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="132932091"
-Received: from ifwibot07.gar.corp.intel.com (HELO
- rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 03:50:36 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
- chaitanya.kumar.borah@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v3 2/2] tests/kms_async_flips: Use tiling modifiers
-Date: Tue, 22 Apr 2025 16:13:03 +0530
-Message-Id: <20250422104303.2939858-3-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250422104303.2939858-1-santhosh.reddy.guddati@intel.com>
-References: <20250422104303.2939858-1-santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="163036592"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.80.187])
+ ([10.245.80.187])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2025 04:13:09 -0700
+Message-ID: <c152534e-1a53-49c6-a796-8a44b9a31de5@linux.intel.com>
+Date: Tue, 22 Apr 2025 13:13:06 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v8 3/3] tests/intel/xe_fault_injection: Return
+ result from inject_fault_probe()
+To: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?Q?Micha=C5=82_Wajdeczko?= <michal.wajdeczko@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250422102941.1678-1-satyanarayana.k.v.p@intel.com>
+ <20250422102941.1678-4-satyanarayana.k.v.p@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250422102941.1678-4-satyanarayana.k.v.p@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,33 +74,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As async with linear modifiers is not a practical and common use case,
-override the default modifier with tiled for all the async flip subtests
 
-V2:
-move handling to default_modifier (Karthik)
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
----
- tests/kms_async_flips.c | 3 +++
- 1 file changed, 3 insertions(+)
+On 4/22/2025 12:29 PM, Satyanarayana K V P wrote:
+> In the current implementation, test asserts if the captured error is not same as
+> injected error. It is possible that the error received is translated to other
+> error which can be returned to application and in some scenarios driver retries
+> in case of failure and so, no error might be captured.
+> 
+> Considering above cases, not asserting the test in inject_fault_probe(), but
+> returning error to the caller. Caller can check and assert if needed.
+> 
+> Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+> ---
+> Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>   tests/intel/xe_fault_injection.c | 10 +++++++---
+>   1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index ced613896..98a414bd3 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -224,9 +224,10 @@ static void set_retval(const char function_name[], long long retval)
+>    * @xe_wa_init:				xe_wa_init
+>    * @xe_wopcm_init:			xe_wopcm_init
+>    */
+> -static void
+> +static int
+>   inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+>   {
+> +	int err = 0;
+>   	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
+>   		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
+>   
+> @@ -236,8 +237,10 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+>   
+>   	igt_kmod_bind("xe", pci_slot);
+>   
+> -	igt_assert_eq(-errno, INJECT_ERRNO);
+> +	err = -errno;
+>   	injection_list_remove(function_name);
+> +
+> +	return err;
+>   }
+>   
+>   /**
+> @@ -579,7 +582,8 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+>   
+>   	for (const struct section *s = probe_fail_functions; s->name; s++)
+>   		igt_subtest_f("inject-fault-probe-function-%s", s->name)
+> -			inject_fault_probe(fd, pci_slot, s->name);
+> +			igt_assert_eq(INJECT_ERRNO, inject_fault_probe(fd,
+> +						pci_slot, s->name));
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 12d1a0f43..71ea94cc8 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -194,6 +194,9 @@ static void wait_flip_event(data_t *data)
- static uint64_t default_modifier(data_t *data)
- {
- 	if (igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
-+				       I915_FORMAT_MOD_4_TILED))
-+		return I915_FORMAT_MOD_4_TILED;
-+	else if (igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
- 				       I915_FORMAT_MOD_X_TILED))
- 		return I915_FORMAT_MOD_X_TILED;
- 	else
--- 
-2.34.1
+LGTM,
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+
+>   
+>   	for (const struct section *s = guc_fail_functions; s->name; s++)
+>   		igt_subtest_f("probe-fail-guc-%s", s->name) {
 
