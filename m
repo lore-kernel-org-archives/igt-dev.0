@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF4A1C369D7
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 10:50:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E728CC369D1
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 10:50:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A22B1891A3;
-	Tue, 22 Apr 2025 10:50:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9BA4510E560;
+	Tue, 22 Apr 2025 10:50:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X+CapPMQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gxIlkdf/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 413D8891A3
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 10:50:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5606110E560
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 10:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745319036; x=1776855036;
+ t=1745319039; x=1776855039;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9F42YOmbH8vMiqRBBXgXqabyG5i58VdGutBeSWSoLPk=;
- b=X+CapPMQr6XAVNM8rrjJYALpc7ILFH+L1NnKcfjBXiaIhKR+tMylXQd6
- sLawaEUUffW7ssD5sjRK2bGwXr57zRkBSPcYHqnJ1lO0EZcm6fM0TtcLt
- dOjr1YY+o4NYOHJDX/J7/1ku751KmlZgYgQU2crU30uCBziYALOo0FwWJ
- JP0+61Fb2EWX7/QfeB2+WVPCQsLdO6bb5JvA6j9k1acQDuM87szsyHJHO
- 03r15/IZUwdf2ZVRxFONm1e9mJ7vrxnTO2BU0mAG0CbTi39xiW2wkS759
- JwUG0VN6hPLWX5Sbz9gXgj7qCwH9tdraNAMreGbnvXmibKb98wlJv8D1n w==;
-X-CSE-ConnectionGUID: VXhDwcd0SBylDrLCwlIcng==
-X-CSE-MsgGUID: U0wcAzPHQ/CiEWlzajkanQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="46971674"
-X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="46971674"
+ bh=/CsEUK+bP3i2PMgxS+HCOt3NE+RerIlL+68d9PuGiBA=;
+ b=gxIlkdf/L43XrAR+hH8IGyvts+bwxpBIxDwNli/ypcWifcLl0Rd4/y8f
+ I2xilFl4TluVE1SVIbSOhryFcSOyHvr0HRT58MZLqGm3ZcGyxrOyAjk2o
+ X5v3OqfaDDlaQ0bYhuv8lf9Sljv8rtof9YGvOzx/6pHmynSfM+VWivw67
+ XiipoBjvlcNeInZbVroLD8WhBczrAOLeSa+rrl+Zd/pXcohmGlDo7H2Gg
+ dDhvMyFeaoXPWP1J8G+kuXQgdoZlVyQkMijGZUkgPE6TpZ34/C9SshTN7
+ 8X2pbD76lfxmh9EqCZhAFEeZruWu2fp/gR1PRy3ACVJ9CytjlIWcvkFtd w==;
+X-CSE-ConnectionGUID: 1aDEkk7uRDuSRGVfK9Cbtg==
+X-CSE-MsgGUID: KANU4ociQ6yv3EaoY4rLeA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="46971675"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="46971675"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 03:50:36 -0700
-X-CSE-ConnectionGUID: NfGpKsCyS6GoUeg0cEHtbg==
-X-CSE-MsgGUID: YJyeMeB9SLSKdxAVRPF8vA==
+ 22 Apr 2025 03:50:38 -0700
+X-CSE-ConnectionGUID: vfErd8r+SG62yUbaOsGd/Q==
+X-CSE-MsgGUID: LXKhY9WRQ1qk8JRyp7zv9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="132932085"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; d="scan'208";a="132932091"
 Received: from ifwibot07.gar.corp.intel.com (HELO
  rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 03:50:34 -0700
+ 22 Apr 2025 03:50:36 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
  chaitanya.kumar.borah@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v3 1/2] tests/kms_async_flips: Split subtest to handle
- linear buffers separately
-Date: Tue, 22 Apr 2025 16:13:02 +0530
-Message-Id: <20250422104303.2939858-2-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v3 2/2] tests/kms_async_flips: Use tiling modifiers
+Date: Tue, 22 Apr 2025 16:13:03 +0530
+Message-Id: <20250422104303.2939858-3-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250422104303.2939858-1-santhosh.reddy.guddati@intel.com>
 References: <20250422104303.2939858-1-santhosh.reddy.guddati@intel.com>
@@ -71,155 +70,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As linear buffers are considered corner cases, split the existing subtests
-run_with_modifiers to handle as a separate subtest.
+As async with linear modifiers is not a practical and common use case,
+override the default modifier with tiled for all the async flip subtests
 
 V2:
-Rename existing subtest to tiled modifier and make the tiled subtest
-intel specific, fix linear modifier subtest to avoid skip on non intel
-platforms (Karthik).
-
-V3:
-Refactor run_test for linear modifier and update run_test_with_modifiers
-to skip for linear modifier only (Karthik).
+move handling to default_modifier (Karthik)
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 ---
- tests/kms_async_flips.c | 58 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 43 insertions(+), 15 deletions(-)
+ tests/kms_async_flips.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 031417ed8..12d1a0f43 100644
+index 12d1a0f43..71ea94cc8 100644
 --- a/tests/kms_async_flips.c
 +++ b/tests/kms_async_flips.c
-@@ -45,7 +45,7 @@
-  * Description: Verify the async flip functionality and the fps during async flips
-  *              Alternate between sync and async flips
-  *
-- * SUBTEST: async-flip-with-page-flip-events
-+ * SUBTEST: async-flip-with-page-flip-events-tiled
-  * Description: Verify the async flip functionality and the fps during async flips
-  *              Wait for page flip events in between successive asynchronous flips
-  *
-@@ -66,7 +66,7 @@
-  * SUBTEST: alternate-sync-async-flip-atomic
-  * Description: Verify the async flip functionality and the fps during async flips using atomic path
-  *
-- * SUBTEST: async-flip-with-page-flip-events-atomic
-+ * SUBTEST: async-flip-with-page-flip-events-tiled-atomic
-  * Description: Wait for page flip events in between successive asynchronous flips using atomic path
-  *
-  * SUBTEST: test-time-stamp-atomic
-@@ -88,6 +88,14 @@
-  *
-  * SUBTEST: overlay-atomic
-  * Description: Verify overlay planes with async flips in atomic API
-+ *
-+ * SUBTEST: async-flip-with-page-flip-events-linear
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *		with linear modifier
-+ *
-+ * SUBTEST: async-flip-with-page-flip-events-linear-atomic
-+ * Description: Verify the async flip functionality and the fps during async flips
-+ *		with linear modifier in Atomic API
-  */
- 
- #define CURSOR_POS 128
-@@ -128,6 +136,7 @@ typedef struct {
- 	struct buf_ops *bops;
- 	bool atomic_path;
- 	bool overlay_path;
-+	bool linear_modifier;
- } data_t;
- 
- static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-@@ -266,6 +275,7 @@ static void test_init_ops(data_t *data)
- 	data->alternate_sync_async = false;
- 	data->atomic_path = false;
- 	data->overlay_path = false;
-+	data->linear_modifier = false;
- }
- 
- static void test_init_fbs(data_t *data)
-@@ -769,7 +779,8 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 
- 		test_init(data);
- 		data->allow_fail = false;
--		data->modifier = default_modifier(data);
-+		data->modifier = data->linear_modifier ? DRM_FORMAT_MOD_LINEAR : default_modifier(data);
-+
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
- 			/*
- 			 * FIXME: joiner+async flip is busted currently in KMD.
-@@ -792,15 +803,20 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
- 		test_init(data);
- 
- 		for (int i = 0; i < data->plane->format_mod_count; i++) {
-+			uint64_t modifier = data->plane->modifiers[i];
-+
- 			if (data->plane->formats[i] != DRM_FORMAT_XRGB8888)
- 				continue;
- 
-+			if (modifier == DRM_FORMAT_MOD_LINEAR)
-+				continue;
-+
- 			data->allow_fail = true;
--			data->modifier = data->plane->modifiers[i];
-+			data->modifier = modifier;
- 
- 			igt_dynamic_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
- 				      data->output->name,
--				      igt_fb_modifier_name(data->modifier)) {
-+				      igt_fb_modifier_name(modifier)) {
- 				      /*
- 				       * FIXME: joiner+async flip is busted currently in KMD.
- 				       * Remove this check once the issues are fixed in KMD.
-@@ -844,23 +860,35 @@ igt_main
- 			require_monotonic_timestamp(data.drm_fd);
- 
- 		igt_describe("Wait for page flip events in between successive asynchronous flips");
--		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
-+		igt_subtest_with_dynamic("async-flip-with-page-flip-events-tiled") {
- 			test_init_ops(&data);
--			if (is_intel_device(data.drm_fd))
--				run_test_with_modifiers(&data, test_async_flip);
--			else
--				run_test(&data, test_async_flip);
-+			igt_require(is_intel_device(data.drm_fd));
-+			run_test_with_modifiers(&data, test_async_flip);
- 		}
- 
- 		igt_describe("Wait for page flip events in between successive "
- 			     "asynchronous flips using atomic path");
--		igt_subtest_with_dynamic("async-flip-with-page-flip-events-atomic") {
-+		igt_subtest_with_dynamic("async-flip-with-page-flip-events-tiled-atomic") {
- 			test_init_ops(&data);
- 			data.atomic_path = true;
--			if (is_intel_device(data.drm_fd))
--				run_test_with_modifiers(&data, test_async_flip);
--			else
--				run_test(&data, test_async_flip);
-+			igt_require(is_intel_device(data.drm_fd));
-+			run_test_with_modifiers(&data, test_async_flip);
-+		}
-+
-+		igt_describe("Wait for page flip events in between successive asynchronous "
-+			     "flips with linear modifiers");
-+		igt_subtest_with_dynamic("async-flip-with-page-flip-events-linear") {
-+			test_init_ops(&data);
-+			data.linear_modifier = true;
-+			run_test(&data, test_async_flip);
-+		}
-+
-+		igt_describe("Wait for page flip events in between successive asynchronous "
-+			     "flips using atomic path with linear modifiers");
-+		igt_subtest_with_dynamic("async-flip-with-page-flip-events-linear-atomic") {
-+			test_init_ops(&data);
-+			data.linear_modifier = true;
-+			run_test(&data, test_async_flip);
- 		}
- 
- 		igt_describe("Alternate between sync and async flips");
+@@ -194,6 +194,9 @@ static void wait_flip_event(data_t *data)
+ static uint64_t default_modifier(data_t *data)
+ {
+ 	if (igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
++				       I915_FORMAT_MOD_4_TILED))
++		return I915_FORMAT_MOD_4_TILED;
++	else if (igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888,
+ 				       I915_FORMAT_MOD_X_TILED))
+ 		return I915_FORMAT_MOD_X_TILED;
+ 	else
 -- 
 2.34.1
 
