@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1419DC369CB
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 17:15:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44217C369D7
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Apr 2025 17:15:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C210A10E608;
-	Tue, 22 Apr 2025 17:15:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F2C9210E609;
+	Tue, 22 Apr 2025 17:15:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="daat7fQ/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RH3Xt5l9";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 02F9110E5E8
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 17:15:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 675A210E609
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Apr 2025 17:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745342134; x=1776878134;
+ t=1745342137; x=1776878137;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DoD8R+jtgyuTdjayV0XOcEe2I5TjZ7eJICiYAXsCdog=;
- b=daat7fQ/u216M02JZl+vgHlwMiapof56FIPGuJtudcy3ssbjyxsHNRtu
- AF6Gejm2nqYHOSVlRq21ikGI49lICmbGRHwNew+EieICNVf0w8Gxm8GMC
- bRXtz+eUODxTLzAlGW+LBTHd6WOWw55WiizvN7s5nJ02AgbIMqgviroqF
- f2tM2afovKyomQgf8PNRlVr0iUk63sXOX4lf6VqUDuqm5tN2wswbiL1XH
- Tjd/60hji200P5S9ckrtls7ShpKxRGVAZ+XS199iAwBVnr2YXa6ce6YMX
- EfnkOKczIdE+NfyiImyHVs12XyVxzJgVdpwVa42BPFe6hkacEW2RLmrkp w==;
-X-CSE-ConnectionGUID: McKeoOUJRcySY9FTDC1XSQ==
-X-CSE-MsgGUID: 7jvBPE4wQWCqucxm+21qHQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50715507"
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="50715507"
+ bh=8iAZIGwyMFjPvMRkzn4CKiG98AmrKqmAkfIdocQXTWY=;
+ b=RH3Xt5l9pZTMEGqy7poaM8pFlHH64Vp/FCgOgQ0Z/ErsIG4oHjr7ZMSp
+ iKpBKRmcGY5OSu05Bz9xcCl3TOeg/ZyMtRUyT4DzGjLAHhF6MSM+3BMMO
+ IYAeCUtp1GscSgIFZR92KfHc/M2IdMM2tav2EJqWwsoKA8/vE5/EDBHdh
+ QyeyLqOZqb675OpvK7CW5uXRiuWXTdmzVIjoB3PWbHTGKq5Qt/L4P0+SO
+ IM2eFvYumymhwkXR/7/KfYuQAk+GLpLkCONgZcf9/OGJUvYK8/4E1f5We
+ SyBMlG7CccgSJRJPUB+KypwuTT6fZjkXiTJfy/DkqclDEUVDsS9Qfaqj/ w==;
+X-CSE-ConnectionGUID: W3A6icFRTiiwEw2vjd0c0A==
+X-CSE-MsgGUID: hFQQuRAbRJmIoh8I7JnRsQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50715512"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="50715512"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 10:15:33 -0700
-X-CSE-ConnectionGUID: Cki+4oGyQBuJ8BElT7St/A==
-X-CSE-MsgGUID: wGN++AxVQFKXzCKUxTGh4Q==
+ 22 Apr 2025 10:15:37 -0700
+X-CSE-ConnectionGUID: w5V969NdRaS78kxblfXPpw==
+X-CSE-MsgGUID: PVWq2BfTSK+KpjuU4pX/KA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="133022678"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; d="scan'208";a="133022708"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Apr 2025 10:15:30 -0700
+ 22 Apr 2025 10:15:34 -0700
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  vinay.belgaumkar@intel.com, kamil.konieczny@intel.com,
  krzysztof.karas@intel.com, zbigniew.kempczynski@intel.com
 Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
  soham.purkait@intel.com, ashutosh.dixit@intel.com
-Subject: [PATCH i-g-t v9 2/5] lib/igt_device_scan: Enable finding all matched
- IGT devices
-Date: Tue, 22 Apr 2025 22:41:05 +0530
-Message-Id: <20250422171108.2170758-3-soham.purkait@intel.com>
+Subject: [PATCH i-g-t v9 3/5] tools/gputop/utils: Add gputop utility functions
+ common to all drivers
+Date: Tue, 22 Apr 2025 22:41:06 +0530
+Message-Id: <20250422171108.2170758-4-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250422171108.2170758-1-soham.purkait@intel.com>
 References: <20250422171108.2170758-1-soham.purkait@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,115 +72,156 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use filter to find all the available
-GPUs or few among them by driver name
-and card type or card number.
+Implement utility functions in gputop for common
+operations and data handling across different drivers.
 
 v2 : Fix for refactoring GPUTOP into a
      vendor-agnostic tool. (Lucas)
 
-v3 : Separate commit for lib. (Kamil)
+v3 : Headers in alphabetical order. (Kamil, Riana)
 
-v4 : Refactor to use composition strategy
-     for driver and device type filtering.
-     Refactor code to improve memory
-     allocation and error handling. (Lucas)
+v4 : Fix source file naming and remove driver
+     specific codes. (Riana)
 
-v5 : Introduce device card match function
-     to return collection of matching
-     devices using device filter.
-
-v6 : Separate commit for device card match
-     function.                     (Zbigniew)
-     Function description modification for device
-     card match function.          (Zbigniew)
-
-v7 : Single return for card match function.
-                                  (Krzysztof)
-
-v8 : Removed 'drivers' array as card match
-     function parameter.          (Zbigniew)
-
-v9 : Fixed allocation in card match instead of
-     multiple realloc.            (Zbigniew)
+v7 : Fix per-client engine width value with
+     a macro replacing magic number. (Krzysztof)
 
 Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
 ---
- lib/igt_device_scan.c | 48 +++++++++++++++++++++++++++++++++++++++++++
- lib/igt_device_scan.h |  1 +
- 2 files changed, 49 insertions(+)
+ tools/gputop/utils.c | 51 +++++++++++++++++++++++++++++++++++
+ tools/gputop/utils.h | 64 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 115 insertions(+)
+ create mode 100644 tools/gputop/utils.c
+ create mode 100644 tools/gputop/utils.h
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index 8859b9489..d424e287d 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -2137,6 +2137,54 @@ bool igt_device_card_match_pci(const char *filter,
-        return __igt_device_card_match(filter, card, true);
- }
- 
-+/**
-+ * igt_device_card_match_all
-+ * @filter: filter string.
-+ * @card: double pointer to igt_device_card structure, containing
-+ * an array of igt_device_card structures upon successful return.
-+ *
-+ * Function applies filter to match device from device array.
-+ *
-+ * Returns: the number of cards found.
-+ *
-+ * Note: The caller is responsible for freeing the memory which is
-+ * dynamically allocated for the array of igt_device_card structures
-+ * upon successful return.
+diff --git a/tools/gputop/utils.c b/tools/gputop/utils.c
+new file mode 100644
+index 000000000..7f260dc05
+--- /dev/null
++++ b/tools/gputop/utils.c
+@@ -0,0 +1,51 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
 + */
-+int igt_device_card_match_all(const char *filter, struct igt_device_card **card)
++#include <assert.h>
++
++#include "utils.h"
++
++static const char * const bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
++
++void n_spaces(const unsigned int n)
 +{
-+	struct igt_device *dev = NULL;
-+	struct igt_device_card *crd = NULL;
-+	int count = 0;
++	unsigned int i;
 +
-+	igt_devices_scan();
-+
-+	if (igt_device_filter_apply(filter) == false)
-+		return 0;
-+
-+	if (igt_list_empty(&igt_devs.filtered))
-+		return 0;
-+
-+	igt_list_for_each_entry(dev, &igt_devs.filtered, link) {
-+		count++;
-+	}
-+
-+	crd = calloc(count, sizeof(struct igt_device_card));
-+	if (!crd)
-+		return 0;
-+
-+	count = 0;
-+
-+	igt_list_for_each_entry(dev, &igt_devs.filtered, link) {
-+		__copy_dev_to_card(dev, crd + count++);
-+	}
-+
-+	if (count)
-+		*card = crd;
-+
-+	return count;
++	for (i = 0; i < n; i++)
++		putchar(' ');
 +}
 +
- /**
-  * igt_device_get_pretty_name
-  * @card: pointer to igt_device_card struct
-diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-index f1cd3b1e9..e6e31e799 100644
---- a/lib/igt_device_scan.h
-+++ b/lib/igt_device_scan.h
-@@ -89,6 +89,7 @@ int igt_device_filter_pci(void);
- bool igt_device_card_match(const char *filter, struct igt_device_card *card);
- bool igt_device_card_match_pci(const char *filter,
- 	struct igt_device_card *card);
-+int igt_device_card_match_all(const char *filter, struct igt_device_card **card);
- bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
- bool igt_device_find_integrated_card(struct igt_device_card *card);
- bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
++void print_percentage_bar(double percent, int max_len)
++{
++	int bar_len, i, len = max_len - 1;
++	const int w = PERCLIENT_ENGINE_WIDTH;
++
++	len -= printf("|%5.1f%% ", percent);
++
++	/* no space left for bars, do what we can */
++	if (len < 0)
++		len = 0;
++
++	bar_len = ceil(w * percent * len / 100.0);
++	if (bar_len > w * len)
++		bar_len = w * len;
++
++	for (i = bar_len; i >= w; i -= w)
++		printf("%s", bars[w]);
++	if (i)
++		printf("%s", bars[i]);
++
++	len -= (bar_len + (w - 1)) / w;
++	n_spaces(len);
++
++	putchar('|');
++}
++
++int print_engines_footer(int lines, int con_w, int con_h)
++{
++	if (lines++ < con_h)
++		printf("\n");
++
++	return lines;
++}
+diff --git a/tools/gputop/utils.h b/tools/gputop/utils.h
+new file mode 100644
+index 000000000..3c62f1c47
+--- /dev/null
++++ b/tools/gputop/utils.h
+@@ -0,0 +1,64 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#ifndef COMMON_GPUTOP_H
++#define COMMON_GPUTOP_H
++
++#include <glib.h>
++#include <math.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++#include "igt_device_scan.h"
++
++#define ANSI_HEADER "\033[7m"
++#define ANSI_RESET "\033[0m"
++
++#define PERCLIENT_ENGINE_WIDTH 8
++
++/**
++ * struct gputop_device
++ *
++ * @driver_present: It is set if at least a
++ * single device of the respective driver is
++ * found
++ * @len: Number of total device discovered
++ * of the respective driver
++ * @instances: pointer to the array of
++ * discovered instances of the devices
++ * of the same driver
++ */
++struct gputop_device {
++	bool driver_present;
++	int len;
++	void *instances;
++};
++
++/**
++ * struct device_operations - Structure to hold function
++ * pointers for device specific operations for each individual driver.
++ * @gputop_init: Function to initialize GPUTOP object
++ * @init_engines: Function to initialize engines for the respective driver.
++ * @pmu_init: Function to initialize the PMU (Performance Monitoring Unit).
++ * @pmu_sample: Function to sample PMU data.
++ * @print_engines: Function to print engine business.
++ * @clean_up: Function to release resources.
++ */
++struct device_operations {
++	void (*gputop_init)(void *ptr,
++			    struct igt_device_card *card);
++	void *(*init_engines)(const void *obj);
++	int (*pmu_init)(const void *obj);
++	void (*pmu_sample)(const void *obj);
++	int (*print_engines)(const void *obj, int lines, int w, int h);
++	void (*clean_up)(void *obj, int len);
++};
++
++void print_percentage_bar(double percent, int max_len);
++int print_engines_footer(int lines, int con_w, int con_h);
++void n_spaces(const unsigned int n);
++
++#endif  /* COMMON_GPUTOP_H */
 -- 
 2.34.1
 
