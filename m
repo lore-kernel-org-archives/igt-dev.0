@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4604C369CB
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Apr 2025 23:37:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8756AC369CB
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Apr 2025 23:45:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5543610E42F;
-	Wed, 23 Apr 2025 23:37:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FC1F10E1C6;
+	Wed, 23 Apr 2025 23:45:26 +0000 (UTC)
 Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2F0310E42F;
- Wed, 23 Apr 2025 23:37:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 326E310E1C6;
+ Wed, 23 Apr 2025 23:45:25 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3198025212423712870=="
+ boundary="===============1750652442698157660=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel/xe=5Ftest=5Fconfig=2E?=
- =?utf-8?q?json=3A_add_intel=5Fsysfs=5Fdebugfs?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_per-device_engine_activ?=
+ =?utf-8?q?ity_stats_in_GPUTOP_=28rev5=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+To: "Soham Purkait" <soham.purkait@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Apr 2025 23:37:57 -0000
-Message-ID: <174545147762.2999.15330651962755344580@c664b1dc75d1>
+Date: Wed, 23 Apr 2025 23:45:25 -0000
+Message-ID: <174545192520.3012.1387985963533747106@c664b1dc75d1>
 X-Patchwork-Hint: ignore
-References: <20250422171125.137275-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20250422171125.137275-1-kamil.konieczny@linux.intel.com>
+References: <20250422171108.2170758-1-soham.purkait@intel.com>
+In-Reply-To: <20250422171108.2170758-1-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3198025212423712870==
+--===============1750652442698157660==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: intel/xe_test_config.json: add intel_sysfs_debugfs
-URL   : https://patchwork.freedesktop.org/series/148093/
+Series: Add per-device engine activity stats in GPUTOP (rev5)
+URL   : https://patchwork.freedesktop.org/series/146756/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8331_BAT -> XEIGTPW_13022_BAT
+CI Bug Log - changes from XEIGT_8331_BAT -> XEIGTPW_13023_BAT
 ====================================================
 
 Summary
@@ -66,15 +66,15 @@ Summary
 
   
 
-Participating hosts (8 -> 8)
+Participating hosts (8 -> 7)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): bat-adlp-7 
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_13022_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_13023_BAT that come from known issues:
 
 ### IGT changes ###
 
@@ -83,7 +83,7 @@ Known issues
   * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
     - bat-dg2-oem2:       [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4829]) +2 other tests dmesg-warn
    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8331/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13022/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13023/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
 
   
 #### Possible fixes ####
@@ -91,7 +91,7 @@ Known issues
   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:
     - bat-dg2-oem2:       [DMESG-WARN][3] ([Intel XE#4829]) -> [PASS][4] +2 other tests pass
    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8331/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13022/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13023/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
 
   
   [Intel XE#4829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4829
@@ -100,19 +100,19 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_8331 -> IGTPW_13022
+  * IGT: IGT_8331 -> IGTPW_13023
   * Linux: xe-2981-97cf1c266145ae8b2bb3f78168d795930a3f5191 -> xe-2982-2b8e7eee3b2b082348b1a307f07b5a6f8a9a2402
 
-  IGTPW_13022: 13022
+  IGTPW_13023: 9116f8243285b74a2b3f48ffc7a42dccac580950 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8331: e209a9bb68d2b524c7eeed1cb87abb4e187f2b78 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-2981-97cf1c266145ae8b2bb3f78168d795930a3f5191: 97cf1c266145ae8b2bb3f78168d795930a3f5191
   xe-2982-2b8e7eee3b2b082348b1a307f07b5a6f8a9a2402: 2b8e7eee3b2b082348b1a307f07b5a6f8a9a2402
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13022/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13023/index.html
 
---===============3198025212423712870==
+--===============1750652442698157660==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -132,44 +132,44 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>intel/xe_test_config.json: add intel_sysfs_debugfs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148093/">https://patchwork.freedesktop.org/series/148093/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Add per-device engine activity stats in GPUTOP (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146756/">https://patchwork.freedesktop.org/series/146756/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13022/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13022/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13023/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13023/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8331_BAT -&gt; XEIGTPW_13022_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8331_BAT -&gt; XEIGTPW_13023_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
+<h2>Participating hosts (8 -&gt; 7)</h2>
+<p>Missing    (1): bat-adlp-7 </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13022_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_13023_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8331/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13022/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4829">Intel XE#4829</a>) +2 other tests dmesg-warn</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8331/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13023/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4829">Intel XE#4829</a>) +2 other tests dmesg-warn</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8331/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4829">Intel XE#4829</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13022/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">PASS</a> +2 other tests pass</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8331/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4829">Intel XE#4829</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13023/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">PASS</a> +2 other tests pass</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8331 -&gt; IGTPW_13022</li>
+<li>IGT: IGT_8331 -&gt; IGTPW_13023</li>
 <li>Linux: xe-2981-97cf1c266145ae8b2bb3f78168d795930a3f5191 -&gt; xe-2982-2b8e7eee3b2b082348b1a307f07b5a6f8a9a2402</li>
 </ul>
-<p>IGTPW_13022: 13022<br />
+<p>IGTPW_13023: 9116f8243285b74a2b3f48ffc7a42dccac580950 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8331: e209a9bb68d2b524c7eeed1cb87abb4e187f2b78 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-2981-97cf1c266145ae8b2bb3f78168d795930a3f5191: 97cf1c266145ae8b2bb3f78168d795930a3f5191<br />
   xe-2982-2b8e7eee3b2b082348b1a307f07b5a6f8a9a2402: 2b8e7eee3b2b082348b1a307f07b5a6f8a9a2402</p>
@@ -177,4 +177,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============3198025212423712870==--
+--===============1750652442698157660==--
