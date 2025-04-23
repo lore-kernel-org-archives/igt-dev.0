@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ABFDC369CB
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Apr 2025 11:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32F61C369CB
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Apr 2025 12:23:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 144DC10E0B0;
-	Wed, 23 Apr 2025 11:56:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DFB9F10E1C5;
+	Wed, 23 Apr 2025 12:23:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R0aTSjAZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d0qrPZXy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4750B10E0B0
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Apr 2025 11:56:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB24F10E1C5
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Apr 2025 12:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745409392; x=1776945392;
+ t=1745411022; x=1776947022;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to;
- bh=L+zStUxXSBDk29yrtEhvtQaFT9U+cxnYVxcdwWz1VEg=;
- b=R0aTSjAZoLkE9BEH/+VIOCiQ1He+6JPDCypSa56ndtmRKvplKkw9ww2h
- WIT+gJElIxOxRi/z4FuNjTYt99NMJGmE/V//sFuch+92rU1IagiKlRgJZ
- MRlLq38J+YO7eqgEy7PGyTqQigrUBdymtUXPy0o+/3WIhAMdCVnfuUulg
- hTu0hIcPNmmxK4giq0amd2b861q5pFn+tmkFlwM6m1ROM59BHl34uYmke
- WYx/S7ZxAPHLZHnMR/LLBPIOCwjc64ZGwrjaTmko39EuQLrpYT/dcR640
- eFXHihVr6g8KmV0rcM4wKT5RWuig8EuNxZuZTrtsdCJZVbyjuWbyi9md5 Q==;
-X-CSE-ConnectionGUID: fQoQnq+dTW+UAJOmUXH+XA==
-X-CSE-MsgGUID: FmZhYbhkT2+87NGqx3RgCA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="34613450"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208,217";a="34613450"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 04:56:32 -0700
-X-CSE-ConnectionGUID: ZNYa7OQ8SPus7MsdKiuDyw==
-X-CSE-MsgGUID: lPeSlIhEQxK02acgeKFiPw==
+ bh=baokpCmPNe7gXAADc0RAapI4EIP1HvIAiwBfyYgU6pI=;
+ b=d0qrPZXy3NYKvVd90RenPK9tcCt74A8k8o21p9qWiYO2k4XqagE477R7
+ DVr20tjwcw7txd01UKA8FTvx7kuUgIfhbbt92+fqBm5u273naDL/WAVLM
+ Ql4SioMm2rB2GCS3jLw5ByAoQYQLfeo8tZA5mN6wyK6JbQnsL0ixmk+pB
+ CEsQ4nJMJbscm4T7YEOmHThvYByZdgkPhp3bXG/dbfB/zvtweKJph3Lyy
+ R1WdUJ0zkX3/gA3y9E1XvXtQZgh3iq0npIZJSY8+aKNiHSwOiVh8stkMJ
+ CYv+g5EfuICL39T8agwS16k+MyrSAjIcXZLUe8ekMed3VJqEIbAA59rsz w==;
+X-CSE-ConnectionGUID: KX/mASsOSjuBZ5DrFSUO9A==
+X-CSE-MsgGUID: pJpKB1rbQCeMuepUzEVwTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50800292"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208,217";a="50800292"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 05:23:41 -0700
+X-CSE-ConnectionGUID: 2o4xcLrtR1imv9cz1Wf1Zw==
+X-CSE-MsgGUID: z8JEMlgZT4S6ay3pKDujeg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
- d="scan'208,217";a="132830012"
-Received: from nniranja-mobl2.gar.corp.intel.com (HELO [10.247.208.41])
- ([10.247.208.41])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 04:56:30 -0700
+ d="scan'208,217";a="137376951"
+Received: from rishavra-mobl.gar.corp.intel.com (HELO [10.247.252.246])
+ ([10.247.252.246])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 05:23:38 -0700
 Content-Type: multipart/alternative;
- boundary="------------TY8JOa6GyOLxKDz0Hjs8ZyiJ"
-Message-ID: <f520c35d-060f-49fb-a035-a6b7ace4ae3d@intel.com>
-Date: Wed, 23 Apr 2025 17:26:26 +0530
+ boundary="------------zCAegVr8YQKVVcu0RsY2DueK"
+Message-ID: <ec6a0143-dae2-4d3f-a889-717188347c45@intel.com>
+Date: Wed, 23 Apr 2025 17:53:34 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,v3,2/5] lib/igt_sysfs: Rename debug level APIs/variables
- to debug mask
+Subject: Re: [i-g-t,v3,4/5] tests/kms: Add parse_bitmask support for user
 To: Pranay Samala <pranay.samala@intel.com>, igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com
-References: <20250401092015.818465-3-pranay.samala@intel.com>
+References: <20250401092015.818465-5-pranay.samala@intel.com>
 Content-Language: en-US
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20250401092015.818465-3-pranay.samala@intel.com>
+In-Reply-To: <20250401092015.818465-5-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,137 +72,249 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 This is a multi-part message in MIME format.
---------------TY8JOa6GyOLxKDz0Hjs8ZyiJ
+--------------zCAegVr8YQKVVcu0RsY2DueK
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 Hello Pranay,
 
-Please find comments inline,
+The new command-line option isn’t necessary. Anyone running a single 
+test can already change the DRM debug mask on the fly with
+
+echo 0x… > /sys/module/drm/parameters/debug
+
+For CI jobs—where disk space is tight—add an environment variable such 
+as |IGT_CI_RUN=1|.
+Test cases known to exceed the predefined CI log limits should switch 
+from the default verbose mask provided in boot parameters (for example 
+|0x1E|) to a lighter mask that still captures the essentials logs.
+
+Also have different masks documented somewhere so others also can do for 
+the tests they are looking after.
+Bit 0  (0x01) CORE      – DRM core paths
+Bit 1  (0x02) DRIVER    – driver-specific code
+Bit 2  (0x04) KMS       – modesetting
+Bit 3  (0x08) PRIME     – dma-buf sharing
+Bit 4  (0x10) ATOMIC    – atomic commits
+Bit 5  (0x20) VBLANK    – vblank handling
+Bit 7  (0x80) LEASE     – leasing infrastructure
+Bit 8  (0x100) DP       – DisplayPort plumbing
+
+Thanks and Regards
+Kunal Joshi
 
 On 01-04-2025 14:50, Pranay Samala wrote:
-> The debug log mask is a mask rather than level. Rename each level
-> occurance to mask.
+> The user can dynamically provide a mask during execution, giving them
+> more control over the debug mask. This is useful in scenarios where
+> different masks are needed for different tests or configurations without
+> modifying the code itself.
 >
-> Fixes: 56b91193b825 ("lib/igt_sysfs: Implement dynamic adjustment of debug log level")
+> If the user does not provide a mask, the system defaults to 0x04. This
+> ensures that the test can still run without requiring any extra input.
+>
+> Fixes: a2ab0ec12ef4 ("tests/kms_atomic_transition: Reducing debug loglevel dynamically")
+> Fixes: 4baeb7397d71 ("tests/intel/kms_dp_linktrain_fallback: Reduce debug loglevel dynamically")
+> Fixes: 7a8a3744466f ("tests/kms_cursor_legacy: Reduce debug loglevel dynamically")
 > Signed-off-by: Pranay Samala<pranay.samala@intel.com>
 > ---
->   lib/igt_sysfs.c | 32 ++++++++++++++++----------------
->   lib/igt_sysfs.h |  6 +++---
->   2 files changed, 19 insertions(+), 19 deletions(-)
+>   tests/intel/kms_dp_linktrain_fallback.c | 37 +++++++++++++++++++------
+>   tests/kms_atomic_transition.c           | 24 ++++++++--------
+>   tests/kms_cursor_legacy.c               | 37 ++++++++++++++++++-------
+>   3 files changed, 68 insertions(+), 30 deletions(-)
 >
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index 9643aab43..e6058a1dd 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -446,15 +446,15 @@ int igt_sysfs_drm_module_params_open(void)
->   static int original_debug_mask = -1;
->   
->   /**
-> - * igt_drm_debug_level_get:
-> + * igt_drm_debug_mask_get:
->    *
-> - * This reads the current debug log level of the machine on
-> + * This reads the current debug mask of the machine on
->    * which the test is currently executing.
->    *
->    * Returns:
-> - * The current log level, or -1 on error.
-> + * The current debug mask, or -1 on error.
->    */
-> -int igt_drm_debug_level_get(int dir)
-> +int igt_drm_debug_mask_get(int dir)
->   {
->   	char buf[20];
->   
-> @@ -468,13 +468,13 @@ int igt_drm_debug_level_get(int dir)
+> diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+> index 6a872efd2..a6f7b586f 100644
+> --- a/tests/intel/kms_dp_linktrain_fallback.c
+> +++ b/tests/intel/kms_dp_linktrain_fallback.c
+> @@ -608,12 +608,33 @@ static bool run_dsc_sst_fallaback_test(data_t *data)
+>   	return ran;
 >   }
 >   
->   /**
-> - * igt_drm_debug_level_reset:
-> + * igt_drm_debug_mask_reset:
->    *
-> - * This modifies the current debug log level of the machine
-> + * This modifies the current debug mask of the machine
->    * to the default value post-test.
->    *
->    */
-> -void igt_drm_debug_level_reset(void)
-> +void igt_drm_debug_mask_reset(void)
+> -igt_main
+> +static unsigned int parse_bitmask;
+> +static unsigned int def_mask = 0x4;
+> +
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	switch (opt) {
+> +	case 'b':
+> +		parse_bitmask = strtoul(optarg, NULL, 16);
+> +		break;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static const struct option long_opts[] = {
+> +	{ .name = "bitmask", .has_arg = true, .val = 'b', },
+> +	{}
+> +};
+> +
+> +static const char help_str[] =
+> +	"  --bitmask\t\tSpecify a bitmask in hexadecimal\n";
+> +
+> +igt_main_args("", long_opts, help_str, opt_handler, NULL)
 >   {
->   	char buf[20];
->   	int dir;
-> @@ -486,25 +486,25 @@ void igt_drm_debug_level_reset(void)
->   	if (dir < 0)
->   		return;
+>   	data_t data = {};
 >   
-> -	igt_debug("Resetting DRM debug level to %d\n", original_debug_mask);
-> +	igt_debug("Resetting DRM debug mask to %d\n", original_debug_mask);
->   	snprintf(buf, sizeof(buf), "%d", original_debug_mask);
->   	igt_assert(igt_sysfs_set(dir, "debug", buf));
+>   	igt_fixture {
+> -		int dir, current_log_level;
+>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL |
+>   						     DRIVER_XE);
+>   		kmstest_set_vt_graphics_mode();
+> @@ -621,14 +642,12 @@ igt_main
+>   		igt_display_require_output(&data.display);
+>   		for_each_pipe(&data.display, data.pipe)
+>   			data.n_pipes++;
+> -		dir = igt_sysfs_drm_module_params_open();
+> -		if (dir >= 0) {
+> -			current_log_level = igt_drm_debug_level_get(dir);
+> -			close(dir);
 >   
->   	close(dir);
+> -			if (current_log_level > 10)
+> -				igt_drm_debug_level_update(10);
+> -		}
+> +		if (parse_bitmask)
+> +			igt_drm_debug_mask_update(parse_bitmask);
+> +		else
+> +			igt_drm_debug_mask_update(def_mask);
+> +
+>   		/*
+>   		 * Some environments may have environment
+>   		 * variable set to ignore long hpd, disable it for this test
+> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+> index 2b64424ce..a92edc2b1 100644
+> --- a/tests/kms_atomic_transition.c
+> +++ b/tests/kms_atomic_transition.c
+> @@ -1096,6 +1096,9 @@ static bool pipe_output_combo_valid(igt_display_t *display,
+>   	return ret;
 >   }
 >   
-> -static void igt_drm_debug_level_reset_exit_handler(int sig)
-> +static void igt_drm_debug_mask_reset_exit_handler(int sig)
+> +static unsigned int parse_bitmask;
+> +static unsigned int def_mask = 0x4;
+> +
+>   static int opt_handler(int opt, int opt_index, void *_data)
 >   {
-> -	igt_drm_debug_level_reset();
-> +	igt_drm_debug_mask_reset();
->   }
->   
->   /**
-> - * igt_drm_debug_level_update:
-> - * @debug_level: new debug level to set
-> + * igt_drm_debug_mask_update:
-> + * @debug_level: new debug mask to set
-Rename to mask,
->    *
-> - * This modifies the current drm debug log level to the new value.
-> + * This modifies the current drm debug mask to the new value.
->    */
-> -void igt_drm_debug_level_update(unsigned int new_log_level)
-> +void igt_drm_debug_mask_update(unsigned int new_log_level)
-Rename new_log_level to |new_debug_mask| or |requested_debug_mask|
->   {
->   	char buf[20];
->   	int dir;
-> @@ -513,13 +513,13 @@ void igt_drm_debug_level_update(unsigned int new_log_level)
->   	if (dir < 0)
->   		return;
->   
-> -	original_debug_mask = igt_drm_debug_level_get(dir);
-> +	original_debug_mask = igt_drm_debug_mask_get(dir);
->   	if (original_debug_mask < 0) {
->   		close(dir);
->   		return;
+>   	data_t *data = _data;
+> @@ -1104,6 +1107,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
+>   	case 'e':
+>   		data->extended = true;
+>   		break;
+> +	case 'b':
+> +		parse_bitmask = strtoul(optarg, NULL, 16);
+> +		break;
 >   	}
 >   
-> -	igt_debug("Setting DRM debug level to %d\n", new_log_level);
-> +	igt_debug("Setting DRM debug mask to %d\n", new_log_level);
->   	snprintf(buf, sizeof(buf), "%d", new_log_level);
->   	igt_assert(igt_sysfs_set(dir, "debug", buf));
+>   	return IGT_OPT_HANDLER_SUCCESS;
+> @@ -1111,11 +1117,13 @@ static int opt_handler(int opt, int opt_index, void *_data)
 >   
-> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-> index 86345f3d1..2f4d25bf6 100644
-> --- a/lib/igt_sysfs.h
-> +++ b/lib/igt_sysfs.h
-> @@ -143,9 +143,9 @@ void igt_sysfs_set_boolean(int dir, const char *attr, bool value);
->   void bind_fbcon(bool enable);
->   void fbcon_blink_enable(bool enable);
+>   static const struct option long_opts[] = {
+>   	{ .name = "extended", .has_arg = false, .val = 'e', },
+> +	{ .name = "bitmask", .has_arg = true, .val = 'b', },
+>   	{}
+>   };
+
 >   
-> -void igt_drm_debug_level_update(unsigned int new_log_level);
-> -void igt_drm_debug_level_reset(void);
-> -int igt_drm_debug_level_get(int dir);
-> +void igt_drm_debug_mask_update(unsigned int new_log_level);
-> +void igt_drm_debug_mask_reset(void);
-> +int igt_drm_debug_mask_get(int dir);
->   int igt_sysfs_drm_module_params_open(void);
+>   static const char help_str[] =
+> -	"  --extended\t\tRun the extended tests\n";
+> +	"  --extended\t\tRun the extended tests\n"
+> +	"  --bitmask\t\tSpecify a bitmask in hexadecimal\n";
 >   
->   /**
---------------TY8JOa6GyOLxKDz0Hjs8ZyiJ
+>   static data_t data;
+>   
+> @@ -1174,8 +1182,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   	int pipe_count = 0;
+>   
+>   	igt_fixture {
+> -		int dir, current_log_level;
+> -
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   
+>   		kmstest_set_vt_graphics_mode();
+> @@ -1188,14 +1194,10 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		for_each_connected_output(&data.display, output)
+>   			count++;
+>   
+> -		dir = igt_sysfs_drm_module_params_open();
+> -		if (dir >= 0) {
+> -			current_log_level = igt_drm_debug_level_get(dir);
+> -			close(dir);
+> -
+> -			if (current_log_level > 10)
+> -				igt_drm_debug_level_update(10);
+> -		}
+> +		if (parse_bitmask)
+> +			igt_drm_debug_mask_update(parse_bitmask);
+> +		else
+> +			igt_drm_debug_mask_update(def_mask);
+>   	}
+>   
+>   	igt_describe("Check toggling of primary plane with vblank");
+> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+> index 44f031e7b..09d511935 100644
+> --- a/tests/kms_cursor_legacy.c
+> +++ b/tests/kms_cursor_legacy.c
+> @@ -1823,7 +1823,29 @@ static void modeset_atomic_cursor_hotspot(igt_display_t *display)
+>   	igt_remove_fb(display->drm_fd, &cursor_fb);
+>   }
+>   
+> -igt_main
+> +static unsigned int parse_bitmask;
+> +static unsigned int def_mask = 0x4;
+> +
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	switch (opt) {
+> +	case 'b':
+> +		parse_bitmask = strtoul(optarg, NULL, 16);
+> +		break;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static const struct option long_opts[] = {
+> +	{ .name = "bitmask", .has_arg = true, .val = 'b', },
+> +	{}
+> +};
+> +
+> +static const char help_str[] =
+> +	"  --bitmask\t\tSpecify a bitmask in hexadecimal\n";
+> +
+> +igt_main_args("", long_opts, help_str, opt_handler, NULL)
+>   {
+>   	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+>   	igt_display_t display = { .drm_fd = -1 };
+> @@ -1839,7 +1861,6 @@ igt_main
+>   	};
+>   
+>   	igt_fixture {
+> -		int dir, current_log_level;
+>   		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   		kmstest_set_vt_graphics_mode();
+>   
+> @@ -1851,14 +1872,10 @@ igt_main
+>   		 */
+>   		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd, NULL);
+>   
+> -		dir = igt_sysfs_drm_module_params_open();
+> -		if (dir >= 0) {
+> -			current_log_level = igt_drm_debug_level_get(dir);
+> -			close(dir);
+> -
+> -			if (current_log_level > 10)
+> -				igt_drm_debug_level_update(10);
+> -		}
+> +		if (parse_bitmask)
+> +			igt_drm_debug_mask_update(parse_bitmask);
+> +		else
+> +			igt_drm_debug_mask_update(def_mask);
+>   	}
+>   
+>   	igt_describe("Test checks how many cursor updates we can fit between vblanks "
+--------------zCAegVr8YQKVVcu0RsY2DueK
 Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 <!DOCTYPE html>
 <html>
@@ -213,141 +324,249 @@ Content-Transfer-Encoding: 7bit
   <body>
     <p>Hello Pranay,<br>
       <br>
-      Please find comments inline,</p>
+      The new command-line option isn’t necessary. Anyone running a
+      single test can already change the DRM debug mask on the fly with<br>
+    </p>
+    <p>echo 0x… &gt; /sys/module/drm/parameters/debug<br>
+      <br>
+      For CI jobs—where disk space is tight—add an environment variable
+      such as <code data-start="296" data-end="311">IGT_CI_RUN=1</code>.<br>
+      Test cases known to exceed the predefined CI log limits should
+      switch from the default verbose mask provided in boot parameters
+      (for example <code data-start="403" data-end="409">0x1E</code>)
+      to a lighter mask that still captures the essentials logs.<br>
+      <br>
+      Also have different masks documented somewhere so others also can
+      do for the tests they are looking after.<br>
+      Bit 0  (0x01) CORE      – DRM core paths<br>
+      Bit 1  (0x02) DRIVER    – driver-specific code<br>
+      Bit 2  (0x04) KMS       – modesetting<br>
+      Bit 3  (0x08) PRIME     – dma-buf sharing<br>
+      Bit 4  (0x10) ATOMIC    – atomic commits<br>
+      Bit 5  (0x20) VBLANK    – vblank handling<br>
+      Bit 7  (0x80) LEASE     – leasing infrastructure<br>
+      Bit 8  (0x100) DP       – DisplayPort plumbing<br>
+      <br>
+      Thanks and Regards<br>
+      Kunal Joshi</p>
     <div class="moz-cite-prefix">On 01-04-2025 14:50, Pranay Samala
       wrote:<br>
     </div>
     <blockquote type="cite">
-      <pre wrap="" class="moz-quote-pre">The debug log mask is a mask rather than level. Rename each level
-occurance to mask.
+      <pre wrap="" class="moz-quote-pre">The user can dynamically provide a mask during execution, giving them
+more control over the debug mask. This is useful in scenarios where
+different masks are needed for different tests or configurations without
+modifying the code itself.
 
-Fixes: 56b91193b825 ("lib/igt_sysfs: Implement dynamic adjustment of debug log level")
+If the user does not provide a mask, the system defaults to 0x04. This
+ensures that the test can still run without requiring any extra input.
+
+Fixes: a2ab0ec12ef4 ("tests/kms_atomic_transition: Reducing debug loglevel dynamically")
+Fixes: 4baeb7397d71 ("tests/intel/kms_dp_linktrain_fallback: Reduce debug loglevel dynamically")
+Fixes: 7a8a3744466f ("tests/kms_cursor_legacy: Reduce debug loglevel dynamically")
 Signed-off-by: Pranay Samala <a class="moz-txt-link-rfc2396E" href="mailto:pranay.samala@intel.com">&lt;pranay.samala@intel.com&gt;</a>
 ---
- lib/igt_sysfs.c | 32 ++++++++++++++++----------------
- lib/igt_sysfs.h |  6 +++---
- 2 files changed, 19 insertions(+), 19 deletions(-)
+ tests/intel/kms_dp_linktrain_fallback.c | 37 +++++++++++++++++++------
+ tests/kms_atomic_transition.c           | 24 ++++++++--------
+ tests/kms_cursor_legacy.c               | 37 ++++++++++++++++++-------
+ 3 files changed, 68 insertions(+), 30 deletions(-)
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 9643aab43..e6058a1dd 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -446,15 +446,15 @@ int igt_sysfs_drm_module_params_open(void)
- static int original_debug_mask = -1;
- 
- /**
-- * igt_drm_debug_level_get:
-+ * igt_drm_debug_mask_get:
-  *
-- * This reads the current debug log level of the machine on
-+ * This reads the current debug mask of the machine on
-  * which the test is currently executing.
-  *
-  * Returns:
-- * The current log level, or -1 on error.
-+ * The current debug mask, or -1 on error.
-  */
--int igt_drm_debug_level_get(int dir)
-+int igt_drm_debug_mask_get(int dir)
- {
- 	char buf[20];
- 
-@@ -468,13 +468,13 @@ int igt_drm_debug_level_get(int dir)
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+index 6a872efd2..a6f7b586f 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -608,12 +608,33 @@ static bool run_dsc_sst_fallaback_test(data_t *data)
+ 	return ran;
  }
  
- /**
-- * igt_drm_debug_level_reset:
-+ * igt_drm_debug_mask_reset:
-  *
-- * This modifies the current debug log level of the machine
-+ * This modifies the current debug mask of the machine
-  * to the default value post-test.
-  *
-  */
--void igt_drm_debug_level_reset(void)
-+void igt_drm_debug_mask_reset(void)
+-igt_main
++static unsigned int parse_bitmask;
++static unsigned int def_mask = 0x4;
++
++static int opt_handler(int opt, int opt_index, void *_data)
++{
++	switch (opt) {
++	case 'b':
++		parse_bitmask = strtoul(optarg, NULL, 16);
++		break;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++static const struct option long_opts[] = {
++	{ .name = "bitmask", .has_arg = true, .val = 'b', },
++	{}
++};
++
++static const char help_str[] =
++	"  --bitmask\t\tSpecify a bitmask in hexadecimal\n";
++
++igt_main_args("", long_opts, help_str, opt_handler, NULL)
  {
- 	char buf[20];
- 	int dir;
-@@ -486,25 +486,25 @@ void igt_drm_debug_level_reset(void)
- 	if (dir &lt; 0)
- 		return;
+ 	data_t data = {};
  
--	igt_debug("Resetting DRM debug level to %d\n", original_debug_mask);
-+	igt_debug("Resetting DRM debug mask to %d\n", original_debug_mask);
- 	snprintf(buf, sizeof(buf), "%d", original_debug_mask);
- 	igt_assert(igt_sysfs_set(dir, "debug", buf));
+ 	igt_fixture {
+-		int dir, current_log_level;
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL |
+ 						     DRIVER_XE);
+ 		kmstest_set_vt_graphics_mode();
+@@ -621,14 +642,12 @@ igt_main
+ 		igt_display_require_output(&amp;data.display);
+ 		for_each_pipe(&amp;data.display, data.pipe)
+ 			data.n_pipes++;
+-		dir = igt_sysfs_drm_module_params_open();
+-		if (dir &gt;= 0) {
+-			current_log_level = igt_drm_debug_level_get(dir);
+-			close(dir);
  
- 	close(dir);
+-			if (current_log_level &gt; 10)
+-				igt_drm_debug_level_update(10);
+-		}
++		if (parse_bitmask)
++			igt_drm_debug_mask_update(parse_bitmask);
++		else
++			igt_drm_debug_mask_update(def_mask);
++
+ 		/*
+ 		 * Some environments may have environment
+ 		 * variable set to ignore long hpd, disable it for this test
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 2b64424ce..a92edc2b1 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -1096,6 +1096,9 @@ static bool pipe_output_combo_valid(igt_display_t *display,
+ 	return ret;
  }
  
--static void igt_drm_debug_level_reset_exit_handler(int sig)
-+static void igt_drm_debug_mask_reset_exit_handler(int sig)
++static unsigned int parse_bitmask;
++static unsigned int def_mask = 0x4;
++
+ static int opt_handler(int opt, int opt_index, void *_data)
  {
--	igt_drm_debug_level_reset();
-+	igt_drm_debug_mask_reset();
- }
+ 	data_t *data = _data;
+@@ -1104,6 +1107,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ 	case 'e':
+ 		data-&gt;extended = true;
+ 		break;
++	case 'b':
++		parse_bitmask = strtoul(optarg, NULL, 16);
++		break;
+ 	}
  
- /**
-- * igt_drm_debug_level_update:
-- * @debug_level: new debug level to set
-+ * igt_drm_debug_mask_update:
-+ * @debug_level: new debug mask to set</pre>
+ 	return IGT_OPT_HANDLER_SUCCESS;
+@@ -1111,11 +1117,13 @@ static int opt_handler(int opt, int opt_index, void *_data)
+ 
+ static const struct option long_opts[] = {
+ 	{ .name = "extended", .has_arg = false, .val = 'e', },
++	{ .name = "bitmask", .has_arg = true, .val = 'b', },
+ 	{}
+ };</pre>
     </blockquote>
-    Rename to mask,
-    <blockquote type="cite">
-      <pre wrap="" class="moz-quote-pre">
-  *
-- * This modifies the current drm debug log level to the new value.
-+ * This modifies the current drm debug mask to the new value.
-  */
--void igt_drm_debug_level_update(unsigned int new_log_level)
-+void igt_drm_debug_mask_update(unsigned int new_log_level)</pre>
-    </blockquote>
-    Rename new_log_level to <code data-start="12431" data-end="12453">new_debug_mask</code>
-    or <code data-start="12431" data-end="12453">requested_debug_mask</code>
     <br>
     <blockquote type="cite">
       <pre wrap="" class="moz-quote-pre">
- {
- 	char buf[20];
- 	int dir;
-@@ -513,13 +513,13 @@ void igt_drm_debug_level_update(unsigned int new_log_level)
- 	if (dir &lt; 0)
- 		return;
  
--	original_debug_mask = igt_drm_debug_level_get(dir);
-+	original_debug_mask = igt_drm_debug_mask_get(dir);
- 	if (original_debug_mask &lt; 0) {
- 		close(dir);
- 		return;
+ static const char help_str[] =
+-	"  --extended\t\tRun the extended tests\n";
++	"  --extended\t\tRun the extended tests\n"
++	"  --bitmask\t\tSpecify a bitmask in hexadecimal\n";
+ 
+ static data_t data;
+ 
+@@ -1174,8 +1182,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &amp;data)
+ 	int pipe_count = 0;
+ 
+ 	igt_fixture {
+-		int dir, current_log_level;
+-
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 
+ 		kmstest_set_vt_graphics_mode();
+@@ -1188,14 +1194,10 @@ igt_main_args("", long_opts, help_str, opt_handler, &amp;data)
+ 		for_each_connected_output(&amp;data.display, output)
+ 			count++;
+ 
+-		dir = igt_sysfs_drm_module_params_open();
+-		if (dir &gt;= 0) {
+-			current_log_level = igt_drm_debug_level_get(dir);
+-			close(dir);
+-
+-			if (current_log_level &gt; 10)
+-				igt_drm_debug_level_update(10);
+-		}
++		if (parse_bitmask)
++			igt_drm_debug_mask_update(parse_bitmask);
++		else
++			igt_drm_debug_mask_update(def_mask);
  	}
  
--	igt_debug("Setting DRM debug level to %d\n", new_log_level);
-+	igt_debug("Setting DRM debug mask to %d\n", new_log_level);
- 	snprintf(buf, sizeof(buf), "%d", new_log_level);
- 	igt_assert(igt_sysfs_set(dir, "debug", buf));
+ 	igt_describe("Check toggling of primary plane with vblank");
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 44f031e7b..09d511935 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -1823,7 +1823,29 @@ static void modeset_atomic_cursor_hotspot(igt_display_t *display)
+ 	igt_remove_fb(display-&gt;drm_fd, &amp;cursor_fb);
+ }
  
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 86345f3d1..2f4d25bf6 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -143,9 +143,9 @@ void igt_sysfs_set_boolean(int dir, const char *attr, bool value);
- void bind_fbcon(bool enable);
- void fbcon_blink_enable(bool enable);
+-igt_main
++static unsigned int parse_bitmask;
++static unsigned int def_mask = 0x4;
++
++static int opt_handler(int opt, int opt_index, void *_data)
++{
++	switch (opt) {
++	case 'b':
++		parse_bitmask = strtoul(optarg, NULL, 16);
++		break;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++static const struct option long_opts[] = {
++	{ .name = "bitmask", .has_arg = true, .val = 'b', },
++	{}
++};
++
++static const char help_str[] =
++	"  --bitmask\t\tSpecify a bitmask in hexadecimal\n";
++
++igt_main_args("", long_opts, help_str, opt_handler, NULL)
+ {
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 	igt_display_t display = { .drm_fd = -1 };
+@@ -1839,7 +1861,6 @@ igt_main
+ 	};
  
--void igt_drm_debug_level_update(unsigned int new_log_level);
--void igt_drm_debug_level_reset(void);
--int igt_drm_debug_level_get(int dir);
-+void igt_drm_debug_mask_update(unsigned int new_log_level);
-+void igt_drm_debug_mask_reset(void);
-+int igt_drm_debug_mask_get(int dir);
- int igt_sysfs_drm_module_params_open(void);
+ 	igt_fixture {
+-		int dir, current_log_level;
+ 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		kmstest_set_vt_graphics_mode();
  
- /**
+@@ -1851,14 +1872,10 @@ igt_main
+ 		 */
+ 		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd, NULL);
+ 
+-		dir = igt_sysfs_drm_module_params_open();
+-		if (dir &gt;= 0) {
+-			current_log_level = igt_drm_debug_level_get(dir);
+-			close(dir);
+-
+-			if (current_log_level &gt; 10)
+-				igt_drm_debug_level_update(10);
+-		}
++		if (parse_bitmask)
++			igt_drm_debug_mask_update(parse_bitmask);
++		else
++			igt_drm_debug_mask_update(def_mask);
+ 	}
+ 
+ 	igt_describe("Test checks how many cursor updates we can fit between vblanks "
 </pre>
     </blockquote>
   </body>
 </html>
 
---------------TY8JOa6GyOLxKDz0Hjs8ZyiJ--
+--------------zCAegVr8YQKVVcu0RsY2DueK--
