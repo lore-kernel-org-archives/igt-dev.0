@@ -4,56 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1824DC369D3
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Apr 2025 10:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE1BC369D7
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Apr 2025 10:49:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C4E5810E683;
-	Wed, 23 Apr 2025 10:28:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A98510E208;
+	Wed, 23 Apr 2025 10:49:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OArFvxru";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sf2WoAwb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB1B210E683
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Apr 2025 10:28:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F06CE10E208
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Apr 2025 10:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745404094; x=1776940094;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=FOIRhTcSBMgy1BV8LGmZSn7X17FHdqSRlzV0xM/U3MY=;
- b=OArFvxru7eEMPFub/rc7xvFi+E4kU8rTvEq284u1qz0ZPXr2p1/iX0Bz
- dqmNZrpRRCO/pd8POdyhj41W2T8TpRWcLuYHY1n9/+JLHCsqfnfG8KjOR
- UYlLYIfWbowCt89E1u/0xKBnMHxJS6UYVIcTTmuxDKg8V0SOH8Bqk0AmL
- 5YI5oTvNn/zps1Kq4fe6YVx7cPAjDmLk+8OnA5EIQp9/5W+8uUVacca9d
- ybSzLywOF73fi9J/RSmaBrgsmK+akjDRlP6bg4famEk8tYm0bFvHImWJg
- uCMAHahAANhFpjereJIKPyzSIgca7BVpHPP8MHP1gMPSI6/7GyONH3GDU g==;
-X-CSE-ConnectionGUID: G1aBjyQIS4WMWk/4zy09vA==
-X-CSE-MsgGUID: UK/qLD2LT8OASkDhUbeFpA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="57979792"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="57979792"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 03:28:13 -0700
-X-CSE-ConnectionGUID: ti5CzhL3R1W+1rWxOM9igA==
-X-CSE-MsgGUID: 38JqrcAaT0SVU8OkOV4BNQ==
+ t=1745405358; x=1776941358;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=gORlOVucKENGAU+H7zfGDuuNkCVW5nbMM7Jx+hSXWGQ=;
+ b=Sf2WoAwbFcECV11vLA1/VNW36vGGWvw2s8BIkPG4nQUgelGjN4YFV4Bm
+ +MijFgJZzCwshvFvNOZ5x9C4z88d5gF1XoD7B+GsAWg+Kr7NBwBvchbuU
+ aeyJxGTBGhKtO7cZIN+xq7XTeCJHRuX+gy/BpL5qKHj542Kn8sqY20YqI
+ YQjtQQS+r/iulFUCdG6bqmJE8QOU/dGd2b4qX/0N5Q4L9g/6ltuszYq8W
+ t+j4tick99vWwTq9SyurLeC92fPh1xep2vHT+s+MQk5BnGrZwK9rkaRx8
+ PsS3tikYvqW73khkipChZMPDU4UEZDmLW+uZokgCRhbGcO/RHiQHwLiU3 g==;
+X-CSE-ConnectionGUID: 6iCnLFLQQJGKgm6LCRuXVw==
+X-CSE-MsgGUID: x07cz41HSxSGypZB0rKjRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="46873286"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="46873286"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 03:49:17 -0700
+X-CSE-ConnectionGUID: QFam18LbROmJ4P69n8PD2A==
+X-CSE-MsgGUID: GGlXMUo9TOm/nVAkCaX52Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137353052"
-Received: from ifwibot07.gar.corp.intel.com (HELO
- rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 03:28:11 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, mohammed.thasleem@intel.com,
- suraj.kandpal@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1] tests/kms_content_protection: Add force HDCP 1.4
- subtest
-Date: Wed, 23 Apr 2025 15:50:36 +0530
-Message-Id: <20250423102036.2944399-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="132025623"
+Received: from yguo23-mobl.ger.corp.intel.com (HELO [10.245.254.228])
+ ([10.245.254.228])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 03:49:16 -0700
+Message-ID: <efc69dc6-afba-4545-b273-87b5e9140ef9@linux.intel.com>
+Date: Wed, 23 Apr 2025 12:49:13 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] intel/xe_test_config.json: add intel_sysfs_debugfs
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Gandi Ramadevi <ramadevi.gandi@intel.com>,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+References: <20250422171125.137275-1-kamil.konieczny@linux.intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20250422171125.137275-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,129 +73,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-If a Panel supports both HDCP1.4 and HDCP2.2 versions, the kernel will
-always choose the HDCP2.2 protection path and if this fails, then
-HDCP1.4 will be tried.
+LGTM.
+Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 
-The subtest uses debugfs support to force hdcp1.4 on the connector and
-verify content protection.
-
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/kms_content_protection.c | 62 ++++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
-
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 6fe1edbc4..aea842bdf 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -63,6 +63,9 @@
-  * Description: Test to detect the HDCP status change when we are reading the
-  *              uevent sent with the corresponding connector id and property id.
-  *
-+ * SUBTEST: force-hdcp14
-+ * Description: Test to force hdcp1.4 on the connector and verify content protection.
-+ *
-  * SUBTEST: %s
-  * Description: Test content protection with %arg[1]
-  *
-@@ -102,6 +105,7 @@ struct data {
- #define CP_MEI_RELOAD				(1 << 2)
- #define CP_TYPE_CHANGE				(1 << 3)
- #define CP_UEVENT				(1 << 4)
-+#define CP_FORCE14				(1 << 5)
- 
- #define CP_UNDESIRED				0
- #define CP_DESIRED				1
-@@ -565,6 +569,51 @@ static bool output_hdcp_capable(igt_output_t *output, int content_type)
- 		return true;
- }
- 
-+static void enable_force_hdcp14(igt_output_t *output)
-+{
-+	int fd, ret;
-+	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
-+
-+	fd = igt_debugfs_connector_dir(data.drm_fd, output->name, O_RDONLY);
-+	igt_require_f(fd >= 0, "Cannot open %s debugfs\n", output->name);
-+
-+	ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf, sizeof(buf));
-+	if (ret <= 0) {
-+		igt_info("force_hdcp14 not supported\n");
-+		close(fd);
-+		return;
-+	}
-+
-+	ret = igt_sysfs_write(fd, "i915_force_hdcp14", "1", 2);
-+	igt_require_f(ret > 0, "force hdcp is not enabled\n");
-+
-+	ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf, sizeof(buf));
-+	igt_assert_f(ret > 0 && strstr(buf, "yes"),
-+			 "force_hdcp14 is not set to 'yes' on %s debugfs\n",
-+			 output->name);
-+
-+	close(fd);
-+}
-+
-+static void disable_force_hdcp14(igt_output_t *output)
-+{
-+	int fd, ret;
-+	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
-+
-+	fd = igt_debugfs_connector_dir(data.drm_fd, output->name, O_RDONLY);
-+	igt_require_f(fd >= 0, "Cannot open %s debugfs\n", output->name);
-+
-+	ret = igt_sysfs_write(fd, "i915_force_hdcp14", "0", 2);
-+	igt_require_f(ret > 0, "force hdcp is not disabled\n");
-+
-+	ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf, sizeof(buf));
-+	igt_assert_f(ret > 0 && strstr(buf, "no"),
-+			 "i915_force_hdcp14 is not set to 'no' on %s debugfs\n",
-+			 "i915_force_hdcp14");
-+
-+	close(fd);
-+}
-+
- static void
- test_fini(igt_output_t *output, enum igt_commit_style commit_style)
- {
-@@ -607,9 +656,15 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
- 			if (!output_hdcp_capable(output, content_type))
- 				continue;
- 
-+			if (data.cp_tests & CP_FORCE14)
-+				enable_force_hdcp14(output);
-+
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 				test_content_protection_on_output(output, pipe, commit_style, content_type);
- 
-+			if (data.cp_tests & CP_FORCE14)
-+				disable_force_hdcp14(output);
-+
- 			test_fini(output, commit_style);
- 			/*
- 			 * Testing a output with a pipe is enough for HDCP
-@@ -830,6 +885,8 @@ static void create_fbs(void)
- 			    0.f, 1.f, 0.f, &data.green);
- }
- 
-+
-+
- static const struct {
- 	const char *desc;
- 	const char *name;
-@@ -893,6 +950,11 @@ static const struct {
- 	  .cp_tests = 0,
- 	  .content_type = HDCP_CONTENT_TYPE_0,
- 	},
-+	{ .desc = "This test forces hdcp1.4 and tests the content protection.",
-+	  .name = "force-hdcp14",
-+	  .cp_tests = CP_FORCE14,
-+	  .content_type = HDCP_CONTENT_TYPE_0,
-+	},
- };
- 
- static const struct {
--- 
-2.34.1
+On 4/22/2025 7:11 PM, Kamil Konieczny wrote:
+> Add missing intel_sysfs_debugfs, after a unify it was missing
+> in testlist generated for Xe.
+> 
+> Fixes: 68f75d1dd410 ("tests/intel/intel_sysfs_debugfs Unify sysfs and debugfs testing")
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
+> Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/intel/xe_test_config.json | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+> index 4556025f7..b33485c96 100644
+> --- a/tests/intel/xe_test_config.json
+> +++ b/tests/intel/xe_test_config.json
+> @@ -2,7 +2,7 @@
+>      "description": "JSON file to be used to parse Xe documentation",
+>      "name": "Tests for Xe Driver",
+>      "drivers": [ "xe" ],
+> -    "files": [ "xe_*.c", "../core_*.c", "../sriov_basic.c", "intel_hwmon.c" ],
+> +    "files": [ "xe_*.c", "../core_*.c", "../sriov_basic.c", "intel_hwmon.c", "intel_sysfs_debugfs.c" ],
+>      "fields": {
+>          "Run type": {
+>              "_properties_": {
 
