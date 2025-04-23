@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88756C369CB
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Apr 2025 21:05:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05941C369CB
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Apr 2025 21:08:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 43BD410E259;
-	Wed, 23 Apr 2025 21:05:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B03A10E256;
+	Wed, 23 Apr 2025 21:08:02 +0000 (UTC)
 Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BEFD910E256;
- Wed, 23 Apr 2025 21:05:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2942B10E256;
+ Wed, 23 Apr 2025 21:08:01 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1175808058118831730=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/amdgpu=3A_add_missi?=
- =?utf-8?q?ng_user_queue_destroy_for_cs=5Fnops_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_benchmark=3A_Measure_alloca?=
+ =?utf-8?q?tion_time_for_objects_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Khatri, Sunil" <sunil.khatri@amd.com>
+To: "Pravalika Gurram" <pravalika.gurram@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Apr 2025 21:05:10 -0000
-Message-ID: <174544231078.2119.15509645977872145479@c664b1dc75d1>
+Date: Wed, 23 Apr 2025 21:08:01 -0000
+Message-ID: <174544248116.2129.12958073151455309303@c664b1dc75d1>
 X-Patchwork-Hint: ignore
-References: <20250421075926.31094-1-sunil.khatri@amd.com>
-In-Reply-To: <20250421075926.31094-1-sunil.khatri@amd.com>
+References: <20250422055522.814722-1-pravalika.gurram@intel.com>
+In-Reply-To: <20250422055522.814722-1-pravalika.gurram@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,18 +41,136 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1175808058118831730==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/amdgpu: add missing user queue destroy for cs_nops (rev3)
-URL   : https://patchwork.freedesktop.org/series/148008/
-State : failure
+Series: benchmark: Measure allocation time for objects (rev2)
+URL   : https://patchwork.freedesktop.org/series/147869/
+State : success
 
 == Summary ==
 
-Applying: tests/amdgpu: add missing user queue destroy for cs_nops
-Patch failed at 0001 tests/amdgpu: add missing user queue destroy for cs_nops
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+CI Bug Log - changes from XEIGT_8330_BAT -> XEIGTPW_13016_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13016_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-dg2-oem2:       [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4829]) +3 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8330/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13016/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:
+    - bat-dg2-oem2:       [DMESG-WARN][3] ([Intel XE#4829]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8330/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13016/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html
+
+  
+  [Intel XE#4829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4829
 
 
+Build changes
+-------------
+
+  * IGT: IGT_8330 -> IGTPW_13016
+
+  IGTPW_13016: c3f893e62c06efeb6f2fb5545982cdfb5acedcbf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8330: 3ce68222e02fcfb1e12827e49e774bc58f69c9ec @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2980-ea9f9455f18d0eb18b81cf146b527d577cb6192d: ea9f9455f18d0eb18b81cf146b527d577cb6192d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13016/index.html
+
+--===============1175808058118831730==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>benchmark: Measure allocation time for objects (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147869/">https://patchwork.freedesktop.org/series/147869/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13016/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13016/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8330_BAT -&gt; XEIGTPW_13016_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13016_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8330/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13016/bat-dg2-oem2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4829">Intel XE#4829</a>) +3 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8330/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4829">Intel XE#4829</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13016/bat-dg2-oem2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-3.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8330 -&gt; IGTPW_13016</li>
+</ul>
+<p>IGTPW_13016: c3f893e62c06efeb6f2fb5545982cdfb5acedcbf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8330: 3ce68222e02fcfb1e12827e49e774bc58f69c9ec @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2980-ea9f9455f18d0eb18b81cf146b527d577cb6192d: ea9f9455f18d0eb18b81cf146b527d577cb6192d</p>
+
+</body>
+</html>
+
+--===============1175808058118831730==--
