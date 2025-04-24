@@ -4,56 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 096BEC369AB
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Apr 2025 17:36:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2DF2C369AB
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Apr 2025 17:39:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E47F10E025;
-	Thu, 24 Apr 2025 17:36:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93DC310E052;
+	Thu, 24 Apr 2025 17:39:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DCvWGhVs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FewBTbIL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 918F310E025
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Apr 2025 17:36:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B1A9610E052
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Apr 2025 17:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745516201; x=1777052201;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=eFiGP8xwTqs6SBao5YPuFqppKOQYWBZImA2IxqzaN78=;
- b=DCvWGhVsokTW5xKWVTOwAzbEBCykDQL2B7oEDTm/oFupA/FmFjaQaVAI
- 3LtejbRHXRFaHuxlwn6C+bGVZaCVEwfkxCOuMIi5rQb3sFfB9ZMLINViP
- 4i97aJGtzgjaxCSLlFLO4A2W6WGe9uPC4ejnoHy7ze+iew7u01YUPzEgL
- Jst4k3Re5kCRs+SwX5GCFbeUiERIeVD4JEDwdHzPnZOPD6kXVhjIYLIIZ
- nGyimtPwRg0QcJdo6UWgnfVQF7TUbxk0QdAeGvLknmqSxf8A7QRcmb0aI
- sHGGu68x23OAmsGfDdjy/iEnZRGeSsA2xa5zmapRwr53C6NG0gMVUI01L w==;
-X-CSE-ConnectionGUID: LjFbPJe8QXOBF110cT+hYg==
-X-CSE-MsgGUID: DK0VNJ1wSCunQguyk8LhSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="34787422"
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="34787422"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2025 10:36:41 -0700
-X-CSE-ConnectionGUID: wfFbC40NR6KtQ41/esJr7g==
-X-CSE-MsgGUID: HXZO+E2SSo+ggSmUdCB/Hw==
+ t=1745516389; x=1777052389;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=78MKpD/ijT+RAMw1Yt3W6C0t5PXj/1qZKe7zqlAv62k=;
+ b=FewBTbILlOwWqyajxQX4vsZvFlmLE6KZKEU/E/D3dQ0kJQBoOS/ZoAjw
+ zoHYPhURf/pzxNBIyhvRzoC9ZVnUiaqOP+p/XTXiTKoM3DZRoM92xD33f
+ hH4/4exfTo7AT3YXAj9R9z5tSzH8fMCg7uiUHxU2bzwDhFWkNrAeJaGuR
+ a/U00lhnu7FpgLwKnt/8q55SPWbmxqevw64LX16y/RZZYQS8IEWxu3K7q
+ DdeskeZ3dlqlgMkaw8TqWwCYtQaejj9YsKjLAF7JWWsZ2AJ9nYyaTzAid
+ AypfswIvH5zpDS1ZP94xyd2pFhdoUtsLpHTHplNi7/j+FSujfBXkgQqGH Q==;
+X-CSE-ConnectionGUID: ZDyk03+MRAaoNANJ/Z9wiA==
+X-CSE-MsgGUID: 7GVkHlJNT+CsedEBW6uRdw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="64581989"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="64581989"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2025 10:39:49 -0700
+X-CSE-ConnectionGUID: Y/SLNn4JRWyayzq/r30PEA==
+X-CSE-MsgGUID: o1kRqRwEQrO/hnSdHUTF+w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="137765701"
-Received: from mzwiewkx-mobl1.ger.corp.intel.com (HELO
- friendship7-home.clients.intel.com) ([10.245.98.179])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2025 10:36:39 -0700
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>, zhanjun.dong@intel.com
-Subject: [PATCH i-g-t] lib/xe/xe_legacy: Move test_legacy_mode to lib/
-Date: Thu, 24 Apr 2025 19:36:08 +0200
-Message-ID: <20250424173610.179158-1-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250417193032.329-1-peter.senna@linux.intel.com>
-References: <20250417193032.329-1-peter.senna@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="137481648"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 10:39:47 -0700
+Date: Thu, 24 Apr 2025 19:39:44 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Matt Roper <matthew.d.roper@intel.com>
+Subject: Re: [PATCH i-g-t 2/3] lib/xe: replace div64_u64_round_up() with
+ DIV_ROUND_UP
+Message-ID: <20250424173944.s35q2xkfk3ltik4d@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Shuicheng Lin <shuicheng.lin@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Matt Roper <matthew.d.roper@intel.com>
+References: <20250416163053.117425-1-shuicheng.lin@intel.com>
+ <20250416163053.117425-3-shuicheng.lin@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250416163053.117425-3-shuicheng.lin@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,573 +73,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There were two similar implementations of test_legacy_mode(), located in
-tests/intel/xe_exec_capture and tests/intel/xe_exec_reset.  This patch
-consolidates them by moving the more complete version from xe_exec_reset
-to lib/xe/xe_legacy, and updates call sites on both tests to use the
-shared function.
+Hi Shuicheng,
+On 2025-04-16 at 16:30:52 +0000, Shuicheng Lin wrote:
+> DIV_ROUND_UP is defined in igt_aux.h with the same function as
+> div64_u64_round_up().
 
-The version from xe_exec_reset.c was chosen because it is more
-feature-complete and flexible, offering the following advantages:
- - Supports CLOSE_FD
- - Supports GT reset
- - Waits for spinner start
- - Checks batch buffer result
- - Conditional bind call using xe_vm_bind_async() instead of
-   __xe_vm_bind_assert()
- - Allows early return
+Version in igt_aux.h is different then one below.
 
-To cover for a difference between the two function definitions, the
-shared function was extended with the use_capture_mode parameter to
-control whether to use __xe_vm_bind_assert (capture mode) or
-xe_vm_bind_async (legacy mode).
+> 
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+> ---
+>  lib/xe/xe_util.c | 10 +---------
+>  1 file changed, 1 insertion(+), 9 deletions(-)
+> 
+> diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+> index 06b378ce0..9907c8b16 100644
+> --- a/lib/xe/xe_util.c
+> +++ b/lib/xe/xe_util.c
+> @@ -253,14 +253,6 @@ static uint32_t reference_clock(int fd, int gt_id)
+>  	return refclock;
+>  }
+>  
+> -static uint64_t div64_u64_round_up(const uint64_t x, const uint64_t y)
+> -{
+> -	igt_assert(y > 0);
+> -	igt_assert_lte_u64(x, UINT64_MAX - (y - 1));
 
-Cc: zhanjun.dong@intel.com
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- lib/meson.build               |   1 +
- lib/xe/xe_legacy.c            | 167 ++++++++++++++++++++++++++++++++++
- lib/xe/xe_legacy.h            |  15 +++
- tests/intel/xe_exec_capture.c | 109 +---------------------
- tests/intel/xe_exec_reset.c   | 153 +++----------------------------
- 5 files changed, 201 insertions(+), 244 deletions(-)
- create mode 100644 lib/xe/xe_legacy.c
- create mode 100644 lib/xe/xe_legacy.h
+I like those two asserts here, why not moving this function to
+lib igt_aux.c and creating new macro for it?
 
-diff --git a/lib/meson.build b/lib/meson.build
-index 8517cd540..454dcd244 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -114,6 +114,7 @@ lib_sources = [
- 	'igt_hook.c',
- 	'xe/xe_gt.c',
- 	'xe/xe_ioctl.c',
-+	'xe/xe_legacy.c',
- 	'xe/xe_mmio.c',
- 	'xe/xe_query.c',
- 	'xe/xe_spin.c',
-diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
-new file mode 100644
-index 000000000..81a9f3bd6
---- /dev/null
-+++ b/lib/xe/xe_legacy.c
-@@ -0,0 +1,167 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+#include "lib/igt_syncobj.h"
-+#include "linux_scaffold.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_legacy.h"
-+#include "xe/xe_spin.h"
-+
-+/* Batch buffer element count, in number of dwords(u32) */
-+#define BATCH_DW_COUNT			16
-+#define CAT_ERROR			(0x1 << 5)
-+#define CLOSE_EXEC_QUEUES		(0x1 << 2)
-+#define CLOSE_FD			(0x1 << 1)
-+/* Batch buffer element count, in number of dwords(u32) */
-+#define GT_RESET			(0x1 << 0)
-+#define MAX_N_EXECQUEUES		16
-+
-+/**
-+ * xe_legacy_test_mode:
-+ * @fd: file descriptor
-+ * @eci: engine class instance
-+ * @n_exec_queues: number of exec queues
-+ * @n_execs: number of execs
-+ * @flags: flags for the test
-+ * @addr: address for the test
-+ * @use_capture_mode: use capture mode or not
-+ *
-+ * Returns: void
-+ */
-+void
-+xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
-+		    int n_exec_queues, int n_execs, unsigned int flags,
-+		    u64 addr, bool use_capture_mode)
-+{
-+	u32 vm;
-+	struct drm_xe_sync sync[2] = {
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 2,
-+		.syncs = to_user_pointer(sync),
-+	};
-+	u32 exec_queues[MAX_N_EXECQUEUES];
-+	u32 syncobjs[MAX_N_EXECQUEUES];
-+	size_t bo_size;
-+	u32 bo = 0;
-+	struct {
-+		struct xe_spin spin;
-+		u32 batch[BATCH_DW_COUNT];
-+		u64 pad;
-+		u32 data;
-+	} *data;
-+	struct xe_spin_opts spin_opts = { .preempt = false };
-+	int i, b;
-+
-+	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
-+
-+	if (flags & CLOSE_FD)
-+		fd = drm_open_driver(DRIVER_XE);
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	bo_size = sizeof(*data) * n_execs;
-+	bo_size = xe_bb_size(fd, bo_size);
-+
-+	bo = xe_bo_create(fd, vm, bo_size,
-+			  vram_if_possible(fd, eci->gt_id),
-+			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	data = xe_bo_map(fd, bo, bo_size);
-+
-+	for (i = 0; i < n_exec_queues; i++) {
-+		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+		syncobjs[i] = syncobj_create(fd, 0);
-+	}
-+
-+	sync[0].handle = syncobj_create(fd, 0);
-+
-+	/* Binding mechanism based on use_capture_mode */
-+	if (use_capture_mode) {
-+		__xe_vm_bind_assert(fd, vm, 0, bo, 0, addr, bo_size,
-+				    DRM_XE_VM_BIND_OP_MAP, flags, sync, 1, 0, 0);
-+	} else {
-+		xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
-+	}
-+
-+	for (i = 0; i < n_execs; i++) {
-+		u64 base_addr = (use_capture_mode || !(flags & CAT_ERROR)) ? addr
-+					: addr + bo_size * 128;
-+		u64 batch_offset = (char *)&data[i].batch - (char *)data;
-+		u64 batch_addr = base_addr + batch_offset;
-+		u64 spin_offset = (char *)&data[i].spin - (char *)data;
-+		u64 sdi_offset = (char *)&data[i].data - (char *)data;
-+		u64 sdi_addr = base_addr + sdi_offset;
-+		u64 exec_addr;
-+		int e = i % n_exec_queues;
-+
-+		if (!i) {
-+			spin_opts.addr = base_addr + spin_offset;
-+			xe_spin_init(&data[i].spin, &spin_opts);
-+			exec_addr = spin_opts.addr;
-+		} else {
-+			b = 0;
-+			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+			data[i].batch[b++] = sdi_addr;
-+			data[i].batch[b++] = sdi_addr >> 32;
-+			data[i].batch[b++] = 0xc0ffee;
-+			data[i].batch[b++] = MI_BATCH_BUFFER_END;
-+			igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+			exec_addr = batch_addr;
-+		}
-+
-+		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+		sync[1].handle = syncobjs[e];
-+
-+		exec.exec_queue_id = exec_queues[e];
-+		exec.address = exec_addr;
-+		if (e != i)
-+			syncobj_reset(fd, &syncobjs[e], 1);
-+		xe_exec(fd, &exec);
-+
-+		if (!i && !(flags & CAT_ERROR) && !use_capture_mode)
-+			xe_spin_wait_started(&data[i].spin);
-+	}
-+
-+	if (flags & GT_RESET)
-+		xe_force_gt_reset_async(fd, eci->gt_id);
-+
-+	if (flags & CLOSE_FD) {
-+		if (flags & CLOSE_EXEC_QUEUES) {
-+			for (i = 0; i < n_exec_queues; i++)
-+				xe_exec_queue_destroy(fd, exec_queues[i]);
-+		}
-+		drm_close_driver(fd);
-+		/* FIXME: wait for idle */
-+		usleep(150000);
-+		return;
-+	}
-+
-+	for (i = 0; i < n_exec_queues && n_execs; i++)
-+		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	if (!use_capture_mode && !(flags & GT_RESET)) {
-+		for (i = 1; i < n_execs; i++)
-+			igt_assert_eq(data[i].data, 0xc0ffee);
-+	}
-+
-+	syncobj_destroy(fd, sync[0].handle);
-+	for (i = 0; i < n_exec_queues; i++) {
-+		syncobj_destroy(fd, syncobjs[i]);
-+		xe_exec_queue_destroy(fd, exec_queues[i]);
-+	}
-+
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
-+	xe_vm_destroy(fd, vm);
-+}
-diff --git a/lib/xe/xe_legacy.h b/lib/xe/xe_legacy.h
-new file mode 100644
-index 000000000..0afd8a76c
---- /dev/null
-+++ b/lib/xe/xe_legacy.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: MIT
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+#ifndef XE_LEGACY_H
-+#define XE_LEGACY_H
-+
-+#include "linux_scaffold.h"
-+
-+void
-+xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
-+		    int n_exec_queues, int n_execs, unsigned int flags,
-+		    u64 addr, bool use_capture_mode);
-+
-+#endif /* XE_LEGACY_H */
-diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
-index fe1ae677e..92113cdb1 100644
---- a/tests/intel/xe_exec_capture.c
-+++ b/tests/intel/xe_exec_capture.c
-@@ -27,6 +27,7 @@
- #include "linux_scaffold.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
-+#include "xe/xe_legacy.h"
- #include "xe/xe_query.h"
- #include "xe/xe_spin.h"
- 
-@@ -135,110 +136,6 @@ static const char *xe_engine_class_name(u32 engine_class)
- 	}
- }
- 
--static void
--test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int n_exec_queues, int n_execs,
--		 unsigned int flags, u64 addr)
--{
--	u32 vm;
--	struct drm_xe_sync sync[2] = {
--		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
--		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
--	};
--	struct drm_xe_exec exec = {
--		.num_batch_buffer = 1,
--		.num_syncs = 2,
--		.syncs = to_user_pointer(sync),
--	};
--	u32 exec_queues[MAX_N_EXECQUEUES];
--	u32 syncobjs[MAX_N_EXECQUEUES];
--	size_t bo_size;
--	u32 bo = 0;
--	struct {
--		struct xe_spin spin;
--		u32 batch[BATCH_DW_COUNT];
--		u64 pad;
--		u32 data;
--	} *data;
--	struct xe_spin_opts spin_opts = { .preempt = false };
--	int i, b;
--
--	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
--
--	vm = xe_vm_create(fd, 0, 0);
--	bo_size = sizeof(*data) * n_execs;
--	bo_size = xe_bb_size(fd, bo_size);
--
--	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_if_possible(fd, eci->gt_id),
--			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
--	data = xe_bo_map(fd, bo, bo_size);
--
--	for (i = 0; i < n_exec_queues; i++) {
--		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
--		syncobjs[i] = syncobj_create(fd, 0);
--	};
--
--	sync[0].handle = syncobj_create(fd, 0);
--	__xe_vm_bind_assert(fd, vm, 0, bo, 0, addr, bo_size,
--			    DRM_XE_VM_BIND_OP_MAP, flags, sync, 1, 0, 0);
--
--	for (i = 0; i < n_execs; i++) {
--		u64 base_addr = addr;
--		u64 batch_offset = (char *)&data[i].batch - (char *)data;
--		u64 batch_addr = base_addr + batch_offset;
--		u64 spin_offset = (char *)&data[i].spin - (char *)data;
--		u64 sdi_offset = (char *)&data[i].data - (char *)data;
--		u64 sdi_addr = base_addr + sdi_offset;
--		u64 exec_addr;
--		int e = i % n_exec_queues;
--
--		if (!i) {
--			spin_opts.addr = base_addr + spin_offset;
--			xe_spin_init(&data[i].spin, &spin_opts);
--			exec_addr = spin_opts.addr;
--		} else {
--			b = 0;
--			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
--			data[i].batch[b++] = sdi_addr;
--			data[i].batch[b++] = sdi_addr >> 32;
--			data[i].batch[b++] = 0xc0ffee;
--			data[i].batch[b++] = MI_BATCH_BUFFER_END;
--			igt_assert(b <= ARRAY_SIZE(data[i].batch));
--
--			exec_addr = batch_addr;
--		}
--
--		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
--		sync[1].handle = syncobjs[e];
--
--		exec.exec_queue_id = exec_queues[e];
--		exec.address = exec_addr;
--		if (e != i)
--			syncobj_reset(fd, &syncobjs[e], 1);
--		xe_exec(fd, &exec);
--	}
--
--	for (i = 0; i < n_exec_queues && n_execs; i++)
--		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
--					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
--
--	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
--	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
--
--	syncobj_destroy(fd, sync[0].handle);
--	for (i = 0; i < n_exec_queues; i++) {
--		syncobj_destroy(fd, syncobjs[i]);
--		xe_exec_queue_destroy(fd, exec_queues[i]);
--	}
--
--	munmap(data, bo_size);
--	gem_close(fd, bo);
--	xe_vm_destroy(fd, vm);
--}
--
- static char **alloc_lines_buffer(void)
- {
- 	int i;
-@@ -460,7 +357,9 @@ static void test_card(int fd)
- 		igt_debug("Running on engine class: %x instance: %x\n", hwe->engine_class,
- 			  hwe->engine_instance);
- 
--		test_legacy_mode(fd, hwe, 1, 1, DRM_XE_VM_BIND_FLAG_DUMPABLE, addr);
-+		xe_legacy_test_mode(fd, hwe, 1, 1, DRM_XE_VM_BIND_FLAG_DUMPABLE,
-+				    addr, true);
-+
- 		/* Wait 1 sec for devcoredump complete */
- 		sleep(1);
- 
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index e2557f345..67b7bb826 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -22,10 +22,12 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_gt.h"
-+#include "xe/xe_legacy.h"
- #include "xe/xe_spin.h"
- #include <string.h>
- 
- #define SYNC_OBJ_SIGNALED	(0x1 << 0)
-+#define LEGACY_MODE_ADDR	0x1a0000
- 
- /**
-  * SUBTEST: spin
-@@ -304,139 +306,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
-  *
-  * SUBTEST: close-execqueues-close-fd
-  * Description: Test close exec_queues close fd
-- */
--
--static void
--test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
--		 int n_exec_queues, int n_execs, unsigned int flags)
--{
--	uint32_t vm;
--	uint64_t addr = 0x1a0000;
--	struct drm_xe_sync sync[2] = {
--		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
--		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
--	};
--	struct drm_xe_exec exec = {
--		.num_batch_buffer = 1,
--		.num_syncs = 2,
--		.syncs = to_user_pointer(sync),
--	};
--	uint32_t exec_queues[MAX_N_EXECQUEUES];
--	uint32_t syncobjs[MAX_N_EXECQUEUES];
--	size_t bo_size;
--	uint32_t bo = 0;
--	struct {
--		struct xe_spin spin;
--		uint32_t batch[16];
--		uint64_t pad;
--		uint32_t data;
--	} *data;
--	struct xe_spin_opts spin_opts = { .preempt = false };
--	int i, b;
--
--	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
--
--	if (flags & CLOSE_FD)
--		fd = drm_open_driver(DRIVER_XE);
--
--	vm = xe_vm_create(fd, 0, 0);
--	bo_size = sizeof(*data) * n_execs;
--	bo_size = xe_bb_size(fd, bo_size);
--
--	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_if_possible(fd, eci->gt_id),
--			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
--	data = xe_bo_map(fd, bo, bo_size);
--
--	for (i = 0; i < n_exec_queues; i++) {
--		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
--		syncobjs[i] = syncobj_create(fd, 0);
--	};
--
--	sync[0].handle = syncobj_create(fd, 0);
--	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
--
--	for (i = 0; i < n_execs; i++) {
--		uint64_t base_addr = flags & CAT_ERROR && !i ?
--			addr + bo_size * 128 : addr;
--		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
--		uint64_t batch_addr = base_addr + batch_offset;
--		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
--		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
--		uint64_t sdi_addr = base_addr + sdi_offset;
--		uint64_t exec_addr;
--		int e = i % n_exec_queues;
--
--		if (!i) {
--			spin_opts.addr = base_addr + spin_offset;
--			xe_spin_init(&data[i].spin, &spin_opts);
--			exec_addr = spin_opts.addr;
--		} else {
--			b = 0;
--			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
--			data[i].batch[b++] = sdi_addr;
--			data[i].batch[b++] = sdi_addr >> 32;
--			data[i].batch[b++] = 0xc0ffee;
--			data[i].batch[b++] = MI_BATCH_BUFFER_END;
--			igt_assert(b <= ARRAY_SIZE(data[i].batch));
--
--			exec_addr = batch_addr;
--		}
--
--		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
--		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
--		sync[1].handle = syncobjs[e];
--
--		exec.exec_queue_id = exec_queues[e];
--		exec.address = exec_addr;
--		if (e != i)
--			 syncobj_reset(fd, &syncobjs[e], 1);
--		xe_exec(fd, &exec);
--
--		if (!i && !(flags & CAT_ERROR))
--			xe_spin_wait_started(&data[i].spin);
--	}
--
--	if (flags & GT_RESET)
--		xe_force_gt_reset_async(fd, eci->gt_id);
--
--	if (flags & CLOSE_FD) {
--		if (flags & CLOSE_EXEC_QUEUES) {
--			for (i = 0; i < n_exec_queues; i++)
--				xe_exec_queue_destroy(fd, exec_queues[i]);
--		}
--		drm_close_driver(fd);
--		/* FIXME: wait for idle */
--		usleep(150000);
--		return;
--	}
--
--	for (i = 0; i < n_exec_queues && n_execs; i++)
--		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
--					NULL));
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
--
--	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
--	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
--
--	if (!(flags & GT_RESET)) {
--		for (i = 1; i < n_execs; i++)
--			igt_assert_eq(data[i].data, 0xc0ffee);
--	}
--
--	syncobj_destroy(fd, sync[0].handle);
--	for (i = 0; i < n_exec_queues; i++) {
--		syncobj_destroy(fd, syncobjs[i]);
--		xe_exec_queue_destroy(fd, exec_queues[i]);
--	}
--
--	munmap(data, bo_size);
--	gem_close(fd, bo);
--	xe_vm_destroy(fd, vm);
--}
--
--/**
-+ *
-  * SUBTEST: cm-cat-error
-  * Description: Test compute mode cat-error
-  *
-@@ -783,24 +653,29 @@ igt_main
- 
- 	igt_subtest("cat-error")
- 		xe_for_each_engine(fd, hwe)
--			test_legacy_mode(fd, hwe, 2, 2, CAT_ERROR);
-+			xe_legacy_test_mode(fd, hwe, 2, 2, CAT_ERROR,
-+					    LEGACY_MODE_ADDR, false);
- 
- 	igt_subtest("gt-reset")
- 		xe_for_each_engine(fd, hwe)
--			test_legacy_mode(fd, hwe, 2, 2, GT_RESET);
-+			xe_legacy_test_mode(fd, hwe, 2, 2, GT_RESET,
-+					    LEGACY_MODE_ADDR, false);
- 
- 	igt_subtest("close-fd-no-exec")
- 		xe_for_each_engine(fd, hwe)
--			test_legacy_mode(-1, hwe, 16, 0, CLOSE_FD);
-+			xe_legacy_test_mode(-1, hwe, 16, 0, CLOSE_FD,
-+					    LEGACY_MODE_ADDR, false);
- 
- 	igt_subtest("close-fd")
- 		xe_for_each_engine(fd, hwe)
--			test_legacy_mode(-1, hwe, 16, 256, CLOSE_FD);
-+			xe_legacy_test_mode(-1, hwe, 16, 256, CLOSE_FD,
-+					    LEGACY_MODE_ADDR, false);
- 
- 	igt_subtest("close-execqueues-close-fd")
- 		xe_for_each_engine(fd, hwe)
--			test_legacy_mode(-1, hwe, 16, 256, CLOSE_FD |
--					 CLOSE_EXEC_QUEUES);
-+			xe_legacy_test_mode(-1, hwe, 16, 256, CLOSE_FD |
-+					    CLOSE_EXEC_QUEUES,
-+					    LEGACY_MODE_ADDR, false);
- 
- 	igt_subtest("cm-cat-error")
- 		xe_for_each_engine(fd, hwe)
--- 
-2.43.0
+#define DIV64_ROUND_UP(n, d) div64_u64_round_up((uint64_t)(n), (uint64_t)(d))
 
+or make it a multi-line macro with do { ... } while(0)
+
+Regards,
+Kamil
+
+> -
+> -	return (x + y - 1) / y;
+> -}
+> -
+>  /**
+>   * xe_nsec_to_ticks: convert time in nanoseconds to timestamp ticks
+>   * @fd: opened device
+> @@ -273,5 +265,5 @@ uint32_t xe_nsec_to_ticks(int fd, int gt_id, uint64_t nsec)
+>  {
+>  	uint32_t refclock = reference_clock(fd, gt_id);
+>  
+> -	return div64_u64_round_up(nsec * refclock, NSEC_PER_SEC);
+> +	return DIV_ROUND_UP(nsec * refclock, NSEC_PER_SEC);
+>  }
+> -- 
+> 2.25.1
+> 
