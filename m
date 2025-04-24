@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CE22C369D1
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Apr 2025 08:59:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC5D7C369D1
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Apr 2025 09:01:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ECF4310E0CF;
-	Thu, 24 Apr 2025 08:59:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 924DE10E0CF;
+	Thu, 24 Apr 2025 09:01:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iR/Q2eJg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="We5uBlYW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 926C310E0CF
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Apr 2025 08:59:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2788110E0CF
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Apr 2025 09:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745485146; x=1777021146;
+ t=1745485292; x=1777021292;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=1YzarGFdzgU5+eQhQ9659j2/Tt8MMsIQGpbq+1ESRgw=;
- b=iR/Q2eJgVddScA4qqjcnRWNUD4X67UMX16i9MDWkJacZC6bPI6aHag5I
- Fzvv5LTi5BD7ipUuU3UQJo+bF9iM4dhIdneX/orzO4RJtCAvQkAgIPFZ2
- sGGxshdpCrF4Tk9SvgpN0et89GIUS4vFw+uJnwE8OwOHck5EltpvC22vD
- L9Qv6DeY+uKhvw8nEglnLuLDzUhdg3iNs455/aSMwFYqPWYuEH5FALCbu
- CgngsmIMQe+w3a78+8SCepL6YKAfEPtPpyW4bJLl9/zpGXVptdvXb4KJ/
- IqST+0IlrAVUkzbdT3nmG5I90eufyhFsQSZERfO2z2abAM8U6sAAjZMxJ Q==;
-X-CSE-ConnectionGUID: bO2OibWdSVW2p5rKSvhd9w==
-X-CSE-MsgGUID: 2BPqobHIT1iX0Cg0Y9yKkA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="34721730"
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="34721730"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ bh=LJ6UtpH3pTmjbDUueZglaLRACyV/0r7OjG6mNFauDNc=;
+ b=We5uBlYWH6GN1+YU9vHpNWyV7bSrM6EZoLMvvHq5MAT8pSDEociixZlj
+ b+4mpMEuH7iea/x6pWk1HtvFOsbPUOWhRRjUhHszZQ65MzjfI5LVQG8rW
+ x5bMcieU5a1+s8+gGpBl3BNhDuwrDVCK7zLb7ihLUoFkaFi2KDM4gCArF
+ YK8jzsek9nOfZrxZuTCsBs/9soU+Oy1Z0W5tWeUvfbYjmifuDhvgLfmxA
+ Zwd/65gCOZs+yXa+u3rk/laJKm6+lwWJuvnXFBPHQTisGRQvpBfPpkEIw
+ qbG4TMqelFnmVsAzugE9q7DG8sELK6svLyXOKxzhd6W4IvQvFlYzriXZD A==;
+X-CSE-ConnectionGUID: owU2t7ztQlqAnGriveTbew==
+X-CSE-MsgGUID: H/4psVl3TwGZOJCqmopgZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="34722114"
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="34722114"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2025 01:59:06 -0700
-X-CSE-ConnectionGUID: IFMBCT2XQUaTsw5vjPkkdQ==
-X-CSE-MsgGUID: Lqctwgf/Swe5A7YSDlhvlA==
+ 24 Apr 2025 02:01:32 -0700
+X-CSE-ConnectionGUID: oqUWUYrvSUynSvP6lPw2Ng==
+X-CSE-MsgGUID: pfMuHzdYRvCOZAo166KQfg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="132296003"
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="169773305"
 Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
- by orviesa009.jf.intel.com with ESMTP; 24 Apr 2025 01:59:04 -0700
+ by orviesa001.jf.intel.com with ESMTP; 24 Apr 2025 02:01:30 -0700
 From: Pravalika Gurram <pravalika.gurram@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: sai.gowtham.ch@intel.com, dwarakanath.ramadeva@intel.com,
  Pravalika Gurram <pravalika.gurram@intel.com>
 Subject: [PATCH] benchmarks: Measure BLT performance
-Date: Thu, 24 Apr 2025 14:37:09 +0530
-Message-Id: <20250424090709.853155-1-pravalika.gurram@intel.com>
+Date: Thu, 24 Apr 2025 14:39:35 +0530
+Message-Id: <20250424090935.853288-1-pravalika.gurram@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -72,8 +72,8 @@ limited bandwidth and submission overhead.
 Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
 ---
  benchmarks/meson.build |   1 +
- benchmarks/xe_blt.c    | 332 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 333 insertions(+)
+ benchmarks/xe_blt.c    | 330 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 331 insertions(+)
  create mode 100644 benchmarks/xe_blt.c
 
 diff --git a/benchmarks/meson.build b/benchmarks/meson.build
@@ -90,10 +90,10 @@ index 2c9a88fd3..4421ede86 100644
  benchmarksdir = join_paths(libexecdir, 'benchmarks')
 diff --git a/benchmarks/xe_blt.c b/benchmarks/xe_blt.c
 new file mode 100644
-index 000000000..0ee5a45d9
+index 000000000..e95ed6d47
 --- /dev/null
 +++ b/benchmarks/xe_blt.c
-@@ -0,0 +1,332 @@
+@@ -0,0 +1,330 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2025 Intel Corporation
@@ -126,7 +126,6 @@ index 000000000..0ee5a45d9
 +		bool emit_bbe,
 +		uint64_t dst_offset,
 +		uint64_t src_offset,
-+//		uint64_t bb_offset,
 +		uint32_t height)
 +{
 +	uint32_t b[12];
@@ -136,7 +135,6 @@ index 000000000..0ee5a45d9
 +
 +	src_offset += blt->src.plane_offset;
 +	dst_offset += blt->dst.plane_offset;
-+//	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
 +
 +	b[i++] = COPY_BLT_CMD | BLT_WRITE_ALPHA | BLT_WRITE_RGB;
 +	b[i-1] += 2;
