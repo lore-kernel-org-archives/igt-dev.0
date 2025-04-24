@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FC9FC369AB
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Apr 2025 17:40:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D44E4C369AB
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Apr 2025 17:43:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B8E2F10E1D3;
-	Thu, 24 Apr 2025 17:40:54 +0000 (UTC)
-Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 076E910E047;
- Thu, 24 Apr 2025 17:40:53 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1260930350700781801=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 21FF710E047;
+	Thu, 24 Apr 2025 17:43:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aT499GSo";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DDDF10E047
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Apr 2025 17:43:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745516632; x=1777052632;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=nCH5Tn1U/A4jA85sewxH59rTJjYnYejhHysjLDxZCe8=;
+ b=aT499GSoezFycw52d8VWNrzz5XV7/nGT/MfoE96R+4u2EEmttVJegOsb
+ SA0UBv+wdaBBa+a4cqIOz47wM6NHmSteOjuzeZVXLKuRmNSEyavcAqgs0
+ pL9aKnOc+lrddS5q2jegpZk/44KvKQetgbml6sCs+rKvs3qb3x03uQ6Ng
+ 43RPBTmZSOTCVg6+AqLDyiB6gssyAzmtZ0dz6d2b+SXeHjXKdgBGVsrpS
+ spyBmGGh5BRNnOgSA52MnfBhIcXYaaKFheDqwUn9WZQbu32yaqFHvVHKy
+ gvj3DzOX0mRh9daZiBwx8udOUUkub8WzRqXNoItW8iWL5ERVeL4BLEJ/k A==;
+X-CSE-ConnectionGUID: ghsv3IHxTTKEDAZ+VDTyZw==
+X-CSE-MsgGUID: 15hnZN3wRTytv+oQtDfEgQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="69656787"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="69656787"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2025 10:43:52 -0700
+X-CSE-ConnectionGUID: jkoeNHzOTiyGiH+vPQNgkw==
+X-CSE-MsgGUID: CZPWL6SeRaKZdkN9yi1sgQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="169899959"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2025 10:43:51 -0700
+Date: Thu, 24 Apr 2025 19:43:48 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Matt Roper <matthew.d.roper@intel.com>
+Subject: Re: [PATCH i-g-t 1/3] tests/intel: replace div64_u64_round_up() with
+ DIV_ROUND_UP
+Message-ID: <20250424174348.fn2leeoegkpr75pf@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Shuicheng Lin <shuicheng.lin@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Matt Roper <matthew.d.roper@intel.com>
+References: <20250416163053.117425-1-shuicheng.lin@intel.com>
+ <20250416163053.117425-2-shuicheng.lin@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_benchmark=3A_Measure_allo?=
- =?utf-8?q?cation_time_for_objects_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pravalika Gurram" <pravalika.gurram@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Apr 2025 17:40:53 -0000
-Message-ID: <174551645303.7481.1053363593551697866@c664b1dc75d1>
-X-Patchwork-Hint: ignore
-References: <20250424091650.853598-1-pravalika.gurram@intel.com>
-In-Reply-To: <20250424091650.853598-1-pravalika.gurram@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250416163053.117425-2-shuicheng.lin@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,186 +70,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1260930350700781801==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Shuicheng,
+On 2025-04-16 at 16:30:51 +0000, Shuicheng Lin wrote:
+> DIV_ROUND_UP is defined in igt_aux.h with the same function as
+> div64_u64_round_up().
+> 
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+> ---
+>  tests/intel/gem_exec_balancer.c |  9 ++-------
+>  tests/intel/gem_exec_fair.c     | 11 +++--------
+>  tests/intel/gem_exec_schedule.c |  9 ++-------
+>  tests/intel/gem_watchdog.c      |  9 ++-------
+>  4 files changed, 9 insertions(+), 29 deletions(-)
+> 
+> diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
+> index 46ea19a2a..1ad87036b 100644
+> --- a/tests/intel/gem_exec_balancer.c
+> +++ b/tests/intel/gem_exec_balancer.c
+> @@ -2636,15 +2636,10 @@ static int read_ctx_timestamp_frequency(int i915)
+>  	return value;
+>  }
+>  
+> -static uint64_t div64_u64_round_up(uint64_t x, uint64_t y)
+> -{
+> -	return (x + y - 1) / y;
+> -}
+> -
+>  static uint64_t ticks_to_ns(int i915, uint64_t ticks)
+>  {
+> -	return div64_u64_round_up(ticks * NSEC_PER_SEC,
+> -				  read_ctx_timestamp_frequency(i915));
+> +	int f = read_ctx_timestamp_frequency(i915);
 
-== Series Details ==
+s/int/unsigned int/
 
-Series: benchmark: Measure allocation time for objects (rev4)
-URL   : https://patchwork.freedesktop.org/series/147869/
-State : success
+Add also an empty line here. Please use checkpatch.pl script
+from Linux kernel to spot such and other issues, you could also
+look into CONTRIBUTING.md for script options.
 
-== Summary ==
+Apply same in other places.
 
-CI Bug Log - changes from IGT_8336 -> IGTPW_13037
-====================================================
+Regards,
+Kamil
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/index.html
-
-Participating hosts (42 -> 41)
-------------------------------
-
-  Missing    (1): bat-arlh-2 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13037 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [PASS][1] -> [INCOMPLETE][2] ([i915#12904]) +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-apl-1/igt@dmabuf@all-tests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-dg2-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-6:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-14:         [PASS][9] -> [DMESG-FAIL][10] ([i915#12061]) +1 other test dmesg-fail
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-    - bat-arls-6:         [PASS][11] -> [DMESG-FAIL][12] ([i915#12061]) +1 other test dmesg-fail
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-11:         [DMESG-FAIL][13] ([i915#12061]) -> [PASS][14] +1 other test pass
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-9:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8336 -> IGTPW_13037
-
-  CI-20190529: 20190529
-  CI_DRM_16460: 6176f71822602f52bc4327965090275c5570ed0d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13037: a94fafa9928b3581118e8a538c87481ad99e7368 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8336: 8336
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/index.html
-
---===============1260930350700781801==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>benchmark: Measure allocation time for objects (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147869/">https://patchwork.freedesktop.org/series/147869/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8336 -&gt; IGTPW_13037</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/index.html</p>
-<h2>Participating hosts (42 -&gt; 41)</h2>
-<p>Missing    (1): bat-arlh-2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13037 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-apl-1/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8336/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13037/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8336 -&gt; IGTPW_13037</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16460: 6176f71822602f52bc4327965090275c5570ed0d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13037: a94fafa9928b3581118e8a538c87481ad99e7368 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8336: 8336</p>
-
-</body>
-</html>
-
---===============1260930350700781801==--
+> +	return DIV_ROUND_UP(ticks * NSEC_PER_SEC, f);
+>  }
+>  
+>  static void __fairslice(int i915,
+> diff --git a/tests/intel/gem_exec_fair.c b/tests/intel/gem_exec_fair.c
+> index 19df66921..cdceb8927 100644
+> --- a/tests/intel/gem_exec_fair.c
+> +++ b/tests/intel/gem_exec_fair.c
+> @@ -187,23 +187,18 @@ static int read_timestamp_frequency(int i915)
+>  	return value;
+>  }
+>  
+> -static uint64_t div64_u64_round_up(uint64_t x, uint64_t y)
+> -{
+> -	return (x + y - 1) / y;
+> -}
+> -
+>  static uint64_t ns_to_ctx_ticks(int i915, uint64_t ns)
+>  {
+>  	int f = read_timestamp_frequency(i915);
+>  	if (intel_gen(intel_get_drm_devid(i915)) == 11)
+>  		f = 12500000; /* gen11!!! are you feeling alright? CTX vs CS */
+> -	return div64_u64_round_up(ns * f, NSEC64);
+> +	return DIV_ROUND_UP(ns * f, NSEC64);
+>  }
+>  
+>  static uint64_t ticks_to_ns(int i915, uint64_t ticks)
+>  {
+> -	return div64_u64_round_up(ticks * NSEC64,
+> -				  read_timestamp_frequency(i915));
+> +	int f = read_timestamp_frequency(i915);
+> +	return DIV_ROUND_UP(ticks * NSEC64, f);
+>  }
+>  
+>  static void delay(int i915,
+> diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
+> index 84219b4cf..1055e8501 100644
+> --- a/tests/intel/gem_exec_schedule.c
+> +++ b/tests/intel/gem_exec_schedule.c
+> @@ -3031,15 +3031,10 @@ static int read_timestamp_frequency(int i915)
+>  	return value;
+>  }
+>  
+> -static uint64_t div64_u64_round_up(uint64_t x, uint64_t y)
+> -{
+> -	return (x + y - 1) / y;
+> -}
+> -
+>  static uint64_t ticks_to_ns(int i915, uint64_t ticks)
+>  {
+> -	return div64_u64_round_up(ticks * NSEC_PER_SEC,
+> -				  read_timestamp_frequency(i915));
+> +	int f = read_timestamp_frequency(i915);
+> +	return DIV_ROUND_UP(ticks * NSEC_PER_SEC, f);
+>  }
+>  
+>  static int cmp_u32(const void *A, const void *B)
+> diff --git a/tests/intel/gem_watchdog.c b/tests/intel/gem_watchdog.c
+> index 1edde8b3c..4cb92c68e 100644
+> --- a/tests/intel/gem_watchdog.c
+> +++ b/tests/intel/gem_watchdog.c
+> @@ -289,11 +289,6 @@ static unsigned int offset_in_page(void *addr)
+>  	return (uintptr_t)addr & 4095;
+>  }
+>  
+> -static uint64_t div64_u64_round_up(uint64_t x, uint64_t y)
+> -{
+> -	return (x + y - 1) / y;
+> -}
+> -
+>  static int read_timestamp_frequency(int i915)
+>  {
+>  	int value = 0;
+> @@ -307,8 +302,8 @@ static int read_timestamp_frequency(int i915)
+>  
+>  static uint64_t ns_to_ticks(int i915, uint64_t ns)
+>  {
+> -	return div64_u64_round_up(ns * read_timestamp_frequency(i915),
+> -				  NSEC_PER_SEC);
+> +	int f = read_timestamp_frequency(i915);
+> +	return DIV_ROUND_UP(ns * f, NSEC_PER_SEC);
+>  }
+>  
+>  static uint32_t __batch_create(int i915, uint32_t offset)
+> -- 
+> 2.25.1
+> 
