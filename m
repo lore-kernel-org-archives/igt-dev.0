@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC688C369AB
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Apr 2025 17:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBAC8C369AB
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Apr 2025 18:14:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8235810E052;
-	Thu, 24 Apr 2025 17:56:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E31810E18B;
+	Thu, 24 Apr 2025 18:14:08 +0000 (UTC)
 Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48C8110E052;
- Thu, 24 Apr 2025 17:56:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6E4B10E18B;
+ Thu, 24 Apr 2025 18:14:07 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2560595347322784678=="
+ boundary="===============8407772605559732367=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_benchmark=3A_Measure_alloca?=
- =?utf-8?q?tion_time_for_objects_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_xe=5Ffault=5Finjection=3A_I?=
+ =?utf-8?q?mprove_probe_fault_injection_handling_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pravalika Gurram" <pravalika.gurram@intel.com>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Apr 2025 17:56:55 -0000
-Message-ID: <174551741529.7603.12709261778312940799@c664b1dc75d1>
+Date: Thu, 24 Apr 2025 18:14:07 -0000
+Message-ID: <174551844774.7603.11206301541413463166@c664b1dc75d1>
 X-Patchwork-Hint: ignore
-References: <20250424091650.853598-1-pravalika.gurram@intel.com>
-In-Reply-To: <20250424091650.853598-1-pravalika.gurram@intel.com>
+References: <20250424095853.1396156-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250424095853.1396156-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2560595347322784678==
+--===============8407772605559732367==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: benchmark: Measure allocation time for objects (rev4)
-URL   : https://patchwork.freedesktop.org/series/147869/
+Series: xe_fault_injection: Improve probe fault injection handling (rev2)
+URL   : https://patchwork.freedesktop.org/series/147916/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8336_BAT -> XEIGTPW_13037_BAT
+CI Bug Log - changes from XEIGT_8336_BAT -> XEIGTPW_13038_BAT
 ====================================================
 
 Summary
@@ -81,17 +81,17 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8336 -> IGTPW_13037
+  * IGT: IGT_8336 -> IGTPW_13038
 
-  IGTPW_13037: a94fafa9928b3581118e8a538c87481ad99e7368 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_13038: 13038
   IGT_8336: 8336
   xe-2994-6176f71822602f52bc4327965090275c5570ed0d: 6176f71822602f52bc4327965090275c5570ed0d
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13037/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13038/index.html
 
---===============2560595347322784678==
+--===============8407772605559732367==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,16 +111,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>benchmark: Measure allocation time for objects (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147869/">https://patchwork.freedesktop.org/series/147869/</a></td></tr>
+<tr><td><b>Series:</b></td><td>xe_fault_injection: Improve probe fault injection handling (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/147916/">https://patchwork.freedesktop.org/series/147916/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13037/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13037/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13038/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13038/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8336_BAT -&gt; XEIGTPW_13037_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8336_BAT -&gt; XEIGTPW_13038_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -130,13 +130,13 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8336 -&gt; IGTPW_13037</li>
+<li>IGT: IGT_8336 -&gt; IGTPW_13038</li>
 </ul>
-<p>IGTPW_13037: a94fafa9928b3581118e8a538c87481ad99e7368 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_13038: 13038<br />
   IGT_8336: 8336<br />
   xe-2994-6176f71822602f52bc4327965090275c5570ed0d: 6176f71822602f52bc4327965090275c5570ed0d</p>
 
 </body>
 </html>
 
---===============2560595347322784678==--
+--===============8407772605559732367==--
