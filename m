@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF842C369C2
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 13:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1466C369C2
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 13:21:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6A4C110E2FB;
-	Fri, 25 Apr 2025 13:18:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A97210E2AB;
+	Fri, 25 Apr 2025 13:21:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EF09augA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BzanyqKx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F62C10E980
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Apr 2025 13:18:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E36AA10E2AB
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Apr 2025 13:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745587083; x=1777123083;
+ t=1745587259; x=1777123259;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=TXqAJzyqbwxcJoKg9DfVTLRhVBrQhQmmbaAcED8OrGE=;
- b=EF09augARQdd+xrJcL/rKMnn7LpKYcNVe9ZdnLPrpTnpGAhPlyYWG0eh
- gxtrAZ0iG+CXH7NYol4D7alxQnBWgtmGxw5z0PktRu9E+CNyXHpTXKXJK
- xtcbgwjzX8hbxDBDjgpWdx0p8m2QIQR9CiDvZYmdtxLEqe6UHHUX+IcJQ
- 1Adtyjih/+qVpXiqyQBtVOofO7vm/UhAW+d+BvYulwYRjRb+2BpBYQSAc
- nYASmjz9lUncAy2UXHYGiG5u7aHEwZD0N+e+SlYyO2JnORvGpixbc7KK6
- NXjggHNA5ewyWR4kw1MqbXMM/UcccQrZnquRPccjrjY5fHc6q9H859foR Q==;
-X-CSE-ConnectionGUID: NjNfCPAZSsqu2cHTYvOu8Q==
-X-CSE-MsgGUID: NB+DoLoVQeaPuaPEakrpeg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="47123612"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="47123612"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 06:18:03 -0700
-X-CSE-ConnectionGUID: po5Z54pVQMKABel4rvDZbA==
-X-CSE-MsgGUID: KOF2qyH4T2CX+qJ7pE9QRg==
+ bh=HvZRUqdtPzJOWQxmRM1gL9tZIm0+08TpnohaXc90QaU=;
+ b=BzanyqKxrRbvVxTouAjmyBki78UgE9e9Z7X7c1ONCL+dTE3x3etfzQgn
+ +QW9yDLFGvJ2/A0T2rctuyPjft2uvl50SClr1X3mrf4BcnblNL96jjTaH
+ BZP722EvRxwfY65glzjI14Me0q4uaH2HQY7y7zIm2HBlPqWtPRkzRPU9m
+ u1wQs5pSrqBYAP7wq94aCvJECpLWYbJ+2S3N1L9AOF/dhhAkw4iGomtY9
+ KHi4dG9IIz2BHcIdYMxuV9b8VyB7lX6bZ3Uv6kOLx5+Gph+Tyu8TdHAs+
+ qGirWDcIOnmjZjn1stHlQYWrFY/6rOsiQ8idIqTnb4sQnP/kO7+jvdcWD w==;
+X-CSE-ConnectionGUID: DRDihNPnSuuyTqH4gKJOjQ==
+X-CSE-MsgGUID: PDt0eoE5Toqbxi2DLv+7RA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="34865396"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="34865396"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2025 06:20:59 -0700
+X-CSE-ConnectionGUID: nwykvM+UQoa++hrWwCVqng==
+X-CSE-MsgGUID: xu5N4TeWSaGX0JdMHs2IQw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="136960905"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="163865922"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 06:18:02 -0700
-Date: Fri, 25 Apr 2025 15:17:59 +0200
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 06:20:58 -0700
+Date: Fri, 25 Apr 2025 15:20:55 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Peter Senna Tschudin <peter.senna@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/3] lib/igt_facts: Remove unnecessary extern from
- header
-Message-ID: <20250425131759.fah44bhqab2k7fqe@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 3/3] lib/igt_facts: Fix potential NULL pointer
+ dereference
+Message-ID: <20250425132055.ewasqqeeigfigxtw@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Peter Senna Tschudin <peter.senna@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20250425094904.221857-1-peter.senna@linux.intel.com>
- <20250425094904.221857-2-peter.senna@linux.intel.com>
+ <20250425094904.221857-3-peter.senna@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250425094904.221857-2-peter.senna@linux.intel.com>
+In-Reply-To: <20250425094904.221857-3-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,29 +73,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Peter,
-On 2025-04-25 at 11:49:03 +0200, Peter Senna Tschudin wrote:
-> There was an unnecessary extern on the header. Remove it.
+On 2025-04-25 at 11:49:04 +0200, Peter Senna Tschudin wrote:
+> If both udev_device_get_sysattr_value and udev_device_get_sysname fail,
+> pci_addr will remain NULL, which could lead to issues when using it
+> later in asprintf. Ignore cards when pci_addr cannot be extracted.
 > 
 > Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 
+LGTM
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  lib/igt_facts.h | 1 -
->  1 file changed, 1 deletion(-)
+>  lib/igt_facts.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/lib/igt_facts.h b/lib/igt_facts.h
-> index e96f88083..109f0d3bd 100644
-> --- a/lib/igt_facts.h
-> +++ b/lib/igt_facts.h
-> @@ -37,7 +37,6 @@ struct igt_facts_config {
->  	bool enabled;
->  	bool disable_udev;
->  };
-> -extern struct igt_facts_config igt_facts_config;
->  
->  void igt_facts_lists_init(void);
->  void igt_facts(const char *last_test);
+> diff --git a/lib/igt_facts.c b/lib/igt_facts.c
+> index d38be0726..47a2c98a5 100644
+> --- a/lib/igt_facts.c
+> +++ b/lib/igt_facts.c
+> @@ -537,6 +537,10 @@ static void igt_facts_scan_pci_drm_cards(const char *last_test)
+>  								 "address");
+>  			if (!pci_addr)
+>  				pci_addr = udev_device_get_sysname(pci_dev);
+> +			if (!pci_addr) {
+> +				udev_device_unref(drm_dev);
+> +				continue;
+> +			}
+>  		} else {
+>  			/* Some GPUs are platform devices. Ignore them. */
+>  			pci_addr = NULL;
 > -- 
 > 2.43.0
 > 
