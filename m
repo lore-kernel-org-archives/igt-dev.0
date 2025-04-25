@@ -4,16 +4,16 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 992FFC369D1
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 08:34:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C6A7C369D1
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 08:34:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4DB4910E8CE;
-	Fri, 25 Apr 2025 08:34:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 06E4D10E8C1;
+	Fri, 25 Apr 2025 08:34:15 +0000 (UTC)
 Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA8C610E8CE;
- Fri, 25 Apr 2025 08:34:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A7B210E8D1;
+ Fri, 25 Apr 2025 08:34:13 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6610511931425344202=="
+ boundary="===============0471109304978919040=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi?=
  =?utf-8?q?-g-t=2Cv2=2C1/2=5D_tests/intel/xe=5Feu=5Fstall=3A_Add_tests_to_ru?=
@@ -21,8 +21,8 @@ Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_series_starting_with
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Harish Chegondi" <harish.chegondi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Apr 2025 08:34:11 -0000
-Message-ID: <174557005167.9869.4311229065068350053@c664b1dc75d1>
+Date: Fri, 25 Apr 2025 08:34:13 -0000
+Message-ID: <174557005360.9891.4719963322854879112@c664b1dc75d1>
 X-Patchwork-Hint: ignore
 References: <29f92b276ff8c0a246dc5d22757193bc66f27c66.1745565376.git.harish.chegondi@intel.com>
 In-Reply-To: <29f92b276ff8c0a246dc5d22757193bc66f27c66.1745565376.git.harish.chegondi@intel.com>
@@ -42,7 +42,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6610511931425344202==
+--===============0471109304978919040==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -249,7 +249,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13042/index.html
 
---===============6610511931425344202==
+--===============0471109304978919040==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -445,4 +445,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============6610511931425344202==--
+--===============0471109304978919040==--
