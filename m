@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AF75C369C2
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 19:28:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFC67C369D3
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 19:34:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4AB0510E999;
-	Fri, 25 Apr 2025 19:28:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8531510E9AD;
+	Fri, 25 Apr 2025 19:34:30 +0000 (UTC)
 Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95DD910E999;
- Fri, 25 Apr 2025 19:28:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB0C410E9AC;
+ Fri, 25 Apr 2025 19:34:28 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6778070735792215283=="
+ boundary="===============0878874031520168551=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/xe=5Fpmu=3A_Fix_frequ?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/xe=5Fpmu=3A_Fix_frequ?=
  =?utf-8?q?ency_stashing_issue?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: sk.anirban@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Apr 2025 19:28:04 -0000
-Message-ID: <174560928445.12508.13726821458877563587@c664b1dc75d1>
+Date: Fri, 25 Apr 2025 19:34:28 -0000
+Message-ID: <174560966881.12518.13969893378054961881@c664b1dc75d1>
 X-Patchwork-Hint: ignore
 References: <20250425180658.2533825-1-sk.anirban@intel.com>
 In-Reply-To: <20250425180658.2533825-1-sk.anirban@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6778070735792215283==
+--===============0878874031520168551==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,7 +50,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: tests/xe_pmu: Fix frequency stashing issue
 URL   : https://patchwork.freedesktop.org/series/148275/
-State : success
+State : failure
 
 == Summary ==
 
@@ -161,7 +161,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13045/index.html
 
---===============6778070735792215283==
+--===============0878874031520168551==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -183,7 +183,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>tests/xe_pmu: Fix frequency stashing issue</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148275/">https://patchwork.freedesktop.org/series/148275/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13045/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13045/index.html</a></td></tr>
 
@@ -286,4 +286,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============6778070735792215283==--
+--===============0878874031520168551==--
