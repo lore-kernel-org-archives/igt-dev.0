@@ -4,183 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB02AC369C2
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 18:22:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 229ECC369C2
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 18:43:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7F61510E036;
-	Fri, 25 Apr 2025 18:22:01 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hf2s5clN";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87B3C10E036
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Apr 2025 18:21:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745605319; x=1777141319;
- h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=MT1YSUafS/HzQpTdNG3MPosZ7/AhKHcPUMBunTxYLSs=;
- b=hf2s5clNOwm+lhiEw5ecY2pG6aFffmytY5l+T9nMOJlY1QA1VQmlAuzy
- utO/CzI15iMs8OcP/g/7RRV7wWNHnZ4H6zU64gyB8qaHJsXgt8ao6ty/1
- NaBoviOUfu9pspOkjThstaWh9Sx5F5GvKc3aX8tU2/QOKbwRDNx/6m2RK
- etZTgiyxeeUQ7GT8dhn81PVpjCD57Nvz6W7RSke/vG8B481wMy825Dls6
- kYr8wznpwsRHJPwz86/UVVFQ2WRzV+jepzE+GtDaVI3tIviXPpmOaJOBg
- d2lM3Rwc14tDeq6atu38j4eUgVoQhC2LrS68LSTvQod32Clz7zlLuseLH g==;
-X-CSE-ConnectionGUID: WX/SfqLTS2StSNMV7UflFQ==
-X-CSE-MsgGUID: qrl6eZgCRiGPPf8Ow5YEcQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="72652444"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="72652444"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 11:21:58 -0700
-X-CSE-ConnectionGUID: EjNqAlVkS96uFu/k2jhM6A==
-X-CSE-MsgGUID: cqHj1kBNQnGXBN9XH/4JPw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="133493404"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 11:21:57 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Fri, 25 Apr 2025 11:21:57 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Fri, 25 Apr 2025 11:21:57 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.44) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Fri, 25 Apr 2025 11:21:56 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pHB4NzFLiSxzbpkP7XS9QMA0ul6T2/BnxWk1unzgijvNMxfa9W6yQ45Ckhu5dm31DDeKEIIQ60FEsPWjUb1A0OASs6Mp/X/3Uw19nylFdmu356+QMzZDBBxTeWQ7ACXONVwTUM8Yk0dKSdX76rByKGPUet4Ua3/Qv22i+UeSF9ayJpQXnyvJYGted4OwHq1PHDKL13KnRQidYvkHDill+mqbWa4XiL61+qxQ8h7p74oy7rXhxs234vQlU1py4IHWqy2zCxamrYj141S7Y4o8HguWPypgp+CNqSBIbArfY0p9Rne2PiMu290cqiT5rUYebsRJ0h9tgyzp7ElhM68+gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K0J62/aPAzgV2gnCOSNAy4faGTMxdPlgOBIaQq/7JTI=;
- b=pFdh/PH4zTxVGWY4yVfKk1zL/YkJgkonkWUbIFV7/B2p8X0i2SvYByXx7KgAGU7F7mnJbUVFQhexVlnvTMLIDAPI3PkJ12vvfVp1R0AG64vftoZzHrlvpFlwhbRg99KZc6os+0eFjsjR0MTDTe7P2vCgaS0M62gE1T03VHXdEGGnHcCaFDBzG26kcdX+beIodVhPYqUzVpE4nqnLs/UUWwOIufm8yWuaMgUdCpaRGksyjd8FPvBYOsHcNCyP8iEBbB9IitojlL3k+GMcSzgO3YbBSIGsQ5iEnFqlHHDeKczXH+zBCGMkeMtkPlf+M6dFsakEiBs5L4LHNx0JROeVOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by IA1PR11MB7944.namprd11.prod.outlook.com (2603:10b6:208:3d8::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.26; Fri, 25 Apr
- 2025 18:21:54 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%4]) with mapi id 15.20.8655.037; Fri, 25 Apr 2025
- 18:21:53 +0000
-Date: Fri, 25 Apr 2025 11:23:15 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, Jonathan Cavitt <jonathan.cavitt@intel.com>, 
- Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [PATCH i-g-t] Revert "tests/xe: Add system_allocator test"
-Message-ID: <aAvTE1vZGlfR6pVc@lstrano-desk.jf.intel.com>
-References: <20250425174631.189728-1-kamil.konieczny@linux.intel.com>
- <tb23yhdok2bj7tw7epodi3luhpxoqr6a3gpmlrmnakgh6max3s@boxusotyobfl>
- <aAvQln3RCEaLn7TF@lstrano-desk.jf.intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aAvQln3RCEaLn7TF@lstrano-desk.jf.intel.com>
-X-ClientProxiedBy: MW4PR03CA0225.namprd03.prod.outlook.com
- (2603:10b6:303:b9::20) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8448910E134;
+	Fri, 25 Apr 2025 18:43:41 +0000 (UTC)
+Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D896210E134;
+ Fri, 25 Apr 2025 18:43:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4236289890388516392=="
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|IA1PR11MB7944:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb0b778e-dd65-4b70-44af-08dd84260e17
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?elJScHRKd1dZVVk5NGFpVmhCN2FvQTN0L1paRE9JVTVHMFh2aS9lcmc0SGhq?=
- =?utf-8?B?RzUwdWNJQlMrWGRwN254RktLK1VOVFBKRUFsNFNtWW1ySlVLQWF1V3dnQi81?=
- =?utf-8?B?NVFHMDBZSFJ6aVpOeEx3TjNkS293UEtXa2dFY0NxakYvdDZQQkY5L1N0T3VK?=
- =?utf-8?B?K21vbUx4czdjcEw2MU9Kamx2UTB1UlZXSVkrU1NoSlZGSDVkSmJWWk9CSTAy?=
- =?utf-8?B?OUNmWm9oSzBhQmVRRjg3SFRVSVFVREw0UjNqbkMvdGNvcUFLSVhwanFrc1pl?=
- =?utf-8?B?Qzk1cVZyOW9ORUxteElhV0NXdTFRUUVrOHQzeTR5RjdRNUptajIzMUZRNE1L?=
- =?utf-8?B?WXphUWdqSTJGNjNNbDZUSTJkbFVYTURSRS9tczJZZmJycFh6VnpoVG9vcXJR?=
- =?utf-8?B?NzhCRHFNbHpzUHE5amFiNTFvT1d6OTUzbmFvSVgvRG5laFh6bW1KT2JWZ0lm?=
- =?utf-8?B?b3FOaHA5Ni96eHVCenFBSzJlaTdBMHdhVDhJSFhJME5WbmFJTUFIZjBpaTBG?=
- =?utf-8?B?dm0ySEJlZGNvelFabnppblZoUVphT2ZwNmY3aEhvYmZjaHJua3BPVjFlYnE2?=
- =?utf-8?B?VExtdkJ2Zml0bXBCcnVqR2loS2FCYUx1M0pnbzRJc1haMVBCaWozL3JaUDlU?=
- =?utf-8?B?ZzhZTFVaampzRTNYRUxmUFZTYW05dTJqQVp2dEFrSExrcnJ1OEdvUjBmKysz?=
- =?utf-8?B?UWtJOTVEaU1zV29mVjlwMzl4MDBaVzRtMUhWSjNyb3grNG1GODRFTWpOWkZt?=
- =?utf-8?B?bHBKT0tNeElFMm5lVGprZmxZR1JmNWdzT2laZGk0NWZhaXVnNHE0bWxlaUl1?=
- =?utf-8?B?amZWY0IzdUQyL3AzU1JjRDFrc1dBLy83T2QvL1VmMFlnempacnN3THBZelE5?=
- =?utf-8?B?Q2FsdXdMQ1N0RXJvYUwzWXBxeFBLeW05UElmdXpHeW92TGlsc3d1UVJBUUtE?=
- =?utf-8?B?aTltRzdjaU5qY2pUYmh1WmRoZ1ZqL21HWE1IeGd0b1lLSllCckFTNUxOMjNQ?=
- =?utf-8?B?RnRwU1dVNFV6UDRkbFNSZmxFYm5SYStOTTh6dlpHa3NKRjNsTFg3Qkx5V3k3?=
- =?utf-8?B?MS9IaFdhQmU5RDdpWGxvcC95b3ZaaE43UDRjV1Evb3JLWFlnMXNYQjZKTmlH?=
- =?utf-8?B?RFpTVzFYOEFsR2hjS1d6RWdabG1UWWFUSVg2cXhCTnl1d3hUeGtrb3ZoenR6?=
- =?utf-8?B?WWwzdzhRTmtTYWxRL0tGcURaeE01VlZwcXkrZkswRTU3ZCtnZS9RNmo2V2hn?=
- =?utf-8?B?ZC92TUxlNm4yWndxdW9SZnQ3R3RxQVovaHh0Z2FFUXl0dS9haEx2NGdZV1c3?=
- =?utf-8?B?SGVQa2pETEM1bVZ1OUtVNnlQMUZWazZuTGJLQ3pIMzF0dnh3MFVqZ3RXVUhk?=
- =?utf-8?B?dTYxbU1sT09LTlpveFpnTXRQY0duYkdTajJOOXFUeEJJSHBUOWgyeTllRno5?=
- =?utf-8?B?UExMd050ZEJBanFjaFhVUklOSzZXN0NpRi9PWmpJY01oclpzSTlkeVBTS0ph?=
- =?utf-8?B?ZWYrVUdweTFibHp5eVRQdzkyNk9lU2JwTkhNd2ROcDkrQ2tYTEkyM1hHblg2?=
- =?utf-8?B?dWU3bzRuaTcxcUw0M1dhOWFzaGxabGpPc0R1SXJyS1hBUk80NWtZd3Nrdy9i?=
- =?utf-8?B?bGR1cEVQa2FUSGR5WEg4aGNjekY2ZVl4NU0veUZvTjZLU1haUzNhc2ZFckNa?=
- =?utf-8?B?VnhBU08vRmd4SEtHS0x4anJnZDNLRTZMbmEzZHNkV2RJQWVLR1N4NlVDc3oy?=
- =?utf-8?B?N3pGZlVkT2tUbGVSRUFWYU9KU09QVWxEWDN6aGdLaWZ0QUxZaHdVb2dBeGhT?=
- =?utf-8?Q?JVptEUc7lwbgSQkCwzEWUxY+2FAg820kQWqTw=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6522.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(7053199007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bkVCVngrT1AyTWVpeWJtbTJ3NkJ1RjI1M1oxTlhiVWhnbTJJdy9lWWtTOXZS?=
- =?utf-8?B?UEZtY29mUlRCQ3ByQ056d0JWTTVXelFUWTdmSlFVbEtKUU1XWDlvdE9xR1M2?=
- =?utf-8?B?dnlWeXdPWEppOG9YcUN5V211OHJUK3UvY3gvNTBwQ3BLalR6Njd0RTIyR3JQ?=
- =?utf-8?B?UzEvdm9PelM1UGlmejNXYWk2M3I0ekM1QVZKZiticWVsbVFUbmZaamg5UEFo?=
- =?utf-8?B?SXZrYmdmWHd6blNnVUMvQURJdUJCb1ZaNUw5a2lxNU1EdG5zRk1ENlBaSmhp?=
- =?utf-8?B?SFlsNy9LYTJtTkRIMVNwMHBvVGFndGZjK0hYN1g3RS9KNTJNUU9hR1ZaQnlO?=
- =?utf-8?B?SXNJeG1xZGw0OXFnOFdDeW5NR2ttUm94aDgrMkZLaFlTbnhjcmsyWmNwQmd4?=
- =?utf-8?B?WXVOY1hsWXRXcVo1ZDJJMTJFcHdkL2xJVFRWZ1ZiQjQvdFJaNXBYRUhQRDAw?=
- =?utf-8?B?K0liQXVSaXdlbFZ0bjBEYTJRZWFBaGJBSHpWelcwOXNRZitlcUhwVndpcHp2?=
- =?utf-8?B?cENtdDhLS0MvNGxvbHlnMW1kbHp3WXdoMG0xbTUxTlI3cG9mejlzRHBqT2Ry?=
- =?utf-8?B?Vnhzb0RXaUIyN29SU1VsN1E3cHMzQzVkZVJxdjRGMGFRTnJCc0NlWFRsTlVH?=
- =?utf-8?B?RFQveHc4VlBqR0FVUjZoUFpRaDVOUTd5SnZzcHI0dEo0WitsbW9GcFErcThX?=
- =?utf-8?B?dTJRckJ6dXJTcWJzT0VTSDQ1QUFnSUQ1dWJ6K1FKdE4raU50OGlWbTNEWlI3?=
- =?utf-8?B?eHdqenFlZjF6elBrVjUwN0x4QTBWMnJINkZaR2lRTCt6bjVYSDMxL2lVcCtT?=
- =?utf-8?B?Z2tYWHVzcHh6OVhCVGVwSFZldjhyLy9ZdGpwaVJpOWxFV1ZiUTBDR1VOVVgv?=
- =?utf-8?B?OVRGZndFWC91ZHhQVjRXWkIrUDFuUjNIaS9BK2lSbDVHVjQ3c0o2TytpQlRz?=
- =?utf-8?B?aXF0Tk1mR1p2R3lYSUV1Tzl3SUt2U1hRYlUyY2ZFSXUycWJ6UThGMXBSNDda?=
- =?utf-8?B?NUdTMFhFSFZ0N25DRS9BS3NoaFI3RlhsN3FZaUlnNnpUQTlvRjRzRUJVaUVU?=
- =?utf-8?B?VnJYdVJDc3BKOS9qWFhkMlNiRUhjeUdJR3Z5OHY1b3B4ZXVrTS9RTzlqZG40?=
- =?utf-8?B?ZEJGNDZpaGlham5kNEZnekNBVmFCN0pjTGFWYWwxMWFYVzhtQ0RGN0JBSk9k?=
- =?utf-8?B?VEQ2eGc2Q3dsOUhxYklOdGlqcVQ1SFRoelZGb1hObk0xd0p4VURiMkJqb2gy?=
- =?utf-8?B?WUF0bFcxRU9kbG1iWFVPalpFZzJRQ2Y4TVcyZ1J6azVnK0wzWnVCWUFHd3pW?=
- =?utf-8?B?cisrVnB0UXFoUWVoRWg1NG9TNW5FVHdXeWhvWVJZWXc1SWZ2eE9LSC9yamNP?=
- =?utf-8?B?cnRWdENWRTI1WENwQ2l2SllEWXVuejVaanBuNDVGZjRoWUE2aG9lZ1ExWEc2?=
- =?utf-8?B?SCs3VHFQZUhTVkNOY1Y3VWxzQklWWkh0WlZEZVRYR0s0dk5MWGhRUS9wd014?=
- =?utf-8?B?WmVQeUpSK1FmK052Qmt6eExjNGJyL2Q3K0V1NHg3TmFDbHVOVCtmQ0RnaERQ?=
- =?utf-8?B?Z2ZPVzR0OEVZbWZxMDEwVzl3TFAwOHRRa2wrdTJuOWFVVENDM213YTN1RVVn?=
- =?utf-8?B?dVd2OGo4WFQ1Q052SHJZV0x0T2V0amEvN1k2VS9JSTFKQ2hXNG41U1Zyajdw?=
- =?utf-8?B?WVBjNVlEZHBWVHl6M1hBM28vczJyaTdHU212dk85QjlpQTlEbEprT3BGNll4?=
- =?utf-8?B?SkQrbk5Kb3JRSWdydmo2UHBZVU82UXdHdTU0M0FoYjdLb1ZqNHZHdHhVTkRx?=
- =?utf-8?B?RVMrbUE3WVl6MHBOZWdaT1RnV0FLb1pHQ2V1bFJOU3RTYnlpQkF3ODlyclVR?=
- =?utf-8?B?SXlUaEhXeUNMa2VoRlBHQ1ErYS92NThIQVhRc1JXeHJic3c3Rnh0OUxIVDZa?=
- =?utf-8?B?RU1Zd205RzkxdStrM3NJem1NNXFDdFV4RE8wbkhBNjljYzNIcjdVeUx3RGZV?=
- =?utf-8?B?ZVBUT1M3VWFyajZMTGc1VjNQRnUvSktFNGFQZXFMRGlJU0dkSnJGUmxIcDc1?=
- =?utf-8?B?aU9mZUNwOS9IWVhDcTRDeENPWUZxb05ZakphOUlOWFBVTEVCUDJhM2NZN0NS?=
- =?utf-8?B?amNKbnhtMUE4VDlNdURpbk5jUFlzUW5YejVhMStqcUZoc3p3eng4a09BWWdo?=
- =?utf-8?B?YUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb0b778e-dd65-4b70-44af-08dd84260e17
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2025 18:21:53.9007 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jokfBCBZoYWQtRDlWtFuCxh4MJUWRk+RQGO6t4t5ZjgS9pM5Yw5jIVt/RK3Am27th1pxeM99wdGK0BAg7pNYgw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7944
-X-OriginatorOrg: intel.com
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2C1/3=5D_lib/igt=5Ffacts=3A_Remove_NULL_and_bool_comparision?=
+ =?utf-8?q?s?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 25 Apr 2025 18:43:39 -0000
+Message-ID: <174560661989.12238.15620662603105820370@c664b1dc75d1>
+X-Patchwork-Hint: ignore
+References: <20250425094904.221857-1-peter.senna@linux.intel.com>
+In-Reply-To: <20250425094904.221857-1-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -193,1967 +38,447 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Apr 25, 2025 at 11:12:38AM -0700, Matthew Brost wrote:
-> On Fri, Apr 25, 2025 at 08:04:52PM +0200, Zbigniew Kempczyński wrote:
-> > On Fri, Apr 25, 2025 at 07:46:29PM +0200, Kamil Konieczny wrote:
-> > > This reverts commit 41ee4d698fd87085494ceeec1985a2b99222c5b0.
-> > > 
-> > > Fix compilation failure on our containers:
-> > > ../tests/intel/xe_exec_system_allocator.c: In function test_exec:
-> > > ../tests/intel/xe_exec_system_allocator.c:1210:21: error: MREMAP_DONTUNMAP undeclared (first use in this function); did you mean DONTUNMAP?
-> > >       remap_flags |= MREMAP_DONTUNMAP;
-> > > 
-> > > Cc: Matthew Brost <matthew.brost@intel.com>
-> > > Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> > > Cc: Francois Dugast <francois.dugast@intel.com>
-> > > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > 
-> > @Matt - please check compilation status on the other containers before
-> > merging.
-> > 
-> 
-> Are we really compiling on kernels older than 5.7? Then yea this won't
-> work, see below [1] for MREMAP_DONTUNMAP.
-> 
-> I don't think a revert is the correct solution here. Maybe an ifdef
-> instead? Let me post something...
-> 
-> Matt
-> 
-> [1] https://man7.org/linux/man-pages/man2/mremap.2.html
-> 
+--===============4236289890388516392==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I guess the revert was merged... Posted a updated version /w ifdef [2].
-Search for MREMAP_DONTUNMAP in the patch.
+== Series Details ==
 
-Kamil, Zbigniew could you please address which kernels we are compiling
-on? I guess I'm a little unclear on that.
+Series: series starting with [i-g-t,1/3] lib/igt_facts: Remove NULL and bool comparisions
+URL   : https://patchwork.freedesktop.org/series/148254/
+State : success
 
-Matt
+== Summary ==
 
-[2] https://patchwork.freedesktop.org/patch/650387/?series=137545&rev=5
+CI Bug Log - changes from IGT_8337 -> IGTPW_13043
+====================================================
 
-> 
-> > For this revert:
-> > 
-> > Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > 
-> > --
-> > Zbigniew
-> > 
-> > > ---
-> > >  lib/xe/xe_ioctl.c                      |   12 -
-> > >  lib/xe/xe_ioctl.h                      |    1 -
-> > >  tests/intel/xe_exec_system_allocator.c | 1849 ------------------------
-> > >  tests/meson.build                      |    1 -
-> > >  4 files changed, 1863 deletions(-)
-> > >  delete mode 100644 tests/intel/xe_exec_system_allocator.c
-> > > 
-> > > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> > > index 785fc9184..fb8c4aef1 100644
-> > > --- a/lib/xe/xe_ioctl.c
-> > > +++ b/lib/xe/xe_ioctl.c
-> > > @@ -440,18 +440,6 @@ void *xe_bo_map(int fd, uint32_t bo, size_t size)
-> > >  	return __xe_bo_map(fd, bo, size, PROT_WRITE);
-> > >  }
-> > >  
-> > > -void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
-> > > -{
-> > > -	uint64_t mmo;
-> > > -	void *map;
-> > > -
-> > > -	mmo = xe_bo_mmap_offset(fd, bo);
-> > > -	map = mmap((void *)addr, size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd, mmo);
-> > > -	igt_assert(map != MAP_FAILED);
-> > > -
-> > > -	return map;
-> > > -}
-> > > -
-> > >  void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot)
-> > >  {
-> > >  	return __xe_bo_map(fd, bo, size, prot);
-> > > diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> > > index 554a33c9c..9bdf73b2b 100644
-> > > --- a/lib/xe/xe_ioctl.h
-> > > +++ b/lib/xe/xe_ioctl.h
-> > > @@ -86,7 +86,6 @@ uint32_t xe_exec_queue_create_class(int fd, uint32_t vm, uint16_t class);
-> > >  void xe_exec_queue_destroy(int fd, uint32_t exec_queue);
-> > >  uint64_t xe_bo_mmap_offset(int fd, uint32_t bo);
-> > >  void *xe_bo_map(int fd, uint32_t bo, size_t size);
-> > > -void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, long unsigned int addr);
-> > >  void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
-> > >  int __xe_exec(int fd, struct drm_xe_exec *exec);
-> > >  void xe_exec(int fd, struct drm_xe_exec *exec);
-> > > diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-> > > deleted file mode 100644
-> > > index 297915cfc..000000000
-> > > --- a/tests/intel/xe_exec_system_allocator.c
-> > > +++ /dev/null
-> > > @@ -1,1849 +0,0 @@
-> > > -// SPDX-License-Identifier: MIT
-> > > -/*
-> > > - * Copyright © 2024-2025 Intel Corporation
-> > > - */
-> > > -
-> > > -/**
-> > > - * TEST: Basic tests for execbuf functionality using system allocator
-> > > - * Category: Core
-> > > - * Mega feature: USM
-> > > - * Sub-category: System allocator
-> > > - * Functionality: fault mode, system allocator
-> > > - * GPU: LNL, BMG, PVC
-> > > - */
-> > > -
-> > > -#include <fcntl.h>
-> > > -#include <linux/mman.h>
-> > > -#include <time.h>
-> > > -
-> > > -#include "igt.h"
-> > > -#include "lib/igt_syncobj.h"
-> > > -#include "lib/intel_reg.h"
-> > > -#include "xe_drm.h"
-> > > -
-> > > -#include "xe/xe_ioctl.h"
-> > > -#include "xe/xe_query.h"
-> > > -#include <string.h>
-> > > -
-> > > -#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-> > > -#define QUARTER_SEC		(NSEC_PER_SEC / 4)
-> > > -#define FIVE_SEC		(5LL * NSEC_PER_SEC)
-> > > -
-> > > -struct batch_data {
-> > > -	uint32_t batch[16];
-> > > -	uint64_t pad;
-> > > -	uint32_t data;
-> > > -	uint32_t expected_data;
-> > > -};
-> > > -
-> > > -#define WRITE_VALUE(data__, i__)	({			\
-> > > -	if (!(data__)->expected_data)				\
-> > > -		(data__)->expected_data = rand() << 12 | (i__);	\
-> > > -	(data__)->expected_data;				\
-> > > -})
-> > > -#define READ_VALUE(data__)	((data__)->expected_data)
-> > > -
-> > > -static void __write_dword(uint32_t *batch, uint64_t sdi_addr, uint32_t wdata,
-> > > -			int *idx)
-> > > -{
-> > > -	batch[(*idx)++] = MI_STORE_DWORD_IMM_GEN4;
-> > > -	batch[(*idx)++] = sdi_addr;
-> > > -	batch[(*idx)++] = sdi_addr >> 32;
-> > > -	batch[(*idx)++] = wdata;
-> > > -}
-> > > -
-> > > -static void write_dword(uint32_t *batch, uint64_t sdi_addr, uint32_t wdata,
-> > > -			int *idx)
-> > > -{
-> > > -	__write_dword(batch, sdi_addr, wdata, idx);
-> > > -	batch[(*idx)++] = MI_BATCH_BUFFER_END;
-> > > -}
-> > > -
-> > > -static void check_all_pages(void *ptr, uint64_t alloc_size, uint64_t stride,
-> > > -			    pthread_barrier_t *barrier)
-> > > -{
-> > > -	int i, n_writes = alloc_size / stride;
-> > > -
-> > > -	for (i = 0; i < n_writes; ++i) {
-> > > -		struct batch_data *data = ptr + i * stride;
-> > > -
-> > > -		igt_assert_eq(data->data, READ_VALUE(data));
-> > > -
-> > > -		if (barrier)
-> > > -			pthread_barrier_wait(barrier);
-> > > -	}
-> > > -}
-> > > -
-> > > -static char sync_file[] = "/tmp/xe_exec_system_allocator_syncXXXXXX";
-> > > -static int sync_fd;
-> > > -
-> > > -static void open_sync_file(void)
-> > > -{
-> > > -	sync_fd = mkstemp(sync_file);
-> > > -}
-> > > -
-> > > -static void close_sync_file(void)
-> > > -{
-> > > -	close(sync_fd);
-> > > -}
-> > > -
-> > > -struct process_data {
-> > > -	pthread_mutex_t mutex;
-> > > -	pthread_cond_t cond;
-> > > -	pthread_barrier_t barrier;
-> > > -	bool go;
-> > > -};
-> > > -
-> > > -static void wait_pdata(struct process_data *pdata)
-> > > -{
-> > > -	pthread_mutex_lock(&pdata->mutex);
-> > > -	while (!pdata->go)
-> > > -		pthread_cond_wait(&pdata->cond, &pdata->mutex);
-> > > -	pthread_mutex_unlock(&pdata->mutex);
-> > > -}
-> > > -
-> > > -static void init_pdata(struct process_data *pdata, int n_engine)
-> > > -{
-> > > -	pthread_mutexattr_t mutex_attr;
-> > > -	pthread_condattr_t cond_attr;
-> > > -	pthread_barrierattr_t barrier_attr;
-> > > -
-> > > -	pthread_mutexattr_init(&mutex_attr);
-> > > -	pthread_mutexattr_setpshared(&mutex_attr, PTHREAD_PROCESS_SHARED);
-> > > -	pthread_mutex_init(&pdata->mutex, &mutex_attr);
-> > > -
-> > > -	pthread_condattr_init(&cond_attr);
-> > > -	pthread_condattr_setpshared(&cond_attr, PTHREAD_PROCESS_SHARED);
-> > > -	pthread_cond_init(&pdata->cond, &cond_attr);
-> > > -
-> > > -	pthread_barrierattr_init(&barrier_attr);
-> > > -	pthread_barrierattr_setpshared(&barrier_attr, PTHREAD_PROCESS_SHARED);
-> > > -	pthread_barrier_init(&pdata->barrier, &barrier_attr, n_engine);
-> > > -
-> > > -	pdata->go = false;
-> > > -}
-> > > -
-> > > -static void signal_pdata(struct process_data *pdata)
-> > > -{
-> > > -	pthread_mutex_lock(&pdata->mutex);
-> > > -	pdata->go = true;
-> > > -	pthread_cond_broadcast(&pdata->cond);
-> > > -	pthread_mutex_unlock(&pdata->mutex);
-> > > -}
-> > > -
-> > > -/* many_alloc flags */
-> > > -#define MIX_BO_ALLOC		(0x1 << 0)
-> > > -#define BENCHMARK		(0x1 << 1)
-> > > -#define CPU_FAULT_THREADS	(0x1 << 2)
-> > > -#define CPU_FAULT_PROCESS	(0x1 << 3)
-> > > -#define CPU_FAULT_SAME_PAGE	(0x1 << 4)
-> > > -
-> > > -static void process_check(void *ptr, uint64_t alloc_size, uint64_t stride,
-> > > -			  unsigned int flags)
-> > > -{
-> > > -	struct process_data *pdata;
-> > > -	int map_fd;
-> > > -
-> > > -	map_fd = open(sync_file, O_RDWR, 0x666);
-> > > -	pdata = mmap(NULL, sizeof(*pdata), PROT_READ |
-> > > -		     PROT_WRITE, MAP_SHARED, map_fd, 0);
-> > > -	wait_pdata(pdata);
-> > > -
-> > > -	if (flags & CPU_FAULT_SAME_PAGE)
-> > > -		check_all_pages(ptr, alloc_size, stride, &pdata->barrier);
-> > > -	else
-> > > -		check_all_pages(ptr, alloc_size, stride, NULL);
-> > > -
-> > > -	close(map_fd);
-> > > -	munmap(pdata, sizeof(*pdata));
-> > > -}
-> > > -
-> > > -/*
-> > > - * Partition checking of results in chunks which causes multiple processes to
-> > > - * fault same VRAM allocation in parallel.
-> > > - */
-> > > -static void
-> > > -check_all_pages_process(void *ptr, uint64_t alloc_size, uint64_t stride,
-> > > -			int n_process, unsigned int flags)
-> > > -{
-> > > -	struct process_data *pdata;
-> > > -	int map_fd, i;
-> > > -
-> > > -	map_fd = open(sync_file, O_RDWR | O_CREAT, 0x666);
-> > > -	posix_fallocate(map_fd, 0, sizeof(*pdata));
-> > > -	pdata = mmap(NULL, sizeof(*pdata), PROT_READ |
-> > > -		     PROT_WRITE, MAP_SHARED, map_fd, 0);
-> > > -
-> > > -	init_pdata(pdata, n_process);
-> > > -
-> > > -	for (i = 0; i < n_process; ++i) {
-> > > -		igt_fork(child, 1)
-> > > -			if (flags & CPU_FAULT_SAME_PAGE)
-> > > -				process_check(ptr, alloc_size, stride, flags);
-> > > -			else
-> > > -				process_check(ptr + stride * i, alloc_size,
-> > > -					      stride * n_process, flags);
-> > > -	}
-> > > -
-> > > -	signal_pdata(pdata);
-> > > -	igt_waitchildren();
-> > > -
-> > > -	close(map_fd);
-> > > -	munmap(pdata, sizeof(*pdata));
-> > > -}
-> > > -
-> > > -struct thread_check_data {
-> > > -	pthread_t thread;
-> > > -	pthread_mutex_t *mutex;
-> > > -	pthread_cond_t *cond;
-> > > -	pthread_barrier_t *barrier;
-> > > -	void *ptr;
-> > > -	uint64_t alloc_size;
-> > > -	uint64_t stride;
-> > > -	bool *go;
-> > > -};
-> > > -
-> > > -static void *thread_check(void *data)
-> > > -{
-> > > -	struct thread_check_data *t = data;
-> > > -
-> > > -	pthread_mutex_lock(t->mutex);
-> > > -	while (!*t->go)
-> > > -		pthread_cond_wait(t->cond, t->mutex);
-> > > -	pthread_mutex_unlock(t->mutex);
-> > > -
-> > > -	check_all_pages(t->ptr, t->alloc_size, t->stride, t->barrier);
-> > > -
-> > > -	return NULL;
-> > > -}
-> > > -
-> > > -/*
-> > > - * Partition checking of results in chunks which causes multiple threads to
-> > > - * fault same VRAM allocation in parallel.
-> > > - */
-> > > -static void
-> > > -check_all_pages_threads(void *ptr, uint64_t alloc_size, uint64_t stride,
-> > > -			int n_threads, unsigned int flags)
-> > > -{
-> > > -	struct thread_check_data *threads_check_data;
-> > > -	pthread_mutex_t mutex;
-> > > -	pthread_cond_t cond;
-> > > -	pthread_barrier_t barrier;
-> > > -	int i;
-> > > -	bool go = false;
-> > > -
-> > > -	threads_check_data = calloc(n_threads, sizeof(*threads_check_data));
-> > > -	igt_assert(threads_check_data);
-> > > -
-> > > -	pthread_mutex_init(&mutex, 0);
-> > > -	pthread_cond_init(&cond, 0);
-> > > -	pthread_barrier_init(&barrier, 0, n_threads);
-> > > -
-> > > -	for (i = 0; i < n_threads; ++i) {
-> > > -		threads_check_data[i].mutex = &mutex;
-> > > -		threads_check_data[i].cond = &cond;
-> > > -		if (flags & CPU_FAULT_SAME_PAGE) {
-> > > -			threads_check_data[i].barrier = &barrier;
-> > > -			threads_check_data[i].ptr = ptr;
-> > > -			threads_check_data[i].alloc_size = alloc_size;
-> > > -			threads_check_data[i].stride = stride;
-> > > -		} else {
-> > > -			threads_check_data[i].barrier = NULL;
-> > > -			threads_check_data[i].ptr = ptr + stride * i;
-> > > -			threads_check_data[i].alloc_size = alloc_size;
-> > > -			threads_check_data[i].stride = n_threads * stride;
-> > > -		}
-> > > -		threads_check_data[i].go = &go;
-> > > -
-> > > -		pthread_create(&threads_check_data[i].thread, 0, thread_check,
-> > > -			       &threads_check_data[i]);
-> > > -	}
-> > > -
-> > > -	pthread_mutex_lock(&mutex);
-> > > -	go = true;
-> > > -	pthread_cond_broadcast(&cond);
-> > > -	pthread_mutex_unlock(&mutex);
-> > > -
-> > > -	for (i = 0; i < n_threads; ++i)
-> > > -		pthread_join(threads_check_data[i].thread, NULL);
-> > > -	free(threads_check_data);
-> > > -}
-> > > -
-> > > -static void touch_all_pages(int fd, uint32_t exec_queue, void *ptr,
-> > > -			    uint64_t alloc_size, uint64_t stride,
-> > > -			    struct timespec *tv, uint64_t *submit)
-> > > -{
-> > > -	struct drm_xe_sync sync[1] = {
-> > > -		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
-> > > -		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> > > -		  .timeline_value = USER_FENCE_VALUE },
-> > > -	};
-> > > -	struct drm_xe_exec exec = {
-> > > -		.num_batch_buffer = 1,
-> > > -		.num_syncs = 0,
-> > > -		.exec_queue_id = exec_queue,
-> > > -		.syncs = to_user_pointer(&sync),
-> > > -	};
-> > > -	uint64_t addr = to_user_pointer(ptr);
-> > > -	int i, ret, n_writes = alloc_size / stride;
-> > > -	u64 *exec_ufence = NULL;
-> > > -	int64_t timeout = FIVE_SEC;
-> > > -
-> > > -	exec_ufence = mmap(NULL, SZ_4K, PROT_READ |
-> > > -			   PROT_WRITE, MAP_SHARED |
-> > > -			   MAP_ANONYMOUS, -1, 0);
-> > > -	igt_assert(exec_ufence != MAP_FAILED);
-> > > -	memset(exec_ufence, 0, SZ_4K);
-> > > -	sync[0].addr = to_user_pointer(exec_ufence);
-> > > -
-> > > -	for (i = 0; i < n_writes; ++i, addr += stride) {
-> > > -		struct batch_data *data = ptr + i * stride;
-> > > -		uint64_t sdi_offset = (char *)&data->data - (char *)data;
-> > > -		uint64_t sdi_addr = addr + sdi_offset;
-> > > -		int b = 0;
-> > > -
-> > > -		write_dword(data->batch, sdi_addr, WRITE_VALUE(data, i), &b);
-> > > -		igt_assert(b <= ARRAY_SIZE(data->batch));
-> > > -	}
-> > > -
-> > > -	igt_nsec_elapsed(tv);
-> > > -	*submit = igt_nsec_elapsed(tv);
-> > > -
-> > > -	addr = to_user_pointer(ptr);
-> > > -	for (i = 0; i < n_writes; ++i, addr += stride) {
-> > > -		struct batch_data *data = ptr + i * stride;
-> > > -		uint64_t batch_offset = (char *)&data->batch - (char *)data;
-> > > -		uint64_t batch_addr = addr + batch_offset;
-> > > -
-> > > -		exec.address = batch_addr;
-> > > -		if (i + 1 == n_writes)
-> > > -			exec.num_syncs = 1;
-> > > -		xe_exec(fd, &exec);
-> > > -	}
-> > > -
-> > > -	ret = __xe_wait_ufence(fd, exec_ufence, USER_FENCE_VALUE, exec_queue,
-> > > -			       &timeout);
-> > > -	if (ret) {
-> > > -		igt_info("FAIL EXEC_UFENCE_ADDR: 0x%016llx\n", sync[0].addr);
-> > > -		igt_info("FAIL EXEC_UFENCE: EXPECTED=0x%016llx, ACTUAL=0x%016lx\n",
-> > > -			 USER_FENCE_VALUE, exec_ufence[0]);
-> > > -
-> > > -		addr = to_user_pointer(ptr);
-> > > -		for (i = 0; i < n_writes; ++i, addr += stride) {
-> > > -			struct batch_data *data = ptr + i * stride;
-> > > -			uint64_t batch_offset = (char *)&data->batch - (char *)data;
-> > > -			uint64_t batch_addr = addr + batch_offset;
-> > > -			uint64_t sdi_offset = (char *)&data->data - (char *)data;
-> > > -			uint64_t sdi_addr = addr + sdi_offset;
-> > > -
-> > > -			igt_info("FAIL BATCH_ADDR: 0x%016lx\n", batch_addr);
-> > > -			igt_info("FAIL SDI_ADDR: 0x%016lx\n", sdi_addr);
-> > > -			igt_info("FAIL SDI_ADDR (in batch): 0x%016lx\n",
-> > > -				 (((u64)data->batch[2]) << 32) | data->batch[1]);
-> > > -			igt_info("FAIL DATA: EXPECTED=0x%08x, ACTUAL=0x%08x\n",
-> > > -				 data->expected_data, data->data);
-> > > -		}
-> > > -		igt_assert_eq(ret, 0);
-> > > -	}
-> > > -	munmap(exec_ufence, SZ_4K);
-> > > -}
-> > > -
-> > > -static int va_bits;
-> > > -
-> > > -#define bind_system_allocator(__sync, __num_sync)			\
-> > > -	__xe_vm_bind_assert(fd, vm, 0,					\
-> > > -			    0, 0, 0, 0x1ull << va_bits,			\
-> > > -			    DRM_XE_VM_BIND_OP_MAP,			\
-> > > -			    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,	\
-> > > -			    (__sync), (__num_sync), 0, 0)
-> > > -
-> > > -#define unbind_system_allocator()				\
-> > > -	__xe_vm_bind(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,	\
-> > > -		     DRM_XE_VM_BIND_OP_UNMAP, 0,		\
-> > > -		     NULL, 0, 0, 0, 0)
-> > > -
-> > > -#define odd(__i)	(__i & 1)
-> > > -
-> > > -struct aligned_alloc_type {
-> > > -	void *__ptr;
-> > > -	void *ptr;
-> > > -	size_t __size;
-> > > -	size_t size;
-> > > -};
-> > > -
-> > > -static struct aligned_alloc_type __aligned_alloc(size_t alignment, size_t size)
-> > > -{
-> > > -	struct aligned_alloc_type aligned_alloc_type;
-> > > -
-> > > -	aligned_alloc_type.__ptr = mmap(NULL, alignment + size, PROT_NONE, MAP_PRIVATE |
-> > > -			      MAP_ANONYMOUS, -1, 0);
-> > > -	igt_assert(aligned_alloc_type.__ptr != MAP_FAILED);
-> > > -
-> > > -	aligned_alloc_type.ptr = (void *)ALIGN((uint64_t)aligned_alloc_type.__ptr, alignment);
-> > > -	aligned_alloc_type.size = size;
-> > > -	aligned_alloc_type.__size = size + alignment;
-> > > -
-> > > -	return aligned_alloc_type;
-> > > -}
-> > > -
-> > > -static void __aligned_free(struct aligned_alloc_type  *aligned_alloc_type)
-> > > -{
-> > > -	munmap(aligned_alloc_type->__ptr, aligned_alloc_type->__size);
-> > > -}
-> > > -
-> > > -static void __aligned_partial_free(struct aligned_alloc_type  *aligned_alloc_type)
-> > > -{
-> > > -	size_t begin_size = (size_t)(aligned_alloc_type->ptr - aligned_alloc_type->__ptr);
-> > > -
-> > > -	if (begin_size)
-> > > -		munmap(aligned_alloc_type->__ptr, begin_size);
-> > > -	if (aligned_alloc_type->__size - aligned_alloc_type->size - begin_size)
-> > > -		munmap(aligned_alloc_type->ptr + aligned_alloc_type->size,
-> > > -		       aligned_alloc_type->__size - aligned_alloc_type->size - begin_size);
-> > > -}
-> > > -
-> > > -/**
-> > > - * SUBTEST: unaligned-alloc
-> > > - * Description: allocate unaligned sizes of memory
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: fault-benchmark
-> > > - * Description: Benchmark how long GPU / CPU take
-> > > - * Test category: performance test
-> > > - *
-> > > - * SUBTEST: fault-threads-benchmark
-> > > - * Description: Benchmark how long GPU / CPU take, reading results with multiple threads
-> > > - * Test category: performance and functionality test
-> > > - *
-> > > - * SUBTEST: fault-threads-same-page-benchmark
-> > > - * Description: Benchmark how long GPU / CPU take, reading results with multiple threads, hammer same page
-> > > - * Test category: performance and functionality test
-> > > - *
-> > > - * SUBTEST: fault-process-benchmark
-> > > - * Description: Benchmark how long GPU / CPU take, reading results with multiple process
-> > > - * Test category: performance and functionality test
-> > > - *
-> > > - * SUBTEST: fault-process-same-page-benchmark
-> > > - * Description: Benchmark how long GPU / CPU take, reading results with multiple process, hammer same page
-> > > - * Test category: performance and functionality test
-> > > - *
-> > > - * SUBTEST: evict-malloc
-> > > - * Description: trigger eviction of VRAM allocated via malloc
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: evict-malloc-mix-bo
-> > > - * Description: trigger eviction of VRAM allocated via malloc and BO create
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: processes-evict-malloc
-> > > - * Description: multi-process trigger eviction of VRAM allocated via malloc
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: processes-evict-malloc-mix-bo
-> > > - * Description: multi-process trigger eviction of VRAM allocated via malloc and BO create
-> > > - * Test category: stress test
-> > > - */
-> > > -
-> > > -static void
-> > > -many_allocs(int fd, struct drm_xe_engine_class_instance *eci,
-> > > -	    uint64_t total_alloc, uint64_t alloc_size, uint64_t stride,
-> > > -	    pthread_barrier_t *barrier, unsigned int flags)
-> > > -{
-> > > -	uint32_t vm, exec_queue;
-> > > -	int num_allocs = flags & BENCHMARK ? 1 :
-> > > -		(9 * (total_alloc / alloc_size)) / 8;
-> > > -	struct aligned_alloc_type *allocs;
-> > > -	uint32_t *bos = NULL;
-> > > -	struct timespec tv = {};
-> > > -	uint64_t submit, read, elapsed;
-> > > -	int i;
-> > > -
-> > > -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-> > > -			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-> > > -	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-> > > -
-> > > -	bind_system_allocator(NULL, 0);
-> > > -
-> > > -	allocs = malloc(sizeof(*allocs) * num_allocs);
-> > > -	igt_assert(allocs);
-> > > -	memset(allocs, 0, sizeof(*allocs) * num_allocs);
-> > > -
-> > > -	if (flags & MIX_BO_ALLOC) {
-> > > -		bos = malloc(sizeof(*bos) * num_allocs);
-> > > -		igt_assert(bos);
-> > > -		memset(bos, 0, sizeof(*bos) * num_allocs);
-> > > -	}
-> > > -
-> > > -	for (i = 0; i < num_allocs; ++i) {
-> > > -		struct aligned_alloc_type alloc;
-> > > -
-> > > -		if (flags & MIX_BO_ALLOC && odd(i)) {
-> > > -			uint32_t bo_flags =
-> > > -				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-> > > -
-> > > -			alloc = __aligned_alloc(SZ_2M, alloc_size);
-> > > -			igt_assert(alloc.ptr);
-> > > -
-> > > -			bos[i] = xe_bo_create(fd, vm, alloc_size,
-> > > -					      vram_if_possible(fd, eci->gt_id),
-> > > -					      bo_flags);
-> > > -			alloc.ptr = xe_bo_map_fixed(fd, bos[i], alloc_size,
-> > > -						    to_user_pointer(alloc.ptr));
-> > > -			xe_vm_bind_async(fd, vm, 0, bos[i], 0,
-> > > -					 to_user_pointer(alloc.ptr),
-> > > -					 alloc_size, 0, 0);
-> > > -		} else {
-> > > -			alloc.ptr = aligned_alloc(SZ_2M, alloc_size);
-> > > -			igt_assert(alloc.ptr);
-> > > -		}
-> > > -		allocs[i] = alloc;
-> > > -
-> > > -		touch_all_pages(fd, exec_queue, allocs[i].ptr, alloc_size, stride,
-> > > -				&tv, &submit);
-> > > -	}
-> > > -
-> > > -	if (barrier)
-> > > -		pthread_barrier_wait(barrier);
-> > > -
-> > > -	for (i = 0; i < num_allocs; ++i) {
-> > > -		if (flags & BENCHMARK)
-> > > -			read = igt_nsec_elapsed(&tv);
-> > > -#define NUM_CHECK_THREADS	8
-> > > -		if (flags & CPU_FAULT_PROCESS)
-> > > -			check_all_pages_process(allocs[i].ptr, alloc_size, stride,
-> > > -						NUM_CHECK_THREADS, flags);
-> > > -		else if (flags & CPU_FAULT_THREADS)
-> > > -			check_all_pages_threads(allocs[i].ptr, alloc_size, stride,
-> > > -						NUM_CHECK_THREADS, flags);
-> > > -		else
-> > > -			check_all_pages(allocs[i].ptr, alloc_size, stride, NULL);
-> > > -		if (flags & BENCHMARK) {
-> > > -			elapsed = igt_nsec_elapsed(&tv);
-> > > -			igt_info("Execution took %.3fms (submit %.1fus, read %.1fus, total %.1fus, read_total %.1fus)\n",
-> > > -				 1e-6 * elapsed, 1e-3 * submit, 1e-3 * read,
-> > > -				 1e-3 * (elapsed - submit),
-> > > -				 1e-3 * (elapsed - read));
-> > > -		}
-> > > -		if (bos && bos[i]) {
-> > > -			__aligned_free(allocs + i);
-> > > -			gem_close(fd, bos[i]);
-> > > -		} else {
-> > > -			free(allocs[i].ptr);
-> > > -		}
-> > > -	}
-> > > -	if (bos)
-> > > -		free(bos);
-> > > -	free(allocs);
-> > > -	xe_exec_queue_destroy(fd, exec_queue);
-> > > -	xe_vm_destroy(fd, vm);
-> > > -}
-> > > -
-> > > -static void process_evict(struct drm_xe_engine_class_instance *hwe,
-> > > -			  uint64_t total_alloc, uint64_t alloc_size,
-> > > -			  uint64_t stride, unsigned int flags)
-> > > -{
-> > > -	struct process_data *pdata;
-> > > -	int map_fd;
-> > > -	int fd;
-> > > -
-> > > -	map_fd = open(sync_file, O_RDWR, 0x666);
-> > > -	pdata = mmap(NULL, sizeof(*pdata), PROT_READ |
-> > > -		     PROT_WRITE, MAP_SHARED, map_fd, 0);
-> > > -	wait_pdata(pdata);
-> > > -
-> > > -	fd = drm_open_driver(DRIVER_XE);
-> > > -	many_allocs(fd, hwe, total_alloc, alloc_size, stride, &pdata->barrier,
-> > > -		    flags);
-> > > -	drm_close_driver(fd);
-> > > -
-> > > -	close(map_fd);
-> > > -	munmap(pdata, sizeof(*pdata));
-> > > -}
-> > > -
-> > > -static void
-> > > -processes_evict(int fd, uint64_t alloc_size, uint64_t stride,
-> > > -		unsigned int flags)
-> > > -{
-> > > -	struct drm_xe_engine_class_instance *hwe;
-> > > -	struct process_data *pdata;
-> > > -	int n_engine_gt[2] = { 0, 0 }, n_engine = 0;
-> > > -	int map_fd;
-> > > -
-> > > -	map_fd = open(sync_file, O_RDWR | O_CREAT, 0x666);
-> > > -	posix_fallocate(map_fd, 0, sizeof(*pdata));
-> > > -	pdata = mmap(NULL, sizeof(*pdata), PROT_READ |
-> > > -		     PROT_WRITE, MAP_SHARED, map_fd, 0);
-> > > -
-> > > -	xe_for_each_engine(fd, hwe) {
-> > > -		igt_assert(hwe->gt_id < 2);
-> > > -		n_engine_gt[hwe->gt_id]++;
-> > > -		n_engine++;
-> > > -	}
-> > > -
-> > > -	init_pdata(pdata, n_engine);
-> > > -
-> > > -	xe_for_each_engine(fd, hwe) {
-> > > -		igt_fork(child, 1)
-> > > -			process_evict(hwe,
-> > > -				      xe_visible_vram_size(fd, hwe->gt_id) /
-> > > -				      n_engine_gt[hwe->gt_id], alloc_size,
-> > > -				      stride, flags);
-> > > -	}
-> > > -
-> > > -	signal_pdata(pdata);
-> > > -	igt_waitchildren();
-> > > -
-> > > -	close(map_fd);
-> > > -	munmap(pdata, sizeof(*pdata));
-> > > -}
-> > > -
-> > > -#define CPU_FAULT	(0x1 << 0)
-> > > -#define REMAP		(0x1 << 1)
-> > > -#define MIDDLE		(0x1 << 2)
-> > > -
-> > > -/**
-> > > - * SUBTEST: partial-munmap-cpu-fault
-> > > - * Description: munmap partially with cpu access in between
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: partial-munmap-no-cpu-fault
-> > > - * Description: munmap partially with no cpu access in between
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: partial-remap-cpu-fault
-> > > - * Description: remap partially with cpu access in between
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: partial-remap-no-cpu-fault
-> > > - * Description: remap partially with no cpu access in between
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: partial-middle-munmap-cpu-fault
-> > > - * Description: munmap middle with cpu access in between
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: partial-middle-munmap-no-cpu-fault
-> > > - * Description: munmap middle with no cpu access in between
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: partial-middle-remap-cpu-fault
-> > > - * Description: remap middle with cpu access in between
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: partial-middle-remap-no-cpu-fault
-> > > - * Description: remap middle with no cpu access in between
-> > > - * Test category: functionality test
-> > > - */
-> > > -
-> > > -static void
-> > > -partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
-> > > -{
-> > > -	struct drm_xe_sync sync[1] = {
-> > > -		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> > > -	          .timeline_value = USER_FENCE_VALUE },
-> > > -	};
-> > > -	struct drm_xe_exec exec = {
-> > > -		.num_batch_buffer = 1,
-> > > -		.num_syncs = 1,
-> > > -		.syncs = to_user_pointer(sync),
-> > > -	};
-> > > -	struct {
-> > > -		uint32_t batch[16];
-> > > -		uint64_t pad;
-> > > -		uint64_t vm_sync;
-> > > -		uint64_t exec_sync;
-> > > -		uint32_t data;
-> > > -		uint32_t expected_data;
-> > > -	} *data;
-> > > -	size_t bo_size = SZ_2M, unmap_offset = 0;
-> > > -	uint32_t vm, exec_queue;
-> > > -	u64 *exec_ufence = NULL;
-> > > -	int i;
-> > > -	void *old, *new = NULL;
-> > > -	struct aligned_alloc_type alloc;
-> > > -
-> > > -	if (flags & MIDDLE)
-> > > -		unmap_offset = bo_size / 4;
-> > > -
-> > > -	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-> > > -			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-> > > -
-> > > -	alloc = __aligned_alloc(bo_size, bo_size);
-> > > -	igt_assert(alloc.ptr);
-> > > -
-> > > -	data = mmap(alloc.ptr, bo_size, PROT_READ | PROT_WRITE,
-> > > -		    MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
-> > > -	igt_assert(data != MAP_FAILED);
-> > > -	memset(data, 0, bo_size);
-> > > -	old = data;
-> > > -
-> > > -	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-> > > -
-> > > -	sync[0].addr = to_user_pointer(&data[0].vm_sync);
-> > > -	bind_system_allocator(sync, 1);
-> > > -	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-> > > -	data[0].vm_sync = 0;
-> > > -
-> > > -	exec_ufence = mmap(NULL, SZ_4K, PROT_READ |
-> > > -			   PROT_WRITE, MAP_SHARED |
-> > > -			   MAP_ANONYMOUS, -1, 0);
-> > > -	igt_assert(exec_ufence != MAP_FAILED);
-> > > -	memset(exec_ufence, 0, SZ_4K);
-> > > -
-> > > -	for (i = 0; i < 2; i++) {
-> > > -		uint64_t addr = to_user_pointer(data);
-> > > -		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
-> > > -		uint64_t sdi_addr = addr + sdi_offset;
-> > > -		int b = 0;
-> > > -
-> > > -		write_dword(data[i].batch, sdi_addr, WRITE_VALUE(&data[i], i), &b);
-> > > -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-> > > -
-> > > -		if (!i)
-> > > -			data = old + unmap_offset + bo_size / 2;
-> > > -	}
-> > > -
-> > > -	data = old;
-> > > -	exec.exec_queue_id = exec_queue;
-> > > -
-> > > -	for (i = 0; i < 2; i++) {
-> > > -		uint64_t addr = to_user_pointer(data);
-> > > -		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
-> > > -		uint64_t batch_addr = addr + batch_offset;
-> > > -
-> > > -		sync[0].addr = new ? to_user_pointer(new) :
-> > > -			to_user_pointer(exec_ufence);
-> > > -		exec.address = batch_addr;
-> > > -		xe_exec(fd, &exec);
-> > > -
-> > > -		xe_wait_ufence(fd, new ?: exec_ufence, USER_FENCE_VALUE,
-> > > -			       exec_queue, FIVE_SEC);
-> > > -		if (i || (flags & CPU_FAULT))
-> > > -			igt_assert_eq(data[i].data, READ_VALUE(&data[i]));
-> > > -		exec_ufence[0] = 0;
-> > > -
-> > > -		if (!i) {
-> > > -			data = old + unmap_offset + bo_size / 2;
-> > > -			munmap(old + unmap_offset, bo_size / 2);
-> > > -			if (flags & REMAP) {
-> > > -				new = mmap(old + unmap_offset, bo_size / 2,
-> > > -					   PROT_READ | PROT_WRITE,
-> > > -					   MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED |
-> > > -					   MAP_LOCKED, -1, 0);
-> > > -				igt_assert(new != MAP_FAILED);
-> > > -			}
-> > > -		}
-> > > -	}
-> > > -
-> > > -	xe_exec_queue_destroy(fd, exec_queue);
-> > > -	munmap(exec_ufence, SZ_4K);
-> > > -	__aligned_free(&alloc);
-> > > -	if (new)
-> > > -		munmap(new, bo_size / 2);
-> > > -	xe_vm_destroy(fd, vm);
-> > > -}
-> > > -
-> > > -#define MAX_N_EXEC_QUEUES	16
-> > > -
-> > > -#define MMAP			(0x1 << 0)
-> > > -#define NEW			(0x1 << 1)
-> > > -#define BO_UNMAP		(0x1 << 2)
-> > > -#define FREE			(0x1 << 3)
-> > > -#define BUSY			(0x1 << 4)
-> > > -#define BO_MAP			(0x1 << 5)
-> > > -#define RACE			(0x1 << 6)
-> > > -#define SKIP_MEMSET		(0x1 << 7)
-> > > -#define FAULT			(0x1 << 8)
-> > > -#define FILE_BACKED		(0x1 << 9)
-> > > -#define LOCK			(0x1 << 10)
-> > > -#define MMAP_SHARED		(0x1 << 11)
-> > > -#define HUGE_PAGE		(0x1 << 12)
-> > > -#define SHARED_ALLOC		(0x1 << 13)
-> > > -#define FORK_READ		(0x1 << 14)
-> > > -#define FORK_READ_AFTER		(0x1 << 15)
-> > > -#define MREMAP			(0x1 << 16)
-> > > -#define DONTUNMAP		(0x1 << 17)
-> > > -#define READ_ONLY_REMAP		(0x1 << 18)
-> > > -#define SYNC_EXEC		(0x1 << 19)
-> > > -#define EVERY_OTHER_CHECK	(0x1 << 20)
-> > > -#define MULTI_FAULT		(0x1 << 21)
-> > > -
-> > > -#define N_MULTI_FAULT		4
-> > > -
-> > > -/**
-> > > - * SUBTEST: once-%s
-> > > - * Description: Run %arg[1] system allocator test only once
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: once-large-%s
-> > > - * Description: Run %arg[1] system allocator test only once with large allocation
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: twice-%s
-> > > - * Description: Run %arg[1] system allocator test twice
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: twice-large-%s
-> > > - * Description: Run %arg[1] system allocator test twice with large allocation
-> > > - * Test category: functionality test
-> > > - *
-> > > - * SUBTEST: many-%s
-> > > - * Description: Run %arg[1] system allocator test many times
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: many-stride-%s
-> > > - * Description: Run %arg[1] system allocator test many times with a stride on each exec
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: many-execqueues-%s
-> > > - * Description: Run %arg[1] system allocator test on many exec_queues
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: many-large-%s
-> > > - * Description: Run %arg[1] system allocator test many times with large allocations
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: many-large-execqueues-%s
-> > > - * Description: Run %arg[1] system allocator test on many exec_queues with large allocations
-> > > - *
-> > > - * SUBTEST: threads-many-%s
-> > > - * Description: Run %arg[1] system allocator threaded test many times
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-many-stride-%s
-> > > - * Description: Run %arg[1] system allocator threaded test many times with a stride on each exec
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-many-execqueues-%s
-> > > - * Description: Run %arg[1] system allocator threaded test on many exec_queues
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-many-large-%s
-> > > - * Description: Run %arg[1] system allocator threaded test many times with large allocations
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-many-large-execqueues-%s
-> > > - * Description: Run %arg[1] system allocator threaded test on many exec_queues with large allocations
-> > > - *
-> > > - * SUBTEST: threads-shared-vm-many-%s
-> > > - * Description: Run %arg[1] system allocator threaded, shared vm test many times
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-shared-vm-many-stride-%s
-> > > - * Description: Run %arg[1] system allocator threaded, shared vm test many times with a stride on each exec
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-shared-vm-many-execqueues-%s
-> > > - * Description: Run %arg[1] system allocator threaded, shared vm test on many exec_queues
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-shared-vm-many-large-%s
-> > > - * Description: Run %arg[1] system allocator threaded, shared vm test many times with large allocations
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-shared-vm-many-large-execqueues-%s
-> > > - * Description: Run %arg[1] system allocator threaded, shared vm test on many exec_queues with large allocations
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: process-many-%s
-> > > - * Description: Run %arg[1] system allocator multi-process test many times
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: process-many-stride-%s
-> > > - * Description: Run %arg[1] system allocator multi-process test many times with a stride on each exec
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: process-many-execqueues-%s
-> > > - * Description: Run %arg[1] system allocator multi-process test on many exec_queues
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: process-many-large-%s
-> > > - * Description: Run %arg[1] system allocator multi-process test many times with large allocations
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: process-many-large-execqueues-%s
-> > > - * Description: Run %arg[1] system allocator multi-process test on many exec_queues with large allocations
-> > > - *
-> > > - * SUBTEST: fault
-> > > - * Description: use a bad system allocator address resulting in a fault
-> > > - * Test category: bad input
-> > > - *
-> > > - * arg[1]:
-> > > - *
-> > > - * @malloc:				malloc single buffer for all execs, issue a command which will trigger multiple faults
-> > > - * @malloc-multi-fault:			malloc single buffer for all execs
-> > > - * @malloc-fork-read:			malloc single buffer for all execs, fork a process to read test output
-> > > - * @malloc-fork-read-after:		malloc single buffer for all execs, fork a process to read test output, check again after fork returns in parent
-> > > - * @malloc-mlock:			malloc and mlock single buffer for all execs
-> > > - * @malloc-race:			malloc single buffer for all execs with race between cpu and gpu access
-> > > - * @malloc-bo-unmap:			malloc single buffer for all execs, bind and unbind a BO to same address before execs
-> > > - * @malloc-busy:			malloc single buffer for all execs, try to unbind while buffer valid
-> > > - * @mmap:				mmap single buffer for all execs
-> > > - * @mmap-remap:				mmap and mremap a buffer for all execs
-> > > - * @mmap-remap-dontunmap:		mmap and mremap a buffer with dontunmap flag for all execs
-> > > - * @mmap-remap-ro:			mmap and mremap a read-only buffer for all execs
-> > > - * @mmap-remap-ro-dontunmap:		mmap and mremap a read-only buffer with dontunmap flag for all execs
-> > > - * @mmap-remap-eocheck:			mmap and mremap a buffer for all execs, check data every other loop iteration
-> > > - * @mmap-remap-dontunmap-eocheck:	mmap and mremap a buffer with dontunmap flag for all execs, check data every other loop iteration
-> > > - * @mmap-remap-ro-eocheck:		mmap and mremap a read-only buffer for all execs, check data every other loop iteration
-> > > - * @mmap-remap-ro-dontunmap-eocheck:	mmap and mremap a read-only buffer with dontunmap flag for all execs, check data every other loop iteration
-> > > - * @mmap-huge:				mmap huge page single buffer for all execs
-> > > - * @mmap-shared:			mmap shared single buffer for all execs
-> > > - * @mmap-shared-remap:			mmap shared and mremap a buffer for all execs
-> > > - * @mmap-shared-remap-dontunmap:	mmap shared and mremap a buffer with dontunmap flag for all execs
-> > > - * @mmap-shared-remap-eocheck:		mmap shared and mremap a buffer for all execs, check data every other loop iteration
-> > > - * @mmap-shared-remap-dontunmap-eocheck:	mmap shared and mremap a buffer with dontunmap flag for all execs, check data every other loop iteration
-> > > - * @mmap-mlock:				mmap and mlock single buffer for all execs
-> > > - * @mmap-file:				mmap single buffer, with file backing, for all execs
-> > > - * @mmap-file-mlock:			mmap and mlock single buffer, with file backing, for all execs
-> > > - * @mmap-race:				mmap single buffer for all execs with race between cpu and gpu access
-> > > - * @free:				malloc and free buffer for each exec
-> > > - * @free-race:				malloc and free buffer for each exec with race between cpu and gpu access
-> > > - * @new:				malloc a new buffer for each exec
-> > > - * @new-race:				malloc a new buffer for each exec with race between cpu and gpu access
-> > > - * @new-bo-map:				malloc a new buffer or map BO for each exec
-> > > - * @new-busy:				malloc a new buffer for each exec, try to unbind while buffers valid
-> > > - * @mmap-free:				mmap and free buffer for each exec
-> > > - * @mmap-free-huge:			mmap huge page and free buffer for each exec
-> > > - * @mmap-free-race:			mmap and free buffer for each exec with race between cpu and gpu access
-> > > - * @mmap-new:				mmap a new buffer for each exec
-> > > - * @mmap-new-huge:			mmap huge page a new buffer for each exec
-> > > - * @mmap-new-race:			mmap a new buffer for each exec with race between cpu and gpu access
-> > > - * @malloc-nomemset:			malloc single buffer for all execs, skip memset of buffers
-> > > - * @malloc-mlock-nomemset:		malloc and mlock single buffer for all execs, skip memset of buffers
-> > > - * @malloc-race-nomemset:		malloc single buffer for all execs with race between cpu and gpu access, skip memset of buffers
-> > > - * @malloc-bo-unmap-nomemset:		malloc single buffer for all execs, bind and unbind a BO to same address before execs, skip memset of buffers
-> > > - * @malloc-busy-nomemset:		malloc single buffer for all execs, try to unbind while buffer valid, skip memset of buffers
-> > > - * @mmap-nomemset:			mmap single buffer for all execs, skip memset of buffers
-> > > - * @mmap-huge-nomemset:			mmap huge page single buffer for all execs, skip memset of buffers
-> > > - * @mmap-shared-nomemset:		mmap shared single buffer for all execs, skip memset of buffers
-> > > - * @mmap-mlock-nomemset:		mmap and mlock single buffer for all execs, skip memset of buffers
-> > > - * @mmap-file-nomemset:			mmap single buffer, with file backing, for all execs, skip memset of buffers
-> > > - * @mmap-file-mlock-nomemset:		mmap and mlock single buffer, with file backing, for all execs, skip memset of buffers
-> > > - * @mmap-race-nomemset:			mmap single buffer for all execs with race between cpu and gpu access, skip memset of buffers
-> > > - * @free-nomemset:			malloc and free buffer for each exec, skip memset of buffers
-> > > - * @free-race-nomemset:			malloc and free buffer for each exec with race between cpu and gpu access, skip memset of buffers
-> > > - * @new-nomemset:			malloc a new buffer for each exec, skip memset of buffers
-> > > - * @new-race-nomemset:			malloc a new buffer for each exec with race between cpu and gpu access, skip memset of buffers
-> > > - * @new-bo-map-nomemset:		malloc a new buffer or map BO for each exec, skip memset of buffers
-> > > - * @new-busy-nomemset:			malloc a new buffer for each exec, try to unbind while buffers valid, skip memset of buffers
-> > > - * @mmap-free-nomemset:			mmap and free buffer for each exec, skip memset of buffers
-> > > - * @mmap-free-huge-nomemset:		mmap huge page and free buffer for each exec, skip memset of buffers
-> > > - * @mmap-free-race-nomemset:		mmap and free buffer for each exec with race between cpu and gpu access, skip memset of buffers
-> > > - * @mmap-new-nomemset:			mmap a new buffer for each exec, skip memset of buffers
-> > > - * @mmap-new-huge-nomemset:		mmap huge page new buffer for each exec, skip memset of buffers
-> > > - * @mmap-new-race-nomemset:		mmap a new buffer for each exec with race between cpu and gpu access, skip memset of buffers
-> > > - *
-> > > - * SUBTEST: threads-shared-vm-shared-alloc-many-stride-malloc
-> > > - * Description: Create multiple threads with a shared VM triggering faults on different hardware engines to same addresses
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-shared-vm-shared-alloc-many-stride-malloc-race
-> > > - * Description: Create multiple threads with a shared VM triggering faults on different hardware engines to same addresses, racing between CPU and GPU access
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-shared-alloc-many-stride-malloc
-> > > - * Description: Create multiple threads with a faults on different hardware engines to same addresses
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-shared-alloc-many-stride-malloc-sync
-> > > - * Description: Create multiple threads with a faults on different hardware engines to same addresses, syncing on each exec
-> > > - * Test category: stress test
-> > > - *
-> > > - * SUBTEST: threads-shared-alloc-many-stride-malloc-race
-> > > - * Description: Create multiple threads with a faults on different hardware engines to same addresses, racing between CPU and GPU access
-> > > - * Test category: stress test
-> > > - */
-> > > -
-> > > -struct test_exec_data {
-> > > -	uint32_t batch[32];
-> > > -	uint64_t pad;
-> > > -	uint64_t vm_sync;
-> > > -	uint64_t exec_sync;
-> > > -	uint32_t data;
-> > > -	uint32_t expected_data;
-> > > -};
-> > > -
-> > > -static void
-> > > -test_exec(int fd, struct drm_xe_engine_class_instance *eci,
-> > > -	  int n_exec_queues, int n_execs, size_t bo_size,
-> > > -	  size_t stride, uint32_t vm, void *alloc, pthread_barrier_t *barrier,
-> > > -	  unsigned int flags)
-> > > -{
-> > > -	uint64_t addr;
-> > > -	struct drm_xe_sync sync[1] = {
-> > > -		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> > > -	          .timeline_value = USER_FENCE_VALUE },
-> > > -	};
-> > > -	struct drm_xe_exec exec = {
-> > > -		.num_batch_buffer = 1,
-> > > -		.num_syncs = 1,
-> > > -		.syncs = to_user_pointer(sync),
-> > > -	};
-> > > -	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
-> > > -	struct test_exec_data *data, *next_data = NULL;
-> > > -	uint32_t bo_flags;
-> > > -	uint32_t bo = 0;
-> > > -	void **pending_free;
-> > > -	u64 *exec_ufence = NULL;
-> > > -	int i, j, b, file_fd = -1, prev_idx;
-> > > -	bool free_vm = false;
-> > > -	size_t aligned_size = bo_size ?: xe_get_default_alignment(fd);
-> > > -	size_t orig_size = bo_size;
-> > > -	struct aligned_alloc_type aligned_alloc_type;
-> > > -
-> > > -	if (flags & MULTI_FAULT) {
-> > > -		if (!bo_size)
-> > > -			return;
-> > > -
-> > > -		bo_size *= N_MULTI_FAULT;
-> > > -	}
-> > > -
-> > > -	if (flags & SHARED_ALLOC)
-> > > -		return;
-> > > -
-> > > -	if (flags & EVERY_OTHER_CHECK && odd(n_execs))
-> > > -		return;
-> > > -
-> > > -	if (flags & EVERY_OTHER_CHECK)
-> > > -		igt_assert(flags & MREMAP);
-> > > -
-> > > -	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
-> > > -
-> > > -	if (flags & NEW && !(flags & FREE)) {
-> > > -		pending_free = malloc(sizeof(*pending_free) * n_execs);
-> > > -		igt_assert(pending_free);
-> > > -		memset(pending_free, 0, sizeof(*pending_free) * n_execs);
-> > > -	}
-> > > -
-> > > -	if (!vm) {
-> > > -		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-> > > -				  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-> > > -		free_vm = true;
-> > > -	}
-> > > -	if (!bo_size) {
-> > > -		if (!stride) {
-> > > -			bo_size = sizeof(*data) * n_execs;
-> > > -			bo_size = xe_bb_size(fd, bo_size);
-> > > -		} else {
-> > > -			bo_size = stride * n_execs * sizeof(*data);
-> > > -			bo_size = xe_bb_size(fd, bo_size);
-> > > -		}
-> > > -	}
-> > > -	if (flags & HUGE_PAGE) {
-> > > -		aligned_size = ALIGN(aligned_size, SZ_2M);
-> > > -		bo_size = ALIGN(bo_size, SZ_2M);
-> > > -	}
-> > > -
-> > > -	if (alloc) {
-> > > -		data = alloc;
-> > > -	} else {
-> > > -		if (flags & MMAP) {
-> > > -			int mmap_flags = MAP_FIXED;
-> > > -
-> > > -			aligned_alloc_type = __aligned_alloc(aligned_size, bo_size);
-> > > -			data = aligned_alloc_type.ptr;
-> > > -			igt_assert(data);
-> > > -			__aligned_partial_free(&aligned_alloc_type);
-> > > -
-> > > -			if (flags & MMAP_SHARED)
-> > > -				mmap_flags |= MAP_SHARED;
-> > > -			else
-> > > -				mmap_flags |= MAP_PRIVATE;
-> > > -
-> > > -			if (flags & HUGE_PAGE)
-> > > -				mmap_flags |= MAP_HUGETLB | MAP_HUGE_2MB;
-> > > -
-> > > -			if (flags & FILE_BACKED) {
-> > > -				char name[] = "/tmp/xe_exec_system_allocator_datXXXXXX";
-> > > -
-> > > -				igt_assert(!(flags & NEW));
-> > > -
-> > > -				file_fd = mkstemp(name);
-> > > -				posix_fallocate(file_fd, 0, bo_size);
-> > > -			} else {
-> > > -				mmap_flags |= MAP_ANONYMOUS;
-> > > -			}
-> > > -
-> > > -			data = mmap(data, bo_size, PROT_READ |
-> > > -				    PROT_WRITE, mmap_flags, file_fd, 0);
-> > > -			igt_assert(data != MAP_FAILED);
-> > > -		} else {
-> > > -			data = aligned_alloc(aligned_size, bo_size);
-> > > -			igt_assert(data);
-> > > -		}
-> > > -		if (!(flags & SKIP_MEMSET))
-> > > -			memset(data, 0, bo_size);
-> > > -		if (flags & LOCK) {
-> > > -			igt_assert(!(flags & NEW));
-> > > -			mlock(data, bo_size);
-> > > -		}
-> > > -	}
-> > > -
-> > > -	for (i = 0; i < n_exec_queues; i++)
-> > > -		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-> > > -
-> > > -	sync[0].addr = to_user_pointer(&data[0].vm_sync);
-> > > -	if (free_vm) {
-> > > -		bind_system_allocator(sync, 1);
-> > > -		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-> > > -	}
-> > > -	data[0].vm_sync = 0;
-> > > -
-> > > -	addr = to_user_pointer(data);
-> > > -
-> > > -	if (flags & BO_UNMAP) {
-> > > -		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-> > > -		bo = xe_bo_create(fd, vm, bo_size,
-> > > -				  vram_if_possible(fd, eci->gt_id), bo_flags);
-> > > -		xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, 0, 0);
-> > > -
-> > > -		__xe_vm_bind_assert(fd, vm, 0,
-> > > -				    0, 0, addr, bo_size,
-> > > -				    DRM_XE_VM_BIND_OP_MAP,
-> > > -				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR, sync,
-> > > -				    1, 0, 0);
-> > > -		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-> > > -			       FIVE_SEC);
-> > > -		data[0].vm_sync = 0;
-> > > -		gem_close(fd, bo);
-> > > -		bo = 0;
-> > > -	}
-> > > -
-> > > -	if (!(flags & RACE)) {
-> > > -		exec_ufence = mmap(NULL, SZ_4K, PROT_READ |
-> > > -				   PROT_WRITE, MAP_SHARED |
-> > > -				   MAP_ANONYMOUS, -1, 0);
-> > > -		igt_assert(exec_ufence != MAP_FAILED);
-> > > -		memset(exec_ufence, 0, SZ_4K);
-> > > -	}
-> > > -
-> > > -	for (i = 0; i < n_execs; i++) {
-> > > -		int idx = !stride ? i : i * stride, next_idx = !stride
-> > > -			? (i + 1) : (i + 1) * stride;
-> > > -		uint64_t batch_offset = (char *)&data[idx].batch - (char *)data;
-> > > -		uint64_t batch_addr = addr + batch_offset;
-> > > -		uint64_t sdi_offset = (char *)&data[idx].data - (char *)data;
-> > > -		uint64_t sdi_addr = addr + sdi_offset;
-> > > -		int e = i % n_exec_queues, err;
-> > > -		bool fault_inject = (FAULT & flags) && i == n_execs / 2;
-> > > -		bool fault_injected = (FAULT & flags) && i > n_execs;
-> > > -
-> > > -		if (barrier)
-> > > -			pthread_barrier_wait(barrier);
-> > > -
-> > > -		if (flags & MULTI_FAULT) {
-> > > -			b = 0;
-> > > -			for (j = 0; j < N_MULTI_FAULT - 1; ++j)
-> > > -				__write_dword(data[idx].batch,
-> > > -					      sdi_addr + j * orig_size,
-> > > -					      WRITE_VALUE(&data[idx], idx), &b);
-> > > -			write_dword(data[idx].batch, sdi_addr + j * orig_size,
-> > > -				    WRITE_VALUE(&data[idx], idx), &b);
-> > > -			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
-> > > -		} else if (!(flags & EVERY_OTHER_CHECK)) {
-> > > -			b = 0;
-> > > -			write_dword(data[idx].batch, sdi_addr,
-> > > -				    WRITE_VALUE(&data[idx], idx), &b);
-> > > -			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
-> > > -		} else if (flags & EVERY_OTHER_CHECK && !odd(i)) {
-> > > -			b = 0;
-> > > -			write_dword(data[idx].batch, sdi_addr,
-> > > -				    WRITE_VALUE(&data[idx], idx), &b);
-> > > -			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
-> > > -
-> > > -			aligned_alloc_type = __aligned_alloc(aligned_size, bo_size);
-> > > -			next_data = aligned_alloc_type.ptr;
-> > > -			igt_assert(next_data);
-> > > -			__aligned_partial_free(&aligned_alloc_type);
-> > > -
-> > > -			b = 0;
-> > > -			write_dword(data[next_idx].batch,
-> > > -				    to_user_pointer(next_data) +
-> > > -				    (char *)&data[next_idx].data - (char *)data,
-> > > -				    WRITE_VALUE(&data[next_idx], next_idx), &b);
-> > > -			igt_assert(b <= ARRAY_SIZE(data[next_idx].batch));
-> > > -		}
-> > > -
-> > > -		if (!exec_ufence)
-> > > -			data[idx].exec_sync = 0;
-> > > -
-> > > -		sync[0].addr = exec_ufence ? to_user_pointer(exec_ufence) :
-> > > -			addr + (char *)&data[idx].exec_sync - (char *)data;
-> > > -
-> > > -		exec.exec_queue_id = exec_queues[e];
-> > > -		if (fault_inject)
-> > > -			exec.address = batch_addr * 2;
-> > > -		else
-> > > -			exec.address = batch_addr;
-> > > -
-> > > -		if (fault_injected) {
-> > > -			err = __xe_exec(fd, &exec);
-> > > -			igt_assert(err == -ENOENT);
-> > > -		} else {
-> > > -			xe_exec(fd, &exec);
-> > > -		}
-> > > -
-> > > -		if (barrier)
-> > > -			pthread_barrier_wait(barrier);
-> > > -
-> > > -		if (fault_inject || fault_injected) {
-> > > -			int64_t timeout = QUARTER_SEC;
-> > > -
-> > > -			err = __xe_wait_ufence(fd, exec_ufence ? exec_ufence :
-> > > -					       &data[idx].exec_sync,
-> > > -					       USER_FENCE_VALUE,
-> > > -					       exec_queues[e], &timeout);
-> > > -			igt_assert(err == -ETIME || err == -EIO);
-> > > -		} else {
-> > > -			xe_wait_ufence(fd, exec_ufence ? exec_ufence :
-> > > -				       &data[idx].exec_sync, USER_FENCE_VALUE,
-> > > -				       exec_queues[e], FIVE_SEC);
-> > > -			if (flags & LOCK && !i)
-> > > -				munlock(data, bo_size);
-> > > -
-> > > -			if (flags & MREMAP) {
-> > > -				void *old = data;
-> > > -				int remap_flags = MREMAP_MAYMOVE | MREMAP_FIXED;
-> > > -
-> > > -				if (flags & DONTUNMAP)
-> > > -					remap_flags |= MREMAP_DONTUNMAP;
-> > > -
-> > > -				if (flags & READ_ONLY_REMAP)
-> > > -					igt_assert(!mprotect(old, bo_size,
-> > > -							     PROT_READ));
-> > > -
-> > > -				if (!next_data) {
-> > > -					aligned_alloc_type = __aligned_alloc(aligned_size,
-> > > -								    bo_size);
-> > > -					data = aligned_alloc_type.ptr;
-> > > -					__aligned_partial_free(&aligned_alloc_type);
-> > > -				} else {
-> > > -					data = next_data;
-> > > -				}
-> > > -				next_data = NULL;
-> > > -				igt_assert(data);
-> > > -
-> > > -				data = mremap(old, bo_size, bo_size,
-> > > -					      remap_flags, data);
-> > > -				igt_assert(data != MAP_FAILED);
-> > > -
-> > > -				if (flags & READ_ONLY_REMAP)
-> > > -					igt_assert(!mprotect(data, bo_size,
-> > > -							     PROT_READ |
-> > > -							     PROT_WRITE));
-> > > -
-> > > -				addr = to_user_pointer(data);
-> > > -				if (flags & DONTUNMAP)
-> > > -					munmap(old, bo_size);
-> > > -			}
-> > > -
-> > > -			if (!(flags & EVERY_OTHER_CHECK) || odd(i)) {
-> > > -				if (flags & FORK_READ) {
-> > > -					igt_fork(child, 1)
-> > > -						igt_assert_eq(data[idx].data,
-> > > -							      READ_VALUE(&data[idx]));
-> > > -					if (!(flags & FORK_READ_AFTER))
-> > > -						igt_assert_eq(data[idx].data,
-> > > -							      READ_VALUE(&data[idx]));
-> > > -					igt_waitchildren();
-> > > -					if (flags & FORK_READ_AFTER)
-> > > -						igt_assert_eq(data[idx].data,
-> > > -							      READ_VALUE(&data[idx]));
-> > > -				} else {
-> > > -					igt_assert_eq(data[idx].data,
-> > > -						      READ_VALUE(&data[idx]));
-> > > -
-> > > -					if (flags & MULTI_FAULT) {
-> > > -						for (j = 1; j < N_MULTI_FAULT; ++j) {
-> > > -							struct test_exec_data *__data =
-> > > -								((void *)data) + j * orig_size;
-> > > -
-> > > -							igt_assert_eq(__data[idx].data,
-> > > -								      READ_VALUE(&data[idx]));
-> > > -						}
-> > > -					}
-> > > -				}
-> > > -				if (flags & EVERY_OTHER_CHECK)
-> > > -					igt_assert_eq(data[prev_idx].data,
-> > > -						      READ_VALUE(&data[prev_idx]));
-> > > -			}
-> > > -		}
-> > > -
-> > > -		if (exec_ufence)
-> > > -			exec_ufence[0] = 0;
-> > > -
-> > > -		if (bo) {
-> > > -			__xe_vm_bind_assert(fd, vm, 0,
-> > > -					    0, 0, addr, bo_size,
-> > > -					    DRM_XE_VM_BIND_OP_MAP,
-> > > -					    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,
-> > > -					    NULL, 0, 0, 0);
-> > > -			munmap(data, bo_size);
-> > > -			gem_close(fd, bo);
-> > > -		}
-> > > -
-> > > -		if (flags & NEW) {
-> > > -			if (flags & MMAP) {
-> > > -				if (flags & FREE)
-> > > -					munmap(data, bo_size);
-> > > -				else
-> > > -					pending_free[i] = data;
-> > > -				data = mmap(NULL, bo_size, PROT_READ |
-> > > -					    PROT_WRITE, MAP_SHARED |
-> > > -					    MAP_ANONYMOUS, -1, 0);
-> > > -				igt_assert(data != MAP_FAILED);
-> > > -			} else if (flags & BO_MAP && odd(i)) {
-> > > -				if (!bo) {
-> > > -					if (flags & FREE)
-> > > -						free(data);
-> > > -					else
-> > > -						pending_free[i] = data;
-> > > -				}
-> > > -
-> > > -				aligned_alloc_type = __aligned_alloc(aligned_size, bo_size);
-> > > -				data = aligned_alloc_type.ptr;
-> > > -				igt_assert(data);
-> > > -				__aligned_partial_free(&aligned_alloc_type);
-> > > -
-> > > -				bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-> > > -				bo = xe_bo_create(fd, vm, bo_size,
-> > > -						  vram_if_possible(fd, eci->gt_id),
-> > > -						  bo_flags);
-> > > -				data = xe_bo_map_fixed(fd, bo, bo_size,
-> > > -						       to_user_pointer(data));
-> > > -
-> > > -				xe_vm_bind_async(fd, vm, 0, bo, 0,
-> > > -						 to_user_pointer(data),
-> > > -						 bo_size, 0, 0);
-> > > -			} else {
-> > > -				if (!bo) {
-> > > -					if (flags & FREE)
-> > > -						free(data);
-> > > -					else
-> > > -						pending_free[i] = data;
-> > > -				}
-> > > -				bo = 0;
-> > > -				data = aligned_alloc(aligned_size, bo_size);
-> > > -				igt_assert(data);
-> > > -			}
-> > > -			addr = to_user_pointer(data);
-> > > -			if (!(flags & SKIP_MEMSET))
-> > > -				memset(data, 0, bo_size);
-> > > -		}
-> > > -
-> > > -		prev_idx = idx;
-> > > -	}
-> > > -
-> > > -	if (bo) {
-> > > -		__xe_vm_bind_assert(fd, vm, 0,
-> > > -				    0, 0, addr, bo_size,
-> > > -				    DRM_XE_VM_BIND_OP_MAP,
-> > > -				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,
-> > > -				    NULL, 0, 0, 0);
-> > > -		munmap(data, bo_size);
-> > > -		data = NULL;
-> > > -		gem_close(fd, bo);
-> > > -	}
-> > > -
-> > > -	if (flags & BUSY)
-> > > -		igt_assert_eq(unbind_system_allocator(), -EBUSY);
-> > > -
-> > > -	for (i = 0; i < n_exec_queues; i++)
-> > > -		xe_exec_queue_destroy(fd, exec_queues[i]);
-> > > -
-> > > -	if (exec_ufence)
-> > > -		munmap(exec_ufence, SZ_4K);
-> > > -
-> > > -	if (flags & LOCK)
-> > > -		munlock(data, bo_size);
-> > > -
-> > > -	if (file_fd != -1)
-> > > -		close(file_fd);
-> > > -
-> > > -	if (flags & NEW && !(flags & FREE)) {
-> > > -		for (i = 0; i < n_execs; i++) {
-> > > -			if (!pending_free[i])
-> > > -				continue;
-> > > -
-> > > -			if (flags & MMAP)
-> > > -				munmap(pending_free[i], bo_size);
-> > > -			else
-> > > -				free(pending_free[i]);
-> > > -		}
-> > > -		free(pending_free);
-> > > -	}
-> > > -	if (data) {
-> > > -		if (flags & MMAP)
-> > > -			munmap(data, bo_size);
-> > > -		else if (!alloc)
-> > > -			free(data);
-> > > -	}
-> > > -	if (free_vm)
-> > > -		xe_vm_destroy(fd, vm);
-> > > -}
-> > > -
-> > > -struct thread_data {
-> > > -	pthread_t thread;
-> > > -	pthread_mutex_t *mutex;
-> > > -	pthread_cond_t *cond;
-> > > -	pthread_barrier_t *barrier;
-> > > -	int fd;
-> > > -	struct drm_xe_engine_class_instance *eci;
-> > > -	int n_exec_queues;
-> > > -	int n_execs;
-> > > -	size_t bo_size;
-> > > -	size_t stride;
-> > > -	uint32_t vm;
-> > > -	unsigned int flags;
-> > > -	void *alloc;
-> > > -	bool *go;
-> > > -};
-> > > -
-> > > -static void *thread(void *data)
-> > > -{
-> > > -	struct thread_data *t = data;
-> > > -
-> > > -	pthread_mutex_lock(t->mutex);
-> > > -	while (!*t->go)
-> > > -		pthread_cond_wait(t->cond, t->mutex);
-> > > -	pthread_mutex_unlock(t->mutex);
-> > > -
-> > > -	test_exec(t->fd, t->eci, t->n_exec_queues, t->n_execs,
-> > > -		  t->bo_size, t->stride, t->vm, t->alloc, t->barrier,
-> > > -		  t->flags);
-> > > -
-> > > -	return NULL;
-> > > -}
-> > > -
-> > > -static void
-> > > -threads(int fd, int n_exec_queues, int n_execs, size_t bo_size,
-> > > -	size_t stride, unsigned int flags, bool shared_vm)
-> > > -{
-> > > -	struct drm_xe_engine_class_instance *hwe;
-> > > -	struct thread_data *threads_data;
-> > > -	int n_engines = 0, i = 0;
-> > > -	pthread_mutex_t mutex;
-> > > -	pthread_cond_t cond;
-> > > -	pthread_barrier_t barrier;
-> > > -	uint32_t vm = 0;
-> > > -	bool go = false;
-> > > -	void *alloc = NULL;
-> > > -
-> > > -	if ((FILE_BACKED | FORK_READ) & flags)
-> > > -		return;
-> > > -
-> > > -	xe_for_each_engine(fd, hwe)
-> > > -		++n_engines;
-> > > -
-> > > -	if (shared_vm) {
-> > > -		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-> > > -				  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-> > > -		bind_system_allocator(NULL, 0);
-> > > -	}
-> > > -
-> > > -	if (flags & SHARED_ALLOC) {
-> > > -		uint64_t alloc_size;
-> > > -
-> > > -		igt_assert(stride);
-> > > -
-> > > -		alloc_size = sizeof(struct test_exec_data) * stride *
-> > > -			n_execs * n_engines;
-> > > -		alloc_size = xe_bb_size(fd, alloc_size);
-> > > -		alloc = aligned_alloc(SZ_2M, alloc_size);
-> > > -		igt_assert(alloc);
-> > > -
-> > > -		memset(alloc, 0, alloc_size);
-> > > -		flags &= ~SHARED_ALLOC;
-> > > -	}
-> > > -
-> > > -	threads_data = calloc(n_engines, sizeof(*threads_data));
-> > > -	igt_assert(threads_data);
-> > > -
-> > > -	pthread_mutex_init(&mutex, 0);
-> > > -	pthread_cond_init(&cond, 0);
-> > > -	pthread_barrier_init(&barrier, 0, n_engines);
-> > > -
-> > > -	xe_for_each_engine(fd, hwe) {
-> > > -		threads_data[i].mutex = &mutex;
-> > > -		threads_data[i].cond = &cond;
-> > > -		threads_data[i].barrier = (flags & SYNC_EXEC) ? &barrier : NULL;
-> > > -		threads_data[i].fd = fd;
-> > > -		threads_data[i].eci = hwe;
-> > > -		threads_data[i].n_exec_queues = n_exec_queues;
-> > > -		threads_data[i].n_execs = n_execs;
-> > > -		threads_data[i].bo_size = bo_size;
-> > > -		threads_data[i].stride = stride;
-> > > -		threads_data[i].vm = vm;
-> > > -		threads_data[i].flags = flags;
-> > > -		threads_data[i].alloc = alloc ? alloc + i *
-> > > -			sizeof(struct test_exec_data) : NULL;
-> > > -		threads_data[i].go = &go;
-> > > -		pthread_create(&threads_data[i].thread, 0, thread,
-> > > -			       &threads_data[i]);
-> > > -		++i;
-> > > -	}
-> > > -
-> > > -	pthread_mutex_lock(&mutex);
-> > > -	go = true;
-> > > -	pthread_cond_broadcast(&cond);
-> > > -	pthread_mutex_unlock(&mutex);
-> > > -
-> > > -	for (i = 0; i < n_engines; ++i)
-> > > -		pthread_join(threads_data[i].thread, NULL);
-> > > -
-> > > -	if (shared_vm) {
-> > > -		int ret;
-> > > -
-> > > -		if (flags & MMAP) {
-> > > -			int tries = 300;
-> > > -
-> > > -			while (tries && (ret = unbind_system_allocator()) == -EBUSY) {
-> > > -				sleep(.01);
-> > > -				--tries;
-> > > -			}
-> > > -			igt_assert_eq(ret, 0);
-> > > -		}
-> > > -		xe_vm_destroy(fd, vm);
-> > > -		if (alloc)
-> > > -			free(alloc);
-> > > -	}
-> > > -	free(threads_data);
-> > > -}
-> > > -
-> > > -static void process(struct drm_xe_engine_class_instance *hwe, int n_exec_queues,
-> > > -		    int n_execs, size_t bo_size, size_t stride,
-> > > -		    unsigned int flags)
-> > > -{
-> > > -	struct process_data *pdata;
-> > > -	int map_fd;
-> > > -	int fd;
-> > > -
-> > > -	map_fd = open(sync_file, O_RDWR, 0x666);
-> > > -	pdata = mmap(NULL, sizeof(*pdata), PROT_READ |
-> > > -		     PROT_WRITE, MAP_SHARED, map_fd, 0);
-> > > -	wait_pdata(pdata);
-> > > -
-> > > -	fd = drm_open_driver(DRIVER_XE);
-> > > -	test_exec(fd, hwe, n_exec_queues, n_execs,
-> > > -		  bo_size, stride, 0, NULL, NULL, flags);
-> > > -	drm_close_driver(fd);
-> > > -
-> > > -	close(map_fd);
-> > > -	munmap(pdata, sizeof(*pdata));
-> > > -}
-> > > -
-> > > -static void
-> > > -processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
-> > > -	  size_t stride, unsigned int flags)
-> > > -{
-> > > -	struct drm_xe_engine_class_instance *hwe;
-> > > -	struct process_data *pdata;
-> > > -	int map_fd;
-> > > -
-> > > -	if (flags & FORK_READ)
-> > > -		return;
-> > > -
-> > > -	map_fd = open(sync_file, O_RDWR | O_CREAT, 0x666);
-> > > -	posix_fallocate(map_fd, 0, sizeof(*pdata));
-> > > -	pdata = mmap(NULL, sizeof(*pdata), PROT_READ |
-> > > -		     PROT_WRITE, MAP_SHARED, map_fd, 0);
-> > > -
-> > > -	init_pdata(pdata, 0);
-> > > -
-> > > -	xe_for_each_engine(fd, hwe) {
-> > > -		igt_fork(child, 1)
-> > > -			process(hwe, n_exec_queues, n_execs, bo_size,
-> > > -				stride, flags);
-> > > -	}
-> > > -
-> > > -	signal_pdata(pdata);
-> > > -	igt_waitchildren();
-> > > -
-> > > -	close(map_fd);
-> > > -	munmap(pdata, sizeof(*pdata));
-> > > -}
-> > > -
-> > > -struct section {
-> > > -	const char *name;
-> > > -	unsigned int flags;
-> > > -};
-> > > -
-> > > -igt_main
-> > > -{
-> > > -	struct drm_xe_engine_class_instance *hwe;
-> > > -	const struct section sections[] = {
-> > > -		{ "malloc", 0 },
-> > > -		{ "malloc-multi-fault", MULTI_FAULT },
-> > > -		{ "malloc-fork-read", FORK_READ },
-> > > -		{ "malloc-fork-read-after", FORK_READ | FORK_READ_AFTER },
-> > > -		{ "malloc-mlock", LOCK },
-> > > -		{ "malloc-race", RACE },
-> > > -		{ "malloc-busy", BUSY },
-> > > -		{ "malloc-bo-unmap", BO_UNMAP },
-> > > -		{ "mmap", MMAP },
-> > > -		{ "mmap-remap", MMAP | MREMAP },
-> > > -		{ "mmap-remap-dontunmap", MMAP | MREMAP | DONTUNMAP },
-> > > -		{ "mmap-remap-ro", MMAP | MREMAP | READ_ONLY_REMAP },
-> > > -		{ "mmap-remap-ro-dontunmap", MMAP | MREMAP | DONTUNMAP |
-> > > -			READ_ONLY_REMAP },
-> > > -		{ "mmap-remap-eocheck", MMAP | MREMAP | EVERY_OTHER_CHECK },
-> > > -		{ "mmap-remap-dontunmap-eocheck", MMAP | MREMAP | DONTUNMAP |
-> > > -			EVERY_OTHER_CHECK },
-> > > -		{ "mmap-remap-ro-eocheck", MMAP | MREMAP | READ_ONLY_REMAP |
-> > > -			EVERY_OTHER_CHECK },
-> > > -		{ "mmap-remap-ro-dontunmap-eocheck", MMAP | MREMAP | DONTUNMAP |
-> > > -			READ_ONLY_REMAP | EVERY_OTHER_CHECK },
-> > > -		{ "mmap-huge", MMAP | HUGE_PAGE },
-> > > -		{ "mmap-shared", MMAP | LOCK | MMAP_SHARED },
-> > > -		{ "mmap-shared-remap", MMAP | LOCK | MMAP_SHARED | MREMAP },
-> > > -		{ "mmap-shared-remap-dontunmap", MMAP | LOCK | MMAP_SHARED |
-> > > -			MREMAP | DONTUNMAP },
-> > > -		{ "mmap-shared-remap-eocheck", MMAP | LOCK | MMAP_SHARED |
-> > > -			MREMAP | EVERY_OTHER_CHECK },
-> > > -		{ "mmap-shared-remap-dontunmap-eocheck", MMAP | LOCK |
-> > > -			MMAP_SHARED | MREMAP | DONTUNMAP | EVERY_OTHER_CHECK },
-> > > -		{ "mmap-mlock", MMAP | LOCK },
-> > > -		{ "mmap-file", MMAP | FILE_BACKED },
-> > > -		{ "mmap-file-mlock", MMAP | LOCK | FILE_BACKED },
-> > > -		{ "mmap-race", MMAP | RACE },
-> > > -		{ "free", NEW | FREE },
-> > > -		{ "free-race", NEW | FREE | RACE },
-> > > -		{ "new", NEW },
-> > > -		{ "new-race", NEW | RACE },
-> > > -		{ "new-bo-map", NEW | BO_MAP },
-> > > -		{ "new-busy", NEW | BUSY },
-> > > -		{ "mmap-free", MMAP | NEW | FREE },
-> > > -		{ "mmap-free-huge", MMAP | NEW | FREE | HUGE_PAGE },
-> > > -		{ "mmap-free-race", MMAP | NEW | FREE | RACE },
-> > > -		{ "mmap-new", MMAP | NEW },
-> > > -		{ "mmap-new-huge", MMAP | NEW | HUGE_PAGE },
-> > > -		{ "mmap-new-race", MMAP | NEW | RACE },
-> > > -		{ "malloc-nomemset", SKIP_MEMSET },
-> > > -		{ "malloc-mlock-nomemset", SKIP_MEMSET | LOCK },
-> > > -		{ "malloc-race-nomemset", SKIP_MEMSET | RACE },
-> > > -		{ "malloc-busy-nomemset", SKIP_MEMSET | BUSY },
-> > > -		{ "malloc-bo-unmap-nomemset", SKIP_MEMSET | BO_UNMAP },
-> > > -		{ "mmap-nomemset", SKIP_MEMSET | MMAP },
-> > > -		{ "mmap-huge-nomemset", SKIP_MEMSET | MMAP | HUGE_PAGE },
-> > > -		{ "mmap-shared-nomemset", SKIP_MEMSET | MMAP | MMAP_SHARED },
-> > > -		{ "mmap-mlock-nomemset", SKIP_MEMSET | MMAP | LOCK },
-> > > -		{ "mmap-file-nomemset", SKIP_MEMSET | MMAP | FILE_BACKED },
-> > > -		{ "mmap-file-mlock-nomemset", SKIP_MEMSET | MMAP | LOCK | FILE_BACKED },
-> > > -		{ "mmap-race-nomemset", SKIP_MEMSET | MMAP | RACE },
-> > > -		{ "free-nomemset", SKIP_MEMSET | NEW | FREE },
-> > > -		{ "free-race-nomemset", SKIP_MEMSET | NEW | FREE | RACE },
-> > > -		{ "new-nomemset", SKIP_MEMSET | NEW },
-> > > -		{ "new-race-nomemset", SKIP_MEMSET | NEW | RACE },
-> > > -		{ "new-bo-map-nomemset", SKIP_MEMSET | NEW | BO_MAP },
-> > > -		{ "new-busy-nomemset", SKIP_MEMSET | NEW | BUSY },
-> > > -		{ "mmap-free-nomemset", SKIP_MEMSET | MMAP | NEW | FREE },
-> > > -		{ "mmap-free-huge-nomemset", SKIP_MEMSET | MMAP | NEW | FREE | HUGE_PAGE },
-> > > -		{ "mmap-free-race-nomemset", SKIP_MEMSET | MMAP | NEW | FREE | RACE },
-> > > -		{ "mmap-new-nomemset", SKIP_MEMSET | MMAP | NEW },
-> > > -		{ "mmap-new-huge-nomemset", SKIP_MEMSET | MMAP | NEW | HUGE_PAGE },
-> > > -		{ "mmap-new-race-nomemset", SKIP_MEMSET | MMAP | NEW | RACE },
-> > > -		{ NULL },
-> > > -	};
-> > > -	const struct section psections[] = {
-> > > -		{ "munmap-cpu-fault", CPU_FAULT },
-> > > -		{ "munmap-no-cpu-fault", 0 },
-> > > -		{ "remap-cpu-fault", CPU_FAULT | REMAP },
-> > > -		{ "remap-no-cpu-fault", REMAP },
-> > > -		{ "middle-munmap-cpu-fault", MIDDLE | CPU_FAULT },
-> > > -		{ "middle-munmap-no-cpu-fault", MIDDLE },
-> > > -		{ "middle-remap-cpu-fault", MIDDLE | CPU_FAULT | REMAP },
-> > > -		{ "middle-remap-no-cpu-fault", MIDDLE | REMAP },
-> > > -		{ NULL },
-> > > -	};
-> > > -	const struct section esections[] = {
-> > > -		{ "malloc", 0 },
-> > > -		{ "malloc-mix-bo", MIX_BO_ALLOC },
-> > > -		{ NULL },
-> > > -	};
-> > > -	int fd;
-> > > -
-> > > -	igt_fixture {
-> > > -		struct xe_device *xe;
-> > > -
-> > > -		fd = drm_open_driver(DRIVER_XE);
-> > > -		igt_require(!xe_supports_faults(fd));
-> > > -
-> > > -		xe = xe_device_get(fd);
-> > > -		va_bits = xe->va_bits;
-> > > -		open_sync_file();
-> > > -	}
-> > > -
-> > > -	for (const struct section *s = sections; s->name; s++) {
-> > > -		igt_subtest_f("once-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				test_exec(fd, hwe, 1, 1, 0, 0, 0, NULL,
-> > > -					  NULL, s->flags);
-> > > -
-> > > -		igt_subtest_f("once-large-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				test_exec(fd, hwe, 1, 1, SZ_2M, 0, 0, NULL,
-> > > -					  NULL, s->flags);
-> > > -
-> > > -		igt_subtest_f("twice-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				test_exec(fd, hwe, 1, 2, 0, 0, 0, NULL,
-> > > -					  NULL, s->flags);
-> > > -
-> > > -		igt_subtest_f("twice-large-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				test_exec(fd, hwe, 1, 2, SZ_2M, 0, 0, NULL,
-> > > -					  NULL, s->flags);
-> > > -
-> > > -		igt_subtest_f("many-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				test_exec(fd, hwe, 1, 128, 0, 0, 0, NULL,
-> > > -					  NULL, s->flags);
-> > > -
-> > > -		igt_subtest_f("many-stride-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				test_exec(fd, hwe, 1, 128, 0, 256, 0, NULL,
-> > > -					  NULL, s->flags);
-> > > -
-> > > -		igt_subtest_f("many-execqueues-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				test_exec(fd, hwe, 16, 128, 0, 0, 0, NULL,
-> > > -					  NULL, s->flags);
-> > > -
-> > > -		igt_subtest_f("many-large-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				test_exec(fd, hwe, 1, 128, SZ_2M, 0, 0, NULL,
-> > > -					  NULL, s->flags);
-> > > -
-> > > -		igt_subtest_f("many-large-execqueues-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				test_exec(fd, hwe, 16, 128, SZ_2M, 0, 0, NULL,
-> > > -					  NULL, s->flags);
-> > > -
-> > > -		igt_subtest_f("threads-many-%s", s->name)
-> > > -			threads(fd, 1, 128, 0, 0, s->flags, false);
-> > > -
-> > > -		igt_subtest_f("threads-many-stride-%s", s->name)
-> > > -			threads(fd, 1, 128, 0, 256, s->flags, false);
-> > > -
-> > > -		igt_subtest_f("threads-many-execqueues-%s", s->name)
-> > > -			threads(fd, 16, 128, 0, 0, s->flags, false);
-> > > -
-> > > -		igt_subtest_f("threads-many-large-%s", s->name)
-> > > -			threads(fd, 1, 128, SZ_2M, 0, s->flags, false);
-> > > -
-> > > -		igt_subtest_f("threads-many-large-execqueues-%s", s->name)
-> > > -			threads(fd, 16, 128, SZ_2M, 0, s->flags, false);
-> > > -
-> > > -		igt_subtest_f("threads-shared-vm-many-%s", s->name)
-> > > -			threads(fd, 1, 128, 0, 0, s->flags, true);
-> > > -
-> > > -		igt_subtest_f("threads-shared-vm-many-stride-%s", s->name)
-> > > -			threads(fd, 1, 128, 0, 256, s->flags, true);
-> > > -
-> > > -		igt_subtest_f("threads-shared-vm-many-execqueues-%s", s->name)
-> > > -			threads(fd, 16, 128, 0, 0, s->flags, true);
-> > > -
-> > > -		igt_subtest_f("threads-shared-vm-many-large-%s", s->name)
-> > > -			threads(fd, 1, 128, SZ_2M, 0, s->flags, true);
-> > > -
-> > > -		igt_subtest_f("threads-shared-vm-many-large-execqueues-%s", s->name)
-> > > -			threads(fd, 16, 128, SZ_2M, 0, s->flags, true);
-> > > -
-> > > -		igt_subtest_f("process-many-%s", s->name)
-> > > -			processes(fd, 1, 128, 0, 0, s->flags);
-> > > -
-> > > -		igt_subtest_f("process-many-stride-%s", s->name)
-> > > -			processes(fd, 1, 128, 0, 256, s->flags);
-> > > -
-> > > -		igt_subtest_f("process-many-execqueues-%s", s->name)
-> > > -			processes(fd, 16, 128, 0, 0, s->flags);
-> > > -
-> > > -		igt_subtest_f("process-many-large-%s", s->name)
-> > > -			processes(fd, 1, 128, SZ_2M, 0, s->flags);
-> > > -
-> > > -		igt_subtest_f("process-many-large-execqueues-%s", s->name)
-> > > -			processes(fd, 16, 128, SZ_2M, 0, s->flags);
-> > > -	}
-> > > -
-> > > -	igt_subtest("threads-shared-vm-shared-alloc-many-stride-malloc")
-> > > -		threads(fd, 1, 128, 0, 256, SHARED_ALLOC, true);
-> > > -
-> > > -	igt_subtest("threads-shared-vm-shared-alloc-many-stride-malloc-race")
-> > > -		threads(fd, 1, 128, 0, 256, RACE | SHARED_ALLOC, true);
-> > > -
-> > > -	igt_subtest("threads-shared-alloc-many-stride-malloc")
-> > > -		threads(fd, 1, 128, 0, 256, SHARED_ALLOC, false);
-> > > -
-> > > -	igt_subtest("threads-shared-alloc-many-stride-malloc-sync")
-> > > -		threads(fd, 1, 128, 0, 256, SHARED_ALLOC | SYNC_EXEC, false);
-> > > -
-> > > -	igt_subtest("threads-shared-alloc-many-stride-malloc-race")
-> > > -		threads(fd, 1, 128, 0, 256, RACE | SHARED_ALLOC, false);
-> > > -
-> > > -	igt_subtest_f("fault")
-> > > -		xe_for_each_engine(fd, hwe)
-> > > -			test_exec(fd, hwe, 4, 1, SZ_2M, 0, 0, NULL, NULL,
-> > > -				  FAULT);
-> > > -
-> > > -	for (const struct section *s = psections; s->name; s++) {
-> > > -		igt_subtest_f("partial-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe)
-> > > -				partial(fd, hwe, s->flags);
-> > > -	}
-> > > -
-> > > -	igt_subtest_f("unaligned-alloc")
-> > > -		xe_for_each_engine(fd, hwe) {
-> > > -			many_allocs(fd, hwe, (SZ_1M + SZ_512K) * 8,
-> > > -				    SZ_1M + SZ_512K, SZ_4K, NULL, 0);
-> > > -			break;
-> > > -		}
-> > > -
-> > > -	igt_subtest_f("fault-benchmark")
-> > > -		xe_for_each_engine(fd, hwe)
-> > > -			many_allocs(fd, hwe, SZ_64M, SZ_64M, SZ_4K, NULL,
-> > > -				    BENCHMARK);
-> > > -
-> > > -	igt_subtest_f("fault-threads-benchmark")
-> > > -		xe_for_each_engine(fd, hwe)
-> > > -			many_allocs(fd, hwe, SZ_64M, SZ_64M, SZ_4K, NULL,
-> > > -				    BENCHMARK | CPU_FAULT_THREADS);
-> > > -
-> > > -	igt_subtest_f("fault-threads-same-page-benchmark")
-> > > -		xe_for_each_engine(fd, hwe)
-> > > -			many_allocs(fd, hwe, SZ_64M, SZ_64M, SZ_4K, NULL,
-> > > -				    BENCHMARK | CPU_FAULT_THREADS |
-> > > -				    CPU_FAULT_SAME_PAGE);
-> > > -
-> > > -	igt_subtest_f("fault-process-benchmark")
-> > > -		xe_for_each_engine(fd, hwe)
-> > > -			many_allocs(fd, hwe, SZ_64M, SZ_64M, SZ_4K, NULL,
-> > > -				    BENCHMARK | CPU_FAULT_PROCESS);
-> > > -
-> > > -	igt_subtest_f("fault-process-same-page-benchmark")
-> > > -		xe_for_each_engine(fd, hwe)
-> > > -			many_allocs(fd, hwe, SZ_64M, SZ_64M, SZ_4K, NULL,
-> > > -				    BENCHMARK | CPU_FAULT_PROCESS |
-> > > -				    CPU_FAULT_SAME_PAGE);
-> > > -
-> > > -	for (const struct section *s = esections; s->name; s++) {
-> > > -		igt_subtest_f("evict-%s", s->name)
-> > > -			xe_for_each_engine(fd, hwe) {
-> > > -				many_allocs(fd, hwe,
-> > > -					    xe_visible_vram_size(fd, hwe->gt_id),
-> > > -					    SZ_8M, SZ_1M, NULL, s->flags);
-> > > -				break;
-> > > -			}
-> > > -	}
-> > > -
-> > > -	for (const struct section *s = esections; s->name; s++) {
-> > > -		igt_subtest_f("processes-evict-%s", s->name)
-> > > -			processes_evict(fd, SZ_8M, SZ_1M, s->flags);
-> > > -	}
-> > > -
-> > > -	igt_fixture {
-> > > -		xe_device_put(fd);
-> > > -		drm_close_driver(fd);
-> > > -		close_sync_file();
-> > > -	}
-> > > -}
-> > > diff --git a/tests/meson.build b/tests/meson.build
-> > > index 20ddddb89..6328792e3 100644
-> > > --- a/tests/meson.build
-> > > +++ b/tests/meson.build
-> > > @@ -295,7 +295,6 @@ intel_xe_progs = [
-> > >  	'xe_exec_reset',
-> > >  	'xe_exec_sip',
-> > >  	'xe_exec_store',
-> > > -	'xe_exec_system_allocator',
-> > >  	'xe_exec_threads',
-> > >  	'xe_exercise_blt',
-> > >  	'xe_fault_injection',
-> > > -- 
-> > > 2.49.0
-> > > 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/index.html
+
+Participating hosts (40 -> 43)
+------------------------------
+
+  Additional (3): fi-hsw-4770 fi-glk-j4005 bat-arlh-2 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_13043 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@eof:
+    - bat-arlh-2:         NOTRUN -> [SKIP][1] ([i915#11345] / [i915#11346]) +3 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@fbdev@eof.html
+
+  * igt@fbdev@info:
+    - bat-arlh-2:         NOTRUN -> [SKIP][2] ([i915#11346] / [i915#1849])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@fbdev@info.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][3] ([i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][4] ([i915#10213] / [i915#11346] / [i915#11671]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_mmap@basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][6] ([i915#11343] / [i915#11346])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_mmap@basic.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][7] ([i915#10197] / [i915#10211] / [i915#11346] / [i915#11725])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_render_tiled_blits@basic.html
+
+  * igt@gem_softpin@allocator-basic-reserve:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][8] +15 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-hsw-4770/igt@gem_softpin@allocator-basic-reserve.html
+
+  * igt@gem_tiled_blits@basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][9] ([i915#11346] / [i915#12637]) +4 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_tiled_blits@basic.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][10] ([i915#10206] / [i915#11346] / [i915#11724])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-arlh-2:         NOTRUN -> [SKIP][11] ([i915#10209] / [i915#11346] / [i915#11681])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live:
+    - bat-arlh-2:         NOTRUN -> [INCOMPLETE][12] ([i915#14046]) +1 other test incomplete
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@client:
+    - fi-kbl-7567u:       [PASS][13] -> [DMESG-WARN][14] ([i915#13735]) +13 other tests dmesg-warn
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/fi-kbl-7567u/igt@i915_selftest@live@client.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-kbl-7567u/igt@i915_selftest@live@client.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][15] -> [DMESG-FAIL][16] ([i915#12061]) +1 other test dmesg-fail
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-arls-5:         [PASS][17] -> [DMESG-FAIL][18] ([i915#12061]) +1 other test dmesg-fail
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [PASS][19] -> [DMESG-FAIL][20] ([i915#12061]) +1 other test dmesg-fail
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  * igt@intel_hwmon@hwmon-read:
+    - bat-arlh-2:         NOTRUN -> [SKIP][21] ([i915#11346] / [i915#11680] / [i915#7707]) +1 other test skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@intel_hwmon@hwmon-read.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][22] ([i915#5190])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+    - bat-arlh-2:         NOTRUN -> [SKIP][23] ([i915#10200] / [i915#11346] / [i915#11666] / [i915#12203])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-x-tiled-legacy:
+    - bat-arlh-2:         NOTRUN -> [SKIP][24] ([i915#10200] / [i915#11346] / [i915#11666]) +8 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@kms_addfb_basic@basic-x-tiled-legacy.html
+
+  * igt@kms_psr@psr-primary-page-flip:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][25] +11 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
+    - bat-arlh-2:         NOTRUN -> [SKIP][26] ([i915#11346]) +32 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@kms_psr@psr-primary-page-flip.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][27] ([i915#1072]) +3 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-hsw-4770/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-arlh-2:         NOTRUN -> [SKIP][28] ([i915#10208] / [i915#11346] / [i915#8809])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-arlh-2:         NOTRUN -> [SKIP][29] ([i915#10212] / [i915#11346] / [i915#11726])
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@prime_vgem@basic-fence-read.html
+
+  * igt@prime_vgem@basic-read:
+    - bat-arlh-2:         NOTRUN -> [SKIP][30] ([i915#10214] / [i915#11346] / [i915#11726])
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@prime_vgem@basic-read.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-arlh-2:         NOTRUN -> [SKIP][31] ([i915#10216] / [i915#11346] / [i915#11723])
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests:
+    - bat-apl-1:          [INCOMPLETE][32] ([i915#12904]) -> [PASS][33] +1 other test pass
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-apl-1/igt@dmabuf@all-tests.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-apl-1/igt@dmabuf@all-tests.html
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [INCOMPLETE][34] ([i915#12904]) -> [PASS][35] +1 other test pass
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [DMESG-FAIL][36] ([i915#12061]) -> [PASS][37] +1 other test pass
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+    - bat-arls-6:         [DMESG-FAIL][38] ([i915#12061]) -> [PASS][39] +1 other test pass
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#10197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10197
+  [i915#10200]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200
+  [i915#10206]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10206
+  [i915#10208]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10208
+  [i915#10209]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209
+  [i915#10211]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10211
+  [i915#10212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212
+  [i915#10213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213
+  [i915#10214]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214
+  [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#11343]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11343
+  [i915#11345]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11345
+  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
+  [i915#11666]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666
+  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
+  [i915#11680]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11680
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
+  [i915#11723]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723
+  [i915#11724]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11724
+  [i915#11725]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11725
+  [i915#11726]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11726
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203
+  [i915#12637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12637
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#14046]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046
+  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#5190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190
+  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
+  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8337 -> IGTPW_13043
+  * Linux: CI_DRM_16463 -> CI_DRM_16464
+
+  CI-20190529: 20190529
+  CI_DRM_16463: 22d29c516450a3931a8e0b1346ab9f334c19ab9c @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16464: 5c29806460a155cbfb176d48bd707cdf17bf259b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13043: 13043
+  IGT_8337: a5f980e11a5540c1c079cc6fceb2b2d889b5a460 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/index.html
+
+--===============4236289890388516392==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3] lib/igt_facts: Remove NULL and bool comparisions</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148254/">https://patchwork.freedesktop.org/series/148254/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8337 -&gt; IGTPW_13043</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/index.html</p>
+<h2>Participating hosts (40 -&gt; 43)</h2>
+<p>Additional (3): fi-hsw-4770 fi-glk-j4005 bat-arlh-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13043 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@eof:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@fbdev@eof.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11345">i915#11345</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213">i915#10213</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671">i915#11671</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap@basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11343">i915#11343</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10197">i915#10197</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10211">i915#10211</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11725">i915#11725</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_softpin@allocator-basic-reserve:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-hsw-4770/igt@gem_softpin@allocator-basic-reserve.html">SKIP</a> +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_blits@basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12637">i915#12637</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10206">i915#10206</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11724">i915#11724</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209">i915#10209</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046">i915#14046</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@client:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/fi-kbl-7567u/igt@i915_selftest@live@client.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-kbl-7567u/igt@i915_selftest@live@client.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +13 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@intel_hwmon@hwmon-read:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11680">i915#11680</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190">i915#5190</a>)</li>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200">i915#10200</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666">i915#11666</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203">i915#12203</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-x-tiled-legacy:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@kms_addfb_basic@basic-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200">i915#10200</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666">i915#11666</a>) +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-page-flip:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +11 other tests skip</li>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-hsw-4770/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10208">i915#10208</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809">i915#8809</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212">i915#10212</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11726">i915#11726</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-read:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214">i915#10214</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11726">i915#11726</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arlh-2/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216">i915#10216</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723">i915#11723</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-apl-1/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8337/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13043/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8337 -&gt; IGTPW_13043</li>
+<li>Linux: CI_DRM_16463 -&gt; CI_DRM_16464</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16463: 22d29c516450a3931a8e0b1346ab9f334c19ab9c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16464: 5c29806460a155cbfb176d48bd707cdf17bf259b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13043: 13043<br />
+  IGT_8337: a5f980e11a5540c1c079cc6fceb2b2d889b5a460 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4236289890388516392==--
