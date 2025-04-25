@@ -4,54 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75BEAC369D7
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 07:21:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BD0C369D1
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 07:38:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2810110E8A3;
-	Fri, 25 Apr 2025 07:21:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2934310E8A0;
+	Fri, 25 Apr 2025 07:38:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TBgBE6/j";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ej8NTzEH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88BF010E8A3
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Apr 2025 07:21:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 890AD10E8A0
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Apr 2025 07:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745565684; x=1777101684;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=GU9qe4wFDZSQ56pQtxMnE/lr5VuiYpan48Yvhv7mIi0=;
- b=TBgBE6/jmjLp5J2I/RBHPULgoyy/urRGOf3rn5s+T7KH3ldWAuOBMDBx
- aYGY7s6tNlIA8eJGKijjmOQcwsPPdKwPKXuFM1lgxBMMXTKWf2HgQ1M5v
- oIGJZzGGsfUDkBuMuqjLzJY6Xz4Px1fWinQUWz74xxFQnED8zTWxbF7+X
- gCEZScJSNtNoWXMQzK/lshUPddu5JmlaEQNPgou/QPp1kYSocWcQdBI0j
- hATVmhCQVldDvixyEnoApbEFAq8NQC1m1NIx9a9pqD/JqfiZje0oTdu92
- 4VK/xQGk/fJRSquHeZRWB/ovb7/Rw6SUKS3c2Ur8Fynj6qUDjlCAU43DV Q==;
-X-CSE-ConnectionGUID: TrRZNtwzSNeimJQpXURtJg==
-X-CSE-MsgGUID: HwbJsFloRgWVAZlYe2/lVw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="58208886"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="58208886"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 00:21:24 -0700
-X-CSE-ConnectionGUID: aYxMuJFXSlKrMGx3X2g4fA==
-X-CSE-MsgGUID: pXPahb3WTAWqP+ExxgYjHw==
+ t=1745566717; x=1777102717;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=OHcuRTe3mT9z8WXFxLV0od85o2tZ1XpbOhh02bDn2nM=;
+ b=Ej8NTzEHqJ/fjU6ELAhX60m2s/a0HzaXWArP28eoONFvEB/J37mNEPZd
+ ID0atarIztjP2zck5dK0JcOKGCjLsuSfV6jcXiW8Z6LOI9I1RoSl08zvt
+ ILEdQzEE/pPtm4oJDR7g39FHTNjgfVIFZABiBk2R8Sl7JrPH6RX8XEtb6
+ BVPluuKYPyxQnWooKwj49S/gIx5YaOxpXxYpTLN7BJ0QkbbUW9BxOYY/o
+ 4p/FBiI2nAnZfHgEAmxovEHkX5vg28KsO5MMrVBHqRwFIzFF9BtZfb3WX
+ 78rf2uaeElenXt4QqsqT0evnfseko4wnU49QdUZsvMU6rYvsGiDXHSe2x A==;
+X-CSE-ConnectionGUID: Ve/0hyHST4uLSdoWTEtwcA==
+X-CSE-MsgGUID: JOyQhFk9T3KRVU3hi33xlg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="46341791"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="46341791"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2025 00:38:37 -0700
+X-CSE-ConnectionGUID: Jp9qSS1XTomZw2GvuU3ZOg==
+X-CSE-MsgGUID: 9pX9HKP6T3mmos3MNIsjiw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="138000189"
-Received: from hchegond-ivm1.jf.intel.com ([10.165.21.208])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 00:21:24 -0700
-From: Harish Chegondi <harish.chegondi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ashutosh.dixit@intel.com, kamil.konieczny@linux.intel.com,
- Harish Chegondi <harish.chegondi@intel.com>
-Subject: [PATCH i-g-t v2 1/2] tests/intel/xe_eu_stall: Add tests to run
- blocking and non-blocking read twice
-Date: Fri, 25 Apr 2025 00:21:17 -0700
-Message-ID: <29f92b276ff8c0a246dc5d22757193bc66f27c66.1745565376.git.harish.chegondi@intel.com>
-X-Mailer: git-send-email 2.48.1
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="137673338"
+Received: from amiszcza-mobl.ger.corp.intel.com (HELO [10.245.116.18])
+ ([10.245.116.18])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2025 00:38:34 -0700
+Message-ID: <e97811cc-06c4-4010-b2d3-bb4330400d03@linux.intel.com>
+Date: Fri, 25 Apr 2025 09:38:24 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/1] tests/intel/xe_fault_injection: Make
+ inject-fault-probe-function* tests VF-aware
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+References: <20250424095853.1396156-1-marcin.bernatowicz@linux.intel.com>
+ <20250424095853.1396156-2-marcin.bernatowicz@linux.intel.com>
+Content-Language: en-US
+From: Adam Miszczak <adam.miszczak@linux.intel.com>
+In-Reply-To: <20250424095853.1396156-2-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,122 +76,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests that enable EU stall sampling, read all the EU stall data and
-disable EU stall sampling, two times back to back. Add tests for both
-blocking and non-blocking reads.
+On 4/24/2025 11:58 AM, Marcin Bernatowicz wrote:
+> Not all probe functions are invoked and cause a failure when fault
+> injection is performed in a Virtual Function (VF) context. Some of
+> these functions are only relevant for Physical Function (PF).
+>
+> Mark such functions with a `pf_only` flag and update the fault injection
+> test logic to handle VF environments appropriately. When a PF-only
+> function is tested on a VF device, expect the probe to succeed and
+> validate accordingly.
+>
+> This ensures that tests do not produce false failures when run on VFs.
+>
+> v2: Resolve merge conflicts.
+>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>   tests/intel/xe_fault_injection.c | 22 ++++++++++++++++------
+>   1 file changed, 16 insertions(+), 6 deletions(-)
+>
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index 98a414bd3..11b21301a 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -16,6 +16,7 @@
+>   #include "igt.h"
+>   #include "igt_device.h"
+>   #include "igt_kmod.h"
+> +#include "igt_sriov_device.h"
+>   #include "igt_sysfs.h"
+>   #include "lib/igt_syncobj.h"
+>   #include "lib/intel_pat.h"
+> @@ -480,18 +481,20 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+>   	struct fault_injection_params fault_params;
+>   	static uint32_t devid;
+>   	char pci_slot[NAME_MAX];
+> +	bool is_vf_device;
+>   	const struct section {
+>   		const char *name;
+>   		unsigned int flags;
+> +		bool pf_only;
+>   	} probe_fail_functions[] = {
+>   		{ "wait_for_lmem_ready" },
+>   		{ "xe_add_hw_engine_class_defaults" },
+>   		{ "xe_device_create" },
+>   		{ "xe_device_probe_early" },
+>   		{ "xe_ggtt_init_early" },
+> -		{ "xe_guc_ads_init" },
+> +		{ "xe_guc_ads_init", 0, true },
+>   		{ "xe_guc_ct_init" },
+> -		{ "xe_guc_log_init" },
+> +		{ "xe_guc_log_init", 0, true },
+>   		{ "xe_guc_relay_init" },
+>   		{ "xe_mmio_probe_early" },
+>   		{ "xe_pcode_probe_early" },
+> @@ -500,7 +503,7 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+>   		{ "xe_tile_init_early" },
+>   		{ "xe_uc_fw_init" },
+>   		{ "xe_wa_init" },
+> -		{ "xe_wopcm_init" },
+> +		{ "xe_wopcm_init", 0, true },
+>   		{ }
+>   	};
+>   	const struct section vm_create_fail_functions[] = {
+> @@ -550,6 +553,7 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+>   		igt_device_get_pci_slot_name(fd, pci_slot);
+>   		setup_injection_fault(&default_fault_params);
+>   		igt_install_exit_handler(cleanup_injection_fault);
+> +		is_vf_device = intel_is_vf_device(fd);
+>   	}
+>   
+>   	for (const struct section *s = vm_create_fail_functions; s->name; s++)
+> @@ -581,9 +585,15 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+>   	}
+>   
+>   	for (const struct section *s = probe_fail_functions; s->name; s++)
+> -		igt_subtest_f("inject-fault-probe-function-%s", s->name)
+> -			igt_assert_eq(INJECT_ERRNO, inject_fault_probe(fd,
+> -						pci_slot, s->name));
+> +		igt_subtest_f("inject-fault-probe-function-%s", s->name) {
+> +			bool should_pass = s->pf_only && is_vf_device;
+> +			int err;
+> +
+> +			err = inject_fault_probe(fd, pci_slot, s->name);
+> +
+> +			igt_assert_eq(should_pass ? 0 : INJECT_ERRNO, err);
+> +			igt_kmod_unbind("xe", pci_slot);
+> +		}
+>   
+>   	for (const struct section *s = guc_fail_functions; s->name; s++)
+>   		igt_subtest_f("probe-fail-guc-%s", s->name) {
 
-v2: Renamed tests: blocking-read-twice to blocking-re-enable, and
-		   non-blocking-read-twice to non-blocking-re-enable
-    Moved check for observation_paranoid file to a separate patch.
-
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
----
- tests/intel/xe_eu_stall.c | 41 +++++++++++++++++++++++++++++----------
- 1 file changed, 31 insertions(+), 10 deletions(-)
-
-diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
-index da9bd7843..b48236425 100644
---- a/tests/intel/xe_eu_stall.c
-+++ b/tests/intel/xe_eu_stall.c
-@@ -14,9 +14,15 @@
-  * SUBTEST: non-blocking-read
-  * Description: Verify non-blocking read of EU stall data during a workload run
-  *
-+ * SUBTEST: non-blocking-re-enable
-+ * Description: Run non-blocking read test twice with disable and enable between the runs
-+ *
-  * SUBTEST: blocking-read
-  * Description: Verify blocking read of EU stall data during a workload run
-  *
-+ * SUBTEST: blocking-re-enable
-+ * Description: Run blocking read test twice with disable and enable between the runs
-+ *
-  * SUBTEST: unprivileged-access
-  * Description: Verify unprivileged open of a EU stall data stream fd
-  *
-@@ -460,13 +466,13 @@ static void print_eu_stall_data(uint32_t devid, uint8_t *buf, size_t size)
-  * while the parent process reads the stall counters data, disables EU stall
-  * counters once the workload completes execution.
-  */
--static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read)
-+static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int iter)
- {
--	uint32_t num_samples = 0, num_drops = 0;
-+	uint32_t num_samples, num_drops;
- 	struct igt_helper_process work_load = {};
- 	struct sigaction sa = { 0 };
- 	int ret, flags, stream_fd;
--	uint64_t total_size = 0;
-+	uint64_t total_size;
- 	uint8_t *buf;
- 
- 	uint64_t properties[] = {
-@@ -520,7 +526,7 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read)
- 		flags = O_CLOEXEC;
- 
- 	set_fd_flags(stream_fd, flags);
--
-+enable:
- 	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
- 
- 	sa.sa_handler = sighandler;
-@@ -540,6 +546,9 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read)
- 			_exit(run_gpgpu_fill(drm_fd, devid));
- 		}
- 	}
-+	total_size = 0;
-+	num_samples = 0;
-+	num_drops = 0;
- 	/* Parent process reads the EU stall counters data */
- 	do {
- 		if (!blocking_read) {
-@@ -574,14 +583,16 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read)
- 	igt_info("Number of samples: %u\n", num_samples);
- 	igt_info("Number of drops reported: %u\n", num_drops);
- 
-+	ret = wait_child(&work_load);
-+	igt_assert_f(ret == 0, "waitpid() - ret: %d, errno: %d\n", ret, errno);
-+	igt_assert_f(num_samples, "No EU stalls detected during the workload\n");
-+
- 	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
-+	if (--iter)
-+		goto enable;
- 
- 	close(stream_fd);
- 	free(buf);
--
--	ret = wait_child(&work_load);
--	igt_assert_f(ret == 0, "waitpid() - ret: %d, errno: %d\n", ret, errno);
--	igt_assert_f(num_samples, "No EU stalls detected during the workload\n");
- }
- 
- static int opt_handler(int opt, int opt_index, void *data)
-@@ -650,12 +661,22 @@ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
- 
- 	igt_describe("Verify non-blocking read of EU stall data during a workload run");
- 	igt_subtest("non-blocking-read") {
--		test_eustall(drm_fd, devid, !blocking_read);
-+		test_eustall(drm_fd, devid, !blocking_read, 1);
-+	}
-+
-+	igt_describe("Run non-blocking read test twice with disable and enable between the runs");
-+	igt_subtest("non-blocking-re-enable") {
-+		test_eustall(drm_fd, devid, !blocking_read, 2);
- 	}
- 
- 	igt_describe("Verify blocking read of EU stall data during a workload run");
- 	igt_subtest("blocking-read") {
--		test_eustall(drm_fd, devid, blocking_read);
-+		test_eustall(drm_fd, devid, blocking_read, 1);
-+	}
-+
-+	igt_describe("Run blocking read test twice with disable and enable between the runs");
-+	igt_subtest("blocking-re-enable") {
-+		test_eustall(drm_fd, devid, blocking_read, 2);
- 	}
- 
- 	igt_describe("Verify that unprivileged open of a EU stall data fd fails");
--- 
-2.48.1
+LGTM,
+Reviewed-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 
