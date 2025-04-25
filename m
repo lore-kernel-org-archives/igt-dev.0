@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D405BC369D1
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 07:21:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75BEAC369D7
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 07:21:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 890F310E8A1;
-	Fri, 25 Apr 2025 07:21:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2810110E8A3;
+	Fri, 25 Apr 2025 07:21:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EXScmQwA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TBgBE6/j";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69EBF10E8A1
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88BF010E8A3
  for <igt-dev@lists.freedesktop.org>; Fri, 25 Apr 2025 07:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1745565684; x=1777101684;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=okpbZ7ogCSLJZSeT6jmFaYl4ZLXutdlN5F02L3Z8Xp8=;
- b=EXScmQwANkrS7zRAw4b44dB7CyPidBzLxIjn7lYpvduWdIUwcYC+tsOP
- VpxWT4dSAQQJczhS24YWvnMDRPiHBs3IoGHJmFlA0Io2173SMppt3KOIF
- GyDqh+SBYsNkaciQxDxW6J1Kqmto4diswaLZ7744a+A3spoyBUf70b3rY
- /CbT7PplCDmyNqaXlKC8zdOlDRcbCDOeGfC2MN9u7pnITH/UrOzdQYUU1
- b0pq+ffAsbROU02s402NU95dx0MZXXo4Ve1mIWJiRPSpqrMCTlv/yy7b5
- 6U6RF33lSAab+Ale8klbUm2v9YAu5d0eh++Up47b4tGMnhxK9C1JNJ9qt A==;
-X-CSE-ConnectionGUID: p4VA6u5tTv2aKdqJd6ku7g==
-X-CSE-MsgGUID: 0kDq5UZdTDWANM6+da1K/g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="58208887"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="58208887"
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=GU9qe4wFDZSQ56pQtxMnE/lr5VuiYpan48Yvhv7mIi0=;
+ b=TBgBE6/jmjLp5J2I/RBHPULgoyy/urRGOf3rn5s+T7KH3ldWAuOBMDBx
+ aYGY7s6tNlIA8eJGKijjmOQcwsPPdKwPKXuFM1lgxBMMXTKWf2HgQ1M5v
+ oIGJZzGGsfUDkBuMuqjLzJY6Xz4Px1fWinQUWz74xxFQnED8zTWxbF7+X
+ gCEZScJSNtNoWXMQzK/lshUPddu5JmlaEQNPgou/QPp1kYSocWcQdBI0j
+ hATVmhCQVldDvixyEnoApbEFAq8NQC1m1NIx9a9pqD/JqfiZje0oTdu92
+ 4VK/xQGk/fJRSquHeZRWB/ovb7/Rw6SUKS3c2Ur8Fynj6qUDjlCAU43DV Q==;
+X-CSE-ConnectionGUID: TrRZNtwzSNeimJQpXURtJg==
+X-CSE-MsgGUID: HwbJsFloRgWVAZlYe2/lVw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="58208886"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="58208886"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Apr 2025 00:21:24 -0700
-X-CSE-ConnectionGUID: vmnnQ0F9S5CAgCGoZLhIdA==
-X-CSE-MsgGUID: +G9EMBWoRgmvuskSqK3bHA==
+X-CSE-ConnectionGUID: aYxMuJFXSlKrMGx3X2g4fA==
+X-CSE-MsgGUID: pXPahb3WTAWqP+ExxgYjHw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="138000192"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="138000189"
 Received: from hchegond-ivm1.jf.intel.com ([10.165.21.208])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Apr 2025 00:21:24 -0700
@@ -45,13 +45,11 @@ From: Harish Chegondi <harish.chegondi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ashutosh.dixit@intel.com, kamil.konieczny@linux.intel.com,
  Harish Chegondi <harish.chegondi@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/intel/xe_eu_stall: Check if
- observation_paranoid file is present
-Date: Fri, 25 Apr 2025 00:21:18 -0700
-Message-ID: <cfc9001ab828c4985d47db3aaa8d0aebfb4dd41e.1745565376.git.harish.chegondi@intel.com>
+Subject: [PATCH i-g-t v2 1/2] tests/intel/xe_eu_stall: Add tests to run
+ blocking and non-blocking read twice
+Date: Fri, 25 Apr 2025 00:21:17 -0700
+Message-ID: <29f92b276ff8c0a246dc5d22757193bc66f27c66.1745565376.git.harish.chegondi@intel.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <29f92b276ff8c0a246dc5d22757193bc66f27c66.1745565376.git.harish.chegondi@intel.com>
-References: <29f92b276ff8c0a246dc5d22757193bc66f27c66.1745565376.git.harish.chegondi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,43 +67,122 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a check for the presence of /proc/sys/dev/xe/observation_paranoid
-file.
+Add tests that enable EU stall sampling, read all the EU stall data and
+disable EU stall sampling, two times back to back. Add tests for both
+blocking and non-blocking reads.
+
+v2: Renamed tests: blocking-read-twice to blocking-re-enable, and
+		   non-blocking-read-twice to non-blocking-re-enable
+    Moved check for observation_paranoid file to a separate patch.
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
 ---
- tests/intel/xe_eu_stall.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/intel/xe_eu_stall.c | 41 +++++++++++++++++++++++++++++----------
+ 1 file changed, 31 insertions(+), 10 deletions(-)
 
 diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
-index b48236425..411c30871 100644
+index da9bd7843..b48236425 100644
 --- a/tests/intel/xe_eu_stall.c
 +++ b/tests/intel/xe_eu_stall.c
-@@ -39,6 +39,7 @@
- #include <fcntl.h>
- #include <poll.h>
- #include <sys/ioctl.h>
-+#include <sys/stat.h>
- #include <sys/wait.h>
- 
- #include "igt.h"
-@@ -645,6 +646,7 @@ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
+@@ -14,9 +14,15 @@
+  * SUBTEST: non-blocking-read
+  * Description: Verify non-blocking read of EU stall data during a workload run
+  *
++ * SUBTEST: non-blocking-re-enable
++ * Description: Run non-blocking read test twice with disable and enable between the runs
++ *
+  * SUBTEST: blocking-read
+  * Description: Verify blocking read of EU stall data during a workload run
+  *
++ * SUBTEST: blocking-re-enable
++ * Description: Run blocking read test twice with disable and enable between the runs
++ *
+  * SUBTEST: unprivileged-access
+  * Description: Verify unprivileged open of a EU stall data stream fd
+  *
+@@ -460,13 +466,13 @@ static void print_eu_stall_data(uint32_t devid, uint8_t *buf, size_t size)
+  * while the parent process reads the stall counters data, disables EU stall
+  * counters once the workload completes execution.
+  */
+-static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read)
++static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int iter)
  {
- 	int drm_fd;
- 	uint32_t devid;
-+	struct stat sb;
- 	bool blocking_read = true;
+-	uint32_t num_samples = 0, num_drops = 0;
++	uint32_t num_samples, num_drops;
+ 	struct igt_helper_process work_load = {};
+ 	struct sigaction sa = { 0 };
+ 	int ret, flags, stream_fd;
+-	uint64_t total_size = 0;
++	uint64_t total_size;
+ 	uint8_t *buf;
  
- 	igt_fixture {
-@@ -653,6 +655,7 @@ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
- 		devid = intel_get_drm_devid(drm_fd);
- 		igt_require(IS_PONTEVECCHIO(devid) || intel_graphics_ver(devid) >= IP_VER(20, 0));
- 		igt_require_f(igt_get_gpgpu_fillfunc(devid), "no gpgpu-fill function\n");
-+		igt_require_f(!stat(OBSERVATION_PARANOID, &sb), "no observation_paranoid file\n");
- 		if (output_file) {
- 			output = fopen(output_file, "w");
- 			igt_require(output);
+ 	uint64_t properties[] = {
+@@ -520,7 +526,7 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read)
+ 		flags = O_CLOEXEC;
+ 
+ 	set_fd_flags(stream_fd, flags);
+-
++enable:
+ 	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+ 
+ 	sa.sa_handler = sighandler;
+@@ -540,6 +546,9 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read)
+ 			_exit(run_gpgpu_fill(drm_fd, devid));
+ 		}
+ 	}
++	total_size = 0;
++	num_samples = 0;
++	num_drops = 0;
+ 	/* Parent process reads the EU stall counters data */
+ 	do {
+ 		if (!blocking_read) {
+@@ -574,14 +583,16 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read)
+ 	igt_info("Number of samples: %u\n", num_samples);
+ 	igt_info("Number of drops reported: %u\n", num_drops);
+ 
++	ret = wait_child(&work_load);
++	igt_assert_f(ret == 0, "waitpid() - ret: %d, errno: %d\n", ret, errno);
++	igt_assert_f(num_samples, "No EU stalls detected during the workload\n");
++
+ 	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
++	if (--iter)
++		goto enable;
+ 
+ 	close(stream_fd);
+ 	free(buf);
+-
+-	ret = wait_child(&work_load);
+-	igt_assert_f(ret == 0, "waitpid() - ret: %d, errno: %d\n", ret, errno);
+-	igt_assert_f(num_samples, "No EU stalls detected during the workload\n");
+ }
+ 
+ static int opt_handler(int opt, int opt_index, void *data)
+@@ -650,12 +661,22 @@ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
+ 
+ 	igt_describe("Verify non-blocking read of EU stall data during a workload run");
+ 	igt_subtest("non-blocking-read") {
+-		test_eustall(drm_fd, devid, !blocking_read);
++		test_eustall(drm_fd, devid, !blocking_read, 1);
++	}
++
++	igt_describe("Run non-blocking read test twice with disable and enable between the runs");
++	igt_subtest("non-blocking-re-enable") {
++		test_eustall(drm_fd, devid, !blocking_read, 2);
+ 	}
+ 
+ 	igt_describe("Verify blocking read of EU stall data during a workload run");
+ 	igt_subtest("blocking-read") {
+-		test_eustall(drm_fd, devid, blocking_read);
++		test_eustall(drm_fd, devid, blocking_read, 1);
++	}
++
++	igt_describe("Run blocking read test twice with disable and enable between the runs");
++	igt_subtest("blocking-re-enable") {
++		test_eustall(drm_fd, devid, blocking_read, 2);
+ 	}
+ 
+ 	igt_describe("Verify that unprivileged open of a EU stall data fd fails");
 -- 
 2.48.1
 
