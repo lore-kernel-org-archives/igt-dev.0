@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CA10C369D5
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 09:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EF40C369C2
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Apr 2025 09:49:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E831010E8F7;
-	Fri, 25 Apr 2025 09:49:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5933010E8F8;
+	Fri, 25 Apr 2025 09:49:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DnqCpJ1Z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IDiGjkaB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61DD510E8F7
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Apr 2025 09:49:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C30A710E8F7
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Apr 2025 09:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745574574; x=1777110574;
+ t=1745574576; x=1777110576;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=djcMcXMZicDcHvfEulTUgx5ULxXcqaKWbj2g+4nyu/U=;
- b=DnqCpJ1Z6YmzZCUS87EC4Rao9U0H7uhSfN6eTTYZtWF3j0BVzg07PE8v
- A/oTNFulX19AOyAQ6GHqQs6Z5jZvDew7Vgn31tuFbrYn8lj3Q/UQgBr1A
- 3QJ0bME1C3cWE3gqPFq5BBVa0A0BXgVFWAl04qAXqmcsac8D4CNX4w33q
- tVtlKTstPgMJdgm5p647SmHmwSTAf/Q6SOPGosLgiH2xyNTJspz80si4l
- r7On6T7Y8L3fBjleDNwtSWrQwJq9NsryGRERilfekshWbjRgc4sFQW89K
- d5HuJvdpA2M8uuqZhL5WFATfY80pczAl5pYaHPhXKhEeVMxjj8CpdOyh/ Q==;
-X-CSE-ConnectionGUID: 8/CSeit4TaqSFbv26ZfCWA==
-X-CSE-MsgGUID: FJQncPxMQn2rLrpO9d+JjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="57874363"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="57874363"
+ bh=tI79SRayBXhL7ODFuF/51ZKA/Jy2lalW4Ep8GrSBsaU=;
+ b=IDiGjkaB/YbYVjDW7zm25diHEp/Co+Elciq8WYWkkNs0bk3zdvMIFGxw
+ /Hmf2q6apdr90XPfZNF5z1vHuEsC5Bz20J60pe8QIA/wqYQBi46IM3wmz
+ mVRsNAbHkR2XQeM9+TJDeuq2iKnTdsHmu5E+RVWOmucQ+DKumqUbCWb6t
+ xTwrrFoIoA17PhbOE2P6jP9uW5KJ/4d2lNSW3/Y7GtXvjNdTtrY6bIRzb
+ aH64wE+gELcX9PExxov+8AdSR1tRDBpW/E8VffbCMgFPbx8c45ugzhX9Z
+ YUE2FYH5NgLmuhVssa/LuIKlb+0jk/YoMlGJngEnwEsUT3Cg3l4y4oxpd g==;
+X-CSE-ConnectionGUID: lHAgcWIVRxqcaAK0M7aZkA==
+X-CSE-MsgGUID: O1jdLrDhT1aUrtzAe9S/Pw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="57874364"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="57874364"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 02:49:34 -0700
-X-CSE-ConnectionGUID: qBUk+TJeTr6hDm6grvK6LA==
-X-CSE-MsgGUID: aAC+QyZrSi2kkc7Xvdpmlw==
+ 25 Apr 2025 02:49:35 -0700
+X-CSE-ConnectionGUID: YYtbCxKJRneWRluR1ZlzpA==
+X-CSE-MsgGUID: VjYfOAIMTo6d4Tvrq/Q3iQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="132606770"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="132606771"
 Received: from szymonos-mobl.ger.corp.intel.com (HELO
  friendship7-home.clients.intel.com) ([10.245.252.47])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 02:49:33 -0700
+ 25 Apr 2025 02:49:34 -0700
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH i-g-t 2/3] lib/igt_facts: Remove unnecessary extern from header
-Date: Fri, 25 Apr 2025 11:49:03 +0200
-Message-ID: <20250425094904.221857-2-peter.senna@linux.intel.com>
+Subject: [PATCH i-g-t 3/3] lib/igt_facts: Fix potential NULL pointer
+ dereference
+Date: Fri, 25 Apr 2025 11:49:04 +0200
+Message-ID: <20250425094904.221857-3-peter.senna@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250425094904.221857-1-peter.senna@linux.intel.com>
 References: <20250425094904.221857-1-peter.senna@linux.intel.com>
@@ -68,25 +69,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There was an unnecessary extern on the header. Remove it.
+If both udev_device_get_sysattr_value and udev_device_get_sysname fail,
+pci_addr will remain NULL, which could lead to issues when using it
+later in asprintf. Ignore cards when pci_addr cannot be extracted.
 
 Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 ---
- lib/igt_facts.h | 1 -
- 1 file changed, 1 deletion(-)
+ lib/igt_facts.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/lib/igt_facts.h b/lib/igt_facts.h
-index e96f88083..109f0d3bd 100644
---- a/lib/igt_facts.h
-+++ b/lib/igt_facts.h
-@@ -37,7 +37,6 @@ struct igt_facts_config {
- 	bool enabled;
- 	bool disable_udev;
- };
--extern struct igt_facts_config igt_facts_config;
- 
- void igt_facts_lists_init(void);
- void igt_facts(const char *last_test);
+diff --git a/lib/igt_facts.c b/lib/igt_facts.c
+index d38be0726..47a2c98a5 100644
+--- a/lib/igt_facts.c
++++ b/lib/igt_facts.c
+@@ -537,6 +537,10 @@ static void igt_facts_scan_pci_drm_cards(const char *last_test)
+ 								 "address");
+ 			if (!pci_addr)
+ 				pci_addr = udev_device_get_sysname(pci_dev);
++			if (!pci_addr) {
++				udev_device_unref(drm_dev);
++				continue;
++			}
+ 		} else {
+ 			/* Some GPUs are platform devices. Ignore them. */
+ 			pci_addr = NULL;
 -- 
 2.43.0
 
