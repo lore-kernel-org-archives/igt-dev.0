@@ -4,61 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 396E8C369D3
-	for <igt-dev@archiver.kernel.org>; Mon, 28 Apr 2025 11:27:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C1DC369D3
+	for <igt-dev@archiver.kernel.org>; Mon, 28 Apr 2025 11:34:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF7B010E3E2;
-	Mon, 28 Apr 2025 11:27:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5EC0810E21A;
+	Mon, 28 Apr 2025 11:34:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mMaKXNri";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JwXQHOx8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA3BA10E3E2
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Apr 2025 11:27:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00FE410E21A
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Apr 2025 11:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745839661; x=1777375661;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=IxXmB9yBIdOhZD52r0hCnazNS65xQflsP6i/TEIKiBM=;
- b=mMaKXNrigffE7rePGUuAErPVLTBJudMb7dRYjT4lvSGD3TVyRsNltQ3J
- Stia+xxSmOywfHj/Dtg7ttWI1S5hKY+ryd3Eh1muWSdzpwg63phUZiEk4
- JAoo5/NOYeQScVZLsSJuXPE6zcYmUlPdUU3sUKj4otV39dxFJz/CJaiZr
- DsD2rwREeiXC3uMuQhFU0UO1NPgoIqD4DqultSOxlhON2NRrFqD7UD/kq
- DjikYL+eaDiOtKxaXE7DDN2sIPbDdoHJDNRO0Urf0P74By6purUD2OPxi
- djfD22Nnd8mm3xkoKTC0PI3sg3wvsXynQeizzinf34L5lHdoSBqHzDSdh g==;
-X-CSE-ConnectionGUID: DCMPiimAQl+ouhE3hr4Gbg==
-X-CSE-MsgGUID: BDP74bMvRwaIbatpF7rxbw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11416"; a="47336095"
-X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; d="scan'208";a="47336095"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2025 04:27:41 -0700
-X-CSE-ConnectionGUID: nf2zwhX1SlqymFTs8zKS+w==
-X-CSE-MsgGUID: tEn1RLatSK2EFuwJ3pTQAg==
+ t=1745840045; x=1777376045;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4whzqdVFcr8P5SWMDFx5VoON9enEjK0QQsqz/9X2ySA=;
+ b=JwXQHOx8dAmzPjFRCgaBibIckgHMGFNTDwzAwDIooFbNt/gjbblPrgki
+ qcGgoKBqCZq9Pc1nQhdjYhgP2l6h22wJ09xYqb5CRnMLSvsREL7Gz9Idi
+ H1bOSZkv9eFN79sXBvvdHpjab4A+TgmNkV3aLqsfEILyVXnMjf3iABJio
+ q2xbBpwxUFb8t3wNFKY7sesbfLHtqQlkfTo+PMWTR56qqS9OLd7y5bWn5
+ n+5LzXWkjGnRCXiNR7GsM0+rELCJseKO6Fi3HrdyvpS32xoyIpm7dplY8
+ USyujswvDwmof5ZlYfndKPRTC7Mqv/2fODhmBlJb9wEgV09BYof/qXJwn A==;
+X-CSE-ConnectionGUID: WTTXWxDHTBW8X8How+adKA==
+X-CSE-MsgGUID: z4iyCDR4TcqC9+7nYVV+9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11416"; a="35039844"
+X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; d="scan'208";a="35039844"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2025 04:34:03 -0700
+X-CSE-ConnectionGUID: BsvqJBU4TDSnnpacoYZfxg==
+X-CSE-MsgGUID: Wo9sMAmeQ7egI0UdsnsxGQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; d="scan'208";a="133377551"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 04:27:40 -0700
-Date: Mon, 28 Apr 2025 13:27:23 +0200
+X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; d="scan'208";a="133388745"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.101])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2025 04:34:02 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [PATCH i-g-t 07/10] lib/igt_kmod: Add rebind abstraction
-Message-ID: <20250428112723.n6tu5b2w7t6ide7y@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>,
- igt-dev@lists.freedesktop.org,
- Francois Dugast <francois.dugast@intel.com>
-References: <20250410-lib-kmod-v1-0-84b1ad0b8075@intel.com>
- <20250410-lib-kmod-v1-7-84b1ad0b8075@intel.com>
- <20250414180722.bnfbjuezcnyxu5gz@kamilkon-DESK.igk.intel.com>
- <xfnfigwlkb7cil4wcmex4mr4pbi2niy6g7xcv7acq5lfsojvyk@tro5piy3pgqb>
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t] intel-ci/xe.blocklist: remove device_reset
+Date: Mon, 28 Apr 2025 13:33:56 +0200
+Message-ID: <20250428113356.17810-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <xfnfigwlkb7cil4wcmex4mr4pbi2niy6g7xcv7acq5lfsojvyk@tro5piy3pgqb>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,74 +69,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
-On 2025-04-14 at 16:36:02 -0500, Lucas De Marchi wrote:
-> On Mon, Apr 14, 2025 at 08:07:22PM +0200, Kamil Konieczny wrote:
-> > Hi Lucas,
-> > On 2025-04-10 at 15:48:36 -0700, Lucas De Marchi wrote:
-> > > Abstract the "set one file in the drivers dir" and share the
-> > > implementation with unbind/rebind.
-> > > 
-> > > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> > > ---
-> > >  lib/igt_kmod.c | 11 +++++++++++
-> > >  lib/igt_kmod.h |  2 ++
-> > >  2 files changed, 13 insertions(+)
-> > > 
-> > > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> > > index 14b6b957a..6d7f5705c 100644
-> > > --- a/lib/igt_kmod.c
-> > > +++ b/lib/igt_kmod.c
-> > > @@ -665,6 +665,17 @@ int igt_kmod_bind(const char *mod_name, const char *pci_device)
-> > >  	return ret;
-> > >  }
-> > > 
-> > > +/**
-> > > + * igt_kmod_rebind: Unbind driver from devices and bind it again
-> > > + * @mod_name: name of the module to rebind
-> > > + * @pci_device: device to rebind to
-> > > + */
-> > > +int igt_kmod_rebind(const char *mod_name, const char *pci_device)
-> > > +{
-> > > +	return igt_kmod_unbind(mod_name, pci_device) ||
-> > > +		igt_kmod_bind(mod_name, pci_device);
-> > 
-> > What if after unbind the bind is still there?
-> 
-> I'm not sure I follow what you mean here, but: if igt_kmod_unbind()
-> fails, it simply returns that and don't executed the second function.
-> Was this the question?
-> 
-> Lucas De Marchi
-> 
+device_reset test is driver agnostic so remove it from Xe
+blocklist.
 
-Yes, you are right, sorry for confusion,
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel-ci/xe.blocklist.txt | 1 -
+ 1 file changed, 1 deletion(-)
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index 541917393..1c43b7a26 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -37,7 +37,6 @@ igt@xe_live_ktest@xe_bo_shrink
+ # Exclude all other non-Xe tests
+ ##################################################################
+ igt@debugfs.*
+-igt@device_reset
+ igt@drm_read
+ igt@dumb.*
+ igt@prime_.*
+-- 
+2.49.0
 
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > > +}
-> > > +
-> > >  /**
-> > >   * igt_intel_driver_unload:
-> > >   *
-> > > diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-> > > index e3a4ce671..905070897 100644
-> > > --- a/lib/igt_kmod.h
-> > > +++ b/lib/igt_kmod.h
-> > > @@ -39,6 +39,8 @@ int igt_kmod_unload(const char *mod_name);
-> > >  int igt_kmod_unbind(const char *mod_name, const char *pci_device);
-> > >  __attribute__((nonnull)) int igt_kmod_bind(const char *mod_name,
-> > >  					   const char *pci_device);
-> > > +__attribute__((nonnull)) int igt_kmod_rebind(const char *mod_name,
-> > > +					     const char *pci_device);
-> > > 
-> > >  int igt_audio_driver_unload(char **whom);
-> > > 
-> > > 
-> > > --
-> > > 2.49.0
-> > > 
