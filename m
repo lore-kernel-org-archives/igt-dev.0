@@ -4,26 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B47CAC3ABAA
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 10:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF4B2C3ABA9
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 10:21:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 365AA10E435;
-	Tue, 29 Apr 2025 10:21:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A9A9A10E436;
+	Tue, 29 Apr 2025 10:21:02 +0000 (UTC)
 Received: from amd-X570-AORUS-ELITE.amd.com (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9E5010E432
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B389910E438
  for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 10:20:58 +0000 (UTC)
 Received: by amd-X570-AORUS-ELITE.amd.com (Postfix, from userid 1000)
- id F2A5E36A000C; Tue, 29 Apr 2025 15:50:54 +0530 (IST)
+ id EE51836A000B; Tue, 29 Apr 2025 15:50:54 +0530 (IST)
 From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org,
 	Vitaly Prosyak <vitaly.prosyak@amd.com>
 Cc: Sunil Khatri <sunil.khatri@amd.com>,
  "Prosyak@sunil.khatri"@amd.com, Vitaly <Vitaly.Prosyak@amd.com>,
  Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH v1 4/4] tests/amdgpu: execute cs_nops userq tests only if
+Subject: [PATCH v1 3/4] tests/amdgpu: execute amdgpu_basic userq tests only if
  supported
-Date: Tue, 29 Apr 2025 15:50:53 +0530
-Message-ID: <20250429102053.183188-4-sunil.khatri@amd.com>
+Date: Tue, 29 Apr 2025 15:50:52 +0530
+Message-ID: <20250429102053.183188-3-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250429102053.183188-1-sunil.khatri@amd.com>
 References: <20250429102053.183188-1-sunil.khatri@amd.com>
@@ -44,56 +44,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-check the ip supported for userqueues before executing
-any cs_nops userqueues test cases.
+check the IP supported by userqueues before executing any
+amdgpu_basic test cases.
 
 Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>
 Cc: Jesse Zhang <jesse.zhang@amd.com>
 Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
 ---
- tests/amdgpu/amd_cs_nop.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ tests/amdgpu/amd_basic.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
-index 67bb0419d..f6a4765be 100644
---- a/tests/amdgpu/amd_cs_nop.c
-+++ b/tests/amdgpu/amd_cs_nop.c
-@@ -169,6 +169,7 @@ igt_main
- 	}, *e;
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index eb8447220..e0029f582 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -697,6 +697,7 @@ igt_main
  	int fd = -1;
+ 	int r;
  	bool arr_cap[AMD_IP_MAX] = {0};
 +	bool userq_arr_cap[AMD_IP_MAX] = {0};
  
  	igt_fixture {
  		uint32_t major, minor;
-@@ -182,6 +183,7 @@ igt_main
- 		err = amdgpu_cs_ctx_create(device, &context);
- 		igt_assert_eq(err, 0);
+@@ -717,6 +718,7 @@ igt_main
+ 		r = setup_amdgpu_ip_blocks(major, minor,  &gpu_info, device);
+ 		igt_assert_eq(r, 0);
  		asic_rings_readness(device, 1, arr_cap);
 +		asic_userq_readiness(device, userq_arr_cap);
  	}
- 
- 	for (p = phase; p->name; p++) {
-@@ -198,18 +200,11 @@ igt_main
+ 	igt_describe("Check-alloc-free-VRAM-visible-non-visible-GART-write-combined-cached");
+ 	igt_subtest("memory-alloc")
+@@ -789,12 +791,10 @@ igt_main
  	}
  
  #ifdef AMDGPU_USERQ_ENABLED
--	/*
--	 * TODO: Add a programmatic check to determine which IPs (gfx, compute, sdma)
--	 * are present for the user-mode queue and execute the test accordingly.
--	 */
--	arr_cap[AMDGPU_HW_IP_GFX] = 1;
--	arr_cap[AMDGPU_HW_IP_COMPUTE] = 1;
--
- 	for (p = phase; p->name; p++) {
- 		for (e = engines; e->name; e++) {
- 			igt_describe("Stressful-and-multiple-cs-of-nop-operations-using-multiple-processes-with-the-same-GPU-context-UMQ");
- 			igt_subtest_with_dynamic_f("cs-nops-with-%s-%s0-with-UQ-Submission", p->name, e->name) {
--				if (arr_cap[e->ip_type]) {
-+				if (arr_userqueue_cap[e->ip_type]) {
- 					igt_dynamic_f("cs-nop-with-%s-%s0-with-UQ-Submission", p->name, e->name)
- 					nop_cs(device, context, e->name, e->ip_type, 0, 20,
- 					       p->flags, 1);
+-	arr_cap[AMD_IP_GFX] = 1;
+-	arr_cap[AMD_IP_COMPUTE] = 1;
+ 
+ 	igt_describe("Check-GFX-CS-for-every-available-ring-works-for-write-const-fill-and-copy-operation-using-more-than-one-IB-and-shared-IB");
+ 	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX-UMQ") {
+-		if (arr_cap[AMD_IP_GFX]) {
++		if (userq_arr_cap[AMD_IP_GFX]) {
+ 			igt_dynamic_f("cs-gfx-with-umq")
+ 			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, true);
+ 		}
+@@ -802,7 +802,7 @@ igt_main
+ 
+ 	igt_describe("Check-COMPUTE-CS-for-every-available-ring-works-for-write-const-fill-copy-and-nop-operation");
+ 	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE-UMQ") {
+-		if (arr_cap[AMD_IP_COMPUTE]) {
++		if (userq_arr_cap[AMD_IP_COMPUTE]) {
+ 			igt_dynamic_f("cs-compute-with-umq")
+ 			amdgpu_command_submission_compute(device, true);
+ 		}
+@@ -810,7 +810,7 @@ igt_main
+ 
+ 	igt_describe("Check-sync-dependency-using-GFX-ring");
+ 	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX-UMQ") {
+-		if (arr_cap[AMD_IP_GFX]) {
++		if (userq_arr_cap[AMD_IP_GFX]) {
+ 			igt_dynamic_f("sync-dependency-test-with-umq")
+ 			amdgpu_sync_dependency_test(device, true);
+ 		}
 -- 
 2.43.0
 
