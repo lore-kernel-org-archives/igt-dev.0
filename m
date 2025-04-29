@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EB55C369DC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 19:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C512C3ABA5
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 19:58:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 27B4510E1B2;
-	Tue, 29 Apr 2025 19:58:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E34D010E23B;
+	Tue, 29 Apr 2025 19:58:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cw9NfN78";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YSlLrIe6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C598010E1B2
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 19:58:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78F0A10E23B
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 19:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745956731; x=1777492731;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=HxqFyr05YkW0L8sSN3D+3DX7SdWQSrmAZfVYDbpa4vs=;
- b=Cw9NfN78E5TRuPfncxDTk0Pm2U4IxYnrWGVywr6is0p8zkFFq6I44cOZ
- OEwSbtqj/cF6GS84SUHv6TBML+dWvQQOmHTwkKZ4Eeuj3u/YYgT2rg4BQ
- Jzu1DUsyBw0hD/PnvGG217lExB6KrX7A7EZolg+nFXOltN9SbjTLQ3X5A
- SboEPMGNc0yCsdvSpX8LjyQIcgmvlQhGED1+GdTkgamrWbTrq+bDY6kEw
- v9S/e85dfAFxzzaYdEYVx6oiDFtU0FsPPr1staciuBSXIkR+sHAAbxV8j
- TIDIhZM5qm4mxo7IN2Hs0ETjsZoUR7UlXsnAOnLCFf3BJvEDIC3/uPVt1 A==;
-X-CSE-ConnectionGUID: m99Wek0IRVK6Tk2FRNQqKQ==
-X-CSE-MsgGUID: DC7poNI4TimcH8XS3QXfLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="46843133"
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="46843133"
+ t=1745956734; x=1777492734;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=5LRHszJgCQf2d9pwNxj6u24f56frYXqzwvs1xgXEST4=;
+ b=YSlLrIe6ZmCbsvKwoaos1LyMbRJMdR01ZWKIZxB9qN1YVaSz4rGx0Mdi
+ FbVFCOmyNkah9ct+ZE1SKkT8aFBjkyhb1sLNGUP+vQMpq8b0jRdJdx2ME
+ aLLqhgbygZygYOnwmlL+OzisAcfKGRRIiWC7w2AI/e6ALAwOYNyx7DDjv
+ BXA2JWOaxm99XdRLD9/9QBOewQyugWEnTXe7bMHnZUax2+9/Mk1IhxvgB
+ DcQrzKd8CPO/67AXEPOdoxYvryATo9qE5sz7jXyNw2VT3Cl9sK46RIbTd
+ Mo8aGmsaFucZ6eo4ackb2q6KUsTUTyzJ/ZiZt75G5J/bXu1/s0+0DBmJB g==;
+X-CSE-ConnectionGUID: lT+vCh0FReC7xNgz66ixmA==
+X-CSE-MsgGUID: Bez9ZU2TQDeEBdqj25kU7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="46843136"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="46843136"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 12:58:51 -0700
-X-CSE-ConnectionGUID: kaqGo20GTeWEcVWW6fvrog==
-X-CSE-MsgGUID: 4zh3YixZTj2JF+YpPuWQhg==
+ 29 Apr 2025 12:58:54 -0700
+X-CSE-ConnectionGUID: 9TAkm8H5R4OFLXf1kRQseg==
+X-CSE-MsgGUID: lQ4Kzu6sTKqIoxUav4bb4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="133831319"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="133831324"
 Received: from intel-s2600stb.iind.intel.com (HELO
  08ca91f16b80.iind.intel.com) ([10.66.234.77])
- by orviesa010.jf.intel.com with ESMTP; 29 Apr 2025 12:58:49 -0700
+ by orviesa010.jf.intel.com with ESMTP; 29 Apr 2025 12:58:52 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevaka.badrappan@intel.com, sapna1.singh@intel.com, markyacoub@google.com,
  seanpaul@google.com, carlos.santa@intel.com
-Subject: [RFC] [PATCH 0/5] Extend IGT to support Android
-Date: Tue, 29 Apr 2025 19:57:40 +0000
-Message-ID: <20250429195745.40982-1-jeevaka.badrappan@intel.com>
+Subject: [PATCH 1/5] Add stub for libunwind, procps and glib
+Date: Tue, 29 Apr 2025 19:57:41 +0000
+Message-ID: <20250429195745.40982-2-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250429195745.40982-1-jeevaka.badrappan@intel.com>
+References: <20250429195745.40982-1-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,56 +68,162 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The primary objective of this proposal is to extend the functionality of
-IGT to Android environments.
+From: Sapna <sapna1.singh@intel.com>
 
-Enabling IGT on Android will allow developers to perform comprehensive
-testing of graphics drivers, ensuring robustness and reliability across
-different platforms.
+As libunwind, procps, glib are not available in Android, not able to
+build igt for Android.
 
-By providing stub implementations for libraries that are not natively
-supported on Android, we will bridge the gap between Android and Linux
-environments, promoting code reuse and reducing development time.
+Provided stub implementations so igt can be compiled for both Android
+and linux from same code base. Incase of linux systems, system libraries
+will be used whereas for Android stubs will be used with reduced
+test coverage.
 
-Changes done:
-- Create stub implementations of GLib, libunwind, libprocps, and
-other necessary libraries to satisfy IGT dependencies on Android.
-- Replace glib hash table with generic hash table implementation
-
-Note:
-- Incase of linux systems, system libraries will be used whereas for
-Android stubs will be used with reduced test coverage.
-- Support will be provided to maintain Android support.
-
-
-Jeevaka Prabu Badrappan (4):
-  Replace program_invocation_short_name with prog_name from command line
-  Avoid use of pthread_cancel by introducing an exit flag
-  Replace glib hash table with c specific implementation
-  igt-gpu-tools: Changes to compile for Android
-
-Sapna (1):
-  Add stub for libunwind, procps and glib
-
- include/stub/glib.h      |  43 ++++++++++++++
- include/stub/libunwind.h |  20 +++++++
- include/stub/pids.h      |  41 ++++++++++++++
- lib/igt_aux.c            |   2 +-
- lib/igt_core.c           |   4 ++
- lib/igt_core.h           |   1 +
- lib/igt_device_scan.c    | 118 +++++++++++++++++++++++++++++----------
- lib/igt_dummyload.c      |   6 +-
- lib/igt_dummyload.h      |   2 +
- lib/igt_kmod.c           |  10 ++++
- lib/xe/xe_spin.c         |   2 +-
- tests/intel/xe_create.c  |   1 +
- tools/gputop.c           |   6 +-
- tools/intel_gpu_top.c    |   2 +-
- 14 files changed, 221 insertions(+), 37 deletions(-)
+Signed-off-by: Sapna <sapna1.singh@intel.com>
+---
+ include/stub/glib.h      | 43 ++++++++++++++++++++++++++++++++++++++++
+ include/stub/libunwind.h | 20 +++++++++++++++++++
+ include/stub/pids.h      | 41 ++++++++++++++++++++++++++++++++++++++
+ lib/igt_aux.c            |  2 +-
+ 4 files changed, 105 insertions(+), 1 deletion(-)
  create mode 100644 include/stub/glib.h
  create mode 100644 include/stub/libunwind.h
  create mode 100644 include/stub/pids.h
 
+diff --git a/include/stub/glib.h b/include/stub/glib.h
+new file mode 100644
+index 000000000..0bd862fa2
+--- /dev/null
++++ b/include/stub/glib.h
+@@ -0,0 +1,43 @@
++#pragma once
++#include <stdbool.h>
++#include <stdlib.h>
++#define G_KEY_FILE_NONE 0
++#define G_REGEX_OPTIMIZE 0
++
++typedef struct _GError {
++    int code;
++    char *message;
++} GError;
++
++typedef struct _GKeyFile {
++    char *key;
++    char *value;
++} GKeyFile;
++
++typedef int gint;
++typedef size_t gsize;
++typedef char gchar;
++typedef unsigned char guchar;
++typedef void GRegex;
++
++static inline void g_clear_error(GError **error) { }
++static inline void g_error_free(GError *error) { }
++static inline const char *g_get_home_dir(void) { return "/data/local/tmp/igt"; }
++static inline void g_key_file_free(GKeyFile *file) { }
++static inline GKeyFile *g_key_file_new(void) { return NULL; }
++static inline int g_key_file_get_integer(GKeyFile *key_file,
++    const char *group_name, const char *key, GError **error) { return 0; }
++static inline char *g_key_file_get_string(GKeyFile *key_file,
++    const char *group_name, const char *key, GError **error) { return NULL; }
++static inline bool g_key_file_load_from_file(GKeyFile *key_file,
++    const char *file, int flags, GError **error) { return false; }
++static inline GRegex* g_regex_new(const char *pattern, int compile_options,
++    int match_options, GError **error) { return NULL; }
++static inline void g_regex_unref(GRegex *pattern) { };
++static gchar* g_base64_encode(const guchar* data, gsize len) {
++    gchar* str = (gchar*)malloc(1);  // Allocate memory for an empty string
++    if (str) {
++        str[0] = '\0';  // Set the string to be empty
++    }
++    return str;
++}
+diff --git a/include/stub/libunwind.h b/include/stub/libunwind.h
+new file mode 100644
+index 000000000..168c31c14
+--- /dev/null
++++ b/include/stub/libunwind.h
+@@ -0,0 +1,20 @@
++#define UNW_TDEP_CURSOR_LEN     127
++typedef struct unw_cursor
++{
++   int opaque[UNW_TDEP_CURSOR_LEN];
++}
++unw_cursor_t;
++
++
++typedef struct unw_context
++{
++   int ctx;
++}
++unw_context_t;
++
++typedef uint32_t unw_word_t;
++
++int unw_getcontext(unw_context_t *uc) { return 0; }
++int unw_init_local (unw_cursor_t *cur, unw_context_t *uc) { return 0; }
++int unw_step (unw_cursor_t *cur) { return 0; }
++int unw_get_proc_name (unw_cursor_t *cur, char *ch, size_t size, unw_word_t *word) { return 0; }
+diff --git a/include/stub/pids.h b/include/stub/pids.h
+new file mode 100644
+index 000000000..bcdd095e0
+--- /dev/null
++++ b/include/stub/pids.h
+@@ -0,0 +1,41 @@
++enum pids_item {
++    PIDS_CMD     = 13,           //      str        stat: comm or status: Name
++    PIDS_ID_EGID = 29,           //    u_int        status: Gid
++    PIDS_ID_EUID = 31,           //    u_int        status: Uid
++    PIDS_ID_PID  = 39,           //    s_int        from /proc/<pid>
++};
++enum pids_fetch_type {
++    PIDS_FETCH_TASKS_ONLY,
++    PIDS_FETCH_THREADS_TOO
++};
++
++struct pids_result {
++    enum pids_item item;
++    union {
++        signed char         s_ch;
++        signed int          s_int;
++        unsigned int        u_int;
++        unsigned long       ul_int;
++        unsigned long long  ull_int;
++        char               *str;
++        char              **strv;
++        double              real;
++    } result;
++};
++
++struct pids_stack {
++    struct pids_result *head;
++};
++
++struct pids_info;
++
++#define PIDS_VAL( relative_enum, type, stack, info) \
++    stack -> head [ relative_enum ] . result . type
++
++int procps_pids_new   (struct pids_info **info, enum pids_item *items, int numitems) { return 0; }
++int procps_pids_unref (struct pids_info **info) { return 0;}
++
++struct pids_stack *procps_pids_get(struct pids_info *info, enum pids_fetch_type which) {
++    struct pids_stack *ps = NULL;
++    return ps;
++}
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index f5bf48da6..78bae7542 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -56,7 +56,7 @@
+ #ifdef HAVE_LIBPROCPS
+ #  include <proc/readproc.h>
+ #else
+-#  include <libproc2/pids.h>
++#include "pids.h"
+ #endif
+ 
+ #include <dirent.h>
 -- 
 2.49.0
 
