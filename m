@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC2E4C369DC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 20:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5A7CC369DC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 20:33:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55F5410E096;
-	Tue, 29 Apr 2025 20:29:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 64EFD10E05C;
+	Tue, 29 Apr 2025 20:33:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JZRW9Fpo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AVepQYSc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFD8710E096
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 20:29:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD58110E05C
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 20:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745958563; x=1777494563;
+ t=1745958824; x=1777494824;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=na8SeUPUh3STGbFrym+8gAp46ds6in/IZwgrB2aqC5w=;
- b=JZRW9FpoHvBVscqgXKO3XwJWwBVyjGufuDjKnNXyeyukCe55VE7bbWEc
- 5Aap6dwGGaFeejovd6egb1zfHEhRFnRIJlOQHWWtQHOJiwwCpTRWPRj+V
- hT8eiX8+XeJ9EqwYLxFzy5zFr72xmWRNnGex708hhh5B/QTxhB50P7odi
- r/DmeNBZKUCwaPE6y8QNg5XKbktnp9Nax9snH5VCMJspb5DhiZPpWU8BZ
- 5900puxmilZz+duaCbhWbmP9jmXQirCLYh1w52sbILsTlycc/pF1gjP7s
- vqm5tDbuORyscm8DXs6cbIIW76G3co9BhhCFJMMPIjwOHnynaOC+Us6uK Q==;
-X-CSE-ConnectionGUID: 6zNDqdE6SjGuExYW7R3Vgg==
-X-CSE-MsgGUID: HtNzLo9zQPm1b6cJBDKFeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="47691797"
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="47691797"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 13:29:19 -0700
-X-CSE-ConnectionGUID: NwP/oZyOSUubv+j0/+2BkQ==
-X-CSE-MsgGUID: gx7Ub0LeRxSyJThCYaPPPg==
+ bh=xJdlXhZBT8sQYYoP6dTHQXH44rvN2PD/7TPJeJsoPCs=;
+ b=AVepQYSc8Iy8WwqImUTLpx2CW6WES+sw1GRjjcoMylttnfsH7+wt7En9
+ kpumUMc7t3mcy06mKV/rMQ1asm/OnCd859erZcMFlpCVyE4PEr+lXzr5O
+ ojxYASKM5E7VXTGo50oA+K0WzhJQetAVH6HaDwgWY76+DUJZKm2i39S2O
+ Iv7VzGW+iEivTS4vEqkT2fh/jF9Y9ZL7ryBXPxXCSnYbzIcWXTd1JCM5s
+ VhwQ3258pWFCUy3SwLYzV3CDJ8/lz118XJn00ROAQBPhGoTqmoJyLWqmI
+ ByHrZNKsgjDQ1wyDHsxx4gFP6zKT7eTrUJ7oEwBOup202XehpNDGyte9f Q==;
+X-CSE-ConnectionGUID: ZwQ/dUvzS1uu1GLfNdCIQg==
+X-CSE-MsgGUID: cprQygR8QYCZhmrT2Gdpag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="47736297"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="47736297"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 13:33:43 -0700
+X-CSE-ConnectionGUID: uQ6pqQlCTqetKWD4klsU9g==
+X-CSE-MsgGUID: kFNK/xf1Q0W7kq8CEQ8x9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="133836773"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="138902321"
 Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
  ([10.165.21.142])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 13:29:20 -0700
-Date: Tue, 29 Apr 2025 13:29:19 -0700
-Message-ID: <85wmb2r9sw.wl-ashutosh.dixit@intel.com>
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 13:33:43 -0700
+Date: Tue, 29 Apr 2025 13:33:42 -0700
+Message-ID: <85v7qmr9ll.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 Cc: igt-dev@lists.freedesktop.org, sapna1.singh@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com
-Subject: Re: [PATCH 3/5] Avoid use of pthread_cancel by introducing an exit
- flag
-In-Reply-To: <20250429195745.40982-4-jeevaka.badrappan@intel.com>
+Subject: Re: [PATCH 4/5] Replace glib hash table with c specific implementation
+In-Reply-To: <20250429195745.40982-5-jeevaka.badrappan@intel.com>
 References: <20250429195745.40982-1-jeevaka.badrappan@intel.com>
- <20250429195745.40982-4-jeevaka.badrappan@intel.com>
+ <20250429195745.40982-5-jeevaka.badrappan@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -73,92 +72,245 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 29 Apr 2025 12:57:43 -0700, Jeevaka Prabu Badrappan wrote:
+On Tue, 29 Apr 2025 12:57:44 -0700, Jeevaka Prabu Badrappan wrote:
 >
-> Android build fails due to pthread_cancel unavailability.
-> Replace pthread_cancel with thread exit based on an exit flag.
+> Inorder to support igt build for Android(without glib), replaced
+> the glib hashtable function with generic hash table implementation.
 
-How about adding the definition of pthread_cancel() in an android specific
-library and using that, rather than making changes here?
+Once again, instead of changing this, how about providing these glibc
+provided data structs and functions in an android specific library, to
+contain changes to android only?
 
-I would think that approach might be better in general, calling into the
-android specific library, rather than using '#ifdef ANDROID' as seems to be
-done in other patches here?
-
-Thoughts?
+Looking for feedback from other people on the mailing list too. Thanks.
 
 >
 > Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 > ---
->  lib/igt_dummyload.c | 6 +++---
->  lib/igt_dummyload.h | 2 ++
->  lib/xe/xe_spin.c    | 2 +-
->  3 files changed, 6 insertions(+), 4 deletions(-)
+>  lib/igt_device_scan.c | 118 ++++++++++++++++++++++++++++++++----------
+>  1 file changed, 90 insertions(+), 28 deletions(-)
 >
-> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-> index 3cf80b762..38249afb7 100644
-> --- a/lib/igt_dummyload.c
-> +++ b/lib/igt_dummyload.c
-> @@ -530,7 +530,7 @@ static void *timer_thread(void *data)
->	/* Wait until we see the timer fire, or we get cancelled */
->	do {
->		read(spin->timerfd, &overruns, sizeof(overruns));
-> -	} while (!overruns);
-> +	} while (!overruns && !spin->exit_thread);
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index 3f26a1737..089777374 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -28,10 +28,10 @@
+>  #include "igt_list.h"
+>  #include "intel_chipset.h"
 >
->	igt_spin_end(spin);
->	return NULL;
-> @@ -565,7 +565,7 @@ void igt_spin_set_timeout(igt_spin_t *spin, int64_t ns)
->	timerfd = timerfd_create(CLOCK_MONOTONIC, 0);
->	igt_assert(timerfd >= 0);
->	spin->timerfd = timerfd;
-> -
-> +	spin->exit_thread = false;
->	pthread_attr_init(&attr);
->	pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
->	pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
-> @@ -631,7 +631,7 @@ void igt_spin_end(igt_spin_t *spin)
->  static void __igt_spin_free(int fd, igt_spin_t *spin)
+> +#include <string.h>
+>  #include <ctype.h>
+>  #include <dirent.h>
+>  #include <fcntl.h>
+> -#include <glib.h>
+>  #include <libudev.h>
+>  #ifdef __linux__
+>  #include <linux/limits.h>
+> @@ -217,6 +217,18 @@ static inline bool strequal(const char *a, const char *b)
+>	return strcmp(a, b) == 0;
+>  }
+>
+> +#define TABLE_SIZE 100
+> +
+> +typedef struct KeyValue {
+> +	char *key;
+> +	char *value;
+> +	struct KeyValue *next;
+> +} KeyValue;
+> +
+> +typedef struct {
+> +	KeyValue *table[TABLE_SIZE];
+> +} HashTable;
+> +
+>  struct igt_device {
+>	/* Filled for drm devices */
+>	struct igt_device *parent;
+> @@ -224,8 +236,8 @@ struct igt_device {
+>	/* Point to vendor spec if can be found */
+>
+>	/* Properties / sysattrs rewriten from udev lists */
+> -	GHashTable *props_ht;
+> -	GHashTable *attrs_ht;
+> +	HashTable *props_ht;
+> +	HashTable *attrs_ht;
+>
+>	/* Most usable variables from udev device */
+>	char *subsystem;
+> @@ -261,6 +273,61 @@ static void igt_device_free(struct igt_device *dev);
+>  typedef char *(*devname_fn)(uint16_t, uint16_t);
+>  typedef enum dev_type (*devtype_fn)(uint16_t, uint16_t, const char *);
+>
+> +unsigned int hash(const char *key)
+> +{
+> +	unsigned int hash = 0;
+> +	while (*key) {
+> +		hash = (hash << 5) + *key++;
+> +	}
+> +	return hash % TABLE_SIZE;
+> +}
+> +
+> +HashTable *create_table()
+> +{
+> +	HashTable *table = malloc(sizeof(HashTable));
+> +	for (int i = 0; i < TABLE_SIZE; i++) {
+> +		table->table[i] = NULL;
+> +	}
+> +	return table;
+> +}
+> +
+> +void insert_table(HashTable *table, const char *key, const char *value)
+> +{
+> +	unsigned int index = hash(key);
+> +	KeyValue *new_pair = malloc(sizeof(KeyValue));
+> +	new_pair->key = strdup(key);
+> +	new_pair->value = strdup(value);
+> +	new_pair->next = table->table[index];
+> +	table->table[index] = new_pair;
+> +}
+> +
+> +char *search_table(HashTable *table, const char *key)
+> +{
+> +	unsigned int index = hash(key);
+> +	KeyValue *pair = table->table[index];
+> +	while (pair) {
+> +		if (strcmp(pair->key, key) == 0) {
+> +			return pair->value;
+> +		}
+> +		pair = pair->next;
+> +	}
+> +	return NULL;
+> +}
+> +
+> +void free_table(HashTable *table) {
+> +	for (int i = 0; i < TABLE_SIZE; i++) {
+> +		KeyValue *pair = table->table[i];
+> +		while (pair) {
+> +			KeyValue *temp = pair;
+> +			pair = pair->next;
+> +			free(temp->key);
+> +			free(temp->value);
+> +			free(temp);
+> +		}
+> +	}
+> +	free(table);
+> +}
+> +
+>  static char *devname_hex(uint16_t vendor, uint16_t device)
 >  {
->	if (spin->timerfd >= 0) {
-> -		pthread_cancel(spin->timer_thread);
-> +		spin->exit_thread = true;
->		igt_assert(pthread_join(spin->timer_thread, NULL) == 0);
->		close(spin->timerfd);
+>	char *s;
+> @@ -472,10 +539,8 @@ static struct igt_device *igt_device_new(void)
+>	if (!dev)
+>		return NULL;
+>
+> -	dev->attrs_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
+> -					      free, free);
+> -	dev->props_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
+> -					      free, free);
+> +	dev->attrs_ht = create_table();
+> +	dev->props_ht = create_table();
+>
+>	if (dev->attrs_ht && dev->props_ht)
+>		return dev;
+> @@ -491,7 +556,7 @@ static void igt_device_add_prop(struct igt_device *dev,
+>	if (!key || !value)
+>		return;
+>
+> -	g_hash_table_insert(dev->props_ht, strdup(key), strdup(value));
+> +	insert_table(dev->props_ht, key, value);
+>  }
+>
+>  static void igt_device_add_attr(struct igt_device *dev,
+> @@ -525,7 +590,7 @@ static void igt_device_add_attr(struct igt_device *dev,
+>		v++;
 >	}
-> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-> index b771011af..07b21227d 100644
-> --- a/lib/igt_dummyload.h
-> +++ b/lib/igt_dummyload.h
-> @@ -26,6 +26,7 @@
->  #define __IGT_DUMMYLOAD_H__
 >
->  #include <stdint.h>
-> +#include <stdatomic.h>
->  #include <time.h>
+> -	g_hash_table_insert(dev->attrs_ht, strdup(key), strdup(v));
+> +	insert_table(dev->attrs_ht, key, v);
+>  }
 >
->  #include "drmtest.h"
-> @@ -75,6 +76,7 @@ typedef struct igt_spin {
->
->	struct timespec last_signal;
->	pthread_t timer_thread;
-> +	atomic_bool exit_thread;
->	int timerfd;
->
->	int out_fence;
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index a92903b6b..2fb688179 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -264,7 +264,7 @@ void xe_spin_free(int fd, struct igt_spin *spin)
->	igt_assert(spin->driver == INTEL_DRIVER_XE);
->
->	if (spin->timerfd >= 0) {
-> -		pthread_cancel(spin->timer_thread);
-> +		spin->exit_thread = true;
->		igt_assert(pthread_join(spin->timer_thread, NULL) == 0);
->		close(spin->timerfd);
+>  /* Iterate over udev properties list and rewrite it to igt_device properties
+> @@ -585,13 +650,13 @@ static void get_attrs_limited(struct udev_device *dev, struct igt_device *idev)
 >	}
+>  }
+>
+> -#define get_prop(dev, prop) ((char *) g_hash_table_lookup(dev->props_ht, prop))
+> -#define get_attr(dev, attr) ((char *) g_hash_table_lookup(dev->attrs_ht, attr))
+> +#define get_prop(dev, prop) ((char *) search_table(dev->props_ht, prop))
+> +#define get_attr(dev, attr) ((char *) search_table(dev->attrs_ht, attr))
+>  #define get_prop_subsystem(dev) get_prop(dev, "SUBSYSTEM")
+>  #define is_drm_subsystem(dev)  (strequal(get_prop_subsystem(dev), "drm"))
+>  #define is_pci_subsystem(dev)  (strequal(get_prop_subsystem(dev), "pci"))
+>
+> -static void print_ht(GHashTable *ht);
+> +static void print_ht(HashTable *ht);
+>  static void dump_props_and_attrs(const struct igt_device *dev)
+>  {
+>	printf("\n[properties]\n");
+> @@ -949,7 +1014,7 @@ static struct igt_device *duplicate_device(struct igt_device *dev) {
+>	return dup;
+>  }
+>
+> -static gint devs_compare(const void *a, const void *b)
+> +static int devs_compare(const void *a, const void *b)
+>  {
+>	struct igt_device *dev1, *dev2;
+>	int ret;
+> @@ -1088,8 +1153,8 @@ static void igt_device_free(struct igt_device *dev)
+>	free(dev->device);
+>	free(dev->driver);
+>	free(dev->pci_slot_name);
+> -	g_hash_table_destroy(dev->attrs_ht);
+> -	g_hash_table_destroy(dev->props_ht);
+> +	free_table(dev->attrs_ht);
+> +	free_table(dev->props_ht);
+>  }
+>
+>  void igt_devices_free(void)
+> @@ -1258,7 +1323,7 @@ igt_devs_print_user(struct igt_list_head *view,
+>		if (!dev->drm_card || dev->drm_render)
+>			continue;
+>
+> -		drm_name = rindex(dev->drm_card, '/');
+> +		drm_name = strrchr(dev->drm_card, '/');
+>		if (!drm_name || !*++drm_name)
+>			continue;
+>
+> @@ -1306,7 +1371,7 @@ igt_devs_print_user(struct igt_list_head *view,
+>			if (strcmp(dev2->parent->syspath, dev->parent->syspath))
+>				continue;
+>
+> -			drm_name = rindex(dev2->drm_render, '/');
+> +			drm_name = strrchr(dev2->drm_render, '/');
+>			if (!drm_name || !*++drm_name)
+>				continue;
+>
+> @@ -1328,19 +1393,16 @@ static inline void _print_key_value(const char* k, const char *v)
+>	printf("%-32s: %s\n", k, v);
+>  }
+>
+> -static void print_ht(GHashTable *ht)
+> +static void print_ht(HashTable *table)
+>  {
+> -	GList *keys = g_hash_table_get_keys(ht);
+> -
+> -	keys = g_list_sort(keys, (GCompareFunc) strcmp);
+> -	while (keys) {
+> -		char *k = (char *) keys->data;
+> -		char *v = g_hash_table_lookup(ht, k);
+> -
+> -		_print_key_value(k, v);
+> -		keys = g_list_next(keys);
+> +	for (int i = 0; i < TABLE_SIZE; i++) {
+> +		KeyValue *pair = table->table[i];
+> +		printf("Index %d:\n", i);
+> +		while (pair) {
+> +			printf("  Key: %s, Value: %s\n", pair->key, pair->value);
+> +			pair = pair->next;
+> +		}
+>	}
+> -	g_list_free(keys);
+>  }
+>
+>  static void
 > --
 > 2.49.0
 >
