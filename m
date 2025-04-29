@@ -4,61 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C493AC369DC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 09:15:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAAC8C3ABA9
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 09:18:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 72C8B10E3F9;
-	Tue, 29 Apr 2025 09:15:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A119B10E3E2;
+	Tue, 29 Apr 2025 09:18:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="POMhvfJm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WA4MdocI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBD8910E2EF
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 09:15:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4BE6910E3E2
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 09:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745918118; x=1777454118;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=oTZM6qOE0eAU7uV67HHns76m7Rr8OIxoXpu44baYy60=;
- b=POMhvfJm/Xx6XJ9Ve26nGqw1AHCWLy1Agky9g31yOXZGjZTM9FjT0DQs
- IVrCVIGey7Hk7WUjF/n3S2sLm19V7VI8U9GVVh2BQsyTkjS5QLEO/mGF4
- Cwwbvfj9MOxNSUcZMIzrNe5iVwyGVjPW7apNnGDEpB3xvnsVDANHtuXHB
- uEt+dgxetAflzy4a9UnU1ThTpkw8pUsHYxFenauQkxKsx+x3zC1BH3JOA
- V2lKEtfz3QIIkJCa/IsgrFWUvhkLN8HM1HiFLC/FbYFgDinm4y1bQABs/
- ZdrV0XjBRRGb/kA4Dt79qWiorOw1EVYasYUjPHHFAEFDerzmV7+jq0cVH g==;
-X-CSE-ConnectionGUID: 9l5jo9akTCa0ddQEtamTQw==
-X-CSE-MsgGUID: pj0m2LloQWK/M2fa4mf1aQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="47689000"
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="47689000"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 02:15:14 -0700
-X-CSE-ConnectionGUID: 7s+5jzJpTb6+df+gbILWdw==
-X-CSE-MsgGUID: OXJaXSyoR6ihk6j1JQE6QQ==
+ t=1745918286; x=1777454286;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=HCTrVxfmkpNYOxjxq2+fY/+BrlQeboO0IsQTHyHuqcM=;
+ b=WA4MdocIfAyjWmg9cpTgWdUYTD+FadG1VgHT0RyR7iyirEgtuzezcGqy
+ DvfbQ3Wse3kdfcFeeKE8hBDAYmZY4OHBcIrRFXM8UCMmkFu94K6MV3Faj
+ J5FBKq6/X7zgsgYqIMDLIaFb4k2I5H+aObiIfKd+1qxvnEhkWzXsbsLxZ
+ CQ/ujP/oUVliV1iPp//6qO9QYxkfaJdyaNBzXKrHrd4Q89/2xSbd4oWFF
+ Ep/Au4R4CjTZ0zKemUVhRUHUZY6YgOMYo1SlL6VOk+E0x5urJjRsZarCZ
+ 1qc/fNbv02TQmILEj5osHE6akF6tH7aNg61jCLGRa0XdFb+fH7X+KvkLs Q==;
+X-CSE-ConnectionGUID: XBIb97gAQVaTd4rIqVOW7A==
+X-CSE-MsgGUID: m5r2co9ITDK43g98V4F9xw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="46774512"
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="46774512"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 02:14:16 -0700
+X-CSE-ConnectionGUID: eyTWEpe0TJWUrbXuiCevPg==
+X-CSE-MsgGUID: FPmuRnuZQ1aFVfWSP8eMqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="138952521"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 02:15:12 -0700
-Date: Tue, 29 Apr 2025 11:14:53 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Francois Dugast <francois.dugast@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: Re: [PATCH i-g-t] lib/xe/xe_ioctl: Fix compilation on 32-bit armhf
-Message-ID: <20250429091453.fum5b3iw4yz5l2ct@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- igt-dev@lists.freedesktop.org,
- Matthew Brost <matthew.brost@intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>
-References: <20250428162122.152829-1-kamil.konieczny@linux.intel.com>
- <aA-sUTROMev9m5zK@fdugast-desk>
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="164867416"
+Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
+ by fmviesa001.fm.intel.com with ESMTP; 29 Apr 2025 02:14:14 -0700
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: nishit.sharma@intel.com,
+	Pravalika Gurram <pravalika.gurram@intel.com>
+Subject: [PATCH] benchmarks: create xe_exec_ctx
+Date: Tue, 29 Apr 2025 14:52:12 +0530
+Message-Id: <20250429092212.909040-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aA-sUTROMev9m5zK@fdugast-desk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,79 +66,331 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Francois,
-On 2025-04-28 at 18:26:57 +0200, Francois Dugast wrote:
-> Hi,
-> 
-> On Mon, Apr 28, 2025 at 06:21:22PM +0200, Kamil Konieczny wrote:
-> > Fix some compilation eerors on 32-bit platforms like armhf:
-> 
-> s/eerors/errors/
-> 
-> > 
-> > ../lib/xe/xe_ioctl.c:443:7: error: conflicting types for xe_bo_map_fixed void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
-> >        ^~~~~~~~~~~~~~~
-> > In file included from ../lib/xe/xe_ioctl.c:46:
-> > ../lib/xe/xe_ioctl.h:89:7: note: previous declaration of xe_bo_map_fixed was here
-> >  void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, long unsigned int addr);
-> >        ^~~~~~~~~~~~~~~
-> > ../lib/xe/xe_ioctl.c: In function xe_bo_map_fixed:
-> > ../lib/xe/xe_ioctl.c:449:13: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-> >   map = mmap((void *)addr, size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd, mmo);
-> >              ^
-> > cc1: some warnings being treated as errors
-> > 
-> > Fixes: 9eda33fedff7 ("tests/xe: Add system_allocator test")
-> > Cc: Matthew Brost <matthew.brost@intel.com>
-> > Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> > Cc: Francois Dugast <francois.dugast@intel.com>
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> I recently came across the same error and the same solution for commit 18f9cc22
-> "lib/intel_compute: Allow the user to override input and output addresses", so:
-> 
-> Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-> 
-> Francois
-> 
+Measure the overhead of execution when doing nothing, switching between
+a pair of contexts, or creating a new context every time.
 
-Uh, it looks more complicated, let me dig in into this as there
-are still compilation errors in those 32-bit containers.
+Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+---
+ benchmarks/meson.build   |   1 +
+ benchmarks/xe_exec_ctx.c | 296 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 297 insertions(+)
+ create mode 100644 benchmarks/xe_exec_ctx.c
 
-Regards,
-Kamil
+diff --git a/benchmarks/meson.build b/benchmarks/meson.build
+index 2c9a88fd3..496edd724 100644
+--- a/benchmarks/meson.build
++++ b/benchmarks/meson.build
+@@ -21,6 +21,7 @@ benchmark_progs = [
+ 	'kms_vblank',
+ 	'prime_lookup',
+ 	'vgem_mmap',
++	'xe_exec_ctx',
+ ]
+ 
+ benchmarksdir = join_paths(libexecdir, 'benchmarks')
+diff --git a/benchmarks/xe_exec_ctx.c b/benchmarks/xe_exec_ctx.c
+new file mode 100644
+index 000000000..7d014e120
+--- /dev/null
++++ b/benchmarks/xe_exec_ctx.c
+@@ -0,0 +1,296 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#include <stdio.h>
++#include "intel_reg.h"
++#include "ioctl_wrappers.h"
++#include "lib/igt_syncobj.h"
++
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_util.h"
++#include "xe/xe_spin.h"
++
++#define MAX_N_EXEC_QUEUES        16
++enum mode { NOP, CREATE, SWITCH };
++
++static double elapsed(const struct timespec *start,
++			const struct timespec *end)
++{
++	return (end->tv_sec - start->tv_sec) + 1e-9*(end->tv_nsec - start->tv_nsec);
++}
++
++static void
++test_exec(int fd, struct drm_xe_engine_class_instance *eci,
++		int n_exec_queues, int n_execs, int n_vm, unsigned int flags)
++{
++	struct drm_xe_sync sync[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(sync),
++	};
++
++	uint64_t addr[MAX_N_EXEC_QUEUES];
++	uint64_t sparse_addr[MAX_N_EXEC_QUEUES];
++	uint32_t vm[MAX_N_EXEC_QUEUES];
++	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
++	uint32_t bind_exec_queues[MAX_N_EXEC_QUEUES];
++	uint32_t syncobjs[MAX_N_EXEC_QUEUES];
++	uint32_t bind_syncobjs[MAX_N_EXEC_QUEUES];
++	struct drm_gem_flink flink;
++	struct drm_gem_open open_struct;
++	uint32_t bo_flags;
++	size_t bo_size;
++	uint32_t bo = 0;
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++	} *data;
++	int i, b;
++	int ret;
++
++	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
++	igt_assert_lte(n_vm, MAX_N_EXEC_QUEUES);
++
++	for (i = 0; i < n_vm; ++i)
++		vm[i] = xe_vm_create(fd, 0, 0);
++	bo_size = sizeof(*data) * n_execs;
++	bo_size = xe_bb_size(fd, bo_size);
++
++	addr[0] = 0x1a0000;
++	sparse_addr[0] = 0x301a0000;
++	for (i = 1; i < MAX_N_EXEC_QUEUES; ++i) {
++		addr[i] = addr[i - 1] + (0x1ull << 32);
++		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
++	}
++
++	bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
++
++	bo = xe_bo_create(fd, n_vm == 1 ? vm[0] : 0, bo_size,
++			vram_if_possible(fd, 0), bo_flags);
++
++	flink.handle = bo;
++	ret = igt_ioctl(fd, DRM_IOCTL_GEM_FLINK, &flink);
++	igt_assert_eq(ret, 0);
++
++	open_struct.name = flink.name;
++	ret = igt_ioctl(fd, DRM_IOCTL_GEM_OPEN, &open_struct);
++	igt_assert_eq(ret, 0);
++	igt_assert(open_struct.handle != 0);
++
++	data = xe_bo_map(fd, bo, bo_size);
++
++	for (i = 0; i < n_exec_queues; i++) {
++		uint32_t __vm = vm[i % n_vm];
++
++		exec_queues[i] = xe_exec_queue_create(fd, __vm, eci, 0);
++
++		bind_exec_queues[i] = 0;
++		syncobjs[i] = syncobj_create(fd, 0);
++		bind_syncobjs[i] = syncobj_create(fd, 0);
++	};
++
++	for (i = 0; i < n_vm; ++i) {
++		sync[0].handle = bind_syncobjs[i];
++		xe_vm_bind_async(fd, vm[i], bind_exec_queues[i], bo, 0,
++				addr[i], bo_size, sync, 1);
++	}
++
++	for (i = 0; i < n_execs; i++) {
++		int cur_vm = i % n_vm;
++		uint64_t __addr = addr[cur_vm];
++		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
++		uint64_t batch_addr = __addr + batch_offset;
++		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
++		uint64_t sdi_addr = __addr + sdi_offset;
++		int e = i % n_exec_queues;
++
++		b = 0;
++		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data[i].batch[b++] = sdi_addr;
++		data[i].batch[b++] = sdi_addr >> 32;
++		data[i].batch[b++] = 0xc0ffee;
++		data[i].batch[b++] = MI_BATCH_BUFFER_END;
++		igt_assert(b <= ARRAY_SIZE(data[i].batch));
++
++		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[0].handle = bind_syncobjs[cur_vm];
++		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[1].handle = syncobjs[e];
++
++		exec.exec_queue_id = exec_queues[e];
++		exec.address = batch_addr;
++		if (e != i)
++			syncobj_reset(fd, &syncobjs[e], 1);
++		xe_exec(fd, &exec);
++
++		if (i + 1 != n_execs) {
++			uint32_t __vm = vm[cur_vm];
++
++			sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++			xe_vm_unbind_async(fd, __vm, bind_exec_queues[e], 0,
++					__addr, bo_size, sync + 1, 1);
++
++			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++			addr[i % n_vm] += bo_size;
++			__addr = addr[i % n_vm];
++			xe_vm_bind_async(fd, __vm, bind_exec_queues[e], bo,
++					0, __addr, bo_size, sync, 1);
++		}
++	}
++
++	for (i = 0; i < n_exec_queues && n_execs; i++)
++		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
++					NULL));
++
++	for (i = 0; i < n_vm; i++)
++		igt_assert(syncobj_wait(fd, &bind_syncobjs[i], 1, INT64_MAX, 0,
++					NULL));
++
++	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	for (i = 0; i < n_vm; ++i) {
++		syncobj_reset(fd, &sync[0].handle, 1);
++		xe_vm_unbind_async(fd, vm[i], bind_exec_queues[i], 0, addr[i],
++				bo_size, sync, 1);
++		igt_assert(syncobj_wait(fd, &sync[0].handle, 1,
++					INT64_MAX, 0, NULL));
++	}
++
++	for (i = 0; i < n_exec_queues; i++) {
++		syncobj_destroy(fd, syncobjs[i]);
++		xe_exec_queue_destroy(fd, exec_queues[i]);
++		if (bind_exec_queues[i])
++			xe_exec_queue_destroy(fd, bind_exec_queues[i]);
++	}
++
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++
++	for (i = 0; i < n_vm; ++i) {
++		syncobj_destroy(fd, bind_syncobjs[i]);
++		xe_vm_destroy(fd, vm[i]);
++	}
++}
++
++static int loop(unsigned int ring,
++		int reps,
++		enum mode mode,
++		int ncpus,
++		unsigned int flags)
++{
++	int fd;
++	struct drm_xe_engine_class_instance *hwe;
++	double *shared;
++
++	fd = drm_open_driver(DRIVER_XE);
++	shared = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++
++	xe_for_each_engine(fd, hwe)
++		if (hwe->engine_class == ring)
++			test_exec(fd, hwe, 1, 1, 1, 0);
++
++	while (reps--) {
++		sleep(1); /* wait for the hw to go back to sleep */
++
++		memset(shared, 0, 4096);
++
++		igt_fork(child, ncpus) {
++			struct timespec start, end;
++			unsigned int count = 0;
++
++		clock_gettime(CLOCK_MONOTONIC, &start);
++		do {
++			switch (mode) {
++			case CREATE:
++				xe_for_each_engine(fd, hwe)
++					if (hwe->engine_class == ring)
++						test_exec(fd, hwe, 1, 1, 1, 0);
++				break;
++
++			case SWITCH:
++				xe_for_each_engine(fd, hwe)
++					if (hwe->engine_class == ring)
++						test_exec(fd, hwe, 16, 64, 1, 1);
++				break;
++
++			case NOP:
++				break;
++			}
++			count++;
++			clock_gettime(CLOCK_MONOTONIC, &end);
++		} while (elapsed(&start, &end) < 2.);
++
++		clock_gettime(CLOCK_MONOTONIC, &end);
++		shared[child] = 1e6*elapsed(&start, &end) / count;
++		}
++	}
++	igt_waitchildren();
++
++	for (int child = 0; child < ncpus; child++)
++		shared[ncpus] += shared[child];
++	printf("%7.3f\n", shared[ncpus] / ncpus);
++
++	return 0;
++}
++
++int main(int argc, char **argv)
++{
++	unsigned int ring = DRM_XE_ENGINE_CLASS_RENDER;
++	unsigned int flags = 0;
++	enum mode mode = NOP;
++	int reps = 1;
++	int ncpus = 1;
++	int c;
++
++	while ((c = getopt(argc, argv, "e:r:b:f")) != -1) {
++		switch (c) {
++		case 'e':
++			if (strcmp(optarg, "rcs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_RENDER;
++			else if (strcmp(optarg, "vcs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
++			else if (strcmp(optarg, "bcs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_COPY;
++			else if (strcmp(optarg, "vecs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
++			else if (strcmp(optarg, "ccs") == 0)
++				ring = DRM_XE_ENGINE_CLASS_COMPUTE;
++			else
++				ring = atoi(optarg);
++			break;
++
++		case 'b':
++			if (strcmp(optarg, "create") == 0)
++				mode = CREATE;
++			else if (strcmp(optarg, "switch") == 0)
++				mode = SWITCH;
++			else if (strcmp(optarg, "nop") == 0)
++				mode = NOP;
++			else
++				abort();
++			break;
++
++		case 'f':
++			ncpus = sysconf(_SC_NPROCESSORS_ONLN);
++			break;
++
++		case 'r':
++			reps = atoi(optarg);
++			if (reps < 1)
++				reps = 1;
++			break;
++
++		default:
++			break;
++		}
++	}
++
++	return loop(ring, reps, mode, ncpus, flags);
++}
+-- 
+2.34.1
 
-> > ---
-> >  lib/xe/xe_ioctl.c | 2 +-
-> >  lib/xe/xe_ioctl.h | 2 +-
-> >  2 files changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> > index 785fc9184..53a53cd0d 100644
-> > --- a/lib/xe/xe_ioctl.c
-> > +++ b/lib/xe/xe_ioctl.c
-> > @@ -446,7 +446,7 @@ void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
-> >  	void *map;
-> >  
-> >  	mmo = xe_bo_mmap_offset(fd, bo);
-> > -	map = mmap((void *)addr, size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd, mmo);
-> > +	map = mmap(from_user_pointer(addr), size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd, mmo);
-> >  	igt_assert(map != MAP_FAILED);
-> >  
-> >  	return map;
-> > diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> > index 554a33c9c..522094ae2 100644
-> > --- a/lib/xe/xe_ioctl.h
-> > +++ b/lib/xe/xe_ioctl.h
-> > @@ -86,7 +86,7 @@ uint32_t xe_exec_queue_create_class(int fd, uint32_t vm, uint16_t class);
-> >  void xe_exec_queue_destroy(int fd, uint32_t exec_queue);
-> >  uint64_t xe_bo_mmap_offset(int fd, uint32_t bo);
-> >  void *xe_bo_map(int fd, uint32_t bo, size_t size);
-> > -void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, long unsigned int addr);
-> > +void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr);
-> >  void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
-> >  int __xe_exec(int fd, struct drm_xe_exec *exec);
-> >  void xe_exec(int fd, struct drm_xe_exec *exec);
-> > -- 
-> > 2.49.0
-> > 
