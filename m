@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01086C3ABA5
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 20:40:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC8EDC369DC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 20:40:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B2F0310E457;
-	Tue, 29 Apr 2025 20:40:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A281310E464;
+	Tue, 29 Apr 2025 20:40:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="awK7hm0j";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jRHycdRc";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7283E10E457
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 20:40:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65ABA10E457
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 20:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745959241; x=1777495241;
+ t=1745959243; x=1777495243;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+qy+tzvh1Mww4FjqsPPKwINyiu2RoYd2Gcp0Thj3vvs=;
- b=awK7hm0j+kQ0TjdlpnOsbH2Q9Am+G6MbtNLN2I/2RxubxcUEPF5GAyXM
- XO268fpGhLKuh+nIuw8ThrjE1dnGyspmOX+CSDrhPq2Bcku7C9d9fZu38
- YCh4eKOZc4+3XDH4OymTJo4VoAabcOkUFNEDX/Nb4AoPnvqUqnlJVAxbe
- wALpSJtfW5cCZUi3ZiLzEiu2c4GurzH1VnTyJDwty9MPUrk6TQ/7SZo5H
- q3nVUnn6UkXKI4gBb6ieQZ8THeRftP3gO0EkZcyBBuQ4r2aNwCOaSRmw7
- nXmXHjFYKt6qhewbtbc/ZG1uD8kNd4WBDfbL/7218lBwhT9qH4hhx/sry A==;
-X-CSE-ConnectionGUID: hhOK8ydYROSYBdBOWB7lgg==
-X-CSE-MsgGUID: 1wd0QtDJSw2ohDa7+s4YKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="72983465"
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="72983465"
+ bh=MJBuxRnPBvv4Ju9ZuXTyB1NB9djkVfAoAoQjSHIqmeM=;
+ b=jRHycdRcLPndXL6EXuPc4vEMSm2pNhnvTN/5/bDfOJSaC2IPbmBMFuhI
+ 0iku9K7OEKd/VqqssOI4SVf7SL6EBmNhNxo3oGUVo+KZbTarCHVC2/ih1
+ gpN6CnKjzbiMngWTBd2m6LVR4444ZIUJ19B0fq41Fk4ADSK0ynnNeMPDS
+ FiNbhsnk86MRd9FKXaZmbp3fyHnma/H/he+eNSmG6YS/595NNSQC7Odrd
+ SmalT7O1klhC10s3wMTx01rfNA0yA3I5Hc42ZBWCxdBg1RYKpxMT+GuXH
+ 4aLN7V+T0JV/BYyR8tkQvm2zhUfHTly0RCMWKF418UaRSAi441jZ9y2Jz Q==;
+X-CSE-ConnectionGUID: EjGWR8wSRyKRPxem1ZvY3g==
+X-CSE-MsgGUID: 6/utcOM+TZGnLA+4poePFg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="72983469"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="72983469"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 13:40:40 -0700
-X-CSE-ConnectionGUID: NG3xw0/KRsqk9aM1voUk+Q==
-X-CSE-MsgGUID: DgvVTEWYSVePfUFRZ52LGg==
+ 29 Apr 2025 13:40:42 -0700
+X-CSE-ConnectionGUID: O5UA1ptBSvWFiSHHKYzh4Q==
+X-CSE-MsgGUID: 3nelruMFQ5WBBSUDJdFz+g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="138739979"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="138739991"
 Received: from intel-s2600stb.iind.intel.com (HELO
  08ca91f16b80.iind.intel.com) ([10.66.234.77])
- by fmviesa005.fm.intel.com with ESMTP; 29 Apr 2025 13:40:38 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 29 Apr 2025 13:40:41 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevaka.badrappan@intel.com, sapna1.singh@intel.com, markyacoub@google.com,
  seanpaul@google.com, carlos.santa@intel.com
-Subject: [PATCH 4/5] Replace glib hash table with c specific implementation
-Date: Tue, 29 Apr 2025 20:39:18 +0000
-Message-ID: <20250429203919.41503-5-jeevaka.badrappan@intel.com>
+Subject: [PATCH 5/5] igt-gpu-tools: Changes to compile for Android
+Date: Tue, 29 Apr 2025 20:39:19 +0000
+Message-ID: <20250429203919.41503-6-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429203919.41503-1-jeevaka.badrappan@intel.com>
 References: <20250429203919.41503-1-jeevaka.badrappan@intel.com>
@@ -68,236 +68,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Inorder to support igt build for Android(without glib), replaced
-the glib hashtable function with generic hash table implementation.
+Changes done to compile for android:
+-  __noreturn and PAGE_SIZE are already defined in Android,
+undef and then define it.
+- define strchrnul for Android
+- Replace index with strchr
 
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 ---
- lib/igt_device_scan.c | 118 ++++++++++++++++++++++++++++++++----------
- 1 file changed, 90 insertions(+), 28 deletions(-)
+ lib/igt_core.c          |  4 ++++
+ lib/igt_core.h          |  1 +
+ lib/igt_kmod.c          | 10 ++++++++++
+ tests/intel/xe_create.c |  1 +
+ tools/intel_gpu_top.c   |  2 +-
+ 5 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index 3f26a1737..c121e53bb 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -28,10 +28,10 @@
- #include "igt_list.h"
- #include "intel_chipset.h"
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index e1061a2ed..519600dfa 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -373,6 +373,9 @@ static bool stderr_needs_sentinel = false;
  
-+#include <string.h>
- #include <ctype.h>
- #include <dirent.h>
- #include <fcntl.h>
--#include <glib.h>
- #include <libudev.h>
- #ifdef __linux__
- #include <linux/limits.h>
-@@ -217,6 +217,18 @@ static inline bool strequal(const char *a, const char *b)
- 	return strcmp(a, b) == 0;
- }
+ static int _igt_dynamic_tests_executed = -1;
  
-+#define TABLE_SIZE 100
-+
-+typedef struct KeyValue {
-+	char *key;
-+	char *value;
-+	struct KeyValue *next;
-+} KeyValue;
-+
-+typedef struct {
-+	KeyValue *table[TABLE_SIZE];
-+} HashTable;
-+
- struct igt_device {
- 	/* Filled for drm devices */
- 	struct igt_device *parent;
-@@ -224,8 +236,8 @@ struct igt_device {
- 	/* Point to vendor spec if can be found */
- 
- 	/* Properties / sysattrs rewriten from udev lists */
--	GHashTable *props_ht;
--	GHashTable *attrs_ht;
-+	HashTable *props_ht;
-+	HashTable *attrs_ht;
- 
- 	/* Most usable variables from udev device */
- 	char *subsystem;
-@@ -261,6 +273,61 @@ static void igt_device_free(struct igt_device *dev);
- typedef char *(*devname_fn)(uint16_t, uint16_t);
- typedef enum dev_type (*devtype_fn)(uint16_t, uint16_t, const char *);
- 
-+static unsigned int hash(const char *key)
-+{
-+	unsigned int hash = 0;
-+	while (*key) {
-+		hash = (hash << 5) + *key++;
-+	}
-+	return hash % TABLE_SIZE;
-+}
-+
-+static HashTable *create_table(void)
-+{
-+	HashTable *table = malloc(sizeof(HashTable));
-+	for (int i = 0; i < TABLE_SIZE; i++) {
-+		table->table[i] = NULL;
-+	}
-+	return table;
-+}
-+
-+static void insert_table(HashTable *table, const char *key, const char *value)
-+{
-+	unsigned int index = hash(key);
-+	KeyValue *new_pair = malloc(sizeof(KeyValue));
-+	new_pair->key = strdup(key);
-+	new_pair->value = strdup(value);
-+	new_pair->next = table->table[index];
-+	table->table[index] = new_pair;
-+}
-+
-+static char *search_table(HashTable *table, const char *key)
-+{
-+	unsigned int index = hash(key);
-+	KeyValue *pair = table->table[index];
-+	while (pair) {
-+		if (strcmp(pair->key, key) == 0) {
-+			return pair->value;
-+		}
-+		pair = pair->next;
-+	}
-+	return NULL;
-+}
-+
-+static void free_table(HashTable *table) {
-+	for (int i = 0; i < TABLE_SIZE; i++) {
-+		KeyValue *pair = table->table[i];
-+		while (pair) {
-+			KeyValue *temp = pair;
-+			pair = pair->next;
-+			free(temp->key);
-+			free(temp->value);
-+			free(temp);
-+		}
-+	}
-+	free(table);
-+}
-+
- static char *devname_hex(uint16_t vendor, uint16_t device)
++#ifdef ANDROID
++static void print_backtrace(void) {}
++#else
+ static void print_backtrace(void)
  {
- 	char *s;
-@@ -472,10 +539,8 @@ static struct igt_device *igt_device_new(void)
- 	if (!dev)
- 		return NULL;
+ 	unw_cursor_t cursor;
+@@ -433,6 +436,7 @@ static void print_backtrace(void)
+ 	if (dwfl)
+ 		dwfl_end(dwfl);
+ }
++#endif // ANDROID
  
--	dev->attrs_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
--					      free, free);
--	dev->props_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
--					      free, free);
-+	dev->attrs_ht = create_table();
-+	dev->props_ht = create_table();
+ __attribute__((format(printf, 2, 3)))
+ static void internal_assert(bool cond, const char *format, ...)
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 45170e215..7add65938 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -86,6 +86,7 @@
+ #define igt_assume(e) BUILD_BUG_ON_INVALID(e)
+ #endif
  
- 	if (dev->attrs_ht && dev->props_ht)
- 		return dev;
-@@ -491,7 +556,7 @@ static void igt_device_add_prop(struct igt_device *dev,
- 	if (!key || !value)
- 		return;
++#undef __noreturn
+ #define __noreturn __attribute__((noreturn))
+ #define __maybe_unused __attribute__((unused))
  
--	g_hash_table_insert(dev->props_ht, strdup(key), strdup(value));
-+	insert_table(dev->props_ht, key, value);
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 14b6b957a..d0a7372b8 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -765,6 +765,16 @@ igt_amdgpu_driver_unload(void)
+ 	return IGT_EXIT_SUCCESS;
  }
  
- static void igt_device_add_attr(struct igt_device *dev,
-@@ -525,7 +590,7 @@ static void igt_device_add_attr(struct igt_device *dev,
- 		v++;
- 	}
- 
--	g_hash_table_insert(dev->attrs_ht, strdup(key), strdup(v));
-+	insert_table(dev->attrs_ht, key, v);
- }
- 
- /* Iterate over udev properties list and rewrite it to igt_device properties
-@@ -585,13 +650,13 @@ static void get_attrs_limited(struct udev_device *dev, struct igt_device *idev)
- 	}
- }
- 
--#define get_prop(dev, prop) ((char *) g_hash_table_lookup(dev->props_ht, prop))
--#define get_attr(dev, attr) ((char *) g_hash_table_lookup(dev->attrs_ht, attr))
-+#define get_prop(dev, prop) ((char *) search_table(dev->props_ht, prop))
-+#define get_attr(dev, attr) ((char *) search_table(dev->attrs_ht, attr))
- #define get_prop_subsystem(dev) get_prop(dev, "SUBSYSTEM")
- #define is_drm_subsystem(dev)  (strequal(get_prop_subsystem(dev), "drm"))
- #define is_pci_subsystem(dev)  (strequal(get_prop_subsystem(dev), "pci"))
- 
--static void print_ht(GHashTable *ht);
-+static void print_ht(HashTable *ht);
- static void dump_props_and_attrs(const struct igt_device *dev)
++#ifdef ANDROID
++char *strchrnul(const char *s, int c)
++{
++	while (*s && *s != (char)c) {
++		s++;
++	}
++	return (char *)s;
++}
++#endif
++
+ static void kmsg_dump(int fd)
  {
- 	printf("\n[properties]\n");
-@@ -949,7 +1014,7 @@ static struct igt_device *duplicate_device(struct igt_device *dev) {
- 	return dup;
- }
+ 	char record[4096 + 1];
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index b22084c84..264b2ae37 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -18,6 +18,7 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
  
--static gint devs_compare(const void *a, const void *b)
-+static int devs_compare(const void *a, const void *b)
- {
- 	struct igt_device *dev1, *dev2;
- 	int ret;
-@@ -1088,8 +1153,8 @@ static void igt_device_free(struct igt_device *dev)
- 	free(dev->device);
- 	free(dev->driver);
- 	free(dev->pci_slot_name);
--	g_hash_table_destroy(dev->attrs_ht);
--	g_hash_table_destroy(dev->props_ht);
-+	free_table(dev->attrs_ht);
-+	free_table(dev->props_ht);
- }
++#undef PAGE_SIZE
+ #define PAGE_SIZE 0x1000
  
- void igt_devices_free(void)
-@@ -1258,7 +1323,7 @@ igt_devs_print_user(struct igt_list_head *view,
- 		if (!dev->drm_card || dev->drm_render)
- 			continue;
+ static struct param {
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 68d27089b..54e71e559 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -290,7 +290,7 @@ get_pmu_config(int dirfd, const char *name, const char *counter)
+ 	if (ret <= 0)
+ 		return -1;
  
--		drm_name = rindex(dev->drm_card, '/');
-+		drm_name = strrchr(dev->drm_card, '/');
- 		if (!drm_name || !*++drm_name)
- 			continue;
+-	p = index(buf, '0');
++	p = strchr(buf, '0');
+ 	if (!p)
+ 		return -1;
  
-@@ -1306,7 +1371,7 @@ igt_devs_print_user(struct igt_list_head *view,
- 			if (strcmp(dev2->parent->syspath, dev->parent->syspath))
- 				continue;
- 
--			drm_name = rindex(dev2->drm_render, '/');
-+			drm_name = strrchr(dev2->drm_render, '/');
- 			if (!drm_name || !*++drm_name)
- 				continue;
- 
-@@ -1328,19 +1393,16 @@ static inline void _print_key_value(const char* k, const char *v)
- 	printf("%-32s: %s\n", k, v);
- }
- 
--static void print_ht(GHashTable *ht)
-+static void print_ht(HashTable *table)
- {
--	GList *keys = g_hash_table_get_keys(ht);
--
--	keys = g_list_sort(keys, (GCompareFunc) strcmp);
--	while (keys) {
--		char *k = (char *) keys->data;
--		char *v = g_hash_table_lookup(ht, k);
--
--		_print_key_value(k, v);
--		keys = g_list_next(keys);
-+	for (int i = 0; i < TABLE_SIZE; i++) {
-+		KeyValue *pair = table->table[i];
-+		printf("Index %d:\n", i);
-+		while (pair) {
-+			printf("  Key: %s, Value: %s\n", pair->key, pair->value);
-+			pair = pair->next;
-+		}
- 	}
--	g_list_free(keys);
- }
- 
- static void
 -- 
 2.49.0
 
