@@ -4,25 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84543C369DC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 13:37:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7041C369DC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 14:31:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3204410E493;
-	Tue, 29 Apr 2025 13:37:45 +0000 (UTC)
-Received: from amd-X570-AORUS-ELITE.amd.com (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1142A10E493
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 13:37:44 +0000 (UTC)
-Received: by amd-X570-AORUS-ELITE.amd.com (Postfix, from userid 1000)
- id C20B436A0008; Tue, 29 Apr 2025 19:07:38 +0530 (IST)
-From: Sunil Khatri <sunil.khatri@amd.com>
-To: igt-dev@lists.freedesktop.org,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Sunil Khatri <sunil.khatri@amd.com>
-Subject: [PATCH] lib/amdgpu: make amdgpu userqueue file name at par with
- kernel names
-Date: Tue, 29 Apr 2025 19:07:37 +0530
-Message-ID: <20250429133737.244773-1-sunil.khatri@amd.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B65610E4AB;
+	Tue, 29 Apr 2025 14:31:02 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f9mFAewr";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F11DB10E4AB
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 14:31:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745937061; x=1777473061;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=VpIiy0CBZIbBvFoUVHEu9i2H5kL78EADvksJFFuwZJw=;
+ b=f9mFAewruerh1//wsJg1YEMUPTchLPC4pJEv5b353Onpvgre5Vf5hbTN
+ ZT5d9nyQ6wAx7AXR4mdGSnYv1Zzuw1uRUzDHNKIxIxUJfB6sm131ypXQc
+ gBHdZEYf0p8P5pMLtzY687K2uPshRG3rE2YfYIWdFBPt/HLyVmRXGg9dI
+ tp8zW06tVMEIw8aR7IPyMPKdw3hp/6G6h2YYw1rKF+TloZ26tm9GJFYYV
+ ZJjwCFIlHKEXp3k7XlLIcnmsOuVzpPrWHwl5/ljNuS7z2kRGs9s8q+RWB
+ gsp8hdwkjSmqcoAqET6l3awg783Brv58bnZ+iI/ayQYRcPywkmyACSzwv g==;
+X-CSE-ConnectionGUID: CJ8vFS4xQQ28MdjDAfDOTw==
+X-CSE-MsgGUID: x+ocDiDbQlSJGXg9Cqtqrw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="58927477"
+X-IronPort-AV: E=Sophos;i="6.15,249,1739865600"; d="scan'208";a="58927477"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 07:31:00 -0700
+X-CSE-ConnectionGUID: 4mCJ9FTXT1G73TkShpc6nQ==
+X-CSE-MsgGUID: zA1VMMHzQMqLjxkp1KT1UA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,249,1739865600"; d="scan'208";a="134790534"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.14])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 07:30:58 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_exec_system_allocator: Fix 32-bit
+ compilation
+Date: Tue, 29 Apr 2025 16:30:51 +0200
+Message-ID: <20250429143051.36969-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -40,120 +70,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Update the amdgpu_user_queue.c/.h to amdgpu_userq.c/.h
+There is one more place which needs fixing of Xe test
+compilation for 32-bit platforms, reported errors are:
 
-Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
+../tests/intel/xe_exec_system_allocator.c:382:41: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
+  aligned_alloc_type.ptr = (void *)ALIGN((uint64_t)aligned_alloc_type.__ptr, alignment);
+                                         ^
+../tests/intel/xe_exec_system_allocator.c:382:27: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+  aligned_alloc_type.ptr = (void *)ALIGN((uint64_t)aligned_alloc_type.__ptr, alignment);
+                           ^
+cc1: some warnings being treated as errors
+
+Fixes: 9eda33fedff7 ("tests/xe: Add system_allocator test")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/amdgpu/amd_command_submission.c          | 2 +-
- lib/amdgpu/amd_compute.c                     | 2 +-
- lib/amdgpu/amd_memory.c                      | 2 +-
- lib/amdgpu/{amd_user_queue.c => amd_userq.c} | 2 +-
- lib/amdgpu/{amd_user_queue.h => amd_userq.h} | 0
- lib/meson.build                              | 2 +-
- tests/amdgpu/amd_basic.c                     | 2 +-
- tests/amdgpu/amd_cs_nop.c                    | 2 +-
- 8 files changed, 7 insertions(+), 7 deletions(-)
- rename lib/amdgpu/{amd_user_queue.c => amd_userq.c} (99%)
- rename lib/amdgpu/{amd_user_queue.h => amd_userq.h} (100%)
+ tests/intel/xe_exec_system_allocator.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-index 7550fa8bc..80d03a498 100644
---- a/lib/amdgpu/amd_command_submission.c
-+++ b/lib/amdgpu/amd_command_submission.c
-@@ -10,7 +10,7 @@
- #include "lib/amdgpu/amd_sdma.h"
- #include "lib/amdgpu/amd_PM4.h"
- #include "lib/amdgpu/amd_command_submission.h"
--#include "lib/amdgpu/amd_user_queue.h"
-+#include "lib/amdgpu/amd_userq.h"
- #include "ioctl_wrappers.h"
+diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+index e1121a862..30b99f3ed 100644
+--- a/tests/intel/xe_exec_system_allocator.c
++++ b/tests/intel/xe_exec_system_allocator.c
+@@ -374,12 +374,15 @@ struct aligned_alloc_type {
+ static struct aligned_alloc_type __aligned_alloc(size_t alignment, size_t size)
+ {
+ 	struct aligned_alloc_type aligned_alloc_type;
++	uint64_t addr;
  
+ 	aligned_alloc_type.__ptr = mmap(NULL, alignment + size, PROT_NONE, MAP_PRIVATE |
+ 					MAP_ANONYMOUS, -1, 0);
+ 	igt_assert(aligned_alloc_type.__ptr != MAP_FAILED);
  
-diff --git a/lib/amdgpu/amd_compute.c b/lib/amdgpu/amd_compute.c
-index 5d7040d80..95bfa53aa 100644
---- a/lib/amdgpu/amd_compute.c
-+++ b/lib/amdgpu/amd_compute.c
-@@ -25,7 +25,7 @@
- #include "amd_PM4.h"
- #include "amd_memory.h"
- #include "amd_compute.h"
--#include "amd_user_queue.h"
-+#include "amd_userq.h"
+-	aligned_alloc_type.ptr = (void *)ALIGN((uint64_t)aligned_alloc_type.__ptr, alignment);
++	addr = to_user_pointer(aligned_alloc_type.__ptr);
++	addr = ALIGN(addr, (uint64_t)alignment);
++	aligned_alloc_type.ptr = from_user_pointer(addr);
+ 	aligned_alloc_type.size = size;
+ 	aligned_alloc_type.__size = size + alignment;
  
- /**
-  *
-diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
-index d1ff57085..882c5c18f 100644
---- a/lib/amdgpu/amd_memory.c
-+++ b/lib/amdgpu/amd_memory.c
-@@ -25,7 +25,7 @@
- 
- #include "amd_memory.h"
- #include "amd_PM4.h"
--#include "amd_user_queue.h"
-+#include "amd_userq.h"
- 
- /**
-  *
-diff --git a/lib/amdgpu/amd_user_queue.c b/lib/amdgpu/amd_userq.c
-similarity index 99%
-rename from lib/amdgpu/amd_user_queue.c
-rename to lib/amdgpu/amd_userq.c
-index 444f9c022..50d058609 100644
---- a/lib/amdgpu/amd_user_queue.c
-+++ b/lib/amdgpu/amd_userq.c
-@@ -3,7 +3,7 @@
-  * Copyright 2025 Advanced Micro Devices, Inc.
-  */
- 
--#include "amd_user_queue.h"
-+#include "amd_userq.h"
- #include "amd_memory.h"
- #include "amd_PM4.h"
- #include "ioctl_wrappers.h"
-diff --git a/lib/amdgpu/amd_user_queue.h b/lib/amdgpu/amd_userq.h
-similarity index 100%
-rename from lib/amdgpu/amd_user_queue.h
-rename to lib/amdgpu/amd_userq.h
-diff --git a/lib/meson.build b/lib/meson.build
-index 8517cd540..b58976a43 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -166,7 +166,7 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_cp_dma.c',
- 		'amdgpu/amd_mem_leak.c',
- 		'amdgpu/amd_mmd_shared.c',
--		'amdgpu/amd_user_queue.c'
-+		'amdgpu/amd_userq.c'
- 	]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
- 		lib_sources +=[ 'amdgpu/amd_dispatch.c',]
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index e0029f582..97a08a9a3 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -13,7 +13,7 @@
- #include "lib/amdgpu/amd_gfx.h"
- #include "lib/amdgpu/amd_shaders.h"
- #include "lib/amdgpu/amd_dispatch.h"
--#include "lib/amdgpu/amd_user_queue.h"
-+#include "lib/amdgpu/amd_userq.h"
- 
- #define BUFFER_SIZE (8 * 1024)
- 
-diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
-index 160c4f026..268bc9201 100644
---- a/tests/amdgpu/amd_cs_nop.c
-+++ b/tests/amdgpu/amd_cs_nop.c
-@@ -12,7 +12,7 @@
- #include "lib/amdgpu/amd_PM4.h"
- #include "lib/amdgpu/amd_ip_blocks.h"
- #include "lib/amdgpu/amd_memory.h"
--#include "lib/amdgpu/amd_user_queue.h"
-+#include "lib/amdgpu/amd_userq.h"
- 
- static void amdgpu_cs_sync(amdgpu_context_handle context,
- 			   unsigned int ip_type,
 -- 
-2.43.0
+2.49.0
 
