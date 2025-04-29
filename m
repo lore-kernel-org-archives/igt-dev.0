@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A552C369DC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 23:27:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF004C369DC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 23:49:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B043D10E466;
-	Tue, 29 Apr 2025 23:27:58 +0000 (UTC)
-Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BD0D10E466;
- Tue, 29 Apr 2025 23:27:57 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4823A10E1E0;
+	Tue, 29 Apr 2025 23:49:38 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SuCwOMVe";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F97210E1E0
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 23:49:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745970576; x=1777506576;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=R7UESXvhG/hvIQVhgSWctrQdS7d7mtCND1w/p288bKk=;
+ b=SuCwOMVekiVdJzs8y6xVQ8uDTwNtgYzM9G7ieUbRzN845yA3aVOs+78h
+ g/0TzXf3vRCU/VrjrbJpsDuc00EYZw4svI0+e31bl2thT+ToYnfk9JDWa
+ +G3dglacUX6BHrAVZwarWMqibR8+HB/a9OEBj+AvmehSzlX+RYErRg5fL
+ nYOEBWyAhW6DsP1kdjHp4PUxRsSZx3Ch5CCloz2S0jT07g0o+UbFB9Uv2
+ MWbKxG39evtAcvz7ocIVjTSOfsgzJScBGX6ccWyB6eIiujzpqFr2dbfhx
+ 2GhsdnHyn5DZL3nuPWJ0WupnFO1Qma/mKNSLsTWVK2vH6WAiLJeMD4oQY Q==;
+X-CSE-ConnectionGUID: FLIGNCHUS7eMJIVCdZg89w==
+X-CSE-MsgGUID: WOBtdlrOR4i9BBNzOJJx0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="72997938"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="72997938"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 16:49:34 -0700
+X-CSE-ConnectionGUID: sFS9r5qzTW6mMRVlIF3ECA==
+X-CSE-MsgGUID: cJI4f3pdTNqBie5JMimCcg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="133853258"
+Received: from valcore-skull-1.fm.intel.com ([10.1.39.17])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 16:49:35 -0700
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+ Alan Previn <alan.previn.teres.alexis@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2] tests/intel/xe_pxp: Terminate PXP on exit
+Date: Tue, 29 Apr 2025 16:49:24 -0700
+Message-ID: <20250429234924.2049502-1-daniele.ceraolospurio@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_benchmarks=3A_Measure_BLT?=
- =?utf-8?q?_performance_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pravalika Gurram" <pravalika.gurram@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Apr 2025 23:27:57 -0000
-Message-ID: <174596927750.26095.16195779191032842585@c664b1dc75d1>
-X-Patchwork-Hint: ignore
-References: <20250428102530.887946-1-pravalika.gurram@intel.com>
-In-Reply-To: <20250428102530.887946-1-pravalika.gurram@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,27 +64,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Most of out tests expect to start their execution from a clean GPU state.
+However, the PXP tests currently leave a PXP session running when they
+complete, so follow up tests will not have a clean starting state; given
+that PXP can impact the timing of some operations (e.g. suspend/resume),
+this could pollute the results of those tests. Therefore, let's make
+sure that PXP is de-activated before we exit.
 
-Series: benchmarks: Measure BLT performance (rev3)
-URL   : https://patchwork.freedesktop.org/series/148191/
-State : failure
+While at it, update the fd cleanup to use drm_close_driver() instead
+of close().
 
-== Summary ==
+v2: only do the termination if PXP is supported.
 
-Applying: benchmarks: Measure BLT performance
-Using index info to reconstruct a base tree...
-M	benchmarks/meson.build
-Falling back to patching base and 3-way merge...
-Auto-merging benchmarks/meson.build
-CONFLICT (content): Merge conflict in benchmarks/meson.build
-Patch failed at 0001 benchmarks: Measure BLT performance
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com> #v1
+---
+ tests/intel/xe_pxp.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
+diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
+index 458d32322..9eddc03fc 100644
+--- a/tests/intel/xe_pxp.c
++++ b/tests/intel/xe_pxp.c
+@@ -1140,9 +1140,23 @@ static void termination_tests(int fd, bool pxp_supported, drmModeResPtr res,
+ 		}
+ }
+ 
++int xe_fd = -1;
++
++static void exit_handler(int sig)
++{
++	/*
++	 * PXP can interact with some operations (e.g. suspend/resume), which
++	 * could impact the behavior of other tests if they unknowingly start
++	 * when PXP is already active. Therefore, let's make sure PXP is
++	 * de-activated before we exit.
++	 */
++	trigger_termination(xe_fd, PXP_TERMINATION_IRQ);
++	drm_close_driver(xe_fd);
++	usleep(50 * 1000); /* give time for the termination to be processed */
++}
++
+ igt_main
+ {
+-	int xe_fd = -1;
+ 	bool pxp_supported = true;
+ 	drmModeResPtr res;
+ 
+@@ -1151,6 +1165,8 @@ igt_main
+ 		igt_require(xe_has_engine_class(xe_fd, DRM_XE_ENGINE_CLASS_RENDER));
+ 		pxp_supported = is_pxp_hw_supported(xe_fd);
+ 		res = drmModeGetResources(xe_fd);
++		if (pxp_supported)
++			igt_install_exit_handler(exit_handler);
+ 	}
+ 
+ 	igt_subtest_group {
+@@ -1215,6 +1231,7 @@ igt_main
+ 
+ 	igt_fixture {
+ 		drmModeFreeResources(res);
+-		close(xe_fd);
++		if (!pxp_supported)
++			drm_close_driver(xe_fd);
+ 	}
+ }
+-- 
+2.43.0
 
