@@ -4,55 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6BFEC3ABA5
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 19:59:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25A0CC3ABA5
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 20:13:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5BA8510E1B2;
-	Tue, 29 Apr 2025 19:59:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 28D6F10E096;
+	Tue, 29 Apr 2025 20:13:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RGuSd/Un";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A2SevO0M";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2430310E464
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 19:59:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6F4110E096
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 20:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745956747; x=1777492747;
- h=from:to:cc:subject:date:message-id:in-reply-to:
+ t=1745957579; x=1777493579;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MJBuxRnPBvv4Ju9ZuXTyB1NB9djkVfAoAoQjSHIqmeM=;
- b=RGuSd/Un4Q47okPOF4DB+p1IoQz3vqlKWYCmt7UVVC8aMi5oLYdJfEhZ
- 4Yv53BnvoXoeFMEaSxZPzTTQ/jZavj3bjxny/lEjWEhAvLRrIhOAE6PLI
- iQGXx3HOXD9tY0Wlo78bxAbQew3YuYyHBReiYVLXZ2JAVBq8DWVNwFrQF
- DAwMh4Uiv9hI9j1/irIETsqJPtmQ4ZQn76H2+DifBOw5uHfRuNvxcQ3fN
- BCv/flw8lESeRl6prGLVLaFXwuD5X+YM2MIm1QbsA5ijAahRSl7s1jifT
- BD7SmgTa/b3n683oNCjFYXyAA7E3uApWuHjGGRGU8XR9S3K8OKIvDa38a A==;
-X-CSE-ConnectionGUID: 5ZDBFtoZTGqkIRQ8AHEf8Q==
-X-CSE-MsgGUID: QrNpXDz8QX+VJuvqXljtTA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="46843150"
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="46843150"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 12:59:06 -0700
-X-CSE-ConnectionGUID: d60g6hnRRw+YjXPL74rsCg==
-X-CSE-MsgGUID: oDKFLH8WRVyqQv3FbVPrrQ==
+ bh=YUvY9v2gSMh5IYhRovfB8/tDqqR/+rABTUGaaE8H12U=;
+ b=A2SevO0M1C6bB0MtfCi5pSCkSyAsCwbdczFPivKkZ0T8smBpaX0sR31x
+ 2jV+yMK/0X5+dRtBxwP6Cbkwp/ghvKZW9pNrH+RMtADkHP0enX+teX41Z
+ iNs/Jh1IgzZCFK1dtV48CSbCwy1wOxPiUDb6HxDDgIV9ise16FftafYJH
+ FFxqhLbEzDsLaNWB15A1sJwpknb6V+ePU6AUz7iIHGBS2nkSJOrCK9PGp
+ JHZS/kJ7/tnmr3YS9yVZTvPCXApmhz30JIB+07xU27tQU9s1ogCUbodsD
+ pyuGQSwwEtAt/8ywAWBUvovrjMJbboXqqO7R/k6/FHHhmgnJEM27tXznd w==;
+X-CSE-ConnectionGUID: QwXW/evlTyK1us3Z+yqpIQ==
+X-CSE-MsgGUID: JxtZPfCwROSv3Fckrx6bCA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="47690090"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="47690090"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 13:12:59 -0700
+X-CSE-ConnectionGUID: d1yAWkmURxmq1lQdiZsmPw==
+X-CSE-MsgGUID: M8niqbqwQDmRZyDCU12NIQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="133831346"
-Received: from intel-s2600stb.iind.intel.com (HELO
- 08ca91f16b80.iind.intel.com) ([10.66.234.77])
- by orviesa010.jf.intel.com with ESMTP; 29 Apr 2025 12:59:05 -0700
-From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevaka.badrappan@intel.com, sapna1.singh@intel.com, markyacoub@google.com,
- seanpaul@google.com, carlos.santa@intel.com
-Subject: [PATCH 5/5] igt-gpu-tools: Changes to compile for Android
-Date: Tue, 29 Apr 2025 19:57:45 +0000
-Message-ID: <20250429195745.40982-6-jeevaka.badrappan@intel.com>
-X-Mailer: git-send-email 2.49.0
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="134421540"
+Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
+ ([10.165.21.142])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 13:12:58 -0700
+Date: Tue, 29 Apr 2025 13:12:57 -0700
+Message-ID: <85y0virak6.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Cc: igt-dev@lists.freedesktop.org, sapna1.singh@intel.com,
+ markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com
+Subject: Re: [RFC] [PATCH 0/5] Extend IGT to support Android
 In-Reply-To: <20250429195745.40982-1-jeevaka.badrappan@intel.com>
 References: <20250429195745.40982-1-jeevaka.badrappan@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/29.4 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-7
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,101 +72,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Changes done to compile for android:
--  __noreturn and PAGE_SIZE are already defined in Android,
-undef and then define it.
-- define strchrnul for Android
-- Replace index with strchr
+On Tue, 29 Apr 2025 12:57:40 -0700, Jeevaka Prabu Badrappan wrote:
+>
+> The primary objective of this proposal is to extend the functionality of
+> IGT to Android environments.
+>
+> Enabling IGT on Android will allow developers to perform comprehensive
+> testing of graphics drivers, ensuring robustness and reliability across
+> different platforms.
+>
+> By providing stub implementations for libraries that are not natively
+> supported on Android, we will bridge the gap between Android and Linux
+> environments, promoting code reuse and reducing development time.
+>
+> Changes done:
+> - Create stub implementations of GLib, libunwind, libprocps, and
+> other necessary libraries to satisfy IGT dependencies on Android.
+> - Replace glib hash table with generic hash table implementation
+>
+> Note:
+> - Incase of linux systems, system libraries will be used whereas for
+> Android stubs will be used with reduced test coverage.
+> - Support will be provided to maintain Android support.
 
-Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
----
- lib/igt_core.c          |  4 ++++
- lib/igt_core.h          |  1 +
- lib/igt_kmod.c          | 10 ++++++++++
- tests/intel/xe_create.c |  1 +
- tools/intel_gpu_top.c   |  2 +-
- 5 files changed, 17 insertions(+), 1 deletion(-)
+I applied this series and immediately see these compile errors on regular
+Linux. Please fix these and resend and then we can start looking at
+this. The series should compile without errors or warnings.
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index e1061a2ed..519600dfa 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -373,6 +373,9 @@ static bool stderr_needs_sentinel = false;
- 
- static int _igt_dynamic_tests_executed = -1;
- 
-+#ifdef ANDROID
-+static void print_backtrace(void) {}
-+#else
- static void print_backtrace(void)
- {
- 	unw_cursor_t cursor;
-@@ -433,6 +436,7 @@ static void print_backtrace(void)
- 	if (dwfl)
- 		dwfl_end(dwfl);
- }
-+#endif // ANDROID
- 
- __attribute__((format(printf, 2, 3)))
- static void internal_assert(bool cond, const char *format, ...)
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index 45170e215..7add65938 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -86,6 +86,7 @@
- #define igt_assume(e) BUILD_BUG_ON_INVALID(e)
- #endif
- 
-+#undef __noreturn
- #define __noreturn __attribute__((noreturn))
- #define __maybe_unused __attribute__((unused))
- 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 14b6b957a..d0a7372b8 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -765,6 +765,16 @@ igt_amdgpu_driver_unload(void)
- 	return IGT_EXIT_SUCCESS;
- }
- 
-+#ifdef ANDROID
-+char *strchrnul(const char *s, int c)
-+{
-+	while (*s && *s != (char)c) {
-+		s++;
-+	}
-+	return (char *)s;
-+}
-+#endif
-+
- static void kmsg_dump(int fd)
- {
- 	char record[4096 + 1];
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index b22084c84..264b2ae37 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -18,6 +18,7 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#undef PAGE_SIZE
- #define PAGE_SIZE 0x1000
- 
- static struct param {
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 68d27089b..54e71e559 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -290,7 +290,7 @@ get_pmu_config(int dirfd, const char *name, const char *counter)
- 	if (ret <= 0)
- 		return -1;
- 
--	p = index(buf, '0');
-+	p = strchr(buf, '0');
- 	if (!p)
- 		return -1;
- 
--- 
-2.49.0
+$ ninja -C build
+ninja: Entering directory `build'
+[62/1691] Compiling C object lib/libigt-igt_aux_c.a.p/igt_aux.c.o
+FAILED: lib/libigt-igt_aux_c.a.p/igt_aux.c.o
+ccache cc -Ilib/libigt-igt_aux_c.a.p -Ilib -I../lib -I../include -I../inclu=
+de/drm-uapi -I../include/drm-uapi-experimental -I../include/linux-uapi -I..=
+/lib/stubs/syscalls -I. -I.. -I/usr/include/cairo -I/usr/include/libxml2 -I=
+/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/harfbuzz -I/u=
+sr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/sysprof-6 =
+-I/usr/include/pixman-1 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau=
+ -I/usr/include/valgrind -fdiagnostics-color=3Dalways -D_FILE_OFFSET_BITS=
+=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -includ=
+e config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-st=
+atement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-decl=
+arations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes=
+ -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls =
+-Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-m=
+aybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-=
+address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-par=
+ameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=
+=3Ddangling-pointer -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-co=
+nversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-bra=
+ces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -=
+Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-bu=
+iltin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread -=
+DWITH_GZFILEOP '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SR=
+CDIR=3D"/home/adixit/git/igt-gpu-tools/tests"' '-DIGT_LOG_DOMAIN=3D"igt_aux=
+"' -MD -MQ lib/libigt-igt_aux_c.a.p/igt_aux.c.o -MF lib/libigt-igt_aux_c.a.=
+p/igt_aux.c.o.d -o lib/libigt-igt_aux_c.a.p/igt_aux.c.o -c ../lib/igt_aux.c
+../lib/igt_aux.c:59:10: fatal error: pids.h: No such file or directory
+   59 | #include "pids.h"
+      |          ^~~~~~~~
+compilation terminated.
+[67/1691] Generating lib/iga64_generated_codes.c with a custom command
+iga64 assemblies not changed, reusing pre-compiled file ../lib/iga64_genera=
+ted_codes.c.
+[125/1691] Compiling C object lib/libigt-igt_device_scan_c.a.p/igt_device_s=
+can.c.o
+../lib/igt_device_scan.c:276:14: warning: no previous prototype for =A1hash=
+=A2 [-Wmissing-prototypes]
+  276 | unsigned int hash(const char *key)
+      |              ^~~~
+../lib/igt_device_scan.c:285:12: warning: function declaration isn=A2t a pr=
+ototype [-Wstrict-prototypes]
+  285 | HashTable *create_table()
+      |            ^~~~~~~~~~~~
+../lib/igt_device_scan.c: In function =A1create_table=A2:
+../lib/igt_device_scan.c:285:12: warning: old-style function definition [-W=
+old-style-definition]
+../lib/igt_device_scan.c: At top level:
+../lib/igt_device_scan.c:294:6: warning: no previous prototype for =A1inser=
+t_table=A2 [-Wmissing-prototypes]
+  294 | void insert_table(HashTable *table, const char *key, const char *va=
+lue)
+      |      ^~~~~~~~~~~~
+../lib/igt_device_scan.c:304:7: warning: no previous prototype for =A1searc=
+h_table=A2 [-Wmissing-prototypes]
+  304 | char *search_table(HashTable *table, const char *key)
+      |       ^~~~~~~~~~~~
+../lib/igt_device_scan.c:317:6: warning: no previous prototype for =A1free_=
+table=A2 [-Wmissing-prototypes]
+  317 | void free_table(HashTable *table) {
+      |      ^~~~~~~~~~
+[135/1691] Compiling C object lib/libigt-i915_intel_decode_c.a.p/i915_intel=
+_decode.c.o
+ninja: build stopped: subcommand failed.
 
+Thanks.
+--
+Ashutosh
