@@ -4,59 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15DB7C369DC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 11:03:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EC58C369DC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 13:35:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB3A010E41B;
-	Tue, 29 Apr 2025 11:03:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EC0C410E493;
+	Tue, 29 Apr 2025 13:35:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cglDR9rY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c0AUxfSn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BAD810E41B
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 11:03:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DBF8910E493
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 13:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745924600; x=1777460600;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=EZuBSl7VtGoV9ebYMk2dWXDyIGu7P5lLnDy3dYgkdKw=;
- b=cglDR9rYOcp24hBFVbPyUD2lCk01ilYOMDQKW8t0HIdHZJjQF/9qTQgx
- LmQe2+zneGykHkBJuCNfXDGmPr7MGwgeT6qe9WdFWbd99p4LR+JZS8xfC
- APzyZ5q6RpjiBR4AbnYTur5ddNCKZElQ+pVFp/zYNQF8a4JJoLDIE8TRB
- /h9QHnVLfW6kd29I647wiN+EQk2mKUSY9YpgzmxW2FWFPfkp0euiBeTaE
- h/8Lbq9OX+wbJv6djXnyH3qUvZueHS03kXbAoohtRtE+CwvcqqGYeC0ux
- VAqv7KjGqSBjtlrDklqTfb4gtECent5bpt8xGJbbCtXenWWROqeGNp28X g==;
-X-CSE-ConnectionGUID: p+7sDsO2QoaJZj/8BWlLvg==
-X-CSE-MsgGUID: N3+65wWFRRSS6oI1IAEh3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58902088"
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="58902088"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 04:03:16 -0700
-X-CSE-ConnectionGUID: AXMXjAecQzmoobwE8m+V4Q==
-X-CSE-MsgGUID: O2Sl7BM2TU+Q84FYoayi3Q==
+ t=1745933721; x=1777469721;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=nkSMivl0fEOxORv2KOeNu/GFw48aKHTqYYJ78p/4lmI=;
+ b=c0AUxfSnvgUu9FHHMaRDLTTVdzKn+5I3KNObEWxtEDTbnq/HHyuz7TPM
+ DCGX297YeBpImDRUDoR/qic4wVYgpaGsCxdvHGnI4moWr04bHZvcGGp2E
+ LNRR+w0HMeYsOFG4duddWW2wzgUQWTFuf1QvFx40/ihv2Lht3mUAo2GYu
+ HYnFakH6lMNVT2RW72efK/MJ2Rk3SUyqfV2+LbFSgFVdnpy9TMFTE2XTt
+ cRBgk+soFI+hgad3VjsWt4BU+DMG1PXTipC3KZy0spyDFhNMxU3foWNpP
+ TwySCFBR7TqP+zYJTNDhOIIj+5zuEjKw8J7u1ZQx2VIR3fVryYZ9B4ebe Q==;
+X-CSE-ConnectionGUID: 1Y+AhOQuTF2yCSqT9rmBZQ==
+X-CSE-MsgGUID: 34XJdFS+Q2+TnZcQfb4weg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="47566635"
+X-IronPort-AV: E=Sophos;i="6.15,249,1739865600"; d="scan'208";a="47566635"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 06:35:21 -0700
+X-CSE-ConnectionGUID: 0tPbr5PbQhC/kpyp8OqHEg==
+X-CSE-MsgGUID: tzA4JbggRaWStdzxMBFC+g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="137832470"
-Received: from mwiniars-desk2.ger.corp.intel.com (HELO [10.245.246.4])
- ([10.245.246.4])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 04:03:14 -0700
-Message-ID: <ec84a0b7-bdd3-4c5e-a51b-ca11c23a5452@intel.com>
-Date: Tue, 29 Apr 2025 13:03:09 +0200
+X-IronPort-AV: E=Sophos;i="6.15,249,1739865600"; d="scan'208";a="133777156"
+Received: from labhost1.iind.intel.com ([10.190.230.69])
+ by fmviesa007.fm.intel.com with ESMTP; 29 Apr 2025 06:35:18 -0700
+From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ John Harrison <John.C.Harrison@Intel.com>,
+ Aditya Chauhan <aditya.chauhan@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_fault_injection: Suppress Guc CT dumps
+ during fault injection
+Date: Tue, 29 Apr 2025 19:21:32 +0530
+Message-ID: <20250429135132.6493-1-satyanarayana.k.v.p@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v1 1/1] /tests/intel/xe_eudebug_online: Remove
- create_metadata_trigger on debugger reattachment.
-To: Jan Sokolowski <jan.sokolowski@intel.com>, igt-dev@lists.freedesktop.org
-References: <20250423113138.88260-1-jan.sokolowski@intel.com>
-Content-Language: en-US
-From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20250423113138.88260-1-jan.sokolowski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,53 +69,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jan,
+When injecting fault to xe_guc_ct_send_recv() & xe_guc_mmio_send_recv()
+functions, the CI test systems are going out of space and crashing. To
+avoid this issue, a new helper function is created and when fault is injected
+into this xe_should_fail_ct_dead_capture() helper function, ct dead capture is
+avoided which suppresses ct dumps in the log.
 
-On 23.04.2025 13:31, Jan Sokolowski wrote:
-> On debugger detach-and-reattach, discovery worker will replay events
-> that have occurred, which leads to a metadata event being sent and
-> create_metadata_trigger being rerun, which would then lead us
-> to try to open a removed metadata.
+Inject fault into xe_should_fail_ct_dead_capture() function along with
+xe_guc_ct_send_recv() & xe_guc_mmio_send_recv() to suppress GUC ct dumps.
 
- From what I see, the client deletes metadata only after the debugger 
-reattaches and performs discovery (there is an assumption that the 
-discovery will take 2 seconds, maybe that is too short?). In other 
-words, the metadata access should succeed after the metadata resource 
-got rediscovered.
+Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Suggested-by: John Harrison <John.C.Harrison@Intel.com>
+Tested-by: Aditya Chauhan <aditya.chauhan@intel.com>
+---
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
 
-It may well be that I am overlooking something, in that case don't 
-hesitate to prove me wrong.
+Test-with: 20250429134649.4747-1-satyanarayana.k.v.p@intel.com
+---
+ tests/intel/xe_fault_injection.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-Regards,
-Christoph
-
-> 
-> On debugger reattach trigger, remove create metadata trigger
-> from list of triggers.
-> 
-> Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-> ---
->   tests/intel/xe_eudebug_online.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-> index 1f72e3e44..03b85e1ac 100644
-> --- a/tests/intel/xe_eudebug_online.c
-> +++ b/tests/intel/xe_eudebug_online.c
-> @@ -2079,10 +2079,13 @@ static void eu_attention_debugger_detach_trigger(struct xe_eudebug_debugger *d,
->   	d->target_pid = c_pid;
->   
->   	/* Discovery worker will replay events that have occurred, which leads to
-> -	 * a vm event being sent and vm_open_trigger being re-run, which would lead
-> -	 * to us trying to open a removed vm. Thus, remove this trigger from list.
-> +	 * some events being sent and vm_open_trigger being re-run, which would lead
-> +	 * to us trying to open a removed vm. Similarly with metadata creation.
-> +	 * Thus, remove these triggers from list.
->   	 */
->   	xe_eudebug_debugger_remove_trigger(d, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-> +	xe_eudebug_debugger_remove_trigger(d, DRM_XE_EUDEBUG_EVENT_METADATA,
-> +					   create_metadata_trigger);
->   
->   	/* Let the discovery worker discover resources */
->   	sleep(2);
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 602e4cb39..82d730a7c 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -121,6 +121,22 @@ static void injection_list_add(const char function_name[])
+ 	close(dir);
+ }
+ 
++static void injection_list_append(const char function_name[])
++{
++	int dir, fd, ret;
++
++	dir = fail_function_open();
++	igt_assert_lte(0, dir);
++
++	fd = openat(dir, "inject", O_WRONLY | O_APPEND);
++	ret = write(fd, function_name, strlen(function_name));
++
++	close(fd);
++	close(dir);
++
++	igt_assert_lte(0, ret);
++}
++
+ static void injection_list_remove(const char function_name[])
+ {
+ 	int dir;
+@@ -234,6 +250,10 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+ 
+ 	ignore_faults_in_dmesg(function_name);
+ 	injection_list_add(function_name);
++	if (!strcmp(function_name, "xe_guc_ct_send_recv") ||
++	    !strcmp(function_name, "xe_guc_mmio_send_recv"))
++		injection_list_append("xe_should_fail_ct_dead_capture");
++
+ 	set_retval(function_name, INJECT_ERRNO);
+ 
+ 	igt_kmod_bind("xe", pci_slot);
+@@ -271,6 +291,8 @@ static void probe_fail_guc(int fd, char pci_slot[], const char function_name[],
+ 	for (int i = iter_start; i < iter_end; i++) {
+ 		fault_params->space = i;
+ 		setup_injection_fault(fault_params);
++		/* Clear the injection list  */
++		injection_list_clear();
+ 		inject_fault_probe(fd, pci_slot, function_name);
+ 		igt_kmod_unbind("xe", pci_slot);
+ 	}
+-- 
+2.43.0
 
