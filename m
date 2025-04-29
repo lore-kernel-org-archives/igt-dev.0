@@ -4,27 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A335C369DC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 10:37:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0633FC3ABAC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 10:37:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0693A10E436;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA65A10E43B;
 	Tue, 29 Apr 2025 10:37:03 +0000 (UTC)
 Received: from amd-X570-AORUS-ELITE.amd.com (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D9B910E43B
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 10:37:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB94910E435
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 10:37:01 +0000 (UTC)
 Received: by amd-X570-AORUS-ELITE.amd.com (Postfix, from userid 1000)
- id C5D8F36A0008; Tue, 29 Apr 2025 16:06:59 +0530 (IST)
+ id D349336A000D; Tue, 29 Apr 2025 16:06:59 +0530 (IST)
 From: Sunil Khatri <sunil.khatri@amd.com>
 To: igt-dev@lists.freedesktop.org,
 	Vitaly Prosyak <vitaly.prosyak@amd.com>
 Cc: Sunil Khatri <sunil.khatri@amd.com>,
  "Prosyak@sunil.khatri"@amd.com, Vitaly <Vitaly.Prosyak@amd.com>,
  Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH v2 1/5] drm-uapi/amdgpu: add UAPI query if user queues are
+Subject: [PATCH v2 5/5] tests/amdgpu: execute secure userq tests only if
  supported
-Date: Tue, 29 Apr 2025 16:06:49 +0530
-Message-ID: <20250429103653.190107-1-sunil.khatri@amd.com>
+Date: Tue, 29 Apr 2025 16:06:53 +0530
+Message-ID: <20250429103653.190107-5-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250429103653.190107-1-sunil.khatri@amd.com>
+References: <20250429103653.190107-1-sunil.khatri@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -42,33 +44,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add UAPI support of userq mask of ip's supporting userqueues on a
-asic.
-
-The changes have been pulled from below kernel commit.
-https://lists.freedesktop.org/archives/amd-gfx/2025-April/122559.html
+check the ip supported for userqueues before executing
+any secure userqueues test cases.
 
 Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>
 Cc: Jesse Zhang <jesse.zhang@amd.com>
 Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
 ---
- include/drm-uapi/amdgpu_drm.h | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/amdgpu/amd_security.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-index 3f4813879..ddcda5d3b 100644
---- a/include/drm-uapi/amdgpu_drm.h
-+++ b/include/drm-uapi/amdgpu_drm.h
-@@ -1446,6 +1446,9 @@ struct drm_amdgpu_info_device {
- 	__u32 csa_size;
- 	/* context save area base virtual alignment for gfx11 */
- 	__u32 csa_alignment;
-+	/* Userq IP mask (1 << AMDGPU_HW_IP_*) */
-+	__u32 userq_ip_mask;
-+	__u32 pad;
- };
+diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
+index 1c880c11f..ff22fd8db 100644
+--- a/tests/amdgpu/amd_security.c
++++ b/tests/amdgpu/amd_security.c
+@@ -315,6 +315,7 @@ igt_main
+ 	struct drm_amdgpu_info_hw_ip  sdma_info = {};
+ 	int r, fd = -1;
+ 	bool is_secure = true;
++	bool userq_arr_cap[AMD_IP_MAX] = {0};
  
- struct drm_amdgpu_info_hw_ip {
+ 	igt_fixture {
+ 		uint32_t major, minor;
+@@ -331,6 +332,7 @@ igt_main
+ 		igt_assert_eq(r, 0);
+ 		r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_DMA, 0, &sdma_info);
+ 		igt_assert_eq(r, 0);
++		asic_userq_readiness(device, userq_arr_cap);
+ 		igt_skip_on(!is_security_tests_enable(device, &gpu_info, major, minor));
+ 	}
+ 
+@@ -355,15 +357,18 @@ igt_main
+ 			AMDGPU_HW_IP_DMA), is_secure);
+ 
+ #ifdef AMDGPU_USERQ_ENABLED
++
+ 	igt_describe("amdgpu gfx command submission write linear helper with user queue");
+ 	igt_subtest("gfx-write-linear-helper-secure-umq")
+-	amdgpu_command_submission_write_linear_helper(device,
+-			get_ip_block(device, AMDGPU_HW_IP_GFX), is_secure, true);
++	if (userq_arr_cap[AMD_IP_GFX])
++		amdgpu_command_submission_write_linear_helper(device,
++				get_ip_block(device, AMDGPU_HW_IP_GFX), is_secure, true);
+ 
+ 	igt_describe("amdgpu compute command submission write linear helper with user queue");
+ 	igt_subtest("compute-write-linear-helper-secure-umq")
+-	amdgpu_command_submission_write_linear_helper(device,
+-			get_ip_block(device, AMDGPU_HW_IP_COMPUTE), is_secure, true);
++	if (userq_arr_cap[AMD_IP_COMPUTE])
++		amdgpu_command_submission_write_linear_helper(device,
++				get_ip_block(device, AMDGPU_HW_IP_COMPUTE), is_secure, true);
+ #endif
+ 
+ 	igt_fixture {
 -- 
 2.43.0
 
