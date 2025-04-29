@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C512C3ABA5
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 19:58:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95432C369DC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 19:59:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E34D010E23B;
-	Tue, 29 Apr 2025 19:58:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C7FA10E2EC;
+	Tue, 29 Apr 2025 19:59:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YSlLrIe6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PiiSeKbh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78F0A10E23B
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 19:58:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 716C610E2EC
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 19:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745956734; x=1777492734;
+ t=1745956737; x=1777492737;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5LRHszJgCQf2d9pwNxj6u24f56frYXqzwvs1xgXEST4=;
- b=YSlLrIe6ZmCbsvKwoaos1LyMbRJMdR01ZWKIZxB9qN1YVaSz4rGx0Mdi
- FbVFCOmyNkah9ct+ZE1SKkT8aFBjkyhb1sLNGUP+vQMpq8b0jRdJdx2ME
- aLLqhgbygZygYOnwmlL+OzisAcfKGRRIiWC7w2AI/e6ALAwOYNyx7DDjv
- BXA2JWOaxm99XdRLD9/9QBOewQyugWEnTXe7bMHnZUax2+9/Mk1IhxvgB
- DcQrzKd8CPO/67AXEPOdoxYvryATo9qE5sz7jXyNw2VT3Cl9sK46RIbTd
- Mo8aGmsaFucZ6eo4ackb2q6KUsTUTyzJ/ZiZt75G5J/bXu1/s0+0DBmJB g==;
-X-CSE-ConnectionGUID: lT+vCh0FReC7xNgz66ixmA==
-X-CSE-MsgGUID: Bez9ZU2TQDeEBdqj25kU7w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="46843136"
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="46843136"
+ bh=pQYtW9qkvnhEngHGNmZkZt7AvSzeubnPXxtiYgznjEM=;
+ b=PiiSeKbhu4mVqIxzCtwoa+M5GZyuhrF8+HEL+QAyyYT7XSo9KMQjGylm
+ VybK/c0EAtlzdhbCIx2CxcZqr/tn1kN5oSUKbpmXcI0uFFk5vSyTqRoAV
+ BNzLQ6cKRC2nY0QGt3BqjZkqteLGdVu6xcHd6j8U3SdixCHojsL6RQTj/
+ gwO5AowCNahdho5n5qN04+Q6Wcq5slaAXarcrRFIzFF1Du+PPrbjMbLop
+ U/CMzAJs3igfey1fjj0RQSFMpHNCSETy2aafUGtj7cS8X9rsFSmoc2gqU
+ w6FVxFIrWU8qgD3eeq+/WFE6sfbYC+ba+mcIbkL0dAexe8D0RpfKBEtkx w==;
+X-CSE-ConnectionGUID: c05pBvu8Sz6H+DNy4+KplQ==
+X-CSE-MsgGUID: EGYxgynATNC6RF6T56dZUg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="46843139"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="46843139"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 12:58:54 -0700
-X-CSE-ConnectionGUID: 9TAkm8H5R4OFLXf1kRQseg==
-X-CSE-MsgGUID: lQ4Kzu6sTKqIoxUav4bb4w==
+ 29 Apr 2025 12:58:57 -0700
+X-CSE-ConnectionGUID: uxjW6MxqR7GJ/PxCchOStQ==
+X-CSE-MsgGUID: ya8vcVaiRmm1w3nIcI7avA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="133831324"
+X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; d="scan'208";a="133831330"
 Received: from intel-s2600stb.iind.intel.com (HELO
  08ca91f16b80.iind.intel.com) ([10.66.234.77])
- by orviesa010.jf.intel.com with ESMTP; 29 Apr 2025 12:58:52 -0700
+ by orviesa010.jf.intel.com with ESMTP; 29 Apr 2025 12:58:55 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevaka.badrappan@intel.com, sapna1.singh@intel.com, markyacoub@google.com,
  seanpaul@google.com, carlos.santa@intel.com
-Subject: [PATCH 1/5] Add stub for libunwind, procps and glib
-Date: Tue, 29 Apr 2025 19:57:41 +0000
-Message-ID: <20250429195745.40982-2-jeevaka.badrappan@intel.com>
+Subject: [PATCH 2/5] Replace program_invocation_short_name with prog_name from
+ command line
+Date: Tue, 29 Apr 2025 19:57:42 +0000
+Message-ID: <20250429195745.40982-3-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429195745.40982-1-jeevaka.badrappan@intel.com>
 References: <20250429195745.40982-1-jeevaka.badrappan@intel.com>
@@ -68,162 +69,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Sapna <sapna1.singh@intel.com>
+program_invocation_short_name is global variable provided by glibc.
 
-As libunwind, procps, glib are not available in Android, not able to
-build igt for Android.
+Inorder to get the igt built for Android(without glibc), replaced the
+program_invocation_short_name with the prog_name.
 
-Provided stub implementations so igt can be compiled for both Android
-and linux from same code base. Incase of linux systems, system libraries
-will be used whereas for Android stubs will be used with reduced
-test coverage.
-
-Signed-off-by: Sapna <sapna1.singh@intel.com>
+Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 ---
- include/stub/glib.h      | 43 ++++++++++++++++++++++++++++++++++++++++
- include/stub/libunwind.h | 20 +++++++++++++++++++
- include/stub/pids.h      | 41 ++++++++++++++++++++++++++++++++++++++
- lib/igt_aux.c            |  2 +-
- 4 files changed, 105 insertions(+), 1 deletion(-)
- create mode 100644 include/stub/glib.h
- create mode 100644 include/stub/libunwind.h
- create mode 100644 include/stub/pids.h
+ tools/gputop.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/stub/glib.h b/include/stub/glib.h
-new file mode 100644
-index 000000000..0bd862fa2
---- /dev/null
-+++ b/include/stub/glib.h
-@@ -0,0 +1,43 @@
-+#pragma once
-+#include <stdbool.h>
-+#include <stdlib.h>
-+#define G_KEY_FILE_NONE 0
-+#define G_REGEX_OPTIMIZE 0
-+
-+typedef struct _GError {
-+    int code;
-+    char *message;
-+} GError;
-+
-+typedef struct _GKeyFile {
-+    char *key;
-+    char *value;
-+} GKeyFile;
-+
-+typedef int gint;
-+typedef size_t gsize;
-+typedef char gchar;
-+typedef unsigned char guchar;
-+typedef void GRegex;
-+
-+static inline void g_clear_error(GError **error) { }
-+static inline void g_error_free(GError *error) { }
-+static inline const char *g_get_home_dir(void) { return "/data/local/tmp/igt"; }
-+static inline void g_key_file_free(GKeyFile *file) { }
-+static inline GKeyFile *g_key_file_new(void) { return NULL; }
-+static inline int g_key_file_get_integer(GKeyFile *key_file,
-+    const char *group_name, const char *key, GError **error) { return 0; }
-+static inline char *g_key_file_get_string(GKeyFile *key_file,
-+    const char *group_name, const char *key, GError **error) { return NULL; }
-+static inline bool g_key_file_load_from_file(GKeyFile *key_file,
-+    const char *file, int flags, GError **error) { return false; }
-+static inline GRegex* g_regex_new(const char *pattern, int compile_options,
-+    int match_options, GError **error) { return NULL; }
-+static inline void g_regex_unref(GRegex *pattern) { };
-+static gchar* g_base64_encode(const guchar* data, gsize len) {
-+    gchar* str = (gchar*)malloc(1);  // Allocate memory for an empty string
-+    if (str) {
-+        str[0] = '\0';  // Set the string to be empty
-+    }
-+    return str;
-+}
-diff --git a/include/stub/libunwind.h b/include/stub/libunwind.h
-new file mode 100644
-index 000000000..168c31c14
---- /dev/null
-+++ b/include/stub/libunwind.h
-@@ -0,0 +1,20 @@
-+#define UNW_TDEP_CURSOR_LEN     127
-+typedef struct unw_cursor
-+{
-+   int opaque[UNW_TDEP_CURSOR_LEN];
-+}
-+unw_cursor_t;
-+
-+
-+typedef struct unw_context
-+{
-+   int ctx;
-+}
-+unw_context_t;
-+
-+typedef uint32_t unw_word_t;
-+
-+int unw_getcontext(unw_context_t *uc) { return 0; }
-+int unw_init_local (unw_cursor_t *cur, unw_context_t *uc) { return 0; }
-+int unw_step (unw_cursor_t *cur) { return 0; }
-+int unw_get_proc_name (unw_cursor_t *cur, char *ch, size_t size, unw_word_t *word) { return 0; }
-diff --git a/include/stub/pids.h b/include/stub/pids.h
-new file mode 100644
-index 000000000..bcdd095e0
---- /dev/null
-+++ b/include/stub/pids.h
-@@ -0,0 +1,41 @@
-+enum pids_item {
-+    PIDS_CMD     = 13,           //      str        stat: comm or status: Name
-+    PIDS_ID_EGID = 29,           //    u_int        status: Gid
-+    PIDS_ID_EUID = 31,           //    u_int        status: Uid
-+    PIDS_ID_PID  = 39,           //    s_int        from /proc/<pid>
-+};
-+enum pids_fetch_type {
-+    PIDS_FETCH_TASKS_ONLY,
-+    PIDS_FETCH_THREADS_TOO
-+};
-+
-+struct pids_result {
-+    enum pids_item item;
-+    union {
-+        signed char         s_ch;
-+        signed int          s_int;
-+        unsigned int        u_int;
-+        unsigned long       ul_int;
-+        unsigned long long  ull_int;
-+        char               *str;
-+        char              **strv;
-+        double              real;
-+    } result;
-+};
-+
-+struct pids_stack {
-+    struct pids_result *head;
-+};
-+
-+struct pids_info;
-+
-+#define PIDS_VAL( relative_enum, type, stack, info) \
-+    stack -> head [ relative_enum ] . result . type
-+
-+int procps_pids_new   (struct pids_info **info, enum pids_item *items, int numitems) { return 0; }
-+int procps_pids_unref (struct pids_info **info) { return 0;}
-+
-+struct pids_stack *procps_pids_get(struct pids_info *info, enum pids_fetch_type which) {
-+    struct pids_stack *ps = NULL;
-+    return ps;
-+}
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index f5bf48da6..78bae7542 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -56,7 +56,7 @@
- #ifdef HAVE_LIBPROCPS
- #  include <proc/readproc.h>
- #else
--#  include <libproc2/pids.h>
-+#include "pids.h"
- #endif
+diff --git a/tools/gputop.c b/tools/gputop.c
+index 43b01f566..ef868f670 100644
+--- a/tools/gputop.c
++++ b/tools/gputop.c
+@@ -335,7 +335,7 @@ struct gputop_args {
+ 	unsigned long delay_usec;
+ };
  
- #include <dirent.h>
+-static void help(void)
++static void help(char* prog_name)
+ {
+ 	printf("Usage:\n"
+ 	       "\t%s [options]\n\n"
+@@ -343,7 +343,7 @@ static void help(void)
+ 	       "\t-h, --help                show this help\n"
+ 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
+ 	       "\t-n, --iterations =NUMBER  number of executions\n"
+-	       , program_invocation_short_name);
++	       , prog_name);
+ }
+ 
+ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+@@ -384,7 +384,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+ 			}
+ 			break;
+ 		case 'h':
+-			help();
++			help(argv[0]);
+ 			return 0;
+ 		default:
+ 			fprintf(stderr, "Unkonwn option '%c'.\n", c);
 -- 
 2.49.0
 
