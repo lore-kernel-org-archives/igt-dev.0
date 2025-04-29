@@ -4,53 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EC58C369DC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 13:35:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84543C369DC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Apr 2025 13:37:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC0C410E493;
-	Tue, 29 Apr 2025 13:35:21 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c0AUxfSn";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBF8910E493
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 13:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745933721; x=1777469721;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nkSMivl0fEOxORv2KOeNu/GFw48aKHTqYYJ78p/4lmI=;
- b=c0AUxfSnvgUu9FHHMaRDLTTVdzKn+5I3KNObEWxtEDTbnq/HHyuz7TPM
- DCGX297YeBpImDRUDoR/qic4wVYgpaGsCxdvHGnI4moWr04bHZvcGGp2E
- LNRR+w0HMeYsOFG4duddWW2wzgUQWTFuf1QvFx40/ihv2Lht3mUAo2GYu
- HYnFakH6lMNVT2RW72efK/MJ2Rk3SUyqfV2+LbFSgFVdnpy9TMFTE2XTt
- cRBgk+soFI+hgad3VjsWt4BU+DMG1PXTipC3KZy0spyDFhNMxU3foWNpP
- TwySCFBR7TqP+zYJTNDhOIIj+5zuEjKw8J7u1ZQx2VIR3fVryYZ9B4ebe Q==;
-X-CSE-ConnectionGUID: 1Y+AhOQuTF2yCSqT9rmBZQ==
-X-CSE-MsgGUID: 34XJdFS+Q2+TnZcQfb4weg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="47566635"
-X-IronPort-AV: E=Sophos;i="6.15,249,1739865600"; d="scan'208";a="47566635"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 06:35:21 -0700
-X-CSE-ConnectionGUID: 0tPbr5PbQhC/kpyp8OqHEg==
-X-CSE-MsgGUID: tzA4JbggRaWStdzxMBFC+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,249,1739865600"; d="scan'208";a="133777156"
-Received: from labhost1.iind.intel.com ([10.190.230.69])
- by fmviesa007.fm.intel.com with ESMTP; 29 Apr 2025 06:35:18 -0700
-From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
- John Harrison <John.C.Harrison@Intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>,
- Francois Dugast <francois.dugast@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_fault_injection: Suppress Guc CT dumps
- during fault injection
-Date: Tue, 29 Apr 2025 19:21:32 +0530
-Message-ID: <20250429135132.6493-1-satyanarayana.k.v.p@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3204410E493;
+	Tue, 29 Apr 2025 13:37:45 +0000 (UTC)
+Received: from amd-X570-AORUS-ELITE.amd.com (unknown [165.204.156.251])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1142A10E493
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Apr 2025 13:37:44 +0000 (UTC)
+Received: by amd-X570-AORUS-ELITE.amd.com (Postfix, from userid 1000)
+ id C20B436A0008; Tue, 29 Apr 2025 19:07:38 +0530 (IST)
+From: Sunil Khatri <sunil.khatri@amd.com>
+To: igt-dev@lists.freedesktop.org,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Sunil Khatri <sunil.khatri@amd.com>
+Subject: [PATCH] lib/amdgpu: make amdgpu userqueue file name at par with
+ kernel names
+Date: Tue, 29 Apr 2025 19:07:37 +0530
+Message-ID: <20250429133737.244773-1-sunil.khatri@amd.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -69,74 +40,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When injecting fault to xe_guc_ct_send_recv() & xe_guc_mmio_send_recv()
-functions, the CI test systems are going out of space and crashing. To
-avoid this issue, a new helper function is created and when fault is injected
-into this xe_should_fail_ct_dead_capture() helper function, ct dead capture is
-avoided which suppresses ct dumps in the log.
+Update the amdgpu_user_queue.c/.h to amdgpu_userq.c/.h
 
-Inject fault into xe_should_fail_ct_dead_capture() function along with
-xe_guc_ct_send_recv() & xe_guc_mmio_send_recv() to suppress GUC ct dumps.
-
-Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Suggested-by: John Harrison <John.C.Harrison@Intel.com>
-Tested-by: Aditya Chauhan <aditya.chauhan@intel.com>
+Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
 ---
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+ lib/amdgpu/amd_command_submission.c          | 2 +-
+ lib/amdgpu/amd_compute.c                     | 2 +-
+ lib/amdgpu/amd_memory.c                      | 2 +-
+ lib/amdgpu/{amd_user_queue.c => amd_userq.c} | 2 +-
+ lib/amdgpu/{amd_user_queue.h => amd_userq.h} | 0
+ lib/meson.build                              | 2 +-
+ tests/amdgpu/amd_basic.c                     | 2 +-
+ tests/amdgpu/amd_cs_nop.c                    | 2 +-
+ 8 files changed, 7 insertions(+), 7 deletions(-)
+ rename lib/amdgpu/{amd_user_queue.c => amd_userq.c} (99%)
+ rename lib/amdgpu/{amd_user_queue.h => amd_userq.h} (100%)
 
-Test-with: 20250429134649.4747-1-satyanarayana.k.v.p@intel.com
----
- tests/intel/xe_fault_injection.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 602e4cb39..82d730a7c 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -121,6 +121,22 @@ static void injection_list_add(const char function_name[])
- 	close(dir);
- }
+diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
+index 7550fa8bc..80d03a498 100644
+--- a/lib/amdgpu/amd_command_submission.c
++++ b/lib/amdgpu/amd_command_submission.c
+@@ -10,7 +10,7 @@
+ #include "lib/amdgpu/amd_sdma.h"
+ #include "lib/amdgpu/amd_PM4.h"
+ #include "lib/amdgpu/amd_command_submission.h"
+-#include "lib/amdgpu/amd_user_queue.h"
++#include "lib/amdgpu/amd_userq.h"
+ #include "ioctl_wrappers.h"
  
-+static void injection_list_append(const char function_name[])
-+{
-+	int dir, fd, ret;
-+
-+	dir = fail_function_open();
-+	igt_assert_lte(0, dir);
-+
-+	fd = openat(dir, "inject", O_WRONLY | O_APPEND);
-+	ret = write(fd, function_name, strlen(function_name));
-+
-+	close(fd);
-+	close(dir);
-+
-+	igt_assert_lte(0, ret);
-+}
-+
- static void injection_list_remove(const char function_name[])
- {
- 	int dir;
-@@ -234,6 +250,10 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
  
- 	ignore_faults_in_dmesg(function_name);
- 	injection_list_add(function_name);
-+	if (!strcmp(function_name, "xe_guc_ct_send_recv") ||
-+	    !strcmp(function_name, "xe_guc_mmio_send_recv"))
-+		injection_list_append("xe_should_fail_ct_dead_capture");
-+
- 	set_retval(function_name, INJECT_ERRNO);
+diff --git a/lib/amdgpu/amd_compute.c b/lib/amdgpu/amd_compute.c
+index 5d7040d80..95bfa53aa 100644
+--- a/lib/amdgpu/amd_compute.c
++++ b/lib/amdgpu/amd_compute.c
+@@ -25,7 +25,7 @@
+ #include "amd_PM4.h"
+ #include "amd_memory.h"
+ #include "amd_compute.h"
+-#include "amd_user_queue.h"
++#include "amd_userq.h"
  
- 	igt_kmod_bind("xe", pci_slot);
-@@ -271,6 +291,8 @@ static void probe_fail_guc(int fd, char pci_slot[], const char function_name[],
- 	for (int i = iter_start; i < iter_end; i++) {
- 		fault_params->space = i;
- 		setup_injection_fault(fault_params);
-+		/* Clear the injection list  */
-+		injection_list_clear();
- 		inject_fault_probe(fd, pci_slot, function_name);
- 		igt_kmod_unbind("xe", pci_slot);
- 	}
+ /**
+  *
+diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
+index d1ff57085..882c5c18f 100644
+--- a/lib/amdgpu/amd_memory.c
++++ b/lib/amdgpu/amd_memory.c
+@@ -25,7 +25,7 @@
+ 
+ #include "amd_memory.h"
+ #include "amd_PM4.h"
+-#include "amd_user_queue.h"
++#include "amd_userq.h"
+ 
+ /**
+  *
+diff --git a/lib/amdgpu/amd_user_queue.c b/lib/amdgpu/amd_userq.c
+similarity index 99%
+rename from lib/amdgpu/amd_user_queue.c
+rename to lib/amdgpu/amd_userq.c
+index 444f9c022..50d058609 100644
+--- a/lib/amdgpu/amd_user_queue.c
++++ b/lib/amdgpu/amd_userq.c
+@@ -3,7 +3,7 @@
+  * Copyright 2025 Advanced Micro Devices, Inc.
+  */
+ 
+-#include "amd_user_queue.h"
++#include "amd_userq.h"
+ #include "amd_memory.h"
+ #include "amd_PM4.h"
+ #include "ioctl_wrappers.h"
+diff --git a/lib/amdgpu/amd_user_queue.h b/lib/amdgpu/amd_userq.h
+similarity index 100%
+rename from lib/amdgpu/amd_user_queue.h
+rename to lib/amdgpu/amd_userq.h
+diff --git a/lib/meson.build b/lib/meson.build
+index 8517cd540..b58976a43 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -166,7 +166,7 @@ if libdrm_amdgpu.found()
+ 		'amdgpu/amd_cp_dma.c',
+ 		'amdgpu/amd_mem_leak.c',
+ 		'amdgpu/amd_mmd_shared.c',
+-		'amdgpu/amd_user_queue.c'
++		'amdgpu/amd_userq.c'
+ 	]
+ 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
+ 		lib_sources +=[ 'amdgpu/amd_dispatch.c',]
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index e0029f582..97a08a9a3 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -13,7 +13,7 @@
+ #include "lib/amdgpu/amd_gfx.h"
+ #include "lib/amdgpu/amd_shaders.h"
+ #include "lib/amdgpu/amd_dispatch.h"
+-#include "lib/amdgpu/amd_user_queue.h"
++#include "lib/amdgpu/amd_userq.h"
+ 
+ #define BUFFER_SIZE (8 * 1024)
+ 
+diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
+index 160c4f026..268bc9201 100644
+--- a/tests/amdgpu/amd_cs_nop.c
++++ b/tests/amdgpu/amd_cs_nop.c
+@@ -12,7 +12,7 @@
+ #include "lib/amdgpu/amd_PM4.h"
+ #include "lib/amdgpu/amd_ip_blocks.h"
+ #include "lib/amdgpu/amd_memory.h"
+-#include "lib/amdgpu/amd_user_queue.h"
++#include "lib/amdgpu/amd_userq.h"
+ 
+ static void amdgpu_cs_sync(amdgpu_context_handle context,
+ 			   unsigned int ip_type,
 -- 
 2.43.0
 
