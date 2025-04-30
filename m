@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18D5BC369D9
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 09:31:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 668F7C369DC
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 09:46:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C53F410E715;
-	Wed, 30 Apr 2025 09:31:16 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cUFuthZt";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F102010E716
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 09:31:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746005475; x=1777541475;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=2CtDuAC/jgTZZHu1p68vWAwOmqvX9W9ZUCChq14M+wM=;
- b=cUFuthZtl/PovPXI7/BVrBg5P7jZLkq60DrrMZosCewnXSNEdQfhlJ3p
- 0CyGcGqMLUb9Z6svfj/kPv9TWVboPXVAVtpQYg5p9nC8OcxM+AYVieBEL
- xblNEva2MAqAFw3qEYhJf68jOj+ysLTiTe2u9KmIsemE0JixRGMA9OXRa
- +f/xYh7a8i7brVF3IZiS2HIsqWbi9itR5/bwNxHl1FmroIxfW2TDy7SLW
- AtVneigC3VRHfFvrl4UMI6ZOHZwqSlB+2WyG/WCotIIT956L16ErVY2Jx
- kBu0GxzW8vyLmiJfOU9kHkcwFQNmOcz8+9qL6yEiXQYrBNexIJIED+Xo5 w==;
-X-CSE-ConnectionGUID: rBEq1qbgSAW6UeU4RiyLBg==
-X-CSE-MsgGUID: C1g2NsvNQyyoVdA2RVe6bA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="73045706"
-X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="73045706"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Apr 2025 02:31:14 -0700
-X-CSE-ConnectionGUID: MBRghVAsSyK69gmRfN4Odw==
-X-CSE-MsgGUID: 91F3owcpRIumdpYEWyFP6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="139251288"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 02:31:12 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: santhosh.reddy.guddati@intel.com,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/kms_display_modes: Fit modes within MST bandwidth
- constraints
-Date: Wed, 30 Apr 2025 15:16:55 +0530
-Message-Id: <20250430094655.3926900-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1EB3110E2FA;
+	Wed, 30 Apr 2025 09:46:10 +0000 (UTC)
+Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EF2B10E2FA;
+ Wed, 30 Apr 2025 09:46:08 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4995766497754919434=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fplane=5Fmultipl?=
+ =?utf-8?q?e=3A_Add_clear_skip_message_for_skips?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 30 Apr 2025 09:46:08 -0000
+Message-ID: <174600636864.29011.11622324621582361297@c664b1dc75d1>
+X-Patchwork-Hint: ignore
+References: <20250430054326.489396-1-pranay.samala@intel.com>
+In-Reply-To: <20250430054326.489396-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,187 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Instead of checking only the current modes, find a combination of
-modes in the MST topology that can be accommodated within the
-available link bandwidth.
+--===============4995766497754919434==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: move fit_modes_in_bw to lib/igt_kms
-v3: update tag from fixes to closes
-v4: remove igt_assert from fit_modes_in_bw call.
+== Series Details ==
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1542
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- lib/igt_kms.c                           | 30 +++++++++++++++++++++++++
- lib/igt_kms.h                           |  1 +
- tests/intel/kms_dp_link_training.c      | 24 +-------------------
- tests/intel/kms_dp_linktrain_fallback.c | 18 +--------------
- tests/kms_display_modes.c               |  4 ++++
- 5 files changed, 37 insertions(+), 40 deletions(-)
+Series: tests/kms_plane_multiple: Add clear skip message for skips
+URL   : https://patchwork.freedesktop.org/series/148462/
+State : success
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f3bc481f2..7c7738844 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5046,6 +5046,36 @@ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display)
- 	return __override_all_active_output_modes_to_fit_bw(display, outputs, n_outputs, 0);
- }
- 
-+/*
-+ * fit_modes_in_bw :
-+ * @display: a pointer to an #igt_display_t structure
-+ *
-+ * Tries atomic TEST_ONLY commit; if it fails, overrides
-+ * output modes to fit bandwidth.
-+ *
-+ * Returns: true if a valid mode combination is found or the commit succeeds,
-+ * false otherwise.
-+ */
-+bool fit_modes_in_bw(igt_display_t *display)
-+{
-+	int ret;
-+
-+	ret = igt_display_try_commit_atomic(display,
-+					    DRM_MODE_ATOMIC_TEST_ONLY |
-+					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	if (ret != 0) {
-+		bool found;
-+
-+		found = igt_override_all_active_output_modes_to_fit_bw(display);
-+		if (!found) {
-+			igt_debug("No valid mode combo found for modeset\n");
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
- /**
-  * igt_pipe_refresh:
-  * @display: a pointer to an #igt_display_t structure
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 0381c82ad..fe01eaf3f 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1226,6 +1226,7 @@ void igt_require_pipe(igt_display_t *display,
- void igt_dump_connectors_fd(int drmfd);
- void igt_dump_crtcs_fd(int drmfd);
- bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
-+bool fit_modes_in_bw(igt_display_t *display);
- bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
- unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
- unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
-diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
-index 9e9b1e6db..0152b7401 100644
---- a/tests/intel/kms_dp_link_training.c
-+++ b/tests/intel/kms_dp_link_training.c
-@@ -140,28 +140,6 @@ static void setup_planes_fbs(data_t *data, igt_output_t *outs[],
- 	}
- }
- 
--/*
-- * fit_modes_in_bw - Tries atomic TEST_ONLY commit; if it fails, overrides
-- * output modes to fit bandwidth.
-- */
--static bool fit_modes_in_bw(data_t *data)
--{
--	int ret;
--
--	ret = igt_display_try_commit_atomic(&data->display,
--					    DRM_MODE_ATOMIC_TEST_ONLY |
--					    DRM_MODE_ATOMIC_ALLOW_MODESET,
--					    NULL);
--	if (ret != 0) {
--		bool found;
--
--		found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
--		igt_require_f(found, "No valid mode combo found for modeset\n");
--	}
--
--	return true;
--}
--
- static void do_modeset(data_t *data, bool mst)
- {
- 	uint32_t master_pipes_mask = 0;
-@@ -204,7 +182,7 @@ static void do_modeset(data_t *data, bool mst)
- 						  "Unable to assign pipes for outputs\n");
- 
- 	setup_planes_fbs(data, outs, out_count, modes, fbs, planes);
--	fit_modes_in_bw(data);
-+	igt_assert_f(fit_modes_in_bw(&data->display), "Unable to fit modes in bw\n");
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- }
- 
-diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
-index 6a872efd2..64f21ec6f 100644
---- a/tests/intel/kms_dp_linktrain_fallback.c
-+++ b/tests/intel/kms_dp_linktrain_fallback.c
-@@ -151,22 +151,6 @@ static void set_connector_link_status_good(data_t *data, igt_output_t *outputs[]
- 							  DRM_MODE_LINK_STATUS_GOOD);
- }
- 
--static bool fit_modes_in_bw(data_t *data)
--{
--	bool found;
--	int ret;
--
--	ret = igt_display_try_commit_atomic(&data->display,
--					    DRM_MODE_ATOMIC_TEST_ONLY |
--					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
--	if (ret != 0) {
--		found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
--		igt_require_f(found,
--			      "No valid mode combo found for modeset\n");
--	}
--	return true;
--}
--
- static bool validate_modeset_for_outputs(data_t *data,
- 					igt_output_t *outputs[],
- 					int *output_count,
-@@ -176,7 +160,7 @@ static bool validate_modeset_for_outputs(data_t *data,
- {
- 	igt_require_f(*output_count > 0, "Require at least 1 output\n");
- 	setup_pipe_on_outputs(data, outputs, output_count);
--	igt_assert_f(fit_modes_in_bw(data), "Unable to fit modes in bw\n");
-+	igt_assert_f(fit_modes_in_bw(&data->display), "Unable to fit modes in bw\n");
- 	setup_modeset_on_outputs(data, outputs,
- 				 output_count,
- 				 mode, fb, primary);
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index d53b83a86..19df03e92 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -93,6 +93,8 @@ static void run_extendedmode_basic(data_t *data,
- 	mode[0] = igt_output_get_mode(output1);
- 	mode[1] = igt_output_get_mode(output2);
- 
-+	igt_assert_f(fit_modes_in_bw(display), "Unable to fit modes in bw\n");
-+
- 	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
- 	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
- 
-@@ -138,6 +140,7 @@ static void run_extendedmode_basic(data_t *data,
- 	igt_fb_set_size(&fb, plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
- 	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
- 
-+	igt_assert_f(fit_modes_in_bw(display), "Unable to fit modes in bw\n");
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]);
-@@ -158,6 +161,7 @@ static void run_extendedmode_basic(data_t *data,
- 			  DRM_PLANE_TYPE_PRIMARY), NULL);
- 	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe2],
- 			  DRM_PLANE_TYPE_PRIMARY), NULL);
-+	igt_assert_f(fit_modes_in_bw(display), "Unable to fit modes in bw\n");
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	/*Compare CRC*/
--- 
-2.25.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8344_BAT -> XEIGTPW_13065_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8344 -> IGTPW_13065
+  * Linux: xe-3009-f13165b51331915eb63fdb160331e035ecae35c7 -> xe-3010-11bac2f4b353b42599a9b028f48261d32b94fe34
+
+  IGTPW_13065: 0c7f69ac95c7e2fd820b252244db81cc787569ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8344: 00f143c5f06f7d5936aacb70dad22be371570d38 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3009-f13165b51331915eb63fdb160331e035ecae35c7: f13165b51331915eb63fdb160331e035ecae35c7
+  xe-3010-11bac2f4b353b42599a9b028f48261d32b94fe34: 11bac2f4b353b42599a9b028f48261d32b94fe34
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13065/index.html
+
+--===============4995766497754919434==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_multiple: Add clear skip message for skips</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148462/">https://patchwork.freedesktop.org/series/148462/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13065/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13065/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8344_BAT -&gt; XEIGTPW_13065_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8344 -&gt; IGTPW_13065</li>
+<li>Linux: xe-3009-f13165b51331915eb63fdb160331e035ecae35c7 -&gt; xe-3010-11bac2f4b353b42599a9b028f48261d32b94fe34</li>
+</ul>
+<p>IGTPW_13065: 0c7f69ac95c7e2fd820b252244db81cc787569ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8344: 00f143c5f06f7d5936aacb70dad22be371570d38 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3009-f13165b51331915eb63fdb160331e035ecae35c7: f13165b51331915eb63fdb160331e035ecae35c7<br />
+  xe-3010-11bac2f4b353b42599a9b028f48261d32b94fe34: 11bac2f4b353b42599a9b028f48261d32b94fe34</p>
+
+</body>
+</html>
+
+--===============4995766497754919434==--
