@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47C09C369DC
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 09:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18D5BC369D9
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 09:31:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB4F510E0E3;
-	Wed, 30 Apr 2025 09:18:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C53F410E715;
+	Wed, 30 Apr 2025 09:31:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A4NXjSsy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cUFuthZt";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1936710E0E3
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 09:18:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F102010E716
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 09:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746004723; x=1777540723;
+ t=1746005475; x=1777541475;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=UHu27Lr6xtfuBxjJi5okZGfeTrDqS8G50J0qtD+gLLE=;
- b=A4NXjSsyFFO6nINtu3euYD7DVoEDrw42LdWtqhKvRcnypmVzG3kfYH+H
- XGKFXJSfNZaseD8vCfsNBw/OQJ41FmSCrtSPg4FfTadclhKnLXQXpxnGr
- Pz8CVFJ9RxGImu/FhGHhs0vETbgy2Qa1PoDGGbswSgu8VK1p2k5uP561H
- Ty/XKLkeRThgh6Ps19aLO5Vw2wsJFH8l1axMyIVadUMcgBtyWNunaEoFN
- T7qvGXoVAAZNweQ8T9csy8GhADuiYwN++wtv+D7alQb+cnn0cmdJcFHZT
- J5Eq+z+RsI1eKti4pFsktwnaRQcYEUicwqGf6bSYWvmR0Xh1Reim2f2nR w==;
-X-CSE-ConnectionGUID: h40HMfd/QpStqcenm15jFQ==
-X-CSE-MsgGUID: WoyFIR7eScyPX3do+9u9+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="46773754"
-X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="46773754"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Apr 2025 02:18:42 -0700
-X-CSE-ConnectionGUID: ip20eyh+QmSqAYsdgWSJww==
-X-CSE-MsgGUID: Ah5mZ9SnQTKS+dWB/a3thA==
+ bh=2CtDuAC/jgTZZHu1p68vWAwOmqvX9W9ZUCChq14M+wM=;
+ b=cUFuthZtl/PovPXI7/BVrBg5P7jZLkq60DrrMZosCewnXSNEdQfhlJ3p
+ 0CyGcGqMLUb9Z6svfj/kPv9TWVboPXVAVtpQYg5p9nC8OcxM+AYVieBEL
+ xblNEva2MAqAFw3qEYhJf68jOj+ysLTiTe2u9KmIsemE0JixRGMA9OXRa
+ +f/xYh7a8i7brVF3IZiS2HIsqWbi9itR5/bwNxHl1FmroIxfW2TDy7SLW
+ AtVneigC3VRHfFvrl4UMI6ZOHZwqSlB+2WyG/WCotIIT956L16ErVY2Jx
+ kBu0GxzW8vyLmiJfOU9kHkcwFQNmOcz8+9qL6yEiXQYrBNexIJIED+Xo5 w==;
+X-CSE-ConnectionGUID: rBEq1qbgSAW6UeU4RiyLBg==
+X-CSE-MsgGUID: C1g2NsvNQyyoVdA2RVe6bA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="73045706"
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="73045706"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Apr 2025 02:31:14 -0700
+X-CSE-ConnectionGUID: MBRghVAsSyK69gmRfN4Odw==
+X-CSE-MsgGUID: 91F3owcpRIumdpYEWyFP6w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="139183438"
-Received: from ba_tws-123.gar.corp.intel.com (HELO
- spottumu-desk.iind.intel.com) ([10.190.216.156])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Apr 2025 02:18:41 -0700
-From: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="139251288"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 02:31:12 -0700
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: umesh.nerlige.ramappa@intel.com,
-	sai.teja.pottumuttu@intel.com
-Subject: [PATCH i-g-t v2] tests/intel/xe_oa: Add a new mmio triggered test
-Date: Wed, 30 Apr 2025 14:46:55 +0530
-Message-Id: <20250430091655.603509-1-sai.teja.pottumuttu@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: santhosh.reddy.guddati@intel.com,
+	Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t] tests/kms_display_modes: Fit modes within MST bandwidth
+ constraints
+Date: Wed, 30 Apr 2025 15:16:55 +0530
+Message-Id: <20250430094655.3926900-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,157 +67,184 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The current mmio-triggered-reports tests mmio triggered reports via a
-mmaped buffer. Add another test which uses 'read' system call to check for
-mmio triggered reports.
+Instead of checking only the current modes, find a combination of
+modes in the MST topology that can be accommodated within the
+available link bandwidth.
 
-v2:
-  - Add a check for len (Umesh)
+v2: move fit_modes_in_bw to lib/igt_kms
+v3: update tag from fixes to closes
+v4: remove igt_assert from fit_modes_in_bw call.
 
-Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1542
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/xe_oa.c | 109 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 106 insertions(+), 3 deletions(-)
+ lib/igt_kms.c                           | 30 +++++++++++++++++++++++++
+ lib/igt_kms.h                           |  1 +
+ tests/intel/kms_dp_link_training.c      | 24 +-------------------
+ tests/intel/kms_dp_linktrain_fallback.c | 18 +--------------
+ tests/kms_display_modes.c               |  4 ++++
+ 5 files changed, 37 insertions(+), 40 deletions(-)
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 766f81a5e..90e863c8b 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -3959,12 +3959,106 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
- 	__perf_close(stream_fd);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index f3bc481f2..7c7738844 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5046,6 +5046,36 @@ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display)
+ 	return __override_all_active_output_modes_to_fit_bw(display, outputs, n_outputs, 0);
  }
  
-+static void
-+__test_mmio_triggered_reports_read(struct drm_xe_engine_class_instance *hwe)
++/*
++ * fit_modes_in_bw :
++ * @display: a pointer to an #igt_display_t structure
++ *
++ * Tries atomic TEST_ONLY commit; if it fails, overrides
++ * output modes to fit bandwidth.
++ *
++ * Returns: true if a valid mode combination is found or the commit succeeds,
++ * false otherwise.
++ */
++bool fit_modes_in_bw(igt_display_t *display)
 +{
-+	struct intel_xe_perf_metric_set *test_set = default_test_set;
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = sizeof(properties) / 16,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	size_t format_size = get_oa_format(test_set->perf_oa_format).size;
-+	struct intel_buf src, dst;
-+	uint32_t mmio_triggered_reports = 0;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t context, vm;
-+	uint8_t *buf = calloc(1, default_oa_buffer_size);
-+	int len, total_len = 0;
++	int ret;
 +
-+	bops = buf_ops_create(drm_fd);
++	ret = igt_display_try_commit_atomic(display,
++					    DRM_MODE_ATOMIC_TEST_ONLY |
++					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (ret != 0) {
++		bool found;
 +
-+	scratch_buf_init(bops, &src, rc_width, rc_height, 0xff0000ff);
-+	scratch_buf_init(bops, &dst, rc_width, rc_height, 0x00ff00ff);
-+
-+	vm = xe_vm_create(drm_fd, 0, 0);
-+	context = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	igt_assert(context);
-+	ibb = intel_bb_create_with_context(drm_fd, context, vm, NULL, BATCH_SZ);
-+
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+	set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+	emit_mmio_triggered_report(ibb, 0xc0ffee11);
-+
-+	if (render_copy)
-+		render_copy(ibb,
-+			    &src, 0, 0, rc_width, rc_height,
-+			    &dst, 0, 0);
-+
-+	emit_mmio_triggered_report(ibb, 0xc0ffee22);
-+
-+	intel_bb_flush_render(ibb);
-+	intel_bb_sync(ibb);
-+
-+	while (total_len < default_oa_buffer_size && mmio_triggered_reports < 2 &&
-+		((len = read(stream_fd, &buf[total_len], format_size)) > 0 ||
-+		(len == -1 && (errno == EINTR || errno == EIO)))) {
-+		uint32_t *report = (void *)&buf[total_len];
-+
-+		if (len != format_size)
-+			continue;
-+
-+		if (!report_reason(report))
-+			mmio_triggered_reports++;
-+
-+		if (get_oa_format(test_set->perf_oa_format).report_hdr_64bit) {
-+			u64 *report64 = (u64 *)report;
-+
-+			igt_debug("hdr: %016"PRIx64" %016"PRIx64" %016"PRIx64" %016"PRIx64"\n",
-+				  report64[0], report64[1], report64[2], report64[3]);
-+			if (!report_reason(report))
-+				igt_assert(report64[2] == 0xc0ffee11 || report64[2] == 0xc0ffee22);
-+		} else {
-+			igt_debug("hdr: %08x %08x %08x %08x\n",
-+				  report[0], report[1], report[2], report[3]);
-+			if (!report_reason(report))
-+				igt_assert(report[2] == 0xc0ffee11 || report[2] == 0xc0ffee22);
++		found = igt_override_all_active_output_modes_to_fit_bw(display);
++		if (!found) {
++			igt_debug("No valid mode combo found for modeset\n");
++			return false;
 +		}
-+
-+		if (len > 0)
-+			total_len += len;
 +	}
 +
-+	igt_assert_eq(mmio_triggered_reports, 2);
-+
-+	intel_buf_close(bops, &src);
-+	intel_buf_close(bops, &dst);
-+	intel_bb_destroy(ibb);
-+	xe_exec_queue_destroy(drm_fd, context);
-+	xe_vm_destroy(drm_fd, vm);
-+	buf_ops_destroy(bops);
-+	free(buf);
-+	__perf_close(stream_fd);
++	return true;
 +}
 +
  /**
-  * SUBTEST: mmio-triggered-reports
-  * Description: Test MMIO trigger functionality
-+ *
-+ * SUBTEST: mmio-triggered-reports-read
-+ * Description: Test MMIO trigger functionality with read system call
-  */
- static void
--test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
-+test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe,
-+			    bool with_read)
+  * igt_pipe_refresh:
+  * @display: a pointer to an #igt_display_t structure
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 0381c82ad..fe01eaf3f 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1226,6 +1226,7 @@ void igt_require_pipe(igt_display_t *display,
+ void igt_dump_connectors_fd(int drmfd);
+ void igt_dump_crtcs_fd(int drmfd);
+ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
++bool fit_modes_in_bw(igt_display_t *display);
+ bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
+ unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
+ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
+diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
+index 9e9b1e6db..0152b7401 100644
+--- a/tests/intel/kms_dp_link_training.c
++++ b/tests/intel/kms_dp_link_training.c
+@@ -140,28 +140,6 @@ static void setup_planes_fbs(data_t *data, igt_output_t *outs[],
+ 	}
+ }
+ 
+-/*
+- * fit_modes_in_bw - Tries atomic TEST_ONLY commit; if it fails, overrides
+- * output modes to fit bandwidth.
+- */
+-static bool fit_modes_in_bw(data_t *data)
+-{
+-	int ret;
+-
+-	ret = igt_display_try_commit_atomic(&data->display,
+-					    DRM_MODE_ATOMIC_TEST_ONLY |
+-					    DRM_MODE_ATOMIC_ALLOW_MODESET,
+-					    NULL);
+-	if (ret != 0) {
+-		bool found;
+-
+-		found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
+-		igt_require_f(found, "No valid mode combo found for modeset\n");
+-	}
+-
+-	return true;
+-}
+-
+ static void do_modeset(data_t *data, bool mst)
  {
- 	struct igt_helper_process child = {};
- 	int ret;
-@@ -3973,7 +4067,10 @@ test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
- 	igt_fork_helper(&child) {
- 		igt_drop_root();
+ 	uint32_t master_pipes_mask = 0;
+@@ -204,7 +182,7 @@ static void do_modeset(data_t *data, bool mst)
+ 						  "Unable to assign pipes for outputs\n");
  
--		__test_mmio_triggered_reports(hwe);
-+		if (with_read)
-+			__test_mmio_triggered_reports_read(hwe);
-+		else
-+			__test_mmio_triggered_reports(hwe);
- 	}
- 	ret = igt_wait_helper(&child);
- 	write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
-@@ -4894,7 +4991,13 @@ igt_main
- 		igt_subtest_with_dynamic("mmio-triggered-reports") {
- 			igt_require(HAS_OA_MMIO_TRIGGER(devid));
- 			__for_one_hwe_in_oag(hwe)
--				test_mmio_triggered_reports(hwe);
-+				test_mmio_triggered_reports(hwe, false);
-+		}
+ 	setup_planes_fbs(data, outs, out_count, modes, fbs, planes);
+-	fit_modes_in_bw(data);
++	igt_assert_f(fit_modes_in_bw(&data->display), "Unable to fit modes in bw\n");
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ }
+ 
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+index 6a872efd2..64f21ec6f 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -151,22 +151,6 @@ static void set_connector_link_status_good(data_t *data, igt_output_t *outputs[]
+ 							  DRM_MODE_LINK_STATUS_GOOD);
+ }
+ 
+-static bool fit_modes_in_bw(data_t *data)
+-{
+-	bool found;
+-	int ret;
+-
+-	ret = igt_display_try_commit_atomic(&data->display,
+-					    DRM_MODE_ATOMIC_TEST_ONLY |
+-					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (ret != 0) {
+-		found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
+-		igt_require_f(found,
+-			      "No valid mode combo found for modeset\n");
+-	}
+-	return true;
+-}
+-
+ static bool validate_modeset_for_outputs(data_t *data,
+ 					igt_output_t *outputs[],
+ 					int *output_count,
+@@ -176,7 +160,7 @@ static bool validate_modeset_for_outputs(data_t *data,
+ {
+ 	igt_require_f(*output_count > 0, "Require at least 1 output\n");
+ 	setup_pipe_on_outputs(data, outputs, output_count);
+-	igt_assert_f(fit_modes_in_bw(data), "Unable to fit modes in bw\n");
++	igt_assert_f(fit_modes_in_bw(&data->display), "Unable to fit modes in bw\n");
+ 	setup_modeset_on_outputs(data, outputs,
+ 				 output_count,
+ 				 mode, fb, primary);
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index d53b83a86..19df03e92 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -93,6 +93,8 @@ static void run_extendedmode_basic(data_t *data,
+ 	mode[0] = igt_output_get_mode(output1);
+ 	mode[1] = igt_output_get_mode(output2);
+ 
++	igt_assert_f(fit_modes_in_bw(display), "Unable to fit modes in bw\n");
 +
-+		igt_subtest_with_dynamic("mmio-triggered-reports-read") {
-+			igt_require(HAS_OA_MMIO_TRIGGER(devid));
-+			__for_one_hwe_in_oag(hwe)
-+				test_mmio_triggered_reports(hwe, true);
- 		}
- 	}
+ 	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
+ 	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
  
+@@ -138,6 +140,7 @@ static void run_extendedmode_basic(data_t *data,
+ 	igt_fb_set_size(&fb, plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+ 	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+ 
++	igt_assert_f(fit_modes_in_bw(display), "Unable to fit modes in bw\n");
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+ 	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]);
+@@ -158,6 +161,7 @@ static void run_extendedmode_basic(data_t *data,
+ 			  DRM_PLANE_TYPE_PRIMARY), NULL);
+ 	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe2],
+ 			  DRM_PLANE_TYPE_PRIMARY), NULL);
++	igt_assert_f(fit_modes_in_bw(display), "Unable to fit modes in bw\n");
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+ 	/*Compare CRC*/
 -- 
-2.34.1
+2.25.1
 
