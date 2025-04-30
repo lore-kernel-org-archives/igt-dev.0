@@ -4,28 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 188E9C369D9
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 12:27:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E45AC369D9
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 12:31:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C1E1510E765;
-	Wed, 30 Apr 2025 12:27:10 +0000 (UTC)
-Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 457E810E766;
- Wed, 30 Apr 2025 12:27:09 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0094877703163617226=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id DEBF310E76C;
+	Wed, 30 Apr 2025 12:31:40 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BVvBPi1z";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AD8F10E76C
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 12:31:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746016300; x=1777552300;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=qSENg8aZ75GB5wct6ANuk8NFmZBVOi1qIl6cNPiG8Gg=;
+ b=BVvBPi1z2M99yFNaOQjzZTpVQX/idTGPiIsXYUEYqDUjh3dsq7CMduJV
+ ojjLpeyAL/DNQCyis9BJnboaXYgHFqiEsbGlpNUOyRIRHtTgfQ+ikyxF4
+ +9gJ0G8Fyg/JSpWDSLPsEme62Uti2fq+p84mVvzFz4znPCQ4YM9GicHZu
+ CI5AjVust7da1dMlI+HAek9BVznKpRId6FIjgAiLaAzLtyFfbQ32GuYci
+ EdPFJPRPw/IzZQxekz5PEXWFP3sPLIkpinDQ0arqjTIUdebRbDCURYA4l
+ wn0sQF8XXif6tbochR8H1GK6z0TPL253Mh2HCW39bDzErNR7YW6ayFExN w==;
+X-CSE-ConnectionGUID: W3OZQxq/TymS0NPraJ2uUA==
+X-CSE-MsgGUID: Dr7e3PwsQSOG+x/pEvhPOQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="46789472"
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="46789472"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Apr 2025 05:31:40 -0700
+X-CSE-ConnectionGUID: asp0kkK5SPiUm5nvKsET/g==
+X-CSE-MsgGUID: tmdMSQYeQc2vR4yoVd6X+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="134002052"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 05:31:38 -0700
+Date: Wed, 30 Apr 2025 14:31:34 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com,
+ thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Ryszard Knop <ryszard.knop@linux.intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: Re: [PATCH i-g-t] .gitlab-ci: Add explaination to run CI locally
+Message-ID: <20250430123134.iuolvropu7z6pokd@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ igt-dev@lists.freedesktop.org, ihf@google.com,
+ markyacoub@google.com, thomas.petazzoni@bootlin.com,
+ jeremie.dautheribes@bootlin.com,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Ryszard Knop <ryszard.knop@linux.intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+References: <20240710-gitlab-ci-local-v1-1-9c8d1dabeeeb@bootlin.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Ffault=5Fin?=
- =?utf-8?q?jection=3A_Suppress_Guc_CT_dumps_during_fault_injection_=28rev2?=
- =?utf-8?q?=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Satyanarayana K V P" <satyanarayana.k.v.p@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 30 Apr 2025 12:27:09 -0000
-Message-ID: <174601602928.29624.3816102390084151537@c664b1dc75d1>
-X-Patchwork-Hint: ignore
-References: <20250430073845.30093-1-satyanarayana.k.v.p@intel.com>
-In-Reply-To: <20250430073845.30093-1-satyanarayana.k.v.p@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240710-gitlab-ci-local-v1-1-9c8d1dabeeeb@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,314 +76,207 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0094877703163617226==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Louis,
+On 2024-07-10 at 15:22:12 +0200, Louis Chauvet wrote:
 
-== Series Details ==
+Sorry for late response, see my comments below.
 
-Series: tests/intel/xe_fault_injection: Suppress Guc CT dumps during fault injection (rev2)
-URL   : https://patchwork.freedesktop.org/series/148416/
-State : success
+> Currently, the CI can only be run on the mailing list. To avoid flooding
+> because of error in certain configurations, add a new .gitlab-ci-local.yml
+> file and some explanation to run some part of the CI locally.
+> 
+> Added some instruction in CONTRIBUTING.md to explain how to use this new
+> pipeline locally.
+> 
 
-== Summary ==
++cc Ryszard
+Cc: Ryszard Knop <ryszard.knop@linux.intel.com>
+also +cc Vitaly
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-CI Bug Log - changes from XEIGT_8345_BAT -> XEIGTPW_13068_BAT
-====================================================
+> ---
+> The "normal" .gitlab-ci.yml can't be used as it uses prebuild docker
+> images, only available for gitlab runners.
+> 
+> I did not include any debian build as I was not able to rebuild the docker
+> images.
+> ---
+>  .gitlab-ci-local.yml | 99 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Summary
--------
+Could you add this as a bash script which will create this file after running it?
+script/gitlab-ci-local.sh --> after run create .gitlab-ci-local.yml
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13068_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-lnl-2:          NOTRUN -> [SKIP][1] ([Intel XE#1466] / [Intel XE#2235])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_flip@basic-flip-vs-dpms:
-    - bat-lnl-2:          NOTRUN -> [SKIP][2] ([Intel XE#2235] / [Intel XE#2482]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_flip@basic-flip-vs-dpms.html
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - bat-lnl-2:          NOTRUN -> [SKIP][3] ([Intel XE#2235] / [Intel XE#352]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_force_connector_basic@force-connector-state.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-lnl-2:          NOTRUN -> [SKIP][4] ([Intel XE#2235] / [Intel XE#2548])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - bat-lnl-2:          NOTRUN -> [SKIP][5] ([Intel XE#1470] / [Intel XE#2235] / [Intel XE#2853])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
-    - bat-lnl-2:          NOTRUN -> [SKIP][6] ([Intel XE#2235]) +13 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-
-  * igt@kms_psr@psr-cursor-plane-move:
-    - bat-lnl-2:          NOTRUN -> [SKIP][7] ([Intel XE#2850] / [Intel XE#929]) +2 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_psr@psr-cursor-plane-move.html
-
-  * igt@sriov_basic@enable-vfs-autoprobe-off:
-    - bat-lnl-2:          NOTRUN -> [SKIP][8] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@sriov_basic@enable-vfs-autoprobe-off.html
-
-  * igt@xe_evict@evict-beng-small:
-    - bat-lnl-2:          NOTRUN -> [SKIP][9] ([Intel XE#688]) +11 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_evict@evict-beng-small.html
-
-  * igt@xe_intel_bb@render@render-linear-256:
-    - bat-adlp-vf:        [PASS][10] -> [ABORT][11] ([Intel XE#3970]) +1 other test abort
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8345/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:
-    - bat-lnl-2:          NOTRUN -> [SKIP][12] ([Intel XE#2229]) +2 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
-
-  * igt@xe_mmap@vram:
-    - bat-lnl-2:          NOTRUN -> [SKIP][13] ([Intel XE#1416])
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_mmap@vram.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-lnl-2:          NOTRUN -> [SKIP][14] ([Intel XE#1420] / [Intel XE#2838])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelp:
-    - bat-lnl-2:          NOTRUN -> [SKIP][15] ([Intel XE#977])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_pat@pat-index-xelp.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-lnl-2:          NOTRUN -> [SKIP][16] ([Intel XE#2236] / [Intel XE#979])
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html
-
-  * igt@xe_sriov_flr@flr-vf1-clear:
-    - bat-lnl-2:          NOTRUN -> [SKIP][17] ([Intel XE#3342])
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html
-
-  
-#### Possible fixes ####
-
-  * igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries:
-    - bat-lnl-2:          [ABORT][18] ([Intel XE#4830] / [Intel XE#4899]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8345/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html
-
-  
-  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
-  [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
-  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
-  [Intel XE#1466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466
-  [Intel XE#1470]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
-  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
-  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
-  [Intel XE#2548]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
-  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
-  [Intel XE#2853]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853
-  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
-  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
-  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
-  [Intel XE#4830]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4830
-  [Intel XE#4899]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4899
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+Also add .gitlab-ci-local.yml to .gitignore
 
 
-Build changes
--------------
+>  CONTRIBUTING.md      | 16 +++++++++
+>  2 files changed, 115 insertions(+)
+> 
+> diff --git a/.gitlab-ci-local.yml b/.gitlab-ci-local.yml
+> new file mode 100644
+> index 000000000000..21d4468379c8
+> --- /dev/null
+> +++ b/.gitlab-ci-local.yml
+> @@ -0,0 +1,99 @@
+> +image: igt-build-fedora
+> +variables:
+> +  BUILDAH_FORMAT: docker
+> +  BUILDAH_ISOLATION: chroot
+> +  MESON_OPTIONS: >
+> +    -Dlibdrm_drivers=intel,nouveau,amdgpu
+> +    -Doverlay=enabled
+> +    -Dchamelium=enabled
+> +    -Dvalgrind=enabled
+> +    -Dman=enabled
+> +    -Dtests=enabled
+> +    -Drunner=enabled
+> +    -Dlibunwind=enabled
+> +  LANG: "C.UTF-8"
+> +
+> +stages:
+> +  - build
+> +  - test
+> +
+> +#################### BUILD #########################
+> +
+> +build:tests-fedora:
+> +  stage: build
+> +  script:
+> +    - meson --prefix=/opt/igt $MESON_OPTIONS build
+> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
+> +    - DESTDIR="$PWD/installdir" ninja -C build install
+> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
+> +  artifacts:
+> +    paths:
+> +      - build
+> +      - installdir
+> +
+> +build:tests-fedora-no-libunwind:
+> +  stage: build
+> +  script:
+> +    - dnf remove -y libunwind-devel
+> +    - meson -Dlibunwind=disabled build
+> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
+> +
+> +# documentation building is different with meson<0.47
+> +build:tests-fedora-oldest-meson:
+> +  stage: build
+> +  script:
+> +    - dnf remove -y meson
+> +    - pip install /usr/src/meson-*.tar.gz
+> +    - meson $MESON_OPTIONS build
+> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
+> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
+> +
+> +# ensure igt_nouveau stubs build when nouveau support for libdrm is disabled
+> +build:tests-fedora-no-libdrm-nouveau:
+> +  stage: build
+> +  script:
+> +    - meson -Dlibdrm_drivers= build
+> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
+> +
+> +build:tests-fedora-clang:
+> +  stage: build
+> +  variables:
+> +    CC: clang
+> +  script:
+> +    - meson $MESON_OPTIONS build
+> +    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
+> +  artifacts:
+> +    paths:
+> +      - build
+> +
+> +
+> +test:ninja-test:
+> +  retry: 2
+> +  dependencies:
+> +    - build:tests-fedora
+> +  stage: test
+> +  script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
+> +
+> +test:ninja-test-clang:
+> +  retry: 2
+> +  dependencies:
+> +    - build:tests-fedora-clang
+> +  variables:
+> +    CC: clang
+> +  stage: test
+> +  script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
+> +
+> +test:list-undocumented-tests:
+> +  dependencies:
+> +    - build:tests-fedora
+> +  stage: test
+> +  script: .gitlab-ci/list_undocumented_tests.py build/tests/test-list.txt > undocumented_tests.txt
+> +  artifacts:
+> +    paths:
+> +      - undocumented_tests.txt
+> +
+> +test:verify-blacklists:
 
-  * IGT: IGT_8345 -> IGTPW_13068
+s/blacklists:/blocklists:/
 
-  IGTPW_13068: 0df3f0aa7604a6b8186f9033bd67947bc8bec8af @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8345: b0aa259fb34bc85fd27a2a710a862e6ebea02d30 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3012-fc3ad08303990b2481cc45a6103ed79935dd3797: fc3ad08303990b2481cc45a6103ed79935dd3797
+> +  dependencies:
+> +    - build:tests-fedora
+> +  stage: test
+> +  script: for bl in tests/intel-ci/blacklist{,-pre-merge}.txt; do scripts/verify-blacklist.sh build/runner/igt_runner build/tests "$bl" || exit 1; done
 
-== Logs ==
+Time to change this name also here...
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/index.html
+> diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+> index 2ab8a48f6ae9..721fc6035b77 100644
+> --- a/CONTRIBUTING.md
+> +++ b/CONTRIBUTING.md
+> @@ -78,6 +78,22 @@ Sending Patches
+>  - Changes to the testcases are automatically tested. Take the results into
+>    account before merging.
+>  
+> +- When pushing a new series, your series will be build-tested by the CI. It is
+> +  useful to avoid merging broken stuff. You can run this CI locally by using the
+> +  project https://github.com/firecow/gitlab-ci-local. To install it, please
 
---===============0094877703163617226==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Remove dot '.' from end of www address, also split line there:
 
+  project https://github.com/firecow/gitlab-ci-local
+  To install it, please
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+> +  refer to its README (on debian, the package gitlab-ci-local can be used).
+> +
+> +  To run the CI, you need to build docker images:
+> +
+> +    docker build . -f Dockerfile.build-fedora -t igt-build-fedora:latest
+> +
+> +  Now you should be able to run the CI:
+> +
+> +    gitlab-ci-local --file .gitlab-ci-local.yml
 
+Hmm, what about a script for running it for igt? so no need for params
+unless someone wants to run only to a stage below? So basically it could
+also be a script plus config for it:
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_fault_injection: Suppress Guc CT dumps during fault injection (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148416/">https://patchwork.freedesktop.org/series/148416/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+scripts/gitlab-local.sh
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/index.html</a></td></tr>
+with config in scripts/gitlab-ci-local.yml
 
-</table>
+Regards,
+Kamil
 
-
-    <h1>CI Bug Log - changes from XEIGT_8345_BAT -&gt; XEIGTPW_13068_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13068_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466">Intel XE#1466</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-connector-state:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/352">Intel XE#352</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548">Intel XE#2548</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470">Intel XE#1470</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853">Intel XE#2853</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>) +13 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-cursor-plane-move:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/929">Intel XE#929</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-beng-small:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +11 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_intel_bb@render@render-linear-256:</p>
-<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8345/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-adlp-vf/igt@xe_intel_bb@render@render-linear-256.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) +1 other test abort</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#1416</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries:<ul>
-<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8345/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4830">Intel XE#4830</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4899">Intel XE#4899</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13068/bat-lnl-2/igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8345 -&gt; IGTPW_13068</li>
-</ul>
-<p>IGTPW_13068: 0df3f0aa7604a6b8186f9033bd67947bc8bec8af @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8345: b0aa259fb34bc85fd27a2a710a862e6ebea02d30 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3012-fc3ad08303990b2481cc45a6103ed79935dd3797: fc3ad08303990b2481cc45a6103ed79935dd3797</p>
-
-</body>
-</html>
-
---===============0094877703163617226==--
+> +
+> +  If you want to run a specific stage, you can add it to the command line:
+> +
+> +    gitlab-ci-local --file .gitlab-ci-local.yml <stage>
+>  
+>  Commit Rights
+>  -------------
+> 
+> ---
+> base-commit: f48806ee249015e967bb220eba8559c5e829d609
+> change-id: 20240710-gitlab-ci-local-2751f8c4f26c
+> 
+> Best regards,
+> -- 
+> Louis Chauvet <louis.chauvet@bootlin.com>
+> 
