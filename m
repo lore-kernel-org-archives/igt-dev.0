@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07F01C369DC
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 01:37:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FA08C369DC
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 01:37:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD6A610E6AC;
-	Wed, 30 Apr 2025 01:37:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4612310E6B0;
+	Wed, 30 Apr 2025 01:37:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Grm/z2Fz";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="4lH8gn/D";
 	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2062.outbound.protection.outlook.com [40.107.243.62])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6DB410E6AC
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 01:37:16 +0000 (UTC)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2079.outbound.protection.outlook.com [40.107.220.79])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6730D10E6B0
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 01:37:30 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=atDvDyE9274x58CDg3AeSxQxllR7p56juwlNlAqymrOsxn4ucO28QT/yHmpFuFndPFKnG+U/JuWAvax7hxSZhbXIjypVKtdljqFQoQl9um/draU6m/Ir3+OMIlo/r4N+dwbV3ITih9vJX0rY+lkflbV03Qlcl12URBEmb2Ff8aHLZ3yH4s+RhqOOcJcyFzYU8XT2ugC2GN4lmk6FqwpIV2OfvVNWF77ikYbJN36TDNqTwUD2IWCpy0wv0DONzIfgVgd4vh+I0kidteLmF7birNFPcJyFEy5hisp9YLwunVdmKeRwm/Lj3F0QFw2vP4YlCoBNvhO90Kxc90bK6vEAjg==
+ b=qiIKUi9aG1MUE76ER5nlns5XXLFRI/9gNywjKytsO9JNoaSDXlcSyk2GXMNHeXjeJXR8QPQCPkRnUPXMgH8V+n9mN44AFB8FCLJlIJCyVOusnTyq3pj0sW7k/IEFtoAkz5vS+rYW5Y1fJLCtJLF8KqBVmPff00BJX/eGPkuZvkemMUSNUiY4OvxEd+1Xqn9aSAaU/K+td58zM3sYaVYI8UxgJiQcRrsGOugfmZUL33yZauHKeJguEBsjAJ0RsX+3ZApc4uZiLVKXISWTT7kBK/Thq4Im0WFnGvMtTU2+ULAIKtK5UALpnzkIZRhB7ouIlukpGzN8AoFm4pVWgFl8wQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wiFTY2YLmV1LRVrrERFGLeSG2tQJr+Z47+fHunHGOkI=;
- b=jMHNKPFcgCtk0jNqYbUHX7SOIyh+D1HVBdiWGlQBFVfLUkyLz/M6b7o64VRA1a1NERoU9WQv8fkMGEXXuJinnJu5mrrGren3qjVo/+Wu8u0yoqzR9KNlfi3b8+31ctNZGGmcKIz5qNxzVcwEsa/WXRwgJpiTlzwX9SMWmbOn9rm4UGTP6ldtlPL/7W9NGOZmsZSf162MZh57Z6SpRsa0wAiHcJ6U99sK0mv2emZiBsxQlQkx2ysZq47cDdzPiqeT+pObZE48hPGiTthP6EGbyfRF0OcNfV2Pjr/xZUEXk5G5qMxD3DlDUl697rdwDhifwWEca9t1P9xSYY3hHU+7BQ==
+ bh=X25cT+QgwIOD05wS58bABLpBLT8q1dbXE55FTwtiy0g=;
+ b=ck6Q3oZaA95ua2m+wDeil2+E13HbnoCDfdznviyLqIrl6Uy3J7NW4UllX0KZ/IRAFJ6XYukGX4OdVEZ7KxG42f8DISA7RLweuaCufU6FKmz6dgN+ZEOF0f0hXpZPQwORvYJhDYzl7goEGR9oFtbgwWLcjoFRGC1HbycdfH/Qi8PVqP2lLjjKTQi7hkhtl+/MI/1cx7hA9MzKrNtTZ+/gMAoR0OiFUEQ2krgWAvrMA/i92hVi5EqolwJ5WF+XEwNqglNZZNE6VhmPwH74qR/JKeazM+5DD9YcTcQ8FzxiIqy3ISf7StW9C6VZNYq6MB6DX8m7JFpT8ciHII2Msg5HFQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wiFTY2YLmV1LRVrrERFGLeSG2tQJr+Z47+fHunHGOkI=;
- b=Grm/z2FzaldhGK8F9Oh2jlMAPuhaU9yKnVfCvjUDF6+P2X2Ard93Ak3uFxF1u+TqjNwMOVAcsBe+hsb94QfA+HZ9bJPK27UZv+2trwuzsWRcX5Mh/3SMYsQUIsHPNPB8n9JEmJf+gy1RLR8s3p0MV4gKak+X0ZWQe6DHVQki/D4=
-Received: from BY5PR17CA0027.namprd17.prod.outlook.com (2603:10b6:a03:1b8::40)
- by CH3PR12MB8535.namprd12.prod.outlook.com (2603:10b6:610:160::19)
+ bh=X25cT+QgwIOD05wS58bABLpBLT8q1dbXE55FTwtiy0g=;
+ b=4lH8gn/DTdsC1ClZMRQImCXgsY6lAQGN6Je+UGwNR97MQi+B3E0WlEox9xmm51JciZvkMT6oItVapckx+Chdkb3R3kQ5/7DBBoz15Qjv6UY8+aO5rBHHLTuoIOdbNXaWhfLyIJS/+/aVPBNEMrzz9ytbTbLWvDJ+0uMT/dvGXdE=
+Received: from MW4PR03CA0195.namprd03.prod.outlook.com (2603:10b6:303:b8::20)
+ by IA0PR12MB8375.namprd12.prod.outlook.com (2603:10b6:208:3dd::16)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.31; Wed, 30 Apr
- 2025 01:37:13 +0000
-Received: from SJ5PEPF000001D5.namprd05.prod.outlook.com
- (2603:10b6:a03:1b8:cafe::3b) by BY5PR17CA0027.outlook.office365.com
- (2603:10b6:a03:1b8::40) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.35 via Frontend Transport; Wed,
- 30 Apr 2025 01:37:12 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Wed, 30 Apr
+ 2025 01:37:25 +0000
+Received: from BY1PEPF0001AE18.namprd04.prod.outlook.com
+ (2603:10b6:303:b8:cafe::d2) by MW4PR03CA0195.outlook.office365.com
+ (2603:10b6:303:b8::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.36 via Frontend Transport; Wed,
+ 30 Apr 2025 01:37:24 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,20 +48,19 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ5PEPF000001D5.mail.protection.outlook.com (10.167.242.57) with Microsoft
+ BY1PEPF0001AE18.mail.protection.outlook.com (10.167.242.100) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8699.20 via Frontend Transport; Wed, 30 Apr 2025 01:37:12 +0000
+ 15.20.8699.20 via Frontend Transport; Wed, 30 Apr 2025 01:37:24 +0000
 Received: from smtp.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 29 Apr
- 2025 20:37:11 -0500
+ 2025 20:37:23 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: <alex.hung@amd.com>, <harry.wentland@amd.com>, Bhanuprakash Modem
- <bhanuprakash.modem@intel.com>
-Subject: [PATCH V8 09/36] lib/igt_kms: Destroy colorops on exit
-Date: Tue, 29 Apr 2025 19:34:27 -0600
-Message-ID: <20250430013454.226910-10-alex.hung@amd.com>
+CC: <alex.hung@amd.com>, <harry.wentland@amd.com>
+Subject: [PATCH V8 10/36] tests/kms_properties: Add colorop properties test
+Date: Tue, 29 Apr 2025 19:34:28 -0600
+Message-ID: <20250430013454.226910-11-alex.hung@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250430013454.226910-1-alex.hung@amd.com>
 References: <20250430013454.226910-1-alex.hung@amd.com>
@@ -73,52 +72,52 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D5:EE_|CH3PR12MB8535:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2f2c35d4-da78-4464-fac0-08dd878787f8
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE18:EE_|IA0PR12MB8375:EE_
+X-MS-Office365-Filtering-Correlation-Id: 269ee11b-87fb-4494-4461-08dd87878f20
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|36860700013|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?KohFgse0K8sH3muyD7GeO69z+O74Gpj+HlTl9StjgIOmV8+CmwZEWA57m/br?=
- =?us-ascii?Q?HS5rvts/vraX/8n2SvG48iYULLgxOKtgz05CDyjIE43dWtSy2+tf5T2za/2k?=
- =?us-ascii?Q?PV2HE3piEcl1rtFX/ls5EOWr6RlTzEzAVwsGFxhipqTSB1PJ1A+1XimnFSc/?=
- =?us-ascii?Q?zHPNDAHs/NoWFy9fDlgqa3j026khUwMHIqWf3/PcCfMhdtlf1sMKsqPswEcS?=
- =?us-ascii?Q?JFoBaggSCO3Bq/946DtMqeTNp+ACTcrTZbxARK7tvb6mClOyNSLCJUXqeJ/7?=
- =?us-ascii?Q?uWBqkXkgqefvDAxaBZVLKH9+wUvYnRIuMMxbtzcKTlxeRdF8LnhC7NP4lp8m?=
- =?us-ascii?Q?OR0zpQ9oEe4M6QyKnoVDguu9pb9WHpNv6PHmhR2H4GPMowxsZFf7XeIwyaKt?=
- =?us-ascii?Q?azYZDLHTEjYIwZCwDtoO+DG7bbU8hcVb6TA9bK1cMNluH0GnqvdSQ9GFnpf/?=
- =?us-ascii?Q?EG67IW6MYTMaHfCkmkmQpvAhUrbWn2wMFC8xs8lAm/DDrEasNN4o617qFKVY?=
- =?us-ascii?Q?SeJkuo/JQW71RmwoCB1EhSs0shuuw2vIqHKo5yHILBAQc60soe+d3kcqSZ+f?=
- =?us-ascii?Q?XvuJOB7wBQGN5RSlmvXQksLJcsVPYu5zhJjd5RqtsZxrbB57fLMFs5/9l7yY?=
- =?us-ascii?Q?kOM/aPS1tVGQeH+wY/fl+4kU1wKWoMWVMWowJKb3OXk/+zMluyPwgxOr7DZT?=
- =?us-ascii?Q?dH2w8Wck5vyqiTi76m1dycY9dR0ljeDQ4LELrNzalKfO2YQRM9RNGPCQhtuQ?=
- =?us-ascii?Q?+g3wF+LJ17OFKGBhyc5920HStlLbDOEg7+5fyh5U1iVmNUZplnb76bjgJtUk?=
- =?us-ascii?Q?2r11CTXV4kWiwHXqImChx0OeiCLuxujwCSoxMGozWLosQl+hf3AEn+jquTkK?=
- =?us-ascii?Q?EmImgAS6Tqvo7zeKpMjV7ZrkSOIHSAVhT6VpKIH3ryYHmv9dr6F/6Ir0S8hO?=
- =?us-ascii?Q?qGUnYZ+BtgO3f8+n3OLcyjXJl1Md0eK3+C64f2Hl030Hf29vPvdwnmk764vT?=
- =?us-ascii?Q?yOiOtWaGCATsVWGnr+4VVaqh8ucn1QHsHgexE1GK0UhfpfRB9IqAjSuUtnyO?=
- =?us-ascii?Q?TPmw65rCpTiv9Ff3/sCFFTSVsSB2uilk9IC8T38kG+kCfdhklawhtx66dWqV?=
- =?us-ascii?Q?UmA41OoOGcVKtzNDpUdmBjhw2O9740YzIyXeHkqKKutLtZXXN2LptIFdHB+z?=
- =?us-ascii?Q?FBqzyh7D6frJF3GjNg2bfaOnLubdYzsFMMy/THd4B5Li+CxZnYAGarOF5GDF?=
- =?us-ascii?Q?fc3zLoRTxmqW12RpT36yJufPtVOcVFrC+vQ9v37cHcVKCRxPA0b0yPtb5+W7?=
- =?us-ascii?Q?jvp8Tn95M2nfkwk04wNJzzavzJ61MH+aXTkob+AioEc2Pb0A45dqleI7UDNh?=
- =?us-ascii?Q?gB4f68PMI42omfuwi00i1yfFgStqjYGrl2hGOnbJ/gJm0yHerwbbpKXEn0+W?=
- =?us-ascii?Q?iwl2SAP9QOn5TICxNxFbl+fP6wyOXyXWlpQ7XRFMq5bYBOP31PbNukJJ0I2q?=
- =?us-ascii?Q?XvfNpsABBWhibpdalmmD7LmdUvxVIZHMW+p6?=
+ ARA:13230040|1800799024|36860700013|376014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?lL2oYFYMohYFTgD9v30JgmPa3wvDwHImzV3wXaEP2DeyalbvwdgoDvKJdXd9?=
+ =?us-ascii?Q?txfJvo1nN1/AuvqvOtSQRmPaJzLEe5H9tyf02Lyyep3A1QIBGqdgtLYa5eNO?=
+ =?us-ascii?Q?9qE8cMtQBbAto31i4GchdpO8UfUZUHtOGX49pjkChTrNa+mIPOzMtTmFx2VJ?=
+ =?us-ascii?Q?IPvZs8jcwOn7B8ABtyd7tOxWn06V54LRq1cbv9k/XrBtr3domQjOb70mQyud?=
+ =?us-ascii?Q?nKf8wjN6PdB/XyC+8GNy/wwqlhmBXVd1pRPcmOP2qh4WSyodKdkfOoOc5a24?=
+ =?us-ascii?Q?Z381wYzoLMky8tVjBD6gsh5MWGu6zJSeAKEhLjM6am0ppQK1RPoWtJWcSPvN?=
+ =?us-ascii?Q?NOA2KewGmVSdYawq18vj0lzpYquBvY5zNNJTVDFbiwGM/cz4HJFBw4K4jOjb?=
+ =?us-ascii?Q?lqq/xFbQSFEcGshXhdP9qO8OS9jzycXBirVgiT4gIY/0ttcfFTefwPW1aDKa?=
+ =?us-ascii?Q?rlDoRo2Ql32xp42vrkVgF6yNgAt4+GALpdZq7QhBF8rGRF5VxIX+uCxRXgpk?=
+ =?us-ascii?Q?zFDDXR9YuePiUWECSHy/h7iV8ZedrbxWEgyy21dRG4dWLzfjg/DvgOitPPc4?=
+ =?us-ascii?Q?JVcMxKazm/vtkGX6LfmQWAFggHmQsZB5wST4F77oRhbuNc5lZ4QiN0d0ZDdh?=
+ =?us-ascii?Q?+9lLLNmVVIwKvftBNHMft1B6QWGZ9Qn1TCEFN/KsMhnBrNvTplV63ej+br4S?=
+ =?us-ascii?Q?pHn9vAAmdw6jb6OUV7bhuOzD2Y9ggEuJiuXOKQg4S7j6NygxeRi1/0gz8hQ4?=
+ =?us-ascii?Q?nRvMjKfcumQq3h5QNQwT9ghUppJws7CtJyplqUpYVlwkQiUu8/pDLxeLpyMA?=
+ =?us-ascii?Q?TuZI6Vc5o1xPvRVl7r6nXLvTScWc1k6DcDLc+gFTFustbGErWGCeLfWVKfVV?=
+ =?us-ascii?Q?twKkA4LEYwlibnqnr8mZWzVpWRKRukMbeYTzGDc3HDoUjVWmnGNeLkrXk/1S?=
+ =?us-ascii?Q?sUtFLKjzTe8BobsM/0oegop9hyDiqUj+sCJ8NI2cAsIBy7Wg7GpQM+4ewP3S?=
+ =?us-ascii?Q?mhswUwa9hr0TJBrbxuXL3Ls4JzwAmLNXFyz6lfzQsHdZ3S2/SPcCcwKqnB3p?=
+ =?us-ascii?Q?d6tyA6xXjM3JtXMgRzmyzy1PzD6yhh/Xn2Dj8iuDDPd/Fize9UZGDdlTU3Hk?=
+ =?us-ascii?Q?qmZAvzWfW45t/Ov7XjhS/dU8NOSMGgq2oEvJij7hDqtSv+p87Quft9051k5C?=
+ =?us-ascii?Q?OUrXnstU4gT4gVHmpwJigGz/6PTgxT9pxPFSTA0sutuT4hcqXPBlhxyubidd?=
+ =?us-ascii?Q?MeujMmw/K++3q8JrbS2kM0cI7zVG0InF2RM+0K0fd+cbV3S70BBgMxX/h8uv?=
+ =?us-ascii?Q?V9o2SHVFTBOL59gXUHHs4iOLvZJxTP7xV93uGMiiUTVz0kDzWt5T69R+sBFB?=
+ =?us-ascii?Q?vAwjeMN7GJk3i8ifyQ4DS+sWEfYGb3YVzA3jJWRyBHegL2ZtnhX7tckYLhjc?=
+ =?us-ascii?Q?Jka/r+mumFHrZe57LIXxlkrTG9uU51L4BR0IAE6Aiyc7MPEoWHN0rsMXer/y?=
+ =?us-ascii?Q?6OjRD5L9Sb8cKhVQVbbwGvZYKW1Z+it5P+CC?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024); DIR:OUT;
+ SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 01:37:12.6637 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f2c35d4-da78-4464-fac0-08dd878787f8
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 01:37:24.6670 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 269ee11b-87fb-4494-4461-08dd87878f20
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF000001D5.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF0001AE18.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8535
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8375
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,46 +133,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-- Free the memory allocated for colorops on igt_display_fini()
-- Disable COLOR_PIPELINE on igt_display_reset()
+We've introduced the concept of a new DRM core object, the
+drm_colorop, to represent a color operation as part of a
+color pipeline.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Add new tests to kms_properties to test the properties of
+a drm_colorop object.
+
+v3:
+ - Update test to work without new libdrm definitions for
+   colorop objects
+ - Test colorop properties with both atomic and legacy
+   code paths
+
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 ---
- lib/igt_kms.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/kms_properties.c | 69 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e5d51487a..0df892d28 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2703,6 +2703,9 @@ static void igt_plane_reset(igt_plane_t *plane)
- 	if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_Y))
- 		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_Y, 0);
- 
-+	if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
-+		igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
-+
- 	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
- 	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
- 	plane->gem_handle = 0;
-@@ -3431,12 +3434,15 @@ void igt_display_fini(igt_display_t *display)
- 
- 	for (i = 0; i < display->n_outputs; i++)
- 		igt_output_fini(&display->outputs[i]);
-+
- 	free(display->outputs);
- 	display->outputs = NULL;
- 	free(display->pipes);
- 	display->pipes = NULL;
- 	free(display->planes);
- 	display->planes = NULL;
-+	free(display->colorops);
-+	display->colorops = NULL;
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index 1f21fd851..8562618bf 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -47,6 +47,7 @@
+  * @crtc:            CRTC
+  * @plane:           Plane
+  * @invalid:         Invalid (connector/crtc/plane)
++ * @colorop:         Colorop
+  *
+  * arg[2]:
+  *
+@@ -232,6 +233,39 @@ static void test_properties(int fd, uint32_t type, uint32_t id, bool atomic, boo
+ 	}
  }
  
- static void igt_display_refresh(igt_display_t *display)
++static void run_colorop_property_tests(igt_display_t *display, enum pipe pipe, igt_output_t *output, bool atomic)
++{
++	struct igt_fb fb;
++	igt_plane_t *plane;
++	igt_colorop_t *colorop;
++	int i;
++	int colorop_id = 0;
++
++	prepare_pipe(display, pipe, output, &fb);
++
++	for_each_plane_on_pipe(display, pipe, plane) {
++		igt_info("Testing colorop properties on plane %s.#%d-%s (output: %s)\n",
++			 kmstest_pipe_name(pipe), plane->index, kmstest_plane_type_name(plane->type), output->name);
++
++		/* iterate over all color pipelines on plane */
++		for (i = 0; i < plane->num_color_pipelines; ++i) {
++			/* iterate over all colorops in pipeline*/
++			colorop = plane->color_pipelines[i];
++			while (colorop) {
++				igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
++					kmstest_pipe_name(pipe), plane->index, colorop->id, kmstest_plane_type_name(plane->type), output->name);
++				test_properties(display->drm_fd, DRM_MODE_OBJECT_COLOROP, colorop->id, atomic, false);
++
++				colorop_id = igt_colorop_get_prop(display, colorop,
++								IGT_COLOROP_NEXT);
++				colorop = igt_find_colorop(display, colorop_id);
++			}
++		}
++	}
++
++	cleanup_pipe(display, pipe, output, &fb);
++}
++
+ static void run_plane_property_tests(igt_display_t *display, enum pipe pipe, igt_output_t *output, bool atomic)
+ {
+ 	struct igt_fb fb;
+@@ -277,6 +311,37 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
+ 		cleanup_pipe(display, pipe, output, &fb);
+ }
+ 
++static void colorop_properties(igt_display_t *display, bool atomic)
++{
++	bool found_any = false, found;
++	igt_output_t *output;
++	enum pipe pipe;
++
++	/* colorops are only available with atomic */
++	igt_skip_on(!display->is_atomic);
++
++	for_each_pipe(display, pipe) {
++		found = false;
++
++		for_each_valid_output_on_pipe(display, pipe, output) {
++			igt_display_reset(display);
++
++			igt_output_set_pipe(output, pipe);
++			if (!intel_pipe_output_combo_valid(display))
++				continue;
++
++			found_any = found = true;
++
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
++				igt_output_name(output)) {
++				run_colorop_property_tests(display, pipe, output, atomic);
++			}
++		}
++	}
++
++	igt_skip_on(!found_any);
++}
++
+ static void plane_properties(igt_display_t *display, bool atomic)
+ {
+ 	igt_output_t *output;
+@@ -854,6 +919,10 @@ igt_main
+ 		  "Tests connector properties with legacy commit" },
+ 		{ "connector-properties-atomic", connector_properties, true,
+ 		  "Tests connector properties with atomic commit" },
++		{ "colorop-properties-legacy", colorop_properties, false,
++		  "Tests colorop properties with legacy commit" },
++		{ "colorop-properties-atomic", colorop_properties, true,
++		  "Tests colorop properties with atomic commit" },
+ 	};
+ 
+ 	igt_fixture {
 -- 
 2.43.0
 
