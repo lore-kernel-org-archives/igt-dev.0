@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94FCBC369DC
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 01:41:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E664C3ABA5
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 01:42:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4911D10E6B4;
-	Wed, 30 Apr 2025 01:41:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 34F4A10E692;
+	Wed, 30 Apr 2025 01:42:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="dLqiXQ8c";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="GBrAJOV1";
 	dkim-atps=neutral
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2056.outbound.protection.outlook.com [40.107.94.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9247310E6B4
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 01:41:43 +0000 (UTC)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2082.outbound.protection.outlook.com [40.107.244.82])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0B3D10E692
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 01:41:59 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PJMgWTHVEP1Nra4Xwf3XMCLWF8kuRHNm4IWu1s/RiAsbOImqWtUlK9+ik6+rB5IiJCmfPinSRbQse4l7MHP9PnM3zfH2JSt2DyHRyyrEmDC2eHaHo/ClTkY6+bj37Mei4pXvZyQ+2/zpufl+zDn3aWCn0JXiEH+6VXNSe3N6IFpvWras1mgBHvuuFcb6nZm4woa+lO24xPKPeSs6aszqIzsB9LHcLyWNsw1ZYfbX2L7L+H68bWu6xMJZGyqX0hTrOmXv/dSJzcHL5SxV4NyxcpJoEukTVNZhSnV/chLjVKHlv+CfzCea76ktIQwSYXk9L78K/RzrN7e/AHcKeLQtpQ==
+ b=a0B7ZbOW1IG/zriS/J72WMLHAgXfG8CBBzLtTDFifb2Wls+9eawixD7oW0qKoYuWuCkEC6CQeJpTdN1J6JXJ6G91yYsczrK7V/05MHl2n9gw+N6nPLYDAgVTX7ksJWLTBQAh56cdWnSPwA4GfyrOoXEXX7HiJhblCn6hkwklMkNs8EZY+1Z0pG+n6QqQLrHF0I9/beBFQVnL+Fv8v6n6nADx0LQj2aHrAbfFxaPY5S6NcDVhMGNNHGHIUDL8FUGnbQYUzB+4sKxc1tWLAuutpcFb5zAqQSHCNclodGxAS5u0X0YDX2dEHq+uWCx8chU1j3jAhTtDaLHxzBmr7HGPNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wjqUeAPudFxaGtn8skNS5B3uPORUxCJWx2ffXlW9FwU=;
- b=BxEZfgwbEmEG43EieXiaYyhcAIDpO6CO26kd4WIqkDT/PyTV5A+bnCKQLrdsklnQ1h7rfSGps2r9NwQTuZSs7uu9uFcOzD5Hpk2tH1X3iW4dycaPDmhKobKjgYCV5WwoD/MEa3mh8hhmcqTFry/2o7/+ZZVBX0svklJbu4RxFobvhGhU2DO6WgQC3RYvf3R7AXC0X+6KSTvf8csUBPx25VoQpfzmLliv4BR9nDIe2MIIfs5K/0l2D/YaddkDu33O/NFG3aSf8MzPsXTKEKYNPTxfbujcSI90U+g9neknKRE+PbfoSGvnHETM9KGl/d5OdgkMSHFjiglV8MlH40Ky7w==
+ bh=yNqh/UiBfAhqUxZpLKE7ErOwDEyL8/860W7mvRJgxuk=;
+ b=ak4K4ALf39/toiKdTMZwjNUyygZnVfIm4EdZBsgev9Jgq7vZXRR//6YH3fa4Mpw9hd7SKSqyC5OGaigF394YGz+WpWW0U7lEXzdKDJXGZ4EtN7VVcLknHce26f3NnUd8JGW7pGTltDlI8C0+NKjdichT3wxZS1Z2HXSiAd37qmM+7o0rK6R/oCgeYJ8XMdiCS88/f77Eg+i6PZCP8WpKYcMW2jB3uFxa3MI1RYnHoWdSY4/IJ3pictvW9YkpseXdWbbPGdXLpMUW+vcWbns1QvQCawEc+CeNZdZUd6zgAXUEnk3zggkx7aFn0Wp7MxvXoeevQ6XeKogs97rl8YQdZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wjqUeAPudFxaGtn8skNS5B3uPORUxCJWx2ffXlW9FwU=;
- b=dLqiXQ8cZg0uncBJF01uiypnupFCbe+mvwMsEl5STB+e4uXay6VChVqxhwl9W/JZXMaofIGGlsH+MMS6XabKBhAkbGLnDvqA44AdGHxS77E+ixWBKHKkRQ3qa0TjYO9hIyR7SnKRjUbGhIUWIb+xYQEt0QALp1XAJGgf/EUhdc0=
-Received: from SJ0PR05CA0098.namprd05.prod.outlook.com (2603:10b6:a03:334::13)
- by SA1PR12MB8094.namprd12.prod.outlook.com (2603:10b6:806:336::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Wed, 30 Apr
- 2025 01:41:40 +0000
-Received: from BY1PEPF0001AE1A.namprd04.prod.outlook.com
- (2603:10b6:a03:334:cafe::d1) by SJ0PR05CA0098.outlook.office365.com
- (2603:10b6:a03:334::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.23 via Frontend Transport; Wed,
- 30 Apr 2025 01:41:40 +0000
+ bh=yNqh/UiBfAhqUxZpLKE7ErOwDEyL8/860W7mvRJgxuk=;
+ b=GBrAJOV1TXK/7yTICQ98ATdqBNjG+suZ/KWaMlXk5R3itDPC4Wutj+UKnbRKYyNUGZeQ/XM5oNcgNdS2k0zFoYppr7A4XB7VJKDJlF+T9DKHLrPplP5X57eT5NyqsieCeM6hUYxH8iwAj8PIdLkBytlcnXMU42J9pD7bDKbfo7w=
+Received: from MW4PR04CA0272.namprd04.prod.outlook.com (2603:10b6:303:89::7)
+ by IA0PR12MB7675.namprd12.prod.outlook.com (2603:10b6:208:433::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Wed, 30 Apr
+ 2025 01:41:53 +0000
+Received: from BY1PEPF0001AE1B.namprd04.prod.outlook.com
+ (2603:10b6:303:89:cafe::96) by MW4PR04CA0272.outlook.office365.com
+ (2603:10b6:303:89::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.41 via Frontend Transport; Wed,
+ 30 Apr 2025 01:41:53 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,19 +48,20 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BY1PEPF0001AE1A.mail.protection.outlook.com (10.167.242.102) with Microsoft
+ BY1PEPF0001AE1B.mail.protection.outlook.com (10.167.242.103) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8699.20 via Frontend Transport; Wed, 30 Apr 2025 01:41:40 +0000
+ 15.20.8699.20 via Frontend Transport; Wed, 30 Apr 2025 01:41:53 +0000
 Received: from smtp.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 29 Apr
- 2025 20:41:37 -0500
+ 2025 20:41:51 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: <alex.hung@amd.com>, <harry.wentland@amd.com>
-Subject: [PATCH V8 31/36] lib/igt_color: Point license header at skia license
-Date: Tue, 29 Apr 2025 19:34:49 -0600
-Message-ID: <20250430013454.226910-32-alex.hung@amd.com>
+Subject: [PATCH V8 32/36] scripts/convert_3dlut.py Convert a 3D LUT to
+ igt_3dlut_t array for 3D LUT API
+Date: Tue, 29 Apr 2025 19:34:50 -0600
+Message-ID: <20250430013454.226910-33-alex.hung@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250430013454.226910-1-alex.hung@amd.com>
 References: <20250430013454.226910-1-alex.hung@amd.com>
@@ -72,51 +73,52 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1A:EE_|SA1PR12MB8094:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81460c6c-ca78-4842-f886-08dd87882787
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1B:EE_|IA0PR12MB7675:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2896d277-e95b-457f-3beb-08dd87882f18
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|376014|36860700013|13003099007; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?6lK3SRnrKUSJJJfYpAEY0RzT7zAJBLX1cpXNL2c0QO+HmFXWEoqsUCYxsYIt?=
- =?us-ascii?Q?F5/m3vZA6530/GTISZW/umK4I9TBQUIMbBEqkNtZqT06HakncUqxGJ243BfX?=
- =?us-ascii?Q?Mf5HPH5qh5PKkjol860MEgMFvU2mZPcpE6wUmkLdKwBkM/i5X6bZEkcF9cH/?=
- =?us-ascii?Q?A9Y0ub1ntEqPBC3d0gBZTjMfhlSo0VOVQ3OrofGgduGimK0F6CZaXr3ylJCx?=
- =?us-ascii?Q?97CtKe010G/5v706XwMahsQ9LFzqh0HmC79uDHowcHy56LZkOC9Lk5CQ2cm/?=
- =?us-ascii?Q?PB/zliKmY3DdBjM2eIkA3re8zQj8IblzlJUnrasUv5aFBxgkjz5OKxrxq7VV?=
- =?us-ascii?Q?WGHxuIQtACcmzNicsAPq1MDwOR7cyR7qfniGVcWiJBCYYlG2OWV2FAe2DOVh?=
- =?us-ascii?Q?XOv6PUGOC4abaGKtLTSg5afdcpbd/XEQ0rjFH3bueGPtB4Y/6ukXVuKpMk06?=
- =?us-ascii?Q?BfTrisA/uBe577JqJi+dYmul8R7NFsflNGealySjs0f4DfBYshGF0h/HrVpz?=
- =?us-ascii?Q?N5tIrVyONfXWWFXVRmYWtvfy4fCmLdfzL2vUcWlO7KAs5SwH5S0Myc/cLkjp?=
- =?us-ascii?Q?HZ86uJJxnwoHpe4BbDq+9TfRbf6rEhKacGLo1m038aHghq4fRKTN5bclcXGM?=
- =?us-ascii?Q?vkXVPR5ST4sCFvCttnqfZGU+5obJgRMa2SnYrfsVvNYMYk8ZqbcI0K85jipy?=
- =?us-ascii?Q?IGzSnLqxdGnS55X6VOW7tHtvBWhqhM6tBUjeI2VEAxoH5n1oPP7Jma//0ph1?=
- =?us-ascii?Q?ItcPwCXt8vExX5Kn8p85YYR94btZZ57CtH3I1iI0BlVLGzjxgymVJauG9qZR?=
- =?us-ascii?Q?VsdPXqGGjoOJz0OlngjJYFe2xk9bYObWJ7h7Htw0Hw1x4uI7u8Wmb4NreN5q?=
- =?us-ascii?Q?zVFfGaFgYFwuXn05Qw2kgzz5lNyuY5JRSQy2EzOJ+3ITrj5WR0iDis8krwqy?=
- =?us-ascii?Q?xmrMxNbp2IKkXgYual9Az8kJOKyMOSzUON9UcxY6KPAdJfyPPswSITeqZioZ?=
- =?us-ascii?Q?mKAMCJPNKtSpjC6xdgE3mtWV5RdgOyvk/+Qgnq8uJc4RSGOHYA5HmGIhWO6g?=
- =?us-ascii?Q?LPLkaJQfXkUSa/nEPunObcq4FB3D7F/4eDvAIE2qqthkcTIJtiT++hm/VWqC?=
- =?us-ascii?Q?49lRHs6uOJ77FsFhmSJa/6NJELLmhl2s6QLBU+Bbi3FIo1dfthJzcLSK7W8U?=
- =?us-ascii?Q?Et1VtVHKgSG81vkU6jihA4edr81a6OHoLDEU//IzgOF/nHHjlNr34DTGQBTk?=
- =?us-ascii?Q?r4BsKwdSbtrcvFO7oabdvvVqTTnGfJUg0MECnWDBev6CcM67OJg+s5Za2XD7?=
- =?us-ascii?Q?YCsoePxy4yHFFV+X6gPH3aFJkk07cO3HD7a49no34Pt+uK5X34+8LtNYydo9?=
- =?us-ascii?Q?ZCGtYCcCSX6CYP8AOw7f70skMsX4UpUP+vICUdL0nUHwPvIAU3Q/LpAWJ8iy?=
- =?us-ascii?Q?CJh+Btq3qO1b39wXz2ba2uT2Q7N9MtUByDN3V47ueWpkf4qaPRZ/3g=3D=3D?=
+ ARA:13230040|1800799024|376014|82310400026|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?sH1s92sSKtOGpWThmd8J1kNSkYhbDF0KL7VVJDpI+240+/p5VwAR7+zYjAty?=
+ =?us-ascii?Q?9enBw7bZkd+u0/YHl8lt7EItwXuIFjWLCpZ31HPX6PrJOKvtCQzxD+jAOlRJ?=
+ =?us-ascii?Q?2FHmpYfYE9++2y3zI2SIQT73O9A28ncH2aBfa3iDREdwEJiKqADx27HQmeel?=
+ =?us-ascii?Q?+Gg4YselTuDXz8TPNISf6JrWSlBHiHK5j3h85d9YjUsH9bwtJB5a9HHv4ltk?=
+ =?us-ascii?Q?jvDuw5Gq62jncDdFpmoBlU+SwfS7FmpqShoqB/1Gu01mApK6XxcfOI94tB7E?=
+ =?us-ascii?Q?TqudPcGZxHMoRkZhim6TNi48LVHS8194r4RPuV39xMyJW2zaxvR5PRUVY2FU?=
+ =?us-ascii?Q?QecoX9GjkcTwhRHTIak4olvrih1lbEJVtVWPY92/PltE27LCmXlTDpRg90HG?=
+ =?us-ascii?Q?ki7MxR864E6piL0h/9Rl8+GxK7t9hQiYexMPLhnzJT8tD18uNwt15AHi2MoY?=
+ =?us-ascii?Q?F3uxEPyUEuxXScTwvqxSflZRG77hVnVMpz1Q9Ylwg3Woj43H06BvAdVRRlqd?=
+ =?us-ascii?Q?Vl+oA9g3RxMbCiCeMSY5XIeGMtjSTl1haXGbN65NURBRLGSbATeuG6tcFuHx?=
+ =?us-ascii?Q?gqGWqF4kHU8YBWb3h+0/kwBUVGzo/2UVQlWLzNeL9B0ili+WtCXkCaIGuj7X?=
+ =?us-ascii?Q?NkI2UpkLI8FvPsi4NZ0Mlb/tKqZq4lO6EClG5dQ9WqkWxKOvaWm0R0rarfKy?=
+ =?us-ascii?Q?JohyRuAlehMwidQ7VungdgG+nLwNiEdljqhPMo4W9BbcwZpKsC19V2KpOI1B?=
+ =?us-ascii?Q?FiGLqO4regxJyY28zZyVoC0mInEpJQ3vcjwBZ14EH96l5/VP7JR1qAShTGD9?=
+ =?us-ascii?Q?JqR2ZbfXHr+jMnOFzm5dBVcoMhgfDwOik+tC6NrI2gApyORTF3nKa9gPiBGC?=
+ =?us-ascii?Q?dyjL/XzSeabdFAjKDU79pa8LwuAQfezEU8wIyYo5hVIWnmHXo1USRPfXnTYg?=
+ =?us-ascii?Q?VYRLEllaVdnBU2VIeAWnfBlErvyI5yvRs4fLsV2uZrqyDi8fXIXRldr9KsGN?=
+ =?us-ascii?Q?yR6UouyXXJpJ2G25eMpvY+bpdvhkSMDKr65GvZrn4tEDvdvIwsUGm8/dWnwT?=
+ =?us-ascii?Q?FDN3aidLaZpZSATbALI7XZKnmdpQmM3gPYR21zsPN4S4mW6XymCEdhplD5hT?=
+ =?us-ascii?Q?lPMFzvUiqqcj+LYqwdUcEecMqJ7Aq633n8cZYsiCg8Gcc2zTfiKpZ8zRg2Nz?=
+ =?us-ascii?Q?xlYWt4IswaTtQ2FpFgXgwggJg/stY38dOYuFi5SIovf1APCNVN+3t0anxxJD?=
+ =?us-ascii?Q?tO7P92I0FtVxPE3JCacwr6G/xeBGwNFTVo11JXuk6C/G3q+xaixmTwnDjXSe?=
+ =?us-ascii?Q?YQfuQL0jqJvacbEiYN/73yRvq+TMw+h6+klWJfcBY1mIle+7tmoWn2lppAnZ?=
+ =?us-ascii?Q?MnZmmu0fyCBO2a6TuZQ5A2SQlwSVK43hrqGyC/RTkWdFK/NdMsJmoMuUxZap?=
+ =?us-ascii?Q?AtG33wn056fq1JSgvvHZOhveqMBWvkbtI27WpD1T0fgNMrmteKJqnJP8ljrJ?=
+ =?us-ascii?Q?nPkv0pPA5OIQM0TTBbAe99zsx1OfchoyY3eY?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013)(13003099007);
- DIR:OUT; SFP:1101; 
+ SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013); DIR:OUT;
+ SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 01:41:40.3554 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81460c6c-ca78-4842-f886-08dd87882787
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 01:41:53.0488 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2896d277-e95b-457f-3beb-08dd87882f18
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF0001AE1A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF0001AE1B.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8094
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7675
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,28 +134,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Harry Wentland <harry.wentland@amd.com>
+This script converts a 17x17x17 3D LUT in a txt file to the following
+(i.e. 4913 entries):
 
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+	{ .red = 0.000000, .green = 0.000000, .blue = 0.000000 },
+	{ .red = 0.175580, .green = 0.003419, .blue = 0.006838 },
+	{ .red = 0.338706, .green = 0.015140, .blue = 0.012454 },
+	...
+
+The text file should contains 3 column (RGB) in following form:
+
+	0000 0000 0000
+	0255 0307 0606
+	0225 0306 0893
+	...
+
+Signed-off-by: Alex Hung <alex.hung@amd.com>
 ---
- lib/igt_color.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/convert_3dlut.py | 94 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 94 insertions(+)
+ create mode 100755 scripts/convert_3dlut.py
 
-diff --git a/lib/igt_color.c b/lib/igt_color.c
-index e6f435bf4..d3f2ccf00 100644
---- a/lib/igt_color.c
-+++ b/lib/igt_color.c
-@@ -3,7 +3,9 @@
-  * Copyright 2023 Advanced Micro Devices, Inc.
-  *
-  * This file contains code adapted from Skia, which is
-- * Copyright (c) 2011 Google Inc. All rights reserved.
-+ * distributed under a BSD-style license which can be
-+ * found at
-+ * https://skia.googlesource.com/skia.git/+/refs/heads/main/LICENSE
-  */
- 
- #include <errno.h>
+diff --git a/scripts/convert_3dlut.py b/scripts/convert_3dlut.py
+new file mode 100755
+index 000000000..35189b549
+--- /dev/null
++++ b/scripts/convert_3dlut.py
+@@ -0,0 +1,94 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: (GPL-2.0 OR MIT)
++
++## Copyright (C) 2024 Advanced Micro Devices, Inc.         ##
++## Author: Alex Hung <alex.hung@amd.com>                   ##
++
++import sys, os, argparse
++import numpy as np
++import pprint
++
++import pprint
++
++class Color:
++    def __init__(self, r, g, b):
++        self.r = r
++        self.g = g
++        self.b = b
++    def __str__(self):
++        r = self.r
++        g = self.g
++        b = self.b
++        rgb = "\t{ " + ".red = {0:05f}, .green = {1:05f}, .blue = {2:05f}".format(r, g, b) + " },"
++        return rgb
++
++def print_lut(ind, lut):
++    for i, v in enumerate(lut):
++        if (i - ind) % (17 * 17) == 0:
++            print(str(i) + " " + v)
++            #print(v)
++
++def parse_lut_file(file_path, max_value=4095):
++    lut = []
++
++    try:
++        with open(file_path, "r") as file:
++            for line in file:
++                values = line.strip().split()  # Split values by spaces or tabs
++                if len(values) == 3:
++                    r, g, b = map(float, values)  # Convert to floats
++                    r = r / max_value
++                    g = g / max_value
++                    b = b / max_value
++                    color = Color(r, g, b)
++                    lut.append(color)
++                else:
++                    print(f"Skipping invalid line: '{line.strip()}'")
++    except FileNotFoundError:
++        print(f"File '{file_path}' not found.")
++
++    return lut
++
++def fill_3d_array(lut, size=17):
++    lut3d = np.zeros((size, size, size), dtype=object)
++
++    for i in range(size):
++        for j in range(size):
++            for k in range(size):
++                index = i * (size ** 2) +  j * size + k
++                color = lut[index]
++                lut3d[i][j][k] = color
++    return lut3d
++
++def print_3d_array_rgb(lut3d, size=17):
++    for i in range(size):
++        for j in range(size):
++            for k in range(size):
++                print(lut3d[i][j][k])
++
++def print_3d_array_bgr(lut3d, size=17):
++    for i in range(size):
++        for j in range(size):
++            for k in range(size):
++                print(lut3d[k][j][i])
++
++def main():
++
++    parser = argparse.ArgumentParser(description='Convert integer values in a 3D LUT file to IGT format.')
++    parser.add_argument("-f", "--input", help="3D LUT file", required=True)
++    parser.add_argument("-t", "--traversal", help="traversal order", required=True)
++    args = parser.parse_args()
++
++    lut = parse_lut_file(args.input)
++    lut3d = fill_3d_array(lut)
++
++    if args.traversal.lower() == "rgb":
++        print_3d_array_rgb(lut3d)
++    elif args.traversal.lower() == "bgr":
++        print_3d_array_bgr(lut3d)
++
++    return 0
++
++if __name__ == "__main__":
++    ret = main()
++    sys.exit(ret)
 -- 
 2.43.0
 
