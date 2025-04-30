@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54ADFC3ABAA
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 07:22:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83D31C369DC
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 07:31:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C9E710E6DA;
-	Wed, 30 Apr 2025 07:22:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1ADDC10E6DA;
+	Wed, 30 Apr 2025 07:31:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zg2xdpJ8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MjV6wo72";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40E7110E6D9
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 07:22:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4BAE10E6DA
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 07:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745997757; x=1777533757;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=4WFDWt/JE0IZaDtDuH6Nai9So4TMqBfVMX/CNB3/aL0=;
- b=Zg2xdpJ8ByrPrW/xVNcgik+YWGFIMTwW3RslgJtKlvf0y3zKJ3HTVVXU
- xFfYkLQ0DxZaeiLM4Lz1ZguufUJRGBOnd8Ll5ppUJ4lS2x+dWq2dfbqYc
- 2L6y/SgmnSXhfIl/Yc5c0fM2CqRtLLM4dwkosONU9lYwRYfHGSG/MzWkp
- yRTCm2UJZkUV9cjCDuuQrARQ4Vr6V7oyhOV/o52/5UOOe9H9LXRWhXlEV
- gIqCiuhsB8k77cgITbCy6ECOM7EDGsrYHPXUiWRb1PO4QV/KqVaAemhDX
- XzrF+kzYFOZ0eftV2A56+VbZK+rUNb4uuwYMnWBKVsusxZCH7MZQpR0Ki w==;
-X-CSE-ConnectionGUID: HMixshMbRVeZBCU5qIJvYw==
-X-CSE-MsgGUID: KkH9ymWDTnaJnQppZVsCiA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="73031278"
-X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="73031278"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ t=1745998296; x=1777534296;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=8iHPXOnPadYl5yIWihmWQ7KotfPIl8PGwNKKqxK8Pes=;
+ b=MjV6wo72frUYMG0D3FZ7Gwmz5oEHkzcuJ8lS8t1dLgUDCOpiWvpXrmo5
+ 7SO9sNDmb4FCNL22nd1GnHD2LRrL4b9Dwi+jPE6XdSKCRuenyj0onSfoh
+ 6VlrVWkCnhWdmCU7CdkjxjfKbCt4o6bpZXFrADgilV3vJ3WO/fk2XXI38
+ KQaNlLqilAd199YVbFjf3SFOJrjwfkKaZi0m7Imv7/lnuuk2aZKWgOQ48
+ Zl5gotRrW9OyoYcDd4XvcM/WydiqOVyArBhLD0xe76d824i7HXvZVXfUG
+ ydk0mu5JX2NQQwf40fUOxjiA1m0YqxikByeD6+xXFnqYQY3io9XAehuWL Q==;
+X-CSE-ConnectionGUID: ISUQTOVRQXmDrmxHk0UbOA==
+X-CSE-MsgGUID: wHl7LKecTA+akd4CPVHEfQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="73032208"
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="73032208"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Apr 2025 00:22:37 -0700
-X-CSE-ConnectionGUID: cx7QnE0rRiWUY1Z6JyAFRA==
-X-CSE-MsgGUID: iFZ26d22Q0Oeg/S6CLHeEw==
+ 30 Apr 2025 00:31:35 -0700
+X-CSE-ConnectionGUID: zorGEmmoSP2ZLtY9x+QWXQ==
+X-CSE-MsgGUID: sJLxjTbPSfaJV3HzFcZBPw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="138056343"
-Received: from labhost1.iind.intel.com ([10.190.230.69])
- by fmviesa003.fm.intel.com with ESMTP; 30 Apr 2025 00:22:35 -0700
-From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; d="scan'208";a="133968332"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
+ by fmviesa006.fm.intel.com with ESMTP; 30 Apr 2025 00:31:33 -0700
+From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_fault_injection: Ignore faults for
- *guc*
-Date: Wed, 30 Apr 2025 13:08:45 +0530
-Message-ID: <20250430073845.30093-3-satyanarayana.k.v.p@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250430073845.30093-1-satyanarayana.k.v.p@intel.com>
-References: <20250430073845.30093-1-satyanarayana.k.v.p@intel.com>
+Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
+ sameer.lattannavar@intel.com, pranay.samala@intel.com
+Subject: [PATCH i-g-t] tests/kms_tiled_display: Skip if connectors are not of
+ same type
+Date: Wed, 30 Apr 2025 13:08:34 +0530
+Message-Id: <20250430073834.492414-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,28 +66,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add some more guc fault messages in the dmesg ignore list.
+Tiled display setups require all involved connectors to be of the same type
+(e.g., all eDP or all HDMI). This patch adds a check to skip the test when
+connector types differ, preventing invalid configurations and reducing
+confusing test failures.
 
-Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
----
- tests/intel/xe_fault_injection.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/kms_tiled_display.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 82d730a7c..f293ac8af 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -83,6 +83,8 @@ static void ignore_faults_in_dmesg(const char function_name[])
- 	if (function_is_part_of_guc(function_name)) {
- 		strcat(regex, "|GT[0-9a-fA-F]*: GuC init failed with -ENOMEM");
- 		strcat(regex, "|GT[0-9a-fA-F]*: Failed to initialize uC .-ENOMEM");
-+		strcat(regex, "|GT[0-9a-fA-F]*: Failed to enable GuC CT	(-ENOMEM)");
-+		strcat(regex, "|GT[0-9a-fA-F]*: GuC PC query task state failed:	-ENOMEM");
- 	}
+diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
+index 1f5331408..42ae5f6ee 100644
+--- a/tests/kms_tiled_display.c
++++ b/tests/kms_tiled_display.c
+@@ -149,6 +149,7 @@ static void get_connectors(data_t *data)
+ 	int count = 0;
+ 	igt_output_t *output;
+ 	data_connector_t *conns = data->conns;
++	int connector_type = -1;
  
- 	igt_emit_ignore_dmesg_regex(regex);
+ 	for_each_connected_output(&data->display, output) {
+ 		conns[count].connector = drmModeGetConnector(data->display.drm_fd,
+@@ -169,6 +170,14 @@ static void get_connectors(data_t *data)
+ 			igt_assert(conns[count].tile.tile_group_id ==
+ 				   conns[count-1].tile.tile_group_id);
+ 
++		if (connector_type == -1) {
++			connector_type = conns[count].connector->connector_type;
++		} else {
++			igt_assert_f(connector_type == conns[count].connector->connector_type,
++				     "Connector type mismatch: Expected %d, but got %d\n",
++				     connector_type, conns[count].connector->connector_type);
++		}
++
+ 		count++;
+ 	}
+ 	igt_require_f(count == data->num_h_tiles,
 -- 
-2.43.0
+2.34.1
 
