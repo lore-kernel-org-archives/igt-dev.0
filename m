@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D83BAC3ABA5
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 01:40:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0378C369DC
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 01:40:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8F7B410E6A2;
-	Wed, 30 Apr 2025 01:40:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A23D10E6AC;
+	Wed, 30 Apr 2025 01:40:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="4ceGvB3E";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="kJlcUsGC";
 	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2071.outbound.protection.outlook.com [40.107.243.71])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2CD610E6A2
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 01:40:16 +0000 (UTC)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2046.outbound.protection.outlook.com [40.107.93.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9519910E692
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 01:40:29 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YSn/bVaMcHuIUmFXo/oomn3r3RiGdS4q7Lu8zVXZ7d5918fGEc5dQWVFLt3RxP++4BlfAvPQ/d/Untad1wgBoT9jkSN/CnK2sMlUY17p2Mj/Jy3wjX7aE/z+WHtjwFLHLf9JWlggv4PlxaGYGXFMJ8EXciMyEF1LCSg+UawfJs/PMjM86po3oGgTnE6Qq5ZvniETq7n+IdbObm5PQr/Dqf69xIyiUtDP4UxUM7xrGMDwMBjdI0m1HwIcNeIkDs4g84tGaFaS503g8kOE80tZg8EO7ungzl3uElp8cygNzLtju/hXCt1X0NYFJQeniWm6tVQa9zw0PnVXPH+lXPaOJg==
+ b=VrnxClktOesnh3bg4MVhQbQsljPQVuv86t7UB3nymPcZHHFqY0fqj4N5bZUUjMpTpfNgbLa3K9ON8qMgdgSHlWnl+pE52mF9m/BituYS01bCL0osO6TFUhThy21B+a8DSSsEfGWgTxf57nKZv6gZ+ECRap7dDuMhkXgiWu9Gs86EJpopnVojgXQ1b0FedOudwIZu9zrJYgDpFC9ojLKiRqRluOJH5eeEZCOFwR81Mzdmq2oTzlzS9DskCUZKZWI5N5wV73nQhpYo6FS7sjN2NR0OrVPBq+LKrW1HDx5K1uQfYolXR856z/8yUSLDQZTv9Fz0J/73/iweXDndZGqv8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wcu7lwYzMUZZbnaFEpliFy3d4nbZkSGcINHHPmqplus=;
- b=XRP9ZNgf5W/cuWHLdnRtINvrflAsHPsVYouM2f30xK+lFVkMtGbRd6R7Qy5DAX4LSA8lX8sdU3wy58q3sIIbwpQyEzqPbXfsyLFQ5oqhJxzcslkDgWxKuoKJNyH4JGSbo1VSViTAiI3BLk8j6Dd0UV3rSPuImpG3gfTqOsKw1kTrgQHWLd7SCWfxQs6v1oxCyK9AD2/FuhkyHuG3wGFmMkasRsYaag/ZKTTh44zfB9MklZOFmCWB7ozaPKKW/GlEt0RGnsOZYionIwE+8Xc3Ey/9jNj6IdHe7lBp3FzQj3ci8lsYDpZK8T6xh0abjgK0UrttbLG0aoYc4wke9KXtLA==
+ bh=wPavEAjloFjP+AtGu2TChLm+Zx3+6vWt+/O0LFBGBh8=;
+ b=jCgKaalH4frk1UzSLsbO/YuFXDZD8uYBi7mTXb07cLeykrWPDWnqc9IdesSSmOc9//YQ2affIzKJuRzTFHkhrG/a6xgUucz9oMEp9zZ7K4MIIB3gp9wglLa22v4ELcRsrJg8HJE3uKCp1J86TIykay87KmvQVQwV9MKoW9cflKWHO8pHe2NGbSaUDRGQEQBXIZ/rK+l+MuUebxMXdKa7dZUZ3H6S21bHHwpP/t8dXnSZNsrTaDkAD4UFiWPiJBRnerZ6SFRgZuB4CcooaZYSoBRriA066NtEIbxNahK3PNUNRLTK/TFpxdrOThfCEB4ssorSKQy+3EshAk0OuUPxRQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wcu7lwYzMUZZbnaFEpliFy3d4nbZkSGcINHHPmqplus=;
- b=4ceGvB3EV+f9SRD1wCTfhcOUKW6F3AE7uTanbe5OehwedH9MxDKInp0e7wsbdZJkQTnCbUee7DhAVpIDWcWxR383uKjOCCHJk+/3tRmpDzcVx5ODM4/7VwiaNFReSlzVY8V4gWm7xDBf/SnlUr3O69w8L7keCj8vC1EJO2XNOgM=
-Received: from MW4PR03CA0208.namprd03.prod.outlook.com (2603:10b6:303:b8::33)
- by CH3PR12MB7545.namprd12.prod.outlook.com (2603:10b6:610:146::13)
+ bh=wPavEAjloFjP+AtGu2TChLm+Zx3+6vWt+/O0LFBGBh8=;
+ b=kJlcUsGCfwruFiOMXARFSXHKFDxvDV5D14qmkgjotCTVjZFWzVfIqqEdbcHG/SnB16G5Q/6MXyVwjMexFin7UuZEXPzpt0fLvEXmfSVvBSjQWlJvyBpa5OkSmMwf8AnwBqAigYiC4RFTnTvLlk5cirIirk1zIcE8F/GrYFabLIU=
+Received: from SJ0PR13CA0104.namprd13.prod.outlook.com (2603:10b6:a03:2c5::19)
+ by SA1PR12MB7245.namprd12.prod.outlook.com (2603:10b6:806:2bf::18)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.34; Wed, 30 Apr
- 2025 01:40:14 +0000
-Received: from BY1PEPF0001AE1B.namprd04.prod.outlook.com
- (2603:10b6:303:b8:cafe::98) by MW4PR03CA0208.outlook.office365.com
- (2603:10b6:303:b8::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.29; Wed, 30 Apr
+ 2025 01:40:26 +0000
+Received: from BY1PEPF0001AE1D.namprd04.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::4c) by SJ0PR13CA0104.outlook.office365.com
+ (2603:10b6:a03:2c5::19) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.36 via Frontend Transport; Wed,
- 30 Apr 2025 01:40:14 +0000
+ 30 Apr 2025 01:40:25 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,19 +48,20 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BY1PEPF0001AE1B.mail.protection.outlook.com (10.167.242.103) with Microsoft
+ BY1PEPF0001AE1D.mail.protection.outlook.com (10.167.242.106) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8699.20 via Frontend Transport; Wed, 30 Apr 2025 01:40:13 +0000
+ 15.20.8699.20 via Frontend Transport; Wed, 30 Apr 2025 01:40:25 +0000
 Received: from smtp.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 29 Apr
- 2025 20:40:12 -0500
+ 2025 20:40:24 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: <alex.hung@amd.com>, <harry.wentland@amd.com>
-Subject: [PATCH V8 24/36] lib/igt_kms: increase MAX_NUM_COLOROPS to 128
-Date: Tue, 29 Apr 2025 19:34:42 -0600
-Message-ID: <20250430013454.226910-25-alex.hung@amd.com>
+Subject: [PATCH V8 25/36] tests/kms_colorop: Add a sRGB test for EOTF ->
+ Inverse EOTF -> EOTF
+Date: Tue, 29 Apr 2025 19:34:43 -0600
+Message-ID: <20250430013454.226910-26-alex.hung@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250430013454.226910-1-alex.hung@amd.com>
 References: <20250430013454.226910-1-alex.hung@amd.com>
@@ -72,52 +73,52 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1B:EE_|CH3PR12MB7545:EE_
-X-MS-Office365-Filtering-Correlation-Id: 29e51f3a-5f91-4b9a-84ff-08dd8787f3ff
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1D:EE_|SA1PR12MB7245:EE_
+X-MS-Office365-Filtering-Correlation-Id: c5a4f033-b1ee-4031-a66a-08dd8787fb1e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|36860700013|1800799024|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?z5ouJcKjug8HiBgcOWyYywtmTIN4Z6ma1hhIHLskjSxvnyrPPCKJXfQwn6Vu?=
- =?us-ascii?Q?/XvgiZ5RvinQc+tRk/t2CRkAy1gmHDd3Cc7pYv6jlwjQXvCSegfbO69XMlnO?=
- =?us-ascii?Q?CC9TcAwBg5Fj/FmI5HTBSTOVSi3BdmjESqKa43116OxYIdk6GTwqGxQPtWAx?=
- =?us-ascii?Q?rDxypH29PTdjonCRHGkZoeA6knno1kpFim+6NjngKysv75I6xpBmmKu/KDua?=
- =?us-ascii?Q?N0BT0WP26vWVclRX7Xl9hUI3/QiJiDi0isvd5Sxn1ZrXOORTzjS76Aak5Qpi?=
- =?us-ascii?Q?iH0wFo9UAtwjf71FRyb26N0IOWgZx7ii7bBtWxHUm9FwJTpCNMlLiDzVzQ1J?=
- =?us-ascii?Q?B/MzOPc9dLp2lKv4H9VCeAT0Ft7gMuf5KFFAZ8lPa3OA350mCb+eNLSu7+5T?=
- =?us-ascii?Q?bo3ourniR+QWAuBonSsvLNXWNRg1AQkzsJCW9elgENwmf9RgAKQ054nYn37q?=
- =?us-ascii?Q?3Q4VwTX1gvCZNHkLTAiwz8cHl1mr6C1hcRbive+HvS4xEm92wuk+2xK5zA5B?=
- =?us-ascii?Q?f9JzV5jK1vMyuKWZj1EKowtd/blS4PvHOv29Hz9NaGYps3IyHKu2H5x8PkLR?=
- =?us-ascii?Q?nK8xGpIbKTYRw5zKa7OqBbsQQBF3kFS4jRQRqL+rgN0z6buIxPvBsE4nb/Z3?=
- =?us-ascii?Q?cJORrDiNeoZfGKg7H9a6sigqV8TsnqXNp6wYSKU1T0upSuAFBestfeP32wG0?=
- =?us-ascii?Q?5+QnzW1o8yrHe8r3hCMwaGiRokWvFSx5AvvIgQinX4y4y5a4PJ2eJQu/TQVV?=
- =?us-ascii?Q?D688FpbqQ3Cu7K9oX3Na1oOhPjkqt7fBm0fJ0oEwd1n8DmW3XgwGGBRPdlEF?=
- =?us-ascii?Q?Ty4S6b4dUFx4MVQcj/b9bkrPABEOrcuEYSrBCun4m7GBQ9qxL3gHfMDMeHQz?=
- =?us-ascii?Q?FlA6tvocmTl9ND7f2KidONm9bXwcjmp+dr2fqsgHazGopoY2hy6cok8lrax4?=
- =?us-ascii?Q?OGgusavh79LPfZ6K99rN8JveHA+W7aU6jyq3BKlNgczAj7/hW7nJun2vMLTA?=
- =?us-ascii?Q?gRfp+065JOw9azH1oIcRY1/+g6Fezn9xq/GPdONJ5GS0DJkAUpxtwfxrFufS?=
- =?us-ascii?Q?JiF9AiA9kVcRu6P6+YzqLKKUuqlpFd3mvBDMfCU4nbKc7Z5lvDCWEGcE1pWG?=
- =?us-ascii?Q?7rt5YwqN8CIgTPsYZQQALtFA0S1yTQSitFZNfDONldME7Q6HJ47G29qYpITH?=
- =?us-ascii?Q?T3gLOfOlDbC7cDPaCdL+PAuosHing7e8olphVOOUiCOJWIO3HUH5jWRe0CoZ?=
- =?us-ascii?Q?EeaeZTNttPcu3sgZsYo/hkAAG9GU+NGKVHKtbAzd7dLw+4wDM9wQtm1yttwg?=
- =?us-ascii?Q?OcOgQbd1ubqk+adRaC+MORn5hDd6KfBusAJjcx/iJ4f2zSPdxiPUgEczCIKL?=
- =?us-ascii?Q?tgCF+t5GV45lfGqEBjMZqzRR5WGPDjjdCB3Pr5EZ89H/RvHMsjfFo+GuGT5C?=
- =?us-ascii?Q?8zYUN4KS9yyMqJc8UncQH6nE111VZSuj3fz9hzW4WrdeYBshltzSPIAf7StZ?=
- =?us-ascii?Q?SQELcbmpqt19uGFnYxeO3FAjinrfsdLhqFO1?=
+ ARA:13230040|1800799024|36860700013|376014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?JZPBowBJLkcYS0U53d+zk1f9blkMV9ayxYYf7+2Rn/5ngvYvWa8JuOYiQDn0?=
+ =?us-ascii?Q?aTvPlnrLyYxh6tI0BPtlmPMjzTHJt9gxQUxJYF+ajgOrOnMY2GXzvvIPbuDd?=
+ =?us-ascii?Q?taMlJRJVyhb/53g+8ce/DUqy/IY5mIzZeZDngU4LqMJRL8J7RfxbkAQNkZqR?=
+ =?us-ascii?Q?s0LzKFOk7rvkC5AkbWahdGlUwXGEwEIi1+AWTCzIRoWQ0ziIfUbzBvCsDz6L?=
+ =?us-ascii?Q?3aCyLVMzxDO2kWAczC6Cw3AvfdIWzAcnYpqU18SkX+bSuJVgqi2IvmV8xfHc?=
+ =?us-ascii?Q?g6lyWv/pkP0zw4VSPA8+0LO2CMHZrLrcR1m4PLeVWQXa8DduZ8gkgs7z2HkB?=
+ =?us-ascii?Q?7iXNTwL+q50IdGkjOZEDtSyRBKt71v1nOV86tF+sMFPpQO7mnQuRfOdI/lDL?=
+ =?us-ascii?Q?/nJI5CmjhPPH3hShPyi4GuNkf/Zf6t6ddr8whehmry9YgJvu0tUuKwv6MsEl?=
+ =?us-ascii?Q?erXmKMbRMAqvfghuvD1N58LwzakbZWB6p9pUZ5YlN0lKVpyVEA2+It5B+N2M?=
+ =?us-ascii?Q?o2JwcFzoq+uivjf3qu/Fb/9GlqCXbZYjY8ympEA3qljfZmPCBhuUtWYV82X9?=
+ =?us-ascii?Q?+iPnGpPK2vj7tjJflo+A1pLR4i5ZHXl0EiFnJ3zrAc63Dv0LFq01eu84L9hC?=
+ =?us-ascii?Q?761O74zJ/edwS4CONsuVxxCivYCFAc7oYpMB41KoBDKEGkobKf6JPMqm5kth?=
+ =?us-ascii?Q?HC6FAuIZGyE2No4uLom9S2k7lIgi322lwPngvXc+HG/NxtrOA2z3/TdY8HR/?=
+ =?us-ascii?Q?AxcCn7hjNAD7gyZELWSYD059NQLULZngNZtqha86uJ3oo5mN0SRbVPNLehDb?=
+ =?us-ascii?Q?Xu7BfrstH0c41Nc5AOZhYHRXw8T1H3144zF+yvGseYKhUT5K1C+GpAPtvYWp?=
+ =?us-ascii?Q?bhxf+N225B6gT0Qk6sItA3IGKcz+4o+t8JSBjHWTPaGGvWmM8RklmBmD7ilJ?=
+ =?us-ascii?Q?BYPoX0A3rqAlNb+S35topaBx/mXb46uto0KiOuz18uKXps+HL43B9aneIrRL?=
+ =?us-ascii?Q?M6jzIWBCu3vdv1E+m+aCbVvBcwQ9Ny0pIoM8xtvmrFvSLD0mP2cB3PFASpAk?=
+ =?us-ascii?Q?rsT627ziBHAIyYcT2WEhVn+w/hwNhP4T7eoZ6KCgVqHJNsp5B6zJPQohRNnQ?=
+ =?us-ascii?Q?YdVeOQmukfVYckZlRT+K1hDbFoY1CB6fEGhdxvqePLQboMOKpySUgaP4tYHo?=
+ =?us-ascii?Q?YPH2I8V3xE5NqCjLQBeLB1OkV61jKwDCA01bRAUjj6lhZDmQDYZAS4u4OEFV?=
+ =?us-ascii?Q?yRVAmW2XEsdL8yawE5LnQaQq3w5ftigS66MK8aHj+9Vcftb7yUCPqYDJqnMU?=
+ =?us-ascii?Q?NjegLiNPfeVSvm2VfxbuL4q20xQTye992e3LRUPDKv38/asdtiAQ7wTI/JcJ?=
+ =?us-ascii?Q?uyHxYdN9FP95IPvonsNG1vgoBRPMt8GnF1nF1ooGb4MhO4TW7xfOD40QJ1KO?=
+ =?us-ascii?Q?G1wv7jZw/5VjCBhdKIjv38hYcBOM9Oqkqufs1uUsjmkIcy7kDmiOsBUSqged?=
+ =?us-ascii?Q?Lt75FnBonbmeMRz7ldzH2QzOyEOuq7hI668M?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026); DIR:OUT;
+ SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 01:40:13.9010 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29e51f3a-5f91-4b9a-84ff-08dd8787f3ff
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 01:40:25.8486 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5a4f033-b1ee-4031-a66a-08dd8787fb1e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF0001AE1B.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF0001AE1D.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7545
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7245
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,22 +136,92 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 ---
- lib/igt_kms.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/kms_colorop.c | 40 +++++++++++++++++++++-------------------
+ tests/kms_colorop.h |  9 +++++++++
+ 2 files changed, 30 insertions(+), 19 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 55069c6b5..4b8105c94 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -92,7 +92,7 @@
- #define MAX_CONNECTORS 32
- #define MAX_EDID 2
- #define DISPLAY_TILE_BLOCK 0x12
--#define MAX_NUM_COLOROPS 32
-+#define MAX_NUM_COLOROPS 128
+diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+index b7de2080f..c146e85d9 100644
+--- a/tests/kms_colorop.c
++++ b/tests/kms_colorop.c
+@@ -39,29 +39,30 @@
+  *
+  * arg[1]:
+  *
+- * @XR24-XR24:			XRGB8888 framebuffer and writeback buffer
+- * @XR30-XR30:			XRGB8888 framebuffer and writeback buffer
++ * @XR24-XR24:				XRGB8888 framebuffer and writeback buffer
++ * @XR30-XR30:				XRGB8888 framebuffer and writeback buffer
+  *
+  * arg[2]:
+  *
+- * @bypass:			Bypass Color Pipeline
+- * @srgb_eotf:                  sRGB EOTF
+- * @srgb_inv_eotf:              sRGB Inverse EOTF
+- * @srgb_eotf-srgb_inv_eotf:    sRGB EOTF -> sRGB Inverse EOTF
+- * @pq_eotf:                    PQ EOTF
+- * @pq_inv_eotf:                PQ Inverse EOTF
+- * @pq_eotf-pq_inv_eotf:        PQ EOTF -> PQ Inverse EOTF
+- * @pq_125_eotf:                PQ EOTF for [0.0, 125.0] optical range
+- * @pq_125_inv_eotf:            PQ Inverse EOTF for [0.0, 125.0] optical range
+- * @pq_125_eotf-pq_125_inv_eotf: PQ EOTF -> PQ Inverse EOTF with [0.0, 125.0] optical range
++ * @bypass:				Bypass Color Pipeline
++ * @srgb_eotf:                  	sRGB EOTF
++ * @srgb_inv_eotf:              	sRGB Inverse EOTF
++ * @srgb_eotf-srgb_inv_eotf:    	sRGB EOTF -> sRGB Inverse EOTF
++ * @srgb_eotf-srgb_inv_eotf-srgb_eotf:  sRGB EOTF -> sRGB Inverse EOTF -> sRGB EOTF
++ * @pq_eotf:                    	PQ EOTF
++ * @pq_inv_eotf:                	PQ Inverse EOTF
++ * @pq_eotf-pq_inv_eotf:        	PQ EOTF -> PQ Inverse EOTF
++ * @pq_125_eotf:                	PQ EOTF for [0.0, 125.0] optical range
++ * @pq_125_inv_eotf:            	PQ Inverse EOTF for [0.0, 125.0] optical range
++ * @pq_125_eotf-pq_125_inv_eotf:	PQ EOTF -> PQ Inverse EOTF with [0.0, 125.0] optical range
+  * @pq_125_eotf-pq_125_inv_eotf-pq_125_eotf: PQ EOTF -> PQ Inverse EOTF -> PQ EOTF with [0.0, 125.0] optical range
+- * @ctm_3x4_50_desat:		3x4 matrix doing a 50% desaturation
+- * @ctm_3x4_overdrive:		3x4 matrix overdring all values by 50%
+- * @ctm_3x4_oversaturate:	3x4 matrix oversaturating values
+- * @ctm_3x4_bt709_enc:		BT709 encoding matrix
+- * @ctm_3x4_bt709_dec:		BT709 decoding matrix
+- * @ctm_3x4_bt709_enc_dec:	BT709 encoding matrix, followed by decoding matrix
+- * @ctm_3x4_bt709_dec_enc:	BT709 decoding matrix, followed by encoding matrix
++ * @ctm_3x4_50_desat:			3x4 matrix doing a 50% desaturation
++ * @ctm_3x4_overdrive:			3x4 matrix overdring all values by 50%
++ * @ctm_3x4_oversaturate:		3x4 matrix oversaturating values
++ * @ctm_3x4_bt709_enc:			BT709 encoding matrix
++ * @ctm_3x4_bt709_dec:			BT709 decoding matrix
++ * @ctm_3x4_bt709_enc_dec:		BT709 encoding matrix, followed by decoding matrix
++ * @ctm_3x4_bt709_dec_enc:		BT709 decoding matrix, followed by encoding matrix
+  *
+  */
  
- typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
+@@ -489,6 +490,7 @@ igt_main
+ 		{ { &kms_colorop_srgb_eotf, NULL }, "srgb_eotf" },
+ 		{ { &kms_colorop_srgb_inv_eotf, NULL }, "srgb_inv_eotf" },
+ 		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, NULL }, "srgb_eotf-srgb_inv_eotf" },
++		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, &kms_colorop_srgb_eotf_2, NULL }, "srgb_eotf-srgb_inv_eotf-srgb_eotf" },
+ 		{ { &kms_colorop_pq_eotf, NULL }, "pq_eotf" },
+ 		{ { &kms_colorop_pq_inv_eotf, NULL }, "pq_inv_eotf" },
+ 		{ { &kms_colorop_pq_eotf, &kms_colorop_pq_inv_eotf, NULL }, "pq_eotf-pq_inv_eotf" },
+diff --git a/tests/kms_colorop.h b/tests/kms_colorop.h
+index 3188e6db4..7d5cb4bd1 100644
+--- a/tests/kms_colorop.h
++++ b/tests/kms_colorop.h
+@@ -88,6 +88,15 @@ kms_colorop_t kms_colorop_srgb_eotf = {
+ 	.transform = &igt_color_srgb_eotf
+ };
  
++kms_colorop_t kms_colorop_srgb_eotf_2 = {
++	.type = KMS_COLOROP_ENUMERATED_LUT1D,
++	.enumerated_lut1d_info = {
++		.tf = KMS_COLOROP_LUT1D_SRGB_EOTF
++	},
++	.name = "srgb_eotf",
++	.transform = &igt_color_srgb_eotf
++};
++
+ kms_colorop_t kms_colorop_srgb_inv_eotf = {
+ 	.type = KMS_COLOROP_ENUMERATED_LUT1D,
+ 	.enumerated_lut1d_info = {
 -- 
 2.43.0
 
