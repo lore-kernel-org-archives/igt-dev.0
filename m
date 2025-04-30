@@ -4,63 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4037AC3ABA5
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 01:42:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80263C369DC
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Apr 2025 01:42:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F0EE110E6AE;
-	Wed, 30 Apr 2025 01:42:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3231410E6A2;
+	Wed, 30 Apr 2025 01:42:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="SnnLsKzK";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="hFr9lUGF";
 	dkim-atps=neutral
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2049.outbound.protection.outlook.com [40.107.92.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9468810E6AE
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 01:42:33 +0000 (UTC)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2050.outbound.protection.outlook.com [40.107.220.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C04A10E6A2
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Apr 2025 01:42:42 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vwoccWO8iYFopb+sKo2wH9/dxzQ1YaZGvXhQLn+K6r5zzQyNS8uGEoV44yzKNjckniV8etJL6ZJ2iTvVRxUgz8Vhcr0ouY9v2bIqgSZenuKdozrLBS51kTyTOzNE4dZ25FPXl70owKFVPMzGRBS02dU8+eY1abKfnPypytAU9ijhCy9v2IbCFPsOcdH6qFSZes6PqsANz4wVG8Pa/W2mfHiNvtl8k+NBhUIwom8Ny1r6hJhE3g9kmZ608m3IdhkMIzhuvjLLYqBlSYRou6ojbBdP9CCmbXcXcJi7ejhXfH4Bn/5CF7JjJVeUq6xDtWwtrNvXicmvF6UjReo/tsSuYg==
+ b=QqczF8RP7OuZJb94i1Lg8kYQN9oyeK/fNCVsaFZ4ASdxJQuM4G8RT8RZ0sqp9IYIer1y86iQocVCkhpBS7pl4F4MFIpCqZu1zuL+ssFi03FrZNZUE9f7RrIKQAs81S3PAHTjRwzhVzkBq6TqFP1BUx83inhYco1DIrSmycVirH8PDMWn1x7LsT/21QU34zT/5DPugAwW81GUFT2OunFkMuynpmfkIrgdl76SkDViBLRW9PrbaEjI+xXG+cMmuPI34BCMLivHMqre6AF+n/rlrgNNbUBJnMCro5uGPVdX1VKVhNkcAbwI/9Yw8FWv4KTJY5d/FGYQld+lVJGr+SOvFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9GlGcyGlStiGHDC6BmVrVji0Gq7AUBUYNpj7Zo2TN5Y=;
- b=pr6sh62tV5FI+3iigDtin4swLVqo0qvEW9U+NrzD9RzP1BP4N1PzXnBkDSAN3QmjJ4+0pOABDkdlW+NHs4potgIbraQifXz+pPPZcJEBePCuSf4bsedf9dgb2jamuDImb+/N5vfHTQfMw+V+Z8QY8ZuA5AWVMCSeE96zTlVChtlGuSSIZ6K8Rq/UVbWahQLPqo14vtWN7VUiwc8RBuNuOWhOF3x9LbXDns1bHJGd2GlpLtNBkQjwkxoNL49kkMfkxLbR1Q6WuFMui7X/pl2AVuOhGSDxpp94Mp108nOq1QlGWHAxxmyTC7Z9Zb9pt+Iiesv7hTO4e/kuUi1PCwT4pw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
+ bh=RBjfunds1d4Hpt9EbOxvfu6izvVAfqFWRLzw5JYox6g=;
+ b=mrNfT4uBcIPdJA8/FxCVP8YE1GY+p4IM+9YlfmMjhwA4KyDnJjJujiCje1CwaCs/dX38J7+gIkEeS7Kn9fkoOfsJNplE36zm0BqJoxARfoGzoAyMXe2ZkrLEbyYTmCuBUX/Q+tCZmbtPY3du6W1KB8HJ3TxCirS+HZCo3OPYOW6zlrW7zkEx7GM1orM/AtHbMgDLBxqXe0O5hqlKvfPhVjW82xtzswR8aZhTAIIFTTBLVf3WwwELhPb41MfaugyV91/2KRKjnGFB/S3rOQuyVe6SYNWLxNoxVNpHEWTr7Kk59hIpxPdkhw8jACmZy7CLhjNcPsRJqgqpUd6kTF+K8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
+ is 165.204.84.17)
+ smtp.rcpttodomain=lists.freedesktop.org
+ smtp.mailfrom=amd.com; dmarc=temperror action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9GlGcyGlStiGHDC6BmVrVji0Gq7AUBUYNpj7Zo2TN5Y=;
- b=SnnLsKzKDVys/5oCHDmKDC9JPgqAHd9Some+gQEc6HmFwhiibbfvGWWtbR5PZfww5SY60RImNtvqHoL7ZPcS0F+VLL3TWoqudXMpJ0HsjL4A7it90/rSWsAc8aUMPAZNxtyXerdfSs4dlMRacvjLN8CsnTbJhYDvupN9xgrQGLk=
-Received: from SN4PR0501CA0038.namprd05.prod.outlook.com
- (2603:10b6:803:41::15) by MW4PR12MB7166.namprd12.prod.outlook.com
- (2603:10b6:303:224::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.29; Wed, 30 Apr
- 2025 01:42:27 +0000
-Received: from SN1PEPF0002636D.namprd02.prod.outlook.com
- (2603:10b6:803:41:cafe::29) by SN4PR0501CA0038.outlook.office365.com
- (2603:10b6:803:41::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.18 via Frontend Transport; Wed,
- 30 Apr 2025 01:42:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+ bh=RBjfunds1d4Hpt9EbOxvfu6izvVAfqFWRLzw5JYox6g=;
+ b=hFr9lUGFPg1tpLT6RNdPRPMALDGqhpwCzndf52wik1GJ5fmgDsSV/rfFpEXtVr44B3ZoRZqDqeRoJVmQdVEc7ZmmQA5mrSHMpErEHSVS3X1FqyQOzvvDYG3ANUbLRvLORKMgF+Wv7+zc7bgZiaMdDc6mXOe7oDb/5eIibnmV1AU=
+Received: from SA9PR13CA0115.namprd13.prod.outlook.com (2603:10b6:806:24::30)
+ by SJ0PR12MB6927.namprd12.prod.outlook.com (2603:10b6:a03:483::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Wed, 30 Apr
+ 2025 01:42:38 +0000
+Received: from SN1PEPF0002636B.namprd02.prod.outlook.com
+ (2603:10b6:806:24:cafe::98) by SA9PR13CA0115.outlook.office365.com
+ (2603:10b6:806:24::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.23 via Frontend Transport; Wed,
+ 30 Apr 2025 01:42:38 +0000
+X-MS-Exchange-Authentication-Results: spf=temperror (sender IP is
+ 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=temperror action=none header.from=amd.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of amd.com: DNS Timeout)
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF0002636D.mail.protection.outlook.com (10.167.241.138) with Microsoft
+ SN1PEPF0002636B.mail.protection.outlook.com (10.167.241.136) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8699.20 via Frontend Transport; Wed, 30 Apr 2025 01:42:26 +0000
+ 15.20.8699.20 via Frontend Transport; Wed, 30 Apr 2025 01:42:37 +0000
 Received: from smtp.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 29 Apr
- 2025 20:42:24 -0500
+ 2025 20:42:36 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: <alex.hung@amd.com>, <harry.wentland@amd.com>
-Subject: [PATCH V8 34/36] drm-uapi: Update kernel doc for drm_colorop_type
-Date: Tue, 29 Apr 2025 19:34:52 -0600
-Message-ID: <20250430013454.226910-35-alex.hung@amd.com>
+Subject: [PATCH V8 35/36] drm-uapi: Sync up definition with kernel colorop
+ implementation
+Date: Tue, 29 Apr 2025 19:34:53 -0600
+Message-ID: <20250430013454.226910-36-alex.hung@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250430013454.226910-1-alex.hung@amd.com>
 References: <20250430013454.226910-1-alex.hung@amd.com>
@@ -72,52 +73,52 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002636D:EE_|MW4PR12MB7166:EE_
-X-MS-Office365-Filtering-Correlation-Id: 268fafeb-27cd-4346-9e83-08dd878842b7
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002636B:EE_|SJ0PR12MB6927:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb167389-a856-4f5f-ad42-08dd878849cc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|82310400026|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?LTYivzr9k/xImFQD3AZLUv9jh53RE823QqFa4dSpVvlO3blaK+JF70bxTbpo?=
- =?us-ascii?Q?UzIz1JTL7Vi7vqWIDbeWj62Q2dboYL/PPzTRRlzTLrhOC4PvrD2ZER/ruWrC?=
- =?us-ascii?Q?4DQkL+yeXNtuHJ+xzCifg/molzIpimJsn/2/ZP7hSW1Na5uVkd6YTPI2XffN?=
- =?us-ascii?Q?x60HB/f1JYSJpiDYTMAfp+2xrZKxjRIoavkUD6RxDzacXhCytQk4jNd32eLY?=
- =?us-ascii?Q?qGYVGpqL5l+T//t/KtRgAggsX0Xlas/R6MVDcB2NEnz9hyKKFs9az4aRvVpa?=
- =?us-ascii?Q?x2THEGMsJpZEUTEbJPD3/irO7DOr/1m3O/18ihVwMyI8SIZ4+xNtN8BC8/Uy?=
- =?us-ascii?Q?B7cgKN/x2IeAHlpQW3jB6w7XqwYVtrh5DDIbi90JkwYDPYnhW8xdkYCnFeyB?=
- =?us-ascii?Q?ohcaGpov9sevm5taf/mULF42hECDaxAr0fqa3RnxeE5F1U51R6o0prO9Msqz?=
- =?us-ascii?Q?i5iX2sEG35NWu6rhjau6GNbFZb62piJ59EEuYFsKch9O/C/j1QEWe4/h1djM?=
- =?us-ascii?Q?6+H5P8A89dUmwr+M7VmOtFakyqJhXfGvmfWy/YiL38JqWs89iCOvWzn+ZwCP?=
- =?us-ascii?Q?dLtwmJO0o+A5se8/0sTMmTwNld3ihifGb60J047d3ChmKm4trxiFcRv2EfaR?=
- =?us-ascii?Q?vVCiYH3uzbLOaDZE9FkgAbMfP+ct/md5K40RaVZo3VRR0kTN4185hvw15h0Z?=
- =?us-ascii?Q?atlTnkufbj+3y2IJlg4uTNHmsRNlHkSmP32yiU5SEePBV26yJEALyBb9pWVh?=
- =?us-ascii?Q?vhzYx9L6bFTzgnH6yQsCmsu1aIb0bJZLaqSO4pq9qu8p0UBwJjQMDah786c/?=
- =?us-ascii?Q?HEhkgukfGv0YnlC1WxhHUeuwOEiuMR9tREoNx2mvbvILTafWFLA1H+vgyb2w?=
- =?us-ascii?Q?tdqhxGMVhf5Bh1EcvS0m9EfRW4cV+BPOOjY0ozZsDOsiculWEo1M17ODQZqi?=
- =?us-ascii?Q?R1umtIu4RTD/auXOLf3uaFHTRT1M/5ugR3dSpcWlhIftgxIGVrTjKY7VKl7/?=
- =?us-ascii?Q?UBr8IT7rMBIGWlmONlEh1tny12U/qIIM2/HOn/KMaNb87FajgqalvaF4aCD6?=
- =?us-ascii?Q?cuWpbTzn+v8yY2ndus4h+AAbFIz3z5rk4FzjumfSYSt7pQWvk09GGEOufmWR?=
- =?us-ascii?Q?blSQ6rF2RzLQ2+POzXOiPUMtAUp90zMOWw9BsvVa8IsuJrVZaJIvXQdqyGhs?=
- =?us-ascii?Q?yk40ZviyxEhFe+uGkIAmOLfEZQrJ1BrLhAJ1RncbdwgWZcCTYdInDscUHQfz?=
- =?us-ascii?Q?e+Dkku9yzmvstzyYSgbfSXjvc2vEtymmKbR4a/zQkjOCqZreBmFcxmPnfuYr?=
- =?us-ascii?Q?AnOgVSf40jZ0a3SZcLYf6FMLB9TL9pI99bTzLKITTR1S9TiMTAyFPM0Tnv2G?=
- =?us-ascii?Q?iO0a5QqEvnKdljtgSYGgz0EYIrEVDTuxwtz216k2e7ynpG5Oni9MqjJiDCWv?=
- =?us-ascii?Q?00CW1k3rSP7Zd5/YqQU0Sz2WrK5vc/BlmEhGbJyI3anWyfDbt2WcOCX/dUo1?=
- =?us-ascii?Q?rdREqDmGGvx3ckYn1Jdm3Hn7m9tHO1gparNb?=
+ ARA:13230040|1800799024|376014|36860700013|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?gJVHtlBz5IKweLRZwYu979MMq77qf/dC1hW7TsAcqSJ6yQ0Ssw+l7r/dQL20?=
+ =?us-ascii?Q?oeBbVYlQzlWSINj9hewUwnwCOcCwebwJLEPVPjBKXCH54e37W385L21wJ/Sj?=
+ =?us-ascii?Q?bits5BEuqQFqYPnEapiH2qVQztJAly+6x/eO53dirRM2RJg2GlY7/SWkGtLj?=
+ =?us-ascii?Q?zgRwG8PWUv2mHDhPVyjrX75c3GHX00tfVKjQLAPosQjOJLfVxEU2vjyKp3xb?=
+ =?us-ascii?Q?LA8Kea3ocWxPJAe2goDHdTbwxxTUoUOD0FibdjlgynIbN+vhWWS+sO9dWO6T?=
+ =?us-ascii?Q?m91tBzc9Oe0xjTcCbXpEqzOOQTPaa2OzyLN3K5ifQJ9mXn045fVTKdasHRwl?=
+ =?us-ascii?Q?De4fN+xlnCI9Hoz5oAWQik893GufBC+WyKl2Ag2zMnoeYUIuB3/YAgD6eCXS?=
+ =?us-ascii?Q?4yMsMpX+C5Cjq9mUoIfnMJGknoV2sS5azfOUV740lA6obE2aw0uex1x5A7yp?=
+ =?us-ascii?Q?kJScJnWN5iRdZ1U/OSO/6i7Z0hTJ6xHaoweOcLYZQzlXEM5PYbtTRtIlsf9s?=
+ =?us-ascii?Q?tHO2Rlcl3OL5KvB6AI/HZGo4ws9ElmifYg6Vld07A3EKBDR0NNy0Uye493yB?=
+ =?us-ascii?Q?8Tph08pL/qXajzPDwO8D/pV+NOHl0hWr/5PEPwwmcW5ka/KTG+sDDv1Lb4A5?=
+ =?us-ascii?Q?72M7Fazjwes1bxAa+t5iiSJ7+8XBHh+4JfgXGZU8WQjYAXhAX/1LmCxrsni6?=
+ =?us-ascii?Q?pAcKINRQi0ERHn8bJxMy4o+C/QhpjS3rcrDPa4+FadrI+G87hDSOlnXPsYz9?=
+ =?us-ascii?Q?enogsOrQnFDnK1/uH7w9yk7zI5dqEw77GyDEJwnLrxfkJV8ZMkq4KfI2C2yP?=
+ =?us-ascii?Q?rPTKxaz2Wae2KYaWXYRA9FftOt7UGtVlUvIxUBdNsjIr8xa6Fkqcdw1lI76E?=
+ =?us-ascii?Q?qL2ZRL5ig4L5SPBKGMOTZOVdkCgpsGGiHA0oipfOJ+TulcjFxKODdiy015i3?=
+ =?us-ascii?Q?sz/gbeYiTCcmFZUXtVZTeq2sXLM8E3YxlINET6evb0t8KdU/Z/oOPzbhtL6y?=
+ =?us-ascii?Q?l+wEx1QCX9DH5kNixl/fGkBsWFfeWIrYpKrPjn1QdiohZ+d1fEbk0pBG0Eq3?=
+ =?us-ascii?Q?bC6d8s7EovqmvbGTBHqE9ah9JT3LzLU/6ZIIWVix69RN9w0rM0VtW20SbvTj?=
+ =?us-ascii?Q?TwyF4M6nmXLjaR1W6sZE2v5bzIDRH64iUwZ6htCHdX3dvsbwZcTpj+mD8/p/?=
+ =?us-ascii?Q?iwwNd3B2wzWPLoVgp8VRpgWXe82VmGQfCdVxmOb4F/edJjS0EYxOV1sNOFS3?=
+ =?us-ascii?Q?IwzAwsgVQT5gJkA2iWcgHqM/fa5YpGF+phwr1fJFc/C5NlmEFA7t+rMeqZeK?=
+ =?us-ascii?Q?uxslvKqfsuzuC1jiQy85c3jKYqvogj+OxYdACGRtpUuCj18prENRIv8b4L8m?=
+ =?us-ascii?Q?qdpijDvsfZ0KpJAzdZWXFQvJKEQU3J/GhAqfgzLDucBrkVZoLMgl/gGmdMI+?=
+ =?us-ascii?Q?fBiPlC1NjfGCn6ojc6mPKf/seoXY7vadxUJZxSzXPWIR59TFRiLdA/m5ts5E?=
+ =?us-ascii?Q?N3lnt6V1OClr25ifsvBVPDKS8XdDFp9Zs6Ic?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013); DIR:OUT;
+ SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 01:42:26.0405 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 268fafeb-27cd-4346-9e83-08dd878842b7
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 01:42:37.9299 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb167389-a856-4f5f-ad42-08dd878849cc
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002636D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002636B.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7166
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6927
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,73 +134,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sync up with kernel documents.
+Add drm_colorop_lut1d_interpolation_type to IGT.
 
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 ---
- include/drm-uapi/drm_mode.h | 44 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ include/drm-uapi/drm_mode.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index 7206b213b..9e34d43db 100644
+index 9e34d43db..f749eebf8 100644
 --- a/include/drm-uapi/drm_mode.h
 +++ b/include/drm-uapi/drm_mode.h
-@@ -874,11 +874,55 @@ struct drm_color_lut {
- 	__u16 reserved;
+@@ -956,6 +956,19 @@ struct drm_plane_size_hint {
+ 	__u16 height;
  };
  
 +/**
-+ * enum drm_colorop_type - Type of color operation
-+ *
-+ *
-+ * drm_colorops can be of many different types. Each type behaves differently
-+ * and defines a different set of properties. This enum defines all types and
-+ * gives a high-level description.
++ * enum drm_colorop_lut1d_interpolation_type - type of interpolation for 1D LUTs
 + */
- enum drm_colorop_type {
++enum drm_colorop_lut1d_interpolation_type {
 +	/**
-+	 * @DRM_COLOROP_1D_CURVE:
++	 * @DRM_COLOROP_LUT1D_INTERPOLATION_LINEAR:
 +	 *
-+	 * A 1D curve that is being applied to all color channels. The
-+	 * curve is specified via tha CURVE_1D_TYPE colorop property.
++	 * Linear interpolation. Values between points of the LUT will be
++	 * linearly interpolated.
 +	 */
- 	DRM_COLOROP_1D_CURVE,
++	DRM_COLOROP_LUT1D_INTERPOLATION_LINEAR,
++};
 +
-+	/**
-+	 * @DRM_COLOROP_1D_LUT:
-+	 *
-+	 * A simple 1D LUT of uniformly spaced &drm_color_lut entries,
-+	 * packed into a blob via the DATA property. The driver's expected
-+	 * LUT size is advertised via the SIZE property.
-+	 */
- 	DRM_COLOROP_1D_LUT,
-+
-+	/**
-+	 * @DRM_COLOROP_CTM_3X4:
-+	 *
-+	 * A 3x4 matrix. Its values are specified via the
-+	 * &drm_color_ctm_3x4 struct provided via the DATA property.
-+	 */
- 	DRM_COLOROP_CTM_3X4,
-+
-+	/**
-+	 * @DRM_COLOROP_MULTIPLIER:
-+	 *
-+	 * A simple multiplier, applied to all color values. The
-+	 * multiplier is specified as a S31.32 via the MULTIPLIER
-+	 * property.
-+	 */
- 	DRM_COLOROP_MULTIPLIER,
-+	/**
-+	 * @DRM_COLOROP_3D_LUT:
-+	 *
-+	 * A 3D LUT of &drm_color_lut entries,
-+	 * packed into a blob via the DATA property. The driver's expected
-+	 * LUT size is advertised via the SIZE property.
-+	 */
- 	DRM_COLOROP_3D_LUT,
- };
- 
+ /**
+  * struct hdr_metadata_infoframe - HDR Metadata Infoframe Data.
+  *
 -- 
 2.43.0
 
