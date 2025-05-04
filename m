@@ -4,16 +4,16 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2E89C369DC
-	for <igt-dev@archiver.kernel.org>; Sun,  4 May 2025 21:23:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59585C369DC
+	for <igt-dev@archiver.kernel.org>; Sun,  4 May 2025 21:24:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C8CD10E040;
-	Sun,  4 May 2025 21:23:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E838C10E04D;
+	Sun,  4 May 2025 21:24:25 +0000 (UTC)
 Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EFB910E040;
- Sun,  4 May 2025 21:23:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A89910E040;
+ Sun,  4 May 2025 21:24:24 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1287989717185472159=="
+ boundary="===============4904935134959838704=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/sec=5Fxe=5Fex?=
  =?utf-8?q?ec=5Fqueue=5Ftimeslice=5Fabuse=3A_Validate_the_Impact_of_Timeslic?=
@@ -21,8 +21,8 @@ Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/sec=5Fxe
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Sun, 04 May 2025 21:23:57 -0000
-Message-ID: <174639383732.42219.12705794185680170631@c664b1dc75d1>
+Date: Sun, 04 May 2025 21:24:24 -0000
+Message-ID: <174639386413.42223.8423342144569108506@c664b1dc75d1>
 X-Patchwork-Hint: ignore
 References: <20250504202809.119066-1-peter.senna@linux.intel.com>
 In-Reply-To: <20250504202809.119066-1-peter.senna@linux.intel.com>
@@ -42,7 +42,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1287989717185472159==
+--===============4904935134959838704==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -135,7 +135,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13074/index.html
 
---===============1287989717185472159==
+--===============4904935134959838704==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -226,4 +226,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1287989717185472159==--
+--===============4904935134959838704==--
