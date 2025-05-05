@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A63A3C369C2
-	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 05:35:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E882CC369C2
+	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 06:01:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B75610E268;
-	Mon,  5 May 2025 05:35:51 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hvkAr6v9";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8766110E268
- for <igt-dev@lists.freedesktop.org>; Mon,  5 May 2025 05:35:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746423351; x=1777959351;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=yckOm7HARl2+HGCDu9ZtmZPo1fdioUy7Jvu1mEP5KFQ=;
- b=hvkAr6v9bpeR7G+w9iSkJa+CRWDbkCRg1QdCDkN3RYUNJ2zx/O6sUzVU
- WR/Vi71orUDrscw/HlOrZcdaHovLq5Q+CG1sLD0Xr6+WSaAoZuJNpinor
- F6q2n6VijsLwk+aJoTKfQ0eCwjHmFk2mSLMoLwm60sF5IWH5u53Wr2DNR
- ZPPIStfTu7Yq7GI5t/BiiYMvPRSpldNh2Cvn87+AJtIG7CjKrerQKsAxF
- fRxJPwClwQtrWNuRqJqzxYWExE/fEO8KSR5utwqxFJo+hm/tkSskPlfMw
- BGe+dd97+FWvWVtHMn7Q/cjAEBNiu+JRkJ+VjybqnYSc6fxg6cGSISVDQ Q==;
-X-CSE-ConnectionGUID: 5x6AGjfpRLKDVkv4IxfJtQ==
-X-CSE-MsgGUID: w/eDlJ0+RsK3NXqpK9MZaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="73415059"
-X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="73415059"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2025 22:35:50 -0700
-X-CSE-ConnectionGUID: Uxg7Ax4rRoa7jEykFDPRjg==
-X-CSE-MsgGUID: FyZAB3JESuK6YH0S7ejYZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="135081498"
-Received: from aiddamse-mobl3.gar.corp.intel.com (HELO [10.247.235.34])
- ([10.247.235.34])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2025 22:35:47 -0700
-Message-ID: <ed0f7ca6-debe-4299-ac9e-6c9718683287@linux.intel.com>
-Date: Mon, 5 May 2025 11:05:44 +0530
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14A4010E2EB;
+	Mon,  5 May 2025 06:01:44 +0000 (UTC)
+Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 191EF10E27D;
+ Mon,  5 May 2025 06:01:43 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6486660349813567585=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 4/5] lib/igt_fs: Add helper functions to create and
- remove directories
-To: Riana Tauro <riana.tauro@intel.com>, igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com,
- rodrigo.vivi@intel.com, kamil.konieczny@linux.intel.com,
- louis.chauvet@bootlin.com, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?=
- <jose.exposito89@gmail.com>
-References: <20250422095602.55041-1-riana.tauro@intel.com>
- <20250422095602.55041-5-riana.tauro@intel.com>
-Content-Language: en-US
-From: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
-In-Reply-To: <20250422095602.55041-5-riana.tauro@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/kms=5Ftiled=5Fdisplay?=
+ =?utf-8?q?=3A_Skip_if_connectors_are_not_of_same_type_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 05 May 2025 06:01:43 -0000
+Message-ID: <174642490309.43928.2225929322273591687@c664b1dc75d1>
+X-Patchwork-Hint: ignore
+References: <20250505034941.930385-1-pranay.samala@intel.com>
+In-Reply-To: <20250505034941.930385-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,105 +37,122 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============6486660349813567585==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 22-04-2025 15:26, Riana Tauro wrote:
-> Add helper function to create directory and return fd of
-> the created directory. Also add a function to remove
-> directories. This will be used by configfs
->
-> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> Cc: José Expósito <jose.exposito89@gmail.com>
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->  lib/igt_fs.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_fs.h |  2 ++
->  2 files changed, 50 insertions(+)
->
-> diff --git a/lib/igt_fs.c b/lib/igt_fs.c
-> index f6a2530cd..1fa281315 100644
-> --- a/lib/igt_fs.c
-> +++ b/lib/igt_fs.c
-> @@ -21,8 +21,10 @@
->   * IN THE SOFTWARE.
->   *
->   */
-> +#include <sys/stat.h>
->  
->  #include <errno.h>
-> +#include <fcntl.h>
->  #include <stdlib.h>
->  #include <unistd.h>
->  
-> @@ -94,3 +96,49 @@ ssize_t igt_writen(int fd, const char *buf, size_t len)
->  	} while (total != len);
->  	return total ?: ret;
->  }
-> +
-> +/**
-> + * igt_fs_create_dir: creates and opens directory
-> + * @fd: file descriptor of parent directory
-> + * @name: name of the directory to create
-> + * @mode: permissions for the directory
-> + *
-> + * creates a directory under parent directory and returns
-> + * the fd
-> + *
-> + * Returns: directory fd on success, -errno otherwise
-> + */
-> +int igt_fs_create_dir(int fd, const char *name, mode_t mode)
-> +{
-> +	int ret;
-> +	int dirfd;
-> +
-> +	ret = mkdirat(fd, name, mode);
-> +	if (ret)
-> +		return -errno;
-> +
-> +	dirfd = openat(fd, name, O_DIRECTORY);
-> +	if (dirfd < 0)
-> +		return -errno;
-> +
-> +	return dirfd;
-> +}
-> +
-> +/**
-> + * igt_fs_remove_directory: removes directory
-> + * @fd: fd of parent directory
-> + * @name: name of directory to remove
-> + *
-> + * removes directory under parent directory
-> + *
-> + * Returns: 0 on success, -errno otherwise
-> + */
-> +int igt_fs_remove_dir(int fd, const char *name)
-> +{
-> +	int ret = unlinkat(fd, name, AT_REMOVEDIR);
-> +
-> +	if (ret)
-> +		return -errno;
-> +
-> +	return 0;
-> +}
-> diff --git a/lib/igt_fs.h b/lib/igt_fs.h
-> index 84c3fed62..ee3e7593b 100644
-> --- a/lib/igt_fs.h
-> +++ b/lib/igt_fs.h
-> @@ -27,6 +27,8 @@
->  
->  #include <stdio.h>
->  
-> +int igt_fs_create_dir(int fd, const char *name, mode_t mode);
-> +int igt_fs_remove_dir(int fd, const char *name);
->  ssize_t igt_readn(int fd, char *buf, size_t len);
->  ssize_t igt_writen(int fd, const char *buf, size_t len);
+== Series Details ==
 
-LGTM.
+Series: tests/kms_tiled_display: Skip if connectors are not of same type (rev2)
+URL   : https://patchwork.freedesktop.org/series/148468/
+State : failure
 
-Reviewed-by: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+== Summary ==
 
-Thanks,
-Aravind.
->  
+CI Bug Log - changes from XEIGT_8353_BAT -> XEIGTPW_13075_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_13075_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_13075_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (8 -> 0)
+------------------------------
+
+  ERROR: It appears as if the changes made in XEIGTPW_13075_BAT prevented too many machines from booting.
+
+  Missing    (8): bat-bmg-1 bat-lnl-2 bat-adlp-vf bat-lnl-1 bat-dg2-oem2 bat-atsm-2 bat-bmg-2 bat-adlp-7 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8353 -> IGTPW_13075
+  * Linux: xe-3030-66dbd091942ffec06a91480c22916f389670a87c -> xe-3032-9c8c2c903387f43ed1e34e2c5f9ca7bd0201f115
+
+  IGTPW_13075: cf6b1715cb114995981939ed8e00f4573f71b932 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8353: 8353
+  xe-3030-66dbd091942ffec06a91480c22916f389670a87c: 66dbd091942ffec06a91480c22916f389670a87c
+  xe-3032-9c8c2c903387f43ed1e34e2c5f9ca7bd0201f115: 9c8c2c903387f43ed1e34e2c5f9ca7bd0201f115
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13076/index.html
+
+--===============6486660349813567585==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_tiled_display: Skip if connectors are not of same type (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148468/">https://patchwork.freedesktop.org/series/148468/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13076/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13076/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8353_BAT -&gt; XEIGTPW_13075_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_13075_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_13075_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (8 -&gt; 0)</h2>
+<p>ERROR: It appears as if the changes made in XEIGTPW_13075_BAT prevented too many machines from booting.</p>
+<p>Missing    (8): bat-bmg-1 bat-lnl-2 bat-adlp-vf bat-lnl-1 bat-dg2-oem2 bat-atsm-2 bat-bmg-2 bat-adlp-7 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8353 -&gt; IGTPW_13075</li>
+<li>Linux: xe-3030-66dbd091942ffec06a91480c22916f389670a87c -&gt; xe-3032-9c8c2c903387f43ed1e34e2c5f9ca7bd0201f115</li>
+</ul>
+<p>IGTPW_13075: cf6b1715cb114995981939ed8e00f4573f71b932 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8353: 8353<br />
+  xe-3030-66dbd091942ffec06a91480c22916f389670a87c: 66dbd091942ffec06a91480c22916f389670a87c<br />
+  xe-3032-9c8c2c903387f43ed1e34e2c5f9ca7bd0201f115: 9c8c2c903387f43ed1e34e2c5f9ca7bd0201f115</p>
+
+</body>
+</html>
+
+--===============6486660349813567585==--
