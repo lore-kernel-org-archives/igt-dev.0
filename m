@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C208C369C2
-	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 05:34:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85C81C369C2
+	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 05:35:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F42B10E2C0;
-	Mon,  5 May 2025 05:34:18 +0000 (UTC)
-Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EAB4C10E268;
- Mon,  5 May 2025 05:34:16 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1940359121752768977=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1E87810E268;
+	Mon,  5 May 2025 05:35:14 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b5eaSsVt";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED0FF10E268
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 May 2025 05:35:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746423312; x=1777959312;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=FCXJWZIBhBKZzVcDGGZW15BdM7W3cA3GzCd7+wII6xc=;
+ b=b5eaSsVt+pqDKzhr90Uj+1IrpsjHuAFqnHxsx94//65JYxO7QEFjJ26D
+ KGhoI4oSiPMn8PWGWCX+aX/x9CVclnCWevxiZ+jQqtGu7g+hDaijxrliH
+ GXbAR06dNDYIULtV/yoZgL6Rh09b6uxPj336U/OizJPaexjLtn4qd5n15
+ /5j/zvLLgQEvSPqiKNXngb7inJbvjVJiTR5pcNu8TzIQXy9TvKWbX737h
+ sHPneWvqS6kN7N+8mwbqXE5D5AbTm/69F9y70t6bNElM2Q6tbCK48l5sX
+ Q7RT60MSq8qD4XkXvxJtlDSEwEUOqng5A3A9QPb8xiph5OlibDSwSi5Mb w==;
+X-CSE-ConnectionGUID: Z9IxhAPDQrySXfExXO6DSQ==
+X-CSE-MsgGUID: xLs477qxSuqm0nJcqBsHcQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="58676015"
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="58676015"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2025 22:35:09 -0700
+X-CSE-ConnectionGUID: MuDazZitRliWSLOTf2tJ4w==
+X-CSE-MsgGUID: YwT0iGlgRICdigfcmsUzHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="135483108"
+Received: from aiddamse-mobl3.gar.corp.intel.com (HELO [10.247.235.34])
+ ([10.247.235.34])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2025 22:35:06 -0700
+Message-ID: <b5836a88-e575-483f-ac4b-68a509b85820@linux.intel.com>
+Date: Mon, 5 May 2025 11:05:03 +0530
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Ftiled=5Fdispl?=
- =?utf-8?q?ay=3A_Skip_if_connectors_are_not_of_same_type_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 05 May 2025 05:34:16 -0000
-Message-ID: <174642325695.43828.16020558420310570497@c664b1dc75d1>
-X-Patchwork-Hint: ignore
-References: <20250505034941.930385-1-pranay.samala@intel.com>
-In-Reply-To: <20250505034941.930385-1-pranay.samala@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 2/5] lib/igt_configfs: Add helper to mount configfs
+To: Riana Tauro <riana.tauro@intel.com>, igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com,
+ rodrigo.vivi@intel.com, kamil.konieczny@linux.intel.com,
+ louis.chauvet@bootlin.com, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?=
+ <jose.exposito89@gmail.com>, Jim Shargo <jshargo@chromium.org>,
+ Marius Vlad <marius.vlad@collabora.com>
+References: <20250422095602.55041-1-riana.tauro@intel.com>
+ <20250422095602.55041-3-riana.tauro@intel.com>
+Content-Language: en-US
+From: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+In-Reply-To: <20250422095602.55041-3-riana.tauro@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,175 +72,168 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1940359121752768977==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 22-04-2025 15:25, Riana Tauro wrote:
+> From: José Expósito <jose.exposito89@gmail.com>
+>
+> Add a new helper function to mount and open configfs
+>
+> Co-developed-by: Jim Shargo <jshargo@chromium.org>
+> Signed-off-by: Jim Shargo <jshargo@chromium.org>
+> Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
+> Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+> Co-developed-by: Riana Tauro <riana.tauro@intel.com>
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+> ---
+>  lib/igt.h          |  1 +
+>  lib/igt_configfs.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_configfs.h | 15 +++++++++
+>  lib/meson.build    |  1 +
+>  4 files changed, 99 insertions(+)
+>  create mode 100644 lib/igt_configfs.c
+>  create mode 100644 lib/igt_configfs.h
+>
+> diff --git a/lib/igt.h b/lib/igt.h
+> index 58c39e098..173ca70bf 100644
+> --- a/lib/igt.h
+> +++ b/lib/igt.h
+> @@ -27,6 +27,7 @@
+>  #include "drmtest.h"
+>  #include "i915_3d.h"
+>  #include "igt_aux.h"
+> +#include "igt_configfs.h"
+>  #include "igt_core.h"
+>  #include "igt_debugfs.h"
+>  #include "igt_draw.h"
+> diff --git a/lib/igt_configfs.c b/lib/igt_configfs.c
+> new file mode 100644
+> index 000000000..6b202b76f
+> --- /dev/null
+> +++ b/lib/igt_configfs.c
+> @@ -0,0 +1,82 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2023 Google LLC.
+> + * Copyright © 2023 Collabora, Ltd.
+> + * Copyright © 2024 Red Hat, Inc.
+> + * Copyright © 2025 Intel Corporation
+> + */
+> +
+> +#include <sys/mount.h>
+> +#include <fcntl.h>
+> +#include <limits.h>
+> +
+> +#include "igt_aux.h"
+> +#include "igt_configfs.h"
+> +
+> +/**
+> + * SECTION:igt_configfs
+> + * @short_description: Support code for configfs features
+> + * @title: configfs
+> + * @include: igt_configfs.h
+> + *
+> + * This library provides helpers to access configfs features.
+> + */
+> +
+> +/*
+> + * General configfs helpers
+> + */
+> +
+> +static const char *__igt_configfs_mount(void)
+> +{
+> +	if (igt_is_mountpoint("/sys/kernel/config"))
+> +		return "/sys/kernel/config";
+> +
+> +	if (igt_is_mountpoint("/config"))
+> +		return "/config";
+> +
+> +	if (mount("config", "/sys/kernel/config", "configfs", 0, 0))
+> +		return NULL;
+> +
+> +	return "/sys/kernel/config";
+> +}
+> +
+> +/**
+> + * igt_configfs_mount:
+> + *
+> + * This attempts to locate where configfs is mounted on the filesystem,
+> + * and if not found, will then try to mount configfs at /sys/kernel/config.
+> + *
+> + * Returns:
+> + * The path to the configfs mount point (e.g. /sys/kernel/config)
+> + */
+> +const char *igt_configfs_mount(void)
+> +{
+> +	static const char *path;
+> +
+> +	if (!path)
+> +		path = __igt_configfs_mount();
+> +
+> +	return path;
+> +}
+> +
+> +/**
+> + * igt_configfs_open: open configfs path
+> + * @name: name of the configfs directory
+> + *
+> + * Opens the configfs directory corresponding to the name
+> + *
+> + * Returns:
+> + * The directory fd, or -1 on failure.
+> + */
+> +int igt_configfs_open(const char *name)
+> +{
+> +	char path[PATH_MAX];
+> +	const char *configfs_path;
+> +
+> +	configfs_path = igt_configfs_mount();
+> +	igt_assert(configfs_path);
+> +
+> +	snprintf(path, sizeof(path), "%s/%s", configfs_path, name);
+> +
+> +	return open(path, O_RDONLY);
 
-Series: tests/kms_tiled_display: Skip if connectors are not of same type (rev2)
-URL   : https://patchwork.freedesktop.org/series/148468/
-State : success
+to be safe better to use O_DIRECTORY flag as well.
 
-== Summary ==
+Reviewed-by: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
 
-CI Bug Log - changes from IGT_8353 -> IGTPW_13076
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/index.html
-
-Participating hosts (43 -> 42)
-------------------------------
-
-  Missing    (1): bat-arlh-2 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13076 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [PASS][1] -> [INCOMPLETE][2] ([i915#12904]) +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-apl-1/igt@dmabuf@all-tests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-9:          [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-11:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-    - bat-arls-6:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8353 -> IGTPW_13076
-  * Linux: CI_DRM_16496 -> CI_DRM_16498
-
-  CI-20190529: 20190529
-  CI_DRM_16496: 66dbd091942ffec06a91480c22916f389670a87c @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16498: 9c8c2c903387f43ed1e34e2c5f9ca7bd0201f115 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13076: 087639213c0f3ca468ea6f47ddceecc029174344 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8353: 8353
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/index.html
-
---===============1940359121752768977==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_tiled_display: Skip if connectors are not of same type (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148468/">https://patchwork.freedesktop.org/series/148468/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8353 -&gt; IGTPW_13076</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/index.html</p>
-<h2>Participating hosts (43 -&gt; 42)</h2>
-<p>Missing    (1): bat-arlh-2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13076 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-apl-1/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test incomplete</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8353/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13076/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8353 -&gt; IGTPW_13076</li>
-<li>Linux: CI_DRM_16496 -&gt; CI_DRM_16498</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16496: 66dbd091942ffec06a91480c22916f389670a87c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16498: 9c8c2c903387f43ed1e34e2c5f9ca7bd0201f115 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13076: 087639213c0f3ca468ea6f47ddceecc029174344 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8353: 8353</p>
-
-</body>
-</html>
-
---===============1940359121752768977==--
+Thanks,
+Aravind.
+> +}
+> diff --git a/lib/igt_configfs.h b/lib/igt_configfs.h
+> new file mode 100644
+> index 000000000..91f95659b
+> --- /dev/null
+> +++ b/lib/igt_configfs.h
+> @@ -0,0 +1,15 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2023 Google LLC.
+> + * Copyright © 2023 Collabora, Ltd.
+> + * Copyright © 2024 Red Hat, Inc.
+> + * Copyright © 2025 Intel Corporation
+> + */
+> +
+> +#ifndef __IGT_CONFIGFS_H__
+> +#define __IGT_CONFIGFS_H__
+> +
+> +const char *igt_configfs_mount(void);
+> +int igt_configfs_open(const char *name);
+> +
+> +#endif /* __IGT_CONFIGFS_H__ */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 8517cd540..59072d8ce 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -18,6 +18,7 @@ lib_sources = [
+>  	'i915/i915_crc.c',
+>  	'igt_collection.c',
+>  	'igt_color_encoding.c',
+> +	'igt_configfs.c',
+>  	'igt_facts.c',
+>  	'igt_crc.c',
+>  	'igt_debugfs.c',
