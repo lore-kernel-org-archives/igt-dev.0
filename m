@@ -4,59 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AADABC3ABB0
-	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 09:18:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D41C3ABB9
+	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 10:06:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5AF0510E3A9;
-	Mon,  5 May 2025 09:18:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09EF510E04E;
+	Mon,  5 May 2025 10:06:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h5t21j9s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TpMAnzc8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01A0F10E3A9
- for <igt-dev@lists.freedesktop.org>; Mon,  5 May 2025 09:18:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8563510E04E
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 May 2025 10:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746436684; x=1777972684;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=I30bTFgulgeB6lcTQmRM7J5QoNoSzsP4YxEpe5+efnM=;
- b=h5t21j9sf0tp9ip0VEW5E4FD5sbogaRK2tqG9LgbrUH6fhWSsrjGhjL8
- MEHTC2qB6Tnf2KzrdzDA51Q5QCXPv39uh/XjWl7SpiHemRdWDp0zXVft8
- ZMlASgNv+d2oALtbTehnrHeDfsBkCc5OouqxA/+JOhavKPX6iTTkFJ0/q
- qa+RR1XeeEq3kOzAdCyeD0ouaNfxuMX09Vba4oOd49/1KxLKO7PLfU5bX
- wUyLlNiLtOwqMoXYMh7gY2O8/tV65YQ48pbpZP/c1VbHq7w+NtGkXTEiy
- +OJAOb0rhdbEcDTWFdcSephRTxfjpn3OQdQcSi3p0siKZNpmcZJUJqcQ4 g==;
-X-CSE-ConnectionGUID: HPUQsS2RTCaodwaOrr181Q==
-X-CSE-MsgGUID: wNQftQ2vShSvvxfp+OrBpQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="59427958"
-X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="59427958"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2025 02:18:03 -0700
-X-CSE-ConnectionGUID: LgH+6CX7RLGCsP4ruNo4Bw==
-X-CSE-MsgGUID: OHLTOgG5R1SO5dgol7OVcw==
+ t=1746439598; x=1777975598;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1Bvlw6DiQ3RJuB4QjKMf76AfF18RcxL0MD5sDiS8Fhk=;
+ b=TpMAnzc8cFLRliCNHc1eTkSmayqpwQE++Yv3p0UWrxRjA1qxkqnMRhQG
+ k6ngwMhBqH++g5jOMBfjPJmZ1+n+rKpUCiiwouGwoRIokzgXrQB6Ci0Rn
+ lma41ipU8t0ck5e5d0Xn4muc+xccmvXfCIWFqRRiC2HgFPQCEzw1R3eIb
+ BoM2Ovn3qdyZf1VaB6XDAo9qnOT66OyPbukoNhY6ZFOWGhyCSav8KUS4F
+ cOzQ0TzidG3aAuqbBbxhfUjsL8t/REgENIyvBdaP5V1ljh9HhRZwV9FBE
+ e8E9OF/CKb3kgJNdQwFCbowe7VR6PVLk3Ua1N6lh1CILztO/1GLFW32l2 A==;
+X-CSE-ConnectionGUID: YrVgfunxRYa2urLd1jqRHg==
+X-CSE-MsgGUID: zmZpX8N6QBylpOBa4CuMUw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="47947352"
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="47947352"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 May 2025 03:06:37 -0700
+X-CSE-ConnectionGUID: ZfSF3IErSl66LpuFypK5Rg==
+X-CSE-MsgGUID: 4Lz54jYtRs+eABCdHW/5dQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="139210287"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.113.30])
- ([10.245.113.30])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2025 02:18:02 -0700
-Message-ID: <c7105616-5074-45a9-8ed5-0b3cd981f5cb@linux.intel.com>
-Date: Mon, 5 May 2025 11:17:43 +0200
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="172437762"
+Received: from unknown (HELO rtauro-desk.iind.intel.com) ([10.190.239.27])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 May 2025 03:06:34 -0700
+From: Riana Tauro <riana.tauro@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
+ umesh.nerlige.ramappa@intel.com, lucas.demarchi@intel.com,
+ vinay.belgaumkar@intel.com, soham.purkait@intel.com
+Subject: [PATCH i-g-t 0/5] Add more tests to validate engine activity
+Date: Mon,  5 May 2025 15:59:41 +0530
+Message-ID: <20250505102946.159655-1-riana.tauro@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] intel-ci/xe.blocklist: remove device_reset
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-References: <20250428113356.17810-1-kamil.konieczny@linux.intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250428113356.17810-1-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,33 +67,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Add more tests to validate engine activity
 
+1) engine-activity-single-(load/load-idle) : Validates engine activity
+by loading a single engine and checking if others are idle
 
-On 4/28/2025 1:33 PM, Kamil Konieczny wrote:
-> device_reset test is driver agnostic so remove it from Xe
-> blocklist.
-> 
-> Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->   tests/intel-ci/xe.blocklist.txt | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-> index 541917393..1c43b7a26 100644
-> --- a/tests/intel-ci/xe.blocklist.txt
-> +++ b/tests/intel-ci/xe.blocklist.txt
-> @@ -37,7 +37,6 @@ igt@xe_live_ktest@xe_bo_shrink
->   # Exclude all other non-Xe tests
->   ##################################################################
->   igt@debugfs.*
-> -igt@device_reset
+2) engine-activity-all-(load/load-idle) : Validates engine activity by
+loading all engines simultaneously.
 
-Probably we still want to block the igt@device_reset@.*reset-bound cases ?
+3) engine-activity-most-(load/load-idle) : Validates engine activity by
+loading most engines except some
 
->   igt@drm_read
->   igt@dumb.*
->   igt@prime_.*
+Riana Tauro (5):
+  tests/intel/xe_pmu: Add a helper function to check and end cork
+  tests/intel/xe_pmu: move descriptions of tests to the top of file
+  tests/intel/xe_pmu: Add tests to validate all engines with single
+    engine active
+  tests/intel/xe_pmu: Add tests to validate engine activity on all
+    engines
+  test/intel/xe_pmu: Add tests to validate engine activity by loading
+    most engines
+
+ tests/intel/xe_pmu.c | 315 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 279 insertions(+), 36 deletions(-)
+
+-- 
+2.47.1
 
