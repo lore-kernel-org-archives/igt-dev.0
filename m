@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 760A8C369C2
-	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 04:45:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EB11C369C2
+	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 04:46:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8319310E120;
-	Mon,  5 May 2025 04:45:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AE70410E120;
+	Mon,  5 May 2025 04:46:19 +0000 (UTC)
 Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 605BA10E120;
- Mon,  5 May 2025 04:45:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0878510E120;
+ Mon,  5 May 2025 04:46:19 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2213161687511344970=="
+ boundary="===============6673509840810197299=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Improve_skip_messaging_an?=
  =?utf-8?q?d_test_context_reporting?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Pranay Samala" <pranay.samala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 05 May 2025 04:45:55 -0000
-Message-ID: <174642035536.43664.13236875637559132652@c664b1dc75d1>
+Date: Mon, 05 May 2025 04:46:19 -0000
+Message-ID: <174642037900.43682.8308095338599028568@c664b1dc75d1>
 X-Patchwork-Hint: ignore
 References: <20250505033435.929953-1-pranay.samala@intel.com>
 In-Reply-To: <20250505033435.929953-1-pranay.samala@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2213161687511344970==
+--===============6673509840810197299==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -144,7 +144,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13075/index.html
 
---===============2213161687511344970==
+--===============6673509840810197299==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -242,4 +242,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============2213161687511344970==--
+--===============6673509840810197299==--
