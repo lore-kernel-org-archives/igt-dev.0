@@ -4,45 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 871C5C3ABAA
-	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 20:50:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3548EC3ABB6
+	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 20:51:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 74ED610E337;
-	Mon,  5 May 2025 20:50:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BFBBE10E337;
+	Mon,  5 May 2025 20:51:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lg0EyMcJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T2Juuw6P";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A88F10E337
- for <igt-dev@lists.freedesktop.org>; Mon,  5 May 2025 20:50:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EBFD10E337
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 May 2025 20:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746478230; x=1778014230;
+ t=1746478267; x=1778014267;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=ApHKaoFSzL1GtBj0gg0AJ4m8jmOJLECRBysw9cg3nuE=;
- b=Lg0EyMcJoE8Ye6rKaTp00O6vJStJKjtdGz8zpA3AYSn+NSAr5QgyzqWy
- 3oTa+M6hMTQmo2hvCY9beFklsU8jXa4D71v4UEo+SM+6vztQvJ64YVfR9
- u6PFpOyrCm/3bkQ6ga7uE1ivu3j9F3Y0tTGiXKLj7h/1XEU5WOcZiniN1
- 24Ig4crZtzQS+tvtCXVE61RSBmSWuuOo8ay8JCtiHhhX5XVOJuhVafKx7
- RIcXLCIKZaP6FBVenQFH8VmlQXAunjV8SFZk7N0Udx1J6rECoEBa8YbYR
- 8i9epv+Xrx5GbTFUP3Wmv4bvKXWjExuenf8a41NWA0uRJ2xG94vLIiJiJ Q==;
-X-CSE-ConnectionGUID: cKuee5iXQu6CwB3y+KsY0Q==
-X-CSE-MsgGUID: +h/zYysdRIOKHKbklbOakg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="48247894"
-X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; d="scan'208";a="48247894"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2025 13:50:29 -0700
-X-CSE-ConnectionGUID: UnjDZyuTQwS3avR6Lv9Dmw==
-X-CSE-MsgGUID: OO3kCUJ/TYes14BYOfywcw==
+ bh=5u0DXLcQRqBiHYGbK/6z7UEEJJlgrlx7DxKUhSEZb5U=;
+ b=T2Juuw6PUChFrFzNTMcR7CyAy6C3U44s0/VOWjVu2taNCx4aQMVUw5cN
+ uSFNhdEeD3MdNnhGZlKaj+MXFxPbGMQC3GlksaItTYA8nwd8jXoNvaCet
+ 6pgfTpBhH/AtUFpFqHr8erhl6955NBAl+fsz28UwatAlLBVANJVL1fKu5
+ PSPwLE1b9V1YOgi2SRi4DPs/z/q3IKccEiI5F0b4sTpv8kr1iRLZRIn4F
+ d0ZdLyFHMUI0obl0/UIwe3SpA158mc98aEBvUzIODheijhwxQFhWxpZmf
+ KhBGyqmI65zuEKUqoyNLXRf4lVAx0tAFbMxDrCZcHTcANCpaXdmkImOS/ w==;
+X-CSE-ConnectionGUID: gx8G45SFSxSak4AeVkDxtw==
+X-CSE-MsgGUID: cgqHMdcISqa7yCmwvUCQXw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="58769087"
+X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; d="scan'208";a="58769087"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 May 2025 13:51:02 -0700
+X-CSE-ConnectionGUID: +6/DTm9TRFSrSW7In7dpdw==
+X-CSE-MsgGUID: V0LUTbjQRAS6trRe+wN6aA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; d="scan'208";a="136327010"
+X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; d="scan'208";a="139397550"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.47])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2025 13:50:25 -0700
-Date: Mon, 5 May 2025 22:50:22 +0200
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 May 2025 13:50:59 -0700
+Date: Mon, 5 May 2025 22:50:57 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Soham Purkait <soham.purkait@intel.com>
 Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com, 
@@ -50,16 +50,16 @@ Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  krzysztof.karas@intel.com, 
  anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com, 
  ashutosh.dixit@intel.com
-Subject: Re: [PATCH i-g-t v10 1/5] lib/igt_device_scan: Add support for the
- device filter
-Message-ID: <xempdkhkmadbzioiwgxhzfyidr6fn2f2x5nsjvnjjaz64qlnid@reioijr7ctu6>
+Subject: Re: [PATCH i-g-t v10 2/5] lib/igt_device_scan: Enable finding all
+ matched IGT devices
+Message-ID: <ft2rlltt3cvzk5njhla2pypvlxzyk4ps3f7ayab6okdm3bdjrw@zun3jgpqnlut>
 References: <20250430070824.3012927-1-soham.purkait@intel.com>
- <20250430070824.3012927-2-soham.purkait@intel.com>
+ <20250430070824.3012927-3-soham.purkait@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250430070824.3012927-2-soham.purkait@intel.com>
+In-Reply-To: <20250430070824.3012927-3-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,29 +75,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Apr 30, 2025 at 12:38:20PM +0530, Soham Purkait wrote:
-> Add support for the device filter based on
-> driver string, device type (integrated or discrete)
-> and card number.
+On Wed, Apr 30, 2025 at 12:38:21PM +0530, Soham Purkait wrote:
+> Use filter to find all the available
+> GPUs or few among them by driver name
+> and card type or card number.
 > 
-> v5 : Add device filter to filter out
->      matching devices.           (Zbigniew)
+> v2 : Fix for refactoring GPUTOP into a
+>      vendor-agnostic tool. (Lucas)
 > 
-> v6 : Move device filter with Separate
->      commit.                     (Zbigniew)
+> v3 : Separate commit for lib. (Kamil)
 > 
-> v7 : Fix interpretation of card numbering
->      and add 'all' option for all the cards.
->                                  (Zbigniew)
+> v4 : Refactor to use composition strategy
+>      for driver and device type filtering.
+>      Refactor code to improve memory
+>      allocation and error handling. (Lucas)
 > 
-> v8 : Fix for card filter output. (Zbigniew)
+> v5 : Introduce device card match function
+>      to return collection of matching
+>      devices using device filter.
 > 
-> v10 : Fix render node issue with 'subsystem' filter
->       option.                    (Zbigniew)
+> v6 : Separate commit for device card match
+>      function.                     (Zbigniew)
+>      Function description modification for device
+>      card match function.          (Zbigniew)
+> 
+> v7 : Single return for card match function.
+>                                   (Krzysztof)
+> 
+> v8 : Removed 'drivers' array as card match
+>      function parameter.          (Zbigniew)
+> 
+> v9 : Fixed allocation in card match instead of
+>      multiple realloc.            (Zbigniew)
 > 
 > Signed-off-by: Soham Purkait <soham.purkait@intel.com>
 
-Drop history and for this patch pick my:
+LGTM:
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
@@ -105,120 +118,81 @@ Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Zbigniew
 
 > ---
->  lib/igt_device_scan.c | 79 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 79 insertions(+)
+>  lib/igt_device_scan.c | 48 +++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_device_scan.h |  1 +
+>  2 files changed, 49 insertions(+)
 > 
 > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 3f26a1737..3c36ca3f2 100644
+> index 3c36ca3f2..949fff461 100644
 > --- a/lib/igt_device_scan.c
 > +++ b/lib/igt_device_scan.c
-> @@ -1434,6 +1434,7 @@ struct filter {
->  		char *driver;
->  		char *pf;
->  		char *vf;
-> +		char *subsystem;
->  	} data;
->  };
->  
-> @@ -1453,6 +1454,7 @@ static void fill_filter_data(struct filter *filter, const char *key, const char
->  	__fill_key(driver);
->  	__fill_key(pf);
->  	__fill_key(vf);
-> +	__fill_key(subsystem);
->  #undef __fill_key
->  
->  }
-> @@ -1709,6 +1711,76 @@ static struct igt_list_head *filter_sriov(const struct filter_class *fcls,
->  	return &igt_devs.filtered;
+> @@ -2142,6 +2142,54 @@ bool igt_device_card_match_pci(const char *filter,
+>         return __igt_device_card_match(filter, card, true);
 >  }
 >  
-> +/*
-> + * Find appropriate gpu device through matching driver, device type and
-> + * card filter arguments.
+> +/**
+> + * igt_device_card_match_all
+> + * @filter: filter string.
+> + * @card: double pointer to igt_device_card structure, containing
+> + * an array of igt_device_card structures upon successful return.
+> + *
+> + * Function applies filter to match device from device array.
+> + *
+> + * Returns: the number of cards found.
+> + *
+> + * Note: The caller is responsible for freeing the memory which is
+> + * dynamically allocated for the array of igt_device_card structures
+> + * upon successful return.
 > + */
-> +static struct igt_list_head *filter_device(const struct filter_class *fcls,
-> +					   const struct filter *filter)
+> +int igt_device_card_match_all(const char *filter, struct igt_device_card **card)
 > +{
-> +	struct igt_device *dev;
-> +	bool allcards = false;
-> +	int card = 0;
-> +	(void)fcls;
+> +	struct igt_device *dev = NULL;
+> +	struct igt_device_card *crd = NULL;
+> +	int count = 0;
 > +
-> +	DBG("filter device\n");
-> +	if (filter->data.card) {
-> +		char crdop[5] = {0};
+> +	igt_devices_scan();
 > +
-> +		if (sscanf(filter->data.card, "%d", &card) == 1) {
-> +			if (card < 0)
-> +				return &igt_devs.filtered;
-> +		} else {
-> +			card = 0;
-> +			if (sscanf(filter->data.card, "%4s", crdop) == 1) {
-> +				if (!strcmp(crdop, "all"))
-> +					allcards = true;
-> +				else
-> +					return &igt_devs.filtered;
-> +			} else {
-> +				return &igt_devs.filtered;
-> +			}
-> +		}
-> +	} else {
-> +		card = 0;
+> +	if (igt_device_filter_apply(filter) == false)
+> +		return 0;
+> +
+> +	if (igt_list_empty(&igt_devs.filtered))
+> +		return 0;
+> +
+> +	igt_list_for_each_entry(dev, &igt_devs.filtered, link) {
+> +		count++;
 > +	}
 > +
-> +	igt_list_for_each_entry(dev, &igt_devs.all, link) {
-> +		/* Skip if 'driver' doesn't match */
-> +		if (filter->data.driver && !strequal(filter->data.driver, dev->driver))
-> +			continue;
+> +	crd = calloc(count, sizeof(struct igt_device_card));
+> +	if (!crd)
+> +		return 0;
 > +
-> +		/* Skip if 'device' doesn't match */
-> +		if (filter->data.device && !is_device_matched(dev, filter->data.device))
-> +			continue;
+> +	count = 0;
 > +
-> +		if (filter->data.subsystem && strcmp(filter->data.subsystem, "all")) {
-> +			if (strcmp(filter->data.subsystem, get_prop_subsystem(dev)))
-> +				continue;
-> +		}
-> +
-> +		/* We get n-th card */
-> +		if (!allcards && !card) {
-> +			struct igt_device *dup = duplicate_device(dev);
-> +
-> +			igt_list_add_tail(&dup->link, &igt_devs.filtered);
-> +			break;
-> +		} else if (!allcards) {
-> +			card--;
-> +		}
-> +		/* Include all the cards */
-> +		else if (allcards) {
-> +			struct igt_device *dup = duplicate_device(dev);
-> +
-> +			igt_list_add(&dup->link, &igt_devs.filtered);
-> +		}
+> +	igt_list_for_each_entry(dev, &igt_devs.filtered, link) {
+> +		__copy_dev_to_card(dev, crd + count++);
 > +	}
 > +
-> +	DBG("Filter device filtered size: %d\n", igt_list_length(&igt_devs.filtered));
+> +	if (count)
+> +		*card = crd;
 > +
-> +	return &igt_devs.filtered;
+> +	return count;
 > +}
 > +
->  static bool sys_path_valid(const struct filter_class *fcls,
->  			   const struct filter *filter)
->  {
-> @@ -1750,6 +1822,13 @@ static struct filter_class filter_definition_list[] = {
->  		.help = "sriov:[vendor=%04x/name][,device=%04x][,card=%d][,pf=%d][,vf=%d]",
->  		.detail = "find pf or vf\n",
->  	},
-> +	{
-> +		.name = "device",
-> +		.filter_function = filter_device,
-> +		.help =
-> +		"device:[driver=name][,subsystem=all|<subsystem>][,device=type][,card=%d|all]",
-> +		.detail = "find device by driver name, subsystem, device type and card number\n",
-> +	},
->  	{
->  		.name = NULL,
->  	},
+>  /**
+>   * igt_device_get_pretty_name
+>   * @card: pointer to igt_device_card struct
+> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+> index f1cd3b1e9..e6e31e799 100644
+> --- a/lib/igt_device_scan.h
+> +++ b/lib/igt_device_scan.h
+> @@ -89,6 +89,7 @@ int igt_device_filter_pci(void);
+>  bool igt_device_card_match(const char *filter, struct igt_device_card *card);
+>  bool igt_device_card_match_pci(const char *filter,
+>  	struct igt_device_card *card);
+> +int igt_device_card_match_all(const char *filter, struct igt_device_card **card);
+>  bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
+>  bool igt_device_find_integrated_card(struct igt_device_card *card);
+>  bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
 > -- 
 > 2.34.1
 > 
