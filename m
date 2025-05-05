@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D925C3ABB0
-	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 15:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A74B5C3ABB0
+	for <igt-dev@archiver.kernel.org>; Mon,  5 May 2025 15:56:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A2A310E30A;
-	Mon,  5 May 2025 15:50:51 +0000 (UTC)
-Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8169E10E30A;
- Mon,  5 May 2025 15:50:49 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1949903796611492053=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40EF810E30A;
+	Mon,  5 May 2025 15:56:33 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mZ8CEONO";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09B0010E30A
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 May 2025 15:56:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746460592; x=1777996592;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=+vw1C9JkDQYZCIcGKQRIOlC9KBMZdZfYDJvqdQENLn0=;
+ b=mZ8CEONOfqMedyHcUiA2oeX0K0VBPw1yKiNigI7IeZh4wAszCaBhMZXQ
+ jdEHMQouRol88vurUyOdG1KTMd1GFZvrTSKR4u1tekEH5vLyRznK50xBs
+ qDXgzmkTFVwcIbjrstxKFOgSJKnMV35U2CrE7KhPTxoBNdtnxof8Aymwl
+ 2FsqmZYjuBjO8Acy9y46dco8Du3mOW0DRe6poz0ictXZLvGVeakMLt16X
+ pcywY+FJgNF2cdOZZs7fkWiUIM2sAqDg2NJbzl2hehYt8fXLYckwV0eUZ
+ /ppRCA4VKxQGNNTkhHYJZ522CUQB0ktJ13jidNuk/HBT3QK3v+G7sSitA g==;
+X-CSE-ConnectionGUID: dQIqAaogT8KbN0H9JWLK1w==
+X-CSE-MsgGUID: XeIh0+pVQ1iUwS8U0m+ydw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="51893054"
+X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; d="scan'208";a="51893054"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 May 2025 08:56:32 -0700
+X-CSE-ConnectionGUID: gXbEnVxxRU+qhTVZF+Ijjg==
+X-CSE-MsgGUID: zRiWx0yuTkazWZCwUna8rQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; d="scan'208";a="140447541"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 08:56:31 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: santhosh.reddy.guddati@intel.com, mohammed.thasleem@intel.com,
+ Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t] tests/kms_display_modes: Fit modes within MST bandwidth
+ constraints
+Date: Mon,  5 May 2025 21:42:17 +0530
+Message-Id: <20250505161217.484268-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_more_tests_to_validate_?=
- =?utf-8?q?engine_activity?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Riana Tauro" <riana.tauro@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 05 May 2025 15:50:49 -0000
-Message-ID: <174646024952.45769.16249079163677289995@c664b1dc75d1>
-X-Patchwork-Hint: ignore
-References: <20250505102946.159655-1-riana.tauro@intel.com>
-In-Reply-To: <20250505102946.159655-1-riana.tauro@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,257 +64,189 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1949903796611492053==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Instead of checking only the current modes, find a combination of
+modes in the MST topology that can be accommodated within the
+available link bandwidth.
 
-== Series Details ==
+v2: move fit_modes_in_bw to lib/igt_kms
+v3: update tag from fixes to closes
+v4: remove igt_assert from fit_modes_in_bw call.
+v5: update function name with 'igt_*'.
 
-Series: Add more tests to validate engine activity
-URL   : https://patchwork.freedesktop.org/series/148597/
-State : success
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1542
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ lib/igt_kms.c                           | 30 +++++++++++++++++++++++++
+ lib/igt_kms.h                           |  1 +
+ tests/intel/kms_dp_link_training.c      | 24 +-------------------
+ tests/intel/kms_dp_linktrain_fallback.c | 18 +--------------
+ tests/kms_display_modes.c               |  4 ++++
+ 5 files changed, 37 insertions(+), 40 deletions(-)
 
-== Summary ==
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index f3bc481f2..9ee03e870 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5046,6 +5046,36 @@ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display)
+ 	return __override_all_active_output_modes_to_fit_bw(display, outputs, n_outputs, 0);
+ }
+ 
++/*
++ * igt_fit_modes_in_bw :
++ * @display: a pointer to an #igt_display_t structure
++ *
++ * Tries atomic TEST_ONLY commit; if it fails, overrides
++ * output modes to fit bandwidth.
++ *
++ * Returns: true if a valid mode combination is found or the commit succeeds,
++ * false otherwise.
++ */
++bool igt_fit_modes_in_bw(igt_display_t *display)
++{
++	int ret;
++
++	ret = igt_display_try_commit_atomic(display,
++					    DRM_MODE_ATOMIC_TEST_ONLY |
++					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	if (ret != 0) {
++		bool found;
++
++		found = igt_override_all_active_output_modes_to_fit_bw(display);
++		if (!found) {
++			igt_debug("No valid mode combo found for modeset\n");
++			return false;
++		}
++	}
++
++	return true;
++}
++
+ /**
+  * igt_pipe_refresh:
+  * @display: a pointer to an #igt_display_t structure
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 0381c82ad..a85fee515 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1226,6 +1226,7 @@ void igt_require_pipe(igt_display_t *display,
+ void igt_dump_connectors_fd(int drmfd);
+ void igt_dump_crtcs_fd(int drmfd);
+ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
++bool igt_fit_modes_in_bw(igt_display_t *display);
+ bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
+ unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
+ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
+diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
+index 9e9b1e6db..fb9b42608 100644
+--- a/tests/intel/kms_dp_link_training.c
++++ b/tests/intel/kms_dp_link_training.c
+@@ -140,28 +140,6 @@ static void setup_planes_fbs(data_t *data, igt_output_t *outs[],
+ 	}
+ }
+ 
+-/*
+- * fit_modes_in_bw - Tries atomic TEST_ONLY commit; if it fails, overrides
+- * output modes to fit bandwidth.
+- */
+-static bool fit_modes_in_bw(data_t *data)
+-{
+-	int ret;
+-
+-	ret = igt_display_try_commit_atomic(&data->display,
+-					    DRM_MODE_ATOMIC_TEST_ONLY |
+-					    DRM_MODE_ATOMIC_ALLOW_MODESET,
+-					    NULL);
+-	if (ret != 0) {
+-		bool found;
+-
+-		found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
+-		igt_require_f(found, "No valid mode combo found for modeset\n");
+-	}
+-
+-	return true;
+-}
+-
+ static void do_modeset(data_t *data, bool mst)
+ {
+ 	uint32_t master_pipes_mask = 0;
+@@ -204,7 +182,7 @@ static void do_modeset(data_t *data, bool mst)
+ 						  "Unable to assign pipes for outputs\n");
+ 
+ 	setup_planes_fbs(data, outs, out_count, modes, fbs, planes);
+-	fit_modes_in_bw(data);
++	igt_assert_f(igt_fit_modes_in_bw(&data->display), "Unable to fit modes in bw\n");
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ }
+ 
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+index 6a872efd2..f8ef0cac4 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -151,22 +151,6 @@ static void set_connector_link_status_good(data_t *data, igt_output_t *outputs[]
+ 							  DRM_MODE_LINK_STATUS_GOOD);
+ }
+ 
+-static bool fit_modes_in_bw(data_t *data)
+-{
+-	bool found;
+-	int ret;
+-
+-	ret = igt_display_try_commit_atomic(&data->display,
+-					    DRM_MODE_ATOMIC_TEST_ONLY |
+-					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	if (ret != 0) {
+-		found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
+-		igt_require_f(found,
+-			      "No valid mode combo found for modeset\n");
+-	}
+-	return true;
+-}
+-
+ static bool validate_modeset_for_outputs(data_t *data,
+ 					igt_output_t *outputs[],
+ 					int *output_count,
+@@ -176,7 +160,7 @@ static bool validate_modeset_for_outputs(data_t *data,
+ {
+ 	igt_require_f(*output_count > 0, "Require at least 1 output\n");
+ 	setup_pipe_on_outputs(data, outputs, output_count);
+-	igt_assert_f(fit_modes_in_bw(data), "Unable to fit modes in bw\n");
++	igt_assert_f(igt_fit_modes_in_bw(&data->display), "Unable to fit modes in bw\n");
+ 	setup_modeset_on_outputs(data, outputs,
+ 				 output_count,
+ 				 mode, fb, primary);
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index d53b83a86..c93195b3c 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -93,6 +93,8 @@ static void run_extendedmode_basic(data_t *data,
+ 	mode[0] = igt_output_get_mode(output1);
+ 	mode[1] = igt_output_get_mode(output2);
+ 
++	igt_assert_f(igt_fit_modes_in_bw(display), "Unable to fit modes in bw\n");
++
+ 	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
+ 	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+@@ -138,6 +140,7 @@ static void run_extendedmode_basic(data_t *data,
+ 	igt_fb_set_size(&fb, plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+ 	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+ 
++	igt_assert_f(igt_fit_modes_in_bw(display), "Unable to fit modes in bw\n");
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+ 	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]);
+@@ -158,6 +161,7 @@ static void run_extendedmode_basic(data_t *data,
+ 			  DRM_PLANE_TYPE_PRIMARY), NULL);
+ 	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe2],
+ 			  DRM_PLANE_TYPE_PRIMARY), NULL);
++	igt_assert_f(igt_fit_modes_in_bw(display), "Unable to fit modes in bw\n");
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+ 	/*Compare CRC*/
+-- 
+2.25.1
 
-CI Bug Log - changes from XEIGT_8353_BAT -> XEIGTPW_13077_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13077_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_evict@evict-beng-small-cm:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +9 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html
-
-  * igt@xe_exec_fault_mode@twice-rebind:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html
-
-  * igt@xe_gt_freq@freq_fixed_idle:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][3] ([Intel XE#2464]) +2 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_gt_freq@freq_fixed_idle.html
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][4] ([Intel XE#2229] / [Intel XE#455]) +2 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][5] ([Intel XE#2229])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  * igt@xe_mmap@vram:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][6] ([Intel XE#1008])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_mmap@vram.html
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][7] ([Intel XE#977])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][8] ([Intel XE#2838] / [Intel XE#979])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][9] ([Intel XE#979])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html
-
-  * igt@xe_pm_residency@gt-c6-on-idle:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][10] ([Intel XE#2468])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_pm_residency@gt-c6-on-idle.html
-
-  * igt@xe_sriov_flr@flr-vf1-clear:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][11] ([Intel XE#3342])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_sriov_flr@flr-vf1-clear.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_exec_balancer@twice-virtual-userptr-rebind:
-    - bat-adlp-vf:        [ABORT][12] ([Intel XE#3970]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8353/bat-adlp-vf/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html
-
-  
-  [Intel XE#1008]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#2464]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2464
-  [Intel XE#2468]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2468
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
-  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-
-
-Build changes
--------------
-
-  * IGT: IGT_8353 -> IGTPW_13077
-  * Linux: xe-3030-66dbd091942ffec06a91480c22916f389670a87c -> xe-3035-df064615c97db7d2a5a691aa4dc7cf50a038282d
-
-  IGTPW_13077: 13077
-  IGT_8353: 8353
-  xe-3030-66dbd091942ffec06a91480c22916f389670a87c: 66dbd091942ffec06a91480c22916f389670a87c
-  xe-3035-df064615c97db7d2a5a691aa4dc7cf50a038282d: df064615c97db7d2a5a691aa4dc7cf50a038282d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/index.html
-
---===============1949903796611492053==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add more tests to validate engine activity</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148597/">https://patchwork.freedesktop.org/series/148597/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8353_BAT -&gt; XEIGTPW_13077_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13077_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-small-cm:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-rebind:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_gt_freq@freq_fixed_idle:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_gt_freq@freq_fixed_idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2464">Intel XE#2464</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008">Intel XE#1008</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pm_residency@gt-c6-on-idle:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_pm_residency@gt-c6-on-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2468">Intel XE#2468</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
-<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_exec_balancer@twice-virtual-userptr-rebind:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8353/bat-adlp-vf/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13077/bat-adlp-vf/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8353 -&gt; IGTPW_13077</li>
-<li>Linux: xe-3030-66dbd091942ffec06a91480c22916f389670a87c -&gt; xe-3035-df064615c97db7d2a5a691aa4dc7cf50a038282d</li>
-</ul>
-<p>IGTPW_13077: 13077<br />
-  IGT_8353: 8353<br />
-  xe-3030-66dbd091942ffec06a91480c22916f389670a87c: 66dbd091942ffec06a91480c22916f389670a87c<br />
-  xe-3035-df064615c97db7d2a5a691aa4dc7cf50a038282d: df064615c97db7d2a5a691aa4dc7cf50a038282d</p>
-
-</body>
-</html>
-
---===============1949903796611492053==--
