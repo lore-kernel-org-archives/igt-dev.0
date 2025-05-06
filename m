@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F9CAC3ABAC
-	for <igt-dev@archiver.kernel.org>; Tue,  6 May 2025 10:16:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F257DC3ABAC
+	for <igt-dev@archiver.kernel.org>; Tue,  6 May 2025 10:16:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 548A210E343;
-	Tue,  6 May 2025 10:16:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A489010E24C;
+	Tue,  6 May 2025 10:16:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G4W9MEgP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TbXxhMnx";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 66AC310E343
- for <igt-dev@lists.freedesktop.org>; Tue,  6 May 2025 10:16:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99CA210E24C
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 May 2025 10:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746526575; x=1778062575;
+ t=1746526581; x=1778062581;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vCIAGDPYXCjxldMebvp60LfHoYedTXHp490HUDTbnAg=;
- b=G4W9MEgPj/XMNTZ3dTRoX9hrCXjagqiF/NHUCxGROZsefViWJtMSxYt+
- TcX53UJuDGiYO4YYFdYnlG9fLduFDS5/WKdQ9ueHSq+u5KOqfMllrgz21
- gNVvUotUVpUuflVXdP8jFWIcxa+4KPZbLJaw0s0kGp6VC5llWabinMMoK
- vpqu5nrbSlgum/f8d2ng3dzRcdnPPkuQF9u0ISxZXT54gOxdnI7wPDCir
- Eltq9y1PrDAt5JBXFszEz0uJo2QNGtDFJgIXy8156XYM3Qqdw5o1L10vD
- U/g6i5MOchEm9OJQrlJZgA6dcLvoPmfOg9ptLvvlEuykoZA7fBFuwHX++ g==;
-X-CSE-ConnectionGUID: zWFwVcwQSbW6lmuPuRfG5Q==
-X-CSE-MsgGUID: uXC/h22fTlmcK+5FJkiWyQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="59575997"
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="59575997"
+ bh=TR3vA0bKDJ561zo/VlRLqQTRXD98PCcm2iuQ4nHH4Jk=;
+ b=TbXxhMnxgipbEkA6Ah44UqUqJxupWJCuAij/RTZs8FZsFRSnJ3AKcJFb
+ cVXGSKXqQy5Nhs/o98Jm2p4mRmLL+EBjDcPbnK+XyIWx/Xksr6Epp8YtM
+ IBPcC2tyPNZP6rT3kod06/czj1vpgd5v78jvGPbZcxkBLrUO0/+zgB3PO
+ AIwCs9rOXFxfzN+HGonIv951A+qm6njVtrH7fd+9ICfwjxQjO3HgDKMMM
+ UAcmXdNAvzxc2qoztlCVhg+MScyCu0SC8JT29YDBedY2YMgLXqHMxuzSy
+ V5JeQWT6YmCFafFV4Gf4P4KDkMCgm2SytLgyCb7QO/xKaswvJu+tCnQBU A==;
+X-CSE-ConnectionGUID: j0H5YeZsQWOT8xg9yHQwSw==
+X-CSE-MsgGUID: 18C9vn0ARgG9bpjKAgXlaA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="59576034"
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="59576034"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 03:16:15 -0700
-X-CSE-ConnectionGUID: xokpRsDSSTS4dbS7WSNzsw==
-X-CSE-MsgGUID: 5DPam1RLTs+zIQ7lW00fPw==
+ 06 May 2025 03:16:21 -0700
+X-CSE-ConnectionGUID: XylxbHcjSpSa1o8a+iCLGw==
+X-CSE-MsgGUID: dTaCAao6TB+bUDSVpjW4DA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="139627966"
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="139627976"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.101.99])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 03:16:13 -0700
+ 06 May 2025 03:16:19 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  Jakub Kolakowski <jakub1.kolakowski@intel.com>,
  Riana Tauro <riana.tauro@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/intel/xe_pmu: Unprovision VFs on cleanup
-Date: Tue,  6 May 2025 12:15:53 +0200
-Message-Id: <20250506101554.629218-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/xe_pmu: Check default scheduling
+ attributes before test
+Date: Tue,  6 May 2025 12:15:54 +0200
+Message-Id: <20250506101554.629218-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20250506101554.629218-1-marcin.bernatowicz@linux.intel.com>
 References: <20250506101554.629218-1-marcin.bernatowicz@linux.intel.com>
@@ -71,50 +72,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Unprovision VFs to ensure a clean state for subsequent tests.
-Rename disable_vfs() to unprovision_and_disable_vfs() to reflect the
-additional cleanup steps.
+Ensure that default scheduling attributes are set before running the
+test. This avoids unexpected configuration during VF provisioning.
 
 Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
 Cc: Riana Tauro <riana.tauro@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- tests/intel/xe_pmu.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tests/intel/xe_pmu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index 094dc0c6c..8cbbf6916 100644
+index 8cbbf6916..806a62cdb 100644
 --- a/tests/intel/xe_pmu.c
 +++ b/tests/intel/xe_pmu.c
-@@ -497,12 +497,15 @@ static unsigned int enable_and_provision_vfs(int fd)
- 	return num_vfs;
- }
+@@ -471,6 +471,7 @@ static unsigned int enable_and_provision_vfs(int fd)
  
--static void disable_vfs(int fd)
-+static void unprovision_and_disable_vfs(int fd)
- {
--	unsigned int gt;
-+	unsigned int gt, num_vfs = igt_sriov_get_enabled_vfs(fd);
+ 	igt_require(igt_sriov_is_pf(fd));
+ 	igt_require(igt_sriov_get_enabled_vfs(fd) == 0);
++	xe_sriov_require_default_scheduling_attributes(fd);
+ 	autoprobe = igt_sriov_is_driver_autoprobe_enabled(fd);
  
--	xe_for_each_gt(fd, gt)
-+	xe_for_each_gt(fd, gt) {
- 		xe_sriov_set_sched_if_idle(fd, gt, 0);
-+		for (int fn = 0; fn <= num_vfs; fn++)
-+			xe_sriov_set_exec_quantum_ms(fd, fn, gt, 0);
-+	}
- 
- 	igt_sriov_disable_vfs(fd);
- 	/* abort to avoid execution of next tests with enabled VFs */
-@@ -596,7 +599,7 @@ igt_main
- 		}
- 
- 		igt_fixture
--			disable_vfs(fd);
-+			unprovision_and_disable_vfs(fd);
- 	}
- 
- 	igt_subtest_group {
+ 	/* Enable VF's */
 -- 
 2.31.1
 
