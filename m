@@ -4,170 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E5EEC3ABAC
-	for <igt-dev@archiver.kernel.org>; Tue,  6 May 2025 08:31:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79B96C3ABAC
+	for <igt-dev@archiver.kernel.org>; Tue,  6 May 2025 09:46:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CB96510E1E1;
-	Tue,  6 May 2025 08:31:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 33B8F10E339;
+	Tue,  6 May 2025 09:46:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AtKRET2z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kaGikYHo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F240F10E1E1
- for <igt-dev@lists.freedesktop.org>; Tue,  6 May 2025 08:31:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 142DB10E65F
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 May 2025 09:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746520272; x=1778056272;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=36tJJXP7sRTUx9fs9IAmXLyRQlNGr1A1PSXdpAp1Kks=;
- b=AtKRET2zGoGciugfMrnTWKf3iqEbydYjmUoR/8THCtEE+OsCAKx7NswP
- fRbvBU+5SHzXt2nQaVrcCTLd8BeKXhB3o+jIhFgJRG1Hy8kpatlvI6Q/o
- b2CQrRdtyAtTs5n2b9Tp7QABX0jV4IjfoeUz/ImjZFHnRHJNJ9rrB1PE/
- fpCjaHxdslTPLdleV+HmNGXepuWON0F30VlBvK9NjIXIwDoXNlf9Yvid+
- 73Zo8bwh/w1CEWsbCVC+SeBVhK9GMBkofnieuzwGDgFTVJHIMxY6rQY2h
- zGCeUVQ2CCGOjM+11DBrswIYliR4rm1ADahP3TnO7V26i9GTUUyJfdgYq A==;
-X-CSE-ConnectionGUID: 2JLe8A7CQxKrZHpRWR1dJg==
-X-CSE-MsgGUID: K2AFSjsAROWfmepty3HWAw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="48321200"
-X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="48321200"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 01:31:12 -0700
-X-CSE-ConnectionGUID: 56tPaazPTWGXG87famTbCQ==
-X-CSE-MsgGUID: pjMZTE5HSRmFj/dgCDoVJQ==
+ t=1746524766; x=1778060766;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:mime-version;
+ bh=U59UPlf4sfBotXDty/j2Z9prOwQo+AuRfTYl7lKBiAo=;
+ b=kaGikYHoUhoDYO32sWtV/W+UZQF3+RV/ZV1SWTHuZ2axdS24dDkAupBK
+ WtCQ2Ti++VwbeF1w3kdTTBkleaXGdTrksxvbXxh4AiUOz/w48EAH8ktbI
+ 8pLTZHUXY0dGFAiyvyUE8KR7E9tgxi60PfJssoVOcKGl3W+uwHvRh/w4p
+ u4OllSGWWMKNSi56wue8DGjTchBy4lnpECSy6raV0FsNJcRWg3i2IYTGi
+ FIqhklgKD4nl1wsJWc312nipdAoQYUMBx1I8eslM334JXCVMHkLvQ0FL4
+ WaOvrUSfGnlhB+oZw+R/OT/0cxKE/HHO8JW9Z9VVoKe8NJPVyp0nQdIse Q==;
+X-CSE-ConnectionGUID: VYRrEr9pQ1aaWKjgKD4/RQ==
+X-CSE-MsgGUID: ACLFy8HdS3CTVcaSqIaP1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="47893076"
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208,217";a="47893076"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2025 02:46:05 -0700
+X-CSE-ConnectionGUID: NM47dF8PT9KhR56NAQQSMQ==
+X-CSE-MsgGUID: +Mb1qGLbRvirlKYUQqkBUg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="136489441"
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
+ d="scan'208,217";a="158815683"
 Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 01:31:12 -0700
+ by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2025 02:46:05 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 6 May 2025 01:31:11 -0700
+ 15.2.1544.14; Tue, 6 May 2025 02:46:04 -0700
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Tue, 6 May 2025 01:31:11 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.176)
+ 15.2.1544.14 via Frontend Transport; Tue, 6 May 2025 02:46:04 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.177)
  by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 6 May 2025 01:31:08 -0700
+ 15.1.2507.44; Tue, 6 May 2025 02:46:03 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Kq5PI5VTN0n5Q1i4AJupesNsluRxTBDQLMA1eVfXkfQF2a0n2IJCwLmQnNaZGLz+GcCjzLMyRd29UKDkk1lyciD+58oNGnqsollKayLH7qMJAf2vBYQ/jysct2k/x7GWk8FRW0RLK132AAuw2GbcpZda3INDMQRkvs7TjAhrZBHtzu20B0FIzBRBh4uwghj9BUeVNwRWY4AOXnCbr2OAjEDXNpAwCrr+C1ahQp9Fg8gzLCXGyg555Wo7vfAPQBk3wEK4+QMAVLQILLgtn6M4cebNpRGJ56p7kINbRFbdpUdm9I7Rc5/jO+v+9jIGjVn99+mwEuOXrWCwEMlk5ZKCyQ==
+ b=UnfKRiKpRABbuSwgkfL8bE9ayPVQNfH/Q+J4Y4IycIVru1D3yyh9BTPbu6RmACBZJR44D9nFJFd2ckr/1w+av9TLmjGJwksSxt12XFMAiLQXPXM5JtKaFbMCPbnsUfqazsfTwFWRRxVbdJUEsKimvnhGRGfhljZoPJ6KP0XreOI2Y/bldwNZZmSXhS37h4vGuWFAprMOFnk1EAmhSBSThHqDT5NLNcJYt2G8lk9psX+mYjj/W4p9I53XNBN1QF8vdDaZNiJ8F0GSZWeMxRE+JZFznHpHDGiAQtrI8sM6Bjb0zPqdHYwvd1GQLJ3vxkwcYD3Ru68KhbrGE64WCgQMfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pU2XAtjX+FXXbX0F2OhwQOz0g065GMW0KYcngXwNpY8=;
- b=AM1YEgnDn2Ewf6kMBWeYvC49R6bet9yI1kF6RepWxMbDHMw0TM4zJONhNkAV8c+zgLK3X6omPqvDhiXAEXmOpoaBIgA18SoSiDDehbtsEI7wIrwou7O/cuyqGkobncIaDRfn2wykOjrbeVJhT6dozra6IeNC2BUble0ZRgVI6f3QGpmvTncK2Yw5GBNfcN+g4C7yrDm1L0chH+UwTEKJg/s4GSnZlGFLzX6Wgf3lSw0h7O6jwWPsEsBZ1Zf7FzV6owmPc4+OWXc+Ovblwfp4F3+rpq3sA+XBqzpdjTJuglmP5Wsj3lKNZPMWKbvURGgUYKr/iq26prJ9/ROrp7sh7Q==
+ bh=OFQX46yNuvRChy2anzaeOGKhuqaAeBqJ6UJk3eDqUrk=;
+ b=AmjR0BgBQSDU8u0GQzADZheV+KeXQQilkNZ7mzCa0BVAHo9AHahqEfI3CBeeQWtPO5Ph2ujbZH0J1rGSJ5YtKWtP2Yr4cToCjUV4cvHHHwbPV470FIhWR3ENDaGkuN4lHUfGUUsb28YDJc3h9m+CUlN5EcbTBe4vG1GslSO8YZaeRW2k2TdlOawF8uiWbXVgG84BDVxnu8DUMqBjx+usl0SUv0lqFeKGolFw2mqmeOsgtuvX6oMdicKdhZg2c2hznCB+0RZtrFan1iDc7jS876VqnFDhNQfuMBIbSB8ulw8us/DO/ZnuC510NC5D2yBIut/3gmcoWICdqFNvrtkiFg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from PH0PR11MB4806.namprd11.prod.outlook.com (2603:10b6:510:31::21)
- by SA1PR11MB6663.namprd11.prod.outlook.com (2603:10b6:806:257::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.27; Tue, 6 May
- 2025 08:30:48 +0000
-Received: from PH0PR11MB4806.namprd11.prod.outlook.com
- ([fe80::c37b:a730:acc7:479c]) by PH0PR11MB4806.namprd11.prod.outlook.com
- ([fe80::c37b:a730:acc7:479c%4]) with mapi id 15.20.8699.026; Tue, 6 May 2025
- 08:30:48 +0000
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-Subject: RE: [PATCH i-g-t] tests/kms_display_modes: Fit modes within MST
- bandwidth constraints
-Thread-Topic: [PATCH i-g-t] tests/kms_display_modes: Fit modes within MST
- bandwidth constraints
-Thread-Index: AQHbvdZLLznqoHxcNk2Ae5YmztUm8rPEb8qQ
-Date: Tue, 6 May 2025 08:30:47 +0000
-Message-ID: <PH0PR11MB48068DB52701CA4527373D44E4892@PH0PR11MB4806.namprd11.prod.outlook.com>
-References: <20250505161217.484268-1-jeevan.b@intel.com>
-In-Reply-To: <20250505161217.484268-1-jeevan.b@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR11MB4806:EE_|SA1PR11MB6663:EE_
-x-ms-office365-filtering-correlation-id: fe21391b-71dd-4200-02f7-08dd8c784d7b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|38070700018|7053199007; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?tgOjXznLUU0e8tyGMnTR/Y6Gf816v2MYUXs2cW4Amp4C4nk0hWZd1/e/X5Mh?=
- =?us-ascii?Q?CIQiFFpRnTuWZ7o8jKL6SeTzZ5pwhqlTsSSLB1tST9eDA0prRb1ftWFPYklK?=
- =?us-ascii?Q?NAXk/ZP72CzW69glv7/vxvDD+REKarkP3LaNceK0c51zxXPfrGTh/g7oDkne?=
- =?us-ascii?Q?WJYzxKv3d/LqEbOAA7VXL5R3tEUtOQef685fV+sSNpQJsyTCfZwvVaoscB8X?=
- =?us-ascii?Q?t3NAZG4MxFO3j0HLkHi+W7OAg4WgabQALHZv8jFN7m1K+SAZNZVheLyXlsZz?=
- =?us-ascii?Q?g4ESL2Aw5byEr46vd8Y8iBqFJDocLtZVdIjneYPq/y7znzB9uqCj72Lx5qEr?=
- =?us-ascii?Q?l31xb3HwxuDMoMDSe7c4bLw/poZ8RAHb780EGUPHCiHeZjxZ/6F+4CTDpQ9W?=
- =?us-ascii?Q?6nusO/LSKUvJXPfH9jRLOelpRtCfXjEMEvtf6z2kXzY8r7mNkPcll+EV7blc?=
- =?us-ascii?Q?nXsmXSn3z8E4dFwuH07pOru45LobFVCjeRdNUZKJH9W4rwxEmlheZDzPFljk?=
- =?us-ascii?Q?fx0hyzdOneSBw7eq2Dr4KX3dmiIERSG6rFQukNO8roqTN6WZ8naMWJzrjYWN?=
- =?us-ascii?Q?mTLH8B3L9XjbGNUe0f+b/vUHi8KLBVS77n/NnVGNTPOawgbwxykm9ufSmYjY?=
- =?us-ascii?Q?u1W+cVZ7vpQez12wtEssMYinsWZP+P7GMnuQ+LzlycA70Am1baBXwqMZVmRm?=
- =?us-ascii?Q?+NjOkG2Fb8xwmCEhuXSpmzm8FFndJHwvEPJGFjIJX7oEkBaxV5Q5x5JOQKgo?=
- =?us-ascii?Q?GA/w5o2cLBC+bogeU0oh7SVluuS9ZsjogNSArMneBVqOQNtwjy7GZSf7+g01?=
- =?us-ascii?Q?CQL5UXhsQXGhjcmxh3iOlIMAEQWdtPYamr5lP0aqrUbcZI3XwgVjxfCmlBW5?=
- =?us-ascii?Q?K4nQTMSQ0B+0XE0SxpPV2vnGq9to4vYFLfG1YiDfNnDeZz3OTnB5ujk9iu2r?=
- =?us-ascii?Q?CuFrncAhCegP+fHGHki1JBpI6ma7E0rUFcQbSHTJ1VEVM4k3vdqK2A0woRDj?=
- =?us-ascii?Q?JRn8g1o5TajhghShijw/InBee/3LzA0zpkTG5R80CkvD9/RROThfK1LsahHn?=
- =?us-ascii?Q?6I+O/g9intfI6f6/jhcgSawvHAtQ/QTYxTxKHSw1E8UhKdB4Db+gsXEcMIKH?=
- =?us-ascii?Q?dDeAuQBKr49565FxqAH/v3j7Wh7bYPqsLPSOoaT0eH0GPPndGaDlr0fJO/i1?=
- =?us-ascii?Q?rTRLklSUd7T1OtSIdkDmC+qURAe9HGgRU41UtrF3g7EJlipAWWzvLrJSUGc6?=
- =?us-ascii?Q?PkOwapZThi44ofRupVG17ZrtNgXBlPacdHmqwO9U9MIw4aokm2kiuhYwk7cB?=
- =?us-ascii?Q?TnlgFPC+KJpHqZRpgivIK9X+cCW3rexSUjNJaE66WaKhQrQ8rCePpP6WN0Cl?=
- =?us-ascii?Q?m8CxjnZGxjUeC8Ey721+VlVyhgAX14UW9xOnkBVPDLsOD5TsNs86zF7fSkHt?=
- =?us-ascii?Q?CwDvV5XRx+E=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR11MB4806.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(38070700018)(7053199007); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?1kzJK2ZtBHsNmDPfm5aade1H9c+kek/37sdL0AhNfZlPC75QkiPdFGLO4WNn?=
- =?us-ascii?Q?lKpp4U3NlmRYDx6+u9Sga+1xkFowXkZsomW/Um88lSTtqQZ7uwoVVYO3HQRf?=
- =?us-ascii?Q?Zkz6SFYw5CMAVVKnL/tiEARUxavcfnhe1ofwb1e2njjRIOSvOOvxcsbz4HqF?=
- =?us-ascii?Q?RnNDpk7DTSU3cOKrGcLlfWjripzEvYvLl5TGHeqioLWZn4LXHuo5jtKHC0Xl?=
- =?us-ascii?Q?DRrvROwVDC5hO0LxUK73SLz56zhVkJ1cE9zTj4tQdH4eTmeQKCbMaQHxaeaa?=
- =?us-ascii?Q?WnsPYKcHppK5MEalIvOV5QuDnAQSQdwsOwBo8XrDMwqP38xhYOqeMd5ZbCM1?=
- =?us-ascii?Q?8EhLrgXfr8NQzjeH/bBYzt5UKHSwoSkeg0a9N+0xkzOrEK15RkyBA4VySTl1?=
- =?us-ascii?Q?Z1HKIpq1vvBxHoQAOZvkZPyJM2sebbVxmj9m4D1upo96rVtMO3UuAfVd+M7E?=
- =?us-ascii?Q?dKM5xDnoSvE/JuzC6vzzEACRSEwREb2pc9oWIMN7efKwtpMQOuEukgOUBF6+?=
- =?us-ascii?Q?2TxDQrwLZL71bnEROr/9sMd4HKjG/NfR2lro7wsdtpeJlP8Y4AfcSv5/x6aH?=
- =?us-ascii?Q?xGh4GkqxZGq7l+OJcDlV20/3lLkr5IcmeaOZTsoBBzVH0BoYPzq6bFC/+Pg/?=
- =?us-ascii?Q?AudoV6b9KEB4cJcqtvt13u3VpP8b8ewiKYdP0l2IiNLbAI0tI4KioIMp9s/L?=
- =?us-ascii?Q?kv5f+MTgYftrCAslH1cGvBI96vS+jfe3sselbDag2TuIstYzJMbcFD64fnpv?=
- =?us-ascii?Q?RGYkEBCMIE191sfJY3IVQkMiLfBgaMIMKAD2pn5VcYJKh6hTf3ycHy7Mzpmo?=
- =?us-ascii?Q?VbB0Ax5XeJj5IEtTup3xB+lsEaYrcPs8U+2ri9QDunf9fb2hr3Ckbq1cgsYt?=
- =?us-ascii?Q?5HoO6OncVZOhJyFPaMQabRL/W50ScyXS7FP3bZVTXMYtT19wxlI3Z7EQs1Km?=
- =?us-ascii?Q?Q2IDwSAKrGhCezQ2yiUyP1KxoVCtsV9dv/SM/1ury3Rm5uGuzVsn5wnK6YMy?=
- =?us-ascii?Q?fxmDFumeqXzWfYx7SGLnowj26swkk9Ce6vw0dc6iP7CG6Duu4gCAMe7lK/uC?=
- =?us-ascii?Q?6sovLvkGRaR3AS7bdnizcDNUTXFo2jV/NBMecJF6RvpKdS2xijTW20I3o7Kx?=
- =?us-ascii?Q?KIYdj+9rKTEEXLSlMY7kvlI7rTi1uNf5uxibxHkdZuTW+Rrei5kksdN8sd36?=
- =?us-ascii?Q?g0OfLUAcjvI4cW6jVymIlZyUaZ+FrHFSjrTDJXJ0Qzw7XWxW4te3QaUhW8PJ?=
- =?us-ascii?Q?wGy1neUvpiT7edndivqGxrFK3ZPW0TXFWkWhNQUcf9CLlWIp5UftRhFZjGh6?=
- =?us-ascii?Q?rLAbD4N2Zj+iqrjPubc2M5XwDU+rSfeRc05Yy0j2/fCv+LXjdwrUwONemLGu?=
- =?us-ascii?Q?kM76gYt0juW0PKukHD7MpyqYV/IdA0N3+jFb46tRZ38TP4KQ9kFVwLxHQsj9?=
- =?us-ascii?Q?1Z7bfSJJFfijDBQY1cmoLW/djpej8NxwiqVaJ9FtICs1Q89SY+bduxv1fR/F?=
- =?us-ascii?Q?x0r9ayQlwSZ4NsyejIpH46/khDMG9Y4swcNlOyxWVho7pLCsSf6ek66OziT2?=
- =?us-ascii?Q?qg/hUIPYGIrSgz9SEbX5u4HO/PirG2VwyoVS4Y4ZNuuTo2UzHkftzCV+k2pM?=
- =?us-ascii?Q?CQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from DM6PR11MB4738.namprd11.prod.outlook.com (2603:10b6:5:2a3::18)
+ by MW5PR11MB5764.namprd11.prod.outlook.com (2603:10b6:303:197::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Tue, 6 May
+ 2025 09:45:57 +0000
+Received: from DM6PR11MB4738.namprd11.prod.outlook.com
+ ([fe80::7064:9c9a:d2ca:c6a1]) by DM6PR11MB4738.namprd11.prod.outlook.com
+ ([fe80::7064:9c9a:d2ca:c6a1%4]) with mapi id 15.20.8699.026; Tue, 6 May 2025
+ 09:45:57 +0000
+Content-Type: multipart/alternative;
+ boundary="------------K6GCAejdXvYASHaNZm4GviBv"
+Message-ID: <839215e3-6a3d-4346-9c1e-66bbaa2f6033@intel.com>
+Date: Tue, 6 May 2025 15:15:47 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3] tests/kms_plane_multiple: Add clear skip message
+ for skips
+To: Pranay Samala <pranay.samala@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <karthik.b.s@intel.com>, <sameer.lattannavar@intel.com>
+References: <20250506032442.1022090-1-pranay.samala@intel.com>
+Content-Language: en-US
+From: "Naladala, Ramanaidu" <Ramanaidu.naladala@intel.com>
+In-Reply-To: <20250506032442.1022090-1-pranay.samala@intel.com>
+X-ClientProxiedBy: MA0PR01CA0018.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:80::18) To DM6PR11MB4738.namprd11.prod.outlook.com
+ (2603:10b6:5:2a3::18)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR11MB4738:EE_|MW5PR11MB5764:EE_
+X-MS-Office365-Filtering-Correlation-Id: 628efd25-4d6c-4640-ff17-08dd8c82ccba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|8096899003;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?akYxUUtQdHR6ajNNVFMzbW9ock0xbFRySmNYaWlyTUMrQVFTeXBNNVUwc3RI?=
+ =?utf-8?B?ckxlQkZnSXM0WldkV2gvZnBrWDFwR0Q2MDFoUElWb3dHMjA0enh1WGwrM1l5?=
+ =?utf-8?B?NUM3VHNXV1ZkQlI2aTNWVUtPUHFTRTlpN3dvVlVBQTlWU3dtT29yaUp4blNR?=
+ =?utf-8?B?bGZMSldWcitwVTlyeHF3ZldTdUlpOW5wRUIwSStTcHFOajhQU2VtQzZ1REpv?=
+ =?utf-8?B?RGR5dnhkNVQwdFBnNTlzbzhwanZab0ZQNFdqc295VnBmV0dzWGh5b1l6VHFI?=
+ =?utf-8?B?Ti9rN29aZytTZXROMkJwMDhnOVQxRzBtRFFOSDhpNFRtMkxoZ2YweFRXbW1s?=
+ =?utf-8?B?YklmQ294YitwcXNWRGppTFVKbEJoVm1KNlVZN2RmbEJ4aHlKbmtxbEtxTEVt?=
+ =?utf-8?B?azZUc04rTytlaXduN0RKNTVqUXRaWElVaU11eFVTTURHcG9YWHAvdDRqZlB0?=
+ =?utf-8?B?dlA4QUNRMkg1bVVsOVVYSXVsU3g0WTlNa2xvdGcwOUt3YllCWTB1WG0wQW1q?=
+ =?utf-8?B?Q1plc2VUZy9pVVdhSXBFcVNRVS9QbHJCSFQrS0dUZ05TNFg1NUFna2hLM2JL?=
+ =?utf-8?B?R1ovb1JBRlVnL3hYNmFubTZWN3RDNFlUUGJDaTZjc3k3SGpwZWRxZjZibzhJ?=
+ =?utf-8?B?YmJjMU5TbnVENXNHUjk3d3c1TXRZWGpmMUpNcUdOOFhtWnBib0ZrNHhkQkdT?=
+ =?utf-8?B?TEZhVHA1aDN6OTZaR3d3L1pveVVIL1RLLzUxR25HdUQ3bzBYSzJLbWYzWkpS?=
+ =?utf-8?B?YXR2R2pLTm9wZ0RCQStDc1hZM0dVczA5VjJzZ2YvVTJmTjlLMUYxeGFqK0lX?=
+ =?utf-8?B?bUQrOWU3TGhKVWdlZk1TbTVEMFFiaVg4VDJJY0F6S29aVTdyUWJic1p2aGUy?=
+ =?utf-8?B?TnRIWDdvUlVZTFdiWElGcVlRbWl0bWlmdGg4N1pwZ3VEbFRYYWM0OGVnN0Jh?=
+ =?utf-8?B?Zkt3T2JZVHVpVm4yWC9CdllTVVlRRFFMSWJhT2I5Ti9yZkRtUWZkSnNoMjJl?=
+ =?utf-8?B?MzFvdk5oVitNbHB4RlZ2RUdya3Fmd01pUDZvbDVOSDRHV0dwdUU0dW9XSkF6?=
+ =?utf-8?B?eXd3R09idEN3eUFMN3FqOERnV3N3WHQwWDJHSlNwc20rVE91WUZtTlpPN1l2?=
+ =?utf-8?B?K0JqdDFHaWt2ckYzTUovSitwYlRaUk1sMlJZbTNPOTI1VXNOWWFUK3BpNGVH?=
+ =?utf-8?B?eGJxY01lNkZyZWpTS2ZNSDlCcDNOcWZYZHdCUWU2dmhiVWpDVWVHL24wM2hG?=
+ =?utf-8?B?RFZrSm1DQno0MStVTWFJdXlncHZOS0k0TUx3cW42M21RdmdXL01FSWlrV0xo?=
+ =?utf-8?B?UnVObFFVOUhYb2JqNUFGWGdLcDl5MkVkZm4rZTk3Sm02NytSOUFTM0o3TmFk?=
+ =?utf-8?B?RDZ0NkNkbFBJUGwwVkt3aXNJbzczS2hHcUNDU0N1UGMrWW1oMG9mNlN3UlRo?=
+ =?utf-8?B?TGd5OGZZSGJrcENmaHhIVDBHL3pVTnpsa0ZFT0t3dHMyRkZlSGdvekVBS05w?=
+ =?utf-8?B?UW8vaDZlVmhIMzZNVXc5K0ZoZ001UWNyZ1Nkbk1JQXhXT1ozQWR4dHVpdjA2?=
+ =?utf-8?B?ZzdmSy9SRDl0RE5vWmU4ejR3b3hFSkdVeElEc0ZHNG1QYVVudUdlamNabGdm?=
+ =?utf-8?B?MGxxKzZqMWpvc1RUaDVubXUrRktRNmoxVFhoRXBocTVXZlpPRlRvN3F6SEVU?=
+ =?utf-8?B?VjFMdnRVTWVkRnRmc1BMbloxODhnTDdqYWNOWmhBUmFrNzlobWM1cG1WRng2?=
+ =?utf-8?B?L1lSQ1hKTFMwS2pzdFIrMDdieWVXOFlPZVFRMzYxZHBQTU1CQXJUeWVsd01o?=
+ =?utf-8?B?L1NRYmNEWWlxTjRvOUwxQm12aDZhSWxJbnFkdnhEdysxQ3V5TGlXWmQrcER6?=
+ =?utf-8?B?aDNXb2E1WDRFR2VhVFl5K0o1U0JnOE1FRzBnNlBtYUY0a3FmVkE3OHlndC8z?=
+ =?utf-8?Q?GDg+U9aG1Ck=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR11MB4738.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(8096899003); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q1R0eTlCSkxZeUIzRGlua1ZKOFp1NTBScVpBa09Dak8vOU5uTGhQVHdVM2dv?=
+ =?utf-8?B?MXFnRXNhaUJsUExhWncrS3k1OHA2Mi9aVDhZUjBlZmVvRzdhaGZTV0VuMUxv?=
+ =?utf-8?B?R25yZURDN1ZmQXZRK1pkOVU4VFIzNTE1OW9BdWwvcW5nOGdVMmRkb3NxakdS?=
+ =?utf-8?B?V2FJM1Z0dHhUNlVNYUJLS2xteFR4ZlZFYy9YOUgvZHMrUWhwZHV2UHoxWXNm?=
+ =?utf-8?B?d2libGhtOVIyeVNuazhBVFY1NFN4RklqajhWZ2lRNk44cmtzdXFLaElpQ2hP?=
+ =?utf-8?B?ZytNYkFvYld6cFlzMFhxL0JlVkQ1aTJKQU42MjJLbG8yUHpsaERPYUFkOUZH?=
+ =?utf-8?B?S0VYcEEvUnR4WTBWMi9ucVFVMlRJODI5M05ycDNmZmhlQ1hSdGI2a3NDZ1V0?=
+ =?utf-8?B?cUJaeHVFRE84ZlFsZGt4WS9NdEJxUmIzMEVBK1BzVkx5cThwOS8yZ2JQMlB0?=
+ =?utf-8?B?L2JKRTBCdnJYcUN2Zy9hQ0RuS0I2QXhTMUgwRjl2bEtXWW54eVpKVlZwSG1G?=
+ =?utf-8?B?anVTVldpYXEyYjFtN2FVSnJzV0RlNnlWallPKzJFTzhFVE1GNkFIYm9JYTBh?=
+ =?utf-8?B?VUdaMkc1c3pLTkZVcjNUWTVWOWFtRVlsTUw2ZlBRdTdaTHkxc3huWE1mbHdz?=
+ =?utf-8?B?TVQ3eXd3aTVMWGhINitYNWorcUNWVFFmTHRtNWFkODVaRkQxN2xRb3QzTWRT?=
+ =?utf-8?B?VDgrZEMrWmJ2UnZ6MU1pUCsyRlRQaWNBK2ZIK2JOYlVnSW1LSTZnQXQ2RTMy?=
+ =?utf-8?B?bWU4djNGQmR6eFZXMHZ3bFIyb2E1b1ZQeEVJaXFpN0d0Z2xrejRGMFZpRG94?=
+ =?utf-8?B?bUhvbUpLWVdMTmVodWpDYmRQNW9LUHhZdE5NbTl6Q3NxRmU1cllmOW1mdGlJ?=
+ =?utf-8?B?bmM2UVNGajhPazgwVTlyNWxuR054czVSUEdwQ3BUMktuemR5bGdacmxSOG5I?=
+ =?utf-8?B?dHVOaXF2QXcrZ0hTMG5TWUNZMkVFT0p6QjdSTXhxak9XbUI4UmVrbVlTQkdD?=
+ =?utf-8?B?ODRhbkNOMllsN0R5alA4SldGV255dnYxRVhnQUE4ZUlBUER2RlJxS1ZjOGph?=
+ =?utf-8?B?eXc5S0ZTN2h3dHpPT3V2cHk1dGlTbnhQUXJRRlNjM3RBZFpsQ2RtdnYxNGs2?=
+ =?utf-8?B?cTV5dER6QXBGU1ExNGV1dERoNkh5MytqTmZHYVpMWXN4Z2VWeVdScmxsNkZY?=
+ =?utf-8?B?VG42QTFIL1JzQmVBQTFKR1crOHkrK1d5WW5jR2xmNTFTd01XMUZLRi9wempS?=
+ =?utf-8?B?eFA2dmxxRzFYNTlYQlNMbWsxdFhNaUU5SUNXaS9KaldkZTl5SlhUS2MxNWhZ?=
+ =?utf-8?B?R3hzRU1UYXZNaDlaMFUzZTNwRk1QV0t6clV2bmJvR1U0Q3lGR0dVaGo2bzRk?=
+ =?utf-8?B?aHZGdW00b050R21xMzFsY2p2TlJMc0Y4NUtDeCtBOCtZcFNNTk8zSlAyenVh?=
+ =?utf-8?B?aHFhZGhpc3NXekk4dmh6UjN2L0h5Qlc2MENIdWl0NzBPVkJEeVkwa0luZ3N0?=
+ =?utf-8?B?MGdlTGg0eDI1S2dQYXNlZTVkYzVyTUpXN3NuZGhZVHUyVCt3VHRuWWhHV0ZE?=
+ =?utf-8?B?bjdkdnFpc2pUdGE4cnJ0OG1oN29kZE9uNUxTV3crRUp0d1NYY1UwSkhYVFBw?=
+ =?utf-8?B?VXRPQzZYcUYyUG1MTHhrc1l3TWUyTGdVVE5wWFExRVRFYi9iQ2x3d3hlMGxJ?=
+ =?utf-8?B?WUtrQ3JRdHpOU3lBWU5LSDJ6NjE0UHR0T2U5emJPOVdFaVFaL1dCZ0FFN1NK?=
+ =?utf-8?B?ZHZYZ2Z2QlFxVXZ4MlZjSk9meWJGVjB5YUFqa29MVUlUZFhvUXVjNFc1ZkV0?=
+ =?utf-8?B?VXlrTG5jWGc0b2QzL0ZqSFhNZCtCWnRYRDNGeEd1S3JuK0dOT3lKUC91ckZD?=
+ =?utf-8?B?eGgzU2s3cEJaMzlscWU2WUl0NmdUa0RRSDMvd1lKeEQ2Y2lpWTUrYW1mOHhy?=
+ =?utf-8?B?NTZYaTNyNGtwZFltV2dnYWhkM1FlUjBUYnZYVFZHOWdhb0tINFpNZndJUUY3?=
+ =?utf-8?B?MWpzcjFmdUVaV3VNV1Q4OFlGZkpTK2thdEw4U05CVnI0UmlwQ3BGNDdVOSsw?=
+ =?utf-8?B?VnRkemxZODlZZzFYaXhBeW8xVVBDQWdQc1hLMmJTRjRCa3BpZGlvSXBxMnp6?=
+ =?utf-8?B?R2YwVHN4NmtSNXlXZ3cvTmwzQnVtU25YUEo4UkNjQllpbnczRTVVaytPbDFy?=
+ =?utf-8?B?RHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 628efd25-4d6c-4640-ff17-08dd8c82ccba
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB4738.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4806.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe21391b-71dd-4200-02f7-08dd8c784d7b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 May 2025 08:30:47.9996 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5Y8qTfG+wmDxa6BcPEEfN7fhkTnd7CB0MB5yZH6L+mH1KTNA/G21nOt08ZnQwltPKzmH9ifAwrdOLLfOsk0oTpAP7FbJOx5I7SNaYUHzHA4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6663
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 09:45:56.9999 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nENlIWelhCDdyYCJjAf/RRJHolbjrq5PmjRL073utQUK5IEXumptnviwciMnAPzZ4AWBfUbY8+i3n2pDtPlW5AUaXICAw/Lnb9dWu3GufxI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5764
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -184,205 +197,826 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM.
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+--------------K6GCAejdXvYASHaNZm4GviBv
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
------Original Message-----
-From: B, Jeevan <jeevan.b@intel.com>=20
-Sent: Monday, May 5, 2025 9:42 PM
-To: igt-dev@lists.freedesktop.org
-Cc: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>; Thasleem, M=
-ohammed <mohammed.thasleem@intel.com>; B, Jeevan <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/kms_display_modes: Fit modes within MST bandwi=
-dth constraints
 
-Instead of checking only the current modes, find a combination of modes in =
-the MST topology that can be accommodated within the available link bandwid=
-th.
+On 5/6/2025 8:54 AM, Pranay Samala wrote:
+> Add a check to skip the subtest when the required DRM modifier
+> is not supported. This avoids unnecessary test skips and
+> improves clarity by providing a proper skip message.
+>
+> v2: Split function parameter changes into seperate commit (Rama)
+> Typo error: seperate
+> v3: Combine both patches into single patch (Kamil)
+>
+> Signed-off-by: Pranay Samala<pranay.samala@intel.com>
+> ---
+>   tests/kms_plane_multiple.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+> index ebb026726..4e6ca780a 100644
+> --- a/tests/kms_plane_multiple.c
+> +++ b/tests/kms_plane_multiple.c
+> @@ -504,14 +504,14 @@ static void test_plane_position_2_display(data_t *data, enum pipe pipe1, enum pi
+>   	for_each_connected_output_local((display), (output)) \
+>   		for_each_if(igt_pipe_connector_valid((pipe), (output)))
+>   
+> -static void run_2_display_test(data_t *data, uint64_t modifier)
+> +static void run_2_display_test(data_t *data, uint64_t modifier, const char *name)
+>   {
+>   	enum pipe pipe1, pipe2;
+>   	igt_output_t *output1, *output2;
+>   	igt_display_t *display = &data->display;
+>   
+> -	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
+> -		return;
+> +	igt_skip_on_f(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier),
+> +		      "%s modifier is not supported\n", name);
+>   
+>   	igt_display_reset(display);
+>   
+> @@ -547,14 +547,14 @@ static void run_2_display_test(data_t *data, uint64_t modifier)
+>   	}
+>   }
+>   
+> -static void run_test(data_t *data, uint64_t modifier)
+> +static void run_test(data_t *data, uint64_t modifier, const char *name)
+>   {
+>   	enum pipe pipe;
+>   	igt_output_t *output;
+>   	igt_display_t *display = &data->display;
+>   
+> -	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
+> -		return;
+> +	igt_skip_on_f(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier),
+> +		      "%s modifier is not supported\n", name);
+>   
+>   	for_each_pipe_with_valid_output(display, pipe, output) {
+>   		igt_display_reset(display);
+> @@ -647,7 +647,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   			     "reflected immediately after each commit.");
+>   
+>   		igt_subtest_with_dynamic(subtests[i].name)
+> -			run_test(&data, subtests[i].modifier);
+> +			run_test(&data, subtests[i].modifier, subtests[i].name);
+>   	}
+>   
+>   	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+> @@ -660,7 +660,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>   
+>   			igt_require(valid_outputs > 1);
+>   
+> -			run_2_display_test(&data, subtests[i].modifier);
+> +			run_2_display_test(&data, subtests[i].modifier, subtests[i].name);
+>   		}
+>   	}
+Reviewed-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+>   
+--------------K6GCAejdXvYASHaNZm4GviBv
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-v2: move fit_modes_in_bw to lib/igt_kms
-v3: update tag from fixes to closes
-v4: remove igt_assert from fit_modes_in_bw call.
-v5: update function name with 'igt_*'.
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 5/6/2025 8:54 AM, Pranay Samala
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20250506032442.1022090-1-pranay.samala@intel.com">
+      <pre wrap="" class="moz-quote-pre">Add a check to skip the subtest when the required DRM modifier
+is not supported. This avoids unnecessary test skips and
+improves clarity by providing a proper skip message.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1542
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+v2: Split function parameter changes into seperate commit (Rama)
+Typo error: seperate
+v3: Combine both patches into single patch (Kamil)
+
+Signed-off-by: Pranay Samala <a class="moz-txt-link-rfc2396E" href="mailto:pranay.samala@intel.com">&lt;pranay.samala@intel.com&gt;</a>
 ---
- lib/igt_kms.c                           | 30 +++++++++++++++++++++++++
- lib/igt_kms.h                           |  1 +
- tests/intel/kms_dp_link_training.c      | 24 +-------------------
- tests/intel/kms_dp_linktrain_fallback.c | 18 +--------------
- tests/kms_display_modes.c               |  4 ++++
- 5 files changed, 37 insertions(+), 40 deletions(-)
+ tests/kms_plane_multiple.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c index f3bc481f2..9ee03e870 10064=
-4
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5046,6 +5046,36 @@ bool igt_override_all_active_output_modes_to_fit_bw(=
-igt_display_t *display)
- 	return __override_all_active_output_modes_to_fit_bw(display, outputs, n_o=
-utputs, 0);  }
-=20
-+/*
-+ * igt_fit_modes_in_bw :
-+ * @display: a pointer to an #igt_display_t structure
-+ *
-+ * Tries atomic TEST_ONLY commit; if it fails, overrides
-+ * output modes to fit bandwidth.
-+ *
-+ * Returns: true if a valid mode combination is found or the commit=20
-+succeeds,
-+ * false otherwise.
-+ */
-+bool igt_fit_modes_in_bw(igt_display_t *display) {
-+	int ret;
-+
-+	ret =3D igt_display_try_commit_atomic(display,
-+					    DRM_MODE_ATOMIC_TEST_ONLY |
-+					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	if (ret !=3D 0) {
-+		bool found;
-+
-+		found =3D igt_override_all_active_output_modes_to_fit_bw(display);
-+		if (!found) {
-+			igt_debug("No valid mode combo found for modeset\n");
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
- /**
-  * igt_pipe_refresh:
-  * @display: a pointer to an #igt_display_t structure diff --git a/lib/igt=
-_kms.h b/lib/igt_kms.h index 0381c82ad..a85fee515 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1226,6 +1226,7 @@ void igt_require_pipe(igt_display_t *display,  void i=
-gt_dump_connectors_fd(int drmfd);  void igt_dump_crtcs_fd(int drmfd);  bool=
- igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
-+bool igt_fit_modes_in_bw(igt_display_t *display);
- bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);  unsig=
-ned int igt_get_output_max_bpc(int drmfd, char *connector_name);  unsigned =
-int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe); diff --git a/tests=
-/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
-index 9e9b1e6db..fb9b42608 100644
---- a/tests/intel/kms_dp_link_training.c
-+++ b/tests/intel/kms_dp_link_training.c
-@@ -140,28 +140,6 @@ static void setup_planes_fbs(data_t *data, igt_output_=
-t *outs[],
+diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+index ebb026726..4e6ca780a 100644
+--- a/tests/kms_plane_multiple.c
++++ b/tests/kms_plane_multiple.c
+@@ -504,14 +504,14 @@ static void test_plane_position_2_display(data_t *data, enum pipe pipe1, enum pi
+ 	for_each_connected_output_local((display), (output)) \
+ 		for_each_if(igt_pipe_connector_valid((pipe), (output)))
+ 
+-static void run_2_display_test(data_t *data, uint64_t modifier)
++static void run_2_display_test(data_t *data, uint64_t modifier, const char *name)
+ {
+ 	enum pipe pipe1, pipe2;
+ 	igt_output_t *output1, *output2;
+ 	igt_display_t *display = &amp;data-&gt;display;
+ 
+-	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
+-		return;
++	igt_skip_on_f(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier),
++		      &quot;%s modifier is not supported\n&quot;, name);
+ 
+ 	igt_display_reset(display);
+ 
+@@ -547,14 +547,14 @@ static void run_2_display_test(data_t *data, uint64_t modifier)
  	}
  }
-=20
--/*
-- * fit_modes_in_bw - Tries atomic TEST_ONLY commit; if it fails, overrides
-- * output modes to fit bandwidth.
-- */
--static bool fit_modes_in_bw(data_t *data) -{
--	int ret;
--
--	ret =3D igt_display_try_commit_atomic(&data->display,
--					    DRM_MODE_ATOMIC_TEST_ONLY |
--					    DRM_MODE_ATOMIC_ALLOW_MODESET,
--					    NULL);
--	if (ret !=3D 0) {
--		bool found;
--
--		found =3D igt_override_all_active_output_modes_to_fit_bw(&data->display)=
-;
--		igt_require_f(found, "No valid mode combo found for modeset\n");
--	}
--
--	return true;
--}
--
- static void do_modeset(data_t *data, bool mst)  {
- 	uint32_t master_pipes_mask =3D 0;
-@@ -204,7 +182,7 @@ static void do_modeset(data_t *data, bool mst)
- 						  "Unable to assign pipes for outputs\n");
-=20
- 	setup_planes_fbs(data, outs, out_count, modes, fbs, planes);
--	fit_modes_in_bw(data);
-+	igt_assert_f(igt_fit_modes_in_bw(&data->display), "Unable to fit modes=20
-+in bw\n");
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);  }
-=20
-diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_l=
-inktrain_fallback.c
-index 6a872efd2..f8ef0cac4 100644
---- a/tests/intel/kms_dp_linktrain_fallback.c
-+++ b/tests/intel/kms_dp_linktrain_fallback.c
-@@ -151,22 +151,6 @@ static void set_connector_link_status_good(data_t *dat=
-a, igt_output_t *outputs[]
- 							  DRM_MODE_LINK_STATUS_GOOD);
- }
-=20
--static bool fit_modes_in_bw(data_t *data) -{
--	bool found;
--	int ret;
--
--	ret =3D igt_display_try_commit_atomic(&data->display,
--					    DRM_MODE_ATOMIC_TEST_ONLY |
--					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
--	if (ret !=3D 0) {
--		found =3D igt_override_all_active_output_modes_to_fit_bw(&data->display)=
-;
--		igt_require_f(found,
--			      "No valid mode combo found for modeset\n");
--	}
--	return true;
--}
--
- static bool validate_modeset_for_outputs(data_t *data,
- 					igt_output_t *outputs[],
- 					int *output_count,
-@@ -176,7 +160,7 @@ static bool validate_modeset_for_outputs(data_t *data, =
+ 
+-static void run_test(data_t *data, uint64_t modifier)
++static void run_test(data_t *data, uint64_t modifier, const char *name)
  {
- 	igt_require_f(*output_count > 0, "Require at least 1 output\n");
- 	setup_pipe_on_outputs(data, outputs, output_count);
--	igt_assert_f(fit_modes_in_bw(data), "Unable to fit modes in bw\n");
-+	igt_assert_f(igt_fit_modes_in_bw(&data->display), "Unable to fit modes=20
-+in bw\n");
- 	setup_modeset_on_outputs(data, outputs,
- 				 output_count,
- 				 mode, fb, primary);
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c index d5=
-3b83a86..c93195b3c 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -93,6 +93,8 @@ static void run_extendedmode_basic(data_t *data,
- 	mode[0] =3D igt_output_get_mode(output1);
- 	mode[1] =3D igt_output_get_mode(output2);
-=20
-+	igt_assert_f(igt_fit_modes_in_bw(display), "Unable to fit modes in=20
-+bw\n");
-+
- 	pipe_crc[0] =3D igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE=
-_AUTO);
- 	pipe_crc[1] =3D igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE=
-_AUTO);
-=20
-@@ -138,6 +140,7 @@ static void run_extendedmode_basic(data_t *data,
- 	igt_fb_set_size(&fb, plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
- 	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
-=20
-+	igt_assert_f(igt_fit_modes_in_bw(display), "Unable to fit modes in=20
-+bw\n");
- 	igt_display_commit2(display, COMMIT_ATOMIC);
-=20
- 	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]); @@ -158,6 +161,7 @@ stati=
-c void run_extendedmode_basic(data_t *data,
- 			  DRM_PLANE_TYPE_PRIMARY), NULL);
- 	igt_plane_set_fb(igt_pipe_get_plane_type(&display->pipes[pipe2],
- 			  DRM_PLANE_TYPE_PRIMARY), NULL);
-+	igt_assert_f(igt_fit_modes_in_bw(display), "Unable to fit modes in=20
-+bw\n");
- 	igt_display_commit2(display, COMMIT_ATOMIC);
-=20
- 	/*Compare CRC*/
---
-2.25.1
+ 	enum pipe pipe;
+ 	igt_output_t *output;
+ 	igt_display_t *display = &amp;data-&gt;display;
+ 
+-	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
+-		return;
++	igt_skip_on_f(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier),
++		      &quot;%s modifier is not supported\n&quot;, name);
+ 
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
+ 		igt_display_reset(display);
+@@ -647,7 +647,7 @@ igt_main_args(&quot;&quot;, long_options, help_str, opt_handler, NULL)
+ 			     &quot;reflected immediately after each commit.&quot;);
+ 
+ 		igt_subtest_with_dynamic(subtests[i].name)
+-			run_test(&amp;data, subtests[i].modifier);
++			run_test(&amp;data, subtests[i].modifier, subtests[i].name);
+ 	}
+ 
+ 	for (int i = 0; i &lt; ARRAY_SIZE(subtests); i++) {
+@@ -660,7 +660,7 @@ igt_main_args(&quot;&quot;, long_options, help_str, opt_handler, NULL)
+ 
+ 			igt_require(valid_outputs &gt; 1);
+ 
+-			run_2_display_test(&amp;data, subtests[i].modifier);
++			run_2_display_test(&amp;data, subtests[i].modifier, subtests[i].name);
+ 		}
+ 	}</pre>
+    </blockquote>
+    <!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:AllowPNG/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:TrackMoves/>
+  <w:TrackFormatting/>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>EN-US</w:LidThemeOther>
+  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:EnableOpenTypeKerning/>
+   <w:DontFlipMirrorIndents/>
+   <w:OverrideTableStyleHps/>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser/>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" DefUnhideWhenUsed="false"
+  DefSemiHidden="false" DefQFormat="false" DefPriority="99"
+  LatentStyleCount="376">
+  <w:LsdException Locked="false" Priority="0" QFormat="true" Name="Normal"/>
+  <w:LsdException Locked="false" Priority="9" QFormat="true" Name="heading 1"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 2"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 3"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 4"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 5"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 6"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 7"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 8"/>
+  <w:LsdException Locked="false" Priority="9" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="heading 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index 9"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 1"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 2"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 3"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 4"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 5"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 6"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 7"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 8"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" Name="toc 9"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="header"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footer"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="index heading"/>
+  <w:LsdException Locked="false" Priority="35" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="caption"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of figures"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="envelope return"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="footnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="line number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="page number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote reference"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="endnote text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="table of authorities"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="macro"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="toa heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Bullet 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Number 5"/>
+  <w:LsdException Locked="false" Priority="10" QFormat="true" Name="Title"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Closing"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Signature"/>
+  <w:LsdException Locked="false" Priority="1" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Default Paragraph Font"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="List Continue 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Message Header"/>
+  <w:LsdException Locked="false" Priority="11" QFormat="true" Name="Subtitle"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Salutation"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Date"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text First Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Note Heading"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Body Text Indent 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Block Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="FollowedHyperlink"/>
+  <w:LsdException Locked="false" Priority="22" QFormat="true" Name="Strong"/>
+  <w:LsdException Locked="false" Priority="20" QFormat="true" Name="Emphasis"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Document Map"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Plain Text"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="E-mail Signature"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Top of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Bottom of Form"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal (Web)"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Acronym"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Address"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Cite"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Code"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Definition"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Keyboard"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Preformatted"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Sample"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Typewriter"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="HTML Variable"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Normal Table"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="annotation subject"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="No List"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Outline List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Simple 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Classic 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Colorful 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Columns 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Grid 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 4"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 5"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 7"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table List 8"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table 3D effects 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Contemporary"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Elegant"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Professional"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Subtle 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 2"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Web 3"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Balloon Text"/>
+  <w:LsdException Locked="false" Priority="39" Name="Table Grid"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Table Theme"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Placeholder Text"/>
+  <w:LsdException Locked="false" Priority="1" QFormat="true" Name="No Spacing"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 1"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 1"/>
+  <w:LsdException Locked="false" SemiHidden="true" Name="Revision"/>
+  <w:LsdException Locked="false" Priority="34" QFormat="true"
+   Name="List Paragraph"/>
+  <w:LsdException Locked="false" Priority="29" QFormat="true" Name="Quote"/>
+  <w:LsdException Locked="false" Priority="30" QFormat="true"
+   Name="Intense Quote"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 1"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 1"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 1"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 1"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 1"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 2"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 2"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 2"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 2"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 2"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 2"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 3"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 3"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 3"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 3"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 3"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 3"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 4"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 4"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 4"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 4"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 4"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 4"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 5"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 5"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 5"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 5"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 5"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 5"/>
+  <w:LsdException Locked="false" Priority="60" Name="Light Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="61" Name="Light List Accent 6"/>
+  <w:LsdException Locked="false" Priority="62" Name="Light Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="63" Name="Medium Shading 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="64" Name="Medium Shading 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="65" Name="Medium List 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="66" Name="Medium List 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="67" Name="Medium Grid 1 Accent 6"/>
+  <w:LsdException Locked="false" Priority="68" Name="Medium Grid 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="69" Name="Medium Grid 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="70" Name="Dark List Accent 6"/>
+  <w:LsdException Locked="false" Priority="71" Name="Colorful Shading Accent 6"/>
+  <w:LsdException Locked="false" Priority="72" Name="Colorful List Accent 6"/>
+  <w:LsdException Locked="false" Priority="73" Name="Colorful Grid Accent 6"/>
+  <w:LsdException Locked="false" Priority="19" QFormat="true"
+   Name="Subtle Emphasis"/>
+  <w:LsdException Locked="false" Priority="21" QFormat="true"
+   Name="Intense Emphasis"/>
+  <w:LsdException Locked="false" Priority="31" QFormat="true"
+   Name="Subtle Reference"/>
+  <w:LsdException Locked="false" Priority="32" QFormat="true"
+   Name="Intense Reference"/>
+  <w:LsdException Locked="false" Priority="33" QFormat="true" Name="Book Title"/>
+  <w:LsdException Locked="false" Priority="37" SemiHidden="true"
+   UnhideWhenUsed="true" Name="Bibliography"/>
+  <w:LsdException Locked="false" Priority="39" SemiHidden="true"
+   UnhideWhenUsed="true" QFormat="true" Name="TOC Heading"/>
+  <w:LsdException Locked="false" Priority="41" Name="Plain Table 1"/>
+  <w:LsdException Locked="false" Priority="42" Name="Plain Table 2"/>
+  <w:LsdException Locked="false" Priority="43" Name="Plain Table 3"/>
+  <w:LsdException Locked="false" Priority="44" Name="Plain Table 4"/>
+  <w:LsdException Locked="false" Priority="45" Name="Plain Table 5"/>
+  <w:LsdException Locked="false" Priority="40" Name="Grid Table Light"/>
+  <w:LsdException Locked="false" Priority="46" Name="Grid Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="Grid Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="Grid Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="Grid Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="Grid Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="Grid Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="Grid Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="Grid Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="Grid Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="Grid Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="46" Name="List Table 1 Light"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark"/>
+  <w:LsdException Locked="false" Priority="51" Name="List Table 6 Colorful"/>
+  <w:LsdException Locked="false" Priority="52" Name="List Table 7 Colorful"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 1"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 1"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 1"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 1"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 1"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 1"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 2"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 2"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 2"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 2"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 2"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 2"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 3"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 3"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 3"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 3"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 3"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 3"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 4"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 4"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 4"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 4"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 4"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 4"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 5"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 5"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 5"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 5"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 5"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 5"/>
+  <w:LsdException Locked="false" Priority="46"
+   Name="List Table 1 Light Accent 6"/>
+  <w:LsdException Locked="false" Priority="47" Name="List Table 2 Accent 6"/>
+  <w:LsdException Locked="false" Priority="48" Name="List Table 3 Accent 6"/>
+  <w:LsdException Locked="false" Priority="49" Name="List Table 4 Accent 6"/>
+  <w:LsdException Locked="false" Priority="50" Name="List Table 5 Dark Accent 6"/>
+  <w:LsdException Locked="false" Priority="51"
+   Name="List Table 6 Colorful Accent 6"/>
+  <w:LsdException Locked="false" Priority="52"
+   Name="List Table 7 Colorful Accent 6"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Hyperlink"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Hashtag"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Unresolved Mention"/>
+  <w:LsdException Locked="false" SemiHidden="true" UnhideWhenUsed="true"
+   Name="Smart Link"/>
+ </w:LatentStyles>
+</xml><![endif]--><!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;
+	mso-ascii-font-family:Aptos;
+	mso-ascii-theme-font:minor-latin;
+	mso-hansi-font-family:Aptos;
+	mso-hansi-theme-font:minor-latin;
+	mso-font-kerning:1.0pt;
+	mso-ligatures:standardcontextual;}
+</style>
+<![endif]--><span style="font-size:12.0pt;font-family:&quot;Aptos&quot;,sans-serif;
+mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Aptos;mso-fareast-theme-font:
+minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA">Reviewed-by: Naladala Ramanaidu
+      <a class="moz-txt-link-rfc2396E" href="mailto:ramanaidu.naladala@intel.com">&lt;ramanaidu.naladala@intel.com&gt;</a></span>
+    <blockquote type="cite" cite="mid:20250506032442.1022090-1-pranay.samala@intel.com">
+      <pre wrap="" class="moz-quote-pre">
+ 
+</pre>
+    </blockquote>
+  </body>
+</html>
 
+--------------K6GCAejdXvYASHaNZm4GviBv--
