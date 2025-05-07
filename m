@@ -4,28 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5BBDC3ABC0
-	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 12:56:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27FDDC3ABC0
+	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 13:03:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F20F10E7AD;
-	Wed,  7 May 2025 12:56:40 +0000 (UTC)
-Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8277510E7AD;
- Wed,  7 May 2025 12:56:39 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6946229807570742758=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D492D10E7BD;
+	Wed,  7 May 2025 13:03:15 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GEp9AM9j";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96F1F10E7C0
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 13:03:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746622995; x=1778158995;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=llQchrs18OPrCTwN7MqK3BYtQNXpfQR3lEQ/Vv09R7M=;
+ b=GEp9AM9jlUDGob7WllzPLGle1T68YYveLYMNK3NvPAff1LKPOyTtpmMn
+ sVrF+GcG3HZ6Iaamtqt3B+W0+0QL3laHB9aXWYWvMiVA6jlLHqr/bdJnU
+ H+5Kq5ckQhxJ1BHzU11YWS74IMWj4DUAucvzf+TlXytNkvo7w8YZilCrH
+ IerXq8nWOl3RgBHZyDET8KRQBSzsmmUs4KRvtveKjqhkz62/qdZhMOnE/
+ L2MZF7o2QE5tb0D1v8ugorfmh2ppeGCNACUCZC53P4VWAOQukHJBoaG+N
+ dIZC258PyDG9BSZxkB/wq3Ku5JFBgygz8Guu+sGY9WVRvpC7pAdWj7yHe Q==;
+X-CSE-ConnectionGUID: TFpitbHFSOucvH8Gt9r3VQ==
+X-CSE-MsgGUID: RM80RZ/PRSKRUyKu+g051A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="59006967"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="59006967"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2025 06:03:14 -0700
+X-CSE-ConnectionGUID: a1G2u3fwSuiOA60N+1C35g==
+X-CSE-MsgGUID: bkEQjszaSR64mVzlTZl60A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="136963528"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 06:03:13 -0700
+Date: Wed, 7 May 2025 15:03:10 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
+Subject: Re: [PATCH i-g-t] tests/kms_plane: Fix crash on fail and print out
+ tested formats
+Message-ID: <20250507130310.hbbvkbptqzqwdr3t@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
+References: <20250505104537.35593-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/sec=5Fxe=5Fex?=
- =?utf-8?q?ec=5Fqueue=5Ftimeslice=5Fabuse=3A_Validate_the_Impact_of_Timeslic?=
- =?utf-8?q?e_Abuse_on_Exec_Queues_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 07 May 2025 12:56:39 -0000
-Message-ID: <174662259952.55006.140653593592193893@c664b1dc75d1>
-X-Patchwork-Hint: ignore
-References: <20250507104111.446923-1-peter.senna@linux.intel.com>
-In-Reply-To: <20250507104111.446923-1-peter.senna@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250505104537.35593-1-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,274 +68,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6946229807570742758==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Juha-Pekka,
+On 2025-05-05 at 13:45:37 +0300, Juha-Pekka Heikkila wrote:
+> Pixel format tests would crash out on failure, let's fix that.
+> 
+> Earlier tested pixel formats were moved from igt_info to igt_debug, let's put
+> igt_info back in place so it's easier for debug time to see what's going on.
+> 
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-== Series Details ==
+Consider to write a little longer explanation, or even change subject,
+about how it is fixing anything, as I understand it should fail early
+after a CRC mismatch.
 
-Series: tests/intel/sec_xe_exec_queue_timeslice_abuse: Validate the Impact of Timeslice Abuse on Exec Queues (rev3)
-URL   : https://patchwork.freedesktop.org/series/148581/
-State : success
+Otherwise, with or without more lenghty explanation
 
-== Summary ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-CI Bug Log - changes from IGT_8355 -> IGTPW_13089
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/index.html
-
-Participating hosts (44 -> 43)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13089 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_module_load@reload:
-    - bat-dg2-8:          [PASS][1] -> [ABORT][2] ([i915#13571])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-dg2-8/igt@i915_module_load@reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-dg2-8/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live:
-    - bat-dg2-14:         [PASS][3] -> [ABORT][4] ([i915#13696] / [i915#14201])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-dg2-14/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-dg2-14/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [PASS][5] -> [DMESG-WARN][6] ([i915#13735]) +82 other tests dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@i915_selftest@live@reset:
-    - bat-atsm-1:         [PASS][7] -> [ABORT][8] ([i915#14201])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-atsm-1/igt@i915_selftest@live@reset.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-atsm-1/igt@i915_selftest@live@reset.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - bat-dg2-14:         [PASS][9] -> [ABORT][10] ([i915#14201])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-dg2-14/igt@i915_selftest@live@sanitycheck.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-dg2-14/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-6:         [PASS][11] -> [DMESG-FAIL][12] ([i915#12061]) +1 other test dmesg-fail
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - fi-cfl-8109u:       [PASS][13] -> [DMESG-WARN][14] ([i915#13735] / [i915#13890]) +49 other tests dmesg-warn
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
-
-  
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests@dma_fence_chain:
-    - fi-bsw-n3050:       [INCOMPLETE][15] ([i915#12904]) -> [PASS][16] +1 other test pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [DMESG-WARN][17] ([i915#13735]) -> [PASS][18] +81 other tests pass
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [DMESG-WARN][19] ([i915#13735] / [i915#180]) -> [PASS][20] +53 other tests pass
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live:
-    - bat-atsm-1:         [DMESG-FAIL][21] ([i915#12061] / [i915#13929]) -> [ABORT][22] ([i915#14201])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-atsm-1/igt@i915_selftest@live.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-atsm-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-atsm-1:         [DMESG-FAIL][23] ([i915#13929]) -> [DMESG-FAIL][24] ([i915#14204])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-atsm-1/igt@i915_selftest@live@mman.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-atsm-1/igt@i915_selftest@live@mman.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#13571]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571
-  [i915#13696]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#13890]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890
-  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
-  [i915#14201]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201
-  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8355 -> IGTPW_13089
-
-  CI-20190529: 20190529
-  CI_DRM_16509: b5600d5671f0e468c0c73bc7a1de942097ddaab4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13089: 13089
-  IGT_8355: 8355
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/index.html
-
---===============6946229807570742758==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/sec_xe_exec_queue_timeslice_abuse: Validate the Impact of Timeslice Abuse on Exec Queues (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148581/">https://patchwork.freedesktop.org/series/148581/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8355 -&gt; IGTPW_13089</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/index.html</p>
-<h2>Participating hosts (44 -&gt; 43)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13089 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-dg2-8/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-dg2-8/igt@i915_module_load@reload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571">i915#13571</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-dg2-14/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-dg2-14/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13696">i915#13696</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +82 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-atsm-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-atsm-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-dg2-14/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-dg2-14/igt@i915_selftest@live@sanitycheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) +49 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +81 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +53 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-atsm-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8355/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13089/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8355 -&gt; IGTPW_13089</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16509: b5600d5671f0e468c0c73bc7a1de942097ddaab4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13089: 13089<br />
-  IGT_8355: 8355</p>
-
-</body>
-</html>
-
---===============6946229807570742758==--
+> ---
+>  tests/kms_plane.c | 52 ++++++++++++++++++++++-------------------------
+>  1 file changed, 24 insertions(+), 28 deletions(-)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index d08ec81e4..f7b672c7a 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -887,9 +887,9 @@ static bool test_format_plane_rgb(data_t *data, enum pipe pipe,
+>  				  igt_crc_t ref_crc[],
+>  				  struct igt_fb *fb)
+>  {
+> -	igt_debug("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
+> -		  IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
+> -		  kmstest_pipe_name(pipe), plane->index);
+> +	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
+> +		 IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
+> +		 kmstest_pipe_name(pipe), plane->index);
+>  
+>  	return test_format_plane_colors(data, pipe, plane,
+>  					format, modifier,
+> @@ -925,13 +925,13 @@ static bool test_format_plane_yuv(data_t *data, enum pipe pipe,
+>  						     igt_color_range_to_str(r)))
+>  				continue;
+>  
+> -			igt_debug("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT
+> -				" (%s, %s) on %s.%u\n", IGT_FORMAT_ARGS(format),
+> -				IGT_MODIFIER_ARGS(modifier),
+> -				igt_color_encoding_to_str(e),
+> -				igt_color_range_to_str(r),
+> -				kmstest_pipe_name(pipe),
+> -				plane->index);
+> +			igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT
+> +				 " (%s, %s) on %s.%u\n", IGT_FORMAT_ARGS(format),
+> +				 IGT_MODIFIER_ARGS(modifier),
+> +				 igt_color_encoding_to_str(e),
+> +				 igt_color_range_to_str(r),
+> +				 kmstest_pipe_name(pipe),
+> +				 plane->index);
+>  
+>  			result &= test_format_plane_colors(data, pipe, plane,
+>  							   format, modifier,
+> @@ -1029,7 +1029,7 @@ static bool skip_format_mod(data_t *data,
+>  	return false;
+>  }
+>  
+> -static bool test_format_plane(data_t *data, enum pipe pipe,
+> +static void test_format_plane(data_t *data, enum pipe pipe,
+>  			      igt_output_t *output, igt_plane_t *plane, igt_fb_t *primary_fb)
+>  {
+>  	struct igt_fb fb = {};
+> @@ -1046,7 +1046,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+>  	 * No clamping test for cursor plane
+>  	 */
+>  	if (data->crop != 0 && plane->type == DRM_PLANE_TYPE_CURSOR)
+> -		return true;
+> +		return;
+>  
+>  	igt_vec_init(&tested_formats, sizeof(struct format_mod));
+>  
+> @@ -1059,7 +1059,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+>  	} else {
+>  		if (!plane->drm_plane) {
+>  			igt_debug("Only legacy cursor ioctl supported, skipping cursor plane\n");
+> -			return true;
+> +			return;
+>  		}
+>  		do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
+>  		do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_HEIGHT, &height));
+> @@ -1073,9 +1073,9 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+>  
+>  	igt_pipe_crc_start(data->pipe_crc);
+>  
+> -	igt_debug("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
+> -		  IGT_FORMAT_ARGS(ref.format), IGT_MODIFIER_ARGS(ref.modifier),
+> -		  kmstest_pipe_name(pipe), plane->index);
+> +	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
+> +		 IGT_FORMAT_ARGS(ref.format), IGT_MODIFIER_ARGS(ref.modifier),
+> +		 kmstest_pipe_name(pipe), plane->index);
+>  
+>  	check_allowed_plane_size_64x64(data, plane, &width, &height, ref.format);
+>  
+> @@ -1107,12 +1107,12 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+>  			continue;
+>  
+>  		if (skip_format_mod(data, f.format, f.modifier, &tested_formats)) {
+> -			igt_debug("Skipping format " IGT_FORMAT_FMT " / modifier "
+> -				  IGT_MODIFIER_FMT " on %s.%u\n",
+> -				  IGT_FORMAT_ARGS(f.format),
+> -				  IGT_MODIFIER_ARGS(f.modifier),
+> -				  kmstest_pipe_name(pipe),
+> -				  plane->index);
+> +			igt_info("Skipping format " IGT_FORMAT_FMT " / modifier "
+> +				 IGT_MODIFIER_FMT " on %s.%u\n",
+> +				 IGT_FORMAT_ARGS(f.format),
+> +				 IGT_MODIFIER_ARGS(f.modifier),
+> +				 kmstest_pipe_name(pipe),
+> +				 plane->index);
+>  			continue;
+>  		}
+>  
+> @@ -1149,7 +1149,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+>  
+>  	igt_vec_fini(&tested_formats);
+>  
+> -	return result;
+> +	igt_assert_f(result, "At least one CRC mismatch happened\n");
+>  }
+>  
+>  static bool skip_plane(data_t *data, igt_plane_t *plane)
+> @@ -1195,7 +1195,6 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+>  	struct igt_fb primary_fb;
+>  	igt_plane_t *primary;
+>  	drmModeModeInfo *mode;
+> -	bool result;
+>  	igt_output_t *output = data->output;
+>  	igt_plane_t *plane;
+>  
+> @@ -1225,12 +1224,11 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+>  
+>  	set_legacy_lut(data, pipe, LUT_MASK);
+>  
+> -	result = true;
+>  	for_each_plane_on_pipe(&data->display, pipe, plane) {
+>  		if (skip_plane(data, plane))
+>  			continue;
+>  		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(pipe), plane->index)
+> -			result &= test_format_plane(data, pipe, output, plane, &primary_fb);
+> +			test_format_plane(data, pipe, output, plane, &primary_fb);
+>  	}
+>  
+>  	test_fini(data);
+> @@ -1242,8 +1240,6 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+>  	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>  
+>  	igt_remove_fb(data->drm_fd, &primary_fb);
+> -
+> -	igt_assert_f(result, "At least one CRC mismatch happened\n");
+>  }
+>  
+>  static void test_planar_settings(data_t *data)
+> -- 
+> 2.45.2
+> 
