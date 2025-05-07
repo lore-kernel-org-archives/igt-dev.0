@@ -4,184 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F2C7C3ABBF
-	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 10:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 535D6C3ABC0
+	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 10:41:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DAE9710E18F;
-	Wed,  7 May 2025 10:32:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD38E10E390;
+	Wed,  7 May 2025 10:41:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c8JPLiCK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SwoPJyaV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D274510E390
- for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 10:32:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E74BE10E18F
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 10:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746613947; x=1778149947;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=l6Lczj5XJvdXkCU2x/xWLUX6cdNeNECXRjyPNlSYf40=;
- b=c8JPLiCK6k7iUSk0MKupEYR35MpiSKw+W7rQAPW8lkGxna+3/jJ7CVYD
- HoySmAzrZxrOc7Qp3S8Ngp3LmBJ22F91fSUGbII546b0eN8RlNskIhR15
- +nXoHIWCNwwBc45ykynNWeJ9qz6Q08WXNTsmuxukWL2sVjJMvuLfStPyy
- M85mpgI3OLtGaVsPJKW23IBidLTpBfvw8VAlmiQv5n5lLzJOmTOnHBbvt
- qhPpq7QJfx3hmbKMvdoDG79knQf4WEEp5EBxUuDJVQ3quNJT2py1lMagq
- TqxH8AgYK+3kgRvfxdvybJbJ+bP6hp/fY2+R2Mxn5Ls03lqIeGZc98jQC A==;
-X-CSE-ConnectionGUID: SShIwnZVT3CMCbHQWaA86Q==
-X-CSE-MsgGUID: CVbP9MA9T/OkRSJiQG0P8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="48349050"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48349050"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 03:32:27 -0700
-X-CSE-ConnectionGUID: hMAP67iLRKOu5vHngtt39g==
-X-CSE-MsgGUID: jvHR5HnTSq6KlfPA2/rqEg==
+ t=1746614507; x=1778150507;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=PyYcuZGh/gVF3DBZbsiN7MghTR+cciXp5/iuSbXCR3s=;
+ b=SwoPJyaVw9DtKddEof1UkvhyiG3sijpBS7avzDAoI1PgZ/ZAlDDd9Kal
+ sTiJ637Nl6bhewFOsDKT9jjKIkAGjno79Dojmm1l4vTWxVKymtV4aNgqd
+ XAL47BeReYvOS+wMYVrWCjj1ZeZdLY/fHfYXOyoLPlAW8LM7ELfK7E8FQ
+ oSk0hU1AjDmyPmHVnimGczuVWGiFG9tqYklQUjUnIJQcCr/DIeQZ9puQh
+ ej2GlI+JDcEVdOJWq9Kv4FEapDMo75Lyl1SAMMgJzZbm1vcoZmGkUAGXB
+ egtUsmTi3eTPfiqS2Uk4JKVi/ROwqbqGKGAV7TONdsjWn+34Ii13NQ82v g==;
+X-CSE-ConnectionGUID: cZ8OfyfvTByml3y5dir7Fg==
+X-CSE-MsgGUID: pEpZqBpeRcuQiuJbPHtkcw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="48471629"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48471629"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2025 03:41:46 -0700
+X-CSE-ConnectionGUID: kDKVf9RVSyqRLxKWxIol3g==
+X-CSE-MsgGUID: i10tH4j3RCmvrYX8mioIdg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="140868240"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 03:32:27 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Wed, 7 May 2025 03:32:26 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Wed, 7 May 2025 03:32:26 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.44) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 7 May 2025 03:32:24 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=w6z5KsZdHpj0hfhNbwY0DyBvssQuWnQSGKQ1/U02YMvXWvbeVU+qmPwj6vLYPfieCoDABjTxDNRBD8Feb8QJUIOWdOCeJpuTi7lhkRJ8NSurhQJ9IdprfXunDjZL3Gf/7UgAWmQ+E9gNLq2G3TbNG6wQV/GWK9+IiOsRaLtmub6DEv25mBa4Czye2OhukjTfEpNM7KDEq21UgFQ3vkBMIqpa45ykVnlhnPFFc/Z6kP5hwpHKvo+UnXvbGuNtBEKbVvkFaR+zcYRCXGhJQJyH7YiFPuLXJ8QJ6Hx7uDUtid0YWBFlc5yXVBgwYidwsqcR38GdPTkR3BVk2wJ27TC3SQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zn5dNPhqkMshn8i/UwhbrL4L4BfFuPMgrmM3ZrkjXtc=;
- b=erYrRLDRvH+xhecomE0hYJ7umrS0/iVjea1SH4AjHraDskGM5z3SSC0tk3ApIEZ81dCPOF3fVqoZtUKulHsNUQT3agYYOBFrn58i6tAo/TtDCHuwd8acGxJPOi6jsZ8KWGRJJsv+cdr5OCNjikhcRstr0knXS2XWk6Zl/NYfJXVjFNI5mAxpKL3RPHnMip28niZ5y3urtwkPE1aJgT9wjU6eBRFcuog2Vb7/sJCM9IJnSYCPUFk50s44djyBCpYqjlX8WqJHeX/dCYmU2nCV4KFxuZxcWBkacFjjt4MLBn/3x2ncosTEjLomUMqG9uTjLsock/ynCbYXB8zxqhd9lw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by CH3PR11MB7274.namprd11.prod.outlook.com (2603:10b6:610:140::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Wed, 7 May
- 2025 10:32:16 +0000
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::397:7566:d626:e839%2]) with mapi id 15.20.8699.026; Wed, 7 May 2025
- 10:32:15 +0000
-Message-ID: <f0305a56-12f5-497a-bfb9-95b00b009c23@intel.com>
-Date: Wed, 7 May 2025 16:02:08 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] tests/kms_tiled_display: Skip if connectors are
- not of same type
-To: Pranay Samala <pranay.samala@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <karthik.b.s@intel.com>, <kunal1.joshi@intel.com>,
- <sameer.lattannavar@intel.com>
-References: <20250505034941.930385-1-pranay.samala@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20250505034941.930385-1-pranay.samala@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0019.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:b8::6) To DM4PR11MB5341.namprd11.prod.outlook.com
- (2603:10b6:5:390::22)
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="136430952"
+Received: from apalm-mobl1.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.84.12])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2025 03:41:44 -0700
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ michal.winiarski@intel.com, rodrigo.vivi@intel.com
+Subject: [RFC v3 i-g-t] tests/intel/sec_xe_exec_queue_timeslice_abuse:
+ Validate the Impact of Timeslice Abuse on Exec Queues
+Date: Wed,  7 May 2025 12:41:10 +0200
+Message-ID: <20250507104111.446923-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|CH3PR11MB7274:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6cc6214e-bf5e-40be-9e2d-08dd8d526f95
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RjZxTUN1Q2szc285VGNZWEJXblFKRDc0RVh4a3pTMjBoVlhVcUs0ZUJYU2d6?=
- =?utf-8?B?TUVQdVpJOGtOMFNtRm12VXBrY2xTWXlBcHlwNEVqNDVXQWVRS3dTTmY4M1ZO?=
- =?utf-8?B?bWRoOUNVOW9uemJrMWhvdnRFaWVUN3RUaWtQRzcreW5KelFIMGNOd3ZSa3Jj?=
- =?utf-8?B?N2RkSVIrOXR6UWFmRjNhYzhrejVlRFRFVEJiVzVSdDEzUyt2dnZnenAwUGox?=
- =?utf-8?B?ZDhNaHlSRnoyMEpHV1lEZ1RiQ0tCOFZzcm5NM3RNT0tMNzJlbkZGOEVmT1RN?=
- =?utf-8?B?VzNKSW4yR0NtUlZCQTM4VVR3OE1aSlFFRnJwT1F1VDR4aXg1WkVOMVBUaHVo?=
- =?utf-8?B?TzNicVd4T3BjR1ZvclZNU1gxdmo3R0dQcm1zVlk1bDE3RFpRdWtUeUFVcGNE?=
- =?utf-8?B?clpabExFKzBVbGZFOW5IUElyQ1VCS1NhOXRFRmFEVHJDMHRqQVUwOTVXbzNs?=
- =?utf-8?B?c3pjSmxXbzhaT2M5UU9BOFpBYmp4MXNaSm1rZThQYTRXbUJXaUJsZnZDK1VQ?=
- =?utf-8?B?bi9jcGRJVVh3ZWNKd1BWdzllWFBXTTQyUVhsbnIwWFpwK0ZyMFZkZWNqcmNN?=
- =?utf-8?B?VDF6Nm9mdDZVelRCLzRPQ3JhUWxzMDdsTk9mYXRaK1cyY1F5QmRTa3kwL2tV?=
- =?utf-8?B?OUlPajViWHV5VlBPR1VybFppVFFCbkZCbk02enhHZ3BDeFhieXBwa1RpR2tU?=
- =?utf-8?B?WVUrTHRvQUlUNDhPMno5TDZqcHVSZmdKcTA3R1dBeTQrOVZ1Wlg0amg3eWhM?=
- =?utf-8?B?TURpdkI3ZDczY0U3RENjaFJBWndJc0MvNGVFdm9iekxCWHhZWlRWMUNMT0lY?=
- =?utf-8?B?aXRqZzdmRmtXN2ZwTjhhY09yanF2a28wVERYdmVxcGowOWlkMGFlWTBNeVlm?=
- =?utf-8?B?b0FoR0VUT1R2TnFvMzdwcjgvMUdZUkJvRlVMQUNaeWpQUHFWYmdIVkhoeTBV?=
- =?utf-8?B?WSt6bGZHYUhJWm00d1hlcHM0VjE4SGx1MnRjeVpBR3Znb1VxazBpVnFtcVpR?=
- =?utf-8?B?aU5aZzV2MEYzYTlKRmI3amdaUXpFV0xyWHA3TFRCNm1DT2FqZ1hIQzJwaVdh?=
- =?utf-8?B?TWZJY1V6M0MrWXJ6S3BKL2dNWXkxYkkzbU56enNOczBkeDROaDdjZVcwQXl4?=
- =?utf-8?B?bzgxS2ZMbm9UdGxpUTIrOUhiK2tVeEQ5R2hDTSs1TDhTa1dka29pOE5RcDBB?=
- =?utf-8?B?MG1kNDRmZGIwVXpzejlNYzNtMGk1ZytoaHQyZ01Ybm00RFNsK0NlQS9FSkhn?=
- =?utf-8?B?VzkybElaaUNUSEx3WjJ5WkQrTk1qR1g3Z3lCL0cyMllJWkVSbWNPWlZCU2Iv?=
- =?utf-8?B?NWVoeWwrdzZuTVdMUVpOemREejFxdzVmalJKSCtNalh3QkxrS1hsT0pPdFll?=
- =?utf-8?B?ZFN5QnpZaHh5QjI5YnQ1Sjg5R0FGeXhKbnQxT04rQnFBZkEyY0dkZjFFbVVL?=
- =?utf-8?B?L0FiSjRMSzhjZjg3c3JhbkRybEZpV1RGNVpEQVF5YjVZcGo1NU91SmorbjBi?=
- =?utf-8?B?VStza0VTTkdadWpNbTZBUUF5b1BvZmhXeDVGM3c0NXhvd0laeDdIT2FTanpr?=
- =?utf-8?B?aERlbGg5Wjl4cy9SVHRqNVI0RktEd0FSVGNzWGplUzdlTVIwczBXUFFjK3Ni?=
- =?utf-8?B?UXBOdU9JcE11NXdNTFJNYmZyc0JYYkgvckIwS201QkJuY2lFWER2d05rWHIx?=
- =?utf-8?B?SDVKcWpnQ3o2bjc1SmtvNDNhdGU5QUxxR095MTg3Q2xNSmtmenBFSExDeTFD?=
- =?utf-8?B?ZzlrLzBFcnhhK3FlQks1dFNvb3hpSmxQZGt5RU1IcFZ3ZnRDbHlUeW4rUG9H?=
- =?utf-8?B?TGEzMTRkUHZMa0hGQWMrSjd1RjRKM1NJL2ZZNDlmY2lnVVhlWVc2bi9RMW9n?=
- =?utf-8?B?MEorYThtd3c0WlZnNU1rUUxGRitCbGNUVWVkUS8xK3c1djBuMzdteWp3eWNW?=
- =?utf-8?Q?tZNk84RwoHA=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aElZcGFVOHBlSEI3UzdaOFVQUTVvbmJNd0crU25ZL2p4TE9wODFvdGdMbWpz?=
- =?utf-8?B?R1pvd3haazFobXdraTUvVk9LcDVKTTVYSWdjNHpSeXBvYkg3WG8vODc2bmJn?=
- =?utf-8?B?M1h6b0daU1UzOEY3Z0tDSVFLMXhvN0ZFeEliZk9EY0wzVndGRUFoQ3VYM0x2?=
- =?utf-8?B?NGcrK0NPdUR3bFpEK0Rkc3pjU1kyZXNkZWpNamJwdEV5dDJuSFBnQ1ozdi9R?=
- =?utf-8?B?eXhsY2JqR1pwb2hLNStvYTFlZURvQlkwRTk2VFMzZzlMVGdpN2ZMMm94T2JX?=
- =?utf-8?B?STJPR1lYMkluSE1ycTJ4c0IrV1F1M1kxRGt3ZzBGNjljeC9oOTM2eDBreHdR?=
- =?utf-8?B?Q08zVEo1blpRbXdKcGxEbElrYTg4eWRwa1VDRDBTK3FDSEc0SEtnaFl0ejVD?=
- =?utf-8?B?TmVQS0c2Q0pMaWk5YUJUNnRSN2Q1MDB6dVhlMFRZQkI3ajhSSm5NMk5paFZS?=
- =?utf-8?B?dnZtNDRtR2pFSm5qUWt6VzFxNkJBS2xRSDkyMjlJWis1cTRuRTlmcjBSeVdx?=
- =?utf-8?B?blQ5SlZld0JRU3l3L3Q4N1NONG1JQlZXVndEdnNjUkpRMTd4NFRiVnN2c1pv?=
- =?utf-8?B?S2pnSTB0OGdBUUhWdEtOVG84VXJXQ2NZME40TUNIU0tHV055UGdMcG9sWkdr?=
- =?utf-8?B?L3pzZnpJOXBQMkxxcHFXdnpQUS9sd1RLVFRERi9sZDdsbXRpMGFGbmlaeHgv?=
- =?utf-8?B?M1prR1FaYVVac2t2c3g5WEtvN0tZc3Y0eEtmczA2YkF5anZRTXdrMDNFbWVT?=
- =?utf-8?B?dTR6UlJleExLTUNVUGR2S2Uxbmcxcmdpc0prN3RqNGhrQkJLV040bTFSVXBa?=
- =?utf-8?B?cHJBVlA4VW1maEVTa29sZGpKMlRZK2Jkb1pPWGg3biszV2tnTzBaVUpNV2Mr?=
- =?utf-8?B?NnZqZzJXWVZtRDQ5bEVzeit2TWhvMFBqZ0UzYkdrbzNmK1o2NmpCVmZtT3Zt?=
- =?utf-8?B?eG00WURWaWwzNUhwdTk0dkpMckNCTkk0ZmYzVUJudmVyOWh3YzRzazJVdHNB?=
- =?utf-8?B?dWo5Ly9sTXJTWXBjQ0tpeFptYU5aeG9PZS94dDdVcStwSjlxNGdHQTg4alhR?=
- =?utf-8?B?Q1Z1WGhIMldwNExxeCs3MmgzVk1sVWNjVGxNMStWMVgzZXk5VDZod0lKUnh2?=
- =?utf-8?B?azVuU0drV3dxeVVRQW8rbCtYWjdWRVQ0ZTVObzlrVVYvdlVtQ2JGSkphS1NK?=
- =?utf-8?B?SGhtQWp5OE1VOWFhQ3hPSlpQNzNQaFd6cnAyellTRzFuWjZjczA4SjMwL2dH?=
- =?utf-8?B?bTZzODNEd1NoTUdHYytNRi9wRXN6WGF3dmNGd1BHY1E3eEUzblY0ZFdaS09X?=
- =?utf-8?B?QUZNbGZDaEJNVW1uNUVyTFZPV3d2WEFmRFNoNWdyK2ZESFBoNGJnMlU4NzNl?=
- =?utf-8?B?a25sZGhndDVPQUxaZEg2QzFqVndnTXZicUF5S2psWU1zeG1vdjlqanNKNGdW?=
- =?utf-8?B?TitUVUxHVnRlZDduTS9QQnZhanYzYjBEWVJ4aVhOYlBITmRBNU9hU2RoL3BB?=
- =?utf-8?B?RTBvNEs2aW5RVk1jQ2t0azkvbnJ4MUdCelZWc2w0V3RCUVdIT0VQWjRlQi85?=
- =?utf-8?B?WjZiWU5xTWcyMUdKL0tSR1RZYkRyYUxGcDY2Uzd3d2hrTWJrSmoyZ0doam1s?=
- =?utf-8?B?U1g3dDJVOUVDTjc1dllBSDJpeE8rT2dSaDRWbnFFdWJxMXhBd3hBWXpxSWZR?=
- =?utf-8?B?MHNDRm5wcjFrR29TbjZZYUt0NHh0cGpiT2VlMGN1QzU2bXpzN29nckN0KzMz?=
- =?utf-8?B?ZnlXTnhUQkF1SGdjTStGek1aTEZRc3NTOHNUS0pPblhPVk9iMjJ3ZS9FTEtE?=
- =?utf-8?B?L21CVitGQ3RiT0U1YUlTLzY4REZ4WEtRT0puNVFOTCtUTUo5WTFNSGhuOFRs?=
- =?utf-8?B?emIyYnk4YkltTjlDME0yaTBGMnE2a280Zm00b2ZQdTlpbXpDVlRSNkwxUW1K?=
- =?utf-8?B?ditwNCtreW1JdEIwNzNGSXNDalJrUE96UE8yNTl5SHFVV0FqRTNvZ01TMDg2?=
- =?utf-8?B?a0hYd1k2aEZnOWxYWEpEUVAwdWduZkEzSFNqU1ZvZjZWN2s5N1pJZ1VTajlx?=
- =?utf-8?B?UG1rNjU3amM4K1FtSk91NGw2WHhpRXF5SjZ0SVcxZHJkN3M1eHVLcis4SGdO?=
- =?utf-8?B?eFlENDg4QUwyd25ZcTNBYTE4MlEydXFzaXhYWWsxTzNCNlZhdHhnWkFuQkN3?=
- =?utf-8?B?SWc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6cc6214e-bf5e-40be-9e2d-08dd8d526f95
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 10:32:15.8857 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gconAuAeezOj9okkfPD3vtbnW2DCpUzbPA7SHbMbQbCjJ8jnZtgVGalxEBinXCu11nBTrFKmhQB0/s3yFM0WjEzghN9dQjPF0FqPgBBOtog=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7274
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -197,61 +69,782 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+DO NOT MERGE!
 
-On 5/5/2025 9:19 AM, Pranay Samala wrote:
-> Tiled display setups require all involved connectors to be of the same type
-> (e.g., all eDP or all HDMI).
+The objective is to test the behavior of the GPU scheduler under
+conditions where one execution queue ("attacker") is configured with an
+abnormally large timeslice, potentially disrupting the normal execution
+of another queue ("attacked"). The explicit attack point is the ioctl
+DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY.
 
-Currently Port Sync is supported only on DP for i915/xe.
+This temporarily disables drm and xe logging to prevent it from slowing
+down and serializing the tests. Using igt_drm_debug_level_update()
+ensures that the logging level is restored after this igt is done.
 
+This RFC implements the first step that is reading timeslice values for
+each engine and run the following tests on timeslice limits:
+ - Boundary Value Analysis: Focuses on testing at the boundaries of
+   input values with values such as max - 1, max, max + 1.
+ - Equivalence Partitioning:  Divide values into partitions where all
+   values behave similarly and test one value from each partition.
+ - Fuzz Testing: Basic fuzz tester for
+      - Large numbers
+      - Empty value
+      - '\0'
+      - 10'000 u64 random values
+ - Fuzz stress test: Create 1000 threads and call the fuzzing test.
+   While this takes about 30 seconds to run, it produces several
+   megabytes of dmesg.
 
-> This patch adds a check to skip the test when
-> connector types differ, preventing invalid configurations and reducing
-> confusing test failures.
->
-> v2: Replace igt_assert with igt_skip_on_f to skip the test.
->
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
-> ---
->   tests/kms_tiled_display.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
->
-> diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
-> index 1f5331408..6d461c976 100644
-> --- a/tests/kms_tiled_display.c
-> +++ b/tests/kms_tiled_display.c
-> @@ -149,6 +149,7 @@ static void get_connectors(data_t *data)
->   	int count = 0;
->   	igt_output_t *output;
->   	data_connector_t *conns = data->conns;
-> +	int connector_type = -1;
+The proposed steps are (this patch goes until 2a):
 
-drmModeConnector has connector_type as uint32_t.
+1. Determine the values for the following parameters:
+        - `timeslice_duration_us`: Default timeslice duration in
+           microseconds.
+        - `timeslice_duration_min`: Minimum allowable timeslice duration.
+        - `timeslice_duration_max`: Maximum allowable timeslice duration.
 
-So better to use that and set it to : DRM_MODE_CONNECTOR_Unknown
+2. Create two execution queues with the following configurations:
+        - `attacked`: Queue with standard/default settings.
+        - `attacker`: Queue configured with an extended timeslice
+                      duration. The goal is to:
+                a) Try to set timeslice to invalid values. This is
+                   expected to fail.
 
->   
->   	for_each_connected_output(&data->display, output) {
->   		conns[count].connector = drmModeGetConnector(data->display.drm_fd,
-> @@ -169,6 +170,14 @@ static void get_connectors(data_t *data)
->   			igt_assert(conns[count].tile.tile_group_id ==
->   				   conns[count-1].tile.tile_group_id);
->   
-> +		if (connector_type == -1) {
-> +			connector_type = conns[count].connector->connector_type;
-> +		} else {
-> +			igt_skip_on_f(connector_type != conns[count].connector->connector_type,
-> +				      "Connector type mismatch: Expected %d, but got %d\n",
-> +				      connector_type, conns[count].connector->connector_type);
-> +		}
-> +
->   		count++;
->   	}
->   	igt_require_f(count == data->num_h_tiles,
+                b) Create the attacker queue setting the timeslice to
+                   `timeslice_duration_max`.
 
-Perhaps need to check that connector_type != DRM_MODE_CONNECTOR_Unknown.
+3. Submit tasks to both queues:
+        - Submit a workload to the `attacked` queue with normal
+           operations.
+        - Submit a workload to the `attacker` queue designed to
+          maximize its timeslice and potentially disrupt the GPU
+          scheduler.
 
-Regards,
+4. Verify the behavior of the `attacked` queue:
+        - Ensure that tasks in the `attacked` queue execute within the
+          expected time constraints and are not delayed or blocked due
+          to the extended timeslice of the `attacker` queue.
+        - Specifically, confirm that tasks in the `attacked` queue do
+          not exceed `timeslice_duration_max` in terms of execution
+          delays or interruptions.
 
-Ankit
+Cc: michal.winiarski@intel.com
+Cc: rodrigo.vivi@intel.com
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+---
+ .../intel/sec_xe_exec_queue_timeslice_abuse.c | 689 ++++++++++++++++++
+ tests/meson.build                             |   1 +
+ 2 files changed, 690 insertions(+)
+ create mode 100644 tests/intel/sec_xe_exec_queue_timeslice_abuse.c
+
+diff --git a/tests/intel/sec_xe_exec_queue_timeslice_abuse.c b/tests/intel/sec_xe_exec_queue_timeslice_abuse.c
+new file mode 100644
+index 000000000..abbc384c4
+--- /dev/null
++++ b/tests/intel/sec_xe_exec_queue_timeslice_abuse.c
+@@ -0,0 +1,689 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++/*
++ * Test Specification: Validate the Impact of Timeslice Abuse on Exec Queues
++ *
++ * Objective
++ * Test the behavior of the GPU scheduler under conditions where one execution
++ * queue ("attacker") is configured with an abnormally large timeslice,
++ * potentially disrupting the normal execution of another queue ("attacked").
++ *
++ * Steps:
++ *
++ * For each GPU engine available:
++ *	1. Determine the values for the following parameters:
++ *		- `timeslice_duration_us`: Default timeslice duration in
++ *		   microseconds.
++ *		- `timeslice_duration_min`: Minimum allowable timeslice duration.
++ *		- `timeslice_duration_max`: Maximum allowable timeslice duration.
++ *
++ *	2. Create two execution queues with the following configurations:
++ *		- `attacked`: Queue with standard/default settings.
++ *		- `attacker`: Queue configured with an extended timeslice
++ *			      duration. The goal is to:
++ *			a) First attempt to set a timeslice greater than
++ *			   `timeslice_duration_max`.
++ *			b) If setting a timeslice above `timeslice_duration_max`
++ *			   fails, fallback to setting the timeslice to
++ *			   `timeslice_duration_max`.
++ *
++ *	3. Submit tasks to both queues:
++ *		- Submit a workload to the `attacked` queue with normal
++ *		   operations.
++ *		- Submit a workload to the `attacker` queue designed to
++ *		  maximize its timeslice and potentially disrupt the GPU
++ *		  scheduler.
++ *
++ *	4. Verify the behavior of the `attacked` queue:
++ *		- Ensure that tasks in the `attacked` queue execute within the
++ *		  expected time constraints and are not delayed or blocked due
++ *		  to the extended timeslice of the `attacker` queue.
++ *		- Specifically, confirm that tasks in the `attacked` queue do
++ *		  not exceed `timeslice_duration_max` in terms of execution
++ *		  delays or interruptions.
++ *
++ */
++
++#include <dirent.h>
++#include <fcntl.h>
++
++#include "igt.h"
++#include "igt_list.h"
++#include "igt_sysfs.h"
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++#define MAX_U64 0xFFFFFFFFFFFFFFFF
++
++static struct igt_list_head engines_list;
++
++/* Struct to Hold Data for Each Engine */
++struct engines_timeslice_test_data {
++	/* Name of the GPU engine (e.g., "CCS", "VCS", "RCS", "BCS", "VECS") */
++	const char *engine_name;
++
++	/* Minimum allowable timeslice duration (microseconds) */
++	uint32_t timeslice_min;
++
++	/* Maximum allowable timeslice duration (microseconds) */
++	uint32_t timeslice_max;
++
++	/* Timeslice value set for the attacker queue (microseconds) */
++	uint32_t timeslice_set;
++
++	/* Linked list node */
++	struct igt_list_head link;
++};
++
++/* Struct for parametric testing */
++struct timeslice_test_case {
++	uint64_t value;
++	int expected_result;
++};
++
++typedef struct {
++	int xe;
++	int vm;
++	int random_count;
++} thread_args_t;
++
++/**
++ * engines_list_add_timeslices: Check if there is already an entry in the list
++ *				for the engine and add timeslices.
++ * @engine: name of the engine
++ * @set: timeslice duration set for the attacker queue
++ * @min: minimum allowable timeslice duration
++ * @max: maximum allowable timeslice duration
++ *
++ * Returns: bool indicating if timeslices were added to the list
++ *
++ */
++static bool engines_list_add_timeslices(const char *engine, uint32_t set,
++					uint32_t min, uint32_t max)
++{
++	struct engines_timeslice_test_data *engine_data = NULL;
++
++	/* Check if the engine already exists in the list. If it does
++	 * add the timeslice values to the existing entry
++	 */
++	igt_list_for_each_entry(engine_data, &engines_list, link) {
++		if (strcmp(engine_data->engine_name, engine) == 0) {
++			engine_data->timeslice_set = set;
++			engine_data->timeslice_min = min;
++			engine_data->timeslice_max = max;
++			return true;
++		}
++	}
++	/* If the engine does not exist, create a new entry */
++	engine_data = malloc(sizeof(*engine_data));
++	if (!engine_data)
++		return false;
++
++	engine_data->engine_name = strdup(engine);
++	engine_data->timeslice_set = set;
++	engine_data->timeslice_min = min;
++	engine_data->timeslice_max = max;
++
++	igt_list_add(&engine_data->link, &engines_list);
++	return true;
++}
++
++/**
++ * engines_list_print_all: Print all engines in the list
++ *
++ * Returns: void
++ *
++ */
++static void engines_list_print_all(void)
++{
++	struct engines_timeslice_test_data *engine_data = NULL;
++
++	igt_warn("Engines List:\n");
++	igt_list_for_each_entry(engine_data, &engines_list, link) {
++		igt_warn("Engine: %s, Set: %u, Min: %u, Max: %u\n",
++			 engine_data->engine_name,
++			 engine_data->timeslice_set,
++			 engine_data->timeslice_min,
++			 engine_data->timeslice_max);
++	}
++}
++
++/**
++ * engines_list_free_all: Free all engines in the list
++ *
++ * Returns: void
++ *
++ */
++static void engines_list_free_all(void)
++{
++	struct engines_timeslice_test_data *engine_data = NULL, *tmp = NULL;
++
++	igt_list_for_each_entry_safe(engine_data, tmp, &engines_list, link) {
++		free((void *)engine_data->engine_name);
++		free(engine_data);
++	}
++}
++
++/**
++ * debug_info_igt_assert: Print debug information for assertion failures
++ * @msg: message to print
++ * @cond: condition to evaluate
++ */
++static void debug_info_igt_assert(const char *msg, bool cond)
++{
++	if (!cond) {
++		igt_warn("Assertion failed: %s\n", msg);
++		engines_list_print_all();
++	}
++	igt_assert(cond);
++}
++
++/**
++ * get_queue_timeslice_properties: Get the timeslice properties for an engine
++ *
++ * @xe: xe device file descriptor
++ * @engine: engine file descriptor
++ * @set: pointer to store the timeslice duration set for the attacker queue
++ * @min: pointer to store the minimum allowable timeslice duration
++ * @max: pointer to store the maximum allowable timeslice duration
++ *
++ * Returns: 0 on success, -1 on failure
++ */
++static int get_queue_timeslice_properties(int xe, int engine,
++			unsigned int *set, unsigned int *min, unsigned int *max)
++{
++	int defaults;
++
++	defaults = openat(engine, ".defaults", O_DIRECTORY);
++	if (defaults == -1)
++		return -1; /* Failure: Unable to open the defaults directory */
++
++	/* Read the max, min, and set values from the sysfs */
++	if (igt_sysfs_scanf(defaults, "timeslice_duration_max", "%u", max) != 1 ||
++	    igt_sysfs_scanf(defaults, "timeslice_duration_min", "%u", min) != 1 ||
++	    igt_sysfs_scanf(engine, "timeslice_duration_us", "%u", set) != 1) {
++		close(defaults);
++		return -1; /* Failure: Unable to read sysfs values */
++	}
++	close(defaults);
++
++	return 0; /* Success */
++}
++
++/**
++ * random_u64: Generate a random 64-bit unsigned integer
++ *
++ * Returns: A random 64-bit unsigned integer
++ */
++static uint64_t random_u64(void)
++{
++	uint64_t high = ((uint64_t)rand() << 32);
++	uint64_t low = (uint64_t)rand();
++
++	return high | low;
++}
++
++/**
++ * TEST: Validate the Impact of Timeslice Abuse on Exec Queues
++ * Category: Security
++ * Mega feature: Security Validation Plan
++ * Sub-category: Security Validation Plan
++ * Functionality: Test if exec queue timeslice property can be used as an
++ *		  attack to prevent other queues from running
++ * Test category: security test
++ *
++ * SUBTEST: get-xe-exec-queue-timeslice-properties
++ * Description: Test to check if timeslice properties are available and
++ *		read them.
++ * Test category: functionality test
++ */
++
++/**
++ * get_xe_exec_queue_timeslice_properties:
++ * @xe: xe device file descriptor
++ *
++ * Returns: void
++ */
++static void get_xe_exec_queue_timeslice_properties(int xe)
++{
++	unsigned int max = -1;
++	unsigned int min = -1;
++	unsigned int set = -1;
++	int gt = -1;
++
++	xe_for_each_gt(xe, gt) {
++		int engines = -1;
++		int gt_fd = -1;
++		DIR *dir;
++		struct dirent *de;
++
++		gt_fd = xe_sysfs_gt_open(xe, gt);
++		igt_require(gt_fd != -1);
++
++		engines = openat(gt_fd, "engines", O_RDONLY);
++		igt_require(engines != -1);
++
++		lseek(engines, 0, SEEK_SET);
++
++		dir = fdopendir(engines);
++		if (!dir)
++			close(engines);
++
++		while ((de = readdir(dir))) {
++			int engine_fd = -1;
++
++			if (*de->d_name == '.')
++				continue;
++
++			engine_fd = openat(engines, de->d_name, O_RDONLY);
++			if (engine_fd < 0)
++				continue;
++
++			/* Check if the timeslice properties are available */
++			if (get_queue_timeslice_properties(xe, engine_fd, &set, &min, &max) == 0)
++				engines_list_add_timeslices(de->d_name, set, min, max);
++			else
++				igt_warn("Failed to get timeslice properties\n");
++
++			close(engine_fd);
++		}
++		close(gt_fd);
++	}
++}
++
++/**
++ * xe_exec_queue_test_create_timeslice:
++ * @xe: xe device file descriptor
++ * @vm: vm file descriptor
++ * @timeslice: timeslice value to be set
++ * @expected_ret: expected return value
++ *§
++ * Returns: bool indicating if the queue creation was successful
++ *
++ */
++static bool xe_exec_queue_test_create_timeslice(int xe, int  vm,
++						uint64_t timeslice,
++						int expected_ret)
++{
++	uint32_t queue_id = -1;
++	int ret;
++	char error_msg[256];
++
++	struct drm_xe_engine_class_instance instance = {
++		.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
++	};
++	struct drm_xe_ext_set_property property = {
++		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++		.base.next_extension = 0,
++		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE,
++		.value = timeslice,
++	};
++
++	igt_assert(vm != -1);
++
++	ret = __xe_exec_queue_create(xe, vm, 1, 1,
++				     &instance, to_user_pointer(&property),
++				     &queue_id);
++	if (ret == 0)
++		xe_exec_queue_destroy(xe, queue_id);
++
++	if (ret == expected_ret)
++		return true;
++
++	snprintf(error_msg, sizeof(error_msg),
++		 "ERROR: Failed to create exec queue with timeslice %lu, expected %d, got %d",
++		 timeslice, expected_ret, ret);
++	debug_info_igt_assert(error_msg, ret == expected_ret);
++
++	return false;
++}
++
++/**
++ * xe_exec_queue_test_iterate_create_timeslice:
++ * @xe: xe device file descriptor
++ * @vm: vm file descriptor
++ * @test_case: struct containing the timeslice value and expected result
++ * @test_case_count: number of test cases
++ *
++ * Returns: void
++ *
++ */
++static void xe_exec_queue_test_iterate_create_timeslice(int xe, int vm,
++						   struct timeslice_test_case *test_case,
++						   int test_case_count)
++{
++	for (int i = 0; i < test_case_count; i++)
++		xe_exec_queue_test_create_timeslice(xe, vm,
++						    test_case[i].value,
++						    test_case[i].expected_result);
++}
++
++/**
++ * SUBTEST: xe-exec-queue-timeslice-boundary-value-analysis
++ * Description: Test to check if the timeslice boundary values are
++ *              working as expected.
++ * Test category: functionality test
++ */
++
++/**
++ * xe_exec_queue_timeslice_boundary_value_analysis:
++ * @xe: xe device file descriptor
++ * @vm: vm file descriptor
++ *
++ * Returns: void
++ *
++ */
++static void xe_exec_queue_timeslice_boundary_value_analysis(int xe, int vm)
++{
++	struct engines_timeslice_test_data *engine_data = NULL;
++	int test_case_count = 6;
++	struct timeslice_test_case test_cases[test_case_count];
++
++	igt_list_for_each_entry(engine_data, &engines_list, link) {
++		if (engine_data->timeslice_set != -1)
++			break;
++	}
++	igt_assert(engine_data != NULL);
++	igt_assert(engine_data->timeslice_set != -1);
++
++	/* Test cases for boundary value analysis */
++	test_cases[0].value = engine_data->timeslice_max + 1;
++	test_cases[0].expected_result = -EINVAL;
++	test_cases[1].value = engine_data->timeslice_max;
++	test_cases[1].expected_result = 0;
++	test_cases[2].value = engine_data->timeslice_max - 1;
++	test_cases[2].expected_result = 0;
++	test_cases[3].value = engine_data->timeslice_min - 1;
++	test_cases[3].expected_result = -EINVAL;
++	test_cases[4].value = engine_data->timeslice_min;
++	test_cases[4].expected_result = 0;
++	test_cases[5].value = engine_data->timeslice_min + 1;
++	test_cases[5].expected_result = 0;
++
++	/* Check if the timeslice values are working as expected */
++	xe_exec_queue_test_iterate_create_timeslice(xe, vm, test_cases,
++						    test_case_count);
++}
++
++/**
++ * SUBTEST: xe-exec-queue-timeslice-equivalence-partitioning
++ * Description: Divide timeslice values into partitions where all values should
++ *		have the same behavior. This test checks if the timeslice
++ *		values are working as expected.
++ *
++ * Test category: functionality test
++ */
++
++/**
++ * xe_exec_queue_timeslice_equivalence_partitioning:
++ * @xe: xe device file descriptor
++ * @vm: vm file descriptor
++ *
++ * Returns: void
++ *
++ */
++static void xe_exec_queue_timeslice_equivalence_partitioning(int xe, int vm)
++{
++	struct engines_timeslice_test_data *engine_data = NULL;
++	int test_case_count = 5;
++	struct timeslice_test_case test_cases[test_case_count];
++
++	igt_list_for_each_entry(engine_data, &engines_list, link) {
++		if (engine_data->timeslice_set != -1)
++			break;
++	}
++	igt_assert(engine_data != NULL);
++	igt_assert(engine_data->timeslice_set != -1);
++
++	/* Test cases for equivalence partitioning */
++	test_cases[0].value = engine_data->timeslice_min - 1;
++	test_cases[0].expected_result = -EINVAL;
++	test_cases[1].value = engine_data->timeslice_min;
++	test_cases[1].expected_result = 0;
++	test_cases[2].value = (engine_data->timeslice_min + engine_data->timeslice_max) / 2;
++	test_cases[2].expected_result = 0;
++	test_cases[3].value = engine_data->timeslice_max;
++	test_cases[3].expected_result = 0;
++	test_cases[4].value = engine_data->timeslice_max + 1;
++	test_cases[4].expected_result = -EINVAL;
++
++	/* Check if the timeslice values are working as expected */
++	xe_exec_queue_test_iterate_create_timeslice(xe, vm, test_cases,
++						    test_case_count);
++}
++
++/**
++ * SUBTEST: xe-exec-queue-timeslice-fuzzing
++ * Description: Test a large set of random timeslice values to check if the
++ *              behavior is as expected. Includes testing for:
++ *                - very large numbers
++ *                - empty value
++ *                - null value
++ *
++ * Test category: functionality test
++ */
++
++/**
++ * xe_exec_queue_timeslice_fuzzing:
++ * @xe: xe device file descriptor
++ * @random_count: number of random timeslice values to test
++ *
++ * Returns: void
++ *
++ */
++static void xe_exec_queue_timeslice_fuzzing(int xe, int vm, int random_count)
++{
++	struct engines_timeslice_test_data *engine_data = NULL;
++	__u64 timeslice_value;
++	uint32_t queue_id = -1;
++
++	struct drm_xe_engine_class_instance instance = {
++		.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
++	};
++	struct drm_xe_ext_set_property empty_value_property = {
++		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++		.base.next_extension = 0,
++		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE,
++	};
++
++	igt_list_for_each_entry(engine_data, &engines_list, link) {
++		if (engine_data->timeslice_set != -1)
++			break;
++	}
++	igt_assert(engine_data != NULL);
++	igt_assert(engine_data->timeslice_set != -1);
++
++	igt_assert(vm != -1);
++
++	/* test empty timeslice_value 10 times*/
++	for (int i = 0; i < 10; i++)
++		igt_assert_eq(__xe_exec_queue_create(xe, vm, 1, 1, &instance,
++					to_user_pointer(&empty_value_property),
++					&queue_id), -EINVAL);
++
++	/* Very large number 10 times for max_u64 and for max_u64 -1 */
++	timeslice_value = MAX_U64;
++	for (int i = 0; i < 10; i++)
++		xe_exec_queue_test_create_timeslice(xe, vm, timeslice_value,
++						    -EINVAL);
++	timeslice_value = MAX_U64 - 1;
++	for (int i = 0; i < 10; i++)
++		xe_exec_queue_test_create_timeslice(xe, vm, timeslice_value,
++						    -EINVAL);
++
++	/* Test '\0' timeslice_value 10 times */
++	for (int i = 0; i < 10; i++)
++		xe_exec_queue_test_create_timeslice(xe, vm, '\0', -EINVAL);
++
++	/* Test random_count random values */
++	srand((unsigned int)time(NULL));
++
++	for (int i = 0; i < random_count; i++) {
++		timeslice_value = random_u64();
++
++		if (timeslice_value < engine_data->timeslice_min ||
++		    timeslice_value > engine_data->timeslice_max)
++			xe_exec_queue_test_create_timeslice(xe,  vm,
++							    timeslice_value,
++							    -EINVAL);
++		else
++			xe_exec_queue_test_create_timeslice(xe, vm,
++							    timeslice_value,
++							    0);
++	}
++}
++
++/**
++ * SUBTEST: xe-exec-queue-timeslice-fuzzing-stress-test
++ * Description: Test a large set of random timeslice values to check if the
++ *              behavior is as expected. Includes testing for:
++ *                - very large numbers
++ *                - empty value
++ *                - null value
++ *
++ * Test category: functionality test
++ */
++
++ /**
++  * fuzz_workload: Thread function to perform fuzz testing
++  * @args: thread arguments containing the xe device file descriptor and
++  *        random count
++  *
++  * Returns: void
++  */
++static void *fuzz_workload(void *args)
++{
++	thread_args_t *thread_args = (thread_args_t *) args;
++
++	/* Call the fuzz testing function with the provided arguments */
++	xe_exec_queue_timeslice_fuzzing(thread_args->xe, thread_args->vm,
++					thread_args->random_count);
++
++	return NULL;
++}
++
++/**
++ * xe_exec_queue_timeslice_fuzzing_stress_threads:
++ * @xe: xe device file descriptor
++ * @vm: vm file descriptor
++ * @thread_count: number of threads to create
++ * @random_count_per_thread: number of random timeslice values per thread
++ *
++ * Returns: void
++ *
++ */
++static void xe_exec_queue_timeslice_fuzzing_stress_threads(int xe,
++							   int vm,
++							   int thread_count,
++							   int random_count_per_thread)
++{
++	pthread_t *threads;
++	thread_args_t *thread_args;
++
++	threads = malloc(thread_count * sizeof(pthread_t));
++	igt_assert(threads);
++	thread_args = malloc(thread_count * sizeof(thread_args_t));
++	igt_assert(thread_args);
++
++	igt_info("Starting stress test with %d threads and with %d random tests each...\n",
++		 thread_count, random_count_per_thread);
++
++	// Create the specified number of threads
++	for (int i = 0; i < thread_count; i++) {
++		thread_args[i].xe = xe;
++		thread_args[i].vm = vm;
++		thread_args[i].random_count = random_count_per_thread;
++
++		if (pthread_create(&threads[i], NULL, fuzz_workload, &thread_args[i]) != 0) {
++			igt_info("Failed to create thread %d.\n", i);
++			exit(EXIT_FAILURE);
++		}
++	}
++
++	// Wait for all threads to finish
++	for (int i = 0; i < thread_count; i++) {
++		if (pthread_join(threads[i], NULL) != 0)
++			igt_info("Failed to join thread %d.\n", i);
++	}
++
++	igt_info("Stress test with %d threads completed successfully.\n",
++		 thread_count);
++
++	// Free allocated memory
++	free(threads);
++	free(thread_args);
++}
++
++igt_main
++{
++	bool has_sysfs = false;
++	int sys_fd = -1;
++	int xe = -1;
++	int vm = -1;
++
++	igt_fixture {
++		/* Disable logging for this igt: Logging imposes a 20X slowdown
++		 * on the operations we are trying to stress test. The logging
++		 * slows down and serializes the operations, which is not what
++		 * we want. igt_drm_debug_level_update() installs an exit
++		 * handler making sure that the logging is reset to the previous
++		 * value when the test ends.
++		 */
++		igt_drm_debug_level_update(0);
++
++		/* Initialize the list of engines */
++		IGT_INIT_LIST_HEAD(&engines_list);
++
++		xe = drm_open_driver(DRIVER_XE);
++		sys_fd = igt_sysfs_open(xe);
++
++		if (sys_fd != -1) {
++			close(sys_fd);
++			has_sysfs = true;
++		} else {
++			has_sysfs = false;
++		}
++	}
++
++	igt_subtest("get-xe-exec-queue-timeslice-properties") {
++		igt_require(has_sysfs);
++		get_xe_exec_queue_timeslice_properties(xe);
++	}
++
++	igt_fixture {
++		vm = xe_vm_create(xe, 0, 0);
++		igt_assert(vm != -1);
++	}
++
++	igt_subtest("xe-exec-queue-timeslice-boundary-value-analysis") {
++		xe_exec_queue_timeslice_boundary_value_analysis(xe, vm);
++	}
++
++	igt_subtest("xe-exec-queue-timeslice-equivalence-partitioning") {
++		xe_exec_queue_timeslice_equivalence_partitioning(xe, vm);
++	}
++
++	igt_subtest("xe-exec-queue-timeslice-fuzzing") {
++		xe_exec_queue_timeslice_fuzzing(xe, vm, 1000000);
++	}
++
++	igt_subtest("xe-exec-queue-timeslice-fuzzing-stress-test") {
++		xe_exec_queue_timeslice_fuzzing_stress_threads(xe, vm,
++							       50000, 500);
++	}
++
++	igt_fixture {
++		engines_list_free_all();
++		close(sys_fd);
++
++		if (vm != -1)
++			xe_vm_destroy(xe, vm);
++
++		xe_device_put(xe);
++		drm_close_driver(xe);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 20ddddb89..560b74ceb 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -273,6 +273,7 @@ intel_kms_progs = [
+ ]
+ 
+ intel_xe_progs = [
++	'sec_xe_exec_queue_timeslice_abuse',
+ 	'xe_wedged',
+ 	'xe_ccs',
+ 	'xe_create',
+-- 
+2.43.0
 
