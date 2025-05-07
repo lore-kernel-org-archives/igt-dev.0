@@ -4,66 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00081C3ABBF
-	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 15:58:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31BFBC3ABC0
+	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 16:04:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 94A4C10E84F;
-	Wed,  7 May 2025 15:58:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DF55510E851;
+	Wed,  7 May 2025 16:04:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L9f3NDui";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BLNN2DAj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A32510E84F
- for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 15:58:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89B7E10E84F
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 16:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746633507; x=1778169507;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=0J/2BzW1NpXMIpJtVU79tmZON07qw3vkwYhj4DO0/Tk=;
- b=L9f3NDui7GajGpR9aT6EWTNA1R4F9XdvEFuTbNriFOYTH06pVr2g9gLd
- vEAstMpy46jcyWOxVwKIvxoB3CcjHUDISJKfYu/wlXmG5KuP979j9KC0P
- eNZwQJ3fWG7//2gq75kjkHH51osacDs/Do1hnstAQ/hVNlMLJ10xQUeJ4
- Xj/shYj5if4yBsApak4WOdbY9m6BD69lm6tIZPhaYJHPdieVospTJx9o4
- MOfF9yRVg4DlWOrqYXiBD3uFwD1A30tsez8/Xedo1I524/koY2YIVEpxt
- 4WGOtzBpnZqOJsaC17PxLmlD54pDhBIthMm5z9s3rYoEWqMAAZeILzN3U A==;
-X-CSE-ConnectionGUID: XIgbwA2NSgSinza0HNOrig==
-X-CSE-MsgGUID: mOSVbYSXREqs1wkvD24dOA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48081118"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48081118"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 08:58:22 -0700
-X-CSE-ConnectionGUID: zQAmgQ47QCiljoIYdmly+g==
-X-CSE-MsgGUID: qaVXWTZDTTephzIfs4lnFA==
+ t=1746633863; x=1778169863;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=sXgRVgGx7pxpscHQZZlxo/Cc5W0pDCCAhF8Uw4xHt4o=;
+ b=BLNN2DAjC0qXnoFMRf3/hmmFYLlfHJZJJ1/663hFZTnLzJzyzAbbjdAP
+ HJ+FxuYrPUF25RO2LlhyZVh1xgeBc2KTr3FJRoA4JhmG2Fz3K1bfKD95a
+ 9GwHBxtVbcnpEzbWk08/laYV5mprrNKZ71BUO+mlyQgku4Ny5uwb2xzxS
+ jhOsyDpnr9Qm69cjFrazReLbLX6CLtCHN2uGBGUOzMixSOfZW4zXVPqOA
+ 9F34zb4PZ4er3emVp2tN/l3SoXDN0bH9ex9OdB67niFeFuRxL7ulBcoNE
+ YpsJlV+q2HC6ir9KFaAorvqLZWFw/XlGamLi9cEqKB1Danjg3w8B0UYxx Q==;
+X-CSE-ConnectionGUID: Vq9lLsfCQs+X2pvYjLVf4w==
+X-CSE-MsgGUID: t5A94ZkXSVekzd2wvOzhaA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48518916"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48518916"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2025 09:03:01 -0700
+X-CSE-ConnectionGUID: HNPwp78LQVC3QKVoiLfhbQ==
+X-CSE-MsgGUID: +gQd0WNZTRizc9yWdy0SVA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="140749629"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:58:20 -0700
-Date: Wed, 7 May 2025 17:58:18 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Riana Tauro <riana.tauro@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- aravind.iddamsetty@linux.intel.com, louis.chauvet@bootlin.com,
- =?utf-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>
-Subject: Re: [PATCH i-g-t 3/5] lib/igt_fs: Rename igt_io to igt_fs to add
- additional helpers
-Message-ID: <20250507155818.f4uus7k3h4js3mku@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Riana Tauro <riana.tauro@intel.com>, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, lucas.demarchi@intel.com,
- rodrigo.vivi@intel.com, aravind.iddamsetty@linux.intel.com,
- louis.chauvet@bootlin.com,
- =?utf-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>
-References: <20250422095602.55041-1-riana.tauro@intel.com>
- <20250422095602.55041-4-riana.tauro@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="173200202"
+Received: from unknown (HELO 0a83d5f6e242.iind.intel.com) ([10.66.234.123])
+ by orviesa001.jf.intel.com with ESMTP; 07 May 2025 09:02:58 -0700
+From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
+ sapna1.singh@intel.com,
+ Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Subject: [PATCH v4 00/15] Extend IGT to support Android
+Date: Wed,  7 May 2025 16:01:33 +0000
+Message-ID: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250422095602.55041-4-riana.tauro@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,142 +66,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Riana,
-On 2025-04-22 at 15:25:59 +0530, Riana Tauro wrote:
-> Rename igt_io to igt_fs to add additional helper functions
-> to create and remove directories
-> 
-> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> Cc: José Expósito <jose.exposito89@gmail.com>
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->  lib/{igt_io.c => igt_fs.c} | 12 ++++++------
->  lib/{igt_io.h => igt_fs.h} |  6 +++---
->  lib/igt_sysfs.c            |  2 +-
->  lib/meson.build            |  2 +-
->  tests/msm/msm_mapping.c    |  2 +-
->  tests/msm/msm_recovery.c   |  2 +-
->  6 files changed, 13 insertions(+), 13 deletions(-)
->  rename lib/{igt_io.c => igt_fs.c} (93%)
->  rename lib/{igt_io.h => igt_fs.h} (94%)
-> 
-> diff --git a/lib/igt_io.c b/lib/igt_fs.c
-> similarity index 93%
-> rename from lib/igt_io.c
-> rename to lib/igt_fs.c
-> index b5143184f..f6a2530cd 100644
-> --- a/lib/igt_io.c
-> +++ b/lib/igt_fs.c
-> @@ -26,15 +26,15 @@
->  #include <stdlib.h>
->  #include <unistd.h>
->  
-> -#include "igt_io.h"
-> +#include "igt_fs.h"
->  
->  /**
-> - * SECTION:igt_io
-> - * @short_description: Helpers for file I/O
-> - * @title: io
-> - * @include: igt_io.h
-> + * SECTION:igt_fs
-> + * @short_description: Helpers for file
-> + * @title: fs
-> + * @include: igt_fs.h
->   *
-> - * This library provides helpers for file I/O
-> + * This library provides helpers for file systems
->   */
->  
->  /**
-> diff --git a/lib/igt_io.h b/lib/igt_fs.h
-> similarity index 94%
-> rename from lib/igt_io.h
-> rename to lib/igt_fs.h
-> index eb9ffee1b..84c3fed62 100644
-> --- a/lib/igt_io.h
-> +++ b/lib/igt_fs.h
-> @@ -22,12 +22,12 @@
->   *
->   */
->  
-> -#ifndef __IGT_IO_H__
-> -#define __IGT_IO_H__
-> +#ifndef __IGT_FS_H__
-> +#define __IGT_FS_H__
->  
->  #include <stdio.h>
->  
->  ssize_t igt_readn(int fd, char *buf, size_t len);
->  ssize_t igt_writen(int fd, const char *buf, size_t len);
->  
-> -#endif /* __IGT_IO_H__ */
-> +#endif /* __IGT_FS_H__ */
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index a76af54eb..acb2f7927 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -46,7 +46,7 @@
->  #include "igt_core.h"
->  #include "igt_sysfs.h"
->  #include "igt_device.h"
-> -#include "igt_io.h"
-> +#include "igt_fs.h"
->  #include "intel_chipset.h"
->  #include "xe/xe_query.h"
->  
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 59072d8ce..34f7d7baa 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -20,6 +20,7 @@ lib_sources = [
->  	'igt_color_encoding.c',
->  	'igt_configfs.c',
->  	'igt_facts.c',
-> +        'igt_fs.c',
->  	'igt_crc.c',
->  	'igt_debugfs.c',
->  	'igt_device.c',
-> @@ -30,7 +31,6 @@ lib_sources = [
->  	'igt_gt.c',
->  	'igt_halffloat.c',
->  	'igt_hwmon.c',
-> -	'igt_io.c',
->  	'igt_matrix.c',
->  	'igt_os.c',
->  	'igt_params.c',
-> diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
-> index e24618607..02ad2f08a 100644
-> --- a/tests/msm/msm_mapping.c
-> +++ b/tests/msm/msm_mapping.c
-> @@ -29,7 +29,7 @@
->  
->  #include "igt.h"
->  #include "igt_msm.h"
-> -#include "igt_io.h"
-> +#include "igt_fs.h"
->  
->  /*
->   * Tests to ensure various kernel controlled buffers are mapped with the
-> diff --git a/tests/msm/msm_recovery.c b/tests/msm/msm_recovery.c
-> index 608836866..53c49ecd4 100644
-> --- a/tests/msm/msm_recovery.c
-> +++ b/tests/msm/msm_recovery.c
-> @@ -26,7 +26,7 @@
->  
->  #include "igt.h"
->  #include "igt_msm.h"
-> -#include "igt_io.h"
-> +#include "igt_fs.h"
+The primary objective of this proposal is to extend the functionality of
+IGT to Android environments.
 
-Should be before igt_msm.h
+Enabling IGT on Android will allow developers to perform comprehensive
+testing of graphics drivers, ensuring robustness and reliability across
+different platforms.
 
-Regards,
-Kamil
+By providing stub implementations for libraries that are not natively
+supported on Android, we will bridge the gap between Android and Linux
+environments, promoting code reuse and reducing development time.
 
->  
->  static struct msm_device *dev;
->  static struct msm_bo *scratch_bo;
-> -- 
-> 2.47.1
-> 
+Changes done:
+- Create stub implementations of GLib, libunwind, libprocps, and
+other necessary libraries to satisfy IGT dependencies on Android.
+- Replace glib hash table with igt hash implementation
+
+Note:
+- Incase of linux systems, system libraries will be used whereas for
+Android stubs will be used with reduced test coverage.
+- Support will be provided to maintain Android support.
+
+Jeevaka Prabu Badrappan (14):
+  lib: Include local igt procps, glib and unwind header for Android
+  tests: Include local igt_glib header for Android
+  runner: Include local igt_glib header for Android
+  tools: Include local igt_glib header for Android
+  tools/gputop: find program name from command line
+  lib/igt_dummyload: Avoid pthread_cancel use by introducing an exit
+    flag
+  lib/xe/xe_spin: Avoid pthread_cancel use by introducing an exit flag
+  lib/igt_core: Add print_backtrace placeholder for Android
+  lib/igt_core: Conditionally define __noreturn for non-Android
+    platforms
+  tools/intel_gpu_top: Replace index with strchr
+  tests/intel/xe_create: Conditionally define PAGE_SIZE for non-Android
+    platforms
+  lib/igt_device_scan: Replace return value of devs_compate to int
+  lib/igt_device_scan: Replace rindex with strrchr
+  lib/igt_device_scan: reuse igt hash
+
+Sapna (1):
+  Add stub for libunwind, procps and glib
+
+ lib/igt_aux.c              |  4 ++
+ lib/igt_chamelium.c        |  4 ++
+ lib/igt_core.c             | 15 +++++++
+ lib/igt_core.h             |  2 +
+ lib/igt_device_scan.c      | 82 +++++++++++++++++++-------------------
+ lib/igt_dummyload.c        |  6 +--
+ lib/igt_dummyload.h        |  2 +
+ lib/igt_glib.h             | 47 ++++++++++++++++++++++
+ lib/igt_procps.h           | 46 +++++++++++++++++++++
+ lib/igt_rc.h               |  4 ++
+ lib/igt_unwind.h           | 25 ++++++++++++
+ lib/intel_batchbuffer.c    |  4 ++
+ lib/meson.build            |  1 +
+ lib/xe/xe_spin.c           |  2 +-
+ runner/executor.c          |  4 ++
+ runner/settings.h          |  4 ++
+ tests/intel/api_intel_bb.c |  4 ++
+ tests/intel/gem_ccs.c      |  4 ++
+ tests/intel/xe_ccs.c       |  4 ++
+ tests/intel/xe_create.c    |  2 +
+ tests/intel/xe_intel_bb.c  |  4 ++
+ tests/testdisplay.h        |  4 ++
+ tools/gputop.c             | 13 ++++--
+ tools/igt_dp_compliance.h  |  4 ++
+ tools/intel_gpu_top.c      |  2 +-
+ tools/intel_pm_rpm.c       |  4 ++
+ tools/lsgpu.c              |  4 ++
+ 27 files changed, 253 insertions(+), 48 deletions(-)
+ create mode 100644 lib/igt_glib.h
+ create mode 100644 lib/igt_procps.h
+ create mode 100644 lib/igt_unwind.h
+
+-- 
+2.34.1
+
