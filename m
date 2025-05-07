@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D4CBC3ABC0
-	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 16:04:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD08C3ABBF
+	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 16:04:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2F78A10E053;
-	Wed,  7 May 2025 16:04:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 212B810E876;
+	Wed,  7 May 2025 16:04:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O4xdoUUJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PML/R7TQ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 438FC10E859
- for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 16:04:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9853510E859
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 16:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746633884; x=1778169884;
+ t=1746633886; x=1778169886;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=trGH2fTJu5omtQwpw39Hx7ecvhMNRDZ25mUNz2mOow0=;
- b=O4xdoUUJoPGvvBU8AQj4Eh3pGlIlgq04H05RorX//D/qpvFjSU/g1ZcS
- tOmLhTTJiBqe4SnU/gRduHdp/9t41rdPCin/K+hQghfHBybf4mClcFzT2
- 78mmEEUNg2wgK/9G4PM0sfmG9ba4mLY2ofttrR3HzD11Ml5sJ5126o9bS
- AWJ00jOYy5SsbHw8V80J4pD/PProk6NB6d35ccOPFqM2MSlPr5+htipj1
- wxZJrfT3Scr/mBCv/OZaAOVfHrReIKPrxnXgohonXOsrMaFyb44KK/xOm
- CAZPBzssFz3aKizzADhk6eYdq/xHA2j4HsBUbBdd2XlTO0bOLHAEkoyKP g==;
-X-CSE-ConnectionGUID: VqLkU8VzSZSa0t/agbV3YA==
-X-CSE-MsgGUID: dpf7HCrbQDWck1FRAcgK6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48519246"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48519246"
+ bh=pTwGmmu8EFjvsyWCFrK8J5KUIXeapFswGNV1T6jxcPo=;
+ b=PML/R7TQGNH6yf67TKGwyirQHP21EearDDm2ycni4j1tJnUWdkbFmgoH
+ k3Fwp/FAuw3UIHGxpqJAIJ5DBQdVi/zzk4+aQ2hbQCd0zSXr8qhEcw2lo
+ LeIADk3fv8Ao6/U8kbANQVf6UJWCVI0PH9W+lQgat94UlCO/oz4znnpLj
+ /amZsPuozgV2nRxqeDKW/k5Wf2RpPeBWPOUsb9vLi9zdSQ+EXt0rfq2VD
+ 6lD2mBUHvSxJKK9eVkl2UahDWaHY/7wYK8jhdghwOOOqm+zlU7jqtokD9
+ GO8T+oNS6A7eXArD+BN0AHcFeL4KXkVUUuYxTX+raljr2QODxRwd/960t Q==;
+X-CSE-ConnectionGUID: GLMCS8ASTxKGzL13dNQQvg==
+X-CSE-MsgGUID: JN39YJCRSluy1ZALpRDQmA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48519272"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48519272"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 09:03:37 -0700
-X-CSE-ConnectionGUID: /ipeTtc0TeCnSySpHZWNDQ==
-X-CSE-MsgGUID: MfpNoJHVRjmmETOSodXZaQ==
+ 07 May 2025 09:03:40 -0700
+X-CSE-ConnectionGUID: NM8rYv1wTx2II55KhqF7Sw==
+X-CSE-MsgGUID: nnw9blVbRh6/jAr754M2jg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="173200775"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="173200837"
 Received: from unknown (HELO 0a83d5f6e242.iind.intel.com) ([10.66.234.123])
- by orviesa001.jf.intel.com with ESMTP; 07 May 2025 09:03:35 -0700
+ by orviesa001.jf.intel.com with ESMTP; 07 May 2025 09:03:38 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
  Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH v4 03/15] tests: Include local igt_glib header for Android
-Date: Wed,  7 May 2025 16:01:36 +0000
-Message-ID: <20250507160148.53857-4-jeevaka.badrappan@intel.com>
+Subject: [PATCH v4 04/15] runner: Include local igt_glib header for Android
+Date: Wed,  7 May 2025 16:01:37 +0000
+Message-ID: <20250507160148.53857-5-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
 References: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
@@ -70,67 +70,16 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 ---
- tests/intel/api_intel_bb.c | 4 ++++
- tests/intel/gem_ccs.c      | 4 ++++
- tests/intel/xe_ccs.c       | 4 ++++
- tests/intel/xe_intel_bb.c  | 4 ++++
- tests/testdisplay.h        | 4 ++++
- 5 files changed, 20 insertions(+)
+ runner/executor.c | 4 ++++
+ runner/settings.h | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/tests/intel/api_intel_bb.c b/tests/intel/api_intel_bb.c
-index 4a1c9be91..3e6c5d632 100644
---- a/tests/intel/api_intel_bb.c
-+++ b/tests/intel/api_intel_bb.c
-@@ -35,7 +35,11 @@
- #include <errno.h>
- #include <sys/stat.h>
- #include <sys/ioctl.h>
-+#ifndef ANDROID
- #include <glib.h>
-+#else
-+#include "igt_glib.h"
-+#endif
- #include <zlib.h>
- #include "intel_bufops.h"
- #include "i915/gem_vm.h"
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index af1e85f6a..a18418753 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -4,7 +4,11 @@
-  */
- 
- #include <errno.h>
-+#ifndef ANDROID
- #include <glib.h>
-+#else
-+#include "igt_glib.h"
-+#endif
- #include <sys/ioctl.h>
- #include <sys/time.h>
- #include <malloc.h>
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index e154bf4dc..9e42a0859 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -4,7 +4,11 @@
-  */
- 
- #include <errno.h>
-+#ifndef ANDROID
- #include <glib.h>
-+#else
-+#include "igt_glib.h"
-+#endif
- #include <sys/ioctl.h>
- #include <sys/time.h>
- #include <malloc.h>
-diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
-index d8bd7b519..e0d1e8016 100644
---- a/tests/intel/xe_intel_bb.c
-+++ b/tests/intel/xe_intel_bb.c
-@@ -6,7 +6,11 @@
- #include <cairo.h>
+diff --git a/runner/executor.c b/runner/executor.c
+index 41f521e56..7be02cea1 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1,7 +1,11 @@
+ #include <ctype.h>
  #include <errno.h>
  #include <fcntl.h>
 +#ifndef ANDROID
@@ -138,25 +87,25 @@ index d8bd7b519..e0d1e8016 100644
 +#else
 +#include "igt_glib.h"
 +#endif
- #include <inttypes.h>
+ #ifdef __linux__
+ #include <linux/watchdog.h>
+ #endif
+diff --git a/runner/settings.h b/runner/settings.h
+index 1f0b85318..36a69036c 100644
+--- a/runner/settings.h
++++ b/runner/settings.h
+@@ -5,7 +5,11 @@
+ #include <stddef.h>
+ #include <sys/types.h>
  #include <stdio.h>
- #include <stdlib.h>
-diff --git a/tests/testdisplay.h b/tests/testdisplay.h
-index 27f8209e2..2725637fe 100644
---- a/tests/testdisplay.h
-+++ b/tests/testdisplay.h
-@@ -24,7 +24,11 @@
- #include <stdio.h>
- #include <string.h>
- #include <stdlib.h>
 +#ifndef ANDROID
  #include <glib.h>
 +#else
 +#include "igt_glib.h"
 +#endif
  
- extern int drm_fd;
- 
+ #include "igt_list.h"
+ #include "igt_vec.h"
 -- 
 2.34.1
 
