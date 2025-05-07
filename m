@@ -4,77 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3FF3C3ABC0
-	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 13:32:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F1E2C3ABC6
+	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 13:53:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C0B410E087;
-	Wed,  7 May 2025 13:32:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9385A10E7D9;
+	Wed,  7 May 2025 13:53:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="KHFZzaNy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fX55M3aB";
 	dkim-atps=neutral
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
- [209.85.128.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D8CC10E087
- for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 13:32:02 +0000 (UTC)
-Received: by mail-wm1-f47.google.com with SMTP id
- 5b1f17b1804b1-43edecbfb94so59238665e9.1
- for <igt-dev@lists.freedesktop.org>; Wed, 07 May 2025 06:32:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746624721; x=1747229521; darn=lists.freedesktop.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=5j6Z8XanShrF2L3SzrENHYiD8ZClbH8cRYRbeVEQwVg=;
- b=KHFZzaNyg/rJr8ygPAY7gfH3ULv+ojOyfqOwYo2GeXU1KMkbrB2fFjbzPKR3PDVseg
- 1oTAeVkVGY7+So7+4Ucj97P8B7N5FnmJHaeos8Ds1KAY4jNnKrqH3WzEAIrBacnPxD1t
- Qfl5hV1CSDRGvbM0cu4RUTuoK5YE4EGF75MTR17EOMBDrnHNQPx78n0TtGtE+LSHB93J
- u4smZXbRwCob92uBnsc7IAwqYw4vd5LfHcXmky7UQlI4ZNgKew0vpxeCIkU92cx8N2Tf
- vwk89rfgXM9HuzVg+5csFuUjijwyCrlvwWPy7V6GQX0kwqj1GtLgEaCmGBn1H2ZlMz0W
- 5UKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746624721; x=1747229521;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5j6Z8XanShrF2L3SzrENHYiD8ZClbH8cRYRbeVEQwVg=;
- b=CCd2GDC8Nfss+OEO9Dz5zOaBWtkvTwqZHnWowZwiCa9XzuV0Jhp5DDnUyu7P+qGGmL
- d6h0tEaUmaFur3NhZEONVcYG0/BDcKoR+aYFRs6nDrslRYrnanGXoGxXljn7BqzojezV
- pzkmkv1HP2XvA2GKoSP+SqXZOX3XisfqvL17AWU8EgDv4XzmJ1BxAsk53CGeUhHahntW
- R1MpeQ9eGUB7rO0LX2Rq4rOfwpPvvz+TRHhCa+kskg0svb13wUFSxXggGDQiPqC1dPHt
- hOO8D3SXKaWVicv+rcxHsv0v2N/QDir+3/kBj6huq02F60uwu5Np6l9WzmjzfJRpr1DG
- P6zQ==
-X-Gm-Message-State: AOJu0YxXdePrpH7h6p83Z/0+VIzysmHrAbs0/LdYh0/zUCKBop7+wXIG
- R3ds29Rmw8+GzD5XlV3YvhfcFKvIi9yLQGlPuM9aSzUR6qxgmK7a
-X-Gm-Gg: ASbGnctLbp3cmUYdfzvPFmGO9o348R72GDj/kKZK7jdTv41Z1T+p4YqA1+LMo9XNjy8
- YnZ2EY9TSKirygJ4QcvudewqfMp229dlupPzXhkbVi5jHb5edGdRldjV6F20JKFANBDTLzntzk0
- L1NuceNoi7nWtn3NjPCSPV1Z0TICCr9oSJja50LY96I11JEF5lAzOoDY3vni15Ie9TvEebtQTrD
- LwMQz3O7ElpCtSbSRqUHbfNFMxO3ojeX7KmR8o2jaIa3Lsl9kjJXhK59WMnP4zcns6ArOOqr59o
- AuLZhhiBEOkPdcX3jUS5pkiogssNUoP3Vlo/7Bs=
-X-Google-Smtp-Source: AGHT+IGnMN8eWUz+H8iFtrwj00VVV8D3805dnMGh8RZerB9EzhyblKbJnZX91fq29fayhVftYKunrA==
-X-Received: by 2002:a05:6000:22c1:b0:39e:f9e8:d07d with SMTP id
- ffacd0b85a97d-3a0b49a5223mr2552841f8f.20.1746624720588; 
- Wed, 07 May 2025 06:32:00 -0700 (PDT)
-Received: from fedora ([94.73.35.165]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442cd34be0csm1143635e9.18.2025.05.07.06.31.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 May 2025 06:32:00 -0700 (PDT)
-Date: Wed, 7 May 2025 15:31:58 +0200
-From: =?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>
-To: Riana Tauro <riana.tauro@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- kamil.konieczny@linux.intel.com, aravind.iddamsetty@linux.intel.com,
- louis.chauvet@bootlin.com
-Subject: Re: [PATCH i-g-t 4/5] lib/igt_fs: Add helper functions to create and
- remove directories
-Message-ID: <aBtgzlUYzS70gKkq@fedora>
-References: <20250422095602.55041-1-riana.tauro@intel.com>
- <20250422095602.55041-5-riana.tauro@intel.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C71BC10E7D8
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 13:53:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746625981; x=1778161981;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=iGs8DpX1FS9aBqQyQOgOcPR7tX+dSmSDPll/8MYQPYg=;
+ b=fX55M3aBfBdiRvmdaUiGT73gpz7GTLywJBP2DC1Lr0ys0E+uJo+du/x+
+ QxqxEo0kWorhE80P0xf2JkDEXEG17p7UxJIQs7kgBoWyyNh+o/P2Ra2vC
+ pfIN3DcHofwFDOwuE0ARb/LIWZ8VpNuGEtKmJ0EBlWarIolPKLQAeE9hi
+ VVVbdZosAyN9CkVy9wRnSCaLMM4Vq3KVc+LEB63Vw2XXftQVK71OHNyKV
+ Cq+9Lo3UPMp4O0WskD4jR/Wbz//Nj+qRAxeMIg8BAA2Rnjz/6DXd+sJcN
+ HiPdiZUFgobVazxje8wtqqj3X2iFSQ0HIjJ9wcmFmwPiyKs79YzYA6mfu Q==;
+X-CSE-ConnectionGUID: wLbthjapSeOt4PNLc88x9w==
+X-CSE-MsgGUID: /J9AdcbcQe6hGSaIposaDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="58986379"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="58986379"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2025 06:53:00 -0700
+X-CSE-ConnectionGUID: uGu36jJKS8KGf6CR8tXEzA==
+X-CSE-MsgGUID: vpOSw87jT9i3481EMaquww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="135672458"
+Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
+ by orviesa009.jf.intel.com with ESMTP; 07 May 2025 06:52:58 -0700
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>,
+ Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Subject: [PATCH] benchmarks/xe_blt: Add measure of BLT performance
+Date: Wed,  7 May 2025 19:30:44 +0530
+Message-Id: <20250507140044.1088885-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250422095602.55041-5-riana.tauro@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,102 +66,352 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Apr 22, 2025 at 03:26:00PM +0530, Riana Tauro wrote:
-> Add helper function to create directory and return fd of
-> the created directory. Also add a function to remove
-> directories. This will be used by configfs
-> 
-> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> Cc: José Expósito <jose.exposito89@gmail.com>
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->  lib/igt_fs.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_fs.h |  2 ++
->  2 files changed, 50 insertions(+)
-> 
-> diff --git a/lib/igt_fs.c b/lib/igt_fs.c
-> index f6a2530cd..1fa281315 100644
-> --- a/lib/igt_fs.c
-> +++ b/lib/igt_fs.c
-> @@ -21,8 +21,10 @@
->   * IN THE SOFTWARE.
->   *
->   */
-> +#include <sys/stat.h>
+Execute N blits and time how long they complete to measure both GPU
+limited bandwidth and submission overhead.
 
-Nit: Missing empty line
+v2: Use single vm across, also removing unnecessary allocator
+    handle utilization in the code [Gowtham]
 
-With or without the additional line:
-Reviewed-by: José Expósito <jose.exposito89@gmail.com>
-  
->  #include <errno.h>
-> +#include <fcntl.h>
->  #include <stdlib.h>
->  #include <unistd.h>
->  
-> @@ -94,3 +96,49 @@ ssize_t igt_writen(int fd, const char *buf, size_t len)
->  	} while (total != len);
->  	return total ?: ret;
->  }
-> +
-> +/**
-> + * igt_fs_create_dir: creates and opens directory
-> + * @fd: file descriptor of parent directory
-> + * @name: name of the directory to create
-> + * @mode: permissions for the directory
-> + *
-> + * creates a directory under parent directory and returns
-> + * the fd
-> + *
-> + * Returns: directory fd on success, -errno otherwise
-> + */
-> +int igt_fs_create_dir(int fd, const char *name, mode_t mode)
-> +{
-> +	int ret;
-> +	int dirfd;
-> +
-> +	ret = mkdirat(fd, name, mode);
-> +	if (ret)
-> +		return -errno;
-> +
-> +	dirfd = openat(fd, name, O_DIRECTORY);
-> +	if (dirfd < 0)
-> +		return -errno;
-> +
-> +	return dirfd;
-> +}
-> +
-> +/**
-> + * igt_fs_remove_directory: removes directory
-> + * @fd: fd of parent directory
-> + * @name: name of directory to remove
-> + *
-> + * removes directory under parent directory
-> + *
-> + * Returns: 0 on success, -errno otherwise
-> + */
-> +int igt_fs_remove_dir(int fd, const char *name)
-> +{
-> +	int ret = unlinkat(fd, name, AT_REMOVEDIR);
-> +
-> +	if (ret)
-> +		return -errno;
-> +
-> +	return 0;
-> +}
-> diff --git a/lib/igt_fs.h b/lib/igt_fs.h
-> index 84c3fed62..ee3e7593b 100644
-> --- a/lib/igt_fs.h
-> +++ b/lib/igt_fs.h
-> @@ -27,6 +27,8 @@
->  
->  #include <stdio.h>
->  
-> +int igt_fs_create_dir(int fd, const char *name, mode_t mode);
-> +int igt_fs_remove_dir(int fd, const char *name);
->  ssize_t igt_readn(int fd, char *buf, size_t len);
->  ssize_t igt_writen(int fd, const char *buf, size_t len);
->  
-> -- 
-> 2.47.1
-> 
+Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+---
+ benchmarks/meson.build |   1 +
+ benchmarks/xe_blt.c    | 314 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 315 insertions(+)
+ create mode 100644 benchmarks/xe_blt.c
+
+diff --git a/benchmarks/meson.build b/benchmarks/meson.build
+index 9fc0209e1..080eeab11 100644
+--- a/benchmarks/meson.build
++++ b/benchmarks/meson.build
+@@ -21,6 +21,7 @@ benchmark_progs = [
+ 	'kms_vblank',
+ 	'prime_lookup',
+ 	'vgem_mmap',
++        'xe_blt',
+ 	'xe_create',
+ 	'xe_exec_ctx',
+ ]
+diff --git a/benchmarks/xe_blt.c b/benchmarks/xe_blt.c
+new file mode 100644
+index 000000000..43261774f
+--- /dev/null
++++ b/benchmarks/xe_blt.c
+@@ -0,0 +1,314 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright Â© 2025 Intel Corporation
++ */
++
++#include "drm.h"
++#include "igt_syncobj.h"
++#include "intel_blt.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_util.h"
++
++#define COPY_BLT_CMD	(2 << 29 | 0x53 << 22 | 0x6)
++
++static double
++elapsed(const struct timespec *start, const struct timespec *end)
++{
++	return (end->tv_sec - start->tv_sec) +
++			1e-9*(end->tv_nsec - start->tv_nsec);
++}
++
++static uint64_t emit_blt_src_copy(int fd, uint64_t ahnd,
++				  const struct blt_copy_data *blt,
++				  uint64_t bb_pos, bool emit_bbe,
++				  uint64_t dst_offset, uint64_t src_offset,
++				  uint32_t height)
++{
++	uint32_t b[12];
++	uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t *bb;
++	int i = 0;
++
++	src_offset += blt->src.plane_offset;
++	dst_offset += blt->dst.plane_offset;
++
++	b[i++] = COPY_BLT_CMD | XY_SRC_COPY_BLT_WRITE_ALPHA | XY_SRC_COPY_BLT_WRITE_RGB;
++	b[i - 1] += 2;
++	b[i++] = 0xcc << 16 | 1 << 25 | 1 << 24 | (16 * 1024);
++	b[i++] = 0;
++	b[i++] = height << 16 | (4 * 1024);
++	b[i++] = dst_offset;
++	b[i++] = dst_offset >> 32; /* FIXME */
++	b[i++] = 0;
++	b[i++] = 16 * 1024;
++	b[i++] = src_offset;
++	b[i++] = src_offset >> 32; /* FIXME */
++
++	bb = xe_bo_map(fd, blt->bb.handle, blt->bb.size);
++
++	igt_assert(bb_pos + sizeof(b) < blt->bb.size);
++	memcpy(bb + bb_pos, &b, sizeof(b));
++	bb_pos += sizeof(b);
++
++	if (emit_bbe) {
++		igt_assert(bb_pos + sizeof(uint32_t) < blt->bb.size);
++		memcpy(bb + bb_pos, &bbe, sizeof(bbe));
++		bb_pos += sizeof(uint32_t);
++	}
++
++	munmap(bb, blt->bb.size);
++
++	return bb_pos;
++}
++
++static int count;
++/*
++ * val = True To check BB is working fine or not
++ * count_val = To get the counter value how many buffers we can send in 0.1 sec
++ * loop_count = count_val time we have to submit the buffers
++ */
++static int blt_src_copy(int fd,
++			const intel_ctx_t *ctx,
++			const struct intel_execution_engine2 *e, uint64_t ahnd,
++			const struct blt_copy_data *blt, uint32_t height,
++			bool val, bool count_val, bool loop_count)
++{
++	uint64_t dst_offset = 0, src_offset = 0, bb_offset = 0;
++	int ret = 0;
++	uint64_t bb_pos = 0;
++	struct timespec start, end;
++
++	igt_assert_f(ahnd, "src-copy supports softpin only\n");
++	igt_assert_f(blt, "src-copy requires data to do src-copy blit\n");
++	igt_assert_neq(blt->driver, 0);
++
++	if (!val) {
++		src_offset = get_offset_pat_index(ahnd, blt->src.handle,
++						  blt->src.size, 0,
++						  blt->src.pat_index);
++		dst_offset = get_offset_pat_index(ahnd, blt->dst.handle,
++						  blt->dst.size, 0,
++						  blt->dst.pat_index);
++		bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
++	}
++
++	bb_pos = emit_blt_src_copy(fd, ahnd, blt, bb_pos, true, src_offset,
++				   dst_offset, height);
++	if (count_val) {
++		clock_gettime(CLOCK_MONOTONIC, &start);
++		do {
++			if (blt->driver == INTEL_DRIVER_XE)
++				intel_ctx_xe_exec(ctx, ahnd,
++						  CANONICAL(bb_offset));
++			count++;
++			clock_gettime(CLOCK_MONOTONIC, &end);
++			if (elapsed(&start, &end) > (100 / 1000.))
++				break;
++		} while (1);
++	} else if (loop_count) {
++		for (int loop = 0; loop < count; loop++) {
++			if (blt->driver == INTEL_DRIVER_XE)
++				intel_ctx_xe_exec(ctx, ahnd,
++						  CANONICAL(bb_offset));
++		}
++
++	} else {
++		if (blt->driver == INTEL_DRIVER_XE)
++			intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
++	}
++	return ret;
++}
++
++static int src_copy(int xe, const intel_ctx_t *ctx,
++		    uint32_t width, uint32_t height, uint32_t region1,
++		    uint32_t region2, bool val, bool count_value, bool loop)
++{
++	struct blt_copy_data blt = {};
++	struct blt_copy_object *src, *dst;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
++	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
++			INTEL_ALLOCATOR_SIMPLE,
++			ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	uint32_t bb;
++	int ret = 0;
++
++	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
++	blt_copy_init(xe, &blt);
++	src = blt_create_object(&blt, region1, width, height, bpp, 0,
++				T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	dst = blt_create_object(&blt, region1, width, height, bpp, 0,
++				T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	igt_assert(src->size == dst->size);
++
++	blt_set_copy_object(&blt.src, src);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++
++	ret = blt_src_copy(xe, ctx, NULL, ahnd, &blt, height, val, count_value, loop);
++
++	put_offset(ahnd, src->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(xe, src);
++	blt_destroy_object(xe, dst);
++	gem_close(xe, bb);
++	put_ahnd(ahnd);
++	return ret;
++}
++
++#define SYNC 0x1
++
++static int run(int width, int batch, int time, int reps, int ncpus,
++	       unsigned int flags)
++{
++	int xe;
++	int height = width / (16 * 1024);
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	intel_ctx_t *ctx;
++	double *shared;
++	uint32_t region1, region2;
++	uint32_t vm, exec_queue;
++	int ret;
++
++	shared = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++
++	xe = drm_open_driver(DRIVER_XE);
++	xe_device_get(xe);
++
++	intel_allocator_multiprocess_start();
++	region1 = 1;
++	region2 = 2;
++
++	vm = xe_vm_create(xe, 0, 0);
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++	ret = src_copy(xe, ctx, width, height, region1, region2, true, false,
++		       false);
++	xe_exec_queue_destroy(xe, exec_queue);
++	free(ctx);
++	if (!ret) {
++		exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++		ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++		ret = src_copy(xe, ctx, width, height, region1, region2,
++			       false, false, false);
++		xe_exec_queue_destroy(xe, exec_queue);
++		free(ctx);
++	}
++	if (batch > 1) {
++		for (int i = 1; i < batch; i++) {
++			exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++			ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++			ret = src_copy(xe, ctx, width, height, region1, region2,
++				       false, false, false);
++			xe_exec_queue_destroy(xe, exec_queue);
++			free(ctx);
++		}
++	}
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++	ret = src_copy(xe, ctx, width, height, region1, region2,
++		       false, true, false);
++	xe_exec_queue_destroy(xe, exec_queue);
++	free(ctx);
++	if (flags & SYNC) {
++		time *= count / 2;
++		count = 1;
++	}
++
++	while (reps--) {
++		memset(shared, 0, 4096);
++
++		igt_fork(child, ncpus) {
++			double min = HUGE_VAL;
++
++			for (int s = 0; s <= time / 100; s++) {
++				struct timespec start, end;
++				double t;
++
++				clock_gettime(CLOCK_MONOTONIC, &start);
++				exec_queue = xe_exec_queue_create(xe, vm,
++								  &inst, 0);
++				ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++				ret = src_copy(xe, ctx, width, height, region1,
++					       region2, false, false, true);
++				free(ctx);
++				xe_exec_queue_destroy(xe, exec_queue);
++				clock_gettime(CLOCK_MONOTONIC, &end);
++
++				t = elapsed(&start, &end);
++				if (t < min)
++					min = t;
++			}
++
++			shared[child] = width / (1024 * 1024.) * batch * count / min;
++		}
++		igt_waitchildren();
++
++		for (int child = 0; child < ncpus; child++)
++			shared[ncpus] += shared[child];
++		printf("%7.3f\n", shared[ncpus] / ncpus);
++	}
++	intel_allocator_multiprocess_stop();
++
++	xe_vm_destroy(xe, vm);
++	close(xe);
++	return 0;
++}
++
++int main(int argc, char **argv)
++{
++	int size = 1024 * 1024;
++	int reps = 13;
++	int time = 2000;
++	int ncpus = 1;
++	int batch = 1;
++	unsigned int flags = 0;
++	int c;
++
++	while ((c = getopt(argc, argv, "s:S:t:r:b:f")) != -1) {
++		switch (c) {
++		case 's':
++			size = atoi(optarg);
++			size = ALIGN(size, 4);
++			if (size < 4)
++				size = 4;
++			break;
++
++		case 'S':
++			flags |= SYNC;
++			break;
++
++		case 't':
++			time = atoi(optarg);
++			if (time < 1)
++				time = 1;
++			break;
++
++		case 'r':
++			reps = atoi(optarg);
++			if (reps < 1)
++				reps = 1;
++			break;
++
++		case 'b':
++			batch = atoi(optarg);
++			if (batch < 1)
++				batch = 1;
++			break;
++
++		case 'f':
++			ncpus = sysconf(_SC_NPROCESSORS_ONLN);
++			break;
++
++		default:
++			break;
++		}
++	}
++
++	return run(size, batch, time, reps, ncpus, flags);
++}
+-- 
+2.34.1
+
