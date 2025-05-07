@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53AB2C3ABBF
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7310C3ABC5
 	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 16:04:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 023A910E85D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 533BB10E863;
 	Wed,  7 May 2025 16:04:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I0mbiF30";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B03OuYww";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E64E210E85D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FE6F10E85D
  for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 16:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746633889; x=1778169889;
+ t=1746633888; x=1778169888;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=NoWz9BTYEdGf1wrrp9tzdUrtz7v73NIO73RUVZbHncA=;
- b=I0mbiF30dQYvxiQSX6QiOYB2ujFz5zApwf3Jk0yoqDHPYe7iadmVZ+9B
- Ea0frsxZbIAXB9v4E64V0Hn9sY1LZYgupvyIJybhj4t7wgwZf5MyNh4YG
- 4/m7Wx1aDe6931Wln7ZRpVqgLYLx2GcEPxtC+YV8Ei5BojRArkybo0CF6
- HKiCS9Y7dC4SQyDgF7IEfG4xmxvgfGuyCoSLiO4kVMCR8r3J89186CGDK
- md1hzncDycyD3mSAkrHcOg72P2IKh9+NKbFV3wFedgsF2fX87L8luXKBk
- sG0xGfju54DKf3a4oKMLOWYSxJjwXhqwpiu0zYuooc0qRfEYf0RSXDyzm g==;
-X-CSE-ConnectionGUID: SpJj74KkTfqdop06FQe99A==
-X-CSE-MsgGUID: b3xP1Y4XRnOoaRB6omdy3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48519308"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48519308"
+ bh=Nhg+ldxYWHztZzMZBkeFoMPjH8roA6e4A/v4uk+kmIQ=;
+ b=B03OuYwwNnwRPxeoGOCDcnI3LiLJbhEDNkYyZjvs9LGg5DV9SnQ94lzh
+ GCTt56EOGx3TLcM7SwJbXCfI00p6nZT3o19/h2+RtC28VxueZyNreyalT
+ OI8vmyLEtwhc5SS8icE9NLr/rWPWBL62DwqHEAfu5ea+izghByn+lVwCr
+ vY39lSGJY0rWqIN5r4enq6eVzQ87b/MOZ655vUyz+64TlM3SdWWVPqqzK
+ IOihtD0M5EQ8Ti66O/iFEv3Dl3JOc2DOBn6Kp9/HJlYLOO+WEwx/pJ2yA
+ 6r8q2Fy/j4SYiKK7XbZzAC4foFNonsyLs2KZawAIn230wG/ooPa8APvaa w==;
+X-CSE-ConnectionGUID: ao6qBQFJQQSlp2fchuMXNg==
+X-CSE-MsgGUID: 2KaE0ug2SmmigE8+mHs5HA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48519297"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48519297"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 09:03:47 -0700
-X-CSE-ConnectionGUID: S2Gn7K8sRGOC3kUO0YAX1A==
-X-CSE-MsgGUID: TbPGd2bYTUeaW9RxRmbvug==
+ 07 May 2025 09:03:43 -0700
+X-CSE-ConnectionGUID: 1teQz5X+QzGef2p7iQZwhg==
+X-CSE-MsgGUID: MnOywhPWRIi+1zFZ/vWfYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="173200910"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="173200872"
 Received: from unknown (HELO 0a83d5f6e242.iind.intel.com) ([10.66.234.123])
- by orviesa001.jf.intel.com with ESMTP; 07 May 2025 09:03:44 -0700
+ by orviesa001.jf.intel.com with ESMTP; 07 May 2025 09:03:41 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
  Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH v4 06/15] tools/gputop: find program name from command line
-Date: Wed,  7 May 2025 16:01:39 +0000
-Message-ID: <20250507160148.53857-7-jeevaka.badrappan@intel.com>
+Subject: [PATCH v4 05/15] tools: Include local igt_glib header for Android
+Date: Wed,  7 May 2025 16:01:38 +0000
+Message-ID: <20250507160148.53857-6-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
 References: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
@@ -68,54 +68,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-program_invocation_short_name is global variable provided by glibc.
-
-Inorder to get the igt built for Android(without glibc), find the
-program from command line without using program_invocation_short_name.
-
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 ---
- tools/gputop.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ tools/igt_dp_compliance.h | 4 ++++
+ tools/intel_pm_rpm.c      | 4 ++++
+ tools/lsgpu.c             | 4 ++++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/tools/gputop.c b/tools/gputop.c
-index 43b01f566..457a31969 100644
---- a/tools/gputop.c
-+++ b/tools/gputop.c
-@@ -335,15 +335,22 @@ struct gputop_args {
- 	unsigned long delay_usec;
- };
+diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
+index 5b1688039..0df44dad3 100644
+--- a/tools/igt_dp_compliance.h
++++ b/tools/igt_dp_compliance.h
+@@ -28,7 +28,11 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
++#ifndef ANDROID
+ #include <glib.h>
++#else
++#include "igt_glib.h"
++#endif
  
--static void help(void)
-+static void help(char* full_path)
- {
-+	const char *short_program_name = strrchr(full_path, '/');
-+	if (short_program_name) {
-+		short_program_name++;
-+	} else {
-+		short_program_name = full_path;
-+	}
-+
- 	printf("Usage:\n"
- 	       "\t%s [options]\n\n"
- 	       "Options:\n"
- 	       "\t-h, --help                show this help\n"
- 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
- 	       "\t-n, --iterations =NUMBER  number of executions\n"
--	       , program_invocation_short_name);
-+	       , short_program_name);
- }
+ extern int drm_fd;
  
- static int parse_args(int argc, char * const argv[], struct gputop_args *args)
-@@ -384,7 +391,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 			}
- 			break;
- 		case 'h':
--			help();
-+			help(argv[0]);
- 			return 0;
- 		default:
- 			fprintf(stderr, "Unkonwn option '%c'.\n", c);
+diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
+index 9622f0552..a2fe16d01 100644
+--- a/tools/intel_pm_rpm.c
++++ b/tools/intel_pm_rpm.c
+@@ -24,7 +24,11 @@
+ 
+ #include <errno.h>
+ #include <getopt.h>
++#ifndef ANDROID
+ #include <glib.h>
++#else
++#include "igt_glib.h"
++#endif
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+index e68390083..83ecaf953 100644
+--- a/tools/lsgpu.c
++++ b/tools/lsgpu.c
+@@ -24,7 +24,11 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
++#ifndef ANDROID
+ #include <glib.h>
++#else
++#include "igt_glib.h"
++#endif
+ #include <libudev.h>
+ #include <string.h>
+ #include <signal.h>
 -- 
 2.34.1
 
