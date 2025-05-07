@@ -4,184 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A63A8C3ABC0
-	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 11:27:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EDF3C3ABBF
+	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 11:29:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6287510E193;
-	Wed,  7 May 2025 11:27:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 473EB10E18F;
+	Wed,  7 May 2025 11:29:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gMrVNTPB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZH0BNhVo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C32D810E193
- for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 11:27:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A41A10E18F
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 11:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746617256; x=1778153256;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=A9yHDA/yAz+mrY9lkuovTwE3E8rWCN63P5FvAJjNg+4=;
- b=gMrVNTPB77JZ6+eLaeOMTUKiOKnCMidovuZx8+9ku8KfOug1+YgdpaM6
- tymCnzbgKOtUyPrmi4xKpBsHLfeIFFEcu/6A23hDkoTrt7VDvAPncBwTF
- z15vO7dLyLIRLNcGkuZTspWURbLrYcW7+4P9Lj7d50ClD8pC9pAbTi7zv
- tAfz43Mwum7NIifSVvW6qCLcAmEzUhTDuwtar3arq1gCD8cMIU8TdV1Q0
- ehUCHEOhyE7g4VxYTC4d4b8S+mtpnQQnRceSoekwtDgOMUo8e2Vx41Ed2
- 0x06gTkNjv0kh1ikss5xGoCz2QD39VRv78as/CJzt1m0KlXY0ol7UcdrE g==;
-X-CSE-ConnectionGUID: dh2oRBc1Sc2iNpB+kryWZg==
-X-CSE-MsgGUID: U0HwOr3RTK6dFiURNeAa3w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="48455405"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48455405"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 04:27:35 -0700
-X-CSE-ConnectionGUID: 9zLPEB2hSTmM1a4djE9TBg==
-X-CSE-MsgGUID: i6rfCHKyQ+mUdijcXGDEag==
+ t=1746617370; x=1778153370;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=qvPnil1ktV4XR5AG/4k8esUmT92y1S4P1+s2euut3MM=;
+ b=ZH0BNhVo4WPFbC3FwwWv/8pPKm/eFXIfevIEkhE7Vx66iMO576SxmDnC
+ gOzkImwdynG1YPvsPUHQtIP7h7n9lZwtHrfCJ3uaFxLcfiZjwHyc4vNRw
+ M1Hd+0pu/RPsgFOcInjeBBAKcwMxY5Gk+857oa/d1vsMYltUap2ZWLaAs
+ 3fGfmRjvB2IvRqB4LIvg528F95qapqpmTkszuiREbNAI0VE8UyVMvdIVy
+ g32a+H81lGh2uKdPL9jAWUWrlySPZ4+Ior8MN4fWhS/tebGNsNaWPidHV
+ HZ+XuOAeK15yX90psdx1hQxvScCNb5d2cq1bQStjS8JFWrchuBxOj3OFr A==;
+X-CSE-ConnectionGUID: KH6h1uk3S0a9IgSfYJgwZA==
+X-CSE-MsgGUID: 00NzB6C0SGWb24nLCpQSPA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="52156386"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="52156386"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2025 04:29:30 -0700
+X-CSE-ConnectionGUID: KZDQr40CRpqdeB1bi8MWbg==
+X-CSE-MsgGUID: E0ZiLvAbTJ6DLtnmVoauyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="135947219"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 04:27:35 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Wed, 7 May 2025 04:27:34 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Wed, 7 May 2025 04:27:34 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.173)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 7 May 2025 04:27:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WmmM0qqlgUtcGBXnHUJz2SI9mocH6Lc6IlgWwwG+ZQWknJqWMFGNCf70/YjU2fnzPBNkhNMSK4WB/UfoTjHo+2RwGWTCWoNiNc1rUKdqLMpeDT1nDSlRK1PAOwWLuobJMxH/u8Gpoy3AO+yQfVUAeyg9W+4YpdMmX+7ttR0FlEV5xTj6Y3b8Wzt07wiNHnvFxmtwNDvAL/YKjP1fWCqQAdZamHznlA2paJXTZlLr/RVWzsYaW6VUgtCcRBTFUBNzl1Wf3p1JeADOWmnvU3JbK4TL0SiCf6O4VL4jA2Kyvr/7pA3vmpNHA4oRnXVoiU1Lx5SQ5TiGEosOxqdw40XhdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yZslzHJZ+r2FAU+nSLvwN33963B3rxHJMVo82xIghXM=;
- b=hveS8fwoGvh2RwF8AAbcecZX2pnB2eRy9b1Ps2jyWjUIJbEsSz5RkCrTjosDIyEiDfD7auqv4Bs3+mmKKEH0yPothKHx5dQDteaP1+OhJYIuYRW41GQ0rLiN02tuA9mkyzGUO7VWaFO6jpR/SPpU9qeblw3up2aFicxyFgyHuLmEJkth9rQeZDLATdi7pvQ2emqTpur7cRkYLozic/zwFc2njU0RnyLUDOLusApyp9HOHXhr+myg5qw+BeYke8W2AE4sJgxtFDGKCc6+EBF6z0JfD81Av3RMx6/TVDawicRQMH7Wf4Wt7xxekZ8+/WZxSsVDg2dg17Lu7zWAHvdk7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB8252.namprd11.prod.outlook.com (2603:10b6:510:1aa::14)
- by PH8PR11MB7095.namprd11.prod.outlook.com (2603:10b6:510:215::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Wed, 7 May
- 2025 11:27:28 +0000
-Received: from PH7PR11MB8252.namprd11.prod.outlook.com
- ([fe80::625b:17f6:495f:7ad]) by PH7PR11MB8252.namprd11.prod.outlook.com
- ([fe80::625b:17f6:495f:7ad%7]) with mapi id 15.20.8699.022; Wed, 7 May 2025
- 11:27:28 +0000
-Message-ID: <6130e370-ea03-4652-b42c-f49cc97705e0@intel.com>
-Date: Wed, 7 May 2025 16:57:20 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,1/2] tests/i915/pm_rc6_residency: Use sysfs to achieve
- peak frequency
-To: Riana Tauro <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>
-References: <20250422063135.2502377-1-sk.anirban@intel.com>
- <20250422063135.2502377-2-sk.anirban@intel.com>
- <5e507a20-03ea-4197-ac8f-d388cb9e2d30@intel.com>
-Content-Language: en-US
-From: "Anirban, Sk" <sk.anirban@intel.com>
-In-Reply-To: <5e507a20-03ea-4197-ac8f-d388cb9e2d30@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MAXPR01CA0115.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:5d::33) To PH7PR11MB8252.namprd11.prod.outlook.com
- (2603:10b6:510:1aa::14)
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="166977333"
+Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
+ by fmviesa001.fm.intel.com with ESMTP; 07 May 2025 04:29:28 -0700
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>,
+ Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Subject: [PATCH] benchmarks: Measure BLT performance
+Date: Wed,  7 May 2025 17:07:12 +0530
+Message-Id: <20250507113712.1086552-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB8252:EE_|PH8PR11MB7095:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6078661a-4de9-4f47-b463-08dd8d5a25ca
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TXJFdmQ2SFZLclpIK0Vva2JtY3hPQzZTN2JSOFdRTnZyT09GdVMwYjlxTzdr?=
- =?utf-8?B?OUQ3VDV4bUYxbDcxVTZFVmZIWWR1SlJvYlcyR0cxRHgvU1pzM0ZIRGNqNkhH?=
- =?utf-8?B?VDlrTWF4Qkw3clcxOUxTWndNWE54V0lFM1JPemNUVlB1T3RxVzJrRi9HbFZz?=
- =?utf-8?B?WTZ2NEdyaFNVUkNsV3ppZGt0K3dIeXpmc0ovRGVwYTZvZ2VSbmZHRXI2VW51?=
- =?utf-8?B?THZ4V3YzOVNtOHdOdTY0eldYSnBqRnFzWEFGRFlCYXpvYzcwVG8rZjBTUlJo?=
- =?utf-8?B?UVI4QlplNzBOZzFOa3FESHhZVjU0SWwwRUtiSUc4R2JLZmlmKytpR1dGaUk3?=
- =?utf-8?B?YzdORHJ0R2tlU2d6R3F1dmdmazI4NzMrSmp2dXcwVWhHRHh2ejZqeHN4dVJz?=
- =?utf-8?B?a01Vb3VIWitPYnpzSjErM1luYS9HOEdVME8renFPMWFDMnB3UFlTR2dLYkJ0?=
- =?utf-8?B?WHErblYwZ01mUVlMVmFjQVBCNUlBQnpWWGpoQW50cUdrcDMzK2FRYVBrRTc5?=
- =?utf-8?B?UysvbjZ1c1Y5MGhocmNWcG5OTERHR21yMXFkU2NUenpCSlBOSmtCeU5FUTM2?=
- =?utf-8?B?RVJ0cWMrenZoQ01SeTN5RWRxMDByNmdaTDNzWDl0MjA1MDNBQzRleEdUSzl3?=
- =?utf-8?B?SjZSUGlLTmZQaEtPWmRLbnRLSG5NeHE1QUg5QkVrVmxlN2sxb2pZTmlUazBV?=
- =?utf-8?B?bkg1N0VCUWQ4Z2M3dHREVUF6Q2RvbDhzUHY4c2JoK0N1UzkxcnduK1dWdGJz?=
- =?utf-8?B?RmZ2bmtrT2JyQ1MrQVZvRTVpd0duUGZib0h4ek1lcUpQb0wrWGxkby9OTCtF?=
- =?utf-8?B?WmpFZkppeW9VdjNZTzNiKzYycU1qazdTRnpIWXdnQmJTdnl5U3E0R1lpM3Q2?=
- =?utf-8?B?b29OOWZVYTVOaTdHbVEyNW9sUDNva3BrTEFkR1pqNVBOZ2hHanU2aU5ieGhC?=
- =?utf-8?B?bEI0aVhwalJXdFhieDRVeEdIQU1ELzQwUnp6OXF5QzBlNGE2cXFab1dVdXdu?=
- =?utf-8?B?bWZxMGt3TDRzczZWK0FVeHZpR0lWdzVROXhIUjJlZUZvTTdXakxYVGJwaDlT?=
- =?utf-8?B?c0hoWjd6aURZUlowRnlEU1BuWS9nUTFIK2tWNUk4QjU2UUxMRmltQTh3Wk44?=
- =?utf-8?B?TGMzV25waDMrcG9vek40TWdKRGZoelJpWWhzbjFibmdkS245Tmkwd3owY1hl?=
- =?utf-8?B?UGt2MG9KbzRJTExWZTM4SE9ObGJDSWh0NWhOMWIvZTdEOTlaSjZnNWhPcEhl?=
- =?utf-8?B?RE9lRWFRNkJXMXNqS3diRU9aelE5UGZJOTJxamN1MmJ2U2lyaEdHSFRaSTI2?=
- =?utf-8?B?QWprN1Z1L0NZWWF2TEtpY3JqcUJmbGpKU2d1TG5RYjdibmV1M0s0bmloR0NL?=
- =?utf-8?B?NHZxZGlFMEJ6dW5OQ09USWJMRkcwWStqeEkxSFdYVFFGMmJyK2N3Z05BRE1H?=
- =?utf-8?B?bmQzTmdGLzRIQ3pZZVR0aFB6WnVROEEvdDQ4bmZ2TnBVOTdSbWp2NkZjVEw3?=
- =?utf-8?B?dmI2Vk5HdndXbU5rK25ub3hqQ0hVaFZvZ2FDSTlieDJmR2tTV1hqTUF4KzF1?=
- =?utf-8?B?aTN5U1h0QlZ2VXgzV0JmZVZsWk9aZ2VVdThHTmJzZ252aTBJWVlOUkZqcmM1?=
- =?utf-8?B?WUJiNTF0YTF2SHJUZFp6UGNBVGsyL2tMK0sweDVSOWNNd0tlQ1FTYnhuVlBF?=
- =?utf-8?B?WCtla0dVaUw3TUlZTWQ0NndnSHdBNE1ZV0RJRVgycDN5YW1Hbm5ScWVJOWhn?=
- =?utf-8?B?UkxWY3UxR2p0aGV0YWw4RnU4a2c3MEJKMjVIbHdtb1NCaFNZRGxBc0RnYTlB?=
- =?utf-8?B?WHlRYWFqTmtSSGFFNDMxWFRQN21TT3kzZGVCSCtUS2RnZUxQM2dKZk9vaEVw?=
- =?utf-8?B?aXlNRm4zb21mZnU1MGpmOWZFVkVmN3Z2L3o4N0VPdUIxN0dqSlNKRk9EZEha?=
- =?utf-8?Q?BwKYaIug3Dk=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB8252.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UEs5cnhGTzJIQ1d6NFFiZGhaSzhKcnNabVdhQTdLRk8rWDdtZFJHOUhBWnhN?=
- =?utf-8?B?VXl4eXcwOTdHRmxRb3Z5aExMMktzK1RyNm1PV2hNbkFoT3pJTHRqQnE5U0xu?=
- =?utf-8?B?dW1CRXllZGJqd2djZk8xOHE2bEdDQm5Jb0ZWbGZldklPY1FydEplbXBkYS96?=
- =?utf-8?B?M2VtVnBvUHhWdmF2enc0OGZFWlRocE1sdHlkRE1iTWRFc0dtZnJTTTVrL2lh?=
- =?utf-8?B?N2hIZEZ5ZzI4RXQ3VFVJbzhHejJDSzFhYTZzK1d0RHRXVVN2azNGK3oraE14?=
- =?utf-8?B?QXdOajBuYlN3Ym9mTm9tOFJ4VnlpR210eHo4TUJNWGJQTkNxS1k0UFBwVDJS?=
- =?utf-8?B?emVWR3F5S0tpU3Y4NkIwc0hHbFJUMkY1ei9YVmRJLzhDc1hQY3F3TnZzVCtQ?=
- =?utf-8?B?Njk5RDBRaGgrSUNEckVnTGZQbUxkYjlnU05wMkpFbm94ZkhrWFhyNXNBeWpH?=
- =?utf-8?B?WFR0eFByRm5BUDYwTXRmTkRzS1NuOE9pNFNTaFY2MlVTdWN1OXRhZmNWNFUx?=
- =?utf-8?B?bHBKaERFUmpMd1NlL2pkelIza2RyK2ZzaW9xSHdEOXpNWFFHMmdFNTEvZEYr?=
- =?utf-8?B?bzZLSk95cmxWNzVQSCtENHVTMjA4QjVRTUxwWVRYTFU2V1preFhWcGxiQzEz?=
- =?utf-8?B?V1kyQXB3aWJYeERnSGlRZ09MNWQ4UGhTbjMxNFlYanNDTEJUeXExY3RXZncw?=
- =?utf-8?B?Yi9PRkl1cStTWjRpaHBnUGg2ZXpBNE5sVlZ4RlZEY2ZNYW9DcXlHZVdHdUo1?=
- =?utf-8?B?cVlLdGtnYUVmeU82MzM5d1Z6dXpZeWRicWFwRTB6V1RCQkgwY3pONTZyc2NQ?=
- =?utf-8?B?MHNhQ0NWbkRKSjBPcDdZb1l2dGhtRlQyNksrL3o2Y3FOdk5HbkRrSEk5Y1lh?=
- =?utf-8?B?NE94bXBoQ01TRmNBa1BTb21ZZ05OL0JtcktGNmhrUmdRWmw5NWNMSm11WTRo?=
- =?utf-8?B?Q0pKWFFCNzFMd0x1bG5uT0tWOUx5ajhSdzNhN25yV3BRQjFYY3pMaS9jZjYw?=
- =?utf-8?B?RkJEZUZFbmQxVkpBa01MZHQ4QXBZRllmMzFtbEdVRUJJb1hFZGIybmw3YkdN?=
- =?utf-8?B?TWRnWHg5YnQ0MkswTmV3ZHk5SDViUWJuSFF5SGRydnJEbDdUWFV2M29TMFdU?=
- =?utf-8?B?L2xKc1JtNmxiZ0w3QWVVS0FCUzRmbU9pVm8raWxaNnY4RnlPS1piZkJFd21x?=
- =?utf-8?B?ZEFzL2FNNkgwNDJCOU15UTJpeGg0ajFXa1FuSk5YNDVhKzBSVGVybjFlRUpq?=
- =?utf-8?B?dVJWSnpTVms2eXF6N0tUaHc3U3JEa1Foc2NRbkNVa1Q3Y3hPc05qbWoyOGpa?=
- =?utf-8?B?dWdGY0FGR1NxdXgxY21vODNjUXNSVitKS1M1eVlHYU82ZW54U3JURTFjWXBL?=
- =?utf-8?B?em1TOGZKOUZTa3Y3VysrRFo2TU5XUW1QbUxXQmllQ2pGN0YwTU5CRGI0YjR5?=
- =?utf-8?B?UWQxdnhyblBhR3I0RmtacEY1M2hCYXlueWxJS2dod25uRzBkbnc5eHR1ZEdI?=
- =?utf-8?B?UmJ6dlE2cUw2aFhtQmFqK2xZMHdzWDJJaXlTcGY1NnkwM2FyNGNMcGlUd2hH?=
- =?utf-8?B?MWJXanNMRmJ1K2RoM2hla2dpZ0hLeDNvaFZ1Z2lmNXl6YUxDY0VhVmV6NjFX?=
- =?utf-8?B?cm9wblVRNVV5R2RKeEJKVmpBbnJyWWs5aUNDbEpTekY2WVVpYkdyNUlxa2lw?=
- =?utf-8?B?MStLQmxUWVpQa1VXRmJDakJRVFY5c2ZZY1lLNE5KQkVKRmpFdmpFSDFsL05y?=
- =?utf-8?B?K1Fkclp6NnM1ZndwODJvYncwVUhsV1VsaW9YWkdNN2V2L2VvNmZuNW1ZNWxX?=
- =?utf-8?B?VDIvTDZUeXowVkw2NTErTGJrUG5rc1JBZnJVaDdsN0dDUWVLMnlVUnVmNWVN?=
- =?utf-8?B?WUxla3pDa0Z4azhOdTZmMm9WRi9PaVE4U0FxRWxQRmNYVGlTclJ6K3pxbG5J?=
- =?utf-8?B?Yk9zMWlvaVMyS2I3aEp6VFU5K290ZUgrSW1ucFo0QXo2cUJSYzlvT0k4Q2Jr?=
- =?utf-8?B?ZGd0TTIwbU50c0pTNWIwWVFGQ01wS1FGYjF5TW9RTWtFekpZT3pSaGw3V3Qz?=
- =?utf-8?B?RE14T0ZTWjN1VHNHampad3JhYytvaldvZW56R2pBM1JVVXRyUGlZSVB6VDFF?=
- =?utf-8?Q?YcSwbOJOCcAcRzGHUwhbq/iSP?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6078661a-4de9-4f47-b463-08dd8d5a25ca
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8252.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 11:27:28.0528 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KR+K4yO1iXZuVqiX9XbhN023cnfwVe67QQgpajh0gN2MAn5IKSNAYk7KQ/dttl8VO/fTe1JEcHOC/PGw9WEPKQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7095
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -197,339 +66,360 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
+Execute N blits and time how long they complete to measure both GPU
+limited bandwidth and submission overhead.
 
-On 07-05-2025 16:20, Riana Tauro wrote:
-> Hi Anirban
->
-> On 4/22/2025 12:01 PM, sk.anirban@intel.com wrote:
->> From: Sk Anirban <sk.anirban@intel.com>
->>
->> Leverage IGT spinner to trigger frequency scaling and
->> set RPS minimum frequency to RP0 for achieving peak frequency.
->> This method replaces the existing waitboost mechanism used
->> to reach maximum frequency.
->>
->> v2:
->>   - Disable power consumption check for dgfx
->>
->> v3:
->>   - Implement igt exit handler
->>
->> v4:
->>   - Cosmetic changes (Riana)
->>
->> v5:
->>   - Limit the power consumption test to GT0 only
->>
->> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
->> ---
->>   tests/intel/i915_pm_rc6_residency.c | 141 +++++++++++++++++++---------
->>   1 file changed, 96 insertions(+), 45 deletions(-)
->>
->> diff --git a/tests/intel/i915_pm_rc6_residency.c 
->> b/tests/intel/i915_pm_rc6_residency.c
->> index c9128481d..1b447f83c 100644
->> --- a/tests/intel/i915_pm_rc6_residency.c
->> +++ b/tests/intel/i915_pm_rc6_residency.c
->> @@ -264,17 +264,6 @@ static bool __pmu_wait_for_rc6(int fd)
->>       return false;
->>   }
->>   -static uint32_t batch_create(int fd)
->> -{
->> -    const uint32_t bbe = MI_BATCH_BUFFER_END;
->> -    uint32_t handle;
->> -
->> -    handle = gem_create(fd, 4096);
->> -    gem_write(fd, handle, 0, &bbe, sizeof(bbe));
->> -
->> -    return handle;
->> -}
->> -
->>   static int open_pmu(int i915, uint64_t config)
->>   {
->>       int fd;
->> @@ -286,45 +275,83 @@ static int open_pmu(int i915, uint64_t config)
->>       return fd;
->>   }
->>   -#define WAITBOOST 0x1
->> +#define FREQUENT_BOOST 0x1
->>   #define ONCE 0x2
->>     static void sighandler(int sig)
->>   {
->>   }
->>   -static void bg_load(int i915, uint32_t ctx_id, uint64_t 
->> engine_flags, unsigned int flags, unsigned long *ctl)
->> +static uint32_t get_freq(int dirfd, uint8_t id)
->> +{
->> +    uint32_t val;
->> +
->> +    igt_assert(igt_sysfs_rps_scanf(dirfd, id, "%u", &val) == 1);
->> +
->> +    return val;
->> +}
->> +
->> +static int set_freq(int dirfd, uint8_t id, uint32_t val)
->> +{
->> +    return igt_sysfs_rps_printf(dirfd, id, "%u", val);
->> +}
->> +
->> +uint32_t *stash_min;
->> +int i915 = -1;
->> +
->> +static void restore_freq(int sig)
->> +{
->> +    int gt_num;
->> +    int dirfd;
->> +
->> +    for_each_sysfs_gt_dirfd(i915, dirfd, gt_num) {
->> +        igt_assert_lt(0, set_freq(dirfd, RPS_MIN_FREQ_MHZ, 
->> stash_min[gt_num]));
->> +    }
->> +}
->> +
->> +static void bg_load(const intel_ctx_t *ctx, int dirfd, uint64_t 
->> engine_flags,
->> +            unsigned int flags, unsigned long *ctl, unsigned int gt)
->>   {
->>       const bool has_execlists = intel_gen(intel_get_drm_devid(i915)) 
->> >= 8;
->> -    struct drm_i915_gem_exec_object2 obj = {
->> -        .handle = batch_create(i915),
->> -    };
->> -    struct drm_i915_gem_execbuffer2 execbuf = {
->> -        .buffers_ptr = to_user_pointer(&obj),
->> -        .buffer_count = 1,
->> -        .flags = engine_flags,
->> -        .rsvd1 = ctx_id,
->> -    };
->>       struct sigaction act = {
->>           .sa_handler = sighandler
->>       };
->> +    int64_t timeout = 1;
->> +    uint64_t ahnd;
->> +    int rp0;
->>   +    ahnd = get_reloc_ahnd(i915, ctx->id);
->> +    rp0 = get_freq(dirfd, RPS_RP0_FREQ_MHZ);
->>       sigaction(SIGINT, &act, NULL);
->>       do {
->>           uint64_t submit, wait, elapsed;
->>           struct timespec tv = {};
->> +        igt_spin_t *spin;
->>             igt_nsec_elapsed(&tv);
->> -
->> -        gem_execbuf(i915, &execbuf);
->> +        spin = igt_spin_new(i915,
->> +                    .ahnd = ahnd,
->> +                    .ctx = ctx,
->> +                    .engine = engine_flags);
->>           submit = igt_nsec_elapsed(&tv);
->> -        if (flags & WAITBOOST) {
->> -            gem_sync(i915, obj.handle);
->> +        if (flags & FREQUENT_BOOST) {
->> +            /* Set MIN freq to RP0 to achieve the peak freq */
->> +            igt_assert_lt(0, set_freq(dirfd, RPS_MIN_FREQ_MHZ, rp0));
->> +            igt_assert(gem_bo_busy(i915, spin->handle));
->> +            gem_wait(i915, spin->handle, &timeout);
->> +
->> +            /* Restore the MIN freq back to default */
->> +            igt_assert_lt(0, set_freq(dirfd, RPS_MIN_FREQ_MHZ, 
->> stash_min[gt]));
->> +            igt_spin_end(spin);
->> +            igt_spin_free(i915, spin);
->> +            gem_quiescent_gpu(i915);
->>               if (flags & ONCE)
->> -                flags &= ~WAITBOOST;
->> +                flags &= ~FREQUENT_BOOST;
->>           } else  {
->> -            while (gem_bo_busy(i915, obj.handle))
->> -                usleep(0);
->> +            igt_assert(gem_bo_busy(i915, spin->handle));
->> +            igt_spin_end(spin);
->> +            igt_spin_free(i915, spin);
->> +            gem_quiescent_gpu(i915);
->>           }
->>           wait = igt_nsec_elapsed(&tv);
->>   @@ -350,6 +377,7 @@ static void bg_load(int i915, uint32_t ctx_id, 
->> uint64_t engine_flags, unsigned i
->>           /* aim for ~1% busy */
->>           usleep(min_t(elapsed, elapsed / 10, 50 * 1000));
->>       } while (!READ_ONCE(*ctl));
->> +    put_ahnd(ahnd);
->>   }
->>     static void kill_children(int sig)
->> @@ -361,25 +389,29 @@ static void kill_children(int sig)
->>       signal(sig, old);
->>   }
->>   -static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, 
->> unsigned int gt)
->> +static void rc6_idle(const intel_ctx_t *ctx, uint64_t flags, 
->> unsigned int gt)
->>   {
->> -    const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
->> +    const int64_t duration_ns = 2 * SLEEP_DURATION * 
->> (int64_t)NSEC_PER_SEC;
->>       const int tolerance = 20; /* Some RC6 is better than none! */
->>       const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
->> +    int num_gts = igt_sysfs_get_num_gt(i915);
->>       struct {
->>           const char *name;
->>           unsigned int flags;
->>           double power;
->>       } phases[] = {
->> +        { "once", FREQUENT_BOOST | ONCE },
->>           { "normal", 0 },
->> -        { "boost", WAITBOOST },
->> -        { "once", WAITBOOST | ONCE },
->> +        { "boost", FREQUENT_BOOST }
->>       };
->> +    int dirfd = igt_sysfs_gt_open(i915, gt);
->>       struct power_sample sample[2];
->>       unsigned long slept, cycles;
->>       unsigned long *done;
->>       uint64_t rc6, ts[2];
->>       struct igt_power gpu;
->> +    int sysfs_dirfd;
->> +    int gt_num;
->>       int fd;
->>         fd = open_pmu(i915, __I915_PMU_RC6_RESIDENCY(gt));
->> @@ -407,12 +439,25 @@ static void rc6_idle(int i915, uint32_t ctx_id, 
->> uint64_t flags, unsigned int gt)
->>         assert_within_epsilon_debug(rc6, ts[1] - ts[0], 5, drpc);
->>   +    if (gt) {
->> +        close(fd);
->> +        close(dirfd);
->> +        igt_power_close(&gpu);
->> +        return;
->> +    }
-> Why? Can't you just run the entire test for primary gt only?
-No, in the same test we are checking the used energy while idle for both 
-the GTs.
->
->> +
->>       done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->>   +    stash_min = (uint32_t *)malloc(sizeof(uint32_t) * num_gts);
->> +    for_each_sysfs_gt_dirfd(i915, sysfs_dirfd, gt_num) {
->> +        stash_min[gt_num] = get_freq(sysfs_dirfd, RPS_MIN_FREQ_MHZ);
->> +        igt_pm_ignore_slpc_efficient_freq(i915, sysfs_dirfd, true);
->> +    }
->
-> Why for all gts? you are skipping if gt >=1.
-I will fix this.
->
->> +
->>       for (int p = 0; p < ARRAY_SIZE(phases); p++) {
->>           memset(done, 0, 2 * sizeof(*done));
->>           igt_fork(child, 1) /* Setup up a very light load */
->> -            bg_load(i915, ctx_id, flags, phases[p].flags, done);
->> +            bg_load(ctx, dirfd, flags, phases[p].flags, done, gt);
->>             igt_power_get_energy(&gpu, &sample[0]);
->>           cycles = -READ_ONCE(done[1]);
->> @@ -451,19 +496,21 @@ static void rc6_idle(int i915, uint32_t ctx_id, 
->> uint64_t flags, unsigned int gt)
->>         munmap(done, 4096);
->>       close(fd);
->> +    close(dirfd);
->> +    close(sysfs_dirfd);
-> This is not necessary. for_each_sysfs_gt_dirfd already closes it
-Sure, I will fix this.
->
->>         igt_power_close(&gpu);
->>   -    if (phases[1].power - phases[0].power > 10) {
->> -        igt_assert_f(2 * phases[2].power - phases[0].power <= 
->> phases[1].power,
->> +    if (phases[2].power - phases[1].power > 20 && 
->> !gem_has_lmem(i915)) {
->> +        igt_assert_f(2 * phases[0].power - phases[1].power <= 
->> phases[2].power,
->>                    "Exceeded energy expectations for single busy wait 
->> load\n"
->>                    "Used %.1fmW, min %.1fmW, max %.1fmW, expected 
->> less than %.1fmW\n",
->> -                 phases[2].power, phases[0].power, phases[1].power,
->> -                 phases[0].power + (phases[1].power - 
->> phases[0].power) / 2);
->> +                 phases[0].power, phases[1].power, phases[2].power,
->> +                 phases[1].power + (phases[2].power - 
->> phases[1].power) / 2);
->>       }
->>   }
->>   -static void rc6_fence(int i915, unsigned int gt)
->> +static void rc6_fence(unsigned int gt)
->>   {
->>       const int64_t duration_ns = SLEEP_DURATION * 
->> (int64_t)NSEC_PER_SEC;
->>       const int tolerance = 20; /* Some RC6 is better than none! */
->> @@ -557,7 +604,7 @@ static void rc6_fence(int i915, unsigned int gt)
->>       close(fd);
->>   }
->>   -static unsigned int rc6_enabled_mask(int i915, int dirfd)
->> +static unsigned int rc6_enabled_mask(int dirfd)
->>   {
->>       igt_require(has_rc6_residency(dirfd, RC6_RESIDENCY_MS));
->>   @@ -570,13 +617,14 @@ static unsigned int rc6_enabled_mask(int 
->> i915, int dirfd)
->>     igt_main
->>   {
->> -    int i915 = -1;
->>       unsigned int dirfd, gt;
->>       const intel_ctx_t *ctx;
->>         /* Use drm_open_driver to verify device existence */
->>       igt_fixture {
->>           i915 = drm_open_driver(DRIVER_INTEL);
->> +        intel_allocator_multiprocess_start();
->> +        igt_install_exit_handler(restore_freq);
-> These are required only for rc6-idle? If yes, move it inside the 
-> igt_subtest
->
-> Same for intel_allocator_multiprocess_stop
-yes, those are for only rc6-idle, I will make the necessary changes.
->
-> Thanks
-> Riana
->
->
->>       }
->>         igt_subtest_with_dynamic("rc6-idle") {
->> @@ -590,20 +638,23 @@ igt_main
->>               for_each_ctx_engine(i915, ctx, e) {
->>                   if (e->instance == 0) {
->>                       igt_dynamic_f("gt%u-%s", gt, e->name)
->> -                        rc6_idle(i915, ctx->id, e->flags, gt);
->> +                        rc6_idle(ctx, e->flags, gt);
->>                   }
->>               }
->>               intel_ctx_destroy(i915, ctx);
->>           }
->>       }
->>   +    igt_fixture
->> +        intel_allocator_multiprocess_stop();
->> +
->>       igt_subtest_with_dynamic("rc6-fence") {
->>           igt_require_gem(i915);
->>           gem_quiescent_gpu(i915);
->>             i915_for_each_gt(i915, dirfd, gt)
->>               igt_dynamic_f("gt%u", gt)
->> -                rc6_fence(i915, gt);
->> +                rc6_fence(gt);
->>       }
->>         igt_subtest_group {
->> @@ -621,7 +672,7 @@ igt_main
->>                   igt_dynamic_f("gt%u", gt) {
->>                       struct residencies res;
->>   -                    rc6_enabled = rc6_enabled_mask(i915, dirfd);
->> +                    rc6_enabled = rc6_enabled_mask(dirfd);
->>                       igt_require(rc6_enabled & RC6_ENABLED);
->>                         measure_residencies(devid, dirfd, 
->> rc6_enabled, &res);
->> @@ -635,7 +686,7 @@ igt_main
->>                 igt_require(IS_VALLEYVIEW(devid) || 
->> IS_CHERRYVIEW(devid));
->>   -            rc6_enabled = rc6_enabled_mask(i915, sysfs);
->> +            rc6_enabled = rc6_enabled_mask(sysfs);
->>               igt_require(rc6_enabled & RC6_ENABLED);
->>                 measure_residencies(devid, sysfs, rc6_enabled, &res);
->
-Thanks,
-Anirban
+v2: Use single vm across, also removing unnecessary allocator
+    handle utilization in the code [Gowtham]
+
+Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+---
+ benchmarks/meson.build |   1 +
+ benchmarks/xe_blt.c    | 322 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 323 insertions(+)
+ create mode 100644 benchmarks/xe_blt.c
+
+diff --git a/benchmarks/meson.build b/benchmarks/meson.build
+index 9fc0209e1..0ada34a28 100644
+--- a/benchmarks/meson.build
++++ b/benchmarks/meson.build
+@@ -22,6 +22,7 @@ benchmark_progs = [
+ 	'prime_lookup',
+ 	'vgem_mmap',
+ 	'xe_create',
++        'xe_blt',
+ 	'xe_exec_ctx',
+ ]
+ 
+diff --git a/benchmarks/xe_blt.c b/benchmarks/xe_blt.c
+new file mode 100644
+index 000000000..7d76de9d0
+--- /dev/null
++++ b/benchmarks/xe_blt.c
+@@ -0,0 +1,322 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#include "drm.h"
++#include "igt_syncobj.h"
++#include "intel_blt.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_util.h"
++
++#define BLT_WRITE_ALPHA		(1<<21)
++#define BLT_WRITE_RGB		(1<<20)
++#define BLT_SRC_TILED		(1<<15)
++#define BLT_DST_TILED		(1<<11)
++
++static double
++elapsed(const struct timespec *start, const struct timespec *end)
++{
++	return (end->tv_sec - start->tv_sec) +
++			1e-9*(end->tv_nsec - start->tv_nsec);
++}
++
++static uint64_t emit_blt_src_copy(int fd,
++		uint64_t ahnd,
++		const struct blt_copy_data *blt,
++		uint64_t bb_pos,
++		bool emit_bbe,
++		uint64_t dst_offset,
++		uint64_t src_offset,
++		uint32_t height)
++{
++	uint32_t b[12];
++	uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t *bb;
++	int i = 0;
++
++	src_offset += blt->src.plane_offset;
++	dst_offset += blt->dst.plane_offset;
++
++	b[i++] = XY_SRC_COPY_BLT_WRITE_RGB | BLT_WRITE_ALPHA | BLT_WRITE_RGB;
++	b[i-1] += 2;
++	b[i++] = 0xcc << 16 | 1 << 25 | 1 << 24 | (16*1024);
++	b[i++] = 0;
++	b[i++] = height << 16 | (4*1024);
++	b[i++] = dst_offset;
++	b[i++] = dst_offset >> 32; /* FIXME */
++	b[i++] = 0;
++	b[i++] = 16*1024;
++	b[i++] = src_offset;
++	b[i++] = src_offset >> 32; /* FIXME */
++
++	bb = xe_bo_map(fd, blt->bb.handle, blt->bb.size);
++
++	igt_assert(bb_pos + sizeof(b) < blt->bb.size);
++	memcpy(bb + bb_pos, &b, sizeof(b));
++	bb_pos += sizeof(b);
++
++	if (emit_bbe) {
++		igt_assert(bb_pos + sizeof(uint32_t) < blt->bb.size);
++		memcpy(bb + bb_pos, &bbe, sizeof(bbe));
++		bb_pos += sizeof(uint32_t);
++	}
++
++	munmap(bb, blt->bb.size);
++
++	return bb_pos;
++
++}
++
++static int count;
++/*
++ * val = True To check BB is working fine or not
++ * count_val = To get the counter value how many buffers we can send in 0.1 sec
++ * loop_count = count_val time we have to submit the buffers
++ */
++static int blt_src_copy(int fd,
++		const intel_ctx_t *ctx,
++		const struct intel_execution_engine2 *e,
++		uint64_t ahnd,
++		const struct blt_copy_data *blt, uint32_t height,
++		bool val, bool count_val, bool loop_count)
++{
++	uint64_t dst_offset = 0, src_offset = 0, bb_offset = 0;
++	int ret = 0;
++	uint64_t bb_pos = 0;
++	struct timespec start, end;
++
++	igt_assert_f(ahnd, "src-copy supports softpin only\n");
++	igt_assert_f(blt, "src-copy requires data to do src-copy blit\n");
++	igt_assert_neq(blt->driver, 0);
++
++	if (!val) {
++		src_offset = get_offset_pat_index(ahnd, blt->src.handle,
++				blt->src.size, 0, blt->src.pat_index);
++		dst_offset = get_offset_pat_index(ahnd, blt->dst.handle,
++				blt->dst.size, 0, blt->dst.pat_index);
++		bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
++	}
++
++	bb_pos = emit_blt_src_copy(fd, ahnd, blt, bb_pos, true, src_offset,
++				  dst_offset, height);
++	if (count_val) {
++		clock_gettime(CLOCK_MONOTONIC, &start);
++		do {
++			if (blt->driver == INTEL_DRIVER_XE)
++				intel_ctx_xe_exec(ctx, ahnd,
++							CANONICAL(bb_offset));
++			count++;
++			clock_gettime(CLOCK_MONOTONIC, &end);
++			if (elapsed(&start, &end) > (100 / 1000.))
++				break;
++		} while (1);
++	} else if (loop_count) {
++		for (int loop = 0; loop < count; loop++) {
++			if (blt->driver == INTEL_DRIVER_XE)
++				intel_ctx_xe_exec(ctx, ahnd,
++							CANONICAL(bb_offset));
++		}
++
++	} else {
++		if (blt->driver == INTEL_DRIVER_XE)
++			intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
++	}
++	return ret;
++}
++
++static int src_copy(int xe, const intel_ctx_t *ctx,
++		uint32_t width, uint32_t height,
++		uint32_t region1, uint32_t region2, bool val, bool count_value,
++		bool loop)
++{
++	struct blt_copy_data blt = {};
++	struct blt_copy_object *src, *dst;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
++	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
++			INTEL_ALLOCATOR_SIMPLE,
++			ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	uint32_t bb;
++	int ret = 0;
++
++	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
++	blt_copy_init(xe, &blt);
++	src = blt_create_object(&blt, region1, width, height, bpp, 0,
++			T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	dst = blt_create_object(&blt, region1, width, height, bpp, 0,
++			T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	igt_assert(src->size == dst->size);
++
++	blt_set_copy_object(&blt.src, src);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++
++	ret = blt_src_copy(xe, ctx, NULL, ahnd, &blt, height, val, count_value, loop);
++
++	put_offset(ahnd, src->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(xe, src);
++	blt_destroy_object(xe, dst);
++	gem_close(xe, bb);
++	put_ahnd(ahnd);
++	return ret;
++
++}
++
++#define SYNC 0x1
++
++static int run(int width, int batch, int time, int reps, int ncpus,
++						unsigned int flags)
++{
++	int xe;
++	int height = width / (16 * 1024);
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	intel_ctx_t *ctx;
++	double *shared;
++	uint32_t region1, region2;
++	uint32_t vm, exec_queue;
++	int ret;
++
++	shared = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++
++	xe = drm_open_driver(DRIVER_XE);
++	xe_device_get(xe);
++
++	intel_allocator_multiprocess_start();
++	region1 = 1;
++	region2 = 2;
++
++	vm = xe_vm_create(xe, 0, 0);
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++	ret = src_copy(xe, ctx, width, height, region1, region2, true,
++								false, false);
++	xe_exec_queue_destroy(xe, exec_queue);
++	free(ctx);
++	if (!ret) {
++		exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++		ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++		ret = src_copy(xe, ctx, width, height, region1, region2,
++							false, false, false);
++		xe_exec_queue_destroy(xe, exec_queue);
++		free(ctx);
++	}
++	if (batch > 1) {
++		for (int i = 1; i < batch; i++) {
++			exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++			ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++			ret = src_copy(xe, ctx, width, height, region1, region2,
++							false, false, false);
++			xe_exec_queue_destroy(xe, exec_queue);
++			free(ctx);
++		}
++	}
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++	ret = src_copy(xe, ctx, width, height, region1, region2,
++						false, true, false);
++	xe_exec_queue_destroy(xe, exec_queue);
++	free(ctx);
++	if (flags & SYNC) {
++		time *= count / 2;
++		count = 1;
++	}
++
++	while (reps--) {
++		memset(shared, 0, 4096);
++
++		igt_fork(child, ncpus) {
++			double min = HUGE_VAL;
++
++			for (int s = 0; s <= time / 100; s++) {
++				struct timespec start, end;
++				double t;
++
++				clock_gettime(CLOCK_MONOTONIC, &start);
++				exec_queue = xe_exec_queue_create(xe, vm,
++								&inst, 0);
++				ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++				ret = src_copy(xe, ctx, width, height, region1,
++						region2, false, false, true);
++				free(ctx);
++				xe_exec_queue_destroy(xe, exec_queue);
++				clock_gettime(CLOCK_MONOTONIC, &end);
++
++				t = elapsed(&start, &end);
++				if (t < min)
++					min = t;
++			}
++
++			shared[child] = width/(1024*1024.)*batch*count/min;
++		}
++		igt_waitchildren();
++
++		for (int child = 0; child < ncpus; child++)
++			shared[ncpus] += shared[child];
++		printf("%7.3f\n", shared[ncpus] / ncpus);
++	}
++	intel_allocator_multiprocess_stop();
++
++	xe_vm_destroy(xe, vm);
++	close(xe);
++	return 0;
++}
++
++int main(int argc, char **argv)
++{
++	int size = 1024*1024;
++	int reps = 13;
++	int time = 2000;
++	int ncpus = 1;
++	int batch = 1;
++	unsigned int flags = 0;
++	int c;
++
++	while ((c = getopt(argc, argv, "s:S:t:r:b:f")) != -1) {
++		switch (c) {
++		case 's':
++			size = atoi(optarg);
++			size = ALIGN(size, 4);
++			if (size < 4)
++				size = 4;
++			break;
++
++		case 'S':
++			flags |= SYNC;
++			break;
++
++		case 't':
++			time = atoi(optarg);
++			if (time < 1)
++				time = 1;
++			break;
++
++		case 'r':
++			reps = atoi(optarg);
++			if (reps < 1)
++				reps = 1;
++			break;
++
++		case 'b':
++			batch = atoi(optarg);
++			if (batch < 1)
++				batch = 1;
++			break;
++
++		case 'f':
++			ncpus = sysconf(_SC_NPROCESSORS_ONLN);
++			break;
++
++		default:
++			break;
++		}
++	}
++
++	return run(size, batch, time, reps, ncpus, flags);
++}
+-- 
+2.34.1
 
