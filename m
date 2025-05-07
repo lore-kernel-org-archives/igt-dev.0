@@ -4,57 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59EBBC3ABC0
-	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 07:53:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57450C3ABC5
+	for <igt-dev@archiver.kernel.org>; Wed,  7 May 2025 08:07:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 15D0810E15F;
-	Wed,  7 May 2025 07:53:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E5ED010E765;
+	Wed,  7 May 2025 08:07:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e1fu1ryf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DqnTvpy8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BEF4A10E15F
- for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 07:53:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFF8110E761
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 May 2025 08:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746604409; x=1778140409;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=E7SdKC/EDx8eKqI/etQq7NMj3ImwiKJZ9ykGqT3cOmk=;
- b=e1fu1ryfgETIWTynT3s/XYWKmcbgLA11mTtXwO4FC+O/vGEimauSIuJr
- j3bYjA4pxGrjWsGtJtToIPKBUvGCF3LXAgLKh3WdpxvkIzLAUoWtk4YoY
- 6nQcV2O7j6a7cAzJoX0BIAQeO4540fTf38MIrUGTumluwooHmDOwCzz5Y
- Q6LunDO6aToo615f/mJmbcn7D9ibgv26otUT0jTCvi91ac3hv9bYhlPFC
- R0pwMpQs9Oh6ypGvz1g6vDoxHInaQMF/i9jQ/WqOZm9yAFrBgMWjAQmgJ
- z1+3sVDYxARYYOY+wKlP06otqzoDPUzgdeBQiF6T9SUg+Ag93os+ScFFQ g==;
-X-CSE-ConnectionGUID: WImIuriJQwuimhEJ40SyPQ==
-X-CSE-MsgGUID: Xjnn4J4XS8yBK6c+NGPMgQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="47417338"
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="47417338"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 00:53:27 -0700
-X-CSE-ConnectionGUID: JTeqrIJAQCy19aG9BGc9GQ==
-X-CSE-MsgGUID: A8K/fuvDRnmKkqBMLRUVyg==
+ t=1746605233; x=1778141233;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ATQOHIoRRyIywZgIsz4yC053B/wZMCBkdQ7twQP6V80=;
+ b=DqnTvpy8IaiyDKkJruFXTJ/o//XD7WdI69f6/VMwngGWgujPT1cIgaup
+ Y+/NVigKPSQ8WN72Tk5uBM/zrejg1KWrkj3LHi7ttpLiUtvwXgFIRpdZI
+ rXIEXYefrs7ezSQl9XcSU9+gXHmIMRIh1Y1bqmNa/RtS0pDMGldQyjpnt
+ XzAVaOpquJqsBkL5Oxg83edf8MSyR6m8ttGVEC4HnxDBzBxsT9XEsoKZH
+ O6+UAsTJ16xRidN7OCHyrM7pmCZCQUpH1aNibKMCOoBONtMh/lxoNoibH
+ OvXWyj74GsUShhD6PJnm0UOyNHwitZCYiDjKXK7BwbQac5thKg5mujhwN Q==;
+X-CSE-ConnectionGUID: cJq0Cf9EQT+zS3O+mgJ1tw==
+X-CSE-MsgGUID: xJ2eYGYJSpCPEN8F9h09tw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="59717464"
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="59717464"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2025 01:07:12 -0700
+X-CSE-ConnectionGUID: rglQr8uWR/KYLbFKjA64Jw==
+X-CSE-MsgGUID: M6qPGhIiQQ6YllhWxJPvyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="140835616"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 00:53:26 -0700
-Date: Wed, 7 May 2025 09:53:10 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: aditya.chauhan@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_system_allocator: Add GPU
- platform PTL for sys allocator tests
-Message-ID: <20250507075310.jwdsl47yep4uxtud@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- aditya.chauhan@intel.com, igt-dev@lists.freedesktop.org
-References: <20250507062359.61919-1-aditya.chauhan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="136281396"
+Received: from unknown (HELO pgurram-desk.iind.intel.com) ([10.190.238.70])
+ by fmviesa008.fm.intel.com with ESMTP; 07 May 2025 01:07:10 -0700
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>,
+ Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Subject: [PATCH] benchmarks: Measure BLT performance
+Date: Wed,  7 May 2025 13:44:53 +0530
+Message-Id: <20250507081453.1065204-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250507062359.61919-1-aditya.chauhan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,40 +66,362 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi aditya.chauhan,
-On 2025-05-07 at 11:53:59 +0530, aditya.chauhan@intel.com wrote:
-> From: Aditya Chauhan <aditya.chauhan@intel.com>
-> 
-> Add PTL to the list of GPUs applicable for the test
-> 
-> Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Tahvanainen, Jari <jari.tahvanainen@intel.com>
+Execute N blits and time how long they complete to measure both GPU
+limited bandwidth and submission overhead.
 
-Should be:
-Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
+v2: Use single vm across, also removing unnecessary allocator
+    handle utilization in the code [Gowtham]
 
-this could be corrected at merge so
+Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+---
+ benchmarks/meson.build |   1 +
+ benchmarks/xe_blt.c    | 324 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 325 insertions(+)
+ create mode 100644 benchmarks/xe_blt.c
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+diff --git a/benchmarks/meson.build b/benchmarks/meson.build
+index 9fc0209e1..a5eb3acdc 100644
+--- a/benchmarks/meson.build
++++ b/benchmarks/meson.build
+@@ -23,6 +23,7 @@ benchmark_progs = [
+ 	'vgem_mmap',
+ 	'xe_create',
+ 	'xe_exec_ctx',
++        'xe_blt',
+ ]
+ 
+ benchmarksdir = join_paths(libexecdir, 'benchmarks')
+diff --git a/benchmarks/xe_blt.c b/benchmarks/xe_blt.c
+new file mode 100644
+index 000000000..0bf156da3
+--- /dev/null
++++ b/benchmarks/xe_blt.c
+@@ -0,0 +1,324 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#include "drm.h"
++#include "igt_syncobj.h"
++#include "intel_blt.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_util.h"
++
++
++#define COPY_BLT_CMD		(2<<29|0x53<<22|0x6)
++#define BLT_WRITE_ALPHA		(1<<21)
++#define BLT_WRITE_RGB		(1<<20)
++#define BLT_SRC_TILED		(1<<15)
++#define BLT_DST_TILED		(1<<11)
++
++static double
++elapsed(const struct timespec *start, const struct timespec *end)
++{
++	return (end->tv_sec - start->tv_sec) +
++			1e-9*(end->tv_nsec - start->tv_nsec);
++}
++
++static uint64_t emit_blt_src_copy(int fd,
++		uint64_t ahnd,
++		const struct blt_copy_data *blt,
++		uint64_t bb_pos,
++		bool emit_bbe,
++		uint64_t dst_offset,
++		uint64_t src_offset,
++		uint32_t height)
++{
++	uint32_t b[12];
++	uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t *bb;
++	int i = 0;
++
++	src_offset += blt->src.plane_offset;
++	dst_offset += blt->dst.plane_offset;
++
++	b[i++] = COPY_BLT_CMD | BLT_WRITE_ALPHA | BLT_WRITE_RGB;
++	b[i-1] += 2;
++	b[i++] = 0xcc << 16 | 1 << 25 | 1 << 24 | (16*1024);
++	b[i++] = 0;
++	b[i++] = height << 16 | (4*1024);
++	b[i++] = dst_offset;
++	b[i++] = dst_offset >> 32; /* FIXME */
++	b[i++] = 0;
++	b[i++] = 16*1024;
++	b[i++] = src_offset;
++	b[i++] = src_offset >> 32; /* FIXME */
++
++	bb = xe_bo_map(fd, blt->bb.handle, blt->bb.size);
++
++	igt_assert(bb_pos + sizeof(b) < blt->bb.size);
++	memcpy(bb + bb_pos, &b, sizeof(b));
++	bb_pos += sizeof(b);
++
++	if (emit_bbe) {
++		igt_assert(bb_pos + sizeof(uint32_t) < blt->bb.size);
++		memcpy(bb + bb_pos, &bbe, sizeof(bbe));
++		bb_pos += sizeof(uint32_t);
++	}
++
++	munmap(bb, blt->bb.size);
++
++	return bb_pos;
++
++}
++
++static int count;
++/*
++ * val = True To check BB is working fine or not
++ * count_val = To get the counter value how many buffers we can send in 0.1 sec
++ * loop_count = count_val time we have to submit the buffers
++ */
++static int blt_src_copy(int fd,
++		const intel_ctx_t *ctx,
++		const struct intel_execution_engine2 *e,
++		uint64_t ahnd,
++		const struct blt_copy_data *blt, uint32_t height,
++		bool val, bool count_val, bool loop_count)
++{
++	uint64_t dst_offset = 0, src_offset = 0, bb_offset = 0;
++	int ret = 0;
++	uint64_t bb_pos = 0;
++	struct timespec start, end;
++
++	igt_assert_f(ahnd, "src-copy supports softpin only\n");
++	igt_assert_f(blt, "src-copy requires data to do src-copy blit\n");
++	igt_assert_neq(blt->driver, 0);
++
++	if (!val) {
++		src_offset = get_offset_pat_index(ahnd, blt->src.handle,
++				blt->src.size, 0, blt->src.pat_index);
++		dst_offset = get_offset_pat_index(ahnd, blt->dst.handle,
++				blt->dst.size, 0, blt->dst.pat_index);
++		bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, 0);
++	}
++
++	bb_pos = emit_blt_src_copy(fd, ahnd, blt, bb_pos, true, src_offset,
++				  dst_offset, height);
++	if (count_val) {
++		clock_gettime(CLOCK_MONOTONIC, &start);
++		do {
++			if (blt->driver == INTEL_DRIVER_XE)
++				intel_ctx_xe_exec(ctx, ahnd,
++							CANONICAL(bb_offset));
++			count++;
++			clock_gettime(CLOCK_MONOTONIC, &end);
++			if (elapsed(&start, &end) > (100 / 1000.))
++				break;
++		} while (1);
++	} else if (loop_count) {
++		for (int loop = 0; loop < count; loop++) {
++			if (blt->driver == INTEL_DRIVER_XE)
++				intel_ctx_xe_exec(ctx, ahnd,
++							CANONICAL(bb_offset));
++		}
++
++	} else {
++		if (blt->driver == INTEL_DRIVER_XE)
++			intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
++	}
++	return ret;
++}
++
++static int src_copy(int xe, const intel_ctx_t *ctx,
++		uint32_t width, uint32_t height,
++		uint32_t region1, uint32_t region2, bool val, bool count_value,
++		bool loop)
++{
++	struct blt_copy_data blt = {};
++	struct blt_copy_object *src, *dst;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
++	uint64_t ahnd = intel_allocator_open_full(xe, ctx->vm, 0, 0,
++			INTEL_ALLOCATOR_SIMPLE,
++			ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	uint32_t bb;
++	int ret = 0;
++
++	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
++	blt_copy_init(xe, &blt);
++	src = blt_create_object(&blt, region1, width, height, bpp, 0,
++			T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	dst = blt_create_object(&blt, region1, width, height, bpp, 0,
++			T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	igt_assert(src->size == dst->size);
++
++	blt_set_copy_object(&blt.src, src);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++
++	ret = blt_src_copy(xe, ctx, NULL, ahnd, &blt, height, val, count_value, loop);
++
++	put_offset(ahnd, src->handle);
++	put_offset(ahnd, dst->handle);
++	put_offset(ahnd, bb);
++	intel_allocator_bind(ahnd, 0, 0);
++	blt_destroy_object(xe, src);
++	blt_destroy_object(xe, dst);
++	gem_close(xe, bb);
++	put_ahnd(ahnd);
++	return ret;
++
++}
++
++#define SYNC 0x1
++
++static int run(int width, int batch, int time, int reps, int ncpus,
++						unsigned int flags)
++{
++	int xe;
++	int height = width / (16 * 1024);
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++	intel_ctx_t *ctx;
++	double *shared;
++	uint32_t region1, region2;
++	uint32_t vm, exec_queue;
++	int ret;
++
++	shared = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++
++	xe = drm_open_driver(DRIVER_XE);
++	xe_device_get(xe);
++
++	intel_allocator_multiprocess_start();
++	region1 = 1;
++	region2 = 2;
++
++	vm = xe_vm_create(xe, 0, 0);
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++	ret = src_copy(xe, ctx, width, height, region1, region2, true,
++								false, false);
++	xe_exec_queue_destroy(xe, exec_queue);
++	free(ctx);
++	if (!ret) {
++		exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++		ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++		ret = src_copy(xe, ctx, width, height, region1, region2,
++							false, false, false);
++		xe_exec_queue_destroy(xe, exec_queue);
++		free(ctx);
++	}
++	if (batch > 1) {
++		for (int i = 1; i < batch; i++) {
++			exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++			ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++			ret = src_copy(xe, ctx, width, height, region1, region2,
++							false, false, false);
++			xe_exec_queue_destroy(xe, exec_queue);
++			free(ctx);
++		}
++	}
++	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
++	ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++	ret = src_copy(xe, ctx, width, height, region1, region2,
++						false, true, false);
++	xe_exec_queue_destroy(xe, exec_queue);
++	free(ctx);
++	if (flags & SYNC) {
++		time *= count / 2;
++		count = 1;
++	}
++
++	while (reps--) {
++		memset(shared, 0, 4096);
++
++		igt_fork(child, ncpus) {
++			double min = HUGE_VAL;
++
++			for (int s = 0; s <= time / 100; s++) {
++				struct timespec start, end;
++				double t;
++
++				clock_gettime(CLOCK_MONOTONIC, &start);
++				exec_queue = xe_exec_queue_create(xe, vm,
++								&inst, 0);
++				ctx = intel_ctx_xe(xe, vm, exec_queue, 0, 0, 0);
++				ret = src_copy(xe, ctx, width, height, region1,
++						region2, false, false, true);
++				free(ctx);
++				xe_exec_queue_destroy(xe, exec_queue);
++				clock_gettime(CLOCK_MONOTONIC, &end);
++
++				t = elapsed(&start, &end);
++				if (t < min)
++					min = t;
++			}
++
++			shared[child] = width/(1024*1024.)*batch*count/min;
++		}
++		igt_waitchildren();
++
++		for (int child = 0; child < ncpus; child++)
++			shared[ncpus] += shared[child];
++		printf("%7.3f\n", shared[ncpus] / ncpus);
++	}
++	intel_allocator_multiprocess_stop();
++
++	xe_vm_destroy(xe, vm);
++	close(xe);
++	return 0;
++}
++
++int main(int argc, char **argv)
++{
++	int size = 1024*1024;
++	int reps = 13;
++	int time = 2000;
++	int ncpus = 1;
++	int batch = 1;
++	unsigned int flags = 0;
++	int c;
++
++	while ((c = getopt(argc, argv, "s:S:t:r:b:f")) != -1) {
++		switch (c) {
++		case 's':
++			size = atoi(optarg);
++			size = ALIGN(size, 4);
++			if (size < 4)
++				size = 4;
++			break;
++
++		case 'S':
++			flags |= SYNC;
++			break;
++
++		case 't':
++			time = atoi(optarg);
++			if (time < 1)
++				time = 1;
++			break;
++
++		case 'r':
++			reps = atoi(optarg);
++			if (reps < 1)
++				reps = 1;
++			break;
++
++		case 'b':
++			batch = atoi(optarg);
++			if (batch < 1)
++				batch = 1;
++			break;
++
++		case 'f':
++			ncpus = sysconf(_SC_NPROCESSORS_ONLN);
++			break;
++
++		default:
++			break;
++		}
++	}
++
++	return run(size, batch, time, reps, ncpus, flags);
++}
+-- 
+2.34.1
 
-> ---
->  tests/intel/xe_exec_system_allocator.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-> index c2daf3712..bae8144ef 100644
-> --- a/tests/intel/xe_exec_system_allocator.c
-> +++ b/tests/intel/xe_exec_system_allocator.c
-> @@ -9,7 +9,7 @@
->   * Mega feature: USM
->   * Sub-category: System allocator
->   * Functionality: fault mode, system allocator
-> - * GPU: LNL, BMG, PVC
-> + * GPU: LNL, BMG, PVC, PTL
->   */
->  
->  #include <fcntl.h>
-> -- 
-> 2.34.1
-> 
