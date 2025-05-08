@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76D6C3ABC0
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C50C3ABBE
 	for <igt-dev@archiver.kernel.org>; Thu,  8 May 2025 05:27:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2584510E32E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2AE1310E367;
 	Thu,  8 May 2025 05:27:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b1ZKXZnS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ozj6WbRI";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9914410E32B
- for <igt-dev@lists.freedesktop.org>; Thu,  8 May 2025 05:27:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C92910E32E
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 May 2025 05:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746682021; x=1778218021;
+ t=1746682024; x=1778218024;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ibwqgWR1tj1HQbXP8C/hCGwglUEljbe0rhZUi/d325M=;
- b=b1ZKXZnS7I2l+RlMucFzAaKEojJ4+OvAfV101+Is82TMCW1SsqOHYfA9
- Vl3a1dMB6j6hJsCtuiepkXVdO4O9d7NjnUphIK7NOTyNVOzXy8/d9b3Ak
- vXbbaoOrWkrqjCsYUDCjXOfXgtYghH6d8WbN4qz74bDiAaP38dgMkasK5
- 7O+8gtijWKi6wf2E2q9ngbTeEkCredYCx6CngEbwUMxsi1ElrgnuleFfw
- xpv4OckSEGWFZGapfotKAxIE0GOCZgL8vrjcI92WmyHbgDLaZxMotbGcw
- f/I9BnaA2eHVyspl7D3TvqfLZN7WBamxXMtmD/8eeLpFFOqFrUVSFQ8KF A==;
-X-CSE-ConnectionGUID: m0gSvxopQluKdL60Nnx+LQ==
-X-CSE-MsgGUID: 5r/xEDEpS82A8m6+H5kZxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="59798133"
-X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="59798133"
+ bh=maGPl+yFQdWNqxPxP1bIWjJfnnOnX6+c2n+3ty+tmA0=;
+ b=Ozj6WbRIzkVq0a0CRJ9bRHfjU8bYwxxMNAPMhZKKzY9O4cOmJsY7oB/2
+ ZUAFsUX0bHT7xxeNwfcOsKSQXAzHh+NDovdWpcVF1+1OXpl1IWmn2ihjC
+ 0fXNE1egN5RD7Tme77zmfjwGRNKod7LH1se7XYOkREtpNyu6J3ANCv5nk
+ dXZCi5SGygjqdp7rKicIZPa7OoQcKeMlDdxSiEmfyt7jaGGEvzByKblYu
+ ogkj16EW2hg1RF2VuKpeLUF8a2+fqhZFXavjcPIKtr2vT1CnJFBVCnl7a
+ Ua6Gc8nvghU9ZQsjpVZxFeq4F0fLCDbljxC/HfzPdeAe/3oWqutURWta8 Q==;
+X-CSE-ConnectionGUID: B6e7rV3YSVe65CoMdiy8oQ==
+X-CSE-MsgGUID: Tk2QNGmPRxu8wFnukg+5Vw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="59798135"
+X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="59798135"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 22:27:01 -0700
-X-CSE-ConnectionGUID: VpIL/1lGTh2iB/oWyBqF/g==
-X-CSE-MsgGUID: dME4V91TTVSxWYgTFwhK4g==
+ 07 May 2025 22:27:04 -0700
+X-CSE-ConnectionGUID: 23MHdfXrS3eNF/FryjSEIA==
+X-CSE-MsgGUID: GBaVg2t3Q3KU61P6Iw06xA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="167124040"
+X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="167124057"
 Received: from unknown (HELO rtauro-desk.iind.intel.com) ([10.190.239.27])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 22:26:59 -0700
+ 07 May 2025 22:27:01 -0700
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
  umesh.nerlige.ramappa@intel.com, lucas.demarchi@intel.com,
  vinay.belgaumkar@intel.com, soham.purkait@intel.com
-Subject: [PATCH i-g-t v2 4/5] tests/intel/xe_pmu: Add tests to validate engine
- activity on all engines
-Date: Thu,  8 May 2025 11:20:05 +0530
-Message-ID: <20250508055006.734259-5-riana.tauro@intel.com>
+Subject: [PATCH i-g-t v2 5/5] test/intel/xe_pmu: Add tests to validate engine
+ activity by loading most engines
+Date: Thu,  8 May 2025 11:20:06 +0530
+Message-ID: <20250508055006.734259-6-riana.tauro@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250508055006.734259-1-riana.tauro@intel.com>
 References: <20250508055006.734259-1-riana.tauro@intel.com>
@@ -70,82 +70,88 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests to validate engine activity by running workload on
-all engines simultaneously.
+Add a test to validate engine activity by running load on all
+engines except one.
 
-Also add trailing idle test.
+Also add a trailing idle test.
 
 v2: use allocator
 
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- tests/intel/xe_pmu.c | 67 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ tests/intel/xe_pmu.c | 73 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
 diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index d78b8bea5..2df460b07 100644
+index 2df460b07..31f41986b 100644
 --- a/tests/intel/xe_pmu.c
 +++ b/tests/intel/xe_pmu.c
-@@ -32,6 +32,14 @@
-  * Description: Test to validate engine activity by running workload and trailing idle on one engine
-  *		and check if all other engines are idle
+@@ -40,6 +40,13 @@
+  * Description: Test to validate engine activity by running workload on all engines
+  *		simultaneously and trailing idle
   *
-+ * SUBTEST: engine-activity-all-load
-+ * Description: Test to validate engine activity by running workload on all engines
-+ *		simultaneously
++ * SUBTEST: engine-activity-most-load
++ * Description: Test to validate engine activity by running workload on all engines except one
 + *
-+ * SUBTEST: engine-activity-all-load-idle
-+ * Description: Test to validate engine activity by running workload on all engines
-+ *		simultaneously and trailing idle
++ * SUBTEST: engine-activity-most-load-idle
++ * Description: Test to validate engine activity by running workload and trailing idle on all engines
++ * 		except one
 + *
   * SUBTEST: all-fn-engine-activity-load
   * Description: Test to validate engine activity by running load on all functions simultaneously
   *
-@@ -319,6 +327,57 @@ static void engine_activity_load_single(int fd, int num_engines,
+@@ -327,6 +334,64 @@ static void engine_activity_load_single(int fd, int num_engines,
  	log_all_engines(num_engines, busy_idx, TEST_IDLE, before, after);
  }
  
-+static void engine_activity_load_all(int fd, int num_engines, unsigned int flags)
++static void engine_activity_load_most(int fd, int num_engines, struct drm_xe_engine_class_instance *eci,
++				      unsigned int flags)
 +{
 +	uint64_t ahnd, config, before[2 * num_engines], after[2 * num_engines];
-+	struct drm_xe_engine_class_instance *eci;
++	struct drm_xe_engine_class_instance *eci_;
 +	struct xe_cork *cork[num_engines];
-+	int idx = 0, engine_idx = 0;
-+	int pmu_fd[2 * num_engines];
++	int pmu_fd[num_engines * 2];
++	int idx = 0, idle_idx = 0, engine_idx = 0;
 +	uint32_t vm;
 +
 +	pmu_fd[0] = -1;
 +	vm = xe_vm_create(fd, 0, 0);
 +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
 +
-+	xe_for_each_engine(fd, eci) {
++	xe_for_each_engine(fd, eci_) {
 +		engine_idx = idx >> 1;
 +
-+		config = get_event_config(eci->gt_id, eci, "engine-active-ticks");
-+		pmu_fd[idx++] = open_group(fd, config, pmu_fd[0]);
-+
-+		config = get_event_config(eci->gt_id, eci, "engine-total-ticks");
-+		pmu_fd[idx++] = open_group(fd, config, pmu_fd[0]);
-+
-+		if (flags & TEST_LOAD) {
-+			cork[engine_idx] = xe_cork_create_opts(fd, eci, vm, 1, 1, .ahnd = ahnd);
++		if (eci_->engine_class == eci->engine_class &&
++		    eci_->engine_instance == eci->engine_instance) {
++			idle_idx = engine_idx;
++			cork[engine_idx] = NULL;
++		} else {
++			cork[engine_idx] = xe_cork_create_opts(fd, eci_, vm, 1, 1, .ahnd = ahnd);
 +			xe_cork_sync_start(fd, cork[engine_idx]);
 +		}
++
++		config = get_event_config(eci_->gt_id, eci_, "engine-active-ticks");
++		pmu_fd[idx++] = open_group(fd, config, pmu_fd[0]);
++
++		config = get_event_config(eci_->gt_id, eci_, "engine-total-ticks");
++		pmu_fd[idx++] = open_group(fd, config, pmu_fd[0]);
 +	}
 +
 +	pmu_read_multi(pmu_fd[0], 2 * num_engines, before);
 +	usleep(SLEEP_DURATION * USEC_PER_SEC);
 +	if (flags & TEST_TRAILING_IDLE) {
 +		for (idx = 0; idx < num_engines; idx++)
-+			xe_cork_sync_end(fd, cork[idx]);
++			check_and_end_cork(fd, cork[engine_idx]);
 +	}
 +	pmu_read_multi(pmu_fd[0], 2 * num_engines, after);
 +
 +	for (idx = 0; idx < num_engines * 2; idx += 2) {
 +		engine_idx = idx >> 1;
++
 +		if (flags & TEST_LOAD)
 +			check_and_end_cork(fd, cork[engine_idx]);
-+		xe_cork_destroy(fd, cork[engine_idx]);
++		if (cork[engine_idx])
++			xe_cork_destroy(fd, cork[engine_idx]);
 +		close(pmu_fd[idx]);
 +		close(pmu_fd[idx + 1]);
 +	}
@@ -153,27 +159,27 @@ index d78b8bea5..2df460b07 100644
 +	xe_vm_destroy(fd, vm);
 +	put_ahnd(ahnd);
 +
-+	log_all_engines(num_engines, -1, TEST_LOAD, before, after);
++	log_all_engines(num_engines, idle_idx, TEST_LOAD, before, after);
 +}
 +
- static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *eci, int num_fns)
+ static void engine_activity_load_all(int fd, int num_engines, unsigned int flags)
  {
- 	uint64_t config, engine_active_ticks, engine_total_ticks;
-@@ -683,6 +742,14 @@ igt_main
+ 	uint64_t ahnd, config, before[2 * num_engines], after[2 * num_engines];
+@@ -742,6 +807,14 @@ igt_main
  	test_each_engine("engine-activity-single-load-idle", fd, eci)
  		engine_activity_load_single(fd, num_engines, eci, TEST_LOAD | TEST_TRAILING_IDLE);
  
-+	igt_describe("Validate engine activity by loading all engines simultaenously");
-+	igt_subtest("engine-activity-all-load")
-+		engine_activity_load_all(fd, num_engines, TEST_LOAD);
++	igt_describe("Validate engine activity when all except one engine is loaded");
++	test_each_engine("engine-activity-most-load", fd, eci)
++		engine_activity_load_most(fd, num_engines, eci, TEST_LOAD);
 +
-+	igt_describe("Validate engine activity by loading all engines simultaenously and trailing idle");
-+	igt_subtest("engine-activity-all-load-idle")
-+		engine_activity_load_all(fd, num_engines, TEST_LOAD | TEST_TRAILING_IDLE);
++	igt_describe("Validate engine activity when all except one engine is loaded and trailing idle");
++	test_each_engine("engine-activity-most-load-idle", fd, eci)
++		engine_activity_load_most(fd, num_engines, eci, TEST_LOAD | TEST_TRAILING_IDLE);
 +
- 	igt_subtest_group {
- 		unsigned int num_fns;
- 
+ 	igt_describe("Validate engine activity by loading all engines simultaenously");
+ 	igt_subtest("engine-activity-all-load")
+ 		engine_activity_load_all(fd, num_engines, TEST_LOAD);
 -- 
 2.47.1
 
