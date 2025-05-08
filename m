@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C50C3ABBE
-	for <igt-dev@archiver.kernel.org>; Thu,  8 May 2025 05:27:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBB8DC3ABC0
+	for <igt-dev@archiver.kernel.org>; Thu,  8 May 2025 06:03:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2AE1310E367;
-	Thu,  8 May 2025 05:27:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ozj6WbRI";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C92910E32E
- for <igt-dev@lists.freedesktop.org>; Thu,  8 May 2025 05:27:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746682024; x=1778218024;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=maGPl+yFQdWNqxPxP1bIWjJfnnOnX6+c2n+3ty+tmA0=;
- b=Ozj6WbRIzkVq0a0CRJ9bRHfjU8bYwxxMNAPMhZKKzY9O4cOmJsY7oB/2
- ZUAFsUX0bHT7xxeNwfcOsKSQXAzHh+NDovdWpcVF1+1OXpl1IWmn2ihjC
- 0fXNE1egN5RD7Tme77zmfjwGRNKod7LH1se7XYOkREtpNyu6J3ANCv5nk
- dXZCi5SGygjqdp7rKicIZPa7OoQcKeMlDdxSiEmfyt7jaGGEvzByKblYu
- ogkj16EW2hg1RF2VuKpeLUF8a2+fqhZFXavjcPIKtr2vT1CnJFBVCnl7a
- Ua6Gc8nvghU9ZQsjpVZxFeq4F0fLCDbljxC/HfzPdeAe/3oWqutURWta8 Q==;
-X-CSE-ConnectionGUID: B6e7rV3YSVe65CoMdiy8oQ==
-X-CSE-MsgGUID: Tk2QNGmPRxu8wFnukg+5Vw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="59798135"
-X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="59798135"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 22:27:04 -0700
-X-CSE-ConnectionGUID: 23MHdfXrS3eNF/FryjSEIA==
-X-CSE-MsgGUID: GBaVg2t3Q3KU61P6Iw06xA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="167124057"
-Received: from unknown (HELO rtauro-desk.iind.intel.com) ([10.190.239.27])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 22:27:01 -0700
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
- umesh.nerlige.ramappa@intel.com, lucas.demarchi@intel.com,
- vinay.belgaumkar@intel.com, soham.purkait@intel.com
-Subject: [PATCH i-g-t v2 5/5] test/intel/xe_pmu: Add tests to validate engine
- activity by loading most engines
-Date: Thu,  8 May 2025 11:20:06 +0530
-Message-ID: <20250508055006.734259-6-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250508055006.734259-1-riana.tauro@intel.com>
-References: <20250508055006.734259-1-riana.tauro@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A47C910E32E;
+	Thu,  8 May 2025 06:03:51 +0000 (UTC)
+Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0018010E32E;
+ Thu,  8 May 2025 06:03:50 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3297242381855616680=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_more_tests_to_validate_?=
+ =?utf-8?q?engine_activity_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 08 May 2025 06:03:50 -0000
+Message-ID: <174668423099.58564.5441903085766835334@c664b1dc75d1>
+X-Patchwork-Hint: ignore
+References: <20250508055006.734259-1-riana.tauro@intel.com>
+In-Reply-To: <20250508055006.734259-1-riana.tauro@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,119 +37,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test to validate engine activity by running load on all
-engines except one.
+--===============3297242381855616680==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Also add a trailing idle test.
+== Series Details ==
 
-v2: use allocator
+Series: Add more tests to validate engine activity (rev2)
+URL   : https://patchwork.freedesktop.org/series/148597/
+State : success
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/intel/xe_pmu.c | 73 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 73 insertions(+)
+== Summary ==
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index 2df460b07..31f41986b 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -40,6 +40,13 @@
-  * Description: Test to validate engine activity by running workload on all engines
-  *		simultaneously and trailing idle
-  *
-+ * SUBTEST: engine-activity-most-load
-+ * Description: Test to validate engine activity by running workload on all engines except one
-+ *
-+ * SUBTEST: engine-activity-most-load-idle
-+ * Description: Test to validate engine activity by running workload and trailing idle on all engines
-+ * 		except one
-+ *
-  * SUBTEST: all-fn-engine-activity-load
-  * Description: Test to validate engine activity by running load on all functions simultaneously
-  *
-@@ -327,6 +334,64 @@ static void engine_activity_load_single(int fd, int num_engines,
- 	log_all_engines(num_engines, busy_idx, TEST_IDLE, before, after);
- }
- 
-+static void engine_activity_load_most(int fd, int num_engines, struct drm_xe_engine_class_instance *eci,
-+				      unsigned int flags)
-+{
-+	uint64_t ahnd, config, before[2 * num_engines], after[2 * num_engines];
-+	struct drm_xe_engine_class_instance *eci_;
-+	struct xe_cork *cork[num_engines];
-+	int pmu_fd[num_engines * 2];
-+	int idx = 0, idle_idx = 0, engine_idx = 0;
-+	uint32_t vm;
-+
-+	pmu_fd[0] = -1;
-+	vm = xe_vm_create(fd, 0, 0);
-+	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+
-+	xe_for_each_engine(fd, eci_) {
-+		engine_idx = idx >> 1;
-+
-+		if (eci_->engine_class == eci->engine_class &&
-+		    eci_->engine_instance == eci->engine_instance) {
-+			idle_idx = engine_idx;
-+			cork[engine_idx] = NULL;
-+		} else {
-+			cork[engine_idx] = xe_cork_create_opts(fd, eci_, vm, 1, 1, .ahnd = ahnd);
-+			xe_cork_sync_start(fd, cork[engine_idx]);
-+		}
-+
-+		config = get_event_config(eci_->gt_id, eci_, "engine-active-ticks");
-+		pmu_fd[idx++] = open_group(fd, config, pmu_fd[0]);
-+
-+		config = get_event_config(eci_->gt_id, eci_, "engine-total-ticks");
-+		pmu_fd[idx++] = open_group(fd, config, pmu_fd[0]);
-+	}
-+
-+	pmu_read_multi(pmu_fd[0], 2 * num_engines, before);
-+	usleep(SLEEP_DURATION * USEC_PER_SEC);
-+	if (flags & TEST_TRAILING_IDLE) {
-+		for (idx = 0; idx < num_engines; idx++)
-+			check_and_end_cork(fd, cork[engine_idx]);
-+	}
-+	pmu_read_multi(pmu_fd[0], 2 * num_engines, after);
-+
-+	for (idx = 0; idx < num_engines * 2; idx += 2) {
-+		engine_idx = idx >> 1;
-+
-+		if (flags & TEST_LOAD)
-+			check_and_end_cork(fd, cork[engine_idx]);
-+		if (cork[engine_idx])
-+			xe_cork_destroy(fd, cork[engine_idx]);
-+		close(pmu_fd[idx]);
-+		close(pmu_fd[idx + 1]);
-+	}
-+
-+	xe_vm_destroy(fd, vm);
-+	put_ahnd(ahnd);
-+
-+	log_all_engines(num_engines, idle_idx, TEST_LOAD, before, after);
-+}
-+
- static void engine_activity_load_all(int fd, int num_engines, unsigned int flags)
- {
- 	uint64_t ahnd, config, before[2 * num_engines], after[2 * num_engines];
-@@ -742,6 +807,14 @@ igt_main
- 	test_each_engine("engine-activity-single-load-idle", fd, eci)
- 		engine_activity_load_single(fd, num_engines, eci, TEST_LOAD | TEST_TRAILING_IDLE);
- 
-+	igt_describe("Validate engine activity when all except one engine is loaded");
-+	test_each_engine("engine-activity-most-load", fd, eci)
-+		engine_activity_load_most(fd, num_engines, eci, TEST_LOAD);
-+
-+	igt_describe("Validate engine activity when all except one engine is loaded and trailing idle");
-+	test_each_engine("engine-activity-most-load-idle", fd, eci)
-+		engine_activity_load_most(fd, num_engines, eci, TEST_LOAD | TEST_TRAILING_IDLE);
-+
- 	igt_describe("Validate engine activity by loading all engines simultaenously");
- 	igt_subtest("engine-activity-all-load")
- 		engine_activity_load_all(fd, num_engines, TEST_LOAD);
--- 
-2.47.1
+CI Bug Log - changes from XEIGT_8357_BAT -> XEIGTPW_13092_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13092_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-adlp-vf:        [PASS][1] -> [ABORT][2] ([Intel XE#3970]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8357/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13092/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelp@render:
+    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#3970])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8357/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13092/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+
+  
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8357 -> IGTPW_13092
+
+  IGTPW_13092: 13092
+  IGT_8357: 8357
+  xe-3050-ca0305cadc2d34c8887b891b96226af17571b2a3: ca0305cadc2d34c8887b891b96226af17571b2a3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13092/index.html
+
+--===============3297242381855616680==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add more tests to validate engine activity (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148597/">https://patchwork.freedesktop.org/series/148597/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13092/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13092/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8357_BAT -&gt; XEIGTPW_13092_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13092_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8357/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13092/bat-adlp-vf/igt@xe_pat@pat-index-xelp.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp@render:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8357/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13092/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8357 -&gt; IGTPW_13092</li>
+</ul>
+<p>IGTPW_13092: 13092<br />
+  IGT_8357: 8357<br />
+  xe-3050-ca0305cadc2d34c8887b891b96226af17571b2a3: ca0305cadc2d34c8887b891b96226af17571b2a3</p>
+
+</body>
+</html>
+
+--===============3297242381855616680==--
