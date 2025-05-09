@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A13E9C3ABBC
-	for <igt-dev@archiver.kernel.org>; Fri,  9 May 2025 06:30:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67CB9C3ABC3
+	for <igt-dev@archiver.kernel.org>; Fri,  9 May 2025 07:00:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 47DA610E9B4;
-	Fri,  9 May 2025 06:30:57 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n/igx+8v";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D51E10E9B4
- for <igt-dev@lists.freedesktop.org>; Fri,  9 May 2025 06:30:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746772256; x=1778308256;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nrDYG5FVBc0K3lXALy9W8TJsUqulxfuF795jqnvxSIc=;
- b=n/igx+8vNNk3WmwMTI5InAG+/su0UB6l6gx2g8caGjxWwGNG8QF8lkt2
- S6Alks+E0o9dpGbVS0MXzXkqwf9zxf+Gj6a3UBQtQaWeZ4XqdrjAn3jf6
- aE7apTdt21spl2YowKBKFp6D1EUmyc2xruDmkVKyGJ+zKsci3qnySSGyi
- ATpkhlNuzmxObbU6iH5nrTSx0Ncw9vhqogLCUV+rRU2OjojRlMS135JJJ
- PndprLImWWR1Z6ixvQrVxXUJUJdl2zKhuvZyBWA4OMx/tj8Ux2KQtu48P
- E1BS8fMzUVtkVJsob4sOG8b7grnGL6b1DTzAK2A7n/xqOsaaduglXxbcQ g==;
-X-CSE-ConnectionGUID: dnlkauzISMqfdsuGxz78CA==
-X-CSE-MsgGUID: Xl9dwdYyQviZmS905RQHYg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="66121121"
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; d="scan'208";a="66121121"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 23:30:52 -0700
-X-CSE-ConnectionGUID: EyJS9VKyRE2+CmzMaKbefg==
-X-CSE-MsgGUID: Eb9tNs8OT4ijX4rr285exw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; d="scan'208";a="137047217"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 23:30:51 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com, uma.shankar@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] tests/kms_setmode: Check timing twice before asserting
- igt@kms_setmode@basic
-Date: Fri,  9 May 2025 12:16:34 +0530
-Message-Id: <20250509064634.809197-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1E71E10E9BA;
+	Fri,  9 May 2025 07:00:46 +0000 (UTC)
+Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C957210E9BA;
+ Fri,  9 May 2025 07:00:44 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6779996883892839643=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fdsc=3A_St?=
+ =?utf-8?q?ore_valid_DSC_outputs_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 09 May 2025 07:00:44 -0000
+Message-ID: <174677404481.62575.552226195679570634@c664b1dc75d1>
+X-Patchwork-Hint: ignore
+References: <20250508072620.1310699-1-swati2.sharma@intel.com>
+In-Reply-To: <20250508072620.1310699-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,96 +37,173 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The check_timings() function used to fail tests if vblank accuracy was slightly
-off, which was too strict for High Refresh Rate (HRR) displays. HRR modes, are
-more sensitive to small timing variations due to their shorter frame and
-scanline times.
+--===============6779996883892839643==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This change adjusts the accuracy check to allow retries and provides more
-flexibility for minor timing differences, which is important for HRR tests.
+== Series Details ==
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_setmode.c | 42 ++++++++++++++++++++++++++++++------------
- 1 file changed, 30 insertions(+), 12 deletions(-)
+Series: tests/intel/kms_dsc: Store valid DSC outputs (rev3)
+URL   : https://patchwork.freedesktop.org/series/145015/
+State : success
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 484c3a95f..f58f05ff1 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -461,7 +461,7 @@ static int test_stealing(int fd, struct crtc_config *crtc, uint32_t *ids)
- #define frame_time(km) (1000.0 * (km)->htotal * (km)->vtotal / (km)->clock)
- #define line_time(km) (1000.0 * (km)->htotal / (km)->clock)
- 
--static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
-+static bool check_timings(int crtc_idx, const drmModeModeInfo *kmode)
- {
- #define CALIBRATE_TS_STEPS 120 /* ~2s has to be less than 128! */
- 	drmVBlank wait;
-@@ -540,9 +540,12 @@ static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
- 		 100 * accuracy / mean, accuracy / line_time(kmode));
- 
- 	/* 99.7% samples within one scanline on each side of mean */
--	igt_assert_f(accuracy < line_time(kmode),
--		     "vblank accuracy (%.3fus, %.1f%%) worse than a scanline (%.3fus)\n",
--		     accuracy, 100 * accuracy / mean, line_time(kmode));
-+	if (accuracy >= line_time(kmode)) {
-+		igt_info("vblank accuracy (%.3fus, %.1f%%) worse than a scanline (%.3fus)\n",
-+			  accuracy, 100 * accuracy / mean, line_time(kmode));
-+
-+		return false;
-+	}
- 
- 	/* At least 90% of frame times fall within the one scanline on each
- 	 * side of expected mean.
-@@ -565,12 +568,18 @@ static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
- 	 * See:
- 	 * https://en.wikipedia.org/wiki/Standard_deviation#Rules_for_normally_distributed_data
- 	 */
--	igt_assert_f(fabs(mean - expected) < max(line_time(kmode), 1.718 * stddev),
--		     "vblank interval differs from modeline! expected %.1fus, measured %1.fus +- %.3fus, difference %.1fus (%.1f sigma, %.1f scanlines)\n",
--		     expected, mean, stddev,
--		     fabs(mean - expected),
--		     fabs(mean - expected) / stddev,
--		     fabs(mean - expected) / line_time(kmode));
-+	if (fabs(mean - expected) >= max(line_time(kmode), 1.718 * stddev)) {
-+		igt_info("vblank interval differs from modeline! expected %.1fus, "
-+			 "measured %1.fus +- %.3fus, difference %.1fus (%.1f sigma, %.1f scanlines)\n",
-+			  expected, mean, stddev,
-+			  fabs(mean - expected),
-+			  fabs(mean - expected) / stddev,
-+			  fabs(mean - expected) / line_time(kmode));
-+
-+		return false;
-+	}
-+
-+	return true;
- }
- 
- static void test_crtc_config(const struct test_config *tconf,
-@@ -654,8 +663,17 @@ retry:
- 
- 	igt_assert(config_failed == !!(tconf->flags & TEST_INVALID));
- 
--	if (ret == 0 && tconf->flags & TEST_TIMINGS)
--		check_timings(crtcs[0].crtc_idx, &crtcs[0].mode);
-+	if (ret == 0 && tconf->flags & TEST_TIMINGS) {
-+		bool status = false;
-+
-+		for (int attempt = 1; attempt <= 2; attempt++) {
-+			status = check_timings(crtcs[0].crtc_idx, &crtcs[0].mode);
-+			if (status)
-+				break;
-+		}
-+
-+		igt_assert_f(status, "VBlank timing test failed after 2 attempt(s)\n");
-+	}
- 
- 	return;
- }
--- 
-2.25.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8359_BAT -> XEIGTPW_13099_BAT
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with XEIGTPW_13099_BAT need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_13099_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13099_BAT:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-lnl-1:          [SKIP][1] ([Intel XE#2244]) -> [SKIP][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8359/bat-lnl-1/igt@kms_dsc@dsc-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/bat-lnl-1/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-7:         [SKIP][3] ([Intel XE#455]) -> [SKIP][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8359/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+    - bat-bmg-1:          [SKIP][5] ([Intel XE#2244]) -> [SKIP][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8359/bat-bmg-1/igt@kms_dsc@dsc-basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/bat-bmg-1/igt@kms_dsc@dsc-basic.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13099_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_module_load@load:
+    - bat-dg2-oem2:       [PASS][7] -> [ABORT][8] ([Intel XE#4966])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8359/bat-dg2-oem2/igt@xe_module_load@load.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/bat-dg2-oem2/igt@xe_module_load@load.html
+
+  
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#4966]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4966
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8359 -> IGTPW_13099
+  * Linux: xe-3051-2862c51f227a36e59ee4a9bb90b690c9855a6246 -> xe-3057-0a4534e5a7d58144a24c64c722c771ec80b1fe32
+
+  IGTPW_13099: 13099
+  IGT_8359: 807f0cbcc771d1d0bb0d27a78231a5f92dc02126 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3051-2862c51f227a36e59ee4a9bb90b690c9855a6246: 2862c51f227a36e59ee4a9bb90b690c9855a6246
+  xe-3057-0a4534e5a7d58144a24c64c722c771ec80b1fe32: 0a4534e5a7d58144a24c64c722c771ec80b1fe32
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/index.html
+
+--===============6779996883892839643==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_dsc: Store valid DSC outputs (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145015/">https://patchwork.freedesktop.org/series/145015/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8359_BAT -&gt; XEIGTPW_13099_BAT</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with XEIGTPW_13099_BAT need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_13099_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13099_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_dsc@dsc-basic:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8359/bat-lnl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/bat-lnl-1/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8359/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8359/bat-bmg-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/bat-bmg-1/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13099_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_module_load@load:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8359/bat-dg2-oem2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13099/bat-dg2-oem2/igt@xe_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4966">Intel XE#4966</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8359 -&gt; IGTPW_13099</li>
+<li>Linux: xe-3051-2862c51f227a36e59ee4a9bb90b690c9855a6246 -&gt; xe-3057-0a4534e5a7d58144a24c64c722c771ec80b1fe32</li>
+</ul>
+<p>IGTPW_13099: 13099<br />
+  IGT_8359: 807f0cbcc771d1d0bb0d27a78231a5f92dc02126 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3051-2862c51f227a36e59ee4a9bb90b690c9855a6246: 2862c51f227a36e59ee4a9bb90b690c9855a6246<br />
+  xe-3057-0a4534e5a7d58144a24c64c722c771ec80b1fe32: 0a4534e5a7d58144a24c64c722c771ec80b1fe32</p>
+
+</body>
+</html>
+
+--===============6779996883892839643==--
