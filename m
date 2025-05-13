@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BEDBC3ABC3
-	for <igt-dev@archiver.kernel.org>; Tue, 13 May 2025 18:59:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E634AC3ABD8
+	for <igt-dev@archiver.kernel.org>; Tue, 13 May 2025 18:59:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 005FD10E5EB;
-	Tue, 13 May 2025 18:59:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9A1B110E5ED;
+	Tue, 13 May 2025 18:59:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nMLLoRKB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iKG1Is0v";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21D4910E5EB
- for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 18:59:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B85910E5ED
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 18:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747162758; x=1778698758;
+ t=1747162761; x=1778698761;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XNBwx3s0oOAbS6Z7cKQp/2Km0G5vo04WqPLNNXhFgEs=;
- b=nMLLoRKBli/GibQLQYJgmWbnv9xEGCgTjy/lZuC3dqqNfd1MVad/vbEU
- ebigkITBIZMXHS16zq5EWRjpMKWWlOWZgY4rUIn4OGuzzLZfSjcP8uDmu
- 6rjonu5dlF1loSzRKT1Z88qhqagIXuZzqlJWOSazFGXhMGDE/04TwFjWN
- hKX2xDL9jWEQwSH7l5/3osnM6jvbSQ6YurjSzNXDWjQYiVpBLbkhEzW9b
- A6gQh3ZR+nC2dvV9JGjfUdxH1l1lQT2JfeqFj6ybrtNBK9VplE1RCXacl
- +A8SEjgt9aVWauu/+cG6Eaoqkps68XGoGAZwYDEjwzD1b+8qjtV5O3x1f A==;
-X-CSE-ConnectionGUID: KCWPq5SjQXKQfvQq79OfUw==
-X-CSE-MsgGUID: zeAJoeBDT9+aB1hOx60Xag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="60428203"
-X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="60428203"
+ bh=QnJVefyxzpiI7CJpaC/Z2I5dpWHRcqbYRKhaTr3TsBc=;
+ b=iKG1Is0vl0sGumamSE4tlGdvU+lcbNodDPed6ddlKrY5a0Y9rJvkSurZ
+ Nq6cUa6MzwBXA+QFuhDzLwLMKuYKPwQotVl+KpPYIqnyASQAnqRhDC10K
+ KIwdLDnrKZIcztJ92aXzU9Ia/oexQ+7ljkXWN9AJg9ZvYtbN70TjRG7XN
+ zdjiipnzq0kjBGOTvJOFZYBeBQoqdyBs5cf5/o87yxgdlmZf0YJIH5Kkx
+ ZiFrWCvcAgTzYrMMl2lpPT53XXRliMOxq7OYVyZvabPe+bfH4VO77WVDL
+ EPHYq7TPbNzWsj6auoHdLXTZqRVgY+KsoFjApv5QE6R4drRWR8KUABUTt Q==;
+X-CSE-ConnectionGUID: 8tm48I/9Tmu/0WgTd5+4Sg==
+X-CSE-MsgGUID: HPuOHzYcSAyK0AJqZ/zaUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="60428217"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="60428217"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 11:59:13 -0700
-X-CSE-ConnectionGUID: axPduNXWRdq+oTnv0XBHBA==
-X-CSE-MsgGUID: iNCoT9gtSmWpKJw7g8i3cA==
+ 13 May 2025 11:59:17 -0700
+X-CSE-ConnectionGUID: UI0kIemARfSB+HNXZDK8EQ==
+X-CSE-MsgGUID: BYK/q8uHQQixGz3LrP1UUA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="137841087"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="137841109"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.60])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 11:59:11 -0700
+ 13 May 2025 11:59:16 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 14/15] tests/xe_copy_basic: add mem-copy matrix subtests
-Date: Tue, 13 May 2025 20:58:09 +0200
-Message-ID: <20250513185811.897232-15-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 15/15] lib/intel_blt: add mem-copy debug facility
+Date: Tue, 13 May 2025 20:58:10 +0200
+Message-ID: <20250513185811.897232-16-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
 References: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
@@ -70,119 +70,146 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify intel_blt is able to properly copy matrix from one buffer
-to another.
+Sometimes dumping batch with command is useful, especially during
+debugging. Basic functions in intel_blt like block-copy/fast-copy/
+surf-ctrl-copy) already have such batch dump code. Add similar
+function for mem-copy.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
 ---
- tests/intel/xe_copy_basic.c | 52 +++++++++++++++++++++++++++++++++----
- 1 file changed, 47 insertions(+), 5 deletions(-)
+ lib/intel_blt.c             | 37 +++++++++++++++++++++++++++++++++++++
+ lib/intel_blt.h             |  1 +
+ tests/intel/xe_copy_basic.c | 28 +++++++++++++++++++++++++++-
+ 3 files changed, 65 insertions(+), 1 deletion(-)
 
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 77a03aff4e..8a05f482fd 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -1887,6 +1887,33 @@ void blt_mem_copy_init(int fd, struct blt_mem_copy_data *mem,
+ 	mem->copy_type = copy_type;
+ }
+ 
++static void dump_bb_mem_copy_cmd(struct xe_mem_copy_data *data)
++{
++	uint32_t *cmd = (uint32_t *) data;
++
++	igt_info("BB details:\n");
++	igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, length: %d> "
++		 "[copy type: %d, mode: %d]\n",
++		 cmd[0], data->dw00.client, data->dw00.opcode, data->dw00.length,
++		 data->dw00.copy_type, data->dw00.mode);
++	igt_info(" dw01: [%08x] width: %u\n", cmd[1],
++		 data->dw00.mode == MODE_BYTE ? data->dw01.byte_copy.width :
++						data->dw01.page_copy.width);
++	igt_info(" dw02: [%08x] height: %u\n", cmd[2], data->dw02.height);
++	igt_info(" dw03: [%08x] src pitch: %u\n", cmd[3], data->dw03.src_pitch);
++	igt_info(" dw04: [%08x] dst pitch: %u\n", cmd[4], data->dw04.dst_pitch);
++	igt_info(" dw05: [%08x] src offset lo (0x%x)\n",
++		 cmd[5], data->dw05.src_address_lo);
++	igt_info(" dw06: [%08x] src offset hi (0x%x)\n",
++		 cmd[6], data->dw06.src_address_hi);
++	igt_info(" dw07: [%08x] dst offset lo (0x%x)\n",
++		 cmd[7], data->dw07.dst_address_lo);
++	igt_info(" dw08: [%08x] dst offset hi (0x%x)\n",
++		 cmd[8], data->dw08.dst_address_hi);
++	igt_info(" dw09: [%08x] mocs <dst: 0x%x, src: 0x%x>\n",
++		 cmd[8], data->dw09.dst_mocs, data->dw09.src_mocs);
++}
++
+ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
+ 				  const struct blt_mem_copy_data *mem,
+ 				  uint64_t bb_pos, bool emit_bbe)
+@@ -1953,6 +1980,11 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
+ 		igt_assert(bb_pos + sizeof(data) < mem->bb.size);
+ 		memcpy(bb + bb_pos, &data, sizeof(data));
+ 		bb_pos += sizeof(data);
++
++		if (mem->print_bb) {
++			igt_info("[MEM COPY]\n");
++			dump_bb_mem_copy_cmd(&data);
++		}
+ 	} else {
+ 		remain = mem->src.width;
+ 
+@@ -1982,6 +2014,11 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
+ 			data.dw06.src_address_hi = src_offset >> 32;
+ 			data.dw07.dst_address_lo = dst_offset;
+ 			data.dw08.dst_address_hi = dst_offset >> 32;
++
++			if (mem->print_bb) {
++				igt_info("[MEM COPY]\n");
++				dump_bb_mem_copy_cmd(&data);
++			}
+ 		}
+ 	}
+ 
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index f2509ab175..54a096c039 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -135,6 +135,7 @@ struct blt_mem_copy_data {
+ 	struct blt_mem_object src;
+ 	struct blt_mem_object dst;
+ 	struct blt_copy_batch bb;
++	bool print_bb;
+ };
+ 
+ struct blt_mem_set_data {
 diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index 7cd21131e0..7f52a6f7be 100644
+index 7f52a6f7be..450c043ff6 100644
 --- a/tests/intel/xe_copy_basic.c
 +++ b/tests/intel/xe_copy_basic.c
-@@ -62,6 +62,19 @@ struct rect {
-  * @17: 17
-  */
+@@ -19,6 +19,12 @@
  
-+/**
-+ *
-+ * SUBTEST: mem-matrix-copy-%s
-+ * Description: Test validates MEM_COPY command, it takes various
-+ *              parameters needed for the filling batch buffer for MEM_COPY command
-+ *              with size %arg[1].
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ * @2x2: 2x2
-+ * @200x127: 200x127
-+ */
-+
- static void
- mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
- 	 enum blt_memop_type type, enum blt_memop_mode mode,
-@@ -79,13 +92,17 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
- 	uint8_t *psrc, *pdst;
- 	int result, i;
+ #define MEM_FILL 0x8b
  
-+	igt_debug("size: %u, pitch: %u, width: %u, height: %u (type: %d, mode: %d)\n",
-+		  size, pitch, width, height, type, mode);
++static struct param {
++	bool print_bb;
++} param = {
++	.print_bb = false,
++};
 +
+ struct rect {
+ 	uint32_t pitch;
+ 	uint32_t width;
+@@ -98,6 +104,8 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
  	bb = xe_bo_create(fd, 0, bb_size, region, 0);
  
  	blt_mem_copy_init(fd, &mem, mode, type);
--	blt_set_mem_object(&mem.src, src_handle, size, width, width, height,
-+	blt_set_mem_object(&mem.src, src_handle, size, pitch, width, height,
++	mem.print_bb = param.print_bb;
++
+ 	blt_set_mem_object(&mem.src, src_handle, size, pitch, width, height,
  			   region, src_mocs, DEFAULT_PAT_INDEX, COMPRESSION_DISABLED);
--	blt_set_mem_object(&mem.dst, dst_handle, size, width, width, height,
-+	blt_set_mem_object(&mem.dst, dst_handle, size, pitch, width, height,
- 			   region, dst_mocs, DEFAULT_PAT_INDEX, COMPRESSION_DISABLED);
-+
- 	mem.src.ptr = xe_bo_map(fd, src_handle, size);
- 	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
- 	psrc = (uint8_t *) mem.src.ptr;
-@@ -112,8 +129,20 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
- 				break;
- 			}
- 		}
--	} else {
-+	} else if (type == TYPE_LINEAR && mode == MODE_PAGE) {
- 		result = memcmp(psrc, pdst, pitch << 8);
-+	} else {
-+		result = 0;
-+
-+		for (i = 0; i < pitch * height; i++) {
-+			if (i % pitch > width && pdst[i] != 0) {
-+				result = -1;
-+				break;
-+			} else if (i % pitch < width && psrc[i] != pdst[i]) {
-+				result = -1;
-+				break;
-+			}
-+		}
- 	}
+ 	blt_set_mem_object(&mem.dst, dst_handle, size, pitch, width, height,
+@@ -233,7 +241,25 @@ static void copy_test(int fd, struct rect *rect, enum blt_cmd_type cmd, uint32_t
+ 	free(ctx);
+ }
  
- 	intel_allocator_bind(ahnd, 0, 0);
-@@ -190,8 +219,10 @@ static void copy_test(int fd, struct rect *rect, enum blt_cmd_type cmd, uint32_t
- 	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
- 
- 	if (cmd == MEM_COPY)
--		mem_copy(fd, src_handle, dst_handle, ctx, TYPE_LINEAR, rect->mode,
--			 bo_size, pitch, rect->width, rect->height, region);
-+		mem_copy(fd, src_handle, dst_handle, ctx,
-+			 rect->height > 1 ? TYPE_MATRIX : TYPE_LINEAR,
-+			 rect->mode,
-+			 bo_size, pitch,	 rect->width, rect->height, region);
- 	else if (cmd == MEM_SET)
- 		mem_set(fd, dst_handle, ctx, bo_size, rect->width, 1, MEM_FILL, region);
- 
-@@ -214,6 +245,7 @@ igt_main
- 				 { 0, 0x8fffe, 1 } };
- 	struct rect page[] = { { 0, 1, 1, MODE_PAGE },
- 			       { 0, 17, 1, MODE_PAGE }};
-+	struct rect matrix[] = { { 4, 2, 2 }, { 256, 200, 127 } };
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
-@@ -243,6 +275,16 @@ igt_main
- 		}
- 	}
- 
-+	for (int i = 0; i < ARRAY_SIZE(matrix); i++) {
-+		igt_subtest_f("mem-matrix-copy-%ux%u", matrix[i].width, matrix[i].height) {
-+			igt_require(blt_has_mem_copy(fd));
-+			for_each_variation_r(regions, 1, set) {
-+				region = igt_collection_get_value(regions, 0);
-+				copy_test(fd, &matrix[i], MEM_COPY, region);
-+			}
-+		}
+-igt_main
++static int opt_handler(int opt, int opt_index, void *data)
++{
++	switch (opt) {
++	case 'b':
++		param.print_bb = true;
++		igt_debug("Print bb: %d\n", param.print_bb);
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
 +	}
 +
- 	for (int i = 0; i < ARRAY_SIZE(linear); i++) {
- 		igt_subtest_f("mem-set-linear-0x%x", linear[i].width) {
- 			igt_require(blt_has_mem_set(fd));
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -b\tPrint bb"
++	;
++
++igt_main_args("b", NULL, help_str, opt_handler, NULL)
+ {
+ 	int fd;
+ 	struct igt_collection *set, *regions;
 -- 
 2.43.0
 
