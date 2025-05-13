@@ -4,57 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0977EC3ABCC
-	for <igt-dev@archiver.kernel.org>; Tue, 13 May 2025 12:19:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F37E6C3ABC3
+	for <igt-dev@archiver.kernel.org>; Tue, 13 May 2025 14:05:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BA6C010E598;
-	Tue, 13 May 2025 12:19:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B0B0810E208;
+	Tue, 13 May 2025 14:05:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EzIdJkbh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="idk5ttFt";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C35E110E598
- for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 12:18:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 446BB10E208
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 14:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747138740; x=1778674740;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Jebi2TS0DG05qFOuqtRfozBw9hxsyzQyMvdPFufhDvI=;
- b=EzIdJkbhQqzaDZVAW8K75YP9eZ68nX8+4OZzzomwJ8R4y1a4OwzG102z
- 1dHhtQ3g5OL7lqZmz4oF1IpS7iaWXwv4n71XpreOGzdBsN4gCFX3CHpL7
- NQKXVn9QHjfVR1JhG5U7XjWmdyzwsQyyiEOrVAENeX7+96bzllfcf9X/i
- BlYrM7uNk7AsU1WaQz2NLP701i8wqwhCmcAZoEQnxq3Hhf/XRw+45Ac1r
- 0kKFm8X6rWAk0H8ik5c3gW+JCi9vwKFcmQ9ZZncztLy4OrboOPdr4JenK
- 38GFMnolcTOw0UG9pROJNsE6+wYAxELjpkoRnbxqZfeJclblIm9ksObUr g==;
-X-CSE-ConnectionGUID: IMg0eh9lTeiTvRS0rnte/w==
-X-CSE-MsgGUID: kJeCmnwqTrmDJw1v/0Zb1g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="48911100"
-X-IronPort-AV: E=Sophos;i="6.15,285,1739865600"; d="scan'208";a="48911100"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 05:18:59 -0700
-X-CSE-ConnectionGUID: FY4+TstYSNGhmDdC/RfA6g==
-X-CSE-MsgGUID: CeD9VXD7TMiNBMTodKFKsQ==
+ t=1747145113; x=1778681113;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Ety2exMg1xXd9xlaI/CuNHccjj2rZ2rTu1tROl+2suA=;
+ b=idk5ttFt0UTN/Vvaa1WSXo0vquJwtW58ubYZNXtbz///BkkRSeyiyfGH
+ MaUkQkDpCFgzjfGp8Py3KQ/RISYHz+oLcNGEWSnJt38xu+SYoNbYpZiur
+ J3QLQ2EBUrlTn1rjI1QQNyD/+w41nB1jzXwp1DM48spRYKS4tJM6aor8v
+ OOzkmi0bH8b+04dnxG2nMBPLdJa/4HAgF5qBAYVmaVbJi4oYtL17dQkQU
+ 9u7u5AgHXdukdfQVk6FV6NW3PTupbvIzPIx9Ni/HyzEPUW0yQKNcZLYfd
+ FXXMRqp45SFzLeiwTgaRVxhugW5loyhvmNzo+0BBqH/5RXdmomfiVfFew A==;
+X-CSE-ConnectionGUID: C4ug1eNwQ3O4cj9bHCyuIw==
+X-CSE-MsgGUID: 6Shp1RgRS0GbJUqhInA51w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="48102098"
+X-IronPort-AV: E=Sophos;i="6.15,285,1739865600"; d="scan'208";a="48102098"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2025 07:05:13 -0700
+X-CSE-ConnectionGUID: 9TPALUbdScyK7ygI5CDf3w==
+X-CSE-MsgGUID: iY0ZFYduRPWgJAsYMypmFA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,285,1739865600"; d="scan'208";a="138669495"
-Received: from administrator-system-product-name.igk.intel.com
- ([10.91.214.181])
- by fmviesa009.fm.intel.com with ESMTP; 13 May 2025 05:18:59 -0700
-From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,285,1739865600"; d="scan'208";a="137583396"
+Received: from unknown (HELO rtauro-desk.iind.intel.com) ([10.190.239.27])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2025 07:05:10 -0700
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v1 2/2] tests/intel/kms_frontbuffer_tracking: pass
- non-NULL output pointer
-Date: Tue, 13 May 2025 14:19:18 +0200
-Message-ID: <20250513121918.2758842-3-michal.grzelak@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250513121918.2758842-1-michal.grzelak@intel.com>
-References: <20250513121918.2758842-1-michal.grzelak@intel.com>
+Cc: riana.tauro@intel.com, anshuman.gupta@intel.com, lucas.demarchi@intel.com,
+ kamil.konieczny@intel.com, rodrigo.vivi@intel.com,
+ aravind.iddamsetty@linux.intel.com, louis.chauvet@bootlin.com
+Subject: [PATCH i-g-t v3 0/5] Add test to validate survivability mode
+Date: Tue, 13 May 2025 19:58:20 +0530
+Message-ID: <20250513142827.1129334-1-riana.tauro@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,27 +68,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently, NULL pointer is passed as output to the test. Pass
-non-NULL output pointer.
+Add helper functions for configfs and add test to validate
+survivability mode using configfs attribute. This tests unbinds the card,
+sets survivability mode and rebinds the card. 
 
-Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
----
- tests/intel/kms_frontbuffer_tracking.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The card enters survivability mode if supported.
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 0809352cb..d0b21b694 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -2329,7 +2329,7 @@ static void do_status_assertions(int flags)
- 	}
- 
- 	if (flags & ASSERT_PSR_ENABLED) {
--		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1, NULL),
-+		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1, prim_mode_params.output),
- 			     "PSR still disabled\n");
- 		psr_sink_error_check(drm.debugfs, PSR_MODE_1, prim_mode_params.output);
- 	} else if (flags & ASSERT_PSR_DISABLED)
+Rev3: Fix review comments
+
+José Expósito (2):
+  lib/igt_aux: Move is_mountpoint() to igt_aux
+  lib/igt_configfs: Add helper to mount configfs
+
+Riana Tauro (3):
+  lib/igt_fs: Rename igt_io to igt_fs to add additional helpers
+  lib/igt_fs: Add helper functions to create and remove directories
+  tests/intel/xe_configfs: Add test to validate survivability mode
+
+ .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   2 +-
+ lib/igt.h                                     |   1 +
+ lib/igt_aux.c                                 |  31 ++++++
+ lib/igt_aux.h                                 |   2 +
+ lib/igt_configfs.c                            |  86 +++++++++++++++
+ lib/igt_configfs.h                            |  15 +++
+ lib/igt_debugfs.c                             |  29 +----
+ lib/{igt_io.c => igt_fs.c}                    |  61 +++++++++--
+ lib/{igt_io.h => igt_fs.h}                    |   8 +-
+ lib/igt_sysfs.c                               |   2 +-
+ lib/meson.build                               |   3 +-
+ tests/intel/xe_configfs.c                     | 100 ++++++++++++++++++
+ tests/meson.build                             |   1 +
+ tests/msm/msm_mapping.c                       |   2 +-
+ tests/msm/msm_recovery.c                      |   2 +-
+ 15 files changed, 303 insertions(+), 42 deletions(-)
+ create mode 100644 lib/igt_configfs.c
+ create mode 100644 lib/igt_configfs.h
+ rename lib/{igt_io.c => igt_fs.c} (68%)
+ rename lib/{igt_io.h => igt_fs.h} (87%)
+ create mode 100644 tests/intel/xe_configfs.c
+
 -- 
-2.45.2
+2.47.1
 
