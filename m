@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9F90C3ABC9
-	for <igt-dev@archiver.kernel.org>; Tue, 13 May 2025 18:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AFF7C3ABC9
+	for <igt-dev@archiver.kernel.org>; Tue, 13 May 2025 18:58:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7461910E5DE;
-	Tue, 13 May 2025 18:58:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1514D10E5DF;
+	Tue, 13 May 2025 18:58:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gvTVaqAu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eUrDdGeG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0366610E5DE
- for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 18:58:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 984BF10E5DF
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 18:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747162709; x=1778698709;
+ t=1747162712; x=1778698712;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qrLNkJk6/uxmcMxoCpRIYddl4TIvkVyF/xCAlblBVPQ=;
- b=gvTVaqAuq0fSfdWR5OIUIrnCW4WWkmszNK4la5kdTsFkMK80mvXCx/yH
- 9fwsPtPVVXCK11zt6RKD6Oqhto59FWqHnZ6cXDis5bKfeFCefSuR4dIwM
- IEm9vJuzNt2ognRcXAG59iW3u4HRu8o+649YtC52uQ3G2M6LMOYnhw1H2
- A7+u+sXRFQ8DxOMAj9sDICTrbLU1uHBiy0z/vF77BknQDhMDnESJeXejf
- O+C1vHOJrgIy7KHAS43/MyJJ97Z2DFRpCXEdYV0rGWAGGIuaYox0MO+ya
- 2zGuyEI0bwkZwfSQ5F+W7e7eLyNlZJpF0T3E05JO1S353P0wVr5GJ7gMw Q==;
-X-CSE-ConnectionGUID: OGbJuivuSv6tVNjfzbuKqw==
-X-CSE-MsgGUID: 8IJQhlmPSliFqwdCEwQrCA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="48960598"
-X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="48960598"
+ bh=sW5430z8VKKZWeXFaMHt0wimlS2HX3sALPJVIT4Quw8=;
+ b=eUrDdGeGlk5ELEcWzhwFx4jxdq/QB3+YQKp2tDH85yi6QJ+qMHtn3k+J
+ TbugZ2i9Na76Hx+HmDReyWWN9QSWYigdtwtvQ2tHHOPj3Pl3+kLlC1xwU
+ m1Nw0MF+E4LQhjUcvSxr0shKhzBw1VeSWIx+j/+q02UUnJpmGGqY8rEYj
+ MGF6OUivvMfCi2lrPovKtQcUVJMFUop/MJcMJBUcbHB54fpcPCYdYNCKC
+ RfPSs7kb97YCDUmBLy4GTKs5kT8Cu+rra2emuL29+/NXXWAdmgE/W0Ma2
+ /Kb/lMa2s5/InpjMaLbWYX3FXiYJiE40y/HUuhB1knRBg8FjMQDIuJHoZ A==;
+X-CSE-ConnectionGUID: TEPG6ioAS1aW4vEDM8+91w==
+X-CSE-MsgGUID: IEZGXXc4QlWu7RPF+j+/cg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="48960604"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="48960604"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 11:58:28 -0700
-X-CSE-ConnectionGUID: NtQnQveTSQ+U7vlL7tZQIA==
-X-CSE-MsgGUID: 6zl+nJjLRGmcDEgyertJMQ==
+ 13 May 2025 11:58:32 -0700
+X-CSE-ConnectionGUID: ncLH6iJ5SReLsrIuLrC2Yw==
+X-CSE-MsgGUID: SqLKouEaS9CwhDuOjdvVYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="137679128"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="137679147"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.60])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 11:58:27 -0700
+ 13 May 2025 11:58:31 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 03/15] tests/xe_spin_batch: change width and pitch to be
- in valid range
-Date: Tue, 13 May 2025 20:57:58 +0200
-Message-ID: <20250513185811.897232-4-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 04/15] tests/xe_copy_basic: use non-zero pitch
+Date: Tue, 13 May 2025 20:57:59 +0200
+Message-ID: <20250513185811.897232-5-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
 References: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
@@ -71,41 +70,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For mem-copy (byte mode) width and pitch must be lesser or equal 256K.
-Limit them, avoiding setting inappropriate bits in mem-copy operation.
+Passing zero leads to use turn all bits on what's incorrect. Pass
+width as pitch to avoid undefined behavior in mem-copy and mem-set.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
 ---
- tests/intel/xe_spin_batch.c | 6 +++---
+ tests/intel/xe_copy_basic.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-index f83f4ba722..4fff34a092 100644
---- a/tests/intel/xe_spin_batch.c
-+++ b/tests/intel/xe_spin_batch.c
-@@ -318,7 +318,7 @@ static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
- static void xe_spin_mem_copy_region(int fd, struct drm_xe_engine_class_instance *hwe,
- 				    uint32_t region)
- {
--	uint32_t copy_size = SZ_4M;
-+	uint32_t copy_size = SZ_256K;
- 	uint64_t duration_ns = NSEC_PER_SEC / 10;
- 	intel_ctx_t *ctx;
- 	uint32_t vm, exec_queue;
-@@ -349,10 +349,10 @@ static void xe_spin_mem_copy_region(int fd, struct drm_xe_engine_class_instance
- 	/* Create source and destination objects used for the copy */
- 	src_handle = xe_bo_create(fd, 0, copy_size, region, 0);
- 	dst_handle = xe_bo_create(fd, 0, copy_size, region, 0);
--	blt_set_mem_object(mem_copy.src, src_handle, copy_size, 0, width, height, region,
-+	blt_set_mem_object(mem_copy.src, src_handle, copy_size, width, width, height, region,
- 			   intel_get_uc_mocs_index(fd), DEFAULT_PAT_INDEX,
- 			   M_LINEAR, COMPRESSION_DISABLED);
--	blt_set_mem_object(mem_copy.dst, dst_handle, copy_size, 0, width, height, region,
-+	blt_set_mem_object(mem_copy.dst, dst_handle, copy_size, width, width, height, region,
- 			   intel_get_uc_mocs_index(fd), DEFAULT_PAT_INDEX,
- 			   M_LINEAR, COMPRESSION_DISABLED);
- 	mem_copy.src->ptr = xe_bo_map(fd, src_handle, copy_size);
+diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
+index a43842e398..d4300b85c0 100644
+--- a/tests/intel/xe_copy_basic.c
++++ b/tests/intel/xe_copy_basic.c
+@@ -57,10 +57,10 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
+ 	bb = xe_bo_create(fd, 0, bb_size, region, 0);
+ 
+ 	blt_mem_init(fd, &mem);
+-	blt_set_mem_object(&mem.src, src_handle, size, 0, width, height,
++	blt_set_mem_object(&mem.src, src_handle, size, width, width, height,
+ 			   region, src_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
+ 			   COMPRESSION_DISABLED);
+-	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height,
++	blt_set_mem_object(&mem.dst, dst_handle, size, width, width, height,
+ 			   region, dst_mocs, DEFAULT_PAT_INDEX, M_LINEAR,
+ 			   COMPRESSION_DISABLED);
+ 	mem.src.ptr = xe_bo_map(fd, src_handle, size);
+@@ -108,7 +108,7 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
+ 
+ 	bb = xe_bo_create(fd, 0, bb_size, region, 0);
+ 	blt_mem_init(fd, &mem);
+-	blt_set_mem_object(&mem.dst, dst_handle, size, 0, width, height, region,
++	blt_set_mem_object(&mem.dst, dst_handle, size, width, width, height, region,
+ 			   dst_mocs, DEFAULT_PAT_INDEX, M_LINEAR, COMPRESSION_DISABLED);
+ 	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
+ 	blt_set_batch(&mem.bb, bb, bb_size, region);
 -- 
 2.43.0
 
