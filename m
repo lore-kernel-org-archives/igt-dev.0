@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39841C3ABC3
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86BCCC3ABC9
 	for <igt-dev@archiver.kernel.org>; Tue, 13 May 2025 18:58:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 319D810E5DC;
-	Tue, 13 May 2025 18:58:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E9E4410E5CD;
+	Tue, 13 May 2025 18:58:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BzI8itcO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZAYCWmzl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D4C010E5DC
- for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 18:58:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A0F210E5CD
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 18:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747162701; x=1778698701;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=hfiZhSem2p/1yO7vs5lDVMv7y5df4CRBslzEHmr/z34=;
- b=BzI8itcOrH+l0Ko//e4jgySJKNjqs94P4Ajho+gP3bWc1+0cw6aW3tkH
- qA3YXBFihNQgIL5iLd4B5sBf2gL0S4TxBN8t51yqLZVSBD1b9+ogS80Bo
- TJdCcR2OlQgyi4PTfIr0/i3CmrBQyBAmTJCfHHk3/R5IX4TpzKP4848gT
- 6NdmY7AHCDQ4TFTnmgNy4XyybzSTKhOZIhNb+KyRovrn+q5MimRqKSPFI
- FdHMdsPIyQnUerRAZfyF5yUBuThuCyLR/ztbGkiMF6nqmEUIratNi64Km
- wvMAuRpNSLychdZwrPN+EW5xt0ZWxO1f4UqOFSYqw0WNpSvpxEAhTrjkv Q==;
-X-CSE-ConnectionGUID: 26MvwLYHSASR764r2/N6Ug==
-X-CSE-MsgGUID: 6gGX3oX7Rfqs3yZfGJsKgQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="48960579"
-X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="48960579"
+ t=1747162697; x=1778698697;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=x9vOJRDznBzCdcEsLNaI8YAKJx2PJCKauXxqtMgRTtI=;
+ b=ZAYCWmzlIuT56i9nuX1wDB5+Te7NpzRPiStkidW1buBqQeCe9c/DWgdV
+ CEcOFNfRiXNjPLldNl57Cjv2rtbxFbxYH8Cf693VYtKM/JMS6dq+nBQJ3
+ fNe8z/OLya3bxBkW+DR4FJuyJ9CFGVDHmvm8rCX7QCNiUXddUhCqYNSix
+ ZSKy4ij0N/uYZUkEXJvMYqfHL1N0R/Wqd95mABz7B0KiQGQa5lCTH/X4M
+ utIJPtee9hjat/RRLv439N49P9YIVDppvFEJSV4jqdSPgdDOBY6+6h13f
+ 5Tk4I0sUUv/G67W94ZNy5AaDDuAJQ/MZGG3V5eUDEcSdODrJrDcoPdpSn Q==;
+X-CSE-ConnectionGUID: z/qG4eC6TgST0XK0ztAfJQ==
+X-CSE-MsgGUID: S1lLdkRgTx6gAepYMAX+qA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="48960571"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="48960571"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 11:58:20 -0700
-X-CSE-ConnectionGUID: guOm8Ai3Rt2kRuZh9ArdRw==
-X-CSE-MsgGUID: K9f3jd6PS9WUd6PIJ3/niA==
+ 13 May 2025 11:58:17 -0700
+X-CSE-ConnectionGUID: OfUWYpKmQ9CMa+jE2Lf36A==
+X-CSE-MsgGUID: 7nc6fcbzTeGRC1tbIQVLog==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="137679105"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="137679093"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.60])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 11:58:19 -0700
+ 13 May 2025 11:58:15 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 01/15] lib/xe_spin: limit width/pitch for mem-copy
-Date: Tue, 13 May 2025 20:57:56 +0200
-Message-ID: <20250513185811.897232-2-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 00/15] Improve mem-copy/mem-set lib and tests
+Date: Tue, 13 May 2025 20:57:55 +0200
+Message-ID: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
-References: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -70,66 +68,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Mem-copy for byte copy requires width/pitch to be max 256K
-(higher bits have different meaning and setting them might lead
-to undefined behavior). If witch/pitch are too high limit them to
-the maximum possible for the operation. Asserting might lead to
-test stucking in multithreading scenarios so displaying warning
-was selected instead.
+There were missing page and matrix tests in mem-copy. Apart of
+that batch emission code allowed to set invalid bits in the command.
+Fix all of these.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
----
- lib/xe/xe_spin.c | 35 +++++++++++++++++++++++++++++++----
- 1 file changed, 31 insertions(+), 4 deletions(-)
 
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index a92903b6bd..6683d1f351 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -126,11 +126,38 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 	}
- 
- 	if (opts->mem_copy) {
-+		uint32_t src_width, src_pitch, dst_width, dst_pitch;
-+
-+		src_width = opts->mem_copy->src->width;
-+		src_pitch = opts->mem_copy->src->pitch;
-+		dst_width = opts->mem_copy->dst->width;
-+		dst_pitch = opts->mem_copy->dst->pitch;
-+
-+		if (src_width > dst_width) {
-+			igt_warn("src width must be <= dst width\n");
-+			src_width = dst_width;
-+		}
-+
-+		if (src_width > SZ_256K) {
-+			igt_warn("src width must be less than 256K, limiting it\n");
-+			src_width = SZ_256K;
-+		}
-+
-+		if (src_pitch > SZ_256K) {
-+			igt_warn("src pitch must be less than 256K, limiting it\n");
-+			src_pitch = SZ_256K;
-+		}
-+
-+		if (dst_pitch > SZ_256K) {
-+			igt_warn("dst pitch must be less than 256K, limiting it\n");
-+			dst_pitch = SZ_256K;
-+		}
-+
- 		spin->batch[b++] = MEM_COPY_CMD;
--		spin->batch[b++] = opts->mem_copy->src->width - 1;
--		spin->batch[b++] = opts->mem_copy->src->height - 1;
--		spin->batch[b++] = opts->mem_copy->src->pitch - 1;
--		spin->batch[b++] = opts->mem_copy->dst->pitch - 1;
-+		spin->batch[b++] = src_width - 1;
-+		spin->batch[b++] = 1;  /* for byte copying this is ignored */
-+		spin->batch[b++] = src_pitch - 1;
-+		spin->batch[b++] = dst_pitch - 1;
- 		spin->batch[b++] = opts->mem_copy->src_offset;
- 		spin->batch[b++] = opts->mem_copy->src_offset << 32;
- 		spin->batch[b++] = opts->mem_copy->dst_offset;
+Zbigniew Kempczyński (15):
+  lib/xe_spin: limit width/pitch for mem-copy
+  tests/xe_render_copy: change width and pitch to be in valid range
+  tests/xe_spin_batch: change width and pitch to be in valid range
+  tests/xe_copy_basic: use non-zero pitch
+  lib/intel_cmds_info: rename M to TYPE in blt_memop_type
+  lib/intel_blt: separate mem-copy and mem-set
+  lib/intel_cmds_info: add blt_memop_mode (byte/page)
+  lib/intel_blt: add emit batchbuffer end
+  lib/intel_blt: use struct instead of inline coding
+  tests/xe_copy_basic: replace size to rect which keeps objects geometry
+  tests/xe_copy_basic: add testcase with large buffer size
+  tests/xe_copy_basic: add subtest to verify mem-copy in pages
+  lib/intel_blt: add support for matrix mem-copy
+  tests/xe_copy_basic: add mem-copy matrix subtests
+  lib/intel_blt: add mem-copy debug facility
+
+ lib/intel_blt.c              | 267 +++++++++++++++++++++++++++++++----
+ lib/intel_blt.h              |  27 +++-
+ lib/intel_cmds_info.c        |   8 +-
+ lib/intel_cmds_info.h        |   9 +-
+ lib/xe/xe_spin.c             |  35 ++++-
+ tests/intel/xe_copy_basic.c  | 193 ++++++++++++++++++++-----
+ tests/intel/xe_render_copy.c |  10 +-
+ tests/intel/xe_spin_batch.c  |  12 +-
+ 8 files changed, 471 insertions(+), 90 deletions(-)
+
 -- 
 2.43.0
 
