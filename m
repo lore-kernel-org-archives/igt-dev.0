@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDDDFC3ABC9
-	for <igt-dev@archiver.kernel.org>; Tue, 13 May 2025 18:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 129C3C3ABC9
+	for <igt-dev@archiver.kernel.org>; Tue, 13 May 2025 18:58:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A8DAE10E5E2;
-	Tue, 13 May 2025 18:58:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BABBE10E5E4;
+	Tue, 13 May 2025 18:58:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YU8OpSP2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NAuoLjx8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 499B610E5E4
- for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 18:58:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D388E10E5E4
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 May 2025 18:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747162724; x=1778698724;
+ t=1747162728; x=1778698728;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=AHXATSY5Y0BX6L2JIOpXu6GX7a43EqQTNnXKJ/1HdS4=;
- b=YU8OpSP2TCJ7efUzf/LJAfpBtMlXlSo858bDW8jdw82TFrISElwGKrnM
- FLdqqy+vpqnbLVpQwK8O87AgGEZkySkqjHjDB+ZtwJmOZylD3HUe8oINA
- ZCDaqIe+gTwHv+lYcxPzPYd5ZTHv87uO0Np+utcgkUh16tdC203naLdRG
- 8kl8Sx5WSt+7x8kVCcZp/1yZXoL8e/2Sw+/fWEHSBCuNS2l/vV9HOfr4p
- 9aZGkT5jOwPvLqjP3iZ1BefhcperQCm1mnucyzavrWlVAHwfEGDjFdlTa
- n1CkIBGeNq2rRu7I3/RY6feBHnZ/2iSoaK+UjiTyJLvPtm9hg//67reag g==;
-X-CSE-ConnectionGUID: 6kq6G0J4RTSWzEEk9YgXBQ==
-X-CSE-MsgGUID: SDjM4/1WSfabueolKnwwgg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="48960624"
-X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="48960624"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 11:58:44 -0700
-X-CSE-ConnectionGUID: 9mPjAbmpSGyr8Ql/gnDWPQ==
-X-CSE-MsgGUID: 8hYtQJynT0a8OqC2Ur9g/w==
+ bh=oJSeIGhpXohVD8oa63okoGryENEPsN6k1dNj8OrlykI=;
+ b=NAuoLjx8VO7IZnRgoxVxXRYvDuT8cHPtudFAl6wArfj/OxKVLqREHNnC
+ 72UQsR73BGI+y2Q33l6wRE5Tqeax9t1P8RMKUT/u1f+KyS3gmJ4kAQafL
+ zNRn2StKwaRJunvcQ2q/u+2yKVJJUls3HvKtUdC6fcIHaDyEDv7DyNQAl
+ 3mIK6MDXITuE4d1mwBsxRfn4W0fZfYZ5d2WuwiKUoKpCkTGj17qKR+DE8
+ i7A6kGcmqRg4ic4XV3PfyiuQ1T53mM6FJ+6QuF4HO+JSTLNxVemnwNo87
+ X9cihu3S+E3DdvpkIRYzc3bYKWE9xaTSX7h83iYf0GnXYO3CixqpTpjIc g==;
+X-CSE-ConnectionGUID: ogWRSVzHRu6XjBggn6jqoQ==
+X-CSE-MsgGUID: SX9LEBnwSry4Dmop6abCZw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="60428146"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="60428146"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2025 11:58:48 -0700
+X-CSE-ConnectionGUID: ZvzpU8cRRBSrwZy9Mzh8IA==
+X-CSE-MsgGUID: VRHWH6odSWK/ybBYLWRlKA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="137679188"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; d="scan'208";a="137840964"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.60])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 11:58:43 -0700
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2025 11:58:47 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 07/15] lib/intel_cmds_info: add blt_memop_mode
- (byte/page)
-Date: Tue, 13 May 2025 20:58:02 +0200
-Message-ID: <20250513185811.897232-8-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 08/15] lib/intel_blt: add emit batchbuffer end
+Date: Tue, 13 May 2025 20:58:03 +0200
+Message-ID: <20250513185811.897232-9-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
 References: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
@@ -71,92 +70,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add 'mode' field for further extending in tests.
+Blitter functions allow emit BBE on demand. This gives the caller
+to combine different emit functions in single batch.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/intel_blt.c             | 3 +++
- lib/intel_blt.h             | 2 ++
- lib/intel_cmds_info.h       | 5 +++++
- tests/intel/xe_copy_basic.c | 2 +-
- 4 files changed, 11 insertions(+), 1 deletion(-)
+ lib/intel_blt.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 4c90d157c9..6bfaf09a2b 100644
+index 6bfaf09a2b..04549ab42e 100644
 --- a/lib/intel_blt.c
 +++ b/lib/intel_blt.c
-@@ -1802,18 +1802,21 @@ int blt_fast_copy(int fd,
-  * blt_mem_copy_init:
-  * @fd: drm fd
-  * @mem: structure for initialization
-+ * @mode: copy mode - byte or page (256B)
-  * @copy_type: linear or matrix
-  *
-  * Function is zeroing @mem and sets fd and driver fields (INTEL_DRIVER_I915 or
-  * INTEL_DRIVER_XE).
-  */
- void blt_mem_copy_init(int fd, struct blt_mem_copy_data *mem,
-+		       enum blt_memop_mode mode,
- 		       enum blt_memop_type copy_type)
- {
- 	memset(mem, 0, sizeof(*mem));
- 
- 	mem->fd = fd;
- 	mem->driver = get_intel_driver(fd);
-+	mem->mode = mode;
+@@ -1820,7 +1820,9 @@ void blt_mem_copy_init(int fd, struct blt_mem_copy_data *mem,
  	mem->copy_type = copy_type;
  }
  
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 9efa799881..f2509ab175 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -130,6 +130,7 @@ struct blt_copy_data {
- struct blt_mem_copy_data {
- 	int fd;
- 	enum intel_driver driver;
-+	enum blt_memop_mode mode;
- 	enum blt_memop_type copy_type;
- 	struct blt_mem_object src;
- 	struct blt_mem_object dst;
-@@ -274,6 +275,7 @@ int blt_fast_copy(int fd,
- 		  const struct blt_copy_data *blt);
- 
- void blt_mem_copy_init(int fd, struct blt_mem_copy_data *mem,
-+		       enum blt_memop_mode mode,
- 		       enum blt_memop_type copy_type);
- 
- void blt_mem_set_init(int fd, struct blt_mem_set_data *mem,
-diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
-index 66f63d7e72..bcaad6053a 100644
---- a/lib/intel_cmds_info.h
-+++ b/lib/intel_cmds_info.h
-@@ -24,6 +24,11 @@ enum blt_memop_type {
- 	TYPE_MATRIX,
- };
- 
-+enum blt_memop_mode {
-+	MODE_BYTE,
-+	MODE_PAGE,
-+};
+-static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_copy_data *mem)
++static void emit_blt_mem_copy(int fd, uint64_t ahnd,
++			      const struct blt_mem_copy_data *mem,
++			      bool emit_bbe)
+ {
+ 	uint64_t dst_offset, src_offset;
+ 	int i;
+@@ -1846,7 +1848,9 @@ static void emit_blt_mem_copy(int fd, uint64_t ahnd, const struct blt_mem_copy_d
+ 	batch[i++] = dst_offset;
+ 	batch[i++] = dst_offset << 32;
+ 	batch[i++] = mem->src.mocs_index << XE2_MEM_COPY_MOCS_SHIFT | mem->dst.mocs_index;
+-	batch[i++] = MI_BATCH_BUFFER_END;
 +
- enum blt_cmd_type {
- 	SRC_COPY,
- 	MEM_SET,
-diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index 5681d4d6ab..f252d29fd4 100644
---- a/tests/intel/xe_copy_basic.c
-+++ b/tests/intel/xe_copy_basic.c
-@@ -56,7 +56,7 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
++	if (emit_bbe)
++		batch[i++] = MI_BATCH_BUFFER_END;
  
- 	bb = xe_bo_create(fd, 0, bb_size, region, 0);
+ 	munmap(batch, mem->bb.size);
+ }
+@@ -1880,7 +1884,7 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
+ 					  0, mem->dst.pat_index);
+ 	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, 0);
  
--	blt_mem_copy_init(fd, &mem, TYPE_LINEAR);
-+	blt_mem_copy_init(fd, &mem, MODE_BYTE, TYPE_LINEAR);
- 	blt_set_mem_object(&mem.src, src_handle, size, width, width, height,
- 			   region, src_mocs, DEFAULT_PAT_INDEX, COMPRESSION_DISABLED);
- 	blt_set_mem_object(&mem.dst, dst_handle, size, width, width, height,
+-	emit_blt_mem_copy(fd, ahnd, mem);
++	emit_blt_mem_copy(fd, ahnd, mem, true);
+ 
+ 	if (mem->driver == INTEL_DRIVER_XE) {
+ 		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
 -- 
 2.43.0
 
