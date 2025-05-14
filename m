@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8309C3ABC5
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 04:30:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BBF7C3ABCB
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 05:02:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 31AC610E085;
-	Wed, 14 May 2025 04:30:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HW+fLjmN";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B86FA10E085
- for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 04:30:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747197042; x=1778733042;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cmgdTAoHC+V9wu7fwCXe+AlyBgheZ62yBnPYvK6KSq0=;
- b=HW+fLjmNkw6g2heLfF69tnM/i4aGD5xE8xfBEUmr1iYNKNRRUZ3goXj7
- 985rpX0FlLljWxJcmJwE/yQmaauHDotw5iSX3m0Sw+mqKOSxViAggA+mZ
- bXK65bLzUOK5PYdWg08lVWEW1s6gA+ltd13VT+FyKhFhabO8VgeOGlMZP
- UEYe4HN3Q6ISWINVW6adIGfti8LPFUBXGX3EmWRxC0Q9a6T33NW8q9hY/
- 7LM/iy0PDDofUSED/DvBQodZmDbAPcdiQDZr7ipf273XkwnIhMaewu40i
- uQRlzF1O5Yps3LMoxqxykMTcQoxzgLPzFxKfSFLO1rN4vTtLYMvzw3mW7 w==;
-X-CSE-ConnectionGUID: tzMT/HTjStaJ1sLOGurfRA==
-X-CSE-MsgGUID: Fa5LurVJRu2xVoPBfaEB1Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="48325301"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="48325301"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 21:30:37 -0700
-X-CSE-ConnectionGUID: hN9W77VlRZadcgM+VzPt1w==
-X-CSE-MsgGUID: NgFCiY6UTE29r7ddOyQr6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="138411701"
-Received: from labhost1.iind.intel.com ([10.190.230.69])
- by fmviesa010.fm.intel.com with ESMTP; 13 May 2025 21:30:35 -0700
-From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- John Harrison <John.C.Harrison@Intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>
-Subject: [PATCH i-g-t] Revert "tests/intel/xe_fault_injection: Suppress GuC CT
- dumps"
-Date: Wed, 14 May 2025 10:16:51 +0530
-Message-ID: <20250514044651.14898-1-satyanarayana.k.v.p@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1E51A10E10F;
+	Wed, 14 May 2025 05:02:47 +0000 (UTC)
+Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F03F10E10F;
+ Wed, 14 May 2025 05:02:46 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5443342945379414196=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Revert_=22tests/intel/xe=5F?=
+ =?utf-8?q?fault=5Finjection=3A_Suppress_GuC_CT_dumps=22?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Satyanarayana K V P" <satyanarayana.k.v.p@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 14 May 2025 05:02:46 -0000
+Message-ID: <174719896612.77154.7732346653004064279@c664b1dc75d1>
+X-Patchwork-Hint: ignore
+References: <20250514044651.14898-1-satyanarayana.k.v.p@intel.com>
+In-Reply-To: <20250514044651.14898-1-satyanarayana.k.v.p@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,71 +37,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit has dependency on a commit from XE. The commit from XE is
-still in review. So, reverting this commit to avoid CI test failures.
+--===============5443342945379414196==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This reverts commit dfe2c08db120d49e8b0ea92f20d09d6b60343da8.
+== Series Details ==
 
-Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
---
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Aditya Chauhan <aditya.chauhan@intel.com>
----
- tests/intel/xe_fault_injection.c | 22 ----------------------
- 1 file changed, 22 deletions(-)
+Series: Revert "tests/intel/xe_fault_injection: Suppress GuC CT dumps"
+URL   : https://patchwork.freedesktop.org/series/148987/
+State : success
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 10374d23e..f9bd5c761 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -123,22 +123,6 @@ static void injection_list_add(const char function_name[])
- 	close(dir);
- }
- 
--static void injection_list_append(const char function_name[])
--{
--	int dir, fd, ret;
--
--	dir = fail_function_open();
--	igt_assert_lte(0, dir);
--
--	fd = openat(dir, "inject", O_WRONLY | O_APPEND);
--	ret = write(fd, function_name, strlen(function_name));
--
--	close(fd);
--	close(dir);
--
--	igt_assert_lte(0, ret);
--}
--
- static void injection_list_remove(const char function_name[])
- {
- 	int dir;
-@@ -252,10 +236,6 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
- 
- 	ignore_faults_in_dmesg(function_name);
- 	injection_list_add(function_name);
--	if (!strcmp(function_name, "xe_guc_ct_send_recv") ||
--	    !strcmp(function_name, "xe_guc_mmio_send_recv"))
--		injection_list_append("xe_should_fail_ct_dead_capture");
--
- 	set_retval(function_name, INJECT_ERRNO);
- 
- 	igt_kmod_bind("xe", pci_slot);
-@@ -293,8 +273,6 @@ static void probe_fail_guc(int fd, char pci_slot[], const char function_name[],
- 	for (int i = iter_start; i < iter_end; i++) {
- 		fault_params->space = i;
- 		setup_injection_fault(fault_params);
--		/* Clear the injection list  */
--		injection_list_clear();
- 		inject_fault_probe(fd, pci_slot, function_name);
- 		igt_kmod_unbind("xe", pci_slot);
- 	}
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8362_BAT -> XEIGTPW_13121_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13121_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries:
+    - bat-lnl-2:          [PASS][1] -> [ABORT][2] ([Intel XE#4624])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8362/bat-lnl-2/igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-lnl-2/igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries.html
+
+  * igt@xe_evict@evict-beng-small-cm:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][3] ([Intel XE#261] / [Intel XE#688]) +9 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html
+
+  * igt@xe_exec_fault_mode@twice-rebind:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][4] ([Intel XE#288]) +32 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][5] ([Intel XE#2229] / [Intel XE#455]) +2 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][6] ([Intel XE#2229])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][7] ([Intel XE#977])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][8] ([Intel XE#2838] / [Intel XE#979])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][9] ([Intel XE#979])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_pat@pat-index-xelp@render:
+    - bat-adlp-vf:        [ABORT][10] ([Intel XE#3970]) -> [PASS][11] +1 other test pass
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8362/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#3970]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#4624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4624
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8362 -> IGTPW_13121
+  * Linux: xe-3069-3db1bb52113808f8bc72a7049e2d36e76acc882c -> xe-3083-dac27c03b365c9da3d8af23f7067f7f4e5a74297
+
+  IGTPW_13121: 13121
+  IGT_8362: 8362
+  xe-3069-3db1bb52113808f8bc72a7049e2d36e76acc882c: 3db1bb52113808f8bc72a7049e2d36e76acc882c
+  xe-3083-dac27c03b365c9da3d8af23f7067f7f4e5a74297: dac27c03b365c9da3d8af23f7067f7f4e5a74297
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/index.html
+
+--===============5443342945379414196==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Revert &quot;tests/intel/xe_fault_injection: Suppress GuC CT dumps&quot;</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148987/">https://patchwork.freedesktop.org/series/148987/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8362_BAT -&gt; XEIGTPW_13121_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13121_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries:</p>
+<ul>
+<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8362/bat-lnl-2/igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-lnl-2/igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4624">Intel XE#4624</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small-cm:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-rebind:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_exec_fault_mode@twice-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xelp@render:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8362/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3970">Intel XE#3970</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13121/bat-adlp-vf/igt@xe_pat@pat-index-xelp@render.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8362 -&gt; IGTPW_13121</li>
+<li>Linux: xe-3069-3db1bb52113808f8bc72a7049e2d36e76acc882c -&gt; xe-3083-dac27c03b365c9da3d8af23f7067f7f4e5a74297</li>
+</ul>
+<p>IGTPW_13121: 13121<br />
+  IGT_8362: 8362<br />
+  xe-3069-3db1bb52113808f8bc72a7049e2d36e76acc882c: 3db1bb52113808f8bc72a7049e2d36e76acc882c<br />
+  xe-3083-dac27c03b365c9da3d8af23f7067f7f4e5a74297: dac27c03b365c9da3d8af23f7067f7f4e5a74297</p>
+
+</body>
+</html>
+
+--===============5443342945379414196==--
