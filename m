@@ -4,27 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F35ADC3ABD8
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 16:06:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3971CC3ABD8
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 16:16:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9133E10E67F;
-	Wed, 14 May 2025 16:06:36 +0000 (UTC)
-Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E973310E67F;
- Wed, 14 May 2025 16:06:34 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5756673553791663647=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC35410E63F;
+	Wed, 14 May 2025 16:16:47 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XgYgvxop";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 675C810E63F
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 16:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747239406; x=1778775406;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=m3Te+Yfe5+thi4uKURZaqP0sJ9XoNW1WBkX9pRr3g6o=;
+ b=XgYgvxopAIzijKuG6VhsDL9xMjyMtiHO1rM1pZXDmtoYqxJgguiiKOTI
+ eEyaiHRUgFfeFrPSconU7IdAmIdmYovVhnxiZ8zrhOVncx5VWVmPLwKxl
+ 8ugRCO+r6oV/2Xfg0PQ/w7bQFqHEMEYeEGek7jRiP/vhf8Uw5qXsW8ZSD
+ 6MNQ5nYu7f/owDGX8O7qRStuZTlNtO9KpqfP+SqujXDkEGJ1CEZV6l/y9
+ 7/V/UgomeU/f58RD5WaSRew7TkFk6lm01dwbwS9Kc/umpzz1UY4yyRwBf
+ KbKxJvl3NPOl62Vnjizote+SKdMjADuDuz8MyMdIjJYvuA2W0msxbflTt Q==;
+X-CSE-ConnectionGUID: +KwbCur6R82Cypc7dWsSgQ==
+X-CSE-MsgGUID: JTB/laR5REWp+J5QDByg9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="52955666"
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="52955666"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 09:16:39 -0700
+X-CSE-ConnectionGUID: BuD+KuAGQtOF/fDvtOSrew==
+X-CSE-MsgGUID: MRal8XtySSeY7iwlshHd1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="142115378"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.97])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 09:16:35 -0700
+Date: Wed, 14 May 2025 18:16:31 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Badrappan, Jeevaka" <jeevaka.badrappan@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
+ "markyacoub@google.com" <markyacoub@google.com>,
+ "seanpaul@google.com" <seanpaul@google.com>, 
+ "Santa, Carlos" <carlos.santa@intel.com>, "Singh,
+ Sapna1" <sapna1.singh@intel.com>
+Subject: Re: [PATCH v4 01/15] Add stub for libunwind, procps and glib
+Message-ID: <ufza27hzcrxihnl5o2zp3y6rezutjpxa3wsqozmvj3o6zraoiz@b4qr5uhzi5dg>
+References: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
+ <20250507160148.53857-2-jeevaka.badrappan@intel.com>
+ <hc5xutqxss2jbhsffjzl2cqg3eu7zmva2l5h2hoqj2htzwwhla@edk5zllh7r5m>
+ <IA0PR11MB735330013D7B954E8F750D7EED91A@IA0PR11MB7353.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Introduce_intel=5Fhdcp_to?=
- =?utf-8?q?ol?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 14 May 2025 16:06:34 -0000
-Message-ID: <174723879494.78050.4649051564920394197@c664b1dc75d1>
-X-Patchwork-Hint: ignore
-References: <20250514090230.3281649-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20250514090230.3281649-1-santhosh.reddy.guddati@intel.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <IA0PR11MB735330013D7B954E8F750D7EED91A@IA0PR11MB7353.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,175 +73,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5756673553791663647==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, May 14, 2025 at 05:00:24PM +0200, Badrappan, Jeevaka wrote:
+> 
+> > diff --git a/lib/igt_glib.h b/lib/igt_glib.h
+> 
+> > new file mode 100644
+> 
+> > index 000000000..fc1743970
+> 
+> > --- /dev/null
+> 
+> > +++ b/lib/igt_glib.h
+> 
+> 
+> > Name igt_something.h may be incidentally included, especially it is
+> 
+> > not protected with #ifdef ANDROID.  So I would use include/android
+> 
+> > directory to put these includes there. And I would name them
+> 
+> > android/glib.h, android/procps.h, and android/unwind.h. For being
+> 
+> > absolutely sure no other os will include them you may protect these
+> 
+> > includes with #ifdef ANDROID.
+> 
+> May i know which one is preferred please?
+> <igt_root_dir>/lib/android/glib.h or <igt_root_dir>/include/android/glib.h or <igt_root_dir>/android/glib.h
 
-== Series Details ==
+I would put it to <igt_root_dir>/include/android.
 
-Series: Introduce intel_hdcp tool
-URL   : https://patchwork.freedesktop.org/series/149007/
-State : success
+--
+Zbigniew
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8364 -> IGTPW_13125
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13125 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [INCOMPLETE][3] ([i915#12904]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-apl-1/igt@dmabuf@all-tests.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [FAIL][7] ([i915#13930]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#13930]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13930
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8364 -> IGTPW_13125
-  * Linux: CI_DRM_16544 -> CI_DRM_16545
-
-  CI-20190529: 20190529
-  CI_DRM_16544: 2e72fd09b4fb0823282977f0717159e47328a533 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16545: dd6a856541dd90fa4ef755783898fcfbea3b9961 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13125: 13125
-  IGT_8364: 8364
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/index.html
-
---===============5756673553791663647==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Introduce intel_hdcp tool</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149007/">https://patchwork.freedesktop.org/series/149007/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8364 -&gt; IGTPW_13125</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/index.html</p>
-<h2>Participating hosts (45 -&gt; 44)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13125 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-apl-1/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13930">i915#13930</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13125/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8364 -&gt; IGTPW_13125</li>
-<li>Linux: CI_DRM_16544 -&gt; CI_DRM_16545</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16544: 2e72fd09b4fb0823282977f0717159e47328a533 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16545: dd6a856541dd90fa4ef755783898fcfbea3b9961 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13125: 13125<br />
-  IGT_8364: 8364</p>
-
-</body>
-</html>
-
---===============5756673553791663647==--
+> 
+> Thanks and Regards,
+> Jeevaka
+> 
