@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31AFDC3ABC5
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 06:04:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48D19C3ABCB
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 06:04:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DEF8D10E15C;
-	Wed, 14 May 2025 06:04:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F2DDE10E15C;
+	Wed, 14 May 2025 06:04:39 +0000 (UTC)
 Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 07AD710E19B;
- Wed, 14 May 2025 06:04:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CCFE10E15C;
+ Wed, 14 May 2025 06:04:37 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1526673710951030020=="
+ boundary="===============4659181834326134012=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fproperties=3A?=
  =?utf-8?q?_Add_IN=5FFORMATS=5FASYNC_property_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Murthy, Arun R" <arun.r.murthy@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 14 May 2025 06:04:13 -0000
-Message-ID: <174720265360.77356.901533188124719910@c664b1dc75d1>
+Date: Wed, 14 May 2025 06:04:37 -0000
+Message-ID: <174720267730.77375.16356646618354303555@c664b1dc75d1>
 X-Patchwork-Hint: ignore
 References: <20250219093211.4059187-1-arun.r.murthy@intel.com>
 In-Reply-To: <20250219093211.4059187-1-arun.r.murthy@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1526673710951030020==
+--===============4659181834326134012==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -151,7 +151,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13122/index.html
 
---===============1526673710951030020==
+--===============4659181834326134012==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -257,4 +257,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1526673710951030020==--
+--===============4659181834326134012==--
