@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 769DAC3ABD8
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 14:33:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2EEC3ABCC
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 14:46:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 251AF10E26F;
-	Wed, 14 May 2025 14:33:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 16CCF10E26F;
+	Wed, 14 May 2025 14:46:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cuGYhVoj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CCf7cuP5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D751910E26F
- for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 14:33:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21D5B10E26F
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 14:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747233185; x=1778769185;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=2jec9cKPeLfyoNLXTK2EuOXAXZkOMnLmbk3PzFv9zzo=;
- b=cuGYhVojQnurZYQwxUs3k45wUpge09Y5EXH2df1j0C8UR1Kin50Lez7s
- HyOms4xCOFLRovwGWE7RkBKz2vRn4nAUIEra/Vtgo+F2tUO8VDFLMNuOr
- o3HGXZLH4cXnKHn6U1/eKKrP5sLMUm354jJQfcxV/tPO0PRAsjJ78SVXu
- +Nu1tMa+rXiFJo4gUMKGzkDMsxCR2LYDcign8qRQgWuZZhjoqt6Nvk8bU
- jQG5AVp4T30G3fhegEug7IiPoqMv5sn9K0AvdMMYIFjOsIBaI0f14xQUN
- 4o5sWOH4kEtd9RJPIZNBLU+o0YGMojVMEhGUYfpVS54uAzaqAAuiy4/8q w==;
-X-CSE-ConnectionGUID: e/YlXoK9RUyUkzMx2VH+fg==
-X-CSE-MsgGUID: ONWe+m5dQiumNNEDQgA44A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="66688604"
-X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="66688604"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 07:33:04 -0700
-X-CSE-ConnectionGUID: RL5kdib3QKyZSFq+km+VyA==
-X-CSE-MsgGUID: MYeLZ/YzQaOvkz9QLlNUJw==
+ t=1747233966; x=1778769966;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=EWsT8LZbFPT1+8noZq22eoJODOXwEXYVUYCSYxfoOXA=;
+ b=CCf7cuP5yRsNv9mMR4puqYtiD/EoTNBLd2MciIggfp+zSG+MbxQRmK/o
+ fyLpwbp+uOui1PHSuNJFdFGOrg5Rq/TL87G6Awf2pXEijtxE7p3ErjVtt
+ 8HjwZm67of0J8I5GAfV4FJe1DpYEV26PE3C3h/VLM9H+oTxmSGmhaaBSM
+ Z8BF2Mrbpln1uUY/sZo241sC9cdbIXH4EKa/ivXJz1WQ50Me/M/mP3DRs
+ dZ7cFNX/CVZuVJlrH2DOr2fgXo4V/yqVq0YqPcv1zR0IH0bXCUCRBe5v+
+ FZW7dBkzm0ULMrqHK8kd9N/k8pRk0bMO8IvTYfLe9SjMCQh0uHNXWBEDg A==;
+X-CSE-ConnectionGUID: adydxngOT3+lO5ibULeSng==
+X-CSE-MsgGUID: raEg1hyYQv2hnQeEfPoz0g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="51775183"
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="51775183"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 07:46:06 -0700
+X-CSE-ConnectionGUID: mFaHWnWNT9WgHI4/T1Lhow==
+X-CSE-MsgGUID: tWdutQkTTd6sggtkngA+LA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="169005722"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 07:33:02 -0700
-Date: Wed, 14 May 2025 16:33:00 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com,
- seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-Subject: Re: [PATCH v4 10/15] lib/igt_core: Conditionally define __noreturn
- for non-Android platforms
-Message-ID: <20250514143300.yuyt5hn4o3a5tkco@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
- igt-dev@lists.freedesktop.org, markyacoub@google.com,
- seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-References: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
- <20250507160148.53857-11-jeevaka.badrappan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="169148300"
+Received: from aiddamse-mobl3.gar.corp.intel.com (HELO [10.247.199.227])
+ ([10.247.199.227])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 07:46:03 -0700
+Message-ID: <75e2a181-a44a-4599-a618-59ad659d80d0@linux.intel.com>
+Date: Wed, 14 May 2025 20:16:00 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250507160148.53857-11-jeevaka.badrappan@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3 5/5] tests/intel/xe_configfs: Add test to
+ validate survivability mode
+To: Riana Tauro <riana.tauro@intel.com>, igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com,
+ kamil.konieczny@intel.com, rodrigo.vivi@intel.com, louis.chauvet@bootlin.com
+References: <20250513142827.1129334-1-riana.tauro@intel.com>
+ <20250513142827.1129334-6-riana.tauro@intel.com>
+Content-Language: en-US
+From: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+In-Reply-To: <20250513142827.1129334-6-riana.tauro@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,33 +73,144 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevaka,
-On 2025-05-07 at 16:01:43 +0000, Jeevaka Prabu Badrappan wrote:
-> Ensure __noreturn is defined only if it is not already defined,
-> addressing compatibility with Android where __noreturn is predefined.
-> 
-> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+On 13-05-2025 19:58, Riana Tauro wrote:
+> The test validates if survivability mode is enabled on supported
+> platforms when configured using configfs attribute.
+>
+> v2: make test platform specific
+>     check for presence of file for survivability mode
+>     use mode_t flags (Aravind)
 
+LGTM
+
+Reviewed-by: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+
+Thanks,
+Aravind.
+>
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 > ---
->  lib/igt_core.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index 45170e215..2db579423 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -86,7 +86,9 @@
->  #define igt_assume(e) BUILD_BUG_ON_INVALID(e)
->  #endif
->  
-> +#ifndef __noreturn
->  #define __noreturn __attribute__((noreturn))
-> +#endif
->  #define __maybe_unused __attribute__((unused))
->  
->  extern const char* __igt_test_description __attribute__((weak));
-> -- 
-> 2.34.1
-> 
+>  tests/intel/xe_configfs.c | 100 ++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build         |   1 +
+>  2 files changed, 101 insertions(+)
+>  create mode 100644 tests/intel/xe_configfs.c
+>
+> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+> new file mode 100644
+> index 000000000..4d244321c
+> --- /dev/null
+> +++ b/tests/intel/xe_configfs.c
+> @@ -0,0 +1,100 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2025 Intel Corporation
+> + */
+> +#include <limits.h>
+> +
+> +#include "igt.h"
+> +#include "igt_configfs.h"
+> +#include "igt_device.h"
+> +#include "igt_fs.h"
+> +#include "igt_kmod.h"
+> +#include "igt_sysfs.h"
+> +
+> +/**
+> + * TEST: Check configfs userspace API
+> + * Category: Core
+> + * Mega feature: General Core features
+> + * Sub-category: uapi
+> + * Functionality: configfs
+> + * Description: validate configfs entries
+> + * Test category: functionality test
+> + */
+> +
+> +static char bus_addr[NAME_MAX];
+> +
+> +static void restore(int sig)
+> +{
+> +	/* Restore after survivability mode */
+> +	igt_kmod_unbind("xe", bus_addr);
+> +	igt_kmod_bind("xe", bus_addr);
+> +}
+> +
+> +static void set_survivability_mode(int dir_fd, bool value)
+> +{
+> +	igt_kmod_unbind("xe", bus_addr);
+> +	igt_sysfs_set_boolean(dir_fd, "survivability_mode", value);
+> +	igt_kmod_bind("xe", bus_addr);
+> +}
+> +
+> +/**
+> + * SUBTEST: survivability-mode
+> + * Description: Validate survivability mode by setting configfs
+> + */
+> +static void test_survivability_mode(int dir_fd)
+> +{
+> +	char path[PATH_MAX];
+> +	int fd;
+> +
+> +	/* Enable survivability mode */
+> +	set_survivability_mode(dir_fd, true);
+> +
+> +	/* check presence of survivability mode sysfs */
+> +	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
+> +
+> +	fd = open(path, O_RDONLY);
+> +	igt_assert_f(fd >= 0, "Survivability mode not set\n");
+> +	close(fd);
+> +}
+> +
+> +static int create_device_configfs(int configfs_fd, int fd)
+> +{
+> +	int dir_fd;
+> +	struct pci_device *pci_dev;
+> +	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+> +
+> +	pci_dev = igt_device_get_pci_device(fd);
+> +	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
+> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +
+> +	dir_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
+> +	igt_assert(dir_fd);
+> +
+> +	return dir_fd;
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd, configfs_fd, dir_fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		configfs_fd = igt_configfs_open("xe");
+> +		igt_require(configfs_fd != -1);
+> +		dir_fd = create_device_configfs(configfs_fd, fd);
+> +	}
+> +
+> +	igt_describe("Validate survivability mode");
+> +	igt_subtest("survivability-mode") {
+> +		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
+> +		igt_install_exit_handler(restore);
+> +		test_survivability_mode(dir_fd);
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +		close(dir_fd);
+> +		close(configfs_fd);
+> +		close(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 20ddddb89..55bcf57ec 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -279,6 +279,7 @@ intel_xe_progs = [
+>  	'xe_compute',
+>  	'xe_compute_preempt',
+>  	'xe_copy_basic',
+> +	'xe_configfs',
+>  	'xe_dma_buf_sync',
+>  	'xe_drm_fdinfo',
+>  	'xe_eu_stall',
