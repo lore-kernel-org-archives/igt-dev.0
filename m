@@ -4,61 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D59D7C3ABCC
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 14:25:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D7EFC3ABD8
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 14:25:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A6BD10E26F;
-	Wed, 14 May 2025 14:25:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CD74010E287;
+	Wed, 14 May 2025 14:25:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b4tuF5m8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EBVWxEQl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EE5510E26F
- for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 14:25:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6663710E26A
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 14:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747232731; x=1778768731;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=tyHJ+5bQ0BIKY15GXxJhNeRXTL6mKIUoMEvHoByAXUo=;
- b=b4tuF5m8mlf565F1ZIOBQhmhfTOVCkGcgoXmSiGQsxwk9jmipGNAZFFo
- gUtJspFuFTV6dvTG54YsqAjvDZL1DiWS8p6254uHpk4fDGGD0Tgd2wZEr
- tfBQyHShjTJioTWXYhRJB+Xt84Z3c1NIF8oJRWs/GmJog4RxWm6OWHkK2
- sufR+GQG445PZ4rHnULh5yFNEB/WOoQ0UkR0xDQSne5Qdka0iVS4lTBTP
- xoAp97QiYtXLCNF7S2pamqM065d+oUjU/6ngWQwg373O6To4PPtHlipO/
- UTacNJaEt8CneRc22AALZcfylluwUScpPR1srIfrxPm7pNfrOykssVroE g==;
-X-CSE-ConnectionGUID: 1YGC7PcxR9WADqeTeRS9FA==
-X-CSE-MsgGUID: mn8hvrm1SeOsn4VP5j835g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="59764924"
-X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="59764924"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 07:25:30 -0700
-X-CSE-ConnectionGUID: Bk03ioR/QKq0Kdn/fsB8PQ==
-X-CSE-MsgGUID: Fag7eLBwTTa0a7V5vCeVyA==
+ t=1747232750; x=1778768750;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=F7QWd4x2S/ulLwBBA0n/zvIyYg7mTelHrtH/6PBYJQ0=;
+ b=EBVWxEQlDCPtPU4EU5zJ127uM+LTuANMUhgUo2txH4CeLFUO3ZlrdaM6
+ ITN9tbX7bnsTwgWdn+7x0SiyF0MiVL05Sr2HRcDhto1FcTsCPNkTk3uUd
+ qwZKEB7cD6OgDDltdIzovvWYbVpEKjRMIx7bsaVHb9OfMjWr9vAamfiGL
+ RIQmeoFF1yxzPJz+cv+sirwSBifcvwGuO9LnYx8HttEGx1eapx27plpHG
+ KYKZpwjRGB0NAkAf77mzQCIRBITTjgpy8m+NTmTo2u9NoJrUJjnSVwbH9
+ KoA5tZUFuxKB3HYoCiJ0+n1AS05gv8NYgDl36K9HpmgC1yhfMc+ZvNDfr g==;
+X-CSE-ConnectionGUID: JFbcZWv7SdK2ThLIItjPpw==
+X-CSE-MsgGUID: A1nFxk0cSwmzLqH85t0fTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="51771581"
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="51771581"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 07:25:50 -0700
+X-CSE-ConnectionGUID: eS6DUaLjTQO5TVwW1fwmdw==
+X-CSE-MsgGUID: D6nz72kKTpij6L+Gvid+Wg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="138582995"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 07:25:28 -0700
-Date: Wed, 14 May 2025 16:25:26 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com,
- seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-Subject: Re: [PATCH v4 13/15] lib/igt_device_scan: Replace return value of
- devs_compate to int
-Message-ID: <20250514142526.dyvydrqi66y4la5v@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
- igt-dev@lists.freedesktop.org, markyacoub@google.com,
- seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-References: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
- <20250507160148.53857-14-jeevaka.badrappan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="138551937"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.246.0.195])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 07:25:48 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_sriov_scheduling: Close open handles
+ before disabling VFs
+Date: Wed, 14 May 2025 16:25:43 +0200
+Message-Id: <20250514142543.345665-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250507160148.53857-14-jeevaka.badrappan@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,33 +70,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevaka,
-On 2025-05-07 at 16:01:46 +0000, Jeevaka Prabu Badrappan wrote:
-> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-> ---
->  lib/igt_device_scan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 3f26a1737..7e9614429 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -949,7 +949,7 @@ static struct igt_device *duplicate_device(struct igt_device *dev) {
->  	return dup;
->  }
->  
-> -static gint devs_compare(const void *a, const void *b)
-> +static int devs_compare(const void *a, const void *b)
+Prevent a potential hot-unplug scenario by explicitly closing all
+open handles before disabling VFs. Extract handle cleanup into a
+dedicated subm_set_close_handles() helper and invoke it before
+asserts.
 
-Could you squash this into patch 15/15? This way it will not be
-needed as in there you remove glib in favour of igt_map.
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ tests/intel/xe_sriov_scheduling.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-Regards,
-Kamil
+diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
+index 89cdd8750..2cd18c982 100644
+--- a/tests/intel/xe_sriov_scheduling.c
++++ b/tests/intel/xe_sriov_scheduling.c
+@@ -241,22 +241,41 @@ static void subm_set_init_sync_method(struct subm_set *set, enum subm_sync_metho
+ 		pthread_barrier_init(&set->barrier, NULL, set->ndata);
+ }
+ 
+-static void subm_set_fini(struct subm_set *set)
++static void subm_set_close_handles(struct subm_set *set)
+ {
++	struct subm *s;
+ 	int i;
+ 
+ 	if (!set->ndata)
+ 		return;
+ 
+ 	for (i = 0; i < set->ndata; ++i) {
+-		igt_stats_fini(&set->data[i].stats.samples);
+-		subm_fini(&set->data[i].subm);
+-		drm_close_driver(set->data[i].subm.fd);
++		s = &set->data[i].subm;
++
++		if (s->fd != -1) {
++			subm_fini(s);
++			drm_close_driver(s->fd);
++			s->fd = -1;
++		}
+ 	}
+-	subm_set_free_data(set);
++}
++
++static void subm_set_fini(struct subm_set *set)
++{
++	int i;
++
++	if (!set->ndata)
++		return;
+ 
+ 	if (set->sync_method == SYNC_BARRIER)
+ 		pthread_barrier_destroy(&set->barrier);
++
++	subm_set_close_handles(set);
++
++	for (i = 0; i < set->ndata; ++i)
++		igt_stats_fini(&set->data[i].stats.samples);
++
++	subm_set_free_data(set);
+ }
+ 
+ struct init_vf_ids_opts {
+@@ -602,6 +621,7 @@ static void throughput_ratio(int pf_fd, int num_vfs, const struct subm_opts *opt
+ 
+ 	/* dispatch spinners, wait for results */
+ 	subm_set_dispatch_and_wait_threads(set);
++	subm_set_close_handles(set);
+ 
+ 	/* verify results */
+ 	compute_common_time_frame_stats(set);
+@@ -696,6 +716,7 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
+ 
+ 	/* dispatch spinners, wait for results */
+ 	subm_set_dispatch_and_wait_threads(set);
++	subm_set_close_handles(set);
+ 
+ 	/* verify results */
+ 	for (int n = 0; n < set->ndata; ++n) {
+-- 
+2.31.1
 
->  {
->  	struct igt_device *dev1, *dev2;
->  	int ret;
-> -- 
-> 2.34.1
-> 
