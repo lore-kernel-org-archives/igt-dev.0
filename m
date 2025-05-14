@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE84C3ABC5
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 05:04:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27FAAC3ABCB
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 05:05:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B72A110E24F;
-	Wed, 14 May 2025 05:04:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB6AB10E24B;
+	Wed, 14 May 2025 05:05:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bqpgq18C";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k9mWMb1i";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2BBC10E24B;
- Wed, 14 May 2025 05:04:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7382F10E24A;
+ Wed, 14 May 2025 05:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747199076; x=1778735076;
+ t=1747199111; x=1778735111;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=9OFPdWNZoPjz6dH2RWefQDbFjPhEPW6MWsZTCpYOpQQ=;
- b=Bqpgq18CuwjBQ0xl/h68G5BXvVpdZRrCf11bTYZDcaGGhiwl0Mctg2ET
- gNjBIFOALziN/9fuPCEcy2uVBOZnWVDxzF89As6/sWMIfvZQ4bCzZp8tt
- Xdarlsd64WoTbphUTwHzSxFPzxZ3B4JYrwJVtHmoYBJGFBI0Z+AOQAtJg
- vTTkcuBGWEL8mqmvbtOfxdZbYb7QY/cjDILw+QV2TEosUWvD4c+UKXw0i
- v9hnnjVgp+eh4rl+5RYpNwp0C3RpTW4gWLnKZBu47PR3PV2UDK1sdkA/d
- J4BbGSwaseZL3DxIYLNcweImQ0gv3D9XK5Tj9gB7aotJdi3aSQ+ciCePT w==;
-X-CSE-ConnectionGUID: 43hDRwoMT8+atm10QZTFUw==
-X-CSE-MsgGUID: K4z6skOOTVCVi8gRrsawog==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="74476163"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="74476163"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 22:04:35 -0700
-X-CSE-ConnectionGUID: h303gagYRoiEemo5ngmhCw==
-X-CSE-MsgGUID: UA5I9d5hQneV3V2sJai0jQ==
+ bh=Tpt+qtg52lsciHG465yOa3ACchGQ5BkTfUbUpXG/d9E=;
+ b=k9mWMb1it8B7Kz7LFZC5XY+DfzB77h6yAE9vTGTw8HO057F6Re6GQOCd
+ /iAZlgnbT/EjB908O2w+V9KFNocPSyZetgZvUL7ZBjrUo0D0WPte8Jqc+
+ VPK0gTIVOLND/I9ykTC41UqBW8gDG4N4pvVIrE9Nv/lIzmbmg+IBtvZsx
+ Da4wy9J3/RpNOg72tURbldKDh1pgE4C7HLEJXS6CxRs0Nmg93jxbnahLB
+ H52cZr6GhVSUvtH6ffJCEQ/YwUvBqQ239pWuNFyuqIszET4k1xKiwpsuq
+ Y+TEJeUSNdsPHlr048oZ1X9wZFN5xn3ijZcjhqd5YAq3G6ZlqQAUryfh8 w==;
+X-CSE-ConnectionGUID: +fH6EG/jT9ylLQjP1sBiAA==
+X-CSE-MsgGUID: xvFTmG0oSsagHy+TSh0MKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="60085671"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="60085671"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2025 22:05:10 -0700
+X-CSE-ConnectionGUID: TtEgSx4uQhWW5eOuTy84Kw==
+X-CSE-MsgGUID: TxFrX14IS+28UjovyYmfdg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="137842693"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="169024709"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
  ([10.245.245.97])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 22:04:33 -0700
-Date: Wed, 14 May 2025 07:04:30 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2025 22:05:08 -0700
+Date: Wed, 14 May 2025 07:05:06 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
  Improve mem-copy/mem-set lib and tests
-Message-ID: <hkjybvtv7ubgy3bbxcwpqwc2b6a6p7h6sg6eyqvnizmrm5ht6e@dtcmealoimyc>
+Message-ID: <xmh7gqfabuzazfmheftjqwfshb754hs4py3jomwlrqzrl72vgl@bgiljjdkijt6>
 References: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
- <174717367276.76908.12657829526952963522@c664b1dc75d1>
+ <174717797452.76810.15348053108286782872@c664b1dc75d1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <174717367276.76908.12657829526952963522@c664b1dc75d1>
+In-Reply-To: <174717797452.76810.15348053108286782872@c664b1dc75d1>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,1281 +70,1182 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, May 13, 2025 at 10:01:12PM +0000, Patchwork wrote:
+On Tue, May 13, 2025 at 11:12:54PM +0000, Patchwork wrote:
 >    Patch Details
 > 
->    Series:  Improve mem-copy/mem-set lib and tests                           
->    URL:     https://patchwork.freedesktop.org/series/148977/                 
->    State:   failure                                                          
->    Details: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13120/index.html 
+>    Series:  Improve mem-copy/mem-set lib and tests                          
+>    URL:     https://patchwork.freedesktop.org/series/148977/                
+>    State:   failure                                                         
+>    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13120/index.html 
 > 
->         CI Bug Log - changes from XEIGT_8362_FULL -> XEIGTPW_13120_FULL
+>         CI Bug Log - changes from CI_DRM_16540_full -> IGTPW_13120_full
 > 
 > Summary
 > 
 >    FAILURE
 > 
->    Serious unknown changes coming with XEIGTPW_13120_FULL absolutely need to
->    be
+>    Serious unknown changes coming with IGTPW_13120_full absolutely need to be
 >    verified manually.
 > 
 >    If you think the reported changes have nothing to do with the changes
->    introduced in XEIGTPW_13120_FULL, please notify your bug team
+>    introduced in IGTPW_13120_full, please notify your bug team
 >    (I915-ci-infra@lists.freedesktop.org) to allow them
 >    to document this new failure mode, which will reduce false positives in
 >    CI.
 > 
-> Participating hosts (4 -> 3)
+>    External URL:
+>    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13120/index.html
 > 
->    Missing (1): shard-adlp
+> Participating hosts (10 -> 10)
+> 
+>    No changes in participating hosts
 > 
 > Possible new issues
 > 
 >    Here are the unknown changes that may have been introduced in
->    XEIGTPW_13120_FULL:
+>    IGTPW_13120_full:
 > 
 >   IGT changes
 > 
 >     Possible regressions
 > 
->      * {igt@xe_copy_basic@mem-page-copy-17} (NEW):
+>      * igt@gem_partial_pwrite_pread@write-uncached:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP +3 other tests skip
+>           * shard-snb: PASS -> INCOMPLETE
+>      * igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs@pipe-c-hdmi-a-1:
+> 
+>           * shard-tglu: PASS -> INCOMPLETE
 
-Skip is expected on dg2. Other issues are not caused by the series.
+Above regressions are not related to the series.
 
 --
 Zbigniew
 
-
->      * igt@xe_exec_threads@threads-shared-vm-userptr-invalidate:
-> 
->           * shard-lnl: PASS -> SKIP +5 other tests skip
-> 
->     Warnings
-> 
->      * igt@xe_evict@evict-small-multi-vm:
-> 
->           * shard-lnl: SKIP (Intel XE#688) -> SKIP
->      * igt@xe_exec_sip_eudebug@wait-writesip-nodebug:
-> 
->           * shard-lnl: SKIP (Intel XE#4837) -> SKIP +1 other test skip
->      * igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> ABORT
-> 
-> New tests
-> 
->    New tests have been introduced between XEIGT_8362_FULL and
->    XEIGTPW_13120_FULL:
-> 
->   New IGT tests (6)
-> 
->      * igt@xe_copy_basic@mem-copy-linear-0x8fffe:
-> 
->           * Statuses : 2 pass(s) 1 skip(s)
->           * Exec time: [0.0, 0.13] s
->      * igt@xe_copy_basic@mem-matrix-copy-200x127:
-> 
->           * Statuses : 1 pass(s) 1 skip(s)
->           * Exec time: [0.0, 0.10] s
->      * igt@xe_copy_basic@mem-matrix-copy-2x2:
-> 
->           * Statuses : 2 pass(s) 1 skip(s)
->           * Exec time: [0.0, 0.01] s
->      * igt@xe_copy_basic@mem-page-copy-1:
-> 
->           * Statuses : 2 pass(s) 1 skip(s)
->           * Exec time: [0.0, 0.02] s
->      * igt@xe_copy_basic@mem-page-copy-17:
-> 
->           * Statuses : 2 pass(s) 1 skip(s)
->           * Exec time: [0.0, 0.01] s
->      * igt@xe_copy_basic@mem-set-linear-0x8fffe:
-> 
->           * Statuses : 2 pass(s) 1 skip(s)
->           * Exec time: [0.0, 0.01] s
 > 
 > Known issues
 > 
->    Here are the changes found in XEIGTPW_13120_FULL that come from known
+>    Here are the changes found in IGTPW_13120_full that come from known
 >    issues:
 > 
 >   IGT changes
 > 
 >     Issues hit
 > 
->      * igt@core_getversion@all-cards:
+>      * igt@device_reset@cold-reset-bound:
 > 
->           * shard-dg2-set2: PASS -> FAIL (Intel XE#4208)
->      * igt@core_setmaster@master-drop-set-user:
+>           * shard-dg2: NOTRUN -> SKIP (i915#11078)
+>           * shard-rkl: NOTRUN -> SKIP (i915#11078)
+>      * igt@device_reset@unbind-cold-reset-rebind:
 > 
->           * shard-dg2-set2: NOTRUN -> FAIL (Intel XE#4208)
->      * igt@fbdev@pan:
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#11078)
+>      * igt@gem_basic@multigpu-create-close:
 > 
->           * shard-dg2-set2: PASS -> SKIP (Intel XE#2134)
+>           * shard-rkl: NOTRUN -> SKIP (i915#7697) +1 other test skip
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#7697) +1 other test skip
+>      * igt@gem_caching@writes:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#4873)
+>      * igt@gem_ccs@block-copy-compressed:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3555 / i915#9323)
+>      * igt@gem_ccs@large-ctrl-surf-copy:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#13008)
+>      * igt@gem_ccs@suspend-resume@linear-compressed-compfmt0-lmem0-lmem0:
+> 
+>           * shard-dg2: PASS -> INCOMPLETE (i915#12392)
+>      * igt@gem_close_race@multigpu-basic-threads:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#7697)
+>      * igt@gem_create@create-ext-cpu-access-big:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#6335)
+>           * shard-dg2: PASS -> ABORT (i915#13427)
+>      * igt@gem_create@create-ext-cpu-access-sanity-check:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#6335)
+>      * igt@gem_create@create-ext-set-pat:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#8562)
+>      * igt@gem_ctx_persistence@engines-mixed-process:
+> 
+>           * shard-snb: NOTRUN -> SKIP (i915#1099)
+>      * igt@gem_ctx_sseu@engines:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#280) +1 other test skip
+>      * igt@gem_ctx_sseu@invalid-args:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#280)
+>      * igt@gem_ctx_sseu@mmap-args:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#280) +1 other test skip
+>      * igt@gem_eio@kms:
+> 
+>           * shard-tglu: NOTRUN -> DMESG-WARN (i915#13363)
+>      * igt@gem_eio@throttle:
+> 
+>           * shard-mtlp: PASS -> ABORT (i915#13193 / i915#13723) +1 other test
+>             abort
+>      * igt@gem_exec_balancer@parallel-balancer:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#4525)
+>      * igt@gem_exec_balancer@parallel-keep-submit-fence:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#4525) +4 other tests skip
+>      * igt@gem_exec_create@madvise@smem:
+> 
+>           * shard-rkl: NOTRUN -> DMESG-WARN (i915#12964) +7 other tests
+>             dmesg-warn
+>      * igt@gem_exec_endless@dispatch@bcs0:
+> 
+>           * shard-dg1: PASS -> TIMEOUT (i915#3778) +1 other test timeout
+>      * igt@gem_exec_fence@submit67:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#4812)
+>      * igt@gem_exec_reloc@basic-cpu-read:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3281) +10 other tests skip
+>      * igt@gem_exec_reloc@basic-cpu-wc-noreloc:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#3281) +3 other tests skip
+>      * igt@gem_exec_reloc@basic-gtt:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#3281) +7 other tests skip
+>      * igt@gem_exec_reloc@basic-gtt-wc:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#3281) +2 other tests skip
+>      * igt@gem_exec_reloc@basic-wc-read:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#3281) +1 other test skip
+>      * igt@gem_exec_schedule@preempt-queue:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#4537 / i915#4812)
+>      * igt@gem_exec_schedule@semaphore-power:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#4812)
+>      * igt@gem_exec_suspend@basic-s0@smem:
+> 
+>           * shard-dg2: PASS -> INCOMPLETE (i915#11441 / i915#13304) +1 other
+>             test incomplete
+>      * igt@gem_fence_thrash@bo-write-verify-y:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#4860) +1 other test skip
+>      * igt@gem_huc_copy@huc-copy:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#2190)
+>      * igt@gem_lmem_swapping@basic:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#4613) +1 other test skip
+>      * igt@gem_lmem_swapping@heavy-random:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#4613) +3 other tests skip
+>           * shard-mtlp: NOTRUN -> SKIP (i915#4613) +1 other test skip
+>      * igt@gem_lmem_swapping@massive-random:
+> 
+>           * shard-glk: NOTRUN -> SKIP (i915#4613) +3 other tests skip
+>      * igt@gem_lmem_swapping@parallel-random-verify-ccs:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#4613) +3 other tests skip
+>      * igt@gem_lmem_swapping@verify-random-ccs:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#12193)
+>      * igt@gem_lmem_swapping@verify-random-ccs@lmem0:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#4565)
+>      * igt@gem_madvise@dontneed-before-exec:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#3282)
+>      * igt@gem_media_vme:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#284)
+>      * igt@gem_mmap@bad-object:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#4083)
+>      * igt@gem_mmap_gtt@basic-small-bo-tiledx:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#4077) +4 other tests skip
+>      * igt@gem_mmap_gtt@cpuset-big-copy-odd:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#4077) +13 other tests skip
+>      * igt@gem_mmap_gtt@cpuset-medium-copy-xy:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#4077) +4 other tests skip
+>      * igt@gem_mmap_wc@write-prefaulted:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#4083) +4 other tests skip
+>           * shard-dg1: NOTRUN -> SKIP (i915#4083) +1 other test skip
+>      * igt@gem_partial_pwrite_pread@write-uncached:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#3282) +1 other test skip
+>      * igt@gem_pread@self:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#3282) +1 other test skip
+>      * igt@gem_pxp@create-regular-context-1:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#4270)
+>      * igt@gem_pxp@display-protected-crc:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#4270) +1 other test skip
+>      * igt@gem_pxp@fail-invalid-protected-context:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#4270)
+>      * igt@gem_pxp@hw-rejects-pxp-context:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#13717)
+>      * igt@gem_pxp@reject-modify-context-protection-off-1:
+> 
+>           * shard-rkl: PASS -> TIMEOUT (i915#12917 / i915#12964)
+>      * igt@gem_pxp@reject-modify-context-protection-off-2:
+> 
+>           * shard-rkl: NOTRUN -> TIMEOUT (i915#12917 / i915#12964)
+>      * igt@gem_readwrite@new-obj:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#3282) +2 other tests skip
+>      * igt@gem_render_copy@x-tiled-to-vebox-yf-tiled:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#5190 / i915#8428)
+>      * igt@gem_render_copy@yf-tiled-ccs-to-linear:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#8428)
+>      * igt@gem_render_copy@yf-tiled-mc-ccs-to-vebox-y-tiled:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#5190 / i915#8428) +3 other tests
+>             skip
+>      * igt@gem_render_tiled_blits@basic:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#4079)
+>           * shard-mtlp: NOTRUN -> SKIP (i915#4079)
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#4079)
+>      * igt@gem_set_tiling_vs_pwrite:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3282) +8 other tests skip
+>      * igt@gem_softpin@evict-snoop-interruptible:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#4885)
+>      * igt@gem_tiled_partial_pwrite_pread@writes-after-reads:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#4077) +6 other tests skip
+>      * igt@gem_unfence_active_buffers:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#4879)
+>           * shard-dg2: NOTRUN -> SKIP (i915#4879)
+>      * igt@gem_userptr_blits@coherency-unsync:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#3297) +1 other test skip
+>      * igt@gem_userptr_blits@dmabuf-sync:
+> 
+>           * shard-glk: NOTRUN -> SKIP (i915#3323)
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#3297)
+>           * shard-rkl: NOTRUN -> SKIP (i915#3297 / i915#3323)
+>      * igt@gem_userptr_blits@forbidden-operations:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3282 / i915#3297)
+>      * igt@gem_userptr_blits@map-fixed-invalidate-overlap-busy:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#3297 / i915#4880)
+>           * shard-dg1: NOTRUN -> SKIP (i915#3297 / i915#4880)
+>      * igt@gem_userptr_blits@relocations:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3281 / i915#3297)
+>      * igt@gem_userptr_blits@unsync-unmap-after-close:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#3297) +1 other test skip
+>      * igt@gem_userptr_blits@unsync-unmap-cycles:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3297)
+>      * igt@gem_vm_create@invalid-create:
+> 
+>           * shard-snb: NOTRUN -> SKIP +56 other tests skip
+>      * igt@gem_workarounds@suspend-resume-context:
+> 
+>           * shard-tglu: PASS -> ABORT (i915#12817)
+>      * igt@gen9_exec_parse@allowed-all:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#2856) +2 other tests skip
+>      * igt@gen9_exec_parse@bb-chained:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#2527) +3 other tests skip
+>      * igt@gen9_exec_parse@bb-oversize:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#2527 / i915#2856) +2 other
+>             tests skip
+>      * igt@gen9_exec_parse@bb-start-cmd:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#2527) +1 other test skip
+>           * shard-mtlp: NOTRUN -> SKIP (i915#2856)
+>      * igt@gen9_exec_parse@unaligned-jump:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#2527 / i915#2856) +4 other tests
+>             skip
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#2856) +1 other test skip
+>      * igt@i915_drm_fdinfo@busy@vecs1:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#14073) +7 other tests skip
+>      * igt@i915_fb_tiling@basic-x-tiling:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#13786)
+>      * igt@i915_module_load@resize-bar:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#6412)
+>           * shard-dg1: NOTRUN -> SKIP (i915#7178)
+>           * shard-tglu: NOTRUN -> SKIP (i915#6412)
+>           * shard-mtlp: NOTRUN -> SKIP (i915#6412)
+>      * igt@i915_pm_freq_api@freq-reset:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#8399)
+>      * igt@i915_pm_rc6_residency@rc6-accuracy:
+> 
+>           * shard-rkl: NOTRUN -> FAIL (i915#12942) +1 other test fail
+>      * igt@i915_pm_rps@basic-api:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#11681 / i915#6621)
+>      * igt@i915_power@sanity:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#7984)
+>      * igt@i915_query@query-topology-coherent-slice-mask:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#6188)
+>           * shard-dg2: NOTRUN -> SKIP (i915#6188)
+>      * igt@i915_query@test-query-geometry-subslices:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#5723)
+>      * igt@i915_suspend@basic-s3-without-i915:
+> 
+>           * shard-tglu: NOTRUN -> INCOMPLETE (i915#4817 / i915#7443)
+>           * shard-glk: NOTRUN -> INCOMPLETE (i915#4817)
+>      * igt@i915_suspend@debugfs-reader:
+> 
+>           * shard-glk: PASS -> INCOMPLETE (i915#4817)
+>      * igt@i915_suspend@sysfs-reader:
+> 
+>           * shard-rkl: PASS -> INCOMPLETE (i915#4817)
+>      * igt@intel_hwmon@hwmon-write:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#7707)
 >      * igt@kms_addfb_basic@invalid-smem-bo-on-discrete:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#3157)
->      * igt@kms_atomic@plane-invalid-params-fence:
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#12454 / i915#12712)
+>      * igt@kms_async_flips@alternate-sync-async-flip:
 > 
->           * shard-dg2-set2: PASS -> SKIP (Intel XE#4208 / i915#2575) +90
->             other tests skip
->      * igt@kms_big_fb@linear-16bpp-rotate-270:
+>           * shard-dg1: PASS -> FAIL (i915#10991 / i915#12518 / i915#12766)
+>      * igt@kms_async_flips@alternate-sync-async-flip@pipe-b-hdmi-a-4:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1407) +2 other tests skip
->      * igt@kms_big_fb@linear-16bpp-rotate-90:
+>           * shard-dg1: PASS -> FAIL (i915#12766)
+>      * igt@kms_atomic@plane-primary-overlay-mutable-zpos:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2327) +1 other test skip
->      * igt@kms_big_fb@y-tiled-16bpp-rotate-180:
+>           * shard-rkl: NOTRUN -> SKIP (i915#9531)
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#9531)
+>      * igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1124) +2 other tests skip
->      * igt@kms_big_fb@y-tiled-addfb-size-offset-overflow:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#607)
->      * igt@kms_big_fb@yf-tiled-16bpp-rotate-0:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1124) +4 other tests skip
->      * igt@kms_big_fb@yf-tiled-64bpp-rotate-180:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1124) +4 other tests
+>           * shard-dg2: NOTRUN -> SKIP (i915#1769 / i915#3555)
+>           * shard-rkl: NOTRUN -> SKIP (i915#1769 / i915#3555) +1 other test
 >             skip
->      * igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p:
+>      * igt@kms_atomic_transition@plane-all-modeset-transition@pipe-b-hdmi-a-2:
 > 
->           * shard-bmg: PASS -> SKIP (Intel XE#2314 / Intel XE#2894) +1 other
->             test skip
->      * igt@kms_bw@connected-linear-tiling-4-displays-2560x1440p:
+>           * shard-rkl: PASS -> DMESG-WARN (i915#12964) +10 other tests
+>             dmesg-warn
+>      * igt@kms_big_fb@4-tiled-16bpp-rotate-180:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1512)
->      * igt@kms_bw@linear-tiling-1-displays-3840x2160p:
+>           * shard-rkl: NOTRUN -> SKIP (i915#5286) +6 other tests skip
+>      * igt@kms_big_fb@4-tiled-8bpp-rotate-0:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#367)
->      * igt@kms_ccs@bad-aux-stride-4-tiled-mtl-rc-ccs@pipe-a-dp-2:
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#5286) +2 other tests skip
+>      * igt@kms_big_fb@4-tiled-8bpp-rotate-180:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#787) +174 other tests
+>           * shard-dg1: NOTRUN -> SKIP (i915#4538 / i915#5286) +3 other tests
 >             skip
->      * igt@kms_ccs@bad-rotation-90-4-tiled-lnl-ccs@pipe-c-dp-2:
+>      * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-async-flip:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2652 / Intel XE#787) +3 other
+>           * shard-tglu: NOTRUN -> SKIP (i915#5286) +2 other tests skip
+>      * igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip:
+> 
+>           * shard-mtlp: PASS -> FAIL (i915#5138)
+>      * igt@kms_big_fb@x-tiled-32bpp-rotate-270:
+> 
+>           * shard-dg2: NOTRUN -> SKIP +7 other tests skip
+>           * shard-dg1: NOTRUN -> SKIP (i915#3638)
+>      * igt@kms_big_fb@y-tiled-64bpp-rotate-270:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3638) +3 other tests skip
+>      * igt@kms_big_fb@yf-tiled-16bpp-rotate-90:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#4538 / i915#5190) +3 other
 >             tests skip
->      * igt@kms_ccs@ccs-on-another-bo-y-tiled-gen12-rc-ccs-cc@pipe-d-dp-4:
+>      * igt@kms_big_fb@yf-tiled-64bpp-rotate-0:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#455 / Intel XE#787) +30
->             other tests skip
->      * igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2887)
->      * igt@kms_ccs@crc-primary-basic-4-tiled-dg2-rc-ccs-cc:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2887) +3 other tests skip
->      * igt@kms_ccs@crc-primary-suspend-yf-tiled-ccs:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#3432)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#3432)
->      * igt@kms_ccs@random-ccs-data-4-tiled-bmg-ccs:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2669) +3 other tests skip
->      * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-d-dp-4:
-> 
->           * shard-dg2-set2: NOTRUN -> INCOMPLETE (Intel XE#3124)
->      * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-d-hdmi-a-6:
-> 
->           * shard-dg2-set2: NOTRUN -> DMESG-WARN (Intel XE#1727 / Intel
->             XE#3113)
->      * igt@kms_cdclk@mode-transition:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2724)
->      * igt@kms_cdclk@mode-transition@pipe-b-edp-1:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4417) +3 other tests skip
->      * igt@kms_cdclk@mode-transition@pipe-d-dp-4:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4417) +3 other tests
+>           * shard-dg2: NOTRUN -> SKIP (i915#4538 / i915#5190) +10 other tests
 >             skip
->      * igt@kms_chamelium_edid@dp-edid-resolution-list:
+>      * igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-async-flip:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2252)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#373) +1 other test skip
->      * igt@kms_chamelium_hpd@vga-hpd:
+>           * shard-dg1: NOTRUN -> SKIP (i915#4538)
+>           * shard-mtlp: NOTRUN -> SKIP +4 other tests skip
+>      * igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#373) +3 other tests skip
->      * igt@kms_content_protection@atomic@pipe-a-dp-2:
+>           * shard-tglu: NOTRUN -> SKIP +50 other tests skip
+>      * igt@kms_ccs@bad-pixel-format-y-tiled-ccs@pipe-d-hdmi-a-1:
 > 
->           * shard-bmg: NOTRUN -> FAIL (Intel XE#1178)
->      * igt@kms_content_protection@dp-mst-type-1:
+>           * shard-dg2: NOTRUN -> SKIP (i915#10307 / i915#10434 / i915#6095)
+>             +2 other tests skip
+>      * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs-cc:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#307)
->      * igt@kms_cursor_crc@cursor-offscreen-512x512:
+>           * shard-mtlp: NOTRUN -> SKIP (i915#6095) +14 other tests skip
+>      * igt@kms_ccs@bad-rotation-90-4-tiled-lnl-ccs:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2321)
+>           * shard-rkl: NOTRUN -> SKIP (i915#12313) +1 other test skip
+>      * igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs@pipe-a-hdmi-a-1:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#6095) +42 other tests skip
+>      * igt@kms_ccs@ccs-on-another-bo-y-tiled-gen12-mc-ccs@pipe-b-hdmi-a-1:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#6095) +54 other tests skip
+>      * igt@kms_ccs@ccs-on-another-bo-y-tiled-gen12-rc-ccs:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#10307 / i915#6095) +29 other
+>             tests skip
+>      * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#12805)
+>           * shard-rkl: NOTRUN -> SKIP (i915#12805)
+>      * igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#12805)
+>      * igt@kms_ccs@crc-primary-suspend-y-tiled-ccs@pipe-a-hdmi-a-1:
+> 
+>           * shard-glk: NOTRUN -> INCOMPLETE (i915#12796) +1 other test
+>             incomplete
+>      * igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs:
+> 
+>           * shard-tglu: PASS -> INCOMPLETE (i915#12796)
+>      * igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs-cc@pipe-d-hdmi-a-1:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#6095) +16 other tests skip
+>      * igt@kms_ccs@crc-primary-suspend-yf-tiled-ccs@pipe-a-hdmi-a-1:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#6095) +54 other tests skip
+>      * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-bmg-ccs:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#12313)
+>      * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-lnl-ccs:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#12313)
+>      * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs@pipe-a-hdmi-a-3:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#10307 / i915#6095) +117 other
+>             tests skip
+>      * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-a-hdmi-a-3:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#6095) +149 other tests skip
+>      * igt@kms_ccs@random-ccs-data-4-tiled-lnl-ccs:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#12313)
+>      * igt@kms_ccs@random-ccs-data-y-tiled-ccs@pipe-b-hdmi-a-1:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#14098 / i915#6095) +54 other
+>             tests skip
+>      * igt@kms_cdclk@mode-transition-all-outputs:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#3742)
+>      * igt@kms_cdclk@plane-scaling@pipe-b-hdmi-a-3:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#13783) +3 other tests skip
+>      * igt@kms_chamelium_audio@dp-audio-edid:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#11151 / i915#7828) +4 other
+>             tests skip
+>      * igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#11151 / i915#7828) +6 other
+>             tests skip
+>      * igt@kms_chamelium_frames@dp-crc-fast:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#11151 / i915#7828) +5 other tests
+>             skip
+>      * igt@kms_chamelium_frames@vga-frame-dump:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#11151 / i915#7828)
+>      * igt@kms_chamelium_hpd@dp-hpd-after-suspend:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#11151 / i915#7828) +4 other
+>             tests skip
+>      * igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#11151 / i915#7828) +2 other tests
+>             skip
+>      * igt@kms_chamelium_hpd@vga-hpd-for-each-pipe:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#11151 / i915#7828) +7 other tests
+>             skip
+>      * igt@kms_color@deep-color:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#3555 / i915#9979)
+>      * igt@kms_content_protection@atomic:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#7118 / i915#9424)
+>      * igt@kms_content_protection@content-type-change:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#9424)
+>      * igt@kms_content_protection@dp-mst-lic-type-1:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#3116 / i915#3299)
+>      * igt@kms_content_protection@legacy:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#7118 / i915#9424)
+>      * igt@kms_content_protection@lic-type-0:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#9424)
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#6944 / i915#9424)
+>      * igt@kms_content_protection@srm:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#6944 / i915#7116 / i915#7118)
+>      * igt@kms_content_protection@srm@pipe-a-dp-3:
+> 
+>           * shard-dg2: NOTRUN -> FAIL (i915#7173)
+>      * igt@kms_cursor_crc@cursor-offscreen-32x32:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#3555) +2 other tests skip
+>      * igt@kms_cursor_crc@cursor-onscreen-32x32:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3555) +6 other tests skip
+>      * igt@kms_cursor_crc@cursor-onscreen-512x170:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#13049)
+>      * igt@kms_cursor_crc@cursor-random-128x42:
+> 
+>           * shard-tglu: PASS -> FAIL (i915#13566) +3 other tests fail
+>           * shard-rkl: PASS -> DMESG-FAIL (i915#12964)
+>      * igt@kms_cursor_crc@cursor-random-128x42@pipe-a-hdmi-a-1:
+> 
+>           * shard-rkl: NOTRUN -> DMESG-FAIL (i915#12964)
+>      * igt@kms_cursor_crc@cursor-random-512x170:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#13049)
+>           * shard-rkl: NOTRUN -> SKIP (i915#13049) +3 other tests skip
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#13049)
+>           * shard-dg1: NOTRUN -> SKIP (i915#13049)
+>           * shard-mtlp: NOTRUN -> SKIP (i915#13049)
 >      * igt@kms_cursor_crc@cursor-rapid-movement-512x512:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#308)
->      * igt@kms_cursor_crc@cursor-rapid-movement-64x21:
+>           * shard-tglu: NOTRUN -> SKIP (i915#13049)
+>      * igt@kms_cursor_crc@cursor-sliding-32x32:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1424) +1 other test skip
+>           * shard-tglu: NOTRUN -> SKIP (i915#3555) +3 other tests skip
+>           * shard-mtlp: NOTRUN -> SKIP (i915#3555 / i915#8814)
 >      * igt@kms_cursor_legacy@2x-flip-vs-cursor-legacy:
 > 
->           * shard-bmg: PASS -> SKIP (Intel XE#2291) +8 other tests skip
->      * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+>           * shard-rkl: NOTRUN -> SKIP +16 other tests skip
+>      * igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4208 / i915#2575) +15
->             other tests skip
->      * igt@kms_cursor_legacy@cursora-vs-flipb-toggle:
+>           * shard-dg2: NOTRUN -> SKIP (i915#13046 / i915#5354) +1 other test
+>             skip
+>      * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#309)
->      * igt@kms_cursor_legacy@flip-vs-cursor-legacy:
+>           * shard-dg2: NOTRUN -> SKIP (i915#4103 / i915#4213) +1 other test
+>             skip
+>           * shard-dg1: NOTRUN -> SKIP (i915#4103 / i915#4213)
+>      * igt@kms_cursor_legacy@cursora-vs-flipb-atomic-transitions:
 > 
->           * shard-bmg: PASS -> FAIL (Intel XE#4667)
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#13046 / i915#5354) +1 other
+>             test skip
+>      * igt@kms_cursor_legacy@short-busy-flip-before-cursor-toggle:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#4103)
 >      * igt@kms_display_modes@extended-mode-basic:
 > 
->           * shard-bmg: PASS -> SKIP (Intel XE#4302)
->      * igt@kms_dither@fb-8bpc-vs-panel-6bpc@pipe-a-hdmi-a-6:
+>           * shard-tglu: NOTRUN -> SKIP (i915#13691)
+>      * igt@kms_dither@fb-8bpc-vs-panel-6bpc:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4494 / i915#3804)
->      * igt@kms_draw_crc@fill-fb:
+>           * shard-rkl: NOTRUN -> SKIP (i915#3555 / i915#3804)
+>      * igt@kms_dither@fb-8bpc-vs-panel-6bpc@pipe-a-hdmi-a-2:
 > 
->           * shard-lnl: PASS -> SKIP (Intel XE#2351 / Intel XE#4996) +1 other
->             test skip
->           * shard-bmg: PASS -> SKIP (Intel XE#2231 / Intel XE#4996)
->      * igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-different-formats:
+>           * shard-rkl: NOTRUN -> SKIP (i915#3804)
+>      * igt@kms_dp_link_training@non-uhbr-sst:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4422)
->      * igt@kms_feature_discovery@chamelium:
+>           * shard-dg2: PASS -> SKIP (i915#13749)
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#13749)
+>      * igt@kms_dp_link_training@uhbr-sst:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#701)
->      * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bd-dp2-hdmi-a3:
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#13748)
+>      * igt@kms_dp_linktrain_fallback@dp-fallback:
 > 
->           * shard-bmg: PASS -> FAIL (Intel XE#3321) +4 other tests fail
->      * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bd-hdmi-a6-dp4:
+>           * shard-rkl: NOTRUN -> SKIP (i915#13707)
+>      * igt@kms_dsc@dsc-basic:
 > 
->           * shard-dg2-set2: NOTRUN -> FAIL (Intel XE#301 / Intel XE#3321)
->      * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@cd-hdmi-a6-dp4:
-> 
->           * shard-dg2-set2: NOTRUN -> FAIL (Intel XE#301) +15 other tests
->             fail
->      * igt@kms_flip@2x-flip-vs-suspend-interruptible:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1421) +5 other tests skip
->      * igt@kms_flip@2x-nonexisting-fb:
-> 
->           * shard-bmg: PASS -> SKIP (Intel XE#2316) +13 other tests skip
->      * igt@kms_flip@2x-single-buffer-flip-vs-dpms-off-vs-modeset-interruptible:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2316)
->      * igt@kms_flip@flip-vs-expired-vblank-interruptible:
-> 
->           * shard-bmg: NOTRUN -> FAIL (Intel XE#3321) +1 other test fail
->      * igt@kms_flip@flip-vs-expired-vblank-interruptible@c-edp1:
-> 
->           * shard-lnl: NOTRUN -> FAIL (Intel XE#301) +2 other tests fail
->      * igt@kms_flip@plain-flip-ts-check:
-> 
->           * shard-lnl: PASS -> FAIL (Intel XE#3149 / Intel XE#886)
->      * igt@kms_flip@plain-flip-ts-check@c-edp1:
-> 
->           * shard-lnl: PASS -> FAIL (Intel XE#886) +4 other tests fail
->      * igt@kms_flip_scaled_crc@flip-32bpp-linear-to-64bpp-linear-upscaling:
-> 
->           * shard-dg2-set2: PASS -> SKIP (Intel XE#2351 / Intel XE#4208) +17
->             other tests skip
->      * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-16bpp-yftile-upscaling@pipe-a-valid-mode:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#455) +11 other tests
+>           * shard-dg2: NOTRUN -> SKIP (i915#3555 / i915#3840) +1 other test
 >             skip
+>      * igt@kms_dsc@dsc-fractional-bpp:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#3840) +1 other test skip
+>      * igt@kms_dsc@dsc-fractional-bpp-with-bpc:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#3840)
+>      * igt@kms_dsc@dsc-with-bpc:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3555 / i915#3840)
+>      * igt@kms_dsc@dsc-with-bpc-formats:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#3555 / i915#3840)
+>      * igt@kms_dsc@dsc-with-output-formats-with-bpc:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#3840 / i915#9053)
+>      * igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-dirtyfb-tests:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#2575)
+>      * igt@kms_fbcon_fbt@psr:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#3469) +1 other test skip
+>           * shard-dg1: NOTRUN -> SKIP (i915#3469)
+>      * igt@kms_fbcon_fbt@psr-suspend:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3955)
+>      * igt@kms_feature_discovery@display-4x:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#1839) +1 other test skip
+>      * igt@kms_feature_discovery@psr1:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#658)
+>      * igt@kms_feature_discovery@psr2:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#658)
+>      * igt@kms_flip@2x-blocking-absolute-wf_vblank:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#3637 / i915#9934) +4 other tests
+>             skip
+>      * igt@kms_flip@2x-flip-vs-blocking-wf-vblank:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#9934) +3 other tests skip
+>      * igt@kms_flip@2x-flip-vs-fences:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#3637 / i915#9934) +6 other
+>             tests skip
+>           * shard-dg2: NOTRUN -> SKIP (i915#8381)
+>      * igt@kms_flip@2x-flip-vs-panning-vs-hang:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#9934) +2 other tests skip
+>           * shard-dg1: NOTRUN -> SKIP (i915#9934) +1 other test skip
+>      * igt@kms_flip@2x-flip-vs-suspend:
+> 
+>           * shard-glk: NOTRUN -> INCOMPLETE (i915#12745 / i915#4839)
+>      * igt@kms_flip@2x-flip-vs-suspend@ab-hdmi-a1-hdmi-a2:
+> 
+>           * shard-glk: NOTRUN -> INCOMPLETE (i915#4839)
+>      * igt@kms_flip@2x-modeset-vs-vblank-race:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#3637 / i915#9934)
+>      * igt@kms_flip@2x-plain-flip-fb-recreate:
+> 
+>           * shard-snb: PASS -> FAIL (i915#13734) +3 other tests fail
+>      * igt@kms_flip@2x-wf_vblank-ts-check-interruptible:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#9934) +7 other tests skip
+>      * igt@kms_flip@blocking-wf_vblank@b-hdmi-a1:
+> 
+>           * shard-tglu-1: NOTRUN -> FAIL (i915#13734) +2 other tests fail
+>      * igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible:
+> 
+>           * shard-dg1: PASS -> FAIL (i915#13734) +1 other test fail
+>      * igt@kms_flip@flip-vs-dpms-on-nop-interruptible@d-hdmi-a1:
+> 
+>           * shard-tglu: PASS -> FAIL (i915#13734) +4 other tests fail
+>      * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling@pipe-a-valid-mode:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#2587 / i915#2672) +3 other
+>             tests skip
+>      * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#2672 / i915#3555)
+>      * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling@pipe-a-valid-mode:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#2587 / i915#2672) +1 other test
+>             skip
+>      * igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-downscaling@pipe-a-valid-mode:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#2672) +4 other tests skip
+>      * igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-downscaling@pipe-a-valid-mode:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#2587 / i915#2672) +1 other test
+>             skip
+>      * igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-upscaling:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#2672 / i915#3555 / i915#5190)
+>           * shard-dg1: NOTRUN -> SKIP (i915#2587 / i915#2672 / i915#3555)
+>           * shard-tglu: NOTRUN -> SKIP (i915#2587 / i915#2672 / i915#3555) +1
+>             other test skip
+>      * igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-upscaling@pipe-a-valid-mode:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#2672) +1 other test skip
+>      * igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-16bpp-4tile-upscaling:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#2672 / i915#3555) +4 other tests
+>             skip
+>      * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-downscaling:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#2672 / i915#3555) +3 other
+>             tests skip
 >      * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1401 / Intel XE#1745)
->      * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling@pipe-a-default-mode:
+>           * shard-dg2: NOTRUN -> SKIP (i915#2672 / i915#3555)
+>      * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1401)
->      * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-pri-indfb-draw-mmap-wc:
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#2672 / i915#3555) +1 other test
+>             skip
+>      * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-mmap-cpu:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2311) +3 other tests skip
->      * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-move:
+>           * shard-snb: PASS -> SKIP +12 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-mmap-cpu:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2312) +5 other tests skip
->      * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-move:
+>           * shard-dg2: NOTRUN -> SKIP (i915#5354) +18 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbc-2p-shrfb-fliptrack-mmap-gtt:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4141) +3 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-move:
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#8708) +6 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-mmap-gtt:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#651) +4 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-pri-indfb-draw-render:
+>           * shard-dg2: NOTRUN -> SKIP (i915#8708) +11 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbc-tiling-y:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#656) +16 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-shrfb-pgflip-blt:
+>           * shard-dg2: NOTRUN -> SKIP (i915#10055)
+>      * igt@kms_frontbuffer_tracking@fbcpsr-1p-indfb-fliptrack-mmap-gtt:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#651) +8 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-tiling-y:
+>           * shard-mtlp: NOTRUN -> SKIP (i915#8708) +1 other test skip
+>      * igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1469)
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2352)
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-blt:
+>           * shard-rkl: NOTRUN -> SKIP (i915#3023) +22 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-render:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#653) +8 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-wc:
+>           * shard-dg1: NOTRUN -> SKIP +8 other tests skip
+>           * shard-mtlp: NOTRUN -> SKIP (i915#1825) +1 other test skip
+>      * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-fullscreen:
 > 
->           * shard-lnl: PASS -> SKIP (Intel XE#2351) +1 other test skip
->      * igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-blt:
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#5354) +15 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-mmap-cpu:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2313) +2 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-onoff:
+>           * shard-rkl: NOTRUN -> SKIP (i915#1825) +37 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-gtt:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2351 / Intel XE#4208) +3
->             other tests skip
->      * igt@kms_hdr@static-toggle-suspend:
+>           * shard-glk: NOTRUN -> SKIP +377 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-blt:
 > 
->           * shard-bmg: PASS -> SKIP (Intel XE#1503) +1 other test skip
+>           * shard-dg1: NOTRUN -> SKIP (i915#3458) +4 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbcpsr-tiling-4:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#5439)
+>      * igt@kms_frontbuffer_tracking@pipe-fbc-rte:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#9766)
+>      * igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-indfb-draw-blt:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#3458) +2 other tests skip
+>      * igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-mmap-wc:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP +55 other tests skip
+>      * igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-mmap-gtt:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#8708) +4 other tests skip
+>      * igt@kms_frontbuffer_tracking@psr-1p-rte:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#3458) +13 other tests skip
+>      * igt@kms_hdr@bpc-switch:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#3555 / i915#8228) +1 other test
+>             skip
+>      * igt@kms_hdr@bpc-switch-suspend:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#3555 / i915#8228) +1 other test
+>             skip
+>      * igt@kms_hdr@invalid-hdr:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#3555 / i915#8228)
+>      * igt@kms_hdr@static-toggle:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#3555 / i915#8228) +1 other test
+>             skip
+>      * igt@kms_hdr@static-toggle-dpms:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#3555 / i915#8228)
 >      * igt@kms_joiner@basic-ultra-joiner:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2927)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2927)
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#12339)
+>      * igt@kms_joiner@invalid-modeset-big-joiner:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#10656)
+>           * shard-dg2: NOTRUN -> SKIP (i915#10656)
 >      * igt@kms_joiner@invalid-modeset-force-big-joiner:
 > 
->           * shard-bmg: PASS -> SKIP (Intel XE#3012)
->      * igt@kms_plane_lowres@tiling-4:
+>           * shard-tglu: NOTRUN -> SKIP (i915#12388)
+>      * igt@kms_joiner@invalid-modeset-force-ultra-joiner:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#599) +3 other tests skip
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#10656)
+>      * igt@kms_panel_fitting@atomic-fastset:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#6301)
+>      * igt@kms_pipe_b_c_ivb@disable-pipe-b-enable-pipe-c:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP +3 other tests skip
+>      * igt@kms_pipe_stress@stress-xrgb8888-ytiled:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#13705)
+>      * igt@kms_plane_alpha_blend@constant-alpha-max:
+> 
+>           * shard-glk: NOTRUN -> FAIL (i915#10647 / i915#12169)
+>      * igt@kms_plane_alpha_blend@constant-alpha-max@pipe-c-hdmi-a-1:
+> 
+>           * shard-glk: NOTRUN -> FAIL (i915#10647) +1 other test fail
 >      * igt@kms_plane_multiple@2x-tiling-4:
 > 
->           * shard-bmg: PASS -> SKIP (Intel XE#4596) +1 other test skip
->      * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-b:
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#13958)
+>           * shard-rkl: NOTRUN -> SKIP (i915#13958)
+>      * igt@kms_plane_multiple@2x-tiling-none:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2763) +11 other tests
->             skip
->      * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-a:
+>           * shard-dg2: NOTRUN -> SKIP (i915#13958)
+>           * shard-dg1: NOTRUN -> SKIP (i915#13958)
+>      * igt@kms_plane_multiple@2x-tiling-yf:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2763) +11 other tests skip
->      * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-d:
+>           * shard-tglu: NOTRUN -> SKIP (i915#13958)
+>      * igt@kms_plane_multiple@tiling-4:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2763 / Intel XE#455) +4
->             other tests skip
->      * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-a:
+>           * shard-tglu: NOTRUN -> SKIP (i915#14259)
+>      * igt@kms_plane_multiple@tiling-y:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2763) +9 other tests skip
+>           * shard-dg2: NOTRUN -> SKIP (i915#14259)
+>      * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-a:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#12247) +10 other tests skip
+>      * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#12247) +9 other tests skip
+>      * igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-a:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#12247) +4 other tests skip
+>      * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-c:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#12247) +4 other tests skip
+>      * igt@kms_pm_backlight@bad-brightness:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#9812)
+>      * igt@kms_pm_backlight@brightness-with-dpms:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#12343)
 >      * igt@kms_pm_backlight@fade-with-dpms:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#870)
->      * igt@kms_pm_dc@dc6-psr:
+>           * shard-rkl: NOTRUN -> SKIP (i915#5354)
+>      * igt@kms_pm_backlight@fade-with-suspend:
 > 
->           * shard-lnl: PASS -> FAIL (Intel XE#718)
->      * igt@kms_psr2_sf@fbc-pr-plane-move-sf-dmg-area:
+>           * shard-dg1: NOTRUN -> SKIP (i915#5354)
+>      * igt@kms_pm_dc@dc5-retention-flops:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1489) +1 other test skip
->      * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:
+>           * shard-rkl: NOTRUN -> SKIP (i915#3828)
+>      * igt@kms_pm_dc@dc6-dpms:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4608) +1 other test skip
->      * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-sf:
+>           * shard-dg2: NOTRUN -> SKIP (i915#14104)
+>      * igt@kms_pm_dc@dc9-dpms:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2893)
->      * igt@kms_psr2_sf@pr-overlay-plane-update-sf-dmg-area:
+>           * shard-tglu: NOTRUN -> SKIP (i915#4281)
+>      * igt@kms_pm_lpsp@kms-lpsp:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1489)
->      * igt@kms_psr@fbc-psr2-primary-blt:
+>           * shard-tglu: NOTRUN -> SKIP (i915#3828)
+>      * igt@kms_pm_rpm@dpms-mode-unset-lpsp:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2234 / Intel XE#2850) +2
->             other tests skip
->      * igt@kms_psr@fbc-psr2-primary-blt@edp-1:
+>           * shard-dg2: PASS -> SKIP (i915#9519)
+>      * igt@kms_pm_rpm@i2c:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4609)
->      * igt@kms_psr@pr-no-drrs:
+>           * shard-dg1: NOTRUN -> DMESG-WARN (i915#4423) +1 other test
+>             dmesg-warn
+>      * igt@kms_pm_rpm@modeset-non-lpsp-stress:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406) +4 other tests skip
->      * igt@kms_psr@psr-primary-render:
+>           * shard-rkl: PASS -> SKIP (i915#9519)
+>      * igt@kms_pm_rpm@system-suspend-modeset:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2351)
->      * igt@kms_psr@psr2-suspend:
+>           * shard-dg1: PASS -> DMESG-WARN (i915#4423) +1 other test
+>             dmesg-warn
+>      * igt@kms_prime@basic-crc-hybrid:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2850 / Intel XE#929) +1
->             other test skip
+>           * shard-rkl: NOTRUN -> SKIP (i915#6524)
+>      * igt@kms_properties@get_properties-sanity-atomic:
+> 
+>           * shard-rkl: NOTRUN -> FAIL (i915#14036)
+>      * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-fully-sf:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#11520) +1 other test skip
+>      * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#11520) +10 other tests skip
+>      * igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area:
+> 
+>           * shard-glk: NOTRUN -> SKIP (i915#11520) +11 other tests skip
+>      * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#11520) +4 other tests skip
+>      * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#11520) +5 other tests skip
+>           * shard-dg1: NOTRUN -> SKIP (i915#11520)
+>           * shard-snb: NOTRUN -> SKIP (i915#11520)
+>      * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#11520) +5 other tests skip
+>      * igt@kms_psr2_su@page_flip-xrgb8888:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#9683)
+>      * igt@kms_psr@fbc-pr-primary-mmap-cpu:
+> 
+>           * shard-tglu: NOTRUN -> SKIP (i915#9732) +18 other tests skip
+>      * igt@kms_psr@fbc-psr-primary-blt:
+> 
+>           * shard-dg2: NOTRUN -> SKIP (i915#1072 / i915#9732) +11 other tests
+>             skip
+>      * igt@kms_psr@fbc-psr-sprite-mmap-gtt:
+> 
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#1072 / i915#9732) +7 other
+>             tests skip
+>      * igt@kms_psr@pr-sprite-mmap-cpu:
+> 
+>           * shard-mtlp: NOTRUN -> SKIP (i915#9688) +2 other tests skip
+>      * igt@kms_psr@psr-cursor-plane-onoff:
+> 
+>           * shard-dg1: NOTRUN -> SKIP (i915#1072 / i915#9732) +8 other tests
+>             skip
+>      * igt@kms_psr@psr2-sprite-mmap-cpu:
+> 
+>           * shard-rkl: NOTRUN -> SKIP (i915#1072 / i915#9732) +26 other tests
+>             skip
+>      * igt@kms_psr@psr2-sprite-mmap-gtt:
+> 
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#9732) +13 other tests skip
 >      * igt@kms_psr_stress_test@flip-primary-invalidate-overlay:
 > 
->           * shard-lnl: PASS -> SKIP (Intel XE#4692) +1 other test skip
->      * igt@kms_rotation_crc@primary-rotation-270:
+>           * shard-tglu: NOTRUN -> SKIP (i915#9685) +2 other tests skip
+>      * igt@kms_rotation_crc@primary-y-tiled-reflect-x-0:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#3414 / Intel XE#3904)
->      * igt@kms_rotation_crc@primary-rotation-90:
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#5190) +1 other test skip
+>      * igt@kms_rotation_crc@primary-y-tiled-reflect-x-90:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#3414 / Intel XE#3904) +1
->             other test skip
->      * igt@kms_rotation_crc@primary-yf-tiled-reflect-x-0:
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#12755 / i915#5190)
+>      * igt@kms_rotation_crc@primary-yf-tiled-reflect-x-180:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1127)
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2330)
->      * igt@kms_tv_load_detect@load-detect:
+>           * shard-rkl: NOTRUN -> SKIP (i915#5289) +3 other tests skip
+>           * shard-dg1: NOTRUN -> SKIP (i915#5289)
+>           * shard-tglu: NOTRUN -> SKIP (i915#5289) +1 other test skip
+>           * shard-mtlp: NOTRUN -> SKIP (i915#5289)
+>      * igt@kms_rotation_crc@primary-yf-tiled-reflect-x-270:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#330)
->      * igt@kms_writeback@writeback-check-output-xrgb2101010:
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#5289)
+>      * igt@kms_rotation_crc@sprite-rotation-90-pos-100-0:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#756)
->      * igt@xe_compute@ccs-mode-compute-kernel:
+>           * shard-dg2: NOTRUN -> SKIP (i915#12755) +1 other test skip
+>      * igt@kms_selftest@drm_framebuffer:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1447)
->      * igt@xe_create@create-big-vram:
+>           * shard-rkl: NOTRUN -> ABORT (i915#13179) +1 other test abort
+>      * igt@kms_setmode@basic:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1062)
->      * igt@xe_eudebug@discovery-empty:
+>           * shard-snb: PASS -> FAIL (i915#5465) +2 other tests fail
+>      * igt@kms_setmode@invalid-clone-single-crtc-stealing:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4837) +2 other tests skip
->      * igt@xe_eudebug_online@interrupt-all-set-breakpoint:
+>           * shard-dg2: NOTRUN -> SKIP (i915#3555) +5 other tests skip
+>      * igt@kms_tiled_display@basic-test-pattern:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4837) +2 other tests
->             skip
->      * igt@xe_eudebug_sriov@deny-eudebug:
+>           * shard-rkl: NOTRUN -> SKIP (i915#8623)
+>      * igt@kms_vrr@flip-basic-fastset:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4518) +1 other test skip
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4518)
->      * igt@xe_evict@evict-beng-large-cm:
+>           * shard-tglu: NOTRUN -> SKIP (i915#9906)
+>      * igt@kms_vrr@flip-dpms:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#688) +3 other tests skip
->      * igt@xe_evict_ccs@evict-overcommit-standalone-instantfree-reopen:
+>           * shard-dg1: NOTRUN -> SKIP (i915#3555) +1 other test skip
+>      * igt@kms_vrr@max-min:
 > 
->           * shard-dg2-set2: PASS -> SKIP (Intel XE#4208) +199 other tests
->             skip
->      * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind:
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#9906)
+>      * igt@kms_vrr@seamless-rr-switch-virtual:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2322)
->      * igt@xe_exec_basic@multigpu-no-exec-null-defer-bind:
+>           * shard-dg2: NOTRUN -> SKIP (i915#9906)
+>      * igt@kms_writeback@writeback-check-output:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1392) +1 other test skip
->      * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race:
+>           * shard-rkl: NOTRUN -> SKIP (i915#2437) +1 other test skip
+>      * igt@kms_writeback@writeback-fb-id:
 > 
->           * shard-dg2-set2: PASS -> SKIP (Intel XE#1392) +3 other tests skip
->      * igt@xe_exec_basic@once-userptr-invalidate-race:
+>           * shard-tglu: NOTRUN -> SKIP (i915#2437)
+>      * igt@kms_writeback@writeback-invalid-parameters:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4208) +80 other tests
->             skip
->      * igt@xe_exec_compute_mode@twice-userptr:
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#2437)
+>           * shard-dg2: NOTRUN -> SKIP (i915#2437)
+>      * igt@kms_writeback@writeback-pixel-formats:
 > 
->           * shard-lnl: PASS -> SKIP (Intel XE#4996) +10 other tests skip
->      * igt@xe_exec_fault_mode@many-execqueues-userptr-invalidate-race-imm:
+>           * shard-glk: NOTRUN -> SKIP (i915#2437) +2 other tests skip
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#2437 / i915#9412)
+>      * igt@perf@global-sseu-config:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#288) +11 other tests
->             skip
->      * igt@xe_exec_mix_modes@exec-spinner-interrupted-lr:
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#7387)
+>      * igt@perf@global-sseu-config-invalid:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2360)
->      * igt@xe_exec_system_allocator@threads-many-execqueues-mmap-free-huge:
+>           * shard-mtlp: NOTRUN -> SKIP (i915#7387)
+>           * shard-dg2: NOTRUN -> SKIP (i915#7387)
+>      * igt@perf_pmu@frequency@gt0:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4943) +1 other test skip
->      * igt@xe_exec_system_allocator@threads-many-large-execqueues-malloc-race:
+>           * shard-dg2: NOTRUN -> FAIL (i915#12549 / i915#6806) +1 other test
+>             fail
+>      * igt@perf_pmu@rc6-all-gts:
 > 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4915) +49 other tests
->             skip
->      * igt@xe_exec_system_allocator@threads-many-mmap-mlock-nomemset:
+>           * shard-tglu-1: NOTRUN -> SKIP (i915#8516)
+>      * igt@prime_vgem@fence-read-hang:
 > 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4996)
->      * igt@xe_exec_system_allocator@threads-shared-vm-many-large-execqueues-mmap-new-huge:
+>           * shard-dg2: NOTRUN -> SKIP (i915#3708) +1 other test skip
+>           * shard-rkl: NOTRUN -> SKIP (i915#3708)
+>      * igt@prime_vgem@fence-write-hang:
 > 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4943) +10 other tests skip
->      * igt@xe_exec_system_allocator@threads-shared-vm-many-large-new-bo-map-nomemset:
+>           * shard-dg1: NOTRUN -> SKIP (i915#3708)
+>      * igt@sriov_basic@bind-unbind-vf:
 > 
->           * shard-lnl: PASS -> FAIL (Intel XE#5018)
->      * igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-race:
+>           * shard-rkl: NOTRUN -> SKIP (i915#9917) +1 other test skip
+>      * igt@sriov_basic@enable-vfs-bind-unbind-each:
 > 
->           * shard-bmg: PASS -> SKIP (Intel XE#4996) +8 other tests skip
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4996)
->      * igt@xe_exec_threads@threads-bal-shared-vm-rebind:
+>           * shard-dg2-9: NOTRUN -> SKIP (i915#9917)
+>      * igt@sriov_basic@enable-vfs-bind-unbind-each-numvfs-all:
 > 
->           * shard-bmg: PASS -> SKIP (Intel XE#4954 / Intel XE#4996) +2 other
->             tests skip
->      * igt@xe_live_ktest@xe_bo:
-> 
->           * shard-dg2-set2: PASS -> SKIP (Intel XE#2229 / Intel XE#455) +1
->             other test skip
->      * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
-> 
->           * shard-dg2-set2: PASS -> SKIP (Intel XE#2229)
->      * igt@xe_mmap@pci-membarrier-parallel:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4045)
->      * igt@xe_oa@non-system-wide-paranoid:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2541 / Intel XE#3573)
->      * igt@xe_oa@syncs-userptr-wait:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2541 / Intel XE#3573 /
->             Intel XE#4501)
->      * igt@xe_peer2peer@read:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1061)
->      * igt@xe_peer2peer@write:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1061 / Intel XE#4208)
->      * igt@xe_prime_self_import@basic-with_one_bo:
-> 
->           * shard-bmg: PASS -> SKIP (Intel XE#4954) +6 other tests skip
->      * igt@xe_pxp@pxp-termination-key-update-post-rpm:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4733) +2 other tests
->             skip
->      * igt@xe_query@multigpu-query-oa-units:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#944)
->      * igt@xe_query@multigpu-query-pxp-status:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#944) +1 other test skip
->      * igt@xe_sriov_flr@flr-each-isolation:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#3342)
->      * igt@xe_sriov_scheduling@nonpreempt-engine-resets:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4351)
+>           * shard-dg2: NOTRUN -> SKIP (i915#9917)
 > 
 >     Possible fixes
 > 
->      * igt@core_hotunplug@unplug-rescan:
+>      * igt@gem_eio@hibernate:
 > 
->           * shard-bmg: SKIP (Intel XE#4963) -> PASS
->           * shard-lnl: SKIP (Intel XE#4963) -> PASS
->      * igt@fbdev@eof:
+>           * shard-tglu: ABORT (i915#10030 / i915#7975 / i915#8213) -> PASS
+>      * igt@gem_eio@reset-stress:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#2134) -> PASS +2 other tests pass
->      * igt@kms_async_flips@alternate-sync-async-flip:
+>           * shard-dg1: FAIL (i915#12543 / i915#5784) -> PASS
+>      * igt@gem_lmem_swapping@smem-oom@lmem0:
 > 
->           * shard-bmg: FAIL (Intel XE#827) -> PASS +1 other test pass
->      * igt@kms_atomic_transition@modeset-transition-nonblocking-fencing:
+>           * shard-dg1: TIMEOUT (i915#14044 / i915#5493) -> PASS +1 other test
+>             pass
+>      * igt@gem_mmap_gtt@cpuset-medium-copy-xy:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> PASS +121
->             other tests pass
->      * igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:
+>           * shard-rkl: DMESG-WARN (i915#12964) -> PASS +13 other tests pass
+>      * igt@gem_pxp@display-protected-crc:
 > 
->           * shard-bmg: SKIP (Intel XE#2314 / Intel XE#2894) -> PASS
->      * igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size:
+>           * shard-rkl: TIMEOUT (i915#12917 / i915#12964) -> PASS
+>      * igt@gem_workarounds@suspend-resume:
 > 
->           * shard-bmg: SKIP (Intel XE#2291) -> PASS +2 other tests pass
->      * igt@kms_dither@fb-8bpc-vs-panel-6bpc:
+>           * shard-glk: INCOMPLETE (i915#13356) -> PASS
+>      * igt@i915_pm_rc6_residency@rc6-idle@gt0-rcs0:
 > 
->           * shard-bmg: SKIP (Intel XE#1340) -> PASS
->      * igt@kms_fbcon_fbt@psr-suspend:
+>           * shard-dg1: FAIL (i915#3591) -> PASS
+>      * igt@i915_selftest@live@sanitycheck:
 > 
->           * shard-lnl: FAIL (Intel XE#4164) -> PASS
->      * igt@kms_feature_discovery@display-2x:
+>           * shard-snb: ABORT (i915#11703) -> PASS +1 other test pass
+>      * igt@kms_atomic_transition@plane-all-modeset-transition:
 > 
->           * shard-bmg: SKIP (Intel XE#2373) -> PASS
->      * igt@kms_flip@2x-flip-vs-dpms-on-nop-interruptible:
+>           * shard-dg2: FAIL (i915#5956) -> PASS
+>      * igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180:
 > 
->           * shard-bmg: SKIP (Intel XE#2316) -> PASS +5 other tests pass
->      * igt@kms_flip@2x-flip-vs-expired-vblank@ab-dp2-hdmi-a3:
+>           * shard-dg1: DMESG-WARN (i915#4423) -> PASS +5 other tests pass
+>      * igt@kms_cursor_crc@cursor-onscreen-128x42:
 > 
->           * shard-bmg: FAIL (Intel XE#3321) -> PASS +3 other tests pass
->      * igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible@b-edp1:
+>           * shard-rkl: FAIL (i915#13566) -> PASS
+>      * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:
 > 
->           * shard-lnl: FAIL (Intel XE#886) -> PASS +2 other tests pass
->      * igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-upscaling:
+>           * shard-rkl: FAIL (i915#2346) -> PASS
+>      * igt@kms_dp_aux_dev:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> PASS +12
->             other tests pass
->      * igt@kms_frontbuffer_tracking@fbc-modesetfrombusy:
+>           * shard-dg2: SKIP (i915#1257) -> PASS
+>      * igt@kms_flip@2x-blocking-wf_vblank@ab-vga1-hdmi-a1:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#2231 / Intel XE#4208) -> PASS +1
->             other test pass
->      * igt@kms_hdr@static-toggle:
+>           * shard-snb: FAIL (i915#11832 / i915#13734) -> PASS +7 other tests
+>             pass
+>      * igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible@c-hdmi-a1:
 > 
->           * shard-bmg: SKIP (Intel XE#1503) -> PASS
+>           * shard-tglu: FAIL (i915#13734) -> PASS +1 other test pass
+>      * igt@kms_flip@flip-vs-suspend-interruptible:
+> 
+>           * shard-rkl: INCOMPLETE (i915#6113) -> PASS
+>      * igt@kms_flip@plain-flip-ts-check:
+> 
+>           * shard-rkl: FAIL (i915#13734) -> PASS
+>      * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-fullscreen:
+> 
+>           * shard-snb: SKIP -> PASS +2 other tests pass
+>      * igt@kms_joiner@basic-force-big-joiner:
+> 
+>           * shard-dg2: SKIP (i915#12388) -> PASS
 >      * igt@kms_pm_dc@dc6-dpms:
 > 
->           * shard-lnl: FAIL (Intel XE#718) -> PASS
->      * igt@kms_psr@psr2-sprite-plane-onoff:
+>           * shard-tglu: FAIL (i915#9295) -> PASS
+>      * igt@kms_pm_rpm@modeset-non-lpsp-stress:
 > 
->           * shard-lnl: SKIP (Intel XE#2351) -> PASS +3 other tests pass
->      * igt@kms_sequence@get-idle:
+>           * shard-dg2: SKIP (i915#9519) -> PASS +1 other test pass
+>      * igt@perf_pmu@all-busy-idle-check-all:
 > 
->           * shard-bmg: SKIP (Intel XE#4954) -> PASS +15 other tests pass
->      * igt@kms_setmode@clone-exclusive-crtc:
+>           * shard-dg2: FAIL (i915#11943) -> PASS
+>           * shard-dg1: FAIL (i915#11943) -> PASS
+>           * shard-mtlp: FAIL (i915#11943) -> PASS
+>      * igt@perf_pmu@busy-double-start@vecs1:
 > 
->           * shard-bmg: SKIP (Intel XE#1435) -> PASS +1 other test pass
->      * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind:
+>           * shard-dg2: FAIL (i915#4349) -> PASS +4 other tests pass
+>      * igt@perf_pmu@module-unload:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#1392) -> PASS +2 other tests pass
->      * igt@xe_exec_system_allocator@many-free:
-> 
->           * shard-bmg: SKIP (Intel XE#4996) -> PASS +24 other tests pass
->      * {igt@xe_exec_system_allocator@threads-many-large-execqueues-mmap-shared-remap}:
-> 
->           * shard-lnl: SKIP (Intel XE#4996) -> PASS +38 other tests pass
->      * igt@xe_mmap@bad-object:
-> 
->           * shard-bmg: SKIP (Intel XE#4954 / Intel XE#4996) -> PASS +1 other
->             test pass
->      * igt@xe_module_load@reload-no-display:
-> 
->           * shard-dg2-set2: FAIL (Intel XE#4208) -> PASS
->      * igt@xe_pm@s4-d3hot-basic-exec:
-> 
->           * shard-lnl: ABORT (Intel XE#1794) -> PASS
->      * igt@xe_vm@large-split-binds-536870912:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> PASS +274 other tests
->             pass
+>           * shard-tglu: INCOMPLETE (i915#13520) -> PASS
+>           * shard-mtlp: INCOMPLETE (i915#13520) -> PASS
 > 
 >     Warnings
 > 
->      * igt@kms_async_flips@invalid-async-flip-atomic:
+>      * igt@kms_big_fb@4-tiled-16bpp-rotate-180:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#3768)
->      * igt@kms_big_fb@4-tiled-8bpp-rotate-90:
+>           * shard-dg1: SKIP (i915#4423 / i915#4538 / i915#5286) -> SKIP
+>             (i915#4538 / i915#5286)
+>      * igt@kms_ccs@bad-pixel-format-y-tiled-gen12-mc-ccs@pipe-a-hdmi-a-4:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#316) -> SKIP (Intel XE#2351 /
->             Intel XE#4208) +1 other test skip
->      * igt@kms_big_fb@linear-16bpp-rotate-90:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#316) +2 other tests skip
->      * igt@kms_big_fb@linear-32bpp-rotate-270:
-> 
->           * shard-bmg: SKIP (Intel XE#2231 / Intel XE#4996) -> SKIP (Intel
->             XE#2327)
->           * shard-dg2-set2: SKIP (Intel XE#2231 / Intel XE#4208) -> SKIP
->             (Intel XE#316)
->           * shard-lnl: SKIP (Intel XE#2351 / Intel XE#4996) -> SKIP (Intel
->             XE#1407)
->      * igt@kms_big_fb@linear-8bpp-rotate-90:
-> 
->           * shard-bmg: SKIP (Intel XE#2231) -> SKIP (Intel XE#2327)
->      * igt@kms_big_fb@x-tiled-32bpp-rotate-90:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#316) -> SKIP (Intel XE#4208) +1
->             other test skip
->      * igt@kms_big_fb@x-tiled-8bpp-rotate-270:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#316) +3
+>           * shard-dg1: SKIP (i915#4423 / i915#6095) -> SKIP (i915#6095) +3
 >             other tests skip
->      * igt@kms_big_fb@y-tiled-64bpp-rotate-180:
+>      * igt@kms_ccs@bad-rotation-90-yf-tiled-ccs@pipe-b-hdmi-a-2:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#2231 / Intel XE#4208) -> SKIP
->             (Intel XE#1124) +1 other test skip
->           * shard-lnl: SKIP (Intel XE#2351) -> SKIP (Intel XE#1124) +1 other
->             test skip
->      * igt@kms_big_fb@y-tiled-addfb:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#619)
->      * igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#1124) +8 other tests skip
->      * igt@kms_big_fb@yf-tiled-32bpp-rotate-0:
-> 
->           * shard-bmg: SKIP (Intel XE#1124) -> SKIP (Intel XE#2231 / Intel
->             XE#4996)
->           * shard-dg2-set2: SKIP (Intel XE#1124) -> SKIP (Intel XE#2351 /
->             Intel XE#4208) +2 other tests skip
->           * shard-lnl: SKIP (Intel XE#1124) -> SKIP (Intel XE#2351 / Intel
->             XE#4996)
->      * igt@kms_big_fb@yf-tiled-32bpp-rotate-180:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1124) -> SKIP (Intel XE#4208) +5
+>           * shard-rkl: SKIP (i915#6095) -> SKIP (i915#14098 / i915#6095) +2
 >             other tests skip
->      * igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow:
+>      * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs@pipe-b-hdmi-a-2:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#607) -> SKIP (Intel XE#4208)
->      * igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#1124) +6
+>           * shard-rkl: SKIP (i915#14098 / i915#6095) -> SKIP (i915#6095) +2
 >             other tests skip
->      * igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0:
+>      * igt@kms_content_protection@mei-interface:
 > 
->           * shard-bmg: SKIP (Intel XE#2231) -> SKIP (Intel XE#1124)
->      * igt@kms_bw@connected-linear-tiling-4-displays-1920x1080p:
+>           * shard-snb: INCOMPLETE (i915#9878) -> SKIP
+>      * igt@kms_content_protection@srm:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#2191) +1 other test skip
->      * igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2191) -> SKIP (Intel XE#4208 /
->             i915#2575) +1 other test skip
->      * igt@kms_bw@linear-tiling-1-displays-1920x1080p:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#367) +3 other tests skip
->      * igt@kms_bw@linear-tiling-4-displays-2560x1440p:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#367) -> SKIP (Intel XE#4208 /
->             i915#2575) +1 other test skip
->           * shard-lnl: SKIP (Intel XE#1512) -> SKIP (Intel XE#4996)
->           * shard-bmg: SKIP (Intel XE#367) -> SKIP (Intel XE#4996)
->      * igt@kms_ccs@bad-pixel-format-4-tiled-dg2-rc-ccs:
-> 
->           * shard-bmg: SKIP (Intel XE#2887) -> SKIP (Intel XE#2231 / Intel
->             XE#4996)
->           * shard-lnl: SKIP (Intel XE#2887) -> SKIP (Intel XE#2351 / Intel
->             XE#4996)
->      * igt@kms_ccs@bad-pixel-format-y-tiled-gen12-mc-ccs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#455 / Intel XE#787) -> SKIP (Intel
->             XE#4208) +7 other tests skip
->      * igt@kms_ccs@bad-rotation-90-4-tiled-lnl-ccs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#2907) +1
->             other test skip
->      * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#455 / Intel XE#787)
->      * igt@kms_ccs@crc-primary-rotation-180-4-tiled-mtl-rc-ccs-cc:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#455 / Intel XE#787) -> SKIP (Intel
->             XE#2351 / Intel XE#4208) +2 other tests skip
->      * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#3442) -> SKIP (Intel XE#4208)
->      * igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#3442)
->      * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs:
-> 
->           * shard-bmg: SKIP (Intel XE#2231) -> SKIP (Intel XE#2887)
->           * shard-dg2-set2: SKIP (Intel XE#2231 / Intel XE#4208) ->
->             INCOMPLETE (Intel XE#1727 / Intel XE#3113 / Intel XE#3124 / Intel
->             XE#4345)
->           * shard-lnl: SKIP (Intel XE#2351) -> SKIP (Intel XE#2887)
->      * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs-cc:
-> 
->           * shard-dg2-set2: INCOMPLETE (Intel XE#1727 / Intel XE#3113 / Intel
->             XE#3124) -> SKIP (Intel XE#4208)
->      * igt@kms_ccs@random-ccs-data-4-tiled-lnl-ccs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2907) -> SKIP (Intel XE#4208) +1
->             other test skip
->      * igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs-cc:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#455 /
->             Intel XE#787) +9 other tests skip
->      * igt@kms_cdclk@mode-transition-all-outputs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4418) -> SKIP (Intel XE#2351 /
->             Intel XE#4208)
->      * igt@kms_chamelium_color@ctm-limited-range:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#306) +1 other test skip
->      * igt@kms_chamelium_color@ctm-max:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#306) -> SKIP (Intel XE#4208 /
->             i915#2575)
->      * igt@kms_chamelium_hpd@hdmi-hpd:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#373) +15 other tests skip
->      * igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe:
-> 
->           * shard-lnl: SKIP (Intel XE#4996) -> SKIP (Intel XE#373)
->           * shard-bmg: SKIP (Intel XE#4996) -> SKIP (Intel XE#2252)
->      * igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#373) -> SKIP (Intel XE#4208 /
->             i915#2575) +8 other tests skip
->      * igt@kms_content_protection@atomic:
-> 
->           * shard-bmg: SKIP (Intel XE#2341) -> FAIL (Intel XE#1178)
->      * igt@kms_content_protection@dp-mst-type-1:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#307)
->      * igt@kms_content_protection@legacy:
-> 
->           * shard-bmg: FAIL (Intel XE#1178) -> SKIP (Intel XE#2341)
->           * shard-dg2-set2: FAIL (Intel XE#1178) -> SKIP (Intel XE#4208 /
->             i915#2575) +1 other test skip
+>           * shard-dg2: SKIP (i915#7118) -> FAIL (i915#7173)
 >      * igt@kms_content_protection@uevent:
 > 
->           * shard-lnl: SKIP (Intel XE#4996) -> SKIP (Intel XE#3278)
->           * shard-bmg: SKIP (Intel XE#4996) -> SKIP (Intel XE#2341)
->      * igt@kms_cursor_crc@cursor-offscreen-512x512:
+>           * shard-dg2: FAIL (i915#1339 / i915#7173) -> SKIP (i915#7118 /
+>             i915#9424)
+>           * shard-snb: INCOMPLETE (i915#8816) -> SKIP
+>      * igt@kms_cursor_crc@cursor-random-max-size:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#308) +4 other tests skip
->      * igt@kms_cursor_crc@cursor-onscreen-32x32:
+>           * shard-dg1: SKIP (i915#3555 / i915#4423) -> SKIP (i915#3555)
+>      * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-spr-indfb-draw-pwrite:
 > 
->           * shard-bmg: SKIP (Intel XE#2320) -> SKIP (Intel XE#4996)
->           * shard-lnl: SKIP (Intel XE#1424) -> SKIP (Intel XE#4996)
->      * igt@kms_cursor_crc@cursor-random-512x512:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#308) -> SKIP (Intel XE#4208 /
->             i915#2575)
->      * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#323)
->      * igt@kms_dp_link_training@non-uhbr-mst:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4354) -> SKIP (Intel XE#4208)
->      * igt@kms_dp_link_training@non-uhbr-sst:
-> 
->           * shard-bmg: SKIP (Intel XE#2231) -> SKIP (Intel XE#4354)
->           * shard-lnl: SKIP (Intel XE#2351) -> SKIP (Intel XE#4354)
->      * igt@kms_dp_link_training@uhbr-mst:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#4356)
->      * igt@kms_dp_link_training@uhbr-sst:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4356) -> SKIP (Intel XE#4208)
->      * igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-dirtyfb-tests:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4422) -> SKIP (Intel XE#4208)
->      * igt@kms_fbcon_fbt@psr:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#776) -> SKIP (Intel XE#4208)
->      * igt@kms_feature_discovery@display-4x:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#1138)
->      * igt@kms_feature_discovery@dp-mst:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1137) -> SKIP (Intel XE#4208 /
->             i915#2575)
->      * igt@kms_feature_discovery@psr1:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#1135)
->      * igt@kms_flip@2x-plain-flip-interruptible:
-> 
->           * shard-lnl: SKIP (Intel XE#1421) -> SKIP (Intel XE#4996)
->      * igt@kms_flip@flip-vs-expired-vblank:
-> 
->           * shard-dg2-set2: FAIL (Intel XE#301) -> SKIP (Intel XE#4208 /
->             i915#2575)
->      * igt@kms_flip@flip-vs-expired-vblank-interruptible:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> FAIL (Intel
->             XE#301) +1 other test fail
->      * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#455) +2 other tests skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-downscaling:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#455) -> SKIP (Intel XE#4208) +5
->             other tests skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-upscaling:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#455) +2
->             other tests skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#455) -> SKIP (Intel XE#2351 /
->             Intel XE#4208)
->      * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-pri-indfb-draw-mmap-wc:
-> 
->           * shard-lnl: SKIP (Intel XE#651) -> SKIP (Intel XE#2351)
->           * shard-bmg: SKIP (Intel XE#2311) -> SKIP (Intel XE#2231 / Intel
->             XE#4954)
->      * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-msflip-blt:
-> 
->           * shard-lnl: SKIP (Intel XE#2351) -> SKIP (Intel XE#651)
->           * shard-bmg: SKIP (Intel XE#2231 / Intel XE#4954) -> SKIP (Intel
->             XE#2311)
->           * shard-dg2-set2: SKIP (Intel XE#2231 / Intel XE#4208) -> SKIP
->             (Intel XE#651)
->      * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-onoff:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#651) -> SKIP (Intel XE#4208) +20
->             other tests skip
->      * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-pgflip-blt:
-> 
->           * shard-bmg: SKIP (Intel XE#2311) -> SKIP (Intel XE#2312) +25 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@drrs-suspend:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#651) +10 other tests skip
->      * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-wc:
-> 
->           * shard-bmg: SKIP (Intel XE#4141) -> SKIP (Intel XE#2231 / Intel
->             XE#4954)
->      * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-move:
-> 
->           * shard-bmg: SKIP (Intel XE#2231 / Intel XE#4954) -> SKIP (Intel
->             XE#2312)
->      * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-indfb-plflip-blt:
-> 
->           * shard-bmg: SKIP (Intel XE#2231 / Intel XE#4954) -> SKIP (Intel
->             XE#4141) +1 other test skip
->           * shard-dg2-set2: SKIP (Intel XE#2231 / Intel XE#4208) -> SKIP
->             (Intel XE#2351 / Intel XE#4208) +1 other test skip
->           * shard-lnl: SKIP (Intel XE#2351) -> SKIP (Intel XE#656) +1 other
->             test skip
->      * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-render:
-> 
->           * shard-bmg: SKIP (Intel XE#4141) -> SKIP (Intel XE#2312) +14 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff:
-> 
->           * shard-bmg: SKIP (Intel XE#2312) -> SKIP (Intel XE#4141) +7 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-draw-render:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#651) +31
->             other tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc:
-> 
->           * shard-bmg: SKIP (Intel XE#2312) -> SKIP (Intel XE#2311) +15 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-mmap-wc:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#651) -> SKIP (Intel XE#2351 /
->             Intel XE#4208) +9 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-tiling-y:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#658) +1 other test skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-indfb-draw-render:
-> 
->           * shard-bmg: SKIP (Intel XE#2231 / Intel XE#4954 / Intel XE#4996)
->             -> SKIP (Intel XE#2312)
->           * shard-lnl: SKIP (Intel XE#2351 / Intel XE#4996) -> SKIP (Intel
->             XE#656)
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-blt:
-> 
->           * shard-bmg: SKIP (Intel XE#2313) -> SKIP (Intel XE#2312) +25 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-render:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#653) -> SKIP (Intel XE#4208) +20
->             other tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-shrfb-plflip-blt:
-> 
->           * shard-bmg: SKIP (Intel XE#2312) -> SKIP (Intel XE#2313) +11 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-modesetfrombusy:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2231 / Intel XE#4208) -> SKIP
->             (Intel XE#4208) +2 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-wc:
-> 
->           * shard-bmg: SKIP (Intel XE#2313) -> SKIP (Intel XE#2231 / Intel
->             XE#4954) +1 other test skip
+>           * shard-dg1: SKIP (i915#4423) -> SKIP +1 other test skip
 >      * igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-render:
 > 
->           * shard-bmg: SKIP (Intel XE#2231 / Intel XE#4954) -> SKIP (Intel
->             XE#2313) +1 other test skip
->           * shard-dg2-set2: SKIP (Intel XE#2231 / Intel XE#4208) -> SKIP
->             (Intel XE#653)
->      * igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#653) +24
+>           * shard-dg2: SKIP (i915#3458) -> SKIP (i915#10433 / i915#3458) +4
 >             other tests skip
->      * igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-msflip-blt:
+>      * igt@kms_frontbuffer_tracking@fbcpsr-shrfb-scaledprimary:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#653) +10 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-render:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#653) -> SKIP (Intel XE#2351 /
->             Intel XE#4208) +1 other test skip
->      * igt@kms_getfb@getfb-reject-ccs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#605) -> SKIP (Intel XE#4208 /
->             i915#2575)
+>           * shard-dg2: SKIP (i915#10433 / i915#3458) -> SKIP (i915#3458)
 >      * igt@kms_hdr@brightness-with-hdr:
 > 
->           * shard-bmg: SKIP (Intel XE#3544) -> SKIP (Intel XE#3374 / Intel
->             XE#3544)
->      * igt@kms_joiner@basic-ultra-joiner:
+>           * shard-tglu: SKIP (i915#12713) -> SKIP (i915#1187 / i915#12713)
+>      * igt@kms_pm_dc@dc9-dpms:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#2927)
->      * igt@kms_joiner@invalid-modeset-big-joiner:
+>           * shard-rkl: SKIP (i915#4281) -> SKIP (i915#3361)
+>      * igt@kms_pm_lpsp@kms-lpsp:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#346) -> SKIP (Intel XE#4208)
->      * igt@kms_multipipe_modeset@basic-max-pipe-crc-check:
+>           * shard-rkl: SKIP (i915#9340) -> SKIP (i915#3828)
+>      * igt@kms_psr@pr-sprite-plane-move:
 > 
->           * shard-dg2-set2: SKIP (Intel XE#356) -> SKIP (Intel XE#4208 /
->             i915#2575)
->      * igt@kms_panel_fitting@legacy:
-> 
->           * shard-bmg: SKIP (Intel XE#4954) -> SKIP (Intel XE#2486)
->      * igt@kms_pipe_stress@stress-xrgb8888-ytiled:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#4359)
->      * igt@kms_plane_multiple@2x-tiling-y:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#5021)
->      * igt@kms_plane_multiple@2x-tiling-yf:
-> 
->           * shard-bmg: SKIP (Intel XE#5021) -> SKIP (Intel XE#4596)
->      * igt@kms_plane_multiple@tiling-y:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#5020) -> SKIP (Intel XE#4208 /
->             i915#2575)
->      * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#2763 / Intel XE#455) +2 other tests skip
->      * igt@kms_pm_backlight@brightness-with-dpms:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#2938)
->      * igt@kms_pm_backlight@fade:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#870) -> SKIP (Intel XE#4208)
->      * igt@kms_pm_backlight@fade-with-dpms:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#870) +1
->             other test skip
->      * igt@kms_pm_dc@dc5-retention-flops:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#3309) -> SKIP (Intel XE#4208)
->      * igt@kms_pm_dc@dc6-dpms:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#908) -> SKIP (Intel XE#2351 /
->             Intel XE#4208)
->      * igt@kms_pm_dc@deep-pkgc:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#908)
->      * igt@kms_properties@get_properties-sanity-non-atomic:
-> 
->           * shard-dg2-set2: FAIL (Intel XE#5017) -> SKIP (Intel XE#4208 /
->             i915#2575) +1 other test skip
->      * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1489) -> SKIP (Intel XE#4208) +6
->             other tests skip
->      * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-sf:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#1489) +8
->             other tests skip
->      * igt@kms_psr2_su@frontbuffer-xrgb8888:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#1122)
->      * igt@kms_psr2_su@page_flip-nv12:
-> 
->           * shard-lnl: SKIP (Intel XE#1128) -> SKIP (Intel XE#2351)
->           * shard-bmg: SKIP (Intel XE#2387) -> SKIP (Intel XE#2231 / Intel
->             XE#4954)
->      * igt@kms_psr2_su@page_flip-xrgb8888:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1122) -> SKIP (Intel XE#4208)
->      * igt@kms_psr@fbc-pr-sprite-blt:
-> 
->           * shard-bmg: SKIP (Intel XE#2231 / Intel XE#4954) -> SKIP (Intel
->             XE#2234 / Intel XE#2850) +1 other test skip
->           * shard-dg2-set2: SKIP (Intel XE#2231 / Intel XE#4208) -> SKIP
->             (Intel XE#2850 / Intel XE#929) +1 other test skip
->           * shard-lnl: SKIP (Intel XE#2351) -> SKIP (Intel XE#1406)
->      * igt@kms_psr@fbc-psr-sprite-plane-onoff:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2850 / Intel XE#929) -> SKIP
->             (Intel XE#2351 / Intel XE#4208) +3 other tests skip
->      * igt@kms_psr@fbc-psr2-primary-render:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2850 / Intel XE#929) -> SKIP
->             (Intel XE#4208) +12 other tests skip
->      * igt@kms_psr@pr-primary-page-flip:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#2850 / Intel XE#929) +4 other tests skip
->      * igt@kms_psr@psr-primary-render:
-> 
->           * shard-bmg: SKIP (Intel XE#2234 / Intel XE#2850) -> SKIP (Intel
->             XE#2231 / Intel XE#4954)
->      * igt@kms_psr@psr2-basic:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#2850 /
->             Intel XE#929) +14 other tests skip
->      * igt@kms_psr_stress_test@flip-primary-invalidate-overlay:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2351 / Intel XE#4208) -> SKIP
->             (Intel XE#2939)
->      * igt@kms_psr_stress_test@invalidate-primary-flip-overlay:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2939) -> SKIP (Intel XE#4208)
->      * igt@kms_rotation_crc@primary-rotation-90:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#3414)
->      * igt@kms_rotation_crc@primary-y-tiled-reflect-x-0:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#1127) +1 other test skip
->      * igt@kms_rotation_crc@sprite-rotation-270:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#3414) -> SKIP (Intel XE#4208 /
->             i915#2575)
->      * igt@kms_tiled_display@basic-test-pattern-with-chamelium:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1500) -> SKIP (Intel XE#4208 /
->             i915#2575)
->      * igt@kms_vrr@flip-dpms:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#455) -> SKIP (Intel XE#4208 /
->             i915#2575) +8 other tests skip
->      * igt@kms_vrr@flip-suspend:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#455) +6 other tests skip
->      * igt@kms_vrr@negative-basic:
-> 
->           * shard-lnl: SKIP (Intel XE#4996) -> SKIP (Intel XE#1499)
->      * igt@kms_writeback@writeback-pixel-formats:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208 / i915#2575) -> SKIP (Intel
->             XE#756) +1 other test skip
->      * igt@sriov_basic@enable-vfs-autoprobe-off:
-> 
->           * shard-bmg: SKIP (Intel XE#4954) -> SKIP (Intel XE#1091 / Intel
->             XE#2849)
->           * shard-lnl: SKIP (Intel XE#4996) -> SKIP (Intel XE#1091 / Intel
->             XE#2849)
->      * igt@sriov_basic@enable-vfs-bind-unbind-each-numvfs-all:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1091 / Intel XE#2849) -> SKIP
->             (Intel XE#4208 / i915#2575)
->      * igt@testdisplay:
-> 
->           * shard-dg2-set2: ABORT (Intel XE#2705) -> SKIP (Intel XE#4208)
->      * igt@xe_copy_basic@mem-copy-linear-0x369:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1123) -> SKIP (Intel XE#4208)
->      * igt@xe_copy_basic@mem-set-linear-0xfffe:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1126) -> SKIP (Intel XE#4208)
->      * igt@xe_eu_stall@invalid-gt-id:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#4497) +1
->             other test skip
->      * igt@xe_eudebug@basic-exec-queues-enable:
-> 
->           * shard-bmg: SKIP (Intel XE#4837) -> SKIP (Intel XE#4954) +1 other
->             test skip
->      * igt@xe_eudebug@multiple-sessions:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4837) -> SKIP (Intel XE#4208) +11
->             other tests skip
->      * igt@xe_eudebug_online@basic-breakpoint:
-> 
->           * shard-bmg: SKIP (Intel XE#4954) -> SKIP (Intel XE#4837)
->           * shard-lnl: SKIP (Intel XE#4996) -> SKIP (Intel XE#4837)
->      * igt@xe_eudebug_online@interrupt-other-debuggable:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#4837) +15
->             other tests skip
->      * igt@xe_eudebug_sriov@deny-eudebug:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#4518)
->      * igt@xe_exec_basic@multigpu-no-exec-basic:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1392) -> SKIP (Intel XE#4208) +1
->             other test skip
->      * igt@xe_exec_basic@multigpu-once-null:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#1392) +1
->             other test skip
->      * igt@xe_exec_basic@multigpu-once-userptr-invalidate:
-> 
->           * shard-lnl: SKIP (Intel XE#4996) -> SKIP (Intel XE#1392)
->           * shard-bmg: SKIP (Intel XE#4954) -> SKIP (Intel XE#2322)
->      * igt@xe_exec_fault_mode@once-invalid-userptr-fault:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#288) -> SKIP (Intel XE#4208) +30
->             other tests skip
->      * igt@xe_exec_fault_mode@twice-userptr-invalidate-race:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#288) +36
->             other tests skip
->      * igt@xe_exec_mix_modes@exec-simple-batch-store-lr:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2360) -> SKIP (Intel XE#4208) +1
->             other test skip
->      * igt@xe_exec_system_allocator@many-mmap-free-huge:
-> 
->           * shard-lnl: SKIP (Intel XE#4943) -> SKIP (Intel XE#4996) +2 other
->             tests skip
->      * igt@xe_exec_system_allocator@threads-many-large-execqueues-malloc-mlock-nomemset:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4915) -> SKIP (Intel XE#4208) +190
->             other tests skip
->      * igt@xe_exec_system_allocator@threads-many-large-mmap-new-huge-nomemset:
-> 
->           * shard-bmg: SKIP (Intel XE#4943) -> SKIP (Intel XE#4996) +2 other
->             tests skip
->      * igt@xe_exec_system_allocator@threads-shared-vm-many-large-execqueues-new-bo-map-nomemset:
-> 
->           * shard-lnl: FAIL (Intel XE#4929 / Intel XE#5018) -> FAIL (Intel
->             XE#5018)
->      * igt@xe_exec_system_allocator@threads-shared-vm-many-mmap-shared-nomemset:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#4915) +242
->             other tests skip
->      * igt@xe_oa@buffer-size:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#4501)
->      * igt@xe_oa@oa-unit-exclusive-stream-sample-oa:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2541 / Intel XE#3573) -> SKIP
->             (Intel XE#4208) +7 other tests skip
->      * igt@xe_oa@syncs-syncobj-wait-cfg:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#2541 /
->             Intel XE#3573 / Intel XE#4501) +1 other test skip
->      * igt@xe_oa@syncs-userptr-wait-cfg:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2541 / Intel XE#3573 / Intel
->             XE#4501) -> SKIP (Intel XE#4208) +2 other tests skip
->      * igt@xe_oa@whitelisted-registers-userspace-config:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#2541 /
->             Intel XE#3573) +9 other tests skip
->      * igt@xe_pat@pat-index-xe2:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#977) -> SKIP (Intel XE#4208)
->      * igt@xe_peer2peer@read:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1061 / Intel XE#4208) -> SKIP
->             (Intel XE#1061)
->      * igt@xe_pm@vram-d3cold-threshold:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#579) -> SKIP (Intel XE#4208)
->      * igt@xe_pmu@fn-engine-activity-sched-if-idle:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4650) -> SKIP (Intel XE#4208)
->      * igt@xe_pxp@pxp-stale-bo-bind-post-termination-irq:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#4733) +3
->             other tests skip
->      * igt@xe_query@multigpu-query-config:
-> 
->           * shard-bmg: SKIP (Intel XE#4954) -> SKIP (Intel XE#944)
->      * igt@xe_query@multigpu-query-topology:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#944) +1
->             other test skip
->      * igt@xe_query@multigpu-query-uc-fw-version-guc:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#944) -> SKIP (Intel XE#4208) +1
->             other test skip
->      * igt@xe_render_copy@render-stress-4-copies:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4814) -> SKIP (Intel XE#4208)
->      * igt@xe_spin_batch@spin-mem-copy:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4821) -> SKIP (Intel XE#4208)
->      * igt@xe_sriov_auto_provisioning@exclusive-ranges:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4130) -> SKIP (Intel XE#4208)
->      * igt@xe_sriov_auto_provisioning@selfconfig-basic:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#4208) -> SKIP (Intel XE#4130) +2
->             other tests skip
->      * igt@xe_sriov_flr@flr-vf1-clear:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#3342) -> SKIP (Intel XE#4208)
-> 
->    {name}: This element is suppressed. This means it is ignored when
->    computing
->    the status of the difference (SUCCESS, WARNING, or FAILURE).
+>           * shard-dg1: SKIP (i915#1072 / i915#4423 / i915#9732) -> SKIP
+>             (i915#1072 / i915#9732)
 > 
 > Build changes
 > 
+>      * CI: CI-20190529 -> None
 >      * IGT: IGT_8362 -> IGTPW_13120
->      * Linux: xe-3069-3db1bb52113808f8bc72a7049e2d36e76acc882c ->
->        xe-3082-d0d3c136f60cbee6ede33f207b4e6d6b2f04779d
+>      * Piglit: piglit_4509 -> None
 > 
+>    CI-20190529: 20190529
+>    CI_DRM_16540: d0d3c136f60cbee6ede33f207b4e6d6b2f04779d @
+>    git://anongit.freedesktop.org/gfx-ci/linux
 >    IGTPW_13120: 13120
 >    IGT_8362: 8362
->    xe-3069-3db1bb52113808f8bc72a7049e2d36e76acc882c:
->    3db1bb52113808f8bc72a7049e2d36e76acc882c
->    xe-3082-d0d3c136f60cbee6ede33f207b4e6d6b2f04779d:
->    d0d3c136f60cbee6ede33f207b4e6d6b2f04779d
+>    piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @
+>    git://anongit.freedesktop.org/piglit
