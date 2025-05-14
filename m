@@ -4,53 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1341C3ABDA
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 08:51:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B21AC3ABD9
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 09:11:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9530110E23A;
-	Wed, 14 May 2025 08:51:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EDCFF10E3BA;
+	Wed, 14 May 2025 09:11:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EAqyUL1J";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aXssagZq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBB6D10E23A
- for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 08:51:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC06E10E2F8
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 09:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747212676; x=1778748676;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ymlA3+qvv7R/HmNBGSpxhk7YGzJBfKUYgXYv5PRsMSA=;
- b=EAqyUL1JT0Lm/VHDSh9JzTLVcTxGRs35vkJHRboFVWYdhcc3okAexYWl
- PHU0SfRYROiryNs5zmsVTj/io+xOLcIhcROTbRklir+R299Q8zzvWkloL
- +BugTUl3otWsqSU2nkfdJnrFutOD0OogotK79wOG2NL8A+uf66RmIUBVe
- Pz9sAMgF6YWA4dkfRttwJmLIvPbW08KxuJNXcxdy/6zY3DwxevSj7oq8u
- NRspDAg62h+Iet14p/ijycwjGOenlWlN2UFiUaifWM5xim7xtOEAPjd3B
- 5y8O++qqLlp39TAlmtPzGL+bthfZ3ONkBZjk6WJBwa5Omcsk5ajKoFM4Y g==;
-X-CSE-ConnectionGUID: ynQvL59zTmOLVzNDgPazkg==
-X-CSE-MsgGUID: yp9JPosmSQW7t2sm0VhVxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="60435757"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="60435757"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 01:51:14 -0700
-X-CSE-ConnectionGUID: GQN/bavWSUOkVgxJIo03sA==
-X-CSE-MsgGUID: J1r6K84lQXWMBGldG1SsSw==
+ t=1747213891; x=1778749891;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=a6f5PTJ6G+FDofr6xXJNzPtNbAl+0a5SHSEN/1JE0Xw=;
+ b=aXssagZqSp0vfZ2AXeIN52tG1qRYch1Srva6U8h7uptSUXVJ5kqwXJeZ
+ dcBZx1CdqeNPmyY+8sNGCz0me0eAHgprh68KemvnJYLLsuVCRE24tfsuN
+ A/eTA3EA/mlCjc4MbvUA0j+3UL4HD/aw1u8HuansiCBFmxbWG0+qXXYKL
+ ki+NhxKKv1LXfKm1w5+VfeM9fHxGCqRODhEAPPOr1DKcgb+BI6jclrPPe
+ sifucMZsPCvlvp3g/Mr4FR3wk0yk6+LUHoL/VborF41mFG+7z9j2JUMiq
+ O8h42ef6Uu9uS035nzOslaZNnguo9+P7GS6JFEXOLT9Nr7TSFrcb/oZQr A==;
+X-CSE-ConnectionGUID: qPDQ4eOLTVCXRtetdS+aqA==
+X-CSE-MsgGUID: r+GQcITPSfOL3aaE3iZkGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="49032567"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="49032567"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 02:11:30 -0700
+X-CSE-ConnectionGUID: lOoEvNXTTOy6Q5JafGVhvQ==
+X-CSE-MsgGUID: 6Ihe0F2fS0KbtjA2zt0Ifw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="138962905"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 01:51:13 -0700
-From: Jeevan B <jeevan.b@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="175114074"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 02:11:29 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: uma.shankar@intel.com,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] RFC: Add library functions to query tiling modes on a
- platform basis
-Date: Wed, 14 May 2025 14:37:02 +0530
-Message-Id: <20250514090702.1379441-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.25.1
+Cc: ankit.k.nautiyal@intel.com, suraj.kandpal@intel.com,
+ mohammed.thasleem@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v3 1/2] tools/intel_hdcp: Introduce intel_hdcp tool
+Date: Wed, 14 May 2025 14:32:29 +0530
+Message-Id: <20250514090230.3281649-2-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250514090230.3281649-1-santhosh.reddy.guddati@intel.com>
+References: <20250514090230.3281649-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,166 +71,176 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit introduces functions to dynamically query the supported basic and
-full tiling modes from the kernel (`igt_get_basic_tiling_mode()` and
-`igt_get_full_tiling_mode()`). The goal is to eliminate hardcoding of tiling modes,
-ensuring that the test environment reflects the actual supported configurations
-for the platform.
+Add a new HDCP tool for self-testing and easy deployment
+to client machines. This tool helps diagnose issues,
+determining whether the problem lies in the driver or user space.
 
-By using this approach, we:
-- Reduce the number of dynamic test cases, as only the supported tiling modes
-  are tested.
-- Avoid unnecessary noise in test results by ensuring only relevant tiling
-  configurations are included.
-- Improve test accuracy and reliability by directly aligning with the kernel's
-  reported capabilities.
+The current changes include tool skeleton and get hdcp info
+on the connected outputs.
 
-WIP:
-- Added basic tiling mode query function.
-- Added full tiling mode query function.
-- Introduced helper function for tiling modifier string conversion.
-- Defined enums for basic and full tiling modes.
+Wiki: https://en.wikipedia.org/wiki/High-bandwidth_Digital_Content_Protection
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
+V2:
+ - Update copyright to use SPDX (Jani Nikula).
+ - Replace use of igt_* with fprintf and minimise usage of igt wrappers
+   wherever possible (Kamil).
+ - Consolidate HDCP version info and connector dump , remove redundant
+   code and comments (Santhosh).
+
+V3:
+ - Remove unimplemented enable, disable options and add Wiki (Kamil).
+
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- lib/igt_kms.c | 70 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h | 40 +++++++++++++++++++++++++++++
- 2 files changed, 110 insertions(+)
+ tools/intel_hdcp.c | 126 +++++++++++++++++++++++++++++++++++++++++++++
+ tools/meson.build  |   1 +
+ 2 files changed, 127 insertions(+)
+ create mode 100644 tools/intel_hdcp.c
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f3bc481f2..99b14bed5 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -7442,3 +7442,73 @@ int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *c
- 
- 	return 0;
- }
-+
-+int igt_get_basic_tiling_mode(int fd, uint64_t *modifiers,
-+			      enum igt_tiling_mode *basic_tiling)
-+{
+diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
+new file mode 100644
+index 000000000..fa7855d6e
+--- /dev/null
++++ b/tools/intel_hdcp.c
+@@ -0,0 +1,126 @@
++// SPDX-License-Identifier: MIT
 +/*
-+     * Step 1: Define a local array of known basic tiling modes
-+     *         Map each basic tiling to its corresponding I915_TILING_* value
-+     */
++ * Copyright © 2025 Intel Corporation
++ */
 +
-+    /*
-+     * Step 2: Loop over each tiling mode supported using the kms_flip_tiling logic
-+     *
-+     *         For each tiling:
-+     *         - Create a small test buffer
-+     *         - Attempt to set the tiling mode
-+     *         - If ioctl succeeds, store the tiling mode in basic_tiling[]
-+     *         - Store a default/zero modifier (optional)
-+     */
++#include <fcntl.h>
++#include <stdio.h>
 +
-+    /*
-+     * Step 3: Return the number of tiling modes successfully supported
-+     */
-+return 0;
-+}
-+int igt_get_full_tiling_mode(int fd, uint64_t *modifiers,
-+			     enum igt_tiling_mode *basic_tiling,
-+			     enum igt_format_modifier *all_tiling)
++#include "igt.h"
++
++#define MAX_HDCP_BUF_LEN	5000
++
++typedef struct data {
++	int fd;
++	igt_display_t display;
++	struct igt_fb red, green;
++	int height, width;
++} data_t;
++
++static const char *get_hdcp_version(int fd, char *connector_name)
 +{
-+/*
-+     * Step 1: Define a static list of known Intel format modifiers
-+     *         Use enum values from IGT_FMT_MOD_* defined in igt_kms.h
-+     */
++	char buf[MAX_HDCP_BUF_LEN];
++	int ret;
 +
-+    /*
-+     * Step 2: For each modifier:
-+     *         - Try to create an fb with that modifier
-+     *         - If the fb is successfully created:
-+     *             - Add the modifier to all_tiling[]
-+     */
++	ret = igt_debugfs_connector_dir(fd, connector_name, O_RDONLY);
++	if (ret < 0) {
++		fprintf(stderr, "Failed to open connector directory\n");
++		return NULL;
++	}
 +
-+    /*
-+     * Step 3: Return the number of supported modifiers detected
-+     */
-+return 0;
++	if (is_intel_device(fd))
++		igt_debugfs_simple_read(ret, "i915_hdcp_sink_capability", buf, sizeof(buf));
++	else
++		igt_debugfs_simple_read(ret, "hdcp_sink_capability", buf, sizeof(buf));
++
++	close(ret);
++	if (strstr(buf, "HDCP1.4") && strstr(buf, "HDCP2.2"))
++		return "HDCP1.4 and HDCP2.2";
++	else if (strstr(buf, "HDCP1.4"))
++		return "HDCP1.4";
++	else if (strstr(buf, "HDCP2.2"))
++		return "HDCP2.2";
++	else
++		return "No HDCP support";
 +}
 +
-+const char *igt_modifier_str(uint64_t modifier)
++static void get_hdcp_info(data_t *data)
 +{
-+	switch (modifier) {
-+		case IGT_FMT_MOD_X_TILED: return "X_TILED";
-+		case IGT_FMT_MOD_Y_TILED: return "Y_TILED";
-+		case IGT_FMT_MOD_Yf_TILED: return "Yf_TILED";
-+		case IGT_FMT_MOD_Y_TILED_CCS: return "Y_TILED_CCS";
-+		case IGT_FMT_MOD_Yf_TILED_CCS: return "Yf_TILED_CCS";
-+		case IGT_FMT_MOD_Y_TILED_GEN12_RC_CCS: return "GEN12_RC_CCS";
-+		case IGT_FMT_MOD_Y_TILED_GEN12_MC_CCS: return "GEN12_MC_CCS";
-+		case IGT_FMT_MOD_Y_TILED_GEN12_RC_CCS_CC: return "GEN12_RC_CCS_CC";
-+		case IGT_FMT_MOD_4_TILED: return "4_TILED";
-+		case IGT_FMT_MOD_4_TILED_DG2_RC_CCS: return "DG2_RC_CCS";
-+		case IGT_FMT_MOD_4_TILED_DG2_MC_CCS: return "DG2_MC_CCS";
-+		case IGT_FMT_MOD_4_TILED_DG2_RC_CCS_CC: return "DG2_RC_CCS_CC";
-+		case IGT_FMT_MOD_4_TILED_MTL_RC_CCS: return "MTL_RC_CCS";
-+		case IGT_FMT_MOD_4_TILED_MTL_MC_CCS: return "MTL_MC_CCS";
-+		case IGT_FMT_MOD_4_TILED_MTL_RC_CCS_CC: return "MTL_RC_CCS_CC";
-+		case IGT_FMT_MOD_4_TILED_LNL_CCS: return "LNL_CCS";
-+		case IGT_FMT_MOD_4_TILED_BMG_CCS: return "BMG_CCS";
++	char *output_name;
++	drmModeRes *res = drmModeGetResources(data->fd);
 +
-+		default: return "UNKNOWN";
++	if (!res) {
++		fprintf(stderr, "Failed to get DRM resources\n");
++		return;
++	}
++
++	fprintf(stderr, "Connectors:\n");
++	fprintf(stderr, "id\tencoder\tstatus\t\ttype\tHDCP\n");
++	for (int i = 0; i < res->count_connectors; i++) {
++		drmModeConnector *c;
++
++		c = drmModeGetConnectorCurrent(data->fd, res->connectors[i]);
++
++		if (!c)
++			continue;
++
++		asprintf(&output_name, "%s-%d",
++					kmstest_connector_type_str(c->connector_type),
++					c->connector_type_id);
++
++		fprintf(stderr, "%d\t%d\t%s\t%s\t%s\n",
++				 c->connector_id, c->encoder_id,
++				 kmstest_connector_status_str(c->connection),
++				 kmstest_connector_type_str(c->connector_type),
++				 get_hdcp_version(data->fd, output_name));
++
++		drmModeFreeConnector(c);
++	}
++
++	drmModeFreeResources(res);
++}
++
++static void print_usage(void)
++{
++	fprintf(stderr, "Usage: intel_hdcp [OPTIONS]\n");
++	fprintf(stderr, "Options:\n");
++	fprintf(stderr, "-i,	--info		Get HDCP Information\n");
++	fprintf(stderr, "-h,	--help		Display this help message\n");
++}
++
++static void test_init(data_t *data)
++{
++	data->fd = __drm_open_driver(DRIVER_ANY);
++	if (data->fd < 0) {
++		fprintf(stderr, "Failed to open DRM driver\n");
++		exit(EXIT_FAILURE);
++	}
++	igt_display_require(&data->display, data->fd);
++	igt_display_require_output(&data->display);
++}
++
++int main(int argc, char **argv)
++{
++	data_t data;
++	int option;
++	static const char optstr[] = "hi";
++	struct option long_opts[] = {
++		{"help",	no_argument,	NULL, 'h'},
++		{"info",	no_argument,	NULL, 'i'},
++		{NULL,		0,		NULL,  0 }
++	};
++
++	test_init(&data);
++
++	while ((option = getopt_long(argc, argv, optstr, long_opts, NULL)) != -1) {
++		switch (option) {
++		case 'i':
++			get_hdcp_info(&data);
++			break;
++		case 'h':
++		default:
++			print_usage();
++			break;
++		}
 +	}
 +}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 0381c82ad..f03de1e3d 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -168,6 +168,36 @@ enum igt_atomic_crtc_properties {
-        IGT_NUM_CRTC_PROPS
- };
- 
-+/* Basic tiling format modifiers */
-+enum igt_basic_tiling_mode {
-+    IGT_TILING_NONE = 0,
-+    IGT_TILING_X    = 1,
-+    IGT_TILING_Y    = 2,
-+    IGT_TILING_Yf   = 3,
-+    IGT_TILING_4    = 4,
-+};
-+
-+/* Full tiling format modifiers */
-+enum igt_full_tiling_mode {
-+    IGT_FMT_MOD_X_TILED                 = I915_FORMAT_MOD_X_TILED,
-+    IGT_FMT_MOD_Y_TILED                 = I915_FORMAT_MOD_Y_TILED,
-+    IGT_FMT_MOD_Yf_TILED                = I915_FORMAT_MOD_Yf_TILED,
-+    IGT_FMT_MOD_Y_TILED_CCS             = I915_FORMAT_MOD_Y_TILED_CCS,
-+    IGT_FMT_MOD_Yf_TILED_CCS            = I915_FORMAT_MOD_Yf_TILED_CCS,
-+    IGT_FMT_MOD_Y_TILED_GEN12_RC_CCS    = I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS,
-+    IGT_FMT_MOD_Y_TILED_GEN12_MC_CCS    = I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS,
-+    IGT_FMT_MOD_Y_TILED_GEN12_RC_CCS_CC = I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC,
-+    IGT_FMT_MOD_4_TILED                 = I915_FORMAT_MOD_4_TILED,
-+    IGT_FMT_MOD_4_TILED_DG2_RC_CCS      = I915_FORMAT_MOD_4_TILED_DG2_RC_CCS,
-+    IGT_FMT_MOD_4_TILED_DG2_MC_CCS      = I915_FORMAT_MOD_4_TILED_DG2_MC_CCS,
-+    IGT_FMT_MOD_4_TILED_DG2_RC_CCS_CC   = I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC,
-+    IGT_FMT_MOD_4_TILED_MTL_RC_CCS      = I915_FORMAT_MOD_4_TILED_MTL_RC_CCS,
-+    IGT_FMT_MOD_4_TILED_MTL_MC_CCS      = I915_FORMAT_MOD_4_TILED_MTL_MC_CCS,
-+    IGT_FMT_MOD_4_TILED_MTL_RC_CCS_CC   = I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC,
-+    IGT_FMT_MOD_4_TILED_LNL_CCS         = I915_FORMAT_MOD_4_TILED_LNL_CCS,
-+    IGT_FMT_MOD_4_TILED_BMG_CCS         = I915_FORMAT_MOD_4_TILED_BMG_CCS,
-+};
-+
- /**
-  * igt_crtc_prop_names
-  *
-@@ -1280,4 +1310,14 @@ void igt_set_link_params(int drm_fd, igt_output_t *output,
- int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
- int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
- 
-+/* Queries */
-+int igt_get_basic_tiling_mode(int fd, uint64_t *modifiers,
-+			      enum igt_tiling_mode *basic_tiling);
-+int igt_get_full_tiling_mode(int fd, uint64_t *modifiers,
-+			     enum igt_tiling_mode *basic_tiling,
-+			     enum igt_format_modifier *all_tiling);
-+
-+/* Helpers */
-+const char *igt_modifier_str(uint64_t modifier);
-+
- #endif /* __IGT_KMS_H__ */
+diff --git a/tools/meson.build b/tools/meson.build
+index de866c392..8185ba160 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -30,6 +30,7 @@ tools_progs = [
+ 	'intel_gpu_time',
+ 	'intel_gtt',
+ 	'intel_guc_logger',
++	'intel_hdcp',
+ 	'intel_infoframes',
+ 	'intel_lid',
+ 	'intel_opregion_decode',
 -- 
-2.25.1
+2.34.1
 
