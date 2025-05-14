@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F16ACC3ABDD
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 20:58:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F142FC3ABD8
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 20:58:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A806910E743;
-	Wed, 14 May 2025 20:58:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A31F210E74D;
+	Wed, 14 May 2025 20:58:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J/8KPC3L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dlmOkril";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8698910E745
- for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 20:58:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2391610E748
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 20:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747256285; x=1778792285;
+ t=1747256287; x=1778792287;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=k82OqRbt/OqLPIs5MS/nvObOAyURfuo+2x5JQB4mmBI=;
- b=J/8KPC3LCRKu6QGFv9cM76uTOA2hlDRk1MH5IxYcj4SXi2QseFtRtUJ6
- SO/ztFd51hKjpPU6aQ1AJRsDfNnmytkhL+mMnbyqS4/MDI0OVt3VPlbEK
- Eb9WOXeIbO6Oeojr0jOpITdte1Ls7/3nPjy5OW9Z+emlkLsZ4MqFr247V
- HuGKsKtlcJSzJlisOu/FvoDasie3Xj7NaHe5zakxGIkTDsiORMMxHTuki
- cyGVFPU8QW00G5vlYAvfCVM6uV7Hlqj20oxwZ7MaDO8qUHD0SNqvXxxpy
- jsxDHmR7XjoCF+oEpGshCaLvx6E/DJwU2JQdU7EkMWE4ud1x4ZKrTFAtr g==;
-X-CSE-ConnectionGUID: 4R8IO1QjSfWA3BoD1efTlw==
-X-CSE-MsgGUID: F7Cc4H3gTYSPRzDfiwNKhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="49067620"
-X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="49067620"
+ bh=ILKBNI0C+y0vLyZLmMzwINbFZY2OHMxVwdfd7BkR2jU=;
+ b=dlmOkrileBGmZRzK6gV6I2OEhN8CfiEPHCDUO582WG3qlaemH99Svn8F
+ 8QcIBkn/AFY6UgvRe+kmPoh69KWBY8nsilI7Kk2rV47EAbHRGiaLtCp4w
+ cMusVD2cHTDERtmqZnIG4Dm3/bqtdYTaTIPi1cKc3zGjt+TVA2GgCNgE+
+ ttjT8HoQXuOyY9ecPlNCMgFyXvexgKBn6nY5mY05Osf2cVVuE4bCEP8e2
+ U7oJ9VX3UsoHHNtRwrltVDaWgPCPOVddliAbY6PLMvfeIzSOhD6yYZ4Pn
+ D4+mjujLFOygGB3wASVbLxPUYkTRv+fdJJc8X71NVbY9ePz5CCjYGvE9S w==;
+X-CSE-ConnectionGUID: mfussUPaQKS7KiW+l9NO/A==
+X-CSE-MsgGUID: mrJO1gguSreDce6bMBZSmA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="49067622"
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="49067622"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 13:58:05 -0700
-X-CSE-ConnectionGUID: F5fvJm8MTmu87BIDIrI/bg==
-X-CSE-MsgGUID: KxnP8dDATzK0WMDLkLPGIQ==
+ 14 May 2025 13:58:07 -0700
+X-CSE-ConnectionGUID: bhQBRWuVS02IB0v/dEmogQ==
+X-CSE-MsgGUID: r7I2INMSQF+Bx3iVh5Cl0Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="138573977"
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="138573980"
 Received: from dut1103bmgfrd.igk.intel.com ([10.211.177.128])
- by fmviesa008.fm.intel.com with ESMTP; 14 May 2025 13:58:04 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 14 May 2025 13:58:05 -0700
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com,
  himal.prasad.ghimiray@intel.com, matthew.brost@intel.com,
  jonathan.cavitt@intel.com
-Subject: [PATCH 1/3] tests/intel/xe_exec_system_allocator: Test to validate
- basic SVM functionality
-Date: Wed, 14 May 2025 20:57:59 +0000
-Message-Id: <20250514205801.40253-2-sai.gowtham.ch@intel.com>
+Subject: [PATCH 2/3] tests/intel/xe_exec_system_allocator: Validate preftch of
+ svm with single and multi ranges
+Date: Wed, 14 May 2025 20:58:00 +0000
+Message-Id: <20250514205801.40253-3-sai.gowtham.ch@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250514205801.40253-1-sai.gowtham.ch@intel.com>
 References: <20250514205801.40253-1-sai.gowtham.ch@intel.com>
@@ -70,42 +70,70 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Basic test validates basic SVM functionality.
+Tests validates Prefetch of SVM with single range and multiple ranges, with different
+range of sizes. checks if not svm pagefaults are seen while prefetching the ranges of
+svm.
+v2: Enhance test to utilize smem/vram flags from the selection loop (Jonathan Cavitt)
 
 Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 ---
- tests/intel/xe_exec_system_allocator.c | 63 ++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
+ tests/intel/xe_exec_system_allocator.c | 121 +++++++++++++++++++++++++
+ 1 file changed, 121 insertions(+)
 
 diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 06daac8c2..68bf29898 100644
+index 68bf29898..d4f2e8d98 100644
 --- a/tests/intel/xe_exec_system_allocator.c
 +++ b/tests/intel/xe_exec_system_allocator.c
-@@ -32,6 +32,8 @@
- struct batch_data {
- 	uint32_t batch[16];
- 	uint64_t pad;
-+	uint64_t vm_sync;
-+	uint64_t exec_sync;
- 	uint32_t data;
- 	uint32_t expected_data;
- };
-@@ -405,6 +407,63 @@ static void __aligned_partial_free(struct aligned_alloc_type  *aligned_alloc_typ
- 		       aligned_alloc_type->__size - aligned_alloc_type->size - begin_size);
- }
+@@ -20,6 +20,7 @@
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
++#include "xe/xe_gt.c"
  
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+@@ -139,6 +140,7 @@ static void signal_pdata(struct process_data *pdata)
+ #define CPU_FAULT_THREADS	(0x1 << 2)
+ #define CPU_FAULT_PROCESS	(0x1 << 3)
+ #define CPU_FAULT_SAME_PAGE	(0x1 << 4)
++#define VRAM			(0x1 << 5)
+ 
+ static void process_check(void *ptr, uint64_t alloc_size, uint64_t stride,
+ 			  unsigned int flags)
+@@ -464,6 +466,101 @@ static void test_basic(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_exec_queue_destroy(fd, exec_queues);
+ 	xe_vm_destroy(fd, vm);
+ }
++
 +/**
-+ * SUBTEST: basic-svm
-+ * Description: Test validates basic svm.
++ * SUBTEST: prefetch-%s
++ * Description: Test to validate functionality of Prefetch of SVM %arg[1]
 + * Test category: functionality test
++ *
++ * SUBTEST: multi-range-%s
++ * Description: Multi range Prefetch of SVM %arg[1] and  check if multiple ranges are created
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @smem-SZ_4K: with size of SZ_4K on smem region
++ * @smem-SZ_64K: with size of SZ_64K on smem region
++ * @smem-SZ_2M: with size of SZ_2M on smem region
++ * @vram-SZ_4K: with size of SZ_4K on vram region
++ * @vram-SZ_64K: with size of SZ_64K on vram region
++ * @vram-SZ_2M: with size of SZ_2M on vram region
 + */
-+static void test_basic(int fd, struct drm_xe_engine_class_instance *eci,
-+		       size_t bo_size, int num_dwords)
++#define MAX_BATCH_DWORDS 16
++static void prefetch(int fd, struct drm_xe_engine_class_instance *eci,
++		     size_t bo_size, unsigned int flags, int num_dwords)
 +{
++	struct batch_data *data;
++	uint64_t target_addr;
 +	uint64_t addr;
++	u64 *exec_ufence = NULL;
 +	struct drm_xe_sync sync[1] = {
 +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
 +		  .timeline_value = USER_FENCE_VALUE },
@@ -115,59 +143,106 @@ index 06daac8c2..68bf29898 100644
 +		.num_syncs = 1,
 +		.syncs = to_user_pointer(sync),
 +	};
-+	struct batch_data *data;
-+	uint32_t exec_queues, vm;
++	size_t slice_size = bo_size;
++	uint64_t batch_addr;
++	uint32_t exec_queues, expected, vm, *result_ptr, *batch;
 +	size_t aligned_size = bo_size ?: xe_get_default_alignment(fd);
++	const char *stat = "svm_pagefault_count";
++	int b, svm_pf_count_pre, svm_pf_count_pos;
 +
++	bo_size = bo_size * num_dwords;
 +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
 +	data = aligned_alloc(aligned_size, bo_size);
-+	igt_assert(data != NULL);
 +	memset(data, 0, bo_size);
++	addr = to_user_pointer(data);
 +
 +	exec_queues = xe_exec_queue_create(fd, vm, eci, 0);
 +	sync[0].addr = to_user_pointer(&data[0].vm_sync);
 +	bind_system_allocator(sync, 1);
 +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
 +	data[0].vm_sync = 0;
++	exec_ufence = mmap(NULL, SZ_4K, PROT_READ |
++				 PROT_WRITE, MAP_SHARED |
++				 MAP_ANONYMOUS, -1, 0);
++	igt_assert(exec_ufence != MAP_FAILED);
++	memset(exec_ufence, 0, SZ_4K);
 +
-+	addr = to_user_pointer(data);
-+	for (int i = 0; i <= num_dwords; i++) {
-+		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
-+		uint64_t batch_addr = addr + batch_offset;
-+		uint64_t sdi_offset = (char *)&(data[i].data) - (char *)data;
-+		uint64_t sdi_addr = addr + sdi_offset;
-+		int b = 0;
++	for (int i = 0; i < num_dwords; i++) {
++		batch = (uint32_t *)((uint8_t *)data + i * slice_size);
++		target_addr = addr + i * slice_size + 0x100;
++		b = 0;
 +
-+		write_dword(data[i].batch, sdi_addr, WRITE_VALUE(&data[i], i), &b);
-+		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-+
-+		exec.exec_queue_id = exec_queues;
-+		exec.address = batch_addr;
-+		sync[0].addr = addr + (char *)&data[i].exec_sync - (char *)data;
-+		xe_exec(fd, &exec);
-+		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE, exec_queues, NSEC_PER_SEC);
-+		data[i].exec_sync = 0;
-+		igt_assert_eq(data[i].data, READ_VALUE(&data[i]));
++		igt_assert(b + 5 <= MAX_BATCH_DWORDS);
++		write_dword(batch, target_addr, 0xDEADBEEF + i, &b);
 +	}
-+	unbind_system_allocator();
-+	free(data);
++	sync[0].addr = to_user_pointer(exec_ufence);
++	xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, sync, 1, flags & VRAM ? 1 : 0);
++	xe_wait_ufence(fd, exec_ufence, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
++	exec.exec_queue_id = exec_queues;
++
++	for (int i = 0; i < num_dwords; i++) {
++		result_ptr = (uint32_t *)((uint8_t *)data + i * slice_size + 0x100);
++		expected = 0xDEADBEEF + i;
++
++		svm_pf_count_pre = xe_gt_stats_get_count(fd, eci->gt_id, stat);
++		batch_addr = addr + i * slice_size;
++		exec.address = batch_addr;
++		exec_ufence[0] = 0;
++		sync[0].addr = to_user_pointer(exec_ufence);
++		xe_exec(fd, &exec);
++		svm_pf_count_pos = xe_gt_stats_get_count(fd, eci->gt_id, stat);
++		igt_assert(svm_pf_count_pre == svm_pf_count_pos);
++		xe_wait_ufence(fd, exec_ufence, USER_FENCE_VALUE, exec_queues, NSEC_PER_SEC);
++		exec_ufence[0] = 0;
++		igt_assert_eq(*result_ptr, expected);
++	}
 +	xe_exec_queue_destroy(fd, exec_queues);
++	unbind_system_allocator();
++	munmap(data, bo_size);
 +	xe_vm_destroy(fd, vm);
 +}
++
  /**
   * SUBTEST: unaligned-alloc
   * Description: allocate unaligned sizes of memory
-@@ -1700,6 +1759,10 @@ igt_main
- 		open_sync_file();
+@@ -1657,6 +1754,20 @@ struct section {
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
++	const struct mode {
++		const char *name;
++		unsigned int flags;
++		size_t size;
++	} mode[] = {
++		{ "smem-SZ_4K", 0, SZ_4K},
++		{ "smem-SZ_64K", 0, SZ_64K},
++		{ "smem-SZ_2M", 0, SZ_2M},
++		{ "vram-SZ_4K", VRAM, SZ_4K},
++		{ "vram-SZ_64K", VRAM, SZ_64K},
++		{ "vram-SZ_2M", VRAM, SZ_2M},
++		{},
++	}, *m;
++
+ 	const struct section sections[] = {
+ 		{ "malloc", 0 },
+ 		{ "malloc-multi-fault", MULTI_FAULT },
+@@ -1930,6 +2041,16 @@ igt_main
+ 			processes_evict(fd, SZ_8M, SZ_1M, s->flags);
  	}
  
-+	igt_subtest("basic-svm")
-+		xe_for_each_engine(fd, hwe)
-+			test_basic(fd, hwe, SZ_64K, 1);
++	for (m = mode; m->name; m++) {
++		igt_subtest_f("prefetch-%s", m->name)
++			xe_for_each_engine(fd, hwe)
++				prefetch(fd, hwe, m->size, m->flags, 1);
 +
- 	for (const struct section *s = sections; s->name; s++) {
- 		igt_subtest_f("once-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
++		igt_subtest_f("multi-range-%s", m->name)
++			xe_for_each_engine(fd, hwe)
++				prefetch(fd, hwe, m->size, m->flags, 10);
++	}
++
+ 	igt_fixture {
+ 		xe_device_put(fd);
+ 		drm_close_driver(fd);
 -- 
 2.34.1
 
