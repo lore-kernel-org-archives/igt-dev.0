@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCDBAC3ABD8
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 17:52:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 549A0C3ABD8
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 17:53:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 948FC10E6C7;
-	Wed, 14 May 2025 17:52:30 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pplmyp0B";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD0BB10E6C7
- for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 17:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747245149; x=1778781149;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/n3a9z7pm6uofUq0UZottesyDxjA1fZxUrWHBGYOkbY=;
- b=Pplmyp0BhUDjfw83hgDfFbIByiMtZ1q/yNcmk6KsH4GnfrHoJ1zzSiRu
- GEzVSCIkNriSJJ7gjA9eo+Xfes1G8/+3v5i7cLpjdx4PLkLnXL1ZkpjUj
- vwGakJyfrDWsGmcbmElI4JR0oDBKNZBPFO4FX2N0iFdREEJEZY1t3IMMV
- Jl6dFBGXWent9nFDExtui4HCHtQwetsDea+nF13nIc6E56S/Ow7+pq2bI
- AmrCTM48jlf8n3Czb5X+zlaK35+Wd5s3TVij+1gI+EYy0bOMk1nLnICvs
- 3bnSymLjvokpUJHkB7gGeq26O6+9RAPRTafP8cZckKCcip3Mka15GzGhW Q==;
-X-CSE-ConnectionGUID: 36cWYSqqSlKe5BbZ3hlg4g==
-X-CSE-MsgGUID: f+PpUUi/RYiQ6VtiqG9M2g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="49025961"
-X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="49025961"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 10:52:29 -0700
-X-CSE-ConnectionGUID: U712mjKtSqKMsd6pQxPLHA==
-X-CSE-MsgGUID: /u1fEkFzR7SxTTlknRXmOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="142998460"
-Received: from amiron-mobl1.ger.corp.intel.com (HELO
- friendship7-home.clients.intel.com) ([10.245.81.154])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 10:52:26 -0700
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- marcin.bernatowicz@intel.com, himanshu.girotra@intel.com,
- aditya.chauhan@intel.com, pravalika.gurram@intel.com,
- sai.gowtham.ch@intel.com, ramadevi.gandi@intel.com,
- lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- kamil.konieczny@linux.intel.com, katarzyna.piecielska@intel.com
-Subject: [RFC i-g-t 5/5] tests/intel/xe_debugfs: Add Xe-specific debugfs
- testing
-Date: Wed, 14 May 2025 19:51:37 +0200
-Message-ID: <20250514175140.115033-6-peter.senna@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250514175140.115033-1-peter.senna@linux.intel.com>
-References: <20250514175140.115033-1-peter.senna@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0F51910E6D5;
+	Wed, 14 May 2025 17:53:22 +0000 (UTC)
+Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B483510E6CB;
+ Wed, 14 May 2025 17:53:20 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0456104085076932457=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsriov=5F?=
+ =?utf-8?q?scheduling=3A_Close_open_handles_before_disabling_VFs?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 14 May 2025 17:53:20 -0000
+Message-ID: <174724520073.80206.13775225801677385244@c664b1dc75d1>
+X-Patchwork-Hint: ignore
+References: <20250514142543.345665-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250514142543.345665-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,261 +37,188 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduces xe_debugfs, a test designed specifically for Xe GPUs. This test
-complements the generic debugfs tests:
-- core_debugfs
-- core_debugfs_display_on_off
+--===============0456104085076932457==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: marcin.bernatowicz@intel.com
-Cc: himanshu.girotra@intel.com
-Cc: aditya.chauhan@intel.com
-Cc: pravalika.gurram@intel.com
-Cc: sai.gowtham.ch@intel.com
-Cc: ramadevi.gandi@intel.com
-Cc: lucas.demarchi@intel.com
-Cc: rodrigo.vivi@intel.com
-Cc: kamil.konieczny@linux.intel.com
-Cc: katarzyna.piecielska@intel.com
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- tests/intel/xe_debugfs.c | 212 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 2 files changed, 213 insertions(+)
- create mode 100644 tests/intel/xe_debugfs.c
+== Series Details ==
 
-diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-new file mode 100644
-index 000000000..b4eef81d1
---- /dev/null
-+++ b/tests/intel/xe_debugfs.c
-@@ -0,0 +1,212 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+#include <dirent.h>
-+#include <fcntl.h>
-+
-+#include "igt.h"
-+#include "igt_debugfs.h"
-+#include "igt_sysfs.h"
-+#include "xe/xe_query.h"
-+
-+
-+struct {
-+	bool warn_on_not_hit;
-+} opt = { 0 };
-+
-+/**
-+ * TEST: Xe debugfs test
-+ * Description: Xe-specific debugfs tests. These are complementary to the
-+ * core_debugfs and core_debugfs_display_on_off tests.
-+ *
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: uapi
-+ * Functionality: debugfs
-+ * Feature: core
-+ * Test category: uapi
-+ *
-+ */
-+
-+IGT_TEST_DESCRIPTION("Read entries from debugfs, and sysfs paths.");
-+
-+static int xe_validate_entries(int fd, const char *add_path,
-+			       const char * const str_val[], int str_cnt)
-+{
-+	int i;
-+	int hit;
-+	int found = 0;
-+	int not_found = 0;
-+	DIR *dir;
-+	struct dirent *de;
-+	char path[PATH_MAX];
-+
-+	if (!igt_debugfs_path(fd, path, sizeof(path)))
-+		return -1;
-+
-+	strcat(path, add_path);
-+	dir = opendir(path);
-+	if (!dir)
-+		return -1;
-+
-+	while ((de = readdir(dir))) {
-+		if (de->d_name[0] == '.')
-+			continue;
-+		hit = 0;
-+		for (i = 0; i < str_cnt; i++) {
-+			if (!strcmp(str_val[i], de->d_name)) {
-+				hit = 1;
-+				break;
-+			}
-+		}
-+		if (hit) {
-+			found++;
-+		} else if (opt.warn_on_not_hit) {
-+			not_found++;
-+			igt_warn("no test for: %s/%s\n", path, de->d_name);
-+		}
-+	}
-+	closedir(dir);
-+	return 0;
-+}
-+
-+/**
-+ * SUBTEST: xe-base
-+ * Description: Check if various debugfs devnodes exist and test reading them
-+ */
-+static void
-+xe_test_base(int fd, struct drm_xe_query_config *config)
-+{
-+	uint16_t devid = intel_get_drm_devid(fd);
-+	static const char * const expected_files[] = {
-+		"gt0",
-+		"gt1",
-+		"stolen_mm",
-+		"gtt_mm",
-+		"vram0_mm",
-+		"forcewake_all",
-+		"info",
-+		"gem_names",
-+		"clients",
-+		"name"
-+	};
-+	char reference[4096];
-+	int val = 0;
-+
-+	igt_assert(config);
-+	sprintf(reference, "devid 0x%llx",
-+			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
-+	sprintf(reference, "revid %lld",
-+			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
-+	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
-+		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "yes" : "no");
-+
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
-+	if (intel_gen(devid) < 20) {
-+		switch (config->info[DRM_XE_QUERY_CONFIG_VA_BITS]) {
-+		case 48:
-+			val = 3;
-+			break;
-+		case 57:
-+			val = 4;
-+			break;
-+		}
-+
-+		sprintf(reference, "vm_max_level %d", val);
-+		igt_assert(igt_debugfs_search(fd, "info", reference));
-+	}
-+
-+	snprintf(reference, sizeof(reference), "tile_count %d", xe_sysfs_get_num_tiles(fd));
-+	igt_assert(igt_debugfs_search(fd, "info", reference));
-+
-+	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
-+
-+	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
-+	igt_debugfs_dump(fd, "gtt_mm");
-+
-+	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM) {
-+		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
-+		igt_debugfs_dump(fd, "vram0_mm");
-+	}
-+
-+	if (igt_debugfs_exists(fd, "stolen_mm", O_RDONLY))
-+		igt_debugfs_dump(fd, "stolen_mm");
-+
-+	igt_assert(igt_debugfs_exists(fd, "clients", O_RDONLY));
-+	igt_debugfs_dump(fd, "clients");
-+
-+	igt_assert(igt_debugfs_exists(fd, "gem_names", O_RDONLY));
-+	igt_debugfs_dump(fd, "gem_names");
-+
-+	xe_validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
-+}
-+
-+/**
-+ * SUBTEST: xe-forcewake
-+ * Description: Check forcewake debugfs devnode
-+ */
-+static void
-+xe_test_forcewake(int fd)
-+{
-+	int handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
-+
-+	igt_assert_neq(handle, -1);
-+	close(handle);
-+}
-+
-+const char *help_str =
-+	"  -w\t--warn-not-hit Produce warnings if it founds a devfs node without tests";
-+
-+struct option long_options[] = {
-+	{ "--warn-not-hit", no_argument, NULL, 'w'},
-+	{ 0, 0, 0, 0 }
-+};
-+
-+static int opt_handler(int option, int option_index, void *input)
-+{
-+	switch (option) {
-+	case 'w':
-+		opt.warn_on_not_hit = true;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+igt_main_args("", long_options, help_str, opt_handler, NULL)
-+{
-+	int debugfs = -1;
-+	int fd = -1;
-+
-+	igt_fixture {
-+		fd = drm_open_driver_master(DRIVER_XE);
-+		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
-+		debugfs = igt_debugfs_dir(fd);
-+
-+		kmstest_set_vt_graphics_mode();
-+	}
-+
-+	igt_describe("Check if various debugfs devnodes exist and test reading them.");
-+	igt_subtest("xe-base") {
-+		xe_test_base(fd, xe_config(fd));
-+	}
-+
-+	igt_describe("Check forcewake debugfs devnode");
-+	igt_subtest("xe-forcewake") {
-+		xe_test_forcewake(fd);
-+	}
-+
-+	igt_fixture {
-+		close(debugfs);
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index eac77fb81..97d60f9f6 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -281,6 +281,7 @@ intel_xe_progs = [
- 	'xe_compute',
- 	'xe_compute_preempt',
- 	'xe_copy_basic',
-+	'xe_debugfs',
- 	'xe_dma_buf_sync',
- 	'xe_drm_fdinfo',
- 	'xe_eu_stall',
--- 
-2.43.0
+Series: tests/intel/xe_sriov_scheduling: Close open handles before disabling VFs
+URL   : https://patchwork.freedesktop.org/series/149013/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8364 -> IGTPW_13127
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_13127 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-dg2-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/bat-dg2-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-6:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests:
+    - bat-apl-1:          [INCOMPLETE][5] ([i915#12904]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-apl-1/igt@dmabuf@all-tests.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/bat-apl-1/igt@dmabuf@all-tests.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-tgl-1115g4:      [FAIL][9] ([i915#13930]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13930]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13930
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8364 -> IGTPW_13127
+  * Linux: CI_DRM_16544 -> CI_DRM_16545
+
+  CI-20190529: 20190529
+  CI_DRM_16544: 2e72fd09b4fb0823282977f0717159e47328a533 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16545: dd6a856541dd90fa4ef755783898fcfbea3b9961 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13127: 13127
+  IGT_8364: 8364
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/index.html
+
+--===============0456104085076932457==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_sriov_scheduling: Close open handles before disabling VFs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149013/">https://patchwork.freedesktop.org/series/149013/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8364 -&gt; IGTPW_13127</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13127 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-apl-1/igt@dmabuf@all-tests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8364/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13930">i915#13930</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13127/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8364 -&gt; IGTPW_13127</li>
+<li>Linux: CI_DRM_16544 -&gt; CI_DRM_16545</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16544: 2e72fd09b4fb0823282977f0717159e47328a533 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16545: dd6a856541dd90fa4ef755783898fcfbea3b9961 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13127: 13127<br />
+  IGT_8364: 8364</p>
+
+</body>
+</html>
+
+--===============0456104085076932457==--
