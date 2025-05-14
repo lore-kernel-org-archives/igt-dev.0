@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 373FEC3ABCC
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 11:57:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85382C3ABCC
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 12:44:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF0CD10E61B;
-	Wed, 14 May 2025 11:57:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40C1F10E62D;
+	Wed, 14 May 2025 12:44:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FjVXF8kn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mGph0RIv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F7FD10E61B
- for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 11:57:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 208F810E62D
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 12:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747223872; x=1778759872;
+ t=1747226683; x=1778762683;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=ck8WoGc0Gr3lLErMplCsP/nPn+k5vrLnt0i2CF6TUcM=;
- b=FjVXF8knOtnCgozprovCE1wcsR0NGjY0HhNBDYP/hsKTts7mNB4KYbTQ
- Pu2hr0AbDbW/xswC0aTPtiHVAWMuRL6CWTBFiklbIIPYRYig/n+ZWM/ea
- 2S/dHQ4ElIb9CIEno0z+eUzi4rysLVAerAlYdcAdgsgfLg1GMdkMUBDkp
- YraB7zg3PuBfDbtyjPHC6j1hYvROzfJKXyw9E3zBnZONkTcV58L0ojxLi
- RwApj6w3gpZSXLmzI1uH4ucGAu8ScqvCcs5xZ8qtKw7++ARvRH2Dugoa8
- Irs/MvBg2imT7734DHogQZiREL8P2kPuoFp1mo59QXf5/lLgFc+RlnIQC A==;
-X-CSE-ConnectionGUID: UP4ShxSkRP6Im9pRlRLkmw==
-X-CSE-MsgGUID: +37ggEv/TaadRtu5QDu4Dg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="36739697"
-X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="36739697"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 04:57:52 -0700
-X-CSE-ConnectionGUID: 1ggMziRpT1yV6IZJIZbTGg==
-X-CSE-MsgGUID: kQ+4JDgNQbWccrrQcBkIBg==
+ bh=f1m1fqQa4P7qIObzUM1nGzfHWxZIhfmfxh5hJz9O4zI=;
+ b=mGph0RIvAktDpU9/Jhc3XEYdYDdSCmDO4kg44mTPMz2vrl1BSxVasGBP
+ Kec3tC0FwcheSXdJE+/9I8kGij1sZPLc2tNq6QlwrNTcdetBYrjrJii3v
+ o2LYjFoVRxu5c6653O4/VN9KaB0jxXkfSr13+nfK5ucThy07LzunqfL62
+ bqUmcTYs0IC83PyGay1QLzp2ahxohIxefldqx8uS+yeUoG8ROcHBCB0oc
+ A+2H92MflH6extljrDBPxDMBrk8RiHj8YnxZlxYsiUTWOmAr8d5T3qyRM
+ 5L2Uwo0qFdAEdgTkF6k3K3eJeX3F5a6v1+NQpBzTgFPXzIAGS9ufK2HI8 g==;
+X-CSE-ConnectionGUID: xXQ9qtOpQuS8uVU759AUew==
+X-CSE-MsgGUID: p8TYfQ9wTbWashcw6zfmFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="49101329"
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="49101329"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 05:44:41 -0700
+X-CSE-ConnectionGUID: cStjSUf9Q9aevTZn6ohsWg==
+X-CSE-MsgGUID: 3MGS5x4uQ6C7hSLkxmJSVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="138543130"
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; d="scan'208";a="138079527"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
  ([10.245.245.97])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 04:57:49 -0700
-Date: Wed, 14 May 2025 13:57:46 +0200
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 05:44:38 -0700
+Date: Wed, 14 May 2025 14:44:35 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com, 
  seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-Subject: Re: [PATCH v4 04/15] runner: Include local igt_glib header for Android
-Message-ID: <fn5dp2xf5zlwkovnnujih3cehyjtyujicgb2emovyb7m2tpgp3@hoyaa5zs4yjc>
+Subject: Re: [PATCH v4 05/15] tools: Include local igt_glib header for Android
+Message-ID: <3flmg5ukt3sxg6kjyp6iuf765xbm5xzprakrrlexogkj65ttsd@2bcfp26qa6ba>
 References: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
- <20250507160148.53857-5-jeevaka.badrappan@intel.com>
+ <20250507160148.53857-6-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250507160148.53857-5-jeevaka.badrappan@intel.com>
+In-Reply-To: <20250507160148.53857-6-jeevaka.badrappan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,19 +71,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, May 07, 2025 at 04:01:37PM +0000, Jeevaka Prabu Badrappan wrote:
+On Wed, May 07, 2025 at 04:01:38PM +0000, Jeevaka Prabu Badrappan wrote:
 > Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 > ---
->  runner/executor.c | 4 ++++
->  runner/settings.h | 4 ++++
->  2 files changed, 8 insertions(+)
+>  tools/igt_dp_compliance.h | 4 ++++
+>  tools/intel_pm_rpm.c      | 4 ++++
+>  tools/lsgpu.c             | 4 ++++
+>  3 files changed, 12 insertions(+)
 > 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 41f521e56..7be02cea1 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -1,7 +1,11 @@
->  #include <ctype.h>
+> diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
+> index 5b1688039..0df44dad3 100644
+> --- a/tools/igt_dp_compliance.h
+> +++ b/tools/igt_dp_compliance.h
+> @@ -28,7 +28,11 @@
+>  #include <stdio.h>
+>  #include <string.h>
+>  #include <stdlib.h>
+> +#ifndef ANDROID
+>  #include <glib.h>
+> +#else
+> +#include "igt_glib.h"
+> +#endif
+>  
+>  extern int drm_fd;
+>  
+> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
+> index 9622f0552..a2fe16d01 100644
+> --- a/tools/intel_pm_rpm.c
+> +++ b/tools/intel_pm_rpm.c
+> @@ -24,7 +24,11 @@
+>  
+>  #include <errno.h>
+>  #include <getopt.h>
+> +#ifndef ANDROID
+>  #include <glib.h>
+> +#else
+> +#include "igt_glib.h"
+> +#endif
+
+Address my comment from first patch, then:
+
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+>  #include <stdio.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+> diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+> index e68390083..83ecaf953 100644
+> --- a/tools/lsgpu.c
+> +++ b/tools/lsgpu.c
+> @@ -24,7 +24,11 @@
+>  
 >  #include <errno.h>
 >  #include <fcntl.h>
 > +#ifndef ANDROID
@@ -91,33 +131,9 @@ On Wed, May 07, 2025 at 04:01:37PM +0000, Jeevaka Prabu Badrappan wrote:
 > +#else
 > +#include "igt_glib.h"
 > +#endif
-
-With comment from first patch addressed:
-
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
->  #ifdef __linux__
->  #include <linux/watchdog.h>
->  #endif
-> diff --git a/runner/settings.h b/runner/settings.h
-> index 1f0b85318..36a69036c 100644
-> --- a/runner/settings.h
-> +++ b/runner/settings.h
-> @@ -5,7 +5,11 @@
->  #include <stddef.h>
->  #include <sys/types.h>
->  #include <stdio.h>
-> +#ifndef ANDROID
->  #include <glib.h>
-> +#else
-> +#include "igt_glib.h"
-> +#endif
->  
->  #include "igt_list.h"
->  #include "igt_vec.h"
+>  #include <libudev.h>
+>  #include <string.h>
+>  #include <signal.h>
 > -- 
 > 2.34.1
 > 
