@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E1FDC3ABD9
-	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 08:44:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1341C3ABDA
+	for <igt-dev@archiver.kernel.org>; Wed, 14 May 2025 08:51:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 57B8410E148;
-	Wed, 14 May 2025 08:44:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9530110E23A;
+	Wed, 14 May 2025 08:51:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U3zQyof9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EAqyUL1J";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F2F810E148
- for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 08:44:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBB6D10E23A
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 May 2025 08:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747212244; x=1778748244;
+ t=1747212676; x=1778748676;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=ymlA3+qvv7R/HmNBGSpxhk7YGzJBfKUYgXYv5PRsMSA=;
- b=U3zQyof9Tm3kwyYVbfLsbW66jVHv25LZYAQyPfumX7WHWa+2PkasjeSt
- n2sZSvTa/gHI34nlVNKlpG8O29SvaNakKMyHpGvAVpVmD5uWIlYjUhCya
- 0iKVdIcmEpPIdi/vIAi7VsxXu+SR5Fc0u/+DKMvKxjvuD/JP1WTUTRLPK
- iNbexVZ+pWiwLoAg3RJJGJFH2gPYjEQaDwJgtWcfUOIlHfWc1f9UFnmg8
- DjJHIkjoUqGj7Pz9oQjPicbGEM9BdXsZgX6YBD3neRCwT2cvxkzZPOkgZ
- cKkfkHvbjtuUAJrGi+9OXrt0lk5bj+kkBECzl2+Qfqu+TlP5El7Usq7si g==;
-X-CSE-ConnectionGUID: nPZ2DuHOShK+PKVS4oJU1w==
-X-CSE-MsgGUID: qnHgSiAwQWCKpRE6WCOycA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66647582"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="66647582"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 01:44:03 -0700
-X-CSE-ConnectionGUID: a2WESBphRsK5uxE8jFPZLQ==
-X-CSE-MsgGUID: ZOVuhP0jQ1GIeOZI4VV3xQ==
+ b=EAqyUL1JT0Lm/VHDSh9JzTLVcTxGRs35vkJHRboFVWYdhcc3okAexYWl
+ PHU0SfRYROiryNs5zmsVTj/io+xOLcIhcROTbRklir+R299Q8zzvWkloL
+ +BugTUl3otWsqSU2nkfdJnrFutOD0OogotK79wOG2NL8A+uf66RmIUBVe
+ Pz9sAMgF6YWA4dkfRttwJmLIvPbW08KxuJNXcxdy/6zY3DwxevSj7oq8u
+ NRspDAg62h+Iet14p/ijycwjGOenlWlN2UFiUaifWM5xim7xtOEAPjd3B
+ 5y8O++qqLlp39TAlmtPzGL+bthfZ3ONkBZjk6WJBwa5Omcsk5ajKoFM4Y g==;
+X-CSE-ConnectionGUID: ynQvL59zTmOLVzNDgPazkg==
+X-CSE-MsgGUID: yp9JPosmSQW7t2sm0VhVxg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="60435757"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="60435757"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 01:51:14 -0700
+X-CSE-ConnectionGUID: GQN/bavWSUOkVgxJIo03sA==
+X-CSE-MsgGUID: J1r6K84lQXWMBGldG1SsSw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="168918262"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="138962905"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 01:44:02 -0700
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 01:51:13 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: uma.shankar@intel.com,
 	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] RFC: tests/kms_plane_lowres: Refactor test to handle
- tiling formats dynamically
-Date: Wed, 14 May 2025 14:29:49 +0530
-Message-Id: <20250514085949.1379335-1-jeevan.b@intel.com>
+Subject: [PATCH i-g-t] RFC: Add library functions to query tiling modes on a
+ platform basis
+Date: Wed, 14 May 2025 14:37:02 +0530
+Message-Id: <20250514090702.1379441-1-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
