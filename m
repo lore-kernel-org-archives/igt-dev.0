@@ -4,58 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55B8AC2D0CD
-	for <igt-dev@archiver.kernel.org>; Thu, 15 May 2025 08:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDC73C3ABC9
+	for <igt-dev@archiver.kernel.org>; Thu, 15 May 2025 08:36:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 113BC10E7CC;
-	Thu, 15 May 2025 08:15:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 86EA510E7C6;
+	Thu, 15 May 2025 08:36:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="moTx52VS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zo/C05yl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E64910E7D3
- for <igt-dev@lists.freedesktop.org>; Thu, 15 May 2025 08:15:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 467BF10E7C6
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 May 2025 08:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747296929; x=1778832929;
+ t=1747298183; x=1778834183;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=lmvCYnzWWfGkpOdaYaVd5b6fBPuBA4ggIX/i9Y1W0LE=;
- b=moTx52VSIpkAB7V50gjfzKNVJjOSeLbmW8wwen1Nv/1hfiQD8ewQHSO5
- goYQaczx4Y7wb0NSQXKWpgi+K17m5lSF9P6js3Zf+w7KRUmeoNKCLWg48
- jYGMyPFwOr9freZZpqD9O4KvJyqK7UXZ5AD2uBFeJsDQz9OqqE84KgdM1
- Tmhr6wqd6V1EdvtDx3Ua1ZUIjagU2BpS4wET3hpYmfGM+78tqGOwI+Z5+
- fgRA2GUAggOWS+XOKeI20WRjEfJJ8CFBgORFwYRVHIJzOlurNS3qqJ+hr
- RhbBnuAfReTjGUJXMcAdlFmvyF8SuxSzXqdVfJAp1atDLq2ex9A8Jv4oN Q==;
-X-CSE-ConnectionGUID: IZ+VjHcdTHGW0/FXZSSEPQ==
-X-CSE-MsgGUID: 0oglOLyzSbOvomcrJRReng==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="66625731"
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="66625731"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2025 01:15:29 -0700
-X-CSE-ConnectionGUID: Uh61VlCKT8iCTP2yQ7omvQ==
-X-CSE-MsgGUID: Dn9esqc+Ts2tVhHu0zZyyg==
+ bh=8tH4EV1LqoGqk1u/lcuQM6SlWOnVSwnyZSug4TJFboc=;
+ b=Zo/C05ylV3wolBaSpb1ot4wqjJEpAvqPptIvW1VI7VSdM+Up/wChYiMt
+ 9LUqa44iObGRS2/rTY4GBo3EN0wmcmjc1IBtuOexGorDIATWilguYF9m0
+ Xb7mKJqWSFbucNhI8aDQmkLbr6ZSAI434Sjic+OPIPbH+JX5Mq71WBIMg
+ L6PziWwhqBZAKkC3cf2IZWsBfcJUAgiY3ehdowwleXd7WWjmjynNgsh3+
+ kzksQ7J7YYjBjsG8OcIytshnnegAYXbHJ3vb5hZiqO1WzngBwwUHrcW+7
+ YER1s7tiQ1IPKusZGkfyLiEcUyFCIM8BY5Y0pzT1TG1MKfVZWmhlIXQBA w==;
+X-CSE-ConnectionGUID: sta/3hnxQX6nddNXML+2gg==
+X-CSE-MsgGUID: ZXC1F9ScRgSFyFXCAy88dw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="60233905"
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="60233905"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 01:36:23 -0700
+X-CSE-ConnectionGUID: 50GBb2oKQCaElGSt4DwgfA==
+X-CSE-MsgGUID: nexVkxPHQE+K+qEzoqbbdg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="138831024"
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="175426097"
 Received: from ettammin-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.87])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2025 01:15:26 -0700
-Date: Thu, 15 May 2025 10:15:23 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 01:36:21 -0700
+Date: Thu, 15 May 2025 10:36:18 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com, 
- seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-Subject: Re: [PATCH v4 07/15] lib/igt_dummyload: Avoid pthread_cancel use by
- introducing an exit flag
-Message-ID: <d4avd6qqmsa5qfanflcqvgkzrmc2gvjbqjw6lbnyjjx5xdklpd@yhlqjmp7f32b>
-References: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
- <20250507160148.53857-8-jeevaka.badrappan@intel.com>
+To: Jan Sokolowski <jan.sokolowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v1 1/1] tests/intel/xe_render_copy: Skip tests on PVC
+Message-ID: <imbnou2uahpw276ewjvighty2mz4x3p3bihrmlben4o4btsr52@izy5eroo52mf>
+References: <20250513115252.9095-1-jan.sokolowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507160148.53857-8-jeevaka.badrappan@intel.com>
+In-Reply-To: <20250513115252.9095-1-jan.sokolowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,92 +68,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, May 07, 2025 at 04:01:40PM +0000, Jeevaka Prabu Badrappan wrote:
-> Android build fails due to pthread_cancel unavailability.
-> Replace pthread_cancel with thread exit based on an exit flag.
+On Tue, May 13, 2025 at 11:52:52AM +0000, Jan Sokolowski wrote:
+> As PVC doesn't have render, these tests will fail by definition.
 > 
-> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+> Skip render tests on PVC.
+> 
+> Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
 > ---
->  lib/igt_dummyload.c | 6 +++---
->  lib/igt_dummyload.h | 2 ++
->  2 files changed, 5 insertions(+), 3 deletions(-)
+>  tests/intel/xe_render_copy.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-> index 3cf80b762..38249afb7 100644
-> --- a/lib/igt_dummyload.c
-> +++ b/lib/igt_dummyload.c
-> @@ -530,7 +530,7 @@ static void *timer_thread(void *data)
->  	/* Wait until we see the timer fire, or we get cancelled */
->  	do {
->  		read(spin->timerfd, &overruns, sizeof(overruns));
-> -	} while (!overruns);
-> +	} while (!overruns && !spin->exit_thread);
-
-I've experimented a bit with this - read() in this case is a
-cancellation point and it will block until the timer fires.
-Instead of introducing spin->exit_thread it is better to change
-timer to tv_sec = 0, tv_nsec = 1 and call timerfd_settime().
-
+> diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
+> index fadfd162c..c36520c92 100644
+> --- a/tests/intel/xe_render_copy.c
+> +++ b/tests/intel/xe_render_copy.c
+> @@ -697,6 +697,10 @@ igt_main_args("dpiW:H:", NULL, help_str, opt_handler, NULL)
 >  
->  	igt_spin_end(spin);
->  	return NULL;
-> @@ -565,7 +565,7 @@ void igt_spin_set_timeout(igt_spin_t *spin, int64_t ns)
->  	timerfd = timerfd_create(CLOCK_MONOTONIC, 0);
->  	igt_assert(timerfd >= 0);
->  	spin->timerfd = timerfd;
-> -
-> +	spin->exit_thread = false;
->  	pthread_attr_init(&attr);
->  	pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
->  	pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
-> @@ -631,7 +631,7 @@ void igt_spin_end(igt_spin_t *spin)
->  static void __igt_spin_free(int fd, igt_spin_t *spin)
->  {
->  	if (spin->timerfd >= 0) {
-> -		pthread_cancel(spin->timer_thread);
+>  	igt_fixture {
+>  		xe = drm_open_driver(DRIVER_XE);
+> +
+> +		/* As PVC doesn't have render, we should skip here */
+> +		igt_require(!IS_PONTEVECCHIO(xe_dev_id(xe)));
 
-I mean I would do:
-
-#ifdef ANDROID
-	tv_sec = 0
-	tv_nsec = 1
-	timerfd_settime()
-#else
-	pthread_cancel()
-#endif
-
-I also wonder to totally remove pthread_cancel() leaving only timer
-setting, as from my experiments looks in this case cancelling is not
-necessary anymore. But this should be verified by CI.
+Please add is_render_supported() helper below render_supports_tiling().
+Checking cmds_info->render_tilings is enough to determine if render is supported.
 
 --
 Zbigniew
 
-
-> +		spin->exit_thread = true;
->  		igt_assert(pthread_join(spin->timer_thread, NULL) == 0);
->  		close(spin->timerfd);
->  	}
-> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-> index b771011af..07b21227d 100644
-> --- a/lib/igt_dummyload.h
-> +++ b/lib/igt_dummyload.h
-> @@ -26,6 +26,7 @@
->  #define __IGT_DUMMYLOAD_H__
->  
->  #include <stdint.h>
-> +#include <stdatomic.h>
->  #include <time.h>
->  
->  #include "drmtest.h"
-> @@ -75,6 +76,7 @@ typedef struct igt_spin {
->  
->  	struct timespec last_signal;
->  	pthread_t timer_thread;
-> +	atomic_bool exit_thread;
->  	int timerfd;
->  
->  	int out_fence;
+> +
+>  		bops = buf_ops_create(xe);
+>  		srand(time(NULL));
+>  		set = xe_get_memory_region_set(xe, DRM_XE_MEM_REGION_CLASS_SYSMEM);
 > -- 
 > 2.34.1
 > 
