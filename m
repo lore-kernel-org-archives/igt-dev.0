@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E9C7C3DA6D
-	for <igt-dev@archiver.kernel.org>; Thu, 15 May 2025 15:53:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B338EC3DA6D
+	for <igt-dev@archiver.kernel.org>; Thu, 15 May 2025 15:58:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F27FE10E8FC;
-	Thu, 15 May 2025 15:53:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 66C3710E8FC;
+	Thu, 15 May 2025 15:58:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ER/uEGRF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W3U+BXr4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37E4710E8FC
- for <igt-dev@lists.freedesktop.org>; Thu, 15 May 2025 15:53:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CB5210E8FC
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 May 2025 15:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747324388; x=1778860388;
+ t=1747324715; x=1778860715;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=G5e+nQtCSdRlpApoN2A+i/ZUCHmtqEb2q8gyEojlm3k=;
- b=ER/uEGRFY/94Xxfk+25bRMSZGcE02NYtfRvF7sTyDNTWEdAFSlHZYkSB
- Msg+PxfofcA/lC4Qbyorc1GOzGDyf4tiZeQGSa1OGRnNrf3bjR4eLf6E9
- M7pbrPRYEqw3YUAlH92Ev7cijhE/rQX0ZFmkSxenA+BPI0L/igQKj0a11
- lHPoVUeiPqXrm+r/tug07zS8kpE2i3aN5kXNj+6iEThhalh4kVoO+fai4
- 48/xaAsNEijZxunIXI2jyXFu7F+d1Bo0wQCPL4PIbid+9P3jM0iJSWbVU
- +k2uCi9BboZKOS8d8M33irilYa6lSCkclNKAt/wjN0tG15c6zCO8lVjIB g==;
-X-CSE-ConnectionGUID: aoXzAJ9tTCeIb59PWPKrDA==
-X-CSE-MsgGUID: +0RY1nuMR8eyVJzZPtFv8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="49255377"
-X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; d="scan'208";a="49255377"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2025 08:53:07 -0700
-X-CSE-ConnectionGUID: 6HYcseI+QLmiCWnBwvuvYw==
-X-CSE-MsgGUID: PSI+/mRvQTqiuh8i1B4AKQ==
+ bh=02GAKfoRWFD9100whJRFbpNmOOeAD345JoSxMYffAtI=;
+ b=W3U+BXr4o5j821IxUog+qNuqUF7BgDUNzfQYjw65Wwel4XO0quxSN9i1
+ cMN1JdZva/mht71qdVml+/0sGZVYShwp0Yms+U/qDxy4HvxAeXFPkWHlv
+ jvjoVOiFBsbntue7V+uZplkzkHSl36oe+LoniW0cvGpEtvihLi44wu+XU
+ k0jVulyGvmWie3DmigIMjbxI2r9R3kwnrWyTPJmVeyt9RJJvc1e4WYtkY
+ x6BfZzYfqWZbLOr4xvYRIrPMD6KtXGFxM8usTvP9TY+xm5BKW2vAPFu1a
+ TPdM1Nnahln2DpllCle1VthJ7DUUXFfAlnbgz16/kE/FyYAf6D9xGGXNT Q==;
+X-CSE-ConnectionGUID: 6jf1OSS+RTiMFzvhIoN95A==
+X-CSE-MsgGUID: yOYJ/t+PSUiP7pqIuJQEJA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="74677193"
+X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; d="scan'208";a="74677193"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 08:58:34 -0700
+X-CSE-ConnectionGUID: 6ULxqe4aR7CshYc1Vl1fyw==
+X-CSE-MsgGUID: ijIQZodAQdSKK/FAjPhHQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; d="scan'208";a="161703513"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2025 08:53:06 -0700
+X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; d="scan'208";a="175533769"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 08:58:34 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 15 May 2025 08:53:05 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ 15.2.1544.14; Thu, 15 May 2025 08:58:34 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Thu, 15 May 2025 08:53:05 -0700
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.46) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.2.1544.14 via Frontend Transport; Thu, 15 May 2025 08:58:34 -0700
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.171)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 15 May 2025 08:53:05 -0700
+ 15.1.2507.44; Thu, 15 May 2025 08:58:33 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UxhuVMexEmoSD0i/6OE3kUJs7DlY9X9wzThkpiAg2wISVNUdCjjVfGu8htPt66W3XBYjPqXyrdG5e66FEAdpVLtXC7LF15QlCKCqtUlxh9qiOaTHCkooeTqyaWYIQRiwjaNxrbTowr9d9zilmfUWeszfvnmuQtb/IGos19Zb5Okfe9yzbLxDprpGqUGASK/YmzHvRdTRrpw2ts0ZnyqNwng8y0AVSRDqYnM+kzgQzuXuT5DkivN3OUIOPErep5gJlDz4jKdgK1IVuNxfIEEzE97kxXpyxaBSg8erT7frd6iFuHPL8EPVn1sQLjxDUOJ85O831qyCC1TPfBdWM9sARg==
+ b=w2IsAm4feq+dftzDKt33naSIjzJUXXxxz1ObILEm7HcwuJsruAws2vFOjg3IMiqbqR9ss/2drkhXbgxqTWLhRCT43+lp5BhDGms1wUnjZGCFxA5GKb7C/OuNxZ4ntPfm6ZVHxgcKUFAg5/Mxbb7+WZ9ZVchZrQj9DdxaMXfrI3RuXe7jO0OFWh5cJAuNIesc8LQ0kucfTz902jtxZzNHCdA6pNvrQoLNWZgk8+dlqSkw1LbFuMPgrFag7YuV/nSmMSD4tjZDkZ2Gyuf9RwnyY7mDGwmOp7wDYOo+kgMRC1YIHjrBZd6ZmC2SLfI2Cn+F1iPzurVmvw1pTYTbaKRgRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3KgSKdQCIbE0cObECy4N1BpnDCcCi3bWS/xuQR1Qxm4=;
- b=xAo/cR0SfSIB3H91O8gSc6HN23bekZ23r9lz3cuCKAJeTbFFbHVDlfG6U5XWAd11IhhHcHhXy4ajo2hQqLPvob0Cm0OG4IYAq5GQpP7BSRURdXHjhZXXJDVZ5w6Vl/CjIVRDI7EDll5emjlWq9/LyGGZLZs47+wYFH1miCrYAw8l7QGGqJ7heTubE1O57ot+V2cHPAzR9d3vtwQAslKNPW6oVwwUiZpzw0Ee5ieM7Pv3P7Ep05LjPA+xgqjDDBgrMHFJa0N9geVUrveXBlWrLBz8DNg3nik9i7T8sN+uAuJ3Jwn0YbzPopDMWXYRMocOeinienXdhB7hiA3i03cHZA==
+ bh=K1xQ7Jed+NIWm0Z573VCHg8pvddyMS4A0MVL2s4LIsM=;
+ b=kZYdj6MziC6XsqfOXYD64GAmXjjrA0nX19jZB0hOlsvGdmH2HA1j/vkPc/xpA8UPgAaLBna5Lvekvh8L2o0KFzDQu7A5SO2dHR7pzNaosra80ID8sm+J3A79cWgSt6VfWtPILfwyGKn7kupEavUVa5EmA5cDdUwJ1hsoSqtsshGreAQo3ZDz3G8GBwG9WWPUyx/4mgreuvfI7T+j5lVI6iPvIkWIBh91gRNx+KESs3tmv46S3Wv+EZIIrzh2q24iGsyeTDK205qNT6z2g1AxA7uDvl29grXcePf5USNwJuBOlWMTO2ZIGdjAmltNK92R1wLe4fn5vzLh2b/1iVBZ4A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from BL3PR11MB5747.namprd11.prod.outlook.com (2603:10b6:208:354::22)
- by LV3PR11MB8768.namprd11.prod.outlook.com (2603:10b6:408:211::19)
+ by PH7PR11MB8121.namprd11.prod.outlook.com (2603:10b6:510:234::14)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Thu, 15 May
- 2025 15:52:21 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.30; Thu, 15 May
+ 2025 15:58:30 +0000
 Received: from BL3PR11MB5747.namprd11.prod.outlook.com
  ([fe80::603f:cea2:4626:ac38]) by BL3PR11MB5747.namprd11.prod.outlook.com
  ([fe80::603f:cea2:4626:ac38%5]) with mapi id 15.20.8722.027; Thu, 15 May 2025
- 15:52:21 +0000
+ 15:58:30 +0000
 From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
 To: "Brost, Matthew" <matthew.brost@intel.com>
 CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>, "Cavitt,
- Jonathan" <jonathan.cavitt@intel.com>
-Subject: RE: [PATCH 1/3] tests/intel/xe_exec_system_allocator: Test to
- validate basic SVM functionality
-Thread-Topic: [PATCH 1/3] tests/intel/xe_exec_system_allocator: Test to
- validate basic SVM functionality
-Thread-Index: AQHbxRLql4SHoYkfrkSO9RfrJCKwu7PSwLGAgAEWWGA=
-Date: Thu, 15 May 2025 15:52:20 +0000
-Message-ID: <BL3PR11MB57470962F54CBE5F7B1C308FD090A@BL3PR11MB5747.namprd11.prod.outlook.com>
-References: <20250514205801.40253-1-sai.gowtham.ch@intel.com>
- <20250514205801.40253-2-sai.gowtham.ch@intel.com>
- <aCUi9V1wP2hy8Ki0@lstrano-desk.jf.intel.com>
-In-Reply-To: <aCUi9V1wP2hy8Ki0@lstrano-desk.jf.intel.com>
+ "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
+Subject: RE: [PATCH 3/3] tests/intel/xe_exec_system_allocator: Rebind the
+ prefetch ranges
+Thread-Topic: [PATCH 3/3] tests/intel/xe_exec_system_allocator: Rebind the
+ prefetch ranges
+Thread-Index: AQHbxCmA7TKXxlJe6UK5kV9kVt3bC7PSwZiAgAEYyvA=
+Date: Thu, 15 May 2025 15:58:30 +0000
+Message-ID: <BL3PR11MB5747F353996B9B7D7FF83C0CD090A@BL3PR11MB5747.namprd11.prod.outlook.com>
+References: <20250513170711.14518-1-sai.gowtham.ch@intel.com>
+ <20250513170711.14518-4-sai.gowtham.ch@intel.com>
+ <aCUiL2ZEbdCLFBRw@lstrano-desk.jf.intel.com>
+In-Reply-To: <aCUiL2ZEbdCLFBRw@lstrano-desk.jf.intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -95,82 +94,82 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL3PR11MB5747:EE_|LV3PR11MB8768:EE_
-x-ms-office365-filtering-correlation-id: 8965356f-8272-4519-fec6-08dd93c87a49
+x-ms-traffictypediagnostic: BL3PR11MB5747:EE_|PH7PR11MB8121:EE_
+x-ms-office365-filtering-correlation-id: 04ec407c-c05f-4925-2e4c-08dd93c95654
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|366016|1800799024|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?NbIC8q7SefuKLQktNWBO8Fk6DhXrnlSexq4qAwEFPyXwGuQz3gMLIqx8f1bn?=
- =?us-ascii?Q?P8tWBiqu9v3l68xiqOs3qLk+9VuNzcrAr3zsbDiXZGw9T+hVaeXFaAQG84n9?=
- =?us-ascii?Q?QlbSPVGEqF3cUb4hNXB/Q+nyqbDKF6szKMya5287KPGHNgV6dqAlrMFyr1I0?=
- =?us-ascii?Q?t4mpWcNTAhQt9Of0s6J04oTvhStUltJYSMV42P6tP++tQ7qdEt9ueeRwUnLY?=
- =?us-ascii?Q?6H6iKHOj+RsOZtjdQ9ydvqUwBIbRdrUAvivgk6PbVczxs6WNlBYfMGy544Re?=
- =?us-ascii?Q?TB7OdFH3IuMWhCeAErV7DBbjOy9eMRbCd+MI+rbCaCH4TPgnZNStMX365y5J?=
- =?us-ascii?Q?Vv06ZJBcOf5YNhL4I3CxKvYmKATbeAZqrBFYZSbB458YDrFyBjxcZNVt88LD?=
- =?us-ascii?Q?E8pDOBy+39fmS9Wl/u7TwYBhYMiZ2rhG4e0Ml+NBG53SuOA6qk86uih74YVc?=
- =?us-ascii?Q?AhR8bdBx04Ilxj891wx2TF33Ibw2xz8qCgKm8Th038LVfr0J+hio/BZ9w2vB?=
- =?us-ascii?Q?xHuccW5k8efa2VySHDSB1Sq/pwGOTcjxrhN5bBhwW95Xn9KTYX+1iJ6ApYnD?=
- =?us-ascii?Q?2Y5j+5/p6Hy01Ad7WCxJJR4nicu1pNP+UrtVEr7d3oIHVExdGjfpznYSq56u?=
- =?us-ascii?Q?65o24lbMPLL/6xg2xvNxHY7wueLc04fozCkqxixT841J7EiOYAlkewoTDTuJ?=
- =?us-ascii?Q?Jujppw714uyzXTvpTYwC/KDsLaqF64iuLqZzZqMeaWtZmymM0eaUBjykBgoq?=
- =?us-ascii?Q?4Br+kcG6rK/WibSAkjJCAm63QRw0AyiELQVUPM2AEZ+Hrj27Oo70lKVtWoQL?=
- =?us-ascii?Q?9PMyhUkO3eV7FuOHXgDo1B/xkiT7DjyH+t2RYbUHsAn9YhwN5ezvQUzPjDVb?=
- =?us-ascii?Q?0kRkps32frc0sZWCIPjGb5vuH3+9vh2KcaZVjzJaKqMwY6RCP3RLPgPYA+1i?=
- =?us-ascii?Q?T5H16vkEB9TZoEPCdM0pJhR4qXauVV/qF64ontWfd1N5M+HiPjKEl4jifA08?=
- =?us-ascii?Q?TE0huRvI1HDpC2JxXoukHMOIIhvPNkDnEQ9VMAHvGT1YmrxzoJkcNtv4VsZl?=
- =?us-ascii?Q?wq73z99PdXaT1fV19CzL44d6l7T5/u6Y23zA+eFnzADmKpay4mHWfBlP3aza?=
- =?us-ascii?Q?gqbZW7etwIzWSS+spYpOcOe7ZjjggV5tpwd1TU6vD1nTL7Rm9taqMyBH0lN3?=
- =?us-ascii?Q?UbmNQWF1DieOpYSQj/nynQQedjM6wL460OnLavqJCzOnR/KI5C1rk+tIcrhR?=
- =?us-ascii?Q?NSUNL4GSe0FUeG5miY8u7XFNdJtkAOhgLYD4bNeuS/QT01sFufRAy2HxDNMe?=
- =?us-ascii?Q?3k9VyMf8YyAN4OBEcdiWMAoGTKyXozR+xfkAjVA8+r8Pai/4/epBDn5TxDWW?=
- =?us-ascii?Q?yYkmJag2yiDGTgaRumSm23Dp/U9VkwIismMh2mqvZ4ybseVablXjsEx4zmGm?=
- =?us-ascii?Q?o7o7ld8Nte71XNDCZ4pz2gO0YXXk4EkczFGS/lAoiyGDR+21JFCLRJh0xuk8?=
- =?us-ascii?Q?JN3NxZ36CW46cvU=3D?=
+ ARA:13230040|366016|1800799024|376014|7053199007|38070700018; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?ZxKUF/0RFM+QahrkszY8f1NrVKGfXU4/AP1taVXclmcg9NpofYL+yO1TtaYM?=
+ =?us-ascii?Q?zV6NfOUYXUz1WIKwkSM3FhvKwuffKndQ2hvaH0qMF4V7gIj5LIj7DA3c0Su+?=
+ =?us-ascii?Q?DrA1lRNhd2MI+Xilv/HKJqQ56FvB7DThqTyMPykuC3z6OAvzM63+wGYdbdmT?=
+ =?us-ascii?Q?5N7Hpb7do5Jobsgbpso5O4/A7Z8CNn1KDniK9dnWzKMTTchWsZRDuQ7vO5z5?=
+ =?us-ascii?Q?du7y/h79sPzFUVX2110ACwYLBTdcG9xlAeCrC4KcVW2qNBzjqYU94mEuaLXi?=
+ =?us-ascii?Q?kJzvzh1kvFV8fNCnZ2ITGzob8Bf7ugfb3PRh56CB5uJlmmOvfBY5KeBHgJjZ?=
+ =?us-ascii?Q?z9L8egb75jnoDCxwoAOGNyPiaYC4icb1xSBDOhpPy6Mxihf4CTZ9dAx2PlB7?=
+ =?us-ascii?Q?JaIcLTrTqkW+ZvZuVkIX+KI+PI+84X1PnNYCjPMvN7Vrt7GQu8R/HQ6iaomm?=
+ =?us-ascii?Q?7lq4PWk5tnLgX0qwm2yA8JjWuPr5EsWE2KsjKN1xK1dzfuJ8k0wzIkswp01I?=
+ =?us-ascii?Q?vsdjqiDXmF41/+nuFnRWJNo1+I1cxWL2ZfudSfRbJPbmHtuYLVt2PQr/tfHZ?=
+ =?us-ascii?Q?d9eynMSArliPHeJGesupdqUr9r5FIwaRpvJXZdOONHsb8wks1P813C2lT1Yx?=
+ =?us-ascii?Q?ftLAAcHJ/dBD/wOY/pXdPHj4SosBx1B6e3/vfMLvwlNqhkMORuFi7vGrCrHN?=
+ =?us-ascii?Q?hH3YNoEPp2QNJbFkaxkpAE4hTSet6CvbYP0WmrPGrxB9nuBUEfGtIU4cZaM2?=
+ =?us-ascii?Q?PDsqik0H1wgeLeyhdXkBvXHsSnG0GatO+iVWTNrtHYJb28SBMIvYutwuRTgz?=
+ =?us-ascii?Q?+CYCIzg0n4iFcH0anAv9aY1//8InIvrNF8WUtXAAijBap6CUX1XHjiVU4184?=
+ =?us-ascii?Q?+2t/FnM23hAr3DV30t7ZpK4dKrAwwc38/fcAGKsiwfu57/LYI+pWWcHrIPZg?=
+ =?us-ascii?Q?szz0TxF3xdL7uDxTmVhq26pYUhXWDMMtkIs2slvOBxMk1t0FR3oQx6/YNhna?=
+ =?us-ascii?Q?+snQqBM6sdN+GxChMzYsBYBN+dvsgX4E+JMKfPDgUrFbdW3XY3J3GGQVpdRB?=
+ =?us-ascii?Q?o6htZPRHPYSXl0z7owXmDEZmxeBP5O48nBXE6wIn5p4tYb+CuhJu4Xeu2q50?=
+ =?us-ascii?Q?YRIS1tVA2Ilv+KejqOIETFMhutf2zBGdzWBGOzu4a11D7RDskhzqvu0xiFyE?=
+ =?us-ascii?Q?59jh2HmzhUy859KUmJnztQzxKh7chZkgJQ3IpMqEkEdbCo5pSl570qTvJuLN?=
+ =?us-ascii?Q?AyuXCVBVYqR28YNKFFVxdv/m462fo3V5HQxxjMdVN4f9VGITd8FJRDUKjOEq?=
+ =?us-ascii?Q?XhLlZYcG1HvU35I+g0QV5ufd9Q3PdXv0m5oxsNYgLQvRA8eIceOtlOjON/nT?=
+ =?us-ascii?Q?81TIYSa13qv39Vgc0yYN+iEKdi46ylu2qrbizv4eXCl6O2FXLjCk/a/ixxhG?=
+ =?us-ascii?Q?JPjix5q/CS3k7/sz9et+YxQhzS1ThFp6Js0xxYQTQ/OOWYkCNrC9Q0Oal9/9?=
+ =?us-ascii?Q?AXLi6CiqA+GWfsA=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR11MB5747.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(7053199007)(38070700018); DIR:OUT;
+ SFS:(13230040)(366016)(1800799024)(376014)(7053199007)(38070700018); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?XXaesf9tsjOcegdi+enujQBw3NWwbb9T+dgOAFyWgY5VVtXI4wa806AqRuCn?=
- =?us-ascii?Q?gIYCBMBG7gJD0gQZHRCm557YNQjxHBJzZPQhRZUochAHqQKRM1bukdhYKFBa?=
- =?us-ascii?Q?y7fDeM3tnLRluYnfkPKvHqCXV1uShOr0tyOywTW20Jr+YnSjLrnxTR85XzZi?=
- =?us-ascii?Q?A2VzSC7wbXwc7SAZwezmjuObS8oSkdLnGUSs0a5m8HqdfYlQmkGkPm4MLhc2?=
- =?us-ascii?Q?8kTmhHmj5p7bvdMxHmqwfCpBRZvkgooVW4VScGM32gaAVXJpHeaM1Mc9dBiR?=
- =?us-ascii?Q?i952IAv6/9/0MBdw9t5Eo0harYsanfPpSGAlDlc63hc0oe5UqmJlMeIX9JFy?=
- =?us-ascii?Q?pzUVZvm9Sy86SQQNXn0aFRMtSpyhXaDApo34oAIXAgDjYuAjxTsRJYt1zmMi?=
- =?us-ascii?Q?xaqdEUpsXT6aRCiCoCr9ROqtnEZTwY35lWn4f4d8qlprTaEFaOv9c84fLOys?=
- =?us-ascii?Q?SMKw7xenxKhTVdAtaJbPEW0P4oxY1CPIFATmznj2/xLzMKjaoaCH3oeZSPTj?=
- =?us-ascii?Q?gbg0/RkRv7tlWEURkgoLyG36LA+qI2628fISDgPprld961akM9N531Gerqri?=
- =?us-ascii?Q?J4v1H1fMIvHY9jjNmdFnd9UBEsqI2pAPvvQyx/1jcNyL1ytv14j+AMsn9cKM?=
- =?us-ascii?Q?oJ6Ju6oPKzbf+qmUH1gw/i75Co5MVxBJwnFvSJy8sUU9V+YPUhT186DHgyWh?=
- =?us-ascii?Q?N1Gl60oMKISN2PTle15xbB5/mtKmNBWSnAeF76riVKjECs7rlY9xqCAPWEDi?=
- =?us-ascii?Q?xH6tfUKZphBSa4bcAUR6C6YNPOa9ypRb+/DMEXBq2cgUW6BJ49jB7b75zuL7?=
- =?us-ascii?Q?yG4L+vllt2T6JBG/5+9DT42ykAETb9fdFqI1edHCSYxUbfbkB90MHOldSQID?=
- =?us-ascii?Q?g5kGruAISoXaKpKjWlorcQ24sACM+59K6JH4eO4Rm57ou25PV4i/OHCX+3iM?=
- =?us-ascii?Q?3t9yRp3CDbJ08vJ+2oIMgJEG4t5usa/w7AJLmiUHMVwpvXZrhbKA1dKxCywA?=
- =?us-ascii?Q?F208koKsFMpUokidK7poEDuy0BqbGQrcVsSJReMr8HGchIW54cwge1R5SmCD?=
- =?us-ascii?Q?CnR3DslOwt1mrny6Y/ZhBBYrVDNSLpKl7oc0+ZJoeRp+tiN2eJNarIaTS5VA?=
- =?us-ascii?Q?r9gIRR1QFU0YZcimSN5C/Sjo2bnS5ln3SuN1OIkffOzebG67boshK5enj53r?=
- =?us-ascii?Q?5SBKkwzvfa+trkNDb9+xEZaCPDJniMS9Aez3kbgceeh85Zw7zW2bbY1XnbwC?=
- =?us-ascii?Q?Y+qJD9VAxseaYPtA7WFiZqo631jqxP2dmJP+bnzikaoNEIAKL/i4iQDX0/0c?=
- =?us-ascii?Q?7ShbhKj/jWkm3fIGjafOz9YOFcFOamQnKqqUhwauwvKhO5G+jjy7xokHwcNW?=
- =?us-ascii?Q?Mdi6y3HZG/f6LHO/KX9Di3NEWdSWok1h1PivIaZCGjOefHPOaqlW42rF8nkW?=
- =?us-ascii?Q?EuzD+oK097Rf3AuVb1HMXuVZPnKGqtrT/3oL5Tqf4lToVtv1JvQAnJJe3HAn?=
- =?us-ascii?Q?s27aG+4hvpaOdBLkneb4NiSdW4McsO3c/50M8xa3SXjgwk0q90tHL2vbD/CB?=
- =?us-ascii?Q?NIcicgM3kXBZc3WJC2G63U05BXMC8xRXt6r/Kov/?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?KkbU9Mu3lINHQ1irP27f9UO9xnpX7U4E7IHD6HadgvKB+imV8hRMIxSph9tK?=
+ =?us-ascii?Q?OW9yxtvG2BdK+5H5k6ZzOJHpAIZRwzNfTaPVsKD22qq2dLaG0dpOTO9/iFiC?=
+ =?us-ascii?Q?vwHFBizhLXv+/zyfTLC4CaJUddndoFJetbOGbZNs6CQeqjzgi+aM+UYjw7R6?=
+ =?us-ascii?Q?a1vk5g+XDzrpygGRmspUS77jv0NVXuNbdLW9Bw+qLkZMksGFE+5F6lI2UP9x?=
+ =?us-ascii?Q?Z+AYmQtSNp5oO9qL7qftlFuQ1mQ7FjwlTtjJvHLYiGDlEWo9NJXE9Wa7fRjS?=
+ =?us-ascii?Q?kdho6tBJKb7/iTmQEnKftu0L9vsYZ8wRygj9CcAdlLD34OeUZCFdgNKVvP0x?=
+ =?us-ascii?Q?HktfI3b8NoIQaZ4YZFsYCkizntY+g8QAJDAI+wOYJPo22fcGM5hsKNEjm4WS?=
+ =?us-ascii?Q?7hVkZPtx/HQZyt8XrqnZVYC896j2fGrWa8yanygsrQlkHefzapo8frUVi3/v?=
+ =?us-ascii?Q?Y0+cR4vnNJsBPXqRHjXOxUy/EF9HlOcUXEfQouqAUgzry5Zdn17NXW2VdjY/?=
+ =?us-ascii?Q?hRjebQScyFZwoAd4b3OGAT5eTlOQnLVs5poZbE48qXXQzID38Fp+tIV5nFHa?=
+ =?us-ascii?Q?M4551Mc0tsNS3XvA3nDPNg7ApdxXbns74PkrK9j5U8XHPDv6sip7F6VN1Dt+?=
+ =?us-ascii?Q?sCv4x2/2mjaZz20NUUUFNQz/2O1He2lCgUkMqwDZcU4x2iTssCvLk7bpMuNV?=
+ =?us-ascii?Q?Ywa+9nLWKLM+52l1uOAnEIMhyAuOSAoml4fI0ZMrLWy7ur6w/bn8ALL+0Jgp?=
+ =?us-ascii?Q?fScfk0reL4I5kFVOmjW8RR43KK+RqiVCgnk8ssb1SizasjiKEKsQsPnRTaJE?=
+ =?us-ascii?Q?RnAX4NYUWX7UiF+33uMcHmqytfWms3VcTUNuOZ6PL8acRv4eNnB6YE/J05k4?=
+ =?us-ascii?Q?HYlIk+pkdthGUoMfvl2bFS8JJRQb1p8mXTpH6fqgAG6kFrdAOgW54Vu/EerF?=
+ =?us-ascii?Q?WvOXYE8/D3wFhQWAX5WFGIsIqq4YjOfysEw1UGP1w1YxrYhy1mAmLmalEZ2h?=
+ =?us-ascii?Q?7ZCG19nJENit0Cegvta9vL2AwZsalawXUQLHaYX1J57p00Cc0bIYi8bDXIGM?=
+ =?us-ascii?Q?90KFnjYoVe0wZZlJk9dMiZG8v8EQBw9Nr07kol/9hs8tWqD7l7wYLyCaMCTS?=
+ =?us-ascii?Q?qDVvl6wjU3O3nE53CaTuCHb//jIBIXNp4nG5aXtFKOfB1qIJrA06THUWQsA4?=
+ =?us-ascii?Q?TOOwqjUvVod/u2a9wuz9WGkeRxZrPUimX3qDb7M3fQs+dYkluvDf+Hqk1YkG?=
+ =?us-ascii?Q?eT2pqe35Kb1qmRzM9tC1cwRrNYrH3F7iw73Z/TYSrF8su7JFU8zk+s+5oMY9?=
+ =?us-ascii?Q?vs/nyakNTGknSc+//9t10/+l5xslmoWgpoIV97HTglWFgA4ZicoT7iUBpOMz?=
+ =?us-ascii?Q?aN0EIR1zj65LpfIa88WduT1e2PjJvUG13Hxe+7CIBQpCE4TmeDfTNLgQOnDx?=
+ =?us-ascii?Q?MoqyPAgKF2VYyzu1cLC8jL4VUn9/TxuAAPMis4Mh0yVXtuZx2qWk+46F/YFC?=
+ =?us-ascii?Q?vxLwneUSq7mvygOonsoL8XeHTMlvIHcS6QeC/mekZ3NU0fDU1zmP748TR2qa?=
+ =?us-ascii?Q?rbq9SAEJiYc8XIBaGenRSOycIaf7tdueN7IRCROR?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB5747.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8965356f-8272-4519-fec6-08dd93c87a49
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 May 2025 15:52:21.0403 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04ec407c-c05f-4925-2e4c-08dd93c95654
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 May 2025 15:58:30.2201 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CEBFREG43HSeEUFgsFvDUW815HjCsCQIxQl7y/vwcmtiBFWfEgpLFQpLjJeABARO4G4Gs1qZNHCMsDQNzM3mtcRlwDeRXdHUhJDsZJSplDA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8768
+X-MS-Exchange-CrossTenant-userprincipalname: jKWxJf26TbRGGFEZmJFxWKeqkJJVOGpnsj6VfXMb80+VsqVDRHUYB++zsVTMxc33YMS/vV02ULRCLic3gLiHrbfZxybZlZUiD+vsHg3NyPE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8121
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -191,137 +190,155 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 >-----Original Message-----
 >From: Brost, Matthew <matthew.brost@intel.com>
->Sent: Thursday, May 15, 2025 4:41 AM
+>Sent: Thursday, May 15, 2025 4:37 AM
 >To: Ch, Sai Gowtham <sai.gowtham.ch@intel.com>
 >Cc: igt-dev@lists.freedesktop.org; Ghimiray, Himal Prasad
-><himal.prasad.ghimiray@intel.com>; Cavitt, Jonathan <jonathan.cavitt@intel=
-.com>
->Subject: Re: [PATCH 1/3] tests/intel/xe_exec_system_allocator: Test to val=
-idate
->basic SVM functionality
+><himal.prasad.ghimiray@intel.com>
+>Subject: Re: [PATCH 3/3] tests/intel/xe_exec_system_allocator: Rebind the
+>prefetch ranges
 >
->On Wed, May 14, 2025 at 08:57:59PM +0000, sai.gowtham.ch@intel.com wrote:
+>On Tue, May 13, 2025 at 05:07:11PM +0000, sai.gowtham.ch@intel.com wrote:
 >> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 >>
->> Basic test validates basic SVM functionality.
+>> Test rebinds the prefetch ranges to check the ideal behaviour of
+>> prefetch mechanisim, expecting address ranges in the corresponding mem
+>> regions has to be created again and use those address ranges to submit
+>workloads.
 >>
 >> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 >> Cc: Matthew Brost <matthew.brost@intel.com>
 >> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+>> ---
+>>  tests/intel/xe_exec_system_allocator.c | 47
+>> +++++++++++++++++++++++---
+>>  1 file changed, 42 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/tests/intel/xe_exec_system_allocator.c
+>> b/tests/intel/xe_exec_system_allocator.c
+>> index c3f0e61f3..94907847c 100644
+>> --- a/tests/intel/xe_exec_system_allocator.c
+>> +++ b/tests/intel/xe_exec_system_allocator.c
+>> @@ -484,6 +484,24 @@ static void test_basic(int fd, struct
+>drm_xe_engine_class_instance *eci,
+>>   * Description: Prefetch of mutliple ranges within arg[1] size and chec=
+k if
+>multiple ranges are created
+>>   * Test category: functionality test
+>>   *
+>> + * SUBTEST: bind-vram-%s
+>> + * Description: Validate prefetch-smem of size arg[1] by rebinding them=
+ with
+>prefetch-vram to
+>> + * 		check the behaviour, ideal behaviour is to migrate ranges
+>> + * Test category: functionality test
+>> + *
+>> + * SUBTEST: bind-smem-%s
+>> + * Description: Validate prefetch-smem of size arg[1] by rebinding them=
+ with
+>prefetch-vram
+>> + * 		check the behaviour, ideal behaviour is to migrate ranges
+>> + * Test category: functionality test
+>> + *
+>> + * SUBTEST: multi-range-bind-vram-%s
+>> + * Description: Validate multiple ranges of size arg[1] by binding
+>> + them with multiple ranges at vram
+>> + * Test category: functionality test
+>> + *
+>> + * SUBTEST: multi-range-bind-smem-%s
+>> + * Description: Validate multiple ranges of size arg[1] by binding
+>> + them with multiple ranges at smem
+>> + * Test category: functionality test
+>> + *
+>>   * arg[1]:
+>>   *
+>>   * @SZ_4K: SZ_4K
+>> @@ -492,7 +510,7 @@ static void test_basic(int fd, struct
+>drm_xe_engine_class_instance *eci,
+>>   */
+>>  #define MAX_BATCH_DWORDS 16
+>>  static void prefetch(int fd, struct drm_xe_engine_class_instance *eci,
+>> -		     size_t bo_size, unsigned int flags, int num_dwords)
+>> +		     size_t bo_size, unsigned int flags, int num_dwords, bool bind)
 >
->See my replies to rev1, to be clear I'm nacking all of this series.
->Please see my comments in rev1.
+>You have flags field but added a bool for bind? Confusing.
+This is an older patch BIND flags was not part of it, this is changed in th=
+e latest patch
+>Again I think you should build prefetch tests within existing tests (the t=
+est_exec
+>function).
 
-Thanks your review comments looks like rev2 was already in the mailing list=
- before your comments on rev1,  Missed your comments.
-Will have a look at it.=20
+Idea was to not club prefetch tests with the existing test_exec to make the=
+m future proof for any debug purpose,  However if you
+think otherwise this can be moved under test_exec.=20
 
-Thanks,
+-----
 Gowtham
 >
 >Matt
 >
->> ---
->>  tests/intel/xe_exec_system_allocator.c | 63
->> ++++++++++++++++++++++++++
->>  1 file changed, 63 insertions(+)
->>
->> diff --git a/tests/intel/xe_exec_system_allocator.c
->> b/tests/intel/xe_exec_system_allocator.c
->> index 06daac8c2..68bf29898 100644
->> --- a/tests/intel/xe_exec_system_allocator.c
->> +++ b/tests/intel/xe_exec_system_allocator.c
->> @@ -32,6 +32,8 @@
->>  struct batch_data {
->>  	uint32_t batch[16];
->>  	uint64_t pad;
->> +	uint64_t vm_sync;
->> +	uint64_t exec_sync;
->>  	uint32_t data;
->>  	uint32_t expected_data;
->>  };
->> @@ -405,6 +407,63 @@ static void __aligned_partial_free(struct
->aligned_alloc_type  *aligned_alloc_typ
->>  		       aligned_alloc_type->__size - aligned_alloc_type->size -
->> begin_size);  }
->>
->> +/**
->> + * SUBTEST: basic-svm
->> + * Description: Test validates basic svm.
->> + * Test category: functionality test
->> + */
->> +static void test_basic(int fd, struct drm_xe_engine_class_instance *eci=
-,
->> +		       size_t bo_size, int num_dwords) {
->> +	uint64_t addr;
->> +	struct drm_xe_sync sync[1] =3D {
->> +		{ .type =3D DRM_XE_SYNC_TYPE_USER_FENCE, .flags =3D
->DRM_XE_SYNC_FLAG_SIGNAL,
->> +		  .timeline_value =3D USER_FENCE_VALUE },
->> +	};
->> +	struct drm_xe_exec exec =3D {
->> +		.num_batch_buffer =3D 1,
->> +		.num_syncs =3D 1,
->> +		.syncs =3D to_user_pointer(sync),
->> +	};
->> +	struct batch_data *data;
->> +	uint32_t exec_queues, vm;
->> +	size_t aligned_size =3D bo_size ?: xe_get_default_alignment(fd);
->> +
->> +	vm =3D xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
->DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
->> +	data =3D aligned_alloc(aligned_size, bo_size);
->> +	igt_assert(data !=3D NULL);
->> +	memset(data, 0, bo_size);
->> +
->> +	exec_queues =3D xe_exec_queue_create(fd, vm, eci, 0);
->> +	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
->> +	bind_system_allocator(sync, 1);
->> +	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
+>>  {
+>>  	struct batch_data *data;
+>>  	uint64_t target_addr;
+>> @@ -542,6 +560,13 @@ static void prefetch(int fd, struct
+>drm_xe_engine_class_instance *eci,
+>>  	sync[0].addr =3D to_user_pointer(exec_ufence);
+>>  	xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, sync, 1, flags & VRA=
+M ?
+>1 : 0);
+>>  	xe_wait_ufence(fd, exec_ufence, USER_FENCE_VALUE, 0,
 >NSEC_PER_SEC);
->> +	data[0].vm_sync =3D 0;
->> +
->> +	addr =3D to_user_pointer(data);
->> +	for (int i =3D 0; i <=3D num_dwords; i++) {
->> +		uint64_t batch_offset =3D (char *)&data[i].batch - (char *)data;
->> +		uint64_t batch_addr =3D addr + batch_offset;
->> +		uint64_t sdi_offset =3D (char *)&(data[i].data) - (char *)data;
->> +		uint64_t sdi_addr =3D addr + sdi_offset;
->> +		int b =3D 0;
->> +
->> +		write_dword(data[i].batch, sdi_addr, WRITE_VALUE(&data[i], i),
->&b);
->> +		igt_assert(b <=3D ARRAY_SIZE(data[i].batch));
->> +
->> +		exec.exec_queue_id =3D exec_queues;
->> +		exec.address =3D batch_addr;
->> +		sync[0].addr =3D addr + (char *)&data[i].exec_sync - (char *)data;
->> +		xe_exec(fd, &exec);
->> +		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
->exec_queues, NSEC_PER_SEC);
->> +		data[i].exec_sync =3D 0;
->> +		igt_assert_eq(data[i].data, READ_VALUE(&data[i]));
+>> +	if (bind) {
+>> +		exec_ufence[0] =3D 0;
+>> +		sync[0].addr =3D to_user_pointer(exec_ufence);
+>> +		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, sync, 1, flags &
+>VRAM ? 0 : 1);
+>> +		xe_wait_ufence(fd, exec_ufence, USER_FENCE_VALUE, 0,
+>NSEC_PER_SEC);
+>> +		exec_ufence[0] =3D 0;
 >> +	}
->> +	unbind_system_allocator();
->> +	free(data);
->> +	xe_exec_queue_destroy(fd, exec_queues);
->> +	xe_vm_destroy(fd, vm);
->> +}
->>  /**
->>   * SUBTEST: unaligned-alloc
->>   * Description: allocate unaligned sizes of memory @@ -1700,6
->> +1759,10 @@ igt_main
->>  		open_sync_file();
->>  	}
+>>  	exec.exec_queue_id =3D exec_queues;
 >>
->> +	igt_subtest("basic-svm")
->> +		xe_for_each_engine(fd, hwe)
->> +			test_basic(fd, hwe, SZ_64K, 1);
+>>  	for (int i =3D 0; i < num_dwords; i++) { @@ -2045,16 +2070,28 @@
+>> igt_main
+>>
+>>  	for (m =3D mode; m->name; m++) {
+>>                  igt_subtest_f("prefetch-smem-%s", m->name)
+>> -                        prefetch(fd, &engine->instance, m->size, 0, 1);
+>> +                        prefetch(fd, &engine->instance, m->size, 0,
+>> + 1, 0);
+>>
+>>                  igt_subtest_f("prefetch-vram-%s", m->name)
+>> -                        prefetch(fd, &engine->instance, m->size, VRAM, =
+1);
+>> +                        prefetch(fd, &engine->instance, m->size,
+>> + VRAM, 1, 0);
+>>
+>>                  igt_subtest_f("multi-range-smem-%s", m->name)
+>> -                        prefetch(fd, &engine->instance, m->size, 0, 10)=
+;
+>> +                        prefetch(fd, &engine->instance, m->size, 0,
+>> + 10, 0);
+>>
+>>                  igt_subtest_f("multi-range-vram-%s", m->name)
+>> -                        prefetch(fd, &engine->instance, m->size, VRAM, =
+10);
+>> +                        prefetch(fd, &engine->instance, m->size,
+>> + VRAM, 10, 0);
 >> +
->>  	for (const struct section *s =3D sections; s->name; s++) {
->>  		igt_subtest_f("once-%s", s->name)
->>  			xe_for_each_engine(fd, hwe)
+>> +		igt_subtest_f("bind-vram-%s", m->name)
+>> +			prefetch(fd, &engine->instance, m->size, 0, 1, 1);
+>> +
+>> +		igt_subtest_f("bind-smem-%s", m->name)
+>> +			prefetch(fd, &engine->instance, m->size, VRAM, 1, 1);
+>> +
+>> +		igt_subtest_f("multi-range-bind-vram-%s", m->name)
+>> +			prefetch(fd, &engine->instance, m->size, 0, 10, 1);
+>> +
+>> +		igt_subtest_f("multi-range-bind-smem-%s", m->name)
+>> +			prefetch(fd, &engine->instance, m->size, VRAM, 10, 1);
+>>          }
+>>
+>>  	igt_fixture {
 >> --
 >> 2.34.1
 >>
