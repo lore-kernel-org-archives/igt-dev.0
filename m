@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE672C3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu, 15 May 2025 19:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 808D5C2D0CD
+	for <igt-dev@archiver.kernel.org>; Thu, 15 May 2025 19:53:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 68EB510E94C;
-	Thu, 15 May 2025 19:52:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 39C5810E94E;
+	Thu, 15 May 2025 19:53:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PnfCqr9g";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UP8uUGEH";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E009C10E951
- for <igt-dev@lists.freedesktop.org>; Thu, 15 May 2025 19:52:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6700C10E951
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 May 2025 19:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747338778; x=1778874778;
+ t=1747338781; x=1778874781;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vQ1qYyT8la5L8/imrHMjxwQIUzrpxrpye0aT71KYBrc=;
- b=PnfCqr9gLFyRzDdl3piK42YjeEkhduvUsMndGcc0F9tWiIT+QW62eSjv
- 9sG4PC6vCUBqof2ZFkfKhjLxobtEh4/Nhklo3H5xR5dJsn3dkPV1gg+eg
- TAJX0oFly4vzDLXizGCXuGKLIIhziOqx+f4OQtHeqNMTciKLSz3PNB3Mx
- mz19m1CaFbS2+Y4U4cllfQaVBrom5EQtpdxBhPlyXFlwoiSBUsO+D27Te
- 4PCflxYtOpRjM4NuX1UeSh1BTnx3kLTB47mNPHNMoY5HpBsRQrw0yJZKE
- nkRWRLUaCN4RGQvb3WfVDameCEAQgjg8uqkF961Tdqu1yN+ApPPehtO6a g==;
-X-CSE-ConnectionGUID: dzJFDthVSUeJEvIuRfh1xQ==
-X-CSE-MsgGUID: MnNMh3kYQByQ+CNCs/ESow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="49454485"
-X-IronPort-AV: E=Sophos;i="6.15,292,1739865600"; d="scan'208";a="49454485"
+ bh=Kcbp9Rr+pevoyG76CJRHPbhyDOZ30DhDAYI+6jpkGDg=;
+ b=UP8uUGEHLuAApqmG9l6hfTfupPjEP50U9RUqsrq8N5HSBnTD4TpvArNQ
+ cVYre2/oTsmP3DnsJDRS+uq41IdQSTS4RmFuOkUkLbkK2Nl1mPjqCWJPw
+ 2or42TweR9kAejUuMSwX/nALxhqtEr8NzY6xxufKRi7CDmwDFdpPeaETP
+ HwWJKdsKuGV90oimhmPmXnfnia4M/1RlVVBhe6J2WGqOBchxP/RTqU0+O
+ aFOYa2d8zn2WZJVa/igVFtrluGl3YJJElYNZPP6NtxQ9MohVGVZmt8JD9
+ r1Hua62yyQZLwpnJ5GuDPtnxBt0q4FFhQ4Ny/51sfnU93bTC+kOB+MgMN g==;
+X-CSE-ConnectionGUID: 4oZjANVNRHW0gVkC07IDFg==
+X-CSE-MsgGUID: nSHdKQRkQKuEvb7CTDidZg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="49454492"
+X-IronPort-AV: E=Sophos;i="6.15,292,1739865600"; d="scan'208";a="49454492"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2025 12:52:58 -0700
-X-CSE-ConnectionGUID: 5KTfyQssRdWT60TSnM05Ww==
-X-CSE-MsgGUID: hA5IIsZ8TM+U19V+devDxQ==
+ 15 May 2025 12:53:01 -0700
+X-CSE-ConnectionGUID: oc38ihqtQguJZzMyiE1tEA==
+X-CSE-MsgGUID: E3b0QVTrT3iwXGKiqwfLhw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,292,1739865600"; d="scan'208";a="138347400"
+X-IronPort-AV: E=Sophos;i="6.15,292,1739865600"; d="scan'208";a="138347410"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by orviesa006.jf.intel.com with ESMTP; 15 May 2025 12:52:56 -0700
+ by orviesa006.jf.intel.com with ESMTP; 15 May 2025 12:52:58 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
  Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH 11/14] tools/intel_gpu_top: Replace index with strchr
-Date: Thu, 15 May 2025 19:52:04 +0000
-Message-ID: <20250515195207.106414-12-jeevaka.badrappan@intel.com>
+Subject: [PATCH 12/14] tests/intel/xe_create: Conditionally define PAGE_SIZE
+ for non-Android platforms
+Date: Thu, 15 May 2025 19:52:05 +0000
+Message-ID: <20250515195207.106414-13-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250515195207.106414-1-jeevaka.badrappan@intel.com>
 References: <20250515195207.106414-1-jeevaka.badrappan@intel.com>
@@ -69,26 +70,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As index is deprecated, replace index with strchr.
+Ensure PAGE_SIZE is defined only if it is not already defined,
+addressing compatibility with Android where PAGE_SIZE is predefined.
+
+Note: PAGE_SIZE is defined in multiple files; a cleanup will be
+addressed in a future patch series.
 
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 ---
- tools/intel_gpu_top.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/xe_create.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 68d27089b..54e71e559 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -290,7 +290,7 @@ get_pmu_config(int dirfd, const char *name, const char *counter)
- 	if (ret <= 0)
- 		return -1;
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index b22084c84..e8b8bb025 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -18,7 +18,9 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
  
--	p = index(buf, '0');
-+	p = strchr(buf, '0');
- 	if (!p)
- 		return -1;
++#ifndef PAGE_SIZE
+ #define PAGE_SIZE 0x1000
++#endif
  
+ static struct param {
+ 	unsigned int quantity;
 -- 
 2.34.1
 
