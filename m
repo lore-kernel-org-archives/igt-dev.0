@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 221DCC3ABD8
-	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 17:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02D8DC3ABD8
+	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 17:12:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C88E010EB4B;
-	Fri, 16 May 2025 17:12:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B200210EB4C;
+	Fri, 16 May 2025 17:12:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IT1ClgaL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cvYWM0Gt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7860710EB4B
- for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 17:12:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4149B10EB4C
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 17:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747415538; x=1778951538;
+ t=1747415540; x=1778951540;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CPzGBptsGTFB02YIa5fv+x3rvtyUoU5glg+G/vdORfM=;
- b=IT1ClgaLv8/Dy2Yjm5+sTY8ncFvaHZEMdKo7TKJqS4Q8VrACyH+dSEdN
- q4WaRhZ+G4L+k7de74fI/CwFYGDTqQE8bIhfrApw+8TxHrUuKgT1vDIcw
- Qu35gN2AeAmzxgrI/XB9WACnaXDWr+vzeS7slX3bf+IDX1OPcEC71thhP
- piB1ditDKnXE8mqouRuZ1LKZvT5hzy1nC4Wratgx5M8xKDUsw/DpZvxfr
- 7kYuI64ZIOXQ5zsJaO7YidhW28EG1dr3zUJbVuk2eCqkVbOp6G+lff9oC
- wFBjWtoV9sUwcyTWVJP/nT7nG0E8NjRK8dCgTR/MnZ7ce1Wux8G4yEau/ w==;
-X-CSE-ConnectionGUID: TTLD52X7SBCsj38OZFElnA==
-X-CSE-MsgGUID: yMrEXWxmRPm0MwetU3GJIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49297064"
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="49297064"
+ bh=FcGz3P5XGMu+3qZM6ec6qD/xZtwU9mWIYrRxWwTucRI=;
+ b=cvYWM0GtwQmqzG5uKtC3B6rZU6z5RPU6OfTxnX7oPfnNeIwWQ05EJBpC
+ A314qcVXQxtBMULVhV8kZrLyUBJcF0rx+YlbyWXjL96/uz/rcOe1gEtdJ
+ iwlV9cPd4ahea3Sd3h48oEIiJSrAhnugFG+OjSRCqZ/hr+d+Tw+q4AUtp
+ tAOi/31rhD1WQGv5vNt2gjBsjiNM34z3frZ/AaztBs7Q6y3RTqkrpvPWz
+ k0Dj/DWE00sPmicVS5vD+0OM6QoUbBHMvLp2ON/dqyPhDjxZtHchdnq9L
+ +ES4JlohviwQ7DTzFG4lGAhLQsWy5ecYujJH2+ereyodDPaKhku9upkMG w==;
+X-CSE-ConnectionGUID: WTqPJEI3TbiqRN+TYAzluA==
+X-CSE-MsgGUID: 6NRDltIMQ0OPWJZuZTltIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49297072"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="49297072"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2025 10:12:17 -0700
-X-CSE-ConnectionGUID: /kzzO79HQeaOZRfPzmNnUg==
-X-CSE-MsgGUID: V2bbLWE0SJOa0KY7F9czEQ==
+ 16 May 2025 10:12:20 -0700
+X-CSE-ConnectionGUID: +nR6QWqvQLOBOQScX5epvA==
+X-CSE-MsgGUID: Ufxtb/J1RwGl/mxwaZnNzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="138793458"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="138793466"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by fmviesa007.fm.intel.com with ESMTP; 16 May 2025 10:12:15 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 16 May 2025 10:12:17 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
  Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH i-g-t v7 02/14] lib: Include local igt procps,
- glib and unwind header for Android
-Date: Fri, 16 May 2025 17:11:41 +0000
-Message-ID: <20250516171153.74079-3-jeevaka.badrappan@intel.com>
+Subject: [PATCH i-g-t v7 03/14] tests: Include local igt_glib header for
+ Android
+Date: Fri, 16 May 2025 17:11:42 +0000
+Message-ID: <20250516171153.74079-4-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250516171153.74079-1-jeevaka.badrappan@intel.com>
 References: <20250516171153.74079-1-jeevaka.badrappan@intel.com>
@@ -74,109 +74,93 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/igt_aux.c           | 4 ++++
- lib/igt_chamelium.c     | 4 ++++
- lib/igt_core.c          | 8 ++++++++
- lib/igt_rc.h            | 4 ++++
- lib/intel_batchbuffer.c | 4 ++++
- 5 files changed, 24 insertions(+)
+ tests/intel/api_intel_bb.c | 4 ++++
+ tests/intel/gem_ccs.c      | 4 ++++
+ tests/intel/xe_ccs.c       | 4 ++++
+ tests/intel/xe_intel_bb.c  | 4 ++++
+ tests/testdisplay.h        | 4 ++++
+ 5 files changed, 20 insertions(+)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index f5bf48da6..3eca09cd9 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -53,11 +53,15 @@
- #include <assert.h>
- #include <grp.h>
- 
-+#ifndef ANDROID
- #ifdef HAVE_LIBPROCPS
- #  include <proc/readproc.h>
- #else
- #  include <libproc2/pids.h>
- #endif
-+#else
-+#include "android/procps.h"
-+#endif
- 
- #include <dirent.h>
- #ifdef __linux__
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index a96e36b5b..d19a78ffa 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -33,7 +33,11 @@
- #include <xmlrpc-c/base.h>
- #include <xmlrpc-c/client.h>
- #include <pthread.h>
-+#ifndef ANDROID
- #include <glib.h>
-+#else
+diff --git a/tests/intel/api_intel_bb.c b/tests/intel/api_intel_bb.c
+index 4a1c9be91..a7d257363 100644
+--- a/tests/intel/api_intel_bb.c
++++ b/tests/intel/api_intel_bb.c
+@@ -35,7 +35,11 @@
+ #include <errno.h>
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
++#ifdef ANDROID
 +#include "android/glib.h"
++#else
+ #include <glib.h>
 +#endif
- #include <pixman.h>
+ #include <zlib.h>
+ #include "intel_bufops.h"
+ #include "i915/gem_vm.h"
+diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
+index af1e85f6a..a84a47cc4 100644
+--- a/tests/intel/gem_ccs.c
++++ b/tests/intel/gem_ccs.c
+@@ -4,7 +4,11 @@
+  */
+ 
+ #include <errno.h>
++#ifdef ANDROID
++#include "android/glib.h"
++#else
+ #include <glib.h>
++#endif
+ #include <sys/ioctl.h>
+ #include <sys/time.h>
+ #include <malloc.h>
+diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
+index e154bf4dc..bff5b5772 100644
+--- a/tests/intel/xe_ccs.c
++++ b/tests/intel/xe_ccs.c
+@@ -4,7 +4,11 @@
+  */
+ 
+ #include <errno.h>
++#ifdef ANDROID
++#include "android/glib.h"
++#else
+ #include <glib.h>
++#endif
+ #include <sys/ioctl.h>
+ #include <sys/time.h>
+ #include <malloc.h>
+diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
+index d8bd7b519..25d172301 100644
+--- a/tests/intel/xe_intel_bb.c
++++ b/tests/intel/xe_intel_bb.c
+@@ -6,7 +6,11 @@
  #include <cairo.h>
- 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index e1061a2ed..1d7402cb7 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -55,7 +55,11 @@
- #include <limits.h>
- #include <locale.h>
- #include <uwildmat/uwildmat.h>
-+#ifndef ANDROID
- #include <glib.h>
-+#else
+ #include <errno.h>
+ #include <fcntl.h>
++#ifdef ANDROID
 +#include "android/glib.h"
-+#endif
- 
- #include "drmtest.h"
- #include "i915/gem_create.h"
-@@ -82,7 +86,11 @@
- #include "runnercomms.h"
- 
- #define UNW_LOCAL_ONLY
-+#ifndef ANDROID
- #include <libunwind.h>
 +#else
-+#include "android/unwind.h"
-+#endif
- #include <elfutils/libdwfl.h>
- 
- #ifdef HAVE_LIBGEN_H
-diff --git a/lib/igt_rc.h b/lib/igt_rc.h
-index 53e5ce669..d871b3b26 100644
---- a/lib/igt_rc.h
-+++ b/lib/igt_rc.h
-@@ -25,7 +25,11 @@
- #ifndef IGT_RC_H
- #define IGT_RC_H
- 
-+#ifndef ANDROID
  #include <glib.h>
-+#else
-+#include "android/glib.h"
 +#endif
- 
- extern GKeyFile *igt_key_file;
- 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index f7569e768..caf142949 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -26,7 +26,11 @@
-  **************************************************************************/
- 
- #include <search.h>
-+#ifndef ANDROID
+ #include <inttypes.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+diff --git a/tests/testdisplay.h b/tests/testdisplay.h
+index 27f8209e2..0f606c028 100644
+--- a/tests/testdisplay.h
++++ b/tests/testdisplay.h
+@@ -24,7 +24,11 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
++#ifdef ANDROID
++#include "android/glib.h"
++#else
  #include <glib.h>
-+#else
-+#include "android/glib.h"
 +#endif
  
- #include "gpgpu_fill.h"
- #include "huc_copy.h"
+ extern int drm_fd;
+ 
 -- 
 2.49.0
 
