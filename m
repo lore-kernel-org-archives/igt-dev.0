@@ -4,58 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 362C9C3ABD8
-	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 15:22:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6884FC3ABC9
+	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 15:37:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BFD2610EAFB;
-	Fri, 16 May 2025 15:22:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED07210EAFB;
+	Fri, 16 May 2025 15:37:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SGZh+ZTj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JLUjfs06";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5638210EAFB
- for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 15:22:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ED5210EAFB
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 15:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747408959; x=1778944959;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=M94CqELhiLvd/TShOM41xKvCSBrbWLBZUKLGdmSnnDg=;
- b=SGZh+ZTjJgABG8HAsLZbz6MThdJ1QQaSdGFb18/9n+kU8Xxr6roRLX6T
- 5p11pGCghRURQbNIBsC9X+gIOyaB8DBwDa2KnLgBlIJvG/4fSme0Fp/iL
- ewUzx+7senZ030R7ADTT9PaTDgTakYThczx1FIETobPUW7NFfxsaPMFVZ
- cuEQUEbFB+UTlT+9zphPZKEqB+S9L/9yPWPgd1iETQ+IVGJ9wn2b0gb5Q
- FclECWv8xRMKpeJ6OM1DX4RMN9VqhUCg12Y1VXxSY6lhI2nYOHIXqIQu9
- WL91ZG5Idog/Q9OJi/I+UjG6D9clbK9FXcxHFkq7pcHps4Wo3YLa1lZUH g==;
-X-CSE-ConnectionGUID: GzC14EAtQbGU5wOYoscZgA==
-X-CSE-MsgGUID: 89gk5TbVRmyig8DSArakVg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="66936586"
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="66936586"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2025 08:22:37 -0700
-X-CSE-ConnectionGUID: PmpF5BpVQmCN5X1LkVUJiQ==
-X-CSE-MsgGUID: CUY4mXvDRECoLqm0WzYwEQ==
+ t=1747409864; x=1778945864;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=N8xi3hDJLywUxeFt0vWbm6t5ORQeZgLZ7PH89GrtlYE=;
+ b=JLUjfs06H/ssK9HWtwTYdu0OSN791tyP0iC3d+92VT5gvZANGbJu0hpP
+ OHDWTsbjkVDjjlF7vuiGkzBWYqpD97gagYHTRAiWlFFIGaYIIy5o9QR+r
+ kpMAF4WhpB02q1mhB62PF1F5sZ9aIWvQdIbOP8TMXv5OIk8VYigt8T0bJ
+ iUhmuPqi8rfwIMxxaz4oIGPIcmP/PJ7PMa/8vIKJqwsBTcPMN0CBRcEgC
+ K8fxhMgGX7qVxHBz70a3Q1cxe1FUdCVJQgLYbqz+Fo8aPXHiizjEif7lY
+ CM/N9++BvV7RyAPT6GivX8vtqGLoquXmG/HliNg87sQKs03q14T6c5PJx w==;
+X-CSE-ConnectionGUID: VLGUwYUMTq+c6tdLozQ44Q==
+X-CSE-MsgGUID: 1Ri9Qa82SXiBqa9IYbAWTQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49542224"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="49542224"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 May 2025 08:37:42 -0700
+X-CSE-ConnectionGUID: fkm0GN6TQE6hvSNhHsDu0A==
+X-CSE-MsgGUID: km1OGavWSPebuNAn6tY8Vg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="138763193"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 08:22:36 -0700
-Date: Fri, 16 May 2025 17:22:33 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Kolanupaka Naveena <kolanupaka.naveena@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_mmap: Use appropriate drm APIs
-Message-ID: <20250516152233.h4vkdrotsiphxmsc@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20250516135819.2784676-1-kolanupaka.naveena@intel.com>
- <20250516135819.2784676-3-kolanupaka.naveena@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="142726592"
+Received: from unknown (HELO naveena-Super-Server.iind.intel.com)
+ ([10.190.238.67])
+ by fmviesa003.fm.intel.com with ESMTP; 16 May 2025 08:37:41 -0700
+From: Kolanupaka Naveena <kolanupaka.naveena@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kolanupaka Naveena <kolanupaka.naveena@intel.com>
+Subject: [PATCH i-g-t 0/2] tests/intel/xe_mmap: Acquire rpm ref for all
+ pci-membarrier tests
+Date: Fri, 16 May 2025 21:25:31 +0530
+Message-Id: <20250516155533.2786246-1-kolanupaka.naveena@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250516135819.2784676-3-kolanupaka.naveena@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,58 +66,20 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kolanupaka,
-On 2025-05-16 at 19:28:19 +0530, Kolanupaka Naveena wrote:
+During the test, the device is entering into runtime suspend, which is
+leading the device to d3hot or d3cold mode. Hence the read is giving
+a special value 0xffffffff.
 
-imho subject should rather read about fixing open/close:
+To avoid this issue acquired an rpm ref to keep the device awake
+during the access.
 
-[PATCH i-g-t 2/2] tests/intel/xe_mmap: Fix open/close calls
+Kolanupaka Naveena (2):
+  tests/intel/xe_mmap: Acquire rpm reference for pci-membarrier tests
+  tests/intel/xe_mmap: Fix open/close calls
 
-> Instead of using the standard drm_open and close APIs for driver
-> open and close operations, use the appropriate drm_reopen and
-> drm_close APIs to ensure the driver is opened and closed correctly.
-> 
+ tests/intel/xe_mmap.c | 63 ++++++++++++++++++++++++-------------------
+ 1 file changed, 36 insertions(+), 27 deletions(-)
 
-Also describe srand() removal here, for example:
+-- 
+2.34.1
 
-Also while at this, drop srand() call as this is done by
-igt_core.
-
-With this fixed
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
-> Suggested-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Kolanupaka Naveena <kolanupaka.naveena@intel.com>
-> ---
->  tests/intel/xe_mmap.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-> index 061b3de0a..abd144ac0 100644
-> --- a/tests/intel/xe_mmap.c
-> +++ b/tests/intel/xe_mmap.c
-> @@ -436,8 +436,7 @@ igt_main
->  		uint32_t *ptr;
->  
->  		igt_require(is_pci_membarrier_supported(fd));
-> -		xe = drm_open_driver(DRIVER_XE);
-> -		srand(time(0));
-> +		xe = drm_reopen_driver(fd);
->  		i = rand() % (PAGE_SIZE / sizeof(*ptr));
->  		fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
->  		igt_assert_lte(0, fw_handle);
-> @@ -447,7 +446,7 @@ igt_main
->  		igt_waitchildren();
->  
->  		close(fw_handle);
-> -		close(xe);
-> +		drm_close_driver(xe);
->  	}
->  
->  	igt_subtest("pci-membarrier-bad-pagesize") {
-> -- 
-> 2.34.1
-> 
