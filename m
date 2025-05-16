@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBD4AC3ABD8
-	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 18:27:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64EFFC3ABD8
+	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 18:27:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A57A010EB67;
-	Fri, 16 May 2025 18:27:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 196A310EB6C;
+	Fri, 16 May 2025 18:27:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PvlRwVBX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NikUQHsg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5AD210EB6D
- for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 18:27:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A016F10EB6C
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 18:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747420074; x=1778956074;
+ t=1747420077; x=1778956077;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lCtZvQAv2uMtkjARD2U6nFwLmPac17dYnQZojBjeyQk=;
- b=PvlRwVBXC4pDPlY4yYLQhI8lXK3zuSSCFOVwpVHM75O1U3EyldgNgOAu
- VWP+bjB/L3z/2zs1NLIIiLvsUuQ88lyKW+5BdJVq/vZBklKxl3AVmfnol
- AZjjGv/YfLd4QA3YKk1EGpRU57DDkFQ/1y3cXQpmnJufiobEk7FDfuKfM
- 3NQzzD/RifUO39/DoEMqKwx0WnRJXDVcYJm0iig8s5Qo7pbmpL3sOnMFV
- vHA53dOlaFK0VGlFppk14ej2TlARC/E0hS8q+C/7HRqF1s4j+z9d0rGzL
- 8oddNkkvHJ9C+tTE06iBjXtpQG4WmZiyjZtq+V+Nh+K9hXDHDSiS0/V+e A==;
-X-CSE-ConnectionGUID: yhCOIt7WT/iVRN1cqLaQng==
-X-CSE-MsgGUID: M0WdMp11SS2u4pBg0SqhNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="60059911"
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="60059911"
+ bh=vVzbZB5HRSgLSfNya0xJtsxDJgCGnyqgU8Tg6Tmrn8I=;
+ b=NikUQHsgcPyu1JaztdpL9zz3c7jb6L0yDYrv297smax/jArRWOOpRjnf
+ rQUxw/LhM8vrFd5NLR6AxBQDlMPGdhTsiI4H05pipMAZd1SXFiP3paO+4
+ J5d55QLgU1oRVoxsrVyNQ2OJVV8SGe29JVv6lljCE2KvN4uC5WUtB0ZCD
+ CdyAgMkS2rd2VNP5Mv1I792ZWjRohkT2TJcCK3lILHyH1EvGCqSAn8vHH
+ BHM+suYAQg6ECo4hFKdR8q0ESpqDArnxX9AP89Z/C3Y5jYbR1TtHvfZoG
+ UQBAjKXoBHmCEmXFw8ZSfm7wW2wiGSlq7EYb5Jfdy5TEZnmo9DfAh/QC6 A==;
+X-CSE-ConnectionGUID: ucvJ/mKKSLqKZVXSb1efgw==
+X-CSE-MsgGUID: MRjB3Hd0TLyjkA9zDxQ20Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="60059916"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="60059916"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2025 11:27:54 -0700
-X-CSE-ConnectionGUID: c8dzBNpKSH+GOjX7Ju1dmQ==
-X-CSE-MsgGUID: Q4rX9sNZRKem2kghiOY6Xw==
+ 16 May 2025 11:27:57 -0700
+X-CSE-ConnectionGUID: XxDzagfZQNOEiIU2gk31nQ==
+X-CSE-MsgGUID: c/ibfSidTOufckDgQgC6hA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="143736973"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="143736983"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by orviesa004.jf.intel.com with ESMTP; 16 May 2025 11:27:52 -0700
+ by orviesa004.jf.intel.com with ESMTP; 16 May 2025 11:27:55 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com, adrinael@adrinael.net,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v8 10/14] lib/igt_core: Conditionally define __noreturn
- for non-Android platforms
-Date: Fri, 16 May 2025 18:27:00 +0000
-Message-ID: <20250516182704.97912-11-jeevaka.badrappan@intel.com>
+ Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Subject: [PATCH i-g-t v8 11/14] tools/intel_gpu_top: Replace index with strchr
+Date: Fri, 16 May 2025 18:27:01 +0000
+Message-ID: <20250516182704.97912-12-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250516182704.97912-1-jeevaka.badrappan@intel.com>
 References: <20250516182704.97912-1-jeevaka.badrappan@intel.com>
@@ -72,30 +70,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Ensure __noreturn is defined only if it is not already defined,
-addressing compatibility with Android where __noreturn is predefined.
+As index is deprecated, replace index with strchr.
 
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/igt_core.h | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/intel_gpu_top.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index 45170e215..2db579423 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -86,7 +86,9 @@
- #define igt_assume(e) BUILD_BUG_ON_INVALID(e)
- #endif
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 68d27089b..54e71e559 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -290,7 +290,7 @@ get_pmu_config(int dirfd, const char *name, const char *counter)
+ 	if (ret <= 0)
+ 		return -1;
  
-+#ifndef __noreturn
- #define __noreturn __attribute__((noreturn))
-+#endif
- #define __maybe_unused __attribute__((unused))
+-	p = index(buf, '0');
++	p = strchr(buf, '0');
+ 	if (!p)
+ 		return -1;
  
- extern const char* __igt_test_description __attribute__((weak));
 -- 
 2.49.0
 
