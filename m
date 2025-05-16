@@ -4,154 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF5AFC3ABD8
-	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 10:17:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EF99C3ABC9
+	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 10:27:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 724B910EA33;
-	Fri, 16 May 2025 10:17:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1540910EA3F;
+	Fri, 16 May 2025 10:27:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Av6J4ZKo";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="HtOtHW+f";
 	dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2050.outbound.protection.outlook.com [40.107.223.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E25B10EA33
- for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 10:17:08 +0000 (UTC)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2059.outbound.protection.outlook.com [40.107.93.59])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB20C10EA3F
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 10:27:00 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YS0rKq3CBBc78Ql319pxySdqXim7d4qdMXkOCogjfPyd8fBadiOPx7ncCZtm2IZy+BEjzzBYOSxv/CcGgMEoSvgiUi+YJjDYTMJ319H8mEoB3rj/cRT3VuG48nIrkFn9cF6iWsVd7lW3SQx3/+OUGmeR+UMDmILsIXrZH1yiyyHXUjRcuJOArZWzxm8tCMNhtILJLbl1BpeUwuWGk8iA9hVOflpQNn33vV/rRcrimGqnvlGuvZmX1zFTcAR1hvLLw5+y77gBjcBgMIApxhBdTSJNcp1vJDSQ/M/71uKKoP9BfwZo6liX/2m4xSo/DBswPXvVjqQDhIaBRfpL6z2JDw==
+ b=n+zxfDS1vIMnxsaN0KjjG/1OiaixkCoKp0ylLsfXnUYG/kLnA/efeig0ECXt/M1pNNnKcXFCWf5jyvHDONbiWKTH8A8FExXUSWKfSBWCHvSkR1mCNK5xit74BfYhbDJxyrVomZDl/rRJNZiUeJOkj2fngqcRzhnun/r8L7wuZ9pfPQLKu985Lv+nL7kcUHYEFKe3/kAhGUuHKzC0e6fYOSorKCCmRXlham7aBPzkFi7FBfoew4abdopOoZpULkV54DFzEOnHfao2IRcdi6wGZtCTHAt403M58z00MR/F6jgJqX6IyLybkmqzuQvJOxXGUXYnFPJTtjWDUNWvHX2HAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F40s5m9IhgMQrFpi/QucQRW8HQR30AC20CiOPbVtYSE=;
- b=OnuP85+nKLWwcvr92NzJfibD0Eq0+mCCAdVNhtyMzyBuTOa79a4eeX7J2/ILjUrRf24lJ4qjI80YWmau8zJBR7WqyKQHYbVRtVad7mC6tk2KW2qeEXjUUN3A5pa9oSQPEMn27Uxm4bYQm4f/ABvRF/eMagtgmUZDMc//z7Y72TjFyGp8HrVkWytj38Kch4d8ncOt/Aww3988K085rEr1eqP3FFo+KkM+2qNe5El2K+WuLfi4k+KP/E6GIW9kXOsvacOzlA6fOtnaatxhulaTNqV/99WNMiB8Gll59bZ4ILb3cRxlHnUz3nGvNraGL8nw7NZ8YJ1OJJ3noWJW/hsXyQ==
+ bh=UfRjZntbMv3ieKdThJjqapy/mflep4nIWUQoUN+c65I=;
+ b=Ob2M68adQ9peYtEtSVlz10a9b8UczMXilRyPDKsGRknWeampPMFjn3yDKYbdzU8gAfItEstGej7sQmPpbEAgxXy3j+xzCOT8+wBkwh2Ca11jph8mqbwZIf3zAibWPwnHPYIBjaSFqBzb2QV9wLYYC8t+iCBCM1+fuTDVSe/IPyT5m7+RYetyWNeCfOAMpBkpCCBBppXcTkVTNKG2XRiErzyaJELMvFPmZfltD35l8la9blk7ti0DbprvP7jyxxN3GSBuaM1ibJb7rFi4Z7X6hWh7Lu9zOGvXLeS4uJi7Nbr/wnpCShO7YNGwjN+WClGeVOUD85AodvTglFkJN7emrw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F40s5m9IhgMQrFpi/QucQRW8HQR30AC20CiOPbVtYSE=;
- b=Av6J4ZKovASk5ekRlsOOPTZxmzVOPfR7WqJh/PdYNloKWOReJpuZ7bgu3OizeDRGEX5eHCYSmmX1Y+ydWCSFX2MBti/3ow9d93S+h2rQJ4ou7QzZ7T9C7lMp40GqoVn3nUQqla4PotbcyzpgPXzN3vq/rdm97bKoKbrgP3erjUQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5753.namprd12.prod.outlook.com (2603:10b6:208:390::15)
- by SJ0PR12MB8092.namprd12.prod.outlook.com (2603:10b6:a03:4ee::12)
+ bh=UfRjZntbMv3ieKdThJjqapy/mflep4nIWUQoUN+c65I=;
+ b=HtOtHW+fbTngSRSSPTgTMsEtfFh08sY8U1Dren0zJDEjnHdZkbK3y354kYn+v/j/D9f8Kd4euuGwvf447ZgoCBC612l8kwy6ZDyKH80X2YJ2O2HL+pIYmvin1LiDYpU/tRA7nIx2gUtMF2XPK6iiTSlZFT8zqyCurvcJFZ1+X7w=
+Received: from PH7PR12MB6633.namprd12.prod.outlook.com (2603:10b6:510:1ff::20)
+ by IA1PR12MB6627.namprd12.prod.outlook.com (2603:10b6:208:3a1::21)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.32; Fri, 16 May
- 2025 10:17:06 +0000
-Received: from BL1PR12MB5753.namprd12.prod.outlook.com
- ([fe80::2b0e:7fc3:1d21:5d2e]) by BL1PR12MB5753.namprd12.prod.outlook.com
- ([fe80::2b0e:7fc3:1d21:5d2e%3]) with mapi id 15.20.8722.027; Fri, 16 May 2025
- 10:17:05 +0000
-Content-Type: multipart/alternative;
- boundary="------------7Wk8LYMs724EqPfPsEYUUuht"
-Message-ID: <3fe3dd07-7946-4c9c-88ce-bd6b30c4f452@amd.com>
-Date: Fri, 16 May 2025 15:47:01 +0530
-User-Agent: Mozilla Thunderbird
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Fri, 16 May
+ 2025 10:26:57 +0000
+Received: from PH7PR12MB6633.namprd12.prod.outlook.com
+ ([fe80::cf8b:bdd3:d791:fccc]) by PH7PR12MB6633.namprd12.prod.outlook.com
+ ([fe80::cf8b:bdd3:d791:fccc%7]) with mapi id 15.20.8722.027; Fri, 16 May 2025
+ 10:26:57 +0000
+From: "Mohan Marimuthu, Yogesh" <Yogesh.Mohanmarimuthu@amd.com>
+To: "Khatri, Sunil" <Sunil.Khatri@amd.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
 Subject: Re: [PATCH i-g-t 1/2] tests/amdgpu: userq skip waiting for signal
  fence
-To: "Mohan Marimuthu, Yogesh" <Yogesh.Mohanmarimuthu@amd.com>,
- "Khatri, Sunil" <Sunil.Khatri@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Thread-Topic: [PATCH i-g-t 1/2] tests/amdgpu: userq skip waiting for signal
+ fence
+Thread-Index: AQHbxWQ2rfmIWc832E63FqKXrWlrirPUv/iAgABHfKqAAAUXgIAAAiRZ
+Date: Fri, 16 May 2025 10:26:57 +0000
+Message-ID: <PH7PR12MB6633068DCE50EC3252186CCFFF93A@PH7PR12MB6633.namprd12.prod.outlook.com>
 References: <PH7PR12MB663304D0B79D9251B8660EA0FF90A@PH7PR12MB6633.namprd12.prod.outlook.com>
  <4628ecc6-9303-4c8a-9e30-0f504307ebfa@amd.com>
  <PH7PR12MB6633234BEAD5CA70DA8E35DEFF93A@PH7PR12MB6633.namprd12.prod.outlook.com>
+ <3fe3dd07-7946-4c9c-88ce-bd6b30c4f452@amd.com>
+In-Reply-To: <3fe3dd07-7946-4c9c-88ce-bd6b30c4f452@amd.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: "Khatri, Sunil" <sukhatri@amd.com>
-In-Reply-To: <PH7PR12MB6633234BEAD5CA70DA8E35DEFF93A@PH7PR12MB6633.namprd12.prod.outlook.com>
-X-ClientProxiedBy: PN3PR01CA0002.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:95::22) To BL1PR12MB5753.namprd12.prod.outlook.com
- (2603:10b6:208:390::15)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=True;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2025-05-16T10:26:57.246Z;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
+ Internal Distribution
+ Only; MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=0;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Method=Standard; 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR12MB6633:EE_|IA1PR12MB6627:EE_
+x-ms-office365-filtering-correlation-id: 3d5ca895-5812-48cb-3d97-08dd94642fd1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|376014|1800799024|7053199007|8096899003|38070700018; 
+x-microsoft-antispam-message-info: =?utf-8?B?WTNINUViay8rM1IvS0ZJdXpGcFByMHh3bzhYcHFkaXdEVU9ucTBDTnZ3cmh2?=
+ =?utf-8?B?U1BHbXFuQmNlejc4cEkzeXFCd2ZoaTFnVXpjSE04M1ZrTDdMRHNWR25ubXd0?=
+ =?utf-8?B?QTdlRVNqbWxQanVIdmVKVGZ6Zzc1d3NpVklQMUlnWnpBVTYwRFRPbVB1aFhN?=
+ =?utf-8?B?SUpVeFM1L2RNeVEyM0hIa1FBQ2VZRTdhUEUwSjNXMGhiV0EwdGRLSVJPNlRM?=
+ =?utf-8?B?WTl3THdHYy9Cakxhd21aWVNJU2gxQ1BQVmNDUWVPTElJd3dPcGpWSmh1dGVM?=
+ =?utf-8?B?S2liRU9MTzMyTHZuVFJONHg4MGlWc0NiZlBuMmVkYTlGelVEUzF1bjlISFl3?=
+ =?utf-8?B?Y3RsSHBLUmUyYjlCL3BGenVzUTVpV1RvOUxSNnBhcHZEY2VSRnJ0TCtoS0wv?=
+ =?utf-8?B?dXJ2NE9LV1NvSTRBOHNKUHdSbSsxTGRQTTRodXlFSmpkZjRxYlN1NFUvMTRt?=
+ =?utf-8?B?N0pjcGdKUExJRkhWenBTSnlCZmhEcERkRS9BamYyd2RUVjJma3U2ZW5qUC9u?=
+ =?utf-8?B?OEErK0JGWGErb0gwaGxuTGZwNS9SZkxaTENPMk5nNnJDY1BtSnpIM01zemJT?=
+ =?utf-8?B?RjdjcGVhdlFPaFo3VTJmTnlHaU0ra2NRTFV5Y085K215a1hqQTgwWUdIQm5W?=
+ =?utf-8?B?MGtWd1BkWDhZamJxVzhOYU5aYkVXUTNFc2JXeWo4NzhQWmJEcnYvTkt3S3lj?=
+ =?utf-8?B?bzZGekgyTzRpUWdROGNSVmVPT3NocHpCZHlUQW5lSXE4bnpKRjg5UkRiMktw?=
+ =?utf-8?B?UHVyZmorWjlwNDNhaDdyNG5pdU5DV1l5YVdyaCt4MnpWL054TVZpdVdlMm5O?=
+ =?utf-8?B?c1R4d3pOSkZQWUdOc2c5U25NY3dhRVI2YlVMd1cyYytEZnlvVHlvOGwxaFhN?=
+ =?utf-8?B?VmQ2NnlCNUNCUzRubVNERkUxelRHMjNMc2FPWi9mUkwxNHdFNHExa2RwR1Qz?=
+ =?utf-8?B?M2dNTkREOVlXV25rL0MvNGtLaktncnJmMFZBZVF5cDJOdTdVWmJVc2JYUXMv?=
+ =?utf-8?B?RStCQ1RoSUNVckZPWUdBakErRUdFRGtwSTFJcGVSR3FGQzBBWS9weXRjTVhZ?=
+ =?utf-8?B?bUR1SHc4Y2RJNGV5SjhvRS90bjdPVzVxcU9JVmM0dXV3V3ArN0hxT3lYek1q?=
+ =?utf-8?B?L0FsWFFJenlVR0NpWTZ0QkN3cUJuaVl6eWZ5RGhUeFVBRytQVGwrdjc3bmFJ?=
+ =?utf-8?B?WmJPRFk1aG05cGN3eUJpNGsxZGVSV0hUWjY5eXdlc1ZYVGVlT052d0JpQ0c3?=
+ =?utf-8?B?TW1adTFHbitaK29wN0JwdUtaZ2xaaHVOVHlKbWxBOStqTkR5Mi9NYkNVYVQ0?=
+ =?utf-8?B?TEgrSkZ5UWp4MVluWEFMR3dpVmwrV0Q2NSsrcThWK1VBVkcwOE9BRzQxWGpF?=
+ =?utf-8?B?QkhlUW1XNVluU05ITzFrWFFOdCt6djVBeHlnbjNmU2liVFRGYnY3Z05SVWR4?=
+ =?utf-8?B?S0paV2hOYWYrL3N6UjdoQllxRDlERXN5Z1NvR0xyMjJKaUFibS8vNXZXMnMv?=
+ =?utf-8?B?NFR1d0FhWFZtVlJiY1dFN0FVZjVhL0ZCL2RtNmFwdklUaHNRK2xSd2x6bnhM?=
+ =?utf-8?B?cFg1QnlZaEd4WS9yeVhqTVkvRFVlU01hcWVBd3lRMk96V09ONHV2cjh5OUU3?=
+ =?utf-8?B?b3h6Y0lzcW9XZmsxakt4QUJnaml0Z3VrTXNwQTVwZzd6Vmh3dXI3NzVHalJD?=
+ =?utf-8?B?QTBXRGhTNW44MWR5Tk1Hd3E5WFdaY1A3T3Zseks2eG54Q01CejU3VnoxNGVM?=
+ =?utf-8?B?RXJ6eURsckhvK0Nodi95VWwrRkFRdTF4Wk5CVEc2bGtuNEppa1N6S3VTajBJ?=
+ =?utf-8?B?MnlNanBVVVUyVXdaWDV2K3lzZ1RiZ3o1R2FWYTNYakd5VWZWb3p0MnhaN2Vy?=
+ =?utf-8?B?OEg3MDExODN4NEYxWGU3eUJwOXV2ZEZoUlJSTzZWMlpJb0NFVnNFQjVyS0hK?=
+ =?utf-8?B?c3BKZG5WbHF6R1pFaU5YTXRyWHBiTUxNNnpSVEtha0pad29EOExxK0lTREFw?=
+ =?utf-8?Q?BXEP2gS1lit+Kflp5PU1ifr9IPZVEY=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB6633.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(7053199007)(8096899003)(38070700018);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dlBJUHo1blZkR0UrSGhlbkN3U2RXdTVUT3lDMXpGaFJ3VHcyZzBZRy82THUw?=
+ =?utf-8?B?d3lLUGMxOEE0MEhmK3RCZyszd0JUcVBLWGhzM25yNG5aamp5b0p4VmozNlJB?=
+ =?utf-8?B?eTFxSDJYNlRUVXphWm54YmlGeFJFTDdBL0o1d2REQ0ZpWTBEWFViZGVFMkxu?=
+ =?utf-8?B?N2JsbmN5K2FDdVdJY3hBL0syV1YxMnRXY0FRRXVSR0xhRnY1cDYybFgyMGp2?=
+ =?utf-8?B?dXZJOHFyd1FvbEhMOFRWSEJkV3daQzZHTWRFYjVGRWxOWGhMUXVUaUVRbTdn?=
+ =?utf-8?B?d0FvOW8xSWQ4ZGlaOFN3ZlhuaWNMcFo2YkF0VDBuSXVGOG5Bd0RaQnBjc1BC?=
+ =?utf-8?B?RHd2cURqY1F0YTA0K1B3QUQ1UjZQa25JNUVuK2pDb2R2NHlXTERmc3grcjFh?=
+ =?utf-8?B?aUpyVjdtdmpWZlh2U3NQZlVjaWlqVlNZTXdZSjhHZ0ZYQUJFUkE3RFhOekdt?=
+ =?utf-8?B?eUJVMFkxSy94d3hpeDMzVzhDSFVrRFp0STk5d1FsQm1iQlZCTi81bE9FRkdH?=
+ =?utf-8?B?N3hqOFlQQ2lKekRIdjRJa0p6RG9wREVQLzdCVzdtaHJHUkVDaXIyRzNnMXB3?=
+ =?utf-8?B?L3RpdVF0ZGRKWHRnNDdFcXVKSThFRTlGTEhVa2ZrVHM5alk3MTFQMGVpNDU3?=
+ =?utf-8?B?d2RVdEdFWlBsRFVtbUFNbVNMOG1xSlhVbDVjbXE2SnFRaElncmp0TWtZYVRY?=
+ =?utf-8?B?ckRpNjhpcWNxNWdheWRHNmxqd1BaUkVMTkoySEJLZkwyckU5U0YzdFZSbVc3?=
+ =?utf-8?B?eStMNnpiQ2Z2cHZOR3M0WEZRanA0eGppMStTWVVaR2hEaE1aSTh3TXdTWlZO?=
+ =?utf-8?B?QmgwM2p1aitPWHgzTnF2VEdFUkpqMStaTUZOcUFrako3anZLUVBURXJ5YUtt?=
+ =?utf-8?B?MlJYSDluVFp4bXM2Rk1seWhCNnZJdUgvRDEwaXIvRmY3aW1vMUdqN0VkSktN?=
+ =?utf-8?B?VEJ1bGlmTWRoTDVjQW9QclcvR1pXa1dQeHVIWlEvSzIvNmNZZXVQVXpHSy9I?=
+ =?utf-8?B?c3p0cDBvWUt3d3pTc25zM09yOFVncTVVdkFWeWpvOVc1WkdyNjAzZmFSeFQ2?=
+ =?utf-8?B?ZisySjY1cGV3UnFLMDNic3orOUpzNUNuQm8wSHpDd1ZFWHRKSU5na3JFbDky?=
+ =?utf-8?B?VUczRHlpWkZDRnFrVGFqWFkwT0VremdSdVFyQmY5aVRGUXlZb3VQaldrN3oz?=
+ =?utf-8?B?azM0MTY4Vml4U0V3b1I5QzFDTUcwMURwRlZDZmNBcFpkSTVyNDdVenRBTW1q?=
+ =?utf-8?B?dHFWL2NueHIvU1Fhb0FPd1Z2NjFXZ0J0QXFTbEhyZUYyT29Ibkh3ZzRuSGpq?=
+ =?utf-8?B?eW51RHZhWWpnb0tuT25YQ0FLeWtiZzJuYmU0aHI2WW5vbDJsNDhCaHVOaU8w?=
+ =?utf-8?B?eTF1dGNVdzdTUTFiOU8zQm5RaHB4QmhYTldmUE1sRVcxUnl1WnpCUERSUGhx?=
+ =?utf-8?B?dnRESWJacUVTUmtlb0hnRFVCaUZoUERsamgzRFQraU9yTFZVdFlwVnVVbWYw?=
+ =?utf-8?B?Vm9naGI1a3hqYzV4N0I2cGZLMHN1d3RNRkJENGNIQ3BCd1VpeGRSUFgveVVQ?=
+ =?utf-8?B?eWozSkM3R2lrMlJYR2JvSk9Sa1hrYWE3eWIyWmhITkpoei8yRzlrMEd1VlJt?=
+ =?utf-8?B?TWc2OWlwN3dsbGVUR3VRL3ZHSkJQNmluVzRZbHlFallKUTFKeXJlc3g0dHR1?=
+ =?utf-8?B?TXhqVHhZVlZLaHpMWXVZNjAyNklUNTNjbWtKMGxBbTdFbFVWbkE4cEcwNXRr?=
+ =?utf-8?B?N01FRWIrTGN4OWV4VTNURXhZK3pCVVZuOG8rVXpMRnNnL3g2Q2wzeVQyb3h3?=
+ =?utf-8?B?cnhLNzROTUhndTZSWnpzRnRvR3d4N2RZN3JHNWNLRERSWHhxOUVxajN6RENR?=
+ =?utf-8?B?VkpGeE5MQ0ZhaUJNUUZGVnhpdVdUbDB1U0hRM2VGbzhudSs1Qk1NSktJVDlr?=
+ =?utf-8?B?Nk84UTNKdTJEcEFQZlB1SWl5R2EyTmp0ZENKVlc0NlNRTTJOTTZhbCt2b0dE?=
+ =?utf-8?B?bTJycUlVZVJWRmsrcnUwVkFVS3E3RlZjdTVwbU9kMEsxRlVwd1hxV3BITXM5?=
+ =?utf-8?B?R0JZOVNoWDJxVVVqTnNTdFNoa3ZNSmNpRTNEa3V6T1Vrckt5SnRkYTdmMTdL?=
+ =?utf-8?Q?XoDQ=3D?=
+Content-Type: multipart/alternative;
+ boundary="_000_PH7PR12MB6633068DCE50EC3252186CCFFF93APH7PR12MB6633namp_"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5753:EE_|SJ0PR12MB8092:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce05eada-4b8e-4981-65ed-08dd9462cecb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|8096899003|7053199007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?anZNUDVHdldqZWpmeTA5YTYvVkc4NTRaZGNaaEZ4Q0wwblh6dlErbGFOWlRk?=
- =?utf-8?B?dUVvVkd6V0szTGYxMG1vMGZZOHpqUVk5U3Mvano1bmtZUkYrSzNaS0U1VWJx?=
- =?utf-8?B?SWtMSnp6dkNKMFp3cm1zSjlONG9iL25sN2NNODBMc1VhVnVvdE0vb1l3a3Iy?=
- =?utf-8?B?elZKZ0xsZk1GQ2VCeFhSV20xUHdKY1VaSVJ4TWQ5bmJOQkphMWtHNWpGREh4?=
- =?utf-8?B?UEQ2cE5PYnY0RWkyeWU1N2tvRVVuZFVjSU1DVms4bGNCQnFocUFleTl6WW1J?=
- =?utf-8?B?Rjl0UXdTQ1lOTlZiWG9qQ2hjdzZySC9vWk1QSnN0c1Rjb2w3bHNERHNMdDU2?=
- =?utf-8?B?aGdTRXphaGtwVExHeitXMXdyWCtCeWdaclcxT3dwNGlhWHdHUnlvbm5OMmhj?=
- =?utf-8?B?TUxtckRkNUZnaXJqZ0xrZzgzRWlFMmdzOE9tTmhNdk9sUGk2dGltRCtVL0tU?=
- =?utf-8?B?THc3WnEyTVgyU2c3WHhhbzFrd0t5Wk4wV1ZNTEpIVmsrdWdpVGNudEFyeDl2?=
- =?utf-8?B?dkFvYXhGV2FQUHR5US9RWTZFcDIxT0I1RTI3aThBM1ZMdjlPb3pIN0xBL0Ux?=
- =?utf-8?B?MzloYjdJVmlLM2Z1WllkZmloMWJpejRwWXpENFFaM0JRdjlKQmNiaDNmWjdH?=
- =?utf-8?B?ckFWNjFveGh4djhMWFJ3V2xIZHVWbU9seFFHUkhWcmxETzJNVXk5V2RnUEZE?=
- =?utf-8?B?a01oUkhqbUN6YVJ1aGlNeHNpa3NMZ25PMEF5aFdiZlcxVUh5K0lNazA3L090?=
- =?utf-8?B?TDc2UXRrNHhyMVpIblMya215dFZIbzNoL0U1UGVCeENqbU84dkVZSkRQRWpZ?=
- =?utf-8?B?QTFrVXBRMFZrSXdkRG9OSHpXVW91cjM0emlScHlQNUF2cm1TM01wb1NqenFX?=
- =?utf-8?B?SmlGZU5iZXFJcmxoRytJTGFiRGJsQzR2MU50OEJQMXEyK0dsUzNmOWFTY0Vy?=
- =?utf-8?B?M0Z5R2hZakV5bkhJZFJxRDA5ZVhLY1ZOQmtqdDFYblpiQ1VmeTdSb2pkS0FW?=
- =?utf-8?B?Q0VLTmRUTHNTNnBkN0ZkTDlvSjFGUjBWRzB5YXJJcG5FY1ZzejNYQkZ0N1pX?=
- =?utf-8?B?azdHZDMrUXlwMDgwTjlZTWUwczBsY2prK2FROXEyaEt6RjZtYVNJSWJJZXY3?=
- =?utf-8?B?MTJLZ3ZKc2NqOGduU25oSnFMVDJabE1DTm1CMXgvZGtOQjQ1aU5xSjJnZG96?=
- =?utf-8?B?MTQ4cjNFRXNQQ3RkTlVzNUQ3ZEdlK3ZJajk4QlM0VnVBbnlrWHZ2Ui9JOGxT?=
- =?utf-8?B?RHBUZHZheUVIUEFoQXIrSHpOZEFCb0hYOE1uaGRFTVpLYmgraHRlYzB2YWVi?=
- =?utf-8?B?VEFzZ1JnRk5vNFBUNFM5UGk5VENJdmtCQXlnMTBBKzhJRVV2dE0zQ2tHUFYv?=
- =?utf-8?B?Wjl5Q0hxSU9kdUlNaFdLZWxRQ0w5VnE2dVlpM2IvTlFmMkRrL2xHTDFsSTUx?=
- =?utf-8?B?MWI5WWZnSFNKR3U2SU9lZVdZRERFUEZadVcrVFpYTTlqeDZkanRDSzNEMER2?=
- =?utf-8?B?eEo4YnY1UEV2VnY5WXB5K2hPcjJaQ0U4MWtrT05MM1hYdG9RT1lnam1PcHFP?=
- =?utf-8?B?aVRqWWIyaFhNTERMb1o0V0QrZzR6b1lHTGtYNkh3WkhKK3IwOXNXdHVHcTNU?=
- =?utf-8?B?YUZDSWxHYTdObTZ6dm9FZlFyTi9mL1QzS0JCeTgyWDZ4Z003WjFIVjJaNUpJ?=
- =?utf-8?B?U2FObzhPUVNmSUgreFFGVkpZT0NoOVBzZ2I1UkN6aGh2WXVxRnovQUJIWlc1?=
- =?utf-8?B?aTdnUm4zdWs5R29FUmVYRlZUQk55eERCVGNvQzVRcVNpcC80VDhlU0ZzR2tw?=
- =?utf-8?B?WlN4ZnIrVkpvQlRBRytwaHBIRFNLdm9Oc3hHcGZkbkNLNHl2R3J6cy83NXVy?=
- =?utf-8?B?S1NsVlVtQnl1YzlkS0N4Qk5EZU9nWFRDMHRIOWpBS3YyN21Nd25NQ1hQcjh1?=
- =?utf-8?Q?EAppJ6zQahQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR12MB5753.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(8096899003)(7053199007); DIR:OUT;
- SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?V1FPS0htU2tYQ3ZvWnh4VlFPTE1JNmNpY3RzSnBzOGIyU2ZWL2RNTVZqcWdo?=
- =?utf-8?B?Si9hdEVZY0IvVS9KV3BhWHJXVXZoUkZDQit2RzQ2R1ZDSTdzYTNQMDNJazcz?=
- =?utf-8?B?ampNYkxpamtqdVExMGFSang5djBjS2k0M1paSDdFTnhvOHZPQUVPSVhUWjdS?=
- =?utf-8?B?QnJFL0R0cU0vOWI3bnJMckdlQlVXYVRqVXpkMVBKQnp6QmN5U2gxYUtjbW50?=
- =?utf-8?B?NldnNmJ4QkZ0bHhidnp3TS84emNyYXBXWEhiM0J2NHBhTUFkMFVDRi9OZXcy?=
- =?utf-8?B?Qk1ib1dXQkxpckZVL2Qwd1hKeHVERmtxWDlrdHRhZkVhSU5QYk93Q1hYdFFa?=
- =?utf-8?B?WUM1WWhsaytmZi9SWTJzMFloR1ZqT3Rqbk5OdUNtUk95ZkFRbFJjdlE5RE5M?=
- =?utf-8?B?emtXTjNpbzV3VkRqcWxMbXQxZmxNUlRlaWVmQWNPYkphUEtSN0s4Q3REMmI3?=
- =?utf-8?B?T0ptNW9iT0FrMVd1TkJiVEcwZnAvUUVBaC9NdVZxRTF2dGhFQTlwbkhCV3pi?=
- =?utf-8?B?a2tmeDcrN1k3SWpBcEs0cGUzdHd3bkM4RjhJRTRYT2xzbWZaOXliQ3M1eUly?=
- =?utf-8?B?STVUTmFHbUVDZFdqNWlwdFB3NjA3MVNTZmU5S0J0MUFiZUdEZHVWdGNmb29L?=
- =?utf-8?B?eTYvbUNQMnJ2WjJyM0JwNk9mRUkwQ3ZtamJmbXNnTjhoVVIvODA4akFlZnc4?=
- =?utf-8?B?ajArcUFqTGo2Mlk5Y3hLNE83czJVOFR2Tis2ZTJhNUl1ZTJiYUhaY1paajl5?=
- =?utf-8?B?YklXYldoOEJ1aHZScUtsTE9Tc3pFOEk5NHJ0REc1MWtyZVhWVmwxZ0I4Szlu?=
- =?utf-8?B?d3U2ZXU1U1pKUjB4aC90d3Jyclk0Q2hNTFVyMnN5eU5uYmYzSklZMHcvUmVJ?=
- =?utf-8?B?MmxXOHlIVjEyUDFVSGFRMTdwWVBYbFJLTHVLWVNCUTNpRVZIcXcxaHZxa2g1?=
- =?utf-8?B?RS8zcE11TGwyNUc4ZFJYajBOaExoR1pLd2RkSW0ySmYyWkRjd2hya0FZeUFr?=
- =?utf-8?B?Tkp3NkpZcmpBc1hZVDZUQUpYTlpsSTBHdDRuajdvVTZZYzNXTUVDS2lIWlht?=
- =?utf-8?B?WnljdzRyY2YwS2UzWDA0b1JDNlBqN0cxUkhTTmViOUtYR3p2Y2N3b3NVbFYx?=
- =?utf-8?B?ZExPYjMzRmMrdXN0RFhxYXZEZXlEcU9VYmZRb21GeDR6Sktvd3hZU0lQdmVH?=
- =?utf-8?B?c0FDM3RtK2FwY3FzdXNORXkxT3MrcWM3dEtYcGJRUHVBQzNLNHpTSEhhTXpH?=
- =?utf-8?B?NXVZS1VFeVJEdE5ZWkYvUWxReTRIUXFSSTJianVuM0NoNE41S1RJR3ZBQjEx?=
- =?utf-8?B?SjJSa3dVZy9HT0ZVUmtvUnI2VCtsV1hibStVU2tMM2pYaStiUG81TVdxbHho?=
- =?utf-8?B?TE1UT3paMmc3bWl3eVFBcnVnd09HSnNSZEVhMFNoWkRpMTBtRFdaRHZ5enZv?=
- =?utf-8?B?cFFmUUVOUHZJdU0wYm1RenN3OFBsY29DaFc1NUVxazdTL3JjVGtrekVpZnNs?=
- =?utf-8?B?a0NGdlRoSGhuSFRmUFd2UmlTMkJ1T09LUHIzdlI2NEdISG11YnpSdUJ5NTk4?=
- =?utf-8?B?Q1dqWUFLNy9NK1hWbFFkVDRjeVFiZXFFTGI4Z3A3bEQxNnNKekFwUWZjRzZI?=
- =?utf-8?B?eC9hQkdDVHZjWXRtSFI0a2NvTkgyYU5ENU5ZeUNBc21rRWRVUFdxbmMxdW9U?=
- =?utf-8?B?UVM1R2JwVjVUOTl4UWlLRWZ5T1Vnemt6MjZxQzF1MDB5UGt3dTROWmtJd002?=
- =?utf-8?B?UWVRZmtCMlJtc01ZTng4dlVQWUhaQjhrZ1duN0pCRy8rWDlKT0NNZmhmYThP?=
- =?utf-8?B?dnBoN01ScUk2VVl2eUhrQUVvRGttV2ZtTWNwV3JOdmlpYUNHWFdtY2JDeDE3?=
- =?utf-8?B?R2c5WmlCQitTOENreUs5QUl0VGUwZXJNaENJTUxqV2xFa1NERjY0M2pRcW1Y?=
- =?utf-8?B?UGVDNmdCNWdyV2lyeTVVb1NsTmJHZ250OU5jUDlNbkp0akMyZDJhV3RGNEhy?=
- =?utf-8?B?Um13UGpLeFZWWXArQTNkaUxwK0xCY0hpSlNnd3JVSkRyV08zTUY1d0w1dWJQ?=
- =?utf-8?B?SzdhK25MMHpMRk5SUTV4TU5UNGVZTWZyaUxVK2phNE5uTmhhejlwV2ZmdW9C?=
- =?utf-8?Q?31hXEn0i1VkGA7L5OFCh7zZxL?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce05eada-4b8e-4981-65ed-08dd9462cecb
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5753.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 10:17:05.7672 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cddgXsPtmwUvcNaLBDhDBb+atof9LQdLroCOLIxwf9+apQULphWpVlH1Db3nVNTyd+cB4g1npsnWQ/ECYSRtCQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8092
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6633.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d5ca895-5812-48cb-3d97-08dd94642fd1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 May 2025 10:26:57.5810 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XBcMb+mo5sGM/dKFUJp4BRhIxnD5LgnIOYXjoEMcCSWgA0k2SmQ2RlT0JtumVvFAdnqIrVklbUXo3l3KpVN5kA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6627
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -167,763 +177,913 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------7Wk8LYMs724EqPfPsEYUUuht
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+--_000_PH7PR12MB6633068DCE50EC3252186CCFFF93APH7PR12MB6633namp_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
+W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEFNRCBJbnRlcm5hbCBEaXN0cmlidXRpb24gT25seV0N
+Cg0KSGkgU3VuaWwsDQoNCkkgaGF2ZSBhZGRlZCBpZ3RfYXNzZXJ0X2VxIGluIHRoZSB0ZXN0IGNh
+c2UuIElmIGFueSBhc3NlcnQgZmFpbHMgdGhlbiB0aGUgdGVzdCBpcyBhIGZhaWx1cmUuDQoNClRo
+YW5rIHlvdSwNCllvZ2VzaA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCkZyb206
+IEtoYXRyaSwgU3VuaWwgPFN1bmlsLktoYXRyaUBhbWQuY29tPg0KU2VudDogRnJpZGF5LCBNYXkg
+MTYsIDIwMjUgMzo0NyBQTQ0KVG86IE1vaGFuIE1hcmltdXRodSwgWW9nZXNoIDxZb2dlc2guTW9o
+YW5tYXJpbXV0aHVAYW1kLmNvbT47IEtoYXRyaSwgU3VuaWwgPFN1bmlsLktoYXRyaUBhbWQuY29t
+PjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcgPGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnPg0KU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdCAxLzJdIHRlc3RzL2FtZGdwdTogdXNl
+cnEgc2tpcCB3YWl0aW5nIGZvciBzaWduYWwgZmVuY2UNCg0KDQoNCk9uIDUvMTYvMjAyNSAzOjMz
+IFBNLCBNb2hhbiBNYXJpbXV0aHUsIFlvZ2VzaCB3cm90ZToNCg0KW0FNRCBPZmZpY2lhbCBVc2Ug
+T25seSAtIEFNRCBJbnRlcm5hbCBEaXN0cmlidXRpb24gT25seV0NCg0KSGkgU3VuaWwsDQoNCkkg
+ZGlkIG5vdCB0ZXN0IHdpdGggdHJ1ZSBhcyBsb2dpY2FsbHkgdGhlIGNvZGUgZmxvdyBkb2VzIG5v
+dCBjaGFuZ2UgaWYgc2tpcF9zaWduYWwgaXMgdHJ1ZS4NClRoZSBpbmRlbnRhdGlvbiBpcyBvZmYg
+YmVjYXVzZSBvZiB0aGUgZWRpdG9yIEkgaGFkIHVzZWQuIEkgd2lsbCBmaXggaW4gdGhlIG5leHQg
+cGF0Y2ggdXBkYXRlLg0KDQpJZiB5b3UgYXJlIHBsYW5uaW5nIHRvIHVzZSB0aGlzIGluIGEgbmV3
+IHRlc3QgY2FzZSB0aGVuIHdlIHNob3VsZCBoYW5kbGUvZGVjbGFyZSB0aGUgdGVzdCBhcyBzdWNj
+ZXNzIG9uIGZhaWx1cmUgYXMgdGhpcyBpcyBhIG5lZ2F0aXZlIHRlc3QgY2FzZS4gU28gdGhpcyBu
+ZWVkcyB0byBiZSBoYW5kbGVkIHdoaWxlIHdyaXRpbmcgYSBuZXcgdGVzdCBjYXNlLg0KDQoNClJl
+Z2FyZHMNClN1bmlsIEtoYXRyaQ0KDQpUaGFuayB5b3UsDQpZb2dlc2gNCg0KX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18NCkZyb206IEtoYXRyaSwgU3VuaWwgPFN1bmlsLktoYXRyaUBh
+bWQuY29tPjxtYWlsdG86U3VuaWwuS2hhdHJpQGFtZC5jb20+DQpTZW50OiBGcmlkYXksIE1heSAx
+NiwgMjAyNSAxMToxMiBBTQ0KVG86IE1vaGFuIE1hcmltdXRodSwgWW9nZXNoIDxZb2dlc2guTW9o
+YW5tYXJpbXV0aHVAYW1kLmNvbT48bWFpbHRvOllvZ2VzaC5Nb2hhbm1hcmltdXRodUBhbWQuY29t
+PjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc8bWFpbHRvOmlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnPiA8aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc+PG1haWx0bzppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4NClN1YmplY3Q6IFJlOiBbUEFUQ0ggaS1nLXQgMS8y
+XSB0ZXN0cy9hbWRncHU6IHVzZXJxIHNraXAgd2FpdGluZyBmb3Igc2lnbmFsIGZlbmNlDQoNCg0K
+QHlvZ2VzaA0KDQpGdW5jdGlvbmFsbHkgY29kZSBsb29rcyBnb29kIHRvIG1lIGJ1dCBpIGhhdmUg
+YSBxdWVzdGlvbiwNCg0KSGF2ZSB5b3UgdmFsaWRhdGVkIHRoZSBhbnkgdGVzdCBjYXNlIHdpdGgg
+dGhlIHNraXAgZmxhZyBzZXQgdG8gdHJ1ZS4gVGVzdCBzaG91bGQgbm90IGZhaWwgd2l0aCB0aGF0
+IGFzIGl0cyBhIG5lZ2F0aXZlIHRlc3QuDQpIb3cgdGhlIGlndCB0ZXN0IHdvcmsgaGVyZSBpcyB0
+aGF0IHdoZW4geW91IHJldHVybiBmcm9tIHRoZSBhbWRncHVfdXNlcl9xdWV1ZV9zdWJtaXQgZnVu
+Y3Rpb24gdGhlIG5leHQgZnVuY3Rpb24gY2hlY2tzIHRoZSB2YWx1ZSB3cml0dGVuIGluIHRoZSBt
+ZW1vcnkgYW5kIHRlc3QgbWlnaHQgZmFpbCBpZiB0aGUgdmFsdWVzIGRvbnQgbWF0Y2guDQoNCg0K
+QWxzbywgSW5kZW50YXRpb24gc2VlbXMgbGl0dGxlIG9mZiB0byBtZS4NCg0KDQpPbiA1LzE1LzIw
+MjUgMTI6MTMgUE0sIE1vaGFuIE1hcmltdXRodSwgWW9nZXNoIHdyb3RlOg0KDQpbUHVibGljXQ0K
+DQoNCltQdWJsaWNdDQoNCkZvciBuZWdhdGl2ZSB0ZXN0IGNhc2VzIHdoZXJlIHRoZSBqb2Igd2ls
+bCBub3QgY29tcGxldGUgbmVlZCB0bw0Kc2tpcCBzaWduYWwgZmVuY2UuIFBhc3MgYSBmbGFnIHRv
+IGFtZGdwdV91c2VyX3F1ZXVlX3N1Ym1pdCgpIHRvDQpza2lwIHNpZ25hbCBmZW5jZSB3YWl0Lg0K
+DQpTaWduZWQtb2ZmLWJ5OiBZb2dlc2ggTW9oYW4gTWFyaW11dGh1IDx5b2dlc2gubW9oYW5tYXJp
+bXV0aHVAYW1kLmNvbT48bWFpbHRvOnlvZ2VzaC5tb2hhbm1hcmltdXRodUBhbWQuY29tPg0KLS0t
+DQogbGliL2FtZGdwdS9hbWRfY29tbWFuZF9zdWJtaXNzaW9uLmMgfCAgMiArLQ0KIGxpYi9hbWRn
+cHUvYW1kX2NvbXB1dGUuYyAgICAgICAgICAgIHwgIDIgKy0NCiBsaWIvYW1kZ3B1L2FtZF91c2Vy
+cS5jICAgICAgICAgICAgICB8IDM2ICsrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tDQogbGli
+L2FtZGdwdS9hbWRfdXNlcnEuaCAgICAgICAgICAgICAgfCAgMiArLQ0KIHRlc3RzL2FtZGdwdS9h
+bWRfYmFzaWMuYyAgICAgICAgICAgIHwgIDQgKystLQ0KIHRlc3RzL2FtZGdwdS9hbWRfY3Nfbm9w
+LmMgICAgICAgICAgIHwgIDIgKy0NCiA2IGZpbGVzIGNoYW5nZWQsIDI1IGluc2VydGlvbnMoKyks
+IDIzIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvbGliL2FtZGdwdS9hbWRfY29tbWFuZF9z
+dWJtaXNzaW9uLmMgYi9saWIvYW1kZ3B1L2FtZF9jb21tYW5kX3N1Ym1pc3Npb24uYw0KaW5kZXgg
+ODBkMDNhNDk4Li43NDA5MWRhNWEgMTAwNjQ0DQotLS0gYS9saWIvYW1kZ3B1L2FtZF9jb21tYW5k
+X3N1Ym1pc3Npb24uYw0KKysrIGIvbGliL2FtZGdwdS9hbWRfY29tbWFuZF9zdWJtaXNzaW9uLmMN
+CkBAIC02OCw3ICs2OCw3IEBAIGludCBhbWRncHVfdGVzdF9leGVjX2NzX2hlbHBlcihhbWRncHVf
+ZGV2aWNlX2hhbmRsZSBkZXZpY2UsIHVuc2lnbmVkIGludCBpcF90eXBlDQog4oCC4oCC4oCC4oCC
+4oCCbWVtY3B5KHJpbmdfcHRyLCByaW5nX2NvbnRleHQtPnBtNCwgcmluZ19jb250ZXh0LT5wbTRf
+ZHcgKiBzaXplb2YoKnJpbmdfY29udGV4dC0+cG00KSk7DQoNCiDigILigILigILigILigIJpZiAo
+dXNlcl9xdWV1ZSkNCi3igILigILigILigILigILigILigILigILigILigILigIJhbWRncHVfdXNl
+cl9xdWV1ZV9zdWJtaXQoZGV2aWNlLCByaW5nX2NvbnRleHQsIGlwX3R5cGUsIGliX3Jlc3VsdF9t
+Y19hZGRyZXNzKTsNCivigILigILigILigILigILigILigILigILigILigILigIJhbWRncHVfdXNl
+cl9xdWV1ZV9zdWJtaXQoZGV2aWNlLCByaW5nX2NvbnRleHQsIGlwX3R5cGUsIGliX3Jlc3VsdF9t
+Y19hZGRyZXNzLCBmYWxzZSk7DQpJbmRlbnRhdGlvbiBoZXJlDQog4oCC4oCC4oCC4oCC4oCCZWxz
+ZSB7DQog4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCcmluZ19jb250ZXh0LT5pYl9p
+bmZvLmliX21jX2FkZHJlc3MgPSBpYl9yZXN1bHRfbWNfYWRkcmVzczsNCiDigILigILigILigILi
+gILigILigILigILigILigILigIJyaW5nX2NvbnRleHQtPmliX2luZm8uc2l6ZSA9IHJpbmdfY29u
+dGV4dC0+cG00X2R3Ow0KZGlmZiAtLWdpdCBhL2xpYi9hbWRncHUvYW1kX2NvbXB1dGUuYyBiL2xp
+Yi9hbWRncHUvYW1kX2NvbXB1dGUuYw0KaW5kZXggOTViZmE1M2FhLi4wMDgxODYwNDkgMTAwNjQ0
+DQotLS0gYS9saWIvYW1kZ3B1L2FtZF9jb21wdXRlLmMNCisrKyBiL2xpYi9hbWRncHUvYW1kX2Nv
+bXB1dGUuYw0KQEAgLTkxLDcgKzkxLDcgQEAgdm9pZCBhbWRncHVfY29tbWFuZF9zdWJtaXNzaW9u
+X2NvbXB1dGVfbm9wKGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZSwgYm9vbCB1c2UNCg0KIOKA
+guKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgmlmICh1c2VyX3F1ZXVlKSB7DQog4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCYW1kZ3B1X3VzZXJf
+cXVldWVfc3VibWl0KGRldmljZSwgcmluZ19jb250ZXh0LCBBTURfSVBfQ09NUFVURSwNCi3igILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigIIgaWJfcmVzdWx0X21j
+X2FkZHJlc3MpOw0KK+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAgiBpYl9yZXN1bHRfbWNfYWRkcmVzcywgZmFsc2UpOw0KIOKAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAguKAgn0gZWxzZSB7DQog4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCCbWVtc2V0KCZpYl9pbmZvLCAwLCBzaXplb2Yoc3RydWN0IGFtZGdw
+dV9jc19pYl9pbmZvKSk7DQog4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCCaWJfaW5mby5pYl9tY19hZGRyZXNzID0gaWJfcmVzdWx0X21jX2FkZHJlc3M7
+DQpkaWZmIC0tZ2l0IGEvbGliL2FtZGdwdS9hbWRfdXNlcnEuYyBiL2xpYi9hbWRncHUvYW1kX3Vz
+ZXJxLmMNCmluZGV4IDUwZDA1ODYwOS4uNzI3ZGY4MjIyIDEwMDY0NA0KLS0tIGEvbGliL2FtZGdw
+dS9hbWRfdXNlcnEuYw0KKysrIGIvbGliL2FtZGdwdS9hbWRfdXNlcnEuYw0KQEAgLTEyNyw3ICsx
+MjcsNyBAQCBpbnQgYW1kZ3B1X3RpbWVsaW5lX3N5bmNvYmpfd2FpdChhbWRncHVfZGV2aWNlX2hh
+bmRsZSBkZXZpY2VfaGFuZGxlLA0KIH0NCg0KIHZvaWQgYW1kZ3B1X3VzZXJfcXVldWVfc3VibWl0
+KGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZSwgc3RydWN0IGFtZGdwdV9yaW5nX2NvbnRleHQg
+KnJpbmdfY29udGV4dCwNCi3igILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigIIgICAgICB1bnNpZ25lZCBpbnQgaXBfdHlwZSwgdWludDY0X3QgbWNfYWRkcmVz
+cykNCivigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigIIg
+ICAgICB1bnNpZ25lZCBpbnQgaXBfdHlwZSwgdWludDY0X3QgbWNfYWRkcmVzcywgYm9vbCBza2lw
+X3NpZ25hbCkNCkluZGVudGF0aW9uIGhlcmUgdG9vLg0KIHsNCiDigILigILigILigILigIJpbnQg
+cjsNCiDigILigILigILigILigIJ1aW50MzJfdCBjb250cm9sID0gcmluZ19jb250ZXh0LT5wbTRf
+ZHc7DQpAQCAtMTY2LDIyICsxNjYsMjQgQEAgdm9pZCBhbWRncHVfdXNlcl9xdWV1ZV9zdWJtaXQo
+YW1kZ3B1X2RldmljZV9oYW5kbGUgZGV2aWNlLCBzdHJ1Y3QgYW1kZ3B1X3JpbmdfY28NCiDigILi
+gILigILigILigIIvKiBVcGRhdGUgdGhlIGRvb3IgYmVsbCAqLw0KIOKAguKAguKAguKAguKAgnJp
+bmdfY29udGV4dC0+ZG9vcmJlbGxfY3B1W0RPT1JCRUxMX0lOREVYXSA9ICpyaW5nX2NvbnRleHQt
+PndwdHJfY3B1Ow0KDQot4oCC4oCC4oCC4oCC4oCCLyogQWRkIGEgZmVuY2UgcGFja2V0IGZvciBz
+aWduYWwgKi8NCi3igILigILigILigILigIJzeW5jYXJyYXlbMF0gPSByaW5nX2NvbnRleHQtPnRp
+bWVsaW5lX3N5bmNvYmpfaGFuZGxlOw0KLeKAguKAguKAguKAguKAgnNpZ25hbF9kYXRhLnF1ZXVl
+X2lkID0gcmluZ19jb250ZXh0LT5xdWV1ZV9pZDsNCi3igILigILigILigILigIJzaWduYWxfZGF0
+YS5zeW5jb2JqX2hhbmRsZXMgPSAodWludHB0cl90KXN5bmNhcnJheTsNCi3igILigILigILigILi
+gIJzaWduYWxfZGF0YS5udW1fc3luY29ial9oYW5kbGVzID0gMTsNCi3igILigILigILigILigIJz
+aWduYWxfZGF0YS5ib19yZWFkX2hhbmRsZXMgPSAwOw0KLeKAguKAguKAguKAguKAgnNpZ25hbF9k
+YXRhLmJvX3dyaXRlX2hhbmRsZXMgPSAwOw0KLeKAguKAguKAguKAguKAgnNpZ25hbF9kYXRhLm51
+bV9ib19yZWFkX2hhbmRsZXMgPSAwOw0KLeKAguKAguKAguKAguKAgnNpZ25hbF9kYXRhLm51bV9i
+b193cml0ZV9oYW5kbGVzID0gMDsNCi0NCi3igILigILigILigILigIJyID0gYW1kZ3B1X3VzZXJx
+X3NpZ25hbChkZXZpY2UsICZzaWduYWxfZGF0YSk7DQot4oCC4oCC4oCC4oCC4oCCaWd0X2Fzc2Vy
+dF9lcShyLCAwKTsNCivigILigILigILigILigIJpZiAoIXNraXBfc2lnbmFsKSB7DQor4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCLyogQWRkIGEgZmVuY2UgcGFja2V0IGZvciBzaWdu
+YWwgKi8NCivigILigILigILigILigILigILigILigILigILigILigIJzeW5jYXJyYXlbMF0gPSBy
+aW5nX2NvbnRleHQtPnRpbWVsaW5lX3N5bmNvYmpfaGFuZGxlOw0KK+KAguKAguKAguKAguKAguKA
+guKAguKAguKAguKAguKAgnNpZ25hbF9kYXRhLnF1ZXVlX2lkID0gcmluZ19jb250ZXh0LT5xdWV1
+ZV9pZDsNCivigILigILigILigILigILigILigILigILigILigILigIJzaWduYWxfZGF0YS5zeW5j
+b2JqX2hhbmRsZXMgPSAodWludHB0cl90KXN5bmNhcnJheTsNCivigILigILigILigILigILigILi
+gILigILigILigILigIJzaWduYWxfZGF0YS5udW1fc3luY29ial9oYW5kbGVzID0gMTsNCivigILi
+gILigILigILigILigILigILigILigILigILigIJzaWduYWxfZGF0YS5ib19yZWFkX2hhbmRsZXMg
+PSAwOw0KK+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgnNpZ25hbF9kYXRhLmJvX3dy
+aXRlX2hhbmRsZXMgPSAwOw0KK+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgnNpZ25h
+bF9kYXRhLm51bV9ib19yZWFkX2hhbmRsZXMgPSAwOw0KK+KAguKAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAgnNpZ25hbF9kYXRhLm51bV9ib193cml0ZV9oYW5kbGVzID0gMDsNCisNCivigILi
+gILigILigILigILigILigILigILigILigILigIJyID0gYW1kZ3B1X3VzZXJxX3NpZ25hbChkZXZp
+Y2UsICZzaWduYWxfZGF0YSk7DQor4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCaWd0
+X2Fzc2VydF9lcShyLCAwKTsNCg0KLeKAguKAguKAguKAguKAgnIgPSBhbWRncHVfY3Nfc3luY29i
+al93YWl0KGRldmljZSwgJnJpbmdfY29udGV4dC0+dGltZWxpbmVfc3luY29ial9oYW5kbGUsIDEs
+IElOVDY0X01BWCwNCi3igILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigIIgICBEUk1fU1lOQ09CSl9XQUlUX0ZMQUdTX1dBSVRf
+QUxMLCBOVUxMKTsNCi3igILigILigILigILigIJpZ3RfYXNzZXJ0X2VxKHIsIDApOw0KK+KAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAguKAgnIgPSBhbWRncHVfY3Nfc3luY29ial93YWl0KGRl
+dmljZSwgJnJpbmdfY29udGV4dC0+dGltZWxpbmVfc3luY29ial9oYW5kbGUsIDEsIElOVDY0X01B
+WCwNCivigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigIJEUk1fU1lOQ09CSl9XQUlUX0ZMQUdTX1dBSVRf
+QUxMLCBOVUxMKTsNCkluZGVudGF0aW9uLg0KK+KAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAgmlndF9hc3NlcnRfZXEociwgMCk7DQor4oCC4oCC4oCC4oCC4oCCfQ0KIH0NCg0KIHZvaWQg
+YW1kZ3B1X3VzZXJfcXVldWVfZGVzdHJveShhbWRncHVfZGV2aWNlX2hhbmRsZSBkZXZpY2VfaGFu
+ZGxlLCBzdHJ1Y3QgYW1kZ3B1X3JpbmdfY29udGV4dCAqY3R4dCwNCkBAIC00NTYsNyArNDU4LDcg
+QEAgaW50IGFtZGdwdV90aW1lbGluZV9zeW5jb2JqX3dhaXQoYW1kZ3B1X2RldmljZV9oYW5kbGUg
+ZGV2aWNlX2hhbmRsZSwNCiB9DQoNCiB2b2lkIGFtZGdwdV91c2VyX3F1ZXVlX3N1Ym1pdChhbWRn
+cHVfZGV2aWNlX2hhbmRsZSBkZXZpY2UsIHN0cnVjdCBhbWRncHVfcmluZ19jb250ZXh0ICpyaW5n
+X2NvbnRleHQsDQot4oCC4oCC4oCC4oCC4oCCdW5zaWduZWQgaW50IGlwX3R5cGUsIHVpbnQ2NF90
+IG1jX2FkZHJlc3MpDQor4oCC4oCC4oCC4oCC4oCCdW5zaWduZWQgaW50IGlwX3R5cGUsIHVpbnQ2
+NF90IG1jX2FkZHJlc3MsIGJvb2wgc2tpcF9zaWduYWwpDQogew0KIH0NCg0KZGlmZiAtLWdpdCBh
+L2xpYi9hbWRncHUvYW1kX3VzZXJxLmggYi9saWIvYW1kZ3B1L2FtZF91c2VycS5oDQppbmRleCBi
+MjllOTdjY2YuLmRjMzljMWNhNCAxMDA2NDQNCi0tLSBhL2xpYi9hbWRncHUvYW1kX3VzZXJxLmgN
+CisrKyBiL2xpYi9hbWRncHUvYW1kX3VzZXJxLmgNCkBAIC01MCw2ICs1MCw2IEBAIHZvaWQgYW1k
+Z3B1X3VzZXJfcXVldWVfZGVzdHJveShhbWRncHVfZGV2aWNlX2hhbmRsZSBkZXZpY2VfaGFuZGxl
+LCBzdHJ1Y3QgYW1kZ3B1DQog4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCCICAgICAgIHVuc2lnbmVkIGludCBpcF90eXBlKTsNCg0KIHZvaWQgYW1kZ3B1
+X3VzZXJfcXVldWVfc3VibWl0KGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZSwgc3RydWN0IGFt
+ZGdwdV9yaW5nX2NvbnRleHQgKnJpbmdfY29udGV4dCwNCi3igILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigIIgICAgICB1bnNpZ25lZCBpbnQgaXBfdHlwZSwg
+dWludDY0X3QgbWNfYWRkcmVzcyk7DQor4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCCICAgICAgdW5zaWduZWQgaW50IGlwX3R5cGUsIHVpbnQ2NF90IG1j
+X2FkZHJlc3MsIGJvb2wgc2tpcF9zaWduYWwpOw0KDQogI2VuZGlmDQpkaWZmIC0tZ2l0IGEvdGVz
+dHMvYW1kZ3B1L2FtZF9iYXNpYy5jIGIvdGVzdHMvYW1kZ3B1L2FtZF9iYXNpYy5jDQppbmRleCA5
+N2EwOGE5YTMuLjkxNGQyNzkwOSAxMDA2NDQNCi0tLSBhL3Rlc3RzL2FtZGdwdS9hbWRfYmFzaWMu
+Yw0KKysrIGIvdGVzdHMvYW1kZ3B1L2FtZF9iYXNpYy5jDQpAQCAtNjA3LDcgKzYwNyw3IEBAIGFt
+ZGdwdV9zeW5jX2RlcGVuZGVuY3lfdGVzdChhbWRncHVfZGV2aWNlX2hhbmRsZSBkZXZpY2VfaGFu
+ZGxlLCBib29sIHVzZXJfcXVldWUpDQog4oCC4oCC4oCC4oCC4oCCaWYgKHVzZXJfcXVldWUpIHsN
+CiDigILigILigILigILigILigILigILigILigILigILigIJyaW5nX2NvbnRleHQtPnBtNF9kdyA9
+IGliX2luZm8uc2l6ZTsNCiDigILigILigILigILigILigILigILigILigILigILigIJhbWRncHVf
+dXNlcl9xdWV1ZV9zdWJtaXQoZGV2aWNlX2hhbmRsZSwgcmluZ19jb250ZXh0LCBpcF9ibG9jay0+
+dHlwZSwNCi3igILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigIIgaWJfcmVzdWx0X21jX2FkZHJl
+c3MpOw0KK+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgiBpYl9yZXN1bHRfbWNfYWRkcmVz
+cywgZmFsc2UpOw0KIOKAguKAguKAguKAguKAgn0gZWxzZSB7DQog4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCCciA9IGFtZGdwdV9jc19zdWJtaXQoY29udGV4dF9oYW5kbGVbMV0sIDAs
+ICZpYnNfcmVxdWVzdCwgMSk7DQog4oCC4oCC4oCC4oCC4oCCfQ0KQEAgLTY0Nyw3ICs2NDcsNyBA
+QCBhbWRncHVfc3luY19kZXBlbmRlbmN5X3Rlc3QoYW1kZ3B1X2RldmljZV9oYW5kbGUgZGV2aWNl
+X2hhbmRsZSwgYm9vbCB1c2VyX3F1ZXVlKQ0KIOKAguKAguKAguKAguKAgmlmICh1c2VyX3F1ZXVl
+KSB7DQog4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCcmluZ19jb250ZXh0LT5wbTRf
+ZHcgPSBpYl9pbmZvLnNpemU7DQog4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCYW1k
+Z3B1X3VzZXJfcXVldWVfc3VibWl0KGRldmljZV9oYW5kbGUsIHJpbmdfY29udGV4dCwgaXBfYmxv
+Y2stPnR5cGUsDQot4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCaWJfaW5mby5pYl9tY19h
+ZGRyZXNzKTsNCivigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigIIgaWJfaW5mby5pYl9tY19h
+ZGRyZXNzLCBmYWxzZSk7DQog4oCC4oCC4oCC4oCC4oCCfSBlbHNlIHsNCiDigILigILigILigILi
+gILigILigILigILigILigILigIJyID0gYW1kZ3B1X2NzX3N1Ym1pdChjb250ZXh0X2hhbmRsZVsw
+XSwgMCwgJmlic19yZXF1ZXN0LCAxKTsNCiDigILigILigILigILigILigILigILigILigILigILi
+gIJpZ3RfYXNzZXJ0X2VxKHIsIDApOw0KZGlmZiAtLWdpdCBhL3Rlc3RzL2FtZGdwdS9hbWRfY3Nf
+bm9wLmMgYi90ZXN0cy9hbWRncHUvYW1kX2NzX25vcC5jDQppbmRleCAyNjhiYzkyMDEuLjY1OGM4
+ZDA1MCAxMDA2NDQNCi0tLSBhL3Rlc3RzL2FtZGdwdS9hbWRfY3Nfbm9wLmMNCisrKyBiL3Rlc3Rz
+L2FtZGdwdS9hbWRfY3Nfbm9wLmMNCkBAIC0xMDgsNyArMTA4LDcgQEAgc3RhdGljIHZvaWQgbm9w
+X2NzKGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZSwNCiDigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigIJpZiAodXNlcl9xdWV1ZSkgew0KIOKAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAgnJpbmdfY29udGV4dC0+cG00X2R3ID0gaWJfaW5mby5zaXplOw0KIOKAguKAguKAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgmFt
+ZGdwdV91c2VyX3F1ZXVlX3N1Ym1pdChkZXZpY2UsIHJpbmdfY29udGV4dCwgaXBfdHlwZSwNCi3i
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigIIgaWJfaW5mby5pYl9tY19hZGRyZXNzKTsNCivigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigIIgaWJfaW5mby5pYl9t
+Y19hZGRyZXNzLCBmYWxzZSk7DQpOb3Qgc3VyZSBpZiBpdHMgdGhlIG1haWwgZWRpdG9yIG9yIHdo
+YXQgaSBzZWUgaXRzIHNoaWZ0ZWQgYnkgb25lLiBCdXQgbWFrZSBzdXJlIGluZGVudGF0aW9uIGlz
+IGNvcnJlY3QgYW5kIHlvdSBydW4gY2hlY2twYXRjaC5wbC4NCiDigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigIJpZ3RfYXNz
+ZXJ0X2VxKHIsIDApOw0KIOKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAgn0gZWxzZSB7DQog4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCciA9IGFtZGdwdV9jc19zdWJtaXQoY29u
+dGV4dCwgMCwgJmlic19yZXF1ZXN0LCAxKTsNCi0tDQoyLjQzLjANCg0KDQo=
 
-On 5/16/2025 3:33 PM, Mohan Marimuthu, Yogesh wrote:
->
-> [AMD Official Use Only - AMD Internal Distribution Only]
->
->
-> Hi Sunil,
->
-> I did not test with true as logically the code flow does not change if 
-> skip_signal is true.
-> The indentation is off because of the editor I had used. I will fix in 
-> the next patch update.
+--_000_PH7PR12MB6633068DCE50EC3252186CCFFF93APH7PR12MB6633namp_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-If you are planning to use this in a new test case then we should 
-handle/declare the test as success on failure as this is a negative test 
-case. So this needs to be handled while writing a new test case.
+PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
+dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyIgc3R5bGU9
+ImRpc3BsYXk6bm9uZTsiPiBQIHttYXJnaW4tdG9wOjA7bWFyZ2luLWJvdHRvbTowO30gPC9zdHls
+ZT4NCjwvaGVhZD4NCjxib2R5IGRpcj0ibHRyIj4NCjxwIHN0eWxlPSJmb250LWZhbWlseTpDYWxp
+YnJpO2ZvbnQtc2l6ZToxMHB0O2NvbG9yOiMwMDAwRkY7bWFyZ2luOjVwdDtmb250LXN0eWxlOm5v
+cm1hbDtmb250LXdlaWdodDpub3JtYWw7dGV4dC1kZWNvcmF0aW9uOm5vbmU7IiBhbGlnbj0iTGVm
+dCI+DQpbQU1EIE9mZmljaWFsIFVzZSBPbmx5IC0gQU1EIEludGVybmFsIERpc3RyaWJ1dGlvbiBP
+bmx5XTxicj4NCjwvcD4NCjxicj4NCjxkaXY+DQo8ZGl2IGNsYXNzPSJlbGVtZW50VG9Qcm9vZiIg
+c3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0Zv
+bnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJw
+dDsgY29sb3I6IHJnYigwLCAwLCAwKTsiPg0KSGkgU3VuaWwsPC9kaXY+DQo8ZGl2IGNsYXNzPSJl
+bGVtZW50VG9Qcm9vZiIgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRG
+b250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
+IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IHJnYigwLCAwLCAwKTsiPg0KPGJyPg0KPC9kaXY+DQo8
+ZGl2IGNsYXNzPSJlbGVtZW50VG9Qcm9vZiIgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0
+b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2Es
+IHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsiPg0KPHNwYW4gc3R5bGU9ImNvbG9yOiByZ2Io
+MCwgMCwgMCk7Ij5JIGhhdmUgYWRkZWQgPC9zcGFuPjxzcGFuIHN0eWxlPSJjb2xvcjogYmxhY2s7
+Ij5pZ3RfYXNzZXJ0X2VxIGluIHRoZSB0ZXN0IGNhc2UuIElmIGFueSBhc3NlcnQgZmFpbHMgdGhl
+biB0aGUgdGVzdCBpcyBhIGZhaWx1cmUuPC9zcGFuPjwvZGl2Pg0KPGRpdiBjbGFzcz0iZWxlbWVu
+dFRvUHJvb2YiIHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwg
+QXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250
+LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KPGJyPg0KPC9kaXY+DQo8ZGl2IGNsYXNzPSJl
+bGVtZW50VG9Qcm9vZiIgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRG
+b250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
+IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQpUaGFuayB5b3UsPC9kaXY+DQo8ZGl2
+IGNsYXNzPSJlbGVtZW50VG9Qcm9vZiIgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3Nf
+RW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNh
+bnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQpZb2dlc2g8c3BhbiBz
+dHlsZT0iZm9udC1mYW1pbHk6IENhbGlicmksIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
+IGNvbG9yOiByZ2IoMCwgMCwgMCk7Ij48YnI+DQo8L3NwYW4+PC9kaXY+DQo8aHIgc3R5bGU9ImRp
+c3BsYXk6IGlubGluZS1ibG9jazsgd2lkdGg6IDk4JTsiPg0KPGRpdiBzdHlsZT0iZm9udC1mYW1p
+bHk6IENhbGlicmksIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJw
+dDsgY29sb3I6IHJnYigwLCAwLCAwKTsiPg0KPGI+RnJvbTo8L2I+Jm5ic3A7S2hhdHJpLCBTdW5p
+bCAmbHQ7U3VuaWwuS2hhdHJpQGFtZC5jb20mZ3Q7PGJyPg0KPGI+U2VudDo8L2I+Jm5ic3A7RnJp
+ZGF5LCBNYXkgMTYsIDIwMjUgMzo0NyBQTTxicj4NCjxiPlRvOjwvYj4mbmJzcDtNb2hhbiBNYXJp
+bXV0aHUsIFlvZ2VzaCAmbHQ7WW9nZXNoLk1vaGFubWFyaW11dGh1QGFtZC5jb20mZ3Q7OyBLaGF0
+cmksIFN1bmlsICZsdDtTdW5pbC5LaGF0cmlAYW1kLmNvbSZndDs7IGlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnICZsdDtpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZyZndDs8YnI+DQo8
+Yj5TdWJqZWN0OjwvYj4mbmJzcDtSZTogW1BBVENIIGktZy10IDEvMl0gdGVzdHMvYW1kZ3B1OiB1
+c2VycSBza2lwIHdhaXRpbmcgZm9yIHNpZ25hbCBmZW5jZQ0KPC9kaXY+DQo8ZGl2IHN0eWxlPSJm
+b250LWZhbWlseTogQ2FsaWJyaSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1z
+aXplOiAxMnB0OyBjb2xvcjogcmdiKDAsIDAsIDApOyI+DQo8YnI+DQo8L2Rpdj4NCjxkaXYgc3R5
+bGU9ImJhY2tncm91bmQtY29sb3I6IHdoaXRlOyI+DQo8cD48YnI+DQo8L3A+DQo8ZGl2Pk9uIDUv
+MTYvMjAyNSAzOjMzIFBNLCBNb2hhbiBNYXJpbXV0aHUsIFlvZ2VzaCB3cm90ZTo8YnI+DQo8L2Rp
+dj4NCjxibG9ja3F1b3RlPg0KPHAgYWxpZ249ImxlZnQiIHN0eWxlPSJtYXJnaW46IDVwdDsgZm9u
+dC1mYW1pbHk6IENhbGlicmk7IGZvbnQtc2l6ZTogMTBwdDsgY29sb3I6IGJsdWU7Ij4NCltBTUQg
+T2ZmaWNpYWwgVXNlIE9ubHkgLSBBTUQgSW50ZXJuYWwgRGlzdHJpYnV0aW9uIE9ubHldPGJyPg0K
+PC9wPg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywg
+QXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRp
+Y2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQpIaSBTdW5p
+bCw8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRG
+b250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
+IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQo8YnI+DQo8L2Rpdj4NCjxkaXYgc3R5
+bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRT
+ZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsg
+Y29sb3I6IGJsYWNrOyI+DQpJIGRpZCBub3QgdGVzdCB3aXRoIHRydWUgYXMgbG9naWNhbGx5IHRo
+ZSBjb2RlIGZsb3cgZG9lcyBub3QgY2hhbmdlIGlmIHNraXBfc2lnbmFsIGlzIHRydWUuPC9kaXY+
+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0
+b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNp
+emU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KVGhlIGluZGVudGF0aW9uIGlzIG9mZiBiZWNhdXNl
+IG9mIHRoZSBlZGl0b3IgSSBoYWQgdXNlZC4gSSB3aWxsIGZpeCBpbiB0aGUgbmV4dCBwYXRjaCB1
+cGRhdGUuPC9kaXY+DQo8L2Jsb2NrcXVvdGU+DQo8cCBzdHlsZT0ibWFyZ2luLXRvcDogMHB4OyBt
+YXJnaW4tYm90dG9tOiAwcHg7Ij5JZiB5b3UgYXJlIHBsYW5uaW5nIHRvIHVzZSB0aGlzIGluIGEg
+bmV3IHRlc3QgY2FzZSB0aGVuIHdlIHNob3VsZCBoYW5kbGUvZGVjbGFyZSB0aGUgdGVzdCBhcyBz
+dWNjZXNzIG9uIGZhaWx1cmUgYXMgdGhpcyBpcyBhIG5lZ2F0aXZlIHRlc3QgY2FzZS4gU28gdGhp
+cyBuZWVkcyB0byBiZSBoYW5kbGVkIHdoaWxlIHdyaXRpbmcgYSBuZXcgdGVzdCBjYXNlLjwvcD4N
+CjxwIHN0eWxlPSJtYXJnaW4tdG9wOiAwcHg7IG1hcmdpbi1ib3R0b206IDBweDsiPjxicj4NCjwv
+cD4NCjxwIHN0eWxlPSJtYXJnaW4tdG9wOiAwcHg7IG1hcmdpbi1ib3R0b206IDBweDsiPlJlZ2Fy
+ZHM8YnI+DQpTdW5pbCBLaGF0cmk8YnI+DQo8L3A+DQo8YmxvY2txdW90ZT4NCjxkaXY+PGJyPg0K
+PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9u
+dCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBm
+b250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KVGhhbmsgeW91LDwvZGl2Pg0KPGRpdiBz
+dHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9u
+dFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0
+OyBjb2xvcjogYmxhY2s7Ij4NCllvZ2VzaDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6
+IENhbGlicmksIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsg
+Y29sb3I6IGJsYWNrOyI+DQo8YnI+DQo8L2Rpdj4NCjxociBzdHlsZT0iZGlzcGxheTogaW5saW5l
+LWJsb2NrOyB3aWR0aDogOTglOyI+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQ2FsaWJyaSwg
+QXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxh
+Y2s7Ij4NCjxiPkZyb206PC9iPiZuYnNwO0toYXRyaSwgU3VuaWwgPGEgaHJlZj0ibWFpbHRvOlN1
+bmlsLktoYXRyaUBhbWQuY29tIiBpZD0iT1dBYjQ2ZmEwM2UtNDgyNy05ZDJjLWQ5ZjUtYjE1ZWU4
+MjJkMDcyIiBjbGFzcz0iT1dBQXV0b0xpbmsiPg0KJmx0O1N1bmlsLktoYXRyaUBhbWQuY29tJmd0
+OzwvYT48YnI+DQo8Yj5TZW50OjwvYj4mbmJzcDtGcmlkYXksIE1heSAxNiwgMjAyNSAxMToxMiBB
+TTxicj4NCjxiPlRvOjwvYj4mbmJzcDtNb2hhbiBNYXJpbXV0aHUsIFlvZ2VzaCA8YSBocmVmPSJt
+YWlsdG86WW9nZXNoLk1vaGFubWFyaW11dGh1QGFtZC5jb20iIGlkPSJPV0E3MWIyNTM5Yi1jN2I4
+LTJiZTMtYTk4My0wZTdlMDg1MWVmOGYiIGNsYXNzPSJPV0FBdXRvTGluayI+DQombHQ7WW9nZXNo
+Lk1vaGFubWFyaW11dGh1QGFtZC5jb20mZ3Q7PC9hPjsgPGEgaHJlZj0ibWFpbHRvOmlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnIiBpZD0iT1dBYjJiYTExNmEtMWM2Mi0wMTk2LWZjZWQtNjhm
+ZmMyMWViNmIwIiBjbGFzcz0iT1dBQXV0b0xpbmsiPg0KaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
+cC5vcmc8L2E+IDxhIGhyZWY9Im1haWx0bzppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZyIg
+aWQ9Ik9XQTM2YjgzNWEzLWFhYmEtMzJiZS1jMzM3LTRkZjBlYTBiNTFjYiIgY2xhc3M9Ik9XQUF1
+dG9MaW5rIj4NCiZsdDtpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZyZndDs8L2E+PGJyPg0K
+PGI+U3ViamVjdDo8L2I+Jm5ic3A7UmU6IFtQQVRDSCBpLWctdCAxLzJdIHRlc3RzL2FtZGdwdTog
+dXNlcnEgc2tpcCB3YWl0aW5nIGZvciBzaWduYWwgZmVuY2U8L2Rpdj4NCjxkaXYgc3R5bGU9ImZv
+bnQtZmFtaWx5OiBDYWxpYnJpLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNp
+emU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KPGJyPg0KPC9kaXY+DQo8ZGl2IHN0eWxlPSJiYWNr
+Z3JvdW5kLWNvbG9yOiB3aGl0ZTsiPg0KPHAgc3R5bGU9Im1hcmdpbi10b3A6IDBweDsgbWFyZ2lu
+LWJvdHRvbTogMHB4OyI+QHlvZ2VzaDxicj4NCjxicj4NCkZ1bmN0aW9uYWxseSBjb2RlIGxvb2tz
+IGdvb2QgdG8gbWUgYnV0IGkgaGF2ZSBhIHF1ZXN0aW9uLDxicj4NCjwvcD4NCjxwIHN0eWxlPSJt
+YXJnaW4tdG9wOiAwcHg7IG1hcmdpbi1ib3R0b206IDBweDsiPkhhdmUgeW91IHZhbGlkYXRlZCB0
+aGUgYW55IHRlc3QgY2FzZSB3aXRoIHRoZSBza2lwIGZsYWcgc2V0IHRvIHRydWUuIFRlc3Qgc2hv
+dWxkIG5vdCBmYWlsIHdpdGggdGhhdCBhcyBpdHMgYSBuZWdhdGl2ZSB0ZXN0Ljxicj4NCkhvdyB0
+aGUgaWd0IHRlc3Qgd29yayBoZXJlIGlzIHRoYXQgd2hlbiB5b3UgcmV0dXJuIGZyb20gdGhlIGFt
+ZGdwdV91c2VyX3F1ZXVlX3N1Ym1pdCBmdW5jdGlvbiB0aGUgbmV4dCBmdW5jdGlvbiBjaGVja3Mg
+dGhlIHZhbHVlIHdyaXR0ZW4gaW4gdGhlIG1lbW9yeSBhbmQgdGVzdCBtaWdodCBmYWlsIGlmIHRo
+ZSB2YWx1ZXMgZG9udCBtYXRjaC48YnI+DQo8L3A+DQo8cCBzdHlsZT0ibWFyZ2luLXRvcDogMHB4
+OyBtYXJnaW4tYm90dG9tOiAwcHg7Ij48YnI+DQo8L3A+DQo8cCBzdHlsZT0ibWFyZ2luLXRvcDog
+MHB4OyBtYXJnaW4tYm90dG9tOiAwcHg7Ij5BbHNvLCBJbmRlbnRhdGlvbiBzZWVtcyBsaXR0bGUg
+b2ZmIHRvIG1lLjwvcD4NCjxwIHN0eWxlPSJtYXJnaW4tdG9wOiAwcHg7IG1hcmdpbi1ib3R0b206
+IDBweDsiPjxicj4NCjwvcD4NCjxkaXY+T24gNS8xNS8yMDI1IDEyOjEzIFBNLCBNb2hhbiBNYXJp
+bXV0aHUsIFlvZ2VzaCB3cm90ZTo8YnI+DQo8L2Rpdj4NCjxibG9ja3F1b3RlPg0KPHAgYWxpZ249
+ImxlZnQiIHN0eWxlPSJtYXJnaW46IDVwdDsgZm9udC1mYW1pbHk6IENhbGlicmk7IGZvbnQtc2l6
+ZTogMTBwdDsgY29sb3I6IGdyZWVuOyI+DQpbUHVibGljXTxicj4NCjwvcD4NCjxkaXY+PGJyPg0K
+PC9kaXY+DQo8cCBhbGlnbj0ibGVmdCIgc3R5bGU9Im1hcmdpbjogNXB0OyBmb250LWZhbWlseTog
+Q2FsaWJyaTsgZm9udC1zaXplOiAxMHB0OyBjb2xvcjogZ3JlZW47Ij4NCltQdWJsaWNdPGJyPg0K
+PC9wPg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywg
+QXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRp
+Y2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQpGb3IgbmVn
+YXRpdmUgdGVzdCBjYXNlcyB3aGVyZSB0aGUgam9iIHdpbGwgbm90IGNvbXBsZXRlIG5lZWQgdG88
+L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250
+LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZv
+bnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQpza2lwIHNpZ25hbCBmZW5jZS4gUGFzcyBh
+IGZsYWcgdG8gYW1kZ3B1X3VzZXJfcXVldWVfc3VibWl0KCkgdG88L2Rpdj4NCjxkaXYgc3R5bGU9
+ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2
+aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29s
+b3I6IGJsYWNrOyI+DQpza2lwIHNpZ25hbCBmZW5jZSB3YWl0LjwvZGl2Pg0KPGRpdiBzdHlsZT0i
+Zm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZp
+Y2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xv
+cjogYmxhY2s7Ij4NCjxicj4NCjwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9z
+LCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZl
+dGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NClNpZ25l
+ZC1vZmYtYnk6IFlvZ2VzaCBNb2hhbiBNYXJpbXV0aHUgPGEgaHJlZj0ibWFpbHRvOnlvZ2VzaC5t
+b2hhbm1hcmltdXRodUBhbWQuY29tIiBpZD0iT1dBOGIzYWRiM2ItYzI2My1lOGE1LWQyMzUtZDBl
+ZmEyZTU0M2ZlIiBjbGFzcz0iT1dBQXV0b0xpbmsiPg0KJmx0O3lvZ2VzaC5tb2hhbm1hcmltdXRo
+dUBhbWQuY29tJmd0OzwvYT48L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywg
+QXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRp
+Y2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQotLS08L2Rp
+dj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBB
+cHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQt
+c2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDtsaWIvYW1kZ3B1L2FtZF9jb21tYW5k
+X3N1Ym1pc3Npb24uYyB8ICZuYnNwOzIgKy08L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5
+OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJp
+LCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+
+DQombmJzcDtsaWIvYW1kZ3B1L2FtZF9jb21wdXRlLmMgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5i
+c3A7ICZuYnNwOyAmbmJzcDt8ICZuYnNwOzIgKy08L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFt
+aWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxp
+YnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNr
+OyI+DQombmJzcDtsaWIvYW1kZ3B1L2FtZF91c2VycS5jICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZu
+YnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwO3wgMzYgKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0t
+LS08L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRG
+b250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
+IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDtsaWIvYW1kZ3B1L2FtZF91
+c2VycS5oICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwO3wg
+Jm5ic3A7MiArLTwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19F
+bWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fu
+cy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwO3Rlc3RzL2Ft
+ZGdwdS9hbWRfYmFzaWMuYyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNw
+O3wgJm5ic3A7NCArKy0tPC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFw
+dG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNh
+LCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KJm5ic3A7dGVz
+dHMvYW1kZ3B1L2FtZF9jc19ub3AuYyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7
+IHwgJm5ic3A7MiArLTwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRv
+c19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwg
+c2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwOzYgZmls
+ZXMgY2hhbmdlZCwgMjUgaW5zZXJ0aW9ucygrKSwgMjMgZGVsZXRpb25zKC0pPC9kaXY+DQo8ZGl2
+IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNG
+b250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEy
+cHQ7IGNvbG9yOiBibGFjazsiPg0KPGJyPg0KPC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWls
+eTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJy
+aSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsi
+Pg0KZGlmZiAtLWdpdCBhL2xpYi9hbWRncHUvYW1kX2NvbW1hbmRfc3VibWlzc2lvbi5jIGIvbGli
+L2FtZGdwdS9hbWRfY29tbWFuZF9zdWJtaXNzaW9uLmM8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQt
+ZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBD
+YWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJs
+YWNrOyI+DQppbmRleCA4MGQwM2E0OTguLjc0MDkxZGE1YSAxMDA2NDQ8L2Rpdj4NCjxkaXYgc3R5
+bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRT
+ZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsg
+Y29sb3I6IGJsYWNrOyI+DQotLS0gYS9saWIvYW1kZ3B1L2FtZF9jb21tYW5kX3N1Ym1pc3Npb24u
+YzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZv
+bnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsg
+Zm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCisrKyBiL2xpYi9hbWRncHUvYW1kX2Nv
+bW1hbmRfc3VibWlzc2lvbi5jPC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3Ms
+IEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0
+aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KQEAgLTY4
+LDcgKzY4LDcgQEAgaW50IGFtZGdwdV90ZXN0X2V4ZWNfY3NfaGVscGVyKGFtZGdwdV9kZXZpY2Vf
+aGFuZGxlIGRldmljZSwgdW5zaWduZWQgaW50IGlwX3R5cGU8L2Rpdj4NCjxkaXYgc3R5bGU9ImZv
+bnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNl
+LCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6
+IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigIJtZW1jcHkocmluZ19wdHIsIHJpbmdfY29u
+dGV4dC0mZ3Q7cG00LCByaW5nX2NvbnRleHQtJmd0O3BtNF9kdyAqIHNpemVvZigqcmluZ19jb250
+ZXh0LSZndDtwbTQpKTs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0
+b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2Es
+IHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDs8L2Rp
+dj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBB
+cHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQt
+c2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigIJpZiAodXNl
+cl9xdWV1ZSk8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1i
+ZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMt
+c2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQot4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCCYW1kZ3B1X3VzZXJfcXVldWVfc3VibWl0KGRldmljZSwgcmluZ19j
+b250ZXh0LCBpcF90eXBlLCBpYl9yZXN1bHRfbWNfYWRkcmVzcyk7PC9kaXY+DQo8ZGl2IHN0eWxl
+PSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2Vy
+dmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNv
+bG9yOiBibGFjazsiPg0KK+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgmFtZGdwdV91
+c2VyX3F1ZXVlX3N1Ym1pdChkZXZpY2UsIHJpbmdfY29udGV4dCwgaXBfdHlwZSwgaWJfcmVzdWx0
+X21jX2FkZHJlc3MsIGZhbHNlKTs8L2Rpdj4NCjwvYmxvY2txdW90ZT4NCjxkaXY+SW5kZW50YXRp
+b24gaGVyZTxicj4NCjwvZGl2Pg0KPGJsb2NrcXVvdGU+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWls
+eTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJy
+aSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsi
+Pg0KJm5ic3A74oCC4oCC4oCC4oCC4oCCZWxzZSB7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZh
+bWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2Fs
+aWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFj
+azsiPg0KJm5ic3A74oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCcmluZ19jb250ZXh0
+LSZndDtpYl9pbmZvLmliX21jX2FkZHJlc3MgPSBpYl9yZXN1bHRfbWNfYWRkcmVzczs8L2Rpdj4N
+CjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRv
+c19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6
+ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigILigILigILigILi
+gILigILigIJyaW5nX2NvbnRleHQtJmd0O2liX2luZm8uc2l6ZSA9IHJpbmdfY29udGV4dC0mZ3Q7
+cG00X2R3OzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJl
+ZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1z
+ZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCmRpZmYgLS1naXQgYS9saWIv
+YW1kZ3B1L2FtZF9jb21wdXRlLmMgYi9saWIvYW1kZ3B1L2FtZF9jb21wdXRlLmM8L2Rpdj4NCjxk
+aXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19N
+U0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTog
+MTJwdDsgY29sb3I6IGJsYWNrOyI+DQppbmRleCA5NWJmYTUzYWEuLjAwODE4NjA0OSAxMDA2NDQ8
+L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250
+LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZv
+bnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQotLS0gYS9saWIvYW1kZ3B1L2FtZF9jb21w
+dXRlLmM8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRk
+ZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2Vy
+aWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQorKysgYi9saWIvYW1kZ3B1L2Ft
+ZF9jb21wdXRlLmM8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3Nf
+RW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNh
+bnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQpAQCAtOTEsNyArOTEs
+NyBAQCB2b2lkIGFtZGdwdV9jb21tYW5kX3N1Ym1pc3Npb25fY29tcHV0ZV9ub3AoYW1kZ3B1X2Rl
+dmljZV9oYW5kbGUgZGV2aWNlLCBib29sIHVzZTwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1p
+bHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGli
+cmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7
+Ij4NCiZuYnNwOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19F
+bWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fu
+cy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwO+KAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAgmlmICh1c2VyX3F1ZXVlKSB7PC9kaXY+DQo8ZGl2IHN0
+eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250
+U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7
+IGNvbG9yOiBibGFjazsiPg0KJm5ic3A74oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCCYW1kZ3B1X3VzZXJfcXVldWVfc3VibWl0KGRldmljZSwgcmluZ19j
+b250ZXh0LCBBTURfSVBfQ09NUFVURSw8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBB
+cHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBI
+ZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQot
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCIGliX3Jlc3Vs
+dF9tY19hZGRyZXNzKTs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0
+b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2Es
+IHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQor4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCIGliX3Jlc3VsdF9tY19hZGRy
+ZXNzLCBmYWxzZSk7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9z
+X0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBz
+YW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KJm5ic3A74oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCfSBlbHNlIHs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZv
+bnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNl
+LCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6
+IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigIJtZW1zZXQoJmFtcDtpYl9pbmZvLCAwLCBzaXplb2Yoc3RydWN0IGFtZGdwdV9j
+c19pYl9pbmZvKSk7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9z
+X0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBz
+YW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KJm5ic3A74oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCaWJfaW5mby5pYl9t
+Y19hZGRyZXNzID0gaWJfcmVzdWx0X21jX2FkZHJlc3M7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250
+LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwg
+Q2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBi
+bGFjazsiPg0KZGlmZiAtLWdpdCBhL2xpYi9hbWRncHUvYW1kX3VzZXJxLmMgYi9saWIvYW1kZ3B1
+L2FtZF91c2VycS5jPC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9z
+X0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBz
+YW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KaW5kZXggNTBkMDU4
+NjA5Li43MjdkZjgyMjIgMTAwNjQ0PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0
+b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVs
+dmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KLS0t
+IGEvbGliL2FtZGdwdS9hbWRfdXNlcnEuYzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6
+IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmks
+IEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4N
+CisrKyBiL2xpYi9hbWRncHUvYW1kX3VzZXJxLmM8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFt
+aWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxp
+YnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNr
+OyI+DQpAQCAtMTI3LDcgKzEyNyw3IEBAIGludCBhbWRncHVfdGltZWxpbmVfc3luY29ial93YWl0
+KGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZV9oYW5kbGUsPC9kaXY+DQo8ZGl2IHN0eWxlPSJm
+b250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2Vydmlj
+ZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9y
+OiBibGFjazsiPg0KJm5ic3A7fTwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9z
+LCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZl
+dGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNw
+OzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZv
+bnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsg
+Zm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwO3ZvaWQgYW1kZ3B1X3VzZXJf
+cXVldWVfc3VibWl0KGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZSwgc3RydWN0IGFtZGdwdV9y
+aW5nX2NvbnRleHQgKnJpbmdfY29udGV4dCw8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5
+OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJp
+LCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+
+DQot4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCICZu
+YnNwOyAmbmJzcDsgJm5ic3A7dW5zaWduZWQgaW50IGlwX3R5cGUsIHVpbnQ2NF90IG1jX2FkZHJl
+c3MpPC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVk
+Rm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlm
+OyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KK+KAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgiAmbmJzcDsgJm5ic3A7ICZuYnNwO3Vuc2ln
+bmVkIGludCBpcF90eXBlLCB1aW50NjRfdCBtY19hZGRyZXNzLCBib29sIHNraXBfc2lnbmFsKTwv
+ZGl2Pg0KPC9ibG9ja3F1b3RlPg0KPGRpdj5JbmRlbnRhdGlvbiBoZXJlIHRvby48YnI+DQo8L2Rp
+dj4NCjxibG9ja3F1b3RlPg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19F
+bWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fu
+cy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwO3s8L2Rpdj4N
+CjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRv
+c19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6
+ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigIJpbnQgcjs8L2Rp
+dj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBB
+cHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQt
+c2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigIJ1aW50MzJf
+dCBjb250cm9sID0gcmluZ19jb250ZXh0LSZndDtwbTRfZHc7PC9kaXY+DQo8ZGl2IHN0eWxlPSJm
+b250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2Vydmlj
+ZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9y
+OiBibGFjazsiPg0KQEAgLTE2NiwyMiArMTY2LDI0IEBAIHZvaWQgYW1kZ3B1X3VzZXJfcXVldWVf
+c3VibWl0KGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZSwgc3RydWN0IGFtZGdwdV9yaW5nX2Nv
+PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9u
+dCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBm
+b250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KJm5ic3A74oCC4oCC4oCC4oCC4oCCLyog
+VXBkYXRlIHRoZSBkb29yIGJlbGwgKi88L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBB
+cHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBI
+ZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQom
+bmJzcDvigILigILigILigILigIJyaW5nX2NvbnRleHQtJmd0O2Rvb3JiZWxsX2NwdVtET09SQkVM
+TF9JTkRFWF0gPSAqcmluZ19jb250ZXh0LSZndDt3cHRyX2NwdTs8L2Rpdj4NCjxkaXYgc3R5bGU9
+ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2
+aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29s
+b3I6IGJsYWNrOyI+DQombmJzcDs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRv
+cywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2
+ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQot4oCC
+4oCC4oCC4oCC4oCCLyogQWRkIGEgZmVuY2UgcGFja2V0IGZvciBzaWduYWwgKi88L2Rpdj4NCjxk
+aXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19N
+U0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTog
+MTJwdDsgY29sb3I6IGJsYWNrOyI+DQot4oCC4oCC4oCC4oCC4oCCc3luY2FycmF5WzBdID0gcmlu
+Z19jb250ZXh0LSZndDt0aW1lbGluZV9zeW5jb2JqX2hhbmRsZTs8L2Rpdj4NCjxkaXYgc3R5bGU9
+ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2
+aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29s
+b3I6IGJsYWNrOyI+DQot4oCC4oCC4oCC4oCC4oCCc2lnbmFsX2RhdGEucXVldWVfaWQgPSByaW5n
+X2NvbnRleHQtJmd0O3F1ZXVlX2lkOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFw
+dG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhl
+bHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCi3i
+gILigILigILigILigIJzaWduYWxfZGF0YS5zeW5jb2JqX2hhbmRsZXMgPSAodWludHB0cl90KXN5
+bmNhcnJheTs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1i
+ZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMt
+c2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQot4oCC4oCC4oCC4oCC4oCC
+c2lnbmFsX2RhdGEubnVtX3N5bmNvYmpfaGFuZGxlcyA9IDE7PC9kaXY+DQo8ZGl2IHN0eWxlPSJm
+b250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2Vydmlj
+ZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9y
+OiBibGFjazsiPg0KLeKAguKAguKAguKAguKAgnNpZ25hbF9kYXRhLmJvX3JlYWRfaGFuZGxlcyA9
+IDA7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVk
+Rm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlm
+OyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KLeKAguKAguKAguKAguKAgnNpZ25h
+bF9kYXRhLmJvX3dyaXRlX2hhbmRsZXMgPSAwOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1p
+bHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGli
+cmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7
+Ij4NCi3igILigILigILigILigIJzaWduYWxfZGF0YS5udW1fYm9fcmVhZF9oYW5kbGVzID0gMDs8
+L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250
+LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZv
+bnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQot4oCC4oCC4oCC4oCC4oCCc2lnbmFsX2Rh
+dGEubnVtX2JvX3dyaXRlX2hhbmRsZXMgPSAwOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1p
+bHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGli
+cmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7
+Ij4NCi08L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRk
+ZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2Vy
+aWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQot4oCC4oCC4oCC4oCC4oCCciA9
+IGFtZGdwdV91c2VycV9zaWduYWwoZGV2aWNlLCAmYW1wO3NpZ25hbF9kYXRhKTs8L2Rpdj4NCjxk
+aXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19N
+U0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTog
+MTJwdDsgY29sb3I6IGJsYWNrOyI+DQot4oCC4oCC4oCC4oCC4oCCaWd0X2Fzc2VydF9lcShyLCAw
+KTs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRG
+b250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
+IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQor4oCC4oCC4oCC4oCC4oCCaWYgKCFz
+a2lwX3NpZ25hbCkgezwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRv
+c19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwg
+c2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILigILi
+gILigILigILigILigILigILigILigIIvKiBBZGQgYSBmZW5jZSBwYWNrZXQgZm9yIHNpZ25hbCAq
+LzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZv
+bnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsg
+Zm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILigILigILigILigILigILi
+gILigILigILigIJzeW5jYXJyYXlbMF0gPSByaW5nX2NvbnRleHQtJmd0O3RpbWVsaW5lX3N5bmNv
+YmpfaGFuZGxlOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19F
+bWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fu
+cy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILigILigILi
+gILigILigILigILigILigILigIJzaWduYWxfZGF0YS5xdWV1ZV9pZCA9IHJpbmdfY29udGV4dC0m
+Z3Q7cXVldWVfaWQ7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9z
+X0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBz
+YW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KK+KAguKAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAgnNpZ25hbF9kYXRhLnN5bmNvYmpfaGFuZGxlcyA9ICh1aW50
+cHRyX3Qpc3luY2FycmF5OzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBB
+cHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGlj
+YSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILi
+gILigILigILigILigILigILigILigILigIJzaWduYWxfZGF0YS5udW1fc3luY29ial9oYW5kbGVz
+ID0gMTs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRk
+ZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2Vy
+aWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQor4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCCc2lnbmFsX2RhdGEuYm9fcmVhZF9oYW5kbGVzID0gMDs8L2Rpdj4NCjxk
+aXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19N
+U0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTog
+MTJwdDsgY29sb3I6IGJsYWNrOyI+DQor4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+c2lnbmFsX2RhdGEuYm9fd3JpdGVfaGFuZGxlcyA9IDA7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250
+LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwg
+Q2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBi
+bGFjazsiPg0KK+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgnNpZ25hbF9kYXRhLm51
+bV9ib19yZWFkX2hhbmRsZXMgPSAwOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFw
+dG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhl
+bHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCivi
+gILigILigILigILigILigILigILigILigILigILigIJzaWduYWxfZGF0YS5udW1fYm9fd3JpdGVf
+aGFuZGxlcyA9IDA7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9z
+X0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBz
+YW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KKzwvZGl2Pg0KPGRp
+diBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01T
+Rm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAx
+MnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILigILigILigILigILigILigILigILigILigIJy
+ID0gYW1kZ3B1X3VzZXJxX3NpZ25hbChkZXZpY2UsICZhbXA7c2lnbmFsX2RhdGEpOzwvZGl2Pg0K
+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9z
+X01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXpl
+OiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILigILigILigILigILigILigILigILigILi
+gIJpZ3RfYXNzZXJ0X2VxKHIsIDApOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFw
+dG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhl
+bHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZu
+YnNwOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRl
+ZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJp
+ZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCi3igILigILigILigILigIJyID0g
+YW1kZ3B1X2NzX3N5bmNvYmpfd2FpdChkZXZpY2UsICZhbXA7cmluZ19jb250ZXh0LSZndDt0aW1l
+bGluZV9zeW5jb2JqX2hhbmRsZSwgMSwgSU5UNjRfTUFYLDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9u
+dC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2Us
+IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjog
+YmxhY2s7Ij4NCi3igILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigIIgJm5ic3A7IERSTV9TWU5DT0JKX1dBSVRfRkxBR1NfV0FJ
+VF9BTEwsIE5VTEwpOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRv
+c19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwg
+c2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCi3igILigILigILi
+gILigIJpZ3RfYXNzZXJ0X2VxKHIsIDApOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6
+IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmks
+IEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4N
+CivigILigILigILigILigILigILigILigILigILigILigIJyID0gYW1kZ3B1X2NzX3N5bmNvYmpf
+d2FpdChkZXZpY2UsICZhbXA7cmluZ19jb250ZXh0LSZndDt0aW1lbGluZV9zeW5jb2JqX2hhbmRs
+ZSwgMSwgSU5UNjRfTUFYLDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBB
+cHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGlj
+YSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigIJEUk1fU1lOQ09CSl9XQUlUX0ZMQUdTX1dBSVRfQUxMLCBOVUxMKTs8
+L2Rpdj4NCjwvYmxvY2txdW90ZT4NCjxkaXY+SW5kZW50YXRpb24uPGJyPg0KPC9kaXY+DQo8Ymxv
+Y2txdW90ZT4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRG
+b250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
+IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQor4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCCaWd0X2Fzc2VydF9lcShyLCAwKTs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQt
+ZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBD
+YWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJs
+YWNrOyI+DQor4oCC4oCC4oCC4oCC4oCCfTwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6
+IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmks
+IEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4N
+CiZuYnNwO308L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1i
+ZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMt
+c2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDs8L2Rpdj4NCjxk
+aXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19N
+U0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTog
+MTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDt2b2lkIGFtZGdwdV91c2VyX3F1ZXVlX2Rlc3Ry
+b3koYW1kZ3B1X2RldmljZV9oYW5kbGUgZGV2aWNlX2hhbmRsZSwgc3RydWN0IGFtZGdwdV9yaW5n
+X2NvbnRleHQgKmN0eHQsPC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFw
+dG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNh
+LCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KQEAgLTQ1Niw3
+ICs0NTgsNyBAQCBpbnQgYW1kZ3B1X3RpbWVsaW5lX3N5bmNvYmpfd2FpdChhbWRncHVfZGV2aWNl
+X2hhbmRsZSBkZXZpY2VfaGFuZGxlLDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFw
+dG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhl
+bHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZu
+YnNwO308L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRk
+ZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2Vy
+aWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDs8L2Rpdj4NCjxkaXYg
+c3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0Zv
+bnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJw
+dDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDt2b2lkIGFtZGdwdV91c2VyX3F1ZXVlX3N1Ym1pdChh
+bWRncHVfZGV2aWNlX2hhbmRsZSBkZXZpY2UsIHN0cnVjdCBhbWRncHVfcmluZ19jb250ZXh0ICpy
+aW5nX2NvbnRleHQsPC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9z
+X0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBz
+YW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KLeKAguKAguKAguKA
+guKAgnVuc2lnbmVkIGludCBpcF90eXBlLCB1aW50NjRfdCBtY19hZGRyZXNzKTwvZGl2Pg0KPGRp
+diBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01T
+Rm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAx
+MnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILigILigILigIJ1bnNpZ25lZCBpbnQgaXBfdHlw
+ZSwgdWludDY0X3QgbWNfYWRkcmVzcywgYm9vbCBza2lwX3NpZ25hbCk8L2Rpdj4NCjxkaXYgc3R5
+bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRT
+ZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsg
+Y29sb3I6IGJsYWNrOyI+DQombmJzcDt7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTog
+QXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwg
+SGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0K
+Jm5ic3A7fTwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJl
+ZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1z
+ZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwOzwvZGl2Pg0KPGRp
+diBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01T
+Rm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAx
+MnB0OyBjb2xvcjogYmxhY2s7Ij4NCmRpZmYgLS1naXQgYS9saWIvYW1kZ3B1L2FtZF91c2VycS5o
+IGIvbGliL2FtZGdwdS9hbWRfdXNlcnEuaDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6
+IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmks
+IEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4N
+CmluZGV4IGIyOWU5N2NjZi4uZGMzOWMxY2E0IDEwMDY0NDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9u
+dC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2Us
+IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjog
+YmxhY2s7Ij4NCi0tLSBhL2xpYi9hbWRncHUvYW1kX3VzZXJxLmg8L2Rpdj4NCjxkaXYgc3R5bGU9
+ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2
+aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29s
+b3I6IGJsYWNrOyI+DQorKysgYi9saWIvYW1kZ3B1L2FtZF91c2VycS5oPC9kaXY+DQo8ZGl2IHN0
+eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250
+U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7
+IGNvbG9yOiBibGFjazsiPg0KQEAgLTUwLDYgKzUwLDYgQEAgdm9pZCBhbWRncHVfdXNlcl9xdWV1
+ZV9kZXN0cm95KGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZV9oYW5kbGUsIHN0cnVjdCBhbWRn
+cHU8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRG
+b250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
+IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigIIgJm5ic3A7ICZuYnNwOyAmbmJzcDsg
+dW5zaWduZWQgaW50IGlwX3R5cGUpOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFw
+dG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhl
+bHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZu
+YnNwOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRl
+ZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJp
+ZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwO3ZvaWQgYW1kZ3B1X3Vz
+ZXJfcXVldWVfc3VibWl0KGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZSwgc3RydWN0IGFtZGdw
+dV9yaW5nX2NvbnRleHQgKnJpbmdfY29udGV4dCw8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFt
+aWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxp
+YnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNr
+OyI+DQot4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+ICZuYnNwOyAmbmJzcDsgJm5ic3A7dW5zaWduZWQgaW50IGlwX3R5cGUsIHVpbnQ2NF90IG1jX2Fk
+ZHJlc3MpOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJl
+ZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1z
+ZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigIIgJm5ic3A7ICZuYnNwOyAmbmJzcDt1
+bnNpZ25lZCBpbnQgaXBfdHlwZSwgdWludDY0X3QgbWNfYWRkcmVzcywgYm9vbCBza2lwX3NpZ25h
+bCk7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVk
+Rm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlm
+OyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KJm5ic3A7PC9kaXY+DQo8ZGl2IHN0
+eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250
+U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7
+IGNvbG9yOiBibGFjazsiPg0KJm5ic3A7I2VuZGlmPC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZh
+bWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2Fs
+aWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFj
+azsiPg0KZGlmZiAtLWdpdCBhL3Rlc3RzL2FtZGdwdS9hbWRfYmFzaWMuYyBiL3Rlc3RzL2FtZGdw
+dS9hbWRfYmFzaWMuYzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRv
+c19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwg
+c2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCmluZGV4IDk3YTA4
+YTlhMy4uOTE0ZDI3OTA5IDEwMDY0NDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFw
+dG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhl
+bHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCi0t
+LSBhL3Rlc3RzL2FtZGdwdS9hbWRfYmFzaWMuYzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1p
+bHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGli
+cmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7
+Ij4NCisrKyBiL3Rlc3RzL2FtZGdwdS9hbWRfYmFzaWMuYzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9u
+dC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2Us
+IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjog
+YmxhY2s7Ij4NCkBAIC02MDcsNyArNjA3LDcgQEAgYW1kZ3B1X3N5bmNfZGVwZW5kZW5jeV90ZXN0
+KGFtZGdwdV9kZXZpY2VfaGFuZGxlIGRldmljZV9oYW5kbGUsIGJvb2wgdXNlcl9xdWV1ZSk8L2Rp
+dj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBB
+cHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQt
+c2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigIJpZiAodXNl
+cl9xdWV1ZSkgezwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19F
+bWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fu
+cy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwO+KAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAgnJpbmdfY29udGV4dC0mZ3Q7cG00X2R3ID0gaWJfaW5m
+by5zaXplOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJl
+ZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1z
+ZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwO+KAguKAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAgmFtZGdwdV91c2VyX3F1ZXVlX3N1Ym1pdChkZXZpY2VfaGFu
+ZGxlLCByaW5nX2NvbnRleHQsIGlwX2Jsb2NrLSZndDt0eXBlLDwvZGl2Pg0KPGRpdiBzdHlsZT0i
+Zm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZp
+Y2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xv
+cjogYmxhY2s7Ij4NCi3igILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigIIgaWJfcmVzdWx0X21j
+X2FkZHJlc3MpOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19F
+bWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fu
+cy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCivigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigIIgaWJfcmVzdWx0X21jX2FkZHJlc3MsIGZhbHNlKTs8L2Rpdj4NCjxk
+aXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19N
+U0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTog
+MTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigIJ9IGVsc2UgezwvZGl2
+Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFw
+dG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1z
+aXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZuYnNwO+KAguKAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAgnIgPSBhbWRncHVfY3Nfc3VibWl0KGNvbnRleHRfaGFuZGxlWzFdLCAwLCAmYW1w
+O2lic19yZXF1ZXN0LCAxKTs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywg
+QXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRp
+Y2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDvi
+gILigILigILigILigIJ9PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFw
+dG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNh
+LCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KQEAgLTY0Nyw3
+ICs2NDcsNyBAQCBhbWRncHVfc3luY19kZXBlbmRlbmN5X3Rlc3QoYW1kZ3B1X2RldmljZV9oYW5k
+bGUgZGV2aWNlX2hhbmRsZSwgYm9vbCB1c2VyX3F1ZXVlKTwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9u
+dC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2Us
+IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjog
+YmxhY2s7Ij4NCiZuYnNwO+KAguKAguKAguKAguKAgmlmICh1c2VyX3F1ZXVlKSB7PC9kaXY+DQo8
+ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3Nf
+TVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6
+IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KJm5ic3A74oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCCcmluZ19jb250ZXh0LSZndDtwbTRfZHcgPSBpYl9pbmZvLnNpemU7PC9kaXY+DQo8ZGl2
+IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNG
+b250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEy
+cHQ7IGNvbG9yOiBibGFjazsiPg0KJm5ic3A74oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCCYW1kZ3B1X3VzZXJfcXVldWVfc3VibWl0KGRldmljZV9oYW5kbGUsIHJpbmdfY29udGV4dCwg
+aXBfYmxvY2stJmd0O3R5cGUsPC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3Ms
+IEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0
+aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KLeKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAgmliX2luZm8uaWJfbWNfYWRkcmVzcyk7PC9kaXY+DQo8
+ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3Nf
+TVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6
+IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KK+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgiBp
+Yl9pbmZvLmliX21jX2FkZHJlc3MsIGZhbHNlKTs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFt
+aWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxp
+YnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNr
+OyI+DQombmJzcDvigILigILigILigILigIJ9IGVsc2UgezwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9u
+dC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2Us
+IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjog
+YmxhY2s7Ij4NCiZuYnNwO+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAgnIgPSBhbWRn
+cHVfY3Nfc3VibWl0KGNvbnRleHRfaGFuZGxlWzBdLCAwLCAmYW1wO2lic19yZXF1ZXN0LCAxKTs8
+L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250
+LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZv
+bnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJzcDvigILigILigILigILigILigILi
+gILigILigILigILigIJpZ3RfYXNzZXJ0X2VxKHIsIDApOzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9u
+dC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2Us
+IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjog
+YmxhY2s7Ij4NCmRpZmYgLS1naXQgYS90ZXN0cy9hbWRncHUvYW1kX2NzX25vcC5jIGIvdGVzdHMv
+YW1kZ3B1L2FtZF9jc19ub3AuYzwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9z
+LCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZl
+dGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCmluZGV4
+IDI2OGJjOTIwMS4uNjU4YzhkMDUwIDEwMDY0NDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1p
+bHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGli
+cmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7
+Ij4NCi0tLSBhL3Rlc3RzL2FtZGdwdS9hbWRfY3Nfbm9wLmM8L2Rpdj4NCjxkaXYgc3R5bGU9ImZv
+bnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNl
+LCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6
+IGJsYWNrOyI+DQorKysgYi90ZXN0cy9hbWRncHUvYW1kX2NzX25vcC5jPC9kaXY+DQo8ZGl2IHN0
+eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250
+U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7
+IGNvbG9yOiBibGFjazsiPg0KQEAgLTEwOCw3ICsxMDgsNyBAQCBzdGF0aWMgdm9pZCBub3BfY3Mo
+YW1kZ3B1X2RldmljZV9oYW5kbGUgZGV2aWNlLDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1p
+bHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGli
+cmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7
+Ij4NCiZuYnNwO+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAgmlmICh1c2VyX3F1ZXVlKSB7PC9kaXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0
+b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVs
+dmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KJm5i
+c3A74oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCCcmluZ19jb250ZXh0LSZndDtwbTRfZHcgPSBpYl9pbmZvLnNpemU7PC9k
+aXY+DQo8ZGl2IHN0eWxlPSJmb250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwg
+QXB0b3NfTVNGb250U2VydmljZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250
+LXNpemU6IDEycHQ7IGNvbG9yOiBibGFjazsiPg0KJm5ic3A74oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCYW1kZ3B1X3Vz
+ZXJfcXVldWVfc3VibWl0KGRldmljZSwgcmluZ19jb250ZXh0LCBpcF90eXBlLDwvZGl2Pg0KPGRp
+diBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01T
+Rm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAx
+MnB0OyBjb2xvcjogYmxhY2s7Ij4NCi3igILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigILigILigILigILigILigILigIIgaWJfaW5mby5pYl9tY19hZGRyZXNzKTs8
+L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3NfRW1iZWRkZWRGb250
+LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZv
+bnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQor4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCCIGliX2luZm8uaWJfbWNf
+YWRkcmVzcywgZmFsc2UpOzwvZGl2Pg0KPC9ibG9ja3F1b3RlPg0KPGRpdj5Ob3Qgc3VyZSBpZiBp
+dHMgdGhlIG1haWwgZWRpdG9yIG9yIHdoYXQgaSBzZWUgaXRzIHNoaWZ0ZWQgYnkgb25lLiBCdXQg
+bWFrZSBzdXJlIGluZGVudGF0aW9uIGlzIGNvcnJlY3QgYW5kIHlvdSBydW4gY2hlY2twYXRjaC5w
+bC48YnI+DQo8L2Rpdj4NCjxibG9ja3F1b3RlPg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFw
+dG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhl
+bHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCiZu
+YnNwO+KAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKAguKA
+guKAguKAguKAguKAguKAgmlndF9hc3NlcnRfZXEociwgMCk7PC9kaXY+DQo8ZGl2IHN0eWxlPSJm
+b250LWZhbWlseTogQXB0b3MsIEFwdG9zX0VtYmVkZGVkRm9udCwgQXB0b3NfTVNGb250U2Vydmlj
+ZSwgQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9y
+OiBibGFjazsiPg0KJm5ic3A74oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC4oCC
+4oCC4oCC4oCC4oCCfSBlbHNlIHs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRv
+cywgQXB0b3NfRW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2
+ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQombmJz
+cDvigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILigILi
+gILigILigILigILigIJyID0gYW1kZ3B1X2NzX3N1Ym1pdChjb250ZXh0LCAwLCAmYW1wO2lic19y
+ZXF1ZXN0LCAxKTs8L2Rpdj4NCjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcHRvcywgQXB0b3Nf
+RW1iZWRkZWRGb250LCBBcHRvc19NU0ZvbnRTZXJ2aWNlLCBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNh
+bnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IGJsYWNrOyI+DQotLSZuYnNwOzwvZGl2
+Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFw
+dG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1z
+aXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCjIuNDMuMDwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9u
+dC1mYW1pbHk6IEFwdG9zLCBBcHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2Us
+IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjog
+YmxhY2s7Ij4NCjxicj4NCjwvZGl2Pg0KPGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFwdG9zLCBB
+cHRvc19FbWJlZGRlZEZvbnQsIEFwdG9zX01TRm9udFNlcnZpY2UsIENhbGlicmksIEhlbHZldGlj
+YSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogYmxhY2s7Ij4NCjxicj4NCjwv
+ZGl2Pg0KPC9ibG9ja3F1b3RlPg0KPC9kaXY+DQo8L2Jsb2NrcXVvdGU+DQo8L2Rpdj4NCjwvZGl2
+Pg0KPC9ib2R5Pg0KPC9odG1sPg0K
 
-
-Regards
-Sunil Khatri
-
->
-> Thank you,
-> Yogesh
->
-> ------------------------------------------------------------------------
-> *From:* Khatri, Sunil <Sunil.Khatri@amd.com>
-> *Sent:* Friday, May 16, 2025 11:12 AM
-> *To:* Mohan Marimuthu, Yogesh <Yogesh.Mohanmarimuthu@amd.com>; 
-> igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
-> *Subject:* Re: [PATCH i-g-t 1/2] tests/amdgpu: userq skip waiting for 
-> signal fence
->
-> @yogesh
->
-> Functionally code looks good to me but i have a question,
->
-> Have you validated the any test case with the skip flag set to true. 
-> Test should not fail with that as its a negative test.
-> How the igt test work here is that when you return from the 
-> amdgpu_user_queue_submit function the next function checks the value 
-> written in the memory and test might fail if the values dont match.
->
->
-> Also, Indentation seems little off to me.
->
->
-> On 5/15/2025 12:13 PM, Mohan Marimuthu, Yogesh wrote:
->
->     [Public]
->
->
->     [Public]
->
->
->     For negative test cases where the job will not complete need to
->     skip signal fence. Pass a flag to amdgpu_user_queue_submit() to
->     skip signal fence wait.
->
->     Signed-off-by: Yogesh Mohan Marimuthu
->     <yogesh.mohanmarimuthu@amd.com> <mailto:yogesh.mohanmarimuthu@amd.com>
->     ---
->      lib/amdgpu/amd_command_submission.c |  2 +-
->      lib/amdgpu/amd_compute.c            |  2 +-
->      lib/amdgpu/amd_userq.c              | 36
->     +++++++++++++++--------------
->      lib/amdgpu/amd_userq.h              |  2 +-
->      tests/amdgpu/amd_basic.c            |  4 ++--
->      tests/amdgpu/amd_cs_nop.c           |  2 +-
->      6 files changed, 25 insertions(+), 23 deletions(-)
->
->     diff --git a/lib/amdgpu/amd_command_submission.c
->     b/lib/amdgpu/amd_command_submission.c
->     index 80d03a498..74091da5a 100644
->     --- a/lib/amdgpu/amd_command_submission.c
->     +++ b/lib/amdgpu/amd_command_submission.c
->     @@ -68,7 +68,7 @@ int
->     amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned
->     int ip_type
->           memcpy(ring_ptr, ring_context->pm4, ring_context->pm4_dw *
->     sizeof(*ring_context->pm4));
->           if (user_queue)
->     -           amdgpu_user_queue_submit(device, ring_context,
->     ip_type, ib_result_mc_address);
->     +           amdgpu_user_queue_submit(device, ring_context,
->     ip_type, ib_result_mc_address, false);
->
-> Indentation here
->
->           else {
->                 ring_context->ib_info.ib_mc_address =
->     ib_result_mc_address;
->                 ring_context->ib_info.size = ring_context->pm4_dw;
->     diff --git a/lib/amdgpu/amd_compute.c b/lib/amdgpu/amd_compute.c
->     index 95bfa53aa..008186049 100644
->     --- a/lib/amdgpu/amd_compute.c
->     +++ b/lib/amdgpu/amd_compute.c
->     @@ -91,7 +91,7 @@ void
->     amdgpu_command_submission_compute_nop(amdgpu_device_handle device,
->     bool use
->                 if (user_queue) {
->                       amdgpu_user_queue_submit(device, ring_context,
->     AMD_IP_COMPUTE,
->     -                                    ib_result_mc_address);
->     +                                    ib_result_mc_address, false);
->                 } else {
->                       memset(&ib_info, 0, sizeof(struct
->     amdgpu_cs_ib_info));
->                       ib_info.ib_mc_address = ib_result_mc_address;
->     diff --git a/lib/amdgpu/amd_userq.c b/lib/amdgpu/amd_userq.c
->     index 50d058609..727df8222 100644
->     --- a/lib/amdgpu/amd_userq.c
->     +++ b/lib/amdgpu/amd_userq.c
->     @@ -127,7 +127,7 @@ int
->     amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
->      }
->      void amdgpu_user_queue_submit(amdgpu_device_handle device, struct
->     amdgpu_ring_context *ring_context,
->     -                       unsigned int ip_type, uint64_t mc_address)
->     +                       unsigned int ip_type, uint64_t mc_address,
->     bool skip_signal)
->
-> Indentation here too.
->
->      {
->           int r;
->           uint32_t control = ring_context->pm4_dw;
->     @@ -166,22 +166,24 @@ void
->     amdgpu_user_queue_submit(amdgpu_device_handle device, struct
->     amdgpu_ring_co
->           /* Update the door bell */
->           ring_context->doorbell_cpu[DOORBELL_INDEX] =
->     *ring_context->wptr_cpu;
->     -     /* Add a fence packet for signal */
->     -     syncarray[0] = ring_context->timeline_syncobj_handle;
->     -     signal_data.queue_id = ring_context->queue_id;
->     -     signal_data.syncobj_handles = (uintptr_t)syncarray;
->     -     signal_data.num_syncobj_handles = 1;
->     -     signal_data.bo_read_handles = 0;
->     -     signal_data.bo_write_handles = 0;
->     -     signal_data.num_bo_read_handles = 0;
->     -     signal_data.num_bo_write_handles = 0;
->     -
->     -     r = amdgpu_userq_signal(device, &signal_data);
->     -     igt_assert_eq(r, 0);
->     +     if (!skip_signal) {
->     +           /* Add a fence packet for signal */
->     +           syncarray[0] = ring_context->timeline_syncobj_handle;
->     +           signal_data.queue_id = ring_context->queue_id;
->     +           signal_data.syncobj_handles = (uintptr_t)syncarray;
->     +           signal_data.num_syncobj_handles = 1;
->     +           signal_data.bo_read_handles = 0;
->     +           signal_data.bo_write_handles = 0;
->     +           signal_data.num_bo_read_handles = 0;
->     +           signal_data.num_bo_write_handles = 0;
->     +
->     +           r = amdgpu_userq_signal(device, &signal_data);
->     +           igt_assert_eq(r, 0);
->     -     r = amdgpu_cs_syncobj_wait(device,
->     &ring_context->timeline_syncobj_handle, 1, INT64_MAX,
->     -                        DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
->     -     igt_assert_eq(r, 0);
->     +           r = amdgpu_cs_syncobj_wait(device,
->     &ring_context->timeline_syncobj_handle, 1, INT64_MAX,
->     +                                                                 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL,
->     NULL);
->
-> Indentation.
->
->     +           igt_assert_eq(r, 0);
->     +     }
->      }
->      void amdgpu_user_queue_destroy(amdgpu_device_handle
->     device_handle, struct amdgpu_ring_context *ctxt,
->     @@ -456,7 +458,7 @@ int
->     amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
->      }
->      void amdgpu_user_queue_submit(amdgpu_device_handle device, struct
->     amdgpu_ring_context *ring_context,
->     -     unsigned int ip_type, uint64_t mc_address)
->     +     unsigned int ip_type, uint64_t mc_address, bool skip_signal)
->      {
->      }
->     diff --git a/lib/amdgpu/amd_userq.h b/lib/amdgpu/amd_userq.h
->     index b29e97ccf..dc39c1ca4 100644
->     --- a/lib/amdgpu/amd_userq.h
->     +++ b/lib/amdgpu/amd_userq.h
->     @@ -50,6 +50,6 @@ void
->     amdgpu_user_queue_destroy(amdgpu_device_handle device_handle,
->     struct amdgpu
->                              unsigned int ip_type);
->      void amdgpu_user_queue_submit(amdgpu_device_handle device, struct
->     amdgpu_ring_context *ring_context,
->     -                       unsigned int ip_type, uint64_t mc_address);
->     +                       unsigned int ip_type, uint64_t mc_address,
->     bool skip_signal);
->      #endif
->     diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
->     index 97a08a9a3..914d27909 100644
->     --- a/tests/amdgpu/amd_basic.c
->     +++ b/tests/amdgpu/amd_basic.c
->     @@ -607,7 +607,7 @@
->     amdgpu_sync_dependency_test(amdgpu_device_handle device_handle,
->     bool user_queue)
->           if (user_queue) {
->                 ring_context->pm4_dw = ib_info.size;
->                 amdgpu_user_queue_submit(device_handle, ring_context,
->     ip_block->type,
->     -                              ib_result_mc_address);
->     +                              ib_result_mc_address, false);
->           } else {
->                 r = amdgpu_cs_submit(context_handle[1], 0,
->     &ibs_request, 1);
->           }
->     @@ -647,7 +647,7 @@
->     amdgpu_sync_dependency_test(amdgpu_device_handle device_handle,
->     bool user_queue)
->           if (user_queue) {
->                 ring_context->pm4_dw = ib_info.size;
->                 amdgpu_user_queue_submit(device_handle, ring_context,
->     ip_block->type,
->     -                             ib_info.ib_mc_address);
->     +                              ib_info.ib_mc_address, false);
->           } else {
->                 r = amdgpu_cs_submit(context_handle[0], 0,
->     &ibs_request, 1);
->                 igt_assert_eq(r, 0);
->     diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
->     index 268bc9201..658c8d050 100644
->     --- a/tests/amdgpu/amd_cs_nop.c
->     +++ b/tests/amdgpu/amd_cs_nop.c
->     @@ -108,7 +108,7 @@ static void nop_cs(amdgpu_device_handle device,
->                       if (user_queue) {
->                             ring_context->pm4_dw = ib_info.size;
->                             amdgpu_user_queue_submit(device,
->     ring_context, ip_type,
->     -                                          ib_info.ib_mc_address);
->     +                                          ib_info.ib_mc_address,
->     false);
->
-> Not sure if its the mail editor or what i see its shifted by one. But 
-> make sure indentation is correct and you run checkpatch.pl.
->
->                             igt_assert_eq(r, 0);
->                       } else {
->                             r = amdgpu_cs_submit(context, 0,
->     &ibs_request, 1);
->     -- 
->     2.43.0
->
->
---------------7Wk8LYMs724EqPfPsEYUUuht
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 5/16/2025 3:33 PM, Mohan Marimuthu,
-      Yogesh wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:PH7PR12MB6633234BEAD5CA70DA8E35DEFF93A@PH7PR12MB6633.namprd12.prod.outlook.com">
-      
-      <style type="text/css" style="display:none;">P {margin-top:0;margin-bottom:0;}</style>
-      <p style="font-family:Calibri;font-size:10pt;color:#0000FF;margin:5pt;font-style:normal;font-weight:normal;text-decoration:none;" align="Left">
-        [AMD Official Use Only - AMD Internal Distribution Only]<br>
-      </p>
-      <br>
-      <div>
-        <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-          Hi Sunil,</div>
-        <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-          <br>
-        </div>
-        <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-          I did not test with true as logically the code flow does not
-          change if skip_signal is true.</div>
-        <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-          The indentation is off because of the editor I had used. I
-          will fix in the next patch update.</div>
-      </div>
-    </blockquote>
-    <p>If you are planning to use this in a new test case then we should
-      handle/declare the test as success on failure as this is a
-      negative test case. So this needs to be handled while writing a
-      new test case.</p>
-    <p><br>
-    </p>
-    <p>Regards<br>
-      Sunil Khatri <br>
-    </p>
-    <blockquote type="cite" cite="mid:PH7PR12MB6633234BEAD5CA70DA8E35DEFF93A@PH7PR12MB6633.namprd12.prod.outlook.com">
-      <div>
-        <div><br>
-        </div>
-        <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-          Thank you,</div>
-        <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-          Yogesh</div>
-        <div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-          <br>
-        </div>
-        <hr style="display: inline-block; width: 98%;">
-        <div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-          <b>From:</b>&nbsp;Khatri, Sunil <a class="moz-txt-link-rfc2396E" href="mailto:Sunil.Khatri@amd.com">&lt;Sunil.Khatri@amd.com&gt;</a><br>
-          <b>Sent:</b>&nbsp;Friday, May 16, 2025 11:12 AM<br>
-          <b>To:</b>&nbsp;Mohan Marimuthu, Yogesh
-          <a class="moz-txt-link-rfc2396E" href="mailto:Yogesh.Mohanmarimuthu@amd.com">&lt;Yogesh.Mohanmarimuthu@amd.com&gt;</a>;
-          <a class="moz-txt-link-abbreviated" href="mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.org</a>
-          <a class="moz-txt-link-rfc2396E" href="mailto:igt-dev@lists.freedesktop.org">&lt;igt-dev@lists.freedesktop.org&gt;</a><br>
-          <b>Subject:</b>&nbsp;Re: [PATCH i-g-t 1/2] tests/amdgpu: userq skip
-          waiting for signal fence
-        </div>
-        <div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-          <br>
-        </div>
-        <div style="background-color: white;">
-          <p>@yogesh<br>
-            <br>
-            Functionally code looks good to me but i have a question,<br>
-          </p>
-          <p>Have you validated the any test case with the skip flag set
-            to true. Test should not fail with that as its a negative
-            test.<br>
-            How the igt test work here is that when you return from the
-            amdgpu_user_queue_submit function the next function checks
-            the value written in the memory and test might fail if the
-            values dont match.<br>
-          </p>
-          <p><br>
-          </p>
-          <p>Also, Indentation seems little off to me.</p>
-          <p><br>
-          </p>
-          <div>On 5/15/2025 12:13 PM, Mohan Marimuthu, Yogesh wrote:<br>
-          </div>
-          <blockquote>
-            <p align="left" style="margin: 5pt; font-family: Calibri; font-size: 10pt; color: green;">
-              [Public]<br>
-            </p>
-            <div><br>
-            </div>
-            <p align="left" style="margin: 5pt; font-family: Calibri; font-size: 10pt; color: green;">
-              [Public]<br>
-            </p>
-            <div><br>
-            </div>
-            <div><span style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">For
-                negative test cases where the job will not complete need
-                to</span>
-            </div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              skip signal fence. Pass a flag to
-              amdgpu_user_queue_submit() to</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              skip signal fence wait.</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              <br>
-            </div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              Signed-off-by: Yogesh Mohan Marimuthu <a href="mailto:yogesh.mohanmarimuthu@amd.com" id="OWAb0ecdee4-a6f2-5efd-4c07-fa3f32380eff" class="OWAAutoLink" moz-do-not-send="true">
-                &lt;yogesh.mohanmarimuthu@amd.com&gt;</a></div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              ---</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;lib/amdgpu/amd_command_submission.c | &nbsp;2 +-</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;lib/amdgpu/amd_compute.c &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| &nbsp;2 +-</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;lib/amdgpu/amd_userq.c &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| 36
-              +++++++++++++++--------------</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;lib/amdgpu/amd_userq.h &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| &nbsp;2 +-</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;tests/amdgpu/amd_basic.c &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| &nbsp;4 ++--</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;tests/amdgpu/amd_cs_nop.c &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | &nbsp;2 +-</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;6 files changed, 25 insertions(+), 23 deletions(-)</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              <br>
-            </div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              diff --git a/lib/amdgpu/amd_command_submission.c
-              b/lib/amdgpu/amd_command_submission.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              index 80d03a498..74091da5a 100644</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              --- a/lib/amdgpu/amd_command_submission.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +++ b/lib/amdgpu/amd_command_submission.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              @@ -68,7 +68,7 @@ int
-              amdgpu_test_exec_cs_helper(amdgpu_device_handle device,
-              unsigned int ip_type</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     memcpy(ring_ptr, ring_context-&gt;pm4,
-              ring_context-&gt;pm4_dw * sizeof(*ring_context-&gt;pm4));</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     if (user_queue)</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -           amdgpu_user_queue_submit(device, ring_context,
-              ip_type, ib_result_mc_address);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           amdgpu_user_queue_submit(device, ring_context,
-              ip_type, ib_result_mc_address, false);</div>
-          </blockquote>
-          <div>Indentation here<br>
-          </div>
-          <blockquote>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     else {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           ring_context-&gt;ib_info.ib_mc_address =
-              ib_result_mc_address;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           ring_context-&gt;ib_info.size =
-              ring_context-&gt;pm4_dw;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              diff --git a/lib/amdgpu/amd_compute.c
-              b/lib/amdgpu/amd_compute.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              index 95bfa53aa..008186049 100644</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              --- a/lib/amdgpu/amd_compute.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +++ b/lib/amdgpu/amd_compute.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              @@ -91,7 +91,7 @@ void
-              amdgpu_command_submission_compute_nop(amdgpu_device_handle
-              device, bool use</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           if (user_queue) {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                 amdgpu_user_queue_submit(device,
-              ring_context, AMD_IP_COMPUTE,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -                                   
-              ib_result_mc_address);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +                                    ib_result_mc_address,
-              false);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           } else {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                 memset(&amp;ib_info, 0, sizeof(struct
-              amdgpu_cs_ib_info));</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                 ib_info.ib_mc_address =
-              ib_result_mc_address;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              diff --git a/lib/amdgpu/amd_userq.c
-              b/lib/amdgpu/amd_userq.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              index 50d058609..727df8222 100644</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              --- a/lib/amdgpu/amd_userq.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +++ b/lib/amdgpu/amd_userq.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              @@ -127,7 +127,7 @@ int
-              amdgpu_timeline_syncobj_wait(amdgpu_device_handle
-              device_handle,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;}</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;void amdgpu_user_queue_submit(amdgpu_device_handle
-              device, struct amdgpu_ring_context *ring_context,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -                  &nbsp; &nbsp; &nbsp;unsigned int ip_type, uint64_t
-              mc_address)</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +                  &nbsp; &nbsp; &nbsp;unsigned int ip_type, uint64_t
-              mc_address, bool skip_signal)</div>
-          </blockquote>
-          <div>Indentation here too.<br>
-          </div>
-          <blockquote>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;{</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     int r;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     uint32_t control = ring_context-&gt;pm4_dw;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              @@ -166,22 +166,24 @@ void
-              amdgpu_user_queue_submit(amdgpu_device_handle device,
-              struct amdgpu_ring_co</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     /* Update the door bell */</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     ring_context-&gt;doorbell_cpu[DOORBELL_INDEX] =
-              *ring_context-&gt;wptr_cpu;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     /* Add a fence packet for signal */</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     syncarray[0] =
-              ring_context-&gt;timeline_syncobj_handle;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     signal_data.queue_id = ring_context-&gt;queue_id;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     signal_data.syncobj_handles = (uintptr_t)syncarray;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     signal_data.num_syncobj_handles = 1;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     signal_data.bo_read_handles = 0;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     signal_data.bo_write_handles = 0;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     signal_data.num_bo_read_handles = 0;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     signal_data.num_bo_write_handles = 0;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     r = amdgpu_userq_signal(device, &amp;signal_data);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     igt_assert_eq(r, 0);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +     if (!skip_signal) {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           /* Add a fence packet for signal */</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           syncarray[0] =
-              ring_context-&gt;timeline_syncobj_handle;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           signal_data.queue_id =
-              ring_context-&gt;queue_id;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           signal_data.syncobj_handles =
-              (uintptr_t)syncarray;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           signal_data.num_syncobj_handles = 1;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           signal_data.bo_read_handles = 0;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           signal_data.bo_write_handles = 0;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           signal_data.num_bo_read_handles = 0;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           signal_data.num_bo_write_handles = 0;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           r = amdgpu_userq_signal(device,
-              &amp;signal_data);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           igt_assert_eq(r, 0);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     r = amdgpu_cs_syncobj_wait(device,
-              &amp;ring_context-&gt;timeline_syncobj_handle, 1,
-              INT64_MAX,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -                        &nbsp;
-              DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     igt_assert_eq(r, 0);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           r = amdgpu_cs_syncobj_wait(device,
-              &amp;ring_context-&gt;timeline_syncobj_handle, 1,
-              INT64_MAX,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-+                                                                 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL,
-              NULL);</div>
-          </blockquote>
-          <div>Indentation.<br>
-          </div>
-          <blockquote>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +           igt_assert_eq(r, 0);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +     }</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;}</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;void amdgpu_user_queue_destroy(amdgpu_device_handle
-              device_handle, struct amdgpu_ring_context *ctxt,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              @@ -456,7 +458,7 @@ int
-              amdgpu_timeline_syncobj_wait(amdgpu_device_handle
-              device_handle,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;}</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;void amdgpu_user_queue_submit(amdgpu_device_handle
-              device, struct amdgpu_ring_context *ring_context,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -     unsigned int ip_type, uint64_t mc_address)</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +     unsigned int ip_type, uint64_t mc_address, bool
-              skip_signal)</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;{</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;}</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              diff --git a/lib/amdgpu/amd_userq.h
-              b/lib/amdgpu/amd_userq.h</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              index b29e97ccf..dc39c1ca4 100644</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              --- a/lib/amdgpu/amd_userq.h</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +++ b/lib/amdgpu/amd_userq.h</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              @@ -50,6 +50,6 @@ void
-              amdgpu_user_queue_destroy(amdgpu_device_handle
-              device_handle, struct amdgpu</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                  &nbsp; &nbsp; &nbsp; unsigned int ip_type);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;void amdgpu_user_queue_submit(amdgpu_device_handle
-              device, struct amdgpu_ring_context *ring_context,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -                  &nbsp; &nbsp; &nbsp;unsigned int ip_type, uint64_t
-              mc_address);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +                  &nbsp; &nbsp; &nbsp;unsigned int ip_type, uint64_t
-              mc_address, bool skip_signal);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;#endif</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              diff --git a/tests/amdgpu/amd_basic.c
-              b/tests/amdgpu/amd_basic.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              index 97a08a9a3..914d27909 100644</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              --- a/tests/amdgpu/amd_basic.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +++ b/tests/amdgpu/amd_basic.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              @@ -607,7 +607,7 @@
-              amdgpu_sync_dependency_test(amdgpu_device_handle
-              device_handle, bool user_queue)</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     if (user_queue) {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           ring_context-&gt;pm4_dw = ib_info.size;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           amdgpu_user_queue_submit(device_handle,
-              ring_context, ip_block-&gt;type,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -                              ib_result_mc_address);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +                              ib_result_mc_address,
-              false);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     } else {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           r = amdgpu_cs_submit(context_handle[1], 0,
-              &amp;ibs_request, 1);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     }</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              @@ -647,7 +647,7 @@
-              amdgpu_sync_dependency_test(amdgpu_device_handle
-              device_handle, bool user_queue)</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     if (user_queue) {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           ring_context-&gt;pm4_dw = ib_info.size;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           amdgpu_user_queue_submit(device_handle,
-              ring_context, ip_block-&gt;type,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -                             ib_info.ib_mc_address);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +                              ib_info.ib_mc_address,
-              false);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;     } else {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           r = amdgpu_cs_submit(context_handle[0], 0,
-              &amp;ibs_request, 1);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;           igt_assert_eq(r, 0);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              diff --git a/tests/amdgpu/amd_cs_nop.c
-              b/tests/amdgpu/amd_cs_nop.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              index 268bc9201..658c8d050 100644</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              --- a/tests/amdgpu/amd_cs_nop.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +++ b/tests/amdgpu/amd_cs_nop.c</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              @@ -108,7 +108,7 @@ static void
-              nop_cs(amdgpu_device_handle device,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                 if (user_queue) {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                       ring_context-&gt;pm4_dw =
-              ib_info.size;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                       amdgpu_user_queue_submit(device,
-              ring_context, ip_type,</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              -                                         
-              ib_info.ib_mc_address);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              +                                         
-              ib_info.ib_mc_address, false);</div>
-          </blockquote>
-          <div>Not sure if its the mail editor or what i see its shifted
-            by one. But make sure indentation is correct and you run
-            checkpatch.pl.<br>
-          </div>
-          <blockquote>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                       igt_assert_eq(r, 0);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                 } else {</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              &nbsp;                       r = amdgpu_cs_submit(context, 0,
-              &amp;ibs_request, 1);</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              --&nbsp;</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              2.43.0</div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              <br>
-            </div>
-            <div style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: black;">
-              <br>
-            </div>
-          </blockquote>
-        </div>
-      </div>
-    </blockquote>
-  </body>
-</html>
-
---------------7Wk8LYMs724EqPfPsEYUUuht--
+--_000_PH7PR12MB6633068DCE50EC3252186CCFFF93APH7PR12MB6633namp_--
