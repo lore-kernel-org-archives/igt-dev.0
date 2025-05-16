@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5608C3ABC9
-	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 18:27:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC91EC3ABC9
+	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 18:27:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 80E5F10EB68;
-	Fri, 16 May 2025 18:27:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8340510EB69;
+	Fri, 16 May 2025 18:27:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gNK78eBe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NZbDnvTO";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC07810EB65
- for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 18:27:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A6F910EB69
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 18:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747420049; x=1778956049;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=wRk9o+1jQ3kwtzwv6uZMMfWcVB1XI3YHUCUFRUZlWZk=;
- b=gNK78eBe1lvToerTLRs7OU1MIBmkmhWJZmWQbatGeZ322df1EO2NBiNd
- 9CqFHm0LXXOPdyfpQ/A86KMIKteK9K2UPgP1FsM6/LcTSfHoWXScJUvMT
- N9eEjvLyeylIpGqk9zbx0KyJOxqPSVz6eohQf+IlPy06A/DsQp7r4y/O2
- YLYRzbPs3o6PsMil3kYs6K3e3fK1rjWtGV1G7gima+mhUDxC2/KZRkwbG
- ccTELtvjTRW7/l3LRRWTG1O19Jvc8mW9NqG4UIaluY8Ag67saEv/OH/5G
- 6kzxuCexw5+NE0WId+jJXPFDKiWwhW5QPYkwfUO105P8Zc040p2fF+edl g==;
-X-CSE-ConnectionGUID: Ee+alj5iRYGvJPh1Pwp5yA==
-X-CSE-MsgGUID: VYq9nmQ7Qam7X2ZYog0K3A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="60059819"
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="60059819"
+ t=1747420052; x=1778956052;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=+yvtvUCtIFkEymc13ikqKfA/wZZvypH4AQUTuYiDpU8=;
+ b=NZbDnvTOp1QfkiUGgsyXkfExf+TH0kkYQi5/7p+50XB18/R7V3CRascv
+ SatP5XeDmn9uXRXsRN2EhgJbuvuJMKuK1kGw2ImOJaovauOpkAPuYhPsH
+ mluEDsCJeNvjP8fxT6Z28J6TuLMq6S07Ep0tmpBfG2GyomInmexv4G408
+ 7LNzgQf7u6YsQ8ShRAxCgCSHto9NHCaDRb181CxuMpO/YQxW64LW4zpEh
+ M876LGlz8Z3zUUzSKDp2fYsB8v1o12qAgYiRmaOcCnz8qMUQza0LNk2BI
+ 6sfW4/sYiI15DaRF2jj2Wl6OrNEUJn47/H8Vrd1PQrff2H7lx67Ezzuuv w==;
+X-CSE-ConnectionGUID: pUHx0qhUSjid9z4y27Nteg==
+X-CSE-MsgGUID: F9lMIrFrT9Gk6qykWG2Dhw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="60059835"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="60059835"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2025 11:27:26 -0700
-X-CSE-ConnectionGUID: oi39FFg6Ty2v0IjHpZoCkQ==
-X-CSE-MsgGUID: 4Vcqj2CQTsex7FHSGbfZOQ==
+ 16 May 2025 11:27:32 -0700
+X-CSE-ConnectionGUID: XIsaoDpORiiulwrZ2UsUzQ==
+X-CSE-MsgGUID: T9xLNdI1TeSbZu53U7mLrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="143736856"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="143736873"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by orviesa004.jf.intel.com with ESMTP; 16 May 2025 11:27:24 -0700
+ by orviesa004.jf.intel.com with ESMTP; 16 May 2025 11:27:30 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com, adrinael@adrinael.net,
  Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH i-g-t v8 00/14] Extend IGT to support Android
-Date: Fri, 16 May 2025 18:26:50 +0000
-Message-ID: <20250516182704.97912-1-jeevaka.badrappan@intel.com>
+Subject: [PATCH i-g-t v8 02/14] lib: Include local igt procps,
+ glib header for Android
+Date: Fri, 16 May 2025 18:26:52 +0000
+Message-ID: <20250516182704.97912-3-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250516182704.97912-1-jeevaka.badrappan@intel.com>
+References: <20250516182704.97912-1-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,77 +71,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The primary objective of this proposal is to extend the functionality of
-IGT to Android environments.
+As procps, glib are not available in Android, added local stub
+procps, glib headers to build igt for Android.
 
-Enabling IGT on Android will allow developers to perform comprehensive
-testing of graphics drivers, ensuring robustness and reliability across
-different platforms.
+Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/igt_aux.c           | 4 ++++
+ lib/igt_chamelium.c     | 4 ++++
+ lib/igt_core.c          | 4 ++++
+ lib/igt_rc.h            | 4 ++++
+ lib/intel_batchbuffer.c | 4 ++++
+ 5 files changed, 20 insertions(+)
 
-By providing stub implementations for libraries that are not natively
-supported on Android, we will bridge the gap between Android and Linux
-environments, promoting code reuse and reducing development time.
-
-Changes done:
-- Create stub implementations of GLib, libunwind, libprocps, and
-other necessary libraries to satisfy IGT dependencies on Android.
-- Replace glib hash table with igt hash implementation
-
-Note:
-- Incase of linux systems, system libraries will be used whereas for
-Android stubs will be used with reduced test coverage.
-- Support will be provided to maintain Android support.
-
-Jeevaka Prabu Badrappan (13):
-  lib: Include local igt procps, glib header for Android
-  tests: Include local glib header for Android
-  runner: Include local glib header for Android
-  tools: Include local glib header for Android
-  tools/gputop: find program name from command line
-  lib/igt_dummyload: Avoid pthread_cancel use by overriding timer value
-  lib/xe/xe_spin: Avoid pthread_cancel use by introducing an exit flag
-  lib/igt_core: Add a dummy workaround when libunwind is not present
-  lib/igt_core: Conditionally define __noreturn for non-Android
-    platforms
-  tools/intel_gpu_top: Replace index with strchr
-  tests/intel/xe_create: Conditionally define PAGE_SIZE for non-Android
-    platforms
-  lib/igt_device_scan: Replace rindex with strrchr
-  lib/igt_device_scan: reuse igt hash
-
-Sapna (1):
-  Add stub for procps and glib
-
- include/android/glib.h     | 49 +++++++++++++++++++++++
- include/android/procps.h   | 47 ++++++++++++++++++++++
- lib/igt_aux.c              |  4 ++
- lib/igt_chamelium.c        |  4 ++
- lib/igt_core.c             | 15 +++++++
- lib/igt_core.h             |  2 +
- lib/igt_device_scan.c      | 82 +++++++++++++++++++-------------------
- lib/igt_dummyload.c        |  9 +++++
- lib/igt_rc.h               |  4 ++
- lib/intel_batchbuffer.c    |  4 ++
- lib/meson.build            |  1 +
- lib/xe/xe_spin.c           | 10 +++++
- meson.build                |  3 ++
- runner/executor.c          |  4 ++
- runner/settings.h          |  4 ++
- tests/intel/api_intel_bb.c |  4 ++
- tests/intel/gem_ccs.c      |  4 ++
- tests/intel/xe_ccs.c       |  4 ++
- tests/intel/xe_create.c    |  2 +
- tests/intel/xe_intel_bb.c  |  4 ++
- tests/testdisplay.h        |  4 ++
- tools/gputop.c             | 13 ++++--
- tools/igt_dp_compliance.h  |  4 ++
- tools/intel_gpu_top.c      |  2 +-
- tools/intel_pm_rpm.c       |  4 ++
- tools/lsgpu.c              |  4 ++
- 26 files changed, 247 insertions(+), 44 deletions(-)
- create mode 100644 include/android/glib.h
- create mode 100644 include/android/procps.h
-
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index f5bf48da6..3eca09cd9 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -53,11 +53,15 @@
+ #include <assert.h>
+ #include <grp.h>
+ 
++#ifndef ANDROID
+ #ifdef HAVE_LIBPROCPS
+ #  include <proc/readproc.h>
+ #else
+ #  include <libproc2/pids.h>
+ #endif
++#else
++#include "android/procps.h"
++#endif
+ 
+ #include <dirent.h>
+ #ifdef __linux__
+diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+index a96e36b5b..d19a78ffa 100644
+--- a/lib/igt_chamelium.c
++++ b/lib/igt_chamelium.c
+@@ -33,7 +33,11 @@
+ #include <xmlrpc-c/base.h>
+ #include <xmlrpc-c/client.h>
+ #include <pthread.h>
++#ifndef ANDROID
+ #include <glib.h>
++#else
++#include "android/glib.h"
++#endif
+ #include <pixman.h>
+ #include <cairo.h>
+ 
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index e1061a2ed..2cea47214 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -55,7 +55,11 @@
+ #include <limits.h>
+ #include <locale.h>
+ #include <uwildmat/uwildmat.h>
++#ifndef ANDROID
+ #include <glib.h>
++#else
++#include "android/glib.h"
++#endif
+ 
+ #include "drmtest.h"
+ #include "i915/gem_create.h"
+diff --git a/lib/igt_rc.h b/lib/igt_rc.h
+index 53e5ce669..d871b3b26 100644
+--- a/lib/igt_rc.h
++++ b/lib/igt_rc.h
+@@ -25,7 +25,11 @@
+ #ifndef IGT_RC_H
+ #define IGT_RC_H
+ 
++#ifndef ANDROID
+ #include <glib.h>
++#else
++#include "android/glib.h"
++#endif
+ 
+ extern GKeyFile *igt_key_file;
+ 
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index f7569e768..caf142949 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -26,7 +26,11 @@
+  **************************************************************************/
+ 
+ #include <search.h>
++#ifndef ANDROID
+ #include <glib.h>
++#else
++#include "android/glib.h"
++#endif
+ 
+ #include "gpgpu_fill.h"
+ #include "huc_copy.h"
 -- 
 2.49.0
 
