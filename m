@@ -4,149 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F67C3ABD8
-	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 05:51:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 321D5C3ABDD
+	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 06:49:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B97C010E99F;
-	Fri, 16 May 2025 05:51:47 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="MQCihXXL";
-	dkim-atps=neutral
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com
- (mail-bn1nam02on2081.outbound.protection.outlook.com [40.107.212.81])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 745AB10E99F
- for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 05:51:45 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SczBhZSGy9uh0IJR0Xx2UNQiT5ALZzhUMiF8oXfU2+W6LOb6QVPi+aDvk45x+PybJmC/GTdj9pEdnYYejqkkOKyhfe64YXvOv6HpjbdFnRR80hPCb0JuBd91l5ZqcvtRO/wI1vo1bP0UVwon/sxt2CT42gKdRWD6Y3rLDE1AB+VKsyymbaocnQ1ILf5Tg/lp7Q5KP250BJtSc5nT1geDgDd2HyQR2JcAEyYijX4meBvdu3ktkYXMIrwvzhx2OxKNhNcTS7V48eCIyVq8uDPjZXIHRHskWtmkk6ZNLaSdFEAk0fJb3l8R5JqG4n1+S8gbhLRn9isK6uhslikjJqkjEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XC/KdZvCU5mSdLFOXhB1mehYZgDHlolfJ7bMjHMa3Yw=;
- b=dz3dkshJs7Jxh1Un3v9nyYYnCwMsKAyCnsxprFueM+kjd/Cs5szusbaQCbQeKwwkhQouQc4/m8trAQc738AicZM1CvnTxmFVt/zDisfB0YFF57UTKnOwZDIXiq+V8EoparLhaoDnadq6EDuxQF5iMzH3AX1b+Wo6lUuTIIxCRnyzDEqgJUjir2pyFOWZ5FAfzc42ho6aPULP+VKP7z1kRAlwTmQH+8Jv4jkeYi/XpPeoR4iBvrAF9QZyawSdF7xhin8YC06LY7eVKNpPgCZxoan9AjYBbD/xNlhhHVHmsjYlPvSl2VE8KW1SiYAisfzjVxnQlBH//Hds5IGQTKIc4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XC/KdZvCU5mSdLFOXhB1mehYZgDHlolfJ7bMjHMa3Yw=;
- b=MQCihXXLjkjwsyAkpwcOmxDDt/0n0RSx7O6WvBHUzXG5Ryi6ffvVvvZq5YYhB6HttHevTeTTSRWLW17rIhRTDlEQWq9nHb+9yvpquhpkXIAtCEK+yBm60PIWfNqZOhRWmKk89atL9C9NIzdS1HAq2P9W+ENsLCgDdp2zH/tgnVE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5753.namprd12.prod.outlook.com (2603:10b6:208:390::15)
- by PH7PR12MB6934.namprd12.prod.outlook.com (2603:10b6:510:1b8::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.24; Fri, 16 May
- 2025 05:51:36 +0000
-Received: from BL1PR12MB5753.namprd12.prod.outlook.com
- ([fe80::2b0e:7fc3:1d21:5d2e]) by BL1PR12MB5753.namprd12.prod.outlook.com
- ([fe80::2b0e:7fc3:1d21:5d2e%3]) with mapi id 15.20.8722.027; Fri, 16 May 2025
- 05:51:36 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1244B10E117;
+	Fri, 16 May 2025 06:49:00 +0000 (UTC)
+Received: from c664b1dc75d1 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B761C10E117;
+ Fri, 16 May 2025 06:48:58 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="------------N6kVWGjOUlRbErCI6ScXQRaT"
-Message-ID: <2de8ccf8-6cac-4021-8b21-824040c16ca0@amd.com>
-Date: Fri, 16 May 2025 11:21:31 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/2] tests/amdgpu: add fwm preemption test case for
- userq
-To: "Mohan Marimuthu, Yogesh" <Yogesh.Mohanmarimuthu@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <PH7PR12MB663326AE2280463B9F393B1FFF90A@PH7PR12MB6633.namprd12.prod.outlook.com>
-Content-Language: en-US
-From: "Khatri, Sunil" <sukhatri@amd.com>
-In-Reply-To: <PH7PR12MB663326AE2280463B9F393B1FFF90A@PH7PR12MB6633.namprd12.prod.outlook.com>
-X-ClientProxiedBy: PN2PR01CA0077.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:23::22) To BL1PR12MB5753.namprd12.prod.outlook.com
- (2603:10b6:208:390::15)
+ boundary="===============7905076100595537599=="
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5753:EE_|PH7PR12MB6934:EE_
-X-MS-Office365-Filtering-Correlation-Id: 780ee1bf-3a72-452c-6bc0-08dd943db7f8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|8096899003;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?NmJvZUJnR1VlWnFyNU5FUVpuVXpkdVp3OW5jWmlIK3AvdjkzbVRvQ21GbGU1?=
- =?utf-8?B?NTJLMWFLaFBCM1ZTaHkva2tUVWxiOTdndWc0UC9ZOElVTC9yMDBVRzRUWWc0?=
- =?utf-8?B?Sm1HUDhuL3l5QUNJbkZxVEs5cUtYeUEvTDRyL0dVZFZWcEtXR2M0VDE0cmIy?=
- =?utf-8?B?bmk2WEI1OTc5ZndJWUdtWGlPMXRqb09sTFJ5WXI2blIyWjl2VlltM0pkS2Nw?=
- =?utf-8?B?QWtFRDR2bURuQzBMNzZXRGZwQTJtK2hNbURiM1hGNUFqdysvN3JEa0hPbjQr?=
- =?utf-8?B?WDdkajBRSHprd1hqRmZmOSt5WmJsdXZZSEVWcDRBN1RVT01MaXBya3B4Vk04?=
- =?utf-8?B?L2tPcWhIcnEzYm5RbFdVeDlFY2ZndVBIMExJYVpXR21zSWtCVFhjdlNoQm0w?=
- =?utf-8?B?T1Fla2MvTUxKQ3ZQOXNpdG1wa1pXRXZSU2lWWmlpdGxRa1ZxUTQ3T0drcDZR?=
- =?utf-8?B?eU5TZWphZmVNdnZiM054bXpkVUpZeXp0a2VqTGJiQ01QRU1sbDJmNTZtbDh6?=
- =?utf-8?B?aEJWZ294dFI2SmhIVnRxTktXWFdZdTFpQm5SYmNpallmNnR2clR4RHFYczB4?=
- =?utf-8?B?aG00NEhTcFROZFo0RUF1ZVhRcWs3c3RBUHM0c1ZLWTBGNnh0SlZUSmhSSG15?=
- =?utf-8?B?ME0yTWF3MVU4eW9JQVhNZG93WWpKK1lDNU5qeDYyeDVldWhqWVFtaVRUbWY5?=
- =?utf-8?B?SFAwVU1oNHpDcGk3QlBaVFJiN2tKUml4c09DSFpjWExYelJHbSsvSWpxWUJx?=
- =?utf-8?B?RFlPM2lseUgxWkVZeUNyVTU2cG9TS0l2ZXRqdUhadXpmaVJDWEQvb2drT2J3?=
- =?utf-8?B?czh2SmFYeE1CQmE3TDN6RjJwVFRVRGdtSmVtRFY4NmNxWXhOYkk3a1lKNjB5?=
- =?utf-8?B?WEJQVGx5bjVvQ2dkei9Mc1RNbVdPV0JRN1A1NkZHNXlPRnZvemY0TE5oMEY4?=
- =?utf-8?B?SHhkVWdxOFhGNXp0RDVRc05pS0JXWHlCZmFyTmEyV2MxZG5VQmtTdzBQeUxo?=
- =?utf-8?B?SythSURKN29Bbk12a2t1Y1NpVDNOcWtaSERoT01GaVV6T2hXZDRML3NaMkJu?=
- =?utf-8?B?VVdPclRGc2h6RXNHOVY5MzBXeHU3cDhhT3ByWXVVeDgzNXFBMXUzUHYrYWxX?=
- =?utf-8?B?VEZGSmFlMnZKbHpxQ1c0blJiVkp4czZhc2RGQmwxZW1USDRYelZZMnVJZnVi?=
- =?utf-8?B?cG5SUzMrcnRXcGk2OVF4UWllN3FrZ3JXWWVOQ2I5S3NUeFNWaHdUeVE1UjRI?=
- =?utf-8?B?ZkdCQlk5QVl6SDFKanRRVWFSYStWdExYU0RtK3IwNzEvNnFNMnc2Qk1Zd2E3?=
- =?utf-8?B?L2UxU0lRTHgvSUZ0SzBEQytyRDVPVTU2b1U3Z1ZCM0hZRFpQdzQyS3JFZ2Zq?=
- =?utf-8?B?cE1QeFIzRTdJTUN0dDZYbEszZSsySGpnbXora2ppRmxnazJ2TXI0ZHZiRUF0?=
- =?utf-8?B?enBhOU1oNE5UcEQrRmxNUVdJVDRKN2tnZWpiM2Eydmp0WkcrM0xacjNHcWxM?=
- =?utf-8?B?ZnhYWWQrU3N4ZzdTcWRzVU1zUVA4VEFrWkIwWUpMTDZqS2d6RnU3TUpxSGY5?=
- =?utf-8?B?ODcvQW9Tbzh3d0FzQ3NITTBlZlJrZ0MzclpXWkROSFA2UTNiRTdKWUhRMTMy?=
- =?utf-8?B?L1VpQnpaM1lYSHZJZ1MyYTN3ZGZYckgzYlVSNk1ZeHNxSTFmK1QzU044TnFZ?=
- =?utf-8?B?WUJCTmJISmFrZDFZV0MydldsQ1pxbm8vMkJMRlNzMURRbDVBWkRQb2FCOVpp?=
- =?utf-8?B?ekRnWVFrbFR6aXZJK3VvWUxUbHpRVC9aeWY4U2ZleU1SYUg2d3l1WXI0NkQw?=
- =?utf-8?B?S2cwK05XTDdxMWVIYkVWUTBPbmVqYWl3ZnM0dHArY29vQ1NOM1VINk9kN3No?=
- =?utf-8?B?UWdhNjQyUUJCcExXRGxBT2tOM0dCVGxQUitGZ1JMNDRrdlFWanA2UnFKbWJh?=
- =?utf-8?Q?G+N7Qo12JsA=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR12MB5753.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(8096899003); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z05ZRk41OGJONnlLV1M0cVBtSnhTejl5ZzA5bWptUmNRNmRjSUF1cjNsbWdk?=
- =?utf-8?B?T0xhOFVKNnJYRWkxRWhvdHp0czJ0M1NqcFZVSVFFOVN3ZTZJN2hZZlZoUjdm?=
- =?utf-8?B?d09LZEVVTllGdHJpdnhMaXZJZG9qcDdodmtuRDM0djhRTjJYcHBwcWpzcHZH?=
- =?utf-8?B?blIyV1diRjB3bVR0azlxUjhNQ2x6M1VLejM0RTJ6MVpnWmFlVE5IUys0Sm5u?=
- =?utf-8?B?OE5zWFpUaHZERnpzL1Y2eUU0TmdJaUhKdGZQbFk0enpGNmdEMGExV0pGTGlV?=
- =?utf-8?B?UkRMWUxnNlJ5V3hQa2dXTG9oQTViVmRxYlUzSDZFZ1dmc0MxaTJyTGRUYlYy?=
- =?utf-8?B?WnlEeEZmSjVwWkIzWWRrYzVaT00vL3ZRcVd6UUZBTHU3UzBLR2xjVjFuYnc0?=
- =?utf-8?B?MmZwZFJVZlVNalhjK0t4Ujl5clFtU1YrY1ZTYXBBT1luVEQ2VGpWaWwyYkQ2?=
- =?utf-8?B?MVBjWU1YWXdtWDRkcmZVKy9mZmxybHdQRkJqSHdsbmlyaEFLblRWNGN1MGk3?=
- =?utf-8?B?Y0lneWpzUjkzQXM3N2xFTHBnM0xIYW1EMzZNNElVanF4eWw3blorVDZJa3JK?=
- =?utf-8?B?dUtvM0N3N2FRZzRDaWt0WEdKRUVGQTRNRThsVktOOW5wTGhhWEh0TDZkZ2Zi?=
- =?utf-8?B?ajd6ODQweXdXUEtUOUs1TXhDenJMN1Z5QzRxZHhpWjNJR25WMXprZ2pSTkp3?=
- =?utf-8?B?bkJwZWFBem45UjJFa0JvbHBTV3kyUWF2ZnZrV1pLZnlFUFBxWS9sUk8yU2tn?=
- =?utf-8?B?VjY1a041eVJRU3JpdkZYS0d0bWFyWDlkbFBuME5WZnNNdVJjYzdUWFhPTTg3?=
- =?utf-8?B?b0IvR1Y5RVVEU3RYM3YyaHorWXhNQ0FWY1c5clBXQUVWaVdCZ0xickUzeW8z?=
- =?utf-8?B?NWduSm5WVnhVektXbmFkbUVtNmtuZ0xtUGxNejI4QVdqYWx3OVBXckRFSFZY?=
- =?utf-8?B?YzZ0Y1Zib2pQbEVpMnFTclJwKzByMCsxclZpZEszcGhMdVczWXdUSkUwR3Ez?=
- =?utf-8?B?Q05scG1oMUFEOU1MVVFYVUo4aHdOejN6TWVuRjRNMFVMRXhOalB3aFVMK3py?=
- =?utf-8?B?WEViYVhYbzZOQVJxQVUxZWNtZkdGQ24xQjhFTnlkc2dFenlkdVBGQkk2dUND?=
- =?utf-8?B?QU1Ud01SUlZSWSttUG12UmIvQjMzMjAyVTlKd09sY0dqSGZrK1IvOFNTVEZO?=
- =?utf-8?B?cmluREhDcmdROVJFMC9RaEtIa2NCb3pURXIvQWNEN2pGOEh2dWRMOFhicWtL?=
- =?utf-8?B?SllIZ0QyTkdDMkdqSVUrMjlZcFFaS3ZBN0RJOUJ2M2FUNGN5aUVpOHdkZGRZ?=
- =?utf-8?B?UURIMWFUZFNDNzlDMjFKVXZtZVNhN2N1anljUFBNck1uRitxUU9oUGh0eW44?=
- =?utf-8?B?S3ErZmMwcFdhOVhYWERUYzNtQWZORjg2TERYbktFVXZLUHFrZHRQZWdSM0dy?=
- =?utf-8?B?N1U1TDk0eEFadDlMOEJRMUtYdnBnbjB0MjU4MW1ET083WFRjOWVmMVBlSjFa?=
- =?utf-8?B?NXZocldDOWhkcTFXVGhmKzZyNkFxTWloUGJkN2tudHBHQjBZcGZwaUtGdVo5?=
- =?utf-8?B?ZVpQMHFFRVgySGhvUURuVjhKcTNablFpYkFtRXZPaG1Dak9MQVBmL3A2RVV1?=
- =?utf-8?B?ZFduR2dEaWZ1ZXJZY21xR0trdnNkaWorS2JMbDYydHJCZTJKamxiKzh3b2J3?=
- =?utf-8?B?MFFkS0xFazM0bWpVMTNlWU9DL3YyTEpuUFg0T3EzcUhqb1R1KytBQ0NpZkJE?=
- =?utf-8?B?YVg0Y3Fsc1k0MUphZ2t0YkpQNm5MMVhRT1ZFRHhYdk5YQkR5cENia0FYbnBy?=
- =?utf-8?B?Q1E0RTExeUNsUmlwZGczUGRzZVlVay9uSGs3VFNQZnRUdE5DMXl1YitHU1BJ?=
- =?utf-8?B?YWRLM2xOQlJHT2sxMGkwWlBVVlk0MUtKbDVkZU56Z04rdS9XTUNGb2dwQ1dB?=
- =?utf-8?B?eE1POEdpNlpObkhQMUh1NGRjb2hWRG0wOHRZeUQ5OTkyaytzcXJXM3ZqVXlL?=
- =?utf-8?B?ZStjRTRRZzBhYUZCaTZWamNyTFZUZm9MWDRlVTQyT2NTdG5pQ0tTcWhtOGJt?=
- =?utf-8?B?cWl2dlgwQklJRHFXeTh6WjFYbCtUTnlDcTl4ZFV0SkhQMWthR3ViUmpqVnZQ?=
- =?utf-8?Q?aiFT7sISXVddYMWG8JifGhp3v?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 780ee1bf-3a72-452c-6bc0-08dd943db7f8
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5753.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 05:51:36.1913 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hBaNLvR+ur5xELSwKdTbjH74HbdPFVup7spXj5T8yPFMDYe2AxwXeHiQ/7A6JYsNvQxrSC97dAIikGIzS7REJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6934
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fmmap=3A_?=
+ =?utf-8?q?Acquire_rpm_reference_for_pci-membarrier-paraller_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kolanupaka Naveena" <kolanupaka.naveena@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 16 May 2025 06:48:58 -0000
+Message-ID: <174737813874.86767.5922964038479829303@c664b1dc75d1>
+X-Patchwork-Hint: ignore
+References: <20250516052429.2780531-1-kolanupaka.naveena@intel.com>
+In-Reply-To: <20250516052429.2780531-1-kolanupaka.naveena@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -159,951 +37,390 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------N6kVWGjOUlRbErCI6ScXQRaT
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+--===============7905076100595537599==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/intel/xe_mmap: Acquire rpm reference for pci-membarrier-paraller test
+URL   : https://patchwork.freedesktop.org/series/149092/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_8365 -> IGTPW_13137
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Additional (1): bat-arlh-2 
+  Missing    (2): fi-ilk-650 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_13137 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@eof:
+    - bat-arlh-2:         NOTRUN -> [SKIP][1] ([i915#11345] / [i915#11346]) +3 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@fbdev@eof.html
+
+  * igt@fbdev@info:
+    - bat-arlh-2:         NOTRUN -> [SKIP][2] ([i915#11346] / [i915#1849])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@fbdev@info.html
+
+  * igt@gem_lmem_swapping@basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][3] ([i915#10213] / [i915#11346] / [i915#11671]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_mmap@basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][4] ([i915#11343] / [i915#11346])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_mmap@basic.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][5] ([i915#10197] / [i915#10211] / [i915#11346] / [i915#11725])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_render_tiled_blits@basic.html
+
+  * igt@gem_tiled_blits@basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][6] ([i915#11346] / [i915#12637]) +4 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_tiled_blits@basic.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-arlh-2:         NOTRUN -> [SKIP][7] ([i915#10206] / [i915#11346] / [i915#11724])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-arlh-2:         NOTRUN -> [SKIP][8] ([i915#10209] / [i915#11346] / [i915#11681])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live:
+    - bat-arlh-3:         [PASS][9] -> [DMESG-FAIL][10] ([i915#14243]) +1 other test dmesg-fail
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-arlh-3/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-3/igt@i915_selftest@live.html
+    - bat-arlh-2:         NOTRUN -> [INCOMPLETE][11] ([i915#14046]) +1 other test incomplete
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][12] -> [DMESG-FAIL][13] ([i915#12061]) +1 other test dmesg-fail
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-dg2-11:         [PASS][14] -> [DMESG-FAIL][15] ([i915#12061]) +1 other test dmesg-fail
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+
+  * igt@intel_hwmon@hwmon-read:
+    - bat-arlh-2:         NOTRUN -> [SKIP][16] ([i915#11346] / [i915#11680] / [i915#7707]) +1 other test skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@intel_hwmon@hwmon-read.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-arlh-2:         NOTRUN -> [SKIP][17] ([i915#10200] / [i915#11346] / [i915#11666] / [i915#12203])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-x-tiled-legacy:
+    - bat-arlh-2:         NOTRUN -> [SKIP][18] ([i915#10200] / [i915#11346] / [i915#11666]) +8 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@kms_addfb_basic@basic-x-tiled-legacy.html
+
+  * igt@kms_psr@psr-primary-page-flip:
+    - bat-arlh-2:         NOTRUN -> [SKIP][19] ([i915#11346]) +32 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@kms_psr@psr-primary-page-flip.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-arlh-2:         NOTRUN -> [SKIP][20] ([i915#10208] / [i915#11346] / [i915#8809])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-arlh-2:         NOTRUN -> [SKIP][21] ([i915#10212] / [i915#11346] / [i915#11726])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@prime_vgem@basic-fence-read.html
+
+  * igt@prime_vgem@basic-read:
+    - bat-arlh-2:         NOTRUN -> [SKIP][22] ([i915#10214] / [i915#11346] / [i915#11726])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@prime_vgem@basic-read.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-arlh-2:         NOTRUN -> [SKIP][23] ([i915#10216] / [i915#11346] / [i915#11723])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-6:         [DMESG-WARN][24] ([i915#13890]) -> [PASS][25] +78 other tests pass
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][26] ([i915#12061] / [i915#14204]) -> [DMESG-FAIL][27] ([i915#12061] / [i915#13929])
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-atsm-1/igt@i915_selftest@live.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-atsm-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-atsm-1:         [DMESG-FAIL][28] ([i915#14204]) -> [DMESG-FAIL][29] ([i915#13929])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-atsm-1/igt@i915_selftest@live@mman.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-atsm-1/igt@i915_selftest@live@mman.html
+
+  
+  [i915#10197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10197
+  [i915#10200]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200
+  [i915#10206]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10206
+  [i915#10208]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10208
+  [i915#10209]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209
+  [i915#10211]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10211
+  [i915#10212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212
+  [i915#10213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213
+  [i915#10214]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214
+  [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
+  [i915#11343]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11343
+  [i915#11345]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11345
+  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
+  [i915#11666]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666
+  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
+  [i915#11680]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11680
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
+  [i915#11723]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723
+  [i915#11724]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11724
+  [i915#11725]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11725
+  [i915#11726]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11726
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203
+  [i915#12637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12637
+  [i915#13890]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890
+  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
+  [i915#14046]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046
+  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
+  [i915#14243]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14243
+  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
+  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
+  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
 
 
-Also, just to be sure that we arent arent suing dma/sdma engine as its 
-not supporter yet in userq. So i am assuming dma write isnt exactly 
-using the sdma engine ?
+Build changes
+-------------
 
-Other wise code looks god to me. With the above understanding, code is 
-Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8365 -> IGTPW_13137
+  * Linux: CI_DRM_16551 -> CI_DRM_16555
+
+  CI-20190529: 20190529
+  CI_DRM_16551: 8e7665352fa586bdac8eadb3cce10bf78a4a58d4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16555: bf8c2c7bea6b5a38b6a3c24fdfc72b1ab5c03c28 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13137: 0b5f7ff96a6a8dfd97e8a1a7bcdffac8ab5ec38a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8365: 8365
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/index.html
+
+--===============7905076100595537599==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-On 5/15/2025 12:13 PM, Mohan Marimuthu, Yogesh wrote:
->
-> [Public]
->
->
-> [Public]
->
->
-> The fwm premption is tested using below algorithm,
-> 1) create 2 queues
-> 2) submit dma write job with unsatisfied fence on both the queues
-> 3) if the dma write passes then the test has failed
->
-> Signed-off-by: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
-> ---
->  lib/amdgpu/amd_PM4.h     |  17 ++++
->  tests/amdgpu/amd_basic.c | 178 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 195 insertions(+)
->
-> diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
-> index 8f59b4223..d6a8446f4 100644
-> --- a/lib/amdgpu/amd_PM4.h
-> +++ b/lib/amdgpu/amd_PM4.h
-> @@ -195,6 +195,23 @@
->  #define PACKET3_INDIRECT_BUFFER 0x3F
->  #define PACKET3_PROTECTED_FENCE_SIGNAL  0xd0
-> +#define PACKET3_FENCE_WAIT_MULTI  0xd1
-> +#define          FENCE_WAIT_MULTI_PREEMPTABLE(x) ((x) << 1)
-> +           /* 0 - no
-> +            * 1 - yes
-> +            */
-> +#define          FENCE_WAIT_MULTI_CACHE_POLICY(x)  ((x) << 2)
-> +           /* 0 - LRU
-> +            * 1 - Stream
-> +            * 2 - noa
-> +            * 3 - Bypass
-> +            */
-> +#define          FENCE_WAIT_MULTI_ENGINE(x)  ((x) << 8)
-> +           /* 0 - me
-> +            * 1 - pfp
-> +            */
-> +#define          FENCE_WAIT_MULTI_POLL_INTERVAL(x) ((x) << 16)
-> +
->  #define    PACKET3_WRITE_DATA                        0x37
->  #define          WRITE_DATA_DST_SEL(x) ((x) << 8)
->             /* 0 - register
-> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-> index 914d27909..00651e8a2 100644
-> --- a/tests/amdgpu/amd_basic.c
-> +++ b/tests/amdgpu/amd_basic.c
-> @@ -689,6 +689,176 @@ amdgpu_sync_dependency_test(amdgpu_device_handle 
-> device_handle, bool user_queue)
->       free(ring_context);
->  }
-> +static void
-> +amdgpu_fwm_preempt_test(amdgpu_device_handle device_handle)
-> +{
-> +     struct amdgpu_ring_context *ring_context_1;
-> +     struct amdgpu_ring_context *ring_context_2;
-> +     struct amdgpu_cmd_base *cmd_base_1 = get_cmd_base();
-> +     struct amdgpu_cmd_base *cmd_base_2 = get_cmd_base();
-> +     const struct amdgpu_ip_block_version *ip_block = 
-> get_ip_block(device_handle, AMD_IP_GFX);
-> +     int r;
-> +
-> +     ring_context_1 = calloc(1, sizeof(struct amdgpu_ring_context));
-> +     igt_assert(ring_context_1);
-> +     amdgpu_user_queue_create(device_handle, ring_context_1, 
-> ip_block->type);
-> +
-> +     ring_context_2 = calloc(1, sizeof(struct amdgpu_ring_context));
-> +     igt_assert(ring_context_2);
-> +     amdgpu_user_queue_create(device_handle, ring_context_2, 
-> ip_block->type);
-> +
-> +     /* allocate bo1 for dma, bo2 for fence and bo3 for ib for render 
-> context 1 */
-> +     ring_context_1->write_length = 1024;
-> +     r = amdgpu_bo_alloc_and_map_sync(device_handle , 
-> ring_context_1->write_length, 4096,
-> +                              AMDGPU_GEM_DOMAIN_GTT, 
-> AMDGPU_GEM_CREATE_CPU_GTT_USWC,
-> +                              AMDGPU_VM_MTYPE_UC, &ring_context_1->bo,
-> +                              (void **)&ring_context_1->bo_cpu, 
-> &ring_context_1->bo_mc,
-> +                              &ring_context_1->va_handle,
-> +                              ring_context_1->timeline_syncobj_handle,
-> +                              ++ring_context_1->point, true);
-> +     igt_assert_eq(r, 0);
-> +     memset((void *)ring_context_1->bo_cpu, 0, 
-> ring_context_1->write_length);
-> +
-> +     r = amdgpu_bo_alloc_and_map_sync(device_handle, 4096, 4096, 
-> AMDGPU_GEM_DOMAIN_GTT,
-> +                              AMDGPU_GEM_CREATE_CPU_GTT_USWC, 
-> AMDGPU_VM_MTYPE_UC,
-> +                              &ring_context_1->bo2, (void 
-> **)&ring_context_1->bo2_cpu,
-> +                              &ring_context_1->bo_mc2, 
-> &ring_context_1->va_handle2,
-> +                              ring_context_1->timeline_syncobj_handle,
-> +                              ++ring_context_1->point, true);
-> +     igt_assert_eq(r, 0);
-> +     memset((void *)ring_context_1->bo2_cpu, 0, 4096);
-> +
-> +     r = amdgpu_bo_alloc_and_map_sync(device_handle, 8192, 4096, 
-> AMDGPU_GEM_DOMAIN_GTT,
-> +                              AMDGPU_GEM_CREATE_CPU_GTT_USWC, 
-> AMDGPU_VM_MTYPE_UC,
-> +                              &ring_context_1->bo3, (void 
-> **)&ring_context_1->bo3_cpu,
-> +                              &ring_context_1->bo_mc3, 
-> &ring_context_1->va_handle3,
-> +                              ring_context_1->timeline_syncobj_handle,
-> +                              ++ring_context_1->point, true);
-> +     igt_assert_eq(r, 0);
-> +     memset((void *)ring_context_1->bo3_cpu, 0, 4096);
-> +
-> +     /* allocate bo1 for dma, bo2 for fence and bo3 for ib for render 
-> context 2 */
-> +     ring_context_2->write_length = 1024;
-> +     r = amdgpu_bo_alloc_and_map_sync(device_handle , 
-> ring_context_2->write_length, 4096,
-> +                              AMDGPU_GEM_DOMAIN_GTT, 
-> AMDGPU_GEM_CREATE_CPU_GTT_USWC,
-> +                              AMDGPU_VM_MTYPE_UC, &ring_context_2->bo,
-> +                              (void **)&ring_context_2->bo_cpu, 
-> &ring_context_2->bo_mc,
-> +                              &ring_context_2->va_handle,
-> +                              ring_context_2->timeline_syncobj_handle,
-> +                              ++ring_context_2->point, true);
-> +     igt_assert_eq(r, 0);
-> +     memset((void *)ring_context_2->bo_cpu, 0, 
-> ring_context_2->write_length);
-> +
-> +     r = amdgpu_bo_alloc_and_map_sync(device_handle, 4096, 4096, 
-> AMDGPU_GEM_DOMAIN_GTT,
-> +                              AMDGPU_GEM_CREATE_CPU_GTT_USWC, 
-> AMDGPU_VM_MTYPE_UC,
-> +                              &ring_context_2->bo2, (void 
-> **)&ring_context_2->bo2_cpu,
-> +                              &ring_context_2->bo_mc2, 
-> &ring_context_2->va_handle2,
-> +                              ring_context_2->timeline_syncobj_handle,
-> +                              ++ring_context_2->point, true);
-> +     igt_assert_eq(r, 0);
-> +     memset((void *)ring_context_2->bo2_cpu, 0, 4096);
-> +
-> +     r = amdgpu_bo_alloc_and_map_sync(device_handle, 8192, 4096, 
-> AMDGPU_GEM_DOMAIN_GTT,
-> +                              AMDGPU_GEM_CREATE_CPU_GTT_USWC, 
-> AMDGPU_VM_MTYPE_UC,
-> +                              &ring_context_2->bo3, (void 
-> **)&ring_context_2->bo3_cpu,
-> +                              &ring_context_2->bo_mc3, 
-> &ring_context_2->va_handle3,
-> +                              ring_context_2->timeline_syncobj_handle,
-> +                              ++ring_context_2->point, true);
-> +     igt_assert_eq(r, 0);
-> +     memset((void *)ring_context_2->bo3_cpu, 0, 4096);
-> +
-> +
-> +     /* wait for gtt mapping to complete */
-> +     r = amdgpu_timeline_syncobj_wait(device_handle, 
-> ring_context_1->timeline_syncobj_handle,
-> +                      ���       ring_context_1->point);
-> +     igt_assert_eq(r, 0);
-> +     r = amdgpu_timeline_syncobj_wait(device_handle, 
-> ring_context_2->timeline_syncobj_handle,
-> +                              ring_context_2->point);
-> +     igt_assert_eq(r, 0);
-> +
-> +     /* assign cmd buffer for ring context 1 */
-> +     cmd_base_1->attach_buf(cmd_base_1, (void 
-> *)ring_context_1->bo3_cpu, 8192);
-> +
-> +     /* create the ib for ring context 1 */
-> +     cmd_base_1->emit(cmd_base_1, PACKET3(PACKET3_FENCE_WAIT_MULTI, 4 
-> * 1));
-> +     cmd_base_1->emit(cmd_base_1, FENCE_WAIT_MULTI_ENGINE(1) | 
-> FENCE_WAIT_MULTI_PREEMPTABLE(1) |
-> +                     FENCE_WAIT_MULTI_CACHE_POLICY(3) | 
-> FENCE_WAIT_MULTI_POLL_INTERVAL(4));
-> +     cmd_base_1->emit(cmd_base_1, ring_context_1->bo_mc2);
-> +     cmd_base_1->emit(cmd_base_1, ring_context_1->bo_mc2 >> 32);
-> +     cmd_base_1->emit(cmd_base_1, 10); // random incorrect fence value
-> +     cmd_base_1->emit(cmd_base_1, 0);
-> +
-> +     cmd_base_1->emit(cmd_base_1, PACKET3(PACKET3_WRITE_DATA, 3));
-> +     cmd_base_1->emit(cmd_base_1, WRITE_DATA_DST_SEL(5) | WR_CONFIRM |
-> +                     WRITE_DATA_CACHE_POLICY(3));
-> +     cmd_base_1->emit(cmd_base_1, 0xfffffffc & ring_context_1->bo_mc);
-> +     cmd_base_1->emit(cmd_base_1, (0xffffffff00000000 & 
-> ring_context_1->bo_mc) >> 32);
-> +     cmd_base_1->emit(cmd_base_1, 0xdead0000);
-> +
-> +     ring_context_1->pm4_dw = cmd_base_1->cdw;
-> +     amdgpu_user_queue_submit(device_handle, ring_context_1, 
-> ip_block->type,
-> +                        ring_context_1->bo_mc3, true);
-> +
-> +     /* if fwm packet got skipped by firmware then 0xdead000 will be 
-> written */
-> +     usleep(1000 * 100);
-> +     igt_assert_eq_u32(*ring_context_1->bo_cpu, 0);
-> +
-> +     /* assign cmd buffer for ring context 2 */
-> +     cmd_base_2->attach_buf(cmd_base_2, (void 
-> *)ring_context_2->bo3_cpu, 8192);
-> +
-> +     /* create the ib for ring context 2 */
-> +     cmd_base_2->emit(cmd_base_2, PACKET3(PACKET3_FENCE_WAIT_MULTI, 4 
-> * 1));
-> +     cmd_base_2->emit(cmd_base_2, FENCE_WAIT_MULTI_ENGINE(1) | 
-> FENCE_WAIT_MULTI_PREEMPTABLE(1) |
-> +                     FENCE_WAIT_MULTI_CACHE_POLICY(3) | 
-> FENCE_WAIT_MULTI_POLL_INTERVAL(4));
-> +     cmd_base_2->emit(cmd_base_2, ring_context_2->bo_mc2);
-> +     cmd_base_2->emit(cmd_base_2, ring_context_2->bo_mc2 >> 32);
-> +     cmd_base_2->emit(cmd_base_2, 10); // random incorrect fence value
-> +     cmd_base_2->emit(cmd_base_2, 0);
-> +
-> +     cmd_base_2->emit(cmd_base_2, PACKET3(PACKET3_WRITE_DATA, 3));
-> +     cmd_base_2->emit(cmd_base_2, WRITE_DATA_DST_SEL(5) | WR_CONFIRM |
-> +                     WRITE_DATA_CACHE_POLICY(3));
-> +     cmd_base_2->emit(cmd_base_2, 0xfffffffc & ring_context_2->bo_mc);
-> +     cmd_base_2->emit(cmd_base_2, (0xffffffff00000000 & 
-> ring_context_2->bo_mc) >> 32);
-> +     cmd_base_2->emit(cmd_base_2, 0xdead0000);
-> +
-> +     ring_context_2->pm4_dw = cmd_base_2->cdw;
-> +     amdgpu_user_queue_submit(device_handle, ring_context_2, 
-> ip_block->type,
-> +                        ring_context_2->bo_mc3, true);
-> +
-> +     /* if fwm packet got skipped by firmware then 0xdead000 will be 
-> written */
-> +     usleep(1000 * 10);
-> +     igt_assert_eq_u32(*ring_context_1->bo_cpu, 0);
-> +     igt_assert_eq_u32(*ring_context_2->bo_cpu, 0);
-> +
-> +     /* set the correct fence value to finish executing the ib */
-> +     *ring_context_1->bo2_cpu = 10;
-> +     *ring_context_2->bo2_cpu = 10;
-> +     usleep(1000 * 10);
-> +     igt_assert_eq_u32(*ring_context_1->bo_cpu, 0xdead0000);
-> +     igt_assert_eq_u32(*ring_context_2->bo_cpu, 0xdead0000);
-> +
-> +     amdgpu_user_queue_destroy(device_handle, ring_context_1, 
-> ip_block->type);
-> +     amdgpu_user_queue_destroy(device_handle, ring_context_2, 
-> ip_block->type);
-> +
-> +     amdgpu_bo_unmap_and_free(ring_context_1->bo, 
-> ring_context_1->va_handle,
-> +                        ring_context_1->bo_mc, 
-> ring_context_1->write_length);
-> +     amdgpu_bo_unmap_and_free(ring_context_1->bo2, 
-> ring_context_1->va_handle2,
-> +                        ring_context_1->bo_mc2, 4096);
-> +     amdgpu_bo_unmap_and_free(ring_context_1->bo3, 
-> ring_context_1->va_handle3,
-> +                        ring_context_1->bo_mc3, 8192);
-> +     amdgpu_bo_unmap_and_free(ring_context_2->bo, 
-> ring_context_2->va_handle,
-> +                        ring_context_2->bo_mc, 
-> ring_context_2->write_length);
-> +     amdgpu_bo_unmap_and_free(ring_context_2->bo2, 
-> ring_context_2->va_handle2,
-> +                        ring_context_2->bo_mc2, 4096);
-> +     amdgpu_bo_unmap_and_free(ring_context_2->bo3, 
-> ring_context_2->va_handle3,
-> +                        ring_context_2->bo_mc3, 8192);
-> +     free_cmd_base(cmd_base_1);
-> +     free_cmd_base(cmd_base_2);
-> +     free(ring_context_1);
-> +     free(ring_context_2);
-> +}
-> +
->  igt_main
->  {
->       amdgpu_device_handle device;
-> @@ -815,6 +985,14 @@ igt_main
->                   amdgpu_sync_dependency_test(device, true);
->             }
->       }
-> +
-> +     igt_describe("Check-FWM-preempt-using-GFX-UMQ");
-> +     igt_subtest_with_dynamic("fwm-prempt-test-with-IP-GFX-UMQ") {
-> +           if (userq_arr_cap[AMD_IP_GFX]) {
-> +                 igt_dynamic_f("fwm-preempt-test-with-gfx-umq")
-> +                 amdgpu_fwm_preempt_test(device);
-> +           }
-> +     }
->  #endif
->       igt_fixture {
-> -- 
-> 2.43.0
->
->
---------------N6kVWGjOUlRbErCI6ScXQRaT
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <p><br>
-    </p>
-    <p>Also, just to be sure that we arent arent suing dma/sdma engine
-      as its not supporter yet in userq. So i am assuming dma write isnt
-      exactly using the sdma engine ?</p>
-    <p>Other wise code looks god to me. With the above understanding,
-      code is Reviewed-by:
-      Sunil Khatri <a class="moz-txt-link-rfc2396E" href="mailto:sunil.khatri@amd.com">&lt;sunil.khatri@amd.com&gt;</a></p>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 5/15/2025 12:13 PM, Mohan Marimuthu,
-      Yogesh wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:PH7PR12MB663326AE2280463B9F393B1FFF90A@PH7PR12MB6633.namprd12.prod.outlook.com">
-      
-      <style type="text/css" style="display:none;">P {margin-top:0;margin-bottom:0;}</style>
-      <p style="font-family:Calibri;font-size:10pt;color:#008000;margin:5pt;font-style:normal;font-weight:normal;text-decoration:none;" align="Left">
-        [Public]<br>
-      </p>
-      <br>
-      <div>
-        <p style="font-family:Calibri;font-size:10pt;color:#008000;margin:5pt;font-style:normal;font-weight:normal;text-decoration:none;" align="Left">
-          [Public]<br>
-        </p>
-        <br>
-        <div><span style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">The
-            fwm premption is tested using below algorithm,</span>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            1) create 2 queues</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            2) submit dma write job with unsatisfied fence on both the
-            queues</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            3) if the dma write passes then the test has failed</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            <br>
-          </div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            Signed-off-by: Yogesh Mohan Marimuthu
-            <a class="moz-txt-link-rfc2396E" href="mailto:yogesh.mohanmarimuthu@amd.com">&lt;yogesh.mohanmarimuthu@amd.com&gt;</a></div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            ---</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;lib/amdgpu/amd_PM4.h &nbsp; &nbsp; | &nbsp;17 ++++</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;tests/amdgpu/amd_basic.c | 178
-            +++++++++++++++++++++++++++++++++++++++</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;2 files changed, 195 insertions(+)</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            <br>
-          </div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            index 8f59b4223..d6a8446f4 100644</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            --- a/lib/amdgpu/amd_PM4.h</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +++ b/lib/amdgpu/amd_PM4.h</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            @@ -195,6 +195,23 @@</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;#define PACKET3_INDIRECT_BUFFER &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            0x3F</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;#define PACKET3_PROTECTED_FENCE_SIGNAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp;0xd0</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +#define PACKET3_FENCE_WAIT_MULTI &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp;0xd1</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +#define          FENCE_WAIT_MULTI_PREEMPTABLE(x) &nbsp; &nbsp; &nbsp; &nbsp;
-            ((x) &lt;&lt; 1)</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +           /* 0 - no</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +            * 1 - yes</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +            */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +#define          FENCE_WAIT_MULTI_CACHE_POLICY(x) &nbsp; &nbsp; &nbsp;
-            &nbsp;((x) &lt;&lt; 2)</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +           /* 0 - LRU</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +            * 1 - Stream</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +            * 2 - noa</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +            * 3 - Bypass</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +            */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +#define          FENCE_WAIT_MULTI_ENGINE(x) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            &nbsp;((x) &lt;&lt; 8)</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +           /* 0 - me</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +            * 1 - pfp</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +            */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +#define          FENCE_WAIT_MULTI_POLL_INTERVAL(x) &nbsp; &nbsp; &nbsp;
-            ((x) &lt;&lt; 16)</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;#define    PACKET3_WRITE_DATA                        0x37</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;#define          WRITE_DATA_DST_SEL(x) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            ((x) &lt;&lt; 8)</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;           /* 0 - register</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            diff --git a/tests/amdgpu/amd_basic.c
-            b/tests/amdgpu/amd_basic.c</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            index 914d27909..00651e8a2 100644</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            --- a/tests/amdgpu/amd_basic.c</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +++ b/tests/amdgpu/amd_basic.c</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            @@ -689,6 +689,176 @@
-            amdgpu_sync_dependency_test(amdgpu_device_handle
-            device_handle, bool user_queue)</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;     free(ring_context);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;}</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +static void</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +amdgpu_fwm_preempt_test(amdgpu_device_handle device_handle)</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +{</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     struct amdgpu_ring_context *ring_context_1;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     struct amdgpu_ring_context *ring_context_2;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     struct amdgpu_cmd_base *cmd_base_1 = get_cmd_base();</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     struct amdgpu_cmd_base *cmd_base_2 = get_cmd_base();</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     const struct amdgpu_ip_block_version *ip_block =
-            get_ip_block(device_handle, AMD_IP_GFX);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     int r;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     ring_context_1 = calloc(1, sizeof(struct
-            amdgpu_ring_context));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert(ring_context_1);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_user_queue_create(device_handle,
-            ring_context_1, ip_block-&gt;type);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     ring_context_2 = calloc(1, sizeof(struct
-            amdgpu_ring_context));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert(ring_context_2);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_user_queue_create(device_handle,
-            ring_context_2, ip_block-&gt;type);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* allocate bo1 for dma, bo2 for fence and bo3 for ib
-            for render context 1 */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     ring_context_1-&gt;write_length = 1024;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     r = amdgpu_bo_alloc_and_map_sync(device_handle ,
-            ring_context_1-&gt;write_length, 4096,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              AMDGPU_GEM_DOMAIN_GTT,
-            AMDGPU_GEM_CREATE_CPU_GTT_USWC,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              AMDGPU_VM_MTYPE_UC,
-            &amp;ring_context_1-&gt;bo,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              (void
-            **)&amp;ring_context_1-&gt;bo_cpu,
-            &amp;ring_context_1-&gt;bo_mc,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            &amp;ring_context_1-&gt;va_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            ring_context_1-&gt;timeline_syncobj_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              ++ring_context_1-&gt;point,
-            true);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq(r, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     memset((void *)ring_context_1-&gt;bo_cpu, 0,
-            ring_context_1-&gt;write_length);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     r = amdgpu_bo_alloc_and_map_sync(device_handle, 4096,
-            4096, AMDGPU_GEM_DOMAIN_GTT,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            AMDGPU_GEM_CREATE_CPU_GTT_USWC, AMDGPU_VM_MTYPE_UC,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              &amp;ring_context_1-&gt;bo2,
-            (void **)&amp;ring_context_1-&gt;bo2_cpu,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            &amp;ring_context_1-&gt;bo_mc2,
-            &amp;ring_context_1-&gt;va_handle2,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            ring_context_1-&gt;timeline_syncobj_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              ++ring_context_1-&gt;point,
-            true);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq(r, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     memset((void *)ring_context_1-&gt;bo2_cpu, 0, 4096);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     r = amdgpu_bo_alloc_and_map_sync(device_handle, 8192,
-            4096, AMDGPU_GEM_DOMAIN_GTT,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            AMDGPU_GEM_CREATE_CPU_GTT_USWC, AMDGPU_VM_MTYPE_UC,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              &amp;ring_context_1-&gt;bo3,
-            (void **)&amp;ring_context_1-&gt;bo3_cpu,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            &amp;ring_context_1-&gt;bo_mc3,
-            &amp;ring_context_1-&gt;va_handle3,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            ring_context_1-&gt;timeline_syncobj_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              ++ring_context_1-&gt;point,
-            true);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq(r, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     memset((void *)ring_context_1-&gt;bo3_cpu, 0, 4096);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* allocate bo1 for dma, bo2 for fence and bo3 for ib
-            for render context 2 */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     ring_context_2-&gt;write_length = 1024;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     r = amdgpu_bo_alloc_and_map_sync(device_handle ,
-            ring_context_2-&gt;write_length, 4096,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              AMDGPU_GEM_DOMAIN_GTT,
-            AMDGPU_GEM_CREATE_CPU_GTT_USWC,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              AMDGPU_VM_MTYPE_UC,
-            &amp;ring_context_2-&gt;bo,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              (void
-            **)&amp;ring_context_2-&gt;bo_cpu,
-            &amp;ring_context_2-&gt;bo_mc,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            &amp;ring_context_2-&gt;va_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            ring_context_2-&gt;timeline_syncobj_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              ++ring_context_2-&gt;point,
-            true);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq(r, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     memset((void *)ring_context_2-&gt;bo_cpu, 0,
-            ring_context_2-&gt;write_length);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     r = amdgpu_bo_alloc_and_map_sync(device_handle, 4096,
-            4096, AMDGPU_GEM_DOMAIN_GTT,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            AMDGPU_GEM_CREATE_CPU_GTT_USWC, AMDGPU_VM_MTYPE_UC,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              &amp;ring_context_2-&gt;bo2,
-            (void **)&amp;ring_context_2-&gt;bo2_cpu,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            &amp;ring_context_2-&gt;bo_mc2,
-            &amp;ring_context_2-&gt;va_handle2,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            ring_context_2-&gt;timeline_syncobj_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              ++ring_context_2-&gt;point,
-            true);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq(r, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     memset((void *)ring_context_2-&gt;bo2_cpu, 0, 4096);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     r = amdgpu_bo_alloc_and_map_sync(device_handle, 8192,
-            4096, AMDGPU_GEM_DOMAIN_GTT,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            AMDGPU_GEM_CREATE_CPU_GTT_USWC, AMDGPU_VM_MTYPE_UC,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              &amp;ring_context_2-&gt;bo3,
-            (void **)&amp;ring_context_2-&gt;bo3_cpu,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            &amp;ring_context_2-&gt;bo_mc3,
-            &amp;ring_context_2-&gt;va_handle3,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                             
-            ring_context_2-&gt;timeline_syncobj_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              ++ring_context_2-&gt;point,
-            true);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq(r, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     memset((void *)ring_context_2-&gt;bo3_cpu, 0, 4096);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* wait for gtt mapping to complete */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     r = amdgpu_timeline_syncobj_wait(device_handle,
-            ring_context_1-&gt;timeline_syncobj_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                      ���       ring_context_1-&gt;point);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq(r, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     r = amdgpu_timeline_syncobj_wait(device_handle,
-            ring_context_2-&gt;timeline_syncobj_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                              ring_context_2-&gt;point);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq(r, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* assign cmd buffer for ring context 1 */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;attach_buf(cmd_base_1, (void
-            *)ring_context_1-&gt;bo3_cpu, 8192);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* create the ib for ring context 1 */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1,
-            PACKET3(PACKET3_FENCE_WAIT_MULTI, 4 * 1));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1,
-            FENCE_WAIT_MULTI_ENGINE(1) | FENCE_WAIT_MULTI_PREEMPTABLE(1)
-            |</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                  &nbsp; &nbsp;FENCE_WAIT_MULTI_CACHE_POLICY(3) |
-            FENCE_WAIT_MULTI_POLL_INTERVAL(4));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1,
-            ring_context_1-&gt;bo_mc2);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1,
-            ring_context_1-&gt;bo_mc2 &gt;&gt; 32);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1, 10); // random
-            incorrect fence value</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1,
-            PACKET3(PACKET3_WRITE_DATA, 3));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1, WRITE_DATA_DST_SEL(5)
-            | WR_CONFIRM |</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                  &nbsp; &nbsp;WRITE_DATA_CACHE_POLICY(3));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1, 0xfffffffc &amp;
-            ring_context_1-&gt;bo_mc);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1, (0xffffffff00000000
-            &amp; ring_context_1-&gt;bo_mc) &gt;&gt; 32);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_1-&gt;emit(cmd_base_1, 0xdead0000);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     ring_context_1-&gt;pm4_dw = cmd_base_1-&gt;cdw;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_user_queue_submit(device_handle,
-            ring_context_1, ip_block-&gt;type,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                        ring_context_1-&gt;bo_mc3, true);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* if fwm packet got skipped by firmware then
-            0xdead000 will be written */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     usleep(1000 * 100);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq_u32(*ring_context_1-&gt;bo_cpu, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* assign cmd buffer for ring context 2 */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;attach_buf(cmd_base_2, (void
-            *)ring_context_2-&gt;bo3_cpu, 8192);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* create the ib for ring context 2 */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2,
-            PACKET3(PACKET3_FENCE_WAIT_MULTI, 4 * 1));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2,
-            FENCE_WAIT_MULTI_ENGINE(1) | FENCE_WAIT_MULTI_PREEMPTABLE(1)
-            |</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                  &nbsp; &nbsp;FENCE_WAIT_MULTI_CACHE_POLICY(3) |
-            FENCE_WAIT_MULTI_POLL_INTERVAL(4));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2,
-            ring_context_2-&gt;bo_mc2);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2,
-            ring_context_2-&gt;bo_mc2 &gt;&gt; 32);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2, 10); // random
-            incorrect fence value</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2,
-            PACKET3(PACKET3_WRITE_DATA, 3));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2, WRITE_DATA_DST_SEL(5)
-            | WR_CONFIRM |</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                  &nbsp; &nbsp;WRITE_DATA_CACHE_POLICY(3));</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2, 0xfffffffc &amp;
-            ring_context_2-&gt;bo_mc);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2, (0xffffffff00000000
-            &amp; ring_context_2-&gt;bo_mc) &gt;&gt; 32);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     cmd_base_2-&gt;emit(cmd_base_2, 0xdead0000);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     ring_context_2-&gt;pm4_dw = cmd_base_2-&gt;cdw;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_user_queue_submit(device_handle,
-            ring_context_2, ip_block-&gt;type,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                        ring_context_2-&gt;bo_mc3, true);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* if fwm packet got skipped by firmware then
-            0xdead000 will be written */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     usleep(1000 * 10);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq_u32(*ring_context_1-&gt;bo_cpu, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq_u32(*ring_context_2-&gt;bo_cpu, 0);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     /* set the correct fence value to finish executing the
-            ib */</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     *ring_context_1-&gt;bo2_cpu = 10;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     *ring_context_2-&gt;bo2_cpu = 10;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     usleep(1000 * 10);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq_u32(*ring_context_1-&gt;bo_cpu,
-            0xdead0000);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_assert_eq_u32(*ring_context_2-&gt;bo_cpu,
-            0xdead0000);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_user_queue_destroy(device_handle,
-            ring_context_1, ip_block-&gt;type);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_user_queue_destroy(device_handle,
-            ring_context_2, ip_block-&gt;type);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_bo_unmap_and_free(ring_context_1-&gt;bo,
-            ring_context_1-&gt;va_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                        ring_context_1-&gt;bo_mc,
-            ring_context_1-&gt;write_length);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_bo_unmap_and_free(ring_context_1-&gt;bo2,
-            ring_context_1-&gt;va_handle2,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                        ring_context_1-&gt;bo_mc2, 4096);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_bo_unmap_and_free(ring_context_1-&gt;bo3,
-            ring_context_1-&gt;va_handle3,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                        ring_context_1-&gt;bo_mc3, 8192);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_bo_unmap_and_free(ring_context_2-&gt;bo,
-            ring_context_2-&gt;va_handle,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                        ring_context_2-&gt;bo_mc,
-            ring_context_2-&gt;write_length);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_bo_unmap_and_free(ring_context_2-&gt;bo2,
-            ring_context_2-&gt;va_handle2,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                        ring_context_2-&gt;bo_mc2, 4096);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     amdgpu_bo_unmap_and_free(ring_context_2-&gt;bo3,
-            ring_context_2-&gt;va_handle3,</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                        ring_context_2-&gt;bo_mc3, 8192);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     free_cmd_base(cmd_base_1);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     free_cmd_base(cmd_base_2);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     free(ring_context_1);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     free(ring_context_2);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +}</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;igt_main</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;{</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;     amdgpu_device_handle device;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            @@ -815,6 +985,14 @@ igt_main</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;                 amdgpu_sync_dependency_test(device, true);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;           }</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;     }</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     igt_describe(&quot;Check-FWM-preempt-using-GFX-UMQ&quot;);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-+     igt_subtest_with_dynamic(&quot;fwm-prempt-test-with-IP-GFX-UMQ&quot;) {</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +           if (userq_arr_cap[AMD_IP_GFX]) {</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-+                 igt_dynamic_f(&quot;fwm-preempt-test-with-gfx-umq&quot;)</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +                 amdgpu_fwm_preempt_test(device);</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +           }</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            +     }</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;#endif</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            &nbsp;     igt_fixture {</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            --&nbsp;</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            2.43.0</div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            <br>
-          </div>
-          <div class="elementToProof" style="font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-            <br>
-          </div>
-        </div>
-      </div>
-    </blockquote>
-  </body>
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_mmap: Acquire rpm reference for pci-membarrier-paraller test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149092/">https://patchwork.freedesktop.org/series/149092/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8365 -&gt; IGTPW_13137</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Additional (1): bat-arlh-2 <br />
+  Missing    (2): fi-ilk-650 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13137 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@eof:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@fbdev@eof.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11345">i915#11345</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213">i915#10213</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671">i915#11671</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap@basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11343">i915#11343</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10197">i915#10197</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10211">i915#10211</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11725">i915#11725</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_blits@basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12637">i915#12637</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10206">i915#10206</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11724">i915#11724</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209">i915#10209</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-3/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14243">i915#14243</a>) +1 other test dmesg-fail</li>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046">i915#14046</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@intel_hwmon@hwmon-read:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11680">i915#11680</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200">i915#10200</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666">i915#11666</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203">i915#12203</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-x-tiled-legacy:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@kms_addfb_basic@basic-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10200">i915#10200</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666">i915#11666</a>) +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-page-flip:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10208">i915#10208</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809">i915#8809</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212">i915#10212</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11726">i915#11726</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-read:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214">i915#10214</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11726">i915#11726</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-arlh-2/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216">i915#10216</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723">i915#11723</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> +78 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8365/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13137/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8365 -&gt; IGTPW_13137</li>
+<li>Linux: CI_DRM_16551 -&gt; CI_DRM_16555</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16551: 8e7665352fa586bdac8eadb3cce10bf78a4a58d4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16555: bf8c2c7bea6b5a38b6a3c24fdfc72b1ab5c03c28 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13137: 0b5f7ff96a6a8dfd97e8a1a7bcdffac8ab5ec38a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8365: 8365</p>
+
+</body>
 </html>
 
---------------N6kVWGjOUlRbErCI6ScXQRaT--
+--===============7905076100595537599==--
