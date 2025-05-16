@@ -4,54 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B846EC3DA4A
-	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 05:06:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA070C3ABD8
+	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 05:07:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 53E9010E99B;
-	Fri, 16 May 2025 05:06:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D9E510E109;
+	Fri, 16 May 2025 05:07:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PzInW+/B";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zfo87TX/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DF3110E99B
- for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 05:06:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 560AB10E109
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 05:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747372007; x=1778908007;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=VO22GqLmDw3Y2uchPFA3sYq15mPC6TydHZe+Ei2uypo=;
- b=PzInW+/BuWRxAuhPdSB6m7PId+3jcxeprq/1QDdtn8G83Xe4AD2HGARr
- vjv8V8aapKrINPK0VmX0VeWiG2vXq/KGJLhpXp8kOcPdBhE7lTPtbXaeo
- 4EUHnwB5DtpYdOl3kaa6x2AtVMiQIuaRbktGQiZmKKRS04GmZtNmghvKE
- cCLeMK28SkvWexlubxzvmCBd/pDy4PRGvmElF9gnBjHAvmPpFPi50DuXf
- MtiUYo0hI3H8ojuhv/VVF4kLngXqIaFMuY+XqRpTHpo78CCEAb+QncAKp
- rnZVLd7UkPXM7gLLTVC2YRm/j2dEpPXDQZTIzjFlcguortI8si6fh+IHl g==;
-X-CSE-ConnectionGUID: XaDZof7LSGqxaAWe8TXblQ==
-X-CSE-MsgGUID: PNDp0xRoTfeOdeFLJYDTvQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="49318368"
-X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; d="scan'208";a="49318368"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2025 22:06:39 -0700
-X-CSE-ConnectionGUID: CA8n+MvFThOS9JvCeh5SPw==
-X-CSE-MsgGUID: mOGByE2kTG2jYF6sVh95uw==
+ t=1747372038; x=1778908038;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=cm47wdT+gFy4/LEbXd8L9SfWX1URq4FULwrLOLGsL0c=;
+ b=Zfo87TX/VszJmqdR8yyGb3TgOWJDVA0lc9j9ExYWaH8vCD2QZHOErEnp
+ iIvBa/8FgYgrs/+EehIyQ6/I7a5hq7wGKM2UPCXsFlodsGY9fpfBjInbZ
+ hnERwhZBRCgbLYN02ONt7Un85Lb7N9TWE7LEnl8+kJAuVPbmNXtLd5OEo
+ 6MaoLN0DCIeSobkCR1R3EQp+Wd5mIhvTeSHEPNy0/wTmDDWgPK0Q59aqo
+ wc3SDG4fKPX05jh520v/Au7IRZyMRh22VvcFO/QrIjds1eUulB20YuQpN
+ AK1AjSph2ThEj5YtJYTw3EHDNJHgD8iVxcSSrrDN7ApTes95GMDkpGrNc A==;
+X-CSE-ConnectionGUID: sLO/iSQsTd2V8OqUuASs9Q==
+X-CSE-MsgGUID: J0cVKy1KQmKcT1SszJllXw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="60724271"
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; d="scan'208";a="60724271"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 22:07:18 -0700
+X-CSE-ConnectionGUID: qUGnP7tcS2KamOK4iVDuxQ==
+X-CSE-MsgGUID: 7x0jwFD/QomJD15kGoZ41Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; d="scan'208";a="143536459"
-Received: from unknown (HELO naveena-Super-Server.iind.intel.com)
- ([10.190.238.67])
- by orviesa004.jf.intel.com with ESMTP; 15 May 2025 22:06:38 -0700
-From: Kolanupaka Naveena <kolanupaka.naveena@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
- Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_mmap: Acquire rpm reference for
- pci-membarrier-paraller test
-Date: Fri, 16 May 2025 10:54:29 +0530
-Message-Id: <20250516052429.2780531-1-kolanupaka.naveena@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; d="scan'208";a="143350206"
+Received: from ettammin-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.80])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 22:07:15 -0700
+Date: Fri, 16 May 2025 07:07:12 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Badrappan, Jeevaka" <jeevaka.badrappan@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
+ "markyacoub@google.com" <markyacoub@google.com>,
+ "seanpaul@google.com" <seanpaul@google.com>, 
+ "Santa, Carlos" <carlos.santa@intel.com>, "Singh,
+ Sapna1" <sapna1.singh@intel.com>
+Subject: Re: [PATCH v4 15/15] lib/igt_device_scan: reuse igt hash
+Message-ID: <ikpkzdh2fcxuxdpdmyqbj74wa4ixyug3nkjsabt4b2u6bfwxzt@lroprjiumfkv>
+References: <20250507160148.53857-1-jeevaka.badrappan@intel.com>
+ <20250507160148.53857-16-jeevaka.badrappan@intel.com>
+ <grv3t2jfem5voffjcwst5osi2dlpxsr2wxyeuhm33c4w4tw3wo@rhrj75opoukb>
+ <IA0PR11MB7353F8B754EFBB51A2DA3592ED90A@IA0PR11MB7353.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <IA0PR11MB7353F8B754EFBB51A2DA3592ED90A@IA0PR11MB7353.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,53 +75,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-During the test, the device is entering into runtime suspend, which is
-leading the device to d3hot or d3cold mode. Hence the read is giving
-a special value 0xffffffff.
+On Thu, May 15, 2025 at 08:23:33PM +0200, Badrappan, Jeevaka wrote:
+>    >  #include <libudev.h>
+>    >  #ifdef __linux__
+>    >  #include <linux/limits.h>
+>    > @@ -224,8 +224,8 @@ struct igt_device {
+>    >        /* Point to vendor spec if can be found */
+>    > 
+>    >        /* Properties / sysattrs rewriten from udev lists */
+>    > -     GHashTable *props_ht;
+>    > -     GHashTable *attrs_ht;
+>    > +     struct igt_map *props_map;
+>    > +     struct igt_map *attrs_map;
+>    > 
+>    >        /* Most usable variables from udev device */
+>    >        char *subsystem;
+>    > @@ -464,6 +464,11 @@ static bool is_on_blacklist(const char *what)
+>    > 
+>    >  }
+>    > 
+>    > +static int key_equals(const void *key1, const void *key2)
+>    > +{
+>    > +     return strcmp((char *)key1, (char *)key2) == 0;
+>    > +}
+>    > +
+>    >  static struct igt_device *igt_device_new(void)
+>    >  {
+>    >        struct igt_device *dev;
+>    > @@ -472,14 +477,14 @@ static struct igt_device *igt_device_new(void)
+>    >        if (!dev)
+>    >                return NULL;
+>    > 
+>    > -     dev->attrs_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
+>    > -                                           free, free);
+>    > -     dev->props_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
+>    > -                                           free, free);
+>    > +     dev->attrs_map = igt_map_create(igt_map_hash_32, key_equals);
+>    > +     dev->props_map = igt_map_create(igt_map_hash_32, key_equals);
+>    > 
+>    > -     if (dev->attrs_ht && dev->props_ht)
+>    > +     if (dev->attrs_map && dev->props_map)
+>    >                return dev;
+>    > 
+>    > +     igt_map_destroy(dev->attrs_map, NULL);
+>    > +     igt_map_destroy(dev->props_map, NULL);
+> 
+>    > What for are you freeing the map here?
+>    map and also device is freed if creation of attrs_map  or props_map fails.
 
-To avoid this issue acquired an rpm ref to keep the device awake
-during the access.
+Ok, now I get your point. Makes sense.
 
-Suggested-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Kolanupaka Naveena <kolanupaka.naveena@intel.com>
----
- tests/intel/xe_mmap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+--
+Zbigniew
 
-diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-index 5fd641075..51c27586f 100644
---- a/tests/intel/xe_mmap.c
-+++ b/tests/intel/xe_mmap.c
-@@ -11,6 +11,8 @@
-  * Functionality: mmap
-  */
- 
-+#include <fcntl.h>
-+
- #include "igt.h"
- 
- #include "xe_drm.h"
-@@ -428,16 +430,20 @@ igt_main
- 		int xe;
- 		unsigned int i;
- 		uint32_t *ptr;
-+		int fw_handle = -1;
- 
- 		igt_require(is_pci_membarrier_supported(fd));
- 		xe = drm_open_driver(DRIVER_XE);
- 		srand(time(0));
- 		i = rand() % (PAGE_SIZE / sizeof(*ptr));
-+		fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-+		igt_assert_lte(0, fw_handle);
- 		igt_fork(child, 1)
- 			test_pci_membarrier_parallel(xe, child, i);
- 		test_pci_membarrier_parallel(fd, -1, i);
- 		igt_waitchildren();
- 
-+		close(fw_handle);
- 		close(xe);
- 	}
- 
--- 
-2.34.1
-
+>    Thanks and Regards,
+>    Jeevaka
