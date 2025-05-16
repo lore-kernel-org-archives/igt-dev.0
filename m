@@ -4,60 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD052C3ABC9
-	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 18:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 154EDC3ABD8
+	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 18:27:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F2F910EB64;
-	Fri, 16 May 2025 18:14:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A7BBB10EB65;
+	Fri, 16 May 2025 18:27:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ISjkKYIY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UoNqEZ+V";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09C1110EB64
- for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 18:14:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33A1A10EB67
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 18:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747419255; x=1778955255;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=qXdyqSCPDtkfKCK8RAwq1dfkhhbUSOcR871mM7ha6ks=;
- b=ISjkKYIY2cY3dlk37p5IpFOYqjdWm5t/LP+2jqbPdPnUosVp6ILbsSN0
- tt1Ua/eRjmzRGExofm0xRcfIkcyTilHMzHuHEvFflZZhbDGYkGoaUZprd
- rCDfzbLYQB2u71nrWRNSDlytV1GhhmWxbJVYUVWZR7Aal4YBrXhUkA3N3
- mw4IsBQXTmN4ByHQ/LBWU6ha2h3xd3zhOuqjY6mAnWdYo9RPF4IljmqAX
- FQCRM6bAxV/RCCWsinooX1XoNNYlTBFJS4jrckj75p+xV1HW2ViH1Xgms
- Q0bi9Ave4t6tRLflC6f5NoOLxGPXhE2HSGiD0N5ulOrkGSqtgWmvkaegN Q==;
-X-CSE-ConnectionGUID: jY7QKZhSQrqLksnltdp9Jw==
-X-CSE-MsgGUID: FAFWPh8cQ1mMnFe+qGPDDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="53072977"
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="53072977"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2025 11:14:14 -0700
-X-CSE-ConnectionGUID: CZrgJUy4RJWJA3dMInlAWQ==
-X-CSE-MsgGUID: 9w25yzjkQ0m9NzAkJNLxaw==
+ t=1747420050; x=1778956050;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=cdtKwkjC2B47PplJu5PRShgPsAdoi/FnZUoRaoTDjxI=;
+ b=UoNqEZ+V8QnHRoEEpHhzHUAyMeQF4/Ko0mKOEfOfCtHgybTMBtg1keAf
+ e6fTsCZd8bGRbD2BGuxHDr3sMU2VpULSrBLFhQu7P0cV0AwwdEvdYtMJA
+ gWEjN437G4Y1eNISmTMTt3Wai70V5k4L3nxQy8zZ+Kc9dRECK6eIkPgLy
+ 7kpdWIhGcMvp2sB7lI82rf38cXSLGoYRe7Eh7XZCB0gfcpgIkUqTKnoMm
+ ypI6FgB7uLBszZ5olbK6NYbDRZipSguLOzMV7EnKP1BDmyH3S5AkGJ6aH
+ YKy5ctapNis0TyVmJHpAgOf7SKqhMbO45XZIcwlU1pEqYhztrv8drweP8 w==;
+X-CSE-ConnectionGUID: zKrqsAbWQYmlfpT0Cg7uZQ==
+X-CSE-MsgGUID: YlQHOq/HQTS1GiatPxLejw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="60059825"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="60059825"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 May 2025 11:27:29 -0700
+X-CSE-ConnectionGUID: 06S93g/7T8KNmw6edIXbIA==
+X-CSE-MsgGUID: iyCDvqOtSjGaAjrCv+deNg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="169800411"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2025 11:14:13 -0700
-Date: Fri, 16 May 2025 20:14:11 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Kolanupaka Naveena <kolanupaka.naveena@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>
-Subject: Re: [PATCH i-g-t 1/2] tests/intel/xe_mmap: Acquire rpm reference for
- pci-membarrier tests
-Message-ID: <20250516181411.wmgu2xv5g5si3rtk@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
- igt-dev@lists.freedesktop.org,
- Matthew Auld <matthew.auld@intel.com>
-References: <20250516155533.2786246-1-kolanupaka.naveena@intel.com>
- <20250516155533.2786246-2-kolanupaka.naveena@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="143736865"
+Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
+ by orviesa004.jf.intel.com with ESMTP; 16 May 2025 11:27:27 -0700
+From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
+ markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
+ sapna1.singh@intel.com, adrinael@adrinael.net
+Subject: [PATCH i-g-t v8 01/14] Add stub for procps and glib
+Date: Fri, 16 May 2025 18:26:51 +0000
+Message-ID: <20250516182704.97912-2-jeevaka.badrappan@intel.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250516182704.97912-1-jeevaka.badrappan@intel.com>
+References: <20250516182704.97912-1-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250516155533.2786246-2-kolanupaka.naveena@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,164 +68,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kolanupaka,
-On 2025-05-16 at 21:25:32 +0530, Kolanupaka Naveena wrote:
-> During the test, the device is entering into runtime suspend, which is
-> leading the device to d3hot or d3cold mode. Hence the read is giving
-> a special value 0xffffffff.
-> 
-> To avoid this issue acquired an rpm ref to keep the device awake
-> during the access.
-> 
-> Also created a sub-group for all the pci-membarrier tests to avoid the
-> multiple open/close calls to rpm ref.
-> 
-> Suggested-by: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Kolanupaka Naveena <kolanupaka.naveena@intel.com>
-> ---
->  tests/intel/xe_mmap.c | 64 +++++++++++++++++++++++++------------------
->  1 file changed, 37 insertions(+), 27 deletions(-)
-> 
-> diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-> index 5fd641075..9421b8503 100644
-> --- a/tests/intel/xe_mmap.c
-> +++ b/tests/intel/xe_mmap.c
-> @@ -11,6 +11,8 @@
->   * Functionality: mmap
->   */
->  
-> +#include <fcntl.h>
-> +
->  #include "igt.h"
->  
->  #include "xe_drm.h"
-> @@ -419,31 +421,43 @@ igt_main
->  		test_mmap(fd, vram_memory(fd, 0) | system_memory(fd),
->  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->  
-> -	igt_subtest("pci-membarrier") {
-> -		igt_require(is_pci_membarrier_supported(fd));
-> -		test_pci_membarrier(fd);
-> -	}
-> +	igt_subtest_group {
-> +		int fw_handle = -1;
->  
-> -	igt_subtest("pci-membarrier-parallel") {
-> -		int xe;
-> -		unsigned int i;
-> -		uint32_t *ptr;
-> -
-> -		igt_require(is_pci_membarrier_supported(fd));
-> -		xe = drm_open_driver(DRIVER_XE);
-> -		srand(time(0));
-> -		i = rand() % (PAGE_SIZE / sizeof(*ptr));
-> -		igt_fork(child, 1)
-> -			test_pci_membarrier_parallel(xe, child, i);
-> -		test_pci_membarrier_parallel(fd, -1, i);
-> -		igt_waitchildren();
-> -
-> -		close(xe);
-> -	}
-> +		igt_fixture {
-> +			igt_require(is_pci_membarrier_supported(fd));
+From: Sapna <sapna1.singh@intel.com>
 
-This require should be placed at each subtest.
+As procps, glib are not available in Android, not able to build igt
+for Android.
 
-> +			fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-> +			igt_assert_lte(0, fw_handle);
+Provided stub implementations so igt can be compiled for both Android
+and linux from same code base. Incase of linux systems, system libraries
+will be used whereas for Android stubs will be used with reduced
+test coverage.
 
-Please no asserts outside of subtest. Imho both open of fw_handle
-and assert should be done in a function, and called at each subtest
-which needs them, for example:
+Signed-off-by: Sapna <sapna1.singh@intel.com>
+---
+ include/android/glib.h   | 49 ++++++++++++++++++++++++++++++++++++++++
+ include/android/procps.h | 47 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 96 insertions(+)
+ create mode 100644 include/android/glib.h
+ create mode 100644 include/android/procps.h
 
-void open_forcewake(int fd, int *fw_ptr)
-{
-	if(fw_ptr > 0)
-		return;
+diff --git a/include/android/glib.h b/include/android/glib.h
+new file mode 100644
+index 000000000..84654f33b
+--- /dev/null
++++ b/include/android/glib.h
+@@ -0,0 +1,49 @@
++#ifndef _ANDROID_GLIB_H
++#define _ANDROID_GLIB_H
++
++#include <stdbool.h>
++#include <stdlib.h>
++#define G_KEY_FILE_NONE 0
++#define G_REGEX_OPTIMIZE 0
++
++typedef struct _GError {
++	int code;
++	char *message;
++} GError;
++
++typedef struct _GKeyFile {
++	char *key;
++	char *value;
++} GKeyFile;
++
++typedef int gint;
++typedef size_t gsize;
++typedef char gchar;
++typedef unsigned char guchar;
++typedef void GRegex;
++
++static inline void g_clear_error(GError **error) { }
++static inline void g_error_free(GError *error) { }
++static inline const char *g_get_home_dir(void) { return "/data/local/tmp/igt"; }
++static inline void g_key_file_free(GKeyFile *file) { }
++static inline GKeyFile *g_key_file_new(void) { return NULL; }
++static inline int g_key_file_get_integer(GKeyFile *key_file,
++	const char *group_name, const char *key, GError **error) { return 0; }
++static inline char *g_key_file_get_string(GKeyFile *key_file,
++	const char *group_name, const char *key, GError **error) { return NULL; }
++static inline bool g_key_file_load_from_file(GKeyFile *key_file,
++	const char *file, int flags, GError **error) { return false; }
++static inline GRegex *g_regex_new(const char *pattern, int compile_options,
++	int match_options, GError **error) { return NULL; }
++static inline void g_regex_unref(GRegex *pattern) { };
++static gchar *g_base64_encode(const guchar *data, gsize len)
++{
++	gchar *str = (gchar *)malloc(1);  /* Allocate memory for an empty string */
++
++	if (str)
++		str[0] = '\0';  /* Set the string to be empty */
++
++	return str;
++}
++
++#endif /* _ANDROID_GLIB_H */
+diff --git a/include/android/procps.h b/include/android/procps.h
+new file mode 100644
+index 000000000..b428ebe20
+--- /dev/null
++++ b/include/android/procps.h
+@@ -0,0 +1,47 @@
++#ifndef _ANDROID_PROCPS_H
++#define _ANDROID_PROCPS_H
++
++enum pids_item {
++	PIDS_CMD     = 13, /* str stat: comm or status: Name */
++	PIDS_ID_EGID = 29, /* u_int status: Gid */
++	PIDS_ID_EUID = 31, /* u_int status: Uid */
++	PIDS_ID_PID  = 39, /* s_int from /proc/<pid> */
++};
++enum pids_fetch_type {
++	PIDS_FETCH_TASKS_ONLY,
++	PIDS_FETCH_THREADS_TOO
++};
++
++struct pids_result {
++	enum pids_item item;
++	union {
++		signed char s_ch;
++		signed int s_int;
++		unsigned int u_int;
++		unsigned long ul_int;
++		unsigned long long ull_int;
++		char *str;
++		char **strv;
++		double real;
++	} result;
++};
++
++struct pids_stack {
++	struct pids_result *head;
++};
++
++struct pids_info;
++
++#define PIDS_VAL(relative_enum, type, stack, info) \
++	stack->head[relative_enum].result.type
++
++int procps_pids_new(struct pids_info **info, enum pids_item *items, int numitems) { return 0; }
++int procps_pids_unref(struct pids_info **info) { return 0; }
++
++struct pids_stack *procps_pids_get(struct pids_info *info, enum pids_fetch_type which)
++{
++	struct pids_stack *ps = NULL;
++	return ps;
++}
++
++#endif /* _ANDROID_PROCPS_H */
+-- 
+2.49.0
 
-	igt_require(is_pci_membarrier_supported(fd));
-	*fw_ptr = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-	igt_assert_lte(0, *fw_ptr);
-}
-
-and use it at each subtest:
-		igt_subtest("pci-membarrier") {
-			open_forcewake(fd, &fw_handle);
-			test_pci_membarrier(fd);
-		}
-
-Btw you could name it as other name, like prepare_pci_membarrier_test()
-as this is doing two things, not one.
-
-> +		}
-> +
-> +		igt_subtest("pci-membarrier")
-> +			test_pci_membarrier(fd);
-> +
-> +		igt_subtest("pci-membarrier-parallel") {
-> +			int xe;
-> +			unsigned int i;
-> +			uint32_t *ptr;
-> +
-> +			xe = drm_open_driver(DRIVER_XE);
-
-This is new code, so
-xe = drm_reopen_driver(fd);
-
-> +			srand(time(0));
-
-Drop srand() from here.
-
-> +			i = rand() % (PAGE_SIZE / sizeof(*ptr));
-> +			igt_fork(child, 1)
-> +				test_pci_membarrier_parallel(xe, child, i);
-> +			test_pci_membarrier_parallel(fd, -1, i);
-> +			igt_waitchildren();
->  
-> -	igt_subtest("pci-membarrier-bad-pagesize") {
-> -		igt_require(is_pci_membarrier_supported(fd));
-> -		test_bad_pagesize_for_pcimem(fd);
-> +			close(xe);
-
-drm_close_driver(fd);
-
-When you are doing code refactoring please make it clean
-from the start.
-
-> +		}
-> +
-> +		igt_subtest("pci-membarrier-bad-pagesize")
-
-Add open_forcewake(fd, &fw_handle);
-
-> +			test_bad_pagesize_for_pcimem(fd);
-> +
-> +		igt_subtest("pci-membarrier-bad-object")
-
-Add open_forcewake(fd, &fw_handle);
-
-Regards,
-Kamil
-
-> +			test_bad_object_for_pcimem(fd);
-> +
-> +		igt_fixture {
-> +			close(fw_handle);
-> +		}
->  	}
->  
->  	igt_subtest("bad-flags")
-> @@ -455,10 +469,6 @@ igt_main
->  	igt_subtest("bad-object")
->  		test_bad_object(fd);
->  
-> -	igt_subtest("pci-membarrier-bad-object") {
-> -		igt_require(is_pci_membarrier_supported(fd));
-> -		test_bad_object_for_pcimem(fd);
-> -	}
->  
->  	igt_subtest("small-bar") {
->  		igt_require(xe_visible_vram_size(fd, 0));
-> -- 
-> 2.34.1
-> 
