@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F6ABC54754
-	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 16:06:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12D4CC3ABC9
+	for <igt-dev@archiver.kernel.org>; Fri, 16 May 2025 16:06:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EEB0810EB24;
-	Fri, 16 May 2025 16:06:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BDF0B10EB27;
+	Fri, 16 May 2025 16:06:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Dfdfu/qi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MwhbdaGB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF06810EB27
- for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 16:06:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18C0810EB23
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 May 2025 16:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747411605; x=1778947605;
+ t=1747411607; x=1778947607;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vVzbZB5HRSgLSfNya0xJtsxDJgCGnyqgU8Tg6Tmrn8I=;
- b=Dfdfu/qiTWpC1N44Zs5KtX+DXgzj+UhsmITtv147vUOOnr9d3af62Way
- gzzlH0zPdgN3JT7hq4K3M+cZ7O/M201Jq8GKnI5p4FndMYOLa/PBnvv/3
- K8I4SJf2Zp31RFuhFA+0SZOrBTyHf+WH7T+vXpZZdHR4DTT+qxT3GLnTv
- wEF5seGJLxAQUTJIOfJ2DR+QViEPwHkFQMAjFLLtAWbgvF+QpO1MYcnB8
- L9Ah0ju6try21dvQsl/7oCVfasdGbRwUafU8ic+4obbvA6vMGaeSMgYOl
- ovfjw6k2XiBbynHJWanfuVuZ4R7FaK9+Tzg+Qc2WdSkOYigif8sWr/2mN w==;
-X-CSE-ConnectionGUID: XTAW+o6jS2CKF3K9H/TU9g==
-X-CSE-MsgGUID: aFbdFwZBQRuhiA1dBoF1lg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="66941170"
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="66941170"
+ bh=PAvsdXnFrekWrVV0dncm5yZatms4rl/Z0Q7Tsft/GLc=;
+ b=MwhbdaGB7TglWWtes756l0yt23zOUxFSWZi5ZAlLJX9M8sYwOxmeLYhp
+ HtH3odxxLLDgBRgkhjRe0KgX9B9/mQS0Z03qyPTNyPcJubboHxQ7qDwvW
+ 3emA55qklumr4uJYx1tJDvJYYMaSb9z6vPocyYnmZTCB/rjc5z2agP1gC
+ pX0duDsrjlwUyZIIJ1ViOWS4Lc/pyeWiNaz2cJHe2Ale5iUXDiaO7Fgf5
+ 9mifiB2vHDB6MNnRHT99YdksSE+J375FBDK6Y5cxLhhbSfP1HlfPabC9W
+ /2Q2VsUkq0gllhNGCs7vF0A7lvyt6rRwt2K3Tdd6uMAI5/0zD9y2utM4S g==;
+X-CSE-ConnectionGUID: xFRZvBRJTUWN7nHKvK3nWg==
+X-CSE-MsgGUID: 1Qswl5c8ST2RX+SEhurF0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="66941177"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="66941177"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2025 09:06:45 -0700
-X-CSE-ConnectionGUID: Ugnem5AETQSI22L0gdq5Jw==
-X-CSE-MsgGUID: Behq3nQ3Qaazqj1L7LhSTw==
+ 16 May 2025 09:06:47 -0700
+X-CSE-ConnectionGUID: ADQ3n8WWTSmDDrAW5aCO2w==
+X-CSE-MsgGUID: 49OYqFlgQ3+vmhHQg/2m/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="169772615"
+X-IronPort-AV: E=Sophos;i="6.15,294,1739865600"; d="scan'208";a="169772621"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by fmviesa001.fm.intel.com with ESMTP; 16 May 2025 09:06:42 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 16 May 2025 09:06:44 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
  Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH i-g-t v6 11/14] tools/intel_gpu_top: Replace index with strchr
-Date: Fri, 16 May 2025 16:05:48 +0000
-Message-ID: <20250516160551.58760-12-jeevaka.badrappan@intel.com>
+Subject: [PATCH i-g-t v6 12/14] tests/intel/xe_create: Conditionally define
+ PAGE_SIZE for non-Android platforms
+Date: Fri, 16 May 2025 16:05:49 +0000
+Message-ID: <20250516160551.58760-13-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250516160551.58760-1-jeevaka.badrappan@intel.com>
 References: <20250516160551.58760-1-jeevaka.badrappan@intel.com>
@@ -70,27 +71,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As index is deprecated, replace index with strchr.
+Ensure PAGE_SIZE is defined only if it is not already defined,
+addressing compatibility with Android where PAGE_SIZE is predefined.
+
+Note: PAGE_SIZE is defined in multiple files; a cleanup will be
+addressed in a future patch series.
 
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tools/intel_gpu_top.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/xe_create.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 68d27089b..54e71e559 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -290,7 +290,7 @@ get_pmu_config(int dirfd, const char *name, const char *counter)
- 	if (ret <= 0)
- 		return -1;
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index b22084c84..e8b8bb025 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -18,7 +18,9 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
  
--	p = index(buf, '0');
-+	p = strchr(buf, '0');
- 	if (!p)
- 		return -1;
++#ifndef PAGE_SIZE
+ #define PAGE_SIZE 0x1000
++#endif
  
+ static struct param {
+ 	unsigned int quantity;
 -- 
 2.49.0
 
