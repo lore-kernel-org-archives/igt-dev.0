@@ -4,57 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDD63C3ABC9
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A93C3ABD8
 	for <igt-dev@archiver.kernel.org>; Sun, 18 May 2025 11:57:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6CEF10E1F9;
-	Sun, 18 May 2025 11:57:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CFC0E10E0C6;
+	Sun, 18 May 2025 11:57:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="M96s0t+F";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="evjDDsPt";
 	dkim-atps=neutral
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2078.outbound.protection.outlook.com [40.107.92.78])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78B2010E1F9
- for <igt-dev@lists.freedesktop.org>; Sun, 18 May 2025 11:57:38 +0000 (UTC)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2063.outbound.protection.outlook.com [40.107.94.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADCD610E0C6
+ for <igt-dev@lists.freedesktop.org>; Sun, 18 May 2025 11:57:30 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N9LsGZ+VX4fskePzlgCxTa+6wM58KWpELylGUSt5CylzqtMSbG8a/zTf2L2DE3P99ybCLY7zhsa9oF20zO+8A0zpBK2bqyzVikZBgoQkA/TU5Y9G/RI2yVVYVLmHRVecsoaKf/O3Q4Elpep3/e1s4uDGjzin2sbSywPi+jNXqlctSSZ7JcbNKteKmCyZyUOJWbYKjLTZ4lLcMPogH/nKdbUTgEo5sPOh2C5RvDcHsd9UTmqrGxr3m9i3PAhbi+FYhger4tJn0klleob4DRMXRS2Cpvt/+zlZaTLPbO5pDkZP4g7U3T9XdOkURp/Oj+arD/jEN68Ghr6b2s5+sKOjVg==
+ b=Kp2H502JBwZ65pMn5qhoRxV3g83eCWmeYstgTEQ1mi7mx607ot6Q/yrZb6u018a5CCj4Gcadc+dFzwxllNak+Hpfinz5PJpGwmSpqLc2S0bsvxvDtDIbqUWvo11a/yTSJyMV6nlf1mWneItEnS9FB9abg/DRGnzQ9aAA413KnvjUZa1QFpk4D/bxtIQxSgyqn5s94Ihz/VhKgbvO95JXnrrz6hk9A8lIVnOdc2M3/pOkNh3I5vTPyJucFE8UG03bgtYDvu7Osb8fymMona5IHgVE0UTEyZaCoKr7CLjgI1QrTfXd7lKZ8+MNAPPPAw8T3CPDZgCvT5bj5S1+1DHAUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IWXS6VuelIt+kzxtKlX83SMmrpF50k+JSuxJy3aQwBI=;
- b=QlGKezLrPmMBPbLPjbUp25NBU0p/B14zXQ1DPZv7c4tgnJDAtEu4lt4sx5xQDBrP8t/8AgVRrQdtvdiB+dFAia+WrnASN4TYM7O4qVYqGAWvuZ5XftpVOOl6X1m7H+yKWUgyC7ooLjqE/v2hcSrQ4BwnQmt9l646yd9SnWAkuQLjsAsL+ZK7fIj4gm++e8unzx9tJdA+OB03yy1763MFExwFHcokAl8hTb7f1ewVAkaJUwo6GFarOPLyS3vadRpAM7XqJ/WbwfivZFigXpzsFclkAMJYla7s8zUsiQeaALlJrdVC5Gytw/UZ6mxwh2D/rpYMrdJyhBO7r4ljAum+uQ==
+ bh=4fbjwl5WylioqE30jPMObF5CF6DZL9wj2PCtong1UsI=;
+ b=XMDePt83YKjCOSZR58F0gqiVqVUpUdpFUE4RG6pysMh76u5VQPEVLmd+Vjh/gFFWE/ZpilplF46fZisEuMxgikvITPwdKjnbKauOxCiXwVKjWZv1slNsK7SfVOFB09c3OSwmbRyxacxK+2kIEfDH/cIjIczQ/YGxoMCYhmZQdc7ZHsWqrJ+deZIX63T7mdlol6g0XvEZU3jbbqq4P7Wk91ZQ9NPf1ahdRVpfB2Mds79pd8+iMmRsZbPisiIM8TnDKOvP5RSm3ZSLrccqzzNzFYUaoGmJh2EXrACIBIYyS828wpRNXMV1Bo1kzv9QaRGrgEycomGABBQd+mcOGI34fw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IWXS6VuelIt+kzxtKlX83SMmrpF50k+JSuxJy3aQwBI=;
- b=M96s0t+FQT/CXtPGl7kLz9WlTIr7fjXsejmp5VD/iuA4oZxDQlvLCj19QkGdXtno77rdAEbTp/nsufFWj6NpvseDu7bfgq8WdwkEtA3bg5TEUjen9rnyrOKyXhSkTBNnj3mW2YMYovSo/oW+SY3FyB5SLHQm5POt+hwN/QtNJcE=
+ bh=4fbjwl5WylioqE30jPMObF5CF6DZL9wj2PCtong1UsI=;
+ b=evjDDsPtNnhURCLmtTh0ui05JW26SbDROvoQHYf1qNt9YnWAf5pN/UAjhS7oOsfWXypildA27GxcmOcvI5RQZR8NpCRiLVJpS51N4QHSYFGWbg3TXOIE8FyfLn7l2MiARkDN15guxMYvu0Bsb3zGtCR0OGtmcq1G/45MqU1zV7c=
 Received: from PH7PR12MB6633.namprd12.prod.outlook.com (2603:10b6:510:1ff::20)
  by PH7PR12MB5829.namprd12.prod.outlook.com (2603:10b6:510:1d4::6)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Sun, 18 May
- 2025 11:57:30 +0000
+ 2025 11:57:23 +0000
 Received: from PH7PR12MB6633.namprd12.prod.outlook.com
  ([fe80::cf8b:bdd3:d791:fccc]) by PH7PR12MB6633.namprd12.prod.outlook.com
  ([fe80::cf8b:bdd3:d791:fccc%7]) with mapi id 15.20.8722.027; Sun, 18 May 2025
- 11:57:30 +0000
+ 11:57:23 +0000
 From: "Mohan Marimuthu, Yogesh" <Yogesh.Mohanmarimuthu@amd.com>
 To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: [PATCH i-g-t v2 2/2] tests/amdgpu: add fwm preemption test case for
- userq
-Thread-Topic: [PATCH i-g-t v2 2/2] tests/amdgpu: add fwm preemption test case
- for userq
-Thread-Index: AQHbx+aOG/5GZmVmQUWBcVPvraSrSw==
-Date: Sun, 18 May 2025 11:57:30 +0000
-Message-ID: <PH7PR12MB6633E37C674801431E4BFADCFF9DA@PH7PR12MB6633.namprd12.prod.outlook.com>
+Subject: [PATCH i-g-t v2 1/2] tests/amdgpu: userq skip waiting for signal fence
+Thread-Topic: [PATCH i-g-t v2 1/2] tests/amdgpu: userq skip waiting for signal
+ fence
+Thread-Index: AQHbx+aaaYFi+AuzF02t5aRm80IYQA==
+Date: Sun, 18 May 2025 11:57:22 +0000
+Message-ID: <PH7PR12MB6633AA2EFED618F772A7191CFF9DA@PH7PR12MB6633.namprd12.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 msip_labels: MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=True;
  MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
- MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2025-05-18T11:57:30.262Z;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2025-05-18T11:57:22.581Z;
  MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
  Internal Distribution
  Only; MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=0;
@@ -63,80 +62,80 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: PH7PR12MB6633:EE_|PH7PR12MB5829:EE_
-x-ms-office365-filtering-correlation-id: 81175120-e2fb-4615-8b3c-08dd96032b1a
+x-ms-office365-filtering-correlation-id: 08490a85-92f9-49d1-ece8-08dd96032669
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?sLp+TdSdCYhuO2fwpws1wlbdLMEJQ1ppe8beik2qTM7R+eFOU0S3UoqSah?=
- =?iso-8859-1?Q?jLR3/LsO332JwwzHxH8jhclmGmxGwCqbVPumIMgTrgnY+AMkH7zE66IWR0?=
- =?iso-8859-1?Q?t5M2zHG5foWa2umVjWFiONnKj7zsG+JtS00z6tHm+zjDWafiKnTdisuEEC?=
- =?iso-8859-1?Q?baBYp3RmwwxSdkXRIi6uJtIf4eZ8dYtRLBwf/PDUYmGT3CdhDRQGj7QkVg?=
- =?iso-8859-1?Q?ogr/Yv9+JPW6tNeNex1LiU81YF1Qzkb5kXp34JYeHx/nQ9l6DE8oKCjUO8?=
- =?iso-8859-1?Q?NgMDX5hDKwtgJoZWXHv8DLFF0BsXh6bVltxk3u/e4JzWm/i1u0n6uwHluc?=
- =?iso-8859-1?Q?tFyppQ+/vwoFe/GS2FCbYLkd2eeHOT0RYhbJE0JDLAJZemVxHWnVxwdUC4?=
- =?iso-8859-1?Q?auiIgF8qFka4ucR7EhUQkhLef5zmdbQzmuYwc1ZT9wloxYV4J6kel/3vWe?=
- =?iso-8859-1?Q?SPzQdyS1MuVSMJIGPHZdy+ud70zfS9HEYPILbXBA2jOwl9UYZ/3asCNp64?=
- =?iso-8859-1?Q?XHIgNMb8+7OJD/UybQt9JbYkYSj/K/lRZ+WIgh5njLpTCK+OD+6Q2kWy2y?=
- =?iso-8859-1?Q?I0otevJlRvGrgo+fO+ltKZRzwhM70nN1NP6mVxbgtSkS9uFuFH0IKmGRKa?=
- =?iso-8859-1?Q?nBQS4skFHpuGqTqr/8RAqvbkRD1EgIv2pvIsYDuYOxmgYbByIWcZFUb49Z?=
- =?iso-8859-1?Q?LaPAZlgsjmBPZCsm4twTxQyJ8kqNP98rY2tO5R13HT9plxs4s7ge53ZqP+?=
- =?iso-8859-1?Q?Se+ejOM8CObf7+yLTBB8LvBPutHx8lgX0aFjcWqFVszRUy7mLrHKTniEvR?=
- =?iso-8859-1?Q?WjefoPfih/qL9EfOYrWyO8O0TQbDLU0clT+ZgAxqpk9hYX+FGxIbfksdAr?=
- =?iso-8859-1?Q?NcPPdhCjXmLK6JFdiNJUprTR/sKpXuM4tI5OR2GJYcM6x+u9zKixth0lER?=
- =?iso-8859-1?Q?bLg57HxzxG/Ti5Ync9YuxRPFnfDD4QyyQOGLHwzoanLk/lNQoRm/8Ou4Vb?=
- =?iso-8859-1?Q?qherVGE2tpuGBcixKhqAnV8WWeAgb8MwnLfrGH/5nPNgvrIrVodAg1fL6d?=
- =?iso-8859-1?Q?t/oHgm/5IS2YDwlLJL3c+skKKGQ8L6/9Wdp35J09HXsexlcl6JpY4Cwl7a?=
- =?iso-8859-1?Q?5qi/e6oUD5F/7xjCrdbN8bi8Q5//u+kAQl1cB4UvNNvzAV/L1S83eKIt88?=
- =?iso-8859-1?Q?tBZlJWaK4eMAc49EKlTN/parAu+tvs/XZXZ0lshDkXLm3ATeVSrLGvim+N?=
- =?iso-8859-1?Q?Bzxf2d2NXyIRlUTtWfDZls0GPiB/A3ROYUpitLWPEmjVzV0VWLHdWyKegw?=
- =?iso-8859-1?Q?u8IRRoRb55bMFj/5BXHk4Fud36Ii9otf3SaTvMpXYkHeSYWoGRkqHvzPCb?=
- =?iso-8859-1?Q?0j3B7WgWugZ86xXNmtVMGpAhKEyRAv0vuOQ01dpwmpmDXy/2T0mCcSqQpS?=
- =?iso-8859-1?Q?TghMxBp91+weAFi4eJPlhVr53XjSKmoAwKI1EAmpyri3ffVHzugg3FSJXM?=
- =?iso-8859-1?Q?npKvgN88aeu3CNRkAlVHcXe3stObj2sJNdx3HrMqGXmQ=3D=3D?=
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?rr1r8HOTQbOlwggbyOhXgtIrqzvQRslXeGRyEsUywa2DcSB2wGgy454J/a?=
+ =?iso-8859-1?Q?1cmDk1w0EpukQ8XjQLAos6GP7hMYLcKeGqOSfpvFcYOWMWWiD6jumHFlXK?=
+ =?iso-8859-1?Q?+NxvxUNVxU5fQbIxvpcSZ4pvtbIjPfvaI0HKWyVix9fxWlBkVHOTvguTIL?=
+ =?iso-8859-1?Q?1G7X+TdQya52+NUzaWmXXQwkEHG/vi8vZRW+ZX3RFp01Xufn9R/m6z8PTk?=
+ =?iso-8859-1?Q?wbYgQ08P62oFTWdnf7IgxIwdgG4yVG/cCnLs+S7KjpXSt0aJTpbjHjIbcO?=
+ =?iso-8859-1?Q?MAlelWYUWVMT8k68+iJcxHnVWcFnPx+LwyCD+sEugz3yq5Ipaiyn2RmM7u?=
+ =?iso-8859-1?Q?ZOViD0C1STdeH/zTIoKEi4j8fM94PpjcocqCK7wM7+leXyvZk8+UNz2erZ?=
+ =?iso-8859-1?Q?9tIE0EU9S1FHtRqhlBu8YNOI5SJpsMFAD+lcTHMeYIaTLMvjsRxxPcoctJ?=
+ =?iso-8859-1?Q?/vT9i4OgOQ5hqS7ovW+cG2vcLaDJCuatHgRPE/Lf47mJ5C6UOzuo6kDz1/?=
+ =?iso-8859-1?Q?Am4ipr8UXvN3LrkBV8546i6MEoD8XXX0C1ECSwXdfVHHPnpR7n5B/9gaXJ?=
+ =?iso-8859-1?Q?xLnXOzRFpuiSyT1QA3cLBWIuFw7Rz7wVxWxeMzXATHEpmPEAiW4lUxQy2/?=
+ =?iso-8859-1?Q?S3CuOVlAxyCrGulrLzvcmv95wDAIpUTTbhYRzUwFH24immi5tm4EauZmWt?=
+ =?iso-8859-1?Q?K7HorULvnrjOBIzoTAvi30Sx+75yHrZ74QEbLkSaqWCoY16q81GrKnNpNv?=
+ =?iso-8859-1?Q?U8yH7m2GCW6pVIVJ2u74seKGdpKAoaXYlzsL2o/dXo2piZmKaALKZ7Op//?=
+ =?iso-8859-1?Q?86Yzv5NkGQcPuDtewvnt/BBYKwhnho22ResHx0/5dtt4b4n116+mHiHjgJ?=
+ =?iso-8859-1?Q?h97OjMrpMQsLIDv7vUCGu7Cv0gJCFh6D5R2aXG9Jel8zYq9Xq9HLFUIfFK?=
+ =?iso-8859-1?Q?nQ9b9gVRrUVoEVhWDb9P+GilGudR4pp/m/b21VFPyMGO3MbBMinMFLUP5Z?=
+ =?iso-8859-1?Q?53nTD/q89NAS0VOq0eujf5Vl37ChgtGhr4S4tqtXxuPHAN4BbW3XOUD9VP?=
+ =?iso-8859-1?Q?Pf0PSWcacTFCORXvwE5TJx/C9EMj2L75t20CTBbfG2+bmGtYkTKpn80g/a?=
+ =?iso-8859-1?Q?P+kAF6ca58RuqSWSRiuxFLern9al2cOsyx/QrH8xOjK5L1DY7xZmfI1ufN?=
+ =?iso-8859-1?Q?0mS7eyqyx/bGpvhgT4PXqLsPnJIqocoqQ5WUTmPhTlh3DC/3psBVwzO/qN?=
+ =?iso-8859-1?Q?FZztlzzfD7jRs2+5p/+62/+WlW3TxcKjm3P4TYpTtbfmECCeM+5K6U3UZO?=
+ =?iso-8859-1?Q?hsrlJ0nuyGmt5Nxdlx8GIPYO+gHAkc0nyMRPlcRRK5bYDkzHognoYoILhX?=
+ =?iso-8859-1?Q?6lUhYdQ6lvuXKPECgj8yGhSse6MQIOaIQwlR+NmymOZmBM2GTi8tAw8au8?=
+ =?iso-8859-1?Q?TB1ogyBfucq7bxcQfY8mCNpMY2+vR0Vi9sOjSSxZh8FxD6cQ4uSa88WNdn?=
+ =?iso-8859-1?Q?CeV5sj9AsA7SrMZ8rDrtaKFgPeNOvzvzRwBmqkedzDAA=3D=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH7PR12MB6633.namprd12.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(376014)(366016)(38070700018); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?BgOL+LwBUGOiBW6RPuUh9ffb+UCMidUElZgqSngfWHgiEv6JOQe+xXZClv?=
- =?iso-8859-1?Q?37veFZOhEyyXsyUjwvmW+iMAnZ/eEbJwAnr6EEjdH1jGoQXK2YsTJj7rco?=
- =?iso-8859-1?Q?J46ZOk/I0SHgU0um5rdPF0H2yvXoArQsSycbKXy4Glw/HZo6MgbYi+1LPq?=
- =?iso-8859-1?Q?hbS/cHPbbRNSpD9w83DnCSAMR5CopfGLK33GabBvqP1J9+8zENwmUCo0Ww?=
- =?iso-8859-1?Q?oun9NYeNAgjyLVeOQe7pm5eeEwVqieys1jt24f1zypYGAyLEsIcsFRLQtl?=
- =?iso-8859-1?Q?gl4Ph/0WrshUsSY63k558MQx5SyOp+qrqDRRw16mKbu+fi4eUZv4GKSyvw?=
- =?iso-8859-1?Q?i1JJFtk+DZ53PlsaVdgAMOXAkwG2+XjmVx6GcHonNHVxcvCh4HhVmI72X+?=
- =?iso-8859-1?Q?fJpgx2k2vtNmEQPfqPgcpvXROb5z+UcQa2Htv8/Yb0LeTQMnGcoaX408IQ?=
- =?iso-8859-1?Q?jjEaqUDv3Ygxxu4UizbuZeZ6gvGtoZr81Oy/rdfhLDvvbmzXbE5fdTmtI1?=
- =?iso-8859-1?Q?ExT2QFMADzCaHpOMGDYLdlWG3rvs3iS4xIZqdUJAWVPFwvoZIz93FHhe7V?=
- =?iso-8859-1?Q?0dW0T9bztkpEFNWXJ9CNWf45PQx8uSExN8+e79MzUydVrUPNWbdM/YDPZz?=
- =?iso-8859-1?Q?tIozlG2bGA5j2JLeeNrdOQDAp+xXfmRhvP9HyxwUh3LrUWphf6ZWA3OT1M?=
- =?iso-8859-1?Q?8jlsQ69fpWOEfSvI+VjWt8XXP3JTjM+jBMvolzAB0nReRj96DhpXCOAyQI?=
- =?iso-8859-1?Q?Si4j0bsyZPQU0JWKVRxiT7xjbkgvhqH8cdnvst4iDCFCPXeZ01Kt5kwUJ/?=
- =?iso-8859-1?Q?GlUOMU4I5g8Xa3qPZwyrsSH3WWxcjGoNNE+0iq6vOYkH3EjaL8o/sd3Pbg?=
- =?iso-8859-1?Q?tgkf+BjnY8OOsAl8/YVR0G1+nIQTYtn0JVnBMhiT1sZZXPQcVROYMssygG?=
- =?iso-8859-1?Q?51hGISHokKudG6bk1xFsU/MTT0CROsN/8onCy4t9QSZx32MfGFuFsITtUq?=
- =?iso-8859-1?Q?6BSY11MwoWSB0kAhMz68QK0LAEih616I6leqH8un3YncY8tn/rXm+kttAu?=
- =?iso-8859-1?Q?jC/8w0gfiv4hAFzB0IZvohYHmzVAulAH/OJPbLimQev6i7rU3EatbzY3io?=
- =?iso-8859-1?Q?+1+twPH8v4L1QdbVUYVAZQXS6Lz9QBGwVZ3IhUJxOLwFO/wBJuQ4VQ6q1q?=
- =?iso-8859-1?Q?u5o8jL7S8e3Gf215bzrZkpH7+cmIWMEaOrgyj9VHch50YZgxMnoHZWQb+v?=
- =?iso-8859-1?Q?sqDa9iQNyrLMo+pUOt59w/ICX2Lz/fRd9j1m0IhTz/uOAfZ185Ero1dm2r?=
- =?iso-8859-1?Q?xwo2HKBjOFJfbH3mXLJ/mQR8LPfZbvI3DT/eWlCtS/nfJWz4CfpqlE0Hdc?=
- =?iso-8859-1?Q?dPlarfIU0GeoVwskP6II1vuY6kT/PLCEfI20Fxz0m6/buz6HlkSTpXrfyx?=
- =?iso-8859-1?Q?BskqmWtNUurGFSJh98tADRJO6rVOzyUi5MmfrPvbKfFsIDB2LBHGN21r/3?=
- =?iso-8859-1?Q?8BqBkdFxVyhieTQN5wPmPBDOI5aqynycE8mCPiXAdJr25KQZdJ+kdywD22?=
- =?iso-8859-1?Q?hZQ9fFkM35lbee0bptaaM1+I9HdredWfPIbtjpPe3DjqLwEPRFJlFivRC9?=
- =?iso-8859-1?Q?NMvCn1pZ5JR5o=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?KQKOOVsufJP1i0zzVL/G3EAn7+GYccIIMYg3D+yWmPz4rcSV4njNh4c+gE?=
+ =?iso-8859-1?Q?vc7us0RVAR/08h84XdLMhNP9ikg9CgIVM3n1o31ctZE0eTZIXwx9ecobAU?=
+ =?iso-8859-1?Q?AGcokION1m+Br5DnwEOp80zB90snTiUxUrnKNiKFKS/2y3USmQxQFNg3Zj?=
+ =?iso-8859-1?Q?VCgUzPvt2samO9RvJUWui7D60HPFIWVOFF/cqKkr3H/S5Yt9utL0rwP+9c?=
+ =?iso-8859-1?Q?6oopaiab9gUrNwQRjyfAD/ZVNYuceMTLBPMIc9XMEsWvZumFGCz5pC3Zcf?=
+ =?iso-8859-1?Q?nTIJtLU+IXEI0UrpKbW3T/odNUoiBQefQ0mZOafl94HSzAvw3AXvP9ZCun?=
+ =?iso-8859-1?Q?Dl4iMdryfVr+sfOiXgzlbmddaPpC/yQmQzJ9iu9i2WjOtcN1lqZRWS9wob?=
+ =?iso-8859-1?Q?WyWJ3KvbEfiy6z0pqm5ihql7eiASalsr1KT5YU56lUtYqq1poBcdC+kY00?=
+ =?iso-8859-1?Q?hMCC6IlzyGFELj4rl99jEPvAM8yrXUuLh+aD9J+4ovPhABlptgvcMXOHWV?=
+ =?iso-8859-1?Q?xP08tW64sS7JR57WVBEUiUqDGddjMJ41KrMbx74Obltv0wMnYupEsNuAsk?=
+ =?iso-8859-1?Q?Im+SxXY6txhrO3lM3PoibfvXACACAAIBtRlVi/A18ln7r09CgbTaDOD8yP?=
+ =?iso-8859-1?Q?E2rld2Yl7cmMrptwtstiS47l6H4sHl2ebrUzpVhKdMGkTtBsbAGp+QOm1q?=
+ =?iso-8859-1?Q?3JtVKPkmqtvhnoPE/gsjA3soxLfHPqx/EHtB3XOgUq9SQ5vsd6MKFJM6aL?=
+ =?iso-8859-1?Q?7gOXV0AJaYA/RifMC2Dpk3drYsodAlHKM5CKNwvPwQEj2hGiHWxs4aulC/?=
+ =?iso-8859-1?Q?i8NKb9W0eTjzOLAhm2xAdhtKnZpzJ2FAPmApMpprWudkgrnK9vKkDiZApw?=
+ =?iso-8859-1?Q?tP1w3jsIUVqX4bMXtP0Cwyo5jmtCNcXVkwb2CdCiHoGlgvhFXhWrikOgQH?=
+ =?iso-8859-1?Q?e4hPbguxHNpb9V45YD5RUi7sxDGelVzKX5DUed4uo9+LFoMcicHEVKttCR?=
+ =?iso-8859-1?Q?FxcAOlPAk80KrrQB6YqOU7pfLfCFR9sZAH0eMt71rH39FAAR0ZHKg5FyJP?=
+ =?iso-8859-1?Q?hYAspYX5HvHfyYzr5gXwVTI1gOPD5UALz9eoLICJRr6ZOuoQaodlam5Ily?=
+ =?iso-8859-1?Q?D7+s1rPxA0nLMBQr2baDyhyAqpYzXbBFPVOX/G+fffXCKZR6m2TUwIdEeH?=
+ =?iso-8859-1?Q?3DKNnkpybouDEbBk0l4U15mCEY+gFkD1wVxdX5hXeayLNpVdXRwh7JcnAl?=
+ =?iso-8859-1?Q?c0snToNtNWQb55qmegS7G9HmJytD+WBDm016wrS/vN5LBqx0cclCKewQva?=
+ =?iso-8859-1?Q?gXDO5zT+EdRIw4xcm2VI6vZU9jtmM5un8VBmdnT5YKcEmFMzSPT0nExRW1?=
+ =?iso-8859-1?Q?QFoyapeXgsESeH0fOh5CO/F44fOzwoXqCZTeaWr0I6sGsIm6xErVlN9r8w?=
+ =?iso-8859-1?Q?WVmKcHYqMTeWxHkhkCAEtbNliuBZYzGB5c6E0wDhsorE3pesKmDVqtd3oJ?=
+ =?iso-8859-1?Q?1IlQ6njjdaNfVr4n0AQewodvU+4wcd+6kTn3Dk4DXNoCKFdar1gteG60Ua?=
+ =?iso-8859-1?Q?HPw2no6Ocfo5wKYLk+UDqLi/VOC+koVQlGSfRD14MEGtDEJRZQkJ+RE8vA?=
+ =?iso-8859-1?Q?9XIoIxAFeJNwM=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: amd.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6633.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81175120-e2fb-4615-8b3c-08dd96032b1a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 May 2025 11:57:30.8637 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08490a85-92f9-49d1-ece8-08dd96032669
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 May 2025 11:57:22.9519 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tW0LWeSECJyfgNEga+NGxUd22jDHCb3n+xIhmUQo4FPXoPplxwQ0eBQ1L+mVr5QMjRXyd/si8fCUa6hXNNjVBQ==
+X-MS-Exchange-CrossTenant-userprincipalname: 8eR6SEBlvRgACtsQvuiZUtiEdTknk4Ez5yUhsLg2JFFzproP/wRkEQJyAaRTNyd7UHKUVcrQ2g078guspHPxCQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5829
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -155,310 +154,193 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 [AMD Official Use Only - AMD Internal Distribution Only]
 
-The fwm premption is tested using below algorithm,
-1) create 2 queues
-2) submit dma write job with unsatisfied fence on both the queues
-3) if the dma write passes then the test has failed
+For negative test cases where the job will not complete need to
+skip signal fence. Pass a flag to amdgpu_user_queue_submit() to
+skip signal fence wait.
 
-v2: reduce timeout to 2ms
+v2: rebase to latest code
 
 Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>
-Cc: Jesse.Zhang <Jesse.zhang@amd.com>
 Cc: Sunil Khatri <sunil.khatri@amd.com>
+Cc: Jesse.Zhang <Jesse.zhang@amd.com>
 Signed-off-by: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
-Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
 ---
- lib/amdgpu/amd_PM4.h     |  17 ++++
- tests/amdgpu/amd_basic.c | 178 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 195 insertions(+)
+ lib/amdgpu/amd_command_submission.c |  2 +-
+ lib/amdgpu/amd_compute.c            |  2 +-
+ lib/amdgpu/amd_userq.c              | 36 +++++++++++++++--------------
+ lib/amdgpu/amd_userq.h              |  2 +-
+ tests/amdgpu/amd_basic.c            |  4 ++--
+ tests/amdgpu/amd_cs_nop.c           |  2 +-
+ 6 files changed, 25 insertions(+), 23 deletions(-)
 
-diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
-index 8f59b4223..d6a8446f4 100644
---- a/lib/amdgpu/amd_PM4.h
-+++ b/lib/amdgpu/amd_PM4.h
-@@ -195,6 +195,23 @@
- #define PACKET3_INDIRECT_BUFFER                         0x3F
- #define PACKET3_PROTECTED_FENCE_SIGNAL                  0xd0
+diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_s=
+ubmission.c
+index fcc356f8f..c3dad3231 100644
+--- a/lib/amdgpu/amd_command_submission.c
++++ b/lib/amdgpu/amd_command_submission.c
+@@ -68,7 +68,7 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle devic=
+e, unsigned int ip_type
+        memcpy(ring_ptr, ring_context->pm4, ring_context->pm4_dw * sizeof(*=
+ring_context->pm4));
 
-+#define PACKET3_FENCE_WAIT_MULTI                        0xd1
-+#define                FENCE_WAIT_MULTI_PREEMPTABLE(x)         ((x) << 1)
-+               /* 0 - no
-+                * 1 - yes
-+                */
-+#define                FENCE_WAIT_MULTI_CACHE_POLICY(x)        ((x) << 2)
-+               /* 0 - LRU
-+                * 1 - Stream
-+                * 2 - noa
-+                * 3 - Bypass
-+                */
-+#define                FENCE_WAIT_MULTI_ENGINE(x)              ((x) << 8)
-+               /* 0 - me
-+                * 1 - pfp
-+                */
-+#define                FENCE_WAIT_MULTI_POLL_INTERVAL(x)       ((x) << 16)
-+
- #define        PACKET3_WRITE_DATA                              0x37
- #define                WRITE_DATA_DST_SEL(x)                   ((x) << 8)
-                /* 0 - register
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 914d27909..075057960 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -689,6 +689,176 @@ amdgpu_sync_dependency_test(amdgpu_device_handle devi=
-ce_handle, bool user_queue)
-        free(ring_context);
+        if (user_queue)
+-               amdgpu_user_queue_submit(device, ring_context, ip_type, ib_=
+result_mc_address);
++               amdgpu_user_queue_submit(device, ring_context, ip_type, ib_=
+result_mc_address, false);
+        else {
+                ring_context->ib_info.ib_mc_address =3D ib_result_mc_addres=
+s;
+                ring_context->ib_info.size =3D ring_context->pm4_dw;
+diff --git a/lib/amdgpu/amd_compute.c b/lib/amdgpu/amd_compute.c
+index 95bfa53aa..008186049 100644
+--- a/lib/amdgpu/amd_compute.c
++++ b/lib/amdgpu/amd_compute.c
+@@ -91,7 +91,7 @@ void amdgpu_command_submission_compute_nop(amdgpu_device_=
+handle device, bool use
+
+                if (user_queue) {
+                        amdgpu_user_queue_submit(device, ring_context, AMD_=
+IP_COMPUTE,
+-                                                ib_result_mc_address);
++                                                ib_result_mc_address, fals=
+e);
+                } else {
+                        memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info=
+));
+                        ib_info.ib_mc_address =3D ib_result_mc_address;
+diff --git a/lib/amdgpu/amd_userq.c b/lib/amdgpu/amd_userq.c
+index f8e1a4b45..0a983834c 100644
+--- a/lib/amdgpu/amd_userq.c
++++ b/lib/amdgpu/amd_userq.c
+@@ -127,7 +127,7 @@ int amdgpu_timeline_syncobj_wait(amdgpu_device_handle d=
+evice_handle,
  }
 
-+static void
-+amdgpu_fwm_preempt_test(amdgpu_device_handle device_handle)
-+{
-+       struct amdgpu_ring_context *ring_context_1;
-+       struct amdgpu_ring_context *ring_context_2;
-+       struct amdgpu_cmd_base *cmd_base_1 =3D get_cmd_base();
-+       struct amdgpu_cmd_base *cmd_base_2 =3D get_cmd_base();
-+       const struct amdgpu_ip_block_version *ip_block =3D get_ip_block(dev=
-ice_handle, AMD_IP_GFX);
-+       int r;
-+
-+       ring_context_1 =3D calloc(1, sizeof(struct amdgpu_ring_context));
-+       igt_assert(ring_context_1);
-+       amdgpu_user_queue_create(device_handle, ring_context_1, ip_block->t=
-ype);
-+
-+       ring_context_2 =3D calloc(1, sizeof(struct amdgpu_ring_context));
-+       igt_assert(ring_context_2);
-+       amdgpu_user_queue_create(device_handle, ring_context_2, ip_block->t=
-ype);
-+
-+       /* allocate bo1 for dma, bo2 for fence and bo3 for ib for render co=
-ntext 1 */
-+       ring_context_1->write_length =3D 1024;
-+       r =3D amdgpu_bo_alloc_and_map_sync(device_handle , ring_context_1->=
-write_length, 4096,
-+                                        AMDGPU_GEM_DOMAIN_GTT, AMDGPU_GEM_=
-CREATE_CPU_GTT_USWC,
-+                                        AMDGPU_VM_MTYPE_UC, &ring_context_=
-1->bo,
-+                                        (void **)&ring_context_1->bo_cpu, =
-&ring_context_1->bo_mc,
-+                                        &ring_context_1->va_handle,
-+                                        ring_context_1->timeline_syncobj_h=
-andle,
-+                                        ++ring_context_1->point, true);
-+       igt_assert_eq(r, 0);
-+       memset((void *)ring_context_1->bo_cpu, 0, ring_context_1->write_len=
-gth);
-+
-+       r =3D amdgpu_bo_alloc_and_map_sync(device_handle, 4096, 4096, AMDGP=
-U_GEM_DOMAIN_GTT,
-+                                        AMDGPU_GEM_CREATE_CPU_GTT_USWC, AM=
-DGPU_VM_MTYPE_UC,
-+                                        &ring_context_1->bo2, (void **)&ri=
-ng_context_1->bo2_cpu,
-+                                        &ring_context_1->bo_mc2, &ring_con=
-text_1->va_handle2,
-+                                        ring_context_1->timeline_syncobj_h=
-andle,
-+                                        ++ring_context_1->point, true);
-+       igt_assert_eq(r, 0);
-+       memset((void *)ring_context_1->bo2_cpu, 0, 4096);
-+
-+       r =3D amdgpu_bo_alloc_and_map_sync(device_handle, 8192, 4096, AMDGP=
-U_GEM_DOMAIN_GTT,
-+                                        AMDGPU_GEM_CREATE_CPU_GTT_USWC, AM=
-DGPU_VM_MTYPE_UC,
-+                                        &ring_context_1->bo3, (void **)&ri=
-ng_context_1->bo3_cpu,
-+                                        &ring_context_1->bo_mc3, &ring_con=
-text_1->va_handle3,
-+                                        ring_context_1->timeline_syncobj_h=
-andle,
-+                                        ++ring_context_1->point, true);
-+       igt_assert_eq(r, 0);
-+       memset((void *)ring_context_1->bo3_cpu, 0, 4096);
-+
-+       /* allocate bo1 for dma, bo2 for fence and bo3 for ib for render co=
-ntext 2 */
-+       ring_context_2->write_length =3D 1024;
-+       r =3D amdgpu_bo_alloc_and_map_sync(device_handle , ring_context_2->=
-write_length, 4096,
-+                                        AMDGPU_GEM_DOMAIN_GTT, AMDGPU_GEM_=
-CREATE_CPU_GTT_USWC,
-+                                        AMDGPU_VM_MTYPE_UC, &ring_context_=
-2->bo,
-+                                        (void **)&ring_context_2->bo_cpu, =
-&ring_context_2->bo_mc,
-+                                        &ring_context_2->va_handle,
-+                                        ring_context_2->timeline_syncobj_h=
-andle,
-+                                        ++ring_context_2->point, true);
-+       igt_assert_eq(r, 0);
-+       memset((void *)ring_context_2->bo_cpu, 0, ring_context_2->write_len=
-gth);
-+
-+       r =3D amdgpu_bo_alloc_and_map_sync(device_handle, 4096, 4096, AMDGP=
-U_GEM_DOMAIN_GTT,
-+                                        AMDGPU_GEM_CREATE_CPU_GTT_USWC, AM=
-DGPU_VM_MTYPE_UC,
-+                                        &ring_context_2->bo2, (void **)&ri=
-ng_context_2->bo2_cpu,
-+                                        &ring_context_2->bo_mc2, &ring_con=
-text_2->va_handle2,
-+                                        ring_context_2->timeline_syncobj_h=
-andle,
-+                                        ++ring_context_2->point, true);
-+       igt_assert_eq(r, 0);
-+       memset((void *)ring_context_2->bo2_cpu, 0, 4096);
-+
-+       r =3D amdgpu_bo_alloc_and_map_sync(device_handle, 8192, 4096, AMDGP=
-U_GEM_DOMAIN_GTT,
-+                                        AMDGPU_GEM_CREATE_CPU_GTT_USWC, AM=
-DGPU_VM_MTYPE_UC,
-+                                        &ring_context_2->bo3, (void **)&ri=
-ng_context_2->bo3_cpu,
-+                                        &ring_context_2->bo_mc3, &ring_con=
-text_2->va_handle3,
-+                                        ring_context_2->timeline_syncobj_h=
-andle,
-+                                        ++ring_context_2->point, true);
-+       igt_assert_eq(r, 0);
-+       memset((void *)ring_context_2->bo3_cpu, 0, 4096);
-+
-+
-+       /* wait for gtt mapping to complete */
-+       r =3D amdgpu_timeline_syncobj_wait(device_handle, ring_context_1->t=
-imeline_syncobj_handle,
-+                                        ring_context_1->point);
-+       igt_assert_eq(r, 0);
-+       r =3D amdgpu_timeline_syncobj_wait(device_handle, ring_context_2->t=
-imeline_syncobj_handle,
-+                                        ring_context_2->point);
-+       igt_assert_eq(r, 0);
-+
-+       /* assign cmd buffer for ring context 1 */
-+       cmd_base_1->attach_buf(cmd_base_1, (void *)ring_context_1->bo3_cpu,=
- 8192);
-+
-+       /* create the ib for ring context 1 */
-+       cmd_base_1->emit(cmd_base_1, PACKET3(PACKET3_FENCE_WAIT_MULTI, 4 * =
-1));
-+       cmd_base_1->emit(cmd_base_1, FENCE_WAIT_MULTI_ENGINE(1) | FENCE_WAI=
-T_MULTI_PREEMPTABLE(1) |
-+                           FENCE_WAIT_MULTI_CACHE_POLICY(3) | FENCE_WAIT_M=
-ULTI_POLL_INTERVAL(4));
-+       cmd_base_1->emit(cmd_base_1, ring_context_1->bo_mc2);
-+       cmd_base_1->emit(cmd_base_1, ring_context_1->bo_mc2 >> 32);
-+       cmd_base_1->emit(cmd_base_1, 10); // random incorrect fence value
-+       cmd_base_1->emit(cmd_base_1, 0);
-+
-+       cmd_base_1->emit(cmd_base_1, PACKET3(PACKET3_WRITE_DATA, 3));
-+       cmd_base_1->emit(cmd_base_1, WRITE_DATA_DST_SEL(5) | WR_CONFIRM |
-+                           WRITE_DATA_CACHE_POLICY(3));
-+       cmd_base_1->emit(cmd_base_1, 0xfffffffc & ring_context_1->bo_mc);
-+       cmd_base_1->emit(cmd_base_1, (0xffffffff00000000 & ring_context_1->=
-bo_mc) >> 32);
-+       cmd_base_1->emit(cmd_base_1, 0xdead0000);
-+
-+       ring_context_1->pm4_dw =3D cmd_base_1->cdw;
-+       amdgpu_user_queue_submit(device_handle, ring_context_1, ip_block->t=
-ype,
-+                                ring_context_1->bo_mc3, true);
-+
-+       /* if fwm packet got skipped by firmware then 0xdead000 will be wri=
-tten */
-+       usleep(1000 * 2);
-+       igt_assert_eq_u32(*ring_context_1->bo_cpu, 0);
-+
-+       /* assign cmd buffer for ring context 2 */
-+       cmd_base_2->attach_buf(cmd_base_2, (void *)ring_context_2->bo3_cpu,=
- 8192);
-+
-+       /* create the ib for ring context 2 */
-+       cmd_base_2->emit(cmd_base_2, PACKET3(PACKET3_FENCE_WAIT_MULTI, 4 * =
-1));
-+       cmd_base_2->emit(cmd_base_2, FENCE_WAIT_MULTI_ENGINE(1) | FENCE_WAI=
-T_MULTI_PREEMPTABLE(1) |
-+                           FENCE_WAIT_MULTI_CACHE_POLICY(3) | FENCE_WAIT_M=
-ULTI_POLL_INTERVAL(4));
-+       cmd_base_2->emit(cmd_base_2, ring_context_2->bo_mc2);
-+       cmd_base_2->emit(cmd_base_2, ring_context_2->bo_mc2 >> 32);
-+       cmd_base_2->emit(cmd_base_2, 10); // random incorrect fence value
-+       cmd_base_2->emit(cmd_base_2, 0);
-+
-+       cmd_base_2->emit(cmd_base_2, PACKET3(PACKET3_WRITE_DATA, 3));
-+       cmd_base_2->emit(cmd_base_2, WRITE_DATA_DST_SEL(5) | WR_CONFIRM |
-+                           WRITE_DATA_CACHE_POLICY(3));
-+       cmd_base_2->emit(cmd_base_2, 0xfffffffc & ring_context_2->bo_mc);
-+       cmd_base_2->emit(cmd_base_2, (0xffffffff00000000 & ring_context_2->=
-bo_mc) >> 32);
-+       cmd_base_2->emit(cmd_base_2, 0xdead0000);
-+
-+       ring_context_2->pm4_dw =3D cmd_base_2->cdw;
-+       amdgpu_user_queue_submit(device_handle, ring_context_2, ip_block->t=
-ype,
-+                                ring_context_2->bo_mc3, true);
-+
-+       /* if fwm packet got skipped by firmware then 0xdead000 will be wri=
-tten */
-+       usleep(1000 * 2);
-+       igt_assert_eq_u32(*ring_context_1->bo_cpu, 0);
-+       igt_assert_eq_u32(*ring_context_2->bo_cpu, 0);
-+
-+       /* set the correct fence value to finish executing the ib */
-+       *ring_context_1->bo2_cpu =3D 10;
-+       *ring_context_2->bo2_cpu =3D 10;
-+       usleep(1000 * 2);
-+       igt_assert_eq_u32(*ring_context_1->bo_cpu, 0xdead0000);
-+       igt_assert_eq_u32(*ring_context_2->bo_cpu, 0xdead0000);
-+
-+       amdgpu_user_queue_destroy(device_handle, ring_context_1, ip_block->=
-type);
-+       amdgpu_user_queue_destroy(device_handle, ring_context_2, ip_block->=
-type);
-+
-+       amdgpu_bo_unmap_and_free(ring_context_1->bo, ring_context_1->va_han=
-dle,
-+                                ring_context_1->bo_mc, ring_context_1->wri=
-te_length);
-+       amdgpu_bo_unmap_and_free(ring_context_1->bo2, ring_context_1->va_ha=
-ndle2,
-+                                ring_context_1->bo_mc2, 4096);
-+       amdgpu_bo_unmap_and_free(ring_context_1->bo3, ring_context_1->va_ha=
-ndle3,
-+                                ring_context_1->bo_mc3, 8192);
-+       amdgpu_bo_unmap_and_free(ring_context_2->bo, ring_context_2->va_han=
-dle,
-+                                ring_context_2->bo_mc, ring_context_2->wri=
-te_length);
-+       amdgpu_bo_unmap_and_free(ring_context_2->bo2, ring_context_2->va_ha=
-ndle2,
-+                                ring_context_2->bo_mc2, 4096);
-+       amdgpu_bo_unmap_and_free(ring_context_2->bo3, ring_context_2->va_ha=
-ndle3,
-+                                ring_context_2->bo_mc3, 8192);
-+       free_cmd_base(cmd_base_1);
-+       free_cmd_base(cmd_base_2);
-+       free(ring_context_1);
-+       free(ring_context_2);
-+}
-+
- igt_main
+ void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_r=
+ing_context *ring_context,
+-                             unsigned int ip_type, uint64_t mc_address)
++                             unsigned int ip_type, uint64_t mc_address, bo=
+ol skip_signal)
  {
-        amdgpu_device_handle device;
-@@ -815,6 +985,14 @@ igt_main
-                        amdgpu_sync_dependency_test(device, true);
-                }
-        }
-+
-+       igt_describe("Check-FWM-preempt-using-GFX-UMQ");
-+       igt_subtest_with_dynamic("fwm-prempt-test-with-IP-GFX-UMQ") {
-+               if (userq_arr_cap[AMD_IP_GFX]) {
-+                       igt_dynamic_f("fwm-preempt-test-with-gfx-umq")
-+                       amdgpu_fwm_preempt_test(device);
-+               }
-+       }
- #endif
+        int r;
+        uint32_t control =3D ring_context->pm4_dw;
+@@ -166,22 +166,24 @@ void amdgpu_user_queue_submit(amdgpu_device_handle de=
+vice, struct amdgpu_ring_co
+        /* Update the door bell */
+        ring_context->doorbell_cpu[DOORBELL_INDEX] =3D *ring_context->wptr_=
+cpu;
 
-        igt_fixture {
+-       /* Add a fence packet for signal */
+-       syncarray[0] =3D ring_context->timeline_syncobj_handle;
+-       signal_data.queue_id =3D ring_context->queue_id;
+-       signal_data.syncobj_handles =3D (uintptr_t)syncarray;
+-       signal_data.num_syncobj_handles =3D 1;
+-       signal_data.bo_read_handles =3D 0;
+-       signal_data.bo_write_handles =3D 0;
+-       signal_data.num_bo_read_handles =3D 0;
+-       signal_data.num_bo_write_handles =3D 0;
+-
+-       r =3D amdgpu_userq_signal(device, &signal_data);
+-       igt_assert_eq(r, 0);
++       if (!skip_signal) {
++               /* Add a fence packet for signal */
++               syncarray[0] =3D ring_context->timeline_syncobj_handle;
++               signal_data.queue_id =3D ring_context->queue_id;
++               signal_data.syncobj_handles =3D (uintptr_t)syncarray;
++               signal_data.num_syncobj_handles =3D 1;
++               signal_data.bo_read_handles =3D 0;
++               signal_data.bo_write_handles =3D 0;
++               signal_data.num_bo_read_handles =3D 0;
++               signal_data.num_bo_write_handles =3D 0;
++
++               r =3D amdgpu_userq_signal(device, &signal_data);
++               igt_assert_eq(r, 0);
+
+-       r =3D amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncob=
+j_handle, 1, timeout,
+-                                  DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
+-       igt_assert_eq(r, 0);
++               r =3D amdgpu_cs_syncobj_wait(device, &ring_context->timelin=
+e_syncobj_handle, 1,
++                                          timeout, DRM_SYNCOBJ_WAIT_FLAGS_=
+WAIT_ALL, NULL);
++               igt_assert_eq(r, 0);
++       }
+ }
+
+ void amdgpu_user_queue_destroy(amdgpu_device_handle device_handle, struct =
+amdgpu_ring_context *ctxt,
+@@ -456,7 +458,7 @@ int amdgpu_timeline_syncobj_wait(amdgpu_device_handle d=
+evice_handle,
+ }
+
+ void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_r=
+ing_context *ring_context,
+-       unsigned int ip_type, uint64_t mc_address)
++       unsigned int ip_type, uint64_t mc_address, bool skip_signal)
+ {
+ }
+
+diff --git a/lib/amdgpu/amd_userq.h b/lib/amdgpu/amd_userq.h
+index b29e97ccf..dc39c1ca4 100644
+--- a/lib/amdgpu/amd_userq.h
++++ b/lib/amdgpu/amd_userq.h
+@@ -50,6 +50,6 @@ void amdgpu_user_queue_destroy(amdgpu_device_handle devic=
+e_handle, struct amdgpu
+                               unsigned int ip_type);
+
+ void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_r=
+ing_context *ring_context,
+-                             unsigned int ip_type, uint64_t mc_address);
++                             unsigned int ip_type, uint64_t mc_address, bo=
+ol skip_signal);
+
+ #endif
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 97a08a9a3..914d27909 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -607,7 +607,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device=
+_handle, bool user_queue)
+        if (user_queue) {
+                ring_context->pm4_dw =3D ib_info.size;
+                amdgpu_user_queue_submit(device_handle, ring_context, ip_bl=
+ock->type,
+-                                        ib_result_mc_address);
++                                        ib_result_mc_address, false);
+        } else {
+                r =3D amdgpu_cs_submit(context_handle[1], 0, &ibs_request, =
+1);
+        }
+@@ -647,7 +647,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device=
+_handle, bool user_queue)
+        if (user_queue) {
+                ring_context->pm4_dw =3D ib_info.size;
+                amdgpu_user_queue_submit(device_handle, ring_context, ip_bl=
+ock->type,
+-                                       ib_info.ib_mc_address);
++                                        ib_info.ib_mc_address, false);
+        } else {
+                r =3D amdgpu_cs_submit(context_handle[0], 0, &ibs_request, =
+1);
+                igt_assert_eq(r, 0);
+diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
+index 268bc9201..658c8d050 100644
+--- a/tests/amdgpu/amd_cs_nop.c
++++ b/tests/amdgpu/amd_cs_nop.c
+@@ -108,7 +108,7 @@ static void nop_cs(amdgpu_device_handle device,
+                        if (user_queue) {
+                                ring_context->pm4_dw =3D ib_info.size;
+                                amdgpu_user_queue_submit(device, ring_conte=
+xt, ip_type,
+-                                                        ib_info.ib_mc_addr=
+ess);
++                                                        ib_info.ib_mc_addr=
+ess, false);
+                                igt_assert_eq(r, 0);
+                        } else {
+                                r =3D amdgpu_cs_submit(context, 0, &ibs_req=
+uest, 1);
 --
 2.43.0
