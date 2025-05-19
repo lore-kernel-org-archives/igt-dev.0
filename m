@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FE3DC3ABD8
-	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 11:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E834C2D0CD
+	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 11:29:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3FD0810E39F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id B2C7810E253;
 	Mon, 19 May 2025 11:29:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nvg3rpSJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HxLpaUJb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F2B6B10E38D
- for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 11:29:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC5CA10E37F
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 11:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747654177; x=1779190177;
+ t=1747654176; x=1779190176;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GhyJPDklkCPFpE2XgVTyRtZ9KNSNpo3Ng1gh27cFoco=;
- b=nvg3rpSJFcsVGYoZzVDCtwcff5WkLNZrEeP9skE4QfBqGVrsRq0iC5Pf
- /tRMC1JmsIOZk1FJpupiqwOoNj1ksUQO9PvvCWZNYEmKoM0aafl9eALuQ
- Pad5x/rJ/xBgUYkHgMJWeLYENBDBLuZDYSF7rpS2x8wyX4pX1Rvcg0KoZ
- OArudOIRZ9/S1KlsjbwSXlczBXeabGKUu7cL3b3cyjpKyRoG/nOdg/vde
- qSCza0R+uMPXxs7Thz56rEn3wuFe9XK/VcR1OlQcBLflz/aD1NSOFPYnB
- 6aDOxWyFRBCKR8kGX3CR0KXQgO2/eyPbEDs+xrBDo7Hig/akdIVs8zo8e w==;
-X-CSE-ConnectionGUID: 9LliTMMAQR+PNCc2MMtZDA==
-X-CSE-MsgGUID: DymuktcFS8Sp0B7ktDMoVQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11437"; a="53347322"
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="53347322"
+ bh=/B+5isc7zroX8OcchWfetZFOe7I6dc/SFGPEJ3rcPa8=;
+ b=HxLpaUJblFtYN7lWJimX7kf7jZBZ9ROlFB4vP3qZFHhEo5AyfYtOuO1t
+ q6Yuit66YeZa2SrIVoryW31mB9ZG7QaDMBBaIEMSXOvNAMZ1BZL/6ZpMy
+ MEaCsguGIpZw8hsVtZbKRIeBrhqYlM3cCGfeQEEleduIOPUNybF6tUyS+
+ WsswS7HS6x+jU2vpTgp3Y8UZK4My0uPlY61Q5OJ3/d0h92XdhdBowazby
+ 5CeL4pRgvEV0/9m4Rk8zuGevUOfKn6atWiepLrp7dtyUT6nX+k5GFhLve
+ cRwbQtsoMhv9fD+gemS6Cu+Btxqd9kKsEfTpCvUg55Rnhofa4TM555mvK g==;
+X-CSE-ConnectionGUID: fCuZwItSQ8W5B85b1ZVB5Q==
+X-CSE-MsgGUID: N2ayC5ZkT7WdA2tJ9jeHcA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11437"; a="53347319"
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="53347319"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 04:29:37 -0700
-X-CSE-ConnectionGUID: j/W764PuS8SRl1ALEAaL6A==
-X-CSE-MsgGUID: HHNQ87xaSyaPWm0Fr1ovmA==
+ 19 May 2025 04:29:36 -0700
+X-CSE-ConnectionGUID: qQE11HXSTjKWXMSw9UGi+w==
+X-CSE-MsgGUID: zbUvF+iBRh+J1ka6Ulo5Uw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="139385849"
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="139385838"
 Received: from artdev273.igk.intel.com ([172.28.176.71])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 04:29:36 -0700
+ 19 May 2025 04:29:35 -0700
 From: Jan Sokolowski <jan.sokolowski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jan Sokolowski <jan.sokolowski@intel.com>
-Subject: [PATCH i-g-t v2 7/8] runner: fixup print/scan formatting for files in
- runner
-Date: Mon, 19 May 2025 11:30:09 +0000
-Message-Id: <20250519113010.125751-8-jan.sokolowski@intel.com>
+Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t v2 6/8] tests/intel/xe_sriov*: fixup print/scan
+ formatting for files in tests
+Date: Mon, 19 May 2025 11:30:08 +0000
+Message-Id: <20250519113010.125751-7-jan.sokolowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250519113010.125751-1-jan.sokolowski@intel.com>
 References: <20250519113010.125751-1-jan.sokolowski@intel.com>
@@ -71,40 +73,121 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Compiling on other architectures than x86-64 causes a lot
 of print/scan formatting warnings.
 
-Fix formatting by using proper formatters, eg. zu for sizes.
+Fix formatting by using proper formatters, eg. PRIu64.
 
 Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- runner/executor.c | 2 +-
- runner/settings.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tests/intel/xe_sriov_auto_provisioning.c |  6 +++---
+ tests/intel/xe_sriov_flr.c               | 12 ++++++------
+ tests/intel/xe_sriov_scheduling.c        |  4 ++--
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 41f521e56..661305006 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -1582,7 +1582,7 @@ static int monitor_output(pid_t child,
- 		if (settings->disk_usage_limit && disk_usage > settings->disk_usage_limit) {
- 			char disk[1024];
+diff --git a/tests/intel/xe_sriov_auto_provisioning.c b/tests/intel/xe_sriov_auto_provisioning.c
+index 9ef5ed79a..451c3c5ca 100644
+--- a/tests/intel/xe_sriov_auto_provisioning.c
++++ b/tests/intel/xe_sriov_auto_provisioning.c
+@@ -58,7 +58,7 @@ static int ranges_fair_allocation(enum xe_sriov_shared_res res,
+ 		uint64_t current_allocation = ranges[i].end - ranges[i].start + 1;
  
--			snprintf(disk, sizeof(disk), "igt_runner: disk limit exceeded at dmesg dump, %ld > %ld\n", disk_usage, settings->disk_usage_limit);
-+			snprintf(disk, sizeof(disk), "igt_runner: disk limit exceeded at dmesg dump, %zu > %zu\n", disk_usage, settings->disk_usage_limit);
- 			if (settings->log_level >= LOG_LEVEL_NORMAL) {
- 				outf("%s", disk);
- 				fflush(stdout);
-diff --git a/runner/settings.c b/runner/settings.c
-index 1d34c5bfe..a7d5dbc97 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -1166,7 +1166,7 @@ static ssize_t unescape_str(char *buf, size_t *n_src)
+ 		if (igt_debug_on_f(current_allocation != expected_allocation,
+-				   "%s: Allocation mismatch, expected=%lu VF%u=%lu\n",
++				   "%s: Allocation mismatch, expected=%" PRIu64 " VF%u=%" PRIu64 "\n",
+ 				   xe_sriov_debugfs_provisioned_attr_name(res),
+ 				   expected_allocation, ranges[i].vf_id,
+ 				   current_allocation)) {
+@@ -183,8 +183,8 @@ static int check_no_overlap(int pf_fd, unsigned int num_vfs, unsigned int gt_id,
+ 	for (unsigned int i = 0; i < num_vfs - 1; i++)
+ 		if (ranges[i].end >= ranges[i + 1].start) {
+ 			igt_debug((res == XE_SRIOV_SHARED_RES_GGTT) ?
+-				  "Overlapping ranges: VF%u [%lx-%lx] and VF%u [%lx-%lx]\n" :
+-				  "Overlapping ranges: VF%u [%lu-%lu] and VF%u [%lu-%lu]\n",
++				  "Overlapping ranges: VF%u [%" PRIx64 "-%" PRIx64 "] and VF%u [%" PRIx64 "-%" PRIx64 "]\n" :
++				  "Overlapping ranges: VF%u [%" PRIu64 "-%" PRIu64 "] and VF%u [%" PRIu64 "-%" PRIu64 "]\n",
+ 				  ranges[i].vf_id, ranges[i].start, ranges[i].end,
+ 				  ranges[i + 1].vf_id, ranges[i + 1].start, ranges[i + 1].end);
+ 			free(ranges);
+diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
+index a98d6ce70..91d9730fa 100644
+--- a/tests/intel/xe_sriov_flr.c
++++ b/tests/intel/xe_sriov_flr.c
+@@ -562,7 +562,7 @@ static int populate_ggtt_pte_offsets(struct ggtt_data *gdata)
+ 			continue;
  
- #define SERIALIZE_LINE(f, s, name, fmt) fprintf(f, "%s : " fmt "\n", #name, s->name)
- #define SERIALIZE_INT(f, s, name) SERIALIZE_LINE(f, s, name, "%d")
--#define SERIALIZE_UL(f, s, name) SERIALIZE_LINE(f, s, name, "%lu")
-+#define SERIALIZE_UL(f, s, name) SERIALIZE_LINE(f, s, name, "%zu")
- #define SERIALIZE_STR(f, s, name) do {		\
- 		if (s->name) {			\
- 			fputs(#name " : ", f);	\
+ 		if (vf_id < 1 || vf_id > num_vfs) {
+-			set_skip_reason(&gdata->base, "Unexpected VF%u at range entry %u [%#lx-%#lx], num_vfs=%u\n",
++			set_skip_reason(&gdata->base, "Unexpected VF%u at range entry %u [%#" PRIx64 "-%#" PRIx64 "], num_vfs=%u\n",
+ 					vf_id, i, ranges[i].start, ranges[i].end, num_vfs);
+ 			free(ranges);
+ 			return -1;
+@@ -634,7 +634,7 @@ static void ggtt_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
+ 		if (!set_pte_gpa(&gdata->ggtt, gdata->mmio, data->gt, pte_offset,
+ 				 (uint8_t)vf_id, &pte)) {
+ 			set_skip_reason(data,
+-					"Prepare VF%u failed, unexpected gpa: Read PTE: %#lx at offset: %#x\n",
++					"Prepare VF%u failed, unexpected gpa: Read PTE: %#" PRIx64 " at offset: %#x\n",
+ 					vf_id, pte, pte_offset);
+ 			return;
+ 		}
+@@ -655,7 +655,7 @@ static void ggtt_subcheck_verify_vf(int vf_id, int flr_vf_id, struct subcheck_da
+ 		if (!check_pte_gpa(&gdata->ggtt, gdata->mmio, data->gt, pte_offset,
+ 				   expected, &pte)) {
+ 			set_fail_reason(data,
+-					"GGTT check after VF%u FLR failed on VF%u: Read PTE: %#lx at offset: %#x\n",
++					"GGTT check after VF%u FLR failed on VF%u: Read PTE: %#" PRIx64 " at offset: %#x\n",
+ 					flr_vf_id, vf_id, pte, pte_offset);
+ 			return;
+ 		}
+@@ -712,7 +712,7 @@ static void *mmap_vf_lmem(int pf_fd, int vf_num, size_t length, int prot, off_t
+ 	}
+ 
+ 	if (st.st_size < length) {
+-		igt_debug("Mapping length (%lu) exceeds BAR2 size (%lu)\n", length, st.st_size);
++		igt_debug("Mapping length (%zu) exceeds BAR2 size (%" PRIo64 ")\n", length, st.st_size);
+ 		close(fd);
+ 		return NULL;
+ 	}
+@@ -750,7 +750,7 @@ static bool lmem_write_pattern(struct lmem_info *lmem, char value, size_t start,
+ 
+ 	for (; start < lmem->size; start += step) {
+ 		read = lmem_write_readback(lmem->addr, start, value);
+-		if (igt_debug_on_f(read != value, "LMEM[%lu]=%u != %u\n", start, read, value))
++		if (igt_debug_on_f(read != value, "LMEM[%zu]=%u != %u\n", start, read, value))
+ 			return false;
+ 	}
+ 	return true;
+@@ -765,7 +765,7 @@ static bool lmem_contains_expected_values_(struct lmem_info *lmem,
+ 	for (; start < lmem->size; start += step) {
+ 		read = lmem_read(lmem->addr, start);
+ 		if (igt_debug_on_f(read != expected,
+-				   "LMEM[%lu]=%u != %u\n", start, read, expected))
++				   "LMEM[%zu]=%u != %u\n", start, read, expected))
+ 			return false;
+ 	}
+ 	return true;
+diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
+index 2cd18c982..d69315690 100644
+--- a/tests/intel/xe_sriov_scheduling.c
++++ b/tests/intel/xe_sriov_scheduling.c
+@@ -346,7 +346,7 @@ static void compute_common_time_frame_stats(struct subm_set *set)
+ 			common_end = stats->end_timestamp;
+ 	}
+ 
+-	igt_info("common time frame: [%lu;%lu] %.2fms\n",
++	igt_info("common time frame: [%" PRIu64 ";%" PRIu64 "] %.2fms\n",
+ 		 common_start, common_end, (common_end - common_start) / 1e6);
+ 
+ 	if (igt_warn_on_f(common_end <= common_start, "No common time frame for all sets found\n"))
+@@ -671,7 +671,7 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
+ 	int preemptible_end = 1;
+ 	uint8_t vf_ids[num_vfs + 1 /*PF*/];
+ 
+-	igt_info("eq=%ums pt=%uus duration=%lums num_vfs=%d job_timeout=%ums\n",
++	igt_info("eq=%ums pt=%uus duration=%" PRIu64 "ms num_vfs=%d job_timeout=%ums\n",
+ 		 vf_sched_params.exec_quantum_ms, vf_sched_params.preempt_timeout_us,
+ 		 duration_ms, num_vfs, job_timeout_ms);
+ 
 -- 
 2.34.1
 
