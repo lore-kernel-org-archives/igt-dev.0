@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61CC8C54799
-	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 15:12:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D59C3DA6D
+	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 15:12:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0DEFB10E361;
-	Mon, 19 May 2025 15:12:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0236610E392;
+	Mon, 19 May 2025 15:12:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hXLoH6Rr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XWnkF/pK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CEF9310E361
- for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 15:12:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F5E710E392
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 15:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747667534; x=1779203534;
+ t=1747667536; x=1779203536;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oVC2UT7QE91r3flyWGx/tVRR2DtEDprDIfy/Kx5YvMM=;
- b=hXLoH6RrUco0wrkjePt0UD3dBhgzwd60E56AT++kxZU/QLV630pq+STU
- blUz3rt8wSQBBT6kn3auB/aXaJCT2D5jg3wCog9o5I26V4Lsx3nm8Bfsz
- HV2dVEqQrbQExKgj69kD9DbR4TIaX1PESDRUNut9h2HO4x8Di+0Jx6YBL
- ed538vNjVqJjhZ6aWFlSTmV38EB2J1nZzCeH1BC9ns+kU8pH1rfHmlgO7
- OZOgqm2A3ysuz/IS4YE3CFLV0+syZljley2z7rPHflrA0x4cnO0T4gzv/
- ajy+vLFPjY7Qnf5LKfZgPl2SokEjIV70F4HbefgaL6YGM68iBFBahO8Wo w==;
-X-CSE-ConnectionGUID: lNh4KFQmTz2/Q91DI8aMeA==
-X-CSE-MsgGUID: UGbFhUSXSFG7lMsan+MxyQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49710551"
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; d="scan'208";a="49710551"
+ bh=FSilhWtHlCtnxM8IrYTQg/oZRvmdQ+NJJBJRcnTCTxo=;
+ b=XWnkF/pKUB6LRVEqIow5fYp61+tyYdJm29lH9CFmv2Zn8Yu8qLSqhRae
+ U4tExo95lpYgMUMm8WBiy54+Q9GWCgtNZuVTYCm+Mw1TWQSdRK5cqzkK2
+ A9pKAo1j3rrn3TCcU1C28x4bqfRvOWk2uTZS9KOoo2YYJAfw8+LBdjMbu
+ AmTdbYMQ5dMcOtaMYXi0Do17pfRAT3YnwXqtinViBuKK4r+TqJkpzbxqN
+ gg27FlBEfivGJqw1A3UZnOEH49QxDRbeqL4mvBK864pIr/6BAOcQW2KRl
+ vtlI+PXzY8uJOCuqZHnO7dsVy2sa/FUZ6WcaewqLsJmbBFlq0FrVDINWR w==;
+X-CSE-ConnectionGUID: 6HbwOVfUTOCLalPckybQkg==
+X-CSE-MsgGUID: LqUyc2PpRLaiDGyqx41OcA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49710556"
+X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; d="scan'208";a="49710556"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 08:12:14 -0700
-X-CSE-ConnectionGUID: cPW7rWFeQry7mQ7nIElwTg==
-X-CSE-MsgGUID: xqjDjgNEQoWiIT58Jhn23Q==
+ 19 May 2025 08:12:16 -0700
+X-CSE-ConnectionGUID: qmAWftoiTF2Ukzi5rxO16g==
+X-CSE-MsgGUID: TsD/wKqOQ5SDMm1Iplu6vw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; d="scan'208";a="139287948"
+X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; d="scan'208";a="139287968"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by orviesa006.jf.intel.com with ESMTP; 19 May 2025 08:12:11 -0700
+ by orviesa006.jf.intel.com with ESMTP; 19 May 2025 08:12:13 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
  Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH i-g-t v9 06/14] tools/gputop: find program name from command
- line
-Date: Mon, 19 May 2025 15:11:27 +0000
-Message-ID: <20250519151135.43874-7-jeevaka.badrappan@intel.com>
+Subject: [PATCH i-g-t v9 07/14] lib/igt_dummyload: Avoid pthread_cancel use by
+ overriding timer value
+Date: Mon, 19 May 2025 15:11:28 +0000
+Message-ID: <20250519151135.43874-8-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519151135.43874-1-jeevaka.badrappan@intel.com>
 References: <20250519151135.43874-1-jeevaka.badrappan@intel.com>
@@ -71,55 +71,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-program_invocation_short_name is global variable provided by glibc.
-
-Inorder to get the igt built for Android(without glibc), find the
-program from command line without using program_invocation_short_name.
+Android build fails due to pthread_cancel unavailability.
+Replace pthread_cancel by overriding the expiration time of the timer.
 
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tools/gputop.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ lib/igt_dummyload.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/gputop.c b/tools/gputop.c
-index 43b01f566..f577a1750 100644
---- a/tools/gputop.c
-+++ b/tools/gputop.c
-@@ -335,15 +335,22 @@ struct gputop_args {
- 	unsigned long delay_usec;
- };
- 
--static void help(void)
-+static void help(char *full_path)
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index 3cf80b762..cc0b4ac3b 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -631,7 +631,16 @@ void igt_spin_end(igt_spin_t *spin)
+ static void __igt_spin_free(int fd, igt_spin_t *spin)
  {
-+	const char *short_program_name = strrchr(full_path, '/');
+ 	if (spin->timerfd >= 0) {
++#ifdef ANDROID
++		struct itimerspec its;
 +
-+	if (short_program_name)
-+		short_program_name++;
-+	else
-+		short_program_name = full_path;
-+
- 	printf("Usage:\n"
- 	       "\t%s [options]\n\n"
- 	       "Options:\n"
- 	       "\t-h, --help                show this help\n"
- 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
- 	       "\t-n, --iterations =NUMBER  number of executions\n"
--	       , program_invocation_short_name);
-+	       , short_program_name);
- }
- 
- static int parse_args(int argc, char * const argv[], struct gputop_args *args)
-@@ -384,7 +391,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 			}
- 			break;
- 		case 'h':
--			help();
-+			help(argv[0]);
- 			return 0;
- 		default:
- 			fprintf(stderr, "Unkonwn option '%c'.\n", c);
++		memset(&its, 0, sizeof(its));
++		its.it_value.tv_sec = 0;
++		its.it_value.tv_nsec = 1;
++		timerfd_settime(spin->timerfd, 0, &its, NULL);
++#else
+ 		pthread_cancel(spin->timer_thread);
++#endif
+ 		igt_assert(pthread_join(spin->timer_thread, NULL) == 0);
+ 		close(spin->timerfd);
+ 	}
 -- 
 2.49.0
 
