@@ -4,149 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0EAFC3DA6D
-	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 06:25:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 214DAC3DA6D
+	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 06:57:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 48D2810E0CE;
-	Mon, 19 May 2025 06:25:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A8D9F10E255;
+	Mon, 19 May 2025 06:57:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="bGowBOal";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dy2pG1Ss";
 	dkim-atps=neutral
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1nam02on2054.outbound.protection.outlook.com [40.107.96.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E54710E0CE
- for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 06:25:06 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WEkbqEORo+26uF4KfhGm2PqkJC+rAYzpGqlW3fgfGiojfH6dOERI/ttgD8FvMhUwuCG6xWXopsBQPghPGXvJ0ZWVcPSfPDhw67XwSCqwIn1cwDhvTYwzpUOus+WQD+6N4UpyU8euXoHUnQefNoJs6sTN6TE5dykJJQAcrUyQXFSSZmyuqt6RFMPVd11NxcB22xIUmcnVx1AP8rBPuNhVN/rBo1h4FdNO+CT693IB20Uexa6HWXh6dHNbeVqhXS1GrnKWfkR9rJppJywnuh7A8p9w1fQEu/M4kEKeN/FAPppAM8T76Rgc04UuN+Y7pv+/SBK2E/DZ7y0HK0cS2pErPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IOrYFkae2R75/+F1Pv0h4Prc8G13S5Zx2skcLbJE6k0=;
- b=BCNY+qdetXIml3IIPfA86yCpMZ7tX/sHlI8joiCYy795tKD+GrNF1boHjsOwoDfn2vFXlphO+tonETxTjw/vHo4xk7ooeYFhkTXytAiPcyR0QiCV4Ux0YhhyBeYF6UWZSj3UHJb3upK6oBE/4obtAv0nJYkcZhVfrpdqZevtJdHlh70Z/97cs/JYFQDHpz7wqGQObrSiD3dm3jMz2xoIENUfSDlzfSv2IKpC0e0bvGeiJlBLz6L7chsP13692agOcPlS5Uw36jbdkeFAnnTUhH/TOQCGrd0Twam9QrPyBiGKus7zHesdLCyaT/Lqd4sqVHznHz9UAmGQ4h10nJusyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IOrYFkae2R75/+F1Pv0h4Prc8G13S5Zx2skcLbJE6k0=;
- b=bGowBOalrDa5aFVPY1qc/QacX5ru96cavlA2PGeYZuvNGy1UUaB/sV17Iw6uL94RmFnWldnUVHRRuG2LrhxDi8RW44YbT338Lyto1L2LJToRj9FzLe17v6viQlLFzguo6FPB9TSAM1lTvFlQ8/IGX6D4Si5aFnn5YKwBvpvOwP4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5753.namprd12.prod.outlook.com (2603:10b6:208:390::15)
- by CH0PR12MB8506.namprd12.prod.outlook.com (2603:10b6:610:18a::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Mon, 19 May
- 2025 06:25:02 +0000
-Received: from BL1PR12MB5753.namprd12.prod.outlook.com
- ([fe80::2b0e:7fc3:1d21:5d2e]) by BL1PR12MB5753.namprd12.prod.outlook.com
- ([fe80::2b0e:7fc3:1d21:5d2e%3]) with mapi id 15.20.8722.027; Mon, 19 May 2025
- 06:25:02 +0000
-Message-ID: <8f59dc76-1c16-4904-b9f8-3acbed4ef1eb@amd.com>
-Date: Mon, 19 May 2025 11:54:58 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 1/2] tests/amdgpu: userq skip waiting for signal
- fence
-To: "Mohan Marimuthu, Yogesh" <Yogesh.Mohanmarimuthu@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <PH7PR12MB6633AA2EFED618F772A7191CFF9DA@PH7PR12MB6633.namprd12.prod.outlook.com>
-Content-Language: en-US
-From: "Khatri, Sunil" <sukhatri@amd.com>
-In-Reply-To: <PH7PR12MB6633AA2EFED618F772A7191CFF9DA@PH7PR12MB6633.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN4PR01CA0087.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:2ae::8) To BL1PR12MB5753.namprd12.prod.outlook.com
- (2603:10b6:208:390::15)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7129010E21E
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 06:57:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747637855; x=1779173855;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=GoAAHi7aTbwIjLRm/tmQLv57GJC9Oq0WXlM80MZb3JU=;
+ b=dy2pG1Ss30YCJduZOONiubBXV4FCZxT9+u+KicX9Zwj1nQn7o+HbJhqC
+ egkdq5Ej1pb5etG8aZMA1cl6owchwerqDYdYutJIP0Jk3pTE/1IbzmAlw
+ VxFTcsw0vdTxy/1/LSLPXo8V/yC7bV+sK39Eq7KM5W79zFFRDoOOqqRZZ
+ z7Ue57dD/QrkZIywspFG+Rq/PaCYK6VejYEZ+NVwEAu7L4yhsQjkG/IhC
+ FgCQfhp/f/qOBdRvLHiVYN3rv93Yu8cC01P3rAEuxSWoOgHftqR5jHoeZ
+ hjwruoTLcSRFhK3ipB69VYZPC11jDd+Lao0Mee8thQu2JV6vw+Tv4ad9U A==;
+X-CSE-ConnectionGUID: bbUi6VCITrutkmKBDTPL/A==
+X-CSE-MsgGUID: +arXvBDCQYK2LAJDvhQXdg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11437"; a="74924842"
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="74924842"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 May 2025 23:57:11 -0700
+X-CSE-ConnectionGUID: 1akYzidlTki1Zte4KTmB8g==
+X-CSE-MsgGUID: 2ZjMqdDYSaadfhB3Mn1PuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="144398904"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.126])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 May 2025 23:57:08 -0700
+Date: Mon, 19 May 2025 08:57:04 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com, 
+ markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com, 
+ sapna1.singh@intel.com
+Subject: Re: [PATCH i-g-t v6 07/14] lib/igt_dummyload: Avoid pthread_cancel
+ use by overriding timer value
+Message-ID: <p35unxhkmxokjwnfiph6ncqfipdvetrxy4uxszzsjrvmz6gxlu@cxpjxhshjc66>
+References: <20250516160551.58760-1-jeevaka.badrappan@intel.com>
+ <20250516160551.58760-8-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5753:EE_|CH0PR12MB8506:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4397625f-772c-455f-9f1f-08dd969de335
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?YmVDQksySGUwM2RjdnpkS0gweUs4WVdxQ2ZkL3FYYlJZZ0IzYlRxeG5Qb3VJ?=
- =?utf-8?B?T3hBVXQ5Ykt2YTlTbFlSaXVBTEFJR1dLS3Q2azkzbC9qcTBGb3ZuTk1lV3JH?=
- =?utf-8?B?K0Q2dkd5WnNEcDZPVWh6dlZzODVyaGlDSjRXOHI1NXdjUXNITHlUOTNKcTFT?=
- =?utf-8?B?Qk5ZUTFTOVBCUXUwbm9yMHRhQ2gzbVhjd2FQZEJiY1JFeVpsT3FZZklKbzFo?=
- =?utf-8?B?RHNDbW9mU3hHWEYxTHV4Y3hkbmZSdk03Q3pEWk5xSGNSV2F2L2dtM1RoSnFx?=
- =?utf-8?B?b0lqaWNoSWdHYnRuNC9LQzRQZWxJR2VDS2JHOHpXeFoxcG5LMXpvT1NnTEVI?=
- =?utf-8?B?SnNVdktxeHJ6R20rUEdQc3k1cmN1SzFYMlhlRXVXRVBsQTNlNGVoWGEvSU90?=
- =?utf-8?B?dG5KdzNlZldrQW5iYVV2N0wvaDZEZHBSbnFNM2JDTHNaRC90OUZSWnkvRkFw?=
- =?utf-8?B?L00vM2dMYThDZzFqTm1MVW9BRklQSTZBWThvNFZsVnhWQytDQllEdnVYaWlm?=
- =?utf-8?B?K21GbG5XcDZ4VjcvdFZGTnMzcHJGSDVFTUwvZ0RLd1hVRzlBSWJFczJOWnJl?=
- =?utf-8?B?dzFzSExxMUdUbWFvbGptaTl1cFlhWGsxcnRJbGtRU2ZFaFZWeHovYlA2bnVR?=
- =?utf-8?B?MlQvSWIzZDhNemk2dEhnZXl2T21YZlQyZVNNSU1hUExucHZPN0dxTVhJaEJP?=
- =?utf-8?B?T2gwTEFOYVU4SVJsbnRQcDlPWEFtY0xnL1lHSEJaaUVacytyOWU5V2xIY0VJ?=
- =?utf-8?B?K0tmVlEwVFJMb29yMGdxMWQxZjhMRGtpRUlyZFlmSlJwMTJialdnVVJXK3N4?=
- =?utf-8?B?eXdhUkRtKzZFempUbUY0dGRCb2dmcEZWZ1pseXZyU0JpMThBaWdrVnljaFRE?=
- =?utf-8?B?aW5MQ1lWd2k4dG0yY21kbnBleFIvRktoM21VNG9yRjcwSm1ERXhLeUY1UFNL?=
- =?utf-8?B?R2ZOODF2Tm1POHBQdHRFZDV0OFRLb2FHYS9GUk12OHBYcEYvTDNCckR3UVpj?=
- =?utf-8?B?VytGNVJBUGc3SjlBRlUyQnY0bC8zRjNYenJjTEprTENBQjM2azUzbFQ3ZEV6?=
- =?utf-8?B?T1U4QkVkaGpiSlVlbFJ0UGUvSHVqcXlzSTJodHVQUG9hOGNOdC9rcTEvREFq?=
- =?utf-8?B?TTJCMUNUQXV3T3Z2MXBoMTBYa05JclFpOVVPSmtCaTlCWGhZZm1DbnllQmwz?=
- =?utf-8?B?M2hZbHgwYVNvVThibUxmaFA0UGNTZUtGSXJBdmxpTk9tRSt6YlZ1UFZ2TW9t?=
- =?utf-8?B?eUlrb3p5YWRyOEZqT0djNVc0ZVFEUGJ4cDlYL0tQSFVScGpvSjRiUCtaTjIy?=
- =?utf-8?B?MTFpWnVkL3VkWENGNTlXaHVnRmVFbTh2RHpHR21mUE9vRll3VjFOQTg1NU4x?=
- =?utf-8?B?b0tRMEpsU283emVXbklJQUhpblZSWDhBbTNWM1B5cHFIdWwxekRHS2hMSi9U?=
- =?utf-8?B?OGpQUGU0TDVtVXNDV1BPWUFxdXUyTjd4ZFZXUHRRQitybzJaZkFtend4TGlm?=
- =?utf-8?B?Qzd1akN1RTRrdlBvYjhsVUVZcTI4VU42bmhDTVZnaFRtck1VZFFaNWZVRXlT?=
- =?utf-8?B?TmhVKzluRDQ3U1BIemgxVU9valA3Z1h0d0VBVFd5MU85Y2JVSGxSYlhLOUw4?=
- =?utf-8?B?WU5ZblIvbGgxNDZHenBCSnp4elFzQkVPNlJ0Z3NLK2x6MEdiOG1yaG5IbHdJ?=
- =?utf-8?B?ZkU5aUdCM0xUTFpHZUVIa08yQlRmZVB4UlNNaEpuRmZGSHN3ZlVZVUY4TU1K?=
- =?utf-8?B?QVZJZWxSV2hJNC9hZXRUT0FseGp5dkRoeDl4Zmt3UVFCV1RsQW5KTitwOE1o?=
- =?utf-8?B?MWpjR3M0aE1XMk1yVndMMjNwVDlaNTlxMW5sbkdXSXN5bFhYL1hsYXI5Rm9t?=
- =?utf-8?B?T0NkUkhVWnNYR0haWHJkZ25pNm5ITkNNdFlNOWRHOElxR05YcU96a0kzM0VO?=
- =?utf-8?Q?pKhb2en1VGQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR12MB5753.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d1p5K0VyUVdNOTdjdW5Ld1crN1hrbDloaStubTdEeUhhajVaTDdYcW9xTm8z?=
- =?utf-8?B?SGNZeHhJcUE3aDNYQjEzTmVZMzZrU1hBcmZMMUxXdzFOSEdWdElmUm81dmp5?=
- =?utf-8?B?YXJxc2NqT3luRzNMa0tXNnZNaHZtcWRPOWJsTHduZ0lzcVd4MUZMK01EcHZ0?=
- =?utf-8?B?TGN0cGZWVEIwSUQrQzJHSk9OQWV6Z3h6NFlHb1pzL1NiRVB5RTY5bDk2Uzh2?=
- =?utf-8?B?bDZ4MXZXdzljQkx6Q29hN2dPcGJuUWpKUlZQL2tpeEw0c2FicWJTY1F6bnJi?=
- =?utf-8?B?blFnV3FWSTRkdGw1bzFkVlEydWdmQm5HUHpxMExGWHYwS1hXSDBUKzFubWFm?=
- =?utf-8?B?NkYyWlN6SS84d1U5eUNvcG5wcTRBaDB2TjJ2bHFpYjNicm5JQmp1MFBmS1Zq?=
- =?utf-8?B?LzdoV052ck1tcG1IR3plUXhjK2FWbGI2dzhKcHVhN3lkSEpEZmY3aGM5ejRG?=
- =?utf-8?B?RVU4M1RMMXl0aFlRY0JkVWYwVEtCWHZENzhIaHp3dHQ5bnQ2bGFBTzl6ZEl3?=
- =?utf-8?B?aEMwNzcyZXJOb2lTUS96NmRpazN6YlRlRG1LN09COHQxOEd3dmFQejFhNWwx?=
- =?utf-8?B?TnB2bU9FL0JPSTNTVzUra3BndnZZU3hRZDZaeFlzalYyVExVYUlyWFlPQnJK?=
- =?utf-8?B?R1RLL3dmcG9UbURRQXhtQ1N4NitPQ3NENDhPbWR1UEJLcmNnT1ZZRExkQnZ3?=
- =?utf-8?B?M0laaUFnd0hSa1hGNnZCZEh4bmtNbWhlVUY0YzNLbXhKNVE1ZThxcDBoczZj?=
- =?utf-8?B?Q1BKU0F2a2hBM0VUTnNtaEJRek1jSFNIVXQrL0IvVjN5QkY3NlgxNk9CdnVK?=
- =?utf-8?B?aEdZTFdkMUc1YW5XMU42QVcyYTFkY2g2b0pvVU5ObDZzMTN0L0xONG9nZUh2?=
- =?utf-8?B?MndwV2E3b0IyZUx2c0V2U2o0TEd4QXBDNUp3SXhHV2ZQT2ovaFk3TDhKN010?=
- =?utf-8?B?dU1GYmtWd3J0WnYyRmc4RXEwOUNURURHdkJkems5MzB2WkdQT3B0TnhLV0ZJ?=
- =?utf-8?B?S0ZDdmF2TFlIWlhod2ZQT1V4bUcwMWt0RUd2OUozQ1dXTWpOd1JLaWluMUcr?=
- =?utf-8?B?cVoyeFRxWWdtaG1YK0NZZ3FzRE9Ra09lV3pCYy9YYkN2bXBzWlBVUEx1Vi81?=
- =?utf-8?B?R3BQSnlDc2IveU5aZUp3NnlKNjR2MWE5NDlLTHQ2NkVzVmtrRUpXNGJEbTlp?=
- =?utf-8?B?VzArak1UU0NFaDJkRWpDTFpyZ25HVnFRVlRpOFcwdGh1YUgxSkYxSW9RSDVP?=
- =?utf-8?B?aGwrRHVTbHVkckRDR1FxNDNsNFliYXR5YXgzQXQrVWxZTys3dW1GZXhySGpG?=
- =?utf-8?B?NktBNTR4MVloNDJjbUE0R2xldDNRa09YQzNhanRmaGtNMTlvcUVzUHFrb3dL?=
- =?utf-8?B?WFRFRWQ2ZTQycnloY0pnZGlLOTJCSElZQ3RicEFydm9DWVJNQUY4eUF1MkhB?=
- =?utf-8?B?QU5YdDB4SW9QOUZhbFdOSWpyZkI5cU94YjJoaCt3SVZwNitBb3lyWm9ybFdJ?=
- =?utf-8?B?ZkViYzRPcHREWUszSzVmZis1RTZ3Um04NkROdmVFR0lWekhVQ0R0WEh2bW00?=
- =?utf-8?B?QjRQNENCdlNiMW8yK3RiMFp0RnVZdllZRUZZdG0xRys1cDBOQTI2ZVgxTjdu?=
- =?utf-8?B?R2FyUm41ODAzR0Ywd3dzTDh5WWFQZXIxc1RNNjJtMVhXaFdVUFUyTkFMNHdW?=
- =?utf-8?B?Y05OYjZMZURqbGtzMm5lN2ZlSk1Oazg3c0FITVFYYTBZS1V1RXdUU2pIMkRB?=
- =?utf-8?B?OEViZjNVOEo3dlplQWhDYXcxYnN2ZWZ0YldsRHRHQkQ1dGpTdEVHOGxNYTF1?=
- =?utf-8?B?QXplditqWE1yYUZaZnpWME1tVnpLMFlSajBLaENLcjU0RDg0TmxLZCtabEQ0?=
- =?utf-8?B?UkQvSW1rRUVKeVFVNlBLckJPMFB4eU1YdkN1N3ZMY3RrWEczbjVONVpCajhK?=
- =?utf-8?B?ZktXbHBPU2FUK0xuVU5ZbHllcmZLMkdWbXBkUHBkWmJzbUhXSG95Nk5MVnFp?=
- =?utf-8?B?ZVRJcTFGdDJjcVBQUFVKZk5UaHFFZDNNQnZoeEpla1Bjdm1kZ05oMWRIeGpp?=
- =?utf-8?B?Zm1JRjZuRGpuYlBhd2p2ZTRicTBDZldpd0VoWERNSWpGSjBKa0dDbG5mWkF2?=
- =?utf-8?Q?7jcOVUQlqzYy+trs1ljv7myQO?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4397625f-772c-455f-9f1f-08dd969de335
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5753.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 06:25:02.7614 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pjv/EMzWVtbVn+dVbrhehKard/pwMdJ7dvJ2Q1NlQFHmKK4n+XnmhHWCQPNuZrnGLf0+SZOfXQqK/s5olSeQlA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8506
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250516160551.58760-8-jeevaka.badrappan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -162,173 +73,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
-
-Please make sure the indentation and alignment follows the kernel 
-guidelines. We follow same guidelines as linux kernel guidelines. Its 
-not easy to capture all indentation issues in review.
-
-Regards
-Sunil Khatri
-
-On 5/18/2025 5:27 PM, Mohan Marimuthu, Yogesh wrote:
-> [AMD Official Use Only - AMD Internal Distribution Only]
->
-> [AMD Official Use Only - AMD Internal Distribution Only]
->
-> For negative test cases where the job will not complete need to
-> skip signal fence. Pass a flag to amdgpu_user_queue_submit() to
-> skip signal fence wait.
->
-> v2: rebase to latest code
->
-> Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>
-> Cc: Sunil Khatri <sunil.khatri@amd.com>
-> Cc: Jesse.Zhang <Jesse.zhang@amd.com>
-> Signed-off-by: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
+On Fri, May 16, 2025 at 04:05:44PM +0000, Jeevaka Prabu Badrappan wrote:
+> Android build fails due to pthread_cancel unavailability.
+> Replace pthread_cancel by overriding the expiration time of the timer.
+> 
+> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 > ---
->   lib/amdgpu/amd_command_submission.c |  2 +-
->   lib/amdgpu/amd_compute.c            |  2 +-
->   lib/amdgpu/amd_userq.c              | 36 +++++++++++++++--------------
->   lib/amdgpu/amd_userq.h              |  2 +-
->   tests/amdgpu/amd_basic.c            |  4 ++--
->   tests/amdgpu/amd_cs_nop.c           |  2 +-
->   6 files changed, 25 insertions(+), 23 deletions(-)
->
-> diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-> index fcc356f8f..c3dad3231 100644
-> --- a/lib/amdgpu/amd_command_submission.c
-> +++ b/lib/amdgpu/amd_command_submission.c
-> @@ -68,7 +68,7 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type
->          memcpy(ring_ptr, ring_context->pm4, ring_context->pm4_dw * sizeof(*ring_context->pm4));
->
->          if (user_queue)
-> -               amdgpu_user_queue_submit(device, ring_context, ip_type, ib_result_mc_address);
-> +               amdgpu_user_queue_submit(device, ring_context, ip_type, ib_result_mc_address, false);
->          else {
->                  ring_context->ib_info.ib_mc_address = ib_result_mc_address;
->                  ring_context->ib_info.size = ring_context->pm4_dw;
-> diff --git a/lib/amdgpu/amd_compute.c b/lib/amdgpu/amd_compute.c
-> index 95bfa53aa..008186049 100644
-> --- a/lib/amdgpu/amd_compute.c
-> +++ b/lib/amdgpu/amd_compute.c
-> @@ -91,7 +91,7 @@ void amdgpu_command_submission_compute_nop(amdgpu_device_handle device, bool use
->
->                  if (user_queue) {
->                          amdgpu_user_queue_submit(device, ring_context, AMD_IP_COMPUTE,
-> -                                                ib_result_mc_address);
-> +                                                ib_result_mc_address, false);
->                  } else {
->                          memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
->                          ib_info.ib_mc_address = ib_result_mc_address;
-> diff --git a/lib/amdgpu/amd_userq.c b/lib/amdgpu/amd_userq.c
-> index f8e1a4b45..0a983834c 100644
-> --- a/lib/amdgpu/amd_userq.c
-> +++ b/lib/amdgpu/amd_userq.c
-> @@ -127,7 +127,7 @@ int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
->   }
->
->   void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
-> -                             unsigned int ip_type, uint64_t mc_address)
-> +                             unsigned int ip_type, uint64_t mc_address, bool skip_signal)
->   {
->          int r;
->          uint32_t control = ring_context->pm4_dw;
-> @@ -166,22 +166,24 @@ void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_co
->          /* Update the door bell */
->          ring_context->doorbell_cpu[DOORBELL_INDEX] = *ring_context->wptr_cpu;
->
-> -       /* Add a fence packet for signal */
-> -       syncarray[0] = ring_context->timeline_syncobj_handle;
-> -       signal_data.queue_id = ring_context->queue_id;
-> -       signal_data.syncobj_handles = (uintptr_t)syncarray;
-> -       signal_data.num_syncobj_handles = 1;
-> -       signal_data.bo_read_handles = 0;
-> -       signal_data.bo_write_handles = 0;
-> -       signal_data.num_bo_read_handles = 0;
-> -       signal_data.num_bo_write_handles = 0;
-> -
-> -       r = amdgpu_userq_signal(device, &signal_data);
-> -       igt_assert_eq(r, 0);
-> +       if (!skip_signal) {
-> +               /* Add a fence packet for signal */
-> +               syncarray[0] = ring_context->timeline_syncobj_handle;
-> +               signal_data.queue_id = ring_context->queue_id;
-> +               signal_data.syncobj_handles = (uintptr_t)syncarray;
-> +               signal_data.num_syncobj_handles = 1;
-> +               signal_data.bo_read_handles = 0;
-> +               signal_data.bo_write_handles = 0;
-> +               signal_data.num_bo_read_handles = 0;
-> +               signal_data.num_bo_write_handles = 0;
+>  lib/igt_dummyload.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+> index 3cf80b762..cc0b4ac3b 100644
+> --- a/lib/igt_dummyload.c
+> +++ b/lib/igt_dummyload.c
+> @@ -631,7 +631,16 @@ void igt_spin_end(igt_spin_t *spin)
+>  static void __igt_spin_free(int fd, igt_spin_t *spin)
+>  {
+>  	if (spin->timerfd >= 0) {
+> +#ifdef ANDROID
+> +		struct itimerspec its;
 > +
-> +               r = amdgpu_userq_signal(device, &signal_data);
-> +               igt_assert_eq(r, 0);
->
-> -       r = amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle, 1, timeout,
-> -                                  DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
-> -       igt_assert_eq(r, 0);
-> +               r = amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle, 1,
-> +                                          timeout, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
-> +               igt_assert_eq(r, 0);
-> +       }
->   }
->
->   void amdgpu_user_queue_destroy(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
-> @@ -456,7 +458,7 @@ int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
->   }
->
->   void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
-> -       unsigned int ip_type, uint64_t mc_address)
-> +       unsigned int ip_type, uint64_t mc_address, bool skip_signal)
->   {
->   }
->
-> diff --git a/lib/amdgpu/amd_userq.h b/lib/amdgpu/amd_userq.h
-> index b29e97ccf..dc39c1ca4 100644
-> --- a/lib/amdgpu/amd_userq.h
-> +++ b/lib/amdgpu/amd_userq.h
-> @@ -50,6 +50,6 @@ void amdgpu_user_queue_destroy(amdgpu_device_handle device_handle, struct amdgpu
->                                 unsigned int ip_type);
->
->   void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
-> -                             unsigned int ip_type, uint64_t mc_address);
-> +                             unsigned int ip_type, uint64_t mc_address, bool skip_signal);
->
->   #endif
-> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-> index 97a08a9a3..914d27909 100644
-> --- a/tests/amdgpu/amd_basic.c
-> +++ b/tests/amdgpu/amd_basic.c
-> @@ -607,7 +607,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle, bool user_queue)
->          if (user_queue) {
->                  ring_context->pm4_dw = ib_info.size;
->                  amdgpu_user_queue_submit(device_handle, ring_context, ip_block->type,
-> -                                        ib_result_mc_address);
-> +                                        ib_result_mc_address, false);
->          } else {
->                  r = amdgpu_cs_submit(context_handle[1], 0, &ibs_request, 1);
->          }
-> @@ -647,7 +647,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle, bool user_queue)
->          if (user_queue) {
->                  ring_context->pm4_dw = ib_info.size;
->                  amdgpu_user_queue_submit(device_handle, ring_context, ip_block->type,
-> -                                       ib_info.ib_mc_address);
-> +                                        ib_info.ib_mc_address, false);
->          } else {
->                  r = amdgpu_cs_submit(context_handle[0], 0, &ibs_request, 1);
->                  igt_assert_eq(r, 0);
-> diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
-> index 268bc9201..658c8d050 100644
-> --- a/tests/amdgpu/amd_cs_nop.c
-> +++ b/tests/amdgpu/amd_cs_nop.c
-> @@ -108,7 +108,7 @@ static void nop_cs(amdgpu_device_handle device,
->                          if (user_queue) {
->                                  ring_context->pm4_dw = ib_info.size;
->                                  amdgpu_user_queue_submit(device, ring_context, ip_type,
-> -                                                        ib_info.ib_mc_address);
-> +                                                        ib_info.ib_mc_address, false);
->                                  igt_assert_eq(r, 0);
->                          } else {
->                                  r = amdgpu_cs_submit(context, 0, &ibs_request, 1);
-> --
-> 2.43.0
+> +		memset(&its, 0, sizeof(its));
+> +		its.it_value.tv_sec = 0;
+> +		its.it_value.tv_nsec = 1;
+> +		timerfd_settime(spin->timerfd, 0, &its, NULL);
+> +#else
+
+Looks good to me. I haven't tested this on Android, but should work
+similar to Linux:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
+>  		pthread_cancel(spin->timer_thread);
+> +#endif
+>  		igt_assert(pthread_join(spin->timer_thread, NULL) == 0);
+>  		close(spin->timerfd);
+>  	}
+> -- 
+> 2.49.0
+> 
