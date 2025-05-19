@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9440FC2D0CD
-	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 15:12:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC67AC3ABD8
+	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 15:12:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 49A2C10E3C0;
-	Mon, 19 May 2025 15:12:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A204210E278;
+	Mon, 19 May 2025 15:12:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K+jKsd7+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bSn8XkKf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4696210E3C0
- for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 15:12:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AF2B10E3CC
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 15:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747667549; x=1779203549;
+ t=1747667552; x=1779203552;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PAvsdXnFrekWrVV0dncm5yZatms4rl/Z0Q7Tsft/GLc=;
- b=K+jKsd7+ypNeusRCYLJYFBk7Pd/OzyAxtDSKGshGtP4oLbtlnVUB3cK6
- BlH6qOwq5JecBGbCvFtgtqYLuvpkxhc2lLDGYuAIjeW66jLzDGKk3d28j
- 3toYCo4/I/qiyrM/pPJc779W6zcp65ZetCpSTlOSFM8PogiPO14DLJJC4
- svqt4rJltMd1byAqUfiJHOr7DbLFZONqOzBKWRYvP98kD1ZW52fXEN9jW
- bewCm7HE91jmghqkeGEVbQYwkXxxWbSqRFp5q0x/AKJiyX8GMsgzw8g8T
- eMgq+sAAedPuPPe973dSmkmDGzhDWhBk2k3fAWLd6jjHU+vOb2Gfjyjwi A==;
-X-CSE-ConnectionGUID: 29xj2d2qQreMDFXN9UpNhQ==
-X-CSE-MsgGUID: zy4rfT17QHCizWAO9jrTag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49710583"
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; d="scan'208";a="49710583"
+ bh=c30f9w4gwit8nY81ngE6AnPMSZU0AbU9GQonoQSa58o=;
+ b=bSn8XkKf2tX3CDJEp6VxSxJ83YPG5zrLQ5gt7A8TSTeRAj9hrPdCcxqn
+ YikBXL0SMvO3LuFdXH6qQCrVQTrvD/3kCeckHHOcI0mFr5K4oA5Mpaeuu
+ jt6Yzfw3OsyFW+2r6UTXJIIV6Qb1i0aDSNVhM4qzam/pCwe0w0XXd0Jvy
+ QUCmgAi/oOwP58wKNDtIxjFVF22wFBcMBLa07GIL5VV+Qf9n9YTl0UFcA
+ tDuVkuK2svSm85/Fz1edqRvzWNI7VstoXIWTGwOnb0R8TPsQVUkn6VDnZ
+ Q/Njb6Hi4BoPXqxI/EG4iY4ymGIxgiVIHriAIjc9j7rHjzTkoobY6Y9FV g==;
+X-CSE-ConnectionGUID: D3pAawDIRL6wFfYrkmbyag==
+X-CSE-MsgGUID: UprpdIaQTvyZ/FBLUNi4Iw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49710593"
+X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; d="scan'208";a="49710593"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 08:12:29 -0700
-X-CSE-ConnectionGUID: AS0TdJ3ATdabPfNPfZwVyg==
-X-CSE-MsgGUID: 9iJ/5eNQQhCnHfrLOEsZew==
+ 19 May 2025 08:12:32 -0700
+X-CSE-ConnectionGUID: aG/x/bDdST6100YxxJBd1g==
+X-CSE-MsgGUID: AyremwIBTZG1Pgja8pHATA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; d="scan'208";a="139288023"
+X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; d="scan'208";a="139288030"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by orviesa006.jf.intel.com with ESMTP; 19 May 2025 08:12:26 -0700
+ by orviesa006.jf.intel.com with ESMTP; 19 May 2025 08:12:29 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH i-g-t v9 12/14] tests/intel/xe_create: Conditionally define
- PAGE_SIZE for non-Android platforms
-Date: Mon, 19 May 2025 15:11:33 +0000
-Message-ID: <20250519151135.43874-13-jeevaka.badrappan@intel.com>
+ Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v9 13/14] lib/igt_device_scan: Replace rindex with
+ strrchr
+Date: Mon, 19 May 2025 15:11:34 +0000
+Message-ID: <20250519151135.43874-14-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519151135.43874-1-jeevaka.badrappan@intel.com>
 References: <20250519151135.43874-1-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,32 +71,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Ensure PAGE_SIZE is defined only if it is not already defined,
-addressing compatibility with Android where PAGE_SIZE is predefined.
-
-Note: PAGE_SIZE is defined in multiple files; a cleanup will be
-addressed in a future patch series.
+As rindex is deprecated, replace index with strrchr.
 
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_create.c | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/igt_device_scan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-index b22084c84..e8b8bb025 100644
---- a/tests/intel/xe_create.c
-+++ b/tests/intel/xe_create.c
-@@ -18,7 +18,9 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index 3f26a1737..45faabc45 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -1258,7 +1258,7 @@ igt_devs_print_user(struct igt_list_head *view,
+ 		if (!dev->drm_card || dev->drm_render)
+ 			continue;
  
-+#ifndef PAGE_SIZE
- #define PAGE_SIZE 0x1000
-+#endif
+-		drm_name = rindex(dev->drm_card, '/');
++		drm_name = strrchr(dev->drm_card, '/');
+ 		if (!drm_name || !*++drm_name)
+ 			continue;
  
- static struct param {
- 	unsigned int quantity;
+@@ -1306,7 +1306,7 @@ igt_devs_print_user(struct igt_list_head *view,
+ 			if (strcmp(dev2->parent->syspath, dev->parent->syspath))
+ 				continue;
+ 
+-			drm_name = rindex(dev2->drm_render, '/');
++			drm_name = strrchr(dev2->drm_render, '/');
+ 			if (!drm_name || !*++drm_name)
+ 				continue;
+ 
 -- 
 2.49.0
 
