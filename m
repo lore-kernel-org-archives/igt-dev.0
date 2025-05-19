@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67CD7C54754
-	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 07:38:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0281FC3DA6D
+	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 07:39:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 890F910E20E;
-	Mon, 19 May 2025 07:38:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B170C10E333;
+	Mon, 19 May 2025 07:39:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kpW/40mC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UwPXOEgO";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 79BDA10E22D
- for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 07:38:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A98ED10E333
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 07:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747640297; x=1779176297;
+ t=1747640363; x=1779176363;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=UzUW1GSZhPEDm9cAkYnf1cy/St3LvwSp88TZHU4KidE=;
- b=kpW/40mCRzoA7NfbHENcr/yxKzRQcWpaSKrXcmTPGqzIGzmT2KIB6jzO
- 3ymWIxAt6k2w18LG8gvZKp7xOxT2hTCch60krub8pLmwEpqA6Q0tr4qbI
- KZp0lN4LjihHaWULdtrkht0P+ARGDkkajmVE55r1NNM6+M8IVvEBTBc9F
- 6ihtbP24SScXodU61wEugmV2ya+lqneIxsQU+KrjYdsLNiQ5rZf9/NHl7
- 1VGWLfkkjsSS7zEXcNrTb+aPJgYNOSmwnDrI9NL9DzX3xCY1JgOldpVJN
- BduMJLi61DG8PpUip4gLnVgPmFwWC/80Fin4JPpoc7/nuJj2y6Y4VB7iH w==;
-X-CSE-ConnectionGUID: b/gvVIMHR1mfL/5paIkdfw==
-X-CSE-MsgGUID: ZHPvszPsTGipcC6gUBzR8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11437"; a="60920737"
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="60920737"
+ bh=0Jo7xOSshw5AH7TLPbPubRjB1c3HsmMD70Iu+qii+hw=;
+ b=UwPXOEgONI8CHxpwk17pUKgavNhWO7GkeCvzpXdS6ELQVBFwvyu1E8Xu
+ iSruejG7+k5KgjGf1xNqTxEu0NUVqQLXekgTXWtYWxqmPmog6+0pM+psy
+ priLIi+hzJJk3o9LXZ1xt9gr+5c1uXeM7doJ9UPqGFCf+pJ6ehM3EvK53
+ LTD1C9tQQUkZuS2jXYn05FmP8JnYTH1zvKLWVo4sp7LRnOQf0dYvLSpgl
+ 8mAiRQFKSQOPJWiexFZKC28/yI6JNB/rwp1Z/tK5L3kEo3laUmWTOa0Vr
+ a3r7In+eX5HSYKWw+MCMsRfW6CiBaf9wN6HgVf26Mk1IUkStjZ04wdDeQ Q==;
+X-CSE-ConnectionGUID: A5DcKHgkQZ2qJ4Mwp+IIZA==
+X-CSE-MsgGUID: HcbrvBFjSiWQSQuM4fyiyg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11437"; a="60920817"
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="60920817"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 00:38:15 -0700
-X-CSE-ConnectionGUID: DdPRSPkrTWmq9pHLY8zGKQ==
-X-CSE-MsgGUID: UomnhKhHTveMyhYh/oGlYg==
+ 19 May 2025 00:39:23 -0700
+X-CSE-ConnectionGUID: HxXtxVK3Q46SQcijIQiMFA==
+X-CSE-MsgGUID: IcfccDCXSNKXqfDyK9miRg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="170200705"
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; d="scan'208";a="170200747"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.126])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 00:38:11 -0700
-Date: Mon, 19 May 2025 09:38:08 +0200
+ 19 May 2025 00:39:19 -0700
+Date: Mon, 19 May 2025 09:39:17 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com, 
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com, 
  sapna1.singh@intel.com, adrinael@adrinael.net
-Subject: Re: [PATCH i-g-t v8 09/14] lib/igt_core: Add a dummy workaround when
- libunwind is not present
-Message-ID: <vsjqez5ftlaxyajsctndisxrk7qft47nkurvrhttbmp2a352h7@kdlrynckg7ot>
+Subject: Re: [PATCH i-g-t v8 14/14] lib/igt_device_scan: reuse igt hash
+Message-ID: <h2fs53wkcvxx4coyxdulq4vcxmla6slzvamoosyaq4ox73gnnm@nvzxbpoboydz>
 References: <20250516182704.97912-1-jeevaka.badrappan@intel.com>
- <20250516182704.97912-10-jeevaka.badrappan@intel.com>
+ <20250516182704.97912-15-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250516182704.97912-10-jeevaka.badrappan@intel.com>
+In-Reply-To: <20250516182704.97912-15-jeevaka.badrappan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,96 +72,212 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, May 16, 2025 at 06:26:59PM +0000, Jeevaka Prabu Badrappan wrote:
-> If HAVE_LIBUNWIND is not defined, print a log message indicating
-> "backtrace not implemented" in the print_backtrace* functions and
-> return.
-> 
-> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-> ---
->  lib/igt_core.c | 11 +++++++++++
->  meson.build    |  3 +++
->  2 files changed, 14 insertions(+)
-> 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index 2cea47214..9d1d0fbd5 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -86,7 +86,9 @@
->  #include "runnercomms.h"
->  
->  #define UNW_LOCAL_ONLY
-> +#ifdef HAVE_LIBUNWIND
->  #include <libunwind.h>
-> +#endif
->  #include <elfutils/libdwfl.h>
->  
->  #ifdef HAVE_LIBGEN_H
-> @@ -379,6 +381,9 @@ static int _igt_dynamic_tests_executed = -1;
->  
->  static void print_backtrace(void)
->  {
-> +#ifndef HAVE_LIBUNWIND
-> +	igt_info("backtrace not implemented\n");
-> +#else
->  	unw_cursor_t cursor;
->  	unw_context_t uc;
->  	int stack_num = 0;
-> @@ -436,6 +441,7 @@ static void print_backtrace(void)
->  
->  	if (dwfl)
->  		dwfl_end(dwfl);
-> +#endif
->  }
->  
->  __attribute__((format(printf, 2, 3)))
-> @@ -2237,6 +2243,10 @@ xprintf(const char *fmt, ...)
->  
->  static void print_backtrace_sig_safe(void)
->  {
-> +
-> +#ifndef HAVE_LIBUNWIND
-> +	igt_info("backtrace not implemented\n");
-> +#else
->  	unw_cursor_t cursor;
->  	unw_context_t uc;
->  	int stack_num = 0;
-> @@ -2256,6 +2266,7 @@ static void print_backtrace_sig_safe(void)
->  				(unsigned int) off);
->  
->  	}
-> +#endif
+On Fri, May 16, 2025 at 06:27:04PM +0000, Jeevaka Prabu Badrappan wrote:
+> As glib is not available in Andriod, replace the glib hash
 
-With libunwind-dev package not installed there're warnings:
+Typo -----------------------  ^^^^^^^
 
-[234/1981] Compiling C object lib/libigt-igt_core_c.a.p/igt_core.c.o
-../lib/igt_core.c:2235:1: warning: ‘xprintf’ defined but not used [-Wunused-function]
- 2235 | xprintf(const char *fmt, ...)
-      | ^~~~~~~
-../lib/igt_core.c:2130:1: warning: ‘xstrlcpy’ defined but not used [-Wunused-function]
- 2130 | xstrlcpy(char *dst, const char *src, size_t size)
-      | ^~~~~~~~
+Rest LGTM, so with commit message fixed:
 
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 --
 Zbigniew
 
+> functions by reusing the igt hash functions.
+> 
+> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+> ---
+>  lib/igt_device_scan.c | 78 ++++++++++++++++++++++---------------------
+>  lib/meson.build       |  1 +
+>  2 files changed, 41 insertions(+), 38 deletions(-)
+> 
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index 45faabc45..2a9dd8395 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -26,12 +26,12 @@
+>  #include "igt_core.h"
+>  #include "igt_device_scan.h"
+>  #include "igt_list.h"
+> +#include "igt_map.h"
+>  #include "intel_chipset.h"
+>  
+>  #include <ctype.h>
+>  #include <dirent.h>
+>  #include <fcntl.h>
+> -#include <glib.h>
+>  #include <libudev.h>
+>  #ifdef __linux__
+>  #include <linux/limits.h>
+> @@ -224,8 +224,8 @@ struct igt_device {
+>  	/* Point to vendor spec if can be found */
+>  
+>  	/* Properties / sysattrs rewriten from udev lists */
+> -	GHashTable *props_ht;
+> -	GHashTable *attrs_ht;
+> +	struct igt_map *props_map;
+> +	struct igt_map *attrs_map;
+>  
+>  	/* Most usable variables from udev device */
+>  	char *subsystem;
+> @@ -464,6 +464,11 @@ static bool is_on_blacklist(const char *what)
+>  
 >  }
 >  
->  void __igt_fail_assert(const char *domain, const char *file, const int line,
-> diff --git a/meson.build b/meson.build
-> index 6a580bd7e..b88098234 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -147,6 +147,9 @@ else
->  endif
+> +static int key_equals(const void *key1, const void *key2)
+> +{
+> +	return strcmp((char *)key1, (char *)key2) == 0;
+> +}
+> +
+>  static struct igt_device *igt_device_new(void)
+>  {
+>  	struct igt_device *dev;
+> @@ -472,14 +477,14 @@ static struct igt_device *igt_device_new(void)
+>  	if (!dev)
+>  		return NULL;
 >  
->  libunwind = dependency('libunwind', required : get_option('libunwind'))
-> +if libunwind.found()
-> +	config.set('HAVE_LIBUNWIND', 1)
-> +endif
->  build_info += 'With libunwind: @0@'.format(libunwind.found())
+> -	dev->attrs_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
+> -					      free, free);
+> -	dev->props_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
+> -					      free, free);
+> +	dev->attrs_map = igt_map_create(igt_map_hash_32, key_equals);
+> +	dev->props_map = igt_map_create(igt_map_hash_32, key_equals);
 >  
->  libdw = dependency('libdw', required : true)
+> -	if (dev->attrs_ht && dev->props_ht)
+> +	if (dev->attrs_map && dev->props_map)
+>  		return dev;
+>  
+> +	igt_map_destroy(dev->attrs_map, NULL);
+> +	igt_map_destroy(dev->props_map, NULL);
+>  	free(dev);
+>  
+>  	return NULL;
+> @@ -491,7 +496,7 @@ static void igt_device_add_prop(struct igt_device *dev,
+>  	if (!key || !value)
+>  		return;
+>  
+> -	g_hash_table_insert(dev->props_ht, strdup(key), strdup(value));
+> +	igt_map_insert(dev->props_map, strdup(key), strdup(value));
+>  }
+>  
+>  static void igt_device_add_attr(struct igt_device *dev,
+> @@ -525,7 +530,7 @@ static void igt_device_add_attr(struct igt_device *dev,
+>  		v++;
+>  	}
+>  
+> -	g_hash_table_insert(dev->attrs_ht, strdup(key), strdup(v));
+> +	igt_map_insert(dev->attrs_map, strdup(key), strdup(v));
+>  }
+>  
+>  /* Iterate over udev properties list and rewrite it to igt_device properties
+> @@ -585,19 +590,30 @@ static void get_attrs_limited(struct udev_device *dev, struct igt_device *idev)
+>  	}
+>  }
+>  
+> -#define get_prop(dev, prop) ((char *) g_hash_table_lookup(dev->props_ht, prop))
+> -#define get_attr(dev, attr) ((char *) g_hash_table_lookup(dev->attrs_ht, attr))
+> +#define get_prop(dev, prop) ((char *) igt_map_search(dev->props_map, prop))
+> +#define get_attr(dev, attr) ((char *) igt_map_search(dev->attrs_map, attr))
+>  #define get_prop_subsystem(dev) get_prop(dev, "SUBSYSTEM")
+>  #define is_drm_subsystem(dev)  (strequal(get_prop_subsystem(dev), "drm"))
+>  #define is_pci_subsystem(dev)  (strequal(get_prop_subsystem(dev), "pci"))
+>  
+> -static void print_ht(GHashTable *ht);
+> +static inline void _print_key_value(const char *k, const char *v)
+> +{
+> +	printf("%-32s: %s\n", k, v);
+> +}
+> +
+>  static void dump_props_and_attrs(const struct igt_device *dev)
+>  {
+> +	struct igt_map_entry *entry;
+> +
+>  	printf("\n[properties]\n");
+> -	print_ht(dev->props_ht);
+> +	igt_map_foreach(dev->props_map, entry) {
+> +		_print_key_value((char *)entry->key, (char *)entry->data);
+> +	}
+> +
+>  	printf("\n[attributes]\n");
+> -	print_ht(dev->attrs_ht);
+> +	igt_map_foreach(dev->attrs_map, entry) {
+> +		_print_key_value((char *)entry->key, (char *)entry->data);
+> +	}
+>  	printf("\n");
+>  }
+>  
+> @@ -949,7 +965,7 @@ static struct igt_device *duplicate_device(struct igt_device *dev) {
+>  	return dup;
+>  }
+>  
+> -static gint devs_compare(const void *a, const void *b)
+> +static int devs_compare(const void *a, const void *b)
+>  {
+>  	struct igt_device *dev1, *dev2;
+>  	int ret;
+> @@ -1076,6 +1092,12 @@ static void scan_drm_devices(bool limit_attrs)
+>  	}
+>  }
+>  
+> +static void free_key_value(struct igt_map_entry *entry)
+> +{
+> +	free((char *)entry->key);
+> +	free(entry->data);
+> +}
+> +
+>  static void igt_device_free(struct igt_device *dev)
+>  {
+>  	free(dev->codename);
+> @@ -1088,8 +1110,8 @@ static void igt_device_free(struct igt_device *dev)
+>  	free(dev->device);
+>  	free(dev->driver);
+>  	free(dev->pci_slot_name);
+> -	g_hash_table_destroy(dev->attrs_ht);
+> -	g_hash_table_destroy(dev->props_ht);
+> +	igt_map_destroy(dev->attrs_map, free_key_value);
+> +	igt_map_destroy(dev->props_map, free_key_value);
+>  }
+>  
+>  void igt_devices_free(void)
+> @@ -1323,26 +1345,6 @@ igt_devs_print_user(struct igt_list_head *view,
+>  	}
+>  }
+>  
+> -static inline void _print_key_value(const char* k, const char *v)
+> -{
+> -	printf("%-32s: %s\n", k, v);
+> -}
+> -
+> -static void print_ht(GHashTable *ht)
+> -{
+> -	GList *keys = g_hash_table_get_keys(ht);
+> -
+> -	keys = g_list_sort(keys, (GCompareFunc) strcmp);
+> -	while (keys) {
+> -		char *k = (char *) keys->data;
+> -		char *v = g_hash_table_lookup(ht, k);
+> -
+> -		_print_key_value(k, v);
+> -		keys = g_list_next(keys);
+> -	}
+> -	g_list_free(keys);
+> -}
+> -
+>  static void
+>  igt_devs_print_detail(struct igt_list_head *view,
+>  		      const struct igt_devices_print_format *fmt)
+> diff --git a/lib/meson.build b/lib/meson.build
+> index b58976a43..b590db9d4 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -304,6 +304,7 @@ scan_dep = [
+>  lib_igt_device_scan_build = static_library('igt_device_scan',
+>  	['igt_device_scan.c',
+>  	'igt_list.c',
+> +	'igt_map.c',
+>  	'igt_tools_stub.c',
+>  	'intel_device_info.c',
+>  	'intel_cmds_info.c',
 > -- 
 > 2.49.0
 > 
