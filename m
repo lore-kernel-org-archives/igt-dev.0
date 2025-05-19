@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14F2EC2D0CD
-	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 13:59:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E310BC2D0CD
+	for <igt-dev@archiver.kernel.org>; Mon, 19 May 2025 13:59:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C2C4A10E12A;
-	Mon, 19 May 2025 13:59:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C17510E37A;
+	Mon, 19 May 2025 13:59:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="jNYtAbpl";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="hyJ1kDu8";
 	dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2066.outbound.protection.outlook.com [40.107.223.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9BC510E12A
- for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 13:59:36 +0000 (UTC)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2069.outbound.protection.outlook.com [40.107.244.69])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05C0010E346
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 May 2025 13:59:41 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tAizEZEhF9taNhVAmw2pPhYRqmF4h/C5rVUO0//1qnBvj/UZmhoxlvm9e6dARNHkRR9MJDYVW0YktVLqo1O8ZNJutFv5pY55JCCYyRaEncF7tIytHq2YozsR3ryQtWpHFUpUJRhi0PeKuqXh6Dig0x6PrsgwPvPNAOJzclM+up0/gOkPUx2HfTuvk5ZgRgbsXlyY384wpvIKGMNHEjvnfyPPZDx51kjiaQOuf14YqG8ueXPtHp3ELAml9pDXx68s0so0Y+s7I2VPNlUIGDs1HJbKCmuXR0fF6HU8m7mZ0uita4QJ6Lqw8FwqAQ9sh9Halscyxl5pn92ASpVsFey2xg==
+ b=BOLpZCU2phhfvmnHk6AqZV3oZVQ+HdQkYhdy1Tv+BtUD06IN56I2+8dX1tnJNcfscCFUKKkSjIbcgKMVDqmL5W2OWPtc3uLe9hdp7u/+UazQKkuYnGmsJzdCOVVukdF8rCohRrsQ+Q+yE/NDjOI/FcnhPfVYcORXKeKaotVe+KGDacDhBnG9HWg96HV76rLLDzokAcDGwde9jmICmzBgeuyzLJ+kXOzEC8c96+n1fVTMHY7a3gS2z+hpXlPN1G+Jzj0G1OHzDNKKOjD/Sf7l9JDREDP9E9vk66g8OMYOom4GCi079T+fE6POolx8FUYAgreugTrKo6zS2qggybiPvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dVJAwESrsy8Il09dzTYBPcwiflJTy+d/W5M5yFnHNkk=;
- b=I3XnMfwKt01gVlFyKSrJmogsx+k7ED0IIlYlPCXqBVBQsvpEWhlxdUkGx35cfpu/tjeHwx2nXrMviU0Pz1JBIg05KgqnYbqbVeO5XWAwq6G47OEwPoE1vjcyaNFkgPqMqEfkER7hxTU9VhVsMSvudOeaMy04ycb9FKBQhoVJ9lAOApgH3nt8d7YdNsIQH6luBrGj+LaOowpmvi5iSv//EdovAHvum3zqBZwMDrpFfs2CjaUnr/x4oNY2sWPwOnhVu5i55hsus/Mg8seBgw+nORE54QwIethKbZfGhisi+R8YIckCJWsWtl7yVdbyg2F6wHBUC7F4KxMh0tcxRRzXFQ==
+ bh=FiBG0Jf/kVsvONCE+jJvmsdJg+lIBp9iCVOiScqhR2E=;
+ b=dy2XyD8VpxfUO1Skq2xB4NFy0xonPbxESPgsMyMgI3nniTWpr6Vd0PL5Hox7doEf5hlJqJdl98CF6suskehFE+ZntlHPUv2H9En3q1oZIBljARuaI9Ke4p+Byuhu7wfJgBTsZtjPtLHp/hnOP3THn8FiK/hKJ554/XDsFpTWUVtueVI/LZdkguiGsQWgu9bA2WURzg+QHo2CfPHKINe+BwoAoomaTO/2Fb5V6lcrh19t36Tm6cuYg8apwFmsjCHp7WV52mvcMsNO0Yes4GPMYDLoHEhzBX/cBQPJhSNLbgQ3p0jy9TUDo3Hq+9zCN5vpIF/W53Xqnp6PqnkxZJCs6Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dVJAwESrsy8Il09dzTYBPcwiflJTy+d/W5M5yFnHNkk=;
- b=jNYtAbpl40p5XWcFKktyGUm3sxPUBrfX2ZjVgr/BIaYoUimRe6v25jaCMyIuodTms/BaarSfZ5iLxv2vZyg5kFVTNl6MyQAG63RZ/el2wpkHbmhC5R2zHtVvYxFEdL4eWIjw8JHeAXc7hX9Rxhu4JYvBaGB2JKv9/V0E5wZVGiQ=
-Received: from BLAPR03CA0121.namprd03.prod.outlook.com (2603:10b6:208:32e::6)
- by SN7PR12MB6689.namprd12.prod.outlook.com (2603:10b6:806:273::17)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=FiBG0Jf/kVsvONCE+jJvmsdJg+lIBp9iCVOiScqhR2E=;
+ b=hyJ1kDu8lfaIN43WKmRn7yXNpDv/J/yJMLQKNJ3gS4xijZUfRTrPwkqEvyD2aTuWP02xOY0r+AvPPQlUcHFNI74If54Kbofl9A9wyOa6Ahod+HqmtSvtYpzQ3tNUyXEFA1OX3IIolTTcK20pmMA1goXk6jpUw+onbUu67nO6GrE=
+Received: from BLAPR03CA0145.namprd03.prod.outlook.com (2603:10b6:208:32e::30)
+ by CY5PR12MB6408.namprd12.prod.outlook.com (2603:10b6:930:3b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Mon, 19 May
- 2025 13:59:33 +0000
+ 2025 13:59:31 +0000
 Received: from BN2PEPF000044A6.namprd04.prod.outlook.com
- (2603:10b6:208:32e:cafe::c6) by BLAPR03CA0121.outlook.office365.com
- (2603:10b6:208:32e::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8746.27 via Frontend Transport; Mon,
- 19 May 2025 13:59:32 +0000
+ (2603:10b6:208:32e:cafe::e7) by BLAPR03CA0145.outlook.office365.com
+ (2603:10b6:208:32e::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8746.29 via Frontend Transport; Mon,
+ 19 May 2025 13:59:26 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,20 +50,17 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  BN2PEPF000044A6.mail.protection.outlook.com (10.167.243.100) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8746.27 via Frontend Transport; Mon, 19 May 2025 13:59:32 +0000
+ 15.20.8746.27 via Frontend Transport; Mon, 19 May 2025 13:59:25 +0000
 Received: from rtg-MAPLE.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 19 May
- 2025 08:59:25 -0500
+ 2025 08:59:24 -0500
 From: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Subject: [PATCH i-g-t v2 2/2] tests/amdgpu: add fwm preemption test case for
- userq
-Date: Mon, 19 May 2025 19:29:01 +0530
-Message-ID: <20250519135901.3032-2-yogesh.mohanmarimuthu@amd.com>
+Subject: [PATCH i-g-t v2 1/2] tests/amdgpu: userq skip waiting for signal fence
+Date: Mon, 19 May 2025 19:29:00 +0530
+Message-ID: <20250519135901.3032-1-yogesh.mohanmarimuthu@amd.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250519135901.3032-1-yogesh.mohanmarimuthu@amd.com>
-References: <20250519135901.3032-1-yogesh.mohanmarimuthu@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -72,52 +69,52 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A6:EE_|SN7PR12MB6689:EE_
-X-MS-Office365-Filtering-Correlation-Id: fbbae533-c6c4-4fe8-efc4-08dd96dd616b
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A6:EE_|CY5PR12MB6408:EE_
+X-MS-Office365-Filtering-Correlation-Id: fcc9189c-0ae9-4a53-6838-08dd96dd5d80
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|36860700013|376014|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?SoNFA1WcCiHN+PWqV/iX5Dzmt+RakZlDNPr67zmeRq5tSjSpBRnn1vYxE1it?=
- =?us-ascii?Q?hMfVEviylYDvF/JLv9HHvNdidSLMof+aahNCueVuAShMLA3096ZyxYqygWpE?=
- =?us-ascii?Q?rLO6YZn5bBKjrvS+owmiWgg44ZS4dDNv9fYk9zuberpfoIZw7SsTQaLCoKWK?=
- =?us-ascii?Q?7tadjxpPgqdxvYqn9gAraVXNmnkxkrNOGRtwbPffxm8IFIqdNbXeelYVpqts?=
- =?us-ascii?Q?AXfKmhPv8k0nDmusw22BHGrRcCpTjKNq4MQX4prRSyPSeGr+8l57I71ydm0q?=
- =?us-ascii?Q?BHv7oemnu3LjsiPZawGAN2kDntAaFuATV2VYufsFBzBr+Aze4FpU6uq5iH/B?=
- =?us-ascii?Q?+4wJV0WuKun/8sKC/yYJcDQee4M5xBaQPYealBn00NbKbOZ/gz82/8347z7B?=
- =?us-ascii?Q?JW5rOLGjwlDOn7bPZaXoAWZheFGdrzQKSXgiisYPjlPZ4F1DCx3JM2IWWXuX?=
- =?us-ascii?Q?cf78kMtETn2jlxW2n5g2DfVA4qb8ANc42YAHlOxd6l53x1pxOBUJQd0SJ5mH?=
- =?us-ascii?Q?ndtIDOsPDEZw/R2uh/0oayVQhIOP8blVgCzwnVWC6/aVWfLf9U2b7k4q89wj?=
- =?us-ascii?Q?SbvapGdhbL81nO/qINKN1FIx1ImAgiBHnroPLSrgcg1I9nwBtRcLtEQpVEFc?=
- =?us-ascii?Q?H8K1Ry4+LM5RNs/vXQT8iLhJbh1XjYi8ALfOSkC6cCGfQuBE/ba3ZX36u/gq?=
- =?us-ascii?Q?ZytuCMxs/7sY5vvNHG3PPNWp96LFxa+1fPcDPU6a3mLzbIAJO7m5R/i1nOZL?=
- =?us-ascii?Q?ZR/0sjBq/fRsSo2BB/+UXfhL9o1a1ZZejZhD6THdRO0WiJCWoU9jCfU+gNF3?=
- =?us-ascii?Q?FkyI2uSrvLRTtCbgEsZdKgin3r/cnZpuvgaKZaQvQRGY5xP9N7tj4Qn7xaAv?=
- =?us-ascii?Q?Fo9nakU99Vgiehyad3X0VjUDdjjSlqSAXUkzKIDD+J0yfr/+BGmsmNP4nxTl?=
- =?us-ascii?Q?jWmbayVGVB2xCVTK1T0vsWIf8Szc917+OtkI8ICvgeWu+M5m6GDsR7sBPguj?=
- =?us-ascii?Q?UJAwp9SR2Yjtp8DOtMsLCWSxzNddk7uE6CMfU04J9V5nHQf5vU5U7IRc1kAe?=
- =?us-ascii?Q?sNgF3J2QQEBZFo1MSMwgr2a9mPeAK5UFfEMgdEFgEI1dIWmLRFLOZmqFTjc4?=
- =?us-ascii?Q?qGfFVtaCDJlzghyCd3GlKFi31OsVVGlJp7wYx2nSJrB/Jt2nOp7bqDfSeISY?=
- =?us-ascii?Q?3E8LLCZJdaFHLPze8plPFiyNtsrw1K9ezib43Cvj08Pm9J0GtdTE+O5zpPAN?=
- =?us-ascii?Q?tdoR5WO6o+LA/xQ9A0snsoJW8GsFqpRXJ8caLgd7Zla3nE4hP93/ftwvpOg7?=
- =?us-ascii?Q?jTfMr8MnW9OYsIIFacAEHLMABgKtkBPZgHJckpH7mRAddzRua2qN0xc6ISln?=
- =?us-ascii?Q?1JQ7FtMxy2bcVA6+RWg4x02DJ8cRlc3L7FeAPwz/Nfp6jBOzzH47NtuAOyh2?=
- =?us-ascii?Q?z6PAIul9of0zeqMy9/jYmosvtvzch+6G+pqrM18rqsQwpVH90izpJPhzDjR7?=
- =?us-ascii?Q?os7hupX7OxMARgsw7vEWr1qgD6tPF+wBURNn?=
+ ARA:13230040|1800799024|376014|36860700013|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?N1fsLs87eCPd6n+eRFcumUKRRHcplmfflucXcjvfKiezqzT3+lXrhlxxob1a?=
+ =?us-ascii?Q?VosrHYB7ndSkhVYzFS714UfU36hd0OkFGv4hAZ+COEN8q5DJgwoxZ4m1LoGw?=
+ =?us-ascii?Q?y3lHxwBogWSOPbl61DXBau4YUfwaxeubZAEhBOA6FpM9otl4YY6prBSfLHyI?=
+ =?us-ascii?Q?t0+pPZ+1M3X+/Y7Sn3TzJUrgp0bVLEuC8UITErJX9NRToIk89pHM4xauCT6C?=
+ =?us-ascii?Q?Pdk06Op1Kxa7ea7upwkoBwEMQXaDtq8QdsAdtWiGFBaTKzZPV8GdAsI7XrHB?=
+ =?us-ascii?Q?CkrmUOUFuUk57ESRvfD3WCHEWx7cSbwr8eBCQl+P0rUaNUDrX+qNthwrl5Bt?=
+ =?us-ascii?Q?kULvGUkCxjebHD++4tw8r6/y+tnWxOtBj14tzKYXxKdxXPRo1shyCGabxt3w?=
+ =?us-ascii?Q?j0+eE2pbc44PNq5jcehoZtzx6QMaOyORc/9ao9+mBJJoiO3ug4nGaguRi+6Z?=
+ =?us-ascii?Q?EnbEqh6dKl8jGTtftG5SdX0N7+ZWhDQIq1/IcISHkBS3f6FaXtaNmio3cmBd?=
+ =?us-ascii?Q?VrHEl742Y8tdJAwpa6x57+AU+pQ59ueRcJcPwvP+4XODO7WzbJf1HNnrYNxO?=
+ =?us-ascii?Q?U8ZKpj13AH6VHSRYNgaS8ye0sg/qKsf3XX+3FbR++Le03NRFCioEoNag5DHD?=
+ =?us-ascii?Q?N6e00gnUH8XUGrPW2eOfVZPs9VS91mmnxOM7wNZEZMf3nKygvNpdl5O1qROO?=
+ =?us-ascii?Q?4lHrTe/k1kfL1xoc8oJSVd2T88oANGmQrcPXFaqanLReRQaoB9Hin5yThDBg?=
+ =?us-ascii?Q?iAdkah4FUwuiO4anx7l2kuMXAzSQ0RdB5t0KydmDDqLqTUzcthMnTpqqJMYw?=
+ =?us-ascii?Q?adVfWD9QTg0bx6JspTa7tqEQ8aTrSTNiBdydJgUETWAyRVcp8lTqW+QF+/FS?=
+ =?us-ascii?Q?QJZDaXWqofyldSM6avlgYtD8YIo1EmGYOPtSyGGb487QCTjJg+6le8ZBlD/9?=
+ =?us-ascii?Q?1gJH2lv6YgC+XZiMGF8nqMkscvfQtijU+YL//Mr5aIw8V50iSwxNiAwrJZfr?=
+ =?us-ascii?Q?1ofZyF/Z/+vRlZFJWdeDYNwNR/h8UWD3wrXbJLrZWYUkjPR9ngRrYVaIZ0kQ?=
+ =?us-ascii?Q?FF2mxC/zl6VuBZSAvIDbKlDE06lKtP6fBOVH8tF9dgy8UUXc4P6TgiFP3lbG?=
+ =?us-ascii?Q?KLrxoih2ezr8LLuDh1HDQ+ezuJu/WqLlssPfJkyTaTHoKptByfOr2Ddyw4Gk?=
+ =?us-ascii?Q?hh9jmPLKdYOkaGT3CrX/oAxEvNGo65BsF2AugVLaSCibDRwbLPyDFwN8bmme?=
+ =?us-ascii?Q?eHwOPGoex/9Z1BVMZFBvwIkqk5PZUHrRUEHBqUDluND5bVW57V8Q0Ya803DM?=
+ =?us-ascii?Q?c8qQ6YyrUNeWqsZMR6OWh5a0GB8oJHELYoID4qgZcO10swOeIvVivBdA5+1j?=
+ =?us-ascii?Q?Vp2Wx0T8H7ZxM/bHhszIhMXIHbLUVkEe3YY45Ye/Qd9LC8Vo2H2Wij8OZBVR?=
+ =?us-ascii?Q?EHL6n+0l/7fdDvkpiCqwstqfbtx2Ldihw9xvd0Ya3ULegjAF1aTe8HjH/GEm?=
+ =?us-ascii?Q?BDqE3Uuo7f2Do1IT5WIcSVc7XvNzvsHyhmkA?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024); DIR:OUT;
+ SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 13:59:32.2453 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbbae533-c6c4-4fe8-efc4-08dd96dd616b
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 13:59:25.6673 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcc9189c-0ae9-4a53-6838-08dd96dd5d80
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A6.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6689
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6408
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,247 +130,161 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The fwm premption is tested using below algorithm,
-1) create 2 queues
-2) submit dma write job with unsatisfied fence on both the queues
-3) if the dma write passes then the test has failed
+For negative test cases where the job will not complete need to
+skip signal fence. Pass a flag to amdgpu_user_queue_submit() to
+skip signal fence wait.
 
-v2: reduce timeout to 2ms
+v2: rebase to latest code
 
 Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>
-Cc: Jesse.Zhang <Jesse.zhang@amd.com>
 Cc: Sunil Khatri <sunil.khatri@amd.com>
+Cc: Jesse.Zhang <Jesse.zhang@amd.com>
 Signed-off-by: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
 Reviewed-by: Sunil Khatri <sunil.khatri@amd.com>
 ---
- lib/amdgpu/amd_PM4.h     |  17 ++++
- tests/amdgpu/amd_basic.c | 178 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 195 insertions(+)
+ lib/amdgpu/amd_command_submission.c |  2 +-
+ lib/amdgpu/amd_compute.c            |  2 +-
+ lib/amdgpu/amd_userq.c              | 36 +++++++++++++++--------------
+ lib/amdgpu/amd_userq.h              |  2 +-
+ tests/amdgpu/amd_basic.c            |  4 ++--
+ tests/amdgpu/amd_cs_nop.c           |  2 +-
+ 6 files changed, 25 insertions(+), 23 deletions(-)
 
-diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
-index 8f59b4223..d6a8446f4 100644
---- a/lib/amdgpu/amd_PM4.h
-+++ b/lib/amdgpu/amd_PM4.h
-@@ -195,6 +195,23 @@
- #define PACKET3_INDIRECT_BUFFER                         0x3F
- #define PACKET3_PROTECTED_FENCE_SIGNAL                  0xd0
+diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
+index fcc356f8f..c3dad3231 100644
+--- a/lib/amdgpu/amd_command_submission.c
++++ b/lib/amdgpu/amd_command_submission.c
+@@ -68,7 +68,7 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type
+ 	memcpy(ring_ptr, ring_context->pm4, ring_context->pm4_dw * sizeof(*ring_context->pm4));
  
-+#define PACKET3_FENCE_WAIT_MULTI                        0xd1
-+#define		FENCE_WAIT_MULTI_PREEMPTABLE(x)         ((x) << 1)
-+		/* 0 - no
-+		 * 1 - yes
-+		 */
-+#define		FENCE_WAIT_MULTI_CACHE_POLICY(x)        ((x) << 2)
-+		/* 0 - LRU
-+		 * 1 - Stream
-+		 * 2 - noa
-+		 * 3 - Bypass
-+		 */
-+#define		FENCE_WAIT_MULTI_ENGINE(x)              ((x) << 8)
-+		/* 0 - me
-+		 * 1 - pfp
-+		 */
-+#define		FENCE_WAIT_MULTI_POLL_INTERVAL(x)       ((x) << 16)
-+
- #define	PACKET3_WRITE_DATA				0x37
- #define		WRITE_DATA_DST_SEL(x)                   ((x) << 8)
- 		/* 0 - register
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 914d27909..075057960 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -689,6 +689,176 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle, bool user_queue)
- 	free(ring_context);
+ 	if (user_queue)
+-		amdgpu_user_queue_submit(device, ring_context, ip_type, ib_result_mc_address);
++		amdgpu_user_queue_submit(device, ring_context, ip_type, ib_result_mc_address, false);
+ 	else {
+ 		ring_context->ib_info.ib_mc_address = ib_result_mc_address;
+ 		ring_context->ib_info.size = ring_context->pm4_dw;
+diff --git a/lib/amdgpu/amd_compute.c b/lib/amdgpu/amd_compute.c
+index 95bfa53aa..008186049 100644
+--- a/lib/amdgpu/amd_compute.c
++++ b/lib/amdgpu/amd_compute.c
+@@ -91,7 +91,7 @@ void amdgpu_command_submission_compute_nop(amdgpu_device_handle device, bool use
+ 
+ 		if (user_queue) {
+ 			amdgpu_user_queue_submit(device, ring_context, AMD_IP_COMPUTE,
+-						 ib_result_mc_address);
++						 ib_result_mc_address, false);
+ 		} else {
+ 			memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
+ 			ib_info.ib_mc_address = ib_result_mc_address;
+diff --git a/lib/amdgpu/amd_userq.c b/lib/amdgpu/amd_userq.c
+index f8e1a4b45..0a983834c 100644
+--- a/lib/amdgpu/amd_userq.c
++++ b/lib/amdgpu/amd_userq.c
+@@ -127,7 +127,7 @@ int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
  }
  
-+static void
-+amdgpu_fwm_preempt_test(amdgpu_device_handle device_handle)
-+{
-+	struct amdgpu_ring_context *ring_context_1;
-+	struct amdgpu_ring_context *ring_context_2;
-+	struct amdgpu_cmd_base *cmd_base_1 = get_cmd_base();
-+	struct amdgpu_cmd_base *cmd_base_2 = get_cmd_base();
-+	const struct amdgpu_ip_block_version *ip_block = get_ip_block(device_handle, AMD_IP_GFX);
-+	int r;
-+
-+	ring_context_1 = calloc(1, sizeof(struct amdgpu_ring_context));
-+	igt_assert(ring_context_1);
-+	amdgpu_user_queue_create(device_handle, ring_context_1, ip_block->type);
-+
-+	ring_context_2 = calloc(1, sizeof(struct amdgpu_ring_context));
-+	igt_assert(ring_context_2);
-+	amdgpu_user_queue_create(device_handle, ring_context_2, ip_block->type);
-+
-+	/* allocate bo1 for dma, bo2 for fence and bo3 for ib for render context 1 */
-+	ring_context_1->write_length = 1024;
-+	r = amdgpu_bo_alloc_and_map_sync(device_handle , ring_context_1->write_length, 4096,
-+					 AMDGPU_GEM_DOMAIN_GTT, AMDGPU_GEM_CREATE_CPU_GTT_USWC,
-+					 AMDGPU_VM_MTYPE_UC, &ring_context_1->bo,
-+					 (void **)&ring_context_1->bo_cpu, &ring_context_1->bo_mc,
-+					 &ring_context_1->va_handle,
-+					 ring_context_1->timeline_syncobj_handle,
-+					 ++ring_context_1->point, true);
-+	igt_assert_eq(r, 0);
-+	memset((void *)ring_context_1->bo_cpu, 0, ring_context_1->write_length);
-+
-+	r = amdgpu_bo_alloc_and_map_sync(device_handle, 4096, 4096, AMDGPU_GEM_DOMAIN_GTT,
-+					 AMDGPU_GEM_CREATE_CPU_GTT_USWC, AMDGPU_VM_MTYPE_UC,
-+					 &ring_context_1->bo2, (void **)&ring_context_1->bo2_cpu,
-+					 &ring_context_1->bo_mc2, &ring_context_1->va_handle2,
-+					 ring_context_1->timeline_syncobj_handle,
-+					 ++ring_context_1->point, true);
-+	igt_assert_eq(r, 0);
-+	memset((void *)ring_context_1->bo2_cpu, 0, 4096);
-+
-+	r = amdgpu_bo_alloc_and_map_sync(device_handle, 8192, 4096, AMDGPU_GEM_DOMAIN_GTT,
-+					 AMDGPU_GEM_CREATE_CPU_GTT_USWC, AMDGPU_VM_MTYPE_UC,
-+					 &ring_context_1->bo3, (void **)&ring_context_1->bo3_cpu,
-+					 &ring_context_1->bo_mc3, &ring_context_1->va_handle3,
-+					 ring_context_1->timeline_syncobj_handle,
-+					 ++ring_context_1->point, true);
-+	igt_assert_eq(r, 0);
-+	memset((void *)ring_context_1->bo3_cpu, 0, 4096);
-+
-+	/* allocate bo1 for dma, bo2 for fence and bo3 for ib for render context 2 */
-+	ring_context_2->write_length = 1024;
-+	r = amdgpu_bo_alloc_and_map_sync(device_handle , ring_context_2->write_length, 4096,
-+					 AMDGPU_GEM_DOMAIN_GTT, AMDGPU_GEM_CREATE_CPU_GTT_USWC,
-+					 AMDGPU_VM_MTYPE_UC, &ring_context_2->bo,
-+					 (void **)&ring_context_2->bo_cpu, &ring_context_2->bo_mc,
-+					 &ring_context_2->va_handle,
-+					 ring_context_2->timeline_syncobj_handle,
-+					 ++ring_context_2->point, true);
-+	igt_assert_eq(r, 0);
-+	memset((void *)ring_context_2->bo_cpu, 0, ring_context_2->write_length);
-+
-+	r = amdgpu_bo_alloc_and_map_sync(device_handle, 4096, 4096, AMDGPU_GEM_DOMAIN_GTT,
-+					 AMDGPU_GEM_CREATE_CPU_GTT_USWC, AMDGPU_VM_MTYPE_UC,
-+					 &ring_context_2->bo2, (void **)&ring_context_2->bo2_cpu,
-+					 &ring_context_2->bo_mc2, &ring_context_2->va_handle2,
-+					 ring_context_2->timeline_syncobj_handle,
-+					 ++ring_context_2->point, true);
-+	igt_assert_eq(r, 0);
-+	memset((void *)ring_context_2->bo2_cpu, 0, 4096);
-+
-+	r = amdgpu_bo_alloc_and_map_sync(device_handle, 8192, 4096, AMDGPU_GEM_DOMAIN_GTT,
-+					 AMDGPU_GEM_CREATE_CPU_GTT_USWC, AMDGPU_VM_MTYPE_UC,
-+					 &ring_context_2->bo3, (void **)&ring_context_2->bo3_cpu,
-+					 &ring_context_2->bo_mc3, &ring_context_2->va_handle3,
-+					 ring_context_2->timeline_syncobj_handle,
-+					 ++ring_context_2->point, true);
-+	igt_assert_eq(r, 0);
-+	memset((void *)ring_context_2->bo3_cpu, 0, 4096);
-+
-+
-+	/* wait for gtt mapping to complete */
-+	r = amdgpu_timeline_syncobj_wait(device_handle, ring_context_1->timeline_syncobj_handle,
-+					 ring_context_1->point);
-+	igt_assert_eq(r, 0);
-+	r = amdgpu_timeline_syncobj_wait(device_handle, ring_context_2->timeline_syncobj_handle,
-+					 ring_context_2->point);
-+	igt_assert_eq(r, 0);
-+
-+	/* assign cmd buffer for ring context 1 */
-+	cmd_base_1->attach_buf(cmd_base_1, (void *)ring_context_1->bo3_cpu, 8192);
-+
-+	/* create the ib for ring context 1 */
-+	cmd_base_1->emit(cmd_base_1, PACKET3(PACKET3_FENCE_WAIT_MULTI, 4 * 1));
-+	cmd_base_1->emit(cmd_base_1, FENCE_WAIT_MULTI_ENGINE(1) | FENCE_WAIT_MULTI_PREEMPTABLE(1) |
-+			    FENCE_WAIT_MULTI_CACHE_POLICY(3) | FENCE_WAIT_MULTI_POLL_INTERVAL(4));
-+	cmd_base_1->emit(cmd_base_1, ring_context_1->bo_mc2);
-+	cmd_base_1->emit(cmd_base_1, ring_context_1->bo_mc2 >> 32);
-+	cmd_base_1->emit(cmd_base_1, 10); // random incorrect fence value
-+	cmd_base_1->emit(cmd_base_1, 0);
-+
-+	cmd_base_1->emit(cmd_base_1, PACKET3(PACKET3_WRITE_DATA, 3));
-+	cmd_base_1->emit(cmd_base_1, WRITE_DATA_DST_SEL(5) | WR_CONFIRM |
-+			    WRITE_DATA_CACHE_POLICY(3));
-+	cmd_base_1->emit(cmd_base_1, 0xfffffffc & ring_context_1->bo_mc);
-+	cmd_base_1->emit(cmd_base_1, (0xffffffff00000000 & ring_context_1->bo_mc) >> 32);
-+	cmd_base_1->emit(cmd_base_1, 0xdead0000);
-+
-+	ring_context_1->pm4_dw = cmd_base_1->cdw;
-+	amdgpu_user_queue_submit(device_handle, ring_context_1, ip_block->type,
-+				 ring_context_1->bo_mc3, true);
-+
-+	/* if fwm packet got skipped by firmware then 0xdead000 will be written */
-+	usleep(1000 * 2);
-+	igt_assert_eq_u32(*ring_context_1->bo_cpu, 0);
-+
-+	/* assign cmd buffer for ring context 2 */
-+	cmd_base_2->attach_buf(cmd_base_2, (void *)ring_context_2->bo3_cpu, 8192);
-+
-+	/* create the ib for ring context 2 */
-+	cmd_base_2->emit(cmd_base_2, PACKET3(PACKET3_FENCE_WAIT_MULTI, 4 * 1));
-+	cmd_base_2->emit(cmd_base_2, FENCE_WAIT_MULTI_ENGINE(1) | FENCE_WAIT_MULTI_PREEMPTABLE(1) |
-+			    FENCE_WAIT_MULTI_CACHE_POLICY(3) | FENCE_WAIT_MULTI_POLL_INTERVAL(4));
-+	cmd_base_2->emit(cmd_base_2, ring_context_2->bo_mc2);
-+	cmd_base_2->emit(cmd_base_2, ring_context_2->bo_mc2 >> 32);
-+	cmd_base_2->emit(cmd_base_2, 10); // random incorrect fence value
-+	cmd_base_2->emit(cmd_base_2, 0);
-+
-+	cmd_base_2->emit(cmd_base_2, PACKET3(PACKET3_WRITE_DATA, 3));
-+	cmd_base_2->emit(cmd_base_2, WRITE_DATA_DST_SEL(5) | WR_CONFIRM |
-+			    WRITE_DATA_CACHE_POLICY(3));
-+	cmd_base_2->emit(cmd_base_2, 0xfffffffc & ring_context_2->bo_mc);
-+	cmd_base_2->emit(cmd_base_2, (0xffffffff00000000 & ring_context_2->bo_mc) >> 32);
-+	cmd_base_2->emit(cmd_base_2, 0xdead0000);
-+
-+	ring_context_2->pm4_dw = cmd_base_2->cdw;
-+	amdgpu_user_queue_submit(device_handle, ring_context_2, ip_block->type,
-+				 ring_context_2->bo_mc3, true);
-+
-+	/* if fwm packet got skipped by firmware then 0xdead000 will be written */
-+	usleep(1000 * 2);
-+	igt_assert_eq_u32(*ring_context_1->bo_cpu, 0);
-+	igt_assert_eq_u32(*ring_context_2->bo_cpu, 0);
-+
-+	/* set the correct fence value to finish executing the ib */
-+	*ring_context_1->bo2_cpu = 10;
-+	*ring_context_2->bo2_cpu = 10;
-+	usleep(1000 * 2);
-+	igt_assert_eq_u32(*ring_context_1->bo_cpu, 0xdead0000);
-+	igt_assert_eq_u32(*ring_context_2->bo_cpu, 0xdead0000);
-+
-+	amdgpu_user_queue_destroy(device_handle, ring_context_1, ip_block->type);
-+	amdgpu_user_queue_destroy(device_handle, ring_context_2, ip_block->type);
-+
-+	amdgpu_bo_unmap_and_free(ring_context_1->bo, ring_context_1->va_handle,
-+				 ring_context_1->bo_mc, ring_context_1->write_length);
-+	amdgpu_bo_unmap_and_free(ring_context_1->bo2, ring_context_1->va_handle2,
-+				 ring_context_1->bo_mc2, 4096);
-+	amdgpu_bo_unmap_and_free(ring_context_1->bo3, ring_context_1->va_handle3,
-+				 ring_context_1->bo_mc3, 8192);
-+	amdgpu_bo_unmap_and_free(ring_context_2->bo, ring_context_2->va_handle,
-+				 ring_context_2->bo_mc, ring_context_2->write_length);
-+	amdgpu_bo_unmap_and_free(ring_context_2->bo2, ring_context_2->va_handle2,
-+				 ring_context_2->bo_mc2, 4096);
-+	amdgpu_bo_unmap_and_free(ring_context_2->bo3, ring_context_2->va_handle3,
-+				 ring_context_2->bo_mc3, 8192);
-+	free_cmd_base(cmd_base_1);
-+	free_cmd_base(cmd_base_2);
-+	free(ring_context_1);
-+	free(ring_context_2);
-+}
-+
- igt_main
+ void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
+-			      unsigned int ip_type, uint64_t mc_address)
++			      unsigned int ip_type, uint64_t mc_address, bool skip_signal)
  {
- 	amdgpu_device_handle device;
-@@ -815,6 +985,14 @@ igt_main
- 			amdgpu_sync_dependency_test(device, true);
- 		}
- 	}
-+
-+	igt_describe("Check-FWM-preempt-using-GFX-UMQ");
-+	igt_subtest_with_dynamic("fwm-prempt-test-with-IP-GFX-UMQ") {
-+		if (userq_arr_cap[AMD_IP_GFX]) {
-+			igt_dynamic_f("fwm-preempt-test-with-gfx-umq")
-+			amdgpu_fwm_preempt_test(device);
-+		}
-+	}
- #endif
+ 	int r;
+ 	uint32_t control = ring_context->pm4_dw;
+@@ -166,22 +166,24 @@ void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_co
+ 	/* Update the door bell */
+ 	ring_context->doorbell_cpu[DOORBELL_INDEX] = *ring_context->wptr_cpu;
  
- 	igt_fixture {
+-	/* Add a fence packet for signal */
+-	syncarray[0] = ring_context->timeline_syncobj_handle;
+-	signal_data.queue_id = ring_context->queue_id;
+-	signal_data.syncobj_handles = (uintptr_t)syncarray;
+-	signal_data.num_syncobj_handles = 1;
+-	signal_data.bo_read_handles = 0;
+-	signal_data.bo_write_handles = 0;
+-	signal_data.num_bo_read_handles = 0;
+-	signal_data.num_bo_write_handles = 0;
+-
+-	r = amdgpu_userq_signal(device, &signal_data);
+-	igt_assert_eq(r, 0);
++	if (!skip_signal) {
++		/* Add a fence packet for signal */
++		syncarray[0] = ring_context->timeline_syncobj_handle;
++		signal_data.queue_id = ring_context->queue_id;
++		signal_data.syncobj_handles = (uintptr_t)syncarray;
++		signal_data.num_syncobj_handles = 1;
++		signal_data.bo_read_handles = 0;
++		signal_data.bo_write_handles = 0;
++		signal_data.num_bo_read_handles = 0;
++		signal_data.num_bo_write_handles = 0;
++
++		r = amdgpu_userq_signal(device, &signal_data);
++		igt_assert_eq(r, 0);
+ 
+-	r = amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle, 1, timeout,
+-				   DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
+-	igt_assert_eq(r, 0);
++		r = amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle, 1,
++					   timeout, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
++		igt_assert_eq(r, 0);
++	}
+ }
+ 
+ void amdgpu_user_queue_destroy(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt,
+@@ -456,7 +458,7 @@ int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
+ }
+ 
+ void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
+-	unsigned int ip_type, uint64_t mc_address)
++	unsigned int ip_type, uint64_t mc_address, bool skip_signal)
+ {
+ }
+ 
+diff --git a/lib/amdgpu/amd_userq.h b/lib/amdgpu/amd_userq.h
+index b29e97ccf..dc39c1ca4 100644
+--- a/lib/amdgpu/amd_userq.h
++++ b/lib/amdgpu/amd_userq.h
+@@ -50,6 +50,6 @@ void amdgpu_user_queue_destroy(amdgpu_device_handle device_handle, struct amdgpu
+ 			       unsigned int ip_type);
+ 
+ void amdgpu_user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
+-			      unsigned int ip_type, uint64_t mc_address);
++			      unsigned int ip_type, uint64_t mc_address, bool skip_signal);
+ 
+ #endif
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 97a08a9a3..914d27909 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -607,7 +607,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle, bool user_queue)
+ 	if (user_queue) {
+ 		ring_context->pm4_dw = ib_info.size;
+ 		amdgpu_user_queue_submit(device_handle, ring_context, ip_block->type,
+-					 ib_result_mc_address);
++					 ib_result_mc_address, false);
+ 	} else {
+ 		r = amdgpu_cs_submit(context_handle[1], 0, &ibs_request, 1);
+ 	}
+@@ -647,7 +647,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle, bool user_queue)
+ 	if (user_queue) {
+ 		ring_context->pm4_dw = ib_info.size;
+ 		amdgpu_user_queue_submit(device_handle, ring_context, ip_block->type,
+-					ib_info.ib_mc_address);
++					 ib_info.ib_mc_address, false);
+ 	} else {
+ 		r = amdgpu_cs_submit(context_handle[0], 0, &ibs_request, 1);
+ 		igt_assert_eq(r, 0);
+diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
+index 268bc9201..658c8d050 100644
+--- a/tests/amdgpu/amd_cs_nop.c
++++ b/tests/amdgpu/amd_cs_nop.c
+@@ -108,7 +108,7 @@ static void nop_cs(amdgpu_device_handle device,
+ 			if (user_queue) {
+ 				ring_context->pm4_dw = ib_info.size;
+ 				amdgpu_user_queue_submit(device, ring_context, ip_type,
+-							 ib_info.ib_mc_address);
++							 ib_info.ib_mc_address, false);
+ 				igt_assert_eq(r, 0);
+ 			} else {
+ 				r = amdgpu_cs_submit(context, 0, &ibs_request, 1);
 -- 
 2.43.0
 
