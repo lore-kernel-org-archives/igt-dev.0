@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 268DEC3ABDD
-	for <igt-dev@archiver.kernel.org>; Tue, 20 May 2025 06:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CBB6C3ABDD
+	for <igt-dev@archiver.kernel.org>; Tue, 20 May 2025 06:25:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A3B9210E14C;
-	Tue, 20 May 2025 06:25:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC55810E3AE;
+	Tue, 20 May 2025 06:25:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hnRwsWo4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LNPiPiI1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18DBC10E33D
- for <igt-dev@lists.freedesktop.org>; Tue, 20 May 2025 06:25:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD0FA10E3AB
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 May 2025 06:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747722333; x=1779258333;
+ t=1747722336; x=1779258336;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9moSCa5aRVKWYi42fzmxVv2UqNQySsI1KCU02AKVews=;
- b=hnRwsWo4P2qOu7ERDhjfPUUgMd09AfAhRuPUlO2RHDpwcr3k2rhn2DeM
- 0C2UGlEs1U6f1QSccfT4IQ/qAA533taSx4yDX7GhneKmVp/baoEpggJlO
- 8aXVSub1Qd3KIzr8+CqcIAQzkH/Da5xHwoXimyliQgKv4AFv+uxhDlqQ0
- BQXCWz9ylWVEtadPOd3nQXXTJZNPMiQCIqNKD61mQzMu+kCKXH7JVE3RH
- nQ64DI+C6bBAThS7hjGHq1AQ0PqSjcfVW3uAR6ZfgGxOGuQZ9THCHU9Vx
- t6VTkuC4MMcAvHxO1PWgy+t3ZYzRQc9UEX6c0UaYUQrJe9GQuXwbldUCs Q==;
-X-CSE-ConnectionGUID: rae++XefRW6BnpkopvjBpw==
-X-CSE-MsgGUID: rtHkD2JiThmYoIh4mu/KQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="52272715"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="52272715"
+ bh=EkWVv75QiHqBJ5nNaM6IOCmhB7Qf8G7kF+PqjhPLyGQ=;
+ b=LNPiPiI17XPkhFxyhOTe5EtcTOTEoHKw6f+rBiG7OemN7kaR+BLRKSOA
+ 4tf7E4fr+w8Bj04NqNH19kkFjx6Nx9nUfseay/5Q18JTWqWDxeUqpx6CJ
+ Sk+gYMpmGPjHbSsS5wX43SqCav60DvgPQMG81tUKYlFKREm5dHztn9U4X
+ hrkfImD8LsfjBVp8WyF1BHXndnH5WMa6M//d4sOeEF4Y+knSu/juiCp05
+ Q8VHtDwjfMLEiLNcR0fW1vUUTx73vJ61DOUFHRG44+4R5A0keotVZQwt7
+ wTCrF7KhrRGr0yTGvevIUkZFHy7e81N2b6pDBHAJFUZ+gQE6vyG8AKhgN Q==;
+X-CSE-ConnectionGUID: lxN0cV9aTkqYe3phuHDeTQ==
+X-CSE-MsgGUID: HQbTEjuuQpS7rjernwPHDQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="52272723"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="52272723"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 23:25:33 -0700
-X-CSE-ConnectionGUID: MXwcR3aaRnaJIy0DTKKHlw==
-X-CSE-MsgGUID: qAfugvlQT4uAAlbOeEkHDA==
+ 19 May 2025 23:25:35 -0700
+X-CSE-ConnectionGUID: 4fPBqfraTXSwZsiEfn7gng==
+X-CSE-MsgGUID: a7wCnqiqQlKXwEMdyZG35w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="170609598"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="170609608"
 Received: from unknown (HELO rtauro-desk.iind.intel.com) ([10.227.90.111])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 23:25:30 -0700
+ 19 May 2025 23:25:33 -0700
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com, lucas.demarchi@intel.com,
  kamil.konieczny@intel.com, rodrigo.vivi@intel.com,
  aravind.iddamsetty@linux.intel.com, louis.chauvet@bootlin.com
-Subject: [PATCH i-g-t v4 3/5] lib/igt_fs: Rename igt_io to igt_fs to add
- additional helpers
-Date: Tue, 20 May 2025 12:19:08 +0530
-Message-ID: <20250520064910.663022-4-riana.tauro@intel.com>
+Subject: [PATCH i-g-t v4 4/5] lib/igt_fs: Add helper functions to create and
+ remove directories
+Date: Tue, 20 May 2025 12:19:09 +0530
+Message-ID: <20250520064910.663022-5-riana.tauro@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250520064910.663022-1-riana.tauro@intel.com>
 References: <20250520064910.663022-1-riana.tauro@intel.com>
@@ -71,11 +71,11 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rename igt_io to igt_fs to add additional helper functions
-to create and remove directories
+Add helper function to create directory and return fd of
+the created directory. Also add a function to remove
+directories. This will be used by configfs
 
-v2: add docs (José)
-    reorder headers (Kamil)
+v2: reorder headers (Kamil)
 
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: José Expósito <jose.exposito89@gmail.com>
@@ -83,142 +83,89 @@ Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 Reviewed-by: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
 Reviewed-by: José Expósito <jose.exposito89@gmail.com>
 ---
- docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml |  2 +-
- lib/{igt_io.c => igt_fs.c}                          | 12 ++++++------
- lib/{igt_io.h => igt_fs.h}                          |  6 +++---
- lib/igt_sysfs.c                                     |  2 +-
- lib/meson.build                                     |  2 +-
- tests/msm/msm_mapping.c                             |  2 +-
- tests/msm/msm_recovery.c                            |  2 +-
- 7 files changed, 14 insertions(+), 14 deletions(-)
- rename lib/{igt_io.c => igt_fs.c} (93%)
- rename lib/{igt_io.h => igt_fs.h} (94%)
+ lib/igt_fs.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ lib/igt_fs.h |  2 ++
+ 2 files changed, 50 insertions(+), 1 deletion(-)
 
-diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
-index 11458c681..4cba804c3 100644
---- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
-+++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
-@@ -31,9 +31,9 @@
-     <xi:include href="xml/igt_dummyload.xml"/>
-     <xi:include href="xml/igt_fb.xml"/>
-     <xi:include href="xml/igt_frame.xml"/>
-+    <xi:include href="xml/igt_fs.xml"/>
-     <xi:include href="xml/igt_gt.xml"/>
-     <xi:include href="xml/igt_hook.xml"/>
--    <xi:include href="xml/igt_io.xml"/>
-     <xi:include href="xml/igt_kmod.xml"/>
-     <xi:include href="xml/igt_kms.xml"/>
-     <xi:include href="xml/igt_list.xml"/>
-diff --git a/lib/igt_io.c b/lib/igt_fs.c
-similarity index 93%
-rename from lib/igt_io.c
-rename to lib/igt_fs.c
-index b5143184f..917ee80de 100644
---- a/lib/igt_io.c
+diff --git a/lib/igt_fs.c b/lib/igt_fs.c
+index 917ee80de..8f4d17546 100644
+--- a/lib/igt_fs.c
 +++ b/lib/igt_fs.c
-@@ -26,15 +26,15 @@
+@@ -21,9 +21,10 @@
+  * IN THE SOFTWARE.
+  *
+  */
+-
+ #include <errno.h>
++#include <fcntl.h>
  #include <stdlib.h>
++#include <sys/stat.h>
  #include <unistd.h>
  
--#include "igt_io.h"
-+#include "igt_fs.h"
- 
- /**
-- * SECTION:igt_io
-- * @short_description: Helpers for file I/O
-- * @title: io
-- * @include: igt_io.h
-+ * SECTION:igt_fs
-+ * @short_description: Helpers for file operations
-+ * @title: fs
-+ * @include: igt_fs.h
-  *
-- * This library provides helpers for file I/O
-+ * This library provides helpers for file operations
-  */
- 
- /**
-diff --git a/lib/igt_io.h b/lib/igt_fs.h
-similarity index 94%
-rename from lib/igt_io.h
-rename to lib/igt_fs.h
-index eb9ffee1b..84c3fed62 100644
---- a/lib/igt_io.h
+ #include "igt_fs.h"
+@@ -94,3 +95,49 @@ ssize_t igt_writen(int fd, const char *buf, size_t len)
+ 	} while (total != len);
+ 	return total ?: ret;
+ }
++
++/**
++ * igt_fs_create_dir: creates and opens directory
++ * @fd: file descriptor of parent directory
++ * @name: name of the directory to create
++ * @mode: permissions for the directory
++ *
++ * creates a directory under parent directory and returns
++ * the fd
++ *
++ * Returns: directory fd on success, -errno otherwise
++ */
++int igt_fs_create_dir(int fd, const char *name, mode_t mode)
++{
++	int ret;
++	int dirfd;
++
++	ret = mkdirat(fd, name, mode);
++	if (ret)
++		return -errno;
++
++	dirfd = openat(fd, name, O_DIRECTORY);
++	if (dirfd < 0)
++		return -errno;
++
++	return dirfd;
++}
++
++/**
++ * igt_fs_remove_directory: removes directory
++ * @fd: fd of parent directory
++ * @name: name of directory to remove
++ *
++ * removes directory under parent directory
++ *
++ * Returns: 0 on success, -errno otherwise
++ */
++int igt_fs_remove_dir(int fd, const char *name)
++{
++	int ret = unlinkat(fd, name, AT_REMOVEDIR);
++
++	if (ret)
++		return -errno;
++
++	return 0;
++}
+diff --git a/lib/igt_fs.h b/lib/igt_fs.h
+index 84c3fed62..ee3e7593b 100644
+--- a/lib/igt_fs.h
 +++ b/lib/igt_fs.h
-@@ -22,12 +22,12 @@
-  *
-  */
- 
--#ifndef __IGT_IO_H__
--#define __IGT_IO_H__
-+#ifndef __IGT_FS_H__
-+#define __IGT_FS_H__
+@@ -27,6 +27,8 @@
  
  #include <stdio.h>
  
++int igt_fs_create_dir(int fd, const char *name, mode_t mode);
++int igt_fs_remove_dir(int fd, const char *name);
  ssize_t igt_readn(int fd, char *buf, size_t len);
  ssize_t igt_writen(int fd, const char *buf, size_t len);
  
--#endif /* __IGT_IO_H__ */
-+#endif /* __IGT_FS_H__ */
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index bc68cf61b..2ba96ca7f 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -46,7 +46,7 @@
- #include "igt_core.h"
- #include "igt_sysfs.h"
- #include "igt_device.h"
--#include "igt_io.h"
-+#include "igt_fs.h"
- #include "intel_chipset.h"
- #include "xe/xe_query.h"
- 
-diff --git a/lib/meson.build b/lib/meson.build
-index 4a9213375..6f3a1150c 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -26,11 +26,11 @@ lib_sources = [
- 	'igt_device_scan.c',
- 	'igt_drm_clients.h',
- 	'igt_drm_fdinfo.c',
-+        'igt_fs.c',
- 	'igt_aux.c',
- 	'igt_gt.c',
- 	'igt_halffloat.c',
- 	'igt_hwmon.c',
--	'igt_io.c',
- 	'igt_matrix.c',
- 	'igt_os.c',
- 	'igt_params.c',
-diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
-index e24618607..ac20ca91d 100644
---- a/tests/msm/msm_mapping.c
-+++ b/tests/msm/msm_mapping.c
-@@ -28,8 +28,8 @@
- #include <sys/stat.h>
- 
- #include "igt.h"
-+#include "igt_fs.h"
- #include "igt_msm.h"
--#include "igt_io.h"
- 
- /*
-  * Tests to ensure various kernel controlled buffers are mapped with the
-diff --git a/tests/msm/msm_recovery.c b/tests/msm/msm_recovery.c
-index 608836866..fbe26e687 100644
---- a/tests/msm/msm_recovery.c
-+++ b/tests/msm/msm_recovery.c
-@@ -25,8 +25,8 @@
- #include <glob.h>
- 
- #include "igt.h"
-+#include "igt_fs.h"
- #include "igt_msm.h"
--#include "igt_io.h"
- 
- static struct msm_device *dev;
- static struct msm_bo *scratch_bo;
 -- 
 2.47.1
 
