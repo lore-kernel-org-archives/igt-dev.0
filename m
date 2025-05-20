@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6E2FC54E90
-	for <igt-dev@archiver.kernel.org>; Tue, 20 May 2025 23:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36879C54E92
+	for <igt-dev@archiver.kernel.org>; Tue, 20 May 2025 23:21:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9395010E5C0;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AEA5E10E5C5;
 	Tue, 20 May 2025 23:21:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SBUXkea/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R1fTBiKL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB87310E588
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEA6910E588
  for <igt-dev@lists.freedesktop.org>; Tue, 20 May 2025 23:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1747783263; x=1779319263;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=uAaLUBTRhanjX5UEpVkzY5PEK2cX8ICRUqqkvPE+kIk=;
- b=SBUXkea/CbP5wOYbOTmgFxt90q/tqWJRbj1w4pZdTvx298Mk5UdFk/1k
- pqw4FwRE9OGC5wHdY/zHmMzXTRk+NcAoJ1KF96aB3Z7aBCIeSnzwTEBTl
- u3kA6VduuvVpgvKKxOm1I2bmQ/b7j38cGkSQXOM+LsUULOqQ8/bg+s4QA
- wLKRqGmreW3SQHV1tnENZxiMmlElQxjAkZou3UQXLr8icfB5WEEmT32HS
- J+cPC0Hsf1bsyIIWo66pp8um2lT3w8DIDCqYQ0v+IRVeE1W5Zi9rypqHq
- v1n4k1GHo1Dh4iR570NaV4k1MnmyIFhmOxkBGebZsZ7sAy8JCQD9ncxn2 w==;
-X-CSE-ConnectionGUID: j5AYbMJWTcSk6jveuiiREg==
-X-CSE-MsgGUID: Ewq7PIEfQamhKoviDMzrHw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49875547"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49875547"
+ bh=Q7+85eFfMnZOqCjfjqprR2f9ItSljENp8/G2hC4pUWc=;
+ b=R1fTBiKLtGvAxyZhUCjbyvRJeJYr5JvSa1j9dIQ7TJhnMi95DSqZGfLX
+ 7t7hNk0bcN9G0mgKFT1VnPHZbH0YmX2qcAjB4IscpVl3rSteTkw5XW/zr
+ aIWINDERxaPYNt1rVcJTvFHWSnIGbViSKtbHA44YLD2FAdVduKslhfif1
+ agw0+Vy0NcA4G99xvkn9v5zp5iIq4h9UOFPikSEjue+QLnxD0mmUgtP+Q
+ O/AjpJHhD5u+OdGDGla2X21BEv0rjcyKuZRu1opJdlzHb1N+uxdJRuyUF
+ Ck+JulPNtYphYL1G+4Parys6et5dtuEhbvHerVhPVTnFzoE/kEFPPNOM0 w==;
+X-CSE-ConnectionGUID: oN9x6brDRLSOTn5toPeKTQ==
+X-CSE-MsgGUID: v4Uf5EW0RbOgxeQepA/MXA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49875550"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49875550"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 May 2025 16:21:01 -0700
-X-CSE-ConnectionGUID: wa/JWqYzQZq8/d+Lp2dO/g==
-X-CSE-MsgGUID: 05JqE9CuRH2R0Q45cIHtaQ==
+X-CSE-ConnectionGUID: tEyJhIy2RFaIZJ3/7hRoxQ==
+X-CSE-MsgGUID: pXLLGgDfRDuOk4SAvofoKw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="145095700"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="145095712"
 Received: from unerlige-desk1.jf.intel.com ([10.165.21.138])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 May 2025 16:21:00 -0700
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  lucas.demarchi@intel.com
-Subject: [PATCH i-g-t 1/4] tests/intel/xe_drm_fdinfo: Use end_cork helper to
- end the spinner
-Date: Tue, 20 May 2025 16:20:29 -0700
-Message-ID: <20250520232027.351497-7-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t 4/4] tests/intel/xe_drm_fdinfo: Test utilization while
+ load is active
+Date: Tue, 20 May 2025 16:20:32 -0700
+Message-ID: <20250520232027.351497-10-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250520232027.351497-6-umesh.nerlige.ramappa@intel.com>
 References: <20250520232027.351497-6-umesh.nerlige.ramappa@intel.com>
@@ -68,93 +68,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some cases require checking if the cork is null before calling the
-library function. Wrap this into a helper.
+Add a test to check if fdinfo returns the correct ticks when querying
+utilization for a context that is currently active on the engine.
+
+v2: Use a specific flag for this test (Lucas)
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 ---
- tests/intel/xe_drm_fdinfo.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ tests/intel/xe_drm_fdinfo.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 9a8811b4cd2f..83b7cd617c34 100644
+index ec439ce7a6d2..ad7b45b1789c 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -423,6 +423,12 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
- 	}
- }
+@@ -48,6 +48,9 @@
+  * SUBTEST: utilization-single-full-load
+  * Description: Check that each engine shows full load
+  *
++ * SUBTEST: utilization-single-full-load-while-active
++ * Description: Check that each engine shows full load whle active
++ *
+  * SUBTEST: utilization-single-full-load-isolation
+  * Description: Check that each engine load does not spill over to other drm clients
+  *
+@@ -70,6 +73,7 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine u
  
-+static void end_cork(int fd, struct xe_cork *cork)
-+{
-+	if (cork && !cork->ended)
-+		xe_cork_sync_end(fd, cork);
-+}
-+
- static void
- utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
- {
-@@ -450,7 +456,7 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+ /* flag masks */
+ #define TEST_WITH_LOAD		(1 << 0)
++#define TEST_WHILE_ACTIVE	(1 << 0)
+ #define TEST_ISOLATION		(1 << 2)
+ #define TEST_VIRTUAL		(1 << 3)
+ #define TEST_PARALLEL		(1 << 4)
+@@ -454,12 +458,15 @@ utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned in
+ 		read_engine_cycles(new_fd, pceu1[1]);
  
  	usleep(batch_duration_usec);
- 	if (flags & TEST_TRAILING_IDLE)
--		xe_cork_sync_end(fd, cork);
+-	end_cork(fd, cork);
++	if (!(flags & TEST_WHILE_ACTIVE))
 +		end_cork(fd, cork);
  
  	read_engine_cycles(fd, pceu2[0]);
  	if (flags & TEST_ISOLATION)
-@@ -497,7 +503,7 @@ utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hw
- 	usleep(batch_duration_usec);
+ 		read_engine_cycles(new_fd, pceu2[1]);
  
- 	/* destroy queue before sampling again */
--	xe_cork_sync_end(fd, cork);
 +	end_cork(fd, cork);
- 	timestamp = cork->spin->timestamp;
- 	xe_cork_destroy(fd, cork);
++
+ 	expected_load = flags & TEST_WITH_LOAD ?
+ 	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
  
-@@ -526,7 +532,7 @@ utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	xe_cork_sync_end(fd, cork);
-+	end_cork(fd, cork);
- 	read_engine_cycles(fd, pceu2);
- 
- 	xe_for_each_engine_class(class) {
-@@ -568,10 +574,8 @@ utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	xe_for_each_engine_class(class) {
--		if (cork[class])
--			xe_cork_sync_end(fd, cork[class]);
--	}
-+	xe_for_each_engine_class(class)
-+		end_cork(fd, cork[class]);
- 
- 	read_engine_cycles(fd, pceu2);
- 
-@@ -613,10 +617,8 @@ utilization_all_full_load(int fd)
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	xe_for_each_engine_class(class) {
--		if (cork[class])
--			xe_cork_sync_end(fd, cork[class]);
--	}
-+	xe_for_each_engine_class(class)
-+		end_cork(fd, cork[class]);
- 
- 	read_engine_cycles(fd, pceu2);
- 
-@@ -692,7 +694,7 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+@@ -691,7 +698,8 @@ utilization_multi(int fd, int gt, int class, unsigned int flags)
+ 		read_engine_cycles(fd_spill, pceu_spill[0]);
  
  	usleep(batch_duration_usec);
- 	if (flags & TEST_TRAILING_IDLE)
--		xe_cork_sync_end(fd, cork);
+-	end_cork(fd, cork);
++	if (!(flags & TEST_WHILE_ACTIVE))
 +		end_cork(fd, cork);
  
  	read_engine_cycles(fd, pceu[1]);
  	if (flags & TEST_ISOLATION)
+@@ -768,6 +776,13 @@ igt_main
+ 			utilization_single(xe, hwe, 0);
+ 	}
+ 
++	igt_subtest("utilization-single-full-load-while-active") {
++		require_engine_utilization_data(xe);
++		xe_for_each_engine(xe, hwe)
++			utilization_single(xe, hwe,
++					   TEST_WITH_LOAD | TEST_WHILE_ACTIVE);
++	}
++
+ 	igt_subtest("utilization-single-full-load") {
+ 		require_engine_utilization_data(xe);
+ 		xe_for_each_engine(xe, hwe)
 -- 
 2.43.0
 
