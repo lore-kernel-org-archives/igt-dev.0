@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C213C3DA6D
-	for <igt-dev@archiver.kernel.org>; Tue, 20 May 2025 19:50:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67ECCC3DA6D
+	for <igt-dev@archiver.kernel.org>; Tue, 20 May 2025 19:53:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E704510E094;
-	Tue, 20 May 2025 19:50:41 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FC8F10E094;
- Tue, 20 May 2025 19:50:41 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0708455599354942358=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FE4210E5CD;
+	Tue, 20 May 2025 19:53:27 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZNM1G/uq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82CAB10E5CD
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 May 2025 19:53:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747770803; x=1779306803;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=UECNVfI0z14lID3Rqkh479tfv2XVgW6ftuXtJQrYMCQ=;
+ b=ZNM1G/uqFe4h71RsTUdVbvWAnujI4bk28pDRD8u2pzfrOAnGQWB9G2lD
+ Es723W1xSC3y2wBft8Ycip4ZdMicPTL5SrCPvs6YUrL1NPOjSXNv7Mbc5
+ Kw9cZF9Jf1LQc8aYecysO8zk7i3YfktlF6CUcBFajbmemFi4fB/8L75Q6
+ xhQ1OOmaWOBmGZH9s3wifAo9RB7YNgdX2mpjmEe/VTDzvCrGv61fzIO7g
+ n2XHdLdszuRYfGNA8Ls01ru5zBwRRtUIRt0tkfI5D3jFYLzFfvsdQg1+r
+ uBYNRZ0ksMhHib2NBCXTzfv3abf1hCZwnUbp6dPAmsnKoaFw6R43GdArH A==;
+X-CSE-ConnectionGUID: MWqz6gwPQOSq81MeZHlPtw==
+X-CSE-MsgGUID: vJUOvGgORZKAL0eva7nYvg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="60379833"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="60379833"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2025 12:53:22 -0700
+X-CSE-ConnectionGUID: CZXQAw5aSdi7aoeoLmzXCQ==
+X-CSE-MsgGUID: hpRNkraUTrCbG8/SgD53vg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="139836102"
+Received: from unerlige-desk1.jf.intel.com ([10.165.21.138])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 May 2025 12:53:22 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: [PATCH] tests/intel/xe_oa: Ignore other errors when looking for
+ buffer overflow
+Date: Tue, 20 May 2025 12:52:50 -0700
+Message-ID: <20250520195249.326080-2-umesh.nerlige.ramappa@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/intel-ci=3A_Add_platf?=
- =?utf-8?q?orm_Blocklist_for_Eudebug_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: himanshu.girotra@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 20 May 2025 19:50:41 -0000
-Message-ID: <174777064112.6224.15508588248232349967@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250520113422.2504-1-himanshu.girotra@intel.com>
-In-Reply-To: <20250520113422.2504-1-himanshu.girotra@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,57 +63,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0708455599354942358==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Occassionally other error bits will result in EIO and prematurely end
+the buffer-fill test. For this test, ignore other errors.
 
-== Series Details ==
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4565
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/intel/xe_oa.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-Series: tests/intel-ci: Add platform Blocklist for Eudebug (rev4)
-URL   : https://patchwork.freedesktop.org/series/149239/
-State : failure
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index 73841a359daf..2022c5cb3955 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -2520,7 +2520,6 @@ test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
+ 	char *buf = malloc(1024);
+ 	bool overflow_seen;
+ 	u32 oa_status;
+-	int len;
+ 
+ 	igt_debug("oa_period %s\n", pretty_print_oa_period(oa_period));
+ 	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+@@ -2535,16 +2534,22 @@ test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
+ 
+ 	errno = 0;
+ 	/* Read 0 bytes repeatedly until you see an EIO */
+-	while ((len = read(stream_fd, buf, 0)) == -1 && (errno == EINTR || errno == ENOSPC)) {
++	while (-1 == read(stream_fd, buf, 0)) {
++		if (errno == EIO) {
++			oa_status = get_stream_status(stream_fd);
++			overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
++			if (overflow_seen)
++				break;
++		}
+ 		usleep(100);
+ 	}
+-	igt_assert_eq(len, -1);
+-	igt_assert_eq(errno, EIO);
++	igt_assert(overflow_seen);
+ 
+-	/* Ensure buffer overflowed */
++	/* Make sure the buffer overflow is cleared */
++	read(stream_fd, buf, 0);
+ 	oa_status = get_stream_status(stream_fd);
+ 	overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
+-	igt_assert(overflow_seen);
++	igt_assert_eq(overflow_seen, 0);
+ 
+ 	__perf_close(stream_fd);
+ }
+-- 
+2.43.0
 
-== Summary ==
-
-Series 149239 revision 4 was fully merged or fully failed: no git log
-
-
-
---===============0708455599354942358==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel-ci: Add platform Blocklist for Eudebug (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149239/">https://patchwork.freedesktop.org/series/149239/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-</table>
-
-
-    <p>Series 149239 revision 4 was fully merged or fully failed: no git log</p>
-
-</body>
-</html>
-
---===============0708455599354942358==--
