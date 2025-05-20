@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D80C3ABDD
-	for <igt-dev@archiver.kernel.org>; Tue, 20 May 2025 06:25:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 837F9C3ABDA
+	for <igt-dev@archiver.kernel.org>; Tue, 20 May 2025 06:25:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 86B4A10E0A9;
-	Tue, 20 May 2025 06:25:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A58510E128;
+	Tue, 20 May 2025 06:25:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dF854c+y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bbiDIGUk";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 429F010E0A9
- for <igt-dev@lists.freedesktop.org>; Tue, 20 May 2025 06:25:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28BBB10E0E4
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 May 2025 06:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747722327; x=1779258327;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=mjkO1y5jGtwOqnA4cQSWl3iZxdqkqKg08peorctY/9w=;
- b=dF854c+y0HhEvCxURRZb5pqgrUxQHAf7A5c/q8jT2MHwLJWOHFTL2QVj
- PU/0Hr7EkxqCtzNihvkK4lU4zbQC5jJQRa0IlGfY/DX4Lo91U4+M2TsAk
- hBbk2ojYxb1o+Gu2cPoI0vcyZAsrUgCKNWMYcoXT9hDJfo4rOZSziZRsL
- iXeh2VhDJL91pxqbvV054HLctcATW1rinyecG4DdXY1b4YY8NGn+V5reO
- dKuOxOpksiu1TK6bFQ6DXxGWsyeugrklV8B/YfPFZiBKobbD4UMcbykXE
- pW0VI9Qmst8xhAQiuwoRlfaVeLBXewuKaws4Spu27KjvyieWizNPsrYs8 w==;
-X-CSE-ConnectionGUID: 4Ijguc/NQD6Ju3/yKw72aQ==
-X-CSE-MsgGUID: qFHV35XsTj6fGFRm3Hl3AA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="52272706"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="52272706"
+ t=1747722328; x=1779258328;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=lJ7pJz9YAMv0Rh3IQlDOwXEAg9/e7WbovdNf5GRaGY0=;
+ b=bbiDIGUkWco8EUTT5h1Jx7/plNd5a5AqUdF7Uff4aAb0j6QNxhIbMUij
+ SoLksnP6ikWPyj+wLbMMTHE1lDtjct/YDdYBzWsgK9aV8U0zLrbgJ4L8A
+ d4nypNK59fKBYd8y/zkE7AV8/qo9fALk2AzpdVpannANVsodaXyF4Urrm
+ CxxbfdzRu3J6ltApnSKH4BhqPNhFoo7SXRxgdV+wfjYMMBmzrWGhjiFCI
+ mz3f6rerlmyug0xrBP14PKZvbuikwUl/7sOq8b18iDZwAQ6+afWbRuaTL
+ 0sQYT+L61RveC0b321eNESAXAQXu8rMp5oRecooH3UIsj00FOd31xDlIx g==;
+X-CSE-ConnectionGUID: 7NfR9d5pRqKbkj/9MfAhQA==
+X-CSE-MsgGUID: Oq7ByeOrTmiE7pJsbEqBog==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="52272709"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="52272709"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 23:25:25 -0700
-X-CSE-ConnectionGUID: kJNppyk8T6ukqd1PRKaDlw==
-X-CSE-MsgGUID: 1afbPibvSRqrsKHvNrYVXA==
+ 19 May 2025 23:25:28 -0700
+X-CSE-ConnectionGUID: KLfYceSZTT+6GuY4Cj0eTg==
+X-CSE-MsgGUID: /NRkTceSTAWC1rJ1/QnBtA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="170609570"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="170609583"
 Received: from unknown (HELO rtauro-desk.iind.intel.com) ([10.227.90.111])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2025 23:25:23 -0700
+ 19 May 2025 23:25:25 -0700
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com, lucas.demarchi@intel.com,
  kamil.konieczny@intel.com, rodrigo.vivi@intel.com,
  aravind.iddamsetty@linux.intel.com, louis.chauvet@bootlin.com
-Subject: [PATCH i-g-t v4 0/5] Add test to validate survivability mode
-Date: Tue, 20 May 2025 12:19:05 +0530
-Message-ID: <20250520064910.663022-1-riana.tauro@intel.com>
+Subject: [PATCH i-g-t v4 1/5] lib/igt_aux: Move is_mountpoint() to igt_aux
+Date: Tue, 20 May 2025 12:19:06 +0530
+Message-ID: <20250520064910.663022-2-riana.tauro@intel.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250520064910.663022-1-riana.tauro@intel.com>
+References: <20250520064910.663022-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,46 +70,125 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helper functions for configfs and add test to validate
-survivability mode using configfs attribute. This tests unbinds the card,
-sets survivability mode and rebinds the card. 
+From: José Expósito <jose.exposito89@gmail.com>
 
-The card enters survivability mode if supported.
+Rename is_mountpoint() to igt_is_mountpoint() and make it available in
+igt_aux.h/c.
 
-Rev3: Fix review comments
-Rev4: rename dir_fd to configfs_device_fd
+Refactor, no functional change.
 
-José Expósito (2):
-  lib/igt_aux: Move is_mountpoint() to igt_aux
-  lib/igt_configfs: Add helper to mount configfs
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Co-developed-by: Jim Shargo <jshargo@chromium.org>
+Signed-off-by: Jim Shargo <jshargo@chromium.org>
+Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
+Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+---
+ lib/igt_aux.c     | 31 +++++++++++++++++++++++++++++++
+ lib/igt_aux.h     |  2 ++
+ lib/igt_debugfs.c | 29 ++---------------------------
+ 3 files changed, 35 insertions(+), 27 deletions(-)
 
-Riana Tauro (3):
-  lib/igt_fs: Rename igt_io to igt_fs to add additional helpers
-  lib/igt_fs: Add helper functions to create and remove directories
-  tests/intel/xe_configfs: Add test to validate survivability mode
-
- .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   2 +-
- lib/igt.h                                     |   1 +
- lib/igt_aux.c                                 |  31 ++++++
- lib/igt_aux.h                                 |   2 +
- lib/igt_configfs.c                            |  86 +++++++++++++++
- lib/igt_configfs.h                            |  15 +++
- lib/igt_debugfs.c                             |  29 +----
- lib/{igt_io.c => igt_fs.c}                    |  61 +++++++++--
- lib/{igt_io.h => igt_fs.h}                    |   8 +-
- lib/igt_sysfs.c                               |   2 +-
- lib/meson.build                               |   3 +-
- tests/intel/xe_configfs.c                     | 100 ++++++++++++++++++
- tests/meson.build                             |   1 +
- tests/msm/msm_mapping.c                       |   2 +-
- tests/msm/msm_recovery.c                      |   2 +-
- 15 files changed, 303 insertions(+), 42 deletions(-)
- create mode 100644 lib/igt_configfs.c
- create mode 100644 lib/igt_configfs.h
- rename lib/{igt_io.c => igt_fs.c} (68%)
- rename lib/{igt_io.h => igt_fs.h} (87%)
- create mode 100644 tests/intel/xe_configfs.c
-
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index f5bf48da6..2905824a5 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -1374,6 +1374,37 @@ static bool get_process_ids(struct igt_process *prcs)
+ 	return prcs->tid != 0;
+ }
+ 
++/**
++ * igt_is_mountpoint() - Check if a path is a mounted filesystem
++ * @path: Root directory to test
++ *
++ * Returns: true if @path is the root of a mounted filesystem
++ */
++bool igt_is_mountpoint(const char *path)
++{
++	char buf[strlen(path) + 4];
++	struct stat st;
++	dev_t dev;
++
++	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
++	if (stat(buf, &st))
++		return false;
++
++	if (!S_ISDIR(st.st_mode))
++		return false;
++
++	dev = st.st_dev;
++
++	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
++	if (stat(buf, &st))
++		return false;
++
++	if (!S_ISDIR(st.st_mode))
++		return false;
++
++	return dev != st.st_dev;
++}
++
+ /**
+  * igt_is_process_running:
+  * @comm: Name of process in the form found in /proc/pid/comm (limited to 15
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index bfd83adca..e8a1788b2 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -314,6 +314,8 @@ double igt_stop_siglatency(struct igt_mean *result);
+ 
+ bool igt_allow_unlimited_files(void);
+ 
++bool igt_is_mountpoint(const char *path);
++
+ int igt_is_process_running(const char *comm);
+ int igt_terminate_process(int sig, const char *comm);
+ void igt_lsof(const char *dpath);
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 8ac215a76..210a9cea0 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -67,37 +67,12 @@
+  * General debugfs helpers
+  */
+ 
+-static bool is_mountpoint(const char *path)
+-{
+-	char buf[strlen(path) + 4];
+-	struct stat st;
+-	dev_t dev;
+-
+-	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/.", path), sizeof(buf));
+-	if (stat(buf, &st))
+-		return false;
+-
+-	if (!S_ISDIR(st.st_mode))
+-		return false;
+-
+-	dev = st.st_dev;
+-
+-	igt_assert_lt(snprintf(buf, sizeof(buf), "%s/..", path), sizeof(buf));
+-	if (stat(buf, &st))
+-		return false;
+-
+-	if (!S_ISDIR(st.st_mode))
+-		return false;
+-
+-	return dev != st.st_dev;
+-}
+-
+ static const char *__igt_debugfs_mount(void)
+ {
+-	if (is_mountpoint("/sys/kernel/debug"))
++	if (igt_is_mountpoint("/sys/kernel/debug"))
+ 		return "/sys/kernel/debug";
+ 
+-	if (is_mountpoint("/debug"))
++	if (igt_is_mountpoint("/debug"))
+ 		return "/debug";
+ 
+ 	if (mount("debug", "/sys/kernel/debug", "debugfs", 0, 0))
 -- 
 2.47.1
 
