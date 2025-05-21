@@ -4,63 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98AE2C2D0CD
-	for <igt-dev@archiver.kernel.org>; Wed, 21 May 2025 16:53:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40401C2D0CD
+	for <igt-dev@archiver.kernel.org>; Wed, 21 May 2025 18:30:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 65D5310F774;
-	Wed, 21 May 2025 16:48:22 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MPG6aD9I";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55AE211AF00
- for <igt-dev@lists.freedesktop.org>; Wed, 21 May 2025 16:47:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747846041; x=1779382041;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=BJtmVYxxl012DqGi1SPYrHyHohLilyP2aFyFamQqImM=;
- b=MPG6aD9IZFl2pMn2GqtBlPUvKvIdTYULVhfDcnx9CSy89HzEvBN3P+ve
- OfWFqxLL0pZyrTmsQ4zsemEE59Oj3fYyQ5qQV8+TcLNpQyqsPUKvUGjSG
- qJHCf0AkENwaZrFbNUqQjS8pGh7oIj3mgWXfOqohvwdy/vOl1rTkFewXv
- 5Ioq1TswOuwWjA/WVvkNXl8OjQEx9zIeDLcuZd73Zb/TNEz4CjyX/n1is
- HDpreq/gePU4IYsmDQy3p4S/XcSQN2pMNzolmgcnxVmqoBfNIs+Ku1mFq
- k6/0So1zSy8B8fG+iIlGMyFfU6OdYaibWIXFca02DtpgGVc9CAF3EDkae Q==;
-X-CSE-ConnectionGUID: X8QTPFmrTvGHh4nEGbITdA==
-X-CSE-MsgGUID: 7j4okA4BSNK465ERDxcunw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="49996363"
-X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; d="scan'208";a="49996363"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 09:47:21 -0700
-X-CSE-ConnectionGUID: 6n3ySJSKSkaGbieh2pa3YA==
-X-CSE-MsgGUID: Tx8E/JFbRkW3iw/GH2dyWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; d="scan'208";a="140699701"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 09:47:19 -0700
-Date: Wed, 21 May 2025 18:47:16 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- kamil.konieczny@intel.com, markyacoub@google.com,
- seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-Subject: Re: [PATCH i-g-t v9 14/14] lib/igt_device_scan: reuse igt hash
-Message-ID: <20250521164716.czfvluoylwqua7sw@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
- igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- kamil.konieczny@intel.com, markyacoub@google.com,
- seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-References: <20250519151135.43874-1-jeevaka.badrappan@intel.com>
- <20250519151135.43874-15-jeevaka.badrappan@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECDC810E736;
+	Wed, 21 May 2025 18:30:28 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEE5C10E736;
+ Wed, 21 May 2025 18:30:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3527658815245373212=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250519151135.43874-15-jeevaka.badrappan@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_DSC_compressed_BPP_subt?=
+ =?utf-8?q?est?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 21 May 2025 18:30:27 -0000
+Message-ID: <174785222784.10732.14398691894499203068@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250521072836.1400749-1-swati2.sharma@intel.com>
+In-Reply-To: <20250521072836.1400749-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,217 +37,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevaka,
-On 2025-05-19 at 15:11:35 +0000, Jeevaka Prabu Badrappan wrote:
-> As glib is not available in Android, replace the glib hash
-> functions by reusing the igt hash functions.
-> 
-> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/igt_device_scan.c | 78 ++++++++++++++++++++++---------------------
->  lib/meson.build       |  1 +
->  2 files changed, 41 insertions(+), 38 deletions(-)
-> 
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 45faabc45..2a9dd8395 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -26,12 +26,12 @@
->  #include "igt_core.h"
->  #include "igt_device_scan.h"
->  #include "igt_list.h"
-> +#include "igt_map.h"
->  #include "intel_chipset.h"
->  
->  #include <ctype.h>
->  #include <dirent.h>
->  #include <fcntl.h>
-> -#include <glib.h>
->  #include <libudev.h>
->  #ifdef __linux__
->  #include <linux/limits.h>
-> @@ -224,8 +224,8 @@ struct igt_device {
->  	/* Point to vendor spec if can be found */
->  
->  	/* Properties / sysattrs rewriten from udev lists */
-> -	GHashTable *props_ht;
-> -	GHashTable *attrs_ht;
-> +	struct igt_map *props_map;
-> +	struct igt_map *attrs_map;
->  
->  	/* Most usable variables from udev device */
->  	char *subsystem;
-> @@ -464,6 +464,11 @@ static bool is_on_blacklist(const char *what)
->  
->  }
->  
-> +static int key_equals(const void *key1, const void *key2)
-> +{
-> +	return strcmp((char *)key1, (char *)key2) == 0;
-> +}
-> +
->  static struct igt_device *igt_device_new(void)
->  {
->  	struct igt_device *dev;
-> @@ -472,14 +477,14 @@ static struct igt_device *igt_device_new(void)
->  	if (!dev)
->  		return NULL;
->  
-> -	dev->attrs_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
-> -					      free, free);
-> -	dev->props_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
-> -					      free, free);
-> +	dev->attrs_map = igt_map_create(igt_map_hash_32, key_equals);
-> +	dev->props_map = igt_map_create(igt_map_hash_32, key_equals);
->  
-> -	if (dev->attrs_ht && dev->props_ht)
-> +	if (dev->attrs_map && dev->props_map)
->  		return dev;
->  
-> +	igt_map_destroy(dev->attrs_map, NULL);
-> +	igt_map_destroy(dev->props_map, NULL);
->  	free(dev);
->  
->  	return NULL;
-> @@ -491,7 +496,7 @@ static void igt_device_add_prop(struct igt_device *dev,
->  	if (!key || !value)
->  		return;
->  
-> -	g_hash_table_insert(dev->props_ht, strdup(key), strdup(value));
-> +	igt_map_insert(dev->props_map, strdup(key), strdup(value));
->  }
->  
->  static void igt_device_add_attr(struct igt_device *dev,
-> @@ -525,7 +530,7 @@ static void igt_device_add_attr(struct igt_device *dev,
->  		v++;
->  	}
->  
-> -	g_hash_table_insert(dev->attrs_ht, strdup(key), strdup(v));
-> +	igt_map_insert(dev->attrs_map, strdup(key), strdup(v));
->  }
->  
->  /* Iterate over udev properties list and rewrite it to igt_device properties
-> @@ -585,19 +590,30 @@ static void get_attrs_limited(struct udev_device *dev, struct igt_device *idev)
->  	}
->  }
->  
-> -#define get_prop(dev, prop) ((char *) g_hash_table_lookup(dev->props_ht, prop))
-> -#define get_attr(dev, attr) ((char *) g_hash_table_lookup(dev->attrs_ht, attr))
-> +#define get_prop(dev, prop) ((char *) igt_map_search(dev->props_map, prop))
-> +#define get_attr(dev, attr) ((char *) igt_map_search(dev->attrs_map, attr))
+--===============3527658815245373212==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please follow checkpatch advise here and use '(dev)':
+== Series Details ==
 
-#define get_prop(dev, prop) ((char *) igt_map_search((dev)->props_map, prop))
-#define get_attr(dev, attr) ((char *) igt_map_search((dev)->attrs_map, attr))
+Series: Add DSC compressed BPP subtest
+URL   : https://patchwork.freedesktop.org/series/149305/
+State : success
 
-Regards,
-Kamil
+== Summary ==
 
->  #define get_prop_subsystem(dev) get_prop(dev, "SUBSYSTEM")
->  #define is_drm_subsystem(dev)  (strequal(get_prop_subsystem(dev), "drm"))
->  #define is_pci_subsystem(dev)  (strequal(get_prop_subsystem(dev), "pci"))
->  
-> -static void print_ht(GHashTable *ht);
-> +static inline void _print_key_value(const char *k, const char *v)
-> +{
-> +	printf("%-32s: %s\n", k, v);
-> +}
-> +
->  static void dump_props_and_attrs(const struct igt_device *dev)
->  {
-> +	struct igt_map_entry *entry;
-> +
->  	printf("\n[properties]\n");
-> -	print_ht(dev->props_ht);
-> +	igt_map_foreach(dev->props_map, entry) {
-> +		_print_key_value((char *)entry->key, (char *)entry->data);
-> +	}
-> +
->  	printf("\n[attributes]\n");
-> -	print_ht(dev->attrs_ht);
-> +	igt_map_foreach(dev->attrs_map, entry) {
-> +		_print_key_value((char *)entry->key, (char *)entry->data);
-> +	}
->  	printf("\n");
->  }
->  
-> @@ -949,7 +965,7 @@ static struct igt_device *duplicate_device(struct igt_device *dev) {
->  	return dup;
->  }
->  
-> -static gint devs_compare(const void *a, const void *b)
-> +static int devs_compare(const void *a, const void *b)
->  {
->  	struct igt_device *dev1, *dev2;
->  	int ret;
-> @@ -1076,6 +1092,12 @@ static void scan_drm_devices(bool limit_attrs)
->  	}
->  }
->  
-> +static void free_key_value(struct igt_map_entry *entry)
-> +{
-> +	free((char *)entry->key);
-> +	free(entry->data);
-> +}
-> +
->  static void igt_device_free(struct igt_device *dev)
->  {
->  	free(dev->codename);
-> @@ -1088,8 +1110,8 @@ static void igt_device_free(struct igt_device *dev)
->  	free(dev->device);
->  	free(dev->driver);
->  	free(dev->pci_slot_name);
-> -	g_hash_table_destroy(dev->attrs_ht);
-> -	g_hash_table_destroy(dev->props_ht);
-> +	igt_map_destroy(dev->attrs_map, free_key_value);
-> +	igt_map_destroy(dev->props_map, free_key_value);
->  }
->  
->  void igt_devices_free(void)
-> @@ -1323,26 +1345,6 @@ igt_devs_print_user(struct igt_list_head *view,
->  	}
->  }
->  
-> -static inline void _print_key_value(const char* k, const char *v)
-> -{
-> -	printf("%-32s: %s\n", k, v);
-> -}
-> -
-> -static void print_ht(GHashTable *ht)
-> -{
-> -	GList *keys = g_hash_table_get_keys(ht);
-> -
-> -	keys = g_list_sort(keys, (GCompareFunc) strcmp);
-> -	while (keys) {
-> -		char *k = (char *) keys->data;
-> -		char *v = g_hash_table_lookup(ht, k);
-> -
-> -		_print_key_value(k, v);
-> -		keys = g_list_next(keys);
-> -	}
-> -	g_list_free(keys);
-> -}
-> -
->  static void
->  igt_devs_print_detail(struct igt_list_head *view,
->  		      const struct igt_devices_print_format *fmt)
-> diff --git a/lib/meson.build b/lib/meson.build
-> index b58976a43..b590db9d4 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -304,6 +304,7 @@ scan_dep = [
->  lib_igt_device_scan_build = static_library('igt_device_scan',
->  	['igt_device_scan.c',
->  	'igt_list.c',
-> +	'igt_map.c',
->  	'igt_tools_stub.c',
->  	'intel_device_info.c',
->  	'intel_cmds_info.c',
-> -- 
-> 2.49.0
-> 
+CI Bug Log - changes from XEIGT_8372_BAT -> XEIGTPW_13159_BAT
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with XEIGTPW_13159_BAT need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_13159_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13159_BAT:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-lnl-1:          [SKIP][1] ([Intel XE#2244]) -> [SKIP][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8372/bat-lnl-1/igt@kms_dsc@dsc-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/bat-lnl-1/igt@kms_dsc@dsc-basic.html
+    - bat-adlp-7:         [SKIP][3] ([Intel XE#455]) -> [SKIP][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8372/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+    - bat-bmg-1:          [SKIP][5] ([Intel XE#2244]) -> [SKIP][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8372/bat-bmg-1/igt@kms_dsc@dsc-basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/bat-bmg-1/igt@kms_dsc@dsc-basic.html
+    - bat-dg2-oem2:       [SKIP][7] ([Intel XE#455]) -> [SKIP][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8372/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8372 -> IGTPW_13159
+
+  IGTPW_13159: 13159
+  IGT_8372: 8372
+  xe-3119-3695d568b260d85e65f9331ca1180a9dd2b5560b: 3695d568b260d85e65f9331ca1180a9dd2b5560b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/index.html
+
+--===============3527658815245373212==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add DSC compressed BPP subtest</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149305/">https://patchwork.freedesktop.org/series/149305/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8372_BAT -&gt; XEIGTPW_13159_BAT</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with XEIGTPW_13159_BAT need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_13159_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13159_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_dsc@dsc-basic:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8372/bat-lnl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/bat-lnl-1/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8372/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8372/bat-bmg-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/bat-bmg-1/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8372/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13159/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8372 -&gt; IGTPW_13159</li>
+</ul>
+<p>IGTPW_13159: 13159<br />
+  IGT_8372: 8372<br />
+  xe-3119-3695d568b260d85e65f9331ca1180a9dd2b5560b: 3695d568b260d85e65f9331ca1180a9dd2b5560b</p>
+
+</body>
+</html>
+
+--===============3527658815245373212==--
