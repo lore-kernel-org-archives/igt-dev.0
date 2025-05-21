@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C5DC2D0CD
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55507C54E65
 	for <igt-dev@archiver.kernel.org>; Wed, 21 May 2025 07:23:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B03810E68D;
-	Wed, 21 May 2025 07:23:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F348910E118;
+	Wed, 21 May 2025 07:23:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jh3j0kwA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H1awsDgg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDF9310E118
- for <igt-dev@lists.freedesktop.org>; Wed, 21 May 2025 07:23:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 120EC10E118
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 May 2025 07:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747812189; x=1779348189;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=a2FCAcHh+YctKG3/DZVXZ6orDh7WkxPfeMUFOX9WEK4=;
- b=Jh3j0kwAk9Q1HcRXj46j/Tcu/B3/Sl2tp52cIwG5aMk2zRJpsmZyVelE
- kLsl2urn8c0GqEAwM34PfIXjiPaKrqSkKcMn6ni3PhuSxs8jS8H95Cy/s
- fYE43t5iMMMtam21BuHmUAatdBoBshn33uNUGo8sHxsjGwsaEiQzDCbZc
- rTAVSyKjyyHMGORD3gsIczNroTfQa7Uj7i1DvEfAQ/0F5C/qL9nz9Yzhr
- sHc+oK6vX8WoJv+WF+YGxR1X9Yfs2rwckNhTVDGtYItpPNEfjU5ZPBjLf
- W7jQUw8r9DNg/UgJC5Qenc+s/kv19rq6lzKubls8IhOZCwNMQtC3T7VUT Q==;
-X-CSE-ConnectionGUID: 8bklUlegQDWMF8P8eroSGg==
-X-CSE-MsgGUID: rAYHoxz+SfCSakoSjCsJIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="53571289"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="53571289"
+ t=1747812192; x=1779348192;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=aRvfy9qJtJnQs2TgtXiz/smE/YkM6pswQ9FAMWR86Ug=;
+ b=H1awsDggbWa79vNNKbL6FQYzkycruCRwfMGz0yRchQFD3YbvzKe8bord
+ rr9G9INF40u1yS6HGqVeSrCn+FHotwi121kaVV/N9AV7jU+BCE8RuMB8i
+ X82srCNPHvOhE55dztYQkFsG0O2LIEYklRO5+49duEsc04filnP64sQc6
+ hFWv0ktw9tFGrfdjEoB46/hQ3lsUZ/tDRS1QTES5jX+QydvIVJcqLOZ1n
+ lIxa+lBu35G/HsJLVgVNn9HOWVn0meHo8SWS2rEmg45uj19tVv8fgckg3
+ /TDqY1KEGzn/WnXPODtcZ2yMO6io7piOeDV5SDNYSx44RvtJE53xQT/M3 w==;
+X-CSE-ConnectionGUID: ZyrM4j6CQDij+nDSBTV2dA==
+X-CSE-MsgGUID: dVRNAtjYQeuRosDAXxlN6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="53571296"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="53571296"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 00:23:08 -0700
-X-CSE-ConnectionGUID: /FfjVs6GSiGE+8Co0Bbt5A==
-X-CSE-MsgGUID: wypd6qFlSdKHXFZjM8BXDQ==
+ 21 May 2025 00:23:11 -0700
+X-CSE-ConnectionGUID: 1bxu2fTrQjSBPJHF9lqv8A==
+X-CSE-MsgGUID: MoIeMHbRSQujEU9tYOeTcA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="170943765"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="170943788"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 00:23:07 -0700
+ 21 May 2025 00:23:10 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com, imre.deak@intel.com,
  Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 0/5] Add DSC compressed BPP subtest
-Date: Wed, 21 May 2025 12:58:31 +0530
-Message-Id: <20250521072836.1400749-1-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 2/5] lib/dsc: Add igt_force_dsc_enable_compressed_bpp()
+Date: Wed, 21 May 2025 12:58:33 +0530
+Message-Id: <20250521072836.1400749-3-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250521072836.1400749-1-swati2.sharma@intel.com>
+References: <20250521072836.1400749-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,22 +69,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add DSC compressed BPP subtest.
+Function is added to force compressed bpp via debugfs
+intel_force_link_bpp.
 
-Swati Sharma (5):
-  tests/intel/kms_dsc: Store valid DSC outputs
-  lib/dsc: Add igt_force_dsc_enable_compressed_bpp()
-  tests/intel/kms_dsc_helper: Add helper to force compressed BPP
-  lib/dsc: Add igt_get_dsc_sink_compressed_bpp()
-  tests/intel/kms_dsc: Add dsc-compressed-bpp subtest
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ lib/igt_dsc.c | 18 ++++++++++++++++++
+ lib/igt_dsc.h |  1 +
+ 2 files changed, 19 insertions(+)
 
- lib/igt_dsc.c                |  55 ++++++++++++++++
- lib/igt_dsc.h                |   2 +
- tests/intel/kms_dsc.c        | 121 ++++++++++++++++++++++++++++++-----
- tests/intel/kms_dsc_helper.c |  10 +++
- tests/intel/kms_dsc_helper.h |   1 +
- 5 files changed, 172 insertions(+), 17 deletions(-)
-
+diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
+index 4caad39db..21677b0e0 100644
+--- a/lib/igt_dsc.c
++++ b/lib/igt_dsc.c
+@@ -6,6 +6,7 @@
+ #include <unistd.h>
+ #include <fcntl.h>
+ #include <string.h>
++#include "drmtest.h"
+ #include "igt_core.h"
+ #include "igt_dsc.h"
+ #include "igt_sysfs.h"
+@@ -141,6 +142,23 @@ int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc)
+ 	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_bpc", buf);
+ }
+ 
++/**
++ * igt_force_dsc_enable_compressed_bpp:
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
++ * @bpp: Compressed BPP
++ *
++ * Returns: 0 on success or negative error code, in case of failure.
++ */
++int igt_force_dsc_enable_compressed_bpp(int drmfd, char *connector_name, float bpp)
++{
++	char buf[20] = {0};
++
++	sprintf(buf, "%.2f", bpp);
++
++	return write_dsc_debugfs(drmfd, connector_name, "intel_force_link_bpp", buf);
++}
++
+ /**
+  * igt_get_dsc_debugfs_fd:
+  * @drmfd: A drm file descriptor
+diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
+index 3cf2d4e76..ab5d27b06 100644
+--- a/lib/igt_dsc.h
++++ b/lib/igt_dsc.h
+@@ -17,6 +17,7 @@ bool igt_is_dsc_enabled(int drmfd, char *connector_name);
+ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
+ int igt_force_dsc_enable(int drmfd, char *connector_name);
+ int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
++int igt_force_dsc_enable_compressed_bpp(int drmfd, char *connector_name, float bpp);
+ int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
+ bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
+ 						enum dsc_output_format output_format);
 -- 
 2.25.1
 
