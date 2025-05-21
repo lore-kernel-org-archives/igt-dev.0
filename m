@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 670ACC2D0CD
-	for <igt-dev@archiver.kernel.org>; Wed, 21 May 2025 07:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 422EFC54E90
+	for <igt-dev@archiver.kernel.org>; Wed, 21 May 2025 07:23:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C94B10E69A;
-	Wed, 21 May 2025 07:23:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F35BA10E69C;
+	Wed, 21 May 2025 07:23:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gJTYN4RU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WfGTu3TX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6026510E69A
- for <igt-dev@lists.freedesktop.org>; Wed, 21 May 2025 07:23:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FC9610E69C
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 May 2025 07:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747812195; x=1779348195;
+ t=1747812197; x=1779348197;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1hOrkzkSmCkEicKR3diyrJqhTYus9RqaUM0faIwUo+A=;
- b=gJTYN4RUn1BC8uDoUbib/KgkkBG2eTQAVk1n9loVbW5D7AoZCEwJHubM
- aAZiiVAqcRQw0oFifyO16GgDha9l4179DKlQNEgsEtSoUx43aiqpToPru
- 7ffSEv38KjA7uK1f5qir08EhTYzU2cZp6GLvTCGzWUNrpmxS+fhoHvlc6
- sMHTH0RrYF9K9KNbRX+A9J0JNOJJWzAmIhrmxdoLS0AgrtLZt2aoAhMgA
- 4w5ULAAP9HngKhVx+2ahGqkFXWxlaCzZ7VTsxKhuNIJXJ2wk67HgES20H
- jPT1KsV4WEeoXSEj8SFvXKXns+gxrIORfklH+YuNqHWLgXmHofD2vu7KM Q==;
-X-CSE-ConnectionGUID: z/fMvxngQiKbJQaEt7qmxQ==
-X-CSE-MsgGUID: HjvrG2EvRyC+rpMwKdblKQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="53571298"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="53571298"
+ bh=qlkQgddZxdUNMhV7/e+M7gaXXPliz3DUNOvpRpTAGQo=;
+ b=WfGTu3TXDN9BEZrGFN46UmgtskzR32enZKeg+8zPYtNNHJgUy2dDOtyG
+ XWdclj14PxvSudxdUpnQtiMSJnQOzIr0W3cnrb7XoSgIB0Xj5NzpNxj47
+ 6TjNMOr472GwN9K7KsBwQ/tFxUlDge/6npUTFVLfhHFcQ1+LiF+SUff2j
+ RjQ/yeacvzK8QJzxt7pBK/1FYdOV6DzeOQiwogNljB8odkQMymXKpOH0O
+ ZwS1vaCmVYZGySDe/HBDCZeSplY25dcdG/y61to7scBwNJpqIFKPKJoqY
+ RQ+8eQvD8NhpgijE3wgWgRtvYW++vn860AQhrs+MGJ8AwwTBus5SzYmUc g==;
+X-CSE-ConnectionGUID: Un9uPohFRYa0QUifOEMPKA==
+X-CSE-MsgGUID: 6I+SD6xRTlW+eCn+MNDoHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="53571299"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="53571299"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 00:23:15 -0700
-X-CSE-ConnectionGUID: OjdDW+MdQ8mdDjLZHXtPcg==
-X-CSE-MsgGUID: pVPaaMmCRIeMTaYlLbU8GA==
+ 21 May 2025 00:23:17 -0700
+X-CSE-ConnectionGUID: g3tMafL/QmKdQOq2TNTBLw==
+X-CSE-MsgGUID: 4AEvgzlXQsmY2xZd4h6w/g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="170943824"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="170943843"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 00:23:13 -0700
+ 21 May 2025 00:23:15 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com, imre.deak@intel.com,
  Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 4/5] lib/dsc: Add igt_get_dsc_sink_compressed_bpp()
-Date: Wed, 21 May 2025 12:58:35 +0530
-Message-Id: <20250521072836.1400749-5-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 5/5] tests/intel/kms_dsc: Add dsc-compressed-bpp subtest
+Date: Wed, 21 May 2025 12:58:36 +0530
+Message-Id: <20250521072836.1400749-6-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250521072836.1400749-1-swati2.sharma@intel.com>
 References: <20250521072836.1400749-1-swati2.sharma@intel.com>
@@ -69,71 +69,169 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Function is added to return compressed bpp after
-parsing i915_display_info debugfs.
+New subtest is added, where we force compressed BPP.
+igt_get_dsc_sink_compressed_bpp() returns max compressed BPP
+for a given connector/pipe from i915_display_info().
+get_compressed_bpp_list() prepares bpp_list depending upon display_ver.
+If display_ver < 13 we have const array (min=6 and max=15).
+For display_ver > 13 max BPP we will get from igt_get_dsc_sink_compressed_bpp().
+Min BPP value is 8 for RGB and YCBCR444 and 6 for YCBCR420.
+However, for simplicity 8 BPP is considered as MIN BPP.
+Later compressed BPP is forced using intel_force_link_bpp.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_dsc.c | 37 +++++++++++++++++++++++++++++++++++++
- lib/igt_dsc.h |  1 +
- 2 files changed, 38 insertions(+)
+ tests/intel/kms_dsc.c | 82 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 79 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-index 21677b0e0..db7af3c7c 100644
---- a/lib/igt_dsc.c
-+++ b/lib/igt_dsc.c
-@@ -350,3 +350,40 @@ int igt_get_dsc_sink_max_slice_count(int drmfd, char *connector_name)
+diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+index 5aedd9576..71a5a191c 100644
+--- a/tests/intel/kms_dsc.c
++++ b/tests/intel/kms_dsc.c
+@@ -55,6 +55,7 @@
+  * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
+  * @fractional-bpp:               DSC with fractional bpp with default parameters
+  * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
++ * @compressed-bpp:               DSC with compressed bpp
+  */
  
- 	return max_slice_count;
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+@@ -62,12 +63,14 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ #define LEN		20
+ #define DEFAULT_BPC	0
+ #define MIN_DSC_BPC	8
++#define STEP_SIZE	2
+ 
+ #define TEST_DSC_BASIC		(0<<0)
+ #define TEST_DSC_BPC		(1<<0)
+ #define TEST_DSC_FORMAT		(1<<1)
+ #define TEST_DSC_OUTPUT_FORMAT	(1<<2)
+ #define TEST_DSC_FRACTIONAL_BPP (1<<3)
++#define TEST_DSC_COMPRESSED_BPP (1<<4)
+ 
+ typedef struct {
+ 	int drm_fd;
+@@ -129,8 +132,59 @@ static void test_cleanup(data_t *data)
+ 	igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
  }
-+
-+/**
-+ * igt_get_dsc_sink_compressed_bpp:
-+ * @drmfd: A drm file descriptor
-+ * @pipe: display pipe
-+ *
-+ * Returns: The dsc sink compressed bpp.
-+ */
-+int igt_get_dsc_sink_compressed_bpp(int drmfd, enum pipe pipe)
+ 
++static void
++force_dsc_with_modeset(int drm_fd, int disp_ver, igt_display_t *display,
++		       igt_output_t *output, enum pipe pipe)
 +{
-+	char buf[8120];
-+	char dest[20] = ":pipe ";
-+	char *start_loc1, *start_loc2;
-+	int dir, res;
-+	float comp_bpp = 0;
++	drmModeModeInfo *mode;
 +
-+	strcat(dest, kmstest_pipe_name(pipe));
++	igt_display_reset(display);
++	igt_display_commit(display);
 +
-+	dir = igt_debugfs_dir(drmfd);
-+	igt_assert_lte(0, dir);
++	igt_output_set_pipe(output, pipe);
 +
-+	igt_require_intel(drmfd);
++        mode = igt_output_get_highres_mode(output);
++	igt_output_override_mode(output, mode);
++	igt_display_commit2(display, COMMIT_ATOMIC);
 +
-+	res = igt_debugfs_simple_read(dir, "i915_display_info", buf, sizeof(buf));
-+	igt_require(res > 0);
-+	close(dir);
++	force_dsc_enable(drm_fd, output);
 +
-+	start_loc1 = strstr(buf, dest);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, COMMIT_ATOMIC);
 +
-+	if ((start_loc1 = strstr(buf, dest))) {
-+		igt_assert(start_loc2 = strstr(buf, "dsc-dss: compressed-bpp:"));
-+		igt_assert_eq(sscanf(start_loc2, "dsc-dss: compressed-bpp:%f", &comp_bpp), 1);
-+		igt_assert(comp_bpp > 0);
++	igt_output_set_pipe(output, pipe);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++}
++
++static int
++get_compressed_bpp_list(int drm_fd, int disp_ver, igt_display_t *display,
++			igt_output_t *output, enum pipe pipe, float *bpp_list,
++			int max_entries)
++{
++	int count = 0;
++	float max_bpp = 0.0f;
++
++	if (disp_ver < 13) {
++		const int fixed_bpp[] = {6, 8, 10, 12, 15};
++		for (int i = 0; i < ARRAY_SIZE(fixed_bpp) && count < max_entries; i++)
++			bpp_list[count++] = fixed_bpp[i];
++	} else {
++		force_dsc_with_modeset(drm_fd, disp_ver, display, output, pipe);
++		max_bpp = igt_get_dsc_sink_compressed_bpp(drm_fd, pipe);
++
++		/* FIXME: MIN compressed BPP value is 8 for RGB and
++		 * 6 for YCBCR420 output formats. For simplicity lets
++		 * consider 8 for time being.
++		 */
++		for (int bpp = 8; bpp <= max_bpp && count < max_entries; bpp += STEP_SIZE)
++			bpp_list[count++] = bpp;
 +	}
 +
-+	return comp_bpp;
++	return count;
 +}
-diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
-index ab5d27b06..f7d13c99c 100644
---- a/lib/igt_dsc.h
-+++ b/lib/igt_dsc.h
-@@ -29,5 +29,6 @@ bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name);
- int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name);
- int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name);
- int igt_get_dsc_sink_max_slice_count(int drmfd, char *connector_name);
-+int igt_get_dsc_sink_compressed_bpp(int drmfd, enum pipe pipe);
++
+ /* re-probe connectors and do a modeset with DSC */
+-static void update_display(data_t *data, uint32_t test_type)
++static void update_display(data_t *data, float compressed_bpp, uint32_t test_type)
+ {
+ 	int ret;
+ 	bool enabled;
+@@ -184,6 +238,11 @@ static void update_display(data_t *data, uint32_t test_type)
  
- #endif
+ 		igt_output_override_mode(output, mode);
+ 
++		if (test_type & TEST_DSC_COMPRESSED_BPP) {
++			igt_debug("Trying to set compressed BPP to %.2f\n", compressed_bpp);
++			force_dsc_enable_compressed_bpp(data->drm_fd, data->output, compressed_bpp);
++		}
++
+ 		if (!intel_pipe_output_combo_valid(display)) {
+ 			if (data->output_format == DSC_FORMAT_RGB) {
+ 				igt_info("No valid pipe/output/mode found.\n");
+@@ -251,11 +310,14 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 		     unsigned int plane_format,
+ 		     enum dsc_output_format output_format)
+ {
++	igt_display_t *display = &data->display;
+ 	char name[3][LEN] = {
+ 				{0},
+ 				{0},
+ 				{0},
+ 			    };
++	int bpp_count = 1;
++	float bpp_list[32];
+ 
+ 	igt_require_f(data->count > 0, "No dsc output found that meets all constraints\n");
+ 	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
+@@ -284,9 +346,15 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 		if (test_type & TEST_DSC_BPC)
+ 			snprintf(&name[2][0], LEN, "-%dbpc", data->input_bpc);
+ 
++		if (test_type & TEST_DSC_COMPRESSED_BPP)
++			bpp_count = get_compressed_bpp_list(data->drm_fd, data->disp_ver, display,
++							    data->output, data->pipe, bpp_list, ARRAY_SIZE(bpp_list));
++
+ 		igt_dynamic_f("pipe-%s-%s%s%s%s",  kmstest_pipe_name(data->pipe), data->output->name,
+-			      &name[0][0], &name[1][0], &name[2][0])
+-			update_display(data, test_type);
++			      &name[0][0], &name[1][0], &name[2][0]) {
++			for (int j = 0; j < bpp_count; j++)
++				update_display(data, bpp_list[j], test_type);
++		}
+ 
+ 		if (data->limited)
+ 			break;
+@@ -426,6 +494,14 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
+ 				 DSC_FORMAT_RGB);
+ 	}
+ 
++	igt_describe("Tests basic display stream compression functionality if supported "
++		     "by a connector by forcing DSC and compressed bpp on all connectors "
++		     "that support it.");
++	igt_subtest_with_dynamic("dsc-compressed-bpp")
++			test_dsc(&data, TEST_DSC_COMPRESSED_BPP,
++				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
++				 DSC_FORMAT_RGB);
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
 -- 
 2.25.1
 
