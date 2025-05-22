@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1909C54E65
-	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 16:57:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B73D1C54E90
+	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 17:04:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04B4010E7D7;
-	Thu, 22 May 2025 16:57:59 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B8B410E7D7;
- Thu, 22 May 2025 16:57:57 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2000328233226417279=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 45B7B10E8BA;
+	Thu, 22 May 2025 17:04:11 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cNGPzHwo";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D38910E8BA
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 May 2025 17:04:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747933451; x=1779469451;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=6MX9I7/Uue3llTWEFwVDzU93w7UvkLPmyC4J0kMMba4=;
+ b=cNGPzHwoHMhAW2uHLjNPHsqFpwquD2Cpg2P35pquklRLK19WaTxmSFeG
+ RoqNILLav6cqaUG0uDrrJ3D4DHDrLL4dhkQUpIYXxTdFmcNAa9hEX1+PL
+ cdEo6DIGZqzMmMwrXLmo+OfrNS8wDzwBnhT4KmlKA2F4mNelHu1CHjCNI
+ TwqovYjED5TU7TARQOE7BOYvpRkcNlGsCd7MMMtK+IvKZjfIaSJQwUJSc
+ ZoribPMYixW279NqTX9ztaQqLvCJnq2lLaihXJZX2N79q1IYCrr5VmTto
+ mNl512AYz9q4Fnitgu+FHq+o13hlwm6G4gS519WzE7N/yckqQpoX/z0pT w==;
+X-CSE-ConnectionGUID: wGRzzSceQzu09UPTBHF6RQ==
+X-CSE-MsgGUID: kD9QAMvjT0yD6kZ9Ht8fbg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="49967947"
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="49967947"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2025 10:04:10 -0700
+X-CSE-ConnectionGUID: 4OC5l3D4R+udYUgC3gMXCA==
+X-CSE-MsgGUID: HlSl9EIHSiuuXooPKImS2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="145845693"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2025 10:04:09 -0700
+Date: Thu, 22 May 2025 19:04:06 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Dafna Hirschfeld <dafna.hirschfeld@intel.com>
+Cc: igt-dev@lists.freedesktop.org, koby.elbaz@intel.com,
+ lucas.demarchi@intel.com, ilia.levi@intel.com
+Subject: Re: [PATCH] intel_reg: add support to hw address port
+Message-ID: <20250522170406.lwtp7wss3a6jidzk@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Dafna Hirschfeld <dafna.hirschfeld@intel.com>,
+ igt-dev@lists.freedesktop.org, koby.elbaz@intel.com,
+ lucas.demarchi@intel.com, ilia.levi@intel.com
+References: <20250514184042.769898-1-dafna.hirschfeld@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Extend_IGT_to_support_Andro?=
- =?utf-8?q?id_=28rev10=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevaka Prabu Badrappan" <jeevaka.badrappan@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 22 May 2025 16:57:57 -0000
-Message-ID: <174793307762.14490.2057868117087210251@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250522143419.28888-1-jeevaka.badrappan@intel.com>
-In-Reply-To: <20250522143419.28888-1-jeevaka.badrappan@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250514184042.769898-1-dafna.hirschfeld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,306 +69,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2000328233226417279==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Dafna,
+On 2025-05-14 at 21:40:42 +0300, Dafna Hirschfeld wrote:
 
-== Series Details ==
+I will leave review for developers on Cc, here I have few nits.
 
-Series: Extend IGT to support Android (rev10)
-URL   : https://patchwork.freedesktop.org/series/148432/
-State : success
+In subject, please add 'tools/' prefix, so instead of
 
-== Summary ==
+[PATCH] intel_reg: add support to hw address port
 
-CI Bug Log - changes from XEIGT_8375_BAT -> XEIGTPW_13171_BAT
-====================================================
+it would be:
 
-Summary
--------
+[PATCH] tools/intel_reg: add support for hw address port
 
-  **SUCCESS**
+> For some platforms we want to access hw addresses.
+> For that we need a callback per platform that maps the hw address
+> to pci address. Add infrastructure to support that.
+> 
 
-  No regressions found.
+Do we need any driver support for this? If yes, will it work
+for both i915 and Xe? In that case could you point to driver
+patches for this?
+Btw it would be good to see a sample implementation for at
+least one GPU, maybe in a separate patch.
 
-  
+Regards,
+Kamil
 
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13171_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-lnl-2:          NOTRUN -> [SKIP][1] ([Intel XE#1466] / [Intel XE#2235])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
-    - bat-lnl-2:          NOTRUN -> [SKIP][2] ([Intel XE#2235]) +13 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-
-  * igt@kms_flip@basic-flip-vs-dpms:
-    - bat-lnl-2:          NOTRUN -> [SKIP][3] ([Intel XE#2235] / [Intel XE#2482]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_flip@basic-flip-vs-dpms.html
-
-  * igt@kms_force_connector_basic@force-edid:
-    - bat-lnl-2:          NOTRUN -> [SKIP][4] ([Intel XE#2235] / [Intel XE#352]) +2 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_force_connector_basic@force-edid.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-lnl-2:          NOTRUN -> [SKIP][5] ([Intel XE#2235] / [Intel XE#2548])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - bat-lnl-2:          NOTRUN -> [SKIP][6] ([Intel XE#1470] / [Intel XE#2235] / [Intel XE#2853])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_psr@psr-cursor-plane-move:
-    - bat-lnl-2:          NOTRUN -> [SKIP][7] ([Intel XE#2850] / [Intel XE#929]) +2 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_psr@psr-cursor-plane-move.html
-
-  * igt@sriov_basic@enable-vfs-autoprobe-off:
-    - bat-lnl-2:          NOTRUN -> [SKIP][8] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@sriov_basic@enable-vfs-autoprobe-off.html
-
-  * igt@xe_evict@evict-small-cm:
-    - bat-lnl-2:          NOTRUN -> [SKIP][9] ([Intel XE#688]) +11 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_evict@evict-small-cm.html
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-lnl-2:          NOTRUN -> [SKIP][10] ([Intel XE#2229]) +2 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_live_ktest@xe_bo.html
-
-  * igt@xe_mmap@vram:
-    - bat-lnl-2:          NOTRUN -> [SKIP][11] ([Intel XE#1416])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_mmap@vram.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-lnl-2:          NOTRUN -> [SKIP][12] ([Intel XE#1420] / [Intel XE#2838])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelp:
-    - bat-lnl-2:          NOTRUN -> [SKIP][13] ([Intel XE#977])
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_pat@pat-index-xelp.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-lnl-2:          NOTRUN -> [SKIP][14] ([Intel XE#2236] / [Intel XE#979])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html
-
-  * igt@xe_sriov_flr@flr-vf1-clear:
-    - bat-lnl-2:          NOTRUN -> [SKIP][15] ([Intel XE#3342])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html
-
-  
-#### Possible fixes ####
-
-  * igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries:
-    - bat-lnl-2:          [ABORT][16] ([Intel XE#4624] / [Intel XE#4966]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8375/bat-lnl-2/igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries.html
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries.html
-
-  
-  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
-  [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
-  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
-  [Intel XE#1466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466
-  [Intel XE#1470]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
-  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
-  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
-  [Intel XE#2548]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
-  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
-  [Intel XE#2853]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853
-  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
-  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
-  [Intel XE#4624]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4624
-  [Intel XE#4966]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4966
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-
-
-Build changes
--------------
-
-  * IGT: IGT_8375 -> IGTPW_13171
-  * Linux: xe-3126-444fd022f6c4f5245b1e8f797805ab3917235d3d -> xe-3128-3f677cc94262c39d180401938c3a0e4ec33472f3
-
-  IGTPW_13171: 604f6169d3678fccc630c0781d42390e3e7ccd44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8375: 8375
-  xe-3126-444fd022f6c4f5245b1e8f797805ab3917235d3d: 444fd022f6c4f5245b1e8f797805ab3917235d3d
-  xe-3128-3f677cc94262c39d180401938c3a0e4ec33472f3: 3f677cc94262c39d180401938c3a0e4ec33472f3
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/index.html
-
---===============2000328233226417279==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Extend IGT to support Android (rev10)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148432/">https://patchwork.freedesktop.org/series/148432/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8375_BAT -&gt; XEIGTPW_13171_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13171_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466">Intel XE#1466</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>) +13 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-edid:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_force_connector_basic@force-edid.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/352">Intel XE#352</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548">Intel XE#2548</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470">Intel XE#1470</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853">Intel XE#2853</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-cursor-plane-move:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/929">Intel XE#929</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-small-cm:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_evict@evict-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +11 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#1416</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
-<ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries:<ul>
-<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8375/bat-lnl-2/igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4624">Intel XE#4624</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4966">Intel XE#4966</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13171/bat-lnl-2/igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8375 -&gt; IGTPW_13171</li>
-<li>Linux: xe-3126-444fd022f6c4f5245b1e8f797805ab3917235d3d -&gt; xe-3128-3f677cc94262c39d180401938c3a0e4ec33472f3</li>
-</ul>
-<p>IGTPW_13171: 604f6169d3678fccc630c0781d42390e3e7ccd44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8375: 8375<br />
-  xe-3126-444fd022f6c4f5245b1e8f797805ab3917235d3d: 444fd022f6c4f5245b1e8f797805ab3917235d3d<br />
-  xe-3128-3f677cc94262c39d180401938c3a0e4ec33472f3: 3f677cc94262c39d180401938c3a0e4ec33472f3</p>
-
-</body>
-</html>
-
---===============2000328233226417279==--
+> Signed-off-by: Dafna Hirschfeld <dafna.hirschfeld@intel.com>
+> ---
+>  tools/intel_reg.c      | 48 +++++++++++++++++++++++++++++++++++-------
+>  tools/intel_reg_spec.c | 36 +++++++++++++++++++++++++++++++
+>  tools/intel_reg_spec.h |  5 +++++
+>  3 files changed, 81 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tools/intel_reg.c b/tools/intel_reg.c
+> index 49afe91c0..28df7904f 100644
+> --- a/tools/intel_reg.c
+> +++ b/tools/intel_reg.c
+> @@ -519,12 +519,17 @@ static int read_register(struct config *config, struct reg *reg, uint32_t *valp)
+>  		break;
+>  	case PORT_MCHBAR_16:
+>  	case PORT_MMIO_16:
+> +	case PORT_HWADDR_16:
+>  		val = INREG16(reg->mmio_offset + reg->addr);
+>  		break;
+>  	case PORT_MCHBAR_8:
+>  	case PORT_MMIO_8:
+> +	case PORT_HWADDR_8:
+>  		val = INREG8(reg->mmio_offset + reg->addr);
+>  		break;
+> +	case PORT_HWADDR_32:
+> +		val = INREG(reg->mmio_offset + reg->addr);
+> +		break;
+>  	case PORT_MMIO_VGA_AR:
+>  		val = vga_ar_read(reg->addr, true);
+>  		break;
+> @@ -610,6 +615,7 @@ static int write_register(struct config *config, struct reg *reg, uint32_t val)
+>  		break;
+>  	case PORT_MCHBAR_16:
+>  	case PORT_MMIO_16:
+> +	case PORT_HWADDR_16:
+>  		if (val > 0xffff) {
+>  			fprintf(stderr, "value 0x%08x out of range for port %s\n",
+>  				val, reg->port_desc.name);
+> @@ -619,6 +625,7 @@ static int write_register(struct config *config, struct reg *reg, uint32_t val)
+>  		break;
+>  	case PORT_MCHBAR_8:
+>  	case PORT_MMIO_8:
+> +	case PORT_HWADDR_8:
+>  		if (val > 0xff) {
+>  			fprintf(stderr, "value 0x%08x out of range for port %s\n",
+>  				val, reg->port_desc.name);
+> @@ -626,6 +633,9 @@ static int write_register(struct config *config, struct reg *reg, uint32_t val)
+>  		}
+>  		OUTREG8(reg->mmio_offset + reg->addr, val);
+>  		break;
+> +	case PORT_HWADDR_32:
+> +		OUTREG(reg->mmio_offset + reg->addr, val);
+> +		break;
+>  	case PORT_MMIO_VGA_AR:
+>  		if (val > 0xff) {
+>  			fprintf(stderr, "value 0x%08x out of range for port %s\n",
+> @@ -750,6 +760,14 @@ static int parse_engine(struct reg *reg, const char *s)
+>  	return reg->engine == NULL;
+>  }
+>  
+> +/*
+> + * Get codename for a gen5+ platform to be used for finding register spec file.
+> + */
+> +static const char *get_codename(uint32_t devid)
+> +{
+> +	return intel_get_device_info(devid)->codename;
+> +}
+> +
+>  /* s has [(PORTNAME|PORTNUM|ENGINE|MMIO-OFFSET):](REGNAME|REGADDR) */
+>  static int parse_reg(struct config *config, struct reg *reg, const char *s)
+>  {
+> @@ -792,6 +810,28 @@ static int parse_reg(struct config *config, struct reg *reg, const char *s)
+>  	case PORT_MCHBAR_8:
+>  		reg->mmio_offset = mcbar_offset(config->devid);
+>  		break;
+> +	case PORT_HWADDR_32:
+> +	case PORT_HWADDR_16:
+> +	case PORT_HWADDR_8:
+> +		{
+> +			uint64_t dev_addr = strtoull(p, &endp, 16);
+> +			uint32_t pci_addr;
+> +			const char *codename = get_codename(config->devid);
+> +
+> +			ret = hwaddr_to_pciaddr(codename, dev_addr, &pci_addr);
+> +			if (ret) {
+> +				if (ret == -ENOENT)
+> +					fprintf(stderr, "platform %s does not support hwaddr\n",
+> +						codename);
+> +				else
+> +					fprintf(stderr,
+> +						"mapping hw addr 0x%llx to pci bar failed (%d)\n",
+> +						dev_addr, ret);
+> +
+> +				return ret;
+> +			}
+> +			return set_reg_by_addr(config, reg, pci_addr);
+> +		}
+>  	default:
+>  		break;
+>  	}
+> @@ -1077,14 +1117,6 @@ static int intel_reg_help(struct config *config, int argc, char *argv[])
+>  	return EXIT_SUCCESS;
+>  }
+>  
+> -/*
+> - * Get codename for a gen5+ platform to be used for finding register spec file.
+> - */
+> -static const char *get_codename(uint32_t devid)
+> -{
+> -	return intel_get_device_info(devid)->codename;
+> -}
+> -
+>  /*
+>   * Get register definitions filename for devid in dir. Return 0 if found,
+>   * negative error code otherwise.
+> diff --git a/tools/intel_reg_spec.c b/tools/intel_reg_spec.c
+> index 632db6b9f..f98d51928 100644
+> --- a/tools/intel_reg_spec.c
+> +++ b/tools/intel_reg_spec.c
+> @@ -32,6 +32,26 @@
+>  
+>  #include "intel_reg_spec.h"
+>  
+> +struct hwaddr {
+> +	const char *codename;
+> +	int (*hwaddr_lookup)(uint64_t dev_addr, uint32_t *pci_addr);
+> +};
+> +
+> +static const struct hwaddr hwaddr_lookups[] = {
+> +	{ .codename = NULL, /* sentinel */}
+> +};
+> +
+> +int hwaddr_to_pciaddr(const char *codename, uint64_t dev_addr, uint32_t *pci_addr)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; hwaddr_lookups[i].codename; i++) {
+> +		if (strcmp(codename, hwaddr_lookups[i].codename) == 0)
+> +			return hwaddr_lookups[i].hwaddr_lookup(dev_addr, pci_addr);
+> +	}
+> +	return -ENOENT;
+> +}
+> +
+>  static const struct port_desc port_descs[] = {
+>  	{
+>  		.name = "mmio",
+> @@ -83,6 +103,22 @@ static const struct port_desc port_descs[] = {
+>  		.port = PORT_MMIO_VGA_CR,
+>  		.stride = 1,
+>  	},
+> +	{
+> +		.name = "hwaddr",
+> +		.port = PORT_HWADDR_32,
+> +		.stride = 4,
+> +	},
+> +	{
+> +		.name = "hwaddr16",
+> +		.port = PORT_HWADDR_16,
+> +		.stride = 2,
+> +	},
+> +	{
+> +		.name = "hwaddr8",
+> +		.port = PORT_HWADDR_8,
+> +		.stride = 1,
+> +	},
+> +
+>  	{
+>  		.name = "portio",
+>  		.port = PORT_PORTIO,
+> diff --git a/tools/intel_reg_spec.h b/tools/intel_reg_spec.h
+> index af396a294..ccf4fd366 100644
+> --- a/tools/intel_reg_spec.h
+> +++ b/tools/intel_reg_spec.h
+> @@ -34,6 +34,10 @@ enum port_addr {
+>  	PORT_MCHBAR_16,
+>  	PORT_MCHBAR_8,
+>  
+> +	PORT_HWADDR_32,
+> +	PORT_HWADDR_16,
+> +	PORT_HWADDR_8,
+> +
+>  	PORT_MMIO_VGA_AR,
+>  	PORT_MMIO_VGA_SR,
+>  	PORT_MMIO_VGA_GR,
+> @@ -86,6 +90,7 @@ static inline void *recalloc(void *ptr, size_t nmemb, size_t size)
+>  	return realloc(ptr, nmemb * size);
+>  }
+>  
+> +int hwaddr_to_pciaddr(const char* codename, uint64_t dev_addr, uint32_t *pci_addr);
+>  int parse_port_desc(struct reg *reg, const char *s);
+>  ssize_t intel_reg_spec_builtin(struct reg **regs, uint32_t devid);
+>  ssize_t intel_reg_spec_file(struct reg **regs, const char *filename);
+> -- 
+> 2.34.1
+> 
