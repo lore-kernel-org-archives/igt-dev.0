@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 411E0C54E65
-	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 15:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE2FAC54E90
+	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 16:19:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E5D3F10E2A3;
-	Thu, 22 May 2025 15:50:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9BD7610E72D;
+	Thu, 22 May 2025 16:19:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cuJTCjWI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h8VEixlv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E8F610E294
- for <igt-dev@lists.freedesktop.org>; Thu, 22 May 2025 15:50:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC94710E5AD
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 May 2025 16:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747929008; x=1779465008;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=VGEBK0FWGqZh/LS/zkXORB1gjvjjxQqRPQgEPOHkGyk=;
- b=cuJTCjWIfqeihyrUT4mciel1De4QtBFKBAwnzRL39Un8ERpTdhn2a/lX
- 6nTAAGAoGbqFzu6Jdbj027vookqXnFrv8abOC+0OlSSEYkN7H6LlyBXvP
- d7BQ0PHXCv37dj2ZNdEQIYrsNWlWp6wxGTmLfR5XzOF0g/7MsmlEXUco8
- ONOb5xgbt0Ej49PEmSFlwHKhvG1VQ3lTyVwY8NUjH8HBqZXhc5c9w2s31
- FJ8oAZ4d20x0Q5eJppXeavaaL5IZeOSO0gfcXRJGa9QJtIC8K1WBuhWkq
- dwas0Ve+6l9ggro36BuYXU9Ix28fFtbBgcCYbe8wcSCLygUa3pbJxRfql g==;
-X-CSE-ConnectionGUID: pdmVxyCKRQKiZpHYDBTO9A==
-X-CSE-MsgGUID: 4YsrhEXKT/CxYJ5gR+twww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="49862163"
-X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="49862163"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2025 08:50:08 -0700
-X-CSE-ConnectionGUID: XnsXogBDSW+0HzfoLm05wg==
-X-CSE-MsgGUID: VSMQcHYvQXSBOSVghZhpNg==
+ t=1747930764; x=1779466764;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=RZVpUsUGFPCj4r4VB9F52rcgT7/6DIaBU+n5NsPidxU=;
+ b=h8VEixlvyLzSYzvGXM7RAAGygytz3Igt5tUqB4id5JdPVg02ydH+7P82
+ mUX05joDGwNoU87/uI5zyNEKcuSUOPpLi+nPhLIWwybS+0j6MiCzKJ3Y9
+ 7TCpf/ZRejcyTDdydbeh8fU8HOgIf1JXFjoVxhhf5PnsqekPAvtW8Bqhx
+ dU9QvOKYD0E7DHfyQnjXiKgF6ulSb9lCk7u/vStN/sagmJU/KmlAcULro
+ +nSXdSv/vevt48KZqtZpi5J43GLRiTH1zPdDGwpRxSCT2UnF3xyBJgEqO
+ ymnWDPVkNokvBD4xhNy+s2PwkFVRHrJYCHdhSCvqc2w1/RgmBfsAfW868 w==;
+X-CSE-ConnectionGUID: 5dInsYz1Qf28g0vePViSbw==
+X-CSE-MsgGUID: TF1wGSZGTQ2k58U3KwKp3Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="67382991"
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="67382991"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2025 09:19:23 -0700
+X-CSE-ConnectionGUID: pB01eaCwTTiwNbZia81OSg==
+X-CSE-MsgGUID: aw4QrvsZSPSvskgnFTFX6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="141594209"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2025 08:50:04 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com, kamil.konieczny@intel.com,
- krzysztof.karas@intel.com, zbigniew.kempczynski@intel.com
-Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- soham.purkait@intel.com, ashutosh.dixit@intel.com
-Subject: [PATCH i-g-t v11 5/5] tools/gputop/gputop: Enable support for
- multiple GPUs and instances
-Date: Thu, 22 May 2025 21:14:47 +0530
-Message-Id: <20250522154447.496407-6-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250522154447.496407-1-soham.purkait@intel.com>
-References: <20250522154447.496407-1-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="171661142"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2025 09:19:22 -0700
+Date: Thu, 22 May 2025 18:19:04 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Dorinda Bassey <dbassey@redhat.com>
+Cc: igt-dev@lists.freedesktop.org, javierm@redhat.com, aesteve@redhat.com
+Subject: Re: [PATCH] drm_virtgpu: Add functional coverage for core VirtIO-GPU
+ ioctls
+Message-ID: <20250522161904.u4pnwbvxhwncfbyk@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Dorinda Bassey <dbassey@redhat.com>, igt-dev@lists.freedesktop.org,
+ javierm@redhat.com, aesteve@redhat.com
+References: <20250514102815.1413678-1-dbassey@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250514102815.1413678-1-dbassey@redhat.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,430 +72,536 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce vendor-agnostic support for
-handling multiple GPUs and instances
-in gputop. Improve the tool's adaptability
-to various GPU configurations.
+Hi Dorinda,
+On 2025-05-14 at 12:28:00 +0200, Dorinda Bassey wrote:
 
-v2 : Fix for refactoring GPUTOP into a
-     vendor-agnostic tool. (Lucas)
+please use 'tests/' as a prefix in subject, also change test name,
+so instead of
+[PATCH] drm_virtgpu: Add functional coverage for core VirtIO-GPU ioctls
 
-v3 : New year included in copyright. (Kamil, Riana)
-     Removed caps in function name. (Riana)
-     Struct for driver specific operations. (Riana)
-     Headers in alphabetical order. (Kamil, Riana)
+better:
+[PATCH] tests/virtgpu: Add functional coverage for core VirtIO-GPU ioctls
 
-v4 : Commit description and signed-off included.
+> This test suite adds coverage for multiple DRM ioctls specific
+> to the VirtIO-GPU driver, verifying functionality such as
+> resource creation, memory mapping, 3D transfers, context
+> initialization, and parameter querying.
+> Each test validates a key ioctl to ensure correct behavior from
+> user space and backend implementations. Each subtest is
+> self-contained and can be executed independently.
+> 
+> Included subtests:
+>   - drm-virtgpu-map
+>   - drm-virtgpu-execbuffer
+>   - drm-virtgpu-resource-info
+>   - drm-virtgpu-3d-transfer-to-host
+>   - drm-virtgpu-3d-transfer-from-host
+>   - drm-virtgpu-3d-wait
+>   - drm-virtgpu-resource-create-blob
+>   - drm-virtgpu-get-caps
+>   - drm-virtgpu-context-init
+>   - drm-virtgpu-getparam
 
-v5 : Fix for proper resource cleanup. (Riana)
-     Use "dev_type" enum for card_type. (Krzysztof)
-     Add new filter to return collection
-     of matching devices.               (Zbigniew)
+I would name them without 'drm-virtgpu-' prefix. Up to you.
 
-v6 : Use device filter to populate the array of
-     cards for all supported drivers.   (Zbigniew)
+> 
+> How to Test with QEMU virtio-vga-gl or rustvmm vhost-device-gpu
+> 
+> 1. Launch a QEMU guest with virtio-vga-gl
+> ./build/qemu-system-x86_64 \
+>   -enable-kvm \
+>   -cpu host \
+>   -m 4096 \
+>   -machine q35 \
+>   -display gtk,gl=on \
+>   -vga none \
+>   -device virtio-vga-gl \
+>   -drive file=image.qcow2,format=qcow2 \
+>   -netdev user,id=n0,hostfwd=tcp::2222-:22 \
+>   -device virtio-net-pci,netdev=n0
+> 
+> ssh into the guest and run the tests.
+> 
+> 2. Start the vhost-device-gpu backend and Launch a QEMU
+> guest with vhost-user-gpu-pci or vhost-user-vga, see guide on:
+> https://crates.io/crates/vhost-device-gpu
 
-v7 : Use filter to find all the cards.  (Zbigniew)
+Could someone from your team help with review?
 
-v8 : Removed 'drivers' array parameter from
-     card match function.               (Zbigniew)
+> 
+> Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
+> ---
+>  tests/drm_virtgpu.c | 388 ++++++++++++++++++++++++++++++++++++++++++++
 
-v10 : Resolved 'populate_devices' call with
-      pci subsystem filtering.          (Zbigniew)
+Please rename it into virtgpu.c:
 
-v11 : Add space after /* and before */ for better
-      readability.                      (Zbigniew)
-      Comments wrapped at 75/100.       (Riana)
+s/drm_virtgpu.c/virtgpu.c/
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+>  tests/meson.build   |   1 +
+>  2 files changed, 389 insertions(+)
+>  create mode 100644 tests/drm_virtgpu.c
+> 
+> diff --git a/tests/drm_virtgpu.c b/tests/drm_virtgpu.c
+> new file mode 100644
+> index 000000000..8de7880db
+> --- /dev/null
+> +++ b/tests/drm_virtgpu.c
+> @@ -0,0 +1,388 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2025 Red Hat Inc.
+> + *
+> + * Authors: Dorinda Bassey <dbassey@redhat.com>
+> + */
+> +
+> +/**
+> + * TEST: drm virtgpu ioctls
+> + * Description: Testing of the virtIO-GPU driver DRM ioctls
+> + * Category: Core
+> + * Mega feature: General Core features
+> + * Sub-category:  virtIO-GPU DRM ioctls
+> + * Functionality: drm_ioctls
+> + * Feature: Virtualization graphics support
+> + * Test category: functionality test
+> + */
+> +
+> +#include "igt.h"
+> +
+> +#include "drm.h"
+> +#include "virtgpu_drm.h"
 
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tools/{ => gputop}/gputop.c | 223 +++++++++++++++++++++++++++++-------
- tools/gputop/meson.build    |   6 +
- tools/meson.build           |   6 +-
- 3 files changed, 191 insertions(+), 44 deletions(-)
- rename tools/{ => gputop}/gputop.c (66%)
- create mode 100644 tools/gputop/meson.build
+Please move igt headers after system ones.
 
-diff --git a/tools/gputop.c b/tools/gputop/gputop.c
-similarity index 66%
-rename from tools/gputop.c
-rename to tools/gputop/gputop.c
-index 43b01f566..fc3ccb83b 100644
---- a/tools/gputop.c
-+++ b/tools/gputop/gputop.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: MIT
- /*
-- * Copyright © 2023 Intel Corporation
-+ * Copyright © 2023-2025 Intel Corporation
-  */
- 
- #include <assert.h>
-@@ -14,66 +14,145 @@
- #include <math.h>
- #include <poll.h>
- #include <signal.h>
-+#include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <sys/sysmacros.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
- #include <sys/types.h>
--#include <unistd.h>
- #include <termios.h>
--#include <sys/sysmacros.h>
--#include <stdbool.h>
-+#include <unistd.h>
- 
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_drm_clients.h"
- #include "igt_drm_fdinfo.h"
-+#include "igt_perf.h"
- #include "igt_profiling.h"
--#include "drmtest.h"
-+#include "xe_gputop.h"
-+#include "xe/xe_query.h"
-+
-+/**
-+ * Supported Drivers
-+ *
-+ * Adhere to the following requirements when implementing support for the
-+ * new driver:
-+ * @drivers: Update drivers[] with driver string.
-+ * @total_count: Update NUM_DRIVER with the total number of supported drivers.
-+ * @operations: Update the respective operations of the new driver:
-+ * gputop_init,
-+ * discover_engines,
-+ * pmu_init,
-+ * pmu_sample,
-+ * print_engines,
-+ * clean_up
-+ * @devices: Update devices[] array of type "struct gputop_device" with the
-+ * initial values.
-+ */
-+static const char * const drivers[] = {
-+	"xe",
-+    /* Keep the last one as NULL */
-+	NULL
-+};
-+
-+/**
-+ * Number of supported drivers needs to be adjusted as per the length of
-+ * the drivers[] array.
-+ */
-+#define NUM_DRIVER 1
-+
-+/**
-+ * Supported operations on driver instances. Update the oprs[] array for
-+ * each individual driver specific function. Maintain the sequence as per
-+ * drivers[] array.
-+ */
-+struct device_operations oprs[NUM_DRIVER] = {
-+	{
-+		xe_gputop_init,
-+		xe_populate_engines,
-+		xe_pmu_init,
-+		xe_pmu_sample,
-+		xe_print_engines,
-+		xe_clean_up
-+	}
-+};
-+
-+/*
-+ * devices[] array of type struct gputop_device
-+ */
-+struct gputop_device devices[] = {
-+	{false, 0, NULL}
-+};
- 
- enum utilization_type {
- 	UTILIZATION_TYPE_ENGINE_TIME,
- 	UTILIZATION_TYPE_TOTAL_CYCLES,
- };
- 
--static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
--
--#define ANSI_HEADER "\033[7m"
--#define ANSI_RESET "\033[0m"
--
--static void n_spaces(const unsigned int n)
-+static void gputop_clean_up(void)
- {
--	unsigned int i;
--
--	for (i = 0; i < n; i++)
--		putchar(' ');
-+	for (int i = 0; drivers[i]; i++) {
-+		oprs[i].clean_up(devices[i].instances, devices[i].len);
-+		free(devices[i].instances);
-+		devices[i].driver_present = false;
-+		devices[i].len = 0;
-+	}
- }
- 
--static void print_percentage_bar(double percent, int max_len)
-+static int find_driver(struct igt_device_card *card)
- {
--	int bar_len, i, len = max_len - 1;
--	const int w = 8;
--
--	len -= printf("|%5.1f%% ", percent);
--
--	/* no space left for bars, do what we can */
--	if (len < 0)
--		len = 0;
--
--	bar_len = ceil(w * percent * len / 100.0);
--	if (bar_len > w * len)
--		bar_len = w * len;
-+	for (int i = 0; drivers[i]; i++) {
-+		if (strcmp(drivers[i], card->driver) == 0)
-+			return i;
-+	}
-+	return -1;
-+}
- 
--	for (i = bar_len; i >= w; i -= w)
--		printf("%s", bars[w]);
--	if (i)
--		printf("%s", bars[i]);
-+/*
-+ * If filter is not NULL i will be ignored.
-+ */
-+static int populate_device_instances(const char *filter)
-+{
-+	struct igt_device_card *cards = NULL;
-+	struct igt_device_card *card_inplace = NULL;
-+	struct gputop_device *dev =  NULL;
-+	int driver_no;
-+	int count, final_count = 0;
-+
-+	count = igt_device_card_match_all(filter, &cards);
-+	for (int j = 0; j < count; j++) {
-+		if (strcmp((cards + j)->subsystem, "pci") != 0)
-+			continue;
- 
--	len -= (bar_len + (w - 1)) / w;
--	n_spaces(len);
-+		driver_no = find_driver(cards + j);
-+		if (driver_no < 0)
-+			continue;
- 
--	putchar('|');
-+		dev = devices + driver_no;
-+		if (!dev->driver_present)
-+			dev->driver_present = true;
-+		dev->len++;
-+		dev->instances = realloc(dev->instances,
-+					 dev->len * sizeof(struct xe_gputop));
-+		if (!dev->instances) {
-+			fprintf(stderr,
-+				"Device instance realloc failed (%s)\n",
-+				strerror(errno));
-+			exit(EXIT_FAILURE);
-+		}
-+		card_inplace = (struct igt_device_card *)
-+				calloc(1, sizeof(struct igt_device_card));
-+		memcpy(card_inplace, cards + j, sizeof(struct igt_device_card));
-+		oprs[driver_no].gputop_init((struct xe_gputop *)(dev->instances + dev->len - 1),
-+			card_inplace);
-+		final_count++;
-+	}
-+	if (count)
-+		free(cards);
-+	return final_count;
- }
- 
- static int
-@@ -333,6 +412,7 @@ static void clrscr(void)
- struct gputop_args {
- 	long n_iter;
- 	unsigned long delay_usec;
-+	char *device;
- };
- 
- static void help(void)
-@@ -343,16 +423,18 @@ static void help(void)
- 	       "\t-h, --help                show this help\n"
- 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
- 	       "\t-n, --iterations =NUMBER  number of executions\n"
-+	       "\t-D, --device              Device filter\n"
- 	       , program_invocation_short_name);
- }
- 
- static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- {
--	static const char cmdopts_s[] = "hn:d:";
-+	static const char cmdopts_s[] = "hn:d:D:";
- 	static const struct option cmdopts[] = {
- 	       {"help", no_argument, 0, 'h'},
- 	       {"delay", required_argument, 0, 'd'},
- 	       {"iterations", required_argument, 0, 'n'},
-+	       {"device", required_argument, 0, 'D'},
- 	       { }
- 	};
- 
-@@ -360,6 +442,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 	memset(args, 0, sizeof(*args));
- 	args->n_iter = -1;
- 	args->delay_usec = 2 * USEC_PER_SEC;
-+	args->device = NULL;
- 
- 	for (;;) {
- 		int c, idx = 0;
-@@ -383,6 +466,9 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 				return -1;
- 			}
- 			break;
-+		case 'D':
-+			args->device = optarg;
-+			break;
- 		case 'h':
- 			help();
- 			return 0;
-@@ -422,6 +508,52 @@ int main(int argc, char **argv)
- 	n = args.n_iter;
- 	period_us = args.delay_usec;
- 
-+	if (!populate_device_instances(args.device ? args.device
-+				       : "device:subsystem=pci,card=all")) {
-+		printf("No device found.\n");
-+		gputop_clean_up();
-+		exit(1);
-+	}
-+
-+	for (int i = 0; drivers[i]; i++) {
-+		if (devices[i].driver_present) {
-+			for (int j = 0; j < devices[i].len; j++) {
-+				if (!oprs[i].init_engines(devices[i].instances + j)) {
-+					fprintf(stderr,
-+						"Failed to initialize engines! (%s)\n",
-+						strerror(errno));
-+						gputop_clean_up();
-+					return EXIT_FAILURE;
-+				}
-+				ret = oprs[i].pmu_init(devices[i].instances + j);
-+
-+				if (ret) {
-+					fprintf(stderr,
-+						"Failed to initialize PMU! (%s)\n",
-+						strerror(errno));
-+					if (errno == EACCES && geteuid())
-+						fprintf(stderr,
-+							"\n"
-+							"When running as a normal user CAP_PERFMON is required to access performance\n"
-+							"monitoring. See \"man 7 capabilities\", \"man 8 setcap\", or contact your\n"
-+							"distribution vendor for assistance.\n"
-+							"\n"
-+							"More information can be found at 'Perf events and tool security' document:\n"
-+							"https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
-+
-+					igt_devices_free();
-+					gputop_clean_up();
-+					return EXIT_FAILURE;
-+				}
-+			}
-+		}
-+	}
-+
-+	for (int i = 0; drivers[i]; i++) {
-+		for (int j = 0; devices[i].driver_present && j < devices[i].len; j++)
-+			oprs[i].pmu_sample(devices[i].instances + j);
-+	}
-+
- 	clients = igt_drm_clients_init(NULL);
- 	if (!clients)
- 		exit(1);
-@@ -442,14 +574,27 @@ int main(int argc, char **argv)
- 
- 	while ((n != 0) && !stop_top) {
- 		struct igt_drm_client *c, *prevc = NULL;
--		int i, engine_w = 0, lines = 0;
-+		int k, engine_w = 0, lines = 0;
- 
- 		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-+
-+		for (int i = 0; drivers[i]; i++) {
-+			for (int j = 0; devices[i].driver_present && j < devices[i].len; j++)
-+				oprs[i].pmu_sample(devices[i].instances + j);
-+		}
-+
- 		igt_drm_clients_sort(clients, client_cmp);
- 
- 		update_console_size(&con_w, &con_h);
- 		clrscr();
- 
-+		for (int i = 0; drivers[i]; i++) {
-+			for (int j = 0; devices[i].driver_present && j < devices[i].len; j++) {
-+				lines = oprs[i].print_engines(devices[i].instances + j,
-+							 lines, con_w, con_h);
-+			}
-+		}
-+
- 		if (!clients->num_clients) {
- 			const char *msg = " (No GPU clients yet. Start workload to see stats)";
- 
-@@ -457,7 +602,7 @@ int main(int argc, char **argv)
- 			       (int)(con_w - strlen(msg) - 1), msg);
- 		}
- 
--		igt_for_each_drm_client(clients, c, i) {
-+		igt_for_each_drm_client(clients, c, k) {
- 			assert(c->status != IGT_DRM_CLIENT_PROBE);
- 			if (c->status != IGT_DRM_CLIENT_ALIVE)
- 				break; /* Active clients are first in the array. */
-@@ -481,11 +626,11 @@ int main(int argc, char **argv)
- 	}
- 
- 	igt_drm_clients_free(clients);
-+	gputop_clean_up();
- 
- 	if (profiled_devices != NULL) {
- 		igt_devices_configure_profiling(profiled_devices, false);
- 		igt_devices_free_profiling(profiled_devices);
- 	}
--
- 	return 0;
- }
-diff --git a/tools/gputop/meson.build b/tools/gputop/meson.build
-new file mode 100644
-index 000000000..4766d8496
---- /dev/null
-+++ b/tools/gputop/meson.build
-@@ -0,0 +1,6 @@
-+gputop_src = [ 'gputop.c', 'utils.c', 'xe_gputop.c']
-+executable('gputop', sources : gputop_src,
-+           install : true,
-+           install_rpath : bindir_rpathdir,
-+           dependencies : [igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math],
-+	   install: true)
-diff --git a/tools/meson.build b/tools/meson.build
-index de866c392..8002f707d 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -69,11 +69,6 @@ if libudev.found()
- 		   install : true)
- endif
- 
--executable('gputop', 'gputop.c',
--           install : true,
--           install_rpath : bindir_rpathdir,
--           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
--
- intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
- executable('intel_l3_parity', sources : intel_l3_parity_src,
- 	   dependencies : tool_deps,
-@@ -122,3 +117,4 @@ endif
- subdir('i915-perf')
- subdir('xe-perf')
- subdir('null_state_gen')
-+subdir('gputop')
--- 
-2.34.1
+> +
+> +#include <fcntl.h>
+> +#include <errno.h>
+> +#include <string.h>
+> +#include <sys/ioctl.h>
+> +
+> +/**
+> + * SUBTEST: drm-virtgpu-map
+> + *
+> + * SUBTEST: drm-virtgpu-execbuffer
+> + *
+> + * SUBTEST: drm-virtgpu-resource-info
+> + *
+> + * SUBTEST: drm-virtgpu-3d-transfer-to-host
+> + *
+> + * SUBTEST: drm-virtgpu-3d-transfer-from-host
+> + *
+> + * SUBTEST: drm-virtgpu-3d-wait
+> + *
+> + * SUBTEST: drm-virtgpu-resource-create-blob
+> + *
+> + * SUBTEST: drm-virtgpu-get-caps
+> +
+> + * SUBTEST: drm-virtgpu-context-init
+> + *
+> + * SUBTEST: drm-virtgpu-getparam
+> + */
+> +
+> +IGT_TEST_DESCRIPTION(" Testing of the virtIO-GPU driver DRM ioctls");
 
+Remove space from " Testing", so
+IGT_TEST_DESCRIPTION("Testing of the virtIO-GPU driver DRM ioctls");
+
+> +
+> +#define VIRTGPU_DEVICE "/dev/dri/card0"
+
+At least try to open all cardN until you find virtio, there is
+sometimes simpleDRM driver loaded and then cards could start from 1,
+/dev/dri/card1
+
+What about checking with getversion? For idea see core_getversion test.
+
+> +
+> +#define CAPS_BUFFER_SIZE 4096
+> +
+> +static const struct {
+> +	const char *name;
+> +	uint64_t id;
+> +} params[] = {
+> +	{"3D_FEATURES", VIRTGPU_PARAM_3D_FEATURES},
+> +	{"CAPSET_QUERY_FIX", VIRTGPU_PARAM_CAPSET_QUERY_FIX},
+> +	{"RESOURCE_BLOB", VIRTGPU_PARAM_RESOURCE_BLOB},
+> +	{"HOST_VISIBLE", VIRTGPU_PARAM_HOST_VISIBLE},
+> +	{"CROSS_DEVICE", VIRTGPU_PARAM_CROSS_DEVICE},
+> +	{"CONTEXT_INIT", VIRTGPU_PARAM_CONTEXT_INIT},
+> +	{"SUPPORTED_CAPSET_IDs", VIRTGPU_PARAM_SUPPORTED_CAPSET_IDs},
+> +	{"EXPLICIT_DEBUG_NAME", VIRTGPU_PARAM_EXPLICIT_DEBUG_NAME},
+> +};
+> +
+> +static void test_capset(int drm_fd, uint32_t capset_id)
+> +{
+> +	uint8_t *caps_buf;
+> +	struct drm_virtgpu_get_caps caps;
+> +	int ret;
+> +	int i;
+> +
+> +	caps_buf = malloc(CAPS_BUFFER_SIZE);
+> +	igt_require(caps_buf);
+> +	memset(caps_buf, 0, CAPS_BUFFER_SIZE);
+> +
+> +	memset(&caps, 0, sizeof(caps));
+> +	caps.cap_set_id = capset_id;
+> +	caps.size = CAPS_BUFFER_SIZE;
+> +	caps.addr = (uintptr_t) caps_buf;
+> +
+> +	ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_GET_CAPS, &caps);
+> +	if (ret == 0) {
+> +		igt_info("Capset ID %u: SUCCESS\n", capset_id);
+> +		igt_info("  Reported size: %u\n", caps.size);
+> +		igt_info("  First 16 bytes: ");
+> +		for (i = 0; i < 16; i++)
+> +			igt_info("%02x ", caps_buf[i]);
+> +		igt_info("\n");
+> +	} else {
+> +		igt_info("Capset ID %u: FAILED - %s\n", capset_id,
+> +			 strerror(errno));
+> +	}
+> +
+> +	free(caps_buf);
+> +}
+> +
+> +igt_main {
+> +	int drm_fd;
+> +	void *caps_buf = NULL;
+> +
+> +	struct drm_virtgpu_resource_create args;
+> +	bool resource_created = false;
+> +
+> +	igt_fixture {
+> +		int ret;
+> +
+> +		drm_fd = open(VIRTGPU_DEVICE, O_RDWR | O_CLOEXEC);
+> +		igt_require(drm_fd >= 0);
+> +
+> +		caps_buf = malloc(CAPS_BUFFER_SIZE);
+> +		igt_require(caps_buf);
+> +		memset(caps_buf, 0, CAPS_BUFFER_SIZE);
+> +
+> +		// Create resource
+> +		memset(&args, 0, sizeof(args));
+> +		args.target = 2;
+> +		args.format = 87;
+> +		args.bind = (1 << 0);
+> +		args.width = 64;
+> +		args.height = 64;
+> +		args.depth = 1;
+> +		args.array_size = 1;
+> +
+> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_RESOURCE_CREATE, &args);
+> +		igt_assert_f(ret == 0, "RESOURCE_CREATE failed: %s\n",
+> +			     strerror(errno));
+> +		igt_assert_neq(args.res_handle, 0);
+> +
+> +		resource_created = true;
+> +		igt_info("Created resource: res_handle=%u, bo_handle=%u\n",
+> +			 args.res_handle, args.bo_handle);
+
+Please do not make initialization with asserts here, I would suggest
+to move this into a function, for example:
+int create_resource(int fd, ... other params...)
+
+and then calling this before each test. For example:
+
+bool create_res(struct drm_virtgpu_resource_create *res)
+{
+	if(res->array_size == 1) /* already created */
+		return true;
+
+	... rest of creation ...
+}
+
+	igt_subtest("virtgpu-map") {
+		...vars here...
+
+		igt_assert(create_res(&args));
+
+
+Or you could just create it in this fixture without asserts,
+place asserts in a function check_res() and call it in each
+subtests which needs them. For example:
+
+	igt_subtest("virtgpu-map") {
+		...vars here...
+
+		check_res(&args);
+
+This also looks like a good candidate for a separate subtest?
+
+> +	}
+> +
+> +	igt_describe
+> +	    ("Maps a buffer object and tests read/write access via mmap.");
+> +	igt_subtest("drm-virtgpu-map") {
+> +		struct drm_virtgpu_map map = { };
+> +		void *map_ptr;
+> +		int ret;
+> +
+> +		memset(&map, 0, sizeof(map));
+> +		map.handle = args.bo_handle;
+> +
+> +		// Request mmap offset
+
+Please use C-style comments:
+		/* Request mmap offset */
+
+Same applies for following code.
+
+Regards,
+Kamil
+
+> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_MAP, &map);
+> +		igt_assert_f(ret == 0, "MAP ioctl failed: %s\n",
+> +			     strerror(errno));
+> +		igt_assert(map.offset != 0);
+> +
+> +		// Try mmap
+> +		map_ptr =
+> +		    mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, drm_fd,
+> +			 map.offset);
+> +		igt_assert(map_ptr != MAP_FAILED);
+> +
+> +		igt_info("Successfully mmap'ed BO: offset=0x%lx\n",
+> +			 (unsigned long)map.offset);
+> +
+> +		// Simple test: write and read
+> +		memset(map_ptr, 0xaa, 4096);
+> +		igt_assert(((uint8_t *) map_ptr)[0] == 0xaa);
+> +
+> +		munmap(map_ptr, 4096);
+> +	}
+> +
+> +	igt_describe("Submits a dummy execbuffer to the GPU.");
+> +	igt_subtest("drm-virtgpu-execbuffer") {
+> +		struct drm_virtgpu_execbuffer execbuf = { };
+> +		uint32_t handles[1];
+> +		int ret;
+> +
+> +		handles[0] = args.bo_handle;
+> +
+> +		// Submit dummy execbuffer
+> +		execbuf.flags = 0;
+> +		execbuf.size = 0;       // No command
+> +		execbuf.command = 0;    // No command buffer
+> +		execbuf.bo_handles = (uintptr_t) handles;
+> +		execbuf.num_bo_handles = 1;
+> +		execbuf.fence_fd = -1;  // No fence
+> +		execbuf.ring_idx = 0;   // Default ring
+> +
+> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_EXECBUFFER, &execbuf);
+> +		igt_assert_f(ret == 0, "EXECBUFFER ioctl failed: %s\n",
+> +			     strerror(errno));
+> +
+> +		igt_info("EXECBUFFER submitted successfully.\n");
+> +	}
+> +
+> +	igt_describe
+> +	    ("Validates that the GPU resource info ioctl returns expected metadata.");
+> +	igt_subtest("drm-virtgpu-resource-info") {
+> +		struct drm_virtgpu_resource_info info;
+> +		int ret;
+> +
+> +		igt_require_f(resource_created,
+> +			      "Resource must be created before this test");
+> +
+> +		memset(&info, 0, sizeof(info));
+> +		info.bo_handle = args.bo_handle;
+> +
+> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_RESOURCE_INFO, &info);
+> +		igt_assert_f(ret == 0, "RESOURCE_INFO failed: %s\n",
+> +			     strerror(errno));
+> +		igt_assert_eq(info.res_handle, args.res_handle);
+> +		igt_assert(info.size > 0);
+> +
+> +		igt_info("Queried resource info:\n");
+> +		igt_info("  size:      %u bytes\n", info.size);
+> +		igt_info("  res_handle %u\n", info.res_handle);
+> +		igt_info("  blob_mem:  %u\n", info.blob_mem);
+> +	}
+> +
+> +	igt_describe
+> +	    ("Transfers buffer contents from guest memory to the host.");
+> +	igt_subtest("drm-virtgpu-3d-transfer-to-host") {
+> +		int ret;
+> +		struct drm_virtgpu_3d_transfer_to_host xfer = {
+> +			.bo_handle = args.bo_handle,
+> +			.box = {
+> +			.x = 0,
+> +			.y = 0,
+> +			.z = 0,
+> +			.w = args.width,
+> +			.h = args.height,
+> +			.d = 1,
+> +			},
+> +			.level = 0,
+> +			.offset = 0,
+> +			.stride = 0,
+> +			.layer_stride = 0,
+> +		};
+> +
+> +		igt_require_f(resource_created,
+> +	    "Resource must be created before this test");
+> +
+> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_TRANSFER_TO_HOST, &xfer);
+> +		igt_assert_f(ret == 0, "TRANSFER_TO_HOST failed: %s\n",
+> +			     strerror(errno));
+> +		igt_info("TRANSFER_TO_HOST completed\n");
+> +	}
+> +
+> +	igt_describe("Transfers buffer contents from the host to guest memory.");
+> +	igt_subtest("drm-virtgpu-3d-transfer-from-host")
+> +	{
+> +		int ret;
+> +		struct drm_virtgpu_3d_transfer_from_host xfer_in = {
+> +			.bo_handle = args.bo_handle,
+> +			.box = {
+> +			.x = 0,
+> +			.y = 0,
+> +			.z = 0,
+> +			.w = args.width,
+> +			.h = args.height,
+> +			.d = 1,
+> +			},
+> +			.level = 0,
+> +			.offset = 0,
+> +			.stride = 0,
+> +			.layer_stride = 0,
+> +		};
+> +
+> +	igt_require_f(resource_created,
+> +	    "Resource must be created before this test");
+> +
+> +	ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_TRANSFER_FROM_HOST, &xfer_in);
+> +	igt_assert_f(ret == 0, "TRANSFER_FROM_HOST failed: %s\n", strerror(errno));
+> +	igt_info("TRANSFER_FROM_HOST completed\n");
+> +	}
+> +
+> +	igt_describe
+> +	    ("Waits for a GPU operation to complete on a specific resource.");
+> +	igt_subtest("drm-virtgpu-3d-wait") {
+> +		struct drm_virtgpu_3d_wait wait = {.handle = args.bo_handle };
+> +
+> +		int ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_WAIT, &wait);
+> +
+> +		if (ret == 0)
+> +			igt_info("WAIT succeeded.\n");
+> +		else
+> +			igt_info("WAIT failed as expected (%s).\n",
+> +				 strerror(errno));
+> +	}
+> +
+> +	igt_describe
+> +	    ("Creates a GPU resource using the blob interface with memory flags.");
+> +	igt_subtest("drm-virtgpu-resource-create-blob") {
+> +		struct drm_virtgpu_resource_create_blob blob = {
+> +			.blob_mem = VIRTGPU_BLOB_MEM_GUEST,
+> +			.blob_flags =
+> +			    VIRTGPU_BLOB_FLAG_USE_MAPPABLE |
+> +			    VIRTGPU_BLOB_FLAG_USE_SHAREABLE,
+> +			.size = 4096,
+> +			.blob_id = 0,
+> +			.cmd_size = 0,
+> +			.cmd = (uintptr_t) NULL,
+> +		};
+> +
+> +		int ret =
+> +		    ioctl(drm_fd, DRM_IOCTL_VIRTGPU_RESOURCE_CREATE_BLOB,
+> +			  &blob);
+> +		igt_assert_f(ret == 0, "Blob creation ioctl failed: %s\n",
+> +			     strerror(errno));
+> +		igt_assert_eq(ret, 0);
+> +		igt_assert_neq(blob.res_handle, 0);
+> +	}
+> +
+> +	igt_describe
+> +	    ("Queries different GPU capsets and prints the response payload.");
+> +	igt_subtest("drm-virtgpu-get-caps") {
+> +		// Test multiple capsets
+> +		test_capset(drm_fd, 1); // VirGL
+> +		test_capset(drm_fd, 2); // GFXSTREAM
+> +		test_capset(drm_fd, 9999);      // Invalid (expect failure)
+> +	}
+> +
+> +	igt_describe
+> +	    ("Initializes a GPU context with parameters like capset ID and debug name.");
+> +	igt_subtest("drm-virtgpu-context-init") {
+> +		struct drm_virtgpu_context_set_param ctx_params[2];
+> +		struct drm_virtgpu_context_init ctx_init;
+> +		int ret;
+> +
+> +		memset(ctx_params, 0, sizeof(ctx_params));
+> +
+> +		ctx_params[0].param = VIRTGPU_CONTEXT_PARAM_CAPSET_ID;
+> +		ctx_params[0].value = 1;
+> +
+> +		ctx_params[1].param = VIRTGPU_CONTEXT_PARAM_DEBUG_NAME;
+> +		ctx_params[1].value = (uintptr_t) "IGT-Test-Context";
+> +
+> +		memset(&ctx_init, 0, sizeof(ctx_init));
+> +		ctx_init.num_params = 2;
+> +		ctx_init.ctx_set_params = (uintptr_t)&ctx_params[0];
+> +
+> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_CONTEXT_INIT, &ctx_init);
+> +		if (ret == -1 && errno == EEXIST) {
+> +			igt_info
+> +			    ("CONTEXT_INIT with params failed as expected (already initialized)\n");
+> +		} else {
+> +			igt_assert_f(ret == 0,
+> +				     "CONTEXT_INIT with params ioctl failed: %s\n",
+> +				     strerror(errno));
+> +			igt_info("CONTEXT_INIT with parameters succeeded\n");
+> +		}
+> +	}
+> +
+> +	igt_describe
+> +	    ("Verifies which VirtIO-GPU features are supported by querying driver parameters.");
+> +	igt_subtest("drm-virtgpu-getparam") {
+> +		bool found_supported = false;
+> +		uint64_t actual_value = 0;
+> +
+> +		for (size_t i = 0; i < ARRAY_SIZE(params); i++) {
+> +			struct drm_virtgpu_getparam gp = {
+> +				.param = params[i].id,
+> +				.value = (uintptr_t)&actual_value,
+> +			};
+> +
+> +			int ret =
+> +			    ioctl(drm_fd, DRM_IOCTL_VIRTGPU_GETPARAM, &gp);
+> +			if (ret == 0) {
+> +				found_supported = true;
+> +				igt_info("GETPARAM %s (ID=%lu): value = %llu\n",
+> +					 params[i].name, params[i].id,
+> +					 gp.value);
+> +			} else {
+> +				igt_info("GETPARAM %s (ID=%lu): failed - %s\n",
+> +					 params[i].name, params[i].id,
+> +					 strerror(errno));
+> +			}
+> +		}
+> +
+> +		igt_assert_f(found_supported,
+> +			     "No GETPARAM query returned a value.");
+> +	}
+> +
+> +	igt_fixture {
+> +		free(caps_buf);
+> +		close(drm_fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 20ddddb89..ac85cac30 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -13,6 +13,7 @@ test_progs = [
+>  	'drm_buddy',
+>  	'drm_mm',
+>  	'drm_read',
+> +	'drm_virtgpu',
+>  	'fbdev',
+>  	'kms_3d',
+>  	'kms_addfb_basic',
+> -- 
+> 2.48.1
+> 
