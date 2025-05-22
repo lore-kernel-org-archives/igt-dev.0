@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95812C54E65
-	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 14:34:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EB30C54E90
+	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 14:35:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 71EBF10ED2B;
-	Thu, 22 May 2025 14:34:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ADB5C10EDA7;
+	Thu, 22 May 2025 14:34:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D1tboV8+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L3U7bhoh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFE4910ED2B
- for <igt-dev@lists.freedesktop.org>; Thu, 22 May 2025 14:34:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4353310ED66
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 May 2025 14:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747924494; x=1779460494;
+ t=1747924497; x=1779460497;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ywYIKW+h87sWk9Cba2YfKNnTM+nP47jDqe7q7L0ccH4=;
- b=D1tboV8+csn/BGMkrDBNU3WmdEOtgTvu6CfQ9GdpL012fcMGMsTkS7sk
- wsWzr0koFcLJPMSUoqmFDq1BnHKf2V8aT52uYF+yEUmOsGYoUl6ceC2ZC
- 9s5ZjVPJJyk4K+hDgfwV7m4WywT+oxAZKK4h6Ap5I0uBLaEFyNldrV10S
- uvUuBkcLdrNK0StrN5I2x9dmq+v8bhUrtcHwVvJy1UqW40afnrxFZMLwg
- h6VEgT2ydEvJnETP9OcGgY+guAtJraoYIe7oG1J0anQR8Oe93dNJjYqI3
- lMYy+At3mma279aWJhDHMaLkQjjfi+03FmZ78kohZ1JHAbSmqudDuekV7 w==;
-X-CSE-ConnectionGUID: 9f6ukid4R7S07C1oS96/bg==
-X-CSE-MsgGUID: 4snV6qqsThWuTVreWFkDzA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="75351189"
-X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="75351189"
+ bh=h/ys446EhI39GuzL/M5IKwa91/NKhwLF+irBH034zhY=;
+ b=L3U7bhohSri1QsWhFLFiATWYvzgSHmOxss/EgKkIvDL0bD9r6BXqEv6N
+ U6Af/ia0QSuJPQlSEuQzTdVcJcjFxVODMCS2Bv5yGQPlY+FERN+6BgPyl
+ Tl+Knm/yo1OAPgjXvmo8UtUuzLcoW/+BO4LM6qcCup/cuy5CXQSZ6TuTP
+ ItVr7LLeGLpY07WDezsqHO2usdDZRYKnYHhn5MfIfrxBhZymYC6MOV4rd
+ 5j4IgYWuNMR01m0tIVeLRazSdTTaOH5c0TBbM0j2dqd83ieQxG9PCqubJ
+ H86DFCOHwVTmHnHJebqsw5Fb1eFcOHxVD5gxyEWhSeAXKoTbRkTKUNDMA g==;
+X-CSE-ConnectionGUID: WGDZCaMcQFGWIhuMnm3zSQ==
+X-CSE-MsgGUID: 1hUdwt4zQEe7pSVrLrehCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="75351202"
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="75351202"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2025 07:34:54 -0700
-X-CSE-ConnectionGUID: ZkQ597IxSh2ohdSQrSKhRw==
-X-CSE-MsgGUID: OJbMuwUVQ4iEYSfeceAcIg==
+ 22 May 2025 07:34:57 -0700
+X-CSE-ConnectionGUID: CBfOf2IKRnCDBAz1s1pOEg==
+X-CSE-MsgGUID: hoOdbQ2LQA6w9W0+AF5p6Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="140495562"
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="140495565"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by orviesa006.jf.intel.com with ESMTP; 22 May 2025 07:34:52 -0700
+ by orviesa006.jf.intel.com with ESMTP; 22 May 2025 07:34:55 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH i-g-t v10 5/7] tools: Include local glib header for Android
-Date: Thu, 22 May 2025 14:34:17 +0000
-Message-ID: <20250522143419.28888-6-jeevaka.badrappan@intel.com>
+ Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v10 6/7] tests/intel/xe_create: Conditionally define
+ PAGE_SIZE for non-Android platforms
+Date: Thu, 22 May 2025 14:34:18 +0000
+Message-ID: <20250522143419.28888-7-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250522143419.28888-1-jeevaka.badrappan@intel.com>
 References: <20250522143419.28888-1-jeevaka.badrappan@intel.com>
@@ -70,65 +72,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As glib is not available in Android, added local glib stub header to
-build igt for Android.
+Ensure PAGE_SIZE is defined only if it is not already defined,
+addressing compatibility with Android where PAGE_SIZE is predefined.
 
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tools/igt_dp_compliance.h | 4 ++++
- tools/intel_pm_rpm.c      | 4 ++++
- tools/lsgpu.c             | 4 ++++
- 3 files changed, 12 insertions(+)
+ tests/intel/xe_create.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
-index 5b1688039..226a13662 100644
---- a/tools/igt_dp_compliance.h
-+++ b/tools/igt_dp_compliance.h
-@@ -28,7 +28,11 @@
- #include <stdio.h>
- #include <string.h>
- #include <stdlib.h>
-+#ifdef ANDROID
-+#include "android/glib.h"
-+#else
- #include <glib.h>
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index b22084c84..e8b8bb025 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -18,7 +18,9 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ 
++#ifndef PAGE_SIZE
+ #define PAGE_SIZE 0x1000
 +#endif
  
- extern int drm_fd;
- 
-diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-index 9622f0552..c1cc54b82 100644
---- a/tools/intel_pm_rpm.c
-+++ b/tools/intel_pm_rpm.c
-@@ -24,7 +24,11 @@
- 
- #include <errno.h>
- #include <getopt.h>
-+#ifdef ANDROID
-+#include "android/glib.h"
-+#else
- #include <glib.h>
-+#endif
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-index e68390083..6cfbf3142 100644
---- a/tools/lsgpu.c
-+++ b/tools/lsgpu.c
-@@ -24,7 +24,11 @@
- 
- #include <errno.h>
- #include <fcntl.h>
-+#ifdef ANDROID
-+#include "android/glib.h"
-+#else
- #include <glib.h>
-+#endif
- #include <libudev.h>
- #include <string.h>
- #include <signal.h>
+ static struct param {
+ 	unsigned int quantity;
 -- 
 2.49.0
 
