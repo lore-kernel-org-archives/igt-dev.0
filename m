@@ -4,52 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A875BC54E65
-	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 07:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1B30C54E65
+	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 07:55:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 354C610F807;
-	Thu, 22 May 2025 07:11:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7DAEE10E0CC;
+	Thu, 22 May 2025 07:55:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HvvRU9dN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jbiCCiML";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C62A10F7DD
- for <igt-dev@lists.freedesktop.org>; Thu, 22 May 2025 07:11:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 020C7112A46
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 May 2025 07:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747897899; x=1779433899;
+ t=1747900532; x=1779436532;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Z9nGXQ+AX8qkASbvbpZiLTShFGisTTMDoV5KYZGmRLA=;
- b=HvvRU9dNYF1IrUbNkUBtMs7eeOE/7NDmHMHLCl6Q2+UmF2s4rwPmtLt3
- Fsrxt6HHJ7r4IPwO8ldTL5S1Dwssb6VoySyfDaO6d0IkANw7nLDbw/9qq
- ApNFEgh3uYwgeP34fJY/xdIl+dsH1zN+0kgjNE5dqV9eFY9390OhXItuA
- ZiPRTF5VM5ZYMzP7bEdN0mUJ3T5gfqXvNkE5OpiOxcTeDu1xDYY12Z6+9
- zX9l8Jh59M86bGPFaszNLQwGyvoMPgL5nRM7H1gv4aaJ3y71Vck4WwIUJ
- D0Dki3Ls65FvaHs9LrmqsT4P4IM4erP7IEeSyF/Qp8IYC6H1RIo2YVq7c g==;
-X-CSE-ConnectionGUID: t9eMUOHERe+tmMQU5SZdrw==
-X-CSE-MsgGUID: FUaFmGwiTr60O/yQPqj5Hg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="75303812"
-X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; d="scan'208";a="75303812"
+ bh=urHzyyc2QU/mU/BgQtMuT51AdWvypAUA3/eqn/tJSVs=;
+ b=jbiCCiMLGGacAU890FUP41lNHxBn5SdlobSZa+I9MDFck6daX1ypVO/B
+ FaCI8O0FM+pK4BWLk69DIlcp8kadc0n+9iSjnh6ImJxb0WRJbBjC8Y+Ss
+ xMOVkjklpH/6A2ULatdXVDQkkaImEZJ1qRXRLZ/+MUeJZghxVZuPQ4Qxg
+ dGJBMBCdDt4nzA7ps/V3V6+lSwIVDyX7DidtpDUSXrq2XoB6CAMhUYJtx
+ AN0KTM4lu/mAFCHRfGUFs8+MlwLmMCp0N5J82nmEyTp5VYDMG8nbEVDrh
+ vkj1ghqGuTz5fOD5/zlJV3saTf5Cc2v1Za5gm8zbbGw5i/fKD23sxCLEc w==;
+X-CSE-ConnectionGUID: dvkeCn81S7iOVy99NOhCNw==
+X-CSE-MsgGUID: Z1TMWSlsTsePCB5E/Fmreg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="50051003"
+X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; d="scan'208";a="50051003"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2025 00:11:39 -0700
-X-CSE-ConnectionGUID: WmTbSW2aQGigYLjDgkIaEw==
-X-CSE-MsgGUID: 1SXOAJf5T82K0JngGpOXLw==
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2025 00:55:24 -0700
+X-CSE-ConnectionGUID: cS5fSR6ORumcGysm8I5cqw==
+X-CSE-MsgGUID: En9edr1OT0mKw5FukoPf3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; d="scan'208";a="140875735"
-Received: from unknown (HELO thasleem.iind.intel.com) ([10.190.216.203])
- by fmviesa008.fm.intel.com with ESMTP; 22 May 2025 00:11:38 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; d="scan'208";a="140888579"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.61])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2025 00:55:22 -0700
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH v3 1/2] lib/igt_debugfs: Add specific checks for WA in GTs
-Date: Thu, 22 May 2025 12:41:06 +0530
-Message-ID: <20250522071106.1340240-1-mohammed.thasleem@intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t v2 1/4] lib/intel_compute: move user-fence to allow
+ async exec call
+Date: Thu, 22 May 2025 09:55:12 +0200
+Message-ID: <20250522075515.168920-2-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250519123135.1307174-2-mohammed.thasleem@intel.com>
-References: <20250519123135.1307174-2-mohammed.thasleem@intel.com>
+In-Reply-To: <20250522075515.168920-1-zbigniew.kempczynski@intel.com>
+References: <20250522075515.168920-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,85 +71,129 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This function check the given workaround on available GTs
+User-fence in bo_execenv_exec() limits its usage to synchronous call.
+Remove this limitation by migration of user-fence from function level
+to execenv structure. This allows to synchronize later what is useful
+for parallel submission scenarios.
 
-v2: Add discription for return. (Kamil)
-    Rename function to igt_has_intel_wa. (Kamil)
-    Move lib changes to lib/igt_debugfs. (Kamil)
-    Dump the whole wa sysfs file and then search for the wa. (Vinod)
-    Use return true/false directly instead assigning value. (Vinod)
-v3: Updated return type discription and debugfs_fd failure check. (Kamil)
-    Return 0 or 1 instead of true or false. (Kamil)
-
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/igt_debugfs.c | 36 ++++++++++++++++++++++++++++++++++++
- lib/igt_debugfs.h |  1 +
- 2 files changed, 37 insertions(+)
+ lib/intel_compute.c | 77 ++++++++++++++++++++++++++++++---------------
+ 1 file changed, 52 insertions(+), 25 deletions(-)
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index 8ac215a76..e4babc37f 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -44,6 +44,7 @@
- #include "igt_kms.h"
- #include "igt_debugfs.h"
- #include "igt_sysfs.h"
-+#include "xe/xe_query.h"
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index 070bc0d2d8..5579bec85b 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -89,6 +89,12 @@ struct bo_execenv {
+ 	uint32_t exec_queue;
+ 	uint32_t array_size;
  
- /**
-  * SECTION:igt_debugfs
-@@ -770,3 +771,38 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
- 	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
- 	free(contents);
++	/* Xe user-fence */
++	uint32_t bo;
++	size_t bo_size;
++	struct bo_sync *bo_sync;
++	struct drm_xe_sync sync;
++
+ 	/* i915 part */
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 *obj;
+@@ -266,48 +272,69 @@ static void bo_execenv_unbind(struct bo_execenv *execenv,
+ 	}
  }
-+
-+/**
-+ * igt_has_intel_wa:
-+ * @drm_fd:	A drm file descriptor
-+ * @check_wa:	Workaround to be checked
-+ *
-+ * Returns:	0 if no WA, 1 if WA present, -1 on error
-+ */
-+int igt_has_intel_wa(int drm_fd, const char *check_wa)
-+{
-+	int debugfs_fd;
-+	unsigned int xe;
-+	char name[PATH_MAX];
-+	char *debugfs_dump, *has_wa;
-+
-+	debugfs_fd = igt_debugfs_dir(drm_fd);
-+	if (debugfs_fd == -1)
-+		return -1;
-+
-+	xe_for_each_gt(drm_fd, xe) {
-+		sprintf(name, "gt%d/workarounds", xe);
-+		if (!igt_debugfs_exists(drm_fd, name, O_RDONLY))
-+			return -1;
-+
-+		debugfs_dump = igt_sysfs_get(debugfs_fd, name);
-+		if (debugfs_dump != NULL) {
-+			has_wa = strstr(debugfs_dump, check_wa);
-+			free(debugfs_dump);
-+			if (has_wa)
-+				return 1;
-+		}
-+	}
-+
-+	return 0;
-+}
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index f4044d545..6d4c09d2f 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -49,6 +49,7 @@ bool igt_debugfs_search(int fd, const char *filename, const char *substring);
- int igt_debugfs_gt_dir(int device, unsigned int gt);
- int igt_debugfs_gt_open(int device, unsigned int gt, const char *filename,
- 			int mode);
-+int igt_has_intel_wa(int drm_fd, const char *check_wa);
  
- /**
-  * igt_debugfs_read:
+-static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
++static void __bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
+ {
+ 	int fd = execenv->fd;
+ 
+ 	if (execenv->driver == INTEL_DRIVER_XE) {
+ 		uint32_t exec_queue = execenv->exec_queue;
+-		struct bo_sync *bo_sync;
+-		size_t bo_size = sizeof(*bo_sync);
+-		uint32_t bo = 0;
+-		struct drm_xe_sync sync = {
+-			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+-			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+-			.timeline_value = USER_FENCE_VALUE,
+-		};
++		size_t bo_size = ALIGN(sizeof(struct bo_sync),
++				       xe_get_default_alignment(fd));
+ 
+-		bo_size = xe_bb_size(fd, bo_size);
+-		bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
+-				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+-		bo_sync = xe_bo_map(fd, bo, bo_size);
+-		sync.addr = to_user_pointer(&bo_sync->sync);
+-		xe_vm_bind_async(fd, execenv->vm, 0, bo, 0, ADDR_SYNC, bo_size, &sync, 1);
+-		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, INT64_MAX);
++		execenv->bo_size = bo_size;
++		execenv->bo = xe_bo_create(fd, execenv->vm, bo_size, vram_if_possible(fd, 0),
++					   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		execenv->bo_sync = xe_bo_map(fd, execenv->bo, bo_size);
++		execenv->sync.type = DRM_XE_SYNC_TYPE_USER_FENCE;
++		execenv->sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
++		execenv->sync.timeline_value = USER_FENCE_VALUE;
++		execenv->sync.addr = to_user_pointer(&execenv->bo_sync->sync);
++		xe_vm_bind_async(fd, execenv->vm, 0, execenv->bo, 0, ADDR_SYNC,
++				 bo_size, &execenv->sync, 1);
++		xe_wait_ufence(fd, &execenv->bo_sync->sync, USER_FENCE_VALUE,
++			       exec_queue, INT64_MAX);
+ 
+-		sync.addr = ADDR_SYNC;
+-		bo_sync->sync = 0;
++		execenv->sync.addr = ADDR_SYNC;
++		execenv->bo_sync->sync = 0;
+ 
+-		xe_exec_sync(fd, exec_queue, start_addr, &sync, 1);
+-		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue, INT64_MAX);
+-
+-		munmap(bo_sync, bo_size);
+-		gem_close(fd, bo);
++		xe_exec_sync(fd, exec_queue, start_addr, &execenv->sync, 1);
+ 	} else {
+ 		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
+-		struct drm_i915_gem_exec_object2 *obj = execenv->obj;
+-		int num_objects = execbuf->buffer_count;
+ 
+ 		execbuf->flags = I915_EXEC_RENDER;
+ 		gem_execbuf(fd, execbuf);
++	}
++}
++
++static void bo_execenv_sync(struct bo_execenv *execenv)
++{
++	int fd = execenv->fd;
++
++	if (execenv->driver == INTEL_DRIVER_XE) {
++		xe_wait_ufence(fd, &execenv->bo_sync->sync,
++			       USER_FENCE_VALUE, execenv->exec_queue, INT64_MAX);
++		munmap(execenv->bo_sync, execenv->bo_size);
++		gem_close(fd, execenv->bo);
++	} else {
++		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
++		struct drm_i915_gem_exec_object2 *obj = execenv->obj;
++		int num_objects = execbuf->buffer_count;
++
+ 		gem_sync(fd, obj[num_objects - 1].handle); /* batch handle */
+ 	}
+ }
+ 
++static void bo_execenv_exec_async(struct bo_execenv *execenv, uint64_t start_addr)
++{
++	__bo_execenv_exec(execenv, start_addr);
++}
++
++static void bo_execenv_exec(struct bo_execenv *execenv, uint64_t start_addr)
++{
++	bo_execenv_exec_async(execenv, start_addr);
++	bo_execenv_sync(execenv);
++}
++
+ static uint32_t size_thread_group_x(uint32_t work_size)
+ {
+ 	return MAX(1, work_size / (ENQUEUED_LOCAL_SIZE_X *
 -- 
-2.34.1
+2.43.0
 
