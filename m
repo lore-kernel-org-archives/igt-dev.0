@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1140FC54E65
-	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 14:02:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3D9FC54E90
+	for <igt-dev@archiver.kernel.org>; Thu, 22 May 2025 14:16:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 19B6210E2AE;
-	Thu, 22 May 2025 14:02:17 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77F0F10E2AE;
- Thu, 22 May 2025 14:02:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1599588064252947268=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fmmap=3A_?=
- =?utf-8?q?Acquire_rpm_ref_for_all_pci-membarrier_tests_=28rev6=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kolanupaka Naveena" <kolanupaka.naveena@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A68D810E9F1;
+	Thu, 22 May 2025 14:16:07 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="af+Rek8Q";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 644D810E9F1
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 May 2025 14:16:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747923366; x=1779459366;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=Yxs1AtjKFR8Wd1J6ZxumkhrAgHngr+Xh0uKffYlwHRg=;
+ b=af+Rek8Qa8dqf7+oC/IAzBlImUe8/LCCEtF+Tu2nf0SNFe5zM2HWzSub
+ /zPU2hUSkgYrEIACSfJBXu+i39BO877ltX7RrHy6ECQAiNIDNSyYPZ1sp
+ tl0g0lt2/fNi0eFT7rKnawkJsIrKVkz9dg3/Tks69FJpy4UOKOuZKfT5f
+ dDVxnp+iDJNbs/fo3kXI50a25pKnKTvywfuJ25nA1AgZrnqB7uKWDl8gJ
+ L7/smUdl7P3vj63SjmJ4WsPj4nWTTro0KQfSzPTQWBe2JSXPOhNY6cDcf
+ itL6Vy4baK0k5Re/9hhM9lgpkrbqctpplm9a/XnbI5pjz217HC5z0ysw9 A==;
+X-CSE-ConnectionGUID: g3klRpRhSHyjLyT46LQJdg==
+X-CSE-MsgGUID: ltiTiSliQ9GnExBJnKgsEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="60592799"
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="60592799"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2025 07:16:04 -0700
+X-CSE-ConnectionGUID: ngArgHg2RJGfxpg0i2MniA==
+X-CSE-MsgGUID: QIEnRbDCTtG2WAlWebfCjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; d="scan'208";a="141165339"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.61])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2025 07:16:02 -0700
+Date: Thu, 22 May 2025 16:15:59 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 22 May 2025 14:02:15 -0000
-Message-ID: <174792253548.14029.17986352890192973337@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250522084954.2861807-1-kolanupaka.naveena@intel.com>
-In-Reply-To: <20250522084954.2861807-1-kolanupaka.naveena@intel.com>
+Subject: Re: [PATCH i-g-t 10/15] tests/xe_copy_basic: replace size to rect
+ which keeps objects geometry
+Message-ID: <qwamenqmoy36xhxlr4q6vxhhhk5bkv677rs2gl3xfzuydsfkpd@4kibj7f466cs>
+References: <20250513185811.897232-1-zbigniew.kempczynski@intel.com>
+ <20250513185811.897232-11-zbigniew.kempczynski@intel.com>
+ <aC8THxeHA6Zurcxe@fdugast-desk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aC8THxeHA6Zurcxe@fdugast-desk>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,212 +69,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1599588064252947268==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, May 22, 2025 at 02:05:51PM +0200, Francois Dugast wrote:
+> On Tue, May 13, 2025 at 08:58:05PM +0200, Zbigniew Kempczyński wrote:
+> > Testing byte/page + linear/matrix mem-copy requires passing different
+> > pitch/width/height so replace simple size to geometry.
+> > 
+> > Change mem-copy and mem-set to use rect instead of size for
+> > copying bytes.
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Francois Dugast <francois.dugast@intel.com>
+> > ---
+> >  tests/intel/xe_copy_basic.c | 44 +++++++++++++++++++++++--------------
+> >  1 file changed, 28 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
+> > index f252d29fd4..7bec248b06 100644
+> > --- a/tests/intel/xe_copy_basic.c
+> > +++ b/tests/intel/xe_copy_basic.c
+> > @@ -19,6 +19,13 @@
+> >  
+> >  #define MEM_FILL 0x8b
+> >  
+> > +struct rect {
+> > +	uint32_t pitch;
+> > +	uint32_t width;
+> > +	uint32_t height;
+> > +	enum blt_memop_mode mode;
+> > +};
+> > +
+> >  /**
+> >   * TEST: Test to validate copy commands on xe
+> >   * Category: Core
+> > @@ -42,7 +49,9 @@
+> >   */
+> >  static void
+> >  mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
+> > -	 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
+> > +	 enum blt_memop_type type, enum blt_memop_mode mode,
+> > +	 uint32_t size, uint32_t pitch,
+> > +	 uint32_t width, uint32_t height, uint32_t region)
+> >  {
+> >  	struct blt_mem_copy_data mem = {};
+> >  	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
+> > @@ -125,13 +134,15 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
+> >  	munmap(mem.dst.ptr, size);
+> >  }
+> >  
+> > -static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t region)
+> > +static void copy_test(int fd, struct rect *rect, enum blt_cmd_type cmd, uint32_t region)
+> >  {
+> >  	struct drm_xe_engine_class_instance inst = {
+> >  		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> >  	};
+> > -	uint32_t src_handle, dst_handle, vm, exec_queue, src_size, dst_size;
+> > -	uint32_t bo_size = ALIGN(size, xe_get_default_alignment(fd));
+> > +	uint32_t src_handle, dst_handle, vm, exec_queue;
+> > +	uint32_t pitch = rect->pitch ?: rect->width;
+> > +	uint32_t blocksize = rect->mode ? pitch << 8 : pitch;
+> 
+> Is this assuming enum values for MODE_BYTE and MODE_PAGE? Better use
+> explicit comparison with: rect->mode == MODE_PAGE ?
 
-== Series Details ==
+Agree. Explicit comparison shows my intention.
+> 
+> > +	uint32_t bo_size = ALIGN(blocksize * rect->height, xe_get_default_alignment(fd));
+> >  	intel_ctx_t *ctx;
+> >  
+> >  	src_handle = xe_bo_create(fd, 0, bo_size, region, 0);
+> > @@ -140,13 +151,11 @@ static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t reg
+> >  	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
+> >  	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
+> >  
+> > -	src_size = bo_size;
+> > -	dst_size = bo_size;
+> > -
+> >  	if (cmd == MEM_COPY)
+> > -		mem_copy(fd, src_handle, dst_handle, ctx, src_size, size, 1, region);
+> > +		mem_copy(fd, src_handle, dst_handle, ctx, TYPE_LINEAR, rect->mode,
+> > +			 bo_size, pitch, rect->width, rect->height, region);
+> >  	else if (cmd == MEM_SET)
+> > -		mem_set(fd, dst_handle, ctx, dst_size, size, 1, MEM_FILL, region);
+> > +		mem_set(fd, dst_handle, ctx, bo_size, rect->width, 1, MEM_FILL, region);
+> >  
+> >  	gem_close(fd, src_handle);
+> >  	gem_close(fd, dst_handle);
+> > @@ -160,7 +169,10 @@ igt_main
+> >  	int fd;
+> >  	struct igt_collection *set, *regions;
+> >  	uint32_t region;
+> > -	uint64_t size[] = {0xFD, 0x369, 0x3FFF, 0xFFFE};
+> > +	struct rect linear[] = { { 0, 0xfd, 1 },
+> > +				 { 0, 0x369, 0x1 },
+> 
+> Any reason for using 0x1 here, unlike for others? What about the mode?
 
-Series: tests/intel/xe_mmap: Acquire rpm ref for all pci-membarrier tests (rev6)
-URL   : https://patchwork.freedesktop.org/series/149106/
-State : success
+I missed 0x1, it should be 1 to be consistent.
 
-== Summary ==
+Regarding mode - before I've splitted series I had one single patch
+where I changed everything (imagine squash of the series you're
+reviewing). On the beginning I didn't exactly knew what I will change
+so when everything was already written division to patches required
+rework to introduce changes partially. That's why MODE_PAGE may
+exists a little bit earlier than it was used. I tried to keep progression
+here as much as possible so maybe I'm not consistent about this.
 
-CI Bug Log - changes from IGT_8375 -> IGTPW_13169
-====================================================
+--
+Zbigniew
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13169 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@gt_pm:
-    - bat-arlh-2:         [PASS][1] -> [INCOMPLETE][2] ([i915#14046])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-arlh-2/igt@i915_selftest@live@gt_pm.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-arlh-2/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - bat-arls-6:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-rpls-4:         [ABORT][7] ([i915#13571]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live:
-    - bat-arlh-2:         [ABORT][11] ([i915#13723]) -> [INCOMPLETE][12] ([i915#14046])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-arlh-2/igt@i915_selftest@live.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-arlh-2/igt@i915_selftest@live.html
-    - bat-atsm-1:         [DMESG-FAIL][13] ([i915#12061] / [i915#13929]) -> [DMESG-FAIL][14] ([i915#12061] / [i915#14204])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-atsm-1/igt@i915_selftest@live.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-atsm-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-atsm-1:         [DMESG-FAIL][15] ([i915#13929]) -> [DMESG-FAIL][16] ([i915#14204])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-atsm-1/igt@i915_selftest@live@mman.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-atsm-1/igt@i915_selftest@live@mman.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13571]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571
-  [i915#13723]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13723
-  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
-  [i915#14046]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046
-  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8375 -> IGTPW_13169
-
-  CI-20190529: 20190529
-  CI_DRM_16582: 444fd022f6c4f5245b1e8f797805ab3917235d3d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13169: 13169
-  IGT_8375: 8375
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/index.html
-
---===============1599588064252947268==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_mmap: Acquire rpm ref for all pci-membarrier tests (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149106/">https://patchwork.freedesktop.org/series/149106/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8375 -&gt; IGTPW_13169</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/index.html</p>
-<h2>Participating hosts (45 -&gt; 44)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13169 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-arlh-2/igt@i915_selftest@live@gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-arlh-2/igt@i915_selftest@live@gt_pm.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046">i915#14046</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-rpls-4/igt@i915_pm_rpm@module-reload.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13571">i915#13571</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-rpls-4/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-arlh-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13723">i915#13723</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-arlh-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046">i915#14046</a>)</li>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8375/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13169/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8375 -&gt; IGTPW_13169</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16582: 444fd022f6c4f5245b1e8f797805ab3917235d3d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13169: 13169<br />
-  IGT_8375: 8375</p>
-
-</body>
-</html>
-
---===============1599588064252947268==--
+> 
+> > +				 { 0, 0x3fff, 1 },
+> > +				 { 0, 0xfffe, 1 } };
+> >  
+> >  	igt_fixture {
+> >  		fd = drm_open_driver(DRIVER_XE);
+> > @@ -170,22 +182,22 @@ igt_main
+> >  					       DRM_XE_MEM_REGION_CLASS_VRAM);
+> >  	}
+> >  
+> > -	for (int i = 0; i < ARRAY_SIZE(size); i++) {
+> > -		igt_subtest_f("mem-copy-linear-0x%"PRIx64"", size[i]) {
+> > +	for (int i = 0; i < ARRAY_SIZE(linear); i++) {
+> > +		igt_subtest_f("mem-copy-linear-0x%x", linear[i].width) {
+> >  			igt_require(blt_has_mem_copy(fd));
+> >  			for_each_variation_r(regions, 1, set) {
+> >  				region = igt_collection_get_value(regions, 0);
+> > -				copy_test(fd, size[i], MEM_COPY, region);
+> > +				copy_test(fd, &linear[i], MEM_COPY, region);
+> >  			}
+> >  		}
+> >  	}
+> >  
+> > -	for (int i = 0; i < ARRAY_SIZE(size); i++) {
+> > -		igt_subtest_f("mem-set-linear-0x%"PRIx64"", size[i]) {
+> > +	for (int i = 0; i < ARRAY_SIZE(linear); i++) {
+> > +		igt_subtest_f("mem-set-linear-0x%x", linear[i].width) {
+> >  			igt_require(blt_has_mem_set(fd));
+> >  			for_each_variation_r(regions, 1, set) {
+> >  				region = igt_collection_get_value(regions, 0);
+> > -				copy_test(fd, size[i], MEM_SET, region);
+> > +				copy_test(fd, &linear[i], MEM_SET, region);
+> >  			}
+> >  		}
+> >  	}
+> > -- 
+> > 2.43.0
+> > 
