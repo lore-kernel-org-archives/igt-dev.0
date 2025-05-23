@@ -4,59 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7155CC54F2E
-	for <igt-dev@archiver.kernel.org>; Fri, 23 May 2025 13:33:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 176B5C54F2E
+	for <igt-dev@archiver.kernel.org>; Fri, 23 May 2025 13:56:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 00FBD10E2A9;
-	Fri, 23 May 2025 13:33:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D9E810E819;
+	Fri, 23 May 2025 13:56:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ddmdCO7f";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IqOU/v/V";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7CDF10E2A9
- for <igt-dev@lists.freedesktop.org>; Fri, 23 May 2025 13:33:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E01D10E7F5
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 May 2025 13:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748007211; x=1779543211;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=UURkhsUaEcuHstz+hAk/MV72P18Uzj9NzHbjFYLSPr8=;
- b=ddmdCO7f8DMb8FGEU6zTRSVU6/cVA6Y4Uba3XLbryURQ/ndXViP0Cv8v
- kbIK+kqFXjWG7F+pjmtCiIx6zkNmlm6DeTmDmFn5BNvgwpmQPpaFunFR7
- kpVuqQU+F8lJnEvbcqqpsSDb/9pEWF6jvmuLwMlElNdbUK+OMXRQr+aME
- 3WRFf6nczR7mjFSk0CWq+BMj+t+/4lT4+iOLNTbCUloVNRT2iI3jgEk6l
- WkQo9MX2bZzjDKU6iLWcFabP0lKMVXH7EFWI9Zgax9+GmRcHFJ+QUvkU1
- YQDGFUHi8/0+9hYRzOmfQoMutXLAfVifusVjWQIQ2t9SC2dKtpzZNaHzt Q==;
-X-CSE-ConnectionGUID: XPJiUsajTK6z4X0CQxpiow==
-X-CSE-MsgGUID: JUNlYXj8R6iRrJCO5e+bkw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="49769618"
-X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; d="scan'208";a="49769618"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2025 06:33:31 -0700
-X-CSE-ConnectionGUID: 1C/MYx8yQsejQd+Tq26G5A==
-X-CSE-MsgGUID: anaChz+6SWeZNckOkZLRUA==
+ t=1748008618; x=1779544618;
+ h=message-id:date:mime-version:subject:from:to:cc:
+ references:in-reply-to:content-transfer-encoding;
+ bh=bLNu9qbWt1KZHSO0NAYTias6+i0fxhzwJYa9/bwYw04=;
+ b=IqOU/v/VOeuphWukzmLb+SbWZo7fiGx3exb7Zr0mmLd8nbHE8fCOeIPj
+ 8PSNyTgkEdfHQR2m+4LvtA2iVXAdPZ5L8/5af7bn+dD1iGNBibQAbastQ
+ vc7vqE2tcyezyiKyI2IyY38vNVe5XCaYpk67xMs98jcm5JUEy7x66Vqbj
+ xO6IcoGLMvRHqwXEDqJOBuYEQYx1JXhwoB7miF6tTjDl+uj+Dd/EIcQ7C
+ 8bk4VQaDOWeI+dkRU/2rmLbhnZzOdn3GyO1feCI0JbspQx0yfWnrq93aR
+ rvIdR6ARrxCJzyHs2JUaNdbFnO6yCnoIBN6KxpLQJtlIsY4AQsU061xQD Q==;
+X-CSE-ConnectionGUID: 0dJlWhQ/SxKBoxpI3GG+IQ==
+X-CSE-MsgGUID: XEz7T4QlTEixbf3EPKH8Dg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="61416130"
+X-IronPort-AV: E=Sophos;i="6.15,309,1739865600"; d="scan'208";a="61416130"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 May 2025 06:56:57 -0700
+X-CSE-ConnectionGUID: K8OT08mKTfSlhetxHcr9Pw==
+X-CSE-MsgGUID: e2IswhVFSKCyiP32NedZ4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; d="scan'208";a="172040264"
+X-IronPort-AV: E=Sophos;i="6.15,309,1739865600"; d="scan'208";a="146142029"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.254.155])
  ([10.245.254.155])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2025 06:33:29 -0700
-Message-ID: <0ddec057-9ef8-48ff-a7fb-ceb736452531@linux.intel.com>
-Date: Fri, 23 May 2025 15:33:27 +0200
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 May 2025 06:56:56 -0700
+Message-ID: <9696a2b7-e85a-4fc1-b400-c16f4df1c31a@linux.intel.com>
+Date: Fri, 23 May 2025 15:56:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 6/8] tests/intel/xe_sriov*: fixup print/scan
- formatting for files in tests
-To: Jan Sokolowski <jan.sokolowski@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-References: <20250519113010.125751-1-jan.sokolowski@intel.com>
- <20250519113010.125751-7-jan.sokolowski@intel.com>
-Content-Language: en-US
+Subject: Re: [PATCH i-g-t] tests/intel/xe_eu_stall: Skip test on SR-IOV VF
 From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250519113010.125751-7-jan.sokolowski@intel.com>
+To: "Kolakowski, Jakub1" <jakub1.kolakowski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Chegondi, Harish" <harish.chegondi@intel.com>,
+ "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ "Laguna, Lukasz" <lukasz.laguna@intel.com>
+References: <20250522172441.3914198-1-jakub1.kolakowski@intel.com>
+ <9eb53198-a170-4cb2-9f31-db5f3dbeb60d@linux.intel.com>
+ <SJ0PR11MB6696245EB0A05F188D95AF06AC98A@SJ0PR11MB6696.namprd11.prod.outlook.com>
+ <86c5c139-26e7-4862-85ae-3b838c514cf1@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <86c5c139-26e7-4862-85ae-3b838c514cf1@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,125 +79,87 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-On 5/19/2025 1:30 PM, Jan Sokolowski wrote:
-> Compiling on other architectures than x86-64 causes a lot
-> of print/scan formatting warnings.
+On 5/23/2025 3:11 PM, Bernatowicz, Marcin wrote:
+> Hi Jakub,
 > 
-> Fix formatting by using proper formatters, eg. PRIu64.
+> On 5/23/2025 2:23 PM, Kolakowski, Jakub1 wrote:
+>> Hi Marcin,
+>> I was trying to align the code of the IGT test with kernel code, where 
+>> we have an explicit check for SR-IOV VF.
+>> See https://gitlab.freedesktop.org/drm/tip/-/ 
+>> commit/1d622a4fe2b9a30cd4af2e858d793d05f8a82774
+>>
+And with this approach, the kernel check itself isn't really being tested ;)
+--
+marcin>> Jakub
 > 
-> Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->   tests/intel/xe_sriov_auto_provisioning.c |  6 +++---
->   tests/intel/xe_sriov_flr.c               | 12 ++++++------
->   tests/intel/xe_sriov_scheduling.c        |  4 ++--
->   3 files changed, 11 insertions(+), 11 deletions(-)
+> Still, I wonder if relying on VF checks is the best long-term approach -
+> we might enable the feature on a VF at some point, and the test would 
+> keep skipping.
+> What about other apps using this feature - how should they detect 
+> availability?
+> If they just try to use it on a VF, do they get ENODEV or something else?
+> Wouldn’t it be more robust to base this on a real feature check from 
+> userspace if possible?
+> -- 
+> marcin
 > 
-> diff --git a/tests/intel/xe_sriov_auto_provisioning.c b/tests/intel/xe_sriov_auto_provisioning.c
-> index 9ef5ed79a..451c3c5ca 100644
-> --- a/tests/intel/xe_sriov_auto_provisioning.c
-> +++ b/tests/intel/xe_sriov_auto_provisioning.c
-> @@ -58,7 +58,7 @@ static int ranges_fair_allocation(enum xe_sriov_shared_res res,
->   		uint64_t current_allocation = ranges[i].end - ranges[i].start + 1;
->   
->   		if (igt_debug_on_f(current_allocation != expected_allocation,
-> -				   "%s: Allocation mismatch, expected=%lu VF%u=%lu\n",
-> +				   "%s: Allocation mismatch, expected=%" PRIu64 " VF%u=%" PRIu64 "\n",
->   				   xe_sriov_debugfs_provisioned_attr_name(res),
->   				   expected_allocation, ranges[i].vf_id,
->   				   current_allocation)) {
-> @@ -183,8 +183,8 @@ static int check_no_overlap(int pf_fd, unsigned int num_vfs, unsigned int gt_id,
->   	for (unsigned int i = 0; i < num_vfs - 1; i++)
->   		if (ranges[i].end >= ranges[i + 1].start) {
->   			igt_debug((res == XE_SRIOV_SHARED_RES_GGTT) ?
-> -				  "Overlapping ranges: VF%u [%lx-%lx] and VF%u [%lx-%lx]\n" :
-> -				  "Overlapping ranges: VF%u [%lu-%lu] and VF%u [%lu-%lu]\n",
-> +				  "Overlapping ranges: VF%u [%" PRIx64 "-%" PRIx64 "] and VF%u [%" PRIx64 "-%" PRIx64 "]\n" :
-> +				  "Overlapping ranges: VF%u [%" PRIu64 "-%" PRIu64 "] and VF%u [%" PRIu64 "-%" PRIu64 "]\n",
->   				  ranges[i].vf_id, ranges[i].start, ranges[i].end,
->   				  ranges[i + 1].vf_id, ranges[i + 1].start, ranges[i + 1].end);
->   			free(ranges);
-> diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-> index a98d6ce70..91d9730fa 100644
-> --- a/tests/intel/xe_sriov_flr.c
-> +++ b/tests/intel/xe_sriov_flr.c
-> @@ -562,7 +562,7 @@ static int populate_ggtt_pte_offsets(struct ggtt_data *gdata)
->   			continue;
->   
->   		if (vf_id < 1 || vf_id > num_vfs) {
-> -			set_skip_reason(&gdata->base, "Unexpected VF%u at range entry %u [%#lx-%#lx], num_vfs=%u\n",
-> +			set_skip_reason(&gdata->base, "Unexpected VF%u at range entry %u [%#" PRIx64 "-%#" PRIx64 "], num_vfs=%u\n",
->   					vf_id, i, ranges[i].start, ranges[i].end, num_vfs);
->   			free(ranges);
->   			return -1;
-> @@ -634,7 +634,7 @@ static void ggtt_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
->   		if (!set_pte_gpa(&gdata->ggtt, gdata->mmio, data->gt, pte_offset,
->   				 (uint8_t)vf_id, &pte)) {
->   			set_skip_reason(data,
-> -					"Prepare VF%u failed, unexpected gpa: Read PTE: %#lx at offset: %#x\n",
-> +					"Prepare VF%u failed, unexpected gpa: Read PTE: %#" PRIx64 " at offset: %#x\n",
->   					vf_id, pte, pte_offset);
->   			return;
->   		}
-> @@ -655,7 +655,7 @@ static void ggtt_subcheck_verify_vf(int vf_id, int flr_vf_id, struct subcheck_da
->   		if (!check_pte_gpa(&gdata->ggtt, gdata->mmio, data->gt, pte_offset,
->   				   expected, &pte)) {
->   			set_fail_reason(data,
-> -					"GGTT check after VF%u FLR failed on VF%u: Read PTE: %#lx at offset: %#x\n",
-> +					"GGTT check after VF%u FLR failed on VF%u: Read PTE: %#" PRIx64 " at offset: %#x\n",
->   					flr_vf_id, vf_id, pte, pte_offset);
->   			return;
->   		}
-> @@ -712,7 +712,7 @@ static void *mmap_vf_lmem(int pf_fd, int vf_num, size_t length, int prot, off_t
->   	}
->   
->   	if (st.st_size < length) {
-> -		igt_debug("Mapping length (%lu) exceeds BAR2 size (%lu)\n", length, st.st_size);
-> +		igt_debug("Mapping length (%zu) exceeds BAR2 size (%" PRIo64 ")\n", length, st.st_size);
+>>
+>> -----Original Message-----
+>> From: Bernatowicz, Marcin <marcin.bernatowicz@linux.intel.com>
+>> Sent: Friday, May 23, 2025 12:40 PM
+>> To: Kolakowski, Jakub1 <jakub1.kolakowski@intel.com>; igt- 
+>> dev@lists.freedesktop.org
+>> Cc: Chegondi, Harish <harish.chegondi@intel.com>; Dixit, Ashutosh 
+>> <ashutosh.dixit@intel.com>; Adam Miszczak 
+>> <adam.miszczak@linux.intel.com>; Laguna, Lukasz <lukasz.laguna@intel.com>
+>> Subject: Re: [PATCH i-g-t] tests/intel/xe_eu_stall: Skip test on SR- 
+>> IOV VF
+>>
+>>
+>>
+>> On 5/22/2025 7:24 PM, Jakub Kolakowski wrote:
+>>> EU stall sampling is not supported on SR-IOV VF. Skip the test on
+>>> SR-IOV VF.
+>>>
+>>> Cc: Harish Chegondi <harish.chegondi@intel.com>
+>>> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>>> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+>>> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+>>> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>>> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+>>> ---
+>>>    tests/intel/xe_eu_stall.c | 3 ++-
+>>>    1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
+>>> index 411c30871..aa94d9565 100644
+>>> --- a/tests/intel/xe_eu_stall.c
+>>> +++ b/tests/intel/xe_eu_stall.c
+>>> @@ -44,6 +44,7 @@
+>>>    #include "igt.h"
+>>>    #include "igt_core.h"
+>>> +#include "igt_sriov_device.h"
+>>>    #include "xe_drm.h"
+>>>    #include "xe/xe_ioctl.h"
+>>> @@ -653,7 +654,7 @@ igt_main_args("e:g:o:r:u:w:", long_options, 
+>>> help_str, opt_handler, NULL)
+>>>            drm_fd = drm_open_driver(DRIVER_XE);
+>>>            igt_require_fd(drm_fd);
+>>>            devid = intel_get_drm_devid(drm_fd);
+>>> -        igt_require(IS_PONTEVECCHIO(devid) || 
+>>> intel_graphics_ver(devid) >= IP_VER(20, 0));
+>>> +        igt_require(!intel_is_vf_device(drm_fd) && 
+>>> (IS_PONTEVECCHIO(devid)
+>>> +|| intel_graphics_ver(devid) >= IP_VER(20, 0)));
+>>>            igt_require_f(igt_get_gpgpu_fillfunc(devid), "no gpgpu- 
+>>> fill function\n");
+>>>            igt_require_f(!stat(OBSERVATION_PARANOID, &sb), "no 
+>>> observation_paranoid file\n");
+>>>            if (output_file) {
+>>
+>> Don't we have another option to check the feature is unavailable (ex. 
+>> an ioctl returning ENODEV) ?
+>>
+> 
 
-Why PRIo64 ?
-
->   		close(fd);
->   		return NULL;
->   	}
-> @@ -750,7 +750,7 @@ static bool lmem_write_pattern(struct lmem_info *lmem, char value, size_t start,
->   
->   	for (; start < lmem->size; start += step) {
->   		read = lmem_write_readback(lmem->addr, start, value);
-> -		if (igt_debug_on_f(read != value, "LMEM[%lu]=%u != %u\n", start, read, value))
-> +		if (igt_debug_on_f(read != value, "LMEM[%zu]=%u != %u\n", start, read, value))
->   			return false;
->   	}
->   	return true;
-> @@ -765,7 +765,7 @@ static bool lmem_contains_expected_values_(struct lmem_info *lmem,
->   	for (; start < lmem->size; start += step) {
->   		read = lmem_read(lmem->addr, start);
->   		if (igt_debug_on_f(read != expected,
-> -				   "LMEM[%lu]=%u != %u\n", start, read, expected))
-> +				   "LMEM[%zu]=%u != %u\n", start, read, expected))
->   			return false;
->   	}
->   	return true;
-> diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
-> index 2cd18c982..d69315690 100644
-> --- a/tests/intel/xe_sriov_scheduling.c
-> +++ b/tests/intel/xe_sriov_scheduling.c
-> @@ -346,7 +346,7 @@ static void compute_common_time_frame_stats(struct subm_set *set)
->   			common_end = stats->end_timestamp;
->   	}
->   
-> -	igt_info("common time frame: [%lu;%lu] %.2fms\n",
-> +	igt_info("common time frame: [%" PRIu64 ";%" PRIu64 "] %.2fms\n",
->   		 common_start, common_end, (common_end - common_start) / 1e6);
->   
->   	if (igt_warn_on_f(common_end <= common_start, "No common time frame for all sets found\n"))
-> @@ -671,7 +671,7 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
->   	int preemptible_end = 1;
->   	uint8_t vf_ids[num_vfs + 1 /*PF*/];
->   
-> -	igt_info("eq=%ums pt=%uus duration=%lums num_vfs=%d job_timeout=%ums\n",
-> +	igt_info("eq=%ums pt=%uus duration=%" PRIu64 "ms num_vfs=%d job_timeout=%ums\n",
->   		 vf_sched_params.exec_quantum_ms, vf_sched_params.preempt_timeout_us,
->   		 duration_ms, num_vfs, job_timeout_ms);
->   
