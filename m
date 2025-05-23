@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E8DEC54ED0
-	for <igt-dev@archiver.kernel.org>; Fri, 23 May 2025 08:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA934C54ED0
+	for <igt-dev@archiver.kernel.org>; Fri, 23 May 2025 08:02:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3274810E7B8;
-	Fri, 23 May 2025 08:01:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A0D4110E7B9;
+	Fri, 23 May 2025 08:02:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FEfCn/ov";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gG0MvhAp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60D0810E7B8
- for <igt-dev@lists.freedesktop.org>; Fri, 23 May 2025 08:01:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3767610E7B9
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 May 2025 08:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747987317; x=1779523317;
+ t=1747987321; x=1779523321;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=x4b2ncgWo3jf7udMwWoGaPY57YGtxg3X4TSi65rEsgI=;
- b=FEfCn/ovn3g5anyldLyF6/h60+I6aQViy3LWdxhNHuHK/GRNQ0obRjKY
- iBu5N5zsDVoN4rZ3WrOuOZSo73i/uvvaZh96iMbnE2Hb2S8C1UTgFuANE
- utUdNcfrpxiH9Ufm58+Fza6y3InnRxHfowOPOdZH8SjBazlXbmpEKjZVo
- 902z/qcEG1A12Fw/KrSQEv4nu5ZDv3fdmhqHR/isz+eC1XEPzoFGj66a9
- 2oc6LCed+hM2IN3u5AqBu2Pbo1eIxM0ZvX6agp7LHojM8ciGWKUzcd0HU
- V+oLLKVShE/cpwfmM1qmpZErom/aYGrlPIvoDtdrlk4xSL5EoF29xPGfC w==;
-X-CSE-ConnectionGUID: N6YkroZwQWKoBkV5Mi/5yA==
-X-CSE-MsgGUID: IeW11CaWQDGlw1FseCB3Fg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="50091236"
-X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; d="scan'208";a="50091236"
+ bh=va9MN9rYT/VoVyYmd+L6URtF9eoALpGvCR9gddr1hwk=;
+ b=gG0MvhApQY10QVG0BJDrGFWinQz4o8W61j5UkUE+Kq7nlx0JxE1O5ZTC
+ H2YlQCmYalHl2P0DKkZJf0DTWa32nNPbKER0E1XxYzRlOF1UnKPzPfL0R
+ a2z4M73fkpen6IVGNrKE9ScyeBaLE+RlHGv8ZG5ozulUntonyPbT9mQJv
+ SkbGSPbwNtR+lnY7kr9Pw+YjZLAMaqSCR/VAJHShvsqbNxUBNZ8WR5B18
+ J4v8KKYc8+XY9aHah0Nf712XsBvztQ5a+jhh0Y3WmZ+MDZNjMDOKOCNWr
+ u+gTSCBYljfTD8VGQ5EOrqphycebARqy29JCdFEpDBnZ1idocAD+0Htpt Q==;
+X-CSE-ConnectionGUID: 9v+a/gyYTYiPastiS2qKBw==
+X-CSE-MsgGUID: si3jpzSsQXSNkpnkhspWsg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="50091252"
+X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; d="scan'208";a="50091252"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2025 01:01:57 -0700
-X-CSE-ConnectionGUID: U6FkvePYTLKktq8xtG5Ufg==
-X-CSE-MsgGUID: wPpaYyDBTQOZafVWAeUQ6A==
+ 23 May 2025 01:02:01 -0700
+X-CSE-ConnectionGUID: ojjfZDY7T8W1r+BY1dcv7w==
+X-CSE-MsgGUID: nuP3vrvXSWO1Z1yvnxjC5w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; d="scan'208";a="146269965"
+X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; d="scan'208";a="146270055"
 Received: from oandoniu-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.56])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2025 01:01:56 -0700
+ 23 May 2025 01:01:59 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t v3 06/11] tests/xe_copy_basic: replace size to rect
- which keeps objects geometry
-Date: Fri, 23 May 2025 10:01:21 +0200
-Message-ID: <20250523080126.75295-7-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v3 07/11] tests/xe_copy_basic: add testcase with large
+ buffer size
+Date: Fri, 23 May 2025 10:01:22 +0200
+Message-ID: <20250523080126.75295-8-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250523080126.75295-1-zbigniew.kempczynski@intel.com>
 References: <20250523080126.75295-1-zbigniew.kempczynski@intel.com>
@@ -71,124 +71,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Testing byte/page + linear/matrix mem-copy requires passing different
-pitch/width/height so replace simple size to geometry.
-
-Change mem-copy and mem-set to use rect instead of size for
-copying bytes.
+Maximum possible size for mem-copy/byte is 256KiB. Verify intel_blt
+is able to emit multiple mem-copy commands to copy buffer which
+is larger than 256KiB.
 
 Cc: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/xe_copy_basic.c | 44 +++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 16 deletions(-)
+ tests/intel/xe_copy_basic.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index f252d29fd4..569f250cc4 100644
+index 569f250cc4..bed3e39426 100644
 --- a/tests/intel/xe_copy_basic.c
 +++ b/tests/intel/xe_copy_basic.c
-@@ -19,6 +19,13 @@
- 
- #define MEM_FILL 0x8b
- 
-+struct rect {
-+	uint32_t pitch;
-+	uint32_t width;
-+	uint32_t height;
-+	enum blt_memop_mode mode;
-+};
-+
- /**
-  * TEST: Test to validate copy commands on xe
-  * Category: Core
-@@ -42,7 +49,9 @@
+@@ -46,6 +46,7 @@ struct rect {
+  * @0x3fff: 0x3fff
+  * @0xfd: 0xfd
+  * @0xfffe: 0xfffe
++ * @0x8fffe: 0x8fffe
   */
  static void
  mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
--	 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
-+	 enum blt_memop_type type, enum blt_memop_mode mode,
-+	 uint32_t size, uint32_t pitch,
-+	 uint32_t width, uint32_t height, uint32_t region)
- {
- 	struct blt_mem_copy_data mem = {};
- 	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
-@@ -125,13 +134,15 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
- 	munmap(mem.dst.ptr, size);
- }
- 
--static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t region)
-+static void copy_test(int fd, struct rect *rect, enum blt_cmd_type cmd, uint32_t region)
- {
- 	struct drm_xe_engine_class_instance inst = {
- 		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
- 	};
--	uint32_t src_handle, dst_handle, vm, exec_queue, src_size, dst_size;
--	uint32_t bo_size = ALIGN(size, xe_get_default_alignment(fd));
-+	uint32_t src_handle, dst_handle, vm, exec_queue;
-+	uint32_t pitch = rect->pitch ?: rect->width;
-+	uint32_t blocksize = rect->mode == MODE_PAGE ? pitch << 8 : pitch;
-+	uint32_t bo_size = ALIGN(blocksize * rect->height, xe_get_default_alignment(fd));
- 	intel_ctx_t *ctx;
- 
- 	src_handle = xe_bo_create(fd, 0, bo_size, region, 0);
-@@ -140,13 +151,11 @@ static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t reg
- 	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
- 	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
- 
--	src_size = bo_size;
--	dst_size = bo_size;
--
- 	if (cmd == MEM_COPY)
--		mem_copy(fd, src_handle, dst_handle, ctx, src_size, size, 1, region);
-+		mem_copy(fd, src_handle, dst_handle, ctx, TYPE_LINEAR, rect->mode,
-+			 bo_size, pitch, rect->width, rect->height, region);
- 	else if (cmd == MEM_SET)
--		mem_set(fd, dst_handle, ctx, dst_size, size, 1, MEM_FILL, region);
-+		mem_set(fd, dst_handle, ctx, bo_size, rect->width, 1, MEM_FILL, region);
- 
- 	gem_close(fd, src_handle);
- 	gem_close(fd, dst_handle);
-@@ -160,7 +169,10 @@ igt_main
- 	int fd;
- 	struct igt_collection *set, *regions;
- 	uint32_t region;
--	uint64_t size[] = {0xFD, 0x369, 0x3FFF, 0xFFFE};
-+	struct rect linear[] = { { 0, 0xfd, 1 },
-+				 { 0, 0x369, 1 },
-+				 { 0, 0x3fff, 1 },
-+				 { 0, 0xfffe, 1 } };
+@@ -99,6 +100,7 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
+  * @0x3fff: 0x3fff
+  * @0xfd: 0xfd
+  * @0xfffe: 0xfffe
++ * @0x8fffe: 0x8fffe
+  */
+ static void
+ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
+@@ -172,7 +174,8 @@ igt_main
+ 	struct rect linear[] = { { 0, 0xfd, 1 },
+ 				 { 0, 0x369, 1 },
+ 				 { 0, 0x3fff, 1 },
+-				 { 0, 0xfffe, 1 } };
++				 { 0, 0xfffe, 1 },
++				 { 0, 0x8fffe, 1 } };
  
  	igt_fixture {
  		fd = drm_open_driver(DRIVER_XE);
-@@ -170,22 +182,22 @@ igt_main
- 					       DRM_XE_MEM_REGION_CLASS_VRAM);
- 	}
- 
--	for (int i = 0; i < ARRAY_SIZE(size); i++) {
--		igt_subtest_f("mem-copy-linear-0x%"PRIx64"", size[i]) {
-+	for (int i = 0; i < ARRAY_SIZE(linear); i++) {
-+		igt_subtest_f("mem-copy-linear-0x%x", linear[i].width) {
- 			igt_require(blt_has_mem_copy(fd));
- 			for_each_variation_r(regions, 1, set) {
- 				region = igt_collection_get_value(regions, 0);
--				copy_test(fd, size[i], MEM_COPY, region);
-+				copy_test(fd, &linear[i], MEM_COPY, region);
- 			}
- 		}
- 	}
- 
--	for (int i = 0; i < ARRAY_SIZE(size); i++) {
--		igt_subtest_f("mem-set-linear-0x%"PRIx64"", size[i]) {
-+	for (int i = 0; i < ARRAY_SIZE(linear); i++) {
-+		igt_subtest_f("mem-set-linear-0x%x", linear[i].width) {
- 			igt_require(blt_has_mem_set(fd));
- 			for_each_variation_r(regions, 1, set) {
- 				region = igt_collection_get_value(regions, 0);
--				copy_test(fd, size[i], MEM_SET, region);
-+				copy_test(fd, &linear[i], MEM_SET, region);
- 			}
- 		}
- 	}
 -- 
 2.43.0
 
