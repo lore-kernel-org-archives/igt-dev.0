@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D163EC5AD49
-	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 08:06:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D13AC5B549
+	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 08:06:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6762610E297;
-	Mon, 26 May 2025 08:06:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14B4910E2A6;
+	Mon, 26 May 2025 08:06:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MakmIwhw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hG7cpvvc";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24C6810E292
- for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 08:06:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A69810E293
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 08:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748246806; x=1779782806;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=QgJjeAj6OEMWs03FIM5ABM4RmamaC9Clg1UdMZKsALo=;
- b=MakmIwhwJfNF6Qv8Xfi9NdQvA2btdf2DKEbrPl3jYhQqNuyCGcW5eQrs
- kcumXaxKQyJyVA11J7WTtIdO3CNTQVT+8ITGNdfHCWXpvIuon4TUJj3xw
- 3OSiy4LRSU5WL0/JVehrZgbcVf1iIBdL0/lLerWwtRSv5fBbEkQyDxrZ5
- 3eSMuXQHuz9/NS5ilkZHFKhZox2PzwBZj5wN/XjgLc2JylbJh4ZnyEhM/
- 1VI5nipcFyTKzq6ygkSsSzPo7aESxNxOC+zkRky6j8DcVADXomzmhaJ8t
- 0aT2Cah6BBr5D2jSC9a0XIWL2pnIM5TM3rJ1PsNHMq/3hJJ6nZdhUybq+ Q==;
-X-CSE-ConnectionGUID: FAOWbdD4RX+djpc3DkcO1A==
-X-CSE-MsgGUID: 1oDq/zTURIaylIQaK47tJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="67762827"
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="67762827"
+ t=1748246811; x=1779782811;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=3MRiGhQcBzfzAk3NKdQRLLnY5yUnyQ5HwN53LofnRVk=;
+ b=hG7cpvvc/i3wQRruXalH16+6PCTZ3Q8xHQiKwclTnlEh1EpuufXqxKjB
+ c4aSb/6LsedIrjtd9A38GEY7pEJleQv/p5otS4+ys6DawFOsZonJoeFJG
+ YFhXK3BqY5CQ44K9PFlZFOMpPA3DDDXnK3a1tQsk0LeQtkxJcqlvAYtqW
+ CikR9JJtN7e25kC6yasp+LjgCDKH+rDB3URmouIOYjumTmWFe5e+/YVOL
+ 6Qe4C+iAgza0U5vYiHxmMe/fpdy6RXQ30xXfemUcELXezLhs2bfg/J+Ot
+ rTtxp9JB8c80R0L3X7gQDTOYczeFNtMBO9vd6kaZMcQQ6ns54xks2n3Ff Q==;
+X-CSE-ConnectionGUID: jNMqLCZkR8mGE4PJxbCH8Q==
+X-CSE-MsgGUID: IP207Kr9RUmPqUeCQGnWYg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="67762839"
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="67762839"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2025 01:06:46 -0700
-X-CSE-ConnectionGUID: 7XKoCHyqQYCsJlw2ICLAuQ==
-X-CSE-MsgGUID: L/Vfd1zFT8OeEYjQhbMeNQ==
+ 26 May 2025 01:06:51 -0700
+X-CSE-ConnectionGUID: w6RyxmsnTUqglyJ9AuQ3PQ==
+X-CSE-MsgGUID: gZB/KmxHQBav2GVGHR4fjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="142208341"
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="142208372"
 Received: from artdev273.igk.intel.com ([172.28.176.71])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2025 01:06:44 -0700
+ 26 May 2025 01:06:50 -0700
 From: Jan Sokolowski <jan.sokolowski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v3 0/8] Print/scan formatting fixups
-Date: Mon, 26 May 2025 08:07:32 +0000
-Message-Id: <20250526080740.67790-1-jan.sokolowski@intel.com>
+ Riana Tauro <riana.tauro@intel.com>,
+ Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Subject: [PATCH i-g-t v3 4/8] lib/igt_perf: fixup print/scan formatting for
+ files in lib
+Date: Mon, 26 May 2025 08:07:36 +0000
+Message-Id: <20250526080740.67790-5-jan.sokolowski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250526080740.67790-1-jan.sokolowski@intel.com>
+References: <20250526080740.67790-1-jan.sokolowski@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,61 +70,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-It was found that when compiling for other architectures,
-due to difference in how these architectures recognize
-how integers should be printed, warnings were thrown
-in print/scan functions.
+Compiling on other architectures than x86-64 causes a lot
+of print/scan formatting warnings.
 
-Fix them up using universal formatters like
-for example PRIu64.
+Fix formatting by using proper formatters, eg. SCNx64.
 
 Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+Cc: Riana Tauro <riana.tauro@intel.com>
+Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 ---
+ lib/igt_perf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-v2: various fixes for missing formatters, commit messages, and warnings
-for additional configurations. Added cc's. Split patches into more
-smaller patches. 
-v3: Added rb's from v2. Fixed what had been found in v2 review.
-Rebased to current HEAD, which added more things to correct in xe_pmu.c 
-
----
-
-Jan Sokolowski (8):
-  lib/amdgpu: fixup print/scan formatting for files in lib
-  tests/amdgpu: fixup print/scan formatting for files in tests
-  lib/igt_nouveau: fixup print/scan formatting for files in lib
-  lib/igt_perf: fixup print/scan formatting for files in lib
-  lib/xe/xe_sriov*: fixup print/scan formatting for files in lib
-  tests/intel/xe_sriov*: fixup print/scan formatting for files in tests
-  runner: fixup print/scan formatting for files in runner
-  tests/intel: fixup print/scan formatting for files in intel tests
-
- lib/amdgpu/amd_deadlock_helpers.c        | 19 ++++++++++---------
- lib/igt_nouveau.c                        |  2 +-
- lib/igt_perf.c                           |  3 ++-
- lib/xe/xe_sriov_debugfs.c                | 18 +++++++++---------
- lib/xe/xe_sriov_provisioning.c           |  2 +-
- runner/executor.c                        |  2 +-
- runner/settings.c                        |  2 +-
- tests/amdgpu/amd_freesync_video_mode.c   |  4 ++--
- tests/amdgpu/amd_info.c                  |  2 +-
- tests/amdgpu/amd_ras.c                   |  2 +-
- tests/intel/xe_compute_preempt.c         |  5 +++--
- tests/intel/xe_eu_stall.c                |  4 ++--
- tests/intel/xe_eudebug.c                 |  4 ++--
- tests/intel/xe_exec_capture.c            |  9 +++++----
- tests/intel/xe_exec_system_allocator.c   |  8 ++++----
- tests/intel/xe_oa.c                      |  6 +++---
- tests/intel/xe_pmu.c                     | 12 ++++++------
- tests/intel/xe_render_copy.c             |  2 +-
- tests/intel/xe_sriov_auto_provisioning.c |  6 +++---
- tests/intel/xe_sriov_flr.c               | 12 ++++++------
- tests/intel/xe_sriov_scheduling.c        |  4 ++--
- 21 files changed, 66 insertions(+), 62 deletions(-)
-
+diff --git a/lib/igt_perf.c b/lib/igt_perf.c
+index fb2b73915..2b7170094 100644
+--- a/lib/igt_perf.c
++++ b/lib/igt_perf.c
+@@ -5,6 +5,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/stat.h>
++#include <inttypes.h>
+ #ifdef __linux__
+ #include <sys/sysinfo.h>
+ #include <sys/sysmacros.h>
+@@ -157,7 +158,7 @@ int perf_event_config(const char *device, const char *event, uint64_t *config)
+ 		return -EINVAL;
+ 
+ 	buf[bytes] = '\0';
+-	ret = sscanf(buf, "event=0x%lx", config);
++	ret = sscanf(buf, "event=0x%" SCNx64, config);
+ 	if (ret != 1)
+ 		return -EINVAL;
+ 
 -- 
 2.34.1
 
