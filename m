@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F87C5AD49
-	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 08:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A6F0C54FB3
+	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 08:06:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 058A610E292;
-	Mon, 26 May 2025 08:06:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 32A0810E295;
+	Mon, 26 May 2025 08:06:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JIzS3duM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i+9SaFk8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5989810E292
- for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 08:06:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D29CA10E09C
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 08:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748246807; x=1779782807;
+ t=1748246809; x=1779782809;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6j6LJP5ghHgFU9WtaBD790QLsZcVhN1Edv1OXdW71fo=;
- b=JIzS3duMA+tAbxUTvTjrBic2e3LmSC22d189+y616Ci+JAtRdf4vJfwJ
- x3lneK0ziktKqI/mfMvl9I8YhJNxGa1CmL6n4403opGlw9L5ELNV7pm+G
- aMCtkrM8AmBZZcX7OBjwbF1YadKrdhtUOo53F93aL+qCPeGQorBM/98jC
- 7EnHrX3EHJvmBMXNzZuDdNI0W/ETVVb9v1GtOnLv3wewQS1QL9dxEk1f2
- V4JLfiX3Q4NW6qniuGdBMogbZuCrm8uYqc3W7E0B+kI/qmaf9PPrVIRIP
- CO78DFm4BTJ0RnrBols83nA05tMz+7JPLrMiJ7xhSDVHCQku/GGxsbgCz w==;
-X-CSE-ConnectionGUID: 2M98xYPaRhSLsJQ7w/HEyw==
-X-CSE-MsgGUID: Rha6iNoWTSGuPJH8+jpWbA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="67762831"
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="67762831"
+ bh=4F1f5WhyywboKgLEgL6BQJmGL63JwTTAQ4aVd35mLbI=;
+ b=i+9SaFk8QRPgngEJ+eSnD6Z2XVCoPK8mXmqXxwwy6DTQL3tw6bofNRSr
+ fVQFfrdqfpoCvtprTGyfeYSHQJ/zKWJV5ybLg0HFhJhY/f9ng+Me0CfCM
+ yElEV5mIbRe6tPgcQTp49RlEXwZL6+FmhbtVEslsLAuvr3mmCEAvNESE8
+ z93t23Cozr4P3itxqhHpSjsuKSIeUvUezcVD47bnaoVY+k+Gq9pY98nje
+ nWZHewesU7aD7/m2zjCbUd1kP4lIwEKSq8ks7IRF2xbCBV65pREG3YHnE
+ wDlVtI2hWvisuX6+Lmj9gaf0/qboDCZjdCuzLzLH3yVdlIMswWrMgsgbO Q==;
+X-CSE-ConnectionGUID: Gw2DZZj9TYCIMNANwTEiTg==
+X-CSE-MsgGUID: cbnudZjFS8S/5e9VhALyFA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="67762836"
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="67762836"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2025 01:06:47 -0700
-X-CSE-ConnectionGUID: llOulOjqTu2HaXse5+CZeQ==
-X-CSE-MsgGUID: sdiUPUb6Q4Sw3WErQMrrig==
+ 26 May 2025 01:06:48 -0700
+X-CSE-ConnectionGUID: RbG51JXBTwa4q/MpnJjAvA==
+X-CSE-MsgGUID: AOi8lomvSv+LAe8RMv6oJg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="142208349"
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="142208355"
 Received: from artdev273.igk.intel.com ([172.28.176.71])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2025 01:06:46 -0700
+ 26 May 2025 01:06:47 -0700
 From: Jan Sokolowski <jan.sokolowski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
  George Zhang <george.zhang@amd.com>,
  Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: [PATCH i-g-t v3 1/8] lib/amdgpu: fixup print/scan formatting for
- files in lib
-Date: Mon, 26 May 2025 08:07:33 +0000
-Message-Id: <20250526080740.67790-2-jan.sokolowski@intel.com>
+Subject: [PATCH i-g-t v3 2/8] tests/amdgpu: fixup print/scan formatting for
+ files in tests
+Date: Mon, 26 May 2025 08:07:34 +0000
+Message-Id: <20250526080740.67790-3-jan.sokolowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250526080740.67790-1-jan.sokolowski@intel.com>
 References: <20250526080740.67790-1-jan.sokolowski@intel.com>
@@ -76,98 +76,62 @@ of print/scan formatting warnings.
 Fix formatting by using proper formatters, eg. PRIu64.
 
 Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Reviewed-by Vitaly Prosyak <vitaly.prosyak at amd.com>
 Cc: George Zhang <george.zhang@amd.com>
 Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_deadlock_helpers.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ tests/amdgpu/amd_freesync_video_mode.c | 4 ++--
+ tests/amdgpu/amd_info.c                | 2 +-
+ tests/amdgpu/amd_ras.c                 | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-index 98251061c..1fcaa6745 100644
---- a/lib/amdgpu/amd_deadlock_helpers.c
-+++ b/lib/amdgpu/amd_deadlock_helpers.c
-@@ -4,6 +4,7 @@
-  */
+diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
+index 7716598dc..adfc8a810 100644
+--- a/tests/amdgpu/amd_freesync_video_mode.c
++++ b/tests/amdgpu/amd_freesync_video_mode.c
+@@ -482,7 +482,7 @@ static int prepare_custom_mode(
+ 	den = refresh_rate * 1000 * (unsigned long long)base_mode->htotal;
+ 	target_vtotal = num / den;
+ 	target_vtotal_diff = target_vtotal - base_mode->vtotal;
+-	igt_debug("num=%lu, den=%lu, target_vtotal=%lu, target_vtotal_diff=%lu, base_mode->vtotal=%d\n",
++	igt_debug("num=%" PRIu64 ", den=%" PRIu64 ", target_vtotal=%" PRIu64 ", target_vtotal_diff=%" PRIu64 ", base_mode->vtotal=%d\n",
+ 		num, den, target_vtotal, target_vtotal_diff, base_mode->vtotal);
  
- #include <amdgpu.h>
-+#include <inttypes.h>
- #include "amdgpu_drm.h"
- #include "amd_PM4.h"
- #include "amd_sdma.h"
-@@ -249,13 +250,13 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
- 			if (support_page) {
- 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
- 							0x3 << ring_id, sysfs);
--				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
-+				igt_info("Disable other rings, keep ring: %" PRIu64 " and %" PRIu64 " enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
- 				ring_id++;
+ 	/* Check for illegal modes */
+@@ -634,7 +634,7 @@ flip_and_measure(
+ 	do_flip(data);
+ 	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
+ 							DRM_EVENT_FLIP_COMPLETE);
+-	igt_debug("interval_ns=%lu\n", interval_ns);
++	igt_debug("interval_ns=%" PRIu64 "\n", interval_ns);
  
- 			} else {
- 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
- 							0x1 << ring_id, sysfs);
--				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
-+				igt_info("Disable other rings, keep only ring: %" PRIu64 " enabled, cmd: %s\n", ring_id, cmd);
+ 	for (;;) {
+ 		uint64_t event_ns, wait_ns;
+diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
+index 53706003f..ace739da4 100644
+--- a/tests/amdgpu/amd_info.c
++++ b/tests/amdgpu/amd_info.c
+@@ -73,7 +73,7 @@ query_timestamp_test(amdgpu_device_handle dev, uint32_t sleep_time, int sample_c
+ 
+ 		/* make sure the GPU timestamps are ordered */
+ 		igt_assert_f(gpu_delta > 0,
+-			     "The GPU time is not moving or is ticking in the wrong direction (start=%lu, end=%lu, end-start=%lu)\n",
++			     "The GPU time is not moving or is ticking in the wrong direction (start=%" PRIu64 ", end=%" PRIu64 ", end-start=%" PRIu64 "\n",
+ 			     ts_start, ts_end, gpu_delta);
+ 
+ 		igt_stats_push_float(&stats, corrected_gpu_delta / cpu_delta);
+diff --git a/tests/amdgpu/amd_ras.c b/tests/amdgpu/amd_ras.c
+index c9307395a..fdf1bc27d 100644
+--- a/tests/amdgpu/amd_ras.c
++++ b/tests/amdgpu/amd_ras.c
+@@ -765,7 +765,7 @@ __amdgpu_ras_ip_inject_test(struct amd_ras_single_test_setup *test,
  			}
- 			r = system(cmd);
- 			igt_assert_eq(r, 0);
-@@ -266,7 +267,7 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
- 
- 	/* recover the sched mask */
- 	if (sched_mask > 1) {
--		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
-+		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" SCNx64 " > %s", sched_mask, sysfs);
- 		r = system(cmd);
- 		igt_assert_eq(r, 0);
- 	}
-@@ -523,12 +524,12 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
- 			if (support_page) {
- 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
- 						0x3 << ring_id, sysfs);
--				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
-+				igt_info("Disable other rings, keep ring: %" PRIu64 " and %" PRIu64 " enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
- 				ring_id++;
- 			} else {
- 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
- 						0x1 << ring_id, sysfs);
--				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
-+				igt_info("Disable other rings, keep only ring: %" PRIu64 " enabled, cmd: %s\n", ring_id, cmd);
- 			}
- 
- 			r = system(cmd);
-@@ -540,7 +541,7 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
- 
- 	/* recover the sched mask */
- 	if (sched_mask > 1) {
--		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
-+		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" PRIx64 " > %s", sched_mask, sysfs);
- 		r = system(cmd);
- 		igt_assert_eq(r, 0);
- 	}
-@@ -592,12 +593,12 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
- 			if (support_page) {
- 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
- 						0x3 << ring_id, sysfs);
--				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
-+				igt_info("Disable other rings, keep ring: %" PRIu64 " and %" PRIu64 " enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
- 				ring_id++;
- 			} else {
- 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
- 						0x1 << ring_id, sysfs);
--				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
-+				igt_info("Disable other rings, keep only ring: %" PRIu64 " enabled, cmd: %s\n", ring_id, cmd);
- 			}
- 
- 			r = system(cmd);
-@@ -609,7 +610,7 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
- 
- 	/* recover the sched mask */
- 	if (sched_mask > 1) {
--		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
-+		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" SCNx64 " > %s", sched_mask, sysfs);
- 		r = system(cmd);
- 		igt_assert_eq(r, 0);
- 	}
+ 			timeout -= 1;
+ 		}
+-		igt_info("\t%4s: test:%s block:%s sub-block:%d error type:%s address:%ld value:%ld\n",
++		igt_info("\t%4s: test:%s block:%s sub-block:%d error type:%s address:%" PRIu64 " value:%" PRIu64 "\n",
+ 				pass ? "Pass" : "Fail",
+ 				ip_test[i].name,
+ 				ip_test[i].block,
 -- 
 2.34.1
 
