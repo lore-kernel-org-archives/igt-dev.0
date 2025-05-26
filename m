@@ -4,61 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCBC7C5AD49
-	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 15:53:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2685FC54FB3
+	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 15:57:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7830810E3DE;
-	Mon, 26 May 2025 15:53:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7DE5A10E3B4;
+	Mon, 26 May 2025 15:57:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OkzMQZ3L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JlCP7ONF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81E6F10E3DE
- for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 15:53:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8872110E3B4
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 15:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748274814; x=1779810814;
+ t=1748275059; x=1779811059;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=nUU1albjlqHkgS30K/6iZlmhVOTX+tEfPztuKQ9WnGI=;
- b=OkzMQZ3L19SxvUQHzTfRLjDDOEaEleXp90PkXmdcg0UDFmX2cTFyGiwT
- kNYyVGzvphzOAIWh3EtFZDHemW7dV2NUoLMeYwxvjpOEhrmHOunnQt7bz
- 8U+UVxHnS5aFUl/3mzu5ivlO3kB6hkND3sOF2Usb30n5nY8mwly0Br5bl
- EL6l/jhZsaKme7oCncDRZmnruIFvftzpkSpW+uVoRGDM7oF/jTBN+pIoF
- HSztw9vHq3Ssp2WfhHGPkxlU7+ZJfIluF8EmSQGMWCXpEDE5Fn17Gw28Y
- 16289yIV70gVy8fYgzllmLN/cgG5A9Voq9SObdgErJe1yGIQAUOIb2RU+ Q==;
-X-CSE-ConnectionGUID: yRD4PGuBTNOlbIuwTRA2Eg==
-X-CSE-MsgGUID: Npv+QD0lT/uRiMnSCI0aGw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11445"; a="50307186"
-X-IronPort-AV: E=Sophos;i="6.15,316,1739865600"; d="scan'208";a="50307186"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2025 08:53:34 -0700
-X-CSE-ConnectionGUID: 3mlDGaDnTiqSa4Typ3qy+Q==
-X-CSE-MsgGUID: rnib0bDNTFmWoq5GOQiSng==
+ mime-version:in-reply-to;
+ bh=mPEO9rXQKnrXFhU+kxxvJ94xsX+YhsGv42D2ZVY7Jlc=;
+ b=JlCP7ONFN9Hf8jVEUfMuBhl5QzDRYrefDklLVSP7wWk3l2hIkgXtt9pt
+ G2U1CxFGMdcSUpoykdcYykxGi/NSOBiz9ekVLXrA8HV5/0SBYShDJAzY2
+ lc854+BhPCbV1ALbmpUimKR5UU57CiGMjOo0Zvr/qcIfKEGKILnO8AMtX
+ nwfcvr7okl/6Nom9nBzl3+PlMzQAJQhTxz6VN1TgrLZULKO6tVzbNaB3C
+ dWiFfd6ta6QKkYmnN2xc5oCJw/c4POsTL/3dadwThgm5EaKocViqtLMWx
+ fSc7EMU4sI2Mr1NGPcRbcJQgHfR9V+J2D4axUyCLkY3htPPSRTI+nTWMi w==;
+X-CSE-ConnectionGUID: FjCg5X1eTxiXvxGR1i+4rQ==
+X-CSE-MsgGUID: Df46J+IrQ/KR+SjO3MIFVw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11445"; a="52880789"
+X-IronPort-AV: E=Sophos;i="6.15,316,1739865600"; d="scan'208";a="52880789"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 May 2025 08:57:39 -0700
+X-CSE-ConnectionGUID: XntWOs90Q/Kns6ZG2EKmhg==
+X-CSE-MsgGUID: zePWBAtkQDu84y2uVHy8NA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,316,1739865600"; d="scan'208";a="147657231"
+X-IronPort-AV: E=Sophos;i="6.15,316,1739865600"; d="scan'208";a="142350152"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2025 08:53:33 -0700
-Date: Mon, 26 May 2025 17:53:30 +0200
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2025 08:57:37 -0700
+Date: Mon, 26 May 2025 17:57:34 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Dorinda Bassey <dbassey@redhat.com>
-Cc: igt-dev@lists.freedesktop.org, javierm@redhat.com, aesteve@redhat.com
-Subject: Re: [PATCH] drm_virtgpu: Add functional coverage for core VirtIO-GPU
- ioctls
-Message-ID: <20250526155330.t6zb4kzx3aj3hjgs@kamilkon-DESK.igk.intel.com>
+To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ kamil.konieczny@intel.com, markyacoub@google.com,
+ seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
+Subject: Re: [PATCH i-g-t v10 1/7] Add stub for procps and glib
+Message-ID: <20250526155734.uc2y6z67f4jnkkij@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Dorinda Bassey <dbassey@redhat.com>, igt-dev@lists.freedesktop.org,
- javierm@redhat.com, aesteve@redhat.com
-References: <20250514102815.1413678-1-dbassey@redhat.com>
- <20250522161904.u4pnwbvxhwncfbyk@kamilkon-DESK.igk.intel.com>
- <CACzuRyzPz7ACirKUpGuEibFqWF3kXV1D-Ur97KeFLdJC-Mu8GA@mail.gmail.com>
+ Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
+ igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ kamil.konieczny@intel.com, markyacoub@google.com,
+ seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
+References: <20250522143419.28888-1-jeevaka.badrappan@intel.com>
+ <20250522143419.28888-2-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACzuRyzPz7ACirKUpGuEibFqWF3kXV1D-Ur97KeFLdJC-Mu8GA@mail.gmail.com>
+In-Reply-To: <20250522143419.28888-2-jeevaka.badrappan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,197 +75,158 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Dorinda,
-On 2025-05-26 at 16:06:07 +0200, Dorinda Bassey wrote:
-> Hi Kamil,
+Hi Jeevaka,
+On 2025-05-22 at 14:34:13 +0000, Jeevaka Prabu Badrappan wrote:
+> From: Sapna <sapna1.singh@intel.com>
 > 
-> Thank you very much for the reviews!
+> As procps, glib are not available in Android, not able to build igt
+> for Android.
 > 
-> please use 'tests/' as a prefix in subject, also change test name,
-> > so instead of
-> > [PATCH] drm_virtgpu: Add functional coverage for core VirtIO-GPU ioctls
-> >
-> > better:
-> > [PATCH] tests/virtgpu: Add functional coverage for core VirtIO-GPU ioctls
-> >
-> Ack, but I would rather prefer to use tests/drm_virtgpu instead considering
-> that I'm testing DRM ioctls for the virtio-GPU driver and this matches
-> other test patterns
+> Provided stub implementations so igt can be compiled for both Android
+> and linux from same code base. Incase of linux systems, system libraries
+> will be used whereas for Android stubs will be used with reduced
+> test coverage.
+> 
+> Signed-off-by: Sapna <sapna1.singh@intel.com>
+> ---
+>  include/android/glib.h   | 49 ++++++++++++++++++++++++++++++++++++++++
+>  include/android/procps.h | 47 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 96 insertions(+)
+>  create mode 100644 include/android/glib.h
+>  create mode 100644 include/android/procps.h
+> 
+> diff --git a/include/android/glib.h b/include/android/glib.h
+> new file mode 100644
+> index 000000000..84654f33b
+> --- /dev/null
+> +++ b/include/android/glib.h
+> @@ -0,0 +1,49 @@
+> +#ifndef _ANDROID_GLIB_H
+> +#define _ANDROID_GLIB_H
 
-Up to you, it could be also tests/drm_virtgpu:
-and a test file drm_virtgpu.c
+imho better: _IGT_ANDROID_GLIB_H
 
-> 
-> I would name them without 'drm-virtgpu-' prefix. Up to you.
-> >
-> I think the drm-virtgpu prefix looks better, I also figured it fits with
-> the igt naming convention, like the drm_mm follows this format.
-> 
-> Could someone from your team help with review?
-> 
-> Sure @Albert Esteve <aesteve@redhat.com> @Javier Martinez Canillas
-> <javierm@redhat.com> could you help?
-> 
-> Please rename it into virtgpu.c:
-> >
-> 
-> > s/drm_virtgpu.c/virtgpu.c/
-> 
-> As per the first reply, I believe drm_virtgpu is better
+> +
+> +#include <stdbool.h>
+> +#include <stdlib.h>
 
-ok
+Add newline.
+
+> +#define G_KEY_FILE_NONE 0
+> +#define G_REGEX_OPTIMIZE 0
+> +
+> +typedef struct _GError {
+> +	int code;
+> +	char *message;
+> +} GError;
+> +
+> +typedef struct _GKeyFile {
+> +	char *key;
+> +	char *value;
+> +} GKeyFile;
+> +
+> +typedef int gint;
+> +typedef size_t gsize;
+> +typedef char gchar;
+> +typedef unsigned char guchar;
+> +typedef void GRegex;
+> +
+> +static inline void g_clear_error(GError **error) { }
+> +static inline void g_error_free(GError *error) { }
+> +static inline const char *g_get_home_dir(void) { return "/data/local/tmp/igt"; }
+
+This looks incorrect, why not just NULL?
+
+> +static inline void g_key_file_free(GKeyFile *file) { }
+> +static inline GKeyFile *g_key_file_new(void) { return NULL; }
+> +static inline int g_key_file_get_integer(GKeyFile *key_file,
+> +	const char *group_name, const char *key, GError **error) { return 0; }
+> +static inline char *g_key_file_get_string(GKeyFile *key_file,
+> +	const char *group_name, const char *key, GError **error) { return NULL; }
+> +static inline bool g_key_file_load_from_file(GKeyFile *key_file,
+> +	const char *file, int flags, GError **error) { return false; }
+> +static inline GRegex *g_regex_new(const char *pattern, int compile_options,
+> +	int match_options, GError **error) { return NULL; }
+> +static inline void g_regex_unref(GRegex *pattern) { };
+> +static gchar *g_base64_encode(const guchar *data, gsize len)
+> +{
+> +	gchar *str = (gchar *)malloc(1);  /* Allocate memory for an empty string */
+> +
+> +	if (str)
+> +		str[0] = '\0';  /* Set the string to be empty */
+
+This also looks incorrect, either implement it or return NULL.
+
+> +
+> +	return str;
+> +}
+> +
+> +#endif /* _ANDROID_GLIB_H */
+> diff --git a/include/android/procps.h b/include/android/procps.h
+> new file mode 100644
+> index 000000000..b428ebe20
+> --- /dev/null
+> +++ b/include/android/procps.h
+> @@ -0,0 +1,47 @@
+> +#ifndef _ANDROID_PROCPS_H
+> +#define _ANDROID_PROCPS_H
+
+Same as above, better _IGT_ANDROID_PROCPS_H
+
+> +
+> +enum pids_item {
+> +	PIDS_CMD     = 13, /* str stat: comm or status: Name */
+> +	PIDS_ID_EGID = 29, /* u_int status: Gid */
+> +	PIDS_ID_EUID = 31, /* u_int status: Uid */
+> +	PIDS_ID_PID  = 39, /* s_int from /proc/<pid> */
+> +};
+> +enum pids_fetch_type {
+> +	PIDS_FETCH_TASKS_ONLY,
+> +	PIDS_FETCH_THREADS_TOO
+> +};
+> +
+> +struct pids_result {
+> +	enum pids_item item;
+> +	union {
+> +		signed char s_ch;
+> +		signed int s_int;
+> +		unsigned int u_int;
+> +		unsigned long ul_int;
+> +		unsigned long long ull_int;
+> +		char *str;
+> +		char **strv;
+> +		double real;
+> +	} result;
+> +};
+> +
+> +struct pids_stack {
+> +	struct pids_result *head;
+> +};
+> +
+> +struct pids_info;
+> +
+> +#define PIDS_VAL(relative_enum, type, stack, info) \
+> +	stack->head[relative_enum].result.type
+> +
+> +int procps_pids_new(struct pids_info **info, enum pids_item *items, int numitems) { return 0; }
+> +int procps_pids_unref(struct pids_info **info) { return 0; }
+> +
+> +struct pids_stack *procps_pids_get(struct pids_info *info, enum pids_fetch_type which)
+> +{
+> +	struct pids_stack *ps = NULL;
+> +	return ps;
+
+Also looks incorrect, you should allocate it and return allocated
+memory or just
+
+	return NULL;
 
 Regards,
 Kamil
 
+> +}
+> +
+> +#endif /* _ANDROID_PROCPS_H */
+> -- 
+> 2.49.0
 > 
-> 
-> > Please move igt headers after system ones.
-> 
-> Ack
-> 
-> Remove space from " Testing", so
-> 
-> Yes, thanks for the catch!
-> 
-> At least try to open all cardN until you find virtio, there is
-> > sometimes simpleDRM driver loaded and then cards could start from 1,
-> > /dev/dri/card1
-> >
-> > What about checking with getversion? For idea see core_getversion test.
-> 
->  Right! This makes sense - Thank you for the reference.
-> 
-> Please do not make initialization with asserts here, I would suggest
-> > to move this into a function, for example:
-> > int create_resource(int fd, ... other params...)
-> >
-> > and then calling this before each test. For example:
-> >
-> > bool create_res(struct drm_virtgpu_resource_create *res)
-> > {
-> >         if(res->array_size == 1) /* already created */
-> >                 return true;
-> >
-> >         ... rest of creation ...
-> > }
-> >
-> >         igt_subtest("virtgpu-map") {
-> >                 ...vars here...
-> >
-> >                 igt_assert(create_res(&args));
-> >
-> >
-> > Or you could just create it in this fixture without asserts,
-> > place asserts in a function check_res() and call it in each
-> > subtests which needs them. For example:
-> >
-> >         igt_subtest("virtgpu-map") {
-> >                 ...vars here...
-> >
-> >                 check_res(&args);
-> >
-> > This also looks like a good candidate for a separate subtest?
-> >
-> Yes, Initially I thought about making it a seperate subtest but considering
-> that many subtests needed it, I put it in the igt_fixture().
-> I will put it in a separate function and create a
-> `drm-virtgpu-resource-create` subtest to run it independently, this will
-> also enable it to be used by other subtests.
-> 
-> 
-> > Please use C-style comments:
-> >                 /* Request mmap offset */
-> >
-> > Same applies for following code.
-> 
-> Noted with thanks!
-> 
-> BR,
-> Dorinda Bassey.
-> 
-> 
-> On Thu, May 22, 2025 at 6:20 PM Kamil Konieczny <
-> kamil.konieczny@linux.intel.com> wrote:
-> 
-> > Hi Dorinda,
-> > On 2025-05-14 at 12:28:00 +0200, Dorinda Bassey wrote:
-> >
-> > please use 'tests/' as a prefix in subject, also change test name,
-> > so instead of
-> > [PATCH] drm_virtgpu: Add functional coverage for core VirtIO-GPU ioctls
-> >
-> > better:
-> > [PATCH] tests/virtgpu: Add functional coverage for core VirtIO-GPU ioctls
-> >
-> > > This test suite adds coverage for multiple DRM ioctls specific
-> > > to the VirtIO-GPU driver, verifying functionality such as
-> > > resource creation, memory mapping, 3D transfers, context
-> > > initialization, and parameter querying.
-> > > Each test validates a key ioctl to ensure correct behavior from
-> > > user space and backend implementations. Each subtest is
-> > > self-contained and can be executed independently.
-> > >
-> > > Included subtests:
-> > >   - drm-virtgpu-map
-> > >   - drm-virtgpu-execbuffer
-> > >   - drm-virtgpu-resource-info
-> > >   - drm-virtgpu-3d-transfer-to-host
-> > >   - drm-virtgpu-3d-transfer-from-host
-> > >   - drm-virtgpu-3d-wait
-> > >   - drm-virtgpu-resource-create-blob
-> > >   - drm-virtgpu-get-caps
-> > >   - drm-virtgpu-context-init
-> > >   - drm-virtgpu-getparam
-> >
-> > I would name them without 'drm-virtgpu-' prefix. Up to you.
-> >
-> > >
-> > > How to Test with QEMU virtio-vga-gl or rustvmm vhost-device-gpu
-> > >
-> > > 1. Launch a QEMU guest with virtio-vga-gl
-> > > ./build/qemu-system-x86_64 \
-> > >   -enable-kvm \
-> > >   -cpu host \
-> > >   -m 4096 \
-> > >   -machine q35 \
-> > >   -display gtk,gl=on \
-> > >   -vga none \
-> > >   -device virtio-vga-gl \
-> > >   -drive file=image.qcow2,format=qcow2 \
-> > >   -netdev user,id=n0,hostfwd=tcp::2222-:22 \
-> > >   -device virtio-net-pci,netdev=n0
-> > >
-> > > ssh into the guest and run the tests.
-> > >
-> > > 2. Start the vhost-device-gpu backend and Launch a QEMU
-> > > guest with vhost-user-gpu-pci or vhost-user-vga, see guide on:
-> > > https://crates.io/crates/vhost-device-gpu
-> >
-> > Could someone from your team help with review?
-> >
-> > >
-> > > Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
-> > > ---
-> > >  tests/drm_virtgpu.c | 388 ++++++++++++++++++++++++++++++++++++++++++++
-> >
-
-[...cut...]
-
-> > > diff --git a/tests/meson.build b/tests/meson.build
-> > > index 20ddddb89..ac85cac30 100644
-> > > --- a/tests/meson.build
-> > > +++ b/tests/meson.build
-> > > @@ -13,6 +13,7 @@ test_progs = [
-> > >       'drm_buddy',
-> > >       'drm_mm',
-> > >       'drm_read',
-> > > +     'drm_virtgpu',
-> > >       'fbdev',
-> > >       'kms_3d',
-> > >       'kms_addfb_basic',
-> > > --
-> > > 2.48.1
-> > >
-> >
-> >
