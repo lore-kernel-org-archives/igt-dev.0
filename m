@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 566F2C54FB3
-	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 21:34:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D83C54FB3
+	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 21:45:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2F7210E3A3;
-	Mon, 26 May 2025 21:34:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A68DA10E27C;
+	Mon, 26 May 2025 21:45:46 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38DB410E3A3;
- Mon, 26 May 2025 21:34:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 871C210E029;
+ Mon, 26 May 2025 21:45:45 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8022755191390676901=="
+ boundary="===============2069375757631351236=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/kms=5Fsetmode=3A_Chec?=
- =?utf-8?q?k_timing_twice_before_asserting_basic_subtest?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/kms=5Fsetmode=3A_Che?=
+ =?utf-8?q?ck_timing_twice_before_asserting_basic_subtest?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Jeevan B" <jeevan.b@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 26 May 2025 21:34:01 -0000
-Message-ID: <174829524122.21444.14400955728851753886@1538d3639d33>
+Date: Mon, 26 May 2025 21:45:45 -0000
+Message-ID: <174829594547.21444.5240288353004139802@1538d3639d33>
 X-Patchwork-Hint: ignore
 References: <20250526084843.2245484-1-jeevan.b@intel.com>
 In-Reply-To: <20250526084843.2245484-1-jeevan.b@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8022755191390676901==
+--===============2069375757631351236==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8380_BAT -> XEIGTPW_13183_BAT
+CI Bug Log - changes from XEIGT_8380_FULL -> XEIGTPW_13183_FULL
 ====================================================
 
 Summary
@@ -62,21 +62,21 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with XEIGTPW_13183_BAT absolutely need to be
+  Serious unknown changes coming with XEIGTPW_13183_FULL absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_13183_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  introduced in XEIGTPW_13183_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
   
 
-Participating hosts (8 -> 0)
+Participating hosts (4 -> 0)
 ------------------------------
 
-  ERROR: It appears as if the changes made in XEIGTPW_13183_BAT prevented too many machines from booting.
+  ERROR: It appears as if the changes made in XEIGTPW_13183_FULL prevented too many machines from booting.
 
-  Missing    (8): bat-bmg-1 bat-lnl-2 bat-pvc-2 bat-lnl-1 bat-dg2-oem2 bat-atsm-2 bat-bmg-2 bat-adlp-7 
+  Missing    (4): shard-bmg shard-dg2-set2 shard-adlp shard-lnl 
 
 
 Changes
@@ -100,7 +100,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13183/index.html
 
---===============8022755191390676901==
+--===============2069375757631351236==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -129,17 +129,17 @@ Content-Transfer-Encoding: 7bit
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8380_BAT -&gt; XEIGTPW_13183_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8380_FULL -&gt; XEIGTPW_13183_FULL</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_13183_BAT absolutely need to be<br />
+<p>Serious unknown changes coming with XEIGTPW_13183_FULL absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_13183_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  introduced in XEIGTPW_13183_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (8 -&gt; 0)</h2>
-<p>ERROR: It appears as if the changes made in XEIGTPW_13183_BAT prevented too many machines from booting.</p>
-<p>Missing    (8): bat-bmg-1 bat-lnl-2 bat-pvc-2 bat-lnl-1 bat-dg2-oem2 bat-atsm-2 bat-bmg-2 bat-adlp-7 </p>
+<h2>Participating hosts (4 -&gt; 0)</h2>
+<p>ERROR: It appears as if the changes made in XEIGTPW_13183_FULL prevented too many machines from booting.</p>
+<p>Missing    (4): shard-bmg shard-dg2-set2 shard-adlp shard-lnl </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
@@ -155,4 +155,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============8022755191390676901==--
+--===============2069375757631351236==--
