@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 668F3C54FB3
-	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 07:27:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F87C5AD49
+	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 08:06:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E30A10E123;
-	Mon, 26 May 2025 07:27:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 058A610E292;
+	Mon, 26 May 2025 08:06:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MgEgB50r";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JIzS3duM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15F7D10E123
- for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 07:27:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5989810E292
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 08:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748244458; x=1779780458;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=OcF70n1asyaEybrp/WHKpTu9BHlQvu74nr1tulU5J3o=;
- b=MgEgB50rmRX/Pa+XHKLkPPehnLJ7biWBXXoI1+XEEQp8wSsMTbEr+R1j
- oQ0jk0I29zecBfrEBa00ulg83lzkN6jm+Xx0mXLcNXse/YXdP/7Fxt/yo
- 8geKjpp+ak6Pwp5nRjdE1dvroDcMiejTyMFOQsKzPMOTraUi5766srfmk
- XckATN2nII73ZMvk+lxpWTKiGY9FE+PegRzO0RRmSuiG9w4rQQPHZN3V6
- W8AeipUho25xcaSPsHRvbln7nuDJGMxO58uMQrr/mBSPPXuHjGJZ4vB9K
- 7GdPY3Z3psbQ6lXd9gjImraQ84RezuTgfVf+pyaewkb5JVzq/bN6GU2Zv g==;
-X-CSE-ConnectionGUID: e1QkvCXCQkuOYfFRacVr8g==
-X-CSE-MsgGUID: rO9MPV0zRvaXJ6/zwCS7cA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="61262003"
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="61262003"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2025 00:27:29 -0700
-X-CSE-ConnectionGUID: QKw+VwdDSeiI9NJZ0av12Q==
-X-CSE-MsgGUID: aCXciwVhRhiKdt537BiZaw==
+ t=1748246807; x=1779782807;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=6j6LJP5ghHgFU9WtaBD790QLsZcVhN1Edv1OXdW71fo=;
+ b=JIzS3duMA+tAbxUTvTjrBic2e3LmSC22d189+y616Ci+JAtRdf4vJfwJ
+ x3lneK0ziktKqI/mfMvl9I8YhJNxGa1CmL6n4403opGlw9L5ELNV7pm+G
+ aMCtkrM8AmBZZcX7OBjwbF1YadKrdhtUOo53F93aL+qCPeGQorBM/98jC
+ 7EnHrX3EHJvmBMXNzZuDdNI0W/ETVVb9v1GtOnLv3wewQS1QL9dxEk1f2
+ V4JLfiX3Q4NW6qniuGdBMogbZuCrm8uYqc3W7E0B+kI/qmaf9PPrVIRIP
+ CO78DFm4BTJ0RnrBols83nA05tMz+7JPLrMiJ7xhSDVHCQku/GGxsbgCz w==;
+X-CSE-ConnectionGUID: 2M98xYPaRhSLsJQ7w/HEyw==
+X-CSE-MsgGUID: Rha6iNoWTSGuPJH8+jpWbA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="67762831"
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="67762831"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 May 2025 01:06:47 -0700
+X-CSE-ConnectionGUID: llOulOjqTu2HaXse5+CZeQ==
+X-CSE-MsgGUID: sdiUPUb6Q4Sw3WErQMrrig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="173171481"
-Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2025 00:27:28 -0700
-From: Lukasz Laguna <lukasz.laguna@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="142208349"
+Received: from artdev273.igk.intel.com ([172.28.176.71])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 May 2025 01:06:46 -0700
+From: Jan Sokolowski <jan.sokolowski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@linux.intel.com, jakub1.kolakowski@intel.com,
- lukasz.laguna@intel.com
-Subject: [PATCH i-g-t] tests/intel: skip subtests using "mocs" debugfs if it's
- not present
-Date: Mon, 26 May 2025 09:27:23 +0200
-Message-Id: <20250526072723.7704-1-lukasz.laguna@intel.com>
-X-Mailer: git-send-email 2.40.0
+Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
+ George Zhang <george.zhang@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: [PATCH i-g-t v3 1/8] lib/amdgpu: fixup print/scan formatting for
+ files in lib
+Date: Mon, 26 May 2025 08:07:33 +0000
+Message-Id: <20250526080740.67790-2-jan.sokolowski@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250526080740.67790-1-jan.sokolowski@intel.com>
+References: <20250526080740.67790-1-jan.sokolowski@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,61 +70,104 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The "mocs" debugfs entry is expected to be missing on VFs, so instead of
-asserting its presence, skip the subtests if it is not available.
+Compiling on other architectures than x86-64 causes a lot
+of print/scan formatting warnings.
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+Fix formatting by using proper formatters, eg. PRIu64.
+
+Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Reviewed-by Vitaly Prosyak <vitaly.prosyak at amd.com>
+Cc: George Zhang <george.zhang@amd.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- tests/intel/xe_exec_reset.c | 11 +++++++----
- tests/intel/xe_pm.c         |  4 +++-
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ lib/amdgpu/amd_deadlock_helpers.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 67b7bb826..e757141cb 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -597,19 +597,22 @@ static void
- gt_mocs_reset(int fd, int gt)
- {
- 	char path[256];
-+	char *mocs_content_pre, *mocs_contents_post;
-+
-+	sprintf(path, "gt%d/mocs", gt);
-+	igt_require_f(igt_debugfs_exists(fd, path, O_RDONLY),
-+		      "Failed to open required \"mocs\" debugfs entry\n");
+diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
+index 98251061c..1fcaa6745 100644
+--- a/lib/amdgpu/amd_deadlock_helpers.c
++++ b/lib/amdgpu/amd_deadlock_helpers.c
+@@ -4,6 +4,7 @@
+  */
  
- 	/* Mocs debugfs contents before and after GT reset.
- 	 * Allocate memory to store 10k characters sufficient enough
- 	 * to store global mocs and lncf mocs data.
- 	 */
--	char *mocs_content_pre = (char *)malloc(10000 * sizeof(char));
--	char *mocs_contents_post = (char *)malloc(10000 * sizeof(char));
-+	mocs_content_pre = (char *)malloc(10000 * sizeof(char));
-+	mocs_contents_post = (char *)malloc(10000 * sizeof(char));
+ #include <amdgpu.h>
++#include <inttypes.h>
+ #include "amdgpu_drm.h"
+ #include "amd_PM4.h"
+ #include "amd_sdma.h"
+@@ -249,13 +250,13 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
+ 			if (support_page) {
+ 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+ 							0x3 << ring_id, sysfs);
+-				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
++				igt_info("Disable other rings, keep ring: %" PRIu64 " and %" PRIu64 " enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
+ 				ring_id++;
  
- 	igt_assert(mocs_content_pre);
- 	igt_assert(mocs_contents_post);
+ 			} else {
+ 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+ 							0x1 << ring_id, sysfs);
+-				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
++				igt_info("Disable other rings, keep only ring: %" PRIu64 " enabled, cmd: %s\n", ring_id, cmd);
+ 			}
+ 			r = system(cmd);
+ 			igt_assert_eq(r, 0);
+@@ -266,7 +267,7 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
  
--	sprintf(path, "gt%d/mocs", gt);
--	igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
- 	igt_debugfs_dump(fd, path);
- 	igt_debugfs_read(fd, path, mocs_content_pre);
+ 	/* recover the sched mask */
+ 	if (sched_mask > 1) {
+-		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
++		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" SCNx64 " > %s", sched_mask, sysfs);
+ 		r = system(cmd);
+ 		igt_assert_eq(r, 0);
+ 	}
+@@ -523,12 +524,12 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
+ 			if (support_page) {
+ 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+ 						0x3 << ring_id, sysfs);
+-				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
++				igt_info("Disable other rings, keep ring: %" PRIu64 " and %" PRIu64 " enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
+ 				ring_id++;
+ 			} else {
+ 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+ 						0x1 << ring_id, sysfs);
+-				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
++				igt_info("Disable other rings, keep only ring: %" PRIu64 " enabled, cmd: %s\n", ring_id, cmd);
+ 			}
  
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 6eb21d5ec..6cf532a88 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -743,7 +743,9 @@ static void test_mocs_suspend_resume(device_t device, enum igt_suspend_state s_s
- 		igt_debug("Running on GT%d\n", gt);
+ 			r = system(cmd);
+@@ -540,7 +541,7 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
  
- 		sprintf(path, "gt%d/mocs", gt);
--		igt_assert(igt_debugfs_exists(device.fd_xe, path, O_RDONLY));
-+		igt_require_f(igt_debugfs_exists(device.fd_xe, path, O_RDONLY),
-+			      "Failed to open required \"mocs\" debugfs entry\n");
-+
- 		igt_debugfs_dump(device.fd_xe, path);
- 		igt_debugfs_read(device.fd_xe, path, mocs_content_pre);
+ 	/* recover the sched mask */
+ 	if (sched_mask > 1) {
+-		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
++		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" PRIx64 " > %s", sched_mask, sysfs);
+ 		r = system(cmd);
+ 		igt_assert_eq(r, 0);
+ 	}
+@@ -592,12 +593,12 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
+ 			if (support_page) {
+ 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+ 						0x3 << ring_id, sysfs);
+-				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
++				igt_info("Disable other rings, keep ring: %" PRIu64 " and %" PRIu64 " enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
+ 				ring_id++;
+ 			} else {
+ 				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+ 						0x1 << ring_id, sysfs);
+-				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
++				igt_info("Disable other rings, keep only ring: %" PRIu64 " enabled, cmd: %s\n", ring_id, cmd);
+ 			}
  
+ 			r = system(cmd);
+@@ -609,7 +610,7 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
+ 
+ 	/* recover the sched mask */
+ 	if (sched_mask > 1) {
+-		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
++		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" SCNx64 " > %s", sched_mask, sysfs);
+ 		r = system(cmd);
+ 		igt_assert_eq(r, 0);
+ 	}
 -- 
-2.40.0
+2.34.1
 
