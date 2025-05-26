@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82895C54FB3
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A59C2C5AD49
 	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 12:38:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 10EC210E2A5;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46C7910E31A;
 	Mon, 26 May 2025 12:38:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RSfSXY95";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fczNJg4G";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A576910E2A5
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 077E610E2A5
  for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 12:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748263137; x=1779799137;
+ t=1748263136; x=1779799136;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KSqOMHoEJnl7ofrw+F40UeoUpm83BoGV/f5sgAb/sqI=;
- b=RSfSXY958unU52CSw5mXjEzMNMD/o0SqslbyISe58fIQ0dD29eULzdTI
- O4nMHS6lqbleKdjCUUT3PpR8sh2sW4Ed87b2GWnAyXJXzExGff7psuHdA
- X6N54k3BFfvo5qeshCeRgdj8NCyZfP/qgtjrajyyQ3SIonoeFHcoIfMY+
- KofSXZHib3WV9c4YtDSDqkZS9jivRC5bTEnGN/qTlvuywY4KKGIn+gOj8
- Cl4/c7Lao0ba1CYquW6Nj8Z8KrdpG5mc3bv8/hpZg1siKk5r8vH8cBygc
- Y+lrXJ7C6j4k8a4wjAUoxdlNUb+e653+pdXetBdfdIUjjmxG05l3prSEx w==;
-X-CSE-ConnectionGUID: YxumnWRxTpONs2qS41Ss7g==
-X-CSE-MsgGUID: 6qkWZV5uRiSbWNC9H9vDww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11445"; a="67786962"
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="67786962"
+ bh=rml9TyTZ90rLpFBb4RK9FsKTXfeyFBtrYtOmIXQJ+g8=;
+ b=fczNJg4GJ3y5qITZTT4cB9I10oRu12O8ThZ1sWVwgVdV57QNV259jRTG
+ FEKr81tarrPsr/VTHdBq5RxDXw34WKJcj3xccAPn1JCvIilrrlR+KFW3/
+ cY3xzizT4TFWDMyrC7tnGXFEa4sy1rzh8Wslyf0aE3HkeXyTeYPl4fgsH
+ F4lz39DYWrXk5kAp7cnYaAArK5Bs0g7jNP1PfR/HFonj5Mo3n+uM/PASG
+ HDaEHdGm1jCPrkwCLot+KSBXLUl4yRyf6O4lHSv4fslckkrDH45vV1MJP
+ vNISj8X+KFNT2HatorOX2D+etbUn+RM95zkPA8IBhZqZZWGR+tVK7wJ+A g==;
+X-CSE-ConnectionGUID: Op+EB4roQFe6uTfdP2oimw==
+X-CSE-MsgGUID: /sx9hhYtS/KCvbMb/JydKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11445"; a="67786960"
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="67786960"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2025 05:38:57 -0700
-X-CSE-ConnectionGUID: lT4CxkiSRH2aDhQRPuwYaw==
-X-CSE-MsgGUID: NhFgWb/0Rb2bz9u4Zf6k/Q==
+ 26 May 2025 05:38:54 -0700
+X-CSE-ConnectionGUID: z7lAtvVESQKbqVB9JN6/zQ==
+X-CSE-MsgGUID: 30C2Zj5tSWaNVEB8mTPqgg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="142307044"
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="142307039"
 Received: from ifwibot07.gar.corp.intel.com (HELO
  rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 May 2025 05:38:55 -0700
+ 26 May 2025 05:38:52 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com, suraj.kandpal@intel.com,
  mohammed.thasleem@intel.com, kamil.konieczny@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/kms_content_protection: Whitelist check
- for panel support
-Date: Mon, 26 May 2025 18:08:22 +0530
-Message-Id: <20250526123822.16068-3-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2 1/1] lib/igt_panel: Skip hdcp tests on unsupported
+ panels
+Date: Mon, 26 May 2025 18:08:21 +0530
+Message-Id: <20250526123822.16068-2-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250526123822.16068-1-santhosh.reddy.guddati@intel.com>
 References: <20250526123822.16068-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,84 +72,175 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify the connected output is not blacklisted and if the blacklist is
-found , skip the test on the output.
+This introduces a mechanism to handle specific panels
+like emulators/dummies that are known to face issues with certain
+features like HDCP.
 
-V2: Rename the function names to reflect the test exemption on panels.
+Tests are skipped for those outputs connected to prevent false negatives
+and unnecessary debugging
+
+V2: Refactor variable ,function names and fix coding style (Kamil)
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tests/kms_content_protection.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ lib/igt_edid.c  | 27 ++++++++++++++++++++++
+ lib/igt_edid.h  |  1 +
+ lib/igt_panel.c | 61 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_panel.h | 15 ++++++++++++
+ lib/meson.build |  1 +
+ 5 files changed, 105 insertions(+)
+ create mode 100644 lib/igt_panel.c
+ create mode 100644 lib/igt_panel.h
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 6fe1edbc4..c50842375 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -36,9 +36,11 @@
- #include <sys/stat.h>
- #include <libudev.h>
- #include "igt.h"
-+#include "igt_edid.h"
- #include "igt_sysfs.h"
- #include "igt_kms.h"
- #include "igt_kmod.h"
-+#include "igt_panel.h"
- 
- /**
-  * SUBTEST: lic-type-0
-@@ -578,6 +580,32 @@ test_fini(igt_output_t *output, enum igt_commit_style commit_style)
- 	igt_display_commit2(&data.display, commit_style);
+diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+index 80dcea112..627201c34 100644
+--- a/lib/igt_edid.c
++++ b/lib/igt_edid.c
+@@ -210,6 +210,33 @@ void edid_get_mfg(const struct edid *edid, char out[static 3])
+ 	out[2] = (edid->mfg_id[1] & 0x1F) + '@';
  }
  
-+static bool is_output_hdcp_test_exempt(igt_output_t *output)
++void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size)
 +{
-+	drmModePropertyBlobPtr edid_blob = NULL;
-+	uint64_t edid_blob_id;
-+	const struct edid *edid;
-+	char edid_vendor[4];
-+	char sink_name[20];
++	const struct detailed_timing *dt;
++	const struct detailed_non_pixel *np;
++	const struct detailed_data_string *ds;
++	size_t i;
 +
-+	igt_assert(kmstest_get_property(data.drm_fd,
-+					output->config.connector->connector_id,
-+					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
-+					&edid_blob_id, NULL));
++	assert(name_size > 0);
++	name[0] = '\0';
 +
-+	igt_assert(edid_blob = drmModeGetPropertyBlob(data.drm_fd, edid_blob_id));
++	for (i = 0; i < DETAILED_TIMINGS_LEN; i++) {
++		dt = &edid->detailed_timings[i];
++		np = &dt->data.other_data;
 +
-+	edid = (const struct edid *)edid_blob->data;
-+	edid_get_mfg(edid, edid_vendor);
-+	edid_vendor[3] = '\0';
++		if (np->type != EDID_DETAIL_MONITOR_NAME)
++			continue;
 +
-+	edid_get_monitor_name(edid, sink_name, ARRAY_SIZE(sink_name));
-+
-+	drmModeFreePropertyBlob(edid_blob);
-+
-+	return igt_is_panel_blocked_hdcp(sink_name);
++		ds = &np->data.string;
++		strncpy(name, ds->str, name_size - 1);
++		name[name_size - 1] = '\0';
++		igt_debug("Monitor name: %s\n", name);
++		return;
++	}
++	igt_debug("No monitor name found in EDID\n");
++	name[0] = '\0';
 +}
 +
- static void
- test_content_protection(enum igt_commit_style commit_style, int content_type)
+ static void edid_set_mfg(struct edid *edid, const char mfg[static 3])
  {
-@@ -595,6 +623,9 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
- 	}
+ 	edid->mfg_id[0] = (mfg[0] - '@') << 2 | (mfg[1] - '@') >> 3;
+diff --git a/lib/igt_edid.h b/lib/igt_edid.h
+index 02645345f..be0ccf529 100644
+--- a/lib/igt_edid.h
++++ b/lib/igt_edid.h
+@@ -456,5 +456,6 @@ void *dispid_block_tiled(void *ptr,
+ 			 int htile, int vtile,
+ 			 int hsize, int vsize,
+ 			 const char *topology_id);
++void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size);
  
- 	for_each_connected_output(display, output) {
-+		igt_require_f(!is_output_hdcp_test_exempt(output),
-+			      "Skipped as the panel is blacklisted");
+ #endif
+diff --git a/lib/igt_panel.c b/lib/igt_panel.c
+new file mode 100644
+index 000000000..ffe08f49e
+--- /dev/null
++++ b/lib/igt_panel.c
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2025 Intel Corporation
++ */
 +
- 		for_each_pipe(display, pipe) {
- 			igt_display_reset(display);
- 
-@@ -923,6 +954,8 @@ static const struct {
- 	},
- };
- 
++#include <stdbool.h>
++#include <string.h>
 +
++#include "drmtest.h"
++#include "igt_panel.h"
 +
- igt_main
- {
- 	igt_fixture {
++/**
++ * List of Panels that should be excluded from hdcp tests
++ *
++ * This array is used to identify and handle scenarios where the test is
++ * executed on dummy monitors, such as those found on shard machines.
++ * Since these dummy monitors are not real and always the test is not consistent,
++ * the test is skipped in such cases to avoid false negatives or
++ * irrelevant test results.
++ */
++static const char *const hdcp_blocklist[] = {
++	"DPF90435", /* Example monitor name */
++	/* Add more monitor names here as needed */
++};
++
++/**
++ * igt_is_panel_blocked - Checks if a given vendor name is present in a blocklist.
++ *
++ * @vendor_name: The name of the vendor to check for in the blocklist.
++ * @blocklist: An array of strings representing the blocklist.
++ * @blocklist_size: The number of entries in the blocklist array.
++ *
++ * Returns:
++ * true if the vendor name is found in the blocklist, false otherwise.
++ */
++static bool igt_is_panel_blocked(const char *vendor_name,
++			    const char *const blocklist[],
++			    size_t blocklist_size)
++{
++	int i;
++
++	for (i = 0; i < blocklist_size; i++) {
++		if (strstr(blocklist[i], vendor_name) != NULL)
++			return true;
++	}
++
++	return false;
++}
++
++/**
++ * igt_is_panel_blocked_hdcp - Checks if a panel vendor is blocklisted for HDCP.
++ * @vendor_name: The name of the panel vendor to check.
++ *
++ * Returns:
++ * true if the vendor is blocklisted for HDCP, false otherwise.
++ */
++bool igt_is_panel_blocked_hdcp(const char *vendor_name)
++{
++	return igt_is_panel_blocked(vendor_name, hdcp_blocklist,
++			       ARRAY_SIZE(hdcp_blocklist));
++}
+diff --git a/lib/igt_panel.h b/lib/igt_panel.h
+new file mode 100644
+index 000000000..79cdaf11c
+--- /dev/null
++++ b/lib/igt_panel.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#ifndef IGT_PANEL_H
++#define IGT_PANEL_H
++
++#include <stdbool.h>
++#include <string.h>
++
++bool igt_is_panel_blocked_hdcp(const char *vendor_name);
++
++#endif
++
+diff --git a/lib/meson.build b/lib/meson.build
+index f54198051..139855f2e 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -94,6 +94,7 @@ lib_sources = [
+ 	'igt_draw.c',
+ 	'igt_list.c',
+ 	'igt_map.c',
++	'igt_panel.c',
+ 	'igt_pm.c',
+ 	'igt_dummyload.c',
+ 	'igt_store.c',
 -- 
 2.34.1
 
