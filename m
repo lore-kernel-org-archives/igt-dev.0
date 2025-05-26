@@ -4,56 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59697C54FB3
-	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 05:52:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 668F3C54FB3
+	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 07:27:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 06DCB10E26B;
-	Mon, 26 May 2025 05:52:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0E30A10E123;
+	Mon, 26 May 2025 07:27:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OrjxJBqR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MgEgB50r";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E9EA10E26B
- for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 05:52:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15F7D10E123
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 07:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748238731; x=1779774731;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Yz7KDA2RTO9OFzi/A62Xw/lX/DS5nkfQatpoM0jezWo=;
- b=OrjxJBqRIy2e1XphqCyIAH7gc0GWLo1s3fvqaeWFrfrwNV4RG/0jZ34k
- kSho/z8Ow0wxqV8B9eBkd75E7oPc7ldZ25vIqhTSFtMCzQjlPXPhB76J7
- BJCJrW0LIZxQmCj1vKtxrCcRZYChJ4nJBRkA128pcmp85e0kr01VJvbNT
- M9qW6dFVWbD2aj9avt+/b1cysjW1F4gE99DYn51IZc7fF3xoFohffXZ8r
- z5a3qo9Fw50Szoq09hzNB9B4XFFeOqlmoim+EoT1wBggBfhYGDCTev/x9
- LA4wSgpGJHqblhLy4ok9fvno+Vvjf+YPs/hNE0Mo54lGjn/0Ggtv1BOk/ g==;
-X-CSE-ConnectionGUID: USwYmhL/Tl688Wto8wnZ2Q==
-X-CSE-MsgGUID: 4OjVvx7gTz+zwcsyU4cPjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="75595107"
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="75595107"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 May 2025 22:52:11 -0700
-X-CSE-ConnectionGUID: sLeCNTjSRPG+T9aWghZ2Mw==
-X-CSE-MsgGUID: qtQF2TQARNu42AGtgDnxIQ==
+ t=1748244458; x=1779780458;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=OcF70n1asyaEybrp/WHKpTu9BHlQvu74nr1tulU5J3o=;
+ b=MgEgB50rmRX/Pa+XHKLkPPehnLJ7biWBXXoI1+XEEQp8wSsMTbEr+R1j
+ oQ0jk0I29zecBfrEBa00ulg83lzkN6jm+Xx0mXLcNXse/YXdP/7Fxt/yo
+ 8geKjpp+ak6Pwp5nRjdE1dvroDcMiejTyMFOQsKzPMOTraUi5766srfmk
+ XckATN2nII73ZMvk+lxpWTKiGY9FE+PegRzO0RRmSuiG9w4rQQPHZN3V6
+ W8AeipUho25xcaSPsHRvbln7nuDJGMxO58uMQrr/mBSPPXuHjGJZ4vB9K
+ 7GdPY3Z3psbQ6lXd9gjImraQ84RezuTgfVf+pyaewkb5JVzq/bN6GU2Zv g==;
+X-CSE-ConnectionGUID: e1QkvCXCQkuOYfFRacVr8g==
+X-CSE-MsgGUID: rO9MPV0zRvaXJ6/zwCS7cA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="61262003"
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="61262003"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 May 2025 00:27:29 -0700
+X-CSE-ConnectionGUID: QKw+VwdDSeiI9NJZ0av12Q==
+X-CSE-MsgGUID: aCXciwVhRhiKdt537BiZaw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="142135728"
-Received: from ifwibot07.gar.corp.intel.com (HELO
- rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 May 2025 22:52:10 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; d="scan'208";a="173171481"
+Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 May 2025 00:27:28 -0700
+From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
- chaitanya.kumar.borah@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v11 5/5] tests/kms_async_flips: Skip Async Flips with
- Linear Modifier
-Date: Mon, 26 May 2025 11:12:17 +0530
-Message-Id: <20250526054217.127802-6-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250526054217.127802-1-santhosh.reddy.guddati@intel.com>
-References: <20250526054217.127802-1-santhosh.reddy.guddati@intel.com>
+Cc: marcin.bernatowicz@linux.intel.com, jakub1.kolakowski@intel.com,
+ lukasz.laguna@intel.com
+Subject: [PATCH i-g-t] tests/intel: skip subtests using "mocs" debugfs if it's
+ not present
+Date: Mon, 26 May 2025 09:27:23 +0200
+Message-Id: <20250526072723.7704-1-lukasz.laguna@intel.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,58 +67,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Skip the linear modifier subtest on unsupported platforms
+The "mocs" debugfs entry is expected to be missing on VFs, so instead of
+asserting its presence, skip the subtests if it is not available.
 
-V2: Remove platform check and use in_formats_async (Chaitanya)
-    Update the commit message
-
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- tests/kms_async_flips.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ tests/intel/xe_exec_reset.c | 11 +++++++----
+ tests/intel/xe_pm.c         |  4 +++-
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index f824f60f9..c144c8390 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -901,6 +901,18 @@ static void run_test_with_async_format_modifiers(data_t *data, void (*test)(data
- 	igt_vec_fini(&tested_formats);
- }
- 
-+static bool is_linear_supported(data_t *data)
-+{
-+	int i;
-+
-+	for (i = 0; i < data->plane->async_format_mod_count; i++) {
-+		if (data->plane->async_modifiers[i] == DRM_FORMAT_MOD_LINEAR)
-+				return true;
-+	}
-+
-+	return false;
-+}
-+
- static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 67b7bb826..e757141cb 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -597,19 +597,22 @@ static void
+ gt_mocs_reset(int fd, int gt)
  {
- 	if (data->atomic_path)
-@@ -988,6 +1000,9 @@ igt_main
- 		igt_describe("Wait for page flip events in between successive asynchronous "
- 			     "flips with linear modifiers");
- 		igt_subtest_with_dynamic("async-flip-with-page-flip-events-linear") {
-+			igt_require(data.plane->async_format_mod_count > 0);
-+			igt_skip_on_f(!is_linear_supported(&data),
-+						  "Async Flips with linear modifier are not supported");
- 			test_init_ops(&data);
- 			data.linear_modifier = true;
- 			run_test(&data, test_async_flip);
-@@ -996,6 +1011,8 @@ igt_main
- 		igt_describe("Wait for page flip events in between successive asynchronous "
- 			     "flips using atomic path with linear modifiers");
- 		igt_subtest_with_dynamic("async-flip-with-page-flip-events-linear-atomic") {
-+			igt_skip_on_f(!is_linear_supported(&data),
-+						  "Async Flips with linear modifier are not supported");
- 			test_init_ops(&data);
- 			data.linear_modifier = true;
- 			run_test(&data, test_async_flip);
+ 	char path[256];
++	char *mocs_content_pre, *mocs_contents_post;
++
++	sprintf(path, "gt%d/mocs", gt);
++	igt_require_f(igt_debugfs_exists(fd, path, O_RDONLY),
++		      "Failed to open required \"mocs\" debugfs entry\n");
+ 
+ 	/* Mocs debugfs contents before and after GT reset.
+ 	 * Allocate memory to store 10k characters sufficient enough
+ 	 * to store global mocs and lncf mocs data.
+ 	 */
+-	char *mocs_content_pre = (char *)malloc(10000 * sizeof(char));
+-	char *mocs_contents_post = (char *)malloc(10000 * sizeof(char));
++	mocs_content_pre = (char *)malloc(10000 * sizeof(char));
++	mocs_contents_post = (char *)malloc(10000 * sizeof(char));
+ 
+ 	igt_assert(mocs_content_pre);
+ 	igt_assert(mocs_contents_post);
+ 
+-	sprintf(path, "gt%d/mocs", gt);
+-	igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
+ 	igt_debugfs_dump(fd, path);
+ 	igt_debugfs_read(fd, path, mocs_content_pre);
+ 
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 6eb21d5ec..6cf532a88 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -743,7 +743,9 @@ static void test_mocs_suspend_resume(device_t device, enum igt_suspend_state s_s
+ 		igt_debug("Running on GT%d\n", gt);
+ 
+ 		sprintf(path, "gt%d/mocs", gt);
+-		igt_assert(igt_debugfs_exists(device.fd_xe, path, O_RDONLY));
++		igt_require_f(igt_debugfs_exists(device.fd_xe, path, O_RDONLY),
++			      "Failed to open required \"mocs\" debugfs entry\n");
++
+ 		igt_debugfs_dump(device.fd_xe, path);
+ 		igt_debugfs_read(device.fd_xe, path, mocs_content_pre);
+ 
 -- 
-2.34.1
+2.40.0
 
