@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21C08C5AE59
-	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 00:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFEB5C54F30
+	for <igt-dev@archiver.kernel.org>; Mon, 26 May 2025 00:49:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 24D8310E22A;
-	Mon, 26 May 2025 00:13:32 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LiVnj0H5";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D61610E0C3
- for <igt-dev@lists.freedesktop.org>; Mon, 26 May 2025 00:13:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748218408; x=1779754408;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Y3zlsMEtFSQYXr3RbVs1v18Io3X44X7+RFBmPPljKbA=;
- b=LiVnj0H5zCOk4agZypomGFA/2kVOFwVGjCPmAr4GWKi8PBcAoZ1aWFJU
- WuJaPPFlZWqGph9LbcWZrzhg2Zo9Ch/4nCL41Uf38RtEEu/8zpPbwoMuC
- 1z3gyt/3hmC5Gft3wc7BLRKX9byZHqWJ0kS4OIzedwi0pBCkBUAcE67gY
- M+jsAQQCNoyfCUd9vv/Ke4TXB1sObxri0u/R4Z6kuDFxOUePnSpI6YtF0
- 2NPxp31jXeS5cj1T1FQUGfw9I9G10+8QEAEhm9tYM0WLIzvTU/74KCjCT
- FUv14hIKWhcxqw9031024la9L69FWJ3ncq0tcyOws2LqyTauIZfsc1b4k w==;
-X-CSE-ConnectionGUID: 3C0cT2TrQ1Sml65kZWuP7w==
-X-CSE-MsgGUID: 5GBnVHYcRQuy4eha2Vt0mw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="50296218"
-X-IronPort-AV: E=Sophos;i="6.15,314,1739865600"; d="scan'208";a="50296218"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 May 2025 17:13:22 -0700
-X-CSE-ConnectionGUID: 8+gsGqEUQSu++7tR2T6lJw==
-X-CSE-MsgGUID: b1xU5coySaOS1yEVjtKrpg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,314,1739865600"; d="scan'208";a="142029273"
-Received: from art-dev-395.igk.intel.com ([10.211.135.233])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 May 2025 17:13:21 -0700
-From: Jan Maslak <jan.maslak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: gwan-gyeong.mun@intel.com,
-	Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH 0/2] tests/intel/xe_eudebug_online: Introduce pagefault stress
- tests
-Date: Mon, 26 May 2025 00:13:02 +0000
-Message-Id: <20250526001304.2899977-1-jan.maslak@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9688810E0C3;
+	Mon, 26 May 2025 00:48:59 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7506010E0C3;
+ Mon, 26 May 2025 00:48:58 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3953825836426264849=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Feudebug=5F?=
+ =?utf-8?q?online=3A_Introduce_pagefault_stress_tests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jan Maslak" <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 26 May 2025 00:48:58 -0000
+Message-ID: <174822053843.19430.9279459546038995159@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250526001304.2899977-1-jan.maslak@intel.com>
+In-Reply-To: <20250526001304.2899977-1-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,31 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch series introduces stress variants of already existing
-pagefault-(read|write) tests in the `xe_eudebug_online` test suite.
-These tests use the maximum number of threads in thread group and
-maximum number of threads in the shader.
+--===============3953825836426264849==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Jan Maslak (2):
-  lib/gpu_cmds: expose num_threads_in_tg parameter for tests
-  tests/intel/xe_eudebug_online: Add pagefault stress tests
+== Series Details ==
 
- lib/gpgpu_fill.c                  |  6 +++---
- lib/gpgpu_shader.c                | 16 ++++++++++------
- lib/gpgpu_shader.h                |  1 +
- lib/gpu_cmds.c                    |  8 +++++---
- lib/gpu_cmds.h                    |  4 +++-
- lib/media_fill.c                  |  4 ++--
- lib/media_spin.c                  |  4 ++--
- tests/intel/xe_eudebug_online.c   | 27 ++++++++++++++++++++++++++-
- tests/intel/xe_exec_sip.c         |  2 +-
- tests/intel/xe_exec_sip_eudebug.c |  2 +-
- tests/intel/xe_exec_store.c       |  2 +-
- 11 files changed, 55 insertions(+), 21 deletions(-)
+Series: tests/intel/xe_eudebug_online: Introduce pagefault stress tests
+URL   : https://patchwork.freedesktop.org/series/149473/
+State : success
 
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8380_BAT -> XEIGTPW_13178_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8380 -> IGTPW_13178
+  * Linux: xe-3134-bf01fbfe3783179370355420b877619645103cae -> xe-3140-d57b26382f3d74ee116ca9ba777ddb349f44f10f
+
+  IGTPW_13178: 13178
+  IGT_8380: 8380
+  xe-3134-bf01fbfe3783179370355420b877619645103cae: bf01fbfe3783179370355420b877619645103cae
+  xe-3140-d57b26382f3d74ee116ca9ba777ddb349f44f10f: d57b26382f3d74ee116ca9ba777ddb349f44f10f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13178/index.html
+
+--===============3953825836426264849==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_eudebug_online: Introduce pagefault stress tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149473/">https://patchwork.freedesktop.org/series/149473/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13178/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13178/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8380_BAT -&gt; XEIGTPW_13178_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8380 -&gt; IGTPW_13178</li>
+<li>Linux: xe-3134-bf01fbfe3783179370355420b877619645103cae -&gt; xe-3140-d57b26382f3d74ee116ca9ba777ddb349f44f10f</li>
+</ul>
+<p>IGTPW_13178: 13178<br />
+  IGT_8380: 8380<br />
+  xe-3134-bf01fbfe3783179370355420b877619645103cae: bf01fbfe3783179370355420b877619645103cae<br />
+  xe-3140-d57b26382f3d74ee116ca9ba777ddb349f44f10f: d57b26382f3d74ee116ca9ba777ddb349f44f10f</p>
+
+</body>
+</html>
+
+--===============3953825836426264849==--
