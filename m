@@ -4,116 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DA1DC54F30
-	for <igt-dev@archiver.kernel.org>; Tue, 27 May 2025 13:08:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17388C54ED1
+	for <igt-dev@archiver.kernel.org>; Tue, 27 May 2025 14:34:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CFBD410E4F2;
-	Tue, 27 May 2025 13:08:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A8E8D10E41F;
+	Tue, 27 May 2025 14:34:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="OfCrsggW";
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.b="BFR2EPUk";
 	dkim-atps=neutral
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73D1810E42A
- for <igt-dev@lists.freedesktop.org>; Tue, 27 May 2025 13:08:49 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
- [IPv6:2001:4b98:dc4:8::228])
- by mslow3.mail.gandi.net (Postfix) with ESMTP id 82FD55850CA
- for <igt-dev@lists.freedesktop.org>; Tue, 27 May 2025 12:51:56 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CB4F143B0F;
- Tue, 27 May 2025 12:51:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1748350314;
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 654E310E511
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 May 2025 14:34:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748356489;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=s9ncJ04OhT8LPyByWbNm62ZCFCBS11yRUYQpgUidApg=;
- b=OfCrsggWrWeEKhZ3jByQvsIitKrKwB1vIckENFWwxpaBGxDFvHQicoasjhUVwaf8c/wsH/
- 1Jme3MSjKhNRyVSAabXGtYTBvYPtXTqPVtSjiJIPm9+D61BF0j8B7Jt9zy6yZF5nGGbu7b
- UUfA4nIGhvC3uAjMmEg051KI47BdwgImMgQIxGNKAXqTC+mjcObuC58v5ih/nZzH24eYOz
- 4fgO/qwsH6FLw0zPodyHoxnhOvrGD2EiPW71u2tVqVD92joIOmyyIipCOsqb0gb4r1WV7D
- Pw+XC3OR36bArYrYrKm+iyngrEFGAvlvN43TGnmwt3mJD9WAmDO+JP9rn+Ze4A==
-Message-ID: <3792f8e8-a0f7-4f35-a784-4ac1b5f7fc2f@bootlin.com>
-Date: Tue, 27 May 2025 14:51:51 +0200
+ content-transfer-encoding:content-transfer-encoding;
+ bh=VvsrX0SktWjSH50A1mj0jTX2X5DQ7sKhCv3ZTI6HWF4=;
+ b=BFR2EPUkmAMrBlAejd4k1tsIA4POvMfoqs20okvX6nbnqSBrTi2yvV0h3Cp39irJK28tGW
+ WAqd11U6HuU3ZhCcJF4VJNb1oDEx9efYAarRRaLzp4aKAkRJxrJEsxjeXlAPYooDg1kKbz
+ xmunBEHaJqhVoGMPWcnw8XPSo1DFsN4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-681-XEpZ-1DKN_qJwPEB7yAaOg-1; Tue, 27 May 2025 10:34:45 -0400
+X-MC-Unique: XEpZ-1DKN_qJwPEB7yAaOg-1
+X-Mimecast-MFC-AGG-ID: XEpZ-1DKN_qJwPEB7yAaOg_1748356484
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a4bafbb1abso2228502f8f.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 May 2025 07:34:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748356484; x=1748961284;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VvsrX0SktWjSH50A1mj0jTX2X5DQ7sKhCv3ZTI6HWF4=;
+ b=JFxDpd3zXp82MIrd9z0L4aiJ4xSk/Amohuv0HRCRNtEyBGcbtQovQ/e9+Qw6f327+p
+ gw8sQsCciQpvp9zQE4QoNBOQHilLFMNXjBrcoiVBciDEOYby/cgBTrHSh3mGqaK+fBe4
+ Hd6s1vyaUOFBQDGl5Rm8U200n/zqCOmOUqKBoRrr6LFXDa4aIsQEvoetJo6j0oLuT8Ao
+ zU0Y8gMrxzxaB6LTQ9g2MqDRYTcNtPHyxWkXMb4RPJ3tlT3S/yYgUIFlDV67vcO9hr4E
+ WS68zCLfe6DV6Y+hGFsPAa9XydtTPRx8IrmGFsxp6Coa01bIaH8Gzkcch2P9YVf3Dxsb
+ id4w==
+X-Gm-Message-State: AOJu0YzNYssx4tuxI0Yf3XKFnUHNSO+rVmsr0flcjwKWL6DrO1Km296f
+ 9ho1CCHgznzob3NN+pZBHRRpJ6cwa/iTJdFEiHvUi+tcN8r/Wd5d1Qs9vL2zRu/WXDjZRVSlMMB
+ 3SoF3ytkTe+xyn5T/ZcNCiQsMkaxl/KWK7dyaXcoiqX82wS6QP8nlLv7i+6QQdHMYEcKfnc5YmP
+ EKnwYa3WmMbSmzNAK41l9R9p39E+952Fq+YJwTCkKA1FXdj99Y4Xabi+Y=
+X-Gm-Gg: ASbGncuILSbGVxvsVMAXWerHC3os1AJLzJRYT2f1b+9iaWZJJdDdjWoKjEiQVyYzxSC
+ KRj2CLMck7IY+nlZT/YONwT1D/1OAC1JtVoHHttbn04ZkmhWzeaI/wUkE5EadZ4Pasu2dyoDPVx
+ rf7H0ZELEUDGmTdG5UriT/t2UfGw3ra6QATIli5lXTgHRcoNSIQbYBMSyYldlen8VkiujHlL5hE
+ iILkv5bzyfbXRNbeSdar3Nn5AReEhnxMWApPiiex0uHCywYfJjXtbMiWIMRf//r8BLZOPS7TcFt
+ 5zn3JpyPZD6931GHzeVrFfkLX4LyAf7WmPtE9EesTcWaG1Sgarg=
+X-Received: by 2002:a5d:64cd:0:b0:3a0:b940:d479 with SMTP id
+ ffacd0b85a97d-3a4cb49e26fmr11369842f8f.53.1748356483644; 
+ Tue, 27 May 2025 07:34:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHdXjszuzeMl2RnpuW7yKuRjT5v40syWUFOepqW0SzOijtzS10E8JEh7P6NRWh/6Bkb4nqn7Q==
+X-Received: by 2002:a5d:64cd:0:b0:3a0:b940:d479 with SMTP id
+ ffacd0b85a97d-3a4cb49e26fmr11369811f8f.53.1748356483115; 
+ Tue, 27 May 2025 07:34:43 -0700 (PDT)
+Received: from fedora.redhat.com (185-219-167-200-static.vivo.cz.
+ [185.219.167.200]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-447f6ffaa6esm275441885e9.16.2025.05.27.07.34.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 May 2025 07:34:42 -0700 (PDT)
+From: Dorinda Bassey <dbassey@redhat.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, javierm@redhat.com, aesteve@redhat.com,
+ ernunes@redhat.com, Dorinda Bassey <dbassey@redhat.com>
+Subject: [PATCH v2] tests/drm_virtgpu: Add functional coverage for core
+ VirtIO-GPU ioctls
+Date: Tue, 27 May 2025 16:24:18 +0200
+Message-ID: <20250527143438.1271611-1-dbassey@redhat.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t RFC] tests/unigraf/unigraf_connectivity: Add unigraf
- device support
-To: "Almahallawy, Khaled" <khaled.almahallawy@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "thomas.petazzoni@bootlin.com" <thomas.petazzoni@bootlin.com>,
- "Nikula, Jani" <jani.nikula@intel.com>, "Leung, Benson" <bleung@google.com>,
- "Shankar, Uma" <uma.shankar@intel.com>,
- "markyacoub@google.com" <markyacoub@google.com>,
- "Deak, Imre" <imre.deak@intel.com>, "Lin, Charlton"
- <charlton.lin@intel.com>, "Lattannavar, Sameer"
- <sameer.lattannavar@intel.com>
-References: <20250517-unigraf-integration-v1-1-044acd2133dd@bootlin.com>
- <2b05fb343a5151faf1cb3f53bfc89185acf675af.camel@intel.com>
-Content-Language: en-US
-Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
- 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
-In-Reply-To: <2b05fb343a5151faf1cb3f53bfc89185acf675af.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 9J94WXAWVbPLE4DKLMiwdAghant-VYIZLiJFK_zo0zE_1748356484
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvtdegfeculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdtleehveeuuedtudehhfefkedukeelvdfgkeefvdeluddvgedvtdekffekgfelnecuffhomhgrihhnpehunhhighhrrghfrdhfihdpsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddtpdhrtghpthhtohepkhhhrghlvggurdgrlhhmrghhrghllhgrfiihsehinhhtvghlrdgtohhmpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtl
- hhinhdrtghomhdprhgtphhtthhopehjrghnihdrnhhikhhulhgrsehinhhtvghlrdgtohhmpdhrtghpthhtohepsghlvghunhhgsehgohhoghhlvgdrtghomhdprhgtphhtthhopehumhgrrdhshhgrnhhkrghrsehinhhtvghlrdgtohhmpdhrtghpthhtohepmhgrrhhkhigrtghouhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehimhhrvgdruggvrghksehinhhtvghlrdgtohhm
-X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,784 +97,497 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Khaled,
+This test suite adds coverage for multiple DRM ioctls specific
+to the VirtIO-GPU driver, verifying functionality such as
+resource creation, memory mapping, 3D transfers, context
+initialization, and parameter querying.
+Each test validates a key ioctl to ensure correct behavior from
+user space and backend implementations. Each subtest is
+self-contained and can be executed independently.
 
-Le 20/05/2025 à 20:49, Almahallawy, Khaled a écrit :
-> Hi Louis,
-> 
-> On Sat, 2025-05-17 at 13:11 +0200, Louis Chauvet wrote:
->> This commit introduces support for Unigraf devices, aiming to
->> facilitate
->> the testing of various hardware features related to display
->> connections.
->>
-> Which Unigraf devices are we focusing on?
+Included subtests:
+  - drm-virtgpu-map
+  - drm-virtgpu-execbuffer
+  - drm-virtgpu-resource-info
+  - drm-virtgpu-3d-transfer-to-host
+  - drm-virtgpu-3d-transfer-from-host
+  - drm-virtgpu-3d-wait
+  - drm-virtgpu-resource-create-blob
+  - drm-virtgpu-get-caps
+  - drm-virtgpu-context-init
+  - drm-virtgpu-getparam
 
-I have a UCD500 [1] with multiple licenses, so I will focus on this one. 
-The API for all UCD devices is the same, so I think adapting the code 
-for a new unigraf devices should be "easy" (can be a simple flag in igt 
-configuration).
+How to Test with QEMU virtio-vga-gl or rustvmm vhost-device-gpu
 
-[1]:https://www.unigraf.fi/product/displayport-2-video-generator-analyzer-ucd-500/
+1. Launch a QEMU guest with virtio-vga-gl
+./build/qemu-system-x86_64 \
+  -enable-kvm \
+  -cpu host \
+  -m 4096 \
+  -machine q35 \
+  -display gtk,gl=on \
+  -vga none \
+  -device virtio-vga-gl \
+  -drive file=image.qcow2,format=qcow2 \
+  -netdev user,id=n0,hostfwd=tcp::2222-:22 \
+  -device virtio-net-pci,netdev=n0
 
->> Key feature that unigraf devices can test:
->> - Link training
->> - Signal integrity
-> Which specific Unigraf device supports Signal Integrity(SI)? Which
-> aspects or tests of SI are we addressing?
+ssh into the guest and run the tests.
 
-I will focus on different link rates/lane count and link training with 
-multiple configurations (scrambling, voltage swing...), and test if the 
-Unigraf properly receives the data.
+2. Start the vhost-device-gpu backend and Launch a QEMU
+guest with vhost-user-gpu-pci or vhost-user-vga, see guide on:
+https://crates.io/crates/vhost-device-gpu
 
->> - HDCP
->> - DSC
-> Will HDCP/DSC be available without requiring a license?
+Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
+---
+v2 changes
+use 'tests/' as a prefix in subject
+fix typo
+find and open the DRM device node for virtio-gpu
+Make drm-virtgpu-resource-create a proper standalone subtest
 
-Unfortunately, I think part will require a license, I plan to add 
-something to detect the features (runtime or config, I don't know yet).
+ tests/drm_virtgpu.c | 419 ++++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build   |   1 +
+ 2 files changed, 420 insertions(+)
+ create mode 100644 tests/drm_virtgpu.c
 
-The goal of this part is to test if the device properly generate 
-encryted and compressed stream.
-
->> - usb-c electrical characteristics
-> Similarly to SI, which device supports USB-C electrical
-> characteristics? Or are you referring to USB-C PD flows?
-
-I was referring to the power delivery side. According to the 
-documentation, UCD500 can emulate different kind of power delivery 
-configuration.
-
-It is a bit out of scope for IGT, so I will only focus on video testing 
-for now.
-
->>
->> This implementation utilizes the external libtsi library provided by
->> Unigraf, which must be downloaded separately to enable compilation.
-> 
-> If a new device/vendor is introduced to IGT and offers similar tests
-> and capabilities, do you intend to generalize the interface for tests
-> rather than using a vendor-specific one?
-
-That could be a very good idea, but I don't know what kind of interface 
-can be proposed yet.
-
-For now I will focus on creating a "device specific API" and some device 
-specific tests, as most of the tests will be specific to unigraf.
-
-At some point, I may introduce a generic API for some part (EDID 
-managment, screen capture), but it is not my main focus right now.
-
-FYI, my todo-list for the rest of the year is: MST, suspend/resume, link 
-training, AUX communication, EDID, HDCP, DSC, color format, 
-plane/overlay, VRR, tiled display.
-
-Louis Chauvet
-
-> Thank You
-> Khaled
->>
->> DO NOT MERGE!
->>
->> The file lib/unigraf/TSI_types.h currently contains hardcoded values
->> that
->> should be replaced by the next unigraf release. The current unigraf
->> SDK
->> release is not c-compatible, so I had to copy those values. The
->> proper v1
->> will not contains hardcoded value and will use the correct
->> TSI_types.h
->> file.
->>
->> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
->> ---
->> Hi everyone,
->>
->> I am excited to share I currently have access to a Unigraf device,
->> which I believe could significantly enhance the capabilities within
->> IGT.
->> This device has the potential to enable testing of low-level hardware
->> features that are currently not covered. Specifically, Unigraf
->> devices can
->> assist in testing link training, signal integrity, HDCP, DSC, and
->> more.
->>
->> It's important to note that the Unigraf SDK is not open-source, and
->> the
->> communication protocol with the device is proprietary. As a result, I
->> have
->> utilized the libTSI.so library, which can be downloaded from [1]. In
->> this
->> RFC, I have not used the official TSI_types.h header because it was
->> incompatible with C, so I hardcoded some necessary values. The next
->> iteration will use the official TSI_types.h (they plan to fix it for
->> the
->> next release)
->>
->> This RFC is intentionally concise to gather initial feedback from the
->> community regarding the integration of a proprietary device into the
->> test
->> suite. I plan to expand on this work by adding more features and
->> pushing
->> the developments upstream.
->>
->> Looking forward to your thoughts and suggestions!
->>
->> Thanks,
->> Louis Chauvet
->>
->> [1]:https://www.unigraf.fi/downloads/
->> ---
->>   lib/meson.build                      |   9 ++-
->>   lib/unigraf/TSI.h                    |  91 ++++++++++++++++++++++
->>   lib/unigraf/TSI_types.h              |  18 +++++
->>   lib/unigraf/unigraf.c                | 143
->> +++++++++++++++++++++++++++++++++++
->>   lib/unigraf/unigraf.h                |  84 ++++++++++++++++++++
->>   meson.build                          |  14 ++++
->>   tests/meson.build                    |   4 +
->>   tests/unigraf/meson.build            |  12 +++
->>   tests/unigraf/unigraf_connectivity.c |  79 +++++++++++++++++++
->>   9 files changed, 453 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/meson.build b/lib/meson.build
->> index 8517cd540437..c1a1c8aa1b24 100644
->> --- a/lib/meson.build
->> +++ b/lib/meson.build
->> @@ -138,6 +138,13 @@ lib_deps = [
->>   	zlib
->>   ]
->>   
->> +if libtsi.found()
->> +	lib_deps += libtsi
->> +	lib_sources += [
->> +		'unigraf/unigraf.c'
->> +	]
->> +endif
->> +
->>   if libdrm_nouveau.found()
->>   	lib_deps += libdrm_nouveau
->>   	lib_sources += [
->> @@ -177,7 +184,7 @@ if libdrm_amdgpu.found()
->>   	if cc.has_function('amdgpu_create_userqueue', dependencies:
->> libdrm_amdgpu)
->>   		add_project_arguments('-DAMDGPU_USERQ_ENABLED=1',
->> language: 'c')
->>   		#conf.set('AMDGPU_USERQ_ENABLED', 1)
->> -	endif	
->> +	endif
->>   endif
->>   
->>   if libunwind.found()
->> diff --git a/lib/unigraf/TSI.h b/lib/unigraf/TSI.h
->> new file mode 100644
->> index 000000000000..e057823c3df0
->> --- /dev/null
->> +++ b/lib/unigraf/TSI.h
->> @@ -0,0 +1,91 @@
->> +/* SPDX-License-Identifier: MIT */
->> +
->> +/*
->> + * tsi.h - Header for libTSI.so
->> + * Documentation here is taken from official documentation and
->> developer observation.
->> + */
->> +
->> +#ifndef TSI_H
->> +#define TSI_H
->> +
->> +#define TSI_CURRENT_VERSION	12
->> +#define MAX_EDID_SIZE		4096
->> +
->> +#define TSI_SUCCESS		0
->> +
->> +typedef unsigned int		TSI_VERSION_ID;
->> +typedef unsigned int		TSI_SEARCH_OPTIONS;
->> +typedef unsigned int		TSI_DEVICE_CAPS;
->> +typedef unsigned int		TSI_CONFIG_ID;
->> +typedef unsigned int		TSI_DEVICE_ID;
->> +typedef unsigned int		TSI_INPUT_ID;
->> +typedef int			TSI_RESULT;
->> +typedef void			*TSI_HANDLE;
->> +typedef int			TSI_FLAGS;
->> +
->> +/**
->> + * TSI_Init() - Initialize the TSI library
->> + * @ClientVersion: Indicates the version used to call the libTSI.so
->> functions.
->> + *
->> + * Initialize libTSI for use and sets up internal state. It can be
->> called
->> + * multiple times, but TSI_Clean must be called the exact same
->> number of time.
->> + *
->> + * Returns:
->> + * - In case of success: Reference count to the API (number of times
->> to call TSI_Clean)
->> + * - TSI_ERROR_NOT_COMPATIBLE if the requested client version is not
->> supported
->> + *   by the library
->> + * - TSI_ERROR_COMPATIBILITY_MISMATCH if TSI_Init is called twice
->> with
->> + *   different client version
->> + */
->> +TSI_RESULT TSI_Init(TSI_VERSION_ID ClientVersion);
->> +
->> +/**
->> + * TSI_Clean() - Cleans and closes the TSI library
->> + *
->> + * When TSI_Clean is called for the last time, cleanup the internal
->> state. It
->> + * should be called exactly the same number of time as TSI_Init
->> + */
->> +TSI_RESULT TSI_Clean(void);
->> +
->> +/**
->> + * TSI_MISC_GetErrorDescription() - Get a human readable error
->> message
->> + * @ErrorCode: Error code for which you want the message
->> + * @ErrorString: Pointer where to copy the message
->> + * @StringMaxLen: Size of the allocated string @ErrorString
->> + *
->> + * The official documentation states: If the function succeeds, the
->> + * return value is the number of characters required for the
->> complete
->> + * error description string.
->> + * In reality, this function always returns 0 or error, so there is
->> no way to
->> + * tell if the allocated memory was big enough
->> + *
->> + * Returns:
->> + * - >= 0 on success, theorically the required string len to store
->> the message
->> + * - < 0 on failure
->> + */
->> +TSI_RESULT TSI_MISC_GetErrorDescription(TSI_RESULT ErrorCode,
->> +					char *ErrorString,
->> +					unsigned int StringMaxLen);
->> +
->> +TSI_RESULT TSIX_TS_GetConfigItem(TSI_HANDLE Device, TSI_CONFIG_ID
->> ConfigItemID,
->> +				 void *ConfigItemData,
->> +				 unsigned int ItemMaxSize);
->> +
->> +TSI_RESULT TSIX_DEV_RescanDevices(TSI_SEARCH_OPTIONS SearchOptions,
->> +				  TSI_DEVICE_CAPS RequiredCaps,
->> +				  TSI_DEVICE_CAPS UnallowedCaps);
->> +TSI_RESULT TSIX_DEV_GetDeviceCount(void);
->> +
->> +TSI_HANDLE TSIX_DEV_OpenDevice(TSI_DEVICE_ID DeviceID, TSI_RESULT
->> *Result);
->> +
->> +TSI_RESULT TSIX_DEV_CloseDevice(TSI_HANDLE Device);
->> +
->> +TSI_RESULT TSIX_VIN_Disable(TSI_HANDLE Device);
->> +
->> +TSI_RESULT TSIX_VIN_Select(TSI_HANDLE Device, TSI_INPUT_ID InputID);
->> +TSI_RESULT TSIX_DEV_SelectRole(TSI_HANDLE Device, int RoleIndex);
->> +TSI_RESULT TSIX_TS_SetConfigItem(TSI_HANDLE Device, TSI_CONFIG_ID
->> ConfigItemID,
->> +				 const void *ItemData, unsigned int
->> ItemSize);
->> +TSI_RESULT TSIX_VIN_Enable(TSI_HANDLE Device, TSI_FLAGS Flags);
->> +
->> +#endif
->> diff --git a/lib/unigraf/TSI_types.h b/lib/unigraf/TSI_types.h
->> new file mode 100644
->> index 000000000000..a3bd20f53066
->> --- /dev/null
->> +++ b/lib/unigraf/TSI_types.h
->> @@ -0,0 +1,18 @@
->> +/* SPDX-License-Identifier: MIT */
->> +
->> +// DO NOT MERGE THIS FILE
->> +//
->> +// Current unigraf public release are not c-compatible, this file
->> hardcode some values
->> +// The next release of libTSI should include a c-compatible
->> TSI_types.h file, that will
->> +// be directly used in place of this file
->> +
->> +#ifndef TSI_REG_H
->> +
->> +#define TSI_VERSION_TEXT			0x80000001
->> +#define TSI_DEVCAP_VIDEO_CAPTURE		0x00000001
->> +#define TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE	0x00000001
->> +
->> +#define TSI_EDID_TE_INPUT			0x1100
->> +#define TSI_EDID_SELECT_STREAM			0x1102
->> +
->> +#endif
->> diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
->> new file mode 100644
->> index 000000000000..3200cb881f91
->> --- /dev/null
->> +++ b/lib/unigraf/unigraf.c
->> @@ -0,0 +1,143 @@
->> +// SPDX-License-Identifier: MIT
->> +
->> +#include "igt_core.h"
->> +#include "igt_edid.h"
->> +#include <stdint.h>
->> +#include <stdio.h>
->> +
->> +#include "unigraf.h"
->> +#include "TSI.h"
->> +#include "TSI_types.h"
->> +
->> +static int unigraf_open_count;
->> +
->> +/**
->> + * unigraf_exit_handler - Handle the exit signal and clean up
->> unigraf resources.
->> + * @sig: The signal number received.
->> + *
->> + * This function is called when the program receives an exit signal.
->> It ensures
->> + * that all unigraf resources are properly cleaned up by calling
->> unigraf_deinit
->> + * for each open instance.
->> + */
->> +static void unigraf_exit_handler(int sig)
->> +{
->> +	while (unigraf_open_count)
->> +		unigraf_deinit();
->> +}
->> +
->> +void unigraf_init(void)
->> +{
->> +	int ret;
->> +
->> +	igt_debug("TSI: Initialize unigraf...\n");
->> +
->> +	__sync_fetch_and_add(&unigraf_open_count, 1);
->> +	ret = TSI_Init(TSI_CURRENT_VERSION);
->> +	if (ret < TSI_SUCCESS)
->> +		__sync_fetch_and_sub(&unigraf_open_count, 1);
->> +	else
->> +		igt_install_exit_handler(unigraf_exit_handler);
->> +	unigraf_assert(ret);
->> +}
->> +
->> +void unigraf_deinit(void)
->> +{
->> +	igt_debug("TSI: Uninitialize unigraf...\n");
->> +
->> +	if (unigraf_open_count >= 1) {
->> +		TSI_Clean();
->> +		__sync_fetch_and_sub(&unigraf_open_count, 1);
->> +	}
->> +}
->> +
->> +/**
->> + * unigraf_write() - Helper to write a value to unigraf
->> + * @dev: device handle, can be null for some config id
->> + * @config: config id to write
->> + * @data: data to write
->> + * @data_len: length of the data
->> + * Returns
->> + */
->> +static void unigraf_write(TSI_HANDLE dev, TSI_CONFIG_ID config,
->> const void *data, size_t data_len)
->> +{
->> +	igt_debug("TSI: Writing %zu bytes to %d\n", data_len,
->> config);
->> +
->> +	unigraf_assert(TSIX_TS_SetConfigItem(dev, config, data,
->> data_len));
->> +}
->> +
->> +/**
->> + * unigraf_rescan_device() - Force the scan of all connected device
->> + */
->> +static void unigraf_rescan_devices(void)
->> +{
->> +	unigraf_assert(TSIX_DEV_RescanDevices(0,
->> TSI_DEVCAP_VIDEO_CAPTURE, 0));
->> +}
->> +
->> +/**
->> + * unigraf_device_count() - Return the number of scanned devices
->> + *
->> + * Must be called after a unigraf_rescan_devices().
->> + */
->> +static unsigned int unigraf_device_count(void)
->> +{
->> +	return unigraf_assert(TSIX_DEV_GetDeviceCount());
->> +}
->> +
->> +char *unigraf_get_version(TSI_HANDLE dev)
->> +{
->> +	int ret;
->> +	void *data;
->> +
->> +	igt_debug("TSI: Fetching version for device %p\n", dev);
->> +
->> +	ret = unigraf_assert(TSIX_TS_GetConfigItem(dev,
->> TSI_VERSION_TEXT, NULL, 0));
->> +
->> +	data = malloc(ret);
->> +	memset(data, 0, ret);
->> +	ret = unigraf_assert(TSIX_TS_GetConfigItem(dev,
->> TSI_VERSION_TEXT, data, ret));
->> +
->> +	return data;
->> +}
->> +
->> +void unigraf_close_device(TSI_HANDLE dev)
->> +{
->> +	igt_debug("TSI: Closing device %p\n", dev);
->> +	unigraf_assert(TSIX_DEV_CloseDevice(dev));
->> +}
->> +
->> +TSI_HANDLE unigraf_require_device(void)
->> +{
->> +	TSI_RESULT r;
->> +	TSI_HANDLE handle;
->> +
->> +	unigraf_rescan_devices();
->> +
->> +	igt_require(unigraf_device_count() >= 1);
->> +	handle = TSIX_DEV_OpenDevice(0, &r);
->> +	unigraf_assert(r);
->> +	igt_assert(handle);
->> +
->> +	igt_debug("TSI: Opened device %p. Selecting role and
->> input...\n", handle);
->> +
->> +	// By default, enable the first role and input
->> +	unigraf_assert(TSIX_DEV_SelectRole(handle, 0));
->> +	unigraf_assert(TSIX_VIN_Select(handle, 0));
->> +	unigraf_assert(TSIX_VIN_Enable(handle, 0));
->> +
->> +	return handle;
->> +}
->> +
->> +struct edid *unigraf_read_edid(TSI_HANDLE dev, uint32_t stream,
->> uint32_t *edid_size)
->> +{
->> +	void *edid;
->> +
->> +	igt_debug("TSI:%p: Read EDID for stream %d...\n", dev,
->> stream);
->> +
->> +	edid = malloc(2048);
->> +	memset(edid, 0, 2048);
->> +
->> +	unigraf_write(dev, TSI_EDID_SELECT_STREAM, &stream,
->> sizeof(stream));
->> +	*edid_size = unigraf_assert(TSIX_TS_GetConfigItem(dev,
->> TSI_EDID_TE_INPUT, edid, 2048));
->> +
->> +	return edid;
->> +}
->> diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
->> new file mode 100644
->> index 000000000000..57f2597d182d
->> --- /dev/null
->> +++ b/lib/unigraf/unigraf.h
->> @@ -0,0 +1,84 @@
->> +/* SPDX-License-Identifier: MIT */
->> +
->> +#ifndef UNIGRAF_H
->> +#define UNIGRAF_H
->> +
->> +#include <stdint.h>
->> +
->> +typedef void *TSI_HANDLE;
->> +
->> +/**
->> + * unigraf_assert: Helper macro to assert a TSI return value and
->> retrieve a detailed error message.
->> + * @result: libTSI return value to check
->> + *
->> + * This macro checks the return value of a libTSI function call. If
->> the return value indicates an
->> + * error, it retrieves a detailed error message and asserts with
->> that message.
->> + * If retrieving the error description fails, it asserts with a
->> generic error message.
->> + */
->> +#define
->> unigraf_assert(result)										\
->> +({								
->> 					\
->> +	char
->> msg[256];											\
->> +	TSI_RESULT __r =
->> (result);									\
->> +	if (__r < TSI_SUCCESS)
->> {									\
->> +		TSI_RESULT __r2 = TSI_MISC_GetErrorDescription(__r,
->> msg, sizeof(msg));			\
->> +		if (__r2 <
->> TSI_SUCCESS)									\
->> +			igt_assert_f(false, "unigraf error: %d (get
->> error description failed: %d)\n",	\
->> +				     __r,
->> __r2);							\
->> +		else						
->> 					\
->> +			igt_assert_f(false, "unigraf error: %d
->> (%s)\n", __r, msg);			\
->> +	}							
->> 					\
->> +	(__r);							
->> 					\
->> +})
->> +
->> +/**
->> + * unigraf_init() - Initialize the unigraf library
->> + *
->> + * This function initializes the unigraf library and install an exit
->> + * handler to ensure proper cleanup on program termination.
->> + */
->> +void unigraf_init(void);
->> +
->> +/**
->> + * unigraf_deinit() - Uninitialize the unigraf library
->> + */
->> +void unigraf_deinit(void);
->> +
->> +/**
->> + * unigraf_get_version() - Retrieve the version information of the
->> libTSI library and the device.
->> + * @dev: The device handle. If set, the function will also retrieve
->> information from the device.
->> +
->> + * Returns: A null-terminated string containing the version
->> information. The caller
->> + * is responsible to free this string.
->> + */
->> +char *unigraf_get_version(TSI_HANDLE dev);
->> +
->> +/**
->> + * unigraf_require_device() - Search and open a device.
->> + *
->> + * Returns: A non-null opaque pointer to the device handle if
->> successful, otherwise NULL.
->> + *
->> + * This function searches for a compatible device and opens it. If a
->> device is found and
->> + * successfully opened, it returns a non-null opaque pointer to the
->> device handle. If no device
->> + * is found or an error occurs during the opening process, the
->> function will handle the error
->> + * appropriately and return a null pointer.
->> + */
->> +TSI_HANDLE unigraf_require_device(void);
->> +
->> +/**
->> + * unigraf_close_device() - Close the device.
->> + * @dev: The device handle to close.
->> + */
->> +void unigraf_close_device(TSI_HANDLE dev);
->> +
->> +/**
->> + * unigraf_read_edid() - Read the EDID from the specified input
->> + * @dev: The device handle
->> + * @stream: The stream ID to read the EDID from
->> + * @edid_size: Pointer to an integer where the size of the EDID will
->> be stored
->> + *
->> + * Returns: A pointer to the EDID structure, or NULL if the
->> operation failed. The caller
->> + * is responsible to free this pointer.
->> + */
->> +struct edid *unigraf_read_edid(TSI_HANDLE dev, uint32_t stream,
->> uint32_t *edid_size);
->> +
->> +#endif // UNIGRAF_H
->> diff --git a/meson.build b/meson.build
->> index 6a580bd7e3a3..d143e3835475 100644
->> --- a/meson.build
->> +++ b/meson.build
->> @@ -162,6 +162,12 @@ cairo = dependency('cairo', version : '>1.12.0',
->> required : true)
->>   libudev = dependency('libudev', required : true)
->>   glib = dependency('glib-2.0', required : true)
->>   
->> +libtsi = cc.find_library('TSI', required : false)
->> +
->> +if libtsi.found()
->> +	config.set('HAVE_UNIGRAF', 1)
->> +endif
->> +
->>   xmlrpc = dependency('xmlrpc', required : false)
->>   xmlrpc_util = dependency('xmlrpc_util', required : false)
->>   xmlrpc_client = dependency('xmlrpc_client', required : false)
->> @@ -285,6 +291,7 @@ libexecdir = join_paths(get_option('libexecdir'),
->> 'igt-gpu-tools')
->>   amdgpudir = join_paths(libexecdir, 'amdgpu')
->>   msmdir = join_paths(libexecdir, 'msm')
->>   panfrostdir = join_paths(libexecdir, 'panfrost')
->> +unigrafdir = join_paths(libexecdir, 'unigraf')
->>   v3ddir = join_paths(libexecdir, 'v3d')
->>   vc4dir = join_paths(libexecdir, 'vc4')
->>   vmwgfxdir = join_paths(libexecdir, 'vmwgfx')
->> @@ -353,6 +360,12 @@ if get_option('use_rpath')
->>   		vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
->>   	endforeach
->>   	vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, libdir)
->> +
->> +	unigraf_rpathdir = '$ORIGIN'
->> +	foreach p : unigrafdir.split('/')
->> +		unigraf_rpathdir = join_paths(unigraf_rpathdir,
->> '..')
->> +	endforeach
->> +	unigraf_rpathdir = join_paths(unigraf_rpathdir, libdir)
->>   else
->>   	bindir_rpathdir = ''
->>   	libexecdir_rpathdir = ''
->> @@ -362,6 +375,7 @@ else
->>   	v3d_rpathdir = ''
->>   	vc4_rpathdir = ''
->>   	vmwgfx_rpathdir = ''
->> +	unigraf_rpathdir = ''
->>   endif
->>   
->>   build_testplan = get_option('testplan')
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 6328792e3a4d..14798547603f 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -452,6 +452,10 @@ foreach prog : intel_progs
->>   	endif
->>   endforeach
->>   
->> +if libtsi.found()
->> +	subdir('unigraf')
->> +endif
->> +
->>   if chamelium.found()
->>   	foreach prog : chamelium_progs
->>   		testexe = executable(prog,
->> diff --git a/tests/unigraf/meson.build b/tests/unigraf/meson.build
->> new file mode 100644
->> index 000000000000..4ef8c32151e4
->> --- /dev/null
->> +++ b/tests/unigraf/meson.build
->> @@ -0,0 +1,12 @@
->> +unigraf_progs = [
->> +	'unigraf_connectivity',
->> +]
->> +
->> +foreach prog : unigraf_progs
->> +	test_executables += executable(prog, prog + '.c',
->> +				       dependencies : test_deps,
->> +				       install_dir : unigrafdir,
->> +				       install_rpath :
->> unigraf_rpathdir,
->> +				       install : true)
->> +	test_list += join_paths('unigraf', prog)
->> +endforeach
->> diff --git a/tests/unigraf/unigraf_connectivity.c
->> b/tests/unigraf/unigraf_connectivity.c
->> new file mode 100644
->> index 000000000000..01266e84db76
->> --- /dev/null
->> +++ b/tests/unigraf/unigraf_connectivity.c
->> @@ -0,0 +1,79 @@
->> +// SPDX-License-Identifier: MIT
->> +
->> +#include <cstdint>
->> +#include <xf86drmMode.h>
->> +
->> +#include "drmtest.h"
->> +#include "igt_aux.h"
->> +#include "igt_core.h"
->> +#include "igt_kms.h"
->> +#include "unigraf/unigraf.h"
->> +
->> +/**
->> + * TEST: unigraf connectivity
->> + * Category: Core
->> + * Description: Testing connectivity with a unigraf device
->> + *
->> + * SUBTEST: unigraf-open
->> + * Description: Make sure that a unigraf device can be accessed
->> + *
->> + * SUBTEST: unigraf-connected
->> + * Description: Make sure that the unigraf device is connected to
->> the DUT
->> + */
->> +
->> +IGT_TEST_DESCRIPTION("Test basic unigraf connectivity");
->> +igt_main
->> +{
->> +	TSI_HANDLE unigraf_dev;
->> +
->> +	igt_fixture {
->> +		unigraf_init();
->> +	}
->> +
->> +	igt_describe("Testing connectivity with a unigraf device");
->> +	igt_subtest("unigraf-open") {
->> +		unigraf_dev = unigraf_require_device();
->> +		unigraf_close_device(unigraf_dev);
->> +	}
->> +
->> +	igt_describe("Make sure that the unigraf device is connected
->> to the DUT");
->> +	igt_subtest("unigraf-connected") {
->> +		drmModePropertyBlobPtr edid_blob = NULL;
->> +		struct igt_display display;
->> +		uint64_t edid_blob_id;
->> +		igt_output_t *output;
->> +		uint32_t unigraf_edid_len;
->> +		void *unigraf_edid;
->> +		int drm_fd;
->> +		bool found;
->> +
->> +		unigraf_dev = unigraf_require_device();
->> +
->> +		drm_fd = drm_open_driver_master(DRIVER_ANY);
->> +		igt_display_require(&display, drm_fd);
->> +
->> +		unigraf_edid = unigraf_read_edid(unigraf_dev, 0,
->> &unigraf_edid_len);
->> +
->> +		for_each_connected_output(&display, output) {
->> +			if (output->config.connector->connector_type
->> == DRM_MODE_CONNECTOR_DisplayPort) {
->> +				igt_assert(kmstest_get_property(drm_
->> fd, output->config.connector->connector_id,
->> +								DRM_
->> MODE_OBJECT_CONNECTOR, "EDID", NULL,
->> +								&edi
->> d_blob_id, NULL));
->> +				edid_blob =
->> drmModeGetPropertyBlob(drm_fd, edid_blob_id);
->> +				igt_assert(edid_blob);
->> +
->> +				found |= memcmp(unigraf_edid,
->> edid_blob->data, min(edid_blob->length, unigraf_edid_len)) == 0;
->> +
->> +				drmModeFreePropertyBlob(edid_blob);
->> +			}
->> +		}
->> +		igt_assert_f(found, "No output with the correct EDID
->> was found\n");
->> +
->> +		free(unigraf_edid);
->> +		unigraf_close_device(unigraf_dev);
->> +	}
->> +
->> +	igt_fixture {
->> +		unigraf_deinit();
->> +	}
->> +}
->>
->> ---
->> base-commit: a5f980e11a5540c1c079cc6fceb2b2d889b5a460
->> change-id: 20250425-unigraf-integration-11ed330755d5
->>
->> Best regards,
-> 
-
+diff --git a/tests/drm_virtgpu.c b/tests/drm_virtgpu.c
+new file mode 100644
+index 000000000..d9f56edb6
+--- /dev/null
++++ b/tests/drm_virtgpu.c
+@@ -0,0 +1,419 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Red Hat Inc.
++ *
++ * Authors: Dorinda Bassey <dbassey@redhat.com>
++ */
++
++/**
++ * TEST: drm virtgpu ioctls
++ * Description: Testing of the virtIO-GPU driver DRM ioctls
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category:  virtIO-GPU DRM ioctls
++ * Functionality: drm_ioctls
++ * Feature: Virtualization graphics support
++ * Test category: functionality test
++ */
++
++#include <fcntl.h>
++#include <errno.h>
++#include <string.h>
++#include <sys/ioctl.h>
++
++#include "drm.h"
++#include "virtgpu_drm.h"
++#include "igt.h"
++
++/**
++ * SUBTEST: drm-virtgpu-map
++ *
++ * SUBTEST: drm-virtgpu-execbuffer
++ *
++ * SUBTEST: drm-virtgpu-resource-info
++ *
++ * SUBTEST: drm-virtgpu-3d-transfer-to-host
++ *
++ * SUBTEST: drm-virtgpu-3d-transfer-from-host
++ *
++ * SUBTEST: drm-virtgpu-3d-wait
++ *
++ * SUBTEST: drm-virtgpu-resource-create
++ *
++ * SUBTEST: drm-virtgpu-resource-create-blob
++ *
++ * SUBTEST: drm-virtgpu-get-caps
++
++ * SUBTEST: drm-virtgpu-context-init
++ *
++ * SUBTEST: drm-virtgpu-getparam
++ */
++
++IGT_TEST_DESCRIPTION("Testing of the virtIO-GPU driver DRM ioctls");
++
++#define VIRTGPU_DEVICE "/dev/dri/card0"
++
++#define CAPS_BUFFER_SIZE 4096
++#define MAX_CARDS 16
++
++int drm_fd;
++struct drm_virtgpu_resource_create args;
++bool resource_created;
++
++static int open_virtgpu_device(void)
++{
++	drmVersionPtr version;
++
++	for (int i = 0; i < MAX_CARDS; i++) {
++		char path[64];
++
++		snprintf(path, sizeof(path), "/dev/dri/card%d", i);
++		drm_fd = open(path, O_RDWR | O_CLOEXEC);
++		if (drm_fd < 0)
++			continue;
++
++		version = drmGetVersion(drm_fd);
++		if (version && strcmp(version->name, "virtio_gpu") == 0) {
++			drmFreeVersion(version);
++			return drm_fd;
++		}
++
++		drmFreeVersion(version);
++		close(drm_fd);
++	}
++	return -1;
++}
++
++static const struct {
++	const char *name;
++	uint64_t id;
++} params[] = {
++	{"3D_FEATURES", VIRTGPU_PARAM_3D_FEATURES},
++	{"CAPSET_QUERY_FIX", VIRTGPU_PARAM_CAPSET_QUERY_FIX},
++	{"RESOURCE_BLOB", VIRTGPU_PARAM_RESOURCE_BLOB},
++	{"HOST_VISIBLE", VIRTGPU_PARAM_HOST_VISIBLE},
++	{"CROSS_DEVICE", VIRTGPU_PARAM_CROSS_DEVICE},
++	{"CONTEXT_INIT", VIRTGPU_PARAM_CONTEXT_INIT},
++	{"SUPPORTED_CAPSET_IDs", VIRTGPU_PARAM_SUPPORTED_CAPSET_IDs},
++	{"EXPLICIT_DEBUG_NAME", VIRTGPU_PARAM_EXPLICIT_DEBUG_NAME},
++};
++
++static void test_capset(int fd, uint32_t capset_id)
++{
++	uint8_t *caps_buf;
++	struct drm_virtgpu_get_caps caps;
++	int ret;
++	int i;
++
++	caps_buf = malloc(CAPS_BUFFER_SIZE);
++	igt_require(caps_buf);
++	memset(caps_buf, 0, CAPS_BUFFER_SIZE);
++
++	memset(&caps, 0, sizeof(caps));
++	caps.cap_set_id = capset_id;
++	caps.size = CAPS_BUFFER_SIZE;
++	caps.addr = (uintptr_t) caps_buf;
++
++	ret = ioctl(fd, DRM_IOCTL_VIRTGPU_GET_CAPS, &caps);
++	if (ret == 0) {
++		igt_info("Capset ID %u: SUCCESS\n", capset_id);
++		igt_info("  Reported size: %u\n", caps.size);
++		igt_info("  First 16 bytes: ");
++		for (i = 0; i < 16; i++)
++			igt_info("%02x ", caps_buf[i]);
++		igt_info("\n");
++	} else {
++		igt_info("Capset ID %u: FAILED - %s\n", capset_id,
++			 strerror(errno));
++	}
++
++	free(caps_buf);
++}
++
++static void create_resource_if_needed(void)
++{
++	int ret;
++
++	if (resource_created)
++		return;
++
++	memset(&args, 0, sizeof(args));
++	args.target = 2;
++	args.format = 87;
++	args.bind = (1 << 0);
++	args.width = 64;
++	args.height = 64;
++	args.depth = 1;
++	args.array_size = 1;
++
++	ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_RESOURCE_CREATE, &args);
++	igt_assert_f(ret == 0, "RESOURCE_CREATE failed: %s\n", strerror(errno));
++	igt_assert_neq(args.res_handle, 0);
++
++	resource_created = true;
++	igt_info("Created resource: res_handle=%u, bo_handle=%u\n",
++			args.res_handle, args.bo_handle);
++}
++
++igt_main {
++	void *caps_buf = NULL;
++
++	igt_fixture {
++		drm_fd = open_virtgpu_device();
++		igt_require(drm_fd >= 0);
++
++		caps_buf = malloc(CAPS_BUFFER_SIZE);
++		igt_require(caps_buf);
++		memset(caps_buf, 0, CAPS_BUFFER_SIZE);
++	}
++
++	igt_describe
++	    ("Maps a buffer object and tests read/write access via mmap.");
++	igt_subtest("drm-virtgpu-map") {
++		struct drm_virtgpu_map map = { };
++		void *map_ptr;
++		int ret;
++
++		create_resource_if_needed();
++		memset(&map, 0, sizeof(map));
++		map.handle = args.bo_handle;
++
++		/* Request mmap offset */
++		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_MAP, &map);
++		igt_assert_f(ret == 0, "MAP ioctl failed: %s\n",
++			     strerror(errno));
++		igt_assert(map.offset != 0);
++
++		/* Try mmap */
++		map_ptr =
++		    mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, drm_fd,
++			 map.offset);
++		igt_assert(map_ptr != MAP_FAILED);
++
++		igt_info("Successfully mmap'ed BO: offset=0x%lx\n",
++			 (unsigned long)map.offset);
++
++		/* Simple test: write and read */
++		memset(map_ptr, 0xaa, 4096);
++		igt_assert(((uint8_t *) map_ptr)[0] == 0xaa);
++
++		munmap(map_ptr, 4096);
++	}
++
++	igt_describe("Submits a dummy execbuffer to the GPU.");
++	igt_subtest("drm-virtgpu-execbuffer") {
++		struct drm_virtgpu_execbuffer execbuf = { };
++		uint32_t handles[1];
++		int ret;
++
++		create_resource_if_needed();
++		handles[0] = args.bo_handle;
++
++		/* Submit dummy execbuffer */
++		execbuf.flags = 0;
++		execbuf.size = 0;       /* No command */
++		execbuf.command = 0;    /* No command buffer */
++		execbuf.bo_handles = (uintptr_t) handles;
++		execbuf.num_bo_handles = 1;
++		execbuf.fence_fd = -1;  /* No fence */
++		execbuf.ring_idx = 0;   /* Default ring */
++
++		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_EXECBUFFER, &execbuf);
++		igt_assert_f(ret == 0, "EXECBUFFER ioctl failed: %s\n",
++			     strerror(errno));
++
++		igt_info("EXECBUFFER submitted successfully.\n");
++	}
++
++	igt_describe
++	    ("Validates that the GPU resource info ioctl returns expected metadata.");
++	igt_subtest("drm-virtgpu-resource-info") {
++		struct drm_virtgpu_resource_info info;
++		int ret;
++
++		create_resource_if_needed();
++		memset(&info, 0, sizeof(info));
++		info.bo_handle = args.bo_handle;
++
++		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_RESOURCE_INFO, &info);
++		igt_assert_f(ret == 0, "RESOURCE_INFO failed: %s\n",
++			     strerror(errno));
++		igt_assert_eq(info.res_handle, args.res_handle);
++		igt_assert(info.size > 0);
++
++		igt_info("Queried resource info:\n");
++		igt_info("  size:      %u bytes\n", info.size);
++		igt_info("  res_handle %u\n", info.res_handle);
++		igt_info("  blob_mem:  %u\n", info.blob_mem);
++	}
++
++	igt_describe
++	    ("Transfers buffer contents from guest memory to the host.");
++	igt_subtest("drm-virtgpu-3d-transfer-to-host") {
++		int ret;
++		struct drm_virtgpu_3d_transfer_to_host xfer;
++
++		create_resource_if_needed();
++
++		memset(&xfer, 0, sizeof(xfer));
++		xfer.bo_handle = args.bo_handle;
++		xfer.box.x = 0;
++		xfer.box.y = 0;
++		xfer.box.z = 0;
++		xfer.box.w = args.width;
++		xfer.box.h = args.height;
++		xfer.box.d = 1;
++		xfer.level = 0;
++		xfer.offset = 0;
++		xfer.stride = 0;
++		xfer.layer_stride = 0;
++
++		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_TRANSFER_TO_HOST, &xfer);
++		igt_assert_f(ret == 0, "TRANSFER_TO_HOST failed: %s\n",
++			     strerror(errno));
++		igt_info("TRANSFER_TO_HOST completed\n");
++	}
++
++	igt_describe("Transfers buffer contents from the host to guest memory.");
++	igt_subtest("drm-virtgpu-3d-transfer-from-host")
++	{
++		int ret;
++		struct drm_virtgpu_3d_transfer_from_host xfer_in;
++
++		create_resource_if_needed();
++		memset(&xfer_in, 0, sizeof(xfer_in));
++		xfer_in.bo_handle = args.bo_handle;
++		xfer_in.box.x = 0;
++		xfer_in.box.y = 0;
++		xfer_in.box.z = 0;
++		xfer_in.box.w = args.width;
++		xfer_in.box.h = args.height;
++		xfer_in.box.d = 1;
++		xfer_in.level = 0;
++		xfer_in.offset = 0;
++		xfer_in.stride = 0;
++		xfer_in.layer_stride = 0;
++
++		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_TRANSFER_FROM_HOST, &xfer_in);
++		igt_assert_f(ret == 0, "TRANSFER_FROM_HOST failed: %s\n", strerror(errno));
++		igt_info("TRANSFER_FROM_HOST completed\n");
++	}
++
++	igt_describe
++	    ("Waits for a GPU operation to complete on a specific resource.");
++	igt_subtest("drm-virtgpu-3d-wait") {
++		struct drm_virtgpu_3d_wait wait = {.handle = args.bo_handle };
++
++		int ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_WAIT, &wait);
++
++		if (ret == 0)
++			igt_info("WAIT succeeded.\n");
++		else
++			igt_info("WAIT failed as expected (%s).\n",
++				 strerror(errno));
++	}
++
++	igt_describe
++		("Creates a standard 2D GPU resource using RESOURCE_CREATE ioctl.");
++	igt_subtest("drm-virtgpu-resource-create") {
++		create_resource_if_needed();
++	}
++
++	igt_describe
++	    ("Creates a GPU resource using the blob interface with memory flags.");
++	igt_subtest("drm-virtgpu-resource-create-blob") {
++		struct drm_virtgpu_resource_create_blob blob = {
++			.blob_mem = VIRTGPU_BLOB_MEM_GUEST,
++			.blob_flags =
++			    VIRTGPU_BLOB_FLAG_USE_MAPPABLE |
++			    VIRTGPU_BLOB_FLAG_USE_SHAREABLE,
++			.size = 4096,
++			.blob_id = 0,
++			.cmd_size = 0,
++			.cmd = (uintptr_t) NULL,
++		};
++
++		int ret =
++		    ioctl(drm_fd, DRM_IOCTL_VIRTGPU_RESOURCE_CREATE_BLOB,
++			  &blob);
++		igt_assert_f(ret == 0, "Blob creation ioctl failed: %s\n",
++			     strerror(errno));
++		igt_assert_eq(ret, 0);
++		igt_assert_neq(blob.res_handle, 0);
++	}
++
++	igt_describe
++	    ("Queries different GPU capsets and prints the response payload.");
++	igt_subtest("drm-virtgpu-get-caps") {
++		/* Test multiple capsets */
++		test_capset(drm_fd, 1); /* VirGL */
++		test_capset(drm_fd, 2); /* GFXSTREAM */
++		test_capset(drm_fd, 9999); /* Invalid (expect failure) */
++	}
++
++	igt_describe
++	    ("Initializes a GPU context with parameters like capset ID and debug name.");
++	igt_subtest("drm-virtgpu-context-init") {
++		struct drm_virtgpu_context_set_param ctx_params[2];
++		struct drm_virtgpu_context_init ctx_init;
++		int ret;
++
++		memset(ctx_params, 0, sizeof(ctx_params));
++
++		ctx_params[0].param = VIRTGPU_CONTEXT_PARAM_CAPSET_ID;
++		ctx_params[0].value = 1;
++
++		ctx_params[1].param = VIRTGPU_CONTEXT_PARAM_DEBUG_NAME;
++		ctx_params[1].value = (uintptr_t) "IGT-Test-Context";
++
++		memset(&ctx_init, 0, sizeof(ctx_init));
++		ctx_init.num_params = 2;
++		ctx_init.ctx_set_params = (uintptr_t)&ctx_params[0];
++
++		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_CONTEXT_INIT, &ctx_init);
++		if (ret == -1 && errno == EEXIST) {
++			igt_info
++			    ("CONTEXT_INIT with params failed as expected (already initialized)\n");
++		} else {
++			igt_assert_f(ret == 0,
++				     "CONTEXT_INIT with params ioctl failed: %s\n",
++				     strerror(errno));
++			igt_info("CONTEXT_INIT with parameters succeeded\n");
++		}
++	}
++
++	igt_describe
++	    ("Verifies which VirtIO-GPU features are supported by querying driver parameters.");
++	igt_subtest("drm-virtgpu-getparam") {
++		bool found_supported = false;
++		uint64_t actual_value = 0;
++
++		for (size_t i = 0; i < ARRAY_SIZE(params); i++) {
++			struct drm_virtgpu_getparam gp = {
++				.param = params[i].id,
++				.value = (uintptr_t)&actual_value,
++			};
++
++			int ret =
++			    ioctl(drm_fd, DRM_IOCTL_VIRTGPU_GETPARAM, &gp);
++			if (ret == 0) {
++				found_supported = true;
++				igt_info("GETPARAM %s (ID=%lu): value = %llu\n",
++					 params[i].name, params[i].id,
++					 gp.value);
++			} else {
++				igt_info("GETPARAM %s (ID=%lu): failed - %s\n",
++					 params[i].name, params[i].id,
++					 strerror(errno));
++			}
++		}
++
++		igt_assert_f(found_supported,
++			     "No GETPARAM query returned a value.");
++	}
++
++	igt_fixture {
++		free(caps_buf);
++		close(drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 20ddddb89..ac85cac30 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -13,6 +13,7 @@ test_progs = [
+ 	'drm_buddy',
+ 	'drm_mm',
+ 	'drm_read',
++	'drm_virtgpu',
+ 	'fbdev',
+ 	'kms_3d',
+ 	'kms_addfb_basic',
 -- 
-Louis Chauvet, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+2.48.1
 
