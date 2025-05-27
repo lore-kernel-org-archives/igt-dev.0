@@ -4,59 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8944EC54F30
-	for <igt-dev@archiver.kernel.org>; Tue, 27 May 2025 16:25:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B62D0C54ED1
+	for <igt-dev@archiver.kernel.org>; Tue, 27 May 2025 16:28:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F074D10E18F;
-	Tue, 27 May 2025 16:25:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B98910E519;
+	Tue, 27 May 2025 16:28:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QOH4h/Vl";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="DNHCvMd7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0242210E18F
- for <igt-dev@lists.freedesktop.org>; Tue, 27 May 2025 16:25:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748363103; x=1779899103;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=u2OCQgB2ZXBUTQbRjwkG8LbuJSIF1oFRChPv1Dbt5hg=;
- b=QOH4h/VlZR1EesBaFIp65qp5wRXHs+qlyO6mTncKCcgiu384GK/iRqrd
- EeuDexjJNRRifdqgPjScppKl0LgyNZdP7W19h3o2jcgGikhEQrgqwYHZL
- Rd61o+R+DYXevYA/EFhIzob8uolb+vI8bU33qb5Ni7mRbXJWt/GBywC86
- pQKg5hRoCy5oO/tj1B71XbAYEhd7+YaNaea9uF7XA4Dp3wESQIeed7stf
- o/rSgbdJRFxC2yZ6dmfpusecmp6SjexvIubivfehB5R6+/ITEjLBF3Sk8
- eUWuxd1fNvCrcFkYXGL2A/R+bytFWhkK/c9BMzHvE59W8m2sRU03Avcyk Q==;
-X-CSE-ConnectionGUID: jITKvBsPRuCNB7JoCjBfWQ==
-X-CSE-MsgGUID: D/dceNosSiiI9AGS7RauqA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="72898332"
-X-IronPort-AV: E=Sophos;i="6.15,318,1739865600"; d="scan'208";a="72898332"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2025 09:25:02 -0700
-X-CSE-ConnectionGUID: J5jBDE3oRN62luKN5WLsTg==
-X-CSE-MsgGUID: 8mUGl6Y4QuCBw6HTNFjKkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,318,1739865600"; d="scan'208";a="180087464"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2025 09:25:01 -0700
-Date: Tue, 27 May 2025 18:24:57 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jan Sokolowski <jan.sokolowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v4 8/9] tests/intel: fixup print formatting for
- files in intel tests
-Message-ID: <20250527162457.njgml6vti4pzk2f6@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jan Sokolowski <jan.sokolowski@intel.com>,
- igt-dev@lists.freedesktop.org
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam04on2086.outbound.protection.outlook.com [40.107.100.86])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9126110E138
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 May 2025 16:28:29 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K8gooMMvKJHJflXG81/VbUF7gapKDefBQ7nuS/G9AEO8DyKcgojRKwOqH14KHQM+cpbqqXSFbzTmW/At+KQO7CJfSwDaeLH5XR7yQwUkidDKGQBf417wixhsGBpNMI8OqfCHNarJps27NFJk1+33xShPLmfUzFXST1h6rMPJZeiuz+3XpzD6VEOv+WBceRJxMsn/+O5XWMPkH9AYzSVpzHRY6GTWwFm/lp2Zlz/5Kqu5adBeBiyuwx+N7pcn6or4Dc3tQavyYbT0/5I8CJL3v7rh1p9JqShxMm4bksS9XqmAzE6w2vCrCoDuMTnEjBEaClkiwneZhew0T2XcaK1qdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6hXcTfL0vUHErojE9n1g9ZjKkqEYJHUE1a3S11z9IKo=;
+ b=Vj0mxQDvte4paznFRTpPgd9/Zyv+BEr2/H3EKQZAuh2g2qNgio8XjYdiVhs5mwEQZ1WG6rC3pr4Jv4p1FvCk8gZcmxqUJIo8+Djnu1y9W+xtPGznxQAxGGyjozfCsQo8T1EQaCxSUgVvDdqV3SxMA1mXCrMq4p8py0KEJKmbvRAyXlKWgG6k0Ps+OwLFXuWNvZYotFr4lhTpfq2zmHwG/DzAJ2d3yxjr5SPX6IXBbtCbDI5NQnKHVpVKsvYS+U3kpcc1Lvc5HT/H3jgV/3rv1SOk7xKg4kBVfmvaJn741H5pznn+twLVfqd5QSExtLeX5DvhHtTOqLgCKPBPvNS3eA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6hXcTfL0vUHErojE9n1g9ZjKkqEYJHUE1a3S11z9IKo=;
+ b=DNHCvMd7+mfm+jho0a5apPj7PJC2wykKS2gYEfanoPAtjqMrTGJ0lfOT+RrjusvB6yrP8KTcVDD7QytnDAlY93fA0SPAH2pF8V9EeEWQOF4NzsdU9WNzfC57IOt2VTF3Re+uXxC3GfeUiUdsT8alUdriY9ty+zgXr3cvcmTHdA0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
+ by DM4PR12MB5793.namprd12.prod.outlook.com (2603:10b6:8:60::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.26; Tue, 27 May
+ 2025 16:28:25 +0000
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af%6]) with mapi id 15.20.8769.022; Tue, 27 May 2025
+ 16:28:24 +0000
+Message-ID: <67151c33-0ec0-4d31-b8ce-aebc1f65e2ab@amd.com>
+Date: Tue, 27 May 2025 12:28:20 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v4 2/9] tests/amdgpu: fixup print formatting for
+ files in tests
+To: Jan Sokolowski <jan.sokolowski@intel.com>, igt-dev@lists.freedesktop.org
+Cc: George Zhang <george.zhang@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
 References: <20250527120421.79026-1-jan.sokolowski@intel.com>
- <20250527120421.79026-9-jan.sokolowski@intel.com>
+ <20250527120421.79026-3-jan.sokolowski@intel.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20250527120421.79026-3-jan.sokolowski@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YQBPR0101CA0150.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:e::23) To PH7PR12MB6420.namprd12.prod.outlook.com
+ (2603:10b6:510:1fc::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250527120421.79026-9-jan.sokolowski@intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|DM4PR12MB5793:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ad4ca93-9598-48bb-ec69-08dd9d3b8099
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WTFZdmxLSnFDeURqSnVzWEZVbko1ZUM5ZEROR0ZoeU5aUDRBTytlKzVFSlQx?=
+ =?utf-8?B?L1o2V1d1WGlkVXkydEpNNEhMUFRNQXp4SXNubWVxTXJ5STVDUTd5VFAxSEVh?=
+ =?utf-8?B?L0xaSm5ZcEJ5dGNZdm03OFM1RnN2azlTRlFKdyt1YmdYZytSSjVvaEFjTXNp?=
+ =?utf-8?B?RkJaaktRTDdDdlRlb29vQlZFd3RteDJTa2lIUWp5c3Bsc1c0aW55YkRRbFZC?=
+ =?utf-8?B?SFBDayt5bE9JUDdmR1JnZ28vVVY4eE5uMDd6ZXUrM21TK2x5VDRPekV6d0p5?=
+ =?utf-8?B?dDlaQXhYYmZUelpXNlNsTkFYdSttcCsvZVE0bjJTMnFVSWRxK3NQYTQyYTIx?=
+ =?utf-8?B?TkZMaXN0OVNBK2djOUZoeXNHa3ZUWlpFOUxCYXdhbndPUDVLSXB6ZzZQR3RH?=
+ =?utf-8?B?cmRaRmFwU3Q5aVRFUlJwMWJpcGR0S1RzZEg2RHV3MUV1TVExQVFCMnRaTzM3?=
+ =?utf-8?B?dUFPVmthU1BIUk91czdGM2pEcjMraGliVEtBZnZoSWJ1WHFvL0FoZGwyVTlp?=
+ =?utf-8?B?WUNNd29KNC9iakV0UE16WHAvWm1PRDU2RTA4eEZHRXNtY0JxbDFYZmZaQks1?=
+ =?utf-8?B?blJZWXNxN2oycVAzbWlKc0NqVWxZaFVLdVZsREhIM0RRY21hbjBUZjMxOEFm?=
+ =?utf-8?B?dG12UXlBMWJKMDRVZHF3cmY4N3NxckNxMi8xL0VRZjRQbi9OWVRXMmJUbHAw?=
+ =?utf-8?B?YUV2VkNpdmRRcTV3dzJtTS9mOXlFZTJvVm5RZ2NLd29Kb0xMajVwK05YTFBX?=
+ =?utf-8?B?ZHJkUWxNMEFNUmJvUFJRdERFUWtLYnZpZ25rZlA4R0xvQU41bUMvUDZXa0Vj?=
+ =?utf-8?B?QWxyeDNpUnZ5cUpoN21aa0Z5RTJhODN3S3FzcVVTb3k5NkRsUXRETk9GSHVQ?=
+ =?utf-8?B?aGRZUCtIa2p2WlEwRXFNeWY1UFVvQUMvZnJQUVdMb1B6d0lXQzhJOUZsVUtW?=
+ =?utf-8?B?MkRPUlRhbG9vMTl1K1N6em1JY2pEYkZnVEQ1Z0FCM0hFaUh6ZWVRMFhpZ1Mw?=
+ =?utf-8?B?UVpEUmlCbHdPZ3NoSEhsTm5XUWFhVVRNczE4cERGaGJ0WVNkZEtROGJrMU1X?=
+ =?utf-8?B?bmtHVlJqclhEQTZwSnhzNGxBbWE2elUyVkR2cEZEZmd2VkVIRVhBcyt4aVlY?=
+ =?utf-8?B?dFRVS2RzSEZsaExQZytvaUQxeEs5V2FSbW9Sam1OY0lNMk10L3RhRmIzWXdt?=
+ =?utf-8?B?L1B2eUFCL1hyZUlxWktiK21xdDhPN3lLZGxDZVdHMm8rbWJYL3JKVXAxWllh?=
+ =?utf-8?B?eXhoVTBoMkdEOFM4YUtYYVE0NHlZRXRtY0RLaGVyRzcyK0Rld1RTR21qanBH?=
+ =?utf-8?B?SzZHcDNFTE5UcTlSS0w4UkpZQjMvVVVnZmpLbkdCK2lpL3V2V05jNDQ3MG1q?=
+ =?utf-8?B?Sms5TlNrSWUrTE03djNnQW1wQ05iUmJtcWl0UTE3OStRSEIvaG1BLzcyWFVk?=
+ =?utf-8?B?eVJiTWo1TkQwb0Q2bERkN0pPalptbngxenhHV012Q2d6djd2OE5RRTUyVFMr?=
+ =?utf-8?B?UGpBTncrVDJVaVJaeEJCeWYwWGdtYU5Wem40NTdMU0hINGlQYjhZNVFZWXVC?=
+ =?utf-8?B?SEhSODBneDBobkNXTzdkTzFDWlJvYndXZ2xxLy9aUFhOSi9HTlp6Mjl4WGZY?=
+ =?utf-8?B?blF3eWRrUVVXRmdBS1hHV3ZMb1l4N0tsZzJ2YXlJWEFLMzczcDZuKzZUTzRQ?=
+ =?utf-8?B?bVhLVXorbm1OeW5JbHlFVGNFQTZ3VUhwVVY4ekQ1UEVSbVdpcllOU3d3b0lB?=
+ =?utf-8?B?dmxsUmFIUWdjRUJ1eVNLTDVTRjZGSzBSNG56blFncUJxeFZpSlo0S2JhQW5D?=
+ =?utf-8?B?MzJzeHU2VlZyZ3dnWW1Hd09oQUpwamdpdkpKVmswSEljeFZHa2ozc2d6dHE1?=
+ =?utf-8?B?bmU2Yk5yN3BCU0w3N2N2TmZYa3VHdExub2F5cWVLUzBVVTFJOE9QazRTWHJL?=
+ =?utf-8?Q?0dvOtE9ydfw=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S0Uvb1U4NU5BZzVqNms0V3ZST2NnTDFLYUJFMTAra3hmTU03VHpmU2ZzdDJa?=
+ =?utf-8?B?UHJzU1V4Q2hxeDg1QWM5OVh2VmUvdjZ5M295QXRia0hlUjc1SzlvbzE4THBn?=
+ =?utf-8?B?M1QrWTYrNXpJUEkySmg3OWJyNWJqRHZKTzI5c013WnZRYm5IVTd1bjBMdDQ0?=
+ =?utf-8?B?b2pBTXVwWTVsZnNtRWRhZnZZVVNVWTNNamVPV0FML3NUUFdUcmRQOFZWRExL?=
+ =?utf-8?B?V285NytPQnhvSU9TREIrc3hVN1VEYzlIZlZKVElUUzQ1Uk90Zmxqbm5qbWt5?=
+ =?utf-8?B?ZGR3Q0tGUktvOFNhSmdkZGdnUVZ2bXo0NXFHRzBibXdPZTkyVUhzbWh5SVFY?=
+ =?utf-8?B?WitPSitud2NFU2paNk1HK0MrQ21MYUkvQ3RMUmFTRXZ2NnRsUG9nV0lhaFVZ?=
+ =?utf-8?B?ZHEwZHNrdzdTS0FrQzlHaTg0YnN0S2ttNFE5NmFJS2pGV0lCVVFGTFR4OWIz?=
+ =?utf-8?B?QTNXcE5RL1Mzemh4c2l1UzBmOUx4eFZ3SkRNK21RanZKdnF0amlBVGdXUWRj?=
+ =?utf-8?B?NFQ1M1pieHNpYzQ2akc0Zk5uL2VIeDBJbXRDdGxXeHhtUExyTkpHY0dwbENY?=
+ =?utf-8?B?YTVZREFLVmpOcVRTd21hejlzNnp1aVRKTXpWblhmU20zUGQ0VkMyc0pZZUZY?=
+ =?utf-8?B?b2xmaUZGc2FqbDlDU3dwMjlZK1FDd0xVYzNTOU54TnBBaUpTUzJkU1E3UGdS?=
+ =?utf-8?B?N3BMdXp3L1NNMjJSNVBqbS9iS0JCVWxyUXVuU290V3lESkMxV3RpQWlST2Nj?=
+ =?utf-8?B?d0U1Qy9hdm9SQXRoVFcyMS84WmFPZ3VlbFNTQ3hmRm9hM0t3YmsvbzhTbGdn?=
+ =?utf-8?B?RXRkY0ZOSG5oVTQ5NTUvUDZaV3gzdDJ3QnN1VnI2NEEzWVZjbWZ2RDJKWTJB?=
+ =?utf-8?B?V1RhdXBPNDdEWVp0ejlwMlhLQkhFKzNZZXBrZ0svV3VzUFE3ZTdqTStyc2Rt?=
+ =?utf-8?B?bXBGb0VhaGFBdDZ6SXJKcElxOWZ5N0dJY000Z3V3RWFiTVRWWHJMby8zYkZo?=
+ =?utf-8?B?R0pNUW5YZS9yV2FQWCtmZUtjaFBzSGM1aWlYeW4wQVJGeWkrZzBKR3YwNnpJ?=
+ =?utf-8?B?RGNneFhYS0hPNjY0M0MrbzFvM0t4elBRNnpHUjBpNnFnQyt0bGdBUEVQcFdo?=
+ =?utf-8?B?OE83VlgwTjIrVHA1UXhOUTcxaHdSMExXYUt3RjBpUUN3aHVWeFpzWFd6TEI5?=
+ =?utf-8?B?YWJZcURycXkrNFU5L3lWWGFpMnRZeXQyZkpOazFQaVRNdWFWNDZVMmFGMzc4?=
+ =?utf-8?B?dTJRK1FDSEpicFV5QkhObXcyTXRnNUdJTUpISnpudVJNSkZ4Ym13QUg2TkJv?=
+ =?utf-8?B?cVRWN29GY0JjVTNqdmhza2VQV3VhdlJQUVVyTUNpN1RhcEhJR2tFVTdxNWZm?=
+ =?utf-8?B?bHgxQ0JFNTVxakhGV0lUVUQ0TXVSMkczSEdaL0VBZ0JYS1FYc0dadjR5K1pa?=
+ =?utf-8?B?Vm5TZ3pwYjArU2VaWEVua2o2RVU3S0RORU1nTi95WFk0QU44STNVQjhYb3Bs?=
+ =?utf-8?B?bkpScE5nNWpna2N3OER3UjlCTytjNG9rVWQ3R0JKV2JyOHNxY09YTXl4ZVFy?=
+ =?utf-8?B?dXQrQUhvM0FhSGp3TWZ0MUVpeVlHV3pEeVhzMG5td1FKelQ2S0Q4dDZDZ0Zh?=
+ =?utf-8?B?MzlMNTVzcSt2dHh6bVIvOUp3dTR0QXZqTjVmclJvZERuM2VVREo3YTdySEZ2?=
+ =?utf-8?B?OW8weFlsSHdWZGhkYWtpOGJzei91dk9jc0lpQ0FaUVI5aXN3cTFmNzhWRjBr?=
+ =?utf-8?B?Z3pDanVNTmdjeEZRVE5MYUtNYmVGVUpJcDJOUnh1QzFLWlRiSEE4MUpEWTBT?=
+ =?utf-8?B?WmFieGhHTUpOZkRuZzRVT0xOR1N0TFJEc09meDE5M2hURFFpOUZjcU1OVjV4?=
+ =?utf-8?B?UTkzWERXN0hzd3krN0NKVlMzUTlPRDV5aTZPLzJqMCttcVRLN1ZvcWttTVhv?=
+ =?utf-8?B?QVE0ZlEwUlZEcWhqY2htRTZ3azNER1hCNkJ2eStydGtyWTlpRHcxT09QVFpr?=
+ =?utf-8?B?c2NBZEVUTGQxY1d1UUkxVERxOTEwSGhnYVoxdTBBY21rRTB5eW5sMyt3MVFV?=
+ =?utf-8?B?VjZXZ0h1YWJjU29wR0dOZDVLaGdmY3NoR2FDNUQveUxTUkVVdXcwZFRKYnZY?=
+ =?utf-8?Q?0D917cZ2vfIo3dTJSz+mmm3Om?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ad4ca93-9598-48bb-ec69-08dd9d3b8099
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2025 16:28:24.6040 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yWFbd/aegmykCCdaFvvsH8810znMSPSBmZ8LJFesVJJ1Z4ZS/t8BekUNAslgcbMTZiSb8pLsfBIDTkwCpyOi0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5793
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,254 +165,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jan,
-On 2025-05-27 at 12:04:20 +0000, Jan Sokolowski wrote:
+Thanks, the change looks good to me.
 
-please improve subject, for example imho better:
+Reviewed-by Vitaly Prosyak  <vitaly.prosyak@amd.com>
 
-[PATCH i-g-t v4 8/9] tests/intel: Fix print formatting for 32-bit compilation
-
+On 2025-05-27 08:04, Jan Sokolowski wrote:
 > Compiling on other architectures than x86-64 causes a lot
 > of print formatting warnings.
-> 
+>
 > Fix formatting by using proper formatters, eg. PRIu64.
-> 
-
-You could consider adding to Cc developer(s) found with git blame.
-
+>
+> Cc: George Zhang <george.zhang@amd.com>
+> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tests/intel/xe_compute_preempt.c       |  5 +++--
->  tests/intel/xe_eu_stall.c              |  4 ++--
->  tests/intel/xe_exec_capture.c          |  9 +++++----
->  tests/intel/xe_exec_system_allocator.c |  8 ++++----
->  tests/intel/xe_oa.c                    |  6 +++---
->  tests/intel/xe_pmu.c                   | 16 ++++++++--------
->  tests/intel/xe_render_copy.c           |  2 +-
->  7 files changed, 26 insertions(+), 24 deletions(-)
-
-With subject improved this is
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
-> 
-> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-> index 43ffb8dba..caed08a71 100644
-> --- a/tests/intel/xe_compute_preempt.c
-> +++ b/tests/intel/xe_compute_preempt.c
-> @@ -12,6 +12,7 @@
->   * Test category: functionality test
->   */
+>  tests/amdgpu/amd_freesync_video_mode.c | 4 ++--
+>  tests/amdgpu/amd_info.c                | 2 +-
+>  tests/amdgpu/amd_ras.c                 | 2 +-
+>  3 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
+> index 7716598dc..adfc8a810 100644
+> --- a/tests/amdgpu/amd_freesync_video_mode.c
+> +++ b/tests/amdgpu/amd_freesync_video_mode.c
+> @@ -482,7 +482,7 @@ static int prepare_custom_mode(
+>  	den = refresh_rate * 1000 * (unsigned long long)base_mode->htotal;
+>  	target_vtotal = num / den;
+>  	target_vtotal_diff = target_vtotal - base_mode->vtotal;
+> -	igt_debug("num=%lu, den=%lu, target_vtotal=%lu, target_vtotal_diff=%lu, base_mode->vtotal=%d\n",
+> +	igt_debug("num=%" PRIu64 ", den=%" PRIu64 ", target_vtotal=%" PRIu64 ", target_vtotal_diff=%" PRIu64 ", base_mode->vtotal=%d\n",
+>  		num, den, target_vtotal, target_vtotal_diff, base_mode->vtotal);
 >  
-> +#include <inttypes.h>
->  #include <string.h>
+>  	/* Check for illegal modes */
+> @@ -634,7 +634,7 @@ flip_and_measure(
+>  	do_flip(data);
+>  	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
+>  							DRM_EVENT_FLIP_COMPLETE);
+> -	igt_debug("interval_ns=%lu\n", interval_ns);
+> +	igt_debug("interval_ns=%" PRIu64 "\n", interval_ns);
 >  
->  #include "igt.h"
-> @@ -84,7 +85,7 @@ igt_main
->  				 */
->  				child_count = ram_mb / 2 / CONTEXT_MB / 2;
+>  	for (;;) {
+>  		uint64_t event_ns, wait_ns;
+> diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
+> index 53706003f..ace739da4 100644
+> --- a/tests/amdgpu/amd_info.c
+> +++ b/tests/amdgpu/amd_info.c
+> @@ -73,7 +73,7 @@ query_timestamp_test(amdgpu_device_handle dev, uint32_t sleep_time, int sample_c
 >  
-> -				igt_debug("RAM: %zd, child count: %d\n",
-> +				igt_debug("RAM: %" PRIu64 ", child count: %d\n",
->  					  ram_mb, child_count);
+>  		/* make sure the GPU timestamps are ordered */
+>  		igt_assert_f(gpu_delta > 0,
+> -			     "The GPU time is not moving or is ticking in the wrong direction (start=%lu, end=%lu, end-start=%lu)\n",
+> +			     "The GPU time is not moving or is ticking in the wrong direction (start=%" PRIu64 ", end=%" PRIu64 ", end-start=%" PRIu64 "\n",
+>  			     ts_start, ts_end, gpu_delta);
 >  
->  				test_compute_preempt(xe, hwe, false);
-> @@ -111,7 +112,7 @@ igt_main
->  				 */
->  				child_count = ram_mb / CONTEXT_MB / 2;
->  
-> -				igt_debug("RAM: %zd, child count: %d\n",
-> +				igt_debug("RAM: %" PRIu64 ", child count: %d\n",
->  					  ram_mb, child_count);
->  
->  				test_compute_preempt(xe, hwe, false);
-> diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
-> index 411c30871..b27f5685e 100644
-> --- a/tests/intel/xe_eu_stall.c
-> +++ b/tests/intel/xe_eu_stall.c
-> @@ -516,7 +516,7 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int ite
->  	igt_assert(query_eu_stall_data->num_sampling_rates > 0);
->  	if (p_rate == 0)
->  		properties[3] = query_eu_stall_data->sampling_rates[0];
-> -	igt_info("Sampling Rate: %lu\n", properties[3]);
-> +	igt_info("Sampling Rate: %" PRIu64 "\n", properties[3]);
->  
->  	stream_fd = xe_eu_stall_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props);
->  	igt_require_fd(stream_fd);
-> @@ -580,7 +580,7 @@ enable:
+>  		igt_stats_push_float(&stats, corrected_gpu_delta / cpu_delta);
+> diff --git a/tests/amdgpu/amd_ras.c b/tests/amdgpu/amd_ras.c
+> index c9307395a..fdf1bc27d 100644
+> --- a/tests/amdgpu/amd_ras.c
+> +++ b/tests/amdgpu/amd_ras.c
+> @@ -765,7 +765,7 @@ __amdgpu_ras_ip_inject_test(struct amd_ras_single_test_setup *test,
+>  			}
+>  			timeout -= 1;
 >  		}
->  	} while (child_is_running);
->  
-> -	igt_info("Total size read: %lu\n", total_size);
-> +	igt_info("Total size read: %" PRIu64 "\n", total_size);
->  	igt_info("Number of samples: %u\n", num_samples);
->  	igt_info("Number of drops reported: %u\n", num_drops);
->  
-> diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
-> index 92113cdb1..8257d8069 100644
-> --- a/tests/intel/xe_exec_capture.c
-> +++ b/tests/intel/xe_exec_capture.c
-> @@ -14,6 +14,7 @@
->  
->  #include <ctype.h>
->  #include <fcntl.h>
-> +#include <inttypes.h>
->  #include <regex.h>
->  #include <stdio.h>
->  #include <string.h>
-> @@ -290,10 +291,10 @@ check_item_u64(regex_t *regex, char **lines, const char *tag, u64 addr_lo,
->  		     "Target not found:%s\n", tag);
->  
->  	result = compare_hex_value(output);
-> -	igt_debug("Compare %s %s vs [0x%lX-0x%lX] result %lX\n", tag, output,
-> +	igt_debug("Compare %s %s vs [0x%" PRIX64 "-0x%" PRIX64 "] result %" PRIX64 "\n", tag, output,
->  		  addr_lo, addr_hi, result);
->  	igt_assert_f((addr_lo <= result) && (result <= addr_hi),
-> -		     "value %lX out of range[0x%lX-0x%lX]\n", result, addr_lo, addr_hi);
-> +		     "value %" PRIX64 " out of range[0x%" PRIX64 "-0x%" PRIX64 "]\n", result, addr_lo, addr_hi);
->  }
->  
->  static void
-> @@ -423,7 +424,7 @@ igt_main
->  			/* Reduce timeout value to speedup test */
->  			xe_sysfs_set_job_timeout_ms(xe, hwe, CAPTURE_JOB_TIMEOUT);
->  
-> -			igt_debug("Reduced %s class timeout from %ld to %d\n",
-> +			igt_debug("Reduced %s class timeout from %" PRIu64 " to %d\n",
->  				  xe_engine_class_name(hwe->engine_class),
->  				  timeouts[hwe->engine_class], CAPTURE_JOB_TIMEOUT);
->  		}
-> @@ -452,7 +453,7 @@ igt_main
->  			store = xe_sysfs_get_job_timeout_ms(xe, hwe);
->  			igt_abort_on_f(timeout != store, "job_timeout_ms not restored!\n");
->  
-> -			igt_debug("Restored %s class timeout to %ld\n",
-> +			igt_debug("Restored %s class timeout to %" PRIu64 "\n",
->  				  xe_engine_class_name(hwe->engine_class),
->  				  timeouts[hwe->engine_class]);
->  
-> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-> index 06daac8c2..564ea22b8 100644
-> --- a/tests/intel/xe_exec_system_allocator.c
-> +++ b/tests/intel/xe_exec_system_allocator.c
-> @@ -325,7 +325,7 @@ static void touch_all_pages(int fd, uint32_t exec_queue, void *ptr,
->  			       &timeout);
->  	if (ret) {
->  		igt_info("FAIL EXEC_UFENCE_ADDR: 0x%016llx\n", sync[0].addr);
-> -		igt_info("FAIL EXEC_UFENCE: EXPECTED=0x%016llx, ACTUAL=0x%016lx\n",
-> +		igt_info("FAIL EXEC_UFENCE: EXPECTED=0x%016llx, ACTUAL=0x%016" PRIx64 "\n",
->  			 USER_FENCE_VALUE, exec_ufence[0]);
->  
->  		addr = to_user_pointer(ptr);
-> @@ -336,9 +336,9 @@ static void touch_all_pages(int fd, uint32_t exec_queue, void *ptr,
->  			uint64_t sdi_offset = (char *)&data->data - (char *)data;
->  			uint64_t sdi_addr = addr + sdi_offset;
->  
-> -			igt_info("FAIL BATCH_ADDR: 0x%016lx\n", batch_addr);
-> -			igt_info("FAIL SDI_ADDR: 0x%016lx\n", sdi_addr);
-> -			igt_info("FAIL SDI_ADDR (in batch): 0x%016lx\n",
-> +			igt_info("FAIL BATCH_ADDR: 0x%016" PRIx64 "\n", batch_addr);
-> +			igt_info("FAIL SDI_ADDR: 0x%016" PRIx64 "\n", sdi_addr);
-> +			igt_info("FAIL SDI_ADDR (in batch): 0x%016" PRIx64 "\n",
->  				 (((u64)data->batch[2]) << 32) | data->batch[1]);
->  			igt_info("FAIL DATA: EXPECTED=0x%08x, ACTUAL=0x%08x\n",
->  				 data->expected_data, data->data);
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 2022c5cb3..cb59918ef 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -1015,13 +1015,13 @@ static void pec_sanity_check(const u32 *report0, const u32 *report1,
->  		return;
->  	}
->  
-> -	igt_debug("tick delta = %#lx\n", tick_delta);
-> +	igt_debug("tick delta = %#" PRIx64 "\n", tick_delta);
->  
->  	/* Difference in test_event1_cycles_xecore* values should be close to tick_delta */
->  	for (int i = 0; i < ARRAY_SIZE(xecore_idx); i++) {
->  		int n = xecore_idx[i];
->  
-> -		igt_debug("n %d: pec1[n] - pec0[n] %#lx, tick delta %#lx\n",
-> +		igt_debug("n %d: pec1[n] - pec0[n] %#" PRIx64 ", tick delta %#" PRIx64 "\n",
->  			  n, pec1[n] - pec0[n], tick_delta);
->  		/* 0 value for pec[xecore_idx[i]] indicates missing xecore */
->  		if (pec1[n] && pec0[n])
-> @@ -1031,7 +1031,7 @@ static void pec_sanity_check(const u32 *report0, const u32 *report1,
->  			igt_assert(pec0[n]);
->  	}
->  
-> -	igt_debug("pec1[2] - pec0[2] %#lx, tick_delta * num_xecores: %#lx\n",
-> +	igt_debug("pec1[2] - pec0[2] %#" PRIx64 ", tick_delta * num_xecores: %#" PRIx64 "\n",
->  		  pec1[2] - pec0[2], tick_delta * intel_xe_perf->devinfo.n_eu_sub_slices);
->  	/* Difference in test_event1_cycles should be close to (tick_delta * num_xecores) */
->  	assert_within_epsilon(pec1[2] - pec0[2],
-> diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-> index 02f23bd7d..8ed2fc3c0 100644
-> --- a/tests/intel/xe_pmu.c
-> +++ b/tests/intel/xe_pmu.c
-> @@ -200,9 +200,9 @@ static void check_all_engines(int num_engines, int *flag, uint64_t *before, uint
->  		engine_active_ticks = after[idx] - before[idx];
->  		engine_total_ticks = after[idx + 1] - before[idx + 1];
->  
-> -		igt_debug("[%d] Engine active ticks: after %ld, before %ld delta %ld\n", engine_idx,
-> +		igt_debug("[%d] Engine active ticks: after %" PRIu64 ", before %" PRIu64 " delta %" PRIu64 "\n", engine_idx,
->  			  after[idx], before[idx], engine_active_ticks);
-> -		igt_debug("[%d] Engine total ticks: after %ld, before %ld delta %ld\n", engine_idx,
-> +		igt_debug("[%d] Engine total ticks: after %" PRIu64 ", before %" PRIu64 " delta %" PRIu64 "\n", engine_idx,
->  			  after[idx + 1], before[idx + 1], engine_total_ticks);
->  
->  		if (flag[engine_idx] == TEST_LOAD)
-> @@ -243,9 +243,9 @@ static void engine_activity(int fd, struct drm_xe_engine_class_instance *eci, un
->  	engine_active_ticks = after[0] - before[0];
->  	engine_total_ticks = after[1] - before[1];
->  
-> -	igt_debug("Engine active ticks:  after %ld, before %ld delta %ld\n", after[0], before[0],
-> +	igt_debug("Engine active ticks:  after %" PRIu64 ", before %" PRIu64 " delta %" PRIu64 "\n", after[0], before[0],
->  		  engine_active_ticks);
-> -	igt_debug("Engine total ticks: after %ld, before %ld delta %ld\n", after[1], before[1],
-> +	igt_debug("Engine total ticks: after %" PRIu64 ", before %" PRIu64 " delta %" PRIu64 "\n", after[1], before[1],
->  		  engine_total_ticks);
->  
->  	if (cork)
-> @@ -471,9 +471,9 @@ static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *
->  		engine_active_ticks = after[idx] - before[idx];
->  		engine_total_ticks = after[idx + 1] - before[idx + 1];
->  
-> -		igt_debug("[%d] Engine active ticks: after %ld, before %ld delta %ld\n", i,
-> +		igt_debug("[%d] Engine active ticks: after %" PRIu64 ", before %" PRIu64 " delta %" PRIu64 "\n", i,
->  			  after[idx], before[idx], engine_active_ticks);
-> -		igt_debug("[%d] Engine total ticks: after %ld, before %ld delta %ld\n", i,
-> +		igt_debug("[%d] Engine total ticks: after %" PRIu64 ", before %" PRIu64 " delta %" PRIu64 "\n", i,
->  			  after[idx + 1], before[idx + 1], engine_total_ticks);
->  
->  		if (f->cork)
-> @@ -526,9 +526,9 @@ static void engine_activity_fn(int fd, struct drm_xe_engine_class_instance *eci,
->  	engine_active_ticks = after[0] - before[0];
->  	engine_total_ticks = after[1] - before[1];
->  
-> -	igt_debug("[%d] Engine active ticks: after %ld, before %ld delta %ld\n", function,
-> +	igt_debug("[%d] Engine active ticks: after %" PRIu64 ", before %" PRIu64 " delta %" PRIu64 "\n", function,
->  		  after[0], before[0], engine_active_ticks);
-> -	igt_debug("[%d] Engine total ticks: after %ld, before %ld delta %ld\n", function,
-> +	igt_debug("[%d] Engine total ticks: after %" PRIu64 ", before %" PRIu64 " delta %" PRIu64 "\n", function,
->  		  after[1], before[1], engine_total_ticks);
->  
->  	busy_percent = (double)engine_active_ticks / engine_total_ticks;
-> diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
-> index 60cd0fb45..19fdd43b0 100644
-> --- a/tests/intel/xe_render_copy.c
-> +++ b/tests/intel/xe_render_copy.c
-> @@ -629,7 +629,7 @@ static void render_stress_copy(int fd, struct igt_collection *set,
->  			render_duration_max = duration;
->  	}
->  	igt_info("%d render() loops in %d seconds\n", render_count, render_timeout);
-> -	igt_info("Render duration: avg = %ld ns, min = %ld ns, max = %ld ns\n",
-> +	igt_info("Render duration: avg = %" PRIu64 " ns, min = %" PRIu64 " ns, max = %" PRIu64 " ns\n",
->  		 render_duration_total / render_count,
->  		 render_duration_min, render_duration_max);
->  
-> -- 
-> 2.34.1
-> 
+> -		igt_info("\t%4s: test:%s block:%s sub-block:%d error type:%s address:%ld value:%ld\n",
+> +		igt_info("\t%4s: test:%s block:%s sub-block:%d error type:%s address:%" PRIu64 " value:%" PRIu64 "\n",
+>  				pass ? "Pass" : "Fail",
+>  				ip_test[i].name,
+>  				ip_test[i].block,
