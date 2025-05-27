@@ -4,152 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B62D0C54ED1
-	for <igt-dev@archiver.kernel.org>; Tue, 27 May 2025 16:28:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AB00C5AD49
+	for <igt-dev@archiver.kernel.org>; Tue, 27 May 2025 16:29:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B98910E519;
-	Tue, 27 May 2025 16:28:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B8C2C10E187;
+	Tue, 27 May 2025 16:29:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="DNHCvMd7";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="mUsgmmEQ";
 	dkim-atps=neutral
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam04on2086.outbound.protection.outlook.com [40.107.100.86])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9126110E138
- for <igt-dev@lists.freedesktop.org>; Tue, 27 May 2025 16:28:29 +0000 (UTC)
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2063.outbound.protection.outlook.com [40.107.223.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 156DB10E187
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 May 2025 16:29:47 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K8gooMMvKJHJflXG81/VbUF7gapKDefBQ7nuS/G9AEO8DyKcgojRKwOqH14KHQM+cpbqqXSFbzTmW/At+KQO7CJfSwDaeLH5XR7yQwUkidDKGQBf417wixhsGBpNMI8OqfCHNarJps27NFJk1+33xShPLmfUzFXST1h6rMPJZeiuz+3XpzD6VEOv+WBceRJxMsn/+O5XWMPkH9AYzSVpzHRY6GTWwFm/lp2Zlz/5Kqu5adBeBiyuwx+N7pcn6or4Dc3tQavyYbT0/5I8CJL3v7rh1p9JqShxMm4bksS9XqmAzE6w2vCrCoDuMTnEjBEaClkiwneZhew0T2XcaK1qdQ==
+ b=rXJn3dfLz6+ydFwh8DHvRrj8oSzY9SorTwc+ADXQ9Q/d+OKT0mV/76r1KJbwAVMoDeR/h+wZ/tLfhk2U9k6EG4bN/YhHikM3rVHSYkB/k9KHaG3OMAc3arVg3bkIU3g8Z5jYQ2GN409a6ao8D4ZGOFIHY+dosB/UXS0Dnx7ivLj0qfHHwRUXXrsqM9aLobV/QJYcIooLimtMHi5TmEIsB8dsZyOuUwrLhB+7AMqN4ZFJ4StRVBKC3kMkXoPrLLa24xyPVx+X0DKXFzZ5Drf97Or3mtgo7wJNf9cJBBPhJYwO1pmo/3Ulp1i3QIsCNaXkVMm3FLic2TCSBCThYCFD9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6hXcTfL0vUHErojE9n1g9ZjKkqEYJHUE1a3S11z9IKo=;
- b=Vj0mxQDvte4paznFRTpPgd9/Zyv+BEr2/H3EKQZAuh2g2qNgio8XjYdiVhs5mwEQZ1WG6rC3pr4Jv4p1FvCk8gZcmxqUJIo8+Djnu1y9W+xtPGznxQAxGGyjozfCsQo8T1EQaCxSUgVvDdqV3SxMA1mXCrMq4p8py0KEJKmbvRAyXlKWgG6k0Ps+OwLFXuWNvZYotFr4lhTpfq2zmHwG/DzAJ2d3yxjr5SPX6IXBbtCbDI5NQnKHVpVKsvYS+U3kpcc1Lvc5HT/H3jgV/3rv1SOk7xKg4kBVfmvaJn741H5pznn+twLVfqd5QSExtLeX5DvhHtTOqLgCKPBPvNS3eA==
+ bh=jocPH77LU14ETNKJ20GV4CHgXKV/+wKdtsjbhyBVqlI=;
+ b=zVh9Y0I3PGS19tkkqmge/MusLANvpNoNS9llvcm706K/rrOlSq3SfRq+9efmCnik9QUo0aRZ+qtmzz08BWMtdKQc6MUOTpUVAQ6KWDKCZWNK89I29I62n3UaVS//7Wrxq8/7m3pO5e/jkB0gteDK728xF/ag9LNfT+ApXSvw/SFhYe3o8P+tPKoPskkhiupQxLhMtDlOvSrhrKzCTcx0jINrbwOtdsBRDZ/QsWEylMTAmJ+F8BEU9PhGL7YrFlFIBT1JvFEa8zbZh/seocavgIDS5Jvz6rniUKopLT5CRm64g6PKuGLhXA75CR74XaPzeNEG8/aiZqsMZf5dC43blQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6hXcTfL0vUHErojE9n1g9ZjKkqEYJHUE1a3S11z9IKo=;
- b=DNHCvMd7+mfm+jho0a5apPj7PJC2wykKS2gYEfanoPAtjqMrTGJ0lfOT+RrjusvB6yrP8KTcVDD7QytnDAlY93fA0SPAH2pF8V9EeEWQOF4NzsdU9WNzfC57IOt2VTF3Re+uXxC3GfeUiUdsT8alUdriY9ty+zgXr3cvcmTHdA0=
+ bh=jocPH77LU14ETNKJ20GV4CHgXKV/+wKdtsjbhyBVqlI=;
+ b=mUsgmmEQoP23pFCIbfGuMXArROWNobUJc8QYxFGknTgt3oOAk2TdQAECZ/zBXcYtmN9mqFWdth4fpg9HRNPojlXvZHR19oAv4tZItibK8V9RI5mHX8hvoEK0Gq5WVzVWl+o2v7IEEwq7O6rGX9ZhtDIrfZtqqVqa8yn/GecSn64=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
- by DM4PR12MB5793.namprd12.prod.outlook.com (2603:10b6:8:60::13) with
+ by DM4PR12MB9735.namprd12.prod.outlook.com (2603:10b6:8:225::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.26; Tue, 27 May
- 2025 16:28:25 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.24; Tue, 27 May
+ 2025 16:29:44 +0000
 Received: from PH7PR12MB6420.namprd12.prod.outlook.com
  ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
  ([fe80::e0e7:bd76:e99:43af%6]) with mapi id 15.20.8769.022; Tue, 27 May 2025
- 16:28:24 +0000
-Message-ID: <67151c33-0ec0-4d31-b8ce-aebc1f65e2ab@amd.com>
-Date: Tue, 27 May 2025 12:28:20 -0400
+ 16:29:44 +0000
+Message-ID: <8d4eaa0b-cb61-4a3f-8566-ddb020a94421@amd.com>
+Date: Tue, 27 May 2025 12:29:40 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 2/9] tests/amdgpu: fixup print formatting for
- files in tests
-To: Jan Sokolowski <jan.sokolowski@intel.com>, igt-dev@lists.freedesktop.org
-Cc: George Zhang <george.zhang@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t v4 1/9] lib/amdgpu: fixup print formatting for files
+ in lib
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jan Sokolowski <jan.sokolowski@intel.com>, igt-dev@lists.freedesktop.org,
+ George Zhang <george.zhang@amd.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>
 References: <20250527120421.79026-1-jan.sokolowski@intel.com>
- <20250527120421.79026-3-jan.sokolowski@intel.com>
+ <20250527120421.79026-2-jan.sokolowski@intel.com>
+ <20250527160926.sy57ac3aknt7sgkg@kamilkon-DESK.igk.intel.com>
 Content-Language: en-US
 From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20250527120421.79026-3-jan.sokolowski@intel.com>
+In-Reply-To: <20250527160926.sy57ac3aknt7sgkg@kamilkon-DESK.igk.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YQBPR0101CA0150.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:e::23) To PH7PR12MB6420.namprd12.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBPR0101CA0146.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:e::19) To PH7PR12MB6420.namprd12.prod.outlook.com
  (2603:10b6:510:1fc::18)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|DM4PR12MB5793:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ad4ca93-9598-48bb-ec69-08dd9d3b8099
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|DM4PR12MB9735:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70a40910-28d4-4d87-e8f2-08dd9d3bb024
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WTFZdmxLSnFDeURqSnVzWEZVbko1ZUM5ZEROR0ZoeU5aUDRBTytlKzVFSlQx?=
- =?utf-8?B?L1o2V1d1WGlkVXkydEpNNEhMUFRNQXp4SXNubWVxTXJ5STVDUTd5VFAxSEVh?=
- =?utf-8?B?L0xaSm5ZcEJ5dGNZdm03OFM1RnN2azlTRlFKdyt1YmdYZytSSjVvaEFjTXNp?=
- =?utf-8?B?RkJaaktRTDdDdlRlb29vQlZFd3RteDJTa2lIUWp5c3Bsc1c0aW55YkRRbFZC?=
- =?utf-8?B?SFBDayt5bE9JUDdmR1JnZ28vVVY4eE5uMDd6ZXUrM21TK2x5VDRPekV6d0p5?=
- =?utf-8?B?dDlaQXhYYmZUelpXNlNsTkFYdSttcCsvZVE0bjJTMnFVSWRxK3NQYTQyYTIx?=
- =?utf-8?B?TkZMaXN0OVNBK2djOUZoeXNHa3ZUWlpFOUxCYXdhbndPUDVLSXB6ZzZQR3RH?=
- =?utf-8?B?cmRaRmFwU3Q5aVRFUlJwMWJpcGR0S1RzZEg2RHV3MUV1TVExQVFCMnRaTzM3?=
- =?utf-8?B?dUFPVmthU1BIUk91czdGM2pEcjMraGliVEtBZnZoSWJ1WHFvL0FoZGwyVTlp?=
- =?utf-8?B?WUNNd29KNC9iakV0UE16WHAvWm1PRDU2RTA4eEZHRXNtY0JxbDFYZmZaQks1?=
- =?utf-8?B?blJZWXNxN2oycVAzbWlKc0NqVWxZaFVLdVZsREhIM0RRY21hbjBUZjMxOEFm?=
- =?utf-8?B?dG12UXlBMWJKMDRVZHF3cmY4N3NxckNxMi8xL0VRZjRQbi9OWVRXMmJUbHAw?=
- =?utf-8?B?YUV2VkNpdmRRcTV3dzJtTS9mOXlFZTJvVm5RZ2NLd29Kb0xMajVwK05YTFBX?=
- =?utf-8?B?ZHJkUWxNMEFNUmJvUFJRdERFUWtLYnZpZ25rZlA4R0xvQU41bUMvUDZXa0Vj?=
- =?utf-8?B?QWxyeDNpUnZ5cUpoN21aa0Z5RTJhODN3S3FzcVVTb3k5NkRsUXRETk9GSHVQ?=
- =?utf-8?B?aGRZUCtIa2p2WlEwRXFNeWY1UFVvQUMvZnJQUVdMb1B6d0lXQzhJOUZsVUtW?=
- =?utf-8?B?MkRPUlRhbG9vMTl1K1N6em1JY2pEYkZnVEQ1Z0FCM0hFaUh6ZWVRMFhpZ1Mw?=
- =?utf-8?B?UVpEUmlCbHdPZ3NoSEhsTm5XUWFhVVRNczE4cERGaGJ0WVNkZEtROGJrMU1X?=
- =?utf-8?B?bmtHVlJqclhEQTZwSnhzNGxBbWE2elUyVkR2cEZEZmd2VkVIRVhBcyt4aVlY?=
- =?utf-8?B?dFRVS2RzSEZsaExQZytvaUQxeEs5V2FSbW9Sam1OY0lNMk10L3RhRmIzWXdt?=
- =?utf-8?B?L1B2eUFCL1hyZUlxWktiK21xdDhPN3lLZGxDZVdHMm8rbWJYL3JKVXAxWllh?=
- =?utf-8?B?eXhoVTBoMkdEOFM4YUtYYVE0NHlZRXRtY0RLaGVyRzcyK0Rld1RTR21qanBH?=
- =?utf-8?B?SzZHcDNFTE5UcTlSS0w4UkpZQjMvVVVnZmpLbkdCK2lpL3V2V05jNDQ3MG1q?=
- =?utf-8?B?Sms5TlNrSWUrTE03djNnQW1wQ05iUmJtcWl0UTE3OStRSEIvaG1BLzcyWFVk?=
- =?utf-8?B?eVJiTWo1TkQwb0Q2bERkN0pPalptbngxenhHV012Q2d6djd2OE5RRTUyVFMr?=
- =?utf-8?B?UGpBTncrVDJVaVJaeEJCeWYwWGdtYU5Wem40NTdMU0hINGlQYjhZNVFZWXVC?=
- =?utf-8?B?SEhSODBneDBobkNXTzdkTzFDWlJvYndXZ2xxLy9aUFhOSi9HTlp6Mjl4WGZY?=
- =?utf-8?B?blF3eWRrUVVXRmdBS1hHV3ZMb1l4N0tsZzJ2YXlJWEFLMzczcDZuKzZUTzRQ?=
- =?utf-8?B?bVhLVXorbm1OeW5JbHlFVGNFQTZ3VUhwVVY4ekQ1UEVSbVdpcllOU3d3b0lB?=
- =?utf-8?B?dmxsUmFIUWdjRUJ1eVNLTDVTRjZGSzBSNG56blFncUJxeFZpSlo0S2JhQW5D?=
- =?utf-8?B?MzJzeHU2VlZyZ3dnWW1Hd09oQUpwamdpdkpKVmswSEljeFZHa2ozc2d6dHE1?=
- =?utf-8?B?bmU2Yk5yN3BCU0w3N2N2TmZYa3VHdExub2F5cWVLUzBVVTFJOE9QazRTWHJL?=
- =?utf-8?Q?0dvOtE9ydfw=3D?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?b0YrY0NTSC8zSkE5Zit0TGZ4eG0wU2M2UG5NU2d1V0hoZVVCZ3hmT0hQRWl5?=
+ =?utf-8?B?NGlVc3Y3UENxRHA4RUJ4Yi81bytyT0ZkQW0yanphbURObjAxZjc0S2JMR2NB?=
+ =?utf-8?B?OHh0Um1iMVhaTlVnMkphWlMyd1J3dkkreDlGd3BuMnRnV0RiSzZFZE1NeEpy?=
+ =?utf-8?B?bm5yUVlHMksxUnJWbU53RUYwMUthQ09wcEo2cFRkOUJLSjRRUkVhZHNaaldh?=
+ =?utf-8?B?RFRNR0xKajhDSjlWSHorWDArQWVqR2NrZjljWkZybUdqb0xSTzRnZGFxL0Zw?=
+ =?utf-8?B?WWtTVVZleWV6QW5ndEZtRGh3ZXg2Y1VGU0RRS1Y3d1hyRDgzdzdpN2xTVGVI?=
+ =?utf-8?B?cVZvVE8xV0E3enp3SG9yQ0hiaURWSk1TWW9LcGtLMlovRE44cXNXU29sUEYx?=
+ =?utf-8?B?TXI2VHZQZFZveWVVVzgwK0lPL0Z5Q0czOVh1djFYc3hpL2tsY3YvUDBJVjVl?=
+ =?utf-8?B?bTg3ZmdIaXJCbTZiYkNSakZRamdYOG1nSlFyWDI3L2hUL216eFRJZHAvTWdl?=
+ =?utf-8?B?N01LSUs1alFadEJqRTVKVTNiSE83NkNWY2Z3bEhSZ09hbm5HSmFtQVM5NThF?=
+ =?utf-8?B?R0E3VENhdExhUE5HaGNQNFIvbEpsenFzME5Sd0dnTTIwbEZKbG83TGFEQ0JF?=
+ =?utf-8?B?YkJxbWlTK29LeUJISjk4YmY2dEVvSVd0ajhxNlZSRWx4am9DS0NiNGtzcUI0?=
+ =?utf-8?B?ayt4eGNsRVh5bUVvM1IwV2dOQ1RtRWJvZlNMTWh1UjBHY0E1RUNxRlIrZG1v?=
+ =?utf-8?B?MzYrM1BNck5CWkdYcWZrRnJaRFpYOHViNzNmeThwaUJoLzU3T1ZkZmlDV0Nm?=
+ =?utf-8?B?d05NamU3TVdqQ1o0d3ZqLytqK09UL3gzc3lwRzhNcm8yTkYyWWZnVGRPbWI0?=
+ =?utf-8?B?dkhjTU9kL1l0VEd2aXZOcDN5TXdvQzdmaGl5dW02aStWTXMxd2YwMFk2TG5Q?=
+ =?utf-8?B?SUswbDUvVnBnVzJiNEluNVRMVTgyWi80Z2JlbDA3QUFmMnRZa3RGVDVhTkJH?=
+ =?utf-8?B?NEZMVC9FbDR0WElYc3NJTnhKcW8veWVOMHUrR3J5UHdIN1ZqeTdKeUFuUnMx?=
+ =?utf-8?B?YlY4VjNSWkpiNlpvMjc5UGNRaTVXOWNFSE1ZY1RlTnJLZlJmbEg2VVZSVGtm?=
+ =?utf-8?B?a0QrcWRmWXNTQmZTcVdoa3hUaURaL3BiVzRPQU1mdEVSZXFSL0w4RVVoUTF3?=
+ =?utf-8?B?TVJKUEVUT3lYM3V0OGJLK0lWVlAzcWtDaS8rTGFpcnFrdzNtdjVkc2wzYXdH?=
+ =?utf-8?B?MmdsMWkyaDhURTB0OVE5OWdhQU1ocDM5ektGbEhnTGhUcHBzK2xNREpTbVUy?=
+ =?utf-8?B?Tit1Y3dINGQrNFd5Zk1nREVaWlNTMWxFTWJUQnlBeDIwM2w2M0VWdlduK000?=
+ =?utf-8?B?dVhyTHVRcDNhL09ld3JXekgzUWYyNXNrbCtTWGV4NUJtSXBsNjVnVVROYXJQ?=
+ =?utf-8?B?Vk4ra3Mwbjk2Sk1KWmpXdXZRSFJ2NHprVGs3dGFLRk8zRXlabzh6M0RDWk5R?=
+ =?utf-8?B?cUw4Tm10MlREY2ZmQTJ1ek5MRWMvQTFUZUNVZk5md2VBM2h2RTNPclpjZ2tB?=
+ =?utf-8?B?WWFMZVg3eUZmS1ZyeFlGN3pwN1RmT0wwb2p4OVYxalBIN1NnU0MraURyRUhq?=
+ =?utf-8?B?NGVaWHRKaEdyaWJLalVNamVUZ2hJR3RWaE5IdS83NXB0RzRNV3c2dG1waXI2?=
+ =?utf-8?B?QTg4c25MSExCbUxtTDlyYWEyVk4vK25RM3FKSUtJVnNwYmhjQzNWaS9Hd3N1?=
+ =?utf-8?B?dDR4ODhaRXVJaythTEE5MWZUVXpadWEzaGhqWVpRRlRIWEk4RjBtRkVETlJ5?=
+ =?utf-8?B?a01ZN1drK2pDZzlTWXRXQ04yMjZXWEt3dXJ6MFhIMksxM0dLeE5YamdpUzcv?=
+ =?utf-8?B?d0Q4YisvWXNHZ0h4N1g3MDE3YWRoUXZ0S2diRS9Ka1RuWk1nMFlScVVNd0dL?=
+ =?utf-8?Q?qZMGKmZL6y4=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(366016)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S0Uvb1U4NU5BZzVqNms0V3ZST2NnTDFLYUJFMTAra3hmTU03VHpmU2ZzdDJa?=
- =?utf-8?B?UHJzU1V4Q2hxeDg1QWM5OVh2VmUvdjZ5M295QXRia0hlUjc1SzlvbzE4THBn?=
- =?utf-8?B?M1QrWTYrNXpJUEkySmg3OWJyNWJqRHZKTzI5c013WnZRYm5IVTd1bjBMdDQ0?=
- =?utf-8?B?b2pBTXVwWTVsZnNtRWRhZnZZVVNVWTNNamVPV0FML3NUUFdUcmRQOFZWRExL?=
- =?utf-8?B?V285NytPQnhvSU9TREIrc3hVN1VEYzlIZlZKVElUUzQ1Uk90Zmxqbm5qbWt5?=
- =?utf-8?B?ZGR3Q0tGUktvOFNhSmdkZGdnUVZ2bXo0NXFHRzBibXdPZTkyVUhzbWh5SVFY?=
- =?utf-8?B?WitPSitud2NFU2paNk1HK0MrQ21MYUkvQ3RMUmFTRXZ2NnRsUG9nV0lhaFVZ?=
- =?utf-8?B?ZHEwZHNrdzdTS0FrQzlHaTg0YnN0S2ttNFE5NmFJS2pGV0lCVVFGTFR4OWIz?=
- =?utf-8?B?QTNXcE5RL1Mzemh4c2l1UzBmOUx4eFZ3SkRNK21RanZKdnF0amlBVGdXUWRj?=
- =?utf-8?B?NFQ1M1pieHNpYzQ2akc0Zk5uL2VIeDBJbXRDdGxXeHhtUExyTkpHY0dwbENY?=
- =?utf-8?B?YTVZREFLVmpOcVRTd21hejlzNnp1aVRKTXpWblhmU20zUGQ0VkMyc0pZZUZY?=
- =?utf-8?B?b2xmaUZGc2FqbDlDU3dwMjlZK1FDd0xVYzNTOU54TnBBaUpTUzJkU1E3UGdS?=
- =?utf-8?B?N3BMdXp3L1NNMjJSNVBqbS9iS0JCVWxyUXVuU290V3lESkMxV3RpQWlST2Nj?=
- =?utf-8?B?d0U1Qy9hdm9SQXRoVFcyMS84WmFPZ3VlbFNTQ3hmRm9hM0t3YmsvbzhTbGdn?=
- =?utf-8?B?RXRkY0ZOSG5oVTQ5NTUvUDZaV3gzdDJ3QnN1VnI2NEEzWVZjbWZ2RDJKWTJB?=
- =?utf-8?B?V1RhdXBPNDdEWVp0ejlwMlhLQkhFKzNZZXBrZ0svV3VzUFE3ZTdqTStyc2Rt?=
- =?utf-8?B?bXBGb0VhaGFBdDZ6SXJKcElxOWZ5N0dJY000Z3V3RWFiTVRWWHJMby8zYkZo?=
- =?utf-8?B?R0pNUW5YZS9yV2FQWCtmZUtjaFBzSGM1aWlYeW4wQVJGeWkrZzBKR3YwNnpJ?=
- =?utf-8?B?RGNneFhYS0hPNjY0M0MrbzFvM0t4elBRNnpHUjBpNnFnQyt0bGdBUEVQcFdo?=
- =?utf-8?B?OE83VlgwTjIrVHA1UXhOUTcxaHdSMExXYUt3RjBpUUN3aHVWeFpzWFd6TEI5?=
- =?utf-8?B?YWJZcURycXkrNFU5L3lWWGFpMnRZeXQyZkpOazFQaVRNdWFWNDZVMmFGMzc4?=
- =?utf-8?B?dTJRK1FDSEpicFV5QkhObXcyTXRnNUdJTUpISnpudVJNSkZ4Ym13QUg2TkJv?=
- =?utf-8?B?cVRWN29GY0JjVTNqdmhza2VQV3VhdlJQUVVyTUNpN1RhcEhJR2tFVTdxNWZm?=
- =?utf-8?B?bHgxQ0JFNTVxakhGV0lUVUQ0TXVSMkczSEdaL0VBZ0JYS1FYc0dadjR5K1pa?=
- =?utf-8?B?Vm5TZ3pwYjArU2VaWEVua2o2RVU3S0RORU1nTi95WFk0QU44STNVQjhYb3Bs?=
- =?utf-8?B?bkpScE5nNWpna2N3OER3UjlCTytjNG9rVWQ3R0JKV2JyOHNxY09YTXl4ZVFy?=
- =?utf-8?B?dXQrQUhvM0FhSGp3TWZ0MUVpeVlHV3pEeVhzMG5td1FKelQ2S0Q4dDZDZ0Zh?=
- =?utf-8?B?MzlMNTVzcSt2dHh6bVIvOUp3dTR0QXZqTjVmclJvZERuM2VVREo3YTdySEZ2?=
- =?utf-8?B?OW8weFlsSHdWZGhkYWtpOGJzei91dk9jc0lpQ0FaUVI5aXN3cTFmNzhWRjBr?=
- =?utf-8?B?Z3pDanVNTmdjeEZRVE5MYUtNYmVGVUpJcDJOUnh1QzFLWlRiSEE4MUpEWTBT?=
- =?utf-8?B?WmFieGhHTUpOZkRuZzRVT0xOR1N0TFJEc09meDE5M2hURFFpOUZjcU1OVjV4?=
- =?utf-8?B?UTkzWERXN0hzd3krN0NKVlMzUTlPRDV5aTZPLzJqMCttcVRLN1ZvcWttTVhv?=
- =?utf-8?B?QVE0ZlEwUlZEcWhqY2htRTZ3azNER1hCNkJ2eStydGtyWTlpRHcxT09QVFpr?=
- =?utf-8?B?c2NBZEVUTGQxY1d1UUkxVERxOTEwSGhnYVoxdTBBY21rRTB5eW5sMyt3MVFV?=
- =?utf-8?B?VjZXZ0h1YWJjU29wR0dOZDVLaGdmY3NoR2FDNUQveUxTUkVVdXcwZFRKYnZY?=
- =?utf-8?Q?0D917cZ2vfIo3dTJSz+mmm3Om?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dDNGd1UyK1pTV0xIc0pIeXh4d3FUR05vc0hWYm5jQzFoem9adTNIQUNXRitJ?=
+ =?utf-8?B?VVpvbjUvQTRYbGtTRjVqSHV2aU9CUGVpaW1iWWY1Zy9hZUMzSWx3a3E1OVl1?=
+ =?utf-8?B?ZW40OG5MVTBvNWIrNjA5MFFZR3IyU2QrUzVsTzYzODdZTkJ6a2ZjbDVtbWRM?=
+ =?utf-8?B?bmt5elArb1VndlhONTVZVGZIY05wcjhMNFM2L21SM1hoQ295VWlrMXNmVkZE?=
+ =?utf-8?B?YnRBYU43V1RHMU5NemZWVm4ydFZKaEpXTGNVK1ZYRTBxRHY3dXJVT2tKTm1l?=
+ =?utf-8?B?K21PNHhZaWkxS2dvcmdvUlFna29nTVFnRXkrQU8vbGxiU1BrV3BZbGVJZks0?=
+ =?utf-8?B?SHh0cG5hT3Fld0tLK0RHTWlOUnRqUXpCMGxWOTcwZktSTS9PQU1RREZuTnF0?=
+ =?utf-8?B?N3lWd3ZKNUR6amZaUHJjajRNT2F1TmRXL3BtU3pDaW5aMlZIcTRldXRnRFBm?=
+ =?utf-8?B?Sy9ZWGUvYzRWYmxIRGlnRElQZVlJby8yeUNOTjJrRk9pWk05WURnV0FzRk4x?=
+ =?utf-8?B?UkhnT2hCWFdFTkpuc01FR1B0ZU1Pd0o1QjNOZ1h2d3hMRDR4dm9pRDRtY0hV?=
+ =?utf-8?B?azQ5bGQwYlNVUThIY0RPZU5RdHloZWU4cXA4a0ZYejhIaFhKa240SnBqcWhz?=
+ =?utf-8?B?RC8zZExuTU1VeUZhVndpSlB4OEhTaDhQUjIybFRnMEJqRkdBV0FRbUVnRWJ0?=
+ =?utf-8?B?cUdsK3pvTjVESVVTMUlMdVNFZUxSR3hkNGRzRWFxTjJWZ2dPcHFMaWo2cEhv?=
+ =?utf-8?B?WHNEQ081b3FvbEFMeFBlNmM3a0RCUnJiOWRnWDZHVGg0cCt4RzhzZkUvVjBY?=
+ =?utf-8?B?cGV1SU82YXJZYlYvSkpRSVhoREo3OVhhUUxrdy9zb1M5YXhZdzdZbGc5TjhI?=
+ =?utf-8?B?eXkzU1BiVytMTHI4emt4TS9qbFV4N043RTdCRU1Hak5QUWphcVE3VHFMTmJR?=
+ =?utf-8?B?ZnpkRElnUUFSdUxsUzB2V3FTYjdkU3pUUlNOT0xXWHZYSk5ib2x3dkErMTJK?=
+ =?utf-8?B?elBMbDhsaWpFMEs0bGNHNWh2MWFhUzJicXNkV3RUbGJQU3lHUEFlSHRBaVVU?=
+ =?utf-8?B?cVgzcm13NVExZUdCNlJUYjl4a3VrbUlWS1hMckNTcG82OWFwUThsMFVQZWFm?=
+ =?utf-8?B?RXZtT3IrV0MyODZldnhzRllMK0xVWWsvZnQxeEtSSkNSWWpsdmFNcHdKdVB0?=
+ =?utf-8?B?ZjlyUklsd1pEUUQwUWV3QzFlTFNZeVJaVFRxNGFPMHFMV3g4cGVVSTVLeFRS?=
+ =?utf-8?B?aVFvUmRlakIybzNxQzQxMjNsUEFVWEVodHlYUnBpSU9VVW9ZblVQbVpxcHFl?=
+ =?utf-8?B?THk1Z0lPc3phb1lWQ0FpMzNzdDdYQUJMR0FDcjNZZEZsdWtWMlhCNVFaR3BT?=
+ =?utf-8?B?TVlYdVpRWGhlS3hZWjNVOGFkSjBsWXBMcURwYUljRmZSdUI0MFRyY3djTTRE?=
+ =?utf-8?B?OFpQV2EvZERzVDJrNmpoUytzcWtGeDNMSkV1Qm5JRzVYZG9YWFNZT2pDekR6?=
+ =?utf-8?B?U3BvWlJjWFQzeWlaT2N2NEJDYjFUN2U0T20rVGpmdDRwV2x2RHN5Z0tlVlRq?=
+ =?utf-8?B?MzQvNW1KV3RneEJYNUgvK0dZN3BraVlibUhFWHp4MzRCL0xzL1hkUm9xdW1M?=
+ =?utf-8?B?N0VCbkwxNTFQeWxsZHh4K0lmUWk4ZzZRY2RPWGNCcTNuOHV4SG5UdmMrVDVH?=
+ =?utf-8?B?c0VUQnc0ZnBsTk5Kc0JjZGJtaGI4S3RmMk41Y2FwQ1ZkVVc0Rkk3TGFKUktt?=
+ =?utf-8?B?cDB2c0RqRGpBVTRjdkVjZlVraTlLOWM0SzdJMnFQaWNKVVU3NUh1anhYOHhj?=
+ =?utf-8?B?N2k2QUFCbENHbEplMDZjQVdkQnlCWXFCRktuWkNaamVKUnIxOThkT2NFT20x?=
+ =?utf-8?B?eTh6VWJBWDBVZEhYRlJpOGs4TjBRWXBaSEM5SjMrNnNwenIrWHdrcmtHeHdC?=
+ =?utf-8?B?UloxTTNzOWoxVlZyQUhPaXhRRnRzL3FrOHUzM2krc3VsdFpHZ21iU3dWSGUx?=
+ =?utf-8?B?dnc4REpxWkdtWDh5c1Uyd0FwekRSTDA3Vy9Wb1BPU2VKQm1PWktsQXFKLzN4?=
+ =?utf-8?B?RWlVYk0vNGpmM3ZGdjlSaVFBblVjQlVrWHdiNXdQcVRMYWhYVHNTY1M1NWo5?=
+ =?utf-8?Q?BFszZbunqLy+qEMN01Vo1va+9?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ad4ca93-9598-48bb-ec69-08dd9d3b8099
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70a40910-28d4-4d87-e8f2-08dd9d3bb024
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2025 16:28:24.6040 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2025 16:29:44.2845 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yWFbd/aegmykCCdaFvvsH8810znMSPSBmZ8LJFesVJJ1Z4ZS/t8BekUNAslgcbMTZiSb8pLsfBIDTkwCpyOi0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5793
+X-MS-Exchange-CrossTenant-UserPrincipalName: nnzOqFeMvlqyFV0g3RgDvWUekiyqQaAaAynPuURIOiDKVDVYF3xafMWLZQlFAa6mDkuS0tkhy1di4QF5YBFlVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9735
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -165,71 +165,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Thanks, the change looks good to me.
+Hi Kamil,
 
-Reviewed-by Vitaly Prosyak  <vitaly.prosyak@amd.com>
+Sorry for delay.
 
-On 2025-05-27 08:04, Jan Sokolowski wrote:
-> Compiling on other architectures than x86-64 causes a lot
-> of print formatting warnings.
+On 2025-05-27 12:09, Kamil Konieczny wrote:
+> Hi Jan,
+> On 2025-05-27 at 12:04:13 +0000, Jan Sokolowski wrote:
 >
-> Fix formatting by using proper formatters, eg. PRIu64.
+> one nit about subject
+> imho you already have a place/file which you changed, so
+> instead of:
+> [PATCH i-g-t v4 1/9] lib/amdgpu: fixup print formatting for files in lib
 >
-> Cc: George Zhang <george.zhang@amd.com>
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+> better:
+> [PATCH i-g-t v4 1/9] lib/amdgpu: Fix print formatting for 32-bit compilation
+>
+>> Compiling on other architectures than x86-64 causes a lot
+>> of print formatting warnings.
+>>
+>> Fix formatting by using proper formatters, eg. PRIu64.
+>>
+>> Cc: George Zhang <george.zhang@amd.com>
+>> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>> Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+>> Reviewed-by Vitaly Prosyak <vitaly.prosyak at amd.com>
+> This is missing ':' and also s/ at /@/
+>
+> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>
+> Vitaly are you ok with other patch 2/9?
+Yes, sure, thanks!
+>
 > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/amdgpu/amd_freesync_video_mode.c | 4 ++--
->  tests/amdgpu/amd_info.c                | 2 +-
->  tests/amdgpu/amd_ras.c                 | 2 +-
->  3 files changed, 4 insertions(+), 4 deletions(-)
 >
-> diff --git a/tests/amdgpu/amd_freesync_video_mode.c b/tests/amdgpu/amd_freesync_video_mode.c
-> index 7716598dc..adfc8a810 100644
-> --- a/tests/amdgpu/amd_freesync_video_mode.c
-> +++ b/tests/amdgpu/amd_freesync_video_mode.c
-> @@ -482,7 +482,7 @@ static int prepare_custom_mode(
->  	den = refresh_rate * 1000 * (unsigned long long)base_mode->htotal;
->  	target_vtotal = num / den;
->  	target_vtotal_diff = target_vtotal - base_mode->vtotal;
-> -	igt_debug("num=%lu, den=%lu, target_vtotal=%lu, target_vtotal_diff=%lu, base_mode->vtotal=%d\n",
-> +	igt_debug("num=%" PRIu64 ", den=%" PRIu64 ", target_vtotal=%" PRIu64 ", target_vtotal_diff=%" PRIu64 ", base_mode->vtotal=%d\n",
->  		num, den, target_vtotal, target_vtotal_diff, base_mode->vtotal);
->  
->  	/* Check for illegal modes */
-> @@ -634,7 +634,7 @@ flip_and_measure(
->  	do_flip(data);
->  	start_ns = last_event_ns = target_ns = get_kernel_event_ns(data,
->  							DRM_EVENT_FLIP_COMPLETE);
-> -	igt_debug("interval_ns=%lu\n", interval_ns);
-> +	igt_debug("interval_ns=%" PRIu64 "\n", interval_ns);
->  
->  	for (;;) {
->  		uint64_t event_ns, wait_ns;
-> diff --git a/tests/amdgpu/amd_info.c b/tests/amdgpu/amd_info.c
-> index 53706003f..ace739da4 100644
-> --- a/tests/amdgpu/amd_info.c
-> +++ b/tests/amdgpu/amd_info.c
-> @@ -73,7 +73,7 @@ query_timestamp_test(amdgpu_device_handle dev, uint32_t sleep_time, int sample_c
->  
->  		/* make sure the GPU timestamps are ordered */
->  		igt_assert_f(gpu_delta > 0,
-> -			     "The GPU time is not moving or is ticking in the wrong direction (start=%lu, end=%lu, end-start=%lu)\n",
-> +			     "The GPU time is not moving or is ticking in the wrong direction (start=%" PRIu64 ", end=%" PRIu64 ", end-start=%" PRIu64 "\n",
->  			     ts_start, ts_end, gpu_delta);
->  
->  		igt_stats_push_float(&stats, corrected_gpu_delta / cpu_delta);
-> diff --git a/tests/amdgpu/amd_ras.c b/tests/amdgpu/amd_ras.c
-> index c9307395a..fdf1bc27d 100644
-> --- a/tests/amdgpu/amd_ras.c
-> +++ b/tests/amdgpu/amd_ras.c
-> @@ -765,7 +765,7 @@ __amdgpu_ras_ip_inject_test(struct amd_ras_single_test_setup *test,
->  			}
->  			timeout -= 1;
->  		}
-> -		igt_info("\t%4s: test:%s block:%s sub-block:%d error type:%s address:%ld value:%ld\n",
-> +		igt_info("\t%4s: test:%s block:%s sub-block:%d error type:%s address:%" PRIu64 " value:%" PRIu64 "\n",
->  				pass ? "Pass" : "Fail",
->  				ip_test[i].name,
->  				ip_test[i].block,
+> Regards,
+> Kamil
+Regards, Vitaly
+>> ---
+>>  lib/amdgpu/amd_deadlock_helpers.c | 19 ++++++++++---------
+>>  1 file changed, 10 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
+>> index 98251061c..3b4822ca0 100644
+>> --- a/lib/amdgpu/amd_deadlock_helpers.c
+>> +++ b/lib/amdgpu/amd_deadlock_helpers.c
+>> @@ -4,6 +4,7 @@
+>>   */
+>>  
+>>  #include <amdgpu.h>
+>> +#include <inttypes.h>
+>>  #include "amdgpu_drm.h"
+>>  #include "amd_PM4.h"
+>>  #include "amd_sdma.h"
+>> @@ -249,13 +250,13 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
+>>  			if (support_page) {
+>>  				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+>>  							0x3 << ring_id, sysfs);
+>> -				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
+>> +				igt_info("Disable other rings, keep ring: %" PRIu64 " and %" PRIu64 " enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
+>>  				ring_id++;
+>>  
+>>  			} else {
+>>  				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+>>  							0x1 << ring_id, sysfs);
+>> -				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
+>> +				igt_info("Disable other rings, keep only ring: %" PRIu64 " enabled, cmd: %s\n", ring_id, cmd);
+>>  			}
+>>  			r = system(cmd);
+>>  			igt_assert_eq(r, 0);
+>> @@ -266,7 +267,7 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
+>>  
+>>  	/* recover the sched mask */
+>>  	if (sched_mask > 1) {
+>> -		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
+>> +		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" PRIx64 " > %s", sched_mask, sysfs);
+>>  		r = system(cmd);
+>>  		igt_assert_eq(r, 0);
+>>  	}
+>> @@ -523,12 +524,12 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
+>>  			if (support_page) {
+>>  				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+>>  						0x3 << ring_id, sysfs);
+>> -				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
+>> +				igt_info("Disable other rings, keep ring: %" PRIu64 " and %" PRIu64 " enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
+>>  				ring_id++;
+>>  			} else {
+>>  				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+>>  						0x1 << ring_id, sysfs);
+>> -				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
+>> +				igt_info("Disable other rings, keep only ring: %" PRIu64 " enabled, cmd: %s\n", ring_id, cmd);
+>>  			}
+>>  
+>>  			r = system(cmd);
+>> @@ -540,7 +541,7 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
+>>  
+>>  	/* recover the sched mask */
+>>  	if (sched_mask > 1) {
+>> -		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
+>> +		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" PRIx64 " > %s", sched_mask, sysfs);
+>>  		r = system(cmd);
+>>  		igt_assert_eq(r, 0);
+>>  	}
+>> @@ -592,12 +593,12 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
+>>  			if (support_page) {
+>>  				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+>>  						0x3 << ring_id, sysfs);
+>> -				igt_info("Disable other rings, keep ring: %ld and %ld enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
+>> +				igt_info("Disable other rings, keep ring: %" PRIu64 " and %" PRIu64 " enabled, cmd: %s\n", ring_id, ring_id + 1, cmd);
+>>  				ring_id++;
+>>  			} else {
+>>  				snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s",
+>>  						0x1 << ring_id, sysfs);
+>> -				igt_info("Disable other rings, keep only ring: %ld enabled, cmd: %s\n", ring_id, cmd);
+>> +				igt_info("Disable other rings, keep only ring: %" PRIu64 " enabled, cmd: %s\n", ring_id, cmd);
+>>  			}
+>>  
+>>  			r = system(cmd);
+>> @@ -609,7 +610,7 @@ void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t ha
+>>  
+>>  	/* recover the sched mask */
+>>  	if (sched_mask > 1) {
+>> -		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
+>> +		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%" PRIx64 " > %s", sched_mask, sysfs);
+>>  		r = system(cmd);
+>>  		igt_assert_eq(r, 0);
+>>  	}
+>> -- 
+>> 2.34.1
+>>
