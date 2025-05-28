@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D2A3C5AE59
-	for <igt-dev@archiver.kernel.org>; Wed, 28 May 2025 08:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1029C5AE59
+	for <igt-dev@archiver.kernel.org>; Wed, 28 May 2025 08:26:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4AE9210E1CB;
-	Wed, 28 May 2025 08:24:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6E53C10E5AC;
+	Wed, 28 May 2025 08:26:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Aw5+fUjz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n9ZRUMkG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 797CA10E1CB
- for <igt-dev@lists.freedesktop.org>; Wed, 28 May 2025 08:24:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A547C10E5BA
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 May 2025 08:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748420673; x=1779956673;
+ t=1748420812; x=1779956812;
  h=date:from:to:cc:subject:message-id:references:
  content-transfer-encoding:in-reply-to:mime-version;
- bh=NOqU1RXBmmNXPRfOf0B/vNGBkeKaQ9Dw6JU5J6JL4Vc=;
- b=Aw5+fUjznJ9HLBUDFuxNf3PN+rm7zW7zCedCIvbJ2l+/DcBDdU7xdsJB
- qx1KLv5dYIoQjTy2Shgy1wagZw3keDtDyFlDv4fUP6kwLLQvbxOn1G/+U
- TXkm0koypVEYfg05LQrSUXs3+6/e2iQe5fd7DkMSyFqJR6YJCSZRklEYY
- PHBDyOA8iEiJm/aCw0L/Bocs/gE19eh8B+HTCD0eXRDMm0EVcUXTn0oEl
- K/MvNL7yxMeSwQ65SElMY9h7CHeEZXJjDGKZJRhc9uKSso3ze6o6aNfp/
- M3NRDMi/8YWZ4xmlWwEgbgqGRKHPa/JoxxjDy/Ul/HKExl/i0fKl+CBdZ w==;
-X-CSE-ConnectionGUID: BlndroGfSg+wnKmDZOH1sg==
-X-CSE-MsgGUID: 2Qp8yogSSTy1zag8P5BrYA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="50593071"
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="50593071"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2025 01:24:31 -0700
-X-CSE-ConnectionGUID: ZD61kYpoTLWWXcHCokg/QA==
-X-CSE-MsgGUID: +jtOMhCtRKqbYdqeZHP59Q==
+ bh=Wd+GTP+bMYxk+J4p9hU7i8abwxrnMCkb6NKoWzj90rQ=;
+ b=n9ZRUMkGrU3dvlt4YZzeoKDe8LFBGmlMkO93Ts4mlooQaFKmArrqTReq
+ 7P3kNVaSDAijNUfP834yNyYeOnfk0TzCmFNRwwjal733n12qhO7DaabEE
+ J/8mvi6syJZ5BqZkcTlnwwLuvI97Pohx3w+wbzUplKJjjaAnE6pxGNWDH
+ uH0On9mPEAWoHnC0jJ/CeIDVruYN3ENUvGLzvv9tFT3dM3c6uqG42VY8O
+ LP/zRCdZekZm9/rLr1QlkWErTrwoasFfgcrmJl4RUrMSb4AdyTRI2GLxR
+ x/xYiig4p3K/Dxwi3BtFZj8lUprOuMnaDCeWl4kbMDXyx1/w0s3pmeMYb A==;
+X-CSE-ConnectionGUID: N52vHh/eT06pOu4sVFL3vw==
+X-CSE-MsgGUID: S67GFIf7RkG4c2hoqpey9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="50135253"
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="50135253"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2025 01:26:33 -0700
+X-CSE-ConnectionGUID: 51jsBZu4TA+cdVQlnJh6MA==
+X-CSE-MsgGUID: ReHMvdGmT3+wLrSAMuhQFw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="143517581"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2025 01:24:31 -0700
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="144147130"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2025 01:26:33 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 28 May 2025 01:24:30 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ 15.2.1544.25; Wed, 28 May 2025 01:26:32 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Wed, 28 May 2025 01:24:30 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.57) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.2.1544.25 via Frontend Transport; Wed, 28 May 2025 01:26:32 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.40)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Wed, 28 May 2025 01:24:30 -0700
+ 15.1.2507.55; Wed, 28 May 2025 01:26:32 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nryh7zHTyK4uM8ltEp4mM+tFFXOyyfycFyT7D3Yj/r7SnYxgpL2W/4MZlLK8pkLfmgEjTGtp1p/Ah84cr6t67qIU7dPKY10Gk/VJswmNATIj01sCUJcJkZiTLQaT47/5tm6jOraCGbxYxzWFmzbf4mAMgOicGhUoPNFx805c5PJneOOMVc8GWP3o2kX0x+mgv6T0MeISVx2quJOPf8hZGrF/bu3izJu/uIrY9vEvWb5BFok/rWKhu0CNlynm46KVhYL9PV/5bvEx6NNqb6C3P5rVg4Sd8MmGqplc4PVCylzFQMVpmXHJCryZBbQZzNeKaWZ8psyIoJemrUy05r8cVw==
+ b=alS3wz8XW7DYWEgCXSfIxs409aP1U3vlpiHCX9GHSOLrOyS6/bI/8+DQ8+dqLYXfyvucdqtHjWGi9xrgVp3b46vzOkwZFlxuCxN1Oi2QuKS9vCZC85Qs8nBsCeTBsSXeK8nvuMntVgTV366RHyXpcHOTaqs+soipcGmzcHzfEhNI10NWfdbr6QUjZrt1ffbJjWa+bVn28gTFczT5iNKCktkCTvaj/whDR0OCecDO4xOBpEU8UoU853PLmEJriWsosz/sEKd/xA8PxFp1S4l8AKE4yOZSVlaame02b+K5kZkCrKlHoFOTiBDCLS0izlZSd3pc4YDsEwCVCxgb4qekNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VcQxRGLUZ2Pol8EaYmlXCUkHZuipSzn8oGzH01Q56/g=;
- b=tJ2VtdES1YFTB0Bpn0hNfN+n7a/DRTYoPHzDFR4V+PewGT/cYzkoRurGlBgmLXDWCV4vc/g09v+7xKmIONuWwC8P/yV2ucDnaZeLN6GtxeZjsKwairVZjO9byWp1DZoiny7Z3K0LlyheY70kOh6kYl14OPTKqv0lQniRcpbyGdHhbGIN4OYAFn1IObur7nyNn+CAEO++NaujXrCVUVYVI9rfkBYucwP9LLhEU2y+dZSWjS6sm1Q8EleRI39rXY+JLFZxVZ7RB/O2dBpvAtq1d+OIWibrYceAds3MN2WY12UeQOspOUgjgTWMkTV30bRUNtPu5S2yELk/iD3ovQpmAA==
+ bh=wfZrzOyjlBCftGDm0nuYClOHz1PcOs6u16KY9+Zzw2Q=;
+ b=oYbtEzvJ9aGOmXPernASdt99KBQJ1v0oGPMrvcJtFG5ysxNHAycju3tEmavOXD438ebyMPJfwZA046hKC8lIX3x0qqrLKBasqbG1TBNf8GI+NT7NczkicE3kCXUNIqTtdh1JDM+Ipi95O/B1I7WP7FH2CRXisAh3299RX+pCEkNU/KdypTcQxitRNDYsWG8sofqKbNz8b6kjh+hLP1xUyBjtGcIs/XWNhQ+GNZc9Yeg/tn4/Ztmlawg6LPEd4f4RL4sQ/78WUSme+ST6G5uRIuphl9zQBOE6nYEOMgcVSLqxGySUY8L8GMLx0+dLBs7E7y1C0UMNle7nwVSGkjyHiw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,117 +69,117 @@ Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
  by SJ0PR11MB4813.namprd11.prod.outlook.com (2603:10b6:a03:2df::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.26; Wed, 28 May
- 2025 08:23:48 +0000
+ 2025 08:26:30 +0000
 Received: from CY8PR11MB7828.namprd11.prod.outlook.com
  ([fe80::5461:fa8c:58b8:e10d]) by CY8PR11MB7828.namprd11.prod.outlook.com
  ([fe80::5461:fa8c:58b8:e10d%6]) with mapi id 15.20.8769.022; Wed, 28 May 2025
- 08:23:48 +0000
-Date: Wed, 28 May 2025 10:23:41 +0200
+ 08:26:30 +0000
+Date: Wed, 28 May 2025 10:26:26 +0200
 From: Francois Dugast <francois.dugast@intel.com>
 To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t v3 09/11] lib/intel_blt: add support for matrix
- mem-copy
-Message-ID: <aDbIDROnBnbIbMOM@fdugast-desk>
+Subject: Re: [PATCH i-g-t v3 10/11] tests/xe_copy_basic: add mem-copy matrix
+ subtests
+Message-ID: <aDbIsqKR-e2Pk9L-@fdugast-desk>
 References: <20250523080126.75295-1-zbigniew.kempczynski@intel.com>
- <20250523080126.75295-10-zbigniew.kempczynski@intel.com>
+ <20250523080126.75295-11-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250523080126.75295-10-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20250523080126.75295-11-zbigniew.kempczynski@intel.com>
 Organization: Intel Corporation
-X-ClientProxiedBy: DU2PR04CA0359.eurprd04.prod.outlook.com
- (2603:10a6:10:2b4::26) To CY8PR11MB7828.namprd11.prod.outlook.com
+X-ClientProxiedBy: DBBPR09CA0016.eurprd09.prod.outlook.com
+ (2603:10a6:10:c0::28) To CY8PR11MB7828.namprd11.prod.outlook.com
  (2603:10b6:930:78::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|SJ0PR11MB4813:EE_
-X-MS-Office365-Filtering-Correlation-Id: e431aa30-d085-4cc7-6c1a-08dd9dc0f848
+X-MS-Office365-Filtering-Correlation-Id: cc485969-9639-47f9-e1be-08dd9dc158ca
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?R0swSGpzWnllSkZVamFMdlV2Wks2aEJaeVV6QUFGMEdkN1BlVVM1aysrQnZG?=
- =?utf-8?B?emFMekVwZExFTHdvS0ltZFVydGZLTlpnMmtrVm1XMENaclBPYi9FWXhPQ2xS?=
- =?utf-8?B?WlJlUjJnUXZ6QmpYK3pvOC9sYWkxbVVnVFRHdGM2bjVQVlJ5WGFXUURaOTRs?=
- =?utf-8?B?TE54Ymw5blo1dTJyWXBPdlUxUEE2UUpiNzF0QWV2Z0JVdUtucXlSMnVPeXNn?=
- =?utf-8?B?Z2pPcDNjWEJTaVFzSE03Mm9aWFpvK0dWb1krSHVGMmFjNnUwb1doaERnN1Z6?=
- =?utf-8?B?NE16ZE5BV0VlMlVYWVNxZ2R0Q0VFS2MzazlsdUQ4TldNN2ZSTkFQWTF5TUJF?=
- =?utf-8?B?OGpBYlBqRFp5dmk1RWlIelJpdm9FT1I5cUtkOE0vbVlMS0R5M1ZMeVdpV1ZV?=
- =?utf-8?B?QmIvdmd1RHdnY0RjQ1IxT25VNVZzZjJEdjBaQ0ZrR3NmcXBWSTlMc3d1LzZV?=
- =?utf-8?B?S0Zyd2E2Z2REWUFmTThUZVQ0akgvTGtiMjJBVnJDNEh4THRNeTNPSU1hVGlw?=
- =?utf-8?B?MkhkWEhabEhNU3RWYmFtN0R1UUc3RnFZR0xHOTJkaUFvMWY5Y3RCditwRDhZ?=
- =?utf-8?B?UzMvbjlZQnRBVFpvZ1pudU52V0hzWFpKd1JFRjJiMkpBZmFyek8wY1I4ZVU2?=
- =?utf-8?B?a0pvYzRkVERFUnk4WDRLS3hLQlpIY0pZajI5aXNhUE9saTE2Mkc1WVFNTHFx?=
- =?utf-8?B?QkpPN05wVXRYQ3I0aFJKN0dFL3hqVjNaT0pJM3FEWStvQWlHY1ZsUC9JNWlu?=
- =?utf-8?B?NzNRWm81blBkMXFpcVI4ZTlzS0JDYVo4VzNmUDZkNEFobmhBTkFXbWw3QlJl?=
- =?utf-8?B?VnBjTld3a3oyY3ptN1p4d3BGd0RUM2ZhZHBWOW1oM1dQUDVkL1g0SFk0ZVlD?=
- =?utf-8?B?QVpQK3ZRZzRRZFp4Z1ZEZmZJT1VyVEhkT1Y4YzVlVFV6Z0wzZzB3bUZtVkl6?=
- =?utf-8?B?bjBCTHdKY1NaVHF4L0RiUnhETWV0dWkyUTUzQ1NyQklrbnlaUjhHQVZmTnQ2?=
- =?utf-8?B?eTE3cWtKeEJpQk9MUW9abjhXbEVJaVBVY25wNWpPL2dPNmdVQnhLMmFsRFI5?=
- =?utf-8?B?dU5yOEN2bk9XcEtKNnRNMVdjMm94UjMxYzg5QnVCdkRBZVNlM2ZOY2tnRk1G?=
- =?utf-8?B?bnVaSm5odkFvcC9xNG5PQjMzWHlpM0plVGEyNGxVTVovSDh6WnlZRkpYY1Jr?=
- =?utf-8?B?cVoveGh4K3ZIbkE5RmI1OVhiWUhYcTNIUjNEcE40OHdIWXFxVWZ2YjBMQWlZ?=
- =?utf-8?B?REIwdTB1dC9qQzhNUk9WcTM3WTZoRHdkQ1NGeks2Z29YN2tUaE9BMGdvTklZ?=
- =?utf-8?B?Nzc4dE1rbDE0VW5STnhLdlh4cTVVU3ZvMktGYStQckNlUE1Rb2VVYVlGZ3BK?=
- =?utf-8?B?SFZ2N2pwWHpsczZ3SGk4YzJUUUpwZkVqQzJmL0U4Ukp2b1A0SE90bSsrVURk?=
- =?utf-8?B?S0gzaWRwc2lYUnQwMW5mVzV3T1NodTVNTnJuTDdXVldLbTNUUVdxUDVVSTN1?=
- =?utf-8?B?QytZZ1RDbmY1cExJOWx5V0xTaUFhd0I2MWQ4ZnoxTEpnK2pPZ1BoU2kzTlha?=
- =?utf-8?B?MW5TMGRRQktDSmNENWJLQUNoZ1FzUDRqejdiRlJ5eTVhY0pKMW94bjRpUkVz?=
- =?utf-8?B?WjZTemJEMm9qcGkvUCtXRVNBTHVHTWZjWHpIQUlFWHA0K0xKeExsL0MvcFNu?=
- =?utf-8?B?UnFRMGZwUUFqamJsek9xWXJGLzJDdWg2ZTY5WW1yZjVaTWZiVHR6bTNhZER3?=
- =?utf-8?B?NE1BbTQ3UmFmdU9yMzZXVDc0WlZXbEJEK0txY0hqNlhxQlV0Z0FGMTVLekdj?=
- =?utf-8?B?aUpJdjRqcHFYd3hOSGM5V1JZdk1ZTlpuRkJFbHpzYjY4Mkk2ZXRzZUlKM1F5?=
- =?utf-8?B?TVd0YmdDQ05wSFdWUElEQmdjSlI3cWZ3TDVLdWJNRXA3V3p3WnZLaERvNzJk?=
- =?utf-8?Q?kp+AC6R8SqA=3D?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MzFtekl4SEVFdG1Hbm1jL0h6Smx5dVR4Q29CeHhVYmxROWpHVDNUWGs4bDJs?=
+ =?utf-8?B?dDhsV3o2TUVVUTRJNGlGc3lZbVpVWU0xWkZUZmVSNUV5eDVRWWxlRFRuWThQ?=
+ =?utf-8?B?SHNORVh6ajlEUU5QSVFCT3RtUkFpVmRtTzI3VmpNTmdLallHL1M1TnpUVENZ?=
+ =?utf-8?B?a2dmUlNBUVFuSEpTMXUwSEN1RFdOTTIzY3dpQW96bzhzaXNya2xia3NxWjVW?=
+ =?utf-8?B?Si9OZTkvYUd4V1pRdmFMYzVnTU92VUtXK0hnYWVEWFBFVzRRd2hCWVltUGl6?=
+ =?utf-8?B?VFZNUUVoQ04wZEROVGhzSS9qT3BYQTNKT2p6WktIY1RqaHdWS2lGWjlsSE1I?=
+ =?utf-8?B?N1NqU3dUWnJCTWJNQ1RSWXk0ZlgySUF3NWs1MEozUXNXQlgrUUNUQVJudmJy?=
+ =?utf-8?B?eEV1bzY5VXlxYk1EK01oSjN4aGhwWnNJamFvODJXN1pacUF1S0xtZEs0ZWRL?=
+ =?utf-8?B?aGNvN29CcnVNWGIxUVdHemJqMDhpRlV1OGFRMnFFUFJXL0xwaGNBU1hLdFJa?=
+ =?utf-8?B?dEJwY21OWDI5cElPL3p1dlRmUW9nZklPOXlQelNHai9EWEg3MExEZ0hrL1ls?=
+ =?utf-8?B?RkR3MmFvWG5pU3FGN3pSOU1iYUQvdHVHeXU4VjZ0dno2SUJUNUkza2FNU2xj?=
+ =?utf-8?B?emc3MmRnZ3VDNHZSWGxJRXNEQXRlTDJZbVVqbG1FN2NmZWhISnBGK0w1NEFy?=
+ =?utf-8?B?NERxb0lxSEJabXk5b3N5cnc0S2pWM1RMbWMyZUNXVU9jZjBRRzE4MkJHYzBK?=
+ =?utf-8?B?WDlGRkNFVm9vUkVYbmdEZWxiUFlGeE5jTjlOSUk2WFplZithdVRLWVVhVloz?=
+ =?utf-8?B?VTVveERQYlhVdENJYzk5MldEWjc2SDNwRGo5OGdFbDFyTk9VeDR2ZmtsbWVh?=
+ =?utf-8?B?b0ZIbFltbDVzTnE2WUdSZ1NIMmlpTHBSZkVKaWVURVFZcXp2N1ZrSUxuS0xl?=
+ =?utf-8?B?UHM5R2J6SmdCNnN3akJkUHkwYjdnTG5PaGlsdzNVTFpHUEVUY0k1bjJnNnF6?=
+ =?utf-8?B?U1BINC9hUVNQNlNyOTcramVvZFNoSUNtRkZGTVFXVHRlU3NXREgzWk9JODdq?=
+ =?utf-8?B?Tm9UbjNBTUUyY2hYRkJSdUh5R0NHUGdhUlV6ZHpKSG1QMlpuUm9iS0REdFBq?=
+ =?utf-8?B?YVBWb2djVXkzZzJvQ0RZTnlsbGZ5T0FTaUp6UU52bTkwdVpFalltaU93a1Vr?=
+ =?utf-8?B?akhLcCtPNVA4QVJvZlRLZ1RuVzhWSXBhM2puTEM2WDhlc01CRUh2N1FIZDNR?=
+ =?utf-8?B?RTE0ZmZ2OEcrNnpTdDh4RXFudDRud1J2ZFRJZXo0MXkwdDd2V3VpSkE0a2Za?=
+ =?utf-8?B?bE9ZdTB2Q2c2K05rOEhWY2FmSk9kVkd1UUlWaEhGQncxWU15WnlISmFhYzhy?=
+ =?utf-8?B?Q3kwZzM4bXNzdzlhWUVwMURPL1NwaFFkVHVVZFg5RHlYUXdvTDlyN3NabVFQ?=
+ =?utf-8?B?VEdpbDdGYlpEMVR1dnZvRStYUW9DVWhpTG1EOEVHZXY2Y1ZZcCtGd2VRNndB?=
+ =?utf-8?B?WndxU3c3SVV4ejVYQmtHQlFUSnJrbTVLblpUc0tRZ3lBRkpYaUxOUldyeXFa?=
+ =?utf-8?B?RVVEZFNTbmlzWkJXMVRnMEJqb0laZjZBSHdjNHpnR0xUZ2lVaVJxMzJqcDBo?=
+ =?utf-8?B?d1Jla0F5NjlJZm5ETE9lVWxiN1c2cWZrQ3dGV2tyVyt0dmNHL2xJNEs3SU5N?=
+ =?utf-8?B?ckVuYWRzK2ZtRXBkeDV1TG9nYjAzdFVjRXB4d0NoQ1hVMUFHR1NoM01HRzFB?=
+ =?utf-8?B?aXlac2hnbzlSeGY0Q0ZFNHB4SkJYTCsvMUp6bXhOcHdMaVB4NmtRTHE2TURC?=
+ =?utf-8?B?WE9abmtBYUNCZFYyeHF0MjFKM29RcllZYmFoWGxkVjdKMHN0b3VWbEtkYlNC?=
+ =?utf-8?B?S04yb1crY3k4UEpLL1VJRTllUTZDWEIxMVM0WGhjS001aWhnc2d0VHR6bDNB?=
+ =?utf-8?Q?XuMWKaKbQAU=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YWxNbXM4NjROR2dGaHl6dVE1SzNZeTlxR1BwNGdHdDM4K1lTMi9qaFh4YUNh?=
- =?utf-8?B?UjlibG5EcFY1NlB1bHBSOVBTU1pzWFNQRWtyaFJZZ0tiZENzd2ZkbGIxOEZG?=
- =?utf-8?B?aXRDYnlhQTkyMW8wSDI4ZmN3MEhITFFGWWtsVlp1bWlrYThLQ0NGa2dmbFpX?=
- =?utf-8?B?RG1jYTFzTTJQS2J4VTlscmFzZkovY3Z2MGFid1A0QmU5ZC9INTJ3MkdLMzBR?=
- =?utf-8?B?OG5rejdkYVVoNzZwT045OUIvZjBnMldRS1ZoT2svWTBxdzN0WHJwMUd3Y013?=
- =?utf-8?B?Ukh4emczVmR1QnZtQ2tCbi81anFsb1pHZ0tZRTVjWW9YZFZzdU1WbjFWS2dW?=
- =?utf-8?B?c0hiR0ROVjlINHdoWG9uMHFhNlowNEhxak9KOFVvRmdlNUUwZ0gyS200Q2FP?=
- =?utf-8?B?azJBNU1MYmxocDJKMWRDSDlpZVJ2SmZhNTRaYnhkbHc2WmdpZlZsYWs1Y3JF?=
- =?utf-8?B?VHZYbGY3bDRHT01raE0rYlpNQk5RWjlkRzFwSmRkMDd1MWhTRTY0cVVIeU9l?=
- =?utf-8?B?ZlRLT2JKR0pXb0wyWitlMGRGbW0yQkVBUmxnSnZRRXR5NDUwakRrY0xnV2pC?=
- =?utf-8?B?bW41MFoyRUJwbC9WMGgyampldDc1Vm1nSlRDbEVNTjB6M2k0SUYwc3RCV0dh?=
- =?utf-8?B?MUs1RjJDQ1ladkUyZlhaTzNnUzcwN2FWeVpDNFl0ZHhDeXpCU2Rod1lUN2Nj?=
- =?utf-8?B?aDdYSVIxK2FHZnFGVmxWY1V2WEppMC9tTWErMU9IZnIzTUNuREJ2ZWVMOFg3?=
- =?utf-8?B?QlM5RjRMNjBNWXBwOXQ3c1NEcVV6V2NOWHhuRnFDV1dDc2FUakFZS0Y4ZWVI?=
- =?utf-8?B?bWdLVFlBUnk0c3JicnBycFBpWVRmd2JjYW5BTlgxajVPeEtJYkJ2T200MWF0?=
- =?utf-8?B?UVFkeXVNZlcxejhUU1FzdUw5clhJSnZlaGJnSU9MWVpLc296Q1g5aGx2QXgv?=
- =?utf-8?B?b0VwWXFCZFp6dkRwdy84c3dWKzI0TWsvVjJYZzdFZ2lRYUVvS2ZZOXk1aFVN?=
- =?utf-8?B?L0VPRXc3M0NCU1BqM3R1Y05vK014VHdKTEMxWnZEbnB3U01Uam5ZbWovbW9o?=
- =?utf-8?B?V3VvaDg1ZURRbmNRNEk5OTI4M29OYUowYVhlbWNjQkhXTm9SUlBPaVArTVYr?=
- =?utf-8?B?alpWbVdnTVZsMVhhZXFJUkk4TE1PVFhrZzV2eEhrMThsWE96ekR2ZGZRMk8r?=
- =?utf-8?B?TFNqRGJWb0dhbzQrUzZvVldNVzF1a3FCNVVaUCtYaFhGaEZyTGJDdlJQdEdU?=
- =?utf-8?B?MXp3eWk1b09pOUZudVZRWU9QUndzMG9ybVVJWm9mc0VLVVFpWWkwbTRTMTQ4?=
- =?utf-8?B?ZVB3aTg1VlZrNkpPY25pSW5hdjdGWlo2b3RZYitteGNMbmFaNXErcmh5Q1Uw?=
- =?utf-8?B?dTQzZG5ZVGFzYUp2aFBoYktRamtZdUw1RW54Q0Nyci90Q1hmZ1hpdS9MTUZQ?=
- =?utf-8?B?SlVlTUpjSURHM2FsMkZua04xci9QNlI3MGNFbm5FN0RiSXJoeDlkYjVoR05K?=
- =?utf-8?B?cEZycGRpK3hnN0tFNEpEQnIzODlmNmxyOFkzdU9IL3VGV2txVUVnclQ3SC80?=
- =?utf-8?B?bUI1allydTJsUC91Zk01UDIrLzZmbnZnSUtudk83Tm9XNXhxbDhuaTNpWXN6?=
- =?utf-8?B?UnZ2WlZPRU1yQTVUMEJIZ2ExNFJBeVRZT3praFpmRVc5Lzc4SndOd3hCbHcx?=
- =?utf-8?B?N0NBMUFrMnBETkpLNDNXeGZuUWJURW1FMTlpK2U0Rmw3V2NDWW9FTG9YTlRO?=
- =?utf-8?B?NGpBSXVINXpUUG9qbDJGNzBqS1RVWE5TZ0F5b21DdEpIZitlNDRoWXdZOXJS?=
- =?utf-8?B?RVREbmEzTEZjUzVUVXV4R0FJOVNHTU4xUDM5UDYzWmRRTFdxeTFUUDA5SlRH?=
- =?utf-8?B?Wk1RbHl2QlpQRXFldDMyR25YRzVWRWZGSWFvWUJ4dCtEL2hPL0hya1o2MCti?=
- =?utf-8?B?ci9IcDgrZkRYangyY0VTT2k3ZXVXN0dhZEowNjdxdG4vSFh1akQvTDJoRlFv?=
- =?utf-8?B?amlHVjhTRXladXA1MS9TbllzUmNCdlBwKzNqbEo1cC9OVUl4QXFGV3hJK3k4?=
- =?utf-8?B?djNOM2FuZWdBZHhlS3FBUnVjN1NXSTJzQlV3VHQ1OXdvN2RkdjJzY0NZcFY2?=
- =?utf-8?B?b09WM0hwdnB3V1M3OHBRcHgzQXBjT2Q1ZHI4YWdwSnBxczM1a1ZWTkVlMHdu?=
- =?utf-8?B?Rmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e431aa30-d085-4cc7-6c1a-08dd9dc0f848
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MXNlTFowL0hZQzlvcjJVSmhZemRWZjBWUUQ0NU9FVmVIcDBFL2N0NExBbUU4?=
+ =?utf-8?B?a05vOEdidGtTNVpQT0g1SHh4WVgySEM0NUJjNzFTNm9xSnRGalFoNm9jVFRU?=
+ =?utf-8?B?bUFJMUlpT3JEb2l3L01yb1hDczRRZTBSRUcvQUN3M0dQZGlXOHBxT2RPK3JQ?=
+ =?utf-8?B?RWVKSDZrRlVucThZY3VuVzJhRGQvZWZ6aDBySWxkdmJUZmhuZ1hHMWM1Slhk?=
+ =?utf-8?B?UEVRVkZHR0tPNXNwRTRGZi9JWGxXOXllaG0yR1pxa1ZlN0N1eklVRkJOemRn?=
+ =?utf-8?B?czJDbWRQRW1sWVhxcXk3bnhHUTEyWFE2QkVxN1NxSUs0QzNWQjd6a0FQRGtj?=
+ =?utf-8?B?M0ZSRnhZOVh6TkJtV1NseWYzeEVyTGwxenBoS3dYVG5hMGxFSjBEVzVhU0xZ?=
+ =?utf-8?B?dzdQQXluc25ESjh1VWY0SFdLYVpVSkdoeU9RZWhTSCsrWGJoTm5aZTIvaG83?=
+ =?utf-8?B?dXJ6U1JubVFrcGNtUGYvNzR1QS9BaGZ6MjMxaWxydlljK2ZLVVMwbk9hVG5z?=
+ =?utf-8?B?cU9aWE11TnY2N3BhYVg3UmpKVkdIK0FWQnZvTFNNRU5ZNHM5dDVZcmgwNkdW?=
+ =?utf-8?B?QXB6TG0rNEZNMjlhSDRRQVdtZDBybXlkNDVSd2h3aWtxTkhsU1h6REE1NXV5?=
+ =?utf-8?B?Skc1L2ErbWZDaHo2amxJbEVpM3lINnZGNXdLRElhL2d6UVN0UE56amFTOGpR?=
+ =?utf-8?B?TmgzVU9ONzNUUGtwcHNsN0hTOTYwRzN5bHJ1VXFFYUszamRiT1JHYjYyY09F?=
+ =?utf-8?B?eXY0d3ZRN01jbTM1U1VFTFRxeElvM2RQMWYxWUowdGF0VWxmZnVzR0pCMU42?=
+ =?utf-8?B?VUxpZzF6WDY5c3drVmZSZjA0SUZ5alBxeVRtUjJZS1I3UjRVNy9Ibm5jQURn?=
+ =?utf-8?B?ZnBUeFRiRXBoZGlWVmNJQ3pTNmNZUFhBaU5Oa3JzQy9DSGxiN0psWnFabWhw?=
+ =?utf-8?B?bWtveitPdkNlWjBqcjlWOFNQMEpLQVVHTWo3Y2QrZWVRQ21MWFRzdm1iNU5x?=
+ =?utf-8?B?WE5XZlFuVjJQVE13U3c0d0s0d2wwWkZSRTVSaC81UGhDNjVTZTFCMm5sZWc4?=
+ =?utf-8?B?cmltK1AxV2J2SWlJTUd5VHpKbnk4RVZsRENFeHk3OWpxenArVEJuVGhLYy85?=
+ =?utf-8?B?N3dFUVMwalIrQjExcnptZ29PQTJFc2ZPcEV0NWtRWDlFR0NHKzNYd3NFdVpK?=
+ =?utf-8?B?WFA0Z1pSdmROcFUrckxrblgvaGZuK0MwT3pJS2FNTVV3MXVyWkUzcVU4T3dT?=
+ =?utf-8?B?YVgxN0dWN1JqeWVBdnhTcW8vVDNZMllxdXRrOGw1SytyL3l4QTFzRmdwd1Y1?=
+ =?utf-8?B?OXNEKzFUaE5qVTBGbWpQQVc2WmExeHpBa3lYNndFZUxBQUFRbWpPVGhpZGk3?=
+ =?utf-8?B?cG5Cbi9YQWt1UWlSVExHUkc1UnZzbnZMbFBQaEZDRXVJOVdSdWZYM3liM0dX?=
+ =?utf-8?B?RmhwTTFJc0xEV0lETkd4VmMxKy9FOFlhOGcvbGVhc1pDcDR5VFd2NXZnYlFW?=
+ =?utf-8?B?b3U5MllwdEUyVVc0UkM4M2hjZ3RDandqdm5vMUswK3BhQXVhS2h3ZmVXUnpE?=
+ =?utf-8?B?WFc5N2M3QnQrSG5RemgvbHg4WmFJaGU5THNQdlhRMjJncjF5TXpLM2Q4SWgw?=
+ =?utf-8?B?Vmg5YldrVWE2K1ZKWlhaa1ozRkNXdFZaYSszdWJYc29SU3JXdUo5SENNd2RB?=
+ =?utf-8?B?TjN0MHVXUzR0a3RDcjMxcVBiZmVCSHN1VVZpZUxzNyt5dVlIRjBKdzNkQVAr?=
+ =?utf-8?B?bUFseCsrK05CTWNNTFBRYlJRY0pLam1CRXA5MFJtb2pBZnZoWkt3ejdZRnVh?=
+ =?utf-8?B?NGxFcG1Fa3lleEVZY3YreDNYZTdmU1FaYUVZOVFjS3Bpc0N0TTRBZUlwNzZR?=
+ =?utf-8?B?N2g3M3o2SGJNaVh1VCtLc0V3Z2pINTRFMmtPNzQ0d3h0UDJEcXdBamxNVkN0?=
+ =?utf-8?B?bXZvOWxIQkk1TkV6RmlXeDlVdnNqOUIzTFR5NUNvUW9hTnhpYzhYanFBMk9S?=
+ =?utf-8?B?VHFFRVpFV09pOGdCZ0UvcEJldzBWMkxzWlVPNENaM1BoTkVJWVdVZ0hhdXFJ?=
+ =?utf-8?B?NWpud2RFQUNkQlRiNmJCRmJMNCszUDlQZlpia2dNeDBSbnhaQ3JWTm5NODJl?=
+ =?utf-8?B?VlhzaEt2QldBbWN1ZkdMdUJvdFFjOGQrZjgvNlBjVjdTb082c1ZzSTZvdXBk?=
+ =?utf-8?B?WHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc485969-9639-47f9-e1be-08dd9dc158ca
 X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 08:23:48.2894 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 08:26:30.1733 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9aIPUs/Ycp6e6PWNPbmSyHhLen8Stm1Lp3np2YRmrxkhLl2k/5Zqay8vK2reveK6JsMuOYQpLYLotCWSoyGceFDMxS1Np8/+KaMsoZjjIrE=
+X-MS-Exchange-CrossTenant-UserPrincipalName: NOK+5tnRkdjgej7DML50DSyav2R101cGzpM+Yza5xpEXZ4MUn0mZ0Rbw3K4mYLwlc+j0jrJXkPUxbUx1LsiSVSc04pW9rnT0y/iyQ6MTrAM=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4813
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -197,138 +197,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, May 23, 2025 at 10:01:24AM +0200, Zbigniew Kempczyński wrote:
-> Linear copy in intel_blt supports passing large buffers (which
-> requires to be spread over couple mem-copies). For matrix this is
-> a little bit more complicated so I left simple case in which
+On Fri, May 23, 2025 at 10:01:25AM +0200, Zbigniew Kempczyński wrote:
+> Verify intel_blt is able to properly copy matrix from one buffer
+> to another.
+> 
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  tests/intel/xe_copy_basic.c | 52 +++++++++++++++++++++++++++++++++----
+>  1 file changed, 47 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
+> index 404fe7f50a..be400e3175 100644
+> --- a/tests/intel/xe_copy_basic.c
+> +++ b/tests/intel/xe_copy_basic.c
+> @@ -62,6 +62,19 @@ struct rect {
+>   * @17: 17
+>   */
+>  
+> +/**
+> + *
+> + * SUBTEST: mem-matrix-copy-%s
+> + * Description: Test validates MEM_COPY command, it takes various
+> + *              parameters needed for the filling batch buffer for MEM_COPY command
+> + *              with size %arg[1].
 
-Patch LGTM but a nit: impersonal style is preferred over "I did X". 
+Please see comment on test description in patch #8.
 
 With that:
 
     Reviewed-by: Francois Dugast <francois.dugast@intel.com>
 
-> pitch/width/height must be within mem-copy command limits -
-> 18-bit width * 18-bit height gives 64GiB object so testing
-> copying bigger buffer would be an overkill.
-> 
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/intel_blt.c | 69 +++++++++++++++++++++++++++++++++----------------
->  1 file changed, 47 insertions(+), 22 deletions(-)
-> 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index 265f5ed50f..77a03aff4e 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -1893,17 +1893,18 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
->  {
->  	struct xe_mem_copy_data data = {};
->  	uint64_t dst_offset, src_offset, shift;
-> -	uint32_t height, width_max, remain;
-> +	uint32_t width, height, width_max, height_max, remain;
->  	uint32_t bbe = MI_BATCH_BUFFER_END;
->  	uint32_t *bb;
+> + * Test category: functionality test
+> + *
+> + * arg[1]:
+> + * @2x2: 2x2
+> + * @200x127: 200x127
+> + */
+> +
+>  static void
+>  mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
+>  	 enum blt_memop_type type, enum blt_memop_mode mode,
+> @@ -79,13 +92,17 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
+>  	uint8_t *psrc, *pdst;
+>  	int result, i;
 >  
->  	if (mem->mode == MODE_BYTE) {
->  		data.dw01.byte_copy.width = -1;
-> -		width_max = data.dw01.byte_copy.width + 1;
-> +		height_max = width_max = data.dw01.byte_copy.width + 1;
->  		shift = width_max;
->  	} else {
->  		data.dw01.page_copy.width = -1;
->  		width_max = data.dw01.page_copy.width + 1;
-> +		height_max = 1;
->  		shift = width_max << 8;
->  	}
+> +	igt_debug("size: %u, pitch: %u, width: %u, height: %u (type: %d, mode: %d)\n",
+> +		  size, pitch, width, height, type, mode);
+> +
+>  	bb = xe_bo_create(fd, 0, bb_size, region, 0);
 >  
-> @@ -1914,6 +1915,7 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
->  
->  	bb = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
->  
-> +	width = mem->src.width;
->  	height = mem->dst.height;
->  
->  	data.dw00.client = 0x2;
-> @@ -1930,34 +1932,57 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
->  	data.dw09.src_mocs = mem->src.mocs_index;
->  	data.dw09.dst_mocs = mem->dst.mocs_index;
->  
-> -	remain = mem->src.width;
-> +	/* For matrix we don't iterate */
-> +	if (mem->copy_type == TYPE_MATRIX) {
-> +		if (width > width_max) {
-> +			width = width_max;
-> +			igt_warn("src width is bigger than max width [%u > %u => %u], truncating it\n",
-> +				 mem->src.width, width_max, width);
-> +		}
->  
-> -	/* Truncate pitches to match operation bits */
-> -	if (mem->src.pitch > width_max)
-> -		data.dw03.src_pitch = width_max - 1;
-> -	else
-> -		data.dw03.src_pitch = mem->src.pitch;
-> +		if (height > height_max) {
-> +			height = height_max;
-> +			igt_warn("src height is bigger than max height [%u > %u => %u], truncating it\n",
-> +				 mem->src.height, height_max, height);
-> +		}
->  
-> -	if (mem->dst.pitch > width_max)
-> -		data.dw04.dst_pitch = width_max - 1;
-> -	else
-> -		data.dw04.dst_pitch = mem->dst.pitch;
-> -
-> -	while (remain) {
-> -		data.dw01.val = min_t(uint32_t, width_max, remain) - 1;
-> +		data.dw01.byte_copy.width = width - 1;
-> +		data.dw03.src_pitch = mem->src.pitch - 1;
-> +		data.dw04.dst_pitch = mem->dst.pitch - 1;
->  
->  		igt_assert(bb_pos + sizeof(data) < mem->bb.size);
->  		memcpy(bb + bb_pos, &data, sizeof(data));
->  		bb_pos += sizeof(data);
+>  	blt_mem_copy_init(fd, &mem, mode, type);
+> -	blt_set_mem_object(&mem.src, src_handle, size, width, width, height,
+> +	blt_set_mem_object(&mem.src, src_handle, size, pitch, width, height,
+>  			   region, src_mocs, DEFAULT_PAT_INDEX, COMPRESSION_DISABLED);
+> -	blt_set_mem_object(&mem.dst, dst_handle, size, width, width, height,
+> +	blt_set_mem_object(&mem.dst, dst_handle, size, pitch, width, height,
+>  			   region, dst_mocs, DEFAULT_PAT_INDEX, COMPRESSION_DISABLED);
+> +
+>  	mem.src.ptr = xe_bo_map(fd, src_handle, size);
+>  	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
+>  	psrc = (uint8_t *) mem.src.ptr;
+> @@ -112,8 +129,20 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
+>  				break;
+>  			}
+>  		}
+> -	} else {
+> +	} else if (type == TYPE_LINEAR && mode == MODE_PAGE) {
+>  		result = memcmp(psrc, pdst, pitch << 8);
 > +	} else {
-> +		remain = mem->src.width;
->  
-> -		remain -= remain > width_max ? width_max : remain;
-> -		src_offset += shift;
-> -		dst_offset += shift;
-> +		/* Truncate pitches to match operation bits */
-> +		if (mem->src.pitch > width_max)
-> +			data.dw03.src_pitch = width_max - 1;
-> +		else
-> +			data.dw03.src_pitch = mem->src.pitch;
->  
-> -		data.dw05.src_address_lo = src_offset;
-> -		data.dw06.src_address_hi = src_offset >> 32;
-> -		data.dw07.dst_address_lo = dst_offset;
-> -		data.dw08.dst_address_hi = dst_offset >> 32;
-> +		if (mem->dst.pitch > width_max)
-> +			data.dw04.dst_pitch = width_max - 1;
-> +		else
-> +			data.dw04.dst_pitch = mem->dst.pitch;
+> +		result = 0;
 > +
-> +		while (remain) {
-> +			data.dw01.val = min_t(uint32_t, width_max, remain) - 1;
-> +
-> +			igt_assert(bb_pos + sizeof(data) < mem->bb.size);
-> +			memcpy(bb + bb_pos, &data, sizeof(data));
-> +			bb_pos += sizeof(data);
-> +
-> +			remain -= remain > width_max ? width_max : remain;
-> +			src_offset += shift;
-> +			dst_offset += shift;
-> +
-> +			data.dw05.src_address_lo = src_offset;
-> +			data.dw06.src_address_hi = src_offset >> 32;
-> +			data.dw07.dst_address_lo = dst_offset;
-> +			data.dw08.dst_address_hi = dst_offset >> 32;
+> +		for (i = 0; i < pitch * height; i++) {
+> +			if (i % pitch > width && pdst[i] != 0) {
+> +				result = -1;
+> +				break;
+> +			} else if (i % pitch < width && psrc[i] != pdst[i]) {
+> +				result = -1;
+> +				break;
+> +			}
 > +		}
 >  	}
 >  
->  	if (emit_bbe) {
+>  	intel_allocator_bind(ahnd, 0, 0);
+> @@ -190,8 +219,10 @@ static void copy_test(int fd, struct rect *rect, enum blt_cmd_type cmd, uint32_t
+>  	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
+>  
+>  	if (cmd == MEM_COPY)
+> -		mem_copy(fd, src_handle, dst_handle, ctx, TYPE_LINEAR, rect->mode,
+> -			 bo_size, pitch, rect->width, rect->height, region);
+> +		mem_copy(fd, src_handle, dst_handle, ctx,
+> +			 rect->height > 1 ? TYPE_MATRIX : TYPE_LINEAR,
+> +			 rect->mode, bo_size, pitch,
+> +			 rect->width, rect->height, region);
+>  	else if (cmd == MEM_SET)
+>  		mem_set(fd, dst_handle, ctx, bo_size, rect->width, 1, MEM_FILL, region);
+>  
+> @@ -214,6 +245,7 @@ igt_main
+>  				 { 0, 0x8fffe, 1 } };
+>  	struct rect page[] = { { 0, 1, 1, MODE_PAGE },
+>  			       { 0, 17, 1, MODE_PAGE }};
+> +	struct rect matrix[] = { { 4, 2, 2 }, { 256, 200, 127 } };
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver(DRIVER_XE);
+> @@ -243,6 +275,16 @@ igt_main
+>  		}
+>  	}
+>  
+> +	for (int i = 0; i < ARRAY_SIZE(matrix); i++) {
+> +		igt_subtest_f("mem-matrix-copy-%ux%u", matrix[i].width, matrix[i].height) {
+> +			igt_require(blt_has_mem_copy(fd));
+> +			for_each_variation_r(regions, 1, set) {
+> +				region = igt_collection_get_value(regions, 0);
+> +				copy_test(fd, &matrix[i], MEM_COPY, region);
+> +			}
+> +		}
+> +	}
+> +
+>  	for (int i = 0; i < ARRAY_SIZE(linear); i++) {
+>  		igt_subtest_f("mem-set-linear-0x%x", linear[i].width) {
+>  			igt_require(blt_has_mem_set(fd));
 > -- 
 > 2.43.0
 > 
