@@ -4,54 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5C64C5B553
-	for <igt-dev@archiver.kernel.org>; Wed, 28 May 2025 21:27:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA3FC3ABB2
+	for <igt-dev@archiver.kernel.org>; Wed, 28 May 2025 21:54:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C22410E6D1;
-	Wed, 28 May 2025 21:27:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB0DC10E0C6;
+	Wed, 28 May 2025 21:54:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mZqOH+qD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C6EZXezq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1311910E6CC
- for <igt-dev@lists.freedesktop.org>; Wed, 28 May 2025 21:27:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FEDE10E0C6
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 May 2025 21:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748467624; x=1780003624;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=qAQSqmm39ls80vLJYrlmN4Kju0Uu3levk+3Z59mZO5A=;
- b=mZqOH+qDrd+Ai03RWhuUqAakPGCXCD7aKYyCf4JmtWnipvMnWGWQhYIw
- jp/5m4chSinavo0Ejdpdt5VyGnYa1PG10oOiY5q1+wUSp68IvvapXVlaM
- uZdNOnbQFtLDv9RhAcCuhkVVizCHFtUNbLBTuNu6bahw3FF4OxsFoM5/8
- mVfkoIn0jOs5R+HBiq892VC4UyAVhHfjOGwa3svC0O8l4Sj7Zc/Q6wh+z
- MRRQCQMTpdLl8KVWmPJh7ULp/yntblWNdY9DBTPWpTOTSjNf4kD48XAj1
- +IvZIdOrmVKn/OE1QsDq0fTX4fHeXxo7ON3aH3iAjFA93AA+rWTYS/s4C g==;
-X-CSE-ConnectionGUID: LoJuRUGpTQ+rIrCqUsNgUA==
-X-CSE-MsgGUID: fir4i6+KRl6W+kZTQVwCDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="61864170"
-X-IronPort-AV: E=Sophos;i="6.15,322,1739865600"; d="scan'208";a="61864170"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2025 14:27:01 -0700
-X-CSE-ConnectionGUID: XDDT/bJwSreuhNd9a1Rx/A==
-X-CSE-MsgGUID: KbBqkz1nSKasYURp+BC2Zg==
+ t=1748469239; x=1780005239;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=YUpZ19a48alXocK3rs+0KX52CXFrVmPXwn/idsiyCHE=;
+ b=C6EZXezqwY/IPUbfpkKHXUhYccDLTbSOQnxVmhXZNuL6HUH+D8X9wB/z
+ r1gsKbkDfhxqUX+ss9XP9q5xV7hbMVsUEgvMbwueWORjCuRMAgxwoN4xO
+ JCnJippV9NqcN8pAxekC0AsZZ+8Fjv041mZ3PPbyNKPlkVmPrtxoQ/Q8I
+ 7pHRXshwN/RJJcSJgsXf+AM78SdZZretP1d6u/MQqLZBLRTocwkTj6ZSa
+ /io5Xa2Kx1RqeZHHbMeP2Dty278BDMyOqYBr3mvVTzRhEV20/ya5DYtaR
+ B1P1VxyzxI4/X7ZOvQZfM9VwNr1Q3Ij1tnPFJ7pjrs1iOTD3KERJdcsjw g==;
+X-CSE-ConnectionGUID: 1Oweh5NZT3y68H8oH+4K2w==
+X-CSE-MsgGUID: t6nVwrByQ5mUNPUo2bluSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="50438881"
+X-IronPort-AV: E=Sophos;i="6.15,322,1739865600"; d="scan'208";a="50438881"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2025 14:53:59 -0700
+X-CSE-ConnectionGUID: QgYYHn5dTMSeg9K9AzwnbQ==
+X-CSE-MsgGUID: t8wXemcASCSabc/Al0fk1w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,322,1739865600"; d="scan'208";a="143688342"
-Received: from mwajdecz-mobl.ger.corp.intel.com ([10.245.84.121])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2025 14:27:00 -0700
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Subject: [PATCH i-g-t 1/3] lib/xe_gt: Move reset related function to xe_gt.c
-Date: Wed, 28 May 2025 23:26:16 +0200
-Message-Id: <20250528212618.373-2-michal.wajdeczko@intel.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20250528212618.373-1-michal.wajdeczko@intel.com>
-References: <20250528212618.373-1-michal.wajdeczko@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,322,1739865600"; d="scan'208";a="143391528"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+ by orviesa009.jf.intel.com with ESMTP; 28 May 2025 14:53:57 -0700
+Received: from [10.245.84.121] (unknown [10.245.84.121])
+ by irvmail002.ir.intel.com (Postfix) with ESMTP id C147D34EF6;
+ Wed, 28 May 2025 22:53:55 +0100 (IST)
+Message-ID: <aadfb113-f41c-4d31-8f7d-31778aa0bef5@intel.com>
+Date: Wed, 28 May 2025 23:53:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/xe_fault_injection: Ignore enable
+ activity stats error
+To: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ John Harrison <John.C.Harrison@Intel.com>
+References: <20250528133049.8975-1-satyanarayana.k.v.p@intel.com>
+Content-Language: en-US
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+In-Reply-To: <20250528133049.8975-1-satyanarayana.k.v.p@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,150 +75,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Those helper functions are per GT and related query function is
-already there. While around add simple documentation.
 
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
----
- lib/xe/xe_gt.c          | 39 +++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_gt.h          |  3 +++
- lib/xe/xe_ioctl.c       | 23 -----------------------
- lib/xe/xe_ioctl.h       |  2 --
- lib/xe/xe_legacy.c      |  1 +
- tests/intel/xe_wedged.c |  1 +
- 6 files changed, 44 insertions(+), 25 deletions(-)
 
-diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-index a1e080b88..8bceca10d 100644
---- a/lib/xe/xe_gt.c
-+++ b/lib/xe/xe_gt.c
-@@ -57,6 +57,45 @@ bool has_xe_gt_reset(int fd)
- 	return 1;
- }
- 
-+static void xe_force_gt_reset(int fd, int gt, bool sync)
-+{
-+	char reset_string[128];
-+	struct stat st;
-+
-+	igt_assert_eq(fstat(fd, &st), 0);
-+
-+	snprintf(reset_string, sizeof(reset_string),
-+		 "cat /sys/kernel/debug/dri/%d/gt%d/force_reset%s",
-+		 minor(st.st_rdev), gt, sync ? "_sync" : "");
-+	system(reset_string);
-+}
-+
-+/**
-+ * xe_force_gt_reset_async:
-+ * @fd: the Xe DRM file descriptor
-+ * @gt: the GT identifier
-+ *
-+ * This function forces a reset on the selected GT.
-+ * It does not wait for the reset completion.
-+ */
-+void xe_force_gt_reset_async(int fd, int gt)
-+{
-+	xe_force_gt_reset(fd, gt, false);
-+}
-+
-+/**
-+ * xe_force_gt_reset_async:
-+ * @fd: the Xe DRM file descriptor
-+ * @gt: the GT identifier
-+ *
-+ * This function forces a reset on the selected GT.
-+ * It will wait until the reset completes.
-+ */
-+void xe_force_gt_reset_sync(int fd, int gt)
-+{
-+	xe_force_gt_reset(fd, gt, true);
-+}
-+
- /**
-  * xe_force_gt_reset_all:
-  *
-diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
-index 06a59281c..93525ea35 100644
---- a/lib/xe/xe_gt.h
-+++ b/lib/xe/xe_gt.h
-@@ -12,6 +12,9 @@
- 
- bool has_xe_gt_reset(int fd);
- void xe_force_gt_reset_all(int fd);
-+void xe_force_gt_reset_async(int fd, int gt);
-+void xe_force_gt_reset_sync(int fd, int gt);
-+
- igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
- 				unsigned int flags);
- void xe_post_hang_ring(int fd, igt_hang_t arg);
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 53a53cd0d..1e95af409 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -585,26 +585,3 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 	igt_assert_eq(__xe_wait_ufence(fd, addr, value, exec_queue, &timeout), 0);
- 	return timeout;
- }
--
--static void xe_force_gt_reset(int fd, int gt, bool sync)
--{
--	char reset_string[128];
--	struct stat st;
--
--	igt_assert_eq(fstat(fd, &st), 0);
--
--	snprintf(reset_string, sizeof(reset_string),
--		 "cat /sys/kernel/debug/dri/%d/gt%d/force_reset%s",
--		 minor(st.st_rdev), gt, sync ? "_sync" : "");
--	system(reset_string);
--}
--
--void xe_force_gt_reset_async(int fd, int gt)
--{
--	xe_force_gt_reset(fd, gt, false);
--}
--
--void xe_force_gt_reset_sync(int fd, int gt)
--{
--	xe_force_gt_reset(fd, gt, true);
--}
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 522094ae2..6302d1a7d 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -99,7 +99,5 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		     uint32_t exec_queue, int64_t *timeout);
- int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		       uint32_t exec_queue, int64_t timeout);
--void xe_force_gt_reset_async(int fd, int gt);
--void xe_force_gt_reset_sync(int fd, int gt);
- 
- #endif /* XE_IOCTL_H */
-diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
-index a3ff5da03..6570cf1e6 100644
---- a/lib/xe/xe_legacy.c
-+++ b/lib/xe/xe_legacy.c
-@@ -5,6 +5,7 @@
- 
- #include "lib/igt_syncobj.h"
- #include "linux_scaffold.h"
-+#include "xe/xe_gt.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_legacy.h"
- #include "xe/xe_spin.h"
-diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
-index 1d2c510b7..7fc7ca9eb 100644
---- a/tests/intel/xe_wedged.c
-+++ b/tests/intel/xe_wedged.c
-@@ -22,6 +22,7 @@
- #include "igt_sysfs.h"
- 
- #include "xe_drm.h"
-+#include "xe/xe_gt.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_spin.h"
--- 
-2.47.1
+On 28.05.2025 15:30, Satyanarayana K V P wrote:
+> Add some more GuC fault messages in the dmesg ignore list.
+> 
+> Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+> ---
+> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Cc: John Harrison <John.C.Harrison@Intel.com>
+> ---
+>  tests/intel/xe_fault_injection.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index f9bd5c761..4ca8a34bf 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -85,6 +85,7 @@ static void ignore_faults_in_dmesg(const char function_name[])
+>  		strcat(regex, "|GT[0-9a-fA-F]*: Failed to initialize uC .-ENOMEM");
+>  		strcat(regex, "|GT[0-9a-fA-F]*: Failed to enable GuC CT	.-ENOMEM");
+>  		strcat(regex, "|GT[0-9a-fA-F]*: GuC PC query task state failed:	-ENOMEM");
+> +		strcat(regex, "|GT[0-9a-fA-F]*: failed to enable activity stats-[0-9]*");
+
+are we really going to add more and more specific error messages to the
+IGT filter just to make CI happy? note that this could be never ending
+story and still very fragile to any changes on the driver side in
+functions or component reordering or improvements in messages or driver
+attempts to recover from non-fatal errors
+
+can't we just ignore *ALL* error messages during fault injection tests?
+
+after all, as we are injecting errors, our only expectation should be
+that driver will not crash or hit asserts, regardless how many error
+messages will be printed in the meantime, as we don't expect error free
+run here and we can't expect specific error message either
+
+>  	}
+>  
+>  	igt_emit_ignore_dmesg_regex(regex);
 
