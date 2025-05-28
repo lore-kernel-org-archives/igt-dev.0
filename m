@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 787B2C5AD49
-	for <igt-dev@archiver.kernel.org>; Wed, 28 May 2025 00:10:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59185C5AD49
+	for <igt-dev@archiver.kernel.org>; Wed, 28 May 2025 00:46:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B7EA89E47;
-	Wed, 28 May 2025 00:10:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6A5110E192;
+	Wed, 28 May 2025 00:46:06 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CA3289E47;
- Wed, 28 May 2025 00:10:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B57210E099;
+ Wed, 28 May 2025 00:46:06 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0720835800539258965=="
+ boundary="===============0457092362482104943=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpm=3A_Enha?=
- =?utf-8?q?nce_vram-d3cold-threshold_test_to_verify_VRAM_self-refresh?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Fix_?=
+ =?utf-8?q?assertion_on_the_return_value_of_mmap?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sk.anirban@intel.com
+To: "Shuicheng Lin" <shuicheng.lin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 28 May 2025 00:10:15 -0000
-Message-ID: <174839101535.26063.3710221407801436387@1538d3639d33>
+Date: Wed, 28 May 2025 00:46:06 -0000
+Message-ID: <174839316610.26062.13394846804648574558@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250527183957.4137136-1-sk.anirban@intel.com>
-In-Reply-To: <20250527183957.4137136-1-sk.anirban@intel.com>
+References: <20250527215915.395919-1-shuicheng.lin@intel.com>
+In-Reply-To: <20250527215915.395919-1-shuicheng.lin@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0720835800539258965==
+--===============0457092362482104943==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_pm: Enhance vram-d3cold-threshold test to verify VRAM self-refresh
-URL   : https://patchwork.freedesktop.org/series/149557/
+Series: tests/intel/xe_vm: Fix assertion on the return value of mmap
+URL   : https://patchwork.freedesktop.org/series/149559/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8380_BAT -> XEIGTPW_13196_BAT
+CI Bug Log - changes from XEIGT_8380_BAT -> XEIGTPW_13197_BAT
 ====================================================
 
 Summary
@@ -81,19 +81,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8380 -> IGTPW_13196
+  * IGT: IGT_8380 -> IGTPW_13197
   * Linux: xe-3134-bf01fbfe3783179370355420b877619645103cae -> xe-3148-6ffa054d5495d030899b3e4f223ecf9fa1d3a640
 
-  IGTPW_13196: e5d66612a3fee3ccd24252c58c41edd925108cac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_13197: 21c56e078dc7d4c2559df19b28ccced972fd9dea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8380: 8380
   xe-3134-bf01fbfe3783179370355420b877619645103cae: bf01fbfe3783179370355420b877619645103cae
   xe-3148-6ffa054d5495d030899b3e4f223ecf9fa1d3a640: 6ffa054d5495d030899b3e4f223ecf9fa1d3a640
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13196/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13197/index.html
 
---===============0720835800539258965==
+--===============0457092362482104943==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,16 +113,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pm: Enhance vram-d3cold-threshold test to verify VRAM self-refresh</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149557/">https://patchwork.freedesktop.org/series/149557/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Fix assertion on the return value of mmap</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149559/">https://patchwork.freedesktop.org/series/149559/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13196/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13196/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13197/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13197/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8380_BAT -&gt; XEIGTPW_13196_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8380_BAT -&gt; XEIGTPW_13197_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -132,10 +132,10 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8380 -&gt; IGTPW_13196</li>
+<li>IGT: IGT_8380 -&gt; IGTPW_13197</li>
 <li>Linux: xe-3134-bf01fbfe3783179370355420b877619645103cae -&gt; xe-3148-6ffa054d5495d030899b3e4f223ecf9fa1d3a640</li>
 </ul>
-<p>IGTPW_13196: e5d66612a3fee3ccd24252c58c41edd925108cac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_13197: 21c56e078dc7d4c2559df19b28ccced972fd9dea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8380: 8380<br />
   xe-3134-bf01fbfe3783179370355420b877619645103cae: bf01fbfe3783179370355420b877619645103cae<br />
   xe-3148-6ffa054d5495d030899b3e4f223ecf9fa1d3a640: 6ffa054d5495d030899b3e4f223ecf9fa1d3a640</p>
@@ -143,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============0720835800539258965==--
+--===============0457092362482104943==--
