@@ -4,184 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 012C9C3ABB2
-	for <igt-dev@archiver.kernel.org>; Wed, 28 May 2025 05:10:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D2A3C5AE59
+	for <igt-dev@archiver.kernel.org>; Wed, 28 May 2025 08:24:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7247710E0C7;
-	Wed, 28 May 2025 05:10:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4AE9210E1CB;
+	Wed, 28 May 2025 08:24:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lJhIcdVg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Aw5+fUjz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8960D10E0C7
- for <igt-dev@lists.freedesktop.org>; Wed, 28 May 2025 05:10:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 797CA10E1CB
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 May 2025 08:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748409025; x=1779945025;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=HpK/et+UgR9lcydRtriWTTolW9K/f2NL42Vy7uvvxX4=;
- b=lJhIcdVgkTw62cnssbLNPSIqkW8r7BY2HBIAOLdiacA5myG3aiSEMblj
- mBx5rx++nTmIOLj0Clzi2dql4aSiQpn6UlIk0/E1SJIlZ1lvB2yNDTsJU
- upzhk36cLp3/IHu/SQL6Al9389pkxY0Y1tILIm/48PJ8HAyorRQ7DzzBO
- MP16jQUK8zrHitBqq4dPxflEYLcjoDSzCUaVhCdxKNPyO6PmTgkDYnB6w
- 7FY2CPt94VblYPNl/bKtqAx6rbk5lFM6FE5bzsCsqyk8UbB5SXSSICMQM
- BIIQc/NC7Pl6L7IToec1iDUzczaOA5J55wX2WiYI5Uc6IKzetHWOcbYne Q==;
-X-CSE-ConnectionGUID: awG57tnAQ9+LXdSf1Ldbrw==
-X-CSE-MsgGUID: JnpWirFrRxuux079fVgnyw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="50527327"
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="50527327"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2025 22:10:23 -0700
-X-CSE-ConnectionGUID: PkxGLSWuQRGMDTIE8BVJKA==
-X-CSE-MsgGUID: 2HvPXPf8T7aiBhnayjxCVQ==
+ t=1748420673; x=1779956673;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=NOqU1RXBmmNXPRfOf0B/vNGBkeKaQ9Dw6JU5J6JL4Vc=;
+ b=Aw5+fUjznJ9HLBUDFuxNf3PN+rm7zW7zCedCIvbJ2l+/DcBDdU7xdsJB
+ qx1KLv5dYIoQjTy2Shgy1wagZw3keDtDyFlDv4fUP6kwLLQvbxOn1G/+U
+ TXkm0koypVEYfg05LQrSUXs3+6/e2iQe5fd7DkMSyFqJR6YJCSZRklEYY
+ PHBDyOA8iEiJm/aCw0L/Bocs/gE19eh8B+HTCD0eXRDMm0EVcUXTn0oEl
+ K/MvNL7yxMeSwQ65SElMY9h7CHeEZXJjDGKZJRhc9uKSso3ze6o6aNfp/
+ M3NRDMi/8YWZ4xmlWwEgbgqGRKHPa/JoxxjDy/Ul/HKExl/i0fKl+CBdZ w==;
+X-CSE-ConnectionGUID: BlndroGfSg+wnKmDZOH1sg==
+X-CSE-MsgGUID: 2Qp8yogSSTy1zag8P5BrYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="50593071"
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="50593071"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2025 01:24:31 -0700
+X-CSE-ConnectionGUID: ZD61kYpoTLWWXcHCokg/QA==
+X-CSE-MsgGUID: +jtOMhCtRKqbYdqeZHP59Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="144094202"
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; d="scan'208";a="143517581"
 Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2025 22:10:24 -0700
+ by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2025 01:24:31 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 27 May 2025 22:10:22 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ 15.2.1544.25; Wed, 28 May 2025 01:24:30 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Tue, 27 May 2025 22:10:22 -0700
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (40.107.102.57)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ 15.2.1544.25 via Frontend Transport; Wed, 28 May 2025 01:24:30 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.57) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Tue, 27 May 2025 22:10:22 -0700
+ 15.1.2507.55; Wed, 28 May 2025 01:24:30 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xhwgL3a6FUzgMoVKWq7TN/DhFzNMPegeH76dboSseCOAi8JX/FddsM9cb0B+ICSFBpv290AqOK46MJM4u0J88QGxmvsxFo1BjB4ReB8hRnBI87DrCl9v+06ZtJ4FCgSEQ51H2rCQB+ZJD3f8li/+VWQJ5MNla3BtqQ/GlNSbaLONegEPEDNF6xksLbxFdFdAanzY2DKGt5DZn14f+KXLOBKD8ZqU4+9B4cggBR6QBAkCWvXnaoAg3rPDo0hD+4g2OLj4MaD+hiEaVPoXBJklQow845EcGrvQTcEaNpFPiBcWFvUIWKV2O5s3Xv2TAq75PxAFjmzlscgpRuCW+tZusw==
+ b=nryh7zHTyK4uM8ltEp4mM+tFFXOyyfycFyT7D3Yj/r7SnYxgpL2W/4MZlLK8pkLfmgEjTGtp1p/Ah84cr6t67qIU7dPKY10Gk/VJswmNATIj01sCUJcJkZiTLQaT47/5tm6jOraCGbxYxzWFmzbf4mAMgOicGhUoPNFx805c5PJneOOMVc8GWP3o2kX0x+mgv6T0MeISVx2quJOPf8hZGrF/bu3izJu/uIrY9vEvWb5BFok/rWKhu0CNlynm46KVhYL9PV/5bvEx6NNqb6C3P5rVg4Sd8MmGqplc4PVCylzFQMVpmXHJCryZBbQZzNeKaWZ8psyIoJemrUy05r8cVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xONiRtYLdOlqXHRh8poYhEW5tOpSWGAXQF3CX6A3EzQ=;
- b=eZAZgyMR8hdQ7pqIenXdTB6SSQoAfwh8qyhwrwVL9w1qDUg6PoXdQlIKF7hgzas6Qzv0LsDG8wH2bTWzSUtVwSE3ZWUVXa0fdSmFh74ea0Z8pDXYeycufMop4PG135Od2NqzSYIl+peDMjBXnGfNjm+mgMCP/Bfb9h+BEeINxTFOxfe3L57UchrCsgw+u/HZBz8MPRgSWXUZvZtQtAxAiLYSdxRxbqPu1zysk+HYXp+mID1uWtzrQG+wYwfQPC2BSt3wYn0alEz8DduHacQikHpIWuXOJLP5MQYyXNywRfn3W+hR59FpbLOz/SuON4nciTEnLLMKitKLB0j3o/Amrg==
+ bh=VcQxRGLUZ2Pol8EaYmlXCUkHZuipSzn8oGzH01Q56/g=;
+ b=tJ2VtdES1YFTB0Bpn0hNfN+n7a/DRTYoPHzDFR4V+PewGT/cYzkoRurGlBgmLXDWCV4vc/g09v+7xKmIONuWwC8P/yV2ucDnaZeLN6GtxeZjsKwairVZjO9byWp1DZoiny7Z3K0LlyheY70kOh6kYl14OPTKqv0lQniRcpbyGdHhbGIN4OYAFn1IObur7nyNn+CAEO++NaujXrCVUVYVI9rfkBYucwP9LLhEU2y+dZSWjS6sm1Q8EleRI39rXY+JLFZxVZ7RB/O2dBpvAtq1d+OIWibrYceAds3MN2WY12UeQOspOUgjgTWMkTV30bRUNtPu5S2yELk/iD3ovQpmAA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
- SJ5PPF867D7FF5E.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::83d)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.24; Wed, 28 May
- 2025 05:10:20 +0000
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::d3ba:63fc:10be:dfca]) by DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::d3ba:63fc:10be:dfca%4]) with mapi id 15.20.8769.025; Wed, 28 May 2025
- 05:10:20 +0000
-Message-ID: <c58eee88-f5db-4a19-b78a-7422c3ed4f65@intel.com>
-Date: Wed, 28 May 2025 10:40:13 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,1/2] tests/i915/pm_rc6_residency: Use sysfs to achieve
- peak frequency
-To: "Anirban, Sk" <sk.anirban@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>
-References: <20250513183726.2118105-1-sk.anirban@intel.com>
- <20250513183726.2118105-2-sk.anirban@intel.com>
- <a2a6c9d7-ba95-4553-9f72-e76491ef1c5c@intel.com>
- <795d88b4-2d5c-4e17-b021-b5d88e3d3a0c@intel.com>
-Content-Language: en-US
-From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <795d88b4-2d5c-4e17-b021-b5d88e3d3a0c@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
+ by SJ0PR11MB4813.namprd11.prod.outlook.com (2603:10b6:a03:2df::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.26; Wed, 28 May
+ 2025 08:23:48 +0000
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::5461:fa8c:58b8:e10d]) by CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::5461:fa8c:58b8:e10d%6]) with mapi id 15.20.8769.022; Wed, 28 May 2025
+ 08:23:48 +0000
+Date: Wed, 28 May 2025 10:23:41 +0200
+From: Francois Dugast <francois.dugast@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v3 09/11] lib/intel_blt: add support for matrix
+ mem-copy
+Message-ID: <aDbIDROnBnbIbMOM@fdugast-desk>
+References: <20250523080126.75295-1-zbigniew.kempczynski@intel.com>
+ <20250523080126.75295-10-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0019.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:b8::6) To DS0PR11MB7958.namprd11.prod.outlook.com
- (2603:10b6:8:f9::19)
+In-Reply-To: <20250523080126.75295-10-zbigniew.kempczynski@intel.com>
+Organization: Intel Corporation
+X-ClientProxiedBy: DU2PR04CA0359.eurprd04.prod.outlook.com
+ (2603:10a6:10:2b4::26) To CY8PR11MB7828.namprd11.prod.outlook.com
+ (2603:10b6:930:78::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|SJ5PPF867D7FF5E:EE_
-X-MS-Office365-Filtering-Correlation-Id: 651500bc-8a55-4eb3-eed9-08dd9da5f120
+X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|SJ0PR11MB4813:EE_
+X-MS-Office365-Filtering-Correlation-Id: e431aa30-d085-4cc7-6c1a-08dd9dc0f848
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RDBxL1N3T2xEL3B3QzdGSzU0VXRkL1VNNmtrVVRsQnNLQ21WNmVERU1ycDRn?=
- =?utf-8?B?SmZEQzE1dTB3Q2NZbGg0MDduZWplWmsvY3RicXovOTBBZlQzejlValBEaVNh?=
- =?utf-8?B?UURrbnNCKzRJbEZxT1F4ak1VTWVVZFNSeXBFUWNyelNFSXZNTDROUm9XSU12?=
- =?utf-8?B?K2FFZWpiU3J2bzNnMEJZWU9IbFRtWkdUazdDSGxzZUxkeldmWHg4aTl1amlj?=
- =?utf-8?B?Q1RrNXNFZ0JaSHJLcExKUjhKMUhVdjBWNVkvQUc5VERnMlNheWl2bXpvVVpZ?=
- =?utf-8?B?ZFRmcG1UckdxSDcyajJTS1pzMzlIaVRUbElSRDNNSnA1ZG5vVlFnT0VJYXRh?=
- =?utf-8?B?c2ZDby9PV2hwZGprL2RKdFlyR09oemh6OENLYk5wbkEvOHNkNDFtTTFvSzhQ?=
- =?utf-8?B?QVBkWVBJU2JiVjRFdVA1cjZTelVBS2FBanVtaVJLUmJHMWkwVDZLYVRzdEJY?=
- =?utf-8?B?NUFXSDh3RVdMY3RTYTBIN3pxWDlIVWJBMWZQN0NqcnkveUZCOWtWd3NqRkkv?=
- =?utf-8?B?QzNtRWMrYzIzR1dRQnNSeDQwOTArS3ExWkhYL3ZPeHRXKzlYcVdzdkhSMWZV?=
- =?utf-8?B?QzlVYWlpWkwrRHBlR2FLWkNVbjg2Y3FHMU9XUkpJdVJyNks2V05IMzZMeGYx?=
- =?utf-8?B?cGJXRFBLRnZPelIrTjd3OWhRcFJDa1JYY2JjUUc0NE5EL0QvdmxPQ2F2RTVu?=
- =?utf-8?B?Mzdyb2lkOG96UVFlaDg1WnRrdnZ4c25OQ2k3Tlc0K2w2bVJhZHFLTS9jUDh4?=
- =?utf-8?B?bW04MHV5VmxvTzZhMFlKNW9EYVFpaFdxL1IvR3U1Qkk0M0FqNHBBdnJFRXNm?=
- =?utf-8?B?Zkh5V3gxelF1N0d5RVBFL3h6VzdiM1NINHlRYitQSVNKallyU0tLLzUrdlRE?=
- =?utf-8?B?TkFWbmxuUWJwSmpzMVpwODR6bmRCTlI4MXNaR2ZBMHIwbzlka1NnR09XZ0VF?=
- =?utf-8?B?WVJOWU41Rzd3WWtZc2R0VHh3Ykg4TUJCQnJIVVAraTBpT1hsZzdFbFlZOHhl?=
- =?utf-8?B?S3NVRXN0UlpqeVpjNlo2d3ZXWmtXNUczUzlpdGkxb2pGTEpGc0tFUGlxYVFi?=
- =?utf-8?B?ZFVYWjByNVFieGp6cU5FbWxId2ZSbnFZbXZ2WFFDaDFxQkJnY3FnUXE5ZkQw?=
- =?utf-8?B?VUM4SHgxMU4reGdaZHd3MDdOemtteDh0MGdHc3drVi9FWVBJL0x0cUMrS1ZZ?=
- =?utf-8?B?Z3B6ZjJXdHZVL01tdWU4ZEt3YUFsU2tjc20zQlAyQlQvK09RUDJqS2ZVOHJo?=
- =?utf-8?B?dXhOMmdpUjJBbFJaQVhGRFY5eTdoaXlwOVlKaXVDUWdwUGtoUTRpeXY0RVpI?=
- =?utf-8?B?RDFnRjNheEw4SFNpU0xMenBTN0ppeHIwVkVDQm9uanlsQWpzU0c3Z2FpUVdE?=
- =?utf-8?B?OTVMV3JFbGZRa01TT3h1eFduK2E4VVQweTZLVnhFTkNrenFUSFNPc0RYbFlh?=
- =?utf-8?B?bEVPd3U0TW11OEhNT0tVL0RPODNoSlp4V1J0cXllZWxyenRKUVhTTHNLT1pt?=
- =?utf-8?B?YzFKK3M4N3hzOXl1bDJEeGpXVUV6R1VMa1NLQnZvMDVwZE5leUtQbFdTUWFl?=
- =?utf-8?B?VFEwVHpsZE1lZDNMaFF4WkMrbENCU3QzRURnOE1FOTZBQlk4YmkrMUp6Y0h5?=
- =?utf-8?B?TWZuUXZmdlI1UVhWSnJDb2RaV2VEeFpEaURnM3dQTStiVHRLT3BralFZcloy?=
- =?utf-8?B?Nk5UKzNZWVpUY0xURHh3R1VIRG4xN1BpOWM4V0MzaHdpMXR3L0FIY0RlaDRj?=
- =?utf-8?B?NTBvR3lRZk9hTTlOQXNHUlVYK3hPZUthYklPV0dYaFY2akF4OTN5S01OdmVH?=
- =?utf-8?B?M3NDb2Y1ZElabGQrSHFEWmdxWlhlakdlUllKb1B1TEdidjJlTGdvVE84UzZw?=
- =?utf-8?B?MGFqcWxFSUJRTWlVdlIzMzI4UnM1WVRqbjFRUmVlOERadml3UUpZQWVwQlRC?=
- =?utf-8?Q?0rzStbaiOAM=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?R0swSGpzWnllSkZVamFMdlV2Wks2aEJaeVV6QUFGMEdkN1BlVVM1aysrQnZG?=
+ =?utf-8?B?emFMekVwZExFTHdvS0ltZFVydGZLTlpnMmtrVm1XMENaclBPYi9FWXhPQ2xS?=
+ =?utf-8?B?WlJlUjJnUXZ6QmpYK3pvOC9sYWkxbVVnVFRHdGM2bjVQVlJ5WGFXUURaOTRs?=
+ =?utf-8?B?TE54Ymw5blo1dTJyWXBPdlUxUEE2UUpiNzF0QWV2Z0JVdUtucXlSMnVPeXNn?=
+ =?utf-8?B?Z2pPcDNjWEJTaVFzSE03Mm9aWFpvK0dWb1krSHVGMmFjNnUwb1doaERnN1Z6?=
+ =?utf-8?B?NE16ZE5BV0VlMlVYWVNxZ2R0Q0VFS2MzazlsdUQ4TldNN2ZSTkFQWTF5TUJF?=
+ =?utf-8?B?OGpBYlBqRFp5dmk1RWlIelJpdm9FT1I5cUtkOE0vbVlMS0R5M1ZMeVdpV1ZV?=
+ =?utf-8?B?QmIvdmd1RHdnY0RjQ1IxT25VNVZzZjJEdjBaQ0ZrR3NmcXBWSTlMc3d1LzZV?=
+ =?utf-8?B?S0Zyd2E2Z2REWUFmTThUZVQ0akgvTGtiMjJBVnJDNEh4THRNeTNPSU1hVGlw?=
+ =?utf-8?B?MkhkWEhabEhNU3RWYmFtN0R1UUc3RnFZR0xHOTJkaUFvMWY5Y3RCditwRDhZ?=
+ =?utf-8?B?UzMvbjlZQnRBVFpvZ1pudU52V0hzWFpKd1JFRjJiMkpBZmFyek8wY1I4ZVU2?=
+ =?utf-8?B?a0pvYzRkVERFUnk4WDRLS3hLQlpIY0pZajI5aXNhUE9saTE2Mkc1WVFNTHFx?=
+ =?utf-8?B?QkpPN05wVXRYQ3I0aFJKN0dFL3hqVjNaT0pJM3FEWStvQWlHY1ZsUC9JNWlu?=
+ =?utf-8?B?NzNRWm81blBkMXFpcVI4ZTlzS0JDYVo4VzNmUDZkNEFobmhBTkFXbWw3QlJl?=
+ =?utf-8?B?VnBjTld3a3oyY3ptN1p4d3BGd0RUM2ZhZHBWOW1oM1dQUDVkL1g0SFk0ZVlD?=
+ =?utf-8?B?QVpQK3ZRZzRRZFp4Z1ZEZmZJT1VyVEhkT1Y4YzVlVFV6Z0wzZzB3bUZtVkl6?=
+ =?utf-8?B?bjBCTHdKY1NaVHF4L0RiUnhETWV0dWkyUTUzQ1NyQklrbnlaUjhHQVZmTnQ2?=
+ =?utf-8?B?eTE3cWtKeEJpQk9MUW9abjhXbEVJaVBVY25wNWpPL2dPNmdVQnhLMmFsRFI5?=
+ =?utf-8?B?dU5yOEN2bk9XcEtKNnRNMVdjMm94UjMxYzg5QnVCdkRBZVNlM2ZOY2tnRk1G?=
+ =?utf-8?B?bnVaSm5odkFvcC9xNG5PQjMzWHlpM0plVGEyNGxVTVovSDh6WnlZRkpYY1Jr?=
+ =?utf-8?B?cVoveGh4K3ZIbkE5RmI1OVhiWUhYcTNIUjNEcE40OHdIWXFxVWZ2YjBMQWlZ?=
+ =?utf-8?B?REIwdTB1dC9qQzhNUk9WcTM3WTZoRHdkQ1NGeks2Z29YN2tUaE9BMGdvTklZ?=
+ =?utf-8?B?Nzc4dE1rbDE0VW5STnhLdlh4cTVVU3ZvMktGYStQckNlUE1Rb2VVYVlGZ3BK?=
+ =?utf-8?B?SFZ2N2pwWHpsczZ3SGk4YzJUUUpwZkVqQzJmL0U4Ukp2b1A0SE90bSsrVURk?=
+ =?utf-8?B?S0gzaWRwc2lYUnQwMW5mVzV3T1NodTVNTnJuTDdXVldLbTNUUVdxUDVVSTN1?=
+ =?utf-8?B?QytZZ1RDbmY1cExJOWx5V0xTaUFhd0I2MWQ4ZnoxTEpnK2pPZ1BoU2kzTlha?=
+ =?utf-8?B?MW5TMGRRQktDSmNENWJLQUNoZ1FzUDRqejdiRlJ5eTVhY0pKMW94bjRpUkVz?=
+ =?utf-8?B?WjZTemJEMm9qcGkvUCtXRVNBTHVHTWZjWHpIQUlFWHA0K0xKeExsL0MvcFNu?=
+ =?utf-8?B?UnFRMGZwUUFqamJsek9xWXJGLzJDdWg2ZTY5WW1yZjVaTWZiVHR6bTNhZER3?=
+ =?utf-8?B?NE1BbTQ3UmFmdU9yMzZXVDc0WlZXbEJEK0txY0hqNlhxQlV0Z0FGMTVLekdj?=
+ =?utf-8?B?aUpJdjRqcHFYd3hOSGM5V1JZdk1ZTlpuRkJFbHpzYjY4Mkk2ZXRzZUlKM1F5?=
+ =?utf-8?B?TVd0YmdDQ05wSFdWUElEQmdjSlI3cWZ3TDVLdWJNRXA3V3p3WnZLaERvNzJk?=
+ =?utf-8?Q?kp+AC6R8SqA=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MGpyWG5wRXVKVmd3TDMyckFwaDU5Ulpmb1NVN2EyYTJhZDNyYkhpdlBNdzlK?=
- =?utf-8?B?WlN5aGpaYk9uYkFaZGpkZFZPNVJHTnpGVG82cURsb3lvV1VJTERBdERPOGM1?=
- =?utf-8?B?Yk5nY09kSnV5bGhjY3JBd0gvWDJRQUVIdWlyNXBQZVF2SkkyNk9OMTBqVGds?=
- =?utf-8?B?MVpTQytnYVNWVVEwejlrQi8vSS96cUxiUTJCM3JRRmtNTlh0d0xjVVp0Q3JZ?=
- =?utf-8?B?b1BabEpkcEpTV1lNcGFod2FGVmZWZHVSQWwyUFRreExkei9RZEZDS0ZVWG9H?=
- =?utf-8?B?TXNFNUFkNVFCbGQxN0RTT0p1ME9XS2plSWFpdVF3cXJBdXhtTlFDeHlWdXdt?=
- =?utf-8?B?Yys5Mis2bXpqdjVpNmZCMUorZkhGc0trRUwyeVpuNG5XazRWTjNMNGQzQzFU?=
- =?utf-8?B?U2pZNVpaaUNLZEZKa1dZV0FYWFVGdUFRWFlUYlhCYnI3UXp2RU1ScllKbDVP?=
- =?utf-8?B?TGIzYUtUV0NESWMyNnNJQVhNYVYwTUdZdzV5bHVPcnlCL2cyV25Tdy9JbVhp?=
- =?utf-8?B?WkdFQm1DMVdVUWRoODhWSlA2QzhFcnEvYzdsTDZSdkpIVTB0cW0yYlZub3ZJ?=
- =?utf-8?B?UEJEV3pPRnZmSHBHbUZWVjVZdG5RNm9haHF2NUx4NkRsdnJwMENiOUsxVjJy?=
- =?utf-8?B?bFhWaUVZZktTVWFsUWZaeWZkc1gxSDRWbnlzME8rYlN3U1hWc2pCNWpnK2pP?=
- =?utf-8?B?aXBoZSsvczU1ZWdoUFNuYjl5QjNXRlR5UjhxT0tDWFlXcFJvZmFtbDhmNER3?=
- =?utf-8?B?a0dQTWR0TDVyaUFLcm9RV09jMEROakJrdEVQNDgxS2VEcTJOYmdvLzYwN2R0?=
- =?utf-8?B?SzY0NGtJMHVZZ3N2aG5xMkIwRWxaQ3FSNEF0dVVITWRJQmtqV1ovdWNuUUFX?=
- =?utf-8?B?OXJBdGdCS1JNM0NEeDdPd1ZoVFFGUDZEOTdWdjd3ZzM3VUJvQmtuNHpXOEtj?=
- =?utf-8?B?VSsyNHIzRHltTHBHMnYzTFl3aTFKbS9FdXAzYTRCdStrZDZiMTFtYndLM2Y5?=
- =?utf-8?B?c0I1V1BqQkUybFJxTW5hL2pKNCs3NCtvU3dnVTVHKys5ck9FTTlFWkxySlBq?=
- =?utf-8?B?eWViRjRWWTR0R0UvS1FCYzZQNGhiNVBlbzlOME5zdWNFRkR6dlc3RFNQajZn?=
- =?utf-8?B?VFRBMGwzZjFQWkpkZERvTzBNUDFIaTdBT1IvQ2dZMzlCeHd3elpqeVBSUnFD?=
- =?utf-8?B?U1d2QkF4MkIxd0h5U01SSEp0YUkrdEJYeU9BUURXSWVCSE55M01SSWFqMnIx?=
- =?utf-8?B?alc5MUNIOW9rMjc0dTE2Mm5YcVJ0Q3Jpb1hSUzlOMFhhZ1p4UzZuK0RtTnNx?=
- =?utf-8?B?TGFBOTBsZDlGQzd0TUE5THRiTEdCRU9TOVZuZzdsOHp1cUlMd05nTHBkUzlH?=
- =?utf-8?B?c0x6VEdvclQ4M01ReDFNQnEyNnJmS1c1ZUpNeStScE1uazlxVEZCaU45RFBx?=
- =?utf-8?B?b2RUZFZZNjAvQWdMT2ltVEtvYzRZZHV6Z2xyVFhteEE2TGZ6dHpXbVRYSUZy?=
- =?utf-8?B?Z3hVeDlMWng1emtZNHVycGwvM1BKc1VROWw0NEhjMHRrOXQ3U2pUNFZPeU13?=
- =?utf-8?B?OUlYZXAwUkdZQkc4d21vUGJlWjVnR0NxZmZWalYrdTIvSXpXWHJXdGFIMWVq?=
- =?utf-8?B?MmtrYUhEd1VWSEtmbElBd1RKWjl1Zm9LNDBVeEhNOWI5cU5ZdVhpZ2ZYUVkr?=
- =?utf-8?B?NndVWHhmTVNTV2N3TGVuZHVkY0ZBV2JXNDBkbm9iaDVDbVlIQ3JDOUQ2c0pN?=
- =?utf-8?B?eWtNODM2OUZ6OXlFMVdkYTBUbjBLZDlNRmoxVTVKZ2w1TWRCVFRKSkQ2bGZq?=
- =?utf-8?B?bFZXOFVYdjVmMXpCbzJoUFcvVVBDUlZ0b1paa3hucjNwVUgxRmFnb0hNT01r?=
- =?utf-8?B?STNTNTFick5VS1NzNDZLVnVidm1Cc3NqWE5yUncwY3NzaCtQU29DdWJWZllB?=
- =?utf-8?B?NVNOeCtIdCt5K1hjTWhYYkpjUytYM3FVMlJ0ZzJtVVY5T010L2VnOW53blZE?=
- =?utf-8?B?ZXgzTW5LYVg2alNmcTNCQThxSm1iQXNMMVRuUzhqaG1rR25QSWl1enA4UDlx?=
- =?utf-8?B?SXRyQUVFcDZXdGtNVE42b0NGVERhalFybzVNYnZxQURRd1RjcDRQVy9vMG9J?=
- =?utf-8?Q?Dv7sd+ShZ6/t1gEUHazN+FPSa?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 651500bc-8a55-4eb3-eed9-08dd9da5f120
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YWxNbXM4NjROR2dGaHl6dVE1SzNZeTlxR1BwNGdHdDM4K1lTMi9qaFh4YUNh?=
+ =?utf-8?B?UjlibG5EcFY1NlB1bHBSOVBTU1pzWFNQRWtyaFJZZ0tiZENzd2ZkbGIxOEZG?=
+ =?utf-8?B?aXRDYnlhQTkyMW8wSDI4ZmN3MEhITFFGWWtsVlp1bWlrYThLQ0NGa2dmbFpX?=
+ =?utf-8?B?RG1jYTFzTTJQS2J4VTlscmFzZkovY3Z2MGFid1A0QmU5ZC9INTJ3MkdLMzBR?=
+ =?utf-8?B?OG5rejdkYVVoNzZwT045OUIvZjBnMldRS1ZoT2svWTBxdzN0WHJwMUd3Y013?=
+ =?utf-8?B?Ukh4emczVmR1QnZtQ2tCbi81anFsb1pHZ0tZRTVjWW9YZFZzdU1WbjFWS2dW?=
+ =?utf-8?B?c0hiR0ROVjlINHdoWG9uMHFhNlowNEhxak9KOFVvRmdlNUUwZ0gyS200Q2FP?=
+ =?utf-8?B?azJBNU1MYmxocDJKMWRDSDlpZVJ2SmZhNTRaYnhkbHc2WmdpZlZsYWs1Y3JF?=
+ =?utf-8?B?VHZYbGY3bDRHT01raE0rYlpNQk5RWjlkRzFwSmRkMDd1MWhTRTY0cVVIeU9l?=
+ =?utf-8?B?ZlRLT2JKR0pXb0wyWitlMGRGbW0yQkVBUmxnSnZRRXR5NDUwakRrY0xnV2pC?=
+ =?utf-8?B?bW41MFoyRUJwbC9WMGgyampldDc1Vm1nSlRDbEVNTjB6M2k0SUYwc3RCV0dh?=
+ =?utf-8?B?MUs1RjJDQ1ladkUyZlhaTzNnUzcwN2FWeVpDNFl0ZHhDeXpCU2Rod1lUN2Nj?=
+ =?utf-8?B?aDdYSVIxK2FHZnFGVmxWY1V2WEppMC9tTWErMU9IZnIzTUNuREJ2ZWVMOFg3?=
+ =?utf-8?B?QlM5RjRMNjBNWXBwOXQ3c1NEcVV6V2NOWHhuRnFDV1dDc2FUakFZS0Y4ZWVI?=
+ =?utf-8?B?bWdLVFlBUnk0c3JicnBycFBpWVRmd2JjYW5BTlgxajVPeEtJYkJ2T200MWF0?=
+ =?utf-8?B?UVFkeXVNZlcxejhUU1FzdUw5clhJSnZlaGJnSU9MWVpLc296Q1g5aGx2QXgv?=
+ =?utf-8?B?b0VwWXFCZFp6dkRwdy84c3dWKzI0TWsvVjJYZzdFZ2lRYUVvS2ZZOXk1aFVN?=
+ =?utf-8?B?L0VPRXc3M0NCU1BqM3R1Y05vK014VHdKTEMxWnZEbnB3U01Uam5ZbWovbW9o?=
+ =?utf-8?B?V3VvaDg1ZURRbmNRNEk5OTI4M29OYUowYVhlbWNjQkhXTm9SUlBPaVArTVYr?=
+ =?utf-8?B?alpWbVdnTVZsMVhhZXFJUkk4TE1PVFhrZzV2eEhrMThsWE96ekR2ZGZRMk8r?=
+ =?utf-8?B?TFNqRGJWb0dhbzQrUzZvVldNVzF1a3FCNVVaUCtYaFhGaEZyTGJDdlJQdEdU?=
+ =?utf-8?B?MXp3eWk1b09pOUZudVZRWU9QUndzMG9ybVVJWm9mc0VLVVFpWWkwbTRTMTQ4?=
+ =?utf-8?B?ZVB3aTg1VlZrNkpPY25pSW5hdjdGWlo2b3RZYitteGNMbmFaNXErcmh5Q1Uw?=
+ =?utf-8?B?dTQzZG5ZVGFzYUp2aFBoYktRamtZdUw1RW54Q0Nyci90Q1hmZ1hpdS9MTUZQ?=
+ =?utf-8?B?SlVlTUpjSURHM2FsMkZua04xci9QNlI3MGNFbm5FN0RiSXJoeDlkYjVoR05K?=
+ =?utf-8?B?cEZycGRpK3hnN0tFNEpEQnIzODlmNmxyOFkzdU9IL3VGV2txVUVnclQ3SC80?=
+ =?utf-8?B?bUI1allydTJsUC91Zk01UDIrLzZmbnZnSUtudk83Tm9XNXhxbDhuaTNpWXN6?=
+ =?utf-8?B?UnZ2WlZPRU1yQTVUMEJIZ2ExNFJBeVRZT3praFpmRVc5Lzc4SndOd3hCbHcx?=
+ =?utf-8?B?N0NBMUFrMnBETkpLNDNXeGZuUWJURW1FMTlpK2U0Rmw3V2NDWW9FTG9YTlRO?=
+ =?utf-8?B?NGpBSXVINXpUUG9qbDJGNzBqS1RVWE5TZ0F5b21DdEpIZitlNDRoWXdZOXJS?=
+ =?utf-8?B?RVREbmEzTEZjUzVUVXV4R0FJOVNHTU4xUDM5UDYzWmRRTFdxeTFUUDA5SlRH?=
+ =?utf-8?B?Wk1RbHl2QlpQRXFldDMyR25YRzVWRWZGSWFvWUJ4dCtEL2hPL0hya1o2MCti?=
+ =?utf-8?B?ci9IcDgrZkRYangyY0VTT2k3ZXVXN0dhZEowNjdxdG4vSFh1akQvTDJoRlFv?=
+ =?utf-8?B?amlHVjhTRXladXA1MS9TbllzUmNCdlBwKzNqbEo1cC9OVUl4QXFGV3hJK3k4?=
+ =?utf-8?B?djNOM2FuZWdBZHhlS3FBUnVjN1NXSTJzQlV3VHQ1OXdvN2RkdjJzY0NZcFY2?=
+ =?utf-8?B?b09WM0hwdnB3V1M3OHBRcHgzQXBjT2Q1ZHI4YWdwSnBxczM1a1ZWTkVlMHdu?=
+ =?utf-8?B?Rmc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e431aa30-d085-4cc7-6c1a-08dd9dc0f848
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 05:10:20.1475 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 08:23:48.2894 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0V0LLZ0k7W2ivaW9t+JbiU3JErpEosVMHf1Xfa0cdHyGO6zo0QasHUjNngQtvgCs/RYuyRGO8kqTmBK1l8W/xQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF867D7FF5E
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9aIPUs/Ycp6e6PWNPbmSyHhLen8Stm1Lp3np2YRmrxkhLl2k/5Zqay8vK2reveK6JsMuOYQpLYLotCWSoyGceFDMxS1Np8/+KaMsoZjjIrE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4813
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -198,335 +197,138 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Anirban
+On Fri, May 23, 2025 at 10:01:24AM +0200, Zbigniew Kempczyński wrote:
+> Linear copy in intel_blt supports passing large buffers (which
+> requires to be spread over couple mem-copies). For matrix this is
+> a little bit more complicated so I left simple case in which
 
-On 5/26/2025 6:35 PM, Anirban, Sk wrote:
-> Hi Riana,
+Patch LGTM but a nit: impersonal style is preferred over "I did X". 
+
+With that:
+
+    Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+
+> pitch/width/height must be within mem-copy command limits -
+> 18-bit width * 18-bit height gives 64GiB object so testing
+> copying bigger buffer would be an overkill.
 > 
-> On 22-05-2025 09:04, Riana Tauro wrote:
->> Hi Anirban
->>
->> On 5/14/2025 12:07 AM, sk.anirban@intel.com wrote:
->>> From: Sk Anirban <sk.anirban@intel.com>
->>>
->>> Leverage IGT spinner to trigger frequency scaling and
->>> set RPS minimum frequency to RP0 for achieving peak frequency.
->>> This method replaces the existing waitboost mechanism used
->>> to reach maximum frequency.
->>>
->>> v2:
->>>   - Disable power consumption check for dgfx
->>>
->>> v3:
->>>   - Implement igt exit handler
->>>
->>> v4:
->>>   - Cosmetic changes (Riana)
->>>
->>> v5:
->>>   - Limit the power consumption test to GT0 only
->>>
->>> v6:
->>>   - Fix frequency restoration (Riana)
->>>
->>> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
->>> ---
->>>   tests/intel/i915_pm_rc6_residency.c | 136 +++++++++++++++++++---------
->>>   1 file changed, 91 insertions(+), 45 deletions(-)
->>>
->>> diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/ 
->>> i915_pm_rc6_residency.c
->>> index c9128481d..b400460c7 100644
->>> --- a/tests/intel/i915_pm_rc6_residency.c
->>> +++ b/tests/intel/i915_pm_rc6_residency.c
->>> @@ -264,17 +264,6 @@ static bool __pmu_wait_for_rc6(int fd)
->>>       return false;
->>>   }
->>>   -static uint32_t batch_create(int fd)
->>> -{
->>> -    const uint32_t bbe = MI_BATCH_BUFFER_END;
->>> -    uint32_t handle;
->>> -
->>> -    handle = gem_create(fd, 4096);
->>> -    gem_write(fd, handle, 0, &bbe, sizeof(bbe));
->>> -
->>> -    return handle;
->>> -}
->>> -
->>>   static int open_pmu(int i915, uint64_t config)
->>>   {
->>>       int fd;
->>> @@ -286,45 +275,88 @@ static int open_pmu(int i915, uint64_t config)
->>>       return fd;
->>>   }
->>>   -#define WAITBOOST 0x1
->>> +#define FREQUENT_BOOST 0x1
->>>   #define ONCE 0x2
->>>     static void sighandler(int sig)
->>>   {
->>>   }
->>>   -static void bg_load(int i915, uint32_t ctx_id, uint64_t 
->>> engine_flags, unsigned int flags, unsigned long *ctl)
->>> +static uint32_t get_freq(int dirfd, uint8_t id)
->>> +{
->>> +    uint32_t val;
->>> +
->>> +    igt_assert(igt_sysfs_rps_scanf(dirfd, id, "%u", &val) == 1);
->>> +
->>> +    return val;
->>> +}
->>> +
->>> +static int set_freq(int dirfd, uint8_t id, uint32_t val)
->>> +{
->>> +    return igt_sysfs_rps_printf(dirfd, id, "%u", val);
->>> +}
->>> +
->>> +uint32_t stash_min;
->>> +int i915 = -1;
->>> +
->>> +static void restore_freq(int sig)
->>> +{
->>> +    int dirfd;
->>> +    int gt = 0;
->>> +
->>> +    i915 = drm_open_driver(DRIVER_INTEL);
->>
->> Why open again. The reason for making it static was re-use
->> Is i915 not open when exit handler is run?
-> The exit handler is getting called after the driver closure so re- 
-> opening it to the restore frequency.
-
-you can keep it local like before or remove close in fixture
-
-With the above change
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>>>
->> Rest of the code looks good.
->>
->> Also respond on the BAT failures as the test is same and are legacy 
->> issues
-> Yeah, testing rev again so that ci team can re-report the BAT failures.
->>
->> Thanks
->> Riana
-> Thanks,
-> Anirban
->>
->>> +    dirfd = igt_sysfs_gt_open(i915, 0);
->>> +    igt_sysfs_gt_open(i915, gt);
->>> +
->>> +    igt_assert_lt(0, set_freq(dirfd, RPS_MIN_FREQ_MHZ, stash_min));
->>> +
->>> +    drm_close_driver(i915);
->>> +    close(dirfd);
->>> +}
->>> +
->>> +static void bg_load(const intel_ctx_t *ctx, int dirfd, uint64_t 
->>> engine_flags,
->>> +            unsigned int flags, unsigned long *ctl, unsigned int gt)
->>>   {
->>>       const bool has_execlists = intel_gen(intel_get_drm_devid(i915)) 
->>> >= 8;
->>> -    struct drm_i915_gem_exec_object2 obj = {
->>> -        .handle = batch_create(i915),
->>> -    };
->>> -    struct drm_i915_gem_execbuffer2 execbuf = {
->>> -        .buffers_ptr = to_user_pointer(&obj),
->>> -        .buffer_count = 1,
->>> -        .flags = engine_flags,
->>> -        .rsvd1 = ctx_id,
->>> -    };
->>>       struct sigaction act = {
->>>           .sa_handler = sighandler
->>>       };
->>> +    int64_t timeout = 1;
->>> +    uint64_t ahnd;
->>> +    int rp0;
->>>   +    ahnd = get_reloc_ahnd(i915, ctx->id);
->>> +    rp0 = get_freq(dirfd, RPS_RP0_FREQ_MHZ);
->>>       sigaction(SIGINT, &act, NULL);
->>>       do {
->>>           uint64_t submit, wait, elapsed;
->>>           struct timespec tv = {};
->>> +        igt_spin_t *spin;
->>>             igt_nsec_elapsed(&tv);
->>> -
->>> -        gem_execbuf(i915, &execbuf);
->>> +        spin = igt_spin_new(i915,
->>> +                    .ahnd = ahnd,
->>> +                    .ctx = ctx,
->>> +                    .engine = engine_flags);
->>>           submit = igt_nsec_elapsed(&tv);
->>> -        if (flags & WAITBOOST) {
->>> -            gem_sync(i915, obj.handle);
->>> +        if (flags & FREQUENT_BOOST) {
->>> +            /* Set MIN freq to RP0 to achieve the peak freq */
->>> +            igt_assert_lt(0, set_freq(dirfd, RPS_MIN_FREQ_MHZ, rp0));
->>> +            igt_assert(gem_bo_busy(i915, spin->handle));
->>> +            gem_wait(i915, spin->handle, &timeout);
->>> +
->>> +            /* Restore the MIN freq back to default */
->>> +            igt_assert_lt(0, set_freq(dirfd, RPS_MIN_FREQ_MHZ, 
->>> stash_min));
->>> +            igt_spin_end(spin);
->>> +            igt_spin_free(i915, spin);
->>> +            gem_quiescent_gpu(i915);
->>>               if (flags & ONCE)
->>> -                flags &= ~WAITBOOST;
->>> +                flags &= ~FREQUENT_BOOST;
->>>           } else  {
->>> -            while (gem_bo_busy(i915, obj.handle))
->>> -                usleep(0);
->>> +            igt_assert(gem_bo_busy(i915, spin->handle));
->>> +            igt_spin_end(spin);
->>> +            igt_spin_free(i915, spin);
->>> +            gem_quiescent_gpu(i915);
->>>           }
->>>           wait = igt_nsec_elapsed(&tv);
->>>   @@ -350,6 +382,7 @@ static void bg_load(int i915, uint32_t ctx_id, 
->>> uint64_t engine_flags, unsigned i
->>>           /* aim for ~1% busy */
->>>           usleep(min_t(elapsed, elapsed / 10, 50 * 1000));
->>>       } while (!READ_ONCE(*ctl));
->>> +    put_ahnd(ahnd);
->>>   }
->>>     static void kill_children(int sig)
->>> @@ -361,9 +394,9 @@ static void kill_children(int sig)
->>>       signal(sig, old);
->>>   }
->>>   -static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, 
->>> unsigned int gt)
->>> +static void rc6_idle(const intel_ctx_t *ctx, uint64_t flags, 
->>> unsigned int gt)
->>>   {
->>> -    const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
->>> +    const int64_t duration_ns = 2 * SLEEP_DURATION * 
->>> (int64_t)NSEC_PER_SEC;
->>>       const int tolerance = 20; /* Some RC6 is better than none! */
->>>       const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
->>>       struct {
->>> @@ -371,10 +404,11 @@ static void rc6_idle(int i915, uint32_t ctx_id, 
->>> uint64_t flags, unsigned int gt)
->>>           unsigned int flags;
->>>           double power;
->>>       } phases[] = {
->>> +        { "once", FREQUENT_BOOST | ONCE },
->>>           { "normal", 0 },
->>> -        { "boost", WAITBOOST },
->>> -        { "once", WAITBOOST | ONCE },
->>> +        { "boost", FREQUENT_BOOST }
->>>       };
->>> +    int dirfd = igt_sysfs_gt_open(i915, gt);
->>>       struct power_sample sample[2];
->>>       unsigned long slept, cycles;
->>>       unsigned long *done;
->>> @@ -407,12 +441,21 @@ static void rc6_idle(int i915, uint32_t ctx_id, 
->>> uint64_t flags, unsigned int gt)
->>>         assert_within_epsilon_debug(rc6, ts[1] - ts[0], 5, drpc);
->>>   +    if (gt) {
->>> +        close(fd);
->>> +        close(dirfd);
->>> +        igt_power_close(&gpu);
->>> +        return;
->>> +    }
->>> +
->>>       done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->>>   +    stash_min = get_freq(dirfd, RPS_MIN_FREQ_MHZ);
->>> +
->>>       for (int p = 0; p < ARRAY_SIZE(phases); p++) {
->>>           memset(done, 0, 2 * sizeof(*done));
->>>           igt_fork(child, 1) /* Setup up a very light load */
->>> -            bg_load(i915, ctx_id, flags, phases[p].flags, done);
->>> +            bg_load(ctx, dirfd, flags, phases[p].flags, done, gt);
->>>             igt_power_get_energy(&gpu, &sample[0]);
->>>           cycles = -READ_ONCE(done[1]);
->>> @@ -451,19 +494,20 @@ static void rc6_idle(int i915, uint32_t ctx_id, 
->>> uint64_t flags, unsigned int gt)
->>>         munmap(done, 4096);
->>>       close(fd);
->>> +    close(dirfd);
->>>         igt_power_close(&gpu);
->>>   -    if (phases[1].power - phases[0].power > 10) {
->>> -        igt_assert_f(2 * phases[2].power - phases[0].power <= 
->>> phases[1].power,
->>> +    if (phases[2].power - phases[1].power > 20 && ! 
->>> gem_has_lmem(i915)) {
->>> +        igt_assert_f(2 * phases[0].power - phases[1].power <= 
->>> phases[2].power,
->>>                    "Exceeded energy expectations for single busy wait 
->>> load\n"
->>>                    "Used %.1fmW, min %.1fmW, max %.1fmW, expected 
->>> less than %.1fmW\n",
->>> -                 phases[2].power, phases[0].power, phases[1].power,
->>> -                 phases[0].power + (phases[1].power - 
->>> phases[0].power) / 2);
->>> +                 phases[0].power, phases[1].power, phases[2].power,
->>> +                 phases[1].power + (phases[2].power - 
->>> phases[1].power) / 2);
->>>       }
->>>   }
->>>   -static void rc6_fence(int i915, unsigned int gt)
->>> +static void rc6_fence(unsigned int gt)
->>>   {
->>>       const int64_t duration_ns = SLEEP_DURATION * 
->>> (int64_t)NSEC_PER_SEC;
->>>       const int tolerance = 20; /* Some RC6 is better than none! */
->>> @@ -557,7 +601,7 @@ static void rc6_fence(int i915, unsigned int gt)
->>>       close(fd);
->>>   }
->>>   -static unsigned int rc6_enabled_mask(int i915, int dirfd)
->>> +static unsigned int rc6_enabled_mask(int dirfd)
->>>   {
->>>       igt_require(has_rc6_residency(dirfd, RC6_RESIDENCY_MS));
->>>   @@ -570,7 +614,6 @@ static unsigned int rc6_enabled_mask(int i915, 
->>> int dirfd)
->>>     igt_main
->>>   {
->>> -    int i915 = -1;
->>>       unsigned int dirfd, gt;
->>>       const intel_ctx_t *ctx;
->>>   @@ -582,19 +625,22 @@ igt_main
->>>       igt_subtest_with_dynamic("rc6-idle") {
->>>           const struct intel_execution_engine2 *e;
->>>   +        igt_install_exit_handler(restore_freq);
->>>           igt_require_gem(i915);
->>>           gem_quiescent_gpu(i915);
->>> +        intel_allocator_multiprocess_start();
->>>             i915_for_each_gt(i915, dirfd, gt) {
->>>               ctx = intel_ctx_create_for_gt(i915, gt);
->>>               for_each_ctx_engine(i915, ctx, e) {
->>>                   if (e->instance == 0) {
->>>                       igt_dynamic_f("gt%u-%s", gt, e->name)
->>> -                        rc6_idle(i915, ctx->id, e->flags, gt);
->>> +                        rc6_idle(ctx, e->flags, gt);
->>>                   }
->>>               }
->>>               intel_ctx_destroy(i915, ctx);
->>>           }
->>> +        intel_allocator_multiprocess_stop();
->>>       }
->>>         igt_subtest_with_dynamic("rc6-fence") {
->>> @@ -603,7 +649,7 @@ igt_main
->>>             i915_for_each_gt(i915, dirfd, gt)
->>>               igt_dynamic_f("gt%u", gt)
->>> -                rc6_fence(i915, gt);
->>> +                rc6_fence(gt);
->>>       }
->>>         igt_subtest_group {
->>> @@ -621,7 +667,7 @@ igt_main
->>>                   igt_dynamic_f("gt%u", gt) {
->>>                       struct residencies res;
->>>   -                    rc6_enabled = rc6_enabled_mask(i915, dirfd);
->>> +                    rc6_enabled = rc6_enabled_mask(dirfd);
->>>                       igt_require(rc6_enabled & RC6_ENABLED);
->>>                         measure_residencies(devid, dirfd, 
->>> rc6_enabled, &res);
->>> @@ -635,7 +681,7 @@ igt_main
->>>                 igt_require(IS_VALLEYVIEW(devid) || 
->>> IS_CHERRYVIEW(devid));
->>>   -            rc6_enabled = rc6_enabled_mask(i915, sysfs);
->>> +            rc6_enabled = rc6_enabled_mask(sysfs);
->>>               igt_require(rc6_enabled & RC6_ENABLED);
->>>                 measure_residencies(devid, sysfs, rc6_enabled, &res);
->>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> ---
+>  lib/intel_blt.c | 69 +++++++++++++++++++++++++++++++++----------------
+>  1 file changed, 47 insertions(+), 22 deletions(-)
 > 
-
+> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+> index 265f5ed50f..77a03aff4e 100644
+> --- a/lib/intel_blt.c
+> +++ b/lib/intel_blt.c
+> @@ -1893,17 +1893,18 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
+>  {
+>  	struct xe_mem_copy_data data = {};
+>  	uint64_t dst_offset, src_offset, shift;
+> -	uint32_t height, width_max, remain;
+> +	uint32_t width, height, width_max, height_max, remain;
+>  	uint32_t bbe = MI_BATCH_BUFFER_END;
+>  	uint32_t *bb;
+>  
+>  	if (mem->mode == MODE_BYTE) {
+>  		data.dw01.byte_copy.width = -1;
+> -		width_max = data.dw01.byte_copy.width + 1;
+> +		height_max = width_max = data.dw01.byte_copy.width + 1;
+>  		shift = width_max;
+>  	} else {
+>  		data.dw01.page_copy.width = -1;
+>  		width_max = data.dw01.page_copy.width + 1;
+> +		height_max = 1;
+>  		shift = width_max << 8;
+>  	}
+>  
+> @@ -1914,6 +1915,7 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
+>  
+>  	bb = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
+>  
+> +	width = mem->src.width;
+>  	height = mem->dst.height;
+>  
+>  	data.dw00.client = 0x2;
+> @@ -1930,34 +1932,57 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
+>  	data.dw09.src_mocs = mem->src.mocs_index;
+>  	data.dw09.dst_mocs = mem->dst.mocs_index;
+>  
+> -	remain = mem->src.width;
+> +	/* For matrix we don't iterate */
+> +	if (mem->copy_type == TYPE_MATRIX) {
+> +		if (width > width_max) {
+> +			width = width_max;
+> +			igt_warn("src width is bigger than max width [%u > %u => %u], truncating it\n",
+> +				 mem->src.width, width_max, width);
+> +		}
+>  
+> -	/* Truncate pitches to match operation bits */
+> -	if (mem->src.pitch > width_max)
+> -		data.dw03.src_pitch = width_max - 1;
+> -	else
+> -		data.dw03.src_pitch = mem->src.pitch;
+> +		if (height > height_max) {
+> +			height = height_max;
+> +			igt_warn("src height is bigger than max height [%u > %u => %u], truncating it\n",
+> +				 mem->src.height, height_max, height);
+> +		}
+>  
+> -	if (mem->dst.pitch > width_max)
+> -		data.dw04.dst_pitch = width_max - 1;
+> -	else
+> -		data.dw04.dst_pitch = mem->dst.pitch;
+> -
+> -	while (remain) {
+> -		data.dw01.val = min_t(uint32_t, width_max, remain) - 1;
+> +		data.dw01.byte_copy.width = width - 1;
+> +		data.dw03.src_pitch = mem->src.pitch - 1;
+> +		data.dw04.dst_pitch = mem->dst.pitch - 1;
+>  
+>  		igt_assert(bb_pos + sizeof(data) < mem->bb.size);
+>  		memcpy(bb + bb_pos, &data, sizeof(data));
+>  		bb_pos += sizeof(data);
+> +	} else {
+> +		remain = mem->src.width;
+>  
+> -		remain -= remain > width_max ? width_max : remain;
+> -		src_offset += shift;
+> -		dst_offset += shift;
+> +		/* Truncate pitches to match operation bits */
+> +		if (mem->src.pitch > width_max)
+> +			data.dw03.src_pitch = width_max - 1;
+> +		else
+> +			data.dw03.src_pitch = mem->src.pitch;
+>  
+> -		data.dw05.src_address_lo = src_offset;
+> -		data.dw06.src_address_hi = src_offset >> 32;
+> -		data.dw07.dst_address_lo = dst_offset;
+> -		data.dw08.dst_address_hi = dst_offset >> 32;
+> +		if (mem->dst.pitch > width_max)
+> +			data.dw04.dst_pitch = width_max - 1;
+> +		else
+> +			data.dw04.dst_pitch = mem->dst.pitch;
+> +
+> +		while (remain) {
+> +			data.dw01.val = min_t(uint32_t, width_max, remain) - 1;
+> +
+> +			igt_assert(bb_pos + sizeof(data) < mem->bb.size);
+> +			memcpy(bb + bb_pos, &data, sizeof(data));
+> +			bb_pos += sizeof(data);
+> +
+> +			remain -= remain > width_max ? width_max : remain;
+> +			src_offset += shift;
+> +			dst_offset += shift;
+> +
+> +			data.dw05.src_address_lo = src_offset;
+> +			data.dw06.src_address_hi = src_offset >> 32;
+> +			data.dw07.dst_address_lo = dst_offset;
+> +			data.dw08.dst_address_hi = dst_offset >> 32;
+> +		}
+>  	}
+>  
+>  	if (emit_bbe) {
+> -- 
+> 2.43.0
+> 
