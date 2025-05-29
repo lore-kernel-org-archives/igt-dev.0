@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EDC3C5AD49
-	for <igt-dev@archiver.kernel.org>; Thu, 29 May 2025 18:50:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9428C5AD49
+	for <igt-dev@archiver.kernel.org>; Thu, 29 May 2025 18:58:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B25110E10F;
-	Thu, 29 May 2025 18:50:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2FF9910E760;
+	Thu, 29 May 2025 18:58:06 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3897910E10F;
- Thu, 29 May 2025 18:50:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CE9510E760;
+ Thu, 29 May 2025 18:58:04 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0758726521464934992=="
+ boundary="===============5859857414388786702=="
 MIME-Version: 1.0
-Subject: =?utf-8?b?4pyTIFhlLkNJLkJBVDogc3VjY2VzcyBmb3IgVXBkYXRlICJmb3JjZV9yZXNldCIg?=
- =?utf-8?b?Y29kZSAocmV2Myk=?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFull=3A_success_for_tests/intel-ci=3A=3A_Updat?=
+ =?utf-8?q?e_xe_blocklist?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Michal Wajdeczko" <michal.wajdeczko@intel.com>
+To: "Swati Sharma" <swati2.sharma@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 29 May 2025 18:50:43 -0000
-Message-ID: <174854464322.32355.3837505355009878057@1538d3639d33>
+Date: Thu, 29 May 2025 18:58:04 -0000
+Message-ID: <174854508454.32035.15811688065276225572@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250528212618.373-1-michal.wajdeczko@intel.com>
-In-Reply-To: <20250528212618.373-1-michal.wajdeczko@intel.com>
+References: <20250529112618.1433617-1-swati2.sharma@intel.com>
+In-Reply-To: <20250529112618.1433617-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0758726521464934992==
+--===============5859857414388786702==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Update "force_reset" code (rev3)
-URL   : https://patchwork.freedesktop.org/series/149607/
+Series: tests/intel-ci:: Update xe blocklist
+URL   : https://patchwork.freedesktop.org/series/149637/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8384_BAT -> XEIGTPW_13211_BAT
+CI Bug Log - changes from XEIGT_8383_FULL -> XEIGTPW_13207_FULL
 ====================================================
 
 Summary
@@ -66,10 +66,10 @@ Summary
 
   
 
-Participating hosts (8 -> 8)
+Participating hosts (4 -> 3)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): shard-adlp 
 
 
 Changes
@@ -81,19 +81,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8384 -> IGTPW_13211
-  * Linux: xe-3159-fa1643bc73a08623ea7f1497258298b0d16a629f -> xe-3160-1bf8ab359843448c553ec50b86348e26d2eb93ae
+  * IGT: IGT_8383 -> IGTPW_13207
+  * Linux: xe-3156-2f74377e0846598397723197386e6d9d65b7711e -> xe-3157-bf0749a9930efe943554c3f73454d03c43779d15
 
-  IGTPW_13211: 0493f4853a0b58efc46af63a1b93c0eb678847f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8384: 8384
-  xe-3159-fa1643bc73a08623ea7f1497258298b0d16a629f: fa1643bc73a08623ea7f1497258298b0d16a629f
-  xe-3160-1bf8ab359843448c553ec50b86348e26d2eb93ae: 1bf8ab359843448c553ec50b86348e26d2eb93ae
+  IGTPW_13207: 13207
+  IGT_8383: 8383
+  xe-3156-2f74377e0846598397723197386e6d9d65b7711e: 2f74377e0846598397723197386e6d9d65b7711e
+  xe-3157-bf0749a9930efe943554c3f73454d03c43779d15: bf0749a9930efe943554c3f73454d03c43779d15
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13211/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13207/index.html
 
---===============0758726521464934992==
+--===============5859857414388786702==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,34 +113,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Update &quot;force_reset&quot; code (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149607/">https://patchwork.freedesktop.org/series/149607/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel-ci:: Update xe blocklist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149637/">https://patchwork.freedesktop.org/series/149637/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13211/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13211/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13207/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13207/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8384_BAT -&gt; XEIGTPW_13211_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8383_FULL -&gt; XEIGTPW_13207_FULL</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
+<h2>Participating hosts (4 -&gt; 3)</h2>
+<p>Missing    (1): shard-adlp </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8384 -&gt; IGTPW_13211</li>
-<li>Linux: xe-3159-fa1643bc73a08623ea7f1497258298b0d16a629f -&gt; xe-3160-1bf8ab359843448c553ec50b86348e26d2eb93ae</li>
+<li>IGT: IGT_8383 -&gt; IGTPW_13207</li>
+<li>Linux: xe-3156-2f74377e0846598397723197386e6d9d65b7711e -&gt; xe-3157-bf0749a9930efe943554c3f73454d03c43779d15</li>
 </ul>
-<p>IGTPW_13211: 0493f4853a0b58efc46af63a1b93c0eb678847f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8384: 8384<br />
-  xe-3159-fa1643bc73a08623ea7f1497258298b0d16a629f: fa1643bc73a08623ea7f1497258298b0d16a629f<br />
-  xe-3160-1bf8ab359843448c553ec50b86348e26d2eb93ae: 1bf8ab359843448c553ec50b86348e26d2eb93ae</p>
+<p>IGTPW_13207: 13207<br />
+  IGT_8383: 8383<br />
+  xe-3156-2f74377e0846598397723197386e6d9d65b7711e: 2f74377e0846598397723197386e6d9d65b7711e<br />
+  xe-3157-bf0749a9930efe943554c3f73454d03c43779d15: bf0749a9930efe943554c3f73454d03c43779d15</p>
 
 </body>
 </html>
 
---===============0758726521464934992==--
+--===============5859857414388786702==--
