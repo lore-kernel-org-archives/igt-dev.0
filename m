@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C25EFC54FB3
-	for <igt-dev@archiver.kernel.org>; Thu, 29 May 2025 06:30:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB2B9C5AE59
+	for <igt-dev@archiver.kernel.org>; Thu, 29 May 2025 06:30:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C95210E6FB;
-	Thu, 29 May 2025 06:30:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93ED710E6FE;
+	Thu, 29 May 2025 06:30:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k+SAitGU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UgL+C8ZW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8ED110E6FB
- for <igt-dev@lists.freedesktop.org>; Thu, 29 May 2025 06:30:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0371F88130
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 May 2025 06:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748500207; x=1780036207;
+ t=1748500210; x=1780036210;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=AHkZx2fg244Xfl6b87h2rkYOfQl5f3hhXnaD1DHb4hk=;
- b=k+SAitGUezwpohMfse0iuuAG1HAqZ9jIzrwhtQ2NBHIKkqoY6TOq4qL0
- IG/JESC81GQN8x7BOqhVpJhOmLCtjbh3WqXWTNlDJNV+ruNnIQD2d3Muo
- r+ZznHJVep1AW4q6pLmd4OzzAelooPPKzzZZKSDEz0AJO8lOVNPJl9adb
- cQUni/iMvDGCZpUEHpWHfkOGpyHwFcX+XvVmySbBZJ7uKGVaqKQnUEnml
- GHP0Sp7yBnejyK612615QA15gA2uKUSAZPYslZumLfhklTAACQyztuhVp
- 3FrxKASk+KVST11TLvA3zGKCuQ2Y7QP2+AcyklV26AIOwZyFPobJr2O66 Q==;
-X-CSE-ConnectionGUID: oVjIF6GwTMObtbO5+w7cow==
-X-CSE-MsgGUID: L15aaQ7JREGc1luWnJ7B5A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="54210914"
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="54210914"
+ bh=VzdNLvZczCSCLh3+3sJqrS8h9/XwmHh0qeBMIaTIJow=;
+ b=UgL+C8ZWE4ixWxTMhFSmd9bIJJQesxTb5J4assDz9qfd5+kmGZvncPkI
+ aIgCLAN8ZPHY+U9P7Bt8b+k+neWfAaUM03c3vsPu6NvySqCZ9HQh0+Waw
+ lUOKs+7E1kqbtWQhxOF3Uiw1/yPd5mrd+ntZs/UhPkGO5/Nz4aoImUlmq
+ TfuB1vfVavu/EPzlB53c/7imFy2cLMjpm/QmeBePJHRYUwulcT/qfQOpo
+ kWb8NoR28qasx/1bhoJwveU1yGFat3iQAVSVFbysmp7VN1rDLQ4YR5GrZ
+ CDHqp1mtHMLuikh8u880ryVmKKqDkgXY9laQqlE74fh2RJ+ExQpOCgRX7 g==;
+X-CSE-ConnectionGUID: 0CahN0zaQHqOs9gq/Brg3A==
+X-CSE-MsgGUID: /bcAQaHKTlqu3VwqUOQcVg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="54210923"
+X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="54210923"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2025 23:30:07 -0700
-X-CSE-ConnectionGUID: ZgzDsqFLSVmG/L+kzKs7qw==
-X-CSE-MsgGUID: JpqsOkxPTOOX5Z820ZabpQ==
+ 28 May 2025 23:30:09 -0700
+X-CSE-ConnectionGUID: mjG4GGlAT8aVwaLNPQkO3g==
+X-CSE-MsgGUID: Gpv8HNBqRES9WowBySJObw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="174347292"
+X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="174347311"
 Received: from unknown (HELO rtauro-desk.iind.intel.com) ([10.227.90.111])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2025 23:30:05 -0700
+ 28 May 2025 23:30:07 -0700
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
  umesh.nerlige.ramappa@intel.com, lucas.demarchi@intel.com,
  soham.purkait@intel.com
-Subject: [PATCH i-g-t v2 1/4] tests/intel/xe_pmu: Validate engine activity on
- gt reset and suspend
-Date: Thu, 29 May 2025 12:23:56 +0530
-Message-ID: <20250529065359.915117-2-riana.tauro@intel.com>
+Subject: [PATCH i-g-t v2 2/4] tests/intel/xe_pmu: Add tests to validate engine
+ activity on render node
+Date: Thu, 29 May 2025 12:23:57 +0530
+Message-ID: <20250529065359.915117-3-riana.tauro@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250529065359.915117-1-riana.tauro@intel.com>
 References: <20250529065359.915117-1-riana.tauro@intel.com>
@@ -70,48 +70,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests to validate engine activity before and after gt resets
-and suspend
+Add idle, load and trailing idle tests to validate engine activity on
+render node
 
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- tests/intel/xe_pmu.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tests/intel/xe_pmu.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index 02f23bd7d..15b4b82d8 100644
+index 15b4b82d8..198470365 100644
 --- a/tests/intel/xe_pmu.c
 +++ b/tests/intel/xe_pmu.c
-@@ -40,6 +40,12 @@
-  * Description: Test to validate engine activity by running workload on all engines
-  *		simultaneously and trailing idle
+@@ -53,6 +53,15 @@
+  * Description: Test to validate engine activity by running workload and trailing idle on all engines
+  * 		except one
   *
-+ * SUBTEST: engine-activity-gt-reset
-+ * Description: Test to validate engine activity on all engines before and after gt reset
++ * SUBTEST: engine-activity-render-node-idle
++ * Description: Test to validate engine activity on render node shows no load when idle
 + *
-+ * SUBTEST: engine-activity-suspend
-+ * Description: Test to validate engine activity on all engines before and after s2idle
++ * SUBTEST: engine-activity-render-node-load
++ * Description: Test to validate engine activity on render node by running workload
 + *
-  * SUBTEST: engine-activity-most-load
-  * Description: Test to validate engine activity by running workload on all engines except one
++ * SUBTEST: engine-activity-render-node-load-idle
++ * Description: Test to validate engine activity on render node by running workload and trailing idle
++ *
+  * SUBTEST: all-fn-engine-activity-load
+  * Description: Test to validate engine activity by running load on all functions simultaneously
   *
-@@ -812,6 +818,21 @@ igt_main
- 	igt_subtest("engine-activity-all-load-idle")
- 		engine_activity_load_all(fd, num_engines, TEST_LOAD | TEST_TRAILING_IDLE);
+@@ -833,6 +842,30 @@ igt_main
+ 		engine_activity_load_all(fd, num_engines, TEST_LOAD);
+ 	}
  
-+	igt_describe("Validate engine activity before and after gt reset");
-+	igt_subtest("engine-activity-gt-reset") {
-+		engine_activity_load_all(fd, num_engines, TEST_LOAD);
-+		xe_for_each_gt(fd, gt)
-+			xe_force_gt_reset_sync(fd, gt);
-+		engine_activity_load_all(fd, num_engines, TEST_LOAD);
-+	}
++	igt_subtest_group {
++		int render_fd;
 +
-+	igt_describe("Validate engine activity before and after s2idle");
-+	igt_subtest("engine-activity-suspend") {
-+		engine_activity_load_all(fd, num_engines, TEST_LOAD);
-+		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
-+		engine_activity_load_all(fd, num_engines, TEST_LOAD);
++		igt_fixture {
++			render_fd = __drm_open_driver_render(DRIVER_XE);
++			igt_require(render_fd);
++		}
++
++		igt_describe("Validate engine activity on render node when idle");
++		test_each_engine("engine-activity-render-node-idle", fd, eci)
++			engine_activity(fd, eci, 0);
++
++		igt_describe("Validate engine activity on render node when loaded");
++		test_each_engine("engine-activity-render-node-load", fd, eci)
++			engine_activity(fd, eci, TEST_LOAD);
++
++		igt_describe("Validate engine activity on render node with load and trailing idle");
++		test_each_engine("engine-activity-render-node-load-idle", fd, eci)
++			engine_activity(fd, eci, TEST_LOAD | TEST_TRAILING_IDLE);
++
++		igt_fixture
++			drm_close_driver(render_fd);
 +	}
 +
  	igt_subtest_group {
