@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FB7EC54FB3
-	for <igt-dev@archiver.kernel.org>; Thu, 29 May 2025 11:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B84CC54FB3
+	for <igt-dev@archiver.kernel.org>; Thu, 29 May 2025 11:22:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AF31410E002;
-	Thu, 29 May 2025 11:20:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4959210E002;
+	Thu, 29 May 2025 11:22:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n87tCKzM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pi0NntzF";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99ADC10E002
- for <igt-dev@lists.freedesktop.org>; Thu, 29 May 2025 11:20:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6FCE210E002
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 May 2025 11:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748517653; x=1780053653;
+ t=1748517758; x=1780053758;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=4pkKwICR7e3PHKu2XD38Qi7VFp79lybaesdpbS69KB8=;
- b=n87tCKzMuoacOmdBkmOjwwc7ee77MhFYboMNXlBTF8xt5tbJWeYYPe+Y
- 5gBUJRuXkXHaZrd7JPT2HAHWrGf0fjzbzSYyyO8vx1GtppL6D0vU1ro5P
- /A7QcB7lfn0ViWBYJR+o9Y6Xm90D2LI8Fe/7gCjsr0MKzqfH0BA+ypRf3
- NpYlcalIqM7lbxRxh8AeF9M394icIOwzwIpLiEiqxkMFKncUUlZpXghrb
- x2mEXMzxXRpVmTRlrvWaOfoLYDcP8SXnR2TXvygt5YUEk0ea9m6UJIF8P
- OyJ6zS9NtCApZqJaO4SPjboRRvl7q6p2YBVdkx5+NoFIwRK/5PD/Un54A A==;
-X-CSE-ConnectionGUID: Gh7viXBuRiW9MACHuBdNbQ==
-X-CSE-MsgGUID: XXqq0FjrT0mmhBGrnq7ngQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="50457360"
-X-IronPort-AV: E=Sophos;i="6.16,192,1744095600"; d="scan'208";a="50457360"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ b=Pi0NntzFTliUEoTQ3WwCqMeXSTEylbALpDKv3LxDEPcGa20G+wzbMbd3
+ fGNMjRF35tCQsU645QACAST2EIXcuQr4MjzSpcq3NU188pUlJlNITp+wh
+ MISoZFpMsJp6BhMtBp2g+R5SXp5qCWYqQ9akO0csgjSRzW2laxnERqG2D
+ rGp3OJxIitAHbSIxtujkqtCQo/IJOD9U0cbI1Jg+qSYRql9JU5Ct6ZGcZ
+ qFxNq3DfWeZAgiEKYjZGWTa3Ks7039Osb3rTHnzDobKv5r6AwoS7Zzlgq
+ 0Cl1QJF1dIqKPlNv+eJL/R2nLvVjt1fGluhORpNr+akYy4/rn3RIj4nl+ g==;
+X-CSE-ConnectionGUID: 0ZpdVKFES7+k5ae7P7sEDA==
+X-CSE-MsgGUID: eV62Hz2NRfuWjT5qy1ARkg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="50457650"
+X-IronPort-AV: E=Sophos;i="6.16,192,1744095600"; d="scan'208";a="50457650"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2025 04:20:52 -0700
-X-CSE-ConnectionGUID: VTeFl5EURemHpnagOhHgWg==
-X-CSE-MsgGUID: J0VcZw2ATcyod2JKHfEbUw==
+ 29 May 2025 04:22:37 -0700
+X-CSE-ConnectionGUID: Ms8rRNkRSeuswr5X4NeqyA==
+X-CSE-MsgGUID: igVKXbfEQAGxARHaCAfvOw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,192,1744095600"; d="scan'208";a="143869997"
+X-IronPort-AV: E=Sophos;i="6.16,192,1744095600"; d="scan'208";a="166708157"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2025 04:20:51 -0700
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2025 04:22:36 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] tests/intel-ci:: Update xe blocklist
-Date: Thu, 29 May 2025 16:56:18 +0530
-Message-Id: <20250529112618.1433617-1-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tests/intel-ci: Update xe blocklist
+Date: Thu, 29 May 2025 16:58:11 +0530
+Message-Id: <20250529112811.1433740-1-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
