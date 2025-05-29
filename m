@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5495EC5AD49
-	for <igt-dev@archiver.kernel.org>; Thu, 29 May 2025 09:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AC9FC54FB3
+	for <igt-dev@archiver.kernel.org>; Thu, 29 May 2025 09:18:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F1EA710E727;
-	Thu, 29 May 2025 09:16:20 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n0WR8Fqy";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CB8B10E725
- for <igt-dev@lists.freedesktop.org>; Thu, 29 May 2025 09:16:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748510178; x=1780046178;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=zpaXNDrRLel7pQcFfsDZ1DUybINd0KQSon15449zTCc=;
- b=n0WR8FqyzUwHuzOvXqk5nkCl+p4VSd/wnFq5C2K33ZpNLmFkOdHOiOoa
- CZ9YN+G4VdL1hj0CY4S8WW9VqCOrsUsuizpg6QdUXmhHaT1Vgk4zfOybL
- T1tPEXVFKllQzTid6eB7/lWW35QBk+/UXmQ8PlBKQyq9UOJctmZ+reVyN
- 7rEWsjJtsA2ZsRH8MOTzLc/cKmATKbrKA4InNX+dhUteyl5+P4tJGoE3B
- Ot58BbCImiAUjdrfMAkvexHYJK3y+ky7jiTZ+4f39O9pXLAh+CGTAGXD3
- jvtlyNoKWUV5fTRuH/VK5Q6MaxZvbX1gappBfQBjPy1WWeAoNrij5s1QL A==;
-X-CSE-ConnectionGUID: C492kTeEQLqT/wlqb6Z1Nw==
-X-CSE-MsgGUID: aniEN99sTqqggjRPgVQmsQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="54360231"
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="54360231"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2025 02:16:18 -0700
-X-CSE-ConnectionGUID: Pp9CdfUVQnel5qSFI0AIDA==
-X-CSE-MsgGUID: oO4iQb4NRfWqCF0tZHopow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; d="scan'208";a="143974147"
-Received: from unknown (HELO anirban-Z690I-A-ULTRA-PLUS.iind.intel.com)
- ([10.190.216.83])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2025 02:16:16 -0700
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: riana.tauro@intel.com,
-	Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH v7 2/2] HAX: Add rc6-idle tests to fast feedback list
-Date: Thu, 29 May 2025 14:38:41 +0530
-Message-Id: <20250529090841.4177513-3-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250529090841.4177513-1-sk.anirban@intel.com>
-References: <20250529090841.4177513-1-sk.anirban@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4308F10E725;
+	Thu, 29 May 2025 09:18:07 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 681DF10E113;
+ Thu, 29 May 2025 09:18:06 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2510381792821168053=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_render-node=2C_gt_reset?=
+ =?utf-8?q?_and_suspend_engine_activity_tests_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 29 May 2025 09:18:06 -0000
+Message-ID: <174851028642.31242.2226546740042882303@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250529065359.915117-1-riana.tauro@intel.com>
+In-Reply-To: <20250529065359.915117-1-riana.tauro@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,28 +37,128 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add pm_rc6_residency-rc6@idle to i915-fast-feedback
+--===============2510381792821168053==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+== Series Details ==
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 82395e7ea..c34caed55 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -48,6 +48,7 @@ igt@gem_tiled_fence_blits@basic
- igt@gem_tiled_pread_basic
- igt@gem_wait@busy@all-engines
- igt@gem_wait@wait@all-engines
-+igt@i915_pm_rc6_residency@rc6-idle
- igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
--- 
-2.34.1
+Series: Add render-node, gt reset and suspend engine activity tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/149526/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8383_BAT -> XEIGTPW_13205_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (7 -> 8)
+------------------------------
+
+  Additional (1): bat-bmg-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13205_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_module_load@load:
+    - bat-bmg-2:          NOTRUN -> [ABORT][1] ([Intel XE#5155])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13205/bat-bmg-2/igt@xe_module_load@load.html
+
+  
+  [Intel XE#5155]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5155
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8383 -> IGTPW_13205
+  * Linux: xe-3156-2f74377e0846598397723197386e6d9d65b7711e -> xe-3157-bf0749a9930efe943554c3f73454d03c43779d15
+
+  IGTPW_13205: 1045f92bde65e7039cdd128957691e8f4bffc623 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8383: 8383
+  xe-3156-2f74377e0846598397723197386e6d9d65b7711e: 2f74377e0846598397723197386e6d9d65b7711e
+  xe-3157-bf0749a9930efe943554c3f73454d03c43779d15: bf0749a9930efe943554c3f73454d03c43779d15
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13205/index.html
+
+--===============2510381792821168053==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add render-node, gt reset and suspend engine activity tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149526/">https://patchwork.freedesktop.org/series/149526/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13205/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13205/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8383_BAT -&gt; XEIGTPW_13205_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 8)</h2>
+<p>Additional (1): bat-bmg-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13205_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_module_load@load:<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13205/bat-bmg-2/igt@xe_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5155">Intel XE#5155</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8383 -&gt; IGTPW_13205</li>
+<li>Linux: xe-3156-2f74377e0846598397723197386e6d9d65b7711e -&gt; xe-3157-bf0749a9930efe943554c3f73454d03c43779d15</li>
+</ul>
+<p>IGTPW_13205: 1045f92bde65e7039cdd128957691e8f4bffc623 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8383: 8383<br />
+  xe-3156-2f74377e0846598397723197386e6d9d65b7711e: 2f74377e0846598397723197386e6d9d65b7711e<br />
+  xe-3157-bf0749a9930efe943554c3f73454d03c43779d15: bf0749a9930efe943554c3f73454d03c43779d15</p>
+
+</body>
+</html>
+
+--===============2510381792821168053==--
