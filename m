@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EB5AC54F30
-	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 06:41:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AE56C3ABB2
+	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 06:41:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3874010E78C;
-	Fri, 30 May 2025 06:41:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB7E910E03A;
+	Fri, 30 May 2025 06:41:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C71zF12f";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a64c/RXz";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B16D310E792
- for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 06:41:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2652610E792
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 06:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748587286; x=1780123286;
+ t=1748587291; x=1780123291;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=nezKVjf/RqWdEXhlQuGawKLaXg0pbgTHyYKgpPz1K+E=;
- b=C71zF12fRXwXRCMc/ELERGaDr100nBdv02SSfZGmOptPU70gEAlvF0Hb
- NmOmimW2Z5KRur8XfsaxW5dDdCnJcwt3C+7VNhTg+bl4v/sKRuvjRzIrn
- fbwsXPaAIM/IaUHYEh8ryOkP1eh0+iKrh6hHqsHsmZWs/flHB1Zk35e1B
- gWV24cl0SXd2o92sZvzc3x3OSUmC9RngaL0R3TEBWzrz7HDl7DSovJ1K7
- PTelMALh3DRK2Itk/MCU7IpImLhKWe5UbfvsGNxP7JoT8enCrlq2eY17L
- J/o5VCXhiF94WwwE9F9XjP9D/XimhNTvm24om7quHY9qEKAwSWchWynhD A==;
-X-CSE-ConnectionGUID: CSp6uDpQQWya3vvwzrK+rA==
-X-CSE-MsgGUID: lMkPsYNbT42Zihw+b7TamQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="73204993"
-X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; d="scan'208";a="73204993"
+ bh=tUXy+WmLM3B5MHKkh+wpo0nkkoruxYcY2Wrs5K2PEaM=;
+ b=a64c/RXzHDT7LmPtMV9QjN0daHI1KiZIX7xGRK6Cyg3mkAAEqEG5Uu+E
+ 5IpdYfXL3QPKnVrycAwc6Z++OtHuQAxf9qZZFGZRPD+YN90B4qv7c4ajq
+ 8Q796gckZ5xLB0xT+Bq8eHDROZYJe3N1hQbErbLjwX1sBW8u280BAnpZ0
+ SawKDHnmVTPukcEnUMHO304k0fgMEqquyOR+xPHyjvxqUdVKGyBWak4kQ
+ 5ovKaU25UXPbIO6uXY15MVSUEpYwcTugwlH/mGLx32xg+mmdh9SWe897R
+ D8FOe+3cpf9L2yleqZwrLIIpPxHGymDITf4V/H8PpMlk/dyF3GvdBwep8 Q==;
+X-CSE-ConnectionGUID: 0gYBGatQQaCviZnMPCkjHw==
+X-CSE-MsgGUID: 1rz3m/eATW+tyfb62zZX0Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="73204999"
+X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; d="scan'208";a="73204999"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2025 23:41:26 -0700
-X-CSE-ConnectionGUID: rZUMoavqT/2LI1gk+AYhHA==
-X-CSE-MsgGUID: DPvomP1qQ5idLaYZIcZ6YA==
+ 29 May 2025 23:41:31 -0700
+X-CSE-ConnectionGUID: UIa5oaXoSeWtHL5xW2R2nA==
+X-CSE-MsgGUID: W/Vv/qPnQkWCSLGUe9Qy1A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; d="scan'208";a="143755807"
+X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; d="scan'208";a="143755811"
 Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.244.174])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2025 23:41:25 -0700
+ 29 May 2025 23:41:29 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t v4 05/11] lib/intel_blt: use struct instead of inline
- coding
-Date: Fri, 30 May 2025 08:40:44 +0200
-Message-ID: <20250530064050.1560398-6-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v4 06/11] tests/xe_copy_basic: replace size to rect
+ which keeps objects geometry
+Date: Fri, 30 May 2025 08:40:45 +0200
+Message-ID: <20250530064050.1560398-7-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250530064050.1560398-1-zbigniew.kempczynski@intel.com>
 References: <20250530064050.1560398-1-zbigniew.kempczynski@intel.com>
@@ -71,230 +71,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Structs with bitfields offer better control to avoid setting
-unnecessary bits and get unexpected behavior.
+Testing byte/page + linear/matrix mem-copy requires passing different
+pitch/width/height so replace simple size to geometry.
 
-Add struct for mem-copy and replace current byte copy implementation
-to byte/page adding iterator for insert couple of mem-copy instructions
-if user passed objects which width is greater than limit.
+Change mem-copy and mem-set to use rect instead of size for
+copying bytes.
 
-On the first glance order of assigning fields might be weird, but
-this will be used in consecutive patch which extends copy from linear
-to matrix.
-
-Bspec: 53418
 Cc: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_blt.c | 171 ++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 144 insertions(+), 27 deletions(-)
+ tests/intel/xe_copy_basic.c | 44 ++++++++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 18 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 04549ab42e..265f5ed50f 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1798,6 +1798,73 @@ int blt_fast_copy(int fd,
- 	return ret;
- }
+diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
+index f252d29fd4..d55991c4f8 100644
+--- a/tests/intel/xe_copy_basic.c
++++ b/tests/intel/xe_copy_basic.c
+@@ -19,6 +19,12 @@
  
-+struct xe_mem_copy_data {
-+	struct {
-+		uint32_t length:			BITRANGE(0, 7);
-+		uint32_t compression_format:	BITRANGE(8, 12);
-+		uint32_t compression_enable:	BITRANGE(13, 13);
-+		uint32_t rsvd0:			BITRANGE(14, 14);
-+		uint32_t dst_compressible:	BITRANGE(15, 15);
-+		uint32_t src_compressible:	BITRANGE(16, 16);
-+		uint32_t copy_type:		BITRANGE(17, 18);
-+		uint32_t mode:			BITRANGE(19, 19);
-+		uint32_t rsvd1:			BITRANGE(20, 21);
-+		uint32_t opcode:			BITRANGE(22, 28);
-+		uint32_t client:			BITRANGE(29, 31);
-+	} dw00;
-+
-+	struct {
-+		union {
-+			struct {
-+				uint32_t width:			BITRANGE(0, 17);
-+				uint32_t rsvd0:			BITRANGE(18, 31);
-+			} byte_copy;
-+			struct {
-+				uint32_t width:			BITRANGE(0, 23);
-+				uint32_t rsvd0:			BITRANGE(24, 31);
-+			} page_copy;
-+			uint32_t val;
-+		};
-+	} dw01;
-+
-+	struct {
-+		uint32_t height:			BITRANGE(0, 17);
-+		uint32_t rsvd0:			BITRANGE(18, 31);
-+	} dw02;
-+
-+	struct {
-+		uint32_t src_pitch:		BITRANGE(0, 17);
-+		uint32_t rsvd0:			BITRANGE(18, 31);
-+	} dw03;
-+
-+	struct {
-+		uint32_t dst_pitch:		BITRANGE(0, 17);
-+		uint32_t rsvd0:			BITRANGE(18, 31);
-+	} dw04;
-+
-+	struct {
-+		uint32_t src_address_lo;
-+	} dw05;
-+
-+	struct {
-+		uint32_t src_address_hi;
-+	} dw06;
-+
-+	struct {
-+		uint32_t dst_address_lo;
-+	} dw07;
-+
-+	struct {
-+		uint32_t dst_address_hi;
-+	} dw08;
-+
-+	struct {
-+		uint32_t dst_mocs:		BITRANGE(0, 6);
-+		uint32_t rsvd0:			BITRANGE(7, 24);
-+		uint32_t src_mocs:		BITRANGE(25, 31);
-+	} dw09;
+ #define MEM_FILL 0x8b
+ 
++struct rect {
++	uint32_t pitch;
++	uint32_t width;
++	uint32_t height;
 +};
 +
  /**
-  * blt_mem_copy_init:
-  * @fd: drm fd
-@@ -1820,41 +1887,91 @@ void blt_mem_copy_init(int fd, struct blt_mem_copy_data *mem,
- 	mem->copy_type = copy_type;
- }
- 
--static void emit_blt_mem_copy(int fd, uint64_t ahnd,
--			      const struct blt_mem_copy_data *mem,
--			      bool emit_bbe)
-+static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
-+				  const struct blt_mem_copy_data *mem,
-+				  uint64_t bb_pos, bool emit_bbe)
+  * TEST: Test to validate copy commands on xe
+  * Category: Core
+@@ -42,7 +48,7 @@
+  */
+ static void
+ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ctx,
+-	 uint32_t size, uint32_t width, uint32_t height, uint32_t region)
++	 uint32_t size, uint32_t pitch, uint32_t width, uint32_t height, uint32_t region)
  {
--	uint64_t dst_offset, src_offset;
--	int i;
--	uint32_t *batch;
--	uint32_t optype;
-+	struct xe_mem_copy_data data = {};
-+	uint64_t dst_offset, src_offset, shift;
-+	uint32_t height, width_max, remain;
-+	uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint32_t *bb;
-+
-+	if (mem->mode == MODE_BYTE) {
-+		data.dw01.byte_copy.width = -1;
-+		width_max = data.dw01.byte_copy.width + 1;
-+		shift = width_max;
-+	} else {
-+		data.dw01.page_copy.width = -1;
-+		width_max = data.dw01.page_copy.width + 1;
-+		shift = width_max << 8;
-+	}
+ 	struct blt_mem_copy_data mem = {};
+ 	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
+@@ -57,9 +63,9 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
+ 	bb = xe_bo_create(fd, 0, bb_size, region, 0);
  
- 	src_offset = get_offset_pat_index(ahnd, mem->src.handle, mem->src.size,
- 					  0, mem->src.pat_index);
- 	dst_offset = get_offset_pat_index(ahnd, mem->dst.handle, mem->dst.size,
- 					  0, mem->dst.pat_index);
- 
--	batch = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
--	optype = mem->copy_type == TYPE_MATRIX ? 1 << 17 : 0;
--
--	i = 0;
--	batch[i++] = MEM_COPY_CMD | optype;
--	batch[i++] = mem->src.width - 1;
--	batch[i++] = mem->src.height - 1;
--	batch[i++] = mem->src.pitch - 1;
--	batch[i++] = mem->dst.pitch - 1;
--	batch[i++] = src_offset;
--	batch[i++] = src_offset << 32;
--	batch[i++] = dst_offset;
--	batch[i++] = dst_offset << 32;
--	batch[i++] = mem->src.mocs_index << XE2_MEM_COPY_MOCS_SHIFT | mem->dst.mocs_index;
--
--	if (emit_bbe)
--		batch[i++] = MI_BATCH_BUFFER_END;
--
--	munmap(batch, mem->bb.size);
-+	bb = bo_map(fd, mem->bb.handle, mem->bb.size, mem->driver);
-+
-+	height = mem->dst.height;
-+
-+	data.dw00.client = 0x2;
-+	data.dw00.opcode = 0x5a;
-+	data.dw00.length = 8;
-+	data.dw00.mode = mem->mode;
-+	data.dw00.copy_type = mem->copy_type;
-+
-+	data.dw02.height = height - 1;
-+	data.dw05.src_address_lo = src_offset;
-+	data.dw06.src_address_hi = src_offset >> 32;
-+	data.dw07.dst_address_lo = dst_offset;
-+	data.dw08.dst_address_hi = dst_offset >> 32;
-+	data.dw09.src_mocs = mem->src.mocs_index;
-+	data.dw09.dst_mocs = mem->dst.mocs_index;
-+
-+	remain = mem->src.width;
-+
-+	/* Truncate pitches to match operation bits */
-+	if (mem->src.pitch > width_max)
-+		data.dw03.src_pitch = width_max - 1;
-+	else
-+		data.dw03.src_pitch = mem->src.pitch;
-+
-+	if (mem->dst.pitch > width_max)
-+		data.dw04.dst_pitch = width_max - 1;
-+	else
-+		data.dw04.dst_pitch = mem->dst.pitch;
-+
-+	while (remain) {
-+		data.dw01.val = min_t(uint32_t, width_max, remain) - 1;
-+
-+		igt_assert(bb_pos + sizeof(data) < mem->bb.size);
-+		memcpy(bb + bb_pos, &data, sizeof(data));
-+		bb_pos += sizeof(data);
-+
-+		remain -= remain > width_max ? width_max : remain;
-+		src_offset += shift;
-+		dst_offset += shift;
-+
-+		data.dw05.src_address_lo = src_offset;
-+		data.dw06.src_address_hi = src_offset >> 32;
-+		data.dw07.dst_address_lo = dst_offset;
-+		data.dw08.dst_address_hi = dst_offset >> 32;
-+	}
-+
-+	if (emit_bbe) {
-+		igt_assert(bb_pos + sizeof(uint32_t) < mem->bb.size);
-+		memcpy(bb + bb_pos, &bbe, sizeof(bbe));
-+		bb_pos += sizeof(uint32_t);
-+	}
-+
-+	munmap(bb, mem->bb.size);
-+
-+	return bb_pos;
+ 	blt_mem_copy_init(fd, &mem, MODE_BYTE, TYPE_LINEAR);
+-	blt_set_mem_object(&mem.src, src_handle, size, width, width, height,
++	blt_set_mem_object(&mem.src, src_handle, size, pitch, width, height,
+ 			   region, src_mocs, DEFAULT_PAT_INDEX, COMPRESSION_DISABLED);
+-	blt_set_mem_object(&mem.dst, dst_handle, size, width, width, height,
++	blt_set_mem_object(&mem.dst, dst_handle, size, pitch, width, height,
+ 			   region, dst_mocs, DEFAULT_PAT_INDEX, COMPRESSION_DISABLED);
+ 	mem.src.ptr = xe_bo_map(fd, src_handle, size);
+ 	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
+@@ -125,13 +131,14 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
+ 	munmap(mem.dst.ptr, size);
  }
  
-+
- /**
-  * blt_mem_copy:
-  * @fd: drm fd
-@@ -1884,7 +2001,7 @@ int blt_mem_copy(int fd, const intel_ctx_t *ctx,
- 					  0, mem->dst.pat_index);
- 	bb_offset = get_offset(ahnd, mem->bb.handle, mem->bb.size, 0);
+-static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t region)
++static void copy_test(int fd, struct rect *rect, enum blt_cmd_type cmd, uint32_t region)
+ {
+ 	struct drm_xe_engine_class_instance inst = {
+ 		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+ 	};
+-	uint32_t src_handle, dst_handle, vm, exec_queue, src_size, dst_size;
+-	uint32_t bo_size = ALIGN(size, xe_get_default_alignment(fd));
++	uint32_t src_handle, dst_handle, vm, exec_queue;
++	uint32_t pitch = rect->pitch ?: rect->width;
++	uint32_t bo_size = ALIGN(pitch * rect->height, xe_get_default_alignment(fd));
+ 	intel_ctx_t *ctx;
  
--	emit_blt_mem_copy(fd, ahnd, mem, true);
-+	emit_blt_mem_copy(fd, ahnd, mem, 0, true);
+ 	src_handle = xe_bo_create(fd, 0, bo_size, region, 0);
+@@ -140,13 +147,11 @@ static void copy_test(int fd, uint32_t size, enum blt_cmd_type cmd, uint32_t reg
+ 	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
+ 	ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
  
- 	if (mem->driver == INTEL_DRIVER_XE) {
- 		intel_ctx_xe_exec(ctx, ahnd, CANONICAL(bb_offset));
+-	src_size = bo_size;
+-	dst_size = bo_size;
+-
+ 	if (cmd == MEM_COPY)
+-		mem_copy(fd, src_handle, dst_handle, ctx, src_size, size, 1, region);
++		mem_copy(fd, src_handle, dst_handle, ctx, bo_size,
++			 pitch, rect->width, rect->height, region);
+ 	else if (cmd == MEM_SET)
+-		mem_set(fd, dst_handle, ctx, dst_size, size, 1, MEM_FILL, region);
++		mem_set(fd, dst_handle, ctx, bo_size, rect->width, 1, MEM_FILL, region);
+ 
+ 	gem_close(fd, src_handle);
+ 	gem_close(fd, dst_handle);
+@@ -160,7 +165,10 @@ igt_main
+ 	int fd;
+ 	struct igt_collection *set, *regions;
+ 	uint32_t region;
+-	uint64_t size[] = {0xFD, 0x369, 0x3FFF, 0xFFFE};
++	struct rect linear[] = { { 0, 0xfd, 1 },
++				 { 0, 0x369, 1 },
++				 { 0, 0x3fff, 1 },
++				 { 0, 0xfffe, 1 } };
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
+@@ -170,22 +178,22 @@ igt_main
+ 					       DRM_XE_MEM_REGION_CLASS_VRAM);
+ 	}
+ 
+-	for (int i = 0; i < ARRAY_SIZE(size); i++) {
+-		igt_subtest_f("mem-copy-linear-0x%"PRIx64"", size[i]) {
++	for (int i = 0; i < ARRAY_SIZE(linear); i++) {
++		igt_subtest_f("mem-copy-linear-0x%x", linear[i].width) {
+ 			igt_require(blt_has_mem_copy(fd));
+ 			for_each_variation_r(regions, 1, set) {
+ 				region = igt_collection_get_value(regions, 0);
+-				copy_test(fd, size[i], MEM_COPY, region);
++				copy_test(fd, &linear[i], MEM_COPY, region);
+ 			}
+ 		}
+ 	}
+ 
+-	for (int i = 0; i < ARRAY_SIZE(size); i++) {
+-		igt_subtest_f("mem-set-linear-0x%"PRIx64"", size[i]) {
++	for (int i = 0; i < ARRAY_SIZE(linear); i++) {
++		igt_subtest_f("mem-set-linear-0x%x", linear[i].width) {
+ 			igt_require(blt_has_mem_set(fd));
+ 			for_each_variation_r(regions, 1, set) {
+ 				region = igt_collection_get_value(regions, 0);
+-				copy_test(fd, size[i], MEM_SET, region);
++				copy_test(fd, &linear[i], MEM_SET, region);
+ 			}
+ 		}
+ 	}
 -- 
 2.43.0
 
