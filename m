@@ -4,63 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79280C5B543
-	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 18:39:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 540F8C5B543
+	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 19:44:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1445810E1FD;
-	Fri, 30 May 2025 18:39:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BCC6010E206;
+	Fri, 30 May 2025 19:44:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EGklWETE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JGvOBvMn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 57CA010E1FD
- for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 18:39:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEAA410E206
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 19:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748630358; x=1780166358;
+ t=1748634241; x=1780170241;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=r3oNWmAYqlWlkUTEfFW0zYxNcTzKpjPmTJNlDSlsAMA=;
- b=EGklWETEUOXMxZiB7/MDjsScgdhSsV/gS/R3b8sMoZWIPqbVjC5bn/nn
- vh+hOh2SkSe1Ki48xMW8U4s3EcPWSk67zr7/iP2LJn5Wqe7zaHDhH9NwI
- A+uybWSyEXq69zi/vfyu4l8DbH/yXaA9IvYIwB1fOBMzJ5DHgcP0ypBkV
- ThgFYBzafTAQN0RxXvUbaOyjCPoXlY9kswSlwfIko8qReLG9n288tJhLz
- N3C0ZG5l4l/ntDWD1RRGtgn+fs8S5db5xcaG0m4TWK4il7JxiIzL+Y3ja
- cB640uOpJInsVmT3tsP5P9rdpCv/cd1F8J7hR4WvjZBZtmG3XLA4yvvLJ g==;
-X-CSE-ConnectionGUID: NhhjE8xMTHisnRNsAav9WA==
-X-CSE-MsgGUID: Ba0Go0nuQKm8LtJ2BDcrgQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="54527710"
-X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="54527710"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2025 11:39:18 -0700
-X-CSE-ConnectionGUID: 0fBJmQjxTc6H61mdss7cww==
-X-CSE-MsgGUID: fVAJuUUnQqWHy/bLMkpvJQ==
+ mime-version:in-reply-to;
+ bh=0tQSFQqK0bfnJETF+gOtyuHlIXVE81b7I2bjcZf8gOQ=;
+ b=JGvOBvMn36s8snKHr1TbyJrKuOSKhrZWOaEzL9YHnP7lLYo+jyWkM9fU
+ VaHqFMnqeCUQyccMlj2kHvZq3liZ8lspqAI69Zzdoyzlcd7+tqq4nROHk
+ CKc755Q9rRLCboUDoFhOo/qPnSPzr3LUfMAgZIrJpq1zBjiBLcYn18NrQ
+ FEG27oPHgEGP0mIqoj+3imrG30Tc0umO0f8EDSLvv2pUYzYhCiEzqd+Wu
+ mEVNuDIlNIKmbBionFBnBba94GME+EY9lP0cNu0E0KTTYPiTamVfeiHia
+ E5n6TpFZ46JJePkPxEkq8nGXv+kHAQoEXZicBrvmigYqGl/MQBEMiK9H9 w==;
+X-CSE-ConnectionGUID: wD9ZZE8sSWCVQjp3cDae0g==
+X-CSE-MsgGUID: 0ccaYgMzQ3KFR3NPpyHunA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="68284203"
+X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="68284203"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2025 12:43:58 -0700
+X-CSE-ConnectionGUID: we+OkBHFQIqoc+St4VV18A==
+X-CSE-MsgGUID: 8bFaPDl9RIGiVvwN7O4qoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="144925522"
+X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="149235493"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 11:39:15 -0700
-Date: Fri, 30 May 2025 20:39:13 +0200
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 12:43:57 -0700
+Date: Fri, 30 May 2025 21:43:41 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- kamil.konieczny@intel.com, markyacoub@google.com,
- seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-Subject: Re: [PATCH i-g-t v11 5/7] tools: Include local glib header for Android
-Message-ID: <20250530183913.hs7xotbhraap2pi5@kamilkon-DESK.igk.intel.com>
+To: Sk Anirban <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com
+Subject: Re: [PATCH v7 1/2] tests/i915/pm_rc6_residency: Use sysfs to achieve
+ peak frequency
+Message-ID: <20250530194341.45pvnnf64em7xd4u@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
- igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- kamil.konieczny@intel.com, markyacoub@google.com,
- seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-References: <20250529171246.74375-1-jeevaka.badrappan@intel.com>
- <20250529171246.74375-6-jeevaka.badrappan@intel.com>
+ Sk Anirban <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
+ riana.tauro@intel.com
+References: <20250529090841.4177513-1-sk.anirban@intel.com>
+ <20250529090841.4177513-2-sk.anirban@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250529171246.74375-6-jeevaka.badrappan@intel.com>
+In-Reply-To: <20250529090841.4177513-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,73 +72,297 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevaka,
-On 2025-05-29 at 17:12:44 +0000, Jeevaka Prabu Badrappan wrote:
-> As glib is not available in Android, added local glib stub header to
-> build igt for Android.
+Hi Sk,
+On 2025-05-29 at 14:38:40 +0530, Sk Anirban wrote:
+> Leverage IGT spinner to trigger frequency scaling and
+> set RPS minimum frequency to RP0 for achieving peak frequency.
+> This method replaces the existing waitboost mechanism used
+> to reach maximum frequency.
 > 
-> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-> Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tools/igt_dp_compliance.h | 4 ++++
->  tools/intel_pm_rpm.c      | 4 ++++
->  tools/lsgpu.c             | 4 ++++
->  3 files changed, 12 insertions(+)
+> v4:
+>  - Cosmetic changes (Riana)
+> 
+> v5:
+>  - Limit the power consumption test to GT0 only
 
-Same here, add some NULL handling to avoid NULL deref errors.
+Imho this should be a separate patch with its own description
+why you need only for GT0.
+
+> 
+> v6:
+>  - Fix frequency restoration (Riana)
+> 
+> v7:
+>  - Fix variable scope (Riana)
+> 
+> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+> Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+> ---
+>  tests/intel/i915_pm_rc6_residency.c | 125 +++++++++++++++++++---------
+>  1 file changed, 86 insertions(+), 39 deletions(-)
+> 
+> diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
+> index c9128481d..e7a34b0da 100644
+> --- a/tests/intel/i915_pm_rc6_residency.c
+> +++ b/tests/intel/i915_pm_rc6_residency.c
+> @@ -264,17 +264,6 @@ static bool __pmu_wait_for_rc6(int fd)
+>  	return false;
+>  }
+>  
+> -static uint32_t batch_create(int fd)
+> -{
+> -	const uint32_t bbe = MI_BATCH_BUFFER_END;
+> -	uint32_t handle;
+> -
+> -	handle = gem_create(fd, 4096);
+> -	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
+> -
+> -	return handle;
+> -}
+> -
+>  static int open_pmu(int i915, uint64_t config)
+>  {
+>  	int fd;
+> @@ -286,45 +275,88 @@ static int open_pmu(int i915, uint64_t config)
+>  	return fd;
+>  }
+>  
+> -#define WAITBOOST 0x1
+> +#define FREQUENT_BOOST 0x1
+>  #define ONCE 0x2
+>  
+>  static void sighandler(int sig)
+>  {
+>  }
+>  
+> -static void bg_load(int i915, uint32_t ctx_id, uint64_t engine_flags, unsigned int flags, unsigned long *ctl)
+> +static uint32_t get_freq(int dirfd, uint8_t id)
+> +{
+> +	uint32_t val;
+> +
+> +	igt_assert(igt_sysfs_rps_scanf(dirfd, id, "%u", &val) == 1);
+> +
+> +	return val;
+> +}
+> +
+> +static int set_freq(int dirfd, uint8_t id, uint32_t val)
+> +{
+> +	return igt_sysfs_rps_printf(dirfd, id, "%u", val);
+> +}
+> +
+> +uint32_t stash_min;
+^
+static uint32_t stash_min;
+
+Also add:
+static int s_dirfd = -1;
+
+> +
+> +static void restore_freq(int sig)
+> +{
+> +	int i915 = -1;
+> +	int dirfd;
+> +	int gt = 0;
+> +
+
+Add here:
+	if (s_dirfd == -1)
+		return;
+
+> +	i915 = drm_open_driver(DRIVER_INTEL);
+> +	dirfd = igt_sysfs_gt_open(i915, 0);
+> +	igt_sysfs_gt_open(i915, gt);
+> +
+> +	igt_assert_lt(0, set_freq(dirfd, RPS_MIN_FREQ_MHZ, stash_min));
+> +
+> +	drm_close_driver(i915);
+
+This looks incorrect, in signal handler you should only make one
+write with restoration of stash_min, so only dirfd and stash_min
+are needed.
+Also this is a last call before exit so no asserts here, if you
+really need it you could make restoring with assert at test end.
+In summary, here:
+	if (stash_min)
+		set_freq(s_dirfd, RPS_MIN_FREQ_MHZ, stash_min);
+
+> +	close(dirfd);
+> +}
+> +
+> +static void bg_load(int i915, const intel_ctx_t *ctx, int dirfd, uint64_t engine_flags,
+> +		    unsigned int flags, unsigned long *ctl, unsigned int gt)
+>  {
+>  	const bool has_execlists = intel_gen(intel_get_drm_devid(i915)) >= 8;
+> -	struct drm_i915_gem_exec_object2 obj = {
+> -		.handle = batch_create(i915),
+> -	};
+> -	struct drm_i915_gem_execbuffer2 execbuf = {
+> -		.buffers_ptr = to_user_pointer(&obj),
+> -		.buffer_count = 1,
+> -		.flags = engine_flags,
+> -		.rsvd1 = ctx_id,
+> -	};
+>  	struct sigaction act = {
+>  		.sa_handler = sighandler
+>  	};
+> +	int64_t timeout = 1;
+> +	uint64_t ahnd;
+> +	int rp0;
+>  
+> +	ahnd = get_reloc_ahnd(i915, ctx->id);
+> +	rp0 = get_freq(dirfd, RPS_RP0_FREQ_MHZ);
+>  	sigaction(SIGINT, &act, NULL);
+>  	do {
+>  		uint64_t submit, wait, elapsed;
+>  		struct timespec tv = {};
+> +		igt_spin_t *spin;
+>  
+>  		igt_nsec_elapsed(&tv);
+> -
+> -		gem_execbuf(i915, &execbuf);
+> +		spin = igt_spin_new(i915,
+> +				    .ahnd = ahnd,
+> +				    .ctx = ctx,
+> +				    .engine = engine_flags);
+>  		submit = igt_nsec_elapsed(&tv);
+> -		if (flags & WAITBOOST) {
+> -			gem_sync(i915, obj.handle);
+> +		if (flags & FREQUENT_BOOST) {
+> +			/* Set MIN freq to RP0 to achieve the peak freq */
+> +			igt_assert_lt(0, set_freq(dirfd, RPS_MIN_FREQ_MHZ, rp0));
+> +			igt_assert(gem_bo_busy(i915, spin->handle));
+> +			gem_wait(i915, spin->handle, &timeout);
+> +
+> +			/* Restore the MIN freq back to default */
+> +			igt_assert_lt(0, set_freq(dirfd, RPS_MIN_FREQ_MHZ, stash_min));
+> +			igt_spin_end(spin);
+> +			igt_spin_free(i915, spin);
+> +			gem_quiescent_gpu(i915);
+>  			if (flags & ONCE)
+> -				flags &= ~WAITBOOST;
+> +				flags &= ~FREQUENT_BOOST;
+>  		} else  {
+> -			while (gem_bo_busy(i915, obj.handle))
+> -				usleep(0);
+> +			igt_assert(gem_bo_busy(i915, spin->handle));
+> +			igt_spin_end(spin);
+> +			igt_spin_free(i915, spin);
+> +			gem_quiescent_gpu(i915);
+>  		}
+>  		wait = igt_nsec_elapsed(&tv);
+>  
+> @@ -350,6 +382,7 @@ static void bg_load(int i915, uint32_t ctx_id, uint64_t engine_flags, unsigned i
+>  		/* aim for ~1% busy */
+>  		usleep(min_t(elapsed, elapsed / 10, 50 * 1000));
+>  	} while (!READ_ONCE(*ctl));
+> +	put_ahnd(ahnd);
+>  }
+>  
+>  static void kill_children(int sig)
+> @@ -361,9 +394,9 @@ static void kill_children(int sig)
+>  	signal(sig, old);
+>  }
+>  
+> -static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+> +static void rc6_idle(int i915, const intel_ctx_t *ctx, uint64_t flags, unsigned int gt)
+>  {
+> -	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
+> +	const int64_t duration_ns = 2 * SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
+>  	const int tolerance = 20; /* Some RC6 is better than none! */
+>  	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+>  	struct {
+> @@ -371,10 +404,11 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+>  		unsigned int flags;
+>  		double power;
+>  	} phases[] = {
+> +		{ "once", FREQUENT_BOOST | ONCE },
+>  		{ "normal", 0 },
+> -		{ "boost", WAITBOOST },
+> -		{ "once", WAITBOOST | ONCE },
+> +		{ "boost", FREQUENT_BOOST }
+>  	};
+> +	int dirfd = igt_sysfs_gt_open(i915, gt);
+>  	struct power_sample sample[2];
+>  	unsigned long slept, cycles;
+>  	unsigned long *done;
+> @@ -407,12 +441,21 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+>  
+>  	assert_within_epsilon_debug(rc6, ts[1] - ts[0], 5, drpc);
+>  
+> +	if (gt) {
+> +		close(fd);
+> +		close(dirfd);
+> +		igt_power_close(&gpu);
+> +		return;
+> +	}
+> +
+>  	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+>  
+> +	stash_min = get_freq(dirfd, RPS_MIN_FREQ_MHZ);
+> +
+>  	for (int p = 0; p < ARRAY_SIZE(phases); p++) {
+>  		memset(done, 0, 2 * sizeof(*done));
+>  		igt_fork(child, 1) /* Setup up a very light load */
+> -			bg_load(i915, ctx_id, flags, phases[p].flags, done);
+> +			bg_load(i915, ctx, dirfd, flags, phases[p].flags, done, gt);
+>  
+>  		igt_power_get_energy(&gpu, &sample[0]);
+>  		cycles = -READ_ONCE(done[1]);
+> @@ -451,15 +494,16 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+>  
+>  	munmap(done, 4096);
+>  	close(fd);
+> +	close(dirfd);
+>  
+>  	igt_power_close(&gpu);
+>  
+> -	if (phases[1].power - phases[0].power > 10) {
+> -		igt_assert_f(2 * phases[2].power - phases[0].power <= phases[1].power,
+> +	if (phases[2].power - phases[1].power > 20 && !gem_has_lmem(i915)) {
+> +		igt_assert_f(2 * phases[0].power - phases[1].power <= phases[2].power,
+>  			     "Exceeded energy expectations for single busy wait load\n"
+>  			     "Used %.1fmW, min %.1fmW, max %.1fmW, expected less than %.1fmW\n",
+> -			     phases[2].power, phases[0].power, phases[1].power,
+> -			     phases[0].power + (phases[1].power - phases[0].power) / 2);
+> +			     phases[0].power, phases[1].power, phases[2].power,
+> +			     phases[1].power + (phases[2].power - phases[1].power) / 2);
+>  	}
+>  }
+>  
+> @@ -582,19 +626,22 @@ igt_main
+>  	igt_subtest_with_dynamic("rc6-idle") {
+>  		const struct intel_execution_engine2 *e;
+>  
+
+You should set stash_min and s_dirfd before installing exit handler.
+
+> +		igt_install_exit_handler(restore_freq);
+
+This should be before ..multiprocess_start(), your test may skip
+in case require will trigger skip.
 
 Regards,
 Kamil
 
-> 
-> diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
-> index 5b1688039..226a13662 100644
-> --- a/tools/igt_dp_compliance.h
-> +++ b/tools/igt_dp_compliance.h
-> @@ -28,7 +28,11 @@
->  #include <stdio.h>
->  #include <string.h>
->  #include <stdlib.h>
-> +#ifdef ANDROID
-> +#include "android/glib.h"
-> +#else
->  #include <glib.h>
-> +#endif
+>  		igt_require_gem(i915);
+>  		gem_quiescent_gpu(i915);
+> +		intel_allocator_multiprocess_start();
 >  
->  extern int drm_fd;
+>  		i915_for_each_gt(i915, dirfd, gt) {
+>  			ctx = intel_ctx_create_for_gt(i915, gt);
+>  			for_each_ctx_engine(i915, ctx, e) {
+>  				if (e->instance == 0) {
+>  					igt_dynamic_f("gt%u-%s", gt, e->name)
+> -						rc6_idle(i915, ctx->id, e->flags, gt);
+> +						rc6_idle(i915, ctx, e->flags, gt);
+>  				}
+>  			}
+>  			intel_ctx_destroy(i915, ctx);
+>  		}
+> +		intel_allocator_multiprocess_stop();
+>  	}
 >  
-> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-> index 9622f0552..c1cc54b82 100644
-> --- a/tools/intel_pm_rpm.c
-> +++ b/tools/intel_pm_rpm.c
-> @@ -24,7 +24,11 @@
->  
->  #include <errno.h>
->  #include <getopt.h>
-> +#ifdef ANDROID
-> +#include "android/glib.h"
-> +#else
->  #include <glib.h>
-> +#endif
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <string.h>
-> diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-> index e68390083..6cfbf3142 100644
-> --- a/tools/lsgpu.c
-> +++ b/tools/lsgpu.c
-> @@ -24,7 +24,11 @@
->  
->  #include <errno.h>
->  #include <fcntl.h>
-> +#ifdef ANDROID
-> +#include "android/glib.h"
-> +#else
->  #include <glib.h>
-> +#endif
->  #include <libudev.h>
->  #include <string.h>
->  #include <signal.h>
+>  	igt_subtest_with_dynamic("rc6-fence") {
 > -- 
-> 2.49.0
+> 2.34.1
 > 
