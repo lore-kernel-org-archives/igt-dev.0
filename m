@@ -4,64 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF78BC5AD49
-	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 18:38:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79280C5B543
+	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 18:39:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 78C9A10E1FD;
-	Fri, 30 May 2025 18:38:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1445810E1FD;
+	Fri, 30 May 2025 18:39:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XUv90hps";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EGklWETE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03C3E10E1FD
- for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 18:38:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57CA010E1FD
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 18:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748630302; x=1780166302;
+ t=1748630358; x=1780166358;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=nLtUQEzCAxUd2loLkMutPupsOnVGT7u/YL1IOd3UfwQ=;
- b=XUv90hps00tcbmie181ilFApR+K5cC+qAF/iPYpGuvizbdju3gF0sziL
- Xy5EjfyC5MuHZo9XfbAzs4rDHtaGj0iwMFK35Pi88926aNxJ6GQNOoSw4
- 72BrMvNTep/giAP99LbXiVspMQO87g24IUxotilK/Kw8mo0c1tYjTD/08
- eL6CNwzRLEImrn8Nk0hldfXx2JBjdlsg+0pgA2v7Yb611b3tg19ogbi1C
- thWuKi4K2U7K0H4nvzKXpL9PwW1wnXlXkd7hE16PPmlzMKOgMP2TuAOj7
- NMZMoYjClqosm6oh7iYxJu3xP0AbEU0ZN1VopvsxAimDXmk7eT8XffU18 A==;
-X-CSE-ConnectionGUID: BETvSsU2RI6ab1zvWiyaYA==
-X-CSE-MsgGUID: k4RDq6+pRI6Cp7hwiBWLXw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="73262634"
-X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="73262634"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2025 11:38:22 -0700
-X-CSE-ConnectionGUID: mwb6Dt6aTMu2Uhq/ezxH/Q==
-X-CSE-MsgGUID: 2YIqGmRUTCG+RvICXNsK+w==
+ bh=r3oNWmAYqlWlkUTEfFW0zYxNcTzKpjPmTJNlDSlsAMA=;
+ b=EGklWETEUOXMxZiB7/MDjsScgdhSsV/gS/R3b8sMoZWIPqbVjC5bn/nn
+ vh+hOh2SkSe1Ki48xMW8U4s3EcPWSk67zr7/iP2LJn5Wqe7zaHDhH9NwI
+ A+uybWSyEXq69zi/vfyu4l8DbH/yXaA9IvYIwB1fOBMzJ5DHgcP0ypBkV
+ ThgFYBzafTAQN0RxXvUbaOyjCPoXlY9kswSlwfIko8qReLG9n288tJhLz
+ N3C0ZG5l4l/ntDWD1RRGtgn+fs8S5db5xcaG0m4TWK4il7JxiIzL+Y3ja
+ cB640uOpJInsVmT3tsP5P9rdpCv/cd1F8J7hR4WvjZBZtmG3XLA4yvvLJ g==;
+X-CSE-ConnectionGUID: NhhjE8xMTHisnRNsAav9WA==
+X-CSE-MsgGUID: Ba0Go0nuQKm8LtJ2BDcrgQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="54527710"
+X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="54527710"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2025 11:39:18 -0700
+X-CSE-ConnectionGUID: 0fBJmQjxTc6H61mdss7cww==
+X-CSE-MsgGUID: fVAJuUUnQqWHy/bLMkpvJQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="149222153"
+X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="144925522"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 11:38:20 -0700
-Date: Fri, 30 May 2025 20:38:17 +0200
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 11:39:15 -0700
+Date: Fri, 30 May 2025 20:39:13 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  kamil.konieczny@intel.com, markyacoub@google.com,
  seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
-Subject: Re: [PATCH i-g-t v11 4/7] runner: Include local glib header for
- Android
-Message-ID: <20250530183817.ki6oxkiw3qp4mghw@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t v11 5/7] tools: Include local glib header for Android
+Message-ID: <20250530183913.hs7xotbhraap2pi5@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
  igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  kamil.konieczny@intel.com, markyacoub@google.com,
  seanpaul@google.com, carlos.santa@intel.com, sapna1.singh@intel.com
 References: <20250529171246.74375-1-jeevaka.badrappan@intel.com>
- <20250529171246.74375-5-jeevaka.badrappan@intel.com>
+ <20250529171246.74375-6-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250529171246.74375-5-jeevaka.badrappan@intel.com>
+In-Reply-To: <20250529171246.74375-6-jeevaka.badrappan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,29 +77,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Jeevaka,
-On 2025-05-29 at 17:12:43 +0000, Jeevaka Prabu Badrappan wrote:
-> As glib is not available in Android, added local stub header to build
-> igt for Android.
+On 2025-05-29 at 17:12:44 +0000, Jeevaka Prabu Badrappan wrote:
+> As glib is not available in Android, added local glib stub header to
+> build igt for Android.
 > 
 > Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 > Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->  runner/executor.c | 4 ++++
->  runner/settings.h | 4 ++++
->  2 files changed, 8 insertions(+)
+>  tools/igt_dp_compliance.h | 4 ++++
+>  tools/intel_pm_rpm.c      | 4 ++++
+>  tools/lsgpu.c             | 4 ++++
+>  3 files changed, 12 insertions(+)
 
-Should you also add some NULL handling there?
+Same here, add some NULL handling to avoid NULL deref errors.
 
 Regards,
 Kamil
 
 > 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 41f521e56..784d9eb5f 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -1,7 +1,11 @@
->  #include <ctype.h>
+> diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
+> index 5b1688039..226a13662 100644
+> --- a/tools/igt_dp_compliance.h
+> +++ b/tools/igt_dp_compliance.h
+> @@ -28,7 +28,11 @@
+>  #include <stdio.h>
+>  #include <string.h>
+>  #include <stdlib.h>
+> +#ifdef ANDROID
+> +#include "android/glib.h"
+> +#else
+>  #include <glib.h>
+> +#endif
+>  
+>  extern int drm_fd;
+>  
+> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
+> index 9622f0552..c1cc54b82 100644
+> --- a/tools/intel_pm_rpm.c
+> +++ b/tools/intel_pm_rpm.c
+> @@ -24,7 +24,11 @@
+>  
+>  #include <errno.h>
+>  #include <getopt.h>
+> +#ifdef ANDROID
+> +#include "android/glib.h"
+> +#else
+>  #include <glib.h>
+> +#endif
+>  #include <stdio.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+> diff --git a/tools/lsgpu.c b/tools/lsgpu.c
+> index e68390083..6cfbf3142 100644
+> --- a/tools/lsgpu.c
+> +++ b/tools/lsgpu.c
+> @@ -24,7 +24,11 @@
+>  
 >  #include <errno.h>
 >  #include <fcntl.h>
 > +#ifdef ANDROID
@@ -108,25 +140,9 @@ Kamil
 > +#else
 >  #include <glib.h>
 > +#endif
->  #ifdef __linux__
->  #include <linux/watchdog.h>
->  #endif
-> diff --git a/runner/settings.h b/runner/settings.h
-> index 1f0b85318..ccdc7281b 100644
-> --- a/runner/settings.h
-> +++ b/runner/settings.h
-> @@ -5,7 +5,11 @@
->  #include <stddef.h>
->  #include <sys/types.h>
->  #include <stdio.h>
-> +#ifdef ANDROID
-> +#include "android/glib.h"
-> +#else
->  #include <glib.h>
-> +#endif
->  
->  #include "igt_list.h"
->  #include "igt_vec.h"
+>  #include <libudev.h>
+>  #include <string.h>
+>  #include <signal.h>
 > -- 
 > 2.49.0
 > 
