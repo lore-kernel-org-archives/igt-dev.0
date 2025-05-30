@@ -4,72 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A69B7C5B543
-	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 14:23:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F270C5AD49
+	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 14:27:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55F2510E7E2;
-	Fri, 30 May 2025 14:23:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B894D10E128;
+	Fri, 30 May 2025 14:27:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z6/Qfj9u";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PfjYo19K";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 911C810E854
- for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 14:23:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C97B10E821
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 14:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748614981; x=1780150981;
- h=from:date:subject:mime-version:content-transfer-encoding:
- message-id:to:cc;
- bh=PBv44869L23a0ZPsxldvCGg2P8rsQh8fwDHpMi+xJXA=;
- b=Z6/Qfj9uljEndnEUEAVPrF9Fs65qDogbD7kW4ZoQx4oSm7nuSZWOF3D8
- q9+c9v3dOrxdLgeaMy4GXwKnkaHBfTEcFH0jB5ondrLIUwBwnBu9kzXJD
- EnCtvrNR1mlS5w3xvNSwpEmHo3rvN7qPH0K4dF4kWPlpBFs4CrgZmEXmA
- icECK0f1ScS/6A33iv723AOVk5t5SNJ6Xj+R+1pRz4bUzlHqTG2qeNTTN
- w1K0l3k6XRFG9KoIAFHz6298GmsK/MXWE2x/x4vBAFSqjlyLaqL372I9G
- 0i0m0Q5dRBsec1kbUtlwKPBNYNiIfTS+iVP5F3gru/4OZp8LggB3r5o18 w==;
-X-CSE-ConnectionGUID: nLEjVlWZRJOeAHbSRWVmKg==
-X-CSE-MsgGUID: Es7YGsRNRdGE3bF36dipBQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="38338262"
-X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="38338262"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2025 07:23:00 -0700
-X-CSE-ConnectionGUID: OM/UZaWATsGohzG+hXJ8CQ==
-X-CSE-MsgGUID: dJjbtty/TMasWVNA3V+hqw==
+ t=1748615233; x=1780151233;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=vK2zXqCMlsA0rJIyq9TsqdDygdPacOOaVs4+d8XgDJA=;
+ b=PfjYo19K6fhapK/AgtBFfQkLCfHfvlyCYzMvGG8iJGC+8XF1R7XT9Wja
+ m8ZPo54bDC2TDxaFbOyCLSSXz7eiqFUy602Mvx2/KedZUy5Kzpie67j6W
+ wLhCPIpccv2BV04Vag7fWPxL5jWX4ir306xkjpSKkAXqR9/5gYsOI5Fkx
+ kfvlq5zwHVyjupoL2tFFqAIrfrMCRDgWOHPh6Fhw26cLitvORa7Pm/Zcm
+ HyeyRyUoAULvb/LBRo1oFGamclDXBSHGuT5ZOn16TqQBZIiioLEFEiiy6
+ /MPiYIYncE5Y6Rd10zg0rIuGxV27KYlECXPpdIbzlvj+Tc+XLhZMMedz9 g==;
+X-CSE-ConnectionGUID: SA8v2S8fRdiTjDTiGrhu1Q==
+X-CSE-MsgGUID: Ttzqo6NlRt6pEeHrRGiKFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="49828092"
+X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="49828092"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2025 07:27:12 -0700
+X-CSE-ConnectionGUID: JoMOgnnxSPOzxpM6cPcyLA==
+X-CSE-MsgGUID: QhJNkYkPSlKOg46ZwbvkSg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="143727163"
-Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2025 07:22:59 -0700
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Fri, 30 May 2025 16:22:11 +0200
-Subject: [PATCH] Revert "lib/meson: refactor GPGPU assembly build process"
+X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; d="scan'208";a="147768643"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+ by fmviesa003.fm.intel.com with ESMTP; 30 May 2025 07:27:11 -0700
+Received: from [10.245.84.121] (unknown [10.245.84.121])
+ by irvmail002.ir.intel.com (Postfix) with ESMTP id 0BC3433EBF
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 15:27:09 +0100 (IST)
+Message-ID: <5fbb0f13-ee0b-4dff-a42d-c575375fc64e@intel.com>
+Date: Fri, 30 May 2025 16:27:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250530-revert_meson-v1-1-69c9ad1ea87f@intel.com>
-X-B4-Tracking: v=1; b=H4sIABK/OWgC/x3MUQqDQAyE4atInruwKkrbq5RS4jpqHrpK0hZBv
- Lupjx/M/BsZVGB0LzZS/MRkzo7yUlCaOI8I0rupilUTmzoGH0E/rzdszqFu+4Rricg3Jr8sikH
- WM/d4ujs2hE45p+kf+S5G+34AVqmjlXQAAAA=
-X-Change-ID: 20250530-revert_meson-36dce81e0a9a
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?B?UmU6IOKclyBYZS5DSS5GdWxsOiBmYWlsdXJlIGZvciBVcGRhdGUgImZv?=
+ =?UTF-8?Q?rce=5Freset=22_code_=28rev3=29?=
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13937;
- i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=PBv44869L23a0ZPsxldvCGg2P8rsQh8fwDHpMi+xJXA=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoOb8eh8Zd7NA3XeKyB3MgkXOP/sF+E8bdsPnRy
- s9ctNnw4v+JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaDm/HgAKCRAjYrKT3hD9
- 1xkoC/0QeIRfNNQOZraXycWeIf/arwnEhJnnvNDGaaDnYNN6q4bYBkjUr5JJwhfF4UkVwniySBw
- 6md2vtTUnBNvVAPH2uYlFOtHUQq3ZDb9THIKW73lybyX0IXbUS4ElfGYfS5bssyZFZL/KTtuWRS
- 5j8FkgohPtFdgJXMSydaxSFBf01xfc2B9lzhaDFj3M2kyUoTI5bNXFZ1vCB81T+SDHAyDzmjQxP
- 83g3PVJU6mbB5DJR3PNFxAmT7ivR6e6JrwdfgnfKxI8p735doL14Mr9S/75QogP2zeX5Yj9nR2Z
- U8LTjYmwsMXSjPKfZqQV683PPJ4zSfIAie5reb5+dAEODQxxqOfWLnP9TwXkCJa1fVDg3T2CCjS
- DenS28wFf8cXvTQl3kQnq9XdBhIIDXo/qGs/atYMns5cznVQDWcGaASsFq8cCVM0tlm5bccfG3T
- UMGNVO9TVwnPHv4q0Bma+ZB4zznA5fXyTyjXX8Xru8ABGcuX5tg0CxpPwZ1IpA/DxMCOQ=
-X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
- fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
+References: <20250528212618.373-1-michal.wajdeczko@intel.com>
+ <174859746893.34736.15610073226434757872@1538d3639d33>
+Content-Language: en-US
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+In-Reply-To: <174859746893.34736.15610073226434757872@1538d3639d33>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,322 +72,124 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Commit causes warnigs in old meson which are treated as error:
-WARNING: Project targetting '>=0.47.2' but tried to use feature introduced in '0.48.0': console arg in custom_target
-As build system uses old meson for checks let's revert it.
 
-This reverts commit 62557300fee4509d3adbcdaf4ee402c6e61b846f.
 
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
----
- lib/gpgpu_fill.c.gen.iga64_codes.c                 | 80 ----------------------
- ...c.gen.iga64_codes.c => iga64_generated_codes.c} | 76 +++++++++++++++++++-
- lib/meson.build                                    | 40 +++++------
- scripts/generate_iga64_codes                       | 14 ++--
- 4 files changed, 98 insertions(+), 112 deletions(-)
+On 30.05.2025 11:31, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: Update "force_reset" code (rev3)
+> URL   : https://patchwork.freedesktop.org/series/149607/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8384_FULL -> XEIGTPW_13211_FULL
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_13211_FULL absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_13211_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 3)
+> ------------------------------
+> 
+>   Missing    (1): shard-adlp 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_13211_FULL:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@xe_exec_reset@parallel-gt-reset:
+>     - shard-bmg:          [PASS][1] -> [DMESG-WARN][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8384/shard-bmg-4/igt@xe_exec_reset@parallel-gt-reset.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13211/shard-bmg-1/igt@xe_exec_reset@parallel-gt-reset.html
 
-diff --git a/lib/gpgpu_fill.c.gen.iga64_codes.c b/lib/gpgpu_fill.c.gen.iga64_codes.c
-deleted file mode 100644
-index b223425d049a51096a2314a759d238af6887b2b9..0000000000000000000000000000000000000000
---- a/lib/gpgpu_fill.c.gen.iga64_codes.c
-+++ /dev/null
-@@ -1,80 +0,0 @@
--// SPDX-License-Identifier: MIT
--// Generated using Intel Graphics Assembler 1.1.0-int
--
--#include "gpgpu_shader.h"
--
--#define MD5_SUM_IGA64_ASMS 8304c8bb11385470bfd6ac32e1c36840
--
--struct iga64_template const iga64_code_gpgpu_fill[] = {
--	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
--		0x00080061, 0x01050000, 0x00000104, 0x00000000,
--		0x00000069, 0x02058220, 0x02000014, 0x00000004,
--		0x00000061, 0x02150220, 0x00000064, 0x00000000,
--		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
--		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
--		0x00041b61, 0x04550220, 0x00220205, 0x00000000,
--		0x00000061, 0x04754550, 0x00000000, 0x000f000f,
--		0x00132031, 0x00000000, 0xd00e0494, 0x04000000,
--		0x80000001, 0x00010000, 0x20000000, 0x00000000,
--		0x80000001, 0x00010000, 0x30000000, 0x00000000,
--		0x80000901, 0x00010000, 0x00000000, 0x00000000,
--	}},
--	{ .gen_ver = 1270, .size = 52, .code = (const uint32_t []) {
--		0x00020061, 0x01050000, 0x00000104, 0x00000000,
--		0x00000069, 0x02058220, 0x02000024, 0x00000004,
--		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
--		0x00030061, 0x04054220, 0x00000000, 0x00000000,
--		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
--		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
--		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
--		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
--		0x80001901, 0x00010000, 0x00000000, 0x00000000,
--		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
--		0x80000001, 0x00010000, 0x20000000, 0x00000000,
--		0x80000001, 0x00010000, 0x30000000, 0x00000000,
--		0x80000901, 0x00010000, 0x00000000, 0x00000000,
--	}},
--	{ .gen_ver = 1260, .size = 48, .code = (const uint32_t []) {
--		0x00080061, 0x01050000, 0x00000104, 0x00000000,
--		0x00000069, 0x02058220, 0x02000014, 0x00000004,
--		0x00000061, 0x02150220, 0x00000064, 0x00000000,
--		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
--		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
--		0x00041b61, 0x04050220, 0x00220205, 0x00000000,
--		0x00000061, 0x04254220, 0x00000000, 0x0000000f,
--		0x00000061, 0x04450220, 0x00000054, 0x00000000,
--		0x00132031, 0x00000000, 0xc0000414, 0x02a00000,
--		0x80000001, 0x00010000, 0x20000000, 0x00000000,
--		0x80000001, 0x00010000, 0x30000000, 0x00000000,
--		0x80000901, 0x00010000, 0x00000000, 0x00000000,
--	}},
--	{ .gen_ver = 1250, .size = 52, .code = (const uint32_t []) {
--		0x00020061, 0x01050000, 0x00000104, 0x00000000,
--		0x00000069, 0x02058220, 0x02000024, 0x00000004,
--		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
--		0x00030061, 0x04054220, 0x00000000, 0x00000000,
--		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
--		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
--		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
--		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
--		0x80001901, 0x00010000, 0x00000000, 0x00000000,
--		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
--		0x80000001, 0x00010000, 0x20000000, 0x00000000,
--		0x80000001, 0x00010000, 0x30000000, 0x00000000,
--		0x80000901, 0x00010000, 0x00000000, 0x00000000,
--	}},
--	{ .gen_ver = 0, .size = 48, .code = (const uint32_t []) {
--		0x00020061, 0x01050000, 0x00000104, 0x00000000,
--		0x00000069, 0x02058220, 0x02000024, 0x00000004,
--		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
--		0x00030061, 0x04054220, 0x00000000, 0x00000000,
--		0x00040461, 0x05050220, 0x00000104, 0x00000000,
--		0x00010361, 0x04050220, 0x00220205, 0x00000000,
--		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
--		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
--		0x00049031, 0x00000000, 0xc0000414, 0x02a00000,
--		0x80000001, 0x00010000, 0x20000000, 0x00000000,
--		0x80000001, 0x00010000, 0x30000000, 0x00000000,
--		0x80000101, 0x00010000, 0x00000000, 0x00000000,
--	}}
--};
-diff --git a/lib/gpgpu_shader.c.gen.iga64_codes.c b/lib/iga64_generated_codes.c
-similarity index 89%
-rename from lib/gpgpu_shader.c.gen.iga64_codes.c
-rename to lib/iga64_generated_codes.c
-index fffe242fe138cd56b5cd73a5f149637b284db02e..551dead2be173d0e48f807e3471f914e898556c4 100644
---- a/lib/gpgpu_shader.c.gen.iga64_codes.c
-+++ b/lib/iga64_generated_codes.c
-@@ -3,7 +3,81 @@
- 
- #include "gpgpu_shader.h"
- 
--#define MD5_SUM_IGA64_ASMS f5d2183439f5e7b18097c3c2c2957dbb
-+#define MD5_SUM_IGA64_ASMS 22a5a4671242c3257209f4051f1c0c7e
-+
-+struct iga64_template const iga64_code_gpgpu_fill[] = {
-+	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-+		0x00080061, 0x01050000, 0x00000104, 0x00000000,
-+		0x00000069, 0x02058220, 0x02000014, 0x00000004,
-+		0x00000061, 0x02150220, 0x00000064, 0x00000000,
-+		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
-+		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
-+		0x00041b61, 0x04550220, 0x00220205, 0x00000000,
-+		0x00000061, 0x04754550, 0x00000000, 0x000f000f,
-+		0x00132031, 0x00000000, 0xd00e0494, 0x04000000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1270, .size = 52, .code = (const uint32_t []) {
-+		0x00020061, 0x01050000, 0x00000104, 0x00000000,
-+		0x00000069, 0x02058220, 0x02000024, 0x00000004,
-+		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
-+		0x00030061, 0x04054220, 0x00000000, 0x00000000,
-+		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
-+		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
-+		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
-+		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x80001901, 0x00010000, 0x00000000, 0x00000000,
-+		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1260, .size = 48, .code = (const uint32_t []) {
-+		0x00080061, 0x01050000, 0x00000104, 0x00000000,
-+		0x00000069, 0x02058220, 0x02000014, 0x00000004,
-+		0x00000061, 0x02150220, 0x00000064, 0x00000000,
-+		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
-+		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
-+		0x00041b61, 0x04050220, 0x00220205, 0x00000000,
-+		0x00000061, 0x04254220, 0x00000000, 0x0000000f,
-+		0x00000061, 0x04450220, 0x00000054, 0x00000000,
-+		0x00132031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1250, .size = 52, .code = (const uint32_t []) {
-+		0x00020061, 0x01050000, 0x00000104, 0x00000000,
-+		0x00000069, 0x02058220, 0x02000024, 0x00000004,
-+		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
-+		0x00030061, 0x04054220, 0x00000000, 0x00000000,
-+		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
-+		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
-+		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
-+		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x80001901, 0x00010000, 0x00000000, 0x00000000,
-+		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 48, .code = (const uint32_t []) {
-+		0x00020061, 0x01050000, 0x00000104, 0x00000000,
-+		0x00000069, 0x02058220, 0x02000024, 0x00000004,
-+		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
-+		0x00030061, 0x04054220, 0x00000000, 0x00000000,
-+		0x00040461, 0x05050220, 0x00000104, 0x00000000,
-+		0x00010361, 0x04050220, 0x00220205, 0x00000000,
-+		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
-+		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x00049031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
- 
- struct iga64_template const iga64_code_read_a64_d32[] = {
- 	{ .gen_ver = 2000, .size = 40, .code = (const uint32_t []) {
-diff --git a/lib/meson.build b/lib/meson.build
-index c903aaa14bc9d5835ddffbddfb1e610d770b0a43..f5419805177f3b87448b4a3c16dae55fa0847595 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -236,30 +236,9 @@ lib_version = vcs_tag(input : 'version.h.in', output : 'version.h',
- 		      command : vcs_command )
- 
- iga64_assembly_sources = [ 'gpgpu_shader.c', 'gpgpu_fill.c' ]
--libiga64_asms = static_library('iga64_asms',
--	iga64_assembly_sources,
--	include_directories: inc,
--	dependencies : lib_deps,
--	c_args : [
--	    '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
--	    '-DIGT_SRCDIR="@0@"'.format(srcdir),
--	    '-DIGT_LOG_DOMAIN="gpu_codes"',
--	    '-ffat-lto-objects' ]
--)
--
--iga64_codes_targets = []
--foreach f: iga64_assembly_sources
--	name = f.underscorify() + '.gen.iga64_codes.c'
--	iga64_codes_targets += custom_target(name,
--		input: [ f + '.gen.iga64_codes.c', libiga64_asms.extract_objects(f) ],
--		output: name,
--		depend_files: [ 'iga64_macros.h', generate_iga64_codes.path() ],
--		command: [ 'env', 'IGT_SRCDIR=@SOURCE_ROOT@', generate_iga64_codes, '-o', '@OUTPUT@', '-i', '@INPUT0@', '@INPUT1@' ],
--		console: true,
--	)
--endforeach
- 
- lib_intermediates = []
-+iga64_assembly_libs = []
- foreach f: lib_sources
-     name = f.underscorify()
-     lib = static_library('igt-' + name,
-@@ -270,12 +249,25 @@ foreach f: lib_sources
- 	    '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
- 	    '-DIGT_SRCDIR="@0@"'.format(srcdir),
- 	    '-DIGT_LOG_DOMAIN="@0@"'.format(f.split('.')[0]),
--	])
-+	] + (iga64_assembly_sources.contains(f) ? [ '-ffat-lto-objects' ] : []))
- 
-     lib_intermediates += lib
-+    if iga64_assembly_sources.contains(f)
-+	iga64_assembly_libs += lib
-+    endif
- endforeach
- 
--lib_intermediates += static_library('iga64_gpu_codes', iga64_codes_targets)
-+iga64_generated_codes = custom_target(
-+    'iga64_generated_codes.c',
-+    input : [ 'iga64_generated_codes.c' ] + iga64_assembly_libs,
-+    output : 'iga64_generated_codes.c',
-+    depend_files : 'iga64_macros.h',
-+    command : [ 'env', 'IGT_SRCDIR=@0@'.format(source_root), generate_iga64_codes, '-o', '@OUTPUT@', '-i', '@INPUT@' ]
-+)
-+
-+lib_intermediates += static_library('igt-iga64_generated_codes.c',
-+			[ iga64_generated_codes, lib_version ]
-+		     )
- 
- lib_igt_build = shared_library('igt',
-     ['dummy.c'],
-diff --git a/scripts/generate_iga64_codes b/scripts/generate_iga64_codes
-index d196c7a016b75a680e38987a1f349fcc6ec934e6..1675ffe639b3bb3228266846ade3ac1f25b55f4f 100755
---- a/scripts/generate_iga64_codes
-+++ b/scripts/generate_iga64_codes
-@@ -29,17 +29,17 @@ while getopts ':i:o:' opt; do
-     case $opt in
-     i) INPUT=$OPTARG;;
-     o) OUTPUT=$OPTARG;;
--    ?) die "Usage: $0 -i pre-generated-iga64-file -o generated-iga64-file obj-with-iga64-assembly [...]"
-+    ?) die "Usage: $0 -i pre-generated-iga64-file -o generated-iga64-file libs-with-iga64-assembly [...]"
-     esac
- done
--OBJ=${@:OPTIND}
-+LIBS=${@:OPTIND}
- 
- # read all assemblies into ASMS array
- ASMS=()
- while  read -d $'\0' asm; do
-     test -z "$asm" && continue
-     ASMS+=( "$asm" )
--done < <(objcopy --dump-section .iga64_assembly=/dev/stdout $OBJ /dev/null)
-+done < <(for f in $LIBS; do objcopy --dump-section .iga64_assembly=/dev/stdout $f.p/*.o /dev/null; done)
- 
- # check if we need to recompile - checksum difference and compiler present
- MD5_ASMS="$(md5sum <<< "$(< $IGT_SRCDIR/lib/iga64_macros.h) ${ASMS[@]}" | cut -b1-32)"
-@@ -47,13 +47,13 @@ MD5_PRE="$(grep -Po '(?<=^#define MD5_SUM_IGA64_ASMS )\S{32,32}' $INPUT 2>/dev/n
- 
- if [ "$MD5_ASMS" = "$MD5_PRE" ]; then
-     echo "iga64 assemblies not changed, reusing pre-compiled file $INPUT."
--    cp -p $INPUT $OUTPUT
-+    cp $INPUT $OUTPUT
-     exit 0
- fi
- 
- type iga64 >/dev/null || {
-     warn "WARNING: iga64 assemblies changed, but iga64 compiler not present, CHANGES will have no effect. Install iga64 (libigc-tools package) to re-compile code."
--    cp -p $INPUT $OUTPUT
-+    cp $INPUT $OUTPUT
-     exit 0
- }
- 
-@@ -67,7 +67,7 @@ for gen in $GEN_VERSIONS; do
-     gen_name="${gen#*:}"
-     iga64 -p=$gen_name -d $WD/empty 2>/dev/null || {
-         warn "WARNING: iga64 assemblies changed, but iga64 compiler does not support platform '$gen_name', CHANGES will have no effect. Update iga64 (libigc-tools package) to re-compile code."
--        cp -p $INPUT $OUTPUT
-+        cp $INPUT $OUTPUT
-         exit 0
-     }
- done
-@@ -127,4 +127,4 @@ for asm in "${ASMS[@]}"; do
-     echo -e "\t{ .gen_ver = $cur_ver, .size = $(dword_count "$cur_code"), .code = (const uint32_t []) {\n$cur_code\n\t}}\n};" >>$OUTPUT
- done
- 
--cp -vp $OUTPUT $INPUT
-+cp $OUTPUT $INPUT
+hmm, quite unexpected
 
----
-base-commit: 62557300fee4509d3adbcdaf4ee402c6e61b846f
-change-id: 20250530-revert_meson-36dce81e0a9a
+<7>[  307.897676] xe 0000:03:00.0: [drm:pf_queue_work_func [xe]]
+                  	ASID: 101
+                  	VFID: 0
+                  	PDATA: 0x0450
+                  	Faulted Address: 0x00007ba9d02b7000
+                  	FaultType: 0
+                  	AccessType: 1
+                  	FaultLevel: 3
+                  	EngineClass: 1 vcs
+                  	EngineInstance: 0
+<7>[  307.898010] xe 0000:03:00.0: [drm:pf_queue_work_func [xe]] Fault
+response: Unsuccessful -22
+<6>[  307.898235] xe 0000:03:00.0: [drm] GT1: reset done
+<7>[  307.898301] xe 0000:03:00.0: [drm:pf_queue_work_func [xe]]
+                  	ASID: 101
+                  	VFID: 0
+                  	PDATA: 0x0451
+                  	Faulted Address: 0x0000793b1cacc000
+                  	FaultType: 0
+                  	AccessType: 0
+                  	FaultLevel: 3
+                  	EngineClass: 1 vcs
+                  	EngineInstance: 2
+<7>[  307.898523] xe 0000:03:00.0: [drm:xe_hw_engine_snapshot_capture
+[xe]] GT1: Proceeding with manual engine snapshot
+<7>[  307.898598] xe 0000:03:00.0: [drm:pf_queue_work_func [xe]] Fault
+response: Unsuccessful -22
+<7>[  307.898620] xe 0000:03:00.0:
+[drm:xe_guc_exec_queue_memory_cat_error_handler [xe]] GT1: Engine memory
+cat error: engine_class=vcs, logical_mask: 0x1, guc_id=2
+<7>[  307.899910] xe 0000:03:00.0:
+[drm:xe_guc_exec_queue_memory_cat_error_handler [xe]] GT1: Engine memory
+cat error: engine_class=vcs, logical_mask: 0x1, guc_id=3
 
-Best regards,
--- 
-Andrzej Hajda <andrzej.hajda@intel.com>
+
+given than the only difference from this patch is the way how we trigger
+the reset, before it was "show" ops:
+
+<6> [207.735904] [IGT] xe_exec_reset: starting subtest parallel-gt-reset
+<6> [207.773630] xe 0000:03:00.0: [drm] GT1: trying reset from
+force_reset_show [xe]
+
+now it's "write" ops:
+
+<6> [307.847469] [IGT] xe_exec_reset: starting subtest parallel-gt-reset
+<6> [307.873879] xe 0000:03:00.0: [drm] GT1: trying reset from
+force_reset_write [xe]
+
+
+> 
+>   * igt@xe_pm@s4-d3hot-basic-exec:
+>     - shard-bmg:          [PASS][3] -> [ABORT][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8384/shard-bmg-6/igt@xe_pm@s4-d3hot-basic-exec.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13211/shard-bmg-6/igt@xe_pm@s4-d3hot-basic-exec.html
+
+unrelated to xe driver
+
+<4> [373.000446] ======================================================
+<4> [373.000460] WARNING: possible circular locking dependency detected
+<4> [373.000475] 6.15.0-xe+ #1 Tainted: G     U           N
+<4> [373.000490] ------------------------------------------------------
+<4> [373.000503] kworker/u64:66/5057 is trying to acquire lock:
+<4> [373.000518] ffffffff838b45a8 (rtnl_mutex){+.+.}-{3:3}, at:
+rtnl_lock+0x17/0x30
+<4> [373.000559]
+but task is already holding lock:
+<4> [373.000572] ffff8881149a3438 (&tp->control){+.+.}-{3:3}, at:
+rtl8152_resume+0x26/0xd0 [r8152]
+<4> [373.000612]
+which lock already depends on the new lock.
+
 
