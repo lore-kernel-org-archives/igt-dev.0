@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC99DC3ABB2
-	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 07:54:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA193C3ABB2
+	for <igt-dev@archiver.kernel.org>; Fri, 30 May 2025 08:40:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4E3F610E7CA;
-	Fri, 30 May 2025 07:54:54 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EKAp9BD3";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9521D10E7EB
- for <igt-dev@lists.freedesktop.org>; Fri, 30 May 2025 07:54:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748591692; x=1780127692;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Winyprb6JEWW7pbxFL9ONtswDj03iUlDtGwiYU7rTXU=;
- b=EKAp9BD3hBvAtIRpLJmDC3O31iFEfLizsL4Hj2yA8VpQ6U3rThLMYL6N
- 6NNUFvm0pG0KdzaA/sacPMT98Q0KpU0FYe6xg6EiDbXqfRwjHO4H7Ey8x
- e7UaCjaYlwAxc+Iv2QRRpiZfUCw2RMjfkU+MArSu4vOxsTRnFwEKVyG6J
- uBolOu7YZe/HJbXzOBCc//5rKrDC11P4A/ubDqlGVH7T5gpyHqRD6me/Z
- wKUaQdEmFd6jUUUyxE3LBQ7XIihdC/uyWKcfMBzsFxEElGw4YQ5x7/fxQ
- dTvBcOnYeW61+uUbrmrBZI2yi6BDOJiJF2wMPlfasIPINVwDcEauV82FO g==;
-X-CSE-ConnectionGUID: 0BYRATwORP2ACYv1eYNBKQ==
-X-CSE-MsgGUID: OXGLiNKyTtuHTJYsRZsffg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="76068452"
-X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; d="scan'208";a="76068452"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2025 00:54:50 -0700
-X-CSE-ConnectionGUID: InF5wa8qQNejPs/0r0Uy7w==
-X-CSE-MsgGUID: E6AQ98KUQayDhEvHiuvyaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; d="scan'208";a="144787239"
-Received: from linux-lunar-lake-client-platform.iind.intel.com
- ([10.190.238.55])
- by fmviesa009.fm.intel.com with ESMTP; 30 May 2025 00:54:48 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: vinod.govindapillai@intel.com,
- Mohammed Thasleem <mohammed.thasleem@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH v4 1/2] lib/igt_debugfs: Add specific checks for WA in GTs
-Date: Fri, 30 May 2025 13:28:10 +0530
-Message-Id: <20250530075811.1033-2-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250530075811.1033-1-mohammed.thasleem@intel.com>
-References: <20250530075811.1033-1-mohammed.thasleem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A55F210E0A9;
+	Fri, 30 May 2025 08:40:14 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A734210E794;
+ Fri, 30 May 2025 08:40:12 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7016314136189629905=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Refine_FBC_test_conditions_?=
+ =?utf-8?q?=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 30 May 2025 08:40:12 -0000
+Message-ID: <174859441267.34389.6045920757046122761@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250530075811.1033-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250530075811.1033-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,93 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This function check the given workaround on available GTs.
+--===============7016314136189629905==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Add discription for return. (Kamil)
-    Rename function to igt_has_intel_wa. (Kamil)
-    Move lib changes to lib/igt_debugfs. (Kamil)
-    Dump the whole wa sysfs file and then search for the wa. (Vinod)
-    Use return true/false directly instead assigning value. (Vinod)
-v3: Updated return type discription and debugfs_fd failure check. (Kamil)
-    Return 0 or 1 instead of true or false. (Kamil)
-v4: Add check for xe device before execution. (Vinod)
+== Series Details ==
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/igt_debugfs.c | 39 +++++++++++++++++++++++++++++++++++++++
- lib/igt_debugfs.h |  1 +
- 2 files changed, 40 insertions(+)
+Series: Refine FBC test conditions (rev3)
+URL   : https://patchwork.freedesktop.org/series/149181/
+State : success
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index 8ac215a76..5444c6f5f 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -44,6 +44,7 @@
- #include "igt_kms.h"
- #include "igt_debugfs.h"
- #include "igt_sysfs.h"
-+#include "xe/xe_query.h"
- 
- /**
-  * SECTION:igt_debugfs
-@@ -770,3 +771,41 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
- 	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
- 	free(contents);
- }
-+
-+/**
-+ * igt_has_intel_wa:
-+ * @drm_fd:	A drm file descriptor
-+ * @check_wa:	Workaround to be checked
-+ *
-+ * Returns:	0 if no WA, 1 if WA present, -1 on error
-+ */
-+int igt_has_intel_wa(int drm_fd, const char *check_wa)
-+{
-+	int debugfs_fd;
-+	unsigned int xe;
-+	char name[PATH_MAX];
-+	char *debugfs_dump, *has_wa;
-+
-+	if (!is_xe_device(drm_fd))
-+		return 0;
-+
-+	debugfs_fd = igt_debugfs_dir(drm_fd);
-+	if (debugfs_fd == -1)
-+		return -1;
-+
-+	xe_for_each_gt(drm_fd, xe) {
-+		sprintf(name, "gt%d/workarounds", xe);
-+		if (!igt_debugfs_exists(drm_fd, name, O_RDONLY))
-+			return -1;
-+
-+		debugfs_dump = igt_sysfs_get(debugfs_fd, name);
-+		if (debugfs_dump != NULL) {
-+			has_wa = strstr(debugfs_dump, check_wa);
-+			free(debugfs_dump);
-+			if (has_wa)
-+				return 1;
-+		}
-+	}
-+
-+	return 0;
-+}
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index f4044d545..6d4c09d2f 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -49,6 +49,7 @@ bool igt_debugfs_search(int fd, const char *filename, const char *substring);
- int igt_debugfs_gt_dir(int device, unsigned int gt);
- int igt_debugfs_gt_open(int device, unsigned int gt, const char *filename,
- 			int mode);
-+int igt_has_intel_wa(int drm_fd, const char *check_wa);
- 
- /**
-  * igt_debugfs_read:
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8385_BAT -> XEIGTPW_13217_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8385 -> IGTPW_13217
+
+  IGTPW_13217: 13217
+  IGT_8385: 8385
+  xe-3164-d94defa5c0a9e9fb29a60bd4ce78bac9018224bc: d94defa5c0a9e9fb29a60bd4ce78bac9018224bc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13217/index.html
+
+--===============7016314136189629905==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Refine FBC test conditions (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149181/">https://patchwork.freedesktop.org/series/149181/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13217/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13217/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8385_BAT -&gt; XEIGTPW_13217_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8385 -&gt; IGTPW_13217</li>
+</ul>
+<p>IGTPW_13217: 13217<br />
+  IGT_8385: 8385<br />
+  xe-3164-d94defa5c0a9e9fb29a60bd4ce78bac9018224bc: d94defa5c0a9e9fb29a60bd4ce78bac9018224bc</p>
+
+</body>
+</html>
+
+--===============7016314136189629905==--
