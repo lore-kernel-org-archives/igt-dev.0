@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FD00C54FB3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 11:08:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA0DC54FB3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 12:03:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 36FEE10E2FC;
-	Mon,  2 Jun 2025 11:08:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A3C810E1C2;
+	Mon,  2 Jun 2025 12:03:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dxTd0GZ6";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JGu0DuQv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DA6610E2FC
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 11:08:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 799C510E1C2
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 12:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748862504; x=1780398504;
+ t=1748865793; x=1780401793;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=tc6wc08tZtN3VZE5VWLJrVyzHsVgnceo8be4CfUO5gE=;
- b=dxTd0GZ6M4rGzxgC7zr/ShGWrp6/yTXbbQxoYAm7olrOWU6QKsYrEwVn
- 5mpelgRlttpu7Qxs7T4OOcy1fdKvhD4xiLi8jibeJvbhURoA+LRMH+rSH
- cmJuT/+ZwPUUBnqhSBCJ4BNw78a64F93SnQfhL5XIn/kS83KolVN/5Q0l
- CL9ZKAOJcubHBYWGAQ4StjStKDLqEstVSfx1Cp3TmHUBOcgp6DcngjRIK
- e8mYWCNeLjHxauKHQl0RoIe2Pgi7sKeJwzQQswxWfUy/TeSAdEuvYsTua
- wELb5YLEhxAI0A36BCcc44W3b1tJ/Q+knRjHDMHkuQoEkGFZB55A+C0PH A==;
-X-CSE-ConnectionGUID: qu7aSfQKRxO6kbLVL27XZg==
-X-CSE-MsgGUID: xAKjeXP9QE2PAVAfWJwLFw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11450"; a="61125950"
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="61125950"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 04:08:20 -0700
-X-CSE-ConnectionGUID: nQEHtotuTHugSF4QIKCr7g==
-X-CSE-MsgGUID: VDORgSOUSMe4z5AqcQgXsw==
+ bh=FiMVvCx8SXkDJBEdUlQ1jZFqCZEJVZUiugf3ETpp51k=;
+ b=JGu0DuQvO6T75C7yo/zkEcZIpCqp06jXuZE6zDyG2LZ8Av5JYViGTIy9
+ V7xhaKSGB6GwDy+3KXWVsS1vnMIriCEtnQ3j/DZH6h1sjRXpBRZpsB1ZW
+ iN5KtSjKJ5lEwyIVMfaSaFZKQo3Ziq3lb+LQGQ5osh5Ilwcjc0XSaT81I
+ zgP5MSg7lryWkNSFbS6zIpsYakq00O3f+qasLGjm6qPlVGCtD+80Ztu4N
+ TkAh4K0DWEmMPXe3ESchDW6HefNM6XuP6A6WJtB8wmSWiQsJdsE+/Hnk0
+ dD1Fu6lxYnj6TItUumBMU0GM6Iv2V3sBwI813hOOAdF2tAQ2UarDiHWNN w==;
+X-CSE-ConnectionGUID: 4n/j6EqzSY6kwuaMqVgSjg==
+X-CSE-MsgGUID: mUuZaAjTQEWanOf+GSSfkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50872666"
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="50872666"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 05:03:11 -0700
+X-CSE-ConnectionGUID: YxYYvEqySsG7gkvI8YcXhg==
+X-CSE-MsgGUID: M07S3oJUSdW+Cdl8B5aspg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="145142063"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 04:08:17 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- badal.nilawar@intel.com, karthik.poosa@intel.com
-Cc: lucas.demarchi@intel.com, soham.purkait@intel.com,
- ashutosh.dixit@intel.com, riana.tauro@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_pm: Test to validate vram-sr through
- Mods during host s2idle
-Date: Mon,  2 Jun 2025 16:33:00 +0530
-Message-Id: <20250602110300.1324145-1-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="149360152"
+Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 05:03:09 -0700
+From: Sk Anirban <sk.anirban@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@intel.com, riana.tauro@intel.com,
+ Sk Anirban <sk.anirban@intel.com>
+Subject: [i-g-t, v8,
+ 0/2] tests/i915/pm_rc6_residency: Use sysfs to achieve peak frequency
+Date: Mon,  2 Jun 2025 17:33:48 +0530
+Message-ID: <20250602120347.62189-4-sk.anirban@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,149 +67,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-    Add test to validate vram-sr through Mods during host s2idle. It checks
-whether vram self refresh capability is supported through debugfs node and
-then introduce host s2idle to check ModS residency to confirm vram self
-refresh capability upon success.
+Leverage IGT spinner to trigger frequency scaling and
+set RPS minimum frequency to RP0 for achieving peak frequency.
+This method replaces the existing waitboost mechanism used
+to reach maximum frequency.
+Restrict the power consumption test to GT0 alone, since we're
+evaluating the power usage for the entire GPU at once.
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
----
- tests/intel/xe_pm.c | 99 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 98 insertions(+), 1 deletion(-)
+v4:
+ - Cosmetic changes (Riana)
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 6eb21d5ec..322b22eb0 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -10,9 +10,10 @@
-  * Sub-category: Suspend-resume tests
-  * Test category: functionality test
-  */
--
-+#include <ctype.h>
- #include <limits.h>
- #include <fcntl.h>
-+#include <stddef.h>
- #include <string.h>
- 
- #include "igt.h"
-@@ -413,6 +414,46 @@ child_exec(void *arguments)
- 	return NULL;
- }
- 
-+static char *read_content_line(const char *content, const char *prefix)
-+{
-+	const char *line_start = content;
-+	char line[1024];
-+	char *result;
-+	size_t len;
-+
-+	while (*line_start) {
-+		const char *line_end = strchr(line_start, '\n');
-+		size_t line_len = line_end ? (size_t)(line_end - line_start) : strlen(line_start);
-+
-+		if (line_len >= sizeof(line))
-+			line_len = sizeof(line) - 1;
-+
-+		memcpy(line, line_start, line_len);
-+		line[line_len] = '\0';
-+
-+		if (strstr(line, prefix)) {
-+			char *colon = strchr(line, ':');
-+
-+			if (colon) {
-+				colon++;
-+				while (isspace((unsigned char)*colon))
-+					colon++;
-+
-+				result = strdup(colon);
-+				len = strlen(result);
-+				if (len > 0 && result[len - 1] == '\n')
-+					result[len - 1] = '\0';
-+
-+				return result;
-+			}
-+		}
-+		line_start = line_end ? line_end + 1 : NULL;
-+		if (!line_start)
-+			break;
-+	}
-+	return NULL;
-+}
-+
- /**
-  * SUBTEST: %s-basic
-  * Description: test CPU/GPU in and out of s/d state from %arg[1]
-@@ -777,6 +818,57 @@ static void test_mocs_suspend_resume(device_t device, enum igt_suspend_state s_s
- 	}
- }
- 
-+/**
-+ * SUBTEST: vrsr-capability-during-host-s2idle
-+ * Functionality: pm - vram-sr
-+ * Description: Test to validate vram self refresh through
-+ * ModS residency counter during host s2idle
-+ */
-+
-+static void test_vrsr_capability_during_host_s2idle(device_t device)
-+{
-+	u32 bo, placement;
-+	u64 s2idle_start_mods, s2idle_end_mods;
-+	int dir, ret;
-+	char buf[4096] = {0};
-+	char *result;
-+	void *map;
-+
-+	dir = igt_debugfs_dir(device.fd_xe);
-+	ret = igt_debugfs_simple_read(dir, "vrsr_capable",
-+				      buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "vrsr_capable node is not present in debugfs.\n");
-+	igt_assert_f(strstr(buf, "true"), "VRSR capability is not supported.");
-+
-+	placement = vram_memory(device.fd_xe, 0);
-+#define XE_BO_SIZE (350 * 1024 * 1024)
-+	bo = xe_bo_create(device.fd_xe, 0, XE_BO_SIZE, placement, 0);
-+	map = xe_bo_map(device.fd_xe, bo, XE_BO_SIZE);
-+	memset(map, 0, XE_BO_SIZE);
-+
-+	ret = igt_debugfs_simple_read(dir, "gtidle/dgfx_pkg_residencies", buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "dgfx_pkg_residencies node is not present in debugfs.\n");
-+
-+#define MODS_PREFIX "ModS"
-+	result = read_content_line(buf, MODS_PREFIX);
-+	igt_assert(result);
-+	s2idle_start_mods = (uint64_t)strtoull(result, NULL, 10);
-+	free(result);
-+
-+	igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
-+	munmap(map, XE_BO_SIZE);
-+	memset(buf, 0, sizeof(buf));
-+	ret = igt_debugfs_simple_read(dir, "gtidle/dgfx_pkg_residencies", buf, sizeof(buf));
-+
-+	result = read_content_line(buf, MODS_PREFIX);
-+	igt_assert(result);
-+
-+	s2idle_end_mods = (uint64_t)strtoull(result, NULL, 10);
-+	free(result);
-+
-+	igt_assert(s2idle_start_mods != s2idle_end_mods);
-+}
-+
- igt_main
- {
- 	device_t device;
-@@ -936,6 +1028,11 @@ igt_main
- 		test_vram_d3cold_threshold(device, sysfs_fd);
- 	}
- 
-+	igt_describe("Validate VRAM self refresh capability during host s2idle");
-+	igt_subtest("vrsr-capability-during-host-s2idle") {
-+		test_vrsr_capability_during_host_s2idle(device);
-+	}
-+
- 	igt_fixture {
- 		close(sysfs_fd);
- 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
+v6:
+ - Fix frequency restoration (Riana)
+
+v7:
+ - Fix variable scope (Riana)
+
+v8:
+ - Fix signal handler (Kamil)
+
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+
+Sk Anirban (2):
+  tests/i915/pm_rc6_residency: Use sysfs to achieve peak frequency
+  HAX: Add rc6-idle tests to fast feedback list
+
+ tests/intel-ci/fast-feedback.testlist |   1 +
+ tests/intel/i915_pm_rc6_residency.c   | 117 +++++++++++++++++---------
+ 2 files changed, 79 insertions(+), 39 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
