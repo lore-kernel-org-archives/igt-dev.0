@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B03C5AD49
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 18:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90117C5AD49
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 19:03:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D10F310E0A8;
-	Mon,  2 Jun 2025 18:54:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3ED7810E580;
+	Mon,  2 Jun 2025 19:03:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JLLd2a60";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Aara1u7D";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11BE610E0A8
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 18:54:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E373B10E57A
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 19:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748890484; x=1780426484;
+ t=1748891028; x=1780427028;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:mime-version;
- bh=5s/ksYxbueEyVmdTfQabtT8JMbMPZ8Z1wmbSGxGBbuI=;
- b=JLLd2a60X/4vNQqQCO7J0ZnpVlcecdcMvYwWLAyKGyx6q+icgC4fk26T
- QmcH45urv7wRU/NayMBEG0Tp87fXM5S+IMn96KJByq/gbda1aJ5o34rkA
- UhStazIYjvGLO2JHz8DxvThr/tp1iBtfP48RLT/qax2g3pRV9U7Rt3rY7
- PjZZAi2ZMGI8Q8ZMY5uGakynjFODudYgVZWrXK7baUIhpebs6ef/uI0wD
- tENtnrlISoHmGviJdZhoiHEtcjbTzC3hEznHp1vufIowpN3lxIUWxvYV3
- ig56CqPVCP2YPcj9bJm2dYT9TtlPTPWlsC/XdNtmI7vzlFJxelGDlEUSs w==;
-X-CSE-ConnectionGUID: LCwMmeGtTY+1+XKbA6W47A==
-X-CSE-MsgGUID: Vmcak1pKT+SJNzd7HsVEbw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="51008678"
-X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; d="scan'208,217";a="51008678"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 11:54:43 -0700
-X-CSE-ConnectionGUID: dsSfcqPPQieU4TslSQ2FIA==
-X-CSE-MsgGUID: LXVX+sm8QYisPRW3kp5/VA==
+ bh=9y/lNqzl0IvxgBdlNz4/yI/K5gWOw+shpbkzaXvQ0q0=;
+ b=Aara1u7DDAiYa4iWwmsGYAjgsNNg4IG0C7t1CMLjE+sQauQKCj4DnZkU
+ yMJwSQK3ejqW9qMG91OPRDCYOyl4g/dvbrsPK6DcgEFUjsJrn1IMMuoj1
+ Hg71r8YwNRAmOnF1z1h+1XZp5sLmPE1cY9i6hGA3K5KquiTv7P0pKSFPI
+ i1qQQBmWb1X2wrzstOemeDF6UMhgFBKg9vxx2iNzrdaX8owYuRfIewi8+
+ h23lRwzAu8poymOX0cg6SSFvw8+r/8zYDJ0AvsGayrA1Szynb+yrC5Pru
+ VdoD7pakED/vvfznHMoyF+ft0LjNQW9XMTvk65uG/5zi7r5hOyRnQTPXS A==;
+X-CSE-ConnectionGUID: ixOrYqjbQ1OWh9gCjHedtw==
+X-CSE-MsgGUID: VrjTTnU6RpOg3e7AEEU8Jg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50827058"
+X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; d="scan'208,217";a="50827058"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 12:03:42 -0700
+X-CSE-ConnectionGUID: Xoow6aruTT2OLTa46hsa9A==
+X-CSE-MsgGUID: VeSmqS4PRYCA0t0KKYyIbg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; 
- d="scan'208,217";a="149393855"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 11:54:42 -0700
+ d="scan'208,217";a="149893945"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 12:03:41 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 2 Jun 2025 11:54:42 -0700
+ 15.2.1544.25; Mon, 2 Jun 2025 12:03:40 -0700
 Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Mon, 2 Jun 2025 11:54:42 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.79) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.2.1544.25 via Frontend Transport; Mon, 2 Jun 2025 12:03:40 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.48)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Mon, 2 Jun 2025 11:54:42 -0700
+ 15.1.2507.55; Mon, 2 Jun 2025 12:03:39 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mIZx1LwbQRgpaxNmqCINCODegSK3sqznzad229y3F2xKilcwZ6Z+pBxE0MP3GRa0N3lKNQTxrHoDxzPpVn9rBv4YArKDGzwNjtHWqYB0UmkNu7ZscrWQxSkIyy0iuMFZ5HHdHgpar2zMPVMHKo2joa5lOwlSRlmB488Vs17gpaosIbNpP60F03+osVo1k/ZXT0UfJvpYOmw6sCJ33z7tNpQrrroobJGfkvGTey+nfWhHiDu6/ElCxDwSx3sF/viAJn8PzOY3TRFzJO5rpLI5z/oSq9NtucqLhDi0k6rhIzxHr+9JbW6okj/AzwujyR8whC99gdy9wfefETmTVJW6dw==
+ b=XbRv3i5CDmFiJQeZazV0nwU1dVr0ATp71Q2IatE/ixWWo3ujA3BNe4HTJyL28qMeLdgwQ/0hwMMGxUNerDHw+nJ5f25o/tKZStxBpirlxfooYy2NNEj0A4tDQbpOFUb0iYxuzVitzrcTKp/tWqqs6GgiKQyLRAHhHmXD0aT6urWwHcq8ah7ycYDh8hL1Yg1tqEIHIc3insX6yBP4PeNGpaNPGVGGFUX99oK6hAefcwHQrD7R8Wo38nTzGcN4MTesDI3qoZKYovkS1w7m8/F86wAfjYSIMJDqeS/+/nNA+FO+Vb7Hmy0yZTvAsapUEA1SBI60vXRclSN7wzMQEdeP4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BVvCAeVoXZ31rU+B4veppnauMkpCMu3T1cfstkKN0VA=;
- b=Qo4ld+nXqRFevYUpeQrAxvDnvXm9wzrtn3ruRnuQv6DoA+oaPyu2LWLgCMZQhVLPvD9pb7cf+aeqLmeipQV1cjeQZ1WxUkosayuq6lO/djVFKZdfjyNLJ7JnuQ7mO1C+GztNUkagQZ+vkGDH8w9W9vmlXNMW6HqH+JxKc3oq+Ga6lQZRuw+0uIk6JGgyAS5QovXv5paMx9Ov9uQLk0BMKHFyNc/id67jqVHi9U+Y8EzkONJT+v5ac5Q4guZdOtAKzEFSPUXwq0Bh9j2WCLwCAhEYA8+rrVybiAXFGG37+0NPIAgj3B1k7Qu1UQh1oMD5AIwUN/y9qSqySK4PgAJOag==
+ bh=9y/lNqzl0IvxgBdlNz4/yI/K5gWOw+shpbkzaXvQ0q0=;
+ b=P0l7/2wYtP9ysPKx/P0toWvGR+8zpwvngOVwpc/fMf94Z39MIKSnh3dgYFlndfYAGALIbaJBw7/rfWLq4tQbhF5buLYqmYcldtXR13YVwJCFqeP0tUttgiECl+XtdWrosRekmWh1GEVpFYdVvjGIWBRLphhKZqvjQfTo5hz730Nl4+rjs3AdH6JZZFnvl4NUMfufP7Tu3NKGyIssYJ+fsqs/iSlWIXX+J6wdaLYxtbEZXVrheT85ILNE5beFomdEJyI7tXGif0GrbNTInhJ1/5kSA+Y02Stl9LmlMf31JfySKutt5+kKat2Ikd+S9heZ8uQ1vTs1Cly5Ur6UZRp30w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from IA0PR11MB7353.namprd11.prod.outlook.com (2603:10b6:208:435::14)
- by PH7PR11MB7431.namprd11.prod.outlook.com (2603:10b6:510:273::16)
+ by PH8PR11MB7990.namprd11.prod.outlook.com (2603:10b6:510:259::6)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.33; Mon, 2 Jun
- 2025 18:54:13 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.30; Mon, 2 Jun
+ 2025 19:03:10 +0000
 Received: from IA0PR11MB7353.namprd11.prod.outlook.com
  ([fe80::f88b:66da:3b8e:9240]) by IA0PR11MB7353.namprd11.prod.outlook.com
  ([fe80::f88b:66da:3b8e:9240%3]) with mapi id 15.20.8769.029; Mon, 2 Jun 2025
- 18:54:12 +0000
+ 19:03:10 +0000
 From: "Badrappan, Jeevaka" <jeevaka.badrappan@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
@@ -80,17 +80,15 @@ CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
  <kamil.konieczny@intel.com>, "markyacoub@google.com" <markyacoub@google.com>, 
  "seanpaul@google.com" <seanpaul@google.com>, "Santa, Carlos"
  <carlos.santa@intel.com>, "Singh, Sapna1" <sapna1.singh@intel.com>
-Subject: Re: [PATCH i-g-t v11 4/7] runner: Include local glib header for
- Android
-Thread-Topic: [PATCH i-g-t v11 4/7] runner: Include local glib header for
- Android
-Thread-Index: AQHb0L0J62f01s5w70mwMqCeQbrNArPrgoqAgAS6Q7c=
-Date: Mon, 2 Jun 2025 18:54:12 +0000
-Message-ID: <IA0PR11MB73535A1B4DD6945AEDE7D5D1ED62A@IA0PR11MB7353.namprd11.prod.outlook.com>
+Subject: Re: [PATCH i-g-t v11 1/7] Add stub for procps and glib
+Thread-Topic: [PATCH i-g-t v11 1/7] Add stub for procps and glib
+Thread-Index: AQHb0L0E/xY8oDvh9ESC0pWK9YdS8bPrfc4AgATARtY=
+Date: Mon, 2 Jun 2025 19:03:10 +0000
+Message-ID: <IA0PR11MB73535C2B916B2E7A07EB905AED62A@IA0PR11MB7353.namprd11.prod.outlook.com>
 References: <20250529171246.74375-1-jeevaka.badrappan@intel.com>
- <20250529171246.74375-5-jeevaka.badrappan@intel.com>
- <20250530183817.ki6oxkiw3qp4mghw@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20250530183817.ki6oxkiw3qp4mghw@kamilkon-DESK.igk.intel.com>
+ <20250529171246.74375-2-jeevaka.badrappan@intel.com>
+ <20250530182120.fm2ph2wp7hyai43e@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20250530182120.fm2ph2wp7hyai43e@kamilkon-DESK.igk.intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -99,84 +97,84 @@ msip_labels:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA0PR11MB7353:EE_|PH7PR11MB7431:EE_
-x-ms-office365-filtering-correlation-id: 1cb09cef-59b3-4ed3-75bc-08dda206dd9f
+x-ms-traffictypediagnostic: IA0PR11MB7353:EE_|PH8PR11MB7990:EE_
+x-ms-office365-filtering-correlation-id: d48d0382-1703-4832-bdca-08dda2081dff
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|38070700018|8096899003; 
-x-microsoft-antispam-message-info: =?iso-8859-2?Q?8t54EcwyESiR1l3VnZ6grvrAvT0DFGd1a+BoTELKsvhUhPgLCSZ8yf549/?=
- =?iso-8859-2?Q?Hu+E0I/PS4MuhzPu3fNlxfNVTCXkw0st31vsLICT+43ZM4fF81vFuBwXtv?=
- =?iso-8859-2?Q?ctcFiGj11emlJc4F3zAx2EBDpbq75XAeXopmJeK2Brbgpm8HTdjDePH/kU?=
- =?iso-8859-2?Q?QmJiJhKOZ13HUV+qTwCGAdwKNBFq61usz08O1rtglrAmpkx6exLmwg3tAc?=
- =?iso-8859-2?Q?O8eNdWs0ywJXHVeu45MI7sWqGSBfp2554ic848NX4+SqrWBhZJyPJeonAP?=
- =?iso-8859-2?Q?SVOAoeiIABXaG+5tAoXhSWv1tsVDSAnfwJFpRvstVkuiYUbjpmEB9faizY?=
- =?iso-8859-2?Q?eX4ZNcu9SPplPnv9FL7J6+o6VTnpd9Wh2k/sAmIoNMY96uAu8sY3w00YH8?=
- =?iso-8859-2?Q?0xCWR449JP1ipq381ys0usXZADqFA5/hj4neEhuxXeVMjoxfOe7fQc1dXa?=
- =?iso-8859-2?Q?CfdvwEja8Qad2OlQFk5N+MDWiDu/tmX/kBmkzjQvs+w7IdeVj2FiUSWi35?=
- =?iso-8859-2?Q?CuMRJA5eKtQyIlGz1WphH6kqgBafI+qp2Iw5hC39b4Td6xeuG1DwMQJFj+?=
- =?iso-8859-2?Q?r7g9L4YWqTxsDxQRshBGtySUzXSMIuYZGsW/xQflg7Ib2dZoZPqnMY78tE?=
- =?iso-8859-2?Q?+9ER8sDoyRQ7F4XW+RvZ3Qm+ENLfdaNuKQVd3z2vkE/gECOnEKbs1/ZLk7?=
- =?iso-8859-2?Q?NL9u6GUpNQUjqtO5brkek+xd3S73NKzfEY20j+L4p40xOeAW1N6pm/YwSg?=
- =?iso-8859-2?Q?7AuFlsHAwloCwc79SMUFk+5rP+ruoMu4COhZzCsKziv/Ej7yyh3PSorNPj?=
- =?iso-8859-2?Q?DLMs9kUh+0zs2o4BExfrV4P863hRMeqHpoi0+e5gfj35c9oRJn3R5KGm6/?=
- =?iso-8859-2?Q?ZgTps3XgvUcAJPkApO+lzbp+Im/rKK/x1lRQa0CSALMxziucPnA63qjB6E?=
- =?iso-8859-2?Q?UJmAPy81L/VEA64M79XV/kQP/moWD40zjOORa5+g3b/QyjxdvByENUSCAX?=
- =?iso-8859-2?Q?PG+jtywv2Dwk+Wn5g7NaJ0u3gJ59iplbJ5hahgTal+1j46025+2Vb4UrdI?=
- =?iso-8859-2?Q?ImV2vCdLktUJzhEem/Ik5/ZQwf/xpmiDw2k+bsS5Tjp9oN6USHHig1PJWg?=
- =?iso-8859-2?Q?Q0QLD8Grdn5kw8lOyjdb30GvtyHQw9+5AFdGOeWbhECNrsT/+e6e/OGTs4?=
- =?iso-8859-2?Q?e6PWvCBTT6dVvpUCN84/NfzKiaejFZVGMMrcpcRPDgut+NOFcQP0vgId0D?=
- =?iso-8859-2?Q?3nJxPRM1iPxaF+T+kNv1uyz3GSUhGvxe088oSPTO8qw3mdlEFExOLkpvdI?=
- =?iso-8859-2?Q?WYNa5o50+1o/Z2nEnRJDiH05XSd8m50Uijx+GXO/n1OzNavr+ToXYhz1mr?=
- =?iso-8859-2?Q?WgzleVPXrQdFlJbPb3aBhVnaLTJTlU7bWHuaed1REFaQ//MkJjdHiPQi1x?=
- =?iso-8859-2?Q?SaLvAeV9VjpzqMTVmnyyJqf84TkN/k/8A2CenhpAs2aSDXiidTqcAz+qFb?=
- =?iso-8859-2?Q?qtSgsTsh7w2rAXGvWEXHOcAM6aVtGWOQ+AHSb+sw6wTgyql/rXhm2tDclA?=
- =?iso-8859-2?Q?58pulQ0=3D?=
+ ARA:13230040|1800799024|376014|366016|8096899003|38070700018; 
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?J7IkC/GB6OP6m7JZE6kNefGBnJrNuwAnmdIQVIlLxISYZt+7KFe1Gjr8WC?=
+ =?iso-8859-1?Q?CRhw4hYRdP97dz6ZLFAIiSvHZGz6yyC5iT422TiNBm0fVf7xAEPtQ9fbVf?=
+ =?iso-8859-1?Q?EAKaA0ia64PKtKvCCFpLxVlX9O/zuH40fb/WXi3UXcv5gQiA8PrOhdBEgz?=
+ =?iso-8859-1?Q?uDZAkW+NMZ0a6th1QealAV0kULFgSKQk25PJPxJ4fgLXKYTm8hTF8PNQXJ?=
+ =?iso-8859-1?Q?SYAsBjhPGNobvEU8xiiL+j1PuAI6Njoby7EXb3brhcXzHwCK4OofVXEnv7?=
+ =?iso-8859-1?Q?JSgZyFHzkScUHcx0rqlb6Qp1KQaKQxhyQvsPz61KSh/6/VHafNqOauovCt?=
+ =?iso-8859-1?Q?l36S4ANMKsPdILPV6WklJoxm9yEMcGB7HZ7gEDu07Y8jIYOnyNdrRQEAVQ?=
+ =?iso-8859-1?Q?6Crn6eBRBnGBTNOwdZMCCLG7XoL3uGQi/7UbOhts8tvbbPmaAB+/a8gcrU?=
+ =?iso-8859-1?Q?Wyq9RGR4s627EfeTxspneYx290KwtGRZqHndOxge72L2kP58iyjxBxZlZK?=
+ =?iso-8859-1?Q?/625LUeASgBYVtCaJV6EJfjA5JwOqb2e1FKsYka9owDXq7A0JX3WS6A5UR?=
+ =?iso-8859-1?Q?Nx6WkzzccDvq9b/0gcpohYtXoyfOZlHs1vpGau7RLdmbKt78UYKqav34Tf?=
+ =?iso-8859-1?Q?RIyTO1C37EUvUJphT+1/Wy2aW1FBtJG65T1A/SU3pFJHx6Tvi978DqhE3f?=
+ =?iso-8859-1?Q?zNKP8JtYGDqVWf4DMJt72YrUFe4+NpUhAl67iBoOVPO0I9Oy1BCqlPuc3s?=
+ =?iso-8859-1?Q?9153MwM6v1VlSlVYrQAzDm3bsjtnmbfhOTDI20MF959nrY7X6jEEQxE15D?=
+ =?iso-8859-1?Q?fCJ/46/kc0nZ/NXL/BChevHXiMkQOTyDkUN+F/nTH0TxQa5i9Z7Fy+zVzt?=
+ =?iso-8859-1?Q?x48JK4u1HZoWDcwZvnvnIhAl9/pPUl454UKKAN6bNgnTUCXFoEtWtcFaYX?=
+ =?iso-8859-1?Q?weP319bPGFN+MkR+rySJUmz5LbJtxkA8lNg16dlAPuwM5U5ES8xaPSYIqv?=
+ =?iso-8859-1?Q?3tEUcu3Rv7TsJdlWUSpO89SB5iwJejVOnz13I/cxeaV4/VaNgShYwptlzU?=
+ =?iso-8859-1?Q?tQt0WfpTHCYsZovwXgHLrDSueQT99ASRmFPu9KWY1k9hJjphlPr70BGZQ/?=
+ =?iso-8859-1?Q?TkVhN7eiN6JSi7RRdEk4TbhO3iIwdOJU9Q/fH5pG2diwuBozjc3a/j014Z?=
+ =?iso-8859-1?Q?+KpVhU7B/p0xTm4Bx25op7X0j8Jb6e3/6KebRWt8Lqrx+BHygGE1Rvd5LJ?=
+ =?iso-8859-1?Q?thaxbTGXgMzOs1h5ML558wg1dGJnu1PBilLF3q77mq1vkqI9p75B4lISpJ?=
+ =?iso-8859-1?Q?WT11AnQT4FS3JJPPji18jtcbmHIgUIXL25AGXN+6TMLC0S+jfvgIa+ujeO?=
+ =?iso-8859-1?Q?/HYECdHaGmgR83TMZ29uFHxkqiT3oJwJh5cJsIAgsxjGTlSPiRMEgKWKRN?=
+ =?iso-8859-1?Q?CuW3CMzg2V4rFt52riThG0s901su75A47sXgn3HfVrvy5w2TzEqSuANJz1?=
+ =?iso-8859-1?Q?snw+ngfHjLTzbK9NB78MCbuNdbYY4fo/5/ug9n0YudNVwhcKqGDkGkltbo?=
+ =?iso-8859-1?Q?82Jd0S8=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA0PR11MB7353.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(38070700018)(8096899003); DIR:OUT;
+ SFS:(13230040)(1800799024)(376014)(366016)(8096899003)(38070700018); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?ZeuSBabrbO++gTZLqdIr8tGPfOQfbr3l4hXW0aPL8kwEJuvDk3x7yZ4ecb?=
- =?iso-8859-2?Q?3TpIGJiblQ1oHkaSe8yYPKdfMVhgWQihKFgjApAN8skneYlicSA+iwrD+J?=
- =?iso-8859-2?Q?4OEuxza/mMpTOeaCxzML0ZILmyRzTKp5N5mcltcKeEwB+Jy7E0UwC+O8xf?=
- =?iso-8859-2?Q?ZYuLfEV88TDWgy70iXbCH/5VSqfQP2ErB41OLM0+BAF5mGyEnOTZpmcJZr?=
- =?iso-8859-2?Q?2SggfgcvnczOseonjefx2gZ+NdrgFDTmLtLmjspWmh3i2+Q1lbXyZZG4t+?=
- =?iso-8859-2?Q?MdKfI2lXX7/8yjb0KIXODwneCO8/fYhraMJ67rk6cg+EuJEAvKx5aP9GPe?=
- =?iso-8859-2?Q?erkL+MPQLxQ6J1VaEzR9brg9ykUDH7i4ucGYOtnJtriwP5gFfFaP+3Wk1w?=
- =?iso-8859-2?Q?jhPYWf+6E0fqnQfWuWxJ0vQz+9TZsNU+rWIaLw+RFXV8AfE/+B/fxKRM5m?=
- =?iso-8859-2?Q?BX/obX8M3fo6Mo/u52m7dBpwULSaXtC6ixTr7TlTwcRtUktrdSloqWyHKp?=
- =?iso-8859-2?Q?FGo2AxOPJOY40MX4BJM6/3izd6oBj3HhJw+mO8Slu5dRw3a1SuJM15lHPf?=
- =?iso-8859-2?Q?7yB6JV1y7exc2QRzImpjG1+yZF/Qr0ydRCuPlSMgKGz8342xswSj3K9Gg6?=
- =?iso-8859-2?Q?eIXVpsPbTibOZZkVebJGP30tI6caZ2OIHnYNu9RSQziRem9RcQbHrlvYG/?=
- =?iso-8859-2?Q?f1/wv5ihLLqsvOkJnAZodJoNQrcSx7NTPruc990NgatbQWdii1JgEQwffy?=
- =?iso-8859-2?Q?cHEkyFdLfioIC6VovH+mVExp7Bd7ZglU63cmTRYznv8KdCYuKL6v/7vt74?=
- =?iso-8859-2?Q?gf4Y68y9Mwv8mXkXbt8c7FTxbe6+OLi/FZSdlynSMZtSTxJOEqKkTB7/ov?=
- =?iso-8859-2?Q?yFRhlX0ZFUGOuwDaTAlfCM8m4RAm08lpZJZkUlkmeO9lhwe1TD19dCMhQR?=
- =?iso-8859-2?Q?Z7dzHu/Mys5DXpAdKZomBh8+N+b0LrCk+CjwwQpeyPAYnF80VpgZuNRboF?=
- =?iso-8859-2?Q?qh305NmOlMC+wFU2k5332Ro28T1iojNo1mDLN4E9yH47QvJ0/qdy3xaIkG?=
- =?iso-8859-2?Q?piExhhH7Bwr/Ko1fFIFvqL5hXcnmel3jyIIjrNsPgLjt9AwihXskMwWXdz?=
- =?iso-8859-2?Q?o6OOFEWGpJ0XrjqUfgdlMolY9k7QJ0oYzLcEpE976Ws94BDoyVPhTJPJTC?=
- =?iso-8859-2?Q?nEZ75mLKO5NnExFiMz6/uxemStUquZWVguT4KCMTOdur+4aPqiIvpMyXOM?=
- =?iso-8859-2?Q?uGo369T9F1to2aJ3VUzpYNhhljbveLgJZf3IN8zD2eaPFL3THg/ql3SVg2?=
- =?iso-8859-2?Q?rBW4SVCUMqJ0IN5edA4OUsPSsnPCRY+vEVmUNKMBxWxIpI6sBSHoZvyQDg?=
- =?iso-8859-2?Q?X2kCT7xBlLwx/ZRRw6QQ80+YkA0waR789MCWDCA119gBaXM3UsMMrGK4A8?=
- =?iso-8859-2?Q?BGWNDOMCbg7aWLAAeiEasEKf2VXBNFw3wkYLnAel1HnD2n/UUHJKv+YwHj?=
- =?iso-8859-2?Q?PHTt25xg8WneONbFl8O1PvpGJ2aWkfOzO7s+BdjnLEEwcJpmG1NVBy1e1b?=
- =?iso-8859-2?Q?u1J5PJd1tkpISFySy59KtelWz3GOPUYNhVxcdBmNdYVQAyUx/1IGF0Sz0A?=
- =?iso-8859-2?Q?p0yoANjIAc4vUu0Xz9sfUzAZ6vv7pJV3NP?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Kd9nwQlb6nV6PkqU17C8pzg1dPBO9OGQ/OwihJ5BUDGkoJkBxBegBwZmEe?=
+ =?iso-8859-1?Q?SlgtdZQsH7ZEsXot4Yek4luZKgAs/tc8Dchzf/8lXNBicKKCQwCA0lLsiH?=
+ =?iso-8859-1?Q?A+rneG51MmnOenk+d7Ef3mUYHrF85nePlVvn/JPqxmeZMHlrHqvKiPgPj7?=
+ =?iso-8859-1?Q?h31nYRpHQmSZbSrJjsQD/XLt8/yaL94aG/B++xtcUufOIw7E/z1rsAThAV?=
+ =?iso-8859-1?Q?aXW2EXCrP3rr1zKm4nKyR6bXM1b4wW7iww0X1WX9yS3/8Y8YJw4/4ny2Ne?=
+ =?iso-8859-1?Q?9U0IzIzBfqfFtHnWAUvC2KA9jVznbzu59XSYIitBt+ddbYXvRuBzHQU+Qt?=
+ =?iso-8859-1?Q?QQd37SgIhvxDnm2Ab4aAnmZBFwMHl2L5bXBSLdBzGVo6KDVW9gWUrcF4mk?=
+ =?iso-8859-1?Q?gwGpeAFvTbLgn/ToFum865bU85C4mECzBHJzCfyhw8ighSELSmXIaKFz8Y?=
+ =?iso-8859-1?Q?rkNjfyduZaxlGkVx3hq/d1L3draDQy2TAoMapglpYigdMCAtYLZjUF1aV8?=
+ =?iso-8859-1?Q?63oVxtO5z1mVaLSZirWe1VAaqwXR0SmLx7/kPrLpfptHUofOgKxPUKId4w?=
+ =?iso-8859-1?Q?GhHXSDrOABOKi1mBhw7fFTPWO9o6DxcK57Hw+97YaVdxCAHMxUJuF6OxCW?=
+ =?iso-8859-1?Q?9EejVgFS6sjsRqxqKo6X7aV50zYDnQj4L2VOvH18gPQ9p/NiOjt/9GMctX?=
+ =?iso-8859-1?Q?5YilxBFn8xCbVaEFGLFad1inY/Vq0aQd/KPQzIUZgzWYH8kWPN0ux7VQsB?=
+ =?iso-8859-1?Q?BtWpLF6hbfJ7T9wqqXTqmU/cs7oR8VqQEpTzTTjz9azT9nDV8grn5a4Cqm?=
+ =?iso-8859-1?Q?ZmrABWAJcyGuuVHHJhaBYiT0yLsMB6PnRyCudxVOtwRrKSCi6L4JYUUzLK?=
+ =?iso-8859-1?Q?PasJ13xdJolS6/zzoPl6rH1qHSv8SnwBSdep4rizcJOaMDgkxUsiPmPYlL?=
+ =?iso-8859-1?Q?0tsLZcdbFDYKHPZqldGo1ZJDS2pJl4pVcUJyf24cxo3sFiQlTuk8DEB/Ez?=
+ =?iso-8859-1?Q?v3EqVuISb4ff33Dtzw62SKLcKmNUM4JDCsVlwc6xOQF98fFZRcg5MQMKkH?=
+ =?iso-8859-1?Q?ZYt2nqBmcxMRBqsoFciK0uyNYsJuwP8rNeVvPlu7gcE9c0K3w532yf+t4O?=
+ =?iso-8859-1?Q?rqo+IwrCHSbwB8qLkQArj74A5CMpcrL20LeBCltLgMN6Um1ha5tAaja/Dg?=
+ =?iso-8859-1?Q?wD+1o5ut+qqerjXg78CGCU36q0LvFLBZKJQykFVSfLkYVzAztykGVgvxKC?=
+ =?iso-8859-1?Q?CQJiZ8mVSyWezcp2WExTc5QgqtwXrvoiDqoNfEz1isNHHlvUAYTIOk0wgB?=
+ =?iso-8859-1?Q?eoZzjIHYLoZZ6G/rzA3aPTVt+Y380J/E/FMiD7fmMNps0TdEqfpe+vXts2?=
+ =?iso-8859-1?Q?TEIl8ijOYvmBHTA2XrQxlLd37tjMhQR+374DXJWW6IYeOkkUBSLDvTkKvF?=
+ =?iso-8859-1?Q?PrbQIjZMqYN7I6f453vQX50+rw0avmjcUtqufGOYxeEkSweqq8uiFg5FX1?=
+ =?iso-8859-1?Q?ommx29PV2Se/3RvQHVApY4xVzIpVDcy6BI8h+HeCg3eGWGcR1SOkDM5nrU?=
+ =?iso-8859-1?Q?Uoj3Zv5gs0YJexNuJkrqCZVuh1VENNS9ct4s7twn0LpuxP1stnY1ZzEzlN?=
+ =?iso-8859-1?Q?XDWFprDQBbX8Spfhiy8t0KyIQ/KILkAsES?=
 Content-Type: multipart/alternative;
- boundary="_000_IA0PR11MB73535A1B4DD6945AEDE7D5D1ED62AIA0PR11MB7353namp_"
+ boundary="_000_IA0PR11MB73535C2B916B2E7A07EB905AED62AIA0PR11MB7353namp_"
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7353.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1cb09cef-59b3-4ed3-75bc-08dda206dd9f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2025 18:54:12.8000 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d48d0382-1703-4832-bdca-08dda2081dff
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2025 19:03:10.2882 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OPJeA0WNxRpe55xyarH2S9c7NxNwVkjIYBc3x/f1GIJ54tU9avJUrEyDUMOyd6gNMobDFS4dcuV8h/sN+e9s/VulOEU0v/InXfEdyyIZPOw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7431
+X-MS-Exchange-CrossTenant-userprincipalname: k2n1ZjaWMGK9yvjNRJ/cWC9k7tHBZCuAca1asqlznaJb44dIuQFjp/YiZOLEED1kw8qwHZhWUKiMB9ksOWW23Wbg5oDigL0vHmqmdMBh2rQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7990
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -193,138 +191,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---_000_IA0PR11MB73535A1B4DD6945AEDE7D5D1ED62AIA0PR11MB7353namp_
-Content-Type: text/plain; charset="iso-8859-2"
+--_000_IA0PR11MB73535C2B916B2E7A07EB905AED62AIA0PR11MB7353namp_
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-> As glib is not available in Android, added local stub header to build
-> igt for Android.
->
-> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-> Acked-by: Zbigniew Kempczy=F1ski <zbigniew.kempczynski@intel.com>
-> ---
->  runner/executor.c | 4 ++++
->  runner/settings.h | 4 ++++
->  2 files changed, 8 insertions(+)
+Hi Kamil,
 
-> Should you also add some NULL handling there?
-For glib stub functions g_key_file_get_string, NULL handling is already in =
-place.
+> +static inline void g_clear_error(GError **error) { }
+> +static inline void g_error_free(GError *error) { }
+> +static inline const char *g_get_home_dir(void) { return "/data/local/tmp=
+/igt"; }
+
+> I am not sure here, imho this should be some user related path
+> or path where igt binaries are installed, if you are ok with
+> this it could stay.
+
+As igt is only used for testing(not part of final builds), it can be part o=
+f igt config folder
+like /data/vendor/igt or /vendor/etc but for now would like to continue wit=
+h
+/data/local/tmp/igt.
 
 Regards,
 Jeevaka
 
->
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 41f521e56..784d9eb5f 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -1,7 +1,11 @@
->  #include <ctype.h>
->  #include <errno.h>
->  #include <fcntl.h>
-> +#ifdef ANDROID
-> +#include "android/glib.h"
-> +#else
->  #include <glib.h>
-> +#endif
->  #ifdef __linux__
->  #include <linux/watchdog.h>
->  #endif
-> diff --git a/runner/settings.h b/runner/settings.h
-> index 1f0b85318..ccdc7281b 100644
-> --- a/runner/settings.h
-> +++ b/runner/settings.h
-> @@ -5,7 +5,11 @@
->  #include <stddef.h>
->  #include <sys/types.h>
->  #include <stdio.h>
-> +#ifdef ANDROID
-> +#include "android/glib.h"
-> +#else
->  #include <glib.h>
-> +#endif
->
->  #include "igt_list.h"
->  #include "igt_vec.h"
-> --
-> 2.49.0
->
-
---_000_IA0PR11MB73535A1B4DD6945AEDE7D5D1ED62AIA0PR11MB7353namp_
-Content-Type: text/html; charset="iso-8859-2"
+--_000_IA0PR11MB73535C2B916B2E7A07EB905AED62AIA0PR11MB7353namp_
+Content-Type: text/html; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
 <html>
 <head>
 <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-2">
+1">
 <style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
 ttom:0;} </style>
 </head>
 <body dir=3D"ltr">
-<div class=3D"elementToProof" style=3D"font-family: Calibri, Arial, Helveti=
-ca, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">
-&gt; As glib is not available in Android, added local stub header to build<=
-br>
-&gt; igt for Android.<br>
-&gt;<br>
-&gt; Signed-off-by: Jeevaka Prabu Badrappan &lt;jeevaka.badrappan@intel.com=
-&gt;<br>
-&gt; Acked-by: Zbigniew Kempczy=F1ski &lt;zbigniew.kempczynski@intel.com&gt=
-;<br>
-&gt; ---<br>
-&gt;&nbsp; runner/executor.c | 4 ++++<br>
-&gt;&nbsp; runner/settings.h | 4 ++++<br>
-&gt;&nbsp; 2 files changed, 8 insertions(+)<br>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+Hi Kamil,</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
 <br>
-&gt; Should you also add some NULL handling there?<br>
-For glib stub functions g_key_file_get_string, NULL handling is already in =
-place.</div>
-<div class=3D"elementToProof" style=3D"font-family: Calibri, Arial, Helveti=
-ca, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">
+&gt; +static inline void g_clear_error(GError **error) { }<br>
+&gt; +static inline void g_error_free(GError *error) { }<br>
+&gt; +static inline const char *g_get_home_dir(void) { return &quot;/data/l=
+ocal/tmp/igt&quot;; }<br>
 <br>
-Regards,<br>
-Jeevaka<br>
+&gt; I am not sure here, imho this should be some user related path<br>
+&gt; or path where igt binaries are installed, if you are ok with<br>
+&gt; this it could stay.</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
 <br>
-&gt;<br>
-&gt; diff --git a/runner/executor.c b/runner/executor.c<br>
-&gt; index 41f521e56..784d9eb5f 100644<br>
-&gt; --- a/runner/executor.c<br>
-&gt; +++ b/runner/executor.c<br>
-&gt; @@ -1,7 +1,11 @@<br>
-&gt;&nbsp; #include &lt;ctype.h&gt;<br>
-&gt;&nbsp; #include &lt;errno.h&gt;<br>
-&gt;&nbsp; #include &lt;fcntl.h&gt;<br>
-&gt; +#ifdef ANDROID<br>
-&gt; +#include &quot;android/glib.h&quot;<br>
-&gt; +#else<br>
-&gt;&nbsp; #include &lt;glib.h&gt;<br>
-&gt; +#endif<br>
-&gt;&nbsp; #ifdef __linux__<br>
-&gt;&nbsp; #include &lt;linux/watchdog.h&gt;<br>
-&gt;&nbsp; #endif<br>
-&gt; diff --git a/runner/settings.h b/runner/settings.h<br>
-&gt; index 1f0b85318..ccdc7281b 100644<br>
-&gt; --- a/runner/settings.h<br>
-&gt; +++ b/runner/settings.h<br>
-&gt; @@ -5,7 +5,11 @@<br>
-&gt;&nbsp; #include &lt;stddef.h&gt;<br>
-&gt;&nbsp; #include &lt;sys/types.h&gt;<br>
-&gt;&nbsp; #include &lt;stdio.h&gt;<br>
-&gt; +#ifdef ANDROID<br>
-&gt; +#include &quot;android/glib.h&quot;<br>
-&gt; +#else<br>
-&gt;&nbsp; #include &lt;glib.h&gt;<br>
-&gt; +#endif<br>
-&gt;&nbsp;<br>
-&gt;&nbsp; #include &quot;igt_list.h&quot;<br>
-&gt;&nbsp; #include &quot;igt_vec.h&quot;<br>
-&gt; --<br>
-&gt; 2.49.0<br>
-&gt;<br>
 </div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+As igt is only used for testing(not part of final builds), it can be part o=
+f igt config folder</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+like /data/vendor/igt or /vendor/etc but for now would like to continue wit=
+h</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+/data/local/tmp/igt.&nbsp;<br>
+<br>
+Regards,</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+Jeevaka<br>
+</div>
+<div id=3D"appendonsend"></div>
 </body>
 </html>
 
---_000_IA0PR11MB73535A1B4DD6945AEDE7D5D1ED62AIA0PR11MB7353namp_--
+--_000_IA0PR11MB73535C2B916B2E7A07EB905AED62AIA0PR11MB7353namp_--
