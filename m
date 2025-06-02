@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A26C54FB3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 14:51:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3807C54FB3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 15:08:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59F7110E54A;
-	Mon,  2 Jun 2025 14:51:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A8AB010E2A9;
+	Mon,  2 Jun 2025 15:07:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QjVZuaBl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TtznAKRA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5636D10E54A
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 14:51:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F50C10E2A9
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 15:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748875917; x=1780411917;
+ t=1748876873; x=1780412873;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=1mfmkhQ1Ou4YMuH00MlrTQwvp2xvt7bAVWdUMvPCfX4=;
- b=QjVZuaBl6yJwjGUdfCaTbcd5afBdMBYsu0Me4f/+q8cU1QpYvPiDZU26
- y36JX8yD3ml9Vlu/1Xld9rgx7S3WABLgFLY5cqzrTd5LU4KOC853FUOYw
- YWnOx6F4dbGrfFb62zIlISwA6JcIxkBN8IfoxkEsVN5T49b2HlpOqdNpy
- gsNENBgbnHyIYsC+XRiO8HugeTeIHzzNn55XC/3XtmxOECYwFYTp3xTwj
- KSFCTo0mgsnPH6/fe7FY8kKDO8zpNzCyXvQx/Yn/T7/oYolRk9JtJyKZf
- 2QdOsLzsmgQYne7d7Zsia9+X3Ut28ekm2bQ7K3GumBdyd8eTOQEOJ4CB8 g==;
-X-CSE-ConnectionGUID: cHj2x6mkSyGZtd6qVcwmVg==
-X-CSE-MsgGUID: vAqibh8NRIi5rSMrAQK3kA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="68311365"
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="68311365"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 07:51:56 -0700
-X-CSE-ConnectionGUID: ufeX/o08QhKvIjxi0v0HOQ==
-X-CSE-MsgGUID: ZlXChNzjSxy42tiso+0JNA==
+ bh=RW/Czv8mQTfS9bq/O92snN4B7DuAoCk9MPQ17g18NTY=;
+ b=TtznAKRAfULrPyJ3PrbLLWC++WJadtJQH4eByaNk3zndgFcdTo6pTODD
+ peP7s+GS0TD0BLg0yp8DhQV+TyGoP6uUWmuK4JqXKVfAvuOPiffdoVv2+
+ nRm7oBIwaeKY88YVQCIc4IZCNBx/7XQY3qhX8zIczbai7cKzXCEakm762
+ 36duRkxDiYGw9QFxZA7v8KNKbch8uT/DBFiS609gFDPn0iA0HFWMt1bxP
+ zIDHF4TdqUGzq45ooIaGNhp7AeZHytyI6FihpUtV/LuHrhNtiUwSzgZuS
+ l04UNIe5r1wS9k+gjaioj5hZoDyTTX52ssWgnEHs6Io+ETZK9eM56iD+K A==;
+X-CSE-ConnectionGUID: egH2CF3vTVy4a+v/wADIxw==
+X-CSE-MsgGUID: jLc/IGreRl2oVJ2mIk8JTw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50587247"
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="50587247"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 08:07:52 -0700
+X-CSE-ConnectionGUID: aqRgBkTLRIyx/7ycKsAJ/A==
+X-CSE-MsgGUID: ynAnUQywQYKExplcb5a5ww==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="167729836"
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="145511092"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 07:51:54 -0700
-Date: Mon, 2 Jun 2025 16:51:35 +0200
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 08:07:51 -0700
+Date: Mon, 2 Jun 2025 17:07:48 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Alex Zuo <alex.zuo@intel.com>,
- Zongyao Bai <zongyao.bai@intel.com>
-Subject: Re: [PATCH] tests/intel/xe_vm: Fix assertion of batch buffer size
-Message-ID: <20250602145135.xilpwv62v4dft4eu@kamilkon-DESK.igk.intel.com>
+To: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v2 1/3] lib/xe_gt: Move reset related function to
+ xe_gt.c
+Message-ID: <20250602150748.etrtjvepvcpjxzqt@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Shuicheng Lin <shuicheng.lin@intel.com>,
- igt-dev@lists.freedesktop.org, Alex Zuo <alex.zuo@intel.com>,
- Zongyao Bai <zongyao.bai@intel.com>
-References: <20250530001844.703844-1-shuicheng.lin@intel.com>
+ Michal Wajdeczko <michal.wajdeczko@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250528212618.373-2-michal.wajdeczko@intel.com>
+ <20250529131127.417-1-michal.wajdeczko@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250530001844.703844-1-shuicheng.lin@intel.com>
+In-Reply-To: <20250529131127.417-1-michal.wajdeczko@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,92 +72,170 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Shuicheng,
-On 2025-05-30 at 00:18:44 +0000, Shuicheng Lin wrote:
-> The batch buffer pointer is data not data[i]. Correct it in the assertion.
+Hi Michal,
+On 2025-05-29 at 15:11:27 +0200, Michal Wajdeczko wrote:
+> Those helper functions are per GT and related query function is
+> already there. While around add simple documentation.
+> 
+> Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-imho s/the assertion/assertions/
-
-This could be changed at merge,
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> Fix a word typo error.
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Alex Zuo <alex.zuo@intel.com>
-> Cc: Zongyao Bai <zongyao.bai@intel.com>
-> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 > ---
->  tests/intel/xe_vm.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+> v2: update also tests/intel/xe_eudebug_online.c (CI)
+> ---
+>  lib/xe/xe_gt.c                  | 39 +++++++++++++++++++++++++++++++++
+>  lib/xe/xe_gt.h                  |  3 +++
+>  lib/xe/xe_ioctl.c               | 23 -------------------
+>  lib/xe/xe_ioctl.h               |  2 --
+>  lib/xe/xe_legacy.c              |  1 +
+>  tests/intel/xe_eudebug_online.c |  1 +
+>  tests/intel/xe_wedged.c         |  1 +
+>  7 files changed, 45 insertions(+), 25 deletions(-)
 > 
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index b5bba7b7e..94cca13ba 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -1719,7 +1719,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
->  	addr = base_addr;
+> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+> index a1e080b88..8bceca10d 100644
+> --- a/lib/xe/xe_gt.c
+> +++ b/lib/xe/xe_gt.c
+> @@ -57,6 +57,45 @@ bool has_xe_gt_reset(int fd)
+>  	return 1;
+>  }
 >  
->  	/*
-> -	 * Kick a thread to write the first page continously to ensure we can't
-> +	 * Kick a thread to write the first page continuously to ensure we can't
->  	 * cause a fault if a rebind occurs during munmap style VM unbind
->  	 * (partial VMAs unbound).
->  	 */
-> @@ -1750,7 +1750,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
->  		data->batch[b++] = sdi_addr >> 32;
->  		data->batch[b++] = 0xc0ffee;
->  		data->batch[b++] = MI_BATCH_BUFFER_END;
-> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+> +static void xe_force_gt_reset(int fd, int gt, bool sync)
+> +{
+> +	char reset_string[128];
+> +	struct stat st;
+> +
+> +	igt_assert_eq(fstat(fd, &st), 0);
+> +
+> +	snprintf(reset_string, sizeof(reset_string),
+> +		 "cat /sys/kernel/debug/dri/%d/gt%d/force_reset%s",
+> +		 minor(st.st_rdev), gt, sync ? "_sync" : "");
+> +	system(reset_string);
+> +}
+> +
+> +/**
+> + * xe_force_gt_reset_async:
+> + * @fd: the Xe DRM file descriptor
+> + * @gt: the GT identifier
+> + *
+> + * This function forces a reset on the selected GT.
+> + * It does not wait for the reset completion.
+> + */
+> +void xe_force_gt_reset_async(int fd, int gt)
+> +{
+> +	xe_force_gt_reset(fd, gt, false);
+> +}
+> +
+> +/**
+> + * xe_force_gt_reset_async:
+> + * @fd: the Xe DRM file descriptor
+> + * @gt: the GT identifier
+> + *
+> + * This function forces a reset on the selected GT.
+> + * It will wait until the reset completes.
+> + */
+> +void xe_force_gt_reset_sync(int fd, int gt)
+> +{
+> +	xe_force_gt_reset(fd, gt, true);
+> +}
+> +
+>  /**
+>   * xe_force_gt_reset_all:
+>   *
+> diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
+> index 06a59281c..93525ea35 100644
+> --- a/lib/xe/xe_gt.h
+> +++ b/lib/xe/xe_gt.h
+> @@ -12,6 +12,9 @@
 >  
->  		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->  		if (i)
-> @@ -1807,7 +1807,7 @@ try_again_after_invalidate:
->  			data->batch[b++] = sdi_addr >> 32;
->  			data->batch[b++] = 0xc0ffee;
->  			data->batch[b++] = MI_BATCH_BUFFER_END;
-> -			igt_assert(b <= ARRAY_SIZE(data[i].batch));
-> +			igt_assert(b <= ARRAY_SIZE(data->batch));
+>  bool has_xe_gt_reset(int fd);
+>  void xe_force_gt_reset_all(int fd);
+> +void xe_force_gt_reset_async(int fd, int gt);
+> +void xe_force_gt_reset_sync(int fd, int gt);
+> +
+>  igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+>  				unsigned int flags);
+>  void xe_post_hang_ring(int fd, igt_hang_t arg);
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index 53a53cd0d..1e95af409 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -585,26 +585,3 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  	igt_assert_eq(__xe_wait_ufence(fd, addr, value, exec_queue, &timeout), 0);
+>  	return timeout;
+>  }
+> -
+> -static void xe_force_gt_reset(int fd, int gt, bool sync)
+> -{
+> -	char reset_string[128];
+> -	struct stat st;
+> -
+> -	igt_assert_eq(fstat(fd, &st), 0);
+> -
+> -	snprintf(reset_string, sizeof(reset_string),
+> -		 "cat /sys/kernel/debug/dri/%d/gt%d/force_reset%s",
+> -		 minor(st.st_rdev), gt, sync ? "_sync" : "");
+> -	system(reset_string);
+> -}
+> -
+> -void xe_force_gt_reset_async(int fd, int gt)
+> -{
+> -	xe_force_gt_reset(fd, gt, false);
+> -}
+> -
+> -void xe_force_gt_reset_sync(int fd, int gt)
+> -{
+> -	xe_force_gt_reset(fd, gt, true);
+> -}
+> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> index 522094ae2..6302d1a7d 100644
+> --- a/lib/xe/xe_ioctl.h
+> +++ b/lib/xe/xe_ioctl.h
+> @@ -99,7 +99,5 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		     uint32_t exec_queue, int64_t *timeout);
+>  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+>  		       uint32_t exec_queue, int64_t timeout);
+> -void xe_force_gt_reset_async(int fd, int gt);
+> -void xe_force_gt_reset_sync(int fd, int gt);
 >  
->  			sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->  			syncobj_reset(fd, &sync[1].handle, 1);
-> @@ -1878,7 +1878,7 @@ try_again_after_invalidate:
->  		data->batch[b++] = sdi_addr >> 32;
->  		data->batch[b++] = 0xc0ffee;
->  		data->batch[b++] = MI_BATCH_BUFFER_END;
-> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+>  #endif /* XE_IOCTL_H */
+> diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
+> index a3ff5da03..6570cf1e6 100644
+> --- a/lib/xe/xe_legacy.c
+> +++ b/lib/xe/xe_legacy.c
+> @@ -5,6 +5,7 @@
 >  
->  		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->  		syncobj_reset(fd, &sync[1].handle, 1);
-> @@ -2056,7 +2056,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
->  		data->batch[b++] = sdi_addr >> 32;
->  		data->batch[b++] = 0xc0ffee;
->  		data->batch[b++] = MI_BATCH_BUFFER_END;
-> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+>  #include "lib/igt_syncobj.h"
+>  #include "linux_scaffold.h"
+> +#include "xe/xe_gt.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_legacy.h"
+>  #include "xe/xe_spin.h"
+> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+> index 1f72e3e44..535f00818 100644
+> --- a/tests/intel/xe_eudebug_online.c
+> +++ b/tests/intel/xe_eudebug_online.c
+> @@ -13,6 +13,7 @@
+>   */
 >  
->  		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->  		if (i)
-> @@ -2115,7 +2115,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
->  		data->batch[b++] = sdi_addr >> 32;
->  		data->batch[b++] = 0xc0ffee;
->  		data->batch[b++] = MI_BATCH_BUFFER_END;
-> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+>  #include "xe/xe_eudebug.h"
+> +#include "xe/xe_gt.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  #include "igt.h"
+> diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+> index 1d2c510b7..7fc7ca9eb 100644
+> --- a/tests/intel/xe_wedged.c
+> +++ b/tests/intel/xe_wedged.c
+> @@ -22,6 +22,7 @@
+>  #include "igt_sysfs.h"
 >  
->  		data = map1 + i * page_size;
->  		b = 0;
-> @@ -2124,7 +2124,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
->  		data->batch[b++] = sdi_addr >> 32;
->  		data->batch[b++] = 0xc0ffee;
->  		data->batch[b++] = MI_BATCH_BUFFER_END;
-> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
-> +		igt_assert(b <= ARRAY_SIZE(data->batch));
->  
->  		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->  		if (i)
+>  #include "xe_drm.h"
+> +#include "xe/xe_gt.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_spin.h"
 > -- 
-> 2.25.1
+> 2.47.1
 > 
