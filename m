@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C00EC61CE5
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 19:25:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C570C5B559
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 19:25:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7A95110E1BA;
-	Mon,  2 Jun 2025 19:25:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5FA010E587;
+	Mon,  2 Jun 2025 19:25:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GG7P2q5k";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JCyuT8Lc";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EF2910E1BA
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 19:25:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C3C510E587
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 19:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748892353; x=1780428353;
+ t=1748892358; x=1780428358;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=co/4IjvZAyGy1ebpbuV9+nzUyTfJiBJBCcHeqi4G1zE=;
- b=GG7P2q5kr3qddp8MRTIBPHXe2IHbLXlEa/XEbF52KChy7zSsihweV/WV
- uvJo/MrQbExIIADQ3oDUI5BttgkixLgW9z0qWzjV+3ZvnONhSRHzwtW0r
- l1whPy7BvLxN7lb1hllTwNltufxegjL+Y5sDwvx6+wscO9hbK1Y+l+emD
- A7K+27yRLReeA1jyF8aeELxWouO2ytwapH3lII6ybRFrwGbguxVyI7VeV
- WUFn78+aCFZZeRUGAsErra+OFXl8dL9o3Yf7QeFeCOTBvBSXJX2pvqsWM
- KYkglW0HBCtptwxdJWwfZOCgXU0gpEjoMBHM12ZTgEtDU1IJqHXwhNxun Q==;
-X-CSE-ConnectionGUID: V/oFfQIhRxufvW69BVDo5A==
-X-CSE-MsgGUID: 52Q/UwF2Q/iowejjNO4f8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50777092"
-X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; d="scan'208";a="50777092"
+ bh=T9inaW7HmajIMgecEL4NnnXtwtz1qC3Ru4mmH0kZmL8=;
+ b=JCyuT8Lcywh80tKQ4SuHvKk8i2Cks7aUC+bmCCsBYcl1U5uTonkPutm2
+ MBng7WGHlIQWXA6XXefr1FUCKazbB6k5gGWGxSVLHRe/nwmZH1sHS8kdn
+ 8fKeBNYsBRlyrdpOC5qyYJ8yol5ZhT7p1oFDaDw2Ia7S7EhW/UdxgyMXR
+ j4rsyo4JYJDzH7yaigf32QtpecKkACZJu6S3OXnyHuZr0yG0MjqzmKE/6
+ D1p/Tc1JNtmnH609a19kOLc7NMi5pmsnFeORSn+PTRPrNkJI9zGfOs0wp
+ TeVgIaK8LCFwNde7rqODTvCCcPfa9VKXX4SnfHsshl3WfrQ5mujMkssct g==;
+X-CSE-ConnectionGUID: b077IpKiQeu06K5PUeku2g==
+X-CSE-MsgGUID: sZ7ufS8GRvC/fjh7HJ0aLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50777099"
+X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; d="scan'208";a="50777099"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 12:25:52 -0700
-X-CSE-ConnectionGUID: 6Q7ursJbT/ylJO+fsPbDoA==
-X-CSE-MsgGUID: ltlHqPrmQZexUEXXqa830w==
+ 02 Jun 2025 12:25:57 -0700
+X-CSE-ConnectionGUID: wDF7rF8nRp2/pR+BmMNs5w==
+X-CSE-MsgGUID: dahYhFlDTdesXc1F5v+f7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; d="scan'208";a="144590211"
+X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; d="scan'208";a="144590220"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by fmviesa007.fm.intel.com with ESMTP; 02 Jun 2025 12:25:50 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 02 Jun 2025 12:25:55 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
  Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH i-g-t v12 01/11] include/android: Add stub for procps and glib
-Date: Mon,  2 Jun 2025 19:25:05 +0000
-Message-ID: <20250602192515.95309-2-jeevaka.badrappan@intel.com>
+Subject: [PATCH i-g-t v12 03/11] tests/intel/*_intel_bb: handle base64 encode
+ fail
+Date: Mon,  2 Jun 2025 19:25:07 +0000
+Message-ID: <20250602192515.95309-4-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602192515.95309-1-jeevaka.badrappan@intel.com>
 References: <20250602192515.95309-1-jeevaka.badrappan@intel.com>
@@ -69,125 +70,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Sapna Singh <sapna1.singh@intel.com>
+g_base64_encode function returns a newly allocated string containing
+the Base64 encoded data. Upon failure, null can be returned.
 
-As procps, glib are not available in Android, not able to build igt
-for Android.
+When g_base64_encode function fails, exit the calling function with
+error.
 
-Provided stub implementations so igt can be compiled for both Android
-and linux from same code base. Incase of linux systems, system libraries
-will be used whereas for Android stubs will be used with reduced
-test coverage.
-
-Signed-off-by: Sapna Singh <sapna1.singh@intel.com>
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 ---
- include/android/glib.h   | 42 ++++++++++++++++++++++++++++++++++++
- include/android/procps.h | 46 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 88 insertions(+)
- create mode 100644 include/android/glib.h
- create mode 100644 include/android/procps.h
+ tests/intel/api_intel_bb.c | 3 +++
+ tests/intel/xe_intel_bb.c  | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/include/android/glib.h b/include/android/glib.h
-new file mode 100644
-index 000000000..4d0a63098
---- /dev/null
-+++ b/include/android/glib.h
-@@ -0,0 +1,42 @@
-+#ifndef _IGT_ANDROID_GLIB_H
-+#define _IGT_ANDROID_GLIB_H
+diff --git a/tests/intel/api_intel_bb.c b/tests/intel/api_intel_bb.c
+index 4a1c9be91..13b1091d8 100644
+--- a/tests/intel/api_intel_bb.c
++++ b/tests/intel/api_intel_bb.c
+@@ -944,6 +944,9 @@ static int dump_base64(const char *name, struct intel_buf *buf)
+ 
+ 		igt_info("--- %s ---\n", name);
+ 		pos = str = g_base64_encode(destbuf, outsize);
++		if (str == NULL)
++			return -1;
 +
-+#include <stdbool.h>
-+#include <stdlib.h>
+ 		outsize = strlen(str);
+ 		while (pos) {
+ 			char line[LINELEN + 1];
+diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
+index d8bd7b519..ef95b4a2a 100644
+--- a/tests/intel/xe_intel_bb.c
++++ b/tests/intel/xe_intel_bb.c
+@@ -595,6 +595,9 @@ static int dump_base64(const char *name, struct intel_buf *buf)
+ 
+ 		igt_info("--- %s ---\n", name);
+ 		pos = str = g_base64_encode(destbuf, outsize);
++		if (str == NULL)
++			return -1;
 +
-+#define G_KEY_FILE_NONE 0
-+#define G_REGEX_OPTIMIZE 0
-+
-+typedef struct _GError {
-+	int code;
-+	char *message;
-+} GError;
-+
-+typedef struct _GKeyFile {
-+	char *key;
-+	char *value;
-+} GKeyFile;
-+
-+typedef int gint;
-+typedef size_t gsize;
-+typedef char gchar;
-+typedef unsigned char guchar;
-+typedef void GRegex;
-+
-+static inline void g_clear_error(GError **error) { }
-+static inline void g_error_free(GError *error) { }
-+static inline const char *g_get_home_dir(void) { return "/data/local/tmp/igt"; }
-+static inline void g_key_file_free(GKeyFile *file) { }
-+static inline GKeyFile *g_key_file_new(void) { return NULL; }
-+static inline int g_key_file_get_integer(GKeyFile *key_file,
-+	const char *group_name, const char *key, GError **error) { return 0; }
-+static inline char *g_key_file_get_string(GKeyFile *key_file,
-+	const char *group_name, const char *key, GError **error) { return NULL; }
-+static inline bool g_key_file_load_from_file(GKeyFile *key_file,
-+	const char *file, int flags, GError **error) { return false; }
-+static inline GRegex *g_regex_new(const char *pattern, int compile_options,
-+	int match_options, GError **error) { return NULL; }
-+static inline void g_regex_unref(GRegex *pattern) { };
-+static gchar *g_base64_encode(const guchar *data, gsize len) { return NULL; }
-+
-+#endif /* _IGT_ANDROID_GLIB_H */
-diff --git a/include/android/procps.h b/include/android/procps.h
-new file mode 100644
-index 000000000..327c9bcc5
---- /dev/null
-+++ b/include/android/procps.h
-@@ -0,0 +1,46 @@
-+#ifndef _IGT_ANDROID_PROCPS_H
-+#define _IGT_ANDROID_PROCPS_H
-+
-+enum pids_item {
-+	PIDS_CMD     = 13, /* str stat: comm or status: Name */
-+	PIDS_ID_EGID = 29, /* u_int status: Gid */
-+	PIDS_ID_EUID = 31, /* u_int status: Uid */
-+	PIDS_ID_PID  = 39, /* s_int from /proc/<pid> */
-+};
-+enum pids_fetch_type {
-+	PIDS_FETCH_TASKS_ONLY,
-+	PIDS_FETCH_THREADS_TOO
-+};
-+
-+struct pids_result {
-+	enum pids_item item;
-+	union {
-+		signed char s_ch;
-+		signed int s_int;
-+		unsigned int u_int;
-+		unsigned long ul_int;
-+		unsigned long long ull_int;
-+		char *str;
-+		char **strv;
-+		double real;
-+	} result;
-+};
-+
-+struct pids_stack {
-+	struct pids_result *head;
-+};
-+
-+struct pids_info;
-+
-+#define PIDS_VAL(relative_enum, type, stack, info) \
-+	stack->head[relative_enum].result.type
-+
-+int procps_pids_new(struct pids_info **info, enum pids_item *items, int numitems) { return 0; }
-+int procps_pids_unref(struct pids_info **info) { return 0; }
-+
-+struct pids_stack *procps_pids_get(struct pids_info *info, enum pids_fetch_type which)
-+{
-+	return NULL;
-+}
-+
-+#endif /* _IGT_ANDROID_PROCPS_H */
+ 		outsize = strlen(str);
+ 		while (pos) {
+ 			char line[LINELEN + 1];
 -- 
 2.49.0
 
