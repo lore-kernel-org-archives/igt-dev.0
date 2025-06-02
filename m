@@ -4,67 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 520E5C54FB3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 13:00:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A26C54FB3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 14:51:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2E2510E515;
-	Mon,  2 Jun 2025 13:00:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 59F7110E54A;
+	Mon,  2 Jun 2025 14:51:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bkprBIku";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QjVZuaBl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97FFE10E515
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 13:00:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5636D10E54A
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 14:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748869256; x=1780405256;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=lpdWRDM8EZUeKhpzNE6sdnG/RM4q6eUJQiFPsT/t58A=;
- b=bkprBIkubJnXaTN8gU8f2wYno3OELQlyVS4hx/It+VVIXV3+w1Ldme3W
- H68Pi4C5YNlUvSUhTO+oVrC3dmLLk3AJgVvKRJDVuLUoI5V/BlpO9/4hk
- +vdQLesEbv1TSOxOyxY/FpIRJRdld0eDaW85I9+7b4eElZFoj/mfUKpgQ
- zBMZJKPC9ZP4nUb8pIvlCT/EaReUuf6BAzKmSX30tH6xI/9746fCQAf0n
- AOq5+ZURWlfhPoDnXvIcWOVnAVaPffy8i+rja5emiz8dRmneBjep2yX/o
- rFtr4tP2eVyOXI4T1WCN7I+kum/1Oe5e8Gk0F/5wR9Tv9FwoS4tdfmke7 A==;
-X-CSE-ConnectionGUID: l0dLo0JPSk+O3lJlj7Duiw==
-X-CSE-MsgGUID: 9eFOFpDgSAKA3nAxanQ92Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="62269179"
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="62269179"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 06:00:47 -0700
-X-CSE-ConnectionGUID: iNER/7CDSkujvyL4BM804w==
-X-CSE-MsgGUID: CejXrlG1Q0O1X7rRDyUwog==
+ t=1748875917; x=1780411917;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1mfmkhQ1Ou4YMuH00MlrTQwvp2xvt7bAVWdUMvPCfX4=;
+ b=QjVZuaBl6yJwjGUdfCaTbcd5afBdMBYsu0Me4f/+q8cU1QpYvPiDZU26
+ y36JX8yD3ml9Vlu/1Xld9rgx7S3WABLgFLY5cqzrTd5LU4KOC853FUOYw
+ YWnOx6F4dbGrfFb62zIlISwA6JcIxkBN8IfoxkEsVN5T49b2HlpOqdNpy
+ gsNENBgbnHyIYsC+XRiO8HugeTeIHzzNn55XC/3XtmxOECYwFYTp3xTwj
+ KSFCTo0mgsnPH6/fe7FY8kKDO8zpNzCyXvQx/Yn/T7/oYolRk9JtJyKZf
+ 2QdOsLzsmgQYne7d7Zsia9+X3Ut28ekm2bQ7K3GumBdyd8eTOQEOJ4CB8 g==;
+X-CSE-ConnectionGUID: cHj2x6mkSyGZtd6qVcwmVg==
+X-CSE-MsgGUID: vAqibh8NRIi5rSMrAQK3kA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="68311365"
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="68311365"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 07:51:56 -0700
+X-CSE-ConnectionGUID: ufeX/o08QhKvIjxi0v0HOQ==
+X-CSE-MsgGUID: ZlXChNzjSxy42tiso+0JNA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="175392510"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
- by fmviesa001.fm.intel.com with ESMTP; 02 Jun 2025 06:00:44 -0700
-Received: from [10.245.84.121] (mwajdecz-MOBL.ger.corp.intel.com
- [10.245.84.121])
- by irvmail002.ir.intel.com (Postfix) with ESMTP id 7470433E89;
- Mon,  2 Jun 2025 14:00:43 +0100 (IST)
-Message-ID: <7aa19e84-6bd4-4e6c-a70e-242cf96a102a@intel.com>
-Date: Mon, 2 Jun 2025 15:00:42 +0200
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; d="scan'208";a="167729836"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 07:51:54 -0700
+Date: Mon, 2 Jun 2025 16:51:35 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Alex Zuo <alex.zuo@intel.com>,
+ Zongyao Bai <zongyao.bai@intel.com>
+Subject: Re: [PATCH] tests/intel/xe_vm: Fix assertion of batch buffer size
+Message-ID: <20250602145135.xilpwv62v4dft4eu@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Shuicheng Lin <shuicheng.lin@intel.com>,
+ igt-dev@lists.freedesktop.org, Alex Zuo <alex.zuo@intel.com>,
+ Zongyao Bai <zongyao.bai@intel.com>
+References: <20250530001844.703844-1-shuicheng.lin@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/xe_fault_injection: Ignore all errors
- while injecting fault
-To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
- "K V P, Satyanarayana" <satyanarayana.k.v.p@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Ceraolo Spurio, Daniele" <daniele.ceraolospurio@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: "Dugast, Francois" <francois.dugast@intel.com>,
- "Harrison, John C" <john.c.harrison@intel.com>
-References: <20250529133132.29912-1-satyanarayana.k.v.p@intel.com>
- <bafb3f48-e1bb-4ed4-8419-dd5e85875795@intel.com>
- <CH0PR11MB54442A56220EDDF9DB18A52DE566A@CH0PR11MB5444.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
-In-Reply-To: <CH0PR11MB54442A56220EDDF9DB18A52DE566A@CH0PR11MB5444.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250530001844.703844-1-shuicheng.lin@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,106 +72,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Shuicheng,
+On 2025-05-30 at 00:18:44 +0000, Shuicheng Lin wrote:
+> The batch buffer pointer is data not data[i]. Correct it in the assertion.
 
+imho s/the assertion/assertions/
 
-On 29.05.2025 23:48, Cavitt, Jonathan wrote:
-> -----Original Message-----
-> From: Wajdeczko, Michal <Michal.Wajdeczko@intel.com> 
-> Sent: Thursday, May 29, 2025 1:14 PM
-> To: K V P, Satyanarayana <satyanarayana.k.v.p@intel.com>; igt-dev@lists.freedesktop.org; Ceraolo Spurio, Daniele <daniele.ceraolospurio@intel.com>
-> Cc: Dugast, Francois <francois.dugast@intel.com>; Cavitt, Jonathan <jonathan.cavitt@intel.com>; Harrison, John C <john.c.harrison@intel.com>
-> Subject: Re: [PATCH i-g-t] tests/intel/xe_fault_injection: Ignore all errors while injecting fault
->> On 29.05.2025 15:31, Satyanarayana K V P wrote:
->>> Currently, numerous fault messages have been included in the dmesg ignore list,
->>> and this list continues to expand. Each time a new fault injection point is
->>> introduced or a new feature is activated, additional fault messages appear,
->>> making it cumbersome to manage the dmesg ignore list.
->>>
->>> This new patch automatically ignores all error messages from dmesg, eliminating
->>> the need to add or maintain a dmesg ignore message list.
->>>
->>> Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
->>> ---
->>> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
->>> Cc: Francois Dugast <francois.dugast@intel.com>
->>> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
->>> Cc: John Harrison <John.C.Harrison@Intel.com>
->>> ---
->>>  tests/intel/xe_fault_injection.c | 35 +++++++-------------------------
->>>  1 file changed, 7 insertions(+), 28 deletions(-)
->>>
->>> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
->>> index f9bd5c761..0dffbe5da 100644
->>> --- a/tests/intel/xe_fault_injection.c
->>> +++ b/tests/intel/xe_fault_injection.c
->>> @@ -64,30 +64,9 @@ static int fail_function_open(void)
->>>  	return debugfs_fail_function_dir_fd;
->>>  }
->>>  
->>> -static bool function_is_part_of_guc(const char function_name[])
->>> +static void ignore_faults_in_dmesg(void)
->>>  {
->>> -	return strstr(function_name, "_guc_") != NULL ||
->>> -	       strstr(function_name, "_uc_") != NULL ||
->>> -	       strstr(function_name, "_wopcm_") != NULL;
->>> -}
->>> -
->>> -static void ignore_faults_in_dmesg(const char function_name[])
->>> -{
->>> -	/* Driver probe is expected to fail in all cases, so ignore in igt_runner */
->>> -	char regex[1024] = "probe with driver xe failed with error -12";
->>> -
->>> -	/*
->>> -	 * If GuC module fault is injected, GuC is expected to fail,
->>> -	 * so also ignore GuC init failures in igt_runner.
->>> -	 */
->>> -	if (function_is_part_of_guc(function_name)) {
->>> -		strcat(regex, "|GT[0-9a-fA-F]*: GuC init failed with -ENOMEM");
->>> -		strcat(regex, "|GT[0-9a-fA-F]*: Failed to initialize uC .-ENOMEM");
->>> -		strcat(regex, "|GT[0-9a-fA-F]*: Failed to enable GuC CT	.-ENOMEM");
->>> -		strcat(regex, "|GT[0-9a-fA-F]*: GuC PC query task state failed:	-ENOMEM");
->>> -	}
->>> -
->>> -	igt_emit_ignore_dmesg_regex(regex);
->>> +	igt_emit_ignore_dmesg_regex(".*");
->>
->> that will filter out all messages, no?
->>
->> maybe we should look for KERN_ERR level messages
->>
->> if IGT can't filter by level then at least look for our errors:
->>
->> 	xe 0000:00:02.0 [drm] *ERROR*
->> 	xe ... [drm] *ERROR*
->> 	[drm] *ERROR*
->> 	*ERROR*
-> 
-> The regex for that would probably look something like:
-> 
-> igt_emit_ignore_dmesg_regex("^((?!ERROR).)*$");
-> 
-> The above regex should filter out all CI warnings that don't contain errors.
+This could be changed at merge,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-I would prefer regex to match as much as possible and thus include DUT
-BDF to avoid filtering out too much
-
+> Fix a word typo error.
 > 
->>
->> and we want to catch/report all warn/WARN/BUG without just relying on
->> taint (and WARN will also catch our xe_asserts)
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Alex Zuo <alex.zuo@intel.com>
+> Cc: Zongyao Bai <zongyao.bai@intel.com>
+> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+> ---
+>  tests/intel/xe_vm.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 > 
-> If you also want to catch WARNs and BUGs, then the filter would look
-> more like:
-
-we don't expect any WARNs or BUGs so we do not want them to be filtered
-out, but highlighted instead
-
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index b5bba7b7e..94cca13ba 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -1719,7 +1719,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
+>  	addr = base_addr;
+>  
+>  	/*
+> -	 * Kick a thread to write the first page continously to ensure we can't
+> +	 * Kick a thread to write the first page continuously to ensure we can't
+>  	 * cause a fault if a rebind occurs during munmap style VM unbind
+>  	 * (partial VMAs unbound).
+>  	 */
+> @@ -1750,7 +1750,7 @@ test_munmap_style_unbind(int fd, struct drm_xe_engine_class_instance *eci,
+>  		data->batch[b++] = sdi_addr >> 32;
+>  		data->batch[b++] = 0xc0ffee;
+>  		data->batch[b++] = MI_BATCH_BUFFER_END;
+> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
+> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+>  
+>  		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+>  		if (i)
+> @@ -1807,7 +1807,7 @@ try_again_after_invalidate:
+>  			data->batch[b++] = sdi_addr >> 32;
+>  			data->batch[b++] = 0xc0ffee;
+>  			data->batch[b++] = MI_BATCH_BUFFER_END;
+> -			igt_assert(b <= ARRAY_SIZE(data[i].batch));
+> +			igt_assert(b <= ARRAY_SIZE(data->batch));
+>  
+>  			sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+>  			syncobj_reset(fd, &sync[1].handle, 1);
+> @@ -1878,7 +1878,7 @@ try_again_after_invalidate:
+>  		data->batch[b++] = sdi_addr >> 32;
+>  		data->batch[b++] = 0xc0ffee;
+>  		data->batch[b++] = MI_BATCH_BUFFER_END;
+> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
+> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+>  
+>  		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+>  		syncobj_reset(fd, &sync[1].handle, 1);
+> @@ -2056,7 +2056,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+>  		data->batch[b++] = sdi_addr >> 32;
+>  		data->batch[b++] = 0xc0ffee;
+>  		data->batch[b++] = MI_BATCH_BUFFER_END;
+> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
+> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+>  
+>  		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+>  		if (i)
+> @@ -2115,7 +2115,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+>  		data->batch[b++] = sdi_addr >> 32;
+>  		data->batch[b++] = 0xc0ffee;
+>  		data->batch[b++] = MI_BATCH_BUFFER_END;
+> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
+> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+>  
+>  		data = map1 + i * page_size;
+>  		b = 0;
+> @@ -2124,7 +2124,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+>  		data->batch[b++] = sdi_addr >> 32;
+>  		data->batch[b++] = 0xc0ffee;
+>  		data->batch[b++] = MI_BATCH_BUFFER_END;
+> -		igt_assert(b <= ARRAY_SIZE(data[i].batch));
+> +		igt_assert(b <= ARRAY_SIZE(data->batch));
+>  
+>  		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+>  		if (i)
+> -- 
+> 2.25.1
 > 
-> igt_emit_ignore_dmesg_regex("^((?!ERROR|WARN|BUG).)*$");
-> 
-> Would either of these be more amenable, Michal?
-> -Jonathan Cavitt
-> 
->>
->>
-
