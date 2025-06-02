@@ -4,179 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 131BBC5AD49
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 19:11:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3EAFC5AD49
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Jun 2025 19:19:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B5A810E08B;
-	Mon,  2 Jun 2025 19:11:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8AD8810E585;
+	Mon,  2 Jun 2025 19:19:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l/9FrSxk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cMy+3cZX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67F9310E08B
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 19:10:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60F5510E585
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Jun 2025 19:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748891459; x=1780427459;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:mime-version;
- bh=3do+gCLUQeZcdkDkQ74+R2ZQf7Qeok4jUt7SnnqYhl4=;
- b=l/9FrSxkcif0pIHVVgHbeYV3sgccFV5E8k6gIk3ZXIiVmQ3R/20q/nmE
- pxFJWCnsFIU0vUweIfdbm77W+dZmBbU4jFPbfRnBkfI0XNciLgk3Xp43K
- KoW0XhGuBUoesgfnNJbOyuXfaFb6a463zP3M60Rfh2OwjMOhFGhFELcgn
- 8hGA2wWZcEv6/SPx/avDMr5ZmG3PCZBJIpxDYOX/RwZJC5gmb78GSQQQS
- IYq4ViusZVuE8pSQyCU2mz3E0g9vOU0aXGrL54fZdSOQNCbTYy9i6Wz1j
- ycrB7wWp9TdZ2LYpTOl4XdykrVFqS2oyBUrefU2uPhDz6HiOaP3xaYfB0 A==;
-X-CSE-ConnectionGUID: JDiaoxwpQmyvNeDaZKVfIg==
-X-CSE-MsgGUID: I/aGMCAoRvqAz57fdS/ZJw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50828295"
-X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; d="scan'208,217";a="50828295"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 12:10:57 -0700
-X-CSE-ConnectionGUID: YYNsIMG8SWCvN9kWqoe06w==
-X-CSE-MsgGUID: 9u0QJVyoQgCpJtHCUe/BJw==
+ t=1748891977; x=1780427977;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=/WF73P7de7pRxBRxbUxmu8wsbyiZ2BlOyE6p6/F3Mqk=;
+ b=cMy+3cZXDGpGF4TOV00wH9IysteHPW1DG87Chb5ebh8BK8Lhysk4Vb7x
+ t3brG/7A08Q3bLMxifo7bWFLqJSFMNd/r7Te/7Z9YPGIM97p3IBkgO5HZ
+ hZ//neKdmQy1FT3VPAGAXe31/rrCITq4jUZKQAAH4F05Iah+w+A2/c+Wc
+ PlKqfPt7gyCrVjEF+E03yqaqQimwwaH2VD6Y1kEQHy0GY8UFa4UPwxKA+
+ nm4qTBLKhnfoKvJqHWaldT5NGVpN/8YeZM2DokCc69dJ7ixau2WEI2yK4
+ Lxdp+hb6FXUKkqWRqb6EAuEqq+3bme0UxAGKWm4wks0JQcBj5wEC+zimL A==;
+X-CSE-ConnectionGUID: 38H1T4i8Ql6OoW1RvI8S6g==
+X-CSE-MsgGUID: 3qaSbIYIRESq71greoSkhA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50970330"
+X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; d="scan'208";a="50970330"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 12:19:36 -0700
+X-CSE-ConnectionGUID: nJkPh/M+RDGDL9TQgSCLOQ==
+X-CSE-MsgGUID: WaYsWBGCQ22463bzs/el0w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; 
- d="scan'208,217";a="149896664"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 12:10:56 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 2 Jun 2025 12:10:55 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Mon, 2 Jun 2025 12:10:55 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.73)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Mon, 2 Jun 2025 12:10:54 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pp4SHw64QN2w45qyGnqo4MA+A9p6KhgAktDQFRHw/XV22+LP4OeUYLNyszSCurPouafqcZVyyviU17/Ol3bHPMKd+JIG1zsqpLBMQTY9ShEL5DpWT3qWriy/LjSv85MElQ2iamntmgP1elTeAvbtEWIRTODVUJblzy+7+blTBm7hX2bQnrxPhPwxVEhKX84NgPoHmuyfU9IUNCKqlj4o2ZT9oaxPaeH301prdjtn9jvHpRDQ2AXRZIjIii9T8fwKGrKvmlAS9XwSzjKBsuYGetSfzu65QG9tHBqNPDZ1FheOvQbEeq/H2RfX/C1JAa8yXQkg+pwIROyYjr7A4cDQZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mYsWetS3blXCDgL1GDo5DqXJ03sxxbxTpsTbhhFTmw0=;
- b=tA22JMjA8MFyTV7Jtk0QeH+ZL1N1dfW6/Dz44cUq91h8u0ghaqw/g/N0Ulwc092XVJnaxMvYj7c18cL7ZxpZmrub7ubG826PwZ5MJ+hpAcq+j79GBJ4Kk//KyQN46BU8UrjZFRRQHhfn05icjTA4FrpTOT1kRkHNwzQjj8F+L4c7rV4JIR0FRFl4G+wiwNMD2wfn0eVcePZAJuF2xE+e9NNNlODMFemrxXQFeUC5I+c4ZLw0T4LBbMHv3vL8H/hu+6ykZb9pHcScvuLcXKJy82MuM1H4NnEtivUf/k3DLY1ThbNkIPivL0vi3HwbaOrQSPjFb3Xv37OiozDwVNlzHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA0PR11MB7353.namprd11.prod.outlook.com (2603:10b6:208:435::14)
- by MN6PR11MB8241.namprd11.prod.outlook.com (2603:10b6:208:473::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.37; Mon, 2 Jun
- 2025 19:10:47 +0000
-Received: from IA0PR11MB7353.namprd11.prod.outlook.com
- ([fe80::f88b:66da:3b8e:9240]) by IA0PR11MB7353.namprd11.prod.outlook.com
- ([fe80::f88b:66da:3b8e:9240%3]) with mapi id 15.20.8769.029; Mon, 2 Jun 2025
- 19:10:47 +0000
-From: "Badrappan, Jeevaka" <jeevaka.badrappan@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Konieczny, Kamil"
- <kamil.konieczny@intel.com>, "markyacoub@google.com" <markyacoub@google.com>, 
- "seanpaul@google.com" <seanpaul@google.com>, "Santa, Carlos"
- <carlos.santa@intel.com>, "Singh, Sapna1" <sapna1.singh@intel.com>
-Subject: Re: [PATCH i-g-t v11 5/7] tools: Include local glib header for Android
-Thread-Topic: [PATCH i-g-t v11 5/7] tools: Include local glib header for
- Android
-Thread-Index: AQHb0L0GlOEHZh6gdkKrDh7+FU3j3rPrgs2AgAS/I7o=
-Date: Mon, 2 Jun 2025 19:10:47 +0000
-Message-ID: <IA0PR11MB7353467A1AB9160BC5679F53ED62A@IA0PR11MB7353.namprd11.prod.outlook.com>
-References: <20250529171246.74375-1-jeevaka.badrappan@intel.com>
- <20250529171246.74375-6-jeevaka.badrappan@intel.com>
- <20250530183913.hs7xotbhraap2pi5@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20250530183913.hs7xotbhraap2pi5@kamilkon-DESK.igk.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA0PR11MB7353:EE_|MN6PR11MB8241:EE_
-x-ms-office365-filtering-correlation-id: 7ae396de-3af3-4cdd-72fc-08dda2092e9d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|8096899003|38070700018; 
-x-microsoft-antispam-message-info: =?iso-8859-2?Q?T2cSPuhuWHoXs+YoddifP4EWmRLpXnbh59QK69gfV/+73ITJIte4mp/j76?=
- =?iso-8859-2?Q?QlHQ9Bb1AY8rwfG+VIdilviEdC6/FGc9Z/dVK66O0msuYMlYdaofC0xAkU?=
- =?iso-8859-2?Q?zMPWHtEkSb7Nuatl91i3zdQEFHyprUtNIP3tEBonIGItmbEPOiUaIKINUP?=
- =?iso-8859-2?Q?3wrJ1FRu6tkUxydeg5sfRDlkwwXU92JuDGN0HHtnYDquGfq5Ukp/WEb8tn?=
- =?iso-8859-2?Q?mL6xo593XmrtME6N9zq3IkQ+CGEjs/iO+GPt/AZnQtBXU+D/p95aZGFwYn?=
- =?iso-8859-2?Q?Mo1Y8t8Ls7O8xD2OwPmgOspkA7sme1u89SvGNwmt4L+sT0wH9THiika4Vi?=
- =?iso-8859-2?Q?TLU1n0OZdr/JEAHVBswyOsNNqGLUw9ysb2Mvt9oF3KQr2+xpwL5xShuHRQ?=
- =?iso-8859-2?Q?eR5e92BtFchuvJgLxHX84qMq0j2YBpIR864Q1mpADhoLMwr3kdfEAPL3c9?=
- =?iso-8859-2?Q?oO1J9hsSzI6+9y1Wb0trxO/hpay/5iuAiRdbp89R9/KxO60lUmvXXCP7IL?=
- =?iso-8859-2?Q?C6I8HYDryBtdIOVcDjtw3oVlgkR/Bz9Fzuh0Y2VBh895hO9ev6Q1t5F5I1?=
- =?iso-8859-2?Q?rjRfZ+sAAuGqE9Jko2CeUSNmjv7C1QbnR9xIuZcB0YrDlRJIbkXvDsQtD8?=
- =?iso-8859-2?Q?7XRDlah/ofoQYcDsX2N5e1gl1YKlmOGLd3tGlTdBUGz3Yjo26rrU39RBYE?=
- =?iso-8859-2?Q?4J/sK9qBaG6aAg5bbzCcoQ6ZsKoP6IyEHC7v6K6Ycr5m9K18bo7TK4qe5/?=
- =?iso-8859-2?Q?yOTDCzwKdi1aAus6KaHxc4/GfNKdDTZMHD4chiuXu1gw/dfjA6AgfnNnVm?=
- =?iso-8859-2?Q?3oMM+WhsQGgukQgbUDQaxd0myDgEzqhTr49nYc6HqCueRtFYg2a6qfar9t?=
- =?iso-8859-2?Q?MvwxuszkqBEnML0EqtVQLOPxifbPyIPhitxl7IJ3zdXzIMm96c78mc9RlG?=
- =?iso-8859-2?Q?/T3fRFA4tg0+Up8HVNhu+ze1h+RCb/XaWjLK1XFQnURgxAN+hG8cJCHCu5?=
- =?iso-8859-2?Q?FBRoCt7gzCBuJDq28iUT89RYdg9r7pLn7Dgyn4kAGsg4jmBRJCqFDSkwIu?=
- =?iso-8859-2?Q?ate7mDfxXgrpnZQedaW4QaiwZbURqWI9uF/IYS/5ZyeQssIrjtxMuWFDe+?=
- =?iso-8859-2?Q?i6SRV+jMSeadAbzsmN/1qwS9P0vclwVgHMyaZJwUQpzeGX69ehDJxKG7eH?=
- =?iso-8859-2?Q?fSExY68PpHxHAL1hHOGPUhl0vNb1BATFYq6ewqyDVHYtsJZQ0NLEUHkzeT?=
- =?iso-8859-2?Q?sOJRUYLKpPlyJRI1gbfnTeii2gwXKn8WSvhCtyp4Jp5mtVVdQFAFydggt3?=
- =?iso-8859-2?Q?yTyXDeigRA+D1EdRP0K8kbPnUnr7B9jhAgEI0QSFOs+Q8E0IV4JSkDZKKw?=
- =?iso-8859-2?Q?9vWMI6W78n5TlTVaBkxGTirBAHftNVa4WOr4sEwsXvQD4ke5LZvo2caQZc?=
- =?iso-8859-2?Q?dd7GcrKtD+z6V0qax5P7WeoxGUSSNctb38QaRa0X8NY2l9ZwQHdro5Wxpf?=
- =?iso-8859-2?Q?2s2zEc67iQjry2HMHtCyMbBoj8oIw1Sl3ZXmzSwNfvweQZuVKDJpA57LF5?=
- =?iso-8859-2?Q?pK3FGAc=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA0PR11MB7353.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(8096899003)(38070700018); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?X9Xb8QS0gwYHxMuTYWqJbuqhiUY+NAg05c1WNxN2ChtraluxppzUSbvkgB?=
- =?iso-8859-2?Q?iCA+AOs6v6cQR2pNP9q//HWWJfqibrzzTyi9FnrE756RJbd8mYzz6d1XwU?=
- =?iso-8859-2?Q?gr5yL7nx+Bci8Tqsbh5hAtoVsnLaH2piuuREbDHf+jNYPF13LTBrmVXuHg?=
- =?iso-8859-2?Q?4BjvKaL7/UAmRgKOZlYHcz7baCXdhNX/JQAYe0Qvmal7wIY6x9cdUjstRW?=
- =?iso-8859-2?Q?XK61fKMZYtDzVyblyCZMmfkFK3629U0tPKdl+oMJRbOMjDaAsoWYYw7+9E?=
- =?iso-8859-2?Q?c4/K1rWCBQZ8s7VZA9hXL1NUR+r23D/wEWfTnFieoLFhFWhkiMzHg40gSd?=
- =?iso-8859-2?Q?loQSWwtSkimQO/eHilN+WmcCgw1rzOb6LJlPAZ5RkGixEMAGLzBu7/+FFD?=
- =?iso-8859-2?Q?W8ttp62Ptz5+DQPZr0v2nyOSz/bLbpd7bWIJ1SQmt9Fc71F+d6F8XneOL4?=
- =?iso-8859-2?Q?GTftIBnXCdmBGdQAmu7lCvrRPvRPTYsXHLL5fl+Y1wtte2AJ6RPG85rdlj?=
- =?iso-8859-2?Q?46JQwKavPERGQrkOgMaAN9ly97PdohOsMRgah8UTv24S4fp2NdOuQclRs3?=
- =?iso-8859-2?Q?vFtXz50HiIa3JV+wWJrRTKwAmdbLT9W+DRKkElbrLR1lfcfEFzqhvkX79u?=
- =?iso-8859-2?Q?HrLS71gZ/qPoYak+5ArP/sRM2veHoV7ZU6p+TxdqiL1WELUzwdoWmZUGhc?=
- =?iso-8859-2?Q?xz507w32Zd02uBCJZ7bhvP/4Hhqtc3ymZdpDbCizDbalGRkt7ufszmgos8?=
- =?iso-8859-2?Q?qG2uSUTaaAwplLbt6OoePi2/gZSJF0max3tSt5XN32udZ8DWmPhQ+7Nu+s?=
- =?iso-8859-2?Q?B9z2r1sjs8ha1cT+OYSYqdQqIiwOKovaaSSYMs0wLqBMPt4Gako1juzKBd?=
- =?iso-8859-2?Q?56ui6hnXQGzEEdIGJeFumfoP4hIiMaxJGEJ1LMe14KpX2T/p1Q4UWrQh+m?=
- =?iso-8859-2?Q?OUNsUTFztZjnJhOmxdJAhr1c94aySWyV9+valsqYncEB6HIYLwrKcD6qML?=
- =?iso-8859-2?Q?iA+KrH3+uCBKApfx4QQby0l/N7S0gYK+SSS8oj2uXmsjC/wKehvbHCj7IB?=
- =?iso-8859-2?Q?qqf8/FWK0B3ls5l76b0YSEb7CU+RFd7n3/qb3puMftYP10WoNYqZraN0mB?=
- =?iso-8859-2?Q?5plhjYTkkikOT9uF+Mj9qkaYJNeQAii/z3Dt3JLTslGgBhJ47eZ8MrgHmC?=
- =?iso-8859-2?Q?JPVGf9JPyDxcSa1Wj5pQIjcbKBjBRI52lN+SC78oQYqJtZpT4diUmcvMLJ?=
- =?iso-8859-2?Q?8/1MWTeYMJAQaxqk5JplZW3pJWSZh5jKh3TUPbkF0OVvzppaZfy/gDz2Eb?=
- =?iso-8859-2?Q?tCBAhJCZopP56Oy3RqfQRvHyGlSUx0fw47ZuOfk+SDtgAjLN6H9sC+uFMq?=
- =?iso-8859-2?Q?ACWcjyE5EZNP4cEKaBmUx6E14u9Jigh6hByKA7np8wssmNLT4YNIeCQWsH?=
- =?iso-8859-2?Q?jVR2ZJc1Kfnv/bT6VB/hpGRzkvjvdzSxpyEdIiSKXqxor3uDbDwCHAWYOH?=
- =?iso-8859-2?Q?O678/lAXqkzgcYXnnOlsPi8dfpYlTwkYxtv4D9t+9e4mYajQRSULHkaZgH?=
- =?iso-8859-2?Q?OTEcQQcDEQ6eiXKTRl/jjkooCg2wgH5rQhv2aSxkxS6C8SyiWjaTZsgF31?=
- =?iso-8859-2?Q?yoxxajswz2XuN9JGA2WFatmltowLbR1jJn?=
-Content-Type: multipart/alternative;
- boundary="_000_IA0PR11MB7353467A1AB9160BC5679F53ED62AIA0PR11MB7353namp_"
+X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; d="scan'208";a="145241360"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.136])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jun 2025 12:19:35 -0700
+Date: Mon, 2 Jun 2025 21:19:30 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Cc: Jan Maslak <jan.maslak@intel.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH 1/2] lib/gpu_cmds: expose num_threads_in_tg parameter for
+ tests
+Message-ID: <ifhrafl54eool5jxwzrfgq74apis2apg7i2yq6z4f5r5qvbhq3@6jdskvojp6hs>
+References: <20250526001304.2899977-1-jan.maslak@intel.com>
+ <20250526001304.2899977-2-jan.maslak@intel.com>
+ <cc7d31ed-d17c-461a-b91d-ea137bd5bdc5@intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7353.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ae396de-3af3-4cdd-72fc-08dda2092e9d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2025 19:10:47.6693 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NUS47dgrdmr6VXELeVIL/7B3MA+eK+vO3Cn1ZUQcKuSAwkSpMAQqyrm3/K8EyeC4F8Us7EoSp53s7iIlhjqWDCvIG2+QuOGWgGF4y6A/qTU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8241
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cc7d31ed-d17c-461a-b91d-ea137bd5bdc5@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -192,185 +71,268 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---_000_IA0PR11MB7353467A1AB9160BC5679F53ED62AIA0PR11MB7353namp_
-Content-Type: text/plain; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
+On Mon, Jun 02, 2025 at 03:54:09PM +0300, Gwan-gyeong Mun wrote:
+> Can you add a routine to check the maximum number of threads that can be
+> used per thread group for each platform?
+> And the reset looks fine.
 
-Hi Kamil,
+I think intel_compute.c might also can use this. I suggest to extend
+intel_device_info struct (intel_chipset.h) with some additional struct
+like intel_aux_info or sth. Even if it would contain single field only
+now.
 
-> As glib is not available in Android, added local glib stub header to
-> build igt for Android.
->
-> Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-> Acked-by: Zbigniew Kempczy=F1ski <zbigniew.kempczynski@intel.com>
-> ---
->  tools/igt_dp_compliance.h | 4 ++++
->  tools/intel_pm_rpm.c      | 4 ++++
->  tools/lsgpu.c             | 4 ++++
->  3 files changed, 12 insertions(+)
+--
+Zbigniew
 
-> Same here, add some NULL handling to avoid NULL deref errors.
-
-In lsgpu.c, g_key_file_get_string is used and NULL deref case is handled pr=
-operly.
-
-Regards,
-Jeevaka
-
->
-> diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
-> index 5b1688039..226a13662 100644
-> --- a/tools/igt_dp_compliance.h
-> +++ b/tools/igt_dp_compliance.h
-> @@ -28,7 +28,11 @@
->  #include <stdio.h>
->  #include <string.h>
->  #include <stdlib.h>
-> +#ifdef ANDROID
-> +#include "android/glib.h"
-> +#else
->  #include <glib.h>
-> +#endif
->
->  extern int drm_fd;
->
-> diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-> index 9622f0552..c1cc54b82 100644
-> --- a/tools/intel_pm_rpm.c
-> +++ b/tools/intel_pm_rpm.c
-> @@ -24,7 +24,11 @@
->
->  #include <errno.h>
->  #include <getopt.h>
-> +#ifdef ANDROID
-> +#include "android/glib.h"
-> +#else
->  #include <glib.h>
-> +#endif
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <string.h>
-> diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-> index e68390083..6cfbf3142 100644
-> --- a/tools/lsgpu.c
-> +++ b/tools/lsgpu.c
-> @@ -24,7 +24,11 @@
->
->  #include <errno.h>
->  #include <fcntl.h>
-> +#ifdef ANDROID
-> +#include "android/glib.h"
-> +#else
->  #include <glib.h>
-> +#endif
->  #include <libudev.h>
->  #include <string.h>
->  #include <signal.h>
-> --
-> 2.49.0
->
-
---_000_IA0PR11MB7353467A1AB9160BC5679F53ED62AIA0PR11MB7353namp_
-Content-Type: text/html; charset="iso-8859-2"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-2">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div class=3D"elementToProof" style=3D"font-family: Calibri, Arial, Helveti=
-ca, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">
-Hi Kamil,</div>
-<div class=3D"elementToProof" style=3D"font-family: Calibri, Arial, Helveti=
-ca, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Calibri, Arial, Helveti=
-ca, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">
-&gt; As glib is not available in Android, added local glib stub header to<b=
-r>
-&gt; build igt for Android.<br>
-&gt;<br>
-&gt; Signed-off-by: Jeevaka Prabu Badrappan &lt;jeevaka.badrappan@intel.com=
-&gt;<br>
-&gt; Acked-by: Zbigniew Kempczy=F1ski &lt;zbigniew.kempczynski@intel.com&gt=
-;<br>
-&gt; ---<br>
-&gt;&nbsp; tools/igt_dp_compliance.h | 4 ++++<br>
-&gt;&nbsp; tools/intel_pm_rpm.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 4 ++++<br>
-&gt;&nbsp; tools/lsgpu.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp; | 4 ++++<br>
-&gt;&nbsp; 3 files changed, 12 insertions(+)<br>
-<br>
-&gt; Same here, add some NULL handling to avoid NULL deref errors.<br>
-<br>
-In lsgpu.c, g_key_file_get_string is used and NULL deref case is handled pr=
-operly.<br>
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Calibri, Arial, Helveti=
-ca, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">
-Regards,<br>
-Jeevaka<br>
-<br>
-&gt;<br>
-&gt; diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h<br>
-&gt; index 5b1688039..226a13662 100644<br>
-&gt; --- a/tools/igt_dp_compliance.h<br>
-&gt; +++ b/tools/igt_dp_compliance.h<br>
-&gt; @@ -28,7 +28,11 @@<br>
-&gt;&nbsp; #include &lt;stdio.h&gt;<br>
-&gt;&nbsp; #include &lt;string.h&gt;<br>
-&gt;&nbsp; #include &lt;stdlib.h&gt;<br>
-&gt; +#ifdef ANDROID<br>
-&gt; +#include &quot;android/glib.h&quot;<br>
-&gt; +#else<br>
-&gt;&nbsp; #include &lt;glib.h&gt;<br>
-&gt; +#endif<br>
-&gt;&nbsp;<br>
-&gt;&nbsp; extern int drm_fd;<br>
-&gt;&nbsp;<br>
-&gt; diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c<br>
-&gt; index 9622f0552..c1cc54b82 100644<br>
-&gt; --- a/tools/intel_pm_rpm.c<br>
-&gt; +++ b/tools/intel_pm_rpm.c<br>
-&gt; @@ -24,7 +24,11 @@<br>
-&gt;&nbsp;<br>
-&gt;&nbsp; #include &lt;errno.h&gt;<br>
-&gt;&nbsp; #include &lt;getopt.h&gt;<br>
-&gt; +#ifdef ANDROID<br>
-&gt; +#include &quot;android/glib.h&quot;<br>
-&gt; +#else<br>
-&gt;&nbsp; #include &lt;glib.h&gt;<br>
-&gt; +#endif<br>
-&gt;&nbsp; #include &lt;stdio.h&gt;<br>
-&gt;&nbsp; #include &lt;stdlib.h&gt;<br>
-&gt;&nbsp; #include &lt;string.h&gt;<br>
-&gt; diff --git a/tools/lsgpu.c b/tools/lsgpu.c<br>
-&gt; index e68390083..6cfbf3142 100644<br>
-&gt; --- a/tools/lsgpu.c<br>
-&gt; +++ b/tools/lsgpu.c<br>
-&gt; @@ -24,7 +24,11 @@<br>
-&gt;&nbsp;<br>
-&gt;&nbsp; #include &lt;errno.h&gt;<br>
-&gt;&nbsp; #include &lt;fcntl.h&gt;<br>
-&gt; +#ifdef ANDROID<br>
-&gt; +#include &quot;android/glib.h&quot;<br>
-&gt; +#else<br>
-&gt;&nbsp; #include &lt;glib.h&gt;<br>
-&gt; +#endif<br>
-&gt;&nbsp; #include &lt;libudev.h&gt;<br>
-&gt;&nbsp; #include &lt;string.h&gt;<br>
-&gt;&nbsp; #include &lt;signal.h&gt;<br>
-&gt; --<br>
-&gt; 2.49.0<br>
-&gt;<br>
-</div>
-</body>
-</html>
-
---_000_IA0PR11MB7353467A1AB9160BC5679F53ED62AIA0PR11MB7353namp_--
+> 
+> G.G.
+> 
+> On 5/26/25 3:13 AM, Jan Maslak wrote:
+> > Expose parameter num_threads_in_tg in (gen8|xehp)_fill_interface_descriptor
+> > functions, so that it can be set from the tests.
+> > Also update rest of the code to accommodate this change, passing in
+> > the default value - 1.
+> > 
+> > Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+> > ---
+> >   lib/gpgpu_fill.c                  |  6 +++---
+> >   lib/gpgpu_shader.c                | 16 ++++++++++------
+> >   lib/gpgpu_shader.h                |  1 +
+> >   lib/gpu_cmds.c                    |  8 +++++---
+> >   lib/gpu_cmds.h                    |  4 +++-
+> >   lib/media_fill.c                  |  4 ++--
+> >   lib/media_spin.c                  |  4 ++--
+> >   tests/intel/xe_eudebug_online.c   |  2 +-
+> >   tests/intel/xe_exec_sip.c         |  2 +-
+> >   tests/intel/xe_exec_sip_eudebug.c |  2 +-
+> >   tests/intel/xe_exec_store.c       |  2 +-
+> >   11 files changed, 30 insertions(+), 21 deletions(-)
+> > 
+> > diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
+> > index f83eee5f2..09408112c 100644
+> > --- a/lib/gpgpu_fill.c
+> > +++ b/lib/gpgpu_fill.c
+> > @@ -203,7 +203,7 @@ gen8_gpgpu_fillfunc(int i915,
+> >   	curbe_buffer = gen7_fill_curbe_buffer_data(ibb, color);
+> >   	interface_descriptor = gen8_fill_interface_descriptor(ibb, buf,
+> > -				gen8_gpgpu_kernel, sizeof(gen8_gpgpu_kernel));
+> > +				gen8_gpgpu_kernel, sizeof(gen8_gpgpu_kernel), 1);
+> >   	intel_bb_ptr_set(ibb, 0);
+> > @@ -254,7 +254,7 @@ __gen9_gpgpu_fillfunc(int i915,
+> >   	interface_descriptor = gen8_fill_interface_descriptor(ibb, buf,
+> >   							      kernel,
+> > -							      kernel_size);
+> > +							      kernel_size, 1);
+> >   	intel_bb_ptr_set(ibb, 0);
+> > @@ -350,7 +350,7 @@ void xehp_gpgpu_fillfunc(int i915,
+> >   	kernel = __xehp_gpgpu_kernel(i915);
+> >   	xehp_fill_interface_descriptor(ibb, buf, kernel->instr,
+> > -				       kernel->size * 4, &idd);
+> > +				       kernel->size * 4, 1, &idd);
+> >   	gpgpu_shader_destroy(kernel);
+> >   	intel_bb_ptr_set(ibb, 0);
+> > diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+> > index a63af0d23..b83e645e3 100644
+> > --- a/lib/gpgpu_shader.c
+> > +++ b/lib/gpgpu_shader.c
+> > @@ -99,6 +99,7 @@ static void
+> >   __xelp_gpgpu_execfunc(struct intel_bb *ibb,
+> >   		      struct intel_buf *target,
+> >   		      unsigned int x_dim, unsigned int y_dim,
+> > +		      uint32_t num_threads_in_tg,
+> >   		      struct gpgpu_shader *shdr,
+> >   		      struct gpgpu_shader *sip,
+> >   		      uint64_t ring, bool explicit_engine)
+> > @@ -113,7 +114,8 @@ __xelp_gpgpu_execfunc(struct intel_bb *ibb,
+> >   	interface_descriptor = gen8_fill_interface_descriptor(ibb, target,
+> >   							      shdr->instr,
+> > -							      4 * shdr->size);
+> > +							      4 * shdr->size,
+> > +							      num_threads_in_tg);
+> >   	idd = intel_bb_ptr_get(ibb, interface_descriptor);
+> >   	idd->desc2.illegal_opcode_exception_enable = shdr->illegal_opcode_exception_enable;
+> > @@ -162,6 +164,7 @@ static void
+> >   __xehp_gpgpu_execfunc(struct intel_bb *ibb,
+> >   		      struct intel_buf *target,
+> >   		      unsigned int x_dim, unsigned int y_dim,
+> > +		      uint32_t num_threads_in_tg,
+> >   		      struct gpgpu_shader *shdr,
+> >   		      struct gpgpu_shader *sip,
+> >   		      uint64_t ring, bool explicit_engine)
+> > @@ -176,7 +179,7 @@ __xehp_gpgpu_execfunc(struct intel_bb *ibb,
+> >   	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
+> >   	xehp_fill_interface_descriptor(ibb, target, shdr->instr,
+> > -				       4 * shdr->size, &idd);
+> > +				       4 * shdr->size, num_threads_in_tg, &idd);
+> >   	idd.desc2.illegal_opcode_exception_enable = shdr->illegal_opcode_exception_enable;
+> >   	if (shdr->vrt != VRT_DISABLED)
+> > @@ -241,6 +244,7 @@ static void gpgpu_alloc_gpu_addr(struct intel_bb *ibb, struct intel_buf *target)
+> >   void gpgpu_shader_exec(struct intel_bb *ibb,
+> >   		       struct intel_buf *target,
+> >   		       unsigned int x_dim, unsigned int y_dim,
+> > +		       uint32_t num_threads_in_tg,
+> >   		       struct gpgpu_shader *shdr,
+> >   		       struct gpgpu_shader *sip,
+> >   		       uint64_t ring, bool explicit_engine)
+> > @@ -253,11 +257,11 @@ void gpgpu_shader_exec(struct intel_bb *ibb,
+> >   		gpgpu_alloc_gpu_addr(ibb, target);
+> >   	if (shdr->gen_ver >= 1250)
+> > -		__xehp_gpgpu_execfunc(ibb, target, x_dim, y_dim, shdr, sip,
+> > -				      ring, explicit_engine);
+> > +		__xehp_gpgpu_execfunc(ibb, target, x_dim, y_dim, num_threads_in_tg,
+> > +				      shdr, sip, ring, explicit_engine);
+> >   	else
+> > -		__xelp_gpgpu_execfunc(ibb, target, x_dim, y_dim, shdr, sip,
+> > -				      ring, explicit_engine);
+> > +		__xelp_gpgpu_execfunc(ibb, target, x_dim, y_dim, num_threads_in_tg,
+> > +				      shdr, sip, ring, explicit_engine);
+> >   }
+> >   /**
+> > diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
+> > index ca996d574..411ad6292 100644
+> > --- a/lib/gpgpu_shader.h
+> > +++ b/lib/gpgpu_shader.h
+> > @@ -60,6 +60,7 @@ void gpgpu_shader_dump(struct gpgpu_shader *shdr);
+> >   void gpgpu_shader_exec(struct intel_bb *ibb,
+> >   		       struct intel_buf *target,
+> >   		       unsigned int x_dim, unsigned int y_dim,
+> > +		       uint32_t num_threads_in_tg,
+> >   		       struct gpgpu_shader *shdr,
+> >   		       struct gpgpu_shader *sip,
+> >   		       uint64_t ring, bool explicit_engine);
+> > diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+> > index a6a9247dc..5c6a6e632 100644
+> > --- a/lib/gpu_cmds.c
+> > +++ b/lib/gpu_cmds.c
+> > @@ -424,7 +424,8 @@ uint32_t
+> >   gen8_fill_interface_descriptor(struct intel_bb *ibb,
+> >   			       struct intel_buf *buf,
+> >   			       const uint32_t kernel[][4],
+> > -			       size_t size)
+> > +			       size_t size,
+> > +			       uint32_t num_threads_in_tg)
+> >   {
+> >   	struct gen8_interface_descriptor_data *idd;
+> >   	uint32_t offset;
+> > @@ -451,7 +452,7 @@ gen8_fill_interface_descriptor(struct intel_bb *ibb,
+> >   	idd->desc5.constant_urb_entry_read_offset = 0;
+> >   	idd->desc5.constant_urb_entry_read_length = 1; /* grf 1 */
+> > -	idd->desc6.num_threads_in_tg = 1;
+> > +	idd->desc6.num_threads_in_tg = num_threads_in_tg;
+> >   	intel_bb_ptr_add(ibb, sizeof(*idd));
+> > @@ -912,6 +913,7 @@ xehp_fill_interface_descriptor(struct intel_bb *ibb,
+> >   			       struct intel_buf *dst,
+> >   			       const uint32_t kernel[][4],
+> >   			       size_t size,
+> > +			       uint32_t num_threads_in_tg,
+> >   			       struct xehp_interface_descriptor_data *idd)
+> >   {
+> >   	uint32_t binding_table_offset, kernel_offset;
+> > @@ -931,7 +933,7 @@ xehp_fill_interface_descriptor(struct intel_bb *ibb,
+> >   	idd->desc4.binding_table_entry_count = 0;
+> >   	idd->desc4.binding_table_pointer = (binding_table_offset >> 5);
+> > -	idd->desc5.num_threads_in_tg = 1;
+> > +	idd->desc5.num_threads_in_tg = num_threads_in_tg;
+> >   }
+> >   static uint32_t
+> > diff --git a/lib/gpu_cmds.h b/lib/gpu_cmds.h
+> > index 846d2122a..20e35f9bf 100644
+> > --- a/lib/gpu_cmds.h
+> > +++ b/lib/gpu_cmds.h
+> > @@ -55,7 +55,8 @@ uint32_t
+> >   gen8_fill_interface_descriptor(struct intel_bb *ibb,
+> >   			       struct intel_buf *buf,
+> >   			       const uint32_t kernel[][4],
+> > -			       size_t size);
+> > +			       size_t size,
+> > +			       uint32_t num_threads_in_tg);
+> >   uint32_t
+> >   gen11_fill_interface_descriptor(struct intel_bb *ibb,
+> > @@ -121,6 +122,7 @@ xehp_fill_interface_descriptor(struct intel_bb *ibb,
+> >   			       struct intel_buf *dst,
+> >   			       const uint32_t kernel[][4],
+> >   			       size_t size,
+> > +			       uint32_t num_threads_in_tg,
+> >   			       struct xehp_interface_descriptor_data *idd);
+> >   void
+> > diff --git a/lib/media_fill.c b/lib/media_fill.c
+> > index 88d83061a..a2f2e8666 100644
+> > --- a/lib/media_fill.c
+> > +++ b/lib/media_fill.c
+> > @@ -205,7 +205,7 @@ gen8_media_fillfunc(int i915,
+> >   	curbe_buffer = gen7_fill_curbe_buffer_data(ibb, color);
+> >   	interface_descriptor = gen8_fill_interface_descriptor(ibb, buf,
+> >   					gen8_media_kernel,
+> > -					sizeof(gen8_media_kernel));
+> > +					sizeof(gen8_media_kernel), 1);
+> >   	intel_bb_ptr_set(ibb, 0);
+> >   	/* media pipeline */
+> > @@ -250,7 +250,7 @@ __gen9_media_fillfunc(int i915,
+> >   	curbe_buffer = gen7_fill_curbe_buffer_data(ibb, color);
+> >   	interface_descriptor = gen8_fill_interface_descriptor(ibb, buf,
+> >   							      kernel,
+> > -							      kernel_size);
+> > +							      kernel_size, 1);
+> >   	intel_bb_ptr_set(ibb, 0);
+> >   	/* media pipeline */
+> > diff --git a/lib/media_spin.c b/lib/media_spin.c
+> > index d2345d153..2b81e99d1 100644
+> > --- a/lib/media_spin.c
+> > +++ b/lib/media_spin.c
+> > @@ -109,7 +109,7 @@ gen8_media_spinfunc(int i915, struct intel_buf *buf, uint32_t spins)
+> >   	curbe_buffer = gen8_spin_curbe_buffer_data(ibb, spins);
+> >   	interface_descriptor = gen8_fill_interface_descriptor(ibb, buf,
+> > -					      spin_kernel, sizeof(spin_kernel));
+> > +					      spin_kernel, sizeof(spin_kernel), 1);
+> >   	intel_bb_ptr_set(ibb, 0);
+> > @@ -149,7 +149,7 @@ gen9_media_spinfunc(int i915, struct intel_buf *buf, uint32_t spins)
+> >   	curbe_buffer = gen8_spin_curbe_buffer_data(ibb, spins);
+> >   	interface_descriptor = gen8_fill_interface_descriptor(ibb, buf,
+> > -					      spin_kernel, sizeof(spin_kernel));
+> > +					      spin_kernel, sizeof(spin_kernel), 1);
+> >   	intel_bb_ptr_set(ibb, 0);
+> > diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+> > index 1f72e3e44..3d138bdc3 100644
+> > --- a/tests/intel/xe_eudebug_online.c
+> > +++ b/tests/intel/xe_eudebug_online.c
+> > @@ -1115,7 +1115,7 @@ static void run_online_client(struct xe_eudebug_client *c)
+> >   	sip = get_sip(fd, c->flags);
+> >   	igt_nsec_elapsed(&ts);
+> > -	gpgpu_shader_exec(ibb, buf, w_dim.x, w_dim.y, shader, sip, 0, 0);
+> > +	gpgpu_shader_exec(ibb, buf, w_dim.x, w_dim.y, 1, shader, sip, 0, 0);
+> >   	gpgpu_shader_destroy(sip);
+> >   	gpgpu_shader_destroy(shader);
+> > diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+> > index 062b80a08..c5e431670 100644
+> > --- a/tests/intel/xe_exec_sip.c
+> > +++ b/tests/intel/xe_exec_sip.c
+> > @@ -146,7 +146,7 @@ static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, enum shader_type shad
+> >   	struct gpgpu_shader *sip = get_sip(fd, sip_type, height / 2);
+> >   	struct gpgpu_shader *shader = get_shader(fd, shader_type);
+> > -	gpgpu_shader_exec(ibb, buf, 1, threads, shader, sip, 0, 0);
+> > +	gpgpu_shader_exec(ibb, buf, 1, threads, 1, shader, sip, 0, 0);
+> >   	if (sip)
+> >   		gpgpu_shader_destroy(sip);
+> > diff --git a/tests/intel/xe_exec_sip_eudebug.c b/tests/intel/xe_exec_sip_eudebug.c
+> > index e5b8ba418..b723b0b58 100644
+> > --- a/tests/intel/xe_exec_sip_eudebug.c
+> > +++ b/tests/intel/xe_exec_sip_eudebug.c
+> > @@ -138,7 +138,7 @@ static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, enum shader_type shad
+> >   	struct gpgpu_shader *sip = get_sip(fd, sip_type, shader_type, height / 2);
+> >   	struct gpgpu_shader *shader = get_shader(fd, shader_type);
+> > -	gpgpu_shader_exec(ibb, buf, 1, threads, shader, sip, 0, 0);
+> > +	gpgpu_shader_exec(ibb, buf, 1, threads, 1, shader, sip, 0, 0);
+> >   	if (sip)
+> >   		gpgpu_shader_destroy(sip);
+> > diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+> > index bf22c3475..364169fdc 100644
+> > --- a/tests/intel/xe_exec_store.c
+> > +++ b/tests/intel/xe_exec_store.c
+> > @@ -390,7 +390,7 @@ static void long_shader(int fd, struct drm_xe_engine_class_instance *hwe,
+> >   	gpgpu_shader__nop(shader);
+> >   	gpgpu_shader__eot(shader);
+> > -	gpgpu_shader_exec(ibb, buf, walker_dim_x, walker_dim_y, shader, NULL, 0, 0);
+> > +	gpgpu_shader_exec(ibb, buf, walker_dim_x, walker_dim_y, 1, shader, NULL, 0, 0);
+> >   	intel_bb_sync(ibb);
+> >   	ptr = xe_bo_map(fd, ibb->handle, ibb->size);
+> 
