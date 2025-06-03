@@ -4,62 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BF3FC5AE59
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 08:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50D98C5AD49
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 08:14:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 15EC810E1C6;
-	Tue,  3 Jun 2025 08:13:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EA6DF10E1C6;
+	Tue,  3 Jun 2025 08:14:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="XUh61EAN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iOxq/gJi";
 	dkim-atps=neutral
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com
- [209.85.160.178])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4B9E10E1BD
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 02:55:58 +0000 (UTC)
-Received: by mail-qt1-f178.google.com with SMTP id
- d75a77b69052e-4a42f28017eso61790771cf.0
- for <igt-dev@lists.freedesktop.org>; Mon, 02 Jun 2025 19:55:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1748919357; x=1749524157; darn=lists.freedesktop.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=4SiwW80LhKjupvPgr6hcwunZ/yDfte7OkNg/zW63Ets=;
- b=XUh61EAN8YTTr6/m+289/Hx+2g+dr7AhAGZLL61BZ1/1eFl0nqjLMlUNF7+uN1RwuT
- zYWLSivtpkD/7ojU+7kXmlS6upb2N9dASqL5QMM2YOL488mohXcWqJneCiCTr4IKZypv
- qrysENQ7erM+FeBUje1Q4RESrg1ryhr0hDfFlyDR6Q3fUUKVpdBb1XVeTf9zZ6IPFPqN
- 6JfDbXwSuUNbkMpADPVWpYWZf2bJVKzpUoUmMU5G0wAdIR5AvTseUSDbZqYOyc/ABysQ
- hKA/aJG1QdbskTnhL5RztSF1R7AzmXBrKMzQFVo44GBGo9jyVty0t3Ry8t+x7p6VTI6f
- fPcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748919357; x=1749524157;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4SiwW80LhKjupvPgr6hcwunZ/yDfte7OkNg/zW63Ets=;
- b=Ml7OaE0tvBrmI3oQLbiOsCveSSFBQ+rsw6CFCTo2T8GyRO4b3h/unMaKpEaXXv24xq
- KSKND04djeDmIJoGid+3s7FxIQom5l6L3Xa3nM8CoxM4lCmfHXT6U2R1FpFWBmSvNTUf
- M8Gij+RnWwYOj11jVvRBWxfzONqwPTpn52hpnMZYKGzBZaPtCkYTowiuLL4Qz0jtJhol
- d0d9dczhU+Fs/ebA55sbxwXvLX7tOXRYV9W3ppCBoGdxORw8OqXYv2E6i/PF08f+hab1
- RaQ9f2KLUcNVQbsKZT3tN+W4lRjtUEpUYznsi82zN/2Lpqjl5ji3lLKwbbJjM9EeIAen
- Gztg==
-X-Gm-Message-State: AOJu0YxDRzIGVhMlGHd4J2DAEvkQZj0glApnFec1VP0+jKGVPn6A2HL6
- kB9XXt1OoHaoZdmVQKKsTMV7CH7pyeYl7365uRW43ag2Xs9R8NpxR0JBYpuKQMUpQPAvSOQ/wvG
- C1x7s3Hv0ateqTksr/ur/EnJCcZWDulEhKJOWHT8=
-X-Gm-Gg: ASbGncsIOpuamW4TML4hEXpKpmZD78WaO2JbmID0pxW1S7dmaRCpHIT8Eb8U1+w631M
- tgfUndth98j2vVjp7EvbiZe9Y6UbsWxBweHpo6E+uOJVa0PGFhVRaxO317jdnPhBIqUR4gviV/w
- 4zEdIvUCNvZfhVBhy+zhBZZWkN00Kq21iNnC47KfFdfkzt8ckEKiwxYQ==
-X-Google-Smtp-Source: AGHT+IGB4VIbPfYTSni1fF4XY1p/EXviBCiQKRJj2j5eL96TjhnE4Vr1MOpLzu+RJsxYb4WnCVdsj+fh3+U38xjeFKg=
-X-Received: by 2002:a05:622a:228e:b0:4a3:4412:dfcd with SMTP id
- d75a77b69052e-4a59b17d8eemr15265891cf.22.1748919357322; Mon, 02 Jun 2025
- 19:55:57 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD7E510E1C6
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 08:14:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1748938465; x=1780474465;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=MxAtB6jRc7k3m5eChxPjBkJGLd8u6uV7UN1oqMqRiGg=;
+ b=iOxq/gJi/34EX/BXeOUe+9B63dvZG72MnEGxsgAF4mBzjyNaNS7HwmSg
+ Z/zC5w0jktRpVFOI+PTEGFvuG8k27EgkiusBGuemyIKPhLrvkf0C6Wm0j
+ k+3lTxBkeIpEDKmVoklIBz5LO7QGJVdgHFuu5D7nY5Mv3IeVSpaBcyewk
+ gF49NEmdatuhOw1mYCGVVChkwcLnDp5/hETzgVTOSEDf75uwgE8bA0uyh
+ XwzA6CvRwTrzvDLztcsBiGs76zibuiWePCgtsO8v0x/WgswTR7MPfQsOl
+ 9CdO8ez1EdoGqt6vFwPqfsBBi4X++XNCy/Gtfq2mLAMfOX8+/N3tIhzXf g==;
+X-CSE-ConnectionGUID: 3SyWrSiMRHCE3U5ouGkJBg==
+X-CSE-MsgGUID: Xe/9y7HZRdegfgxjxdXBvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="51068811"
+X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="51068811"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2025 01:14:23 -0700
+X-CSE-ConnectionGUID: USQU9D0NT9mv3RIYhHgWpA==
+X-CSE-MsgGUID: 0o+mkYgSSq+5K4i0FDxh2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="149665412"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 01:14:19 -0700
+Date: Tue, 3 Jun 2025 10:14:04 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: aditya.chauhan@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] Revert "tests/intel/xe_exec_system_allocator: Add
+ GPU platform PTL for sys allocator tests"
+Message-ID: <20250603081404.dmmtsznb3lx5m62j@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ aditya.chauhan@intel.com, igt-dev@lists.freedesktop.org
+References: <20250603053629.222192-1-aditya.chauhan@intel.com>
 MIME-Version: 1.0
-From: Bram Stolk <b.stolk@gmail.com>
-Date: Mon, 2 Jun 2025 19:55:46 -0700
-X-Gm-Features: AX0GCFtVUqia1NEmD5IvV-OX-fYbwFPaR7bcc5CZxMCy96SNLtO3pl5pMmgkc-0
-Message-ID: <CABYXEks8fkP15bNZJyr3A49F1eNbn1MPnYLkUtNm6FCP=nksgA@mail.gmail.com>
-Subject: [PATCH i-g-t] xe-perf-record: use correct sysctl suggestion.
-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/alternative; boundary="00000000000008c07c0636a20584"
-X-Mailman-Approved-At: Tue, 03 Jun 2025 08:12:59 +0000
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250603053629.222192-1-aditya.chauhan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,59 +70,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---00000000000008c07c0636a20584
-Content-Type: text/plain; charset="UTF-8"
+Hi aditya.chauhan,
+On 2025-06-03 at 11:06:29 +0530, aditya.chauhan@intel.com wrote:
+> From: Aditya Chauhan <aditya.chauhan@intel.com>
+> 
+> This reverts commit c7c948b8de5dc4178ee5ed2106f7c3f160def170.
+> SVM development is limited to post PV platforms as of now.
+> 
+> Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
+> Cc: Ramadevi Gandi<ramadevi.gandi@intel.com>
+> Cc: Himanshu Girotra <himanshu.girotra@intel.com>
 
-From e03269c796207749afe2f7d49ac64b672e7185af Mon Sep 17 00:00:00 2001
-From: Bram Stolk <b.stolk@gmail.com>
-Date: Sat, 31 May 2025 11:40:18 -0700
-Subject: [PATCH i-g-t] xe-perf-record: use correct sysctl suggestion.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-On xe, perf_stream_paranoid is not used.
-Instead, observation_paranoid should be used.
-
-Signed-off-by: Bram Stolk <b.stolk@gmail.com>
----
- tools/xe-perf/xe_perf_recorder.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/xe-perf/xe_perf_recorder.c
-b/tools/xe-perf/xe_perf_recorder.c
-index 9cf51f3e1..5bd91aeb1 100644
---- a/tools/xe-perf/xe_perf_recorder.c
-+++ b/tools/xe-perf/xe_perf_recorder.c
-@@ -1137,7 +1137,7 @@ main(int argc, char *argv[])
-  if (ctx.metric_set->perf_oa_metrics_set == 0) {
-  fprintf(stderr,
-  "Unable to load performance configuration, consider running:\n"
-- "   sysctl dev.xe.perf_stream_paranoid=0\n");
-+ "   sysctl dev.xe.observation_paranoid=0\n");
-  goto fail;
-  }
-
--- 
-2.48.1
-
---00000000000008c07c0636a20584
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>From e03269c796207749afe2f7d49ac64b672e7185af Mon Sep=
- 17 00:00:00 2001<br>From: Bram Stolk &lt;<a href=3D"mailto:b.stolk@gmail.c=
-om">b.stolk@gmail.com</a>&gt;<br>Date: Sat, 31 May 2025 11:40:18 -0700<br>S=
-ubject: [PATCH i-g-t] xe-perf-record: use correct sysctl suggestion.<br><br=
->On xe, perf_stream_paranoid is not used.<br>Instead, observation_paranoid =
-should be used.<br><br>Signed-off-by: Bram Stolk &lt;<a href=3D"mailto:b.st=
-olk@gmail.com">b.stolk@gmail.com</a>&gt;<br>---<br>=C2=A0tools/xe-perf/xe_p=
-erf_recorder.c | 2 +-<br>=C2=A01 file changed, 1 insertion(+), 1 deletion(-=
-)<br><br>diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_p=
-erf_recorder.c<br>index 9cf51f3e1..5bd91aeb1 100644<br>--- a/tools/xe-perf/=
-xe_perf_recorder.c<br>+++ b/tools/xe-perf/xe_perf_recorder.c<br>@@ -1137,7 =
-+1137,7 @@ main(int argc, char *argv[])<br>=C2=A0	if (ctx.metric_set-&gt;pe=
-rf_oa_metrics_set =3D=3D 0) {<br>=C2=A0		fprintf(stderr,<br>=C2=A0			&quot;=
-Unable to load performance configuration, consider running:\n&quot;<br>-			=
-&quot; =C2=A0 sysctl dev.xe.perf_stream_paranoid=3D0\n&quot;);<br>+			&quot=
-; =C2=A0 sysctl dev.xe.observation_paranoid=3D0\n&quot;);<br>=C2=A0		goto f=
-ail;<br>=C2=A0	}<br>=C2=A0<br>-- <br>2.48.1</div><div><br></div></div>
-
---00000000000008c07c0636a20584--
+> ---
+>  tests/intel/xe_exec_system_allocator.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+> index 06daac8c2..9528c9449 100644
+> --- a/tests/intel/xe_exec_system_allocator.c
+> +++ b/tests/intel/xe_exec_system_allocator.c
+> @@ -9,7 +9,7 @@
+>   * Mega feature: USM
+>   * Sub-category: System allocator
+>   * Functionality: fault mode, system allocator
+> - * GPU: LNL, BMG, PVC, PTL
+> + * GPU: LNL, BMG, PVC
+>   */
+>  
+>  #include <fcntl.h>
+> -- 
+> 2.34.1
+> 
