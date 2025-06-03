@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EF90C5AD49
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 10:30:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7A40C5AE59
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 11:10:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 11CD410E311;
-	Tue,  3 Jun 2025 10:30:11 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF20F10E5B3;
- Tue,  3 Jun 2025 10:30:10 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4287402276088044492=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 75EE710E5C1;
+	Tue,  3 Jun 2025 11:10:05 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MzsP5Mv2";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40EFE10E5A2
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 11:10:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1748949004; x=1780485004;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7QvvRIKxF0olS5d1F9GTDdT8kOm6aqpOK5Z0UL95KHw=;
+ b=MzsP5Mv2p4b4u51XKYzfd6z9d0Jq8WpYogPxUnFeCGuCkZXSfg8ikau8
+ 2zNMHNTjxA/sNVWS0U/8BSiBB14h48SMPUvHeMP/PidC3GpMDbJbXXfrl
+ Xg0eN5CvIQd9DCvonFD8h8HDU1inRSSBW1mmzOKZD/oxheyu/qTMV2cT5
+ efjzffLPbVuKslrf+obszDEBrIwKXNWMwvnjWfDn03xIDEo2Ey/RXf+G1
+ 83vompsY8vq9Hzv6w9jdJrkCLDs56D4mObKj9wtUHmP1SzRuJjCjI6mMK
+ Zqd4ZXzRmGlyDQwv8VrdaaS8sPCtIbHDC/rs0SONFO6nasUkzlBTgiP70 g==;
+X-CSE-ConnectionGUID: +jx/DrF+RB+8MRGYLiAYCg==
+X-CSE-MsgGUID: kxNAAXObQrGYTicWu6VS1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="61603711"
+X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="61603711"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2025 04:10:03 -0700
+X-CSE-ConnectionGUID: 7/bkFsORSx+W6neaQLKEgg==
+X-CSE-MsgGUID: D7z6HWCRTp6wgSAnkT7Iog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="149598270"
+Received: from artdev273.igk.intel.com ([172.28.176.71])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2025 04:10:01 -0700
+From: Jan Sokolowski <jan.sokolowski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v5 0/9] Print/scan formatting fixups
+Date: Tue,  3 Jun 2025 11:10:58 +0000
+Message-Id: <20250603111107.3170529-1-jan.sokolowski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Support_for_IN=5FFORMATS=5F?=
- =?utf-8?q?ASYNC_plane_property?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 03 Jun 2025 10:30:10 -0000
-Message-ID: <174894661070.43069.11497761632464173897@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250603092758.371150-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20250603092758.371150-1-santhosh.reddy.guddati@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +64,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4287402276088044492==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+It was found that when compiling for other architectures,
+due to difference in how these architectures recognize
+how integers should be printed, warnings were thrown
+in print/scan functions.
 
-== Series Details ==
+Fix them up using universal formatters like
+for example PRIu64.
 
-Series: Support for IN_FORMATS_ASYNC plane property
-URL   : https://patchwork.freedesktop.org/series/149760/
-State : success
+Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
+---
 
-CI Bug Log - changes from XEIGT_8392_BAT -> XEIGTPW_13231_BAT
-====================================================
+v2: various fixes for missing formatters, commit messages, and warnings
+for additional configurations. Added cc's. Split patches into more
+smaller patches.
+v3: Added rb's from v2. Fixed what had been found in v2 review.
+Rebased to current HEAD, which added more things to correct in xe_pmu.c
+v4: Minor fixes.
+v5: Reworded patch topics, added rb's
 
-Summary
--------
+---
 
-  **SUCCESS**
+Jan Sokolowski (9):
+  lib/amdgpu: fix print formatting for 32-bit compilation
+  tests/amdgpu: fix print formatting for 32-bit compilation
+  lib/igt_nouveau: fix print formatting for 32-bit compilation
+  lib/igt_perf: fix scan formatting for 32-bit compilation
+  lib/xe/xe_sriov*: fix print/scan formatting for 32-bit compilation
+  tests/intel/xe_sriov*: fix print formatting for 32-bit compilation
+  runner: fix print/scan formatting for 32-bit compilation
+  tests/intel/xe*: fix print formatting for 32-bit compilation
+  tests/intel/xe_eudebug: fix print formatting for 32-bit compilation
 
-  No regressions found.
+ lib/amdgpu/amd_deadlock_helpers.c        | 19 ++++++++++---------
+ lib/igt_nouveau.c                        |  2 +-
+ lib/igt_perf.c                           |  3 ++-
+ lib/xe/xe_sriov_debugfs.c                | 18 +++++++++---------
+ lib/xe/xe_sriov_provisioning.c           |  2 +-
+ runner/executor.c                        |  2 +-
+ runner/settings.c                        |  2 +-
+ tests/amdgpu/amd_freesync_video_mode.c   |  4 ++--
+ tests/amdgpu/amd_info.c                  |  2 +-
+ tests/amdgpu/amd_ras.c                   |  2 +-
+ tests/intel/xe_compute_preempt.c         |  5 +++--
+ tests/intel/xe_eu_stall.c                |  4 ++--
+ tests/intel/xe_eudebug.c                 |  4 ++--
+ tests/intel/xe_exec_capture.c            |  9 +++++----
+ tests/intel/xe_exec_system_allocator.c   |  8 ++++----
+ tests/intel/xe_oa.c                      |  6 +++---
+ tests/intel/xe_pmu.c                     | 16 ++++++++--------
+ tests/intel/xe_render_copy.c             |  2 +-
+ tests/intel/xe_sriov_auto_provisioning.c |  6 +++---
+ tests/intel/xe_sriov_flr.c               | 12 ++++++------
+ tests/intel/xe_sriov_scheduling.c        |  4 ++--
+ 21 files changed, 68 insertions(+), 64 deletions(-)
 
-  
+-- 
+2.34.1
 
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8392 -> IGTPW_13231
-
-  IGTPW_13231: 18a4690da17318412b9c672752df0035f748c7d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8392: 8392
-  xe-3182-ca1365e3f2388040c758942fcdf3d046016cd649: ca1365e3f2388040c758942fcdf3d046016cd649
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13231/index.html
-
---===============4287402276088044492==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Support for IN_FORMATS_ASYNC plane property</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149760/">https://patchwork.freedesktop.org/series/149760/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13231/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13231/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8392_BAT -&gt; XEIGTPW_13231_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8392 -&gt; IGTPW_13231</li>
-</ul>
-<p>IGTPW_13231: 18a4690da17318412b9c672752df0035f748c7d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8392: 8392<br />
-  xe-3182-ca1365e3f2388040c758942fcdf3d046016cd649: ca1365e3f2388040c758942fcdf3d046016cd649</p>
-
-</body>
-</html>
-
---===============4287402276088044492==--
