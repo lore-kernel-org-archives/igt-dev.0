@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5230BC5B552
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 19:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D33BC5AD49
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 19:31:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F1AD210E19C;
-	Tue,  3 Jun 2025 19:24:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 27C4710E8C4;
+	Tue,  3 Jun 2025 19:31:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BdfLbxnQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GjplYReh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C0DE10E21E
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 19:24:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BECC410E8C4
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 19:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748978695; x=1780514695;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=84kAnjc+9yPDoCceg0qvQQRJw/DFfD1LKXLEqYHhgKs=;
- b=BdfLbxnQhuyULnbK5S7qE4ztDuLPGcXnl9k2IKZQpednYQYBApiaj8Pw
- DROY72OoNAcU7GtKKmQUx7wAc+3wyUu8SMbAHLlaePFv53h0N4FmpeLdT
- 3ZYDug8oEYIlRcnWGNdssvx/bsN6NXUT/jqBtwpLD9+jiCl95Jt+gU2xX
- U9VUzgrkowS5xn6q7LQx3eMbkhfzHW1iC/vcg2h604itdiT1iS5IHkRrm
- AVPp0vQsAOS5RaXE2q4xiGgKO+Swucjur7rV4LepaLGaLMcVd7xg9vR4z
- xCHzcanu/WtS95l8/XznQ4rSCmjn/+xNau9DoqgbdTfc+qMAc6iGcJgj1 A==;
-X-CSE-ConnectionGUID: XoD0nQKtSAG7qx7DIMNWww==
-X-CSE-MsgGUID: F9Q1wu+eQwKUuYM4c+UJSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="76424334"
-X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="76424334"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2025 12:24:55 -0700
-X-CSE-ConnectionGUID: B0fwbOCcQIKHw4hWsNr6GA==
-X-CSE-MsgGUID: 9dFKNf1BQTOiPGUiwtP8EQ==
+ t=1748979076; x=1780515076;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=AYhPlsAvHhdX1AqTQ6vmvLrY0fwWNO5i3atTxfbY3eQ=;
+ b=GjplYRehv7rLycbEMkKPpqZ5BM2C3bAgdfk4N1iKcwjkwdPIR5HKfcSx
+ XcZ29u3YvSg1qxvl7JmDVgrD8aFV/delXofd9eaN8NE7vqwwv5Fh3WBxK
+ 5OOotisJSfiT0F4w9jlGXvMELzW9TbVtfvp9PWRh+S4ZEqjuaxzTNw43a
+ 99TAE1edrMlCk6GZldRitOeKpYJUL40O3kBn0DjRJm21K8UsvIOcIXwvH
+ lETk9Ka54xyOB/XAdyAn7LjymCUoOpAFuQcx4ZCCLAhCho/xGV1w2dalu
+ BrHwCxRZsMFhOyEdwbgh/8RzawgmYHxKP+6wXx1B08v1AVsAxvLr/bbkH Q==;
+X-CSE-ConnectionGUID: 1vKhYDzaQ8eGHmD6Hdcs7Q==
+X-CSE-MsgGUID: MjGT4Eg8SEG7eYjB1XdjOA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="53663154"
+X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; d="scan'208";a="53663154"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2025 12:31:16 -0700
+X-CSE-ConnectionGUID: ZpVPiLLvREWuyVU8mCOqZg==
+X-CSE-MsgGUID: aslaEB/aTguQIo4So03brg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="175821641"
-Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by fmviesa001.fm.intel.com with ESMTP; 03 Jun 2025 12:24:52 -0700
-From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; d="scan'208";a="150003994"
+Received: from dut4028ptlh.fm.intel.com ([10.105.10.130])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2025 12:31:16 -0700
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
- markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
- sapna1.singh@intel.com,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Subject: [PATCH i-g-t v14 11/11] lib/igt_device_scan: reuse igt hash
-Date: Tue,  3 Jun 2025 19:23:54 +0000
-Message-ID: <20250603192355.77019-12-jeevaka.badrappan@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250603192355.77019-1-jeevaka.badrappan@intel.com>
-References: <20250603192355.77019-1-jeevaka.badrappan@intel.com>
+Cc: jonathan.cavitt@intel.com, satyanarayana.k.v.p@intel.com,
+ michal.wajdeczko@intel.com, daniele.ceraolospurio@intel.com,
+ lucas.demarchi@intel.com, francois.dugast@intel.com,
+ rodrigo.vivi@intel.com, john.c.harrison@intel.com
+Subject: [PATCH v2] tests/intel/xe_fault_injection: Ignore all errors while
+ injecting fault
+Date: Tue,  3 Jun 2025 19:31:10 +0000
+Message-ID: <20250603193110.625056-1-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,203 +69,235 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As glib is not available in Android, replace the glib hash
-functions by reusing the igt hash functions.
+From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 
-Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Currently, numerous fault messages have been included in the dmesg
+ignore list, and this list continues to expand.  Each time a new fault
+injection point is introduced or a new feature is activated, additional
+fault messages appear, making it cumbersome to manage the dmesg ignore
+list.
+
+However, we can safely assert that all dmesg reports that contain
+*ERROR* in their message can be ignored, so add them to the dmesg ignore
+list.  This unfortunately does not include the device probe error
+itself, so that must be added separately.
+
+While we're here, we should also assert that any errors we see are only
+coming from the target PCI device.
+
+v2:
+- Only ignore error-level dmesg reports (or, at least, reports with
+  *ERROR* in them), and device probe failues
+- Add PCI data to regex (Michal)
+
+v3: (Michal)
+- Revert name change
+- Add change log
+- Remove fixes tag from commit
+- Rename ignore_faults_in_dmesg to igt_ignore_dmesg_errors_from_dut, and
+  move to lib/igt_core.c
+- Minor code fixes
+
+Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Suggested-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Suggested-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Suggested-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: John Harrison <john.c.harrison@intel.com>
 ---
- lib/igt_device_scan.c | 78 ++++++++++++++++++++++---------------------
- lib/meson.build       |  1 +
- 2 files changed, 41 insertions(+), 38 deletions(-)
+ lib/igt_core.c                   | 47 +++++++++++++++++++++++++-------
+ lib/igt_core.h                   |  1 +
+ tests/intel/xe_fault_injection.c | 36 ++++--------------------
+ 3 files changed, 43 insertions(+), 41 deletions(-)
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index 45faabc45..e1cebfaed 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -26,12 +26,12 @@
- #include "igt_core.h"
- #include "igt_device_scan.h"
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index b06cdfd894..ecc7bafab9 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -76,6 +76,7 @@
+ #include "igt_rc.h"
  #include "igt_list.h"
-+#include "igt_map.h"
- #include "intel_chipset.h"
+ #include "igt_map.h"
++#include "igt_device.h"
+ #include "igt_device_scan.h"
+ #include "igt_thread.h"
+ #include "igt_vec.h"
+@@ -642,8 +643,8 @@ static void _igt_log_buffer_dump(void)
+  *
+  * Provides a way to replay the internal igt log buffer for inspection.
+  * @check: A user-specified handler that gets invoked for each line of
+- *         the log buffer. The handler should return true to stop
+- *         inspecting the rest of the buffer.
++ * the log buffer. The handler should return true to stop
++ * inspecting the rest of the buffer.
+  * @data: passed as a user argument to the inspection function.
+  */
+ void igt_log_buffer_inspect(igt_buffer_log_handler_t check, void *data)
+@@ -1101,19 +1102,19 @@ static int common_init(int *argc, char **argv,
+ 	static struct option long_options[] = {
+ 		{"list-subtests",     no_argument,       NULL, OPT_LIST_SUBTESTS},
+ 		{"show-testlist",     no_argument,       NULL, OPT_SHOW_TESTLIST},
+-		{"describe",          optional_argument, NULL, OPT_DESCRIBE_SUBTESTS},
++		{"describe",  optional_argument, NULL, OPT_DESCRIBE_SUBTESTS},
+ 		{"run-subtest",       required_argument, NULL, OPT_RUN_SUBTEST},
+ 		{"dynamic-subtest",   required_argument, NULL, OPT_RUN_DYNAMIC_SUBTEST},
+ 		{"help-description",  no_argument,       NULL, OPT_DESCRIPTION},
+-		{"debug",             optional_argument, NULL, OPT_DEBUG},
++		{"debug",     optional_argument, NULL, OPT_DEBUG},
+ 		{"interactive-debug", optional_argument, NULL, OPT_INTERACTIVE_DEBUG},
+ 		{"skip-crc-compare",  no_argument,       NULL, OPT_SKIP_CRC},
+ 		{"trace-on-oops",     no_argument,       NULL, OPT_TRACE_OOPS},
+-		{"hook",              required_argument, NULL, OPT_HOOK},
+-		{"help-hook",         no_argument,       NULL, OPT_HELP_HOOK},
+-		{"device",            required_argument, NULL, OPT_DEVICE},
+-		{"version",           no_argument,       NULL, OPT_VERSION},
+-		{"help",              no_argument,       NULL, OPT_HELP},
++		{"hook",      required_argument, NULL, OPT_HOOK},
++		{"help-hook", no_argument,       NULL, OPT_HELP_HOOK},
++		{"device",    required_argument, NULL, OPT_DEVICE},
++		{"version",   no_argument,       NULL, OPT_VERSION},
++		{"help",      no_argument,       NULL, OPT_HELP},
+ 		{0, 0, 0, 0}
+ 	};
+ 	char *short_opts;
+@@ -3034,7 +3035,7 @@ static void fatal_sig_handler(int sig)
  
- #include <ctype.h>
- #include <dirent.h>
- #include <fcntl.h>
--#include <glib.h>
- #include <libudev.h>
- #ifdef __linux__
- #include <linux/limits.h>
-@@ -224,8 +224,8 @@ struct igt_device {
- 	/* Point to vendor spec if can be found */
- 
- 	/* Properties / sysattrs rewriten from udev lists */
--	GHashTable *props_ht;
--	GHashTable *attrs_ht;
-+	struct igt_map *props_map;
-+	struct igt_map *attrs_map;
- 
- 	/* Most usable variables from udev device */
- 	char *subsystem;
-@@ -464,6 +464,11 @@ static bool is_on_blacklist(const char *what)
- 
+ 		pthread_sigqueue(tid, sig, value);
+ #endif
+-        }
++}
  }
  
-+static int key_equals(const void *key1, const void *key2)
+ /**
+@@ -3581,6 +3582,32 @@ void igt_emit_ignore_dmesg_regex(const char *ignore_dmesg_regex)
+ 	igt_kmsg(KMSG_INFO "%s%s\n", mark_ignore_dmesg, ignore_dmesg_regex);
+ }
+ 
++/**
++ * igt_ignore_dmesg_errors_from_dut(int fd)
++ * @fd: The file directory
++ *
++ * Submits an igt_emit_ignore_dmesg_regex request targeting all error-level
++ * dmesg reports (or, at least, reports that contain the string *ERROR*),
++ * as well as any device probe errors, that are reported from the pci
++ * slot of the given file directory @fd
++ */
++void igt_ignore_dmesg_errors_from_dut(int fd)
 +{
-+	return strcmp((char *)key1, (char *)key2) == 0;
++	/*
++	 * Catch any dmesg reports that contain the substring "*ERROR*", as well as any
++	 * device probe errors.
++	 */
++	static const char *store = "probe with driver xe failed with error|\\*ERROR\\*";
++	char pci_slot[NAME_MAX];
++	char regex[1024];
++
++	/* Only block dmesg reports that target the pci slot of the given fd */
++	igt_device_get_pci_slot_name(fd, pci_slot);
++	snprintf(regex, sizeof(regex), "%s:.*(%s)", pci_slot, store);
++
++	igt_emit_ignore_dmesg_regex(regex);
 +}
 +
- static struct igt_device *igt_device_new(void)
- {
- 	struct igt_device *dev;
-@@ -472,14 +477,14 @@ static struct igt_device *igt_device_new(void)
- 	if (!dev)
- 		return NULL;
+ /**
+  * @igt_measured_usleep: Helper to model accurate sleep time for tests
+  * @usec: usec to sleep
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 2db579423c..f6affbaf57 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1599,6 +1599,7 @@ int igt_pci_system_reinit(void);
+ void igt_pci_system_cleanup(void);
  
--	dev->attrs_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
--					      free, free);
--	dev->props_ht = g_hash_table_new_full(g_str_hash, g_str_equal,
--					      free, free);
-+	dev->attrs_map = igt_map_create(igt_map_hash_32, key_equals);
-+	dev->props_map = igt_map_create(igt_map_hash_32, key_equals);
+ void igt_emit_ignore_dmesg_regex(const char *ignore_dmesg_regex);
++void igt_ignore_dmesg_errors_from_dut(int fd);
  
--	if (dev->attrs_ht && dev->props_ht)
-+	if (dev->attrs_map && dev->props_map)
- 		return dev;
- 
-+	igt_map_destroy(dev->attrs_map, NULL);
-+	igt_map_destroy(dev->props_map, NULL);
- 	free(dev);
- 
- 	return NULL;
-@@ -491,7 +496,7 @@ static void igt_device_add_prop(struct igt_device *dev,
- 	if (!key || !value)
- 		return;
- 
--	g_hash_table_insert(dev->props_ht, strdup(key), strdup(value));
-+	igt_map_insert(dev->props_map, strdup(key), strdup(value));
+ unsigned int igt_measured_usleep(unsigned int usec);
+ #endif /* IGT_CORE_H */
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 9fe6bfe351..594c1417a2 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -64,32 +64,6 @@ static int fail_function_open(void)
+ 	return debugfs_fail_function_dir_fd;
  }
  
- static void igt_device_add_attr(struct igt_device *dev,
-@@ -525,7 +530,7 @@ static void igt_device_add_attr(struct igt_device *dev,
- 		v++;
- 	}
- 
--	g_hash_table_insert(dev->attrs_ht, strdup(key), strdup(v));
-+	igt_map_insert(dev->attrs_map, strdup(key), strdup(v));
- }
- 
- /* Iterate over udev properties list and rewrite it to igt_device properties
-@@ -585,19 +590,30 @@ static void get_attrs_limited(struct udev_device *dev, struct igt_device *idev)
- 	}
- }
- 
--#define get_prop(dev, prop) ((char *) g_hash_table_lookup(dev->props_ht, prop))
--#define get_attr(dev, attr) ((char *) g_hash_table_lookup(dev->attrs_ht, attr))
-+#define get_prop(dev, prop) ((char *) igt_map_search((dev)->props_map, prop))
-+#define get_attr(dev, attr) ((char *) igt_map_search((dev)->attrs_map, attr))
- #define get_prop_subsystem(dev) get_prop(dev, "SUBSYSTEM")
- #define is_drm_subsystem(dev)  (strequal(get_prop_subsystem(dev), "drm"))
- #define is_pci_subsystem(dev)  (strequal(get_prop_subsystem(dev), "pci"))
- 
--static void print_ht(GHashTable *ht);
-+static inline void _print_key_value(const char *k, const char *v)
-+{
-+	printf("%-32s: %s\n", k, v);
-+}
-+
- static void dump_props_and_attrs(const struct igt_device *dev)
- {
-+	struct igt_map_entry *entry;
-+
- 	printf("\n[properties]\n");
--	print_ht(dev->props_ht);
-+	igt_map_foreach(dev->props_map, entry) {
-+		_print_key_value((char *)entry->key, (char *)entry->data);
-+	}
-+
- 	printf("\n[attributes]\n");
--	print_ht(dev->attrs_ht);
-+	igt_map_foreach(dev->attrs_map, entry) {
-+		_print_key_value((char *)entry->key, (char *)entry->data);
-+	}
- 	printf("\n");
- }
- 
-@@ -949,7 +965,7 @@ static struct igt_device *duplicate_device(struct igt_device *dev) {
- 	return dup;
- }
- 
--static gint devs_compare(const void *a, const void *b)
-+static int devs_compare(const void *a, const void *b)
- {
- 	struct igt_device *dev1, *dev2;
- 	int ret;
-@@ -1076,6 +1092,12 @@ static void scan_drm_devices(bool limit_attrs)
- 	}
- }
- 
-+static void free_key_value(struct igt_map_entry *entry)
-+{
-+	free((char *)entry->key);
-+	free(entry->data);
-+}
-+
- static void igt_device_free(struct igt_device *dev)
- {
- 	free(dev->codename);
-@@ -1088,8 +1110,8 @@ static void igt_device_free(struct igt_device *dev)
- 	free(dev->device);
- 	free(dev->driver);
- 	free(dev->pci_slot_name);
--	g_hash_table_destroy(dev->attrs_ht);
--	g_hash_table_destroy(dev->props_ht);
-+	igt_map_destroy(dev->attrs_map, free_key_value);
-+	igt_map_destroy(dev->props_map, free_key_value);
- }
- 
- void igt_devices_free(void)
-@@ -1323,26 +1345,6 @@ igt_devs_print_user(struct igt_list_head *view,
- 	}
- }
- 
--static inline void _print_key_value(const char* k, const char *v)
+-static bool function_is_part_of_guc(const char function_name[])
 -{
--	printf("%-32s: %s\n", k, v);
+-	return strstr(function_name, "_guc_") != NULL ||
+-	       strstr(function_name, "_uc_") != NULL ||
+-	       strstr(function_name, "_wopcm_") != NULL;
 -}
 -
--static void print_ht(GHashTable *ht)
+-static void ignore_faults_in_dmesg(const char function_name[])
 -{
--	GList *keys = g_hash_table_get_keys(ht);
+-	/* Driver probe is expected to fail in all cases, so ignore in igt_runner */
+-	char regex[1024] = "probe with driver xe failed with error -12";
 -
--	keys = g_list_sort(keys, (GCompareFunc) strcmp);
--	while (keys) {
--		char *k = (char *) keys->data;
--		char *v = g_hash_table_lookup(ht, k);
--
--		_print_key_value(k, v);
--		keys = g_list_next(keys);
+-	/*
+-	 * If GuC module fault is injected, GuC is expected to fail,
+-	 * so also ignore GuC init failures in igt_runner.
+-	 */
+-	if (function_is_part_of_guc(function_name)) {
+-		strcat(regex, "|GT[0-9a-fA-F]*: GuC init failed with -ENOMEM");
+-		strcat(regex, "|GT[0-9a-fA-F]*: Failed to initialize uC .-ENOMEM");
+-		strcat(regex, "|GT[0-9a-fA-F]*: Failed to enable GuC CT .-ENOMEM");
+-		strcat(regex, "|GT[0-9a-fA-F]*: GuC PC query task state failed: -ENOMEM");
 -	}
--	g_list_free(keys);
+-
+-	igt_emit_ignore_dmesg_regex(regex);
 -}
 -
- static void
- igt_devs_print_detail(struct igt_list_head *view,
- 		      const struct igt_devices_print_format *fmt)
-diff --git a/lib/meson.build b/lib/meson.build
-index f54198051..b134416eb 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -306,6 +306,7 @@ scan_dep = [
- lib_igt_device_scan_build = static_library('igt_device_scan',
- 	['igt_device_scan.c',
- 	'igt_list.c',
-+	'igt_map.c',
- 	'igt_tools_stub.c',
- 	'intel_device_info.c',
- 	'intel_cmds_info.c',
+ /*
+  * The injectable file requires CONFIG_FUNCTION_ERROR_INJECTION in kernel.
+  */
+@@ -234,7 +208,7 @@ inject_fault_probe(int fd, char pci_slot[], const char function_name[])
+ 	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
+ 		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
+ 
+-	ignore_faults_in_dmesg(function_name);
++	igt_ignore_dmesg_errors_from_dut(fd);
+ 	injection_list_add(function_name);
+ 	set_retval(function_name, INJECT_ERRNO);
+ 
+@@ -299,7 +273,7 @@ exec_queue_create_fail(int fd, struct drm_xe_engine_class_instance *instance,
+ 	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id), 0);
+ 	xe_exec_queue_destroy(fd, exec_queue_id);
+ 
+-	ignore_faults_in_dmesg(function_name);
++	igt_ignore_dmesg_errors_from_dut(fd);
+ 	injection_list_add(function_name);
+ 	set_retval(function_name, INJECT_ERRNO);
+ 	igt_assert(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id) != 0);
+@@ -334,7 +308,7 @@ vm_create_fail(int fd, const char function_name[], unsigned int flags)
+ {
+ 	igt_assert_eq(simple_vm_create(fd, flags), 0);
+ 
+-	ignore_faults_in_dmesg(function_name);
++	igt_ignore_dmesg_errors_from_dut(fd);
+ 	injection_list_add(function_name);
+ 	set_retval(function_name, INJECT_ERRNO);
+ 	igt_assert(simple_vm_create(fd, flags) != 0);
+@@ -397,7 +371,7 @@ vm_bind_fail(int fd, const char function_name[])
+ 
+ 	igt_assert_eq(simple_vm_bind(fd, vm), 0);
+ 
+-	ignore_faults_in_dmesg(function_name);
++	igt_ignore_dmesg_errors_from_dut(fd);
+ 	injection_list_add(function_name);
+ 	set_retval(function_name, INJECT_ERRNO);
+ 	igt_assert(simple_vm_bind(fd, vm) != 0);
+@@ -445,7 +419,7 @@ oa_add_config_fail(int fd, int sysfs, int devid, const char function_name[])
+ 	igt_assert(igt_sysfs_scanf(sysfs, path, "%" PRIu64, &config_id) == 1);
+ 	igt_assert_eq(intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_REMOVE_CONFIG, &config_id), 0);
+ 
+-	ignore_faults_in_dmesg(function_name);
++	igt_ignore_dmesg_errors_from_dut(fd);
+ 	injection_list_add(function_name);
+ 	set_retval(function_name, INJECT_ERRNO);
+ 	igt_assert_lt(intel_xe_perf_ioctl(fd, DRM_XE_OBSERVATION_OP_ADD_CONFIG, &config), 0);
 -- 
-2.49.0
+2.43.0
 
