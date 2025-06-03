@@ -4,51 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A766C5AD49
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 05:37:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DEC7C5AE59
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 05:43:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 84BA610E1BD;
-	Tue,  3 Jun 2025 05:37:19 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FDMk+oss";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48D2B10E1BD
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 05:37:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748929037; x=1780465037;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nhftqBGWrzyt9E8PORI55EWUPQvdkwQIonldGodCTTg=;
- b=FDMk+ossOJz8SFpBf/5FOYhASOWenIfxmIu7Jgm5VSDYHMKKse4pl2Uo
- Cjk1986/rNHGgewLzfj8jyd1AMLGCJ6v4bWEaAwl7MCg63coWbcSjRmx4
- AY233fnSfZfGsCgFQ1e6lRpqVTlUyoqMuLIPLmOWR5utVmib0ZS+2MEwo
- 21rvQy+7MxFSb5Gwm2JGk2+/DNDyYG7DV7ykhU9nt3ON/OhjY+DVlsBAp
- Ctaw8PPDoLtvBlSQ+U9VJGvovX/I8n9nWzpQ6n6VDbrxGzi/3jC9f2K9S
- aOZJASh9X9QAGtXnpAHwk4Jjc/Ib/d3739IZgXkAHHKuWisjXU3ZjFSp/ A==;
-X-CSE-ConnectionGUID: eQO1g2aiTUaKLj0MSb5JAA==
-X-CSE-MsgGUID: dX2BK+q0RamWVMKYmEEbTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50868578"
-X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="50868578"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2025 22:37:17 -0700
-X-CSE-ConnectionGUID: RTqzPnKiTR2xhNoWAVM9Dw==
-X-CSE-MsgGUID: xTmgzumETI2GPxTxU5fz3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="149627482"
-Received: from cml-cometlake-client-platform.iind.intel.com ([10.227.88.163])
- by fmviesa005.fm.intel.com with ESMTP; 02 Jun 2025 22:36:30 -0700
-From: aditya.chauhan@intel.com
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] Revert "tests/intel/xe_exec_system_allocator: Add GPU
- platform PTL for sys allocator tests"
-Date: Tue,  3 Jun 2025 11:06:29 +0530
-Message-Id: <20250603053629.222192-1-aditya.chauhan@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 38F7E10E628;
+	Tue,  3 Jun 2025 05:43:14 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8175810E5ED;
+ Tue,  3 Jun 2025 05:43:12 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8799287923153949341=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Ftiled=5Fdisplay?=
+ =?utf-8?q?=3A_Skip_if_connectors_are_not_of_same_type_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 03 Jun 2025 05:43:12 -0000
+Message-ID: <174892939251.42372.1494183685490628752@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250603051722.1690985-1-pranay.samala@intel.com>
+In-Reply-To: <20250603051722.1690985-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,34 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Aditya Chauhan <aditya.chauhan@intel.com>
+--===============8799287923153949341==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This reverts commit c7c948b8de5dc4178ee5ed2106f7c3f160def170.
-SVM development is limited to post PV platforms as of now.
+== Series Details ==
 
-Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
-Cc: Ramadevi Gandi<ramadevi.gandi@intel.com>
-Cc: Himanshu Girotra <himanshu.girotra@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Series: tests/kms_tiled_display: Skip if connectors are not of same type (rev4)
+URL   : https://patchwork.freedesktop.org/series/148468/
+State : success
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 06daac8c2..9528c9449 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -9,7 +9,7 @@
-  * Mega feature: USM
-  * Sub-category: System allocator
-  * Functionality: fault mode, system allocator
-- * GPU: LNL, BMG, PVC, PTL
-+ * GPU: LNL, BMG, PVC
-  */
- 
- #include <fcntl.h>
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8391_BAT -> XEIGTPW_13229_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8391 -> IGTPW_13229
+
+  IGTPW_13229: 13229
+  IGT_8391: 2de2b6fc758c48199aed7e0aca8213b62f2d0ea0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3181-354657e88d7ab7195b5f0525bc14273fb020f2f2: 354657e88d7ab7195b5f0525bc14273fb020f2f2
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13229/index.html
+
+--===============8799287923153949341==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_tiled_display: Skip if connectors are not of same type (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148468/">https://patchwork.freedesktop.org/series/148468/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13229/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13229/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8391_BAT -&gt; XEIGTPW_13229_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8391 -&gt; IGTPW_13229</li>
+</ul>
+<p>IGTPW_13229: 13229<br />
+  IGT_8391: 2de2b6fc758c48199aed7e0aca8213b62f2d0ea0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3181-354657e88d7ab7195b5f0525bc14273fb020f2f2: 354657e88d7ab7195b5f0525bc14273fb020f2f2</p>
+
+</body>
+</html>
+
+--===============8799287923153949341==--
