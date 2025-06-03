@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C4FC5AE59
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 19:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23176C5AE59
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 19:24:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AF0B910E0D9;
-	Tue,  3 Jun 2025 19:24:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C11F210E0E5;
+	Tue,  3 Jun 2025 19:24:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EpZl9Mhq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m3qX1o/T";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3363F10E0D9
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 19:24:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D87FE10E0E5
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 19:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748978671; x=1780514671;
+ t=1748978674; x=1780514674;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=95JcTtPUh1xofjO3SETGbMLE6BG8U53MztsiqyzaWgk=;
- b=EpZl9Mhq891R621T8vDrp1cHZjpC3wSVWbVelhfRKKOa/eQnEbSi6GLQ
- Hcr84rOZdyASj+Vs5mbgCftYLL621gE0YJfZ0UkI6OY7Iie2iv0fskIXq
- t0DG5z6qTmmdVeVcVJa2HJlOopSm/uiB5MkzEU2KbddSnWCLzABZ5STZp
- fh6b9IHtJjmvUxaBTaZX7nTQ8R9CoyFzgxuI+mjDyACSw7F5mNCrTQZdG
- KfYPGuESme3KOCtTkr8Fjf/uRKSfuS2eItmDvXqWIXD324ootfeRztnal
- aPquRmQT0uETg+jv8+WDuYe2102KjJrNi8VRELPLBqXGiDUUrmw3CJfmv w==;
-X-CSE-ConnectionGUID: ehvjGjkORjOaJUI50cJRew==
-X-CSE-MsgGUID: +zy07sDHTZeF6Rvd9nUERQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="76424297"
-X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="76424297"
+ bh=6AkYm9RAJmwnqE5/KrXHTSmK6o2N9ItNB2oOU876BJo=;
+ b=m3qX1o/TCMAdQdgLG+FEjJK1HJiFZAZ0XuT/cccV5ey2mdxQV0WxH5zn
+ lOlXe++W2H0pfMeLMMIHRIgoWjzb3hiytOn9jPPJyJWx/I1/GFZQqhzrp
+ 8iAlE81yILXM0eFvmAuVk/8eUPh5qUstCMChK3b3k7TQuOkC/N9hyCMT0
+ YhCHX2LdgRhs5tL4uwazQg4mV+mdg0ifBLaJ3BCif0N2rl4UZqR/LDcVU
+ USzIpy5hKqNVKgd3O2jCXuZvJvKtCCrKewLJuw622eTF05APi2ptccdn+
+ 92ubKIE6LZew88kKtFgzaxX3cmw1yBmBx9sFpv+YFui/jnoVYRanO9f3S w==;
+X-CSE-ConnectionGUID: xR1P8m8oSvukdqTiA0FqyA==
+X-CSE-MsgGUID: 1m7Udu/ITiiiXkZlQwCvzQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="76424299"
+X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="76424299"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2025 12:24:31 -0700
-X-CSE-ConnectionGUID: EtnH1/8GSdGW8uMAuDq8MA==
-X-CSE-MsgGUID: Z4tlXOJkRwyGdZ4KAHAZnQ==
+ 03 Jun 2025 12:24:34 -0700
+X-CSE-ConnectionGUID: 647JLJFjQNii7YO29IQY+g==
+X-CSE-MsgGUID: Wwm+nEtwRbaAZ5G8hTCh+w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="175821260"
+X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="175821275"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by fmviesa001.fm.intel.com with ESMTP; 03 Jun 2025 12:24:29 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 03 Jun 2025 12:24:31 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v14 02/11] tests/intel/*_intel_bb: handle base64 encode
- fail
-Date: Tue,  3 Jun 2025 19:23:45 +0000
-Message-ID: <20250603192355.77019-3-jeevaka.badrappan@intel.com>
+ Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Subject: [PATCH i-g-t v14 03/11] include/android: Add stub for procps and glib
+Date: Tue,  3 Jun 2025 19:23:46 +0000
+Message-ID: <20250603192355.77019-4-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250603192355.77019-1-jeevaka.badrappan@intel.com>
 References: <20250603192355.77019-1-jeevaka.badrappan@intel.com>
@@ -71,47 +69,121 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-g_base64_encode function returns a newly allocated string containing
-the Base64 encoded data. Failure case is not handled.
+From: Sapna Singh <sapna1.singh@intel.com>
 
-When g_base64_encode function fails, set the outsize to 0 to address
-null pointer dereference crash.
+As procps, glib are not available in Android, not able to build igt
+for Android.
 
+Provided stub implementations so igt can be compiled for both Android
+and linux from same code base. In case of linux systems, system
+libraries will be used whereas for Android stubs will be used with
+reduced test coverage.
+
+Signed-off-by: Sapna Singh <sapna1.singh@intel.com>
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/api_intel_bb.c | 3 ++-
- tests/intel/xe_intel_bb.c  | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ include/android/glib.h   | 44 ++++++++++++++++++++++++++++++++++++++++
+ include/android/procps.h | 40 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 84 insertions(+)
+ create mode 100644 include/android/glib.h
+ create mode 100644 include/android/procps.h
 
-diff --git a/tests/intel/api_intel_bb.c b/tests/intel/api_intel_bb.c
-index 4a1c9be91..1910690cd 100644
---- a/tests/intel/api_intel_bb.c
-+++ b/tests/intel/api_intel_bb.c
-@@ -944,7 +944,8 @@ static int dump_base64(const char *name, struct intel_buf *buf)
- 
- 		igt_info("--- %s ---\n", name);
- 		pos = str = g_base64_encode(destbuf, outsize);
--		outsize = strlen(str);
-+		outsize = str ? strlen(str) : 0;
+diff --git a/include/android/glib.h b/include/android/glib.h
+new file mode 100644
+index 000000000..c80a16e47
+--- /dev/null
++++ b/include/android/glib.h
+@@ -0,0 +1,44 @@
++/* SPDX-License-Identifier: MIT */
 +
- 		while (pos) {
- 			char line[LINELEN + 1];
- 			int to_copy = min(LINELEN, outsize);
-diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
-index d8bd7b519..f0cc17b1a 100644
---- a/tests/intel/xe_intel_bb.c
-+++ b/tests/intel/xe_intel_bb.c
-@@ -595,7 +595,8 @@ static int dump_base64(const char *name, struct intel_buf *buf)
- 
- 		igt_info("--- %s ---\n", name);
- 		pos = str = g_base64_encode(destbuf, outsize);
--		outsize = strlen(str);
-+		outsize = str ? strlen(str) : 0;
++#ifndef _IGT_ANDROID_GLIB_H
++#define _IGT_ANDROID_GLIB_H
 +
- 		while (pos) {
- 			char line[LINELEN + 1];
- 			int to_copy = min(LINELEN, outsize);
++#include <stdbool.h>
++#include <stdlib.h>
++
++#define G_KEY_FILE_NONE 0
++#define G_REGEX_OPTIMIZE 0
++
++typedef struct _GError {
++	int code;
++	char *message;
++} GError;
++
++typedef struct _GKeyFile {
++	char *key;
++	char *value;
++} GKeyFile;
++
++typedef int gint;
++typedef size_t gsize;
++typedef char gchar;
++typedef unsigned char guchar;
++typedef void GRegex;
++
++static inline void g_clear_error(GError **error) { }
++static inline void g_error_free(GError *error) { }
++static inline const char *g_get_home_dir(void) { return "/data/local/tmp/igt"; }
++static inline void g_key_file_free(GKeyFile *file) { }
++static inline GKeyFile *g_key_file_new(void) { return NULL; }
++static inline int g_key_file_get_integer(GKeyFile *key_file,
++	const char *group_name, const char *key, GError **error) { return 0; }
++static inline char *g_key_file_get_string(GKeyFile *key_file,
++	const char *group_name, const char *key, GError **error) { return NULL; }
++static inline bool g_key_file_load_from_file(GKeyFile *key_file,
++	const char *file, int flags, GError **error) { return false; }
++static inline GRegex *g_regex_new(const char *pattern, int compile_options,
++	int match_options, GError **error) { return NULL; }
++static inline void g_regex_unref(GRegex *pattern) { };
++static gchar *g_base64_encode(const guchar *data, gsize len) { return NULL; }
++
++#endif /* _IGT_ANDROID_GLIB_H */
+diff --git a/include/android/procps.h b/include/android/procps.h
+new file mode 100644
+index 000000000..f859dffe1
+--- /dev/null
++++ b/include/android/procps.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: MIT */
++
++#ifndef _IGT_ANDROID_PROCPS_H
++#define _IGT_ANDROID_PROCPS_H
++
++enum pids_item {
++	PIDS_NOT_IMPLEMENTED = 0,
++};
++
++enum pids_fetch_type {
++	PIDS_FETCH_TASKS_ONLY,
++	PIDS_FETCH_THREADS_TOO
++};
++
++struct pids_result {
++	enum pids_item item;
++	union {
++		unsigned long long ull_int;
++		double real;
++	} result;
++};
++
++struct pids_stack {
++	struct pids_result *head;
++};
++
++struct pids_info;
++
++#define PIDS_VAL(relative_enum, type, stack, info) \
++	((info & 0) | (stack)->head[relative_enum].result.type)
++
++int procps_pids_new(struct pids_info **info, enum pids_item *items, int numitems) { return 0; }
++int procps_pids_unref(struct pids_info **info) { return 0; }
++
++struct pids_stack *procps_pids_get(struct pids_info *info, enum pids_fetch_type which)
++{
++	return NULL;
++}
++
++#endif /* _IGT_ANDROID_PROCPS_H */
 -- 
 2.49.0
 
