@@ -4,27 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EE05C5AE59
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 12:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E5EFC5AD49
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 12:41:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 096F610E606;
-	Tue,  3 Jun 2025 12:24:09 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90AC310E606;
- Tue,  3 Jun 2025 12:24:07 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1502799141877678257=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2A60910E61D;
+	Tue,  3 Jun 2025 12:41:26 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oECFCKpq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38CD810E5FB
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 12:41:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1748954485; x=1780490485;
+ h=from:subject:date:message-id:mime-version:
+ content-transfer-encoding:to:cc;
+ bh=UhsF7tkKBy9uKD2xRVoqKWaEelbGBYtdR+m8sdzANNg=;
+ b=oECFCKpqyaryNI3xIV0+BRTcSY05P0y4GdOkiBw1oQ921cwc4D63a/0s
+ opaYuVLDLO/ygBi26HOYlaiAaV36PH0laH53Un5Xz49dI+WzjQAwZi15F
+ w9znaALBfa6/b3DP833ODZ6TnGkypx6M9diMYXrC22QyMGZuIpJw92CB4
+ XDeNxYLaIx7clc8wuH5rWVBcnRWwyNbLhy3bf0+5JOYLHqDKoM2WrsNTG
+ oAg5IUDOXXKJATRm49+FNtH7R4oHuDJK/CR27vyqKpiJG+g23tLx/qc3Z
+ 5qPtd2k7vekrauPrb9HF6ZNHDOcWcp/LWTgwanRNGAOCRWH9HkGI16XxY Q==;
+X-CSE-ConnectionGUID: t2UL6m1uQleAxXawzskZ6w==
+X-CSE-MsgGUID: tRwX3AbFR4OTwnFJAl4odw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="62045691"
+X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="62045691"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2025 05:41:25 -0700
+X-CSE-ConnectionGUID: nxQfwyKoTyGi7wvCPqZuRQ==
+X-CSE-MsgGUID: 0qSlIK94Rj+qi6Oq0V2ITQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; d="scan'208";a="149719694"
+Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2025 05:41:23 -0700
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: [PATCH 0/3] build: bump meson version
+Date: Tue, 03 Jun 2025 14:40:37 +0200
+Message-Id: <20250603-bump_docker_distros-v1-0-cf7e062e339c@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Print/scan_formatting_fixup?=
- =?utf-8?q?s_=28rev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jan Sokolowski" <jan.sokolowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 03 Jun 2025 12:24:07 -0000
-Message-ID: <174895344756.43118.7182972309927107907@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250603111107.3170529-1-jan.sokolowski@intel.com>
-In-Reply-To: <20250603111107.3170529-1-jan.sokolowski@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEXtPmgC/x3MQQrCMBBA0auUWRtIUxqsVxEpk2S0g5iEGSuF0
+ rsbXb7F/zsoCZPCpdtB6MPKJTf0pw7igvlBhlMzOOtG660zYX3VOZX4JJkT61uKmh7RBz9NQxr
+ P0MoqdOftf73emgMqmSCY4/J7rVXhOL4K378hewAAAA==
+X-Change-ID: 20250602-bump_docker_distros-1aa6b6993d58
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Ryszard Knop <ryszard.knop@intel.com>, Ryszard Knop <rk@dragonic.eu>, 
+ Petri Latvala <adrinael@adrinael.net>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1578;
+ i=andrzej.hajda@intel.com; h=from:subject:message-id;
+ bh=UhsF7tkKBy9uKD2xRVoqKWaEelbGBYtdR+m8sdzANNg=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoPu1OkfZkQrzP+Y72oy8yTL6d+waWQIRjpTpxS
+ AmZLci3O5qJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaD7tTgAKCRAjYrKT3hD9
+ 1w2NC/9N2VGmHJRMulsmWvR2bR38CKaLxEtdWLwPpbXrSgmvKjczgta/akOKQr4fsisFMqVV+6D
+ O6zv5lNBZGOxAvdHIwTrYJZsPS1c/4B5HWZqvjTHJlKRGaLSZv6YG8tbWC643G2oAd1tW2VTR1+
+ ARVjshe58oBPUDrZgSItSG1dKPJmpVhWh7SXzNf+XOuG0y1l9pZMxX2mRydeOmhTCNBjg9wd7dv
+ xDY0QHFbN7bsATUEJZmeO92RD2USMqpXpEdJkfs/U9Y5PK/eLN6LAyvk7iGbP1rMzMif12105G3
+ beDmxee5v5/rZV4J8SWPSQ8YsqXBiRPXg1V5/TEZKTXPvRB31R/8Ay7wcUrO2fYEWZZTfbFhR/t
+ Ini4rFIZ378ZlfrBYWFl0RnOo8wRFQ+yb6oyvCTZ7eJNMLF8onZ/WS1XKKUdalIGuvqGxC0SYvx
+ +hx0k1GHTuC/YoPL3jPrq5lYqbSg3ET90nkClHE4QekEtejZATMCVSKIu4wZ/zzBwRpsc=
+X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
+ fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +84,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1502799141877678257==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+New patch(es) require newer version of meson to work properly.
+And this patchset tries to do it.
 
-== Series Details ==
+Unfortunatly after gitlab update "pipeline checks" do not work
+on pre-merge phase so all green CI results [1], can be followed
+by critical post-merge failure on pipelines [2] and quick revert [3].
+This patchset also contain changes which can be detected only after
+merge and potentially can end up with revert.
 
-Series: Print/scan formatting fixups (rev5)
-URL   : https://patchwork.freedesktop.org/series/149111/
-State : success
+I have tested changes sucesfully locally with docker, simulating
+behavior of CI runner, but I am not able to trigger pipeline tests
+to perform more reliable tests.
+Any advice how to do it better are welcome.
+I am also playing with gitlab-ci-local, but without success so far.
 
-== Summary ==
+[1]: https://patchwork.freedesktop.org/series/149642/#rev1
+[2]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/pipelines/1438518
+[3]: https://patchwork.freedesktop.org/series/149700/
 
-CI Bug Log - changes from XEIGT_8392_BAT -> XEIGTPW_13232_BAT
-====================================================
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+Andrzej Hajda (3):
+      Dockerfile: bump Debian version
+      Dockerfile: bump Fedora version
+      meson: update required version of meson
 
-Summary
--------
+ Dockerfile.build-debian-arm64   | 2 +-
+ Dockerfile.build-debian-armhf   | 2 +-
+ Dockerfile.build-debian-minimal | 2 +-
+ Dockerfile.build-debian-mips    | 2 +-
+ Dockerfile.build-fedora         | 4 ++--
+ meson.build                     | 2 +-
+ 6 files changed, 7 insertions(+), 7 deletions(-)
+---
+base-commit: 5be9140fab5ba77b8d012ff763f61dce9a81c7bf
+change-id: 20250602-bump_docker_distros-1aa6b6993d58
 
-  **SUCCESS**
+Best regards,
+-- 
+Andrzej Hajda <andrzej.hajda@intel.com>
 
-  No regressions found.
-
-  
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8392 -> IGTPW_13232
-  * Linux: xe-3182-ca1365e3f2388040c758942fcdf3d046016cd649 -> xe-3183-bea2a0d35dc29d6ae8a4e44506af9b563f012211
-
-  IGTPW_13232: 1f62ccce09fd19aead6f0ef66c3fbc72e7bddeec @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8392: 8392
-  xe-3182-ca1365e3f2388040c758942fcdf3d046016cd649: ca1365e3f2388040c758942fcdf3d046016cd649
-  xe-3183-bea2a0d35dc29d6ae8a4e44506af9b563f012211: bea2a0d35dc29d6ae8a4e44506af9b563f012211
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13232/index.html
-
---===============1502799141877678257==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Print/scan formatting fixups (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149111/">https://patchwork.freedesktop.org/series/149111/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13232/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13232/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8392_BAT -&gt; XEIGTPW_13232_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8392 -&gt; IGTPW_13232</li>
-<li>Linux: xe-3182-ca1365e3f2388040c758942fcdf3d046016cd649 -&gt; xe-3183-bea2a0d35dc29d6ae8a4e44506af9b563f012211</li>
-</ul>
-<p>IGTPW_13232: 1f62ccce09fd19aead6f0ef66c3fbc72e7bddeec @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8392: 8392<br />
-  xe-3182-ca1365e3f2388040c758942fcdf3d046016cd649: ca1365e3f2388040c758942fcdf3d046016cd649<br />
-  xe-3183-bea2a0d35dc29d6ae8a4e44506af9b563f012211: bea2a0d35dc29d6ae8a4e44506af9b563f012211</p>
-
-</body>
-</html>
-
---===============1502799141877678257==--
