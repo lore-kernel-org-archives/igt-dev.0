@@ -4,57 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50D98C5AD49
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 08:14:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64FECC5AE59
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Jun 2025 09:17:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA6DF10E1C6;
-	Tue,  3 Jun 2025 08:14:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 08B6C10E8CA;
+	Tue,  3 Jun 2025 09:17:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iOxq/gJi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HiZDj8a2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD7E510E1C6
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 08:14:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33A7210E743
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Jun 2025 09:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1748938465; x=1780474465;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=MxAtB6jRc7k3m5eChxPjBkJGLd8u6uV7UN1oqMqRiGg=;
- b=iOxq/gJi/34EX/BXeOUe+9B63dvZG72MnEGxsgAF4mBzjyNaNS7HwmSg
- Z/zC5w0jktRpVFOI+PTEGFvuG8k27EgkiusBGuemyIKPhLrvkf0C6Wm0j
- k+3lTxBkeIpEDKmVoklIBz5LO7QGJVdgHFuu5D7nY5Mv3IeVSpaBcyewk
- gF49NEmdatuhOw1mYCGVVChkwcLnDp5/hETzgVTOSEDf75uwgE8bA0uyh
- XwzA6CvRwTrzvDLztcsBiGs76zibuiWePCgtsO8v0x/WgswTR7MPfQsOl
- 9CdO8ez1EdoGqt6vFwPqfsBBi4X++XNCy/Gtfq2mLAMfOX8+/N3tIhzXf g==;
-X-CSE-ConnectionGUID: 3SyWrSiMRHCE3U5ouGkJBg==
-X-CSE-MsgGUID: Xe/9y7HZRdegfgxjxdXBvw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="51068811"
-X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="51068811"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2025 01:14:23 -0700
-X-CSE-ConnectionGUID: USQU9D0NT9mv3RIYhHgWpA==
-X-CSE-MsgGUID: 0o+mkYgSSq+5K4i0FDxh2A==
+ t=1748942271; x=1780478271;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=Zmmz5ZoM2eG3opN0dn1pznYVOAj7k2Yfx3m/s1oF1l8=;
+ b=HiZDj8a2DZhO/kamt9blLXa1xlLWov5DVXUOtfcHHA2KT7B0HKcQOgfB
+ kymMz9P4Q3ol2La1fI77P73quduxjMiIoYEkZioCcDLsXhNyVz4wYFHBB
+ Eiy5UItM36xFZhzxf2WtAa/eZsereID1gaDzq1wrsRHT0/LgboZV5PXUO
+ VQ4OFYF0h3ciKwxaCFbmBEF9RxvLdn+COSwrucThjUf8+JNjN1hichWYR
+ BpIGWq6vHHpVga/hTzFOcu+2HVbkInrR6uJLZsS19k5ygWytDQZhYl4DI
+ UlvP9ZY+c9QmnsyIeYSur99qJqMphqxdANdj2XhAuUxwtcDZPEQzDiMEN Q==;
+X-CSE-ConnectionGUID: tNHJFLb3QR20FeWkrJhL6g==
+X-CSE-MsgGUID: LtwFlSj3R22Y8o+zFjWHeQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50845878"
+X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="50845878"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2025 02:17:51 -0700
+X-CSE-ConnectionGUID: WIXP50+6R/CSbcDNeC49kA==
+X-CSE-MsgGUID: yvZHUfnwQmuqrbGSXhUinA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="149665412"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 01:14:19 -0700
-Date: Tue, 3 Jun 2025 10:14:04 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: aditya.chauhan@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] Revert "tests/intel/xe_exec_system_allocator: Add
- GPU platform PTL for sys allocator tests"
-Message-ID: <20250603081404.dmmtsznb3lx5m62j@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- aditya.chauhan@intel.com, igt-dev@lists.freedesktop.org
-References: <20250603053629.222192-1-aditya.chauhan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; d="scan'208";a="150092440"
+Received: from soc-dcgdq34.clients.intel.com (HELO [10.66.98.161])
+ ([10.66.98.161])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2025 02:17:48 -0700
+Message-ID: <6c3135f4-8196-4cfc-b68d-850a0f0ee5f2@intel.com>
+Date: Tue, 3 Jun 2025 14:47:46 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250603053629.222192-1-aditya.chauhan@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3 0/2] whitelist for HDCP panels
+To: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: ankit.k.nautiyal@intel.com, suraj.kandpal@intel.com,
+ mohammed.thasleem@intel.com, kamil.konieczny@intel.com
+References: <20250529015522.298460-1-santhosh.reddy.guddati@intel.com>
+Content-Language: en-US
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20250529015522.298460-1-santhosh.reddy.guddati@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,36 +72,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi aditya.chauhan,
-On 2025-06-03 at 11:06:29 +0530, aditya.chauhan@intel.com wrote:
-> From: Aditya Chauhan <aditya.chauhan@intel.com>
-> 
-> This reverts commit c7c948b8de5dc4178ee5ed2106f7c3f160def170.
-> SVM development is limited to post PV platforms as of now.
-> 
-> Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
-> Cc: Ramadevi Gandi<ramadevi.gandi@intel.com>
-> Cc: Himanshu Girotra <himanshu.girotra@intel.com>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> ---
->  tests/intel/xe_exec_system_allocator.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-> index 06daac8c2..9528c9449 100644
-> --- a/tests/intel/xe_exec_system_allocator.c
-> +++ b/tests/intel/xe_exec_system_allocator.c
-> @@ -9,7 +9,7 @@
->   * Mega feature: USM
->   * Sub-category: System allocator
->   * Functionality: fault mode, system allocator
-> - * GPU: LNL, BMG, PVC, PTL
-> + * GPU: LNL, BMG, PVC
->   */
->  
->  #include <fcntl.h>
-> -- 
-> 2.34.1
-> 
+On 29-05-2025 07:25, Santhosh Reddy Guddati wrote:
+> Add whitelist functionality for monitor EDID checks.
+> Introduce a whitelist mechanism to handle specific monitors
+> that are known to face issues with certain features, such as HDCP.
+>
+> This change is intended to skip test on those panels which are
+> blacklisted.
+>
+> Santhosh Reddy Guddati (2):
+>    lib/igt_panel: Skip hdcp tests on unsupported panels
+>    tests/kms_content_protection: Whitelist check for panel support
+>
+>   lib/igt_edid.c                 | 27 +++++++++++++++++++
+>   lib/igt_edid.h                 |  1 +
+>   lib/igt_panel.c                | 35 +++++++++++++++++++++++++
+>   lib/igt_panel.h                | 17 ++++++++++++
+>   lib/meson.build                |  1 +
+>   tests/kms_content_protection.c | 47 ++++++++++++++++++++++++++++++++++
+>   6 files changed, 128 insertions(+)
+>   create mode 100644 lib/igt_panel.c
+>   create mode 100644 lib/igt_panel.h
+Acked-by: Kunal Joshi <kunal1.joshi@intel.com>
