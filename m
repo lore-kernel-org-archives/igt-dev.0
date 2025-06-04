@@ -4,121 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BAE1C5B549
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Jun 2025 23:47:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACEF3C5B543
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Jun 2025 23:50:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DAC5F10E22B;
-	Wed,  4 Jun 2025 23:47:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54A3810E79A;
+	Wed,  4 Jun 2025 23:50:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="C2hgIAIW";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="4Hok3Jvz";
 	dkim-atps=neutral
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2051.outbound.protection.outlook.com [40.107.244.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7A9410E22B
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jun 2025 23:47:25 +0000 (UTC)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com
+ (mail-co1nam11on2056.outbound.protection.outlook.com [40.107.220.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5DDC10E79A
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jun 2025 23:50:29 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ps/N9aln7NIIwP3Ijiv6zvT4altgurv89wh4IArp9WXQjGPitkxlD9gwddY8g/3lAG2E31eM2mDhMjetw2E140FKsiP5q7LlNLfSwPpLSGfIcQ3c2p0/jf2EWu++e0qgb5MLBBZu+5UxNv6w0Myhjeu8wPsFzk0vST/gHHCBpPmfID67NqlEHvmMWebjGYh0nv/JtzDdQBIhtNgbFB3NybdUGZOnDKKOTOblcF+pRHlmKP52SXx5IlZk1NdlLTTCw5qvMnH6lsNmSklZV+wPlGXdlRQoJQAn18T7dRiM2EbBl7t4jH4K+8DKhzM2EhOE1UwKF/3A9cMciiyaoUXG4Q==
+ b=U0UvlpB/x1BqRlKuF5LAc8wtqW6AfnwM+U1aCZa8QFF/s5EHeqemgDsHvJl6ztvha20Q+guQFooOAUfpGVIt8R+gqtKZ8oncI02rcPbO8odaZTMfCPOCSFTHRxzFYBhZcG9OybW7YLJ5vQZmAFpJzBeQh4NFTGW4c7/aD4vKFrw2OpNMbXiVoa1mq15EaEffGFT0FRGnf489K6UMAkujIokfxCTaViwPZSJXYKmqIaNy+h1KK6YQTevn8WcupMUjDdx38t9lscQ0OXOXJ0lLB4TijwjC9/tYJNcoj2V5ZW8vBeB/ZxGa6Pa3809mu04nc9SRGOuxebK3IFS3vpxYkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E4aDpQG6FH86SFRJPFdohe6opsejxnY92mp1xleJV/c=;
- b=G75d+wWM9PSLrP5x5/XzzwYvOqQ/xTVsJbwwN1Bv9uJMLAYz/rAmtvZHfNBX8jxhShNgMXMkt5DZkshVgwOTaf7heCfHz43HNWZgbDc3my23RzYQnn3pifQdxajqFF1YO9GJmBQz+Ybnt16ACaALE1JuY5FB5Gy7KNIyxu6RAqueH8k0keF7mrgsjTGj1ZmYuJTNW3ocXgw2rNXhhfpedBXqnVHu8BMhqias0x82VxOIWKQaKmCRSRgzfq/QxPm0gZv0NN9AbKeNHBlYdQVoO84OdPxfCDpFGt22r3zDadDk75HVumzHM5a9SxcjNs6v1pqYermiiiMDsSVyLWZXFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
+ bh=R9jTS6FE7chnn950K4ellY+ZQEZTDTfCgJu1WThcSFE=;
+ b=i1lwlpFggMymeYaBQl9sR/FkBZpV/I2Ay08qrcyYXDZC2DW/ZIxE9qvbm8W0MuGNwtWPRAJte35a/8eA9cwEfx94oCNJlGIo8k8OtU1wedmFMyr2uOMfvJ2nrUc0B6qLP/sAr7qzLpYzTjPMDrZpl5aivVIWYRpcwZbYKumgiivGIjjZ8yO+yi401KCiqPhn6k8Y2J5wJb+Ddq8eNw4SEIpFw2zREF4XixyFO0OexE+KrZivtRi+yKTQFis+X3Vg6GK71ndVUVPDSmH7d8lKBM6NXBnWnFMSvxv7mP9kKEFcAQdaW7KjGU8htx3QNpA2wJ9eUHlCA7lr6vzj1t1tRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E4aDpQG6FH86SFRJPFdohe6opsejxnY92mp1xleJV/c=;
- b=C2hgIAIWVhskWXZ/vdm1pAYskvFcLdTXXJYHDYto+SqUP8MlrlAzYOEJai/mB0vmPqDaXdwyQeF5i05rFQD7yl++IBhbQXXYWmFy4rJBUavrqlH3M7EaCxvite69xvoQNKJSxShnlBuAH7IAJWTfjoo+G1mKt3Ucx4FY2ziIDb8=
-Received: from MW4PR03CA0114.namprd03.prod.outlook.com (2603:10b6:303:b7::29)
- by PH0PR12MB8797.namprd12.prod.outlook.com (2603:10b6:510:28d::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Wed, 4 Jun
- 2025 23:47:19 +0000
-Received: from CO1PEPF000044FB.namprd21.prod.outlook.com
- (2603:10b6:303:b7:cafe::da) by MW4PR03CA0114.outlook.office365.com
- (2603:10b6:303:b7::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.23 via Frontend Transport; Wed,
- 4 Jun 2025 23:47:19 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044FB.mail.protection.outlook.com (10.167.241.201) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8835.2 via Frontend Transport; Wed, 4 Jun 2025 23:47:19 +0000
-Received: from ruiliji-ubuntu2204.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 4 Jun 2025 18:47:17 -0500
-From: Ruili Ji <ruiliji2@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Ruili Ji <ruiliji2@amd.com>, Ruijing Dong <ruijing.dong@amd.com>, "Vitaly
- Prosyak" <vitaly.prosyak@amd.com>
-Subject: [PATCH 1/4] lib/amdgpu: implement vcn/jpeg queue tests
-Date: Thu, 5 Jun 2025 07:46:52 +0800
-Message-ID: <20250604234652.2715698-4-ruiliji2@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250604234652.2715698-1-ruiliji2@amd.com>
+ bh=R9jTS6FE7chnn950K4ellY+ZQEZTDTfCgJu1WThcSFE=;
+ b=4Hok3Jvzm7fAI1ZvnGKybTaV4b5YwICK8VDANhV5UCyRmnpR7pzA3rVAqYElsjpilQMUulqQBX5qfNgVvvjgMsRKTQj7GNGprcyKOQK74d1DBFO5nsW3m7pJNMZgz7qrGUoQNrT3aJSudYF5FsyQgx5RqWpltmyowH/xv3L9EM8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
+ by CY5PR12MB6276.namprd12.prod.outlook.com (2603:10b6:930:f::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.35; Wed, 4 Jun
+ 2025 23:50:25 +0000
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af%6]) with mapi id 15.20.8792.034; Wed, 4 Jun 2025
+ 23:50:25 +0000
+Message-ID: <bd7d7b93-360f-4e21-acb6-11a0fe8e55f8@amd.com>
+Date: Wed, 4 Jun 2025 19:50:21 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] test/amdgpu: implement jpeg queue tests
+To: Ruili Ji <ruiliji2@amd.com>, igt-dev@lists.freedesktop.org
+Cc: Ruijing Dong <ruijing.dong@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
 References: <20250604234652.2715698-1-ruiliji2@amd.com>
-MIME-Version: 1.0
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20250604234652.2715698-1-ruiliji2@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
+X-ClientProxiedBy: YQBP288CA0039.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:c01:9d::22) To PH7PR12MB6420.namprd12.prod.outlook.com
+ (2603:10b6:510:1fc::18)
+MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044FB:EE_|PH0PR12MB8797:EE_
-X-MS-Office365-Filtering-Correlation-Id: f1385794-7dba-4150-6818-08dda3c22501
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|CY5PR12MB6276:EE_
+X-MS-Office365-Filtering-Correlation-Id: cdad64e9-229f-4102-3e82-08dda3c2936a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|36860700013|1800799024|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?F0u4kR2DBAW2WSQ9kuJmtk02C7rxtqnuN1rr6t4d7xmLQA1DuEoE3e+RHijN?=
- =?us-ascii?Q?Cb0KvHNAg8Hd7X7I8HBw3Da1vEsziRgA3LnDL1TFkbXMNdsSNH27QlIy+E6l?=
- =?us-ascii?Q?mrLqYuzpPoP4yxVS+re5/bWzQjKkycV2TarD8f3tLM9GxYAc1YiUv1tcyQkD?=
- =?us-ascii?Q?bLJWiwqBUi0w2TkKWrHGCrKXbnUjykbbGheue5/4fHadakTeUyzDPCrKUMr+?=
- =?us-ascii?Q?vPhPGIGo2eUaALPFiiJUnHMNcxX31YSQwKvV++z3qT5CcvpHqDsUSZg9xczs?=
- =?us-ascii?Q?zIWUgWCtW0I08Zs/USQYibUSNfKA3AtIAvlsCh9SBTI93XfZa/jF+WEgFwne?=
- =?us-ascii?Q?qPLCs5YEhKA6J3f/u/Zw6lEiWdfNNy/K0AYiXNpMDQR+uH+8hzUCDK2b1DEf?=
- =?us-ascii?Q?3qCkmDSzIkwLvun1u7aWCGcukAWk+iSBM2LToTH8JTWPVkWl3ui3esJ/RcTB?=
- =?us-ascii?Q?7B5vB0Am1gfXKZikQOOE4ahqkkCnG4EWxVhCe3Uwy/TMWB2U6918ph8bDbs+?=
- =?us-ascii?Q?T//GYh8Aa82s/B0xpsPi0DvWJAfmPrc92+QShOgg3OF28jf4AEu1AoOaXc/U?=
- =?us-ascii?Q?hkTxwaKx3IgklZuPOWJ6iqiJWDlFh6Dp8YDy8MFF+C46GHpl9ABu/n+SDWk1?=
- =?us-ascii?Q?S0iORjDsZD6mk1NeizjagZVutkAPVoJgSoCGoL97bnhFQLC4Y+evzkpXL/IC?=
- =?us-ascii?Q?PdvLsUbg4tHf//UjhrIedVSoPxzzOlwRrNlqQFNnQAlUTzQH5DJYtYds9Lx7?=
- =?us-ascii?Q?SvbpZe1dNUAmkVKe6TKVr4g9NxH5mMPg3MiouFF4pYubmYjb4LIeA/vT+PDJ?=
- =?us-ascii?Q?ugmo3YDZ1mX9bfZErs6Aeqti0I4cNSc6b4VVAe7MgaasdhZd5r1Inwc+ypPp?=
- =?us-ascii?Q?I7+ja9yhERuaRUkjBKGxiLcxtd8/A4oPWTPqRL8amdFYgLEFDUdAiX6lAEH/?=
- =?us-ascii?Q?+KPR/34B98KuKGsqMM37T3+8T8XMjZrZmRKOpOOFfoQnYuRQU8eGzASOWZWZ?=
- =?us-ascii?Q?qlxzH2VsuwBHM+KRcCkBvzmv50zp4bN6e1snpUILzWi1PZ1Kml7tPymo8XBW?=
- =?us-ascii?Q?Ud4HHAIVg77b1qiBqURlVb5FevBIXtUgjyn07B8T04M4W/QWoF4MD8v/T4vK?=
- =?us-ascii?Q?78sjM71gpTzy3JMfiUaOfgN6ou9wURaCYs6dyF6mJy3/mHR0L8PXTvivoZOn?=
- =?us-ascii?Q?uT7YgsgAZArjPiAiSV7ciRWH7eF1+4RKldcRXAK/ZK3lpdfknK8UrEtjB4SF?=
- =?us-ascii?Q?k3zzrgGgp5hktpCFPS+DBfcma/FiSS5S4uNfNUZAqqCQHX9RtLRWTeZHQw02?=
- =?us-ascii?Q?1RTQU0J2Ba46AYv7v0evoWAgRHs4gxuj+cmaMtJF316Vm7EPi3CpwGpLmlGH?=
- =?us-ascii?Q?VwaDY7MWVqo4YS3LkUq4I8F4hO/k4Kieam3M8rFZzWHXCBtnv2uTlWVpB7Wr?=
- =?us-ascii?Q?icBDD4iFUR1w2vFJ8yydj7AnPS8cmms9WD7ZI6kAJkO+IAu7y0De7JFEMEe0?=
- =?us-ascii?Q?hoAeBBjZF+i0N0WK/c0rJ0QKkDyLq1qZmE5l?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014); DIR:OUT;
- SFP:1101; 
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?N21yaHlzUGF4WkExbVZFK0d1SzBaVzZ5cFlidTlBMzNnL3ZQYm1SVzZsYTJY?=
+ =?utf-8?B?Sm5FZzJYVDhRNCtUblRSb0ZoR0k1WEtOdXBvT20wbjFDb1JlQ0tBRU5mam1q?=
+ =?utf-8?B?VnJBS3FzVkRqblowQnByN1lQMXNHRGZ1M2VRYkVma0NUTmVLQzg1c3Bya3Fk?=
+ =?utf-8?B?NHhDWUp6TGR2U1FVd2ZGVDROVU9kOVREMEFUNXlidEZ2bFcydFRFOEptQ2ZK?=
+ =?utf-8?B?SzhYd0xNMkYyZ3R4aFVxajZjbVdFY09POW01M1FocHd3OE51ZG1YWTY0ZmF1?=
+ =?utf-8?B?clM5M080R2dKYXBwdFNZTkJ1Y0NYbnlVUWxxQVVuaWU4a2lhNk1CSlNpT040?=
+ =?utf-8?B?UXVLMWxJM3hrdHIzc1FsUERsSldhUE44SDliNFVnRTFrQmJQUHNzYWlqbUlT?=
+ =?utf-8?B?TC9rUHZXMzlnTzJiQ2pjcCt0S2M1ZCswNU1iazNlVFlyalh2d2xTQjBkd3Zp?=
+ =?utf-8?B?bmxHRDJ3ZjZHQ1FobXN0SXlmQW5nZFpGY2ZjOUo4SU1BaTFkT040U3BidFNu?=
+ =?utf-8?B?cEtmQ1UyeTEya2JnY1I0T1lxU01VUEowYmx5NTVOcVl0cjUvKzduelcrdHBX?=
+ =?utf-8?B?UitXNkE1d0ZxYzhCaE1ObXhtMjh1eS9TVDZFd000am5Da0FEZ0VQeDYxMzVm?=
+ =?utf-8?B?dmdBQUhrb3RlbjcwZmpES3dOTlFadjBsdEJPSDJqS2xqbFI2emVKMFRmek9x?=
+ =?utf-8?B?QlliNisxczZhdXlxR0FKd1llYUpBR24xWWtyaGQ4VkNzaWMrTmduTDdFZlcz?=
+ =?utf-8?B?VGdvM0hwZ0U3LzJubHJYT2x5b1M3ZzdqNTFVMXgxU1NFSU1tNE1qdnJqU3or?=
+ =?utf-8?B?R1JLSHowU3lMNjV3cFA3SE1yU25aL3ZaRTMyVWQ3L1JZOERIeWV5S2dsWk1o?=
+ =?utf-8?B?YldTZDR0Y25JRXl2dHgrbzd5R0ovbEF5ZlpZeU5uRlNUT3UyRmpLTGh5UWxx?=
+ =?utf-8?B?WS9kRHdxRy9sR2ZidGJmdVlRa3hsTHl2Z2IwTkd0THg2SlR1V3ZtdEJiOUls?=
+ =?utf-8?B?ZGFzeVpDTmh6RU9TRGdmR2c5MlVXUy9JemlUVkhWbXNUWmxtVHpMTWJhSDU0?=
+ =?utf-8?B?dW9FQXAwTUJpeXdUZHBQYnRRQ1hISFBhRkJxTkNzQTg1NTQxQTV5b2NZVEFX?=
+ =?utf-8?B?ZEtpRk8rY0hKbUJMTlpkMmg2MVlOcFhEQ3pZSyt2RjFkdjN6RDVianFXbzFN?=
+ =?utf-8?B?Z1V5WEl1VFpmaG5tVDdNdjVoWnk0WjZWVEZmalJLZ1pML0RDaDJOUXR0OSts?=
+ =?utf-8?B?ZzRmd0JMZzJQVHRMVkdvTFBvTEovemZKY0RQVnNBTDI3aHNYNFF3bjRkamNB?=
+ =?utf-8?B?OFlRNHYyTkdlZHhKWXR2eHRNRGpXRk8xb2FEYzkydmFCMURibHlSYUhCS0ha?=
+ =?utf-8?B?SHhmeHNLNDJIV0pKOUV1REs3UVdWSXBJbVNLNC9TL2d1MUh1SExtZ0ZHMDdq?=
+ =?utf-8?B?cFdCWkRyOTZVc1dDcWNuMzc0Y1VXbU93elFFalgrbnlPYXVqMkFSWUN1MW9u?=
+ =?utf-8?B?NWFpcGhiUDlVUVNGdFZLbEozZTlhQzZteWdCVTFjN0x5MExvWVNuZkJSUlhQ?=
+ =?utf-8?B?NVZ1WlArSWRCcDJrWEVCS09Pb082TVB3dndxOGloaHE2QXFFYllvWmNCUXlS?=
+ =?utf-8?B?b0d5OHhYR2J0RHFVWitZZHNGeEhtMCtBRGx6NlBzT3JzUjB0dVdvNW1pZUdX?=
+ =?utf-8?B?b1lTQnNBSUxkSVY0WmFKRXZWV1NkQUVNelVXVGZ6TlljSm9pblFQSTNUMmdq?=
+ =?utf-8?B?Q3YrSC96aXJtY3A5eDlUTTZFOGlWdk1POVV2UzQwN1JDSDZTb0VyanZKdDFF?=
+ =?utf-8?B?ZjN6QTZoK1kyeGgxVEo5ejROcExlTXlaUml4U0ZZSUljenlaYVJVN09McGNl?=
+ =?utf-8?B?clRTR2lDQVc2blNlcGJSaTBBbGV0L21jQXVhM004eG0rYWgvZFduY2NEZVAw?=
+ =?utf-8?Q?VWcCEtVHzp4=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RVhGWGFNazhnUW1MRTh1bjJKN3E1UEswZVhDYmx3NXJBbDhjNUFSVFJmY2Vv?=
+ =?utf-8?B?Z2U5MU1UOEg1VFZ6VWx3S3NENFBvczNUVjJ3WkFJbEdXUlNjNDFBRVZ6K05I?=
+ =?utf-8?B?Z1pMSE5DQ0hybU5oamNaOWh5dXBMaVBlMGJmMEVSUHcvZzVUQy9rRW9jLzNJ?=
+ =?utf-8?B?M1FUemt3N0EzRnJ5dVVZNmlOak53VkNmNUhDbTA1U3VyMjYrT2RFOEh4aE1M?=
+ =?utf-8?B?SGFIQ3UvNzhXZzVTc01DeGZpVkhxRWFqWUFLR2ZqdG9GU3craEVUMlh3VDR5?=
+ =?utf-8?B?R3NnVGowN0tvVjg4OWZtYUxpTU11RHBEVUhuTDhoN094MmZvNG94YXNHeGYv?=
+ =?utf-8?B?ZDh1NTNMbUppQzJvVzNpMlAyc2lYN0pXODFCOGpWRjRUN2FzRHhuYW9GejNQ?=
+ =?utf-8?B?UGRVSlBwb2loQUs0WWFYNUk4UUpTV2NiODNjZW1UcVEwejBYaVpWd2MyejNt?=
+ =?utf-8?B?RFVzZVZSMDQ5cEkvY1JpNGwxY200QnllbmNBTFQ4SWxsMWgycDJ5L2VJcCs3?=
+ =?utf-8?B?ME9kSnhyVmxoQVczNW9WeWg5d0FtRkZTZTFEN0hrcW4xZWdOM2h0TVdFNGdT?=
+ =?utf-8?B?NVEwQ3VUb1hKQ2d3aEo5RzRPaWIzWSt5RjVXOVZHTExxa3pUZFZrc0s0RGVl?=
+ =?utf-8?B?VWZIVVJKTmN4SThSU2c1SjQvbDBia0xMNldTYk5rZ1FYM2FOcWVaT0p0UGtM?=
+ =?utf-8?B?K3pVT29GSVFQbWdtbEJwN0hoOGYyZkt2d24zWm5WMzBRWjhJRjAxcVNjMTh0?=
+ =?utf-8?B?TTVoZ05xaXNCRmNPSWhBTFBRZDE1aHJIc3BhcmkvbHdXRGlRQnlmQWdHUUwr?=
+ =?utf-8?B?YTVtY1NIZkRtajlCREVsZ0w5UnZhcDUrUjhvTVBBTHh3SjlNcUJjNkpjQlZ0?=
+ =?utf-8?B?L0NISHVjMUROREJzLzNEU2d3K1I5bk1iY0RCNUVRbytLZTZhMVNCZDZrMGhq?=
+ =?utf-8?B?U3FSYm9wRGlhZGFBZHNFQzc2VmkwSWluM25nVG83UklCTkpGdUY5WFk2Q01h?=
+ =?utf-8?B?M0VFK0lBNktkZ0ZVK3FiTEFPSlZjcmVORnNHZ3c2WExUVHNwZXBuR0JiWkE3?=
+ =?utf-8?B?eGxQMU9CeDVOemRIVG9ZRlhMdW1SMDlIYXRpZXVHRnNNSWliQS9IT3F5YjVJ?=
+ =?utf-8?B?VmVycTQ5MTVDMUs5dUtpUUxvdktIRVljNStscGhyVE9teGVpbU9DNjd4QlZr?=
+ =?utf-8?B?ZjEzc1dEMVlaU2E4ZmlUTmxrZ2lQQVQ3RjBKbjEzdFBuRFNheloybmo5ZXpO?=
+ =?utf-8?B?dnRtdUVjUUFpeEhtNGNYMHBGQ1lhUU5veEI1bkNrWEo0M2dEb1FESWo1Y2tj?=
+ =?utf-8?B?SnQ4THd3TVBlZ3UzVDV4Z0tHenRXZXJueXo3TkZkVVFsTUM2bTZLS0pCU2px?=
+ =?utf-8?B?MHlnME5Fa0ZuMFZZd1NkWHRacVJ3VHlJL1ViWmJvMW9GREUyYnAyTk5jWndF?=
+ =?utf-8?B?MUdwajJtSEdnRDFRZ3IwNW1kTVVVSzVNbUR5Q0I2clp2ejFGWEtwU1Z6amx2?=
+ =?utf-8?B?dCtDUXA5MmtWRzltSzZmdENmeWc2M3ZXRWlrQktmM1I3OWhxRC9NWk45ajA2?=
+ =?utf-8?B?MEtONE5ORmpJcXJWOG95bGo1NURoSlBZWTh6eWlwOUUzYWxmZlRwb3Z0QlAx?=
+ =?utf-8?B?RFI1ZkJLcVVYd1F1YjhUN1FXc3RyWUtQcXBTTzNjamFZMVlLaUgzNGF0Yzhr?=
+ =?utf-8?B?bzV2czFQcExCREk0Y1oya3hlanFOY3FEcDhBN3AreW1LcC9hVGFJQ2Y1ZHh6?=
+ =?utf-8?B?VVpHelpnV1ZtTVhSMFdBZi9hZUM2UTBiY21ab0dQL0E0ZWhxS0pNSjFxZHV0?=
+ =?utf-8?B?Ykl5RTJwVW1ldUxDNmFpMkdrVzUrTHBTdEtRd2xGSXMvVmd5cy96YlpnNFVp?=
+ =?utf-8?B?UFhuNjlGRk9md2xCMWRHclNTMWdEVktWbitpby9WeVpKekg5U29JY1pnTEly?=
+ =?utf-8?B?d3NjdDFRMkg4ak53UTJEUkJqR080ZUlZUG1Od1lHam5KNnFvK0FSMTZ4SjVk?=
+ =?utf-8?B?L2hvR1QyWE1DdjNybXBjSzB1RDBXRWlaZUE5eW5EdEV1MnlDYlcrL2lJdUh2?=
+ =?utf-8?B?VG9sU0tTbWZXdE0xZFRpbjE4R2JBM0YxRWdHU0xaUG8yNk53WEpveVoxQ29H?=
+ =?utf-8?Q?HlIkqCLXIoAKobWbxaHgajVJc?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2025 23:47:19.4853 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1385794-7dba-4150-6818-08dda3c22501
+X-MS-Exchange-CrossTenant-Network-Message-Id: cdad64e9-229f-4102-3e82-08dda3c2936a
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2025 23:50:25.1308 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044FB.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8797
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IBrjXKLn0icIBdDfhyI1MiHVGPxVeYa76e3fsoB7z0aflqu7/60joV8nPB7YVZ68lcksMxjOQtLQnRzeRnAT5g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6276
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,883 +162,166 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Query the vcn/jpeg queue reset mask to check
-if driver has supported queue reset.
-Add common api to query the queue sched mask info
-and select the ready queue (1: ready, 0: not ready),
-then execute test on the selected queue.
-If there are multiple queues, test will be
-executed on per ready queue.
+All four patches in the series look good to me —Reviewed-by Vitaly Prosyak ,vitaly.prosyak@amd.com>
 
-Queue test shall be independent, because some vcn ips
-do not support queue reset. And decode/encode normal
-tests and queue tests have some same functions, we
-move the duplicated code to the shared lib files.
 
-Signed-off-by: ruiliji2 <ruiliji2@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
----
- lib/amdgpu/amd_ip_blocks.c   |   4 +
- lib/amdgpu/amd_jpeg_shared.c | 191 +++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_jpeg_shared.h | 145 ++++++++++++++++++++++++++
- lib/amdgpu/amd_mmd_shared.c  |  62 +++++++++++-
- lib/amdgpu/amd_mmd_shared.h  |  19 ++++
- lib/amdgpu/amd_vcn_shared.c  | 191 +++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_vcn_shared.h  | 144 ++++++++++++++++++++++++++
- lib/meson.build              |   2 +
- 8 files changed, 756 insertions(+), 2 deletions(-)
- create mode 100644 lib/amdgpu/amd_jpeg_shared.c
- create mode 100644 lib/amdgpu/amd_jpeg_shared.h
- create mode 100644 lib/amdgpu/amd_vcn_shared.c
- create mode 100644 lib/amdgpu/amd_vcn_shared.h
+Thanks, Vitaly
 
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index b8227ba2b..e4913c77d 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -1050,6 +1050,10 @@ is_reset_enable(enum amd_ip_block_type ip_type, uint32_t reset_type, const struc
- 		snprintf(reset_mask, sizeof(reset_mask) - 1, "gfx_reset_mask");
- 	else if (ip_type == AMD_IP_COMPUTE)
- 		snprintf(reset_mask, sizeof(reset_mask) - 1, "compute_reset_mask");
-+	else if (ip_type == AMD_IP_VCN_UNIFIED)
-+		snprintf(reset_mask, sizeof(reset_mask) - 1, "vcn_reset_mask");
-+	else if (ip_type == AMD_IP_VCN_JPEG)
-+		snprintf(reset_mask, sizeof(reset_mask) - 1, "jpeg_reset_mask");
- 	else
- 		snprintf(reset_mask, sizeof(reset_mask) - 1, "sdma_reset_mask");
- 
-diff --git a/lib/amdgpu/amd_jpeg_shared.c b/lib/amdgpu/amd_jpeg_shared.c
-new file mode 100644
-index 000000000..e9f673a42
---- /dev/null
-+++ b/lib/amdgpu/amd_jpeg_shared.c
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: MIT
-+// Copyright 2025 Advanced Micro Devices, Inc.
-+
-+#include "amd_jpeg_shared.h"
-+
-+bool
-+is_jpeg_tests_enable(amdgpu_device_handle device_handle,
-+		struct mmd_shared_context *context)
-+{
-+	struct drm_amdgpu_info_hw_ip info;
-+	int r;
-+
-+	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VCN_JPEG, 0, &info);
-+
-+	if (r != 0 || !info.available_rings ||
-+			(context->family_id < AMDGPU_FAMILY_RV &&
-+			(context->family_id == AMDGPU_FAMILY_AI &&
-+			(context->chip_id - context->chip_rev) < 0x32))) { /* Arcturus */
-+		igt_info("\n\nThe ASIC NOT support JPEG, test disabled\n");
-+		return false;
-+	}
-+
-+	if (info.hw_ip_version_major == 1)
-+		context->jpeg_direct_reg = false;
-+	else if (info.hw_ip_version_major > 1 && info.hw_ip_version_major <= 4)
-+		context->jpeg_direct_reg = true;
-+	else
-+		return false;
-+
-+	context->vcn_ip_version_major = info.hw_ip_version_major;
-+	context->vcn_ip_version_minor = info.hw_ip_version_minor;
-+	jrbc_ib_cond_rd_timer = vcnipUVD_JRBC_IB_COND_RD_TIMER;
-+	jrbc_ib_ref_data = vcnipUVD_JRBC_IB_REF_DATA;
-+	jpeg_rb_base = vcnipUVD_JPEG_RB_BASE;
-+	jpeg_rb_size = vcnipUVD_JPEG_RB_SIZE;
-+	jpeg_rb_wptr = vcnipUVD_JPEG_RB_WPTR;
-+	jpeg_int_en = vcnipUVD_JPEG_INT_EN;
-+	jpeg_cntl = vcnipUVD_JPEG_CNTL;
-+	jpeg_rb_rptr = vcnipUVD_JPEG_RB_RPTR;
-+
-+	if (context->family_id == AMDGPU_FAMILY_AI &&
-+		(context->chip_id - context->chip_rev) > 0x3c) { /* gfx940 */
-+		jpeg_dec_soft_rst = vcnipUVD_JPEG_DEC_SOFT_RST_1;
-+		lmi_jpeg_read_64bit_bar_high = vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH_1;
-+		lmi_jpeg_read_64bit_bar_low = vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW_1;
-+		jpeg_pitch = vcnipUVD_JPEG_PITCH_1;
-+		jpeg_uv_pitch = vcnipUVD_JPEG_UV_PITCH_1;
-+		dec_addr_mode = vcnipJPEG_DEC_ADDR_MODE_1;
-+		dec_y_gfx10_tiling_surface = vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE_1;
-+		dec_uv_gfx10_tiling_surface = vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE_1;
-+		lmi_jpeg_write_64bit_bar_high = vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH_1;
-+		lmi_jpeg_write_64bit_bar_low = vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW_1;
-+		jpeg_tier_cntl2 = vcnipUVD_JPEG_TIER_CNTL2_1;
-+		jpeg_outbuf_cntl = vcnipUVD_JPEG_OUTBUF_CNTL_1;
-+		jpeg_outbuf_rptr = vcnipUVD_JPEG_OUTBUF_RPTR_1;
-+		jpeg_outbuf_wptr = vcnipUVD_JPEG_OUTBUF_WPTR_1;
-+		jpeg_luma_base0_0 = vcnipUVD_JPEG_LUMA_BASE0_0;
-+		jpeg_chroma_base0_0 = vcnipUVD_JPEG_CHROMA_BASE0_0;
-+	} else {
-+		jpeg_dec_soft_rst = vcnipUVD_JPEG_DEC_SOFT_RST;
-+		lmi_jpeg_read_64bit_bar_high = vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH;
-+		lmi_jpeg_read_64bit_bar_low = vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW;
-+		jpeg_pitch = vcnipUVD_JPEG_PITCH;
-+		jpeg_uv_pitch = vcnipUVD_JPEG_UV_PITCH;
-+		dec_addr_mode = vcnipJPEG_DEC_ADDR_MODE;
-+		dec_y_gfx10_tiling_surface = vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE;
-+		dec_uv_gfx10_tiling_surface = vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE;
-+		lmi_jpeg_write_64bit_bar_high = vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH;
-+		lmi_jpeg_write_64bit_bar_low = vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW;
-+		jpeg_tier_cntl2 = vcnipUVD_JPEG_TIER_CNTL2;
-+		jpeg_outbuf_cntl = vcnipUVD_JPEG_OUTBUF_CNTL;
-+		jpeg_outbuf_rptr = vcnipUVD_JPEG_OUTBUF_RPTR;
-+		jpeg_outbuf_wptr = vcnipUVD_JPEG_OUTBUF_WPTR;
-+	}
-+
-+	return true;
-+}
-+
-+void
-+set_reg_jpeg(struct mmd_context *context, uint32_t reg, uint32_t cond,
-+		uint32_t type, uint32_t val, uint32_t *idx)
-+{
-+	context->ib_cpu[(*idx)++] = RDECODE_PKTJ(reg, cond, type);
-+	context->ib_cpu[(*idx)++] = val;
-+}
-+
-+/* send a target buffer command */
-+void
-+send_cmd_target_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	set_reg_jpeg(context, jpeg_pitch, COND0, TYPE0,
-+			(JPEG_DEC_DT_PITCH >> 4), idx);
-+	set_reg_jpeg(context, jpeg_uv_pitch, COND0, TYPE0,
-+			(JPEG_DEC_DT_PITCH >> 4), idx);
-+
-+	set_reg_jpeg(context, dec_addr_mode, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, dec_y_gfx10_tiling_surface, COND0, TYPE0,
-+			0, idx);
-+	set_reg_jpeg(context, dec_uv_gfx10_tiling_surface, COND0, TYPE0,
-+			0, idx);
-+
-+	/* set UVD_LMI_JPEG_WRITE_64BIT_BAR_LOW/HIGH based on target buffer address */
-+	set_reg_jpeg(context, lmi_jpeg_write_64bit_bar_high, COND0, TYPE0,
-+			(addr >> 32), idx);
-+	set_reg_jpeg(context, lmi_jpeg_write_64bit_bar_low, COND0, TYPE0,
-+			addr, idx);
-+
-+	/* set output buffer data address */
-+	if (jpeg_luma_base0_0) {
-+		set_reg_jpeg(context, jpeg_luma_base0_0, COND0, TYPE0,
-+			JPEG_DEC_LUMA_OFFSET, idx);
-+		set_reg_jpeg(context, jpeg_chroma_base0_0, COND0, TYPE0,
-+			JPEG_DEC_CHROMA_OFFSET, idx);
-+	} else {
-+		set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 0, idx);
-+		set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0,
-+			JPEG_DEC_LUMA_OFFSET, idx);
-+		set_reg_jpeg(context, vcnipUVD_JPEG_INDEX, COND0, TYPE0, 1, idx);
-+		set_reg_jpeg(context, vcnipUVD_JPEG_DATA, COND0, TYPE0,
-+			JPEG_DEC_CHROMA_OFFSET, idx);
-+	}
-+	set_reg_jpeg(context, jpeg_tier_cntl2, COND0, 0, 0, idx);
-+
-+	/* set output buffer read pointer */
-+	set_reg_jpeg(context, jpeg_outbuf_rptr, COND0, TYPE0, 0, idx);
-+	set_reg_jpeg(context, jpeg_outbuf_cntl, COND0, TYPE0,
-+				((0x00001587 & (~0x00000180L)) | (0x1 << 0x7) | (0x1 << 0x6)),
-+				 idx);
-+
-+	/* enable error interrupts */
-+	set_reg_jpeg(context, jpeg_int_en, COND0, TYPE0, 0xFFFFFFFE, idx);
-+
-+	/* start engine command */
-+	set_reg_jpeg(context, jpeg_cntl, COND0, TYPE0, 0xE, idx);
-+
-+	/* wait for job completion, wait for job JBSI fetch done */
-+	set_reg_jpeg(context, jrbc_ib_ref_data, COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+	set_reg_jpeg(context, jrbc_ib_cond_rd_timer, COND0, TYPE0,
-+			0x01400200, idx);
-+	set_reg_jpeg(context, jpeg_rb_rptr, COND3, TYPE3, 0xFFFFFFFF, idx);
-+
-+	/* wait for job jpeg outbuf idle */
-+	set_reg_jpeg(context, jrbc_ib_ref_data, COND0, TYPE0, 0xFFFFFFFF,
-+			idx);
-+	set_reg_jpeg(context, jpeg_outbuf_wptr, COND3, TYPE3, 0x00000001,
-+			idx);
-+
-+	/* stop engine */
-+	set_reg_jpeg(context, jpeg_cntl, COND0, TYPE0, 0x4, idx);
-+}
-+
-+/* send a bitstream buffer command */
-+void
-+send_cmd_bitstream_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx)
-+{
-+
-+	/* jpeg soft reset */
-+	set_reg_jpeg(context, jpeg_dec_soft_rst, COND0, TYPE0, 1, idx);
-+
-+	/* ensuring the Reset is asserted in SCLK domain */
-+	set_reg_jpeg(context, jrbc_ib_cond_rd_timer, COND0, TYPE0, 0x01400200, idx);
-+	set_reg_jpeg(context, jrbc_ib_ref_data, COND0, TYPE0, (0x1 << 0x10), idx);
-+	set_reg_jpeg(context, jpeg_dec_soft_rst, COND3, TYPE3, (0x1 << 0x10), idx);
-+
-+	/* wait mem */
-+	set_reg_jpeg(context, jpeg_dec_soft_rst, COND0, TYPE0, 0, idx);
-+
-+	/* ensuring the Reset is de-asserted in SCLK domain */
-+	set_reg_jpeg(context, jrbc_ib_ref_data, COND0, TYPE0, (0 << 0x10), idx);
-+	set_reg_jpeg(context, jpeg_dec_soft_rst, COND3, TYPE3, (0x1 << 0x10), idx);
-+
-+	/* set UVD_LMI_JPEG_READ_64BIT_BAR_LOW/HIGH based on bitstream buffer address */
-+	set_reg_jpeg(context, lmi_jpeg_read_64bit_bar_high, COND0, TYPE0,
-+			(addr >> 32), idx);
-+	set_reg_jpeg(context, lmi_jpeg_read_64bit_bar_low, COND0, TYPE0,
-+			addr, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, jpeg_rb_base, COND0, TYPE0, 0, idx);
-+
-+	/* set jpeg_rb_base */
-+	set_reg_jpeg(context, jpeg_rb_size, COND0, TYPE0, 0xFFFFFFF0, idx);
-+
-+	/* set jpeg_rb_wptr */
-+	set_reg_jpeg(context, jpeg_rb_wptr, COND0, TYPE0,
-+			(JPEG_DEC_BSD_SIZE >> 2), idx);
-+}
-\ No newline at end of file
-diff --git a/lib/amdgpu/amd_jpeg_shared.h b/lib/amdgpu/amd_jpeg_shared.h
-new file mode 100644
-index 000000000..09e76b005
---- /dev/null
-+++ b/lib/amdgpu/amd_jpeg_shared.h
-@@ -0,0 +1,145 @@
-+/* SPDX-License-Identifier: MIT
-+ * Copyright 2025 Advanced Micro Devices, Inc.
-+ */
-+
-+#ifndef AMD_JPEG_SHARED_H
-+#define AMD_JPEG_SHARED_H
-+
-+#include "amd_mmd_shared.h"
-+
-+/* jpeg registers */
-+#define mmUVD_JPEG_CNTL				0x0200
-+#define mmUVD_JPEG_RB_BASE			0x0201
-+#define mmUVD_JPEG_RB_WPTR			0x0202
-+#define mmUVD_JPEG_RB_RPTR			0x0203
-+#define mmUVD_JPEG_RB_SIZE			0x0204
-+#define mmUVD_JPEG_TIER_CNTL2			0x021a
-+#define mmUVD_JPEG_UV_TILING_CTRL		0x021c
-+#define mmUVD_JPEG_TILING_CTRL			0x021e
-+#define mmUVD_JPEG_OUTBUF_RPTR			0x0220
-+#define mmUVD_JPEG_OUTBUF_WPTR			0x0221
-+#define mmUVD_JPEG_PITCH			0x0222
-+#define mmUVD_JPEG_INT_EN			0x0229
-+#define mmUVD_JPEG_UV_PITCH			0x022b
-+#define mmUVD_JPEG_INDEX			0x023e
-+#define mmUVD_JPEG_DATA				0x023f
-+#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x0438
-+#define mmUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x0439
-+#define mmUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x045a
-+#define mmUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x045b
-+#define mmUVD_CTX_INDEX				0x0528
-+#define mmUVD_CTX_DATA				0x0529
-+#define mmUVD_SOFT_RESET			0x05a0
-+
-+#define vcnipUVD_JPEG_DEC_SOFT_RST		0x402f
-+#define vcnipUVD_JRBC_IB_COND_RD_TIMER		0x408e
-+#define vcnipUVD_JRBC_IB_REF_DATA		0x408f
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH	0x40e1
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW	0x40e0
-+#define vcnipUVD_JPEG_RB_BASE			0x4001
-+#define vcnipUVD_JPEG_RB_SIZE			0x4004
-+#define vcnipUVD_JPEG_RB_WPTR			0x4002
-+#define vcnipUVD_JPEG_PITCH			0x401f
-+#define vcnipUVD_JPEG_UV_PITCH			0x4020
-+#define vcnipJPEG_DEC_ADDR_MODE			0x4027
-+#define vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE	0x4024
-+#define vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE	0x4025
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x40e3
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x40e2
-+#define vcnipUVD_JPEG_INDEX			0x402c
-+#define vcnipUVD_JPEG_DATA			0x402d
-+#define vcnipUVD_JPEG_TIER_CNTL2		0x400f
-+#define vcnipUVD_JPEG_OUTBUF_RPTR		0x401e
-+#define vcnipUVD_JPEG_OUTBUF_CNTL		0x401c
-+#define vcnipUVD_JPEG_INT_EN			0x400a
-+#define vcnipUVD_JPEG_CNTL			0x4000
-+#define vcnipUVD_JPEG_RB_RPTR			0x4003
-+#define vcnipUVD_JPEG_OUTBUF_WPTR		0x401d
-+
-+#define vcnipUVD_JPEG_DEC_SOFT_RST_1             0x4051
-+#define vcnipUVD_JPEG_PITCH_1                    0x4043
-+#define vcnipUVD_JPEG_UV_PITCH_1                 0x4044
-+#define vcnipJPEG_DEC_ADDR_MODE_1                0x404B
-+#define vcnipUVD_JPEG_TIER_CNTL2_1               0x400E
-+#define vcnipUVD_JPEG_OUTBUF_CNTL_1              0x4040
-+#define vcnipUVD_JPEG_OUTBUF_WPTR_1              0x4041
-+#define vcnipUVD_JPEG_OUTBUF_RPTR_1              0x4042
-+#define vcnipUVD_JPEG_LUMA_BASE0_0               0x41C0
-+#define vcnipUVD_JPEG_CHROMA_BASE0_0             0x41C1
-+#define vcnipJPEG_DEC_Y_GFX10_TILING_SURFACE_1   0x4048
-+#define vcnipJPEG_DEC_UV_GFX10_TILING_SURFACE_1  0x4049
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_HIGH_1 0x40B5
-+#define vcnipUVD_LMI_JPEG_WRITE_64BIT_BAR_LOW_1  0x40B4
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_HIGH_1  0x40B3
-+#define vcnipUVD_LMI_JPEG_READ_64BIT_BAR_LOW_1   0x40B2
-+
-+uint32_t jpeg_dec_soft_rst;
-+uint32_t jrbc_ib_cond_rd_timer;
-+uint32_t jrbc_ib_ref_data;
-+uint32_t lmi_jpeg_read_64bit_bar_high;
-+uint32_t lmi_jpeg_read_64bit_bar_low;
-+uint32_t jpeg_rb_base;
-+uint32_t jpeg_rb_size;
-+uint32_t jpeg_rb_wptr;
-+uint32_t jpeg_pitch;
-+uint32_t jpeg_uv_pitch;
-+uint32_t dec_addr_mode;
-+uint32_t dec_y_gfx10_tiling_surface;
-+uint32_t dec_uv_gfx10_tiling_surface;
-+uint32_t lmi_jpeg_write_64bit_bar_high;
-+uint32_t lmi_jpeg_write_64bit_bar_low;
-+uint32_t jpeg_tier_cntl2;
-+uint32_t jpeg_outbuf_rptr;
-+uint32_t jpeg_outbuf_cntl;
-+uint32_t jpeg_int_en;
-+uint32_t jpeg_cntl;
-+uint32_t jpeg_rb_rptr;
-+uint32_t jpeg_outbuf_wptr;
-+uint32_t jpeg_luma_base0_0;
-+uint32_t jpeg_chroma_base0_0;
-+
-+#define RDECODE_PKT_REG_J(x)		((unsigned int)(x)&0x3FFFF)
-+#define RDECODE_PKT_RES_J(x)		(((unsigned int)(x)&0x3F) << 18)
-+#define RDECODE_PKT_COND_J(x)		(((unsigned int)(x)&0xF) << 24)
-+#define RDECODE_PKT_TYPE_J(x)		(((unsigned int)(x)&0xF) << 28)
-+#define RDECODE_PKTJ(reg, cond, type)	(RDECODE_PKT_REG_J(reg) | \
-+					 RDECODE_PKT_RES_J(0) | \
-+					 RDECODE_PKT_COND_J(cond) | \
-+					 RDECODE_PKT_TYPE_J(type))
-+
-+#define UVD_BASE_INST0_SEG1		0x00007E00
-+#define SOC15_REG_ADDR(reg)		(UVD_BASE_INST0_SEG1 + reg)
-+
-+#define COND0				0
-+#define COND1				1
-+#define COND3				3
-+#define TYPE0				0
-+#define TYPE1				1
-+#define TYPE3				3
-+#define JPEG_DEC_DT_PITCH       0x100
-+#define WIDTH                   64
-+#define JPEG_DEC_BSD_SIZE       0x200
-+#define JPEG_DEC_LUMA_OFFSET    0
-+#define JPEG_DEC_CHROMA_OFFSET  0x4000
-+#define JPEG_DEC_SUM            262144
-+#define IB_SIZE                 4096
-+#define MAX_RESOURCES           16
-+
-+bool
-+is_jpeg_tests_enable(amdgpu_device_handle device_handle,
-+		struct mmd_shared_context *context);
-+
-+void
-+set_reg_jpeg(struct mmd_context *context, uint32_t reg, uint32_t cond,
-+		uint32_t type, uint32_t val, uint32_t *idx);
-+
-+/* send a bitstream buffer command */
-+void
-+send_cmd_bitstream_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx);
-+
-+/* send a target buffer command */
-+void
-+send_cmd_target_direct(struct mmd_context *context, uint64_t addr,
-+		uint32_t *idx);
-+#endif // AMD_JPEG_SHARED_H
-\ No newline at end of file
-diff --git a/lib/amdgpu/amd_mmd_shared.c b/lib/amdgpu/amd_mmd_shared.c
-index 976fc61ba..95a89d40e 100644
---- a/lib/amdgpu/amd_mmd_shared.c
-+++ b/lib/amdgpu/amd_mmd_shared.c
-@@ -191,6 +191,64 @@ submit(amdgpu_device_handle device_handle, struct mmd_context *context,
- 	return r;
- }
- 
-+int
-+mm_queue_test_helper(amdgpu_device_handle device_handle, struct mmd_shared_context *context,
-+		mm_test_callback callback, int err_type, const struct pci_addr *pci)
-+{
-+	int r;
-+	FILE *fp;
-+	char cmd[1024];
-+	char buffer[128];
-+	long sched_mask = 0;
-+	long mask = 0;
-+	uint32_t ring_id;
-+	char sysfs[125];
-+
-+	if (!callback)
-+		return -1;
-+
-+	// test is only supported on VCN version >= 4
-+	if (context->ip_type == AMD_IP_VCN_UNIFIED)
-+		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_vcn_sched_mask",
-+				pci->domain, pci->bus, pci->device, pci->function);
-+	else if (context->ip_type == AMD_IP_VCN_JPEG)
-+		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_jpeg_sched_mask",
-+				pci->domain, pci->bus, pci->device, pci->function);
-+
-+	snprintf(cmd, sizeof(cmd) - 1, "sudo cat %s", sysfs);
-+	r = access(sysfs, R_OK);
-+	if (!r) {
-+		fp = popen(cmd, "r");
-+		if (fp == NULL) {
-+			igt_skip("read the sysfs failed: %s\n", sysfs);
-+			return -1;
-+		}
-+
-+		if (fgets(buffer, 128, fp) != NULL)
-+			sched_mask = strtol(buffer, NULL, 16);
-+		pclose(fp);
-+	} else
-+		sched_mask = 1;
-+
-+	mask = sched_mask;
-+	for (ring_id = 0;  mask > 0; ring_id++) {
-+		/* check sched is ready is on the ring. */
-+		if (mask & 1) {
-+			igt_info(" Testing on queue %d\n", ring_id);
-+			snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%x > %s", 0x1 << ring_id, sysfs);
-+			r = system(cmd);
-+			igt_assert_eq(r, 0);
-+			if (callback(device_handle, context, err_type))
-+				break;
-+		}
-+		mask = mask >> 1;
-+	}
- 
--
--
-+	/* recover the sched mask */
-+	if (sched_mask > 1) {
-+		snprintf(cmd, sizeof(cmd) - 1, "sudo echo  0x%lx > %s", sched_mask, sysfs);
-+		r = system(cmd);
-+		igt_assert_eq(r, 0);
-+	}
-+	return r;
-+}
-diff --git a/lib/amdgpu/amd_mmd_shared.h b/lib/amdgpu/amd_mmd_shared.h
-index 923bcc29c..65857d16a 100644
---- a/lib/amdgpu/amd_mmd_shared.h
-+++ b/lib/amdgpu/amd_mmd_shared.h
-@@ -7,6 +7,7 @@
- #include "amdgpu_drm.h"
- 
- #include "igt.h"
-+#include "amd_ip_blocks.h"
- #include "amd_mmd_decode_messages.h"
- #include "amd_mmd_util_math.h"
- #include "amd_memory.h"
-@@ -27,6 +28,17 @@
- #define IB_SIZE		4096
- #define MAX_RESOURCES	16
- 
-+enum decoder_error_type {
-+	INVALID_DECODER_IB_TYPE = 0,
-+	INVALID_DECODER_IB_SIZE,
-+	INVALID_DECODER_DPB_BUFFER,
-+	INVALID_DECODER_CODEC_PARAM,
-+	INVALID_DECODER_TARGET_BUFFER,
-+	INVALID_DECODER_BITSTREAM,
-+	INVALID_DECODER_BITSTREAM_BUFFER,
-+	INVALID_DECODER_NONE,
-+};
-+
- struct mmd_shared_context {
- 	uint32_t family_id;
- 	uint32_t chip_id;
-@@ -51,6 +63,7 @@ struct mmd_shared_context {
- 	uint32_t vpe_ip_version_major;
- 	uint32_t vpe_ip_version_minor;
- 	bool vpe_ring;
-+	enum amd_ip_block_type ip_type;
- };
- 
- struct mmd_context {
-@@ -117,3 +130,9 @@ alloc_resource(amdgpu_device_handle device_handle,
- 
- void
- free_resource(struct amdgpu_mmd_bo *mmd_bo);
-+
-+typedef int (*mm_test_callback) (amdgpu_device_handle device_handle, struct mmd_shared_context *context,
-+		int err);
-+int
-+mm_queue_test_helper(amdgpu_device_handle device_handle, struct mmd_shared_context *context,
-+		mm_test_callback test, int err_type, const struct pci_addr *pci);
-diff --git a/lib/amdgpu/amd_vcn_shared.c b/lib/amdgpu/amd_vcn_shared.c
-new file mode 100644
-index 000000000..3888ec112
---- /dev/null
-+++ b/lib/amdgpu/amd_vcn_shared.c
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: MIT
-+// Copyright 2025 Advanced Micro Devices, Inc.
-+
-+#include "amd_vcn_shared.h"
-+
-+bool
-+is_vcn_tests_enable(amdgpu_device_handle device_handle, struct mmd_shared_context *context)
-+{
-+	struct drm_amdgpu_info_hw_ip info;
-+	int r;
-+
-+	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VCN_ENC, 0, &info);
-+
-+	if (r)
-+		return false;
-+
-+	context->vcn_ip_version_major = info.hw_ip_version_major;
-+	context->vcn_ip_version_minor = info.hw_ip_version_minor;
-+	context->enc_ring = !!info.available_rings;
-+	/* in vcn 4.0 it re-uses encoding queue as unified queue */
-+	if (context->vcn_ip_version_major >= 4) {
-+		context->vcn_unified_ring = true;
-+		context->vcn_dec_sw_ring = true;
-+		context->dec_ring = context->enc_ring;
-+	} else {
-+		r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_VCN_DEC, 0, &info);
-+		context->dec_ring = !!info.available_rings;
-+	}
-+
-+	if (!(context->dec_ring || context->enc_ring) ||
-+		(context->family_id < AMDGPU_FAMILY_RV &&
-+		(context->family_id == AMDGPU_FAMILY_AI &&
-+		(context->chip_id - context->chip_rev) < 0x32))) { /* Arcturus */
-+		igt_info("The ASIC does NOT support VCN, vcn test is disabled\n");
-+		return false;
-+	}
-+
-+	if (context->family_id == AMDGPU_FAMILY_AI)
-+		context->enc_ring  = false;
-+
-+	if (!context->dec_ring) {
-+		igt_info("VCN Tests DEC create disable\n");
-+		igt_info("VCN Tests DEC decode disable\n");
-+		igt_info("VCN Tests DEC destroy disable\n");
-+	}
-+
-+	if (!context->enc_ring) {
-+		igt_info("VCN Tests ENC create disable\n");
-+		igt_info("VCN Tests ENC encode disable\n");
-+		igt_info("VCN Tests ENC destroy disable\n");
-+	}
-+
-+	if (context->vcn_ip_version_major == 1) {
-+		context->vcn_reg_index = 0;
-+	} else if (context->vcn_ip_version_major == 2 && context->vcn_ip_version_minor == 0) {
-+		context->vcn_reg_index = 1;
-+	} else if ((context->vcn_ip_version_major == 2 && context->vcn_ip_version_minor >= 5) ||
-+			context->vcn_ip_version_major == 3) {
-+		context->vcn_reg_index = 2;
-+	}
-+
-+	return true;
-+}
-+
-+void
-+amdgpu_cs_sq_head(struct vcn_context *v_context, uint32_t *base, int *offset, bool enc)
-+{
-+	/* signature */
-+	*(base + (*offset)++) = 0x00000010;
-+	*(base + (*offset)++) = 0x30000002;
-+	v_context->ib_checksum = base + (*offset)++;
-+	v_context->ib_size_in_dw = base + (*offset)++;
-+
-+	/* engine info */
-+	*(base + (*offset)++) = 0x00000010;
-+	*(base + (*offset)++) = 0x30000001;
-+	*(base + (*offset)++) = enc ? 2 : 3;
-+	*(base + (*offset)++) = 0x00000000;
-+}
-+
-+void
-+amdgpu_cs_sq_ib_tail(struct vcn_context *v_context, uint32_t *end)
-+{
-+	uint32_t size_in_dw;
-+	uint32_t checksum = 0;
-+
-+	/* if the pointers are invalid, no need to process */
-+	if (v_context->ib_checksum == NULL || v_context->ib_size_in_dw == NULL)
-+		return;
-+
-+	size_in_dw = end - v_context->ib_size_in_dw - 1;
-+	*v_context->ib_size_in_dw = size_in_dw;
-+	*(v_context->ib_size_in_dw + 4) = size_in_dw * sizeof(uint32_t);
-+
-+	for (int i = 0; i < size_in_dw; i++)
-+		checksum += *(v_context->ib_checksum + 2 + i);
-+
-+	*v_context->ib_checksum = checksum;
-+
-+	v_context->ib_checksum = NULL;
-+	v_context->ib_size_in_dw = NULL;
-+}
-+
-+void
-+vcn_dec_cmd(struct mmd_shared_context *shared_context,
-+		struct mmd_context *context, struct vcn_context *v_context,
-+		uint64_t addr, unsigned int cmd, int *idx, enum decoder_error_type err_type)
-+{
-+	if (shared_context->vcn_dec_sw_ring == false) {
-+		context->ib_cpu[(*idx)++] = reg[shared_context->vcn_reg_index].data0;
-+		context->ib_cpu[(*idx)++] = addr;
-+		context->ib_cpu[(*idx)++] = reg[shared_context->vcn_reg_index].data1;
-+		context->ib_cpu[(*idx)++] = addr >> 32;
-+		context->ib_cpu[(*idx)++] = reg[shared_context->vcn_reg_index].cmd;
-+		context->ib_cpu[(*idx)++] = cmd << 1;
-+		return;
-+	}
-+
-+	/* Support decode software ring message */
-+	if (!(*idx)) {
-+		struct rvcn_decode_ib_package *ib_header;
-+
-+		if (shared_context->vcn_unified_ring)
-+			amdgpu_cs_sq_head(v_context, context->ib_cpu, idx, false);
-+
-+		ib_header = (struct rvcn_decode_ib_package *)&context->ib_cpu[*idx];
-+		if (err_type == INVALID_DECODER_IB_SIZE)
-+			ib_header->package_size = 0;
-+		else
-+			ib_header->package_size = sizeof(struct rvcn_decode_buffer) +
-+			sizeof(struct rvcn_decode_ib_package);
-+
-+		(*idx)++;
-+		ib_header->package_type = (DECODE_IB_PARAM_DECODE_BUFFER);
-+		(*idx)++;
-+
-+		v_context->decode_buffer = (struct rvcn_decode_buffer *)&(context->ib_cpu[*idx]);
-+		*idx += sizeof(struct rvcn_decode_buffer) / 4;
-+		memset(v_context->decode_buffer, 0, sizeof(struct rvcn_decode_buffer));
-+	}
-+
-+	switch (cmd) {
-+	case DECODE_CMD_MSG_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= DECODE_CMDBUF_FLAGS_MSG_BUFFER;
-+		v_context->decode_buffer->msg_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->msg_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_DPB_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_DPB_BUFFER);
-+		v_context->decode_buffer->dpb_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->dpb_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_DECODING_TARGET_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_DECODING_TARGET_BUFFER);
-+		v_context->decode_buffer->target_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->target_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_FEEDBACK_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_FEEDBACK_BUFFER);
-+		v_context->decode_buffer->feedback_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->feedback_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_PROB_TBL_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_PROB_TBL_BUFFER);
-+		v_context->decode_buffer->prob_tbl_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->prob_tbl_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_SESSION_CONTEXT_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_SESSION_CONTEXT_BUFFER);
-+		v_context->decode_buffer->session_contex_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->session_contex_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_BITSTREAM_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_BITSTREAM_BUFFER);
-+		v_context->decode_buffer->bitstream_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->bitstream_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_IT_SCALING_TABLE_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_IT_SCALING_BUFFER);
-+		v_context->decode_buffer->it_sclr_table_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->it_sclr_table_buffer_address_lo = (addr);
-+	break;
-+	case DECODE_CMD_CONTEXT_BUFFER:
-+		v_context->decode_buffer->valid_buf_flag |= (DECODE_CMDBUF_FLAGS_CONTEXT_BUFFER);
-+		v_context->decode_buffer->context_buffer_address_hi = (addr >> 32);
-+		v_context->decode_buffer->context_buffer_address_lo = (addr);
-+	break;
-+	default:
-+		igt_info("Not Supported!\n");
-+	}
-+}
-\ No newline at end of file
-diff --git a/lib/amdgpu/amd_vcn_shared.h b/lib/amdgpu/amd_vcn_shared.h
-new file mode 100644
-index 000000000..d6ce0b60b
---- /dev/null
-+++ b/lib/amdgpu/amd_vcn_shared.h
-@@ -0,0 +1,144 @@
-+/* SPDX-License-Identifier: MIT
-+ * Copyright 2025 Advanced Micro Devices, Inc.
-+ */
-+
-+#ifndef AMD_VCN_SHARED_H
-+#define AMD_VCN_SHARED_H
-+
-+#include "amd_mmd_shared.h"
-+
-+#define DECODE_CMD_MSG_BUFFER                              0x00000000
-+#define DECODE_CMD_DPB_BUFFER                              0x00000001
-+#define DECODE_CMD_DECODING_TARGET_BUFFER                  0x00000002
-+#define DECODE_CMD_FEEDBACK_BUFFER                         0x00000003
-+#define DECODE_CMD_PROB_TBL_BUFFER                         0x00000004
-+#define DECODE_CMD_SESSION_CONTEXT_BUFFER                  0x00000005
-+#define DECODE_CMD_BITSTREAM_BUFFER                        0x00000100
-+#define DECODE_CMD_IT_SCALING_TABLE_BUFFER                 0x00000204
-+#define DECODE_CMD_CONTEXT_BUFFER                          0x00000206
-+
-+#define DECODE_IB_PARAM_DECODE_BUFFER                      (0x00000001)
-+
-+#define DECODE_CMDBUF_FLAGS_MSG_BUFFER                     (0x00000001)
-+#define DECODE_CMDBUF_FLAGS_DPB_BUFFER                     (0x00000002)
-+#define DECODE_CMDBUF_FLAGS_BITSTREAM_BUFFER               (0x00000004)
-+#define DECODE_CMDBUF_FLAGS_DECODING_TARGET_BUFFER         (0x00000008)
-+#define DECODE_CMDBUF_FLAGS_FEEDBACK_BUFFER                (0x00000010)
-+#define DECODE_CMDBUF_FLAGS_IT_SCALING_BUFFER              (0x00000200)
-+#define DECODE_CMDBUF_FLAGS_CONTEXT_BUFFER                 (0x00000800)
-+#define DECODE_CMDBUF_FLAGS_PROB_TBL_BUFFER                (0x00001000)
-+#define DECODE_CMDBUF_FLAGS_SESSION_CONTEXT_BUFFER         (0x00100000)
-+
-+#define H264_NAL_TYPE_NON_IDR_SLICE 1
-+#define H264_NAL_TYPE_DP_A_SLICE 2
-+#define H264_NAL_TYPE_DP_B_SLICE 3
-+#define H264_NAL_TYPE_DP_C_SLICE 0x4
-+#define H264_NAL_TYPE_IDR_SLICE 0x5
-+#define H264_NAL_TYPE_SEI 0x6
-+#define H264_NAL_TYPE_SEQ_PARAM 0x7
-+#define H264_NAL_TYPE_PIC_PARAM 0x8
-+#define H264_NAL_TYPE_ACCESS_UNIT 0x9
-+#define H264_NAL_TYPE_END_OF_SEQ 0xa
-+#define H264_NAL_TYPE_END_OF_STREAM 0xb
-+#define H264_NAL_TYPE_FILLER_DATA 0xc
-+#define H264_NAL_TYPE_SEQ_EXTENSION 0xd
-+
-+#define H264_START_CODE 0x000001
-+
-+struct rvcn_decode_buffer {
-+	unsigned int valid_buf_flag;
-+	unsigned int msg_buffer_address_hi;
-+	unsigned int msg_buffer_address_lo;
-+	unsigned int dpb_buffer_address_hi;
-+	unsigned int dpb_buffer_address_lo;
-+	unsigned int target_buffer_address_hi;
-+	unsigned int target_buffer_address_lo;
-+	unsigned int session_contex_buffer_address_hi;
-+	unsigned int session_contex_buffer_address_lo;
-+	unsigned int bitstream_buffer_address_hi;
-+	unsigned int bitstream_buffer_address_lo;
-+	unsigned int context_buffer_address_hi;
-+	unsigned int context_buffer_address_lo;
-+	unsigned int feedback_buffer_address_hi;
-+	unsigned int feedback_buffer_address_lo;
-+	unsigned int luma_hist_buffer_address_hi;
-+	unsigned int luma_hist_buffer_address_lo;
-+	unsigned int prob_tbl_buffer_address_hi;
-+	unsigned int prob_tbl_buffer_address_lo;
-+	unsigned int sclr_coeff_buffer_address_hi;
-+	unsigned int sclr_coeff_buffer_address_lo;
-+	unsigned int it_sclr_table_buffer_address_hi;
-+	unsigned int it_sclr_table_buffer_address_lo;
-+	unsigned int sclr_target_buffer_address_hi;
-+	unsigned int sclr_target_buffer_address_lo;
-+	unsigned int cenc_size_info_buffer_address_hi;
-+	unsigned int cenc_size_info_buffer_address_lo;
-+	unsigned int mpeg2_pic_param_buffer_address_hi;
-+	unsigned int mpeg2_pic_param_buffer_address_lo;
-+	unsigned int mpeg2_mb_control_buffer_address_hi;
-+	unsigned int mpeg2_mb_control_buffer_address_lo;
-+	unsigned int mpeg2_idct_coeff_buffer_address_hi;
-+	unsigned int mpeg2_idct_coeff_buffer_address_lo;
-+};
-+
-+struct rvcn_decode_ib_package {
-+	unsigned int package_size;
-+	unsigned int package_type;
-+};
-+
-+struct amdgpu_vcn_reg {
-+	uint32_t data0;
-+	uint32_t data1;
-+	uint32_t cmd;
-+	uint32_t nop;
-+	uint32_t cntl;
-+};
-+
-+struct buffer_info {
-+	uint32_t num_bits_in_buffer;
-+	const uint8_t *dec_buffer;
-+	uint8_t dec_data;
-+	uint32_t dec_buffer_size;
-+	const uint8_t *end;
-+};
-+
-+struct h264_decode {
-+	uint8_t profile;
-+	uint8_t level_idc;
-+	uint8_t nal_ref_idc;
-+	uint8_t nal_unit_type;
-+	uint32_t pic_width, pic_height;
-+	uint32_t slice_type;
-+};
-+
-+struct vcn_context {
-+	struct amdgpu_mmd_bo enc_buf;
-+	struct amdgpu_mmd_bo cpb_buf;
-+	struct amdgpu_mmd_bo session_ctx_buf;
-+	uint32_t enc_task_id;
-+	uint32_t *ib_checksum;
-+	uint32_t *ib_size_in_dw;
-+	uint32_t gWidth, gHeight, gSliceType;
-+	struct rvcn_decode_buffer *decode_buffer;
-+};
-+
-+struct amdgpu_vcn_reg reg[] = {
-+	{0x81c4, 0x81c5, 0x81c3, 0x81ff, 0x81c6},
-+	{0x504, 0x505, 0x503, 0x53f, 0x506},
-+	{0x10, 0x11, 0xf, 0x29, 0x26d},
-+};
-+
-+bool
-+is_vcn_tests_enable(amdgpu_device_handle device_handle, struct mmd_shared_context *context);
-+
-+void
-+amdgpu_cs_sq_head(struct vcn_context *v_context, uint32_t *base, int *offset, bool enc);
-+
-+void
-+amdgpu_cs_sq_ib_tail(struct vcn_context *v_context, uint32_t *end);
-+
-+void
-+vcn_dec_cmd(struct mmd_shared_context *shared_context,
-+		struct mmd_context *context, struct vcn_context *v_context,
-+		uint64_t addr, unsigned int cmd, int *idx, enum decoder_error_type err_type);
-+#endif //AMD_VCN_SHARED_H
-\ No newline at end of file
-diff --git a/lib/meson.build b/lib/meson.build
-index f54198051..96dcb9fd9 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -168,6 +168,8 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_cp_dma.c',
- 		'amdgpu/amd_mem_leak.c',
- 		'amdgpu/amd_mmd_shared.c',
-+		'amdgpu/amd_jpeg_shared.c',
-+		'amdgpu/amd_vcn_shared.c',
- 		'amdgpu/amd_userq.c'
- 	]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
--- 
-2.34.1
-
+On 2025-06-04 19:46, Ruili Ji wrote:
+> The jpeg queue tests are used to verify the resiliency
+> of GPU. If there is job timeout on a jpeg queue, driver
+> could only reset this jpeg queue with other queues (like
+> gfx/vcn/jpeg queues) unaffected.
+>
+> Brief description of queue tests:
+> 1. Query the queue sched mask info and select one ready queue.
+>    If there are multiple queues, the following steps will be
+>    executed on per ready queue (1: ready, 0: not ready).
+> 2. Insert invalid content into the normal decode flow
+>    and check the result of jobs submit.
+>    If submit returns without error, there is no job timeout.
+>    If submit returns with error, there is job timeout
+>    and driver will reset queue.
+>
+> Signed-off-by: Ruili Ji <ruiliji2@amd.com>
+> Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> ---
+>  tests/amdgpu/amd_jpeg_queue.c | 115 ++++++++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build      |   1 +
+>  2 files changed, 116 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_jpeg_queue.c
+>
+> diff --git a/tests/amdgpu/amd_jpeg_queue.c b/tests/amdgpu/amd_jpeg_queue.c
+> new file mode 100644
+> index 000000000..82d8679cc
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_jpeg_queue.c
+> @@ -0,0 +1,115 @@
+> +// SPDX-License-Identifier: MIT
+> +// Copyright 2025 Advanced Micro Devices, Inc.
+> +
+> +#include "lib/amdgpu/amd_jpeg_shared.h"
+> +#include "lib/amdgpu/amd_ip_blocks.h"
+> +
+> +static bool
+> +is_queue_tests_enable(amdgpu_device_handle device_handle,
+> +		struct mmd_shared_context *context, struct pci_addr *pci)
+> +{
+> +	bool ret = is_jpeg_tests_enable(device_handle, context);
+> +
+> +	if (!ret)
+> +		return false;
+> +
+> +	if (!is_reset_enable(AMD_IP_VCN_JPEG, AMDGPU_RESET_TYPE_PER_QUEUE, pci)) {
+> +		igt_info("The ASIC does NOT support jpeg queue reset\n");
+> +		return false;
+> +	} else if (context->vcn_ip_version_major < 4) {
+> +		igt_info("The vcn ip does NOT support jpeg queue reset\n");
+> +		return false;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int
+> +jpeg_queue_decode(amdgpu_device_handle device_handle,
+> +		struct mmd_shared_context *shared_context, int err)
+> +{
+> +	struct amdgpu_mmd_bo dec_buf;
+> +	int size, ret;
+> +	uint32_t idx;
+> +	struct mmd_context acontext = {0};
+> +	struct mmd_context *context = &acontext;
+> +	int64_t dec_buf_addr;
+> +
+> +	ret = mmd_context_init(device_handle, context);
+> +	if (ret) {
+> +		igt_info("mmd_context_init fail!\n");
+> +		return ret;
+> +	}
+> +
+> +	size = 32 * 1024; /* 8K bitstream + 24K output */
+> +	context->num_resources = 0;
+> +	alloc_resource(device_handle, &dec_buf, size, AMDGPU_GEM_DOMAIN_VRAM);
+> +	context->resources[context->num_resources++] = dec_buf.handle;
+> +	context->resources[context->num_resources++] = context->ib_handle;
+> +	ret = amdgpu_bo_cpu_map(dec_buf.handle, (void **)&dec_buf.ptr);
+> +	if (ret) {
+> +		igt_info("amdgpu_bo_cpu_map map dec_buf fail!\n");
+> +		goto err_handle;
+> +	}
+> +	memcpy(dec_buf.ptr, jpeg_bitstream, sizeof(jpeg_bitstream));
+> +
+> +	idx = 0;
+> +	dec_buf_addr = dec_buf.addr;
+> +	if (err == INVALID_DECODER_BITSTREAM_BUFFER)
+> +		dec_buf_addr = 0xdead;
+> +
+> +	send_cmd_bitstream_direct(context, dec_buf_addr, &idx);
+> +	send_cmd_target_direct(context, dec_buf_addr + (size / 4), &idx);
+> +
+> +	amdgpu_bo_cpu_unmap(dec_buf.handle);
+> +	submit(device_handle, context, idx, AMDGPU_HW_IP_VCN_JPEG);
+> +
+> +	/*
+> +	 * For job timeout test case, submit job will return error,
+> +	 * here needn't return error.
+> +	 */
+> +	ret = 0;
+> +
+> +err_handle:
+> +	free_resource(&dec_buf);
+> +	mmd_context_clean(device_handle, context);
+> +	return ret;
+> +}
+> +
+> +igt_main
+> +{
+> +	amdgpu_device_handle device;
+> +	struct mmd_shared_context shared_context = {};
+> +	int fd = -1;
+> +	uint32_t major, minor;
+> +	int err;
+> +	struct pci_addr pci;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_AMDGPU);
+> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
+> +		igt_require(err == 0);
+> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
+> +			 major, minor);
+> +		err = mmd_shared_context_init(device, &shared_context);
+> +		igt_require(err == 0);
+> +
+> +		igt_skip_on(get_pci_addr_from_fd(fd, &pci));
+> +		igt_info("PCI Address: domain %04x, bus %02x, device %02x, function %02x\n",
+> +				pci.domain, pci.bus, pci.device, pci.function);
+> +		igt_skip_on(!is_queue_tests_enable(device, &shared_context, &pci));
+> +		shared_context.ip_type = AMD_IP_VCN_JPEG;
+> +	}
+> +
+> +	igt_describe("Test whether jpeg queue");
+> +	igt_subtest("jpeg-decoder-queue-reset") {
+> +		err = (int)INVALID_DECODER_BITSTREAM_BUFFER;
+> +		mm_queue_test_helper(device, &shared_context, jpeg_queue_decode, err, &pci);
+> +	}
+> +
+> +	igt_fixture {
+> +		amdgpu_device_deinitialize(device);
+> +		drm_close_driver(fd);
+> +	}
+> +
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index d3f301e9c..421e686d3 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -19,6 +19,7 @@ if libdrm_amdgpu.found()
+>  			  'amd_ilr',
+>  			  'amd_info',
+>  			  'amd_jpeg_dec',
+> +			  'amd_jpeg_queue',
+>  			  'amd_link_settings',
+>  			  'amd_max_bpc',
+>  			  'amd_mem_leak',
