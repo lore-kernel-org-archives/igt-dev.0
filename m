@@ -4,57 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 801D5C5B543
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Jun 2025 17:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67677C61DB8
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Jun 2025 17:19:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9533410E782;
-	Wed,  4 Jun 2025 17:19:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1926C10E787;
+	Wed,  4 Jun 2025 17:19:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c0okQvbS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V/CYMVj6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A60A310E75F
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7FD6610E75F
  for <igt-dev@lists.freedesktop.org>; Wed,  4 Jun 2025 17:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749057572; x=1780593572;
+ t=1749057571; x=1780593571;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IKgkkT7l1AAjYDiOyMZWCEUrh6ZglkdcT8H+T8Z1RGs=;
- b=c0okQvbS5FhjU38/jFfi7NUtKlojyRy/GZ1jh1YddJ7b4lR/6uKjVlpI
- rx+bKPtPR5rHIWlLQJ0LL4eNdTI/uskaxaCKcrAK47/cWXPsY05wEmaKS
- 7MBzO4DMZn7xIPL1VGTUCMwyW+xhRI/xdZ4HjbEUbajybFAi7GIw9V9oE
- TtmqLeQibeSX5WQ52YjzpURZBUPe9CnpTcOECI2xBbPYsH4AT1tAPTRGt
- 8HRWs6V/Thi2PVA5AJQkaRJBKXjkgce8ZWzFUPKE7dpK/ghdin8QTmU+X
- AtC+yRfOrswZnidUAF1yJ8DYv+/QrDLT29vTjbVUCgO8k58mbEqpfng8W A==;
-X-CSE-ConnectionGUID: UP2AnITHRjic84n4xFJmTQ==
-X-CSE-MsgGUID: IHTpqMykSZKxUo77xUQH0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="68595958"
-X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; d="scan'208";a="68595958"
+ bh=OSRHlZUDl7nmZlqbQ71vIchtJCsMAa6MguwBZn97BDk=;
+ b=V/CYMVj64uZL+y06Ryjob4vKT/dp3JEcCnDrRDyX9LbrVxNMp1pngS+R
+ Lv7vZSIp0355cJxhgbS3tHye5HJvgV4AwK9iCuzz/l0H+iP4diJ70wPgN
+ vR2bh4qjvTGl/2lO3QWa2a+RbTmjdfcwSpsFOPvR3D5LP3dAWKMmw8k2e
+ ugcXbYG9UX4u2u2M5nNYUOD0sHmPw9d+O/Iu1ikSAOn+HfhK6JVIAErRb
+ CHngTILVRO5VBxtkMeroacvAEXOrdq2szxSbK6QPNqkDcuQb1rvWCJ78K
+ fqw5t+5hHageIKxzN6MpWwUCBP/KEw/7Cvw+PttTB3rs5IVYKPSg8gaIU Q==;
+X-CSE-ConnectionGUID: j6iYlaAQQUGRrJt+YckXSw==
+X-CSE-MsgGUID: ffXv88pgSeOC4EHcyJKBGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="68595950"
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; d="scan'208";a="68595950"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2025 10:17:36 -0700
-X-CSE-ConnectionGUID: gfmKCgXxS3KDaf+zmcubfA==
-X-CSE-MsgGUID: vEbdBYBXT6iLZz4uM9ycFQ==
+ 04 Jun 2025 10:17:33 -0700
+X-CSE-ConnectionGUID: mufkydyjRAC5HcvUfU3gHQ==
+X-CSE-MsgGUID: iHw1X4qpTteTQRWR6J20FQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; d="scan'208";a="145203282"
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; d="scan'208";a="145203271"
 Received: from unknown (HELO d368ed45d7ae.iind.intel.com) ([10.66.234.123])
- by fmviesa007.fm.intel.com with ESMTP; 04 Jun 2025 10:17:34 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 04 Jun 2025 10:17:32 -0700
 From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com,
  markyacoub@google.com, seanpaul@google.com, carlos.santa@intel.com,
  sapna1.singh@intel.com,
- Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH v15 4/9] tests/intel: Include local glib header for Android
-Date: Wed,  4 Jun 2025 17:16:51 +0000
-Message-ID: <20250604171656.31559-5-jeevaka.badrappan@intel.com>
+ Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Subject: [PATCH v15 3/9] lib/igt_aux: Handle absence of libproc2 in Android
+Date: Wed,  4 Jun 2025 17:16:50 +0000
+Message-ID: <20250604171656.31559-4-jeevaka.badrappan@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250604171656.31559-1-jeevaka.badrappan@intel.com>
 References: <20250604171656.31559-1-jeevaka.badrappan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,83 +69,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As glib is not available in Android, added local stub header to build
-igt for Android.
+Handle the absence of libproc2 in Android by conditionally including
+libproc2 headers and function calls based on the definition of
+HAVE_LIBPROC2. This ensures compatibility by only compiling
+libproc2-related code when the library is available.
 
 Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/api_intel_bb.c | 4 ++++
- tests/intel/gem_ccs.c      | 4 ++++
- tests/intel/xe_ccs.c       | 4 ++++
- tests/intel/xe_intel_bb.c  | 4 ++++
- 4 files changed, 16 insertions(+)
+ lib/igt_aux.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/api_intel_bb.c b/tests/intel/api_intel_bb.c
-index 1910690cd..21ed6fc09 100644
---- a/tests/intel/api_intel_bb.c
-+++ b/tests/intel/api_intel_bb.c
-@@ -35,7 +35,11 @@
- #include <errno.h>
- #include <sys/stat.h>
- #include <sys/ioctl.h>
-+#ifdef ANDROID
-+#include "android/glib.h"
-+#else
- #include <glib.h>
-+#endif
- #include <zlib.h>
- #include "intel_bufops.h"
- #include "i915/gem_vm.h"
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index af1e85f6a..a84a47cc4 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -4,7 +4,11 @@
-  */
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 2905824a5..5c2679812 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -55,7 +55,7 @@
  
- #include <errno.h>
-+#ifdef ANDROID
-+#include "android/glib.h"
-+#else
- #include <glib.h>
-+#endif
- #include <sys/ioctl.h>
- #include <sys/time.h>
- #include <malloc.h>
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index e154bf4dc..bff5b5772 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -4,7 +4,11 @@
-  */
+ #ifdef HAVE_LIBPROCPS
+ #  include <proc/readproc.h>
+-#else
++#elif HAVE_LIBPROC2
+ #  include <libproc2/pids.h>
+ #endif
  
- #include <errno.h>
-+#ifdef ANDROID
-+#include "android/glib.h"
-+#else
- #include <glib.h>
-+#endif
- #include <sys/ioctl.h>
- #include <sys/time.h>
- #include <malloc.h>
-diff --git a/tests/intel/xe_intel_bb.c b/tests/intel/xe_intel_bb.c
-index f0cc17b1a..f2e92a024 100644
---- a/tests/intel/xe_intel_bb.c
-+++ b/tests/intel/xe_intel_bb.c
-@@ -6,7 +6,11 @@
- #include <cairo.h>
- #include <errno.h>
- #include <fcntl.h>
-+#ifdef ANDROID
-+#include "android/glib.h"
-+#else
- #include <glib.h>
-+#endif
- #include <inttypes.h>
- #include <stdio.h>
- #include <stdlib.h>
+@@ -1289,7 +1289,7 @@ struct igt_process {
+ #ifdef HAVE_LIBPROCPS
+ 	PROCTAB * proc;
+ 	proc_t *proc_info;
+-#else
++#elif HAVE_LIBPROC2
+ 	struct pids_info *info;
+ 	struct pids_stack *stack;
+ #endif
+@@ -1305,7 +1305,7 @@ static void open_process(struct igt_process *prcs)
+ 	prcs->proc = openproc(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);
+ 	igt_assert_f(prcs->proc != NULL, "procps open failed\n");
+ 	prcs->proc_info = NULL;
+-#else
++#elif HAVE_LIBPROC2
+ 	enum pids_item Items[] = { PIDS_ID_PID, PIDS_ID_EUID, PIDS_ID_EGID, PIDS_CMD };
+ 	int err;
+ 
+@@ -1327,7 +1327,7 @@ static void close_process(struct igt_process *prcs)
+ 	closeproc(prcs->proc);
+ 	prcs->proc_info = NULL;
+ 	prcs->proc = NULL;
+-#else
++#elif HAVE_LIBPROC2
+ 	procps_pids_unref(&prcs->info);
+ 	prcs->info = NULL;
+ #endif
+@@ -1351,7 +1351,7 @@ static bool get_process_ids(struct igt_process *prcs)
+ 		prcs->egid = prcs->proc_info->egid;
+ 		prcs->comm = prcs->proc_info->cmd;
+ 	}
+-#else
++#elif HAVE_LIBPROC2
+ 	enum rel_items { EU_PID, EU_EUID, EU_EGID, EU_CMD }; // order at open
+ 
+ 	prcs->tid = 0;
 -- 
 2.49.0
 
