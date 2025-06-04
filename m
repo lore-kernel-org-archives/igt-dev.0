@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B38CAC5B552
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Jun 2025 05:23:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1344C5B543
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Jun 2025 05:24:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6035E10E261;
-	Wed,  4 Jun 2025 05:23:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7E30E10E600;
+	Wed,  4 Jun 2025 05:24:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lfCRvm6P";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BBtFGeIB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 571D810E261
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jun 2025 05:23:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5279E10E600
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jun 2025 05:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749014637; x=1780550637;
+ t=1749014641; x=1780550641;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DBhYg0gJfmSeUjndj5pVaxnPqGYd3H5NRZlGiVO2zUQ=;
- b=lfCRvm6PMTcN5g2fgW/3BSM1DoE5hzubjqdJg5OSgwHPq7TKiM/vhPSA
- urnMVQYY/QfWlruAl6YIy4PcuEuCQ2tqEPa9+0ecZOPMN1yV3K7YN38MB
- CPCSs8DlQjzUnapgloPIZw90aNOzSAvZqADY87nYB4DkjzByc1iyuQXQi
- DgWIsdNQzhbbQubAXUrM72mQVRpm4Ouo9UmPoieKuvaritUZ4xRzJfNsW
- 4r/DzdqYHYMOEc0dPAWOcArmyVzUk0z7j6jc3qdS4kmVFjFV6fNEj7vZv
- M2sDX/GEKbNcFdb8APV1175xYGNqUSd7nGmpDuebf2+j/Y+0vH/r6h71S Q==;
-X-CSE-ConnectionGUID: BReXhweCSPmxEVoaB/hpjw==
-X-CSE-MsgGUID: /dS0Lc4USGqQ/p8IrHKFSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="54738317"
-X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; d="scan'208";a="54738317"
+ bh=880LvkbRT2VgQjV8qXUWcAp0vh5J+VY3lhpJTbpT7zk=;
+ b=BBtFGeIBf0XvsLW/C9VvO9EVPD5zn/xj3vGE9i1lFSJxu5qr6hWAGPI7
+ r01ulwGb8hAW/mvsmjoXlVUDGQyJT8sFkdvTk7cjpanR49mhwW7u+MHmY
+ 4WdAP7xlucfTHqB7u5EPS6FpCM0kmobRnIqzKO+kJ6OUjKfoquPC0Wns/
+ khLZH19N8libWEFAEAWNwmDV2Rr+WMA7qS8bz0PCNTY8TktSsAOhFaVyx
+ eIwNfpHWux/EQ9kmGPxKea7DqhVf2dCHUNxrq3uRuHV/fe/9ACoG8eDOe
+ 4HPuGHNWuaACxaaMWJzlVs8Wa8nHuOgh4vIwfC/kCXLwQfg2Ei2idVX2x A==;
+X-CSE-ConnectionGUID: yEyzKs1kT9eZT0fLm4R1hQ==
+X-CSE-MsgGUID: k3Ad4V9hS8yGcnKCJZ6owQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="54738321"
+X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; d="scan'208";a="54738321"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jun 2025 22:23:57 -0700
-X-CSE-ConnectionGUID: c6moPatXRSWKBUQYFQAnIA==
-X-CSE-MsgGUID: bTu/b9USRqeebOLX03Qq9w==
+ 03 Jun 2025 22:24:01 -0700
+X-CSE-ConnectionGUID: mDF2s6whSy6gk1Nhhm2thQ==
+X-CSE-MsgGUID: 0xRjeIfhSdOVYOKNvVLbFQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; d="scan'208";a="145551516"
+X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; d="scan'208";a="145551523"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by fmviesa010.fm.intel.com with ESMTP; 03 Jun 2025 22:23:55 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 03 Jun 2025 22:23:59 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
  sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t v4 4/5] tests/kms: Use CI environment variable
-Date: Wed,  4 Jun 2025 11:00:45 +0530
-Message-Id: <20250604053046.1702233-5-pranay.samala@intel.com>
+Subject: [PATCH i-g-t v4 5/5] lib/igt_sysfs: Move igt_exit_handler into test
+Date: Wed,  4 Jun 2025 11:00:46 +0530
+Message-Id: <20250604053046.1702233-6-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250604053046.1702233-1-pranay.samala@intel.com>
 References: <20250604053046.1702233-1-pranay.samala@intel.com>
@@ -67,197 +67,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When running under CI (detected via the IGT_CI_RUN environment variable),
-reduce the DRM debug mask to DRM_UT_KMS to avoid excessive debug output
-and improve log readability. This replaces the previous logic that set the
-debug level to 10 if it was higher, and makes the behavior CI-specific.
-
-This helps keep CI logs concise and focused on relevant KMS debug messages
-during automated test runs.
-As per the test requirements, this level can be changed in the future if
-deeper debug information is needed for troubleshooting.
+In case of nested updated the exit handler will be called multiple
+times. Hence calling it before the updates rather than calling after
+update.
 
 v3:
 - Refactored for readability and address logical comment.
 
-v4:
-- Remove custom command-line option handler (Jani & Kunal)
-- Have different masks documented (Kunal)
-- Use an environment variable for CI jobs where disk space is tight (Kunal)
-
+Fixes: 56b91193b825 ("lib/igt_sysfs: Implement dynamic adjustment of debug log level")
 Fixes: a2ab0ec12ef4 ("tests/kms_atomic_transition: Reducing debug loglevel dynamically")
 Fixes: 4baeb7397d71 ("tests/intel/kms_dp_linktrain_fallback: Reduce debug loglevel dynamically")
 Fixes: 7a8a3744466f ("tests/kms_cursor_legacy: Reduce debug loglevel dynamically")
 Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- lib/igt_sysfs.h                         | 13 +++++++++++++
- tests/intel/kms_dp_linktrain_fallback.c | 21 +++++++++++++--------
- tests/kms_atomic_transition.c           | 22 ++++++++++++----------
- tests/kms_cursor_legacy.c               | 21 ++++++++++++---------
- 4 files changed, 50 insertions(+), 27 deletions(-)
+ lib/igt_sysfs.c                         | 8 +-------
+ lib/igt_sysfs.h                         | 1 +
+ tests/intel/kms_dp_linktrain_fallback.c | 1 +
+ tests/kms_atomic_transition.c           | 1 +
+ tests/kms_cursor_legacy.c               | 1 +
+ 5 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 892682344..06badaf0e 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -148,6 +148,19 @@ void igt_drm_debug_mask_reset(void);
- int igt_drm_debug_mask_get(int dir);
- int igt_sysfs_drm_module_params_open(void);
- 
-+enum drm_debug_category {
-+	DRM_UT_CORE      = 1 << 0,
-+	DRM_UT_DRIVER    = 1 << 1,
-+	DRM_UT_KMS       = 1 << 2,
-+	DRM_UT_PRIME     = 1 << 3,
-+	DRM_UT_ATOMIC    = 1 << 4,
-+	DRM_UT_VBL       = 1 << 5,
-+	DRM_UT_STATE     = 1 << 6,
-+	DRM_UT_LEASE     = 1 << 7,
-+	DRM_UT_DP        = 1 << 8,
-+	DRM_UT_DRMRES    = 1 << 9,
-+};
-+
- /**
-  * igt_sysfs_rw_attr:
-  * @dir: file descriptor for parent directory
-diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
-index f8ef0cac4..9cd6f3d54 100644
---- a/tests/intel/kms_dp_linktrain_fallback.c
-+++ b/tests/intel/kms_dp_linktrain_fallback.c
-@@ -592,12 +592,22 @@ static bool run_dsc_sst_fallaback_test(data_t *data)
- 	return ran;
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 427aed4de..c90881d53 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -493,7 +493,7 @@ void igt_drm_debug_mask_reset(void)
+ 	close(dir);
  }
  
-+static void update_debug_mask_if_ci(unsigned int debug_mask_if_ci)
-+{
-+	const char *ci_run = getenv("IGT_CI_RUN");
-+
-+	if (ci_run && ci_run[0] == '1') {
-+		igt_debug("Currently under CI execution, reducing the DRM debug mask to 0x4\n");
-+		igt_drm_debug_mask_update(debug_mask_if_ci);
-+	}
-+}
-+
- igt_main
+-static void igt_drm_debug_mask_reset_exit_handler(int sig)
++void igt_drm_debug_mask_reset_exit_handler(int sig)
  {
- 	data_t data = {};
+ 	igt_drm_debug_mask_reset();
+ }
+@@ -531,12 +531,6 @@ void igt_drm_debug_mask_update(unsigned int mask_to_set)
+ 	igt_assert(igt_sysfs_set(dir, "debug", buf));
  
- 	igt_fixture {
--		int dir, current_log_level;
-+		unsigned int debug_mask_if_ci = DRM_UT_KMS;
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL |
- 						     DRIVER_XE);
- 		kmstest_set_vt_graphics_mode();
-@@ -605,14 +615,9 @@ igt_main
- 		igt_display_require_output(&data.display);
+ 	close(dir);
+-
+-	/*
+-	 * TODO: Check whether multiple exit handlers will get installed,
+-	 * if we call this api multiple times
+-	 */
+-	igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
+ }
+ 
+ /**
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 06badaf0e..583be5d98 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -147,6 +147,7 @@ void igt_drm_debug_mask_update(unsigned int new_log_level);
+ void igt_drm_debug_mask_reset(void);
+ int igt_drm_debug_mask_get(int dir);
+ int igt_sysfs_drm_module_params_open(void);
++void igt_drm_debug_mask_reset_exit_handler(int sig);
+ 
+ enum drm_debug_category {
+ 	DRM_UT_CORE      = 1 << 0,
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+index 9cd6f3d54..adbaa0749 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -616,6 +616,7 @@ igt_main
  		for_each_pipe(&data.display, data.pipe)
  			data.n_pipes++;
--		dir = igt_sysfs_drm_module_params_open();
--		if (dir >= 0) {
--			current_log_level = igt_drm_debug_level_get(dir);
--			close(dir);
  
--			if (current_log_level > 10)
--				igt_drm_debug_level_update(10);
--		}
-+		update_debug_mask_if_ci(debug_mask_if_ci);
-+
++		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
+ 		update_debug_mask_if_ci(debug_mask_if_ci);
+ 
  		/*
- 		 * Some environments may have environment
- 		 * variable set to ignore long hpd, disable it for this test
 diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 2b64424ce..3202ab668 100644
+index 3202ab668..486d5b2ab 100644
 --- a/tests/kms_atomic_transition.c
 +++ b/tests/kms_atomic_transition.c
-@@ -1119,6 +1119,16 @@ static const char help_str[] =
- 
- static data_t data;
- 
-+static void update_debug_mask_if_ci(unsigned int debug_mask_if_ci)
-+{
-+	const char *ci_run = getenv("IGT_CI_RUN");
-+
-+	if (ci_run && ci_run[0] == '1') {
-+		igt_debug("Currently under CI execution, reducing the DRM debug mask to 0x4\n");
-+		igt_drm_debug_mask_update(debug_mask_if_ci);
-+	}
-+}
-+
- igt_main_args("", long_opts, help_str, opt_handler, &data)
- {
- 	igt_output_t *output;
-@@ -1174,8 +1184,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	int pipe_count = 0;
- 
- 	igt_fixture {
--		int dir, current_log_level;
--
-+		unsigned int debug_mask_if_ci = DRM_UT_KMS;
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
- 		kmstest_set_vt_graphics_mode();
-@@ -1188,14 +1197,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+@@ -1197,6 +1197,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
  		for_each_connected_output(&data.display, output)
  			count++;
  
--		dir = igt_sysfs_drm_module_params_open();
--		if (dir >= 0) {
--			current_log_level = igt_drm_debug_level_get(dir);
--			close(dir);
--
--			if (current_log_level > 10)
--				igt_drm_debug_level_update(10);
--		}
-+		update_debug_mask_if_ci(debug_mask_if_ci);
++		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
+ 		update_debug_mask_if_ci(debug_mask_if_ci);
  	}
  
- 	igt_describe("Check toggling of primary plane with vblank");
 diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 44f031e7b..281812a4d 100644
+index 281812a4d..74118c014 100644
 --- a/tests/kms_cursor_legacy.c
 +++ b/tests/kms_cursor_legacy.c
-@@ -1823,6 +1823,16 @@ static void modeset_atomic_cursor_hotspot(igt_display_t *display)
- 	igt_remove_fb(display->drm_fd, &cursor_fb);
- }
- 
-+static void update_debug_mask_if_ci(unsigned int debug_mask_if_ci)
-+{
-+	const char *ci_run = getenv("IGT_CI_RUN");
-+
-+	if (ci_run && ci_run[0] == '1') {
-+		igt_debug("Currently under CI execution, reducing the DRM debug mask to 0x4\n");
-+		igt_drm_debug_mask_update(debug_mask_if_ci);
-+	}
-+}
-+
- igt_main
- {
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-@@ -1839,7 +1849,7 @@ igt_main
- 	};
- 
- 	igt_fixture {
--		int dir, current_log_level;
-+		unsigned int debug_mask_if_ci = DRM_UT_KMS;
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
- 
-@@ -1851,14 +1861,7 @@ igt_main
+@@ -1861,6 +1861,7 @@ igt_main
  		 */
  		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd, NULL);
  
--		dir = igt_sysfs_drm_module_params_open();
--		if (dir >= 0) {
--			current_log_level = igt_drm_debug_level_get(dir);
--			close(dir);
--
--			if (current_log_level > 10)
--				igt_drm_debug_level_update(10);
--		}
-+		update_debug_mask_if_ci(debug_mask_if_ci);
++		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
+ 		update_debug_mask_if_ci(debug_mask_if_ci);
  	}
  
- 	igt_describe("Test checks how many cursor updates we can fit between vblanks "
 -- 
 2.34.1
 
