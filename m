@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF8CCC5B543
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Jun 2025 23:53:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59DD0C5B549
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Jun 2025 00:10:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 80DEC10E7D4;
-	Wed,  4 Jun 2025 23:53:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0D4AE10E89F;
+	Thu,  5 Jun 2025 00:10:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kyma+Wkm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YhVoSMfw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE48910E222
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jun 2025 23:53:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8217C10E89F
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Jun 2025 00:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749081195; x=1780617195;
+ t=1749082255; x=1780618255;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=jpHDnAQy70GSw7Rwv6BnBVD30A848id3WG+gOS5yB3E=;
- b=kyma+Wkml49u2y24F5g3mSFDENKN8HIZAbQXIbV64MPRTVG2H7Zpp1XM
- DsyVhKYtqblmHTE60ugSLKYQkEB19UoJUZHc0s2mbnBRrgRur6USpo3an
- M8sS6r9qkdZwCKA6wowADsO+6quizxzaATlJxkiL2yg8Jp//lrQ3hzHt1
- R4tO6RQagtOzsKAOqJMTm38YrPQRIfR8SjcZ5lzu7IffD91KBLLGocmfK
- epbYrwpVK45YKTq6a8i0KOCQxTOc9XNmO4Tq8V+ncSA40hucwpzXgr3oy
- PhOak0JAFXIXGE4plDovgbhDCilFbudqQvXcUGEt3yLbxrgFt7Q5khngs g==;
-X-CSE-ConnectionGUID: OhEV8LYPSnKmr4txjxKPEA==
-X-CSE-MsgGUID: zF8kh9QYR1mHH4pCriBTtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="53815313"
-X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; d="scan'208";a="53815313"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2025 16:53:14 -0700
-X-CSE-ConnectionGUID: GBCnr72zRHWDRNDh+Hisbw==
-X-CSE-MsgGUID: RJnfiuo4SSG7O2IsdR0VuA==
+ bh=X4aN87L/76pD1uoAZcqWdt6U8jCAjx8/6RmtmD44Qh0=;
+ b=YhVoSMfwcAJxYrKC/PFHWQ8lTEoVt8AmxYWM5dTpWxubmGqH+qDNbtEG
+ sArtJWjt/eGUIsXqiwG32/Xmuy3XYODw8+311/CaiC66YDup5XqnmXFpo
+ FF5YyzeIvJQvIQGSTAMkyeIvE6BjqZf06/raK/2i1wGAGhrbu5QvbbZkV
+ yhr94khXecK/vutz6XEuAb1/x2SjQfKsStqIxIrkumw+O9KnaXgN7Hi95
+ RayUyaEQukGkFdbf9TI2d9mcs8ili9uad+OcHLBjEODT48qY1DzjPdtDv
+ 52U3/QSCjG5l6IowwayLFXjMoAjLg+r9peZAEtJk+3TZHiIyGPX19lMfw Q==;
+X-CSE-ConnectionGUID: M/lfwgwaRxaXxY3z03Ogjw==
+X-CSE-MsgGUID: SdcREDYTQLKIMjm8HwfnoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="73719355"
+X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; d="scan'208";a="73719355"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2025 17:10:55 -0700
+X-CSE-ConnectionGUID: b0g5P7DGQ2eOUnextJYlIA==
+X-CSE-MsgGUID: r2DXsecqRqmvb3xMZpZLrw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; d="scan'208";a="145290583"
+X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; d="scan'208";a="145377333"
 Received: from adixit-mobl3.clients.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.24.12.163])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2025 16:53:15 -0700
-Date: Wed, 04 Jun 2025 16:53:14 -0700
-Message-ID: <874iwvukr9.wl-ashutosh.dixit@intel.com>
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2025 17:10:39 -0700
+Date: Wed, 04 Jun 2025 17:10:37 -0700
+Message-ID: <8734cfujya.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Harish Chegondi <harish.chegondi@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 1/3] tests/intel/xe_eu_stall: Close any open EU
- stall fd before opening a new one
-In-Reply-To: <b5b8323fe6840bff949b8607480d57104b908a1f.1748994982.git.harish.chegondi@intel.com>
-References: <b5b8323fe6840bff949b8607480d57104b908a1f.1748994982.git.harish.chegondi@intel.com>
+Subject: Re: [PATCH i-g-t 2/3] tests/intel/xe_eu_stall: Do not check for
+ presence of data on simulation
+In-Reply-To: <37ab7f14480edb308e152d1a9088394407b031e8.1748994982.git.harish.chegondi@intel.com>
+References: <b5b8323fe6840bff949b8607480d57104b908a1f.1748994982.git.harish.chegondi@intel.com>	<37ab7f14480edb308e152d1a9088394407b031e8.1748994982.git.harish.chegondi@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,111 +71,121 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 03 Jun 2025 16:57:34 -0700, Harish Chegondi wrote:
+On Tue, 03 Jun 2025 16:57:35 -0700, Harish Chegondi wrote:
 >
-> asserts in a sub-test can prevent closing an EU stall fd and the next
-> subtest may fail with EBUSY if it tries to open another EU stall fd
-> as there can only be one EU stall stream open at a time. Any open fds
-> are automatically closed at the end of a test (last sub-test).
+> Some simulation models may not have full EU stall sampling support.
 >
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
+> v2: 1. Make EU stall fd global and close any open fd before open (Ashutosh)
 
-So -EBUSY errors are gone with this patch, correct? So this is:
+This is probably patch 1/3, so no need to mention here I think.
+
+>     2. Move disable IOCTL call to before the assert.
+>     3. Allocate and free the user buffer in the main routine to prevent
+>        any memory leak due to an assert.
+
+3 is probably not worth it since any allocated memory will be freed when
+the process exits, so the memory "leak" is only for the duration the
+process is running after the assert.
+
+Generally multiple changes like these should be sent in separate patches to
+make review easier, but in any case, here it is obvious what's happening so
+this is:
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
+>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
 > ---
->  tests/intel/xe_eu_stall.c | 34 ++++++++++++++++++++++++++--------
->  1 file changed, 26 insertions(+), 8 deletions(-)
+>  tests/intel/xe_eu_stall.c | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
 >
 > diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
-> index 411c30871..1499ec4b4 100644
+> index 1499ec4b4..b3a0ee742 100644
 > --- a/tests/intel/xe_eu_stall.c
 > +++ b/tests/intel/xe_eu_stall.c
-> @@ -69,6 +69,7 @@ static uint8_t p_gt_id;
+> @@ -65,6 +65,7 @@
+>  static FILE *output;
+>  static char *p_args[8];
+>  static char *output_file;
+> +static uint8_t *user_buf;
+>  static uint8_t p_gt_id;
 >  static uint32_t p_rate;
 >  static uint32_t p_user = DEFAULT_USER_BUF_SIZE;
->  static uint32_t p_num_reports = DEFAULT_NUM_REPORTS;
-> +static int stream_fd = -1;
->
->  static volatile bool child_is_running = true;
->
-> @@ -302,6 +303,25 @@ static void set_fd_flags(int fd, int flags)
->	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
->  }
->
-> +static void eu_stall_close(int fd)
-> +{
-> +	close(fd);
-> +	stream_fd = -1;
-> +}
-> +
-> +static int eu_stall_open(int drm_fd, struct xe_eu_stall_open_prop *props)
-> +{
-> +	int ret;
-> +
-> +	if (stream_fd >= 0)
-> +		eu_stall_close(stream_fd);
-> +
-> +	ret = xe_eu_stall_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, props);
-> +	igt_require_fd(ret);
-> +
-> +	return ret;
-> +}
-> +
->  /*
->   * Verify that tests with invalid arguments fail.
->   */
-> @@ -353,7 +373,7 @@ static inline void disable_paranoid(void)
->   */
->  static void test_non_privileged_access(int drm_fd)
->  {
-> -	int paranoid, stream_fd;
-> +	int paranoid;
->
->	paranoid = read_u64_file(OBSERVATION_PARANOID);
->
-> @@ -395,9 +415,8 @@ static void test_non_privileged_access(int drm_fd)
->
->		igt_drop_root();
->
-> -		stream_fd = xe_eu_stall_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props);
-> -		igt_require_fd(stream_fd);
-> -		close(stream_fd);
-> +		stream_fd = eu_stall_open(drm_fd, &props);
-> +		eu_stall_close(stream_fd);
->	}
->
->	igt_waitchildren();
-> @@ -472,7 +491,7 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int ite
->	uint32_t num_samples, num_drops;
->	struct igt_helper_process work_load = {};
+> @@ -493,7 +494,6 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int ite
 >	struct sigaction sa = { 0 };
-> -	int ret, flags, stream_fd;
-> +	int ret, flags;
+>	int ret, flags;
 >	uint64_t total_size;
->	uint8_t *buf;
+> -	uint8_t *buf;
 >
-> @@ -518,8 +537,7 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int ite
->		properties[3] = query_eu_stall_data->sampling_rates[0];
->	igt_info("Sampling Rate: %lu\n", properties[3]);
+>	uint64_t properties[] = {
+>		DRM_XE_EU_STALL_PROP_GT_ID, p_gt_id,
+> @@ -520,9 +520,6 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int ite
+>	else
+>		igt_info("Workload: GPGPU fill\n");
 >
-> -	stream_fd = xe_eu_stall_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props);
-> -	igt_require_fd(stream_fd);
-> +	stream_fd = eu_stall_open(drm_fd, &props);
+> -	buf = malloc(p_user);
+> -	igt_assert(buf);
+> -
+>	igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+>	igt_assert_neq(query.size, 0);
 >
->	if (!blocking_read)
->		flags = O_CLOEXEC | O_NONBLOCK;
-> @@ -592,7 +610,7 @@ enable:
+> @@ -579,11 +576,11 @@ enable:
+>			igt_assert_eq(ret, 1);
+>			igt_assert(pollfd.revents & POLLIN);
+>		}
+> -		ret = read(stream_fd, buf, p_user);
+> +		ret = read(stream_fd, user_buf, p_user);
+>		if (ret > 0) {
+>			total_size += ret;
+>			if (output)
+> -				print_eu_stall_data(devid, buf, ret);
+> +				print_eu_stall_data(devid, user_buf, ret);
+>			num_samples += ret / query_eu_stall_data->record_size;
+>		} else if ((ret < 0) && (errno != EAGAIN)) {
+>			if (errno == EINTR)
+> @@ -598,20 +595,21 @@ enable:
+>		}
+>	} while (child_is_running);
+>
+> +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
+> +
+>	igt_info("Total size read: %lu\n", total_size);
+>	igt_info("Number of samples: %u\n", num_samples);
+>	igt_info("Number of drops reported: %u\n", num_drops);
+>
+>	ret = wait_child(&work_load);
+>	igt_assert_f(ret == 0, "waitpid() - ret: %d, errno: %d\n", ret, errno);
+> -	igt_assert_f(num_samples, "No EU stalls detected during the workload\n");
+> +	if (!igt_run_in_simulation())
+> +		igt_assert_f(num_samples, "No EU stalls detected during the workload\n");
+>
+> -	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
 >	if (--iter)
 >		goto enable;
 >
-> -	close(stream_fd);
-> +	eu_stall_close(stream_fd);
->	free(buf);
+>	eu_stall_close(stream_fd);
+> -	free(buf);
 >  }
 >
+>  static int opt_handler(int opt, int opt_index, void *data)
+> @@ -678,6 +676,8 @@ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
+>			output = fopen(output_file, "w");
+>			igt_require(output);
+>		}
+> +		user_buf = malloc(p_user);
+> +		igt_assert(user_buf);
+>	}
+>
+>	igt_describe("Verify non-blocking read of EU stall data during a workload run");
+> @@ -717,6 +717,7 @@ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
+>		test_invalid_event_report_count(drm_fd);
+>
+>	igt_fixture {
+> +		free(user_buf);
+>		if (output)
+>			fclose(output);
+>		drm_close_driver(drm_fd);
 > --
 > 2.48.1
 >
