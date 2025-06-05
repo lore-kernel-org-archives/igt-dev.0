@@ -4,16 +4,16 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0376EC5AD49
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26574C5B549
 	for <igt-dev@archiver.kernel.org>; Fri,  6 Jun 2025 09:28:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C3A810E2F0;
+	by gabe.freedesktop.org (Postfix) with ESMTP id BE2D610E348;
 	Fri,  6 Jun 2025 09:28:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JDIDJ2Cg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MFxJxAB0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10F0310E9A5
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32C5210E9AA
  for <igt-dev@lists.freedesktop.org>; Thu,  5 Jun 2025 13:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
@@ -21,42 +21,42 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=d1QmlbNuPdkB/NH2/FYClaZrrAuIFsrgZYh4v6PSQnk=;
- b=JDIDJ2Cgoukfg+fg/crL8M2j9R5uMpbzN2Me+ZC3w3cWa4o1xlcmtB0Q
- bV6+xRxPNKi8K4R+EVTXTi1jiBJ98D71JyC0y2CrBIQ8/riIdGMdU2FDZ
- ZsuYQgfaeNBE+l8/JV1rw05yd9/wjJBajQax/o2aPYQFewMDjQe0sFLap
- zmHS0wFUTPHOoFsSEtLKThy2rjHf/uZk9ZpH/5n2Z/wAxVsaQv62OJx4i
- zQeW8WKxofoe/NO8opn1cSOsETRKlwWILit8YTnVp4A58qqexc6T2xzOc
- xztOtauBK2xoNmFsmmMlgpInd/+ozuLH9im//PS9dFwhstgHRGntEL9eO w==;
-X-CSE-ConnectionGUID: 1MFwNVB6QUiZoCbk+3tdLg==
-X-CSE-MsgGUID: hIcV/dmWSeGEzk/ZPtVKkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="68800608"
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="68800608"
+ b=MFxJxAB0S9zXON0F7RFuCkFbRnCyj/zVpWNTN6tUgho0mvS73daxNxyx
+ 06T0djVqGBiuwEAQ/vdvypqqBR3+hAEVCzSdPEh469pWBRqIgKLB6fdNj
+ zfCHMlkWbq8YAjdZes3nd9ZLyVmdWLWl7PKlHWwn2DGqYqYkadOQQD2Zf
+ UZWGKGsyiUpep7HIcJVRVwBKOtrZFPJhiuAUg22CKRCSLCEOLRXdw9eEm
+ lClopLuow/5R3eMTRlU/VZ5AV+GPjSjZhzn8hXulCcbkVMjKPiD/FOgiS
+ ZikAX7aLAsDOuz4yG7fxGA1flkkwyMIoIA//8a8LGTxNhSCospQZKntMQ Q==;
+X-CSE-ConnectionGUID: DB1xPcygQf6LhXi2SyCCfw==
+X-CSE-MsgGUID: h5eD4Dt5QjmcAQfqIfW/Rw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="68800616"
+X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="68800616"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  05 Jun 2025 06:05:07 -0700
-X-CSE-ConnectionGUID: HRes/ZEdRfSkO2WuzoVN9g==
-X-CSE-MsgGUID: CvVYgzNDR7ipfG6a/6tIqg==
+X-CSE-ConnectionGUID: IDit3S7KRF6FnpdRFstneg==
+X-CSE-MsgGUID: yPpu9FdyTIqEauH4pMMn3A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="149344509"
+X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="149344512"
 Received: from intelmailrelay-01.habana-labs.com ([10.111.11.20])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  05 Jun 2025 06:05:05 -0700
 Received: internal info suppressed
 Received: from dhirschfeld-vm-u24.habana-labs.com (localhost [127.0.0.1])
  by dhirschfeld-vm-u24.habana-labs.com (8.18.1/8.18.1/Debian-2) with ESMTPS id
- 555D4Sv7528962
+ 555D4Sv5528962
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Thu, 5 Jun 2025 16:04:57 +0300
+ Thu, 5 Jun 2025 16:04:56 +0300
 Received: (from dhirschfeld@localhost)
- by dhirschfeld-vm-u24.habana-labs.com (8.18.1/8.18.1/Submit) id 554HRelu460445;
- Wed, 4 Jun 2025 20:27:40 +0300
+ by dhirschfeld-vm-u24.habana-labs.com (8.18.1/8.18.1/Submit) id 5556fnIO510553;
+ Thu, 5 Jun 2025 09:41:49 +0300
 From: Dafna Hirschfeld <dafna.hirschfeld@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: lucas.demarchi@intel.com, ilia.levi@intel.com, koby.elbaz@intel.com,
- kamil.konieczny@intel.com, Dafna Hirschfeld <dafna.hirschfeld@intel.com>
+ kamil.konieczny@intel.com, dafna.hirschfeld@intel.com
 Subject: [PATCH v2] tools/intel_reg: add support to hw address port
-Date: Wed,  4 Jun 2025 20:27:26 +0300
-Message-ID: <20250604172726.460431-1-dafna.hirschfeld@intel.com>
+Date: Thu,  5 Jun 2025 09:41:37 +0300
+Message-ID: <20250605064137.510521-1-dafna.hirschfeld@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
