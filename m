@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE111C5AE59
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Jun 2025 14:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A24B8C5B543
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Jun 2025 14:28:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7AFF210E056;
-	Thu,  5 Jun 2025 14:28:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4787010E08D;
+	Thu,  5 Jun 2025 14:28:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BxMzFypL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i+MPk3Qi";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D52FD10E056
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Jun 2025 14:28:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D536110E08D
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Jun 2025 14:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1749133735; x=1780669735;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=0ok4a0Q+qvQApi8AOQ2q+lDJ8FC1koxZk8pciNSD9pw=;
- b=BxMzFypL3eUAULr462qMiBsZiv1JClPuR2l6sEGh0BtxbVxDgk6mY85K
- yssTjfvCvJzSpwf4t21XLO320RaUMCfkhF4352jWcm7xr5Yt8Qh/JFebU
- bjlXhl39lJt3BkCsTZ/ziTX/pSGxlDe+IXIaY/nurrX25eb88eYrEMO0A
- w+by+s/PDQsy78O29OCB+NnqWRQ2myOZ7whmI90ma7Lc2GMLwEVm+s6ZU
- dFh2ONYmmLdDSIGQWghy2g5rJd9SOSbf8Bul68rRZYlt0vn0NGnh0eVnx
- eCxDDIoGxDYT3AXAOlaS3IvU+b2ZjxRb/pHSmeQDsV7mR6NY4q9cvPU2v g==;
-X-CSE-ConnectionGUID: cH+C4QoxQFy8R3Whahi4uQ==
-X-CSE-MsgGUID: LRzRyXz4SoiItUnMyV2Pww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="50954435"
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="50954435"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=2E/jbI8PZmZyMn4l7wHvzqxQhRveBNu/EYpGxFXyGMU=;
+ b=i+MPk3QieBJrOC31CiV1TpcOyWQqHhdSflLcGW1qIaez2h5FCyfSmFnW
+ paw+ly0b7fAmAKMnxy4WGaJcXa1JX0Rsa+xaJTLhLXGgGDiclHw6fm6oo
+ vo1WmYXnD0ak3C/NlLdwt7dX67HzRbpWlK9EhqE9mmPequ4v9C76Uw/nx
+ 9vtD3ALQM6vTNwU3J5ZKOpWatkAQi5QZg0UNH2bX7CXyrT1ZOdXn8HkHt
+ u8vktIwTy6kuRt28lNAeOFTxL3H24LXuLSHrJT6oSeJH7F9mF79VPAvj+
+ 0TSRNDgkkfs7Qwmo/xg30FknhlxSHduY1s7tw8qhgCefTqcJW9dvD9FGW w==;
+X-CSE-ConnectionGUID: vvbItfwpQOKfi7Peq7CavA==
+X-CSE-MsgGUID: T57A80h8SM2k0vMxKIRQAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="50954444"
+X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="50954444"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 07:28:50 -0700
-X-CSE-ConnectionGUID: Zg7dpb0kQWu13y95rPzqkA==
-X-CSE-MsgGUID: GTnljVSOSlePSsgzES5pxw==
+ 05 Jun 2025 07:28:53 -0700
+X-CSE-ConnectionGUID: Yw61YLTnR5GT/Is1MHXL/w==
+X-CSE-MsgGUID: irEtFeLWRiOlzQR+q+Et+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="150406821"
+X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="150406829"
 Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.2])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 07:28:48 -0700
+ 05 Jun 2025 07:28:52 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t v2 0/2] Control compute-preempt bo allocation
-Date: Thu,  5 Jun 2025 16:28:25 +0200
-Message-ID: <20250605142824.380177-4-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 1/2] lib/intel_compute: add alloc preference for
+ objects used in compute
+Date: Thu,  5 Jun 2025 16:28:26 +0200
+Message-ID: <20250605142824.380177-5-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250605142824.380177-4-zbigniew.kempczynski@intel.com>
+References: <20250605142824.380177-4-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,31 +71,376 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Compute-preempt on BMG reveals some bugs related to oversized
-bo allocation. This happens because memory limits for objects
-allocated in vram are taken from system memory - what is wrong
-obviously. However it should work as well even if this exceeds
-vram size and causes eviction.
+Compute preemption tests executed on LNL and BMG behaves different
+as objects were allocated with 'vram_if_possible' strategy.
+This caused LNL creates objects in system memory whereas BMG
+in vram. Setting memory limits should be then adopted to appropriate
+memory type.
 
-First patch in the series makes all platform starts to use
-system memory allocation for compute objects. Second patch
-extends testing on discrete to use vram objects.
+Introduce memory allocation preference allowing tests to control
+how much and what type of memory it wants to take.
 
 Cc: Francois Dugast <francois.dugast@intel.com>
-
-v2: rebase (conflict in printf() + missing igt_debug instead igt_info)
-
-Zbigniew Kempczyński (2):
-  lib/intel_compute: add alloc preference for objects used in compute
-  tests/xe_compute_preempt: add compute preempt on vram bos
-
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
  lib/intel_compute.c              | 91 ++++++++++++++++++++++----------
  lib/intel_compute.h              | 15 ++++--
  tests/intel/gem_compute.c        |  3 +-
  tests/intel/xe_compute.c         |  5 +-
- tests/intel/xe_compute_preempt.c | 88 ++++++++++++++++++++++++++----
- 5 files changed, 157 insertions(+), 45 deletions(-)
+ tests/intel/xe_compute_preempt.c |  4 +-
+ 5 files changed, 82 insertions(+), 36 deletions(-)
 
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index 06f831f68c..bfb9024ba8 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -207,6 +207,7 @@ static void bo_execenv_destroy(struct bo_execenv *execenv)
+ }
+ 
+ static void bo_execenv_bind(struct bo_execenv *execenv,
++			    enum execenv_alloc_prefs alloc_prefs,
+ 			    struct bo_dict_entry *bo_dict, int entries)
+ {
+ 	int fd = execenv->fd;
+@@ -230,10 +231,26 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
+ 		sync.addr = to_user_pointer(&bo_sync->sync);
+ 
+ 		for (int i = 0; i < entries; i++) {
++			uint32_t placement, flags = 0;
++
+ 			bo_sync->sync = 0;
++
++			switch (alloc_prefs) {
++			case EXECENV_PREF_SYSTEM:
++				placement = system_memory(fd);
++				break;
++			case EXECENV_PREF_VRAM:
++				placement = vram_memory(fd, 0);
++				flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
++				break;
++			case EXECENV_PREF_VRAM_IF_POSSIBLE:
++				placement = vram_if_possible(fd, 0);
++				flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
++				break;
++			}
++
+ 			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
+-							 vram_if_possible(fd, 0),
+-							 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++							 placement, flags);
+ 			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
+ 			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
+ 					 bo_dict[i].size, &sync, 1);
+@@ -253,6 +270,7 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
+ 		struct drm_i915_gem_execbuffer2 *execbuf = &execenv->execbuf;
+ 		struct drm_i915_gem_exec_object2 *obj;
+ 
++		igt_assert_eq(alloc_prefs, EXECENV_PREF_SYSTEM);
+ 		obj = calloc(entries, sizeof(*obj));
+ 		execenv->obj = obj;
+ 
+@@ -795,7 +813,8 @@ static void dg1_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+ static void compute_exec(int fd, const unsigned char *kernel,
+ 			 unsigned int size,
+ 			 struct drm_xe_engine_class_instance *eci,
+-			 struct user_execenv *user)
++			 struct user_execenv *user,
++			 enum execenv_alloc_prefs alloc_prefs)
+ {
+ 	struct bo_dict_entry bo_dict[] = {
+ 		{ .addr = ADDR_INDIRECT_OBJECT_BASE + OFFSET_KERNEL,
+@@ -831,7 +850,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 	bo_dict[4].size = size_input(execenv.array_size);
+ 	bo_dict[5].size = size_output(execenv.array_size);
+ 
+-	bo_execenv_bind(&execenv, bo_dict, entries);
++	bo_execenv_bind(&execenv, alloc_prefs, bo_dict, entries);
+ 
+ 	memcpy(bo_dict[0].data, kernel, size);
+ 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
+@@ -1078,7 +1097,8 @@ static void xehp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 			      unsigned int size,
+ 			      struct drm_xe_engine_class_instance *eci,
+-			      struct user_execenv *user)
++			      struct user_execenv *user,
++			      enum execenv_alloc_prefs alloc_prefs)
+ {
+ 	struct bo_dict_entry bo_dict[] = {
+ 		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+@@ -1118,7 +1138,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_dict[4].size = size_input(execenv.array_size);
+ 	bo_dict[5].size = size_output(execenv.array_size);
+ 
+-	bo_execenv_bind(&execenv, bo_dict, entries);
++	bo_execenv_bind(&execenv, alloc_prefs, bo_dict, entries);
+ 
+ 	memcpy(bo_dict[0].data, kernel, size);
+ 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
+@@ -1303,7 +1323,8 @@ static void xehpc_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 			       unsigned int size,
+ 			       struct drm_xe_engine_class_instance *eci,
+-			       struct user_execenv *user)
++			       struct user_execenv *user,
++			       enum execenv_alloc_prefs alloc_prefs)
+ {
+ 	struct bo_dict_entry bo_dict[] = {
+ 		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+@@ -1334,7 +1355,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_dict[2].size = size_input(execenv.array_size);
+ 	bo_dict[3].size = size_output(execenv.array_size);
+ 
+-	bo_execenv_bind(&execenv, bo_dict, entries);
++	bo_execenv_bind(&execenv, alloc_prefs, bo_dict, entries);
+ 
+ 	memcpy(bo_dict[0].data, kernel, size);
+ 	xehpc_create_indirect_data(bo_dict[1].data, bind_input_addr, bind_output_addr,
+@@ -1682,9 +1703,10 @@ static void xe2_create_indirect_data_inc_kernel(uint32_t *addr_bo_buffer_batch,
+  * @user: user-provided execution environment
+  */
+ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+-				unsigned int size,
++			       unsigned int size,
+ 			       struct drm_xe_engine_class_instance *eci,
+-			       struct user_execenv *user)
++			       struct user_execenv *user,
++			       enum execenv_alloc_prefs alloc_prefs)
+ {
+ 	struct bo_dict_entry bo_dict[] = {
+ 		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+@@ -1726,7 +1748,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_dict[4].size = size_input(execenv.array_size);
+ 	bo_dict[5].size = size_output(execenv.array_size);
+ 
+-	bo_execenv_bind(&execenv, bo_dict, entries);
++	bo_execenv_bind(&execenv, alloc_prefs, bo_dict, entries);
+ 
+ 	memcpy(bo_dict[0].data, kernel, size);
+ 
+@@ -1777,7 +1799,8 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 				unsigned int size,
+ 				struct drm_xe_engine_class_instance *eci,
+-				struct user_execenv *user)
++				struct user_execenv *user,
++				enum execenv_alloc_prefs alloc_prefs)
+ {
+ 	struct bo_dict_entry bo_dict[] = {
+ 		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+@@ -1822,7 +1845,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 	bo_dict[4].size = size_input(execenv.array_size);
+ 	bo_dict[5].size = size_output(execenv.array_size);
+ 
+-	bo_execenv_bind(&execenv, bo_dict, entries);
++	bo_execenv_bind(&execenv, alloc_prefs, bo_dict, entries);
+ 
+ 	memcpy(bo_dict[0].data, kernel, size);
+ 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
+@@ -1879,7 +1902,8 @@ static const struct {
+ 	void (*compute_exec)(int fd, const unsigned char *kernel,
+ 			     unsigned int size,
+ 			     struct drm_xe_engine_class_instance *eci,
+-			     struct user_execenv *user);
++			     struct user_execenv *user,
++			     enum execenv_alloc_prefs alloc_prefs);
+ 	uint32_t compat;
+ } intel_compute_batches[] = {
+ 	{
+@@ -1926,7 +1950,8 @@ static const struct {
+ 
+ static bool __run_intel_compute_kernel(int fd,
+ 				       struct drm_xe_engine_class_instance *eci,
+-				       struct user_execenv *user)
++				       struct user_execenv *user,
++				       enum execenv_alloc_prefs alloc_prefs)
+ {
+ 	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+ 	unsigned int batch;
+@@ -1967,15 +1992,16 @@ static bool __run_intel_compute_kernel(int fd,
+ 		kernel_size = kernels->size;
+ 	}
+ 
+-	intel_compute_batches[batch].compute_exec(fd, kernel,
+-						  kernel_size, eci, user);
++	intel_compute_batches[batch].compute_exec(fd, kernel, kernel_size,
++						  eci, user, alloc_prefs);
+ 
+ 	return true;
+ }
+ 
+-bool run_intel_compute_kernel(int fd, struct user_execenv *user)
++bool run_intel_compute_kernel(int fd, struct user_execenv *user,
++			      enum execenv_alloc_prefs alloc_prefs)
+ {
+-	return __run_intel_compute_kernel(fd, NULL, user);
++	return __run_intel_compute_kernel(fd, NULL, user, alloc_prefs);
+ }
+ 
+ /**
+@@ -1990,7 +2016,8 @@ bool run_intel_compute_kernel(int fd, struct user_execenv *user)
+  */
+ bool xe_run_intel_compute_kernel_on_engine(int fd,
+ 					   struct drm_xe_engine_class_instance *eci,
+-					   struct user_execenv *user)
++					   struct user_execenv *user,
++					   enum execenv_alloc_prefs alloc_prefs)
+ {
+ 	if (!is_xe_device(fd)) {
+ 		igt_debug("Xe device expected\n");
+@@ -2009,7 +2036,7 @@ bool xe_run_intel_compute_kernel_on_engine(int fd,
+ 		return false;
+ 	}
+ 
+-	return __run_intel_compute_kernel(fd, eci, user);
++	return __run_intel_compute_kernel(fd, eci, user, alloc_prefs);
+ }
+ 
+ /**
+@@ -2035,7 +2062,8 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 					const unsigned char *loop_kernel,
+ 					unsigned int loop_kernel_size,
+ 					struct drm_xe_engine_class_instance *eci,
+-					bool threadgroup_preemption)
++					bool threadgroup_preemption,
++					enum execenv_alloc_prefs alloc_prefs)
+ {
+ 	struct bo_dict_entry bo_dict_long[] = {
+ 		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+@@ -2095,8 +2123,8 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 		bo_dict_long[0].size = ALIGN(long_kernel_size, 0x1000);
+ 	bo_dict_short[0].size = ALIGN(short_kernel_size, 0x1000);
+ 
+-	bo_execenv_bind(&execenv_long, bo_dict_long, entries);
+-	bo_execenv_bind(&execenv_short, bo_dict_short, entries);
++	bo_execenv_bind(&execenv_long, alloc_prefs, bo_dict_long, entries);
++	bo_execenv_bind(&execenv_short, alloc_prefs, bo_dict_short, entries);
+ 
+ 	if (use_loop_kernel)
+ 		memcpy(bo_dict_long[0].data, loop_kernel, loop_kernel_size);
+@@ -2175,7 +2203,8 @@ static const struct {
+ 			     const unsigned char *loop_kernel,
+ 			     unsigned int loop_kernel_size,
+ 			     struct drm_xe_engine_class_instance *eci,
+-			     bool threadgroup_preemption);
++			     bool threadgroup_preemption,
++			     enum execenv_alloc_prefs alloc_prefs);
+ 	uint32_t compat;
+ } intel_compute_preempt_batches[] = {
+ 	{
+@@ -2197,7 +2226,8 @@ static const struct {
+ 
+ static bool __run_intel_compute_kernel_preempt(int fd,
+ 		struct drm_xe_engine_class_instance *eci,
+-		bool threadgroup_preemption)
++		bool threadgroup_preemption,
++		enum execenv_alloc_prefs alloc_prefs)
+ {
+ 	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+ 	unsigned int batch;
+@@ -2238,7 +2268,8 @@ static bool __run_intel_compute_kernel_preempt(int fd,
+ 							  kernels->loop_kernel,
+ 							  kernels->loop_kernel_size,
+ 							  eci,
+-							  threadgroup_preemption);
++							  threadgroup_preemption,
++							  alloc_prefs);
+ 
+ 	return true;
+ }
+@@ -2254,7 +2285,9 @@ static bool __run_intel_compute_kernel_preempt(int fd,
+  */
+ bool run_intel_compute_kernel_preempt(int fd,
+ 		struct drm_xe_engine_class_instance *eci,
+-		bool threadgroup_preemption)
++		bool threadgroup_preemption,
++		enum execenv_alloc_prefs alloc_prefs)
+ {
+-	return __run_intel_compute_kernel_preempt(fd, eci, threadgroup_preemption);
++	return __run_intel_compute_kernel_preempt(fd, eci, threadgroup_preemption,
++						  alloc_prefs);
+ }
+diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+index f0d1750ccb..412791d074 100644
+--- a/lib/intel_compute.h
++++ b/lib/intel_compute.h
+@@ -65,11 +65,20 @@ struct user_execenv {
+ 	uint64_t output_addr;
+ };
+ 
++enum execenv_alloc_prefs {
++	EXECENV_PREF_SYSTEM,
++	EXECENV_PREF_VRAM,
++	EXECENV_PREF_VRAM_IF_POSSIBLE,
++};
++
+ extern const struct intel_compute_kernels intel_compute_square_kernels[];
+ 
+-bool run_intel_compute_kernel(int fd, struct user_execenv *user);
++bool run_intel_compute_kernel(int fd, struct user_execenv *user,
++			      enum execenv_alloc_prefs alloc_prefs);
+ bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci,
+-					   struct user_execenv *user);
++					   struct user_execenv *user,
++					   enum execenv_alloc_prefs alloc_prefs);
+ bool run_intel_compute_kernel_preempt(int fd, struct drm_xe_engine_class_instance *eci,
+-				      bool threadgroup_preemption);
++				      bool threadgroup_preemption,
++				      enum execenv_alloc_prefs alloc_prefs);
+ #endif	/* INTEL_COMPUTE_H */
+diff --git a/tests/intel/gem_compute.c b/tests/intel/gem_compute.c
+index ce41cd386b..b8e7dec59c 100644
+--- a/tests/intel/gem_compute.c
++++ b/tests/intel/gem_compute.c
+@@ -27,7 +27,8 @@
+ static void
+ test_compute_square(int fd)
+ {
+-	igt_require_f(run_intel_compute_kernel(fd, NULL), "GPU not supported\n");
++	igt_require_f(run_intel_compute_kernel(fd, NULL, EXECENV_PREF_SYSTEM),
++		      "GPU not supported\n");
+ }
+ 
+ igt_main
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index 65e32ce9dc..955edf082b 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
+@@ -146,7 +146,7 @@ test_compute_kernel_with_ccs_mode(int num_gt)
+ 
+ 				igt_info("GT-%d: Running compute kernel with ccs_mode %d on ccs engine %d\n",
+ 					 gt, m, hwe->engine_instance);
+-				igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL),
++				igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL, EXECENV_PREF_SYSTEM),
+ 					     "Unable to run compute kernel successfully\n");
+ 			}
+ 			drm_close_driver(fd);
+@@ -174,7 +174,8 @@ test_compute_kernel_with_ccs_mode(int num_gt)
+ static void
+ test_compute_square(int fd)
+ {
+-	igt_require_f(run_intel_compute_kernel(fd, NULL), "GPU not supported\n");
++	igt_require_f(run_intel_compute_kernel(fd, NULL, EXECENV_PREF_SYSTEM),
++		      "GPU not supported\n");
+ }
+ 
+ igt_main
+diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
+index caed08a710..5231e5a66c 100644
+--- a/tests/intel/xe_compute_preempt.c
++++ b/tests/intel/xe_compute_preempt.c
+@@ -44,7 +44,9 @@
+ static void
+ test_compute_preempt(int fd, struct drm_xe_engine_class_instance *hwe, bool threadgroup_preemption)
+ {
+-	igt_require_f(run_intel_compute_kernel_preempt(fd, hwe, threadgroup_preemption), "GPU not supported\n");
++	igt_require_f(run_intel_compute_kernel_preempt(fd, hwe, threadgroup_preemption,
++						       EXECENV_PREF_SYSTEM),
++		      "GPU not supported\n");
+ }
+ 
+ #define CONTEXT_MB 100
 -- 
 2.43.0
 
