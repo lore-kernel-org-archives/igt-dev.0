@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67A25C5AD49
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Jun 2025 15:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F8C4C61CE7
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Jun 2025 17:19:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2D9FB10E3B7;
-	Fri,  6 Jun 2025 15:56:32 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hl5Yi6Pp";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B72810E3B7
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Jun 2025 15:56:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749225391; x=1780761391;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=rFYmsHtq9FFCAFc36hdxUes8Ddre0dnWxztTujSWw2Y=;
- b=hl5Yi6PpCPUakf4OrfHnITP/ZQ81W167Hel1Cx0dCPMRTJz25/9ixQKa
- 89fDksiWltPvFolj7xdZFfqz4objt7mmidR8sLpj3K1qRYzvgJtYfAaVs
- sFq9MR4wKXEwTBglpiY7DvYVJxObRhrTsb9kAFrpR+w3KUO0QwPVhC8cI
- h/PWfeT4YQQ4RufEoWKp18sIG2tALf4zbKM/NUpp+poHV69NreEo0km1Z
- 6CssVHQSpdt+R7Bo/hlki3l2LV0BjDpCBY3Hbb5LED24Dir4eaY99KlaO
- /fIMRM2pWuzPHciUAPpCQ5FkY3C4U7SOETy9Dxkg+bKAChTFLT7V4hia8 g==;
-X-CSE-ConnectionGUID: 2BMTPz1lRTqcfnYgaj4C9w==
-X-CSE-MsgGUID: GA0tS3DzSFaRM67g5IOJIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11456"; a="68820650"
-X-IronPort-AV: E=Sophos;i="6.16,215,1744095600"; d="scan'208";a="68820650"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 08:55:27 -0700
-X-CSE-ConnectionGUID: g3BWw21KSzOy73LKztYENA==
-X-CSE-MsgGUID: Pm8HzE2URwGVmj5NDtTAOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,215,1744095600"; d="scan'208";a="176810393"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 08:55:24 -0700
-Date: Fri, 6 Jun 2025 17:55:22 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Dorinda Bassey <dbassey@redhat.com>
-Cc: igt-dev@lists.freedesktop.org, javierm@redhat.com, aesteve@redhat.com,
- ernunes@redhat.com
-Subject: Re: [PATCH v3] tests/drm_virtgpu: Add functional coverage for core
- VirtIO-GPU ioctls
-Message-ID: <20250606155522.2mnzanrvr73yfc6n@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Dorinda Bassey <dbassey@redhat.com>, igt-dev@lists.freedesktop.org,
- javierm@redhat.com, aesteve@redhat.com, ernunes@redhat.com
-References: <20250530090451.1438981-1-dbassey@redhat.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0F9B810EAF0;
+	Fri,  6 Jun 2025 17:19:53 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AD3F10E32A;
+ Fri,  6 Jun 2025 17:19:52 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0698136211018265718=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250530090451.1438981-1-dbassey@redhat.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_render-node=2C_gt_res?=
+ =?utf-8?q?et_and_suspend_engine_activity_tests_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 06 Jun 2025 17:19:52 -0000
+Message-ID: <174923039230.56838.3687885813796836187@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250606101008.1949955-1-riana.tauro@intel.com>
+In-Reply-To: <20250606101008.1949955-1-riana.tauro@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,205 +37,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Dorinda,
-On 2025-05-30 at 11:02:20 +0200, Dorinda Bassey wrote:
-> This test suite adds coverage for multiple DRM ioctls specific
-> to the VirtIO-GPU driver, verifying functionality such as
-> resource creation, memory mapping, 3D transfers, context
-> initialization, and parameter querying.
-> Each test validates a key ioctl to ensure correct behavior from
-> user space and backend implementations. Each subtest is
-> self-contained and can be executed independently.
-> 
-> Included subtests:
->   - drm-virtgpu-map
->   - drm-virtgpu-execbuffer
->   - drm-virtgpu-resource-info
->   - drm-virtgpu-3d-transfer-to-host
->   - drm-virtgpu-3d-transfer-from-host
->   - drm-virtgpu-3d-wait
->   - drm-virtgpu-resource-create-blob
->   - drm-virtgpu-get-caps
->   - drm-virtgpu-context-init
->   - drm-virtgpu-getparam
-> 
-> How to Test with QEMU virtio-vga-gl or rustvmm vhost-device-gpu
-> 
-> 1. Launch a QEMU guest with virtio-vga-gl
-> ./build/qemu-system-x86_64 \
->   -enable-kvm \
->   -cpu host \
->   -m 4096 \
->   -machine q35 \
->   -display gtk,gl=on \
->   -vga none \
->   -device virtio-vga-gl \
->   -drive file=image.qcow2,format=qcow2 \
->   -netdev user,id=n0,hostfwd=tcp::2222-:22 \
->   -device virtio-net-pci,netdev=n0
-> 
-> ssh into the guest and run the tests.
-> 
-> 2. Start the vhost-device-gpu backend and Launch a QEMU
-> guest with vhost-user-gpu-pci or vhost-user-vga, see guide on:
-> https://crates.io/crates/vhost-device-gpu
-> 
-> Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
+--===============0698136211018265718==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please use checkpatch.pl script from Linux kernel, for usefull
-options see CONTRIBUTING.md
-You could ignore MAINTAINER or CamelCase but please fix others.
+== Series Details ==
 
-With that fixed
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: Add render-node, gt reset and suspend engine activity tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/149526/
+State : success
 
-I will wait with merge for a review from someone in your Cc list.
+== Summary ==
 
-One more nit below.
+CI Bug Log - changes from IGT_8401 -> IGTPW_13253
+====================================================
 
-> ---
-> v3:
-> Fix resource format and clarify capset IDs
-> 
->  tests/drm_virtgpu.c | 420 ++++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build   |   1 +
->  2 files changed, 421 insertions(+)
->  create mode 100644 tests/drm_virtgpu.c
-> 
-> diff --git a/tests/drm_virtgpu.c b/tests/drm_virtgpu.c
-> new file mode 100644
-> index 000000000..4d7c9e8f5
-> --- /dev/null
-> +++ b/tests/drm_virtgpu.c
-> @@ -0,0 +1,420 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2025 Red Hat Inc.
-> + *
-> + * Authors: Dorinda Bassey <dbassey@redhat.com>
-> + */
-> +
-> +/**
-> + * TEST: drm virtgpu ioctls
-> + * Description: Testing of the virtIO-GPU driver DRM ioctls
-> + * Category: Core
-> + * Mega feature: General Core features
-> + * Sub-category:  virtIO-GPU DRM ioctls
-> + * Functionality: drm_ioctls
-> + * Feature: Virtualization graphics support
-> + * Test category: functionality test
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <errno.h>
-> +#include <string.h>
-> +#include <sys/ioctl.h>
-> +
-> +#include "drm.h"
-> +#include "virtgpu_drm.h"
-> +#include "igt.h"
-> +
-> +/**
-> + * SUBTEST: drm-virtgpu-map
-> + *
-> + * SUBTEST: drm-virtgpu-execbuffer
-> + *
-> + * SUBTEST: drm-virtgpu-resource-info
-> + *
-> + * SUBTEST: drm-virtgpu-3d-transfer-to-host
-> + *
-> + * SUBTEST: drm-virtgpu-3d-transfer-from-host
-> + *
-> + * SUBTEST: drm-virtgpu-3d-wait
-> + *
-> + * SUBTEST: drm-virtgpu-resource-create
-> + *
-> + * SUBTEST: drm-virtgpu-resource-create-blob
-> + *
-> + * SUBTEST: drm-virtgpu-get-caps
-> +
-> + * SUBTEST: drm-virtgpu-context-init
-> + *
-> + * SUBTEST: drm-virtgpu-getparam
-> + */
-> +
-> +IGT_TEST_DESCRIPTION("Testing of the virtIO-GPU driver DRM ioctls");
-> +
-> +#define VIRTGPU_DEVICE "/dev/dri/card0"
-> +
-> +#define CAPS_BUFFER_SIZE 4096
-> +#define MAX_CARDS 16
-> +
-> +int drm_fd;
-> +struct drm_virtgpu_resource_create args;
-> +bool resource_created;
-> +
-> +static int open_virtgpu_device(void)
-> +{
-> +	drmVersionPtr version;
-> +
-> +	for (int i = 0; i < MAX_CARDS; i++) {
-> +		char path[64];
-> +
-> +		snprintf(path, sizeof(path), "/dev/dri/card%d", i);
-> +		drm_fd = open(path, O_RDWR | O_CLOEXEC);
-> +		if (drm_fd < 0)
-> +			continue;
-> +
-> +		version = drmGetVersion(drm_fd);
-> +		if (version && strcmp(version->name, "virtio_gpu") == 0) {
-> +			drmFreeVersion(version);
+Summary
+-------
 
-You could print path here (with igt_info or igt_debug).
+  **SUCCESS**
 
-> +			return drm_fd;
-> +		}
-> +
-> +		drmFreeVersion(version);
-> +		close(drm_fd);
-> +	}
+  No regressions found.
 
-Same here, you could print number of opened devices (with drm_fd >=0)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/index.html
 
-Regards,
-Kamil
+Participating hosts (43 -> 42)
+------------------------------
 
-> +	return -1;
-> +}
-> +
-> +static const struct {
-> +	const char *name;
-> +	uint64_t id;
-> +} params[] = {
-> +	{"3D_FEATURES", VIRTGPU_PARAM_3D_FEATURES},
-> +	{"CAPSET_QUERY_FIX", VIRTGPU_PARAM_CAPSET_QUERY_FIX},
-> +	{"RESOURCE_BLOB", VIRTGPU_PARAM_RESOURCE_BLOB},
-> +	{"HOST_VISIBLE", VIRTGPU_PARAM_HOST_VISIBLE},
-> +	{"CROSS_DEVICE", VIRTGPU_PARAM_CROSS_DEVICE},
-> +	{"CONTEXT_INIT", VIRTGPU_PARAM_CONTEXT_INIT},
-> +	{"SUPPORTED_CAPSET_IDs", VIRTGPU_PARAM_SUPPORTED_CAPSET_IDs},
-> +	{"EXPLICIT_DEBUG_NAME", VIRTGPU_PARAM_EXPLICIT_DEBUG_NAME},
-> +};
-> +
+  Missing    (1): fi-snb-2520m 
 
-...cut...
+Known issues
+------------
 
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 20ddddb89..ac85cac30 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -13,6 +13,7 @@ test_progs = [
->  	'drm_buddy',
->  	'drm_mm',
->  	'drm_read',
-> +	'drm_virtgpu',
->  	'fbdev',
->  	'kms_3d',
->  	'kms_addfb_basic',
-> -- 
-> 2.48.1
-> 
+  Here are the changes found in IGTPW_13253 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-mtlp-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - bat-twl-2:          NOTRUN -> [ABORT][3] ([i915#14357])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-twl-2/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-11:         [PASS][4] -> [DMESG-FAIL][5] ([i915#12061]) +1 other test dmesg-fail
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-arlh-3:         [DMESG-FAIL][6] ([i915#14243]) -> [PASS][7] +1 other test pass
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-arlh-3/igt@i915_selftest@live.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-arlh-3/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@guc_multi_lrc:
+    - bat-twl-2:          [INCOMPLETE][8] ([i915#14096]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-twl-2/igt@i915_selftest@live@guc_multi_lrc.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-twl-2/igt@i915_selftest@live@guc_multi_lrc.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-twl-2:          [INCOMPLETE][10] ([i915#14096]) -> [ABORT][11] ([i915#14357])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-twl-2/igt@i915_selftest@live.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-twl-2/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#14096]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14096
+  [i915#14243]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14243
+  [i915#14357]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14357
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8401 -> IGTPW_13253
+  * Linux: CI_DRM_16662 -> CI_DRM_16663
+
+  CI-20190529: 20190529
+  CI_DRM_16662: 2f92a5cfa1b06e29699d63b805ce3e4aab6c4f77 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16663: ac3f699ce8cdc62253c9cfb8d914a7d346634c93 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13253: 8801ec6eb89a5a45f05dc221c360d877f7f77b4a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8401: 8401
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/index.html
+
+--===============0698136211018265718==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add render-node, gt reset and suspend engine activity tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149526/">https://patchwork.freedesktop.org/series/149526/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8401 -&gt; IGTPW_13253</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/index.html</p>
+<h2>Participating hosts (43 -&gt; 42)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13253 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-twl-2/igt@i915_selftest@live@late_gt_pm.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14357">i915#14357</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-arlh-3/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14243">i915#14243</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@guc_multi_lrc:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-twl-2/igt@i915_selftest@live@guc_multi_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14096">i915#14096</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-twl-2/igt@i915_selftest@live@guc_multi_lrc.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8401/bat-twl-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14096">i915#14096</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13253/bat-twl-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14357">i915#14357</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8401 -&gt; IGTPW_13253</li>
+<li>Linux: CI_DRM_16662 -&gt; CI_DRM_16663</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16662: 2f92a5cfa1b06e29699d63b805ce3e4aab6c4f77 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16663: ac3f699ce8cdc62253c9cfb8d914a7d346634c93 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13253: 8801ec6eb89a5a45f05dc221c360d877f7f77b4a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8401: 8401</p>
+
+</body>
+</html>
+
+--===============0698136211018265718==--
