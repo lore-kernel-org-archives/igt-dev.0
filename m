@@ -4,63 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26574C5B549
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Jun 2025 09:28:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71C3CC61CE8
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Jun 2025 09:46:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE2D610E348;
-	Fri,  6 Jun 2025 09:28:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F0D3110EA14;
+	Fri,  6 Jun 2025 09:46:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MFxJxAB0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KhZ7araD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32C5210E9AA
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Jun 2025 13:05:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8606910EA0C
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Jun 2025 09:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749128708; x=1780664708;
+ t=1749203170; x=1780739170;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=d1QmlbNuPdkB/NH2/FYClaZrrAuIFsrgZYh4v6PSQnk=;
- b=MFxJxAB0S9zXON0F7RFuCkFbRnCyj/zVpWNTN6tUgho0mvS73daxNxyx
- 06T0djVqGBiuwEAQ/vdvypqqBR3+hAEVCzSdPEh469pWBRqIgKLB6fdNj
- zfCHMlkWbq8YAjdZes3nd9ZLyVmdWLWl7PKlHWwn2DGqYqYkadOQQD2Zf
- UZWGKGsyiUpep7HIcJVRVwBKOtrZFPJhiuAUg22CKRCSLCEOLRXdw9eEm
- lClopLuow/5R3eMTRlU/VZ5AV+GPjSjZhzn8hXulCcbkVMjKPiD/FOgiS
- ZikAX7aLAsDOuz4yG7fxGA1flkkwyMIoIA//8a8LGTxNhSCospQZKntMQ Q==;
-X-CSE-ConnectionGUID: DB1xPcygQf6LhXi2SyCCfw==
-X-CSE-MsgGUID: h5eD4Dt5QjmcAQfqIfW/Rw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="68800616"
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="68800616"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 06:05:07 -0700
-X-CSE-ConnectionGUID: IDit3S7KRF6FnpdRFstneg==
-X-CSE-MsgGUID: yPpu9FdyTIqEauH4pMMn3A==
+ bh=f7dPiMhSKm1g2oTYlwtPTTvmiiHXtWWxAHbG2SbzYvo=;
+ b=KhZ7araDvaDVsfPXWIA9kKD5pMawgjDyk5JDl0ADZ2pEHMK702UNTvrf
+ z61t2KbEuCCIU5SYyLpeCi1ia+aTN4Bi6037WEJMrqRFg9shi+xKs8my1
+ OevlJfewXLFj/7IihgydqDaD+EzwpVd7xBXRASlLea+5t2rLPHHOpJC/f
+ DUZCuKKNBwaJG8sFn2ImiPRzfldjyJB2QAm+NZRJxlCZUY0/gnKgGC3Ip
+ PlCQFdzu4tPyDUV8TkEs3+sodOJN+Dl54ua51VqkFH51ClwEr/4yVcjcY
+ Nt4C37Ei6//EZDSlIq2kGKNk0GUuqMNxqaCwwmod9uzztlXDv0qBvY35Y w==;
+X-CSE-ConnectionGUID: uoHufKVJRMCgI4IP+zZVDw==
+X-CSE-MsgGUID: 4LiR7129TK6JsSYViqLNCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="62745034"
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="62745034"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jun 2025 02:46:07 -0700
+X-CSE-ConnectionGUID: EMW/++nBT0SdBDiYOD4bzA==
+X-CSE-MsgGUID: YdgCxCGbT2+G+Jsi1p08+w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; d="scan'208";a="149344512"
-Received: from intelmailrelay-01.habana-labs.com ([10.111.11.20])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2025 06:05:05 -0700
-Received: internal info suppressed
-Received: from dhirschfeld-vm-u24.habana-labs.com (localhost [127.0.0.1])
- by dhirschfeld-vm-u24.habana-labs.com (8.18.1/8.18.1/Debian-2) with ESMTPS id
- 555D4Sv5528962
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Thu, 5 Jun 2025 16:04:56 +0300
-Received: (from dhirschfeld@localhost)
- by dhirschfeld-vm-u24.habana-labs.com (8.18.1/8.18.1/Submit) id 5556fnIO510553;
- Thu, 5 Jun 2025 09:41:49 +0300
-From: Dafna Hirschfeld <dafna.hirschfeld@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="182974790"
+Received: from unknown (HELO rtauro-desk.iind.intel.com) ([10.227.90.111])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jun 2025 02:46:04 -0700
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: lucas.demarchi@intel.com, ilia.levi@intel.com, koby.elbaz@intel.com,
- kamil.konieczny@intel.com, dafna.hirschfeld@intel.com
-Subject: [PATCH v2] tools/intel_reg: add support to hw address port
-Date: Thu,  5 Jun 2025 09:41:37 +0300
-Message-ID: <20250605064137.510521-1-dafna.hirschfeld@intel.com>
-X-Mailer: git-send-email 2.43.0
+Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
+ umesh.nerlige.ramappa@intel.com, lucas.demarchi@intel.com,
+ soham.purkait@intel.com
+Subject: [PATCH i-g-t v3 0/5] Add render-node,
+ gt reset and suspend engine activity tests
+Date: Fri,  6 Jun 2025 15:40:03 +0530
+Message-ID: <20250606101008.1949955-1-riana.tauro@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 06 Jun 2025 09:28:08 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,205 +68,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For some platforms we want to access hw addresses.
-For that we need a callback per platform that maps the hw address
-to pci address. Add infrastructure to support that.
+Add tests to validate engine activity on render node, after gt reset,
+suspend and multi-client.
 
-Signed-off-by: Dafna Hirschfeld <dafna.hirschfeld@intel.com>
----
-changes since v1:
-1. add 'tools' presfix to title
-2. fix wrong printf params
+Also add a test to validate engine activity by opening PMU fd after
+starting the cork
 
- tools/intel_reg.c      | 48 +++++++++++++++++++++++++++++++++++-------
- tools/intel_reg_spec.c | 36 +++++++++++++++++++++++++++++++
- tools/intel_reg_spec.h |  5 +++++
- 3 files changed, 81 insertions(+), 8 deletions(-)
+Tests added:
 
-diff --git a/tools/intel_reg.c b/tools/intel_reg.c
-index 49afe91c0..bea4c84fb 100644
---- a/tools/intel_reg.c
-+++ b/tools/intel_reg.c
-@@ -519,12 +519,17 @@ static int read_register(struct config *config, struct reg *reg, uint32_t *valp)
- 		break;
- 	case PORT_MCHBAR_16:
- 	case PORT_MMIO_16:
-+	case PORT_HWADDR_16:
- 		val = INREG16(reg->mmio_offset + reg->addr);
- 		break;
- 	case PORT_MCHBAR_8:
- 	case PORT_MMIO_8:
-+	case PORT_HWADDR_8:
- 		val = INREG8(reg->mmio_offset + reg->addr);
- 		break;
-+	case PORT_HWADDR_32:
-+		val = INREG(reg->mmio_offset + reg->addr);
-+		break;
- 	case PORT_MMIO_VGA_AR:
- 		val = vga_ar_read(reg->addr, true);
- 		break;
-@@ -610,6 +615,7 @@ static int write_register(struct config *config, struct reg *reg, uint32_t val)
- 		break;
- 	case PORT_MCHBAR_16:
- 	case PORT_MMIO_16:
-+	case PORT_HWADDR_16:
- 		if (val > 0xffff) {
- 			fprintf(stderr, "value 0x%08x out of range for port %s\n",
- 				val, reg->port_desc.name);
-@@ -619,6 +625,7 @@ static int write_register(struct config *config, struct reg *reg, uint32_t val)
- 		break;
- 	case PORT_MCHBAR_8:
- 	case PORT_MMIO_8:
-+	case PORT_HWADDR_8:
- 		if (val > 0xff) {
- 			fprintf(stderr, "value 0x%08x out of range for port %s\n",
- 				val, reg->port_desc.name);
-@@ -626,6 +633,9 @@ static int write_register(struct config *config, struct reg *reg, uint32_t val)
- 		}
- 		OUTREG8(reg->mmio_offset + reg->addr, val);
- 		break;
-+	case PORT_HWADDR_32:
-+		OUTREG(reg->mmio_offset + reg->addr, val);
-+		break;
- 	case PORT_MMIO_VGA_AR:
- 		if (val > 0xff) {
- 			fprintf(stderr, "value 0x%08x out of range for port %s\n",
-@@ -750,6 +760,14 @@ static int parse_engine(struct reg *reg, const char *s)
- 	return reg->engine == NULL;
- }
- 
-+/*
-+ * Get codename for a gen5+ platform to be used for finding register spec file.
-+ */
-+static const char *get_codename(uint32_t devid)
-+{
-+	return intel_get_device_info(devid)->codename;
-+}
-+
- /* s has [(PORTNAME|PORTNUM|ENGINE|MMIO-OFFSET):](REGNAME|REGADDR) */
- static int parse_reg(struct config *config, struct reg *reg, const char *s)
- {
-@@ -792,6 +810,28 @@ static int parse_reg(struct config *config, struct reg *reg, const char *s)
- 	case PORT_MCHBAR_8:
- 		reg->mmio_offset = mcbar_offset(config->devid);
- 		break;
-+	case PORT_HWADDR_32:
-+	case PORT_HWADDR_16:
-+	case PORT_HWADDR_8:
-+		{
-+			uint64_t dev_addr = strtoull(p, &endp, 16);
-+			uint32_t pci_addr;
-+			const char *codename = get_codename(config->devid);
-+
-+			ret = hwaddr_to_pciaddr(codename, dev_addr, &pci_addr);
-+			if (ret) {
-+				if (ret == -ENOENT)
-+					fprintf(stderr, "platform %s does not support hwaddr\n",
-+						codename);
-+				else
-+					fprintf(stderr,
-+						"mapping hw addr 0x%lx to pci bar failed (%d)\n",
-+						dev_addr, ret);
-+
-+				return ret;
-+			}
-+			return set_reg_by_addr(config, reg, pci_addr);
-+		}
- 	default:
- 		break;
- 	}
-@@ -1077,14 +1117,6 @@ static int intel_reg_help(struct config *config, int argc, char *argv[])
- 	return EXIT_SUCCESS;
- }
- 
--/*
-- * Get codename for a gen5+ platform to be used for finding register spec file.
-- */
--static const char *get_codename(uint32_t devid)
--{
--	return intel_get_device_info(devid)->codename;
--}
--
- /*
-  * Get register definitions filename for devid in dir. Return 0 if found,
-  * negative error code otherwise.
-diff --git a/tools/intel_reg_spec.c b/tools/intel_reg_spec.c
-index 632db6b9f..f98d51928 100644
---- a/tools/intel_reg_spec.c
-+++ b/tools/intel_reg_spec.c
-@@ -32,6 +32,26 @@
- 
- #include "intel_reg_spec.h"
- 
-+struct hwaddr {
-+	const char *codename;
-+	int (*hwaddr_lookup)(uint64_t dev_addr, uint32_t *pci_addr);
-+};
-+
-+static const struct hwaddr hwaddr_lookups[] = {
-+	{ .codename = NULL, /* sentinel */}
-+};
-+
-+int hwaddr_to_pciaddr(const char *codename, uint64_t dev_addr, uint32_t *pci_addr)
-+{
-+	int i;
-+
-+	for (i = 0; hwaddr_lookups[i].codename; i++) {
-+		if (strcmp(codename, hwaddr_lookups[i].codename) == 0)
-+			return hwaddr_lookups[i].hwaddr_lookup(dev_addr, pci_addr);
-+	}
-+	return -ENOENT;
-+}
-+
- static const struct port_desc port_descs[] = {
- 	{
- 		.name = "mmio",
-@@ -83,6 +103,22 @@ static const struct port_desc port_descs[] = {
- 		.port = PORT_MMIO_VGA_CR,
- 		.stride = 1,
- 	},
-+	{
-+		.name = "hwaddr",
-+		.port = PORT_HWADDR_32,
-+		.stride = 4,
-+	},
-+	{
-+		.name = "hwaddr16",
-+		.port = PORT_HWADDR_16,
-+		.stride = 2,
-+	},
-+	{
-+		.name = "hwaddr8",
-+		.port = PORT_HWADDR_8,
-+		.stride = 1,
-+	},
-+
- 	{
- 		.name = "portio",
- 		.port = PORT_PORTIO,
-diff --git a/tools/intel_reg_spec.h b/tools/intel_reg_spec.h
-index af396a294..ccf4fd366 100644
---- a/tools/intel_reg_spec.h
-+++ b/tools/intel_reg_spec.h
-@@ -34,6 +34,10 @@ enum port_addr {
- 	PORT_MCHBAR_16,
- 	PORT_MCHBAR_8,
- 
-+	PORT_HWADDR_32,
-+	PORT_HWADDR_16,
-+	PORT_HWADDR_8,
-+
- 	PORT_MMIO_VGA_AR,
- 	PORT_MMIO_VGA_SR,
- 	PORT_MMIO_VGA_GR,
-@@ -86,6 +90,7 @@ static inline void *recalloc(void *ptr, size_t nmemb, size_t size)
- 	return realloc(ptr, nmemb * size);
- }
- 
-+int hwaddr_to_pciaddr(const char* codename, uint64_t dev_addr, uint32_t *pci_addr);
- int parse_port_desc(struct reg *reg, const char *s);
- ssize_t intel_reg_spec_builtin(struct reg **regs, uint32_t devid);
- ssize_t intel_reg_spec_file(struct reg **regs, const char *filename);
+1) engine-activity-gt-reset
+2) engine-activity-gt-reset-idle
+3) engine-activity-suspend
+4) engine-activity-after-load-start
+5) engine-activity-render-node-idle
+6) engine-activity-render-node-load
+7) engine-activity-render-node-load-idle
+8) engine-activity-multi-client
+
+Rev2: Add multi-client test
+      fix render node test
+
+Rev3: Add gt reset idle test    
+
+Riana Tauro (5):
+  tests/intel/xe_pmu: Validate engine activity on gt reset
+  tests/intel/xe_pmu: Validate engine activity after suspend
+  tests/intel/xe_pmu: Add tests to validate engine activity on render
+    node
+  tests/intel/xe_pmu: Add a test to validate engine activity after
+    starting load
+  tests/intel/xe_pmu: Add multi client engine activity test
+
+ tests/intel/xe_pmu.c | 201 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 195 insertions(+), 6 deletions(-)
+
 -- 
-2.43.0
+2.47.1
 
