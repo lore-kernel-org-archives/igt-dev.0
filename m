@@ -4,56 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64992C5AD49
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Jun 2025 10:39:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6632C61CE8
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Jun 2025 11:17:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4BA4D10E2D0;
-	Fri,  6 Jun 2025 10:39:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D5BA10E37A;
+	Fri,  6 Jun 2025 11:17:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GtNUS8Iq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lT4hEugE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C7BA10E2D0
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Jun 2025 10:39:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1278910E37A
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Jun 2025 11:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749206383; x=1780742383;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=4ikZ74yDZmWOp+RZ6k7KI/1bILc4qtfxdEfJI2gLpgU=;
- b=GtNUS8Iqq3Sq6YNKTntAb0adrvcrgzV41gkrPiDnlTMyWYf03sxUqICy
- RGp4wQBoi+3gCvbFYV7utdlyD/D2Zg7OFq7zNbPRlvcasFzBcypnHCm9n
- GwGf4NXy+7PfYrDV4kMhcDaZCOmJgomogwhxDKHnUdkY2oiqiwwcYWVjM
- HlC7uSEzEdra9TDk5UiN5FziFrMDXBMcpvCZEB9mFWiumv6T1WbMJmy6P
- qoL0TkjJM7pyn896Z/GNn4KpcPB/JfwCvYnrVxcunjueMg/dguRtOuLy3
- cTJDqydGmLwIUQ8ouNgPiLMQ4nF4t74WtNsnuMcnqTV2NdeZ3WAH/wc4F w==;
-X-CSE-ConnectionGUID: zCp9BV2gTfKI1Gyb0MvaqQ==
-X-CSE-MsgGUID: /TZCegoTRjSTkVTx/0XNxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="51428777"
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="51428777"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 03:39:43 -0700
-X-CSE-ConnectionGUID: yW3/HgdKR3WwMu1uaB/B1A==
-X-CSE-MsgGUID: 5hMX3cf9Qe+HDPujuGCp4A==
+ t=1749208619; x=1780744619;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=DNXrLFkcnQNI3RkMCautPp5Dr4T6CeROcEFv79sAQIw=;
+ b=lT4hEugEwL+yqV4KmFDnBZmd5K/1rA9QRojxCQUj+F+GNHdinb+BnJ8r
+ dkXbVVMauC+37JA6G0IyS1KqW1lWyFaP53WSoV4GcAAETrkTefbUyxnK7
+ 48PHZen9J1akSqc+pyclsNwrxobMOiySYRtbOhIXbX3+iyDTDdxYWcYO5
+ KUeXWZXSGkk6B/ZI1Cj18NME8292c1P5++69kgqjBntCMeEAzJUxrBg7l
+ TQn2IwXtgbHsPUs76ksUAkZNY3abd9CFGWIzeRHo4lBl+mIL4r5GZ+xyJ
+ jBvkjNIYvwjnO7jAkdAACe5GtQYdL2vRnM58Mcail2kKBuVEmQLm4DYN9 w==;
+X-CSE-ConnectionGUID: k/VfHxtsTum9MYaT/k1ZRQ==
+X-CSE-MsgGUID: OvWr36k+Sl6MXDUYI2Mt+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="51500993"
+X-IronPort-AV: E=Sophos;i="6.16,215,1744095600"; d="scan'208";a="51500993"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jun 2025 04:16:58 -0700
+X-CSE-ConnectionGUID: D3NFSB2TQIunu9yhv4NGUw==
+X-CSE-MsgGUID: NX/koBlmRqK5L94gmSuQlg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; d="scan'208";a="150809867"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
- ([10.245.244.216])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jun 2025 03:39:42 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t] lib/intel_compute: change shader and logic for
- threadgroup preemption
-Date: Fri,  6 Jun 2025 12:39:38 +0200
-Message-ID: <20250606103937.576276-2-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.16,215,1744095600"; d="scan'208";a="176670861"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jun 2025 04:16:58 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 6 Jun 2025 04:16:57 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Fri, 6 Jun 2025 04:16:57 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.75) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.55; Fri, 6 Jun 2025 04:16:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kasgQR4jcNosMhuoC5/50MHSqfowLm7mLCbE79r8LLI0zHj20TtCkTVYNlL1FcjY10aH2c3Yz1uMprgK2VaLaBY4enTytkdbqRwsSln8r8w6+ADKomcohezbOr9+o8XJh9aRQKvrQJkI+qnAcFfw7XTwtif2ZYczYU/D7ZHP702+gPz5ar/kPsW5hyKBf/dG1cGGbgkEAwI5hGXRqGK3WILqhtIa5b5lPZy0hqayUpy54Ze0vk+NPzIx06VChhde5Pp5CidKxC8f/lY1JVSp+UhCOlaf/OroVFXne0h66WdU1c6a8UtXsjDTKkxruywZhJnyCNJ3TkwDCfDrE5qReg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zNfssA9Nj7fu6xdvD/wl2GC/fjCwo6Hs94HV5ywIaWo=;
+ b=V680GSih29eu/UcUBMZVUzhw+D3gFBLmhF7avlCj4PkZq1oxzEZF4HtOhAs3A4OsRqz57+6IfiuXfnw4FlmsBnJE7Me7qBq7u07aNVT762ARHD2xb8rI0i7JQg5G+rtbjVijZHd4RwDkpk7d9ND4U7xyJCvK0Z3f9YA6RifreQnpZtAUvUwhe9KYvR51Gn6LVm63s8nc9G6lCVjFFEcmtrezAWjQrB5xvLrWZ2aEzcSE7VmXx9Y7WYLuewm6O2AXuTCyUHYBfgIRX/NRZV1jTTJZSv8dRdvGu/DoSG6NrBmgLYyMTAbrL109HhuNThrqzR0Htugih6wRlo/ubkztSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
+ PH7PR11MB6401.namprd11.prod.outlook.com (2603:10b6:510:1fb::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.21; Fri, 6 Jun
+ 2025 11:16:53 +0000
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::d3ba:63fc:10be:dfca]) by DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::d3ba:63fc:10be:dfca%4]) with mapi id 15.20.8813.018; Fri, 6 Jun 2025
+ 11:16:52 +0000
+Message-ID: <cc9db6af-4bca-40a8-b19f-3e972acf5f6a@intel.com>
+Date: Fri, 6 Jun 2025 16:46:46 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2 2/2] tests/intel/xe_configfs: Test engines_allowed
+To: Lucas De Marchi <lucas.demarchi@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20250602-engines-allowed-v2-0-52bffe717766@intel.com>
+ <20250602-engines-allowed-v2-2-52bffe717766@intel.com>
+Content-Language: en-US
+From: Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <20250602-engines-allowed-v2-2-52bffe717766@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0004.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:80::17) To DS0PR11MB7958.namprd11.prod.outlook.com
+ (2603:10b6:8:f9::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|PH7PR11MB6401:EE_
+X-MS-Office365-Filtering-Correlation-Id: 33463181-37d7-466e-ac94-08dda4eba393
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?VGdQWWlOMlNXQzB2dXNkcTVINnFRRFFyQzJxSDNDYU9mWlBtRmhzb28xbEFZ?=
+ =?utf-8?B?Q3VCeDF5dFpKU09RalM0WTFkR0tadEpDUndjMDlqazFxM1RXMjcwN0NZZ0Rz?=
+ =?utf-8?B?enQvYjJmM21kYjAvcEwrb0VKcW9mMnowUEc1ZUh3RlB0ZDJiK3Z0NnhpanJN?=
+ =?utf-8?B?Vnc1RE9KL0xXYUlUUFRzVExWemFiYkRMNVFIcWtTSHE3R3A2am51VWdUWDJI?=
+ =?utf-8?B?S05jZytvM0hJR2VHSCs2a0x1UEVTNHJielFQNFRseDZ4N2VxTWRHU05UQ2E3?=
+ =?utf-8?B?aWV4NXR3UkRMSzdwRHRueno4VjQ2R3VrRUhuM09PdlVkVWg5OERkSFdKTnEz?=
+ =?utf-8?B?UTRDZHpUQitubEkwT21uTVpDblNOeFpSRm8vNlFWYTV0RXYrQkdjd1hSSGhP?=
+ =?utf-8?B?SFJ4NEpGNmtpbFk3bWhQRVI5ZER3Skx3OXJWUFZiQnUwaUZoZ1Q2bjg1VTB3?=
+ =?utf-8?B?ay9XcENES1R3MEZqL0NPVndLWkVwZXRSMDJsbnJOSEdjdFU4Mm1KK0xHODZr?=
+ =?utf-8?B?eEpad2tqZUt6aE84d0dsODBnSjJqOExCUThtZ3NxNVdUWXEwSUJqeG85N2Z2?=
+ =?utf-8?B?ZzZBQjl4dEZNSUdWa3N3ekNCODZpUUtlRGhZb3FHdmhwbElDU3p4QlVDRzln?=
+ =?utf-8?B?Zk1JWjZtdXROV25EQTlzcy9sRitTdUlQL2ZVa0E0Qjg4MjNsSlgwRUIvUVR6?=
+ =?utf-8?B?ODM5amdyMi9MWUZPMnFSOVBuaXMzVU9DYVdQVUJYYzZLTUpETnlLaTBMRjJJ?=
+ =?utf-8?B?R3MyUVQ0c2ZYM3FzOGNidGlPSzREMTlFV3NkS05qQ1ZnOGJGb3VDbVlxSjI0?=
+ =?utf-8?B?WHRKdjFSVUFjTDNtRTVmQi9yZDE4MTBJR2VMYVpQeVRqZktmU0swL1BUM1ZB?=
+ =?utf-8?B?bFY4blduYVR5Zjdkd3gvTVYrc2huN0Z0OUxCc0hnaGdpU3hGRitreWhkVmdz?=
+ =?utf-8?B?cGFPVzNuN3NrM3ZlRExGUEh3ZXV4UVZhNXVwZXNucWg3VUY3L1ZLTzNvaVBq?=
+ =?utf-8?B?SEZNVDViUS8yalVSSDVDNTcvTkhJTEZGM0JPMUFRQnNOdWEyUjdXVmdhK2Qr?=
+ =?utf-8?B?NGtvOVRvSW4zZVJ2SEpzZXg1QnZEUW9BcUs0bHZ1akFjbnRtTGpkZk9wVWZy?=
+ =?utf-8?B?YjhyQWJiMktSVGM5U2djTStGRGowVDEvaEtkZmY0UTJ1VXZtS3JlUUJnb1RF?=
+ =?utf-8?B?SStZQ25wNkVDQWtxdmxoVUpZU0IyS0E1WlRwUEl6aC9lMTExeEFTZEVuVXVF?=
+ =?utf-8?B?UzBLVWxBbmZoVlQwRkhtUzFrcGc5M2Y2SDNzNkVrNkNsbTN6QVN6NkZxV2Jn?=
+ =?utf-8?B?YkNMYm01cndWZXFmZ2ZhYnpVcmNzajZYakZ5T1NyanFqUE9xaUlFQU1WWmJI?=
+ =?utf-8?B?eFpXTzAxdTVPZVVsbS82UUFreTVpMkxoZDZoTXJrZU9zYmVYRzFCZmVqYjZN?=
+ =?utf-8?B?NXBMQTg5c0lqNWEvTVU4V09lQWxDVlg2V1RzU2UzRWNFeTBBTnZjM2haMWpX?=
+ =?utf-8?B?Z014WXFGWVJ1K3NZN1B3OXRKcFhCMy9yR21UNHRCYVAyY2xlUWl0Rk9KV0ty?=
+ =?utf-8?B?MVJGRUV5bHhXNVZxTXRrR2V1VlpuNFA0SmpqbzQ5cGlOQUJEMlk2MXIxRjI2?=
+ =?utf-8?B?enFmYXBpSnBOQWpUaGx6dkV0VEI0akdXTW4yU05oQVNjci9haUhhbXNydFln?=
+ =?utf-8?B?TEpwQmJDYjJOMUYzL2lqL2I3MzMxZW1mVGN6OWVHZDV2QStIMytreElhNnpR?=
+ =?utf-8?B?dDYvUFpsYTdIYURMNW9KMkRFOWlQVFRVRHJpTEVIMUd3a21xU1BnTENrNnRN?=
+ =?utf-8?B?MmJZUy8wdmVuK2RzSFdJNTF0U29PWC9uUzIxSE5MVmdMS3VsaWJrM0JvTExO?=
+ =?utf-8?B?T0NLaVdtclUrZ3JRWGR0NTVBR2xQaFY4a092ZG9uNWMzNXBFRW5kT2NJUlc0?=
+ =?utf-8?Q?O1/79zlYlJY=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?elMrZ20ybUQ4aEt5RldwTmIyZmVhWGprcG56WGtkcHpYTjNWaFQ0Rktpb3Bp?=
+ =?utf-8?B?aDlFTGszOURLTHYxektFd2lnMjNnZEpiM3lFYUhzTDdJQ3NiY1FCR0VvQnlk?=
+ =?utf-8?B?VkhhOHFwOFhjak9hTW1MU0lQc3dyWHBSZkMzVS9hb08vWDBUVUlGVTJVMHNG?=
+ =?utf-8?B?ZGFENGN1L2I2a1l6anp2eTFPMjF3WmVMcnk2a1RyelJNSnd2WXhQZXRGY2dy?=
+ =?utf-8?B?NlNZVmlNYS9KdzEyempITGlkNjE4ekFSRFJzNmNzcXVWZi8wUU5YZzg4QTFF?=
+ =?utf-8?B?azBmTVVaL1hIUnFTV3Q2blBoRGRoWk0zU1d1b2dWN2MzcVBycytLc1Q5bFBu?=
+ =?utf-8?B?QmQ2WkxvZDg3VnBHMGlrME9wY0NPeThFZi9LRHZBN1F3cmxMcXl5Q1dwVlI5?=
+ =?utf-8?B?MTR0YktEN0hWYU9taUFIQ3AvejdTaE5HMExINUowMFRKSWkzN1lYaDJGNi9p?=
+ =?utf-8?B?NnMzUVVqdUd3OUxwNGkvaGtsSTVSbkxQMyt0UlVpVEtCd0NIZFAxK1pmb2JB?=
+ =?utf-8?B?NU56d1VKLy8vWUhTeXViVDFuaVRHWTVTbFZWdFdXcCs2MGsrS0VaaHlDM2xD?=
+ =?utf-8?B?OFZHc2t6VWR1WDhERzc1eThsQlUwWi9uMGRpWDR1UTVKeE10Q0s5Njh3bzFE?=
+ =?utf-8?B?VmljTWcvc0N2VTVOaGlwL2tBc3RsTDMxd3JqMk1lTmlVSkJleUFsUG0wWUk4?=
+ =?utf-8?B?NkFPeHFYcFhzOHRFQ1NiYzMyMFV2V2RuY3VUbFRycEtVa053YWpLdDNZY2cy?=
+ =?utf-8?B?R0JUYktGcmZ0TmZlcy9rMjlreDdyc3RjM2NYYVBDZ0hIUnV4aVhucVBNeFRq?=
+ =?utf-8?B?aXRLTE8zSFM2OTBGYUhUMTZ4bUcyaWZhdFVSYlJpRnVEMWpsRWJsV0kxN005?=
+ =?utf-8?B?T2VSdzNnb0VNdTZ1NTIzWTNjalgrcjY5WHNYWDYxeFpaajlBSkJNK1JLWkd4?=
+ =?utf-8?B?dXl4WmxEbUdpM3IvOU83ZFNDYjEvb1FFUHV3Y1JUYWEwaWZjS3JySEVaM3Ni?=
+ =?utf-8?B?d1NXUklERnNrT1daMWcvMk1JcGJYMTF3SFJDV0JheEdjWWNKYTdJSVBCMWNq?=
+ =?utf-8?B?NTlUd09FQzlWaDVTbDVueTR2cjcxZnhoUkQ3L056bGdFcG13Um5zeUJTQXMv?=
+ =?utf-8?B?RDJEQ1VxRnljeTdiUnFIc1lYT1liM2xvb05JK0cxcll3dmRaRktHRHAzVHhu?=
+ =?utf-8?B?WWpDNkJNSVIraEJYMklEaWhHQzE2UG9rdC83b21qZmJDT0V0d000YWIxdE9r?=
+ =?utf-8?B?cERZQkVYYmRnZ1RSUzZXTjlRcncyUXNGUFVQT3RkTzZjajJnNGZQYk9EM3J2?=
+ =?utf-8?B?UGJRTXc1VFUxYmtIUVp5MGtCT1QycEJmT1NTZDQ4R24zR3ZsNWN0VC9DZVcx?=
+ =?utf-8?B?L0NhOU5zUEdWemt2MDJXRVdqT3Y5M2w3WHpIaWttY3pVVEhjSlhZWVAxNjds?=
+ =?utf-8?B?WkZMS2Fjd242NzN6b2svSC95bnhFMXdMcUZYdEEzcWVZUWMyWnVSeHNuMyto?=
+ =?utf-8?B?SGF3UlpybHRPWWJZSFVDcDEvOTNnNm5scnBRS29NTk1xeWNLS2xMSW4vU2N0?=
+ =?utf-8?B?MXRibVAyMVpZUTRKZUsxcHE5ZjVUUmljOS9id2JJRmR1dFNSb3NiSlB1b2pp?=
+ =?utf-8?B?dkU3T1dFb1FwUHZlSVdPRkdWQ1RSa3NZNUNUR0pxWnU2cmlwNUlCZllKYXJ6?=
+ =?utf-8?B?U0IxTitxK2pUUEJVamNJVTM2ZW54NjVJR3lXcit3NUV3akdoQ3h4ZXNFMmRE?=
+ =?utf-8?B?dHd3emN4bzQrQWJuNEJQOUZORzltd0hVSGp3OEMyZ1laaEhmSko0ejk1elV3?=
+ =?utf-8?B?U1Z0aG5HMlNUV014U2J4UjNoUmJWYmdVSTQzcFp3aWRGbmF3cjEyTHhGMlRK?=
+ =?utf-8?B?ZVJvaVhVbmJVZUlNM0d4VXJTdnE4eEdJa3ZLV3hCbFJiSTdHTHg2NnRsNENw?=
+ =?utf-8?B?S2dOVjV5U213aGxBVGwrR1FYekZUVDVpQlpRaW9oM09ZYmozcCs3L2VZWWZp?=
+ =?utf-8?B?UFJ5ZUdNNVNkM1lsZVQ5MVVzY3puWUVCWGsvU2hDcGx1SWJ0bXRIUkR4WGQ0?=
+ =?utf-8?B?ZDlHTTl4RER5YjNoK3kzVFVyMzJ4NHJ5RlYwNGllYTBYNnRQWHk2VXdLUmg0?=
+ =?utf-8?Q?o0GHa9Rd3rtyDKC8qz8N9XqkY?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33463181-37d7-466e-ac94-08dda4eba393
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2025 11:16:52.8693 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: n/X5NMx2aNBMOXRlxpqcURXnjnkfMeM7ves6MAxxKq+Ns0gHZfYUzVVtE3ueyutwf/zDkKpfPFA86kGRMyUscg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6401
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,267 +194,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Threadgroup preemption happens on thread group dispatch boundary.
-It is harder to control it comparing to WMTP. Simple loop with
-n-iterations and relatively high dimensions allows to achieve that
-but requires tweaking work dimension as each loop (single thread)
-executes similar time.
+Hi Lucas
 
-Change then this "constant" time loop to one which allows to be
-stopped by writing MAGIC number to buffer observed by the loop
-conditional. Until threadgroup preemption occurs threads will execute
-relatively long time allowing another short job (compute square)
-to complete. When short job is done MAGIC write causes all threads
-exit loop immediately. This strategy is more reliable and shortens
-threadgroup preemption test faster.
+On 6/2/2025 9:54 PM, Lucas De Marchi wrote:
+> Add tests for the parsing of engines_allowed configfs. This doesn't try
+> to bind the driver and ensure only those engines are available. That's
+> because the engine uapi instance doesn't necessarily match what is used
+> for configfs configuration. Maybe we will need an engine map in debugfs
+> for covering that.
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>   tests/intel/xe_configfs.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 56 insertions(+)
+> 
+> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+> index 074cd04d9..e4fffd0b9 100644
+> --- a/tests/intel/xe_configfs.c
+> +++ b/tests/intel/xe_configfs.c
+> @@ -10,6 +10,7 @@
+>   #include "igt_fs.h"
+>   #include "igt_kmod.h"
+>   #include "igt_sysfs.h"
+> +#include "xe/xe_query.h"
+>   
+>   /**
+>    * TEST: Check configfs userspace API
+> @@ -54,6 +55,49 @@ static void test_survivability_mode(int configfs_device_fd)
+>   	close(fd);
+>   }
+>   
+> +/**
+> + * SUBTEST: engines-allowed-invalid
+> + * Description: Validate engines_allowed attribute for invalid values
+> + */
+> +static void test_engines_allowed_invalid(int configfs_device_fd)
+> +{
+> +	static const char *values[] = {
+> +		"xcs0",
+> +		"abcsdcs0",
+> +		"rcs0,abcsdcs0",
+> +		"rcs9",
+> +		"rcs10",
+> +		"rcs0asdf",
+> +	};
+> +
+> +	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
+> +		const char *v = values[i];
+> +
+> +		igt_debug("Writing '%s' to engines_allowed\n", v);
+> +		igt_assert(!igt_sysfs_set(configfs_device_fd, "engines_allowed", v));
+> +	}
+> +}
+> +
+> +/**
+> + * SUBTEST: engines-allowed
+> + * Description: Validate engines_allowed attribute
+> + */
+> +static void test_engines_allowed(int configfs_device_fd)
+> +{
+> +	static const char *values[] = {
+> +		"rcs0", "rcs*", "rcs0,bcs0", "bcs0,rcs0",
+> +		"bcs0\nrcs0", "bcs0\nrcs0\n",
+> +		"rcs000",
+> +	};
+> +
+> +	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
+> +		const char *v = values[i];
+> +
+> +		igt_debug("Writing '%s' to engines_allowed\n", v);
+> +		igt_assert(igt_sysfs_set(configfs_device_fd, "engines_allowed", v));
+> +	}
+> +}
+> +
+>   static int create_device_configfs_group(int configfs_fd, int fd)
+>   {
+>   	int configfs_device_fd;
+> @@ -88,6 +132,18 @@ igt_main
+>   		test_survivability_mode(configfs_device_fd);
+>   	}
+>   
+> +	igt_describe("Validate engines_allowed with invalid options");
+> +	igt_subtest("engines-allowed-invalid") {
+> +		igt_install_exit_handler(restore);
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
----
- lib/intel_compute.c                |   9 +-
- lib/intel_compute_square_kernels.c | 147 +++++++++++++++--------------
- opencl/loop_count.cl               |  15 +++
- 3 files changed, 99 insertions(+), 72 deletions(-)
- create mode 100644 opencl/loop_count.cl
+Exit handler can be common in the fixture if it's needed by all tests
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index bfb9024ba8..9f5fc1bc59 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -67,7 +67,7 @@
-  */
- #define TGP_long_kernel_loop_count		10
- #define WMTP_long_kernel_loop_count		1000000
--#define XE2_THREADGROUP_PREEMPT_XDIM		0x200000
-+#define XE2_THREADGROUP_PREEMPT_XDIM		0x4000
- 
- struct bo_dict_entry {
- 	uint64_t addr;
-@@ -2180,8 +2180,11 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	/* Check that the long kernel has not completed yet */
- 	igt_assert_neq(0, __xe_wait_ufence(fd, &execenv_long.bo_sync->sync, USER_FENCE_VALUE,
- 					   execenv_long.exec_queue, &timeout_one_ns));
--	if (use_loop_kernel)
--		((int *)input_long)[0] = MAGIC_LOOP_STOP;
-+	/*
-+	 * For threadgroup preemption it breaks the loop. So rest shaders exit
-+	 * immediately without reaching whole loop count.
-+	 */
-+	((int *)input_long)[0] = MAGIC_LOOP_STOP;
- 
- 	bo_execenv_sync(&execenv_long);
- 
-diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
-index f67c048583..5bf9a1feb5 100644
---- a/lib/intel_compute_square_kernels.c
-+++ b/lib/intel_compute_square_kernels.c
-@@ -3806,44 +3806,47 @@ static const unsigned char xe2lpg_kernel_sip_bin[] = {
- };
- 
- /*
-- * Opencl code for below binary is provided in below path:
-- *	opencl/compute_increment_kernel.cl
-+ * Opencl code is in opencl/loop_count.cl
-+ *
-+ * To work properly it requires to use uncached reads, so ocloc has to
-+ * be called with: -options " -igc_opts 'LscLoadCacheControlOverride=1'" arg
-  */
--static const unsigned char xe2lpg_kernel_inc_bin[] = {
--	0x65, 0x00, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f, 0x04, 0x00, 0x00, 0x02,
--	0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f,
--	0x04, 0x7f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80,
--	0x00, 0x00, 0x0c, 0x05, 0x8f, 0x7f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6,
--	0x01, 0x00, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
--	0x04, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
-+static const unsigned char xe2lpg_kernel_count_bin[] = {
-+	0x01, 0xa1, 0x8c, 0x3c, 0x00, 0x00, 0x10, 0x00, 0x65, 0xa0, 0x00, 0x80,
-+	0x20, 0x82, 0x05, 0x7f, 0x04, 0x00, 0x00, 0x02, 0xc0, 0xff, 0xff, 0xff,
-+	0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f, 0x04, 0x7f, 0x00, 0x02,
-+	0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80, 0x00, 0x00, 0x0c, 0x05,
-+	0x8f, 0x7f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6, 0x61, 0x80, 0x10, 0x2c,
-+	0x02, 0x00, 0x10, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
- 	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x41, 0x22, 0x03, 0x80,
--	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x00, 0x00, 0x00,
--	0x53, 0x80, 0x00, 0x80, 0x60, 0x06, 0x05, 0x02, 0x54, 0x05, 0x00, 0x06,
--	0x14, 0x00, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
--	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x52, 0x1a, 0x14, 0x00,
--	0x60, 0x06, 0x04, 0x06, 0x04, 0x02, 0x0e, 0x01, 0x04, 0x01, 0x04, 0x04,
-+	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x02, 0x00, 0x00,
-+	0x53, 0x81, 0x00, 0x80, 0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06,
-+	0x14, 0x02, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
-+	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x40, 0x1a, 0x14, 0x00,
-+	0x60, 0x06, 0x05, 0x06, 0x04, 0x03, 0x00, 0x01, 0x04, 0x01, 0x10, 0x00,
- 	0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
--	0xd0, 0x00, 0x00, 0x00, 0x61, 0x1a, 0x00, 0xb4, 0x0e, 0x06, 0x10, 0x00,
--	0x61, 0x00, 0x08, 0xb4, 0x10, 0x07, 0x10, 0x00, 0x69, 0x1a, 0x10, 0x00,
--	0x70, 0x86, 0x05, 0x12, 0x04, 0x0e, 0x20, 0x05, 0x02, 0x00, 0x02, 0x00,
--	0x69, 0x1a, 0x10, 0x02, 0x70, 0x86, 0x05, 0x14, 0x04, 0x10, 0x20, 0x05,
--	0x02, 0x00, 0x02, 0x00, 0x40, 0x1a, 0x00, 0x38, 0x08, 0x12, 0x30, 0x05,
--	0x40, 0x1a, 0x08, 0x38, 0x0a, 0x14, 0x30, 0x05, 0x31, 0x23, 0x17, 0x00,
--	0x00, 0x00, 0x14, 0x0c, 0x24, 0x08, 0x00, 0xfb, 0x00, 0x00, 0x00, 0x00,
--	0x61, 0x00, 0x84, 0xf4, 0x02, 0x00, 0x02, 0x00, 0x01, 0x00, 0x00, 0x00,
--	0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20, 0x08, 0x00, 0x00, 0x00,
--	0x40, 0x19, 0x00, 0x80, 0x60, 0x86, 0x15, 0x02, 0x14, 0x02, 0x00, 0x05,
--	0x01, 0x00, 0x01, 0x00, 0x40, 0x83, 0x20, 0x30, 0x0c, 0x0c, 0x80, 0x3f,
--	0x70, 0x19, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00, 0x14, 0x02, 0x00, 0x52,
--	0x44, 0x05, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84, 0x00, 0x40, 0x00, 0x00,
--	0x00, 0x00, 0x00, 0x00, 0xd8, 0xff, 0xff, 0xff, 0x31, 0x24, 0x16, 0x00,
--	0x00, 0x00, 0x00, 0x00, 0x24, 0x08, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00,
--	0x01, 0x00, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
--	0x10, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x28, 0x7f, 0x00, 0x10, 0x00,
--	0x31, 0x20, 0x02, 0x80, 0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30,
--	0x00, 0x00, 0x00, 0x00
-+	0xf0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xf4, 0x03, 0x00, 0x02, 0x00,
-+	0x61, 0x00, 0x84, 0xa4, 0x09, 0x05, 0x10, 0x00, 0x31, 0x24, 0x03, 0x80,
-+	0x00, 0x00, 0x0c, 0x08, 0x0c, 0x09, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
-+	0x70, 0x84, 0x94, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x08, 0x00, 0x16,
-+	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x80, 0x84, 0x00, 0x40, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xa4,
-+	0x0a, 0x05, 0x16, 0x00, 0x40, 0x00, 0x00, 0x80, 0x60, 0x86, 0x15, 0x03,
-+	0x14, 0x03, 0x00, 0x05, 0x01, 0x00, 0x01, 0x00, 0x31, 0x45, 0x03, 0x80,
-+	0x00, 0x00, 0x0c, 0x0b, 0x0c, 0x0a, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
-+	0x61, 0xa3, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0e, 0x04, 0x0a, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02, 0xa0, 0x0a, 0x06, 0x10,
-+	0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x00,
-+	0xa0, 0x0a, 0x16, 0x0e, 0x14, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x10, 0x14, 0x0a, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x70, 0x1a, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00,
-+	0x14, 0x03, 0x00, 0x52, 0x44, 0x05, 0x00, 0x00, 0x52, 0x85, 0xb8, 0x20,
-+	0x0c, 0x0b, 0x04, 0x06, 0x31, 0x23, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x24, 0x0e, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84,
-+	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0xff, 0xff, 0xff,
-+	0x61, 0x00, 0x10, 0x28, 0x7f, 0x02, 0x10, 0x00, 0x31, 0x26, 0x02, 0x80,
-+	0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00,
- };
--
- /*
-  * Opencl code is in opencl/loop.cl
-  *
-@@ -6635,35 +6638,41 @@ static const unsigned char xe3lpg_kernel_sip_bin[] = {
- 	0x20, 0x02, 0xb5, 0x00, 0x04, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
- };
- 
--static const unsigned char xe3lpg_kernel_inc_bin[] = {
--	0x65, 0xa0, 0x00, 0x80, 0x20, 0x82, 0x05, 0x1f, 0x04, 0x00, 0x00, 0x02,
--	0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x1f,
--	0x04, 0x1f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80,
--	0x00, 0x00, 0x0c, 0x05, 0x8f, 0x1f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6,
--	0x61, 0x80, 0x24, 0x2c, 0x02, 0x00, 0x10, 0x00, 0x66, 0x09, 0x00, 0x80,
--	0x20, 0x82, 0x01, 0x80, 0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40,
--	0x41, 0x22, 0x03, 0x80, 0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01,
--	0x14, 0x02, 0x00, 0x00, 0x53, 0x81, 0x00, 0x80, 0x60, 0x06, 0x05, 0x03,
--	0x54, 0x05, 0x00, 0x06, 0x14, 0x02, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80,
--	0x60, 0x86, 0x01, 0x00, 0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00,
--	0x52, 0x1a, 0x14, 0x00, 0x60, 0x06, 0x04, 0x06, 0x04, 0x03, 0x0e, 0x01,
--	0x04, 0x01, 0x04, 0x04, 0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00,
--	0x00, 0x00, 0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x61, 0x1a, 0x00, 0xb4,
--	0x0f, 0x06, 0x10, 0x00, 0x61, 0x00, 0x08, 0xb4, 0x11, 0x07, 0x10, 0x00,
--	0x69, 0x1a, 0x10, 0x00, 0x70, 0x86, 0x05, 0x13, 0x04, 0x0f, 0x20, 0x05,
--	0x02, 0x00, 0x02, 0x00, 0x69, 0x1a, 0x10, 0x02, 0x70, 0x86, 0x05, 0x15,
--	0x04, 0x11, 0x20, 0x05, 0x02, 0x00, 0x02, 0x00, 0x40, 0x1a, 0x00, 0x38,
--	0x08, 0x13, 0x30, 0x05, 0x40, 0x1a, 0x08, 0x38, 0x0a, 0x15, 0x30, 0x05,
--	0x31, 0x23, 0x17, 0x00, 0x00, 0x00, 0x14, 0x0c, 0x24, 0x08, 0x00, 0xfb,
--	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xf4, 0x03, 0x00, 0x02, 0x00,
--	0x40, 0x19, 0x00, 0x80, 0x60, 0x86, 0x15, 0x03, 0x14, 0x03, 0x00, 0x05,
--	0x01, 0x00, 0x01, 0x00, 0x40, 0x83, 0x20, 0x30, 0x0c, 0x0c, 0x80, 0x3f,
--	0x70, 0x19, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00, 0x14, 0x03, 0x00, 0x52,
--	0x44, 0x05, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84, 0x00, 0x40, 0x00, 0x00,
--	0x00, 0x00, 0x00, 0x00, 0xd8, 0xff, 0xff, 0xff, 0x31, 0x24, 0x16, 0x00,
--	0x00, 0x00, 0x00, 0x00, 0x24, 0x08, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00,
--	0x61, 0x00, 0x10, 0x28, 0x0e, 0x02, 0x10, 0x00, 0x31, 0x20, 0x02, 0x80,
--	0x04, 0x00, 0x00, 0x00, 0x0c, 0x0e, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00
-+static const unsigned char xe3lpg_kernel_count_bin[] = {
-+	0x01, 0xa1, 0x8c, 0x3c, 0x00, 0x00, 0x10, 0x00, 0x65, 0xa0, 0x00, 0x80,
-+	0x20, 0x82, 0x05, 0x1f, 0x04, 0x00, 0x00, 0x02, 0xc0, 0xff, 0xff, 0xff,
-+	0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x1f, 0x04, 0x1f, 0x00, 0x02,
-+	0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80, 0x00, 0x00, 0x0c, 0x05,
-+	0x8f, 0x1f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6, 0x61, 0x80, 0x10, 0x2c,
-+	0x02, 0x00, 0x10, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
-+	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x41, 0x22, 0x03, 0x80,
-+	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x02, 0x00, 0x00,
-+	0x53, 0x81, 0x00, 0x80, 0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06,
-+	0x14, 0x02, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
-+	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x40, 0x1a, 0x14, 0x00,
-+	0x60, 0x06, 0x05, 0x06, 0x04, 0x03, 0x00, 0x01, 0x04, 0x01, 0x10, 0x00,
-+	0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0xf0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xf4, 0x03, 0x00, 0x02, 0x00,
-+	0x61, 0x00, 0x84, 0xa4, 0x09, 0x05, 0x10, 0x00, 0x31, 0x24, 0x03, 0x80,
-+	0x00, 0x00, 0x0c, 0x08, 0x0c, 0x09, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
-+	0x70, 0x84, 0x94, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x08, 0x00, 0x16,
-+	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x80, 0x84, 0x00, 0x40, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xa4,
-+	0x0a, 0x05, 0x16, 0x00, 0x40, 0x00, 0x00, 0x80, 0x60, 0x86, 0x15, 0x03,
-+	0x14, 0x03, 0x00, 0x05, 0x01, 0x00, 0x01, 0x00, 0x31, 0x45, 0x03, 0x80,
-+	0x00, 0x00, 0x0c, 0x0b, 0x0c, 0x0a, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
-+	0x61, 0xa3, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0e, 0x04, 0x0a, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02, 0xa0, 0x0a, 0x06, 0x10,
-+	0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x00,
-+	0xa0, 0x0a, 0x16, 0x0e, 0x14, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x10, 0x14, 0x0a, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x70, 0x1a, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00,
-+	0x14, 0x03, 0x00, 0x52, 0x44, 0x05, 0x00, 0x00, 0x52, 0x85, 0xb8, 0x20,
-+	0x0c, 0x0b, 0x04, 0x06, 0x31, 0x23, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x24, 0x0e, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84,
-+	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0xff, 0xff, 0xff,
-+	0x61, 0x00, 0x10, 0x28, 0x12, 0x02, 0x10, 0x00, 0x31, 0x26, 0x02, 0x80,
-+	0x04, 0x00, 0x00, 0x00, 0x0c, 0x12, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00,
- };
- 
- const struct intel_compute_kernels intel_compute_square_kernels[] = {
-@@ -6696,8 +6705,8 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
- 		.ip_ver = IP_VER(20, 01),
- 		.size = sizeof(xe2lpg_kernel_square_bin),
- 		.kernel = xe2lpg_kernel_square_bin,
--		.long_kernel = xe2lpg_kernel_inc_bin,
--		.long_kernel_size = sizeof(xe2lpg_kernel_inc_bin),
-+		.long_kernel = xe2lpg_kernel_count_bin,
-+		.long_kernel_size = sizeof(xe2lpg_kernel_count_bin),
- 		.sip_kernel = xe2lpg_kernel_sip_bin,
- 		.sip_kernel_size = sizeof(xe2lpg_kernel_sip_bin),
- 		.loop_kernel = xe2lpg_kernel_loop_bin,
-@@ -6707,8 +6716,8 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
- 		.ip_ver = IP_VER(20, 04),
- 		.size = sizeof(xe2lpg_kernel_square_bin),
- 		.kernel = xe2lpg_kernel_square_bin,
--		.long_kernel = xe2lpg_kernel_inc_bin,
--		.long_kernel_size = sizeof(xe2lpg_kernel_inc_bin),
-+		.long_kernel = xe2lpg_kernel_count_bin,
-+		.long_kernel_size = sizeof(xe2lpg_kernel_count_bin),
- 		.sip_kernel = xe2lpg_kernel_sip_bin,
- 		.sip_kernel_size = sizeof(xe2lpg_kernel_sip_bin),
- 		.loop_kernel = xe2lpg_kernel_loop_bin,
-@@ -6718,8 +6727,8 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
- 		.ip_ver = IP_VER(30, 00),
- 		.size = sizeof(xe3lpg_kernel_square_bin),
- 		.kernel = xe3lpg_kernel_square_bin,
--		.long_kernel = xe3lpg_kernel_inc_bin,
--		.long_kernel_size = sizeof(xe3lpg_kernel_inc_bin),
-+		.long_kernel = xe3lpg_kernel_count_bin,
-+		.long_kernel_size = sizeof(xe3lpg_kernel_count_bin),
- 		.sip_kernel = xe3lpg_kernel_sip_bin,
- 		.sip_kernel_size = sizeof(xe3lpg_kernel_sip_bin),
- 		.loop_kernel = xe3lpg_kernel_loop_bin,
-diff --git a/opencl/loop_count.cl b/opencl/loop_count.cl
-new file mode 100644
-index 0000000000..c5856ab7a8
---- /dev/null
-+++ b/opencl/loop_count.cl
-@@ -0,0 +1,15 @@
-+/* Must be same as MAGIC_LOOP_STOP in lib/intel_compute.c */
-+#define MAGIC_LOOP_STOP 0x12341234
-+
-+__kernel void loop(volatile __global int *input,
-+		   __global int *output,
-+		   unsigned int count)
-+{
-+	int i = get_global_id(0);
-+
-+	for (int c = 0; c < count; c++) {
-+		if (input[0] == MAGIC_LOOP_STOP)
-+			break;
-+		output[0] = output[0] + i;
-+	}
-+}
--- 
-2.43.0
+Otherwise, Looks good to me
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+> +		test_engines_allowed_invalid(configfs_device_fd);
+> +	}
+> +
+> +	igt_describe("Validate engines_allowed");
+> +	igt_subtest("engines-allowed") {
+> +		igt_install_exit_handler(restore);
+> +		test_engines_allowed(configfs_device_fd);
+> +	}
+> +
+>   	igt_fixture {
+>   		igt_fs_remove_dir(configfs_fd, bus_addr);
+>   		close(configfs_device_fd);
+> 
 
