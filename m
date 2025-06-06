@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D623DC61CE7
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Jun 2025 19:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F68BC61CE7
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Jun 2025 19:22:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 90D0710E01F;
-	Fri,  6 Jun 2025 19:03:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 26BE210EB0C;
+	Fri,  6 Jun 2025 19:22:08 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7965C10E01F;
- Fri,  6 Jun 2025 19:03:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECDD210E363;
+ Fri,  6 Jun 2025 19:22:06 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8585254175885419214=="
+ boundary="===============2323216834966463055=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fgetfb=3A_replac?=
- =?utf-8?q?e_CCS_with_NV12_and_use_libigt_functions_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Ffault=5Fin?=
+ =?utf-8?q?jection=3A_Ignore_all_errors_while_injecting_fault_=28rev6=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+To: "Satyanarayana K V P" <satyanarayana.k.v.p@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 06 Jun 2025 19:03:01 -0000
-Message-ID: <174923658149.56994.10493293098138799344@1538d3639d33>
+Date: Fri, 06 Jun 2025 19:22:06 -0000
+Message-ID: <174923772696.56993.9098258982437632785@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250526122039.50519-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20250526122039.50519-1-juhapekka.heikkila@gmail.com>
+References: <20250606183519.78736-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20250606183519.78736-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8585254175885419214==
+--===============2323216834966463055==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_getfb: replace CCS with NV12 and use libigt functions (rev2)
-URL   : https://patchwork.freedesktop.org/series/149491/
+Series: tests/intel/xe_fault_injection: Ignore all errors while injecting fault (rev6)
+URL   : https://patchwork.freedesktop.org/series/149644/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8401_BAT -> XEIGTPW_13255_BAT
+CI Bug Log - changes from XEIGT_8401_BAT -> XEIGTPW_13257_BAT
 ====================================================
 
 Summary
@@ -81,19 +81,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8401 -> IGTPW_13255
+  * IGT: IGT_8401 -> IGTPW_13257
   * Linux: xe-3210-8c96c8b7753fa6146836b12a379a53cac71894c5 -> xe-3212-ac3f699ce8cdc62253c9cfb8d914a7d346634c93
 
-  IGTPW_13255: 72575622023334662cef9913d6efc6eb4d94f85c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_13257: 13257
   IGT_8401: 8401
   xe-3210-8c96c8b7753fa6146836b12a379a53cac71894c5: 8c96c8b7753fa6146836b12a379a53cac71894c5
   xe-3212-ac3f699ce8cdc62253c9cfb8d914a7d346634c93: ac3f699ce8cdc62253c9cfb8d914a7d346634c93
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13255/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13257/index.html
 
---===============8585254175885419214==
+--===============2323216834966463055==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,16 +113,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_getfb: replace CCS with NV12 and use libigt functions (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149491/">https://patchwork.freedesktop.org/series/149491/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_fault_injection: Ignore all errors while injecting fault (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149644/">https://patchwork.freedesktop.org/series/149644/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13255/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13255/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13257/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13257/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8401_BAT -&gt; XEIGTPW_13255_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8401_BAT -&gt; XEIGTPW_13257_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -132,10 +132,10 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8401 -&gt; IGTPW_13255</li>
+<li>IGT: IGT_8401 -&gt; IGTPW_13257</li>
 <li>Linux: xe-3210-8c96c8b7753fa6146836b12a379a53cac71894c5 -&gt; xe-3212-ac3f699ce8cdc62253c9cfb8d914a7d346634c93</li>
 </ul>
-<p>IGTPW_13255: 72575622023334662cef9913d6efc6eb4d94f85c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_13257: 13257<br />
   IGT_8401: 8401<br />
   xe-3210-8c96c8b7753fa6146836b12a379a53cac71894c5: 8c96c8b7753fa6146836b12a379a53cac71894c5<br />
   xe-3212-ac3f699ce8cdc62253c9cfb8d914a7d346634c93: ac3f699ce8cdc62253c9cfb8d914a7d346634c93</p>
@@ -143,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============8585254175885419214==--
+--===============2323216834966463055==--
