@@ -4,24 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92361C61DB2
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Jun 2025 07:33:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ADB8C61DB2
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Jun 2025 07:34:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D70410E247;
-	Mon,  9 Jun 2025 07:33:16 +0000 (UTC)
-Received: from amd-X570-AORUS-ELITE.amd.com (unknown [165.204.156.251])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C209710E247
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Jun 2025 07:33:14 +0000 (UTC)
-Received: by amd-X570-AORUS-ELITE.amd.com (Postfix, from userid 1000)
- id 77EDF36A0041; Mon,  9 Jun 2025 13:03:12 +0530 (IST)
-From: Sunil Khatri <sunil.khatri@amd.com>
-To: igt-dev@lists.freedesktop.org,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Sunil Khatri <sunil.khatri@amd.com>
-Subject: [PATCH] lib/meson: Enable userqueues based on libdrm version
-Date: Mon,  9 Jun 2025 13:03:11 +0530
-Message-ID: <20250609073311.715013-1-sunil.khatri@amd.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF2BC10E368;
+	Mon,  9 Jun 2025 07:34:15 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RPmt0Jkv";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D93E10E368
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Jun 2025 07:34:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749454455; x=1780990455;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Pw0InNSZ4feYFXwgtNOOzdhtXnHkagRjQaU9aoZbXqc=;
+ b=RPmt0Jkv/KxzyKj1BpH7Zmg2cGS1TVhaBbWrqX9NToLrBZHs6enpkRR/
+ lYRRV0vv0FYALt9RiHVfS7bJOgTTfkjSt7YzDNzntQ6wpQrJNH42/VtMV
+ w8bRhpInhW2zjyTU6qdMcG6tdFredSveNdV/Xg77KcuVVqUXtH5Y/u1gi
+ eUj4j+KpHS+bNhJ5OpNA8sEHAkjkOf5BLS2lx03FoSGQxm8dOwpDKz9rD
+ fKpl9m36+rOrAZ/VEjumTTnLzpAY+8gxTTcWwrPshF//2o2rK96o1fmnn
+ Z4ct8VZMJZCz4KrN7uPYzzZ+JoYOJ8mShoNUKbJz/6Of81fQh+S1n6s1Y g==;
+X-CSE-ConnectionGUID: 9Z96FUjTRVSvCqQuLWoS5w==
+X-CSE-MsgGUID: bn6DIbl5Qzin2npiB0kolA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11458"; a="74055368"
+X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; d="scan'208";a="74055368"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jun 2025 00:34:15 -0700
+X-CSE-ConnectionGUID: Iz+V2Xp9QHO9V9jxFzmIzw==
+X-CSE-MsgGUID: JNAqnsBGRPKqwLf/LIUQwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; d="scan'208";a="146368217"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jun 2025 00:34:13 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ankit.k.nautiyal@intel.com, suraj.kandpal@intel.com,
+ mohammed.thasleem@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_content_protection: Skip empty vendor
+ names in blocklist
+Date: Mon,  9 Jun 2025 13:02:28 +0530
+Message-Id: <20250609073228.416135-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250609065936.415814-1-santhosh.reddy.guddati@intel.com>
+References: <20250609065936.415814-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -39,35 +71,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Enable amdgpu userqueues support and test support if
-libdrm version is >= 2.4.125.
+Avoids false positives by returning false early when the vendor name is
+NULL, empty, or a single whitespace character.
 
-Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
+log message in kms_content_protection by printing skipped outputs instead
+of asserting.
+
+V2: Add Fixes tag (Suraj)
+
+Fixes: 6a256bfe3 (tests/kms_content_protection: Whitelist check for panel
+support)
+
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- lib/meson.build | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ lib/igt_panel.c                | 8 ++++++--
+ tests/kms_content_protection.c | 9 ++++++---
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/lib/meson.build b/lib/meson.build
-index 04a568cf1..dda30e4bd 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -179,10 +179,12 @@ if libdrm_amdgpu.found()
- 		warning('libdrm <= 2.4.99 found, amdgpu_cs_query_reset_state2 not applicable')
- 	endif
+diff --git a/lib/igt_panel.c b/lib/igt_panel.c
+index c89bf9123..c51fd7d54 100644
+--- a/lib/igt_panel.c
++++ b/lib/igt_panel.c
+@@ -20,11 +20,15 @@
+  * true if the vendor name is found in the blocklist, false otherwise.
+  */
+ bool igt_is_panel_blocked(const char *vendor_name,
+-			    const char *const blocklist[],
+-			    size_t blocklist_size)
++				const char *const blocklist[],
++				size_t blocklist_size)
+ {
+ 	int i;
  
--	if cc.has_function('amdgpu_create_userqueue', dependencies: libdrm_amdgpu)
--		add_project_arguments('-DAMDGPU_USERQ_ENABLED=1', language: 'c')
--		#conf.set('AMDGPU_USERQ_ENABLED', 1)
--	endif	
-+	if libdrm_amdgpu.version().version_compare('>= 2.4.125')
-+		add_project_arguments('-DAMDGPU_USERQ_ENABLED', language: 'c')
-+	else
-+		warning('libdrm < 2.4.125 found, amdgpu user queue support is not enabled')
-+	endif
++	if (!vendor_name || vendor_name[0] == '\0' ||
++		(vendor_name[0] == ' ' && vendor_name[1] == '\0'))
++			return false;
 +
- endif
+ 	for (i = 0; i < blocklist_size; i++) {
+ 		if (strstr(blocklist[i], vendor_name) != NULL)
+ 			return true;
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index b0d0b0234..51fc1d3be 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -637,9 +637,6 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ 	}
  
- if libunwind.found()
+ 	for_each_connected_output(display, output) {
+-		igt_require_f(!is_output_hdcp_test_exempt(output),
+-			      "Skipped as the panel is blacklisted");
+-
+ 		for_each_pipe(display, pipe) {
+ 			igt_display_reset(display);
+ 
+@@ -652,6 +649,12 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ 			if (!output_hdcp_capable(output, content_type))
+ 				continue;
+ 
++			if (is_output_hdcp_test_exempt(output)) {
++				igt_info("Skipping HDCP test on %s, as the panel is blocklisted\n",
++					  output->name);
++				continue;
++			}
++
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_content_protection_on_output(output, pipe, commit_style, content_type);
+ 
 -- 
-2.43.0
+2.34.1
 
