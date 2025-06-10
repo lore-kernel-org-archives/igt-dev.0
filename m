@@ -4,55 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52826C71131
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Jun 2025 17:39:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E8A2C677C4
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Jun 2025 17:48:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 02E6010E30A;
-	Tue, 10 Jun 2025 17:39:10 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IDu12qRj";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 665CB10E2B2
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Jun 2025 17:39:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749577148; x=1781113148;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XISU1gvRjMOl0GEI1cfwB2rcwUhvtMt4ZPM55lBFCKE=;
- b=IDu12qRjl7/jXc71pCNKpVMycX41G2JaeHuEgiYSTU+FS5tFEd2kqbiz
- NBCMHlxpOEgxMHQW3TZRuFvfYyEWbquKI8ucJcfkYgYuPI+273zvzbxVK
- PJfsFCnIWxBC4nV/skk/d/jfxi20nf6lhvo9r/MXscnbPt9ONHkeTrlfG
- 49uLyglskMSXUZmNH91XtiynRNOsYAIrN9l+GFzKMXxTAPNmNjJV/BLWp
- ba0oGtKOJUtw+4EzXtcu1Xbf3QIwLL//qCtXc5pbBJC9Z/qm/8cLHabkx
- dIiIUwP1Q1Us/dGidSSg67Gcm0+Ek9B9uwjb1uzvos6Ahy61nO6XPOfap g==;
-X-CSE-ConnectionGUID: 42BKQ5/2R92Zn5OOu8paNw==
-X-CSE-MsgGUID: jVM8iOhiQqOmg/Fcjv5cCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="55505951"
-X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; d="scan'208";a="55505951"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2025 10:39:08 -0700
-X-CSE-ConnectionGUID: oEl6+9FgTvS5JsBofzD6bQ==
-X-CSE-MsgGUID: 0Khi85eqQu6gOWnDkf96Ag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; d="scan'208";a="147854456"
-Received: from linux-panther-lake-client-platform.iind.intel.com (HELO
- linux-Lunar-Lake-Client-Platform.iind.intel.com) ([10.190.238.55])
- by orviesa008.jf.intel.com with ESMTP; 10 Jun 2025 10:39:07 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH v1 7/7] tests/intel/kms_psr2_sf: Enable the tests support
- variations based on the WAs
-Date: Tue, 10 Jun 2025 23:12:44 +0530
-Message-Id: <20250610174244.1292-8-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250610174244.1292-1-mohammed.thasleem@intel.com>
-References: <20250610174244.1292-1-mohammed.thasleem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4495110E134;
+	Tue, 10 Jun 2025 17:48:56 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3738710E134;
+ Tue, 10 Jun 2025 17:48:55 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3966547015986779496=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2C1/2=5D_tools/gputop/gputop=3A_Add_per-device_engine_activity?=
+ =?utf-8?q?_stats_in_GPUTOP?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 10 Jun 2025 17:48:55 -0000
+Message-ID: <174957773521.65214.1981883795943909934@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250610135318.90430-1-nishit.sharma@intel.com>
+In-Reply-To: <20250610135318.90430-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,41 +38,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This update stops skipping fbc-* tests support variations based on the WAs.
+--===============3966547015986779496==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel/kms_psr2_sf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 68842b020..3c328923e 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -179,6 +179,8 @@ IGT_TEST_DESCRIPTION("Tests to verify PSR2 selective fetch by sending multiple"
- 
- #define MAX_SCREEN_CHANGES 5
- 
-+#define WA_FBC_DISABLED "16023588340"
-+
- enum operations {
- 	PLANE_UPDATE,
- 	PLANE_UPDATE_CONTINUOUS,
-@@ -561,6 +563,11 @@ static void prepare(data_t *data)
- 	igt_plane_set_position(primary, 0, 0);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
-+	/* FBC disabled: Wa_16023588340 */
-+	igt_skip_on_f(data->op_fbc_mode == FBC_ENABLED &&
-+		      !intel_is_fbc_supported(data->drm_fd, WA_FBC_DISABLED),
-+		      "WA has disabled FBC on BMG\n");
-+
- 	if (data->coexist_feature & FEATURE_DSC)
- 		igt_require_f(igt_is_dsc_enabled(data->drm_fd, output->name),
- 			      "DSC is not enabled\n");
--- 
-2.34.1
+Series: series starting with [i-g-t,1/2] tools/gputop/gputop: Add per-device engine activity stats in GPUTOP
+URL   : https://patchwork.freedesktop.org/series/150043/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8403_BAT -> XEIGTPW_13263_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8403 -> IGTPW_13263
+
+  IGTPW_13263: faa5446f8ec03f32560dd9a3dfeb6bf08d21ebac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8403: f2e82612b44bf8c30bfd0c523b69e424dc5f8d7a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3226-7bc153635620254b73cfe8714ce42768b2bf6d60: 7bc153635620254b73cfe8714ce42768b2bf6d60
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13263/index.html
+
+--===============3966547015986779496==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tools/gputop/gputop: Add per-device engine activity stats in GPUTOP</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150043/">https://patchwork.freedesktop.org/series/150043/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13263/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13263/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8403_BAT -&gt; XEIGTPW_13263_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8403 -&gt; IGTPW_13263</li>
+</ul>
+<p>IGTPW_13263: faa5446f8ec03f32560dd9a3dfeb6bf08d21ebac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8403: f2e82612b44bf8c30bfd0c523b69e424dc5f8d7a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3226-7bc153635620254b73cfe8714ce42768b2bf6d60: 7bc153635620254b73cfe8714ce42768b2bf6d60</p>
+
+</body>
+</html>
+
+--===============3966547015986779496==--
