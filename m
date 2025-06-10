@@ -4,27 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 286BEC5B543
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Jun 2025 13:46:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3642C5B543
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Jun 2025 13:53:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F23810E2F6;
-	Tue, 10 Jun 2025 13:46:44 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D56689369;
- Tue, 10 Jun 2025 13:46:43 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3692717289885598985=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E05510E278;
+	Tue, 10 Jun 2025 13:53:22 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YPQvjSkU";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAFFE10E278
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Jun 2025 13:53:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749563602; x=1781099602;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=xlkcEUbAunPRPGTd+XFdyQTB2vA6s7/z4xe6QDmY/YA=;
+ b=YPQvjSkU63eLgo6qsEDxiTx0N5b2iwlXVB78v/1HeBjDoi1q+BlodiJ6
+ U8RDmX2ttmAUM4t4WNYssQvYt/MLkazG3qvLwQDyv7xJ3DDxC18r9UFM9
+ RkIV5YYDr7A4ZXwZjejHhLPcHr+jBLtE1KX7pCDxlA2Hh3zzACjbKx9UH
+ vJTqIZ8jxGdMqVcxTyH9CnGsBXky27Z1TtpdGQSGwuIOPYE4lLRtoCYQW
+ PA17ya6acLrFSfp7awttSEmLTekZ1ebVojFtNjFFfWZ4+a6gfl6ro+gfj
+ jXZ/VTReclKT/QaJIpVj7tOwVH3c5Wy7bnVP2sgHHiQFzK6rlfiQDM0W7 w==;
+X-CSE-ConnectionGUID: fHie3tr4TLuPKupjoDSR6w==
+X-CSE-MsgGUID: do3LlFNbQzKGu3RdMgmQCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="62329809"
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; d="scan'208";a="62329809"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2025 06:53:22 -0700
+X-CSE-ConnectionGUID: MdJgIk8CRIW9yslXdQJ4xA==
+X-CSE-MsgGUID: R9UhWsJYTIuLLExq5lFGlQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; d="scan'208";a="146751438"
+Received: from unknown (HELO DUT2943PVC.iind.intel.com) ([10.190.215.47])
+ by orviesa006.jf.intel.com with ESMTP; 10 Jun 2025 06:53:20 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ nishit.sharma@intel.com
+Subject: [PATCH i-g-t 0/2]
+Date: Tue, 10 Jun 2025 13:53:16 +0000
+Message-ID: <20250610135318.90430-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/i915/pm=5Frc6=5Fresid?=
- =?utf-8?q?ency=3A_Use_sysfs_to_achieve_peak_frequency_=28rev11=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sk Anirban" <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 10 Jun 2025 13:46:43 -0000
-Message-ID: <174956320357.64248.4634602234526205615@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250610122645.2088257-5-sk.anirban@intel.com>
-In-Reply-To: <20250610122645.2088257-5-sk.anirban@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +61,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3692717289885598985==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-== Series Details ==
-
-Series: tests/i915/pm_rc6_residency: Use sysfs to achieve peak frequency (rev11)
-URL   : https://patchwork.freedesktop.org/series/148054/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8402_BAT -> XEIGTPW_13262_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
+IGT subtest eu-busy-10-sec schedules and execute compute workload on
+multiple CCS engine instances. To check per engine instance is utilized
+graphical representation of engine busyness is required. Functions
+related to Graphical respresentation are integrated in IGT test xe_compute which has
+dependency on Patch tools/gputop/gputop: Add per-device engine activity stats in GPUTOP
 
 
-Changes
--------
+Nishit Sharma (2):
+  tools/gputop/gputop: Add per-device engine activity stats in GPUTOP
+  tests/intel/xe_compute: Add Compute workload Scheduling and Display EU
+    busyness
 
-  No changes found
+ lib/igt_device_scan.c    | 128 +++++++
+ lib/igt_device_scan.h    |   1 +
+ lib/intel_compute.c      |  29 +-
+ lib/intel_compute.h      |   2 +
+ tests/intel/xe_compute.c | 755 +++++++++++++++++++++++++++++++++++++++
+ tests/meson.build        |   1 +
+ tools/gputop/gputop.c    | 638 +++++++++++++++++++++++++++++++++
+ tools/gputop/meson.build |   6 +
+ tools/gputop/utils.c     |  51 +++
+ tools/gputop/utils.h     |  64 ++++
+ tools/gputop/xe_gputop.c | 378 ++++++++++++++++++++
+ tools/gputop/xe_gputop.h |  62 ++++
+ tools/meson.build        |   6 +-
+ 13 files changed, 2113 insertions(+), 8 deletions(-)
+ create mode 100644 tools/gputop/gputop.c
+ create mode 100644 tools/gputop/meson.build
+ create mode 100644 tools/gputop/utils.c
+ create mode 100644 tools/gputop/utils.h
+ create mode 100644 tools/gputop/xe_gputop.c
+ create mode 100644 tools/gputop/xe_gputop.h
 
+-- 
+2.43.0
 
-Build changes
--------------
-
-  * IGT: IGT_8402 -> IGTPW_13262
-
-  IGTPW_13262: 090f0b4ded38d4daf71e63efafe272010d82c41a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8402: ad7a9182bc87a1fe9875de9956b620f9d25485df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3225-52ecbb6a68785860c776b29f58792d9807243979: 52ecbb6a68785860c776b29f58792d9807243979
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13262/index.html
-
---===============3692717289885598985==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/pm_rc6_residency: Use sysfs to achieve peak frequency (rev11)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148054/">https://patchwork.freedesktop.org/series/148054/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13262/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13262/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8402_BAT -&gt; XEIGTPW_13262_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8402 -&gt; IGTPW_13262</li>
-</ul>
-<p>IGTPW_13262: 090f0b4ded38d4daf71e63efafe272010d82c41a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8402: ad7a9182bc87a1fe9875de9956b620f9d25485df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3225-52ecbb6a68785860c776b29f58792d9807243979: 52ecbb6a68785860c776b29f58792d9807243979</p>
-
-</body>
-</html>
-
---===============3692717289885598985==--
