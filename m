@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42054C61DB2
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Jun 2025 21:01:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56973C677C4
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Jun 2025 21:01:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C77B010E2EC;
-	Tue, 10 Jun 2025 21:01:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EF8E310E2EC;
+	Tue, 10 Jun 2025 21:01:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VSjdWNMB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HNsXBDTG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15C1B10E2EC
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Jun 2025 21:01:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 06E4E10E2EC
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Jun 2025 21:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749589261; x=1781125261;
+ t=1749589296; x=1781125296;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=RaTtlv4NMeQrhWpWROsbU48+ZoMV6keyiY0qN6s+vKw=;
- b=VSjdWNMBdLevyjNYzS4p1p/VyDEP63wGuu9iDxU4Ioa119+4Otr/WU/W
- 5sjQzBFUaS5+qEFDFbnwJLiO3IT7Kpq7o0Zv7PokjyYtiY65LDVYT4LXd
- ARCp3Yf1KCjf+MV6XOKn/I/qsfuIDKrcBTwMQ4OZxoTZiCN+tf+RrbEvz
- uLUjCrj1XNKdaeHKDFPOGe50lzzbgLz2xPYxwole5yeDdRy4nHlTFAZx9
- dM2arabJKVSu6tVPOA5ZlmbfaGmDlnhWrecioYRjqazWCJ4B0LKkzpa8V
- Km07u/uzUVgooUsDEDFByrSJ9yThm+hoo+/BRrBBkwIBxmaFFpsrI3rxE Q==;
-X-CSE-ConnectionGUID: Ql2hKvkARquYMQI8w8dayQ==
-X-CSE-MsgGUID: N2BfU83uQZqwhljSCdiMzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="39334149"
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; d="scan'208";a="39334149"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2025 14:01:01 -0700
-X-CSE-ConnectionGUID: tyZRTmNCQLeBVYaPOlEUYQ==
-X-CSE-MsgGUID: R/sp02eBQqq3TgzYz5cVnA==
+ bh=dCJH3/lE9XXlneslKpOQa1PKmRPgIaeduKSOQWGnmz0=;
+ b=HNsXBDTGK772UOmykfWsNmoxzSG6uCb1YAvv7B/XxP1o1OUOKRAzqTLm
+ HiLaDEjmSHFUsWlJejqpNwvQSqEcR4hhQzETCSrw/ZjatyIBayK4oMLHC
+ CF+bjfo+USy0cdfZHZat9cqX5tLStopTCACVA7lVkUEVoUGKfJUR6u7+u
+ Ewg+cjZyC8wlSdz0dzcU2X4OgWBVTTvxp6x9LHSUTOqrb2fVCZhbjXRTE
+ 4QwjSelEZUwK0kGwOsLmiqOOZlFGvSUI7w5i6ZpS+C7UxMrcm6Pb2O155
+ fFy/aTggYCUDaihr1Q6pUbdmYvSqcaSFlBOsUeRK9SZnHCpf6LxGbfwtZ A==;
+X-CSE-ConnectionGUID: ind5GTrBSQOMobqiGAhXZA==
+X-CSE-MsgGUID: ZKrhzeNcRKCHfKjl/kmynw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="54347033"
+X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; d="scan'208";a="54347033"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2025 14:01:36 -0700
+X-CSE-ConnectionGUID: 0vh6GPzkQcKzXZJxLcuU2Q==
+X-CSE-MsgGUID: MLVrl0rlRBqkEYlGpXeXGA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; d="scan'208";a="177866578"
+X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; d="scan'208";a="151836739"
 Received: from edmundru-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.163.10])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2025 14:01:00 -0700
-Date: Tue, 10 Jun 2025 14:00:59 -0700
-Message-ID: <87zfefcnw4.wl-ashutosh.dixit@intel.com>
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2025 14:01:35 -0700
+Date: Tue, 10 Jun 2025 14:01:34 -0700
+Message-ID: <87y0tz2tw1.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: sushma.venkatesh.reddy@intel.com
-Subject: Re: [PATCH v2 i-g-t 1/2] xe/oa: Update scripts to support PTL
-In-Reply-To: <20250610201426.1948744-1-ashutosh.dixit@intel.com>
-References: <20250610201426.1948744-1-ashutosh.dixit@intel.com>
+Subject: Re: [PATCH v2 i-g-t 2/2] xe/oa: Add oa-ptl.xml and guids.xml
+In-Reply-To: <20250610201426.1948744-2-ashutosh.dixit@intel.com>
+References: <20250610201426.1948744-1-ashutosh.dixit@intel.com>	<20250610201426.1948744-2-ashutosh.dixit@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -70,15 +70,14 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 10 Jun 2025 13:14:25 -0700, Ashutosh Dixit wrote:
+On Tue, 10 Jun 2025 13:14:26 -0700, Ashutosh Dixit wrote:
 >
 > From: Sushma Venkatesh Reddy <sushma.venkatesh.reddy@intel.com>
 >
 > v2 (Ashutosh):
-> - Remove xe3_chipset_params_pec and xe3_chipset_oa_formats, use
->   xe2_chipset_oa_formats
-> - Move generated changes to guids.xml to next patch
-> - Add PTL to intel_xe_perf_for_devinfo
+> - Move changes to guids.xml to this patch
+> - Drop lines for PipelineStats, MediaSet1, MediaSet2 and EuStallSampling
+>   since these either cause crashes and also don't generate anything in oa-ptl.xml
 >
 > Signed-off-by: Sushma Venkatesh Reddy <sushma.venkatesh.reddy@intel.com>
 
