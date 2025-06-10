@@ -4,52 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89545C71131
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Jun 2025 17:39:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58149C677C4
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Jun 2025 17:39:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E57610E288;
-	Tue, 10 Jun 2025 17:39:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B27110E2D2;
+	Tue, 10 Jun 2025 17:39:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="grsErr1D";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fEFHRcoV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE83D10E288
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Jun 2025 17:39:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1594210E288
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Jun 2025 17:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749577144; x=1781113144;
+ t=1749577142; x=1781113142;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5C9+LssWfQ9wWDs8w2bhfLY5a7G3PJ4+Hq2HN2+W+zM=;
- b=grsErr1DivkwYrbSIJoJm/EPY7BBCM7bYD4YCtDG62hYoevNqX0y9lRz
- OqqFHrb5k7FSI582oMlDt7BvtoM6U7yTnxBIfXIO0W/6WPBnIRu8f/RWL
- +FRP7TIV6RE6Dcomv9c2cmtSWRENYLAUk7x8De4vS1nHjIxa3PFyqBqNI
- qwIZ+lnmCn9vtrWWEX+mQiMnIxPtwwC03SOpbZKVq/Htdw7tOycBkt3uS
- b4iet9/f4/bks0/LKLO9wnv2IcNi9Es/CFVGMj7MvfcbzlpPfz/CPc48A
- 79VsPjDXPZ3wxYP8MQRYpeOqYCdHBvqEiyCACI3uAnqJFOtT/YXquaD8B g==;
-X-CSE-ConnectionGUID: WksjXBHARTiw7vpl1GYcWg==
-X-CSE-MsgGUID: 5eh3YcoCQW24m2XI0nH1XA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="55505946"
-X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; d="scan'208";a="55505946"
+ bh=wTtHOrFwlWl7BeUR9se5mCBzu9YAPegauQaiDu3e3TA=;
+ b=fEFHRcoVBlj+yw+vELaHV3crckpCbvaeGWN9YtBs8UIyOfA4IlNCYVEO
+ 0TA5pIvxSqGHBdxL/CNKbgmqkPML17l+aOutCbJw4usDQUjw10VQEaoO3
+ xt6xNv2mIIHQEcb14HCgur4xSi8ZNQcM0GCXPjE0S4y+U14WTIEXEdEI9
+ S/OU6IaRF46BLr88z85l7uy3ZOTqoX0UyhKHNfP/Mh5FqS0+Hni/eTN2s
+ pF9/PUl4E3/CiDPAfhWJlkxPaDKIHmifjbO1/s2HDnXBF885jSQBqjCBb
+ CBNYXK+R6Zqb5EU7Q7nXochiMXff6XMC3CiYcjduBxcB1hREAUtj/Zv+U w==;
+X-CSE-ConnectionGUID: LlfMBePkSLyaPmOy2rFRIg==
+X-CSE-MsgGUID: pilhU9G3Rum3VyfhIR0Iiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="55505942"
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; d="scan'208";a="55505942"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2025 10:39:03 -0700
-X-CSE-ConnectionGUID: N/P8LqrYT/C0lNrOHzB2Vw==
-X-CSE-MsgGUID: U9m8bHLnSKu9ddyeIjb+OA==
+ 10 Jun 2025 10:39:02 -0700
+X-CSE-ConnectionGUID: HZgrDPyxSWyz26Ev+qz7+A==
+X-CSE-MsgGUID: LY/ZgicBQ/mHLrDxvIE80g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; d="scan'208";a="147854440"
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; d="scan'208";a="147854435"
 Received: from linux-panther-lake-client-platform.iind.intel.com (HELO
  linux-Lunar-Lake-Client-Platform.iind.intel.com) ([10.190.238.55])
- by orviesa008.jf.intel.com with ESMTP; 10 Jun 2025 10:39:02 -0700
+ by orviesa008.jf.intel.com with ESMTP; 10 Jun 2025 10:39:01 -0700
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- Vinod Govindapillai <vinod.govindapillai@intel.com>,
- Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH v5 3/7] tests/intel/kms_frontbuffer_tracking: Enable the tests
- support variations based on the WAs
-Date: Tue, 10 Jun 2025 23:12:40 +0530
-Message-Id: <20250610174244.1292-4-mohammed.thasleem@intel.com>
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH v1 2/7] lib/i915/intel_fbc: Add fbc supported check based on wa
+Date: Tue, 10 Jun 2025 23:12:39 +0530
+Message-Id: <20250610174244.1292-3-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250610174244.1292-1-mohammed.thasleem@intel.com>
 References: <20250610174244.1292-1-mohammed.thasleem@intel.com>
@@ -70,67 +67,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This update stops skipping fbc-* tests support variations based on the WAs.
-
-v2: Use WA_FBC_DISABLED instead CHECK_WA. (Vinod)
-    Update igt_skip_on_f discription. (Vinod)
-v3: Remove platform check and make it for xe specific. (Vinod)
-    Rename function name with is_fbc_support. (Vinod)
-v4: Update function name and add igt_skip check. (Vinod)
-v5: Move is_fbc_supported to intel_fbc.c (Kunal)
+This will check the fbc supported based on given workarunds.
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ lib/i915/intel_fbc.c | 21 +++++++++++++++++++++
+ lib/i915/intel_fbc.h |  1 +
+ 2 files changed, 22 insertions(+)
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 0809352cb..aaa4261ee 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -781,6 +781,7 @@
-  */
+diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
+index a8ded0a59..015523773 100644
+--- a/lib/i915/intel_fbc.c
++++ b/lib/i915/intel_fbc.c
+@@ -200,3 +200,24 @@ bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode)
  
- #define TIME SLOW_QUICK(1000, 10000)
-+#define WA_FBC_DISABLED "16023588340"
+ 	return fbc_supported;
+ }
++
++/**
++ * intel_is_fbc_supported
++ *
++ * @fd: fd of the device
++ * @wa_fbc_disabled : WA to be checked
++ *
++ * This function pass the WA to igt_has_intel_wa to check WA on available GTs
++ *
++ * Returns:
++ * true if wa is not equal to 1, and false if wa is equal to 1
++ */
++bool intel_is_fbc_supported(int fd, const char *wa_fbc_disabled)
++{
++	int wa;
++
++	wa = igt_has_intel_wa(fd, wa_fbc_disabled);
++	igt_assert_f(wa >= 0, "WA path not found on GTs\n");
++
++	return wa != 1;
++}
+diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
+index fcafe6049..0db1fa14a 100644
+--- a/lib/i915/intel_fbc.h
++++ b/lib/i915/intel_fbc.h
+@@ -19,5 +19,6 @@ bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level);
+ void intel_fbc_max_plane_size(int fd, uint32_t *width, uint32_t *height);
+ bool intel_fbc_plane_size_supported(int device, uint32_t width, uint32_t height);
+ bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode);
++bool intel_is_fbc_supported(int fd, const char *wa_fbc_disabled);
  
- IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
- 		     "its related features: FBC, PSR and DRRS");
-@@ -2610,8 +2611,8 @@ static void prepare_subtest_data(const struct test_mode *t,
- static void prepare_subtest_screens(const struct test_mode *t)
- {
- 	/* FBC disabled: Wa_16023588340 */
--	igt_skip_on_f((IS_BATTLEMAGE(drm.devid) && t->feature == FEATURE_FBC),
--		      "FBC isn't supported on BMG\n");
-+	igt_skip_on_f(t->feature == FEATURE_FBC && !intel_is_fbc_supported(drm.fd, WA_FBC_DISABLED),
-+		     "WA has disabled FBC on BMG\n");
- 
- 	if (t->pipes == PIPE_DUAL)
- 		enable_both_screens_and_wait(t);
-@@ -2658,8 +2659,8 @@ static void prepare_subtest(const struct test_mode *t,
- static void rte_subtest(const struct test_mode *t)
- {
- 	/* FBC disabled: Wa_16023588340 */
--	igt_skip_on_f((IS_BATTLEMAGE(drm.devid) && t->feature == FEATURE_FBC),
--		      "FBC isn't supported on BMG\n");
-+	igt_skip_on_f(t->feature == FEATURE_FBC && !intel_is_fbc_supported(drm.fd, WA_FBC_DISABLED),
-+		     "WA has disabled FBC on BMG\n");
- 
- 	prepare_subtest_data(t, NULL);
- 
-@@ -4157,8 +4158,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 			t.tiling = opt.tiling;
- 
- 			/* FBC disabled: Wa_16023588340 */
--			igt_skip_on_f((IS_BATTLEMAGE(drm.devid) && t.feature == FEATURE_FBC),
--				      "FBC isn't supported on BMG\n");
-+			igt_skip_on_f(t.feature == FEATURE_FBC && !intel_is_fbc_supported(drm.fd, WA_FBC_DISABLED),
-+				     "WA has disabled FBC on BMG\n");
- 
- 			for_each_pipe(&drm.display, pipe) {
- 				if (pipe == default_pipe) {
+ #endif
 -- 
 2.34.1
 
