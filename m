@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 100A8C678DC
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 13:39:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6A6FC677C4
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 13:39:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1D7610E36F;
-	Wed, 11 Jun 2025 13:39:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5BC5010E66A;
+	Wed, 11 Jun 2025 13:39:23 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96DE710E36F;
- Wed, 11 Jun 2025 13:39:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E149C10E666;
+ Wed, 11 Jun 2025 13:39:22 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7080729196057230001=="
+ boundary="===============7862984943664212393=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5F*=3A_Use?=
  =?utf-8?q?_NEEDS=5FVISIBLE=5FVRAM_flag_where_it=27s_missing?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Laguna, Lukasz" <lukasz.laguna@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Jun 2025 13:39:07 -0000
-Message-ID: <174964914760.67091.17531993646459634183@1538d3639d33>
+Date: Wed, 11 Jun 2025 13:39:22 -0000
+Message-ID: <174964916293.67551.7036277622164657812@1538d3639d33>
 X-Patchwork-Hint: ignore
 References: <20250611095711.14864-1-lukasz.laguna@intel.com>
 In-Reply-To: <20250611095711.14864-1-lukasz.laguna@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7080729196057230001==
+--===============7862984943664212393==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -147,7 +147,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13271/index.html
 
---===============7080729196057230001==
+--===============7862984943664212393==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -250,4 +250,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============7080729196057230001==--
+--===============7862984943664212393==--
