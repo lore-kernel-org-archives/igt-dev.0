@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F40C2C61CE7
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 09:57:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 513C2C61CE7
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 10:02:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A4F9710E5FE;
-	Wed, 11 Jun 2025 09:57:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0569289316;
+	Wed, 11 Jun 2025 10:02:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="herpHIhL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BlAWXaJt";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1126A10E5FE
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 09:57:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F06A899B7
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 10:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749635841; x=1781171841;
+ t=1749636129; x=1781172129;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=Ctu/M9LmWIdk4SFaC7foVMpP2Pfh/37QCKSTAJa6SsM=;
- b=herpHIhLsOCCmGIHts0IwaqxtMocut9fn6WrQK53O7xXbkuzo++eZ2u5
- spC2zLJdqjkvg0V/AHyYQn/Tp447C07v1x/2C9UDyb1BPJnFrAoalXsGf
- C0Nmq11RFPpqFHAjRXuMIm2SVp7DCamvOZMojisN4N/ZbTKHtg8GhEKNV
- kKKgyefSxWga5em1vfH1K10pvfdh9MohDFa2zHWJbb3a6rnCGd/it8fGD
- 5CJK38tKfNzX+BrW+QAHFQ/P7hLUp3VGZMn+KNQ+nWmkEEvo5hQbGSQdC
- mJdiGQqrieOg/qYd/uM1bWWWZfcFk+JxUqsg84WAtAQH9UUj/Dxa0ZXNA g==;
-X-CSE-ConnectionGUID: 3DK32GLIQoOH+QMY9eKgpQ==
-X-CSE-MsgGUID: F+6fEKvtTp6KQYyOPq9zbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="62425682"
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="62425682"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2025 02:57:21 -0700
-X-CSE-ConnectionGUID: 8rPdhBzSR3C36SvJx3JPuA==
-X-CSE-MsgGUID: v/gsFBYmSQSBLw3YctjI2w==
+ bh=I7TJwNIN31Sl2iP/P+u6J24zZ9BzWEogNgYZJR2x4J4=;
+ b=BlAWXaJtkcxrPk3erWtvr6/9ucQK+RfALMKFAbtJM8U4ar3B5Bsqd6tN
+ wNSd9T6XkWhVGR1C0OO7csu9gVuxS9tWy/XoufHci3+d5NJlC/tJ7h92i
+ xMLSio7iOEpP5SJ+7BUJCOmDSrO8lvqQB9cnNBpjqTi8GZhkJ8GtvpRGW
+ xlGo8S1qhC9r19Ovqp6VByhbOcgZKmPJo/BmAznji7DUEcGXvVo7qYbSB
+ el43ZWcxlazAZJiD+D9VGvVOv47NITMO0P/dxONfl0ynoh5nPJ0VyZjmn
+ oR2uaySv1eyPCw4Ft63f1jPJQ2+RbjANmrz2b9UGA4zUXGo7lrCDARCPK g==;
+X-CSE-ConnectionGUID: wL7+Zo+NTNepn1CTkYzHqQ==
+X-CSE-MsgGUID: kBYRmsEoR5yQQeDOVbfMLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="69335370"
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="69335370"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2025 03:02:06 -0700
+X-CSE-ConnectionGUID: WKgfNnMRQKqdDbpzZTBKmw==
+X-CSE-MsgGUID: GSDm3S0uSPq5SrripuL+1Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="147059321"
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="152039973"
 Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2025 02:57:19 -0700
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2025 03:02:05 -0700
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: matthew.auld@intel.com,
 	lukasz.laguna@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_*: Use NEEDS_VISIBLE_VRAM flag where
- it's missing
-Date: Wed, 11 Jun 2025 11:57:11 +0200
-Message-Id: <20250611095711.14864-1-lukasz.laguna@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_vm: Fix skip condition to account for
+ padded BO size
+Date: Wed, 11 Jun 2025 12:01:58 +0200
+Message-Id: <20250611100158.15197-1-lukasz.laguna@intel.com>
 X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,63 +67,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Set DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM flag when creating BOs
-that will be CPU-mapped, to ensure that the corresponding VRAM
-allocation will use the CPU accessible part of VRAM.
+Several subtests currently skip when the requested BO size exceeds
+visible VRAM, but they don't take into account the padded size that is
+actually passed to the kernel when creating BO. As a result, subtest may
+attempt to allocate a BO that exceeds the available VRAM, resulting in
+-E2BIG error.
 
-This is essential for small-bar systems, where omitting the flag may
-cause failures or SIGBUS crashes due to the CPU accessing non-visible
-VRAM.
+Fix this by using the prefetch BO size in the skip condition to ensure
+the subtests avoid allocation attempts that are guaranteed to fail.
 
-Suggested-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- tests/intel/xe_exec_atomic.c | 2 +-
- tests/intel/xe_pat.c         | 3 ++-
- tests/intel/xe_spin_batch.c  | 3 ++-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ tests/intel/xe_vm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
-index 825d7d190..39c739b64 100644
---- a/tests/intel/xe_exec_atomic.c
-+++ b/tests/intel/xe_exec_atomic.c
-@@ -85,7 +85,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
- 	bo_size = xe_bb_size(fd, bo_size);
- 
- 	bo = xe_bo_create(fd, vm, bo_size, placement,
--			  I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS);
-+			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 
- 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
- 	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 88d8de9dd..8bb0ac167 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -582,7 +582,8 @@ static void prime_self_import_coh(void)
- 	fd1 = drm_open_driver(DRIVER_XE);
- 	fd2 = drm_open_driver(DRIVER_XE);
- 
--	dst_handle = xe_bo_create_caching(fd1, 0, size, all_memory_regions(fd1), 0,
-+	dst_handle = xe_bo_create_caching(fd1, 0, size, all_memory_regions(fd1),
-+					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
- 					  DRM_XE_GEM_CPU_CACHING_WC);
- 
- 	dma_buf_fd = prime_handle_to_fd(fd1, dst_handle);
-diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-index 21b08ba06..48a888e35 100644
---- a/tests/intel/xe_spin_batch.c
-+++ b/tests/intel/xe_spin_batch.c
-@@ -442,7 +442,8 @@ static void exec_store(int fd, struct drm_xe_engine_class_instance *eci,
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 94cca13ba..1a21a6459 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -1385,15 +1385,15 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+ 	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
  	vm = xe_vm_create(fd, 0, 0);
- 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
- 	bb_size = xe_bb_size(fd, sizeof(*data));
--	bb = xe_bo_create(fd, vm, bb_size, vram_if_possible(fd, eci->gt_id), 0);
-+	bb = xe_bo_create(fd, vm, bb_size, vram_if_possible(fd, eci->gt_id),
-+			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	bb_addr = intel_allocator_alloc_with_strategy(ahnd, bb, bb_size, 0,
- 						      ALLOC_STRATEGY_LOW_TO_HIGH);
- 	data = xe_bo_map(fd, bb, bb_size);
+ 
++	bo_size_prefetch = xe_bb_size(fd, bo_size);
++
+ 	if (flags & LARGE_BIND_FLAG_USERPTR) {
+-		bo_size_prefetch = xe_bb_size(fd, bo_size);
+ 		map = aligned_alloc(xe_get_default_alignment(fd), bo_size_prefetch);
+ 		igt_assert(map);
+ 	} else {
+-		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
++		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size_prefetch >
+ 			    xe_visible_vram_size(fd, 0));
+ 
+-		bo_size_prefetch = xe_bb_size(fd, bo_size);
+ 		bo = xe_bo_create(fd, vm, bo_size_prefetch,
+ 				  vram_if_possible(fd, eci->gt_id),
+ 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
 -- 
 2.40.0
 
