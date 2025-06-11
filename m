@@ -4,60 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B75AC61CE7
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 10:59:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63332C677C4
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 11:07:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A65210E61D;
-	Wed, 11 Jun 2025 10:59:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 167CA10E61B;
+	Wed, 11 Jun 2025 11:07:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U+7P2RPf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UXXfxQKB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC9E810E61C
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 10:59:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E56210E61B
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 11:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749639548; x=1781175548;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=tPyilT8xPamBlVnI7fW7cwmOzEaNltveSRGnh/s+0NM=;
- b=U+7P2RPfEkUoCPO6RwYHJe0UP3reNwibLzUzLxVPqPZe8oLcxO72fBtb
- 0AsbQJ4cl/xQhdHn6XcPIHV9f/+qH8GPa8Kyvy/F8XRys1FmsC8jalXpX
- C39uErlLfk33ELBcLyMLliL/JN1RUonngP1PTNv+gQkr7pn7f4V9P8yas
- A2WySymGLfaw+2bKcP55E3cZuPkzOTtYlu9UQ+nt69Yr2rcn697Cwwlb0
- ONDOU52j6CulnGQ5qcDwhAnmimxKtyyicYeeIuHsIRKj8Z2lRV3zm9zED
- 5ihe1mFm86vb8f4BsrSE6ayN5P8InZRC23cEw5HJDl54VCuO3CmU7y+ZJ A==;
-X-CSE-ConnectionGUID: ncnmTnV5RqS/Cvk7uAsP0A==
-X-CSE-MsgGUID: PvscEv1jSlyegr8r2T8qYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="63187013"
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="63187013"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2025 03:59:08 -0700
-X-CSE-ConnectionGUID: 8Fsb20JjQ6CcfXw/x+vnHw==
-X-CSE-MsgGUID: c7hlAAyOSUqZFEMu3r4kwg==
+ t=1749640041; x=1781176041;
+ h=from:subject:date:message-id:mime-version:
+ content-transfer-encoding:to:cc;
+ bh=AvoDWRa52vD1y9cwmb6Ee03pt5+OVTaDWCi+998zqk0=;
+ b=UXXfxQKBzYjW3RjkyAh7EUsw55F92jIFxZmdj2s3x164AismQgMq/Dop
+ rDPQEfkutbugrmuvRnl+iYsOlapXRWhrJLBIXQqg2fDkNkR54fo1CwZcz
+ hxEUoNcT7dKIScFExBPWwefziFC3Svli6JXdT+CHSenXIqATwMJQ3jgDN
+ dFrXGgQGCGEw7cBiVj10upblWvA5goke0A1g9crE9M94KixvO76BAO2M0
+ EgWVnJQbly1mt1hxAdl2jnYK9vNSYobb2omXJG3ouqt3zl8XFFS9BQAni
+ 0T/DaazigE/rJ0ZhZmOmZdUtZR8l3Rz/tHRwU5rbJMoa/QhjaFtwCbJTn A==;
+X-CSE-ConnectionGUID: +BsucdSzS0+sXzrmCuRmrw==
+X-CSE-MsgGUID: BnBATEfkS/i9HouhvUylAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="62057447"
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="62057447"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2025 04:07:20 -0700
+X-CSE-ConnectionGUID: AWIjsFSsRz2YpM3vC7NW5A==
+X-CSE-MsgGUID: AbWt3iJlRhGLd6gdskSZrA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="147076791"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 03:59:05 -0700
-Date: Wed, 11 Jun 2025 12:59:03 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Dorinda Bassey <dbassey@redhat.com>
-Cc: igt-dev@lists.freedesktop.org, javierm@redhat.com, aesteve@redhat.com,
- ernunes@redhat.com
-Subject: Re: [PATCH v4] tests/drm_virtgpu: Add functional coverage for core
- VirtIO-GPU ioctls
-Message-ID: <20250611105903.l5msqwuvhox6yav2@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Dorinda Bassey <dbassey@redhat.com>, igt-dev@lists.freedesktop.org,
- javierm@redhat.com, aesteve@redhat.com, ernunes@redhat.com
-References: <20250610163135.1122267-1-dbassey@redhat.com>
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="147014985"
+Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2025 04:07:18 -0700
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: [PATCH v2 0/5] CI/build: bump container images, OS and meson versions
+Date: Wed, 11 Jun 2025 13:06:35 +0200
+Message-Id: <20250611-bump_docker_distros-v2-0-90791ecb953d@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250610163135.1122267-1-dbassey@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADtjSWgC/22Oyw6CMBQFf4V0bbW0oYor/8MQ0sdFGm1LboFoC
+ P9uIXHnchYz5ywkATpI5FosBGF2ycWQgR8KYnoVHkCdzUw44xWTjFM9+aG10TwBW+vSiDHRUim
+ pZV0LW11INgeEzr336r3JrFUCqlEF02+tacgaKH/yKo2Am9HnUsTPfmMuN++3KP4uziVl1HRnY
+ JKDELW5uTDC62iiJ826rl/qJmEi2AAAAA==
+X-Change-ID: 20250602-bump_docker_distros-1aa6b6993d58
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Ryszard Knop <ryszard.knop@intel.com>, Ryszard Knop <rk@dragonic.eu>, 
+ Petri Latvala <adrinael@adrinael.net>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2799;
+ i=andrzej.hajda@intel.com; h=from:subject:message-id;
+ bh=AvoDWRa52vD1y9cwmb6Ee03pt5+OVTaDWCi+998zqk0=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoSWNCxssHsixf/NBravkNFuU9GRhP89do/3AgB
+ d5gxBckF4eJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaEljQgAKCRAjYrKT3hD9
+ 1xuIDACLTsoNq4Cv9aT6kYmL7X0blaDs7QNIOtF+BQUbWW0GvoPdAAD3PbnnuxeyfjU4UGzdzSk
+ LjsEQvpJLbihZhOOvvz6MsMxkPbuoSUyRNACcAlxlqNd6+tMldwui85UPmIVWOptjHMRiE15tja
+ Wwrn6hx7MoYQTnBxeIHhc9V3bjLgOz+hp8iFGe1ziCwEcmASUpdTSFf59VF8wdEl/WAQH6GMwAK
+ CpOk+HWLmSeozeWANDnlBlVa2Ac3cxXHreXJ6w6Tf+RSjrv0thnKsePZSLwm0ddVHr/6GFaFQx2
+ zovM/TPWDMz1fWVcd+NwC71v5MsB0iw1kqdH5tP1HZO7HQ6+ifnZ0k/2i5sNKPtvw5EkC667FqZ
+ EDYWEFHTX91AOX+6yZVDcKRpTXt42e4XU3ryBf365fSP57jDBEdKl5AyCVBvho5cz32cfUB7E3N
+ OpfZiKcp2MJZDTxgJKyg6cVxMIDAGX8EAc9+m+EmEntdo/4yAFITfTsNKIy96M4RCfgZE=
+X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
+ fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,558 +88,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Dorinda,
-On 2025-06-10 at 18:30:13 +0200, Dorinda Bassey wrote:
-> This test suite adds coverage for multiple DRM ioctls specific
-> to the VirtIO-GPU driver, verifying functionality such as
-> resource creation, memory mapping, 3D transfers, context
-> initialization, and parameter querying.
-> Each test validates a key ioctl to ensure correct behavior from
-> user space and backend implementations. Each subtest is
-> self-contained and can be executed independently.
-> 
-> Included subtests:
->   - drm-virtgpu-map
->   - drm-virtgpu-execbuffer
->   - drm-virtgpu-resource-info
->   - drm-virtgpu-3d-transfer-to-host
->   - drm-virtgpu-3d-transfer-from-host
->   - drm-virtgpu-3d-wait
->   - drm-virtgpu-resource-create-blob
->   - drm-virtgpu-get-caps
->   - drm-virtgpu-context-init
->   - drm-virtgpu-getparam
-> 
-> How to Test with QEMU virtio-vga-gl or rustvmm vhost-device-gpu
-> 
-> 1. Launch a QEMU guest with virtio-vga-gl
-> ./build/qemu-system-x86_64 \
->   -enable-kvm \
->   -cpu host \
->   -m 4096 \
->   -machine q35 \
->   -display gtk,gl=on \
->   -vga none \
->   -device virtio-vga-gl \
->   -drive file=image.qcow2,format=qcow2 \
->   -netdev user,id=n0,hostfwd=tcp::2222-:22 \
->   -device virtio-net-pci,netdev=n0
-> 
-> ssh into the guest and run the tests.
-> 
-> 2. Start the vhost-device-gpu backend and Launch a QEMU
-> guest with vhost-user-gpu-pci or vhost-user-vga, see guide on:
-> https://crates.io/crates/vhost-device-gpu
-> 
-> Signed-off-by: Dorinda Bassey <dbassey@redhat.com>
-> ---
-> v4: Print virtio_gpu path and number of opened DRM devices
+New patch(es) require newer version of build tools to work properly.
+This patchset tries to do it.
 
-Looks good, few space for fix, for example:
-CHECK:SPACING: No space is necessary after a cast
-#433: FILE: tests/drm_virtgpu.c:373:
-+               ctx_params[1].value = (uintptr_t) "IGT-Test-Context";
+Unfortunatly after gitlab update (February/March) "pipeline checks"
+do not work on pre-merge phase so all green CI results [1], can be followed
+by critical post-merge failure on pipelines [2] and quick revert [3].
+This patchset contains changes which can cause failure on CI only after
+merge and potentially can end up with revert.
 
-> 
->  tests/drm_virtgpu.c | 425 ++++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build   |   1 +
->  2 files changed, 426 insertions(+)
->  create mode 100644 tests/drm_virtgpu.c
-> 
-> diff --git a/tests/drm_virtgpu.c b/tests/drm_virtgpu.c
-> new file mode 100644
-> index 000000000..d372cd340
-> --- /dev/null
-> +++ b/tests/drm_virtgpu.c
-> @@ -0,0 +1,425 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2025 Red Hat Inc.
-> + *
-> + * Authors: Dorinda Bassey <dbassey@redhat.com>
-> + */
-> +
-> +/**
-> + * TEST: drm virtgpu ioctls
-> + * Description: Testing of the virtIO-GPU driver DRM ioctls
-> + * Category: Core
-> + * Mega feature: General Core features
-> + * Sub-category:  virtIO-GPU DRM ioctls
-> + * Functionality: drm_ioctls
-> + * Feature: Virtualization graphics support
-> + * Test category: functionality test
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <errno.h>
-> +#include <string.h>
-> +#include <sys/ioctl.h>
-> +
-> +#include "drm.h"
-> +#include "virtgpu_drm.h"
-> +#include "igt.h"
-> +
-> +/**
-> + * SUBTEST: drm-virtgpu-map
-> + *
-> + * SUBTEST: drm-virtgpu-execbuffer
-> + *
-> + * SUBTEST: drm-virtgpu-resource-info
-> + *
-> + * SUBTEST: drm-virtgpu-3d-transfer-to-host
-> + *
-> + * SUBTEST: drm-virtgpu-3d-transfer-from-host
-> + *
-> + * SUBTEST: drm-virtgpu-3d-wait
-> + *
-> + * SUBTEST: drm-virtgpu-resource-create
-> + *
-> + * SUBTEST: drm-virtgpu-resource-create-blob
-> + *
-> + * SUBTEST: drm-virtgpu-get-caps
-> +
-> + * SUBTEST: drm-virtgpu-context-init
-> + *
-> + * SUBTEST: drm-virtgpu-getparam
-> + */
-> +
-> +IGT_TEST_DESCRIPTION("Testing of the virtIO-GPU driver DRM ioctls");
-> +
-> +#define VIRTGPU_DEVICE "/dev/dri/card0"
-> +
-> +#define CAPS_BUFFER_SIZE 4096
-> +#define MAX_CARDS 16
-> +
-> +int drm_fd;
-> +struct drm_virtgpu_resource_create args;
-> +bool resource_created;
-> +
-> +static int open_virtgpu_device(void)
-> +{
-> +	drmVersionPtr version;
-> +	int opened_devices = 0;
-> +
-> +	for (int i = 0; i < MAX_CARDS; i++) {
-> +		char path[64];
-> +
-> +		snprintf(path, sizeof(path), "/dev/dri/card%d", i);
-> +		drm_fd = open(path, O_RDWR | O_CLOEXEC);
-> +		if (drm_fd < 0)
-> +			continue;
-> +
-> +		opened_devices++;
-> +
-> +		version = drmGetVersion(drm_fd);
-> +		if (version && strcmp(version->name, "virtio_gpu") == 0) {
-> +			drmFreeVersion(version);
-> +			igt_info("Found virtio_gpu device: %s\n", path);
-> +			return drm_fd;
-> +		}
-> +
-> +		drmFreeVersion(version);
-> +		close(drm_fd);
-> +	}
-> +	igt_info("No virtio_gpu device found, total DRM devices opened: %d\n", opened_devices);
-> +	return -1;
-> +}
-> +
-> +static const struct {
-> +	const char *name;
-> +	uint64_t id;
-> +} params[] = {
-> +	{"3D_FEATURES", VIRTGPU_PARAM_3D_FEATURES},
-> +	{"CAPSET_QUERY_FIX", VIRTGPU_PARAM_CAPSET_QUERY_FIX},
-> +	{"RESOURCE_BLOB", VIRTGPU_PARAM_RESOURCE_BLOB},
-> +	{"HOST_VISIBLE", VIRTGPU_PARAM_HOST_VISIBLE},
-> +	{"CROSS_DEVICE", VIRTGPU_PARAM_CROSS_DEVICE},
-> +	{"CONTEXT_INIT", VIRTGPU_PARAM_CONTEXT_INIT},
-> +	{"SUPPORTED_CAPSET_IDs", VIRTGPU_PARAM_SUPPORTED_CAPSET_IDs},
-> +	{"EXPLICIT_DEBUG_NAME", VIRTGPU_PARAM_EXPLICIT_DEBUG_NAME},
-> +};
-> +
-> +static void test_capset(int fd, uint32_t capset_id)
-> +{
-> +	uint8_t *caps_buf;
-> +	struct drm_virtgpu_get_caps caps;
-> +	int ret;
-> +	int i;
-> +
-> +	caps_buf = malloc(CAPS_BUFFER_SIZE);
-> +	igt_require(caps_buf);
-> +	memset(caps_buf, 0, CAPS_BUFFER_SIZE);
-> +
-> +	memset(&caps, 0, sizeof(caps));
-> +	caps.cap_set_id = capset_id;
-> +	caps.size = CAPS_BUFFER_SIZE;
-> +	caps.addr = (uintptr_t) caps_buf;
-> +
-> +	ret = ioctl(fd, DRM_IOCTL_VIRTGPU_GET_CAPS, &caps);
-> +	if (ret == 0) {
-> +		igt_info("Capset ID %u: SUCCESS\n", capset_id);
-> +		igt_info("  Reported size: %u\n", caps.size);
-> +		igt_info("  First 16 bytes: ");
-> +		for (i = 0; i < 16; i++)
-> +			igt_info("%02x ", caps_buf[i]);
-> +		igt_info("\n");
-> +	} else {
-> +		igt_info("Capset ID %u: FAILED - %s\n", capset_id,
-> +			 strerror(errno));
-> +	}
-> +
-> +	free(caps_buf);
-> +}
-> +
-> +static void create_resource_if_needed(void)
-> +{
-> +	int ret;
-> +
-> +	if (resource_created)
-> +		return;
-> +
-> +	memset(&args, 0, sizeof(args));
-> +	args.target = 2;
-> +	args.format = 67;
-> +	args.bind = (1 << 0);
-> +	args.width = 64;
-> +	args.height = 64;
-> +	args.depth = 1;
-> +	args.array_size = 1;
-> +
-> +	ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_RESOURCE_CREATE, &args);
-> +	igt_assert_f(ret == 0, "RESOURCE_CREATE failed: %s\n", strerror(errno));
-> +	igt_assert_neq(args.res_handle, 0);
-> +
-> +	resource_created = true;
-> +	igt_info("Created resource: res_handle=%u, bo_handle=%u\n",
-> +			args.res_handle, args.bo_handle);
-> +}
-> +
-> +igt_main {
-> +	void *caps_buf = NULL;
-> +
-> +	igt_fixture {
-> +		drm_fd = open_virtgpu_device();
-> +		igt_require(drm_fd >= 0);
-> +
-> +		caps_buf = malloc(CAPS_BUFFER_SIZE);
+To test gitlab pipelines I have forked IGT repo. It allowed to test
+pipelines in safe way (thanks Kamil for the idea).
+Here are results of the test:
+Last IGT without patchset:
+https://gitlab.freedesktop.org/andrzej.hajda/igt-gpu-tools/-/pipelines/1448021
+Last IGT with patchset:
+https://gitlab.freedesktop.org/andrzej.hajda/igt-gpu-tools/-/pipelines/1448029
 
-Use calloc
+Anyway it appeared CI uses quite old buildah base images which fails to find
+newer versions of OSes, and even with added workarounds for this they fail
+with arm64/armhf debian images. As a result I have decided to create own
+buldah image based on stable original bare buildah.
+All this took quite long time - learing gitlab CI, docker, buildah, podman,...
+Finally I have ended with v2, hopefully sth acceptable.
 
-> +		igt_require(caps_buf);
-> +		memset(caps_buf, 0, CAPS_BUFFER_SIZE);
-> +	}
-> +
-> +	igt_describe
-> +	    ("Maps a buffer object and tests read/write access via mmap.");
-> +	igt_subtest("drm-virtgpu-map") {
-> +		struct drm_virtgpu_map map = { };
-> +		void *map_ptr;
-> +		int ret;
-> +
-> +		create_resource_if_needed();
-> +		memset(&map, 0, sizeof(map));
-> +		map.handle = args.bo_handle;
-> +
-> +		/* Request mmap offset */
-> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_MAP, &map);
-> +		igt_assert_f(ret == 0, "MAP ioctl failed: %s\n",
-> +			     strerror(errno));
+v2:
+ - added own base buildah image creation job instead of using wayland's,
+ - removed podman logins from CI script,
+ - updated python[3]-docutils package name,
+ - updated descriptions,
+ - added tags,
+ - successfully tested gitlab pipelins on forked repo.
 
-Or use '%m':
-		igt_assert_f(!ret, "MAP ioctl failed: %m\n");
+[1]: https://patchwork.freedesktop.org/series/149642/#rev1
+[2]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/pipelines/1438518
+[3]: https://patchwork.freedesktop.org/series/149700/
 
-> +		igt_assert(map.offset != 0);
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+- Link to v1: https://lore.kernel.org/r/20250603-bump_docker_distros-v1-0-cf7e062e339c@intel.com
 
-Shorter:
-		igt_assert(map.offset);
+---
+Andrzej Hajda (5):
+      CI: create own base buildah image instead of wayland's
+      Dockerfile: bump debian version
+      Dockerfile: bump fedora version
+      meson: bump required and tested version of meson
+      CI: remove podman login
 
-> +
-> +		/* Try mmap */
-> +		map_ptr =
-> +		    mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, drm_fd,
-> +			 map.offset);
-> +		igt_assert(map_ptr != MAP_FAILED);
-> +
-> +		igt_info("Successfully mmap'ed BO: offset=0x%lx\n",
+ .gitlab-ci.yml                  | 37 +++++++++++++++++++++++++++----------
+ .gitlab-ci/pull-or-rebuild.sh   |  4 ++--
+ Dockerfile.build-buildah        |  3 +++
+ Dockerfile.build-debian         |  2 +-
+ Dockerfile.build-debian-arm64   |  4 ++--
+ Dockerfile.build-debian-armhf   |  4 ++--
+ Dockerfile.build-debian-minimal |  2 +-
+ Dockerfile.build-debian-mips    |  4 ++--
+ Dockerfile.build-fedora         |  4 ++--
+ meson.build                     |  2 +-
+ 10 files changed, 43 insertions(+), 23 deletions(-)
+---
+base-commit: dad4b2bb9e5a2c87ae0275efbf9f0df00a67ef46
+change-id: 20250602-bump_docker_distros-1aa6b6993d58
 
-Use PRIx64, for example see
-https://patchwork.freedesktop.org/series/149111/
+Best regards,
+-- 
+Andrzej Hajda <andrzej.hajda@intel.com>
 
-		igt_info("Successfully mmap'ed BO: offset=0x%" PRIx64 "\n",
-
-> +			 (unsigned long)map.offset);
-> +
-> +		/* Simple test: write and read */
-> +		memset(map_ptr, 0xaa, 4096);
-> +		igt_assert(((uint8_t *) map_ptr)[0] == 0xaa);
-> +
-> +		munmap(map_ptr, 4096);
-> +	}
-> +
-> +	igt_describe("Submits a dummy execbuffer to the GPU.");
-> +	igt_subtest("drm-virtgpu-execbuffer") {
-> +		struct drm_virtgpu_execbuffer execbuf = { };
-> +		uint32_t handles[1];
-> +		int ret;
-> +
-> +		create_resource_if_needed();
-> +		handles[0] = args.bo_handle;
-> +
-> +		/* Submit dummy execbuffer */
-> +		execbuf.flags = 0;
-> +		execbuf.size = 0;       /* No command */
-> +		execbuf.command = 0;    /* No command buffer */
-> +		execbuf.bo_handles = (uintptr_t) handles;
-> +		execbuf.num_bo_handles = 1;
-> +		execbuf.fence_fd = -1;  /* No fence */
-> +		execbuf.ring_idx = 0;   /* Default ring */
-> +
-> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_EXECBUFFER, &execbuf);
-> +		igt_assert_f(ret == 0, "EXECBUFFER ioctl failed: %s\n",
-> +			     strerror(errno));
-
-		igt_assert_f(!ret, "EXECBUFFER ioctl failed: %m\n");
-
-> +
-> +		igt_info("EXECBUFFER submitted successfully.\n");
-> +	}
-> +
-> +	igt_describe
-> +	    ("Validates that the GPU resource info ioctl returns expected metadata.");
-> +	igt_subtest("drm-virtgpu-resource-info") {
-> +		struct drm_virtgpu_resource_info info;
-> +		int ret;
-> +
-> +		create_resource_if_needed();
-> +		memset(&info, 0, sizeof(info));
-> +		info.bo_handle = args.bo_handle;
-> +
-> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_RESOURCE_INFO, &info);
-> +		igt_assert_f(ret == 0, "RESOURCE_INFO failed: %s\n",
-> +			     strerror(errno));
-
-		igt_assert_f(!ret, "RESOURCE_INFO failed: %m\n");
-
-> +		igt_assert_eq(info.res_handle, args.res_handle);
-> +		igt_assert(info.size > 0);
-> +
-> +		igt_info("Queried resource info:\n");
-> +		igt_info("  size:      %u bytes\n", info.size);
-> +		igt_info("  res_handle %u\n", info.res_handle);
-> +		igt_info("  blob_mem:  %u\n", info.blob_mem);
-> +	}
-> +
-> +	igt_describe
-> +	    ("Transfers buffer contents from guest memory to the host.");
-> +	igt_subtest("drm-virtgpu-3d-transfer-to-host") {
-> +		int ret;
-> +		struct drm_virtgpu_3d_transfer_to_host xfer;
-> +
-> +		create_resource_if_needed();
-> +
-> +		memset(&xfer, 0, sizeof(xfer));
-> +		xfer.bo_handle = args.bo_handle;
-> +		xfer.box.x = 0;
-> +		xfer.box.y = 0;
-> +		xfer.box.z = 0;
-> +		xfer.box.w = args.width;
-> +		xfer.box.h = args.height;
-> +		xfer.box.d = 1;
-> +		xfer.level = 0;
-> +		xfer.offset = 0;
-> +		xfer.stride = 0;
-> +		xfer.layer_stride = 0;
-> +
-> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_TRANSFER_TO_HOST, &xfer);
-> +		igt_assert_f(ret == 0, "TRANSFER_TO_HOST failed: %s\n",
-> +			     strerror(errno));
-
-		igt_assert_f(!ret, "TRANSFER_TO_HOST failed: %m\n"(;
-
-> +		igt_info("TRANSFER_TO_HOST completed\n");
-> +	}
-> +
-> +	igt_describe("Transfers buffer contents from the host to guest memory.");
-> +	igt_subtest("drm-virtgpu-3d-transfer-from-host")
-> +	{
-> +		int ret;
-> +		struct drm_virtgpu_3d_transfer_from_host xfer_in;
-> +
-> +		create_resource_if_needed();
-> +		memset(&xfer_in, 0, sizeof(xfer_in));
-> +		xfer_in.bo_handle = args.bo_handle;
-> +		xfer_in.box.x = 0;
-> +		xfer_in.box.y = 0;
-> +		xfer_in.box.z = 0;
-> +		xfer_in.box.w = args.width;
-> +		xfer_in.box.h = args.height;
-> +		xfer_in.box.d = 1;
-> +		xfer_in.level = 0;
-> +		xfer_in.offset = 0;
-> +		xfer_in.stride = 0;
-> +		xfer_in.layer_stride = 0;
-> +
-> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_TRANSFER_FROM_HOST, &xfer_in);
-> +		igt_assert_f(ret == 0, "TRANSFER_FROM_HOST failed: %s\n", strerror(errno));
-
-		igt_assert_f(!ret, "TRANSFER_FROM_HOST failed: %m\n");
-
-> +		igt_info("TRANSFER_FROM_HOST completed\n");
-> +	}
-> +
-> +	igt_describe
-> +	    ("Waits for a GPU operation to complete on a specific resource.");
-> +	igt_subtest("drm-virtgpu-3d-wait") {
-> +		struct drm_virtgpu_3d_wait wait = {.handle = args.bo_handle };
-> +
-> +		int ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_WAIT, &wait);
-> +
-> +		if (ret == 0)
-> +			igt_info("WAIT succeeded.\n");
-> +		else
-> +			igt_info("WAIT failed as expected (%s).\n",
-> +				 strerror(errno));
-
-			igt_info("WAIT failed as expected (%m).\n");
-Btw it looks unclear, what is tested here?
-
-> +	}
-> +
-> +	igt_describe
-> +		("Creates a standard 2D GPU resource using RESOURCE_CREATE ioctl.");
-> +	igt_subtest("drm-virtgpu-resource-create") {
-> +		create_resource_if_needed();
-> +	}
-> +
-> +	igt_describe
-> +	    ("Creates a GPU resource using the blob interface with memory flags.");
-> +	igt_subtest("drm-virtgpu-resource-create-blob") {
-> +		struct drm_virtgpu_resource_create_blob blob = {
-> +			.blob_mem = VIRTGPU_BLOB_MEM_GUEST,
-> +			.blob_flags =
-> +			    VIRTGPU_BLOB_FLAG_USE_MAPPABLE |
-> +			    VIRTGPU_BLOB_FLAG_USE_SHAREABLE,
-> +			.size = 4096,
-> +			.blob_id = 0,
-> +			.cmd_size = 0,
-> +			.cmd = (uintptr_t) NULL,
-> +		};
-> +
-> +		int ret =
-> +		    ioctl(drm_fd, DRM_IOCTL_VIRTGPU_RESOURCE_CREATE_BLOB,
-> +			  &blob);
-> +		igt_assert_f(ret == 0, "Blob creation ioctl failed: %s\n",
-> +			     strerror(errno));
-
-		igt_assert_f(!ret, "Blob creation ioctl failed: %m\n");
-
-> +		igt_assert_eq(ret, 0);
-
-Redundant.
-
-> +		igt_assert_neq(blob.res_handle, 0);
-> +	}
-> +
-> +	igt_describe
-> +	    ("Queries different GPU capsets and prints the response payload.");
-> +	igt_subtest("drm-virtgpu-get-caps") {
-> +		/* Test multiple capsets */
-> +		test_capset(drm_fd, 1); /* VirGL */
-> +		test_capset(drm_fd, 2); /* VirGL2 */
-> +		test_capset(drm_fd, 3); /* GFXSTREAM_VULKAN */
-> +		test_capset(drm_fd, 9999); /* Invalid (expect failure) */
-
-Why not test_capset() return an -errno and you actually check it here?
-
-> +	}
-> +
-> +	igt_describe
-> +	    ("Initializes a GPU context with parameters like capset ID and debug name.");
-> +	igt_subtest("drm-virtgpu-context-init") {
-> +		struct drm_virtgpu_context_set_param ctx_params[2];
-> +		struct drm_virtgpu_context_init ctx_init;
-> +		int ret;
-> +
-> +		memset(ctx_params, 0, sizeof(ctx_params));
-> +
-> +		ctx_params[0].param = VIRTGPU_CONTEXT_PARAM_CAPSET_ID;
-> +		ctx_params[0].value = 1;
-> +
-> +		ctx_params[1].param = VIRTGPU_CONTEXT_PARAM_DEBUG_NAME;
-> +		ctx_params[1].value = (uintptr_t) "IGT-Test-Context";
-> +
-> +		memset(&ctx_init, 0, sizeof(ctx_init));
-> +		ctx_init.num_params = 2;
-> +		ctx_init.ctx_set_params = (uintptr_t)&ctx_params[0];
-> +
-> +		ret = ioctl(drm_fd, DRM_IOCTL_VIRTGPU_CONTEXT_INIT, &ctx_init);
-> +		if (ret == -1 && errno == EEXIST) {
-> +			igt_info
-> +			    ("CONTEXT_INIT with params failed as expected (already initialized)\n");
-> +		} else {
-> +			igt_assert_f(ret == 0,
-> +				     "CONTEXT_INIT with params ioctl failed: %s\n",
-> +				     strerror(errno));
-
-			igt_assert_f(!ret, "CONTEXT_INIT with params ioctl failed: %m\n");
-
-> +			igt_info("CONTEXT_INIT with parameters succeeded\n");
-> +		}
-> +	}
-> +
-> +	igt_describe
-> +	    ("Verifies which VirtIO-GPU features are supported by querying driver parameters.");
-> +	igt_subtest("drm-virtgpu-getparam") {
-> +		bool found_supported = false;
-> +		uint64_t actual_value = 0;
-> +
-> +		for (size_t i = 0; i < ARRAY_SIZE(params); i++) {
-> +			struct drm_virtgpu_getparam gp = {
-> +				.param = params[i].id,
-> +				.value = (uintptr_t)&actual_value,
-> +			};
-> +
-> +			int ret =
-> +			    ioctl(drm_fd, DRM_IOCTL_VIRTGPU_GETPARAM, &gp);
-> +			if (ret == 0) {
-> +				found_supported = true;
-> +				igt_info("GETPARAM %s (ID=%lu): value = %llu\n",
-> +					 params[i].name, params[i].id,
-> +					 gp.value);
-> +			} else {
-> +				igt_info("GETPARAM %s (ID=%lu): failed - %s\n",
-> +					 params[i].name, params[i].id,
-> +					 strerror(errno));
-
-Use '%m'
-
-Regards,
-Kamil
-
-> +			}
-> +		}
-> +
-> +		igt_assert_f(found_supported,
-> +			     "No GETPARAM query returned a value.");
-> +	}
-> +
-> +	igt_fixture {
-> +		free(caps_buf);
-> +		close(drm_fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 20ddddb89..ac85cac30 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -13,6 +13,7 @@ test_progs = [
->  	'drm_buddy',
->  	'drm_mm',
->  	'drm_read',
-> +	'drm_virtgpu',
->  	'fbdev',
->  	'kms_3d',
->  	'kms_addfb_basic',
-> -- 
-> 2.48.1
-> 
