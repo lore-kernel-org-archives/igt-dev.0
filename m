@@ -4,54 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 513C2C61CE7
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 10:02:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6706C61CE7
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 10:16:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0569289316;
-	Wed, 11 Jun 2025 10:02:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6CCAD10E609;
+	Wed, 11 Jun 2025 10:16:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BlAWXaJt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UzgOIjCJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F06A899B7
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 10:02:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1B4810E279
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 10:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749636129; x=1781172129;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=I7TJwNIN31Sl2iP/P+u6J24zZ9BzWEogNgYZJR2x4J4=;
- b=BlAWXaJtkcxrPk3erWtvr6/9ucQK+RfALMKFAbtJM8U4ar3B5Bsqd6tN
- wNSd9T6XkWhVGR1C0OO7csu9gVuxS9tWy/XoufHci3+d5NJlC/tJ7h92i
- xMLSio7iOEpP5SJ+7BUJCOmDSrO8lvqQB9cnNBpjqTi8GZhkJ8GtvpRGW
- xlGo8S1qhC9r19Ovqp6VByhbOcgZKmPJo/BmAznji7DUEcGXvVo7qYbSB
- el43ZWcxlazAZJiD+D9VGvVOv47NITMO0P/dxONfl0ynoh5nPJ0VyZjmn
- oR2uaySv1eyPCw4Ft63f1jPJQ2+RbjANmrz2b9UGA4zUXGo7lrCDARCPK g==;
-X-CSE-ConnectionGUID: wL7+Zo+NTNepn1CTkYzHqQ==
-X-CSE-MsgGUID: kBYRmsEoR5yQQeDOVbfMLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="69335370"
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="69335370"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2025 03:02:06 -0700
-X-CSE-ConnectionGUID: WKgfNnMRQKqdDbpzZTBKmw==
-X-CSE-MsgGUID: GSDm3S0uSPq5SrripuL+1Q==
+ t=1749636982; x=1781172982;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=QU5b9YoKYl2MDjqJa+QO4DMY1GKkd9v74xidG6U4Se4=;
+ b=UzgOIjCJjMc/5XZkEEvp8q+h3BgXmgRVViKXLUSqqIF4jm90Qi2BThgd
+ Iqa25Vvy60LwC9z3wNQS3CoKITitQR4oxaEQHP2euvH5thEbOlvAHGhgG
+ V8nVWs8KkmAjHs/tl2VHyqnHDN4p+T5FYozs7bzBf4FaGxtWkMrrRCqRF
+ Ts2yYcQGO0QqktMMZDyLx/Z5PXODvn9XDy4NNdrwG8jjhbOe5mZl5D0hm
+ uX9nlslYTPvlhIypusGyAU/DK/qnT3F4Ss5zWlClunjc44V8sERR3132z
+ UXyCwCmHfeKU8YR2KNQPLSzAByCKNI36cG6mE5LgdhC5eEL30NlumC+tT A==;
+X-CSE-ConnectionGUID: r+1EL/3RTleLY+1nmhYoFA==
+X-CSE-MsgGUID: 8BEtKOViSlOij+ExZn1dqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51874883"
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="51874883"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2025 03:16:22 -0700
+X-CSE-ConnectionGUID: mauX3T76T8uFgcfgbsZ1Gg==
+X-CSE-MsgGUID: VsuFhpQEQAe7TZGe8oxaYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="152039973"
-Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2025 03:02:05 -0700
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.auld@intel.com,
-	lukasz.laguna@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_vm: Fix skip condition to account for
- padded BO size
-Date: Wed, 11 Jun 2025 12:01:58 +0200
-Message-Id: <20250611100158.15197-1-lukasz.laguna@intel.com>
-X-Mailer: git-send-email 2.40.0
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; d="scan'208";a="148067379"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 03:16:18 -0700
+Date: Wed, 11 Jun 2025 12:16:05 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Melissa Wen <mwen@igalia.com>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>, Alex Hung <alex.hung@amd.com>,
+ Leo Li <sunpeng.li@amd.com>, Harry Wentland <harry.wentland@amd.com>,
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, kernel-dev@igalia.com
+Subject: Re: [PATCH i-g-t 3/3] tests/kms_async_flip: skip subtest on AMD if
+ invalid condition
+Message-ID: <20250611101605.tql5ik4th75t762a@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Melissa Wen <mwen@igalia.com>,
+ Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>, Alex Hung <alex.hung@amd.com>,
+ Leo Li <sunpeng.li@amd.com>,
+ Harry Wentland <harry.wentland@amd.com>,
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ kernel-dev@igalia.com
+References: <20250601191459.46759-1-mwen@igalia.com>
+ <20250601191459.46759-4-mwen@igalia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250601191459.46759-4-mwen@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,43 +89,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Several subtests currently skip when the requested BO size exceeds
-visible VRAM, but they don't take into account the padded size that is
-actually passed to the kernel when creating BO. As a result, subtest may
-attempt to allocate a BO that exceeds the available VRAM, resulting in
--E2BIG error.
+Hi Melissa,
+On 2025-06-01 at 16:14:46 -0300, Melissa Wen wrote:
+> Async page flips can fail for any driver-specific reasons, i.e. when the
+> driver can't commit to async page flip request due to hw limitations,
+> the commit is rejected with -EINVAL since there is one or more
+> conditions that make the request invalid. These limitations vary between
+> vendors and hw versions. In case of AMD devices, async page flip cannot
+> be perfomed if fb memory type changes (VRAM vs GTT), but framebuffer
+> allocation type cannot be controlled by any userspace configuration.
+> 
+> Allow EINVAL failures on AMD device and skip the test. Async flips can
+> be still validated by the performance comparison assert if no EINVAL.
+> 
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
 
-Fix this by using the prefetch BO size in the skip condition to ensure
-the subtests avoid allocation attempts that are guaranteed to fail.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
- tests/intel/xe_vm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Are you ok with merging this one patch first?
+This should also be tested again, as i915.Full were not run.
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 94cca13ba..1a21a6459 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -1385,15 +1385,15 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
- 	vm = xe_vm_create(fd, 0, 0);
- 
-+	bo_size_prefetch = xe_bb_size(fd, bo_size);
-+
- 	if (flags & LARGE_BIND_FLAG_USERPTR) {
--		bo_size_prefetch = xe_bb_size(fd, bo_size);
- 		map = aligned_alloc(xe_get_default_alignment(fd), bo_size_prefetch);
- 		igt_assert(map);
- 	} else {
--		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
-+		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size_prefetch >
- 			    xe_visible_vram_size(fd, 0));
- 
--		bo_size_prefetch = xe_bb_size(fd, bo_size);
- 		bo = xe_bo_create(fd, vm, bo_size_prefetch,
- 				  vram_if_possible(fd, eci->gt_id),
- 				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
--- 
-2.40.0
+Regards,
+Kamil
 
+> ---
+>  tests/kms_async_flips.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index 97128cfad..065ac9c49 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -410,7 +410,12 @@ static void test_async_flip(data_t *data)
+>  
+>  		ret = perform_flip(data, frame, flags);
+>  
+> -		if (frame == 1 && data->allow_fail)
+> +		/* AMD cannot perform async page flip if fb mem type changes,
+> +		 * and this condition cannot be controlled by any userspace
+> +		 * configuration. Therefore allow EINVAL failure and skip the
+> +		 * test for AMD devices.
+> +		 */
+> +		if ((frame == 1 && data->allow_fail) || is_amdgpu_device(data->drm_fd))
+>  			igt_skip_on(ret == -EINVAL);
+>  		else
+>  			igt_assert_eq(ret, 0);
+> -- 
+> 2.47.2
+> 
