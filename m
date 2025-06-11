@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB497C71133
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 15:27:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9442C677C4
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 15:27:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 90DBD10E6A9;
-	Wed, 11 Jun 2025 15:27:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5E8C110E6AC;
+	Wed, 11 Jun 2025 15:27:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DE/hOjVa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YZV1jhim";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 778D310E6A9
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 15:27:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B9E810E6AC
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 15:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749655650; x=1781191650;
+ t=1749655654; x=1781191654;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KYFDwGgoag3Su0NpDRUelCyM+11dEfUxZykUWz2R60s=;
- b=DE/hOjVa3hDipdxwTdtL6/2AwvRITIbVsvocNYxmmVKrhlciprzLJVvv
- FuvPgSdlguReZwkv2UsMdyEp3/j03gBL0jnpc/n0O+bwZohSzPnx6bqJa
- sFYvnXqWYmOCXZxpJekOKXFUpbdDW6wSc7wgn2meUrpKmeayl+/PjUzih
- tU5+Ow9v6c02dEuBa0JvMbCuCxd+PwpRvvM0H6wOLuMziAkHQml4hXXS0
- eEDMFF6yg1Y1ec8jaQHqoi6zKPV5MV9T3mOQ+8QLD30p8nIrhcqcU71Ei
- jBl0/CcHJpYJ4oHcvwwcScZDTyOCvkGq7JiGTNSUYfFvlCQvWFWnchfRM w==;
-X-CSE-ConnectionGUID: pUeBZJ00SU6WLdiXgXAg9Q==
-X-CSE-MsgGUID: NM2IDxIhTqGUGa2lVFZNuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51517793"
-X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; d="scan'208";a="51517793"
+ bh=FuUeOlA9NaKso0vhVnIY+nyfCehTUX4WkENXkBP4UsA=;
+ b=YZV1jhimzXXq5yWgyT25k8+n5BiWOP55bsCK0qdzzb1tnjx5Tfm+PFCb
+ FaBtxPQRGWLNRR01EwGhVrinW4c59Qg3MECCA1qLCs+F3yHwpioXuc9u0
+ nvtJ5ERNPIe0TD1T3L5WwJzpn5oz43xoohCDnpBMxZqiTndcWcFnUe75d
+ l0JAsi5wFx0/G2hGrQh9RlqD+rFemgkp1yIb+1vD51H/aCiNgGZv7M2g4
+ UoGQ9rMRXPvFdeB5+X7l9LtrETjGVHVll82M9f3ryLE+egKKoskb0T4FL
+ 9rCykSdQ0Lz3cET/nO4fRExVCIvsJFCLUjgjTfmXGfezA2SRMyx3MGLb7 A==;
+X-CSE-ConnectionGUID: o5QxAOjVQuWU1FAS2L+yCQ==
+X-CSE-MsgGUID: lFaozxCiQNSuTUNyaTuKXA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51517806"
+X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; d="scan'208";a="51517806"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2025 08:27:30 -0700
-X-CSE-ConnectionGUID: k77rJ8+wS4Ojeo66D8lQdQ==
-X-CSE-MsgGUID: QjcdpRehQRqYsr/5T0K27g==
+ 11 Jun 2025 08:27:34 -0700
+X-CSE-ConnectionGUID: qsM+B6eXRBqgqwOJ+UVUvw==
+X-CSE-MsgGUID: ztrRC2ffTv6TOuaaz4H+XA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; d="scan'208";a="178136314"
+X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; d="scan'208";a="178136340"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2025 08:27:26 -0700
+ 11 Jun 2025 08:27:30 -0700
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  vinay.belgaumkar@intel.com, kamil.konieczny@intel.com,
@@ -48,10 +48,10 @@ To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
 Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
  soham.purkait@intel.com, ashutosh.dixit@intel.com,
  umesh.nerlige.ramappa@intel.com
-Subject: [PATCH v12 4/5] tools/gputop/xe_gputop: Add gputop support for xe
- specific devices
-Date: Wed, 11 Jun 2025 20:51:36 +0530
-Message-Id: <20250611152137.1858240-5-soham.purkait@intel.com>
+Subject: [PATCH v12 5/5] tools/gputop/gputop: Enable support for multiple GPUs
+ and instances
+Date: Wed, 11 Jun 2025 20:51:37 +0530
+Message-Id: <20250611152137.1858240-6-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250611152137.1858240-1-soham.purkait@intel.com>
 References: <20250611152137.1858240-1-soham.purkait@intel.com>
@@ -73,493 +73,434 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add gputop support for xe-specific devices. Separate
-driver-specific code into respective source files.
+Introduce vendor-agnostic support for
+handling multiple GPUs and instances
+in gputop. Improve the tool's adaptability
+to various GPU configurations.
 
 v2 : Fix for refactoring GPUTOP into a
      vendor-agnostic tool. (Lucas)
 
-v3 : Separate commit. (Kamil)
+v3 : New year included in copyright. (Kamil, Riana)
+     Removed caps in function name. (Riana)
+     Struct for driver specific operations. (Riana)
+     Headers in alphabetical order. (Kamil, Riana)
 
-v4 : Headers in alphabetical order
-     Engines memory allocation at
-     the beginning all at once.
-     Removed PMU normalization. (Riana)
+v4 : Commit description and signed-off included.
 
-v5 : Refactor to eliminate redundant
-     and unused code segments.
-     Fix for proper resource cleanup. (Riana)
+v5 : Fix for proper resource cleanup. (Riana)
+     Use "dev_type" enum for card_type. (Krzysztof)
+     Add new filter to return collection
+     of matching devices.               (Zbigniew)
 
-v8 : Allocated card structure memory inplace and
-     accordingly modified the clean up code.
+v6 : Use device filter to populate the array of
+     cards for all supported drivers.   (Zbigniew)
 
-v11 : Loop optimization in xe_populate_engines.
-      Removed short_name.
-      PMU fds are closed on cleanup.
-      Removed unnecessary comments. (Riana)
+v7 : Use filter to find all the cards.  (Zbigniew)
+
+v8 : Removed 'drivers' array parameter from
+     card match function.               (Zbigniew)
+
+v10 : Resolved 'populate_devices' call with
+      pci subsystem filtering.          (Zbigniew)
+
+v11 : Add space after /* and before */ for better
+      readability.                      (Zbigniew)
+      Comments wrapped at 75/100.       (Riana)
 
 v12 : Cosmetic changes.
-                     (Riana)
+		      (Riana)
 
 Signed-off-by: Soham Purkait <soham.purkait@intel.com>
----
- tools/gputop/xe_gputop.c | 378 +++++++++++++++++++++++++++++++++++++++
- tools/gputop/xe_gputop.h |  61 +++++++
- 2 files changed, 439 insertions(+)
- create mode 100644 tools/gputop/xe_gputop.c
- create mode 100644 tools/gputop/xe_gputop.h
 
-diff --git a/tools/gputop/xe_gputop.c b/tools/gputop/xe_gputop.c
-new file mode 100644
-index 000000000..1585f76e1
---- /dev/null
-+++ b/tools/gputop/xe_gputop.c
-@@ -0,0 +1,378 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+#include "xe_gputop.h"
-+
-+#define engine_ptr(engines, n) (&(engines)->engine + (n))
-+
-+static void __update_sample(struct xe_pmu_counter *counter, uint64_t val)
-+{
-+	counter->val.prev = counter->val.cur;
-+	counter->val.cur = val;
-+}
-+
-+static void update_sample(struct xe_pmu_counter *counter, uint64_t *val)
-+{
-+	if (counter->present)
-+		__update_sample(counter, val[counter->idx]);
-+}
-+
-+static const char *class_display_name(unsigned int class)
-+{
-+	switch (class) {
-+	case DRM_XE_ENGINE_CLASS_RENDER:
-+		return "Render/3D";
-+	case DRM_XE_ENGINE_CLASS_COPY:
-+		return "Blitter";
-+	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
-+		return "Video";
-+	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-+		return "VideoEnhance";
-+	case DRM_XE_ENGINE_CLASS_COMPUTE:
-+		return "Compute";
-+	default:
-+		return "[unknown]";
-+	}
-+}
-+
-+void xe_clean_up(void *obj, int len)
-+{
-+	struct xe_gputop *dev = (struct xe_gputop *)obj;
-+	struct xe_pmu_counter pmu;
-+	struct xe_engine *eng;
-+
-+	for (int i = 0; i < len; i++) {
-+		if ((dev + i)->card)
-+			free((dev + i)->card);
-+		if ((dev + i)->eng_obj) {
-+			for (int j = 0;
-+			     j < ((struct xe_pmu_device *)(dev + i)->eng_obj)->num_engines;
-+			     j++) {
-+				eng = engine_ptr((struct xe_pmu_device *)(dev + i)->eng_obj, j);
-+				if (eng->display_name)
-+					free(eng->display_name);
-+
-+				pmu = eng->engine_active_ticks;
-+				if (pmu.present)
-+					close(pmu.fd);
-+
-+				pmu = eng->engine_total_ticks;
-+				if (pmu.present)
-+					close(pmu.fd);
-+			}
-+			free(dev->eng_obj);
-+		}
-+		if ((dev + i)->pmu_device)
-+			free(dev->pmu_device);
-+	}
-+}
-+
-+static char *pmu_name(struct igt_device_card *card)
-+{
-+	int card_fd;
-+	char device[30];
-+	char *path;
-+
-+	if (strlen(card->card))
-+		card_fd = igt_open_card(card);
-+	else if (strlen(card->render))
-+		card_fd = igt_open_render(card);
-+
-+	if (card_fd == -1)
-+		return NULL;
-+
-+	xe_perf_device(card_fd, device, sizeof(device));
-+	path = strdup(device);
-+	close(card_fd);
-+	return path;
-+}
-+
-+static int _open_pmu(uint64_t type, unsigned int *cnt, struct xe_pmu_counter *pmu, int *fd)
-+{
-+	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
-+
-+	if (fd__ >= 0) {
-+		if (*fd == -1)
-+			*fd = fd__;
-+		pmu->present = true;
-+		pmu->idx = (*cnt)++;
-+		pmu->fd = fd__;
-+	}
-+
-+	return fd__;
-+}
-+
-+void xe_gputop_init(void *ptr,
-+		    struct igt_device_card *card)
-+{
-+	struct xe_gputop *obj = (struct xe_gputop *)ptr;
-+
-+	obj->pmu_device = pmu_name(card);
-+	if (!obj->pmu_device) {
-+		fprintf(stderr, "%s : pmu_device path returned NULL", card->pci_slot_name);
-+		exit(EXIT_FAILURE);
-+	}
-+	obj->card = card;
-+}
-+
-+static int pmu_format_shift(int xe, const char *name)
-+{
-+	uint32_t start;
-+	int format;
-+	char device[80];
-+
-+	format = perf_event_format(xe_perf_device(xe, device, sizeof(device)),
-+				   name, &start);
-+	if (format)
-+		return 0;
-+
-+	return start;
-+}
-+
-+static int engine_cmp(const void *__a, const void *__b)
-+{
-+	const struct xe_engine *a = (struct xe_engine *)__a;
-+	const struct xe_engine *b = (struct xe_engine *)__b;
-+
-+	if (a->drm_xe_engine.engine_class != b->drm_xe_engine.engine_class)
-+		return a->drm_xe_engine.engine_class - b->drm_xe_engine.engine_class;
-+	else
-+		return a->drm_xe_engine.engine_instance - b->drm_xe_engine.engine_instance;
-+}
-+
-+void *xe_populate_engines(const void *obj)
-+{
-+	struct igt_device_card *card = ((struct xe_gputop *)obj)->card;
-+	uint64_t engine_active_config, engine_total_config;
-+	uint64_t engine_class, engine_instance, gt_shift;
-+	struct drm_xe_engine_class_instance *hwe;
-+	struct xe_pmu_device *engines;
-+	char device[30];
-+	int ret = 0;
-+	int card_fd;
-+
-+	if (!card || !strlen(card->card) || !strlen(card->render))
-+		return NULL;
-+
-+	if (strlen(card->card)) {
-+		card_fd = igt_open_card(card);
-+	} else if (strlen(card->render)) {
-+		card_fd = igt_open_render(card);
-+	} else {
-+		fprintf(stderr, "Failed to detect device!\n");
-+		return NULL;
-+	}
-+	xe_device_get(card_fd);
-+	engines = malloc(sizeof(struct xe_pmu_device) +
-+			 xe_number_engines(card_fd) * sizeof(struct xe_engine));
-+	if (!engines)
-+		return NULL;
-+
-+	memset(engines, 0, sizeof(struct xe_pmu_device) +
-+	       xe_number_engines(card_fd) * sizeof(struct xe_engine));
-+
-+	engines->num_engines = 0;
-+	engines->device = ((struct xe_gputop *)obj)->pmu_device;
-+	gt_shift = pmu_format_shift(card_fd, "gt");
-+	engine_class = pmu_format_shift(card_fd, "engine_class");
-+	engine_instance = pmu_format_shift(card_fd, "engine_instance");
-+	xe_perf_device(card_fd, device, sizeof(device));
-+	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
-+	if (ret < 0)
-+		return NULL;
-+
-+	ret = perf_event_config(device, "engine-total-ticks", &engine_total_config);
-+	if (ret < 0)
-+		return NULL;
-+
-+	xe_for_each_engine(card_fd, hwe) {
-+		uint64_t  param_config;
-+		struct xe_engine *engine;
-+
-+		engine = engine_ptr(engines, engines->num_engines);
-+		param_config = (uint64_t)hwe->gt_id << gt_shift | hwe->engine_class << engine_class
-+			| hwe->engine_instance << engine_instance;
-+		engine->drm_xe_engine = *hwe;
-+		engine->engine_active_ticks.config = engine_active_config | param_config;
-+		engine->engine_total_ticks.config = engine_total_config | param_config;
-+
-+		if (engine->engine_active_ticks.config == -1 ||
-+		    engine->engine_total_ticks.config == -1) {
-+			ret = ENOENT;
-+			break;
-+		}
-+
-+		ret = asprintf(&engine->display_name, "%s/%u",
-+			       class_display_name(engine->drm_xe_engine.engine_class),
-+			       engine->drm_xe_engine.engine_instance);
-+
-+		if (ret <= 0) {
-+			ret = errno;
-+			break;
-+		}
-+
-+		engines->num_engines++;
-+	}
-+
-+	if (!ret) {
-+		errno = ret;
-+		return NULL;
-+	}
-+
-+	qsort(engine_ptr(engines, 0), engines->num_engines,
-+	      sizeof(struct xe_engine), engine_cmp);
-+
-+	((struct xe_gputop *)obj)->eng_obj = engines;
-+
-+	return engines;
-+}
-+
-+static uint64_t pmu_read_multi(int fd, unsigned int num, uint64_t *val)
-+{
-+	uint64_t buf[2 + num];
-+	unsigned int i;
-+	ssize_t len;
-+
-+	memset(buf, 0, sizeof(buf));
-+
-+	len = read(fd, buf, sizeof(buf));
-+	assert(len == sizeof(buf));
-+
-+	for (i = 0; i < num; i++)
-+		val[i] = buf[2 + i];
-+
-+	return buf[1];
-+}
-+
-+void xe_pmu_sample(const void *obj)
-+{
-+	struct xe_pmu_device *engines = ((struct xe_gputop *)obj)->eng_obj;
-+	const int num_val = engines->num_counters;
-+	uint64_t val[2 + num_val];
-+	unsigned int i;
-+
-+	pmu_read_multi(engines->fd, num_val, val);
-+
-+	for (i = 0; i < engines->num_engines; i++) {
-+		struct xe_engine *engine = engine_ptr(engines, i);
-+
-+		update_sample(&engine->engine_active_ticks, val);
-+		update_sample(&engine->engine_total_ticks, val);
-+	}
-+}
-+
-+int xe_pmu_init(const void *obj)
-+{
-+	struct xe_pmu_device *engines = ((struct xe_gputop *)obj)->eng_obj;
-+	struct xe_engine *engine;
-+	unsigned int i;
-+	uint64_t type;
-+	int fd;
-+
-+	type = igt_perf_type_id(engines->device);
-+	engines->fd = -1;
-+	engines->num_counters = 0;
-+
-+	for (i = 0; i < engines->num_engines; i++) {
-+		engine = engine_ptr(engines, i);
-+		fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
-+			       &engines->fd);
-+		if (fd < 0)
-+			return -1;
-+		fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
-+			       &engines->fd);
-+		if (fd < 0)
-+			return -1;
-+	}
-+	return 0;
-+}
-+
-+static double pmu_active_percentage(struct xe_engine *engine)
-+{
-+	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
-+				  engine->engine_active_ticks.val.prev;
-+	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
-+				 engine->engine_total_ticks.val.prev;
-+	double percentage;
-+
-+	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
-+	return percentage;
-+}
-+
-+static int
-+print_device_description(const void *obj, int lines, int w, int h)
-+{
-+	char *desc;
-+	int len;
-+
-+	len = asprintf(&desc, "DRIVER: %s || BDF: %s",
-+		       ((struct xe_gputop *)obj)->card->driver,
-+		       ((struct xe_gputop *)obj)->card->pci_slot_name);
-+
-+	printf("\033[7m%s%*s\033[0m\n",
-+	       desc,
-+	       (int)(w - len), " ");
-+	lines++;
-+	free(desc);
-+	return lines;
-+}
-+
-+static int
-+print_engines_header(struct xe_pmu_device *engines,
-+		     int lines, int con_w, int con_h)
-+{
-+	const char *a;
-+
-+	for (unsigned int i = 0;
-+	     i < engines->num_engines && lines < con_h;
-+	     i++) {
-+		struct xe_engine *engine = engine_ptr(engines, i);
-+
-+		if (!engine->num_counters)
-+			continue;
-+
-+		a = "            ENGINES   ACTIVITY  ";
-+
-+		printf("\033[7m%s%*s\033[0m\n",
-+		       a,
-+		       (int)(con_w - strlen(a)), " ");
-+		lines++;
-+
-+		break;
-+	}
-+
-+	return lines;
-+}
-+
-+static int
-+print_engine(struct xe_pmu_device *engines, unsigned int i,
-+	     int lines, int con_w, int con_h)
-+{
-+	struct xe_engine *engine = engine_ptr(engines, i);
-+	double percentage = pmu_active_percentage(engine);
-+
-+	printf("%*s", (int)(strlen("            ENGINES")), engine->display_name);
-+	print_percentage_bar(percentage, con_w - strlen("            ENGINES"));
-+	printf("\n");
-+
-+	return ++lines;
-+}
-+
-+int xe_print_engines(const void *obj, int lines, int w, int h)
-+{
-+	struct xe_pmu_device *show = ((struct xe_gputop *)obj)->eng_obj;
-+
-+	lines = print_device_description(obj, lines, w, h);
-+
-+	lines = print_engines_header(show, lines, w,  h);
-+
-+	for (unsigned int i = 0; i < show->num_engines && lines < h; i++)
-+		lines = print_engine(show, i, lines, w, h);
-+
-+	lines = print_engines_footer(lines, w, h);
-+
-+	return lines;
-+}
-+
-diff --git a/tools/gputop/xe_gputop.h b/tools/gputop/xe_gputop.h
-new file mode 100644
-index 000000000..3a7856ae2
---- /dev/null
-+++ b/tools/gputop/xe_gputop.h
-@@ -0,0 +1,61 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+#ifndef __XE_GPUTOP_H__
-+#define __XE_GPUTOP_H__
-+
-+#include <dirent.h>
-+
-+#include "igt_device_scan.h"
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tools/{ => gputop}/gputop.c | 224 +++++++++++++++++++++++++++++-------
+ tools/gputop/meson.build    |   6 +
+ tools/meson.build           |   6 +-
+ 3 files changed, 192 insertions(+), 44 deletions(-)
+ rename tools/{ => gputop}/gputop.c (66%)
+ create mode 100644 tools/gputop/meson.build
+
+diff --git a/tools/gputop.c b/tools/gputop/gputop.c
+similarity index 66%
+rename from tools/gputop.c
+rename to tools/gputop/gputop.c
+index 43b01f566..bc5f11197 100644
+--- a/tools/gputop.c
++++ b/tools/gputop/gputop.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: MIT
+ /*
+- * Copyright © 2023 Intel Corporation
++ * Copyright © 2023-2025 Intel Corporation
+  */
+ 
+ #include <assert.h>
+@@ -14,66 +14,146 @@
+ #include <math.h>
+ #include <poll.h>
+ #include <signal.h>
++#include <stdbool.h>
+ #include <stdint.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
++#include <sys/sysmacros.h>
+ #include <sys/types.h>
+-#include <unistd.h>
+ #include <termios.h>
+-#include <sys/sysmacros.h>
+-#include <stdbool.h>
++#include <unistd.h>
+ 
++#include "drmtest.h"
+ #include "igt_core.h"
+ #include "igt_drm_clients.h"
+ #include "igt_drm_fdinfo.h"
 +#include "igt_perf.h"
-+#include "utils.h"
+ #include "igt_profiling.h"
+-#include "drmtest.h"
++#include "xe_gputop.h"
 +#include "xe/xe_query.h"
 +
-+struct xe_pmu_pair {
-+	uint64_t cur;
-+	uint64_t prev;
++/**
++ * Supported Drivers
++ *
++ * Adhere to the following requirements when implementing support for the
++ * new driver:
++ * @drivers: Update drivers[] with driver string.
++ * @total_count: Update NUM_DRIVER with the total number of supported drivers.
++ * @operations: Update the respective operations of the new driver:
++ * gputop_init,
++ * discover_engines,
++ * pmu_init,
++ * pmu_sample,
++ * print_engines,
++ * clean_up
++ * @devices: Update devices[] array of type "struct gputop_device" with the
++ * initial values.
++ */
++static const char * const drivers[] = {
++	"xe",
++    /* Keep the last one as NULL */
++	NULL
 +};
 +
-+struct xe_pmu_counter {
-+	uint64_t type;
-+	uint64_t config;
-+	unsigned int idx;
-+	struct xe_pmu_pair val;
-+	int fd;
-+	bool present;
++/**
++ * Number of supported drivers needs to be adjusted as per the length of
++ * the drivers[] array.
++ */
++#define NUM_DRIVER 1
++
++/**
++ * Supported operations on driver instances. Update the oprs[] array for
++ * each individual driver specific function. Maintain the sequence as per
++ * drivers[] array.
++ */
++struct device_operations oprs[NUM_DRIVER] = {
++	{
++		xe_gputop_init,
++		xe_populate_engines,
++		xe_pmu_init,
++		xe_pmu_sample,
++		xe_print_engines,
++		xe_clean_up
++	}
 +};
 +
-+struct xe_engine {
-+	const char *name;
-+	char *display_name;
-+	struct drm_xe_engine_class_instance drm_xe_engine;
-+	unsigned int num_counters;
-+	struct xe_pmu_counter engine_active_ticks;
-+	struct xe_pmu_counter engine_total_ticks;
++/*
++ * devices[] array of type struct gputop_device which keeps track of the devices
++ * discovered per driver.
++ */
++struct gputop_device devices[] = {
++	{false, 0, NULL}
 +};
+ 
+ enum utilization_type {
+ 	UTILIZATION_TYPE_ENGINE_TIME,
+ 	UTILIZATION_TYPE_TOTAL_CYCLES,
+ };
+ 
+-static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+-
+-#define ANSI_HEADER "\033[7m"
+-#define ANSI_RESET "\033[0m"
+-
+-static void n_spaces(const unsigned int n)
++static void gputop_clean_up(void)
+ {
+-	unsigned int i;
+-
+-	for (i = 0; i < n; i++)
+-		putchar(' ');
++	for (int i = 0; drivers[i]; i++) {
++		oprs[i].clean_up(devices[i].instances, devices[i].len);
++		free(devices[i].instances);
++		devices[i].driver_present = false;
++		devices[i].len = 0;
++	}
+ }
+ 
+-static void print_percentage_bar(double percent, int max_len)
++static int find_driver(struct igt_device_card *card)
+ {
+-	int bar_len, i, len = max_len - 1;
+-	const int w = 8;
+-
+-	len -= printf("|%5.1f%% ", percent);
+-
+-	/* no space left for bars, do what we can */
+-	if (len < 0)
+-		len = 0;
+-
+-	bar_len = ceil(w * percent * len / 100.0);
+-	if (bar_len > w * len)
+-		bar_len = w * len;
++	for (int i = 0; drivers[i]; i++) {
++		if (strcmp(drivers[i], card->driver) == 0)
++			return i;
++	}
++	return -1;
++}
+ 
+-	for (i = bar_len; i >= w; i -= w)
+-		printf("%s", bars[w]);
+-	if (i)
+-		printf("%s", bars[i]);
++/*
++ * If filter is not NULL i will be ignored.
++ */
++static int populate_device_instances(const char *filter)
++{
++	struct igt_device_card *cards = NULL;
++	struct igt_device_card *card_inplace = NULL;
++	struct gputop_device *dev =  NULL;
++	int driver_no;
++	int count, final_count = 0;
 +
-+struct xe_pmu_device {
-+	unsigned int num_engines;
-+	unsigned int num_counters;
-+	int fd;
++	count = igt_device_card_match_all(filter, &cards);
++	for (int j = 0; j < count; j++) {
++		if (strcmp((cards + j)->subsystem, "pci") != 0)
++			continue;
+ 
+-	len -= (bar_len + (w - 1)) / w;
+-	n_spaces(len);
++		driver_no = find_driver(cards + j);
++		if (driver_no < 0)
++			continue;
+ 
+-	putchar('|');
++		dev = devices + driver_no;
++		if (!dev->driver_present)
++			dev->driver_present = true;
++		dev->len++;
++		dev->instances = realloc(dev->instances,
++					 dev->len * sizeof(struct xe_gputop));
++		if (!dev->instances) {
++			fprintf(stderr,
++				"Device instance realloc failed (%s)\n",
++				strerror(errno));
++			exit(EXIT_FAILURE);
++		}
++		card_inplace = (struct igt_device_card *)
++				calloc(1, sizeof(struct igt_device_card));
++		memcpy(card_inplace, cards + j, sizeof(struct igt_device_card));
++		oprs[driver_no].gputop_init((struct xe_gputop *)(dev->instances + dev->len - 1),
++			card_inplace);
++		final_count++;
++	}
++	if (count)
++		free(cards);
++	return final_count;
+ }
+ 
+ static int
+@@ -333,6 +413,7 @@ static void clrscr(void)
+ struct gputop_args {
+ 	long n_iter;
+ 	unsigned long delay_usec;
 +	char *device;
-+	struct xe_engine engine;
-+};
+ };
+ 
+ static void help(void)
+@@ -343,16 +424,18 @@ static void help(void)
+ 	       "\t-h, --help                show this help\n"
+ 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
+ 	       "\t-n, --iterations =NUMBER  number of executions\n"
++	       "\t-D, --device              Device filter\n"
+ 	       , program_invocation_short_name);
+ }
+ 
+ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+ {
+-	static const char cmdopts_s[] = "hn:d:";
++	static const char cmdopts_s[] = "hn:d:D:";
+ 	static const struct option cmdopts[] = {
+ 	       {"help", no_argument, 0, 'h'},
+ 	       {"delay", required_argument, 0, 'd'},
+ 	       {"iterations", required_argument, 0, 'n'},
++	       {"device", required_argument, 0, 'D'},
+ 	       { }
+ 	};
+ 
+@@ -360,6 +443,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+ 	memset(args, 0, sizeof(*args));
+ 	args->n_iter = -1;
+ 	args->delay_usec = 2 * USEC_PER_SEC;
++	args->device = NULL;
+ 
+ 	for (;;) {
+ 		int c, idx = 0;
+@@ -383,6 +467,9 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+ 				return -1;
+ 			}
+ 			break;
++		case 'D':
++			args->device = optarg;
++			break;
+ 		case 'h':
+ 			help();
+ 			return 0;
+@@ -422,6 +509,52 @@ int main(int argc, char **argv)
+ 	n = args.n_iter;
+ 	period_us = args.delay_usec;
+ 
++	if (!populate_device_instances(args.device ? args.device
++				       : "device:subsystem=pci,card=all")) {
++		printf("No device found.\n");
++		gputop_clean_up();
++		exit(1);
++	}
 +
-+struct xe_gputop {
-+	char *pmu_device;
-+	struct igt_device_card *card;
-+	struct xe_pmu_device *eng_obj;
-+};
++	for (int i = 0; drivers[i]; i++) {
++		if (devices[i].driver_present) {
++			for (int j = 0; j < devices[i].len; j++) {
++				if (!oprs[i].init_engines(devices[i].instances + j)) {
++					fprintf(stderr,
++						"Failed to initialize engines! (%s)\n",
++						strerror(errno));
++						gputop_clean_up();
++					return EXIT_FAILURE;
++				}
++				ret = oprs[i].pmu_init(devices[i].instances + j);
 +
-+void xe_gputop_init(void *ptr, struct igt_device_card *card);
-+void xe_populate_device_instances(struct gputop_device *dv);
-+void *xe_populate_engines(const void *obj);
-+void xe_pmu_sample(const void *obj);
-+int xe_pmu_init(const void *obj);
-+int xe_print_engines(const void *obj, int lines, int w, int h);
-+void xe_clean_up(void *obj, int len);
++				if (ret) {
++					fprintf(stderr,
++						"Failed to initialize PMU! (%s)\n",
++						strerror(errno));
++					if (errno == EACCES && geteuid())
++						fprintf(stderr,
++							"\n"
++							"When running as a normal user CAP_PERFMON is required to access performance\n"
++							"monitoring. See \"man 7 capabilities\", \"man 8 setcap\", or contact your\n"
++							"distribution vendor for assistance.\n"
++							"\n"
++							"More information can be found at 'Perf events and tool security' document:\n"
++							"https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
 +
-+#endif /* __XE_GPUTOP_H__ */
++					igt_devices_free();
++					gputop_clean_up();
++					return EXIT_FAILURE;
++				}
++			}
++		}
++	}
++
++	for (int i = 0; drivers[i]; i++) {
++		for (int j = 0; devices[i].driver_present && j < devices[i].len; j++)
++			oprs[i].pmu_sample(devices[i].instances + j);
++	}
++
+ 	clients = igt_drm_clients_init(NULL);
+ 	if (!clients)
+ 		exit(1);
+@@ -442,14 +575,27 @@ int main(int argc, char **argv)
+ 
+ 	while ((n != 0) && !stop_top) {
+ 		struct igt_drm_client *c, *prevc = NULL;
+-		int i, engine_w = 0, lines = 0;
++		int k, engine_w = 0, lines = 0;
+ 
+ 		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
++
++		for (int i = 0; drivers[i]; i++) {
++			for (int j = 0; devices[i].driver_present && j < devices[i].len; j++)
++				oprs[i].pmu_sample(devices[i].instances + j);
++		}
++
+ 		igt_drm_clients_sort(clients, client_cmp);
+ 
+ 		update_console_size(&con_w, &con_h);
+ 		clrscr();
+ 
++		for (int i = 0; drivers[i]; i++) {
++			for (int j = 0; devices[i].driver_present && j < devices[i].len; j++) {
++				lines = oprs[i].print_engines(devices[i].instances + j,
++							 lines, con_w, con_h);
++			}
++		}
++
+ 		if (!clients->num_clients) {
+ 			const char *msg = " (No GPU clients yet. Start workload to see stats)";
+ 
+@@ -457,7 +603,7 @@ int main(int argc, char **argv)
+ 			       (int)(con_w - strlen(msg) - 1), msg);
+ 		}
+ 
+-		igt_for_each_drm_client(clients, c, i) {
++		igt_for_each_drm_client(clients, c, k) {
+ 			assert(c->status != IGT_DRM_CLIENT_PROBE);
+ 			if (c->status != IGT_DRM_CLIENT_ALIVE)
+ 				break; /* Active clients are first in the array. */
+@@ -481,11 +627,11 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	igt_drm_clients_free(clients);
++	gputop_clean_up();
+ 
+ 	if (profiled_devices != NULL) {
+ 		igt_devices_configure_profiling(profiled_devices, false);
+ 		igt_devices_free_profiling(profiled_devices);
+ 	}
+-
+ 	return 0;
+ }
+diff --git a/tools/gputop/meson.build b/tools/gputop/meson.build
+new file mode 100644
+index 000000000..4766d8496
+--- /dev/null
++++ b/tools/gputop/meson.build
+@@ -0,0 +1,6 @@
++gputop_src = [ 'gputop.c', 'utils.c', 'xe_gputop.c']
++executable('gputop', sources : gputop_src,
++           install : true,
++           install_rpath : bindir_rpathdir,
++           dependencies : [igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math],
++	   install: true)
+diff --git a/tools/meson.build b/tools/meson.build
+index de866c392..8002f707d 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -69,11 +69,6 @@ if libudev.found()
+ 		   install : true)
+ endif
+ 
+-executable('gputop', 'gputop.c',
+-           install : true,
+-           install_rpath : bindir_rpathdir,
+-           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
+-
+ intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
+ executable('intel_l3_parity', sources : intel_l3_parity_src,
+ 	   dependencies : tool_deps,
+@@ -122,3 +117,4 @@ endif
+ subdir('i915-perf')
+ subdir('xe-perf')
+ subdir('null_state_gen')
++subdir('gputop')
 -- 
 2.34.1
 
