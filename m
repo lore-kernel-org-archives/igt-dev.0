@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7701CC7113E
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 20:50:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 527C3C71136
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 21:25:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2328010E72A;
-	Wed, 11 Jun 2025 20:50:30 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36D1A10E72A;
- Wed, 11 Jun 2025 20:50:29 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4016136977644306624=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B912510E73A;
+	Wed, 11 Jun 2025 21:25:09 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EYSvSbUK";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C32F210E73A
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 21:25:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1749677109; x=1781213109;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=k7yVSAaSYtbLvOgjlUo/Ua5StK63yajatRb7DdAAWBQ=;
+ b=EYSvSbUKtDYMNyjzKzamyYp+7IenMJeG181buABiFzADVMd/DlfcgNgh
+ APPXH5aoA8o7wGorA3Gwkn6HbCBqcmQh5EF4j8s88PRL8do1nHE61NY7z
+ +aBulkwXz9WzpSlwr5dxiSHDowN3M/Egepre9K3Z/WMg28B+mfObcQA1H
+ HTV0WN9nRe8UgtOP8KL0yIB11Dr56jvtTtfGi7S/O6i8Dkf2iXh8KPu3e
+ 1lpPyMZ8lWVCe1GofSgukacHm0QwVQYaQftxlaJS/HPVPYV1j3KfekwIP
+ hdwNehDvPMEm8OGICE7Ed/thJh2/ZdCXHHAnygmPJnuEbLp9gMyVZRjKy Q==;
+X-CSE-ConnectionGUID: GLLLb59jS/2gfiNM5opodg==
+X-CSE-MsgGUID: uyVeSy8OQSieHO7k5jpGOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51753697"
+X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; d="scan'208";a="51753697"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2025 14:25:08 -0700
+X-CSE-ConnectionGUID: 4jEt5aBGTku7FI/B+MOrHA==
+X-CSE-MsgGUID: sCFM5RaBToKxaUTTGz5Zkw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; d="scan'208";a="147303298"
+Received: from zzombora-mobl1 (HELO localhost) ([10.245.245.188])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2025 14:25:05 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Sunil Khatri <sunil.khatri@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: [PATCH i-g-t v3] tests/amdgpu: Fix compilation warnings for USERQ
+Date: Wed, 11 Jun 2025 23:25:00 +0200
+Message-ID: <20250611212500.1940399-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_CI/build=3A_bump_container_?=
- =?utf-8?q?images=2C_OS_and_meson_versions?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Hajda, Andrzej" <andrzej.hajda@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Jun 2025 20:50:29 -0000
-Message-ID: <174967502921.69074.18339101702068494385@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250611-bump_docker_distros-v2-0-90791ecb953d@intel.com>
-In-Reply-To: <20250611-bump_docker_distros-v2-0-90791ecb953d@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +64,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4016136977644306624==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Recent change brings compilation warnings when
+AMDGPU_USERQ_ENABLED was not defined, for example:
 
-== Series Details ==
+../tests/amdgpu/amd_security.c: In function '__igt_unique____real_main311':
+../tests/amdgpu/amd_security.c:319:14: warning: variable 'enable_test' set but not used [-Wunused-but-set-variable]
+  319 |         bool enable_test = false;
 
-Series: CI/build: bump container images, OS and meson versions
-URL   : https://patchwork.freedesktop.org/series/150093/
-State : success
+Fix this.
 
-== Summary ==
+v2: removed additional vars and prints (Sunil)
+v3: correcting description, moved var setting back (Kamil)
 
-CI Bug Log - changes from XEIGT_8405_BAT -> XEIGTPW_13274_BAT
-====================================================
+Cc: Sunil Khatri <sunil.khatri@amd.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Fixes: dad4b2bb9e5a ("tests/amdgpu: add environment variable to enable tests")
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/amdgpu/amd_cs_nop.c   | 2 ++
+ tests/amdgpu/amd_deadlock.c | 2 ++
+ tests/amdgpu/amd_security.c | 2 ++
+ 3 files changed, 6 insertions(+)
 
-Summary
--------
+diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
+index 644016d5d..c406f2fc5 100644
+--- a/tests/amdgpu/amd_cs_nop.c
++++ b/tests/amdgpu/amd_cs_nop.c
+@@ -171,10 +171,12 @@ igt_main
+ 	int fd = -1;
+ 	bool arr_cap[AMD_IP_MAX] = {0};
+ 	bool userq_arr_cap[AMD_IP_MAX] = {0};
++#ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test;
+ 	const char *env = getenv("AMDGPU_DISABLE_USERQTEST");
+ 
+ 	enable_test = env && atoi(env);
++#endif
+ 
+ 	igt_fixture {
+ 		uint32_t major, minor;
+diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+index 45a864feb..2330b2955 100644
+--- a/tests/amdgpu/amd_deadlock.c
++++ b/tests/amdgpu/amd_deadlock.c
+@@ -43,10 +43,12 @@ igt_main
+ 	bool arr_cap[AMD_IP_MAX] = {0};
+ 	bool userq_arr_cap[AMD_IP_MAX] = {0};
+ 	struct pci_addr pci;
++#ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test = false;
+ 	const char *env = getenv("AMDGPU_DISABLE_USERQTEST");
+ 
+ 	enable_test = env && atoi(env);
++#endif
+ 
+ 	igt_fixture {
+ 		uint32_t major, minor;
+diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
+index 45bd7e771..4f38ee04e 100644
+--- a/tests/amdgpu/amd_security.c
++++ b/tests/amdgpu/amd_security.c
+@@ -316,10 +316,12 @@ igt_main
+ 	int r, fd = -1;
+ 	bool is_secure = true;
+ 	bool userq_arr_cap[AMD_IP_MAX] = {0};
++#ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test = false;
+ 	const char *env = getenv("AMDGPU_DISABLE_USERQTEST");
+ 
+ 	enable_test = env && atoi(env);
++#endif
+ 
+ 	igt_fixture {
+ 		uint32_t major, minor;
+-- 
+2.49.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8405 -> IGTPW_13274
-  * Linux: xe-3230-a08a2132ed7ae776652df710008606631989bc60 -> xe-3231-c9fa578feb38223f213de42d5c3f7210d2ce094a
-
-  IGTPW_13274: f05813a24048918a43838f8626659025d73c448c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8405: 8405
-  xe-3230-a08a2132ed7ae776652df710008606631989bc60: a08a2132ed7ae776652df710008606631989bc60
-  xe-3231-c9fa578feb38223f213de42d5c3f7210d2ce094a: c9fa578feb38223f213de42d5c3f7210d2ce094a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13274/index.html
-
---===============4016136977644306624==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>CI/build: bump container images, OS and meson versions</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150093/">https://patchwork.freedesktop.org/series/150093/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13274/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13274/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8405_BAT -&gt; XEIGTPW_13274_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8405 -&gt; IGTPW_13274</li>
-<li>Linux: xe-3230-a08a2132ed7ae776652df710008606631989bc60 -&gt; xe-3231-c9fa578feb38223f213de42d5c3f7210d2ce094a</li>
-</ul>
-<p>IGTPW_13274: f05813a24048918a43838f8626659025d73c448c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8405: 8405<br />
-  xe-3230-a08a2132ed7ae776652df710008606631989bc60: a08a2132ed7ae776652df710008606631989bc60<br />
-  xe-3231-c9fa578feb38223f213de42d5c3f7210d2ce094a: c9fa578feb38223f213de42d5c3f7210d2ce094a</p>
-
-</body>
-</html>
-
---===============4016136977644306624==--
