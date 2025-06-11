@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF9EC71136
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 21:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11244C71136
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Jun 2025 22:03:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B863810E740;
-	Wed, 11 Jun 2025 21:51:39 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="UTr81uYD";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3FA0610E740
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jun 2025 21:51:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=M058a7MeftsxDvmh/pd0XQ7yjKNLGvL5kFZSNAbZ9d8=; b=UTr81uYD+ttR84R67Cn4GKt0CY
- H0VTwXukABy/d37aIUjcLJ5wWBL/GKY0bMRjYkajP/ib36JvTVqSnlf3cAdzJG0bUs+js54U8A883
- uTL906pA9hTm3bkerXahwMB6uyXJq007K+o8y7w4+QIWsVQ0OruKETaSQeDm5onPiCCI4KS+pZCBn
- mo1UUeExE6YZXXkPEJ/gcy0KOYYr7n8ao3Ky0KurBSodWVlJFVgrfxdj55W85V7L+AUuhnnglqRjs
- LGONs7mL5GrYkfo/y6sIOzZ3p1N+oVfIu5phQhW3o5JFNKzR4NdqEsIqimgr+GJWP7c+PE2+IOy3H
- jfz6WDEg==;
-Received: from [189.6.13.79] (helo=[192.168.0.55])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1uPTM2-002NaY-6C; Wed, 11 Jun 2025 23:51:30 +0200
-Message-ID: <046d8f69-8eb3-497b-a2fe-798aa91773b6@igalia.com>
-Date: Wed, 11 Jun 2025 18:51:22 -0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id BBA2510E747;
+	Wed, 11 Jun 2025 22:03:48 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D330510E740;
+ Wed, 11 Jun 2025 22:03:47 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0542744955723320009=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 3/3] tests/kms_async_flip: skip subtest on AMD if
- invalid condition
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
- Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Karthik B S <karthik.b.s@intel.com>, Alex Hung <alex.hung@amd.com>,
- Leo Li <sunpeng.li@amd.com>, Harry Wentland <harry.wentland@amd.com>,
- Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, kernel-dev@igalia.com
-References: <20250601191459.46759-1-mwen@igalia.com>
- <20250601191459.46759-4-mwen@igalia.com>
- <20250611101605.tql5ik4th75t762a@kamilkon-DESK.igk.intel.com>
-Content-Language: en-US
-From: Melissa Wen <mwen@igalia.com>
-In-Reply-To: <20250611101605.tql5ik4th75t762a@kamilkon-DESK.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5B1/2?=
+ =?utf-8?q?=5D_tests/amdgpu=3A_disabled_tests_are_skipped_with_skip_message?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sunil Khatri" <sunil.khatri@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 11 Jun 2025 22:03:47 -0000
+Message-ID: <174967942785.69074.6394851631627970703@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250611113711.15544-1-sunil.khatri@amd.com>
+In-Reply-To: <20250611113711.15544-1-sunil.khatri@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,63 +37,297 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============0542744955723320009==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: series starting with [1/2] tests/amdgpu: disabled tests are skipped with skip message
+URL   : https://patchwork.freedesktop.org/series/150097/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8405_BAT -> XEIGTPW_13275_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13275_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@nullptr:
+    - bat-bmg-2:          NOTRUN -> [SKIP][1] ([Intel XE#2134]) +4 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@fbdev@nullptr.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-bmg-2:          NOTRUN -> [SKIP][2] ([Intel XE#2233])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+    - bat-bmg-1:          NOTRUN -> [SKIP][3] ([Intel XE#2233])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-bmg-2:          NOTRUN -> [SKIP][4] ([Intel XE#2489] / [Intel XE#3419]) +13 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-bmg-1:          NOTRUN -> [SKIP][5] ([Intel XE#2244])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-bmg-2:          NOTRUN -> [SKIP][6] ([Intel XE#2482]) +3 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-bmg-2:          NOTRUN -> [SKIP][7] ([Intel XE#2434] / [Intel XE#2548])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_psr@psr-primary-page-flip:
+    - bat-bmg-2:          NOTRUN -> [SKIP][8] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_psr@psr-primary-page-flip.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-bmg-1:          NOTRUN -> [SKIP][9] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-bmg-1:          NOTRUN -> [SKIP][10] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-off.html
+    - bat-bmg-2:          NOTRUN -> [SKIP][11] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-bmg-2:          NOTRUN -> [SKIP][12] ([Intel XE#2229])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+    - bat-bmg-1:          NOTRUN -> [SKIP][13] ([Intel XE#2229])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-bmg-2:          NOTRUN -> [SKIP][14] ([Intel XE#1420])
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html
+    - bat-bmg-1:          NOTRUN -> [SKIP][15] ([Intel XE#1420])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-bmg-2:          NOTRUN -> [SKIP][16] ([Intel XE#2245])
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_pat@pat-index-xelp.html
+    - bat-bmg-1:          NOTRUN -> [SKIP][17] ([Intel XE#2245])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-bmg-2:          NOTRUN -> [SKIP][18] ([Intel XE#2236])
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html
+    - bat-bmg-1:          NOTRUN -> [SKIP][19] ([Intel XE#2236])
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-bmg-1:          NOTRUN -> [SKIP][20] ([Intel XE#3342])
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_sriov_flr@flr-vf1-clear.html
+    - bat-bmg-2:          NOTRUN -> [SKIP][21] ([Intel XE#3342])
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2233]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233
+  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
+  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#2245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245
+  [Intel XE#2434]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434
+  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
+  [Intel XE#2489]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489
+  [Intel XE#2548]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
 
 
-On 11/06/2025 07:16, Kamil Konieczny wrote:
-> Hi Melissa,
-> On 2025-06-01 at 16:14:46 -0300, Melissa Wen wrote:
->> Async page flips can fail for any driver-specific reasons, i.e. when the
->> driver can't commit to async page flip request due to hw limitations,
->> the commit is rejected with -EINVAL since there is one or more
->> conditions that make the request invalid. These limitations vary between
->> vendors and hw versions. In case of AMD devices, async page flip cannot
->> be perfomed if fb memory type changes (VRAM vs GTT), but framebuffer
->> allocation type cannot be controlled by any userspace configuration.
->>
->> Allow EINVAL failures on AMD device and skip the test. Async flips can
->> be still validated by the performance comparison assert if no EINVAL.
->>
->> Signed-off-by: Melissa Wen <mwen@igalia.com>
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->
-> Are you ok with merging this one patch first?
-> This should also be tested again, as i915.Full were not run.
-Yes, sounds good.
+Build changes
+-------------
 
-Thanks,
+  * IGT: IGT_8405 -> IGTPW_13275
+  * Linux: xe-3230-a08a2132ed7ae776652df710008606631989bc60 -> xe-3232-441e516a4359fedd83969b1b6a75194f096c11ba
 
-Melissa
+  IGTPW_13275: 071a162b281e150fb94e2e34195184634220bca0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8405: 8405
+  xe-3230-a08a2132ed7ae776652df710008606631989bc60: a08a2132ed7ae776652df710008606631989bc60
+  xe-3232-441e516a4359fedd83969b1b6a75194f096c11ba: 441e516a4359fedd83969b1b6a75194f096c11ba
 
->
-> Regards,
-> Kamil
->
->> ---
->>   tests/kms_async_flips.c | 7 ++++++-
->>   1 file changed, 6 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
->> index 97128cfad..065ac9c49 100644
->> --- a/tests/kms_async_flips.c
->> +++ b/tests/kms_async_flips.c
->> @@ -410,7 +410,12 @@ static void test_async_flip(data_t *data)
->>   
->>   		ret = perform_flip(data, frame, flags);
->>   
->> -		if (frame == 1 && data->allow_fail)
->> +		/* AMD cannot perform async page flip if fb mem type changes,
->> +		 * and this condition cannot be controlled by any userspace
->> +		 * configuration. Therefore allow EINVAL failure and skip the
->> +		 * test for AMD devices.
->> +		 */
->> +		if ((frame == 1 && data->allow_fail) || is_amdgpu_device(data->drm_fd))
->>   			igt_skip_on(ret == -EINVAL);
->>   		else
->>   			igt_assert_eq(ret, 0);
->> -- 
->> 2.47.2
->>
+== Logs ==
 
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/index.html
+
+--===============0542744955723320009==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2] tests/amdgpu: disabled tests are skipped with skip message</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150097/">https://patchwork.freedesktop.org/series/150097/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8405_BAT -&gt; XEIGTPW_13275_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13275_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@nullptr:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@fbdev@nullptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233">Intel XE#2233</a>)</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233">Intel XE#2233</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489">Intel XE#2489</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434">Intel XE#2434</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548">Intel XE#2548</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-page-flip:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a>)</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a>)</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a>)</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-1/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13275/bat-bmg-2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8405 -&gt; IGTPW_13275</li>
+<li>Linux: xe-3230-a08a2132ed7ae776652df710008606631989bc60 -&gt; xe-3232-441e516a4359fedd83969b1b6a75194f096c11ba</li>
+</ul>
+<p>IGTPW_13275: 071a162b281e150fb94e2e34195184634220bca0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8405: 8405<br />
+  xe-3230-a08a2132ed7ae776652df710008606631989bc60: a08a2132ed7ae776652df710008606631989bc60<br />
+  xe-3232-441e516a4359fedd83969b1b6a75194f096c11ba: 441e516a4359fedd83969b1b6a75194f096c11ba</p>
+
+</body>
+</html>
+
+--===============0542744955723320009==--
