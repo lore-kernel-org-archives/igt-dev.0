@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09AA6C61CE8
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5306BC71136
 	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 12:31:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B198510E82A;
-	Thu, 12 Jun 2025 12:31:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0611C10E830;
+	Thu, 12 Jun 2025 12:31:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ctlaaS7O";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="anmyfize";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19A1210E82A
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 12:31:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCC1210E82A
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 12:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1749731484; x=1781267484;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=bi2aSV2VaQeov9J97EuexquhJC+oJ97eqzilq5ZoRoA=;
- b=ctlaaS7OnSVe5f29R9duBCCfTzS3Qtb29aP2k/SNN7ERR/DXzykSM56K
- CihvT5YDFByLZFceGLYHtATGkJbPSSXKRXaRC+ygcd1E+NslornfV+bLL
- BIM1wQ3tH4dNIep8dlasOxjsy4bEBArXJ79fCJHTRhZo/oUPaA3kOQzuU
- CeVNX1a9X2IKdMoe1jR88oO7ra7aITZpQepmLEWdqtPRG8pTYec1CctQV
- JtP0TryUTtkBirfs0CLUI4Yn4A/YK5n1fLpmhBD/skDGkm1NxinbK8oaZ
- vp5e4Hn4x0Pe/TursO6BLKDP8MLpjsgAAP5y0NQidZdClKSpWGZm5B9hs Q==;
-X-CSE-ConnectionGUID: UAJ16ncPQN2FqirslgoWzQ==
-X-CSE-MsgGUID: GcojAPxeQoybAnQIGOi/+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51777777"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="51777777"
+ bh=07eQo8/NZ6yd1mqjuNz4LipXbdWY389Rwzl1zJeAk7A=;
+ b=anmyfizepj8tHk86ijurUw2amm91UrLIt/dVMShjAYQxjUw8nRHHq8dE
+ qtREBlkGJykHzfGqxDthNZF6GukPuJAwWN9EJjc/OAfdK/c7IAd1b7MVX
+ 91LTsbG9qUdfoJ+KEEsv/uEhxYlAcSAZu0IRQ7IHKp2d6uohUwtrG6mK3
+ iQ50dJjzqQ/uzNSr0pDZjwTtDDbf9nqE+sNFhQK9iFAIX4fXK2pFuyOwT
+ gzV5qqTDwp8RDEa33ju8StLz34tApHckWx/m+C4LG2hiNiienLockHtaO
+ DRva5tww6CXiGdi+aChdLOHqPz760x0SsP94+hHuN3MfTCm0Nlf9ucsfS w==;
+X-CSE-ConnectionGUID: M+YCKrf7Tn2xFgoKurpewg==
+X-CSE-MsgGUID: bAJrV7j/TxmFNVt9pW3Qeg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51777771"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="51777771"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  12 Jun 2025 05:31:23 -0700
-X-CSE-ConnectionGUID: 0TcxMOsMQcu7Aglv8cTsTg==
-X-CSE-MsgGUID: FfLnjd5uS4ymIhub8dmvHA==
+X-CSE-ConnectionGUID: 1OjgoQK8RH+Qkc8AceIZrw==
+X-CSE-MsgGUID: yI2qzuE1Q5GVD2JEzpDytQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="148061587"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="148061581"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 05:31:18 -0700
+ 12 Jun 2025 05:31:16 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 12 Jun 2025 14:30:13 +0200
-Subject: [PATCH v4 2/6] Dockerfile: remove MIPS architecture
+Date: Thu, 12 Jun 2025 14:30:12 +0200
+Subject: [PATCH v4 1/6] gitlab-ci: create own base buildah image instead of
+ wayland's
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-bump_docker_distros-v4-2-10d18745c7d4@intel.com>
+Message-Id: <20250612-bump_docker_distros-v4-1-10d18745c7d4@intel.com>
 References: <20250612-bump_docker_distros-v4-0-10d18745c7d4@intel.com>
 In-Reply-To: <20250612-bump_docker_distros-v4-0-10d18745c7d4@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -56,18 +57,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1321;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4240;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=bi2aSV2VaQeov9J97EuexquhJC+oJ97eqzilq5ZoRoA=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoSshhDUzzQjvDW13HQBUaUk/3wZx2YZMxoC41C
- eEjzLzJws+JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaErIYQAKCRAjYrKT3hD9
- 17JGDACSxInxShpk5vmEE4fuDVV4oGxoZV+vEHNHYmIQOKtLlxGefO4aKmABL9FuY/EO11+KYPM
- QEaQGbImeEX7EoG7eCtqsuVHfM4gGIkxBRvWXNicGcyUrhWAYD5JizI24g5hYVimgsT/S5g4gyB
- e9bEXkCfbs3H4JbWFrJiu32wY5+HQjFIs5zyWE5drdiHzqDYt5w6wRinkdD+rqzr6lKfu3rgclY
- WloOQXcJu48KkoFuBeKasnGzNiioBeWmlZKUJCf8XU1PhI9gq2dGtZgAVr8nR/+6ieOTGWI/s3H
- XJd8pIfzvQZ2iU1zE/edLg3nmSN3Xv03RJgh/wUdZLlCudSp29OpUJCBCKBOks8jPXgswYhyjVe
- 8xLOA2NjKYrwPHi+oI2q9tT9F+qP+7g13RHf+8rG41JEf2TpYjAYk1e8vaA3PzbxkBBM2+ZGx3q
- miwlW7J06fDWOuTmO7cph17yk2F4f1Nci08Rk/YTr0eOiEOmH/f1d30iUlnQUFIyZ+jLQ=
+ bh=07eQo8/NZ6yd1mqjuNz4LipXbdWY389Rwzl1zJeAk7A=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoSshh8av8OPWIU+WZlUrps0STUYPUQFpNuWPr1
+ haSjDgSBt2JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaErIYQAKCRAjYrKT3hD9
+ 1x5SDACTBIy/Lj93bnRXb4cjfTp0wMOOH1XspdgRZMHGINZTh4xnmhgKzAh1pFB5ePOsp2my4me
+ EeG0sUuG68Y7e7S/h8LZh5nQkxwwy7ZHy1kK2U2dxsW0VDhbLAGvr/uosHzMhMrRRLRmtCMlyfz
+ qnA6ttM0o//mUOJeIeG7nI1sbIZmIH/rzfqu4p8KtJVQSKe0bogjEx44phtj79D8HkCXbFhsg8k
+ hqezaNi8KPjGBtAvcxtpn//iR2TApxdz4GiGxmSIV5MmABUFFKhSqC6umOglCIsLdBDPStN9prw
+ 3LTVGFK3aJPRcgXe29rbdgXSYNeSepHzdLtHX248OACWQne4tYMZPwiEQjfgmSxr9wF93OpYzu/
+ MPiCOKK2/IpR+api99SCYF9uzv+1CCT7qELVkQeQ5p6+0K+vBOOfcXS70JJPpN6MC4CSFv6vshT
+ kO6IqF6ee1fE6xkwhh57AZxFP04a58t1anSHURwPAyP3+7HBf86nTgKdE4K7RLYpAxb7c=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -85,58 +86,118 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-MIPS is no longer supported by gitlab-ci.
+To allow to bump debian and fedora versions for build testing we need
+reliable base container. Containers provided by
+registry.freedesktop.org/wayland/ci-templates/buildah are quite old and
+have multiple issues when used with newer OS versions.
+Instead of relying on them or some other random registry let's take
+bare buildah from reliable source and add required tools to it.
+Base image will be built only if Dockerfile.build-buildah
+is changed. Alternatively building can be enforced from gitlab:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/pipelines.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- Dockerfile.build-debian-mips | 39 ---------------------------------------
- 1 file changed, 39 deletions(-)
+ .gitlab-ci.yml           | 32 +++++++++++++++++++++++++++-----
+ Dockerfile.build-buildah |  3 +++
+ 2 files changed, 30 insertions(+), 5 deletions(-)
 
-diff --git a/Dockerfile.build-debian-mips b/Dockerfile.build-debian-mips
-deleted file mode 100644
-index 9b7c0a5b4703e8dd9461406731af248b050a0a2b..0000000000000000000000000000000000000000
---- a/Dockerfile.build-debian-mips
-+++ /dev/null
-@@ -1,39 +0,0 @@
--FROM debian:buster
--
--RUN apt-get update
--RUN apt-get install -y \
--			flex \
--			bison \
--			pkg-config \
--			x11proto-dri2-dev \
--			python-docutils \
--			valgrind \
--			peg
--
--RUN dpkg --add-architecture mips
--RUN apt-get update
--RUN apt-get install -y \
--			gcc-mips-linux-gnu \
--			libatomic1:mips \
--			libpciaccess-dev:mips \
--			libkmod-dev:mips \
--			libprocps-dev:mips \
--			libunwind-dev:mips \
--			libdw-dev:mips \
--			zlib1g-dev:mips \
--			liblzma-dev:mips \
--			libcairo-dev:mips \
--			libpixman-1-dev:mips \
--			libudev-dev:mips \
--			libgsl-dev:mips \
--			libasound2-dev:mips \
--			libjson-c-dev:mips \
--			libcurl4-openssl-dev:mips \
--			libxrandr-dev:mips \
--			libxv-dev:mips \
--			meson \
--			libdrm-dev:mips \
--			qemu-user \
--			qemu-user-static
--
--RUN apt-get clean
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 1aff5cb000555bb3995634d814c7074488e2567e..ab6968b549d0026869fe38f063f60f57b5e9d75c 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -2,6 +2,7 @@ image: $CI_REGISTRY/$CI_PROJECT_PATH/build-fedora:commit-$CI_COMMIT_SHA
+ variables:
+   BUILDAH_FORMAT: docker
+   BUILDAH_ISOLATION: chroot
++  BUILD_CONTAINERS_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/build-buildah:latest
+   MESON_OPTIONS: >
+     -Dlibdrm_drivers=intel,nouveau,amdgpu
+     -Doverlay=enabled
+@@ -14,17 +15,38 @@ variables:
+   LANG: "C.UTF-8"
+ 
+ stages:
++  - build-base
+   - build-containers
+   - build
+   - test
+   - containers
+   - deploy
+ 
++############### BUILD BASE CONTAINER #####################
++
++build-base:build-buildah:
++  stage: build-base
++  image: quay.io/buildah/stable
++  rules:
++    - if: $CI_PIPELINE_SOURCE == "push"
++      changes:
++        - Dockerfile.build-buildah
++  script:
++    - buildah bud --squash -t $BUILD_CONTAINERS_IMAGE -f Dockerfile.build-buildah .
++    - buildah push --creds $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD $BUILD_CONTAINERS_IMAGE docker://$BUILD_CONTAINERS_IMAGE
++
++build-base:build-buildah-manual:
++  extends: build-base:build-buildah
++  when: manual
++  rules:
++    - when: manual
++    - allow_failure: true
++
+ ################# BUILD CONTAINERS #######################
+ 
+ build-containers:build-debian:
+   stage: build-containers
+-  image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
++  image: $BUILD_CONTAINERS_IMAGE
+   script:
+     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-minimal build-debian-minimal
+@@ -32,21 +54,21 @@ build-containers:build-debian:
+ 
+ build-containers:build-debian-armhf:
+   stage: build-containers
+-  image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
++  image: $BUILD_CONTAINERS_IMAGE
+   script:
+     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-armhf build-debian-armhf
+ 
+ build-containers:build-debian-arm64:
+   stage: build-containers
+-  image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
++  image: $BUILD_CONTAINERS_IMAGE
+   script:
+     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-arm64 build-debian-arm64
+ 
+ build-containers:build-fedora:
+   stage: build-containers
+-  image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
++  image: $BUILD_CONTAINERS_IMAGE
+   script:
+     - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-fedora build-fedora
+@@ -235,7 +257,7 @@ pages:
+ 
+ containers:igt:
+   stage: containers
+-  image: registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0
++  image: $BUILD_CONTAINERS_IMAGE
+   dependencies:
+     - build:tests-fedora
+   variables:
+diff --git a/Dockerfile.build-buildah b/Dockerfile.build-buildah
+new file mode 100644
+index 0000000000000000000000000000000000000000..94623c2ef50aca330decddf75a1104c539904610
+--- /dev/null
++++ b/Dockerfile.build-buildah
+@@ -0,0 +1,3 @@
++FROM quay.io/buildah/stable
++
++RUN dnf install -y podman skopeo
 
 -- 
 2.43.0
