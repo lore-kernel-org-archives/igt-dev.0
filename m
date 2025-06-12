@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1C16C61CE8
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 11:57:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DF8CC71136
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 11:57:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A95E10E7EF;
-	Thu, 12 Jun 2025 11:57:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 00ECE10E7EE;
+	Thu, 12 Jun 2025 11:57:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CJP88cjQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UtFm1krn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC1E910E7EE
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 11:57:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 460EE10E7F0
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 11:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749729464; x=1781265464;
+ t=1749729466; x=1781265466;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=DeYdxrPuVeuS/qTV3ut9M7hdB1zXWAfZIGjfLaVqOjQ=;
- b=CJP88cjQtBnlWfnhrmRur5/f9MIP7UivFiWDd5Vb5wFV59DtyqtWXPB/
- 5wulwWwFNQcc3HvFudebZyIuF6a+7g79piAd/btgwQ6DE29/W/Q/MLI6+
- X+/qhNeOzFhiyPrbE/OesG2NWOBM699lUeZmJpcqlM2mFQ6yETh3M+1/C
- FNEGn28VuvQRI+jNh+mktM+tk3dkCfOLPoWnvPxTaYzPVK3yixrQORfhd
- VzEHNScYw00PLoUNwgnrGlLPiVaO/mIs75dfAOKPit56WbXbJMSdNKieV
- mavnKZoJ+b3UlNb6fZV/iPgYXNPuFtVpstcpZ7F2vBet3/svLPcEsj+ny g==;
-X-CSE-ConnectionGUID: d4vb3P+ERD6FZqlUAH4p8A==
-X-CSE-MsgGUID: UiGXsgEkQ6StmmUfliw1GA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="69343063"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="69343063"
+ bh=U5qEZWirPwohNg9HUdlQtgE6U0gClTCREJcZViNTb98=;
+ b=UtFm1krnCwJz8rYewZ5oHhy6EMdjAQmJ86Ob9KzszKa4BIokhsin0TfH
+ QV+sFEi9jbG74OD2ue7lQB+5YOl/7XUGsvgzrvyMZ7DvgG47Ptwed26RT
+ Kr59hmp9dCokOeEwX+X86LUhkfFJNT2pxs05ogYMrdqdYY5/ojsaURWwc
+ rmweidD8cCHP5Wdq+4BgkiIgiYofJ7iB0gHYTzZ3PG2zNuhOsWVRRaaOu
+ Ip+O3NP2DkdOUqYVeLmyETagEz10TlTjaFK5nkaTRUuqeroXXbAsRkjr4
+ McKiVhY1MEjlIKU/KrzM7sm7URVRA+VNsav94N4Ft3XuGvR0/vZUluwzH Q==;
+X-CSE-ConnectionGUID: g2LjmYmQQBSq3Zkih46Biw==
+X-CSE-MsgGUID: HhecNPMJRYuZP1wK9uciWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="69343066"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="69343066"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 04:57:44 -0700
-X-CSE-ConnectionGUID: 99ehr47CTfGW1Kaca8Ec7w==
-X-CSE-MsgGUID: +ThpMXu9QguxctjHwgOgbQ==
+ 12 Jun 2025 04:57:46 -0700
+X-CSE-ConnectionGUID: 4o46rPtKSw6g+5eHu68Y+g==
+X-CSE-MsgGUID: nxVhViXoS6+TZ697+Yr50g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="152644881"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="152644894"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 04:57:42 -0700
+ 12 Jun 2025 04:57:44 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 12 Jun 2025 13:56:30 +0200
-Subject: [PATCH v3 5/6] meson: bump required and tested version of meson
+Date: Thu, 12 Jun 2025 13:56:31 +0200
+Subject: [PATCH v3 6/6] gitlab-ci: remove podman login
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-bump_docker_distros-v3-5-78ceb39a71b1@intel.com>
+Message-Id: <20250612-bump_docker_distros-v3-6-78ceb39a71b1@intel.com>
 References: <20250612-bump_docker_distros-v3-0-78ceb39a71b1@intel.com>
 In-Reply-To: <20250612-bump_docker_distros-v3-0-78ceb39a71b1@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -56,18 +56,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1591;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3029;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=DeYdxrPuVeuS/qTV3ut9M7hdB1zXWAfZIGjfLaVqOjQ=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoSsB/tKzf6bj3AX9/s9tM184/hq5qRUk37mMUo
- 1BLE9yVWneJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaErAfwAKCRAjYrKT3hD9
- 12zPC/9rHTfr8D5vSMA8K0qffmUzq/tAu0qvSnPyd/mRjsgBpuRMBUm3ehqjGgLnJFK7rQeFFMd
- YqaivDIowEN4/UP10J75wEhVLw3VN0STQIppj7voyqx3RZ/W56+C0wI1I532KbrmsIvJzWXEjrT
- /LrlbBBUS2jpS7ixm2WF959ooqRwOs1xZCN2WuPipmYM25BKivBFL39es34jsBJWgvhcmq2pCsM
- +ehjVl/W2kmrQiftH2wEKk3Pty+cjr1UEILgGxHMmxFuB7cxutNl5plZGw+TJLAWbv1cbvgsyYT
- vetLuVfEdB7fQj4w3BAPXixcyBdNIserir+EtDYIKKb7s78VxNy5oOcLh5pl/IouRz2rYlZWdOg
- MaRzP2j+2Vdv6B51n6ChhLxAxBRYfH0mUh8+HLmN+qh7vktliBl+5ztsIG+nk3s4W9mjjIAP8ue
- G31wSfvvxIlnfG/phvgX1X5Kpr4YdLcQ+9GWadrokZb0vpE1mmO6HYUgvUOTdXQuUEsCs=
+ bh=U5qEZWirPwohNg9HUdlQtgE6U0gClTCREJcZViNTb98=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoSsB/Hs5hobhsslsaLeI/lC1PH09sQPIQKCIDg
+ AzJacJ1aaWJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaErAfwAKCRAjYrKT3hD9
+ 15OgDACVAOQaf0fKjOKfU8IZDlk0qPki01KkGJtcbD+HTuhxM3PQTnyfO+cxoS5ne9O6MClMbkI
+ IfNZIAGa8PaoVDMI16rAeVvyPGT6fMuBKUdA1k1wUhLFVy+XZsTycCO3WwU4ZiY+NH6JeySpZ2t
+ QPi7kn4CTNKqaI4Q+4Zq3FjR7HrbEwG08gQa44f6XumumZd3CcqPndweZV5MDIEgHleM5hPGI9a
+ L6g44PtNHe1qUy5Y6OFpRhprD0/ep0pvk8TXcmQcAv5U2qkxejqPw8LrBDO7WDOUy+HANKDhFvN
+ 8sny6NfGjyolOqByKntCMCRKaS1bXkogOG2OQI0tt2xiJgDUS4qStiS1T4/OXxJCDAES3YCofyM
+ fjkNnwbsouPEuanX8PcL5nKAN+pDAmyYSlIr394hBfJ6dmMrwx6NmkZIDBr7xGyqLIV06gBk8W6
+ Rsn0FIpcbJIt1s6jYRhxpzyTzx4Ixhl/1BRHYobj3ftI8Do6KLOp7sSMwpHBobfC3d13M=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -85,44 +85,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Future patches will require meson 0.52. Let's set the oldest tested
-and required release to 0.52.1.
-
-v2: updated description
+"podman login" is issued for every container job even if it is usually
+not required. Let's drop it in favor of credentials provided
+to commands requiring it.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Acked-by: Petri Latvala <adrinael@adrinael.net> #irc
+Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- Dockerfile.build-fedora | 2 +-
- meson.build             | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ .gitlab-ci.yml                | 5 -----
+ .gitlab-ci/pull-or-rebuild.sh | 4 ++--
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/Dockerfile.build-fedora b/Dockerfile.build-fedora
-index fb0750783028b3a9aa834de3da8a64a6ed6e3792..d6d479f6ad6e4a79538b0e16cd348554dace8881 100644
---- a/Dockerfile.build-fedora
-+++ b/Dockerfile.build-fedora
-@@ -45,6 +45,6 @@ RUN dnf install -y findutils
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index ab6968b549d0026869fe38f063f60f57b5e9d75c..519edab5ff9c79eae0de71e71e3f3645431a1459 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -48,7 +48,6 @@ build-containers:build-debian:
+   stage: build-containers
+   image: $BUILD_CONTAINERS_IMAGE
+   script:
+-    - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-minimal build-debian-minimal
+     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian build-debian
  
- # Meson version switching shenanigans
- RUN dnf install -y python3-pip
--RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/e8/ec/3e6a68c9e0fd4b4f4fb6877a3ccfb6f6e6d09f2b4fc87674e671bf64b7b8/{meson-0.47.2.tar.gz}"
-+RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/43/9a/e0bcec70d290986c6265d32e0a2d16ace7ef38f58aa5a65308967129d094/{meson-0.52.1.tar.gz}"
+@@ -56,21 +55,18 @@ build-containers:build-debian-armhf:
+   stage: build-containers
+   image: $BUILD_CONTAINERS_IMAGE
+   script:
+-    - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-armhf build-debian-armhf
  
- RUN dnf clean all
-diff --git a/meson.build b/meson.build
-index b88098234e6d72dd2ed4cf26972e7afed1b1aede..3d18267e652943c5984575498ddeacdec7e079da 100644
---- a/meson.build
-+++ b/meson.build
-@@ -7,7 +7,7 @@ project('igt-gpu-tools', 'c',
-           'buildtype=debugoptimized',
-         ],
- 	license : 'MIT',
--	meson_version : '>=0.47.2')
-+	meson_version : '>=0.52.1')
+ build-containers:build-debian-arm64:
+   stage: build-containers
+   image: $BUILD_CONTAINERS_IMAGE
+   script:
+-    - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-debian-arm64 build-debian-arm64
  
- if get_option('b_ndebug') != 'false'
- 	error('Building without -Db_ndebug=false is not supported')
+ build-containers:build-fedora:
+   stage: build-containers
+   image: $BUILD_CONTAINERS_IMAGE
+   script:
+-    - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - .gitlab-ci/pull-or-rebuild.sh base Dockerfile.build-fedora build-fedora
+ 
+ #################### BUILD #########################
+@@ -263,5 +259,4 @@ containers:igt:
+   variables:
+     FORCE_REBUILD: 1
+   script:
+-    - podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+     - .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt
+diff --git a/.gitlab-ci/pull-or-rebuild.sh b/.gitlab-ci/pull-or-rebuild.sh
+index 4f77431b52b06fd5971b47ea1aadcf0e85e4edad..aa1bddcde88d927a892501071dc848a36b2f2f85 100755
+--- a/.gitlab-ci/pull-or-rebuild.sh
++++ b/.gitlab-ci/pull-or-rebuild.sh
+@@ -47,7 +47,7 @@ if [ "$TYPE" = "base" ]; then
+ 	else
+ 		echo "Building!"
+ 		$PODMAN_BUILD --squash -t $DOCKERNAME -f $DOCKERFILE .
+-		podman push $DOCKERNAME
++		podman push --creds $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD $DOCKERNAME
+ 	fi
+ 
+ 	skopeo copy --dest-creds $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD \
+@@ -57,7 +57,7 @@ elif [ "$TYPE" = "igt" ]; then
+ 	# we always rebuild
+ 	set -e
+ 	$PODMAN_BUILD -t $COMMITNAME -f $DOCKERFILE .
+-	podman push $COMMITNAME
++	podman push --creds $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD $COMMITNAME
+ 	skopeo copy --dest-creds $CI_REGISTRY_USER:$CI_REGISTRY_PASSWORD \
+                docker://$COMMITNAME docker://$REFNAME
+ else
 
 -- 
 2.43.0
