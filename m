@@ -4,174 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11800C71136
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 16:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C24F6C61CE8
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 17:52:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC93A10E033;
-	Thu, 12 Jun 2025 16:49:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 710BD10E0B1;
+	Thu, 12 Jun 2025 17:52:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VwP5w3h2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PkgGlAq3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 997A610E033
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 16:49:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0048210E0BE
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 17:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749746979; x=1781282979;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=ZsUvjdktzHW9cawUCm65sR/kz5/a6wPJfU6n9SGa07g=;
- b=VwP5w3h22cjxIPRgWOx/7fP+IVsHGIJcB0ZNVfitfudp0rHTEF7rMyyM
- dc+Fy+MZTDfV4eUhygJ+u4sWCrRSeHbjQedioyd8rTj+sOu20KOFOersD
- z8CPD0DGJPKDrI4i3rhiDpUW03c2GmHXXaUYXpzj/k/2RMvPBtWoZkZdP
- qnN7/Rvd8XhX+Sb1pF0g/QJElGIJ4eKFq4zKQHjMuEOUFZp5mA/oj9+AI
- OKnf4Ihs0dQQiBYn7FE2UtCGnkU69SjbxdNB8TLnXhJpHyqaQREYn8vjo
- vs2sAAeIVaDVf85dpyTnQ8QRxfFRX82IthoZdyFmE9aZo5bmb81abV9jY g==;
-X-CSE-ConnectionGUID: anXMBkgTRmeGrrSDilH1ew==
-X-CSE-MsgGUID: jAq1zfGEQnq02JtP6GMOwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="52086905"
-X-IronPort-AV: E=Sophos;i="6.16,231,1744095600"; d="scan'208";a="52086905"
+ t=1749750727; x=1781286727;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=/pnlk7DfjBvx6sGtPA1xPkq8WB/gjWi4yfzUa5yNCx4=;
+ b=PkgGlAq3Zq2KhcspYwo0pySUB8U6d3u1uwmz2g+ZKx7cXgbJxxOiCY9v
+ QaZSUZxWUvm+rFi612nFlAWIswfgwMuzHuP/fs93lQ8h1/QLAF1UnayLJ
+ i4+dbAEr6gaUPnW3u2tFvZVg3IstS0zDpeVp993wQp2EUzOHL7m1ClAki
+ pEVf4Z1EUCQiznidtVvjhhbrOC9IxfESY+nYvQDQWT4t/NsU8EPU3ovtC
+ E/IsFIvJ2E8Tcy4a53z/klcUmwDNzWRa78pRh80O8rba1uuIPgUcld6H3
+ 0mdJg7DfQQ2zSK9qqP+YGj64paDHXc3Fy1TRHZvO2zxCkfnU1R7W7nZK8 A==;
+X-CSE-ConnectionGUID: rb5KFCb4Ss62mglN2TKTuQ==
+X-CSE-MsgGUID: SXaY/4dVTI62wvu7krcjlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51664008"
+X-IronPort-AV: E=Sophos;i="6.16,231,1744095600"; d="scan'208";a="51664008"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 09:49:39 -0700
-X-CSE-ConnectionGUID: gWFX04ydTtKhTKwwxuC4tQ==
-X-CSE-MsgGUID: MVlJFPFAQKGpavAs5dbjRw==
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2025 10:52:06 -0700
+X-CSE-ConnectionGUID: PXD+s0OhSv2X3Zzhr/YpNQ==
+X-CSE-MsgGUID: igpM+3lyRuWywo7gu1Tnsg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,231,1744095600"; d="scan'208";a="147418925"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 09:49:38 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Jun 2025 09:49:38 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 12 Jun 2025 09:49:38 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.70)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Jun 2025 09:49:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qGXuUXlcrwTRhSUBo0nORQj7C1Lk+IWZlJ44aIVdShS1eACAmIWWlYXZSWS63fJ5KJe2bwVgS9xvqFt8x1C/h5Y7AfHAuR4cL0NSxKYlyjg19kEOpJFWyal+xlZ26eGR5tyoOpq2V4VjJBY7EXO5FvDDNonYDqwBN2EKz+UkEWdc5E8c5exoszdmAZaEiwfIoOA0sRzv5C9wppiwT68xeuf1U/HZ8a8Ym2jbF2mbZ+BL/Z0ZQkm9faWtr9FPKTTG7xdN0sEAkZoo85sC8+rnftufx4DeiwypZhBywwFfy63+UVacCnbOdPTQGqKNP0FXGuXhEh+OgaR978LSBkSSAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5/lWrTnh1MJkFWRX0o0M7aorzJPy7EK502gtfxgKWH0=;
- b=R1HqQ2zvB0g6n6Lg11C/i7EX8MDugRuBxfzxJ9kEIvwwBkdoFBztxArCczc2hsbTK9cbpcphbD+DWrANvq3cql0j36b24HqFRW17Ub2F1iEPENKYWkXHe4KltqkaOY6SuKIOzwuOGNaBdo4mcfDopdNlSncNaqdzgvCrSCnGkCPW5U6EXtOzeB/hoJ/xWYyP/qwYPaQFTsNJ1DZLW8/N90bd6FY/z9D6E/GjhVmwnF7aWQRMB5zv62adwKb91gZBdCu1StOFlr6ynTWZkU85p8juUtSP8HKHwnQnHDEak2JhRwGyFLApqHttxA5kc3n3RAtBZYdRldRQacBx+uii/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH0PR11MB5444.namprd11.prod.outlook.com (2603:10b6:610:d3::13)
- by PH0PR11MB5141.namprd11.prod.outlook.com (2603:10b6:510:3c::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.22; Thu, 12 Jun
- 2025 16:49:31 +0000
-Received: from CH0PR11MB5444.namprd11.prod.outlook.com
- ([fe80::5f89:ba81:ff70:bace]) by CH0PR11MB5444.namprd11.prod.outlook.com
- ([fe80::5f89:ba81:ff70:bace%4]) with mapi id 15.20.8813.024; Thu, 12 Jun 2025
- 16:49:31 +0000
-From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-To: "K V P, Satyanarayana" <satyanarayana.k.v.p@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Harrison, John C" <john.c.harrison@intel.com>, "Dugast, Francois"
- <francois.dugast@intel.com>, "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-Subject: RE: [PATCH i-g-t v5] tests/intel/xe_fault_injection: Suppress Guc CT
- dumps during fault injection
-Thread-Topic: [PATCH i-g-t v5] tests/intel/xe_fault_injection: Suppress Guc CT
- dumps during fault injection
-Thread-Index: AQHb22/hCXX+z8nLl0CwT5ZzBqu/grP/jCaggAAtsgCAAAFtkA==
-Date: Thu, 12 Jun 2025 16:49:31 +0000
-Message-ID: <CH0PR11MB5444B80E7AC333E8C9944B90E574A@CH0PR11MB5444.namprd11.prod.outlook.com>
-References: <20250612081524.26153-1-satyanarayana.k.v.p@intel.com>
- <CH0PR11MB5444419E64DD6CDC14D13ABAE574A@CH0PR11MB5444.namprd11.prod.outlook.com>
- <DS0PR11MB86868FA7D9CBD35DF0371430F974A@DS0PR11MB8686.namprd11.prod.outlook.com>
-In-Reply-To: <DS0PR11MB86868FA7D9CBD35DF0371430F974A@DS0PR11MB8686.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR11MB5444:EE_|PH0PR11MB5141:EE_
-x-ms-office365-filtering-correlation-id: d7e743f8-9743-42ea-c1bd-08dda9d11a4c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?0L4FE2Un4JoiiT3nPxAX3pQd0UMx+G6M3WDySWQlgG47CB4ZPBUA/jC2oKzD?=
- =?us-ascii?Q?znjcGp3e3LwHPrPUQubEs2hWrDn50TwGjBS6UWsJ9l6taWAEGYtJOU3udZfC?=
- =?us-ascii?Q?oxsbz0UJgwPRxMVWy+L1A2PwLMD2yBACb/uHztPip/C4eKgkRyLuxIcbsGY1?=
- =?us-ascii?Q?qc/6hxuCf0nd6MHQbL1IbgPSGNVo8IqJrfqT/dO0pzMXHDV6ADMQRKsHD4B2?=
- =?us-ascii?Q?3jYxbOk/lGIuBxUwsvxDeAIAX9nk9bgCPyVVGpjmftLCv+xbyYN2kRsa+YwQ?=
- =?us-ascii?Q?E8g6TQxfWYOuU51jO01tx2tSrOFVdcx9AfumEAiLF46Svhc0U61mZfr+x31a?=
- =?us-ascii?Q?4buf6acoMJ0uEqFItoYkFrrfzhx2BMkH46A3frpIOfbAZAKFC+cUDF9tBS3N?=
- =?us-ascii?Q?jWRFvkmZ9IK4RliPVTjkKZPrzwr1Uyyjc+huzsItHNtgkbi8cYQPamYehWnt?=
- =?us-ascii?Q?61jjqIRVMUIX1pwNsXIU0dPQ+sinSXDd/5unof+fDaUek5n2PpG9W+Fvcbec?=
- =?us-ascii?Q?0cLjQeNAnpAzGYx0cqlAo8mIPFdibOsEMMfLNSgE47lYWy54xQHeUhhkUOXk?=
- =?us-ascii?Q?4hY1lNrBQlbpSojMIWoTNof6OwpWC2ObI5nXTdnSkKyHP8lb6c08oWe92EjU?=
- =?us-ascii?Q?FugWuz6BVtivxL4xY8+7etMeF624RhyPCGzQLfzzxSNiUCQ71aQ3ChlbEEpl?=
- =?us-ascii?Q?U9dHm6keXUWmo9NhssoqR6AlbACi5DgSKYrSnVgvKuLOWBT6KlMEAmLSQm35?=
- =?us-ascii?Q?zgsbub9XhBAdxj2GDNab1gt0BTm4zITjLl1SouK1KK8uOG3y2hoXCrb45sq+?=
- =?us-ascii?Q?4/p8DkLdrZnX89kNEPCGSJTvWZic4nem/vh+YO/MhPhX/LhhYqwOUOEHaB5N?=
- =?us-ascii?Q?IOQ2ASPIcLEJEgWj8yxDovzQR4CNZghK6pHm44/3sS5KUISk2+do6LLMtJJf?=
- =?us-ascii?Q?mmeJ7BceMrtHFNMPlkJfFuq+6ncHotSxqDH+RfOR0tgDTuNVHuB/NJG0+bpj?=
- =?us-ascii?Q?8MSb7GUcdgPzwrva1S6oFJ/pPJ58a3jM5GkZAQOdQqF0Vlg2cNbiXCU7+l2Z?=
- =?us-ascii?Q?AydxTEmE4ZASFLiiuSvkknGtGIz4imvldb7Tca/ewL94K5ua+L5Jl8N6TsZt?=
- =?us-ascii?Q?VTtPXo6AOY/HWJNc6MQkG0oi60Jli9lF3Rd7Nhd8bOmu2ddD0AMlJa3udfry?=
- =?us-ascii?Q?5OoL6izvBrh4jOtzhq3TdTjnB2Qo2uIgO5nFVcsYZ/pT0mAD45GQtzTxISRy?=
- =?us-ascii?Q?YbLs8djRxECdpZSLhkuLugt25eB5xRye256dXX+q6ZnuKZ3WoKvMDj9jmS9U?=
- =?us-ascii?Q?9D19njES+l1Ya1gnZM8C7B+6SPik77p1ODkOvVAw0cT6acRW4RPNQgGSqr6+?=
- =?us-ascii?Q?tebK+hIAKP5vYM5VUVtOzKwJ7ygjst1TeBqthUs1NkZcAXzKCiQIyY0aRuPJ?=
- =?us-ascii?Q?XnYvbMgJoI8=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5444.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(7053199007)(38070700018); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?aodYScnbtiOWrpeGTk8NZuVJqRYUBEcasK+8QUtrx5xsWTHEJjjSgzFwl4Dq?=
- =?us-ascii?Q?DV0RlEE/j41WjP6xK2P88thw+18S87nunfbrxG41nA5MQerUgNdvlBtXmHvj?=
- =?us-ascii?Q?GWigquNenc+KW8fmJJb4yEYdV5uhpO8Waj+SfBffBxJmc46y9bs8seVSWiVK?=
- =?us-ascii?Q?FrPjtQlLrhzP4R87Kl/E9gpR87eriQvAbh0aM6hzydPIDvFRnzB3vnPfKzcl?=
- =?us-ascii?Q?wtd64R/4fO+OSLwEzQO+3LDmE7zqcRWb5fnTHdsOl+L725rJTUUlxLWLn/g3?=
- =?us-ascii?Q?FjC37Jj1Vr54BMSeI+zKP+K9ST0h8oPlguhDSDVPCWkRVbaZXxxqAHEXdHu7?=
- =?us-ascii?Q?l2RdNRssFYMge/CcSY+PZB6LwYXzkeHhbSLg5ECbL8T3rEgf+yzHM7wPGRqs?=
- =?us-ascii?Q?bTbrKN1u2Ag0i3V6nJQaOpVxYP8KHOlHG+9ZSTtiBTGhoNiPDmyylrXQzLO2?=
- =?us-ascii?Q?Ihsuf3zJXPo9ENwngWtxQofjvK6yo0JT+5tAgF0vXsUv/KPwM+fUwrMuXI1b?=
- =?us-ascii?Q?ONIrBxG9kUZrm9/ztTOEBN2cPPZ4hHNo1/Z0xMgaaVbtOWc7nVE9nTFCY5Qq?=
- =?us-ascii?Q?pmClpEVHu2ddvrRUpWJpNL0fPHTSgJs5UOeFOHub1iAQqEPB9MpSqCG3WX+Y?=
- =?us-ascii?Q?f6q8Nmq+W2YT1jv4NGiR2qX3AvrcYtlCdRUrq+sjACuhH3eAijgJsxziXW22?=
- =?us-ascii?Q?1Ot+gsy1/3BAna9cdyB88QwBW6Lrrzi1cGX1BpgXMGQDPf10OyZufE4j89zU?=
- =?us-ascii?Q?rYPZCUwe2F0s/0bEw2t73SRQ+6dLDXSNanSpjHUNG9NXIUyNOYZYtBDalTPQ?=
- =?us-ascii?Q?0qM1Vr5ia87JneuvCp3lab+5h6DiPAk7NnAylUdnJmT3isKWjEnhEtQ1y20q?=
- =?us-ascii?Q?R+FbcP4JtCZ4qWuI1MoBF/agVn4l8rOyEqpWDgXH/pdf4tC0KRXJ6/i2GT+1?=
- =?us-ascii?Q?BV+on0p6GrPmNkFx0sq19Ga6pypUdgVvk4qMT1Cr0A0wL69KZfj/HtY9NQC2?=
- =?us-ascii?Q?FZ4q/mMQrjcW78Pd5kja5MhUVI5lt7kxrh5wS80VObQWOzAV57JeKhEe1XKS?=
- =?us-ascii?Q?PgSl7JP3TBxqU1M0cuV+DNu0UPz7+WxE4+95vS12o/5JBxw47ZTujBQSVPOK?=
- =?us-ascii?Q?ZLZXRgxNBrAy4bvf5ANuRQUM1PbMSC7cyCseo5G4XZsyHEx+IFo3fy8DFZXG?=
- =?us-ascii?Q?Kftlo57ecpPvqZt1+TZop97Tfp4U3JSrkxWydUsrKdhKcUPhmkMyou7EnxrM?=
- =?us-ascii?Q?iWzPXgxo6mLdHCkXa3JyJa6GQH+Et179wiytSeF+B5mwjvp7D/fDrmjqDfgW?=
- =?us-ascii?Q?EAgug1pKL4tmvRQfxLg5mUF9M3z6RltsXjc6axQzcme4AQ4zXUJasOteczIn?=
- =?us-ascii?Q?C7DPF42osxfKNG2i8XAsX1cjM3xjrIZeCpEduRKHlP8cyp66R7dEKwkM5lK2?=
- =?us-ascii?Q?iu5Nq26DHV5V010kM3C5g0cbUMferpEXjVWZZAQEF4ZC0kQwp1TyJI9JgL9R?=
- =?us-ascii?Q?BDIAa/e3r+6dhpJpB0YhX9ri61uCKsn/nYNog5qL61tDO8rIaY6jCB9/iQrN?=
- =?us-ascii?Q?vy/5LE3uOL/z99unm5Rk64/OOFsjImhxVgqLlFxDoE3NckIz+A5nTDJMaVL9?=
- =?us-ascii?Q?NA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-IronPort-AV: E=Sophos;i="6.16,231,1744095600"; d="scan'208";a="147431776"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 10:52:04 -0700
+Date: Thu, 12 Jun 2025 19:51:48 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, marcin.bernatowicz@intel.com,
+ katarzyna.piecielska@intel.com, zbigniew.kempczynski@intel.com,
+ ewelina.musial@intel.com
+Subject: Re: [PATCH i-g-t 1/5] Remove tests/intel/intel_sysfs_debugfs
+Message-ID: <20250612175148.an6ojlvxt6qcftw5@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, marcin.bernatowicz@intel.com,
+ katarzyna.piecielska@intel.com, zbigniew.kempczynski@intel.com,
+ ewelina.musial@intel.com
+References: <20250522110126.628720-1-peter.senna@linux.intel.com>
+ <20250522110126.628720-2-peter.senna@linux.intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5444.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7e743f8-9743-42ea-c1bd-08dda9d11a4c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jun 2025 16:49:31.0956 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7GnCOsfjBYae/XdOYBYW+yfV8LGswaQHyj4vE6pKxCngYQH+xe0lgbTW/9LsdD0rMpfDdnvZbX/8P+44seg1+qYnsaLsWSXN45gY89F7uYg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5141
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250522110126.628720-2-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -187,202 +76,542 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
------Original Message-----
-From: K V P, Satyanarayana <satyanarayana.k.v.p@intel.com>=20
-Sent: Thursday, June 12, 2025 9:38 AM
-To: Cavitt, Jonathan <jonathan.cavitt@intel.com>; igt-dev@lists.freedesktop=
-.org
-Cc: Harrison, John C <john.c.harrison@intel.com>; Dugast, Francois <francoi=
-s.dugast@intel.com>; K V P, Satyanarayana <satyanarayana.k.v.p@intel.com>
-Subject: RE: [PATCH i-g-t v5] tests/intel/xe_fault_injection: Suppress Guc =
-CT dumps during fault injection
->=20
-> > -----Original Message-----
-> > From: Cavitt, Jonathan <jonathan.cavitt@intel.com>
-> > Sent: Thursday, June 12, 2025 7:50 PM
-> > To: K V P, Satyanarayana <satyanarayana.k.v.p@intel.com>; igt-
-> > dev@lists.freedesktop.org
-> > Cc: K V P, Satyanarayana <satyanarayana.k.v.p@intel.com>; Harrison, Joh=
-n C
-> > <john.c.harrison@intel.com>; Dugast, Francois <francois.dugast@intel.co=
-m>;
-> > Cavitt, Jonathan <jonathan.cavitt@intel.com>
-> > Subject: RE: [PATCH i-g-t v5] tests/intel/xe_fault_injection: Suppress =
-Guc CT
-> > dumps during fault injection
-> >=20
-> > -----Original Message-----
-> > From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-> > Sent: Thursday, June 12, 2025 1:15 AM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: K V P, Satyanarayana <satyanarayana.k.v.p@intel.com>; Harrison, Joh=
-n C
-> > <john.c.harrison@intel.com>; Cavitt, Jonathan <jonathan.cavitt@intel.co=
-m>;
-> > Dugast, Francois <francois.dugast@intel.com>
-> > Subject: [PATCH i-g-t v5] tests/intel/xe_fault_injection: Suppress Guc =
-CT
-> > dumps during fault injection
-> > >
-> > > When injecting fault to xe_guc_ct_send_recv() & xe_guc_mmio_send_recv=
-()
-> > > functions, the CI test systems are going out of space and crashing. T=
-o
-> > > avoid this issue, a new helper function is created and when fault is
-> > > injected into this xe_should_fail_ct_dead_capture() helper function,
-> > > ct dead capture is avoided which suppresses ct dumps in the log.
-> > >
-> > > Inject fault into xe_should_fail_ct_dead_capture() function along wit=
-h
-> > > xe_guc_ct_send_recv() & xe_guc_mmio_send_recv() to suppress GUC ct
-> > dumps.
-> > >
-> > > Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-> > > Suggested-by: John Harrison <John.C.Harrison@Intel.com>
-> > > Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> > > Cc: Francois Dugast <francois.dugast@intel.com>
-> > > ---
-> > > Same as https://patchwork.freedesktop.org/series/148416/ which was
-> > > reverted due to change from XE was still in review.
-> > >
-> > > V4 -> V5:
-> > > - Fixed review comments (Jonathan).
-> > >
-> > > Test-with: 20250612080402.22011-1-satyanarayana.k.v.p@intel.com
-> > > ---
-> > >  tests/intel/xe_fault_injection.c | 30 ++++++++++++++++++++++++++++++
-> > >  1 file changed, 30 insertions(+)
-> > >
-> > > diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_=
-injection.c
-> > > index aa3a3a7c2..8245c558c 100644
-> > > --- a/tests/intel/xe_fault_injection.c
-> > > +++ b/tests/intel/xe_fault_injection.c
-> > > @@ -113,6 +113,22 @@ static void injection_list_add(const char
-> > function_name[])
-> > >  	close(dir);
-> > >  }
-> > >
-> > > +static void injection_list_append(const char function_name[])
-> > > +{
-> > > +	int dir, fd, ret;
-> > > +
-> > > +	dir =3D fail_function_open();
-> > > +	igt_assert_lte(0, dir);
-> > > +
-> > > +	fd =3D openat(dir, "inject", O_WRONLY | O_APPEND);
-> > > +	igt_assert_lte(0, fd);
-> > > +	ret =3D write(fd, function_name, strlen(function_name));
-> > > +	igt_assert_lte(0, ret);
-> > > +
-> > > +	close(fd);
-> > > +	close(dir);
-> > > +}
-> > > +
-> > >  static void injection_list_remove(const char function_name[])
-> > >  {
-> > >  	int dir;
-> > > @@ -192,6 +208,18 @@ static void set_retval(const char function_name[=
-],
-> > long long retval)
-> > >  	close(dir);
-> > >  }
-> > >
-> > > +static void ignore_fail_dump_in_dmesg(const char function_name[], bo=
-ol
-> > enable)
-> > > +{
-> > > +	if (strstr(function_name, "send_recv")) {
-> > > +		if (enable) {
-> > > +			injection_list_append("xe_is_injection_active");
-> > > +			set_retval("xe_is_injection_active", INJECT_ERRNO);
-> > > +		} else {
-> > > +			injection_list_remove("xe_is_injection_active");
-> > > +		}
-> > > +	}
-> > > +}
-> > > +
-> > >  /**
-> > >   * SUBTEST: inject-fault-probe-function-%s
-> > >   * Description: inject an error in the injectable function %arg[1] t=
-hen
-> > > @@ -227,11 +255,13 @@ inject_fault_probe(int fd, const char pci_slot[=
-],
-> > const char function_name[])
-> > >  	ignore_dmesg_errors_from_dut(pci_slot);
-> > >  	injection_list_add(function_name);
-> > >  	set_retval(function_name, INJECT_ERRNO);
-> > > +	ignore_fail_dump_in_dmesg(function_name, true);
-> > >
-> > >  	igt_kmod_bind("xe", pci_slot);
-> > >
-> > >  	err =3D -errno;
-> > >  	injection_list_remove(function_name);
-> > > +	ignore_fail_dump_in_dmesg(function_name, false);
-> >=20
-> > This is better, though I think there's a stigma against giving a single=
- function a
-> > boolean
-> > mode switch like this.  I don't know where that stigma came from, but i=
-t might
-> > be
-> > preferrable for you to just break the "false" case out and run it here =
-directly.
-> >=20
-> > Perhaps something like:
-> >=20
-> > """
-> >  static bool ignore_fail_dump_in_dmesg(const char function_name[])
-> > {
-> > 	bool ret =3D !!strstr(function_name, "send_recv");
-> >=20
-> > 	if (ret) {
-> > 		injection_list_append("xe_is_injection_active");
-> > 		set_retval("xe_is_injection_active", INJECT_ERRNO);
-> > 	}
-> > 	return ret;
-> > }
-> > ...
-> > 	ignore_dmesg_errors_from_dut(pci_slot);
-> > 	injection_list_add(function_name);
-> > 	set_retval(function_name, INJECT_ERRNO);
-> > 	ignore_dump =3D ignore_fail_dump_in_dmesg(function_name);
-> >=20
-> > 	igt_kmod_bind("xe", pci_slot);
-> >=20
-> > 	err =3D -errno;
-> >  	injection_list_remove(function_name);
-> > 	if (ignore_dump)
-> > 		injection_list_remove("xe_is_injection_active");
-> > """
-> >=20
-> > If you do that, you can have my
-> > Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> > -Jonathan Cavitt
-> >=20
-> I do not think, I am going to implement above method as it increases LOC =
-count=20
-> and not seeing any benefit with implementing this.
-> Let me know if you see any benefit with suggested approach.
+Hi Peter,
+On 2025-05-22 at 13:00:44 +0200, Peter Senna Tschudin wrote:
 
-This isn't so much about the lines of change or the performance.  It's abou=
-t the
-expected style guidelines used for IGT.  I'll admit that I might not be rem=
-embering
-the style guidelines quite correctly and that this function could be accept=
-ably within
-the given guidelines, though, so I'll give my reviewed-by for now and reque=
-st you
-wait for someone else to also give this a look.
+I have few nits, this is not a full review. imho this patch
+should last one, or be moved into xe_debugfs.c and then removing
+code parts which are already in core_debugfs/core_sysfs
 
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
--Jonathan Cavitt
-=20
-> -Satya.
-> > >  	return err;
-> > >  }
-> > > --
-> > > 2.43.0
-> > >
-> > >
->=20
+Last one 5/5 is: tests/intel/xe_debugfs: Add Xe-specific debugfs test
+
+Do we also need an i915 variant?
+
+imho subject should be:
+
+[PATCH i-g-t 1/5] tests/intel: Remove intel_sysfs_debugfs
+
+Regards,
+Kamil
+
+> The intel_sysfs_debugfs test was originally introduced to unify testing
+> for both i915 and Xe drivers, aiming to prevent gaps in test coverage.
+> However, its implementation fell short in addressing scenarios where
+> both i915 and Xe were present in the system.
+> 
+> To address these limitations, intel_sysfs_debugfs will be replaced by a
+> more modular and comprehensive set of tests:
+>  - tests/core_debugfs (gpu agnostic)
+>  - tests/core_sysfs (gpu agnostic)
+>  - tests/intel/xe_debugfs (complementary to core_debugfs)
+> 
+> This restructuring ensures better test coverage and flexibility moving
+> forward.
+> 
+> Cc: marcin.bernatowicz@intel.com
+> Cc: kamil.konieczny@linux.intel.com
+> Cc: katarzyna.piecielska@intel.com
+> Cc: zbigniew.kempczynski@intel.com
+> Cc: ewelina.musial@intel.com
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> ---
+>  tests/intel-ci/fast-feedback.testlist    |   2 -
+>  tests/intel-ci/xe-fast-feedback.testlist |   4 -
+>  tests/intel/intel_sysfs_debugfs.c        | 430 -----------------------
+>  tests/intel/xe_test_config.json          |   2 +-
+>  tests/meson.build                        |   1 -
+>  5 files changed, 1 insertion(+), 438 deletions(-)
+>  delete mode 100644 tests/intel/intel_sysfs_debugfs.c
+> 
+> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+> index 82395e7ea..db0dcb458 100644
+> --- a/tests/intel-ci/fast-feedback.testlist
+> +++ b/tests/intel-ci/fast-feedback.testlist
+> @@ -53,8 +53,6 @@ igt@i915_getparams_basic@basic-subslice-total
+>  igt@i915_hangman@error-state-basic
+>  igt@i915_pciid
+>  igt@intel_hwmon
+> -igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries
+> -igt@intel_sysfs_debugfs@i915-sysfs-read-all-entries
+>  igt@kms_addfb_basic@addfb25-4-tiled
+>  igt@kms_addfb_basic@addfb25-bad-modifier
+>  igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index d9d180d87..536c25836 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -7,10 +7,6 @@ igt@fbdev@nullptr
+>  igt@fbdev@read
+>  igt@fbdev@write
+>  
+> -igt@intel_sysfs_debugfs@xe-base
+> -igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries
+> -igt@intel_sysfs_debugfs@xe-forcewake
+> -igt@intel_sysfs_debugfs@xe-sysfs-read-all-entries
+>  igt@kms_addfb_basic@addfb25-4-tiled
+>  igt@kms_addfb_basic@addfb25-bad-modifier
+>  igt@kms_addfb_basic@addfb25-modifier-no-flag
+> diff --git a/tests/intel/intel_sysfs_debugfs.c b/tests/intel/intel_sysfs_debugfs.c
+> deleted file mode 100644
+> index dfd8d52d8..000000000
+> --- a/tests/intel/intel_sysfs_debugfs.c
+> +++ /dev/null
+> @@ -1,430 +0,0 @@
+> -// SPDX-License-Identifier: MIT
+> -/*
+> - * Copyright © 2025 Intel Corporation
+> - */
+> -
+> -#include <dirent.h>
+> -#include <fcntl.h>
+> -
+> -#include "i915/gem.h"
+> -#include "igt.h"
+> -#include "igt_sysfs.h"
+> -#include "xe/xe_query.h"
+> -
+> -struct {
+> -	bool warn_on_not_hit;
+> -} opt = { 0 };
+> -
+> -/**
+> - * TEST: debugfs test
+> - * Description: Read entries from debugfs, and sysfs paths.
+> - * Category: Core
+> - * Mega feature: General Core features
+> - * Sub-category: uapi
+> - * Functionality: debugfs
+> - * Feature: core
+> - * Test category: uapi
+> - *
+> - * SUBTEST: i915-debugfs-read-all-entries
+> - * Description: Read all entries from debugfs path validating debugfs entries
+> - *
+> - * SUBTEST: i915-debugfs-read-all-entries-display-off
+> - * Description: Read all debugfs entries with display off.
+> - *
+> - * SUBTEST: i915-debugfs-read-all-entries-display-on
+> - * Description: Read all debugfs entries with display on.
+> - *
+> - * SUBTEST: i915-sysfs-read-all-entries
+> - * Description: Read all entries from sysfs path validating debugfs entries
+> - *
+> - * SUBTEST: xe-debugfs-read-all-entries
+> - * Description: Read all entries from debugfs path validating debugfs entries
+> - *
+> - * SUBTEST: xe-debugfs-read-all-entries-display-off
+> - * Description: Read all debugfs entries with display off.
+> - *
+> - * SUBTEST: xe-debugfs-read-all-entries-display-on
+> - * Description: Read all debugfs entries with display on.
+> - *
+> - * SUBTEST: xe-sysfs-read-all-entries
+> - * Description: Read all entries from sysfs path validating debugfs entries
+> - *
+> - */
+> -
+> -IGT_TEST_DESCRIPTION("Read entries from debugfs, and sysfs paths.");
+> -
+> -static void read_and_discard_sysfs_entries(int path_fd, int indent)
+> -{
+> -	struct dirent *dirent;
+> -	DIR *dir;
+> -	char tabs[8];
+> -	int i;
+> -
+> -	igt_assert(indent < sizeof(tabs) - 1);
+> -
+> -	for (i = 0; i < indent; i++)
+> -		tabs[i] = '\t';
+> -	tabs[i] = '\0';
+> -
+> -	dir = fdopendir(path_fd);
+> -	if (!dir)
+> -		return;
+> -
+> -	while ((dirent = readdir(dir))) {
+> -		if (!strcmp(dirent->d_name, ".") ||
+> -		    !strcmp(dirent->d_name, ".."))
+> -			continue;
+> -
+> -		if (dirent->d_type == DT_DIR) {
+> -			int sub_fd;
+> -
+> -			sub_fd = openat(path_fd, dirent->d_name,
+> -					O_RDONLY | O_DIRECTORY);
+> -			if (sub_fd < 0)
+> -				continue;
+> -
+> -			igt_debug("%sEntering subdir %s\n", tabs, dirent->d_name);
+> -			read_and_discard_sysfs_entries(sub_fd, indent + 1);
+> -			close(sub_fd);
+> -		} else if (dirent->d_type == DT_REG) {
+> -			char buf[512];
+> -			int sub_fd;
+> -			ssize_t ret;
+> -
+> -			igt_kmsg(KMSG_DEBUG "Reading file \"%s\"\n", dirent->d_name);
+> -			igt_debug("%sReading file \"%s\"\n", tabs, dirent->d_name);
+> -
+> -			sub_fd = openat(path_fd, dirent->d_name, O_RDONLY | O_NONBLOCK);
+> -			if (sub_fd == -1) {
+> -				igt_debug("%sCould not open file \"%s\" with error: %m\n",
+> -					  tabs, dirent->d_name);
+> -				continue;
+> -			}
+> -
+> -			do {
+> -				ret = read(sub_fd, buf, sizeof(buf));
+> -			} while (ret == sizeof(buf));
+> -
+> -			if (ret == -1)
+> -				igt_debug("%sCould not read file \"%s\" with error: %m\n",
+> -					  tabs, dirent->d_name);
+> -
+> -			close(sub_fd);
+> -		}
+> -	}
+> -	closedir(dir);
+> -}
+> -
+> -static void kms_tests(int fd, int debugfs, const char *card_name)
+> -{
+> -	igt_display_t display;
+> -	struct igt_fb fb[IGT_MAX_PIPES];
+> -	enum pipe pipe;
+> -	int ret;
+> -	char test_name[64];
+> -
+> -	igt_fixture
+> -		igt_display_require(&display, fd);
+> -
+> -	snprintf(test_name, sizeof(test_name),
+> -		 "%s-debugfs-read-all-entries-display-on", card_name);
+> -
+> -	igt_subtest(test_name) {
+> -		/* try to light all pipes */
+> -retry:
+> -		for_each_pipe(&display, pipe) {
+> -			igt_output_t *output;
+> -
+> -			for_each_valid_output_on_pipe(&display, pipe, output) {
+> -				igt_plane_t *primary;
+> -				drmModeModeInfo *mode;
+> -
+> -				if (output->pending_pipe != PIPE_NONE)
+> -					continue;
+> -
+> -				igt_output_set_pipe(output, pipe);
+> -				primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> -				mode = igt_output_get_mode(output);
+> -				igt_create_pattern_fb(display.drm_fd,
+> -						      mode->hdisplay, mode->vdisplay,
+> -						      DRM_FORMAT_XRGB8888,
+> -						      DRM_FORMAT_MOD_LINEAR, &fb[pipe]);
+> -
+> -				/* Set a valid fb as some debugfs like to
+> -				 * inspect it on a active pipe
+> -				 */
+> -				igt_plane_set_fb(primary, &fb[pipe]);
+> -				break;
+> -			}
+> -		}
+> -
+> -		if (display.is_atomic)
+> -			ret = igt_display_try_commit_atomic(&display,
+> -					DRM_MODE_ATOMIC_TEST_ONLY |
+> -					DRM_MODE_ATOMIC_ALLOW_MODESET,
+> -					NULL);
+> -		else
+> -			ret = igt_display_try_commit2(&display, COMMIT_LEGACY);
+> -
+> -		if (ret) {
+> -			igt_output_t *output;
+> -			bool found = igt_override_all_active_output_modes_to_fit_bw(&display);
+> -
+> -			igt_require_f(found, "No valid mode combo found.\n");
+> -
+> -			for_each_connected_output(&display, output)
+> -				igt_output_set_pipe(output, PIPE_NONE);
+> -
+> -			goto retry;
+> -		}
+> -
+> -		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+> -
+> -		read_and_discard_sysfs_entries(debugfs, 0);
+> -	}
+> -
+> -	snprintf(test_name, sizeof(test_name),
+> -		 "%s-debugfs-read-all-entries-display-off", card_name);
+> -
+> -	igt_subtest(test_name) {
+> -		igt_output_t *output;
+> -		igt_plane_t *plane;
+> -
+> -		for_each_connected_output(&display, output)
+> -			igt_output_set_pipe(output, PIPE_NONE);
+> -
+> -		for_each_pipe(&display, pipe)
+> -			for_each_plane_on_pipe(&display, pipe, plane)
+> -				igt_plane_set_fb(plane, NULL);
+> -
+> -		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+> -
+> -		read_and_discard_sysfs_entries(debugfs, 0);
+> -	}
+> -
+> -	igt_fixture
+> -		igt_display_fini(&display);
+> -}
+> -
+> -static int xe_validate_entries(int fd, const char *add_path,
+> -			       const char * const str_val[], int str_cnt)
+> -{
+> -	int i;
+> -	int hit;
+> -	int found = 0;
+> -	int not_found = 0;
+> -	DIR *dir;
+> -	struct dirent *de;
+> -	char path[PATH_MAX];
+> -
+> -	if (!igt_debugfs_path(fd, path, sizeof(path)))
+> -		return -1;
+> -
+> -	strcat(path, add_path);
+> -	dir = opendir(path);
+> -	if (!dir)
+> -		return -1;
+> -
+> -	while ((de = readdir(dir))) {
+> -		if (de->d_name[0] == '.')
+> -			continue;
+> -		hit = 0;
+> -		for (i = 0; i < str_cnt; i++) {
+> -			if (!strcmp(str_val[i], de->d_name)) {
+> -				hit = 1;
+> -				break;
+> -			}
+> -		}
+> -		if (hit) {
+> -			found++;
+> -		} else if (opt.warn_on_not_hit) {
+> -			not_found++;
+> -			igt_warn("no test for: %s/%s\n", path, de->d_name);
+> -		}
+> -	}
+> -	closedir(dir);
+> -	return 0;
+> -}
+> -
+> -/**
+> - * SUBTEST: xe-base
+> - * Description: Check if various debugfs devnodes exist and test reading them
+> - */
+> -static void
+> -xe_test_base(int fd, struct drm_xe_query_config *config)
+> -{
+> -	uint16_t devid = intel_get_drm_devid(fd);
+> -	static const char * const expected_files[] = {
+> -		"gt0",
+> -		"gt1",
+> -		"stolen_mm",
+> -		"gtt_mm",
+> -		"vram0_mm",
+> -		"forcewake_all",
+> -		"info",
+> -		"gem_names",
+> -		"clients",
+> -		"name"
+> -	};
+> -	char reference[4096];
+> -	int val = 0;
+> -
+> -	igt_assert(config);
+> -	sprintf(reference, "devid 0x%llx",
+> -			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
+> -	igt_assert(igt_debugfs_search(fd, "info", reference));
+> -
+> -	sprintf(reference, "revid %lld",
+> -			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
+> -	igt_assert(igt_debugfs_search(fd, "info", reference));
+> -
+> -	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
+> -		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "yes" : "no");
+> -
+> -	igt_assert(igt_debugfs_search(fd, "info", reference));
+> -
+> -	if (intel_gen(devid) < 20) {
+> -		switch (config->info[DRM_XE_QUERY_CONFIG_VA_BITS]) {
+> -		case 48:
+> -			val = 3;
+> -			break;
+> -		case 57:
+> -			val = 4;
+> -			break;
+> -		}
+> -
+> -		sprintf(reference, "vm_max_level %d", val);
+> -		igt_assert(igt_debugfs_search(fd, "info", reference));
+> -	}
+> -
+> -	snprintf(reference, sizeof(reference), "tile_count %d", xe_sysfs_get_num_tiles(fd));
+> -	igt_assert(igt_debugfs_search(fd, "info", reference));
+> -
+> -	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
+> -
+> -	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
+> -	igt_debugfs_dump(fd, "gtt_mm");
+> -
+> -	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM) {
+> -		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
+> -		igt_debugfs_dump(fd, "vram0_mm");
+> -	}
+> -
+> -	if (igt_debugfs_exists(fd, "stolen_mm", O_RDONLY))
+> -		igt_debugfs_dump(fd, "stolen_mm");
+> -
+> -	igt_assert(igt_debugfs_exists(fd, "clients", O_RDONLY));
+> -	igt_debugfs_dump(fd, "clients");
+> -
+> -	igt_assert(igt_debugfs_exists(fd, "gem_names", O_RDONLY));
+> -	igt_debugfs_dump(fd, "gem_names");
+> -
+> -	xe_validate_entries(fd, "", expected_files, ARRAY_SIZE(expected_files));
+> -}
+> -
+> -/**
+> - * SUBTEST: xe-forcewake
+> - * Description: Check forcewake debugfs devnode
+> - */
+> -static void
+> -xe_test_forcewake(int fd)
+> -{
+> -	int handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
+> -
+> -	igt_assert_neq(handle, -1);
+> -	close(handle);
+> -}
+> -
+> -const char *help_str =
+> -	"  -w\t--warn-not-hit Produce warnings if it founds a devfs node without tests";
+> -
+> -struct option long_options[] = {
+> -	{ "--warn-not-hit", no_argument, NULL, 'w'},
+> -	{ 0, 0, 0, 0 }
+> -};
+> -
+> -static int opt_handler(int option, int option_index, void *input)
+> -{
+> -	switch (option) {
+> -	case 'w':
+> -		opt.warn_on_not_hit = true;
+> -		break;
+> -	default:
+> -		return IGT_OPT_HANDLER_ERROR;
+> -	}
+> -
+> -	return IGT_OPT_HANDLER_SUCCESS;
+> -}
+> -
+> -igt_main_args("", long_options, help_str, opt_handler, NULL)
+> -{
+> -	int debugfs = -1;
+> -	int fd = -1;
+> -	int sysfs = -1;
+> -
+> -	igt_subtest_group {
+> -		igt_fixture {
+> -			fd = drm_open_driver_master(DRIVER_INTEL);
+> -			igt_require_gem(fd);
+> -			debugfs = igt_debugfs_dir(fd);
+> -			sysfs = igt_sysfs_open(fd);
+> -
+> -			kmstest_set_vt_graphics_mode();
+> -		}
+> -
+> -		igt_describe("Read all entries from sysfs path.");
+> -		igt_subtest("i915-sysfs-read-all-entries")
+> -			read_and_discard_sysfs_entries(sysfs, 0);
+> -		igt_describe("Read all entries from debugfs path.");
+> -		igt_subtest("i915-debugfs-read-all-entries")
+> -			read_and_discard_sysfs_entries(debugfs, 0);
+> -
+> -		igt_describe("Read all debugfs entries with display on/off.");
+> -		igt_subtest_group
+> -			kms_tests(fd, debugfs, "i915");
+> -
+> -		igt_fixture {
+> -			close(sysfs);
+> -			close(debugfs);
+> -			drm_close_driver(fd);
+> -		}
+> -	}
+> -
+> -	igt_subtest_group {
+> -		igt_fixture {
+> -			fd = drm_open_driver_master(DRIVER_XE);
+> -			__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
+> -			debugfs = igt_debugfs_dir(fd);
+> -			sysfs = igt_sysfs_open(fd);
+> -
+> -			kmstest_set_vt_graphics_mode();
+> -		}
+> -
+> -		igt_describe("Read all entries from sysfs path.");
+> -		igt_subtest("xe-sysfs-read-all-entries")
+> -			read_and_discard_sysfs_entries(sysfs, 0);
+> -		igt_describe("Read all entries from debugfs path.");
+> -		igt_subtest("xe-debugfs-read-all-entries")
+> -			read_and_discard_sysfs_entries(debugfs, 0);
+> -
+> -		igt_describe("Read all debugfs entries with display on/off.");
+> -		igt_subtest_group
+> -			kms_tests(fd, debugfs, "xe");
+> -
+> -		igt_describe("Check if various debugfs devnodes exist and test reading them.");
+> -		igt_subtest("xe-base") {
+> -			xe_test_base(fd, xe_config(fd));
+> -		}
+> -
+> -		igt_describe("Check forcewake debugfs devnode");
+> -		igt_subtest("xe-forcewake") {
+> -			xe_test_forcewake(fd);
+> -		}
+> -
+> -		igt_fixture {
+> -			close(sysfs);
+> -			close(debugfs);
+> -			drm_close_driver(fd);
+> -		}
+> -	}
+> -}
+> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+> index edca243f1..e69450663 100644
+> --- a/tests/intel/xe_test_config.json
+> +++ b/tests/intel/xe_test_config.json
+> @@ -2,7 +2,7 @@
+>      "description": "JSON file to be used to parse Xe documentation",
+>      "name": "Tests for Xe Driver",
+>      "drivers": [ "xe" ],
+> -    "files": [ "xe_*.c", "../core_*.c", "../device_*.c", "../sriov_basic.c", "intel_hwmon.c", "intel_sysfs_debugfs.c" ],
+> +    "files": [ "xe_*.c", "../core_*.c", "../device_*.c", "../sriov_basic.c", "intel_hwmon.c"],
+>      "fields": {
+>          "Run type": {
+>              "_properties_": {
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 55bcf57ec..e2cef3de9 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -83,7 +83,6 @@ test_progs = [
+>  intel_i915_xe_progs = [
+>  	'api_intel_allocator',
+>  	'intel_hwmon',
+> -	'intel_sysfs_debugfs',
+>  ]
+>  
+>  intel_i915_progs = [
+> -- 
+> 2.43.0
+> 
