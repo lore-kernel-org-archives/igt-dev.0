@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BBBCC71143
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 12:31:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE709C71136
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 12:31:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E712D10E833;
-	Thu, 12 Jun 2025 12:31:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9E36810E832;
+	Thu, 12 Jun 2025 12:31:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZKsYkOLd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uf93C+55";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0E6110E830
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 12:31:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25DB310E835
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 12:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749731484; x=1781267484;
+ t=1749731499; x=1781267499;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=SgC2cX6ZuCMHtLAyItJ3HIuhZyNJXdR7DPAcQv0j7WA=;
- b=ZKsYkOLdVd3+myfBJAtEStskZSlq4g5gRkNrkG5FGZNh8cVZDkfjWSUR
- RBOG1az2vyEVliTvtNJ0IjeJS2tA5eeDyOlVXx9VPkkhlcWg8LbwprDcn
- ZsE/wexjohXQ3uAAac7I6tEZ89t/m+Cu+MC+OTdU29s8KDEPpnwKKPfP+
- btplmevZTljct7pmfPyTa4hU5eaDH0JCKxjNdQQpKkfcA36voPRhttxvM
- yd2leEorQgXkoIgksfWX8EhWYQfbaZ2u5OHi82LH3ki03jdnfknDVkfw8
- zJa1BaQMcVkxaNQWvocQhKTUGjUaigLySbnP2dNMV39tKumpDGGGvo+Nh A==;
-X-CSE-ConnectionGUID: mcDYgy01STq8+IfkxVUSNg==
-X-CSE-MsgGUID: qC4EuKk8TfeUGi2RZmIEMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51777780"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="51777780"
+ bh=eTUl8dL/kW19bdM54V4mBiEpp3uLS2zJU99wpFLyMaM=;
+ b=Uf93C+55fJnj17suOrnwDk/PUaYXV3x493G61MsSBhc9XQE198/kFZuh
+ LFnfKZLzIKmI8sm0rUVaP8m3N69Z1XV/HfzmFD4+CyPoRDWXc1ez0zC1F
+ 2VslBvVLjgZFfyOYp1bCD5kz6uI6Bisi88L/km0OiEMkeESXqQ6lXHHF5
+ URjjphPrPVetq/YVH6viUOuIkV6YmuSKz7oy+CHYNC94ir8nZMZ0DjDJP
+ 5zi65PiPO26OMl6wABYHF3iKbO9ej+bGpsqnjef4+YIwfp581SQBWN3Xo
+ 9FbgiRffkCyvJRRgXDx4LnGNsmYf5cvBCAWqX7GrXixrNDtwePJeo4z77 g==;
+X-CSE-ConnectionGUID: LXC80bjeSfqwGUxpA4If/A==
+X-CSE-MsgGUID: Cx3uTj/KRlmUIWaneuaDBA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51777809"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="51777809"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 05:31:23 -0700
-X-CSE-ConnectionGUID: Vah1JhAKRli9g8kw+mz38A==
-X-CSE-MsgGUID: WwfMJADHTE2GQXc3bHwCIQ==
+ 12 Jun 2025 05:31:36 -0700
+X-CSE-ConnectionGUID: fJ7mMbiETD6YlgyB19squw==
+X-CSE-MsgGUID: HGpWNx/bS1yl0fV0mTYW8A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="148061588"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="148061603"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 05:31:19 -0700
+ 12 Jun 2025 05:31:23 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 12 Jun 2025 14:30:14 +0200
-Subject: [PATCH v4 3/6] Dockerfile: bump debian version
+Date: Thu, 12 Jun 2025 14:30:16 +0200
+Subject: [PATCH v4 5/6] meson: bump required and tested version of meson
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-bump_docker_distros-v4-3-10d18745c7d4@intel.com>
+Message-Id: <20250612-bump_docker_distros-v4-5-10d18745c7d4@intel.com>
 References: <20250612-bump_docker_distros-v4-0-10d18745c7d4@intel.com>
 In-Reply-To: <20250612-bump_docker_distros-v4-0-10d18745c7d4@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -56,18 +56,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2431;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1591;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=SgC2cX6ZuCMHtLAyItJ3HIuhZyNJXdR7DPAcQv0j7WA=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoSshhQfImoHVIZrp+sY6f2kpx+XXaCAsijLBus
- 4RLUqxT5jiJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaErIYQAKCRAjYrKT3hD9
- 10ErC/9DAaPhplKYB0b+LmiJtI2asWafFf7OPmf2up+LhFsQk82iR0nL/sRb9DPpcFia9W2rgij
- iT6nmgIxeMFyPjJ87PtZ62TjJ90BmHgMN+UqYl91tNfdwDfLLuUdencRSkJ89KW4fT037B5AUk8
- nHFfnIXeJ6QTbTNpJkVzkRiFjDLHJ5OaHqb4/yqGfhXXyjA32rvmwNNP4aMQZCY1rae9nwzGfow
- ZDS7EmVltbmLPqJmokAOsTNfaTVPax02upgM9/22IXAq3hmcUoIDw+WYkPgDWjXI8mIqZBpVKxx
- iBgcbyyKeUBwYlZcwA/j7zTDEp4N8NPrOHqE0cvt3tSU0Bt52huHdo1KSrqbc9X4twogXW1tpFa
- 2InY2Hvg16eh0xE7ZaIzcenNc27PRwVY2IbCYezLZIrgTgk1EWpqy9a/WlHGbONdVzAeuyPGrU4
- 95BG8oFZPDSVjkr/xdNp5XsO4bGCeN4d4bTCDcBZyEefW+cs+P/2687zkJlmSXxlpeWt0=
+ bh=eTUl8dL/kW19bdM54V4mBiEpp3uLS2zJU99wpFLyMaM=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoSshisWhmVRkpCYUvjvDG0mIZ4zePOMndK6trN
+ POr3czSTTWJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaErIYgAKCRAjYrKT3hD9
+ 122hDAC2vV5JXnOKPZec53u4YEZhGdsnCV0yKJi0h/oPwTixLqC3upSvNJjvgEY/QqzebBaZN9E
+ K5c1YryofyhlpCNIacIBGLZzHuSE1CYFurAe24n5Rfqbc2vNTQ6uynt8MF3KEzpWWTgOZLIREl9
+ JyxF4SRAWV1NNdNC5+I+hZAchC8gZRy46iVM1UD6DbaRlVQ7I7CSu33meH0H28g9vjjuo00bGWa
+ Y1Wvjk8p/NIhfduoDpKZ0yLP6ozdFQepA2GFC1qBU5+f8hn0fOhm9kiWgOn33RqiNQQpk7OoL5H
+ 5G3asaVJb8Nosd/rKtZafbFtCgrNHpyPmlIOZ1n36RQmkOBc7iywmIKl18pbNvWwgTYJLFCFShd
+ sWU6uSmQIfmMq7jxyRKyJY7tL2eKR9SQEBNKRzjXOnUAzJGFxcJOoV7aS7rkaHGugZj7NmnYy/l
+ 0ny/DGxZ9+Bv1pCblAmncFvLi9HrD/6vk2okwWlJB2X5qaPleHDi4uZk2wM56TU/JuDiY=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -85,82 +85,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Debian buster is already old and EOL. Replace
-it with oldest but still supported release - bullseye.
-It will allow to use more recent build tools.
+Future patches will require meson 0.52. Let's set the oldest tested
+and required release to 0.52.1.
 
-v2: python-docutils -> python3-docutils, description
+v2: updated description
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Petri Latvala <adrinael@adrinael.net> #irc
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Acked-by: Petri Latvala <adrinael@adrinael.net> #irc
 ---
- Dockerfile.build-debian         | 2 +-
- Dockerfile.build-debian-arm64   | 4 ++--
- Dockerfile.build-debian-armhf   | 4 ++--
- Dockerfile.build-debian-minimal | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ Dockerfile.build-fedora | 2 +-
+ meson.build             | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Dockerfile.build-debian b/Dockerfile.build-debian
-index 454f4bce5e77339ddcd7db2d90a7944ddfe1b266..52d7c42d132509e3c22fc4af01629482d7fa46cd 100644
---- a/Dockerfile.build-debian
-+++ b/Dockerfile.build-debian
-@@ -15,7 +15,7 @@ RUN apt-get install -y \
- 			libxmlrpc-core-c3-dev \
- 			libjson-c-dev \
- 			libcurl4-openssl-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg \
- 			libdrm-intel1
-diff --git a/Dockerfile.build-debian-arm64 b/Dockerfile.build-debian-arm64
-index 573c7096feb8da1789f2520e556109e358a351fa..cf0625ac725aa009173b9afe072a646a13402cb5 100644
---- a/Dockerfile.build-debian-arm64
-+++ b/Dockerfile.build-debian-arm64
-@@ -1,4 +1,4 @@
--FROM debian:buster
-+FROM debian:bullseye
+diff --git a/Dockerfile.build-fedora b/Dockerfile.build-fedora
+index 00f45857c20f82320500e7230e72c9522527e7a9..588738ac423e0d274fa42dfa4043b44d4cb1bad7 100644
+--- a/Dockerfile.build-fedora
++++ b/Dockerfile.build-fedora
+@@ -45,6 +45,6 @@ RUN dnf install -y findutils
  
- RUN apt-get update
- RUN apt-get install -y \
-@@ -6,7 +6,7 @@ RUN apt-get install -y \
- 			bison \
- 			pkg-config \
- 			x11proto-dri2-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg
+ # Meson version switching shenanigans
+ RUN dnf install -y python3-pip
+-RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/e8/ec/3e6a68c9e0fd4b4f4fb6877a3ccfb6f6e6d09f2b4fc87674e671bf64b7b8/{meson-0.47.2.tar.gz}"
++RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/43/9a/e0bcec70d290986c6265d32e0a2d16ace7ef38f58aa5a65308967129d094/{meson-0.52.1.tar.gz}"
  
-diff --git a/Dockerfile.build-debian-armhf b/Dockerfile.build-debian-armhf
-index 737ca3645f1ba37bd694f7bdf19c2a4d7293be72..58b5be82a4da8a72bd52dcf719daa1a7c958a354 100644
---- a/Dockerfile.build-debian-armhf
-+++ b/Dockerfile.build-debian-armhf
-@@ -1,4 +1,4 @@
--FROM debian:buster
-+FROM debian:bullseye
+ RUN dnf clean all
+diff --git a/meson.build b/meson.build
+index b88098234e6d72dd2ed4cf26972e7afed1b1aede..3d18267e652943c5984575498ddeacdec7e079da 100644
+--- a/meson.build
++++ b/meson.build
+@@ -7,7 +7,7 @@ project('igt-gpu-tools', 'c',
+           'buildtype=debugoptimized',
+         ],
+ 	license : 'MIT',
+-	meson_version : '>=0.47.2')
++	meson_version : '>=0.52.1')
  
- RUN apt-get update
- RUN apt-get install -y \
-@@ -6,7 +6,7 @@ RUN apt-get install -y \
- 			bison \
- 			pkg-config \
- 			x11proto-dri2-dev \
--			python-docutils \
-+			python3-docutils \
- 			valgrind \
- 			peg
- 
-diff --git a/Dockerfile.build-debian-minimal b/Dockerfile.build-debian-minimal
-index 64edf4b4313ee482b7b2c5212fe31f1021c9cccf..3850fb43e5cc3bc958663ca225bb6130ae947b76 100644
---- a/Dockerfile.build-debian-minimal
-+++ b/Dockerfile.build-debian-minimal
-@@ -1,4 +1,4 @@
--FROM debian:buster
-+FROM debian:bullseye
- 
- RUN apt-get update
- RUN apt-get install -y \
+ if get_option('b_ndebug') != 'false'
+ 	error('Building without -Db_ndebug=false is not supported')
 
 -- 
 2.43.0
