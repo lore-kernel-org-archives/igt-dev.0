@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF2FC61CE8
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 07:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B64A9C61CE8
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 08:11:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 305D310E063;
-	Thu, 12 Jun 2025 07:59:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5791210E063;
+	Thu, 12 Jun 2025 08:11:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OAETzr/r";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c7uQeaNK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F13A10E063
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 07:59:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75FEA10E063
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 08:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749715190; x=1781251190;
+ t=1749715863; x=1781251863;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=+Tfx4KhT0Ca+AeEcbi2Qg+ppRuOMHyjQQrADrVYqUBE=;
- b=OAETzr/rOj9SrFLRYeNN4NTZrv4iCiC9uPX+RVnIhV0ZZIUpCL4cRvri
- ocJv1ro98Hub5cdbyJ7kC2WTiKyi6vH8zG2hP0H+dTWp/TUhiLuvCEDaB
- ozL6LOX6n3K121QHjnG7nc+Sq9Qj+YfjYoU3XLlyKQSZT79C6DwrnEJYa
- cZVfLSSWtS8/ofq655A/CklUeanCV6bUUmP0TtNJurh33uel+xqYsQy9k
- JEsp2F0eVLitH5q/Kjl/PCqDNdf08ilNkksSgAwfuQYCrTp1hcswpsxWj
- rzqION8jv8DWPS+PtXxVQbGP6FrpVgRZohFFoNsgnT4RkgQbp6qW0f+a7 g==;
-X-CSE-ConnectionGUID: 2mqXCRRTRVKQDCawGbOtqw==
-X-CSE-MsgGUID: g0uY+AAZTLK9TR/an+PRaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="62920296"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="62920296"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 00:59:50 -0700
-X-CSE-ConnectionGUID: SmbYo0jbRSe1tcy6xLISqQ==
-X-CSE-MsgGUID: Vuv4HTUMSnSdGvKaDWLBIQ==
+ bh=WbUoyiPIgeF58Z2e8ri0qqZw9gFAbAk7l7nanvcvvGU=;
+ b=c7uQeaNKvRJ72vO6vBcvk+dXIGYprMfftNcrYb/JnqJACWs5Gct38jIn
+ dBp12cJXX04vn5hktKA9k6MIxfiknq4NJRQDJklMx17kgmXyW/xJC42J0
+ qKvSwR2MHQUb1YOEwmysjDdevqdJJH/IbibRHZXA27vbU5NEE4GJcYmz7
+ gljvPIPO2jWzgcApt/+nnsmM/iSMtUKPBmmveDhv2EdBtiUSK3S/c4FJ5
+ SoTsT+S+1+7FKdsEUso+5V6Ukq3QjnZIdsWwnJ2dxMiQT6iufLSYI1JJ2
+ kfxrRLES/NEUA4nWaDhYE9i/SH1c6O9D270PP+q3OOkDGJIuqw7KrcjnL A==;
+X-CSE-ConnectionGUID: W6rsQJLJR+WJ/ARXLqC84w==
+X-CSE-MsgGUID: XmVHt1IGRxuAp+vBnBwkmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51757911"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="51757911"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2025 01:11:01 -0700
+X-CSE-ConnectionGUID: Z0ke7+CFRmuWWgROBn/32w==
+X-CSE-MsgGUID: rbhogABlQCOI6O6y4GbTpw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="152207419"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="152724136"
 Received: from osgc-linux-buildserver.sh.intel.com ([10.112.232.103])
- by orviesa003.jf.intel.com with ESMTP; 12 Jun 2025 00:59:49 -0700
+ by orviesa005.jf.intel.com with ESMTP; 12 Jun 2025 01:11:00 -0700
 From: Shuicheng Lin <shuicheng.lin@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH] tests/intel/xe_exec_compute_mode: Fix assertion of batch
+Subject: [PATCH v2] tests/intel/xe_exec_compute_mode: Fix assertion of batch
  buffer size
-Date: Thu, 12 Jun 2025 07:58:43 +0000
-Message-Id: <20250612075843.3697019-1-shuicheng.lin@intel.com>
+Date: Thu, 12 Jun 2025 08:09:27 +0000
+Message-Id: <20250612080927.3697303-1-shuicheng.lin@intel.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,17 +67,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 The batch buffer pointer is data[EXEC_DATA] not data. Correct it in the assertion.
+Fix 2 other issues reported by checkpatch.pl:
+"
+WARNING: please, no space before tabs
+
+ERROR: code indent should use tabs where possible
+"
+
+v2: fix issues reported by checkpatch.pl
 
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 ---
- tests/intel/xe_exec_compute_mode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/xe_exec_compute_mode.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index 8fba9daef..f321e1d76 100644
+index 8fba9daef..a7ea56327 100644
 --- a/tests/intel/xe_exec_compute_mode.c
 +++ b/tests/intel/xe_exec_compute_mode.c
+@@ -24,7 +24,7 @@
+ #include "xe/xe_spin.h"
+ #include <string.h>
+ 
+-#define MAX_N_EXECQUEUES 	16
++#define MAX_N_EXECQUEUES		16
+ #define USERPTR				(0x1 << 0)
+ #define REBIND				(0x1 << 1)
+ #define INVALIDATE			(0x1 << 2)
+@@ -272,7 +272,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 				map_fd = open("/tmp", O_TMPFILE | O_RDWR,
+ 					      0x666);
+ 				igt_assert_eq(write(map_fd, data, bo_size),
+-				              bo_size);
++					      bo_size);
+ 				data = mmap((void *)MAP_ADDRESS, bo_size,
+ 					    PROT_READ | PROT_WRITE, MAP_SHARED |
+ 					    MAP_FIXED, map_fd, 0);
 @@ -393,7 +393,7 @@ static void non_block(int fd, int expect)
  	data[EXEC_DATA].batch[b++] = sdi_addr >> 32;
  	data[EXEC_DATA].batch[b++] = value;
