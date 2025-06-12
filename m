@@ -4,74 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A047C71148
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BBBCC71143
 	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 12:31:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F8C910E834;
-	Thu, 12 Jun 2025 12:31:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E712D10E833;
+	Thu, 12 Jun 2025 12:31:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aDFifYE4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZKsYkOLd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4862B10E830
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 12:31:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0E6110E830
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 12:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749731485; x=1781267485;
- h=from:subject:date:message-id:mime-version:
- content-transfer-encoding:to:cc;
- bh=1UAyESwVvWY1Ik8POzNvtdPjVFPRYQztqqDiTjr/mfA=;
- b=aDFifYE4Ipn01CywmEkrId/KQS7pWRgJwJYZWn2USD4Sz+RI2s57qGDu
- YZB+E8ydhI09foRrXDZliOJWdqCdekSAY3ylJqj4/zp0/Xk28PToFXyzn
- dgPQxpB97tnqDgC83EhLaHZHvOD1U3T0uOdfOQqKP3R1Pi0kfOJ/VHYmS
- OneU3QIG21jHMJJH2PfZNkBGMMKjD0bz1GTVSYbM3KbvbnMmPX3Tg9BQ4
- tqNg/YDqO7FhCX58xB5b5WoLK/PGx+P//3g2mpFgvQTSTrXrKMBd5vSmi
- p1eFElmmDviSpP/Dt2Lhna93F2LqqhixGVuZvU4PuEHroflTSaYlsXmF3 Q==;
-X-CSE-ConnectionGUID: YNUJVeDGRYich2B8jyGeMw==
-X-CSE-MsgGUID: vwKrBmzrSxeqgwcBwbI7Ew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51777774"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="51777774"
+ t=1749731484; x=1781267484;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:references:in-reply-to:to:cc;
+ bh=SgC2cX6ZuCMHtLAyItJ3HIuhZyNJXdR7DPAcQv0j7WA=;
+ b=ZKsYkOLdVd3+myfBJAtEStskZSlq4g5gRkNrkG5FGZNh8cVZDkfjWSUR
+ RBOG1az2vyEVliTvtNJ0IjeJS2tA5eeDyOlVXx9VPkkhlcWg8LbwprDcn
+ ZsE/wexjohXQ3uAAac7I6tEZ89t/m+Cu+MC+OTdU29s8KDEPpnwKKPfP+
+ btplmevZTljct7pmfPyTa4hU5eaDH0JCKxjNdQQpKkfcA36voPRhttxvM
+ yd2leEorQgXkoIgksfWX8EhWYQfbaZ2u5OHi82LH3ki03jdnfknDVkfw8
+ zJa1BaQMcVkxaNQWvocQhKTUGjUaigLySbnP2dNMV39tKumpDGGGvo+Nh A==;
+X-CSE-ConnectionGUID: mcDYgy01STq8+IfkxVUSNg==
+X-CSE-MsgGUID: qC4EuKk8TfeUGi2RZmIEMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51777780"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="51777780"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  12 Jun 2025 05:31:23 -0700
-X-CSE-ConnectionGUID: /XWo0EnPTNSQJ3XTrltfbw==
-X-CSE-MsgGUID: ++HV/e/QQzKfOJXYpJOZxg==
+X-CSE-ConnectionGUID: Vah1JhAKRli9g8kw+mz38A==
+X-CSE-MsgGUID: WwfMJADHTE2GQXc3bHwCIQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="148061579"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="148061588"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 05:31:14 -0700
+ 12 Jun 2025 05:31:19 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH v4 0/6] CI/build: bump container images, OS and meson versions
-Date: Thu, 12 Jun 2025 14:30:11 +0200
-Message-Id: <20250612-bump_docker_distros-v4-0-10d18745c7d4@intel.com>
+Date: Thu, 12 Jun 2025 14:30:14 +0200
+Subject: [PATCH v4 3/6] Dockerfile: bump debian version
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFPISmgC/23Pyw6CMBAF0F8xXVvtQ8C68j+MIX0M0iiUtNBoC
- P9uITEhhuVd3HNnRhTAWwjoshuRh2iDdW0Kp/0O6Vq2D8DWpIwYYRnJCcNqaLrSOP0EXxobeu8
- CplLmKheCm+yMUrPzUNn3ot7uKSsZACsvW13P1tClGsjm2MjQg58bdZKc/yxnRDr3fot8czFST
- LCuCiA5A86Fvtq2h9dBuwbNi5GtDEq3DZYMQQpBQSuRcfNv8LWx/XnkySjOGhQXsqCKro1pmr7
- Xgx3SYAEAAA==
-X-Change-ID: 20250602-bump_docker_distros-1aa6b6993d58
+Message-Id: <20250612-bump_docker_distros-v4-3-10d18745c7d4@intel.com>
+References: <20250612-bump_docker_distros-v4-0-10d18745c7d4@intel.com>
+In-Reply-To: <20250612-bump_docker_distros-v4-0-10d18745c7d4@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
  Ryszard Knop <ryszard.knop@intel.com>, Ryszard Knop <rk@dragonic.eu>, 
  Petri Latvala <adrinael@adrinael.net>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3494;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2431;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=1UAyESwVvWY1Ik8POzNvtdPjVFPRYQztqqDiTjr/mfA=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoSshgkJbxHofUehJVg9CnNpSUAqkmvA1yvoo5V
- seGhi26c0OJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaErIYAAKCRAjYrKT3hD9
- 13I1C/4zsDqS3F0XdnBjLpXUL17yLPa7E+hmIR5pwqStFb1NeMnh1x/XgLDqLfZLEpWAU1UZyWQ
- Dv9q8y58AoFo2xYBordgqGeDePH0nV6KQ/AdMRDm4JkFmnrQ3y1vaRnNzo52SajeYJzZ9u3H3Tg
- d8fNNLNjb+AN7cm8uLqoC3zNuKEG01ZYMR4BAgFAl45nG/2BFEDhfsd5UOelbwo7QvRmBMecKTI
- tfDHjFUqppJez6NB3tR2Y/iG0nRsj8zAiX6rd35pXUTw83kWUGGvMopfioE7cYGUMaaAHFRaIKA
- HCAHtkQ+QZK2UbItpiKAUUU4Bf5Ra4xix9RXUWE6/LSq9xNqSCpLIZvqnt7PF7spuNlXhmWRIk/
- OuDI7WKkg2XQvkskPmZ7OMrMyM6LtxRuqPY/n67IVXNuU/qfA8nZY726e701zbwGBh8xZfRjlqx
- lmTxzngha07hcLfzks+z1CaqQAPZLl73IrsF7RAziu1LH4xHE5LJai3gybxv7yp/JWgp0=
+ bh=SgC2cX6ZuCMHtLAyItJ3HIuhZyNJXdR7DPAcQv0j7WA=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoSshhQfImoHVIZrp+sY6f2kpx+XXaCAsijLBus
+ 4RLUqxT5jiJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaErIYQAKCRAjYrKT3hD9
+ 10ErC/9DAaPhplKYB0b+LmiJtI2asWafFf7OPmf2up+LhFsQk82iR0nL/sRb9DPpcFia9W2rgij
+ iT6nmgIxeMFyPjJ87PtZ62TjJ90BmHgMN+UqYl91tNfdwDfLLuUdencRSkJ89KW4fT037B5AUk8
+ nHFfnIXeJ6QTbTNpJkVzkRiFjDLHJ5OaHqb4/yqGfhXXyjA32rvmwNNP4aMQZCY1rae9nwzGfow
+ ZDS7EmVltbmLPqJmokAOsTNfaTVPax02upgM9/22IXAq3hmcUoIDw+WYkPgDWjXI8mIqZBpVKxx
+ iBgcbyyKeUBwYlZcwA/j7zTDEp4N8NPrOHqE0cvt3tSU0Bt52huHdo1KSrqbc9X4twogXW1tpFa
+ 2InY2Hvg16eh0xE7ZaIzcenNc27PRwVY2IbCYezLZIrgTgk1EWpqy9a/WlHGbONdVzAeuyPGrU4
+ 95BG8oFZPDSVjkr/xdNp5XsO4bGCeN4d4bTCDcBZyEefW+cs+P/2687zkJlmSXxlpeWt0=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -89,84 +85,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-New patch(es) require newer version of build tools to work properly.
-This patchset tries to do it.
+Debian buster is already old and EOL. Replace
+it with oldest but still supported release - bullseye.
+It will allow to use more recent build tools.
 
-Unfortunatly after gitlab update (February/March) "pipeline checks"
-do not work on pre-merge phase so all green CI results [1], can be followed
-by critical post-merge failure on pipelines [2] and quick revert [3].
-This patchset contains changes which can cause failure on CI only after
-merge and potentially can end up with revert.
-
-To test gitlab pipelines I have forked IGT repo. It allowed to test
-pipelines in safe way (thanks Kamil for the idea).
-Here are results of the test:
-Last IGT without patchset:
-https://gitlab.freedesktop.org/andrzej.hajda/igt-gpu-tools/-/pipelines/1448021
-Last IGT with patchset:
-https://gitlab.freedesktop.org/andrzej.hajda/igt-gpu-tools/-/pipelines/1448029
-
-Anyway it appeared CI uses quite old buildah base images which fails to find
-newer versions of OSes, and even with added workarounds for this they fail
-with arm64/armhf debian images. As a result I have decided to create own
-buldah image based on stable original bare buildah.
-All this took quite long time - learing gitlab CI, docker, buildah, podman,...
-Finally I have ended with v2, hopefully sth acceptable.
-
-v2:
- - added own base buildah image creation job instead of using wayland's,
- - removed podman logins from CI script,
- - updated python[3]-docutils package name,
- - updated descriptions,
- - added tags,
- - successfully tested gitlab pipelins on forked repo.
-v3:
- - modified subject prefixes in the 1st an last patch,
- - removed MIPS Deckerfile,
- - added tags
-v4:
- - just fixed fedora version back to 33, 42 somehow sneaked in
-
-TODO:
- - switch to newer version of fedora, alternatively replace it by alma
- - consider setting reqired meson version to the oldest one in tested distros,
-   and remove shenanigans with downgrading meson in fedora Dockerfile
-
-[1]: https://patchwork.freedesktop.org/series/149642/#rev1
-[2]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/pipelines/1438518
-[3]: https://patchwork.freedesktop.org/series/149700/
+v2: python-docutils -> python3-docutils, description
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Petri Latvala <adrinael@adrinael.net> #irc
 ---
-- Link to v1: https://lore.kernel.org/r/20250603-bump_docker_distros-v1-0-cf7e062e339c@intel.com
-- Link to v2: https://lore.kernel.org/r/20250611-bump_docker_distros-v2-0-90791ecb953d@intel.com
-- Link to v3: https://lore.kernel.org/r/20250612-bump_docker_distros-v3-0-78ceb39a71b1@intel.com
+ Dockerfile.build-debian         | 2 +-
+ Dockerfile.build-debian-arm64   | 4 ++--
+ Dockerfile.build-debian-armhf   | 4 ++--
+ Dockerfile.build-debian-minimal | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
----
-Andrzej Hajda (6):
-      gitlab-ci: create own base buildah image instead of wayland's
-      Dockerfile: remove MIPS architecture
-      Dockerfile: bump debian version
-      Dockerfile: bump fedora version
-      meson: bump required and tested version of meson
-      gitlab-ci: remove podman login
+diff --git a/Dockerfile.build-debian b/Dockerfile.build-debian
+index 454f4bce5e77339ddcd7db2d90a7944ddfe1b266..52d7c42d132509e3c22fc4af01629482d7fa46cd 100644
+--- a/Dockerfile.build-debian
++++ b/Dockerfile.build-debian
+@@ -15,7 +15,7 @@ RUN apt-get install -y \
+ 			libxmlrpc-core-c3-dev \
+ 			libjson-c-dev \
+ 			libcurl4-openssl-dev \
+-			python-docutils \
++			python3-docutils \
+ 			valgrind \
+ 			peg \
+ 			libdrm-intel1
+diff --git a/Dockerfile.build-debian-arm64 b/Dockerfile.build-debian-arm64
+index 573c7096feb8da1789f2520e556109e358a351fa..cf0625ac725aa009173b9afe072a646a13402cb5 100644
+--- a/Dockerfile.build-debian-arm64
++++ b/Dockerfile.build-debian-arm64
+@@ -1,4 +1,4 @@
+-FROM debian:buster
++FROM debian:bullseye
+ 
+ RUN apt-get update
+ RUN apt-get install -y \
+@@ -6,7 +6,7 @@ RUN apt-get install -y \
+ 			bison \
+ 			pkg-config \
+ 			x11proto-dri2-dev \
+-			python-docutils \
++			python3-docutils \
+ 			valgrind \
+ 			peg
+ 
+diff --git a/Dockerfile.build-debian-armhf b/Dockerfile.build-debian-armhf
+index 737ca3645f1ba37bd694f7bdf19c2a4d7293be72..58b5be82a4da8a72bd52dcf719daa1a7c958a354 100644
+--- a/Dockerfile.build-debian-armhf
++++ b/Dockerfile.build-debian-armhf
+@@ -1,4 +1,4 @@
+-FROM debian:buster
++FROM debian:bullseye
+ 
+ RUN apt-get update
+ RUN apt-get install -y \
+@@ -6,7 +6,7 @@ RUN apt-get install -y \
+ 			bison \
+ 			pkg-config \
+ 			x11proto-dri2-dev \
+-			python-docutils \
++			python3-docutils \
+ 			valgrind \
+ 			peg
+ 
+diff --git a/Dockerfile.build-debian-minimal b/Dockerfile.build-debian-minimal
+index 64edf4b4313ee482b7b2c5212fe31f1021c9cccf..3850fb43e5cc3bc958663ca225bb6130ae947b76 100644
+--- a/Dockerfile.build-debian-minimal
++++ b/Dockerfile.build-debian-minimal
+@@ -1,4 +1,4 @@
+-FROM debian:buster
++FROM debian:bullseye
+ 
+ RUN apt-get update
+ RUN apt-get install -y \
 
- .gitlab-ci.yml                  | 37 +++++++++++++++++++++++++++----------
- .gitlab-ci/pull-or-rebuild.sh   |  4 ++--
- Dockerfile.build-buildah        |  3 +++
- Dockerfile.build-debian         |  2 +-
- Dockerfile.build-debian-arm64   |  4 ++--
- Dockerfile.build-debian-armhf   |  4 ++--
- Dockerfile.build-debian-minimal |  2 +-
- Dockerfile.build-debian-mips    | 39 ---------------------------------------
- Dockerfile.build-fedora         |  4 ++--
- meson.build                     |  2 +-
- 10 files changed, 41 insertions(+), 60 deletions(-)
----
-base-commit: dad4b2bb9e5a2c87ae0275efbf9f0df00a67ef46
-change-id: 20250602-bump_docker_distros-1aa6b6993d58
-
-Best regards,
 -- 
-Andrzej Hajda <andrzej.hajda@intel.com>
+2.43.0
 
