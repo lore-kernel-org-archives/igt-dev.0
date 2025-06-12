@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48053C61CE8
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 08:49:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FCA3C61CE8
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Jun 2025 09:02:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB83A10E7B9;
-	Thu, 12 Jun 2025 08:49:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EC95210E793;
+	Thu, 12 Jun 2025 09:02:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aleCIh5X";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TAUCKtO4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 070E210E7B9
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jun 2025 08:49:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D684210E1ED;
+ Thu, 12 Jun 2025 09:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749718147; x=1781254147;
+ t=1749718939; x=1781254939;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=SoTFR5+nuRBFql23WmnhT2Vzz5I97wbf1IdkMv7J27Q=;
- b=aleCIh5Xv2/yhBv8sJfMCaSVO3eF+iPX3sUbLaj8t8Cf5JtGaNwjkhdD
- O49NbrDPvph3jYTjvqJCs14odY5Z8RtPDqeN/bMcGwlGy79y+6QasRWyl
- 8sfUb1p+ZFCOoCf9uHn1Zv2cjCJ0v3B7IrwMDIEKu7vX4b6VqeAATwP6t
- 05VUBwjnsflwuwz+bN/T2+hEj6LHsrSuqYO2fgvOlsEKACOPTLBllz1sJ
- d2WufDkJO+pQMGVk8cQlvjR5xcW6RAfMEUt/F4CNiQud8/zb6U2PwY0+y
- jTT++36VDMUiU9iqOpZYnKge3Mo8ECVCzQ0cIkZZjcw6JNXgXJ8GMvp1l g==;
-X-CSE-ConnectionGUID: mJZI+v8KTLqVlXHtdtaZEw==
-X-CSE-MsgGUID: o5BbQ1b1Qe2/CoUc+RR2TQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51107450"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="51107450"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 01:48:58 -0700
-X-CSE-ConnectionGUID: azn2XwCuQ9WQ+09s+JAFcg==
-X-CSE-MsgGUID: EH1LbGi/RvCplsPRKAUj8g==
+ bh=hVMd3Pb6QHnDft1Pff5lO05sIurBlcJNZy7Snu1Gjh8=;
+ b=TAUCKtO4dco7yzbN1e0MUSfvHrsT/+gHs1I3chgwL4dCGedpmU/ij2lR
+ LX9nUdyx7NGrUWfY4FRhzFHOu2xunHxPNs0L9MKBpSR0UytlaYSTTYnQ8
+ wVgk0+JUhJWLXXjbwu2BvWSN3B93SPFbQ1cdO/DifUQyFYS+Iw2ijXAcv
+ /MgqwR9RHxeTW8Q75Sg6dAgDdoOEhldxZTi1XdA3ZyRR9N4mPsOBiJRIS
+ Dh52wDR+WC06CSZdyVyt7sN7bBvVr/MbTyZv8l9ldilG2P09GBbxIcEvh
+ tLKmStKaQHrxactG5OMoFe1g2GyfD9po9bOdB7EJsQV2j09uN7T0gggs2 A==;
+X-CSE-ConnectionGUID: YRAE9MVBTzuMxO301XdXmw==
+X-CSE-MsgGUID: 5enQcgMLQqme6K783ml7/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="54516781"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="54516781"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2025 02:02:15 -0700
+X-CSE-ConnectionGUID: RcLpiD6oR0iCPxvWC4eozw==
+X-CSE-MsgGUID: DwWBzNg4RPGoDKuQk9FWig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="178365425"
+X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; d="scan'208";a="152448026"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 01:48:56 -0700
-Date: Thu, 12 Jun 2025 10:48:35 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 02:02:13 -0700
+Date: Thu, 12 Jun 2025 11:02:10 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH] tests/intel/xe_exec_compute_mode: Fix assertion of batch
- buffer size
-Message-ID: <20250612084835.45k2ziw5t6uk4loc@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Melissa Wen <mwen@igalia.com>, I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbDogZmFpbHVy?= =?utf-8?Q?e?= for
+ improvements for AMD color and async flip tests (rev2)
+Message-ID: <20250612090210.vl5euq2qpjtarxbs@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Shuicheng Lin <shuicheng.lin@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20250612075843.3697019-1-shuicheng.lin@intel.com>
+ igt-dev@lists.freedesktop.org, Melissa Wen <mwen@igalia.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20250601191459.46759-1-mwen@igalia.com>
+ <174968264849.69517.2162850858821355412@1538d3639d33>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250612075843.3697019-1-shuicheng.lin@intel.com>
+In-Reply-To: <174968264849.69517.2162850858821355412@1538d3639d33>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,34 +72,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Shuicheng,
-On 2025-06-12 at 07:58:43 +0000, Shuicheng Lin wrote:
-> The batch buffer pointer is data[EXEC_DATA] not data. Correct it in the assertion.
+Hi igt-dev,
+On 2025-06-11 at 22:57:28 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-
-Nice catch,
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> ---
->  tests/intel/xe_exec_compute_mode.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Series: improvements for AMD color and async flip tests (rev2)
+> URL   : https://patchwork.freedesktop.org/series/149722/
+> State : failure
 > 
-> diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-> index 8fba9daef..f321e1d76 100644
-> --- a/tests/intel/xe_exec_compute_mode.c
-> +++ b/tests/intel/xe_exec_compute_mode.c
-> @@ -393,7 +393,7 @@ static void non_block(int fd, int expect)
->  	data[EXEC_DATA].batch[b++] = sdi_addr >> 32;
->  	data[EXEC_DATA].batch[b++] = value;
->  	data[EXEC_DATA].batch[b++] = MI_BATCH_BUFFER_END;
-> -	igt_assert(b <= ARRAY_SIZE(data->batch));
-> +	igt_assert(b <= ARRAY_SIZE(data[EXEC_DATA].batch));
->  
->  	sync[0].addr = addr + (char *)&data[EXEC_DATA].exec_sync - (char *)data;
->  	exec.num_syncs = 0;
-> -- 
-> 2.25.1
+> == Summary ==
 > 
+> CI Bug Log - changes from CI_DRM_16685_full -> IGTPW_13273_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_13273_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_13273_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13273/index.html
+> 
+> Participating hosts (10 -> 10)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_13273_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_whisper@basic-contexts-all:
+>     - shard-dg2:          [PASS][1] -> [DMESG-WARN][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16685/shard-dg2-11/igt@gem_exec_whisper@basic-contexts-all.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13273/shard-dg2-7/igt@gem_exec_whisper@basic-contexts-all.html
+> 
+>   * igt@runner@aborted:
+>     - shard-mtlp:         NOTRUN -> [FAIL][3]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13273/shard-mtlp-7/igt@runner@aborted.html
+> 
+
+Unrelated to change in kms test.
+
+Regards,
+Kamil
+
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_13273_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@api_intel_bb@blit-reloc-keep-cache:
+>     - shard-dg2-9:        NOTRUN -> [SKIP][4] ([i915#8411])
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13273/shard-dg2-9/igt@api_intel_bb@blit-reloc-keep-cache.html
+> 
+...cut...
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_8404 -> IGTPW_13273
+>   * Piglit: piglit_4509 -> None
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_16685: aafbd01c99cde1b0b8a117e0ae1b77e87554c7b6 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_13273: 516b93210d865b02860d740d081fd15be4e09d32 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8404: dad4b2bb9e5a2c87ae0275efbf9f0df00a67ef46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13273/index.html
