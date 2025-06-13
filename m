@@ -4,184 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BBCAC71135
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 04:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FAEFC61DB2
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 05:29:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E89A910E3C1;
-	Fri, 13 Jun 2025 04:11:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2166210E1AA;
+	Fri, 13 Jun 2025 05:29:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bpbilEd7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AGn6qIsH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A91CE10E3C1
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jun 2025 04:11:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B56AC10E1CC
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jun 2025 05:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749787865; x=1781323865;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=pRhmCOHtuxBjuObt613bHNV9gb3n5uMDoagA4wlejv8=;
- b=bpbilEd7Z3zVhjsx/fJ9orTu8iUSoRu51lU/CHT7irpan5UdgtlL6bVg
- eChDCQFgjeP3pkX0m/RXr5Lkfb2Ug4v1um3FvW+s6S8IGkUlNc/eaPpdO
- HCplZWQrj5UZvmDMXDz2iM87nwq/h3vg4Vjk8bQdLNzEOqB5nULqhAwwg
- OV+CQDsWpYHzYQowZXqBtn/DDiG36HcXitOzQQOEdPKv07Q6zP/z5B9u4
- RxuY+PROQUpUVTJFNJ57LGc5L1D33TC9Q0kYhoElda3h9uNsP33aNjquj
- hiCAGzI0nSj5GefvFHiJM0ehPAWnV0lMCHKEIaZcOGpCwMkJeEWvEUV/X Q==;
-X-CSE-ConnectionGUID: oF+8uxi0QG6NoHZF+Q7f8g==
-X-CSE-MsgGUID: 7/Szm4ibS7O0mPeDxek3Ag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="52087869"
-X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; d="scan'208,217";a="52087869"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 21:11:01 -0700
-X-CSE-ConnectionGUID: tjZR2KUFR4SedYstAi9sRQ==
-X-CSE-MsgGUID: wHEDXwfcT7OkQ3MuLQ89XA==
+ t=1749792577; x=1781328577;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ mime-version; bh=AtPHxINBZbm2yUYCbv9WOGspDNhxftZs1+LO4c1hdvc=;
+ b=AGn6qIsHdw3/JBqLAB68cYNNXgblRkVWZ6reAx0dDGLPb7zSVMuCWjy0
+ pcGkrFOuGHkgY7wKMFr4vk3ybAs/PJxaAXt7qBOkOclvRHBEWrQyAxX4y
+ RIdCfpOhJ0cjTjEiHraCXinCYgfVEVFf2U20OmHMoMJzvuiQjY9TJ5V1R
+ nwr8Xql50P2rmC43gkdA34juZBW3dgoOv8Du4au2lyaR0O8yxcfOGdLp6
+ N0x/qeG7w0/TdHu9iz2nYcTJw1VyzNlgzij1U4j+Mrdxv5pgpL9y/DvxI
+ 7qtJhatyMrRGCCltB+uMXB/WvlHnqzwqicetEItfgYNtHBtwYy5b/4yTU g==;
+X-CSE-ConnectionGUID: iHy3G+A8SjOmy/kYobPrwg==
+X-CSE-MsgGUID: NxgnLTMwQJK9+nQJE/1wFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="62606116"
+X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; d="scan'208,217";a="62606116"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2025 22:29:37 -0700
+X-CSE-ConnectionGUID: TL25NuCCTKq5ipGGKaX+CA==
+X-CSE-MsgGUID: PqHDUWuuSxCj9uxNOS/FXg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; 
- d="scan'208,217";a="170896352"
+ d="scan'208,217";a="152886213"
 Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 21:11:01 -0700
+ by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2025 22:29:37 -0700
 Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Jun 2025 21:11:00 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ 15.2.1544.25; Thu, 12 Jun 2025 22:29:36 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 12 Jun 2025 21:11:00 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.61)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.1544.25 via Frontend Transport; Thu, 12 Jun 2025 22:29:36 -0700
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (40.107.101.68)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Jun 2025 21:11:00 -0700
+ 15.2.1544.25; Thu, 12 Jun 2025 22:29:32 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rdKevPdc+fE28Vx9rYtVRvS04WeSXyeSPQ7idsb5Sv1EOmWMIxbPdMy1hrqmGf0wnsWuqkaTlzG6Wf189nxLtmIi5YJjegd18usjvpfweWeFIzLXppdZeYSkeHOT8+mpbPnHAehjvoaGX4Cfvtmz/qqgab112ZXXfrrPebzgnjaYUrQ6pMOtpP9doSn3EPEEQGg7eyzV91B3U0NwJe1Q59ONFhuzdgJ0Rpbrr0WXbMqURVT4873r93GZ9UoBRhw8QJ8f/hWLMprC0ygxOIQFr8nxzw4u0lv3IQixqg0rRWdiPA8dwSw9ACoEl9NG/ZHzKt7Bm9zdG6GjU9TS595vHQ==
+ b=cFE2ea5JR5CzQb7xUTUDeDmSxhJ9Gbe9Bqi1uEcJ9wb5oAcRhb+LT7LlF+K0up4BYjBYgdvCOv43qblJ4aZixGlZtFg1C2QW5sAqq1umxU2w09RHhdN4gu2VZv02scVf4gjs7NLxMIaqiQM5/bpFsLMsnoneccAMy9P8e8oSMUfJcEonyoEnyKP5UCba6SkDYJbUBoi6eaiolEspKtIe0k+ySLvQi9gBmcbVzWhJte29unMgTp3hrHuC7bBJH3An1pm4BUpIjEBJaTcal0DY64y2dtDm/ioIa6hLRV7840QNR9goE2rmvmv+b/uoEWsL8suh9E3BXHesYEg5B8etJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A6jfOo0Fn7ybIdzpxw6ioqylJJHxWgNdkR3FDfpfiO4=;
- b=hlToto6QG3QEcEIkPzVH1Jq7hrVQ6Bpe/duUSsqWSQCmU7CiPfefqUD277+RbFe5hWuWyZjWm9cFBKSoU4gbW5Va2D7M113CeDwkeT82jj9iyGIjxhJ4H7WQ+sTRxFpZPRiE/zUWaRBJH0m/0JzX+7sS5jSv84jxUKTgsAP+uDV8SETThaR+DdNeYvyAFjDPQW4rjW975rAJv6bFfeC8a3wRDCFkO48ROBCv13WlG0Hq4r1AuWcKiZkz2UElfT6g00hH5yI5oFf/r2ZsPbEx4SSiAnQjYZjHb5hvCeSKmrWymO+3X4pTDmZSg/VOqksZX6X8cyCk32JrzCl6o1keIw==
+ bh=lf2zTzEF7BU6VLZiCGKAvzf5Y5xxHRv0YaUWoBVEhIw=;
+ b=mEpTKLiw1kAjxtmZOkhHdtZm19xrEPI+zJo90bSA0Jjjq/D/8GNYig9cWPaaBPcGoiAUiMPk4/HhnFXhBZZF8klPyNg15Zr87Z/xo63P9KJWF5QID84J+Z4jfO1Bu3gaevVGsxO/0kOpXkxzi6SLW1VmZLbjClhxXHLSnQXBz3qifMqJlSvjbFhLP0dpn7C1NWcAoH9vdsQlSEyZxvj7TxKd23CZVwBnA+lY8WZCIa4NkooSpbfQHEY3VpfHXsSRmgZIk/HgCbtm7Dv6262LNnvlrHVV4KSxqM5iSOJPrg56MaEYcpmJe6YCTXZrON0ZUcWTbOYVGOrGk2EcfBgaHA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM8PR11MB5703.namprd11.prod.outlook.com (2603:10b6:8:22::5) by
- PH0PR11MB7495.namprd11.prod.outlook.com (2603:10b6:510:289::5) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8769.30; Fri, 13 Jun 2025 04:10:25 +0000
-Received: from DM8PR11MB5703.namprd11.prod.outlook.com
- ([fe80::f734:e507:3083:e454]) by DM8PR11MB5703.namprd11.prod.outlook.com
- ([fe80::f734:e507:3083:e454%5]) with mapi id 15.20.8769.025; Fri, 13 Jun 2025
- 04:10:25 +0000
+Received: from DM3PPFEF920636F.namprd11.prod.outlook.com
+ (2603:10b6:f:fc00::f5d) by CO1PR11MB4899.namprd11.prod.outlook.com
+ (2603:10b6:303:6e::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.23; Fri, 13 Jun
+ 2025 05:29:16 +0000
+Received: from DM3PPFEF920636F.namprd11.prod.outlook.com
+ ([fe80::84c:a02c:91a8:f5e]) by DM3PPFEF920636F.namprd11.prod.outlook.com
+ ([fe80::84c:a02c:91a8:f5e%4]) with mapi id 15.20.8769.025; Fri, 13 Jun 2025
+ 05:29:15 +0000
 Content-Type: multipart/alternative;
- boundary="------------GyTu6VLTjylINydCRWlz4tzb"
-Message-ID: <9b0cee58-f6c5-416c-8085-6e0b1a60e09e@intel.com>
-Date: Fri, 13 Jun 2025 09:40:19 +0530
+ boundary="------------0jODaM1lBlhE2Jh0OBR7Y0AD"
+Message-ID: <e0c75458-d68a-4e59-bb97-5bbab8c5fdf1@intel.com>
+Date: Fri, 13 Jun 2025 10:59:09 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t] tests/intel/xe_pm: Enhance vram-d3cold-threshold test to
- verify VRAM self-refresh
-Content-Language: en-GB
-To: <sk.anirban@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>,
- <riana.tauro@intel.com>, <ravi.kishore.koppuravuri@intel.com>
-References: <20250527183957.4137136-1-sk.anirban@intel.com>
-From: "Poosa, Karthik" <karthik.poosa@intel.com>
-In-Reply-To: <20250527183957.4137136-1-sk.anirban@intel.com>
-X-ClientProxiedBy: MA0PR01CA0115.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:11d::13) To DM8PR11MB5703.namprd11.prod.outlook.com
- (2603:10b6:8:22::5)
+Subject: Re: [PATCH i-g-t v1] tests/intel-ci: Blocklist unsupported Xe scaling
+ tests
+To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20250612201734.3280725-1-ramanaidu.naladala@intel.com>
+ <2b6b3910-88e7-40c5-88bb-f5c3bbc46bdc@intel.com>
+Content-Language: en-US
+From: "Naladala, Ramanaidu" <Ramanaidu.naladala@intel.com>
+In-Reply-To: <2b6b3910-88e7-40c5-88bb-f5c3bbc46bdc@intel.com>
+X-ClientProxiedBy: MAXPR01CA0097.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:5d::15) To DM3PPFEF920636F.namprd11.prod.outlook.com
+ (2603:10b6:f:fc00::f5d)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM8PR11MB5703:EE_|PH0PR11MB7495:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9473d169-31fb-4623-d1eb-08ddaa303960
+X-MS-TrafficTypeDiagnostic: DM3PPFEF920636F:EE_|CO1PR11MB4899:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6269d50-6ac0-401e-dae4-08ddaa3b3cbb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|8096899003;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MERlOENJSEZJVGd6NzhYRnRwbk9GcHBWSlRYNmVkVVlRR2xVNGFieXNZUHZ2?=
- =?utf-8?B?eGlFa0dxRHJtWW8zeVBhcGZtRkNKei9VcDEzeG1wTzdNMlRiRUVGbkNVZ1h0?=
- =?utf-8?B?VThJR1ZiYnFFZVYwYk5FazA5cUZpalVseVF2T3RtMGJwZFN6aXVoNXlGMUZB?=
- =?utf-8?B?U0FXbVU4NHl3ektDNWJQSzlzU0VRaDQ3QU1LM2pQTGRSd0hSUmJ5M2NIZVdS?=
- =?utf-8?B?QWtkclNUeGFpWXczU0dGT1B0SVBzVTRkVTV2SnE3STlSdzN1VXkycytwbDdj?=
- =?utf-8?B?d0tLV3FjWkMvTjVTMXlmZ1p1UzlQUFdsaVJhYkszNE9aRzBDMGJQczlJcU1Q?=
- =?utf-8?B?WEFUaHMybkwvdEhtODB5SGtSWW4xRGI5eFEyWWl0aTh6RkVMajEvb1VSK1Y4?=
- =?utf-8?B?c0VveWoyeSt3SUpQUTlwNkh1QmF3NDFWM1hrSWFYYWY0ZGsxdnpBS3ZhZUd6?=
- =?utf-8?B?VlRVcXFpVkU2RFRac1AyN1N2dC9pN0dabUVJVlRGcWRSQU4wNW9qWWdhREh3?=
- =?utf-8?B?UnEyd1FHVWp2SjQ3ODR0STU3ZmZiTWJtKzV6WTVzdUhXVXRSTWoyTVdEMk5o?=
- =?utf-8?B?NjZ6QVpWS296TFVNM1RmYTJqbkQ2R090aTdRR0ZDS1JyaTZFdjZJUGU5NVdl?=
- =?utf-8?B?Y0VGK25vL0F4QyswOGFZbWZ5d1VsZ1BLK1NEWkNWeEFWOXAydUlrblRqK2xW?=
- =?utf-8?B?Q1ZVOUZhTEdtZlU5Mk96OGgrUGtKUFZ5cE9BMXRQbTlRYlVqYUNjbUVuNlN6?=
- =?utf-8?B?QWp3dTRzdXkvVko0ZnFodmZsdmlqL0ZXOE9qOUFSek03Z2EyUUt2V25JeUFV?=
- =?utf-8?B?aGI1Uy9ndVp6VHU0VU5yeitYNG5tYnlVL0doYk14d3RyQ2d0ZmVIRmg1bkFW?=
- =?utf-8?B?Z01ZTUcwcVFnTXJXN1p4V1N6NlhZeXJRRE9EbWxudFZ0NjdMVEVQYWZtc2JY?=
- =?utf-8?B?NzY3Nm5GUHdkaXplck9yaE5MVGN4dDVNVDd5OVVZZzVkRFpGOWFMbUQ1ejRi?=
- =?utf-8?B?dmcvMW9TSW50aFdlalA5N3RtbTNLSEg0TksxZXJueXFhZTlrNWFZM3hvWCtT?=
- =?utf-8?B?WDhsM2xMMXBGQW5EM2dqeC95ZkFLQkhVVU5ZMjhvd1FBTHJndzhsdGN1TVVs?=
- =?utf-8?B?TUZsdjJoWnlEVlh3dG9QTFU4cWRRZVF3Y0VOaERlbUY5cGxZUThGb1Z1Zy80?=
- =?utf-8?B?QURmRXljUjRxUmJXeEVmempXc0R6YkZzY05hVVZ3S2x1UWQ1cHltSWg3STNL?=
- =?utf-8?B?NTVsb1dQL01oN21JN1RGdzFZc1BPU0RSY2l5K1hNNGluWG1QakRoRHdlS1By?=
- =?utf-8?B?cjJQRmxuejA1T09NVUZMbFNHamJaa3B1UXBBdXBueFRDTFNRSmxLTmgyajFB?=
- =?utf-8?B?V1U3TjcvSFBiTnQ0SGh2SzhEVm5NNGFmTUZ3aGN4MVNEcGd5ZS9BVkxpVVFs?=
- =?utf-8?B?OGlhdlJidkNMN0FrNjJMWk5HNHNUYXI1b2VMdHdNL1k5R2UrUVRMNFNXOGp0?=
- =?utf-8?B?dkZncW00YnppYU5xZitvL0txdUZHcmNFV1FaNExwK1dZdDdPQnllNEQ5d0h4?=
- =?utf-8?B?UEVqbWMwZlRMOFdTYXIwMm1IS1k4M3Jrd2lrTHhId2ZpZFgxQ1JOUTlvN2Iv?=
- =?utf-8?B?NDJnSGdxbGY2V0NaZXhPQU5TL29VSHZRaGE3ekJXc0Z5SDUzTmNsZHJYR1FD?=
- =?utf-8?B?bjU3Z3RKMkMvb1ZaRnM0RDhudlIvcHlET3ZJeXJvUHhjbGZTeHlhWlFKb05i?=
- =?utf-8?B?aENSRzI4Mk9Da3E3TFo2UE5iQStpdmx1K25jbTR1aHBvS3dRVXNDMnJkUDk0?=
- =?utf-8?B?M3I4WlBPZTI1VXJMaXZwendZMTl3UTF1SzNFZS90VHg5NTJVbUFqWWpKY2hz?=
- =?utf-8?B?WWN5Wjg3U2hNamdoZkFhSGxrbVRHYnd4dG13Um9sQW1iQkpScXAzc1dZZWZF?=
- =?utf-8?Q?pCdenUZKJWU=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|8096899003;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dVVjMG9NSUJSOURGVlhFS2J0N0dORmRmSUd1NGdYUEQrQ3oyUTNXWE9NdHc4?=
+ =?utf-8?B?SUVNS3FSK3hVa1Vnd3NoaU1ldUFjQWpmZXhIMUlQUURCR0UvL3hkRElIN0c2?=
+ =?utf-8?B?QTY1ZVQxNUhiY2lJTkMrdFlyL08wTEJDRDUrdGtCZEdsM29KdkFKZkYyU1dm?=
+ =?utf-8?B?T0gzR2xaWS9oNmx5cDNSN2RtMEdXMGhTMlBqV0RMSTBmaExCaGpXbksrWUZP?=
+ =?utf-8?B?Y3VGdW5RQ0tEY3I3Tk9abU1GSXVvSTQvRXNSVkpJMUV0TWpCaHJzMExlRUFm?=
+ =?utf-8?B?TVF6bGxjK1d5ZGdxeSs0eHJmSlQ3NmVVRlAxWDJFeldjVGxoaWlOaCtkK0RR?=
+ =?utf-8?B?cXJCcy9keVg5Qjd4RXQ4YUVyUUg3STNpVlZyMGd3aW14YkJIeWNJRTJIU1Ft?=
+ =?utf-8?B?NWM0bk01eXM0aTYzQXkxRnY5UGg5UmdxTkZ1VlJxOTYzMnBZRzhFZjljNEZ0?=
+ =?utf-8?B?ZUtkZ1BjNEJQTXYweFYvTnB0TzAvTTB6STMwR0UxMDlqb0ZibnVLeGNCQUo3?=
+ =?utf-8?B?Ym00cjdVaExORWlMZjVxalgzdSs4Ukp2MnhSTjJCb3U3Z3I0Vll3amNQNnVh?=
+ =?utf-8?B?QVpJbVdUdmpSdU9raXNBYWJYUXJyZ0JKL01nbXRDMTRmOWczUGFEdm9BQmVV?=
+ =?utf-8?B?SDF6ekRwRDRvdU0vZGZvYUFoY1AzeTVoU25OQzlmSG0rSzgzK3RxMWpNcGJG?=
+ =?utf-8?B?eGdxZHJVK3BlYWdRVnpqZFlQWkhNbFNUdE9rb2xNTzNKTVA3eXlqT0laU2RD?=
+ =?utf-8?B?WWN0dkZQcElpVndlODRWYUxXK29GRmtjSGRucTdsLzB5T3BYWThJUEVVZjVT?=
+ =?utf-8?B?K2hLTjAzZTEwWVdqVURuMHVNbEFLc2xBM2grb2Z1ZVFQSFZHYmhHeE5DeGlY?=
+ =?utf-8?B?ZWRpQStONStkbjhndmdsamI4ZERkbFIzRC9TRy80SU0wT2hKT3hDZ0lJVlcz?=
+ =?utf-8?B?RzVoSC9CSWdjQjRiR2EyK0hBanJNTzFWa2ZTdGYxbjhMdmNacTROOFUxc0JI?=
+ =?utf-8?B?N1o0eTVOckExcmFxK0U5V2k3NzQ3MlRDUXlXbFkxZzlWR0c1LzFITFcxYS8r?=
+ =?utf-8?B?cTZ5L3ZTQVhDU25oalZ2SGhVNTNEZmpBanpKeHZmZDZneFd4bTdkYlVoT2RI?=
+ =?utf-8?B?WHg0ZWZlNjN2SXhmaE9TSDUyeklKcnBkUGJsOTNBeDJuYWt5dXVPSHVLd1E0?=
+ =?utf-8?B?Q0hzVEdKM2JKRy9RL3h6ZUY1bjA4NlBXeTBRWWxPWkhqeE52OGYzTG9vZXIr?=
+ =?utf-8?B?SXFIaHNJeXhKNVBhSEIxMmVSZTdVQjgwVzRIYlFwY281cUFhTzFuSjhkTmZm?=
+ =?utf-8?B?ajNtemVRZVJsbXdMeVBRVGUvQnJMelJEUVcwU3dNT1RlNWRPVy9TT1BLQnNB?=
+ =?utf-8?B?aXU0ZWtQQURWSmhMOWs0OXBKTnExL1MxdXMveVBDajFWbkFRWEVKWHZEQkxn?=
+ =?utf-8?B?RksxOFJFa3VIcC9TVkxpeDN1RVhHSm8xNnRIN3FKdHp6MDBHV0lDbEk3TStH?=
+ =?utf-8?B?MkJGekFNVGE5WlRJczI5bWdpRzZ0ODd0N2Y0MHVBMUc2aVZOdmd1NFJxcVdh?=
+ =?utf-8?B?WWJNUnZuYXEzV0lxYU5nTjFuNmtzYldqcEVWeWdKSmdsRlVxeGgxalJsaitj?=
+ =?utf-8?B?aWc0Q0NKcnRJYTNwUFdSb0ptaTlZV2l2Qm5ITkJmaGViZXNEQitTWnVXTHZz?=
+ =?utf-8?B?RDF1QUszSE1LOGxvTlFtcEtUL0I1cG0zZ1hWbDIvZDh3WGZjMGY4cU54bFJt?=
+ =?utf-8?B?RkcvL0xZSUN0YmZVbzJhZ2cvaGN2VHpxeC8rZXVpbXljQmlaZ3E1Nk05WmJ6?=
+ =?utf-8?B?N1ZOUy9ob3pxa2JEOE1RdFVscUdQSUpYeDZqSEZ0dGNxa0traVhFRU1DUm9x?=
+ =?utf-8?B?REFSaVJiWFdUbm9IZGZEcUJnY04zdVZHaldMSlV5dUIvUGNoeDgyLzNyb2pF?=
+ =?utf-8?Q?AWcULoyolgc=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5703.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(8096899003); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:DM3PPFEF920636F.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(8096899003); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VWlUNmNyQ2Z6Qkg3MEZnTHlycDQzN3oxODhlWXc4NXJqdDJsOERUdnk3QnJX?=
- =?utf-8?B?ZS84dmNUNnRTeHBkNTlPK0x1RUlYNDkxL240VGVXUTN3RnBsQlpMM0o0a3R3?=
- =?utf-8?B?ZFlsaFRVVnVQODhKZHB5L3FaSDZKaDE4aCsrUDBZdElJVXVVMUlxVnJaMXpJ?=
- =?utf-8?B?aUJPYmwySjBpZG1qcHA5VGplSGJqUVZGMGNLWVN6NFk3NXU2Y3JlTEtiSCtn?=
- =?utf-8?B?OTB6K3N3SURQMGo4NGlYUm84bDVLSGpsMFV5OGtaYTJia3VaTVlCQWVPWTNp?=
- =?utf-8?B?czhFVXB4NXdwWTBvZWxiaFREeEtwQVVmWVhKck1OTDhkcjdTL0ZKaFo4QWhh?=
- =?utf-8?B?ekpwZGcrUU1xL2o0Tm5manRLUVpGbUJ0d0d1dlhWS2E2MXlxRWY5RHVSL0ZX?=
- =?utf-8?B?T01wSm9SekY5VXo4dG9kMk9wcnErekdTYzRWZjNnN2RnK3U1WjIxVjRPVXhn?=
- =?utf-8?B?OU1EbDRTOU5pcmp1cjdkUStUenk4VStnRmNyVjBiZzBCeFBERDRXeE1EQjRS?=
- =?utf-8?B?WWlOTHNYRXMrcktkbDdDY3ViZ1o0cjNLVWcwYVl6UERWS0dJdkFHVXNveTQ4?=
- =?utf-8?B?RGdMVzdJeW1qRWExOWhOcXVicmJrak84VXg0bGJaYzVBZ3pxcm1DQnduUGsr?=
- =?utf-8?B?dnNocHhXT2EzdWMrVFBBcXAzNXFPMXV6SUthNndyS0VNZVlGb1lzVmZuR2Qr?=
- =?utf-8?B?UlZ2QUUrd1R5cy9oYW1UKytISzZvTzZjVUNNblY2cGFJazBSTVAvdWx0dWYy?=
- =?utf-8?B?QU96ZERObEdHdVlWZjhEVm91cFdEbDRFTE1tU1hVUDFoalVlSUExU0dZSWtS?=
- =?utf-8?B?TU9EaCtSYTZXNVVqRjZ1RUxyM0c5S1c3SlZJeFBNS054eTRveWZQUnB3aTNY?=
- =?utf-8?B?VGczRnp2SU5UZ0dsTFhXdlUvNnRieHdLWHg3ZW5wNk1xdmg1RnIyRVJLWCtt?=
- =?utf-8?B?b1JlSDROTXdibkdOZmtLcHUzTGQxYmZ1OG5XbzBBT1dCYTYvellKUUhjaThv?=
- =?utf-8?B?WFdTK0RFSC9KZDZsRmtuNUxINEdySXJqcjB0Yk1uRUVSWkZHVyt5TnJjdEd6?=
- =?utf-8?B?OFZlK2RjRk04VGorYUxLd0d0WW5XaUZqRzNMMnloMC9SQ3RjeGluUURyZGd2?=
- =?utf-8?B?d2k5U3NpbHJsZFZkMnJVdmI3WXhGL2VMTU5wRDI2MUs0R3U4bVN6N3FWSVB4?=
- =?utf-8?B?VGYwMVEwaVFGTDJvYXM0c0UxaTNtTkUrZWY0cUUvTHVReUpGWFhrSktoVWwy?=
- =?utf-8?B?UEIzbFkvK1lBTER2aGVxUllRTE1IalpLeXNISTl1L05xd3lmQWxoTjVic3JL?=
- =?utf-8?B?L3B3U01Pa1JxRlFQNm1pckJLZVNWUGpRLy9XVEJNcGpwOXRndWxNMnQxVmh5?=
- =?utf-8?B?RTFQSG5SbVNRZnpBUGx3TjYvK05TeURva3JRYjczeHdSSlJERUNJZHV2T1U2?=
- =?utf-8?B?SHNxQ2s2YU9Ta3UxbWllVzhWN3RpMXJvTVpEKy85SGl0a0Jab05SUkNpUEJh?=
- =?utf-8?B?ZStIWGRUWFVVaTd5eXZQVU1VVm5ydTBWRW1xU24vNi9wUUxqdERyNklqdy9z?=
- =?utf-8?B?OFg4Ky9kVnhYYmVpSFRRMFZkcEJJUThoVkpHaVhDVk5jcXNRZm1mYmJGWTJP?=
- =?utf-8?B?UDJWZWY2bDFhcm1lbFpndGFkSnJkUkc1MTlpUmZZN1JJY09VVEg2andYN1Ns?=
- =?utf-8?B?K0RaRE1aVHNVOHVOV2RBaW1VUmgraHdpN243bkJtNFgvZ2VVaDRoYWd5UnJI?=
- =?utf-8?B?M2xqSC9wMTZZUXh5eWhreU0zczRaelJTZWxUQnM0S3lKMzNvdzk0QkFReHdk?=
- =?utf-8?B?bThkaFN5UjBVMmQ0Yysyd2V6dU1mRjlMdzlBM0U2bFQ1SkdwQ05tTjZ2YW5F?=
- =?utf-8?B?S1NseUhZL3BSRUZvSVFiTU5FZ2xBTmFOWkN0Vk1CNmpGL2JaUDRTVFI4VFFo?=
- =?utf-8?B?SGpIK3lVOTBjNlNyelhNa3FWaS9XSFprMFVyc0I1SVVqcFRaQndWeE51TkZz?=
- =?utf-8?B?YXYvYTc5dVlkTDRQRkZrTTI3WjZIRm5xakNKUks0YWpjdzZVSnRjSVg2RDVw?=
- =?utf-8?B?MTcrc1ZYSkF5aC8zaGdGbkVnbFpmMGozYndwMVpxa1Y4Z3RQLytkQ3NEMjU0?=
- =?utf-8?B?UE1tNWpEem42MnNJNng0YVZ2dXZZNHNQYlVLZ3QvajY5WlMrU095TUxmUU9a?=
- =?utf-8?B?NEE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9473d169-31fb-4623-d1eb-08ddaa303960
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5703.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N3dMWW5xelhCaTBHbjJXMkV2cUVnSXJ1ckVMMDFEbTQyZmVuQ0J1SEx4Z1Y4?=
+ =?utf-8?B?S1BaZHhQQ3U2WG43WWovZWdRdDBFUWtDRWFlZWwrR0djSk5jNDZocVB2bkt6?=
+ =?utf-8?B?Snlqdk9BTzZKek9RYzgyR0kzN0EvRDlLZGNlaHhuUmIxT2g3N3hMZmF5RHFu?=
+ =?utf-8?B?NVA3US9hdlZqZVEyOEE1bHZLSWxvQ2t0a21VOVRhazZQUHpoR2RoMTFRQXAy?=
+ =?utf-8?B?TGlWOWt1UFRQNGE1R0t6Tkk1RDM3d056OHp5ZkFFVEhkTmRWVFpnMlBZa0Fj?=
+ =?utf-8?B?Z3BxK0xaV09yR01CZ2ppMzg4R1ZKSHRZcW5Mc2J4djZROGNvQjVHVXFZcTJn?=
+ =?utf-8?B?SHEzMmxVcC9VSkVWbVJzMDVJdUE0bDZLRW5GNzNNRjM0dWs0SlJnbFJKUlNI?=
+ =?utf-8?B?dTIyM0U0c3FvamRoaFVvWGR1d1pBUXhZVDZvVXlQYTVnbGViZDJEN0Z1VHQr?=
+ =?utf-8?B?UWNSUTdmcFlBNDlaYlJOV0oxYk1uQmxlaVJaRWhRazRrYkcvakdnTEFvdmsx?=
+ =?utf-8?B?eE9HcERZU0NPNFBxRStuaGdBaUI5a2lsOFFmQUpIQUNzSW9TS0N2dThRTURE?=
+ =?utf-8?B?RGxBVy81U2lXZGtPbjhMeC9kYkpjRjZaaEQ3dmRkOTVGaTR5UkVpV2o2SlV2?=
+ =?utf-8?B?SE5ON0YxVFdDdXh3QVZGNlJGeThMdytrUXk5dEljTUErN2VvOHpodTRiYW1R?=
+ =?utf-8?B?K2lCaCs4VjVTSDFNcjFSaE8zaXBMeEhZR1cxNGd6NTY2M2NtdytmK05MR3pa?=
+ =?utf-8?B?bkY3YXU4MVU2cU5RWHVXVW9xcVlKZG8rNitpTGhvNTRETGZQRmFBWGhsVnI2?=
+ =?utf-8?B?L1NPZSs5MldlblRJc3J2cU8ydUhoMjEvSk40SmFGcWd0Uks0aVhESmVjVHd1?=
+ =?utf-8?B?MWhFcmRkb2lpKzc0dlp6ZitiNnJ6aTNXTzI3SjNoRWZXa1FIR3N3RExUUDQr?=
+ =?utf-8?B?V2lWS0NxQzA4Wm1UYVFjaStSSFdBbldxZzg4aS9tZWFNaXBTRUZNSzRmc1Qz?=
+ =?utf-8?B?RlVXMDlrdzY1VnFTeHg4Z3J0Q0VXT2tPRXJTWG92UnJjWHNIYVJaK2YrbHov?=
+ =?utf-8?B?SHB4VWU2VVhoL2doSWpNZXp0K0pSdHFpMnRoVFRkNUpQRVcrMjY5cThPbVA3?=
+ =?utf-8?B?M3VSTWY2MGQvOElDb2Z2STVRbmU3dmUwTDRQVkM0ZUo3UFRCZDUweUFrU2pp?=
+ =?utf-8?B?UWJxemkrL2psRUhTQnRiT0tKbTF3OU9UUEdKeTBuTm1PaW5vQi9mbGI3WjAw?=
+ =?utf-8?B?VXJLRjY4NnZSLzJPb1JJVnBOc0tqd050cTJBVDhvc01hQVZXdVRIT1lpaEV6?=
+ =?utf-8?B?VHA5dUlMeTRDK2pEdjRxbm1UcHNMZTIrM2c1UUVHbjBTaUFLL2ZmK0liZVNk?=
+ =?utf-8?B?K0FlbFI1UjQxRnpEeEVlY1c2SlhZZloybEhtSzBYR29nQWNldEtEd1dNYjgw?=
+ =?utf-8?B?UGdHK0gvZDRqVVhEakk0Y1BMR2MyTExvT3czcHNYUUlDNlE5Q0FjT01QMUYv?=
+ =?utf-8?B?aVYreVNKK3lDb3VlWlpVR3NteDlkaG1QQlg0eUlJNmJreEt6RGoyTGlGN0Fz?=
+ =?utf-8?B?ZE9qdWdhdEN2eVFiTGszd1JJTzZjcnJTNUQwakF3L1ZBcElrMWR0VFpIVlFZ?=
+ =?utf-8?B?MHp3b1NicUk0SkJyc0lFYzBuclA3TlJXeDkxdWpIYkxibTJSM1RDa3d1ck5J?=
+ =?utf-8?B?RE9SODRZR3B5Nk16ZWJVSkFYMzhFQkZXVkVRZHpadFFOYUloaUhIQ3pqK3VZ?=
+ =?utf-8?B?RUg0L0RkZ3RyS0M2TFpoTjBiUEUxd3BsWVZWUTBDb2puRllaRnQzS2xVdEFQ?=
+ =?utf-8?B?SkoyNUVyOFJ5RzkrZEUzbi9GSDNYKzQrTndtbnR0TW43K0Naa0V5RC92N0dt?=
+ =?utf-8?B?MVpoeFR4ZUxjdmxlRWtjSXh5UFVlb1BZSXovbVMzMlRnT2RCZ3h1ZldHUDIv?=
+ =?utf-8?B?MXR4cVZOcHlxTFlnVjF2b3JkTHhEc0VIRWVIaUpRSHpCVnRGSDZaK2dNVTda?=
+ =?utf-8?B?a1dtK0swbklPaDFKVE5WYmt6SDMzUzhScTZIMDJZMFVBeDNETGhzMDBPbWJ6?=
+ =?utf-8?B?WVpSeVZoRCtLakpqZ3hjSkJoZGV1OHVqNjJldnlVNWhtRHA1WEZWRis2RkVO?=
+ =?utf-8?B?d0N2MnRZMnRBZEhFNXBlT3VKQlhJdGRNZnptSzRMZVJEemROWU1ocFRsTkRI?=
+ =?utf-8?B?Qmc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6269d50-6ac0-401e-dae4-08ddaa3b3cbb
+X-MS-Exchange-CrossTenant-AuthSource: DM3PPFEF920636F.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 04:10:25.8364 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 05:29:15.9006 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mT7qK/VuFQZGxu+r342iBeT0ij3RQnyLO2gdhcSKbm9+Cy4AtizNeHIv6/0JjM1lZbdU/TJb1dBR9w6vvjqZqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7495
+X-MS-Exchange-CrossTenant-UserPrincipalName: a6qdihgi/RjO30gIu/KSsMjJwKkZnurioCah/lyi21V+nRS4hvOffkYvbzIxVZTf3k1mD9ZG6ioPu3g2NM5N5FFn9monDDI+/m4oAfB5s+o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4899
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -198,307 +196,129 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------GyTu6VLTjylINydCRWlz4tzb
+--------------0jODaM1lBlhE2Jh0OBR7Y0AD
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 28-05-2025 00:09, sk.anirban@intel.com wrote:
-> From: Sk Anirban<sk.anirban@intel.com>
->
-> Update the vram-d3cold-threshold test to include validation of
-> VRAM self-refresh functionality. It introduces checks for VRAM
-> self-refresh capability and verifies the ModS residency to ensure
-> accurate self-refresh behavior.
-> The test now distinguishes between D3Cold and D3Hot states based on
-> VRAM self-refresh capability.
+Hi Karthik,
 
-You can rephase commit message to|,| Update the|vram-d3cold-threshold|test to include validatation of VRAM self-refresh (VRSR) functionality, 
-by including checks for VRSR capability and ModS residency. The test now 
-differentiates between D3Cold and D3Hot states based on VRAM 
-self-refresh capability."
+Thanks for reviewing my patch.
 
+On 6/13/2025 9:05 AM, Karthik B S wrote:
 >
-> Signed-off-by: Sk Anirban<sk.anirban@intel.com>
-> ---
->   tests/intel/xe_pm.c | 51 ++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 50 insertions(+), 1 deletion(-)
+> Hi,
 >
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 6eb21d5ec..f8074a9c6 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -144,6 +144,29 @@ static void vram_d3cold_threshold_restore(int sig)
->   	close(fd);
->   }
->   
-> +static uint64_t read_mods(device_t device)
-> +{
-> +	uint64_t mods_value;
-> +	char buf[4096];
-we dont need 4K buf here, 256 Bytes should be enough.
-> +	int dir, ret;
-> +	char *mods_ptr;
-> +
-> +	dir = igt_debugfs_dir(device.fd_xe);
-> +	igt_assert(dir >= 0);
-> +
-this extra line space is not necessary
-> +	ret = igt_debugfs_simple_read(dir, "gtidle/dgfx_pkg_residencies", buf, sizeof(buf));
-> +	igt_assert_f(ret >= 0, "Debugfs dgfx_pkg_residencies is not present.\n");
-> +
-this extra line space is not necessary
-> +	close(dir);
-> +
-> +	mods_ptr = strstr(buf, "Package ModS: ");
-> +
-extra line space not needed here.
-> +	if (mods_ptr)
-> +		sscanf(mods_ptr, "Package ModS: %"PRIu64"\n", &mods_value);
-> +
-> +	return mods_value;
-> +}
-> +
->   static bool setup_d3(device_t device, enum igt_acpi_d_state state)
->   {
->   	igt_require_f(igt_has_pci_pm_capability(device.pci_xe),
-> @@ -561,10 +584,25 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->   	};
->   	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold;
->   	uint32_t bo, placement;
-> +	int vrsr_capability = 0;
-> +	uint64_t mods_value = 0;
-> +	char buf[4096];
-we dont need 4K buf here, 8 Bytes should be enough.
-> +	int dir, ret;
->   	bool active;
->   	void *map;
->   	int i;
->   
-> +	dir = igt_debugfs_dir(device.fd_xe);
-> +	igt_assert(dir >= 0);
-> +
-> +	ret = igt_debugfs_simple_read(dir, "vrsr_capable",
-> +				      buf, sizeof(buf));
-> +	igt_assert_f(ret >= 0, "Debugfs vrsr_capable is not present.\n");
-> +	close(dir);
-> +
-> +	if (strstr(buf, "true"))
-> +		vrsr_capability = 1;
-> +
->   	igt_require(xe_has_vram(device.fd_xe));
->   
->   	placement = vram_memory(device.fd_xe, 0);
-> @@ -595,10 +633,21 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->   	munmap(map, SIZE);
->   	set_vram_d3cold_threshold(sysfs_fd, threshold);
->   
-> +	if (vrsr_capability)
-> +		mods_value = read_mods(device);
-> +
->   	/* Setup D3Cold but card should be in D3hot */
->   	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
->   	sleep(1);
-> -	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-> +	if (vrsr_capability) {
-> +		igt_assert(in_d3(device, IGT_ACPI_D3Cold));
-> +		mods_value = read_mods(device) - mods_value;
-> +		igt_assert_f(mods_value > 0,
-> +			     "Mods residency is inaccurate: %"PRIu64"\n", mods_value);
-> +	} else {
-> +		igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-> +	}
-> +
->   	igt_assert(igt_pm_get_acpi_real_d_state(device.pci_root) == IGT_ACPI_D0);
->   	gem_close(device.fd_xe, bo);
->   
---------------GyTu6VLTjylINydCRWlz4tzb
+> On 6/13/2025 1:47 AM, Naladala Ramanaidu wrote:
+>> The second scaler does not support downscaling in either
+>> vertical or horizontal dimensions. Blocklist the affected IGT
+>> kms_plane_scaling tests that involve downscaling scenarios
+>> unsupported by the second scaler.
+>>
+>> Bspec: 69901
+>>
+>> Signed-off-by: Naladala Ramanaidu<ramanaidu.naladala@intel.com>
+>> ---
+>>   tests/intel-ci/xe.blocklist.txt | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+>> index ebe1ff006..8e43c217d 100644
+>> --- a/tests/intel-ci/xe.blocklist.txt
+>> +++ b/tests/intel-ci/xe.blocklist.txt
+>> @@ -82,6 +82,10 @@igt@kms_pm_rpm@cursor.*
+>>   ##################################################################
+>>   igt@kms_atomic@plane-primary-overlay-mutable-zpos
+>>   igt@kms_plane_scaling@.*downscale-factor-0-25.*
+>> +igt@kms_plane_scaling@planes-downscale-factor-.*5
+> I see few of the tests passing with this filter where we've upscale on 
+> the second plane. We need a more specific filter here.
+Agree. i will fix and float in next rev.
+>> +igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-.*
+>> +igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-.*
+> Could the above 2 can be combined into one? 
+> 'igt@kms_plane_scaling@planes-upscale-.*-downscale-factor-.*'
+Yes we can combine. i will fix and float next rev.
+>> +igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-.*
+>
+> This I see is mostly passing other than 0.25 which is blocklisted 
+> already. Do we need this?
+>
+It is not required.  I will remove this in next rev.
+> Thanks,
+> Karthik.B.S
+>>   igt@kms_prime@.*
+>>   igt@kms_scaling_modes@scaling-mode-none
+>>   igt@kms_writeback@writeback.*
+--------------0jODaM1lBlhE2Jh0OBR7Y0AD
 Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
 <!DOCTYPE html><html><head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   </head>
   <body>
-    <div class=3D"moz-cite-prefix">On 28-05-2025 00:09,
-      <a class=3D"moz-txt-link-abbreviated" href=3D"mailto:sk.anirban@intel=
-.com">sk.anirban@intel.com</a> wrote:<br>
+    <p>Hi Karthik,</p>
+    <p>Thanks for reviewing my patch.&nbsp;</p>
+    <div class="moz-cite-prefix">On 6/13/2025 9:05 AM, Karthik B S
+      wrote:<br>
     </div>
-    <blockquote type=3D"cite" cite=3D"mid:20250527183957.4137136-1-sk.anirb=
-an@intel.com">
-      <pre wrap=3D"" class=3D"moz-quote-pre">From: Sk Anirban <a class=3D"m=
-oz-txt-link-rfc2396E" href=3D"mailto:sk.anirban@intel.com">&lt;sk.anirban@i=
-ntel.com&gt;</a>
+    <blockquote type="cite" cite="mid:2b6b3910-88e7-40c5-88bb-f5c3bbc46bdc@intel.com">
+      
+      <p>Hi,</p>
+      <div class="moz-cite-prefix">On 6/13/2025 1:47 AM, Naladala
+        Ramanaidu wrote:<br>
+      </div>
+      <blockquote type="cite" cite="mid:20250612201734.3280725-1-ramanaidu.naladala@intel.com">
+        <pre wrap="" class="moz-quote-pre">The second scaler does not support downscaling in either
+vertical or horizontal dimensions. Blocklist the affected IGT
+kms_plane_scaling tests that involve downscaling scenarios
+unsupported by the second scaler.
 
-Update the vram-d3cold-threshold test to include validation of
-VRAM self-refresh functionality. It introduces checks for VRAM
-self-refresh capability and verifies the ModS residency to ensure
-accurate self-refresh behavior.
-The test now distinguishes between D3Cold and D3Hot states based on
-VRAM self-refresh capability.</pre>
-    </blockquote>
-    <pre wrap=3D"" class=3D"moz-quote-pre"><span style=3D"color: rgb(66, 66=
-, 66); font-family: &quot;Segoe Sans&quot;, &quot;Segoe UI&quot;, &quot;Seg=
-oe UI Web (West European)&quot;, -apple-system, BlinkMacSystemFont, Roboto,=
- &quot;Helvetica Neue&quot;, sans-serif; font-size: 16px; font-style: norma=
-l; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: =
-400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0p=
-x; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-=
-width: 0px; white-space: normal; background-color: rgb(250, 250, 250); text=
--decoration-thickness: initial; text-decoration-style: initial; text-decora=
-tion-color: initial; display: inline !important; float: none;">You can reph=
-ase commit message to<code>,</code>
+Bspec: 69901
 
-Update the<span>&nbsp;</span></span><code style=3D"color: rgb(66, 66, 66); =
-font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-v=
-ariant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; =
-text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-=
-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; backgrou=
-nd-color: rgb(250, 250, 250); text-decoration-thickness: initial; text-deco=
-ration-style: initial; text-decoration-color: initial;">vram-d3cold-thresho=
-ld</code><span style=3D"color: rgb(66, 66, 66); font-family: &quot;Segoe Sa=
-ns&quot;, &quot;Segoe UI&quot;, &quot;Segoe UI Web (West European)&quot;, -=
-apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, sans-=
-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal;=
- font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orpha=
-ns: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2=
-; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; b=
-ackground-color: rgb(250, 250, 250); text-decoration-thickness: initial; te=
-xt-decoration-style: initial; text-decoration-color: initial; display: inli=
-ne !important; float: none;"><span>&nbsp;</span>test to include validatatio=
-n of
-VRAM self-refresh (VRSR) functionality, by including checks for VRSR capabi=
-lity and ModS residency.
-The test now differentiates between D3Cold and D3Hot states based on VRAM s=
-elf-refresh capability.&quot;</span></pre>
-    <blockquote type=3D"cite" cite=3D"mid:20250527183957.4137136-1-sk.anirb=
-an@intel.com">
-      <pre wrap=3D"" class=3D"moz-quote-pre">
-
-Signed-off-by: Sk Anirban <a class=3D"moz-txt-link-rfc2396E" href=3D"mailto=
-:sk.anirban@intel.com">&lt;sk.anirban@intel.com&gt;</a>
+Signed-off-by: Naladala Ramanaidu <a class="moz-txt-link-rfc2396E" href="mailto:ramanaidu.naladala@intel.com" moz-do-not-send="true">&lt;ramanaidu.naladala@intel.com&gt;</a>
 ---
- tests/intel/xe_pm.c | 51 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+), 1 deletion(-)
+ tests/intel-ci/xe.blocklist.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 6eb21d5ec..f8074a9c6 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -144,6 +144,29 @@ static void vram_d3cold_threshold_restore(int sig)
- 	close(fd);
- }
-=20
-+static uint64_t read_mods(device_t device)
-+{
-+	uint64_t mods_value;
-+	char buf[4096];</pre>
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index ebe1ff006..8e43c217d 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -82,6 +82,10 @@ <a class="moz-txt-link-abbreviated moz-txt-link-freetext" href="mailto:igt@kms_pm_rpm@cursor.*" moz-do-not-send="true">igt@kms_pm_rpm@cursor.*</a>
+ ##################################################################
+ igt@kms_atomic@plane-primary-overlay-mutable-zpos
+ <a class="moz-txt-link-abbreviated moz-txt-link-freetext" href="mailto:igt@kms_plane_scaling@.*downscale-factor-0-25.*" moz-do-not-send="true">igt@kms_plane_scaling@.*downscale-factor-0-25.*</a>
++igt@kms_plane_scaling@planes-downscale-factor-.*5</pre>
+      </blockquote>
+      I see few of the tests passing with this filter where we've
+      upscale on the second plane. We need a more specific filter here.</blockquote>
+    Agree. i will fix and float in next rev.
+    <blockquote type="cite" cite="mid:2b6b3910-88e7-40c5-88bb-f5c3bbc46bdc@intel.com">
+      <blockquote type="cite" cite="mid:20250612201734.3280725-1-ramanaidu.naladala@intel.com">
+        <pre wrap="" class="moz-quote-pre">+igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-.*
++igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-.*</pre>
+      </blockquote>
+      Could the above 2 can be combined into one? '<span style="white-space: pre-wrap"><a class="moz-txt-link-abbreviated moz-txt-link-freetext" href="mailto:igt@kms_plane_scaling@planes-upscale-.*-downscale-factor-.*" moz-do-not-send="true">igt@kms_plane_scaling@planes-upscale-.*-downscale-factor-.*</a></span>'</blockquote>
+    Yes we can combine. i will fix and float next rev.
+    <blockquote type="cite" cite="mid:2b6b3910-88e7-40c5-88bb-f5c3bbc46bdc@intel.com">
+      <blockquote type="cite" cite="mid:20250612201734.3280725-1-ramanaidu.naladala@intel.com">
+        <pre wrap="" class="moz-quote-pre">+igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-.*</pre>
+      </blockquote>
+      <p>This I see is mostly passing other than 0.25 which is
+        blocklisted already. Do we need this?</p>
     </blockquote>
-    we dont need 4K buf here, 256 Bytes should be enough.
-    <blockquote type=3D"cite" cite=3D"mid:20250527183957.4137136-1-sk.anirb=
-an@intel.com">
-      <pre wrap=3D"" class=3D"moz-quote-pre">
-+	int dir, ret;
-+	char *mods_ptr;
-+
-+	dir =3D igt_debugfs_dir(device.fd_xe);
-+	igt_assert(dir &gt;=3D 0);
-+</pre>
-    </blockquote>
-    this extra line space is not necessary
-    <blockquote type=3D"cite" cite=3D"mid:20250527183957.4137136-1-sk.anirb=
-an@intel.com">
-      <pre wrap=3D"" class=3D"moz-quote-pre">
-+	ret =3D igt_debugfs_simple_read(dir, &quot;gtidle/dgfx_pkg_residencies&qu=
-ot;, buf, sizeof(buf));
-+	igt_assert_f(ret &gt;=3D 0, &quot;Debugfs dgfx_pkg_residencies is not pre=
-sent.\n&quot;);
-+</pre>
-    </blockquote>
-    this extra line space is not necessary
-    <blockquote type=3D"cite" cite=3D"mid:20250527183957.4137136-1-sk.anirb=
-an@intel.com">
-      <pre wrap=3D"" class=3D"moz-quote-pre">
-+	close(dir);
-+
-+	mods_ptr =3D strstr(buf, &quot;Package ModS: &quot;);
-+</pre>
-    </blockquote>
-    extra line space not needed here.
-    <blockquote type=3D"cite" cite=3D"mid:20250527183957.4137136-1-sk.anirb=
-an@intel.com">
-      <pre wrap=3D"" class=3D"moz-quote-pre">
-+	if (mods_ptr)
-+		sscanf(mods_ptr, &quot;Package ModS: %&quot;PRIu64&quot;\n&quot;, &amp;m=
-ods_value);
-+
-+	return mods_value;
-+}
-+
- static bool setup_d3(device_t device, enum igt_acpi_d_state state)
- {
- 	igt_require_f(igt_has_pci_pm_capability(device.pci_xe),
-@@ -561,10 +584,25 @@ static void test_vram_d3cold_threshold(device_t devic=
-e, int sysfs_fd)
- 	};
- 	uint64_t vram_used_mb =3D 0, vram_total_mb =3D 0, threshold;
- 	uint32_t bo, placement;
-+	int vrsr_capability =3D 0;
-+	uint64_t mods_value =3D 0;
-+	char buf[4096];</pre>
-    </blockquote>
-    we dont need 4K buf here, 8 Bytes should be enough.
-    <blockquote type=3D"cite" cite=3D"mid:20250527183957.4137136-1-sk.anirb=
-an@intel.com">
-      <pre wrap=3D"" class=3D"moz-quote-pre">
-+	int dir, ret;
- 	bool active;
- 	void *map;
- 	int i;
-=20
-+	dir =3D igt_debugfs_dir(device.fd_xe);
-+	igt_assert(dir &gt;=3D 0);
-+
-+	ret =3D igt_debugfs_simple_read(dir, &quot;vrsr_capable&quot;,
-+				      buf, sizeof(buf));
-+	igt_assert_f(ret &gt;=3D 0, &quot;Debugfs vrsr_capable is not present.\n&=
-quot;);
-+	close(dir);
-+
-+	if (strstr(buf, &quot;true&quot;))
-+		vrsr_capability =3D 1;
-+
- 	igt_require(xe_has_vram(device.fd_xe));
-=20
- 	placement =3D vram_memory(device.fd_xe, 0);
-@@ -595,10 +633,21 @@ static void test_vram_d3cold_threshold(device_t devic=
-e, int sysfs_fd)
- 	munmap(map, SIZE);
- 	set_vram_d3cold_threshold(sysfs_fd, threshold);
-=20
-+	if (vrsr_capability)
-+		mods_value =3D read_mods(device);
-+
- 	/* Setup D3Cold but card should be in D3hot */
- 	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
- 	sleep(1);
--	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-+	if (vrsr_capability) {
-+		igt_assert(in_d3(device, IGT_ACPI_D3Cold));
-+		mods_value =3D read_mods(device) - mods_value;
-+		igt_assert_f(mods_value &gt; 0,
-+			     &quot;Mods residency is inaccurate: %&quot;PRIu64&quot;\n&quot;, m=
-ods_value);
-+	} else {
-+		igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-+	}
-+
- 	igt_assert(igt_pm_get_acpi_real_d_state(device.pci_root) =3D=3D IGT_ACPI_=
-D0);
- 	gem_close(device.fd_xe, bo);
-=20
+    It is not required.&nbsp; I will remove this in next rev.
+    <blockquote type="cite" cite="mid:2b6b3910-88e7-40c5-88bb-f5c3bbc46bdc@intel.com"> Thanks,<br>
+      Karthik.B.S
+      <blockquote type="cite" cite="mid:20250612201734.3280725-1-ramanaidu.naladala@intel.com">
+        <pre wrap="" class="moz-quote-pre"> <a class="moz-txt-link-abbreviated moz-txt-link-freetext" href="mailto:igt@kms_prime@.*" moz-do-not-send="true">igt@kms_prime@.*</a>
+ igt@kms_scaling_modes@scaling-mode-none
+ <a class="moz-txt-link-abbreviated moz-txt-link-freetext" href="mailto:igt@kms_writeback@writeback.*" moz-do-not-send="true">igt@kms_writeback@writeback.*</a>
 </pre>
+      </blockquote>
     </blockquote>
   </body>
 </html>
 
---------------GyTu6VLTjylINydCRWlz4tzb--
+--------------0jODaM1lBlhE2Jh0OBR7Y0AD--
