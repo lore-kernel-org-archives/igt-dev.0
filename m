@@ -4,55 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB413C71135
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 08:03:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73D84C61DB2
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 09:43:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 622C210E8FC;
-	Fri, 13 Jun 2025 08:03:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1879110E93A;
+	Fri, 13 Jun 2025 09:43:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aOLJs99W";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q9SriPqd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD51610E8FC
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jun 2025 08:02:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9B6B10E93A
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jun 2025 09:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749801779; x=1781337779;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=HzwdlGZZjq2ono6cxbvxA7CbkE+mSTnrcckAPjHc7vE=;
- b=aOLJs99WFYcMVaGDA51VbNeESsB0x8LFILquE9SsMkhBlQQ725UUKNFo
- YOm3MA0RFwVmnKsZKVhzbPGFzsZ8Nfz11xxW01mQ38PeXW4YAXVD39cm/
- aksbFWjT3QPWc551w5ssmPKrisxhPm9ia7ZTMq2Lt6KY19EpzhT5DcpPp
- Q0mTttRIKzpCghDe9EbJukty41Byua2xPk6Nps4O4401p7VjAnARjKok7
- NFFECYWnlwWaIhCimjaTqfbTOv9NzFXm4DsJxQIisfnQaMbJDsRr/nXM4
- Pm6Rd+4ypU5zHG/N5enNAmvm6avqSUgKhCOCchIF41faeVH89B11cvwiG g==;
-X-CSE-ConnectionGUID: 4HMad6x0TZyMdJdlUcc78Q==
-X-CSE-MsgGUID: HGIQtSYjS6C8loZdB1D0eQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51726115"
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="51726115"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2025 01:02:58 -0700
-X-CSE-ConnectionGUID: lrXvBAgWQnSkVSpPGbTyew==
-X-CSE-MsgGUID: N94xXgolRkqUIs3BlC0MBA==
+ t=1749807803; x=1781343803;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=KdjK/FdFaiC01by06x2N4VLczQJgUIol8z3NGcoUvxo=;
+ b=Q9SriPqdPy+Zw2lZLZ4GcNRHZQE/oKZYkdnoPUI1IMkjfx50QezCBqcX
+ /+g4+M6M9dKJvndrZLa2qNatq9/t7Ft97YGJ+kfk+2jGzv7NVjjZvaRTr
+ yKDeGJyoecMXYM3zRbSzWl+Lcuakbs3mnNgtZbWAxWvH17IyOIWBQtkUP
+ hyQyXgUdm8WP9zeTqP7pjy5oJBxArWlbita7FtwPCgXfvwwC+NGECd/cM
+ TWSqtrhsk1OwFJEjkUSweB6Kb+icOtZwOPXuZfPF+mklT9bLR5EckLr2B
+ 7izwER8gypIe2WvVDwFrimfheWTCK3/+sajFUspynB264K9lfUVwEhjnY Q==;
+X-CSE-ConnectionGUID: hxYeQgN0T0WTQ23bkDIFuQ==
+X-CSE-MsgGUID: SI/jbgdeQVG6rJKezbQH2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="74552877"
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="74552877"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2025 02:43:23 -0700
+X-CSE-ConnectionGUID: VbUmjGBnTRGn3yb6imPV0Q==
+X-CSE-MsgGUID: t/CfjzV1SJCe7fK4/h8VVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="178659727"
-Received: from unknown (HELO DUT2943PVC.iind.intel.com) ([10.190.215.47])
- by orviesa002.jf.intel.com with ESMTP; 13 Jun 2025 01:02:57 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_compute: Add Compute workload
- Scheduling and Display EU busyness
-Date: Fri, 13 Jun 2025 08:02:51 +0000
-Message-ID: <20250613080251.570961-3-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250613080251.570961-1-nishit.sharma@intel.com>
-References: <20250613080251.570961-1-nishit.sharma@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="148666951"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2025 02:43:22 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 13 Jun 2025 02:43:21 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Fri, 13 Jun 2025 02:43:21 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.58)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 13 Jun 2025 02:43:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fmGkwn2xVwyL+0YbkMGML26+xLeJHhzC78Qlvh/H/euqKCcwnmJ93mHce+9zFc+WAd7tEnbAsch/G5n9fReGFGErdEzCUTfyqqdBhpkPSrpn31vsYfsmSnFlbLLZS+ViUnuDMaGWMPFwawgiIFtY7PwhLUdagcvxtVdeD9yF4VOfMmlahmlnfp7Yv+YXP55d3SGYif7SN4X7RfqCB+jLPjX3HJJVWnslMrzWHnbVG+lWDslvFk60aN9iKHYHCOJnt/EkE8SpqYIFfJtiJAOjlsoR7vqBLkG4qQ15yjGScf1hMpfSUuJggpFpFzBV76RDUtE5TID3X5T0FkvxAA7G9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OsOsNMlX71hxRhBfG+Ci8u5qs/Os8EsmnDSoeRmv/SM=;
+ b=httSkkZX4FAZnsd4m9sZhEdRqE+TgnSR7xuj0SXgwOgzaBEMWmoi5nCYLBDE8s/Cqq5qwtu2Ftwv7earASJG5kafGLO3tfoG/PCQpUjOIqFk/sAySXilezUJCPSjD8ch22kyvpEHbBAoffMi/Y578pTGjip2jmh385Hh4ekxSPckQ4lgJejAoLlKnOaW2ZWWM+1NqektejbMpnEhllVUp62cCC+uAuqXQc4Nt/jFdgzmy4XGEwrElQUdQNSZ332loOzCukq5/qOTuzD/MpRcNrgOHFnIdjSmBWLuD2vG2OBmzMMURR85n88OTVn1zEwuV63fV5qy+wgZ+1O38yUrVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB7838.namprd11.prod.outlook.com (2603:10b6:208:402::12)
+ by DM4PR11MB8131.namprd11.prod.outlook.com (2603:10b6:8:190::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Fri, 13 Jun
+ 2025 09:43:18 +0000
+Received: from IA0PR11MB7838.namprd11.prod.outlook.com
+ ([fe80::62fc:d6dc:d0d2:bc4]) by IA0PR11MB7838.namprd11.prod.outlook.com
+ ([fe80::62fc:d6dc:d0d2:bc4%4]) with mapi id 15.20.8813.033; Fri, 13 Jun 2025
+ 09:43:18 +0000
+Date: Fri, 13 Jun 2025 11:43:06 +0200
+From: Francois Dugast <francois.dugast@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t] lib/intel_compute: change shader and logic for
+ threadgroup preemption
+Message-ID: <aEvyqmW_tVdOSdXR@fdugast-desk>
+References: <20250611054628.678665-2-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250611054628.678665-2-zbigniew.kempczynski@intel.com>
+Organization: Intel Corporation
+X-ClientProxiedBy: DUZPR01CA0292.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b7::14) To DS7PR11MB7836.namprd11.prod.outlook.com
+ (2603:10b6:8:e3::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR11MB7838:EE_|DM4PR11MB8131:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7e70add-2b41-4567-15c4-08ddaa5eb9d3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RGpGallvdi9MWmUzMDNNZjlDZWdUSEgvZnpUTktsS29IaXRIZ3JSTlZVWEF1?=
+ =?utf-8?B?ZmNYbmtKajQ4QldCM0xTa01CbW5lenRPcXZjNTkwa0JwbW5NRHh6T2xIWG1h?=
+ =?utf-8?B?d042QnBNWThWaUpYdTdBYnJ3WU1ic09BNVpscEhVZk1FRWdHR2k3Z0FhNlJ3?=
+ =?utf-8?B?c1cwZm9QalBnV2RvSTZNeGVJQzhuV0JKMWdIbEVwV1V4SThiUi9WSVRCY016?=
+ =?utf-8?B?ZXA3d0oweUJ3TFNlTjZTMXNPNS85Q0t4YU5weU0zbFRWajFqQWZjZGRZMXV6?=
+ =?utf-8?B?V2RoQnVoZlRhYTc4aHpJZ3lyem9oNnRySFliSWhneDdrUkJmZmd2NmFKMTZl?=
+ =?utf-8?B?bUttSTlPK1NSRGpIa3dNblJyN3E4QmJKOWwyRjRiSGZ4aUZiUzRKdkx0UnNX?=
+ =?utf-8?B?SnRPVE1iYVVUeXNPR1laU1BWMEJHMXhFbWsyWG0zbkFwRmRnTld4THg3bnZn?=
+ =?utf-8?B?T2pZa1V1TSt2K1Yxc0NUdVZTM216czB1WXJuQ1RhdVpmbWJ5NjJRQ21mNHNv?=
+ =?utf-8?B?ZFJtamhZalpnbFJWeUFhUVR2Rk83b1JUTGFybURHT1VuZk9LSHdQNUtDZlFY?=
+ =?utf-8?B?T09samFMWWdldVYrNGdiRUJuMERhVE4vUk1LdnBTUDNXZkhWMDRNSDBvejdO?=
+ =?utf-8?B?Q05raENxOHNNV1dEaGFwbXZrYzhKZjZROHpTS2RjR0loTlZCWkFwQVdFNkNz?=
+ =?utf-8?B?K2haOUpPYlFleWdLNUtSTFR6L0NldC9tOXUzUmZWZVBHRDRQdk5tMll1VDdp?=
+ =?utf-8?B?R1lWOVNvQk1WRjV2Q1N5MU81M3orZEo4RFE3T1QvWCt6cVFNQnF4SkpCOWtY?=
+ =?utf-8?B?aHRxc0tlajNGQmJhSCtOSUVIL1lqTjQvbzNJMEJaTGhxYTZJK0ZnN0NLTmMw?=
+ =?utf-8?B?dk5zRGZoRHBqWldPNEJFMjlHelFjYmNpL2hOSkViS1p1TkloeUFNM1pPc0tz?=
+ =?utf-8?B?STlOVG5ObXNTYmc5bUhUR1lGNWRma2E4WkNVTVVRSXp3OTBpTnRCRjl2R2FH?=
+ =?utf-8?B?SVBCbE5hbEN0QWlrNkhYUUlDaE9JTDdjOGxISXB4UkFhYWVNaGVySGR6bnh1?=
+ =?utf-8?B?ZlVjOU1rcStkZHpBcncxQjA3bVljdmNrbWxWYVZVUTVXQ0NDYWhjQ0REcnpv?=
+ =?utf-8?B?WSswZXkzcHdNZnN6ZnQrN2VSYThXZzg0R0NlaUxzWnJ3amhIejFwNTllYmtm?=
+ =?utf-8?B?U0srTkEyY0tjWnBkZjhST2dhcXUvK09DenVZQ1VvV3RTVUFYZk9TRks2cXdz?=
+ =?utf-8?B?QjRCbHdQc2JIMFU0Q3FrVzkzSGdJS0p0LzNWdTJiR0FocC9aRmNTRzM2Rm1C?=
+ =?utf-8?B?a3AzeklmSkhqZnJCK0F4akFoV1lnci81cUR2MUw0N1RQUEJhVDBsM25Ldk9u?=
+ =?utf-8?B?VmVoNDN0OWw3T3lFOTd1WDBPN0o0OUVlVWFIOUxyQWlPY1dwa3F3SE5KQUhG?=
+ =?utf-8?B?anB4WUNjQm1LcVo3eU5mangxT0Z2R3JrS1BPZjZBcXJNTEgwYlFUKzdZb05C?=
+ =?utf-8?B?SlE4WnVwcld4cUtxZ0ZzZGI3WU1IWnczRjBQNm9NNHo3cUpyTFNGZCtPWFo1?=
+ =?utf-8?B?UnF2dU1HYmdtTjJtcEN0a21XY0RSVjhvT0VBQVM0ZEpmaFdNaFpFUndLN2hs?=
+ =?utf-8?B?Q211RUFzZkF3a1VMblJWNkFkWnArbnMvVUI1YS8vU1cxWmpQdzlEKzh2OWZw?=
+ =?utf-8?B?TlFyRXdJR0V2c29OV2t6S00xUGova2VMd1J6ZzNENUFGMVNYV05XWkN6akhl?=
+ =?utf-8?B?Y3FyMkF6MysyTElTb0g2dnIwK1JOTHVKZjZ0dTVnZ1JWNzYxYWVmK2NmenB6?=
+ =?utf-8?B?bkUwSmQ1VVJLVWNvMDE3N2U5bmhtUVY3RXZFbjR5SUd5emFVY0Ezb2pXalhi?=
+ =?utf-8?B?UWpNZHZwbTFzZ3IzMktFQXBPR3VqR2xUbm5JUXZ5UkpNWjNoMGFMdFpiWFd3?=
+ =?utf-8?Q?1Q0tXQ/VHRQ=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA0PR11MB7838.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?azQ0TDJST1VVeEFUeW9QdVgybnAyQW5lOVJObS8xNGpybXZNSTNXdS9aWnVN?=
+ =?utf-8?B?YURnTjBlY1ZNTDh5MUxWMnRWZ2Y0RVg5T0w4MU01aFRINDdLdStKeEk4RDAx?=
+ =?utf-8?B?ZjhCNHcrUVlNS3VBaElDL2tmeEhyNUxScU9IMnFuUkZJYmFEYVYvS3hQb0pC?=
+ =?utf-8?B?b2taQU5xRUl3cmNJYmZpTnNLdUhKcmJsUnlINk1uQmQ5dFUvZEcvUkRVYm9Q?=
+ =?utf-8?B?MVhBMEdQY3N6ZjBKN0RhS2tnRmI4cjRSN3o1NzNsbWlhRlB5RTRXMXEzSDFK?=
+ =?utf-8?B?dS84SkdnUTF3MVJSS2Zlc3RqRStWSkhFT0lLd05OM2dyOGNQbFdYQnZkVkZn?=
+ =?utf-8?B?bHZneTN1eWh0aEpYQ0dkdFBRTlR1Q1pFMGdKSlZHYUxpQ041SXRiWXBzWHhj?=
+ =?utf-8?B?Mk1waEk5VWJ1TWdVbjk2T0ZiL3lkNXFGTUF5REhoWXFZMWkrZ1VRbVlZV0M4?=
+ =?utf-8?B?TVBtMlkvaGdQWG9ZNjF5Z0lxcFFTMno0dFp1eUdDZ245dTFobENJd1p0QTZy?=
+ =?utf-8?B?ZDFEMHlGVzV4OHBGa205VzBTZlgraTNtVmpJa215K0EraUxZNWFDNEZ3QWdK?=
+ =?utf-8?B?dHdsWlVqOHB4c2laZmlsTEhpWXdMYmtiSVIwZ3pkY3FhejN5aTluSnVIQ05X?=
+ =?utf-8?B?QktMWlZnRnhRNkQ3U3d0VlFzZ1IrM2VpMGU1RUtibXkxU3lVUWxKZW9OMW1U?=
+ =?utf-8?B?cllHT3RSWVA2RFN6RW1wWUYxOVAyZG55T1ZuM1gyVEFyMUUvNzZiTDdmbDdY?=
+ =?utf-8?B?YjR6ajVnUEp6K1d1bnI5TkhYZjlzWVp1Qm5wWkcrT2JSbFFmMGtyZy9hdlRG?=
+ =?utf-8?B?RzRTWEhEbDNENXJkNDJ3dDhHZWtQUldleEIyNkNWSWxIZDJVUW5FdkhQSms5?=
+ =?utf-8?B?T1NXNkNHc21OT3ZaK1ZjdlVhSUlLUEc4SVQyTVlhV1MvTHhGeFpXNHAzNnVr?=
+ =?utf-8?B?c1lNV0F5Qkl3RFF5Tk5sL0lOMkovQnBDMVlxRXhDb09KSkJrU3ppZVJhOGh1?=
+ =?utf-8?B?Z2JTMk50K3U5UU16YmVGT0JHUEpCeU9RRW5udmx1R3B4VDYwazlnMllyQlU1?=
+ =?utf-8?B?ZThsbWdHU3RhbmczbURiUEJFb2JreGFZT2Q0cFdqa3REMW54VFpLb3FyY1Vy?=
+ =?utf-8?B?MThDWCtPazFVUHM5ZDB1MS94ZENNV2VLV3ZsNm9vMCsvaXFJV3lMNCtBZU5o?=
+ =?utf-8?B?ckZFTy90cC9velhzSk0zTm8yVzlkdDA3VCtjREIwNy9NNldITm9aL0NDcWxD?=
+ =?utf-8?B?dmNDNzJsZGZ2SVY4S2RvN1N5TjNQaDRUYXNoMkRJMGhIRmpNSnJBaDVoZnls?=
+ =?utf-8?B?VEdKRWU3Z2dLU0VTRXBZUTZwVEJNZWhwVElJMURUR05KL3p3VFQ3SmwweVYr?=
+ =?utf-8?B?VjVhR1lIa2JNUjRRRUJtMzNNTkJtTlViUDdaQ1h0NFFOVjdxRTNTQmZ6M0dT?=
+ =?utf-8?B?ejJBZzlkZ2JzdkJmc3kwK2Z2d016WWxQMVlXQ000UDUrbjAwOVFyMlY5RGVU?=
+ =?utf-8?B?cHU2NlFOZGpjNDF0eWwxeUFrQkxxOXdHc0VIU3Y2U2Z0R3Q3b1BNci9JZk1Q?=
+ =?utf-8?B?Z3VwSmloQWtNdmVJK1ExbEtQTEY1RWtmdUVEUkJuVGI3SWdXc0Y1aWtjQjdU?=
+ =?utf-8?B?ZnNsQkpVb0o5TXpPM29FblllVlAzU1hscXdiSTZGUSt3TTFqbmJjaXdrekl5?=
+ =?utf-8?B?MW9QM1M0c0tlVUU1d3MzZWhHV0owZDVObFZzNTk1b3ZPSTdZSEk3ZmlGbDA4?=
+ =?utf-8?B?L2Z3dTRIa05TTERnVkNPT0N5T3orQzVINkd6MFBIcEg5V0Q4YmgzNjByenBw?=
+ =?utf-8?B?ODFKdTd3MDFaUXk4K2ZUeWVjNXFxbzRHTEtDc2VOb3Q0dnJaeVY2b0gvN0x2?=
+ =?utf-8?B?TG1kRWxtTWJvQlB0SkFLam1VVWEyWVdJaDdKYlFUT1hKVmtIT2ZoWUpDcTFx?=
+ =?utf-8?B?Z3RkUng1R0dsUDFPbWUxU29ZdmFWcE52QnF5cWx4WHhTcFlLeXFuRVM4dHlo?=
+ =?utf-8?B?TG82QS9CRDNWMzM5amMrYytuTW1pcENjVldQQVZURUdjVlkrcDN3SVZGUFRP?=
+ =?utf-8?B?eVdmRnBqZVZ4Y0ZUWFFmbWZjcWY2UjRSZ1lnc1pZWmd4NnMzRXJ3ZGVkdTEw?=
+ =?utf-8?B?cDM2anZsZGtJb2VSNWxEeFMyVVlnU0I0OWJNZFVRZk5CQXNUdklhVi95ek4x?=
+ =?utf-8?B?d3c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7e70add-2b41-4567-15c4-08ddaa5eb9d3
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB7836.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 09:43:18.7957 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Mkxtixz2mRdQWHKwl7Dexz6Gw33h+Fbx/9Ms3HSmlw7uw+P5gC+t6UEE2TcUc3k2YaKvh6riOsunXdmJRMZCVx64xalah/xVlmdmXNmK2V0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB8131
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,887 +196,271 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+On Wed, Jun 11, 2025 at 07:46:29AM +0200, Zbigniew Kempczyński wrote:
+> Threadgroup preemption happens on thread group dispatch boundary.
+> It is harder to control it comparing to WMTP. Simple loop with
+> n-iterations and relatively high dimensions allows to achieve that
+> but requires tweaking work dimension as each loop (single thread)
+> executes similar time.
+> 
+> Change then this "constant" time loop to one which allows to be
+> stopped by writing MAGIC number to buffer observed by the loop
+> conditional. Until threadgroup preemption occurs threads will execute
+> relatively long time allowing another short job (compute square)
+> to complete. When short job is done MAGIC write causes all threads
+> exit loop immediately. This strategy is more reliable and shortens
+> threadgroup preemption execution time.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
 
-Adds compute workload scheduling and execution on multi-ccs available.
-This also adds graphical respresentation of per engine busyness while
-workload is running on multiple CCS engine instances.
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- lib/intel_compute.c      |  29 +-
- lib/intel_compute.h      |   2 +
- tests/intel/xe_compute.c | 756 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 4 files changed, 785 insertions(+), 3 deletions(-)
-
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index bfb9024ba..252fa2f81 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -249,8 +249,14 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
- 				break;
- 			}
- 
--			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
--							 placement, flags);
-+			if (!execenv->user)
-+				bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
-+								 placement, flags);
-+			else
-+				bo_dict[i].handle = xe_bo_create_caching(fd, execenv->vm,
-+									 bo_dict[i].size,
-+									 placement, flags,
-+									 DRM_XE_GEM_CPU_CACHING_WC);
- 			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
- 			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
- 					 bo_dict[i].size, &sync, 1);
-@@ -1788,6 +1794,15 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_destroy(&execenv);
- }
- 
-+static void bo_execenv_exec_async_wait(struct bo_execenv *execenv)
-+{
-+	xe_wait_ufence(execenv->fd, &execenv->bo_sync->sync, USER_FENCE_VALUE,
-+			execenv->exec_queue, INT64_MAX);
-+
-+	munmap(execenv->bo_sync, sizeof(*execenv->bo_sync));
-+	gem_close(execenv->fd, execenv->bo);
-+}
-+
- /**
-  * xe2lpg_compute_exec - run a pipeline compatible with XE2
-  *
-@@ -1867,7 +1882,15 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 				    OFFSET_KERNEL, 0, false,
- 				    execenv.array_size);
- 
--	bo_execenv_exec(&execenv, ADDR_BATCH);
-+	if (!user)
-+		bo_execenv_exec(&execenv, ADDR_BATCH);
-+	else if (user->loop_kernel_duration) {
-+		bo_execenv_exec_async(&execenv, ADDR_BATCH);
-+		igt_measured_usleep(user->loop_kernel_duration);
-+		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
-+		bo_execenv_exec_async_wait(&execenv);
-+		user->skip_results_check = 1;
-+	}
- 
- 	for (int i = 0; i < execenv.array_size; i++) {
- 		float input = input_data[i];
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index 412791d07..19977933f 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -63,6 +63,8 @@ struct user_execenv {
- 	uint64_t input_addr;
- 	/** @output_addr: override default address of the output array if provided */
- 	uint64_t output_addr;
-+	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
-+	uint32_t loop_kernel_duration;
- };
- 
- enum execenv_alloc_prefs {
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 955edf082..87bbc8569 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -12,6 +12,7 @@
-  */
- 
- #include <string.h>
-+#include <sys/ioctl.h>
- 
- #include "igt.h"
- #include "igt_sysfs.h"
-@@ -19,6 +20,51 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#include "tools/gputop/utils.h"
-+#include "tools/gputop/xe_gputop.h"
-+#include "igt_drm_clients.h"
-+
-+static const char * const drivers[] = {
-+	"xe",
-+	/* Keep the last one as NULL */
-+	NULL
-+};
-+
-+/**
-+ * Number of supported drivers needs to be adjusted as per the length of
-+ * the drivers[] array.
-+ */
-+#define	NUM_DRIVER	1
-+#define	LOOP_DURATION	(1000000ull)
-+#define	engine_ptr(engines, n)	(&(engines)->engine + (n))
-+
-+static const char * const bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
-+
-+/*
-+ * devices[] array of type struct gputop_device
-+ */
-+struct gputop_device devices[] = {
-+	{false, 0, NULL}
-+};
-+
-+enum utilization_type {
-+	UTILIZATION_TYPE_ENGINE_TIME,
-+	UTILIZATION_TYPE_TOTAL_CYCLES,
-+};
-+
-+pthread_barrier_t barrier;
-+struct thread_data {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	int class;
-+	int fd;
-+	int gt;
-+	struct user_execenv *execenv;
-+	struct drm_xe_engine_class_instance *eci;
-+	bool *go;
-+};
-+
- static int gt_sysfs_open(int gt)
- {
- 	int fd, gt_fd;
-@@ -178,6 +224,712 @@ test_compute_square(int fd)
- 		      "GPU not supported\n");
- }
- 
-+static void
-+*intel_compute_thread(void *data)
-+{
-+	struct thread_data *t = (struct thread_data *)data;
-+
-+	igt_info("Compute kernel executing on engine class :%s instance :%d gt: GT-%d\n",
-+			xe_engine_class_string(t->eci->engine_class), t->eci->engine_instance,
-+			t->eci->gt_id);
-+
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
-+
-+	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd,
-+							   t->eci,
-+							   t->execenv,
-+							   EXECENV_PREF_VRAM_IF_POSSIBLE),
-+		     "Unable to run compute kernel successfully\n");
-+	return NULL;
-+}
-+
-+static volatile bool stop_top;
-+
-+static void
-+update_console_size(int *w, int *h)
-+{
-+	struct winsize ws = {};
-+
-+	if (ioctl(0, TIOCGWINSZ, &ws) == -1)
-+		return;
-+
-+	*w = ws.ws_col;
-+	*h = ws.ws_row;
-+
-+	if (*w == 0 && *h == 0) {
-+		/* Serial console. */
-+		*w = 80;
-+		*h = 24;
-+	}
-+}
-+
-+static int
-+__client_id_cmp(const struct igt_drm_client *a,
-+		const struct igt_drm_client *b)
-+{
-+	if (a->id > b->id)
-+		return 1;
-+	else if (a->id < b->id)
-+		return -1;
-+	else
-+		return 0;
-+}
-+
-+static int
-+client_cmp(const void *_a, const void *_b, void *unused)
-+{
-+	const struct igt_drm_client *a = _a;
-+	const struct igt_drm_client *b = _b;
-+	long val_a, val_b;
-+
-+	/* DRM cards into consecutive buckets first. */
-+	val_a = a->drm_minor;
-+	val_b = b->drm_minor;
-+	if (val_a > val_b)
-+		return 1;
-+	else if (val_b > val_a)
-+		return -1;
-+
-+	/*
-+	 * Within buckets sort by last sampling period aggregated runtime, with
-+	 * client id as a tie-breaker.
-+	 */
-+	val_a = a->agg_delta_engine_time;
-+	val_b = b->agg_delta_engine_time;
-+	if (val_a == val_b)
-+		return __client_id_cmp(a, b);
-+	else if (val_b > val_a)
-+		return 1;
-+	else
-+		return -1;
-+
-+}
-+
-+static void clrscr(void)
-+{
-+	printf("\033[H\033[J");
-+}
-+
-+static int
-+pmu_format_shift(int xe, const char *name)
-+{
-+	uint32_t start;
-+	int format;
-+	char device[80];
-+
-+	format = perf_event_format(xe_perf_device(xe, device, sizeof(device)),
-+			name, &start);
-+	if (format)
-+		return 0;
-+
-+	return start;
-+}
-+
-+static const char
-+*class_display_name(unsigned int class)
-+{
-+	switch (class) {
-+	case DRM_XE_ENGINE_CLASS_RENDER:
-+		return "Render/3D";
-+	case DRM_XE_ENGINE_CLASS_COPY:
-+		return "Blitter";
-+	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
-+		return "Video";
-+	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-+		return "VideoEnhance";
-+	case DRM_XE_ENGINE_CLASS_COMPUTE:
-+		return "Compute";
-+	default:
-+		return "[unknown]";
-+	}
-+}
-+
-+static int
-+engine_cmp(const void *__a, const void *__b)
-+{
-+	const struct xe_engine *a = (struct xe_engine *)__a;
-+	const struct xe_engine *b = (struct xe_engine *)__b;
-+
-+	if (a->drm_xe_engine.engine_class != b->drm_xe_engine.engine_class)
-+		return a->drm_xe_engine.engine_class - b->drm_xe_engine.engine_class;
-+	else
-+		return a->drm_xe_engine.engine_instance - b->drm_xe_engine.engine_instance;
-+}
-+
-+static void
-+*xe_init_engines(const void *obj)
-+{
-+	struct igt_device_card *card = ((struct xe_gputop *)obj)->card;
-+	struct xe_pmu_device *engines;
-+	int ret = 0;
-+	char device[30];
-+	struct drm_xe_engine_class_instance *hwe;
-+	int card_fd;
-+	uint64_t engine_class, engine_instance, gt_shift;
-+	uint64_t engine_active_config, engine_total_config;
-+
-+	if (!card || !strlen(card->card) || !strlen(card->render))
-+		return NULL;
-+
-+	if (strlen(card->card)) {
-+		card_fd = igt_open_card(card);
-+	} else if (strlen(card->render)) {
-+		card_fd = igt_open_render(card);
-+	} else {
-+		fprintf(stderr, "Failed to detect device!\n");
-+		return NULL;
-+	}
-+	xe_device_get(card_fd);
-+	engines = malloc(sizeof(struct xe_pmu_device) +
-+			xe_number_engines(card_fd) * sizeof(struct xe_engine));
-+	if (!engines)
-+		return NULL;
-+
-+	memset(engines, 0, sizeof(struct xe_pmu_device) +
-+			xe_number_engines(card_fd) * sizeof(struct xe_engine));
-+
-+	engines->num_engines = 0;
-+	engines->device = ((struct xe_gputop *)obj)->pmu_device;
-+	gt_shift = pmu_format_shift(card_fd, "gt");
-+	engine_class = pmu_format_shift(card_fd, "engine_class");
-+	engine_instance = pmu_format_shift(card_fd, "engine_instance");
-+	xe_perf_device(card_fd, device, sizeof(device));
-+	ret = perf_event_config(device,
-+			"engine-active-ticks",
-+			&engine_active_config);
-+	if (ret < 0)
-+		return NULL;
-+	ret = perf_event_config(device,
-+			"engine-total-ticks",
-+			&engine_total_config);
-+	if (ret < 0)
-+		return NULL;
-+	xe_for_each_engine(card_fd, hwe) {
-+		uint64_t  param_config;
-+		struct xe_engine *engine;
-+
-+		engine = engine_ptr(engines, engines->num_engines);
-+		param_config = (uint64_t)hwe->gt_id << gt_shift | hwe->engine_class << engine_class
-+			| hwe->engine_instance << engine_instance;
-+		engine->drm_xe_engine = *hwe;
-+		engine->engine_active_ticks.config = engine_active_config | param_config;
-+		engine->engine_total_ticks.config = engine_total_config | param_config;
-+
-+		if (engine->engine_active_ticks.config == -1 ||
-+				engine->engine_total_ticks.config == -1) {
-+			ret = ENOENT;
-+			break;
-+		}
-+
-+		ret = asprintf(&engine->display_name, "%s/%u",
-+				class_display_name(engine->drm_xe_engine.engine_class),
-+				engine->drm_xe_engine.engine_instance);
-+
-+		if (ret <= 0) {
-+			ret = errno;
-+			break;
-+		}
-+
-+		engines->num_engines++;
-+	}
-+
-+	if (!ret) {
-+		errno = ret;
-+		return NULL;
-+	}
-+
-+	qsort(engine_ptr(engines, 0), engines->num_engines,
-+			sizeof(struct xe_engine), engine_cmp);
-+
-+	((struct xe_gputop *)obj)->eng_obj = engines;
-+
-+	return engines;
-+}
-+
-+static int
-+_open_pmu(uint64_t type, unsigned int *cnt,
-+	  struct xe_pmu_counter *pmu, int *fd)
-+{
-+	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
-+
-+	if (fd__ >= 0) {
-+		if (*fd == -1)
-+			*fd = fd__;
-+		pmu->present = true;
-+		pmu->idx = (*cnt)++;
-+		pmu->fd = fd__;
-+	}
-+
-+	return fd__;
-+}
-+
-+int xe_pmu_init(const void *obj)
-+{
-+	struct xe_pmu_device *engines = ((struct xe_gputop *)obj)->eng_obj;
-+	unsigned int i;
-+	int fd;
-+	struct xe_engine *engine;
-+	uint64_t type = igt_perf_type_id(engines->device);
-+
-+	engines->fd = -1;
-+	engines->num_counters = 0;
-+
-+	for (i = 0; i < engines->num_engines; i++) {
-+		engine = engine_ptr(engines, i);
-+		fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
-+				&engines->fd);
-+		if (fd < 0)
-+			return -1;
-+		fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
-+				&engines->fd);
-+		if (fd < 0)
-+			return -1;
-+	}
-+	return 0;
-+}
-+
-+void xe_clean_up(void *obj, int len)
-+{
-+	struct xe_engine *eng;
-+	struct xe_pmu_counter pmu;
-+	struct xe_gputop *dev = (struct xe_gputop *)obj;
-+
-+	for (int i = 0; i < len; i++) {
-+		if ((dev + i)->card)
-+			free((dev + i)->card);
-+		if ((dev + i)->eng_obj) {
-+
-+			for (int j = 0; j < ((struct xe_pmu_device *)(dev + i)->eng_obj)->num_engines ; j++) {
-+				eng = engine_ptr((struct xe_pmu_device *)(dev + i)->eng_obj, j);
-+				if (eng->display_name)
-+					free(eng->display_name);
-+
-+				pmu = eng->engine_active_ticks;
-+				if (pmu.present)
-+					close(pmu.fd);
-+
-+				pmu = eng->engine_total_ticks;
-+				if (pmu.present)
-+					close(pmu.fd);
-+			}
-+			free(dev->eng_obj);
-+		}
-+		if ((dev + i)->pmu_device)
-+			free(dev->pmu_device);
-+	}
-+}
-+
-+static void
-+eu_util_free(void)
-+{
-+	for (int i = 0; drivers[i]; i++) {
-+		xe_clean_up(devices[i].instances, devices[i].len);
-+		free(devices[i].instances);
-+		devices[i].driver_present = false;
-+		devices[i].len = 0;
-+	}
-+}
-+
-+static int
-+find_driver(struct igt_device_card *card)
-+{
-+	for (int i = 0; drivers[i]; i++) {
-+		if (strcmp(drivers[i], card->driver) == 0)
-+			return i;
-+	}
-+	return -1;
-+}
-+
-+static char
-+*pmu_name(struct igt_device_card *card)
-+{
-+	int card_fd;
-+	char device[30];
-+	char *path;
-+
-+	if (strlen(card->card))
-+		card_fd = igt_open_card(card);
-+	else if (strlen(card->render))
-+		card_fd = igt_open_render(card);
-+
-+	if (card_fd == -1)
-+		return NULL;
-+
-+	xe_perf_device(card_fd, device, sizeof(device));
-+	path = strdup(device);
-+	close(card_fd);
-+	return path;
-+}
-+
-+void xe_gputop_init(void *ptr, struct igt_device_card *card)
-+{
-+	struct xe_gputop *obj = (struct xe_gputop *)ptr;
-+
-+	obj->pmu_device = pmu_name(card);
-+	if (!obj->pmu_device) {
-+		fprintf(stderr, "%s : pmu_device path returned NULL", card->pci_slot_name);
-+		exit(EXIT_FAILURE);
-+	}
-+	obj->card = card;
-+}
-+
-+static int populate_device_instances(const char *filter)
-+{
-+	struct igt_device_card *cards = NULL;
-+	struct igt_device_card *card_inplace = NULL;
-+	struct gputop_device *dev =  NULL;
-+	int driver_no;
-+	int count, final_count = 0;
-+
-+	count = igt_device_card_match_all(filter, &cards);
-+	for (int j = 0; j < count; j++) {
-+		if (strcmp((cards + j)->subsystem, "pci") != 0)
-+			continue;
-+
-+		driver_no = find_driver(cards + j);
-+		if (driver_no < 0)
-+			continue;
-+
-+		dev = devices + driver_no;
-+		if (!dev->driver_present)
-+			dev->driver_present = true;
-+		dev->len++;
-+		dev->instances = realloc(dev->instances,
-+				dev->len * sizeof(struct xe_gputop));
-+		if (!dev->instances) {
-+			fprintf(stderr,
-+					"Device instance realloc failed (%s)\n",
-+					strerror(errno));
-+			exit(EXIT_FAILURE);
-+		}
-+		card_inplace = (struct igt_device_card *)
-+			calloc(1, sizeof(struct igt_device_card));
-+		memcpy(card_inplace, cards + j, sizeof(struct igt_device_card));
-+		xe_gputop_init((struct xe_gputop *)(dev->instances + dev->len - 1),
-+				card_inplace);
-+		final_count++;
-+	}
-+	if (count)
-+		free(cards);
-+	return final_count;
-+}
-+
-+static uint64_t
-+pmu_read_multi(int fd, unsigned int num, uint64_t *val)
-+{
-+	uint64_t buf[2 + num];
-+	unsigned int i;
-+	ssize_t len;
-+
-+	memset(buf, 0, sizeof(buf));
-+
-+	len = read(fd, buf, sizeof(buf));
-+	assert(len == sizeof(buf));
-+
-+	for (i = 0; i < num; i++)
-+		val[i] = buf[2 + i];
-+
-+	return buf[1];
-+}
-+
-+static void
-+__update_sample(struct xe_pmu_counter *counter, uint64_t val)
-+{
-+	counter->val.prev = counter->val.cur;
-+	counter->val.cur = val;
-+}
-+
-+static void
-+update_sample(struct xe_pmu_counter *counter, uint64_t *val)
-+{
-+	if (counter->present)
-+		__update_sample(counter, val[counter->idx]);
-+}
-+
-+void xe_pmu_sample(const void *obj)
-+{
-+	struct xe_pmu_device *engines = ((struct xe_gputop *)obj)->eng_obj;
-+	const int num_val = engines->num_counters;
-+	uint64_t val[2 + num_val];
-+	unsigned int i;
-+
-+	pmu_read_multi(engines->fd, num_val, val);
-+
-+	for (i = 0; i < engines->num_engines; i++) {
-+		struct xe_engine *engine = engine_ptr(engines, i);
-+
-+		update_sample(&engine->engine_active_ticks, val);
-+		update_sample(&engine->engine_total_ticks, val);
-+	}
-+}
-+
-+static double
-+pmu_active_percentage(struct xe_engine *engine)
-+{
-+	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
-+		engine->engine_active_ticks.val.prev;
-+	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
-+		engine->engine_total_ticks.val.prev;
-+	double percentage;
-+
-+	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
-+	return percentage;
-+}
-+
-+void n_spaces(const unsigned int n)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < n; i++)
-+		putchar(' ');
-+}
-+
-+void print_percentage_bar(double percent, int max_len)
-+{
-+	int bar_len, i, len = max_len - 1;
-+	const int w = PERCLIENT_ENGINE_WIDTH;
-+
-+	len -= printf("|%5.1f%% ", percent);
-+
-+	/* no space left for bars, do what we can */
-+	if (len < 0)
-+		len = 0;
-+
-+	bar_len = ceil(w * percent * len / 100.0);
-+	if (bar_len > w * len)
-+		bar_len = w * len;
-+
-+	for (i = bar_len; i >= w; i -= w)
-+		printf("%s", bars[w]);
-+	if (i)
-+		printf("%s", bars[i]);
-+
-+	len -= (bar_len + (w - 1)) / w;
-+	n_spaces(len);
-+
-+	putchar('|');
-+}
-+
-+static int
-+print_engine(struct xe_pmu_device *engines, unsigned int i,
-+	     int lines, int con_w, int con_h)
-+{
-+	struct xe_engine *engine = engine_ptr(engines, i);
-+	double percentage = pmu_active_percentage(engine);
-+
-+	printf("%*s", (int)(strlen("            ENGINES")), engine->display_name);
-+	print_percentage_bar(percentage, con_w - strlen("            ENGINES"));
-+	printf("\n");
-+
-+	return ++lines;
-+}
-+
-+int xe_print_engines(const void *obj, int lines, int w, int h)
-+{
-+	struct xe_pmu_device *show = ((struct xe_gputop *)obj)->eng_obj;
-+
-+	for (unsigned int i = 0; i < show->num_engines && lines < h; i++)
-+		lines = print_engine(show, i, lines, w, h);
-+
-+	return lines;
-+}
-+
-+static void *show_eu_util(void *data)
-+{
-+	struct igt_drm_clients *clients = NULL;
-+	int con_w = -1, con_h = -1;
-+	int ret;
-+	long n;
-+
-+	n = -1;
-+	if (!populate_device_instances("device:subsystem=pci,card=all")) {
-+		printf("No device found.\n");
-+		eu_util_free();
-+		exit(1);
-+	}
-+
-+	for (int i = 0; drivers[i]; i++) {
-+		if (devices[i].driver_present) {
-+			for (int j = 0; j < devices[i].len; j++) {
-+				if (!xe_init_engines(devices[i].instances + j)) {
-+					fprintf(stderr,
-+							"Failed to initialize engines! (%s)\n",
-+							strerror(errno));
-+					eu_util_free();
-+					return NULL;
-+				}
-+				ret = xe_pmu_init(devices[i].instances + j);
-+
-+				if (ret) {
-+					fprintf(stderr,
-+							"Failed to initialize PMU! (%s)\n",
-+							strerror(errno));
-+					if (errno == EACCES && geteuid())
-+						fprintf(stderr,
-+								"\n"
-+								"When running as a normal user CAP_PERFMON is required to access performance\n"
-+								"monitoring. See \"man 7 capabilities\", \"man 8 setcap\", or contact your\n"
-+								"distribution vendor for assistance.\n"
-+								"\n"
-+								"More information can be found at 'Perf events and tool security' document:\n"
-+								"https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
-+
-+					igt_devices_free();
-+					eu_util_free();
-+					return NULL;
-+				}
-+			}
-+		}
-+	}
-+	for (int i = 0; drivers[i]; i++) {
-+		for (int j = 0; devices[i].driver_present && j < devices[i].len; j++)
-+			xe_pmu_sample(devices[i].instances + j);
-+	}
-+
-+	clients = igt_drm_clients_init(NULL);
-+	if (!clients)
-+		exit(1);
-+
-+	sleep(2);
-+	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-+	while ((n != 0) && !stop_top) {
-+		int lines = 0;
-+
-+		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-+
-+		for (int i = 0; drivers[i]; i++) {
-+			for (int j = 0; devices[i].driver_present && j < devices[i].len; j++)
-+				xe_pmu_sample(devices[i].instances + j);
-+		}
-+
-+		igt_drm_clients_sort(clients, client_cmp);
-+
-+		update_console_size(&con_w, &con_h);
-+		clrscr();
-+
-+		for (int i = 0; drivers[i]; i++) {
-+			for (int j = 0; devices[i].driver_present && j < devices[i].len; j++) {
-+				lines = xe_print_engines(devices[i].instances + j,
-+						lines, con_w, con_h);
-+			}
-+		}
-+
-+		if (!clients->num_clients) {
-+			const char *msg = " (No GPU clients yet. Start workload to see stats)";
-+
-+			printf(ANSI_HEADER "%-*s" ANSI_RESET "\n",
-+					(int)(con_w - strlen(msg) - 1), msg);
-+		}
-+	}
-+	igt_drm_clients_free(clients);
-+	eu_util_free();
-+
-+	return NULL;
-+}
-+
-+static void
-+thread_init_eu_utils(void)
-+{
-+	pthread_t eu_utils;
-+	/* Creating thread to display EU utilization */
-+	pthread_create(&eu_utils, NULL, show_eu_util, NULL);
-+}
-+
-+/**
-+ * SUBTEST: eu-busy-10-sec
-+ * Functionality: OpenCL kernel
-+ * Description:
-+ *      Run an openCL long rinning Kernel that returns output[i] = input[i] * input[i],
-+ */
-+static void
-+test_eu_busy(int fd, int num_gt, u32 duration_sec)
-+{
-+	struct user_execenv execenv = { 0 };
-+	struct thread_data *threads_data;
-+	struct drm_xe_engine_class_instance *hwe;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
-+	bool go = false;
-+	int ccs_mode, gt_fd, ccs_mode_set;
-+
-+	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		gt_fd = gt_sysfs_open(gt);
-+		if (igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0) {
-+			ccs_mode_set = ccs_mode;
-+		}
-+	}
-+
-+	igt_skip_on_f(ccs_mode_set <= 1, "Skipping test as ccs_mode not matching criteria :%d\n",
-+					  ccs_mode_set);
-+	thread_init_eu_utils();
-+
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	execenv.loop_kernel_duration = duration_sec;
-+	execenv.kernel = kernels->loop_kernel;
-+	execenv.kernel_size = kernels->loop_kernel_size;
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		xe_for_each_engine(fd, hwe) {
-+			igt_assert(hwe);
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+				++n_instances;
-+		}
-+	}
-+
-+	threads_data = calloc(n_instances, sizeof(*threads_data));
-+	igt_assert(threads_data);
-+
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->gt_id != gt ||
-+					hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+				continue;
-+
-+			threads_data[i].mutex = &mutex;
-+			threads_data[i].cond = &cond;
-+			threads_data[i].fd = fd;
-+			threads_data[i].eci = hwe;
-+			threads_data[i].go = &go;
-+			threads_data[i].execenv = &execenv;
-+			++n_threads;
-+			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-+					&threads_data[i]);
-+			++i;
-+			++iterations;
-+		}
-+
-+		pthread_mutex_lock(&mutex);
-+		go = true;
-+		pthread_cond_broadcast(&cond);
-+		pthread_mutex_unlock(&mutex);
-+
-+		for (int val = 0; val < i; ++val) {
-+			pthread_join(threads_data[val].thread, NULL);
-+		}
-+
-+		i = 0;
-+		n_threads = 0;
-+		iterations = 0;
-+		stop_top = true;
-+	}
-+	free(threads_data);
-+}
-+
- igt_main
- {
- 	int xe, num_gt;
-@@ -190,6 +942,10 @@ igt_main
- 	igt_subtest("compute-square")
- 		test_compute_square(xe);
- 
-+	/* test to check available EU utilisation for multi_ccs */
-+	igt_subtest("eu-busy-10-sec")
-+		test_eu_busy(xe, num_gt, 10 * LOOP_DURATION);
-+
- 	igt_fixture
- 		drm_close_driver(xe);
- 
-diff --git a/tests/meson.build b/tests/meson.build
-index 55bcf57ec..3340e137d 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -404,6 +404,7 @@ extra_dependencies = {
- 	'sw_sync': [ libatomic ],
- 	'xe_fault_injection': [ lib_igt_xe_oa ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-+	'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math ],
- }
- 
- test_executables = []
--- 
-2.43.0
-
+> ---
+>  lib/intel_compute.c                |   9 +-
+>  lib/intel_compute_square_kernels.c | 147 +++++++++++++++--------------
+>  opencl/loop_count.cl               |  15 +++
+>  3 files changed, 99 insertions(+), 72 deletions(-)
+>  create mode 100644 opencl/loop_count.cl
+> 
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index bfb9024ba8..9f5fc1bc59 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -67,7 +67,7 @@
+>   */
+>  #define TGP_long_kernel_loop_count		10
+>  #define WMTP_long_kernel_loop_count		1000000
+> -#define XE2_THREADGROUP_PREEMPT_XDIM		0x200000
+> +#define XE2_THREADGROUP_PREEMPT_XDIM		0x4000
+>  
+>  struct bo_dict_entry {
+>  	uint64_t addr;
+> @@ -2180,8 +2180,11 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+>  	/* Check that the long kernel has not completed yet */
+>  	igt_assert_neq(0, __xe_wait_ufence(fd, &execenv_long.bo_sync->sync, USER_FENCE_VALUE,
+>  					   execenv_long.exec_queue, &timeout_one_ns));
+> -	if (use_loop_kernel)
+> -		((int *)input_long)[0] = MAGIC_LOOP_STOP;
+> +	/*
+> +	 * For threadgroup preemption it breaks the loop. So rest shaders exit
+> +	 * immediately without reaching whole loop count.
+> +	 */
+> +	((int *)input_long)[0] = MAGIC_LOOP_STOP;
+>  
+>  	bo_execenv_sync(&execenv_long);
+>  
+> diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
+> index f67c048583..5bf9a1feb5 100644
+> --- a/lib/intel_compute_square_kernels.c
+> +++ b/lib/intel_compute_square_kernels.c
+> @@ -3806,44 +3806,47 @@ static const unsigned char xe2lpg_kernel_sip_bin[] = {
+>  };
+>  
+>  /*
+> - * Opencl code for below binary is provided in below path:
+> - *	opencl/compute_increment_kernel.cl
+> + * Opencl code is in opencl/loop_count.cl
+> + *
+> + * To work properly it requires to use uncached reads, so ocloc has to
+> + * be called with: -options " -igc_opts 'LscLoadCacheControlOverride=1'" arg
+>   */
+> -static const unsigned char xe2lpg_kernel_inc_bin[] = {
+> -	0x65, 0x00, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f, 0x04, 0x00, 0x00, 0x02,
+> -	0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f,
+> -	0x04, 0x7f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80,
+> -	0x00, 0x00, 0x0c, 0x05, 0x8f, 0x7f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6,
+> -	0x01, 0x00, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
+> -	0x04, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+> +static const unsigned char xe2lpg_kernel_count_bin[] = {
+> +	0x01, 0xa1, 0x8c, 0x3c, 0x00, 0x00, 0x10, 0x00, 0x65, 0xa0, 0x00, 0x80,
+> +	0x20, 0x82, 0x05, 0x7f, 0x04, 0x00, 0x00, 0x02, 0xc0, 0xff, 0xff, 0xff,
+> +	0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f, 0x04, 0x7f, 0x00, 0x02,
+> +	0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80, 0x00, 0x00, 0x0c, 0x05,
+> +	0x8f, 0x7f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6, 0x61, 0x80, 0x10, 0x2c,
+> +	0x02, 0x00, 0x10, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+>  	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x41, 0x22, 0x03, 0x80,
+> -	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x00, 0x00, 0x00,
+> -	0x53, 0x80, 0x00, 0x80, 0x60, 0x06, 0x05, 0x02, 0x54, 0x05, 0x00, 0x06,
+> -	0x14, 0x00, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
+> -	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x52, 0x1a, 0x14, 0x00,
+> -	0x60, 0x06, 0x04, 0x06, 0x04, 0x02, 0x0e, 0x01, 0x04, 0x01, 0x04, 0x04,
+> +	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x02, 0x00, 0x00,
+> +	0x53, 0x81, 0x00, 0x80, 0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06,
+> +	0x14, 0x02, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
+> +	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x40, 0x1a, 0x14, 0x00,
+> +	0x60, 0x06, 0x05, 0x06, 0x04, 0x03, 0x00, 0x01, 0x04, 0x01, 0x10, 0x00,
+>  	0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> -	0xd0, 0x00, 0x00, 0x00, 0x61, 0x1a, 0x00, 0xb4, 0x0e, 0x06, 0x10, 0x00,
+> -	0x61, 0x00, 0x08, 0xb4, 0x10, 0x07, 0x10, 0x00, 0x69, 0x1a, 0x10, 0x00,
+> -	0x70, 0x86, 0x05, 0x12, 0x04, 0x0e, 0x20, 0x05, 0x02, 0x00, 0x02, 0x00,
+> -	0x69, 0x1a, 0x10, 0x02, 0x70, 0x86, 0x05, 0x14, 0x04, 0x10, 0x20, 0x05,
+> -	0x02, 0x00, 0x02, 0x00, 0x40, 0x1a, 0x00, 0x38, 0x08, 0x12, 0x30, 0x05,
+> -	0x40, 0x1a, 0x08, 0x38, 0x0a, 0x14, 0x30, 0x05, 0x31, 0x23, 0x17, 0x00,
+> -	0x00, 0x00, 0x14, 0x0c, 0x24, 0x08, 0x00, 0xfb, 0x00, 0x00, 0x00, 0x00,
+> -	0x61, 0x00, 0x84, 0xf4, 0x02, 0x00, 0x02, 0x00, 0x01, 0x00, 0x00, 0x00,
+> -	0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20, 0x08, 0x00, 0x00, 0x00,
+> -	0x40, 0x19, 0x00, 0x80, 0x60, 0x86, 0x15, 0x02, 0x14, 0x02, 0x00, 0x05,
+> -	0x01, 0x00, 0x01, 0x00, 0x40, 0x83, 0x20, 0x30, 0x0c, 0x0c, 0x80, 0x3f,
+> -	0x70, 0x19, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00, 0x14, 0x02, 0x00, 0x52,
+> -	0x44, 0x05, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84, 0x00, 0x40, 0x00, 0x00,
+> -	0x00, 0x00, 0x00, 0x00, 0xd8, 0xff, 0xff, 0xff, 0x31, 0x24, 0x16, 0x00,
+> -	0x00, 0x00, 0x00, 0x00, 0x24, 0x08, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00,
+> -	0x01, 0x00, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
+> -	0x10, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x28, 0x7f, 0x00, 0x10, 0x00,
+> -	0x31, 0x20, 0x02, 0x80, 0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30,
+> -	0x00, 0x00, 0x00, 0x00
+> +	0xf0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xf4, 0x03, 0x00, 0x02, 0x00,
+> +	0x61, 0x00, 0x84, 0xa4, 0x09, 0x05, 0x10, 0x00, 0x31, 0x24, 0x03, 0x80,
+> +	0x00, 0x00, 0x0c, 0x08, 0x0c, 0x09, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
+> +	0x70, 0x84, 0x94, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x08, 0x00, 0x16,
+> +	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x80, 0x84, 0x00, 0x40, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xa4,
+> +	0x0a, 0x05, 0x16, 0x00, 0x40, 0x00, 0x00, 0x80, 0x60, 0x86, 0x15, 0x03,
+> +	0x14, 0x03, 0x00, 0x05, 0x01, 0x00, 0x01, 0x00, 0x31, 0x45, 0x03, 0x80,
+> +	0x00, 0x00, 0x0c, 0x0b, 0x0c, 0x0a, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
+> +	0x61, 0xa3, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0e, 0x04, 0x0a, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02, 0xa0, 0x0a, 0x06, 0x10,
+> +	0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x00,
+> +	0xa0, 0x0a, 0x16, 0x0e, 0x14, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x10, 0x14, 0x0a, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x70, 0x1a, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00,
+> +	0x14, 0x03, 0x00, 0x52, 0x44, 0x05, 0x00, 0x00, 0x52, 0x85, 0xb8, 0x20,
+> +	0x0c, 0x0b, 0x04, 0x06, 0x31, 0x23, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x24, 0x0e, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84,
+> +	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0xff, 0xff, 0xff,
+> +	0x61, 0x00, 0x10, 0x28, 0x7f, 0x02, 0x10, 0x00, 0x31, 0x26, 0x02, 0x80,
+> +	0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00,
+>  };
+> -
+>  /*
+>   * Opencl code is in opencl/loop.cl
+>   *
+> @@ -6635,35 +6638,41 @@ static const unsigned char xe3lpg_kernel_sip_bin[] = {
+>  	0x20, 0x02, 0xb5, 0x00, 0x04, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+>  };
+>  
+> -static const unsigned char xe3lpg_kernel_inc_bin[] = {
+> -	0x65, 0xa0, 0x00, 0x80, 0x20, 0x82, 0x05, 0x1f, 0x04, 0x00, 0x00, 0x02,
+> -	0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x1f,
+> -	0x04, 0x1f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80,
+> -	0x00, 0x00, 0x0c, 0x05, 0x8f, 0x1f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6,
+> -	0x61, 0x80, 0x24, 0x2c, 0x02, 0x00, 0x10, 0x00, 0x66, 0x09, 0x00, 0x80,
+> -	0x20, 0x82, 0x01, 0x80, 0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40,
+> -	0x41, 0x22, 0x03, 0x80, 0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01,
+> -	0x14, 0x02, 0x00, 0x00, 0x53, 0x81, 0x00, 0x80, 0x60, 0x06, 0x05, 0x03,
+> -	0x54, 0x05, 0x00, 0x06, 0x14, 0x02, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80,
+> -	0x60, 0x86, 0x01, 0x00, 0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00,
+> -	0x52, 0x1a, 0x14, 0x00, 0x60, 0x06, 0x04, 0x06, 0x04, 0x03, 0x0e, 0x01,
+> -	0x04, 0x01, 0x04, 0x04, 0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00,
+> -	0x00, 0x00, 0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x61, 0x1a, 0x00, 0xb4,
+> -	0x0f, 0x06, 0x10, 0x00, 0x61, 0x00, 0x08, 0xb4, 0x11, 0x07, 0x10, 0x00,
+> -	0x69, 0x1a, 0x10, 0x00, 0x70, 0x86, 0x05, 0x13, 0x04, 0x0f, 0x20, 0x05,
+> -	0x02, 0x00, 0x02, 0x00, 0x69, 0x1a, 0x10, 0x02, 0x70, 0x86, 0x05, 0x15,
+> -	0x04, 0x11, 0x20, 0x05, 0x02, 0x00, 0x02, 0x00, 0x40, 0x1a, 0x00, 0x38,
+> -	0x08, 0x13, 0x30, 0x05, 0x40, 0x1a, 0x08, 0x38, 0x0a, 0x15, 0x30, 0x05,
+> -	0x31, 0x23, 0x17, 0x00, 0x00, 0x00, 0x14, 0x0c, 0x24, 0x08, 0x00, 0xfb,
+> -	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xf4, 0x03, 0x00, 0x02, 0x00,
+> -	0x40, 0x19, 0x00, 0x80, 0x60, 0x86, 0x15, 0x03, 0x14, 0x03, 0x00, 0x05,
+> -	0x01, 0x00, 0x01, 0x00, 0x40, 0x83, 0x20, 0x30, 0x0c, 0x0c, 0x80, 0x3f,
+> -	0x70, 0x19, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00, 0x14, 0x03, 0x00, 0x52,
+> -	0x44, 0x05, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84, 0x00, 0x40, 0x00, 0x00,
+> -	0x00, 0x00, 0x00, 0x00, 0xd8, 0xff, 0xff, 0xff, 0x31, 0x24, 0x16, 0x00,
+> -	0x00, 0x00, 0x00, 0x00, 0x24, 0x08, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00,
+> -	0x61, 0x00, 0x10, 0x28, 0x0e, 0x02, 0x10, 0x00, 0x31, 0x20, 0x02, 0x80,
+> -	0x04, 0x00, 0x00, 0x00, 0x0c, 0x0e, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00
+> +static const unsigned char xe3lpg_kernel_count_bin[] = {
+> +	0x01, 0xa1, 0x8c, 0x3c, 0x00, 0x00, 0x10, 0x00, 0x65, 0xa0, 0x00, 0x80,
+> +	0x20, 0x82, 0x05, 0x1f, 0x04, 0x00, 0x00, 0x02, 0xc0, 0xff, 0xff, 0xff,
+> +	0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x1f, 0x04, 0x1f, 0x00, 0x02,
+> +	0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80, 0x00, 0x00, 0x0c, 0x05,
+> +	0x8f, 0x1f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6, 0x61, 0x80, 0x10, 0x2c,
+> +	0x02, 0x00, 0x10, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+> +	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x41, 0x22, 0x03, 0x80,
+> +	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x02, 0x00, 0x00,
+> +	0x53, 0x81, 0x00, 0x80, 0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06,
+> +	0x14, 0x02, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
+> +	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x40, 0x1a, 0x14, 0x00,
+> +	0x60, 0x06, 0x05, 0x06, 0x04, 0x03, 0x00, 0x01, 0x04, 0x01, 0x10, 0x00,
+> +	0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0xf0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xf4, 0x03, 0x00, 0x02, 0x00,
+> +	0x61, 0x00, 0x84, 0xa4, 0x09, 0x05, 0x10, 0x00, 0x31, 0x24, 0x03, 0x80,
+> +	0x00, 0x00, 0x0c, 0x08, 0x0c, 0x09, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
+> +	0x70, 0x84, 0x94, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x08, 0x00, 0x16,
+> +	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x80, 0x84, 0x00, 0x40, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xa4,
+> +	0x0a, 0x05, 0x16, 0x00, 0x40, 0x00, 0x00, 0x80, 0x60, 0x86, 0x15, 0x03,
+> +	0x14, 0x03, 0x00, 0x05, 0x01, 0x00, 0x01, 0x00, 0x31, 0x45, 0x03, 0x80,
+> +	0x00, 0x00, 0x0c, 0x0b, 0x0c, 0x0a, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
+> +	0x61, 0xa3, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0e, 0x04, 0x0a, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02, 0xa0, 0x0a, 0x06, 0x10,
+> +	0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x00,
+> +	0xa0, 0x0a, 0x16, 0x0e, 0x14, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x10, 0x14, 0x0a, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x70, 0x1a, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00,
+> +	0x14, 0x03, 0x00, 0x52, 0x44, 0x05, 0x00, 0x00, 0x52, 0x85, 0xb8, 0x20,
+> +	0x0c, 0x0b, 0x04, 0x06, 0x31, 0x23, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x24, 0x0e, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84,
+> +	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0xff, 0xff, 0xff,
+> +	0x61, 0x00, 0x10, 0x28, 0x12, 0x02, 0x10, 0x00, 0x31, 0x26, 0x02, 0x80,
+> +	0x04, 0x00, 0x00, 0x00, 0x0c, 0x12, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00,
+>  };
+>  
+>  const struct intel_compute_kernels intel_compute_square_kernels[] = {
+> @@ -6696,8 +6705,8 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
+>  		.ip_ver = IP_VER(20, 01),
+>  		.size = sizeof(xe2lpg_kernel_square_bin),
+>  		.kernel = xe2lpg_kernel_square_bin,
+> -		.long_kernel = xe2lpg_kernel_inc_bin,
+> -		.long_kernel_size = sizeof(xe2lpg_kernel_inc_bin),
+> +		.long_kernel = xe2lpg_kernel_count_bin,
+> +		.long_kernel_size = sizeof(xe2lpg_kernel_count_bin),
+>  		.sip_kernel = xe2lpg_kernel_sip_bin,
+>  		.sip_kernel_size = sizeof(xe2lpg_kernel_sip_bin),
+>  		.loop_kernel = xe2lpg_kernel_loop_bin,
+> @@ -6707,8 +6716,8 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
+>  		.ip_ver = IP_VER(20, 04),
+>  		.size = sizeof(xe2lpg_kernel_square_bin),
+>  		.kernel = xe2lpg_kernel_square_bin,
+> -		.long_kernel = xe2lpg_kernel_inc_bin,
+> -		.long_kernel_size = sizeof(xe2lpg_kernel_inc_bin),
+> +		.long_kernel = xe2lpg_kernel_count_bin,
+> +		.long_kernel_size = sizeof(xe2lpg_kernel_count_bin),
+>  		.sip_kernel = xe2lpg_kernel_sip_bin,
+>  		.sip_kernel_size = sizeof(xe2lpg_kernel_sip_bin),
+>  		.loop_kernel = xe2lpg_kernel_loop_bin,
+> @@ -6718,8 +6727,8 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
+>  		.ip_ver = IP_VER(30, 00),
+>  		.size = sizeof(xe3lpg_kernel_square_bin),
+>  		.kernel = xe3lpg_kernel_square_bin,
+> -		.long_kernel = xe3lpg_kernel_inc_bin,
+> -		.long_kernel_size = sizeof(xe3lpg_kernel_inc_bin),
+> +		.long_kernel = xe3lpg_kernel_count_bin,
+> +		.long_kernel_size = sizeof(xe3lpg_kernel_count_bin),
+>  		.sip_kernel = xe3lpg_kernel_sip_bin,
+>  		.sip_kernel_size = sizeof(xe3lpg_kernel_sip_bin),
+>  		.loop_kernel = xe3lpg_kernel_loop_bin,
+> diff --git a/opencl/loop_count.cl b/opencl/loop_count.cl
+> new file mode 100644
+> index 0000000000..c5856ab7a8
+> --- /dev/null
+> +++ b/opencl/loop_count.cl
+> @@ -0,0 +1,15 @@
+> +/* Must be same as MAGIC_LOOP_STOP in lib/intel_compute.c */
+> +#define MAGIC_LOOP_STOP 0x12341234
+> +
+> +__kernel void loop(volatile __global int *input,
+> +		   __global int *output,
+> +		   unsigned int count)
+> +{
+> +	int i = get_global_id(0);
+> +
+> +	for (int c = 0; c < count; c++) {
+> +		if (input[0] == MAGIC_LOOP_STOP)
+> +			break;
+> +		output[0] = output[0] + i;
+> +	}
+> +}
+> -- 
+> 2.43.0
+> 
