@@ -4,183 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73D84C61DB2
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 09:43:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35EC5C61DB2
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 10:52:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1879110E93A;
-	Fri, 13 Jun 2025 09:43:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 43C2510E988;
+	Fri, 13 Jun 2025 10:52:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q9SriPqd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jd29bCl3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D9B6B10E93A
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jun 2025 09:43:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9656910E988
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jun 2025 10:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749807803; x=1781343803;
- h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=KdjK/FdFaiC01by06x2N4VLczQJgUIol8z3NGcoUvxo=;
- b=Q9SriPqdPy+Zw2lZLZ4GcNRHZQE/oKZYkdnoPUI1IMkjfx50QezCBqcX
- /+g4+M6M9dKJvndrZLa2qNatq9/t7Ft97YGJ+kfk+2jGzv7NVjjZvaRTr
- yKDeGJyoecMXYM3zRbSzWl+Lcuakbs3mnNgtZbWAxWvH17IyOIWBQtkUP
- hyQyXgUdm8WP9zeTqP7pjy5oJBxArWlbita7FtwPCgXfvwwC+NGECd/cM
- TWSqtrhsk1OwFJEjkUSweB6Kb+icOtZwOPXuZfPF+mklT9bLR5EckLr2B
- 7izwER8gypIe2WvVDwFrimfheWTCK3/+sajFUspynB264K9lfUVwEhjnY Q==;
-X-CSE-ConnectionGUID: hxYeQgN0T0WTQ23bkDIFuQ==
-X-CSE-MsgGUID: SI/jbgdeQVG6rJKezbQH2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="74552877"
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="74552877"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2025 02:43:23 -0700
-X-CSE-ConnectionGUID: VbUmjGBnTRGn3yb6imPV0Q==
-X-CSE-MsgGUID: t/CfjzV1SJCe7fK4/h8VVg==
+ t=1749811925; x=1781347925;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7Tt9C5+a/mZ3n9mwTqkjfWvJpx8kcW9HEX+gwi4RsRQ=;
+ b=Jd29bCl3wW/rfSQOuujst2bI46UgrFycV5uK1PL39lgqitnFSWp3ft3T
+ SaKHQAirw9OQ262UG/E1UodW2UCu7YMgP9fZZtkCiEnCpkyRzakW8Kdp2
+ sq4uUeMtfWEk3W2mmh9Ed6OviJkZVyiYaSAUOO7qja9gUkYnVyFBMly5Z
+ PzGGaiPnqdaLYmQz4G2soSNIeOpONJjXV1RsyEbFFuTc3FU4DRECwNGxL
+ p6YaT81kzo8w3vxLEjgUfL6HbcvjQ/GdEdNAJlVcmCVdD3PxBhyZ360Jm
+ aw7dMcxfnexozPMCQMjwptTpzIObPxNRlqZV5kBX9s3u+TNskm9YdMJ5a A==;
+X-CSE-ConnectionGUID: yG/QoGkZRJi7nQ+GiTlcvQ==
+X-CSE-MsgGUID: pedlf4SIT+6WhGu7hKcWcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="69467206"
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="69467206"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2025 03:52:04 -0700
+X-CSE-ConnectionGUID: UFHrvqjlTf+Qq4oMMM4yvw==
+X-CSE-MsgGUID: Ui+b1PfESSilviwNvsk5WQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="148666951"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2025 02:43:22 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 13 Jun 2025 02:43:21 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Fri, 13 Jun 2025 02:43:21 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.58)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 13 Jun 2025 02:43:20 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fmGkwn2xVwyL+0YbkMGML26+xLeJHhzC78Qlvh/H/euqKCcwnmJ93mHce+9zFc+WAd7tEnbAsch/G5n9fReGFGErdEzCUTfyqqdBhpkPSrpn31vsYfsmSnFlbLLZS+ViUnuDMaGWMPFwawgiIFtY7PwhLUdagcvxtVdeD9yF4VOfMmlahmlnfp7Yv+YXP55d3SGYif7SN4X7RfqCB+jLPjX3HJJVWnslMrzWHnbVG+lWDslvFk60aN9iKHYHCOJnt/EkE8SpqYIFfJtiJAOjlsoR7vqBLkG4qQ15yjGScf1hMpfSUuJggpFpFzBV76RDUtE5TID3X5T0FkvxAA7G9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OsOsNMlX71hxRhBfG+Ci8u5qs/Os8EsmnDSoeRmv/SM=;
- b=httSkkZX4FAZnsd4m9sZhEdRqE+TgnSR7xuj0SXgwOgzaBEMWmoi5nCYLBDE8s/Cqq5qwtu2Ftwv7earASJG5kafGLO3tfoG/PCQpUjOIqFk/sAySXilezUJCPSjD8ch22kyvpEHbBAoffMi/Y578pTGjip2jmh385Hh4ekxSPckQ4lgJejAoLlKnOaW2ZWWM+1NqektejbMpnEhllVUp62cCC+uAuqXQc4Nt/jFdgzmy4XGEwrElQUdQNSZ332loOzCukq5/qOTuzD/MpRcNrgOHFnIdjSmBWLuD2vG2OBmzMMURR85n88OTVn1zEwuV63fV5qy+wgZ+1O38yUrVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA0PR11MB7838.namprd11.prod.outlook.com (2603:10b6:208:402::12)
- by DM4PR11MB8131.namprd11.prod.outlook.com (2603:10b6:8:190::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Fri, 13 Jun
- 2025 09:43:18 +0000
-Received: from IA0PR11MB7838.namprd11.prod.outlook.com
- ([fe80::62fc:d6dc:d0d2:bc4]) by IA0PR11MB7838.namprd11.prod.outlook.com
- ([fe80::62fc:d6dc:d0d2:bc4%4]) with mapi id 15.20.8813.033; Fri, 13 Jun 2025
- 09:43:18 +0000
-Date: Fri, 13 Jun 2025 11:43:06 +0200
-From: Francois Dugast <francois.dugast@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t] lib/intel_compute: change shader and logic for
- threadgroup preemption
-Message-ID: <aEvyqmW_tVdOSdXR@fdugast-desk>
-References: <20250611054628.678665-2-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250611054628.678665-2-zbigniew.kempczynski@intel.com>
-Organization: Intel Corporation
-X-ClientProxiedBy: DUZPR01CA0292.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b7::14) To DS7PR11MB7836.namprd11.prod.outlook.com
- (2603:10b6:8:e3::10)
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="178772173"
+Received: from mstancu-mobl1.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.118.0])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2025 03:52:01 -0700
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ marcin.bernatowicz@intel.com, kamil.konieczny@linux.intel.com,
+ katarzyna.piecielska@intel.com, zbigniew.kempczynski@intel.com,
+ ewelina.musial@intel.com
+Subject: [PATCH v2 i-g-t 0/6] Replace intel_sysfs_debugfs
+Date: Fri, 13 Jun 2025 12:51:39 +0200
+Message-ID: <20250613105146.106581-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB7838:EE_|DM4PR11MB8131:EE_
-X-MS-Office365-Filtering-Correlation-Id: f7e70add-2b41-4567-15c4-08ddaa5eb9d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RGpGallvdi9MWmUzMDNNZjlDZWdUSEgvZnpUTktsS29IaXRIZ3JSTlZVWEF1?=
- =?utf-8?B?ZmNYbmtKajQ4QldCM0xTa01CbW5lenRPcXZjNTkwa0JwbW5NRHh6T2xIWG1h?=
- =?utf-8?B?d042QnBNWThWaUpYdTdBYnJ3WU1ic09BNVpscEhVZk1FRWdHR2k3Z0FhNlJ3?=
- =?utf-8?B?c1cwZm9QalBnV2RvSTZNeGVJQzhuV0JKMWdIbEVwV1V4SThiUi9WSVRCY016?=
- =?utf-8?B?ZXA3d0oweUJ3TFNlTjZTMXNPNS85Q0t4YU5weU0zbFRWajFqQWZjZGRZMXV6?=
- =?utf-8?B?V2RoQnVoZlRhYTc4aHpJZ3lyem9oNnRySFliSWhneDdrUkJmZmd2NmFKMTZl?=
- =?utf-8?B?bUttSTlPK1NSRGpIa3dNblJyN3E4QmJKOWwyRjRiSGZ4aUZiUzRKdkx0UnNX?=
- =?utf-8?B?SnRPVE1iYVVUeXNPR1laU1BWMEJHMXhFbWsyWG0zbkFwRmRnTld4THg3bnZn?=
- =?utf-8?B?T2pZa1V1TSt2K1Yxc0NUdVZTM216czB1WXJuQ1RhdVpmbWJ5NjJRQ21mNHNv?=
- =?utf-8?B?ZFJtamhZalpnbFJWeUFhUVR2Rk83b1JUTGFybURHT1VuZk9LSHdQNUtDZlFY?=
- =?utf-8?B?T09samFMWWdldVYrNGdiRUJuMERhVE4vUk1LdnBTUDNXZkhWMDRNSDBvejdO?=
- =?utf-8?B?Q05raENxOHNNV1dEaGFwbXZrYzhKZjZROHpTS2RjR0loTlZCWkFwQVdFNkNz?=
- =?utf-8?B?K2haOUpPYlFleWdLNUtSTFR6L0NldC9tOXUzUmZWZVBHRDRQdk5tMll1VDdp?=
- =?utf-8?B?R1lWOVNvQk1WRjV2Q1N5MU81M3orZEo4RFE3T1QvWCt6cVFNQnF4SkpCOWtY?=
- =?utf-8?B?aHRxc0tlajNGQmJhSCtOSUVIL1lqTjQvbzNJMEJaTGhxYTZJK0ZnN0NLTmMw?=
- =?utf-8?B?dk5zRGZoRHBqWldPNEJFMjlHelFjYmNpL2hOSkViS1p1TkloeUFNM1pPc0tz?=
- =?utf-8?B?STlOVG5ObXNTYmc5bUhUR1lGNWRma2E4WkNVTVVRSXp3OTBpTnRCRjl2R2FH?=
- =?utf-8?B?SVBCbE5hbEN0QWlrNkhYUUlDaE9JTDdjOGxISXB4UkFhYWVNaGVySGR6bnh1?=
- =?utf-8?B?ZlVjOU1rcStkZHpBcncxQjA3bVljdmNrbWxWYVZVUTVXQ0NDYWhjQ0REcnpv?=
- =?utf-8?B?WSswZXkzcHdNZnN6ZnQrN2VSYThXZzg0R0NlaUxzWnJ3amhIejFwNTllYmtm?=
- =?utf-8?B?U0srTkEyY0tjWnBkZjhST2dhcXUvK09DenVZQ1VvV3RTVUFYZk9TRks2cXdz?=
- =?utf-8?B?QjRCbHdQc2JIMFU0Q3FrVzkzSGdJS0p0LzNWdTJiR0FocC9aRmNTRzM2Rm1C?=
- =?utf-8?B?a3AzeklmSkhqZnJCK0F4akFoV1lnci81cUR2MUw0N1RQUEJhVDBsM25Ldk9u?=
- =?utf-8?B?VmVoNDN0OWw3T3lFOTd1WDBPN0o0OUVlVWFIOUxyQWlPY1dwa3F3SE5KQUhG?=
- =?utf-8?B?anB4WUNjQm1LcVo3eU5mangxT0Z2R3JrS1BPZjZBcXJNTEgwYlFUKzdZb05C?=
- =?utf-8?B?SlE4WnVwcld4cUtxZ0ZzZGI3WU1IWnczRjBQNm9NNHo3cUpyTFNGZCtPWFo1?=
- =?utf-8?B?UnF2dU1HYmdtTjJtcEN0a21XY0RSVjhvT0VBQVM0ZEpmaFdNaFpFUndLN2hs?=
- =?utf-8?B?Q211RUFzZkF3a1VMblJWNkFkWnArbnMvVUI1YS8vU1cxWmpQdzlEKzh2OWZw?=
- =?utf-8?B?TlFyRXdJR0V2c29OV2t6S00xUGova2VMd1J6ZzNENUFGMVNYV05XWkN6akhl?=
- =?utf-8?B?Y3FyMkF6MysyTElTb0g2dnIwK1JOTHVKZjZ0dTVnZ1JWNzYxYWVmK2NmenB6?=
- =?utf-8?B?bkUwSmQ1VVJLVWNvMDE3N2U5bmhtUVY3RXZFbjR5SUd5emFVY0Ezb2pXalhi?=
- =?utf-8?B?UWpNZHZwbTFzZ3IzMktFQXBPR3VqR2xUbm5JUXZ5UkpNWjNoMGFMdFpiWFd3?=
- =?utf-8?Q?1Q0tXQ/VHRQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA0PR11MB7838.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?azQ0TDJST1VVeEFUeW9QdVgybnAyQW5lOVJObS8xNGpybXZNSTNXdS9aWnVN?=
- =?utf-8?B?YURnTjBlY1ZNTDh5MUxWMnRWZ2Y0RVg5T0w4MU01aFRINDdLdStKeEk4RDAx?=
- =?utf-8?B?ZjhCNHcrUVlNS3VBaElDL2tmeEhyNUxScU9IMnFuUkZJYmFEYVYvS3hQb0pC?=
- =?utf-8?B?b2taQU5xRUl3cmNJYmZpTnNLdUhKcmJsUnlINk1uQmQ5dFUvZEcvUkRVYm9Q?=
- =?utf-8?B?MVhBMEdQY3N6ZjBKN0RhS2tnRmI4cjRSN3o1NzNsbWlhRlB5RTRXMXEzSDFK?=
- =?utf-8?B?dS84SkdnUTF3MVJSS2Zlc3RqRStWSkhFT0lLd05OM2dyOGNQbFdYQnZkVkZn?=
- =?utf-8?B?bHZneTN1eWh0aEpYQ0dkdFBRTlR1Q1pFMGdKSlZHYUxpQ041SXRiWXBzWHhj?=
- =?utf-8?B?Mk1waEk5VWJ1TWdVbjk2T0ZiL3lkNXFGTUF5REhoWXFZMWkrZ1VRbVlZV0M4?=
- =?utf-8?B?TVBtMlkvaGdQWG9ZNjF5Z0lxcFFTMno0dFp1eUdDZ245dTFobENJd1p0QTZy?=
- =?utf-8?B?ZDFEMHlGVzV4OHBGa205VzBTZlgraTNtVmpJa215K0EraUxZNWFDNEZ3QWdK?=
- =?utf-8?B?dHdsWlVqOHB4c2laZmlsTEhpWXdMYmtiSVIwZ3pkY3FhejN5aTluSnVIQ05X?=
- =?utf-8?B?QktMWlZnRnhRNkQ3U3d0VlFzZ1IrM2VpMGU1RUtibXkxU3lVUWxKZW9OMW1U?=
- =?utf-8?B?cllHT3RSWVA2RFN6RW1wWUYxOVAyZG55T1ZuM1gyVEFyMUUvNzZiTDdmbDdY?=
- =?utf-8?B?YjR6ajVnUEp6K1d1bnI5TkhYZjlzWVp1Qm5wWkcrT2JSbFFmMGtyZy9hdlRG?=
- =?utf-8?B?RzRTWEhEbDNENXJkNDJ3dDhHZWtQUldleEIyNkNWSWxIZDJVUW5FdkhQSms5?=
- =?utf-8?B?T1NXNkNHc21OT3ZaK1ZjdlVhSUlLUEc4SVQyTVlhV1MvTHhGeFpXNHAzNnVr?=
- =?utf-8?B?c1lNV0F5Qkl3RFF5Tk5sL0lOMkovQnBDMVlxRXhDb09KSkJrU3ppZVJhOGh1?=
- =?utf-8?B?Z2JTMk50K3U5UU16YmVGT0JHUEpCeU9RRW5udmx1R3B4VDYwazlnMllyQlU1?=
- =?utf-8?B?ZThsbWdHU3RhbmczbURiUEJFb2JreGFZT2Q0cFdqa3REMW54VFpLb3FyY1Vy?=
- =?utf-8?B?MThDWCtPazFVUHM5ZDB1MS94ZENNV2VLV3ZsNm9vMCsvaXFJV3lMNCtBZU5o?=
- =?utf-8?B?ckZFTy90cC9velhzSk0zTm8yVzlkdDA3VCtjREIwNy9NNldITm9aL0NDcWxD?=
- =?utf-8?B?dmNDNzJsZGZ2SVY4S2RvN1N5TjNQaDRUYXNoMkRJMGhIRmpNSnJBaDVoZnls?=
- =?utf-8?B?VEdKRWU3Z2dLU0VTRXBZUTZwVEJNZWhwVElJMURUR05KL3p3VFQ3SmwweVYr?=
- =?utf-8?B?VjVhR1lIa2JNUjRRRUJtMzNNTkJtTlViUDdaQ1h0NFFOVjdxRTNTQmZ6M0dT?=
- =?utf-8?B?ejJBZzlkZ2JzdkJmc3kwK2Z2d016WWxQMVlXQ000UDUrbjAwOVFyMlY5RGVU?=
- =?utf-8?B?cHU2NlFOZGpjNDF0eWwxeUFrQkxxOXdHc0VIU3Y2U2Z0R3Q3b1BNci9JZk1Q?=
- =?utf-8?B?Z3VwSmloQWtNdmVJK1ExbEtQTEY1RWtmdUVEUkJuVGI3SWdXc0Y1aWtjQjdU?=
- =?utf-8?B?ZnNsQkpVb0o5TXpPM29FblllVlAzU1hscXdiSTZGUSt3TTFqbmJjaXdrekl5?=
- =?utf-8?B?MW9QM1M0c0tlVUU1d3MzZWhHV0owZDVObFZzNTk1b3ZPSTdZSEk3ZmlGbDA4?=
- =?utf-8?B?L2Z3dTRIa05TTERnVkNPT0N5T3orQzVINkd6MFBIcEg5V0Q4YmgzNjByenBw?=
- =?utf-8?B?ODFKdTd3MDFaUXk4K2ZUeWVjNXFxbzRHTEtDc2VOb3Q0dnJaeVY2b0gvN0x2?=
- =?utf-8?B?TG1kRWxtTWJvQlB0SkFLam1VVWEyWVdJaDdKYlFUT1hKVmtIT2ZoWUpDcTFx?=
- =?utf-8?B?Z3RkUng1R0dsUDFPbWUxU29ZdmFWcE52QnF5cWx4WHhTcFlLeXFuRVM4dHlo?=
- =?utf-8?B?TG82QS9CRDNWMzM5amMrYytuTW1pcENjVldQQVZURUdjVlkrcDN3SVZGUFRP?=
- =?utf-8?B?eVdmRnBqZVZ4Y0ZUWFFmbWZjcWY2UjRSZ1lnc1pZWmd4NnMzRXJ3ZGVkdTEw?=
- =?utf-8?B?cDM2anZsZGtJb2VSNWxEeFMyVVlnU0I0OWJNZFVRZk5CQXNUdklhVi95ek4x?=
- =?utf-8?B?d3c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f7e70add-2b41-4567-15c4-08ddaa5eb9d3
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB7836.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 09:43:18.7957 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Mkxtixz2mRdQWHKwl7Dexz6Gw33h+Fbx/9Ms3HSmlw7uw+P5gC+t6UEE2TcUc3k2YaKvh6riOsunXdmJRMZCVx64xalah/xVlmdmXNmK2V0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB8131
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -196,271 +70,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jun 11, 2025 at 07:46:29AM +0200, Zbigniew Kempczyński wrote:
-> Threadgroup preemption happens on thread group dispatch boundary.
-> It is harder to control it comparing to WMTP. Simple loop with
-> n-iterations and relatively high dimensions allows to achieve that
-> but requires tweaking work dimension as each loop (single thread)
-> executes similar time.
-> 
-> Change then this "constant" time loop to one which allows to be
-> stopped by writing MAGIC number to buffer observed by the loop
-> conditional. Until threadgroup preemption occurs threads will execute
-> relatively long time allowing another short job (compute square)
-> to complete. When short job is done MAGIC write causes all threads
-> exit loop immediately. This strategy is more reliable and shortens
-> threadgroup preemption execution time.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
+This series:
+ - moves shared function to lib/igt_dir
+ - creates gpu agnostic tests
+   - core_debugfs
+   - core_debugfs_display_on_off
+   - core_sysfs
+ - creates the xe-specific test
+   - xe_debugfs (complementary to core_debugfs*)
+ - Updates testlists and scripts
+ - deletes tests/intel_sysfs_debugfs
 
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Cc: marcin.bernatowicz@intel.com
+Cc: kamil.konieczny@linux.intel.com
+Cc: katarzyna.piecielska@intel.com
+Cc: zbigniew.kempczynski@intel.com
+Cc: ewelina.musial@intel.com
 
-> ---
->  lib/intel_compute.c                |   9 +-
->  lib/intel_compute_square_kernels.c | 147 +++++++++++++++--------------
->  opencl/loop_count.cl               |  15 +++
->  3 files changed, 99 insertions(+), 72 deletions(-)
->  create mode 100644 opencl/loop_count.cl
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index bfb9024ba8..9f5fc1bc59 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -67,7 +67,7 @@
->   */
->  #define TGP_long_kernel_loop_count		10
->  #define WMTP_long_kernel_loop_count		1000000
-> -#define XE2_THREADGROUP_PREEMPT_XDIM		0x200000
-> +#define XE2_THREADGROUP_PREEMPT_XDIM		0x4000
->  
->  struct bo_dict_entry {
->  	uint64_t addr;
-> @@ -2180,8 +2180,11 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
->  	/* Check that the long kernel has not completed yet */
->  	igt_assert_neq(0, __xe_wait_ufence(fd, &execenv_long.bo_sync->sync, USER_FENCE_VALUE,
->  					   execenv_long.exec_queue, &timeout_one_ns));
-> -	if (use_loop_kernel)
-> -		((int *)input_long)[0] = MAGIC_LOOP_STOP;
-> +	/*
-> +	 * For threadgroup preemption it breaks the loop. So rest shaders exit
-> +	 * immediately without reaching whole loop count.
-> +	 */
-> +	((int *)input_long)[0] = MAGIC_LOOP_STOP;
->  
->  	bo_execenv_sync(&execenv_long);
->  
-> diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
-> index f67c048583..5bf9a1feb5 100644
-> --- a/lib/intel_compute_square_kernels.c
-> +++ b/lib/intel_compute_square_kernels.c
-> @@ -3806,44 +3806,47 @@ static const unsigned char xe2lpg_kernel_sip_bin[] = {
->  };
->  
->  /*
-> - * Opencl code for below binary is provided in below path:
-> - *	opencl/compute_increment_kernel.cl
-> + * Opencl code is in opencl/loop_count.cl
-> + *
-> + * To work properly it requires to use uncached reads, so ocloc has to
-> + * be called with: -options " -igc_opts 'LscLoadCacheControlOverride=1'" arg
->   */
-> -static const unsigned char xe2lpg_kernel_inc_bin[] = {
-> -	0x65, 0x00, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f, 0x04, 0x00, 0x00, 0x02,
-> -	0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f,
-> -	0x04, 0x7f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80,
-> -	0x00, 0x00, 0x0c, 0x05, 0x8f, 0x7f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6,
-> -	0x01, 0x00, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
-> -	0x04, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
-> +static const unsigned char xe2lpg_kernel_count_bin[] = {
-> +	0x01, 0xa1, 0x8c, 0x3c, 0x00, 0x00, 0x10, 0x00, 0x65, 0xa0, 0x00, 0x80,
-> +	0x20, 0x82, 0x05, 0x7f, 0x04, 0x00, 0x00, 0x02, 0xc0, 0xff, 0xff, 0xff,
-> +	0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x7f, 0x04, 0x7f, 0x00, 0x02,
-> +	0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80, 0x00, 0x00, 0x0c, 0x05,
-> +	0x8f, 0x7f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6, 0x61, 0x80, 0x10, 0x2c,
-> +	0x02, 0x00, 0x10, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
->  	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x41, 0x22, 0x03, 0x80,
-> -	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x00, 0x00, 0x00,
-> -	0x53, 0x80, 0x00, 0x80, 0x60, 0x06, 0x05, 0x02, 0x54, 0x05, 0x00, 0x06,
-> -	0x14, 0x00, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
-> -	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x52, 0x1a, 0x14, 0x00,
-> -	0x60, 0x06, 0x04, 0x06, 0x04, 0x02, 0x0e, 0x01, 0x04, 0x01, 0x04, 0x04,
-> +	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x02, 0x00, 0x00,
-> +	0x53, 0x81, 0x00, 0x80, 0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06,
-> +	0x14, 0x02, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
-> +	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x40, 0x1a, 0x14, 0x00,
-> +	0x60, 0x06, 0x05, 0x06, 0x04, 0x03, 0x00, 0x01, 0x04, 0x01, 0x10, 0x00,
->  	0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> -	0xd0, 0x00, 0x00, 0x00, 0x61, 0x1a, 0x00, 0xb4, 0x0e, 0x06, 0x10, 0x00,
-> -	0x61, 0x00, 0x08, 0xb4, 0x10, 0x07, 0x10, 0x00, 0x69, 0x1a, 0x10, 0x00,
-> -	0x70, 0x86, 0x05, 0x12, 0x04, 0x0e, 0x20, 0x05, 0x02, 0x00, 0x02, 0x00,
-> -	0x69, 0x1a, 0x10, 0x02, 0x70, 0x86, 0x05, 0x14, 0x04, 0x10, 0x20, 0x05,
-> -	0x02, 0x00, 0x02, 0x00, 0x40, 0x1a, 0x00, 0x38, 0x08, 0x12, 0x30, 0x05,
-> -	0x40, 0x1a, 0x08, 0x38, 0x0a, 0x14, 0x30, 0x05, 0x31, 0x23, 0x17, 0x00,
-> -	0x00, 0x00, 0x14, 0x0c, 0x24, 0x08, 0x00, 0xfb, 0x00, 0x00, 0x00, 0x00,
-> -	0x61, 0x00, 0x84, 0xf4, 0x02, 0x00, 0x02, 0x00, 0x01, 0x00, 0x00, 0x00,
-> -	0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20, 0x08, 0x00, 0x00, 0x00,
-> -	0x40, 0x19, 0x00, 0x80, 0x60, 0x86, 0x15, 0x02, 0x14, 0x02, 0x00, 0x05,
-> -	0x01, 0x00, 0x01, 0x00, 0x40, 0x83, 0x20, 0x30, 0x0c, 0x0c, 0x80, 0x3f,
-> -	0x70, 0x19, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00, 0x14, 0x02, 0x00, 0x52,
-> -	0x44, 0x05, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84, 0x00, 0x40, 0x00, 0x00,
-> -	0x00, 0x00, 0x00, 0x00, 0xd8, 0xff, 0xff, 0xff, 0x31, 0x24, 0x16, 0x00,
-> -	0x00, 0x00, 0x00, 0x00, 0x24, 0x08, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00,
-> -	0x01, 0x00, 0x00, 0x00, 0x00, 0x42, 0x01, 0x00, 0x00, 0x00, 0x00, 0x20,
-> -	0x10, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x28, 0x7f, 0x00, 0x10, 0x00,
-> -	0x31, 0x20, 0x02, 0x80, 0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30,
-> -	0x00, 0x00, 0x00, 0x00
-> +	0xf0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xf4, 0x03, 0x00, 0x02, 0x00,
-> +	0x61, 0x00, 0x84, 0xa4, 0x09, 0x05, 0x10, 0x00, 0x31, 0x24, 0x03, 0x80,
-> +	0x00, 0x00, 0x0c, 0x08, 0x0c, 0x09, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
-> +	0x70, 0x84, 0x94, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x08, 0x00, 0x16,
-> +	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x80, 0x84, 0x00, 0x40, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xa4,
-> +	0x0a, 0x05, 0x16, 0x00, 0x40, 0x00, 0x00, 0x80, 0x60, 0x86, 0x15, 0x03,
-> +	0x14, 0x03, 0x00, 0x05, 0x01, 0x00, 0x01, 0x00, 0x31, 0x45, 0x03, 0x80,
-> +	0x00, 0x00, 0x0c, 0x0b, 0x0c, 0x0a, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
-> +	0x61, 0xa3, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0e, 0x04, 0x0a, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02, 0xa0, 0x0a, 0x06, 0x10,
-> +	0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x00,
-> +	0xa0, 0x0a, 0x16, 0x0e, 0x14, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x10, 0x14, 0x0a, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x70, 0x1a, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00,
-> +	0x14, 0x03, 0x00, 0x52, 0x44, 0x05, 0x00, 0x00, 0x52, 0x85, 0xb8, 0x20,
-> +	0x0c, 0x0b, 0x04, 0x06, 0x31, 0x23, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x24, 0x0e, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84,
-> +	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0xff, 0xff, 0xff,
-> +	0x61, 0x00, 0x10, 0x28, 0x7f, 0x02, 0x10, 0x00, 0x31, 0x26, 0x02, 0x80,
-> +	0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00,
->  };
-> -
->  /*
->   * Opencl code is in opencl/loop.cl
->   *
-> @@ -6635,35 +6638,41 @@ static const unsigned char xe3lpg_kernel_sip_bin[] = {
->  	0x20, 0x02, 0xb5, 0x00, 0x04, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
->  };
->  
-> -static const unsigned char xe3lpg_kernel_inc_bin[] = {
-> -	0x65, 0xa0, 0x00, 0x80, 0x20, 0x82, 0x05, 0x1f, 0x04, 0x00, 0x00, 0x02,
-> -	0xc0, 0xff, 0xff, 0xff, 0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x1f,
-> -	0x04, 0x1f, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80,
-> -	0x00, 0x00, 0x0c, 0x05, 0x8f, 0x1f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6,
-> -	0x61, 0x80, 0x24, 0x2c, 0x02, 0x00, 0x10, 0x00, 0x66, 0x09, 0x00, 0x80,
-> -	0x20, 0x82, 0x01, 0x80, 0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40,
-> -	0x41, 0x22, 0x03, 0x80, 0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01,
-> -	0x14, 0x02, 0x00, 0x00, 0x53, 0x81, 0x00, 0x80, 0x60, 0x06, 0x05, 0x03,
-> -	0x54, 0x05, 0x00, 0x06, 0x14, 0x02, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80,
-> -	0x60, 0x86, 0x01, 0x00, 0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00,
-> -	0x52, 0x1a, 0x14, 0x00, 0x60, 0x06, 0x04, 0x06, 0x04, 0x03, 0x0e, 0x01,
-> -	0x04, 0x01, 0x04, 0x04, 0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00,
-> -	0x00, 0x00, 0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x61, 0x1a, 0x00, 0xb4,
-> -	0x0f, 0x06, 0x10, 0x00, 0x61, 0x00, 0x08, 0xb4, 0x11, 0x07, 0x10, 0x00,
-> -	0x69, 0x1a, 0x10, 0x00, 0x70, 0x86, 0x05, 0x13, 0x04, 0x0f, 0x20, 0x05,
-> -	0x02, 0x00, 0x02, 0x00, 0x69, 0x1a, 0x10, 0x02, 0x70, 0x86, 0x05, 0x15,
-> -	0x04, 0x11, 0x20, 0x05, 0x02, 0x00, 0x02, 0x00, 0x40, 0x1a, 0x00, 0x38,
-> -	0x08, 0x13, 0x30, 0x05, 0x40, 0x1a, 0x08, 0x38, 0x0a, 0x15, 0x30, 0x05,
-> -	0x31, 0x23, 0x17, 0x00, 0x00, 0x00, 0x14, 0x0c, 0x24, 0x08, 0x00, 0xfb,
-> -	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xf4, 0x03, 0x00, 0x02, 0x00,
-> -	0x40, 0x19, 0x00, 0x80, 0x60, 0x86, 0x15, 0x03, 0x14, 0x03, 0x00, 0x05,
-> -	0x01, 0x00, 0x01, 0x00, 0x40, 0x83, 0x20, 0x30, 0x0c, 0x0c, 0x80, 0x3f,
-> -	0x70, 0x19, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00, 0x14, 0x03, 0x00, 0x52,
-> -	0x44, 0x05, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84, 0x00, 0x40, 0x00, 0x00,
-> -	0x00, 0x00, 0x00, 0x00, 0xd8, 0xff, 0xff, 0xff, 0x31, 0x24, 0x16, 0x00,
-> -	0x00, 0x00, 0x00, 0x00, 0x24, 0x08, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00,
-> -	0x61, 0x00, 0x10, 0x28, 0x0e, 0x02, 0x10, 0x00, 0x31, 0x20, 0x02, 0x80,
-> -	0x04, 0x00, 0x00, 0x00, 0x0c, 0x0e, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00
-> +static const unsigned char xe3lpg_kernel_count_bin[] = {
-> +	0x01, 0xa1, 0x8c, 0x3c, 0x00, 0x00, 0x10, 0x00, 0x65, 0xa0, 0x00, 0x80,
-> +	0x20, 0x82, 0x05, 0x1f, 0x04, 0x00, 0x00, 0x02, 0xc0, 0xff, 0xff, 0xff,
-> +	0x40, 0x19, 0x00, 0x80, 0x20, 0x82, 0x05, 0x1f, 0x04, 0x1f, 0x00, 0x02,
-> +	0x00, 0x00, 0x00, 0x00, 0x31, 0x22, 0x03, 0x80, 0x00, 0x00, 0x0c, 0x05,
-> +	0x8f, 0x1f, 0x00, 0xfa, 0x03, 0x00, 0x70, 0xf6, 0x61, 0x80, 0x10, 0x2c,
-> +	0x02, 0x00, 0x10, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
-> +	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x41, 0x22, 0x03, 0x80,
-> +	0x60, 0x06, 0x01, 0x20, 0x54, 0x05, 0x00, 0x01, 0x14, 0x02, 0x00, 0x00,
-> +	0x53, 0x81, 0x00, 0x80, 0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06,
-> +	0x14, 0x02, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
-> +	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x40, 0x1a, 0x14, 0x00,
-> +	0x60, 0x06, 0x05, 0x06, 0x04, 0x03, 0x00, 0x01, 0x04, 0x01, 0x10, 0x00,
-> +	0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0xf0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xf4, 0x03, 0x00, 0x02, 0x00,
-> +	0x61, 0x00, 0x84, 0xa4, 0x09, 0x05, 0x10, 0x00, 0x31, 0x24, 0x03, 0x80,
-> +	0x00, 0x00, 0x0c, 0x08, 0x0c, 0x09, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
-> +	0x70, 0x84, 0x94, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x08, 0x00, 0x16,
-> +	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x80, 0x84, 0x00, 0x40, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0xa4,
-> +	0x0a, 0x05, 0x16, 0x00, 0x40, 0x00, 0x00, 0x80, 0x60, 0x86, 0x15, 0x03,
-> +	0x14, 0x03, 0x00, 0x05, 0x01, 0x00, 0x01, 0x00, 0x31, 0x45, 0x03, 0x80,
-> +	0x00, 0x00, 0x0c, 0x0b, 0x0c, 0x0a, 0x00, 0xfb, 0x00, 0x00, 0xa0, 0x00,
-> +	0x61, 0xa3, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0e, 0x04, 0x0a, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02, 0xa0, 0x0a, 0x06, 0x10,
-> +	0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x00,
-> +	0xa0, 0x0a, 0x16, 0x0e, 0x14, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x10, 0x14, 0x0a, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x70, 0x1a, 0x54, 0x80, 0x20, 0x02, 0x01, 0x00,
-> +	0x14, 0x03, 0x00, 0x52, 0x44, 0x05, 0x00, 0x00, 0x52, 0x85, 0xb8, 0x20,
-> +	0x0c, 0x0b, 0x04, 0x06, 0x31, 0x23, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x24, 0x0e, 0x08, 0xfb, 0x14, 0x0c, 0x00, 0x00, 0x20, 0x00, 0x40, 0x84,
-> +	0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0xff, 0xff, 0xff,
-> +	0x61, 0x00, 0x10, 0x28, 0x12, 0x02, 0x10, 0x00, 0x31, 0x26, 0x02, 0x80,
-> +	0x04, 0x00, 0x00, 0x00, 0x0c, 0x12, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00,
->  };
->  
->  const struct intel_compute_kernels intel_compute_square_kernels[] = {
-> @@ -6696,8 +6705,8 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
->  		.ip_ver = IP_VER(20, 01),
->  		.size = sizeof(xe2lpg_kernel_square_bin),
->  		.kernel = xe2lpg_kernel_square_bin,
-> -		.long_kernel = xe2lpg_kernel_inc_bin,
-> -		.long_kernel_size = sizeof(xe2lpg_kernel_inc_bin),
-> +		.long_kernel = xe2lpg_kernel_count_bin,
-> +		.long_kernel_size = sizeof(xe2lpg_kernel_count_bin),
->  		.sip_kernel = xe2lpg_kernel_sip_bin,
->  		.sip_kernel_size = sizeof(xe2lpg_kernel_sip_bin),
->  		.loop_kernel = xe2lpg_kernel_loop_bin,
-> @@ -6707,8 +6716,8 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
->  		.ip_ver = IP_VER(20, 04),
->  		.size = sizeof(xe2lpg_kernel_square_bin),
->  		.kernel = xe2lpg_kernel_square_bin,
-> -		.long_kernel = xe2lpg_kernel_inc_bin,
-> -		.long_kernel_size = sizeof(xe2lpg_kernel_inc_bin),
-> +		.long_kernel = xe2lpg_kernel_count_bin,
-> +		.long_kernel_size = sizeof(xe2lpg_kernel_count_bin),
->  		.sip_kernel = xe2lpg_kernel_sip_bin,
->  		.sip_kernel_size = sizeof(xe2lpg_kernel_sip_bin),
->  		.loop_kernel = xe2lpg_kernel_loop_bin,
-> @@ -6718,8 +6727,8 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
->  		.ip_ver = IP_VER(30, 00),
->  		.size = sizeof(xe3lpg_kernel_square_bin),
->  		.kernel = xe3lpg_kernel_square_bin,
-> -		.long_kernel = xe3lpg_kernel_inc_bin,
-> -		.long_kernel_size = sizeof(xe3lpg_kernel_inc_bin),
-> +		.long_kernel = xe3lpg_kernel_count_bin,
-> +		.long_kernel_size = sizeof(xe3lpg_kernel_count_bin),
->  		.sip_kernel = xe3lpg_kernel_sip_bin,
->  		.sip_kernel_size = sizeof(xe3lpg_kernel_sip_bin),
->  		.loop_kernel = xe3lpg_kernel_loop_bin,
-> diff --git a/opencl/loop_count.cl b/opencl/loop_count.cl
-> new file mode 100644
-> index 0000000000..c5856ab7a8
-> --- /dev/null
-> +++ b/opencl/loop_count.cl
-> @@ -0,0 +1,15 @@
-> +/* Must be same as MAGIC_LOOP_STOP in lib/intel_compute.c */
-> +#define MAGIC_LOOP_STOP 0x12341234
-> +
-> +__kernel void loop(volatile __global int *input,
-> +		   __global int *output,
-> +		   unsigned int count)
-> +{
-> +	int i = get_global_id(0);
-> +
-> +	for (int c = 0; c < count; c++) {
-> +		if (input[0] == MAGIC_LOOP_STOP)
-> +			break;
-> +		output[0] = output[0] + i;
-> +	}
-> +}
-> -- 
-> 2.43.0
-> 
+Peter Senna Tschudin (6):
+  lib/igt_dir: Directory processing and flexible file handling
+  tests: Add core_debugfs
+  tests: Add core_debugfs_display_on_off
+  tests: Add core_sysfs
+  tests: Add xe_debugfs
+  tests/intel: Remove intel_sysfs_debugfs
+
+ docs/code_coverage.md                    |  18 +-
+ lib/igt_dir.c                            | 260 ++++++++++++++
+ lib/igt_dir.h                            |  61 ++++
+ lib/meson.build                          |   1 +
+ scripts/code_cov_selftest.sh             |   2 +-
+ tests/core_debugfs.c                     |  54 +++
+ tests/core_debugfs_display_on_off.c      | 171 +++++++++
+ tests/core_sysfs.c                       |  58 +++
+ tests/intel-ci/fast-feedback.testlist    |   4 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   8 +-
+ tests/intel/intel_sysfs_debugfs.c        | 430 -----------------------
+ tests/intel/xe_debugfs.c                 | 208 +++++++++++
+ tests/intel/xe_test_config.json          |   2 +-
+ tests/meson.build                        |   5 +-
+ 14 files changed, 834 insertions(+), 448 deletions(-)
+ create mode 100644 lib/igt_dir.c
+ create mode 100644 lib/igt_dir.h
+ create mode 100644 tests/core_debugfs.c
+ create mode 100644 tests/core_debugfs_display_on_off.c
+ create mode 100644 tests/core_sysfs.c
+ delete mode 100644 tests/intel/intel_sysfs_debugfs.c
+ create mode 100644 tests/intel/xe_debugfs.c
+
+-- 
+2.43.0
+
