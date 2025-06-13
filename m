@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A3D2C71136
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 00:20:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C076C71136
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 00:20:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF4EF10E004;
-	Fri, 13 Jun 2025 00:20:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IX0GMwAq";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F165D10E004
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jun 2025 00:20:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749774043; x=1781310043;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=HsYq2SSsH9tDCZpbNjuND7GHGZ8KfAm0atsW/dkpCCU=;
- b=IX0GMwAqhzlIstnO3W/pjqBGQbH1pQt4OE3ZV9iopbZD5UfLvz/deLUi
- HHALWECIRlVeq+aqVa1vruedsQg38yaXLaRiLYxGmh95F/vuR2R27qfZW
- hFAYFsYmMShNQ0+N64ihJw2MUuAhN465GlcOYT43sjIqRlwBDz/M2COMN
- 4Q7oisR1YNCLEZpOcP4N5A7LenwDskJ/Khz8qOp+pTmZ9myqK3YC9/SBF
- NKW2RvbQpkW97Om6wfC1yIBczfUjjO5OEwrch/YPkQzRX2lEaql++7yuB
- O9UkmDZo8OuurmMrtwdKKizitSXvrhX6nrbT2SrAvr/n+rAMt23O93iZ4 w==;
-X-CSE-ConnectionGUID: dLk9XztgStaBiDZCVPHLTw==
-X-CSE-MsgGUID: DiGjG1jaQZK9Yqvgs56RRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51087966"
-X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; d="scan'208";a="51087966"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2025 17:20:42 -0700
-X-CSE-ConnectionGUID: 2b6c4dkNStOO394EaCc41Q==
-X-CSE-MsgGUID: lkojevwNT6uH6X53jtq56A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; d="scan'208";a="152655274"
-Received: from osgc-linux-buildserver.sh.intel.com ([10.112.232.103])
- by orviesa004.jf.intel.com with ESMTP; 12 Jun 2025 17:20:40 -0700
-From: Shuicheng Lin <shuicheng.lin@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH v4] tests/intel/xe_exec_compute_mode: Fix assertion of batch
- buffer size
-Date: Fri, 13 Jun 2025 00:19:43 +0000
-Message-Id: <20250613001943.3704187-1-shuicheng.lin@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id C82B410E1E2;
+	Fri, 13 Jun 2025 00:20:50 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED5B010E1E2;
+ Fri, 13 Jun 2025 00:20:49 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4649517702842158606=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel-ci=3A_Blockli?=
+ =?utf-8?q?st_unsupported_Xe_scaling_tests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 13 Jun 2025 00:20:49 -0000
+Message-ID: <174977404996.74490.2371918969434235420@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250612201734.3280725-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20250612201734.3280725-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,30 +37,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The batch buffer pointer is data[EXEC_DATA] not data. Correct it in the assertion.
+--===============4649517702842158606==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
----
- tests/intel/xe_exec_compute_mode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index 8fba9daef..f321e1d76 100644
---- a/tests/intel/xe_exec_compute_mode.c
-+++ b/tests/intel/xe_exec_compute_mode.c
-@@ -393,7 +393,7 @@ static void non_block(int fd, int expect)
- 	data[EXEC_DATA].batch[b++] = sdi_addr >> 32;
- 	data[EXEC_DATA].batch[b++] = value;
- 	data[EXEC_DATA].batch[b++] = MI_BATCH_BUFFER_END;
--	igt_assert(b <= ARRAY_SIZE(data->batch));
-+	igt_assert(b <= ARRAY_SIZE(data[EXEC_DATA].batch));
- 
- 	sync[0].addr = addr + (char *)&data[EXEC_DATA].exec_sync - (char *)data;
- 	exec.num_syncs = 0;
--- 
-2.25.1
+Series: tests/intel-ci: Blocklist unsupported Xe scaling tests
+URL   : https://patchwork.freedesktop.org/series/150185/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8409 -> IGTPW_13286
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13286/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_13286 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-tgl-1115g4:      [PASS][1] -> [FAIL][2] ([i915#13930])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8409/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13286/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+
+  
+  [i915#13930]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13930
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8409 -> IGTPW_13286
+  * Linux: CI_DRM_16694 -> CI_DRM_16695
+
+  CI-20190529: 20190529
+  CI_DRM_16694: aca8df1835568921d5f108fe9fd16b1d282a74b2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16695: 1eb0e9ebd86a603c0d83e641c5e543606d175bc6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13286: ec3f79958262789d5578a29070cf6bda86cba803 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8409: 47d092f112d138977837666b161c97032c3446cd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13286/index.html
+
+--===============4649517702842158606==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci: Blocklist unsupported Xe scaling tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150185/">https://patchwork.freedesktop.org/series/150185/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13286/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13286/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8409 -&gt; IGTPW_13286</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13286/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13286 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_hdmi_inject@inject-audio:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8409/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13286/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13930">i915#13930</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8409 -&gt; IGTPW_13286</li>
+<li>Linux: CI_DRM_16694 -&gt; CI_DRM_16695</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16694: aca8df1835568921d5f108fe9fd16b1d282a74b2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16695: 1eb0e9ebd86a603c0d83e641c5e543606d175bc6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13286: ec3f79958262789d5578a29070cf6bda86cba803 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8409: 47d092f112d138977837666b161c97032c3446cd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4649517702842158606==--
