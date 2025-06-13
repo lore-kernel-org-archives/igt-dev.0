@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E563C71135
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 10:52:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A21BEC71148
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Jun 2025 10:52:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5FDD710E98F;
-	Fri, 13 Jun 2025 10:52:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5430B10E999;
+	Fri, 13 Jun 2025 10:52:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gzM37/8a";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VFJ+odhx";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9226C10E98F
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jun 2025 10:52:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AD6E10E997
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jun 2025 10:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1749811927; x=1781347927;
+ t=1749811934; x=1781347934;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Ru6/UASDXEdnC+t+vAVAVQJGaaEocsxb8XSKqOXWJYg=;
- b=gzM37/8a7xdydL7nW1uecRevZHnoMp/zRg/1aXPlLi7abkpUzlNr7rzr
- G6jrchaqFh4bAHdlsnbdcIMPzZbV9F28JMeC0vuF515DdgN0D5z2CBN8z
- wq/cJwMXscx6zWULyph7sVGH+4TfJZvpUUHGUPdRxMMukf5JxosntAE9M
- VA5aGXR2T27vYuzHKrN4HILmb5RTm/gWFLfFwKziDh9m7UQd2U1Dec1Bz
- EOhu/VIgXMFg63Ebi7Agrvbj7gW6nS64GQPQA5vzwc6aM7jzm0UtIr3/k
- 5JkHAS1UT+sIJG4fvou+tIILXXjt/4tYBjw3WjWrDlktidag8aPdonVSn g==;
-X-CSE-ConnectionGUID: ShZMHSFLRwC/rimwRRnDvg==
-X-CSE-MsgGUID: oaCvzvAOS+uEbzF3RKg/rw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="69467209"
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="69467209"
+ bh=0BGWfrG8yG69c9HdO1HJhz1Wb0V5T6BZapUM6jaXozI=;
+ b=VFJ+odhxKaIcgLjTz5i9iiIqOwwhMLNgCZeRyLMjk6mMBygpbnhgkucz
+ BNDNSpTG17PLBml3KDWfTaQbdI9F+cCz3Jxpk9ItbIzTOqfwdgEmFpDVf
+ VYjYYcTMbwje2iy2EneU7EaN/BTTTbIe8CWRDa6xPkoAQk86bUaLxmYvJ
+ 5gV99124eIDkuMecu+EvDFjixVbKguMkAQvsOjC4LAPWZ32rxxha1CjQM
+ mQnWjEwNr0NzursuaMkvimjrmR+6t/4/x5uZQdXgSUS7xmooUZ45OJym7
+ PuzfGXeeMshwB9VlFDNAXUBVtSUSr988eYUtFyWHu8xcYQ3/hxTIVSDj+ g==;
+X-CSE-ConnectionGUID: hmWRKsYcQo2wTAEpEkBziQ==
+X-CSE-MsgGUID: +hQ8OkKYSXC18OHL3hqs5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="69467224"
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="69467224"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2025 03:52:07 -0700
-X-CSE-ConnectionGUID: F2vQwTerSGGOMIUGibP13g==
-X-CSE-MsgGUID: BZxD+moVTXuW1ArnsaO4dw==
+ 13 Jun 2025 03:52:14 -0700
+X-CSE-ConnectionGUID: eF6ECe+4Rs6bj3luGpm0ag==
+X-CSE-MsgGUID: dJnRh3pxRZ6bkNP56gthyg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="178772182"
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; d="scan'208";a="178772225"
 Received: from mstancu-mobl1.ger.corp.intel.com (HELO
  friendship7-home.clients.intel.com) ([10.245.118.0])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2025 03:52:04 -0700
+ 13 Jun 2025 03:52:11 -0700
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
  marcin.bernatowicz@intel.com, kamil.konieczny@linux.intel.com,
  katarzyna.piecielska@intel.com, zbigniew.kempczynski@intel.com,
  ewelina.musial@intel.com
-Subject: [PATCH v2 i-g-t 1/6] lib/igt_dir: Directory processing and file
- handling
-Date: Fri, 13 Jun 2025 12:51:40 +0200
-Message-ID: <20250613105146.106581-2-peter.senna@linux.intel.com>
+Subject: [PATCH v2 i-g-t 4/6] tests: Add core_sysfs
+Date: Fri, 13 Jun 2025 12:51:43 +0200
+Message-ID: <20250613105146.106581-5-peter.senna@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250613105146.106581-1-peter.senna@linux.intel.com>
 References: <20250613105146.106581-1-peter.senna@linux.intel.com>
@@ -73,26 +72,9 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add new utilities to facilitate reading and processing files within a
-directory.
-
-For example, to read and discard all files from debugfs:
-
-  fd = drm_open_driver_master(DRIVER_ANY);
-  debugfs = igt_debugfs_dir(fd);
-
-  igt_dir = igt_dir_create(debugfs);
-  igt_dir_scan_dirfd(igt_dir, -1); /* -1 is unlimited scan depth */
-  igt_dir_process_files(igt_dir, NULL, NULL);
-
-The igt_dir_scan_dirfd() function builds a linked list of files (using
-igt_list), making it easy to add or remove specific files before
-processing. If you only want to process a predetermined set of files,
-you can skip the scan step and add the files directly to the list.
-
-The last two parameters of igt_dir_process_files() specify a callback
-function and user data. If the callback is NULL, a default read and
-discard function is used.
+core_sysfs is GPU-agnostic test designed to work with any GPU, not
+limited to i915 and Xe. The test scans the sysfs directory associated
+with the GPU, reads all files, and discards the content.
 
 Cc: marcin.bernatowicz@intel.com
 Cc: kamil.konieczny@linux.intel.com
@@ -104,358 +86,122 @@ Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 v2:
  - changed style of comparison to NULL
 
- lib/igt_dir.c   | 260 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dir.h   |  61 ++++++++++++
- lib/meson.build |   1 +
- 3 files changed, 322 insertions(+)
- create mode 100644 lib/igt_dir.c
- create mode 100644 lib/igt_dir.h
+ tests/core_sysfs.c                       | 58 ++++++++++++++++++++++++
+ tests/intel-ci/fast-feedback.testlist    |  3 +-
+ tests/intel-ci/xe-fast-feedback.testlist |  1 +
+ tests/meson.build                        |  1 +
+ 4 files changed, 62 insertions(+), 1 deletion(-)
+ create mode 100644 tests/core_sysfs.c
 
-diff --git a/lib/igt_dir.c b/lib/igt_dir.c
+diff --git a/tests/core_sysfs.c b/tests/core_sysfs.c
 new file mode 100644
-index 000000000..8f5a25e35
+index 000000000..fc97bd77b
 --- /dev/null
-+++ b/lib/igt_dir.c
-@@ -0,0 +1,260 @@
++++ b/tests/core_sysfs.c
+@@ -0,0 +1,58 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2025 Intel Corporation
 + */
 +
-+#include <dirent.h>
-+#include <fcntl.h>
-+
 +#include "igt.h"
-+#include "lib/igt_dir.h"
++#include "igt_dir.h"
++#include "igt_sysfs.h"
++
++struct {
++	bool warn_on_not_hit;
++} opt = { 0 };
 +
 +/**
-+ * igt_dir_get_fd_path: Get the path of a file descriptor
-+ * @fd: file descriptor to get the path for
-+ * @path: buffer to store the path
-+ * @path_len: length of the buffer
++ * TEST: sysfs test
++ * Description: Read entries from sysfs path.
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: uapi
++ * Functionality: sysfs
++ * Feature: core
++ * Test category: uapi
 + *
-+ * Returns: 0 on success, a negative error code on failure
-+ */
-+int igt_dir_get_fd_path(int fd, char *path, size_t path_len)
-+{
-+	ssize_t len;
-+	char proc_path[64];
-+
-+	snprintf(proc_path, sizeof(proc_path), "/proc/self/fd/%d", fd);
-+	len = readlink(proc_path, path, path_len - 1);
-+	if (len == -1)
-+		return -1;
-+
-+	path[path_len] = '\0';
-+	return 0;
-+}
-+
-+/**
-+ * igt_dir_callback_read_discard: Default callback function for reading and
-+ *				  discarding file contents
-+ * @filename: Path to the file
-+ * @callback_data: Optional pointer to user-defined data passed to the callback
++ * SUBTEST: sysfs-read-all-entries
++ * Description: Read all entries from sysfs path
 + *
-+ * Returns: 0 on success, a negative error code on failure
 + */
-+int igt_dir_callback_read_discard(const char *filename,
-+				  void *callback_data)
++
++IGT_TEST_DESCRIPTION("Read entries from sysfs paths.");
++
++igt_main
 +{
-+	int fd;
-+	char buf[4096];
-+	ssize_t bytes_read;
++	int fd = -1;
++	int sysfs = -1;
++	igt_dir_t *igt_dir = NULL;
 +
-+	fd = open(filename, O_RDONLY);
-+	if (fd < 0) {
-+		igt_debug("Failed to open file %s\n", filename);
-+		return -1;
++	igt_fixture {
++		fd = drm_open_driver_master(DRIVER_ANY);
++		sysfs = igt_sysfs_open(fd);
++		igt_require(sysfs >= 0);
++
++		igt_dir = igt_dir_create(sysfs);
++		igt_require(igt_dir);
++
++		kmstest_set_vt_graphics_mode();
 +	}
-+	bytes_read = read(fd, buf, sizeof(buf) - 1);
-+	if (bytes_read < 0) {
-+		igt_debug("Failed to read file %s\n", filename);
-+		close(fd);
-+		return -1;
++
++	igt_describe("Read all entries from sysfs path.");
++	igt_subtest("sysfs-read-all-entries") {
++		igt_dir_scan_dirfd(igt_dir, -1);
++		igt_dir_process_files(igt_dir, NULL, NULL);
 +	}
-+	buf[bytes_read] = '\0';
-+	igt_debug("Read %zd bytes from file %s: %s\n", bytes_read,
-+		  filename, buf);
-+	close(fd);
-+	return 0;
++
++	igt_fixture {
++		close(sysfs);
++		drm_close_driver(fd);
++	}
 +}
-+
-+/**
-+ * igt_dir_create: Create a new igt_dir_t struct
-+ * @dirfd: file descriptor of the root directory
-+ *
-+ * Returns: Pointer to the new igt_dir_t struct, or NULL on failure
-+ */
-+igt_dir_t *igt_dir_create(int dirfd)
-+{
-+	igt_dir_t *config;
-+	size_t path_len = 512;
-+	char path[path_len];
-+
-+	config = malloc(sizeof(igt_dir_t));
-+	if (!config)
-+		return NULL;
-+
-+	config->dirfd = dirfd;
-+
-+	igt_dir_get_fd_path(dirfd, path, path_len);
-+	igt_require(path[0] != '\0');
-+
-+	config->root_path = malloc(path_len);
-+	if (!config->root_path) {
-+		free(config);
-+		return NULL;
-+	}
-+
-+	strncpy(config->root_path, path, path_len);
-+
-+	IGT_INIT_LIST_HEAD(&config->file_list_head);
-+
-+	config->callback = NULL;
-+
-+	return config;
-+}
-+
-+static int _igt_dir_scan_dirfd(igt_dir_t *config, int scan_maxdepth,
-+			       int depth, const char *current_path)
-+{
-+	struct dirent *entry;
-+	igt_dir_file_list_t *file_list_entry;
-+	DIR *dirp;
-+	int dirfd;
-+	int ret = 0;
-+
-+	if (depth > scan_maxdepth && scan_maxdepth != -1)
-+		return 0;
-+
-+	if (!current_path) {
-+		igt_debug("Invalid current path\n");
-+		return -1;
-+	}
-+
-+	dirfd = open(current_path, O_RDONLY | O_DIRECTORY);
-+	if (dirfd < 0) {
-+		igt_debug("Failed to open directory %s\n", current_path);
-+		return -1;
-+	}
-+
-+	dirp = fdopendir(dirfd);
-+	if (!dirp) {
-+		igt_debug("Failed to fdopendir %s\n", current_path);
-+		close(dirfd);
-+		return -1;
-+	}
-+
-+	while ((entry = readdir(dirp))) {
-+		char entry_path[PATH_MAX];
-+
-+		if (strcmp(entry->d_name, ".") == 0 ||
-+		    strcmp(entry->d_name, "..") == 0)
-+			continue;
-+
-+		snprintf(entry_path, sizeof(entry_path),
-+			 "%s/%s", current_path, entry->d_name);
-+
-+		if (entry->d_type == DT_DIR) {
-+			ret = _igt_dir_scan_dirfd(config, scan_maxdepth,
-+						  depth + 1, entry_path);
-+			if (ret)
-+				break;
-+		} else {
-+			/* Compute path relative to the scan root */
-+			const char *relative_path = entry_path +
-+						    strlen(config->root_path);
-+			if (*relative_path == '/')
-+				relative_path++; /* skip leading slash */
-+
-+			file_list_entry = malloc(sizeof(igt_dir_file_list_t));
-+			if (!file_list_entry) {
-+				igt_debug("Failed to allocate memory for file list entry\n");
-+				continue;
-+			}
-+			file_list_entry->relative_path = strdup(relative_path);
-+			file_list_entry->match = true;
-+			igt_list_add(&file_list_entry->link,
-+				     &config->file_list_head);
-+		}
-+	}
-+
-+	closedir(dirp);
-+	close(dirfd);
-+	return ret;
-+}
-+
-+/**
-+ * igt_dir_scan_dirfd: Perform a directory scan based on config.
-+ * @config: Pointer to the igt_dir struct
-+ * @scan_maxdepth: Maximum depth to scan the directory. -1 means no limit
-+ *
-+ * Returns: 0 on success, a negative error code on failure
-+ */
-+int igt_dir_scan_dirfd(igt_dir_t *config, int scan_maxdepth)
-+{
-+	igt_require(config);
-+	igt_require(config->root_path);
-+	igt_require(config->dirfd >= 0);
-+	igt_require(scan_maxdepth >= -1);
-+	igt_require(scan_maxdepth != 0);
-+
-+	/* If the linked list is not empty, clean it first */
-+	if (!igt_list_empty(&config->file_list_head)) {
-+		igt_dir_file_list_t *file_list_entry, *tmp;
-+
-+		igt_list_for_each_entry_safe(file_list_entry, tmp,
-+					     &config->file_list_head, link) {
-+			free(file_list_entry->relative_path);
-+			free(file_list_entry);
-+		}
-+	}
-+
-+	return _igt_dir_scan_dirfd(config, scan_maxdepth, 0, config->root_path);
-+}
-+
-+/**
-+ * igt_dir_process_files: Process files in the directory
-+ * @config: Pointer to the igt_dir struct
-+ * @callback: Callback function to process each file
-+ * @callback_data: Optional pointer to user-defined data passed to the callback
-+ *
-+ * Returns: 0 on success, a negative error code on failure
-+ */
-+int igt_dir_process_files(igt_dir_t *config,
-+			 igt_dir_file_callback callback,
-+			 void *callback_data)
-+{
-+	igt_dir_file_list_t *file_list_entry;
-+	int ret = 0;
-+
-+	igt_require(config);
-+	igt_require(config->root_path);
-+	igt_require(config->dirfd >= 0);
-+
-+	if (!callback)
-+		callback = igt_dir_callback_read_discard;
-+
-+	igt_list_for_each_entry(file_list_entry, &config->file_list_head, link) {
-+		/* Only if match is true */
-+		if (file_list_entry->match) {
-+			char full_path[PATH_MAX];
-+
-+			snprintf(full_path, sizeof(full_path),
-+				 "%s/%s", config->root_path,
-+				 file_list_entry->relative_path);
-+			ret = callback(full_path, callback_data);
-+			if (ret)
-+				break;
-+		}
-+	}
-+
-+	return ret;
-+}
-+
-+/**
-+ * igt_dir_destroy: Destroy the igt_dir struct
-+ * @config: Pointer to the igt_dir struct
-+ *
-+ * Returns: 0 on success, a negative error code on failure
-+ */
-+void igt_dir_destroy(igt_dir_t *config)
-+{
-+	igt_dir_file_list_t *file_list_entry, *tmp;
-+
-+	igt_require(config);
-+
-+	igt_list_for_each_entry_safe(file_list_entry, tmp,
-+				 &config->file_list_head, link) {
-+		free(file_list_entry->relative_path);
-+		free(file_list_entry);
-+	}
-+
-+	free(config->root_path);
-+	free(config);
-+}
-diff --git a/lib/igt_dir.h b/lib/igt_dir.h
-new file mode 100644
-index 000000000..fb9230862
---- /dev/null
-+++ b/lib/igt_dir.h
-@@ -0,0 +1,61 @@
-+/* SPDX-License-Identifier: MIT
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+#ifndef IGT_DIR_H
-+#define IGT_DIR_H
-+
-+#include "igt_list.h"
-+
-+/**
-+ * Callback function type for processing files
-+ * The callback is blocking, meaning traversal waits for it to return
-+ * before proceeding to the next file
-+ * @filename: Path to the file
-+ * @callback_data: Optional pointer to user-defined data passed to the callback
-+ *
-+ * Returns:
-+ * 0 on success, a negative error code on failure.
-+ */
-+typedef int (*igt_dir_file_callback)(const char *filename,
-+				     void *callback_data);
-+
-+/**
-+ * igt_dir_file_list_t: List of files with a relative path
-+ * @relative_path: path to a file, relative to the root directory
-+ * @match: a boolean used to filter the list of files. When match=true the
-+ *	   file is processed, otherwise it is skipped
-+ * @link: list head for linking files in the list
-+ */
-+typedef struct {
-+	char *relative_path;
-+	bool match;
-+	struct igt_list_head link;
-+} igt_dir_file_list_t;
-+
-+/**
-+ * igt_dir_t: Main struct for igt_dir
-+ * @dirfd: file descriptor of the root directory
-+ * @root_path: string of the root path, for example:
-+ *	       /sys/kernel/debug/dri/0000:00:02.0/
-+ * @file_list_head: head of the list of files
-+ * @callback: Callback function for file operations. If NULL, defaults
-+ *	      to reading and discarding file contents
-+ */
-+typedef struct {
-+	int dirfd;
-+	char *root_path;
-+	struct igt_list_head file_list_head;
-+	igt_dir_file_callback callback;
-+} igt_dir_t;
-+
-+int igt_dir_get_fd_path(int fd, char *path, size_t path_len);
-+int igt_dir_callback_read_discard(const char *filename,
-+				  void *callback_data);
-+igt_dir_t *igt_dir_create(int dirfd);
-+int igt_dir_scan_dirfd(igt_dir_t *config, int scan_maxdepth);
-+int igt_dir_process_files(igt_dir_t *config,
-+			  igt_dir_file_callback callback,
-+			  void *callback_data);
-+void igt_dir_destroy(igt_dir_t *config);
-+#endif /* IGT_DIR_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index ff81baae1..ec4a71bd7 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -91,6 +91,7 @@ lib_sources = [
- 	'igt_kms.c',
- 	'igt_fb.c',
- 	'igt_core.c',
-+	'igt_dir.c',
- 	'igt_draw.c',
- 	'igt_list.c',
- 	'igt_map.c',
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 7902bbdae..7415c51ef 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -3,6 +3,8 @@ igt@i915_module_load@load
+ 
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
++igt@core_debugfs@debugfs-read-all-entries
++igt@core_sysfs@sysfs-read-all-entries
+ igt@fbdev@eof
+ igt@fbdev@info
+ igt@fbdev@nullptr
+@@ -53,7 +55,6 @@ igt@i915_getparams_basic@basic-subslice-total
+ igt@i915_hangman@error-state-basic
+ igt@i915_pciid
+ igt@intel_hwmon
+-igt@core_debugfs@debugfs-read-all-entries
+ igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries
+ igt@intel_sysfs_debugfs@i915-sysfs-read-all-entries
+ igt@kms_addfb_basic@addfb25-4-tiled
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 5fb233fb4..1626e5d7c 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -8,6 +8,7 @@ igt@fbdev@read
+ igt@fbdev@write
+ 
+ igt@core_debugfs@debugfs-read-all-entries
++igt@core_sysfs@sysfs-read-all-entries
+ igt@intel_sysfs_debugfs@xe-base
+ igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries
+ igt@intel_sysfs_debugfs@xe-forcewake
+diff --git a/tests/meson.build b/tests/meson.build
+index c05c023ef..da9247ddc 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -8,6 +8,7 @@ test_progs = [
+ 	'core_hotunplug',
+ 	'core_setmaster',
+ 	'core_setmaster_vs_auth',
++	'core_sysfs',
+ 	'dmabuf',
+ 	'dmabuf_sync_file',
+ 	'device_reset',
 -- 
 2.43.0
 
