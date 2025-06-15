@@ -4,60 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F44C7115A
-	for <igt-dev@archiver.kernel.org>; Sun, 15 Jun 2025 17:15:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23564C71157
+	for <igt-dev@archiver.kernel.org>; Sun, 15 Jun 2025 17:15:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 167BC10E131;
-	Sun, 15 Jun 2025 17:15:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D361510E00D;
+	Sun, 15 Jun 2025 17:15:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L7jifGzV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gH8WCJO6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6678110E00D
- for <igt-dev@lists.freedesktop.org>; Sun, 15 Jun 2025 17:15:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED2B310E00D
+ for <igt-dev@lists.freedesktop.org>; Sun, 15 Jun 2025 17:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1750007719; x=1781543719;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Msxw1YDGisp4h/26g/SXzpG/x47uyV7RRdjxFCEO+iI=;
- b=L7jifGzVdViAaweVUtIfqi2inGLkIcWVNGsYfpi9lyud2Nj5JhuKt/EB
- O0akf/rcdpD2cejvoIhsWUZF+VBPU1+NUULeipZs2kAzaYqNYIdUAelgX
- b4k9Owhl1QYgCMGQlhVIKMPyJ6+MicpmFaoqf9QLAtRErzJaDJX9/riAU
- MMV7w/R3eGszXXQLa/YUOueD5Aq4gIMaxzGUZzch3iEzcbGxgWWX06rIl
- 17axYJYCzMcToyotY7W76qK4iYAq56bFzNWeHPGrKGPnKkT9J0d33c2+p
- 0q8k9+0s2Zp9L/w9QM6i2bkv16uDJZBysyLgyASNBori4+uqwDnjjjUiV w==;
-X-CSE-ConnectionGUID: Qhg1bI+3RcuNjJBIi2ZO7Q==
-X-CSE-MsgGUID: HCNlV2+XTNmi+YczBpNabA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52298218"
-X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; d="scan'208";a="52298218"
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=GzqjcQdeq/dGbNuuOL7LD3aqVk4m6VZsgcZ6PN6KL4Y=;
+ b=gH8WCJO6906l6coNlhILYQCGnuDs4Yt/A2kJmFwUwrosQpHcidlwI5/o
+ 1yBpBSOJVREuVv3OKFkuGY7p+R3Jx73iDY1xP0XMf52HZSGRQ6guDUVie
+ jb5tcJcBBe8mrhi1DHxlU7YfjIeltHkOO3uNKY8JCK/sp+XJT2oKNtLL+
+ bEYypjD9cowBZSarT8ob895jzSJoV0lmHZg5l7hcab13x1w/tievun85u
+ rj+URacxsFHRSpKZeDGABIBVUZ9hkz/IUBKHqOU2WOA8W33h0QTN2sMFq
+ hOG+MSbS0tRDaI58PMSjyhhB7SycWIBUHOUDo7g9Ta3iILl6IRnUU3+gP Q==;
+X-CSE-ConnectionGUID: p8jF5QVQQjyiRAjAwL4R7Q==
+X-CSE-MsgGUID: nPo+oiHmQYma2qxV7RSokg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52298204"
+X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; d="scan'208";a="52298204"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2025 10:15:18 -0700
-X-CSE-ConnectionGUID: jeuSChV6TH2M88dWzYrRoQ==
-X-CSE-MsgGUID: QnLVpvZ8ToO0WYh4g8uO6w==
+ 15 Jun 2025 10:15:10 -0700
+X-CSE-ConnectionGUID: 12IPG50yRc6DUJVI8VCANA==
+X-CSE-MsgGUID: CyBgvacYTdi64+x0PrOdPg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; d="scan'208";a="171476471"
+X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; d="scan'208";a="171476454"
 Received: from mstancu-mobl1.ger.corp.intel.com (HELO
  friendship7-home.clients.intel.com) ([10.245.118.0])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2025 10:15:15 -0700
+ 15 Jun 2025 10:15:07 -0700
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Karthik B S <karthik.b.s@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>, michal.wajdeczko@intel.com,
- marcin.bernatowicz@intel.com, kamil.konieczny@linux.intel.com,
- katarzyna.piecielska@intel.com, zbigniew.kempczynski@intel.com,
- ewelina.musial@intel.com
-Subject: [PATCH v3 i-g-t 3/6] tests: Add core_debugfs_heads_power
-Date: Sun, 15 Jun 2025 19:14:48 +0200
-Message-ID: <20250615171452.44751-4-peter.senna@linux.intel.com>
+ michal.wajdeczko@intel.com, marcin.bernatowicz@intel.com,
+ kamil.konieczny@linux.intel.com, katarzyna.piecielska@intel.com,
+ zbigniew.kempczynski@intel.com, ewelina.musial@intel.com
+Subject: [PATCH v3 i-g-t 0/6] Replace intel_sysfs_debugfs
+Date: Sun, 15 Jun 2025 19:14:45 +0200
+Message-ID: <20250615171452.44751-1-peter.senna@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250615171452.44751-1-peter.senna@linux.intel.com>
-References: <20250615171452.44751-1-peter.senna@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -76,222 +70,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce core_debugfs_heads_power that is expected to work with any
-GPU, not limited to i915 and Xe. The test powers off all available
-heads before reading debugfs files, and then powers on all heads
-before reading the files again.
+This series:
+ - moves shared function to lib/igt_dir
+ - creates gpu agnostic tests
+   - core_debugfs
+   - core_debugfs_display_on_off
+   - core_sysfs
+ - creates the xe-specific test
+   - xe_debugfs (complementary to core_debugfs*)
+ - Updates testlists and scripts
+ - deletes tests/intel_sysfs_debugfs
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
 Cc: michal.wajdeczko@intel.com
 Cc: marcin.bernatowicz@intel.com
 Cc: kamil.konieczny@linux.intel.com
 Cc: katarzyna.piecielska@intel.com
 Cc: zbigniew.kempczynski@intel.com
 Cc: ewelina.musial@intel.com
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
-v3:
- - renamed the test
- - Removed reference to sysfs from comments  (thanks Kamil)
- - Updated description to match the display part (thanks Kamil)
- - Moved from "display" to "heads". Our CI uses "headless" to refer
-   to a DUT without display and it is shorter
- - renamed subtests for shorter names (thanks Kamil)
- - fixed comments style (thanks Kamil)
- - updated CC list
- - changed the order to test first with all heads off then with all heads on
-   to prevent the need from powering on the heads at the end of the test
-   (thanks Kamil)
- - removed snprintf from test names (thanks Kamil)
- - removed subtest group (thanks Kamil)
- - deleted kms_tests() and moved the code to igt_main (thanks Kamil)
 
-v2:
- - changed style of comparison to NULL
- - moved to a separate patch
+Peter Senna Tschudin (6):
+  lib/igt_dir: Directory processing and flexible file handling
+  tests: Add core_debugfs
+  tests: Add core_debugfs_heads_power
+  tests: Add core_sysfs
+  tests: Add xe_debugfs
+  tests/intel: Remove intel_sysfs_debugfs
 
- tests/core_debugfs_heads_power.c | 156 +++++++++++++++++++++++++++++++
- tests/meson.build                |   1 +
- 2 files changed, 157 insertions(+)
+ docs/code_coverage.md                    |  18 +-
+ lib/igt_dir.c                            | 260 ++++++++++++++
+ lib/igt_dir.h                            |  61 ++++
+ lib/meson.build                          |   1 +
+ scripts/code_cov_selftest.sh             |   2 +-
+ tests/core_debugfs.c                     |  54 +++
+ tests/core_debugfs_heads_power.c         | 156 ++++++++
+ tests/core_sysfs.c                       |  58 +++
+ tests/intel-ci/fast-feedback.testlist    |   4 +-
+ tests/intel-ci/xe-fast-feedback.testlist |   8 +-
+ tests/intel/intel_sysfs_debugfs.c        | 430 -----------------------
+ tests/intel/xe_debugfs.c                 | 208 +++++++++++
+ tests/intel/xe_test_config.json          |   2 +-
+ tests/meson.build                        |   5 +-
+ 14 files changed, 819 insertions(+), 448 deletions(-)
+ create mode 100644 lib/igt_dir.c
+ create mode 100644 lib/igt_dir.h
+ create mode 100644 tests/core_debugfs.c
  create mode 100644 tests/core_debugfs_heads_power.c
+ create mode 100644 tests/core_sysfs.c
+ delete mode 100644 tests/intel/intel_sysfs_debugfs.c
+ create mode 100644 tests/intel/xe_debugfs.c
 
-diff --git a/tests/core_debugfs_heads_power.c b/tests/core_debugfs_heads_power.c
-new file mode 100644
-index 000000000..1813986d8
---- /dev/null
-+++ b/tests/core_debugfs_heads_power.c
-@@ -0,0 +1,156 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+#include "igt.h"
-+#include "igt_debugfs.h"
-+#include "igt_dir.h"
-+
-+/**
-+ * TEST: debugfs heads power test
-+ * Description: Read entries from debugfs with all heads on and with all heads
-+ *		off.
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: uapi
-+ * Functionality: debugfs
-+ * Feature: core
-+ * Test category: uapi
-+ *
-+ * SUBTEST: off-read-all
-+ * Description: Read all debugfs entries with heads off.
-+ *
-+ * SUBTEST: on-read-all
-+ * Description: Read all debugfs entries with heads on.
-+ */
-+
-+/**
-+ * bool igt_kms_all_displays_on: Try to turn on all heads
-+ * @display: pointer to the igt_display structure
-+ *
-+ * Returns: void
-+ */
-+static void igt_display_all_on(igt_display_t *display)
-+{
-+	struct igt_fb fb[IGT_MAX_PIPES];
-+	enum pipe pipe;
-+	int ret;
-+
-+	/* try to light all pipes */
-+retry:
-+	for_each_pipe(display, pipe) {
-+		igt_output_t *output;
-+
-+		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_plane_t *primary;
-+			drmModeModeInfo *mode;
-+
-+			if (output->pending_pipe != PIPE_NONE)
-+				continue;
-+
-+			igt_output_set_pipe(output, pipe);
-+			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+			mode = igt_output_get_mode(output);
-+			igt_create_pattern_fb(display->drm_fd,
-+						mode->hdisplay, mode->vdisplay,
-+						DRM_FORMAT_XRGB8888,
-+						DRM_FORMAT_MOD_LINEAR, &fb[pipe]);
-+
-+			/* Set a valid fb as some debugfs like to
-+			 * inspect it on a active pipe
-+			 */
-+			igt_plane_set_fb(primary, &fb[pipe]);
-+			break;
-+		}
-+	}
-+
-+	if (display->is_atomic)
-+		ret = igt_display_try_commit_atomic(display,
-+				DRM_MODE_ATOMIC_TEST_ONLY |
-+				DRM_MODE_ATOMIC_ALLOW_MODESET,
-+				NULL);
-+	else
-+		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
-+
-+	if (ret) {
-+		igt_output_t *output;
-+		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
-+
-+		igt_require_f(found, "No valid mode combo found.\n");
-+
-+		for_each_connected_output(display, output)
-+			igt_output_set_pipe(output, PIPE_NONE);
-+
-+		goto retry;
-+	}
-+
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+}
-+
-+/**
-+ * bool igt_kms_all_displays_off: Try to turn off all heads
-+ * @display: pointer to the igt_display structure
-+ *
-+ * Returns: void
-+ */
-+static void igt_display_all_off(igt_display_t *display)
-+{
-+	enum pipe pipe;
-+	igt_output_t *output;
-+	igt_plane_t *plane;
-+
-+	for_each_connected_output(display, output)
-+		igt_output_set_pipe(output, PIPE_NONE);
-+
-+	for_each_pipe(display, pipe)
-+		for_each_plane_on_pipe(display, pipe, plane)
-+			igt_plane_set_fb(plane, NULL);
-+
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+}
-+
-+IGT_TEST_DESCRIPTION("Read entries from debugfs with display on/off.");
-+
-+igt_main
-+{
-+	int debugfs = -1;
-+	igt_display_t *display;
-+	int fd = -1;
-+	igt_dir_t *igt_dir = NULL;
-+
-+	igt_fixture {
-+		fd = drm_open_driver_master(DRIVER_ANY);
-+		debugfs = igt_debugfs_dir(fd);
-+		igt_require(debugfs >= 0);
-+
-+		igt_dir = igt_dir_create(debugfs);
-+		igt_require(igt_dir);
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		display = calloc(1, sizeof(*display));
-+		igt_display_require(display, fd);
-+	}
-+
-+	igt_subtest("off-read-all") {
-+		igt_display_all_off(display);
-+
-+		igt_dir_scan_dirfd(igt_dir, -1);
-+		igt_dir_process_files(igt_dir, NULL, NULL);
-+	}
-+
-+	igt_subtest("on-read-all") {
-+		/* try to light all pipes */
-+		igt_display_all_on(display);
-+
-+		igt_dir_scan_dirfd(igt_dir, -1);
-+		igt_dir_process_files(igt_dir, NULL, NULL);
-+	}
-+
-+	igt_fixture {
-+		igt_display_fini(display);
-+		close(debugfs);
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index fa62cbeb9..99dbd4feb 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -1,6 +1,7 @@
- test_progs = [
- 	'core_auth',
- 	'core_debugfs',
-+	'core_debugfs_heads_power',
- 	'core_getclient',
- 	'core_getstats',
- 	'core_getversion',
 -- 
 2.43.0
 
