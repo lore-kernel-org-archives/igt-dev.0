@@ -4,28 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78447C71159
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Jun 2025 20:58:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC532C71136
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Jun 2025 21:09:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2C18210E445;
-	Mon, 16 Jun 2025 20:58:46 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FB0010E445;
- Mon, 16 Jun 2025 20:58:45 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0297118870028327562=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 62F9110E453;
+	Mon, 16 Jun 2025 21:09:18 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PkyfFnMs";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EC0A10E453
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Jun 2025 21:09:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1750108157; x=1781644157;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=eX/mSy/JBwb3Nk95MKDwu00B5Ppv0Sa+PRkRWOsDs8k=;
+ b=PkyfFnMsV6+p/SQ3d4OHkGj+e/F7/95ZpVFnu0n8KRHnFufob/2nsmrb
+ nzS7gUGu3tftVBzoTTrkoUakii4Pb+AKAi/XSI49LBIZ3LmtcmSpDDomW
+ 1rdFkxcVIcedtWlhaPGRrYGr3ijvAMVfXHv7B9ndik+0wBJxru9rZ33HV
+ dVpOBOFPC8htR3kG2/BpFp/rKAxflJCADPIa4mUzT/QXCJADVXQsC695o
+ 4+fMpT2TNWhZ6K6E4BN/Lz/Dz3h+NYkrsnOam/bkV64Sb4DT622ko6GwR
+ A6505bhyhxC3lRQkFHqgl1B4pJkv5Sfa7mPtmH57jYNz1LzhYTJoSTuMW w==;
+X-CSE-ConnectionGUID: yxa3deOkRAqJJkVP5UwoGg==
+X-CSE-MsgGUID: Nm2YsOEkR4qHC0pX5weSFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52351459"
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; d="scan'208";a="52351459"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2025 14:09:17 -0700
+X-CSE-ConnectionGUID: COhMfp3pRx+kju4AxOmxEw==
+X-CSE-MsgGUID: kiFbiCBeQWSuyX3uFj3Qew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; d="scan'208";a="153344548"
+Received: from unknown (HELO rgsanthosh-System-Product-Name.iind.intel.com)
+ ([10.190.238.65])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jun 2025 14:09:15 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@intel.com, swati2.sharma@intel.com,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v6 2/5] runner/settings: Constify absolute_path parameter
+Date: Tue, 17 Jun 2025 02:38:37 +0530
+Message-ID: <20250616210840.3335978-3-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250616210840.3335978-1-ramanaidu.naladala@intel.com>
+References: <20250616210840.3335978-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/2=5D_tools/gputop/gputop=3A_Add_per-device_engine_activity?=
- =?utf-8?q?_stats_in_GPUTOP?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 16 Jun 2025 20:58:45 -0000
-Message-ID: <175010752510.83788.6637359264961258352@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250616112538.32551-1-nishit.sharma@intel.com>
-In-Reply-To: <20250616112538.32551-1-nishit.sharma@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,110 +67,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0297118870028327562==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Make absolute_path a const char*, this ensures the input path
+remains unmodified, enhancing code safety and clarity.
 
-== Series Details ==
+v2: Update commit subject.  (kamil)
+v3: Update commit message.  (Kamil)
 
-Series: series starting with [i-g-t,1/2] tools/gputop/gputop: Add per-device engine activity stats in GPUTOP
-URL   : https://patchwork.freedesktop.org/series/150321/
-State : success
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/settings.c | 2 +-
+ runner/settings.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-== Summary ==
+diff --git a/runner/settings.c b/runner/settings.c
+index a7d5dbc97..b151218cc 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -590,7 +590,7 @@ static char *_basename(const char *path)
+ 	return tmpname;
+ }
+ 
+-char *absolute_path(char *path)
++char *absolute_path(const char *path)
+ {
+ 	char *result = NULL;
+ 	char *base, *dir;
+diff --git a/runner/settings.h b/runner/settings.h
+index ccdc7281b..6c58c3282 100644
+--- a/runner/settings.h
++++ b/runner/settings.h
+@@ -146,7 +146,7 @@ bool parse_options(int argc, char **argv,
+ bool validate_settings(struct settings *settings);
+ 
+ /* TODO: Better place for this */
+-char *absolute_path(char *path);
++char *absolute_path(const char *path);
+ 
+ /**
+  * serialize_settings:
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8412_BAT -> XEIGTPW_13302_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8412 -> IGTPW_13302
-  * Linux: xe-3255-dea7240e83c9e58ec755a3d68e7db10068df6b76 -> xe-3256-43ac07d088f280cfb9eeda0c4caf11b0b7b56e96
-
-  IGTPW_13302: 13302
-  IGT_8412: 8412
-  xe-3255-dea7240e83c9e58ec755a3d68e7db10068df6b76: dea7240e83c9e58ec755a3d68e7db10068df6b76
-  xe-3256-43ac07d088f280cfb9eeda0c4caf11b0b7b56e96: 43ac07d088f280cfb9eeda0c4caf11b0b7b56e96
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13302/index.html
-
---===============0297118870028327562==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tools/gputop/gputop: Add per-device engine activity stats in GPUTOP</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150321/">https://patchwork.freedesktop.org/series/150321/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13302/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13302/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8412_BAT -&gt; XEIGTPW_13302_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8412 -&gt; IGTPW_13302</li>
-<li>Linux: xe-3255-dea7240e83c9e58ec755a3d68e7db10068df6b76 -&gt; xe-3256-43ac07d088f280cfb9eeda0c4caf11b0b7b56e96</li>
-</ul>
-<p>IGTPW_13302: 13302<br />
-  IGT_8412: 8412<br />
-  xe-3255-dea7240e83c9e58ec755a3d68e7db10068df6b76: dea7240e83c9e58ec755a3d68e7db10068df6b76<br />
-  xe-3256-43ac07d088f280cfb9eeda0c4caf11b0b7b56e96: 43ac07d088f280cfb9eeda0c4caf11b0b7b56e96</p>
-
-</body>
-</html>
-
---===============0297118870028327562==--
