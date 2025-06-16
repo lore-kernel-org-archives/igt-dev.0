@@ -4,52 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DD44C71159
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74BEEC71136
 	for <igt-dev@archiver.kernel.org>; Mon, 16 Jun 2025 23:57:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E81E10E470;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 86E0210E473;
 	Mon, 16 Jun 2025 23:57:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gKYUx0Kn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cwvRfvbS";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A174310E465
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Jun 2025 23:57:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC45010E465
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Jun 2025 23:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750118235; x=1781654235;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=c02Ni6PP/sNaqyAymV9CdC9UmIlz4evnrF4oQLgBQK8=;
- b=gKYUx0KnEeb07EY5/W+nUwsoIlecHTUDf53Fgjt25gTOp9ymV2yarBxl
- uwRkf9ywGhrCxax0g40QXgLv0tiRkQK7f5vAOQfCJiiGy+m8h/HNcKhbt
- 8c8BfpBi3vcpwSxDuitkzhcrA+J8U8zYt5LMjks58FFwBkW8GL0Kv/0ww
- tBhV81qg+2Tr1vVrQq/hc731aqYI+RS1Cemh3bib7ZTm8EqX0F8DGqWOT
- X+mAf2PlOGLXJCQauy2a8ZN1n+38NC2ZA1GKnqp5R3UU03guRmV9RF8/W
- mIxaujA6fAkaeIs/CWoEZxY7G1688eiggvyCIuns6i40jvevhism1LOg+ g==;
-X-CSE-ConnectionGUID: CfiHQ4Q2SJCwWSTGFDItPA==
-X-CSE-MsgGUID: sUAoL4B8RCux8Q7X1Ju3uQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="69719232"
-X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; d="scan'208";a="69719232"
+ t=1750118238; x=1781654238;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=AsMFcdMSMZ0+k6bdY46B/TBa5P3PxA8YDjOXjDz5VQQ=;
+ b=cwvRfvbS2ch4Z3Vq6oWGeuf7JD+Z51NzSawTqFSBHNfNDBMYEFIZt9qz
+ sfb1gjugyg7Q5ckwu+u1Z12MfVzRej8AJ9sEbZnMo4Pg8v2u2OnbOK6My
+ o04zyiMTfX6opJhHv09jO0+MVVTevy9i5VvCm/dzcy1EqTZCzEsvLVEB5
+ kG+umW5DouY0mYhqHBHncYJNoU0k02jgJ7OOuHN0GkoiilLxruWcRIVZ+
+ 0vtDLpMskNpmQBcJ3Aw2NKHFDaM8BtWBWdhwb7/lG+xDT1rg+rHOcxvW1
+ Q1dilJl3tfBNAjqXjwCE9Pv50iBAQi4SY+qxBgbBWE7u+kBrjYd5lDDpp g==;
+X-CSE-ConnectionGUID: 1jJxEa/tQfCVLUuqgCMDhw==
+X-CSE-MsgGUID: BWgeR3KxQKOQc2ZqPLoo/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="69719234"
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; d="scan'208";a="69719234"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Jun 2025 16:57:14 -0700
-X-CSE-ConnectionGUID: nc6MlH81Qt2XOyrF7ZRB4w==
-X-CSE-MsgGUID: 2uh22gQaTsKzYX4+u9nWUQ==
+X-CSE-ConnectionGUID: ViNdM604Q4C6eFlHUtuhvA==
+X-CSE-MsgGUID: 6I/LPuxrSm+NJo4vr1JgNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; d="scan'208";a="148502631"
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; d="scan'208";a="148502636"
 Received: from hchegond-ivm1.jf.intel.com ([10.165.21.208])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Jun 2025 16:57:13 -0700
 From: Harish Chegondi <harish.chegondi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Harish Chegondi <harish.chegondi@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t v2 1/3] tests/intel/xe_eu_stall: Close any open EU stall
- fd before opening a new one
-Date: Mon, 16 Jun 2025 16:57:07 -0700
-Message-ID: <3cb3df73daf1b29c309f9fe4331af27b49e0d9c2.1750117903.git.harish.chegondi@intel.com>
+Subject: [PATCH i-g-t v2 3/3] tests/intel/xe_eu_stall: Use query IOCTL to
+ check for EU stall support
+Date: Mon, 16 Jun 2025 16:57:09 -0700
+Message-ID: <d2bbfcc1855bd6dca1af6d22484bd17df26b8025.1750117903.git.harish.chegondi@intel.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <3cb3df73daf1b29c309f9fe4331af27b49e0d9c2.1750117903.git.harish.chegondi@intel.com>
+References: <3cb3df73daf1b29c309f9fe4331af27b49e0d9c2.1750117903.git.harish.chegondi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,113 +74,119 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-asserts in a sub-test can prevent closing an EU stall fd and the next
-subtest may fail with EBUSY if it tries to open another EU stall fd
-as there can only be one EU stall stream open at a time. Any open fds
-are automatically closed at the end of a test (last sub-test).
+Use EU stall query IOCTL to check if EU stall monitoring feature is
+available on the platform and if it is supported in the driver.
+This would replace the checks in the test with those in the driver.
 
-v2: 1. Use igt_assert_fd() instead of igt_require_fd() as skips are
-       not allowed from a child process
-    2. Close any open stream fd before fork()
-    3. Rebase
+v2: Rebase and resolve merge conflicts
+    Remove unnecessary brackets
 
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
+Resolves: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5131
 ---
- tests/intel/xe_eu_stall.c | 38 ++++++++++++++++++++++++++++++--------
- 1 file changed, 30 insertions(+), 8 deletions(-)
+ tests/intel/xe_eu_stall.c | 54 ++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 24 deletions(-)
 
 diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
-index b27f5685e..16428af9b 100644
+index 36a4471e5..c496e654b 100644
 --- a/tests/intel/xe_eu_stall.c
 +++ b/tests/intel/xe_eu_stall.c
-@@ -69,6 +69,7 @@ static uint8_t p_gt_id;
- static uint32_t p_rate;
- static uint32_t p_user = DEFAULT_USER_BUF_SIZE;
- static uint32_t p_num_reports = DEFAULT_NUM_REPORTS;
-+static int stream_fd = -1;
+@@ -74,6 +74,8 @@ static int stream_fd = -1;
  
  static volatile bool child_is_running = true;
  
-@@ -302,6 +303,25 @@ static void set_fd_flags(int fd, int flags)
- 	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
- }
- 
-+static void eu_stall_close(int fd)
-+{
-+	close(fd);
-+	stream_fd = -1;
-+}
-+
-+static int eu_stall_open(int drm_fd, struct xe_eu_stall_open_prop *props)
-+{
-+	int ret;
-+
-+	if (stream_fd >= 0)
-+		eu_stall_close(stream_fd);
-+
-+	ret = xe_eu_stall_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, props);
-+	igt_assert_fd(ret);
-+
-+	return ret;
-+}
++static struct drm_xe_query_eu_stall *query_eu_stall_data;
 +
  /*
-  * Verify that tests with invalid arguments fail.
+  * EU stall data format for PVC
   */
-@@ -353,7 +373,11 @@ static inline void disable_paranoid(void)
-  */
- static void test_non_privileged_access(int drm_fd)
+@@ -510,33 +512,13 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int ite
+ 		.properties_ptr = to_user_pointer(properties),
+ 	};
+ 
+-	struct drm_xe_query_eu_stall *query_eu_stall_data;
+-	struct drm_xe_device_query query = {
+-		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_EU_STALL,
+-		.size = 0,
+-		.data = 0,
+-	};
+-
+ 	igt_info("User buffer size: %u\n", p_user);
+ 	if (p_args[0])
+ 		igt_info("Workload: %s\n", p_args[0]);
+ 	else
+ 		igt_info("Workload: GPGPU fill\n");
+ 
+-	igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-	igt_assert_neq(query.size, 0);
+-
+-	query_eu_stall_data = malloc(query.size);
+-	igt_assert(query_eu_stall_data);
+-
+-	query.data = to_user_pointer(query_eu_stall_data);
+-	igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	igt_assert(query_eu_stall_data->num_sampling_rates > 0);
+-	if (p_rate == 0)
+-		properties[3] = query_eu_stall_data->sampling_rates[0];
+-	igt_info("Sampling Rate: %" PRIu64 "\n", properties[3]);
++	igt_info("Sampling Rate: %u\n", p_rate);
+ 
+ 	stream_fd = eu_stall_open(drm_fd, &props);
+ 
+@@ -664,18 +646,42 @@ static struct option long_options[] = {
+ 
+ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
  {
--	int paranoid, stream_fd;
-+	int paranoid;
+-	int drm_fd;
++	bool blocking_read = true;
++	int drm_fd, ret;
+ 	uint32_t devid;
+ 	struct stat sb;
+-	bool blocking_read = true;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_EU_STALL,
++		.size = 0,
++		.data = 0,
++	};
+ 
+ 	igt_fixture {
+ 		drm_fd = drm_open_driver(DRIVER_XE);
+ 		igt_require_fd(drm_fd);
+ 		devid = intel_get_drm_devid(drm_fd);
+-		igt_require(IS_PONTEVECCHIO(devid) || intel_graphics_ver(devid) >= IP_VER(20, 0));
 +
-+	/* Close any open stream fd before fork() */
-+	if (stream_fd >= 0)
-+		eu_stall_close(stream_fd);
- 
- 	paranoid = read_u64_file(OBSERVATION_PARANOID);
- 
-@@ -395,9 +419,8 @@ static void test_non_privileged_access(int drm_fd)
- 
- 		igt_drop_root();
- 
--		stream_fd = xe_eu_stall_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props);
--		igt_require_fd(stream_fd);
--		close(stream_fd);
-+		stream_fd = eu_stall_open(drm_fd, &props);
-+		eu_stall_close(stream_fd);
- 	}
- 
- 	igt_waitchildren();
-@@ -472,7 +495,7 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int ite
- 	uint32_t num_samples, num_drops;
- 	struct igt_helper_process work_load = {};
- 	struct sigaction sa = { 0 };
--	int ret, flags, stream_fd;
-+	int ret, flags;
- 	uint64_t total_size;
- 	uint8_t *buf;
- 
-@@ -518,8 +541,7 @@ static void test_eustall(int drm_fd, uint32_t devid, bool blocking_read, int ite
- 		properties[3] = query_eu_stall_data->sampling_rates[0];
- 	igt_info("Sampling Rate: %" PRIu64 "\n", properties[3]);
- 
--	stream_fd = xe_eu_stall_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &props);
--	igt_require_fd(stream_fd);
-+	stream_fd = eu_stall_open(drm_fd, &props);
- 
- 	if (!blocking_read)
- 		flags = O_CLOEXEC | O_NONBLOCK;
-@@ -592,7 +614,7 @@ enable:
- 	if (--iter)
- 		goto enable;
- 
--	close(stream_fd);
-+	eu_stall_close(stream_fd);
- 	free(buf);
- }
- 
+ 		igt_require_f(igt_get_gpgpu_fillfunc(devid), "no gpgpu-fill function\n");
+ 		igt_require_f(!stat(OBSERVATION_PARANOID, &sb), "no observation_paranoid file\n");
++
++		ret = igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
++		igt_skip_on_f(ret == -1 && errno == ENODEV,
++			      "EU stall monitoring is not available on this platform\n");
++		igt_skip_on_f(ret == -1 && errno == EINVAL,
++			      "EU stall monitoring is not supported in the driver\n");
++		igt_assert_neq(query.size, 0);
++
++		query_eu_stall_data = malloc(query.size);
++		igt_assert(query_eu_stall_data);
++
++		query.data = to_user_pointer(query_eu_stall_data);
++		igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++		igt_assert(query_eu_stall_data->num_sampling_rates > 0);
++		if (p_rate == 0)
++			p_rate = query_eu_stall_data->sampling_rates[0];
++
+ 		if (output_file) {
+ 			output = fopen(output_file, "w");
+ 			igt_require(output);
 -- 
 2.48.1
 
