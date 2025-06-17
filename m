@@ -4,72 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 785F0C7115B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D14AC7115F
 	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 14:06:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A10B110E727;
-	Tue, 17 Jun 2025 14:06:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D44CD10E72B;
+	Tue, 17 Jun 2025 14:06:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NG5PPnWz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MWLbJUYb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC27110E727
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 14:06:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98AF610E727
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 14:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750169181; x=1781705181;
- h=from:subject:date:message-id:mime-version:
- content-transfer-encoding:to:cc;
- bh=9axi0haCdTEmBKtgsrBc8OYrB6hj3DqO2qSOi4I1MHE=;
- b=NG5PPnWzdZfoW7dxRjYqhcNzgfDEtqxIodJsNkjKtDt8eSVkssJHSOZA
- aV0sZOl7TD5AEmJ4zCKyLF0QnVtK8Sg76GBhghdCMefUDxjzjnszGR8H1
- TbPYD7yszP2X9E2g1BOtFpwsgtIW5DnzLqYkCDiKelhWjZVkLh9db35M7
- PpSViqx9+n0G0tl2Wn55Kpjl235ZKHDcxhW8HIXlB24yCzKnt9KDwIbwb
- 62Cy8mvCdfiFLR2LazZPiBqmajOAGOJe2WyTp4NTL1AywCl7kHUcW5iB1
- 9IygwHW35jOABtFZtZ5Njk9DbNjbkKFEcNBw1lCImxBqMJD22ZPaXdoBg Q==;
-X-CSE-ConnectionGUID: Klo3/xAQQSigIR1D83WizA==
-X-CSE-MsgGUID: zfu8tLMNT2Gx0kE10D+Wxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52431603"
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="52431603"
+ t=1750169182; x=1781705182;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:references:in-reply-to:to:cc;
+ bh=ZEA0P4OELLhZT0FRICI6AniZOQJxu+5CDMJ79vuXlzA=;
+ b=MWLbJUYbBFtbZOP0NhaRlL3Hon67ImaRCzsLFecqiYUx4xJB+1AhtDnI
+ T2RhSTYIS8DiV9dZAWIWQc3rsBZPHGfpuePmwSq2FauhIyh6A1WTYTIZA
+ UDXGKN3i7AQtA8EyCSmIxPLhjDTuMl0nc47AKUbr9GASHbOAXm246sMnH
+ 6rQ+3ipNpUX8nZrLaXZP0I4Oa+UUxHUdFvxAHijw9HFcZbgx2p7mrF7EM
+ eO+gkBW5ug7RtwqKkawDZ7jqtKIvq+pN3sXaKH8vTgpsGEEuHj9ErYWL4
+ dVvcTnbz/HuzYkOMEjXH4IOET31Oodz2h4VgA4ugKrauh+KuUh+aIzRdN A==;
+X-CSE-ConnectionGUID: rWGES/kdRmOriKPlvNXDLw==
+X-CSE-MsgGUID: vjIJxsQxQC+wdKZ07WwZ3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52431604"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="52431604"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 07:06:20 -0700
-X-CSE-ConnectionGUID: FucufKx/T62VJngEg0Zn4Q==
-X-CSE-MsgGUID: CuSuGSwJQLSkgjfX+qxzNA==
+ 17 Jun 2025 07:06:22 -0700
+X-CSE-ConnectionGUID: T+anQnUsRKeXtHvodpzSwQ==
+X-CSE-MsgGUID: byZN55O6RkGKexxPNfxjMw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="172036305"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="172036309"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 07:06:19 -0700
+ 17 Jun 2025 07:06:20 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH 0/3] gitlab-ci: bump fedora version to the latest
-Date: Tue, 17 Jun 2025 16:05:22 +0200
-Message-Id: <20250617-bump_fedora_to_42-v1-0-d04e6a0455fd@intel.com>
+Date: Tue, 17 Jun 2025 16:05:23 +0200
+Subject: [PATCH 1/3] gitlab-ci: build docs before installation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACJ2UWgC/x3MTQ7CIBBA4as0s5ZYEEz0KsaQAaaWBT8ZqDFpe
- nfR5bd4b4dGHKnBfdqB6R1bLHlAnibwK+YXiRiGQc3KzFd5EW5L1S4UCqPtxWollA7a3YzRzks
- YXWVa4uf/fDyHHTYSjjH79XfaautMmM4JWyeG4/gCjQ9Q/4UAAAA=
-X-Change-ID: 20250613-bump_fedora_to_42-24d4b9554bc1
+Message-Id: <20250617-bump_fedora_to_42-v1-1-d04e6a0455fd@intel.com>
+References: <20250617-bump_fedora_to_42-v1-0-d04e6a0455fd@intel.com>
+In-Reply-To: <20250617-bump_fedora_to_42-v1-0-d04e6a0455fd@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
  Ryszard Knop <ryszard.knop@intel.com>, 
  Petri Latvala <adrinael@adrinael.net>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=819;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=865;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=9axi0haCdTEmBKtgsrBc8OYrB6hj3DqO2qSOi4I1MHE=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoUXYr8fVCfb30M6fT3nz9Je6Ge4Ju4jGuFLatC
- vSRbI+qITyJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaFF2KwAKCRAjYrKT3hD9
- 11w7C/99dYC0rCAn49uvgSjoFj1DND6MbUpj3rD2hq9DbN2pjMKTCoQwL5RXqzdRqUglCyIyaZJ
- U/ZrgBjwxmRCAZHrypoW9LDW8uLZdvQ9PdrfUAfTv8NJRnNq0X8NSQbA0SXuX95Iz92V+2ZtFJa
- F2y0QxFgQIPF3JnzzSW7J/SZRiUwz0XNb8RkQ4j3TyioOV0gUeKQX57HfXkGWCH2rQIUe5GCtAJ
- V6COPz4L6VyZUMwkduXZ6qrqho5u6VSgPvIexzi4h3Uld6+SBHWR+kp2ARddpe0gIL4nM6VFk3D
- 7HyDlP5B/4FdOb5i4bO33uDJrzW837gVEkmRQp2RJakLuwolhyXlAsMNSvvAHFifhoEGD7VQZiW
- v+eOhihsc2Hrlz3wJ/ce2yIu5TYRtN14AZ5S/uno+MJ/t20GCPHLBE6E4k7T5jn2KglzmKaZdea
- sbffXlS5U4Fk2R9/OYzFdp/9gFtJe2XEilR3hs04dB28jRcC5Hwg6leZIWPxxZWwAXDdE=
+ bh=ZEA0P4OELLhZT0FRICI6AniZOQJxu+5CDMJ79vuXlzA=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoUXYsIj3/B2QLgUGioA6gHQFqfF0NeUSLdwPcL
+ TdlUXIn5R+JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaFF2LAAKCRAjYrKT3hD9
+ 10HDDACzrUmd5rfCKrz2cc7GIkOEZLcaiPXhdZEWrwAzcYYfeIY+6RZhmN1ytET3gPoDwZ61qP6
+ GLT3avZHdfMq/QyseufNI+okwHYTWILgwM1gpgCIBzl/78R8vU91ylUcQVZrG1Coa4WczR5qCiP
+ EsrQ7E7reE6mAJncko7HdzBFaR0BRalmfUnnq/nBnGozmQUnGpOj+o8F/HiXwBLVDahLueE7eDo
+ QXMUxrh5+n4gwDzJgsEFDtBTTxEv6wkx8ZU/0w8H/4VAUwL6PG+imOdV0G2Lb9EHMrqEMUonCFf
+ T2fBniqTlX19CNw7p0l73mUcp/EVka4eekRz7OyRWWsd+SagBCLv4JqehoLUzmoKRFbPPM4Bnj0
+ xO5t88V7bb1odF4wyHiYgIUrvB3W299hyv7qhWV5j6TRn2WcXHsqoIPCTF2jH80tPoQn+AAzGa2
+ 7Zjt8nynyIZoIbfoOB55m1Xd19agFbDKzlO6zU5Fu5l279C6iCvyTZc+0Drqcq7I39gbQ=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -87,27 +85,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are two preparatory patches before fedora upgrade.
-They are required to pass gitlab-ci pipelines after fedora upgrade.
-Tested pipeline logs are here:
-https://gitlab.freedesktop.org/andrzej.hajda/igt-gpu-tools/-/pipelines/1452050
+The proper way seems to 1st build then install.
+Not sure why it works with old gtkdoc, but newer one
+reports error.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
-Andrzej Hajda (3):
-      gitlab-ci: build docs before installation
-      lib/tests/igt_assert: use volatile cast in igt_assert
-      Dockerfile: bump fedora version to the newest one
+ .gitlab-ci.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- .gitlab-ci.yml          | 2 +-
- Dockerfile.build-fedora | 5 +++--
- lib/tests/igt_assert.c  | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
----
-base-commit: a0d787e069ce10aa444c54b7d1ffdf5894826c68
-change-id: 20250613-bump_fedora_to_42-24d4b9554bc1
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 587bf884708b315b3c015fec9467f7993bd56417..637112e4e10d678a70c9a6964ec9b2ce55876c34 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -76,8 +76,8 @@ build:tests-fedora:
+   script:
+     - meson setup --prefix=/opt/igt $MESON_OPTIONS build
+     - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
+-    - DESTDIR="$PWD/installdir" ninja -C build install
+     - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
++    - DESTDIR="$PWD/installdir" ninja -C build install
+   artifacts:
+     paths:
+       - build
 
-Best regards,
 -- 
-Andrzej Hajda <andrzej.hajda@intel.com>
+2.43.0
 
