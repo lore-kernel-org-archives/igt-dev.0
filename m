@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B59BC71136
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 16:24:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 590E4C71157
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 16:24:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0263010E1A3;
-	Tue, 17 Jun 2025 16:24:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0BEA310E41F;
+	Tue, 17 Jun 2025 16:24:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RMNxbKvU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DeEaTfUX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22AA110E1A3
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 16:24:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3486F10E415
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 16:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750177468; x=1781713468;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+acsCkAJFpaj5OSrQl3OuKd8YzNwrtDMVe32BlcdS+Q=;
- b=RMNxbKvUEpI4k+GdjSnDkyMPOzMUY9aYhWUPJfHT66/hD1uQhjLDhslK
- sjKzUEw+Kuk9M4bXtK8IakgQN9UibHU4jTJ+8E0zq7JhIwMDC2OYHVs7W
- jr0xpzC5pdelzspuxxcoagvGOH+xdJge6vaBDNUJAHZnfHhrJgCxim79h
- QZuaalGPo6QKcLK6mM6J1bjcbPjE4PD9BbdbB7NXydLODbSV2EP5I8v3T
- bjHo6NOeoEE0loGGyx14WmcwO8777oug4uwsVv59ctMjjbi/qVQE+Qrnt
- OtHSOpxDyIvwPMsjLeTgBwcW5c9K7WzD6nWArSNrMDnhxjs9cjvH/x2Wx w==;
-X-CSE-ConnectionGUID: F+EZ4riiRoGqGaZD4Z6LiA==
-X-CSE-MsgGUID: NuFRIZZTRjGFdubC+U+M8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52224042"
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="52224042"
+ t=1750177469; x=1781713469;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Ho9ixbC8fbcnfO5mUqR7rD4854kBO2WxStawSxlth6I=;
+ b=DeEaTfUX5jIpixaBGuykDOZ2t4tL6LQsFL3gmmzj+DtT079Z7rV7UQTw
+ PZpWj/lVBn1mYg3Qt4JeBbYHu0En2Z19KZgqUeMIbUVAaCH6iH2pJRlJ3
+ OMlC5Qt6XKbqXqtDDV9Wu0Ha7swYgqASrCS/IgvYvmCaIZ+AgUo5TAksJ
+ SrMaSOwaOMfh1wF+01nHIy0OunPv2s2RsvUKHIwrmUeSxceMJ0yfvIzGd
+ UHWMUwCq+8IVv8KrYJsrj2GemxF1zL9H8fxRYwoXazl1UDgF5/C4F3HPn
+ fGk9uQ7WgpqdMktzIlHzdn5THuH1rpkjagvO5EuN3mFBMHcyT8P9Qp3ME w==;
+X-CSE-ConnectionGUID: Ofa0RTGvSp+iDAOdXshJTw==
+X-CSE-MsgGUID: CCZr0ojNQeWjn88HYpiU3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52224048"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="52224048"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 09:24:28 -0700
-X-CSE-ConnectionGUID: 6c4cg4P9RFimdYU2w+PHbQ==
-X-CSE-MsgGUID: TVt8pyV4RDq5jCh9kTKHZQ==
+ 17 Jun 2025 09:24:29 -0700
+X-CSE-ConnectionGUID: XT/DvZSvQA2VLUMPiuirNQ==
+X-CSE-MsgGUID: sAOKhEBhTMG3b8A9nX/2Xg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="179821070"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="179821076"
 Received: from unknown (HELO rgsanthosh-System-Product-Name.iind.intel.com)
  ([10.190.238.65])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 09:24:26 -0700
+ 17 Jun 2025 09:24:27 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, uma.shankar@intel.com,
  Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v4 0/2] tests/kms_flip: Improve frame timing checks for
- high refresh rates
-Date: Tue, 17 Jun 2025 21:53:50 +0530
-Message-ID: <20250617162353.3348190-1-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v4 1/2] tests/kms_flip: Default to tiled modifiers for
+ stable flips on high refresh panels
+Date: Tue, 17 Jun 2025 21:53:51 +0530
+Message-ID: <20250617162353.3348190-2-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250617162353.3348190-1-ramanaidu.naladala@intel.com>
+References: <20250617162353.3348190-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,17 +70,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch will improve the test timing checks.
+Using tiled modifiers as the default significantly improves flip
+test pass rates, especially on high refresh rate panels.
 
-Naladala Ramanaidu (2):
-  tests/kms_flip: Default to tiled modifiers for stable flips on high
-    refresh panels
-  tests/kms_flip: Track and report unexpected events with pass rate
-    metric
+Consolidated report on 10 samples on each pipe as below.
+    - PipeA:  95.01% -> 100.00% (Improved by 4.99%)
+    - PipeB:  91.57% -> 100.00% (Improved by 8.43%)
+    - PipeC:  73.17% -> 97.94% (Improved by 24.77%)
+    - PipeD:  76.64% -> 98.89% (Improved by 22.25%)
 
- tests/kms_flip.c | 40 +++++++++++++++++++++++++---------------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/kms_flip.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 65016c66d..ca31ef7dd 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -282,6 +282,8 @@ static drmModeConnector *last_connector;
+ 
+ uint32_t *fb_ptr;
+ 
++static igt_display_t display;
++
+ struct type_name {
+ 	int type;
+ 	const char *name;
+@@ -1533,7 +1535,15 @@ restart:
+ 	if (o->flags & TEST_PAN)
+ 		o->fb_width *= 2;
+ 
+-	modifier = DRM_FORMAT_MOD_LINEAR;
++	if (igt_display_has_format_mod(&display, DRM_FORMAT_XRGB8888,
++				       I915_FORMAT_MOD_4_TILED))
++		modifier = I915_FORMAT_MOD_4_TILED;
++	else if (igt_display_has_format_mod(&display, DRM_FORMAT_XRGB8888,
++					    I915_FORMAT_MOD_X_TILED))
++		modifier = I915_FORMAT_MOD_X_TILED;
++	else
++		modifier = DRM_FORMAT_MOD_LINEAR;
++
+ 	if (o->flags & TEST_FENCE_STRESS)
+ 		modifier = I915_FORMAT_MOD_X_TILED;
+ 
+@@ -2034,7 +2044,6 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 		{ 0, TEST_BO_TOOBIG | TEST_NO_2X_OUTPUT, "bo-too-big" },
+ 		{ 10, TEST_FLIP | TEST_SUSPEND, "flip-vs-suspend" },
+ 	};
+-	igt_display_t display;
+ 	int i;
+ 
+ 	igt_fixture {
 -- 
 2.43.0
 
