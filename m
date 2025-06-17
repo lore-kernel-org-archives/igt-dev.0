@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D14AC7115F
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 14:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B216C7115A
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 14:06:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D44CD10E72B;
-	Tue, 17 Jun 2025 14:06:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E126110E71A;
+	Tue, 17 Jun 2025 14:06:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MWLbJUYb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LHC9CEhM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98AF610E727
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 14:06:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83B8210E72C
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 14:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750169182; x=1781705182;
+ t=1750169185; x=1781705185;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=ZEA0P4OELLhZT0FRICI6AniZOQJxu+5CDMJ79vuXlzA=;
- b=MWLbJUYbBFtbZOP0NhaRlL3Hon67ImaRCzsLFecqiYUx4xJB+1AhtDnI
- T2RhSTYIS8DiV9dZAWIWQc3rsBZPHGfpuePmwSq2FauhIyh6A1WTYTIZA
- UDXGKN3i7AQtA8EyCSmIxPLhjDTuMl0nc47AKUbr9GASHbOAXm246sMnH
- 6rQ+3ipNpUX8nZrLaXZP0I4Oa+UUxHUdFvxAHijw9HFcZbgx2p7mrF7EM
- eO+gkBW5ug7RtwqKkawDZ7jqtKIvq+pN3sXaKH8vTgpsGEEuHj9ErYWL4
- dVvcTnbz/HuzYkOMEjXH4IOET31Oodz2h4VgA4ugKrauh+KuUh+aIzRdN A==;
-X-CSE-ConnectionGUID: rWGES/kdRmOriKPlvNXDLw==
-X-CSE-MsgGUID: vjIJxsQxQC+wdKZ07WwZ3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52431604"
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="52431604"
+ bh=hNoycAxqm7k4DBgBHXbzFLipm426XG4ktd/Y5bujoow=;
+ b=LHC9CEhMd6h8lYE0xh66sMG498fPV6kBarC5RwRUv839iV7brS4a9bne
+ AJTTqqlNXVsD8uusosJXJjtI/dfiFKOmg37QDse6eqY/pYKx1iqiqV6Lv
+ 9Bw46VkFO/xR5HAW2cNVsB9gcStbe7gEWD9RG/DUQ9l3mqSPriCWbgyq5
+ u7E+SvfXy1EE23fmmF8mUkjfF3xSqvx/px3TtTXqjsREbtitdC2iu1dPe
+ 6lhqoPUr8ucuvoGTtSFqlD8JIXCFaBr0HNW0L2jh7qaD+RyEJxwW/zLPO
+ f89uZDrofgE4DiLIjn0Y8nOxpyuN2RX8lOv/sZfnDZwIxAsHysrnIy0Gg w==;
+X-CSE-ConnectionGUID: QMWP4K6KRlKalQBWF0zVXQ==
+X-CSE-MsgGUID: 5pDLSelKSUadj8X56nEDKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52431612"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="52431612"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 07:06:22 -0700
-X-CSE-ConnectionGUID: T+anQnUsRKeXtHvodpzSwQ==
-X-CSE-MsgGUID: byZN55O6RkGKexxPNfxjMw==
+ 17 Jun 2025 07:06:24 -0700
+X-CSE-ConnectionGUID: CWMcx2J/Sp+w5yFW2vDSWA==
+X-CSE-MsgGUID: zmzLp4PCRu+dFUqoRwSlDw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="172036309"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="172036324"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 07:06:20 -0700
+ 17 Jun 2025 07:06:23 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Tue, 17 Jun 2025 16:05:23 +0200
-Subject: [PATCH 1/3] gitlab-ci: build docs before installation
+Date: Tue, 17 Jun 2025 16:05:25 +0200
+Subject: [PATCH 3/3] Dockerfile: bump fedora version to the newest one
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250617-bump_fedora_to_42-v1-1-d04e6a0455fd@intel.com>
+Message-Id: <20250617-bump_fedora_to_42-v1-3-d04e6a0455fd@intel.com>
 References: <20250617-bump_fedora_to_42-v1-0-d04e6a0455fd@intel.com>
 In-Reply-To: <20250617-bump_fedora_to_42-v1-0-d04e6a0455fd@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -56,18 +56,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=865;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=846;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=ZEA0P4OELLhZT0FRICI6AniZOQJxu+5CDMJ79vuXlzA=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoUXYsIj3/B2QLgUGioA6gHQFqfF0NeUSLdwPcL
- TdlUXIn5R+JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaFF2LAAKCRAjYrKT3hD9
- 10HDDACzrUmd5rfCKrz2cc7GIkOEZLcaiPXhdZEWrwAzcYYfeIY+6RZhmN1ytET3gPoDwZ61qP6
- GLT3avZHdfMq/QyseufNI+okwHYTWILgwM1gpgCIBzl/78R8vU91ylUcQVZrG1Coa4WczR5qCiP
- EsrQ7E7reE6mAJncko7HdzBFaR0BRalmfUnnq/nBnGozmQUnGpOj+o8F/HiXwBLVDahLueE7eDo
- QXMUxrh5+n4gwDzJgsEFDtBTTxEv6wkx8ZU/0w8H/4VAUwL6PG+imOdV0G2Lb9EHMrqEMUonCFf
- T2fBniqTlX19CNw7p0l73mUcp/EVka4eekRz7OyRWWsd+SagBCLv4JqehoLUzmoKRFbPPM4Bnj0
- xO5t88V7bb1odF4wyHiYgIUrvB3W299hyv7qhWV5j6TRn2WcXHsqoIPCTF2jH80tPoQn+AAzGa2
- 7Zjt8nynyIZoIbfoOB55m1Xd19agFbDKzlO6zU5Fu5l279C6iCvyTZc+0Drqcq7I39gbQ=
+ bh=hNoycAxqm7k4DBgBHXbzFLipm426XG4ktd/Y5bujoow=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBoUXYtHseWNCq4/SBf+6s7tBN2nZxY06G2v1+CT
+ WiX7dF1MIyJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaFF2LQAKCRAjYrKT3hD9
+ 12WuC/9nQEi6WQrkHULJuHXkahywowzw08UdsjzjnX4vu+O0a/A842t+lYTgfuYMTK/56lluyDz
+ E3/N1JWeM8ccXPHSFk3a3zzAtVFXE0QllStvAhI4lykzQxPlVKX6YTly1gVIDzQS5hLwCKGlhzs
+ /5w+/ItZy/h/X4kFMSbkrWjwfs1b/NpLQ6oM3rXtHDjctjzXrHixst9O2j3h5mMlY5SGb0oajq1
+ 6jUbrP0IITszH7r6mqsWtkOtMM3cDMtOX0GvcF8wo7NFeQbOjlTx2iE3olyPaTIlSd//zgxI+jJ
+ UfRmPYbxMRktneY32u6QScAW9wApkwNWSBOCB9l7DKefbO5dw/B+pk2vSbILd34I8NZaoe1t5z0
+ 0zR/On+bVqGTjLIMM8Bbqm0xqnJcGUscUyxPyA8cYJePdijg08RzGbLl/U0P1lo8y6hWfdbFES7
+ Rh/Bx+kczvoEm2azXnyAzJGsIntDfewCbxCxgs8NGoQGpe3oJ2uXYi6uJPmZnIf0HJxDA=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -85,29 +85,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The proper way seems to 1st build then install.
-Not sure why it works with old gtkdoc, but newer one
-reports error.
+With fixed few issues in previos patches new fedora
+can be used for build tests.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- .gitlab-ci.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Dockerfile.build-fedora | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index 587bf884708b315b3c015fec9467f7993bd56417..637112e4e10d678a70c9a6964ec9b2ce55876c34 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -76,8 +76,8 @@ build:tests-fedora:
-   script:
-     - meson setup --prefix=/opt/igt $MESON_OPTIONS build
-     - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
--    - DESTDIR="$PWD/installdir" ninja -C build install
-     - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
-+    - DESTDIR="$PWD/installdir" ninja -C build install
-   artifacts:
-     paths:
-       - build
+diff --git a/Dockerfile.build-fedora b/Dockerfile.build-fedora
+index 588738ac423e0d274fa42dfa4043b44d4cb1bad7..9399c0a7dbabd2ee1d78993c7d2e245f957b2ea7 100644
+--- a/Dockerfile.build-fedora
++++ b/Dockerfile.build-fedora
+@@ -1,11 +1,12 @@
+-FROM fedora:33
++FROM fedora:42
+ 
+ RUN dnf install -y \
+ 	gcc flex bison libatomic meson ninja-build xdotool \
++	'pkgconfig(libcurl)' \
+ 	'pkgconfig(libdrm)' \
+ 	'pkgconfig(pciaccess)' \
+ 	'pkgconfig(libkmod)' \
+-	'pkgconfig(libprocps)' \
++	'pkgconfig(libproc2)' \
+ 	'pkgconfig(libunwind)' \
+ 	'pkgconfig(libdw)' \
+ 	'pkgconfig(pixman-1)' \
 
 -- 
 2.43.0
