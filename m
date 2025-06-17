@@ -4,56 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63D23C71157
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 10:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEB50C71157
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 10:58:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E4B9710E4B0;
-	Tue, 17 Jun 2025 10:56:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 740CA10E144;
+	Tue, 17 Jun 2025 10:58:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E8wQWVTw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="At//JRTd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3079F10E4B0
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 10:56:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95E3510E144;
+ Tue, 17 Jun 2025 10:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750157786; x=1781693786;
- h=date:from:to:subject:message-id:references:mime-version:
- in-reply-to; bh=rY40VySTVeHkJkxS0KmPkSI2vAUx4+D/KDYINawaFbA=;
- b=E8wQWVTwKLjloIT9Xq4NXl0k80CddS8h2GeB7p+P1TLgF+OYK7Ar/OXZ
- uaM4bWhGIX+8b6WmqokEuXrdMT32VTqIX6KR2IgclNqhpDrfH6qkRVbQ7
- JgAIF2wUhHUbih4Db7EaCsnu4lUWa0We2WAFtb84vzufCx8lGTkDRxsnO
- 1DYA9X0eX5JTullExMyGjtCrdeS++2lLGuNIeS+EVH9LIxyMu34QvngxF
- Cbk96NK+IKIcLuwp+8VAtZfxerFKaypKkUdCS3PIKcy2DDVcPf8xjb2gH
- Pf9cMB1jLPQ+1n3Uz9kCdGZExdm9lHxM3BG2BZhLqD8o6f0EqNmirCkQg g==;
-X-CSE-ConnectionGUID: 8KR9rBicQyeMY+txDVZOPQ==
-X-CSE-MsgGUID: 3vXn6Zz1T+yA64DQ2L7RBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52191242"
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="52191242"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 03:56:25 -0700
-X-CSE-ConnectionGUID: dhbnmCAVSJaZvVmWWoGBEw==
-X-CSE-MsgGUID: 9lt6BRrQTjeWa+HOKanqrA==
+ t=1750157913; x=1781693913;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=UVozgMCUMvhwLliqUrJOJt8gt865PceT25LsjKfLjy4=;
+ b=At//JRTd8e2de7lk1NOQ7YyFcsuSZEGOhnafJvnH1eJf1tq2lZe4lo4d
+ QTPNDiwDE4qFzaTGqX/pT4GvxRPn2Jf/fE1Dc6P0HutvR1zlExB0nGRvm
+ t9WniXMMKqjLH/N6mxfn+TE02k7Q8d0fNeX8yfhTqJllN+Kt6gMOQeXT3
+ 6dJA7SfiIcVvDfpeQYCt2H2564McVGUyQ8EfGTyBR7dP8ZokPaYX025Gf
+ IUU7UweJrfeMZQoHDb/dNonodtJRXj7/QzVfcmEXRRpMRGxNh9VbdHQOW
+ ZantE2+4FKSGmFH39lsPCMeZO4KqOR+sphsoaibcI/VLJDlyUAS7wW4v7 g==;
+X-CSE-ConnectionGUID: JkpL5hdKRmeMNPUP39iLtA==
+X-CSE-MsgGUID: ebGu9+TeQkK1GI6rWlBjVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="54943627"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="54943627"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2025 03:58:32 -0700
+X-CSE-ConnectionGUID: BD+pd9HrQD6kEoJcL8k3qg==
+X-CSE-MsgGUID: 9o5Hi/aPTEmVWNRocbt4pA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="154038439"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="153941668"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 03:56:25 -0700
-Date: Tue, 17 Jun 2025 12:56:22 +0200
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 03:58:31 -0700
+Date: Tue, 17 Jun 2025 12:58:29 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFU?= =?utf-8?Q?=3A?= failure for
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
  runner/executor: Abort if dmesg is flooded
-Message-ID: <20250617105622.4jeyedsnop7liutl@kamilkon-DESK.igk.intel.com>
+Message-ID: <20250617105829.ywjcafwmk2euw2i7@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20250613162013.103165-1-kamil.konieczny@linux.intel.com>
- <174983896187.78228.10176676452917222262@1538d3639d33>
+ <174999391697.80309.9723666748976748600@1538d3639d33>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <174983896187.78228.10176676452917222262@1538d3639d33>
+In-Reply-To: <174999391697.80309.9723666748976748600@1538d3639d33>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,26 +72,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi igt-dev,
-On 2025-06-13 at 18:22:41 -0000, Patchwork wrote:
+On 2025-06-15 at 13:25:16 -0000, Patchwork wrote:
+
+please do not file a bug for ABORT with 'Dmesg ratio exceeded'
+
+This is new experimental feature in igt_runner.
+
+Regards,
+Kamil
+
 > == Series Details ==
 > 
 > Series: runner/executor: Abort if dmesg is flooded
 > URL   : https://patchwork.freedesktop.org/series/150246/
 > State : failure
-
-Please do not file a bug for ABORT with 'Dmesg ratio exceeded'
-
-This is introduced by this patch to igt_runner,
-also no need for full i915 run as this is experimental.
-
-Regards,
-Kamil
-
-
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from IGT_8411 -> IGTPW_13295
+> CI Bug Log - changes from XEIGT_8411_FULL -> XEIGTPW_13295_FULL
 > ====================================================
 > 
 > Summary
@@ -97,68 +97,81 @@ Kamil
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with IGTPW_13295 absolutely need to be
+>   Serious unknown changes coming with XEIGTPW_13295_FULL absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_13295, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in XEIGTPW_13295_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13295/index.html
+>   
 > 
-> Participating hosts (44 -> 43)
+> Participating hosts (4 -> 3)
 > ------------------------------
 > 
->   Missing    (1): fi-snb-2520m 
+>   Missing    (1): shard-adlp 
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in IGTPW_13295:
+>   Here are the unknown changes that may have been introduced in XEIGTPW_13295_FULL:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@gem_lmem_swapping@parallel-random-engines:
->     - fi-blb-e6850:       NOTRUN -> [ABORT][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13295/fi-blb-e6850/igt@gem_lmem_swapping@parallel-random-engines.html
+>   * igt@kms_async_flips@test-cursor-atomic@pipe-b-edp-1:
+>     - shard-lnl:          NOTRUN -> [SKIP][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/shard-lnl-2/igt@kms_async_flips@test-cursor-atomic@pipe-b-edp-1.html
 > 
->   * igt@i915_module_load@reload:
->     - fi-cfl-guc:         NOTRUN -> [ABORT][2]
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13295/fi-cfl-guc/igt@i915_module_load@reload.html
+>   * igt@xe_drm_fdinfo@parallel-utilization-single-idle:
+>     - shard-dg2-set2:     [PASS][2] -> [ABORT][3]
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8411/shard-dg2-435/igt@xe_drm_fdinfo@parallel-utilization-single-idle.html
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/shard-dg2-436/igt@xe_drm_fdinfo@parallel-utilization-single-idle.html
 > 
->   * igt@i915_selftest@live:
->     - bat-jsl-1:          NOTRUN -> [DMESG-WARN][3] +1 other test dmesg-warn
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13295/bat-jsl-1/igt@i915_selftest@live.html
+>   * igt@xe_exec_system_allocator@threads-shared-vm-many-mmap-remap:
+>     - shard-lnl:          NOTRUN -> [ABORT][4] +1 other test abort
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/shard-lnl-8/igt@xe_exec_system_allocator@threads-shared-vm-many-mmap-remap.html
 > 
->   * igt@kms_flip@basic-flip-vs-wf_vblank:
->     - fi-kbl-7567u:       [PASS][4] -> [DMESG-WARN][5] +1 other test dmesg-warn
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8411/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-wf_vblank.html
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13295/fi-kbl-7567u/igt@kms_flip@basic-flip-vs-wf_vblank.html
-> 
->   * igt@kms_hdmi_inject@inject-audio:
->     - bat-kbl-2:          [PASS][6] -> [ABORT][7]
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8411/bat-kbl-2/igt@kms_hdmi_inject@inject-audio.html
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13295/bat-kbl-2/igt@kms_hdmi_inject@inject-audio.html
-> 
->   * igt@vgem_basic@dmabuf-fence:
->     - fi-skl-6600u:       NOTRUN -> [ABORT][8]
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13295/fi-skl-6600u/igt@vgem_basic@dmabuf-fence.html
+>   * igt@xe_exec_system_allocator@twice-large-new-bo-map-nomemset:
+>     - shard-lnl:          [PASS][5] -> [ABORT][6] +16 other tests abort
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8411/shard-lnl-2/igt@xe_exec_system_allocator@twice-large-new-bo-map-nomemset.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/shard-lnl-8/igt@xe_exec_system_allocator@twice-large-new-bo-map-nomemset.html
 > 
 >   
 > #### Warnings ####
 > 
->   * igt@prime_self_import@basic-with_one_bo:
->     - bat-twl-2:          [ABORT][9] ([i915#14463]) -> [ABORT][10]
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8411/bat-twl-2/igt@prime_self_import@basic-with_one_bo.html
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13295/bat-twl-2/igt@prime_self_import@basic-with_one_bo.html
+>   * igt@kms_big_fb@y-tiled-64bpp-rotate-180:
+>     - shard-dg2-set2:     [SKIP][7] ([Intel XE#1124]) -> [ABORT][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8411/shard-dg2-435/igt@kms_big_fb@y-tiled-64bpp-rotate-180.html
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/shard-dg2-436/igt@kms_big_fb@y-tiled-64bpp-rotate-180.html
+> 
+>   * igt@kms_ccs@ccs-on-another-bo-4-tiled-mtl-mc-ccs:
+>     - shard-dg2-set2:     [SKIP][9] ([Intel XE#455] / [Intel XE#787]) -> [ABORT][10] +1 other test abort
+>    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8411/shard-dg2-433/igt@kms_ccs@ccs-on-another-bo-4-tiled-mtl-mc-ccs.html
+>    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/shard-dg2-464/igt@kms_ccs@ccs-on-another-bo-4-tiled-mtl-mc-ccs.html
+> 
+>   * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-continuous-sf:
+>     - shard-lnl:          [SKIP][11] ([Intel XE#2893]) -> [ABORT][12]
+>    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8411/shard-lnl-7/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-continuous-sf.html
+>    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/shard-lnl-4/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-continuous-sf.html
+> 
+>   * igt@xe_exec_system_allocator@many-execqueues-mmap-free-nomemset:
+>     - shard-dg2-set2:     [SKIP][13] ([Intel XE#4915]) -> [ABORT][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8411/shard-dg2-435/igt@xe_exec_system_allocator@many-execqueues-mmap-free-nomemset.html
+>    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/shard-dg2-435/igt@xe_exec_system_allocator@many-execqueues-mmap-free-nomemset.html
+> 
+>   * igt@xe_pxp@pxp-stale-bo-bind-post-suspend:
+>     - shard-dg2-set2:     [SKIP][15] ([Intel XE#4733]) -> [ABORT][16]
+>    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8411/shard-dg2-436/igt@xe_pxp@pxp-stale-bo-bind-post-suspend.html
+>    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/shard-dg2-435/igt@xe_pxp@pxp-stale-bo-bind-post-suspend.html
 > 
 >   
 > Known issues
 > ------------
 > 
->   Here are the changes found in IGTPW_13295 that come from known issues:
+>   Here are the changes found in XEIGTPW_13295_FULL that come from known issues:
 > 
+
 ...cut...
 
