@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F721C71136
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 19:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A073C71136
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 22:52:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 327EE10E799;
-	Tue, 17 Jun 2025 19:26:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BFA2710E18C;
+	Tue, 17 Jun 2025 22:52:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IDFNv5N+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DAIr6mZo";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0335B10E15F
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 19:26:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 734E210E18C
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 22:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750188416; x=1781724416;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XISU1gvRjMOl0GEI1cfwB2rcwUhvtMt4ZPM55lBFCKE=;
- b=IDFNv5N+TPf9fwmV56bHELVWIeWfJpyPM1rvhA54Hg5YrdzEObuupO+L
- c/0eyGC1BKtQVKvAyDptk0ZSI1S1jh9WHqhb7MFdn98/zP4m636Px5z5m
- j8a+22yt+DXQ09kBJMVFKaJ30i1Yz3X7u/fVwp1iVSr08N4ZhoUZOmFHn
- jW+7mJHXuQ21EE26B/CRGCA8fFpUrWu4cmWDMwOFOhPvPFgFQ3Ha0CITL
- U+54bX/pwpdndrvKBqJt4ul/gaGMEcD+lXGAeBQzLM4gQPnAjZUep77Kb
- HN1cZ0x7ZUDfB3vlQn3pixTFHRwQ00ecvlnXD8Tu8/NBBzexErR3nG4TU Q==;
-X-CSE-ConnectionGUID: hRIzufEbTmCSHLJ4ucMx6A==
-X-CSE-MsgGUID: gTxWE2HmTRGQkgAnzRGHvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52524002"
-X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; d="scan'208";a="52524002"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ t=1750200744; x=1781736744;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=GWYmHqcEQMIadVMyXkO04iw+ZBV5Xk/ojSEok7nzFEo=;
+ b=DAIr6mZoZsYYdigBBt4UV4A3BvUIC9J0a0BBLGtPdZ/UWh3arv+uhHXv
+ qmTY7yO3rjAE/0ortBDOMqc++saLHKqtisPkdilkn/8dmt9L/fvt4U9KG
+ UZmY9NB1I8NI5U4rJM6H5gRQdH8nGfvVOOc9pe3Yng+qOuimZIQKvLjxg
+ 81RpViMENnzGlqF4xQcxFj3Ay60wngwkUMC+Z96Pycx/uUMPknA4s8FbL
+ s5FvZqk0vMcxqZjaHdnaGww8F25oBZyt5RQVPAYpbMJXsqtm6KNai4EtP
+ NlpUVhLNe/tYG6hoPEQLG3z+lTgBiqCbbYM31Ks/OeQQq5Dp66d4zlF+a w==;
+X-CSE-ConnectionGUID: bDFVfNb6Q9iPymx/BqZioQ==
+X-CSE-MsgGUID: 7KHh03GjQRWshpu6i6040Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52539631"
+X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; d="scan'208";a="52539631"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 12:26:56 -0700
-X-CSE-ConnectionGUID: FJkiq6zhRoGH7LYcUyvDJg==
-X-CSE-MsgGUID: cJnrkAA+SEeA/8gQjeJKYA==
+ 17 Jun 2025 15:52:23 -0700
+X-CSE-ConnectionGUID: Y2LAOP2ERR6eve0b0rq8Bw==
+X-CSE-MsgGUID: xPk5I+MvQTqd5PnrgicZ5w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; d="scan'208";a="148807939"
-Received: from linux-panther-lake-client-platform.iind.intel.com (HELO
- linux-Lunar-Lake-Client-Platform.iind.intel.com) ([10.190.238.55])
- by fmviesa006.fm.intel.com with ESMTP; 17 Jun 2025 12:26:56 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; d="scan'208";a="154374892"
+Received: from mdroper-desk1.fm.intel.com ([10.1.39.133])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2025 15:52:23 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH v1 7/7] tests/intel/kms_psr2_sf: Enable the tests support
- variations based on the WAs
-Date: Wed, 18 Jun 2025 01:00:28 +0530
-Message-Id: <20250617193028.107483-8-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250617193028.107483-1-mohammed.thasleem@intel.com>
-References: <20250617193028.107483-1-mohammed.thasleem@intel.com>
+Cc: matthew.d.roper@intel.com
+Subject: [PATCH i-g-t] lib/xe_query: Fix doc string for
+ xe_device->memory_regions
+Date: Tue, 17 Jun 2025 15:52:14 -0700
+Message-ID: <20250617225213.43226-2-matthew.d.roper@intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,38 +66,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This update stops skipping fbc-* tests support variations based on the WAs.
+Due to a copy/paste error, the doc string did not match the field it was
+documenting.
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 ---
- tests/intel/kms_psr2_sf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/xe/xe_query.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 68842b020..3c328923e 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -179,6 +179,8 @@ IGT_TEST_DESCRIPTION("Tests to verify PSR2 selective fetch by sending multiple"
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index a84a6bfa5..1224a723a 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -36,7 +36,7 @@ struct xe_device {
+ 	/** @gt_list: gt info */
+ 	struct drm_xe_query_gt_list *gt_list;
  
- #define MAX_SCREEN_CHANGES 5
+-	/** @gt_list: bitmask of all memory regions */
++	/** @memory_regions: bitmask of all memory regions */
+ 	uint64_t memory_regions;
  
-+#define WA_FBC_DISABLED "16023588340"
-+
- enum operations {
- 	PLANE_UPDATE,
- 	PLANE_UPDATE_CONTINUOUS,
-@@ -561,6 +563,11 @@ static void prepare(data_t *data)
- 	igt_plane_set_position(primary, 0, 0);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
-+	/* FBC disabled: Wa_16023588340 */
-+	igt_skip_on_f(data->op_fbc_mode == FBC_ENABLED &&
-+		      !intel_is_fbc_supported(data->drm_fd, WA_FBC_DISABLED),
-+		      "WA has disabled FBC on BMG\n");
-+
- 	if (data->coexist_feature & FEATURE_DSC)
- 		igt_require_f(igt_is_dsc_enabled(data->drm_fd, output->name),
- 			      "DSC is not enabled\n");
+ 	/** @engines: hardware engines */
 -- 
-2.34.1
+2.49.0
 
