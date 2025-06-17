@@ -4,53 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A073C71136
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 22:52:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99577C71157
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 23:18:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BFA2710E18C;
-	Tue, 17 Jun 2025 22:52:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4537810E08B;
+	Tue, 17 Jun 2025 23:18:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DAIr6mZo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TZFDUOr+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 734E210E18C
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 22:52:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40A4610E08B
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 23:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750200744; x=1781736744;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=GWYmHqcEQMIadVMyXkO04iw+ZBV5Xk/ojSEok7nzFEo=;
- b=DAIr6mZoZsYYdigBBt4UV4A3BvUIC9J0a0BBLGtPdZ/UWh3arv+uhHXv
- qmTY7yO3rjAE/0ortBDOMqc++saLHKqtisPkdilkn/8dmt9L/fvt4U9KG
- UZmY9NB1I8NI5U4rJM6H5gRQdH8nGfvVOOc9pe3Yng+qOuimZIQKvLjxg
- 81RpViMENnzGlqF4xQcxFj3Ay60wngwkUMC+Z96Pycx/uUMPknA4s8FbL
- s5FvZqk0vMcxqZjaHdnaGww8F25oBZyt5RQVPAYpbMJXsqtm6KNai4EtP
- NlpUVhLNe/tYG6hoPEQLG3z+lTgBiqCbbYM31Ks/OeQQq5Dp66d4zlF+a w==;
-X-CSE-ConnectionGUID: bDFVfNb6Q9iPymx/BqZioQ==
-X-CSE-MsgGUID: 7KHh03GjQRWshpu6i6040Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52539631"
-X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; d="scan'208";a="52539631"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 15:52:23 -0700
-X-CSE-ConnectionGUID: Y2LAOP2ERR6eve0b0rq8Bw==
-X-CSE-MsgGUID: xPk5I+MvQTqd5PnrgicZ5w==
+ t=1750202283; x=1781738283;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=wVZgKzLpi5ldWrpbQTqacDNmF2+7ddqsLeI7W+Vt3HU=;
+ b=TZFDUOr+GsAM1CYPb7PGLmc+0T/yrim7M5yXQ+eKbjhgNfT870XUnzv4
+ 5yHffnLqalSMoTPF5s+DcGCcp/a+zr+E/xTZ3B4DV16gGd5GRVqabp6oH
+ pgpfVq6iCiqt5WmvAextI7Dp46b3rjb/2HXZovjixCIa6cBBs1FMwbcI6
+ 0uLNbOqilQJkVZFkwdctnmcuIjtJRnKP+2SxBqYI8IyVsXFVVwVHsxxKp
+ arVPtq6qA55uJygEPHA4z5VWLxHYPQcUbIWiT+CMqv09i418mrHVrqJl1
+ GNcYsuYpWY3uDB3fFcDTaqaybdvsmdkn0UkBKuWbI/fsRVVQAqVDyzq73 A==;
+X-CSE-ConnectionGUID: w0GHqaIOTe6532zuW84qwQ==
+X-CSE-MsgGUID: FYEsS4OxT0a/Gxz94Awb0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="62677790"
+X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; d="scan'208";a="62677790"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2025 16:18:03 -0700
+X-CSE-ConnectionGUID: 0jH0FNQZSTqtj9OEHVHq8w==
+X-CSE-MsgGUID: d6dXC0/jQDe3dWvTFZPTmg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; d="scan'208";a="154374892"
-Received: from mdroper-desk1.fm.intel.com ([10.1.39.133])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2025 15:52:23 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.d.roper@intel.com
-Subject: [PATCH i-g-t] lib/xe_query: Fix doc string for
+X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; d="scan'208";a="148859992"
+Received: from mabeegle-x13.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.183.135])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2025 16:18:03 -0700
+Date: Tue, 17 Jun 2025 16:18:02 -0700
+Message-ID: <8734bykled.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] lib/xe_query: Fix doc string for
  xe_device->memory_regions
-Date: Tue, 17 Jun 2025 15:52:14 -0700
-Message-ID: <20250617225213.43226-2-matthew.d.roper@intel.com>
-X-Mailer: git-send-email 2.49.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250617225213.43226-2-matthew.d.roper@intel.com>
+References: <20250617225213.43226-2-matthew.d.roper@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,27 +71,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Due to a copy/paste error, the doc string did not match the field it was
-documenting.
+On Tue, 17 Jun 2025 15:52:14 -0700, Matt Roper wrote:
+>
+> Due to a copy/paste error, the doc string did not match the field it was
+> documenting.
 
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
----
- lib/xe/xe_query.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index a84a6bfa5..1224a723a 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -36,7 +36,7 @@ struct xe_device {
- 	/** @gt_list: gt info */
- 	struct drm_xe_query_gt_list *gt_list;
- 
--	/** @gt_list: bitmask of all memory regions */
-+	/** @memory_regions: bitmask of all memory regions */
- 	uint64_t memory_regions;
- 
- 	/** @engines: hardware engines */
--- 
-2.49.0
-
+> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+> ---
+>  lib/xe/xe_query.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> index a84a6bfa5..1224a723a 100644
+> --- a/lib/xe/xe_query.h
+> +++ b/lib/xe/xe_query.h
+> @@ -36,7 +36,7 @@ struct xe_device {
+>	/** @gt_list: gt info */
+>	struct drm_xe_query_gt_list *gt_list;
+>
+> -	/** @gt_list: bitmask of all memory regions */
+> +	/** @memory_regions: bitmask of all memory regions */
+>	uint64_t memory_regions;
+>
+>	/** @engines: hardware engines */
+> --
+> 2.49.0
+>
