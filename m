@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D29BC7114A
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CD7DC71155
 	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 06:45:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0533F10E50B;
-	Tue, 17 Jun 2025 06:45:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E75DE10E50A;
+	Tue, 17 Jun 2025 06:45:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DEEnGFkY";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xrmzr888";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3B8610E50A
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 06:45:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D31BE10E505
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jun 2025 06:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750142731; x=1781678731;
+ t=1750142729; x=1781678729;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=eTfMnyxVOemzTMwOLWnglEheTjZ6pWJRWTxng500UDU=;
- b=DEEnGFkYhVdKjPq1W4WrLSd3hj+xtpYD3FScIDQNmxIdX5q2klxSnf3s
- dNmoYJZBHRJwpFQ0jG942MpaE7N/62TIRLHeU7i5on2w0fO7Kgg1jPiG+
- freAEaWT/AMQpBOyWclfYw/lKQ0Jf6noX6XqHtFmV2S40tRHvwn2qMvDK
- +jYHOGYC1YbdP0eBdtoLYmtn9PERCj+gidWHp1v54UIodWxrPJZ8bcjt/
- 8Mr1d3QhPcsdTWb0QYNy0ZdnXHQyF2YkzU+K5mj1+sv39PSpxtQgjzF4r
- JZpLgcYHV5DbMi2lFJjSu2GWTbwiI1Aw6NtWuU6ueUN2yHfnZrGS5uqjo w==;
-X-CSE-ConnectionGUID: LBp2pXKdSJeIAx0ofmHisA==
-X-CSE-MsgGUID: GfC7MLxpQ/Gyfgoo02JoGQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="63335545"
-X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="63335545"
+ bh=KAISO3MrOIU5TFxUgdKyqvu0LErRpj02NDUS99KEVlQ=;
+ b=Xrmzr888pZTYOc3+3USha6JXeNvHO+8o3RuUorN0XLbK7MaeU0cTVli/
+ Fg0F02wkWorbn0E98tpqlJKFkZWMfAeLkVnq1CM7FHnVlPxgAqkCpnZgn
+ W4vHg1YFUOgrxHVCG65TXux2Zwv8xHhzxzeqmMDombtKSzKMUjA0ejL2h
+ KqS9zo7LVBNdj8oBCCaZuZUwBDu5R5U2KSC5CcCb9JbEWQOT3rs/Jj2eT
+ cFOlQzJfNSEFi08ILVE7q3O3NKYTjIJHrBO9yFbTJmnrCuQ9h+oBdo1J0
+ IxIN+Mt7rLUmAOTtW5BGeBp1J66dsnT93ZEt+n9lrPbD9z7l/7mhwGLna A==;
+X-CSE-ConnectionGUID: XlRq4WpIT+uHtOHYVOv5CQ==
+X-CSE-MsgGUID: 1RCUtEILQFCEVqiFHyMlag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="63335542"
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="63335542"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2025 23:45:30 -0700
-X-CSE-ConnectionGUID: l4HB0nuHSbKwrRZh77tOQA==
-X-CSE-MsgGUID: 0VhTVyynR96BePZSyIqkEw==
+ 16 Jun 2025 23:45:28 -0700
+X-CSE-ConnectionGUID: MY6ebM7jQN+DMXAz97zB7g==
+X-CSE-MsgGUID: gghMDH1LR4K034ZqBa1qzw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="149578126"
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; d="scan'208";a="149578121"
 Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2025 23:45:29 -0700
+ 16 Jun 2025 23:45:27 -0700
 From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@intel.com, riana.tauro@intel.com,
  Sk Anirban <sk.anirban@intel.com>
-Subject: [i-g-t, v2,
- 3/3] tests/intel/pm_rc6_residency: Ensure that SLPC is enabled for
- test rc6-idle
-Date: Tue, 17 Jun 2025 12:15:00 +0530
-Message-ID: <20250617064456.3041238-8-sk.anirban@intel.com>
+Subject: [i-g-t, v9,
+ 2/3] tests/intel/pm_rc6_residency: Use sysfs to achieve peak frequency
+Date: Tue, 17 Jun 2025 12:14:59 +0530
+Message-ID: <20250617064456.3041238-7-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250617064456.3041238-5-sk.anirban@intel.com>
 References: <20250617064456.3041238-5-sk.anirban@intel.com>
@@ -70,30 +69,241 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The test currently utilizes sysfs to adjust the RPS minimum frequency
-to RP0 in order to reach peak frequency. Therefore, skip the test on
-older platforms where SLPC is not enabled.
+Leverage IGT spinner to trigger frequency scaling and
+set RPS minimum frequency to RP0 for achieving peak frequency.
+This method replaces the existing waitboost mechanism used
+to reach maximum frequency.
+Restrict the power consumption test to GT0 alone, since we're
+evaluating the power usage for the entire GPU at once.
 
-v2: Remove guc check (Riana)
+v4: Cosmetic changes (Riana)
+v6: Fix frequency restoration (Riana)
+v7: Fix variable scope (Riana)
+v8: Fix signal handler (Kamil)
+v9: Cosmetic changes (Kamil)
 
 Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 ---
- tests/intel/i915_pm_rc6_residency.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/intel/i915_pm_rc6_residency.c | 117 ++++++++++++++++++----------
+ 1 file changed, 78 insertions(+), 39 deletions(-)
 
 diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-index d3fa95423..2236668ce 100644
+index c9128481d..d3fa95423 100644
 --- a/tests/intel/i915_pm_rc6_residency.c
 +++ b/tests/intel/i915_pm_rc6_residency.c
-@@ -617,6 +617,8 @@ igt_main
+@@ -264,17 +264,6 @@ static bool __pmu_wait_for_rc6(int fd)
+ 	return false;
+ }
  
+-static uint32_t batch_create(int fd)
+-{
+-	const uint32_t bbe = MI_BATCH_BUFFER_END;
+-	uint32_t handle;
+-
+-	handle = gem_create(fd, 4096);
+-	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
+-
+-	return handle;
+-}
+-
+ static int open_pmu(int i915, uint64_t config)
+ {
+ 	int fd;
+@@ -286,45 +275,82 @@ static int open_pmu(int i915, uint64_t config)
+ 	return fd;
+ }
+ 
+-#define WAITBOOST 0x1
++#define FREQUENT_BOOST 0x1
+ #define ONCE 0x2
+ 
+ static void sighandler(int sig)
+ {
+ }
+ 
+-static void bg_load(int i915, uint32_t ctx_id, uint64_t engine_flags, unsigned int flags, unsigned long *ctl)
++static uint32_t get_freq(int dirfd, uint8_t id)
++{
++	uint32_t val;
++
++	igt_assert(igt_sysfs_rps_scanf(dirfd, id, "%u", &val) == 1);
++
++	return val;
++}
++
++static int set_freq(int dirfd, uint8_t id, uint32_t val)
++{
++	return igt_sysfs_rps_printf(dirfd, id, "%u", val);
++}
++
++static uint32_t stash_min;
++static int s_dirfd = -1;
++
++static void restore_freq(int sig)
++{
++	if (s_dirfd == -1)
++		return;
++
++	set_freq(s_dirfd, RPS_MIN_FREQ_MHZ, stash_min);
++	close(s_dirfd);
++}
++
++static void bg_load(int i915, const intel_ctx_t *ctx, uint64_t engine_flags,
++		    unsigned int flags, unsigned long *ctl, unsigned int gt)
+ {
+ 	const bool has_execlists = intel_gen(intel_get_drm_devid(i915)) >= 8;
+-	struct drm_i915_gem_exec_object2 obj = {
+-		.handle = batch_create(i915),
+-	};
+-	struct drm_i915_gem_execbuffer2 execbuf = {
+-		.buffers_ptr = to_user_pointer(&obj),
+-		.buffer_count = 1,
+-		.flags = engine_flags,
+-		.rsvd1 = ctx_id,
+-	};
+ 	struct sigaction act = {
+ 		.sa_handler = sighandler
+ 	};
++	int64_t timeout = 1;
++	uint64_t ahnd;
++	int rp0;
+ 
++	ahnd = get_reloc_ahnd(i915, ctx->id);
++	rp0 = get_freq(s_dirfd, RPS_RP0_FREQ_MHZ);
+ 	sigaction(SIGINT, &act, NULL);
+ 	do {
+ 		uint64_t submit, wait, elapsed;
+ 		struct timespec tv = {};
++		igt_spin_t *spin;
+ 
+ 		igt_nsec_elapsed(&tv);
+-
+-		gem_execbuf(i915, &execbuf);
++		spin = igt_spin_new(i915,
++				    .ahnd = ahnd,
++				    .ctx = ctx,
++				    .engine = engine_flags);
+ 		submit = igt_nsec_elapsed(&tv);
+-		if (flags & WAITBOOST) {
+-			gem_sync(i915, obj.handle);
++		if (flags & FREQUENT_BOOST) {
++			/* Set MIN freq to RP0 to achieve the peak freq */
++			igt_assert_lt(0, set_freq(s_dirfd, RPS_MIN_FREQ_MHZ, rp0));
++			igt_assert(gem_bo_busy(i915, spin->handle));
++			gem_wait(i915, spin->handle, &timeout);
++
++			/* Restore the MIN freq back to default */
++			igt_assert_lt(0, set_freq(s_dirfd, RPS_MIN_FREQ_MHZ, stash_min));
++			igt_spin_end(spin);
++			igt_spin_free(i915, spin);
++			gem_quiescent_gpu(i915);
+ 			if (flags & ONCE)
+-				flags &= ~WAITBOOST;
++				flags &= ~FREQUENT_BOOST;
+ 		} else  {
+-			while (gem_bo_busy(i915, obj.handle))
+-				usleep(0);
++			igt_assert(gem_bo_busy(i915, spin->handle));
++			igt_spin_end(spin);
++			igt_spin_free(i915, spin);
++			gem_quiescent_gpu(i915);
+ 		}
+ 		wait = igt_nsec_elapsed(&tv);
+ 
+@@ -350,6 +376,7 @@ static void bg_load(int i915, uint32_t ctx_id, uint64_t engine_flags, unsigned i
+ 		/* aim for ~1% busy */
+ 		usleep(min_t(elapsed, elapsed / 10, 50 * 1000));
+ 	} while (!READ_ONCE(*ctl));
++	put_ahnd(ahnd);
+ }
+ 
+ static void kill_children(int sig)
+@@ -361,9 +388,9 @@ static void kill_children(int sig)
+ 	signal(sig, old);
+ }
+ 
+-static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
++static void rc6_idle(int i915, const intel_ctx_t *ctx, uint64_t flags, unsigned int gt)
+ {
+-	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
++	const int64_t duration_ns = 2 * SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
+ 	const int tolerance = 20; /* Some RC6 is better than none! */
+ 	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+ 	struct {
+@@ -371,9 +398,9 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+ 		unsigned int flags;
+ 		double power;
+ 	} phases[] = {
++		{ "once", FREQUENT_BOOST | ONCE },
+ 		{ "normal", 0 },
+-		{ "boost", WAITBOOST },
+-		{ "once", WAITBOOST | ONCE },
++		{ "boost", FREQUENT_BOOST }
+ 	};
+ 	struct power_sample sample[2];
+ 	unsigned long slept, cycles;
+@@ -407,12 +434,18 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+ 
+ 	assert_within_epsilon_debug(rc6, ts[1] - ts[0], 5, drpc);
+ 
++	if (gt) {
++		close(fd);
++		igt_power_close(&gpu);
++		return;
++	}
++
+ 	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+ 
+ 	for (int p = 0; p < ARRAY_SIZE(phases); p++) {
+ 		memset(done, 0, 2 * sizeof(*done));
+ 		igt_fork(child, 1) /* Setup up a very light load */
+-			bg_load(i915, ctx_id, flags, phases[p].flags, done);
++			bg_load(i915, ctx, flags, phases[p].flags, done, gt);
+ 
+ 		igt_power_get_energy(&gpu, &sample[0]);
+ 		cycles = -READ_ONCE(done[1]);
+@@ -454,12 +487,12 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags, unsigned int gt)
+ 
+ 	igt_power_close(&gpu);
+ 
+-	if (phases[1].power - phases[0].power > 10) {
+-		igt_assert_f(2 * phases[2].power - phases[0].power <= phases[1].power,
++	if (phases[2].power - phases[1].power > 20 && !gem_has_lmem(i915)) {
++		igt_assert_f(2 * phases[0].power - phases[1].power <= phases[2].power,
+ 			     "Exceeded energy expectations for single busy wait load\n"
+ 			     "Used %.1fmW, min %.1fmW, max %.1fmW, expected less than %.1fmW\n",
+-			     phases[2].power, phases[0].power, phases[1].power,
+-			     phases[0].power + (phases[1].power - phases[0].power) / 2);
++			     phases[0].power, phases[1].power, phases[2].power,
++			     phases[1].power + (phases[2].power - phases[1].power) / 2);
+ 	}
+ }
+ 
+@@ -585,16 +618,22 @@ igt_main
  		igt_require_gem(i915);
  		gem_quiescent_gpu(i915);
-+		igt_require_f(i915_is_slpc_enabled(i915),
-+			      "This test can only be conducted if SLPC is enabled\n");
  
- 		s_dirfd = igt_sysfs_gt_open(i915, 0);
- 		stash_min = get_freq(s_dirfd, RPS_MIN_FREQ_MHZ);
++		s_dirfd = igt_sysfs_gt_open(i915, 0);
++		stash_min = get_freq(s_dirfd, RPS_MIN_FREQ_MHZ);
++		igt_install_exit_handler(restore_freq);
++		intel_allocator_multiprocess_start();
++
+ 		i915_for_each_gt(i915, dirfd, gt) {
+ 			ctx = intel_ctx_create_for_gt(i915, gt);
+ 			for_each_ctx_engine(i915, ctx, e) {
+ 				if (e->instance == 0) {
+ 					igt_dynamic_f("gt%u-%s", gt, e->name)
+-						rc6_idle(i915, ctx->id, e->flags, gt);
++						rc6_idle(i915, ctx, e->flags, gt);
+ 				}
+ 			}
+ 			intel_ctx_destroy(i915, ctx);
+ 		}
++		intel_allocator_multiprocess_stop();
+ 	}
+ 
+ 	igt_subtest_with_dynamic("rc6-fence") {
 -- 
 2.43.0
 
