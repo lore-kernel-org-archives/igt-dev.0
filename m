@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7491EC71136
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 10:22:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96223C71136
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Jun 2025 10:49:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 74BA010E5A4;
-	Tue, 17 Jun 2025 10:22:27 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B87610E5A4;
- Tue, 17 Jun 2025 10:22:26 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7584449806966642224=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 43B0410E144;
+	Tue, 17 Jun 2025 10:49:24 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F2FnA/QO";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1880F10E144;
+ Tue, 17 Jun 2025 10:49:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1750157364; x=1781693364;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=rVrvPIw780JG4No5qssdmJU1HDusOd2DYKSuYPgaCeg=;
+ b=F2FnA/QOfLVEVUd6D58+9b1mNCWQwIfq9uTl6dlHZtthchUNxbebZ3J0
+ W+NGhWn3MQCzw7JjqhDB61Sy4izGpZyP6e2hUJtxzdhU/lF+vrL36tbeh
+ c9MGnjd2Jq/PFbjaEUTtbYHdPPBSV29nz8eW2aJXE48ekHMbMy+lPn0Br
+ GNd+Uuz9Oxz+xV6FAdfkN7Ulaw+JQ0BbRIL3pTWA0euKTvydUT2/o4yX/
+ xM0TYOzAZBAnJktlCmqLktv3tzmwTETLwpCAdo+cMXycmWKIA3aSYjP2Y
+ anQ+fCpqJLA6GzT/dA4ghaphO4K9a6yQrKzB6ewTCW73S17cB/0oElPrY Q==;
+X-CSE-ConnectionGUID: c5WXm4fHTdei9UtbvATA3w==
+X-CSE-MsgGUID: YfJezQC2SoadClS+o8iKIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52032364"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="52032364"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2025 03:49:23 -0700
+X-CSE-ConnectionGUID: 5o1VsztGR7CqwgBJP3ib6A==
+X-CSE-MsgGUID: knd+aWFZS1ip1IRVnln9XQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; d="scan'208";a="152602084"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 03:49:21 -0700
+Date: Tue, 17 Jun 2025 12:49:06 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for
+ runner/executor: Abort if dmesg is flooded
+Message-ID: <20250617104906.ys2vznlnwkdygntt@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20250613162013.103165-1-kamil.konieczny@linux.intel.com>
+ <174983766749.78228.14743131806257281945@1538d3639d33>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/i915/pm=5Frc6=5Fresid?=
- =?utf-8?q?ency=3A_Use_sysfs_to_achieve_peak_frequency_=28rev12=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sk Anirban" <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jun 2025 10:22:26 -0000
-Message-ID: <175015574643.86154.18064851082464821737@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250617064456.3041238-5-sk.anirban@intel.com>
-In-Reply-To: <20250617064456.3041238-5-sk.anirban@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <174983766749.78228.14743131806257281945@1538d3639d33>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +68,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7584449806966642224==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi igt-dev,
+On 2025-06-13 at 18:01:07 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: runner/executor: Abort if dmesg is flooded
+> URL   : https://patchwork.freedesktop.org/series/150246/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8411_BAT -> XEIGTPW_13295_BAT
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_13295_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_13295_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (8 -> 8)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_13295_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+>     - bat-lnl-1:          [PASS][1] -> [ABORT][2] +1 other test abort
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8411/bat-lnl-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13295/bat-lnl-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+> 
 
-== Series Details ==
+please do not file a bug, this is a bug/feature instroduced by
+this patch in igt_runner.
 
-Series: tests/i915/pm_rc6_residency: Use sysfs to achieve peak frequency (rev12)
-URL   : https://patchwork.freedesktop.org/series/148054/
-State : success
+Regards,
+Kamil
 
-== Summary ==
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_13295_BAT that come from known issues:
+> 
+...cut...
 
-CI Bug Log - changes from XEIGT_8412_BAT -> XEIGTPW_13310_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8412 -> IGTPW_13310
-  * Linux: xe-3255-dea7240e83c9e58ec755a3d68e7db10068df6b76 -> xe-3261-95f0ac069cc2eee10b5d5e0ba67502ccea089de8
-
-  IGTPW_13310: 13310
-  IGT_8412: 8412
-  xe-3255-dea7240e83c9e58ec755a3d68e7db10068df6b76: dea7240e83c9e58ec755a3d68e7db10068df6b76
-  xe-3261-95f0ac069cc2eee10b5d5e0ba67502ccea089de8: 95f0ac069cc2eee10b5d5e0ba67502ccea089de8
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13310/index.html
-
---===============7584449806966642224==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/pm_rc6_residency: Use sysfs to achieve peak frequency (rev12)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148054/">https://patchwork.freedesktop.org/series/148054/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13310/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13310/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8412_BAT -&gt; XEIGTPW_13310_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8412 -&gt; IGTPW_13310</li>
-<li>Linux: xe-3255-dea7240e83c9e58ec755a3d68e7db10068df6b76 -&gt; xe-3261-95f0ac069cc2eee10b5d5e0ba67502ccea089de8</li>
-</ul>
-<p>IGTPW_13310: 13310<br />
-  IGT_8412: 8412<br />
-  xe-3255-dea7240e83c9e58ec755a3d68e7db10068df6b76: dea7240e83c9e58ec755a3d68e7db10068df6b76<br />
-  xe-3261-95f0ac069cc2eee10b5d5e0ba67502ccea089de8: 95f0ac069cc2eee10b5d5e0ba67502ccea089de8</p>
-
-</body>
-</html>
-
---===============7584449806966642224==--
