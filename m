@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F1EAC71157
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Jun 2025 01:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8084C71157
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Jun 2025 01:43:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A9EB410E09F;
-	Wed, 18 Jun 2025 01:28:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D91C10E0C6;
+	Wed, 18 Jun 2025 01:43:32 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE85310E09F;
- Wed, 18 Jun 2025 01:28:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3165210E0C6;
+ Wed, 18 Jun 2025 01:43:31 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1888453812930915186=="
+ boundary="===============6830203105124771829=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/meson=3A_refactor_GPGPU?=
- =?utf-8?q?_assembly_build_process_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Refine_FBC_test_conditions_?=
+ =?utf-8?q?=28rev6=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Andrzej Hajda" <andrzej.hajda@intel.com>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 18 Jun 2025 01:28:42 -0000
-Message-ID: <175021012289.89473.17295950412314377760@1538d3639d33>
+Date: Wed, 18 Jun 2025 01:43:31 -0000
+Message-ID: <175021101119.89473.12336207907058744767@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250617-refactor_gpgpu_asms-v3-1-c06612e31be2@intel.com>
-In-Reply-To: <20250617-refactor_gpgpu_asms-v3-1-c06612e31be2@intel.com>
+References: <20250617193028.107483-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250617193028.107483-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1888453812930915186==
+--===============6830203105124771829==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/meson: refactor GPGPU assembly build process (rev3)
-URL   : https://patchwork.freedesktop.org/series/149642/
+Series: Refine FBC test conditions (rev6)
+URL   : https://patchwork.freedesktop.org/series/149181/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8414_BAT -> XEIGTPW_13314_BAT
+CI Bug Log - changes from XEIGT_8414_BAT -> XEIGTPW_13315_BAT
 ====================================================
 
 Summary
@@ -81,19 +81,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8414 -> IGTPW_13314
+  * IGT: IGT_8414 -> IGTPW_13315
   * Linux: xe-3266-ec86132a383e84e0acd73092030b8d1b51c70060 -> xe-3269-7f85cdb764bd0dabbfca093468fa515a58be0cfd
 
-  IGTPW_13314: 8bd33506cab000613df257947468c226fc9beb89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_13315: 13315
   IGT_8414: 8414
   xe-3266-ec86132a383e84e0acd73092030b8d1b51c70060: ec86132a383e84e0acd73092030b8d1b51c70060
   xe-3269-7f85cdb764bd0dabbfca093468fa515a58be0cfd: 7f85cdb764bd0dabbfca093468fa515a58be0cfd
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13314/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13315/index.html
 
---===============1888453812930915186==
+--===============6830203105124771829==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,16 +113,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/meson: refactor GPGPU assembly build process (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149642/">https://patchwork.freedesktop.org/series/149642/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Refine FBC test conditions (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149181/">https://patchwork.freedesktop.org/series/149181/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13314/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13314/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13315/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13315/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8414_BAT -&gt; XEIGTPW_13314_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8414_BAT -&gt; XEIGTPW_13315_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -132,10 +132,10 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8414 -&gt; IGTPW_13314</li>
+<li>IGT: IGT_8414 -&gt; IGTPW_13315</li>
 <li>Linux: xe-3266-ec86132a383e84e0acd73092030b8d1b51c70060 -&gt; xe-3269-7f85cdb764bd0dabbfca093468fa515a58be0cfd</li>
 </ul>
-<p>IGTPW_13314: 8bd33506cab000613df257947468c226fc9beb89 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_13315: 13315<br />
   IGT_8414: 8414<br />
   xe-3266-ec86132a383e84e0acd73092030b8d1b51c70060: ec86132a383e84e0acd73092030b8d1b51c70060<br />
   xe-3269-7f85cdb764bd0dabbfca093468fa515a58be0cfd: 7f85cdb764bd0dabbfca093468fa515a58be0cfd</p>
@@ -143,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1888453812930915186==--
+--===============6830203105124771829==--
