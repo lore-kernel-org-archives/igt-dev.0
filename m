@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1846C71157
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Jun 2025 12:43:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 032EDC71157
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Jun 2025 12:43:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A97D610E81E;
-	Wed, 18 Jun 2025 12:43:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AE40F10E19B;
+	Wed, 18 Jun 2025 12:43:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cszRpp65";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C88B6XwS";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB32B10E81B
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jun 2025 12:43:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 019DA10E19B
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jun 2025 12:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750250604; x=1781786604;
+ t=1750250607; x=1781786607;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0uZsFpNpJez4GFc7swrRJboduQd4zUTmKmC1xYx77ps=;
- b=cszRpp65GgnURMmYgFeC6gHao/rbkf/yAPbLOKwUyZw0Y0cBaDXm9yqA
- 9pF7nsoNwfinMR7wHryrtjRT3n2+EqgE409zZtqfg6fzysP5m8qgNqKDr
- fegaiARqHhmIqOUMq8K2QVMO2NiVEh2rEvaofoQwmYnxR1y73zk1RnMpG
- NEWYRqTWEt6Gn4DdSTlev8a8mJ+rDQTiu0OZFramGUK2qyNWDj1rIWNua
- cbWFyEbSneKXPKp9TEn4nBHtCgYwKF5ciCYoRA1maCfAgd41jcyRPv1Iz
- D5ZkPN2AxFHQsRBwlUPQC1Pjb5SVMuKWO89JtPLjMd0p9oNBSpnTK2HoA g==;
-X-CSE-ConnectionGUID: d2v2OQTISBW6yJdcOfpujA==
-X-CSE-MsgGUID: qZvOPt0OTH229BPS5Ld4LQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="51690528"
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; d="scan'208";a="51690528"
+ bh=VNYf/opP3HOiqHxntRPVpEOSm+vo98nax6W9efqYXXk=;
+ b=C88B6XwSaPjD6B+sxTlGjFGPBM8UiiGm7bwDPPccq4IJmaUERlruotel
+ baAZCrVPS6Ujuj8sxv3IEUyz5WwHEgwI4EgUwa+QK9LkbGy04FNMxPghl
+ /TJvOkOAvGpXo78jg8XJSU1lYD57QIqJXFufTpeZQJiXdd6glLWgUncW/
+ Tjapl8HeyQhUNXvGJSQ2G/rNyF9oL6JGQH7JzTEWQ8/Rk1iw3eYSnicFY
+ NpG90tQ1+dG4Z2PZvAzqg8AlO6Q3x0pUVVw6PUF4y/CNhi7s8uc/e2CKw
+ 0dgaghhSQ/+pWTy1uJlO7y5esVynEuiZSXG/tPWBPZRIkUzz338SyO84K A==;
+X-CSE-ConnectionGUID: 944oDNcxTbCI3i2AGESKvg==
+X-CSE-MsgGUID: lhZEclV2SKaU0ciadyBcmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="51690538"
+X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; d="scan'208";a="51690538"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2025 05:43:23 -0700
-X-CSE-ConnectionGUID: qlVJruXQR5eqfHv/rptc7g==
-X-CSE-MsgGUID: kQIldNh4QUyn9S6mmAw7/A==
+ 18 Jun 2025 05:43:27 -0700
+X-CSE-ConnectionGUID: +d6PFO6GTaeUpbbvuLAa3Q==
+X-CSE-MsgGUID: 9iB6pfPGTQGSGyq8LlUOCg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; d="scan'208";a="150265991"
+X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; d="scan'208";a="150266081"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2025 05:43:21 -0700
+ 18 Jun 2025 05:43:25 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: alex.hung@amd.com, chaitanya.kumar.borah@intel.com, uma.shankar@intel.com,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 3/9] drm-uapi: Add 3x3 CTM
-Date: Wed, 18 Jun 2025 18:18:43 +0530
-Message-Id: <20250618124849.1587767-4-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 5/9] drm-uapi: Add 1D LUT multi-segmented color op
+Date: Wed, 18 Jun 2025 18:18:45 +0530
+Message-Id: <20250618124849.1587767-6-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250618124849.1587767-1-swati2.sharma@intel.com>
 References: <20250618124849.1587767-1-swati2.sharma@intel.com>
@@ -70,32 +69,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- include/drm-uapi/drm_mode.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/drm-uapi/drm_mode.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index 4c8d404b1..754a3b029 100644
+index 0cf307333..07e9d4b4b 100644
 --- a/include/drm-uapi/drm_mode.h
 +++ b/include/drm-uapi/drm_mode.h
-@@ -918,6 +918,14 @@ enum drm_colorop_type {
+@@ -910,6 +910,16 @@ enum drm_colorop_type {
  	 */
- 	DRM_COLOROP_CTM_3X4,
+ 	DRM_COLOROP_1D_LUT,
  
 +	/**
-+	 * @DRM_COLOROP_CTM_3X3:
++	 * @DRM_COLOROP_1D_LUT_MULTSEG:
 +	 *
-+	 * A 3x3 matrix. Its values are specified via the
-+	 * &drm_color_ctm struct provided via the DATA property.
++	 * A 1D LUT with multiple segments to cover the full color range with non-uniformly
++	 * distributed &drm_color_lut entries, packed into a blob via the DATA property.
++	 * The driver's expected LUT size and segmented capabilities are advertised via the
++	 * HW_CAPS property.
 +	 */
-+	DRM_COLOROP_CTM_3X3,
++	DRM_COLOROP_1D_LUT_MULTSEG,
 +
  	/**
- 	 * @DRM_COLOROP_MULTIPLIER:
+ 	 * @DRM_COLOROP_CTM_3X4:
  	 *
 -- 
 2.25.1
