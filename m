@@ -4,118 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B52BBC71157
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Jun 2025 23:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8664C71157
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Jun 2025 00:54:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5083910E972;
-	Wed, 18 Jun 2025 23:03:11 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="kCEDxXLn";
-	dkim-atps=neutral
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2050.outbound.protection.outlook.com [40.107.92.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A14910E972
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jun 2025 23:03:10 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KfYWV9xgHm3rRJk3/Pb6BFd5OdTnTubhZKpxIY0M+PpUg8UNONaXqvRhQS61qD0GaEItMj3KzlTcpJMqfFPO8bUtt6/QKYIhfahgJqf4tIBXOcOdOWYHRP/gj7L1pMAXl5dOPwlSCd6BO9z9ov+A0VTD+lDCdx19J5qtKEFuuMgGkfe+xkXJkXlgQtCGFUUPlZHnuS/FRJgpmF62bQFjmiz4U+vhdxFQgy8nEvNht1p3+XEmXk4txCi3CsQ/lf3QIdwlR1YoWfE7VheFTyXevGoy0CyT+CLcRm93bz7MaJhPLlZ9+Ld7H86Xcf7La5pjTcJ/rTz1OULH4X5qb8pHyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gvHOVOq+UXjil+NqfdRAj2t1dfbbHSyKGLDqrzHfKWA=;
- b=wZkkzOt/CDB3ni5j/OlaPdc+oY+xXp2XtpWEvOC96remXpeB0r6Ad/l3v/JpZJAffia8Sikk39GAyN6cyiiMt7wEX8uuameiACIaUm0dtMW6zj50GmjOBqikMYjGrDFmOC32dFoJM2m2+MJlufWHG/Z2a+uaLop128W8Hn6jH+SqDlz58n37gRLm3OypxwXWcJlNFGHwX052TbKprXZn0V8uxo06hhWWwf1cZjrIfJgc/CTg7xTwO1rJ7a6iMCjXhcWLInED+iju2q5Mlau+3t+UPeCAKLOsJbQeB1IfLhGDPOOG4cdgzhQDOX6SU07Ooopk1pAexnbTplkMMqvz6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gvHOVOq+UXjil+NqfdRAj2t1dfbbHSyKGLDqrzHfKWA=;
- b=kCEDxXLnWVd0Ep/fIiTrWJ7oIzdIBl56zLOgmSs0RJwMfuh/rjwJ7Ag/E4bocXouMJOuWyHjF0+ZBpSE7mWzSaW51YPDpeXuRi89kJmuYv7IKcS1SWFQhd2J0qFnYWzTF9mebwy3FWrUybSINnzg3SVyN5MGN8sHLC/FM7x0wV4=
-Received: from BN9PR03CA0868.namprd03.prod.outlook.com (2603:10b6:408:13d::33)
- by BY5PR12MB4067.namprd12.prod.outlook.com (2603:10b6:a03:212::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.30; Wed, 18 Jun
- 2025 23:03:06 +0000
-Received: from BL02EPF00029928.namprd02.prod.outlook.com
- (2603:10b6:408:13d:cafe::83) by BN9PR03CA0868.outlook.office365.com
- (2603:10b6:408:13d::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.35 via Frontend Transport; Wed,
- 18 Jun 2025 23:03:05 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF00029928.mail.protection.outlook.com (10.167.249.53) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8857.21 via Frontend Transport; Wed, 18 Jun 2025 23:03:05 +0000
-Received: from kylin.lan (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 18 Jun
- 2025 18:03:04 -0500
-From: Alex Hung <alex.hung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Alex Hung <alex.hung@amd.com>
-Subject: [PATCH] README.md: Update oneliner build command
-Date: Wed, 18 Jun 2025 17:02:57 -0600
-Message-ID: <20250618230257.1721932-1-alex.hung@amd.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C36B10E911;
+	Thu, 19 Jun 2025 00:54:45 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B23EA10E4FA;
+ Thu, 19 Jun 2025 00:54:44 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4939800911958242023=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00029928:EE_|BY5PR12MB4067:EE_
-X-MS-Office365-Filtering-Correlation-Id: edf83c4e-327c-4144-3b7a-08ddaebc48bb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|82310400026|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?r3Hw9VQbQeB4+cS8QXbHF6WiI++F1Kq6YnLdPkBZaWAOrvWtQUe2howE6uY3?=
- =?us-ascii?Q?UwnBna6DFsL70OsajNzqAWmUBWT4zykKX4tInhbkHpy6ueC2/haEBEcjzmhe?=
- =?us-ascii?Q?dd0zYq4MWinqIPHGhCRQLxm9pRQhM7gV/OiWUEpn/GyLbn/UT4HAu/biS6pZ?=
- =?us-ascii?Q?t14zrIRs4L1pzt4N/zZE3bZzQM1ZhLeN0yHIG9O4IIH1rkXt3+avtItfP6z4?=
- =?us-ascii?Q?I0YUk6I7toF+vcb6CC2PuncoBrlDiQickdwd9tavU0l7qZT5F38177dgnbzb?=
- =?us-ascii?Q?W50fE/HIdyP//elroJjG9KpaXGRACxAAkzd2jMRSvh6yns4oB2+BlSNr9f4R?=
- =?us-ascii?Q?E1aKvI9wB21QyKKvrluqc1TFku0PrjUMfr/cb0pELheMbg9FrcEPmczWT6lv?=
- =?us-ascii?Q?aZUDErb1nZ/cm1PBlfKUEUKwBpWkxHOHle653IbnGi5ja2XjsDLeOhw+jk/7?=
- =?us-ascii?Q?YNVhxix4RmwGb023ANwEs17goepvoP0GDXM/8Ssi/+K2TKD/v6C1R51ZG7Gp?=
- =?us-ascii?Q?MOgLodGmK0jAPHs2Z/hpvmoG5DiPdG7mmKBE2QnRS8RomWoFcmFt9V0WQObu?=
- =?us-ascii?Q?uBydudaWIIM6Ojl7qbaGpUmBXtPnkOGqWoSLjwp5spzDgU4nWCna9ea75qw5?=
- =?us-ascii?Q?bAYYhiyVTph6h+K2DMdQySjvRwPGhjXct+sOnzFCC5cFqQQ+l4aU/+Zk3uFl?=
- =?us-ascii?Q?Ter483nF+CJJOc9YeYAGnVVvApOuvOjSX39Vs7vW4iIPNcp+hmv9wmZs9CJJ?=
- =?us-ascii?Q?PaOwQV5voowA1T8X2IEJpSnoaamR2f4Gh8vA84Zc27BFzxWH7vSw92vgjP/e?=
- =?us-ascii?Q?ozqPfwiyf2R4UGRnAP5UqPideXAsjQwk9wcsTpUCLwrz1q6OjyiTCiksESEc?=
- =?us-ascii?Q?201tKyRWU6+8YhRraKeeKqw31CZ+I/b/6O5vg5dxD6J/uRrKH+O4Je2HJBcO?=
- =?us-ascii?Q?w6ffEs42V1Q30Xv/mFjIzyGds5Fwc/VJxXh4tpaesr4ZZJE2ps9BqqGCcVR/?=
- =?us-ascii?Q?woPPyGCC+zItiJ5x3YxEJq4W5ix4pzKqKKCXlYhk+K4ZdL/Gri45wjof5JdU?=
- =?us-ascii?Q?5v9ehj84Jkm3MmZ/PoJBapDRPKfVVO+7sr0PBJcn26kI6McIRBbqava+iHJu?=
- =?us-ascii?Q?2Ejs1tLNs+e7fXUP3nyHx29kXGbQYIO8YRUL5GJ+5b+1kPPiqw909azUUvj3?=
- =?us-ascii?Q?FxZZ6CyaW4CgZurMLzBMuV9mK3mvp1lviAZbIIOUOyvgF0//PjlRZhr6KqIs?=
- =?us-ascii?Q?QniCdC8uS/39xjTTqgSY99pFkSr/OoUQderjV22IcOxQBHTGW7adRdxnaa6c?=
- =?us-ascii?Q?F4c0m29kryfsQSs47Vdqul57UGN9a2i+ya5rM6zcobchKnL+6ggqgOZFPdmy?=
- =?us-ascii?Q?ThDHdHYcQLPEmJbiE/Mhr0VYPvYxXeSBucnwErgu8mosBiDbqU9b1SJVTWBi?=
- =?us-ascii?Q?e68XZdbg/j5lmromTJm4ZQev1ssTmlhrID7l2s8T9pmt8OKzPTaOXgvo3twn?=
- =?us-ascii?Q?wK08CGIh8rcEldU+423rJMBwljW1w1wgxloF?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2025 23:03:05.2696 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: edf83c4e-327c-4144-3b7a-08ddaebc48bb
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL02EPF00029928.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4067
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fwriteback=3A_Fi?=
+ =?utf-8?q?x_kms=5Fwriteback_for_VKMS?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Alex Hung" <alex.hung@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Jun 2025 00:54:44 -0000
+Message-ID: <175029448472.93835.18414076087223970174@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250618230105.1721658-1-alex.hung@amd.com>
+In-Reply-To: <20250618230105.1721658-1-alex.hung@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,32 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This fixes the following warning:
+--===============4939800911958242023==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-WARNING: Running the setup command as `meson [options]` instead of
-`meson setup [options]` is ambiguous and deprecated.
+== Series Details ==
 
-Signed-off-by: Alex Hung <alex.hung@amd.com>
----
- README.md | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Series: tests/kms_writeback: Fix kms_writeback for VKMS
+URL   : https://patchwork.freedesktop.org/series/150485/
+State : success
 
-diff --git a/README.md b/README.md
-index 9cef60d88..ed6647726 100644
---- a/README.md
-+++ b/README.md
-@@ -37,7 +37,7 @@ Building
- 
- Oneliner to get started:
- 
--    $ meson build && ninja -C build
-+    $ meson setup build && ninja -C build
- 
- Note that meson insist on separate build directories from the source tree.
- 
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8418_BAT -> XEIGTPW_13319_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8418 -> IGTPW_13319
+  * Linux: xe-3273-b5956fc71790f85e9c9113adf1d9c7332c995f13 -> xe-3274-0cd8ffca03164a8a9686dbab2a21fae671161e58
+
+  IGTPW_13319: 13319
+  IGT_8418: 8418
+  xe-3273-b5956fc71790f85e9c9113adf1d9c7332c995f13: b5956fc71790f85e9c9113adf1d9c7332c995f13
+  xe-3274-0cd8ffca03164a8a9686dbab2a21fae671161e58: 0cd8ffca03164a8a9686dbab2a21fae671161e58
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13319/index.html
+
+--===============4939800911958242023==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_writeback: Fix kms_writeback for VKMS</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150485/">https://patchwork.freedesktop.org/series/150485/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13319/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13319/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8418_BAT -&gt; XEIGTPW_13319_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8418 -&gt; IGTPW_13319</li>
+<li>Linux: xe-3273-b5956fc71790f85e9c9113adf1d9c7332c995f13 -&gt; xe-3274-0cd8ffca03164a8a9686dbab2a21fae671161e58</li>
+</ul>
+<p>IGTPW_13319: 13319<br />
+  IGT_8418: 8418<br />
+  xe-3273-b5956fc71790f85e9c9113adf1d9c7332c995f13: b5956fc71790f85e9c9113adf1d9c7332c995f13<br />
+  xe-3274-0cd8ffca03164a8a9686dbab2a21fae671161e58: 0cd8ffca03164a8a9686dbab2a21fae671161e58</p>
+
+</body>
+</html>
+
+--===============4939800911958242023==--
