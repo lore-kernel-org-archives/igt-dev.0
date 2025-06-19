@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B9CC7115B
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Jun 2025 08:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0D31C7115B
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Jun 2025 09:14:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6902310E35D;
-	Thu, 19 Jun 2025 08:24:38 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d4xs1cEG";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BB4E10E35D
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Jun 2025 08:24:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750321477; x=1781857477;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=eghjY6/3JJhZ5e/6M+aMKHrCs//JKDnCpC3u2cOMZSM=;
- b=d4xs1cEG501x/MZvAqzPAXweZf/2xAImlgzJ4L/EBxkTpWPq5NUyR2RN
- oi1gnlnmcRUHWHdF3azQUSjhFDMDCADisTdG5mvmPofESB7UDrhoyqJRP
- n6py24jCyM55AAC+xPHWtzXMJPIiBwYOZikKahyDOOP6DHCM0jxtwbZr+
- gIaisT/ElJW7hCltlDoo8+os9jnASlT4AkOzZntTIWHjdKnmww7w8neA2
- 6tcwwyPR/1nBSVp7+Calf9OrdzOnoMwctSCRRyiKWjIdDVAv/fZ/QFQQr
- eNk7Pu+vJiVhcWf2ML1sojYQb+IJI89WNGEQy/k3KPflY9bmKWMtsqfBs A==;
-X-CSE-ConnectionGUID: NIyBtD/0RvuGFJc6TnTO2g==
-X-CSE-MsgGUID: 19g70mUWSZ6nnjiu1YIrvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="52650141"
-X-IronPort-AV: E=Sophos;i="6.16,248,1744095600"; d="scan'208";a="52650141"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2025 01:24:37 -0700
-X-CSE-ConnectionGUID: qfDez9yNQPOeE2vCzpitdw==
-X-CSE-MsgGUID: 8jAXfBtHQ0SuOQPqpAb8QA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,248,1744095600"; d="scan'208";a="154522951"
-Received: from unknown (HELO rgsanthosh-System-Product-Name.iind.intel.com)
- ([10.190.238.65])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2025 01:24:35 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com,
-	Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1] tests/intel-ci: Refine regex to accurately match
- plane downscale factor tests
-Date: Thu, 19 Jun 2025 13:54:36 +0530
-Message-ID: <20250619082436.56220-1-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9AA9210E9D9;
+	Thu, 19 Jun 2025 09:14:09 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE02310E9D9;
+ Thu, 19 Jun 2025 09:14:07 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3322839329005304252=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel-ci=3A_Refine_re?=
+ =?utf-8?q?gex_to_accurately_match_plane_downscale_factor_tests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Jun 2025 09:14:07 -0000
+Message-ID: <175032444796.94313.1310490708546995647@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250619082436.56220-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20250619082436.56220-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,32 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The previous pattern was overly broad and potentially matched
-unintended test cases. The updated regex now accurately targets
-the intended downscale factors.
+--===============3322839329005304252==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Fixes: a0d787e069ce ("tests/intel-ci: Blocklist unsupported Xe scaling tests")
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/intel-ci/xe.blocklist.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index dcdce8b20..1eabd4232 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -82,7 +82,7 @@ igt@kms_pm_rpm@cursor.*
- ##################################################################
- igt@kms_atomic@plane-primary-overlay-mutable-zpos
- igt@kms_plane_scaling@.*downscale-factor-0-25.*
--igt@kms_plane_scaling@planes-downscale-factor-(0-25|0-5|0-75)
-+igt@kms_plane_scaling@planes-downscale-factor-(0-2|0-|0-7).$
- igt@kms_plane_scaling@planes-upscale-.*downscale-.*
- igt@kms_prime@.*
- igt@kms_scaling_modes@scaling-mode-none
--- 
-2.43.0
+Series: tests/intel-ci: Refine regex to accurately match plane downscale factor tests
+URL   : https://patchwork.freedesktop.org/series/150504/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8418_BAT -> XEIGTPW_13322_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8418 -> IGTPW_13322
+  * Linux: xe-3273-b5956fc71790f85e9c9113adf1d9c7332c995f13 -> xe-3275-74c4708b7ac3e4bcecaa618e9f16c0b5c3e75ab3
+
+  IGTPW_13322: 13322
+  IGT_8418: 8418
+  xe-3273-b5956fc71790f85e9c9113adf1d9c7332c995f13: b5956fc71790f85e9c9113adf1d9c7332c995f13
+  xe-3275-74c4708b7ac3e4bcecaa618e9f16c0b5c3e75ab3: 74c4708b7ac3e4bcecaa618e9f16c0b5c3e75ab3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13322/index.html
+
+--===============3322839329005304252==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci: Refine regex to accurately match plane downscale factor tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150504/">https://patchwork.freedesktop.org/series/150504/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13322/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13322/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8418_BAT -&gt; XEIGTPW_13322_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8418 -&gt; IGTPW_13322</li>
+<li>Linux: xe-3273-b5956fc71790f85e9c9113adf1d9c7332c995f13 -&gt; xe-3275-74c4708b7ac3e4bcecaa618e9f16c0b5c3e75ab3</li>
+</ul>
+<p>IGTPW_13322: 13322<br />
+  IGT_8418: 8418<br />
+  xe-3273-b5956fc71790f85e9c9113adf1d9c7332c995f13: b5956fc71790f85e9c9113adf1d9c7332c995f13<br />
+  xe-3275-74c4708b7ac3e4bcecaa618e9f16c0b5c3e75ab3: 74c4708b7ac3e4bcecaa618e9f16c0b5c3e75ab3</p>
+
+</body>
+</html>
+
+--===============3322839329005304252==--
