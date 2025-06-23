@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF253C77B7F
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Jun 2025 11:11:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39850C7115B
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Jun 2025 11:24:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E9DC10E362;
-	Mon, 23 Jun 2025 11:11:55 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IknXHC/Z";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B68A10E367
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jun 2025 11:11:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750677113; x=1782213113;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=2dM6yEN//pHQIidoG7QaEOILMeyhKyQP0gGzGAAWFKY=;
- b=IknXHC/ZhuLzOPV3Qqkspefb4M4ABDoA4qb2jFAZC1/X7rfE1yhlXbC0
- W0/Cc9hqdFYd3xysIcrHs/FHsXX0pMOUOCXKDFvY/OsVV2RjaJO9ixTow
- BakeS8AXNFRawSqEDYH9ZXYIUP0NJk0WDDELdgd+wUXZN0JDPhgSBie5q
- VkZB0Oqpr7Ak+GjM/TFSjQTLQ/5boqUq1bTgC59nl8i1TkZsKTb4tsZyD
- /7OWOWyixsCod4Qi4jrzPX1/JExqO0qPZPOZRnTcxpPQmsxxZkAYufMob
- Sh5Qilh7HllMAlHPDWwHkeN5523RfsfYg5AbYkmYxn6TpqSjcwk4n8ySZ A==;
-X-CSE-ConnectionGUID: j05ES9oDR/mAy1ipLrZAew==
-X-CSE-MsgGUID: DNNLzZZWR7+F8FqPGPkEdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="53018936"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="53018936"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 04:11:53 -0700
-X-CSE-ConnectionGUID: JZFEaWSNTvy48driuCm5Aw==
-X-CSE-MsgGUID: 9pIFjceETy6saqaOuUsDtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="157063760"
-Received: from ifwibot07.gar.corp.intel.com (HELO
- rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 04:11:52 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com,
- chaitanya.kumar.borah@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v15 5/5] tests/kms_async_flips: Skip Async Flips with
- Linear Modifier
-Date: Mon, 23 Jun 2025 16:39:18 +0530
-Message-Id: <20250623110918.606014-6-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250623110918.606014-1-santhosh.reddy.guddati@intel.com>
-References: <20250623110918.606014-1-santhosh.reddy.guddati@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id E1DF110E0DC;
+	Mon, 23 Jun 2025 11:24:19 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D28310E0DC;
+ Mon, 23 Jun 2025 11:24:19 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6506739781656268303=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fwedged=3A_?=
+ =?utf-8?q?Add_new_test_csc-wedged?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sk Anirban" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 23 Jun 2025 11:24:19 -0000
+Message-ID: <175067785957.100614.1182403301013593205@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250623081821.155158-2-sk.anirban@intel.com>
+In-Reply-To: <20250623081821.155158-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,70 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Skip the linear modifier subtest on unsupported platforms
+--===============6506739781656268303==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-V2: Remove platform check and use in_formats_async (Chaitanya)
-    Update the commit message
+== Series Details ==
 
-V3: Fix crash
+Series: tests/intel/xe_wedged: Add new test csc-wedged
+URL   : https://patchwork.freedesktop.org/series/150606/
+State : success
 
-v4: Handle the case for linear modifiers on platforms where
-IN_FORMATS_ASYNC is not supported. (Chaitanya)
+== Summary ==
 
-v5: Move the linear modifier support checks to run_test (Chaitanya)
+CI Bug Log - changes from XEIGT_8421_BAT -> XEIGTPW_13333_BAT
+====================================================
 
-v6: Remove hard coding pipe and refactor to move checks inside run_test
-(Chaitanya)
+Summary
+-------
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/kms_async_flips.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+  **SUCCESS**
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index e176b2a28..5a7daaf07 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -799,6 +799,23 @@ static void test_crc(data_t *data)
- 	igt_assert_lt(data->frame_count * 2, data->flip_count);
- }
- 
-+static void require_linear_modifier(data_t *data)
-+{
-+	if(!igt_plane_has_prop(data->plane, IGT_PLANE_IN_FORMATS_ASYNC)) {
-+		data->modifier = DRM_FORMAT_MOD_LINEAR;
-+		return;
-+	}
-+
-+	for (int i = 0; i < data->plane->async_format_mod_count; i++) {
-+		if (data->plane->async_modifiers[i] == DRM_FORMAT_MOD_LINEAR) {
-+			data->modifier = DRM_FORMAT_MOD_LINEAR;
-+			return;
-+		}
-+	}
-+
-+	igt_skip("Linear modifier not supported for async flips\n");
-+}
-+
- static void run_test(data_t *data, void (*test)(data_t *))
- {
- 	igt_display_t *display = &data->display;
-@@ -814,7 +831,11 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 			continue;
- 
- 		test_init(data);
--		data->modifier = data->linear_modifier ? DRM_FORMAT_MOD_LINEAR : default_modifier(data);
-+
-+		if (data->linear_modifier)
-+			require_linear_modifier(data);
-+		else
-+			data->modifier = default_modifier(data);
- 
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
- 			/*
--- 
-2.34.1
+  No regressions found.
 
+  
+
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8421 -> IGTPW_13333
+  * Linux: xe-3286-cc5c19e59842d7e522f9f9f3943efe34943ed70b -> xe-3287-7b754bc155cea643adf525cf6f56a610c131066b
+
+  IGTPW_13333: 13333
+  IGT_8421: 8421
+  xe-3286-cc5c19e59842d7e522f9f9f3943efe34943ed70b: cc5c19e59842d7e522f9f9f3943efe34943ed70b
+  xe-3287-7b754bc155cea643adf525cf6f56a610c131066b: 7b754bc155cea643adf525cf6f56a610c131066b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13333/index.html
+
+--===============6506739781656268303==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_wedged: Add new test csc-wedged</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150606/">https://patchwork.freedesktop.org/series/150606/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13333/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13333/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8421_BAT -&gt; XEIGTPW_13333_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8421 -&gt; IGTPW_13333</li>
+<li>Linux: xe-3286-cc5c19e59842d7e522f9f9f3943efe34943ed70b -&gt; xe-3287-7b754bc155cea643adf525cf6f56a610c131066b</li>
+</ul>
+<p>IGTPW_13333: 13333<br />
+  IGT_8421: 8421<br />
+  xe-3286-cc5c19e59842d7e522f9f9f3943efe34943ed70b: cc5c19e59842d7e522f9f9f3943efe34943ed70b<br />
+  xe-3287-7b754bc155cea643adf525cf6f56a610c131066b: 7b754bc155cea643adf525cf6f56a610c131066b</p>
+
+</body>
+</html>
+
+--===============6506739781656268303==--
