@@ -4,59 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 463A7C77B7F
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Jun 2025 10:01:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B0CC7115B
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Jun 2025 10:12:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F0EC710E0E9;
-	Mon, 23 Jun 2025 10:01:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CDEC510E342;
+	Mon, 23 Jun 2025 10:12:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nfyFep4Z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XInuH0au";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60D5B10E05B;
- Mon, 23 Jun 2025 10:01:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F87E10E342
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Jun 2025 10:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750672883; x=1782208883;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=MjIOBo0zw5aFxGv1nRmJ2qMzd6BMVW8wxd1yoGzn7NY=;
- b=nfyFep4ZuL60MohRTzTqPFyjO/rZu2/CepdYUScMbOsg5/2Cf5gbqpRY
- 8c8SDQFT2t0Li+HOQPYNxqCalKTaScWKjtrnTN8kZiFIKfctg2IMzDpi0
- 62pb6iQ3zLanUi9etVKevOwdv8JcQAJL3lpuwNz/8TDs7wF9mrQXjl/Z2
- mNFdJbDJV+VA8S+KVW7z30YC0J2euCqzwPDcbuppdz14a8LqOHfJlZc5E
- Ym/1RJs64/zbJrwLc3dKh1KhO5YU7CDpPsfDitp2mx1Uk1AxxwklujT4J
- XPkMn0PxJ9sgLnEsyB5aGmxWsD5Kw+n29JpNZM6TQiWlyf8IrMvE7lpFm g==;
-X-CSE-ConnectionGUID: bfyqho3WSwKymjgvtxBcUg==
-X-CSE-MsgGUID: fJfFa5StSJe8BZACQplyNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52740262"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="52740262"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 03:01:23 -0700
-X-CSE-ConnectionGUID: eKO5eKYtQsWdQHZt/KIEqw==
-X-CSE-MsgGUID: pHS0JQk1RbyUXJhJoLUC2Q==
+ t=1750673560; x=1782209560;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=LV8Ih/4kKXZ8/jQj1RZLFI+QrmP8EHAPtkf4b/FkzyY=;
+ b=XInuH0auol3/Sgmd1rN+NlI+jzJsCpMy8iwKtaL1kcT3c+JYQUSdd+HO
+ aYX5E/Vbwylc7LrklscH0CEGyyR1K+ObkXWXk2BlUbo6YUrrNms6z3FsO
+ CbkYczI9lvT7T4g+gfwgI7ebk/1MJE+1cCEhuRm6Yw8bYC7XQLFpjbchY
+ CORO3aznvPCn8M9nq6Y932xog7/YUCLCji1wedJpzH252T3Cg+JkZtoWi
+ NWMiv7MoqU2cjIkjdCTjgY4U4MSIXJMwccf3RfUOh4W7Or5Sr7wQrNNdw
+ e/1cV6aRF4ktSqPRdWKgF10ud6fIqkY8lwtSedTNw0h7JFpZ6MS2ypJmA g==;
+X-CSE-ConnectionGUID: 3LnS6jF0RgyAB3i8s+CC2A==
+X-CSE-MsgGUID: hA7AivuKRHGhdysWLhG18w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="64229275"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="64229275"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jun 2025 03:12:40 -0700
+X-CSE-ConnectionGUID: SOHDqfiGSj2gnrDL86u+Rw==
+X-CSE-MsgGUID: NV7Q2s9ZRyWneZb06pxakw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="175159654"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 03:01:23 -0700
-Date: Mon, 23 Jun 2025 12:01:19 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Alex Hung <alex.hung@amd.com>, I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
- README.md: Update oneliner build command
-Message-ID: <20250623100119.snprhqyoet5sxuaw@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Alex Hung <alex.hung@amd.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20250618230257.1721932-1-alex.hung@amd.com>
- <175034489306.96048.14671091982776928545@1538d3639d33>
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="151844178"
+Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jun 2025 03:12:37 -0700
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ vinay.belgaumkar@intel.com, kamil.konieczny@intel.com,
+ krzysztof.karas@intel.com, zbigniew.kempczynski@intel.com
+Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
+ soham.purkait@intel.com, ashutosh.dixit@intel.com,
+ umesh.nerlige.ramappa@intel.com
+Subject: [PATCH v14 0/5] Add per-device engine activity stats in GPUTOP
+Date: Mon, 23 Jun 2025 15:36:36 +0530
+Message-Id: <20250623100641.3359635-1-soham.purkait@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <175034489306.96048.14671091982776928545@1538d3639d33>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,92 +70,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-06-19 at 14:54:53 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: README.md: Update oneliner build command
-> URL   : https://patchwork.freedesktop.org/series/150487/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_16725_full -> IGTPW_13321_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_13321_full absolutely need to be
->   verified manually.
+     Add per-device engine activity stat support in GPUTOP.
+This leverages the PMU interface to display the activity of
+engine instances for the array of requested or all devices.
 
-Unrelated to change in documentation.
+    This patch refactors GPUTOP to be vendor-agnostic, laying
+the groundwork for future support of multiple GPU vendors.
 
-Regards,
-Kamil
+    Currently, GPUTOP supports GPUs with Xe driver only
+and can monitor the engine activities of multiple GPU
+devices simultaneously through abstracting vendor 
+specific code into a common interface and implementing 
+vendor-neutral APIs for monitoring.
 
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_13321_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13321/index.html
-> 
-> Participating hosts (9 -> 9)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_13321_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_module_load@reload-no-display:
->     - shard-dg2:          [PASS][1] -> [DMESG-WARN][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16725/shard-dg2-8/igt@i915_module_load@reload-no-display.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13321/shard-dg2-5/igt@i915_module_load@reload-no-display.html
-> 
->   * igt@prime_self_import@reimport-vs-gem_close-race:
->     - shard-dg1:          [PASS][3] -> [FAIL][4]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_16725/shard-dg1-12/igt@prime_self_import@reimport-vs-gem_close-race.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13321/shard-dg1-15/igt@prime_self_import@reimport-vs-gem_close-race.html
-> 
->   
-> New tests
-> ---------
-> 
->   New tests have been introduced between CI_DRM_16725_full and IGTPW_13321_full:
-> 
-> ### New IGT tests (2) ###
-> 
->   * igt@kms_async_flips@test-cursor@pipe-a-vga-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.10] s
-> 
->   * igt@kms_async_flips@test-cursor@pipe-b-vga-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.11] s
-> 
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_13321_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@core_hotunplug@unbind-rebind:
->     - shard-dg2:          NOTRUN -> [ABORT][5] ([i915#13571])
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13321/shard-dg2-10/igt@core_hotunplug@unbind-rebind.html
-> 
-...cut...
+DRIVER: xe || BDF: 0000:00:02.0
+ENGINES         BUSY
+Render/3D/0   | 96.5% ███████████████████████████████████████ |
+Blitter/0     | 91.6% █████████████████████████████████████   |
+Video/0       | 56.2% ███████████████████████████             |
+VideoEnhance/0| 97.7% ████████████████████████████████████████|
+Compute/0     | 48.5% ███████████████████████                 |
+
+Soham Purkait (5):
+  lib/igt_device_scan: Add support for the device filter
+  lib/igt_device_scan: Enable finding all matched IGT devices
+  tools/gputop/utils: Add gputop utility functions common to all drivers
+  tools/gputop/xe_gputop: Add gputop support for xe specific devices
+  tools/gputop/gputop: Enable support for multiple GPUs and instances
+
+ lib/igt_device_scan.c       | 128 +++++++++++++
+ lib/igt_device_scan.h       |   1 +
+ tools/{ => gputop}/gputop.c | 229 +++++++++++++++++++----
+ tools/gputop/meson.build    |   6 +
+ tools/gputop/utils.c        |  51 ++++++
+ tools/gputop/utils.h        |  62 +++++++
+ tools/gputop/xe_gputop.c    | 354 ++++++++++++++++++++++++++++++++++++
+ tools/gputop/xe_gputop.h    |  59 ++++++
+ tools/meson.build           |   6 +-
+ 9 files changed, 852 insertions(+), 44 deletions(-)
+ rename tools/{ => gputop}/gputop.c (65%)
+ create mode 100644 tools/gputop/meson.build
+ create mode 100644 tools/gputop/utils.c
+ create mode 100644 tools/gputop/utils.h
+ create mode 100644 tools/gputop/xe_gputop.c
+ create mode 100644 tools/gputop/xe_gputop.h
+
+-- 
+2.34.1
+
