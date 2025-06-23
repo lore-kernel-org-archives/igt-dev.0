@@ -4,67 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C6A5C77B7C
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Jun 2025 18:00:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB3EC77B7C
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Jun 2025 18:04:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D17710E013;
-	Mon, 23 Jun 2025 18:00:18 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NL2WS5u4";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A00E810E14D
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jun 2025 18:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750701616; x=1782237616;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Q2C1GOuTJgtOCwFuF0o1iQXD9DTzyfNH8gu7z45+N2Y=;
- b=NL2WS5u44cjRLSS7Zlv4ISw2yjxVfjvF7DwDKJoI50kmx9/EDtUZp3G2
- 3PKSVxtB1oPWHqvlTEym43i4jlTHYKoA4/IPWEnKYlMI1pFF4HQn1W6k1
- 3HLpcvcLGEHr79oWNW34nWi445rd9yYBtn2gMHPOxAfroTVxrRFCqIP0Z
- zdRcDAM7MnUmCE3LJ6bbB0Up4pg34u+bTL7WwqtTS8bpqCwquqLqDR1hk
- uyGV8o7JhWwQmtZQN5tAxT6AJaGVm1HIjaFNmN04AH7moURnRCeGLmFVh
- HyvACngFG8XY//hw58mduHoyAH16YomKWmtJnJHTU7NFUmKEJVWRVd9sZ Q==;
-X-CSE-ConnectionGUID: 3Ha77iT0RpiJrz2XPYz6ew==
-X-CSE-MsgGUID: nrZgkyHrSJyvEuFfpg39jA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="63614507"
-X-IronPort-AV: E=Sophos;i="6.16,259,1744095600"; d="scan'208";a="63614507"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 11:00:14 -0700
-X-CSE-ConnectionGUID: bZNSH0NySLCmDCYLtKqcLw==
-X-CSE-MsgGUID: x8eQXDFLQQCa2LzwxPq3fw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,259,1744095600"; d="scan'208";a="188886251"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jun 2025 11:00:12 -0700
-Date: Mon, 23 Jun 2025 20:00:09 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Shekhar Chauhan <shekhar.chauhan@intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Tejas Upadhyay <tejas.upadhyay@intel.com>,
- Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
- Matt Roper <matthew.d.roper@intel.com>,
- Matt Atwood <matthew.s.atwood@intel.com>
-Subject: Re: [PATCH i-g-t] lib/pciids: Sync pciid's with kernel commit 9b779ff
-Message-ID: <20250623180009.rixfzijs5yll3xuk@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org,
- Shekhar Chauhan <shekhar.chauhan@intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Tejas Upadhyay <tejas.upadhyay@intel.com>,
- Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
- Matt Roper <matthew.d.roper@intel.com>,
- Matt Atwood <matthew.s.atwood@intel.com>
-References: <20250623133257.3807750-1-kunal1.joshi@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 127E310E013;
+	Mon, 23 Jun 2025 18:04:27 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ED4710E14D;
+ Mon, 23 Jun 2025 18:04:25 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6840221974540197968=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250623133257.3807750-1-kunal1.joshi@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Support_for_IN=5FFORMATS=5F?=
+ =?utf-8?q?ASYNC_plane_property?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 23 Jun 2025 18:04:25 -0000
+Message-ID: <175070186561.101275.2390774688180414114@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250623110918.606014-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250623110918.606014-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,99 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kunal,
-On 2025-06-23 at 19:02:57 +0530, Kunal Joshi wrote:
+--===============6840221974540197968==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-few nits about this for future, as this was merged already.
+== Series Details ==
 
-imho subject could be short, instead of:
+Series: Support for IN_FORMATS_ASYNC plane property
+URL   : https://patchwork.freedesktop.org/series/150616/
+State : success
 
-[PATCH i-g-t] lib/pciids: Sync pciid's with kernel commit 9b779ff
+== Summary ==
 
-simple one:
-[PATCH i-g-t] lib/pciids: Sync with kernel
+CI Bug Log - changes from XEIGT_8422_BAT -> XEIGTPW_13336_BAT
+====================================================
 
-or little more explanatory when only few changed:
+Summary
+-------
 
-[PATCH i-g-t] lib/pciids: Update BMG and PTL pci ids
+  **SUCCESS**
 
-Reason for this short subject is that you will write details
-in patch description.
+  No regressions found.
 
-> From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+  
 
-imho this should be your 'From:' as you are porting this
-into IGT, especially when there will be more changes
-from different authors.
+Participating hosts (8 -> 8)
+------------------------------
 
-> 
-> As per updated Bspec, Sync PCI IDs
-> 
-> Sync with the following kernel commits:
-> 9b779ff ("drm/xe/xe2_hpg: Add PCI IDs for xe2_hpg")
-> 49c6dc7 ("drm/xe/ptl: Update the PTL pci id table")
+  No changes in participating hosts
 
-Please use more chars for SHA1 sum, at least 12 for now, as
-suggested by checkpatch.pl script from Linux kernel source.
 
-> 
-> v1: Sync with kernel commit (Jani/Tejas)
-> v2: Specify both kernel commits in subject (Tejas)
-> 
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-> Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-> Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
+Changes
+-------
 
-Where is your s-o-b?
+  No changes found
 
-> Link: https://lore.kernel.org/r/20250605190804.1287289-2-dnyaneshwar.bhadane@intel.com
-> Link: https://lore.kernel.org/r/20250520195749.371748-1-matthew.s.atwood@intel.com
 
-Nice, thank you for providing links to lore.
+Build changes
+-------------
 
-Regards,
-Kamil
+  * IGT: IGT_8422 -> IGTPW_13336
 
-> Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> ---
->  lib/pciids.h | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/pciids.h b/lib/pciids.h
-> index d212848d0..129c3172a 100644
-> --- a/lib/pciids.h
-> +++ b/lib/pciids.h
-> @@ -852,8 +852,11 @@
->  	MACRO__(0xE210, ## __VA_ARGS__), \
->  	MACRO__(0xE211, ## __VA_ARGS__), \
->  	MACRO__(0xE212, ## __VA_ARGS__), \
-> -	MACRO__(0xE215, ## __VA_ARGS__), \
-> -	MACRO__(0xE216, ## __VA_ARGS__)
-> +	MACRO__(0xE216, ## __VA_ARGS__), \
-> +	MACRO__(0xE220, ## __VA_ARGS__), \
-> +	MACRO__(0xE221, ## __VA_ARGS__), \
-> +	MACRO__(0xE222, ## __VA_ARGS__), \
-> +	MACRO__(0xE223, ## __VA_ARGS__)
->  
->  /* PTL */
->  #define INTEL_PTL_IDS(MACRO__, ...) \
-> @@ -861,6 +864,10 @@
->  	MACRO__(0xB081, ## __VA_ARGS__), \
->  	MACRO__(0xB082, ## __VA_ARGS__), \
->  	MACRO__(0xB083, ## __VA_ARGS__), \
-> +	MACRO__(0xB084, ## __VA_ARGS__), \
-> +	MACRO__(0xB085, ## __VA_ARGS__), \
-> +	MACRO__(0xB086, ## __VA_ARGS__), \
-> +	MACRO__(0xB087, ## __VA_ARGS__), \
->  	MACRO__(0xB08F, ## __VA_ARGS__), \
->  	MACRO__(0xB090, ## __VA_ARGS__), \
->  	MACRO__(0xB0A0, ## __VA_ARGS__), \
-> -- 
-> 2.25.1
-> 
+  IGTPW_13336: dcc521e8bd7dcebdc632b541b5bc5c0c9ea9c74c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8422: 9b9c9136b17a2ed0680fb9589d51446c03698b37 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3291-9ec4850b4b065a9a15957da0ed1bb3904d4a3b18: 9ec4850b4b065a9a15957da0ed1bb3904d4a3b18
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13336/index.html
+
+--===============6840221974540197968==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Support for IN_FORMATS_ASYNC plane property</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150616/">https://patchwork.freedesktop.org/series/150616/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13336/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13336/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8422_BAT -&gt; XEIGTPW_13336_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8422 -&gt; IGTPW_13336</li>
+</ul>
+<p>IGTPW_13336: dcc521e8bd7dcebdc632b541b5bc5c0c9ea9c74c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8422: 9b9c9136b17a2ed0680fb9589d51446c03698b37 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3291-9ec4850b4b065a9a15957da0ed1bb3904d4a3b18: 9ec4850b4b065a9a15957da0ed1bb3904d4a3b18</p>
+
+</body>
+</html>
+
+--===============6840221974540197968==--
