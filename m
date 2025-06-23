@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFB7AC7115B
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Jun 2025 05:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9C6EC7115D
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Jun 2025 05:22:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A53010E160;
-	Mon, 23 Jun 2025 05:20:05 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c+N772BH";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00DD910E15B
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jun 2025 05:20:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750656004; x=1782192004;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=PGhkW8Z/y1miOuV81v4pH/UUO2rje9dFzpfrEfwi5Fg=;
- b=c+N772BHL4UWCthM+D4j/DIM6eW2cC3FHK1Mbr8F0X501IafgjgK8/Fj
- sXyqqu5o8IfGKVi767uqoyc6J7JU/XuuNDAwCcpt0isI5izuJ8suOb4ZV
- aFJKrg/l1GP47EjqMZ3mvH3Wihn7QZfWPHgtN2VfeHzOYgrCKTwNACfL9
- JlBWqdmAVQUNVCvU7IDUbNUUWHkXuHvOS6DBy0jJSuF4b7d7uivfCxBrD
- ET4/G99tZ6yJNHUvag1BszDwGr9HIP/5ch7A4XDb0UVF6dYaqkBWYz5QI
- qT8PcfJPOZmhplRTR+djPRRk3NfMl1DkeBluKxnj4KBT9d+IlFCBk+E7f A==;
-X-CSE-ConnectionGUID: maQwJ8MwTa6Oe/CBYzEXhw==
-X-CSE-MsgGUID: xne9i5PfRgSa3G+h6EWyuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="70416993"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="70416993"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2025 22:20:04 -0700
-X-CSE-ConnectionGUID: wA6HoEGnSB+VR3xmum6J3Q==
-X-CSE-MsgGUID: v8bqg9PKRSaCpbsmoCW74A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; d="scan'208";a="182527562"
-Received: from jeevan24.iind.intel.com ([10.223.74.160])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2025 22:20:03 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: animesh.manna@intel.com,
-	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] kms_vrr: Add comment explaining PR and LOBF dependency
-Date: Mon, 23 Jun 2025 10:50:56 +0530
-Message-ID: <20250623052056.135083-1-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5803F10E160;
+	Mon, 23 Jun 2025 05:22:49 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26CEF10E15B;
+ Mon, 23 Jun 2025 05:22:49 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6831171397497185313=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/pciids=3A_Sync_pciid=27?=
+ =?utf-8?q?s_with_kernel_commit_9b779ff?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 23 Jun 2025 05:22:49 -0000
+Message-ID: <175065616913.99585.924719188630290361@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250623044646.3764499-1-kunal1.joshi@intel.com>
+In-Reply-To: <20250623044646.3764499-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,32 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a comment to explain that LOBF requires PR support,
-which is only available on eDP 1.5 panels.
+--===============6831171397497185313==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_vrr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+== Series Details ==
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 4919b7cb7..b7600ae2c 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -1049,6 +1049,10 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
- 				continue;
- 			}
- 
-+			/* Panel Replay is supported only with eDP 1.5 panels.
-+			 * LOBF and PR are mutually exclusive features.
-+			 * Skip the test if PR is not supported, as LOBF cannot be enabled.
-+			 */
- 			if (flags == TEST_LINK_OFF)
- 				igt_require_f(psr_sink_support(data->drm_fd,
- 					      data->debugfs_fd, PR_MODE, output),
--- 
-2.43.0
+Series: lib/pciids: Sync pciid's with kernel commit 9b779ff
+URL   : https://patchwork.freedesktop.org/series/150597/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8419_BAT -> XEIGTPW_13330_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8419 -> IGTPW_13330
+  * Linux: xe-3283-7b3d316d26e5191c5761cfc5bd13b0e83c98d95c -> xe-3285-84486f04a417c8d400d6243d9b395a91eeb10fc0
+
+  IGTPW_13330: 13330
+  IGT_8419: 8419
+  xe-3283-7b3d316d26e5191c5761cfc5bd13b0e83c98d95c: 7b3d316d26e5191c5761cfc5bd13b0e83c98d95c
+  xe-3285-84486f04a417c8d400d6243d9b395a91eeb10fc0: 84486f04a417c8d400d6243d9b395a91eeb10fc0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13330/index.html
+
+--===============6831171397497185313==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/pciids: Sync pciid&#x27;s with kernel commit 9b779ff</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150597/">https://patchwork.freedesktop.org/series/150597/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13330/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13330/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8419_BAT -&gt; XEIGTPW_13330_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8419 -&gt; IGTPW_13330</li>
+<li>Linux: xe-3283-7b3d316d26e5191c5761cfc5bd13b0e83c98d95c -&gt; xe-3285-84486f04a417c8d400d6243d9b395a91eeb10fc0</li>
+</ul>
+<p>IGTPW_13330: 13330<br />
+  IGT_8419: 8419<br />
+  xe-3283-7b3d316d26e5191c5761cfc5bd13b0e83c98d95c: 7b3d316d26e5191c5761cfc5bd13b0e83c98d95c<br />
+  xe-3285-84486f04a417c8d400d6243d9b395a91eeb10fc0: 84486f04a417c8d400d6243d9b395a91eeb10fc0</p>
+
+</body>
+</html>
+
+--===============6831171397497185313==--
