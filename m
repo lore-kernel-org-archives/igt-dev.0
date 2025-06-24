@@ -4,28 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39A3FC77B7F
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Jun 2025 09:23:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFB05C77B7C
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Jun 2025 09:24:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E550F10E568;
-	Tue, 24 Jun 2025 09:23:40 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BEBF10E568;
- Tue, 24 Jun 2025 09:23:39 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5745572470273514087=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93DE889316;
+	Tue, 24 Jun 2025 09:24:45 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I/xClgdq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AF1189316
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Jun 2025 09:24:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1750757084; x=1782293084;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=aypU9KTuFBf3KUiUBv9MQtvi0OjeHhp342FFyjpYmC8=;
+ b=I/xClgdqPID5C//uyVkrn/rnhmrsmBmIGtXB/1ThpATkHiICcRzIGw0h
+ Wle0MKLzKBNoO0krv93tkm7016LBVeSXLqutuOlF0anqxPBg3jLRSJyPZ
+ BMvteTqdiuVipKWaE8GNl6fOUzE9/G+37Q3kNFf7CJEX3GHHLJ6CUdpTT
+ HajwwsvIk76Ql3Cvh0aZLylXuzHr3mI0TfHrmc9aSUFS64BL3ZGWHS3qO
+ vuumqEV5sZEQFTSZ+NXIUiWvgbuPjl9T5nt0xAvVR4edZ9HnFP/V/8yL9
+ NyIrLXkJqvyNqq3F2buV+EShKkIVvVPDsDB5tw7kS4jRg595FhyhPwHhu Q==;
+X-CSE-ConnectionGUID: intt89QtS1GN/GJhE/74/g==
+X-CSE-MsgGUID: X5vLee4WS/Wrny7djJB0bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="64418977"
+X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="64418977"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2025 02:24:21 -0700
+X-CSE-ConnectionGUID: 39vvLbVrRlKVT7txh1ne1g==
+X-CSE-MsgGUID: 15vLf4UoSgmmwlc9Vadgkw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="157630881"
+Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2025 02:24:19 -0700
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: santhosh.reddy.guddati@intel.com, arun.r.murthy@intel.com,
+ jeevan.b@intel.com, Karthik B S <karthik.b.s@intel.com>
+Subject: [PATCH i-g-t v2 1/4] tests/kms_async_flips: Fix suspend-resume subtest
+Date: Tue, 24 Jun 2025 14:54:17 +0530
+Message-ID: <20250624092421.785063-1-karthik.b.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2Cv2=2C1/2=5D_lib/amdgpu=3A_Generalize_command_submission_NOP_?=
- =?utf-8?q?function?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Zhang, Jesse(Jie)" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Jun 2025 09:23:39 -0000
-Message-ID: <175075701956.103826.501619395230666003@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250624080539.3548500-1-Jesse.Zhang@amd.com>
-In-Reply-To: <20250624080539.3548500-1-Jesse.Zhang@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,106 +63,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5745572470273514087==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Currently suspend-resume subtest is only running on the first pipe as
+the variable is set to false in the first iteration.
 
-== Series Details ==
+Add a temp variable to avoid this and actually run the test on all the
+pipes as intended.
 
-Series: series starting with [i-g-t,v2,1/2] lib/amdgpu: Generalize command submission NOP function
-URL   : https://patchwork.freedesktop.org/series/150666/
-State : success
+Fixes: 982a8d7bbc0b ("tests/kms_async_flips: Async flips suspend resume test")
 
-== Summary ==
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/kms_async_flips.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-CI Bug Log - changes from XEIGT_8423_BAT -> XEIGTPW_13342_BAT
-====================================================
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 065ac9c49..0f2d932e4 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -377,6 +377,7 @@ static void test_async_flip(data_t *data)
+ 	long long int fps;
+ 	struct timeval start, end, diff;
+ 	int suspend_time = RUN_TIME / 2;
++	bool temp = data->suspend_resume;
+ 
+ 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+@@ -432,8 +433,8 @@ static void test_async_flip(data_t *data)
+ 				     data->flip_interval, data->refresh_rate, MIN_FLIPS_PER_FRAME);
+ 		}
+ 
+-		if (data->suspend_resume && diff.tv_sec == suspend_time) {
+-			data->suspend_resume = false;
++		if (data->suspend_resume && diff.tv_sec == suspend_time && temp) {
++			temp = false;
+ 			igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
+ 		}
+ 		frame++;
+@@ -1028,6 +1029,7 @@ igt_main
+ 		test_init_ops(&data);
+ 		data.suspend_resume = true;
+ 		run_test(&data, test_async_flip);
++		data.suspend_resume = false;
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8423 -> IGTPW_13342
-
-  IGTPW_13342: 13342
-  IGT_8423: 8423
-  xe-3296-da56936fad6f5e1d5f0cef8b50277bfb071eefe7: da56936fad6f5e1d5f0cef8b50277bfb071eefe7
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13342/index.html
-
---===============5745572470273514087==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/2] lib/amdgpu: Generalize command submission NOP function</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150666/">https://patchwork.freedesktop.org/series/150666/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13342/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13342/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8423_BAT -&gt; XEIGTPW_13342_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8423 -&gt; IGTPW_13342</li>
-</ul>
-<p>IGTPW_13342: 13342<br />
-  IGT_8423: 8423<br />
-  xe-3296-da56936fad6f5e1d5f0cef8b50277bfb071eefe7: da56936fad6f5e1d5f0cef8b50277bfb071eefe7</p>
-
-</body>
-</html>
-
---===============5745572470273514087==--
