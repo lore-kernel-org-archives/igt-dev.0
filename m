@@ -4,58 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7586C77B7C
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Jun 2025 13:31:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC099C77B7C
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Jun 2025 13:33:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 756B110E5AE;
-	Tue, 24 Jun 2025 13:31:25 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D9EOM4hM";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 938AE10E5AE
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Jun 2025 13:31:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750771884; x=1782307884;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=R0fL5nNTzFFzh2VVl/+T9RXV5UTiXYyR8d51zP3hvbo=;
- b=D9EOM4hMG+apiKEB2oCvoyZCWGDuxEJi90z5W3Yu6+GNbqjRKs5Nf6W2
- u8yjd16ef+raYs/sGE8mA2javPkZw6FHwlX6rIoSKE2G9ewtwXTn3295V
- a3uToMDvQIzqdAIW4k+jarc+zkEC/7CVxCaXGdQx+h7S4J8O9dqn/Ofgt
- oT2r7KAkddM30lSmJsmoYFxinpxNlCcMdrO1c/vq+TL29/1D6PVqpIZoP
- CzLI3U9+mTuoN1jbc9xS1mHveEX3UN4fAGavL6A3Y2CGVT5ld7aJKr7nk
- VTFYTmFHp0Pjlik1FcZ/W3oIRArF55Um29QpoCUhE3SUmsNQ7hY8vQ/D8 g==;
-X-CSE-ConnectionGUID: wPV9pqFUSFOHYSWIz0Cb7A==
-X-CSE-MsgGUID: sYtoarTfQPisxsEGnBuCqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="63702899"
-X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="63702899"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2025 06:31:24 -0700
-X-CSE-ConnectionGUID: AK3rh5S+SAGYQH+dTRbL7w==
-X-CSE-MsgGUID: P2BNSuJ+RmOJ2IHNtShbRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,261,1744095600"; d="scan'208";a="151342921"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 06:31:23 -0700
-Date: Tue, 24 Jun 2025 15:31:06 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Alex Hung <alex.hung@amd.com>
-Cc: igt-dev@lists.freedesktop.org, harry.wentland@amd.com,
- Karthik B S <karthik.b.s@intel.com>
-Subject: Re: [PATCH][V2] lib/igt_kms: Move get_writeback_formats_blob to lib
-Message-ID: <20250624133106.s2lppebjpbc5grg6@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org,
- harry.wentland@amd.com, Karthik B S <karthik.b.s@intel.com>
-References: <20250623181440.462861-1-alex.hung@amd.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8203089E36;
+	Tue, 24 Jun 2025 13:33:42 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 979F189E36;
+ Tue, 24 Jun 2025 13:33:41 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3755000256210319701=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250623181440.462861-1-alex.hung@amd.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2Cv2=2C1/4=5D_tests/kms=5Fasync=5Fflips=3A_Fix_suspend-resume_?=
+ =?utf-8?q?subtest?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik B S" <karthik.b.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 24 Jun 2025 13:33:41 -0000
+Message-ID: <175077202161.104825.16805801884330375560@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250624092421.785063-1-karthik.b.s@intel.com>
+In-Reply-To: <20250624092421.785063-1-karthik.b.s@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,131 +38,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Alex,
-On 2025-06-23 at 12:14:40 -0600, Alex Hung wrote:
-> From: Harry Wentland <harry.wentland@amd.com>
-> 
-> This function can be used by other tests that need writeback. A prefix
-> "igt_" is also added to the function name.
-> 
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-> ---
->  lib/igt_kms.c         | 25 +++++++++++++++++++++++++
->  lib/igt_kms.h         |  2 ++
->  tests/kms_writeback.c | 21 +--------------------
->  3 files changed, 28 insertions(+), 20 deletions(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 9ee03e870..085c3f430 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -7472,3 +7472,28 @@ int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *c
->  
->  	return 0;
->  }
-> +
-> +/**
-> + * igt_get_writeback_formats_blob:
-> + * @output: Target output
-> + *
-> + * get supported formats from the writeback connector
+--===============3755000256210319701==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Document here when this could assert (or not)
-also document when return value could be NULL
+== Series Details ==
 
-> + */
-> +drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output)
-> +{
-> +	drmModePropertyBlobRes *blob = NULL;
-> +	uint64_t blob_id;
-> +	int ret;
-> +
-> +	ret = kmstest_get_property(output->display->drm_fd,
-> +				   output->config.connector->connector_id,
-> +				   DRM_MODE_OBJECT_CONNECTOR,
-> +				   igt_connector_prop_names[IGT_CONNECTOR_WRITEBACK_PIXEL_FORMATS],
-> +				   NULL, &blob_id, NULL);
-> +	if (ret)
-> +		blob = drmModeGetPropertyBlob(output->display->drm_fd, blob_id);
-> +
-> +	igt_assert(blob);
+Series: series starting with [i-g-t,v2,1/4] tests/kms_async_flips: Fix suspend-resume subtest
+URL   : https://patchwork.freedesktop.org/series/150677/
+State : success
 
-Please remove assert from here, or at least move it iside 'if':
+== Summary ==
 
-	if (ret) {
-		blob = drmModeGetPropertyBlob(output->display->drm_fd, blob_id);
-		igt_assert(blob);
-	}
+CI Bug Log - changes from XEIGT_8424_BAT -> XEIGTPW_13344_BAT
+====================================================
 
-Or provide second function __igt_get_writeback_formats_blob
-without any asserts, see note about writing library functions
-in CONTRIBUTING.md
+Summary
+-------
 
-Or it could be merged as is now and improved later on?
-+cc Karthik
+  **SUCCESS**
 
-Cc: Karthik B S <karthik.b.s@intel.com>
+  No regressions found.
 
-Regards,
-Kamil
+  
 
-> +
-> +	return blob;
-> +}
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index a85fee515..09d7d4414 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1281,4 +1281,6 @@ void igt_set_link_params(int drm_fd, igt_output_t *output,
->  int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
->  int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
->  
-> +drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output);
-> +
->  #endif /* __IGT_KMS_H__ */
-> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-> index 8765fda34..86afed509 100644
-> --- a/tests/kms_writeback.c
-> +++ b/tests/kms_writeback.c
-> @@ -92,25 +92,6 @@ enum {
->  	XRGB2101010 = 1 << 1,
->  };
->  
-> -static drmModePropertyBlobRes *get_writeback_formats_blob(igt_output_t *output)
-> -{
-> -	drmModePropertyBlobRes *blob = NULL;
-> -	uint64_t blob_id;
-> -	int ret;
-> -
-> -	ret = kmstest_get_property(output->display->drm_fd,
-> -				   output->config.connector->connector_id,
-> -				   DRM_MODE_OBJECT_CONNECTOR,
-> -				   igt_connector_prop_names[IGT_CONNECTOR_WRITEBACK_PIXEL_FORMATS],
-> -				   NULL, &blob_id, NULL);
-> -	if (ret)
-> -		blob = drmModeGetPropertyBlob(output->display->drm_fd, blob_id);
-> -
-> -	igt_assert(blob);
-> -
-> -	return blob;
-> -}
-> -
->  static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
->  				    drmModeModeInfo override_mode)
->  {
-> @@ -621,7 +602,7 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
->  		const char *valid_chars;
->  
->  		igt_skip_on(data.dump_check || data.list_modes);
-> -		formats_blob = get_writeback_formats_blob(output);
-> +		formats_blob = igt_get_writeback_formats_blob(output);
->  		valid_chars = "01234568 ABCGNRUVXY";
->  
->  		/*
-> -- 
-> 2.43.0
-> 
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8424 -> IGTPW_13344
+
+  IGTPW_13344: 13344
+  IGT_8424: 68588b3c89a1bbe08c54d21c4d3d2e509957c795 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3297-fb5dada21e3cfa26179ca58e1d7c26cdad217201: fb5dada21e3cfa26179ca58e1d7c26cdad217201
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13344/index.html
+
+--===============3755000256210319701==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/4] tests/kms_async_flips: Fix suspend-resume subtest</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150677/">https://patchwork.freedesktop.org/series/150677/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13344/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13344/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8424_BAT -&gt; XEIGTPW_13344_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8424 -&gt; IGTPW_13344</li>
+</ul>
+<p>IGTPW_13344: 13344<br />
+  IGT_8424: 68588b3c89a1bbe08c54d21c4d3d2e509957c795 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3297-fb5dada21e3cfa26179ca58e1d7c26cdad217201: fb5dada21e3cfa26179ca58e1d7c26cdad217201</p>
+
+</body>
+</html>
+
+--===============3755000256210319701==--
