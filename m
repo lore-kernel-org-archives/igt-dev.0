@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA1DEC77B7C
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Jun 2025 15:28:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4D9EC77B7F
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Jun 2025 15:28:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 590BD10E5D4;
-	Tue, 24 Jun 2025 15:28:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F2A710E5D4;
+	Tue, 24 Jun 2025 15:28:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JQ5BkSBU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k6XxfkP3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8479910E5CF
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Jun 2025 15:28:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 72D0410E5D4
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Jun 2025 15:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750778893; x=1782314893;
+ t=1750778909; x=1782314909;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=YYINGtdY0i+XNfucTs7SWgl3a4CBmxIXV5ew8F02oN8=;
- b=JQ5BkSBU210+9kp72l9ab81rcl3KYugm3BJ0bbtjXk5iZVIuoUTCTMoI
- 4otBKuYWTP1cGGBD/vFCXKyNjXO6qXdkvscCWSOq3+zlSdkAbduek+kWO
- 1C+4SVsHAQ3xJdbsTHRMhpZRG/B2SlMTU6nDnfjb53ADc0zQUbiKAV59P
- ERDKcbB8MBQJ4XvInuPK3CVcj56wa1xU3ok55jcXHwjbOAap8JAunMGr4
- QcuS8AqxA9atloEEt2MR3Me3ivgSaKkRAvmv6t26bdP7PM/iAAG9dJ4/M
- Lq0kZFOkOVv+JvvuWni0w9Cb3UTfRZXtR5iUv1C1fBULZkPntCri+jUB/ Q==;
-X-CSE-ConnectionGUID: C2LyDuDKS2KCFfSxGplPpQ==
-X-CSE-MsgGUID: XGpZzs/aREeMoSH4KlYqew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="78448416"
-X-IronPort-AV: E=Sophos;i="6.16,262,1744095600"; d="scan'208";a="78448416"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2025 08:28:12 -0700
-X-CSE-ConnectionGUID: 8ETIfuiqSAeHNHYoLdSR1g==
-X-CSE-MsgGUID: 817xqmNGTTCeTSn8tTK4Vg==
+ bh=7zf+HKgA5ooLNXSWRYHdl5QjU2Lab8ASUwiYlofxcys=;
+ b=k6XxfkP3A3MpOlaOlpJiGcJ8vPQQ9x/LSE96dP9I/zvpKCubUSBmlhXW
+ BoUW3zaRuupBtz9MtMi4D827/+uw9rNFt0aNUHKNywTPyrEqcwq1mrfOJ
+ dcb+qtBvkDUTEYOKvN1lxz3T6O3J9yIuP+aWFJtzpK84wDmqgbBYBiqiC
+ NY+xSVvkiYOs2wHnomSDJC72tmREfwRd6Uk0dyqnNuQr3/YAD+l4XNPGe
+ 8r4jNe9Dq5+Jn+2V7J3m6xujMOH3rRVuxSvfeoHaKckIAT+rKbsScqos1
+ f3wjxhiCD/uSr6kvRGpB2uhk3aoqcXoBdUO1H4Pe4lwiALNfuORPKhWRn w==;
+X-CSE-ConnectionGUID: wXLNXN7XS+K1Ewa5+eWrKQ==
+X-CSE-MsgGUID: KahzTj19RGyNF2gyZzBDBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="64379619"
+X-IronPort-AV: E=Sophos;i="6.16,262,1744095600"; d="scan'208";a="64379619"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2025 08:28:29 -0700
+X-CSE-ConnectionGUID: wqBPb8AwTtWPSafwUIXIUg==
+X-CSE-MsgGUID: GKss6Gg/RkOux84nDlk7/g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,262,1744095600"; d="scan'208";a="182834115"
+X-IronPort-AV: E=Sophos;i="6.16,262,1744095600"; d="scan'208";a="156518449"
 Received: from gmalyava-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.181.149])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2025 08:28:13 -0700
-Date: Tue, 24 Jun 2025 08:28:10 -0700
-Message-ID: <87zfdx17n9.wl-ashutosh.dixit@intel.com>
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2025 08:28:29 -0700
+Date: Tue, 24 Jun 2025 08:28:28 -0700
+Message-ID: <87y0th17mr.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v1 1/2] intel-ci: Block virtgpu tests for i915
-In-Reply-To: <20250624112215.67441-2-kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t v1 2/2] intel-ci/xe.blocklist: Block virtgpu test
+In-Reply-To: <20250624112215.67441-3-kamil.konieczny@linux.intel.com>
 References: <20250624112215.67441-1-kamil.konieczny@linux.intel.com>
- <20250624112215.67441-2-kamil.konieczny@linux.intel.com>
+ <20250624112215.67441-3-kamil.konieczny@linux.intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,34 +71,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 24 Jun 2025 04:22:14 -0700, Kamil Konieczny wrote:
+On Tue, 24 Jun 2025 04:22:15 -0700, Kamil Konieczny wrote:
 >
-> There is new test for VirtIO-GPU so block it from running for
-> i915.
+> There is new VirtIO-GPU test so block it from running.
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
 >
 > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tests/intel-ci/blacklist.txt | 4 ++++
->  1 file changed, 4 insertions(+)
+>  tests/intel-ci/xe.blocklist.txt | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-> index e9b11a75f..6c91f1a70 100644
-> --- a/tests/intel-ci/blacklist.txt
-> +++ b/tests/intel-ci/blacklist.txt
-> @@ -117,6 +117,10 @@ igt@panfrost.*
->  ###############################################
->  igt@msm.*
->  ###############################################
-> +# VirtIO-GPU
-> +###############################################
+> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+> index ebe1ff006..a21c8a3d3 100644
+> --- a/tests/intel-ci/xe.blocklist.txt
+> +++ b/tests/intel-ci/xe.blocklist.txt
+> @@ -10,6 +10,7 @@ igt@panfrost.*
+>  igt@v3d.*
+>  igt@vc4.*
+>  igt@vgem_.*
 > +igt@.*virtgpu.*
-> +###############################################
->  # Hibernate: not configured correctly on CI
->  ###############################################
->  igt@.*@.*-hibernate
+>  igt@vmwgfx.*
+>  ##################################################################
+>  # Exclude all i915 tests
 > --
 > 2.49.0
 >
