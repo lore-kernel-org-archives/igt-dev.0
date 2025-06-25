@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44371C77B7C
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Jun 2025 07:34:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A2CFC77B7C
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Jun 2025 07:34:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE86E10E0C3;
-	Wed, 25 Jun 2025 07:34:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 42E4A10E67D;
+	Wed, 25 Jun 2025 07:34:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aS/i8wz8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aRlG1anQ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6B3F10E0C3
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Jun 2025 07:34:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46C2310E67D
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Jun 2025 07:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750836893; x=1782372893;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=McuoBe5aYMIzPSGCzUbjWC0BNVR2fuBmt5Go4CjSipU=;
- b=aS/i8wz8oAZzJtuwtVHWXcygkKbKnIOARxJ17KpymLWSVr4ZuCWH19zR
- TPDKcoF+C9IMg+wFosPXbiKJgSDjlqx2BhMujmicD49IZlb5EmISHXPYh
- 1M57Q+amL5u6I4c9zacF1L8VYEfMfWhRSNGQvuRYCxIIrfJC0+Yhx2yQh
- fBZSTzHQJpn49QrudVoAlQaXSRHPI2ACPSJS0cf3ymtyB5MPuDOc7sLDa
- SnqnfRXPzZqjqWaEzII4AzFiY1cNsZU1XNCUYj77TliGxh5R2HIPQ6165
- zs1qDlGj3uHQ+pUYE9g5NuDxmfvauUHnOu5crCEPJSGkEOai84bzOcL1c g==;
-X-CSE-ConnectionGUID: Yxk4CRGqS7yGMZB9nx0Cqg==
-X-CSE-MsgGUID: cr9DzUcHTJmncxpXmsu6QQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="75633329"
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; d="scan'208";a="75633329"
+ t=1750836897; x=1782372897;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=LEDndX6vhIxxTpNrCkgLjjuSxTlAFXMwZfxeJefY0Cw=;
+ b=aRlG1anQwbh4ZoS29Il2+65mKCret7GzHVDg4y4pMZBXkq/SvC9SmvtI
+ pSN1yKXCOt+7hVVCd/RkI3edcM4mND5phqf9DtZ1r/mAEkvaBkstsXyIt
+ XbVLs+RpH83fXZr/0gfT8DD2TSM3j3SqjDBfWfem7ZmqKj1GJ+PfutNyg
+ JzmsUS7lMdhkpLa0DRMx8w+Pw1pj+TG8hZfNiiyIA1Kh6tjsyOMNJ3s0C
+ TuO+P7yl4SvLuzv/Tcnp77fyi7JMhNnvfvx3ZjzeuKfgV4b+IKk+0CIqU
+ sO/nV/m6eLNHcAiY7PwHbc01Xsi8WPsAkAroHGF8E6SC61heON2Bl3k7l w==;
+X-CSE-ConnectionGUID: i3Y+WTZSTGWhDHafVYrHmw==
+X-CSE-MsgGUID: zeHMB8N9SNyh168UsM97dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="75633337"
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; d="scan'208";a="75633337"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2025 00:34:53 -0700
-X-CSE-ConnectionGUID: r9Ymyuo8SM+vRaA/SI6DrA==
-X-CSE-MsgGUID: EhNl+1W3QGy9BQ+eh+HbAA==
+ 25 Jun 2025 00:34:56 -0700
+X-CSE-ConnectionGUID: cdPUQcJiTLGiUkJP0R94Ig==
+X-CSE-MsgGUID: QiFBCgWjR7aPlXSFlR8N7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; d="scan'208";a="151892216"
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; d="scan'208";a="151892247"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2025 00:34:49 -0700
+ 25 Jun 2025 00:34:52 -0700
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  vinay.belgaumkar@intel.com, kamil.konieczny@intel.com,
@@ -48,10 +48,12 @@ To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
 Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
  soham.purkait@intel.com, ashutosh.dixit@intel.com,
  umesh.nerlige.ramappa@intel.com
-Subject: [PATCH v15 0/5] Add per-device engine activity stats in GPUTOP
-Date: Wed, 25 Jun 2025 12:58:43 +0530
-Message-Id: <20250625072848.3479396-1-soham.purkait@intel.com>
+Subject: [PATCH v15 1/5] lib/igt_device_scan: Add support for the device filter
+Date: Wed, 25 Jun 2025 12:58:44 +0530
+Message-Id: <20250625072848.3479396-2-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250625072848.3479396-1-soham.purkait@intel.com>
+References: <20250625072848.3479396-1-soham.purkait@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -70,52 +72,133 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add per-device engine activity stat support in GPUTOP.
-This leverages the PMU interface to display the activity of
-engine instances for the array of requested or all devices.
+Add support for the device filter based on driver string, device type
+(integrated or discrete) and card number.
 
-    This patch refactors GPUTOP to be vendor-agnostic, laying
-the groundwork for future support of multiple GPU vendors.
+v1: 
+ - Add device filter to filter out matching devices.(Zbigniew)
+v2:
+ - Add 'all' option for all the cards and 'subsystem' filter
+   option. (Zbigniew)
 
-    Currently, GPUTOP supports GPUs with Xe driver only
-and can monitor the engine activities of multiple GPU
-devices simultaneously through abstracting vendor 
-specific code into a common interface and implementing 
-vendor-neutral APIs for monitoring.
+Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/igt_device_scan.c | 80 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 80 insertions(+)
 
-DRIVER: xe || BDF: 0000:03:00.0
-   GT:0 Render/3D/0| 99.1% ███████████████████████████████████████████████████|
-     GT:0 Blitter/0| 59.2% ██████████████████████████████                     |
-     GT:0 Compute/0| 49.2% █████████████████████████                          |
-       GT:1 Video/0| 89.3% ██████████████████████████████████████████████     |
-       GT:1 Video/1|  0.0%                                                    |
-GT:1 VideoEnhance/0| 98.5% ██████████████████████████████████████████████████ |
-GT:1 VideoEnhance/1|  0.0%                                                    |
-
-Soham Purkait (5):
-  lib/igt_device_scan: Add support for the device filter
-  lib/igt_device_scan: Enable finding all matched IGT devices
-  tools/gputop/utils: Add gputop utility functions common to all drivers
-  tools/gputop/xe_gputop: Add gputop support for xe specific devices
-  tools/gputop/gputop: Enable support for multiple GPUs and instances
-
- lib/igt_device_scan.c       | 128 +++++++++++++
- lib/igt_device_scan.h       |   1 +
- tools/{ => gputop}/gputop.c | 237 +++++++++++++++++++----
- tools/gputop/meson.build    |   6 +
- tools/gputop/utils.c        |  51 +++++
- tools/gputop/utils.h        |  63 +++++++
- tools/gputop/xe_gputop.c    | 361 ++++++++++++++++++++++++++++++++++++
- tools/gputop/xe_gputop.h    |  59 ++++++
- tools/meson.build           |   6 +-
- 9 files changed, 868 insertions(+), 44 deletions(-)
- rename tools/{ => gputop}/gputop.c (64%)
- create mode 100644 tools/gputop/meson.build
- create mode 100644 tools/gputop/utils.c
- create mode 100644 tools/gputop/utils.h
- create mode 100644 tools/gputop/xe_gputop.c
- create mode 100644 tools/gputop/xe_gputop.h
-
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index 3f26a1737..a250e7ee9 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -1434,6 +1434,7 @@ struct filter {
+ 		char *driver;
+ 		char *pf;
+ 		char *vf;
++		char *subsystem;
+ 	} data;
+ };
+ 
+@@ -1453,6 +1454,7 @@ static void fill_filter_data(struct filter *filter, const char *key, const char
+ 	__fill_key(driver);
+ 	__fill_key(pf);
+ 	__fill_key(vf);
++	__fill_key(subsystem);
+ #undef __fill_key
+ 
+ }
+@@ -1709,6 +1711,77 @@ static struct igt_list_head *filter_sriov(const struct filter_class *fcls,
+ 	return &igt_devs.filtered;
+ }
+ 
++/*
++ * Find appropriate gpu device through matching driver, device type and
++ * card filter arguments.
++ */
++static struct igt_list_head *filter_device(const struct filter_class *fcls,
++					   const struct filter *filter)
++{
++	struct igt_device *dev;
++	bool allcards = false;
++	int card = 0;
++	(void)fcls;
++
++	DBG("filter device\n");
++	if (filter->data.card) {
++		char crdop[5] = {0};
++
++		if (sscanf(filter->data.card, "%d", &card) == 1) {
++			if (card < 0)
++				return &igt_devs.filtered;
++		} else {
++			card = 0;
++			if (sscanf(filter->data.card, "%4s", crdop) == 1) {
++				if (!strcmp(crdop, "all"))
++					allcards = true;
++				else
++					return &igt_devs.filtered;
++			} else {
++				return &igt_devs.filtered;
++			}
++		}
++	} else {
++		card = 0;
++	}
++
++	igt_list_for_each_entry(dev, &igt_devs.all, link) {
++		/* Skip if 'driver' doesn't match */
++		if (filter->data.driver && !strequal(filter->data.driver, dev->driver))
++			continue;
++
++		/* Skip if 'device' doesn't match */
++		if (filter->data.device && !is_device_matched(dev, filter->data.device))
++			continue;
++
++		/* Skip if 'subsystem' doesn't match */
++		if (filter->data.subsystem && strcmp(filter->data.subsystem, "all")) {
++			if (strcmp(filter->data.subsystem, get_prop_subsystem(dev)))
++				continue;
++		}
++
++		/* We get n-th card */
++		if (!allcards && !card) {
++			struct igt_device *dup = duplicate_device(dev);
++
++			igt_list_add_tail(&dup->link, &igt_devs.filtered);
++			break;
++		} else if (!allcards) {
++			card--;
++		}
++		/* Include all the cards */
++		else if (allcards) {
++			struct igt_device *dup = duplicate_device(dev);
++
++			igt_list_add(&dup->link, &igt_devs.filtered);
++		}
++	}
++
++	DBG("Filter device filtered size: %d\n", igt_list_length(&igt_devs.filtered));
++
++	return &igt_devs.filtered;
++}
++
+ static bool sys_path_valid(const struct filter_class *fcls,
+ 			   const struct filter *filter)
+ {
+@@ -1750,6 +1823,13 @@ static struct filter_class filter_definition_list[] = {
+ 		.help = "sriov:[vendor=%04x/name][,device=%04x][,card=%d][,pf=%d][,vf=%d]",
+ 		.detail = "find pf or vf\n",
+ 	},
++	{
++		.name = "device",
++		.filter_function = filter_device,
++		.help =
++		"device:[driver=name][,subsystem=all|<subsystem>][,device=type][,card=%d|all]",
++		.detail = "find device by driver name, subsystem, device type and card number\n",
++	},
+ 	{
+ 		.name = NULL,
+ 	},
 -- 
 2.34.1
 
