@@ -4,54 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E994C7115C
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Jun 2025 14:01:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 698E7C7115C
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Jun 2025 14:06:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 01CC610E733;
-	Wed, 25 Jun 2025 14:01:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0CA1610E739;
+	Wed, 25 Jun 2025 14:06:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KQI+CrZ7";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="AGWONXII";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 118A210E733
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Jun 2025 14:01:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750860089; x=1782396089;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cAKjaCgrTQzQ08vNbrQ1ydfPvJJ1JasZSG/wVwAqfu4=;
- b=KQI+CrZ7EKblTK5/jGJjttsD3bvebw29+WY5qJ+xhn5JT72wZoDJR5BB
- rRCgHhDjbasgXHXpBWxDT3uD9MGF1ZeNlT5uRpepM6QB5KGO9Rey5JZPt
- aHTWO6jJOSIXb9TJjLy0cq8yzGn/sTzFeKB6Yhvu2PcBcQ4N0QEv2H9/C
- LKI89xMgzaGq2VYfCR+Fx4FBaEA1V9/jmpSE3qsadfJym88Y+AZmOkQCA
- jMtDc0NhRI6ZzLBL6JLswcP06a1cOH3ghwBm5mN9tIITM/5ooMFBGJkMt
- UaSldMXOezI236D4V0Rg0SB5FPbwAxraqN6lxdqEHzFUOUYjgLeQeNVRG Q==;
-X-CSE-ConnectionGUID: KDM77pFmQLaLXt59iWKl6g==
-X-CSE-MsgGUID: yK382uVaQFCp+nZD8+S+DQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="52247997"
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; d="scan'208";a="52247997"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2025 07:01:28 -0700
-X-CSE-ConnectionGUID: l/UIieweTQSfRs2bo21mCg==
-X-CSE-MsgGUID: S7LAoHCeSB6RVYhc8AdozA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; d="scan'208";a="175872522"
-Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2025 07:01:27 -0700
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
- umesh.nerlige.ramappa@intel.com, soham.purkait@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_pmu: Add gt id check while selecting
- engines
-Date: Wed, 25 Jun 2025 19:56:08 +0530
-Message-ID: <20250625142608.2042599-1-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com
+ [209.85.214.172])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 400D510E739
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Jun 2025 14:06:31 +0000 (UTC)
+Received: by mail-pl1-f172.google.com with SMTP id
+ d9443c01a7336-237d849253fso10766375ad.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Jun 2025 07:06:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1750860391; x=1751465191; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZSjYpyXyQBnyawZoo+4BXjvO8RA/8Rvx3F8b5sBzzaY=;
+ b=AGWONXIIUkbWw989z3WLR49wnbwtjk0Wx3kCxUqYP/Z2ShRSZfu3SO4bYb8ATz7/5a
+ YxB9A4sS4VVOYdGhjulHg0rr/S0uiDXi/VINtXZB7BVzolZiWNeWeTpUs1gjTlnx4xzG
+ MOHE+DovZONClJRb4VgBSpPIn+zfbz84L5xaHeLCTEisNdtRX10vxqB+0K+1zkm+8Jl+
+ laI9d+lmNwaE2PY5QR2x9uZqlvpPVuk13nptD49zcu2aKT/czUpnOgoPI75e3+a/htrE
+ F3ruWOuigbBXZh+BupTsvPFEuwCWYak8YrcnsTTVC6Yp18sVLdmcrXPpBJBp+Sen35G8
+ vyuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1750860391; x=1751465191;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZSjYpyXyQBnyawZoo+4BXjvO8RA/8Rvx3F8b5sBzzaY=;
+ b=gDP7g7ZtQEIi1z3wuKkSRf7mMpG7RpvEBaX4Y3OJmJeQEt/nwKqaNLy4tu4vrpLvPp
+ 6001LLLYHJ8Whz9LpddxbmzFiKl0Akm2dTOwUuV4kdllJp5z0N5qc6Dssw0M57blgKjA
+ nOZwyuZZF+GVcyRSAmKa1GQPX/2cN9z5UOfE9vEp7fboQGxjAuJdoS8TxtPu5aXIE2Id
+ nsi7Ak9hF0ePrvaC5e0l6U1ec5U/I14qaKZJVgNh3b7LX+sgr9y1q6rBNWgmOEdAfvNg
+ i9aVgTNNj0qadLN8PG3EnZz6uozLEPEyu3+Gbn6c0whQyokCXy6axZuhoUQNEGd3OKPj
+ MNyA==
+X-Gm-Message-State: AOJu0YwLit5j5utHOu/WDFpZ5wQUk4kohyB6SEVjLIdvIU32duqekS/a
+ YjOFJMAfi95ztNv3bVqWtvXLmVyBS8oLjDF5ijy/sRJ+lAx4EQU3cqotvYHur8cbW1mSLAPbo5d
+ EZkB9beV/Ia6PxwnFeeJhuP8u6DC04gk=
+X-Gm-Gg: ASbGncs78JCBqIVXzZtfxpvd5XfPkf9sbHmB3GNtWTVd8x1oO6QKjXsA4sbiFhRt0d8
+ WFUD8QhDdK5q4NFodAiGfbsk/yMFfxHnHkOHAPyxPfgyUIAhyRsNtOHJbgFyLY9U8a5JwVcUVvt
+ K5Ml70IUw3WCwHJhL8BWwF78YxBQ9asJ4A4HeVJIoQv/gw
+X-Google-Smtp-Source: AGHT+IEAZpE5rR82ccErp5ZgLMCk+VGGuQDmNU3nOMpU9QYDrpaACyRcS0tEndkjB7ljQznALJFE+hOTVwGFRhA/Shk=
+X-Received: by 2002:a17:902:ce85:b0:234:a734:4abe with SMTP id
+ d9443c01a7336-238240f37ccmr20664565ad.1.1750860390586; Wed, 25 Jun 2025
+ 07:06:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250625042133.6609-1-alexander.deucher@amd.com>
+In-Reply-To: <20250625042133.6609-1-alexander.deucher@amd.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Wed, 25 Jun 2025 10:06:16 -0400
+X-Gm-Features: AX0GCFtJNmZnFj3sKyDsqa_oYk472b96VTl6PsD5eVhD6IiJst2BNOK9F7k0zeM
+Message-ID: <CADnq5_O2AsV9dWPam_qLYXzQy4V+y6U0knjSFYZhNiWK2-DpOw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] lib/amdgpu: fix SDMA packet contents for deadlock
+ helper
+To: Alex Deucher <alexander.deucher@amd.com>, "Zhang,
+ Jesse(Jie)" <Jesse.Zhang@amd.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,41 +82,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In multi-tile cards like PVC, where engine class and instance numbers
-are identical, gt id distinguishes between engines while selecting for
-load execution or idling.
++ Vitalty, Jesse
 
-Check gt id while selecting engines.
-
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/intel/xe_pmu.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index 2ac4c7293..0e5a7360f 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -321,7 +321,8 @@ static void engine_activity_load_single(int fd, int num_engines,
- 		flag[engine_idx] = TEST_IDLE;
- 
- 		if (eci_->engine_class == eci->engine_class &&
--		    eci_->engine_instance == eci->engine_instance)
-+		    eci_->engine_instance == eci->engine_instance &&
-+		    eci_->gt_id == eci->gt_id)
- 			flag[engine_idx] = TEST_LOAD;
- 
- 		config = get_event_config(eci_->gt_id, eci_, "engine-active-ticks");
-@@ -379,7 +380,8 @@ static void engine_activity_load_most(int fd, int num_engines, struct drm_xe_eng
- 		flag[engine_idx] = TEST_LOAD;
- 
- 		if (eci_->engine_class == eci->engine_class &&
--		    eci_->engine_instance == eci->engine_instance) {
-+		    eci_->engine_instance == eci->engine_instance &&
-+		    eci_->gt_id == eci->gt_id) {
- 			flag[engine_idx] = TEST_IDLE;
- 			cork[engine_idx] = NULL;
- 		} else {
--- 
-2.47.1
-
+On Wed, Jun 25, 2025 at 12:28=E2=80=AFAM Alex Deucher <alexander.deucher@am=
+d.com> wrote:
+>
+> Use the right NOP packet for SDMA and set the retry
+> to infinite.  If it's set to 0, the engine gives up
+> after the first try.
+>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> ---
+>  lib/amdgpu/amd_deadlock_helpers.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_=
+helpers.c
+> index 3b4822ca0..0cd83f061 100644
+> --- a/lib/amdgpu/amd_deadlock_helpers.c
+> +++ b/lib/amdgpu/amd_deadlock_helpers.c
+> @@ -101,8 +101,14 @@ amdgpu_wait_memory(amdgpu_device_handle device_handl=
+e, unsigned int ip_type, uin
+>
+>         base_cmd->emit(base_cmd, 0);/* reference value */
+>         base_cmd->emit(base_cmd, 0xffffffff); /* and mask */
+> -       base_cmd->emit(base_cmd, 0x00000004);/* poll interval */
+> -       base_cmd->emit_repeat(base_cmd, GFX_COMPUTE_NOP, 16 - base_cmd->c=
+dw);
+> +
+> +       if (ip_type =3D=3D AMDGPU_HW_IP_DMA) {
+> +               base_cmd->emit(base_cmd, 0x0fff0004);/* poll interval and=
+ infinite retry */
+> +               base_cmd->emit_repeat(base_cmd, SDMA_NOP, 16 - base_cmd->=
+cdw);
+> +       } else {
+> +               base_cmd->emit(base_cmd, 0x00000004);/* poll interval */
+> +               base_cmd->emit_repeat(base_cmd, GFX_COMPUTE_NOP, 16 - bas=
+e_cmd->cdw);
+> +       }
+>
+>         ib_result_cpu2 =3D ib_result_cpu;
+>         ib_result_cpu2[MEMORY_OFFSET] =3D 0x0; /* the memory we wait on t=
+o change */
+> --
+> 2.49.0
+>
