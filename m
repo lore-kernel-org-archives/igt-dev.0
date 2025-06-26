@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D626C77B7F
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Jun 2025 06:40:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E65FC77B7F
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Jun 2025 08:03:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 294F110E26D;
-	Thu, 26 Jun 2025 06:40:42 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FF2110E045;
- Thu, 26 Jun 2025 06:40:41 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2571829559233445672=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC1C510E276;
+	Thu, 26 Jun 2025 08:03:38 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZMMbPEy7";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A6F510E276
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Jun 2025 08:03:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1750925018; x=1782461018;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0ddIQ1TGPFugUdcVwa5vupAvMNS+7yoR6iz6+dxR2ZE=;
+ b=ZMMbPEy7vyRfztQTSEuhzs0j8swp/wQVMg2XCHyaO4BGyDMdaKY4QU2m
+ +avKlaq7BdnSaN0HFMxXJbxqj72jbtcncDjgz3Qsf5IxeHJBTBKcxvfze
+ clXEB9HM3TEvcwyyxRuBEQyqrulLQ7nsSei17+0i0jnxSZU7iZsdYYTUt
+ +14OxWEkE1E27WnYHLJ9Ky3r4/NE74Hl9miqNQ1ts1mAzs3NMG6wx03G1
+ z1PbcQLYjttv9XspWdrX7DgUmiNxwVSioyt1Sh2wBpO6bJ8jFQVjgkFS5
+ mcUqmaiLoR2sN/iyrzP6mZjwjoSk7+5gmhh/joWS9hCPbeGK7wiUSQUWy g==;
+X-CSE-ConnectionGUID: C9G/T8haQVGjaAWFJX4EJg==
+X-CSE-MsgGUID: FKtyk4dqRxeuH5v70FFU3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="64567537"
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; d="scan'208";a="64567537"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2025 01:03:38 -0700
+X-CSE-ConnectionGUID: NRf/T/Q0Ty6DMS0wc8dLUA==
+X-CSE-MsgGUID: mjISrtrfRV+NbgEw+O20JA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; d="scan'208";a="156716481"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2025 01:03:35 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, arun.r.murthy@intel.com, jeevan.b@intel.com,
+ swati2.sharma@intel.com, pranay.samala@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_cursor_crc: optimise cursor crc on
+ simulation
+Date: Thu, 26 Jun 2025 13:31:07 +0530
+Message-Id: <20250626080107.629395-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/amdgpu=3A_Generalize_co?=
- =?utf-8?q?mmand_submission_to_support_SDMA?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse.Zhang" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 26 Jun 2025 06:40:41 -0000
-Message-ID: <175092004138.111359.6207685520575669415@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250626055655.3641497-1-Jesse.Zhang@amd.com>
-In-Reply-To: <20250626055655.3641497-1-Jesse.Zhang@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +66,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2571829559233445672==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Reduce the number of test crc iterations on simulation to avoid timeouts
+on simulation.
 
-== Series Details ==
+V2: Avoid usage of extra variable to check run_in_simuation (Pranay)
 
-Series: lib/amdgpu: Generalize command submission to support SDMA
-URL   : https://patchwork.freedesktop.org/series/150793/
-State : success
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ tests/kms_cursor_crc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-== Summary ==
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index cacd2402c..61dd4a205 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -490,9 +490,17 @@ static void test_crc_offscreen(data_t *data)
+ static void test_crc_sliding(data_t *data)
+ {
+ 	int i;
++	int max;
++
++	/* In simulation, we only run a few rounds to keep the test fast */
++	if (igt_run_in_simulation())
++		max = 4;
++	else
++		max = 16;
++
+ 	struct {
+ 		igt_crc_t crc[3];
+-	} rounds[16] = {};
++	} rounds[max];
+ 
+ 	/* Make sure cursor moves smoothly and pixel-by-pixel, and that there are
+ 	 * no alignment issues. Horizontal, vertical and diagonal test.
+@@ -526,6 +534,9 @@ static void test_crc_random(data_t *data)
+ 
+ 	/* Random cursor placement */
+ 
++	if (igt_run_in_simulation())
++		max = 10;
++
+ 	/* HW test */
+ 	cursor_enable(data);
+ 	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
+-- 
+2.34.1
 
-CI Bug Log - changes from XEIGT_8428_BAT -> XEIGTPW_13354_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13354_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_pat@pat-index-xe2@render:
-    - bat-bmg-1:          [PASS][1] -> [FAIL][2] ([Intel XE#5307]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8428/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13354/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
-
-  
-  [Intel XE#5307]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5307
-
-
-Build changes
--------------
-
-  * IGT: IGT_8428 -> IGTPW_13354
-
-  IGTPW_13354: 13354
-  IGT_8428: 8428
-  xe-3307-74f3ed8bab4e5ef51f1c266e8c7ffd1f2a052a73: 74f3ed8bab4e5ef51f1c266e8c7ffd1f2a052a73
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13354/index.html
-
---===============2571829559233445672==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/amdgpu: Generalize command submission to support SDMA</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150793/">https://patchwork.freedesktop.org/series/150793/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13354/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13354/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8428_BAT -&gt; XEIGTPW_13354_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13354_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_pat@pat-index-xe2@render:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8428/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13354/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5307">Intel XE#5307</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8428 -&gt; IGTPW_13354</li>
-</ul>
-<p>IGTPW_13354: 13354<br />
-  IGT_8428: 8428<br />
-  xe-3307-74f3ed8bab4e5ef51f1c266e8c7ffd1f2a052a73: 74f3ed8bab4e5ef51f1c266e8c7ffd1f2a052a73</p>
-
-</body>
-</html>
-
---===============2571829559233445672==--
