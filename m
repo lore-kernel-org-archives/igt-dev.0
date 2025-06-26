@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 916E0C7EE32
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Jun 2025 09:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EB9C7EE33
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Jun 2025 09:32:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4664F10E842;
-	Thu, 26 Jun 2025 09:31:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2DEEC10E842;
+	Thu, 26 Jun 2025 09:32:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hvyNlgZ0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S6fZyeda";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D63710E842
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Jun 2025 09:31:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F37D510E842
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Jun 2025 09:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750930268; x=1782466268;
+ t=1750930356; x=1782466356;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=0+Cx10gB7OhxdaYlHwdcey0YuZIRjktQfKwIbTVcVZM=;
- b=hvyNlgZ0FW0K6QqlNggEIsZOm+Bt4ajJBlSXiZEH5AmLmFt/BAynkBfK
- 0XZGI9eX3mnUxbRDbLx4DnWNGSTZ6iKA1vdNXEk8liQ969DUIIyn/nhGS
- ygs/KSd/mLBq3lic5jqM9ApNsfEPgGn84tn0f9KTO08WYHi2UD4yiYHcv
- q49DzRDh0lxo0FH86UPHy/sCBFlID6aZriMWo5xQgnKn5k/CTgmAXLgpw
- YprCPNOeStV9duIxzO6iQyylcVQ/azSU1ZFmqiTj0P4B0OXd2bVWJdtMI
- PyZa6lHI6yANMQSuuc0PEvz45HhjzWDOqnBEbeSu2RP8/etg1AUxUJtHo A==;
-X-CSE-ConnectionGUID: /vZdyS/lQdG9sU33fS7ZeA==
-X-CSE-MsgGUID: H8hFczU0QH61+lzrvKUTAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="53351521"
-X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; d="scan'208";a="53351521"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2025 02:31:07 -0700
-X-CSE-ConnectionGUID: 5v9/AgnNSxGI1FfC6DZZqg==
-X-CSE-MsgGUID: wjWoxFOqQ9SsdSRl3PTyQg==
+ bh=3iPgyI42StECy15lH4lu70zBYUyuYzvOv4NlYsFIxmE=;
+ b=S6fZyedaulBXcQEQ3qIuMQhdwlj0qUDNQ4dJ0g59kGf4c6wXDJbT93ID
+ yYiWY5QAtWyv5EXwwOiiaVYMNFjIVa6YhVBKgp/s+45+O0GR4uZhLtNlS
+ rdcD8M7uWO0pahjD4NpDiLr2ueM+pVOPETf+ayxI3rz5gQ1W50yZFqwo9
+ g2fzQBN9vRxwHVYY1Ts6qPrkPBpfzvbspldTf1QdGJacGiIpVQv9CufNQ
+ aPzQYHMVZHnLGwAM2xdcTqNsEK8XDmVntpKnInZpsyrVxi0rumzKkdj0b
+ Slc7nRp77OW8qWH6JO9VzJZJlYYkwoPcVwV3+bPTgfgx6w/MOzUuClhIl A==;
+X-CSE-ConnectionGUID: wS1JK+GYTmmL6cky+g2VkQ==
+X-CSE-MsgGUID: OWqX0VowRG27R2oznLIGSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="53184776"
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; d="scan'208";a="53184776"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2025 02:32:36 -0700
+X-CSE-ConnectionGUID: 7LrcX6r0RDmQcXorILRLxA==
+X-CSE-MsgGUID: QQbzH2SITCm3ztNrn0ciEA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; d="scan'208";a="152587090"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2025 02:31:06 -0700
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; d="scan'208";a="152971186"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2025 02:32:35 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 26 Jun 2025 02:31:05 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 26 Jun 2025 02:31:05 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.46) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.1544.25; Thu, 26 Jun 2025 02:32:34 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 26 Jun 2025 02:31:05 -0700
+ 15.2.1544.25 via Frontend Transport; Thu, 26 Jun 2025 02:32:34 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.58) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 26 Jun 2025 02:32:34 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YlmDN8uPssaX0/NLaFAcoESljK/rOX1jCnrTKeioHotM3a+q0F0pSr3zleQIJ0WOx0flIemOnXBVhdxi8AIEdib2wd4xfPfCH4hMmotEDfcUxKUj+PAAloBCH1v8teCp5LmTDHdlDgds+7LJZBAfQWNIBxXekK5+v6MTKggnLWyHTyuIKRfv/qcIEaUeb6F+cS32eYLWufj30WHE6bH5lq9paoFwAFT/2tAw5ymQj1Z/RUJhQOEna22LRs+UUraEq8SJJYDtD+92y/rsKnoaO0m2NPPv49oykBM13ZDEL92WT83zXU8VxpjU4gdKlvNVDfy8XAH6lq/+uFAKqz5C1A==
+ b=E/8JMslSaNWGQXSFDG38pKMmiKVfaJzJgR5xXOoP5XGvPU6GP/rHtE2zsNkDlRha1uA9m1qSwqoOAYXLd5j+YQmHX8C8VAonLZkium2kAYhF1g+Xr6vriBnD6W5u87rmRO6lgWmACEN6ADYydDL/2YeNcr9rWH/oglzzk6ZO1UJUKtA7yJRLxmRSG/Q60s693LDPGUD2roUPu0ztdtB7o5vixW5uF9Djdqkqr527D3zxEpSjIVxQfsK3iPrvTYTeYu8khtV6ua2nHshjxdgcKCNUkkzwYbIP9C76V0ZfspFNKZvhFDgqa8xCBelIT52J393hXmXdBQ9iZcSB3qRf/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C+bhtXusmn2nm0HlFGSX+Y1LLdak4+I/pms2butnNpc=;
- b=GC8PyAK/tukfRPWkhMncioXgS+fcHv97vqJstJ/5jpZoYNbIAR7vjSA7K1hzwJJ/f3ujcVi2m3wDI5RnymOjkRd2tacwfFVSNfucOn4p5G0frN9VpEym1zrFlm/hpZE0XglJSloXC6waR53Ao17nkQpihc57NiVN/tZcgpRHFriEJuXTGtE8I3f/h1uaQsXP5oxtupWMlGZyFcTSlDX9Dordp9mtg1M7TCF6626khQqF4huXbkabAfbRNYh+6p/QrxX+YSCLg7c9UBea5sXoCQffROWWwhVJOLp6OHtXlLK2aPgU6Kk3fZnkYnsDSXYSKC/GVIEoanNlkhHh7vV4+g==
+ bh=sMSPnYByAReuNntVJFY6EAH7dg6uBuCeMfzOQCkCD10=;
+ b=g0iDyGZ6EbL4vvyD2zsE3I6v5TCG87dAEtTNvVyPl1Y+Fm+QKmF3tLsAQsTMaeOBdxBQ9/QPrT2Qjzb8m7BHVpR5pjc2xAVkoCWW86tIahgM0eLlplBc7Lw6zhtLaN3yZ5vOdwkV6QRnm1WbGTA6DetFV2uubn1xeoh8FNrHMChTaEfQVXuCMj41ijm0DQeX0JHJPzblK1kKxhsSZSg38heDqjxvRA0nGwrLogDWsLGM4DfZHBWAwjB2aph/J3ciQJ+Dck/2JtizjA6TDIQP9C6xPLvZdbiUpnfUOJvXF8HZuAoP8D37VBdKZi0IDzAAf/fTV3aYTTXGpdc8HPYYlg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,16 +69,16 @@ Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
  PH0PR11MB4855.namprd11.prod.outlook.com (2603:10b6:510:41::12) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8857.25; Thu, 26 Jun 2025 09:31:03 +0000
+ 15.20.8857.25; Thu, 26 Jun 2025 09:32:32 +0000
 Received: from DS0PR11MB7958.namprd11.prod.outlook.com
  ([fe80::d3ba:63fc:10be:dfca]) by DS0PR11MB7958.namprd11.prod.outlook.com
  ([fe80::d3ba:63fc:10be:dfca%4]) with mapi id 15.20.8857.026; Thu, 26 Jun 2025
- 09:31:03 +0000
-Message-ID: <64aa5697-8535-4876-a3e7-2f17fd538dec@intel.com>
-Date: Thu, 26 Jun 2025 15:00:48 +0530
+ 09:32:32 +0000
+Message-ID: <b989f9c8-9d3b-4baa-ab8d-5f915e33ed4c@intel.com>
+Date: Thu, 26 Jun 2025 15:02:23 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 4/5] tools/gputop/xe_gputop: Add gputop support for xe
- specific devices
+Subject: Re: [PATCH v15 3/5] tools/gputop/utils: Add gputop utility functions
+ common to all drivers
 To: Soham Purkait <soham.purkait@intel.com>, <igt-dev@lists.freedesktop.org>, 
  <vinay.belgaumkar@intel.com>, <kamil.konieczny@intel.com>,
  <krzysztof.karas@intel.com>, <zbigniew.kempczynski@intel.com>
@@ -86,102 +86,103 @@ CC: <anshuman.gupta@intel.com>, <lucas.demarchi@intel.com>,
  <rodrigo.vivi@intel.com>, <ashutosh.dixit@intel.com>,
  <umesh.nerlige.ramappa@intel.com>
 References: <20250626091626.3760324-1-soham.purkait@intel.com>
- <20250626091626.3760324-5-soham.purkait@intel.com>
+ <20250626091626.3760324-4-soham.purkait@intel.com>
 Content-Language: en-US
 From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <20250626091626.3760324-5-soham.purkait@intel.com>
+In-Reply-To: <20250626091626.3760324-4-soham.purkait@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MAXP287CA0024.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:49::32) To DS0PR11MB7958.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0072.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ad::19) To DS0PR11MB7958.namprd11.prod.outlook.com
  (2603:10b6:8:f9::19)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|PH0PR11MB4855:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48dde0d0-65fd-4f1c-4d71-08ddb4942b0e
+X-MS-Office365-Filtering-Correlation-Id: ff4ff893-c3dc-4d59-4dd9-08ddb4946025
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SmFnOXFlbWZ3YS9PWUd6K2NhTGRCZlJld2MwZnc0SnBhM3VOZkswOHNHZzkr?=
- =?utf-8?B?aS9ublNnN0x1dDhUVXFhOFZKV0Y0QjRoVkxLMXMwUG9HcU9yeWhrcEpodkFa?=
- =?utf-8?B?bVNFRC9uVlNPTkVieHR1dkdPcmdiSjdCdC9WdEUwWWFYL2lqOEdHTlE2bE9Z?=
- =?utf-8?B?dGFqZUV3d2xsRnkwYVdHZzdoZEQ3eDBnM1MwODlxaDErN3JWS0hBTVQ0ckFh?=
- =?utf-8?B?dXlYenc5dWdyeVE2WDR6ZW5rSy9MdnF2SFc5WnN5bHYwSk00YnZ5UVRFNzJJ?=
- =?utf-8?B?cjNPZzRtU3FLaDlrK1pKbWRVeXBiWkdBTkxMR204TWFLZ3pCRDlocTJobTho?=
- =?utf-8?B?VjNobXpqWkFGam8wdWFZeHdDSG1LL2RXbzdOL3BNK25Da01OSmJ2c0FSRm9w?=
- =?utf-8?B?bGdwbm9rQ05lUlhwaXlnb0dwbTREUVo2U1JtRHNLRVNTTGlENkpnR05BS0dB?=
- =?utf-8?B?dnJXeVEvejBDTEJxWVFaR2ZWRzU1eFZUUE5aMCtWUWVLYUVMYURwbmRWNGlN?=
- =?utf-8?B?OEF1MjB3dWM0MUhad20xZjlZa2d5WDV3VWJoKzczbUZaRWlyL2JYendsLzZs?=
- =?utf-8?B?UUlJTmxjcFR3VllQZW1QekM5aGhmRzloZWZ3eFhRUW1HRlBSMVZ4MURvaFlU?=
- =?utf-8?B?L0hSOVNQTkRMVXFkVlRpVFh6YjZhVmtHb0E2T0FNQ3lKekhNT0ErYUNSOXdW?=
- =?utf-8?B?bk1ldjkzNEw0bkdVVmRnaTdGQlllMGhQMS9rSzU2WG1GVWo4OHdhODN3R1J0?=
- =?utf-8?B?Z296bWowQ3JHaUczZk0yVmt5bTB2T1hEUzI2bmhtSHF6cEJWdkZFa1pWRUVu?=
- =?utf-8?B?WTlMV1dvNWwvb3luTm91cnB4S0pBQ21oREVhNDJ3cUJETktzMGUyeWUwQWJC?=
- =?utf-8?B?WHNlN0tmd0pSR1hGbnJHMDNHTTNVTUphRkduRE96SnJrcDVTWURSWDA1WEdO?=
- =?utf-8?B?eHNtMnVsdWVZamZkemhrV0pZc1RpSEFsYjY0OHZZV2dwT1kwa0thcU0vMk5l?=
- =?utf-8?B?TkdLbWF2V0puMXZPZGdCQ3p2Y1psZVVUWk1EYWhHVk51WmdWSSt4RnhTYkYz?=
- =?utf-8?B?STNBRlIvN0VDWFM1Rmg1VEhKb2pFSkNMNUE4bVhpL21CeTZrUGR6a24vbUo3?=
- =?utf-8?B?U2lYcDhPd3krWlhLVld4UXlqcFJwNklRRUs3bFNQbFRrb3U3a3FDSlhaQU5Z?=
- =?utf-8?B?Q0oxNmpjd2tXU0RBT0xhcnJNK2c5VTNRdWxFV1dGZWxqOXdkM21zamVXTThn?=
- =?utf-8?B?QWJOcHVqY3JtNUxldTA0ZFdxLzZXaE1lQjg2dlJLaS9IQXRRK0ZEZmFLa0dY?=
- =?utf-8?B?dVd1THNRN2xRMUVvUE03TC8yQUZlN1RwbnpvR3c2RVlXNEZ4U2crbTJ1dEF2?=
- =?utf-8?B?ZTlRNGx2Ry9DVGh0Slh3Zy94UlZYUEw4eGlDREpmZnR3WEZxeDdqS1RBTHhk?=
- =?utf-8?B?MVdNZ1pabEVWcm0wR1FwTHk3Rkg0Y084WkRkQVp5U29KRS94Ni9rdDZnTERl?=
- =?utf-8?B?akJKY2dLNjBsaldUcVRMN0tVZDlXM0k1ckovVEpqUTlhSzdXeXdyK1VNZ1R3?=
- =?utf-8?B?TXVnNnZ0dllQNXJvODF3ejhNc2R6RGtyLzhOMHdWUkowQ0swNnMvOE5Tblg4?=
- =?utf-8?B?Yk9RSmZGVUZzdFljelhTR0Fueis3dS9TZ2VmMjhRbFVRY3F5TlNteVJodUxT?=
- =?utf-8?B?enRST3VjT0ZPaHF6T0drR2hxdnZEaGtaanU4N2grQklhdmZTT2NiYk9aUXBl?=
- =?utf-8?B?eThRYzRVZ1pjcld5WXJTTUhUek9Wd0FZdnNUVmhUb0xvNS9iSDVlMnlJVEJi?=
- =?utf-8?B?Z0ZXTFloUXhzTll6ZUFoWkswYmZnMFI0eWZJS3FNVFJOM1ZwWjhuYy9GY2RI?=
- =?utf-8?B?SVR3MjRYN244VnN1cjhlVmg1UWZwTk5CcDNrZWUzUzJCSHc9PQ==?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Znp5M24vQ1lDSnR1eXRkMStWOXFNWHhFWU9RV0lWNVBJK3ZFMGo1ak00SmtF?=
+ =?utf-8?B?QWszbDQ0WHNrWlplM1F0OXh5aVozQTF4ejJiU3UwaWh3K1M4WlhsVitmczl2?=
+ =?utf-8?B?bHRieWNuU3NIQkNYb3Q3VC9Ud0VObEZYbXUrSXliM2tiL3ZCYW9ra2xmVzkx?=
+ =?utf-8?B?M0plWXUreGhrWmdYM01WMDYwSzZraGc1K0FIbVIvdjhMWVJqc3cxTit5eUNu?=
+ =?utf-8?B?OEZBN0dNYVJ6RDF1eUFab2dLT0tpUllxT01UWHV4ZXluOFo5cVRCbDZQTzla?=
+ =?utf-8?B?Z3hmb05WWDhnUXZjR2x0UWFGVnJyZk5xb0pZUjAwenQ1dDVUSWxSdG1ob3A3?=
+ =?utf-8?B?ZGgxMWJFYVhJd01HRElrMDFSRkM0Q1VRb1VrYkx2U1p6MitEd2RJdkE5ZEV6?=
+ =?utf-8?B?VHhpNDBydi9JZjlmd1hnZGsvVFFBUGREQlZEK2c2OWJWME1BMFIreFBXU2Ro?=
+ =?utf-8?B?Wjd2MDNOdjd4aTQyN0pxenNsQmc0aEF0TC80TGdjWUxnbVZkRGdnQm1QQTJw?=
+ =?utf-8?B?WVgvWklJaXc4eVBja0dXemQ1amNLZGY4NUVYRTROZFdpOHRzTFBvVG1Ndzdl?=
+ =?utf-8?B?ZDBiZktEYnpJTU1Zb0FpckNqYytEc3ZRV0taWkE5cXV4WEJjZFg2a3prVEhF?=
+ =?utf-8?B?bzlxNWl5RFphUTRDRVZFS0xGTUJqOGtQZG45TTdOMDF1YStiQ1kxZXRUL0Y4?=
+ =?utf-8?B?T1JOMGJRL3lSVjdEOFA2dXkwS3BoTkZITmMySDNsUXhrQ015WExpUjIrQm1M?=
+ =?utf-8?B?WWY5eTJuVUFlOEZ5Y2pITGVHVlkyVEtSc3p4aTVxQTZDSkZDV3hmU1BUZUVS?=
+ =?utf-8?B?MVBUWG53dEsraE8zZ2dydWxjbngrL0NoQkd2QmJsUzhFVUlBQjBPcEJIUVV1?=
+ =?utf-8?B?ZVpKbEh1TWVMS3pzUExoSTdnZ3REV3FFTlRhMUt4NTdvd3BIT1I5ZUVOMFlP?=
+ =?utf-8?B?Z0pNdXI4aFJCOFdEK25vVlE5UjBncnFob3JvVHB6Y2dOQ3lUaWdJa0NxUTh3?=
+ =?utf-8?B?Z2FHWnZXdlRnWlBNdmc0UWExVDBYNFhHT0N6WHN6dDY5Vm1MYkhLcXdrVlJB?=
+ =?utf-8?B?dExEd1FYajdPc0xjL1hWT0IxRkhzdnBSS1Y5MW5hWU5LdnJGbWFEa0ZBS0FG?=
+ =?utf-8?B?S09sY3F4Z0ZVSVFxUWNoWXp5MWUrVWo3dThpdmVtZllxVWFmNERFRkZvR21k?=
+ =?utf-8?B?Q0xUZS8wT1Y1M1A2cDF3dHdrYnRLeEhDYUdMbnlGdlRnZDc3a2V0dlF2cjYv?=
+ =?utf-8?B?UEdiNEVXQTkySVBwZVhJS1FpQ1ZWNTBxaUJoc1ExdWtyWTl6cGNFbVlCSUFr?=
+ =?utf-8?B?a3g3NjFNWi9jYXoyeVRqZ2lhWDNoQU1mbHdxVTN5UjVLUjk5a1N4UHg3VW1j?=
+ =?utf-8?B?VHJQeG5VZUZEVXAxcGszUG1wZVVMQ0xXNjFqRzZpSmJPV0NwY2p5TFNyVkVZ?=
+ =?utf-8?B?NGpNSHhsNURTMUt2U1dCY1lKV3dHRVlTa05nNFBuVUJxVE1nR0M0Y3lqRzM3?=
+ =?utf-8?B?VDJXWC96SXVRNmh1SyswcEhibE4wVm1ObC9DWTVYQ2pxVjJ5eEtkY2ZuRHNo?=
+ =?utf-8?B?d0p0WERhTUtWK3NVK25pWWhVUVF1aEQvMTd0MVdkQ1N2a2RReG9mMlhhYktK?=
+ =?utf-8?B?OG01TTNINHVuU0MxSExSUXZraHFHWWtUaStlbktrOENmVmxDbklVUFpZT0RW?=
+ =?utf-8?B?Wkd6b1F6bU1lWnpkY0E5UFlNd1Z4YSsvVHE0V1BKSi9qNGhCNG5HYXJYL05r?=
+ =?utf-8?B?WXJSQVp3MHR0R09Vamc1WXB6RHlMNDF5VUtpSWNCVHhuVDR0OVNXTERrZzIw?=
+ =?utf-8?B?YzNYUEZmTDVUc0h2bjlzYzZnZk1teUFHcjMrTzdvWHFBTXJreVlpb1R3M0NV?=
+ =?utf-8?B?NGFJV3I5d3Q5VEg0Q245Q3d5RUpETll4QVlzSVRQczlRRTRnQjlkN0RqVm8x?=
+ =?utf-8?Q?NDCN0diWNA8=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WmJkWEwwVnJPQ1dJUzlXQjArNDR5Y1hWRHp4c1VLS2pKYkN6N1kzcmFqUDNT?=
- =?utf-8?B?T2ZacDBVUjRZOFltejJwUmV2dUhqTnRFeTlQVmxITnhBZitkdTdpKzhuYk5B?=
- =?utf-8?B?dE9hODhXc2FJdWZmNTNqR0hvODc1Z082dzhlNE43VWFhZ25iekVvbU11LzdX?=
- =?utf-8?B?OXNmWUFkSGFVYTUxY2RFZmRENU9GVmM5SUkxcmx1MGErSE5jTEkxSzFrTEZM?=
- =?utf-8?B?V09wSmtRa1htWDk1VFVwRnR6dHBlT3hrc29jMFpJRHdNQ1VOVVVrY3R4dWQ1?=
- =?utf-8?B?c0lJVCtVNkZ2NkNlcWlPa2c0WXd6alRFcjQ2QmIrbUkrSmUrZU9jVkNwOFo5?=
- =?utf-8?B?Q0p6RGROeEx2amtNQjRYWGJIU2VWWjZaTEpJR1RodmxLaElMT3Voa2JpUEZh?=
- =?utf-8?B?ZUNyNHZibTdCY2FOVmJWb3l5VkgyYXlNVy80S2JWaTg5ODlWVUxVZWpNU1RT?=
- =?utf-8?B?ZHRHekhIY0REUXNUM1NmWVpZeGFOalp0eEl2dmhxMlhCemZFZC9SSjB4dVdB?=
- =?utf-8?B?WGM2ZENuNVZ2YlIza3A5QVNGaVAxL24xNXhLWEFoZUhsc2I2RVNNeE83MXNQ?=
- =?utf-8?B?Rk1rQnE2NUpmTWJWbFZrRjNESHltWnZJK1JYSFVGbUdvLzJRL0lHT3dZZHoy?=
- =?utf-8?B?NUVxanZjSUxBck8zcU9oODlBVFlONFB4anh3WlpqUlNNUUhHTzYrbXYvNnU0?=
- =?utf-8?B?WVdaZElMSHE3QXlXZS9OZ0VDZFlTTGtaWWlDY1VUUUlFaGlaQytWSEVLMkFQ?=
- =?utf-8?B?NUFGQzdHNWVPWXZpOEJsNW5DL0gzZ2dYcmx0ZmlXRzdGQ1MyTGpaU0RldGpi?=
- =?utf-8?B?RGNHazYzb1dWdDFrYlVZMFRYOFl2eldPWjFUdGJzWVpWSlRSTWllK0dsQmZm?=
- =?utf-8?B?OVlaamVoWUpjYUo4T3MxWXUxVzQ2UWRiVnlYbWl6eXFESURudXZDYTJSVWpn?=
- =?utf-8?B?MGN0RDZ5cmJnNlNldml4TG8rNFhCaUxieEFLWFBra3hLMTVUZ1BEYWxtOGIx?=
- =?utf-8?B?YjBBRW9nN3dRRmM4blZudVFZM01KbkhLNXIyVmd1d3FNMUtsMkl2MjhhaE5W?=
- =?utf-8?B?NUl4RzU1M29DRk1NUVo0WDVYQjJxTGo3ZUxicUNZdjI2ZWFEZWJPYU1QQ3Jy?=
- =?utf-8?B?eFBPUjA4T2craStGYnlFUlZlc05aM0RzVm1KbiswUnVJZHNpTnptOHkxUTVv?=
- =?utf-8?B?MHJKSjcvbjU0WGxjYWRrKzl6QnN3V1AyQmQ5Njgva2pnKzNobXF0eVJzaWxh?=
- =?utf-8?B?ODJXVk5RaldXemFpMEx5a2NtTzFLOXBVSVU4eElNTHd3K2RZRC91QkJ5REsv?=
- =?utf-8?B?ajl6ZXF5bUtWYzVmYzlHNWxsbmwweVdHTWJScUFobWhWNERMTG5SbktYSjhM?=
- =?utf-8?B?dVMrTGgxSkpIZDdOdm1VREJLUy9Gd2hDY2h1QXI5cmQreGJIVGgrSzUrYURF?=
- =?utf-8?B?SUIvRTFvbUtaQUhQZzl2Tk5MV1l5RGhzQW1xZHZRT01CWTFPVHRBVlhlN1pr?=
- =?utf-8?B?NlhKMkRaUUZGcG54a0cxK1RUUGFxaDlvK3dqeXJDTHVYd0N5WWd6Vk5SMERQ?=
- =?utf-8?B?c0d3dGhuOFAxSnBybTRqUUZXd0RCY0YxanhTOWJkd011SEZCWnBjVE15cStk?=
- =?utf-8?B?SWc4RDJYZ0ViMjVGMSt4U2hRMUY2NkZRRFVMQ1JSUmozbThZMkJmWmcyZUcr?=
- =?utf-8?B?NU1QaUdLQWVBeE10SThrZkdlSEtCanZGSE9KYnNRQllBTGV2Z0JmK0V5UUpD?=
- =?utf-8?B?UEhYei9Yd3NGejUreDFDVEhxbkczcVlFS3JsbSt4cjN3aG9icG9RY1FPTDZk?=
- =?utf-8?B?ZWJSZ2loK3NNUHNxMkZvWEFPR1hwY1RUV3czRFJpcG56TDBSYnVhTDNQRk5B?=
- =?utf-8?B?eEJSR1lNMW1xWXQxYVpMQzBuZEk4a1BsazJvZ1JKSWdORmRVU2h4OVdmZFo4?=
- =?utf-8?B?QkJ6VlhPTGh5blBOTnkya0FzWGdpY0k0dmFVY1k4VTdCSDE1L1BSeWpwWEpk?=
- =?utf-8?B?b3BiOEp4OEtFV1JCeFdZWDY4eWZZVEtlRG5SMmI4elk0eWkvTHF0b1pqanZG?=
- =?utf-8?B?MlZ6NnpPTkxTaGJQWWVBelN6OVB0djZkWHBrOUtDWDZGcW9XZmVBWnJHRnh0?=
- =?utf-8?Q?8XML9m31L3fs9XA85aY4p1hSF?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48dde0d0-65fd-4f1c-4d71-08ddb4942b0e
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VW52ZHhNUDl2SHVPSDdFMTNHYXRISmM0TzZqekx2eEh6VUw2TG14bFBWMEx2?=
+ =?utf-8?B?UDFBOHVoUTc2RUNTRUw4L3ZEM2ZXN3dqSHZxL0RiSXJFeUVITmJUTit1OTk3?=
+ =?utf-8?B?OTIwODlzY3JiM3pFb2tyNkVQeFBNWVRmS3hOd2lnNFV0ZkVkdzJYOXJpaVp6?=
+ =?utf-8?B?cEloczVNcHJSWG5EejFMTDVpTXJWRGlQbFJOZmhXa0IwcWZyUmdRVTlmVDVw?=
+ =?utf-8?B?cWdvM2VPTm5MeGZVemZqS0l6YjI3Rnd3Q3VpdHRrRVpQZ1E4dTFnL2kwTmpQ?=
+ =?utf-8?B?WG4ra2ROMUNCNGpSZGNYc0pGRmw1ZmovN0lMV212dyttSDJyQ3F5S2F4MTE4?=
+ =?utf-8?B?bktKbnRyNGdVTHc1dlZ5R2pJak5KQ1VINTJNakZHM1ZDYkxVMG1KbXpxVFRZ?=
+ =?utf-8?B?emswbnFxLzNQSjBLOHQxWWZaK2p0YUtLUXErOHBiNXRDVG5NSTk5bzFyaTdm?=
+ =?utf-8?B?ZmNpUTE4K2pKaHgySTZQVU5iek1VNjA3YXZIektPWTlDV1gzK0pWcnZpM3Na?=
+ =?utf-8?B?SFV4ay9Ha1ZCYVBFcGFEMVBGZGV6U3ljUDFFWUF1T0dFQkV6VFhLc0dHU2xx?=
+ =?utf-8?B?eHN1V3p6MnQ2L0hwckdKWWw5ZXM1MWl1MGhSeEg0UnE5RXBTckFiUzJna1Nl?=
+ =?utf-8?B?bVdJTFV3SThYbWRYcUwwc2g2aFlRbTdKQnl0S1hFYXU1SlBWS2I4QWh6dW8x?=
+ =?utf-8?B?VmpkOXJlWFovUWVjcmJpL0lqNG5DVjkraDFpRzlvbnd4TmFwYlFaY2xkdmNY?=
+ =?utf-8?B?eFFDM0dQNmlUWDBoMXBMMEFZQXNrK0Y0Q0d6c3d1R2VUc0tUbGE0OGFHeWpW?=
+ =?utf-8?B?UWtLMUZZNjdmSk5kOHBLWWFDaTc4eWpyZGZyVHdUMm5BbnorYi9pakhMTVQ5?=
+ =?utf-8?B?RHFSb0lDbTJIakFwemlwZWI2ZCtvLzhCSCtnZ2lxL2ozUll4SHowNUZWODhE?=
+ =?utf-8?B?NDF3TnNERUQxWnJkTmxGTlZQeWRDb2xhakZIczN5Y2xyLzhUeFVRTkFsVktr?=
+ =?utf-8?B?ekRaaVBjWWNHUnZUeTlBYUFoajE3Vml3dkRqTUduWXBFQXM1R1Z6R0pKVHJO?=
+ =?utf-8?B?NmIzUjVnZUpzRDd6a01xaXFoc0c3R082RWp5WXJTVVN5eGlad2h3dUhhSGhh?=
+ =?utf-8?B?TjBFQVNBemlmTkhxNE1UeUtmckhoVUlES0RTQndKVUJ3bmtuTXNjUUdId1V3?=
+ =?utf-8?B?OFVQelY3VTRmeDdJK1ZrSWMxa1dKVVZObUIra3NpcWN2WnorK0UwM1pIeWRI?=
+ =?utf-8?B?LzdwdWtjUXI4ejlZNjc5Z1JkM3FMQU9wZEFzWnpiK3hBS2ZjNVhpcGowV2J1?=
+ =?utf-8?B?Y2hrK2hHRWMxU1FTWFIzMHF5b3NhZnJLaWNnTFRHb0pKRFlEenJ5U20xM3Ro?=
+ =?utf-8?B?NjE1Umx4ZVA2U2duWXA3UGNnL1lWRy81ZEtRcFc3dE5yNDhpcy9iZFdHbSsz?=
+ =?utf-8?B?VFlHUnpDSjZ6a2IyTnRaMER3WWhSMjBHZkNtVUdYZTVQNFBMclZrd0xLaHpE?=
+ =?utf-8?B?bFJDdHZZZXlDVmVTN2llempOTEVXbGMzb2QvcmprZ2FhMVNnME41R1NpNVQr?=
+ =?utf-8?B?aXhaK1hTaGhsUDBiaDc4NXBsNTA3bDVSZXZiekVGUk40aWU3NGpuTkZLcy9D?=
+ =?utf-8?B?cTJHZEV0L0VEUUtDbzltZ3pkUjZxT0JEQWtGZ1pLUGpKODJSaWJLSmhMMHZL?=
+ =?utf-8?B?aFRCQ0RrcnNsRExCWkRKaWxhbWczWkNwdDg4UnhrOVg3Q01WcWlaU0RYNG9S?=
+ =?utf-8?B?T1doODZaeFhTTDRDNHBDdk5DUi9qYnR1TEFtcTBXcnpkMzdzc1Z4bi9ZVVN1?=
+ =?utf-8?B?dG1tVmVYanZ4YThEQk1EZ0ZTcUFUVUFuK083SWFOdk1DbUhXZFdIb0xUUlB5?=
+ =?utf-8?B?bnN1amN3ZXIxSWZIa1piK3o0cm5ERHQ4UHZGaHF3OGdJdktCa3dDWXBJL0p3?=
+ =?utf-8?B?UUd0Q1VPSXdwUU40Q093K2RNMWVpRUVMY1RBRkhhTnByRFB2aTAzV0xFME8x?=
+ =?utf-8?B?aUUyUXVQSkpoSWZXMFV1b1Uwd3Q1cnYzYlJycWt5bUtXOFFFVkZkUEVVK05z?=
+ =?utf-8?B?aW4zUEdSYVpDakp1elM4V2FZT2J3c0FiQ216Q080YlpjcCs0emYzc21CZXF3?=
+ =?utf-8?Q?b/TUA+idpkfEy07ysuWUj7vMr?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff4ff893-c3dc-4d59-4dd9-08ddb4946025
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 09:31:02.8893 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 09:32:31.9109 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JCyqnrisiI/TjnqqDuGESqC9sZuPaIX95UbYEErYYVrD8rkC27MiL8EQEkhwyR8u5CTyTQDaK/eHQgVhRU6mDg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: YaU3za9b0PKqv0+ZAecCagHK7msWl77u5V5EBVp6Ao8BJMFp5fQMFR1V/WGg6m1sPvoYRxTm3vOUoSbAEWbLrQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4855
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -199,468 +200,153 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Soham
+
 
 On 6/26/2025 2:46 PM, Soham Purkait wrote:
-> Add gputop support for xe-specific devices. Separate driver-specific code
-> into respective source files.
+> Implement utility functions in gputop for common operations and data
+> handling across different drivers.
 > 
 > v1:
 >   - Refactor GPUTOP into a vendor-agnostic tool. (Lucas)
 > v2:
->   - Allocate Engine memory all at once, remove PMU
->     normalization and perform proper resource
->     cleanup (Riana)
-> v3:
->   - Add GT number.    (Riana)
->   - Cosmetic changes. (Riana)
+>   - Remove magic number. (Krzysztof)
 > 
 > Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-> ---
->   tools/gputop/xe_gputop.c | 361 +++++++++++++++++++++++++++++++++++++++
->   tools/gputop/xe_gputop.h |  59 +++++++
->   2 files changed, 420 insertions(+)
->   create mode 100644 tools/gputop/xe_gputop.c
->   create mode 100644 tools/gputop/xe_gputop.h
-> 
-> diff --git a/tools/gputop/xe_gputop.c b/tools/gputop/xe_gputop.c
-> new file mode 100644
-> index 000000000..9757369a8
-> --- /dev/null
-> +++ b/tools/gputop/xe_gputop.c
-> @@ -0,0 +1,361 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2025 Intel Corporation
-> + */
-> +
-> +#include "xe_gputop.h"
-> +
-> +#define engine_ptr(pmu_device, n) (&(pmu_device)->engine + (n))
-> +
-> +static void __update_sample(struct xe_pmu_counter *counter, uint64_t val)
-> +{
-> +	counter->val.prev = counter->val.cur;
-> +	counter->val.cur = val;
-> +}
-> +
-> +static void update_sample(struct xe_pmu_counter *counter, uint64_t *val)
-> +{
-> +	if (counter->present)
-> +		__update_sample(counter, val[counter->idx]);
-> +}
-> +
-> +static const char *class_display_name(unsigned int class)
-> +{
-> +	switch (class) {
-> +	case DRM_XE_ENGINE_CLASS_RENDER:
-> +		return "Render/3D";
-> +	case DRM_XE_ENGINE_CLASS_COPY:
-> +		return "Blitter";
-> +	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
-> +		return "Video";
-> +	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-> +		return "VideoEnhance";
-> +	case DRM_XE_ENGINE_CLASS_COMPUTE:
-> +		return "Compute";
-> +	default:
-> +		return "[unknown]";
-> +	}
-> +}
-> +
-> +void xe_clean_up(void *obj, int len)
-> +{
-> +	struct xe_gputop *gputop_dev = (struct xe_gputop *)obj;
-> +	struct xe_pmu_counter pmu_counter;
-> +	struct xe_engine *eng;
-> +
-> +	for (int i = 0; i < len; i++) {
-> +		if (gputop_dev[i].card)
-> +			free(gputop_dev[i].card);
-> +		if (gputop_dev[i].pmu_device_obj) {
-> +			for (int j = 0;
-> +			     j < gputop_dev[i].pmu_device_obj->num_engines;
-> +			     j++) {
-> +				eng = engine_ptr(gputop_dev[i].pmu_device_obj,
-> +						 j);
-> +				if (eng->display_name)
-> +					free(eng->display_name);
-> +
-> +				pmu_counter = eng->engine_active_ticks;
-> +				if (pmu_counter.present)
-> +					close(pmu_counter.fd);
-> +
-> +				pmu_counter = eng->engine_total_ticks;
-> +				if (pmu_counter.present)
-> +					close(pmu_counter.fd);
-> +			}
-> +			if (gputop_dev[i].pmu_device_obj->device)
-> +				free(gputop_dev[i].pmu_device_obj->device);
-> +			free(gputop_dev->pmu_device_obj);
-> +		}
-> +	}
-> +}
-> +
-> +static int _open_pmu(uint64_t type, unsigned int *cnt, struct xe_pmu_counter *pmu, int *fd)
-> +{
-> +	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
-> +
-> +	if (fd__ >= 0) {
-> +		if (*fd == -1)
-> +			*fd = fd__;
-> +		pmu->present = true;
-> +		pmu->idx = (*cnt)++;
-> +		pmu->fd = fd__;
-> +	}
-> +
-> +	return fd__;
-> +}
-> +
-> +void xe_gputop_init(void *ptr, int index,
-> +		    struct igt_device_card *card)
-> +{
-> +	struct xe_gputop *obj;
-> +
-> +	obj = ((struct xe_gputop *)ptr) + index;
-> +	obj->card = card;
-> +}
-> +
-> +static int pmu_format_shift(int xe, const char *name)
-> +{
-> +	uint32_t start;
-> +	int format;
-> +	char device[80];
-> +
-> +	format = perf_event_format(xe_perf_device(xe, device, sizeof(device)),
-> +				   name, &start);
-> +	if (format)
-> +		return 0;
-> +
-> +	return start;
-> +}
-> +
-> +static int engine_cmp(const void *__a, const void *__b)
-> +{
-> +	const struct xe_engine *a = (struct xe_engine *)__a;
-> +	const struct xe_engine *b = (struct xe_engine *)__b;
-> +
-> +	if (a->drm_xe_engine.gt_id != b->drm_xe_engine.gt_id)
-> +		return a->drm_xe_engine.gt_id - b->drm_xe_engine.gt_id;
-> +	else if (a->drm_xe_engine.engine_class != b->drm_xe_engine.engine_class)
-> +		return a->drm_xe_engine.engine_class - b->drm_xe_engine.engine_class;
-> +	else
-> +		return a->drm_xe_engine.engine_instance - b->drm_xe_engine.engine_instance;
-> +}
-> +
-> +void *xe_populate_engines(const void *obj, int index)
-> +{
-> +	struct xe_gputop *ptr = ((struct xe_gputop *)obj) + index;
-> +	struct igt_device_card *card = ptr->card;
-> +	uint64_t engine_active_config, engine_total_config;
-> +	uint64_t engine_class, engine_instance, gt_shift;
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	struct xe_pmu_device *engines;
-> +	char device[30];
-> +	int ret = 0;
-> +	int card_fd;
-> +
-> +	if (!card || !strlen(card->card) || !strlen(card->render))
-> +		return NULL;
-> +
-> +	if (strlen(card->card)) {
-> +		card_fd = igt_open_card(card);
-> +	} else if (strlen(card->render)) {
-> +		card_fd = igt_open_render(card);
-> +	} else {
-> +		fprintf(stderr, "Failed to detect device!\n");
-> +		return NULL;
-> +	}
-> +	xe_device_get(card_fd);
-> +	engines = malloc(sizeof(struct xe_pmu_device) +
-> +			 xe_number_engines(card_fd) * sizeof(struct xe_engine));
-> +	if (!engines)
-> +		return NULL;
-> +
-> +	memset(engines, 0, sizeof(struct xe_pmu_device) +
-> +	       xe_number_engines(card_fd) * sizeof(struct xe_engine));
-> +
-> +	engines->num_engines = 0;
-> +	gt_shift = pmu_format_shift(card_fd, "gt");
-> +	engine_class = pmu_format_shift(card_fd, "engine_class");
-> +	engine_instance = pmu_format_shift(card_fd, "engine_instance");
-> +	xe_perf_device(card_fd, device, sizeof(device));
-> +	engines->device = strdup(device);
-> +	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
-> +	if (ret < 0)
-> +		return NULL;
-> +
-> +	ret = perf_event_config(device, "engine-total-ticks", &engine_total_config);
-> +	if (ret < 0)
-> +		return NULL;
-> +
-> +	xe_for_each_engine(card_fd, hwe) {
-> +		uint64_t  param_config;
-> +		struct xe_engine *engine;
-> +
-> +		engine = engine_ptr(engines, engines->num_engines);
-> +		param_config = (uint64_t)hwe->gt_id << gt_shift | hwe->engine_class << engine_class
-> +			| hwe->engine_instance << engine_instance;
-> +		engine->drm_xe_engine = *hwe;
-> +		engine->engine_active_ticks.config = engine_active_config | param_config;
-> +		engine->engine_total_ticks.config = engine_total_config | param_config;
-> +
-> +		if (engine->engine_active_ticks.config == -1 ||
-> +		    engine->engine_total_ticks.config == -1) {
-> +			ret = ENOENT;
-> +			break;
-> +		}
-> +
-> +		ret = asprintf(&engine->display_name, "GT:%u %s/%u",
-> +			       hwe->gt_id,
-> +			       class_display_name(engine->drm_xe_engine.engine_class),
-> +			       engine->drm_xe_engine.engine_instance);
-
-unnecessary redirection.
-use hwe->engine_class and instance here.
 
 Looks good to me
 Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 
-
-> +
-> +		if (ret <= 0) {
-> +			ret = errno;
-> +			break;
-> +		}
-> +
-> +		engines->num_engines++;
-> +	}
-> +
-> +	if (!ret) {
-> +		errno = ret;
-> +		return NULL;
-> +	}
-> +
-> +	qsort(engine_ptr(engines, 0), engines->num_engines,
-> +	      sizeof(struct xe_engine), engine_cmp);
-> +
-> +	ptr->pmu_device_obj = engines;
-> +
-> +	return engines;
-> +}
-> +
-> +static uint64_t pmu_read_multi(int fd, unsigned int num, uint64_t *val)
-> +{
-> +	uint64_t buf[2 + num];
-> +	unsigned int i;
-> +	ssize_t len;
-> +
-> +	memset(buf, 0, sizeof(buf));
-> +
-> +	len = read(fd, buf, sizeof(buf));
-> +	assert(len == sizeof(buf));
-> +
-> +	for (i = 0; i < num; i++)
-> +		val[i] = buf[2 + i];
-> +
-> +	return buf[1];
-> +}
-> +
-> +void xe_pmu_sample(const void *obj, int index)
-> +{
-> +	struct xe_gputop *ptr = ((struct xe_gputop *)obj) + index;
-> +	struct xe_pmu_device *engines = ptr->pmu_device_obj;
-> +	const int num_val = engines->num_counters;
-> +	uint64_t val[2 + num_val];
-> +	unsigned int i;
-> +
-> +	pmu_read_multi(engines->fd, num_val, val);
-> +
-> +	for (i = 0; i < engines->num_engines; i++) {
-> +		struct xe_engine *engine = engine_ptr(engines, i);
-> +
-> +		update_sample(&engine->engine_active_ticks, val);
-> +		update_sample(&engine->engine_total_ticks, val);
-> +	}
-> +}
-> +
-> +int xe_pmu_init(const void *obj, int index)
-> +{
-> +	struct xe_gputop *ptr = ((struct xe_gputop *)obj) + index;
-> +	struct xe_pmu_device *engines = ptr->pmu_device_obj;
-> +	struct xe_engine *engine;
-> +	unsigned int i;
-> +	uint64_t type;
-> +	int fd;
-> +
-> +	type = igt_perf_type_id(engines->device);
-> +	engines->fd = -1;
-> +	engines->num_counters = 0;
-> +
-> +	for (i = 0; i < engines->num_engines; i++) {
-> +		engine = engine_ptr(engines, i);
-> +		fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
-> +			       &engines->fd);
-> +		if (fd < 0)
-> +			return -1;
-> +		fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
-> +			       &engines->fd);
-> +		if (fd < 0)
-> +			return -1;
-> +	}
-> +	return 0;
-> +}
-> +
-> +static double pmu_active_percentage(struct xe_engine *engine)
-> +{
-> +	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
-> +				  engine->engine_active_ticks.val.prev;
-> +	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
-> +				 engine->engine_total_ticks.val.prev;
-> +	double percentage;
-> +
-> +	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
-> +	return percentage;
-> +}
-> +
-> +static int
-> +print_device_description(const void *obj, int lines, int w, int h)
-> +{
-> +	char *desc;
-> +	int len;
-> +
-> +	len = asprintf(&desc, "DRIVER: %s || BDF: %s",
-> +		       ((struct xe_gputop *)obj)->card->driver,
-> +		       ((struct xe_gputop *)obj)->card->pci_slot_name);
-> +
-> +	printf("\033[7m%s%*s\033[0m\n",
-> +	       desc,
-> +	       (int)(w - len), " ");
-> +	lines++;
-> +	free(desc);
-> +	return lines;
-> +}
-> +
-> +static int
-> +print_engines_header(struct xe_pmu_device *engines,
-> +		     int lines, int con_w, int con_h)
-> +{
-> +	const char *a;
-> +
-> +	for (unsigned int i = 0;
-> +	     i < engines->num_engines && lines < con_h;
-> +	     i++) {
-> +		struct xe_engine *engine = engine_ptr(engines, i);
-> +
-> +		if (!engine->num_counters)
-> +			continue;
-> +
-> +		a = "            ENGINES   ACTIVITY  ";
-> +
-> +		printf("\033[7m%s%*s\033[0m\n",
-> +		       a,
-> +		       (int)(con_w - strlen(a)), " ");
-> +		lines++;
-> +
-> +		break;
-> +	}
-> +
-> +	return lines;
-> +}
-> +
-> +static int
-> +print_engine(struct xe_pmu_device *engines, unsigned int i,
-> +	     int lines, int con_w, int con_h)
-> +{
-> +	struct xe_engine *engine = engine_ptr(engines, i);
-> +	double percentage = pmu_active_percentage(engine);
-> +
-> +	printf("%*s", (int)(strlen("            ENGINES")), engine->display_name);
-> +	print_percentage_bar(percentage, con_w - strlen("            ENGINES"));
-> +	printf("\n");
-> +
-> +	return ++lines;
-> +}
-> +
-> +int xe_print_engines(const void *obj, int index, int lines, int w, int h)
-> +{
-> +	struct xe_gputop *ptr = ((struct xe_gputop *)obj) + index;
-> +	struct xe_pmu_device *show = ptr->pmu_device_obj;
-> +
-> +	lines = print_device_description(ptr, lines, w, h);
-> +	lines = print_engines_header(show, lines, w,  h);
-> +
-> +	for (unsigned int i = 0; i < show->num_engines && lines < h; i++)
-> +		lines = print_engine(show, i, lines, w, h);
-> +
-> +	lines = print_engines_footer(lines, w, h);
-> +
-> +	return lines;
-> +}
-> +
-> diff --git a/tools/gputop/xe_gputop.h b/tools/gputop/xe_gputop.h
+> ---
+>   tools/gputop/utils.c | 51 +++++++++++++++++++++++++++++++++++
+>   tools/gputop/utils.h | 63 ++++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 114 insertions(+)
+>   create mode 100644 tools/gputop/utils.c
+>   create mode 100644 tools/gputop/utils.h
+> 
+> diff --git a/tools/gputop/utils.c b/tools/gputop/utils.c
 > new file mode 100644
-> index 000000000..1e3856071
+> index 000000000..7f260dc05
 > --- /dev/null
-> +++ b/tools/gputop/xe_gputop.h
-> @@ -0,0 +1,59 @@
+> +++ b/tools/gputop/utils.c
+> @@ -0,0 +1,51 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2025 Intel Corporation
+> + */
+> +#include <assert.h>
+> +
+> +#include "utils.h"
+> +
+> +static const char * const bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+> +
+> +void n_spaces(const unsigned int n)
+> +{
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < n; i++)
+> +		putchar(' ');
+> +}
+> +
+> +void print_percentage_bar(double percent, int max_len)
+> +{
+> +	int bar_len, i, len = max_len - 1;
+> +	const int w = PERCLIENT_ENGINE_WIDTH;
+> +
+> +	len -= printf("|%5.1f%% ", percent);
+> +
+> +	/* no space left for bars, do what we can */
+> +	if (len < 0)
+> +		len = 0;
+> +
+> +	bar_len = ceil(w * percent * len / 100.0);
+> +	if (bar_len > w * len)
+> +		bar_len = w * len;
+> +
+> +	for (i = bar_len; i >= w; i -= w)
+> +		printf("%s", bars[w]);
+> +	if (i)
+> +		printf("%s", bars[i]);
+> +
+> +	len -= (bar_len + (w - 1)) / w;
+> +	n_spaces(len);
+> +
+> +	putchar('|');
+> +}
+> +
+> +int print_engines_footer(int lines, int con_w, int con_h)
+> +{
+> +	if (lines++ < con_h)
+> +		printf("\n");
+> +
+> +	return lines;
+> +}
+> diff --git a/tools/gputop/utils.h b/tools/gputop/utils.h
+> new file mode 100644
+> index 000000000..00befed56
+> --- /dev/null
+> +++ b/tools/gputop/utils.h
+> @@ -0,0 +1,63 @@
 > +/* SPDX-License-Identifier: MIT */
 > +/*
 > + * Copyright © 2025 Intel Corporation
 > + */
 > +
-> +#ifndef __XE_GPUTOP_H__
-> +#define __XE_GPUTOP_H__
+> +#ifndef COMMON_GPUTOP_H
+> +#define COMMON_GPUTOP_H
 > +
-> +#include <dirent.h>
+> +#include <glib.h>
+> +#include <math.h>
+> +#include <stdbool.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
 > +
 > +#include "igt_device_scan.h"
-> +#include "igt_perf.h"
-> +#include "utils.h"
-> +#include "xe/xe_query.h"
 > +
-> +struct xe_pmu_pair {
-> +	uint64_t cur;
-> +	uint64_t prev;
+> +#define ANSI_HEADER "\033[7m"
+> +#define ANSI_RESET "\033[0m"
+> +
+> +#define PERCLIENT_ENGINE_WIDTH 8
+> +
+> +/**
+> + * struct gputop_driver
+> + *
+> + * @device_present: It is set if at least a single device of the
+> + * respective driver is found.
+> + * @len: Number of total device discovered of the respective
+> + * driver.
+> + * @instances: pointer to the array of discovered instances
+> + * of the devices of the same driver.
+> + */
+> +struct gputop_driver {
+> +	bool device_present;
+> +	int len;
+> +	void *instances;
 > +};
 > +
-> +struct xe_pmu_counter {
-> +	uint64_t type;
-> +	uint64_t config;
-> +	unsigned int idx;
-> +	struct xe_pmu_pair val;
-> +	int fd;
-> +	bool present;
+> +/**
+> + * struct device_operations - Structure to hold function
+> + * pointers for device specific operations for each individual driver.
+> + * @gputop_init: Function to initialize GPUTOP object
+> + * @init_engines: Function to initialize engines for the respective driver.
+> + * @pmu_init: Function to initialize the PMU (Performance Monitoring Unit).
+> + * @pmu_sample: Function to sample PMU data.
+> + * @print_engines: Function to print engine business.
+> + * @clean_up: Function to release resources.
+> + */
+> +struct device_operations {
+> +	void (*gputop_init)(void *ptr, int index,
+> +			    struct igt_device_card *card);
+> +	void *(*init_engines)(const void *obj, int index);
+> +	int (*pmu_init)(const void *obj, int index);
+> +	void (*pmu_sample)(const void *obj, int index);
+> +	int (*print_engines)(const void *obj, int index, int lines,
+> +			     int w, int h);
+> +	void (*clean_up)(void *obj, int len);
 > +};
 > +
-> +struct xe_engine {
-> +	const char *name;
-> +	char *display_name;
-> +	struct drm_xe_engine_class_instance drm_xe_engine;
-> +	unsigned int num_counters;
-> +	struct xe_pmu_counter engine_active_ticks;
-> +	struct xe_pmu_counter engine_total_ticks;
-> +};
+> +void print_percentage_bar(double percent, int max_len);
+> +int print_engines_footer(int lines, int con_w, int con_h);
+> +void n_spaces(const unsigned int n);
 > +
-> +struct xe_pmu_device {
-> +	unsigned int num_engines;
-> +	unsigned int num_counters;
-> +	int fd;
-> +	char *device;
-> +	struct xe_engine engine;
-> +};
-> +
-> +struct xe_gputop {
-> +	struct igt_device_card *card;
-> +	struct xe_pmu_device *pmu_device_obj;
-> +};
-> +
-> +void xe_gputop_init(void *ptr, int index, struct igt_device_card *card);
-> +void *xe_populate_engines(const void *obj, int index);
-> +int xe_pmu_init(const void *obj, int index);
-> +void xe_pmu_sample(const void *obj, int index);
-> +int xe_print_engines(const void *obj, int index, int lines, int w, int h);
-> +void xe_clean_up(void *obj, int len);
-> +
-> +#endif /* __XE_GPUTOP_H__ */
+> +#endif  /* COMMON_GPUTOP_H */
 
