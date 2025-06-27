@@ -4,58 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D0EBC7EE2A
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Jun 2025 16:45:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD83DC7EE2A
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Jun 2025 18:19:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D427210EA70;
-	Fri, 27 Jun 2025 16:45:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6387410E274;
+	Fri, 27 Jun 2025 18:19:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ju2pw9vz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IvgEcHIA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69E6610EA6A
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Jun 2025 16:45:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 06A8710E062
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Jun 2025 18:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751042727; x=1782578727;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=R7I2KpNLQPjw9b7uvWziPZXTkG/M9bK1AqpMucKNpcM=;
- b=Ju2pw9vzAImSJxzaspHiAIYuUAYID/VWJrLJuNkOc2NxBdWQRjqygELA
- lYx0S4/FHnvuib/sYzcFEhDI26fOinQYtzVVsT4QcPTG66WZ4yTGLLLZ1
- +dU9kfrjwTUVe82l8CThcit0IHXTDqhnA7rhn7dQOoQ1K4eIHcDv/YRDQ
- D1OOnTt2mnZ5TwlKcZblXcof0BtwkWJTeuqjbl06Aq+APR7tkoo8ygbOU
- tErw8wWXdt7FBt5+u5QIgLWkaA65a62e99k+OfKRsPotN+ALLqr3PuMBx
- Qyqiv5QrOMh3f1KWJmb6no3BmGxQCDtqt3IePIxr42Fudg+MnER5g4IFz Q==;
-X-CSE-ConnectionGUID: 5ytcA4xXQ2O6rE4nBU9YDQ==
-X-CSE-MsgGUID: zoj7+2VgQ4e+UNLgZ9O8Rg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53485000"
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="53485000"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2025 09:45:27 -0700
-X-CSE-ConnectionGUID: 8c/hnDGbSFGswQqZGlByUg==
-X-CSE-MsgGUID: 2rOvq1rpSN+YutajHrqDYg==
+ t=1751048379; x=1782584379;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=EibWUEsuFjkBjzKuQrnT/tLVbWkHV3/7y3+Rzqf+930=;
+ b=IvgEcHIAeGieeuYkgA0TTVOumDD6mfSyykKeypzv/lVh1dMQ7419WIRl
+ XACLHIxk86J8M1ygPKCVRTpkKdB1WjbtvHo18LkNCt387Mkp9hyBHV8KC
+ /QbTO2v1prG2JBaTnQUTjDNFnPy4wCEQAKD6hLwkdjnt1hP7iiI1t9y8Q
+ p+jA3I+ZZ2pDD/UwrJvOHSRIiP2J5EP+emuCcCrviegJ/e6NncPPu1KcJ
+ gBA3wD/2GB8PgIHabmz7muLRST/kF5Y3exmqS9JQffAF6wwLwXRZZbkvw
+ 7SsP11Ph40iS26CGuunLl7JM25ZA46NWVP40H5KZJ/cbu1/UjPBCW3/Je w==;
+X-CSE-ConnectionGUID: EG81bcDFTMCR6Cmp0WoU/Q==
+X-CSE-MsgGUID: 4ATJvMSTRGa5HxACYx/Mhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53465567"
+X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; d="scan'208";a="53465567"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2025 11:18:31 -0700
+X-CSE-ConnectionGUID: +1R1vYESSXirB62SuagMHA==
+X-CSE-MsgGUID: OyfHGtXzRr+k8WJcps37wQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="158582242"
-Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.245.97])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2025 09:45:26 -0700
-Date: Fri, 27 Jun 2025 18:45:24 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jeevan B <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org, animesh.manna@intel.com
-Subject: Re: [i-g-t] kms_vrr: Add comment explaining PR and LOBF dependency
-Message-ID: <aF7KpKgOQ9TPsR3N@kamilkon-DESK1>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org,
- animesh.manna@intel.com
-References: <20250623052056.135083-1-jeevan.b@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; d="scan'208";a="152604277"
+Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2025 11:18:27 -0700
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ vinay.belgaumkar@intel.com, kamil.konieczny@intel.com,
+ krzysztof.karas@intel.com, zbigniew.kempczynski@intel.com
+Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
+ soham.purkait@intel.com, ashutosh.dixit@intel.com,
+ umesh.nerlige.ramappa@intel.com
+Subject: [PATCH v16 0/5] Add per-device engine activity stats in GPUTOP
+Date: Fri, 27 Jun 2025 23:42:17 +0530
+Message-Id: <20250627181222.227803-1-soham.purkait@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250623052056.135083-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,40 +70,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 2025-06-23 at 10:50:56 +0530, Jeevan B wrote:
+Add per-device engine activity stat support in GPUTOP.
+This leverages the PMU interface to display the activity of
+engine instances for the array of requested or all devices.
 
-Small nit about subject, add "tests/" prefix, so it will be:
+This patch refactors GPUTOP to be vendor-agnostic, laying
+the groundwork for future support of multiple GPU vendors.
 
-[i-g-t] tests/kms_vrr: Add comment explaining PR and LOBF dependency
+ Currently, GPUTOP supports GPUs with Xe driver only
+and can monitor the engine activities of multiple GPU
+devices simultaneously through abstracting vendor 
+specific code into a common interface and implementing 
+vendor-neutral APIs for monitoring.
 
-> Add a comment to explain that LOBF requires PR support,
-> which is only available on eDP 1.5 panels.
-> 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  tests/kms_vrr.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 4919b7cb7..b7600ae2c 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -1049,6 +1049,10 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
->  				continue;
->  			}
->  
-> +			/* Panel Replay is supported only with eDP 1.5 panels.
-> +			 * LOBF and PR are mutually exclusive features.
+DRIVER: xe || BDF: 0000:03:00.0
+   GT:0 Render/3D/0| 99.1% ███████████████████████████████████████████████████|
+     GT:0 Blitter/0| 59.2% ██████████████████████████████                     |
+     GT:0 Compute/0| 49.2% █████████████████████████                          |
+       GT:1 Video/0| 89.3% ██████████████████████████████████████████████     |
+       GT:1 Video/1|  0.0%                                                    |
+GT:1 VideoEnhance/0| 98.5% ██████████████████████████████████████████████████ |
+GT:1 VideoEnhance/1|  0.0%                                                    |
 
-I do not understand this, did you mean:
+Soham Purkait (5):
+  lib/igt_device_scan: Add support for the device filter
+  lib/igt_device_scan: Enable finding all matched IGT devices
+  tools/gputop/utils: Add gputop utility functions common to all drivers
+  tools/gputop/xe_gputop: Add gputop support for xe specific devices
+  tools/gputop/gputop: Enable support for multiple GPUs and instances
 
-			 * LOBF is possible only when PR is present.
+ lib/igt_device_scan.c       | 128 +++++++++++++
+ lib/igt_device_scan.h       |   1 +
+ tools/{ => gputop}/gputop.c | 236 +++++++++++++++++++----
+ tools/gputop/meson.build    |   6 +
+ tools/gputop/utils.c        |  51 +++++
+ tools/gputop/utils.h        |  63 +++++++
+ tools/gputop/xe_gputop.c    | 361 ++++++++++++++++++++++++++++++++++++
+ tools/gputop/xe_gputop.h    |  59 ++++++
+ tools/meson.build           |   6 +-
+ 9 files changed, 867 insertions(+), 44 deletions(-)
+ rename tools/{ => gputop}/gputop.c (65%)
+ create mode 100644 tools/gputop/meson.build
+ create mode 100644 tools/gputop/utils.c
+ create mode 100644 tools/gputop/utils.h
+ create mode 100644 tools/gputop/xe_gputop.c
+ create mode 100644 tools/gputop/xe_gputop.h
 
-Regards,
-Kamil
+-- 
+2.34.1
 
-> +			 * Skip the test if PR is not supported, as LOBF cannot be enabled.
-> +			 */
->  			if (flags == TEST_LINK_OFF)
->  				igt_require_f(psr_sink_support(data->drm_fd,
->  					      data->debugfs_fd, PR_MODE, output),
