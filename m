@@ -4,57 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADDD1C7EE2A
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Jun 2025 18:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7707C77B7F
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Jun 2025 20:49:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 67CB210EA6F;
-	Fri, 27 Jun 2025 18:20:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CE54510E074;
+	Fri, 27 Jun 2025 20:49:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SWExEv+l";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RpPfZvUP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EC9910EA70
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Jun 2025 18:20:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A062610E074
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Jun 2025 20:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751048420; x=1782584420;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Rp8aKtpFpeGXkvzM7r9ZKtsPE070onVWKShRqCWvOtY=;
- b=SWExEv+ljaJdK+RgbSYg+3JO0xSkO6IAtlSDcokoZG+mgrtXbGDzngBg
- wkItugz8/VVqi9Mh/IQQpvwEjxWOTxeIDEois66nBwlQGKkdIL21LEuxd
- LyCMnz4demFSblBBmyLW+vGAngFUTAR9u3Xna1AD+UxLc65RauFKwcnWO
- 4bnb481LWdkXkncuIzxUrNRTx9uYORPvi4JW5hD1R90GOHfWJYwEjCHQa
- jyq/HkeKHPlUSIuNEbZGtjPeQA3R+DVh4kJkI5ZixpD6/5sPKG3FcUp1+
- JLEfZ7m3vPGjckdzJxhXFbcLi+9dn4x+rqLyFXrIBOeziXDhbLizHxB2X g==;
-X-CSE-ConnectionGUID: v6PZ1MyZQBqboGFejUAA+A==
-X-CSE-MsgGUID: o2KLPmI2SBitcoe2zxbYzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53465889"
-X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; d="scan'208";a="53465889"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2025 11:18:50 -0700
-X-CSE-ConnectionGUID: W5lAZ1sIQAOSzGs6hfm57g==
-X-CSE-MsgGUID: za83coRySHKkXBYia2ZJQA==
+ t=1751057342; x=1782593342;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=R+a71FE9J6KjONu+Q6U79Kk4UtlFcNqN6GIlZ2O3YSo=;
+ b=RpPfZvUP3Mg+y1yP98b7L7P/PAp5Oed2GeaE9NmvUY8f1cdv96Qb1xj2
+ AD71n1AP6mf7IMrlC2snMLgVKX5d01wUSpB+XIUakr0YzyUTeWVKvVaNC
+ C4x5Bb8KMQbVgeviHelt62P86hFow7BxJephIZNKq7GDrq1ZRG5XHmTnz
+ H7cliEYGV2y2DBHo/Mq7Il+UZMRz2Wx64k2x9C0ZVhp26jWK8dq75f7OS
+ FkOUUYnOcOXjJbYnlJAqu+cwh4ScSyxbYhGqfA5Ez5QH/n5ndYgLQO2GN
+ NUUehMo5h637BdeZmcXO8902bnCGkR/WcbbzWRc+9AZ3V/FUMtETz37TC w==;
+X-CSE-ConnectionGUID: q/DYMm1UQDSORL2xzxZdQQ==
+X-CSE-MsgGUID: nej69G34Q56cOC5gzih4zw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="55998422"
+X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; d="scan'208";a="55998422"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2025 13:49:02 -0700
+X-CSE-ConnectionGUID: ayLcO5J+S+KTZTMMsULtug==
+X-CSE-MsgGUID: jbw/pmu/QYOe0b9sdq4cVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; d="scan'208";a="152604430"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2025 11:18:46 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- vinay.belgaumkar@intel.com, kamil.konieczny@intel.com,
- krzysztof.karas@intel.com, zbigniew.kempczynski@intel.com
-Cc: anshuman.gupta@intel.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
- soham.purkait@intel.com, ashutosh.dixit@intel.com,
- umesh.nerlige.ramappa@intel.com
-Subject: [PATCH v16 5/5] tools/gputop/gputop: Enable support for multiple GPUs
- and instances
-Date: Fri, 27 Jun 2025 23:42:22 +0530
-Message-Id: <20250627181222.227803-6-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250627181222.227803-1-soham.purkait@intel.com>
-References: <20250627181222.227803-1-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; d="scan'208";a="176577182"
+Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com)
+ ([10.124.220.252])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2025 13:49:01 -0700
+From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+To: igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com,
+ rodrigo.vivi@intel.com, david.e.box@linux.intel.com
+Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+Subject: [PATCH] test/intel/xe_pmt: Add testing for BMG crashlog
+Date: Fri, 27 Jun 2025 16:48:42 -0400
+Message-ID: <20250627204846.521691-1-michael.j.ruhl@intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -73,421 +68,598 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce vendor-agnostic support for handling multiple GPUs and instances
-in gputop. Improve the tool's adaptability to various GPU configurations.
+The BMG devices has the PMT crashlog feature. If the devices present
+is a BMG, test PMT api.
 
-v1:
- - Refactor GPUTOP into a vendor-agnostic tool. (Lucas)
-v2:
- - Add device filter to populate the array of cards for
-   all supported drivers. (Zbigniew)
-v3:
- - Cosmetic changes. (Riana)
- - Avoid three level indentation. (Riana)
+NOTE: the testing order is not flexible and must be done in
+the currently specified order.
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
 ---
- tools/{ => gputop}/gputop.c | 236 ++++++++++++++++++++++++++++++------
- tools/gputop/meson.build    |   6 +
- tools/meson.build           |   6 +-
- 3 files changed, 204 insertions(+), 44 deletions(-)
- rename tools/{ => gputop}/gputop.c (65%)
- create mode 100644 tools/gputop/meson.build
+ tests/intel/xe_pmt.c | 561 +++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build    |   1 +
+ 2 files changed, 562 insertions(+)
+ create mode 100644 tests/intel/xe_pmt.c
 
-diff --git a/tools/gputop.c b/tools/gputop/gputop.c
-similarity index 65%
-rename from tools/gputop.c
-rename to tools/gputop/gputop.c
-index f577a1750..3e1f3badc 100644
---- a/tools/gputop.c
-+++ b/tools/gputop/gputop.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: MIT
- /*
-- * Copyright © 2023 Intel Corporation
-+ * Copyright © 2023-2025 Intel Corporation
-  */
- 
- #include <assert.h>
-@@ -14,66 +14,149 @@
- #include <math.h>
- #include <poll.h>
- #include <signal.h>
-+#include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
-+#include <sys/sysmacros.h>
- #include <sys/types.h>
--#include <unistd.h>
- #include <termios.h>
--#include <sys/sysmacros.h>
--#include <stdbool.h>
+diff --git a/tests/intel/xe_pmt.c b/tests/intel/xe_pmt.c
+new file mode 100644
+index 000000000..21a2e74e7
+--- /dev/null
++++ b/tests/intel/xe_pmt.c
+@@ -0,0 +1,561 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++/**
++ * TEST: Verify BMG PMT files operations
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: uapi
++ * Functionality: sysfs
++ * Description: Verify BMG PMT files are created and are accessable
++ */
++
++#include <dirent.h>
++#include <limits.h>
++#include <string.h>
++#include <fcntl.h>
 +#include <unistd.h>
- 
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_drm_clients.h"
- #include "igt_drm_fdinfo.h"
-+#include "igt_perf.h"
- #include "igt_profiling.h"
--#include "drmtest.h"
-+#include "xe_gputop.h"
++
++#include "igt.h"
++#include "igt_sysfs.h"
++#include "linux_scaffold.h"
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
 +#include "xe/xe_query.h"
 +
-+/**
-+ * Supported Drivers
-+ *
-+ * Adhere to the following requirements when implementing support for the
-+ * new driver:
-+ * @drivers: Update drivers[] with driver string.
-+ * @sizeof_gputop_obj: Update this function as per new driver support included.
-+ * @operations: Update the respective operations of the new driver:
-+ * gputop_init,
-+ * discover_engines,
-+ * pmu_init,
-+ * pmu_sample,
-+ * print_engines,
-+ * clean_up
-+ * @per_driver_contexts: Update per_driver_contexts[] array of type "struct gputop_driver" with the
-+ * initial values.
-+ */
-+static const char * const drivers[] = {
-+	"xe",
-+    /* Keep the last one as NULL */
-+	NULL
++/* base directory names */
++#define VSEC_CRASHLOG_DIR "intel_vsec.crashlog."
++#define VSEC_TELEMETRY_DIR "intel_vsec.telemetry."
++#define CRASHLOG_DIR "crashlog"
++#define TELEMETRY_DIR "telem"
++#define BMG_CRASHLOG_CNT 2
++#define BMG_TELEMETRY_CNT 2
++
++enum bmg_crashlog_instances {
++	bmg_crashlog_punit = 0,
++	bmg_crashlog_oobmsm,
++	bmg_crashlog_max
 +};
 +
-+static size_t sizeof_gputop_obj(int driver_num)
-+{
-+	switch (driver_num) {
-+	case 0:
-+		return sizeof(struct xe_gputop);
-+	default:
-+		fprintf(stderr,
-+			"Driver number does not exist.\n");
-+		exit(EXIT_FAILURE);
-+	}
-+}
-+
-+/**
-+ * Supported operations on driver instances. Update the ops[] array for
-+ * each individual driver specific function. Maintain the sequence as per
-+ * drivers[] array.
-+ */
-+struct device_operations ops[] = {
-+	{
-+		xe_gputop_init,
-+		xe_populate_engines,
-+		xe_pmu_init,
-+		xe_pmu_sample,
-+		xe_print_engines,
-+		xe_clean_up
-+	}
++enum bmg_telemety_instances {
++	bmg_telemetry_punit = 0,
++	bmg_telemetry_oobmsm,
++	bmg_telemetry_max
 +};
++
++static char dev_path[PATH_MAX];
++static char work_path[PATH_MAX * 2];
 +
 +/*
-+ * per_driver_contexts[] array of type struct gputop_driver which keeps track of the devices
-+ * and related info discovered per driver.
++ * In most case there should be a single instance of crashlog an telemetry directories.
++ * If DVSEC entries are separate the structure will be different.
 + */
-+struct gputop_driver per_driver_contexts[] = {
-+	{false, 0, NULL}
-+};
- 
- enum utilization_type {
- 	UTILIZATION_TYPE_ENGINE_TIME,
- 	UTILIZATION_TYPE_TOTAL_CYCLES,
- };
- 
--static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
--
--#define ANSI_HEADER "\033[7m"
--#define ANSI_RESET "\033[0m"
--
--static void n_spaces(const unsigned int n)
-+static void gputop_clean_up(void)
- {
--	unsigned int i;
--
--	for (i = 0; i < n; i++)
--		putchar(' ');
-+	for (int i = 0; drivers[i]; i++) {
-+		ops[i].clean_up(per_driver_contexts[i].instances, per_driver_contexts[i].len);
-+		free(per_driver_contexts[i].instances);
-+		per_driver_contexts[i].device_present = false;
-+		per_driver_contexts[i].len = 0;
-+	}
- }
- 
--static void print_percentage_bar(double percent, int max_len)
-+static int find_driver(struct igt_device_card *card)
- {
--	int bar_len, i, len = max_len - 1;
--	const int w = 8;
--
--	len -= printf("|%5.1f%% ", percent);
--
--	/* no space left for bars, do what we can */
--	if (len < 0)
--		len = 0;
--
--	bar_len = ceil(w * percent * len / 100.0);
--	if (bar_len > w * len)
--		bar_len = w * len;
-+	for (int i = 0; drivers[i]; i++) {
-+		if (strcmp(drivers[i], card->driver) == 0)
-+			return i;
-+	}
-+	return -1;
-+}
- 
--	for (i = bar_len; i >= w; i -= w)
--		printf("%s", bars[w]);
--	if (i)
--		printf("%s", bars[i]);
-+static int populate_device_instances(const char *filter)
++static char crashlog_vsec_dir[32];
++static char telemetry_vsec_dir[32];
++
++/* This needs to be specific for each supported device */
++static char crashlog_dir[bmg_crashlog_max][32];
++static char telemetry_dir[bmg_telemetry_max][32];
++
++/* telemetry file names */
++static const char *telem = "telem";
++
++/* crashlog filenames and descriptors */
++static const char *clear = "clear";
++static const char *consumed = "consumed";
++static const char *crashlog = "crashlog";
++static const char *enable = "enable";
++static const char *error = "error";
++static const char *dev_guid = "guid";
++static const char *rearm = "rearm";
++static const char *trigger = "trigger";
++
++struct crashlog_v2_info {
++	int clear_fd;
++	int consumed_fd;
++	int crashlog_fd;
++	int enable_fd;
++	int error_fd;
++	int guid_fd;
++	int rearm_fd;
++	int trigger_fd;
++	u_int32_t guid;
++} bmg_info[bmg_crashlog_max];
++
++#define DEV_PATH_LEN 80
++
++/**
++ * device_sysfs_path:
++ * @fd: opened device file descriptor
++ * @path: buffer to store sysfs path to device directory
++ *
++ * Returns:
++ * On successfull path resolution sysfs path to device directory,
++ * NULL otherwise
++ */
++static char *device_sysfs_path(int fd, char *path)
 +{
-+	struct igt_device_card *cards = NULL;
-+	struct igt_device_card *card_inplace = NULL;
-+	struct gputop_driver *driver_entry =  NULL;
-+	int driver_no;
-+	int count, final_count = 0;
++        char sysfs[DEV_PATH_LEN];
 +
-+	count = igt_device_card_match_all(filter, &cards);
-+	for (int j = 0; j < count; j++) {
-+		if (strcmp(cards[j].subsystem, "pci") != 0)
-+			continue;
- 
--	len -= (bar_len + (w - 1)) / w;
--	n_spaces(len);
-+		driver_no = find_driver(&cards[j]);
-+		if (driver_no < 0)
-+			continue;
- 
--	putchar('|');
-+		driver_entry = &per_driver_contexts[driver_no];
-+		if (!driver_entry->device_present)
-+			driver_entry->device_present = true;
-+		driver_entry->len++;
-+		driver_entry->instances = realloc(driver_entry->instances,
-+						  driver_entry->len * sizeof_gputop_obj(driver_no));
-+		if (!driver_entry->instances) {
-+			fprintf(stderr,
-+				"Device instance realloc failed (%s)\n",
-+				strerror(errno));
-+			exit(EXIT_FAILURE);
-+		}
-+		card_inplace = (struct igt_device_card *)
-+				calloc(1, sizeof(struct igt_device_card));
-+		memcpy(card_inplace, &cards[j], sizeof(struct igt_device_card));
-+		ops[driver_no].gputop_init(driver_entry->instances, (driver_entry->len - 1),
-+			card_inplace);
-+		final_count++;
-+	}
-+	if (count)
-+		free(cards);
-+	return final_count;
- }
- 
- static int
-@@ -333,6 +416,7 @@ static void clrscr(void)
- struct gputop_args {
- 	long n_iter;
- 	unsigned long delay_usec;
-+	char *device;
- };
- 
- static void help(char *full_path)
-@@ -350,16 +434,18 @@ static void help(char *full_path)
- 	       "\t-h, --help                show this help\n"
- 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
- 	       "\t-n, --iterations =NUMBER  number of executions\n"
-+	       "\t-D, --device              Device filter\n"
- 	       , short_program_name);
- }
- 
- static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- {
--	static const char cmdopts_s[] = "hn:d:";
-+	static const char cmdopts_s[] = "hn:d:D:";
- 	static const struct option cmdopts[] = {
- 	       {"help", no_argument, 0, 'h'},
- 	       {"delay", required_argument, 0, 'd'},
- 	       {"iterations", required_argument, 0, 'n'},
-+	       {"device", required_argument, 0, 'D'},
- 	       { }
- 	};
- 
-@@ -367,6 +453,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 	memset(args, 0, sizeof(*args));
- 	args->n_iter = -1;
- 	args->delay_usec = 2 * USEC_PER_SEC;
-+	args->device = NULL;
- 
- 	for (;;) {
- 		int c, idx = 0;
-@@ -390,6 +477,9 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 				return -1;
- 			}
- 			break;
-+		case 'D':
-+			args->device = optarg;
-+			break;
- 		case 'h':
- 			help(argv[0]);
- 			return 0;
-@@ -429,6 +519,55 @@ int main(int argc, char **argv)
- 	n = args.n_iter;
- 	period_us = args.delay_usec;
- 
-+	if (!populate_device_instances(args.device ? args.device
-+				       : "device:subsystem=pci,card=all")) {
-+		printf("No device found.\n");
-+		gputop_clean_up();
-+		exit(1);
++        if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
++                return NULL;
++
++        if (DEV_PATH_LEN <= (strlen(sysfs) + strlen("/device")))
++                return NULL;
++
++        strcat(sysfs, "/device");
++
++        return realpath(sysfs, path);
++}
++
++/**
++ * SUBTEST: test_pmt_directories
++ * BMG PMT directory structure:
++ * device/intel_vsec.crashlog.x/intel_pmt/crashlog<a,b>
++ * device/intel_vsec.telemetry.x/intel_pmt/telemetry<c,d>
++ *
++ * If this is done for a different platform, this could be
++ * different.
++ *
++ */
++static void test_pmt_directories(int dev_fd)
++{
++	struct dirent *ent;
++	int index;
++	DIR *dir;
++
++        igt_assert(device_sysfs_path(dev_fd, dev_path));
++
++	/* verify top level PMT directories */
++	dir = opendir(dev_path);
++	igt_assert_f(dir, "no directories found\n");
++
++	while ((ent = readdir(dir)) != NULL) {
++		if (strncmp(VSEC_CRASHLOG_DIR, ent->d_name, sizeof(VSEC_CRASHLOG_DIR) - 1) == 0)
++			strcpy(crashlog_vsec_dir, ent->d_name);
++		if (strncmp(VSEC_TELEMETRY_DIR, ent->d_name, sizeof(VSEC_TELEMETRY_DIR) - 1) == 0)
++			strcpy(telemetry_vsec_dir, ent->d_name);
 +	}
 +
-+	for (int i = 0; drivers[i]; i++) {
-+		if (!per_driver_contexts[i].device_present)
-+			continue;
++	closedir(dir);
 +
-+		for (int j = 0; j < per_driver_contexts[i].len; j++) {
-+			if (!ops[i].init_engines(per_driver_contexts[i].instances, j)) {
-+				fprintf(stderr,
-+					"Failed to initialize engines! (%s)\n",
-+					strerror(errno));
-+					gputop_clean_up();
-+				return EXIT_FAILURE;
-+			}
-+			ret = ops[i].pmu_init(per_driver_contexts[i].instances, j);
++	igt_assert_f(strlen(crashlog_vsec_dir), "missing crashlog directory\n");
++	igt_assert_f(strlen(telemetry_vsec_dir), "missing telemetry directory\n");
 +
-+			if (ret) {
-+				fprintf(stderr,
-+					"Failed to initialize PMU! (%s)\n",
-+					strerror(errno));
-+				if (errno == EACCES && geteuid())
-+					fprintf(stderr,
-+						"\n"
-+						"When running as a normal user CAP_PERFMON is required to access performance\n"
-+						"monitoring. See \"man 7 capabilities\", \"man 8 setcap\", or contact your\n"
-+						"distribution vendor for assistance.\n"
-+						"\n"
-+						"More information can be found at 'Perf events and tool security' document:\n"
-+						"https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
++	/* verify crashlog directory structure */
++	sprintf(work_path, "%s/%s/%s", dev_path, crashlog_vsec_dir, "intel_pmt");
 +
-+				igt_devices_free();
-+				gputop_clean_up();
-+				return EXIT_FAILURE;
-+			}
++	dir = opendir(work_path);
++	igt_assert_f(dir, "no intel_pmt directories found\n");
++
++	index = 0;
++	/* find the crashlog<x> directory instances */
++	while ((ent = readdir(dir)) != NULL) {
++		if (strncmp(CRASHLOG_DIR, ent->d_name, sizeof(CRASHLOG_DIR) - 1) == 0) {
++			if (index < bmg_crashlog_max)
++				strcpy(crashlog_dir[index], ent->d_name);
++			index++;
 +		}
 +	}
 +
-+	for (int i = 0; drivers[i]; i++) {
-+		for (int j = 0;
-+		     per_driver_contexts[i].device_present && j < per_driver_contexts[i].len;
-+		     j++)
-+			ops[i].pmu_sample(per_driver_contexts[i].instances, j);
++	closedir(dir);
++
++	igt_assert_f(index == bmg_crashlog_max, "too many crashlog entries %d\n", index);
++	for (int i = 0; i < ARRAY_SIZE(crashlog_dir); i++)
++		igt_assert_f(strlen(crashlog_dir[i]), "missing crashlog[%d] directory\n", i);
++
++	/* verify telemetry directory structure */
++	sprintf(work_path, "%s/%s/%s", dev_path, telemetry_vsec_dir, "intel_pmt");
++
++	dir = opendir(work_path);
++	igt_assert_f(dir, "no telemetry intel_pmt directories found\n");
++
++	index = 0;
++	while ((ent = readdir(dir)) != NULL) {
++		if (strncmp(TELEMETRY_DIR, ent->d_name, sizeof(TELEMETRY_DIR) - 1) == 0) {
++			if (index < BMG_TELEMETRY_CNT)
++				strcpy(telemetry_dir[index], ent->d_name);
++			index++;
++		}
 +	}
 +
- 	clients = igt_drm_clients_init(NULL);
- 	if (!clients)
- 		exit(1);
-@@ -449,14 +588,33 @@ int main(int argc, char **argv)
- 
- 	while ((n != 0) && !stop_top) {
- 		struct igt_drm_client *c, *prevc = NULL;
--		int i, engine_w = 0, lines = 0;
-+		int k, engine_w = 0, lines = 0;
- 
- 		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
++	closedir(dir);
 +
-+		for (int i = 0; drivers[i]; i++) {
-+			for (int j = 0;
-+			     per_driver_contexts[i].device_present &&
-+			     j < per_driver_contexts[i].len;
-+			     j++)
-+				ops[i].pmu_sample(per_driver_contexts[i].instances, j);
++	igt_assert_f(index == bmg_telemetry_max, "too many telemetry entries %d\n", index);
++	for (int i = 0; i < ARRAY_SIZE(telemetry_dir); i++)
++		igt_assert_f(strlen(telemetry_dir[i]), "missing telemetry[%d] directory\n", i);
++
++}
++
++static void find_pmt_file(const char *path, const char *file)
++{
++	struct dirent *ent;
++	bool found;
++	DIR *dir;
++
++	dir = opendir(path);
++	igt_assert_f(dir, "no intel_pmt directories found\n");
++
++	found = false;
++	while ((ent = readdir(dir)) != NULL)
++		if (strcmp(file, ent->d_name) == 0)
++			found = true;
++	closedir(dir);
++
++	igt_assert_f(found, "missing %s from %s\n", file, path);
++}
++
++static void open_pmt_file(const char *path, const char *file, int *fd, int flags)
++{
++	char file_path[PATH_MAX];
++
++	sprintf(file_path, "%s/%s", path, file);
++
++	*fd = open(file_path, flags);
++	igt_assert_f(*fd > -1, "failed to open %s\n", file_path);
++
++	/* TODO: match flags to file attributes */
++}
++
++/**
++ * SUBTEST: test_pmt_telemetry_files
++ * Description: validate the expected telemetry file(s)
++ * Test category: functionality test
++ *
++ */
++static void test_pmt_telemetry_files(int dev_fd)
++{
++	int i;
++
++	for (i = 0; i < BMG_TELEMETRY_CNT; i++) {
++		sprintf(work_path, "%s/%s/%s/%s", dev_path, telemetry_vsec_dir,
++			"intel_pmt", telemetry_dir[i]);
++		find_pmt_file(work_path, telem);
++	}
++}
++
++/**
++ * SUBTEST: test_pmt_crashlog_files
++ * Description: validate the expected crashlog files
++ * Test category: functionality test
++ *
++ */
++static void test_pmt_crashlog_files(int dev_fd)
++{
++	char buf[64] = {};
++	int ret;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
++		sprintf(work_path, "%s/%s/%s/%s", dev_path, crashlog_vsec_dir, "intel_pmt",
++			crashlog_dir[i]);
++
++		open_pmt_file(work_path, clear, &bmg_info[i].clear_fd, O_RDONLY);
++		open_pmt_file(work_path, consumed, &bmg_info[i].consumed_fd, O_RDWR);
++		open_pmt_file(work_path, crashlog, &bmg_info[i].crashlog_fd, O_RDONLY);
++		open_pmt_file(work_path, enable, &bmg_info[i].enable_fd, O_RDWR);
++		open_pmt_file(work_path, error, &bmg_info[i].error_fd, O_RDONLY);
++		open_pmt_file(work_path, dev_guid, &bmg_info[i].guid_fd, O_RDONLY);
++		open_pmt_file(work_path, rearm, &bmg_info[i].rearm_fd, O_RDWR);
++		open_pmt_file(work_path, trigger, &bmg_info[i].trigger_fd, O_RDWR);
++
++		ret = pread(bmg_info[i].guid_fd, buf, sizeof(buf), 0);
++		igt_assert_f(ret > 0, "failed to read guid for device %d\n", i);
++		bmg_info[i].guid = strtol(buf, NULL, 16);
++		igt_assert_f(bmg_info[i].guid > 0, "failed to set guid for device %d\n", i);
++	}
++}
++
++#define ENABLE_MSG "1\n"
++#define DISABLE_MSG "0\n"
++
++static bool send_msg(int fd, const char *msg, const char *file) {
++	size_t len = strlen(msg);
++	int ret;
++
++	errno = 0;
++	ret = pwrite(fd, msg, len, 0);
++	if (ret != len)
++		igt_info("%s failed: len: %ld vs %d  errno: %d\n", file, len, ret,
++			 errno);
++
++	return ret == len;
++}
++
++static bool verify_msg(int fd, const char *msg, const char *file) {
++	size_t len = strlen(msg);
++	char buf[32] = {};
++	int ret;
++
++	errno = 0;
++	ret = pread(fd, buf, sizeof(buf), 0);
++	if (ret != len)
++		igt_info("%s failed: len: %ld vs %d  errno: %d\n", file, len, ret, errno);
++
++	return ret == len && strcmp(buf, msg) == 0;
++}
++
++/**
++ * SUBTEST: test_pmt_crashlog_enable
++ * Description: Set enable enable/disable bit and verify usage
++ * Test category: functionality test
++ *
++ */
++static void test_pmt_crashlog_enable(int dev_fd)
++{
++	u_int32_t guid;
++	int fd;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
++		fd = bmg_info[i].enable_fd;
++		guid = bmg_info[i].guid;
++
++		/* force enable so we are in a known state */
++		igt_assert_f(send_msg(fd, ENABLE_MSG, enable), "0x%x: send enable\n", guid);
++		igt_assert_f(verify_msg(fd, ENABLE_MSG, enable), "0x%x: verify enable\n", guid);
++
++		/* disable */
++		igt_assert_f(send_msg(fd, DISABLE_MSG, enable), "0x%x: send disable\n", guid);
++		igt_assert_f(verify_msg(fd, DISABLE_MSG, enable), "0x%x: verify disable\n", guid);
++
++		/* re-enable so we can do more testing */
++		igt_assert_f(send_msg(fd, ENABLE_MSG, enable), "0x%x: re-enable\n", guid);
++		igt_assert_f(verify_msg(fd, ENABLE_MSG, enable), "0x%x: verify re-enable\n", guid);
++	}
++
++}
++
++/**
++ * SUBTEST: test_pmt_crashlog_clear
++ * Description:
++ *   Test the clear crashlog bit. After setting the crashlog data buffer should be
++ *   set to 0xdeadbeef.
++ *   "0" (DISABLE_MSG) is written to the trigger file to set the clear bit.  BMG does
++ *   writing to the clear file, but once the bit is set it cannot be cleared with a
++ *   reboot.  "0" to trigger is the "standard" usage, so test it.
++ *
++ * Test category: functionality test
++ *
++ */
++static void test_pmt_crashlog_clear(int dev_fd)
++{
++	char buf[64] = {};
++	u_int32_t guid;
++	int crashlog_fd;
++	int trigger_fd;
++	int clear_fd;
++	int *val;
++	int len;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
++		clear_fd = bmg_info[i].clear_fd;
++		crashlog_fd = bmg_info[i].crashlog_fd;
++		trigger_fd = bmg_info[i].trigger_fd;
++		guid = bmg_info[i].guid;
++
++		/* make sure the bit is clear */
++		igt_assert_f(verify_msg(clear_fd, DISABLE_MSG, clear), "0x%x: verify clear\n", guid);
++
++		/* set the clear bit (0 -> trigger)*/
++		igt_assert_f(send_msg(trigger_fd, DISABLE_MSG, trigger), "0x%x: send enable\n", guid);
++
++		/* make sure the bit is set.  sleep() to allow HW to set the bit */
++		sleep(1);
++		igt_assert_f(verify_msg(clear_fd, ENABLE_MSG, clear), "0x%x: clear set\n", guid);
++
++		len = read(crashlog_fd, buf, sizeof(buf));
++		igt_assert_f(len == sizeof(buf), "0x%x: failed to read crashlog data\n", guid);
++
++		/* wa punit issue for first crashlog (NOTE: this is fixed)*/
++		if (i == 0)
++			val = (int *) &buf[32];
++		else
++			val = (int *)buf;
++
++		igt_assert_f(*val == 0xdeadbeef, "0x%x: invalid clear data value: : 0x%x", guid, *val);
++	}
++
++}
++
++/**
++ * SUBTEST: test_pmt_crashlog_consumed
++ * Description:
++ *   After a crashlog has been "consumed" (read), setting this bit can be done.
++ *   Verify that it is set correctly.
++ * Test category: functionality test
++ *
++ */
++static void test_pmt_crashlog_consumed(int dev_fd)
++{
++	uint32_t guid;
++	int fd;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
++		fd = bmg_info[i].consumed_fd;
++		guid = bmg_info[i].guid;
++
++		/* check, set, verify */
++		igt_assert_f(verify_msg(fd, DISABLE_MSG, consumed), "0x%x: consumed clear\n", guid);
++		igt_assert_f(send_msg(fd, ENABLE_MSG, consumed), "0x%x: set consumed\n", guid);
++		/* sleep(1) to allow HW to set the bit */
++		sleep(1);
++		igt_assert_f(verify_msg(fd, ENABLE_MSG, consumed), "0x%x: verify consumed\n", guid);
++	}
++}
++
++/**
++ * SUBTEST: test_pmt_crashlog_error
++ * Description:
++ *    The error bit is set when a crashlog fails in HW.  It is read only so only
++ *    need to verify that it is "0".
++ * Test category: functionality test
++ *
++ */
++static void test_pmt_crashlog_error(int dev_fd)
++{
++	uint32_t guid;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
++		guid = bmg_info[i].guid;
++		igt_assert_f(verify_msg(bmg_info[i].error_fd, DISABLE_MSG, error), "0x%x: error clear\n", guid);
++	}
++}
++
++/**
++ * SUBTEST: test_pmt_crashlog_rearm
++ * Description:
++ *    The rearm bit is set at cold boot.  It cannot be reset unless are real crashlog
++ *    occurs (i.e. setting trigger will not change its value).  Verify that it is "1".
++ * Test category: functionality test
++ *
++ */
++static void test_pmt_crashlog_rearm(int dev_fd)
++{
++	uint32_t guid;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
++		guid = bmg_info[i].guid;
++		igt_assert_f(verify_msg(bmg_info[i].rearm_fd, ENABLE_MSG, rearm), "0x%x: rearm set\n", guid);
++	}
++}
++
++/**
++ * SUBTEST: test_pmt_crashlog_rearm_after_disable
++ * Description:
++ *    After a disable/enable sequence REARM will be set for PUNINT instaces and
++ *    clear for OOBMSM instances.
++ *    Verify that the bits are set as expected
++ *
++ * Test category: functionality test
++ *
++ */
++static void test_pmt_crashlog_rearm_after_disable(int dev_fd)
++{
++	uint32_t guid;
++	int i;
++
++	i = bmg_crashlog_punit;
++	guid = bmg_info[i].guid;
++	igt_assert_f(verify_msg(bmg_info[i].rearm_fd, ENABLE_MSG, rearm), "0x%x: rearm set\n", guid);
++
++	i = bmg_crashlog_oobmsm;
++	guid = bmg_info[i].guid;
++	igt_assert_f(verify_msg(bmg_info[i].rearm_fd, DISABLE_MSG, rearm), "0x%x: rearm set\n", guid);
++}
++
++/**
++ * SUBTEST: test_pmt_crashlog_trigger
++ * Description:
++ *    Set the manual trigger bit and make sure the data is not 0xdeadbeef
++ * Test category: functionality test
++ *
++ */
++static void test_pmt_crashlog_trigger(int dev_fd)
++{
++	char buf[64] = {};
++	u_int32_t *val;
++	int crashlog_fd;
++	int trigger_fd;
++	u_int32_t guid;
++	int len;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
++		crashlog_fd = bmg_info[i].crashlog_fd;
++		trigger_fd = bmg_info[i].trigger_fd;
++		guid = bmg_info[i].guid;
++
++		/* make sure the bit is clear */
++		igt_assert_f(verify_msg(trigger_fd, DISABLE_MSG, trigger), "0x%x: trigger clear\n",
++			     guid);
++		/* set the trigger bit (1 -> trigger)*/
++		igt_assert_f(send_msg(trigger_fd, ENABLE_MSG, trigger), "0x%x: set trigger\n", guid);
++
++		/* sleep to let the HW do its thing */
++		sleep(1);
++
++		/* make sure the bit is set */
++		igt_assert_f(verify_msg(trigger_fd, ENABLE_MSG, trigger), "0x%x: trigger not set\n",
++			     guid);
++
++		len = read(crashlog_fd, buf, sizeof(buf));
++		igt_assert_f(len == sizeof(buf), "0x%x: failed to read crashlog data\n", guid);
++
++		val = (u_int32_t *)buf;
++
++		igt_assert_f(*val != 0xdeadbeef, "0x%x: invalid trigger value: : 0x%x", guid, *val);
++	}
++}
++
++igt_main
++{
++	const struct {
++		const char *name;
++		void (*func)(int);
++	} funcs[] = {
++		/*
++		 * NOTE:
++		 *  o These tests are ordered.  Do not use them individualy unless you understand
++		 *    the underlying HW behavior
++		 *  o Testing MUST be done after a cold reset
++		 *  o Once crashlog is triggered the device needs a cold reset, and some of the
++		 *    tests cannot be done.
++		 *  Only change this order if you understand this feature.
++		 */
++		{ "pmt-directories", test_pmt_directories },
++		{ "pmt-telemetry-files", test_pmt_telemetry_files },
++		{ "pmt-crashlog-files", test_pmt_crashlog_files },
++		{ "pmt-crashlog-error", test_pmt_crashlog_error },
++		{ "pmt-crashlog-rearm", test_pmt_crashlog_rearm },
++		{ "pmt-crashlog-enable", test_pmt_crashlog_enable },
++		{ "pmt-crashlog-rearm_after_disable", test_pmt_crashlog_rearm_after_disable },
++		{ "pmt-crashlog-trigger", test_pmt_crashlog_trigger },
++		{ "pmt-crashlog-consumed", test_pmt_crashlog_consumed },
++		{ "pmt-crashlog-clear", test_pmt_crashlog_clear },
++		{ }
++	}, *f;
++	uint16_t dev_id;
++	int dev_fd;
++
++	igt_fixture
++		dev_fd = drm_open_driver(DRIVER_XE);
++
++	dev_id = intel_get_drm_devid(dev_fd);
++
++	if (IS_BATTLEMAGE(dev_id)) {
++		for (f = funcs; f->name; f++) {
++			igt_subtest_f("%s", f->name)
++				f->func(dev_fd);
 +		}
++	}
 +
- 		igt_drm_clients_sort(clients, client_cmp);
- 
- 		update_console_size(&con_w, &con_h);
- 		clrscr();
- 
-+		for (int i = 0; drivers[i]; i++) {
-+			for (int j = 0;
-+			     per_driver_contexts[i].device_present &&
-+			     j < per_driver_contexts[i].len;
-+			     j++) {
-+				lines = ops[i].print_engines(per_driver_contexts[i].instances, j,
-+							 lines, con_w, con_h);
-+			}
-+		}
-+
- 		if (!clients->num_clients) {
- 			const char *msg = " (No GPU clients yet. Start workload to see stats)";
- 
-@@ -464,7 +622,7 @@ int main(int argc, char **argv)
- 			       (int)(con_w - strlen(msg) - 1), msg);
- 		}
- 
--		igt_for_each_drm_client(clients, c, i) {
-+		igt_for_each_drm_client(clients, c, k) {
- 			assert(c->status != IGT_DRM_CLIENT_PROBE);
- 			if (c->status != IGT_DRM_CLIENT_ALIVE)
- 				break; /* Active clients are first in the array. */
-@@ -488,11 +646,11 @@ int main(int argc, char **argv)
- 	}
- 
- 	igt_drm_clients_free(clients);
-+	gputop_clean_up();
- 
- 	if (profiled_devices != NULL) {
- 		igt_devices_configure_profiling(profiled_devices, false);
- 		igt_devices_free_profiling(profiled_devices);
- 	}
--
- 	return 0;
- }
-diff --git a/tools/gputop/meson.build b/tools/gputop/meson.build
-new file mode 100644
-index 000000000..4766d8496
---- /dev/null
-+++ b/tools/gputop/meson.build
-@@ -0,0 +1,6 @@
-+gputop_src = [ 'gputop.c', 'utils.c', 'xe_gputop.c']
-+executable('gputop', sources : gputop_src,
-+           install : true,
-+           install_rpath : bindir_rpathdir,
-+           dependencies : [igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math],
-+	   install: true)
-diff --git a/tools/meson.build b/tools/meson.build
-index 8185ba160..99a732942 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -70,11 +70,6 @@ if libudev.found()
- 		   install : true)
- endif
- 
--executable('gputop', 'gputop.c',
--           install : true,
--           install_rpath : bindir_rpathdir,
--           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
--
- intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
- executable('intel_l3_parity', sources : intel_l3_parity_src,
- 	   dependencies : tool_deps,
-@@ -123,3 +118,4 @@ endif
- subdir('i915-perf')
- subdir('xe-perf')
- subdir('null_state_gen')
-+subdir('gputop')
++	igt_fixture
++		drm_close_driver(dev_fd);
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 9b87a0d24..4276e6967 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -315,6 +315,7 @@ intel_xe_progs = [
+ 	'xe_peer2peer',
+ 	'xe_pm',
+ 	'xe_pm_residency',
++	'xe_pmt',
+ 	'xe_pmu',
+ 	'xe_prime_self_import',
+ 	'xe_pxp',
 -- 
-2.34.1
+2.49.0
 
