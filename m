@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D1EC7EE31
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B6AC7EE39
 	for <igt-dev@archiver.kernel.org>; Fri, 27 Jun 2025 06:00:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC8B310E972;
-	Fri, 27 Jun 2025 06:00:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2696410E973;
+	Fri, 27 Jun 2025 06:00:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yt3kgdmy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y4ntWn/J";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F24010E971
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Jun 2025 06:00:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3DF310E971
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Jun 2025 06:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751004049; x=1782540049;
+ t=1751004051; x=1782540051;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=wOUfuRcBBqPR0fWkmRxYYxV9fQ95UV7jSrZ0IlvW7/E=;
- b=Yt3kgdmyRrc4I3m3cvSKcBmAgPTsgz4XP1HEv/NjgTF4mOQn0nH8nI1B
- +5petn7BOcQbUeLVCmKblPYcoafyHWeK6F1XZKzAsuUsmEJz3oO8+YL4f
- it6xTY/DDmdoEByTMrKt2krtFzGMrwk9VMqGBw7Va9ZJ0kPEKjks9sSHH
- NdtyZJHty/aoZBi/iccDMMnpNiSiOOwmmioIRo8vXIKHpbZflmum7zD83
- AjtiSv3qGSVRmoIqB3wvBeaFZ1A2l7NhX8z3OqPKrslnaoeY1WvonRfsR
- 4SjFzS2gOX8F2xWFjtZPOE9cnvuZRaCe/naILzT3FV5MOiO5rfElryo+I w==;
-X-CSE-ConnectionGUID: s/xeJuAGT+CRHtpqPzI1ZQ==
-X-CSE-MsgGUID: 10Vuohf+R5S3h32gLxoEew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="53278514"
-X-IronPort-AV: E=Sophos;i="6.16,269,1744095600"; d="scan'208";a="53278514"
+ bh=Ol4z/XJByEgZOLe4hPLDVBsWlaHm6G8oK7np/E9hXAI=;
+ b=Y4ntWn/J/x1ZQgLAuiZkbhgVg0UuoWVVvYao17+YocsNlwNAKEuw5+NX
+ En9yrBdztMqOj4EzCjMMQvwp96PjadqsBLEuFRQ38tQ95lVKar3U2pn4s
+ 4RRM/osRO8/5kSE0kTHraOe8xEbrpRVUKzGxymzSlWUn79Z0KKN0l+YZc
+ Sn+rxW/V0+fikIyXNfEoae9YHHIc4CwtEC8Hnc7XIEABicEpkh/FJarMK
+ jf0wuNeZjiB+CA4AIjA/zW0vuwBgFAqwtMu1ENIFYOxjMJNQxkKz4dYby
+ TJXLfFYjh3YHn5QLJzz9W0gxE7E8FFdOXky86MWAjqw4D2iQSOF3jkrmd Q==;
+X-CSE-ConnectionGUID: AH0JSVTzSJurKQbO0v9ACA==
+X-CSE-MsgGUID: CqCsmCaASeOQF8reCD/N9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="53278519"
+X-IronPort-AV: E=Sophos;i="6.16,269,1744095600"; d="scan'208";a="53278519"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2025 23:00:49 -0700
-X-CSE-ConnectionGUID: 5b6slD4wRJeHUxA09hz4Jw==
-X-CSE-MsgGUID: /TYh0FLBR2KgmQJKHadvPw==
+ 26 Jun 2025 23:00:50 -0700
+X-CSE-ConnectionGUID: WA/78rQWTdGeMlu0tNpdcQ==
+X-CSE-MsgGUID: QB1Q36aPS+yVD67lBDoyIw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,269,1744095600"; d="scan'208";a="152809504"
+X-IronPort-AV: E=Sophos;i="6.16,269,1744095600"; d="scan'208";a="152809519"
 Received: from linux-panther-lake-client-platform.iind.intel.com (HELO
  linux-Lunar-Lake-Client-Platform.iind.intel.com) ([10.190.238.55])
- by fmviesa006.fm.intel.com with ESMTP; 26 Jun 2025 23:00:48 -0700
+ by fmviesa006.fm.intel.com with ESMTP; 26 Jun 2025 23:00:49 -0700
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH v2 6/7] tests/intel/kms_psr: Enable the tests support
+Subject: [PATCH v2 7/7] tests/intel/kms_psr2_sf: Enable the tests support
  variations based on the WAs
-Date: Fri, 27 Jun 2025 11:34:45 +0530
-Message-Id: <20250627060446.29615-7-mohammed.thasleem@intel.com>
+Date: Fri, 27 Jun 2025 11:34:46 +0530
+Message-Id: <20250627060446.29615-8-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250627060446.29615-1-mohammed.thasleem@intel.com>
 References: <20250627060446.29615-1-mohammed.thasleem@intel.com>
@@ -74,26 +74,25 @@ v2: Updated function name with intel_is_fbc_disabled_by_wa. (Kamil)
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_psr.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/intel/kms_psr2_sf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index da947feb6..1192320a7 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -719,6 +719,12 @@ static void test_setup(data_t *data)
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index 68842b020..50582c42a 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -561,6 +561,11 @@ static void prepare(data_t *data)
+ 	igt_plane_set_position(primary, 0, 0);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
  
- 	igt_require_f(data->output,
- 		      "No available output found\n");
-+
 +	/* FBC disabled: Wa_16023588340 */
 +	igt_skip_on_f(data->op_fbc_mode == FBC_ENABLED &&
 +		      !intel_is_fbc_disabled_by_wa(data->drm_fd),
 +		      "WA has disabled FBC on BMG\n");
 +
- 	if (data->op_fbc_mode == FBC_ENABLED)
- 		igt_require_f(data->fbc_flag,
- 			      "Can't test FBC with PSR\n");
+ 	if (data->coexist_feature & FEATURE_DSC)
+ 		igt_require_f(igt_is_dsc_enabled(data->drm_fd, output->name),
+ 			      "DSC is not enabled\n");
 -- 
 2.34.1
 
