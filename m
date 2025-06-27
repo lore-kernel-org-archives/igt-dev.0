@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6701C77B7F
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Jun 2025 15:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85ED2C7EE2A
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Jun 2025 16:19:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C53510EA45;
-	Fri, 27 Jun 2025 15:09:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1AA1E10EA6A;
+	Fri, 27 Jun 2025 16:19:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nFeVdLva";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CxVgsU91";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6172710EA45
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Jun 2025 15:09:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 133A110EA6A
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Jun 2025 16:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751036983; x=1782572983;
+ t=1751041159; x=1782577159;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=nHEN+sgCHQUHHlWBSFfpU+qJOJdNEms61/GQhfzvg2w=;
- b=nFeVdLvazP8a8sKQ/j3IUwabx38NEJmYxFE9hsIEF3tGAx3l/CQ/xujR
- tjn81YtqABBT9zIRqZPHNT7iGh/oKXvkdig5t0WEbIglVER1Jt9/f7qcc
- Y+w0CyhBxIGWA+/FIvS6JtiXxgNqmn9eaFWbQDZIrNi57lRwXZ6nQNS1D
- Q/Kkulaykk+2I5nUvzmk2k+NVJHenTSMeZYDvZPMgZTGbSwbyLXKPkm5v
- Q3EwMZPN6Swu6H2CQXqLJs9yhK0KFgImElJP0lXQdcHEtKV/ZRfeusMmc
- 4pnmp3o7xd9NqFlbwTwjkUMTQURY8XnHFuwVTXkjPiNyNwAkyhiqjUPlQ Q==;
-X-CSE-ConnectionGUID: 5lLmG/C8TzmI3h0LSFdAvw==
-X-CSE-MsgGUID: qmUju/UfQ/K6ClgaJ2lW6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="57134659"
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="57134659"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2025 08:09:42 -0700
-X-CSE-ConnectionGUID: H5U+v6D9QE2Vvyi3j8viJQ==
-X-CSE-MsgGUID: ljOE2ueOR7mfL7/jKXWedQ==
+ bh=z7gmaIWJG/fHEfV3W+JNhdFrxsix0HD2WxjRpkSxZDQ=;
+ b=CxVgsU91OxNAitZ7hFLjiBG5x4A/aT5OtRT8K2+KvMUZ8IbTZoZNEjxO
+ vF8ziqoEO40OZkr1Ei4Ooh/qB7oNGS4O2WbjKn7hfGynyld1ym4WJ887y
+ zjyjyU51Lm07E7bdy9AIRGW6Lg8YoLgiSxCfOI3GyyfnfnfBmvRoud92w
+ srsKqdSy/76u9oylzh1HPOut4PqryXGhkwYjkesOkDNH5oXXcIZChy2NG
+ KYkXIIx0DG9UBZiyvJ6d7UH+Zl9QZFG91gKVnmuXXIVcM4zSMjl24QDiY
+ CYuLDjYzvLQgCpKzsp5wF659oWGdFOe9X9AqzuH0uSANbkCKm31L+dobo Q==;
+X-CSE-ConnectionGUID: 2vxUmAhQQWal3uRQn9DisQ==
+X-CSE-MsgGUID: o3n0mTuXTeyRG5NFwz1Pjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53300592"
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="53300592"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2025 09:19:19 -0700
+X-CSE-ConnectionGUID: Swx4l6RHQEGKkPlOzhbmvg==
+X-CSE-MsgGUID: hW/mE1upQ821rr+RHDdQuQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="176506411"
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; d="scan'208";a="183881708"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.245.97])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2025 08:09:40 -0700
-Date: Fri, 27 Jun 2025 17:09:38 +0200
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2025 09:19:17 -0700
+Date: Fri, 27 Jun 2025 18:19:15 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- swati2.sharma@intel.com
-Subject: Re: [i-g-t,v6,4/5] runner/settings: Add function to set
- IGT_DATA_PATH environment variable
-Message-ID: <aF60MnVBpNISz-pG@kamilkon-DESK1>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
+Subject: Re: [v4,2/7] lib/i915/intel_fbc: Add fbc supported check based on wa
+Message-ID: <aF7Eg90UHe2h857y@kamilkon-DESK1>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
- igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- swati2.sharma@intel.com
-References: <20250616210840.3335978-5-ramanaidu.naladala@intel.com>
+ Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
+References: <20250627060446.29615-3-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250616210840.3335978-5-ramanaidu.naladala@intel.com>
+In-Reply-To: <20250627060446.29615-3-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,117 +71,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 2025-06-17 at 02:38:39 +0530, Naladala Ramanaidu wrote:
-> Add environment variable to obtain absolute path for PNG files
-> at runtime.
+On 2025-06-27 at 11:34:41 +0530, Mohammed Thasleem wrote:
+> This will check the fbc supported based on given workarunds.
 > 
-> v2: Fix review comments. (Kamil)
-> v3: Fix review comments. (kamil)
-> v4: Fix review comments. (kamil)
-> v5: Make code simpler.	 (Kamil)
-> v6: Update env only if not exists.    (Kamil)
+> v2: Add intel_wa header file.
+> v3: Add xe check. (Kamil)
+> v4: Updated function name with intel_is_fbc_disabled_by_wa. (Kamil)
+
+Please see comments below.
+
 > 
-> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-
-Looks good, I am still not convinced we need it here, maybe
-it will be better to have it at load data file function?
-
-We can improve that later if there will be any need to do it,
-so I will not block it. See one nit below.
-
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->  runner/settings.c | 36 ++++++++++++++++++++++++++++++++++++
->  runner/settings.h |  1 +
->  2 files changed, 37 insertions(+)
+>  lib/i915/intel_fbc.c | 25 +++++++++++++++++++++++++
+>  lib/i915/intel_fbc.h |  1 +
+>  2 files changed, 26 insertions(+)
 > 
-> diff --git a/runner/settings.c b/runner/settings.c
-> index b151218cc..28b031a29 100644
-> --- a/runner/settings.c
-> +++ b/runner/settings.c
-> @@ -90,6 +90,8 @@ static const char settings_filename[] = "metadata.txt";
->  static const char env_filename[] = "environment.txt";
->  static const char hooks_filename[] = "hooks.txt";
+> diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
+> index a8ded0a59..722899432 100644
+> --- a/lib/i915/intel_fbc.c
+> +++ b/lib/i915/intel_fbc.c
+> @@ -9,6 +9,7 @@
+>  #include "igt_psr.h"
 >  
-> +static bool igt_data_path_set_by_runner;
-> +
->  static bool set_log_level(struct settings* settings, const char *level)
->  {
->  	typeof(*log_levels) *it;
-> @@ -612,6 +614,31 @@ char *absolute_path(const char *path)
->  	return result;
+>  #include "intel_fbc.h"
+> +#include "intel_wa.h"
+>  
+>  #define FBC_STATUS_BUF_LEN 128
+>  
+> @@ -200,3 +201,27 @@ bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode)
+>  
+>  	return fbc_supported;
 >  }
->  
-> +int set_tests_datadir(void)
+> +
+> +/**
+> + * intel_is_fbc_disabled_by_wa
+> + *
+> + * @fd: fd of the device
+> + *
+> + * This function pass the WA to igt_has_intel_wa to check WA on available GTs
 
-Why not static? It is not used anywhere outside this settings.c
-so it could just be:
+imho this should be:
 
-static int set_tests_datadir(void)
+ * This function check if WA is present on some GT, which in turn make
+ * FBC not possible
 
+> + *
+> + * Returns:
+> + * true if wa is not equal to 1, and false if wa is equal to 1
+
+imho this should be reversed, also each return value in its own line,
+so better:
+
+ * true:  if WA is applied and FBC id disabled
+ * false: otherwise
+
+> + * true if wa is not equal to 1, and false if wa is equal to 1
+
+Also, please do not translate C source code into english.
+
+> + */
+> +bool intel_is_fbc_disabled_by_wa(int fd)
 > +{
-> +	const char *datapath = "../share/igt-gpu-tools";
-> +	char *abpath;
+> +	int wa;
+> +	const char *wa_fbc_disabled = "16023588340";
 > +
-> +	if (getenv("IGT_DATA_PATH"))
-> +		return 0;
+> +	if (!is_xe_device(fd))
+> +		return true;
+
+Should be:
+
+		return false;
+
 > +
-> +	abpath = absolute_path(datapath);
-> +	if (!abpath) {
-> +		fprintf(stderr, "Error: Failed to get absolute path for '%s'\n",
-> +			datapath);
-> +		return -EINVAL;
-> +	}
+> +	wa = igt_has_intel_wa(fd, wa_fbc_disabled);
+> +	igt_assert_f(wa >= 0, "WA path not found on GTs\n");
+
+Do you really need this assert here?
+
 > +
-> +	if (setenv("IGT_DATA_PATH", abpath, 0) == 0) {
-> +		igt_data_path_set_by_runner = true;
-> +		return 0;
-> +	}
-> +
-> +	return -EINVAL;
+> +	return wa != 1;
+
+Should be:
+
+	return wa == 1;
+
+Update also caller sites into:
+
+igt_skip_on_f(data.feature == FEATURE_FBC && intel_is_fbc_disabled_by_wa(data.drm_fd),
+	      "WA has disabled FBC on BMG\n");
+
+Also align to first char after '('.
+
+Regards,
+Kamil
+
 > +}
-> +
-> +
-> +
->  static char *bin_path(char *fname)
->  {
->  	char *path, *p;
-> @@ -654,6 +681,10 @@ void init_settings(struct settings *settings)
->  {
->  	memset(settings, 0, sizeof(*settings));
->  	IGT_INIT_LIST_HEAD(&settings->env_vars);
-> +
-> +	if (set_tests_datadir())
-> +		fprintf(stderr, "Data dir path not set\n");
-> +
->  	igt_vec_init(&settings->hook_strs, sizeof(char *));
->  }
->  
-> @@ -671,6 +702,11 @@ void clear_settings(struct settings *settings)
->  	free_hook_strs(&settings->hook_strs);
->  	free_array_deep((void **)settings->cmdline.argv, settings->cmdline.argc);
->  
-> +	if (igt_data_path_set_by_runner) {
-> +		unsetenv("IGT_DATA_PATH");
-> +		igt_data_path_set_by_runner = false;
-> +	}
-> +
->  	init_settings(settings);
->  }
->  
-> diff --git a/runner/settings.h b/runner/settings.h
-> index 6c58c3282..e8e87d3a5 100644
-> --- a/runner/settings.h
-> +++ b/runner/settings.h
-> @@ -160,5 +160,6 @@ bool serialize_settings(struct settings *settings);
->  
->  bool read_settings_from_file(struct settings *settings, FILE* f);
->  bool read_settings_from_dir(struct settings *settings, int dirfd);
-> +int set_tests_datadir(void);
-
-This is only used at setting.c so no need for exporting this,
-it could be fixed at merge time, with this fixed:
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+> diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
+> index fcafe6049..fe9edcbc3 100644
+> --- a/lib/i915/intel_fbc.h
+> +++ b/lib/i915/intel_fbc.h
+> @@ -19,5 +19,6 @@ bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level);
+>  void intel_fbc_max_plane_size(int fd, uint32_t *width, uint32_t *height);
+>  bool intel_fbc_plane_size_supported(int device, uint32_t width, uint32_t height);
+>  bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode);
+> +bool intel_is_fbc_disabled_by_wa(int fd);
 >  
 >  #endif
