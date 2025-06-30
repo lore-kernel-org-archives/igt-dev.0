@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 166D8C83029
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 16:38:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A238C83029
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 16:39:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C2D010E057;
-	Mon, 30 Jun 2025 16:38:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1454910E11D;
+	Mon, 30 Jun 2025 16:39:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cOLWQIY+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fzaaV3hO";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DF8D10E057
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 16:38:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4A5D10E11D
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 16:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751301484; x=1782837484;
+ t=1751301540; x=1782837540;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=LmDNyui4IzfXxCnGsA6SesTloFiKY7qHh5yhj1khuEw=;
- b=cOLWQIY+Dir7vGqPR2sadpChn/alEpTJCVCHt4GVKkegJzpp6gvAR5N7
- u14XbVMDH8N8DJCrgc4/FlxPV3IUwVeVJ5mBKLOS4HxzoIxfyns0ZkMp9
- xJa8ej8BcILW77E3jxEcxX6f0HOi1xF3mm06/u0xBX4D7NdgniwGcC18T
- DVyFKlke9+o/J0TCmtj6jVPwOqXe7yBFYiTWhH1lWHuhCVdRSyWtbb/F3
- Se49o/jP4coilG4yZHcocueHnGJ54Ko3PUU/hE15km+kY4Wd9abYw3vHg
- k1RgiHBRyEAe9cqalJz0PnLOYWqdjDZ3hz+SDWR3H8pojgtKKXbq7c0ev g==;
-X-CSE-ConnectionGUID: jOQT7VpCRmmmm+JFOMLqxg==
-X-CSE-MsgGUID: IqUltlzvR2CXrWlWQH/AOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="53472493"
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="53472493"
+ mime-version:in-reply-to;
+ bh=NryewXPab6MqS6MhIrk98nfjR5zvGu0Pk2+9eF4OIOI=;
+ b=fzaaV3hOh0ACwnLyuCfoYV5YnK+qsLRI+Tiw1RqRWtcEN7xvK03yxOpI
+ b1lYYBjo5V0B5M0gAeFXL/B4LDbiZHbBgMpfaXbjnIq1Wh1W5f4aOhRfF
+ 7qci3HxPx7DmYerddvX2CAnwy1aPAgo+eGb7Wx/RPDta63dku1hvYnp+r
+ Yv9KFl0WWphNCwoVCZA2lIIzCGVe9B2UOAcN4Own5Zi4HjBbFTGi+j5OC
+ y5DhEHKPuX2UkZOKCEkIvDcJmDAtyTn6fymGsvJfB5isuLHT7MpZvtlQr
+ 6qFTYFm1oLiWDTxYZKoMdgXtktws3RzToyJjrKXgt1XxsKEMECuwmI0CD w==;
+X-CSE-ConnectionGUID: ZjnJgXhHR3Opbd9hxI7vOw==
+X-CSE-MsgGUID: EvlPG45hREC+NARTQ38HUQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="53472601"
+X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="53472601"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2025 09:38:03 -0700
-X-CSE-ConnectionGUID: ZVLst5MeSVaQW0FgBOcWKg==
-X-CSE-MsgGUID: k/6M2mLASvm64FDokjWsyg==
+ 30 Jun 2025 09:38:59 -0700
+X-CSE-ConnectionGUID: cbMy5Fe3T8yprhtntUMKBg==
+X-CSE-MsgGUID: SKGh6EauSFWeNimCmTwctw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="153143387"
+X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="153143400"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 09:38:02 -0700
-Date: Mon, 30 Jun 2025 18:37:47 +0200
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 09:38:58 -0700
+Date: Mon, 30 Jun 2025 18:38:56 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH v9 1/7] lib/intel_wa: Add check for workaround in GTs
-Message-ID: <20250630163747.mve22irvr3pgvvjo@kamilkon-DESK.igk.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
+Subject: Re: [PATCH v5 2/7] lib/i915/intel_fbc: Add fbc supported check based
+ on wa
+Message-ID: <20250630163856.btzqsjkluqagean5@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mohammed Thasleem <mohammed.thasleem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20250630134145.836-2-mohammed.thasleem@intel.com>
- <20250630151950.330502-1-mohammed.thasleem@intel.com>
+ igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
+References: <20250630134145.836-1-mohammed.thasleem@intel.com>
+ <20250630134145.836-3-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250630151950.330502-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250630134145.836-3-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,127 +73,78 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Mohammed,
-On 2025-06-30 at 20:49:50 +0530, Mohammed Thasleem wrote:
-> This function check the given workaround on available GTs.
+On 2025-06-30 at 19:11:40 +0530, Mohammed Thasleem wrote:
+> This will check the fbc supported based on given workarunds.
 > 
-> v2: Add discription for return. (Kamil)
->     Rename function to igt_has_intel_wa. (Kamil)
->     Move lib changes to lib/igt_debugfs. (Kamil)
->     Dump the whole wa sysfs file and then search for the wa. (Vinod)
->     Use return true/false directly instead assigning value. (Vinod)
-> v3: Updated return type discription and debugfs_fd failure check. (Kamil)
->     Return 0 or 1 instead of true or false. (Kamil)
-> v4: Add check for xe device before execution. (Vinod)
-> v5: Move igt_has_intel_wa to lib/intel_wa. (Kamil)
-> v6: Remove unused header and move xe check to intel_is_fbc_supported. (Kamil)
-> v7: Update the title and move header from .h to .c file. (Kamil)
-> v8: Close debugfs_fd before exit. (Kamil)
-> v9: Remove null ckeck and single line coment for SPDX license. (Kamil)
-
-imho 'fix SPDX line'
-This could be fixed at merge, no need for resend,
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+> v2: Add intel_wa header file.
+> v3: Add xe check. (Kamil)
+> v4: Updated function name with intel_is_fbc_disabled_by_wa. (Kamil)
+> v5: Updated function discription and return logic. (Kamil)
 > 
 > Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->  lib/intel_wa.c  | 54 +++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/intel_wa.h  | 11 ++++++++++
->  lib/meson.build |  1 +
->  3 files changed, 66 insertions(+)
->  create mode 100644 lib/intel_wa.c
->  create mode 100644 lib/intel_wa.h
+>  lib/i915/intel_fbc.c | 27 +++++++++++++++++++++++++++
+>  lib/i915/intel_fbc.h |  1 +
+>  2 files changed, 28 insertions(+)
 > 
-> diff --git a/lib/intel_wa.c b/lib/intel_wa.c
-> new file mode 100644
-> index 000000000..685df106f
-> --- /dev/null
-> +++ b/lib/intel_wa.c
-> @@ -0,0 +1,54 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2025 Intel Corporation
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <stdint.h>
-> +#include <stdio.h>
-> +
-> +#include "igt_debugfs.h"
-> +#include "igt_sysfs.h"
+> diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
+> index a8ded0a59..a1a6de90e 100644
+> --- a/lib/i915/intel_fbc.c
+> +++ b/lib/i915/intel_fbc.c
+> @@ -9,6 +9,7 @@
+>  #include "igt_psr.h"
+>  
+>  #include "intel_fbc.h"
 > +#include "intel_wa.h"
-> +#include "xe/xe_query.h"
+>  
+>  #define FBC_STATUS_BUF_LEN 128
+>  
+> @@ -200,3 +201,29 @@ bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode)
+>  
+>  	return fbc_supported;
+>  }
 > +
 > +/**
-> + * igt_has_intel_wa:
-> + * @drm_fd:	A drm file descriptor
-> + * @check_wa:	Workaround to be checked
+> + * intel_is_fbc_disabled_by_wa
 > + *
-> + * Returns:	0 if no WA, 1 if WA present, -1 on error
+> + * @fd: fd of the device
+> + *
+> + * This function check if WA is present on some GT, which in turn make
+> + * FBC not possible
+> + *
+> + * Returns:
+> + * true: if WA is applied and FBC id disabled
+> + * false: otherwise
 > + */
-> +int igt_has_intel_wa(int drm_fd, const char *check_wa)
+> +bool intel_is_fbc_disabled_by_wa(int fd)
 > +{
-> +	int ret = 0;
-> +	int debugfs_fd;
-> +	unsigned int xe;
-> +	char name[256];
-> +	char *debugfs_dump, *has_wa;
+> +	int wa;
+> +	const char *wa_fbc_disabled = "16023588340";
 > +
-> +	debugfs_fd = igt_debugfs_dir(drm_fd);
-> +	if (debugfs_fd == -1)
-> +		return -1;
+> +	if (!is_xe_device(fd))
+> +		return false;
 > +
-> +	xe_for_each_gt(drm_fd, xe) {
-> +		sprintf(name, "gt%d/workarounds", xe);
-> +		if (!igt_debugfs_exists(drm_fd, name, O_RDONLY)) {
-> +			ret = -1;
-> +			break;
-> +		}
+> +	wa = igt_has_intel_wa(fd, wa_fbc_disabled);
+> +	igt_assert_f(wa >= 0, "WA path not found on GTs\n");
 > +
-> +		debugfs_dump = igt_sysfs_get(debugfs_fd, name);
-> +		if (debugfs_dump) {
-> +			has_wa = strstr(debugfs_dump, check_wa);
-> +			free(debugfs_dump);
-> +			if (has_wa) {
-> +				ret = 1;
-> +				break;
-> +			}
-> +		}
-> +	}
-> +
-> +	close(debugfs_fd);
-> +	return ret;
+> +	return wa == 1;
 > +}
-> diff --git a/lib/intel_wa.h b/lib/intel_wa.h
-> new file mode 100644
-> index 000000000..765a5948e
-> --- /dev/null
-> +++ b/lib/intel_wa.h
-> @@ -0,0 +1,11 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2025 Intel Corporation
-> + */
-> +
-> +#ifndef __INTEL_WA_H__
-> +#define __INTEL_WA_H__
-> +
-> +int igt_has_intel_wa(int drm_fd, const char *check_wa);
-> +
-> +#endif /* __INTEL_WA_H__ */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 5e4247aad..ef397fe45 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -88,6 +88,7 @@ lib_sources = [
->  	'intel_aux_pgtable.c',
->  	'intel_reg_map.c',
->  	'intel_iosf.c',
-> +        'intel_wa.c',
->  	'igt_kms.c',
->  	'igt_fb.c',
->  	'igt_core.c',
+
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
+> index fcafe6049..fe9edcbc3 100644
+> --- a/lib/i915/intel_fbc.h
+> +++ b/lib/i915/intel_fbc.h
+> @@ -19,5 +19,6 @@ bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level);
+>  void intel_fbc_max_plane_size(int fd, uint32_t *width, uint32_t *height);
+>  bool intel_fbc_plane_size_supported(int device, uint32_t width, uint32_t height);
+>  bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode);
+> +bool intel_is_fbc_disabled_by_wa(int fd);
+>  
+>  #endif
 > -- 
 > 2.25.1
 > 
