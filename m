@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA69BC83033
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 20:47:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 646F0C83030
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 21:11:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 70E1010E00D;
-	Mon, 30 Jun 2025 20:47:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 19FC810E163;
+	Mon, 30 Jun 2025 21:11:58 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EC5B10E00D;
- Mon, 30 Jun 2025 20:47:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 35A4010E163;
+ Mon, 30 Jun 2025 21:11:57 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8679059310123848031=="
+ boundary="===============2412087985630836034=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2Cv1=2C1/1=5D_tests/intel/xe=5Feudebug=3A_move_multigpu_requir?=
- =?utf-8?q?ement_to_test_block?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fplane=3A_Add_te?=
+ =?utf-8?q?st_to_validate_odd_panning_=28rev7=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sokolowski, Jan" <jan.sokolowski@intel.com>
+To: "Garg, Nemesa" <nemesa.garg@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 30 Jun 2025 20:47:25 -0000
-Message-ID: <175131644511.121990.2477242445262813886@1538d3639d33>
+Date: Mon, 30 Jun 2025 21:11:57 -0000
+Message-ID: <175131791721.121988.15654964325653882503@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250627074133.2898426-1-jan.sokolowski@intel.com>
-In-Reply-To: <20250627074133.2898426-1-jan.sokolowski@intel.com>
+References: <20250509124823.191392-1-nemesa.garg@intel.com>
+In-Reply-To: <20250509124823.191392-1-nemesa.garg@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,24 +41,68 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8679059310123848031==
+--===============2412087985630836034==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [i-g-t,v1,1/1] tests/intel/xe_eudebug: move multigpu requirement to test block
-URL   : https://patchwork.freedesktop.org/series/150855/
-State : failure
+Series: tests/kms_plane: Add test to validate odd panning (rev7)
+URL   : https://patchwork.freedesktop.org/series/145772/
+State : success
 
 == Summary ==
 
-Series 150855 revision 1 was fully merged or fully failed: no git log
+CI Bug Log - changes from XEIGT_8432_BAT -> XEIGTPW_13365_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13365_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8432/bat-adlp-7/igt@kms_flip@basic-flip-vs-dpms.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13365/bat-adlp-7/igt@kms_flip@basic-flip-vs-dpms.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
 
 
+Build changes
+-------------
 
---===============8679059310123848031==
+  * IGT: IGT_8432 -> IGTPW_13365
+
+  IGTPW_13365: 13365
+  IGT_8432: 4871829d8b7117553eb2dc1bdb9a0d18de428a98 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3325-d9007d535ea106181346f9988c97aa73a9cdfb86: d9007d535ea106181346f9988c97aa73a9cdfb86
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13365/index.html
+
+--===============2412087985630836034==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -79,16 +122,40 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v1,1/1] tests/intel/xe_eudebug: move multigpu requirement to test block</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150855/">https://patchwork.freedesktop.org/series/150855/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_plane: Add test to validate odd panning (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/145772/">https://patchwork.freedesktop.org/series/145772/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13365/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13365/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 150855 revision 1 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from XEIGT_8432_BAT -&gt; XEIGTPW_13365_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13365_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-dpms:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8432/bat-adlp-7/igt@kms_flip@basic-flip-vs-dpms.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13365/bat-adlp-7/igt@kms_flip@basic-flip-vs-dpms.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8432 -&gt; IGTPW_13365</li>
+</ul>
+<p>IGTPW_13365: 13365<br />
+  IGT_8432: 4871829d8b7117553eb2dc1bdb9a0d18de428a98 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3325-d9007d535ea106181346f9988c97aa73a9cdfb86: d9007d535ea106181346f9988c97aa73a9cdfb86</p>
 
 </body>
 </html>
 
---===============8679059310123848031==--
+--===============2412087985630836034==--
