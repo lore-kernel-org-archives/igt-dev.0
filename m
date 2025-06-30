@@ -4,102 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC85FC83029
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 18:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E80DBC8302D
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 18:09:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 69ED310E4AD;
-	Mon, 30 Jun 2025 18:09:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A588A10E4A8;
+	Mon, 30 Jun 2025 18:09:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.b="KnI2gXIU";
+	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.b="XJkE7tew";
 	dkim-atps=neutral
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
  [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15F7210E4A8
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A19B10E4A8
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:39 +0000 (UTC)
 Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55UFB3Se008172
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:37 GMT
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55UFB3Sf008172
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=j2IrTVpPHGk
- 3cmgedXeFGuPk4Zt45xwZrIney2J2rCU=; b=KnI2gXIUmv9NXog4BGOFJqjhovW
- xTTQJz96andPBFSagpXYM3T6QZKhykQG55a8u5rLJKyoZjRUIVz7NrzlarK+fjHr
- 4oZHd2kSUZSL94/wzhy1rI6+PygsOORXpmheU3EEca9UsH9zQv7J9PmVTUMbFhC/
- ixgR3jQB81H2fFTSnH7VJ45m2EVsjWz6LhnUThWFwFnqBYpowZjoH7OkhX2X0GNn
- z06tlHWOIboYF8YvfYy8s8W2vsrAjJ55ywroHgco4CSdXPhKM989hKD0dy420RL1
- Y/2v9Qdm7pYFP1YJXAjO3r+7hX0OwIo4iHZnf1C2FfyfzIvcqa8tM2Uc39A==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47kkfmte16-1
+ :mime-version:references:subject:to; s=qcppdkim1; bh=IJWy2YzEJyY
+ s9EZMMf+CwoyQREsppkk7QGGbGrM/qFc=; b=XJkE7tewXXRhXyHfiZGAANv3t4J
+ nadCBC5F5QDRXMcV29Ye0Vvxc2sTsiAwJfl0l/kFPGdjcd/FbZT6RQywEHVj3jHK
+ FIt/98/j81qsf9p74xmtv5aaUNxZGvbK8vKiOhfNVGBJMha9ajknn3PJMR5G5G5z
+ FHrEaK2YwI16e48YrIdu3pTwDnStMax7Y7ehl1/P/Um2J+4rcZjfmEAqs8eL/83w
+ rtKKd3x8s3gjXWNl3oK5+LhaR7KuKP+oTF0ZV9ZnDvuERXXgCCGnoteaszz4o/1Y
+ HouTmZ0BGgjR/wqfUg/nLud53unck7cpVLt3KY8QOpolXHb973rOi1OryTA==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47kkfmte17-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:37 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-7398d70abbfso7210422b3a.2
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 11:09:36 -0700 (PDT)
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:38 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-235089528a0so46051505ad.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 11:09:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751306976; x=1751911776;
+ d=1e100.net; s=20230601; t=1751306977; x=1751911777;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j2IrTVpPHGk3cmgedXeFGuPk4Zt45xwZrIney2J2rCU=;
- b=aQpLoFfRHfow1FOL05xttKF7CrJ+3BDlO0d4o80Hh8EAcXbd0GUlWWMbPWRsgjhDbK
- q+1iCl+eDJp0g1PFJBsVxx9ps8SDX/dOlK32CZlt8blf1SXIGZMApTe7mudmpRetXI3W
- Y6rD8DSGm3k8KxYd9YHHsOP+M7Jzvsz30xzJ/U2Kx8/ue8nf1xuOj0EA4sWvoNcpT/O5
- Z3nognNyN3+APIe9Y8Vh+pXqGeMx1Yq6bC6T+FJRzhCxSF0mj6n/9/ahvbVP1ruatJt8
- xWCuOSxgUHWTq3s1h0FRJdk4A+TIf2lgmFG0fcxZElvmNwtdDeMuah1shVia27EI+vVI
- MZQQ==
-X-Gm-Message-State: AOJu0Yyoyow/Hp8Q8YaGGwIXsvuC8TvreFoyrlDkYV3fTvYswmLWNvtr
- yLSsLrmLgiVWH7WFU375VFJ7VtsnxUjImaUx/TWhbPYTvj65wZZeP1z5Ojr0pBnYUATjmS/JFXp
- 76QjFdc8N9LLC9YclY+tIQlXnrhGBrLVFS2mzL0Kv74GonqxBaDOBcyRvtK8yoYD/ko7ZStCcO2
- LX
-X-Gm-Gg: ASbGncvG06iCgItIKMqGtzrkJzJLJivCkJQV52khbUQn0uyRDfHezkDBu2cNIHqEusd
- HF8QUQ0GANPMEWSnsm3KSYaRK39AfB6fXZbEjc2ztDo4p3r2qc9VF9YKdrdmgl3RC9mjs1YGz+E
- oRCUIwjvQmMH1TNG6Xd3/inBcVlRxglzQ7rFjqAs5lcIMYVZA69ot1bgT23S+XhhqNUsjUJJ+d9
- YHtlOyfYHqvGvri79F3ZYwAWtHPJZZV/KHn2QQvbXPwNbKVd29Bo+Z14ZRemeOs2q7ECn59H+h1
- tVNCKs0Fv2/BLMGpM+gv5iBTYjqYw7Y1Yg==
-X-Received: by 2002:a05:6a00:2e09:b0:748:fcfa:8be2 with SMTP id
- d2e1a72fcca58-74af6e6332cmr17721021b3a.2.1751306975726; 
- Mon, 30 Jun 2025 11:09:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEJ3O8y2ECboE6xOGFXRtAZOY7C0DZ9frX12JQWBPnD4Jg6ZmDzwgTEEb4oZkG3IoXABb/yHQ==
-X-Received: by 2002:a05:6a00:2e09:b0:748:fcfa:8be2 with SMTP id
- d2e1a72fcca58-74af6e6332cmr17720994b3a.2.1751306975323; 
- Mon, 30 Jun 2025 11:09:35 -0700 (PDT)
+ bh=IJWy2YzEJyYs9EZMMf+CwoyQREsppkk7QGGbGrM/qFc=;
+ b=Agv5RdrU32JQPqMVa91tKdfDApNXdmBkSuIFnsigUkaCvSgpadReuvonPhy2y0FVav
+ hCOfL/gV95SpNA0+LmSeRErihCtPaDPbqGtAKUaGYKSNDTcMrjymGOvluAoyy1d5ua1l
+ k4wp6tCR3V1kgS96Tgv93xhba1T37mKe72BL7Zxc+ZbTZhziMLtQjLJzS9TVfDnpib5m
+ ThznVrGVhdx9/3D768I15Rese0r8yjbyrqBKvlRGzkhpezlIxHK6/7mZtOyviBEGUyzX
+ g1XL8fYvF5ynIRBl61putFZSnHawMVxa+Zj3mhhvyCrTiVG8zMRut+h/BLW+GqR04or/
+ WGDA==
+X-Gm-Message-State: AOJu0Yxi8QTGGQzcyG2xjuBEZ80s0rA834dhcecaHWMeI9DQblXHrdFl
+ DP60SjD6breYHEvM0/jsEBsXYkEwUqAP/wWy8vvNK7IpoxGIgUyj8gQsgZZ/+OB2J6bZs8skTqa
+ 1teufaB/DStQfB/NdUlBdEM/JO2vK2FEPQgVZNvdVs0KMZCIoO2C+hI3pd/itiZv2v2hM1D+LKu
+ iA
+X-Gm-Gg: ASbGncuJR1PXaG7Dq0WKRPaxfUgOhHPwxNVJ1A2LMfKOgXOeEjXLQABlyFzV/VDdEJq
+ DFJZl4Vjz9MkG7uCRCVSxJtrIgWkFp78k/b13uCm2Go5gnolCL+LfpR6DBVTwOyajfYmaZefQLr
+ ncngtzQ8IqTe8X3cxMzFq1gt/FOUhqoubS1nPg9Ek8cDSAeXwfjlTHs/WPnCXpBlL1qj1ap1mMU
+ b1KBCED+C0BNYziN2c+SyGC+PP+hF5jqUthoho/W+6JZu0JrmbYg+NCuDSigjKpQxxbU535A4aG
+ 9YQA9fCvHTCdZyDxkfVzUYgxd2uUnfEyxw==
+X-Received: by 2002:a17:903:1745:b0:236:10b1:50cb with SMTP id
+ d9443c01a7336-23b35545a17mr7446105ad.26.1751306976891; 
+ Mon, 30 Jun 2025 11:09:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJ+Qty+kDBWOA1YlE9PCYg9YlN5CgMFJljWFv1gfYcNh/SM7Zo85y3IlX9e/eOEDwLKBfETA==
+X-Received: by 2002:a17:903:1745:b0:236:10b1:50cb with SMTP id
+ d9443c01a7336-23b35545a17mr7445875ad.26.1751306976502; 
+ Mon, 30 Jun 2025 11:09:36 -0700 (PDT)
 Received: from localhost ([2601:1c0:5000:d5c:5b3e:de60:4fda:e7b1])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74af541e64asm9844647b3a.63.2025.06.30.11.09.34
+ d9443c01a7336-23acb39b9fdsm91560265ad.108.2025.06.30.11.09.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 30 Jun 2025 11:09:35 -0700 (PDT)
 From: Rob Clark <robin.clark@oss.qualcomm.com>
 To: igt-dev@lists.freedesktop.org
 Cc: linux-arm-msm@vger.kernel.org, Rob Clark <robdclark@chromium.org>,
  Rob Clark <rob.clark@oss.qualcomm.com>
-Subject: [PATCH igt 2/9] drm/recovery: add iova-fault-stress test
-Date: Mon, 30 Jun 2025 11:08:56 -0700
-Message-ID: <20250630180903.77990-3-robin.clark@oss.qualcomm.com>
+Subject: [PATCH igt 3/9] msm/mapping: update for sparse
+Date: Mon, 30 Jun 2025 11:08:57 -0700
+Message-ID: <20250630180903.77990-4-robin.clark@oss.qualcomm.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250630180903.77990-1-robin.clark@oss.qualcomm.com>
 References: <20250630180903.77990-1-robin.clark@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: 1Vy07KqQJMbCqVqrEhiuXVK0Z297Wrya
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDE0NyBTYWx0ZWRfXxAoscEwn2yfe
- VYqSst5fQlKsDomiKnb6lvTumGo6FuIavee+L1GBf8l8plJCUQxAb9ujLATuDF7sjKiswSQYZX2
- Fh2Ck0FuVC1Z+eVCsJL6IaoD56aoihGiulQY/8GL/xeKGdbFiFztk9W+bgLZq+YdcPabLn8ju0C
- wJH9ZFnXF/I350NTPKROsMycbS+6KIb5syMn3EIl3wZFuaB3ZudK+qGCJv5mXwJIjey8Py5n2Vx
- Q58SClATWSxYICnJuOs1o3Ct7GUeNDftxHmZZa/Ajm8Blv6z7w/3yadIYbJI0cnQTQQ4EGDlQKX
- /ciXYIchm3TId4fO8DwazaNaQiF/0TPPyG1E3JXQjj/h+iqGAbz2ozac3AErSbnw1N2zRk7qKPH
- QiTKX/nAs32MINGXUNAtTMQpR/NnLyQFhlUG5emfTIwMZv7QGWzRYu/CtcEs4Q7qMOtdAdby
-X-Authority-Analysis: v=2.4 cv=L9sdQ/T8 c=1 sm=1 tr=0 ts=6862d2e1 cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=xqWC_Br6kY4A:10 a=6IFa9wvqVegA:10
- a=cm27Pg_UAAAA:8 a=EUspDBNiAAAA:8 a=636ExQzhtIBJ3iDFxPcA:9
- a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-GUID: 1Vy07KqQJMbCqVqrEhiuXVK0Z297Wrya
+X-Proofpoint-ORIG-GUID: 0QK4zaIso2VHvOetqi4oess3DeUoDaMy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDE0NyBTYWx0ZWRfX2gXeqwi7ea9G
+ fYvcWkbpSoIUveZmCALq3n9WmjTxQkl4JDmKKH9XlHdGTDl/C9z30LP5qUANW3MrV+J6iuoJ6Vo
+ bm2B8TpOnAYsqMT4lVGm6o6c6cTiQ8+D6yW2SbKsiqPAImXKpc7+Hyb6B6Uge01FNRFTT4CLR+A
+ abobYZwgtdwh/7dJ6BHL6oV7B8vvfATRvGXv6kOGbsftbrlKN8gbdYWF23O3wgShDh8uQxcqkGF
+ kL7GpZh/aJoGKV1uz5mOqTZvAFhvnjYx7k4ObQNtdMdHdY8JPsWr4jxuGMM/0puCKgzfM+qToPa
+ bOj7a9dyHQWSreRqYcCf2iskpb0/6rjGnLdNPvq7MUdluSulUybGOLF2aKpiq2d31qHtGVKwvpF
+ ySVYsRy86ef+OefCbhb1eVzIGY4xOk6DvY05gGleu/bqwWltsg3ux3boralKL4SW8F4G0zQJ
+X-Authority-Analysis: v=2.4 cv=L9sdQ/T8 c=1 sm=1 tr=0 ts=6862d2e2 cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=xqWC_Br6kY4A:10 a=6IFa9wvqVegA:10
+ a=cm27Pg_UAAAA:8 a=EUspDBNiAAAA:8 a=Gj4tO84-8EQ2_5EzKZ0A:9
+ a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: 0QK4zaIso2VHvOetqi4oess3DeUoDaMy
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-06-30_04,2025-06-27_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  clxscore=1011 spamscore=0 phishscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
+ malwarescore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 mlxlogscore=883
  bulkscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2506300147
@@ -120,66 +120,29 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Rob Clark <robdclark@chromium.org>
 
-Add a test which triggers many faults to test robustness.
+The debugfs format changes a bit.  Update the igt test to handle both
+cases.
 
 Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
 ---
- tests/msm/msm_recovery.c | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ tests/msm/msm_mapping.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/msm/msm_recovery.c b/tests/msm/msm_recovery.c
-index 433392079bd4..8a83a6f24c41 100644
---- a/tests/msm/msm_recovery.c
-+++ b/tests/msm/msm_recovery.c
-@@ -195,6 +195,23 @@ do_parallel_test(struct msm_pipe *pipe, int child)
- 	igt_msm_cmd_free(cmd);
- }
+diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
+index ac20ca91d613..f536db82aba2 100644
+--- a/tests/msm/msm_mapping.c
++++ b/tests/msm/msm_mapping.c
+@@ -148,6 +148,10 @@ get_bo_addr(int drm_fd, const char *name)
  
-+static void
-+do_fault_test(struct msm_pipe *pipe, bool stress)
-+{
-+	struct msm_cmd *cmd =
-+		igt_msm_cmd_new(pipe, 0x10000);
-+	unsigned cnt = stress ? 0x10000/16 : 1;
-+
-+	for (unsigned i = 0; i < cnt; i++) {
-+		msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
-+		msm_cmd_emit(cmd, 0xdeaddead);           /* ADDR_LO */
-+		msm_cmd_emit(cmd, 0x1);                  /* ADDR_HI */
-+		msm_cmd_emit(cmd, 0x123);                /* VAL */
-+	}
-+
-+	igt_wait_and_close(igt_msm_cmd_submit(cmd));
-+}
-+
- /*
-  * Tests for drm/msm hangcheck, recovery, and fault handling
-  */
-@@ -242,18 +259,16 @@ igt_main
+ 			ret = sscanf(line, "      vmas: [gpu: aspace=%"PRIx64", %"PRIx64",mapped,inuse=1]",
+ 					&dummy, &addr);
++			if (ret != 2) {
++				ret = sscanf(line, "      vmas: [gpu: vm=%"PRIx64", %"PRIx64", mapped]",
++						&dummy, &addr);
++			}
+ 			igt_fail_on(ret != 2);
  
- 	igt_describe("Test iova fault handling");
- 	igt_subtest("iova-fault") {
--		struct msm_cmd *cmd;
--
- 		igt_require(dev->gen >= 6);
- 
--		cmd = igt_msm_cmd_new(pipe, 0x1000);
-+		do_fault_test(pipe, false);
-+	}
- 
--		msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
--		msm_cmd_emit(cmd, 0xdeaddead);           /* ADDR_LO */
--		msm_cmd_emit(cmd, 0x1);                  /* ADDR_HI */
--		msm_cmd_emit(cmd, 0x123);                /* VAL */
-+	igt_describe("Test iova fault handling (stress)");
-+	igt_subtest("iova-fault-stress") {
-+		igt_require(dev->gen >= 6);
- 
--		igt_wait_and_close(igt_msm_cmd_submit(cmd));
-+		do_fault_test(pipe, true);
- 	}
- 
- 	igt_fixture {
+ 			return addr;
 -- 
 2.50.0
 
