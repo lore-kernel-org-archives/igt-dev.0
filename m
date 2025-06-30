@@ -4,54 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4468C8302D
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 16:35:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 166D8C83029
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 16:38:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 100EE10E4AA;
-	Mon, 30 Jun 2025 16:35:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C2D010E057;
+	Mon, 30 Jun 2025 16:38:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kuqBFBRT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cOLWQIY+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9607C10E050
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 16:35:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9DF8D10E057
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 16:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751301349; x=1782837349;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/HLb/a7BgD9uJ/WODpau1Ssdw1ichwC3TCsEl3TtA9E=;
- b=kuqBFBRTndR10LdoIYskYCG0bkU4IUpc0aQSjxJ9tf13EzfdVzbxSLOd
- YOeKe27VBZ3Lq3wKeI63mUZHUEwJ0lZp7vvHsh6x/oxdN8If5phwSoJtr
- WJ15uh2e6pAobCR1LFiSM8qrnr9sDNUywU6aW/Nq61XNb/n3+lwCqyQmx
- 1OUE6ioSmQe73AzoaOwwuuAtw3ZbpgvOnPrczlAJNIdSOaThTMSOmbKrp
- 1m1mrrwOIp92hkMa2PsIhmhBpki+tfp3WTkLGcN+R/2jTXbKaQjc/zS7P
- HZ5L9Rb062W4s1V8yUKQxEV3XSDY0cFlLHiIRuQmIWsYE2Buho5NuzwEx w==;
-X-CSE-ConnectionGUID: 07HrpjpnQJGgPCVXiCkYKQ==
-X-CSE-MsgGUID: fuJgA1d7QH66mScebksHiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="71101955"
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="71101955"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2025 09:35:48 -0700
-X-CSE-ConnectionGUID: zQv9yC3CQmikLnrbemQQFQ==
-X-CSE-MsgGUID: q4q8jJoORvOJouJuil1w1A==
+ t=1751301484; x=1782837484;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=LmDNyui4IzfXxCnGsA6SesTloFiKY7qHh5yhj1khuEw=;
+ b=cOLWQIY+Dir7vGqPR2sadpChn/alEpTJCVCHt4GVKkegJzpp6gvAR5N7
+ u14XbVMDH8N8DJCrgc4/FlxPV3IUwVeVJ5mBKLOS4HxzoIxfyns0ZkMp9
+ xJa8ej8BcILW77E3jxEcxX6f0HOi1xF3mm06/u0xBX4D7NdgniwGcC18T
+ DVyFKlke9+o/J0TCmtj6jVPwOqXe7yBFYiTWhH1lWHuhCVdRSyWtbb/F3
+ Se49o/jP4coilG4yZHcocueHnGJ54Ko3PUU/hE15km+kY4Wd9abYw3vHg
+ k1RgiHBRyEAe9cqalJz0PnLOYWqdjDZ3hz+SDWR3H8pojgtKKXbq7c0ev g==;
+X-CSE-ConnectionGUID: jOQT7VpCRmmmm+JFOMLqxg==
+X-CSE-MsgGUID: IqUltlzvR2CXrWlWQH/AOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="53472493"
+X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="53472493"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2025 09:38:03 -0700
+X-CSE-ConnectionGUID: ZVLst5MeSVaQW0FgBOcWKg==
+X-CSE-MsgGUID: k/6M2mLASvm64FDokjWsyg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="159226423"
-Received: from mdroper-desk1.fm.intel.com ([10.1.39.133])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2025 09:35:48 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.d.roper@intel.com
-Subject: [PATCH i-g-t 7/7] tests/xe: Don't assume max GT ID is num_gt - 1
-Date: Mon, 30 Jun 2025 09:35:37 -0700
-Message-ID: <20250630163529.2096664-16-matthew.d.roper@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250630163529.2096664-9-matthew.d.roper@intel.com>
-References: <20250630163529.2096664-9-matthew.d.roper@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="153143387"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 09:38:02 -0700
+Date: Mon, 30 Jun 2025 18:37:47 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH v9 1/7] lib/intel_wa: Add check for workaround in GTs
+Message-ID: <20250630163747.mve22irvr3pgvvjo@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250630134145.836-2-mohammed.thasleem@intel.com>
+ <20250630151950.330502-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250630151950.330502-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,173 +72,128 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On future platforms GT IDs may not be consecutive.  The GT mask should
-be consulted when determining whether a GT is valid, and the maximum GT
-ID (not the GT count) should be used when allocating array storage space
-for GTs.
+Hi Mohammed,
+On 2025-06-30 at 20:49:50 +0530, Mohammed Thasleem wrote:
+> This function check the given workaround on available GTs.
+> 
+> v2: Add discription for return. (Kamil)
+>     Rename function to igt_has_intel_wa. (Kamil)
+>     Move lib changes to lib/igt_debugfs. (Kamil)
+>     Dump the whole wa sysfs file and then search for the wa. (Vinod)
+>     Use return true/false directly instead assigning value. (Vinod)
+> v3: Updated return type discription and debugfs_fd failure check. (Kamil)
+>     Return 0 or 1 instead of true or false. (Kamil)
+> v4: Add check for xe device before execution. (Vinod)
+> v5: Move igt_has_intel_wa to lib/intel_wa. (Kamil)
+> v6: Remove unused header and move xe check to intel_is_fbc_supported. (Kamil)
+> v7: Update the title and move header from .h to .c file. (Kamil)
+> v8: Close debugfs_fd before exit. (Kamil)
+> v9: Remove null ckeck and single line coment for SPDX license. (Kamil)
 
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
----
- tests/intel/xe_compute.c | 47 ++++++++++++++++++++--------------------
- tests/intel/xe_gt_freq.c |  8 +++----
- 2 files changed, 27 insertions(+), 28 deletions(-)
+imho 'fix SPDX line'
+This could be fixed at merge, no need for resend,
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 955edf082..658502e35 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -48,13 +48,13 @@ static bool get_num_cslices(u32 gt, u32 *num_slices)
-  * Functionality: ccs mode
-  */
- static void
--test_ccs_mode(int num_gt)
-+test_ccs_mode(int fd)
- {
- 	struct drm_xe_engine_class_instance *hwe;
- 	u32 gt, m, ccs_mode, vm, q, num_slices;
--	int fd, gt_fd, num_gt_with_ccs_mode = 0;
-+	int new_fd, gt_fd, num_gt_with_ccs_mode = 0;
- 
--	for (gt = 0; gt < num_gt; gt++) {
-+	xe_for_each_gt(fd, gt) {
- 		if (!get_num_cslices(gt, &num_slices))
- 			continue;
- 
-@@ -74,34 +74,34 @@ test_ccs_mode(int num_gt)
- 			igt_assert(m == ccs_mode);
- 
- 			/* Validate exec queues creation with enabled ccs engines */
--			fd = drm_open_driver(DRIVER_XE);
--			vm = xe_vm_create(fd, 0, 0);
--			xe_for_each_engine(fd, hwe) {
-+			new_fd = drm_open_driver(DRIVER_XE);
-+			vm = xe_vm_create(new_fd, 0, 0);
-+			xe_for_each_engine(new_fd, hwe) {
- 				if (hwe->gt_id != gt ||
- 				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
- 					continue;
- 
--				q = xe_exec_queue_create(fd, vm, hwe, 0);
--				xe_exec_queue_destroy(fd, q);
-+				q = xe_exec_queue_create(new_fd, vm, hwe, 0);
-+				xe_exec_queue_destroy(new_fd, q);
- 			}
- 
- 			/* Ensure exec queue creation fails for disabled ccs engines */
- 			hwe->gt_id = gt;
- 			hwe->engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
- 			hwe->engine_instance = m;
--			igt_assert_neq(__xe_exec_queue_create(fd, vm, 1, 1, hwe, 0, &q), 0);
-+			igt_assert_neq(__xe_exec_queue_create(new_fd, vm, 1, 1, hwe, 0, &q), 0);
- 
--			xe_vm_destroy(fd, vm);
--			drm_close_driver(fd);
-+			xe_vm_destroy(new_fd, vm);
-+			drm_close_driver(new_fd);
- 		}
- 
- 		/* Ensure invalid ccs mode setting is rejected */
- 		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) < 0);
- 
- 		/* Can't change ccs mode with an open drm clients */
--		fd = drm_open_driver(DRIVER_XE);
-+		new_fd = drm_open_driver(DRIVER_XE);
- 		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) < 0);
--		drm_close_driver(fd);
-+		drm_close_driver(new_fd);
- 
- 		/* Set ccs mode back to default value */
- 		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) > 0);
-@@ -119,13 +119,13 @@ test_ccs_mode(int num_gt)
-  * Functionality: ccs mode
-  */
- static void
--test_compute_kernel_with_ccs_mode(int num_gt)
-+test_compute_kernel_with_ccs_mode(int fd)
- {
- 	struct drm_xe_engine_class_instance *hwe;
- 	u32 gt, m, num_slices;
--	int fd, gt_fd, num_gt_with_ccs_mode = 0;
-+	int new_fd, gt_fd, num_gt_with_ccs_mode = 0;
- 
--	for (gt = 0; gt < num_gt; gt++) {
-+	xe_for_each_gt(fd, gt) {
- 		if (!get_num_cslices(gt, &num_slices))
- 			continue;
- 
-@@ -138,18 +138,18 @@ test_compute_kernel_with_ccs_mode(int num_gt)
- 			igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) > 0);
- 
- 			/* Run compute kernel on enabled ccs engines */
--			fd = drm_open_driver(DRIVER_XE);
--			xe_for_each_engine(fd, hwe) {
-+			new_fd = drm_open_driver(DRIVER_XE);
-+			xe_for_each_engine(new_fd, hwe) {
- 				if (hwe->gt_id != gt ||
- 				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
- 					continue;
- 
- 				igt_info("GT-%d: Running compute kernel with ccs_mode %d on ccs engine %d\n",
- 					 gt, m, hwe->engine_instance);
--				igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL, EXECENV_PREF_SYSTEM),
-+				igt_assert_f(xe_run_intel_compute_kernel_on_engine(new_fd, hwe, NULL, EXECENV_PREF_SYSTEM),
- 					     "Unable to run compute kernel successfully\n");
- 			}
--			drm_close_driver(fd);
-+			drm_close_driver(new_fd);
- 		}
- 
- 		/* Set ccs mode back to default value */
-@@ -180,11 +180,10 @@ test_compute_square(int fd)
- 
- igt_main
- {
--	int xe, num_gt;
-+	int xe;
- 
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
--		num_gt = xe_number_gt(xe);
- 	}
- 
- 	igt_subtest("compute-square")
-@@ -195,8 +194,8 @@ igt_main
- 
- 	/* ccs mode tests should be run without open gpu file handles */
- 	igt_subtest("ccs-mode-basic")
--		test_ccs_mode(num_gt);
-+		test_ccs_mode(xe);
- 
- 	igt_subtest("ccs-mode-compute-kernel")
--		test_compute_kernel_with_ccs_mode(num_gt);
-+		test_compute_kernel_with_ccs_mode(xe);
- }
-diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-index 689e0296a..2c9080428 100644
---- a/tests/intel/xe_gt_freq.c
-+++ b/tests/intel/xe_gt_freq.c
-@@ -399,17 +399,17 @@ igt_main
- 	int gt;
- 	struct drm_xe_engine_class_instance *hwe;
- 	uint32_t *stash_min, *stash_max;
--	int num_gts;
-+	int max_gt;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
- 
- 		igt_require(xe_sysfs_gt_has_node(fd, 0, "freq0"));
--		num_gts = xe_number_gt(fd);
-+		max_gt = xe_dev_max_gt(fd);
- 
- 		/* The defaults are the same. Stashing the gt0 is enough */
--		stash_min = (uint32_t *) malloc(sizeof(uint32_t) * num_gts);
--		stash_max = (uint32_t *) malloc(sizeof(uint32_t) * num_gts);
-+		stash_min = (uint32_t *) malloc(sizeof(uint32_t) * max_gt);
-+		stash_max = (uint32_t *) malloc(sizeof(uint32_t) * max_gt);
- 
- 		xe_for_each_gt(fd, gt) {
- 			stash_min[gt] = xe_gt_get_freq(fd, gt, "min");
--- 
-2.49.0
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>  lib/intel_wa.c  | 54 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/intel_wa.h  | 11 ++++++++++
+>  lib/meson.build |  1 +
+>  3 files changed, 66 insertions(+)
+>  create mode 100644 lib/intel_wa.c
+>  create mode 100644 lib/intel_wa.h
+> 
+> diff --git a/lib/intel_wa.c b/lib/intel_wa.c
+> new file mode 100644
+> index 000000000..685df106f
+> --- /dev/null
+> +++ b/lib/intel_wa.c
+> @@ -0,0 +1,54 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2025 Intel Corporation
+> + */
+> +
+> +#include <fcntl.h>
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +
+> +#include "igt_debugfs.h"
+> +#include "igt_sysfs.h"
+> +#include "intel_wa.h"
+> +#include "xe/xe_query.h"
+> +
+> +/**
+> + * igt_has_intel_wa:
+> + * @drm_fd:	A drm file descriptor
+> + * @check_wa:	Workaround to be checked
+> + *
+> + * Returns:	0 if no WA, 1 if WA present, -1 on error
+> + */
+> +int igt_has_intel_wa(int drm_fd, const char *check_wa)
+> +{
+> +	int ret = 0;
+> +	int debugfs_fd;
+> +	unsigned int xe;
+> +	char name[256];
+> +	char *debugfs_dump, *has_wa;
+> +
+> +	debugfs_fd = igt_debugfs_dir(drm_fd);
+> +	if (debugfs_fd == -1)
+> +		return -1;
+> +
+> +	xe_for_each_gt(drm_fd, xe) {
+> +		sprintf(name, "gt%d/workarounds", xe);
+> +		if (!igt_debugfs_exists(drm_fd, name, O_RDONLY)) {
+> +			ret = -1;
+> +			break;
+> +		}
+> +
+> +		debugfs_dump = igt_sysfs_get(debugfs_fd, name);
+> +		if (debugfs_dump) {
+> +			has_wa = strstr(debugfs_dump, check_wa);
+> +			free(debugfs_dump);
+> +			if (has_wa) {
+> +				ret = 1;
+> +				break;
+> +			}
+> +		}
+> +	}
+> +
+> +	close(debugfs_fd);
+> +	return ret;
+> +}
+> diff --git a/lib/intel_wa.h b/lib/intel_wa.h
+> new file mode 100644
+> index 000000000..765a5948e
+> --- /dev/null
+> +++ b/lib/intel_wa.h
+> @@ -0,0 +1,11 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2025 Intel Corporation
+> + */
+> +
+> +#ifndef __INTEL_WA_H__
+> +#define __INTEL_WA_H__
+> +
+> +int igt_has_intel_wa(int drm_fd, const char *check_wa);
+> +
+> +#endif /* __INTEL_WA_H__ */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 5e4247aad..ef397fe45 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -88,6 +88,7 @@ lib_sources = [
+>  	'intel_aux_pgtable.c',
+>  	'intel_reg_map.c',
+>  	'intel_iosf.c',
+> +        'intel_wa.c',
+>  	'igt_kms.c',
+>  	'igt_fb.c',
+>  	'igt_core.c',
+> -- 
+> 2.25.1
+> 
