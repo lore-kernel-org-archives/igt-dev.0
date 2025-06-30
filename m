@@ -4,170 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3BB6C83029
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 14:32:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D868DC8302B
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 14:43:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B11E110E464;
-	Mon, 30 Jun 2025 14:32:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8869D10E478;
+	Mon, 30 Jun 2025 14:43:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I4Ho2QEc";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iNN9eXwg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3EFB10E464
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 14:32:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79AFB10E478
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 14:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751293960; x=1782829960;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=oYF+pgrqT2kHYr0SMIaXqxyiK/LhPeeHCDh9LgWQEwE=;
- b=I4Ho2QEcSLRga4KmYmDK8anLya6hiuLI/a0MX8rFvRsNOtRBgz77K5V0
- CIak7Dgfvi8YCNeOKFFSVPtMmKB6KUVtxACO3dou6qeKHye/yXsGzeZjg
- NFJN5ACFyuV0r9Y1RALMkeuDl9k9vRfKYq2LTU0N8e6o6o2e4YSRT1bUE
- sE+OsEPgc9jYdY5bM4BOMbQMTxGQRdeDzZYA0ghMqPx9kovEHlWDddOw4
- xn0QTnkK9wLiKPFgyhjDZC0hZvFTEKEgssSUKGlV78q6ZpZfYTNlGP7hY
- pBJ9xTZLjEGydbM3RvI08QDD32PnxiLDyEprzKCL+mj7L47TdEdqsT/su Q==;
-X-CSE-ConnectionGUID: njLXG+74QuCr874MW1dxSg==
-X-CSE-MsgGUID: xRnuWUpcRw2e00Z5+klGdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="53246170"
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="53246170"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2025 07:32:40 -0700
-X-CSE-ConnectionGUID: ATT3SJYVSUujN7k19C0aag==
-X-CSE-MsgGUID: SeAfDZrsShu0hslBTztyzA==
+ t=1751294594; x=1782830594;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=mlGi6d/h+zaLqXP6xCQG7U0he2wjdn4wnGhAVsM3jRc=;
+ b=iNN9eXwgyPCFJNs3T2V5/ZgILkeP6pvXhPruqWTXdS5IfGAw8hnkgQLZ
+ W47UTqeZD8tjE0AwzTXFIu4pSqefIGIrJ2QvSJFjP0kGEWLn8f0TkUrc8
+ WZq8uLcnj9Dhf3dyN26HminzWaCa4BhoXAzcXrvq5fCV2iX2vKMwlox5P
+ c8djU/YyFLf9PkU00qdo+hJ07IRGzfuwcds3CH5ujvcL6VH7RAOlafIYl
+ umdYF/vLMsh730SgZe3W0MMZBcU3+2UZ3hD4+7cI57SBejCx8kLF6xzs+
+ 3oipW84kat8FJuN59A7dqUIABvrktB3lSr5PElwfoNOyMS0EAAhOdnxyD Q==;
+X-CSE-ConnectionGUID: aswjiZ85TMKCM0sMDYsOaw==
+X-CSE-MsgGUID: SSph1JnRQqSTzZAcdHvcew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="53385484"
+X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="53385484"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2025 07:42:07 -0700
+X-CSE-ConnectionGUID: lA26z+0JRVWQlwqk5XpoRw==
+X-CSE-MsgGUID: S5UZiI85RcWK729LHmdbaw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="154187634"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2025 07:32:20 -0700
+X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; d="scan'208";a="184403927"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2025 07:42:06 -0700
 Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 30 Jun 2025 07:32:19 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ 15.2.1544.25; Mon, 30 Jun 2025 07:42:06 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Mon, 30 Jun 2025 07:32:19 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.67)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.1544.25 via Frontend Transport; Mon, 30 Jun 2025 07:42:06 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.69)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 30 Jun 2025 07:32:17 -0700
+ 15.2.1544.25; Mon, 30 Jun 2025 07:42:05 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sSI3q0I+Zv1M0QZ64tVvxluocCOo7EAP+kFvU7zOrMf17nTPulfTjM9NOrKF6jwauSACfcwS5wDtLw+WKpIvOA+26u3y47ACGTiHOeAr/TvnKDNmNm1mzrvaWJyl/1INI+6kpCMkEHUF66ZDNRi9Vb3ov7yESDf8Nbh4Q8krX0clAB7+YRkWhwr0BkFBEFhcfNKMbp6s8QHhAARGnJ4KMZ8wTeiBsfzmteNNPPZJLViiBttComdLwHKfuqUgNcvPM4PBJ+sC6FwvWFXmtsEe/vzhvlJ6r4JHPJCpYQY3/EvD2Gp0Z/aYEptYkMJzCwfCqCDke0Ead3VKBFYjzFpBeQ==
+ b=vePEvssqbC70h1VDQSsqK47Xl+U7Lv4jmZoClE4bq/o+2m6dRIlmRqq6qP5jH41XsGCXfFqjX6BDoQ6V54odfv24lUHTE9TI/fGC/eJMsNYXwRSQcwv4vCtImtOa32UN0+cA1rbD8od8onknNO5XBOQUyl7YEBP7He7bRsHofpZ+lDUpYBnbwG7aKlW8+KnPlNEBxHP/nvUISW2CCP3dH5ijV2X+sPppts9NB2sFdcM/aXgLbrcKUO2YQ6/5qwdlW2I4GfBe855flMh5r8eXBV/H2VsxziU2SxhIYZZS0MVSNPEQc0agZMh2eLKZ7Je8M71bwuHI5TKoFWb900WkTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QCaI1EQ7+cjVs2+meaOszHtON6o1/Hnp9dNEMW+JmSw=;
- b=d+OepBVzmDfGOIDs4IDxN1f2tX/5ARmSD7qDsYkKLFEceEk+YCkquqPdMTOd1+UtDECXYt9l2UhLUnkQODbfcWkSRUM+axnEcZDmNtE31MKnYdVndolA4vI/FqH1dv/Axow7J0+WwKYmUO2J4UCm25blSDUebRepelfSzbXxkoaYvAnjz0wbHTqkpiPkL0vrHLOTrZuaJznGuS3yqsAp49iBg+5IU+leChuYILAqPYi1/fIRnULtI8A+Pw6nDs5gZrVqn2oTIbPoECHJCOTI4xMt+IRbV6EUA4nQRzzbczDqAhrep2Mch++S4/ir31cE0JXbt4f+bdNTWGdPTBAN1Q==
+ bh=mrBFppUTIr3DYrh4yV8/0s1KrxckEjBpGBE9c6gAl4Q=;
+ b=GlbcYa+MjCJMMb2/iQFYM3iHDtuRfK++Td6YMxmMpZ91YnhpF50Op1fdSx2CtZyy6bvgVYyKAipoOOcINR9d/CNpX70YR7dcPQm/1IAmZWQ5S9NaTqSrYwoLikZ7O7zuq/ex6q/O6f5EjtvLPNGx71GlgtyxsNdx5Vq43zXJIXKLD9TrfI0MTHgpYrc+5aS99cuK9GzfkPkW7N242tlv9VuUWU+77wyyuBF88Pytf0ztjI0um4OQ5fnCXS7D5yRXMhOyCXHVcfLwkfFQEbTxrgtYfbWi1g608shTxwSQvKKAiLtlN8YR3dRhixC0/4Jtp+tQDsoQ8J0oi6EOV/3SJQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6418.namprd11.prod.outlook.com (2603:10b6:208:3aa::18)
- by DM3PPF4D011AE7D.namprd11.prod.outlook.com (2603:10b6:f:fc00::f20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.27; Mon, 30 Jun
- 2025 14:31:59 +0000
-Received: from IA1PR11MB6418.namprd11.prod.outlook.com
- ([fe80::68b8:5391:865e:a83]) by IA1PR11MB6418.namprd11.prod.outlook.com
- ([fe80::68b8:5391:865e:a83%4]) with mapi id 15.20.8880.026; Mon, 30 Jun 2025
- 14:31:59 +0000
-From: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "De
- Marchi, Lucas" <lucas.demarchi@intel.com>, "david.e.box@linux.intel.com"
- <david.e.box@linux.intel.com>
-Subject: RE: [PATCH] test/intel/xe_pmt: Add testing for BMG crashlog
-Thread-Topic: [PATCH] test/intel/xe_pmt: Add testing for BMG crashlog
-Thread-Index: AQHb56T5+ptjFnBidU6gEj+vu5M6obQXh44AgAQ/l/A=
-Date: Mon, 30 Jun 2025 14:31:59 +0000
-Message-ID: <IA1PR11MB6418FD2E50273B2DCB945ECFC146A@IA1PR11MB6418.namprd11.prod.outlook.com>
-References: <20250627204846.521691-1-michael.j.ruhl@intel.com>
- <aF8OqgWWgPT1PE-I@intel.com>
-In-Reply-To: <aF8OqgWWgPT1PE-I@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6418:EE_|DM3PPF4D011AE7D:EE_
-x-ms-office365-filtering-correlation-id: a2735435-8fea-4c63-0e80-08ddb7e2df5c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|7053199007|38070700018; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?6aXr1s5y5moQlCH9ooI2q3syZ0Yi57FR6EEfwYotquPKl8SVVAr296lfVE3x?=
- =?us-ascii?Q?L9POWJvsyQpOeXTWbcizbYxnZTWM+zionXfgE/Pkk73SE1SEA2qjmtGmufU4?=
- =?us-ascii?Q?4jYJer0YBKG7bV2hUhR32TPxQpBH6agyOZ6s8OtLo6MCW7yFo7wuJY8d3TRy?=
- =?us-ascii?Q?DsUCKXLi046hC1zMDJoCrrPOAw9h3SBByIsC/mpq8C1CdtpCSkC1hlvvEZjD?=
- =?us-ascii?Q?ZSzerLOCN0fS9wT5qbveXu9OKmBz5hM40b4HEzkWJgi5t6OYwvvJTccYfjjT?=
- =?us-ascii?Q?wBtLAqdoNPd+RXrcbF96B6DWZ+LEdOEXEQ+HhsyDRCzmRTBuOfLSlD4ZOZ/8?=
- =?us-ascii?Q?kxhBaPjkpd/vvwx0OKWkvC9BW3jnMd6mohg59Ze/oUVpx5mffAywecF9zp4Y?=
- =?us-ascii?Q?oM+KLebkjC99XAr40BzV1zla+sYw2xGkWZLXkrS8WJSijsJMVKq7eeWXPCIv?=
- =?us-ascii?Q?esRyjgPh+cdVqJkGiWyuXBPqXaN2KT9LG4taFNLU/0otAkKQ3NvWCRkSTJNJ?=
- =?us-ascii?Q?pr2KrZDsetKTdGU3trMyCezCtJ5A1hAUWHTBoa7S2GmU9wya5X8oRZjYknGq?=
- =?us-ascii?Q?5FsBZ1055N17maAmKuGoRzMzPysjfqXfpVAGBfZF0WSx1KC3zDhONWEML5/m?=
- =?us-ascii?Q?MAgVZr49SXiLVD/ch2V2HNR+PCzjP+ejEEY84Yqio4WW/VSfRquZHJL9jSrI?=
- =?us-ascii?Q?PdwZX7OQ0UdvJlQ6lFADBSiOsx45tjTWp8l1CMwX1puN1IwVNzFm+8Q4iGo1?=
- =?us-ascii?Q?/SngOSHyvaEUNS4YOj3iMRGI7jvBrmnpej+cyZ3NeIBJE9rQgfAHc3I+grEy?=
- =?us-ascii?Q?zVhASg0Y+4uDT2VcYKZbWsT1+SfiI5jhMihp/r5+3JF/Tjg3JFJYhE2bUNjE?=
- =?us-ascii?Q?yOQGGTTahFO2GoFd9aPRaYM9MbtkWNV29PvS8jQ2OdKhCMVWcTnM8JztJ9VK?=
- =?us-ascii?Q?JwSjhwyOQIWQwQeh3d2DvUJI9eUYhwytdFE8XvLkx4X6nkOUpW37OIIr9DJ+?=
- =?us-ascii?Q?Nr1CKVCt5Wqr63O4VysG9+81ztaufaEyCmi9nfs7nbq65y6bWTHvDT3c/7/7?=
- =?us-ascii?Q?MpJG6qQkpjU2/vcXpFB6VG8ZydshFH7pEaKBXaSGRiNU41eidrk03yRwX8DJ?=
- =?us-ascii?Q?g78YXbPQn3f1sCA1YAPfu7Z6mxJRSgs9c3glimcR760ySrPDMvfo9bfibZgv?=
- =?us-ascii?Q?HoShaeyH4bTM3C/wI1eD9bIk6APYXA4hjU+/mzoHcO6uoKroxKeV4DyDF2FT?=
- =?us-ascii?Q?EBan3QW9S9Ksuz085ZyL27EOig7Q4vprx0qbjqa2jOiPjvWvKjUB7KPJPjtt?=
- =?us-ascii?Q?CPyoQvLxFr4s9UHhN9L+6W2nYGRm9tolUJteqWddYXjw5m+4yMiHTIkZmUSr?=
- =?us-ascii?Q?YjRZ/d1v79ktiVl/2VoFwNvNlaJdMD1zl+1NEEWQyhnEeUtKDTOFPdc59X6q?=
- =?us-ascii?Q?+CkKvyi6TNMFJa40ljNAR30o0wSz2gIEOainTPguHoeihML/+igvv6txhvLb?=
- =?us-ascii?Q?/U5a/4AsuD1RxTg=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR11MB6418.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(38070700018); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?yLDHb8uwY8KQPnaqFMENLRnW7IwoLxDOQBzGSWFc5GWw1y1oUqlMa1coieGl?=
- =?us-ascii?Q?ok86PNqoL6Tg/3lyYbrBp+QpU1oLRinLtYradxmRWn8chDggcN5Z3NSakBud?=
- =?us-ascii?Q?aukgfTvys6/CiTYEgdcbVrx4PeP5ytMvWoW1S66DJ46vK3O1QF3+ZySywKEH?=
- =?us-ascii?Q?vk06TytVcFxQw7UBtDiXwRmRsq6JxrNAEKwlqPoDc44mGcIUBoCUfCBa8yv1?=
- =?us-ascii?Q?YO+MVjbsGU8OF/Tq4aXKz/Af552gRzIGe5rZ2qBugJqXF4khG/VSD3FPrVtB?=
- =?us-ascii?Q?Ha8vm5oEwRXqsagkxC5bBBXvjlLcjZFZ1Z4jwUG9GgLP0dUwymMoVEVejV98?=
- =?us-ascii?Q?ug7R0zeVsneRDSA+H1BM2jJ2V0gXZuS70ThNMnL84GaLk0Oz/sTOQuY+q2Jb?=
- =?us-ascii?Q?64b06/S8okLC13X2h7Aq9jzIW4KLMngjQ2bqONLtS2OeBUZiLgY4QduzNDZv?=
- =?us-ascii?Q?Lizbl6jM1sewOl2E0mOyvru4MB7MrbnPZQqY6ACrlH/57OyY8Qh6jsKlFLqW?=
- =?us-ascii?Q?0PoAQRYR2CEARPLsEX53iZ5BDnZT/EBKNtF+EcsgfTa3oZGNf0JS9kYP0yaN?=
- =?us-ascii?Q?BPgU6THaHMhn1t1av+CUiA9QDI4BDJ5YJ9D81ErHbO2B8PvK9jtd548oecRA?=
- =?us-ascii?Q?dwiLfQdT3Bs2/ixTkLLoeQ3TgU3AfuXVR2ikI5uW+TvHj/F5jfOBLjg3ryDM?=
- =?us-ascii?Q?DfL3Co5Pf0rkMUfpWNkhVlUoVBcuxjhCKQTUo1hAt6yY0LWNO67Ff01uYMOz?=
- =?us-ascii?Q?v8kDeMmAJNeX+30Sxnd5gj5TKg4VMRjto+eAZ1GmBcc9yAKt4QV5IRJt7bMi?=
- =?us-ascii?Q?q5EMr8TcS/O2Xt19lS22YTelLFhlFhc9p3TDxWI2FsfCKkvwYBUG3g9iAj+9?=
- =?us-ascii?Q?io4TYg1Ft/p9+9YxceWVhzSlPr1V+x5aVfB24d9UUujiPdU5LWCmVZI5fYPI?=
- =?us-ascii?Q?fH/OXrAyihWBse1Yu0X9PwxgoNhVzmCmHETmtmgYdbv2sQl5vWgOsRysZfVz?=
- =?us-ascii?Q?NtPUC5Fp7LGzeS9HZ7l19tALCkgfer7kuY+I19Z+pP8dWcJIu+fz87jv2JGs?=
- =?us-ascii?Q?yj9Uh3fPAjJp3OHSlY/O4cHMFQ17JhK6PyjZNL+gL6su/5Igs0/ZOI1R4D4m?=
- =?us-ascii?Q?KaoMIMF+pOO+w1YBVXzS6m597p8X1jpjjedEdh6L/W6owZN4YZPQMCLacLGX?=
- =?us-ascii?Q?gHkYcd//0nTb5HaAyMv2dSiakHZpEL4AzbrkmE3uNoMdzLVOPajpw5k2FFoB?=
- =?us-ascii?Q?H+x3Qg8xcog3B4eSOuD6cFrglXdFrV8UKl2SpgDj6RdEN2A4rvel1m9gg4nG?=
- =?us-ascii?Q?WltjvNkkIrZHbkYAwixv4G6H2WL/grxPRIMxM52CU70e8xFNw8nl4LOMjuhu?=
- =?us-ascii?Q?pLPkxQC2w6mrM8HFwYWJ95eeMpbb8XMKrUgOMi8+EtE90PI7X28e6LAP9WGL?=
- =?us-ascii?Q?1SDGp9Fj0YckOI/bFu5jiEBzAY/L0laEWkaGcgHX4TfjwGPpj+0W8o+WElX7?=
- =?us-ascii?Q?6WRWx0WePXLTJfVnqd4JK8T/5fBj5zQno80CH0SOHsE34KS5Bqluhi5trHii?=
- =?us-ascii?Q?bPtaRBG2PBkwwjlEKsNFUhjayoA0wGtIUAU4fYUH?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from CH0PR11MB5249.namprd11.prod.outlook.com (2603:10b6:610:e0::17)
+ by LV3PR11MB8726.namprd11.prod.outlook.com (2603:10b6:408:21a::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.23; Mon, 30 Jun
+ 2025 14:42:03 +0000
+Received: from CH0PR11MB5249.namprd11.prod.outlook.com
+ ([fe80::a665:5444:d558:23c3]) by CH0PR11MB5249.namprd11.prod.outlook.com
+ ([fe80::a665:5444:d558:23c3%5]) with mapi id 15.20.8880.015; Mon, 30 Jun 2025
+ 14:42:01 +0000
+Message-ID: <01bea423-1e83-49b0-8e86-fa2cccd47c46@intel.com>
+Date: Mon, 30 Jun 2025 20:11:44 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [i-g-t, v3] tests/intel/xe_pm: Enhance vram-d3cold-threshold test
+ to verify VRAM self-refresh
+To: Sk Anirban <sk.anirban@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20250630051145.2572003-2-sk.anirban@intel.com>
+Content-Language: en-GB
+From: "Poosa, Karthik" <karthik.poosa@intel.com>
+In-Reply-To: <20250630051145.2572003-2-sk.anirban@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0020.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:b8::8) To CH0PR11MB5249.namprd11.prod.outlook.com
+ (2603:10b6:610:e0::17)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5249:EE_|LV3PR11MB8726:EE_
+X-MS-Office365-Filtering-Correlation-Id: 947b5cbd-2551-4afc-2249-08ddb7e445c7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dmE0QWVQVEJEOUtIaVZFcjRaM3NrSkFUY01ibkhaekhXRDhBd3I1QSt6bWMz?=
+ =?utf-8?B?cmFBOEtCbHFRVTRORkI4WGhablljUzhFSktoL0RPUW1SUGt6Q0xJd1ZOWHRp?=
+ =?utf-8?B?NkRLazRmc2Z3VVNON1B5c0ZDYlA0UjVBeC9iby9QZm9VdEZ0UjgzTEI1ejBF?=
+ =?utf-8?B?dUF5Q3hGSkd1UWhUdDVMRGFJVWYvanBtdVZYVXNYcjg3ZkoxdGUxMVVIME83?=
+ =?utf-8?B?M1pQOHErcllQd09kamUrdkpmZ1BObFF4OFptSUtLMmZMeFFJd0FvcDVHRnBq?=
+ =?utf-8?B?T2E3NWlzUEd2UjJjWWhaVjdvWGNXeU5qdVhqN1VLemZURU5LaHNPUVNuelpZ?=
+ =?utf-8?B?cVZMWGxvTDJNdEtJcHhQcExNVExDK0dpbnA5dVBoVFprQTlZWTVadnFJTHc1?=
+ =?utf-8?B?SFlDUVhmQ2psOWtLNDlvODJnVzlQZ1ZnV1pNYmJja3JHVHVqcVE5dW9jS05Y?=
+ =?utf-8?B?dEFMUzlmM2lNNzhJZ0dEanppTnZtalBrc2hPUmNsTVdocE9iNTFnTDIrZTF4?=
+ =?utf-8?B?UW9BZGMwRGl1elFsdGRLMlBONVlLak9yR3lYaVRsTWF5dEg0K2lKT1FKMzlX?=
+ =?utf-8?B?MnhVejZIR1BkL0svWGpVN2xWSHM2bUt0cEVaVkQ4U3BNcW1vTTkxNFJ2emdJ?=
+ =?utf-8?B?YlY1N2VxVFVPR1gwbS8rTm40UmVQTENzYnJZVUtRM1ptbWJQblIxbHE2N2M5?=
+ =?utf-8?B?Y0liZldzRENaTXg1TGR1bDRoWURiRFhqRGFsUFNBZ1lTZytsbERwZk9FTk82?=
+ =?utf-8?B?SmZXaGs0QS9EYVpXUnBldUREZi9Ua05BcGFwc21wTHdyUTlwZmp5ZTlCUDla?=
+ =?utf-8?B?dmNHYWdMK1FxMEZCSUhTd0laaGpZT0xFbzREZHlvYUZmUWlMcmdqd1dkTkdJ?=
+ =?utf-8?B?c3hJK0VvekVyYXlYUW1BWUhlVHQ0dUdHY210QmltK2p2cVRvbkdkblg4cFBj?=
+ =?utf-8?B?RExTZ2czRUphM0xqbW9JVnZ4ODhNWUtickVONnF6SFMyRFFzMldRTGhzWHV4?=
+ =?utf-8?B?cGRaR0xJS3Jjc3p3dEdPYjR2cXBRQnlEcWVKQ3RudUw3bjYxVFZGZ0hRREdt?=
+ =?utf-8?B?SEJEVlZmWlpSNWd3SytZa1p5UTYvVVFIWllhZy9BT2tnZ0Z1dHBQbkl6NkE3?=
+ =?utf-8?B?NVBnSDU2TUJsYjV1TUhpcjZMZWR1R2hsNFJDLzZiOXRKQ24xdGVIVjVTcEsx?=
+ =?utf-8?B?Wk9qemJOQndiTFJGdkplYWlyVnI1WkpPVHhwU1VrZlV4bGZEeHdGb1k0SXdj?=
+ =?utf-8?B?dTdVTncwaU5NNGhWaTQvN2s5cVhSMEFlQzJSZldiUEFqRVZ3MHBZVStiMkVE?=
+ =?utf-8?B?bzJaaXE3amdxbDIrcEpwRWtQcFlDdnQwUWhUdE80ZWUxL3A4SStTNVBkaUxk?=
+ =?utf-8?B?YUFjb0ZudlJPYzIrUkJGUEorcnhvN0ZLRytIWDZrckRaT3JEU1BoYm9ZVzIr?=
+ =?utf-8?B?bldXL1pQZlZEUm5WTUhGblp0RElvQnYyMDJhS282K0JRSlFJcWhTOHo1Sk1l?=
+ =?utf-8?B?ZTNxUk1jdmdiWWlJRHl1dGFNRTAwL0tab25ISkNwV00xR3Ardmo1eTlDd3FE?=
+ =?utf-8?B?N2F5WWhEQWowRjFwSjl1ZFpTajAyRWVUVUVVaU9GTFIwd1BwaC9pR0JnZGJI?=
+ =?utf-8?B?bmgwdCt3aGN2YXlzNEJQMDFGUmFqZTU5SGFPMTVGQllIZVdvQTFaTC9ZOHFK?=
+ =?utf-8?B?QVo0MjFUNlp1cHNoWldrZTFQckJnZy9Gd0dGMFR6WTYreW5WakEvcmN5eis0?=
+ =?utf-8?B?aTF1Qzd5MW5sRTQ2MWhYS1hhTFVnS05vWHR4NmFqUEZiUkFKV2N4LzRpY3ZJ?=
+ =?utf-8?B?Unh4dEw0NFdpUzc1TDVHTGlZb04rNkUrRDRiT1F4ZkFwVkI0cldZZlRtZThO?=
+ =?utf-8?B?NFpCKytVUE1Od1RxS3BMZ0s3MWRLQkc2SUlMa1ZTanE1Tmd0NjNwRWRJckRC?=
+ =?utf-8?Q?/mVngbz01kw=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH0PR11MB5249.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RG8wNFJKRWlUUGVhRnltd01EdUZFZGdFREtsSlBXOW5iU2NtRDRJYnhlVnFz?=
+ =?utf-8?B?dUJEQ3hKM2M1N2VhYW5Sc0RGRVdCTXBIRFpLclhveWVraU43VVJmb2lURkJm?=
+ =?utf-8?B?OThLTzdmVGFVQ0FyenB0cGVIWWIzUE5kTll1WlE3ZHZRK0h6K1BFUHM5ZDdY?=
+ =?utf-8?B?ZCtIRmp3M3BlMmdORWtGRjdEZkJZeWtZaEJzZmFYMlR3c0NuVHMwanNoTXY4?=
+ =?utf-8?B?WVN6bDVFT093dWs1VVlydUF3TERyMjdEd2JkK0hmQ1VwQ2l5c1NmTUxmYnQ1?=
+ =?utf-8?B?N2FDYUJqNkxIVHI1RzJ1azVydVRoaW1lampBMWRnMVJrVEhKTzN4dlVKcmdy?=
+ =?utf-8?B?S29TVGxTVCtTaTZBamVEWnRtRU1icjFRZnhmRStqWkczWFkxaHg3UlpnTUVs?=
+ =?utf-8?B?RmgzTkYzckdDWHFtMVNDdTlMVmFDREM4N0FEWWR4Zk4vNlMzVkxQUWZWdUJ2?=
+ =?utf-8?B?WFY3QnhuQ0dTbUhYREVDQ2M0NUpmWUJrQnRLKytYa0VMTXRXczZSY0haSEJY?=
+ =?utf-8?B?UWY1MWRoU1FIcWlKL1V0bENzWWVvbXloM0NYakVJVURDV25zWGs0ZDF0TU5W?=
+ =?utf-8?B?S1hLdzFtWHRoMHl3UDRQaXZKMVMwSTlIbGpuWHBhVkZvMUtwQmtSWUNXN2U4?=
+ =?utf-8?B?L0FyTTZPaVcwbVQrcHNFWkg5dGhBcVphREhVS01JckVFYXk0cVhoTDIvOFZJ?=
+ =?utf-8?B?bXU2ZUFGa3F3cVRZY3UyS1hPOE1CQ3RzbDZhc1lMcEdMdXZoOURqekN2MnNV?=
+ =?utf-8?B?Q1Fvd3NWdWp1dUxkTzBsZERVN3JQcjlLOEFHNlNaSUh2K051WXJPajVNanVX?=
+ =?utf-8?B?MStjUEcxaU1wTVVYY3BOc2xVc0JOSzBxNzdFL0VlVkZEbGY5TndkWTBSSFUy?=
+ =?utf-8?B?N0h1NXpia01CcHduMi90TlRDRWMzVGl1WUVuVnRsZFRjRm0zaWZ3aldqcVZK?=
+ =?utf-8?B?WnRUVlZXc2FRYUdhQVVKU1B2VWt3NVRIb1lLTkNMVmxqTDcvUFVzdnltN0RR?=
+ =?utf-8?B?Znp3d21KQzY4c2x1M213eFduamN3RHNabUFHTGJzSGcwbllvYmFUQlh4V0c0?=
+ =?utf-8?B?aGVvTmwwdkRSbEkxVnZDNHB4Q1lhcWdtUk9qaytwblpwR2VnNG1VdTJKODhY?=
+ =?utf-8?B?UFJNZlpzYVFRUDUzbmVoYnRmVGw3ZUpCbnBRWDUra2xCTFQxc1REZUlaRmla?=
+ =?utf-8?B?VTZzb3FGeEdmeng3NWhPK3J6UVRPMUUydEw4bjhwcWc4WjNueHFsdGFxaXNx?=
+ =?utf-8?B?dERhUzdNM2dUc1gwcEY5QVJ0QmhLVHR2cnRTcCtVUVpieWFMcGxOZGgyaVBR?=
+ =?utf-8?B?RVBDcHVNTnNIWGJWZmdvM1lvaHIwanJvZ1h1WlhTQ0hVNExPbmd5djRkM0FK?=
+ =?utf-8?B?RXJJbVJQVC9tS2I5UFhwRjZYcGIwMFBDSUwraHUwbUV0ZXNxbFdoaUU0TGxC?=
+ =?utf-8?B?KzV4SUU0NS9GeVZUZjBsMUZ1SklkUitMZVc5S2tnZkxOZ2txa0JmQlRnOTdk?=
+ =?utf-8?B?TXdFUFZZbUgrT3NRKzlURGEvZnFsZWwwaUJoRjBEeVhRbnZqYzZ6ZDI5Tk4z?=
+ =?utf-8?B?QVJiaC8rUVNLK1BlR3ZvemdTVkNZQ1hIcGdaM3Z0b0hWTHNhM2lJWlFXNVBI?=
+ =?utf-8?B?ZFNFU2ZzSlVoampOUEhzdFBEVHV1NDFWNi9id0tSVmJJNXZJNjkybVlOeUoz?=
+ =?utf-8?B?ajlRN2dvbmlxNm5lM3JmV2F6NVVaVUhlTkhXaW0rWE40SjloMEg2SE1pU0pH?=
+ =?utf-8?B?amcwcHp5bC9yY05YYUhFNloyMGM1dlg3amZwOXlaUkRJSkRkK05zR1hldW9N?=
+ =?utf-8?B?cVlzVlZpWU9mRFJmRE1TWXBNamdNb255SU9qazBlZjB4eVNwUXB2dU1LWjB6?=
+ =?utf-8?B?QmN4YTh6cnhwVVZVOHFTVS8yWXMyMHRWSnllR3RLMmRBQVNROU5JQWdETXU5?=
+ =?utf-8?B?REtxS0lHM2xlRzBNTFlqMzF1a1dkSXRNYWtHRVpLMjFhVDVEck9zaEFwakJW?=
+ =?utf-8?B?THZOOHVzaVZTS0ZLUlBVNXZVSzRMQTlvNjVZR1d2N3lWdkZSWHRqNkNNb1Nm?=
+ =?utf-8?B?RlJDdmlRVTR2M3lSNE1UbU5sYzQ2cngxbE5xYlBPMUNUdzZhTThFTHlGcHBG?=
+ =?utf-8?B?cEhUMDdoZ0dDOWhuTzJLVEZWRGhuWFpudVhKdCtBdENKc3hkMXhVY2RMdGxF?=
+ =?utf-8?B?UUE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 947b5cbd-2551-4afc-2249-08ddb7e445c7
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5249.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6418.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2735435-8fea-4c63-0e80-08ddb7e2df5c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2025 14:31:59.4046 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ATFsOJuUqI5BgxQKwwlyrjMENphsX9QWK74wy4PXq6/kax+LBF7xlszSywA5GR/n+su/TZ+EA2brXiErv/e6PaGsXp3+uFTJx2/HAVGGGKY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF4D011AE7D
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 14:42:01.1639 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9Fd1qtcjHZ2oEQpGas16lj0OsxTQK4bbfVbeAho/CPhvoRyly52MZ2sfpCkIXtB4b3zdbVRDLscEdFDgAwQf/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8726
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -184,692 +195,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
->-----Original Message-----
->From: Vivi, Rodrigo <rodrigo.vivi@intel.com>
->Sent: Friday, June 27, 2025 5:36 PM
->To: Ruhl, Michael J <michael.j.ruhl@intel.com>
->Cc: igt-dev@lists.freedesktop.org; De Marchi, Lucas
-><lucas.demarchi@intel.com>; david.e.box@linux.intel.com
->Subject: Re: [PATCH] test/intel/xe_pmt: Add testing for BMG crashlog
+
+On 30-06-2025 10:41, Sk Anirban wrote:
+> Update the vram-d3cold-threshold test to include validation of VRAM
+> self-refresh (VRSR) functionality, by including checks for VRSR capability
+> and ModS residency. The test now differentiates between D3Cold and D3Hot
+> states based on VRAM self-refresh capability.
 >
->On Fri, Jun 27, 2025 at 04:48:42PM -0400, Michael J. Ruhl wrote:
->> The BMG devices has the PMT crashlog feature. If the devices present
->> is a BMG, test PMT api.
->>
->> NOTE: the testing order is not flexible and must be done in
->> the currently specified order.
+> v2: Buffer size reduced from 4K to 256 and 8 bytes (Karthik)
+> v3: Update error message (Karthik)
 >
->Hmm.... I believe it is safer to create a single testcase then,
->without subtests, or a single subtest with the right order only.
+> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+> ---
+>   tests/intel/xe_pm.c | 49 ++++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 48 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index 7e9324eec..c9582d337 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -144,6 +144,27 @@ static void vram_d3cold_threshold_restore(int sig)
+>   	close(fd);
+>   }
+>   
+> +static uint64_t read_mods(device_t device)
+> +{
+> +	uint64_t mods_value;
+> +	char buf[256];
+> +	int dir, ret;
+> +	char *mods_ptr;
+> +
+> +	dir = igt_debugfs_dir(device.fd_xe);
+> +	igt_assert(dir >= 0);
+> +	ret = igt_debugfs_simple_read(dir, "gtidle/dgfx_pkg_residencies", buf, sizeof(buf));
+> +	igt_assert_f(ret >= 0, "Debugfs dgfx_pkg_residencies is not present.\n");
+> +
+> +	close(dir);
+> +
+> +	mods_ptr = strstr(buf, "Package ModS: ");
+> +	if (mods_ptr)
+> +		sscanf(mods_ptr, "Package ModS: %"PRIu64"\n", &mods_value);
+> +
+> +	return mods_value;
+> +}
+> +
+>   static bool setup_d3(device_t device, enum igt_acpi_d_state state)
+>   {
+>   	igt_require_f(igt_has_pci_pm_capability(device.pci_xe),
+> @@ -561,10 +582,25 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+>   	};
+>   	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold;
+>   	uint32_t bo, placement;
+> +	int vrsr_capability = 0;
+> +	uint64_t mods_value = 0;
+> +	char buf[8];
+> +	int dir, ret;
+>   	bool active;
+>   	void *map;
+>   	int i;
+>   
+> +	dir = igt_debugfs_dir(device.fd_xe);
+> +	igt_assert(dir >= 0);
+> +
+> +	ret = igt_debugfs_simple_read(dir, "vrsr_capable",
+> +				      buf, sizeof(buf));
+> +	igt_assert_f(ret >= 0, "Debugfs vrsr_capable is not present.\n");
+> +	close(dir);
+> +
+> +	if (strstr(buf, "true"))
+> +		vrsr_capability = 1;
+> +
+>   	igt_require(xe_has_vram(device.fd_xe));
+>   
+>   	placement = vram_memory(device.fd_xe, 0);
+> @@ -595,10 +631,21 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+>   	munmap(map, SIZE);
+>   	set_vram_d3cold_threshold(sysfs_fd, threshold);
+>   
+> +	if (vrsr_capability)
+> +		mods_value = read_mods(device);
+> +
+>   	/* Setup D3Cold but card should be in D3hot */
+>   	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
+>   	sleep(1);
+> -	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
+> +	if (vrsr_capability) {
+> +		igt_assert(in_d3(device, IGT_ACPI_D3Cold));
+> +		mods_value = read_mods(device) - mods_value;
+> +		igt_assert_f(mods_value > 0,
+> +			     "GPU couldn't enter ModS!");
+> +	} else {
+> +		igt_assert(in_d3(device, IGT_ACPI_D3Hot));
+> +	}
+> +
+>   	igt_assert(igt_pm_get_acpi_real_d_state(device.pci_root) == IGT_ACPI_D0);
+>   	gem_close(device.fd_xe, bo);
+>   
 
-Ok, I will explore that (one test) path.
+LGTM.
 
->BTW, this current flow here is okay to go without rebooting the
->machine and running this entire flow again?
+Reviewed-by: Karthik Poosa <karthik.poosa@intel.com>
 
-Once the crashlog is triggered, the machine will have to be rebooted (cold =
-restart).
 
-There is currently discussions as to how or if this requirement can be chan=
-ged, but the current
-use case requires the cold reboot.
-
-M
-
->>
->> Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
->> ---
->>  tests/intel/xe_pmt.c | 561
->+++++++++++++++++++++++++++++++++++++++++++
->>  tests/meson.build    |   1 +
->>  2 files changed, 562 insertions(+)
->>  create mode 100644 tests/intel/xe_pmt.c
->>
->> diff --git a/tests/intel/xe_pmt.c b/tests/intel/xe_pmt.c
->> new file mode 100644
->> index 000000000..21a2e74e7
->> --- /dev/null
->> +++ b/tests/intel/xe_pmt.c
->> @@ -0,0 +1,561 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright (c) 2025 Intel Corporation
->> + */
->> +
->> +/**
->> + * TEST: Verify BMG PMT files operations
->> + * Category: Core
->> + * Mega feature: General Core features
->> + * Sub-category: uapi
->> + * Functionality: sysfs
->> + * Description: Verify BMG PMT files are created and are accessable
->> + */
->> +
->> +#include <dirent.h>
->> +#include <limits.h>
->> +#include <string.h>
->> +#include <fcntl.h>
->> +#include <unistd.h>
->> +
->> +#include "igt.h"
->> +#include "igt_sysfs.h"
->> +#include "linux_scaffold.h"
->> +#include "xe_drm.h"
->> +#include "xe/xe_ioctl.h"
->> +#include "xe/xe_query.h"
->> +
->> +/* base directory names */
->> +#define VSEC_CRASHLOG_DIR "intel_vsec.crashlog."
->> +#define VSEC_TELEMETRY_DIR "intel_vsec.telemetry."
->> +#define CRASHLOG_DIR "crashlog"
->> +#define TELEMETRY_DIR "telem"
->> +#define BMG_CRASHLOG_CNT 2
->> +#define BMG_TELEMETRY_CNT 2
->> +
->> +enum bmg_crashlog_instances {
->> +	bmg_crashlog_punit =3D 0,
->> +	bmg_crashlog_oobmsm,
->> +	bmg_crashlog_max
->> +};
->> +
->> +enum bmg_telemety_instances {
->> +	bmg_telemetry_punit =3D 0,
->> +	bmg_telemetry_oobmsm,
->> +	bmg_telemetry_max
->> +};
->> +
->> +static char dev_path[PATH_MAX];
->> +static char work_path[PATH_MAX * 2];
->> +
->> +/*
->> + * In most case there should be a single instance of crashlog an teleme=
-try
->directories.
->> + * If DVSEC entries are separate the structure will be different.
->> + */
->> +static char crashlog_vsec_dir[32];
->> +static char telemetry_vsec_dir[32];
->> +
->> +/* This needs to be specific for each supported device */
->> +static char crashlog_dir[bmg_crashlog_max][32];
->> +static char telemetry_dir[bmg_telemetry_max][32];
->> +
->> +/* telemetry file names */
->> +static const char *telem =3D "telem";
->> +
->> +/* crashlog filenames and descriptors */
->> +static const char *clear =3D "clear";
->> +static const char *consumed =3D "consumed";
->> +static const char *crashlog =3D "crashlog";
->> +static const char *enable =3D "enable";
->> +static const char *error =3D "error";
->> +static const char *dev_guid =3D "guid";
->> +static const char *rearm =3D "rearm";
->> +static const char *trigger =3D "trigger";
->> +
->> +struct crashlog_v2_info {
->> +	int clear_fd;
->> +	int consumed_fd;
->> +	int crashlog_fd;
->> +	int enable_fd;
->> +	int error_fd;
->> +	int guid_fd;
->> +	int rearm_fd;
->> +	int trigger_fd;
->> +	u_int32_t guid;
->> +} bmg_info[bmg_crashlog_max];
->> +
->> +#define DEV_PATH_LEN 80
->> +
->> +/**
->> + * device_sysfs_path:
->> + * @fd: opened device file descriptor
->> + * @path: buffer to store sysfs path to device directory
->> + *
->> + * Returns:
->> + * On successfull path resolution sysfs path to device directory,
->> + * NULL otherwise
->> + */
->> +static char *device_sysfs_path(int fd, char *path)
->> +{
->> +        char sysfs[DEV_PATH_LEN];
->> +
->> +        if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
->> +                return NULL;
->> +
->> +        if (DEV_PATH_LEN <=3D (strlen(sysfs) + strlen("/device")))
->> +                return NULL;
->> +
->> +        strcat(sysfs, "/device");
->> +
->> +        return realpath(sysfs, path);
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_directories
->> + * BMG PMT directory structure:
->> + * device/intel_vsec.crashlog.x/intel_pmt/crashlog<a,b>
->> + * device/intel_vsec.telemetry.x/intel_pmt/telemetry<c,d>
->> + *
->> + * If this is done for a different platform, this could be
->> + * different.
->> + *
->> + */
->> +static void test_pmt_directories(int dev_fd)
->> +{
->> +	struct dirent *ent;
->> +	int index;
->> +	DIR *dir;
->> +
->> +        igt_assert(device_sysfs_path(dev_fd, dev_path));
->> +
->> +	/* verify top level PMT directories */
->> +	dir =3D opendir(dev_path);
->> +	igt_assert_f(dir, "no directories found\n");
->> +
->> +	while ((ent =3D readdir(dir)) !=3D NULL) {
->> +		if (strncmp(VSEC_CRASHLOG_DIR, ent->d_name,
->sizeof(VSEC_CRASHLOG_DIR) - 1) =3D=3D 0)
->> +			strcpy(crashlog_vsec_dir, ent->d_name);
->> +		if (strncmp(VSEC_TELEMETRY_DIR, ent->d_name,
->sizeof(VSEC_TELEMETRY_DIR) - 1) =3D=3D 0)
->> +			strcpy(telemetry_vsec_dir, ent->d_name);
->> +	}
->> +
->> +	closedir(dir);
->> +
->> +	igt_assert_f(strlen(crashlog_vsec_dir), "missing crashlog directory\n"=
-);
->> +	igt_assert_f(strlen(telemetry_vsec_dir), "missing telemetry
->directory\n");
->> +
->> +	/* verify crashlog directory structure */
->> +	sprintf(work_path, "%s/%s/%s", dev_path, crashlog_vsec_dir,
->"intel_pmt");
->> +
->> +	dir =3D opendir(work_path);
->> +	igt_assert_f(dir, "no intel_pmt directories found\n");
->> +
->> +	index =3D 0;
->> +	/* find the crashlog<x> directory instances */
->> +	while ((ent =3D readdir(dir)) !=3D NULL) {
->> +		if (strncmp(CRASHLOG_DIR, ent->d_name,
->sizeof(CRASHLOG_DIR) - 1) =3D=3D 0) {
->> +			if (index < bmg_crashlog_max)
->> +				strcpy(crashlog_dir[index], ent->d_name);
->> +			index++;
->> +		}
->> +	}
->> +
->> +	closedir(dir);
->> +
->> +	igt_assert_f(index =3D=3D bmg_crashlog_max, "too many crashlog entries
->%d\n", index);
->> +	for (int i =3D 0; i < ARRAY_SIZE(crashlog_dir); i++)
->> +		igt_assert_f(strlen(crashlog_dir[i]), "missing crashlog[%d]
->directory\n", i);
->> +
->> +	/* verify telemetry directory structure */
->> +	sprintf(work_path, "%s/%s/%s", dev_path, telemetry_vsec_dir,
->"intel_pmt");
->> +
->> +	dir =3D opendir(work_path);
->> +	igt_assert_f(dir, "no telemetry intel_pmt directories found\n");
->> +
->> +	index =3D 0;
->> +	while ((ent =3D readdir(dir)) !=3D NULL) {
->> +		if (strncmp(TELEMETRY_DIR, ent->d_name,
->sizeof(TELEMETRY_DIR) - 1) =3D=3D 0) {
->> +			if (index < BMG_TELEMETRY_CNT)
->> +				strcpy(telemetry_dir[index], ent->d_name);
->> +			index++;
->> +		}
->> +	}
->> +
->> +	closedir(dir);
->> +
->> +	igt_assert_f(index =3D=3D bmg_telemetry_max, "too many telemetry entri=
-es
->%d\n", index);
->> +	for (int i =3D 0; i < ARRAY_SIZE(telemetry_dir); i++)
->> +		igt_assert_f(strlen(telemetry_dir[i]), "missing telemetry[%d]
->directory\n", i);
->> +
->> +}
->> +
->> +static void find_pmt_file(const char *path, const char *file)
->> +{
->> +	struct dirent *ent;
->> +	bool found;
->> +	DIR *dir;
->> +
->> +	dir =3D opendir(path);
->> +	igt_assert_f(dir, "no intel_pmt directories found\n");
->> +
->> +	found =3D false;
->> +	while ((ent =3D readdir(dir)) !=3D NULL)
->> +		if (strcmp(file, ent->d_name) =3D=3D 0)
->> +			found =3D true;
->> +	closedir(dir);
->> +
->> +	igt_assert_f(found, "missing %s from %s\n", file, path);
->> +}
->> +
->> +static void open_pmt_file(const char *path, const char *file, int *fd, =
-int flags)
->> +{
->> +	char file_path[PATH_MAX];
->> +
->> +	sprintf(file_path, "%s/%s", path, file);
->> +
->> +	*fd =3D open(file_path, flags);
->> +	igt_assert_f(*fd > -1, "failed to open %s\n", file_path);
->> +
->> +	/* TODO: match flags to file attributes */
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_telemetry_files
->> + * Description: validate the expected telemetry file(s)
->> + * Test category: functionality test
->> + *
->> + */
->> +static void test_pmt_telemetry_files(int dev_fd)
->> +{
->> +	int i;
->> +
->> +	for (i =3D 0; i < BMG_TELEMETRY_CNT; i++) {
->> +		sprintf(work_path, "%s/%s/%s/%s", dev_path,
->telemetry_vsec_dir,
->> +			"intel_pmt", telemetry_dir[i]);
->> +		find_pmt_file(work_path, telem);
->> +	}
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_crashlog_files
->> + * Description: validate the expected crashlog files
->> + * Test category: functionality test
->> + *
->> + */
->> +static void test_pmt_crashlog_files(int dev_fd)
->> +{
->> +	char buf[64] =3D {};
->> +	int ret;
->> +	int i;
->> +
->> +	for (i =3D 0; i < ARRAY_SIZE(bmg_info); i++) {
->> +		sprintf(work_path, "%s/%s/%s/%s", dev_path,
->crashlog_vsec_dir, "intel_pmt",
->> +			crashlog_dir[i]);
->> +
->> +		open_pmt_file(work_path, clear, &bmg_info[i].clear_fd,
->O_RDONLY);
->> +		open_pmt_file(work_path, consumed,
->&bmg_info[i].consumed_fd, O_RDWR);
->> +		open_pmt_file(work_path, crashlog, &bmg_info[i].crashlog_fd,
->O_RDONLY);
->> +		open_pmt_file(work_path, enable, &bmg_info[i].enable_fd,
->O_RDWR);
->> +		open_pmt_file(work_path, error, &bmg_info[i].error_fd,
->O_RDONLY);
->> +		open_pmt_file(work_path, dev_guid, &bmg_info[i].guid_fd,
->O_RDONLY);
->> +		open_pmt_file(work_path, rearm, &bmg_info[i].rearm_fd,
->O_RDWR);
->> +		open_pmt_file(work_path, trigger, &bmg_info[i].trigger_fd,
->O_RDWR);
->> +
->> +		ret =3D pread(bmg_info[i].guid_fd, buf, sizeof(buf), 0);
->> +		igt_assert_f(ret > 0, "failed to read guid for device %d\n", i);
->> +		bmg_info[i].guid =3D strtol(buf, NULL, 16);
->> +		igt_assert_f(bmg_info[i].guid > 0, "failed to set guid for device
->%d\n", i);
->> +	}
->> +}
->> +
->> +#define ENABLE_MSG "1\n"
->> +#define DISABLE_MSG "0\n"
->> +
->> +static bool send_msg(int fd, const char *msg, const char *file) {
->> +	size_t len =3D strlen(msg);
->> +	int ret;
->> +
->> +	errno =3D 0;
->> +	ret =3D pwrite(fd, msg, len, 0);
->> +	if (ret !=3D len)
->> +		igt_info("%s failed: len: %ld vs %d  errno: %d\n", file, len, ret,
->> +			 errno);
->> +
->> +	return ret =3D=3D len;
->> +}
->> +
->> +static bool verify_msg(int fd, const char *msg, const char *file) {
->> +	size_t len =3D strlen(msg);
->> +	char buf[32] =3D {};
->> +	int ret;
->> +
->> +	errno =3D 0;
->> +	ret =3D pread(fd, buf, sizeof(buf), 0);
->> +	if (ret !=3D len)
->> +		igt_info("%s failed: len: %ld vs %d  errno: %d\n", file, len, ret,
->errno);
->> +
->> +	return ret =3D=3D len && strcmp(buf, msg) =3D=3D 0;
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_crashlog_enable
->> + * Description: Set enable enable/disable bit and verify usage
->> + * Test category: functionality test
->> + *
->> + */
->> +static void test_pmt_crashlog_enable(int dev_fd)
->> +{
->> +	u_int32_t guid;
->> +	int fd;
->> +	int i;
->> +
->> +	for (i =3D 0; i < ARRAY_SIZE(bmg_info); i++) {
->> +		fd =3D bmg_info[i].enable_fd;
->> +		guid =3D bmg_info[i].guid;
->> +
->> +		/* force enable so we are in a known state */
->> +		igt_assert_f(send_msg(fd, ENABLE_MSG, enable), "0x%x: send
->enable\n", guid);
->> +		igt_assert_f(verify_msg(fd, ENABLE_MSG, enable), "0x%x:
->verify enable\n", guid);
->> +
->> +		/* disable */
->> +		igt_assert_f(send_msg(fd, DISABLE_MSG, enable), "0x%x: send
->disable\n", guid);
->> +		igt_assert_f(verify_msg(fd, DISABLE_MSG, enable), "0x%x:
->verify disable\n", guid);
->> +
->> +		/* re-enable so we can do more testing */
->> +		igt_assert_f(send_msg(fd, ENABLE_MSG, enable), "0x%x: re-
->enable\n", guid);
->> +		igt_assert_f(verify_msg(fd, ENABLE_MSG, enable), "0x%x:
->verify re-enable\n", guid);
->> +	}
->> +
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_crashlog_clear
->> + * Description:
->> + *   Test the clear crashlog bit. After setting the crashlog data buffe=
-r should be
->> + *   set to 0xdeadbeef.
->> + *   "0" (DISABLE_MSG) is written to the trigger file to set the clear =
-bit.  BMG
->does
->> + *   writing to the clear file, but once the bit is set it cannot be cl=
-eared with a
->> + *   reboot.  "0" to trigger is the "standard" usage, so test it.
->> + *
->> + * Test category: functionality test
->> + *
->> + */
->> +static void test_pmt_crashlog_clear(int dev_fd)
->> +{
->> +	char buf[64] =3D {};
->> +	u_int32_t guid;
->> +	int crashlog_fd;
->> +	int trigger_fd;
->> +	int clear_fd;
->> +	int *val;
->> +	int len;
->> +	int i;
->> +
->> +	for (i =3D 0; i < ARRAY_SIZE(bmg_info); i++) {
->> +		clear_fd =3D bmg_info[i].clear_fd;
->> +		crashlog_fd =3D bmg_info[i].crashlog_fd;
->> +		trigger_fd =3D bmg_info[i].trigger_fd;
->> +		guid =3D bmg_info[i].guid;
->> +
->> +		/* make sure the bit is clear */
->> +		igt_assert_f(verify_msg(clear_fd, DISABLE_MSG, clear), "0x%x:
->verify clear\n", guid);
->> +
->> +		/* set the clear bit (0 -> trigger)*/
->> +		igt_assert_f(send_msg(trigger_fd, DISABLE_MSG, trigger),
->"0x%x: send enable\n", guid);
->> +
->> +		/* make sure the bit is set.  sleep() to allow HW to set the bit */
->> +		sleep(1);
->> +		igt_assert_f(verify_msg(clear_fd, ENABLE_MSG, clear), "0x%x:
->clear set\n", guid);
->> +
->> +		len =3D read(crashlog_fd, buf, sizeof(buf));
->> +		igt_assert_f(len =3D=3D sizeof(buf), "0x%x: failed to read crashlog
->data\n", guid);
->> +
->> +		/* wa punit issue for first crashlog (NOTE: this is fixed)*/
->> +		if (i =3D=3D 0)
->> +			val =3D (int *) &buf[32];
->> +		else
->> +			val =3D (int *)buf;
->> +
->> +		igt_assert_f(*val =3D=3D 0xdeadbeef, "0x%x: invalid clear data value:
->: 0x%x", guid, *val);
->> +	}
->> +
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_crashlog_consumed
->> + * Description:
->> + *   After a crashlog has been "consumed" (read), setting this bit can =
-be done.
->> + *   Verify that it is set correctly.
->> + * Test category: functionality test
->> + *
->> + */
->> +static void test_pmt_crashlog_consumed(int dev_fd)
->> +{
->> +	uint32_t guid;
->> +	int fd;
->> +	int i;
->> +
->> +	for (i =3D 0; i < ARRAY_SIZE(bmg_info); i++) {
->> +		fd =3D bmg_info[i].consumed_fd;
->> +		guid =3D bmg_info[i].guid;
->> +
->> +		/* check, set, verify */
->> +		igt_assert_f(verify_msg(fd, DISABLE_MSG, consumed), "0x%x:
->consumed clear\n", guid);
->> +		igt_assert_f(send_msg(fd, ENABLE_MSG, consumed), "0x%x:
->set consumed\n", guid);
->> +		/* sleep(1) to allow HW to set the bit */
->> +		sleep(1);
->> +		igt_assert_f(verify_msg(fd, ENABLE_MSG, consumed), "0x%x:
->verify consumed\n", guid);
->> +	}
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_crashlog_error
->> + * Description:
->> + *    The error bit is set when a crashlog fails in HW.  It is read onl=
-y so only
->> + *    need to verify that it is "0".
->> + * Test category: functionality test
->> + *
->> + */
->> +static void test_pmt_crashlog_error(int dev_fd)
->> +{
->> +	uint32_t guid;
->> +	int i;
->> +
->> +	for (i =3D 0; i < ARRAY_SIZE(bmg_info); i++) {
->> +		guid =3D bmg_info[i].guid;
->> +		igt_assert_f(verify_msg(bmg_info[i].error_fd, DISABLE_MSG,
->error), "0x%x: error clear\n", guid);
->> +	}
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_crashlog_rearm
->> + * Description:
->> + *    The rearm bit is set at cold boot.  It cannot be reset unless are=
- real
->crashlog
->> + *    occurs (i.e. setting trigger will not change its value).  Verify =
-that it is "1".
->> + * Test category: functionality test
->> + *
->> + */
->> +static void test_pmt_crashlog_rearm(int dev_fd)
->> +{
->> +	uint32_t guid;
->> +	int i;
->> +
->> +	for (i =3D 0; i < ARRAY_SIZE(bmg_info); i++) {
->> +		guid =3D bmg_info[i].guid;
->> +		igt_assert_f(verify_msg(bmg_info[i].rearm_fd, ENABLE_MSG,
->rearm), "0x%x: rearm set\n", guid);
->> +	}
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_crashlog_rearm_after_disable
->> + * Description:
->> + *    After a disable/enable sequence REARM will be set for PUNINT inst=
-aces
->and
->> + *    clear for OOBMSM instances.
->> + *    Verify that the bits are set as expected
->> + *
->> + * Test category: functionality test
->> + *
->> + */
->> +static void test_pmt_crashlog_rearm_after_disable(int dev_fd)
->> +{
->> +	uint32_t guid;
->> +	int i;
->> +
->> +	i =3D bmg_crashlog_punit;
->> +	guid =3D bmg_info[i].guid;
->> +	igt_assert_f(verify_msg(bmg_info[i].rearm_fd, ENABLE_MSG, rearm),
->"0x%x: rearm set\n", guid);
->> +
->> +	i =3D bmg_crashlog_oobmsm;
->> +	guid =3D bmg_info[i].guid;
->> +	igt_assert_f(verify_msg(bmg_info[i].rearm_fd, DISABLE_MSG, rearm),
->"0x%x: rearm set\n", guid);
->> +}
->> +
->> +/**
->> + * SUBTEST: test_pmt_crashlog_trigger
->> + * Description:
->> + *    Set the manual trigger bit and make sure the data is not 0xdeadbe=
-ef
->> + * Test category: functionality test
->> + *
->> + */
->> +static void test_pmt_crashlog_trigger(int dev_fd)
->> +{
->> +	char buf[64] =3D {};
->> +	u_int32_t *val;
->> +	int crashlog_fd;
->> +	int trigger_fd;
->> +	u_int32_t guid;
->> +	int len;
->> +	int i;
->> +
->> +	for (i =3D 0; i < ARRAY_SIZE(bmg_info); i++) {
->> +		crashlog_fd =3D bmg_info[i].crashlog_fd;
->> +		trigger_fd =3D bmg_info[i].trigger_fd;
->> +		guid =3D bmg_info[i].guid;
->> +
->> +		/* make sure the bit is clear */
->> +		igt_assert_f(verify_msg(trigger_fd, DISABLE_MSG, trigger),
->"0x%x: trigger clear\n",
->> +			     guid);
->> +		/* set the trigger bit (1 -> trigger)*/
->> +		igt_assert_f(send_msg(trigger_fd, ENABLE_MSG, trigger),
->"0x%x: set trigger\n", guid);
->> +
->> +		/* sleep to let the HW do its thing */
->> +		sleep(1);
->> +
->> +		/* make sure the bit is set */
->> +		igt_assert_f(verify_msg(trigger_fd, ENABLE_MSG, trigger),
->"0x%x: trigger not set\n",
->> +			     guid);
->> +
->> +		len =3D read(crashlog_fd, buf, sizeof(buf));
->> +		igt_assert_f(len =3D=3D sizeof(buf), "0x%x: failed to read crashlog
->data\n", guid);
->> +
->> +		val =3D (u_int32_t *)buf;
->> +
->> +		igt_assert_f(*val !=3D 0xdeadbeef, "0x%x: invalid trigger value: :
->0x%x", guid, *val);
->> +	}
->> +}
->> +
->> +igt_main
->> +{
->> +	const struct {
->> +		const char *name;
->> +		void (*func)(int);
->> +	} funcs[] =3D {
->> +		/*
->> +		 * NOTE:
->> +		 *  o These tests are ordered.  Do not use them individualy
->unless you understand
->> +		 *    the underlying HW behavior
->> +		 *  o Testing MUST be done after a cold reset
->> +		 *  o Once crashlog is triggered the device needs a cold reset,
->and some of the
->> +		 *    tests cannot be done.
->> +		 *  Only change this order if you understand this feature.
->> +		 */
->> +		{ "pmt-directories", test_pmt_directories },
->> +		{ "pmt-telemetry-files", test_pmt_telemetry_files },
->> +		{ "pmt-crashlog-files", test_pmt_crashlog_files },
->> +		{ "pmt-crashlog-error", test_pmt_crashlog_error },
->> +		{ "pmt-crashlog-rearm", test_pmt_crashlog_rearm },
->> +		{ "pmt-crashlog-enable", test_pmt_crashlog_enable },
->> +		{ "pmt-crashlog-rearm_after_disable",
->test_pmt_crashlog_rearm_after_disable },
->> +		{ "pmt-crashlog-trigger", test_pmt_crashlog_trigger },
->> +		{ "pmt-crashlog-consumed", test_pmt_crashlog_consumed },
->> +		{ "pmt-crashlog-clear", test_pmt_crashlog_clear },
->> +		{ }
->> +	}, *f;
->> +	uint16_t dev_id;
->> +	int dev_fd;
->> +
->> +	igt_fixture
->> +		dev_fd =3D drm_open_driver(DRIVER_XE);
->> +
->> +	dev_id =3D intel_get_drm_devid(dev_fd);
->> +
->> +	if (IS_BATTLEMAGE(dev_id)) {
->> +		for (f =3D funcs; f->name; f++) {
->> +			igt_subtest_f("%s", f->name)
->> +				f->func(dev_fd);
->> +		}
->> +	}
->> +
->> +	igt_fixture
->> +		drm_close_driver(dev_fd);
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 9b87a0d24..4276e6967 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -315,6 +315,7 @@ intel_xe_progs =3D [
->>  	'xe_peer2peer',
->>  	'xe_pm',
->>  	'xe_pm_residency',
->> +	'xe_pmt',
->>  	'xe_pmu',
->>  	'xe_prime_self_import',
->>  	'xe_pxp',
->> --
->> 2.49.0
->>
