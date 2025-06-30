@@ -4,103 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8978C83029
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 18:09:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2652AC8302D
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 18:09:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 81DD310E4B8;
+	by gabe.freedesktop.org (Postfix) with ESMTP id CFD7310E4BA;
 	Mon, 30 Jun 2025 18:09:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.b="omsmwrcJ";
+	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.b="QyCU05It";
 	dkim-atps=neutral
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
  [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD1D910E4B6
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:44 +0000 (UTC)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55UG2eDn008169
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:44 GMT
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57B1710E4B3
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:41 +0000 (UTC)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55UGG3Pd001184
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
  cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=+lRr3gI/KD/
- sDiUpT3STEHoC0WFSv9i9T/J/yu1bztI=; b=omsmwrcJrXdIln5amOugIOsfUNE
- KZMMy1xv0xpvtpQZc/3EKS2GfBLA8n3ruxkdMvUgsOoGN7vX/ST+Sozp2eBuYuIp
- ajwshwD3dqzb2Ho5qaLrnVe0LbnB4w5j0NPg8D6QAHAME6sEiNbZsCodoWyCew1L
- +nUmNjdXU2noJeeCYBvLZvVMAy1X9IlNVmiCpf1ObvI2i9LzYxKSp2VQ4eE68vSj
- ZaD6mVbd7+B9nwXtaU0T1US36uo3Wcp0/L04PNpM/actHYaB17iVsgD9fa2R6PRB
- d2JWWVhDOae+PsgCilQMrQOasByJzPSbH39B47WL5M+eVSKQQnV8j/+3+PA==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47kkfmte1f-1
+ :mime-version:references:subject:to; s=qcppdkim1; bh=55DQSDgU9XN
+ WkZSlf7911sVDtNc0BKCuuJITO8Sc7fo=; b=QyCU05ItWiAZAZNy1fGrl97gOkx
+ SwAUgVexeb8JttYAYuMFiKR4md1DQ/VmlQUT2Q3l9ruhhUNv/7TjpX8hiEMzIq42
+ lVmgRXaBZAU0NhGyUUIS3Y22d7/wRt5HTkL2tOn1HXUzWjpuSSfCg5epJNMql9OQ
+ LiQJ7LrcJa3iCg/FkwEe4NlCA+o1PQ0vBNikoaobwj+iD2Y+ha39jTyenywrriwj
+ 7YOKmmHFeaElancx54uPREK9gRWUIPzy9QZQ4ZLgmAjjsc+phD7bu8sv5a9w2QIu
+ JdheTtX3xgVv9qbR7oZswboaSc9IhdH2yWiEzttEjawKJ/TEioBATi2lABA==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j7qm5rak-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:42 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-7491814d6f2so5295634b3a.3
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 11:09:42 -0700 (PDT)
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 18:09:40 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-237f8d64263so38816675ad.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 11:09:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751306981; x=1751911781;
+ d=1e100.net; s=20230601; t=1751306979; x=1751911779;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+lRr3gI/KD/sDiUpT3STEHoC0WFSv9i9T/J/yu1bztI=;
- b=JE4EEKLplH+R0vbjg54csuvYeMmkuTMsUuv4OWiSL1WWiCQhyxXdnN20eZIvJNa5bq
- zZSyGn76VtoKZJD1XJYP8NYPQd3zWexBNKueEk7GNQZyPRzDYH258l5zgUD/DtK6nLmp
- FMSdbV3kO1yLWvzSGAXX35qmwoI1kksLclu7vPywN0S6EXq9zzcmaRJbj8qnVI46O7Xz
- ArZB4TdKemOyBGG6HF5DMy24h7OStScoRrnz6vm+f5D4+r4ZzMYJMWkT24u6pyyXrkU6
- cXq6KrArwoJdp7hY3dC2SaBM4h3yYA2kjBf1AnIfhLl28YxqvyS3SxNfj5UyIgx/yiSM
- t4/w==
-X-Gm-Message-State: AOJu0Yz/iQ09UVV0eOGm8AAi71jof4szJLUoIq0OOXgAj3dJ2UdoDlbw
- G2u9aqwJmwMNBSrwgezQNHQLMzb8z2wTlUf8dUy7ntPYkp/SwEXa83Ass2+JxYW+8m9VlMOEk/l
- qZPBmHcYyL2+q5r1q+aCyLnKwpnWXxhMtLDKyB3aTC7gmO02kJC01flKypw/9u/mZaZOJHzLaxk
- 8P
-X-Gm-Gg: ASbGncuNdp8LsHpsZnbMaa1beV0v+IEjJGI7OF3eK9Az+u9uT66fLQcwhgg/xbpTiii
- Oh4vwTKscI8P5SNGRJdpKdbJEb8MrMxgBh42QovAptdFkMRojzLsmxuVt5rGCy3SUFQttUIGrtK
- IjfyiJ5FZKmDj/O8mT6tfRdQ3qmUiOkBG0q1Khn+PvymV+dYGyA4Tqpkw97Vs5VNCHIbtgsu3Lu
- 8NO/1hJMb/LG4GiNbfeQVrmEzux1IlOpoRyz7Y92Gvz97+CKrqr3TONmgcfefeINgVGTz2EILqw
- Pt/2FPc0W8ZZars/O0HwEwVOs4A3z0wQVw==
-X-Received: by 2002:a05:6a00:1a8f:b0:748:f406:b09 with SMTP id
- d2e1a72fcca58-74af6fca3d4mr23163231b3a.23.1751306981533; 
- Mon, 30 Jun 2025 11:09:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7CND6tKFO5hUMumYDZaZW9zhAXvptM83/cyBuGl+RUxf6hGSdNgBe57l5cuijhzysQkCevg==
-X-Received: by 2002:a05:6a00:1a8f:b0:748:f406:b09 with SMTP id
- d2e1a72fcca58-74af6fca3d4mr23163193b3a.23.1751306980981; 
- Mon, 30 Jun 2025 11:09:40 -0700 (PDT)
+ bh=55DQSDgU9XNWkZSlf7911sVDtNc0BKCuuJITO8Sc7fo=;
+ b=Hyi1aTCNXqYDbIvrNrDgURE++VBYf/2QsMMG+pAH2l1BtmPjw3i7L+mX5MEFjhQdeR
+ 4aWMPwwyZYiQt+kZblSvp56lBb4Z7wF0lDTcModbNvpAeMBsTlKAJF88c4oRoHEk3eDH
+ Oz5Hjyse/oAiW9A/GeA01L9+HEhbJJflRWkb2vf267Zb98I18CbI+IkMytnM/Zmc6rj1
+ /Cx5nq0acets+NNWUn/GO4Sdh+HGYGp9oqAP9KPhs68m+6TpEsCY30/hTxa3DuMI7s32
+ 2O9YvGzITfRE0ImjyqAlw07UBrDE96TYQK2DB1UR01bhegvr+q6k7Uk5uwF9mqV7dB42
+ j3Cw==
+X-Gm-Message-State: AOJu0YxHxUtXPMOuEUMGYcVM9V1AmIeMslWDseq7by0DheCIFhukZi4p
+ oBB0I5y2+TCdRl83/G/CkUhNmhKj5SyAOSXFy9cWpsaz/WXmL9wUAOx2pLxoKUOTEooKdcaiFt/
+ w/43c5nHbTAUx1YVRuXz0fTz8y5AHo1wiphRuh9tZ8d3AX+VBb92Qv4ayAt0xuZutdhM570/cgu
+ LM
+X-Gm-Gg: ASbGncuycU9HXDHwQmuYx/4YaDlE3wPQ9gayU7JtXb25pxwIz55dJWooKLhORjN1z3P
+ K0jiamt+WCeM5vF83hCUKot4gB+OOpkmJo23/YgZygsKPlQSbBOkm+4BeVdbo6dvgfEAkW4Yzi1
+ +I8PkNA/wPNyHPJJY98NT4fuOPDcqStKa3gkrS9Xr8n9/0GLZ1axRmpQg1v59E5Z+o5dH3XTn8c
+ Ul9ulYsXTwNj9ff0Zx1t2aggflpIZlQgfRRhrIUTZTyB9uArA2xnhW7RV6hhhfrv7yLBShK6WRF
+ fAOV0KxHlgDHApgAzsHT2js6WrxDCETGrA==
+X-Received: by 2002:a17:903:3d0e:b0:235:f45f:ed53 with SMTP id
+ d9443c01a7336-23ac45e376amr211248865ad.33.1751306979038; 
+ Mon, 30 Jun 2025 11:09:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEimgSP5MOd1GlXXxOYUtftx/nDjse1hzrKVUKPUaxykf/eRNnjnuj1oXkCdn8EmNGh/YHSYA==
+X-Received: by 2002:a17:903:3d0e:b0:235:f45f:ed53 with SMTP id
+ d9443c01a7336-23ac45e376amr211248575ad.33.1751306978638; 
+ Mon, 30 Jun 2025 11:09:38 -0700 (PDT)
 Received: from localhost ([2601:1c0:5000:d5c:5b3e:de60:4fda:e7b1])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74af56cffe4sm9288372b3a.138.2025.06.30.11.09.40
+ d9443c01a7336-23acb3b8ec2sm86706595ad.183.2025.06.30.11.09.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Jun 2025 11:09:40 -0700 (PDT)
+ Mon, 30 Jun 2025 11:09:38 -0700 (PDT)
 From: Rob Clark <robin.clark@oss.qualcomm.com>
 To: igt-dev@lists.freedesktop.org
-Cc: linux-arm-msm@vger.kernel.org, Rob Clark <rob.clark@oss.qualcomm.com>
-Subject: [PATCH igt 7/9] msm/mapping: Handle larger gmem file size
-Date: Mon, 30 Jun 2025 11:09:01 -0700
-Message-ID: <20250630180903.77990-8-robin.clark@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, Rob Clark <robdclark@chromium.org>,
+ Rob Clark <rob.clark@oss.qualcomm.com>
+Subject: [PATCH igt 5/9] msm/mapping: Add additional subtests
+Date: Mon, 30 Jun 2025 11:08:59 -0700
+Message-ID: <20250630180903.77990-6-robin.clark@oss.qualcomm.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250630180903.77990-1-robin.clark@oss.qualcomm.com>
 References: <20250630180903.77990-1-robin.clark@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: c-pw1VGC1iQTP7QUOUtkpYjKG4k2KNwL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDE0NyBTYWx0ZWRfX6FKCYtutkYlt
- /IMBcROuQAGNsH6I4fXcpik+lngFokaU2z3/UlxVRDoIBbH5DP8D4nD/wCTJvGfc8cAnfQ39Khx
- dLboAFG0ibWNzTmF0V2hpokInMk6qFwnoqIUZV0XM82gnw2G8g4w2ABZNoQ0ya1rmJEfX00MlsH
- uxseeer95LIPV7kS7fW0KoSo04wzqftxUncMia61nLeNAhsBDjlBdFOdBglSRuTajh2HJFYPY4H
- ubnA6xo7DFrY8Pz6kMPBYw9iJs48XqZhF5w9E/ZS2oiHD7GRT9/jMivrtjNd87m/49798t43qTz
- ocVrPsrwE4zBeAgtN4igzwqI5pFjqklQ/bvEVtgd2m7TFMObYO+0CiqcRYa2Hjx3CpsiXvlRWHw
- PFF4XB1hriC7Js+nUZighqihbt0c46X40owigVeBHgRhQM+v9hkNiQtOsj5jJqrmdRKejcJm
-X-Authority-Analysis: v=2.4 cv=L9sdQ/T8 c=1 sm=1 tr=0 ts=6862d2e6 cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=xqWC_Br6kY4A:10 a=6IFa9wvqVegA:10
- a=EUspDBNiAAAA:8 a=vubaehVBMwJoC4cWCuwA:9 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-GUID: c-pw1VGC1iQTP7QUOUtkpYjKG4k2KNwL
+X-Authority-Analysis: v=2.4 cv=C4TpyRP+ c=1 sm=1 tr=0 ts=6862d2e4 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=xqWC_Br6kY4A:10 a=6IFa9wvqVegA:10
+ a=cm27Pg_UAAAA:8 a=EUspDBNiAAAA:8 a=uKBAPi6pz9e2o7ac47oA:9
+ a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-ORIG-GUID: wI8V6mk_x4qXuEbWJoLdWrdkNSmUfYBz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDE0NiBTYWx0ZWRfX79+8iYSJC6PX
+ NrONMM9h4A5d+m9qgXnIR4moDQy/7OUI8ND/SGRLvgROgM6+2+TUKnSIQV3D5rsGB9Le6/H/t9c
+ 0yrXZCnY2zA9HFknrqNJxj8GPnaUepdlQCpv8wpPk88IySo0uglgRmBpseaWNgKFP1CLjGCdv5G
+ XC+VF5L5gVr8Rufa4e2HhnZ4kgpJSmeetAPzWDMI0FSurzrD/tnMzWPpN2prp4Uj0RhJpaOFSPu
+ RSQbXRvcUzp5Dfzbk/EDJ/hTdnc6IlHUvZNTWJ5d2yex8FYf2Ov2m97j+tTAbWmPr6GoRMI0Coh
+ ZgNpy0+qawRX547bA5c94ntyedOjvJiq+1dH8rcsAimN4aYqM9V6HJ8pgRYAgqlNb90450k+93m
+ Iv6/xLJvwp/6J670QGDvrxHw/cVaVE4ZFrc9L7E61CnAdvwseApFs6j5JXogVWAeuUiahr0Y
+X-Proofpoint-GUID: wI8V6mk_x4qXuEbWJoLdWrdkNSmUfYBz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-06-30_04,2025-06-27_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 phishscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 mlxlogscore=886
- bulkscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ impostorscore=0 phishscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ clxscore=1015 priorityscore=1501 spamscore=0 mlxscore=0 mlxlogscore=788
+ adultscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506300147
+ definitions=main-2506300146
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,29 +118,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Rob Clark <rob.clark@oss.qualcomm.com>
+From: Rob Clark <robdclark@chromium.org>
 
-If running on a system with full desktop environment, the file will be
-much larger than 0x4000 bytes.
+Test a few additional buffers that userspace should not have access to.
 
 Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
 ---
- tests/msm/msm_mapping.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/msm/msm_mapping.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
 diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
-index 03a9e814c931..978ea18375dd 100644
+index 5afbcd081fc7..846385bb5206 100644
 --- a/tests/msm/msm_mapping.c
 +++ b/tests/msm/msm_mapping.c
-@@ -122,7 +122,7 @@ endswith(const char *str, const char *end)
- static uint64_t
- get_bo_addr(int drm_fd, const char *name)
- {
--	char buf[0x4000];
-+	char buf[0x80000];
- 	char *p = buf;
+@@ -253,6 +253,36 @@ igt_main
+ 		do_mapping_test(pipe, "shadow", false);
+ 	}
  
- 	igt_debugfs_read(drm_fd, "gem", buf);
++	igt_describe("Test pwrup_reglist mapping, should be inaccessible");
++	igt_subtest("pwrup_reglist") {
++		do_mapping_test(pipe, "pwrup_reglist", true);
++		do_mapping_test(pipe, "pwrup_reglist", false);
++	}
++
++	igt_describe("Test memptrs mapping, should be inaccessible");
++	igt_subtest("memptrs") {
++		/*
++		 * This test will fail on older GPUs without HW_APRIV, but
++		 * there isn't a good way to test that from userspace, short
++		 * of maintaining a giant table.  Probably just easier to
++		 * list it in xfails or skips for those GPUs.
++		 */
++		do_mapping_test(pipe, "memptrs", true);
++		do_mapping_test(pipe, "memptrs", false);
++	}
++
++	igt_describe("Test 'preempt_record ring0' mapping, should be inaccessible");
++	igt_subtest("preempt_record_ring0") {
++		do_mapping_test(pipe, "preempt_record ring0", true);
++		do_mapping_test(pipe, "preempt_record ring0", false);
++	}
++
++	igt_describe("Test 'preempt_smmu_info ring0' mapping, should be inaccessible");
++	igt_subtest("preempt_smmu_info_ring0") {
++		do_mapping_test(pipe, "preempt_smmu_info ring0", true);
++		do_mapping_test(pipe, "preempt_smmu_info ring0", false);
++	}
++
+ 	igt_fixture {
+ 		igt_msm_pipe_close(pipe);
+ 		igt_msm_dev_close(dev);
 -- 
 2.50.0
 
