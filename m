@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9151EC8302F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8483DC83029
 	for <igt-dev@archiver.kernel.org>; Mon, 30 Jun 2025 13:37:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2C48A10E222;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 38E6D10E44F;
 	Mon, 30 Jun 2025 13:37:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nBGyhj8P";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I0I6AowS";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2330D10E44F
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 065A510E222
  for <igt-dev@lists.freedesktop.org>; Mon, 30 Jun 2025 13:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1751290660; x=1782826660;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iVXlrNJ+GGjaxpUgoZ/rUdsYUegKo5o2MJIEvyzqMMM=;
- b=nBGyhj8PoEzjQmD+6A+9il7K25R2L18mFAGfIzg75UEWSvU8IjLx2bKm
- eNnHwv0HKv1mKoaUxNUSacT+aXEayEgDizDQkFRGozBojyIAPK3IeSOv7
- GJRoWbEmsBwN1esFoVqrZkoE5SstKaaLBdVVDjJPtz4SZ/BjehpR5n+Z3
- p6uQv6S+EIFNRUU2epLPK701idL9ZvlUHUCJoezKfecSEzYaCSQAnZyD9
- 4/RtsTgEMRjLyWNgDGFbr/EUpgyu8mH/k6CRyv/fCE9WgAGWpnrM5KIBU
- UY/noSPzwB6mQPJzGuhMe7XhijJC74rgxE/93LwpzfjLTzpNt4iYuDGyI g==;
-X-CSE-ConnectionGUID: Lsu4z4ogQuWYGfQgqFM6zQ==
-X-CSE-MsgGUID: o5jL54tcQi2jNWCSO/rW0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="57322570"
-X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="57322570"
+ bh=HS+Tilt92kvUdw3mSp+YF8wNAXm6n/cqD0QW8qEvwfE=;
+ b=I0I6AowSERrTDrpufBOd42tLi1VByNkwsHmOCXFwZjgOKce7TZpqHMYf
+ wrETt2hHQ3U48Dzzoma+P7Lifq6mE/+Sr77tedRPv1ITqEYtFPS9SnZW9
+ CcUeq0xMFeKdQpt+E70BbCPFGS0vLA9s3hzcs/js9DxjLxrWNzDPEPsOC
+ TsXsUB5Cv2bUA28VwG8ZBULEeQsTu5pC/HsTlyuB7bMpNMhmNViGFV0+K
+ 29wQFBW5QyoVUnRBadqcfCecW4YWE/Vk6W84cK5K1h7TURHHafZtU2y0h
+ mqRysDB8RPPMOIvB/HeXAslghPHhTrH2aJI9ckPtAXdyobRmIuAP/lTqH A==;
+X-CSE-ConnectionGUID: bJ/CTlaFQTSi+Pye0Hr1RQ==
+X-CSE-MsgGUID: iiNnfzDETyKBAHIk8SYeTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="57322566"
+X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="57322566"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2025 06:37:40 -0700
-X-CSE-ConnectionGUID: XRy0P05DSNymtKknhwVOGQ==
-X-CSE-MsgGUID: 8LH7xNFEQ3yUQLFmjOZyVw==
+ 30 Jun 2025 06:37:39 -0700
+X-CSE-ConnectionGUID: U99iB1u1Sv2ZDPN2qWzN5g==
+X-CSE-MsgGUID: TwbPdRqrS1eEhlWeYWbLMw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="159188330"
+X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; d="scan'208";a="159188323"
 Received: from linux-panther-lake-client-platform.iind.intel.com (HELO
  linux-Lunar-Lake-Client-Platform.iind.intel.com) ([10.227.88.71])
- by orviesa005.jf.intel.com with ESMTP; 30 Jun 2025 06:37:39 -0700
+ by orviesa005.jf.intel.com with ESMTP; 30 Jun 2025 06:37:38 -0700
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH v3 5/7] tests/intel/kms_fbcon_fbt: Enable the tests support
+Subject: [PATCH v4 4/7] tests/intel/kms_dirtyfb: Enable the tests support
  variations based on the WAs
-Date: Mon, 30 Jun 2025 19:11:43 +0530
-Message-Id: <20250630134145.836-6-mohammed.thasleem@intel.com>
+Date: Mon, 30 Jun 2025 19:11:42 +0530
+Message-Id: <20250630134145.836-5-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250630134145.836-1-mohammed.thasleem@intel.com>
 References: <20250630134145.836-1-mohammed.thasleem@intel.com>
@@ -75,39 +75,25 @@ v3: Updated logic at igt_skip_on_f. (Kamil)
 
 Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_fbcon_fbt.c | 5 +++--
+ tests/intel/kms_dirtyfb.c | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index fedacec94..f3843cdb0 100644
---- a/tests/intel/kms_fbcon_fbt.c
-+++ b/tests/intel/kms_fbcon_fbt.c
-@@ -40,6 +40,7 @@
- #include <sys/types.h>
- #include <sys/stat.h>
- #include <fcntl.h>
-+#include "i915/intel_fbc.h"
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index a5707c5b1..51b4d446f 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -381,8 +381,9 @@ igt_main
+ 					data.mode = igt_output_get_mode(data.output);
  
- /**
-  * SUBTEST: fbc
-@@ -455,7 +456,7 @@ igt_main
- 		     "tracking infrastructure with fbc enabled.");
- 	igt_subtest("fbc") {
- 		/* FBC disabled: Wa_16023588340 */
--		igt_require_f(!IS_BATTLEMAGE(drm.devid), "FBC isn't supported on BMG\n");
-+		igt_skip_on_f(intel_is_fbc_disabled_by_wa(drm.fd), "WA has disabled FBC on BMG\n");
- 		subtest(&drm, &fbc, false);
- 	}
+ 					/* FBC disabled: Wa_16023588340 */
+-					igt_skip_on_f((IS_BATTLEMAGE(data.devid) && data.feature == FEATURE_FBC),
+-						       "FBC isn't supported on BMG\n");
++					igt_skip_on_f(data.feature == FEATURE_FBC &&
++						      intel_is_fbc_disabled_by_wa(data.drm_fd),
++						      "WA has disabled FBC on BMG\n");
  
-@@ -468,7 +469,7 @@ igt_main
- 		     "tracking infrastructure with fbc enabled.");
- 	igt_subtest("fbc-suspend") {
- 		/* FBC disabled: Wa_16023588340 */
--		igt_require_f(!IS_BATTLEMAGE(drm.devid), "FBC isn't supported on BMG\n");
-+		igt_skip_on_f(intel_is_fbc_disabled_by_wa(drm.fd), "WA has disabled FBC on BMG\n");
- 		subtest(&drm, &fbc, true);
- 	}
- 
+ 					/* FBC Disp_ver 8 and below supports only I915_FORMAT_MOD_X_TILED */
+ 					if (data.feature == FEATURE_FBC &&
 -- 
 2.25.1
 
