@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78272C83038
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Jul 2025 15:58:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51646C83038
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Jul 2025 16:09:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DDDEA10E5CA;
-	Tue,  1 Jul 2025 15:58:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E750910E2D5;
+	Tue,  1 Jul 2025 16:09:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eZobNnlw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="foUFjAhP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6062110E5C9
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Jul 2025 15:58:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0757710E2D5
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Jul 2025 16:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751385502; x=1782921502;
+ t=1751386156; x=1782922156;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=5aZrIAe2eKzhmefAbNX/pN76GNAAeBFFZNyAIjsRjZU=;
- b=eZobNnlwwnsMtJMZVb5uqz7hio7ZZTewLVlgUeaUVZog1J632vt9JCGr
- GJCm5cAGUMxHiXqa2gWLLeVNnIOxcFP5UbxC5nhLoBTBRJ0Q1ywZ0Pc8p
- y3wBjFi+I8SARO+wbG+TGQvd/6tGd/ZMZtB7AKsHI0xOEamYdExIAZEx8
- kqTfw8x/tnTvuEHW1dRRb8mXFLeChwFb/NdoqkO+8VnhqukYKwG0kFOAZ
- 4C5fKpgAicb2J9DvsQobVPjpltz3WIXHbSQ4kNGLhJ27xc0OuJCp9ctaA
- VmKwjmVbmaqZkvhAXYHwbQQ2v40srUhMAtfqtOGOfGt3JKix6I1rduysZ Q==;
-X-CSE-ConnectionGUID: v6xe3eAWQtuS/VuK4J6DlA==
-X-CSE-MsgGUID: PlSlYCbmS0eLgpChZ4k57Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="53528807"
-X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; d="scan'208";a="53528807"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2025 08:58:21 -0700
-X-CSE-ConnectionGUID: sil2bnhCT96907E+hxr2BA==
-X-CSE-MsgGUID: t7PDDZ8XQCqDoAaZlh6+4g==
+ bh=+wHArhLIQ8X6LOJbWLKMls1Djn74F5eDK9f0wvi/eZM=;
+ b=foUFjAhPutRzgoZv79LrusUbuIfxYDQDL7xspH8P9VZEkxQoRFZPSDOJ
+ L9xsHfXau0TzoSmcitqML8zRCEd/VWqvMC2aDoxo5Dk9VUhbkwb/14wU/
+ gM/pddzFdXrdaQrNf0ReR9bS0q7GR3wqVOmsTXoIKypR/ujHPV/2Q+h10
+ 2+oE1OAa/LZUwdhWc3XKYRHg1USPswS29SgecPgzCmAzsYNYffSeVEmLI
+ ryF6OY4dVFXwBlsZ0U4+YmzDzL3o4NE2pEf8fFrZ9j9xOj1oTsp1kb2mU
+ FH3tPCl2QieXppZ5uU0KVMUJZkdk9aA2vdXO6W4NO3l6DSp68WBW9lkxw g==;
+X-CSE-ConnectionGUID: Bn8dHzYuSAmXLQFiFFiH0w==
+X-CSE-MsgGUID: 4ywOzmwNTYy/72s3vKxGjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="76210432"
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; d="scan'208";a="76210432"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2025 09:09:16 -0700
+X-CSE-ConnectionGUID: 2bwetq6DQnCikLDQ7OnH9Q==
+X-CSE-MsgGUID: W4xuiwVyTaGa5NZEVqrmxw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; d="scan'208";a="190992177"
+X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; d="scan'208";a="177481055"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2025 08:58:19 -0700
-Date: Tue, 1 Jul 2025 17:58:03 +0200
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 09:09:13 -0700
+Date: Tue, 1 Jul 2025 18:09:11 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Rob Clark <robin.clark@oss.qualcomm.com>
 Cc: igt-dev@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- Rob Clark <rob.clark@oss.qualcomm.com>
-Subject: Re: [PATCH igt 1/9] drm/recovery: Wait for devcore to become available
-Message-ID: <20250701155803.mqaptav2i4mkfl6e@kamilkon-DESK.igk.intel.com>
+ Rob Clark <robdclark@chromium.org>, Rob Clark <rob.clark@oss.qualcomm.com>
+Subject: Re: [PATCH igt 2/9] drm/recovery: add iova-fault-stress test
+Message-ID: <20250701160911.6rcsripyyuztn5wm@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Rob Clark <robin.clark@oss.qualcomm.com>,
  igt-dev@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ Rob Clark <robdclark@chromium.org>,
  Rob Clark <rob.clark@oss.qualcomm.com>
 References: <20250630180903.77990-1-robin.clark@oss.qualcomm.com>
- <20250630180903.77990-2-robin.clark@oss.qualcomm.com>
+ <20250630180903.77990-3-robin.clark@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250630180903.77990-2-robin.clark@oss.qualcomm.com>
+In-Reply-To: <20250630180903.77990-3-robin.clark@oss.qualcomm.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,55 +75,101 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Rob,
-On 2025-06-30 at 11:08:55 -0700, Rob Clark wrote:
-> From: Rob Clark <rob.clark@oss.qualcomm.com>
+On 2025-06-30 at 11:08:56 -0700, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
 
-Please change subject, it is now:
-[PATCH igt 1/9] drm/recovery: Wait for devcore to become available
+This 'From: ' do no match your s-o-b below, please fix it.
 
-and it should be:
-[PATCH igt 1/9] tests/msm/msm_recovery: Wait for devcore to become available
+Please run checkpatch.pl from Linux kernel on your patches.
+Few helpfull options could be found in CONTRIBUTING.md
 
-or little shorter:
-[PATCH igt 1/9] tests/msm/msm_recovery: Wait for devcore
+Also improve subject to:
+[PATCH igt 2/9] tests/msm/msm_recovery: add iova-fault-stress test
 
-After a resend I will ack it, I have also few nits for other
-patches.
+> 
+> Add a test which triggers many faults to test robustness.
+> 
+> Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
+> ---
+>  tests/msm/msm_recovery.c | 31 +++++++++++++++++++++++--------
+>  1 file changed, 23 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tests/msm/msm_recovery.c b/tests/msm/msm_recovery.c
+> index 433392079bd4..8a83a6f24c41 100644
+> --- a/tests/msm/msm_recovery.c
+> +++ b/tests/msm/msm_recovery.c
+> @@ -195,6 +195,23 @@ do_parallel_test(struct msm_pipe *pipe, int child)
+>  	igt_msm_cmd_free(cmd);
+>  }
+>  
+> +static void
+> +do_fault_test(struct msm_pipe *pipe, bool stress)
+> +{
+> +	struct msm_cmd *cmd =
+> +		igt_msm_cmd_new(pipe, 0x10000);
+
+Why not in one line? Imho this is better:
+
+	struct msm_cmd *cmd = igt_msm_cmd_new(pipe, 0x10000);
+
+> +	unsigned cnt = stress ? 0x10000/16 : 1;
+
+Use 'unsigned int' here, also
+
+Place space around '/', also make 0x10000 a const or define it.
+
+For example:
+	const unsigned int f_cnt = 0x10000;
+	struct msm_cmd *cmd = igt_msm_cmd_new(pipe, f_cnt);
+	unsigned int cnt = stress ? f_cnt / 16 : 1;
+
+> +
+> +	for (unsigned i = 0; i < cnt; i++) {
+
+Use 'unsigned int' here:
+
+	for (unsigned int i = 0; i < cnt; i++) {
 
 Regards,
 Kamil
 
-> 
-> The devcore could take some time to show up, so add a igt_wait() with
-> timeout so we don't fail the test if the devcore is not immediately
-> available.
-> 
-> This addresses a source of flakeyness.
-> 
-> Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
-> ---
->  tests/msm/msm_recovery.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/msm/msm_recovery.c b/tests/msm/msm_recovery.c
-> index fbe26e687ed3..433392079bd4 100644
-> --- a/tests/msm/msm_recovery.c
-> +++ b/tests/msm/msm_recovery.c
-> @@ -44,8 +44,12 @@ read_and_clear_devcore(void)
->  	glob_t glob_buf = {0};
->  	int ret, fd;
+> +		msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
+> +		msm_cmd_emit(cmd, 0xdeaddead);           /* ADDR_LO */
+> +		msm_cmd_emit(cmd, 0x1);                  /* ADDR_HI */
+> +		msm_cmd_emit(cmd, 0x123);                /* VAL */
+> +	}
+> +
+> +	igt_wait_and_close(igt_msm_cmd_submit(cmd));
+> +}
+> +
+>  /*
+>   * Tests for drm/msm hangcheck, recovery, and fault handling
+>   */
+> @@ -242,18 +259,16 @@ igt_main
 >  
-> -	ret = glob("/sys/class/devcoredump/devcd*/data", GLOB_NOSORT, NULL, &glob_buf);
-> -	if ((ret == GLOB_NOMATCH) || !glob_buf.gl_pathc)
-> +	/* The devcore shows up asynchronously, so it might not be
-> +	 * immediately available:
-> +	 */
-> +	if (!igt_wait(glob("/sys/class/devcoredump/devcd*/data",
-> +			   GLOB_NOSORT, NULL, &glob_buf) != GLOB_NOMATCH,
-> +		      1000, 100))
->  		return;
+>  	igt_describe("Test iova fault handling");
+>  	igt_subtest("iova-fault") {
+> -		struct msm_cmd *cmd;
+> -
+>  		igt_require(dev->gen >= 6);
 >  
->  	fd = open(glob_buf.gl_pathv[0], O_RDWR);
+> -		cmd = igt_msm_cmd_new(pipe, 0x1000);
+> +		do_fault_test(pipe, false);
+> +	}
+>  
+> -		msm_cmd_pkt7(cmd, CP_MEM_WRITE, 3);
+> -		msm_cmd_emit(cmd, 0xdeaddead);           /* ADDR_LO */
+> -		msm_cmd_emit(cmd, 0x1);                  /* ADDR_HI */
+> -		msm_cmd_emit(cmd, 0x123);                /* VAL */
+> +	igt_describe("Test iova fault handling (stress)");
+> +	igt_subtest("iova-fault-stress") {
+> +		igt_require(dev->gen >= 6);
+>  
+> -		igt_wait_and_close(igt_msm_cmd_submit(cmd));
+> +		do_fault_test(pipe, true);
+>  	}
+>  
+>  	igt_fixture {
 > -- 
 > 2.50.0
 > 
