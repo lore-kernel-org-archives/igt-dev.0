@@ -4,123 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A91FC83038
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Jul 2025 07:17:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD0BAC8302F
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Jul 2025 07:49:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CB67510E513;
-	Tue,  1 Jul 2025 07:17:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6431010E517;
+	Tue,  1 Jul 2025 07:49:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="GTHNMg4o";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="JiT+/oSk";
 	dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2089.outbound.protection.outlook.com [40.107.223.89])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45B6B10E510
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Jul 2025 07:17:31 +0000 (UTC)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2066.outbound.protection.outlook.com [40.107.243.66])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B19D510E517
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Jul 2025 07:49:49 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c6JyHAjF11bHeSlypYxFxg/AlNnMmUMVpDQ/WJ1T7DvaKhf74MYwPAB0rolt9wnbAjuTPKQ0bkuHNmKm5N1A85e4S+28xpx8vleYYwfiPKBXazLLepklz51WIue7hFuYSaQtiqlbtpZR9PJAP+IGtnldtVJgB66p/we8Ufqn55Ouy50lEUpYB13aNKUskiO8sL+IfM+151+sFblHVkygjt6Pc2KYr5hHqIVPVA+/fGcK2vwPwBYPeZSnTIHC74xZvEhBesMwYsdOHBi5Uf5Qgry2JW3EsxwI8U8g/hzE1gzMzR0I505pK+Uf+tLXJysogkqfVxRmH1S0/oth5slB0Q==
+ b=RzkIABBzmN27A4OV862evh3oOOO1BQ31ISYUDB1d+Bnf7Ya8A7DzwFXlzLEFR5oQwxSURFt/TsmELtqL0aVIsJDAqzElKofZVtQshUygXqqsYSqrTvh0aODY0Qyzbgz8zccoeumrFWdveIbzKw6alZ7Jnii6UOtqb8F+gQWXyk2Q1Rnc9HJq7cEv5MaIUXzi4+x+jk+JAny5MVvUasaXwNTZnYrMxkiAxN98nAwahJ8DSudEX9uTLm8d5flwukXAdHaJBvI85QzMg7zyFsTrIUesQeSEYIWahmnrT3x+G41GRLwbIvuOJgOwSdF6ZvDFN5nYQgs52jK4D6dsHqgOsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9SjHXJOaK9l2rYKavfc9CjSPmPFAh/SnGVuGk5hwTx8=;
- b=mL4W4KZJOCxHxfeX7ADx0r3EV3qoB1OxtsmpM/amAY/mD6TL4HTcgeVMpgnWxdxu7IdgU1SnP8KRmbpFlIuYXeFCPEnBcHaPpD7A3Qp3neVicJnhX7O9U1G1bNhcAREMmr4Vbuacjl/UGKaoN0FKA9uIgGuEVW9LwWeUR2plvBPbrFT9AbgsPEpj46gf1QS/7ZuvSGFYT5wXQCngbAJb4zqXQc3Hzbgp9yiR9P8sFMuuA9c6G9ZMdS5ry8lI3rVcAZVJXkxVQgsBRmSJyh8De83XKdYN4UOFzdpEa5Dxc00an/LXwU5TxrVG+hHY5HDYgjUQ4ZiKlqCeKLbAb5jfYQ==
+ bh=VcWKbmMCwL5HehD1KBCbT9JVzTqkkmAu/LKsSbxsmR4=;
+ b=ojoeLpJXOELf/AY0ePzdjk/WU+3QG4bSKA/mWLIt7nFGwpuZu13y63mCRAcv7CvzLvmJLz3QsPD/3hFolnJt2RjjZlAA0f0k53S3lJxvigjRrWt7ttcpFQGkFVUDP+AfmiMV6yfCpUzUJ4lnzVla2vMfhlPc72i/K5paNb3D2Rm3ZivmMgFkKCTB/zcZ7kTkb1w5K0O/Kjj1q0kPnOAtEX6TrDS9RwtVV2vm/dHCRXiq8ve8aNR+pJfX8DzD40qMG8E6Jv5caC9hTlw2p75NI0x/+5EkhkxdpWV2BmkY6+HdQqmA9M0J0d+gXNf7VO3TOSvcOVd186vhWgC//Eof2A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9SjHXJOaK9l2rYKavfc9CjSPmPFAh/SnGVuGk5hwTx8=;
- b=GTHNMg4oOoL3NzWJJnWcnOf866POiDb86PKj1YcId434MKCRfBtMFE5iDtM19Sdtia5WhAQpprSL6RG/G7b2sRDBetKYRlMNijbfVu7CJYJD9lZKxj34aySLSnDKTtw8X3uX15ieyVGUze6HBZakJvd/CEicas3Nrgxeh9Yjjwo=
-Received: from BLAP220CA0022.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:32c::27)
- by SJ2PR12MB8876.namprd12.prod.outlook.com (2603:10b6:a03:539::18)
+ bh=VcWKbmMCwL5HehD1KBCbT9JVzTqkkmAu/LKsSbxsmR4=;
+ b=JiT+/oSkL3o3zeLXPez3jNowm7AWXtYkebs/6zIMWRXliwcxZzj5APqZlP26hvYAp1sn4Flx0p5dEHB65ENBnfZqUXCA/izOJn9SIucfFbP0Dlw/pid78bZdTGqd3zC+D6Tx82nFSGnHCe899lcZvUysOMnGzV9EzaknjMejaww=
+Received: from BN9PR03CA0290.namprd03.prod.outlook.com (2603:10b6:408:f5::25)
+ by LV8PR12MB9406.namprd12.prod.outlook.com (2603:10b6:408:20b::20)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.25; Tue, 1 Jul
- 2025 07:17:27 +0000
-Received: from BL02EPF0001A0FE.namprd03.prod.outlook.com
- (2603:10b6:208:32c:cafe::40) by BLAP220CA0022.outlook.office365.com
- (2603:10b6:208:32c::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8880.32 via Frontend Transport; Tue,
- 1 Jul 2025 07:17:26 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.29; Tue, 1 Jul
+ 2025 07:49:46 +0000
+Received: from BL02EPF0001A108.namprd05.prod.outlook.com
+ (2603:10b6:408:f5:cafe::34) by BN9PR03CA0290.outlook.office365.com
+ (2603:10b6:408:f5::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8880.20 via Frontend Transport; Tue,
+ 1 Jul 2025 07:49:46 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BL02EPF0001A0FE.mail.protection.outlook.com (10.167.242.105) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A108.mail.protection.outlook.com (10.167.241.138) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8901.15 via Frontend Transport; Tue, 1 Jul 2025 07:17:26 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.8901.15 via Frontend Transport; Tue, 1 Jul 2025 07:49:45 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 1 Jul
- 2025 02:17:26 -0500
+ 2025 02:49:45 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 1 Jul
+ 2025 02:49:44 -0500
 Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
- SATLEXMB03.amd.com (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Tue, 1 Jul 2025 02:17:25 -0500
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
+ via Frontend Transport; Tue, 1 Jul 2025 02:49:43 -0500
 From: Jesse.Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Jesse.Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t v2 3/3] drm/amdgpu: Add RPTR support and volatile
- qualifiers for user queues
-Date: Tue, 1 Jul 2025 15:17:22 +0800
-Message-ID: <20250701071722.226903-3-Jesse.Zhang@amd.com>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ Sunil Khatri <sunil.khatri@amd.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Jesse.Zhang <Jesse.Zhang@amd.com>
+Subject: [PATCH i-g-t] tests/amdgpu: Standardize user queue test enablement
+ with AMDGPU_ENABLE_USERQTEST
+Date: Tue, 1 Jul 2025 15:49:36 +0800
+Message-ID: <20250701074942.229300-1-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250701071722.226903-1-Jesse.Zhang@amd.com>
-References: <20250701071722.226903-1-Jesse.Zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: Jesse.Zhang@amd.com does not designate
+Received-SPF: None (SATLEXMB05.amd.com: Jesse.Zhang@amd.com does not designate
  permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FE:EE_|SJ2PR12MB8876:EE_
-X-MS-Office365-Filtering-Correlation-Id: de94782b-ff8d-490c-50b7-08ddb86f5537
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A108:EE_|LV8PR12MB9406:EE_
+X-MS-Office365-Filtering-Correlation-Id: f31c364c-716c-4d92-beef-08ddb873d91d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|82310400026|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?7Jy5GBTDw2hZJ6hHcUvqVgf57+paqoXAuZwHc05gCuk7PYep1RZlcEi3nVCF?=
- =?us-ascii?Q?vCYo3tgvHgv6T24ELBrhGKJMRP24TaFIm3liRZ3Jk/PBfl/w5qSnv9fK2w05?=
- =?us-ascii?Q?dspPo6OLm/bRDsgiXiVwkbHxpFVZ284hxSoNOOkHRcDRdV2FtA+nitXrV19x?=
- =?us-ascii?Q?HSQqJXocn3Ha48qs9O2c7utngDPJXEt5JBD/ExhUWHqvakto+vspQAHwUeBZ?=
- =?us-ascii?Q?a/YOdN01xMsmAUMcj/bHM5/f2QywY0zDZmR3TFKSAw5h8pPdsB+eiVJPCTAO?=
- =?us-ascii?Q?pVKRwiJl9JOj9P/PRUaUQqjUWFZPj4bb8Cq18A7aJZZotPY8xQQ8Yi7mDxju?=
- =?us-ascii?Q?XXuuxvNq7PjeVAFU8tgsbvnfmrg8NOUACudd7Gv69W9byWE0g0BHbuh+aPmO?=
- =?us-ascii?Q?ke5zzxjdBBgxk2FJ7ccI4m47mus8eNEwQZtZ/oF6KaAGehx833az9Vhq1D38?=
- =?us-ascii?Q?ayxw/q0PSKSeUGUMD8eXiQLrirjaTQNH9/j+7djyrIz2ncR9rDvcGDhxsMUU?=
- =?us-ascii?Q?SpaII3CBPqTy0GnJjoFuI990W1UnOBqoWqmmVKs6nHwLXceGgMq+Ud4noCph?=
- =?us-ascii?Q?nNcE0flD34+AEAiUebVSSm1B+i7q5pj/lWf4/6Gl07qSODthEUjY4nc+bG8d?=
- =?us-ascii?Q?O6isLKMd7s6c2H8uEokj0oZrMcuYIeduOCzeDIFsVeKwc+m85AHfsTia19q3?=
- =?us-ascii?Q?JIiErIF376porKBgQ2akdKlqsD31Xj79N9qGp0crwpa0nGvadnr34TJk+oJL?=
- =?us-ascii?Q?nUlmoVrUXiu0fl7eq73dFqGKpuhcshaM2dpNtFLgzG9y1gwR4hj2DIFk1x4q?=
- =?us-ascii?Q?wInT+NSmUVg2gJGLbyO0Hn6lKkB87ebbnJE+DIKDF13M+KnE80fdeJk7d9bv?=
- =?us-ascii?Q?1JkBB2eKZOT/1RqaAtHGZyMEvhPj7ecToIeapS82o3sXFbis1+sURxQMta9T?=
- =?us-ascii?Q?W72+JGe8GELUT8yPGX1hMqB30hmcyjKyv9F4WF0Nr4BDexlOe3SdcJwinTuf?=
- =?us-ascii?Q?msLW+VFK6w3bh221z7X8GcrFciv3j1gQE1qgA5qd46UX5Xt9LA2a6+SKNX0m?=
- =?us-ascii?Q?+apny7DXsP0OZGZ80QHoFRcDiwel+B51OFMmMaxoJCnONNq2d0wBibpbfbRJ?=
- =?us-ascii?Q?+aYaKeI8yMHlkdeUvcD7IFI78492/97yglUon14CsOkg/7fRTpmdXedPdLvm?=
- =?us-ascii?Q?uhNqP/TBcyHzQNI7GLPtubJ0AETBEoFKoE/1x84sd+MSkdmN7Fjhl5FseA6A?=
- =?us-ascii?Q?tw8EliAcBgoguTK1tDyWLHn0OO+nVeUeeYv5843KawmEipGcctIUAh1Go0YD?=
- =?us-ascii?Q?s5NrSipDKkJmSYMyvnP5scQpB1xthEUoj36QB5icT7cRevosoiDToS3Jjc0C?=
- =?us-ascii?Q?iD1GpYG8kcTWqrgkBPvMygZ02+vX8dtf0s7p/3dFWbLPJW2NPghtu7+UBqM0?=
- =?us-ascii?Q?Q/2gxDGoBf7Ny6xUeVSooPJLBsvs5V/H6NkoGmEUEu3Wu8+3OjKCyl8V+ELc?=
- =?us-ascii?Q?PHBI/fDN4o9FjEa/SnBEppAb0FV2WeZwzEau?=
+ ARA:13230040|376014|36860700013|1800799024|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?qsXPhZS4BASbXy2Otaoh8kzHAPcBx9Pyxr133SASGIBMVrkFsahSzzdLpG+i?=
+ =?us-ascii?Q?fNk8Rj9iW+0rYly/lX46DcBQzVO27uGIlhLaRKg63g7JU8kaFpfeSj4f1TCB?=
+ =?us-ascii?Q?ufkdZLI+wGvEl3j7nTkHUIk9nczgpWWCnn4bsUA+a+jFRHb9qfHmmBF/QjIK?=
+ =?us-ascii?Q?JPpcu9K/fwTrCCF5PjrwUOxq01s7vq6Vje5sPqvRvwnfLZYjlYzqAmm6dgy7?=
+ =?us-ascii?Q?SlaGo0LAjNrsXLuozsYZ9aEbYJTReKv3AeiU/uTRAZU7m3ilCbtX2bdyueW+?=
+ =?us-ascii?Q?1MMkBPduHphDd9VLq9v2VDfQ8C2BYb+wzLUnJBqJEOCe5+P+uy7tj7zME3qa?=
+ =?us-ascii?Q?LiySi7pd0JhF5FcOMHMd5DTXxZ7Kzuu/b0iVkCakPE/+hHEJmRRGEoW0Rhvs?=
+ =?us-ascii?Q?yqjlv0Q15Fzz6ADl1H+KVve4oqvltvIiXnCsKO8WeygNG11fXgz0n8zLiAEZ?=
+ =?us-ascii?Q?ho2l/vL3WDseMTzdKXI9EDm9wToDuDXty1Bo2E/MxywLryhn/0mQlyWYYcWL?=
+ =?us-ascii?Q?nkYuiWBgOxRXLnJA4nFCl2n0irdyK7ZypvWGjAk3Q7kBREHs9yOhSgX2+9XO?=
+ =?us-ascii?Q?J+kwVGrXWJyh6+ZrLWcpWoCfKRxKc4PKK4josR6jpmou/GOu2FvgOUZ7wPDf?=
+ =?us-ascii?Q?EE737bCP5ppk81hsaH7Mq4mAQwKC7ecHkOCLigyEEJsNhkr8BK+IHRdlHluD?=
+ =?us-ascii?Q?yNygIR82nIVXFLpDeBhn0NC9SAyfCswE3v+03kJmwMg3q+bNnW3foyMNM+jS?=
+ =?us-ascii?Q?EDcU3jQdFelui7nHnf4A7fWucc9gjc4ATRpWA2YNtqikYo0EQ6gLQcMGdVAz?=
+ =?us-ascii?Q?L3ntEKdO2kA+mPSDOqYIiVftdNrKoCn53jQufJx4T5nTtKurjGwakGqz4Hpo?=
+ =?us-ascii?Q?I9lybW0csqbepiWYufauF77zxov4Nl1rV9J5Jb6kkkb3JgpY6BtC3mCzLH9D?=
+ =?us-ascii?Q?w4hGa9k2FAExOoJIqG/n9zhk87HIaXTBHMvIQjsWowzUPCxETVNxzbbcybNZ?=
+ =?us-ascii?Q?uZDlne7XxqJ9M1WU2SZY4c2ptDzgvPKokXoGFcyrSYBq7bG+x89KpkdBWaF7?=
+ =?us-ascii?Q?PRQ1NwdNnOgwwqXr+b09pxKnLdEqmbCz7lbH1tomINTkPypJGz5tOIlg2b8j?=
+ =?us-ascii?Q?YZBYSwGuHCwgadcZkxeAYwX96igadfmiQ9tL4DrqOjGcxatzWcG4YWS4bbYW?=
+ =?us-ascii?Q?lFxHs6Tx0oEA3n3OOL0OfbXxy6XWSwVkwOt2sKIRrU1emvHjJk3Irx0KaoOj?=
+ =?us-ascii?Q?8dZrLXuB+rV3syi3S8ZphcxD/OKVWEGXnDvTMC3oIsXDjJLruzNwj3iJwi7c?=
+ =?us-ascii?Q?wb3XEV64u37CfgsCYMqyP6RoJHOaEpB+ysm/qZxTP+1qZJ9p1NX3SqkgQeR/?=
+ =?us-ascii?Q?KeiLiR3gfT/nejNbR6q8ZOfoWc/F5qQerZ+rnCXT0k0Eh10kW47si+dIwNpx?=
+ =?us-ascii?Q?OXL4yaZVsXEozknxa8B33VnVI1hjCUfQIQIwjxAX0UYNl7NmpnTLSTV18cwQ?=
+ =?us-ascii?Q?2P5JLzn7G7wclWxn7HxxZQTBvWTtWoLLvA21?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014); DIR:OUT;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2025 07:17:26.6615 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: de94782b-ff8d-490c-50b7-08ddb86f5537
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2025 07:49:45.9395 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f31c364c-716c-4d92-beef-08ddb873d91d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A0FE.namprd03.prod.outlook.com
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A108.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8876
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9406
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,47 +141,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This change introduces two improvements to user queue handling:
+Consolidate user queue test control by replacing AMDGPU_DISABLE_USERQTEST
+with AMDGPU_ENABLE_USERQTEST. This change:
 
-1. Adds rptr_cpu pointer tracking in amdgpu_user_queue_create()
-   to properly handle read pointer management for user queues.
+1. Replaces negative logic (disable) with positive enablement control
+2. Affects four test files consistently:
+   - tests/amdgpu/amd_basic.c
+   - tests/amdgpu/amd_cs_nop.c
+   - tests/amdgpu/amd_deadlock.c
+   - tests/amdgpu/amd_security.c
 
-2. Marks both wptr_cpu and new rptr_cpu pointers as volatile in
-   amdgpu_ring_context to ensure compiler doesn't optimize away
-   accesses to these hardware-mapped registers.
-
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com
 ---
- lib/amdgpu/amd_ip_blocks.h | 3 ++-
- lib/amdgpu/amd_userq.c     | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ tests/amdgpu/amd_basic.c    | 2 +-
+ tests/amdgpu/amd_cs_nop.c   | 2 +-
+ tests/amdgpu/amd_deadlock.c | 2 +-
+ tests/amdgpu/amd_security.c | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index a6c35c171..2a4fa1742 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -166,7 +166,8 @@ struct amdgpu_ring_context {
- 	struct  amdgpu_userq_bo eop;
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 9eb5c7599..04e8d62e5 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -702,7 +702,7 @@ igt_main
+ 	bool userq_arr_cap[AMD_IP_MAX] = {0};
+ #ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test;
+-	const char *env = getenv("AMDGPU_DISABLE_USERQTEST");
++	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
  
- 	uint32_t *queue_cpu;
--	uint64_t *wptr_cpu;
-+	volatile uint64_t *wptr_cpu;
-+	volatile uint64_t *rptr_cpu;
- 	uint64_t *doorbell_cpu;
+ 	enable_test = env && atoi(env);
+ #endif
+diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
+index 7b08bf99c..96a385413 100644
+--- a/tests/amdgpu/amd_cs_nop.c
++++ b/tests/amdgpu/amd_cs_nop.c
+@@ -173,7 +173,7 @@ igt_main
+ 	bool userq_arr_cap[AMD_IP_MAX] = {0};
+ #ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test;
+-	const char *env = getenv("AMDGPU_DISABLE_USERQTEST");
++	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
  
- 	uint32_t db_handle;
-diff --git a/lib/amdgpu/amd_userq.c b/lib/amdgpu/amd_userq.c
-index 10e82a5a4..43a2d10c5 100644
---- a/lib/amdgpu/amd_userq.c
-+++ b/lib/amdgpu/amd_userq.c
-@@ -416,6 +416,7 @@ void amdgpu_user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_
- 	ctxt->doorbell_cpu = (uint64_t *)ctxt->doorbell.ptr;
+ 	enable_test = env && atoi(env);
+ #endif
+diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+index 7bc53ee12..19dff1dc0 100644
+--- a/tests/amdgpu/amd_deadlock.c
++++ b/tests/amdgpu/amd_deadlock.c
+@@ -46,7 +46,7 @@ igt_main
  
- 	ctxt->wptr_cpu = (uint64_t *)ctxt->wptr.ptr;
-+	ctxt->rptr_cpu = (uint64_t *)ctxt->rptr.ptr;
+ #ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test;
+-	const char *env = getenv("AMDGPU_DISABLE_USERQTEST");
++	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
  
- 	ctxt->queue_cpu = (uint32_t *)ctxt->queue.ptr;
- 	memset(ctxt->queue_cpu, 0, USERMODE_QUEUE_SIZE);
+ 	enable_test = env && atoi(env);
+ #endif
+diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
+index c9a02ade2..ce448a806 100644
+--- a/tests/amdgpu/amd_security.c
++++ b/tests/amdgpu/amd_security.c
+@@ -319,7 +319,7 @@ igt_main
+ 
+ #ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test;
+-	const char *env = getenv("AMDGPU_DISABLE_USERQTEST");
++	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
+ 
+ 	enable_test = env && atoi(env);
+ #endif
 -- 
 2.49.0
 
