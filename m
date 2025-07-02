@@ -4,62 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B004AC77B7C
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 13:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99AC8C83F04
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 13:31:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 56FBB10E144;
-	Wed,  2 Jul 2025 13:21:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 37CA610E702;
+	Wed,  2 Jul 2025 13:31:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dWooeK84";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UML9M7Qv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEB4610E144
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 13:21:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4E4E10E702
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 13:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751462467; x=1782998467;
+ t=1751463110; x=1782999110;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=1Tn/ahFeyJ1uue9quwteQJTHmHKlTj5MTtXHTQau3pk=;
- b=dWooeK84sqtfN1shHPoAavgAbVH4kdWNi0cp6jDpIfUTAUZWNBhAlj9Q
- 2TkfXg1vPAMRpCkqxhbeWTHTGtKTQflhcqMysWkD0zEFnhAqDWvPq8fIj
- ZYDUmU5HGUldR1ZxHc9dUXdANJTHVvQE17QEhgvt58xLqIT5KGRCkJgOR
- IdRM9SpP/TS6nB2tRZ482uUsPsyP0xWzt5OG3y/nryHzdOF9WClFdiAXc
- qYlcHsWUnmecs3Q6dHyOLXCF/RU0EKqhXRoalas2gU1fgxNNBG+5ZHowX
- 7qnvPa1a7Nu7VMA1zvR149HuH9NaEm1YEvAFtjfUZPEtEW7/hwyEtoHHo w==;
-X-CSE-ConnectionGUID: 7to0bdD4RHaBZ/WbBGgxzw==
-X-CSE-MsgGUID: imPkpNOXQjWq2oNRk/ZNjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53685087"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="53685087"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 06:21:07 -0700
-X-CSE-ConnectionGUID: 03X2xv08Rs6ipxtEv/gXew==
-X-CSE-MsgGUID: N+aAssyKSI6/fSDRgMhShA==
+ bh=+FoKEGlJwKaY0MXlRRyq5zdJB7Th+V2uKKa85SQ1+wM=;
+ b=UML9M7QvGwhemNlZpuB/DLqanyhf2/ZYH4VfjTkDbuSMkDxHZ5dCtW0d
+ RtKLTmw1xZ+BcdNLyjLOXBA4eQNprRSCDZJgQG6oG91oEjdKL3TRD0d9J
+ F7IEx4oVKdcYRhASwKGnKALgDFOhCc8ysWLEnwH5Qr5RyKQNOtCK7GVwA
+ s7Tuxpr+9AWpvGexFADS/MFhFO3c10JOrVWALFlYdvDjgYop6gSID/SNR
+ phRLb49/YMUPbl7r5xRH9SQsCCD3D2Vo7KWE+JjwI876URyPeDX8loExQ
+ E4Ds2qvQivjCJANz87W9ClhmxTWkFA6G+bhNl73ZCfFsfra4zScQCr+qx A==;
+X-CSE-ConnectionGUID: vCQ4fX76Qy+zq6+eFKRs7g==
+X-CSE-MsgGUID: upWrQ7z8RvuRywbqAKv30w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="57567418"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="57567418"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2025 06:31:49 -0700
+X-CSE-ConnectionGUID: LWyK6UPlT02O5E1nPhxnVw==
+X-CSE-MsgGUID: K5SL4lGNTMuYCXQS4b+xlQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="158638263"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="185022413"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 06:21:04 -0700
-Date: Wed, 2 Jul 2025 15:21:02 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2025 06:31:49 -0700
+Date: Wed, 2 Jul 2025 15:31:46 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
- arun.r.murthy@intel.com, jeevan.b@intel.com,
- swati2.sharma@intel.com, pranay.samala@intel.com
-Subject: Re: [PATCH i-g-t v3] tests/kms_cursor_crc: optimise cursor crc on
- simulation
-Message-ID: <20250702132102.s55zwxhq3j4fmdmg@kamilkon-DESK.igk.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] DO NOT MERGE fast-feedback.testlist: Reorder
+ dmabuf and i915_selftest
+Message-ID: <20250702133146.zs7xkb273lrkhghb@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
- igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
- arun.r.murthy@intel.com, jeevan.b@intel.com,
- swati2.sharma@intel.com, pranay.samala@intel.com
-References: <20250702091643.967483-1-santhosh.reddy.guddati@intel.com>
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250701103405.23478-1-peter.senna@linux.intel.com>
+ <20250701153151.27638-1-peter.senna@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250702091643.967483-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250701153151.27638-1-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,71 +72,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Santhosh,
-On 2025-07-02 at 14:46:43 +0530, Santhosh Reddy Guddati wrote:
-> Reduce the number of test crc iterations on simulation to avoid timeouts
-> on simulation.
+Hi Peter,
+On 2025-07-01 at 17:31:51 +0200, Peter Senna Tschudin wrote:
+> DO NOT MERGE
 > 
-> V2: Avoid usage of extra variable to check run_in_simuation (Pranay)
-> V3: Initialise max and avoid unnecessary bump (Kamil)
+> Trying to determine what is causing the tests to fail.
+
+Please use IGT Trybot for this as you are using i915.
+
+https://patchwork.freedesktop.org/project/igt-trybot/
+
+You could also put only few tests in fast-feedback.testlist
+and prevent FULL run, see for example:
+
+https://patchwork.freedesktop.org/patch/572750/?series=128015&rev=2
+
+Regards,
+Kamil
+
 > 
-> Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > ---
->  tests/kms_cursor_crc.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
+> v3:
+>  - move test to the very top
+> v2:
+>  - move the test higher
 > 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index cacd2402c..8a465dc6b 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -490,10 +490,15 @@ static void test_crc_offscreen(data_t *data)
->  static void test_crc_sliding(data_t *data)
->  {
->  	int i;
-> +	int max;
+>  tests/intel-ci/fast-feedback.testlist | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+> index 82395e7ea..5d86b0911 100644
+> --- a/tests/intel-ci/fast-feedback.testlist
+> +++ b/tests/intel-ci/fast-feedback.testlist
+> @@ -1,6 +1,9 @@
+>  # Try to load the driver if it's not available yet.
+>  igt@i915_module_load@load
+>  
+> +# Just to test
+> +igt@dmabuf@all-tests
 > +
->  	struct {
->  		igt_crc_t crc[3];
->  	} rounds[16] = {};
+>  # Keep alphabetically sorted by default
+>  igt@core_auth@basic-auth
+>  igt@fbdev@eof
+> @@ -168,4 +171,3 @@ igt@i915_pm_rpm@module-reload
 >  
-> +	/* In simulation, we only run a few rounds to keep the test fast */
-> +	max = igt_run_in_simulation() ? 4 : 16;
-> +
->  	/* Make sure cursor moves smoothly and pixel-by-pixel, and that there are
->  	 * no alignment issues. Horizontal, vertical and diagonal test.
->  	 */
-> @@ -502,7 +507,7 @@ static void test_crc_sliding(data_t *data)
->  	cursor_enable(data);
->  	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
->  
-> -	for (i = 0; i < ARRAY_SIZE(rounds); i++) {
-> +	for (i = 0; i < max; i++) {
->  		do_single_test(data, i, 0, true, &rounds[i].crc[0]);
->  		do_single_test(data, 0, i, true, &rounds[i].crc[1]);
->  		do_single_test(data, i, i, true, &rounds[i].crc[2]);
-> @@ -510,7 +515,7 @@ static void test_crc_sliding(data_t *data)
->  
->  	/* SW test */
->  	cursor_disable(data);
-> -	for (i = 0; i < ARRAY_SIZE(rounds); i++) {
-> +	for (i = 0; i < max; i++) {
->  		do_single_test(data, i, 0, false, &rounds[i].crc[0]);
->  		do_single_test(data, 0, i, false, &rounds[i].crc[1]);
->  		do_single_test(data, i, i, false, &rounds[i].crc[2]);
-> @@ -526,6 +531,9 @@ static void test_crc_random(data_t *data)
->  
->  	/* Random cursor placement */
->  
-> +	if (igt_run_in_simulation() && max > 10)
-> +		max = 10;
-> +
->  	/* HW test */
->  	cursor_enable(data);
->  	igt_plane_set_fb(data->primary, &data->primary_fb[HWCURSORBUFFER]);
+>  # Kernel selftests
+>  igt@i915_selftest@live
+> -igt@dmabuf@all-tests
 > -- 
-> 2.34.1
+> 2.43.0
 > 
