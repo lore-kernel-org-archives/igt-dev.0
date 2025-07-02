@@ -4,105 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC88C8303D
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76B71C83F03
 	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 13:30:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C889F10EA3F;
-	Fri,  4 Jul 2025 13:30:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 159F610EA43;
+	Fri,  4 Jul 2025 13:30:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.b="YPexs63C";
+	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.b="BM33QmVa";
 	dkim-atps=neutral
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
  [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B980D10E764
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 19:03:22 +0000 (UTC)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562FmVrJ025086
- for <igt-dev@lists.freedesktop.org>; Wed, 2 Jul 2025 19:03:22 GMT
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 416A610E764
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 19:03:20 +0000 (UTC)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562EFZKi025382
+ for <igt-dev@lists.freedesktop.org>; Wed, 2 Jul 2025 19:03:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=8zWjMM3vTvg
- rkjTYr2fejrs2ZdcqMCLb/nSokNAjbQc=; b=YPexs63CoxrF6YUK3sVamLlUlsi
- BfIio/Xv2nofln8QZiYvraQifMdCN/74+pK2Ym/CrtBkJGgHFQ8+Gr5KNtAdLz/S
- ihdCMsel6JYdJaqOsla1kkV20HRAEyuqRR7k16Qg4RPsgNEwB3K7HbJpVzSt5Eht
- m0nWf0bMMWyoFpUUWao3a4c9P0c3v1JFxCtwtV2zYJjUkM+W3lmH9/yZW6xTvvJi
- H8sAxRRuwkCB5I0Ralv0H1Np2c4BQnPHY1t2l0pfkykFz0Qw3ZbsHFivo1Zx0kag
- lWsBsyqKl+KTGVSTqWjJTpVjjUbeviEQRwVZlV1PoVMKFfmhBOj6/jrvNuA==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j8025jhy-1
+ cc:content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=qcppdkim1; bh=0/uiwiGylGbdHG4khEzUQ8hS96SResBuOFv
+ us9BDibs=; b=BM33QmVaztOEgCmdiz7tuhibFOmZS31wRRdvbnJii1E6LSyjC4m
+ daDrp5U12kDNg5ukPWwAaaPpUd72qXhFSPhf7Xn3lKZTrrDJGq9tTrUb0UuAvmT5
+ 6eBP3i9tGYmU+4Ceky+OE8PhemGaK/EF4Lw+SLXZUI1Hbun+489CjmP6plowQIko
+ SzZpA529KcPgnod73DN7zYS7oG3eBxUOPT5tkUD88EWGBlultARIBfF5oPGmqY4g
+ GOcsL0mrWZdfA/pn0hDfbUlBEaXPCTRczfWORLvmQUFzrU96qBj31BRZogCXM+7a
+ CZskiarmK4vP3q+jgz1cfXxlk03okvesheA==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47kd64twj8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Wed, 02 Jul 2025 19:03:21 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-2363bb41664so1584365ad.0
- for <igt-dev@lists.freedesktop.org>; Wed, 02 Jul 2025 12:03:21 -0700 (PDT)
+ for <igt-dev@lists.freedesktop.org>; Wed, 02 Jul 2025 19:03:19 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-b2fcbd76b61so5847193a12.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 02 Jul 2025 12:03:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751483000; x=1752087800;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8zWjMM3vTvgrkjTYr2fejrs2ZdcqMCLb/nSokNAjbQc=;
- b=t6f8NvKiqHdqiRITtE8LllKqnOz9GP9nQxeW6PSr9GBeQNF1aFLnMPVY6dU4eGCi48
- oKyIYAcIQk+kyVBgbl7FsDC/yEEBnh0ukDX3cISwhs4wnSPCz7ylAEsVqSKWiMdo75y4
- DyqE8jYRmS/aQvc/8r0Od1X4g8aqPdLbxzJaJsl49gudL7Ox3VFb7zDpjMOj5PkKUZYa
- 4i5xT4o2YKf6X6lAazayUyyDI65P+tNrAUrOSOhD7ct1oGpmCbY/YJKZ4RHXioGpromP
- FTbxRwVTUBQ6UUolDBZ/45gaC/9+PWneAgiF9sqY5dwpnPm49HsCzAXaUDCm3pU/IF4I
- 9QHQ==
-X-Gm-Message-State: AOJu0Yxo7LQnDYLGASiUXnlrvkIP1dHty6cXZM393oSe7luZn9+pdrTy
- h1joDyvW805AFc0XGZDr+L30OaMoO3eLtsEGHNR7+2lVyZ+VOrvUmaEbK5Yh9luaT0D5T6mNbu8
- rFwtS9t41b5mMkQqhYhQWwcSUDHu2Jg+JCymDdgOXzFqii4ohVaLldmF3po65XMEmFJoPf1NNt+
- v3
-X-Gm-Gg: ASbGncvFGaC1ABtCt8QS4QoZ6FKDg5tub5xmTr287ALrfGv3YhnFRoTgSA3YjE0f2My
- jIBlwtBhvOCtyHRBGaZt5YX9did/OjAWeN7bifyt/KYB62qAzgt853lh/w1wvOw2KyTUpN2xu6P
- g8Z/yVBgFRJ5C59/gi5fi07NxrJeQ0pqAxQZVTWMLF3IYbuVS+uu0lMiA/KVuXjnQcYHSJz8Zx8
- 3iZiqK9klqLtiIMJcs3ED1V/EfK+dFYhoitgjQprohVA8nO294DcUhinJhuz+fEIsNKMrNbyMdO
- 1pD07v3n6aFYsUIcdW759YWKe31I9nz+Vw==
-X-Received: by 2002:a17:903:31c2:b0:235:e94b:62dd with SMTP id
- d9443c01a7336-23c793f0b20mr8643635ad.12.1751483000292; 
- Wed, 02 Jul 2025 12:03:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFGIViSrY5Xq1XMHCu9BSAtE0RQhXUpkJt/6iEGJjkGtqZjQvrnJcfYnvJF9HqL7P+iJ9a5og==
-X-Received: by 2002:a17:903:31c2:b0:235:e94b:62dd with SMTP id
- d9443c01a7336-23c793f0b20mr8643325ad.12.1751482999813; 
- Wed, 02 Jul 2025 12:03:19 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1751482998; x=1752087798;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0/uiwiGylGbdHG4khEzUQ8hS96SResBuOFvus9BDibs=;
+ b=W1C0umahM+c055gWtLIlYR4/eTHEzctiUszljCq6nIQMsOWKnCjcAiFLm/DUEtKnLe
+ GRdJzJ4ES6+1wQy2j2+dDMVXySU5c87jRvoAcQWZ5yBmM/s5QGVFsWRK9G+re3wxMNMT
+ S6Pg2KxSAqQTcFP+LLngY7EnMaGy+/rEcvpwX9E5RqbxZnQqB9S5P4wvgo+5xyZwq2qO
+ BrvXtNOXIs0pQC7ARu1intKIJKwLVh0KiA7ayV1Q+01GsmJPCyeU9wxLeP2kRvYqeGzJ
+ E4yutPPCScVqLBr4/2FU5C/7tPcymQs2uDwR+H4JP5VITuhthHh9+1/jN4CFrwBA6WzF
+ /HXw==
+X-Gm-Message-State: AOJu0YwUJ9dYAUjQQ5w3VZAarrUdFPfs1UWX1iuvpmALW9UArgZc3ikq
+ BRbXa4lT0p1ZrX/QHu62aLkONEctmNhUpzb5DSE4YE9FiNY2Vay7CLl0+eTg+SXY6v8xwf6dzvb
+ MVkxMqvNAJwXwJzfm4FZF1/X1q75IpKUpncxf2Vh1V3HHhG6klvxHxnw0BNlFEgKBN23Pb2r4ni
+ Ny
+X-Gm-Gg: ASbGncvJ5/YmMjVYjzJVwBUlm5tZ9KEpIKf/aKQizn8hK79EpxWpWBIwb84/6uEJmMp
+ WAeAk8Rk3+bHlfXw0O2ZSUw8cyrW8wfnQzIasOaYDe6CZUthzG/U6gGQ34HYGUykTRJdruNnJGM
+ 0zBT2V1pFXeIIqvML7XXURghwDHV0VOe9bMMo2uQ5DqbNgFGJkKG6DG/0ZbS16p5uM0h2tDapBa
+ H1PL5c26hJGmKO6Pxzm5oKHggokFms2qDCe2OlsVLN/VL62En2UjKzXvVBZUaOkv+eqjEfvFV+y
+ M/tVls9ZNH+Szcm4LjhF7ohOkgCwki6TbA==
+X-Received: by 2002:a17:903:1a84:b0:234:be9b:539a with SMTP id
+ d9443c01a7336-23c6e5b0f24mr55528115ad.40.1751482997967; 
+ Wed, 02 Jul 2025 12:03:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE9tsuRLtrQ2uRtOQ0/LPPD9ZdhX4zl87JWXmSBvbvVQUC6Y83LHsDKAMTKR2oEPIpwyo9+tQ==
+X-Received: by 2002:a17:903:1a84:b0:234:be9b:539a with SMTP id
+ d9443c01a7336-23c6e5b0f24mr55527815ad.40.1751482997550; 
+ Wed, 02 Jul 2025 12:03:17 -0700 (PDT)
 Received: from localhost ([2601:1c0:5000:d5c:5b3e:de60:4fda:e7b1])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-23acb2f1c40sm137079185ad.67.2025.07.02.12.03.19
+ d9443c01a7336-23acb3acc00sm131125835ad.142.2025.07.02.12.03.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Jul 2025 12:03:19 -0700 (PDT)
+ Wed, 02 Jul 2025 12:03:17 -0700 (PDT)
 From: Rob Clark <rob.clark@oss.qualcomm.com>
 To: igt-dev@lists.freedesktop.org
 Cc: linux-arm-msm@vger.kernel.org,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Rob Clark <rob.clark@oss.qualcomm.com>
-Subject: [PATCH i-g-t v2 2/9] tests/msm/msm_recovery: Wait for devcore
-Date: Wed,  2 Jul 2025 12:02:42 -0700
-Message-ID: <20250702190249.376313-3-rob.clark@oss.qualcomm.com>
+Subject: [PATCH i-g-t v2 0/9] msm: recovery and mapping updates
+Date: Wed,  2 Jul 2025 12:02:40 -0700
+Message-ID: <20250702190249.376313-1-rob.clark@oss.qualcomm.com>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250702190249.376313-1-rob.clark@oss.qualcomm.com>
-References: <20250702190249.376313-1-rob.clark@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: RpqO5DO_suasbjxwxFJ3ns0jme4hqP5z
-X-Authority-Analysis: v=2.4 cv=YPWfyQGx c=1 sm=1 tr=0 ts=68658279 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=xqWC_Br6kY4A:10 a=Wb1JkmetP80A:10
- a=EUspDBNiAAAA:8 a=wbXP5UgKaa9MPXhy6qkA:9 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-ORIG-GUID: RpqO5DO_suasbjxwxFJ3ns0jme4hqP5z
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDE1NiBTYWx0ZWRfXzGxLNLvC43hn
- FJ8Scf2qj0yL+3jXcwoHX2ZDB0wcgFlPStmEA/esvbcWatPQpg715N6lrclOfXZeqrf8RLCOvG4
- AyqQmuJLDfnZjpm5jxEDkTYTXeDj95BnBbgi9OIqfwLflZmll3gnJ3obezsaK8RUzcd80FbHG+k
- 0y91heeUxzjsmEEk7PkWnnBBjyPMRAK5AMCUQfVUp+CXzZn6V96weeLH/JhCEsLKKNE4c/OpQBh
- hcChQCVWvL8BIg3kPym61b6HolKXILwT4fdDC5gtriWvbkKB5NKfDb7By3s06xxExfavM3FHYFu
- 4EIwyZcaRzKSqdUSq/97NQmt1U9kTfIGWtzoKvbubC1snQeXxqheGl14D23Dr1GWPdhZkajbScD
- cMNJobX53s3P+LeYMUXOEhYYnS3riGclhdUGsG/aLldctO+aDx88xyRcSe0VspDg/mx2Fxe3
+X-Authority-Analysis: v=2.4 cv=Z+PsHGRA c=1 sm=1 tr=0 ts=68658277 cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=xqWC_Br6kY4A:10 a=Wb1JkmetP80A:10
+ a=BuRRKxK7vx0tYKGPvLAA:9 a=3WC7DwWrALyhR5TkjVHa:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDE1NiBTYWx0ZWRfX0cywlseCgxZI
+ QXuQVB3yKU5zWWuypb8Lu1U4XTiz6LR29P//F2ERRH/YHHKS355jq2ubD12bxO1lIjhm5tw6l/W
+ YRkt3Ajf2LQr7Q04wdWHyFHq3Ncrq38ml43vu5dIUbsEFodUN4nwpa6oWePGsyhRqAVJNbfq5va
+ lnW2N2jliuq8ydW8SpmIa/gpgXjXeUSI5dc2gfAGmL525d6oY069W/3UHCeuCe9cZRUjWsErWAh
+ e4ZURW8wGqWd3fw7KGuDmExY6Vf/94LBTxHRwkJKq7W0CbaJ+fHJ/lRi81M6bpudb4d/ovINI9C
+ ni8GI+yUxE+V5lnsi6nNtvcQHqBRD7WOuG/TKuhyh/9GrdOw45rlbnty7zKuDGzl/JFbuGw+mDf
+ wFORwcW6Ylh0s31hScjitnoi4orMva2WtSJmvbgoH99gEnc6d1wVCkp6MZC7hufcvJ48wlZn
+X-Proofpoint-GUID: Rg1ne6zInqTySBDHVg5bVC9zcPR9jNQo
+X-Proofpoint-ORIG-GUID: Rg1ne6zInqTySBDHVg5bVC9zcPR9jNQo
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-02_03,2025-07-02_04,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxlogscore=907 mlxscore=0 malwarescore=0 suspectscore=0
- lowpriorityscore=0 clxscore=1015 impostorscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 phishscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507020156
+ phishscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 mlxlogscore=999
+ spamscore=0 adultscore=0 mlxscore=0 priorityscore=1501 bulkscore=0
+ impostorscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507020156
 X-Mailman-Approved-At: Fri, 04 Jul 2025 13:30:46 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -119,36 +117,24 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The devcore could take some time to show up, so add a igt_wait() with
-timeout so we don't fail the test if the devcore is not immediately
-available.
+Mostly updates to address flakes, and updates related to newer kernels.
+Plus a few additional sub-tests.
 
-This addresses a source of flakeyness.
+Rob Clark (9):
+  tests/msm/msm_mapping: Fix memory leak
+  tests/msm/msm_recovery: Wait for devcore
+  tests/msm/msm_recovery: add iova-fault-stress test
+  tests/msm/msm_mapping: update for sparse
+  tests/msm/msm_mapping: Handle BO names with spaces
+  tests/msm/msm_mapping: Add additional subtests
+  tests/msm/msm_mapping: Wait for devcore
+  tests/msm/msm_mapping: Handle larger gmem file size
+  tests/msm/msm_mapping: Add wait for stall-on-fault to re-arm
 
-Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
----
- tests/msm/msm_recovery.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/msm/msm_mapping.c  | 93 +++++++++++++++++++++++++++++++++++-----
+ tests/msm/msm_recovery.c | 38 +++++++++++-----
+ 2 files changed, 110 insertions(+), 21 deletions(-)
 
-diff --git a/tests/msm/msm_recovery.c b/tests/msm/msm_recovery.c
-index fbe26e687ed3..433392079bd4 100644
---- a/tests/msm/msm_recovery.c
-+++ b/tests/msm/msm_recovery.c
-@@ -44,8 +44,12 @@ read_and_clear_devcore(void)
- 	glob_t glob_buf = {0};
- 	int ret, fd;
- 
--	ret = glob("/sys/class/devcoredump/devcd*/data", GLOB_NOSORT, NULL, &glob_buf);
--	if ((ret == GLOB_NOMATCH) || !glob_buf.gl_pathc)
-+	/* The devcore shows up asynchronously, so it might not be
-+	 * immediately available:
-+	 */
-+	if (!igt_wait(glob("/sys/class/devcoredump/devcd*/data",
-+			   GLOB_NOSORT, NULL, &glob_buf) != GLOB_NOMATCH,
-+		      1000, 100))
- 		return;
- 
- 	fd = open(glob_buf.gl_pathv[0], O_RDWR);
 -- 
 2.50.0
 
