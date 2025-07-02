@@ -4,103 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80717C83F0B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D3DC83F0C
 	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 13:30:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3027210EA4D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 606DF10EA50;
 	Fri,  4 Jul 2025 13:30:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.b="DGFPDAUk";
+	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.b="Gz/Pxbg8";
 	dkim-atps=neutral
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99B1310E764
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 19:03:20 +0000 (UTC)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562CR4YC002176
- for <igt-dev@lists.freedesktop.org>; Wed, 2 Jul 2025 19:03:20 GMT
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
+ [205.220.180.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E39510E764
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 19:00:45 +0000 (UTC)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562EQ4hU000324
+ for <igt-dev@lists.freedesktop.org>; Wed, 2 Jul 2025 19:00:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=qcppdkim1; bh=0TPHHqeWwaf
- gD/wy+wdMm0T79M28epZeyV5c9zSAGPU=; b=DGFPDAUkATM87XY2Yq3x5my5uIz
- f4K+AcXgcRJ1yoSbXVqIVDS6/fsCaZdouz17qePb9/LLxRa7uBpY8FkJ6pqGEonX
- QYYtLMMpDguSAtnkovnkzzOA8HEIoz5zQV/4kt3Huo3Eewo1O2fxD/Nzb4hxcAVc
- P0v4Qd1V+FcGmacJgcaiLueNlUNQsZrPYQ+DW0HXIo2HyOzMlDTmCeP/m6qWqlQV
- qqvKhQA9Wl7t6yoYkzI8guX7ajnrX5Emc6BwhiaL8Fv/Hz94lJ8i7qvonA3jm//J
- 1ZqtPFipfkjiACvatRLm/TO6C6X/LhB5v5oJAN2DmXHtXcAJwoAHTLBgX+Q==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j9pcwrgy-1
+ content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:to; s=
+ qcppdkim1; bh=+Hi4OFWQN74gf29SCjhq82t1+AZHZTzvICMf6bwxODM=; b=Gz
+ /Pxbg8eKHb4SIWYa3Jpwtgl7ikIocw06njIAMyI42GsMJOQnEn5oIaGxvzq05oQZ
+ dVe1jWW4gBmrjL46GwVZH1vLbyx9ZFs9RH+AEFv+73sXbU74mhY4ca7Pbyc36Xq8
+ GG7QXJwplPhdzNCxvgK2TMcG/YJRzi8msy6/893JULPtwAdpRDvpG9KBH7ciDznK
+ rm5IqeteztpSddQQEN8ZzqTb6/JFc8ApsFphpLlntO34oFXJ/k1QCXHOX435Hcss
+ D1PNr2nv5DNf/oaAicOQOtRGKElEhB+lRt7FtL9pqwM137GKc2eY1RHbhCV4+XTQ
+ 3qFr7shggYccs0gDoS4Q==
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j7qmdn9k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Wed, 02 Jul 2025 19:03:20 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-74913a4f606so4093542b3a.1
- for <igt-dev@lists.freedesktop.org>; Wed, 02 Jul 2025 12:03:20 -0700 (PDT)
+ for <igt-dev@lists.freedesktop.org>; Wed, 02 Jul 2025 19:00:43 +0000 (GMT)
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-4066941a3e5so6402069b6e.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 02 Jul 2025 12:00:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1751482999; x=1752087799;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1751482843; x=1752087643;
+ h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0TPHHqeWwafgD/wy+wdMm0T79M28epZeyV5c9zSAGPU=;
- b=kNy9bO4g5IlaaVlQJSOl5gF9R9fbOMXnmJqc7IXtYzJpfKyKJVEeP602Ep7S68zZVJ
- rqkBvyVqfEZHryRmmkv/7zqRIFyS+9jwtSeOQQCh92N1FwKXbG5dHbLCTI1/AR3PYqOi
- P7cRg+B0J76MQkdqUyftmWoBR7xBnDOAFxNVHCENAev4TfU2Zq+6sHKwYclkBOX0cxQH
- D9xwswgIomRMew0oNiYojUwbOhxhYdo5eKfrYq6RnlwFivsczU5I7mw6LlH0xBjnPSpn
- kwfz50qopfU4QDbWdo+ndl5dtFtDI6WefLl//XkkTMJZmDg0yFpE6pkHI7yb2F9asju7
- phTQ==
-X-Gm-Message-State: AOJu0YzBU28mCREF9gvpEtqoyBpjIQp0l7eYtrirC8ZzSZvtTJ6ny3HG
- +oiiZVoa/9gHLi0JcLh9D0D5rAf8orPD0hhJF6GJQwry6Brsyv/xiL0wkefWPrZ19sXtkuHqqgr
- Usq2cdnCrLMlIOJacVXX6xjFj7DQ6u9fdsSfF8uY1xFxJyhG+J+Hi4V7syLS1tOKeSTBR3gHoGv
- gN
-X-Gm-Gg: ASbGncvtvGtWQkzTcD0weQKgYzjONivCHqjgcBiYc4a6LllyoK0VGMYbFOgLFX/aUc1
- VQpfAGBB6XM3bPkHuPQIUNy0jWaaB776LsBEQ2e10roppuI9F8mxwXFtF0Jwo8OB4whUYlsWrLW
- 0i3ADeko0F2wyOZsaK6IICAyv4A3AwhPT9qjYD2FrTM4sUhn22MQieV9bqcrJmU7G4rxwqFiFIv
- y4gfaUk6YQVOqpg8CR42N2ZmVqfNMIlusqG6UWUz/xLFTCOTEiNhQ/Uy4SRYFjM/Dgx8aq+bfPs
- xWYGpnSNKM0FjzyElqdMoRpwnaFejmBPHQ==
-X-Received: by 2002:a05:6a21:69c:b0:1f5:63f9:9eb4 with SMTP id
- adf61e73a8af0-2240c69846dmr1191564637.35.1751482999072; 
- Wed, 02 Jul 2025 12:03:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF4IHEqp34Hp57IuuMOJPLXbvbMWusNlgvmZerZp2Ng3NfEcRfq/4k3OMVpkzVtLypMw8T8EA==
-X-Received: by 2002:a05:6a21:69c:b0:1f5:63f9:9eb4 with SMTP id
- adf61e73a8af0-2240c69846dmr1191531637.35.1751482998643; 
- Wed, 02 Jul 2025 12:03:18 -0700 (PDT)
-Received: from localhost ([2601:1c0:5000:d5c:5b3e:de60:4fda:e7b1])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74af56cffccsm15581393b3a.130.2025.07.02.12.03.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Jul 2025 12:03:18 -0700 (PDT)
-From: Rob Clark <rob.clark@oss.qualcomm.com>
-To: igt-dev@lists.freedesktop.org
-Cc: linux-arm-msm@vger.kernel.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Rob Clark <rob.clark@oss.qualcomm.com>
-Subject: [PATCH i-g-t v2 1/9] tests/msm/msm_mapping: Fix memory leak
-Date: Wed,  2 Jul 2025 12:02:41 -0700
-Message-ID: <20250702190249.376313-2-rob.clark@oss.qualcomm.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250702190249.376313-1-rob.clark@oss.qualcomm.com>
-References: <20250702190249.376313-1-rob.clark@oss.qualcomm.com>
+ bh=+Hi4OFWQN74gf29SCjhq82t1+AZHZTzvICMf6bwxODM=;
+ b=QVVMWJ2m87KE44iuYVm06vd2RD7m3M5MZM6OFD67xNPgvhrDepbZwjVha9y7j1KtlB
+ VgkQ2ZykH7Rip+WJrK6WZWI+es+Q07WHZK6N3kpEv9yLeIEXD6T4UnBmzyneKuAFvgO4
+ QTxlH3zpxIqbZjJwMjfUAU8KBCjMn/lWGvlahCLGkpm2USxbJev622478L/qCtK/vGqw
+ MFilqw7iTkxxNqsqf7ytCKcc4uuFXyMmHDxQHBNhuG/UNyeTdstgV7F4BOPosT+a9lzH
+ LNa0/5erecqRmN+gOTfbqrdhC7vVCuFjNOjASO2FiJDsjFZ7SZ5SGv/Ssi+tzqOym8gC
+ ZuLg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVfzTIGZJvcV1b+364vECJol/NKfgISXGDSaC2IJp/RZGkUCqKxUZXX+xWPaKweSp7IzmXdrMiR@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YyN8e9QvgymqQMgW/3ZK015ljCgEuYSJYkHuCeo01p6OG9dh14s
+ 6UqY6ufDA2kOg8OLYrJ29vZnviEGP0CDz7pYzDhSOJ/ht1LrD7QHH66bIcqfM/JkcjnqsmPD2AP
+ tuSgdhlit1yupS9jQVHcXBiY7CIrYua7WzK9gGTDt4n3L3deqWku7t6PbXhXJ6RXc6D7RPfzPzH
+ zHhc9KqiBccNLz7mnkvUzVSThVE6gPmFuCFAGo015yNq4=
+X-Gm-Gg: ASbGncuIX6LSjUEh+NWcklvsTqgqs/rC6WvJhFKsmIFjkUuzpjSpik+nJy0iJ3qip6C
+ vWjNCdBvkN4CuEHDs2cZcLPHecyh8kpAbkGxSfOkR8R9Qm+rU5AESH4jU8/vYCK8Tqxr9HcEmt4
+ SHgJFKqkEI55VwV+cR1mdAgNR0eGsEAdxenm4=
+X-Received: by 2002:a05:6808:6d8e:b0:404:8e:69c2 with SMTP id
+ 5614622812f47-40bfdf21e90mr295869b6e.0.1751482842893; 
+ Wed, 02 Jul 2025 12:00:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRMcrRIZay6hMAGvVa57iatWkhPq9rIs+Lvfh48yNUeZ9KCbXf+fEf3iNU68YsrjhIhBQGRsdLElq5+I5VUjs=
+X-Received: by 2002:a05:6808:6d8e:b0:404:8e:69c2 with SMTP id
+ 5614622812f47-40bfdf21e90mr295848b6e.0.1751482842545; Wed, 02 Jul 2025
+ 12:00:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: ieG00TVp-QDByYkWz-ZRT6TleMwSUNyR
-X-Proofpoint-ORIG-GUID: ieG00TVp-QDByYkWz-ZRT6TleMwSUNyR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDE1NiBTYWx0ZWRfXwn2xUkK/lDI5
- SbbWKmGbkzgzsTE3N2GN1ri29KGe2D1cqymYOkPe0m9TEMY4crEZhlFjfZM/lNFNeZoJDcuIWpj
- J5BPFTzvXf5YlBXH3FQXqnVb9qmRPprFFhsu6bpeXr/yoW7Zl3oPTFTs3tsel3vhUiRIt6kXDHA
- Y9wGAZxzTZLINzk2COjypuwfWWiIGAM5brRA8MWCNGwQzz6evqN7QX4UywsntKPkzro2ARZHL1j
- I/JQCjijL11z38H1kTOSC3gSXW9mK1Skd+CR/IVzRLXSVjxm/uKI9ehsucG/myIx6pIXdJHZPJm
- 5ZGUWvK40AUkEC1YxzDS6IAzvgPwXiCxn2/xThdcYX7p9apffB3LjgOAsKfZGaSBiHTPZ7j6F59
- x5DsGVZCBPC/l84EbmUtW7M348o51VuXRmOQSphNmWEN31gVyUQyFCMXSdB6aRpLvB65AH3+
-X-Authority-Analysis: v=2.4 cv=QMFoRhLL c=1 sm=1 tr=0 ts=68658278 cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=xqWC_Br6kY4A:10 a=Wb1JkmetP80A:10
- a=EUspDBNiAAAA:8 a=YG-Ktf8kLO1V0yi116gA:9 a=2VI0MkxyNR6bbpdq8BZq:22
+References: <20250630180903.77990-1-robin.clark@oss.qualcomm.com>
+ <20250630180903.77990-8-robin.clark@oss.qualcomm.com>
+ <20250701162114.5gkdr7f5cww23ou4@kamilkon-DESK.igk.intel.com>
+ <CACSVV02jA9dFUFuaKAmoOn_wav0V-QrTj4vo6Krr2V4n7MRDKQ@mail.gmail.com>
+ <20250702074835.7pcbjlhczplibowt@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20250702074835.7pcbjlhczplibowt@kamilkon-DESK.igk.intel.com>
+From: Rob Clark <rob.clark@oss.qualcomm.com>
+Date: Wed, 2 Jul 2025 12:00:29 -0700
+X-Gm-Features: Ac12FXz-65Bv82tj3yj2dd8MCkuAfc2blW-3OHfQEJHly2NJrDaG4_vgnVPpqaA
+Message-ID: <CACSVV00fGkeGKXviFHVR6Qrz+pXLgVSpqr3-4GqBT2TH_nxxgA@mail.gmail.com>
+Subject: Re: [PATCH igt 7/9] msm/mapping: Handle larger gmem file size
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Rob Clark <rob.clark@oss.qualcomm.com>,
+ Rob Clark <robin.clark@oss.qualcomm.com>,
+ igt-dev@lists.freedesktop.org, linux-arm-msm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=C4TpyRP+ c=1 sm=1 tr=0 ts=686581db cx=c_pps
+ a=AKZTfHrQPB8q3CcvmcIuDA==:117 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10
+ a=QyXUC8HyAAAA:8 a=EUspDBNiAAAA:8 a=FV7_indNlyCjRKMUmb8A:9 a=QEXdDO2ut3YA:10
+ a=pF_qn-MSjDawc0seGVz6:22
+X-Proofpoint-ORIG-GUID: YnK2zdzU-t-krODt-to48QZpVoEDp4Th
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDE1NiBTYWx0ZWRfXy9V25ITo6TdJ
+ Pg5davWvVbFqQFdyNE0JrrEyTudMnHrXTVHuzfyhR4hJjAgZQ0w3XrIZG3n/wHC48CZhbXmVtDT
+ Dd3Hxa7xEPqGTlRq2mktm4+4r41eGqV7IzffQKqtOITAd1b3RquVMDHHDcAArGGxIQYI1XAiW8u
+ UIxueMOBjKY5xMPc/X+xCu3DFJlbJcXBRSoN7ks/mgUzMgiYHtJVqJSoQ0WwIzmHOXrBdI/0CaE
+ zqVlaSncWomjp/zvmoL7p0nM9JW9+aw+vXKlcPuTACqAIWFWRLUlrc1DkRATW3CKYQbmqX3ufDF
+ 6GjgVSwKEEKNRvbDVmILSu7XW2s74dEMEDmOPdrX54g1ckwa8dFukg2kbK/FmRHlIuxcAJqdgXp
+ KrGvK3bJbvvvyHXTtkQLsTfrdwp7Lo4lV02nnXVzhcwM5ImvGtgKQylSgcTlbA9C1YzwAMy/
+X-Proofpoint-GUID: YnK2zdzU-t-krODt-to48QZpVoEDp4Th
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-02_03,2025-07-02_04,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0 adultscore=0
- mlxlogscore=999 mlxscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0
- clxscore=1015 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ impostorscore=0 phishscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ clxscore=1015 priorityscore=1501 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2507020156
 X-Mailman-Approved-At: Fri, 04 Jul 2025 13:30:46 +0000
@@ -116,29 +118,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: rob.clark@oss.qualcomm.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We shouldn't leak the devcore.
+On Wed, Jul 2, 2025 at 12:48=E2=80=AFAM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
+>
+> Hi Rob,
+> On 2025-07-01 at 11:01:06 -0700, Rob Clark wrote:
+> > On Tue, Jul 1, 2025 at 9:21=E2=80=AFAM Kamil Konieczny
+> > <kamil.konieczny@linux.intel.com> wrote:
+> > >
+> > > Hi Rob,
+> > > On 2025-06-30 at 11:09:01 -0700, Rob Clark wrote:
+> > > > From: Rob Clark <rob.clark@oss.qualcomm.com>
+> > > >
+> > > > If running on a system with full desktop environment, the file will=
+ be
+> > > > much larger than 0x4000 bytes.
+> > > >
+> > > > Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
+> > > > ---
+> > > >  tests/msm/msm_mapping.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
+> > > > index 03a9e814c931..978ea18375dd 100644
+> > > > --- a/tests/msm/msm_mapping.c
+> > > > +++ b/tests/msm/msm_mapping.c
+> > > > @@ -122,7 +122,7 @@ endswith(const char *str, const char *end)
+> > > >  static uint64_t
+> > > >  get_bo_addr(int drm_fd, const char *name)
+> > > >  {
+> > > > -     char buf[0x4000];
+> > > > +     char buf[0x80000];
+> > >
+> > > If it is that big why not malloc() it?
+> >
+> > in kernel, for sure.  But userspace stack size is multiple MB at least
+> >
+> > BR,
+> > -R
+>
+> You are reading "gem" debugfs below, so this buffer in igt is in
+> userspace, no need for it to be on stack. Btw you just discovered
+> a bug in igt, imho this function should give sizeof(buf) to caller
+> here to igt_debugfs_read():
+>
+> igt_debugfs_read(drm_fd, "gem", buf, sizeof(buf));
 
-Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
----
- tests/msm/msm_mapping.c | 2 ++
- 1 file changed, 2 insertions(+)
+Actually igt_debugfs_read() is a convenience wrapper macro for
+__igt_debugfs_read() which does just this.  But makes
+igt_debugfs_read() more convenient for stack allocated buffers.
 
-diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
-index ac20ca91d613..1749a670e70d 100644
---- a/tests/msm/msm_mapping.c
-+++ b/tests/msm/msm_mapping.c
-@@ -215,6 +215,8 @@ do_mapping_test(struct msm_pipe *pipe, const char *buffername, bool write)
- 	ret = sscanf(s, "  - iova=%"PRIx64, &fault_addr);
- 	igt_fail_on(ret != 1);
- 	igt_fail_on(addr != fault_addr);
-+
-+	free(devcore);
- }
- 
- /*
--- 
-2.50.0
+BR,
+-R
 
+>
+> Also imho it should be calloc() to avoid garbage later on in buf.
+> Or if it should read all of debugfs node, make it like:
+>
+> int igt_debugfs_read_all(int drm_fd, char *, char **buf);
+>
+> and let it alloc *buf, and later realloc this *buf if needed.
+>
+> Regards,
+> Kamil
+>
+> >
+> > > Regards,
+> > > Kamil
+> > >
+> > > >       char *p =3D buf;
+> > > >
+> > > >       igt_debugfs_read(drm_fd, "gem", buf);
+> > > > --
+> > > > 2.50.0
+> > > >
