@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE0CBC77B7C
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 19:33:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05149C83F09
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 19:33:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A977110E779;
-	Wed,  2 Jul 2025 19:33:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ACFB110E77D;
+	Wed,  2 Jul 2025 19:33:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IxVQRUm8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="efcVFycW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 185F010E779
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 652D110E062
  for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 19:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1751484784; x=1783020784;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IRtnzF0c2UyCpZU9BP5sidqFhwKupQ5dyeHdnFUq+6I=;
- b=IxVQRUm842e3kkPAkD8B51nrqqOhsem4hD2oeobCmZxqSWytHy35CLpL
- J5Fw6LIXxtRB+X51eVL+aHfGKuQgLA+DcNPUs2EOO8mj1T8wNK02k7DPm
- iRXT1XIHlmgrvD8+0YRFopv9UCJm7ywWZkRTUQEh6Scn8jRLtmr0eC1g4
- hFgknQzx3Oplzv0kCCxZkoEMAFi7G60mxP523Eke+egtUrLb84oAY7lCg
- /2uyVfyL3fZSWOl+azRm+tpQD8qIqD7J2IisngXrzusEVjIiDV4APhHyn
- wnU0uWMO88V9YoUlHRXbx6Nz4IkX35R6lHU6YHGVp6EqTSpM8+1ZFm7x7 A==;
-X-CSE-ConnectionGUID: 0AVBRDsvTFaD3dr5sb8dCA==
-X-CSE-MsgGUID: fxh5n6y+Q1uOyhhBDR3/FQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53028473"
-X-IronPort-AV: E=Sophos;i="6.16,282,1744095600"; d="scan'208";a="53028473"
+ bh=cJwyAtYpQuKpvBLUPVT2v3Vg1GomOGqpy/TotYkWNSU=;
+ b=efcVFycWLuq59vGGz4fOseJKyvT0rJWYqT8d4TpoI+nf99ruvaITi0tR
+ FTJ8ZlpLQLG1gANbEHmTY6gIwxuVP6R53om+jIAwWmhFibrfHATkuBpBX
+ lqTRm15VKWJ81Jz5x1DIS/y7ShBE/YbEf6+gYqvMpllkRlE7axZdWXpbi
+ A63zRemsW+FyHU3Yxvkul29tfD5GG0TtnqQUySRKECCep3eSUGCe+zf6G
+ e46ChiCxMfQ8T1JndsD8BPd4zusTlsSNq6BLt48Zcf8CTLqt2O6n19meu
+ wHa0nqf8DFezxC3NuKgcz6rW+kG5fNlFVnbbcohyWqnABIDjjT1tVJI4j A==;
+X-CSE-ConnectionGUID: dXvzcNxCSly2rpYwjEGBGQ==
+X-CSE-MsgGUID: 2vLTKWqwRBa5ONHlviSyNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53028476"
+X-IronPort-AV: E=Sophos;i="6.16,282,1744095600"; d="scan'208";a="53028476"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 12:33:03 -0700
-X-CSE-ConnectionGUID: qpzTZSyZSMeraOJvMvI2zA==
-X-CSE-MsgGUID: VgRqpwBCRaujWyjrmRSBYQ==
+ 02 Jul 2025 12:33:04 -0700
+X-CSE-ConnectionGUID: xuVk5gbvRE6kdGBy9ApMeg==
+X-CSE-MsgGUID: Lh04diH6Q1K2opOCP8FrHw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,282,1744095600"; d="scan'208";a="154241553"
+X-IronPort-AV: E=Sophos;i="6.16,282,1744095600"; d="scan'208";a="154241564"
 Received: from mdroper-desk1.fm.intel.com ([10.1.39.133])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Jul 2025 12:33:03 -0700
@@ -45,10 +45,9 @@ From: Matt Roper <matthew.d.roper@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: matthew.d.roper@intel.com,
  =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v2 3/7] lib/xe: Populate vram_size[] and
- visible_vram_size[] by GT ID
-Date: Wed,  2 Jul 2025 12:32:58 -0700
-Message-ID: <20250702193254.2613121-12-matthew.d.roper@intel.com>
+Subject: [PATCH i-g-t v2 6/7] lib/xe: Add xe_dev_max_gt()
+Date: Wed,  2 Jul 2025 12:33:01 -0700
+Message-ID: <20250702193254.2613121-15-matthew.d.roper@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250702193254.2613121-9-matthew.d.roper@intel.com>
 References: <20250702193254.2613121-9-matthew.d.roper@intel.com>
@@ -70,64 +69,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-vram_size[] and visible_vram_size[] are used to lookup VRAM information
-by uapi GT ID.  Ensure that they're populated according to these IDs
-rather than by the GT's index in the query list; on future platforms
-these two may not be the same.
+Tests may need to allocate storage space to hold data by GT ID.  Add a
+helper function to ensure they can easily determine the maximum possible
+ID (which may be higher than the number of GTs reported by
+xe_number_gt()).
 
-v2:
- - s/ffs()/ffsll()/  (Zbigniew)
-
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/xe/xe_query.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ lib/xe/xe_query.c | 14 ++++++++++++++
+ lib/xe/xe_query.h |  1 +
+ 2 files changed, 15 insertions(+)
 
 diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index c4aed178f..8afcfe8db 100644
+index 8afcfe8db..3d628cb3f 100644
 --- a/lib/xe/xe_query.c
 +++ b/lib/xe/xe_query.c
-@@ -332,6 +332,7 @@ static void xe_device_free(struct xe_device *xe_dev)
- struct xe_device *xe_device_get(int fd)
- {
- 	struct xe_device *xe_dev, *prev;
-+	int max_gt;
+@@ -469,6 +469,20 @@ _TYPE _NAME(int fd)			\
+  */
+ xe_dev_FN(xe_number_gt, gt_list->num_gt, unsigned int);
  
- 	xe_dev = find_in_cache(fd);
- 	if (xe_dev)
-@@ -355,14 +356,22 @@ struct xe_device *xe_device_get(int fd)
- 	xe_dev->engines = xe_query_engines(fd);
- 	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
- 	xe_dev->oa_units = xe_query_oa_units_new(fd);
--	xe_dev->vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->vram_size));
--	xe_dev->visible_vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->visible_vram_size));
--	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
--		xe_dev->vram_size[gt] = gt_vram_size(xe_dev->mem_regions,
--						     &xe_dev->gt_list->gt_list[gt]);
--		xe_dev->visible_vram_size[gt] =
--			gt_visible_vram_size(xe_dev->mem_regions,
--					     &xe_dev->gt_list->gt_list[gt]);
++/**
++ * xe_max_gt:
++ * @fd: xe device fd
++ *
++ * Return maximum GT ID in xe device's GT list.
++ */
++unsigned int xe_dev_max_gt(int fd)
++{
++	struct xe_device *xe_dev = find_in_cache(fd);
 +
-+	/*
-+	 * vram_size[] and visible_vram_size[] are indexed by uapi ID; ensure
-+	 * the allocation is large enough to hold the highest GT ID
-+	 */
-+	max_gt = ffsll(xe_dev->gt_mask) - 1;
-+	xe_dev->vram_size = calloc(max_gt, sizeof(*xe_dev->vram_size));
-+	xe_dev->visible_vram_size = calloc(max_gt, sizeof(*xe_dev->visible_vram_size));
++	igt_assert(xe_dev);
++	return igt_fls(xe_dev->gt_mask) - 1;
++}
 +
-+	for (int idx = 0; idx < xe_dev->gt_list->num_gt; idx++) {
-+		struct drm_xe_gt *gt = &xe_dev->gt_list->gt_list[idx];
-+
-+		xe_dev->vram_size[gt->gt_id] =
-+			gt_vram_size(xe_dev->mem_regions, gt);
-+		xe_dev->visible_vram_size[gt->gt_id] =
-+			gt_visible_vram_size(xe_dev->mem_regions, gt);
- 	}
- 	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_regions);
- 	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_regions);
+ /**
+  * all_memory_regions:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index d18ca2b56..ca0b3235e 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -94,6 +94,7 @@ struct xe_device {
+ #define XE_MAX_ENGINE_INSTANCE	9
+ 
+ unsigned int xe_number_gt(int fd);
++unsigned int xe_dev_max_gt(int fd);
+ uint64_t all_memory_regions(int fd);
+ uint64_t system_memory(int fd);
+ const struct drm_xe_gt *drm_xe_get_gt(struct xe_device *xe_dev, int gt_id);
 -- 
 2.49.0
 
