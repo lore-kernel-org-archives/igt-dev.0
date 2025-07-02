@@ -4,56 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16512C83013
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 11:41:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 348A3C8303F
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 11:51:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1A7610E6F4;
-	Wed,  2 Jul 2025 11:41:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D4F4F10E6F4;
+	Wed,  2 Jul 2025 11:51:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BRq/UtwC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aFYUMDMG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFE2810E6F4
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 11:41:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10E0910E6F4
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 11:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751456498; x=1782992498;
+ t=1751457072; x=1782993072;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=x3ceMuwJ9hjcPO5EKFGu0Mzq3aI9sPbzPKObreXHWQ4=;
- b=BRq/UtwC+4UBZjf4g4kHeO1hMk5Lik5gDOQNSpFBByb6VdCq4w2lF48Q
- V1cO9IjrUyyWHTFATJZGnp9E2IeLK7ib1x7Lfibci+Z4ZzGmenYnseTVn
- PW6Gg/GyN4HgOm07kv/b28E07XiKudqfyMcldoWrgG4kWm6akQl4wXDmA
- /agmHL/PfEf6n6i5AUniITLQoe+KsZqMo64OMtMERL+N33jjt1+mHm6qe
- VgJyxkKO725f0ahEiM0WBuTDYy9teDoLUBea3sXBdDK+ai/ypOZR/LoWq
- MPrgiZ9AA/uzhQAfYp3AVOIxCog2YIHzL5mWBP2B9XNYA7TvyFmVnIZnS Q==;
-X-CSE-ConnectionGUID: rLRGl4xbRWy9Ih5ngLdTUA==
-X-CSE-MsgGUID: 0GPYExvhTnmq23MatPbyGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="53839671"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="53839671"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 04:41:37 -0700
-X-CSE-ConnectionGUID: KHzjpNwiRBKl+taTHjc8GQ==
-X-CSE-MsgGUID: ifAdLgOfR4ikxcKirzlHEg==
+ bh=QPmwmB+MhxaScgsMOp+aHhj75VBklgg6/ZudyMIxdjg=;
+ b=aFYUMDMGLjskX+sKeh//IQKjq4JQsa5KkuiGmTmVDhmjXzyBmEVue0kh
+ V+5rymPxm6/PXzDxuSAsTsrK2QtODeWoV00Er4ZBc41hUJRi9/Ksa+m1Q
+ n0PX5h2pSZBXka4M8CA5oUlYJ8GhpGa/DUTjVgyhMq1l7uBd43IpjJ9dh
+ 8y92s8IKzIVmIjl1JsxIo7PluJcffXsdVPu9jD1agh3VF4FcoUfPSTOwE
+ S+GwT9czO9d74Aq0Mk4/Ld0E8eOH5a3xcaalV5IDdt06ZZt9D43UKIPa5
+ 5GJopd7buMtNSCknweEhozeErX4Qt9MJKb2NkA50gbvuMTTxq9YxP+5am Q==;
+X-CSE-ConnectionGUID: Sx6/T8thQCuyG01xSjjQSA==
+X-CSE-MsgGUID: FvIRaX3ETcuzW6hF7TQLHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="64345514"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="64345514"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2025 04:51:12 -0700
+X-CSE-ConnectionGUID: d02H3hpcRfaF07ZJ3l6i+Q==
+X-CSE-MsgGUID: GWrIvrylRaeq4YqcNH9OPg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="184998964"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.145])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 04:41:37 -0700
-Date: Wed, 2 Jul 2025 13:41:33 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 7/7] tests/xe: Don't assume max GT ID is num_gt - 1
-Message-ID: <bnuzwetx64yv4ol6dpk2w6u6y3zsy32mtlmqqaehd7hdvfptot@kgpqdbgwitaq>
-References: <20250630163529.2096664-9-matthew.d.roper@intel.com>
- <20250630163529.2096664-16-matthew.d.roper@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="158434171"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 04:51:10 -0700
+Date: Wed, 2 Jul 2025 13:51:07 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+Cc: "Randhawa, Jagmeet" <jagmeet.randhawa@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Brost, Matthew" <matthew.brost@intel.com>,
+ "Nguyen, Brian3" <brian3.nguyen@intel.com>
+Subject: Re: [i-g-t] tests/intel/xe_dma_buf_sync.c: Ensure spinner completion
+Message-ID: <20250702115107.6hi7ubhy5ikipwvb@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
+ "Randhawa, Jagmeet" <jagmeet.randhawa@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Brost, Matthew" <matthew.brost@intel.com>,
+ "Nguyen, Brian3" <brian3.nguyen@intel.com>
+References: <a2c1172f61589220cb2ee5a5ece02bb3f9f722d3.1750963929.git.jagmeet.randhawa@intel.com>
+ <aF7JHvwjfOvPHjLV@kamilkon-DESK1>
+ <CH0PR11MB5444338DD0527BA09D873062E541A@CH0PR11MB5444.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250630163529.2096664-16-matthew.d.roper@intel.com>
+In-Reply-To: <CH0PR11MB5444338DD0527BA09D873062E541A@CH0PR11MB5444.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,184 +78,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Jun 30, 2025 at 09:35:37AM -0700, Matt Roper wrote:
-> On future platforms GT IDs may not be consecutive.  The GT mask should
-> be consulted when determining whether a GT is valid, and the maximum GT
-> ID (not the GT count) should be used when allocating array storage space
-> for GTs.
+Hi Cavitt,,
+On 2025-07-01 at 16:59:57 +0000, Cavitt, Jonathan wrote:
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kamil Konieczny
+> Sent: Friday, June 27, 2025 9:39 AM
+> To: Randhawa, Jagmeet <jagmeet.randhawa@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Brost, Matthew <matthew.brost@intel.com>; Nguyen, Brian3 <brian3.nguyen@intel.com>
+> Subject: Re: [i-g-t] tests/intel/xe_dma_buf_sync.c: Ensure spinner completion
+> > 
+> > On 2025-06-27 at 03:00:02 +0800, Jagmeet Randhawa wrote:
+> > 
+> > One small nit, please remove ".c" from subject, so it will
+> > read:
+> > 
+> > [i-g-t] tests/intel/xe_dma_buf_sync: Ensure spinner completion
 > 
-> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-> ---
->  tests/intel/xe_compute.c | 47 ++++++++++++++++++++--------------------
->  tests/intel/xe_gt_freq.c |  8 +++----
->  2 files changed, 27 insertions(+), 28 deletions(-)
+> Agreed.  With the above change, this is
+> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> -Jonathan Cavitt
 > 
-> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-> index 955edf082..658502e35 100644
-> --- a/tests/intel/xe_compute.c
-> +++ b/tests/intel/xe_compute.c
-> @@ -48,13 +48,13 @@ static bool get_num_cslices(u32 gt, u32 *num_slices)
->   * Functionality: ccs mode
->   */
->  static void
-> -test_ccs_mode(int num_gt)
-> +test_ccs_mode(int fd)
->  {
->  	struct drm_xe_engine_class_instance *hwe;
->  	u32 gt, m, ccs_mode, vm, q, num_slices;
-> -	int fd, gt_fd, num_gt_with_ccs_mode = 0;
-> +	int new_fd, gt_fd, num_gt_with_ccs_mode = 0;
->  
-> -	for (gt = 0; gt < num_gt; gt++) {
-> +	xe_for_each_gt(fd, gt) {
->  		if (!get_num_cslices(gt, &num_slices))
->  			continue;
->  
-> @@ -74,34 +74,34 @@ test_ccs_mode(int num_gt)
->  			igt_assert(m == ccs_mode);
->  
->  			/* Validate exec queues creation with enabled ccs engines */
-> -			fd = drm_open_driver(DRIVER_XE);
-> -			vm = xe_vm_create(fd, 0, 0);
-> -			xe_for_each_engine(fd, hwe) {
-> +			new_fd = drm_open_driver(DRIVER_XE);
 
-Instead of adding new_fd wouldn't be easier to reopen fd?
-Some of the code would be intact.
+Thank you, I merged it.
 
-> +			vm = xe_vm_create(new_fd, 0, 0);
-> +			xe_for_each_engine(new_fd, hwe) {
->  				if (hwe->gt_id != gt ||
->  				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  					continue;
->  
-> -				q = xe_exec_queue_create(fd, vm, hwe, 0);
-> -				xe_exec_queue_destroy(fd, q);
-> +				q = xe_exec_queue_create(new_fd, vm, hwe, 0);
-> +				xe_exec_queue_destroy(new_fd, q);
->  			}
->  
->  			/* Ensure exec queue creation fails for disabled ccs engines */
->  			hwe->gt_id = gt;
->  			hwe->engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
->  			hwe->engine_instance = m;
-> -			igt_assert_neq(__xe_exec_queue_create(fd, vm, 1, 1, hwe, 0, &q), 0);
-> +			igt_assert_neq(__xe_exec_queue_create(new_fd, vm, 1, 1, hwe, 0, &q), 0);
->  
-> -			xe_vm_destroy(fd, vm);
-> -			drm_close_driver(fd);
-> +			xe_vm_destroy(new_fd, vm);
-> +			drm_close_driver(new_fd);
->  		}
->  
->  		/* Ensure invalid ccs mode setting is rejected */
->  		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) < 0);
->  
->  		/* Can't change ccs mode with an open drm clients */
-> -		fd = drm_open_driver(DRIVER_XE);
-> +		new_fd = drm_open_driver(DRIVER_XE);
->  		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) < 0);
-> -		drm_close_driver(fd);
-> +		drm_close_driver(new_fd);
->  
->  		/* Set ccs mode back to default value */
->  		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 1) > 0);
-> @@ -119,13 +119,13 @@ test_ccs_mode(int num_gt)
->   * Functionality: ccs mode
->   */
->  static void
-> -test_compute_kernel_with_ccs_mode(int num_gt)
-> +test_compute_kernel_with_ccs_mode(int fd)
->  {
->  	struct drm_xe_engine_class_instance *hwe;
->  	u32 gt, m, num_slices;
-> -	int fd, gt_fd, num_gt_with_ccs_mode = 0;
-> +	int new_fd, gt_fd, num_gt_with_ccs_mode = 0;
->  
-> -	for (gt = 0; gt < num_gt; gt++) {
-> +	xe_for_each_gt(fd, gt) {
->  		if (!get_num_cslices(gt, &num_slices))
->  			continue;
->  
-> @@ -138,18 +138,18 @@ test_compute_kernel_with_ccs_mode(int num_gt)
->  			igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", m) > 0);
->  
->  			/* Run compute kernel on enabled ccs engines */
-> -			fd = drm_open_driver(DRIVER_XE);
-> -			xe_for_each_engine(fd, hwe) {
-> +			new_fd = drm_open_driver(DRIVER_XE);
+Regards,
+Kamil
 
-Ditto.
-
---
-Zbigniew
-
-> +			xe_for_each_engine(new_fd, hwe) {
->  				if (hwe->gt_id != gt ||
->  				    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  					continue;
->  
->  				igt_info("GT-%d: Running compute kernel with ccs_mode %d on ccs engine %d\n",
->  					 gt, m, hwe->engine_instance);
-> -				igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL, EXECENV_PREF_SYSTEM),
-> +				igt_assert_f(xe_run_intel_compute_kernel_on_engine(new_fd, hwe, NULL, EXECENV_PREF_SYSTEM),
->  					     "Unable to run compute kernel successfully\n");
->  			}
-> -			drm_close_driver(fd);
-> +			drm_close_driver(new_fd);
->  		}
->  
->  		/* Set ccs mode back to default value */
-> @@ -180,11 +180,10 @@ test_compute_square(int fd)
->  
->  igt_main
->  {
-> -	int xe, num_gt;
-> +	int xe;
->  
->  	igt_fixture {
->  		xe = drm_open_driver(DRIVER_XE);
-> -		num_gt = xe_number_gt(xe);
->  	}
->  
->  	igt_subtest("compute-square")
-> @@ -195,8 +194,8 @@ igt_main
->  
->  	/* ccs mode tests should be run without open gpu file handles */
->  	igt_subtest("ccs-mode-basic")
-> -		test_ccs_mode(num_gt);
-> +		test_ccs_mode(xe);
->  
->  	igt_subtest("ccs-mode-compute-kernel")
-> -		test_compute_kernel_with_ccs_mode(num_gt);
-> +		test_compute_kernel_with_ccs_mode(xe);
->  }
-> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-> index 689e0296a..2c9080428 100644
-> --- a/tests/intel/xe_gt_freq.c
-> +++ b/tests/intel/xe_gt_freq.c
-> @@ -399,17 +399,17 @@ igt_main
->  	int gt;
->  	struct drm_xe_engine_class_instance *hwe;
->  	uint32_t *stash_min, *stash_max;
-> -	int num_gts;
-> +	int max_gt;
->  
->  	igt_fixture {
->  		fd = drm_open_driver(DRIVER_XE);
->  
->  		igt_require(xe_sysfs_gt_has_node(fd, 0, "freq0"));
-> -		num_gts = xe_number_gt(fd);
-> +		max_gt = xe_dev_max_gt(fd);
->  
->  		/* The defaults are the same. Stashing the gt0 is enough */
-> -		stash_min = (uint32_t *) malloc(sizeof(uint32_t) * num_gts);
-> -		stash_max = (uint32_t *) malloc(sizeof(uint32_t) * num_gts);
-> +		stash_min = (uint32_t *) malloc(sizeof(uint32_t) * max_gt);
-> +		stash_max = (uint32_t *) malloc(sizeof(uint32_t) * max_gt);
->  
->  		xe_for_each_gt(fd, gt) {
->  			stash_min[gt] = xe_gt_get_freq(fd, gt, "min");
-> -- 
-> 2.49.0
-> 
+> > 
+> > This could be done at merge time, no need for resend.
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > > Add syncobj_wait() to verify that the spinner operation on fd[0]
+> > > has completely finished before proceeding to clean up.
+> > > 
+> > > Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+> > > Cc: Brian Nguyen <brian3.nguyen@intel.com>
+> > > Suggested-by: Matthew Brost <matthew.brost@intel.com>
+> > > ---
+> > >  tests/intel/xe_dma_buf_sync.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > > 
+> > > diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
+> > > index 3e8d89e95..1c0e7c670 100644
+> > > --- a/tests/intel/xe_dma_buf_sync.c
+> > > +++ b/tests/intel/xe_dma_buf_sync.c
+> > > @@ -203,6 +203,8 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+> > >  		xe_spin_end(&data[i]->spin);
+> > >  		igt_assert(syncobj_wait(fd[1], &sync[1].handle, 1, INT64_MAX,
+> > >  					0, NULL));
+> > > +		igt_assert(syncobj_wait(fd[0], &syncobj_signal, 1, INT64_MAX,
+> > > +					0, NULL));
+> > >  		igt_assert_eq(data[i]->data, 0xc0ffee);
+> > >  
+> > >  		/* Clean up */
+> > 
