@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5451FC83013
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 07:08:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12BCCC7EE30
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 07:10:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0865310E279;
-	Wed,  2 Jul 2025 07:08:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B98CC10E2A4;
+	Wed,  2 Jul 2025 07:10:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b4r4Zp19";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TNATjuXI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6BD7010E279
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 07:08:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA9AE10E2A4
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 07:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751440096; x=1782976096;
+ t=1751440222; x=1782976222;
  h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to; bh=9TTXFi0jz7NmGF+UMNFXV9vAQldG8HeSk9yMDdnJpZQ=;
- b=b4r4Zp19tjSyLMmYiMFpR8g8sOFYOnx1tT7os9y+k+pI5PZdQSCPMTn0
- Byxl1lykNsYngX/iREXO7q6+nugD8mCBnbB4Rt3xDn8g5Ep91nhj6jqo1
- OdUrTyMfQlEVb2/zf1qIji8qTdRpUwshwph627f4rEsjTxOEmZ5QySysF
- zl92uM2FQmgMOjjwcrAOcu70ZoBEmNxlm3LlOVTE3n0JR+2cOwXFjfbAB
- r+j2S75Iot2nBg6NoZ5vKYLokVFa2CRvxyxzHC5dMIB8U0tu1HyWOOb/C
- 7LSw5/oMcKv6zyAF7Ogd0c8afmjh2ptHBhRvQhrjTjeoNCZp3k9x+7D6t g==;
-X-CSE-ConnectionGUID: +BAKezTpQseOtkpBdJEIHQ==
-X-CSE-MsgGUID: p+Dbb5nhRNCA/qY6qdmSlw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="53834826"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208,217";a="53834826"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 00:08:15 -0700
-X-CSE-ConnectionGUID: zX0bsXhCRfe3makuPD9X6w==
-X-CSE-MsgGUID: nIiTSSZnQQSkywRiOhHGFg==
+ in-reply-to; bh=YdLsk4pvcgBEi+58GPOLf6MEKmTlzFUyvGSA8/pzDR8=;
+ b=TNATjuXImOZOVQppX2EBdRHuflliZpaAQ1ViZTMg2lSNMwzT31E132/P
+ r3PcgzEJcNugu+l5YIiq3h9mqUI9zOygiBWgtOp/+eC1wHCy9vTeTxv9e
+ 2+wxY0gJD5vN95NHbol2XuuPX08ejVb4fieaw5n2cR7j6KALE2H1e50F7
+ OI4s+jENqePmdu5F8u41/nfelkWQKE3+Tg5Emo9RiPdTMtH7BSzDlfeXm
+ WvATnrY5s2WMVC2QhsEtqeTC6ZYD/pIIcf/0Qv9MbYaVLeDn4d4ESjA2S
+ S2gFbofVeXjVI+8ow6Y4RRnk/USL7alwzcac9lBAg6Lui4XoFhw28eLT6 Q==;
+X-CSE-ConnectionGUID: cwD0i5ngRmaR3irBFKwz8w==
+X-CSE-MsgGUID: gK5dR+WLS3SNCa2C0HbnFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="57399594"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208,217";a="57399594"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2025 00:10:21 -0700
+X-CSE-ConnectionGUID: SBP8+um9T0u/o7dCV5Br8Q==
+X-CSE-MsgGUID: 6ya7atAVRCi7Cd2e99Vv9w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
- d="scan'208,217";a="154319520"
+ d="scan'208,217";a="154152901"
 Received: from supriya2-mobl6.gar.corp.intel.com (HELO [10.247.250.202])
  ([10.247.250.202])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 00:08:14 -0700
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2025 00:10:20 -0700
 Content-Type: multipart/alternative;
- boundary="------------uFdFwCgdiX1RwiGXaISRX8Zn"
-Message-ID: <1d52bbd3-9b08-4bf4-b081-815712d4f00b@intel.com>
-Date: Wed, 2 Jul 2025 12:38:06 +0530
+ boundary="------------JNFcVrK95x0mWqKiUNkUmorV"
+Message-ID: <c9ac4f2a-1f98-42ab-9d17-78ab89aa5dbf@intel.com>
+Date: Wed, 2 Jul 2025 12:40:13 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [v3, 6/7] tests/intel/kms_psr: Enable the tests support variations
@@ -72,13 +72,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 This is a multi-part message in MIME format.
---------------uFdFwCgdiX1RwiGXaISRX8Zn
+--------------JNFcVrK95x0mWqKiUNkUmorV
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-LGTM Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 
---------------uFdFwCgdiX1RwiGXaISRX8Zn
+On 30-06-2025 19:11, Mohammed Thasleem wrote:
+> This update stops skipping fbc-* tests support variations based on the WAs.
+>
+> v2: Updated function name with intel_is_fbc_disabled_by_wa. (Kamil)
+> v3: Updated logic at igt_skip_on_f. (Kamil)
+>
+> Signed-off-by: Mohammed Thasleem<mohammed.thasleem@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+--------------JNFcVrK95x0mWqKiUNkUmorV
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -88,11 +95,23 @@ Content-Transfer-Encoding: 7bit
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
-    <pre class="content"
-style="box-sizing: border-box; overflow: auto; font-family: Menlo, Monaco, Consolas, &quot;Courier New&quot;, monospace; font-size: 13px; display: block; padding: 9.5px; margin: 0px 0px 10px; line-height: 14.3px; color: rgb(51, 51, 51); word-break: break-all; overflow-wrap: break-word; background-color: white; border: 0px; border-radius: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><span
-    class="reviewed-by" style="box-sizing: border-box;">LGTM
-Reviewed-by: Kunal Joshi <a class="moz-txt-link-rfc2396E" href="mailto:kunal1.joshi@intel.com">&lt;kunal1.joshi@intel.com&gt;</a></span></pre>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 30-06-2025 19:11, Mohammed Thasleem
+      wrote:<br>
+    </div>
+    <blockquote type="cite">
+      <pre wrap="" class="moz-quote-pre">This update stops skipping fbc-* tests support variations based on the WAs.
+
+v2: Updated function name with intel_is_fbc_disabled_by_wa. (Kamil)
+v3: Updated logic at igt_skip_on_f. (Kamil)
+
+Signed-off-by: Mohammed Thasleem <a class="moz-txt-link-rfc2396E" href="mailto:mohammed.thasleem@intel.com">&lt;mohammed.thasleem@intel.com&gt;</a>
+</pre>
+    </blockquote>
+    <span class="reviewed-by" style="box-sizing: border-box;">Reviewed-by:
+      Kunal Joshi <a class="moz-txt-link-rfc2396E" href="mailto:kunal1.joshi@intel.com">&lt;kunal1.joshi@intel.com&gt;</a></span>
   </body>
 </html>
 
---------------uFdFwCgdiX1RwiGXaISRX8Zn--
+--------------JNFcVrK95x0mWqKiUNkUmorV--
