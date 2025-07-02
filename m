@@ -4,62 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4246AC83013
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 10:41:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83484C8303C
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 11:03:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EBEC710E335;
-	Wed,  2 Jul 2025 10:40:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3588189CC4;
+	Wed,  2 Jul 2025 11:03:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hNoCcgKk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EJ6IVxz8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 248AA10E335
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 10:40:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 261A989CC4
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 11:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751452858; x=1782988858;
+ t=1751454226; x=1782990226;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=eG+F5PTGZkZkG8cjd/SymRB3LObmrYBVTt9iV8TPRug=;
- b=hNoCcgKkXUnwFDsUdNQtupeMgsCCRTiVmi7yCa3+mlSHxKp0M9er7sKE
- A8NkXO8M2WzOjcMnhPGTbCvyKfDTrr16OrgEyL6B8x66OZRREjyc7UkU3
- TySxMHvn8Yt9j4wFOeu8nTZBfcO+86JGaTSMhrd8tDatZaHkLXVNRpVGK
- 8o9jj5UHLZ+6iUHF5jfS63r1tig0vmKqjrOqHC1vjt2BeTD10aAfDhRin
- 0Bar5+icO6PidI1TtthACfvUg5hULRQdKCe1FPPTagMkUNvUbHHiBjjOe
- qVMEItOtoZGP7L0riebn3Y7N3R/ySsoP7tmOyDYMHVTju9TqxbE0sx5J4 Q==;
-X-CSE-ConnectionGUID: okDrCV71RnuBv5hqgDBLSQ==
-X-CSE-MsgGUID: ktlmSpTWTmy+DCHuDQffUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="65197300"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="65197300"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 03:40:58 -0700
-X-CSE-ConnectionGUID: bD7Ep0G5Rr+Bjz4ZkQVhXg==
-X-CSE-MsgGUID: uJUsWWIkQJmVttAX2K4ClA==
+ mime-version:in-reply-to;
+ bh=FPV+LAYdxLH0FFYj1aNXH7X/L8WVPUMJ5GZtCA/S68w=;
+ b=EJ6IVxz8m6PvS+gDeGnu4vQ0Fc6bJoJ22WIAxsSN7d3ShO7ngzmnI/tk
+ Rbr9P/Q3mm8H3iKDn+v4AK+X7Rz0aY/e3VvpmcsmTWYcJzj3we8HQnVHC
+ 4k9twsdJzayacTs4uo49/975mwn+uiyHVp5ezPH/djlUGtQ93JRbA8UjM
+ oXbmcmLDRppeo8pTwneqSwotAOk3RUuOL0IEQXyNfkWZzVd6wBRuWip9B
+ wbrXO9Sj5KquF52wM6uQCuV0cVSpJaH1ZMw317H2KKEW7lPHKlapSpts+
+ DjFUGMbNRiB21XXthoiXYtN789fJmJl9NW1tsqdM1IVg01Ifa2/lKVxOK A==;
+X-CSE-ConnectionGUID: X4RXIzmhQe+/uTI3WR6R6w==
+X-CSE-MsgGUID: dTNBZUbEROWchCJAlMZFQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="53610622"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="53610622"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2025 04:03:46 -0700
+X-CSE-ConnectionGUID: zTxAVmTnRbCSbSm1VV1RSw==
+X-CSE-MsgGUID: kWL9A+SKRIe1amRfFoBQ8Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="177719064"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 03:40:56 -0700
-Date: Wed, 2 Jul 2025 12:40:40 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Sharma, Nishit" <nishit.sharma@intel.com>
-Cc: "Roper, Matthew D" <matthew.d.roper@intel.com>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t] PVC: tests/intel/xe_multi_tile: Added Multi tile
- verification in available platform
-Message-ID: <20250702104040.ye6mgwrs752mgajm@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Sharma, Nishit" <nishit.sharma@intel.com>,
- "Roper, Matthew D" <matthew.d.roper@intel.com>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-References: <20250318103740.124966-1-nishit.sharma@intel.com>
- <MW4PR11MB7151AA7B4EED5EA0FB7CB9F9E441A@MW4PR11MB7151.namprd11.prod.outlook.com>
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="153817042"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.145])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2025 04:03:45 -0700
+Date: Wed, 2 Jul 2025 13:03:41 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/7] lib/xe: Track valid GT IDs
+Message-ID: <pmicjhhs2q3eplg76opai2uquew2kfgouegnmdvbtsp3cuzzcn@57svuxnvx2s4>
+References: <20250630163529.2096664-9-matthew.d.roper@intel.com>
+ <20250630163529.2096664-10-matthew.d.roper@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <MW4PR11MB7151AA7B4EED5EA0FB7CB9F9E441A@MW4PR11MB7151.namprd11.prod.outlook.com>
+In-Reply-To: <20250630163529.2096664-10-matthew.d.roper@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,88 +69,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nishit,
-On 2025-07-01 at 08:03:09 +0000, Sharma, Nishit wrote:
+On Mon, Jun 30, 2025 at 09:35:31AM -0700, Matt Roper wrote:
+> Although current Intel platforms always have GTs with consecutive IDs,
+> we should rely on this being true in the future.  During initial device
+> query, build a bitmask of valid GT IDs that userspace may use.
 > 
-
-I have few nits, see below.
-
-If you will sent new revision please remove 'PVC: ' from subject,
-so instead of:
-
-[PATCH i-g-t] PVC: tests/intel/xe_multi_tile: Added Multi tile verification in available platform
-
-it should be:
-
-[PATCH i-g-t] tests/intel/xe_multi_tile: Add Multi-tile verification for PVC
-
-or
-
-[PATCH i-g-t] tests/intel: Add xe_multi_tile test
-
-> This multi-tile test verifies whether platform supports multi-tile or not. If multi-tile supported then how many gt belongs to single tile%d and type of each gt.
-
-Fold description lines, so:
-
-This multi-tile test verifies whether platform supports
-multi-tile or not. If it is, then check how many GTs
-belongs to single Tile and type of each gt.
-
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 > ---
->  tests/intel/xe_multi_tile.c | 274 ++++++++++++++++++++++++++++++++++++
->  tests/meson.build           |   1 +
->  2 files changed, 275 insertions(+)
->  create mode 100644 tests/intel/xe_multi_tile.c
+>  lib/xe/xe_query.c | 5 +++++
+>  lib/xe/xe_query.h | 3 +++
+>  2 files changed, 8 insertions(+)
 > 
-> diff --git a/tests/intel/xe_multi_tile.c b/tests/intel/xe_multi_tile.c new file mode 100644 index 000000000..d302dce28
-> --- /dev/null
-> +++ b/tests/intel/xe_multi_tile.c
-> @@ -0,0 +1,274 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2025 Intel Corporation
-> + *
-> + * Authors:
-
-Author:
-
-> + *      Nishit Sharma <nishit.sharma@intel.com>
-> + */
+> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> index 0d2e4805c..ac7b3110b 100644
+> --- a/lib/xe/xe_query.c
+> +++ b/lib/xe/xe_query.c
+> @@ -346,6 +346,11 @@ struct xe_device *xe_device_get(int fd)
+>  	xe_dev->va_bits = xe_dev->config->info[DRM_XE_QUERY_CONFIG_VA_BITS];
+>  	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+>  	xe_dev->gt_list = xe_query_gt_list_new(fd);
 > +
-> +#include <dirent.h>
-> +#include <fcntl.h>
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +#include <unistd.h>
-> +
-> +#include "igt.h"
-> +#include "igt_sysfs.h"
-> +
-> +#include "xe_drm.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +
-> +/**
-> + * TEST: Test to verify if multi-tile support available in platform
-> + * Category: Core
-> + * Mega feature: General Core features
-> + * Functionality: Tile/GT operations
+> +	/* GT IDs may be non-consecutive; keep a mask of valid IDs */
+> +	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
+> +		xe_dev->gt_mask |= (1 << xe_dev->gt_list->gt_list[gt].gt_id);
 
-I am not sure about this 'Functionality' here,
-please find some already existing so it is kept on minimum.
+gt_id is __u16 so if I'm not wrong (1 << ...) won't exceed 32 bit.
+I would cast it to 1ULL for safety.
 
-Regards,
-Kamil
+--
+Zbigniew
 
-> + */
 > +
-> +/**
-> + * SUBTEST: multi-tile-info
-> + * Description: Test gathers Tile_ID/s, GT_ID/s, GT Type info
-> + * Test category: functionality test
-> + *
-> + */
-[...cut...]
-
+>  	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
+>  	xe_dev->engines = xe_query_engines(fd);
+>  	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
+> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> index 1224a723a..37b0cf31e 100644
+> --- a/lib/xe/xe_query.h
+> +++ b/lib/xe/xe_query.h
+> @@ -36,6 +36,9 @@ struct xe_device {
+>  	/** @gt_list: gt info */
+>  	struct drm_xe_query_gt_list *gt_list;
+>  
+> +	/** @gt_mask: bitmask of GT IDs */
+> +	uint64_t gt_mask;
+> +
+>  	/** @memory_regions: bitmask of all memory regions */
+>  	uint64_t memory_regions;
+>  
+> -- 
+> 2.49.0
+> 
