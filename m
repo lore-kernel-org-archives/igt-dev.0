@@ -4,56 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 970F4C83013
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 07:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAEABC8303C
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Jul 2025 07:39:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D6BE10E30C;
-	Wed,  2 Jul 2025 07:32:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D79E10E309;
+	Wed,  2 Jul 2025 07:39:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IHnBSB8S";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Co/npETZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 158D610E30C
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 07:32:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FAAB10E309
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Jul 2025 07:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751441573; x=1782977573;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=CzPFz9rmeY4kpWxWcG4RAvTCqD8BmdZskf+J6hY1wFU=;
- b=IHnBSB8SWpyp9S0yK8lXItuZs0qoe4tmgJYG0iw2CaZ3l0GF3BoKn6rg
- wdQbVCRJRoOPft02q7M/ovopZZZG7xK20lQr+m5t2KEnFSWARN13UZ6O4
- 9IINQOrdEyr2ooTXgF9A90+dL2XArVymwVRky3RpfGQIWPWthPY0ZK93z
- LNoy6pJ3COsWgAuvVj2K3w+qXYKZgOa8TyD9bp7kGCU6jYRSeC+cVASay
- 7Wtw9w0YQZFyeRHAlB6RkFQhGaLIcluejZz7HBu1NTT4JDJB8K3hgd27+
- XkryqKysZsqV33D1H2JJV+4zjjb9dmw/7MUl8+eb2+/QavmnkIeHNbf0Y A==;
-X-CSE-ConnectionGUID: sywTpHbqRAWHev70y2EJkg==
-X-CSE-MsgGUID: t+jkH5yvTW+gt4ZiR3lnkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="79165909"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="79165909"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ t=1751441972; x=1782977972;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=FMb3Uw5o+MNP/yfpYDdRJ10lMOZDI4vBOq65zrvw6lc=;
+ b=Co/npETZgJfgzpc1ZMLWA/AhP4BqsihBk9JtjwjFYOoPRm0dxJERZ12l
+ 6tTzXTtYFpV5AA2lMZAAY2svDFBdtcQXA4NN8VqjfCLWqJdU9l9LBFnqG
+ zPP+RgjDavtk/yyq6Ea0H42aWEPhJWvDyEv3P+7e+xWksZfLkFyqNwX7S
+ ljWte0xQc61xvnefIadxLL7HohN45QfM465GWXyUCEfmrYauOdrI9hjfH
+ bboidfEpq2dU0VkHECoD5iVHDXTD6su8Hwv8SW3GEFSs8Ol06dgPvKnRC
+ uxHyCaTZitm/6TYATUU7SmIH7jaaM5FcHf0Dsy3B9pG7nDhNAvYfuMegr Q==;
+X-CSE-ConnectionGUID: lciDPIq6Te6HrY07nGgT1A==
+X-CSE-MsgGUID: vnt3Wsk9So+3yr6+BXhhuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="79166530"
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="79166530"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 00:32:52 -0700
-X-CSE-ConnectionGUID: 0T6408sKTIWZVTw+Yq+KjA==
-X-CSE-MsgGUID: mGHvC1XGRXSnyO/nbM+1SQ==
+ 02 Jul 2025 00:39:31 -0700
+X-CSE-ConnectionGUID: XWru2ms5Sm6jtpAFnYLK4Q==
+X-CSE-MsgGUID: Dp7cKx6pQ5mS3g1Ndik+SA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="154549279"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.145])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 00:32:51 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t] lib/intel_compute: use post-sync write to detect
- command level preemption
-Date: Wed,  2 Jul 2025 09:32:43 +0200
-Message-ID: <20250702073242.365099-2-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; d="scan'208";a="159517233"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 00:39:30 -0700
+Date: Wed, 2 Jul 2025 09:39:13 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Rob Clark <rob.clark@oss.qualcomm.com>
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>, igt-dev@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH igt 8/9] msm/mapping: Add wait for stall-on-fault to re-arm
+Message-ID: <20250702073913.epq47msgf7bjqmqb@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Rob Clark <rob.clark@oss.qualcomm.com>,
+ Rob Clark <robin.clark@oss.qualcomm.com>,
+ igt-dev@lists.freedesktop.org, linux-arm-msm@vger.kernel.org
+References: <20250630180903.77990-1-robin.clark@oss.qualcomm.com>
+ <20250630180903.77990-9-robin.clark@oss.qualcomm.com>
+ <20250701162420.7dndnmld2p73atex@kamilkon-DESK.igk.intel.com>
+ <CACSVV0251in35dD-=hk9oy6USZCxHR-oWFy+Xk+YsSyy_LDYtQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACSVV0251in35dD-=hk9oy6USZCxHR-oWFy+Xk+YsSyy_LDYtQ@mail.gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,153 +76,102 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-At command level when long job compute walker is finished we might
-be immediately switched to short job. This defers signalling of long
-job user-fence giving false impression this job is still ongoing.
+Hi Rob,
+On 2025-07-01 at 11:02:07 -0700, Rob Clark wrote:
+> On Tue, Jul 1, 2025 at 9:24 AM Kamil Konieczny
+> <kamil.konieczny@linux.intel.com> wrote:
+> >
+> > Hi Rob,
+> > On 2025-06-30 at 11:09:02 -0700, Rob Clark wrote:
+> > > From: Rob Clark <rob.clark@oss.qualcomm.com>
+> > >
+> > > Newer kernels disable stall-on-fault for a grace period, to avoid a
+> > > flood of faults causing instability with memory translations that
+> > > the hw attempts with the translation stalled.  Fortunately it adds a
+> >
+> > Is it system-wide or only for msm driver?
+> 
+> specific to msm
+> 
+> BR,
+> -R
 
-Add post-sync write to compute walker to allow detect this situation
-and fail if command level preemption occurred instead TG preemption.
+Ok, so please write it explicitly, like for example:
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
----
- lib/intel_compute.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+Newer msm driver disables stall-on-fault for a grace period, [...rest...]
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 9f5fc1bc59..829d3a35f9 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -14,6 +14,7 @@
- #include "gen8_media.h"
- #include "gen9_media.h"
- #include "intel_compute.h"
-+#include "intel_mocs.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_reg.h"
- #include "xe/xe_ioctl.h"
-@@ -52,6 +53,7 @@
- #define OFFSET_STATE_SIP			0xFFFF0000
- 
- #define USER_FENCE_VALUE			0xdeadbeefdeadbeefull
-+#define POST_SYNC_VALUE			0xabcdabcdcdefcdefull
- #define MAGIC_LOOP_STOP			0x12341234
- 
- #define THREADS_PER_GROUP		32
-@@ -60,6 +62,9 @@
- #define ENQUEUED_LOCAL_SIZE_X		1024
- #define ENQUEUED_LOCAL_SIZE_Y		1
- #define ENQUEUED_LOCAL_SIZE_Z		1
-+#define DP_SS_CACHE_FLUSH		(1 << 12)
-+#define DP_PIPELINE_FLUSH		(1 << 2)
-+#define WRITE_IMM_DATA			(1 << 0)
- 
- /*
-  * TGP  - ThreadGroup Preemption
-@@ -1532,7 +1537,8 @@ static void xelpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
- }
- 
--static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
-+static void xe2lpg_compute_exec_compute(int fd,
-+					uint32_t *addr_bo_buffer_batch,
- 					uint64_t addr_general_state_base,
- 					uint64_t addr_surface_state_base,
- 					uint64_t addr_dynamic_state_base,
-@@ -1544,6 +1550,7 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 					bool	 threadgroup_preemption,
- 					uint32_t work_size)
- {
-+	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
- 	int b = 0;
- 
- 	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
-@@ -1603,7 +1610,7 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
- 	addr_bo_buffer_batch[b++] = 0x001ff000;
- 
--	if (sip_start_pointer) {
-+	if (sip_start_pointer && !threadgroup_preemption) {
- 		addr_bo_buffer_batch[b++] = XE2_STATE_SIP | 0x1;
- 		addr_bo_buffer_batch[b++] = sip_start_pointer;
- 		addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -1651,11 +1658,12 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
- 	addr_bo_buffer_batch[b++] = 0x0c000000 | THREADS_PER_GROUP;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x00001047;
-+	addr_bo_buffer_batch[b++] = DP_SS_CACHE_FLUSH | uc_mocs << 4 |
-+				    DP_PIPELINE_FLUSH | WRITE_IMM_DATA;
- 	addr_bo_buffer_batch[b++] = ADDR_BATCH;
- 	addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;
--	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = (uint32_t) POST_SYNC_VALUE;
-+	addr_bo_buffer_batch[b++] = (uint32_t) (POST_SYNC_VALUE >> 32);
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -1857,7 +1865,8 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 	input_data = get_input_data(&execenv, user, bo_dict[4].data);
- 	output_data = get_output_data(&execenv, user, bo_dict[5].data);
- 
--	xe2lpg_compute_exec_compute(bo_dict[8].data,
-+	xe2lpg_compute_exec_compute(fd,
-+				    bo_dict[8].data,
- 				    ADDR_GENERAL_STATE_BASE,
- 				    ADDR_SURFACE_STATE_BASE,
- 				    ADDR_DYNAMIC_STATE_BASE,
-@@ -2101,6 +2110,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	struct bo_dict_entry bo_dict_short[ARRAY_SIZE(bo_dict_long)];
- 	struct bo_execenv execenv_short, execenv_long;
- 	float *input_short, *output_short, *input_long;
-+	uint64_t *post_data;
- 	unsigned int long_kernel_loop_count = 0;
- 	int64_t timeout_one_ns = 1;
- 	bool use_loop_kernel = loop_kernel && !threadgroup_preemption;
-@@ -2149,16 +2159,19 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	input_long = (float *) bo_dict_long[4].data;
- 	input_short = (float *) bo_dict_short[4].data;
- 	output_short = (float *) bo_dict_short[5].data;
-+	post_data = (uint64_t *) bo_dict_long[8].data;
- 
- 	bo_randomize(input_short, SIZE_DATA);
- 
--	xe2lpg_compute_exec_compute(bo_dict_long[8].data, ADDR_GENERAL_STATE_BASE,
-+	xe2lpg_compute_exec_compute(fd,
-+				    bo_dict_long[8].data, ADDR_GENERAL_STATE_BASE,
- 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
- 				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
- 				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
- 				    threadgroup_preemption, SIZE_DATA);
- 
--	xe2lpg_compute_exec_compute(bo_dict_short[8].data, ADDR_GENERAL_STATE_BASE,
-+	xe2lpg_compute_exec_compute(fd,
-+				    bo_dict_short[8].data, ADDR_GENERAL_STATE_BASE,
- 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
- 				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
- 				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
-@@ -2177,6 +2190,12 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	bo_execenv_exec(&execenv_short, ADDR_BATCH);
- 	bo_check_square(input_short, output_short, SIZE_DATA);
- 
-+	/*
-+	 * Catch command level preemption instead TG preemption. For TG and WMTP
-+	 * post sync can't be visible at this point yet.
-+	 */
-+	igt_assert_neq_u64(POST_SYNC_VALUE, *post_data);
-+
- 	/* Check that the long kernel has not completed yet */
- 	igt_assert_neq(0, __xe_wait_ufence(fd, &execenv_long.bo_sync->sync, USER_FENCE_VALUE,
- 					   execenv_long.exec_queue, &timeout_one_ns));
-@@ -2187,6 +2206,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	((int *)input_long)[0] = MAGIC_LOOP_STOP;
- 
- 	bo_execenv_sync(&execenv_long);
-+	igt_assert_eq_u64(POST_SYNC_VALUE, *post_data);
- 
- 	bo_execenv_unbind(&execenv_short, bo_dict_short, entries);
- 	bo_execenv_unbind(&execenv_long, bo_dict_long, entries);
--- 
-2.43.0
+Please also give a link to lore with a change in msm driver.
 
+Regards,
+Kamil
+
+> 
+> > Please improve subject:
+> >
+> > [PATCH igt 8/9] tests/msm/msm_mapping: Add wait for stall-on-fault to re-arm
+> >
+> > imho it could be shorter:
+> >
+> > [PATCH igt 8/9] tests/msm/msm_mapping: Wait for stall-on-fault
+> >
+> > Regards,
+> > Kamil
+> >
+> > > debugfs file so we can know how long we need to wait for stall-on-
+> > > fault to be re-enabled.
+> > >
+> > > Signed-off-by: Rob Clark <rob.clark@oss.qualcomm.com>
+> > > ---
+> > >  tests/msm/msm_mapping.c | 29 +++++++++++++++++++++++++++++
+> > >  1 file changed, 29 insertions(+)
+> > >
+> > > diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
+> > > index 978ea18375dd..7e2f5c7eadc8 100644
+> > > --- a/tests/msm/msm_mapping.c
+> > > +++ b/tests/msm/msm_mapping.c
+> > > @@ -74,6 +74,30 @@ get_and_clear_devcore(int timeout_ms)
+> > >       return buf;
+> > >  }
+> > >
+> > > +static void
+> > > +wait_for_stall_on_fault(int drm_fd)
+> > > +{
+> > > +     char buf[64] = "\0";
+> > > +
+> > > +     do {
+> > > +             int us;
+> > > +
+> > > +             igt_debugfs_read(drm_fd, "stall_reenable_time_us", buf);
+> > > +             if (!strlen(buf)) {
+> > > +                     /* Not supported on older kernels: */
+> > > +                     return;
+> > > +             }
+> > > +
+> > > +             us = atoi(buf);
+> > > +             if (!us) {
+> > > +                     /* Done waiting: */
+> > > +                     return;
+> > > +             }
+> > > +
+> > > +             usleep(us);
+> > > +     } while (true);
+> > > +}
+> > > +
+> > >  /*
+> > >   * Helper to find named buffer address
+> > >   */
+> > > @@ -224,6 +248,11 @@ do_mapping_test(struct msm_pipe *pipe, const char *buffername, bool write)
+> > >       ret = sscanf(s, "  - iova=%"PRIx64, &fault_addr);
+> > >       igt_fail_on(ret != 1);
+> > >       igt_fail_on(addr != fault_addr);
+> > > +
+> > > +     /* Wait for stall-on-fault to re-enable, otherwise the next sub-test
+> > > +      * would not generate a devcore:
+> > > +      */
+> > > +     wait_for_stall_on_fault(pipe->dev->fd);
+> > >  }
+> > >
+> > >  /*
+> > > --
+> > > 2.50.0
+> > >
