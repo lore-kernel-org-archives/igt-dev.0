@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8DD8C83F04
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 14:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9029CC77B7C
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 14:04:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9733210E855;
-	Thu,  3 Jul 2025 14:03:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 39E0A10E856;
+	Thu,  3 Jul 2025 14:04:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZH/KFKGd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="daeR8YFT";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E401B10E855
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 14:03:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E5AC10E856
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 14:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751551438; x=1783087438;
+ t=1751551440; x=1783087440;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/faAk7H2xJ8Int/FDzXLgO5yuVeRlxuMBffpkySrEak=;
- b=ZH/KFKGdGHbNiqL2mAEUhjIgej9Z94B2m0XooMjRw5Rkbng3Flzt/C1B
- L9RezwGLo2j5ttMtHaLhGd5DE7b/nDyzRNxihO2BJcWI7HAnCJcYERRRy
- 7N7Y+ZVzBjmIxPyayui3cwEp657zJG1A31psM4LPAc0blxqe+Wo3oOlFd
- hls17ip8hDQxG6gdSlAEqCm8AYY2vkk8KXD5KCjKxWpJrTwFBniYe2yQx
- 4TtqLp5cSpjHOHnxJwS/IN/sbabjUXUdIQS9PUem1AJeWOak5WyD7A+3w
- 4PEaXZ+UFTtZZENHJvWxEEvtqrDCUsR2ZIbzczmBKa26lesF+859AEzsd w==;
-X-CSE-ConnectionGUID: fn13P3LmT2ehxNst4M73Xg==
-X-CSE-MsgGUID: p1F8Z+VCQFmBlgUYiFitwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="53993354"
-X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; d="scan'208";a="53993354"
+ bh=PvLsglNreSUxfjwc8508aMAby5x6WUaVVhDHNxbIoGk=;
+ b=daeR8YFTJtcWYANHL1HwtLSoAA4UyHIlpmCRBsK6Ldjy2B1IQU2ScH5/
+ m7LnZal3efsonmeqPiuhTBzt9g8JcWxuQFrdiH+77dBckHLZK48vX3lRj
+ 9pB1FgBZEjX/soFjQQiKHff0dvRZPsjNvjAzFQVXbP+GIVUwIvg0HmU0x
+ PSXEi6+04HVQi4tQrQZFgi8tdVn9j69Yk+6FFlEHFnO2JAAFw7LwrrWtT
+ F4zxCyiJUmuz3jy+wDSZ12Os/KTw8TAp08FBjGmlf2WnMCFG4lWRFAtCo
+ aRxn/jlvZJ4r+atauiI4L/+uCNmqSccPdoSU5jBsHLIUO0ZRffFU/25Ju w==;
+X-CSE-ConnectionGUID: PvyPkAhHQoWTAP2aZCfx1w==
+X-CSE-MsgGUID: X8bV168aSleYNabqSSmN4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="53993355"
+X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; d="scan'208";a="53993355"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 07:03:58 -0700
-X-CSE-ConnectionGUID: cv0/hhCzQW2GPVc9qV4T2g==
-X-CSE-MsgGUID: lwmkY+bETgiABcdWrTa29w==
+ 03 Jul 2025 07:03:59 -0700
+X-CSE-ConnectionGUID: 16wIaYTMSFa+6mcEDzVbBQ==
+X-CSE-MsgGUID: t+oCRLH0Qg+riCOJr27XrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; d="scan'208";a="159879197"
+X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; d="scan'208";a="159879206"
 Received: from administrator-system-product-name.igk.intel.com
  ([10.91.214.181])
- by fmviesa004.fm.intel.com with ESMTP; 03 Jul 2025 07:03:57 -0700
+ by fmviesa004.fm.intel.com with ESMTP; 03 Jul 2025 07:03:59 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v1 RERUN 1/2] lib/igt_psr: Skip the test when PSR is
- disabled
-Date: Thu,  3 Jul 2025 16:04:50 +0200
-Message-ID: <20250703140451.491593-2-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v1 RERUN 2/2] tests/intel/kms_frontbuffer_tracking: pass
+ non-NULL output pointer
+Date: Thu,  3 Jul 2025 16:04:51 +0200
+Message-ID: <20250703140451.491593-3-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20250703140451.491593-1-michal.grzelak@intel.com>
 References: <20250703140451.491593-1-michal.grzelak@intel.com>
@@ -71,37 +71,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-If PSR setup timing is not met, then PSR will stay disabled and test
-will fail anyway. Skip the test upon finding that setup timing was not
-met.
+Currently, there is NULL pointer passed to the test as output. Pass
+non-NULL output pointer to the test.
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- lib/igt_psr.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/intel/kms_frontbuffer_tracking.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 3d8f1949b..f35051ebc 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -38,7 +38,7 @@ bool psr_disabled_check(int debugfs_fd)
- 	igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status", buf,
- 				sizeof(buf));
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 0809352cb..d0b21b694 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -2329,7 +2329,7 @@ static void do_status_assertions(int flags)
+ 	}
  
--	return strstr(buf, "PSR mode: disabled\n");
-+	return strstr(buf, "PSR disabled:");
- }
- 
- bool selective_fetch_check(int debugfs_fd, igt_output_t *output)
-@@ -122,6 +122,8 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
- 
- 	igt_skip_on(strstr(buf, "PSR sink not reliable: yes"));
- 
-+	igt_skip_on(strstr(buf, "PSR setup timing not met"));
-+
- 	active = strstr(buf, state) ||
- 		 (c && (c->connector_type == DRM_MODE_CONNECTOR_DisplayPort) &&
- 		  strstr(buf, "SU_STANDBY"));
+ 	if (flags & ASSERT_PSR_ENABLED) {
+-		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1, NULL),
++		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1, prim_mode_params.output),
+ 			     "PSR still disabled\n");
+ 		psr_sink_error_check(drm.debugfs, PSR_MODE_1, prim_mode_params.output);
+ 	} else if (flags & ASSERT_PSR_DISABLED)
 -- 
 2.45.2
 
