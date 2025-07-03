@@ -4,57 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBA5CC77B7C
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 06:30:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 701BCC77B7C
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 06:53:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6479410E7CA;
-	Thu,  3 Jul 2025 06:30:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nbVemioO";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68D5410E7CB
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 06:30:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751524247; x=1783060247;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XNNd25RpioCzcXMwLl/rvDtO+HUJ+Ihi7rMj6V9/IB4=;
- b=nbVemioOzsZUHFqUhBfCbVSVaupcqGbb9Sm4u61GprOZZRgJwVHfTXPE
- sEpLexlXhdLtzzdR8A+NhNyf+wrBNt+uMCpuUK2L/fqPchhO1hw5wxtTr
- Dv/omnUNG1pWvxoTCR/5OppYeLqWsb36En2ojFW8w+Z8GpssHbYOdfII/
- SZQwyiWqp/V39UofHpgrIi6zzkqrqnTsdYjNBV1QOChD00RC/2W0YETUP
- S3YvJ+9L4VLGp5MET0LgEIXwMCrc3/v89YTO71B1UUH3fXqOwSuaBFNoE
- 3mloOqby20p+VSFhdwCYgVpjJIdJcQQs9VYndHxb0VTKF4wLFVc9yUyY4 Q==;
-X-CSE-ConnectionGUID: fQ+goNkiT8Cy/pTd9WxwEQ==
-X-CSE-MsgGUID: F/M1HOlOQVauJFjMXyUlKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="64886394"
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="64886394"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 23:30:47 -0700
-X-CSE-ConnectionGUID: DGouOrn1T/yYpI0akQcUhw==
-X-CSE-MsgGUID: 98oQnlq0RcO+yAyAPaq7Xw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="154635807"
-Received: from savramon-mobl1 (HELO localhost) ([10.245.244.83])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 23:30:46 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 3/3] lib/intel_compute: use post-sync write to detect
- command level preemption
-Date: Thu,  3 Jul 2025 08:30:36 +0200
-Message-ID: <20250703063032.553963-8-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250703063032.553963-5-zbigniew.kempczynski@intel.com>
-References: <20250703063032.553963-5-zbigniew.kempczynski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D8B410E7CC;
+	Thu,  3 Jul 2025 06:53:11 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3B0B10E7CB;
+ Thu,  3 Jul 2025 06:53:09 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6367284929348027783=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/kms=5Fplane=5Fscaling?=
+ =?utf-8?q?=3A_Skip_scalar2_downscale_tests_on_Intel_Gen14+_with_specific_co?=
+ =?utf-8?q?nditions?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 03 Jul 2025 06:53:09 -0000
+Message-ID: <175152558966.130399.9664567753092602510@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250703060353.74819-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20250703060353.74819-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,114 +38,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-At command level when long job compute walker is finished we might
-be immediately switched to short job. This defers signalling of long
-job user-fence giving false impression this job is still ongoing.
+--===============6367284929348027783==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add post-sync write to compute walker to allow detect this situation
-and fail if command level preemption occurred instead TG preemption.
+== Series Details ==
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
----
- lib/intel_compute.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+Series: tests/kms_plane_scaling: Skip scalar2 downscale tests on Intel Gen14+ with specific conditions
+URL   : https://patchwork.freedesktop.org/series/151104/
+State : failure
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 9549b58fdf..6126bdb3f7 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -53,6 +53,7 @@
- #define OFFSET_STATE_SIP			0xFFFF0000
- 
- #define USER_FENCE_VALUE			0xdeadbeefdeadbeefull
-+#define POST_SYNC_VALUE			0xabcdabcdcdefcdefull
- #define MAGIC_LOOP_STOP			0x12341234
- 
- #define THREADS_PER_GROUP		32
-@@ -63,6 +64,7 @@
- #define ENQUEUED_LOCAL_SIZE_Z		1
- #define DP_SS_CACHE_FLUSH		(1 << 12)
- #define DP_PIPELINE_FLUSH		(1 << 2)
-+#define WRITE_IMM_DATA			(1 << 0)
- #define WRITE_TIMESTAMP		(3 << 0)
- 
- /*
-@@ -1557,7 +1559,7 @@ static void xe2lpg_compute_exec_compute(int fd,
- 					bool	 threadgroup_preemption,
- 					uint32_t work_size)
- {
--	uint8_t wb_mocs = intel_get_wb_mocs_index(fd);
-+	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
- 	int b = 0;
- 
- 	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
-@@ -1617,7 +1619,7 @@ static void xe2lpg_compute_exec_compute(int fd,
- 	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
- 	addr_bo_buffer_batch[b++] = 0x001ff000;
- 
--	if (sip_start_pointer) {
-+	if (sip_start_pointer && !threadgroup_preemption) {
- 		addr_bo_buffer_batch[b++] = XE2_STATE_SIP | 0x1;
- 		addr_bo_buffer_batch[b++] = sip_start_pointer;
- 		addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -1665,12 +1667,12 @@ static void xe2lpg_compute_exec_compute(int fd,
- 	addr_bo_buffer_batch[b++] = 0x0c000000 | THREADS_PER_GROUP;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = DP_SS_CACHE_FLUSH | wb_mocs << 4 |
--				    DP_PIPELINE_FLUSH | WRITE_TIMESTAMP;
-+	addr_bo_buffer_batch[b++] = DP_SS_CACHE_FLUSH | uc_mocs << 4 |
-+				    DP_PIPELINE_FLUSH | WRITE_IMM_DATA;
- 	addr_bo_buffer_batch[b++] = ADDR_BATCH;
- 	addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;
--	addr_bo_buffer_batch[b++] = 0x00000000;
--	addr_bo_buffer_batch[b++] = 0x00000000;
-+	addr_bo_buffer_batch[b++] = (uint32_t) POST_SYNC_VALUE;
-+	addr_bo_buffer_batch[b++] = (uint32_t) (POST_SYNC_VALUE >> 32);
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
- 	addr_bo_buffer_batch[b++] = 0x00000000;
-@@ -2117,6 +2119,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	struct bo_dict_entry bo_dict_short[ARRAY_SIZE(bo_dict_long)];
- 	struct bo_execenv execenv_short, execenv_long;
- 	float *input_short, *output_short, *input_long;
-+	uint64_t *post_data;
- 	unsigned int long_kernel_loop_count = 0;
- 	int64_t timeout_one_ns = 1;
- 	bool use_loop_kernel = loop_kernel && !threadgroup_preemption;
-@@ -2165,6 +2168,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	input_long = (float *) bo_dict_long[4].data;
- 	input_short = (float *) bo_dict_short[4].data;
- 	output_short = (float *) bo_dict_short[5].data;
-+	post_data = (uint64_t *) bo_dict_long[8].data;
- 
- 	bo_randomize(input_short, SIZE_DATA);
- 
-@@ -2195,6 +2199,12 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	bo_execenv_exec(&execenv_short, ADDR_BATCH);
- 	bo_check_square(input_short, output_short, SIZE_DATA);
- 
-+	/*
-+	 * Catch command level preemption instead TG preemption. For TG and WMTP
-+	 * post sync can't be visible at this point yet.
-+	 */
-+	igt_assert_neq_u64(POST_SYNC_VALUE, *post_data);
-+
- 	/* Check that the long kernel has not completed yet */
- 	igt_assert_neq(0, __xe_wait_ufence(fd, &execenv_long.bo_sync->sync, USER_FENCE_VALUE,
- 					   execenv_long.exec_queue, &timeout_one_ns));
-@@ -2205,6 +2215,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	((int *)input_long)[0] = MAGIC_LOOP_STOP;
- 
- 	bo_execenv_sync(&execenv_long);
-+	igt_assert_eq_u64(POST_SYNC_VALUE, *post_data);
- 
- 	bo_execenv_unbind(&execenv_short, bo_dict_short, entries);
- 	bo_execenv_unbind(&execenv_long, bo_dict_long, entries);
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8434_BAT -> XEIGT_8435_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8434 -> IGT_8435
+  * Linux: xe-3335-e46fcd77ceacb06a5411cb77b7344d6b82e1ab72 -> xe-3339-d04a54cd3b99001adbc4cd3305b44f9f3e658407
+
+  IGT_8434: 5185b9527673518a418d575c3f58b5554e27f111 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8435: 157b34af651681184df1f41c47576f77c3b784f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3335-e46fcd77ceacb06a5411cb77b7344d6b82e1ab72: e46fcd77ceacb06a5411cb77b7344d6b82e1ab72
+  xe-3339-d04a54cd3b99001adbc4cd3305b44f9f3e658407: d04a54cd3b99001adbc4cd3305b44f9f3e658407
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13392/index.html
+
+--===============6367284929348027783==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: Skip scalar2 downscale tests on Intel Gen14+ with specific conditions</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151104/">https://patchwork.freedesktop.org/series/151104/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13392/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13392/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8434_BAT -&gt; XEIGT_8435_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8434 -&gt; IGT_8435</li>
+<li>Linux: xe-3335-e46fcd77ceacb06a5411cb77b7344d6b82e1ab72 -&gt; xe-3339-d04a54cd3b99001adbc4cd3305b44f9f3e658407</li>
+</ul>
+<p>IGT_8434: 5185b9527673518a418d575c3f58b5554e27f111 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8435: 157b34af651681184df1f41c47576f77c3b784f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3335-e46fcd77ceacb06a5411cb77b7344d6b82e1ab72: e46fcd77ceacb06a5411cb77b7344d6b82e1ab72<br />
+  xe-3339-d04a54cd3b99001adbc4cd3305b44f9f3e658407: d04a54cd3b99001adbc4cd3305b44f9f3e658407</p>
+
+</body>
+</html>
+
+--===============6367284929348027783==--
