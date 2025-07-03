@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D18DBC77B7C
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 11:49:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D62BC77B7C
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 11:51:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E71810E806;
-	Thu,  3 Jul 2025 11:49:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C9AB10E813;
+	Thu,  3 Jul 2025 11:51:37 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42E6710E828;
- Thu,  3 Jul 2025 11:49:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B64F210E813;
+ Thu,  3 Jul 2025 11:51:36 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2118807980701483082=="
+ boundary="===============0704388892216801388=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Update_image_assets_=28rev9?=
- =?utf-8?q?=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Update_image_assets_=28rev1?=
+ =?utf-8?q?0=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 03 Jul 2025 11:49:49 -0000
-Message-ID: <175154338926.131301.6740789694739747531@1538d3639d33>
+Date: Thu, 03 Jul 2025 11:51:36 -0000
+Message-ID: <175154349673.131399.8607691052822195805@1538d3639d33>
 X-Patchwork-Hint: ignore
 References: <20250703075344.95774-1-ramanaidu.naladala@intel.com>
 In-Reply-To: <20250703075344.95774-1-ramanaidu.naladala@intel.com>
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2118807980701483082==
+--===============0704388892216801388==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Update image assets (rev9)
+Series: Update image assets (rev10)
 URL   : https://patchwork.freedesktop.org/series/141539/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8436_BAT -> XEIGTPW_13395_BAT
+CI Bug Log - changes from XEIGT_8436_BAT -> XEIGTPW_13396_BAT
 ====================================================
 
 Summary
@@ -81,17 +81,17 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8436 -> IGTPW_13395
+  * IGT: IGT_8436 -> IGTPW_13396
 
-  IGTPW_13395: 13395
+  IGTPW_13396: 13396
   IGT_8436: 3b7595f0e7f95de6d79e7ae6bb72e86b0a08a08c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-3339-d04a54cd3b99001adbc4cd3305b44f9f3e658407: d04a54cd3b99001adbc4cd3305b44f9f3e658407
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13395/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13396/index.html
 
---===============2118807980701483082==
+--===============0704388892216801388==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,16 +111,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Update image assets (rev9)</td></tr>
+<tr><td><b>Series:</b></td><td>Update image assets (rev10)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141539/">https://patchwork.freedesktop.org/series/141539/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13395/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13395/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13396/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13396/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8436_BAT -&gt; XEIGTPW_13395_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8436_BAT -&gt; XEIGTPW_13396_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -130,13 +130,13 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8436 -&gt; IGTPW_13395</li>
+<li>IGT: IGT_8436 -&gt; IGTPW_13396</li>
 </ul>
-<p>IGTPW_13395: 13395<br />
+<p>IGTPW_13396: 13396<br />
   IGT_8436: 3b7595f0e7f95de6d79e7ae6bb72e86b0a08a08c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-3339-d04a54cd3b99001adbc4cd3305b44f9f3e658407: d04a54cd3b99001adbc4cd3305b44f9f3e658407</p>
 
 </body>
 </html>
 
---===============2118807980701483082==--
+--===============0704388892216801388==--
