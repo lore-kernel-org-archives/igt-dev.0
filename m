@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4968C77B7C
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 04:36:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 778DCC83030
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 05:20:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2700310E004;
-	Thu,  3 Jul 2025 04:36:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 238BF10E058;
+	Thu,  3 Jul 2025 05:20:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YxYrdeF4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="esLBU1/x";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE0A010E004
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 04:36:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B77A110E058
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 05:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751517388; x=1783053388;
+ t=1751520019; x=1783056019;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=+RlPpZ3j/olTj104I5U7N6SwHFpCNWia0aLX99UcQqY=;
- b=YxYrdeF4kgOL4HdD5OJEbBS5GpltZNeBjJPW2FxVQogVE7QlpUueOpEw
- Q30/5E5YmjE74rLX95KECmZ0VM4GmzT3rUbs5fpqb7GDP1HsQGFIr/16u
- QFU2P80MhNlWy4+qiAh8v5TcuaYonkThBoYT5Y/ShgUUf/MXYULx878Kv
- +mjDvhYVIZVgYpL+0vjTQn5LZWb0wXUd8ZD4vsz7Ah25K8vU/QyLsmrAy
- ugX59ap0xZBHK2V7Bghw2B5HkGxvAoV67ACPRWZml4pEvvC1d+Dv1jzb5
- wbhJyYLUJ9+ZX3273uMWZQ0DXfmVGPEERmEwF5pIU1m+4xSyr9D0XzJcl Q==;
-X-CSE-ConnectionGUID: RzsOzMqCQiWZrzYbI3HsDQ==
-X-CSE-MsgGUID: aj3FQqHqQBqxZx/BwEPM0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53972699"
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="53972699"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 21:36:28 -0700
-X-CSE-ConnectionGUID: xY+BxuhYTcmFefSCwc/ZOA==
-X-CSE-MsgGUID: 6Uc4NDyOQ5661fVq6HOTqQ==
+ bh=S7Vy0X0yb9xVlhHMysao88EvNng0saZ8cGEnOGfCFSE=;
+ b=esLBU1/xjTTVNbKh6M2yQp2uF5S0Z2vGDnQw8LJHS10g04F0/mX1ceFj
+ qBr6QFDF3oQoWRA6kwfm6a6u38/yROs+xHRyvDAX/W4mOZkQVfR/ZXKlq
+ 2a/a6LDBd533EIFQvxCVhmsCI/ZiTw4MvVm7fxllbos9k6NLWDf3V2iRY
+ mvhw2woPmP7NFpR8c0h6EleTctqjlVUx4tbcP/CVm5X05OmfRwF0qS4Fy
+ x+G7FwWmsQF6ADO5U+1QmTps1iJtRpbJAwz9prRKhLPkXlrUZeF7iigmi
+ Drel5Jo/DyjdzVxuHwsMDLm41/xvsNQ5cyk9OxLh6CJk7MRr94SHHCVxC A==;
+X-CSE-ConnectionGUID: qLlPLrRqSkCQR3YLNLPZqA==
+X-CSE-MsgGUID: waA4WfGKSFurAyyEHhvkJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="64881375"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="64881375"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2025 22:20:19 -0700
+X-CSE-ConnectionGUID: wnU4FNo8SsmKglmuhlUHnA==
+X-CSE-MsgGUID: N327gkz5TTGxkcORVU9xiw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="158625987"
+X-IronPort-AV: E=Sophos;i="6.16,283,1744095600"; d="scan'208";a="153681278"
 Received: from savramon-mobl1 (HELO localhost) ([10.245.244.83])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2025 21:36:26 -0700
-Date: Thu, 3 Jul 2025 06:36:23 +0200
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2025 22:20:17 -0700
+Date: Thu, 3 Jul 2025 07:20:15 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Matt Roper <matthew.d.roper@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2 1/7] lib/xe: Track valid GT IDs
-Message-ID: <cbxw2lp2q46qx3bv3nun4xmll2gmdh6gj5b3ifacwx5exvqb2z@i4s46zs4nugo>
+Subject: Re: [PATCH i-g-t v2 7/7] tests/xe: Don't assume max GT ID is num_gt
+ - 1
+Message-ID: <agstlmny5qhaxlfqswoh63wwzimdvwbimdfjlv6depjdezesnq@fz24s6ynixzd>
 References: <20250702193254.2613121-9-matthew.d.roper@intel.com>
- <20250702193254.2613121-10-matthew.d.roper@intel.com>
+ <20250702193254.2613121-16-matthew.d.roper@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250702193254.2613121-10-matthew.d.roper@intel.com>
+In-Reply-To: <20250702193254.2613121-16-matthew.d.roper@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,59 +70,149 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jul 02, 2025 at 12:32:56PM -0700, Matt Roper wrote:
-> Although current Intel platforms always have GTs with consecutive IDs,
-> we should rely on this being true in the future.  During initial device
-> query, build a bitmask of valid GT IDs that userspace may use.
+On Wed, Jul 02, 2025 at 12:33:02PM -0700, Matt Roper wrote:
+> On future platforms GT IDs may not be consecutive.  The GT mask should
+> be consulted when determining whether a GT is valid, and the maximum GT
+> ID (not the GT count) should be used when allocating array storage space
+> for GTs.
 > 
 > v2:
->  - Switch bit assignment to (1ull << ...) to properly support up to
->    64 GTs even on 32-bit architectures.  (Zbigniew)
+>  - Correct xe_compute handling; we need to loop over GTs without already
+>    having a driver fd open (and without holding one over the loop since
+>    that will break the semantics of adjusting ccs_mode), so the usual GT
+>    iterator isn't suitable for this special case.
 > 
 > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-> ---
->  lib/xe/xe_query.c | 5 +++++
->  lib/xe/xe_query.h | 3 +++
->  2 files changed, 8 insertions(+)
-> 
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index 0d2e4805c..d7ca08f65 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -346,6 +346,11 @@ struct xe_device *xe_device_get(int fd)
->  	xe_dev->va_bits = xe_dev->config->info[DRM_XE_QUERY_CONFIG_VA_BITS];
->  	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
->  	xe_dev->gt_list = xe_query_gt_list_new(fd);
-> +
-> +	/* GT IDs may be non-consecutive; keep a mask of valid IDs */
-> +	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
-> +		xe_dev->gt_mask |= (1ull << xe_dev->gt_list->gt_list[gt].gt_id);
-> +
->  	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
->  	xe_dev->engines = xe_query_engines(fd);
->  	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index 1224a723a..37b0cf31e 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -36,6 +36,9 @@ struct xe_device {
->  	/** @gt_list: gt info */
->  	struct drm_xe_query_gt_list *gt_list;
->  
-> +	/** @gt_mask: bitmask of GT IDs */
-> +	uint64_t gt_mask;
-> +
->  	/** @memory_regions: bitmask of all memory regions */
->  	uint64_t memory_regions;
->  
-> -- 
-> 2.49.0
-> 
-
-LGTM,
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
+
+> ---
+>  tests/intel/xe_compute.c | 40 ++++++++++++++++++++++++++++++++--------
+>  tests/intel/xe_gt_freq.c |  8 ++++----
+>  2 files changed, 36 insertions(+), 12 deletions(-)
+> 
+> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> index 955edf082..5e9140902 100644
+> --- a/tests/intel/xe_compute.c
+> +++ b/tests/intel/xe_compute.c
+> @@ -41,6 +41,21 @@ static bool get_num_cslices(u32 gt, u32 *num_slices)
+>  	return ret > 0;
+>  }
+>  
+> +/* Grab GT mask in places where we don't have or want to maintain an open fd */
+> +static uint64_t get_gt_mask(void)
+> +{
+> +	int fd = drm_open_driver(DRIVER_XE);
+> +	uint64_t mask;
+> +
+> +	mask = xe_device_get(fd)->gt_mask;
+> +	drm_close_driver(fd);
+> +
+> +	return mask;
+> +}
+> +
+> +#define for_each_bit(__mask, __bit) \
+> +	for ( ; __bit = ffsll(__mask) - 1, __mask != 0; __mask &= ~(1ull << __bit))
+> +
+>  /**
+>   * SUBTEST: ccs-mode-basic
+>   * GPU requirement: PVC
+> @@ -48,13 +63,18 @@ static bool get_num_cslices(u32 gt, u32 *num_slices)
+>   * Functionality: ccs mode
+>   */
+>  static void
+> -test_ccs_mode(int num_gt)
+> +test_ccs_mode(void)
+>  {
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	u32 gt, m, ccs_mode, vm, q, num_slices;
+>  	int fd, gt_fd, num_gt_with_ccs_mode = 0;
+> +	uint64_t gt_mask = get_gt_mask();
+>  
+> -	for (gt = 0; gt < num_gt; gt++) {
+> +	/*
+> +	 * The loop body needs to run without any open file descriptors so we
+> +	 * can't use xe_for_each_gt() which uses an open fd.
+> +	 */
+> +	for_each_bit(gt_mask, gt) {
+>  		if (!get_num_cslices(gt, &num_slices))
+>  			continue;
+>  
+> @@ -119,13 +139,18 @@ test_ccs_mode(int num_gt)
+>   * Functionality: ccs mode
+>   */
+>  static void
+> -test_compute_kernel_with_ccs_mode(int num_gt)
+> +test_compute_kernel_with_ccs_mode(void)
+>  {
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	u32 gt, m, num_slices;
+>  	int fd, gt_fd, num_gt_with_ccs_mode = 0;
+> +	uint64_t gt_mask = get_gt_mask();
+>  
+> -	for (gt = 0; gt < num_gt; gt++) {
+> +	/*
+> +	 * The loop body needs to run without any open file descriptors so we
+> +	 * can't use xe_for_each_gt() which uses an open fd.
+> +	 */
+> +	for_each_bit(gt_mask, gt) {
+>  		if (!get_num_cslices(gt, &num_slices))
+>  			continue;
+>  
+> @@ -180,11 +205,10 @@ test_compute_square(int fd)
+>  
+>  igt_main
+>  {
+> -	int xe, num_gt;
+> +	int xe;
+>  
+>  	igt_fixture {
+>  		xe = drm_open_driver(DRIVER_XE);
+> -		num_gt = xe_number_gt(xe);
+>  	}
+>  
+>  	igt_subtest("compute-square")
+> @@ -195,8 +219,8 @@ igt_main
+>  
+>  	/* ccs mode tests should be run without open gpu file handles */
+>  	igt_subtest("ccs-mode-basic")
+> -		test_ccs_mode(num_gt);
+> +		test_ccs_mode();
+>  
+>  	igt_subtest("ccs-mode-compute-kernel")
+> -		test_compute_kernel_with_ccs_mode(num_gt);
+> +		test_compute_kernel_with_ccs_mode();
+>  }
+> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+> index 689e0296a..2c9080428 100644
+> --- a/tests/intel/xe_gt_freq.c
+> +++ b/tests/intel/xe_gt_freq.c
+> @@ -399,17 +399,17 @@ igt_main
+>  	int gt;
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	uint32_t *stash_min, *stash_max;
+> -	int num_gts;
+> +	int max_gt;
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver(DRIVER_XE);
+>  
+>  		igt_require(xe_sysfs_gt_has_node(fd, 0, "freq0"));
+> -		num_gts = xe_number_gt(fd);
+> +		max_gt = xe_dev_max_gt(fd);
+>  
+>  		/* The defaults are the same. Stashing the gt0 is enough */
+> -		stash_min = (uint32_t *) malloc(sizeof(uint32_t) * num_gts);
+> -		stash_max = (uint32_t *) malloc(sizeof(uint32_t) * num_gts);
+> +		stash_min = (uint32_t *) malloc(sizeof(uint32_t) * max_gt);
+> +		stash_max = (uint32_t *) malloc(sizeof(uint32_t) * max_gt);
+>  
+>  		xe_for_each_gt(fd, gt) {
+>  			stash_min[gt] = xe_gt_get_freq(fd, gt, "min");
+> -- 
+> 2.49.0
+> 
