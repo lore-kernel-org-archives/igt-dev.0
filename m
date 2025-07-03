@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1384C83030
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 19:21:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA0F3C83030
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 19:25:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F85A10E013;
-	Thu,  3 Jul 2025 19:21:12 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3CA910E013;
- Thu,  3 Jul 2025 19:21:11 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3056380487740125571=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D6C210E013;
+	Thu,  3 Jul 2025 19:25:25 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i7nt5m32";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E6A310E013
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 19:25:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751570725; x=1783106725;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=Q4A47DwCIWSKT30dK2Ozb6r2PwO2cmUbtz15tndCaA8=;
+ b=i7nt5m32X1JtHzRE0gEDLJwQaV293byLEeLIZG/GaEsDT7KwijSvhEMZ
+ gtNwVMoKhRbtRmxFb+7HAnImjfDpnSG0OL96s61Ak2AqdAIKdfSU6DD7O
+ aaNKQSInm+Mzc03BZW+QPYTTxlaR4sieLIcSYA4+tZZog1kyZsUyJ3YW+
+ 1HKvbEbuGDklpN+EPORtzj15Jo9T9pCRk8ZqmASzCjThJqoHnxn+PXdVl
+ ZRQT+isNXhEszmy+vRkk3wZoPQBmR7xU73DhlSF6kTp4yO1SP24+jQija
+ Q016779xbvxj5RT6YT7iGQ+x+AdFr2lGBZv9NE7ZlflmJmUn2dmkZ5JtU g==;
+X-CSE-ConnectionGUID: FGSrYpNPTpG+PSNfGvuFAQ==
+X-CSE-MsgGUID: QTokZvGWSayuTpcVVew+5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="57684465"
+X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; d="scan'208";a="57684465"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 12:25:25 -0700
+X-CSE-ConnectionGUID: zB205jqYQKm8r/5GNJIVZg==
+X-CSE-MsgGUID: VSFfBSZ8QwiC1H/igUlWpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; d="scan'208";a="178115125"
+Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
+ ([10.245.118.0])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 12:25:23 -0700
+Message-ID: <16a59eea-100c-4198-91e4-8e5e6ece34b5@linux.intel.com>
+Date: Thu, 3 Jul 2025 21:25:20 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Skip_PSR_when_disabled_=28r?=
- =?utf-8?q?ev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 03 Jul 2025 19:21:11 -0000
-Message-ID: <175157047172.132264.6922578109811118131@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250703140451.491593-1-michal.grzelak@intel.com>
-In-Reply-To: <20250703140451.491593-1-michal.grzelak@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 0/2] Add post-gpukmod-unbind igt_hook
+To: igt-dev@lists.freedesktop.org
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+References: <20250703150304.101208-1-peter.senna@linux.intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20250703150304.101208-1-peter.senna@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +68,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3056380487740125571==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Sorry Lucas and Gustavo for the typo in your email address...
 
-== Series Details ==
+On 7/3/2025 5:03 PM, Peter Senna Tschudin wrote:
+> his patch introduces a new IGT hook: IGT_HOOK_POST_GPUKMOD_UNBIND
+> (post-gpukmod-unbind), designed to facilitate kmemleak scans in our CI
+> workflows.
+> 
+> As suggested by Lucas de Marchi, a useful strategy for detecting memory
+> leaks is to run kmemleak scans both before binding and after unbinding
+> the GPU kernel module. This patch adds support for the latter scenario,
+> enabling automated scans immediately after the GPU module is unbound.
+> 
+> 
+> Example test-list:
+>  igt@xe_module_load@load
+>  igt@core_hotunplug@unbind-rebind
+>  igt@xe_module_load@unload
+> 
+> Usage Example:
+>  IGT_PING_HOSTNAME='10.211.176.1'
+>  IGT_TEST_ROOT='/home/gta/UPSTREAM/igt-gpu-tools/build/tests/'
+>  ./build/runner/igt_runner -o -l verbose -s --per-test-timeout 120 \
+>    --overall-timeout 960 --piglit-style-dmesg --dmesg-warn-level=4 \
+>    --use-watchdog --inactivity-timeout 90 \
+>    --abort-on-monitored-error=ping,taint --disk-usage-limit=10M \
+>    --facts --hook 'post-gpukmod-unbind:OUTF=/tmp/kmemleak-post-unbind && \
+>                    echo $IGT_HOOK_TEST_FULLNAME $IGT_HOOK_TEST $IGT_HOOK_SUBTEST >> $OUTF && \
+>                    echo scan > /sys/kernel/debug/kmemleak && \
+>                    cat /sys/kernel/debug/kmemleak >> $OUTF' \
+>    --test-list ~/igt/test-list \
+>    /home/gta/igt/0
+> 
+> Known Limitations: In certain cases, such as when running
+> igt@core_hotunplug@unbind-rebind, the unbind operation is explicitly
+> managed by igt_runner if the module is already loaded. However, if the
+> unbind occurs outside of igt_runner, the hook will not be triggered and
+> the scan will not run.
+> 
+> Cc: Gustavo Sousa <gustavo.sousa@linux.intel.com>
+> Cc: Lucas de Marchi <lucas.demarchi@linux.intel.com>
+> 
+> Peter Senna Tschudin (2):
+>   igt_core: igt_hook_get_pointer() for external hooks
+>   lib/igt_kmod: Add IGT_HOOK_POST_GPUKMOD_UNBIND
+> 
+>  lib/igt_core.c | 12 ++++++++++++
+>  lib/igt_core.h |  9 +++++++++
+>  lib/igt_hook.c |  5 +++++
+>  lib/igt_hook.h |  1 +
+>  lib/igt_kmod.c |  7 +++++++
+>  5 files changed, 34 insertions(+)
+> 
 
-Series: Skip PSR when disabled (rev3)
-URL   : https://patchwork.freedesktop.org/series/148962/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8437_BAT -> XEIGTPW_13399_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8437 -> IGTPW_13399
-  * Linux: xe-3341-f47dc5475b77dff3243eb2f52e6d03f877199df1 -> xe-3342-3d1065d908ccc26b8c6963c2e676d158fdab960f
-
-  IGTPW_13399: a7e7d1a7039c90ebf914c8dc5e62a0a404339f10 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8437: edd059dcd65215c4deda2a59e47357148e856d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3341-f47dc5475b77dff3243eb2f52e6d03f877199df1: f47dc5475b77dff3243eb2f52e6d03f877199df1
-  xe-3342-3d1065d908ccc26b8c6963c2e676d158fdab960f: 3d1065d908ccc26b8c6963c2e676d158fdab960f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13399/index.html
-
---===============3056380487740125571==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Skip PSR when disabled (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148962/">https://patchwork.freedesktop.org/series/148962/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13399/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13399/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8437_BAT -&gt; XEIGTPW_13399_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8437 -&gt; IGTPW_13399</li>
-<li>Linux: xe-3341-f47dc5475b77dff3243eb2f52e6d03f877199df1 -&gt; xe-3342-3d1065d908ccc26b8c6963c2e676d158fdab960f</li>
-</ul>
-<p>IGTPW_13399: a7e7d1a7039c90ebf914c8dc5e62a0a404339f10 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8437: edd059dcd65215c4deda2a59e47357148e856d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3341-f47dc5475b77dff3243eb2f52e6d03f877199df1: f47dc5475b77dff3243eb2f52e6d03f877199df1<br />
-  xe-3342-3d1065d908ccc26b8c6963c2e676d158fdab960f: 3d1065d908ccc26b8c6963c2e676d158fdab960f</p>
-
-</body>
-</html>
-
---===============3056380487740125571==--
