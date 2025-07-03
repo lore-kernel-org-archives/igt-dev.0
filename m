@@ -4,168 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 182EBC83F03
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 20:37:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CCCCC83F03
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 20:39:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDA4510E1CF;
-	Thu,  3 Jul 2025 20:37:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CAC7F10E1CF;
+	Thu,  3 Jul 2025 20:39:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fU2vUHm0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YbBEPguI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22D3F10E1CF
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 20:37:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E28F910E1CF
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 20:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751575035; x=1783111035;
+ t=1751575163; x=1783111163;
  h=date:from:to:cc:subject:message-id:references:
  content-transfer-encoding:in-reply-to:mime-version;
- bh=mHMqQ+2Nk+vCbHOuuN0zfpnu5tN69rqMvuU8WbBnS0Q=;
- b=fU2vUHm0IEU1NRl5eJ7OuwfrrJYdtLUu5rxzX+n1jYdgocXbQ5O7GOQm
- OnX1A0vGYtty+RCnmHfaUfH8wQdWfdzr2v2rktIBrcW9HAB/a7+B/9abT
- s7z4nw/7QpNahAkKm9Hbi6hyI3nBhu7tIhuDYNihm+ihSyjOqdVAk6pxk
- tWFzTUfNr+kHmSoodWVWM9NaT4WTodrf3ns5upqUwPZye/K8JuEbSEOgX
- 0wGNvCrQ+xAQUtrMji/OlODM52fTFLH3KO4I3AFirbTCR339Qw5qg9X85
- zKu8NVttvJV2BXiRBk3vs/LTlsEyhX/UMGZd8nEx0LasHIoD2CnKgZxBi A==;
-X-CSE-ConnectionGUID: lv/dvq9xTJmKwUmaaQLUQA==
-X-CSE-MsgGUID: AARiDzxvRiSB2YX/AkNWPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="57721953"
-X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; d="scan'208";a="57721953"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 13:37:14 -0700
-X-CSE-ConnectionGUID: X1Vng72ZT0yXH3wgN6sz6A==
-X-CSE-MsgGUID: qtxohi7DSqiEElUePG3myQ==
+ bh=P9ZKJgXn2ZgT7Dv5ANWiNLc7ZQuAJoo2JZJmaqHtYE8=;
+ b=YbBEPguISJ5nXURtWCchsUwlwWJxGn1IRp3r/f0TcL+Xg0ldFwp7v1p7
+ WIoRCHHv158UQmUOt9Jcz775DdCMBRmAL3aY1y/K2Odg248Y9kGhc4mOV
+ To3Qy/GUMFOaVaZA/yh+sfEXZ2OVUGZbhcgRjJ2uGSmbUvQX/Gu712Lsh
+ oDCQCB1sbXEBa6DbgEu59RXfYl3a6NeSj1HFMF8t/eCvK34QW6Xz1vOJz
+ nra1dBXQNXpM8sD2cZoQ9q1jZ4lea/J7UFILw0nbotgnMbMAlxkZqfz1a
+ Ghv64b1CgFp95CXdxRsRnRcnFtURD7s8oW9FFu3IICOPJ69bo6Gxn1Moi g==;
+X-CSE-ConnectionGUID: lM0sNu2aTNW/zvtye3HRHQ==
+X-CSE-MsgGUID: F1rc9paEQWidDguZmVyHGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="54056386"
+X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; d="scan'208";a="54056386"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 13:39:23 -0700
+X-CSE-ConnectionGUID: DS9emD5QSl6tftHOrVR/Gg==
+X-CSE-MsgGUID: oF80R71ZQ3mb7y1DvplWKw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; d="scan'208";a="153881249"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 13:37:15 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; d="scan'208";a="159024835"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 13:39:23 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 3 Jul 2025 13:37:14 -0700
+ 15.2.1544.25; Thu, 3 Jul 2025 13:39:22 -0700
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 3 Jul 2025 13:37:14 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.72)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.1544.25 via Frontend Transport; Thu, 3 Jul 2025 13:39:22 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.87) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 3 Jul 2025 13:37:14 -0700
+ 15.2.1544.25; Thu, 3 Jul 2025 13:39:21 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RmaArpRo10wO+8rJELpfyJjNwwRo4XGhvzCy2H2VHvFWMDs9J2Z0NLca9LF/LyQjsltzyaFzBaMKLSJm7uejbZ4XmTgjksW3cK35ypfRhC9JI6c8inISXkmum6QVyimHggIHJRXpMvPCkAkCOHmd89ZZqvmkCgn1j+tf5J9/YdOcnT8NFUCBtagLQBrCgQWyt3Ek0o/pvaa7xezXoCOA7SSsgb7+ae6Nt2LRXMxJ3YffdVdSpEpa/ds7Zkqmcnv8Tbn0DpdtjkRXkzCsTxEYsN7EhiSqoCmjnDL4D82V/e+mzzeG49/9LSqRum4yZS+x8XUx2UjrBuJjUw8gDs/aAQ==
+ b=HCodIZs5h/kNd4yeMZWo1LmaweT1vetZCqFFLIZIF624/GalwISYbpqfNusNj89FY/63OZOCFgQZs6699MrBYZGTrcOQMnWsF9X2hdYnOcS/VMbqncFzO5GabRLzJmydif5vy4WOITCe6N1XuGWpo3wcA3ZFAgIlBHVFfR565VjjwQu/vQPDtO0fUnznMKzYe5Q3IZG4ruR4ZaOfkCvj+3RlLlnOZFnAy6oSpb+P6sLSwi26gXyMNq+36m2ttrKOgRGNmhThQ+owewa5nbuQJWzMDTihChuGafTnJX7tPKSh1s/oCYMEsIe9Mg2uNDQ2l3f/5ZC+IFp/OPxTUFEhtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dy0o3H4GYZntuyupPh7RkoX7Yb0DOqJ7iPQwZp6dCPE=;
- b=ZM0jg4X7k/VnFL03nFdWNllcX+e3xAWhMDiBWQVCJ3ov3sZ1WcdDvxzwzrND6BKtAEu9LXNn/c0sjtoTb49VGw/BzYaaHO0KV2I/KMe/8+rZO/E48aQiTZ4aEmm2vrt8JYrkDeRF/zI473ohOOytbFOJPOXmrWg8N/TfbHeZEGK7P6W7qy1yogYa0XJ4lvXBxGRIo6VsxM7v+ruc9KSaQk+YYpalXChNQaJV8sqXen13vVvSyjBtxK7xmRQjbXq7BD42e9e7cICkctJELwMq4ms5u2vHzngV4O47CeE8PkMPPt2QvJvBR7wmrH3aPQdaPtKidUbkrN1nB5KWzbT/1g==
+ bh=Yz4z7nyUFw3NOtEjVDVXATok35X3k18Rj8hFU/+sfIw=;
+ b=YviWY0TlbHsrCRnUg3JGWcUieojwkwgRyaCSBRMtRObWlpEfgvCjVbcvJYQ9H/fWNG3mYhyQqlbjq218WB1/tnLt8uydh2ZcT3AILMVxZb6rP7wGNsfedBx8MwwggkEtnszp0Xmj78gFu5UrUBi1DckyfrT2kocTRKVjgp5oWGdGvZDflUgkdtKgfj5xmE4woRtmHKWU32ZUOe2Rod/NKlj7R5H03fQUMZSS+i40FYxMb+lxl/vzvcQqa4+YxymMYvURCNEFEJp12Q31l8GwFoblOxbSGURV8J9agZKizRz9pAqN1tXKHO8oc+pyObxfMdoSLZjIZweR/kZsO/eqZQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CYYPR11MB8430.namprd11.prod.outlook.com (2603:10b6:930:c6::19)
- by IA0PR11MB8302.namprd11.prod.outlook.com (2603:10b6:208:482::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.20; Thu, 3 Jul
- 2025 20:36:31 +0000
+ by DS7PR11MB6038.namprd11.prod.outlook.com (2603:10b6:8:75::8) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8901.21; Thu, 3 Jul 2025 20:39:05 +0000
 Received: from CYYPR11MB8430.namprd11.prod.outlook.com
  ([fe80::76d2:8036:2c6b:7563]) by CYYPR11MB8430.namprd11.prod.outlook.com
  ([fe80::76d2:8036:2c6b:7563%5]) with mapi id 15.20.8880.034; Thu, 3 Jul 2025
- 20:36:31 +0000
-Date: Thu, 3 Jul 2025 16:36:26 -0400
+ 20:39:05 +0000
+Date: Thu, 3 Jul 2025 16:39:01 -0400
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-CC: <igt-dev@lists.freedesktop.org>, <michal.wajdeczko@intel.com>,
- <marcin.bernatowicz@intel.com>, <kamil.konieczny@linux.intel.com>,
- <katarzyna.piecielska@intel.com>, <zbigniew.kempczynski@intel.com>,
- <ewelina.musial@intel.com>
-Subject: Re: [PATCH v3 resend i-g-t 5/6] tests: Add xe_debugfs
-Message-ID: <aGbpyhgv6AwZ41Sm@intel.com>
+CC: <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, Juha-Pekka Heikkila
+ <juha-pekka.heikkila@intel.com>, Swati Sharma <swati2.sharma@intel.com>,
+ <michal.wajdeczko@intel.com>, <marcin.bernatowicz@intel.com>,
+ <kamil.konieczny@linux.intel.com>, <katarzyna.piecielska@intel.com>,
+ <zbigniew.kempczynski@intel.com>, <ewelina.musial@intel.com>
+Subject: Re: [PATCH v3 resend i-g-t 3/6] tests: Add core_debugfs_heads_power
+Message-ID: <aGbqZTPOpf79Xxx7@intel.com>
 References: <20250616074240.45818-1-peter.senna@linux.intel.com>
- <20250616074240.45818-6-peter.senna@linux.intel.com>
+ <20250616074240.45818-4-peter.senna@linux.intel.com>
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250616074240.45818-6-peter.senna@linux.intel.com>
-X-ClientProxiedBy: BY5PR16CA0013.namprd16.prod.outlook.com
- (2603:10b6:a03:1a0::26) To CYYPR11MB8430.namprd11.prod.outlook.com
+In-Reply-To: <20250616074240.45818-4-peter.senna@linux.intel.com>
+X-ClientProxiedBy: BYAPR07CA0031.namprd07.prod.outlook.com
+ (2603:10b6:a02:bc::44) To CYYPR11MB8430.namprd11.prod.outlook.com
  (2603:10b6:930:c6::19)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CYYPR11MB8430:EE_|IA0PR11MB8302:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a61ed23-8dd8-405f-2064-08ddba714b51
+X-MS-TrafficTypeDiagnostic: CYYPR11MB8430:EE_|DS7PR11MB6038:EE_
+X-MS-Office365-Filtering-Correlation-Id: 888ff7b1-9b0e-45ec-5c38-08ddba71a71e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?vJG2r5HNlhWuuNzjqG1zFY61ZeeRGZdo9x0mdxA79322CzZED+KJCjJZx5?=
- =?iso-8859-1?Q?dRW5GYCY+Bc+BPH0sL4JVpoFVAqQNgimHP24DkkxjlxNzsuBmrC+pF/DOp?=
- =?iso-8859-1?Q?4xA4XMOKPO4cja9VXqQM8luGpVaoODpXlOLRhk1Yk3i7Y4o1RU9lTiouy1?=
- =?iso-8859-1?Q?cVzj8dHQznrEv1mu2jQpoX/N1tcL+8o9RSbqBZTGd17vopsf+9VSv3tbuE?=
- =?iso-8859-1?Q?n2zD4LNtQg2WPFRpeVWQtFD5dRBVIiSZoR06HAdU6dCAhvY3ZGc2n3xvH+?=
- =?iso-8859-1?Q?hnRiXwj9Mlq1UYiY0JKcywlciyImiIfCo9OiaoDlfmqqEgJYQkZ8V4MQ6A?=
- =?iso-8859-1?Q?7qQ88FBP8J4NIJFws4qDTphLs4lbwVmfpQG9XpXtEVt1qs/47fMzrVt4Sn?=
- =?iso-8859-1?Q?Ncn+lB0uwCRN+tG0ReZSESQ/Bnjr3KP6HAnEQWjHDKDYX4hmjlF3Lv0xRL?=
- =?iso-8859-1?Q?ijScrDMX5b5IWBT6roPNCH7tR7Tk+Ephe9Jm3NYtOv79ml8zE2EJkI6UMV?=
- =?iso-8859-1?Q?IPAqHO6N5iD6iheIZbMs7mLP3H/tw3qcDIOFBwp4yIGFDYr5X0YHFbgjrF?=
- =?iso-8859-1?Q?mQXEHS8+bQEDFoI++UX7qnNof+XdLu2v0y6nwIFbHCu4hEukzPDmjsVVT2?=
- =?iso-8859-1?Q?q595r8XlIP0AxqWhms/jJfaLfRxQI+Gi0D1dVZp60fJvdQ9K5xSpk3Rolz?=
- =?iso-8859-1?Q?D6afU+Cn57km+OGCmPEicordNAksv2XedL5UDl5dN1jHsR+sKe0gsJZ976?=
- =?iso-8859-1?Q?3lNCta5ts8ef+b8YUZW6YmXiW6vjS0/vpt8+6NArctoa8z85UYvEJZ4uGm?=
- =?iso-8859-1?Q?+zEj97bPsLZSCQ9STQGiYRQLK9/O7DuCFw5tjMSgkPTJTfEIs4PSRaeO0j?=
- =?iso-8859-1?Q?xrElyTF1Cvpqt11H/kA1ShqXDUEIGjUVi7v/O22kr/ImXc+azIUsXHvklQ?=
- =?iso-8859-1?Q?b1FVyWrTc3ScgLtuGCloxCmvvvj3U8qi9GvDzqEsQsQ8SfyJWuq2V8UgLp?=
- =?iso-8859-1?Q?h2/0/pM2NIObMh/tgOHiCXVgG0E1f2Sc6j40ufU6WmmWgSANpJA9YPswfE?=
- =?iso-8859-1?Q?h3Ez9IY2wmOlh7/l/Tgxt5dJnCzUQ72O3jNU6ywz06UZyG7RfjsILKFP9G?=
- =?iso-8859-1?Q?BXAO03ODvHbphR9VW/mEvzjpmJYMGPVxUv06YaQzuz25LZNI/SQOs3sKNw?=
- =?iso-8859-1?Q?Tso+6s0TtVISAWJe9h0/be04R7vofIbslOg5b614SSC/2o06iGO39jtmwJ?=
- =?iso-8859-1?Q?KUUsq12nAAtpbJsp26Nwoze1P1kubvwdTlSJQOLXFPjbEdR7xseWLWkHQ3?=
- =?iso-8859-1?Q?NcNvHwJR29AgcAgb3fAsCcwsMfHM0D88iNs8W9YnSPyF2sTbcophlew873?=
- =?iso-8859-1?Q?Qegi3PQXRyws/gDOAHFIGvLdtW96VfK7R6bKqwEri2hi2S4aGOrKX8w7Rb?=
- =?iso-8859-1?Q?r8sFPfBKQbuAupb60x3xeSOZ7YmvpR2z9IBUPJLlTAteREqKixqRUP/yz9?=
- =?iso-8859-1?Q?M=3D?=
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?f9lRlcVkEWlV8SkgkaCxtKqwLKdmyz1dKyaU+uSfYibnTyC7u/E0/CXFez?=
+ =?iso-8859-1?Q?IX5vy793Svpnbn/gvDj3+L07b5p3ikTXuTCSwDR1PbC0bUGpQXMtP9jLjY?=
+ =?iso-8859-1?Q?QEroub5TFrLu76cNrBlwo9it3Rg77FzlUYeCfvrkSVqxHYPXjhv3AHh41b?=
+ =?iso-8859-1?Q?BxsB2MgBqHA74JvnqcTvFpfR5HGwKngdCFOIjOfALcUDicn+dxj2dIi/ad?=
+ =?iso-8859-1?Q?TsHWPteKJR1clzBYuYOqA/nP4orieqvDCuCxcxh9FRt/z6At/lMLVEL7Ho?=
+ =?iso-8859-1?Q?jtWDUXXZvdkCSjkz4YFjBjW5lBWc2Hu832QeLKVz4Ygeyaet62oB09ptpQ?=
+ =?iso-8859-1?Q?FcMSUC95gLh/0zMWmJWU4k40w5qHxapbIo4ACMjE/6LRobIJ4AgqvZ9HGd?=
+ =?iso-8859-1?Q?MU+eBHsosIsiBi4a6xZOte0sctUJFnPIDBxgrcv6cBkviop8YwFk3gWckL?=
+ =?iso-8859-1?Q?Z936risYov0wn7T1VLsklNa3bb5V9sEbXCuQ8TmBz8vt+3Eqlrrpsvmcg7?=
+ =?iso-8859-1?Q?tTsvSUKNbTzNKy3adgJx7h9Rb2NEqCjAY7mJyWoWABrFishp8Xqsiy6gcF?=
+ =?iso-8859-1?Q?EHFlBnQSqBi4a/qQUBPjmKoOJvN2mJCtW533nTaHyDt13Z6whizLhfI+vH?=
+ =?iso-8859-1?Q?xLy922ycSYf9XKjF9OSbeqUZ5LrORjvcZ7BUxbCY4tjmkJX0mVAXTP1ShS?=
+ =?iso-8859-1?Q?1kAnCqpYBqYyRevmsW3W2Q2NSr7DBmpl09IVKX6vRi7RulqtcOx1kip4WT?=
+ =?iso-8859-1?Q?FhOjVq2tTK3GkG4p6wA9R5RZ/z9iNvT0ZzuPkOyunbR+SEa/A4dxRQz5sQ?=
+ =?iso-8859-1?Q?GZhBUzM8entUsUbb8nlkErNno1uTqC014y79UU14/tVCST2HUXMmq1TeUz?=
+ =?iso-8859-1?Q?9NaGLe8KpnhM0O0zDbIUR2Eq36aBoY9eAsTKtRH/wzc42ePYHmuryrM03f?=
+ =?iso-8859-1?Q?rSLqsDqMdSCZJybH4cfzX6P8j8RrydGgCSfS4gELWGOoEjLPVCbcPPh+63?=
+ =?iso-8859-1?Q?/YwoeFgpamGt9Zu/JAPelVnneed3Tma7x5l7ZR0PlHNhCfJ4ZHhD7MNw3K?=
+ =?iso-8859-1?Q?7PBC9SdLKn3AT9HJLiONsl5gcOZEW16NaP18jOcTP+hm1+bsgp+cuGN6pF?=
+ =?iso-8859-1?Q?OHWnjkkNxdTC/JM4ZgwnD1s+5ND1gMObyyESUYWCF2f7HcnONv2emhFW+d?=
+ =?iso-8859-1?Q?DcwNoxV1Fo0oQ2R29MGh5AbX99XH9GDRW7P0E8MIvr5QRHWPyOK74emcaP?=
+ =?iso-8859-1?Q?1nmw+YO8x/d1Edw55lAF1YwfX1wL9HSuvCJFb0fC+T/+2oG9e4n57InE8U?=
+ =?iso-8859-1?Q?YPQh1Fou/Inh3fOXendOE3Yq3qi1wPLedEKZgRPg/oZuUd/tam316v1fDI?=
+ =?iso-8859-1?Q?QuQieJEPS1XlFAMERFBRtglvqu4+etePUgvdcFDAalTLxwrApM1AqUtMM5?=
+ =?iso-8859-1?Q?jmzYMrvxxgqJt4hshQptSwe2ewXpuIgIRKX7y43ciORO/f0viq/2Gsp3M0?=
+ =?iso-8859-1?Q?Y=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CYYPR11MB8430.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(1800799024)(376014)(7053199007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?3VkdktotnZQ6DVa7SXqPLnKQBytlSzxgMGRk3YcJ5xtxxcrdAdSwGtoqO1?=
- =?iso-8859-1?Q?wZ10CvQBgLGSay8XzAO+Ym8q3unWiyJeS+y8hmO3IWenEmMHWHbsFYKev6?=
- =?iso-8859-1?Q?rT5LnTC5Cq8xzrWGiAsWhSh2Wo2E/aFMS4miYVHjCGk7KCoIZLmhpLGw0i?=
- =?iso-8859-1?Q?u5OHmepBbgl6FG483+0alhzJt/aDIPbvqBKF36yfXX+TXbIcb8qRj9tLY2?=
- =?iso-8859-1?Q?XdzFd1AYeqruvmkczEXS1fkEZNXP8dHL01a6sTWj7lcVjkZWOje8iE1v8K?=
- =?iso-8859-1?Q?1XCkzH5IhDn5fsD90yWRkkOuAOD5YHXXBrf0aSBtRJpr9gTYkM/Q/fplPk?=
- =?iso-8859-1?Q?mye+QPIG973pfJNBwLtEmC0UD2I82zh1UNgMPVyeJ229xYvfzbyHAsfJ6I?=
- =?iso-8859-1?Q?/D+3mr2OzrGYJcsT1QMXc0nmzxbYLW9BBdmJJfX6dlvz3/2GoWSaqOxaVw?=
- =?iso-8859-1?Q?2BZltiysK+QMy9eBYX0KUWIo2lB7pQCuOPziFFPtfKQyau8Z8y0uS35mVd?=
- =?iso-8859-1?Q?OK09JGFeIrgMdNsJuYYjhxjtR6zfxi/0GL/KkeVFV+oRvVSW87EOtgyFbk?=
- =?iso-8859-1?Q?4ewAqIL1tPtaBpxxNwajU4u6aaUgdKFitUMsAXrFHjMRQnLYPGdr8J6y2b?=
- =?iso-8859-1?Q?FFNcIM+88EXTrfr1MU6gbPlzUyukCZWulNyIZixmdwqpI0xZD2Nq7aZpYr?=
- =?iso-8859-1?Q?6bvv5vSEfnKbrqjTQAwCPFJe69rj0VF+CtzhXYLxw0RUOxmyOScfqz7uIa?=
- =?iso-8859-1?Q?5G6hCU1DMGZp59P5ATZ5D+lmmTFVTIkcr+McJJOpPUttC4tYTt4ZyIod45?=
- =?iso-8859-1?Q?qPM8GbI4jftrLsXOX9uVSWx+PgI9PPa6Pu9eHgUQ7SpZizv7w1RksiMBgZ?=
- =?iso-8859-1?Q?UENVqfKcGF/XkcDqUfONCY/drqO+JgyRIzaK0A5qWAYBQPFULsGzyChdYh?=
- =?iso-8859-1?Q?NqoeCJI0qtUHM5dxfRZRRCTcqxuu49SYPnk29swiwQtzuRF8KNuQ0L2el+?=
- =?iso-8859-1?Q?+z55s467Oth9CSPOuyZfF6ry66rSiN2dofxqRwOrBaL9R/egWGr4QihjeH?=
- =?iso-8859-1?Q?cdO4DuJkmnWrvdQCVZUS+k89VV8jDJdyZhLKghcy1wOiEwQdib4e4cPwWs?=
- =?iso-8859-1?Q?bjIiSKbOHtkuEHexaDFlatD+Z7rSF8rNdUKsXUBzQV0GqGZkDp5+WJ5zbR?=
- =?iso-8859-1?Q?Gu7osK4PyTwdO0OUqk8zlyQW4AXr5eXjWkod6e5Z+w5EPeofVFbXzi8Q98?=
- =?iso-8859-1?Q?SS7fVlUDY5a8x9ITH206oDgVQB0yzWe4BdKCW+GMYDgF5+6H/vkD2n84PW?=
- =?iso-8859-1?Q?VjmGKUFfJWRtMoQH95U4XHTIKKwdZektCpWIiw0pBPK7Pya1qihRH5rwpZ?=
- =?iso-8859-1?Q?s+nXAqI8Qt1QrXQDkmDNf102HB7OYayl8UtUn1XPPucwXGStJtYVc9AofC?=
- =?iso-8859-1?Q?+SeNFBRBcsXOPvWMK7sLoNfUGGTzfPOGtqHCAH6mBHKnMuTkI5Rlebm55e?=
- =?iso-8859-1?Q?s4Nx6SYL5Wmc1rIuiLdF0vVWYOJbTbFP7FiWPTZcLxbXrrEgdx82dvpRet?=
- =?iso-8859-1?Q?SdX0OgKZYNolM3hDkxBkkUg9vcFwSwGWmGZytX+HyNpFJyNbgzGAGkBurT?=
- =?iso-8859-1?Q?I5xoE+N2ezUbftMUmfodGBY4S/KyvMhrgf?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a61ed23-8dd8-405f-2064-08ddba714b51
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?W/6EdYy1r9/osX3HGEtoUxrfjTkCb6aY+AQR/Ulk5leS22hcV0lIKmeJ5c?=
+ =?iso-8859-1?Q?NIanZewFLn5ubi6AOs9CtuGrDDnSp7h6mtqj67Dmss2V/Mvi9D8cAw6qfc?=
+ =?iso-8859-1?Q?bPD2YrvmjUiB/3n5MqJ5kusp4FvOY89IgJVY+h421/l+Ett0iocLi25Ba5?=
+ =?iso-8859-1?Q?efjYlqcoAU86tqAUx+K4ViRrPKF9hGAxcAYvtA7R00sq7GYOfREiGJVUfC?=
+ =?iso-8859-1?Q?c7JtcrR5MHS+l0dUa1U0jffCU7WHiQbod+Vokd4GJ6Sx2F21E526+YKd5r?=
+ =?iso-8859-1?Q?UYkEtfKIJU4aX2LJ3HPmMDmvcOhJYiIHJySBH6w3HWLVZgPI6Xgn4WMoVn?=
+ =?iso-8859-1?Q?dKThaJwj+pgH/m5VSzeq1RaH/swm6Zo1dkFCQVi6lOliBNzZTke1rxwwI5?=
+ =?iso-8859-1?Q?CiB+VpnsOylAWAOBiSAlkTK7VC8fU6eOJDqD2i7PRiWp382nuC6WeGofrF?=
+ =?iso-8859-1?Q?bvFkn5sIT9yZEk0nEfxX0gaj72LdMGVPYh2q3Ng74hBA6bfYqPrBhk0AaS?=
+ =?iso-8859-1?Q?OoJ1gjQ5K5z+xtBG6BH/RIKjDTnBcQXgNauZ0BmHH0lXkWPdjg4m/4c/kt?=
+ =?iso-8859-1?Q?bHhRLRF/8ucuDJZXJZjTtV/FXyybD3REkuWNk3orNyFSFsh4E9k7d///Ut?=
+ =?iso-8859-1?Q?fWKJo11sgQPrzgOOiCcDg/fLlNkcxxS8LNNSceJ9s5JLbzbhrJ7zAVQ2gF?=
+ =?iso-8859-1?Q?aiHnK0qNxtb/OJA4J9gXl03zWdiFz9Tiabyx7O7JIBDlSyp/iaWO3Ru+De?=
+ =?iso-8859-1?Q?1AoIs2DmCRW2DHcA8VuimlHtGeGrpwGq2dCtfnAgHXTlbzP1Wjkw1QZfH8?=
+ =?iso-8859-1?Q?9HniDyYRp0FPnDeVAvuX62uFU2GvJvHBMh4cxpYh+UGz1ATSfzv2ip71Lx?=
+ =?iso-8859-1?Q?k1oMOh61uafE+7bDFmyplg3VICfCIxSH4kAtkSDBTx/uFh4On3SsQs3NHw?=
+ =?iso-8859-1?Q?5XyobY4+BKTmsdc5km34KqFVRx986JMQjZPAG8u82TNo0LKebd0/cibxPt?=
+ =?iso-8859-1?Q?G9Zfs07LBeB/uFlf7K30C51REhEWSVXZB4+eXiCJcJxYfya4QZHxafmvB0?=
+ =?iso-8859-1?Q?Q3kKy5NDFiykcfu2Kh6xMsOikgNajQxe+BXpYamjnuKeP1+NXUAFxX+mJW?=
+ =?iso-8859-1?Q?bMZg0OZvobkwvsjTeBSTgJQ5SwNyexMHw4hFsCuqiyoaJIJRnFJXKVFleI?=
+ =?iso-8859-1?Q?S22T2zEBhbkBlrBkVDfPlccWv6hUS+l9emY/4W4WBGXRGXdP3Je30bONeX?=
+ =?iso-8859-1?Q?p9RvMvw4xiBWcqpx9C1fge8vLWqhu640jqf3zpmduAZUnmv2fjUYr8veFf?=
+ =?iso-8859-1?Q?WDHUoNb/q3wsh65AuladtqwXuG/XdN/9eBjzjSz2n73xJH+6Flxs9QctC7?=
+ =?iso-8859-1?Q?xCgCP+TMBBqrFaRrvDYKV9UOO/AY6v+I9VFwlhTY1BonF3Xip4W5Hw3vMA?=
+ =?iso-8859-1?Q?Fv9eB+fHjq3hSt9QwYRQSpVOus3322/NNwlithrQkLs1eqfCUJim7OqlsT?=
+ =?iso-8859-1?Q?Jb+5Zbo18nt77ab35IiOExqUWnoqpDZfDLer+BS6MM+eepiX0T13298aUL?=
+ =?iso-8859-1?Q?+jIU9G3CfG+SwQePhn8Nmyc+MKmY080JrRAzzgT5kx2SX8SDhVod1ziO94?=
+ =?iso-8859-1?Q?fmgYrmyMQSD6SJvze1AmjHKl/fBpRbog/sB7MiUSC9JtTnPCw2c17ciQ?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 888ff7b1-9b0e-45ec-5c38-08ddba71a71e
 X-MS-Exchange-CrossTenant-AuthSource: CYYPR11MB8430.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2025 20:36:31.7134 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2025 20:39:05.6639 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B9G8YDnZkOwleTgnZ2e7lNr9MJYdFQbg6rI61QNMJHCXrY1taNQ9Br2Lc1EP4DbKbrlxKeVmnd0fPqzU4DUzYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8302
+X-MS-Exchange-CrossTenant-UserPrincipalName: PMzmlfItxmin/ZmIlauuDzIcyH2YMS3TcyO8cHERI1NKCjcq9UonPZoh2cnHMppkBBv9/sOKIfdWxIOyQA8scw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6038
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -182,14 +185,16 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Jun 16, 2025 at 09:42:37AM +0200, Peter Senna Tschudin wrote:
-> xe_debugfs is a test specific to Xe GPUs. It is intended to complement
-> the existing generic debugfs tests core_debugfs and
-> core_debugfs_display_on_off.
+On Mon, Jun 16, 2025 at 09:42:35AM +0200, Peter Senna Tschudin wrote:
+> Introduce core_debugfs_heads_power that is expected to work with any
+> GPU, not limited to i915 and Xe. The test powers off all available
+> heads before reading debugfs files, and then powers on all heads
+> before reading the files again.
 > 
-> Additionally, this test has been updated to use the igt_dir
-> infrastructure, resulting in simpler code.
-> 
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
 > Cc: michal.wajdeczko@intel.com
 > Cc: marcin.bernatowicz@intel.com
 > Cc: kamil.konieczny@linux.intel.com
@@ -199,59 +204,57 @@ On Mon, Jun 16, 2025 at 09:42:37AM +0200, Peter Senna Tschudin wrote:
 > Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > ---
 > v3:
->  - unchanged from v2
+>  - renamed the test
+>  - Removed reference to sysfs from comments  (thanks Kamil)
+>  - Updated description to match the display part (thanks Kamil)
+>  - Moved from "display" to "heads". Our CI uses "headless" to refer
+>    to a DUT without display and it is shorter
+>  - renamed subtests for shorter names (thanks Kamil)
+>  - fixed comments style (thanks Kamil)
+>  - updated CC list
+>  - changed the order to test first with all heads off then with all heads on
+>    to prevent the need from powering on the heads at the end of the test
+>    (thanks Kamil)
+>  - removed snprintf from test names (thanks Kamil)
+>  - removed subtest group (thanks Kamil)
+>  - deleted kms_tests() and moved the code to igt_main (thanks Kamil)
+> 
 > v2:
 >  - changed style of comparison to NULL
+>  - moved to a separate patch
 > 
->  tests/intel-ci/xe-fast-feedback.testlist |   2 +
->  tests/intel/xe_debugfs.c                 | 208 +++++++++++++++++++++++
->  tests/meson.build                        |   1 +
->  3 files changed, 211 insertions(+)
->  create mode 100644 tests/intel/xe_debugfs.c
+>  tests/core_debugfs_heads_power.c | 156 +++++++++++++++++++++++++++++++
+>  tests/meson.build                |   1 +
+>  2 files changed, 157 insertions(+)
+>  create mode 100644 tests/core_debugfs_heads_power.c
 > 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index a5f799f6b..c52f08953 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -78,6 +78,8 @@ igt@xe_create@create-execqueues-noleak
->  igt@xe_create@create-execqueues-leak
->  igt@xe_create@create-invalid-mbz
->  igt@xe_create@create-massive-size
-> +igt@xe_debugfs@xe-base
-> +igt@xe_debugfs@xe-forcewake
->  igt@xe_dma_buf_sync@export-dma-buf-once-write-sync
->  igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
->  igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync
-> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+> diff --git a/tests/core_debugfs_heads_power.c b/tests/core_debugfs_heads_power.c
 > new file mode 100644
-> index 000000000..66a5fa0f6
+> index 000000000..1813986d8
 > --- /dev/null
-> +++ b/tests/intel/xe_debugfs.c
-> @@ -0,0 +1,208 @@
+> +++ b/tests/core_debugfs_heads_power.c
+> @@ -0,0 +1,156 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
 > + * Copyright © 2025 Intel Corporation
 > + */
 > +
-> +#include <dirent.h>
-> +#include <fcntl.h>
-> +
 > +#include "igt.h"
 > +#include "igt_debugfs.h"
 > +#include "igt_dir.h"
-> +#include "igt_sysfs.h"
-> +#include "xe/xe_query.h"
-> +
-> +
-> +struct {
-> +	bool warn_on_not_hit;
-> +} opt = { 0 };
 > +
 > +/**
-> + * TEST: Xe debugfs test
-> + * Description: Xe-specific debugfs tests. These are complementary to the
-> + * core_debugfs and core_debugfs_display_on_off tests.
-> + *
+> + * TEST: debugfs heads power test
+
+Could we please use display instead of heads here?
+From display folks perspective heads might be indeed more clear because we will
+only use display if any 'head' is attached, but from folks outside of display
+world, heads will be a confusing term to be in the name of the test.
+
+Or perhaps we name kms_debugfs 
+
+> + * Description: Read entries from debugfs with all heads on and with all heads
+> + *		off.
 > + * Category: Core
 > + * Mega feature: General Core features
 > + * Sub-category: uapi
@@ -259,202 +262,154 @@ On Mon, Jun 16, 2025 at 09:42:37AM +0200, Peter Senna Tschudin wrote:
 > + * Feature: core
 > + * Test category: uapi
 > + *
+> + * SUBTEST: off-read-all
+> + * Description: Read all debugfs entries with heads off.
+> + *
+> + * SUBTEST: on-read-all
+> + * Description: Read all debugfs entries with heads on.
 > + */
 > +
-> +IGT_TEST_DESCRIPTION("Read entries from debugfs, and sysfs paths.");
-> +
-> +static int xe_validate_entries(igt_dir_t *igt_dir,
-> +			       const char * const str_val[], int str_cnt)
+> +/**
+> + * bool igt_kms_all_displays_on: Try to turn on all heads
+> + * @display: pointer to the igt_display structure
+> + *
+> + * Returns: void
+> + */
+> +static void igt_display_all_on(igt_display_t *display)
 > +{
-> +	igt_dir_file_list_t *file_list_entry;
+> +	struct igt_fb fb[IGT_MAX_PIPES];
+> +	enum pipe pipe;
+> +	int ret;
 > +
-> +	if (!igt_dir)
-> +		return -1;
+> +	/* try to light all pipes */
+> +retry:
+> +	for_each_pipe(display, pipe) {
+> +		igt_output_t *output;
 > +
-> +	igt_dir_scan_dirfd(igt_dir, -1);
+> +		for_each_valid_output_on_pipe(display, pipe, output) {
+> +			igt_plane_t *primary;
+> +			drmModeModeInfo *mode;
 > +
-> +	for (int i = 0; i < str_cnt; i++) {
-> +		int hit = 0;
+> +			if (output->pending_pipe != PIPE_NONE)
+> +				continue;
 > +
-> +		igt_list_for_each_entry(file_list_entry,
-> +					&igt_dir->file_list_head, link) {
-> +			if (strcmp(file_list_entry->relative_path,
-> +				   str_val[i]) == 0) {
-> +				hit = 1;
-> +				break;
-> +			}
+> +			igt_output_set_pipe(output, pipe);
+> +			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +			mode = igt_output_get_mode(output);
+> +			igt_create_pattern_fb(display->drm_fd,
+> +						mode->hdisplay, mode->vdisplay,
+> +						DRM_FORMAT_XRGB8888,
+> +						DRM_FORMAT_MOD_LINEAR, &fb[pipe]);
+> +
+> +			/* Set a valid fb as some debugfs like to
+> +			 * inspect it on a active pipe
+> +			 */
+> +			igt_plane_set_fb(primary, &fb[pipe]);
+> +			break;
 > +		}
-> +
-> +		if (!hit && opt.warn_on_not_hit)
-> +			igt_warn("no test for: %s\n", str_val[i]);
 > +	}
 > +
-> +	return 0;
+> +	if (display->is_atomic)
+> +		ret = igt_display_try_commit_atomic(display,
+> +				DRM_MODE_ATOMIC_TEST_ONLY |
+> +				DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +				NULL);
+> +	else
+> +		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+> +
+> +	if (ret) {
+> +		igt_output_t *output;
+> +		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
+> +
+> +		igt_require_f(found, "No valid mode combo found.\n");
+> +
+> +		for_each_connected_output(display, output)
+> +			igt_output_set_pipe(output, PIPE_NONE);
+> +
+> +		goto retry;
+> +	}
+> +
+> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
 > +}
 > +
 > +/**
-> + * SUBTEST: xe-base
-> + * Description: Check if various debugfs devnodes exist and test reading them
+> + * bool igt_kms_all_displays_off: Try to turn off all heads
+> + * @display: pointer to the igt_display structure
+> + *
+> + * Returns: void
 > + */
-> +static void
-> +xe_test_base(int fd, struct drm_xe_query_config *config, igt_dir_t *igt_dir)
+> +static void igt_display_all_off(igt_display_t *display)
 > +{
-> +	uint16_t devid = intel_get_drm_devid(fd);
-> +	static const char * const expected_files[] = {
-> +		"gt0",
-> +		"gt1",
-> +		"stolen_mm",
-> +		"gtt_mm",
-> +		"vram0_mm",
-> +		"forcewake_all",
-> +		"info",
-> +		"gem_names",
-> +		"clients",
-> +		"name"
-> +	};
-> +	char reference[4096];
-> +	int val = 0;
+> +	enum pipe pipe;
+> +	igt_output_t *output;
+> +	igt_plane_t *plane;
 > +
-> +	igt_assert(config);
-> +	sprintf(reference, "devid 0x%llx",
-> +			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
-> +	igt_assert(igt_debugfs_search(fd, "info", reference));
+> +	for_each_connected_output(display, output)
+> +		igt_output_set_pipe(output, PIPE_NONE);
 > +
-> +	sprintf(reference, "revid %lld",
-> +			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
-> +	igt_assert(igt_debugfs_search(fd, "info", reference));
+> +	for_each_pipe(display, pipe)
+> +		for_each_plane_on_pipe(display, pipe, plane)
+> +			igt_plane_set_fb(plane, NULL);
 > +
-> +	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
-> +		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "yes" : "no");
-> +
-> +	igt_assert(igt_debugfs_search(fd, "info", reference));
-> +
-> +	if (intel_gen(devid) < 20) {
-> +		switch (config->info[DRM_XE_QUERY_CONFIG_VA_BITS]) {
-> +		case 48:
-> +			val = 3;
-> +			break;
-> +		case 57:
-> +			val = 4;
-> +			break;
-> +		}
-> +
-> +		sprintf(reference, "vm_max_level %d", val);
-> +		igt_assert(igt_debugfs_search(fd, "info", reference));
-> +	}
-> +
-> +	snprintf(reference, sizeof(reference), "tile_count %d", xe_sysfs_get_num_tiles(fd));
-> +	igt_assert(igt_debugfs_search(fd, "info", reference));
-> +
-> +	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
-> +
-> +	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
-> +	igt_debugfs_dump(fd, "gtt_mm");
-> +
-> +	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM) {
-> +		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
-> +		igt_debugfs_dump(fd, "vram0_mm");
-> +	}
-> +
-> +	if (igt_debugfs_exists(fd, "stolen_mm", O_RDONLY))
-> +		igt_debugfs_dump(fd, "stolen_mm");
-> +
-> +	igt_assert(igt_debugfs_exists(fd, "clients", O_RDONLY));
-> +	igt_debugfs_dump(fd, "clients");
-> +
-> +	igt_assert(igt_debugfs_exists(fd, "gem_names", O_RDONLY));
-> +	igt_debugfs_dump(fd, "gem_names");
-> +
-> +	xe_validate_entries(igt_dir, expected_files,
-> +			    ARRAY_SIZE(expected_files));
+> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
 > +}
 > +
-> +/**
-> + * SUBTEST: xe-forcewake
-> + * Description: Check forcewake debugfs devnode
-> + */
-> +static void
-> +xe_test_forcewake(int fd)
-> +{
-> +	int handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
-
-What I don't see here is how do we avoid the forcewake_all to be read
-in the other test? Or that doesn't matter there?
-
+> +IGT_TEST_DESCRIPTION("Read entries from debugfs with display on/off.");
 > +
-> +	igt_assert_neq(handle, -1);
-> +	close(handle);
-> +}
-> +
-> +const char *help_str =
-> +	"  -w\t--warn-not-hit Produce warnings if it founds a devfs node without tests";
-> +
-> +struct option long_options[] = {
-> +	{ "--warn-not-hit", no_argument, NULL, 'w'},
-> +	{ 0, 0, 0, 0 }
-> +};
-> +
-> +static int opt_handler(int option, int option_index, void *input)
-> +{
-> +	switch (option) {
-> +	case 'w':
-> +		opt.warn_on_not_hit = true;
-
-what about make this the default?
-
-> +		break;
-> +	default:
-> +		return IGT_OPT_HANDLER_ERROR;
-> +	}
-> +
-> +	return IGT_OPT_HANDLER_SUCCESS;
-> +}
-> +
-> +igt_main_args("", long_options, help_str, opt_handler, NULL)
+> +igt_main
 > +{
 > +	int debugfs = -1;
+> +	igt_display_t *display;
 > +	int fd = -1;
 > +	igt_dir_t *igt_dir = NULL;
 > +
 > +	igt_fixture {
-> +		fd = drm_open_driver_master(DRIVER_XE);
-> +		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
+> +		fd = drm_open_driver_master(DRIVER_ANY);
 > +		debugfs = igt_debugfs_dir(fd);
+> +		igt_require(debugfs >= 0);
 > +
 > +		igt_dir = igt_dir_create(debugfs);
 > +		igt_require(igt_dir);
 > +
 > +		kmstest_set_vt_graphics_mode();
+> +
+> +		display = calloc(1, sizeof(*display));
+> +		igt_display_require(display, fd);
 > +	}
 > +
-> +	igt_describe("Check if various debugfs devnodes exist and test reading them.");
-> +	igt_subtest("xe-base") {
-> +		xe_test_base(fd, xe_config(fd), igt_dir);
+> +	igt_subtest("off-read-all") {
+> +		igt_display_all_off(display);
+> +
+> +		igt_dir_scan_dirfd(igt_dir, -1);
+> +		igt_dir_process_files(igt_dir, NULL, NULL);
 > +	}
 > +
-> +	igt_describe("Check forcewake debugfs devnode");
-> +	igt_subtest("xe-forcewake") {
-> +		xe_test_forcewake(fd);
+> +	igt_subtest("on-read-all") {
+> +		/* try to light all pipes */
+> +		igt_display_all_on(display);
+> +
+> +		igt_dir_scan_dirfd(igt_dir, -1);
+> +		igt_dir_process_files(igt_dir, NULL, NULL);
 > +	}
 > +
 > +	igt_fixture {
-> +		igt_dir_destroy(igt_dir);
+> +		igt_display_fini(display);
 > +		close(debugfs);
 > +		drm_close_driver(fd);
 > +	}
 > +}
 > diff --git a/tests/meson.build b/tests/meson.build
-> index a06172d2e..847598255 100644
+> index fa62cbeb9..99dbd4feb 100644
 > --- a/tests/meson.build
 > +++ b/tests/meson.build
-> @@ -283,6 +283,7 @@ intel_xe_progs = [
->  	'xe_compute_preempt',
->  	'xe_copy_basic',
->  	'xe_configfs',
-> +	'xe_debugfs',
->  	'xe_dma_buf_sync',
->  	'xe_drm_fdinfo',
->  	'xe_eu_stall',
+> @@ -1,6 +1,7 @@
+>  test_progs = [
+>  	'core_auth',
+>  	'core_debugfs',
+> +	'core_debugfs_heads_power',
+>  	'core_getclient',
+>  	'core_getstats',
+>  	'core_getversion',
 > -- 
 > 2.43.0
 > 
