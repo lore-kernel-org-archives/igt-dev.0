@@ -4,182 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B89A8C83F03
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 21:23:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5F62C83030
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Jul 2025 21:34:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A62F10E8F2;
-	Thu,  3 Jul 2025 21:23:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7016010E8F5;
+	Thu,  3 Jul 2025 21:34:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gt3XS9Sj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V6rVs+uP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00B9910E8F2
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 21:23:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E8C9110E8F5
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Jul 2025 21:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751577818; x=1783113818;
+ t=1751578494; x=1783114494;
  h=message-id:date:subject:to:references:from:in-reply-to:
- mime-version; bh=O4CjqmQhGxsNhF1FwHQZiI62TAzH2X2D+HHJVfTYlIc=;
- b=Gt3XS9SjLaQcBSu8PI0Jh/oHbevoHJJcFKuAkw3i3e3xeIIwmjGUFidg
- Wa8KZIwkgpInWOEoKnlFfgGU/WPh8QStbdys0j6WflyFvIT3zA8z4x4Ik
- WOFb0Vog3XMB3F8rAtQHDfHm7Jk5F8XRHIawEs9L8H4kxUCcLuESqjLuv
- Zm+krVu71rBH7BPaDmPczaNre9XpXdInkNLKQuU99JjGbiwykqnE15pWy
- zLt9vfdRyULhB6Dm9U6L39+NO8+ku6aTHL3nHI2JsmulqP7CoNM1yicMV
- IEyKVzZzhE3IYqTAzX89IkrKW5+lzZcJMVEg6UbxZiVWDm1YLwzc4jZsT A==;
-X-CSE-ConnectionGUID: PldckRljRrmrMaA4hKLS8g==
-X-CSE-MsgGUID: ecQv1dNfSSOgxG/i0y+r5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="57589752"
-X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; d="scan'208,217";a="57589752"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 14:23:37 -0700
-X-CSE-ConnectionGUID: tfJYlqvGRdSc2TK0tBVUUw==
-X-CSE-MsgGUID: 5qvGZ3boTOegH4n7o1Q20Q==
+ content-transfer-encoding:mime-version;
+ bh=uvN+qTGVihJfY8+pTy1SGNG2pJB3sZbH7P0/ZREzNGI=;
+ b=V6rVs+uP5bj54V9F1ycyquDHaVzz7Gjtc6Vkxwh5QCDTsXbB6v3G7WyA
+ y1QgZ47Pg+FKAw0k0UvVuelM4abxm8tdnxDpwOjSFGRRl+cXlML3sEq+Z
+ KDczYktHPNDcnrXHmiBfOvnP20djFDUsaf5mH3qNKg+h7ynSFHh3d3Xff
+ KLkSrgJJHctW3rgwDylhn2jAERdi8FWvvttHD7T44mVQ653MOmREII5T4
+ uktFQfw1dJ0cvJdMsweoWBAxs8MIUgG8bE9xoytxVMQK6bMhAN6u/H/45
+ RYjFdKFCsFdOKO7qNW9pLJceEQFraHwwWpmhjrSqvNM6QY5k2q7BrYcGF A==;
+X-CSE-ConnectionGUID: pjIIFup0Rt+wC53qjGq3pA==
+X-CSE-MsgGUID: kDPPofsbQteh0Mautmoq8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="79354442"
+X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; d="scan'208";a="79354442"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 14:34:53 -0700
+X-CSE-ConnectionGUID: KHUUS2+sTFykGzBO5hGb0A==
+X-CSE-MsgGUID: 8WD9rydRQh2KphwG+NmIQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; 
- d="scan'208,217";a="153902556"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 14:23:38 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 3 Jul 2025 14:23:37 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+X-IronPort-AV: E=Sophos;i="6.16,285,1744095600"; d="scan'208";a="154565053"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2025 14:34:53 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 3 Jul 2025 14:23:37 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.68)
+ 15.2.1544.25; Thu, 3 Jul 2025 14:34:52 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Thu, 3 Jul 2025 14:34:52 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (40.107.100.57)
  by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 3 Jul 2025 14:23:36 -0700
+ 15.2.1544.25; Thu, 3 Jul 2025 14:34:30 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FfB7L2AdpRbOEksV5BeXcIUuQ9WL1s24rSolT7LG3kze0PyZAPkIydz7j+fcUq+UqymcS6+aKTlbfRFnjFlvXFfuhUFEd75arWQLH2mlz+mIXqt8a9MBBFXHsh9k+r3Rp1OKy91HADtErOBGg7hgma0gaf/aqDhhTCP2PLNpgQokDX8IYhiJcIXJl4eEHv3AC4Z5fkC1UIows63bw6AsaoKGK+ZFo0U3HIyqwtr4cqEnRjIyOr+ghc9EtmEhd2awgsK04tiopjv6JbpNQeXloFm8kAcZq/2Za8yYoZN5Jaxzdy1R5MKt9QRk0wsl3P09LDNm/U/VFkA1t8SPCqGK4g==
+ b=tybPMRKS2c4eWId1N5BjVaN1WXR6oVaayo5OXvsCP4UKZoT22SALttZCLVzldfmlZWdcJxU6LYmY5Na64RhNg7nET3DS57WTD2V3i4RflLcK0tZhrZGolpXYkSuboOCoyXsNEcz54rz/gJGbKIaLEF1EEvmRtkWCaxPvQEFEWtjwYnGSasfgH5y5Ob6LWwryqwO31tQqyjDdpE3mj0s01+cJwW60wh+LF/84tlVdt69DGtwOvZj7G9he8q6q5VewVWb9orkuzoljl4oc3OHSLy1prbR4onELI9fGXfsrjXvD7hVc9yD1lAyl4wEKfnFq97BxOepKuSW6bO3eeEcduw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tfZfOgJKwb92Qb/FEb/PAz+5tswP2bz/OPJetnzHndE=;
- b=fai0pQczTR5AaZ+1zODRTWCC1+5amIB0fc2vtnbQpLJPzNhtwO6q6cNRM3kzyZdYKMyLgMoyCmjmMC78YXsp7F3vNhDPFH5ScljEmxGhBiJ/YTXhj4vW7JFngDv+40EW5NDL1FRjidNK++7Gm9TmeoMLxa+1l12vsTiTiuoTRuEe4wt9TP94ZNQc3e+30hHCVv3XSn1s4lfk2vfKtc+HQbGNTjTrklpLOISVo9IbqFWAhFCOPSC8gjh/HqQpsun+wGclrKzA0t8MYMeX+a3+mo1k/XKdGZ4x5oqw1LsG4da/bFtU5BEvQ+ghIZ8mmQ3N6D6rrgPJBygzuQV1C1dpbA==
+ bh=kBpHwzS1gdyzk8N+0FcPNSPm3Za3ZgowwL6WAnEiWpQ=;
+ b=Syf0VtEfjyhguX4DJkfl4vU1QVTPNAVHsIDhVE+nefBRxt+2VOA2aRNGcVi5Gsmd/VijLECiYNOt6aV2P7cvHPtd2/wNysup3+c1UXNB1z6tb5jrc2dgXRJqG67aUeaT7tqVyq0amzU11ga8Cmx4L6OfBIjyR7cJ05Vsu5bHhJC+A8Xz9W8JV5Xu2km+aEVB0qW9AmNCC38i9EdKvwZ+AQh54M8oAHdH+wol0fHFKLmXtNCsMdGcKchHsost9gwZ78NB/d8aJVl0xzw+WFeUOWxNFjoxCJkYefEzsb6eIYDj9b5gjXOU0HAmKKukyK9wrYVR4g5DxSYJZdJ89xXNxg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from BYAPR11MB2760.namprd11.prod.outlook.com (2603:10b6:a02:c0::26)
- by DS7PR11MB7738.namprd11.prod.outlook.com (2603:10b6:8:e0::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8901.21; Thu, 3 Jul 2025 21:22:53 +0000
+ by DM4PR11MB8131.namprd11.prod.outlook.com (2603:10b6:8:190::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.26; Thu, 3 Jul
+ 2025 21:34:28 +0000
 Received: from BYAPR11MB2760.namprd11.prod.outlook.com
  ([fe80::edff:94fd:b8f9:34c7]) by BYAPR11MB2760.namprd11.prod.outlook.com
  ([fe80::edff:94fd:b8f9:34c7%6]) with mapi id 15.20.8901.018; Thu, 3 Jul 2025
- 21:22:53 +0000
-Content-Type: multipart/alternative;
- boundary="------------Cso6Ct0ojQbBpj5Z0iDHl9Eo"
-Message-ID: <9438f600-9351-418a-9acf-c99bb45d98ab@intel.com>
-Date: Fri, 4 Jul 2025 02:52:48 +0530
+ 21:34:28 +0000
+Message-ID: <1f9a71b5-6ae1-4e5a-8d56-66d5d72b5442@intel.com>
+Date: Fri, 4 Jul 2025 03:04:22 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 3/5] lib/igt_sysfs: Update new debug mask
- requested by user
+Subject: Re: [PATCH i-g-t v4 4/5] tests/kms: Use CI environment variable
 To: <igt-dev@lists.freedesktop.org>
 References: <20250604053046.1702233-1-pranay.samala@intel.com>
- <20250604053046.1702233-4-pranay.samala@intel.com>
+ <20250604053046.1702233-5-pranay.samala@intel.com>
 Content-Language: en-US
 From: "Naladala, Ramanaidu" <Ramanaidu.naladala@intel.com>
-In-Reply-To: <20250604053046.1702233-4-pranay.samala@intel.com>
-X-ClientProxiedBy: MA1PR01CA0156.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:71::26) To BYAPR11MB2760.namprd11.prod.outlook.com
+In-Reply-To: <20250604053046.1702233-5-pranay.samala@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MAXP287CA0022.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a00:49::29) To BYAPR11MB2760.namprd11.prod.outlook.com
  (2603:10b6:a02:c0::26)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR11MB2760:EE_|DS7PR11MB7738:EE_
-X-MS-Office365-Filtering-Correlation-Id: 565fd322-652f-43a1-47a9-08ddba77c577
+X-MS-TrafficTypeDiagnostic: BYAPR11MB2760:EE_|DM4PR11MB8131:EE_
+X-MS-Office365-Filtering-Correlation-Id: fcbfed3d-9974-4913-7fb9-08ddba7963c5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|8096899003;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WUJDNlZieVhjeXBjZmRVS0hvSEpYZU1vUUx2aitjYVdGdGwxWkV3MjA4elJi?=
- =?utf-8?B?R21DYlNzRlBqTldGang1RDI4Z2VkT3d1ckJ4d0I3WEpienp4OFpvSXdxSnF5?=
- =?utf-8?B?TkIwb1VUZVhaeHFGSWNaM2pHekF1Q1BqYk9ZQW51citXeDFVUEZFWFBvbWVD?=
- =?utf-8?B?QWlSMXNoRGFNR3pBdFNGcWxEL1FHQkJLZ3NiM2RtLzNuT0d3UkorNFIza1Vk?=
- =?utf-8?B?azBNRmhDRXJZbi9pU0tJTE1FazVRbWdXTTBHNEJOeE43UjdCSE1iVmppWGl4?=
- =?utf-8?B?YmFIMzRDR2xQUHlsZ2xuRzlOY3U5Z3Z6MkE0bVRqeUNSWCtwUG9MNWlvM2Yv?=
- =?utf-8?B?QkVLWEovWXY3cmxBN3hraExmRWc5UC8rTG1GRnN1a1pLdjJ1MzRkYm9NZUNa?=
- =?utf-8?B?U01jNm1pZDdoQTB0UEtWUzdMTk81TVVsaVRaaktEbG12UzB0cy9YaXExSTkx?=
- =?utf-8?B?MUliUXpMN0xiRkJ6d2hJSmYraXlGUUYrdnVzaVRORGxSVmJwTVFCNkdoVisv?=
- =?utf-8?B?dElOd3QyNTk5T3d1amlFZWVDbjJxZ2Q1M0tLdk8zUnA0WTdqanZsUXZEaFRC?=
- =?utf-8?B?ZkdLK2FYTXM3bmx2aHdWK05PRGNDUEt4SndOU3czaTAvZVdBK00xdUorZUJC?=
- =?utf-8?B?eUIrL3lPSlArNnBocDVFSEphaHRvczZ2VGN1bkQ4cGFXaGZZanJ0SHhxYjg3?=
- =?utf-8?B?N2R0MzZaZ2drOGc1S0hGaWtSbkFLN1dWSlBKRWdFdURPMVI5VFlHNzRia2dT?=
- =?utf-8?B?U3ExUlBKY1pJOU5TR1ZBN2t1MHZqQkxHL3paZWJpelJGU1psVmdxUER4OCtI?=
- =?utf-8?B?S1BHa1B0VGQ2cUEzem5MN1lCb2krTS9uMlNEamUwZjBJbEd4R0VMSzYvQVBq?=
- =?utf-8?B?b3pXMnJUTW5BZmZDYUFvaHZQVnlRLzBXWDZmRUtNSjc4NEQ4UmxIeVp3RXZV?=
- =?utf-8?B?NTByNFVZSXFHYm1WNzhGeXgrR2tCWWhkdFFITE5nbzk4T2xoMGc2WUg2QlNS?=
- =?utf-8?B?K1BSaWZ5V29SQ3NPUWpPNGZRbHJicHU4Und0ZWpzQ0p2bklIMFVQcERXNjJP?=
- =?utf-8?B?Y0JGY2E0L21lb3BZRllnMWdCakdUZjdjUlVKYThhVWg0WkpmekpaMXNNUHdk?=
- =?utf-8?B?blNlb3JYSWYxTzZrU1VoSC9aRW5JNGxILy81eno1emJEZ0kweHJFalRHU1hR?=
- =?utf-8?B?OWMzaStGSzhxWjdCS1VYang5bDVOcFUwemdjL29CQVRIVWpuTGRpM21Bemtl?=
- =?utf-8?B?VWJ5emc0RnA4SnBDNnJnSFArK2lzSld0N2NiV09GT0tnTE9zN0NEUWs1NW5z?=
- =?utf-8?B?b09ZblFxMHB2NHlXQW1IQ0Z0Sys3VWFpZXh5emFRZGpJREdjZWpmT0dvUGdQ?=
- =?utf-8?B?T1NPZTZqd2daeW95YjRISldIQ3JrYkZ3bGM0UTRSQUNMR2R4ZU4yZGVNN0RN?=
- =?utf-8?B?WXcrYXNNYUNGeEp2b3lGWmQ3V2VoWHJ0VHFnOUtObHd6UWdpcldlUGtWRm9J?=
- =?utf-8?B?UHB6U2JpaFQ5UmVTVGZhSEQ0RDg0KzVEcUJkZ3BrWEZJOEs4Q0lwVzNoajJl?=
- =?utf-8?B?L2Z6dGR0S0ZzbkRLUXRIdW9FNGJNcE9lT1ByL3hNWCsxUmFhMkJOUWVMTjlN?=
- =?utf-8?B?RUpGZzBLQ0lBSTlsdHhLYjlISVlpTHpKMXROQlc1Z3BrYkR5ZUpCOHhQbGtF?=
- =?utf-8?B?aGk2TThDbnBNRHphR2FCQ1o1a3RBME9BSDRMUFZKL0pYUVZsYmJ6TzFhR3FN?=
- =?utf-8?B?eDdXVUNLbTMvT2gxK2Rpb3hqK2RUeGFCQ3RCTnFzYVV3aUdSOTBXRHNqa3lx?=
- =?utf-8?B?VVN2MXJycmh1K1hzTFMrQWxYd0hDM1lCK1FkT1VhdFZReWVNZ0wvK0ExQk11?=
- =?utf-8?B?MHA4RmpKZHVBd1hOZlFVTkNaNzlhVmdQLzV1ek56clRWTFJBK20yaVk1dDRL?=
- =?utf-8?Q?hTKnI+33EJY=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZFlpUDVSRzRXVFVndGg0UHdOWTBpaFRTOFhyQ0lPa0d5ZU5scHoydmVKajI5?=
+ =?utf-8?B?VUkwS1JNT0FqOXB3TXl6dDg3THBvaXl3enlPajFVZDVuWTBOTjhWRUhDUWox?=
+ =?utf-8?B?Wnd5WUpDc1QxZTJDcmRpbWxZLzQ5YzVUSStnbUdzR3Qvam9HenJ3VjZXL3Bk?=
+ =?utf-8?B?WmQ2c1M1NVBKOXJmbTl0MFNrVnJiemtVbmR6K3dsMDlqbkwrbWdLZGQrRy81?=
+ =?utf-8?B?WnpkOG1QNTFnWUR1Mm9vQjVVRHdYVEVpeFlGQ2svbHdMVEUwbkQ4b2k1aHAw?=
+ =?utf-8?B?U0RJaERNd2xwRU5XbnJHRnpOYURQaU9ESDFCbWNkT0kwT2g3djNBVGsvTUF4?=
+ =?utf-8?B?MUFDMEpCdGRBNmtaNGQrdG0rNkljQWVRbXp5U1lsMDQya1pzRGs3SkZQRlZS?=
+ =?utf-8?B?dmtXaWZ4SlVjM011cndqakpsbC96dVRUd0lTd1NxRTQ1NFlVUXg4bnNGQnpB?=
+ =?utf-8?B?bVI1bVJUNk5jVkFORkFISUpYOEdkaW5Kbi8xV2JlSUtXaDdvelRpSjZCYXZx?=
+ =?utf-8?B?cWFXbzZCS3pnenpwVEF3Z0dFanVobGhOTDdHQmZqN1RLWVJ1WFJiRWVhcXZ6?=
+ =?utf-8?B?MVRjcUxrNVFnNXRteG1ZMHJrQWlQeW1EWHdUZXJqTTZTekU5REdwK0U0M3Ro?=
+ =?utf-8?B?NXJoenlsRUpoRkhtREx3ZlY2S1FaazdqOFVvajBoOHllTTJadzBHV21lbnRu?=
+ =?utf-8?B?R0xNQ3RYSEsrdEhBYmpaUVNtUzlmRng2WDZxZTFQSUE2cEw1RjVWMjRqZFNl?=
+ =?utf-8?B?aTU1NFNkTE95SDJQa01uUXpoSGg2TlZuWUVVSWtxNVFrcFgxMGNncWgwaTFx?=
+ =?utf-8?B?eEJOWktocHQ1RFNuNHI3b2FOa0hDeTRVbW4vSks1S3VJUEVtQks4TWo0UThP?=
+ =?utf-8?B?N3FqMm1ramh3WGVyUk0xNXdpVFFua3pDWmJyblNnTWxyZGZZTEpOK2theHNC?=
+ =?utf-8?B?d0thQkxjV3VuVWZxZlFpZDAydEV0OTJUM1IzcHowMkJPdFJaY0h3Q2lyWEJy?=
+ =?utf-8?B?YjZueDBORndrZG1KdytqWWtabGFsYythZC8wTXV2bkFNc3JUR0xlUGl3YWU5?=
+ =?utf-8?B?SGp4S3hPR3FsMGZ5L0xXWEFpdnFBWm5iM2hKVTBkek90YUlZVFRhRk55SWhD?=
+ =?utf-8?B?RWl0Qm5tVVNabzY1M1AwZmJtNzA5Y0pJNDJJOGZzR0dNYTB2eHRESy9Mb0tm?=
+ =?utf-8?B?bGRiTFloY1BKTlhzRGxQU0lHbEg0Z2toYk9XaVNwdkszQTVDUVllY3lPcWdH?=
+ =?utf-8?B?WHVyN3JJNjcyaWFSRHp4dEdTc3JaTENHL2Zlc2c2Q3pnTisxWURuRmhyS3E0?=
+ =?utf-8?B?d1YrWlFxZU02ODhoMDlkL3F5QVlSbERMdHEwbG9HaEVSQmlFaThEYVRUNG1i?=
+ =?utf-8?B?RTk5dGZHeE9LaHRPYUgvS3pJVWFNMDBML2sxMXY0MFRxZFJYT2t1MTRGYVlw?=
+ =?utf-8?B?VWRyV3laUVBrVFFpK3M0QXk0bFE5NmYrT3ZEOGJOaXVzNnl3Z0I0RHIvVy9x?=
+ =?utf-8?B?eUxwOERIUjVSa1JrSjhjQ1BGSGZQWEhEV2hzN2FTWTI4Q29DYkZFM0phcVM4?=
+ =?utf-8?B?emUwQzNPYlo0aHljM29oeXNKZDZEWGx5dFBQMUc0Q1E5T29DdzhDZ0kzSTdz?=
+ =?utf-8?B?cTNtcmxBekw0SlQ5a0VyNXFNWitrV3FGRkJMZEEybC9qM0pXYnAvbHB3dFND?=
+ =?utf-8?B?cU1Wbi9kZzA2aGJ3RUg5VWNER1crelVrbGhLK3dxenBMSVUwYk9YQW5TVTBN?=
+ =?utf-8?B?OUpZUjJMZEVCNk5YcmZlOEhZamFvdlRFVmRVcVpxcVZyTXRlaTU2TXE3alBD?=
+ =?utf-8?B?a3JNckhaaDNwNE9YbUM1MFhWdFl0YUNTQW1jb1Z3OVM1cENQYXpTYk80NkRk?=
+ =?utf-8?B?VXZkTUI5NTJHU21ya3ZQbW1oUWxjQlFEV3AxZ3ZiQ3hyT0hYMFM4WkFyYWZZ?=
+ =?utf-8?Q?11NzeLCRl3E=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BYAPR11MB2760.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(8096899003); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QXNLZHFMSllTUkpsTHo3SlZhUzVBREhhUkRRSVFUOWg0dnFnSHlnOXJBVFRn?=
- =?utf-8?B?WmxPdCtaTUg1eEh5M2ZxLzhCSkZWRURmT0hTbWtmMlVjR2NOMnVLc1daaVBM?=
- =?utf-8?B?bzlOQ2FPTzJBRURSWlBKem5NdlIzRzByWmp6bk1HSEN0UVdnclF1VFd3NGY0?=
- =?utf-8?B?bmZ4VUdCRWR3Rjd0UnpjaUZJMytFTGtLTGNUUW42ajNPQ0g5MXZpb3hHZWND?=
- =?utf-8?B?Q2FxeUZyWDFwakdtYWswT3FuWTRRczdpMHRsc2pwVmRzQUQ5cmRqUGdjWkha?=
- =?utf-8?B?eGlLbEVOeE1XczlLVVcxd1d4cnZORHI5OVJ2T2VvZ0NjUEMxSVI0djMyTW43?=
- =?utf-8?B?eE1FVEhuaWc4WkR1cTZxTFFOVUJHZjdTYmM4WkF5bXJZd0p2cmFOd0NIVTh1?=
- =?utf-8?B?MjMyeGxxQ3pkaXUxaVErNlZObklCR1dxWnNVV0c0WEJ4eDBEZ2V6ZHlpbWth?=
- =?utf-8?B?bnBzNkRJSUxBaDM5dmZibXowa3hWcVZ1V3drdm1ia1pQYzROdXFGendrbFJy?=
- =?utf-8?B?L3VweEFYdWxKL0I5N3E3NXF1UlhTL1JMUzc5SkttQm90VjNZbXBzc0xhSktU?=
- =?utf-8?B?MjdQSXFjOFBHakZHSXNsbUdtU1FlSFkybUpWKzRGMVdnL1B2c2FUWkl6bE9F?=
- =?utf-8?B?bTBhdFdKOE1Za29aVC9za3N1SFg2UjRxRkU1TjhVT2JBeUFpM2tCUlNRVkFS?=
- =?utf-8?B?ak03a290elRsNVI4T21YNUV5cG9GUXJxekpQcW1oTURDTzRWbTlYSXpJcVky?=
- =?utf-8?B?dTVkWEFBR05KNXYyZUVkTFBXQXVJMEVSejI1Q09JRkRFS05Sc1RqcTdJb1hH?=
- =?utf-8?B?RjczMTVLOFFCUVhaSUFZTG9NeE5lYXN6eFB2QVJlSFFxSFVuNFVwc1lyNGp6?=
- =?utf-8?B?dzlGNTh5TWVkaS9sRWZTTnF1Vi9jVUdmU1p0VVdodVhjWFRlVk9WUHBwaE51?=
- =?utf-8?B?NVowcHFhTFNrekVqVGE0NHNlb21NZThVWG5BZ3pJYkZkN2NBejdwNnRMOGF1?=
- =?utf-8?B?dVY2MGFuNjV5d0xkaEVja3hsNWVlU0N1VzFIbm90STMzcDdPSGhxeXpKZEV1?=
- =?utf-8?B?clRmUXo0V3RTNXNRR21vb1paS215S3NhbjJ0M0dpN3phVVdOZ2I5STF2WE1j?=
- =?utf-8?B?RE5vK3RKR3lXRHAyNTFlRzdSV3dGL2U0L09tcW9kTmpZWlVRVWQ4RjBmODF2?=
- =?utf-8?B?SkJDaVVLaVlWMFRabVJEcHU5a1c0YkJROUtrbklaWnpVTzFhY1ptZEQ5bG5I?=
- =?utf-8?B?T3had3BZNENJYTZCSzB2ZlNWbEhhYUtjck5iN3NkM3dobVZESk9PQkMxT2pP?=
- =?utf-8?B?V3Q1YURCM0hhdHB0SFdlb08vOWR2eWxmcWhnUHdIRnVmU205SDUrd1ZZWmN2?=
- =?utf-8?B?VWZwN2tURjB0MTdwQUdyZ0RoSHowWGZwV0tVTEgzdklIQVBtRWJmSUtDZ1F0?=
- =?utf-8?B?bmJMSnhNRXVyOTdUR2hwb2oyMllqZCtJYWlpaEY3UDk2OU5HdUJ0YjhBL2sr?=
- =?utf-8?B?bDRMNHNGS2ZOWmV1emF6bzJISS9HZjdoQ2Z4OVZwQ0FNSERnaHRCQ0dGRnhL?=
- =?utf-8?B?VXNRMGpXRVovZVlEUkhlTlFKekJyd1VJUG5YTGprblVISVlvNmRpTVFVSDZ3?=
- =?utf-8?B?S2V0eDQ5alRDam5EWHBrQzVFNzZKZk9WR3lqVWgzL3c2Z2RaZG5GT25PL052?=
- =?utf-8?B?cHVaQmd0UlZtRXBNY0g0NmpBT0ZkZVA0U2FXRk9BYXV1Q1FxSTNPSUxIV0lT?=
- =?utf-8?B?Z0hFMUNKem9xTWk0MkRXSU54NjRJZDJ6ZmxFMk82SFNvTDAxallOdmUzbGRT?=
- =?utf-8?B?eFhldnpzakZ2bmtLeXh2M3RtZVZ6RHZoV1dqVXdSbHdoOHVUcTZPNFhJa3ZM?=
- =?utf-8?B?SDcyTU5PSEV0V3ZaM1o4VTlTMFVVekI2UGkzbDNOdHlpbkQ4cm5EV3hRYnFz?=
- =?utf-8?B?WER1RUdkeS9nS1NURU9vbDQrVXJ0d2dET280TnEzVHdTU0JsTzNjQXF3Y0hv?=
- =?utf-8?B?UzJwUHNkbjhsa3JuVlRXZnpjNXpJdVRtWm5SRTJLQklOM1ovU0dZRVdwSHpa?=
- =?utf-8?B?VStiaTZkblMrdVltMUlnN2ZwcjR0aHBjeUJoL1JOS2dvQjBOK3BqZXgrQXZI?=
- =?utf-8?B?M29BaTN1b0Uwa0JSVTNjMVl2Y3dhamo2Tlp6aE41TTBJSzBtbzRyNHZ6SWRL?=
- =?utf-8?B?UUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 565fd322-652f-43a1-47a9-08ddba77c577
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bjNrektuaXcxV3Eyd2w5RzZUSm16SHhGZzBDTW1BeHEzVFBYdnRGT09GbWtP?=
+ =?utf-8?B?L00rdkVqQnEyVEhKemNtZG0xRDkxbXl2T2ZCM2R4ZWZ2QVJaOXBsclcydUhU?=
+ =?utf-8?B?bTcyNlk2aXhzc3NGZnhiUzZxZGRaLzFVZTllbWErdDNYM1luaGR0eFJJVmVZ?=
+ =?utf-8?B?UEFUY2hFZmRaSzNOZWpNck9CVGNJSUtLZWpRQTRDd2d3UGFzQUNGcXU1M1Jv?=
+ =?utf-8?B?c25xUENFbHpidG9EUGNaaTdDRHRYU1U0V0JiVHhuMWdPWTBBRi9Jak0yK05S?=
+ =?utf-8?B?c29wNzZLRlViT2t3czYzUWNoWUJGelBtc0ZjZUNucWhRUzlHNHV1V3JVaDlN?=
+ =?utf-8?B?ZVJvb1g3R1RUYm04OXJoTE5CNGdsd0lpdkc5OXdQQVRVN0ZhampOY2FjQ2Nl?=
+ =?utf-8?B?MzRNU1VnaHpLQ29sR2JKYXVwd1k4SE0wNkk4Z2ROdmtrM2VHbHFaUmpwSXdR?=
+ =?utf-8?B?TXNFaE1sdVh5NmVYMlcrQWtyVjZBblU2LzdyM2ZDZDhvTThCa0lFUlJLaXVB?=
+ =?utf-8?B?RHBTZ2RJTndyK21qVmdqOWs4d05lY3N2QnQ3NFBSNEppZ3F0NWdialJJc2xv?=
+ =?utf-8?B?RFl3a3RYaDNPYnFFL015SUZRMy9rYkxwQXV3YU5xangvS0k1cEtEMmV3OUo4?=
+ =?utf-8?B?dWM4TDU3NGtBK2VtZnRPeUNncHoweVo5YnZpeEJhbldudVJpMjA2ODk0SEVv?=
+ =?utf-8?B?SC8vNnNvZTZxSU1yKzN2OW9zSG40UVdHeGd0b3p2RjZZVThhUmsrZjdsbTNa?=
+ =?utf-8?B?ejFaMlh4MUY1UjNkN2N1Zm5mVkJLc0taTmdqbU4yMUNjR2diRzd6SVE5MG5I?=
+ =?utf-8?B?MlJDMWFYRGFwN3FwVDNLUnp2OE83dmt6UThGYXBrOEhTZ1FqTlZJeExjZEZx?=
+ =?utf-8?B?NExoSzlKanJ3TXNlNTJ4dWFMVDZrSWoxOTB4dTVUcUJDYUQ4VmtKY1E3QXdt?=
+ =?utf-8?B?S2NwLzJETDR5K3BrbE5oK1dEbklSYmxrTm4vMnA4RjhrOEV4NGJVTjVWMEZC?=
+ =?utf-8?B?ZDg0TU1JdlZ0LzlLRXM0NGJEdVhZMTFpWlpSVENSbGIyUkNHK3BNMGdmWktJ?=
+ =?utf-8?B?ZDdUTlZHbFZFZXh0R1d1Y1dBZjhOR3dsUE8yUmp4K2lpZHdSbllTZUtWeTNS?=
+ =?utf-8?B?amhEMnFJeVZCN1pPU1IzQUl0emhOVVhPNE5EWE1YZStzY2xJVGdxWUVsOTdH?=
+ =?utf-8?B?SUdLR2RvdmQvNUxCVVUxWDV2MllTUlViTTFqMHVTVGJaNDY2SGNpU2FHYWJX?=
+ =?utf-8?B?anQ1T25BT2pRSnBTVEhJWW92dWp4c1EwVStmTVBOa3JyRnVSWERvTkFubXYx?=
+ =?utf-8?B?R25jTTJmTWlxYk82TXJTMHpid2Z1NWdMdHFoSmk5WlhJRTNJa3RxNUN0WUlU?=
+ =?utf-8?B?TldkdW0ydWtIenoraUVra2QxUGVNS3Nxbi94YURHVXRMWnRka2FDMTFNSTVZ?=
+ =?utf-8?B?bDh4TUJOR3FjRHRDdFR4anlTU0lHSStrdmNLZzRnODVwSllrU2FZaGR6VjB2?=
+ =?utf-8?B?dEdtaG55NEd2UXR4SUl1NGJ3WlNBbzVqejhFSjRnZWxRZy9XcFdkMFdpU1Zt?=
+ =?utf-8?B?OUM0VG9HdzF3ZmRwVDR1Tm9TSG9DNHhUeEl3cnE4VXg1SEMyME1JM1VDMW5z?=
+ =?utf-8?B?bXYvazBzOXlsUFdKSHVMbWJJMHdLM1ZMQURHVTJrUXdEMjNKUjhWaEFGWGt0?=
+ =?utf-8?B?SkYxWFV0bVdVTDNGYWkyVjdaQkgzZjEwQlVmYXRhbnpaVGcwUTVHYnRFYWtj?=
+ =?utf-8?B?WkFnZzF3dUxNbTMwazl1U2I0V3UvWWtYdHZONG1sNGU2U0ZjZXRTbTNnTFNJ?=
+ =?utf-8?B?YmNsS2FLT3Ivcm5TcEJCQzN2b2RlQjZ4ZEJlclhVWE1hNU1xZWRyLzBLY0ZR?=
+ =?utf-8?B?aUxQNElFVWoxV3ZHdjFnOWZFSUoydTV1bHdTb05CZkl2OVpVMFgxZlpaWGNH?=
+ =?utf-8?B?MkcyS0JieFF6Z1R2V2dSTytvL1paQlF3SVcxbkFJWlRPZC91NjlCZ3h0Q3Bx?=
+ =?utf-8?B?cElLbFA1eXlvMzFRUUF1c2wzd2hKcUdwYUpDZ2dMdUs3bkhhV1JaRGY0YzUx?=
+ =?utf-8?B?bHVlcmxPalRDM0tlODVxSExNczBEcSsvWlJsZDZUMkJmTDhLZk1Va3BSa2RV?=
+ =?utf-8?B?K0grSGsycUlEMzlZTSszbUkrY1dyYTdjNWkySUNYZDBBclc5cXd4VTB0WkZ5?=
+ =?utf-8?B?Z1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcbfed3d-9974-4913-7fb9-08ddba7963c5
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB2760.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2025 21:22:53.6874 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2025 21:34:28.5804 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KloQ0qrUWn/KQFtknL/m0OERokOyg+bZ/nJ671o7njnpqpLitck+ljg8AglPW9NHwdoskUBPPLX06KuTyWMm+zHEQKhXaE7zfx5E0SVm82w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7738
+X-MS-Exchange-CrossTenant-UserPrincipalName: DbVhHLylgRcHKJZI+HtGRn6D/urEuRTPjCLHjVMGaVkqG/0cTx446lJFEcYSyNv3UqnETJ8jaPyT37XdIzYRc+GQdzqKElV5keONDlmn8qs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB8131
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -196,170 +195,198 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------Cso6Ct0ojQbBpj5Z0iDHl9Eo
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-
 
 On 6/4/2025 11:00 AM, Pranay Samala wrote:
-> These below changes will update the required debug mask passed by the
-> user as per the requirement. Before setting the debug mask, it stores
-> the original mask which will be used to restore the debug mask post
-> test.
+> When running under CI (detected via the IGT_CI_RUN environment variable),
+> reduce the DRM debug mask to DRM_UT_KMS to avoid excessive debug output
+> and improve log readability. This replaces the previous logic that set the
+> debug level to 10 if it was higher, and makes the behavior CI-specific.
 >
-> To handle nested updated, update flag is being used. Using this flag the
-> original debug mask will be read only once to ensure while restoring it,
-> it should be the original value and not the previous value.
+> This helps keep CI logs concise and focused on relevant KMS debug messages
+> during automated test runs.
+> As per the test requirements, this level can be changed in the future if
+> deeper debug information is needed for troubleshooting.
 >
 > v3:
 > - Refactored for readability and address logical comment.
 >
-> Fixes: 56b91193b825 ("lib/igt_sysfs: Implement dynamic adjustment of debug log level")
-> Signed-off-by: Pranay Samala<pranay.samala@intel.com>
-> ---
->   lib/igt_sysfs.c | 23 +++++++++++++++--------
->   1 file changed, 15 insertions(+), 8 deletions(-)
+> v4:
+> - Remove custom command-line option handler (Jani & Kunal)
+> - Have different masks documented (Kunal)
+> - Use an environment variable for CI jobs where disk space is tight (Kunal)
 >
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index ceb776b8d..427aed4de 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -500,12 +500,14 @@ static void igt_drm_debug_mask_reset_exit_handler(int sig)
+> Fixes: a2ab0ec12ef4 ("tests/kms_atomic_transition: Reducing debug loglevel dynamically")
+> Fixes: 4baeb7397d71 ("tests/intel/kms_dp_linktrain_fallback: Reduce debug loglevel dynamically")
+> Fixes: 7a8a3744466f ("tests/kms_cursor_legacy: Reduce debug loglevel dynamically")
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+> ---
+>   lib/igt_sysfs.h                         | 13 +++++++++++++
+>   tests/intel/kms_dp_linktrain_fallback.c | 21 +++++++++++++--------
+>   tests/kms_atomic_transition.c           | 22 ++++++++++++----------
+>   tests/kms_cursor_legacy.c               | 21 ++++++++++++---------
+>   4 files changed, 50 insertions(+), 27 deletions(-)
+>
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+> index 892682344..06badaf0e 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -148,6 +148,19 @@ void igt_drm_debug_mask_reset(void);
+>   int igt_drm_debug_mask_get(int dir);
+>   int igt_sysfs_drm_module_params_open(void);
 >   
+> +enum drm_debug_category {
+> +	DRM_UT_CORE      = 1 << 0,
+> +	DRM_UT_DRIVER    = 1 << 1,
+> +	DRM_UT_KMS       = 1 << 2,
+> +	DRM_UT_PRIME     = 1 << 3,
+> +	DRM_UT_ATOMIC    = 1 << 4,
+> +	DRM_UT_VBL       = 1 << 5,
+> +	DRM_UT_STATE     = 1 << 6,
+> +	DRM_UT_LEASE     = 1 << 7,
+> +	DRM_UT_DP        = 1 << 8,
+> +	DRM_UT_DRMRES    = 1 << 9,
+> +};
+> +
 >   /**
->    * igt_drm_debug_mask_update:
-> - * @debug_mask: new debug mask to set
-> + * @mask_to_set: new debug mask to set
->    *
->    * This modifies the current drm debug mask to the new value.
->    */
-> -void igt_drm_debug_mask_update(unsigned int new_mask)
-> +void igt_drm_debug_mask_update(unsigned int mask_to_set)
+>    * igt_sysfs_rw_attr:
+>    * @dir: file descriptor for parent directory
+> diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+> index f8ef0cac4..9cd6f3d54 100644
+> --- a/tests/intel/kms_dp_linktrain_fallback.c
+> +++ b/tests/intel/kms_dp_linktrain_fallback.c
+> @@ -592,12 +592,22 @@ static bool run_dsc_sst_fallaback_test(data_t *data)
+>   	return ran;
+>   }
+>   
+> +static void update_debug_mask_if_ci(unsigned int debug_mask_if_ci)
+> +{
+> +	const char *ci_run = getenv("IGT_CI_RUN");
+> +
+> +	if (ci_run && ci_run[0] == '1') {
+> +		igt_debug("Currently under CI execution, reducing the DRM debug mask to 0x4\n");
+> +		igt_drm_debug_mask_update(debug_mask_if_ci);
+> +	}
+> +}
+> +
+Move the update_debug_mask_if_ci() function to a shared library and 
+reuse it across all relevant binaries to avoid code duplication.
+>   igt_main
 >   {
-> +	unsigned int new_debug_mask;
-> +	static bool debug_mask_read_once = true;
->   	char buf[20];
->   	int dir;
+>   	data_t data = {};
 >   
-> @@ -513,14 +515,19 @@ void igt_drm_debug_mask_update(unsigned int new_mask)
->   	if (dir < 0)
->   		return;
+>   	igt_fixture {
+> -		int dir, current_log_level;
+> +		unsigned int debug_mask_if_ci = DRM_UT_KMS;
+>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL |
+>   						     DRIVER_XE);
+>   		kmstest_set_vt_graphics_mode();
+> @@ -605,14 +615,9 @@ igt_main
+>   		igt_display_require_output(&data.display);
+>   		for_each_pipe(&data.display, data.pipe)
+>   			data.n_pipes++;
+> -		dir = igt_sysfs_drm_module_params_open();
+> -		if (dir >= 0) {
+> -			current_log_level = igt_drm_debug_level_get(dir);
+> -			close(dir);
 >   
-> -	saved_drm_debug_mask = igt_drm_debug_mask_get(dir);
-> -	if (saved_drm_debug_mask < 0) {
-> -		close(dir);
-> -		return;
-> +	/* The below flag is used to read the original debug mask only once */
-> +	if (debug_mask_read_once) {
-> +		debug_mask_read_once = false;
-> +		saved_drm_debug_mask = igt_drm_debug_mask_get(dir);
-> +		if (saved_drm_debug_mask < 0) {
-> +			close(dir);
-> +			return;
-> +		}
+> -			if (current_log_level > 10)
+> -				igt_drm_debug_level_update(10);
+> -		}
+> +		update_debug_mask_if_ci(debug_mask_if_ci);
+> +
+>   		/*
+>   		 * Some environments may have environment
+>   		 * variable set to ignore long hpd, disable it for this test
+> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+> index 2b64424ce..3202ab668 100644
+> --- a/tests/kms_atomic_transition.c
+> +++ b/tests/kms_atomic_transition.c
+> @@ -1119,6 +1119,16 @@ static const char help_str[] =
+>   
+>   static data_t data;
+>   
+> +static void update_debug_mask_if_ci(unsigned int debug_mask_if_ci)
+> +{
+> +	const char *ci_run = getenv("IGT_CI_RUN");
+> +
+> +	if (ci_run && ci_run[0] == '1') {
+> +		igt_debug("Currently under CI execution, reducing the DRM debug mask to 0x4\n");
+> +		igt_drm_debug_mask_update(debug_mask_if_ci);
+> +	}
+> +}
+> +
+>   igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   {
+>   	igt_output_t *output;
+> @@ -1174,8 +1184,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   	int pipe_count = 0;
+>   
+>   	igt_fixture {
+> -		int dir, current_log_level;
+> -
+> +		unsigned int debug_mask_if_ci = DRM_UT_KMS;
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   
+>   		kmstest_set_vt_graphics_mode();
+> @@ -1188,14 +1197,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		for_each_connected_output(&data.display, output)
+>   			count++;
+>   
+> -		dir = igt_sysfs_drm_module_params_open();
+> -		if (dir >= 0) {
+> -			current_log_level = igt_drm_debug_level_get(dir);
+> -			close(dir);
+> -
+> -			if (current_log_level > 10)
+> -				igt_drm_debug_level_update(10);
+> -		}
+> +		update_debug_mask_if_ci(debug_mask_if_ci);
 >   	}
-
-LGTM,
-
-Reviewed-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-
 >   
-> -	igt_debug("Setting DRM debug mask to %d\n", new_mask);
-> -	snprintf(buf, sizeof(buf), "%d", new_mask);
-> +	new_debug_mask = mask_to_set;
-> +	igt_debug("Setting DRM debug mask to %d\n", new_debug_mask);
-> +	snprintf(buf, sizeof(buf), "%d", new_debug_mask);
->   	igt_assert(igt_sysfs_set(dir, "debug", buf));
+>   	igt_describe("Check toggling of primary plane with vblank");
+> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+> index 44f031e7b..281812a4d 100644
+> --- a/tests/kms_cursor_legacy.c
+> +++ b/tests/kms_cursor_legacy.c
+> @@ -1823,6 +1823,16 @@ static void modeset_atomic_cursor_hotspot(igt_display_t *display)
+>   	igt_remove_fb(display->drm_fd, &cursor_fb);
+>   }
 >   
->   	close(dir);
---------------Cso6Ct0ojQbBpj5Z0iDHl9Eo
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 6/4/2025 11:00 AM, Pranay Samala
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20250604053046.1702233-4-pranay.samala@intel.com">
-      <pre wrap="" class="moz-quote-pre">These below changes will update the required debug mask passed by the
-user as per the requirement. Before setting the debug mask, it stores
-the original mask which will be used to restore the debug mask post
-test.
-
-To handle nested updated, update flag is being used. Using this flag the
-original debug mask will be read only once to ensure while restoring it,
-it should be the original value and not the previous value.
-
-v3:
-- Refactored for readability and address logical comment.
-
-Fixes: 56b91193b825 (&quot;lib/igt_sysfs: Implement dynamic adjustment of debug log level&quot;)
-Signed-off-by: Pranay Samala <a class="moz-txt-link-rfc2396E" href="mailto:pranay.samala@intel.com">&lt;pranay.samala@intel.com&gt;</a>
----
- lib/igt_sysfs.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
-
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index ceb776b8d..427aed4de 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -500,12 +500,14 @@ static void igt_drm_debug_mask_reset_exit_handler(int sig)
- 
- /**
-  * igt_drm_debug_mask_update:
-- * @debug_mask: new debug mask to set
-+ * @mask_to_set: new debug mask to set
-  *
-  * This modifies the current drm debug mask to the new value.
-  */
--void igt_drm_debug_mask_update(unsigned int new_mask)
-+void igt_drm_debug_mask_update(unsigned int mask_to_set)
- {
-+	unsigned int new_debug_mask;
-+	static bool debug_mask_read_once = true;
- 	char buf[20];
- 	int dir;
- 
-@@ -513,14 +515,19 @@ void igt_drm_debug_mask_update(unsigned int new_mask)
- 	if (dir &lt; 0)
- 		return;
- 
--	saved_drm_debug_mask = igt_drm_debug_mask_get(dir);
--	if (saved_drm_debug_mask &lt; 0) {
--		close(dir);
--		return;
-+	/* The below flag is used to read the original debug mask only once */
-+	if (debug_mask_read_once) {
-+		debug_mask_read_once = false;
-+		saved_drm_debug_mask = igt_drm_debug_mask_get(dir);
-+		if (saved_drm_debug_mask &lt; 0) {
-+			close(dir);
-+			return;
-+		}
- 	}</pre>
-    </blockquote>
-    <p>LGTM,</p>
-    <p><span style="background:white">Reviewed-by:
-        Naladala Ramanaidu <a class="moz-txt-link-rfc2396E" href="mailto:ramanaidu.naladala@intel.com">&lt;ramanaidu.naladala@intel.com&gt;</a></span></p>
-    <blockquote type="cite" cite="mid:20250604053046.1702233-4-pranay.samala@intel.com">
-      <pre wrap="" class="moz-quote-pre">
- 
--	igt_debug(&quot;Setting DRM debug mask to %d\n&quot;, new_mask);
--	snprintf(buf, sizeof(buf), &quot;%d&quot;, new_mask);
-+	new_debug_mask = mask_to_set;
-+	igt_debug(&quot;Setting DRM debug mask to %d\n&quot;, new_debug_mask);
-+	snprintf(buf, sizeof(buf), &quot;%d&quot;, new_debug_mask);
- 	igt_assert(igt_sysfs_set(dir, &quot;debug&quot;, buf));
- 
- 	close(dir);
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------Cso6Ct0ojQbBpj5Z0iDHl9Eo--
+> +static void update_debug_mask_if_ci(unsigned int debug_mask_if_ci)
+> +{
+> +	const char *ci_run = getenv("IGT_CI_RUN");
+> +
+> +	if (ci_run && ci_run[0] == '1') {
+> +		igt_debug("Currently under CI execution, reducing the DRM debug mask to 0x4\n");
+> +		igt_drm_debug_mask_update(debug_mask_if_ci);
+> +	}
+> +}
+> +
+>   igt_main
+>   {
+>   	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> @@ -1839,7 +1849,7 @@ igt_main
+>   	};
+>   
+>   	igt_fixture {
+> -		int dir, current_log_level;
+> +		unsigned int debug_mask_if_ci = DRM_UT_KMS;
+>   		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   		kmstest_set_vt_graphics_mode();
+>   
+> @@ -1851,14 +1861,7 @@ igt_main
+>   		 */
+>   		intel_psr2_restore = i915_psr2_sel_fetch_to_psr1(display.drm_fd, NULL);
+>   
+> -		dir = igt_sysfs_drm_module_params_open();
+> -		if (dir >= 0) {
+> -			current_log_level = igt_drm_debug_level_get(dir);
+> -			close(dir);
+> -
+> -			if (current_log_level > 10)
+> -				igt_drm_debug_level_update(10);
+> -		}
+> +		update_debug_mask_if_ci(debug_mask_if_ci);
+>   	}
+>   
+>   	igt_describe("Test checks how many cursor updates we can fit between vblanks "
