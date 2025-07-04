@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFFCEC83030
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 05:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0E2AC83030
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 05:49:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 76E1310E92F;
-	Fri,  4 Jul 2025 05:22:16 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AFzjqh4R";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DFE510E92F
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jul 2025 05:22:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751606535; x=1783142535;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=FRkIRD+PqcJdCwpD8Yi4fcN4bUqk3Qfwd9bD/XRXxuE=;
- b=AFzjqh4RTl3v31EwSA98r0Os4LTp7toyCUUmZDFiVnYNAXeh/yJz2wBe
- ldYXByXERRjqPb15fq0v/4xJssAxXTDJ9Yxu1Md1wHoLWvHdQego88ekY
- BYs+Q2oj0Xlbh2Z47KbT885zjPLAHYd/W5rE04rZcEzuKhhy5w1eg0uX7
- DoBkwAoRUnT6oe6UeupoZCITstNk1TU3HZCMHUO1o/gHuY+YUX7nzlgPd
- CRSnCdO/KRDQ51krjv2pNjIIJJQu4vK7z39Vdyo5tnEcWa+6v03Relfq4
- dGkB4LYOsjL8rUzWEYCv6t/IzSyDQigApfLd/43z+4tARnFiX7nChFrn/ g==;
-X-CSE-ConnectionGUID: w6wrEvDAS9+Pt8ZVOPG56Q==
-X-CSE-MsgGUID: 8uWJZWRYRfCkasJz3q8i+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="53810989"
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="53810989"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2025 22:22:15 -0700
-X-CSE-ConnectionGUID: Lfwy+XGDRIe4D2QYp6apmw==
-X-CSE-MsgGUID: FInlt67iTmSaPm4JVtR/qA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="154635437"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 22:22:12 -0700
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Jari Tahvanainen <jari.tahvanainen@intel.com>
-Subject: [PATCH i-g-t] tests/intel-ci/xe.bmg.display.blocklist: update bmg
- blocklist
-Date: Fri,  4 Jul 2025 11:08:01 +0530
-Message-Id: <20250704053801.230707-1-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 38CF110E930;
+	Fri,  4 Jul 2025 05:49:16 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C790210E13A;
+ Fri,  4 Jul 2025 05:49:14 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4750264592654368040=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel-ci/xe=2Ebmg=2Ed?=
+ =?utf-8?q?isplay=2Eblocklist=3A_update_bmg_blocklist?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 04 Jul 2025 05:49:14 -0000
+Message-ID: <175160815480.133850.12103029369056148944@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250704053801.230707-1-kunal1.joshi@intel.com>
+In-Reply-To: <20250704053801.230707-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,94 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-update bmg blocklist with unsupported
-or tests which are expected to skip
+--===============4750264592654368040==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com> 
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Signed-off-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
----
- tests/intel-ci/xe.bmg.display.blocklist.txt | 25 ++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel-ci/xe.bmg.display.blocklist.txt b/tests/intel-ci/xe.bmg.display.blocklist.txt
-index f145d6c0d..d315ca1a0 100644
---- a/tests/intel-ci/xe.bmg.display.blocklist.txt
-+++ b/tests/intel-ci/xe.bmg.display.blocklist.txt
-@@ -9,8 +9,9 @@ igt@(?!.*kms|testdisplay|.*display-vs-wb-transient)(.*)
- igt@kms_(big_fb|ccs|rotation_crc)@.*(y|yf)-(tiled|tile).*
- igt@kms_(plane_lowres|frontbuffer_tracking|plane_multiple)@.*tiling-y.*
- igt@kms_flip_scaled_crc@.*(yf|y)tile.*
--igt@kms_async_flips@invalid-async-flip
-+igt@kms_async_flips@invalid-async-flip.*
- igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
-+igt@kms_pipe_stress@.*ytiled$
- #########################################
- # Valid skip :- 90/270 rotation is not supported
- ##########################################
-@@ -61,6 +62,14 @@ igt@kms_cursor_crc@cursor-(offscreen|onscreen|random|rapid-movement|sliding)-512
- # Valid skip as BMG doesn't have eDP supported
- ##########################################
- igt@kms_vrr@seamless-rr-switch-vrr
-+igt@kms_vrr@cmrr.*
-+igt@kms_atomic_transition@.*-internal-panels$
-+igt@.*psr.*
-+igt@kms_pm_backlight@.*
-+igt@kms_pm_power_saving@.*
-+igt@kms_scaling_modes@.*
-+igt@kms_panel_fitting@.*
-+igt@.*@.*(?!no-)drrs.*
- #########################################
- # no VGA connectors in BMG
- #########################################
-@@ -71,6 +80,7 @@ igt@.*chamelium.*vga.*
- igt@kms_content_protection@content-type-change
- igt@kms_content_protection@lic-type-1
- igt@kms_content_protection@type1
-+igt@kms_content_protection@mei-interface
- #########################################
- # Expected skip as BMG doesn't have PORT_A/B
- #########################################
-@@ -88,6 +98,7 @@ igt@kms_getfb@getfb-reject-ccs
- # Expected skip for graphics ver >= 20
- #########################################
- igt@kms_getfb@getfb2-accept-ccs
-+igt@kms_vrr@lobf
- ##########################################
- # Valid skip :- Feature is not enabled on kernel
- ##########################################
-@@ -97,13 +108,17 @@ igt@kms_writeback@.*
- #########################################
- igt@kms_pm_dc@deep-pkgc
- igt@kms_pm_dc@dc6-dpms
--
-+#########################################
-+# Valid skip :- BMG has only one cdclk (WA)
-+#########################################
-+igt@kms_cdclk@.*
- ##########################################
--# Valid skip :- DG2 & MTL specific
-+# Valid skip :- DG2 & MTL & LNL specific
- ##########################################
- igt@kms_ccs@.*-dg2-.*
- igt@kms_ccs@.*-mtl-.*
- igt@kms_flip_scaled_crc@.*dg2rcccs.*
-+igt@kms_ccs@.*-lnl-.*
- ##########################################
- # Valid skip :- Simulation specific
- ##########################################
-@@ -156,3 +171,7 @@ igt@kms_bw@linear-tiling-.*-display.*
- #########################################
- igt@kms_big_fb@linear-max-hw-stride.*hflip
- #########################################
-+# Valid skip : intel_display_ver(data.devid) >= 30
-+#########################################
-+igt@kms_pm_dc@dc5-retention-flops$
-+#########################################
--- 
-2.25.1
+Series: tests/intel-ci/xe.bmg.display.blocklist: update bmg blocklist
+URL   : https://patchwork.freedesktop.org/series/151156/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8438_BAT -> XEIGTPW_13404_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8438 -> IGTPW_13404
+  * Linux: xe-3343-310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43 -> xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80
+
+  IGTPW_13404: 13404
+  IGT_8438: 8438
+  xe-3343-310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43: 310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43
+  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13404/index.html
+
+--===============4750264592654368040==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci/xe.bmg.display.blocklist: update bmg blocklist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151156/">https://patchwork.freedesktop.org/series/151156/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13404/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13404/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8438_BAT -&gt; XEIGTPW_13404_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8438 -&gt; IGTPW_13404</li>
+<li>Linux: xe-3343-310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43 -&gt; xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80</li>
+</ul>
+<p>IGTPW_13404: 13404<br />
+  IGT_8438: 8438<br />
+  xe-3343-310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43: 310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43<br />
+  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80</p>
+
+</body>
+</html>
+
+--===============4750264592654368040==--
