@@ -4,182 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85EA4C83F03
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 08:24:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44014C83030
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 08:57:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 29BFC10E1F8;
-	Fri,  4 Jul 2025 08:24:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB10E10E99B;
+	Fri,  4 Jul 2025 08:57:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dw9zAcYt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S67nzpEb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB10E10E1F8
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jul 2025 08:24:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D126C10E9A5
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Jul 2025 08:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751617465; x=1783153465;
- h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=oXqdgLZ7ciZcaCciqUSFUkebnOdemg5WaN27R3hWuQs=;
- b=dw9zAcYtu7A0b1b6t9+ffIEVRyoySdCmqVPeAZtnH5cFJNC1uaL0f6rw
- JhKRk13lloluAp23O1V9wtr6cmwjB+M4iJ0RyE09QZaaUo4KBtX5bIkiW
- OnTjXx9D6IwZvdiwFz6jJz78ceA994kLXlGoB/A/AEaZul5l44p1Ulxb6
- NmpBKOhyqMkH8TvlQRVVesGA+xZ+LlelF1d9rVvMihpb2+OPEQzrUJpnN
- ji3x6bVmhQerkLgxXxRaiqKLp5io6aCcSoYS68Nfy9YODcK3Uyhmd7dTr
- /PuQL+6WcT0Lcfqlfqfr+L1Gu+7EAsmwQZNtNZ3tHiZg9ocVPR089oCbf w==;
-X-CSE-ConnectionGUID: DZmWrj3YRiWRudr8z2i45g==
-X-CSE-MsgGUID: NwPTf+4qQrG+ZsiA0C1Q/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="54048121"
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="54048121"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 01:24:25 -0700
-X-CSE-ConnectionGUID: uUpS2OXBR6SO9gJdc5upXQ==
-X-CSE-MsgGUID: U8o0KsFfRmCme31VYEgEfQ==
+ t=1751619426; x=1783155426;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=Xk4bmuMh7BcaS9A14TcPhGgdZRBYbTU+S8sAVdCKvlE=;
+ b=S67nzpEbT7nf5OVPnxkYifC9aaxPIMGvi/XdNT8PVtk6UFoDLMWvFmYv
+ 1mtC1NU82asjxXFfDrOO9ICQU6GMmvGji+zWWNFDkp0GreEbzwPTLq/A2
+ Np+O2GQ2I+LLrde9br1bu0iyXrxrR8QapQgj02+delxRhPsLPHpmwuCyg
+ 9uWrVQoG5BNGeIJX3VHix/W2PosdEhRIEshMz1C7HaXpmi0Hq1hOLHn9W
+ LwoV3Q5Pt5Tf/Ld3ghPnwEsLP9KofvAQlDwJpISr9tUMXwHrykJaCdOzq
+ 9oVWWOb1pVgUvfzVcRlskPRRn+8zqJ6WleOjr1P6ratYePEcs9xFBf1W9 g==;
+X-CSE-ConnectionGUID: 0mudL7nLTqaU5SDHDzLopQ==
+X-CSE-MsgGUID: ODF1t/C5QFO5x/eIfz9xdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="53674945"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="53674945"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 01:57:05 -0700
+X-CSE-ConnectionGUID: /XW57PTXT5ynb+o3xIbxYQ==
+X-CSE-MsgGUID: 18CH89eJRDWwTeznzxpxGQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="185542199"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 01:24:24 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 4 Jul 2025 01:24:24 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Fri, 4 Jul 2025 01:24:24 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.68)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 4 Jul 2025 01:24:23 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gf30TmeJ3oNMNPwvIfIsZKT1tQS5Uz8e90W1KdNFrIAkJ++ZiOLUTmri+sjLm7fjeeN9QGq6/6m5qzV+I5ELzNM1zUphGh5iibNafWkXNJV35vPsJRdvQ+xLWSHlL+kzUAVE9yZyEfOmuYVMLbeMU002JxQu5mRCsA703HGz/zx2UEjmDODZwZJdExK51pBkdo7fPMJcniU2UNoobKxnnDt2+ahP/Uv8cLULgtnm54GwOrHPf3hOaeatFmrgf5l4KZK98RzbIHX/JUVU1+hEv/W0Q08sTSX186H9Kn5w/X/SLL5ihNty+sTy4LtgFZH1DS424+TDtC4dQFeTkBKkRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uP7UL30UkMwBK1LLerEhi+Axa2BC3PcP6UW8Br7zyEk=;
- b=isyTZ5fGbF/h2eWmadqe23xpliALt544Ois4vamVftBUx2yPW1gyOkbB+qdwObSd/V8vE4oHdNNghmPvprUamJcvT/oL89HGemMNJNb/pBxGjOLGZ8s9xGoN4idXOMAsG2mlmCmxFD7AXL6qDa3IvjynzdClODNm1tbT32t3H/PSVyUX3+CI+uGOSvtRSH8BsFheoRyHxao4XYSaxMJBy+xMT0vz7VqCXYUAQA69UQULYjSTtFcb9EtZ1l0jKuHe+7HGaiq0prupIMclDH0AXyzGNgUyqnfCKY1hcIaxgzEWdBTMUFMqwTMrzq/CxeOUXC955ZtP8buWBln1MT3Ybw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
- by SN7PR11MB7604.namprd11.prod.outlook.com (2603:10b6:806:343::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.23; Fri, 4 Jul
- 2025 08:24:22 +0000
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::5461:fa8c:58b8:e10d]) by CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::5461:fa8c:58b8:e10d%3]) with mapi id 15.20.8880.021; Fri, 4 Jul 2025
- 08:24:22 +0000
-Date: Fri, 4 Jul 2025 10:24:16 +0200
-From: Francois Dugast <francois.dugast@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t] lib/intel_compute: reuse bo checking code
-Message-ID: <aGePsCuPncEOTOIa@fdugast-desk>
-References: <20250704081131.895088-2-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250704081131.895088-2-zbigniew.kempczynski@intel.com>
-Organization: Intel Corporation
-X-ClientProxiedBy: DU2P251CA0015.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:10:230::19) To CY8PR11MB7828.namprd11.prod.outlook.com
- (2603:10b6:930:78::8)
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="154014070"
+Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
+ ([10.245.118.0])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 01:57:03 -0700
+Message-ID: <73966bd6-8a4b-43fe-bcb9-88279a8a9fda@linux.intel.com>
+Date: Fri, 4 Jul 2025 10:57:00 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|SN7PR11MB7604:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7c1ef8ce-2f38-4bfe-7601-08ddbad42dd8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?T1ZidXdnRVBqSTRXcUVFUVVmYzAwQTN3clpOdFR6L0ZrSlJLajROSlNHUlUr?=
- =?utf-8?B?UlVQbHNJc2JGVG0yaEU1TXlaRTdlNUlSdm5tYVMxOEZEWDYzaWdDNG1XZEhq?=
- =?utf-8?B?TlBDeHBKU01xWTdBdFQ5eXZCekxORS9mcXlTMUI5MjZXaCtraEw3b0xyaFhx?=
- =?utf-8?B?cmR0MzNOcUg3Y2dDUFIxL3YzZEc5OXBpa2Vlc2FyaTNDR2xQRXNpQTIzcXov?=
- =?utf-8?B?USs3aGNUcDE4RXM1ei9PaUdDcTVmTWh2VlhLMzE5T3FSTDUzckdhczExcmU1?=
- =?utf-8?B?K0RRVnQvOGNic0JXb2N2Y0JKeDlqenRLaGxBN0ZmVTB4UkUreGhTT1ZiMC81?=
- =?utf-8?B?bWluaUdpSjh2My9SNmp5cWVpbDFHYmVNVmhPQ3FjT2RmSFdDRUlsbzM5cFZX?=
- =?utf-8?B?LzlPS0FHdzBSK2JIVmEzTEljWWJsQ1hoYW9ReTdRWXRUNlR3TjRJWFd2cUxN?=
- =?utf-8?B?dnkwN1JtSGNNS0FjelN4dGdNVVlVNTR5MGJLQTJ2NFZMT1hHN0dEeXZIK3cv?=
- =?utf-8?B?VDJkRTdEN2V1N1MwUmdKcnU4SHBPRTNsWDg3c2dCQU04ejhwTEdZLzFLeU9U?=
- =?utf-8?B?Y3lBY2tkNTVEYlV4eVJjU0FJSWlpdk1zQ0dPeERFKzZHaWlNNm5NZGZMekNo?=
- =?utf-8?B?elRWMzJ1TVo5cDE0WTBnTmk4L0N1TGUrYURSSE1RS001R2hLYUs3U3Z2R0Fa?=
- =?utf-8?B?cktUb0p1aHlac2QxTDlwZFN1bXIyUmp2WUJycXZQd2JxWGlsUG9HWURldENZ?=
- =?utf-8?B?cnYwbldjS0FKT1RDMnQzUDFXRStqVFJudS9NY2RhN1NSTjN6RkZHSTRvSEpo?=
- =?utf-8?B?b0hsM28vMXJMbjNlZHhEcGtKUXJxajhwM1NKVldJNE05aCs1a0RqYTEvdmxD?=
- =?utf-8?B?Z0toODVZL1d5cU5mOWloT1cwL2ovcEIrYlhtNm92UVdkUVRhK2kvNStHY0tT?=
- =?utf-8?B?UFZtZDNEMitiWlB5aGovYlRsMWF3eFBoUHNLZzJQdFRpcmoyT1JiYkN0V2JY?=
- =?utf-8?B?V3VVSmhFcXVsYU1QNnRZa0lnUFJWeVhxSlkyNDVjcjY4OHFuN3lvODA5bXRz?=
- =?utf-8?B?RWpsNnVHb0JLdld2VzRpKzVqMXhHNy91RVYzZTJiVlV6SWZlQjN4KzJ4cVNL?=
- =?utf-8?B?TVJGeUl4V0JsQUJWVk5yeUFyL1Rkc1VHcDhzRTlvS3RqSXZYc1lXem41VGdZ?=
- =?utf-8?B?L2dYNGVHLyszUVZWSzBIRDc0QnFyT0FlZ1IwaHI4dktacVMvMGgwanFwM3J5?=
- =?utf-8?B?UUY5UGEzNGR1Nzh1WFhLd2k2NTVLS0ptaWIxMkFrSDcvYVNnbnNOVmdpaXl5?=
- =?utf-8?B?Y3pjTndFcExsU0VYajkvZWFTWVFRL2tCR2hCUEUyTk1RaWIwYXNJZUxCMWZl?=
- =?utf-8?B?aFdHcWU2ODR5bTNVaEYvaHpoK2s5MitmV2dqQUl3TzhjT3NLeTNZYi9seXRX?=
- =?utf-8?B?R0plMkxOWHZodEF0UXlQbUhVUllNL2ZkZ2RiL0JzeFR5SnhqbEhJVU5venFq?=
- =?utf-8?B?WSthaFdIM1MzUXFkSWJRTHJzZGFSaW52clZ1Zk1zM3dTTVdFbzZRdEYvQ0o4?=
- =?utf-8?B?K2hucmtwYnF4Y2pwRnB4bHFVT3ZuSjQwbXU5YXlnaDBxaGIxOTFDUUlMbC9Z?=
- =?utf-8?B?WHI2R3BLN0t6bkgyelE3NHV1NXpBdTJtMUZDOVFUK2kyeGNuaUNWV0U0SmFl?=
- =?utf-8?B?WHJ1alNrT0R5RDBqbks3ZEVtcGcySXlCVnZrMGwrdGhtSE42QnFHSGxkbzA4?=
- =?utf-8?B?RWt6Wm9lNW9tUzNZdkd5cXQxUDg1dXVkSXBUb1M5VFozQmpPNkdWRkpsWGhG?=
- =?utf-8?B?R20vYjM4QUpWQk5pOGdTNzl3eThRRU9iOFRXNGNQellYTnVLSk1zV2xGcUhv?=
- =?utf-8?B?U0RPeFJ4NnJ1SUtsL2xXdWN2SEZKRC83TC92NFhPUzNhY2lpZmEvdGF1d1dP?=
- =?utf-8?Q?KSJSKdXsNmo=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a2hHT0tlRnZTYUgvVThvTEFJRGhWQ3BFYVY1U0UxM0Fxb2I1SDhpUEZkS0dj?=
- =?utf-8?B?Wm83eWJlK0xnSmtPK0pyQlVKaG54ZnNKa3lxbWo5R2tTN082cDc3VlhHNDhF?=
- =?utf-8?B?TVhwSzhKb3g4Z1ZnOVEwcHkvbmVpYnBab0loaDM3TkFOdDNVbFBvUENZNndh?=
- =?utf-8?B?STJTNFJXRHhmVFVHNE5OcWVOY3NkQWQvYUdiRGtXMnpFUm9pbmFRNXFIYWox?=
- =?utf-8?B?NFRNdFVGNHlLRVVxU1I1QlBEZ3ZNckNDK3hRLzZlcXpDNFBURzk4aVArOFRZ?=
- =?utf-8?B?L3Q3YXFFaUlJaU4xUTZhMmJFS2hrS01CZXVwT3F2WG5tYW1GTElKZmlTeHJY?=
- =?utf-8?B?Z3UrV3AwcVdoNXZEQmpnc2QvUmRNeTFRSFM3Y1RBSnJpWm1VWmZRclVOZHRU?=
- =?utf-8?B?eUhoTW15T1hWa1BJZVN0ZThRR3dka2Q1UEZ1N1FhSjFzMDJzZloxcmhvTFVr?=
- =?utf-8?B?dnhrMHR6Y2phb1lid1I4ajVRZ1N4NnBaQjZkejJpQmlWRU9NeURacHRuTGdy?=
- =?utf-8?B?czZVUk1qNjdiMXNzUXZzZHNtZ2tBWlpJNHA2by9wWWxZNE1FYzA0YUlGSksr?=
- =?utf-8?B?NjhxWlp5RVhEZ3NXRXpSTXhIN3o1NmRmOXhIendKeTRIQXROODZwY2pOd1FG?=
- =?utf-8?B?RUloeTJSLzNSUXR6Q2hrUGlMRnQ0NkNxRE1RWnlCMlNxdUVvL0ExOS9iUTNT?=
- =?utf-8?B?dm5QT2EwZ3MzNm8reFZ6WUtkc21MU0E2UlZSb2kzZ1g0YVloT2lKb2psQ0sz?=
- =?utf-8?B?bFg2OHg1c0RaWTBNb3Y5OEgyTlFWbStvQ3VuWHZpcUVuKzE2NU5oUVRKNTJP?=
- =?utf-8?B?U0JlOEc3bUlneEc5WFdhaThYN3NvK01Jc1gvaDc3bjVUREVSVXRVN1lScE9R?=
- =?utf-8?B?SDl4S3g4YmN6cm9ZUjJLRStqYTZCdXpkZlZJZVdlNFFhVHQwTlZTU0tCMGFG?=
- =?utf-8?B?clhRTS9DTFVlMXRjYmwvOGEyL0JvYmpmRHZUTXR5VEZ3ZzBERGZlbUlDaFVk?=
- =?utf-8?B?NmVNamNIS3NtOW1oSmZDdXFyUkY5aXFJZ29yODNKUlF3c0tBbktvakY2T2F2?=
- =?utf-8?B?V0UxUmd0aGl4ampKakoxb3EyVXJjdDBYRU9uTkdNTHlTcXViNWhJUHRxQ2I4?=
- =?utf-8?B?QjVtdXpxc0UrMEdoS3J5YXJscFZ2UWl1T1JodDVrYnhMSGxqbzdFeVJLQ0Zl?=
- =?utf-8?B?azN3OHdPVkpXREppaVZCYTZxRUpzenlVVjVHTDRhTGhJRWUwOWVXQlFxK3Zj?=
- =?utf-8?B?ZWJlQWF0eXBGUHc1dGI2ZHA4a0c2dEtPd0FuTFhjcGY4RmI4cG9LT3N2UEtu?=
- =?utf-8?B?ekxxS0NnaGFBbnExQWJqVkY3VjVJQ2s4bVAxWVh1M3R1MmtZQ09CZ2Y5SDgv?=
- =?utf-8?B?ZGQzaGZQRDYvTCtMLzhtNFc2Tm5ubG9qSXZBYlRpWUlOckdab2pZeFRmR1F4?=
- =?utf-8?B?Q0cxSDlKL3R6ekdSUjdXeGRpVy9OMk4vMGVMcUNyYjhQRHJYODlYaDhHVDk2?=
- =?utf-8?B?RUZIRThHL29Pdlo1THcvbTRkbUNWVnBCTEd4QUgzNWJ2L013bW1LdkJZRkZk?=
- =?utf-8?B?b0hWRitzYzRuS2N1bEp6NmlMeVY4RDRDWFNrUHJIZ1B6ZTdEd1lYL0xQN2Zy?=
- =?utf-8?B?MFBDeWEyK1AzTDJ3YjBnaFA1SWY3N0hQQXJFOWo2UlY3ZTI0RGlsZmRrdFNR?=
- =?utf-8?B?dFI2STJya0FFZnNWVkltZVhXckYyeGxPMWFoZ3BWbmExNExacEtPV1RMd3Bp?=
- =?utf-8?B?MGdrZmd5YUNEMkNwbFhTYzk1UVRjOFJBZVMrNWtSNjdjTVlyK0dVd01nQ1dl?=
- =?utf-8?B?cnFORnlIbjg5ZXRScVBHRjBsaWNENVpNaFMzeFZnWkd0c0lkYU96UjlXcmRZ?=
- =?utf-8?B?eUd1R2RadndLOXNicVJXM2FxVWpuL1pLZ21wTldtalRGd1RsNVZkeXlNV0tk?=
- =?utf-8?B?dUpaQjQ0YWR4OGNOTm03eWUrZjVneFRha2swaVg5VUthRDlSMkprZjg1ZkN6?=
- =?utf-8?B?dW1rWkxTZ0RneG5mcE1qeG1Zc2E2RDNaV3J2NWJuVkZuSCtjYkZNV0RYRFNl?=
- =?utf-8?B?a2E0ZzU5eTc1a2t5TkpKY21jdnZzWTAzeTlBRDQ3bkg2OHhsVkRPN2hsRmhn?=
- =?utf-8?B?NWR3T2h3M0ZMSTZEaGNIVHZHdGY5SlVEZzcyK0k5TlU4aWdnc0E4RCtDU09F?=
- =?utf-8?B?SFE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c1ef8ce-2f38-4bfe-7601-08ddbad42dd8
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2025 08:24:22.2473 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kqiVEu/8zM4vxQTpzMnDaoPvEwlWXZEQexzV9xXTznrivr92OYtVP25/TJdPiUOrhxKXe6tN6rpATOpkmZRmP2gssDWQLtbTdEpmZ+qJgh4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7604
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 resend i-g-t 5/6] tests: Add xe_debugfs
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, michal.wajdeczko@intel.com,
+ marcin.bernatowicz@intel.com, kamil.konieczny@linux.intel.com,
+ katarzyna.piecielska@intel.com, zbigniew.kempczynski@intel.com,
+ ewelina.musial@intel.com
+References: <20250616074240.45818-1-peter.senna@linux.intel.com>
+ <20250616074240.45818-6-peter.senna@linux.intel.com>
+ <aGbpyhgv6AwZ41Sm@intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <aGbpyhgv6AwZ41Sm@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -195,124 +75,311 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Jul 04, 2025 at 10:11:32AM +0200, Zbigniew Kempczyński wrote:
-> Use previously added bo checker helper to reduce code size.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
 
-Thanks for cleaning this up:
 
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+On 7/3/2025 10:36 PM, Rodrigo Vivi wrote:
+> On Mon, Jun 16, 2025 at 09:42:37AM +0200, Peter Senna Tschudin wrote:
+>> xe_debugfs is a test specific to Xe GPUs. It is intended to complement
+>> the existing generic debugfs tests core_debugfs and
+>> core_debugfs_display_on_off.
+>>
+>> Additionally, this test has been updated to use the igt_dir
+>> infrastructure, resulting in simpler code.
+>>
+>> Cc: michal.wajdeczko@intel.com
+>> Cc: marcin.bernatowicz@intel.com
+>> Cc: kamil.konieczny@linux.intel.com
+>> Cc: katarzyna.piecielska@intel.com
+>> Cc: zbigniew.kempczynski@intel.com
+>> Cc: ewelina.musial@intel.com
+>> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+>> ---
+>> v3:
+>>  - unchanged from v2
+>> v2:
+>>  - changed style of comparison to NULL
+>>
+>>  tests/intel-ci/xe-fast-feedback.testlist |   2 +
+>>  tests/intel/xe_debugfs.c                 | 208 +++++++++++++++++++++++
+>>  tests/meson.build                        |   1 +
+>>  3 files changed, 211 insertions(+)
+>>  create mode 100644 tests/intel/xe_debugfs.c
+>>
+>> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+>> index a5f799f6b..c52f08953 100644
+>> --- a/tests/intel-ci/xe-fast-feedback.testlist
+>> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+>> @@ -78,6 +78,8 @@ igt@xe_create@create-execqueues-noleak
+>>  igt@xe_create@create-execqueues-leak
+>>  igt@xe_create@create-invalid-mbz
+>>  igt@xe_create@create-massive-size
+>> +igt@xe_debugfs@xe-base
+>> +igt@xe_debugfs@xe-forcewake
+>>  igt@xe_dma_buf_sync@export-dma-buf-once-write-sync
+>>  igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
+>>  igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync
+>> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+>> new file mode 100644
+>> index 000000000..66a5fa0f6
+>> --- /dev/null
+>> +++ b/tests/intel/xe_debugfs.c
+>> @@ -0,0 +1,208 @@
+>> +// SPDX-License-Identifier: MIT
+>> +/*
+>> + * Copyright © 2025 Intel Corporation
+>> + */
+>> +
+>> +#include <dirent.h>
+>> +#include <fcntl.h>
+>> +
+>> +#include "igt.h"
+>> +#include "igt_debugfs.h"
+>> +#include "igt_dir.h"
+>> +#include "igt_sysfs.h"
+>> +#include "xe/xe_query.h"
+>> +
+>> +
+>> +struct {
+>> +	bool warn_on_not_hit;
+>> +} opt = { 0 };
+>> +
+>> +/**
+>> + * TEST: Xe debugfs test
+>> + * Description: Xe-specific debugfs tests. These are complementary to the
+>> + * core_debugfs and core_debugfs_display_on_off tests.
+>> + *
+>> + * Category: Core
+>> + * Mega feature: General Core features
+>> + * Sub-category: uapi
+>> + * Functionality: debugfs
+>> + * Feature: core
+>> + * Test category: uapi
+>> + *
+>> + */
+>> +
+>> +IGT_TEST_DESCRIPTION("Read entries from debugfs, and sysfs paths.");
+>> +
+>> +static int xe_validate_entries(igt_dir_t *igt_dir,
+>> +			       const char * const str_val[], int str_cnt)
+>> +{
+>> +	igt_dir_file_list_t *file_list_entry;
+>> +
+>> +	if (!igt_dir)
+>> +		return -1;
+>> +
+>> +	igt_dir_scan_dirfd(igt_dir, -1);
+>> +
+>> +	for (int i = 0; i < str_cnt; i++) {
+>> +		int hit = 0;
+>> +
+>> +		igt_list_for_each_entry(file_list_entry,
+>> +					&igt_dir->file_list_head, link) {
+>> +			if (strcmp(file_list_entry->relative_path,
+>> +				   str_val[i]) == 0) {
+>> +				hit = 1;
+>> +				break;
+>> +			}
+>> +		}
+>> +
+>> +		if (!hit && opt.warn_on_not_hit)
+>> +			igt_warn("no test for: %s\n", str_val[i]);
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +/**
+>> + * SUBTEST: xe-base
+>> + * Description: Check if various debugfs devnodes exist and test reading them
+>> + */
+>> +static void
+>> +xe_test_base(int fd, struct drm_xe_query_config *config, igt_dir_t *igt_dir)
+>> +{
+>> +	uint16_t devid = intel_get_drm_devid(fd);
+>> +	static const char * const expected_files[] = {
+>> +		"gt0",
+>> +		"gt1",
+>> +		"stolen_mm",
+>> +		"gtt_mm",
+>> +		"vram0_mm",
+>> +		"forcewake_all",
+>> +		"info",
+>> +		"gem_names",
+>> +		"clients",
+>> +		"name"
+>> +	};
+>> +	char reference[4096];
+>> +	int val = 0;
+>> +
+>> +	igt_assert(config);
+>> +	sprintf(reference, "devid 0x%llx",
+>> +			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff);
+>> +	igt_assert(igt_debugfs_search(fd, "info", reference));
+>> +
+>> +	sprintf(reference, "revid %lld",
+>> +			config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] >> 16);
+>> +	igt_assert(igt_debugfs_search(fd, "info", reference));
+>> +
+>> +	sprintf(reference, "is_dgfx %s", config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
+>> +		DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM ? "yes" : "no");
+>> +
+>> +	igt_assert(igt_debugfs_search(fd, "info", reference));
+>> +
+>> +	if (intel_gen(devid) < 20) {
+>> +		switch (config->info[DRM_XE_QUERY_CONFIG_VA_BITS]) {
+>> +		case 48:
+>> +			val = 3;
+>> +			break;
+>> +		case 57:
+>> +			val = 4;
+>> +			break;
+>> +		}
+>> +
+>> +		sprintf(reference, "vm_max_level %d", val);
+>> +		igt_assert(igt_debugfs_search(fd, "info", reference));
+>> +	}
+>> +
+>> +	snprintf(reference, sizeof(reference), "tile_count %d", xe_sysfs_get_num_tiles(fd));
+>> +	igt_assert(igt_debugfs_search(fd, "info", reference));
+>> +
+>> +	igt_assert(igt_debugfs_exists(fd, "gt0", O_RDONLY));
+>> +
+>> +	igt_assert(igt_debugfs_exists(fd, "gtt_mm", O_RDONLY));
+>> +	igt_debugfs_dump(fd, "gtt_mm");
+>> +
+>> +	if (config->info[DRM_XE_QUERY_CONFIG_FLAGS] & DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM) {
+>> +		igt_assert(igt_debugfs_exists(fd, "vram0_mm", O_RDONLY));
+>> +		igt_debugfs_dump(fd, "vram0_mm");
+>> +	}
+>> +
+>> +	if (igt_debugfs_exists(fd, "stolen_mm", O_RDONLY))
+>> +		igt_debugfs_dump(fd, "stolen_mm");
+>> +
+>> +	igt_assert(igt_debugfs_exists(fd, "clients", O_RDONLY));
+>> +	igt_debugfs_dump(fd, "clients");
+>> +
+>> +	igt_assert(igt_debugfs_exists(fd, "gem_names", O_RDONLY));
+>> +	igt_debugfs_dump(fd, "gem_names");
+>> +
+>> +	xe_validate_entries(igt_dir, expected_files,
+>> +			    ARRAY_SIZE(expected_files));
+>> +}
+>> +
+>> +/**
+>> + * SUBTEST: xe-forcewake
+>> + * Description: Check forcewake debugfs devnode
+>> + */
+>> +static void
+>> +xe_test_forcewake(int fd)
+>> +{
+>> +	int handle = igt_debugfs_open(fd, "forcewake_all", O_WRONLY);
+> 
+> What I don't see here is how do we avoid the forcewake_all to be read
+> in the other test? Or that doesn't matter there?
 
-> ---
->  lib/intel_compute.c | 65 +++++++--------------------------------------
->  1 file changed, 10 insertions(+), 55 deletions(-)
+That is a very good catch, thank you.
+
+Not sure what to do here. xe_debugfs was supposed to be a complement to
+the core_ tests. But the core_ tests will attempt to read all files, and
+that is clearly not going to work. Here are a few options:
+
+1 - Add gpu driver specifics to the core_ tests. If driver == xe then
+skip these files. Not perfect to have intel specifics inside a core_
+test, but I am ok with that.
+2 - Give up the core_ idea and revert back to xe_ and i915_ tests. Works
+for us, may not be the best for other vendors.
+3 - Duplicate the core_ tests here. This is trivial for the core_debugfs
+and core_sysfs, but it is not for the display_on_off variants. I don't
+think this is a good idea from the software architecture perspective.
+4 - Add run time customization to core_ tests to allow for skiping
+files. I don't think this is a good idea because we will add maintenance
+work to our CI.
+
+
+What is your take?
+
+
 > 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 6126bdb3f7..147dd29163 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -882,17 +882,8 @@ static void compute_exec(int fd, const unsigned char *kernel,
->  
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
->  
-> -	for (int i = 0; i < execenv.array_size; i++) {
-> -		float input = input_data[i];
-> -		float output = output_data[i];
-> -		float expected_output = input * input;
-> -
-> -		if (output != expected_output)
-> -			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> -				  i, input, output, expected_output);
-> -		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq_double(output, expected_output);
-> -	}
-> +	if (!user || (user && !user->skip_results_check))
-> +		bo_check_square(input_data, output_data, execenv.array_size);
->  
->  	bo_execenv_unbind(&execenv, bo_dict, entries);
->  	bo_execenv_destroy(&execenv);
-> @@ -1170,17 +1161,8 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
->  
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
->  
-> -	for (int i = 0; i < execenv.array_size; i++) {
-> -		float input = input_data[i];
-> -		float output = output_data[i];
-> -		float expected_output = input * input;
-> -
-> -		if (output != expected_output)
-> -			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> -				  i, input, output, expected_output);
-> -		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq_double(output, expected_output);
-> -	}
-> +	if (!user || (user && !user->skip_results_check))
-> +		bo_check_square(input_data, output_data, execenv.array_size);
->  
->  	bo_execenv_unbind(&execenv, bo_dict, entries);
->  	bo_execenv_destroy(&execenv);
-> @@ -1388,17 +1370,8 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
->  
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
->  
-> -	for (int i = 0; i < execenv.array_size; i++) {
-> -		float input = input_data[i];
-> -		float output = output_data[i];
-> -		float expected_output = input * input;
-> -
-> -		if (output != expected_output)
-> -			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> -				  i, input, output, expected_output);
-> -		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq_double(output, expected_output);
-> -	}
-> +	if (!user || (user && !user->skip_results_check))
-> +		bo_check_square(input_data, output_data, execenv.array_size);
->  
->  	bo_execenv_unbind(&execenv, bo_dict, entries);
->  	bo_execenv_destroy(&execenv);
-> @@ -1789,17 +1762,8 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
->  
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
->  
-> -	for (int i = 0; i < execenv.array_size; i++) {
-> -		float input = input_data[i];
-> -		float output = output_data[i];
-> -		float expected_output = input * input;
-> -
-> -		if (output != expected_output)
-> -			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> -				  i, input, output, expected_output);
-> -		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq_double(output, expected_output);
-> -	}
-> +	if (!user || (user && !user->skip_results_check))
-> +		bo_check_square(input_data, output_data, execenv.array_size);
->  
->  	bo_execenv_unbind(&execenv, bo_dict, entries);
->  	bo_execenv_destroy(&execenv);
-> @@ -1887,17 +1851,8 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  
->  	bo_execenv_exec(&execenv, ADDR_BATCH);
->  
-> -	for (int i = 0; i < execenv.array_size; i++) {
-> -		float input = input_data[i];
-> -		float output = output_data[i];
-> -		float expected_output = input * input;
-> -
-> -		if (output != expected_output)
-> -			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> -				  i, input, output, expected_output);
-> -		if (!user || (user && !user->skip_results_check))
-> -			igt_assert_eq_double(output, expected_output);
-> -	}
-> +	if (!user || (user && !user->skip_results_check))
-> +		bo_check_square(input_data, output_data, execenv.array_size);
->  
->  	bo_execenv_unbind(&execenv, bo_dict, entries);
->  	bo_execenv_destroy(&execenv);
-> -- 
-> 2.43.0
+>> +
+>> +	igt_assert_neq(handle, -1);
+>> +	close(handle);
+>> +}
+>> +
+>> +const char *help_str =
+>> +	"  -w\t--warn-not-hit Produce warnings if it founds a devfs node without tests";
+>> +
+>> +struct option long_options[] = {
+>> +	{ "--warn-not-hit", no_argument, NULL, 'w'},
+>> +	{ 0, 0, 0, 0 }
+>> +};
+>> +
+>> +static int opt_handler(int option, int option_index, void *input)
+>> +{
+>> +	switch (option) {
+>> +	case 'w':
+>> +		opt.warn_on_not_hit = true;
 > 
+> what about make this the default?
+
+Sure, do you want to swap the logic here to have a command line option
+that disables opt.warn_on_not_hit or should I remove the command line
+arguments all togheter and have it always warn_on_not_hit?
+
+> 
+>> +		break;
+>> +	default:
+>> +		return IGT_OPT_HANDLER_ERROR;
+>> +	}
+>> +
+>> +	return IGT_OPT_HANDLER_SUCCESS;
+>> +}
+>> +
+>> +igt_main_args("", long_options, help_str, opt_handler, NULL)
+>> +{
+>> +	int debugfs = -1;
+>> +	int fd = -1;
+>> +	igt_dir_t *igt_dir = NULL;
+>> +
+>> +	igt_fixture {
+>> +		fd = drm_open_driver_master(DRIVER_XE);
+>> +		__igt_debugfs_dump(fd, "info", IGT_LOG_INFO);
+>> +		debugfs = igt_debugfs_dir(fd);
+>> +
+>> +		igt_dir = igt_dir_create(debugfs);
+>> +		igt_require(igt_dir);
+>> +
+>> +		kmstest_set_vt_graphics_mode();
+>> +	}
+>> +
+>> +	igt_describe("Check if various debugfs devnodes exist and test reading them.");
+>> +	igt_subtest("xe-base") {
+>> +		xe_test_base(fd, xe_config(fd), igt_dir);
+>> +	}
+>> +
+>> +	igt_describe("Check forcewake debugfs devnode");
+>> +	igt_subtest("xe-forcewake") {
+>> +		xe_test_forcewake(fd);
+>> +	}
+>> +
+>> +	igt_fixture {
+>> +		igt_dir_destroy(igt_dir);
+>> +		close(debugfs);
+>> +		drm_close_driver(fd);
+>> +	}
+>> +}
+>> diff --git a/tests/meson.build b/tests/meson.build
+>> index a06172d2e..847598255 100644
+>> --- a/tests/meson.build
+>> +++ b/tests/meson.build
+>> @@ -283,6 +283,7 @@ intel_xe_progs = [
+>>  	'xe_compute_preempt',
+>>  	'xe_copy_basic',
+>>  	'xe_configfs',
+>> +	'xe_debugfs',
+>>  	'xe_dma_buf_sync',
+>>  	'xe_drm_fdinfo',
+>>  	'xe_eu_stall',
+>> -- 
+>> 2.43.0
+>>
+
