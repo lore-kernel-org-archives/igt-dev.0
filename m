@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44014C83030
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 08:57:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E28DC83F03
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 09:06:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB10E10E99B;
-	Fri,  4 Jul 2025 08:57:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CA4C610E9BC;
+	Fri,  4 Jul 2025 09:06:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S67nzpEb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FQAB2/1M";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D126C10E9A5
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jul 2025 08:57:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8DEC10E9BC
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Jul 2025 09:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751619426; x=1783155426;
+ t=1751619981; x=1783155981;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=Xk4bmuMh7BcaS9A14TcPhGgdZRBYbTU+S8sAVdCKvlE=;
- b=S67nzpEbT7nf5OVPnxkYifC9aaxPIMGvi/XdNT8PVtk6UFoDLMWvFmYv
- 1mtC1NU82asjxXFfDrOO9ICQU6GMmvGji+zWWNFDkp0GreEbzwPTLq/A2
- Np+O2GQ2I+LLrde9br1bu0iyXrxrR8QapQgj02+delxRhPsLPHpmwuCyg
- 9uWrVQoG5BNGeIJX3VHix/W2PosdEhRIEshMz1C7HaXpmi0Hq1hOLHn9W
- LwoV3Q5Pt5Tf/Ld3ghPnwEsLP9KofvAQlDwJpISr9tUMXwHrykJaCdOzq
- 9oVWWOb1pVgUvfzVcRlskPRRn+8zqJ6WleOjr1P6ratYePEcs9xFBf1W9 g==;
-X-CSE-ConnectionGUID: 0mudL7nLTqaU5SDHDzLopQ==
-X-CSE-MsgGUID: ODF1t/C5QFO5x/eIfz9xdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="53674945"
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="53674945"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 01:57:05 -0700
-X-CSE-ConnectionGUID: /XW57PTXT5ynb+o3xIbxYQ==
-X-CSE-MsgGUID: 18CH89eJRDWwTeznzxpxGQ==
+ bh=NQModE7ZkETHcIrfq60F94pOQUeOgkCIfp3rKlR0boc=;
+ b=FQAB2/1MtxkxwrrAb63SKg9x4KpVpbC4Ykr9DYstny6hNcjB7uWiT9pn
+ t/WF85rQJE/x5nT+D25tpgg1wkt/x5u0Un6axOpZz5g8RjJL7eVY3NRr1
+ VrOl3Z2GrTvDenEFKqcb7tqfCMo/IBujsd3bYp4OeSP4C0NmuQsq4cNaq
+ lbE8uW/aUPxtLk70kza/EZcGPrmU49U+Yp3dPSjuq1qLS0zn3yuCcUePJ
+ qCcxC5BpGq5B+MgsBLvPazw3CxiJT9NN6qC/U+pmY7A+GuPSz3qPE8bJh
+ Fx4R7pUGHuhmN/jz6mPb/uDzmaiZsN3vx6StFIRsZwG9ak3eY+zy6DLrf Q==;
+X-CSE-ConnectionGUID: nNNQiO1uRVSaDCbPKxGWUw==
+X-CSE-MsgGUID: ntFr70WCTY20vJ/w0igsIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="56579904"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="56579904"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 02:06:20 -0700
+X-CSE-ConnectionGUID: vicFuwYYT2uc6H39Qy1LoQ==
+X-CSE-MsgGUID: MaUylD80R7ijxEi55WUogA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="154014070"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; d="scan'208";a="159149713"
 Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
  ([10.245.118.0])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 01:57:03 -0700
-Message-ID: <73966bd6-8a4b-43fe-bcb9-88279a8a9fda@linux.intel.com>
-Date: Fri, 4 Jul 2025 10:57:00 +0200
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 02:06:18 -0700
+Message-ID: <81885310-1ccf-4d0e-9ec2-606807c5a185@linux.intel.com>
+Date: Fri, 4 Jul 2025 11:06:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 resend i-g-t 5/6] tests: Add xe_debugfs
@@ -277,27 +277,13 @@ On 7/3/2025 10:36 PM, Rodrigo Vivi wrote:
 > What I don't see here is how do we avoid the forcewake_all to be read
 > in the other test? Or that doesn't matter there?
 
-That is a very good catch, thank you.
+There is a recent kernel change that I forgot about. Now the kernel
+requires opening the files for write to trigger a GPU reset.
 
-Not sure what to do here. xe_debugfs was supposed to be a complement to
-the core_ tests. But the core_ tests will attempt to read all files, and
-that is clearly not going to work. Here are a few options:
-
-1 - Add gpu driver specifics to the core_ tests. If driver == xe then
-skip these files. Not perfect to have intel specifics inside a core_
-test, but I am ok with that.
-2 - Give up the core_ idea and revert back to xe_ and i915_ tests. Works
-for us, may not be the best for other vendors.
-3 - Duplicate the core_ tests here. This is trivial for the core_debugfs
-and core_sysfs, but it is not for the display_on_off variants. I don't
-think this is a good idea from the software architecture perspective.
-4 - Add run time customization to core_ tests to allow for skiping
-files. I don't think this is a good idea because we will add maintenance
-work to our CI.
-
-
-What is your take?
-
+The core_ tests only attempt to open files for reading using O_RDONLY.
+This should no longer trigger resets in the GPU. So I guess that from
+the Xe perspective, we are actually good to go trying to open all files
+for reading.
 
 > 
 >> +
@@ -320,11 +306,6 @@ What is your take?
 >> +		opt.warn_on_not_hit = true;
 > 
 > what about make this the default?
-
-Sure, do you want to swap the logic here to have a command line option
-that disables opt.warn_on_not_hit or should I remove the command line
-arguments all togheter and have it always warn_on_not_hit?
-
 > 
 >> +		break;
 >> +	default:
