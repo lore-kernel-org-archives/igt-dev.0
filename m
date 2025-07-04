@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0E2AC83030
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 05:49:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05558C83F09
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 05:59:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 38CF110E930;
-	Fri,  4 Jul 2025 05:49:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AFC3210E13A;
+	Fri,  4 Jul 2025 05:59:38 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C790210E13A;
- Fri,  4 Jul 2025 05:49:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFBB010E13A;
+ Fri,  4 Jul 2025 05:59:37 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4750264592654368040=="
+ boundary="===============7345868825455462188=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel-ci/xe=2Ebmg=2Ed?=
- =?utf-8?q?isplay=2Eblocklist=3A_update_bmg_blocklist?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/kms=5Fcursor=5Fcrc?=
+ =?utf-8?q?=3A_optimise_cursor_crc_on_simulation_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
+To: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 04 Jul 2025 05:49:14 -0000
-Message-ID: <175160815480.133850.12103029369056148944@1538d3639d33>
+Date: Fri, 04 Jul 2025 05:59:37 -0000
+Message-ID: <175160877797.133851.8963045377260728938@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250704053801.230707-1-kunal1.joshi@intel.com>
-In-Reply-To: <20250704053801.230707-1-kunal1.joshi@intel.com>
+References: <20250702091643.967483-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250702091643.967483-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,59 +41,26 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4750264592654368040==
+--===============7345868825455462188==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel-ci/xe.bmg.display.blocklist: update bmg blocklist
-URL   : https://patchwork.freedesktop.org/series/151156/
-State : success
+Series: tests/kms_cursor_crc: optimise cursor crc on simulation (rev3)
+URL   : https://patchwork.freedesktop.org/series/150628/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8438_BAT -> XEIGTPW_13404_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8438 -> IGTPW_13404
-  * Linux: xe-3343-310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43 -> xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80
-
-  IGTPW_13404: 13404
-  IGT_8438: 8438
-  xe-3343-310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43: 310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43
-  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80
+ERROR: The runconfig 'XEIGT_8434_FULL' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13404/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13389/index.html
 
---===============4750264592654368040==
+--===============7345868825455462188==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,34 +80,18 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel-ci/xe.bmg.display.blocklist: update bmg blocklist</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151156/">https://patchwork.freedesktop.org/series/151156/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: optimise cursor crc on simulation (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150628/">https://patchwork.freedesktop.org/series/150628/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13404/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13404/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13389/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13389/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8438_BAT -&gt; XEIGTPW_13404_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8438 -&gt; IGTPW_13404</li>
-<li>Linux: xe-3343-310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43 -&gt; xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80</li>
-</ul>
-<p>IGTPW_13404: 13404<br />
-  IGT_8438: 8438<br />
-  xe-3343-310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43: 310881baa8e5c97ebd7cc0c6eb01ab6672d8cf43<br />
-  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80</p>
+    <p>ERROR: The runconfig 'XEIGT_8434_FULL' does not exist in the database</p>
 
 </body>
 </html>
 
---===============4750264592654368040==--
+--===============7345868825455462188==--
