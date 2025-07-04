@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52D5AC83F03
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 21:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E48E3C8303D
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 21:55:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0107E10E0DD;
-	Fri,  4 Jul 2025 21:13:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5757A10E0DD;
+	Fri,  4 Jul 2025 21:55:59 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D051C10E0E5;
- Fri,  4 Jul 2025 21:12:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A6BC10E0DD;
+ Fri,  4 Jul 2025 21:55:58 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4556470809287797331=="
+ boundary="===============1182809618774441518=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_TG_preemption_detection_im?=
- =?utf-8?q?provements?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Update_image_assets_=28rev?=
+ =?utf-8?q?9=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 04 Jul 2025 21:12:58 -0000
-Message-ID: <175166357884.136031.6677292245114119910@1538d3639d33>
+Date: Fri, 04 Jul 2025 21:55:58 -0000
+Message-ID: <175166615829.136663.18022989874455331991@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250703063032.553963-5-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20250703063032.553963-5-zbigniew.kempczynski@intel.com>
+References: <20250703075344.95774-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20250703075344.95774-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,15 +41,15 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4556470809287797331==
+--===============1182809618774441518==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: TG preemption detection improvements
-URL   : https://patchwork.freedesktop.org/series/151107/
+Series: Update image assets (rev9)
+URL   : https://patchwork.freedesktop.org/series/141539/
 State : failure
 
 == Summary ==
@@ -58,9 +58,9 @@ ERROR: The runconfig 'XEIGT_8436_FULL' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13394/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13395/index.html
 
---===============4556470809287797331==
+--===============1182809618774441518==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,11 +80,11 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>TG preemption detection improvements</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151107/">https://patchwork.freedesktop.org/series/151107/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Update image assets (rev9)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/141539/">https://patchwork.freedesktop.org/series/141539/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13394/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13394/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13395/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13395/index.html</a></td></tr>
 
 </table>
 
@@ -94,4 +94,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============4556470809287797331==--
+--===============1182809618774441518==--
