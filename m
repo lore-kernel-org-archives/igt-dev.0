@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADB31C8303D
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 10:41:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03C7BC8303D
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 10:44:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6564910E9E5;
-	Fri,  4 Jul 2025 10:41:59 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FBsbRfoy";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25AF410E9E5
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jul 2025 10:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751625719; x=1783161719;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Uq9sZPoyAjKctKqJ1YHj10ILyKdZMXCc6XwX4XtUH5k=;
- b=FBsbRfoyCfc1zDaysJbaoZByKIVr9A9ssj5uq5cjf12A5Ba4hJwHOfOg
- hx09lj0HbqBzuUQrmYyhnlHejz/ZUYCWaWY7wtKKNwaM0LNAW3f9fFiH3
- Ztn+sI11n6kIf2fovWCHDdV5we/Wy4nmiF3jclBHnudoEDeN6bpCFghUv
- 1/3WjvsrjvZSZrVoYGapSTMlAvOhxQ2JOIVWxwTIRRKfCtaUB42KBykEH
- y9/6btoNXsHN/FWmYAPIFBRGmtC9QTQqB1SYXntvPr6HYqQso56PXout7
- nzs4RShL79xNyX4FJ44ldq89UeIDWp/Xddtv+Qq+VS1eZitF983EsnBmx w==;
-X-CSE-ConnectionGUID: gJbqObZ6RLydgAYmc43SCQ==
-X-CSE-MsgGUID: BAwAM5kATTKEC3dxOY+bhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="53681208"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="53681208"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 03:41:58 -0700
-X-CSE-ConnectionGUID: WNWqJCcAQf+BzPYvirqUMg==
-X-CSE-MsgGUID: cn5mFP0DTHu4S3YXBRoiTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="185632443"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 03:41:56 -0700
-Date: Fri, 4 Jul 2025 12:41:40 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- jari.tahvanainen@intel.com
-Subject: Re: [PATCH i-g-t v2] tests/intel/test_config: Add GPU excluded
- platform definition for i915
-Message-ID: <20250704104140.wd2tl2n6vngtcu2x@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com, jari.tahvanainen@intel.com
-References: <20250703094111.896703-1-karthik.b.s@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A0CED10E9EA;
+	Fri,  4 Jul 2025 10:44:16 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D2B710E9E6;
+ Fri,  4 Jul 2025 10:44:16 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7567766380240240200=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250703094111.896703-1-karthik.b.s@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Skip_PSR_when_disabled_=28r?=
+ =?utf-8?q?ev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 04 Jul 2025 10:44:16 -0000
+Message-ID: <175162585624.134870.10554281000579248894@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250704093557.499836-1-michal.grzelak@intel.com>
+In-Reply-To: <20250704093557.499836-1-michal.grzelak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,60 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Karthik,
-On 2025-07-03 at 15:11:11 +0530, Karthik B S wrote:
-> With config definitions added, the blocklists for i915 can be used to
-> generate platform testlists.
-> 
-> v2: Fix Typo.
-> 
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> Signed-off-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
+--===============7567766380240240200==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-> ---
->  tests/intel/i915_test_config.json | 8 +++++++-
->  tests/intel/kms_test_config.json  | 3 ++-
->  2 files changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/intel/i915_test_config.json b/tests/intel/i915_test_config.json
-> index 04bf1fa68..e53f9400b 100644
-> --- a/tests/intel/i915_test_config.json
-> +++ b/tests/intel/i915_test_config.json
-> @@ -83,7 +83,13 @@
->          },
->          "GPU excluded platform": {
->              "_properties_": {
-> -                "description": "Provides a list of GPUs not capable of running the subtest (or the test as a whole)."
-> +                "description": "Provides a list of GPUs not capable of running the subtest (or the test as a whole).",
-> +                "update-from-file": {
-> +                    "include-type": "regex-ignorecase",
-> +                    "include": [
-> +                        { "all": "../intel-ci/blacklist.txt" }
-> +                    ]
-> +                }
->              }
->          },
->          "GPU requirement": {
-> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-> index 65d6eb07d..0b6fc36e8 100644
-> --- a/tests/intel/kms_test_config.json
-> +++ b/tests/intel/kms_test_config.json
-> @@ -60,7 +60,8 @@
->  		    "include": [
->  			{ "LNL": "../intel-ci/xe.lnl.display.blocklist.txt" },
->  			{ "BMG": "../intel-ci/xe.bmg.display.blocklist.txt" },
-> -			{ "all": "../intel-ci/xe.blocklist.txt" }
-> +			{ "LNL, BMG": "../intel-ci/xe.blocklist.txt" },
-> +			{ "ADLP, ADLS, DG2, MTL": "../intel-ci/blacklist.txt" }
->  		    ]
->  		}
->  	    }
-> -- 
-> 2.43.0
-> 
+Series: Skip PSR when disabled (rev4)
+URL   : https://patchwork.freedesktop.org/series/148962/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8440_BAT -> XEIGTPW_13406_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8440 -> IGTPW_13406
+
+  IGTPW_13406: 13406
+  IGT_8440: 08eb5310bd1d4c9bfee7e268e7e6242d3283b28e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13406/index.html
+
+--===============7567766380240240200==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Skip PSR when disabled (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148962/">https://patchwork.freedesktop.org/series/148962/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13406/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13406/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8440_BAT -&gt; XEIGTPW_13406_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8440 -&gt; IGTPW_13406</li>
+</ul>
+<p>IGTPW_13406: 13406<br />
+  IGT_8440: 08eb5310bd1d4c9bfee7e268e7e6242d3283b28e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80</p>
+
+</body>
+</html>
+
+--===============7567766380240240200==--
