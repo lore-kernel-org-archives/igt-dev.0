@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 721D4C8303D
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 16:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A980FC8303D
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 16:14:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1051010E2BA;
-	Fri,  4 Jul 2025 16:11:06 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KN2iD85N";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E1D310E2BA
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jul 2025 16:11:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751645464; x=1783181464;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=DgP70vcJeAJPMXAq9cVZVldZeoHrKQO543SnryhrNSc=;
- b=KN2iD85N4cwRRNPLxdkD/XAOzArwF44/pRi6np+gmJXcHmFoFhgoZZE7
- llYJbCzb+qaTpYYeKZsqH2wqCeXIMTO1nK+3H7LOngqypSwrOki+JIA9t
- 0dwS5+sZ9sGKWXPthPRWnW2MCt6wPqg+wx84sjlOPCmP1rW5deidDoRaZ
- 5wyzPA+E7HknmIupCOqU2gtcSvbYMrwJh7cEfsfxBSdG6oR3/GIJzOzrk
- Luir0x3TolIl9jsC2dV5mCsBH8EDfCsKKiBVoN5HFD5HOnsyKCqYqKA3e
- lpam7iGwty3ajUyZPFixz5+D2Jcu0+upZcuN91VMS2SC54nnt0w7DpDMZ A==;
-X-CSE-ConnectionGUID: huOtsO6HQBGQsnjmTNM6QA==
-X-CSE-MsgGUID: V/mVCfyVSy+NQKbaYKxOjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11484"; a="53701939"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="53701939"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 09:11:03 -0700
-X-CSE-ConnectionGUID: RaslA7riSISPN/r2ep5UbQ==
-X-CSE-MsgGUID: /6+Clr9rR/mRBJAPRUhABw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="154420060"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 09:11:03 -0700
-Date: Fri, 4 Jul 2025 18:11:00 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Rob Clark <rob.clark@oss.qualcomm.com>
-Cc: igt-dev@lists.freedesktop.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH i-g-t v2 0/9] msm: recovery and mapping updates
-Message-ID: <20250704161100.k27itcxbiprtr3a4@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Rob Clark <rob.clark@oss.qualcomm.com>,
- igt-dev@lists.freedesktop.org, linux-arm-msm@vger.kernel.org
-References: <20250702190249.376313-1-rob.clark@oss.qualcomm.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F44F10E08E;
+	Fri,  4 Jul 2025 16:14:13 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1419210E08E;
+ Fri,  4 Jul 2025 16:14:12 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8775417878411721991=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250702190249.376313-1-rob.clark@oss.qualcomm.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/pciids=3A_Add_one_more_?=
+ =?utf-8?q?PCI_ID_to_BMG_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ravi Kumar Vodapalli" <ravi.kumar.vodapalli@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 04 Jul 2025 16:14:12 -0000
+Message-ID: <175164565207.136031.2635763843729279225@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250704153407.101227-1-ravi.kumar.vodapalli@intel.com>
+In-Reply-To: <20250704153407.101227-1-ravi.kumar.vodapalli@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,35 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Rob,
-On 2025-07-02 at 12:02:40 -0700, Rob Clark wrote:
-> Mostly updates to address flakes, and updates related to newer kernels.
-> Plus a few additional sub-tests.
+--===============8775417878411721991==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you, I merged it.
+== Series Details ==
 
-Regards,
-Kamil
+Series: lib/pciids: Add one more PCI ID to BMG (rev3)
+URL   : https://patchwork.freedesktop.org/series/151184/
+State : success
 
-> 
-> Rob Clark (9):
->   tests/msm/msm_mapping: Fix memory leak
->   tests/msm/msm_recovery: Wait for devcore
->   tests/msm/msm_recovery: add iova-fault-stress test
->   tests/msm/msm_mapping: update for sparse
->   tests/msm/msm_mapping: Handle BO names with spaces
->   tests/msm/msm_mapping: Add additional subtests
->   tests/msm/msm_mapping: Wait for devcore
->   tests/msm/msm_mapping: Handle larger gmem file size
->   tests/msm/msm_mapping: Add wait for stall-on-fault to re-arm
-> 
->  tests/msm/msm_mapping.c  | 93 +++++++++++++++++++++++++++++++++++-----
->  tests/msm/msm_recovery.c | 38 +++++++++++-----
->  2 files changed, 110 insertions(+), 21 deletions(-)
-> 
-> -- 
-> 2.50.0
-> 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8441_BAT -> XEIGTPW_13412_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8441 -> IGTPW_13412
+
+  IGTPW_13412: 13412
+  IGT_8441: 8441
+  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13412/index.html
+
+--===============8775417878411721991==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/pciids: Add one more PCI ID to BMG (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151184/">https://patchwork.freedesktop.org/series/151184/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13412/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13412/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8441_BAT -&gt; XEIGTPW_13412_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8441 -&gt; IGTPW_13412</li>
+</ul>
+<p>IGTPW_13412: 13412<br />
+  IGT_8441: 8441<br />
+  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80</p>
+
+</body>
+</html>
+
+--===============8775417878411721991==--
