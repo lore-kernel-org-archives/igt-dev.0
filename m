@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 685E7C83F03
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 13:37:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE78EC8303D
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Jul 2025 13:38:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1CD3F10EA43;
-	Fri,  4 Jul 2025 13:37:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 83C3210EA49;
+	Fri,  4 Jul 2025 13:38:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JtxEhIB/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eNyFE9qX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49D3610EA43
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Jul 2025 13:37:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48BB310EA49
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Jul 2025 13:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751636258; x=1783172258;
+ t=1751636316; x=1783172316;
  h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=c4XAoQijIqACkEBqVGJI2VSbqqj04cm8wVBgtLdV6ig=;
- b=JtxEhIB/+dNxS6EDgRk8FL6M2c0kttt4WhXdOmp0DqEFQTY6AI6c3M7l
- 4xzv8uElDX9Qo01MpLxmbqQU/1uNFCG4K+s2+4wKIR0J6lQCuGENsS2Js
- 61UiLgB03uklxqQkfI6MO7P/FsWiNJuD3F4N1PbmJQFXvI1GHmfcl1/bf
- 4iwwYp4zrAc6pHER677xgzj3BSsVkfhSsNjwO8XXzSPS9VdP6Qx0NSGNd
- 2tjSeGjT9OdBs2g9VaPPJvhvUsxoj7xXtKpAzF+DMsTcy8riofBIYZ69J
- PtrRQmWqS7uisxvuBC6KsbHCkFfzmi5LXZExKlvamcxaxfyxJMe42bYpS A==;
-X-CSE-ConnectionGUID: bSw6+PIMRl24Yx1afRzwRw==
-X-CSE-MsgGUID: 6RMRFgcjQZmnIGD9w93i3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11484"; a="71543489"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="71543489"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2025 06:37:38 -0700
-X-CSE-ConnectionGUID: 8W3GVzGcTXWI5+kKdTJb1Q==
-X-CSE-MsgGUID: nH7bzxcmTJKtRe8WttZ7Iw==
+ b=eNyFE9qXxZSEmDFKOpWOGTvvZOJr0vkcTErTeL5yHo5APpD+JTJIHQP6
+ LhhMhGcAOwuC2/E7cgRpH4XpgFbFUBlakuD5lKP2pSPANdCpCBFDOPTOR
+ FdNTk7UckJyqNmYB/425+rqpqXOelnRnQkh1TTTfmp3QUv5Z0glVvKShY
+ x0m5VwGPFnuf+pFZWFy9U3j337yzARhb4cj7oS1MHPovCkmvjPRtwr6dG
+ ILkOiloDd2UXrSkXUYpq1Reqmlh4x+UVvnlI35wmJqv/F5TeVqUtJ4Wlg
+ k/T2u/oBWEr9hVRSZ1tdUxR6xQWtX//rv/kq97I10B5hPgOou+FseRZHj Q==;
+X-CSE-ConnectionGUID: a9/KhZ7SQ16AykfTWveASA==
+X-CSE-MsgGUID: ynqdR445TjKSiXFmcowXYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11484"; a="65026987"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="65026987"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2025 06:38:36 -0700
+X-CSE-ConnectionGUID: G68C54q+S0q0FsSAdo3g/A==
+X-CSE-MsgGUID: +S37z8RERbyDr9aDv7yFzw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="154056671"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; d="scan'208";a="154398147"
 Received: from unknown (HELO DUT2943PVC.iind.intel.com) ([10.190.215.47])
- by orviesa010.jf.intel.com with ESMTP; 04 Jul 2025 06:37:36 -0700
+ by orviesa009.jf.intel.com with ESMTP; 04 Jul 2025 06:38:34 -0700
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  nishit.sharma@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_compute: Add Compute workload Scheduling
- and Display EU busyness
-Date: Fri,  4 Jul 2025 13:37:34 +0000
-Message-ID: <20250704133734.304172-1-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v4] tests/intel/xe_compute: Add Compute workload
+ Scheduling and Display EU busyness
+Date: Fri,  4 Jul 2025 13:38:32 +0000
+Message-ID: <20250704133833.304517-1-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
