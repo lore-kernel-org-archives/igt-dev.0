@@ -2,56 +2,55 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97646C7115A
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Jun 2025 12:43:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 436D9C83F03
+	for <igt-dev@archiver.kernel.org>; Sun,  6 Jul 2025 19:54:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 467D710E81B;
-	Wed, 18 Jun 2025 12:43:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E414510E2DB;
+	Sun,  6 Jul 2025 19:54:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iIcVBWmL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KJyflyrq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E38A10E81D
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jun 2025 12:43:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACA8310E2DB
+ for <igt-dev@lists.freedesktop.org>; Sun,  6 Jul 2025 19:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1750250604; x=1781786604;
+ t=1751831695; x=1783367695;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=olYsrbWk1lTlkd2UMAGtfqZqFNt+kLTiwf6zSeMbDNk=;
- b=iIcVBWmLiJHk9HMfO3ne8HFpp4zMkvw5A/8LRXY5GrGfbqueGVcH4u8b
- 2YU4A2/mT1EX/+urtv6QK3h/Y1yx6jOAN5TVXIOc/SRaMt0EDU+byqcsZ
- tdZ/1PWBqZKe+OcJ89a+kmEF7e4I1245NXkptrf7hALfo+ftERmsuOKk/
- MeTVPIGxnD9zdks+j39t2YRKYdtCg5v66/p4Z4pzzkGyOWXPykM4G6d2e
- fQfqllFYTmUm7CiHA11l7Rn1aOlDaGXT4s9aUTvvQHLES9Bky+RNT8PcH
- KHto5YBmmHkia2/MMWMe28yFjUcZc/uzs1Cx/0cslfgt6nDfD9hmrHxat w==;
-X-CSE-ConnectionGUID: 2HB2FMZ5QQuTS9TVXq2dCA==
-X-CSE-MsgGUID: c5TiJOr1R7uOq4mxgzjAtQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="51690521"
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; d="scan'208";a="51690521"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2025 05:43:22 -0700
-X-CSE-ConnectionGUID: Edf1+uOlTMSKfazm9RmnxQ==
-X-CSE-MsgGUID: YQ4cB9ipRxCGKShO+BWgYw==
+ b=KJyflyrq7KWgLUEBdOHVr/T0JH9LUM8kHEWPFJyBSUP9yo68Ft3lh0Mn
+ B4f2lbbEe6W11UDGrkdsDq3aC4e/KbIMKZcMBhVKu9pVfyJGIXzTXLp95
+ YM2iWGeQhptUfe1ZQRS3fjpEFYRhdL+1R77JuzzFGV2ee/MYeTJNwDB+4
+ 9DPBWVr6frX/qIBhx93l01jIJKatKToOUYwruWNKrsxulsFu2TLqdmowe
+ QOcDji5XY7Pju327TdOuC82WdGHzy+Q62WoktGdz4LIt2AJEh7QoPiqOY
+ Y4lsiYjyhB+QyfySdvAs6neP1lBiYTlWqDY/noUjMlhT+b8MUlSo7B/cv g==;
+X-CSE-ConnectionGUID: YkVUmVFeSRajc1qWIi1Jmg==
+X-CSE-MsgGUID: NNAzUViuSueZ9auIfbh/0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="53983008"
+X-IronPort-AV: E=Sophos;i="6.16,292,1744095600"; d="scan'208";a="53983008"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jul 2025 12:54:55 -0700
+X-CSE-ConnectionGUID: bsCu6wXDS0SvHOX28XjMpw==
+X-CSE-MsgGUID: mOXEwSpbSQKXQeHK3o585g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; d="scan'208";a="150265936"
+X-IronPort-AV: E=Sophos;i="6.16,292,1744095600"; d="scan'208";a="159064764"
 Received: from dut2122ptlh.iind.intel.com (HELO
  linux-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.223.34.115])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2025 05:43:16 -0700
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jul 2025 12:54:53 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: alex.hung@amd.com, chaitanya.kumar.borah@intel.com, uma.shankar@intel.com,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Swati Sharma <swati2.sharma@intel.com>
 Subject: [PATCH i-g-t 2/9] lib/colorops: Move few helpers to common place to
  reuse
-Date: Wed, 18 Jun 2025 18:18:42 +0530
-Message-Id: <20250618124849.1587767-3-swati2.sharma@intel.com>
+Date: Mon,  7 Jul 2025 01:31:18 +0530
+Message-Id: <20250706200125.35741-3-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250618124849.1587767-1-swati2.sharma@intel.com>
-References: <20250618124849.1587767-1-swati2.sharma@intel.com>
+In-Reply-To: <20250706200125.35741-1-swati2.sharma@intel.com>
+References: <20250706200125.35741-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
