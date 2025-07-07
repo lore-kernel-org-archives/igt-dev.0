@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 134E9C71130
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Jul 2025 17:28:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C991BC8303C
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Jul 2025 19:21:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A73BB892F6;
-	Mon,  7 Jul 2025 17:28:02 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 730DE892F6;
- Mon,  7 Jul 2025 17:28:01 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3496090293574897959=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6DE1210E33C;
+	Mon,  7 Jul 2025 19:21:59 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gzytGRTH";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CA0110E33C
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Jul 2025 19:21:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751916119; x=1783452119;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=edxuBHt5FhjYjqhrzYImKF9BE6fxnDzs3ZiRy/hvx3g=;
+ b=gzytGRTHYIIdHp5Yeu0EuCZZvY7WvcDgoeeT9/N0aWajKS9ZB6IRCrVD
+ rgIsM9fjJ3CXYBPkLj0srxNvEbkaKJy6T9QmXS/Vv15xUqVfbt3yvIdic
+ T8a5bDURyeR99PozDy1tUafi7l9JsaI3IIE1mmzDNPrHi8yi7DpgsiF8z
+ GxiiUNH+nD2EDayiV0J3V8Kotjmv3tUeNqxKw2bdu98F+b8rI2AUCLPnj
+ gmh8e18ZHHYDdTK+MJwdLuyZScExXsB9rcY7wxGroFunHBbbSTcLSiQea
+ 0xNTFbnJyKuu32ouIq64op8KXJScJFf9XCURxB6JaNQUhCl7ebaXvBW6l A==;
+X-CSE-ConnectionGUID: KUgKqbj1QNeAG95JpVPCiA==
+X-CSE-MsgGUID: NeARAWkZS4GMwjJkYBz4Ew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="57818592"
+X-IronPort-AV: E=Sophos;i="6.16,295,1744095600"; d="scan'208";a="57818592"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jul 2025 12:21:58 -0700
+X-CSE-ConnectionGUID: PxuOcdsOQTm9Tc67GXKx7w==
+X-CSE-MsgGUID: Glrs5VgjQkycmFDH4YdR1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,295,1744095600"; d="scan'208";a="154913747"
+Received: from unknown (HELO rgsanthosh-System-Product-Name.iind.intel.com)
+ ([10.190.238.65])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jul 2025 12:21:56 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1] tests/intel-ci: Add unsupported downscaling tests to
+ blacklist
+Date: Tue,  8 Jul 2025 00:52:09 +0530
+Message-ID: <20250707192209.783141-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci=3A_Rename_i915_blo?=
- =?utf-8?q?cklist_and_testlists_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 07 Jul 2025 17:28:01 -0000
-Message-ID: <175190928146.140955.16697942675789329016@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250707162340.258267-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20250707162340.258267-1-kamil.konieczny@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +64,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3496090293574897959==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Adds the scaling test to the blacklist due to failures when
+the maximum downscale factor exceeds the 3.0 limit in either
+direction.
 
-== Series Details ==
+Bspec: 50441
 
-Series: intel-ci: Rename i915 blocklist and testlists (rev3)
-URL   : https://patchwork.freedesktop.org/series/151121/
-State : success
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+---
+ tests/intel-ci/blacklist.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-== Summary ==
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index 6c91f1a70..bb4b8dfec 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -84,6 +84,11 @@ igt@gem_exec_alignment@pi-shared
+ ###############################################
+ igt@kms_frontbuffer_tracking@.*drrs.*
+ ###############################################
++# Maximum downscale must be less than 3.0 in
++# each direction
++###############################################
++igt@kms_plane_scaling@.*downscale-factor-0-25.*
++###############################################
+ # Tends to generate invalid configurations
+ # using CCS planes or configurations that
+ # exceed HW capabilities resulting in sporadic
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8445_BAT -> XEIGTPW_13421_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13421_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-plain-flip@d-edp1:
-    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8445/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13421/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-
-
-Build changes
--------------
-
-  * IGT: IGT_8445 -> IGTPW_13421
-  * Linux: xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80 -> xe-3365-17e70ec7d93c01d943dba448b407ec3dc74e3ea7
-
-  IGTPW_13421: 96fb72706fec7c90b8fd1f30d590ced0160383dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8445: 8445
-  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80
-  xe-3365-17e70ec7d93c01d943dba448b407ec3dc74e3ea7: 17e70ec7d93c01d943dba448b407ec3dc74e3ea7
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13421/index.html
-
---===============3496090293574897959==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel-ci: Rename i915 blocklist and testlists (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151121/">https://patchwork.freedesktop.org/series/151121/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13421/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13421/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8445_BAT -&gt; XEIGTPW_13421_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13421_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8445/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13421/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8445 -&gt; IGTPW_13421</li>
-<li>Linux: xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80 -&gt; xe-3365-17e70ec7d93c01d943dba448b407ec3dc74e3ea7</li>
-</ul>
-<p>IGTPW_13421: 96fb72706fec7c90b8fd1f30d590ced0160383dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8445: 8445<br />
-  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80<br />
-  xe-3365-17e70ec7d93c01d943dba448b407ec3dc74e3ea7: 17e70ec7d93c01d943dba448b407ec3dc74e3ea7</p>
-
-</body>
-</html>
-
---===============3496090293574897959==--
