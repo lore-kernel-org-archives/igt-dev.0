@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3674BC83F03
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Jul 2025 03:25:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18351C83F09
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Jul 2025 03:25:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C89A310E083;
-	Mon,  7 Jul 2025 03:25:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD2E510E303;
+	Mon,  7 Jul 2025 03:25:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IX1r+9Kl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I60CMR3x";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C259710E083
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Jul 2025 03:25:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8314A10E303
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Jul 2025 03:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751858710; x=1783394710;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=idj6g5wNElEw9pbykqQQhMbhdsexPU5Asd9h/zitzE4=;
- b=IX1r+9KlokowTlUEUtgbfx/G9qaFxghQ98lBfUEdPE3lA1RF35yQh9zU
- M+2s6d7XRA6rWKULwkmGgS4m875MbcloCbtXMXU9ah/zliwfCJ2UdmnXh
- ypMb7VZoqHt5kdWgPx2ZcYChnVDhmvnjQoAzy/1OOP4N1sILiLd4juf4V
- ynMFdOCIB0KpRIt2UruuCrYLvb44AtADn6ZvR3M23aN214f3XH9/ec8s2
- j+Omzs8uckunrIW3Rw5ZtsZYEKUu9WkJsVZRC7x8MIftJWFqOSn8zDSDU
- Dm4v6QX4IWJc9gHzfgJYWvsF9ZgxnDOVyVnp5dhTbYRyirt9UtS33zH6e A==;
-X-CSE-ConnectionGUID: Za9Wct+ySOW7kuLRZzXYGA==
-X-CSE-MsgGUID: P2RbU77sSkWKLFa2wJipUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="65134971"
-X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; d="scan'208";a="65134971"
+ t=1751858713; x=1783394713;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=0jUv5+EShMsYz8b6Fx+UVw7t+gjOWO1CCteNCF09m8E=;
+ b=I60CMR3xqhkO8UxHItYVXfVGYbznd72htjLpyOCes9F4Zk0WttswmSo4
+ G7o1eIeJ+neKumiMeZp23BwF8/LJ1s1uW7zkLtePt9ojx59Jms97m66oU
+ 4HjNfIYwQUcqK55Ucf1Xac6aO7oTm7NfE2zf0fgCuncrpHfJ/sTudy49B
+ MR8aG/ekcGZ7DMlelsIAVy5vNglgv9hvaeWwRU23CNdTCib+oVsPjSnnm
+ sh1azXzzbmm6kJcA2PnQ7Ho41vTwlT0Yrw9zi4AJSzQN1sx58b2ebmwTr
+ 16yFJ5e6bx84V2zl+nJkjslGbeYlxCx9QLkBQ9yLjRrXpI0EnLgyWdopK g==;
+X-CSE-ConnectionGUID: tfr5YeqCSzOmGD5Vi3yc8g==
+X-CSE-MsgGUID: 44iO5y8uTXaYtQarCPt3WQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="65134978"
+X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; d="scan'208";a="65134978"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jul 2025 20:25:09 -0700
-X-CSE-ConnectionGUID: YpJdISQgTHWZezOT/Qty6w==
-X-CSE-MsgGUID: d5e5Bi/JTUmSBovIgkecag==
+ 06 Jul 2025 20:25:13 -0700
+X-CSE-ConnectionGUID: PuT2RNC1Qi6RhMDxVhGJQw==
+X-CSE-MsgGUID: 0CqqaCwWSbW0i50rzA8KCg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; d="scan'208";a="192288677"
+X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; d="scan'208";a="192288712"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by orviesa001.jf.intel.com with ESMTP; 06 Jul 2025 20:25:07 -0700
+ by orviesa001.jf.intel.com with ESMTP; 06 Jul 2025 20:25:11 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
  sameer.lattannavar@intel.com, pranay.samala@intel.com,
- Leo Li <sunpeng.li@amd.com>, Jani Nikula <jani.nikula@intel.com>,
- Uma Shankar <uma.shankar@intel.com>,
- Ramanaidu Naladala <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v5 0/5] Refactor DRM Debug Severity Handling for
-Date: Mon,  7 Jul 2025 09:02:41 +0530
-Message-Id: <20250707033246.751156-1-pranay.samala@intel.com>
+ Jan Sokolowski <jan.sokolowski@intel.com>
+Subject: [PATCH i-g-t v5 1/5] lib/igt_sysfs: Rename log_level to
+ saved_drm_debug_mask
+Date: Mon,  7 Jul 2025 09:02:42 +0530
+Message-Id: <20250707033246.751156-2-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250707033246.751156-1-pranay.samala@intel.com>
+References: <20250707033246.751156-1-pranay.samala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,64 +69,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This update refactors the debug mask handling in the test framework for
-improved readability and addresses logical inconsistencies. The test now 
-leverages the IGT_CI_RUN environment variable to control the debug mask 
-dynamically, according to the test's internal requirements.
-
-Additionally, the exit handler has been modified to restore the original
-debug mask after the test completes, ensuring consistency. These changes
-enhance the flexibility and robustness of the DRM debug logic, making it
-easier to control the debug mask throughout the test.
-
-v2:
-- Implementated to allow flexible bitmask usage during execution. (Jani)
-- Update the commit message (Jani)
-- Using mask to update instead of a single category (Jani)
-- To handle nested updates, exit_handler is set before the update
-  process (Jani)
+Rename log_level to saved_drm_debug_mask as it holds
+the mask pre-test and will be used to reset the
+debug mask post test.
 
 v3:
 - Refactored for readability and address logical comment.
 
 v4:
-- Remove custom command-line option handler (Jani & Kunal)
-- Have different masks documented (Kunal)
-- Use an environment variable for CI jobs where disk space is tight (Kunal)
-- Improve variable name for original debug mask saving (Kunal)
-- Rename debug_level parameter to mask (Kunal)
+- Improve variable name for debug mask saving (Kunal)
 
 v5:
-- Move function to shared library to avoid duplication (Rama)
-- Solve compilation issue (Rama)
- 
-Cc: Leo Li <sunpeng.li@amd.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Uma Shankar <uma.shankar@intel.com>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Ramanaidu Naladala <ramanaidu.naladala@intel.com>
-Cc: Sameer Lattannavar <sameer.lattannavar@intel.com>
+- Edit the commit message and subject (Jan)
+- Rename a word in igt_debug message (Rama)
 
 Fixes: 56b91193b825 ("lib/igt_sysfs: Implement dynamic adjustment of debug log level")
-Fixes: a2ab0ec12ef4 ("tests/kms_atomic_transition: Reducing debug loglevel dynamically")
-Fixes: 4baeb7397d71 ("tests/intel/kms_dp_linktrain_fallback: Reduce debug loglevel dynamically")
-Fixes: 7a8a3744466f ("tests/kms_cursor_legacy: Reduce debug loglevel dynamically")
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+Reviewed-by: Jan Sokolowski <jan.sokolowski@intel.com>
+---
+ lib/igt_sysfs.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Pranay Samala (5):
-  lib/igt_sysfs: Rename log_level to saved_drm_debug_mask
-  lib/igt_sysfs: Rename debug level APIs/variables to debug mask
-  lib/igt_sysfs: Update new debug mask requested by user
-  tests/kms: Use CI environment variable
-  lib/igt_sysfs: Move igt_exit_handler into test
-
- lib/igt_sysfs.c                         | 70 ++++++++++++++-----------
- lib/igt_sysfs.h                         | 21 ++++++--
- tests/intel/kms_dp_linktrain_fallback.c | 11 ++--
- tests/kms_atomic_transition.c           | 13 ++---
- tests/kms_cursor_legacy.c               | 12 ++---
- 5 files changed, 67 insertions(+), 60 deletions(-)
-
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 2ba96ca7f..23fe4ac45 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -443,7 +443,7 @@ int igt_sysfs_drm_module_params_open(void)
+ 	return open(path, O_RDONLY);
+ }
+ 
+-static int log_level = -1;
++static int saved_drm_debug_mask = -1;
+ 
+ /**
+  * igt_drm_debug_level_get:
+@@ -458,8 +458,8 @@ int igt_drm_debug_level_get(int dir)
+ {
+ 	char buf[20];
+ 
+-	if (log_level >= 0)
+-		return log_level;
++	if (saved_drm_debug_mask >= 0)
++		return saved_drm_debug_mask;
+ 
+ 	if (igt_sysfs_read(dir, "debug", buf, sizeof(buf) - 1) < 0)
+ 		return -1;
+@@ -479,15 +479,15 @@ void igt_drm_debug_level_reset(void)
+ 	char buf[20];
+ 	int dir;
+ 
+-	if (log_level < 0)
++	if (saved_drm_debug_mask < 0)
+ 		return;
+ 
+ 	dir = igt_sysfs_drm_module_params_open();
+ 	if (dir < 0)
+ 		return;
+ 
+-	igt_debug("Resetting DRM debug level to %d\n", log_level);
+-	snprintf(buf, sizeof(buf), "%d", log_level);
++	igt_debug("Restoring DRM debug level to %d\n", saved_drm_debug_mask);
++	snprintf(buf, sizeof(buf), "%d", saved_drm_debug_mask);
+ 	igt_assert(igt_sysfs_set(dir, "debug", buf));
+ 
+ 	close(dir);
+@@ -513,8 +513,8 @@ void igt_drm_debug_level_update(unsigned int new_log_level)
+ 	if (dir < 0)
+ 		return;
+ 
+-	log_level = igt_drm_debug_level_get(dir);
+-	if (log_level < 0) {
++	saved_drm_debug_mask = igt_drm_debug_level_get(dir);
++	if (saved_drm_debug_mask < 0) {
+ 		close(dir);
+ 		return;
+ 	}
 -- 
 2.34.1
 
