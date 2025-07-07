@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 311FBC8303C
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Jul 2025 08:40:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77309C83F07
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Jul 2025 08:54:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C1EB310E2FC;
-	Mon,  7 Jul 2025 08:40:49 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC18710E2F9;
- Mon,  7 Jul 2025 08:40:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2508685401977714718=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5806810E2F9;
+	Mon,  7 Jul 2025 08:54:30 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LYV1jNiG";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5AD110E10E;
+ Mon,  7 Jul 2025 08:54:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1751878469; x=1783414469;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=EN+mbgEKQIc0Pfp4POuGediyLkr0BfEdulyKeFLolG4=;
+ b=LYV1jNiGiAGfu/d5rx3NPalaprxBSkxqFg0UlJfLESaMU4jaw2W0/HiH
+ PtZzt5Oq/0HsY0/0nSvTviXrHf0GeafeJq/mLeSm19E4+l9dCXH4kyuQQ
+ mxEGQ97pCg4lpIRFFAGVNnqYX1s2g9wWmN377fjy5JoIdOaQLt59zY62g
+ 83lEKXRBpJwpLcDohD+Mnbg6UAAp2PJ8fSLLmnMA3ZiNreafGTEaRJYx4
+ zZWtrv2RblraFf97nDTPcZU3Q29TB37No2LLxwiFOfLoGJ24YlJMNHYxa
+ zYpxWYwQml9hO8EYHfhKF5flnVPgz0iUBALYI21efTLi4l5X6XchrvziO g==;
+X-CSE-ConnectionGUID: BZ7TSwxDRDiRSY2Nzc5Y/Q==
+X-CSE-MsgGUID: YVXuaKHZTKCyzL6RWixw/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="65440889"
+X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; d="scan'208";a="65440889"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jul 2025 01:54:29 -0700
+X-CSE-ConnectionGUID: Q/n55/QtRv67ljgdB3xoCg==
+X-CSE-MsgGUID: xWbsNd2GTwmXYIN6Z5g7mA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; d="scan'208";a="155260450"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 01:54:26 -0700
+Date: Mon, 7 Jul 2025 10:54:24 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>
+Subject: Re: [PATCH i-g-t] runner: Relax timeout reduction on soft lockup
+Message-ID: <20250707085424.mltmm45tstne3vfo@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>
+References: <20250704133139.676541-2-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_Add_test_fo?=
- =?utf-8?q?r_GPUVM=2C_LDS=2C_and_Scratch_Aperture_Sizes?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Srinivasan Shanmugam" <srinivasan.shanmugam@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 07 Jul 2025 08:40:48 -0000
-Message-ID: <175187764882.139067.10064518442073031571@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250707070923.4045891-1-srinivasan.shanmugam@amd.com>
-In-Reply-To: <20250707070923.4045891-1-srinivasan.shanmugam@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250704133139.676541-2-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +72,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2508685401977714718==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Janusz,
+On 2025-07-04 at 15:30:35 +0200, Janusz Krzysztofik wrote:
+> In case of soft lockups, it might be helpful from root cause analysis
+> perspective to see if the test was still able to complete despite
+> triggering the soft lockup warning, or if that soft lockup seems not
+> recoverable without killing the test. For that to be possible, igt_runner
+> should not kill the test too promptly if a soft lockup related kernel
+> taint is detected.
+> 
+> On kernel taints, igt_runner now decreases per test and inactivity
+> timeouts by a factor of 10.  Let it check if the taint is caused by a
+> soft lockup and decrease the timeouts only by the factor of 2 in those
+> cases.
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  runner/executor.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/runner/executor.c b/runner/executor.c
+> index 13180a0a46..de9d29d28d 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -871,10 +871,14 @@ static const char *need_to_timeout(struct settings *settings,
+>  	if (settings->abort_mask & ABORT_TAINT &&
+>  	    is_tainted(taints)) {
+>  		/* list of timeouts that may postpone immediate kill on taint */
+> -		if (settings->per_test_timeout || settings->inactivity_timeout)
+> -			decrease = 10;
+> -		else
+> +		if (settings->per_test_timeout || settings->inactivity_timeout) {
+> +			if (is_tainted(taints) == (1 << 9) && taints & (1 << 14))
 
-== Series Details ==
+Looks reasonable, imho there should be #define or constants
+for those (1 << 9) and (1 << 14), at least for these and maybe
+also other bits.
 
-Series: tests/amdgpu: Add test for GPUVM, LDS, and Scratch Aperture Sizes
-URL   : https://patchwork.freedesktop.org/series/151253/
-State : success
+Regards,
+Kamil
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8444_BAT -> XEIGTPW_13417_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8444 -> IGTPW_13417
-
-  IGTPW_13417: cb5adb607630d6fb6774e61532bdac713647a161 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8444: 8444
-  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13417/index.html
-
---===============2508685401977714718==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: Add test for GPUVM, LDS, and Scratch Aperture Sizes</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151253/">https://patchwork.freedesktop.org/series/151253/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13417/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13417/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8444_BAT -&gt; XEIGTPW_13417_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8444 -&gt; IGTPW_13417</li>
-</ul>
-<p>IGTPW_13417: cb5adb607630d6fb6774e61532bdac713647a161 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8444: 8444<br />
-  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80</p>
-
-</body>
-</html>
-
---===============2508685401977714718==--
+> +				decrease = 2;	/* only warn + soft lockup */
+> +			else
+> +				decrease = 10;
+> +		} else {
+>  			return "Killing the test because the kernel is tainted.\n";
+> +		}
+>  	}
+>  
+>  	if (settings->per_test_timeout != 0 &&
+> @@ -1526,8 +1530,9 @@ static int monitor_output(pid_t child,
+>  			sigfd = -1; /* we are dying, no signal handling for now */
+>  		}
+>  
+> +		igt_kernel_tainted(&taints);
+>  		timeout_reason = need_to_timeout(settings, killed,
+> -						 igt_kernel_tainted(&taints),
+> +						 taints,
+>  						 igt_time_elapsed(&time_last_activity, &time_now),
+>  						 igt_time_elapsed(&time_last_subtest, &time_now),
+>  						 igt_time_elapsed(&time_killed, &time_now),
+> -- 
+> 2.50.0
+> 
