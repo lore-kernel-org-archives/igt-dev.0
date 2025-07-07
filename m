@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBDBDC8303C
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Jul 2025 16:24:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44E52C8303C
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Jul 2025 16:24:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9307E10E4E0;
-	Mon,  7 Jul 2025 16:24:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E765510E4CB;
+	Mon,  7 Jul 2025 16:24:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="auEAM21+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fDW2r36A";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BAC410E4E0
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Jul 2025 16:24:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D4D710E4E1
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Jul 2025 16:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751905444; x=1783441444;
+ t=1751905448; x=1783441448;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MGDxPsrURrLWOJX9RebOnNZTiZC2y4yxz2Ye42hN640=;
- b=auEAM21+MMmH8iKu7ouUYbAbgmaBJQyZU/26kdEOt6aEvr887OJqY8Sv
- J2azgNlAqokDQUhRVCCnE/k4yQR6fUPa7Ykeu1HGcSgaDfFQ3+Nhn4fAi
- iH5tzJPpwFo1IySk75FyiMSIfiTfTCImPUt1g483JqK3wPr45ZPDEd21Z
- aqzeo8p68myhTFQ17hs+3cqmAB2NdlBiatF9sZJBslHvIWdbxmbH0m6+f
- ZEu759++jwMzhHXwIM0pZdOiEheCUgnBqAj2lETt2XM4VoDsY5ixR6aKA
- t6ApM6kMJhBz5po0wTxTNHpVvd0vMQkOi55UIjdj4tz1cHiWy8kHHwDkS w==;
-X-CSE-ConnectionGUID: /GtS6xPQRtKwx5fpX04RAA==
-X-CSE-MsgGUID: amqjvl0GRs6fLHk3ndWEsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="76680647"
-X-IronPort-AV: E=Sophos;i="6.16,294,1744095600"; d="scan'208";a="76680647"
+ bh=aadJoAuflOOIjDiB4tBVsFNw1xJh2Dq2CZSD1V6BlLs=;
+ b=fDW2r36AIsJLHYk5O5iHOFci8RPd4qMaJndTUBVOYj0bTEjAWSY1b4eI
+ +cF24CLzJdcoUMuejsZ61lJxRpcRe5fYyEgonE9f7AsIAeV3eAAGs7mB7
+ rrtOKldXLm2Yf7Sx4wv+QC2zcvnykbElReqVAk6gbTc4kkyoxqhvrF+18
+ tSsZ8wRW920tvLcPW8cXGYzIYhOrUCD8GGlnLJp06gccw0LAl1k+6gVsQ
+ CAQ/YfkHsG2NG7Z1219TXZWUpOi9Uz/bF/nEj5HtBpLmkXELqVyV9VHfH
+ njPRgTvyOvXJFFKq83ZaThlZH8+moOtEF+QsXqq5JmoioDgnI0GDbkf1j A==;
+X-CSE-ConnectionGUID: yB0T2bL+Tdq0lLc27O8fFg==
+X-CSE-MsgGUID: t4//3r0qRuCB3dIEEKaq8Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="76680651"
+X-IronPort-AV: E=Sophos;i="6.16,294,1744095600"; d="scan'208";a="76680651"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jul 2025 09:24:04 -0700
-X-CSE-ConnectionGUID: RSMOG75YRgK9aV+LXsNfTw==
-X-CSE-MsgGUID: ikx15++PRp68/b147c3q1w==
+ 07 Jul 2025 09:24:08 -0700
+X-CSE-ConnectionGUID: 9I7sHKz0QE2Nej1ZlslE/g==
+X-CSE-MsgGUID: TPcPlDS5Sv6c2T/f+uwxiQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,294,1744095600"; d="scan'208";a="178916163"
+X-IronPort-AV: E=Sophos;i="6.16,294,1744095600"; d="scan'208";a="178916181"
 Received: from ettammin-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.98])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jul 2025 09:24:03 -0700
+ 07 Jul 2025 09:24:06 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v3 4/5] intel-ci: rename i915 testlists
-Date: Mon,  7 Jul 2025 18:23:39 +0200
-Message-ID: <20250707162340.258267-5-kamil.konieczny@linux.intel.com>
+ Michal Czaplinski <michal.czaplinski@intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>
+Subject: [PATCH i-g-t v3 5/5] intel-ci: Add symlinks for old i915 testlists
+Date: Mon,  7 Jul 2025 18:23:40 +0200
+Message-ID: <20250707162340.258267-6-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250707162340.258267-1-kamil.konieczny@linux.intel.com>
 References: <20250707162340.258267-1-kamil.konieczny@linux.intel.com>
@@ -69,100 +70,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Follow Xe nameing and add i915 prefix to its testlists. In
-fast-feedback use 'i915-' and in normal testlist 'i915.'.
+Add symlinks for testlists to make transition easier.
 
+Cc: Michal Czaplinski <michal.czaplinski@intel.com>
+Suggested-by: Ryszard Knop <ryszard.knop@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/intel-ci/README                                       | 6 +++---
- ....testlist => i915-fast-feedback-chamelium-only.testlist} | 0
- .../{fast-feedback.testlist => i915-fast-feedback.testlist} | 0
- ...chamelium-only.testlist => i915.chamelium-only.testlist} | 0
- tests/intel-ci/meson.build                                  | 6 +++---
- tests/intel/i915_test_config.json                           | 2 +-
- tests/intel/kms_test_config.json                            | 6 +++---
- 7 files changed, 10 insertions(+), 10 deletions(-)
- rename tests/intel-ci/{fast-feedback-chamelium-only.testlist => i915-fast-feedback-chamelium-only.testlist} (100%)
- rename tests/intel-ci/{fast-feedback.testlist => i915-fast-feedback.testlist} (100%)
- rename tests/intel-ci/{chamelium-only.testlist => i915.chamelium-only.testlist} (100%)
+ tests/intel-ci/chamelium-only.testlist               | 1 +
+ tests/intel-ci/fast-feedback-chamelium-only.testlist | 1 +
+ tests/intel-ci/fast-feedback.testlist                | 1 +
+ 3 files changed, 3 insertions(+)
+ create mode 120000 tests/intel-ci/chamelium-only.testlist
+ create mode 120000 tests/intel-ci/fast-feedback-chamelium-only.testlist
+ create mode 120000 tests/intel-ci/fast-feedback.testlist
 
-diff --git a/tests/intel-ci/README b/tests/intel-ci/README
-index 5ef2ee2d1..102cdb1fa 100644
---- a/tests/intel-ci/README
-+++ b/tests/intel-ci/README
-@@ -17,9 +17,9 @@ Changing the test lists should only happen with approval from the CI
- people. If you make a new test that should be tested by CI regularly,
- ask a maintainer (see MAINTAINERS).
- 
--======================
--fast-feedback.testlist
--======================
-+===========================
-+i915.fast-feedback.testlist
-+===========================
- 
- Fast-feedback contains tests that roughly tests a wide coverage of
- features in a short time. If the tests in fast-feedback report no
-diff --git a/tests/intel-ci/fast-feedback-chamelium-only.testlist b/tests/intel-ci/i915-fast-feedback-chamelium-only.testlist
-similarity index 100%
-rename from tests/intel-ci/fast-feedback-chamelium-only.testlist
-rename to tests/intel-ci/i915-fast-feedback-chamelium-only.testlist
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/i915-fast-feedback.testlist
-similarity index 100%
-rename from tests/intel-ci/fast-feedback.testlist
-rename to tests/intel-ci/i915-fast-feedback.testlist
-diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/i915.chamelium-only.testlist
-similarity index 100%
-rename from tests/intel-ci/chamelium-only.testlist
-rename to tests/intel-ci/i915.chamelium-only.testlist
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index d18170402..17d3102bd 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -4,9 +4,9 @@ intelci_files = [
-   'README',
-   'i915.blocklist.txt',
-   'i915.blocklist-pre-merge.txt',
--  'chamelium-only.testlist',
--  'fast-feedback.testlist',
--  'fast-feedback-chamelium-only.testlist',
-+  'i915.chamelium-only.testlist',
-+  'i915-fast-feedback.testlist',
-+  'i915-fast-feedback-chamelium-only.testlist',
-   'meta.testlist',
-   'xe.blocklist.txt',
-   'xe.bmg.core.blocklist.txt',
-diff --git a/tests/intel/i915_test_config.json b/tests/intel/i915_test_config.json
-index da871f493..1a75d52e5 100644
---- a/tests/intel/i915_test_config.json
-+++ b/tests/intel/i915_test_config.json
-@@ -25,7 +25,7 @@
-                     "exclude-type": "regex-ignorecase",
-                     "append-value-if-not-excluded": "i915 FULL",
-                     "include": [
--                        { "i915 BAT": "../intel-ci/fast-feedback.testlist" }
-+                        { "i915 BAT": "../intel-ci/i915-fast-feedback.testlist" }
-                     ],
-                     "exclude": [
-                         { "all": "../intel-ci/i915.blocklist.txt" }
-diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-index fc8766279..886870783 100644
---- a/tests/intel/kms_test_config.json
-+++ b/tests/intel/kms_test_config.json
-@@ -13,9 +13,9 @@
-                     "append-value-if-not-excluded": "Xe FULL, i915 FULL",
-                     "exclude-type": "regex-ignorecase",
-                     "include": [
--                        { "i915 BAT": "../intel-ci/fast-feedback.testlist" },
--                        { "i915 BAT chamelium": "../intel-ci/fast-feedback-chamelium-only.testlist" },
--                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
-+                        { "i915 BAT": "../intel-ci/i915-fast-feedback.testlist" },
-+                        { "i915 BAT chamelium": "../intel-ci/i915-fast-feedback-chamelium-only.testlist" },
-+                        { "i915 chamelium": "../intel-ci/i915.chamelium-only.testlist" },
- 
-                         { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" },
-                         { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
+diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
+new file mode 120000
+index 000000000..3715a9469
+--- /dev/null
++++ b/tests/intel-ci/chamelium-only.testlist
+@@ -0,0 +1 @@
++i915.chamelium-only.testlist
+\ No newline at end of file
+diff --git a/tests/intel-ci/fast-feedback-chamelium-only.testlist b/tests/intel-ci/fast-feedback-chamelium-only.testlist
+new file mode 120000
+index 000000000..4181aa6f5
+--- /dev/null
++++ b/tests/intel-ci/fast-feedback-chamelium-only.testlist
+@@ -0,0 +1 @@
++i915-fast-feedback-chamelium-only.testlist
+\ No newline at end of file
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+new file mode 120000
+index 000000000..1b1885013
+--- /dev/null
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -0,0 +1 @@
++i915-fast-feedback.testlist
+\ No newline at end of file
 -- 
 2.49.0
 
