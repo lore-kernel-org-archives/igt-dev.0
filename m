@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 185F0C8303C
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 07:48:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48666C83F10
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 07:48:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDFCC10E5B0;
-	Tue,  8 Jul 2025 07:48:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F392810E5B2;
+	Tue,  8 Jul 2025 07:48:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="nKnv8dIU";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="PNfwz6Gq";
 	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2058.outbound.protection.outlook.com [40.107.243.58])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8012610E5B0
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jul 2025 07:48:30 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2076.outbound.protection.outlook.com [40.107.237.76])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C5CB10E5B2
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jul 2025 07:48:32 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=H3QYJ0p3GzXdSKLyw9Zm6bBPWdS1g8V4tmCZ8A3Muw3+l44hG5NnYTp+nPGZMl4UghlizX0I8WNCLpRq01dqQUm1LkMfIO87qqeqF+3hSBTm59JFcaXDwkD0uf+wmmVZRGkEDLx/bSdlHqb3nLAj1czZ8KgYoSdmOrdkM9n4vVYhEtXAGSFyp+upFzNMITdQuRqSfwna6yM+h72XEt7Kzelfytfkcx06qoA5S/nA6WqYC+aPpS/TKcu4SgAuucapp6c6W4itCWejlJtYo3nvPRRAm0OXEUicWYW2VGd/ldntqLzvuK7X/VrrnNm+A2kcNaqOvuobplKA2r+566jFUw==
+ b=NTLa6hIXVEpkxHuFUS3u3yGiMYttNOCkv94YCaL3svw48c5/gM17KHNyegdvp/N0l46cJIYwNQUcB2CuWHlm6K4fxBJbvdGx+Zae+r0ElA5rjfwQzUGONDh4EBvgJWghUwne4StnACdUDbTkraQTmqAdVeHWUl1VCPnHM5KOuUJ99VCjNmylMd2eGiWWY8ApkwuHIfvOeatm95RYe2otWDBcxIas27oDVaTS5BvMuZPeXpJT5dPoIZlrKylVHXHhZHQyV4ccPSO1Q7FCnLuGSkGZPWNkTSmaB5+C/hI46cvmeNXjyLadTQhSnOhHgMMzS7KORaryZgempxPSnVBDpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gKQNWoYPmn2z1HRkbBUSzGQXNNDwWzdwMjp8MUJITf0=;
- b=myS5BkSM+eP39+/e5iS6Gv7QRcHUUgkB9rnXOTkB+K7SzBCvoeL13ThKLideKkStBRX7rfja65bH9JiGf1/5fIOeG4ARhke0UccC/BNeNShaIlnOkgWUaDQ696ofYDB0spPtuZEkhsVNmsXCL6/CEgyEkt6hP7wsfkxoE65a5y5uDgwJKUsgWAhNv3o+LZjZ1C+TDgdiOiwNkWmjBu1H2EIidwQOfi565/zjCpZLkuj3xldoKqRiKpJ0Bi7gs0ksBDMf8Co4ZOIpP/r2gowfZfdP4ysOrerYpL2XLCvN6ffi7j2U0SZLbdz9Nl2HwE8z1MgkHDadVYI+CBcTpNEXvA==
+ bh=Yyy+jwWvtISn/6sGbsNIJkHoLsnCs2R00qF0JMtD94U=;
+ b=ll9OSMM5BfOdmwQDWRUa3hq/xRRhjKSX08GSc2qT95+9qRtox0GX3Tn39bK3ASnHxrU3BsatEWx3EVKE8VKXlXpvpkwRdMRSkaZTycAtUxvQk9HeiVAxRPmqsvfLDvwOsqIkOgsxROkqNZvVj0Nfdx7TqCekFoCovB9WSrINfS4nKLROPLFv7qOgRxX7e92sINYlrIHusfzj1jVWmDTin2y0m/WsC+k46hnNLBF8HvF/dp9cTdc6+vHbWY7VrQkyOqeUj9dOfnvXcRDyapVuBXMG3tN/YHEx37BAQ8kUNqXe4+dmOY3S+13B80YXyaSs8Avi4irNdCSvcrbxI72kag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gKQNWoYPmn2z1HRkbBUSzGQXNNDwWzdwMjp8MUJITf0=;
- b=nKnv8dIUfsSMEQoDo6kI9H6eCXEJ+txc8Ou/1qu+JrbOQEnUqrtIAZTxOdaJaBcFvfNWp1T1x05+KgzSju/myL129EiKITab2xnuzmxSVXoCzRH80qMtyWk1+QX8LuIYwvYX/vTsPlD7EYlkkvSuXYL83eYR54mTTrw74ZyhV8Q=
-Received: from BN9PR03CA0427.namprd03.prod.outlook.com (2603:10b6:408:113::12)
- by CY5PR12MB6201.namprd12.prod.outlook.com (2603:10b6:930:26::16)
+ bh=Yyy+jwWvtISn/6sGbsNIJkHoLsnCs2R00qF0JMtD94U=;
+ b=PNfwz6GqssPVlL9Dj5H5hhGJKOm30PCtukKuWesdpvo6WFdE9Hueu4Vfpizdw7oXMCplXF8YFS4Oq16U+DpOYNvWfEEs3D/g2MEp6RgmUF3sEt1DACoQcpRkrSM5XnLRmaBOXYJhXoc5ISoreux+SFeCRkye4DwZjjnXDOOuIrQ=
+Received: from BN9PR03CA0297.namprd03.prod.outlook.com (2603:10b6:408:f5::32)
+ by SA1PR12MB9247.namprd12.prod.outlook.com (2603:10b6:806:3af::18)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.25; Tue, 8 Jul
- 2025 07:48:23 +0000
-Received: from BL02EPF00021F6D.namprd02.prod.outlook.com
- (2603:10b6:408:113:cafe::c7) by BN9PR03CA0427.outlook.office365.com
- (2603:10b6:408:113::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Tue, 8 Jul
+ 2025 07:48:28 +0000
+Received: from BL02EPF00021F6C.namprd02.prod.outlook.com
+ (2603:10b6:408:f5:cafe::87) by BN9PR03CA0297.outlook.office365.com
+ (2603:10b6:408:f5::32) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8901.27 via Frontend Transport; Tue,
- 8 Jul 2025 07:48:22 +0000
+ 8 Jul 2025 07:48:27 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,26 +48,27 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
 Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BL02EPF00021F6D.mail.protection.outlook.com (10.167.249.9) with Microsoft
+ BL02EPF00021F6C.mail.protection.outlook.com (10.167.249.8) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8901.15 via Frontend Transport; Tue, 8 Jul 2025 07:48:22 +0000
+ 15.20.8901.15 via Frontend Transport; Tue, 8 Jul 2025 07:48:27 +0000
 Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 8 Jul
- 2025 02:48:22 -0500
+ 2025 02:48:27 -0500
 Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
  SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Tue, 8 Jul 2025 02:48:20 -0500
+ via Frontend Transport; Tue, 8 Jul 2025 02:48:26 -0500
 From: Jesse.Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
  Jesse.Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t 1/4] drm-uapi/amdgpu: Add num_userq_slots to hw_ip_info
- structure
-Date: Tue, 8 Jul 2025 15:47:47 +0800
-Message-ID: <20250708074819.624367-1-Jesse.Zhang@amd.com>
+Subject: [PATCH i-g-t 4/4] lib/amdgpu: Use available_rings mask for user queues
+Date: Tue, 8 Jul 2025 15:47:50 +0800
+Message-ID: <20250708074819.624367-4-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250708074819.624367-1-Jesse.Zhang@amd.com>
+References: <20250708074819.624367-1-Jesse.Zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -75,52 +76,52 @@ Received-SPF: None (SATLEXMB03.amd.com: Jesse.Zhang@amd.com does not designate
  permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00021F6D:EE_|CY5PR12MB6201:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a03587f-85ca-4ce6-0e10-08ddbdf3d053
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F6C:EE_|SA1PR12MB9247:EE_
+X-MS-Office365-Filtering-Correlation-Id: aeaa6d86-5b37-42b2-289c-08ddbdf3d375
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|82310400026|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?TzQKQlkIs+ruii5i3MKwfEW5XJh/OeniTPgAJTA0gs3x4sY6AGzblatzAyvJ?=
- =?us-ascii?Q?ql2CcDeCFjgYgimus3teBa3XRef4mXPmRRD4ddjBzAmOdWUJwMh3TCggkfT0?=
- =?us-ascii?Q?UeOetKu/XOvx0KHo1VLVouIJZO/QWzbUSP6lUW5OSIkZOa1um9JvbQXQCg7O?=
- =?us-ascii?Q?HtrfBotO8lauWhPyq7tV/X6pO/Zb7yX6m2JdPrkZbQIksgRqFDdDhtBObYI/?=
- =?us-ascii?Q?wX8K9OBb+EGf5Uqun7j2l/E0vae+fWsp2nYms8YCEMjOSWEIDwR+OGKCwMEq?=
- =?us-ascii?Q?+/RsrdmW84+f9fXUeiHmIIWuaW7vEJ9mUNjhQbkuWhEU8KNrWt+nDwMW79h2?=
- =?us-ascii?Q?znwrduRhiLwv9F7x7nZNTdvN2rSCtsW1RPBLFribOWO4gSFH03uITfjXWnhB?=
- =?us-ascii?Q?k6ccUI44aEJ2PZTs6EvMgtAQ11ZBmS6cJ5TnGsIo9uXXMdDkKp+Krb+V/pye?=
- =?us-ascii?Q?JJXddwSFoGyljcdVdeSv78MulXIvJXkYQRls/lfON6n0ArXpasnR9vtArygD?=
- =?us-ascii?Q?0lZFpumH8PPMdsewgpe/gPLk1Km7bvhVJfHEN/gf/+WaWdw52yg+FG82/jAf?=
- =?us-ascii?Q?tb1qEnZmMU/V4T9KCJwHd0Q0t+jBrZjAm4IJ1MXTPRbOoqVyYnjUTrfhPoFQ?=
- =?us-ascii?Q?WRxa0vikU+q1U9iQCy8/rcFx6Dk2uKV8jWlLA6slHwrCf7OCYwBO3TWxQ6pf?=
- =?us-ascii?Q?feSJO3cEPsK50OyEw4vd+Wvfm32ia2uK1DyWBm8/mO+r1GlPQwnA8KgouolG?=
- =?us-ascii?Q?WKmy6QUMF/pX3t09wso8M8iDDTYsNrZ3juk6agnv1f4h7FVr6YNNXHiTO+8b?=
- =?us-ascii?Q?1DsIIWU1pjElD6c4uzVY2n6lyf/J0iz3vCXRoHli+XIvZbRHcmzpNRvrD7gA?=
- =?us-ascii?Q?Gm8X7E457RPBRy5lZ3JxRdxDXc1NY5IVCW5jsJc/5nLshW8wzQoeielVOI2J?=
- =?us-ascii?Q?9GKbI8o9lY0eCVvhaMuj3olhpeX2wFmD5+5vyBcs8mMx/JwJgQLVLPcCd/uC?=
- =?us-ascii?Q?at4HAWu6DLq4PYuxBs9XoddtYibRAxBwtslrnob8Qt3iHBegpp9QBt2EZ7U6?=
- =?us-ascii?Q?rz/foo+FXUxAnnYgdjJ0jKXNx2z4jFeojZ3quS9YuNwAfKtz8M3LAdMVQqp+?=
- =?us-ascii?Q?8+DKqE6tqONsIdf3fya8yCisn/qAZZ2MoCml6dvspp/3w9wo7ChLVq38KS6s?=
- =?us-ascii?Q?x7V/r/0NCczwPFq6zK04E9vx2L1j0cm265H2kUy05UMl2Q+u+o/7BAFYYg5x?=
- =?us-ascii?Q?cWS5Rl50Gj4Rw5k9JVGGUyolpiyYv2oHkCjDwWMqQqj6c21yXr536ANexVvR?=
- =?us-ascii?Q?SnCg1V2iAg85ZGEPHTPYDa3+ApmSR4KdP83rwsAKtItXz7MZoc+NPGBkDgui?=
- =?us-ascii?Q?/IMJkAGjD+BV0m5Ohs4qyt864cF46iyjEbYR93VeJNLQAa/SZZnFALQddmFV?=
- =?us-ascii?Q?gyiyZB5TvaaMtbD9u57I3/cq556nEHsqzfViorcG24Fts8eFLgVBjoFppBi9?=
- =?us-ascii?Q?vYnedfp9l/yblqCaXquGERAIzA3w4Hxyl+xd?=
+ ARA:13230040|82310400026|376014|36860700013|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?f2zGG/wzYfmZg4ncvxO+F6uau9Xn41pGGJ/Bk+MNYcKXBitlwH61QCKwwiRX?=
+ =?us-ascii?Q?lsHTuiHgIthLOtZgg7lOoHhdWDLjgrnioGI1ZwjbDZSnFel8FGmGK8XZ5h1k?=
+ =?us-ascii?Q?dHEhIgiFH84j77KaZ79VGUbUKCm6HXF7uMi8TJRphGBoQ+DgPVp2JphixPNp?=
+ =?us-ascii?Q?haFNrZ6TmGOJ0TskijXE7VA1jXnowR0zA+dcAn4+3WPEu1AOx2FjilB/6flV?=
+ =?us-ascii?Q?j3L8t5oZXjXSu+o8Q1FQxzR5uJNRNV6ssC73rkGVQt2gt6ZH4Yg5FaGkUy9u?=
+ =?us-ascii?Q?thBqLYOtKZuT8hwJ+XjpJqmBwJABnmw38h0VwHSK6zWqL7LfpjRVfUNAPaoj?=
+ =?us-ascii?Q?d1atm8TvwWg53vy3/XhajSLlOtrrQjwM7qvjnvxRZpvB7qAMo9wePpsfpRjI?=
+ =?us-ascii?Q?MFNgM33Q0XrywaJBWmxnJKs5uf3YBcypC20dVOO9sQj5caCci1ifmErIzio9?=
+ =?us-ascii?Q?ejRgBXv0Q7xZzMlEgFijhzn+soiDHJdhtku9qw6t2san3QoPeAbUi+QJ3Axu?=
+ =?us-ascii?Q?97bbZT4Q5W5NzEBk44CMfLfv+A2XnhuvJiWYgxMeFNk4JdmUgsMHI0ei6R+S?=
+ =?us-ascii?Q?omq9Fc9Isw5Yg/DWd5lSlNlF2Dl8CPwRy2nkyYWDvVyxm7LYR1xBvNUUb2YV?=
+ =?us-ascii?Q?Moo4G/dKUKrNHVvSnJwsbsLK+xbd32Y2fQ4GEezaKg9D15B8vOpVVb9z5heM?=
+ =?us-ascii?Q?dEiCP28fpk+lhsGaQAzxGzqXihLMQfj5klQPakYNXNH0fA0w3axeEDzgLETl?=
+ =?us-ascii?Q?zXa4/+fRHlX7NiVf9s0i+Z3Um5M/SGDzhGcaQMGuZE3QV5PHv68KFaFRnAI4?=
+ =?us-ascii?Q?HR4jAEoMoHTGOMlR1mVq32IzJ4kH6W30WhP7PeD0yStx6+Z6y9PzVOMk/uMi?=
+ =?us-ascii?Q?hA6hwM4Qh6EfhyibQEMjpviV0noRAjeBe3s5Js6jBFMF7rooJiojf0ar0jFE?=
+ =?us-ascii?Q?yWcfQMo4I3HQCBxJCplyeqttOyzIY9Xx/IWrQgt/2toi5IycCsOhT7rdmUey?=
+ =?us-ascii?Q?W9s3khZ9Os94V6f22dbuclBFWfRoeCtmKyx3HnSrgsbfuzChT/pbpoBetiCy?=
+ =?us-ascii?Q?AXFFYB9/qvI5LwAeYKKtEh3fB5Y4f+eCB7YzA/M4K0ouF5rRrVIb3sJ0Hxza?=
+ =?us-ascii?Q?AbTONpAp5SZOXE4npAj5TE4S96Nq6q4/BteEw1WZa83IMjCRFmGlABSrau1i?=
+ =?us-ascii?Q?wG3V2J83kMLpPN3pVhyR1Au9cIrL2533LaHqbnnL/SK9cH5TfBAtYFOWqAJV?=
+ =?us-ascii?Q?i+G37Nd/l54stEmTOkPQC2XwOaMGcNLRgOB2BEfv/ACpUuMv+BWcK/k1ptyX?=
+ =?us-ascii?Q?MqfEhvqXjsPIPPujuZJaEedm8/30uvYMNchwKh6UVAbkBbO/6NycVNarsP50?=
+ =?us-ascii?Q?rsc2DaOuHaOnpx9WZUX/m8lSEW7LLFrw8W6mPWg5xnoP94OIbLFBLCRQdEq0?=
+ =?us-ascii?Q?0cCPw+9gfPVqqvupNcipZQFBR/LtQQD4+RY0SciaqQ33mohBn+BBMGH3YLiO?=
+ =?us-ascii?Q?kKnsJl8MYdAqWTnjZOA7iWPkTB0fyCF7xDO2?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014); DIR:OUT;
+ SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 07:48:22.5846 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a03587f-85ca-4ce6-0e10-08ddbdf3d053
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 07:48:27.8406 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: aeaa6d86-5b37-42b2-289c-08ddbdf3d375
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL02EPF00021F6D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF00021F6C.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6201
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9247
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,30 +137,167 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new field num_userq_slots to struct drm_amdgpu_info_hw_ip to expose
-the number of available user queue slots per hardware IP block. This
-enables userspace to query and utilize user queues more effectively.
+This patch modifies ring selection logic to properly handle user queues by
+calculating an available_rings mask based on num_userq_slots when user_queue
+is true, otherwise falling back to hw_ip_info.available_rings.
 
-The field will be used by the amdgpu driver to communicate the number
-of available user-mode queue slots to userspace applications
+Changes include:
+- Added available_rings variable in all command submission helpers
+- Calculated mask as ((1 << num_userq_slots) - 1) for user queues
+- Used available_rings for ring iteration instead of direct hw_ip_info access
+- Applied consistent logic across:
+  * amd_command_submission_write_linear_helper
+  * amd_command_submission_const_fill_helper
+  * amd_command_submission_copy_linear_helper
+  * amd_compute.c (nop submission)
+  * amd_deadlock_helpers.c
+
+This ensures correct ring selection behavior for both kernel queue and user queue cases.
 
 Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 ---
- include/drm-uapi/amdgpu_drm.h | 1 +
- 1 file changed, 1 insertion(+)
+ lib/amdgpu/amd_command_submission.c | 19 ++++++++++++-------
+ lib/amdgpu/amd_compute.c            |  7 +++++--
+ lib/amdgpu/amd_deadlock_helpers.c   |  6 ++++--
+ 3 files changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-index ddcda5d3b..b38f27d69 100644
---- a/include/drm-uapi/amdgpu_drm.h
-+++ b/include/drm-uapi/amdgpu_drm.h
-@@ -1465,6 +1465,7 @@ struct drm_amdgpu_info_hw_ip {
- 	__u32  available_rings;
- 	/** version info: bits 23:16 major, 15:8 minor, 7:0 revision */
- 	__u32  ip_discovery_version;
-+	__u32  num_userq_slots;
- };
+diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
+index 0279b22c8..8b7236383 100644
+--- a/lib/amdgpu/amd_command_submission.c
++++ b/lib/amdgpu/amd_command_submission.c
+@@ -353,6 +353,7 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+ 	int i, r, loop, ring_id;
  
- /* GFX metadata BO sizes and alignment info (in bytes) */
+ 	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
++	uint32_t available_rings = 0;
+ 
+ 	ring_context = calloc(1, sizeof(*ring_context));
+ 	igt_assert(ring_context);
+@@ -368,7 +369,8 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+ 
+ 	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
+ 	igt_assert_eq(r, 0);
+-
++	available_rings = user_queue ? ((1 << ring_context->hw_ip_info.num_userq_slots) -1) :
++					ring_context->hw_ip_info.available_rings;
+ 	for (i = 0; secure && (i < 2); i++)
+ 		gtt_flags[i] |= AMDGPU_GEM_CREATE_ENCRYPTED;
+ 
+@@ -381,8 +383,7 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+ 
+ 
+ 
+-/* Dont need but check with vitaly if for KMS also we need ring id or not */
+-	for (ring_id = 0; (1 << ring_id) & ring_context->hw_ip_info.available_rings; ring_id++) {
++	for (ring_id = 0; (1 << ring_id) & available_rings; ring_id++) {
+ 		loop = 0;
+ 		ring_context->ring_id = ring_id;
+ 		while (loop < 2) {
+@@ -481,7 +482,7 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
+ 
+ 	struct amdgpu_ring_context *ring_context;
+ 	int r, loop, ring_id;
+-
++	uint32_t available_rings = 0;
+ 	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
+ 
+ 	ring_context = calloc(1, sizeof(*ring_context));
+@@ -495,6 +496,8 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
+ 	igt_assert(ring_context->pm4);
+ 	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
+ 	igt_assert_eq(r, 0);
++	available_rings = user_queue ? ((1 << ring_context->hw_ip_info.num_userq_slots) -1) :
++					ring_context->hw_ip_info.available_rings;
+ 
+ 	if (user_queue) {
+ 		ip_block->funcs->userq_create(device, ring_context, ip_block->type);
+@@ -503,7 +506,7 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
+ 		igt_assert_eq(r, 0);
+ 	}
+ 
+-	for (ring_id = 0; (1 << ring_id) & ring_context->hw_ip_info.available_rings; ring_id++) {
++	for (ring_id = 0; (1 << ring_id) & available_rings; ring_id++) {
+ 		/* prepare resource */
+ 		loop = 0;
+ 		ring_context->ring_id = ring_id;
+@@ -575,7 +578,7 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+ 
+ 	struct amdgpu_ring_context *ring_context;
+ 	int r, loop1, loop2, ring_id;
+-
++	uint32_t available_rings = 0;
+ 	uint64_t gtt_flags[2] = {0, AMDGPU_GEM_CREATE_CPU_GTT_USWC};
+ 
+ 
+@@ -590,6 +593,8 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+ 	igt_assert(ring_context->pm4);
+ 	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
+ 	igt_assert_eq(r, 0);
++	available_rings = user_queue ? ((1 << ring_context->hw_ip_info.num_userq_slots) -1) :
++					ring_context->hw_ip_info.available_rings;
+ 
+ 
+ 	if (user_queue) {
+@@ -599,7 +604,7 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+ 		igt_assert_eq(r, 0);
+ 	}
+ 
+-	for (ring_id = 0; (1 << ring_id) & ring_context->hw_ip_info.available_rings; ring_id++) {
++	for (ring_id = 0; (1 << ring_id) & available_rings; ring_id++) {
+ 		loop1 = loop2 = 0;
+ 		ring_context->ring_id = ring_id;
+ 	/* run 9 circle to test all mapping combination */
+diff --git a/lib/amdgpu/amd_compute.c b/lib/amdgpu/amd_compute.c
+index d92b99a76..bc9f77d34 100644
+--- a/lib/amdgpu/amd_compute.c
++++ b/lib/amdgpu/amd_compute.c
+@@ -47,7 +47,7 @@ void amdgpu_command_submission_nop(amdgpu_device_handle device, enum amd_ip_bloc
+ 	int r, instance;
+ 	amdgpu_bo_list_handle bo_list;
+ 	amdgpu_va_handle va_handle;
+-
++	uint32_t available_rings = 0;
+ 	struct amdgpu_ring_context *ring_context;
+ 
+ 	ip_block = get_ip_block(device, type);
+@@ -57,6 +57,9 @@ void amdgpu_command_submission_nop(amdgpu_device_handle device, enum amd_ip_bloc
+ 	r = amdgpu_query_hw_ip_info(device, type, 0, &ring_context->hw_ip_info);
+ 	igt_assert_eq(r, 0);
+ 
++	available_rings = user_queue ? ((1 << ring_context->hw_ip_info.num_userq_slots) -1) :
++						ring_context->hw_ip_info.available_rings;
++
+ 	if (user_queue) {
+ 		ip_block->funcs->userq_create(device, ring_context, type);
+ 	} else {
+@@ -64,7 +67,7 @@ void amdgpu_command_submission_nop(amdgpu_device_handle device, enum amd_ip_bloc
+ 		igt_assert_eq(r, 0);
+ 	}
+ 
+-	for (instance = 0; ring_context->hw_ip_info.available_rings & (1 << instance); instance++) {
++	for (instance = 0; available_rings & (1 << instance); instance++) {
+ 		r = amdgpu_bo_alloc_and_map_sync(device, 4096, 4096,
+ 						 AMDGPU_GEM_DOMAIN_GTT, 0,
+ 						 AMDGPU_VM_MTYPE_UC,
+diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
+index 1ed407332..49582b6c9 100644
+--- a/lib/amdgpu/amd_deadlock_helpers.c
++++ b/lib/amdgpu/amd_deadlock_helpers.c
+@@ -457,10 +457,12 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
+ 	uint32_t prio;
+ 	char sysfs[125];
+ 	bool support_page;
+-
++	uint32_t available_rings = 0;
+ 	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
+ 	igt_assert_eq(r, 0);
+-	if (!info.available_rings)
++
++	available_rings = user_queue ? ((1 << info.num_userq_slots) -1) : info.available_rings;
++	if (!available_rings)
+ 		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
+ 
+ 	if (user_queue) {
 -- 
 2.49.0
 
