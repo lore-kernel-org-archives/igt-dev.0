@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92970C83F09
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 17:05:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23824C83F0A
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 17:06:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 28E3E10E6B5;
-	Tue,  8 Jul 2025 17:05:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A9DB110E6B5;
+	Tue,  8 Jul 2025 17:06:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GrG+chaJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nPKHHyha";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2117E10E6B5
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jul 2025 17:05:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38E7910E6B5
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jul 2025 17:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751994303; x=1783530303;
+ t=1751994408; x=1783530408;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=kISgSRjlKN5pLG1vm++DKa7LjGoDffNPpPppOFmyOrA=;
- b=GrG+chaJ7qOG/PuaAwmHJdTqUVXDbYMEJ9ZBrmwoGvLIYkgDAJjwhCLZ
- qiwGmMYaAv4jbuz9A8xAoQ0ghJVAt5BNqDse5oC8595fWpAsMYqdk8EJK
- h+aAfPi4ygb0NrflJpYOlnTAFrvTbo1OS3B51QBZfZhNNBASf7AvNb8V6
- VvGS4MSlykmtIlKmXjHmlfj65pS21O5eO3UWmM2rTWgWt070hpE90b/Al
- 8ybtJ2PkWjtL/CfuUSsw6Axyo7s35VqWg4L5A6annf8ew0NZOMru0KqAV
- C9RgNBZ7yXzZUJY00um7SmxZvn0AURQAeQsXz8ZcjHjOcNQauGm59EJ6P Q==;
-X-CSE-ConnectionGUID: EocqxmN3Th+oO5StpXVu9g==
-X-CSE-MsgGUID: WpZE4v1zSDWim7QmZKHRpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="57911476"
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="57911476"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2025 10:05:03 -0700
-X-CSE-ConnectionGUID: LV9rS1NYT4CCEp0ngYlEHQ==
-X-CSE-MsgGUID: 0eg+P8Q4Q3aZB4iuUsr+jA==
+ bh=es0depksWmVYt8xNNmyNHooo3offb2fTMzCUwo4++HY=;
+ b=nPKHHyhaqaq28w/6guUo5NEFeByoPy7NiTqp8JeJD5tqPcOKY8Frrdpe
+ 21us4qNa8mVufzcQXnd6g76cmpQq051/rrVznM9jCTPOHulFAUR/nxZca
+ rV+5IUoqmHj0NPm/Xw2C4S/Kxsdc5+FoqZq1+CGjU57imApVeH9uKXK7G
+ h7/tX/yr0L4p9mssiL6PqDtnVkUL4fS62/n6BNO9EHBMfFj1XulPK1beu
+ zKDyiLCLiqdmPiQReTvvxsw4jUKvO2lMGwfwefOLFpJ8lJHgGHXU3v8FY
+ FW6X3X8mTSEPnr0DBy8b/lDhIT91F4A3SbxYUNt58yidc5O1M5H+O911t g==;
+X-CSE-ConnectionGUID: AztY8NszSUmQeILmb7N/8w==
+X-CSE-MsgGUID: MAtjfY7jSxmsJW2I/iczVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="65302677"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="65302677"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jul 2025 10:06:48 -0700
+X-CSE-ConnectionGUID: VcFCAHXCRJyXao/n5sX5fQ==
+X-CSE-MsgGUID: HuZpp4FGRZ65q29MbCTe7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="155179876"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="160083772"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 10:05:01 -0700
-Date: Tue, 8 Jul 2025 19:04:59 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 10:06:47 -0700
+Date: Tue, 8 Jul 2025 19:06:43 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/xe_oa: Look at errno only when system
- calls fail
-Message-ID: <20250708170459.hqt3nlzcmbmzmo6n@kamilkon-DESK.igk.intel.com>
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ karthik.b.s@intel.com
+Subject: Re: [PATCH i-g-t v2] tests/kms_flip: Skip timestamp checks in Intel
+ simulation environments
+Message-ID: <20250708170643.f666isxtoghbu2gz@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- igt-dev@lists.freedesktop.org,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-References: <20250708151659.3556357-1-ashutosh.dixit@intel.com>
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ karthik.b.s@intel.com
+References: <20250624085217.139873-1-ramanaidu.naladala@intel.com>
+ <20250708100813.787544-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250708151659.3556357-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20250708100813.787544-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,60 +74,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ashutosh,
-On 2025-07-08 at 08:16:59 -0700, Ashutosh Dixit wrote:
-> errno is set only when system calls fail, so it is incorrect to look at
-> errno when system calls succeed.
+Hi Naladala,
+On 2025-07-08 at 15:38:13 +0530, Naladala Ramanaidu wrote:
+> Bypass timestamp and sequence validations when INTEL_SIMULATION is
+> active to accommodate non-deterministic timing in simulated test
+> environments.
 > 
+> v2: Use existing function for reading environment variables. (kamil)
+> 
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 
-LGTM,
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5339
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > ---
->  tests/intel/xe_oa.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+>  tests/kms_flip.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index cb59918ef9..724fea73f0 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -1431,7 +1431,7 @@ read_2_oa_reports(int format_id,
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index 382b92d9a..0cebbecac 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -321,7 +321,19 @@ static bool should_skip_ts_checks(void) {
+>  	 * timestamp to drift with a relatively larger standard deviation over a large sample.
+>  	 * As it's a known issue, skip any Timestamp or Sequence checks for MTK drivers.
+>  	 */
+> -	return is_mtk_device(drm_fd);
+> +	if (is_mtk_device(drm_fd))
+> +		return true;
+> +
+> +	/*
+> +	 * In simulation environments, hardware behavior may not accurately reflect real-world
+> +	 * timing characteristics. To avoid false negatives in tests due to simulated timing
+> +	 * artifacts, skip timestamp and sequence checks when the INTEL_SIMULATION environment
+> +	 * variable is set to a truthy value.
+> +	 */
+> +	if (igt_run_in_simulation())
+> +		return true;
+> +
+> +	return false;
+>  }
 >  
->  		while ((ret = read(stream_fd, buf + len, buf_size)) < 0 && errno == EINTR)
->  			;
-> -		if (errno == EIO) {
-> +		if (ret < 0 && errno == EIO) {
->  			oa_status = get_stream_status(stream_fd);
->  			continue;
->  		}
-> @@ -1869,7 +1869,7 @@ static void test_oa_exponents(const struct drm_xe_engine_class_instance *hwe)
->  
->  			while ((ret = read(stream_fd, buf, buf_size)) < 0 && errno == EINTR)
->  				;
-> -			if (errno == EIO) {
-> +			if (ret < 0 && errno == EIO) {
->  				oa_status = get_stream_status(stream_fd);
->  				continue;
->  			}
-> @@ -2532,7 +2532,6 @@ test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
->  
->  	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
->  
-> -	errno = 0;
->  	/* Read 0 bytes repeatedly until you see an EIO */
->  	while (-1 == read(stream_fd, buf, 0)) {
->  		if (errno == EIO) {
-> @@ -2607,7 +2606,7 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
->  	       ((len = read(stream_fd, &buf[total_len], buf_size - total_len)) > 0 ||
->  		(len == -1 && (errno == EINTR || errno == EIO)))) {
->  		/* Assert only for default OA buffer size */
-> -		if (errno == EIO && !oa_buffer_size) {
-> +		if (len < 0 && errno == EIO && !oa_buffer_size) {
->  			oa_status = get_stream_status(stream_fd);
->  			igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
->  		}
+>  static bool vblank_dependence(int flags)
 > -- 
-> 2.48.1
+> 2.43.0
 > 
