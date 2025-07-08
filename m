@@ -4,53 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 635E9C83F0F
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 09:23:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E03C6C83F0F
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 09:24:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1673010E336;
-	Tue,  8 Jul 2025 09:23:56 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BUgWCAY8";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E87E810E336
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jul 2025 09:23:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751966633; x=1783502633;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=sfaTYYoCznUM9nUs4N9kl3NMWNVM9AxUr96bqwDH5Jk=;
- b=BUgWCAY8COu//ENS3j+e07cJoqud5RIEitMr4viiXIZGnOYky2Yn90Ia
- OEYGLS8XN+Hgp+nJewsn6rH9IVeqEX+bWm6ZliiUl8bm0+1zVZ/aFmAdu
- G+PdB3rJrs8wpmVFIqOXOucwavyW7vKK7yHaQ+g+qEcBunsxYWP4v858M
- 3yuu7rMUMU2TXphN57oYmZcYBBeKPs8lf143+iubu59yM+GE8BSoWA9xD
- Ip9yldhbl41f3WrMmsk+VYWi9SrpEZXfTOQa0xMwaCnAe5eMOyzT0Ff9N
- lixNrIzeztJXMwy1/xTYW+h4K775qe8B7p/JPHluR9FPgP1nHTrqpHreg A==;
-X-CSE-ConnectionGUID: 78oq/oRhTIChNKkLPhQO9A==
-X-CSE-MsgGUID: KmykhvN5TjeMf2mSYVYVJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="41819812"
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; d="scan'208";a="41819812"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2025 02:23:52 -0700
-X-CSE-ConnectionGUID: RU+2vl3HR0qm7Q6+HOeIJQ==
-X-CSE-MsgGUID: xqUadoLaTKeYr3KP0OeGTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; d="scan'208";a="155071353"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2025 02:23:50 -0700
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, riana.tauro@intel.com, badal.nilawar@intel.com,
- rodrigo.vivi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [i-g-t] tests/intel/xe_wedged: Add new test csc-wedged
-Date: Tue,  8 Jul 2025 14:53:03 +0530
-Message-ID: <20250708092302.2553111-2-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 99D9B10E5C3;
+	Tue,  8 Jul 2025 09:24:34 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92CA010E336;
+ Tue,  8 Jul 2025 09:24:32 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8205204954004900067=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fcompute=3A?=
+ =?utf-8?q?_Add_Compute_workload_Scheduling_and_Display_EU_busyness_=28rev4?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 08 Jul 2025 09:24:32 -0000
+Message-ID: <175196667259.142601.12096982343817688553@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250708080545.539924-1-nishit.sharma@intel.com>
+In-Reply-To: <20250708080545.539924-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,141 +38,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Inject a CSC error through uevent to cause the Xe device to enter a wedged
-state. To return the device to a normal state, reload the driver, as
-the wedged state can only be resolved by rebinding/reprobing the driver.
+--===============8205204954004900067==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- tests/intel/xe_wedged.c | 85 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
-index 7fc7ca9eb..b29e9bcb5 100644
---- a/tests/intel/xe_wedged.c
-+++ b/tests/intel/xe_wedged.c
-@@ -14,6 +14,7 @@
- 
- #include <limits.h>
- #include <dirent.h>
-+#include <libudev.h>
- 
- #include "igt.h"
- #include "igt_device.h"
-@@ -46,6 +47,46 @@ static void force_wedged(int fd)
- 	sleep(1);
- }
- 
-+static void force_wedged_csc_error(int fd)
-+{
-+	igt_debugfs_write(fd, "inject_csc_hw_error/probability", "100");
-+	igt_debugfs_write(fd, "inject_csc_hw_error/times", "1");
-+
-+	xe_force_gt_reset_sync(fd, 0);
-+	sleep(1);
-+}
-+
-+static char bus_addr[NAME_MAX];
-+
-+static int check_survivability_mode(int fd)
-+{
-+	struct pci_device *pci_dev;
-+	char path[PATH_MAX];
-+	int dirfd;
-+
-+	pci_dev = igt_device_get_pci_device(fd);
-+	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
-+		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-+	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
-+	dirfd = open(path, O_RDONLY);
-+
-+	return dirfd;
-+}
-+
-+static void intercept_udev_events(struct udev_device *device)
-+{
-+	const char *dev_path = udev_device_get_property_value(device, "DEVPATH");
-+	const char *wedged = udev_device_get_property_value(device, "WEDGED");
-+
-+	igt_assert_f(wedged && !strcmp(wedged, "vendor-specific"),
-+		     "Expected WEDGED property to be 'vendor-specific', got '%s'",
-+		     wedged);
-+
-+	igt_assert_f(dev_path && strstr(dev_path, bus_addr),
-+		     "Expected bus address '%s' to be part of DEVPATH '%s'",
-+		     bus_addr, dev_path);
-+}
-+
- static int simple_ioctl(int fd)
- {
- 	int ret;
-@@ -208,6 +249,11 @@ simple_hang(int fd, struct drm_xe_sync *sync)
-  * SUBTEST: basic-wedged-read
-  * Description: Read wedged_mode debugfs
-  */
-+/**
-+ * SUBTEST: csc-wedged
-+ * Description: Force Xe device wedged after injecting a failure in CSC
-+ */
-+
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -300,12 +346,51 @@ igt_main
- 		igt_assert_f(str[0] != '\0', "Failed to read wedged_mode from debugfs!\n");
- 	}
- 
-+	igt_subtest("csc-wedged") {
-+		struct udev *udev = udev_new();
-+		struct udev_monitor *monitor;
-+		struct udev_device *device;
-+
-+		igt_require(igt_debugfs_exists(fd, "inject_csc_hw_error/probability",
-+					       O_RDWR));
-+
-+		igt_assert_f(check_survivability_mode(fd) < 0,
-+			     "survivability_mode sysfs available");
-+
-+		igt_debugfs_write(fd, "inject_csc_hw_error/verbose", "1");
-+		igt_assert_eq(simple_ioctl(fd), 0);
-+		ignore_wedged_in_dmesg();
-+
-+		monitor = udev_monitor_new_from_netlink(udev, "kernel");
-+		udev_monitor_enable_receiving(monitor);
-+
-+		force_wedged_csc_error(fd);
-+
-+		device = udev_monitor_receive_device(monitor);
-+		intercept_udev_events(device);
-+
-+		igt_assert_f(check_survivability_mode(fd) >= 0,
-+			     "survivability_mode sysfs not available");
-+
-+		drm_close_driver(fd);
-+		igt_kmod_rebind("xe", pci_slot);
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_assert_eq(simple_ioctl(fd), 0);
-+		xe_for_each_engine(fd, hwe)
-+			simple_exec(fd, hwe);
-+	}
-+
- 	igt_fixture {
- 		if (igt_debugfs_exists(fd, "fail_gt_reset/probability", O_RDWR)) {
- 			igt_debugfs_write(fd, "fail_gt_reset/probability", "0");
- 			igt_debugfs_write(fd, "fail_gt_reset/times", "1");
- 		}
- 
-+		if (igt_debugfs_exists(fd, "inject_csc_hw_error/probability", O_RDWR)) {
-+			igt_debugfs_write(fd, "inject_csc_hw_error/probability", "0");
-+			igt_debugfs_write(fd, "inject_csc_hw_error/times", "1");
-+		}
-+
- 		/* Tests might have failed, force a rebind before exiting */
- 		drm_close_driver(fd);
- 		igt_kmod_rebind("xe", pci_slot);
--- 
-2.43.0
+Series: tests/intel/xe_compute: Add Compute workload Scheduling and Display EU busyness (rev4)
+URL   : https://patchwork.freedesktop.org/series/151192/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8445_BAT -> XEIGTPW_13427_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13427_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-plain-flip@b-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8445/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13427/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@d-edp1:
+    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#4543]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8445/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13427/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8445 -> IGTPW_13427
+  * Linux: xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80 -> xe-3368-8b32b5509128873da8ecfc06beefcb58927eb50b
+
+  IGTPW_13427: e4a04247c0571d0f8722e9d93154bc2347d2b539 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8445: 8445
+  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80
+  xe-3368-8b32b5509128873da8ecfc06beefcb58927eb50b: 8b32b5509128873da8ecfc06beefcb58927eb50b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13427/index.html
+
+--===============8205204954004900067==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_compute: Add Compute workload Scheduling and Display EU busyness (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151192/">https://patchwork.freedesktop.org/series/151192/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13427/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13427/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8445_BAT -&gt; XEIGTPW_13427_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13427_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@b-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8445/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13427/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8445/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13427/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8445 -&gt; IGTPW_13427</li>
+<li>Linux: xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80 -&gt; xe-3368-8b32b5509128873da8ecfc06beefcb58927eb50b</li>
+</ul>
+<p>IGTPW_13427: e4a04247c0571d0f8722e9d93154bc2347d2b539 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8445: 8445<br />
+  xe-3349-bf8cb3609bc5e03d788964e62c5d1f2c3e141e80: bf8cb3609bc5e03d788964e62c5d1f2c3e141e80<br />
+  xe-3368-8b32b5509128873da8ecfc06beefcb58927eb50b: 8b32b5509128873da8ecfc06beefcb58927eb50b</p>
+
+</body>
+</html>
+
+--===============8205204954004900067==--
