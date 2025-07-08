@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0AF4C83F10
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 18:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F642C8303C
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 19:19:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9702710E1B8;
-	Tue,  8 Jul 2025 18:15:06 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h1ln13Yb";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0ED910E030;
- Tue,  8 Jul 2025 18:15:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751998506; x=1783534506;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=c+0qDmVnh/TKD3Qng2uU+oq7ct7kdf0jMqM5buqRAAA=;
- b=h1ln13YbvXR0tRAtUeDFl6r8bUNhYrPT19IpfJh9k5D/dA69FiJFQjbC
- 8Onolfk7/4NJchf6++03uqMUqKNNH4C2u8sKZZgMBXz7gmAfFkPgqCC9Z
- py9YrGREaRLvVIdPbCi1JOzTp1Q57zpP0JtvP02Xoa+QEXccwxOFUuify
- DZ4CKSPYiBjAYbDgiPQVp+jEaGDnzkXvIb5AL38ezY29o1KpE4B4gDnGh
- o0Kq3IU40NhqYeiYCnCkVv0AwCZ5u0YXDWrsiSJE8m9cJg7j6XFZ1PSdv
- 8fcpQab4/tsokBL5NSwe21tStJZPt+n3YKG0more+LpHMZXb+H+h1H8WF w==;
-X-CSE-ConnectionGUID: kXb/Y9WTSiq3eEwtnZHHdA==
-X-CSE-MsgGUID: VMO6+bcETwm6zjDjV02HCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="65704086"
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="65704086"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2025 11:15:05 -0700
-X-CSE-ConnectionGUID: rk8zpwg8SwecOWdSZExzFw==
-X-CSE-MsgGUID: oDXTfiqBQrSXhlEEgMN32Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="154977301"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 11:15:03 -0700
-Date: Tue, 8 Jul 2025 20:15:00 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>
-Subject: Re: [PATCH i-g-t v2] runner: Relax timeout reduction on soft lockup
-Message-ID: <20250708181500.ibtmgnkpxzlreasz@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>
-References: <20250708130437.917619-2-janusz.krzysztofik@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9797410E1BA;
+	Tue,  8 Jul 2025 19:19:15 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EF4D10E048;
+ Tue,  8 Jul 2025 19:19:14 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0388564102289122661=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250708130437.917619-2-janusz.krzysztofik@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fcopy_=3A_A?=
+ =?utf-8?q?dd_check_for_memset_and_memcpy_tests=2E?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sobin Thomas" <sobin.thomas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 08 Jul 2025 19:19:14 -0000
+Message-ID: <175200235444.145434.16101194929973877989@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250708122056.1698837-1-sobin.thomas@intel.com>
+In-Reply-To: <20250708122056.1698837-1-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,106 +37,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2025-07-08 at 15:04:15 +0200, Janusz Krzysztofik wrote:
-> In case of soft lockups, it might be helpful from root cause analysis
-> perspective to see if the test was still able to complete despite
-> triggering the soft lockup warning, or if that soft lockup seems not
-> recoverable without killing the test. For that to be possible, igt_runner
-> should not kill the test too promptly if a soft lockup related kernel
-> taint is detected.
-> 
-> On kernel taints, igt_runner now decreases per test and inactivity
-> timeouts by a factor of 10.  Let it check if the taint is caused by a
-> soft lockup and decrease the timeouts only by the factor of 2 in those
-> cases.
-> 
-> v2: Define symbols for taint bits and use them (Kamil)
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+--===============0388564102289122661==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-> ---
->  lib/igt_taints.c  |  8 ++++----
->  lib/igt_taints.h  |  6 ++++++
->  runner/executor.c | 14 ++++++++++----
->  3 files changed, 20 insertions(+), 8 deletions(-)
-> 
-> diff --git a/lib/igt_taints.c b/lib/igt_taints.c
-> index 6b36d11cba..1d238fd2af 100644
-> --- a/lib/igt_taints.c
-> +++ b/lib/igt_taints.c
-> @@ -13,10 +13,10 @@ static const struct {
->  	int bad;
->  	const char *explanation;
->  } abort_taints[] = {
-> -  { 4, 1, "TAINT_MACHINE_CHECK: Processor reported a Machine Check Exception."},
-> -  { 5, 1, "TAINT_BAD_PAGE: Bad page reference or an unexpected page flags." },
-> -  { 7, 1, "TAINT_DIE: Kernel has died - BUG/OOPS." },
-> -  { 9, 1, "TAINT_WARN: WARN_ON has happened." },
-> +  { TAINT_MACHINE_CHECK, 1, "TAINT_MACHINE_CHECK: Processor reported a Machine Check Exception."},
-> +  { TAINT_BAD_PAGE,	 1, "TAINT_BAD_PAGE: Bad page reference or an unexpected page flags." },
-> +  { TAINT_DIE,		 1, "TAINT_DIE: Kernel has died - BUG/OOPS." },
-> +  { TAINT_WARN,		 1, "TAINT_WARN: WARN_ON has happened." },
->    { -1 }
->  };
->  
-> diff --git a/lib/igt_taints.h b/lib/igt_taints.h
-> index be4195c5aa..50c4cf16f8 100644
-> --- a/lib/igt_taints.h
-> +++ b/lib/igt_taints.h
-> @@ -6,6 +6,12 @@
->  #ifndef __IGT_TAINTS_H__
->  #define __IGT_TAINTS_H__
->  
-> +#define	TAINT_MACHINE_CHECK	 4
-> +#define	TAINT_BAD_PAGE		 5
-> +#define	TAINT_DIE		 7
-> +#define	TAINT_WARN		 9
-> +#define	TAINT_SOFT_LOCKUP	14
-> +
->  unsigned long igt_kernel_tainted(unsigned long *taints);
->  const char *igt_explain_taints(unsigned long *taints);
->  
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 13180a0a46..847abe481a 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -871,10 +871,15 @@ static const char *need_to_timeout(struct settings *settings,
->  	if (settings->abort_mask & ABORT_TAINT &&
->  	    is_tainted(taints)) {
->  		/* list of timeouts that may postpone immediate kill on taint */
-> -		if (settings->per_test_timeout || settings->inactivity_timeout)
-> -			decrease = 10;
-> -		else
-> +		if (settings->per_test_timeout || settings->inactivity_timeout) {
-> +			if (is_tainted(taints) == (1 << TAINT_WARN) &&
-> +			    taints & (1 << TAINT_SOFT_LOCKUP))
-> +				decrease = 2;
-> +			else
-> +				decrease = 10;
-> +		} else {
->  			return "Killing the test because the kernel is tainted.\n";
-> +		}
->  	}
->  
->  	if (settings->per_test_timeout != 0 &&
-> @@ -1526,8 +1531,9 @@ static int monitor_output(pid_t child,
->  			sigfd = -1; /* we are dying, no signal handling for now */
->  		}
->  
-> +		igt_kernel_tainted(&taints);
->  		timeout_reason = need_to_timeout(settings, killed,
-> -						 igt_kernel_tainted(&taints),
-> +						 taints,
->  						 igt_time_elapsed(&time_last_activity, &time_now),
->  						 igt_time_elapsed(&time_last_subtest, &time_now),
->  						 igt_time_elapsed(&time_killed, &time_now),
-> -- 
-> 2.50.0
-> 
+Series: tests/intel/xe_copy : Add check for memset and memcpy tests.
+URL   : https://patchwork.freedesktop.org/series/151334/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8446_BAT -> XEIGTPW_13430_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_13430_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_13430_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13430_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-bmg-1:          [PASS][1] -> [FAIL][2] +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8446/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13430/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13430_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#4543]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8446/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13430/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8446 -> IGTPW_13430
+
+  IGTPW_13430: 13430
+  IGT_8446: 5832a01fd5922caabd22e057a6293f6707fac1eb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3372-de097594ab5dac2b7db67759c8ed7ce0e47f6f0c: de097594ab5dac2b7db67759c8ed7ce0e47f6f0c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13430/index.html
+
+--===============0388564102289122661==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_copy : Add check for memset and memcpy tests.</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151334/">https://patchwork.freedesktop.org/series/151334/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13430/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13430/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8446_BAT -&gt; XEIGTPW_13430_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_13430_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_13430_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13430_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xe2@render:<ul>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8446/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13430/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13430_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8446/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13430/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8446 -&gt; IGTPW_13430</li>
+</ul>
+<p>IGTPW_13430: 13430<br />
+  IGT_8446: 5832a01fd5922caabd22e057a6293f6707fac1eb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3372-de097594ab5dac2b7db67759c8ed7ce0e47f6f0c: de097594ab5dac2b7db67759c8ed7ce0e47f6f0c</p>
+
+</body>
+</html>
+
+--===============0388564102289122661==--
