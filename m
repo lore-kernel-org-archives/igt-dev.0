@@ -4,57 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A050C83F09
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 15:28:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8368C83F09
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 15:28:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3F0F310E6AF;
-	Tue,  8 Jul 2025 15:28:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7958310E115;
+	Tue,  8 Jul 2025 15:28:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DT9KoleD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RKYH6f0D";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0587310E6A2
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jul 2025 15:28:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D6C010E688
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jul 2025 15:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751988496; x=1783524496;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=27J3nzFcTEphLK2HexMINhlA4YGqAdKdzXpb9t1fSEk=;
- b=DT9KoleDAo2917wJnZ3dEkbQhOeM3INDhQ3qaA5pZJMKrxdIwMkNd/AQ
- UoDO6hEMrVV3IxtQzcVvf3TQS1LTXr+XQZRE8tTfX1JUW3/tkMWVoBom0
- eWrIqVihYPlgg5WIv+DouUge3wHpdJ+fWBryuuJlM9Wuo3FBwvKrGQMyW
- VYyo+C/SP6+U9GicOVdvIaLM+CDlVLJpNqNmHBfz3OxLRk4/jhT/Hffik
- X5CbV8Jtoqoy2+fCNviry+HJvDlaoEm1fC06cZ+TKqlBcJAWYpPGpyZVJ
- nG5HC7dt+RQoL4s0f5ObPSIXd4meLAUVRTheln8RPnEZ5mFuZKc8ln179 Q==;
-X-CSE-ConnectionGUID: yMWxQdN6TGa6JJv68HELkw==
-X-CSE-MsgGUID: tbgUSJpATxORARPOe+0A3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="53947130"
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="53947130"
+ t=1751988499; x=1783524499;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=qFV4FEy0UsgK5QL8yZYrChEJNRX41Tjk2qTll9viPMA=;
+ b=RKYH6f0DHIbsMzPY+Is2GN3TJQqbYa39dXvIIyQZWPd8SIpe463jbwKQ
+ jYHFc+49vIfg0Z0QmUa83URzxTUU9d1Q1Vi/xFEYTCk2J0lgE/QOeqGbI
+ l8gD3FYt+AmCYY0WUYiK5IUuzub6d6gZVGGcwAFAUgdhA3TVpaZaFThLM
+ xYICykb5OwvlUfFa6SB1yRlir8qrJX3NVwIRUjo/TaJoGCqIdn165dQ4k
+ 3CKAq50hMcpWehStcb7kz7XVnsRlRRkbBklAyozt7zsNuLXqJLS36txQ1
+ MIRthULdPKJsUaXexCiiSgyYD+oobRTueaEuRNBMeW62/LDwOAnI/4/nP Q==;
+X-CSE-ConnectionGUID: Yk5jMSmmR9mIe8XawFnvHw==
+X-CSE-MsgGUID: vMSjp6dtTbaPRw3kJhiQfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="53947141"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="53947141"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2025 08:28:16 -0700
-X-CSE-ConnectionGUID: L3T4OekwQcCA82s7jfq1sg==
-X-CSE-MsgGUID: A8poVk9ORbytxsZ9m1xnyw==
+ 08 Jul 2025 08:28:19 -0700
+X-CSE-ConnectionGUID: MKh32trXTAep+99Vts7MOA==
+X-CSE-MsgGUID: 83JpQlqrSfWfGcLLfEfcMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="154937609"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="154937630"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.16])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2025 08:28:13 -0700
+ 08 Jul 2025 08:28:18 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ewelina Musial <ewelina.musial@intel.com>,
- Jari Tahvanainen <jari.tahvanainen@intel.com>,
- Karthik B S <karthik.b.s@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t v4 0/5] intel-ci: Rename i915 blocklist and testlists
-Date: Tue,  8 Jul 2025 17:28:03 +0200
-Message-ID: <20250708152808.59977-1-kamil.konieczny@linux.intel.com>
+ Karthik B S <karthik.b.s@intel.com>
+Subject: [PATCH i-g-t v4 1/5] intel-ci: rename i915 blocklists
+Date: Tue,  8 Jul 2025 17:28:04 +0200
+Message-ID: <20250708152808.59977-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250708152808.59977-1-kamil.konieczny@linux.intel.com>
+References: <20250708152808.59977-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -72,55 +69,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Lets make our block/test/lists similar to Xe and rename them,
-adding 'i915.' prefix to i915 fast-feedback testlists and blocklists.
+Unify naming with Xe blocklists so blocklists for i915 will have
+i915 prefix in names.
 
-v2: added symlinks for old files (Ryszard)
-  added change for blocklist verification in gitlab pipeline (Kamil)
-v3: dropped xe from .gitlab-ci.yml (Kamil)
-v4: use 'i915.' prefix everywhere for i915 testlist (Swati)
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/intel-ci/README                                | 12 ++++++------
+ ...st-pre-merge.txt => i915.blocklist-pre-merge.txt} |  5 +++--
+ tests/intel-ci/{blacklist.txt => i915.blocklist.txt} |  0
+ tests/intel-ci/meson.build                           |  4 ++--
+ tests/intel/i915_test_config.json                    |  2 +-
+ tests/intel/kms_test_config.json                     |  2 +-
+ 6 files changed, 13 insertions(+), 12 deletions(-)
+ rename tests/intel-ci/{blacklist-pre-merge.txt => i915.blocklist-pre-merge.txt} (97%)
+ rename tests/intel-ci/{blacklist.txt => i915.blocklist.txt} (100%)
 
-Cc: Ewelina Musial <ewelina.musial@intel.com>
-Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-
-Kamil Konieczny (5):
-  intel-ci: rename i915 blocklists
-  gitlab-ci: Update Intel i915 blocklists
-  intel-ci: Add symlinks for old i915 blocklists
-  intel-ci: rename i915 testlists
-  intel-ci: Add symlinks for old i915 testlists
-
- .gitlab-ci.yml                                |   2 +-
- tests/intel-ci/README                         |  18 +-
- tests/intel-ci/blacklist-pre-merge.txt        | 113 +-----------
- tests/intel-ci/blacklist.txt                  | 172 +-----------------
- tests/intel-ci/chamelium-only.testlist        |  69 +------
- .../fast-feedback-chamelium-only.testlist     |  16 +-
- tests/intel-ci/fast-feedback.testlist         | 172 +-----------------
- tests/intel-ci/i915.blocklist-pre-merge.txt   | 113 ++++++++++++
- tests/intel-ci/i915.blocklist.txt             | 171 +++++++++++++++++
- tests/intel-ci/i915.chamelium-only.testlist   |  68 +++++++
- ...i915.fast-feedback-chamelium-only.testlist |  15 ++
- tests/intel-ci/i915.fast-feedback.testlist    | 171 +++++++++++++++++
- tests/intel-ci/meson.build                    |  10 +-
- tests/intel/i915_test_config.json             |   4 +-
- tests/intel/kms_test_config.json              |   8 +-
- 15 files changed, 564 insertions(+), 558 deletions(-)
- mode change 100644 => 120000 tests/intel-ci/blacklist-pre-merge.txt
- mode change 100644 => 120000 tests/intel-ci/blacklist.txt
- mode change 100644 => 120000 tests/intel-ci/chamelium-only.testlist
- mode change 100644 => 120000 tests/intel-ci/fast-feedback-chamelium-only.testlist
- mode change 100644 => 120000 tests/intel-ci/fast-feedback.testlist
- create mode 100644 tests/intel-ci/i915.blocklist-pre-merge.txt
- create mode 100644 tests/intel-ci/i915.blocklist.txt
- create mode 100644 tests/intel-ci/i915.chamelium-only.testlist
- create mode 100644 tests/intel-ci/i915.fast-feedback-chamelium-only.testlist
- create mode 100644 tests/intel-ci/i915.fast-feedback.testlist
-
+diff --git a/tests/intel-ci/README b/tests/intel-ci/README
+index 07b32b54a..5ef2ee2d1 100644
+--- a/tests/intel-ci/README
++++ b/tests/intel-ci/README
+@@ -30,16 +30,16 @@ considered to mean that the kernel is not obviously broken.
+ The results of CI runs on drm-tip and various other kernel trees can
+ be found in https://intel-gfx-ci.01.org/CI/
+ 
+-=============
+-blacklist.txt
+-=============
++==================
++i915.blocklist.txt
++==================
+ 
+ This file contains regular expressions (one per line) for tests that
+ are not to be executed in full suite test rounds.
+ 
+-=======================
+-blacklist-pre-merge.txt
+-=======================
++============================
++i915.blocklist-pre-merge.txt
++============================
+ 
+ This file contains regular expressions (one per line) for tests that
+ are not to be executed in pre-merge full suite test rounds.
+diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/i915.blocklist-pre-merge.txt
+similarity index 97%
+rename from tests/intel-ci/blacklist-pre-merge.txt
+rename to tests/intel-ci/i915.blocklist-pre-merge.txt
+index 0a1315aae..bee4a856f 100644
+--- a/tests/intel-ci/blacklist-pre-merge.txt
++++ b/tests/intel-ci/i915.blocklist-pre-merge.txt
+@@ -23,7 +23,7 @@ igt@kms_pm_rpm@universal-planes(-dpms)?
+ # it is harder to predictably exercise the cache from userspace.
+ #
+ # Until these 8 tests are replaced with a kernel selftest and removed from IGT,
+-# let's blacklist them for pre-merge testing as they are responsible for a
++# let's blocklist them for pre-merge testing as they are responsible for a
+ # significant portion of our execution time:
+ #
+ # - shard-skl: 0.1% (~15 seconds)
+@@ -96,7 +96,8 @@ igt@gem_tiled_wc
+ # This test is doing nothing more than waiting for the driver to be suspended
+ # before issueing a modeset. However, it never failed while testing for this
+ # in the past year, so we probably just want to drop the amount of rounds to
+-# reduce the runtime, but let's just blacklist it in pre-merge for now:
++# reduce the runtime, but let's just blocklist it in pre-merge for now:
++
+ #
+ # - shard-skl: 1% (~2.5 minute)
+ # - shard-kbl: 0.9% (~1 minute)
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/i915.blocklist.txt
+similarity index 100%
+rename from tests/intel-ci/blacklist.txt
+rename to tests/intel-ci/i915.blocklist.txt
+diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+index 4aacb479d..d18170402 100644
+--- a/tests/intel-ci/meson.build
++++ b/tests/intel-ci/meson.build
+@@ -2,8 +2,8 @@
+ 
+ intelci_files = [
+   'README',
+-  'blacklist.txt',
+-  'blacklist-pre-merge.txt',
++  'i915.blocklist.txt',
++  'i915.blocklist-pre-merge.txt',
+   'chamelium-only.testlist',
+   'fast-feedback.testlist',
+   'fast-feedback-chamelium-only.testlist',
+diff --git a/tests/intel/i915_test_config.json b/tests/intel/i915_test_config.json
+index e53f9400b..da871f493 100644
+--- a/tests/intel/i915_test_config.json
++++ b/tests/intel/i915_test_config.json
+@@ -28,7 +28,7 @@
+                         { "i915 BAT": "../intel-ci/fast-feedback.testlist" }
+                     ],
+                     "exclude": [
+-                        { "all": "../intel-ci/blacklist.txt" }
++                        { "all": "../intel-ci/i915.blocklist.txt" }
+                     ]
+                 },
+                 "order": [
+diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+index 0b6fc36e8..fc8766279 100644
+--- a/tests/intel/kms_test_config.json
++++ b/tests/intel/kms_test_config.json
+@@ -21,7 +21,7 @@
+                         { "Xe BAT chamelium": "../intel-ci/xe-fast-feedback-chamelium-only.testlist" }
+                     ],
+                     "exclude": [
+-                        { "i915 BAT, i915 BAT chamelium, i915 chamelium, i915 FULL": "../intel-ci/blacklist.txt" },
++                        { "i915 BAT, i915 BAT chamelium, i915 chamelium, i915 FULL": "../intel-ci/i915.blocklist.txt" },
+                             { "Xe BAT, Xe BAT chamelium, Xe FULL": "../intel-ci/xe.blocklist.txt" }
+                     ]
+                 }
 -- 
 2.49.0
 
