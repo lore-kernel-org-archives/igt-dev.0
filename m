@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8C6BC71130
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 04:42:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08C29C83F09
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 04:56:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5094610E11B;
-	Tue,  8 Jul 2025 04:42:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 68A2D10E09F;
+	Tue,  8 Jul 2025 04:56:36 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1253F10E11B;
- Tue,  8 Jul 2025 04:42:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3BAE10E581;
+ Tue,  8 Jul 2025 04:56:34 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2695490737082655592=="
+ boundary="===============6195796006519671339=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EFull=3A_success_for_tests/kms=5Fcursor=5Fcrc?=
  =?utf-8?q?=3A_optimise_cursor_crc_on_simulation_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 08 Jul 2025 04:42:15 -0000
-Message-ID: <175194973504.142461.15968053036208614626@1538d3639d33>
+Date: Tue, 08 Jul 2025 04:56:33 -0000
+Message-ID: <175195059354.142505.4114605517307169646@1538d3639d33>
 X-Patchwork-Hint: ignore
 References: <20250702091643.967483-1-santhosh.reddy.guddati@intel.com>
 In-Reply-To: <20250702091643.967483-1-santhosh.reddy.guddati@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2695490737082655592==
+--===============6195796006519671339==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -76,7 +76,7 @@ New tests
 
   New tests have been introduced between IGT_8444_full and IGTPW_13416_full:
 
-### New IGT tests (73) ###
+### New IGT tests (71) ###
 
   * igt@gem_exec_basic@basic@bcs0-lmem0:
     - Statuses : 1 pass(s)
@@ -361,14 +361,6 @@ New tests
   * igt@kms_flip@plain-flip-ts-check-interruptible@d-dp3:
     - Statuses : 1 pass(s)
     - Exec time: [8.02] s
-
-  * igt@kms_rmfb@close-fd@pipe-a-edp-1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.12] s
-
-  * igt@kms_rmfb@rmfb-ioctl@pipe-a-edp-1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.12] s
 
   
 
@@ -2847,7 +2839,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13416/index.html
 
---===============2695490737082655592==
+--===============6195796006519671339==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -2885,7 +2877,7 @@ Content-Transfer-Encoding: 7bit
 <p>No changes in participating hosts</p>
 <h2>New tests</h2>
 <p>New tests have been introduced between IGT_8444_full and IGTPW_13416_full:</p>
-<h3>New IGT tests (73)</h3>
+<h3>New IGT tests (71)</h3>
 <ul>
 <li>
 <p>igt@gem_exec_basic@basic@bcs0-lmem0:</p>
@@ -3382,20 +3374,6 @@ Content-Transfer-Encoding: 7bit
 <ul>
 <li>Statuses : 1 pass(s)</li>
 <li>Exec time: [8.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_rmfb@close-fd@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.12] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_rmfb@rmfb-ioctl@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.12] s</li>
 </ul>
 </li>
 </ul>
@@ -6383,4 +6361,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============2695490737082655592==--
+--===============6195796006519671339==--
