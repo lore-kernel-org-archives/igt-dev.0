@@ -4,63 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AFE1C83F0A
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 17:01:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25C20C83F09
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Jul 2025 17:02:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 31A6510E6B5;
-	Tue,  8 Jul 2025 17:01:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C99F310E6B5;
+	Tue,  8 Jul 2025 17:02:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d46kajWs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e2QVqWzD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB88E10E6B5
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Jul 2025 17:01:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 686F910E6B5
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Jul 2025 17:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1751994092; x=1783530092;
+ t=1751994176; x=1783530176;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=616DmsNbfoswBMG8DQnfwJg5GMzqzXdDY6fEzwr+wuA=;
- b=d46kajWsernILKyQ9LPU7IfhjhGjmrcoOOv4+7uTxZkZhi68iiN3JsfC
- Klim5TiRFRDzUZRrdi5cc5oEg7e3SvUx53N+oGAjDTcTQTPD1cPOOlYYv
- a78E0KJzErDDvovUlCQUlOUUOxov9FIWC34v4lc99MSXPTvBhWh4yfxfc
- B3faQQSWOMFuEmdudAN2txWfuL3bYvtgYR2nT7b0VbnVed7AbRJO1popU
- vprWtvX7Crs/o+vwjadEFidOJaO0CMcSIDqHTQTVPFEJtLGSJppbmxcY1
- mwKuudVDEeZR0K+9oDiNIzTP78P/Xds3f8yLafqfVdAUt8Er54YoC0gIl A==;
-X-CSE-ConnectionGUID: bRlQ5tQdQf6ROjgfGlAYPg==
-X-CSE-MsgGUID: /N8W95buTGuHVb8Jik1DfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54370810"
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="54370810"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Jul 2025 10:01:31 -0700
-X-CSE-ConnectionGUID: XjVyF434QDybcYBGLs8mOA==
-X-CSE-MsgGUID: +3xEBkBdQ3y27S1BCBCbqA==
+ bh=hacUiAg0kTalVyp8QHETNR7QkLoQoTRoGt/EockiWDk=;
+ b=e2QVqWzDlmKfpEL7+Fl7xiMrLwYn3N3krT/yUqrieqvhkGPDzlPfDrAs
+ mbO4A/DElDr084bhoSLr9g8nALh9eFDc6VytMhpJ1Zx9PIAXCudrbSDK1
+ 9rmhMyyLvGlMLbOYkEs+4WUfq/Bf0EKih2SSJGTnwC6no6n8SgktDhmFL
+ jrNk8ZTTGxKTkogHq0fsXp11WzsKT4TNFW+UadTTSL5jnyS4f5lhznqBQ
+ KId03pXsXZFJI3ub7zwMI6cKniqfuS01lSnyEzcYMkncyb4H8FUm5Cl/b
+ cqopzEREUvYI6F4HBepdh+n12Zi6gipOw7D+TjOqwmNszJ9MeU7NGWhOy A==;
+X-CSE-ConnectionGUID: lvQPw7FnQU619c6WEwfkYQ==
+X-CSE-MsgGUID: V2HYX4nZQN2nujSaFqTIKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="53956267"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="53956267"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jul 2025 10:02:56 -0700
+X-CSE-ConnectionGUID: H+PK5J83T6SIey9WSc44zA==
+X-CSE-MsgGUID: PdHauDF2Tc2/MCjtDyNzZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="159866118"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; d="scan'208";a="155879799"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 10:01:29 -0700
-Date: Tue, 8 Jul 2025 19:01:27 +0200
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 10:02:55 -0700
+Date: Tue, 8 Jul 2025 19:02:52 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+To: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
 Cc: igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com,
- rodrigo.vivi@intel.com, katarzyna.piecielska@intel.com,
- zbigniew.kempczynski@intel.com, michal.wajdeczko@intel.com,
- karthik.b.s@intel.com, ewelina.musial@intel.com
-Subject: Re: [PATCH v5,resend i-g-t 0/6] Replace intel_sysfs_debugfs
-Message-ID: <20250708170127.dkvxow3s43gtd2dc@kamilkon-DESK.igk.intel.com>
+ rodrigo.vivi@intel.com
+Subject: Re: [PATCH] script/test_list: fix a document generator bug
+Message-ID: <20250708170252.lbn4olkm7madzcgj@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
  igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com,
- rodrigo.vivi@intel.com, katarzyna.piecielska@intel.com,
- zbigniew.kempczynski@intel.com, michal.wajdeczko@intel.com,
- karthik.b.s@intel.com, ewelina.musial@intel.com
-References: <20250708144039.53482-1-peter.senna@linux.intel.com>
+ rodrigo.vivi@intel.com
+References: <20250708150207.247795-1-michael.j.ruhl@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250708144039.53482-1-peter.senna@linux.intel.com>
+In-Reply-To: <20250708150207.247795-1-michael.j.ruhl@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,67 +72,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2025-07-08 at 16:40:32 +0200, Peter Senna Tschudin wrote:
-> This series:
->  - moves shared function to lib/igt_dir
->  - creates gpu agnostic tests
->    - core_debugfs
->    - core_sysfs
->    - kms_debugfs
->  - creates xe_debugfs (complementary to core_debugfs and kms_debugfs)
->  - Updates testlists and scripts
->  - deletes tests/intel_sysfs_debugfs
+Hi Michael,
+On 2025-07-08 at 11:02:07 -0400, Michael J. Ruhl wrote:
+> Remove an extra 'f' from the print() function.
 > 
+> Fixes: b9c6750f935f ("scripts/test_list: Do not stop the build if documentation fails")
+> Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
 
-Please provide here simple and short summary what changed,
-also a reason for quick resend, why do you need it instead
-of a new version? Maybe not now but when (and if) you will
-send new versions.
+Nice catch, thanks!
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
-
-> Cc: lucas.demarchi@intel.com
-> Cc: rodrigo.vivi@intel.com
-> Cc: kamil.konieczny@linux.intel.com
-> Cc: katarzyna.piecielska@intel.com
-> Cc: zbigniew.kempczynski@intel.com
-> Cc: michal.wajdeczko@intel.com
-> Cc: karthik.b.s@intel.com
-> Cc: ewelina.musial@intel.com
+> ---
+>  scripts/test_list.py | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Peter Senna Tschudin (6):
->   lib/igt_dir: Directory processing and flexible file handling
->   tests: Add core_debugfs
->   tests: Add kms_debugfs
->   tests: Add core_sysfs
->   tests: Add xe_debugfs
->   tests/intel: Remove intel_sysfs_debugfs
-> 
->  docs/code_coverage.md                    |  18 +-
->  lib/igt_dir.c                            | 287 +++++++++++++++
->  lib/igt_dir.h                            |  62 ++++
->  lib/meson.build                          |   1 +
->  scripts/code_cov_selftest.sh             |   2 +-
->  tests/core_debugfs.c                     |  48 +++
->  tests/core_sysfs.c                       |  49 +++
->  tests/intel-ci/fast-feedback.testlist    |   4 +-
->  tests/intel-ci/xe-fast-feedback.testlist |   8 +-
->  tests/intel/intel_sysfs_debugfs.c        | 430 -----------------------
->  tests/intel/xe_debugfs.c                 | 208 +++++++++++
->  tests/intel/xe_test_config.json          |   2 +-
->  tests/kms_debugfs.c                      | 151 ++++++++
->  tests/meson.build                        |   5 +-
->  14 files changed, 827 insertions(+), 448 deletions(-)
->  create mode 100644 lib/igt_dir.c
->  create mode 100644 lib/igt_dir.h
->  create mode 100644 tests/core_debugfs.c
->  create mode 100644 tests/core_sysfs.c
->  delete mode 100644 tests/intel/intel_sysfs_debugfs.c
->  create mode 100644 tests/intel/xe_debugfs.c
->  create mode 100644 tests/kms_debugfs.c
-> 
+> diff --git a/scripts/test_list.py b/scripts/test_list.py
+> index 5f1b4218b..cb2fb054c 100644
+> --- a/scripts/test_list.py
+> +++ b/scripts/test_list.py
+> @@ -1427,7 +1427,7 @@ class TestList:
+>                      continue
+>  
+>                  file_line.rstrip(r"\n")
+> -                printf(f"{fname}:{file_ln + 1}: Warning: unrecognized line. Need to add field at %s?\n\t==> %s" %
+> +                print(f"{fname}:{file_ln + 1}: Warning: unrecognized line. Need to add field at %s?\n\t==> %s" %
+>                           (config_origin, file_line))
+>  
+>      def show_subtests(self, sort_field):
 > -- 
-> 2.43.0
+> 2.50.0
 > 
