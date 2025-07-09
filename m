@@ -4,186 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78033C83F09
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Jul 2025 13:01:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A145C83F09
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Jul 2025 13:40:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C15810E7DF;
-	Wed,  9 Jul 2025 13:01:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A04610E214;
+	Wed,  9 Jul 2025 13:40:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cRaH27E9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nSOn3ver";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 880D910E7DF
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jul 2025 13:01:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8960410E214
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jul 2025 13:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752066101; x=1783602101;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=Gkxn25aFBBu07orR16X2EMIvTLWV2jQbvqZtUDtc1BM=;
- b=cRaH27E9VzCQZL6m9BmZoulQYeB6L0sQeHp2JzrciX0RslzVVU0NVr3X
- SIBl0LCc7ii82fj/CNPq9eHhwoRTw6V1P9CE6tGqOY4yqD5OOsnhsLECW
- 7EHjI8u7HopzE0Q0srIrqFkJ73gv/C1tQYqIQt2tLrX7L4qFeQqaI7Cqm
- S0Y4D/ZhxEZzunIlRub68GB6sPJiP2AtG6LS+C22ZRCbPw1FVaWzdJTuI
- QcNbc2Rgfca6QX1MrW4ZeUYPzkHmGbIhdX2mHujyrZrH17VtkeUQ/ERPm
- MOj/H7FlzPF281t0kjRX10qJhJGBSgLOsPYxPVhL3WNcDLbl07eSVhDy7 A==;
-X-CSE-ConnectionGUID: hsZFsrPkSBasMSCaOTHw8Q==
-X-CSE-MsgGUID: 7dviMYL+Qc+f/OopByFTbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="57992110"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="57992110"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2025 06:01:41 -0700
-X-CSE-ConnectionGUID: INWW/0dwQ0K4C5ovulEaiQ==
-X-CSE-MsgGUID: QFbM3aNaQImFRVCovn1Kxw==
+ t=1752068410; x=1783604410;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4w2itEHn2XVXJ5QZC+JItaCOyGGEuXfO207SfO/W4+M=;
+ b=nSOn3ver7qCh9vkHyyvrqRwfpWrvCisMh0d+85bNNBnn8guKsQlJC/hY
+ H9GNSlDeBjRn/eozt0Z20A5TKkmkU5xFxcWMi4xp4xIokfRIAvJHPd2qv
+ +Ouv11BXJPeO+pl8CYHKCaqJZ1ag6AUM1Pb5Ss7q08ObsA3DGN99bNG5Z
+ Nwy/l1Se49SzMx7M0TnfoS1Irf3NIvfXcKRSLpFjMo+LqHrrN7mrE2wHx
+ F67elyaqvlOdy2PxljslHI2NaMwmKOGrJxh1qbWLFhEfnYgZjO5qchExy
+ 9DaYWAsnwakY3gxj/11INHrIHh8QFNpxungDjQKJL+widqwb+85aIHPWv w==;
+X-CSE-ConnectionGUID: ibTCyeFrSZqH4QR2kzOGOA==
+X-CSE-MsgGUID: MUyVzJgRQUebuXgABE13nA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="65028307"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="65028307"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2025 06:40:10 -0700
+X-CSE-ConnectionGUID: Bre3Ljq/STWVFRTkt+gW1Q==
+X-CSE-MsgGUID: uSKyhykeT8WHuGoatGKQPw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="155856427"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2025 06:01:38 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 9 Jul 2025 06:01:37 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Wed, 9 Jul 2025 06:01:37 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.83) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 9 Jul 2025 06:01:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R/oghgbkQ4YcptcPc+mp4yktjXVcEOr272xrDJRdJ1V5wN4jyjVjzyEzOgthvq9wEDVZ3CtHivssqId5XmRKV9mXk8oUu3EZ8SdnO5x6XYxo9a25Ik/o5KeyvJwd3NDaCO5IwhaKY4xbHDs2fKVrYXCWX9MpZS8fLbdfz+mn/lH1uvGYPb/WoTeAzEO80VwzpZnMgb8ByQ+5ZsAlBib0hqJrjozQ3fWnnGFU66tVCD8xwApBcKGrIlrcdz53hZMZRMuC8CTYUDsIywl2oYPSHZuzPwvtGoDIhilkBgaBLi1YIV4CjUJDbmq6Z/xLJViTEjt80/TSDd2g6x5ltSjM+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3ml3GS1Cl+oUeqPh2LhiCW8K090T8Lm45cBTL+hW/nE=;
- b=ToaYvBYxwx76UUUGzrdku3M4X6ptrGsHmDQ8P4MQZ8VeFeTpokYeY6MSkToooexdyl2Bf2Ib6rMYO9u6JkbAmpgNq2KVvHS3KzwbH7PwNsXLCkX/tI/oisAKOkOjNzOQC81IfSWNRQgmsFXsumzioFxLcU5tjL3VGsR0EUfZHclO99nw7/6Qirsa+JCLsZMnkMCBSAyMmxn8mB/CRDUklDEnY0UOfXM8PCwl1UyYT1LKq7lpOU124GdwTDUCjdjv1logqFyNhf61gmEkhvM0mBtrOzNn8kMUGxh4M/fYdaH3ooD0HT8RI1j77YX+plElNXhoDAPw32wFcb152B45Dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::839) by CY8PR11MB6865.namprd11.prod.outlook.com
- (2603:10b6:930:5f::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.28; Wed, 9 Jul
- 2025 13:01:19 +0000
-Received: from SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- ([fe80::eb7f:6dc0:d823:ccc]) by SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- ([fe80::eb7f:6dc0:d823:ccc%7]) with mapi id 15.20.8901.024; Wed, 9 Jul 2025
- 13:01:19 +0000
-Message-ID: <a169b687-20d1-406b-8dd9-452d7cb2c156@intel.com>
-Date: Wed, 9 Jul 2025 15:01:14 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 5/5] intel-ci: Add symlinks for old i915 testlists
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: Michal Czaplinski <michal.czaplinski@intel.com>, Ryszard Knop
- <ryszard.knop@intel.com>
-References: <20250708152808.59977-1-kamil.konieczny@linux.intel.com>
- <20250708152808.59977-6-kamil.konieczny@linux.intel.com>
-Content-Language: en-GB
-From: "Hajda, Andrzej" <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20250708152808.59977-6-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VI1PR07CA0268.eurprd07.prod.outlook.com
- (2603:10a6:803:b4::35) To SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::839)
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="156113955"
+Received: from unknown (HELO DUT2943PVC.iind.intel.com) ([10.190.215.47])
+ by fmviesa009.fm.intel.com with ESMTP; 09 Jul 2025 06:40:08 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ nishit.sharma@intel.com
+Subject: [PATCH i-g-t v10] tests/intel/xe_compute: Add Compute workload
+ Scheduling
+Date: Wed,  9 Jul 2025 13:40:07 +0000
+Message-ID: <20250709134007.870101-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PPF7DCFBC32A:EE_|CY8PR11MB6865:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c4d902d-68e0-4f61-b720-08ddbee8b233
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?YmIraTh2amUyWm91eWdDN0tvYUIvc1NMMFZpaDFFUDBrbTJ0Qi9ML0xpRnU0?=
- =?utf-8?B?LzJVU3NPaXJ6L2hmb2d4MmdHTHo3d1U4MlI4MXcxMG5FNHhqc0ptMHhtN0xw?=
- =?utf-8?B?VitrSUpPck5oOXlPRnVvT3ZzYWUvNmhvajlrMHUzVXR3MXFNeEpjTGVpejRw?=
- =?utf-8?B?ZHpjRlFoY3B3THROb1JKOFZFMURqZWR0WEJhNmZ2bE44TUViMTFRU0Ivaldq?=
- =?utf-8?B?V3orYk5pMUZHcTkwRGhQeVdVYktuUVAwcXBza2p5MGdxTTdaQVFPZHNLK2w4?=
- =?utf-8?B?T3czVHVrb0NJTXorU2FnQ0FHSkh1dEMxVjdBenUwQi9UbElNS3BVVmZjYWdW?=
- =?utf-8?B?RDJwYTN1M0VINFhYc0VyMmllTEhNVWJiWjBrbDk2Znk2TzdoZkpVL3pSWDUx?=
- =?utf-8?B?ZGVZM0FsSUt2M0Q2T3FuQlM0WGsrQlcremNOZW1iSmZYVUtqR1JCZnVaZFlq?=
- =?utf-8?B?RmFvZUxIZFR3Zm9VNk1OLzdSMmt1Sm5NQ01QUENWRzB0U2IwY2ZNM1FyQ0lX?=
- =?utf-8?B?dlF2THcyY0FVYXFPdmd4YnZISTNnR3JrSFh3QW84SXV6dUZZbFlqTzFQYnpD?=
- =?utf-8?B?MDl5QUR2VGRBL0dQci9BWnN0UzhERjYrS1NvOHhhMjhJQWJhU1Z1a1ZYeVd6?=
- =?utf-8?B?cVZobnJ4NzFUTGF1TUR2TG1TZHdBL2lBaXBURnBqUzhMR2xzNFVHYUV4N3Zw?=
- =?utf-8?B?SEZRclRCRUpUNXh0MEhySklzOEp6cFZ3ZGRqYmN2eXlRSHZuU0QzRmhsN2Vl?=
- =?utf-8?B?bVkvT0pIbVRyd2VzdDZFblZacUdwM0Q1YjVCQUxUT0dHMHkyWUZpLytBc1pi?=
- =?utf-8?B?ejEySlZrcFZmWnR6dWdYazZxcFZMN2tvY0t2TWEvcGg0Umx3Y2pnK1dITkxY?=
- =?utf-8?B?Y2hTQnJxbllRaDJMMHFhTTNXTWxaVGw3ejFZRU44cVpZRWpKVE5uZ2pibHg0?=
- =?utf-8?B?SjYyMDNtQVVrRlZUS2tWSDkzdWYvcGxJSW5QUE14MXVHcU9Ea1lndE1mT1Zh?=
- =?utf-8?B?SnJPY3cyTWU0SzZHN1RnRVBob1dPK0xKdkVQZ003YW93Nnhua0FKdXhTQ0xI?=
- =?utf-8?B?UHFQbVhHZ3poMUZHendkN0FZWXlnd2ZKUXU0SFZrR1F1RVEwS2llbXo3S0sz?=
- =?utf-8?B?U0JsandhTWdDZUprYk56L2hzQ01mdFZrQ3RGVWZKQVZnWmlicjVROG92VXI4?=
- =?utf-8?B?Q1REb1lCN01kWXgwWksrd0RGQ3k5L1dXQU9YaGFQbndBWHJOY1BVYzlUbFow?=
- =?utf-8?B?Y1piZnpvK2grQ0VuVEtVWW03K1lQeUtHRHViYnJLaE5DWDdkazVxTm1CampX?=
- =?utf-8?B?eWFwM2FXVlZUMEVxbks3dnBZNmg5K0FuVjZkS0YzM25rVFFnekp0V1E0V3R2?=
- =?utf-8?B?VGpIRHA4QlRoRGJtNHd3Y2pUM1dscGhrQ3VYMzdSYkdoU1pWMkUrRFU1OUNy?=
- =?utf-8?B?dWFveUdrWFdETHN6WWp6Wm40QitoUm9zOU1ZOUhJK3cvTHRTNWl1SWRGMkxz?=
- =?utf-8?B?bHhMaWx3RmRPVFpVUVdUREg5ZjFzTm8zSUdRMEVlWEN6K2xDQWdZVkNwR1Nn?=
- =?utf-8?B?ZEl1cHdXN0hTemRzTklIQTlLdmIzR2wrWllaYUxFdGI0RktadjJtSjNneGx6?=
- =?utf-8?B?eE1PV205cnhlTFllUDdBdmR6S21Qc1NNbWE2WS8vaUtYNG9nQjVwYU92a1p6?=
- =?utf-8?B?VTJqZzlvSENxYW9qWG8vYkNoVnRrMVcrZkNXZUgvbkJUZmlVUWNOY09qbHN3?=
- =?utf-8?B?Y3dRYlIwNHkxSlNtLzNuMDRCYzM4eFlVdlJ2a0NVSldzNS8rVzhVUVc4NDBU?=
- =?utf-8?B?NjBkbGtuWVdOUndRSExVTncyRDJOQk5IbUZaaHJSU1BZZVJNN1ZrVElDVEE4?=
- =?utf-8?B?d1B6TmNuL05OLzJuMjhOVzIxRjArUEZrczRtb0FGYjEyRkhyM05lSG93ek01?=
- =?utf-8?Q?2lbG0AP01BQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ5PPF7DCFBC32A.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(7053199007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YlNHSHE1ZUFjTk1iVThDTUZtZC8vR0x1T0kwWjJKUUE0dk14azVnRlpZT0Iv?=
- =?utf-8?B?VkMzOXRLbmF3SldUbEFpMWRpTUhnNER0MnpJNTI3YkZmd1dDUDdMRS9INllo?=
- =?utf-8?B?UmJSNFlUaC9vNzF4RG5DSGx5NGNjTHladkdMZW9hWlFyZ2lxM1pwVWVjRDgz?=
- =?utf-8?B?WnZ4NzNVUDVQaFVkdFl5d211SmZDRUluSUM5UVJJeVJjdXRzNmwxNE9hZ2ZU?=
- =?utf-8?B?aW9jQ0NPbDhHMWtGb2RzQ0lsSW50ZW1LaS9NNlFob3ZHb05La0l0aFdzMVl6?=
- =?utf-8?B?ejRORy9SRmZKZHFHUjJIQ25RWEgvdGUxaUt4UFpNbkdmQ1ljSlJlTUpDT1ZP?=
- =?utf-8?B?WDJKVEpLSVJLYkd1K1h3R2N0WDJLMkxxSzdia2M5YkJ5MDFDb2hSTWR4amFO?=
- =?utf-8?B?bGI3ZFlEbHBwYm5reWUrOWN6ZTR0OG5jR20rcjF3NG02dlZHT0Nzc3loaTdC?=
- =?utf-8?B?WUswOXoyczE1emVXQjQyaDJQdWY2Y1B5K1cxUVVIbHYxUE5saDZWQlVTblBS?=
- =?utf-8?B?a3VydjU1SmMxemdPaWhMRGVNY09tYlY0ejF0cmRUelltdThIYjlFSmgybDZY?=
- =?utf-8?B?YXU5U1Y3ZFhCamdpMDc5YitNKzZiTGtjbU52YjlIa085UUt6WHEvQVg4elhK?=
- =?utf-8?B?UHNJd2tuZzRzdWRJUjhFQ1VLenBqOHRaWUFGN0daWEhXSGdyVTdjblZicmtE?=
- =?utf-8?B?ZXlQZ0NsSllCN2p0Q1hpcU83T0RZbEYrc1BoWXMycjczdy9PcWdmVUdpcFhZ?=
- =?utf-8?B?bW9VVDlLaHdIekFWNGlhOHpRVXFoQ2c1K0hzazBUQXYvTmtzNlZkZUdScUgz?=
- =?utf-8?B?aVJwTG5XNVNicmw4ODJsTWZOZWd5dWt2dVJJWVUvNkM2cTdDMnNCVWp4VUFv?=
- =?utf-8?B?R0ZOcnR4eFBOdk50M251R0EwWkwxWHltQ29NTzBybEdPTFZzenhtTHBiem4y?=
- =?utf-8?B?SEhERDBPbkhXc0pQM0hNS2JXNnlCeDl6Yy8weGJjMUhJdDdiSUhEOStWWVU0?=
- =?utf-8?B?Q0wvN3hSOHFLOUJRWG9HV0paSGVHdWF1bU5qanhkVVlQc1BUTkc2UisveXox?=
- =?utf-8?B?T0ZDYUx4a3gyWFlVd0drZ211cTdqc2t0eTZmQkRwWmdXZHNOSWJVdGMrQStE?=
- =?utf-8?B?V3RIZ1NBQk1iQWFROW1CN0tiNXQ4ZVdYSGZ2ODdkVjA1ZCtoMTRLYTgzNTh0?=
- =?utf-8?B?WGY5a0xyUzJSTTlQT3hKMHlZclFrSU8ycGpkOUxIbXNIM1pxbWJqM2NrWkly?=
- =?utf-8?B?WFlvQitYWkxsSXdZdmJGakZiRzhGc0VtcnBvaVZYTjc1aU9VSlZwZ05kbm1L?=
- =?utf-8?B?d0VJMU9aU0ZsKzY5SndSQUlGbC84ejJCTmRQUGx1dVkrRHcyaGdLM1h1dk5m?=
- =?utf-8?B?bmtBMDNLVERWNjFYVzZlRzJadTBTWHpJREJNbFBncUJxWHIyN21FWkdqNGtG?=
- =?utf-8?B?a2ZGV1JoT3VLa3JSUjQzVTFTRDh5bkcwVnc0c1dsK1lpa0xvNFVnR3FqTHVM?=
- =?utf-8?B?ZWEwMjA4ZEFPSk1yUmtaa3JydnQ2aEZWTHdaaVNtZXFHWUkvd0krVDNURjVz?=
- =?utf-8?B?M0tFVzFzR29HNzFlQTIyTDlYK0I4aWZhK3B3WVIvWUtBMW1weUhubk1IVmsy?=
- =?utf-8?B?UDZPYmw4blJ0R1NuSmRHNjJsaVZOTGlTaU9GV1phZVVEcGdXMndhRTVmcWhu?=
- =?utf-8?B?Rkh6VTlSMHVtVlZjU1Z5Y1JGcmVpeHIvL25XdEUyQTVjdjFWOW4wVnVJYklY?=
- =?utf-8?B?Szl0cGhKV0ltbFJncjJZM1pUbzBLVGJ4WnlJYzV6NEtuUGVNMnVlVUtrM2lB?=
- =?utf-8?B?UGU2UFJhbHhTOWd1cGNlYzhGYXZWdzRiYVJRTEcweW02d01ldHQ3WVQrQVpj?=
- =?utf-8?B?cVZ5ZGl4NTM5eXpJaDdvWTFHZHd5L0UvcWxOYWhHQ3c1Zmc2WGZJM2luZUE0?=
- =?utf-8?B?cGVqa2pWVXRiUlRFSlBSM3V6U2ordVFUSDFOeWJidWhQQ3cwMk1oN0FOS05F?=
- =?utf-8?B?S216MXVibE9RT3BlYlVUTkFKcWxoRS9GUU1FeUdUSG5jOVZKZ0xyM0pvSWEr?=
- =?utf-8?B?ZVk2ODVaNG1iRXpkN252OElYSVE4RGJHRW9WYU0vMEcrVk9ycmJuNUgyNHdo?=
- =?utf-8?Q?w+QsOqLFT+/rY+Tz5MeXoi0Cm?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c4d902d-68e0-4f61-b720-08ddbee8b233
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 13:01:18.9655 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tlzMj49Fc+rrTIZm35R3G+kU9bTXIfqiwQOaNsQSUDKo7GogX5gAx8x0/TpvpkE55AUJNPJzaClAOn5Qb3EJMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6865
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -199,55 +65,607 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-W dniu 08.07.2025 o 17:28, Kamil Konieczny pisze:
-> Add symlinks for i915 testlists to make transition easier.
->
-> v4: use 'i915.' prefix for fast-feedback (Swati)
->
-> Cc: Michal Czaplinski <michal.czaplinski@intel.com>
-> Suggested-by: Ryszard Knop <ryszard.knop@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Adds compute workload scheduling and execution on multiple CCS engines
+available. This also adds logic to show EU busyness information on console
+during workload execution on multiple CCS engine instances.
 
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+---
+ lib/intel_compute.c      |  34 ++-
+ lib/intel_compute.h      |   2 +
+ tests/intel/xe_compute.c | 475 ++++++++++++++++++++++++++++++++++++++-
+ tests/meson.build        |   1 +
+ 4 files changed, 505 insertions(+), 7 deletions(-)
 
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index 147dd2916..e1685788c 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -255,8 +255,14 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
+ 				break;
+ 			}
+ 
+-			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
+-							 placement, flags);
++			if (!execenv->user)
++				bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
++								 placement, flags);
++			else if (execenv->user)
++				bo_dict[i].handle = xe_bo_create_caching(fd, execenv->vm,
++									 bo_dict[i].size,
++									 placement, flags,
++									 DRM_XE_GEM_CPU_CACHING_WC);
+ 			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
+ 			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
+ 					 bo_dict[i].size, &sync, 1);
+@@ -1849,10 +1855,26 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 				    OFFSET_KERNEL, 0, false,
+ 				    execenv.array_size);
+ 
+-	bo_execenv_exec(&execenv, ADDR_BATCH);
+-
+-	if (!user || (user && !user->skip_results_check))
+-		bo_check_square(input_data, output_data, execenv.array_size);
++	if (user && user->loop_kernel_duration) {
++		bo_execenv_exec_async(&execenv, ADDR_BATCH);
++		igt_measured_usleep(user->loop_kernel_duration);
++		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
++		bo_execenv_sync(&execenv);
++		user->skip_results_check = 1;
++	} else
++		bo_execenv_exec(&execenv, ADDR_BATCH);
++
++	for (int i = 0; i < execenv.array_size; i++) {
++		float input = input_data[i];
++		float output = output_data[i];
++		float expected_output = input * input;
++
++		if (output != expected_output)
++			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
++					i, input, output, expected_output);
++		if (!user || (user && !user->skip_results_check))
++			igt_assert_eq_double(output, expected_output);
++	}
+ 
+ 	bo_execenv_unbind(&execenv, bo_dict, entries);
+ 	bo_execenv_destroy(&execenv);
+diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+index 412791d07..19977933f 100644
+--- a/lib/intel_compute.h
++++ b/lib/intel_compute.h
+@@ -63,6 +63,8 @@ struct user_execenv {
+ 	uint64_t input_addr;
+ 	/** @output_addr: override default address of the output array if provided */
+ 	uint64_t output_addr;
++	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
++	uint32_t loop_kernel_duration;
+ };
+ 
+ enum execenv_alloc_prefs {
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index 5e9140902..addacc331 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
+@@ -12,6 +12,7 @@
+  */
+ 
+ #include <string.h>
++#include <sys/ioctl.h>
+ 
+ #include "igt.h"
+ #include "igt_sysfs.h"
+@@ -19,6 +20,39 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ 
++#include "igt_device.h"
++#include "tools/gputop/xe_gputop.h"
++#include "igt_drm_clients.h"
++
++/**
++ * Number of supported drivers needs to be adjusted as per the length of
++ * the drivers[] array.
++ */
++#define	NUM_DRIVER	1
++#define	LOOP_DURATION	(1000000ull)
++#define engine_ptr(pmu_device, n)	(&(pmu_device)->engine + (n))
++#define NS_SLEEP	(1000000ull)
++
++enum utilization_type {
++	UTILIZATION_TYPE_ENGINE_TIME,
++	UTILIZATION_TYPE_TOTAL_CYCLES,
++};
++
++bool workload_sched;
++
++pthread_barrier_t barrier;
++struct thread_data {
++	pthread_t thread;
++	pthread_mutex_t *mutex;
++	pthread_cond_t *cond;
++	int class;
++	int fd;
++	int gt;
++	struct user_execenv *execenv;
++	struct drm_xe_engine_class_instance *eci;
++	bool *go;
++};
++
+ static int gt_sysfs_open(int gt)
+ {
+ 	int fd, gt_fd;
+@@ -203,12 +237,447 @@ test_compute_square(int fd)
+ 		      "GPU not supported\n");
+ }
+ 
++static void
++*intel_compute_thread(void *data)
++{
++	struct thread_data *t = (struct thread_data *)data;
++
++	usleep(3 * NS_SLEEP);
++
++	igt_info("Compute kernel executing on engine class :%s instance :%d gt: GT-%d\n",
++			xe_engine_class_string(t->eci->engine_class), t->eci->engine_instance,
++			t->eci->gt_id);
++
++	pthread_mutex_lock(t->mutex);
++	while (*t->go == 0)
++		pthread_cond_wait(t->cond, t->mutex);
++	pthread_mutex_unlock(t->mutex);
++
++	workload_sched = true;
++	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd,
++				t->eci,
++				t->execenv,
++				EXECENV_PREF_VRAM_IF_POSSIBLE),
++			"Unable to run compute kernel successfully\n");
++	workload_sched = false;
++	return NULL;
++}
++
++static volatile bool stop_top;
++
++static const char
++*class_display_name(unsigned int class)
++{
++	switch (class) {
++	case DRM_XE_ENGINE_CLASS_RENDER:
++		return "Render/3D";
++	case DRM_XE_ENGINE_CLASS_COPY:
++		return "Blitter";
++	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
++		return "Video";
++	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
++		return "VideoEnhance";
++	case DRM_XE_ENGINE_CLASS_COMPUTE:
++		return "Compute";
++	default:
++		return "[unknown]";
++	}
++}
++
++static char *pmu_name(int fd)
++{
++	char device[30];
++
++	xe_perf_device(fd, device, sizeof(device));
++
++	return strdup(device);
++}
++
++static int
++_open_pmu(uint64_t type, unsigned int *cnt,
++	  struct xe_pmu_counter *pmu, int *fd)
++{
++	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
++
++	if (fd__ >= 0) {
++		if (*fd == -1)
++			*fd = fd__;
++		pmu->present = true;
++		pmu->idx = (*cnt)++;
++		pmu->fd = fd__;
++	}
++
++	return fd__;
++}
++
++static struct xe_pmu_device
++*xe_init_engines(int dev_fd)
++{
++	struct xe_pmu_device *engines;
++	struct drm_xe_engine *ccs_engine;
++	int ret = 0, engine_count = 0;
++	char device[30];
++	struct drm_xe_engine_class_instance *hwe;
++	int fd;
++	uint32_t engine_class, engine_instance, gt_shift;
++	uint64_t engine_active_config, engine_total_config;
++	uint64_t type = igt_perf_type_id(xe_perf_device(dev_fd, device, sizeof(device)));
++
++	xe_device_get(dev_fd);
++
++	xe_for_each_engine(dev_fd, hwe) {
++		ccs_engine = xe_find_engine_by_class(dev_fd, DRM_XE_ENGINE_CLASS_COMPUTE);
++		if (ccs_engine)
++			engine_count++;
++	}
++
++	engines = calloc(1, sizeof(struct xe_pmu_device) +
++			engine_count * sizeof(struct xe_engine));
++	if (!engines)
++		return NULL;
++
++	engines->num_engines = 0;
++	engines->device = pmu_name(dev_fd);
++	engines->fd = -1;
++	engines->num_counters = 0;
++
++	perf_event_format(engines->device, "gt", &gt_shift);
++	perf_event_format(engines->device, "engine_class", &engine_class);
++	perf_event_format(engines->device, "engine_instance", &engine_instance);
++	ret = perf_event_config(engines->device,
++			"engine-active-ticks",
++			&engine_active_config);
++	if (ret < 0)
++		return NULL;
++	ret = perf_event_config(engines->device,
++			"engine-total-ticks",
++			&engine_total_config);
++	if (ret < 0)
++		return NULL;
++	xe_for_each_engine(dev_fd, hwe) {
++		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
++			uint64_t  param_config;
++			struct xe_engine *engine;
++
++			engine = engine_ptr(engines, engines->num_engines);
++			param_config = (uint64_t)hwe->gt_id << gt_shift |
++						hwe->engine_class << engine_class |
++						hwe->engine_instance << engine_instance;
++			engine->drm_xe_engine = *hwe;
++			engine->engine_active_ticks.config = engine_active_config | param_config;
++			engine->engine_total_ticks.config = engine_total_config | param_config;
++
++			if (engine->engine_active_ticks.config == -1 ||
++					engine->engine_total_ticks.config == -1) {
++				ret = ENOENT;
++				break;
++			}
++
++			ret = asprintf(&engine->display_name, "%s/%u",
++					class_display_name(engine->drm_xe_engine.engine_class),
++					engine->drm_xe_engine.engine_instance);
++
++			if (ret <= 0) {
++				ret = errno;
++				break;
++			}
++
++			fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
++					&engines->fd);
++			if (fd < 0)
++				return NULL;
++
++			fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
++					&engines->fd);
++			if (fd < 0)
++				return NULL;
++
++			engines->num_engines++;
++		}
++	}
++
++	if (!ret) {
++		errno = ret;
++		return NULL;
++	}
++
++	return engines;
++}
++
++static void
++eu_util_free(struct xe_pmu_device *pmu_device)
++{
++	struct xe_engine *eng;
++	struct xe_pmu_counter pmu;
++
++	igt_info("EU cleanup process\n");
++
++	if (pmu_device) {
++		for (int j = 0; j < pmu_device->num_engines ; j++) {
++			eng = engine_ptr(pmu_device, j);
++			if (eng->display_name)
++				free(eng->display_name);
++
++			pmu = eng->engine_active_ticks;
++			if (pmu.present)
++				close(pmu.fd);
++
++			pmu = eng->engine_total_ticks;
++			if (pmu.present)
++				close(pmu.fd);
++		}
++		free(pmu_device);
++	}
++}
++
++static void
++update_sample(struct xe_pmu_counter *counter, uint64_t *val)
++{
++	if (counter->present) {
++		counter->val.prev = counter->val.cur;
++		counter->val.cur = val[counter->idx];
++	}
++}
++
++static void xe_pmu_device_sample(const void *obj)
++{
++	struct xe_pmu_device *engines = ((struct xe_pmu_device *)obj);
++	const int num_val = engines->num_counters;
++	uint64_t val[2 + num_val];
++	uint64_t buf[2 + num_val];
++	unsigned int i;
++	ssize_t len;
++
++	memset(buf, 0, sizeof(buf));
++	len = read(engines->fd, buf, sizeof(buf));
++	assert(len == sizeof(buf));
++
++	for (i = 0; i < num_val; i++)
++		val[i] = buf[2 + i];
++
++	for (i = 0; i < engines->num_engines; i++) {
++		struct xe_engine *engine = engine_ptr(engines, i);
++
++		update_sample(&engine->engine_active_ticks, val);
++		update_sample(&engine->engine_total_ticks, val);
++	}
++}
++
++static double
++pmu_active_percentage(struct xe_engine *engine)
++{
++	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
++		engine->engine_active_ticks.val.prev;
++	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
++		engine->engine_total_ticks.val.prev;
++	double percentage;
++
++	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
++	return percentage;
++}
++
++static void xe_print_perc(const void *obj)
++{
++	struct xe_pmu_device *pmu_device = ((struct xe_pmu_device *)obj);
++
++	for (unsigned int i = 0; i < pmu_device->num_engines; i++) {
++		double percentage;
++		struct xe_engine *engine = engine_ptr(pmu_device, i);
++
++		igt_assert(engine);
++
++		percentage = pmu_active_percentage(engine);
++
++		if (engine->drm_xe_engine.engine_class == DRM_XE_ENGINE_CLASS_COMPUTE &&
++		    !workload_sched) {
++			igt_info("Engine_instance :%d EU busyness :%5.1f\n",
++				  engine->drm_xe_engine.engine_instance,
++				   percentage);
++			if (!percentage)
++				igt_info("No workload scheduled, BU busyness :%5.1f expected\n",
++					  percentage);
++			else
++				igt_info("Workload scheduled, BU busyness :%5.1f expected\n",
++					  percentage);
++		} else if (engine->drm_xe_engine.engine_class == DRM_XE_ENGINE_CLASS_COMPUTE &&
++			   workload_sched) {
++			igt_info("Engine_instance :%d EU busyness :%5.1f\n",
++				  engine->drm_xe_engine.engine_instance, percentage);
++			if (!percentage)
++				igt_info("No workload scheduled, BU busyness :%5.1f expected\n",
++					  percentage);
++			else
++				igt_info("Workload scheduled, BU busyness :%5.1f expected\n",
++					  percentage);
++		}
++	}
++}
++
++static void *show_eu_util(void *data)
++{
++	struct igt_drm_clients *clients = NULL;
++	struct xe_pmu_device *pmu_device = NULL;
++	int dev_fd;
++	long n;
++
++	dev_fd = drm_open_driver(DRIVER_XE);
++
++	pmu_device = xe_init_engines(dev_fd);
++	if (!pmu_device) {
++		fprintf(stderr,
++				"Failed to initialize engines! (%s)\n",
++				strerror(errno));
++		return NULL;
++	}
++
++	xe_pmu_device_sample(pmu_device);
++
++	clients = igt_drm_clients_init(NULL);
++	if (!clients)
++		exit(1);
++	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
++	while ((n != 0) && !stop_top) {
++		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
++		xe_pmu_device_sample(pmu_device);
++		xe_print_perc(pmu_device);
++		usleep(2 * NS_SLEEP);
++	}
++	igt_drm_clients_free(clients);
++	eu_util_free(pmu_device);
++	drm_close_driver(dev_fd);
++
++	return NULL;
++}
++
++static void
++thread_init_eu_utils(void)
++{
++	pthread_t eu_utils;
++	int fd;
++	uint16_t dev_id;
++
++	fd = drm_open_driver(DRIVER_XE);
++	dev_id = intel_get_drm_devid(fd);
++
++	/* Creating thread to display EU utilization in BMG */
++	if (IS_BATTLEMAGE(dev_id))
++		pthread_create(&eu_utils, NULL, show_eu_util, NULL);
++}
++
++/**
++ * SUBTEST: eu-busy-10-sec
++ * Functionality: OpenCL kernel
++ * Description:
++ *      Run an openCL long rinning Kernel that returns output[i] = input[i] * input[i],
++ */
++static void
++test_eu_busy(int fd, int num_gt, u32 duration_sec)
++{
++	struct user_execenv execenv = { 0 };
++	struct thread_data *threads_data;
++	struct drm_xe_engine_class_instance *hwe;
++	const struct intel_compute_kernels *kernels;
++	pthread_mutex_t mutex;
++	pthread_cond_t cond;
++	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
++	bool go = false;
++	int ccs_mode, gt_fd;
++	u32 num_slices, ip_ver;
++
++	fd = drm_open_driver(DRIVER_XE);
++	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
++	kernels = intel_compute_square_kernels;
++	drm_close_driver(fd);
++
++	for (gt = 0; gt < num_gt; gt++) {
++		if (!get_num_cslices(gt, &num_slices))
++			continue;
++
++		gt_fd = gt_sysfs_open(gt);
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 2) > 0);
++		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
++		close(gt_fd);
++	}
++
++	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
++		      ccs_mode);
++
++	fd = drm_open_driver(DRIVER_XE);
++	thread_init_eu_utils();
++
++	while (kernels->kernel) {
++		if (ip_ver == kernels->ip_ver)
++			break;
++		kernels++;
++	}
++
++	/*If loop_kernel_duration not set user should use different
++	 *kernel and size
++	 *use with loop kernel and loop duration it assumes we stop
++	 *it via memory write
++	 */
++
++	execenv.loop_kernel_duration = duration_sec;
++	execenv.kernel = kernels->loop_kernel;
++	execenv.kernel_size = kernels->loop_kernel_size;
++	for (gt = 0; gt < num_gt; gt++) {
++		xe_for_each_engine(fd, hwe) {
++			igt_assert(hwe);
++			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
++				++n_instances;
++		}
++	}
++
++	threads_data = calloc(n_instances, sizeof(*threads_data));
++	igt_assert(threads_data);
++
++	pthread_mutex_init(&mutex, 0);
++	pthread_cond_init(&cond, 0);
++
++	for (gt = 0; gt < num_gt; gt++) {
++		xe_for_each_engine(fd, hwe) {
++			if (hwe->gt_id != gt ||
++					hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++				continue;
++
++			threads_data[i].mutex = &mutex;
++			threads_data[i].cond = &cond;
++			threads_data[i].fd = fd;
++			threads_data[i].eci = hwe;
++			threads_data[i].go = &go;
++			threads_data[i].execenv = &execenv;
++			++n_threads;
++			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
++					&threads_data[i]);
++			++i;
++			++iterations;
++			usleep(2 * NS_SLEEP);
++		}
++
++		pthread_mutex_lock(&mutex);
++		go = true;
++		pthread_cond_broadcast(&cond);
++		pthread_mutex_unlock(&mutex);
++
++		for (int val = 0; val < i; ++val)
++			pthread_join(threads_data[val].thread, NULL);
++
++		i = 0;
++		n_threads = 0;
++		iterations = 0;
++		stop_top = true;
++	}
++	free(threads_data);
++	drm_close_driver(fd);
++}
++
+ igt_main
+ {
+-	int xe;
++	int xe, num_gt;
+ 
+ 	igt_fixture {
+ 		xe = drm_open_driver(DRIVER_XE);
++		num_gt = xe_number_gt(xe);
+ 	}
+ 
+ 	igt_subtest("compute-square")
+@@ -223,4 +692,8 @@ igt_main
+ 
+ 	igt_subtest("ccs-mode-compute-kernel")
+ 		test_compute_kernel_with_ccs_mode();
++
++	/* test to check available EU utilisation for multi_ccs */
++	igt_subtest("eu-busy-10-sec")
++		test_eu_busy(xe, num_gt, 10 * LOOP_DURATION);
+ }
+diff --git a/tests/meson.build b/tests/meson.build
+index 9b87a0d24..7945f68f8 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -405,6 +405,7 @@ extra_dependencies = {
+ 	'sw_sync': [ libatomic ],
+ 	'xe_fault_injection': [ lib_igt_xe_oa ],
+ 	'xe_oa': [ lib_igt_xe_oa ],
++	'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math ],
+ }
+ 
+ test_executables = []
+-- 
+2.43.0
 
-Regards
-
-Andrzej
-
-
-
-> ---
->   tests/intel-ci/chamelium-only.testlist               | 1 +
->   tests/intel-ci/fast-feedback-chamelium-only.testlist | 1 +
->   tests/intel-ci/fast-feedback.testlist                | 1 +
->   3 files changed, 3 insertions(+)
->   create mode 120000 tests/intel-ci/chamelium-only.testlist
->   create mode 120000 tests/intel-ci/fast-feedback-chamelium-only.testlist
->   create mode 120000 tests/intel-ci/fast-feedback.testlist
->
-> diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
-> new file mode 120000
-> index 000000000..3715a9469
-> --- /dev/null
-> +++ b/tests/intel-ci/chamelium-only.testlist
-> @@ -0,0 +1 @@
-> +i915.chamelium-only.testlist
-> \ No newline at end of file
-> diff --git a/tests/intel-ci/fast-feedback-chamelium-only.testlist b/tests/intel-ci/fast-feedback-chamelium-only.testlist
-> new file mode 120000
-> index 000000000..44d83f366
-> --- /dev/null
-> +++ b/tests/intel-ci/fast-feedback-chamelium-only.testlist
-> @@ -0,0 +1 @@
-> +i915.fast-feedback-chamelium-only.testlist
-> \ No newline at end of file
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> new file mode 120000
-> index 000000000..88e9d80e0
-> --- /dev/null
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -0,0 +1 @@
-> +i915.fast-feedback.testlist
-> \ No newline at end of file
