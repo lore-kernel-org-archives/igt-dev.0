@@ -4,28 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D599C83F03
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Jul 2025 05:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5B95C83F03
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Jul 2025 05:27:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AAEF310E712;
-	Wed,  9 Jul 2025 05:08:26 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0F8610E712;
- Wed,  9 Jul 2025 05:08:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4600879320191298421=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B9F510E717;
+	Wed,  9 Jul 2025 05:27:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hQktwSyj";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7285A10E717
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jul 2025 05:27:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752038827; x=1783574827;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0TEX2++zimuQ0lIRMBisyCmz7Dld3o8mSkQCSliX+vs=;
+ b=hQktwSyjBLiarZIBG97DCruXcO9FeLyVuMsw+is6nOioZ7PyiQh/BtSM
+ tJ41eJ4JNCMqsYSyQM7Aw/swtvlxEHgzSFCnJTaHZ2rmV88BYEwThNhnL
+ bKAfJm220FhY7PGfr1sfjj+4hbWqztHwsw2GLnYgGSIVs2ZfoC/xfLN14
+ rZ/0acUi/7V0OA8Ly0qKPj0FrCOYHFAcJIHVsbFlfta1gOR7EC9FPZ/6N
+ k+tEr95Gydi08faSL3DHYNJfSAoIGaoRyKCGK7BRS0m+hybDDDhE/Ngvu
+ y3A48mHvUHldKmbznPFuVxnhOO+HHCP71YUtmJOKi+Q9cq+4YTj3+kLdx Q==;
+X-CSE-ConnectionGUID: 1mDCLaEZTPOVyrWxOtFRng==
+X-CSE-MsgGUID: oc/93js5RluqG4Hyt3+8FQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="64537115"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="64537115"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jul 2025 22:27:07 -0700
+X-CSE-ConnectionGUID: XX02QpiYSNi04ZnUmC7NpQ==
+X-CSE-MsgGUID: vV0sAJwORrmcH/iMvELdjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="156254871"
+Received: from unknown (HELO cs1n2.iind.intel.com) ([10.223.104.22])
+ by fmviesa008.fm.intel.com with ESMTP; 08 Jul 2025 22:27:05 -0700
+From: Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: khaled.almahallawy@intel.com, jeevaka.badrappan@intel.com,
+ Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
+Subject: [PATCH i-g-t] tools/intel_dp_compliance: Enabling XE driver support
+Date: Wed,  9 Jul 2025 10:37:44 +0530
+Message-ID: <20250709050744.3050283-1-disantkumar.isvarbhai.mistry@intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5B1?=
- =?utf-8?q?/3=5D_tests/intel/xe=5Fexec=5Fsystem=5Fallocator=3A_Add_section_t?=
- =?utf-8?q?o_trigger_64k_fault?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Brost" <matthew.brost@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 09 Jul 2025 05:08:25 -0000
-Message-ID: <175203770576.146216.16465136515146284030@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250709035821.712973-1-matthew.brost@intel.com>
-In-Reply-To: <20250709035821.712973-1-matthew.brost@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,181 +62,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4600879320191298421==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+i915 and XE driver has different api for mapping buffer. Enabling XE driver
+support by selecting XE driver specific map buffer api for XE devices.
 
-== Series Details ==
+Signed-off-by: Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
+----
+v2:
+ - Updated commit description
+---
+ tools/igt_dp_compliance.h   |  1 +
+ tools/intel_dp_compliance.c | 43 +++++++++++++++++++++++++------------
+ 2 files changed, 30 insertions(+), 14 deletions(-)
 
-Series: series starting with [1/3] tests/intel/xe_exec_system_allocator: Add section to trigger 64k fault
-URL   : https://patchwork.freedesktop.org/series/151363/
-State : success
+diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
+index 226a13662871..b4357ca55733 100644
+--- a/tools/igt_dp_compliance.h
++++ b/tools/igt_dp_compliance.h
+@@ -33,6 +33,7 @@
+ #else
+ #include <glib.h>
+ #endif
++#include <xe/xe_ioctl.h>
+ 
+ extern int drm_fd;
+ 
+diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
+index 99196a450b45..2b2ffd402dc6 100644
+--- a/tools/intel_dp_compliance.c
++++ b/tools/intel_dp_compliance.c
+@@ -349,7 +349,14 @@ static void dump_info(void)
+ 	igt_dump_connectors_fd(drm_fd);
+ 	igt_dump_crtcs_fd(drm_fd);
+ }
+-
++static void *map_buffer(int fd, uint32_t handle, size_t size)
++{
++	if (is_xe_device(fd))
++		return xe_bo_mmap_ext(fd, handle, size, PROT_READ | PROT_WRITE);
++	else
++		return gem_mmap__device_coherent(fd, handle, 0, size,
++				PROT_READ | PROT_WRITE);
++}
+ static int setup_framebuffers(struct connector *dp_conn)
+ {
+ 
+@@ -361,15 +368,19 @@ static int setup_framebuffers(struct connector *dp_conn)
+ 	igt_assert(dp_conn->fb);
+ 
+ 	/* Map the mapping of GEM object into the virtual address space */
+-	dp_conn->pixmap = gem_mmap__device_coherent(drm_fd,
++
++	dp_conn->pixmap = map_buffer(drm_fd,
+ 					dp_conn->fb_video_pattern.gem_handle,
+-					0, dp_conn->fb_video_pattern.size,
+-					PROT_READ | PROT_WRITE);
++					dp_conn->fb_video_pattern.size);
++
+ 	if (dp_conn->pixmap == NULL)
+ 		return -1;
+ 
+-	gem_set_domain(drm_fd, dp_conn->fb_video_pattern.gem_handle,
++
++	if (is_i915_device(drm_fd))
++		gem_set_domain(drm_fd, dp_conn->fb_video_pattern.gem_handle,
+ 		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
++
+ 	dp_conn->fb_size = dp_conn->fb_video_pattern.size;
+ 
+ 	/* After filling the device memory with 0s it needs to be unmapped */
+@@ -391,15 +402,17 @@ static int setup_failsafe_framebuffer(struct connector *dp_conn)
+ 	igt_assert(dp_conn->failsafe_fb);
+ 
+ 	/* Map the mapping of GEM object into the virtual address space */
+-	dp_conn->failsafe_pixmap = gem_mmap__device_coherent(drm_fd,
++	dp_conn->failsafe_pixmap = map_buffer(drm_fd,
+ 						 dp_conn->fb_failsafe_pattern.gem_handle,
+-						 0, dp_conn->fb_failsafe_pattern.size,
+-						 PROT_READ | PROT_WRITE);
++						 dp_conn->fb_failsafe_pattern.size);
++
+ 	if (dp_conn->failsafe_pixmap == NULL)
+ 		return -1;
+ 
+-	gem_set_domain(drm_fd, dp_conn->fb_failsafe_pattern.gem_handle,
+-		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
++
++	if (is_i915_device(drm_fd))
++		gem_set_domain(drm_fd, dp_conn->fb_failsafe_pattern.gem_handle,
++	       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+ 	dp_conn->failsafe_size = dp_conn->fb_failsafe_pattern.size;
+ 
+ 	/* After filling the device framebuffer the mapped memory needs to be freed */
+@@ -428,14 +441,16 @@ static int setup_video_pattern_framebuffer(struct connector *dp_conn)
+ 	igt_assert(dp_conn->test_pattern.fb);
+ 
+ 	/* Map the mapping of GEM object into the virtual address space */
+-	dp_conn->test_pattern.pixmap = gem_mmap__device_coherent(drm_fd,
++
++	dp_conn->test_pattern.pixmap = map_buffer(drm_fd,
+ 						     dp_conn->test_pattern.fb_pattern.gem_handle,
+-						     0, dp_conn->test_pattern.fb_pattern.size,
+-						     PROT_READ | PROT_WRITE);
++						     dp_conn->test_pattern.fb_pattern.size);
++
+ 	if (dp_conn->test_pattern.pixmap == NULL)
+ 		return -1;
+ 
+-	gem_set_domain(drm_fd, dp_conn->test_pattern.fb_pattern.gem_handle,
++	if (is_i915_device(drm_fd))
++		gem_set_domain(drm_fd, dp_conn->test_pattern.fb_pattern.gem_handle,
+ 		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+ 
+ 	dp_conn->test_pattern.size = dp_conn->test_pattern.fb_pattern.size;
+-- 
+2.49.0
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8447 -> IGTPW_13436
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/index.html
-
-Participating hosts (45 -> 42)
-------------------------------
-
-  Missing    (3): bat-mtlp-8 fi-glk-j4005 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13436 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-jsl-1:          [PASS][1] -> [DMESG-WARN][2] ([i915#13827]) +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8447/bat-jsl-1/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/bat-jsl-1/igt@i915_selftest@live.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@load:
-    - bat-mtlp-9:         [DMESG-WARN][3] ([i915#13494]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8447/bat-mtlp-9/igt@i915_module_load@load.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/bat-mtlp-9/igt@i915_module_load@load.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live:
-    - bat-atsm-1:         [DMESG-FAIL][5] ([i915#12061] / [i915#13929]) -> [DMESG-FAIL][6] ([i915#12061] / [i915#14204])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8447/bat-atsm-1/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/bat-atsm-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-atsm-1:         [DMESG-FAIL][7] ([i915#13929]) -> [DMESG-FAIL][8] ([i915#14204])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8447/bat-atsm-1/igt@i915_selftest@live@mman.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/bat-atsm-1/igt@i915_selftest@live@mman.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
-  [i915#13827]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13827
-  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
-  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8447 -> IGTPW_13436
-  * Linux: CI_DRM_16826 -> CI_DRM_16829
-
-  CI-20190529: 20190529
-  CI_DRM_16826: 979c7404b39440741bb47c65938cb260bb76ccf4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16829: b56a996bf200253fd2df3518cb46613e37090e48 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13436: 13436
-  IGT_8447: 8447
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/index.html
-
---===============4600879320191298421==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [1/3] tests/intel/xe_exec_system_allocator: Add section to trigger 64k fault</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151363/">https://patchwork.freedesktop.org/series/151363/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8447 -&gt; IGTPW_13436</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/index.html</p>
-<h2>Participating hosts (45 -&gt; 42)</h2>
-<p>Missing    (3): bat-mtlp-8 fi-glk-j4005 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13436 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8447/bat-jsl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/bat-jsl-1/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13827">i915#13827</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_module_load@load:<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8447/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8447/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8447/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13436/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8447 -&gt; IGTPW_13436</li>
-<li>Linux: CI_DRM_16826 -&gt; CI_DRM_16829</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16826: 979c7404b39440741bb47c65938cb260bb76ccf4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16829: b56a996bf200253fd2df3518cb46613e37090e48 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13436: 13436<br />
-  IGT_8447: 8447</p>
-
-</body>
-</html>
-
---===============4600879320191298421==--
