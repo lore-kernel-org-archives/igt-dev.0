@@ -4,50 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A145C83F09
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Jul 2025 13:40:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CCC7C83F0A
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Jul 2025 15:22:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A04610E214;
-	Wed,  9 Jul 2025 13:40:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3502010E109;
+	Wed,  9 Jul 2025 15:22:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nSOn3ver";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OYtXSkjL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8960410E214
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jul 2025 13:40:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BCDF10E109
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jul 2025 15:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752068410; x=1783604410;
- h=from:to:subject:date:message-id:mime-version:
+ t=1752074578; x=1783610578;
+ h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=4w2itEHn2XVXJ5QZC+JItaCOyGGEuXfO207SfO/W4+M=;
- b=nSOn3ver7qCh9vkHyyvrqRwfpWrvCisMh0d+85bNNBnn8guKsQlJC/hY
- H9GNSlDeBjRn/eozt0Z20A5TKkmkU5xFxcWMi4xp4xIokfRIAvJHPd2qv
- +Ouv11BXJPeO+pl8CYHKCaqJZ1ag6AUM1Pb5Ss7q08ObsA3DGN99bNG5Z
- Nwy/l1Se49SzMx7M0TnfoS1Irf3NIvfXcKRSLpFjMo+LqHrrN7mrE2wHx
- F67elyaqvlOdy2PxljslHI2NaMwmKOGrJxh1qbWLFhEfnYgZjO5qchExy
- 9DaYWAsnwakY3gxj/11INHrIHh8QFNpxungDjQKJL+widqwb+85aIHPWv w==;
-X-CSE-ConnectionGUID: ibTCyeFrSZqH4QR2kzOGOA==
-X-CSE-MsgGUID: MUyVzJgRQUebuXgABE13nA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="65028307"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="65028307"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2025 06:40:10 -0700
-X-CSE-ConnectionGUID: Bre3Ljq/STWVFRTkt+gW1Q==
-X-CSE-MsgGUID: uSKyhykeT8WHuGoatGKQPw==
+ bh=Fbspjk80S3cJMMdWZTWU9sZ9WdBempC2YodOOIDrNzE=;
+ b=OYtXSkjLgBJHoz0kenw9VQw+oKmw4IHi+R288AlJugRnvEGikkk2/D6r
+ GMhkF/Cn0Fo4krqhJWcDabXjv6wgIBOjcRKiiaElaOaw1WFmaSVhRPckF
+ fdHeMLnERiBbuW7UdCGNxT6TQJyS1iXZb2ma+sM2WWTt2YyKnPyTMlLwl
+ 7a8SytsrQKxKpdCixhFSWEzZSomfMBmpqSk8tdtoi7GK8sCWCTJrfyOiF
+ 1YAeysyZtNmrRrD98+QF0ZIFFHBlbJTAaBI1b2yKsTaN3Has7Bhf6wxmw
+ v8rw8Q3iFLVdfI44wBH4wr8xZAV5T1bAprvr34rA0mWiBnbLdjX4yaB7x A==;
+X-CSE-ConnectionGUID: Jr4LmFDERQG9xZQgKmO1Qw==
+X-CSE-MsgGUID: 9wAip9BURqyvek4yOI3zEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54268096"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="54268096"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2025 08:22:58 -0700
+X-CSE-ConnectionGUID: 2uva1dSUTYSIQrAYbLeXQg==
+X-CSE-MsgGUID: 1U3l0C3oRiGl4TAdwGarmg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="156113955"
-Received: from unknown (HELO DUT2943PVC.iind.intel.com) ([10.190.215.47])
- by fmviesa009.fm.intel.com with ESMTP; 09 Jul 2025 06:40:08 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t v10] tests/intel/xe_compute: Add Compute workload
- Scheduling
-Date: Wed,  9 Jul 2025 13:40:07 +0000
-Message-ID: <20250709134007.870101-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="155440962"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2025 08:22:56 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, mohammed.thasleem@intel.com, jeevan.b@intel.com,
+ suraj.kandpal@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v4] tests/kms_content_protection: Add force HDCP 1.4
+ subtest
+Date: Wed,  9 Jul 2025 20:49:30 +0530
+Message-Id: <20250709151930.1034205-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,607 +69,360 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+If a Panel supports both HDCP1.4 and HDCP2.2 versions, the kernel will
+always choose the HDCP2.2 protection path and if this fails, then
+HDCP1.4 will be tried.
 
-Adds compute workload scheduling and execution on multiple CCS engines
-available. This also adds logic to show EU busyness information on console
-during workload execution on multiple CCS engine instances.
+The subtest uses debugfs support to force hdcp1.4 on the connector and
+verify content protection.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+V2: Use hdcp14 debugfs for all the supported subtests (Suraj).
+
+v3: Create new separate subtests for hdcp1.4 and hdcp2.2 for all the
+supported tests. (Suraj)
+
+v4: Add -hdcp14 suffix for subtests only for cases explicitly
+forcing hdcp1.4, retain original subtest names (eg atomic, type1)
+for default behaviour. (Suraj)
+
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- lib/intel_compute.c      |  34 ++-
- lib/intel_compute.h      |   2 +
- tests/intel/xe_compute.c | 475 ++++++++++++++++++++++++++++++++++++++-
- tests/meson.build        |   1 +
- 4 files changed, 505 insertions(+), 7 deletions(-)
+ tests/kms_content_protection.c | 154 ++++++++++++++++++++++++++++++---
+ 1 file changed, 142 insertions(+), 12 deletions(-)
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 147dd2916..e1685788c 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -255,8 +255,14 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
- 				break;
- 			}
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 51fc1d3be..4fa5d2c20 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -43,8 +43,8 @@
+ #include "igt_panel.h"
  
--			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
--							 placement, flags);
-+			if (!execenv->user)
-+				bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
-+								 placement, flags);
-+			else if (execenv->user)
-+				bo_dict[i].handle = xe_bo_create_caching(fd, execenv->vm,
-+									 bo_dict[i].size,
-+									 placement, flags,
-+									 DRM_XE_GEM_CPU_CACHING_WC);
- 			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
- 			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
- 					 bo_dict[i].size, &sync, 1);
-@@ -1849,10 +1855,26 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 				    OFFSET_KERNEL, 0, false,
- 				    execenv.array_size);
- 
--	bo_execenv_exec(&execenv, ADDR_BATCH);
--
--	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+	if (user && user->loop_kernel_duration) {
-+		bo_execenv_exec_async(&execenv, ADDR_BATCH);
-+		igt_measured_usleep(user->loop_kernel_duration);
-+		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
-+		bo_execenv_sync(&execenv);
-+		user->skip_results_check = 1;
-+	} else
-+		bo_execenv_exec(&execenv, ADDR_BATCH);
-+
-+	for (int i = 0; i < execenv.array_size; i++) {
-+		float input = input_data[i];
-+		float output = output_data[i];
-+		float expected_output = input * input;
-+
-+		if (output != expected_output)
-+			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-+					i, input, output, expected_output);
-+		if (!user || (user && !user->skip_results_check))
-+			igt_assert_eq_double(output, expected_output);
-+	}
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index 412791d07..19977933f 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -63,6 +63,8 @@ struct user_execenv {
- 	uint64_t input_addr;
- 	/** @output_addr: override default address of the output array if provided */
- 	uint64_t output_addr;
-+	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
-+	uint32_t loop_kernel_duration;
- };
- 
- enum execenv_alloc_prefs {
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 5e9140902..addacc331 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -12,6 +12,7 @@
+ /**
+- * SUBTEST: lic-type-0
+- * Description: Test for the integrity of link for type-0 content.
++ * SUBTEST: lic-type-0-hdcp14
++ * Description: Test for the integrity of link for type-0 content with HDCP1.4.
+  *
+  * SUBTEST: lic-type-1
+  * Description: Test for the integrity of link for type-1 content.
+@@ -65,6 +65,11 @@
+  * Description: Test to detect the HDCP status change when we are reading the
+  *              uevent sent with the corresponding connector id and property id.
+  *
++ * SUBTEST: uevent-hdcp14
++ * Description: Test to detect the status change when we are reading the
++ *              uevent sent with the corresponding connector id and property id
++ *              with HDCP1.4 content protection.
++ *
+  * SUBTEST: %s
+  * Description: Test content protection with %arg[1]
+  *
+@@ -74,6 +79,10 @@
+  * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
+  * @legacy:         legacy style commit
+  * @type1:          content type 1 that can be handled only through HDCP2.2.
++ * @legacy-hdcp14:  Test HDCP1.4 content protection with legacy style commit.
++ * @atomic-hdcp14:  Test HDCP1.4 content protection with atomic modesetting.
++ * @atomic-dpms-hdcp14: Test HDCP1.4 content protection with atomic modesetting and DPMS.
++ *
   */
  
- #include <string.h>
-+#include <sys/ioctl.h>
+ /**
+@@ -83,8 +92,10 @@
+  * arg[1]:
+  *
+  * @lic-type-0:   Type 0 with LIC
++ * @lic-type-0-hdcp14: Type 0 with LIC and HDCP1.4
+  * @lic-type-1:   Type 1 with LIC.
+  * @type-0:       Type 0
++ * @type-0-hdcp14: Type 0 with HDCP1.4
+  * @type-1:       Type 1
+  */
  
- #include "igt.h"
- #include "igt_sysfs.h"
-@@ -19,6 +20,39 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
+@@ -96,6 +107,7 @@ struct data {
+ 	struct igt_fb red, green;
+ 	unsigned int cp_tests;
+ 	struct udev_monitor *uevent_monitor;
++	bool is_force_hdcp14;
+ } data;
  
-+#include "igt_device.h"
-+#include "tools/gputop/xe_gputop.h"
-+#include "igt_drm_clients.h"
-+
-+/**
-+ * Number of supported drivers needs to be adjusted as per the length of
-+ * the drivers[] array.
-+ */
-+#define	NUM_DRIVER	1
-+#define	LOOP_DURATION	(1000000ull)
-+#define engine_ptr(pmu_device, n)	(&(pmu_device)->engine + (n))
-+#define NS_SLEEP	(1000000ull)
-+
-+enum utilization_type {
-+	UTILIZATION_TYPE_ENGINE_TIME,
-+	UTILIZATION_TYPE_TOTAL_CYCLES,
-+};
-+
-+bool workload_sched;
-+
-+pthread_barrier_t barrier;
-+struct thread_data {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	int class;
-+	int fd;
-+	int gt;
-+	struct user_execenv *execenv;
-+	struct drm_xe_engine_class_instance *eci;
-+	bool *go;
-+};
-+
- static int gt_sysfs_open(int gt)
- {
- 	int fd, gt_fd;
-@@ -203,12 +237,447 @@ test_compute_square(int fd)
- 		      "GPU not supported\n");
+ /* Test flags */
+@@ -581,6 +593,51 @@ static bool output_hdcp_capable(igt_output_t *output, int content_type)
+ 		return true;
  }
  
-+static void
-+*intel_compute_thread(void *data)
++static void set_i915_force_hdcp14(igt_output_t *output)
 +{
-+	struct thread_data *t = (struct thread_data *)data;
++	int fd, ret;
++	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
 +
-+	usleep(3 * NS_SLEEP);
++	fd = igt_debugfs_connector_dir(data.drm_fd, output->name, O_RDONLY);
++	igt_require_f(fd >= 0, "Cannot open %s debugfs\n", output->name);
 +
-+	igt_info("Compute kernel executing on engine class :%s instance :%d gt: GT-%d\n",
-+			xe_engine_class_string(t->eci->engine_class), t->eci->engine_instance,
-+			t->eci->gt_id);
++	ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf, sizeof(buf));
++	if (ret <= 0) {
++		igt_info("i915_force_hdcp14 not supported\n");
++		close(fd);
++		return;
++	}
 +
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
++	ret = igt_sysfs_write(fd, "i915_force_hdcp14", "1", 2);
++	igt_require_f(ret > 0, "i915_force_hdcp14 is not enabled\n");
 +
-+	workload_sched = true;
-+	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd,
-+				t->eci,
-+				t->execenv,
-+				EXECENV_PREF_VRAM_IF_POSSIBLE),
-+			"Unable to run compute kernel successfully\n");
-+	workload_sched = false;
-+	return NULL;
++	ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf, sizeof(buf));
++	igt_assert_f(ret > 0 && strstr(buf, "yes"),
++			 "i915_force_hdcp14 is not set to 'yes' on %s debugfs\n",
++			 output->name);
++
++	close(fd);
 +}
 +
-+static volatile bool stop_top;
-+
-+static const char
-+*class_display_name(unsigned int class)
++static void reset_i915_force_hdcp14(igt_output_t *output)
 +{
-+	switch (class) {
-+	case DRM_XE_ENGINE_CLASS_RENDER:
-+		return "Render/3D";
-+	case DRM_XE_ENGINE_CLASS_COPY:
-+		return "Blitter";
-+	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
-+		return "Video";
-+	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-+		return "VideoEnhance";
-+	case DRM_XE_ENGINE_CLASS_COMPUTE:
-+		return "Compute";
-+	default:
-+		return "[unknown]";
-+	}
++	int fd, ret;
++	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
++
++	fd = igt_debugfs_connector_dir(data.drm_fd, output->name, O_RDONLY);
++	igt_require_f(fd >= 0, "Cannot open %s debugfs\n", output->name);
++
++	ret = igt_sysfs_write(fd, "i915_force_hdcp14", "0", 2);
++	igt_require_f(ret > 0, "i915_force_hdcp14 is not disabled\n");
++
++	ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf, sizeof(buf));
++	igt_assert_f(ret > 0 && strstr(buf, "no"),
++			 "i915_force_hdcp14 is not set to 'no' on %s debugfs\n",
++			 "i915_force_hdcp14");
++
++	close(fd);
 +}
 +
-+static char *pmu_name(int fd)
-+{
-+	char device[30];
-+
-+	xe_perf_device(fd, device, sizeof(device));
-+
-+	return strdup(device);
-+}
-+
-+static int
-+_open_pmu(uint64_t type, unsigned int *cnt,
-+	  struct xe_pmu_counter *pmu, int *fd)
-+{
-+	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
-+
-+	if (fd__ >= 0) {
-+		if (*fd == -1)
-+			*fd = fd__;
-+		pmu->present = true;
-+		pmu->idx = (*cnt)++;
-+		pmu->fd = fd__;
-+	}
-+
-+	return fd__;
-+}
-+
-+static struct xe_pmu_device
-+*xe_init_engines(int dev_fd)
-+{
-+	struct xe_pmu_device *engines;
-+	struct drm_xe_engine *ccs_engine;
-+	int ret = 0, engine_count = 0;
-+	char device[30];
-+	struct drm_xe_engine_class_instance *hwe;
-+	int fd;
-+	uint32_t engine_class, engine_instance, gt_shift;
-+	uint64_t engine_active_config, engine_total_config;
-+	uint64_t type = igt_perf_type_id(xe_perf_device(dev_fd, device, sizeof(device)));
-+
-+	xe_device_get(dev_fd);
-+
-+	xe_for_each_engine(dev_fd, hwe) {
-+		ccs_engine = xe_find_engine_by_class(dev_fd, DRM_XE_ENGINE_CLASS_COMPUTE);
-+		if (ccs_engine)
-+			engine_count++;
-+	}
-+
-+	engines = calloc(1, sizeof(struct xe_pmu_device) +
-+			engine_count * sizeof(struct xe_engine));
-+	if (!engines)
-+		return NULL;
-+
-+	engines->num_engines = 0;
-+	engines->device = pmu_name(dev_fd);
-+	engines->fd = -1;
-+	engines->num_counters = 0;
-+
-+	perf_event_format(engines->device, "gt", &gt_shift);
-+	perf_event_format(engines->device, "engine_class", &engine_class);
-+	perf_event_format(engines->device, "engine_instance", &engine_instance);
-+	ret = perf_event_config(engines->device,
-+			"engine-active-ticks",
-+			&engine_active_config);
-+	if (ret < 0)
-+		return NULL;
-+	ret = perf_event_config(engines->device,
-+			"engine-total-ticks",
-+			&engine_total_config);
-+	if (ret < 0)
-+		return NULL;
-+	xe_for_each_engine(dev_fd, hwe) {
-+		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
-+			uint64_t  param_config;
-+			struct xe_engine *engine;
-+
-+			engine = engine_ptr(engines, engines->num_engines);
-+			param_config = (uint64_t)hwe->gt_id << gt_shift |
-+						hwe->engine_class << engine_class |
-+						hwe->engine_instance << engine_instance;
-+			engine->drm_xe_engine = *hwe;
-+			engine->engine_active_ticks.config = engine_active_config | param_config;
-+			engine->engine_total_ticks.config = engine_total_config | param_config;
-+
-+			if (engine->engine_active_ticks.config == -1 ||
-+					engine->engine_total_ticks.config == -1) {
-+				ret = ENOENT;
-+				break;
-+			}
-+
-+			ret = asprintf(&engine->display_name, "%s/%u",
-+					class_display_name(engine->drm_xe_engine.engine_class),
-+					engine->drm_xe_engine.engine_instance);
-+
-+			if (ret <= 0) {
-+				ret = errno;
-+				break;
-+			}
-+
-+			fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
-+					&engines->fd);
-+			if (fd < 0)
-+				return NULL;
-+
-+			fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
-+					&engines->fd);
-+			if (fd < 0)
-+				return NULL;
-+
-+			engines->num_engines++;
-+		}
-+	}
-+
-+	if (!ret) {
-+		errno = ret;
-+		return NULL;
-+	}
-+
-+	return engines;
-+}
-+
-+static void
-+eu_util_free(struct xe_pmu_device *pmu_device)
-+{
-+	struct xe_engine *eng;
-+	struct xe_pmu_counter pmu;
-+
-+	igt_info("EU cleanup process\n");
-+
-+	if (pmu_device) {
-+		for (int j = 0; j < pmu_device->num_engines ; j++) {
-+			eng = engine_ptr(pmu_device, j);
-+			if (eng->display_name)
-+				free(eng->display_name);
-+
-+			pmu = eng->engine_active_ticks;
-+			if (pmu.present)
-+				close(pmu.fd);
-+
-+			pmu = eng->engine_total_ticks;
-+			if (pmu.present)
-+				close(pmu.fd);
-+		}
-+		free(pmu_device);
-+	}
-+}
-+
-+static void
-+update_sample(struct xe_pmu_counter *counter, uint64_t *val)
-+{
-+	if (counter->present) {
-+		counter->val.prev = counter->val.cur;
-+		counter->val.cur = val[counter->idx];
-+	}
-+}
-+
-+static void xe_pmu_device_sample(const void *obj)
-+{
-+	struct xe_pmu_device *engines = ((struct xe_pmu_device *)obj);
-+	const int num_val = engines->num_counters;
-+	uint64_t val[2 + num_val];
-+	uint64_t buf[2 + num_val];
-+	unsigned int i;
-+	ssize_t len;
-+
-+	memset(buf, 0, sizeof(buf));
-+	len = read(engines->fd, buf, sizeof(buf));
-+	assert(len == sizeof(buf));
-+
-+	for (i = 0; i < num_val; i++)
-+		val[i] = buf[2 + i];
-+
-+	for (i = 0; i < engines->num_engines; i++) {
-+		struct xe_engine *engine = engine_ptr(engines, i);
-+
-+		update_sample(&engine->engine_active_ticks, val);
-+		update_sample(&engine->engine_total_ticks, val);
-+	}
-+}
-+
-+static double
-+pmu_active_percentage(struct xe_engine *engine)
-+{
-+	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
-+		engine->engine_active_ticks.val.prev;
-+	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
-+		engine->engine_total_ticks.val.prev;
-+	double percentage;
-+
-+	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
-+	return percentage;
-+}
-+
-+static void xe_print_perc(const void *obj)
-+{
-+	struct xe_pmu_device *pmu_device = ((struct xe_pmu_device *)obj);
-+
-+	for (unsigned int i = 0; i < pmu_device->num_engines; i++) {
-+		double percentage;
-+		struct xe_engine *engine = engine_ptr(pmu_device, i);
-+
-+		igt_assert(engine);
-+
-+		percentage = pmu_active_percentage(engine);
-+
-+		if (engine->drm_xe_engine.engine_class == DRM_XE_ENGINE_CLASS_COMPUTE &&
-+		    !workload_sched) {
-+			igt_info("Engine_instance :%d EU busyness :%5.1f\n",
-+				  engine->drm_xe_engine.engine_instance,
-+				   percentage);
-+			if (!percentage)
-+				igt_info("No workload scheduled, BU busyness :%5.1f expected\n",
-+					  percentage);
-+			else
-+				igt_info("Workload scheduled, BU busyness :%5.1f expected\n",
-+					  percentage);
-+		} else if (engine->drm_xe_engine.engine_class == DRM_XE_ENGINE_CLASS_COMPUTE &&
-+			   workload_sched) {
-+			igt_info("Engine_instance :%d EU busyness :%5.1f\n",
-+				  engine->drm_xe_engine.engine_instance, percentage);
-+			if (!percentage)
-+				igt_info("No workload scheduled, BU busyness :%5.1f expected\n",
-+					  percentage);
-+			else
-+				igt_info("Workload scheduled, BU busyness :%5.1f expected\n",
-+					  percentage);
-+		}
-+	}
-+}
-+
-+static void *show_eu_util(void *data)
-+{
-+	struct igt_drm_clients *clients = NULL;
-+	struct xe_pmu_device *pmu_device = NULL;
-+	int dev_fd;
-+	long n;
-+
-+	dev_fd = drm_open_driver(DRIVER_XE);
-+
-+	pmu_device = xe_init_engines(dev_fd);
-+	if (!pmu_device) {
-+		fprintf(stderr,
-+				"Failed to initialize engines! (%s)\n",
-+				strerror(errno));
-+		return NULL;
-+	}
-+
-+	xe_pmu_device_sample(pmu_device);
-+
-+	clients = igt_drm_clients_init(NULL);
-+	if (!clients)
-+		exit(1);
-+	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-+	while ((n != 0) && !stop_top) {
-+		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-+		xe_pmu_device_sample(pmu_device);
-+		xe_print_perc(pmu_device);
-+		usleep(2 * NS_SLEEP);
-+	}
-+	igt_drm_clients_free(clients);
-+	eu_util_free(pmu_device);
-+	drm_close_driver(dev_fd);
-+
-+	return NULL;
-+}
-+
-+static void
-+thread_init_eu_utils(void)
-+{
-+	pthread_t eu_utils;
-+	int fd;
-+	uint16_t dev_id;
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	dev_id = intel_get_drm_devid(fd);
-+
-+	/* Creating thread to display EU utilization in BMG */
-+	if (IS_BATTLEMAGE(dev_id))
-+		pthread_create(&eu_utils, NULL, show_eu_util, NULL);
-+}
-+
-+/**
-+ * SUBTEST: eu-busy-10-sec
-+ * Functionality: OpenCL kernel
-+ * Description:
-+ *      Run an openCL long rinning Kernel that returns output[i] = input[i] * input[i],
-+ */
-+static void
-+test_eu_busy(int fd, int num_gt, u32 duration_sec)
-+{
-+	struct user_execenv execenv = { 0 };
-+	struct thread_data *threads_data;
-+	struct drm_xe_engine_class_instance *hwe;
-+	const struct intel_compute_kernels *kernels;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
-+	bool go = false;
-+	int ccs_mode, gt_fd;
-+	u32 num_slices, ip_ver;
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+	drm_close_driver(fd);
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 2) > 0);
-+		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-+		close(gt_fd);
-+	}
-+
-+	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
-+		      ccs_mode);
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	thread_init_eu_utils();
-+
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/*If loop_kernel_duration not set user should use different
-+	 *kernel and size
-+	 *use with loop kernel and loop duration it assumes we stop
-+	 *it via memory write
-+	 */
-+
-+	execenv.loop_kernel_duration = duration_sec;
-+	execenv.kernel = kernels->loop_kernel;
-+	execenv.kernel_size = kernels->loop_kernel_size;
-+	for (gt = 0; gt < num_gt; gt++) {
-+		xe_for_each_engine(fd, hwe) {
-+			igt_assert(hwe);
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+				++n_instances;
-+		}
-+	}
-+
-+	threads_data = calloc(n_instances, sizeof(*threads_data));
-+	igt_assert(threads_data);
-+
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->gt_id != gt ||
-+					hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+				continue;
-+
-+			threads_data[i].mutex = &mutex;
-+			threads_data[i].cond = &cond;
-+			threads_data[i].fd = fd;
-+			threads_data[i].eci = hwe;
-+			threads_data[i].go = &go;
-+			threads_data[i].execenv = &execenv;
-+			++n_threads;
-+			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-+					&threads_data[i]);
-+			++i;
-+			++iterations;
-+			usleep(2 * NS_SLEEP);
-+		}
-+
-+		pthread_mutex_lock(&mutex);
-+		go = true;
-+		pthread_cond_broadcast(&cond);
-+		pthread_mutex_unlock(&mutex);
-+
-+		for (int val = 0; val < i; ++val)
-+			pthread_join(threads_data[val].thread, NULL);
-+
-+		i = 0;
-+		n_threads = 0;
-+		iterations = 0;
-+		stop_top = true;
-+	}
-+	free(threads_data);
-+	drm_close_driver(fd);
-+}
-+
- igt_main
+ static void
+ test_fini(igt_output_t *output, enum igt_commit_style commit_style)
  {
--	int xe;
-+	int xe, num_gt;
+@@ -654,10 +711,15 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ 					  output->name);
+ 				continue;
+ 			}
++			if (data.is_force_hdcp14)
++				set_i915_force_hdcp14(output);
  
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
-+		num_gt = xe_number_gt(xe);
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_content_protection_on_output(output, pipe, commit_style, content_type);
+ 
++			if (data.is_force_hdcp14)
++				reset_i915_force_hdcp14(output);
++
+ 			test_fini(output, commit_style);
+ 			/*
+ 			 * Testing a output with a pipe is enough for HDCP
+@@ -719,6 +781,11 @@ test_mst_cp_enable_with_retry(igt_output_t *hdcp_mst_output[], int valid_outputs
+ 	int retry_orig = retries, count, i;
+ 	bool ret;
+ 
++	if (data.is_force_hdcp14) {
++		for (count = 0; count < valid_outputs; count++)
++			set_i915_force_hdcp14(hdcp_mst_output[count]);
++	}
++
+ 	do {
+ 		if (retry_orig != retries)
+ 			test_mst_cp_disable(hdcp_mst_output, COMMIT_ATOMIC, valid_outputs);
+@@ -752,6 +819,11 @@ test_mst_cp_enable_with_retry(igt_output_t *hdcp_mst_output[], int valid_outputs
+ 		igt_display_commit2(display, COMMIT_ATOMIC);
+ 	} while (retries && !ret);
+ 
++	if (data.is_force_hdcp14) {
++		for (count = 0; count < valid_outputs; count++)
++			reset_i915_force_hdcp14(hdcp_mst_output[count]);
++	}
++
+ 	igt_assert_f(ret, "Content Protection not enabled on MST outputs\n");
+ }
+ 
+@@ -878,54 +950,84 @@ static void create_fbs(void)
+ 			    0.f, 1.f, 0.f, &data.green);
+ }
+ 
++
++
+ static const struct {
+ 	const char *desc;
+ 	const char *name;
+ 	unsigned int cp_tests;
+ 	bool content_type;
++	bool is_force_hdcp14;
+ } subtests[] = {
++	{ .desc = "Test content protection with atomic modesetting with HDCP1.4.",
++	  .name = "atomic-hdcp14",
++	  .cp_tests = 0,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
++	},
+ 	{ .desc = "Test content protection with atomic modesetting",
+ 	  .name = "atomic",
+ 	  .cp_tests = 0,
+-	  .content_type = HDCP_CONTENT_TYPE_0
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
+ 	},
+-	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting.",
++	{ .desc = "Test content protection with DPMS ON/OFF during "
++		  "atomic modesetting with HDCP1.4.",
++	  .name = "atomic-dpms-hdcp14",
++	  .cp_tests = CP_DPMS,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
++	},
++	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting",
+ 	  .name = "atomic-dpms",
+ 	  .cp_tests = CP_DPMS,
+-	  .content_type = HDCP_CONTENT_TYPE_0
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test for the integrity of link with type 0 content.",
+-	  .name = "lic-type-0",
++	  .name = "lic-type-0-hdcp14",
+ 	  .cp_tests = CP_LIC,
+ 	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
+ 	},
+ 	{ .desc = "Test for the integrity of link with type 1 content",
+ 	  .name = "lic-type-1",
+ 	  .cp_tests = CP_LIC,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test content protection with content type 1 "
+ 		  "that can be handled only through HDCP2.2.",
+ 	  .name = "type1",
+ 	  .cp_tests = 0,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test the teardown and rebuild of the interface between "
+ 		  "Intel and mei hdcp.",
+ 	  .name = "mei-interface",
+ 	  .cp_tests = CP_MEI_RELOAD,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test the content type change when the content protection already enabled",
+ 	  .name = "content-type-change",
+ 	  .cp_tests = CP_TYPE_CHANGE,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
+ 	},
+-	{ .desc = "Test to detect the HDCP status change when we are reading the uevent "
++	{.desc = "Test to detect the HDCP status change when we are reading the uevent "
+ 		  "sent with the corresponding connector id and property id.",
+ 	  .name = "uevent",
+ 	  .cp_tests = CP_UEVENT,
+ 	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
++	},
++	{ .desc = "Test to detect the HDCP status change when we are reading the uevent "
++		  "sent with the corresponding connector id and property id.",
++	  .name = "uevent-hdcp14",
++	  .cp_tests = CP_UEVENT,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
+ 	},
+ 	/*
+ 	 *  Testing the revocation check through SRM needs a HDCP sink with
+@@ -940,6 +1042,7 @@ static const struct {
+ 	  .name = "srm",
+ 	  .cp_tests = 0,
+ 	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
+ 	},
+ };
+ 
+@@ -948,26 +1051,43 @@ static const struct {
+ 	const char *name;
+ 	unsigned int cp_tests;
+ 	bool content_type;
++	bool is_force_hdcp14;
+ } mst_subtests[] = {
+-	{ .desc = "Test Content protection(Type 0) over DP MST.",
++	{ .desc = "Test Content protection(Type 0) over DP MST",
+ 	  .name = "dp-mst-type-0",
+ 	  .cp_tests = 0,
+-	  .content_type = HDCP_CONTENT_TYPE_0
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
++	},
++	{ .desc = "Test Content protection(Type 0) over DP MST with HDCP1.4.",
++	  .name = "dp-mst-type-0-hdcp14",
++	  .cp_tests = 0,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
+ 	},
+ 	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
+ 	  .name = "dp-mst-lic-type-0",
+ 	  .cp_tests = CP_LIC,
+-	  .content_type = HDCP_CONTENT_TYPE_0
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
++	},
++	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
++	  .name = "dp-mst-lic-type-0-hdcp14",
++	  .cp_tests = CP_LIC,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
+ 	},
+ 	{ .desc = "Test Content protection(Type 1) over DP MST.",
+ 	  .name = "dp-mst-type-1",
+ 	  .cp_tests = 0,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test Content protection(Type 1) over DP MST with LIC.",
+ 	  .name = "dp-mst-lic-type-1",
+ 	  .cp_tests = CP_LIC,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ };
+ 
+@@ -980,12 +1100,20 @@ igt_main
+ 		create_fbs();
  	}
  
- 	igt_subtest("compute-square")
-@@ -223,4 +692,8 @@ igt_main
+-	igt_describe("Test content protection with legacy style commit.");
+-	igt_subtest_with_dynamic("legacy") {
++	igt_describe("Test content protection with legacy style commit with HDCP1.4");
++	igt_subtest_with_dynamic("legacy-hdcp14") {
+ 		data.cp_tests = 0;
++		data.is_force_hdcp14 = true;
+ 		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
+ 	}
  
- 	igt_subtest("ccs-mode-compute-kernel")
- 		test_compute_kernel_with_ccs_mode();
++	igt_describe("Test content protection with legacy style commit with HDCP2.2");
++	igt_subtest_with_dynamic("legacy") {
++		data.cp_tests = 0;
++		data.is_force_hdcp14 = false;
++		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_1);
++	}
 +
-+	/* test to check available EU utilisation for multi_ccs */
-+	igt_subtest("eu-busy-10-sec")
-+		test_eu_busy(xe, num_gt, 10 * LOOP_DURATION);
- }
-diff --git a/tests/meson.build b/tests/meson.build
-index 9b87a0d24..7945f68f8 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -405,6 +405,7 @@ extra_dependencies = {
- 	'sw_sync': [ libatomic ],
- 	'xe_fault_injection': [ lib_igt_xe_oa ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-+	'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math ],
- }
+ 	igt_subtest_group {
+ 		igt_fixture
+ 			igt_require(data.display.is_atomic);
+@@ -995,6 +1123,7 @@ igt_main
  
- test_executables = []
+ 			igt_subtest_with_dynamic(subtests[i].name) {
+ 				data.cp_tests = subtests[i].cp_tests;
++				data.is_force_hdcp14 = subtests[i].is_force_hdcp14;
+ 
+ 				if (!strcmp(subtests[i].name, "srm")) {
+ 					bool ret;
+@@ -1018,6 +1147,7 @@ igt_main
+ 
+ 			igt_subtest(mst_subtests[i].name) {
+ 				data.cp_tests = mst_subtests[i].cp_tests;
++				data.is_force_hdcp14 = mst_subtests[i].is_force_hdcp14;
+ 				test_content_protection_mst(mst_subtests[i].content_type);
+ 			}
+ 		}
 -- 
-2.43.0
+2.34.1
 
