@@ -4,55 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6994CC83F03
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Jul 2025 07:19:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84EF7C83F03
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Jul 2025 07:19:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C71310E750;
-	Wed,  9 Jul 2025 07:19:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3C42F10E751;
+	Wed,  9 Jul 2025 07:19:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YjTCzMyS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gicz/39q";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C515510E750
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jul 2025 07:19:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D132E10E751;
+ Wed,  9 Jul 2025 07:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752045547; x=1783581547;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=wm4UDZyVCLj8JH2TNEV8vq1SPAsZ/2PF5Hf5cEoudJg=;
- b=YjTCzMySc5ybYCBGCvYasHy0igXP/HQAqrF5tkJba99rx1ruvfKpgj/E
- 2wC0CDLL5QqNJfQiGGXUnTK3b2+odSLsx9mb8pglJe5NDfWxvKmRLzueZ
- l1Pe/6sGcZA9EMkD881rdFIe41WsGB5LoqKtaSmPD0jw3QLO2nmbyRZHE
- SKLsHkVdNFetxnJ5ZM4nst0H3MWXQVfsIDv3xat3Y0vfAyTg5EvJO/b6N
- zLR5I3JHoxiW7jcXhZUu7WUS5+6sYrDObdY56A1XMDDN83KF2qxgZxnYS
- h8Mug1xOMIyINDVfmyiAy2D5YrkuDyHvHA3yC6EwmM4qIQDVQ1AfvaEUj g==;
-X-CSE-ConnectionGUID: R/V+CU89QJKop6r3LVnd1w==
-X-CSE-MsgGUID: H/H7yHNmTH+I8TJSSPx6ew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="57964977"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="57964977"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2025 00:19:07 -0700
-X-CSE-ConnectionGUID: VSFN/0CRRraHgddkqzjSfw==
-X-CSE-MsgGUID: g0fK0DmDS8St7YadrYaghQ==
+ t=1752045557; x=1783581557;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=+wqvzcyGjrOi6lj5aJt/UQopQTI17ihXJsbpPwgh/lk=;
+ b=Gicz/39qBd0+RIb6/mB3lqeVpVSofbHS6aD+dwt0fui1NZi2G90+Cwr6
+ LbOA84gx/X3uhBzoAbKnK4IYq21BiSIFgfDXLW19l3ho6pRfFWGptt7fV
+ zDc/OwlxEcWUh9rRuAnZnyrDHw1N1kEyK5bLHsRNDptN9U6s3sy5vqvJd
+ 77F8A2dB7M2P37yE4eYDG7zlFv47abhcRvdLwBrEGNGoAalTfL9u4mgdw
+ lT0ZbrGI0xVWKZchOraBVZu47qHbFkF6yaw9+VDi5K0jQHJH5t4rSuJTX
+ QYA9yrNmq828D6knbmsdemaB46Q3WN8/c3Bs5DGOoAtk97qYM6t7vJnLC A==;
+X-CSE-ConnectionGUID: +t8mU66XSS+ePn89/XUX3g==
+X-CSE-MsgGUID: wuqDjTB6Ssq3vA1Pv7faKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="56902446"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="56902446"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2025 00:19:16 -0700
+X-CSE-ConnectionGUID: yh2Epl0UQHibuFEh/oM6Ww==
+X-CSE-MsgGUID: 2BTZt3cEQr6UQ/pVXpAw0w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="161252924"
-Received: from opintica-mobl1 (HELO localhost) ([10.245.245.113])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2025 00:19:04 -0700
-Date: Wed, 9 Jul 2025 09:19:02 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v9] tests/intel/xe_compute: Add Compute workload
- Scheduling and Display EU busyness
-Message-ID: <gilwiea36fjkknvb4azsuwipubm2e3eah5vv467k5izb4eqy6n@tyeg474ft7aw>
-References: <20250708080545.539924-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; d="scan'208";a="156431828"
+Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
+ ([10.245.118.0])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2025 00:19:15 -0700
+Message-ID: <24c88440-b587-44a2-85a6-0fbba5b44ed4@linux.intel.com>
+Date: Wed, 9 Jul 2025 09:19:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250708080545.539924-1-nishit.sharma@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Replace_int?=
+ =?UTF-8?Q?el=5Fsysfs=5Fdebugfs?=
+To: igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20250708144039.53482-1-peter.senna@linux.intel.com>
+ <175202210059.145914.14422593174335609531@1538d3639d33>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <175202210059.145914.14422593174335609531@1538d3639d33>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,731 +71,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Jul 08, 2025 at 08:05:45AM +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
+Dear I915,
+
+On 7/9/2025 2:48 AM, Patchwork wrote:
+> == Series Details ==
 > 
-> Adds compute workload scheduling and execution on multi-ccs available.
-> This also adds logic to show EU busyness information on console while workload is running
-> on multiple CCS engine instances.
+> Series: Replace intel_sysfs_debugfs
+> URL   : https://patchwork.freedesktop.org/series/151342/
+> State : failure
 > 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-
-Test is failing on my setup.
-
-IGT-Version: 2.1-NO-GIT (x86_64) (Linux: 6.16.0-rc4+ x86_64)
-Using IGT_SRANDOM=1752044861 for randomisation
-Opened device: /dev/dri/card0
-Starting subtest: eu-busy-10-sec
-Failed to initialize engines! (No such file or directory)
-[thread:15649] EU cleanup process
-free(): invalid pointer
-Received signal SIGABRT.
-Stack trace:
- #0 [fatal_sig_handler+0x175]
- #1 [__sigaction+0x50]
- #2 [pthread_kill+0x11c]
- #3 [gsignal+0x1e]
- #4 [abort+0xdf]
- #5 [perror+0xd23]
- #6 [timer_settime+0x2c5]
- #7 [__default_morecore+0x97c]
- #8 [__libc_free+0x7e]
- #9 [eu_util_free+0x2b]
- #10 [show_eu_util+0x2e5]
- #11 [pthread_condattr_setpshared+0x684]
- #12 [__clone+0x24c]
-Aborted (core dumped)
-
-Before I'm going to do full review of your code any device filtering
-from here must gone.
-
---
-Zbigniew
-
-
-> ---
->  lib/intel_compute.c      |  34 ++-
->  lib/intel_compute.h      |   2 +
->  tests/intel/xe_compute.c | 564 ++++++++++++++++++++++++++++++++++++++-
->  tests/meson.build        |   1 +
->  4 files changed, 594 insertions(+), 7 deletions(-)
+> == Summary ==
 > 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 147dd2916..e1685788c 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -255,8 +255,14 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
->  				break;
->  			}
->  
-> -			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
-> -							 placement, flags);
-> +			if (!execenv->user)
-> +				bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
-> +								 placement, flags);
-> +			else if (execenv->user)
-> +				bo_dict[i].handle = xe_bo_create_caching(fd, execenv->vm,
-> +									 bo_dict[i].size,
-> +									 placement, flags,
-> +									 DRM_XE_GEM_CPU_CACHING_WC);
->  			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
->  			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
->  					 bo_dict[i].size, &sync, 1);
-> @@ -1849,10 +1855,26 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  				    OFFSET_KERNEL, 0, false,
->  				    execenv.array_size);
->  
-> -	bo_execenv_exec(&execenv, ADDR_BATCH);
-> -
-> -	if (!user || (user && !user->skip_results_check))
-> -		bo_check_square(input_data, output_data, execenv.array_size);
-> +	if (user && user->loop_kernel_duration) {
-> +		bo_execenv_exec_async(&execenv, ADDR_BATCH);
-> +		igt_measured_usleep(user->loop_kernel_duration);
-> +		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
-> +		bo_execenv_sync(&execenv);
-> +		user->skip_results_check = 1;
-> +	} else
-> +		bo_execenv_exec(&execenv, ADDR_BATCH);
-> +
-> +	for (int i = 0; i < execenv.array_size; i++) {
-> +		float input = input_data[i];
-> +		float output = output_data[i];
-> +		float expected_output = input * input;
-> +
-> +		if (output != expected_output)
-> +			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> +					i, input, output, expected_output);
-> +		if (!user || (user && !user->skip_results_check))
-> +			igt_assert_eq_double(output, expected_output);
-> +	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, entries);
->  	bo_execenv_destroy(&execenv);
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index 412791d07..19977933f 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -63,6 +63,8 @@ struct user_execenv {
->  	uint64_t input_addr;
->  	/** @output_addr: override default address of the output array if provided */
->  	uint64_t output_addr;
-> +	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
-> +	uint32_t loop_kernel_duration;
->  };
->  
->  enum execenv_alloc_prefs {
-> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-> index 5e9140902..9a140c77f 100644
-> --- a/tests/intel/xe_compute.c
-> +++ b/tests/intel/xe_compute.c
-> @@ -12,6 +12,7 @@
->   */
->  
->  #include <string.h>
-> +#include <sys/ioctl.h>
->  
->  #include "igt.h"
->  #include "igt_sysfs.h"
-> @@ -19,6 +20,45 @@
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  
-> +#include "igt_device.h"
-> +#include "tools/gputop/xe_gputop.h"
-> +#include "igt_drm_clients.h"
-> +
-> +/**
-> + * Number of supported drivers needs to be adjusted as per the length of
-> + * the drivers[] array.
-> + */
-> +#define	NUM_DRIVER	1
-> +#define	LOOP_DURATION	(1000000ull)
-> +#define	engine_ptr(engines, n)	(&(engines)->engine + (n))
-> +#define NS_SLEEP	(1000000ull)
-> +
-> +enum utilization_type {
-> +	UTILIZATION_TYPE_ENGINE_TIME,
-> +	UTILIZATION_TYPE_TOTAL_CYCLES,
-> +};
-> +
-> +bool workload_sched;
-> +
-> +pthread_barrier_t barrier;
-> +struct thread_data {
-> +	pthread_t thread;
-> +	pthread_mutex_t *mutex;
-> +	pthread_cond_t *cond;
-> +	int class;
-> +	int fd;
-> +	int gt;
-> +	struct user_execenv *execenv;
-> +	struct drm_xe_engine_class_instance *eci;
-> +	bool *go;
-> +};
-> +
-> +struct xe_gpu_info {
-> +	char *pmu_device;
-> +	struct igt_device_card *card;
-> +	struct xe_pmu_device *eng_obj;
-> +};
-> +
->  static int gt_sysfs_open(int gt)
->  {
->  	int fd, gt_fd;
-> @@ -203,12 +243,530 @@ test_compute_square(int fd)
->  		      "GPU not supported\n");
->  }
->  
-> +static void
-> +*intel_compute_thread(void *data)
-> +{
-> +	struct thread_data *t = (struct thread_data *)data;
-> +
-> +	usleep(3 * NS_SLEEP);
-> +
-> +	igt_info("Compute kernel executing on engine class :%s instance :%d gt: GT-%d\n",
-> +			xe_engine_class_string(t->eci->engine_class), t->eci->engine_instance,
-> +			t->eci->gt_id);
-> +
-> +	pthread_mutex_lock(t->mutex);
-> +	while (*t->go == 0)
-> +		pthread_cond_wait(t->cond, t->mutex);
-> +	pthread_mutex_unlock(t->mutex);
-> +
-> +	workload_sched = true;
-> +	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd,
-> +				t->eci,
-> +				t->execenv,
-> +				EXECENV_PREF_VRAM_IF_POSSIBLE),
-> +			"Unable to run compute kernel successfully\n");
-> +	workload_sched = false;
-> +	return NULL;
-> +}
-> +
-> +static volatile bool stop_top;
-> +
-> +static const char
-> +*class_display_name(unsigned int class)
-> +{
-> +	switch (class) {
-> +	case DRM_XE_ENGINE_CLASS_RENDER:
-> +		return "Render/3D";
-> +	case DRM_XE_ENGINE_CLASS_COPY:
-> +		return "Blitter";
-> +	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
-> +		return "Video";
-> +	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-> +		return "VideoEnhance";
-> +	case DRM_XE_ENGINE_CLASS_COMPUTE:
-> +		return "Compute";
-> +	default:
-> +		return "[unknown]";
-> +	}
-> +}
-> +
-> +static void
-> +*xe_init_engines(const void *obj)
-> +{
-> +	struct igt_device_card *card = ((struct xe_gpu_info *)obj)->card;
-> +	struct xe_pmu_device *engines;
-> +	struct drm_xe_engine *ccs_engine;
-> +	int ret = 0, engine_count = 0;
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	int card_fd;
-> +	uint32_t engine_class, engine_instance, gt_shift;
-> +	uint64_t engine_active_config, engine_total_config;
-> +
-> +	if (!card || !strlen(card->card) || !strlen(card->render))
-> +		return NULL;
-> +
-> +	if (strlen(card->card)) {
-> +		card_fd = igt_open_card(card);
-> +	} else if (strlen(card->render)) {
-> +		card_fd = igt_open_render(card);
-> +	} else {
-> +		fprintf(stderr, "Failed to detect device!\n");
-> +		return NULL;
-> +	}
-> +	xe_device_get(card_fd);
-> +
-> +	xe_for_each_engine(card_fd, hwe) {
-> +		ccs_engine = xe_find_engine_by_class(card_fd, DRM_XE_ENGINE_CLASS_COMPUTE);
-> +		if (ccs_engine)
-> +			engine_count++;
-> +	}
-> +
-> +	engines = calloc(1, sizeof(struct xe_pmu_device) +
-> +			engine_count * sizeof(struct xe_engine));
-> +	if (!engines)
-> +		return NULL;
-> +
-> +	engines->num_engines = 0;
-> +	engines->device = ((struct xe_gpu_info *)obj)->pmu_device;
-> +	perf_event_format(((struct xe_gpu_info *)obj)->pmu_device, "gt", &gt_shift);
-> +	perf_event_format(((struct xe_gpu_info *)obj)->pmu_device, "engine_class", &engine_class);
-> +	perf_event_format(((struct xe_gpu_info *)obj)->pmu_device, "engine_instance", &engine_instance);
-> +	ret = perf_event_config(((struct xe_gpu_info *)obj)->pmu_device,
-> +			"engine-active-ticks",
-> +			&engine_active_config);
-> +	if (ret < 0)
-> +		return NULL;
-> +	ret = perf_event_config(((struct xe_gpu_info *)obj)->pmu_device,
-> +			"engine-total-ticks",
-> +			&engine_total_config);
-> +	if (ret < 0)
-> +		return NULL;
-> +	xe_for_each_engine(card_fd, hwe) {
-> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
-> +			uint64_t  param_config;
-> +			struct xe_engine *engine;
-> +
-> +			engine = engine_ptr(engines, engines->num_engines);
-> +			param_config = (uint64_t)hwe->gt_id << gt_shift | hwe->engine_class << engine_class
-> +				| hwe->engine_instance << engine_instance;
-> +			engine->drm_xe_engine = *hwe;
-> +			engine->engine_active_ticks.config = engine_active_config | param_config;
-> +			engine->engine_total_ticks.config = engine_total_config | param_config;
-> +
-> +			if (engine->engine_active_ticks.config == -1 ||
-> +					engine->engine_total_ticks.config == -1) {
-> +				ret = ENOENT;
-> +				break;
-> +			}
-> +
-> +			ret = asprintf(&engine->display_name, "%s/%u",
-> +					class_display_name(engine->drm_xe_engine.engine_class),
-> +					engine->drm_xe_engine.engine_instance);
-> +
-> +			if (ret <= 0) {
-> +				ret = errno;
-> +				break;
-> +			}
-> +
-> +			engines->num_engines++;
-> +		}
-> +	}
-> +
-> +	if (!ret) {
-> +		errno = ret;
-> +		return NULL;
-> +	}
-> +
-> +	((struct xe_gpu_info *)obj)->eng_obj = engines;
-> +
-> +	return engines;
-> +}
-> +
-> +static int
-> +_open_pmu(uint64_t type, unsigned int *cnt,
-> +	  struct xe_pmu_counter *pmu, int *fd)
-> +{
-> +	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
-> +
-> +	if (fd__ >= 0) {
-> +		if (*fd == -1)
-> +			*fd = fd__;
-> +		pmu->present = true;
-> +		pmu->idx = (*cnt)++;
-> +		pmu->fd = fd__;
-> +	}
-> +
-> +	return fd__;
-> +}
-> +
-> +static int xe_gpu_pmu_init(const void *obj)
-> +{
-> +	struct xe_pmu_device *engines = ((struct xe_gpu_info *)obj)->eng_obj;
-> +	unsigned int i;
-> +	int fd;
-> +	struct xe_engine *engine;
-> +	uint64_t type = igt_perf_type_id(engines->device);
-> +
-> +	engines->fd = -1;
-> +	engines->num_counters = 0;
-> +
-> +	for (i = 0; i < engines->num_engines; i++) {
-> +		engine = engine_ptr(engines, i);
-> +		fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
-> +				&engines->fd);
-> +		if (fd < 0)
-> +			return -1;
-> +		fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
-> +				&engines->fd);
-> +		if (fd < 0)
-> +			return -1;
-> +	}
-> +	return 0;
-> +}
-> +
-> +static void
-> +eu_util_free(struct xe_gpu_info *gpu_ptr)
-> +{
-> +	struct xe_engine *eng;
-> +	struct xe_pmu_counter pmu;
-> +
-> +	igt_info("EU cleanup process\n");
-> +
-> +	if (gpu_ptr->card)
-> +		free(gpu_ptr->card);
-> +
-> +	if (gpu_ptr->eng_obj) {
-> +		for (int j = 0; j < ((struct xe_pmu_device *)gpu_ptr->eng_obj)->num_engines ; j++) {
-> +			eng = engine_ptr((struct xe_pmu_device *)(gpu_ptr)->eng_obj, j);
-> +			if (eng->display_name)
-> +				free(eng->display_name);
-> +
-> +			pmu = eng->engine_active_ticks;
-> +			if (pmu.present)
-> +				close(pmu.fd);
-> +
-> +			pmu = eng->engine_total_ticks;
-> +			if (pmu.present)
-> +				close(pmu.fd);
-> +		}
-> +		free(gpu_ptr->eng_obj);
-> +	}
-> +	if (gpu_ptr->pmu_device)
-> +		free(gpu_ptr->pmu_device);
-> +}
-> +
-> +static char
-> +*pmu_name(struct igt_device_card *card)
-> +{
-> +	int card_fd;
-> +	char device[30];
-> +	char *path;
-> +
-> +	if (strlen(card->card))
-> +		card_fd = igt_open_card(card);
-> +	else if (strlen(card->render))
-> +		card_fd = igt_open_render(card);
-> +
-> +	if (card_fd == -1)
-> +		return NULL;
-> +
-> +	xe_perf_device(card_fd, device, sizeof(device));
-> +	path = strdup(device);
-> +	close(card_fd);
-> +	return path;
-> +}
-> +
-> +static struct xe_gpu_info *
-> +xe_device_match(const char *filter)
-> +{
-> +	struct igt_device_card card;
-> +	struct xe_gpu_info *gpu_ptr =  NULL;
-> +
-> +	if (!igt_device_card_match(filter, &card)) {
-> +		igt_info("No device found for the filter\n\n");
-> +		return NULL;
-> +	}
-> +
-> +	gpu_ptr = (struct xe_gpu_info *)malloc(sizeof(struct xe_gpu_info));
-> +	igt_assert(gpu_ptr);
-> +
-> +	gpu_ptr->pmu_device = pmu_name(&card);
-> +	if (!gpu_ptr->pmu_device) {
-> +		fprintf(stderr, "%s : pmu_device path returned NULL", card.pci_slot_name);
-> +		exit(EXIT_FAILURE);
-> +	}
-> +	gpu_ptr->card = &card;
-> +	return gpu_ptr;
-> +}
-> +
-> +static void
-> +update_sample(struct xe_pmu_counter *counter, uint64_t *val)
-> +{
-> +	if (counter->present) {
-> +		counter->val.prev = counter->val.cur;
-> +		counter->val.cur = val[counter->idx];
-> +	}
-> +}
-> +
-> +static void xe_pmu_device_sample(const void *obj)
-> +{
-> +	struct xe_pmu_device *engines = ((struct xe_gpu_info *)obj)->eng_obj;
-> +	const int num_val = engines->num_counters;
-> +	uint64_t val[2 + num_val];
-> +	uint64_t buf[2 + num_val];
-> +	unsigned int i;
-> +	ssize_t len;
-> +
-> +	memset(buf, 0, sizeof(buf));
-> +	len = read(engines->fd, buf, sizeof(buf));
-> +	assert(len == sizeof(buf));
-> +
-> +	for (i = 0; i < num_val; i++)
-> +		val[i] = buf[2 + i];
-> +
-> +	for (i = 0; i < engines->num_engines; i++) {
-> +		struct xe_engine *engine = engine_ptr(engines, i);
-> +
-> +		update_sample(&engine->engine_active_ticks, val);
-> +		update_sample(&engine->engine_total_ticks, val);
-> +	}
-> +}
-> +
-> +static double
-> +pmu_active_percentage(struct xe_engine *engine)
-> +{
-> +	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
-> +		engine->engine_active_ticks.val.prev;
-> +	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
-> +		engine->engine_total_ticks.val.prev;
-> +	double percentage;
-> +
-> +	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
-> +	return percentage;
-> +}
-> +
-> +static void xe_print_perc(const void *obj)
-> +{
-> +	struct xe_pmu_device *pmu_device = ((struct xe_gpu_info *)obj)->eng_obj;
-> +
-> +	for (unsigned int i = 0; i < pmu_device->num_engines; i++) {
-> +		double percentage;
-> +		struct xe_engine *engine = engine_ptr(pmu_device, i);
-> +		igt_assert(engine);
-> +
-> +		percentage = pmu_active_percentage(engine);
-> +
-> +		if (engine->drm_xe_engine.engine_class == DRM_XE_ENGINE_CLASS_COMPUTE && !workload_sched) {
-> +			igt_info("Engine_instance :%d EU busyness :%5.1f\n", engine->drm_xe_engine.engine_instance, percentage);
-> +			if (!percentage)
-> +				igt_info("No workload scheduled, BU busyness :%5.1f expected\n", percentage);
-> +			else
-> +				igt_info("Workload scheduled, BU busyness :%5.1f expected\n", percentage);
-> +		} else if (engine->drm_xe_engine.engine_class == DRM_XE_ENGINE_CLASS_COMPUTE && workload_sched) {
-> +			igt_info("Engine_instance :%d EU busyness :%5.1f\n", engine->drm_xe_engine.engine_instance, percentage);
-> +			if (!percentage)
-> +				igt_info("No workload scheduled, BU busyness :%5.1f expected\n", percentage);
-> +			else
-> +				igt_info("Workload scheduled, BU busyness :%5.1f expected\n", percentage);
-> +		}
-> +	}
-> +}
-> +
-> +static void *show_eu_util(void *data)
-> +{
-> +	struct igt_drm_clients *clients = NULL;
-> +	struct pci_device *pdev = NULL;
-> +	struct xe_gpu_info *gpu_ptr = NULL;
-> +	char filter[50] = "";
-> +	int ret, dev_fd;
-> +	long n;
-> +
-> +	dev_fd = drm_open_driver(DRIVER_XE);
-> +
-> +	pdev = igt_device_get_pci_device(dev_fd);
-> +	igt_require(pdev);
-> +
-> +	strcpy(filter, "pci:vendor=Intel,device=discrete,card=0");
-> +	gpu_ptr = xe_device_match(filter);
-> +	if (!gpu_ptr) {
-> +		printf("No device found.\n");
-> +		eu_util_free(gpu_ptr);
-> +		exit(1);
-> +	}
-> +
-> +	drm_close_driver(dev_fd);
-> +
-> +	if (!xe_init_engines(gpu_ptr)) {
-> +		fprintf(stderr,
-> +				"Failed to initialize engines! (%s)\n",
-> +				strerror(errno));
-> +		eu_util_free(gpu_ptr);
-> +		return NULL;
-> +	}
-> +
-> +	ret = xe_gpu_pmu_init(gpu_ptr);
-> +	if (ret) {
-> +		fprintf(stderr,
-> +				"Failed to initialize PMU! (%s)\n",
-> +				strerror(errno));
-> +		if (errno == EACCES && geteuid())
-> +			fprintf(stderr,
-> +					"\n"
-> +					"Access error\n"
-> +					"More info athttps://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
-> +		igt_devices_free();
-> +		eu_util_free(gpu_ptr);
-> +		return NULL;
-> +	}
-> +
-> +	xe_pmu_device_sample(gpu_ptr);
-> +
-> +	clients = igt_drm_clients_init(NULL);
-> +	if (!clients)
-> +		exit(1);
-> +	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-> +	while ((n != 0) && !stop_top) {
-> +		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-> +		xe_pmu_device_sample(gpu_ptr);
-> +		xe_print_perc(gpu_ptr);
-> +		usleep(2 * NS_SLEEP);
-> +	}
-> +	igt_drm_clients_free(clients);
-> +	eu_util_free(gpu_ptr);
-> +
-> +	return NULL;
-> +}
-> +
-> +static void
-> +thread_init_eu_utils(void)
-> +{
-> +	pthread_t eu_utils;
-> +	int fd;
-> +	uint16_t dev_id;
-> +
-> +	fd = drm_open_driver(DRIVER_XE);
-> +	dev_id = intel_get_drm_devid(fd);
-> +
-> +	/* Creating thread to display EU utilization in BMG */
-> +	if (IS_BATTLEMAGE(dev_id))
-> +		pthread_create(&eu_utils, NULL, show_eu_util, NULL);
-> +}
-> +
-> +/**
-> + * SUBTEST: eu-busy-10-sec
-> + * Functionality: OpenCL kernel
-> + * Description:
-> + *      Run an openCL long rinning Kernel that returns output[i] = input[i] * input[i],
-> + */
-> +static void
-> +test_eu_busy(int fd, int num_gt, u32 duration_sec)
-> +{
-> +	struct user_execenv execenv = { 0 };
-> +	struct thread_data *threads_data;
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	const struct intel_compute_kernels *kernels;
-> +	pthread_mutex_t mutex;
-> +	pthread_cond_t cond;
-> +	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
-> +	bool go = false;
-> +	int ccs_mode, gt_fd;
-> +	u32 num_slices, ip_ver;
-> +
-> +	fd = drm_open_driver(DRIVER_XE);
-> +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-> +	kernels = intel_compute_square_kernels;
-> +	drm_close_driver(fd);
-> +
-> +	for (gt = 0; gt < num_gt; gt++) {
-> +		if (!get_num_cslices(gt, &num_slices))
-> +			continue;
-> +
-> +		gt_fd = gt_sysfs_open(gt);
-> +		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 2) > 0);
-> +		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-> +		close(gt_fd);
-> +	}
-> +
-> +	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
-> +		      ccs_mode);
-> +
-> +	fd = drm_open_driver(DRIVER_XE);
-> +	thread_init_eu_utils();
-> +
-> +	while (kernels->kernel) {
-> +		if (ip_ver == kernels->ip_ver)
-> +			break;
-> +		kernels++;
-> +	}
-> +
-> +	/*If loop_kernel_duration not set user should use different
-> +	 *kernel and size
-> +	 *use with loop kernel and loop duration it assumes we stop
-> +	 *it via memory write
-> +	 */
-> +
-> +	execenv.loop_kernel_duration = duration_sec;
-> +	execenv.kernel = kernels->loop_kernel;
-> +	execenv.kernel_size = kernels->loop_kernel_size;
-> +	for (gt = 0; gt < num_gt; gt++) {
-> +		xe_for_each_engine(fd, hwe) {
-> +			igt_assert(hwe);
-> +			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-> +				++n_instances;
-> +		}
-> +	}
-> +
-> +	threads_data = calloc(n_instances, sizeof(*threads_data));
-> +	igt_assert(threads_data);
-> +
-> +	pthread_mutex_init(&mutex, 0);
-> +	pthread_cond_init(&cond, 0);
-> +
-> +	for (gt = 0; gt < num_gt; gt++) {
-> +		xe_for_each_engine(fd, hwe) {
-> +			if (hwe->gt_id != gt ||
-> +					hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-> +				continue;
-> +
-> +			threads_data[i].mutex = &mutex;
-> +			threads_data[i].cond = &cond;
-> +			threads_data[i].fd = fd;
-> +			threads_data[i].eci = hwe;
-> +			threads_data[i].go = &go;
-> +			threads_data[i].execenv = &execenv;
-> +			++n_threads;
-> +			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-> +					&threads_data[i]);
-> +			++i;
-> +			++iterations;
-> +			usleep(2 * NS_SLEEP);
-> +		}
-> +
-> +		pthread_mutex_lock(&mutex);
-> +		go = true;
-> +		pthread_cond_broadcast(&cond);
-> +		pthread_mutex_unlock(&mutex);
-> +
-> +		for (int val = 0; val < i; ++val) {
-> +			pthread_join(threads_data[val].thread, NULL);
-> +		}
-> +
-> +		i = 0;
-> +		n_threads = 0;
-> +		iterations = 0;
-> +		stop_top = true;
-> +	}
-> +	free(threads_data);
-> +	drm_close_driver(fd);
-> +}
-> +
->  igt_main
->  {
-> -	int xe;
-> +	int xe, num_gt;
->  
->  	igt_fixture {
->  		xe = drm_open_driver(DRIVER_XE);
-> +		num_gt = xe_number_gt(xe);
->  	}
->  
->  	igt_subtest("compute-square")
-> @@ -223,4 +781,8 @@ igt_main
->  
->  	igt_subtest("ccs-mode-compute-kernel")
->  		test_compute_kernel_with_ccs_mode();
-> +
-> +	/* test to check available EU utilisation for multi_ccs */
-> +	igt_subtest("eu-busy-10-sec")
-> +		test_eu_busy(xe, num_gt, 10 * LOOP_DURATION);
->  }
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 9b87a0d24..7945f68f8 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -405,6 +405,7 @@ extra_dependencies = {
->  	'sw_sync': [ libatomic ],
->  	'xe_fault_injection': [ lib_igt_xe_oa ],
->  	'xe_oa': [ lib_igt_xe_oa ],
-> +	'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math ],
->  }
->  
->  test_executables = []
-> -- 
-> 2.43.0
+> CI Bug Log - changes from XEIGT_8447_FULL -> XEIGTPW_13432_FULL
+> ====================================================
 > 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_13432_FULL absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_13432_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 3)
+> ------------------------------
+> 
+>   Missing    (1): shard-adlp 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_13432_FULL:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@xe_exec_system_allocator@process-many-large-execqueues-malloc-bo-unmap:
+>     - shard-bmg:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8447/shard-bmg-7/igt@xe_exec_system_allocator@process-many-large-execqueues-malloc-bo-unmap.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13432/shard-bmg-5/igt@xe_exec_system_allocator@process-many-large-execqueues-malloc-bo-unmap.html
+> 
+>   * igt@xe_pm@s4-exec-after:
+>     - shard-lnl:          [PASS][3] -> [DMESG-WARN][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8447/shard-lnl-1/igt@xe_pm@s4-exec-after.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13432/shard-lnl-4/igt@xe_pm@s4-exec-after.html
+
+These are unrelated. Please fix and resend.
+
+[...]
+
+Thanks,
+
+Peter
