@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AEB3C83F18
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2EFBC83F1A
 	for <igt-dev@archiver.kernel.org>; Thu, 10 Jul 2025 08:07:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B26CD10E89B;
-	Thu, 10 Jul 2025 08:07:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 112FA10E89E;
+	Thu, 10 Jul 2025 08:07:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WgacGycP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PZ89B0Qr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1D8C10E89B
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jul 2025 08:07:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9439B10E89B
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jul 2025 08:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752134876; x=1783670876;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/4wXFxlMsRPRr4jyVitEonnSpXK77zTABZsUWIkTulA=;
- b=WgacGycPzAtboeBWmdxb8AZ23gOb04tdYtt+C342CyzhStFeVhVrK4jt
- HH4bNrAW+sV2Tq53vG7wnd0GFnW8qcvs79aQcG5da7L6xis5zEvSCd5kS
- 434/K+dWZyV6CujakEtRoXpbTdhMgFLVFwiu9gpZRlny8LzMqkE5HHvJf
- ix3sIOOq4aCvlvZkfVggVDonZZjW6/MDgQGojVUNVGPkK0dBiwRPreJoH
- H1eGHMT8M+nNeDhcIKLFlUcmriC9Zce0KuEoUGJ5zn5T4fwW47LzNJ4Jn
- Oq3K1rWzMkS8+wYUX7rsg8erQZaTyxzDCMilmzt6SehNr5WuMxBuvbPRk g==;
-X-CSE-ConnectionGUID: wJuEjJQmSxytZb2cwglDgA==
-X-CSE-MsgGUID: Hl6jcMZwTaKkcd5043Vjog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54379545"
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; d="scan'208";a="54379545"
+ t=1752134877; x=1783670877;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=JizrmnyjUUg6jj/unpUuE4b9dtUp1DeN8unz2jWtmDw=;
+ b=PZ89B0Qr890gFLzMYBXNVHYlNCU9Fyt300jLZSXhEN+hYQ6SoDHpe7EW
+ V8G78DM7vRxTGuoMXTPCT0YRDQ5ylpbCZOwLiqkbglC1BgwiZ+/x8ujkv
+ gQMuti5LMHjCR9++45cxyNIWvK006fQkcix2xDt5gmCRZkFW1eiiFBk0f
+ nf0KxhgsoU94wR5monERfU2JZsmQV92uW1vBIFWmi+WXbtnhA2X9e3VJF
+ GaE0ghacYs7KV01SpMaVXc+k0tbca9k2cQ9ahKFIWoQLhg1Z/cSM97LrQ
+ YLio54cormeeZifSz9hu8fNC3BOciCq6GhIC5ux5QCqoPShnXZBt+/mRA Q==;
+X-CSE-ConnectionGUID: rEr4ptKyTruvDJsQQ6m9EQ==
+X-CSE-MsgGUID: S98XKBJKRWCetLYwPKgfpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54379547"
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; d="scan'208";a="54379547"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 Jul 2025 01:07:56 -0700
-X-CSE-ConnectionGUID: wczG0K+YR76Mb+7QobMe5g==
-X-CSE-MsgGUID: IhmDSbnRTvOTyCq9mf2ofw==
+X-CSE-ConnectionGUID: BAaMxMaBTn6jXZl1fcYAHA==
+X-CSE-MsgGUID: J3xJu6AqQpuc/bKZIhSa0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; d="scan'208";a="156114247"
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; d="scan'208";a="156114259"
 Received: from artdev273.igk.intel.com ([172.28.176.71])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2025 01:07:54 -0700
+ 10 Jul 2025 01:07:55 -0700
 From: Jan Sokolowski <jan.sokolowski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jan Sokolowski <jan.sokolowski@intel.com>
-Subject: [PATCH i-g-t v1 1/2] tests/intel/xe_eudebug: Reduce debug loglevel
-Date: Thu, 10 Jul 2025 08:09:28 +0000
-Message-Id: <20250710080929.412509-1-jan.sokolowski@intel.com>
+Subject: [PATCH i-g-t v1 2/2] tests/intel/xe_pm: Reduce debug loglevel
+Date: Thu, 10 Jul 2025 08:09:29 +0000
+Message-Id: <20250710080929.412509-2-jan.sokolowski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250710080929.412509-1-jan.sokolowski@intel.com>
+References: <20250710080929.412509-1-jan.sokolowski@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,31 +75,23 @@ if it's bigger than that.
 
 Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
 ---
- tests/intel/xe_eudebug.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/intel/xe_pm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index d2a1932fb..4a2c43635 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -20,6 +20,7 @@
- #include <sys/prctl.h>
- 
- #include "igt.h"
-+#include "igt_sysfs.h"
- #include "intel_pat.h"
- #include "lib/igt_syncobj.h"
- #include "xe/xe_eudebug.h"
-@@ -2800,6 +2801,9 @@ igt_main
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
- 		was_enabled = xe_eudebug_enable(fd, true);
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 7e9324eec..16b5fc686 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -826,6 +826,9 @@ igt_main
+ 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
+ 		sysfs_fd = igt_sysfs_open(device.fd_xe);
+ 		device.res = drmModeGetResources(device.fd_xe);
 +
 +		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
 +		update_debug_mask_if_ci(DRM_UT_KMS);
  	}
  
- 	igt_subtest("sysfs-toggle")
+ 	for (const struct s_state *s = s_states; s->name; s++) {
 -- 
 2.34.1
 
