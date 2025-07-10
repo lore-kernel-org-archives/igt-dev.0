@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E47C83F20
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Jul 2025 09:36:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48CE3C83F1D
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Jul 2025 09:41:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5CE1410E04A;
-	Thu, 10 Jul 2025 09:36:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0094A10E05A;
+	Thu, 10 Jul 2025 09:41:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LZXtUre0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bz+BdtAk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2B7510E04A
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jul 2025 09:36:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EBE210E05A
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jul 2025 09:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752140171; x=1783676171;
+ t=1752140497; x=1783676497;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=Grp3aihC/9g0GU/mU4IxORuAGTYE/G3VnoqIPb2HB5Q=;
- b=LZXtUre0KjdJ8n8hKeQ0jbWoxbu49rmwcSAJp5OchxoYtEfhA/g59CHr
- wj0ij8dNoeM243GWnhzSAgDtJ4BGrWf02fQmSgYfdPvaCCCPNuIY08708
- xf8wr72djQIwjPioBqH1IyC0b0/ZMaEXSCq0Av/yrGgZxFpkuR5mNaDno
- 17QSn9/1dln/7GO0MAsXq38XoQgVu0IeHqO22uCRagiq+oa5xaKo4KFTc
- 8BfDokoQMPFS7MoRucruySarF6V2SrENXaAOtXKeqsL6Uvbp8Zxe/AQMH
- ssxL/M/7G313xwSGmTRC7WW9oWQ6dg6CZX+lo2qMvCsKsgJN1X0EuJzCg A==;
-X-CSE-ConnectionGUID: 0atpLyEDQoeohTT8xBe/SA==
-X-CSE-MsgGUID: zS0qxJeuTKmNm5kxyAVOEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="65766068"
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; d="scan'208";a="65766068"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2025 02:36:10 -0700
-X-CSE-ConnectionGUID: 5Zx3rS/bRDyq2ZYPflU6GQ==
-X-CSE-MsgGUID: 2hJRtVq8RgmzOP/emcDZ8g==
+ bh=sarOhvYqbrVLuiMkcLwLklPHOIZVp3Lcb5mPaAEJ8Do=;
+ b=bz+BdtAknJuDv/nkWPs8C9D/D2Ffst7WVFXUNhiMBoKRTLqh5GUdGWMK
+ MyqYluEV31QDnNqTr3Q7Gbb1daReFPSp1g7IODzifeWBiqbeJhDuvWKsX
+ KTQmI+3+bjoyRoa1x7nzkFdW7COFZrTe7LVw++AzpnrLhB9yi5mF+bb6n
+ ISB9XXwl+uWw8BatOYJQjbm/i0gn2PB4KY9l0NJ7UL2xIpPEQTumk8Pen
+ /WM8tZbI/Xu+zx/yXhhP2lbnKpg6fyEaxdLAIikiZ+RJCfz+jqunvoBYA
+ kwuyYqpeHwa0IRzhwDa4KHoU8Zs5Qu4MsZhiOClDYau5KWcss3nsrcdGk A==;
+X-CSE-ConnectionGUID: aLvq+gXKQGmtMzgq+xLdEA==
+X-CSE-MsgGUID: Jo1ANvqPTEq3tXLAjhE3Pw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="65114820"
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; d="scan'208";a="65114820"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2025 02:41:37 -0700
+X-CSE-ConnectionGUID: /GpmJYZMTJqB3iEpFnESMQ==
+X-CSE-MsgGUID: AaZTOdiGQt6yaTogi/OSHQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; d="scan'208";a="155435672"
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; d="scan'208";a="160313843"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 02:36:08 -0700
-Date: Thu, 10 Jul 2025 11:35:50 +0200
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 02:41:35 -0700
+Date: Thu, 10 Jul 2025 11:41:32 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Peter Senna Tschudin <peter.senna@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com,
  rodrigo.vivi@intel.com, katarzyna.piecielska@intel.com,
  zbigniew.kempczynski@intel.com, michal.wajdeczko@intel.com,
  karthik.b.s@intel.com
-Subject: Re: [PATCH v5,resend i-g-t 2/6] tests: Add core_debugfs
-Message-ID: <20250710093550.lfwhn47pa5ozhsjb@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH v5,resend i-g-t 4/6] tests: Add core_sysfs
+Message-ID: <20250710094132.nilml7cpqh46qbhs@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Peter Senna Tschudin <peter.senna@linux.intel.com>,
  igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com,
@@ -57,12 +57,12 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  zbigniew.kempczynski@intel.com, michal.wajdeczko@intel.com,
  karthik.b.s@intel.com
 References: <20250708144039.53482-1-peter.senna@linux.intel.com>
- <20250708144039.53482-3-peter.senna@linux.intel.com>
+ <20250708144039.53482-5-peter.senna@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250708144039.53482-3-peter.senna@linux.intel.com>
+In-Reply-To: <20250708144039.53482-5-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,10 +79,10 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Peter,
-On 2025-07-08 at 16:40:34 +0200, Peter Senna Tschudin wrote:
-> Introduce core_debugfs that is expected to work with any GPU, not
-> limited to i915 and Xe. The test attempts to open every file in debugfs
-> associated with the GPU.
+On 2025-07-08 at 16:40:36 +0200, Peter Senna Tschudin wrote:
+> core_sysfs is GPU-agnostic test designed to work with any GPU, not
+> limited to i915 and Xe. The test scans the sysfs directory associated
+> with the GPU, reads all files, and discards the content.
 > 
 > Cc: lucas.demarchi@intel.com
 > Cc: rodrigo.vivi@intel.com
@@ -92,192 +92,122 @@ On 2025-07-08 at 16:40:34 +0200, Peter Senna Tschudin wrote:
 > Cc: michal.wajdeczko@intel.com
 > Cc: karthik.b.s@intel.com
 > Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
 > v5:
 >  - use igt_dir_process_files_simple()
 > v4:
 >  - unchanged from v3
 > v3:
->  - removed "debugfs" from subtest name (Thanks Michal Wajdeczko)
+>  - removed "sysfs" from the name of subtest (Thanks Michal Wajdeczko)
 > v2:
 >  - changed style of comparison to NULL
 > 
->  docs/code_coverage.md                    | 18 ++++-----
->  scripts/code_cov_selftest.sh             |  2 +-
->  tests/core_debugfs.c                     | 48 ++++++++++++++++++++++++
+>  tests/core_sysfs.c                       | 49 ++++++++++++++++++++++++
 >  tests/intel-ci/fast-feedback.testlist    |  1 +
 >  tests/intel-ci/xe-fast-feedback.testlist |  1 +
 >  tests/meson.build                        |  1 +
->  6 files changed, 61 insertions(+), 10 deletions(-)
->  create mode 100644 tests/core_debugfs.c
+>  4 files changed, 52 insertions(+)
+>  create mode 100644 tests/core_sysfs.c
 > 
-> diff --git a/docs/code_coverage.md b/docs/code_coverage.md
-> index 031611e69..8c4857412 100644
-> --- a/docs/code_coverage.md
-> +++ b/docs/code_coverage.md
-> @@ -162,23 +162,23 @@ For each script, the igt_runner passes just one parameter: the results
->  directory + the test name.
->  
->  For instance, if it is needed to run a test called
-> -`intel_sysfs_debugfs (i915-debugfs-read-all-entries)` using `code_cov_capture`
-> +`core_debugfs (read-all-entries)` using `code_cov_capture`
->  parameter, e. g.:
->  
->  ```
-> -$ echo "igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries" > my.testlist
-> +$ echo "igt@core_debugfs@read-all-entries" > my.testlist
->  $ ./scripts/run-tests.sh -T my.testlist -k ~/linux -c code_cov_capture -P
->  Found test list: "/basedir/igt/build/tests/test-list.txt"
-> -[31410.499969] [1/1] intel_sysfs_debugfs (i915-debugfs-read-all-entries)
-> +[31410.499969] [1/1] core_debugfs (read-all-entries)
->  [31411.060446] Storing code coverage results...
-> -[31418.01]     Code coverage wrote to /basedir/igt/results/code_cov/intel_sysfs_debugfs_i915_debugfs_read_all_entries.info
-> +[31418.01]     Code coverage wrote to /basedir/igt/results/code_cov/core_debugfs_debugfs_read_all_entries.info
->  Done.
->  ```
->  
->  The script will be called as:
->  
->  ```
-> -code_cov_capture results/code_cov/intel_sysfs_debugfs_i915_debugfs_read_all_entries
-> +code_cov_capture results/code_cov/core_debugfs_debugfs_read_all_entries
->  ```
->  
->  Please notice that any character that it is not a number nor a letter at the
-> @@ -376,7 +376,7 @@ OUT_DIR="${HOME}/results"
->  
->  mkdir -p $OUT_DIR/html
->  
-> -echo "igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries" > $TESTLIST
-> +echo "igt@core_debugfs@read-all-entries" > $TESTLIST
->  echo "igt@core_auth@basic-auth" >> $TESTLIST
->  echo "igt@gem_exec_basic@basic" >> $TESTLIST
->  
-> @@ -401,8 +401,8 @@ genhtml -q -s --legend --branch-coverage $OUT_DIR/results.info
->  Running such script produces the following output:
->  
->  ```
-> -[3622.993304] [1/3] intel_sysfs_debugfs (i915-debugfs-read-all-entries)
-> -[3631.95]     Code coverage wrote to results/code_cov/intel_sysfs_debugfs_i915_debugfs_read_all_entries.info
-> +[3622.993304] [1/3] core_debugfs (read-all-entries)
-> +[3631.95]     Code coverage wrote to results/code_cov/core_debugfs_debugfs_read_all_entries.info
->  [3626.217016] Storing code coverage results...
->  [3631.957998] [2/3] core_auth (basic-auth)
->  [3638.03]     Code coverage wrote to results/code_cov/core_auth_basic_auth.info
-> @@ -419,7 +419,7 @@ core_auth_basic_auth.info:
->  Ignored......: non-drm headers and source files where none of its code ran.
->  Source files.: 23.27% (165 of 709 total), 29.57% (165 of 558 filtered)
->  
-> -intel_sysfs_debugfs_i915_debugfs_read_all_entries.info:
-> +core_debugfs_debugfs_read_all_entries.info:
->    lines......: 19.3% (20266 of 104802 lines)
->    functions..: 17.5% (1922 of 10971 functions)
->    branches...: 12.7% (9462 of 74555 branches)
-> diff --git a/scripts/code_cov_selftest.sh b/scripts/code_cov_selftest.sh
-> index bc5ef7458..6f3a6db55 100755
-> --- a/scripts/code_cov_selftest.sh
-> +++ b/scripts/code_cov_selftest.sh
-> @@ -13,7 +13,7 @@ if [ -z "$IGT_KERNEL_TREE" ] ; then
->          exit 1
->  fi
->  
-> -TEST="igt@intel_sysfs_debugfs@i915-debugfs-read-all-entries"
-> +TEST="igt@core_debugfs@read-all-entries"
->  
->  TESTLIST="my_tests.testlist"
->  GATHER="scripts/code_cov_gather_on_test.py"
-> diff --git a/tests/core_debugfs.c b/tests/core_debugfs.c
+> diff --git a/tests/core_sysfs.c b/tests/core_sysfs.c
 > new file mode 100644
-> index 000000000..8ce305c40
+> index 000000000..5ac3ed901
 > --- /dev/null
-> +++ b/tests/core_debugfs.c
-> @@ -0,0 +1,48 @@
+> +++ b/tests/core_sysfs.c
+> @@ -0,0 +1,49 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
 > + * Copyright © 2025 Intel Corporation
 > + */
 > +
 > +#include "igt.h"
-> +#include "igt_debugfs.h"
 > +#include "igt_dir.h"
+> +#include "igt_sysfs.h"
 > +
 > +/**
-> + * TEST: debugfs test
-> + * Description: Read entries from debugfs
+> + * TEST: sysfs test
+> + * Description: Read entries from sysfs path.
 > + * Category: Core
 > + * Mega feature: General Core features
 > + * Sub-category: uapi
-> + * Functionality: debugfs
+> + * Functionality: sysfs
 > + * Feature: core
 > + * Test category: uapi
 > + *
 > + * SUBTEST: read-all-entries
-> + * Description: Read all entries from debugfs path validating debugfs entries
+> + * Description: Read all entries from sysfs path
+> + *
 > + */
 > +
-> +IGT_TEST_DESCRIPTION("Read entries from debugfs");
+> +IGT_TEST_DESCRIPTION("Read entries from sysfs paths.");
 > +
 > +igt_main
 > +{
-> +	int debugfs = -1;
 > +	int fd = -1;
+> +	int sysfs = -1;
 > +
 > +	igt_fixture {
 > +		fd = drm_open_driver_master(DRIVER_ANY);
-> +		debugfs = igt_debugfs_dir(fd);
-> +		igt_require(debugfs >= 0);
+> +		sysfs = igt_sysfs_open(fd);
+> +		igt_require(sysfs >= 0);
 > +
 > +		kmstest_set_vt_graphics_mode();
 > +	}
 > +
-> +	igt_describe("Read all entries from debugfs path.");
+> +	igt_describe("Read all entries from sysfs path.");
 > +	igt_subtest("read-all-entries") {
-> +		igt_dir_process_files_simple(debugfs);
+> +		igt_dir_process_files_simple(sysfs);
 > +	}
+
+Please remove braces here, they are not needed, so:
+	igt_subtest("read-all-entries")
+		igt_dir_process_files_simple(sysfs);
+
+With this fixed
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > +
 > +	igt_fixture {
-> +		close(debugfs);
+> +		close(sysfs);
 > +		drm_close_driver(fd);
 > +	}
 > +}
 > diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index 82395e7ea..3ec1b95cf 100644
+> index 3ec1b95cf..5d4d101ef 100644
 > --- a/tests/intel-ci/fast-feedback.testlist
 > +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -3,6 +3,7 @@ igt@i915_module_load@load
->  
+> @@ -4,6 +4,7 @@ igt@i915_module_load@load
 >  # Keep alphabetically sorted by default
 >  igt@core_auth@basic-auth
-> +igt@core_debugfs@read-all-entries
+>  igt@core_debugfs@read-all-entries
+> +igt@core_sysfs@read-all-entries
 >  igt@fbdev@eof
 >  igt@fbdev@info
 >  igt@fbdev@nullptr
 > diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index d9d180d87..ac3177ae9 100644
+> index ac3177ae9..a5f799f6b 100644
 > --- a/tests/intel-ci/xe-fast-feedback.testlist
 > +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -7,6 +7,7 @@ igt@fbdev@nullptr
->  igt@fbdev@read
+> @@ -8,6 +8,7 @@ igt@fbdev@read
 >  igt@fbdev@write
 >  
-> +igt@core_debugfs@read-all-entries
+>  igt@core_debugfs@read-all-entries
+> +igt@core_sysfs@read-all-entries
 >  igt@intel_sysfs_debugfs@xe-base
 >  igt@intel_sysfs_debugfs@xe-debugfs-read-all-entries
 >  igt@intel_sysfs_debugfs@xe-forcewake
 > diff --git a/tests/meson.build b/tests/meson.build
-> index 9b87a0d24..99d7d95be 100644
+> index 1009bef2e..4976f2d91 100644
 > --- a/tests/meson.build
 > +++ b/tests/meson.build
-> @@ -1,5 +1,6 @@
->  test_progs = [
->  	'core_auth',
-> +	'core_debugfs',
->  	'core_getclient',
->  	'core_getstats',
->  	'core_getversion',
+> @@ -7,6 +7,7 @@ test_progs = [
+>  	'core_hotunplug',
+>  	'core_setmaster',
+>  	'core_setmaster_vs_auth',
+> +	'core_sysfs',
+>  	'dmabuf',
+>  	'dmabuf_sync_file',
+>  	'device_reset',
 > -- 
 > 2.43.0
 > 
