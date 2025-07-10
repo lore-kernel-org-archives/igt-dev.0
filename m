@@ -4,28 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E420C83F1A
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Jul 2025 20:34:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6117CC83F20
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Jul 2025 20:53:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F0AAA10E952;
-	Thu, 10 Jul 2025 20:34:31 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BA4110E053;
- Thu, 10 Jul 2025 20:34:31 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1998376501606165389=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id EFEE110E38B;
+	Thu, 10 Jul 2025 20:53:26 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QOmTX6gR";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9DF9410E38B
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jul 2025 20:53:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752180805; x=1783716805;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:to:cc;
+ bh=weAbstxvJKwIMtAYqu72ZCuhs01ZQcg27DkBMJDgr3Y=;
+ b=QOmTX6gRrDbSG38IDmpXcJHxxo4Z+11G5MQucl8s+clXx3N9KGEHUy3k
+ KiWKvdDG7UG88/6Bf8vb//4u+2DuVBMrX7uIvsFQhc5vwGTntT66/0p1S
+ DqMrO8UaVDJKDocYEK6O5ahArJt74U20hUL+ZgskaP9eqR/TvlpiLUYPD
+ 8groH2WozOnRBOFbnLTkUIGAFQslieVciXI9u6+LKY25dQBAz3JHtltF2
+ siX24gBHrtxB2ZKO+ypHFnCPjP+FNvhFIPSDmGF67xpkylXGWPBMZSBXn
+ 6hH8kvd90oIwpp2yUBgY9NsYZGWw8wX2/dcFnlOAc7KG+pe+EJGjxsDz9 Q==;
+X-CSE-ConnectionGUID: 1XhvLz9VT/SJjZ0tvmoDiQ==
+X-CSE-MsgGUID: 7NkNvSr9S221Pmh2pYO/vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="42107927"
+X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; d="scan'208";a="42107927"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2025 13:53:25 -0700
+X-CSE-ConnectionGUID: 1q5WUEbiR22+iHYwqJBBvQ==
+X-CSE-MsgGUID: DMBFEglbRru3pc/JBE6X2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; d="scan'208";a="156288518"
+Received: from spandruv-desk1.amr.corp.intel.com (HELO
+ gjsousa-mobl2.amr.corp.intel.com) ([10.125.110.234])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2025 13:53:24 -0700
+From: Gustavo Sousa <gustavo.sousa@intel.com>
+Date: Thu, 10 Jul 2025 17:53:10 -0300
+Subject: [PATCH i-g-t] tests/xe: Fix usage of xe_dev_max_gt() for array
+ allocation
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2Cv1=2C1/3=5D_lib/igt=5Fvc4=3A_Fix_musl_libc_compilation_=28re?=
- =?utf-8?q?v2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Jul 2025 20:34:31 -0000
-Message-ID: <175217967163.151663.7748744860362280212@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250710190017.167735-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20250710190017.167735-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250710-fix-use-of-xe_dev_max_gt-for-array-allocation-v1-1-4b255bba56d8@intel.com>
+X-B4-Tracking: v=1; b=H4sIADYocGgC/x3NQQrCQAxA0auUrA2k1ap4FZEhTDM1UDuSqWWk9
+ O4Gl3/z/gZFTKXArdnAZNWiefZoDw3EJ8+joA7e0FHX06UlTFrxUwRzwiphkDW8uIZxwZQN2Yy
+ /yNOUIy8uoVxPRDFKfzxHcPNt4sD/d3/s+w9NN+uXfwAAAA==
+X-Change-ID: 20250710-fix-use-of-xe_dev_max_gt-for-array-allocation-e8400cce536c
+To: igt-dev@lists.freedesktop.org
+Cc: Matt Roper <matthew.d.roper@intel.com>, 
+ =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Gustavo Sousa <gustavo.sousa@intel.com>
+X-Mailer: b4 0.14.2
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,129 +71,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1998376501606165389==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The function xe_dev_max_gt() returns the maximum GT ID. Because the ID
+is zero-based, if we want to allocate an array that can hold positions
+for all possible GTs, we need to take xe_dev_max_gt() + 1.
 
-== Series Details ==
+Fix the current allocations to conform to that.
 
-Series: series starting with [i-g-t,v1,1/3] lib/igt_vc4: Fix musl libc compilation (rev2)
-URL   : https://patchwork.freedesktop.org/series/151459/
-State : success
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Fixes: edd059dcd652 ("tests/xe: Don't assume max GT ID is num_gt - 1")
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+---
+ tests/intel/xe_gt_freq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+index 2c90804282c9f9f2ca5cfd0ddc1c7b9f01410225..d0f35b10a5fe4b09779ca8120120b22c98477b44 100644
+--- a/tests/intel/xe_gt_freq.c
++++ b/tests/intel/xe_gt_freq.c
+@@ -408,8 +408,8 @@ igt_main
+ 		max_gt = xe_dev_max_gt(fd);
+ 
+ 		/* The defaults are the same. Stashing the gt0 is enough */
+-		stash_min = (uint32_t *) malloc(sizeof(uint32_t) * max_gt);
+-		stash_max = (uint32_t *) malloc(sizeof(uint32_t) * max_gt);
++		stash_min = (uint32_t *) malloc(sizeof(uint32_t) * (max_gt + 1));
++		stash_max = (uint32_t *) malloc(sizeof(uint32_t) * (max_gt + 1));
+ 
+ 		xe_for_each_gt(fd, gt) {
+ 			stash_min[gt] = xe_gt_get_freq(fd, gt, "min");
 
-CI Bug Log - changes from XEIGT_8451_BAT -> XEIGTPW_13447_BAT
-====================================================
+---
+base-commit: eacde5c2acc37c1570e27b68b8b6c39d8b61fb32
+change-id: 20250710-fix-use-of-xe_dev_max_gt-for-array-allocation-e8400cce536c
 
-Summary
--------
+Best regards,
+-- 
+Gustavo Sousa <gustavo.sousa@intel.com>
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13447_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-plain-flip@c-edp1:
-    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8451/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13447/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-
-
-Build changes
--------------
-
-  * IGT: IGT_8451 -> IGTPW_13447
-  * Linux: xe-3390-ad02e528d11b8cdc56daaa647aed319ba1d1ff03 -> xe-3391-6ee8d9883a49bf8ddaf26b60905f73e8654fd58c
-
-  IGTPW_13447: 46f145a8a62a2badeaecbc8c2d5e56f05ccd99ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8451: 8451
-  xe-3390-ad02e528d11b8cdc56daaa647aed319ba1d1ff03: ad02e528d11b8cdc56daaa647aed319ba1d1ff03
-  xe-3391-6ee8d9883a49bf8ddaf26b60905f73e8654fd58c: 6ee8d9883a49bf8ddaf26b60905f73e8654fd58c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13447/index.html
-
---===============1998376501606165389==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v1,1/3] lib/igt_vc4: Fix musl libc compilation (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151459/">https://patchwork.freedesktop.org/series/151459/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13447/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13447/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8451_BAT -&gt; XEIGTPW_13447_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13447_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8451/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13447/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8451 -&gt; IGTPW_13447</li>
-<li>Linux: xe-3390-ad02e528d11b8cdc56daaa647aed319ba1d1ff03 -&gt; xe-3391-6ee8d9883a49bf8ddaf26b60905f73e8654fd58c</li>
-</ul>
-<p>IGTPW_13447: 46f145a8a62a2badeaecbc8c2d5e56f05ccd99ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8451: 8451<br />
-  xe-3390-ad02e528d11b8cdc56daaa647aed319ba1d1ff03: ad02e528d11b8cdc56daaa647aed319ba1d1ff03<br />
-  xe-3391-6ee8d9883a49bf8ddaf26b60905f73e8654fd58c: 6ee8d9883a49bf8ddaf26b60905f73e8654fd58c</p>
-
-</body>
-</html>
-
---===============1998376501606165389==--
