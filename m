@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87D46C83F17
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Jul 2025 19:00:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4708BC83F17
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Jul 2025 19:00:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3350B10E94F;
-	Thu, 10 Jul 2025 19:00:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F37A410E953;
+	Thu, 10 Jul 2025 19:00:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xq8TbxtA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mpctb1tg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB98B10E94F
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jul 2025 19:00:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AF1910E950
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jul 2025 19:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752174037; x=1783710037;
+ t=1752174041; x=1783710041;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=JfKfBg3CM+Qd2OPLcVXtJwiVo9cOfcpsPuKQpwdMlHQ=;
- b=Xq8TbxtARDj37s8tQ3vWa7nLs3a+85yXnUg/mp3IydgGvPQ+rLn1rfZs
- /VLHfoErsWN9ljLL4P/+X0uULdccY00aLVI88oajH4XSIn78iNycWDkT5
- 9TeNf07MUIU4wV+BWYsGPWs4HZPtmdmkdXcszEaAhzsoKQw0902v4dpId
- uVo8rhaC0AhfZjCFDIiZ/sCqjEaCs8WaziuIDS9PhpFWlsSsY+Cu3HAv9
- eQ5cEpR5+A/2ItKdWg0LrRS5QmM13VIZ7Vnhry43wfI9Nwsw/qx04F98A
- asTK1mPMGxRLN43N9RGGbiBWHGP+fSUeB9zp//7YMieTR8Fxz4R66/jxO Q==;
-X-CSE-ConnectionGUID: a1+cul/oRLuMasYjjsUVAw==
-X-CSE-MsgGUID: UDtS/FnWSUielLoDGAp0mg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="53685864"
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; d="scan'208";a="53685864"
+ bh=eN63gB2Mmb/GneVE4VDl13KodVDz0eu18iQzEMSYd9s=;
+ b=mpctb1tgxPpl8iog/7eTP8sp+f8VhkWP8Kj+JW63VrrLr2LWGr+4otnz
+ m3I+tOCMM6ZF1vNhccwtUh86TAjWMfHu/5M72xyh2+gB53RHxRu3U1Nm8
+ am8xaZIeU0Ia8/3g/K2RArSepSRHAWRwf4sG2vlpzokqzRa3jxmMNmCX1
+ xn4vS4n3XkiFfWpjfbsQCeABfjI7qvYZqmPQks+syCQDKeWXGQ6ejgcc4
+ Yb5NOPvtVcDNZlLoXgO8fRz8TKRSZC9dFnc1rUe/UuN5XzEN+q4/jClfr
+ tjoeo6XJfWpiF0DSLleDltCbM6Og9Qic6v0gsmEUzNHPgxyDNK6gZuuD+ A==;
+X-CSE-ConnectionGUID: QWMhp6TKRjmIuGz2YOLStQ==
+X-CSE-MsgGUID: Zpzm8yWeRNONCnLW3/Hpow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="53685872"
+X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; d="scan'208";a="53685872"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2025 12:00:37 -0700
-X-CSE-ConnectionGUID: CRf+YH0DSpmrVy+C60hyUA==
-X-CSE-MsgGUID: +3sucJiwSkOU+AFEtjSRhg==
+ 10 Jul 2025 12:00:41 -0700
+X-CSE-ConnectionGUID: rSL0YedZR22iaHVYiG9gTA==
+X-CSE-MsgGUID: QPldvxSMRgSoRxBbWRyI9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; d="scan'208";a="179864975"
+X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; d="scan'208";a="179865002"
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.100])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2025 12:00:36 -0700
+ 10 Jul 2025 12:00:40 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zlice555@gmail.com,
 	Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 3/3] lib/svga/vm_basic_types: fix musl libs compilation
-Date: Thu, 10 Jul 2025 21:00:12 +0200
-Message-ID: <20250710190017.167735-3-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 0/3] Fix igt v2.1 compilation on Void Linux with musl
+ C libs
+Date: Thu, 10 Jul 2025 21:00:13 +0200
+Message-ID: <20250710190017.167735-4-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250710190017.167735-1-kamil.konieczny@linux.intel.com>
 References: <20250710190017.167735-1-kamil.konieczny@linux.intel.com>
@@ -69,37 +70,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fix gcc compilation on Void Linux with musl C libs, where
-PAGE_SIZE is already defined.
+This fixes a compilation on Void Linux as reported
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/179
 
-Reported-by: zlice <zlice555@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/179
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
+Cc: zlice <zlice555@gmail.com>
+
+Kamil Konieczny (3):
+  lib/igt_vc4: Fix musl libc compilation
+  lib/xe/xe_sriov_debugfs: fix musl libs compilation
+  lib/svga/vm_basic_types: fix musl libs compilation
+
+ lib/igt_vc4.h             |  8 +++++++-
  lib/svga/vm_basic_types.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ lib/xe/xe_sriov_debugfs.c |  1 +
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/lib/svga/vm_basic_types.h b/lib/svga/vm_basic_types.h
-index 8fec5b665..ea10a683c 100644
---- a/lib/svga/vm_basic_types.h
-+++ b/lib/svga/vm_basic_types.h
-@@ -27,7 +27,15 @@
- #define VM_BASIC_TYPES_H
- 
- #define PAGE_SHIFT 12
--#define PAGE_SIZE (1 << PAGE_SHIFT)
-+
-+#ifndef PAGE_SIZE
-+# define PAGE_SIZE (1 << PAGE_SHIFT)
-+#else
-+# if PAGE_SIZE != 4096
-+#  error "Unexpected PAGE_SIZE"
-+# endif
-+#endif
-+
- #define PAGE_MASK (~(PAGE_SIZE - 1))
- #define PAGE_ALIGN(addr) (((addr) + PAGE_SIZE - 1) & PAGE_MASK)
- 
 -- 
 2.50.1
 
