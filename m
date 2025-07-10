@@ -4,56 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86EC6C83F09
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Jul 2025 04:48:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6949C83F1A
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Jul 2025 05:58:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3436610E1A4;
-	Thu, 10 Jul 2025 04:48:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6973210E17E;
+	Thu, 10 Jul 2025 05:58:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aKo2gyCs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Np+4HArH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EB4210E164
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Jul 2025 04:48:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04ACB10E17E
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jul 2025 05:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752122911; x=1783658911;
- h=from:to:cc:subject:date:message-id:in-reply-to:
+ t=1752127101; x=1783663101;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=A7EDjYAe26FMqS4/fD6Bli8nt0uikjJ3LfNaMQrH5qY=;
- b=aKo2gyCs4rK2bvZn3LrKpBOAXAU3qrkXlMxPpdohvkb9vnU2Oq1xLCMX
- IwAeuURiWXyK3IRMtD8PnN/QLXhojVN8SUz8wKgQp/8APT335K7nARWO3
- yroCtakKwKg7em2L/5/YpIJtzyHJKBIOrmy+zmt0MlgxUbTsgnZ1Ld4L+
- n8CN6uO+wByg9M/uDdm5Wz8Z1m8C1Ie1K4qi2CuFCtag4g8CCiOBp0fPp
- pg89ICKDv216/R9sG6yFXP0lB9l8RHF8Iy6qypn/EU9N9sl1TUKNJYo8n
- 2NAnr7mniUvyNK6j6TFQRf28tIeb2rcgMNT5MpfBdzq6KlHKoKME/Yr1K Q==;
-X-CSE-ConnectionGUID: m9M5HqkXQgSnxDejJ7yenA==
-X-CSE-MsgGUID: WP9q9Q/NSzOX07iro3FAaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54540141"
-X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; d="scan'208";a="54540141"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2025 21:48:31 -0700
-X-CSE-ConnectionGUID: MfGorqCAQveBksUx6h4C9A==
-X-CSE-MsgGUID: D9ccsiHsRnmieXhZwXYBcw==
+ bh=BGzZXwbfMyIs+WK0eBUt60AybxGQ4b62Wl2uIH3jpWQ=;
+ b=Np+4HArH33hk1WpcM8E7gY28AS3y2e9Sm7weosNnRKW6/b9I7utoy1sX
+ QvEvYIgGEzXPpnQNdovfp11Y8E6qyWD5gtI+pvu/nemlqDsIEkhNIhSeo
+ w0noP8PN9Izv5aZK6LAZns/OESPoJ5xSPjIQUUpiM5f5wezHjD0T9bTcA
+ qEmzBaUWpJX/yduhdwRIeHTwJr8tFxixxxkCN9KkZSFOMKkV0avjWHZNQ
+ 4xDI7WONSL/cLWc5Eush9t+M++SW9Qyi168sGAVxaPqO3gVB+6QWxRxum
+ nGQZML+cyi9wJCBmH36us5mVkZQYKHb7SiCON4xTvhhW2uW+MmjjySTrq w==;
+X-CSE-ConnectionGUID: VY42oG1XQtGzkZFlzsi1bA==
+X-CSE-MsgGUID: TQ/oWJ2CS8KWlG6mWp9IDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="65748748"
+X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; d="scan'208";a="65748748"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2025 22:58:21 -0700
+X-CSE-ConnectionGUID: tP4YngUETU2TJQGarGuYQQ==
+X-CSE-MsgGUID: BnHf49JVTvipkGmXJ1vpbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; d="scan'208";a="156446512"
-Received: from dut6245dg2frd.fm.intel.com ([10.80.55.42])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Jul 2025 21:48:31 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com,
-	Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH v2 i-g-t 1/1] tests/intel/xe_copy : Add check for memset and
- memcpy tests.
-Date: Thu, 10 Jul 2025 04:48:09 +0000
-Message-Id: <20250710044809.1739631-2-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250710044809.1739631-1-sobin.thomas@intel.com>
-References: <20250710044809.1739631-1-sobin.thomas@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.16,299,1744095600"; d="scan'208";a="161538705"
+Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
+ ([10.165.21.142])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2025 22:58:21 -0700
+Date: Wed, 09 Jul 2025 22:58:20 -0700
+Message-ID: <85tt3kk2o3.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Jesse.Zhang <Jesse.Zhang@amd.com>
+Cc: <igt-dev@lists.freedesktop.org>, Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+Subject: Re: [PATCH i-g-t 3/4] tests/amdgpu: Add test coverage for all
+ user-mode queues across IP blocks
+In-Reply-To: <20250708074819.624367-3-Jesse.Zhang@amd.com>
+References: <20250708074819.624367-1-Jesse.Zhang@amd.com>
+ <20250708074819.624367-3-Jesse.Zhang@amd.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/29.4 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-7
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,56 +75,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Added checks for platforms with graphics_ver < 20 (e.g., PVC) in xe_memcpy (page copy) 
-and memset tests (e.g., xe-memset-linear) using extended parameters.
+On Tue, 08 Jul 2025 00:47:49 -0700, Jesse.Zhang wrote:
+>
+> Introduced a new test function, amdgpu_test_all_queues(), to validate
+> write-linear command submission across all available IP blocks (GFX, Comp=
+ute, SDMA)
+> with user-mode queues (UMQ).
+>
+> - Adds a dynamic subtest "all-queues-test-with-UMQ" under amdgpu_basic to=
+ ensure
+>   all supported IP queues are exercised individually and in combination.
+> - Uses the newly added helper amdgpu_command_submission_write_linear_help=
+er2() to
+>   manage setup, execution, and teardown across multiple IP types.
+>
+> This improves test coverage for command submission paths involving user q=
+ueues
+> and multi-IP coordination.
+>
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+> ---
+>  tests/amdgpu/amd_basic.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+>
+> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+> index 8c6b466ce..100a634ce 100644
+> --- a/tests/amdgpu/amd_basic.c
+> +++ b/tests/amdgpu/amd_basic.c
+> @@ -139,6 +139,14 @@ static void amdgpu_command_submission_sdma(amdgpu_de=
+vice_handle device, bool use
+>	amdgpu_command_submission_nop(device, AMDGPU_HW_IP_DMA, user_queue);
+>  }
+>
+> +static void amdgpu_test_all_queues(amdgpu_device_handle device, bool use=
+r_queue)
+> +{
+> +	amdgpu_command_submission_write_linear_helper2(device, AMDGPU_HW_IP_GFX=
+, false, user_queue);
+> +	amdgpu_command_submission_write_linear_helper2(device, AMDGPU_HW_IP_COM=
+PUTE, false, user_queue);
+> +	amdgpu_command_submission_write_linear_helper2(device, AMDGPU_HW_IP_DMA=
+, false, user_queue);
+> +	amdgpu_command_submission_write_linear_helper2(device, AMDGPU_HW_IP_GFX=
+ |AMDGPU_HW_IP_COMPUTE |
+> +							AMDGPU_HW_IP_DMA, false, user_queue);
+> +}
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- tests/intel/xe_copy_basic.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+>  /**
+>   * SEMAPHORE
+>   * @param device
+> @@ -830,6 +838,16 @@ igt_main
+>			amdgpu_command_submission_sdma(device, true);
+>		}
+>	}
+> +
+> +	igt_describe("Check-all-user-queues-for-write-operation");
+> +	igt_subtest_with_dynamic("all-queues-test-with-UMQ") {
+> +		if (enable_test && userq_arr_cap[AMD_IP_GFX] &&
+> +				userq_arr_cap[AMD_IP_COMPUTE] &&
+> +				userq_arr_cap[AMD_IP_DMA]) {
+> +			igt_dynamic_f("all-queues-with-umq")
+> +			amdgpu_test_all_queues(device, true);
 
-diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index 5a050b82c..2996a496b 100644
---- a/tests/intel/xe_copy_basic.c
-+++ b/tests/intel/xe_copy_basic.c
-@@ -261,6 +261,7 @@ const char *help_str =
- igt_main_args("b", NULL, help_str, opt_handler, NULL)
- {
- 	int fd;
-+	uint16_t dev_id;
- 	struct igt_collection *set, *regions;
- 	uint32_t region;
- 	struct rect linear[] = { { 0, 0xfd, 1, MODE_BYTE },
-@@ -274,6 +275,7 @@ igt_main_args("b", NULL, help_str, opt_handler, NULL)
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
-+		dev_id = intel_get_drm_devid(fd);
- 		xe_device_get(fd);
- 		set = xe_get_memory_region_set(fd,
- 					       DRM_XE_MEM_REGION_CLASS_SYSMEM,
-@@ -293,6 +295,7 @@ igt_main_args("b", NULL, help_str, opt_handler, NULL)
- 	for (int i = 0; i < ARRAY_SIZE(page); i++) {
- 		igt_subtest_f("mem-page-copy-%u", page[i].width) {
- 			igt_require(blt_has_mem_copy(fd));
-+			igt_require(intel_get_device_info(dev_id)->graphics_ver >= 20);
- 			for_each_variation_r(regions, 1, set) {
- 				region = igt_collection_get_value(regions, 0);
- 				copy_test(fd, &page[i], MEM_COPY, region);
-@@ -312,6 +315,13 @@ igt_main_args("b", NULL, help_str, opt_handler, NULL)
- 
- 	for (int i = 0; i < ARRAY_SIZE(linear); i++) {
- 		igt_subtest_f("mem-set-linear-0x%x", linear[i].width) {
-+			/* Skip mem-set-linear test for values greater than
-+			 * 0x3FFFF. As hardware with graphics_ver<20 support
-+			 * till 0x3FFFF.
-+			 */
-+			if ((linear[i].width > 0x3ffff) &&
-+				   (intel_get_device_info(dev_id)->graphics_ver < 20))
-+				igt_skip("Skipping: width exceeds 18-bit limit on gfx_ver < 20.");
- 			igt_require(blt_has_mem_set(fd));
- 			for_each_variation_r(regions, 1, set) {
- 				region = igt_collection_get_value(regions, 0);
--- 
-2.34.1
 
+Please clean up this warning without AMDGPU_USERQ_ENABLED:
+
+636/1531] Compiling C object tests/amdgpu/amd_basic.p/amd_basic.c.o
+../tests/amdgpu/amd_basic.c:142:13: warning: =A1amdgpu_test_all_queues=A2 d=
+efined but not used [-Wunused-function]
+  142 | static void amdgpu_test_all_queues(amdgpu_device_handle device, boo=
+l user_queue)
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+[1526/1529] Generating docs/testplan/intel-ci-tests with a custom command
+
+
+> +		}
+> +	}
+>  #endif
+>
+>	igt_fixture {
+> --
+> 2.49.0
+>
