@@ -4,60 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C269C83F1A
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 14:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC35C83F1A
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 14:45:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1414110E292;
-	Fri, 11 Jul 2025 14:31:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D153510E292;
+	Fri, 11 Jul 2025 14:45:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RvH/fus/";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="HHmh/Css";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D94010E292
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jul 2025 14:31:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752244309; x=1783780309;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=1lt40Pt7p9Nq3oTZAbbtfK7npnRiVU+AcwzcuuhJARM=;
- b=RvH/fus/4VdFtBVhjY56chO4VvXgku1Ejx4HOXia5PpCliLGJe3BMcaM
- t1vtWbJClBT5MaeT8AL5UDkf8C263AiYL39BLxTHestXYggwD6tpvAGCd
- w+ssM66rBqOXXjcqMHkscprQrSiK84c3sodr6w5CFurbyZRMj+0FX31wz
- nVSes/PD2UKT7EUL+z12hAQXMtWo/D5NpowdBfb/fxv6dNAyIYtDmm/7V
- WTBqPCze9mWHnOb9J64Q+7Z2/s7iJ5ZMyJnMAvv6/auyxpvOtLVtWc9uq
- Ro1V7ULgcWMg3ZNKulv/33Vcj7Smr78eTpKGb3kAoIwaoobgz01h4Xmup w==;
-X-CSE-ConnectionGUID: VUafEe/QQQOQLGCuDKB9mQ==
-X-CSE-MsgGUID: oVeIXt7SQk29FoWTUBWNGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65244292"
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="65244292"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jul 2025 07:31:49 -0700
-X-CSE-ConnectionGUID: VX9HFa8ESBKY/FHdf8hozQ==
-X-CSE-MsgGUID: HDoorFPNSmG1rPDD5rd6qA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="162066685"
-Received: from johunt-mobl9.ger.corp.intel.com (HELO stinkbox)
- ([10.245.245.78])
- by orviesa005.jf.intel.com with SMTP; 11 Jul 2025 07:31:46 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 11 Jul 2025 17:31:45 +0300
-Date: Fri, 11 Jul 2025 17:31:45 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
-Cc: igt-dev@lists.freedesktop.org, khaled.almahallawy@intel.com,
- jeevaka.badrappan@intel.com, kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t v2] tools/intel_dp_compliance: Enabling XE driver
- support
-Message-ID: <aHEgUdUwMW_xfUWJ@intel.com>
-References: <20250711065645.3074530-1-disantkumar.isvarbhai.mistry@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 253D410E292
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jul 2025 14:45:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=OFMQ1CKUOr/lTes/OFm3lomO7lQX9jGX+zWSaHvVuV8=; b=HHmh/CssB0nXRwhbGF4AEc45Hw
+ sYdEwTmaA8+3COgyW/uYoY1JnK/uRrU/X9uUcnKsjjYaFFrjIAcTjfTjUuweQr3c/AZOc6UnpC2Em
+ fR+2xM0et4ncvQYUroA9g+zE4GxPa5MOEZhDjoinnhxw5MzfemtneO6Iz8YdPWNYFWpWNQL7Q17Ej
+ CMXVkqtqh9XUfx/MbSb/8ta5M0Ffez7UcT2nnPTJq5vq9gjUooHwPr+L3Ed7Cx1FajUPzdnhgDX++
+ ZK6uQixOgq9KpYkXq7xMAe7JnU2FQ95CctBGzGv0GuVqJHu/TSaCpuFqUvRaiO9LfhnsC+iru5Y1r
+ jYFFWVIw==;
+Received: from [187.36.210.68] (helo=[192.168.1.103])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1uaF0G-00FPhD-9M; Fri, 11 Jul 2025 16:45:32 +0200
+Message-ID: <db8e01cb-058c-40e7-a272-a76ec924fef3@igalia.com>
+Date: Fri, 11 Jul 2025 11:45:27 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v1 1/3] lib/igt_vc4: Fix musl libc compilation
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, zlice555@gmail.com,
+ Melissa Wen <mwen@igalia.com>, Louis Chauvet <louis.chauvet@bootlin.com>,
+ Vignesh Raman <vignesh.raman@collabora.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
+References: <20250710190017.167735-1-kamil.konieczny@linux.intel.com>
+ <20250710190017.167735-5-kamil.konieczny@linux.intel.com>
+ <20250711113239.uxhsil4lkvbgnnm3@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+In-Reply-To: <20250711113239.uxhsil4lkvbgnnm3@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250711065645.3074530-1-disantkumar.isvarbhai.mistry@intel.com>
-X-Patchwork-Hint: comment
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,130 +65,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Jul 11, 2025 at 12:26:45PM +0530, Disantkumar Mistry wrote:
-> i915 and XE driver have different api for mapping buffer. Enabling XE driver
-> support by selecting XE driver specific map buffer api for XE devices.
+Hi Kamil,
+
+On 11/07/25 08:32, Kamil Konieczny wrote:
+> Hi ,
+> On 2025-07-10 at 21:00:14 +0200, Kamil Konieczny wrote:
+>> Fix gcc compilation on Void Linux with musl C libs, where
+>> PAGE_SIZE is already defined.
+>>
 > 
-> Signed-off-by: Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
-> Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-> ----
-> v2:
->  - Updated commit description
-> ---
->  tools/igt_dp_compliance.h   |  1 +
->  tools/intel_dp_compliance.c | 50 ++++++++++++++++++++++++-------------
->  2 files changed, 33 insertions(+), 18 deletions(-)
+> Sorry, I forgot adding vc4 developers to Cc:
 > 
-> diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
-> index 226a13662871..89bab0e6b8f8 100644
-> --- a/tools/igt_dp_compliance.h
-> +++ b/tools/igt_dp_compliance.h
-> @@ -33,6 +33,7 @@
->  #else
->  #include <glib.h>
->  #endif
-> +#include "xe/xe_ioctl.h"
->  
->  extern int drm_fd;
->  
-> diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
-> index 99196a450b45..60f064442396 100644
-> --- a/tools/intel_dp_compliance.c
-> +++ b/tools/intel_dp_compliance.c
-> @@ -350,6 +350,14 @@ static void dump_info(void)
->  	igt_dump_crtcs_fd(drm_fd);
->  }
->  
-> +static void *map_buffer(int fd, uint32_t handle, size_t size)
-> +{
-> +	if (is_xe_device(fd))
-> +		return xe_bo_mmap_ext(fd, handle, size, PROT_READ | PROT_WRITE);
-> +	else
-> +		return gem_mmap__device_coherent(fd, handle, 0, size, PROT_READ | PROT_WRITE);
-> +}
+> Cc: "Ma√≠ra Canal" <mcanal@igalia.com>
+> Cc: Melissa Wen <mwen@igalia.com>
+> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
+> Cc: Vignesh Raman <vignesh.raman@collabora.com>
+> 
+> Also +cc Andrzej Hajda <andrzej.hajda@intel.com>
+> 
+>> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>> ---
+>>   lib/igt_vc4.h | 8 +++++++-
+>>   1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
+>> index fe7173c50..165872ba2 100644
+>> --- a/lib/igt_vc4.h
+>> +++ b/lib/igt_vc4.h
+>> @@ -31,7 +31,13 @@
+>>   #include "igt_fb.h"
+>>   #include "vc4_drm.h"
+>>   
+>> -#define PAGE_SIZE 4096
+>> +#ifndef PAGE_SIZE
+>> +# define PAGE_SIZE 4096
+>> +#else
+>> +# if PAGE_SIZE != 4096
+>> +#  error "Unexpected PAGE_SIZE"
+>> +# endif
+>> +#endif
+> 
+> I am not sure if vc4 needs exactly 4KB as bo, or is it good
+> to have whatever comes from compilation environment?
 
-Can someone please introduce some sanity into lib/ so
-that we have a *single* api to do common things?
+The GPU uses 4KB pages, so, that's the reason we define PAGE_SIZE to
+4096. It would be ideal to keep using the size of 4096 in vc4 tests.
+Hence, I'd suggest you to just rename PAGE_SIZE to something like
+GPU_PAGE_SIZE or VC4_PAGE_SIZE.
 
-> +
->  static int setup_framebuffers(struct connector *dp_conn)
->  {
->  
-> @@ -361,15 +369,17 @@ static int setup_framebuffers(struct connector *dp_conn)
->  	igt_assert(dp_conn->fb);
->  
->  	/* Map the mapping of GEM object into the virtual address space */
-> -	dp_conn->pixmap = gem_mmap__device_coherent(drm_fd,
-> -					dp_conn->fb_video_pattern.gem_handle,
-> -					0, dp_conn->fb_video_pattern.size,
-> -					PROT_READ | PROT_WRITE);
-> +	dp_conn->pixmap = map_buffer(drm_fd,
-> +				     dp_conn->fb_video_pattern.gem_handle,
-> +				     dp_conn->fb_video_pattern.size);
-> +
->  	if (dp_conn->pixmap == NULL)
->  		return -1;
->  
-> -	gem_set_domain(drm_fd, dp_conn->fb_video_pattern.gem_handle,
-> -		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-> +	if (is_i915_device(drm_fd))
-> +		gem_set_domain(drm_fd, dp_conn->fb_video_pattern.gem_handle,
-> +			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-> +
->  	dp_conn->fb_size = dp_conn->fb_video_pattern.size;
->  
->  	/* After filling the device memory with 0s it needs to be unmapped */
-> @@ -391,15 +401,17 @@ static int setup_failsafe_framebuffer(struct connector *dp_conn)
->  	igt_assert(dp_conn->failsafe_fb);
->  
->  	/* Map the mapping of GEM object into the virtual address space */
-> -	dp_conn->failsafe_pixmap = gem_mmap__device_coherent(drm_fd,
-> -						 dp_conn->fb_failsafe_pattern.gem_handle,
-> -						 0, dp_conn->fb_failsafe_pattern.size,
-> -						 PROT_READ | PROT_WRITE);
-> +	dp_conn->failsafe_pixmap = map_buffer(drm_fd,
-> +					      dp_conn->fb_failsafe_pattern.gem_handle,
-> +					      dp_conn->fb_failsafe_pattern.size);
-> +
->  	if (dp_conn->failsafe_pixmap == NULL)
->  		return -1;
->  
-> -	gem_set_domain(drm_fd, dp_conn->fb_failsafe_pattern.gem_handle,
-> -		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-> +	if (is_i915_device(drm_fd))
-> +		gem_set_domain(drm_fd, dp_conn->fb_failsafe_pattern.gem_handle,
-> +			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-> +
->  	dp_conn->failsafe_size = dp_conn->fb_failsafe_pattern.size;
->  
->  	/* After filling the device framebuffer the mapped memory needs to be freed */
-> @@ -428,15 +440,17 @@ static int setup_video_pattern_framebuffer(struct connector *dp_conn)
->  	igt_assert(dp_conn->test_pattern.fb);
->  
->  	/* Map the mapping of GEM object into the virtual address space */
-> -	dp_conn->test_pattern.pixmap = gem_mmap__device_coherent(drm_fd,
-> -						     dp_conn->test_pattern.fb_pattern.gem_handle,
-> -						     0, dp_conn->test_pattern.fb_pattern.size,
-> -						     PROT_READ | PROT_WRITE);
-> +
-> +	dp_conn->test_pattern.pixmap = map_buffer(drm_fd,
-> +						  dp_conn->test_pattern.fb_pattern.gem_handle,
-> +						  dp_conn->test_pattern.fb_pattern.size);
-> +
->  	if (dp_conn->test_pattern.pixmap == NULL)
->  		return -1;
->  
-> -	gem_set_domain(drm_fd, dp_conn->test_pattern.fb_pattern.gem_handle,
-> -		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-> +	if (is_i915_device(drm_fd))
-> +		gem_set_domain(drm_fd, dp_conn->test_pattern.fb_pattern.gem_handle,
-> +			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
->  
->  	dp_conn->test_pattern.size = dp_conn->test_pattern.fb_pattern.size;
->  
-> -- 
-> 2.49.0
+Thanks for CCing me!
 
--- 
-Ville Syrj‰l‰
-Intel
+Best Regards,
+- Ma√≠ra
+
+> Other proposed change was smaller:
+> 
+> #ifndef PAGE_SIZE
+> #define PAGE_SIZE 4096
+> #endif
+> 
+> Regards,
+> Kamil
+> 
+>>   
+>>   uint32_t igt_vc4_get_cleared_bo(int fd, size_t size, uint32_t clearval);
+>>   int igt_vc4_create_bo(int fd, size_t size);
+>> -- 
+>> 2.50.1
+>>
+
