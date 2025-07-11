@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3AD6C8303C
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 09:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86302C8303C
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 09:56:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A4B9F10EA14;
-	Fri, 11 Jul 2025 09:50:09 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FE5510E26F;
- Fri, 11 Jul 2025 09:50:08 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8754610274082032669=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3020710E26F;
+	Fri, 11 Jul 2025 09:56:23 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YZyYHt8i";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D7A310E26F
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jul 2025 09:56:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752227782; x=1783763782;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=bOjSBuyKMrAiFIQ6xxWIQFG0tFNtjAwlOJcgcsVoROE=;
+ b=YZyYHt8i0asuJYS2bjDddwc2PvEi61aef9JEZLi0Oyqi/ofLBzNRAHhg
+ xuSIveeZqZ+UJs9Kxlx1eQxwZBlEb9yD/snyDz0JvEwqlPdgVVzEWDHNn
+ qrzvrUCx3YWe26gZqYBtxnvfHMUB9OX+ZU1jeSfZ2RthRyEP66UkNBNVo
+ LKh4Gk5cuBILk+ACt1BqbTzMhFBn4gbsTupCfY8WBWAbaljH7ZN9F+muf
+ vhSAQd1gwn8sUses+jLW5GmC07yo4AuGisv+2kQ5VtNsZ4z0nzMZmmkOs
+ gTh8l5qrtK/anK7IOeytR4PUg3iZX20ar7VpodiDpTko5IHEHMtnYAIsb A==;
+X-CSE-ConnectionGUID: zRMQueqVSiuzcm9okPmC4Q==
+X-CSE-MsgGUID: l3UDbRu8Sm6T4rhR4n4p1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54682959"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="54682959"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jul 2025 02:56:22 -0700
+X-CSE-ConnectionGUID: mbCj+rIYTtKxycYu840frg==
+X-CSE-MsgGUID: Pg7zmje8Tiqn1riCnPDB1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="160628391"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jul 2025 02:56:20 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, mohammed.thasleem@intel.com, jeevan.b@intel.com,
+ suraj.kandpal@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v5] tests/kms_content_protection: Add force HDCP 1.4
+ subtest
+Date: Fri, 11 Jul 2025 15:22:49 +0530
+Message-Id: <20250711095249.1622000-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fplane=5Fcurso?=
- =?utf-8?q?r=3A_Optimise_plane_cursor_behavior_on_simulation_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Jul 2025 09:50:08 -0000
-Message-ID: <175222740844.153810.10999590257404365948@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250711083500.1218999-1-pranay.samala@intel.com>
-In-Reply-To: <20250711083500.1218999-1-pranay.samala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,154 +66,355 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8754610274082032669==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+If a Panel supports both HDCP1.4 and HDCP2.2 versions, the kernel will
+always choose the HDCP2.2 protection path and if this fails, then
+HDCP1.4 will be tried.
 
-== Series Details ==
+The subtest uses debugfs support to force hdcp1.4 on the connector and
+verify content protection.
 
-Series: tests/kms_plane_cursor: Optimise plane cursor behavior on simulation (rev2)
-URL   : https://patchwork.freedesktop.org/series/151445/
-State : success
+V2: Use hdcp14 debugfs for all the supported subtests (Suraj).
 
-== Summary ==
+v3: Create new separate subtests for hdcp1.4 and hdcp2.2 for all the
+supported tests. (Suraj)
 
-CI Bug Log - changes from IGT_8451 -> IGTPW_13453
-====================================================
+v4: Add -hdcp14 suffix for subtests only for cases explicitly
+forcing hdcp1.4, retain original subtest names (eg atomic, type1)
+for default behaviour. (Suraj)
 
-Summary
--------
+v5: Add missing lic-type-0 subtest (Suraj)
 
-  **SUCCESS**
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ tests/kms_content_protection.c | 150 +++++++++++++++++++++++++++++++--
+ 1 file changed, 144 insertions(+), 6 deletions(-)
 
-  No regressions found.
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 51fc1d3be..c4658ebf4 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -46,6 +46,9 @@
+  * SUBTEST: lic-type-0
+  * Description: Test for the integrity of link for type-0 content.
+  *
++ * SUBTEST: lic-type-0-hdcp14
++ * Description: Test for the integrity of link for type-0 content with HDCP1.4.
++ *
+  * SUBTEST: lic-type-1
+  * Description: Test for the integrity of link for type-1 content.
+  *
+@@ -65,6 +68,11 @@
+  * Description: Test to detect the HDCP status change when we are reading the
+  *              uevent sent with the corresponding connector id and property id.
+  *
++ * SUBTEST: uevent-hdcp14
++ * Description: Test to detect the status change when we are reading the
++ *              uevent sent with the corresponding connector id and property id
++ *              with HDCP1.4 content protection.
++ *
+  * SUBTEST: %s
+  * Description: Test content protection with %arg[1]
+  *
+@@ -74,6 +82,10 @@
+  * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
+  * @legacy:         legacy style commit
+  * @type1:          content type 1 that can be handled only through HDCP2.2.
++ * @legacy-hdcp14:  Test HDCP1.4 content protection with legacy style commit.
++ * @atomic-hdcp14:  Test HDCP1.4 content protection with atomic modesetting.
++ * @atomic-dpms-hdcp14: Test HDCP1.4 content protection with atomic modesetting and DPMS.
++ *
+  */
+ 
+ /**
+@@ -83,8 +95,10 @@
+  * arg[1]:
+  *
+  * @lic-type-0:   Type 0 with LIC
++ * @lic-type-0-hdcp14: Type 0 with LIC and HDCP1.4
+  * @lic-type-1:   Type 1 with LIC.
+  * @type-0:       Type 0
++ * @type-0-hdcp14: Type 0 with HDCP1.4
+  * @type-1:       Type 1
+  */
+ 
+@@ -96,6 +110,7 @@ struct data {
+ 	struct igt_fb red, green;
+ 	unsigned int cp_tests;
+ 	struct udev_monitor *uevent_monitor;
++	bool is_force_hdcp14;
+ } data;
+ 
+ /* Test flags */
+@@ -581,6 +596,51 @@ static bool output_hdcp_capable(igt_output_t *output, int content_type)
+ 		return true;
+ }
+ 
++static void set_i915_force_hdcp14(igt_output_t *output)
++{
++	int fd, ret;
++	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
++
++	fd = igt_debugfs_connector_dir(data.drm_fd, output->name, O_RDONLY);
++	igt_require_f(fd >= 0, "Cannot open %s debugfs\n", output->name);
++
++	ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf, sizeof(buf));
++	if (ret <= 0) {
++		igt_info("i915_force_hdcp14 not supported\n");
++		close(fd);
++		return;
++	}
++
++	ret = igt_sysfs_write(fd, "i915_force_hdcp14", "1", 2);
++	igt_require_f(ret > 0, "i915_force_hdcp14 is not enabled\n");
++
++	ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf, sizeof(buf));
++	igt_assert_f(ret > 0 && strstr(buf, "yes"),
++			 "i915_force_hdcp14 is not set to 'yes' on %s debugfs\n",
++			 output->name);
++
++	close(fd);
++}
++
++static void reset_i915_force_hdcp14(igt_output_t *output)
++{
++	int fd, ret;
++	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
++
++	fd = igt_debugfs_connector_dir(data.drm_fd, output->name, O_RDONLY);
++	igt_require_f(fd >= 0, "Cannot open %s debugfs\n", output->name);
++
++	ret = igt_sysfs_write(fd, "i915_force_hdcp14", "0", 2);
++	igt_require_f(ret > 0, "i915_force_hdcp14 is not disabled\n");
++
++	ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf, sizeof(buf));
++	igt_assert_f(ret > 0 && strstr(buf, "no"),
++			 "i915_force_hdcp14 is not set to 'no' on %s debugfs\n",
++			 "i915_force_hdcp14");
++
++	close(fd);
++}
++
+ static void
+ test_fini(igt_output_t *output, enum igt_commit_style commit_style)
+ {
+@@ -654,10 +714,15 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ 					  output->name);
+ 				continue;
+ 			}
++			if (data.is_force_hdcp14)
++				set_i915_force_hdcp14(output);
+ 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_content_protection_on_output(output, pipe, commit_style, content_type);
+ 
++			if (data.is_force_hdcp14)
++				reset_i915_force_hdcp14(output);
++
+ 			test_fini(output, commit_style);
+ 			/*
+ 			 * Testing a output with a pipe is enough for HDCP
+@@ -719,6 +784,11 @@ test_mst_cp_enable_with_retry(igt_output_t *hdcp_mst_output[], int valid_outputs
+ 	int retry_orig = retries, count, i;
+ 	bool ret;
+ 
++	if (data.is_force_hdcp14) {
++		for (count = 0; count < valid_outputs; count++)
++			set_i915_force_hdcp14(hdcp_mst_output[count]);
++	}
++
+ 	do {
+ 		if (retry_orig != retries)
+ 			test_mst_cp_disable(hdcp_mst_output, COMMIT_ATOMIC, valid_outputs);
+@@ -752,6 +822,11 @@ test_mst_cp_enable_with_retry(igt_output_t *hdcp_mst_output[], int valid_outputs
+ 		igt_display_commit2(display, COMMIT_ATOMIC);
+ 	} while (retries && !ret);
+ 
++	if (data.is_force_hdcp14) {
++		for (count = 0; count < valid_outputs; count++)
++			reset_i915_force_hdcp14(hdcp_mst_output[count]);
++	}
++
+ 	igt_assert_f(ret, "Content Protection not enabled on MST outputs\n");
+ }
+ 
+@@ -878,43 +953,70 @@ static void create_fbs(void)
+ 			    0.f, 1.f, 0.f, &data.green);
+ }
+ 
++
++
+ static const struct {
+ 	const char *desc;
+ 	const char *name;
+ 	unsigned int cp_tests;
+ 	bool content_type;
++	bool is_force_hdcp14;
+ } subtests[] = {
++	{ .desc = "Test content protection with atomic modesetting with HDCP1.4.",
++	  .name = "atomic-hdcp14",
++	  .cp_tests = 0,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
++	},
+ 	{ .desc = "Test content protection with atomic modesetting",
+ 	  .name = "atomic",
+ 	  .cp_tests = 0,
+-	  .content_type = HDCP_CONTENT_TYPE_0
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
++	},
++	{ .desc = "Test content protection with DPMS ON/OFF during "
++		  "atomic modesetting with HDCP1.4.",
++	  .name = "atomic-dpms-hdcp14",
++	  .cp_tests = CP_DPMS,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
+ 	},
+-	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting.",
++	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting",
+ 	  .name = "atomic-dpms",
+ 	  .cp_tests = CP_DPMS,
+-	  .content_type = HDCP_CONTENT_TYPE_0
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test for the integrity of link with type 0 content.",
+ 	  .name = "lic-type-0",
+ 	  .cp_tests = CP_LIC,
+ 	  .content_type = HDCP_CONTENT_TYPE_0,
+ 	},
++	{ .desc = "Test for the integrity of link with type 0 content.",
++	  .name = "lic-type-0-hdcp14",
++	  .cp_tests = CP_LIC,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
++	},
+ 	{ .desc = "Test for the integrity of link with type 1 content",
+ 	  .name = "lic-type-1",
+ 	  .cp_tests = CP_LIC,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test content protection with content type 1 "
+ 		  "that can be handled only through HDCP2.2.",
+ 	  .name = "type1",
+ 	  .cp_tests = 0,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test the teardown and rebuild of the interface between "
+ 		  "Intel and mei hdcp.",
+ 	  .name = "mei-interface",
+ 	  .cp_tests = CP_MEI_RELOAD,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test the content type change when the content protection already enabled",
+ 	  .name = "content-type-change",
+@@ -926,6 +1028,14 @@ static const struct {
+ 	  .name = "uevent",
+ 	  .cp_tests = CP_UEVENT,
+ 	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
++	},
++	{ .desc = "Test to detect the HDCP status change when we are reading the uevent "
++		  "sent with the corresponding connector id and property id.",
++	  .name = "uevent-hdcp14",
++	  .cp_tests = CP_UEVENT,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
+ 	},
+ 	/*
+ 	 *  Testing the revocation check through SRM needs a HDCP sink with
+@@ -940,6 +1050,7 @@ static const struct {
+ 	  .name = "srm",
+ 	  .cp_tests = 0,
+ 	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
+ 	},
+ };
+ 
+@@ -948,26 +1059,43 @@ static const struct {
+ 	const char *name;
+ 	unsigned int cp_tests;
+ 	bool content_type;
++	bool is_force_hdcp14;
+ } mst_subtests[] = {
+-	{ .desc = "Test Content protection(Type 0) over DP MST.",
++	{ .desc = "Test Content protection(Type 0) over DP MST",
+ 	  .name = "dp-mst-type-0",
+ 	  .cp_tests = 0,
+-	  .content_type = HDCP_CONTENT_TYPE_0
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
++	},
++	{ .desc = "Test Content protection(Type 0) over DP MST with HDCP1.4.",
++	  .name = "dp-mst-type-0-hdcp14",
++	  .cp_tests = 0,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
+ 	},
+ 	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
+ 	  .name = "dp-mst-lic-type-0",
+ 	  .cp_tests = CP_LIC,
+-	  .content_type = HDCP_CONTENT_TYPE_0
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = false,
++	},
++	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
++	  .name = "dp-mst-lic-type-0-hdcp14",
++	  .cp_tests = CP_LIC,
++	  .content_type = HDCP_CONTENT_TYPE_0,
++	  .is_force_hdcp14 = true,
+ 	},
+ 	{ .desc = "Test Content protection(Type 1) over DP MST.",
+ 	  .name = "dp-mst-type-1",
+ 	  .cp_tests = 0,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ 	{ .desc = "Test Content protection(Type 1) over DP MST with LIC.",
+ 	  .name = "dp-mst-lic-type-1",
+ 	  .cp_tests = CP_LIC,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
++	  .is_force_hdcp14 = false,
+ 	},
+ };
+ 
+@@ -983,6 +1111,14 @@ igt_main
+ 	igt_describe("Test content protection with legacy style commit.");
+ 	igt_subtest_with_dynamic("legacy") {
+ 		data.cp_tests = 0;
++		data.is_force_hdcp14 = false;
++		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
++	}
++
++	igt_describe("Test content protection with legacy style commit with HDCP1.4");
++	igt_subtest_with_dynamic("legacy-hdcp14") {
++		data.cp_tests = 0;
++		data.is_force_hdcp14 = true;
+ 		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
+ 	}
+ 
+@@ -995,6 +1131,7 @@ igt_main
+ 
+ 			igt_subtest_with_dynamic(subtests[i].name) {
+ 				data.cp_tests = subtests[i].cp_tests;
++				data.is_force_hdcp14 = subtests[i].is_force_hdcp14;
+ 
+ 				if (!strcmp(subtests[i].name, "srm")) {
+ 					bool ret;
+@@ -1018,6 +1155,7 @@ igt_main
+ 
+ 			igt_subtest(mst_subtests[i].name) {
+ 				data.cp_tests = mst_subtests[i].cp_tests;
++				data.is_force_hdcp14 = mst_subtests[i].is_force_hdcp14;
+ 				test_content_protection_mst(mst_subtests[i].content_type);
+ 			}
+ 		}
+-- 
+2.34.1
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13453 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@dmabuf@all-tests@dma_fence_chain:
-    - fi-bsw-n3050:       [PASS][1] -> [ABORT][2] ([i915#12904]) +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8451/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8451/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-9:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8451/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8451 -> IGTPW_13453
-  * Linux: CI_DRM_16842 -> CI_DRM_16849
-
-  CI-20190529: 20190529
-  CI_DRM_16842: ad02e528d11b8cdc56daaa647aed319ba1d1ff03 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16849: e1d8a6230d710e3e59a23520a0690115ad57b459 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13453: 13453
-  IGT_8451: 8451
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/index.html
-
---===============8754610274082032669==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_cursor: Optimise plane cursor behavior on simulation (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151445/">https://patchwork.freedesktop.org/series/151445/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8451 -&gt; IGTPW_13453</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/index.html</p>
-<h2>Participating hosts (45 -&gt; 44)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13453 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@dmabuf@all-tests@dma_fence_chain:<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8451/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test abort</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8451/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8451/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13453/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8451 -&gt; IGTPW_13453</li>
-<li>Linux: CI_DRM_16842 -&gt; CI_DRM_16849</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16842: ad02e528d11b8cdc56daaa647aed319ba1d1ff03 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16849: e1d8a6230d710e3e59a23520a0690115ad57b459 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13453: 13453<br />
-  IGT_8451: 8451</p>
-
-</body>
-</html>
-
---===============8754610274082032669==--
