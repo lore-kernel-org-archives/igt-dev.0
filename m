@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67EF7C8303C
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 09:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF55C83F1A
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 09:30:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 06FC110E13D;
-	Fri, 11 Jul 2025 09:22:18 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF35910E13D;
- Fri, 11 Jul 2025 09:22:16 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2732064873860516030=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fplane=5Fcursor?=
- =?utf-8?q?=3A_Optimise_plane_cursor_behavior_on_simulation_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 87C5710E9DB;
+	Fri, 11 Jul 2025 09:30:52 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IhSFPu/8";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86DFC10E9DB
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jul 2025 09:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752226251; x=1783762251;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=fXUTorm/lQYl3hym167OiwIaVpkLzEUMMJf1uyTVK0I=;
+ b=IhSFPu/8E29wKBRE2DhU10uNRIbWIgkssF80yfmkcjDHihG8DPSpQ+x1
+ tNpS6J8GF/ywXGMhV66FxaRMiRrwLUXui6YSo8CmGVISWH4s0FEl949es
+ 1My0JSWzvYz+T/bPJdpMRJaqZwTYj4eiJFUVPa5CXdxqumyW50dV7hv5N
+ 19EmSHDy26L9kRcQg9V1pXjOHDB7JL5E9FErYhY8WwwI4S3gk4rhAfcUS
+ b0d1bEa/F9oHryPULgWYAmN7u+8CYM/u6d+Ovnh/gMxnxNS0HnWP5UHym
+ N8890INLMqtwwN0c3Y+nGXcFzlJMbBUsm1P1phohE+5JgsjTiMvJGvl87 w==;
+X-CSE-ConnectionGUID: IwNcrimNQ0SqHAtDo+f6lA==
+X-CSE-MsgGUID: wkuUmz0YSCaT9uT4jpTQRg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="57134627"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="57134627"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jul 2025 02:30:51 -0700
+X-CSE-ConnectionGUID: EuYlYsaoSSey4nVm+mSCLQ==
+X-CSE-MsgGUID: slLJotcwQ46XSwLqRQyELA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="155957908"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 02:30:50 -0700
+Date: Fri, 11 Jul 2025 11:30:34 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Jul 2025 09:22:16 -0000
-Message-ID: <175222573697.153810.4910509076324502399@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250711083500.1218999-1-pranay.samala@intel.com>
-In-Reply-To: <20250711083500.1218999-1-pranay.samala@intel.com>
+Subject: Re: [PATCH i-g-t] .checkpatch.conf: Add checkpatch.pl defaults for IGT
+Message-ID: <20250711093034.z4eth72uzukiqnym@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250710181613.62487-1-peter.senna@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250710181613.62487-1-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +67,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2732064873860516030==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Peter,
+On 2025-07-10 at 20:16:13 +0200, Peter Senna Tschudin wrote:
 
-== Series Details ==
+small nit about subject, no need for resend, now it reads:
 
-Series: tests/kms_plane_cursor: Optimise plane cursor behavior on simulation (rev2)
-URL   : https://patchwork.freedesktop.org/series/151445/
-State : success
+[PATCH i-g-t] .checkpatch.conf: Add checkpatch.pl defaults for IGT
 
-== Summary ==
+imho it could be shorter, like:
 
-CI Bug Log - changes from XEIGT_8451_BAT -> XEIGTPW_13453_BAT
-====================================================
+[PATCH i-g-t] checkpatch.conf: Add defaults for IGT
 
-Summary
--------
+Note dropping first dot and dropping script name, as it
+is described in commit message and also as a first word.
 
-  **SUCCESS**
+> CONTRIBUTING.md contains instruction on how to use Linux kernel'
+> checkpatch.pl, including command line arguments for the tool.
+> 
+> As IGT maintainers use these options, let's standardize it in a
+> configuration file so that everyone using checkpatch.pl from IGT's
+> source code will use the same options.
+> 
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 
-  No regressions found.
+I tested it and it work as expected, thank you for taking care of it,
 
-  
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13453_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-plain-flip@c-edp1:
-    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8451/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13453/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-
-
-Build changes
--------------
-
-  * IGT: IGT_8451 -> IGTPW_13453
-  * Linux: xe-3390-ad02e528d11b8cdc56daaa647aed319ba1d1ff03 -> xe-3397-e1d8a6230d710e3e59a23520a0690115ad57b459
-
-  IGTPW_13453: 13453
-  IGT_8451: 8451
-  xe-3390-ad02e528d11b8cdc56daaa647aed319ba1d1ff03: ad02e528d11b8cdc56daaa647aed319ba1d1ff03
-  xe-3397-e1d8a6230d710e3e59a23520a0690115ad57b459: e1d8a6230d710e3e59a23520a0690115ad57b459
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13453/index.html
-
---===============2732064873860516030==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_cursor: Optimise plane cursor behavior on simulation (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151445/">https://patchwork.freedesktop.org/series/151445/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13453/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13453/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8451_BAT -&gt; XEIGTPW_13453_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13453_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8451/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13453/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8451 -&gt; IGTPW_13453</li>
-<li>Linux: xe-3390-ad02e528d11b8cdc56daaa647aed319ba1d1ff03 -&gt; xe-3397-e1d8a6230d710e3e59a23520a0690115ad57b459</li>
-</ul>
-<p>IGTPW_13453: 13453<br />
-  IGT_8451: 8451<br />
-  xe-3390-ad02e528d11b8cdc56daaa647aed319ba1d1ff03: ad02e528d11b8cdc56daaa647aed319ba1d1ff03<br />
-  xe-3397-e1d8a6230d710e3e59a23520a0690115ad57b459: e1d8a6230d710e3e59a23520a0690115ad57b459</p>
-
-</body>
-</html>
-
---===============2732064873860516030==--
+> ---
+>  .checkpatch.conf | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>  create mode 100644 .checkpatch.conf
+> 
+> diff --git a/.checkpatch.conf b/.checkpatch.conf
+> new file mode 100644
+> index 000000000..eac25592f
+> --- /dev/null
+> +++ b/.checkpatch.conf
+> @@ -0,0 +1,6 @@
+> +--emacs
+> +--strict
+> +--show-types
+> +--max-line-length=100
+> +--ignore=BIT_MACRO,SPLIT_STRING,LONG_LINE_STRING,BOOL_MEMBER,PREFER_KERNEL_TYPES
+> +
+> -- 
+> 2.43.0
+> 
