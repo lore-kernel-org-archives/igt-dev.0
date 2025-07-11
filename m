@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F23CC83F1A
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 11:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85420C8303C
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 11:05:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE3A910E9BD;
-	Fri, 11 Jul 2025 11:03:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 27E6D10EA21;
+	Fri, 11 Jul 2025 11:05:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LYpRvNg4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CYSJuBEh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08A3110E9BD
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jul 2025 11:03:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D6CF10E27D;
+ Fri, 11 Jul 2025 11:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752231790; x=1783767790;
+ t=1752231907; x=1783767907;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=oTe8slwBao8YgTXoCTlFryeHRopQbc1Ay5WB5mO4LaE=;
- b=LYpRvNg4pDNkFJk/2mFUHl7AMBc1uLuFdHzUnhIoD989UYhB/wczZpEH
- l9h8FguhOpINNjcTFLeNqkCwkA7dFUFf6s0yfQXu2eEfyLYfDApO0Qnqz
- Q548OhnOzVfwtmiizTBUJ/fagJaygpKJIVYkwXKgAge0AFF6J6/6VBkv8
- MEJ4BQLqcwG3NFVfXwJToD7xQfVgm3oJGPRuguwF+wml3RBoIDuiAQjbN
- nYofmE80JNvAAvHKmbgd51f2lcIwvdlAkKqazeBcmN1F9K7JamSSN6aF7
- vEI9Y7itxQX+QjtIdZlEllW7KqH9sPsqNENzp/IekNBp8qVlKxpue/A4N g==;
-X-CSE-ConnectionGUID: 5cP5GxxBSzu9SaZHVLqTyw==
-X-CSE-MsgGUID: v02bOyfhR+OgLThKFO9fqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54500313"
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="54500313"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jul 2025 04:03:10 -0700
-X-CSE-ConnectionGUID: fUPNHBbyRnqsup4e+Rwv5A==
-X-CSE-MsgGUID: 5C1/vK0xRauKvRwogtbY+A==
+ mime-version:in-reply-to;
+ bh=NgZ6MbeHZJQROhDQATCtHnRB3mJmcJnj25+h8X6ox50=;
+ b=CYSJuBEh6wcIBkyJbDSjLH0k2FzwBRnPYfQFSMM+pYa5WXA3TKc+qy5m
+ vTcDkzubUpOWumWmrz9bOZ9b/ZKo0bDJZPdjLrPM6UZKp/nu/zc+LMnAX
+ IXm1PoyUAI1xUtCG5sQqF4UYomLjTCPbkKqyJwwTuTmSvR3d7Dl4gCjDv
+ ugibPfXtl17NiJVSQCInqcG0itti+BOzx2bl1lqQuIuSDYJQZZKltFBb6
+ 3bCNGrtm4AxZwcVmBhA2oECD3qb7z0F9/VkB7A5bqdefoSP4p18KCWQ3f
+ 4xyxQ+NHOZ6QrPYV1aSAaxm8ICEDfwk5KL3KbBYrfH+NWFCyDWSAme8Xu A==;
+X-CSE-ConnectionGUID: PBE2zI69R4qHto1toIXbiw==
+X-CSE-MsgGUID: RETAyDAaRquwd+nmdieRPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54687317"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="54687317"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jul 2025 04:05:07 -0700
+X-CSE-ConnectionGUID: J0wn60EwQZ2dbkJZambfyg==
+X-CSE-MsgGUID: iWSjVlLZT5GuDPnpa7yyiQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="155759130"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; d="scan'208";a="187345550"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 04:03:08 -0700
-Date: Fri, 11 Jul 2025 13:03:05 +0200
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 04:05:06 -0700
+Date: Fri, 11 Jul 2025 13:05:03 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: vitaly prosyak <vprosyak@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Jesse Zhang <Jesse.Zhang@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: Re: [PATCH i-g-t] tests/amdgpu/amd_basic: fix compilation warning
-Message-ID: <20250711110305.a7prjailwtjocinu@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
+ tests/amdgpu/amd_basic: fix compilation warning
+Message-ID: <20250711110503.5j54p2s4e73jrnqe@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- vitaly prosyak <vprosyak@amd.com>, igt-dev@lists.freedesktop.org,
- Jesse Zhang <Jesse.Zhang@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20250710123406.84306-1-kamil.konieczny@linux.intel.com>
- <87c40728-6032-41e3-9d6f-93b97eba45bc@amd.com>
+ <175217351765.151663.14526401428387676997@1538d3639d33>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87c40728-6032-41e3-9d6f-93b97eba45bc@amd.com>
+In-Reply-To: <175217351765.151663.14526401428387676997@1538d3639d33>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,87 +71,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi vitaly,
-On 2025-07-10 at 14:05:44 -0400, vitaly prosyak wrote:
-> The patch looks great to me — much appreciated for your quick response via email.
+Hi igt-dev,
+On 2025-07-10 at 18:51:57 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com
+> Series: tests/amdgpu/amd_basic: fix compilation warning
+> URL   : https://patchwork.freedesktop.org/series/151439/
+> State : failure
 > 
-> Are you planning to merge it yourself, or would you prefer that I take care of it?
+> == Summary ==
 > 
-> Thanks!
+> CI Bug Log - changes from XEIGT_8450_FULL -> XEIGTPW_13444_FULL
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_13444_FULL absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_13444_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
 
-Thank you, I merged it.
+This is unrelated to change in amdgpu.
 
 Regards,
 Kamil
 
+>   
 > 
-> On 2025-07-10 08:34, Kamil Konieczny wrote:
-> > Fix compilation warning:
-> > [1564/2025] Compiling C object tests/amdgpu/amd_basic.p/amd_basic.c.o
-> > ../tests/amdgpu/amd_basic.c:142:13: warning: 'amdgpu_test_all_queues' defined but not used [-Wunused-function]
-> >   142 | static void amdgpu_test_all_queues(amdgpu_device_handle device, bool user_queue)
-> >       |             ^~~~~~~~~~~~~~~~~~~~~~
-> >
-> > Cc: Jesse Zhang <Jesse.Zhang@amd.com>
-> > Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> > Fixes: b195a6c65cdd ("tests/amdgpu: Add test coverage for all user-mode queues across IP blocks")
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  tests/amdgpu/amd_basic.c | 11 ++++-------
-> >  1 file changed, 4 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-> > index 100a634ce..45cf64251 100644
-> > --- a/tests/amdgpu/amd_basic.c
-> > +++ b/tests/amdgpu/amd_basic.c
-> > @@ -707,8 +707,8 @@ igt_main
-> >  	int r;
-> >  	bool arr_cap[AMD_IP_MAX] = {0};
-> >  	bool userq_arr_cap[AMD_IP_MAX] = {0};
-> > +	bool enable_test = false;
-> >  #ifdef AMDGPU_USERQ_ENABLED
-> > -	bool enable_test;
-> >  	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
-> >  
-> >  	enable_test = env && atoi(env);
-> > @@ -805,11 +805,9 @@ igt_main
-> >  		}
-> >  	}
-> >  
-> > -#ifdef AMDGPU_USERQ_ENABLED
-> > -
-> >  	igt_describe("Check-GFX-CS-for-every-available-ring-works-for-write-const-fill-and-copy-operation-using-more-than-one-IB-and-shared-IB");
-> >  	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX-UMQ") {
-> > -		if (userq_arr_cap[AMD_IP_GFX]) {
-> > +		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
-> >  			igt_dynamic_f("cs-gfx-with-umq")
-> >  			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, true);
-> >  		}
-> > @@ -817,7 +815,7 @@ igt_main
-> >  
-> >  	igt_describe("Check-COMPUTE-CS-for-every-available-ring-works-for-write-const-fill-copy-and-nop-operation");
-> >  	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE-UMQ") {
-> > -		if (userq_arr_cap[AMD_IP_COMPUTE]) {
-> > +		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
-> >  			igt_dynamic_f("cs-compute-with-umq")
-> >  			amdgpu_command_submission_compute(device, true);
-> >  		}
-> > @@ -825,7 +823,7 @@ igt_main
-> >  
-> >  	igt_describe("Check-sync-dependency-using-GFX-ring");
-> >  	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX-UMQ") {
-> > -		if (userq_arr_cap[AMD_IP_GFX]) {
-> > +		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
-> >  			igt_dynamic_f("sync-dependency-test-with-umq")
-> >  			amdgpu_sync_dependency_test(device, true);
-> >  		}
-> > @@ -848,7 +846,6 @@ igt_main
-> >  			amdgpu_test_all_queues(device, true);
-> >  		}
-> >  	}
-> > -#endif
-> >  
-> >  	igt_fixture {
-> >  		amdgpu_device_deinitialize(device);
+> Participating hosts (4 -> 3)
+> ------------------------------
+> 
+>   Missing    (1): shard-adlp 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_13444_FULL:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_psr@psr2-primary-blt@edp-1:
+>     - shard-lnl:          [PASS][1] -> [FAIL][2] +1 other test fail
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8450/shard-lnl-7/igt@kms_psr@psr2-primary-blt@edp-1.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13444/shard-lnl-7/igt@kms_psr@psr2-primary-blt@edp-1.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_13444_FULL that come from known issues:
+
+...cut...
+
