@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AC35C83F1A
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 14:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E229C83F20
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Jul 2025 14:59:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D153510E292;
-	Fri, 11 Jul 2025 14:45:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="HHmh/Css";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 253D410E292
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jul 2025 14:45:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=OFMQ1CKUOr/lTes/OFm3lomO7lQX9jGX+zWSaHvVuV8=; b=HHmh/CssB0nXRwhbGF4AEc45Hw
- sYdEwTmaA8+3COgyW/uYoY1JnK/uRrU/X9uUcnKsjjYaFFrjIAcTjfTjUuweQr3c/AZOc6UnpC2Em
- fR+2xM0et4ncvQYUroA9g+zE4GxPa5MOEZhDjoinnhxw5MzfemtneO6Iz8YdPWNYFWpWNQL7Q17Ej
- CMXVkqtqh9XUfx/MbSb/8ta5M0Ffez7UcT2nnPTJq5vq9gjUooHwPr+L3Ed7Cx1FajUPzdnhgDX++
- ZK6uQixOgq9KpYkXq7xMAe7JnU2FQ95CctBGzGv0GuVqJHu/TSaCpuFqUvRaiO9LfhnsC+iru5Y1r
- jYFFWVIw==;
-Received: from [187.36.210.68] (helo=[192.168.1.103])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1uaF0G-00FPhD-9M; Fri, 11 Jul 2025 16:45:32 +0200
-Message-ID: <db8e01cb-058c-40e7-a272-a76ec924fef3@igalia.com>
-Date: Fri, 11 Jul 2025 11:45:27 -0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3CF9110E2A7;
+	Fri, 11 Jul 2025 14:59:26 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA09410E2A7;
+ Fri, 11 Jul 2025 14:59:24 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3455269747457288188=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v1 1/3] lib/igt_vc4: Fix musl libc compilation
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, zlice555@gmail.com,
- Melissa Wen <mwen@igalia.com>, Louis Chauvet <louis.chauvet@bootlin.com>,
- Vignesh Raman <vignesh.raman@collabora.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
-References: <20250710190017.167735-1-kamil.konieczny@linux.intel.com>
- <20250710190017.167735-5-kamil.konieczny@linux.intel.com>
- <20250711113239.uxhsil4lkvbgnnm3@kamilkon-DESK.igk.intel.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-In-Reply-To: <20250711113239.uxhsil4lkvbgnnm3@kamilkon-DESK.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpipe=5Fst?=
+ =?utf-8?q?ress=3A_Skip_invalid_pipe-output_combinations?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 11 Jul 2025 14:59:24 -0000
+Message-ID: <175224596494.155142.7544515521458636249@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250711092040.193732-1-jeevan.b@intel.com>
+In-Reply-To: <20250711092040.193732-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,75 +37,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
+--===============3455269747457288188==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 11/07/25 08:32, Kamil Konieczny wrote:
-> Hi ,
-> On 2025-07-10 at 21:00:14 +0200, Kamil Konieczny wrote:
->> Fix gcc compilation on Void Linux with musl C libs, where
->> PAGE_SIZE is already defined.
->>
-> 
-> Sorry, I forgot adding vc4 developers to Cc:
-> 
-> Cc: "Maíra Canal" <mcanal@igalia.com>
-> Cc: Melissa Wen <mwen@igalia.com>
-> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> Cc: Vignesh Raman <vignesh.raman@collabora.com>
-> 
-> Also +cc Andrzej Hajda <andrzej.hajda@intel.com>
-> 
->> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> ---
->>   lib/igt_vc4.h | 8 +++++++-
->>   1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
->> index fe7173c50..165872ba2 100644
->> --- a/lib/igt_vc4.h
->> +++ b/lib/igt_vc4.h
->> @@ -31,7 +31,13 @@
->>   #include "igt_fb.h"
->>   #include "vc4_drm.h"
->>   
->> -#define PAGE_SIZE 4096
->> +#ifndef PAGE_SIZE
->> +# define PAGE_SIZE 4096
->> +#else
->> +# if PAGE_SIZE != 4096
->> +#  error "Unexpected PAGE_SIZE"
->> +# endif
->> +#endif
-> 
-> I am not sure if vc4 needs exactly 4KB as bo, or is it good
-> to have whatever comes from compilation environment?
+== Series Details ==
 
-The GPU uses 4KB pages, so, that's the reason we define PAGE_SIZE to
-4096. It would be ideal to keep using the size of 4096 in vc4 tests.
-Hence, I'd suggest you to just rename PAGE_SIZE to something like
-GPU_PAGE_SIZE or VC4_PAGE_SIZE.
+Series: tests/intel/kms_pipe_stress: Skip invalid pipe-output combinations
+URL   : https://patchwork.freedesktop.org/series/151491/
+State : success
 
-Thanks for CCing me!
+== Summary ==
 
-Best Regards,
-- Maíra
+CI Bug Log - changes from XEIGT_8454_BAT -> XEIGTPW_13454_BAT
+====================================================
 
-> Other proposed change was smaller:
-> 
-> #ifndef PAGE_SIZE
-> #define PAGE_SIZE 4096
-> #endif
-> 
-> Regards,
-> Kamil
-> 
->>   
->>   uint32_t igt_vc4_get_cleared_bo(int fd, size_t size, uint32_t clearval);
->>   int igt_vc4_create_bo(int fd, size_t size);
->> -- 
->> 2.50.1
->>
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13454_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +2 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8454/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13454/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-bmg-2:          [FAIL][3] -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8454/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13454/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8454 -> IGTPW_13454
+
+  IGTPW_13454: 13454
+  IGT_8454: 67f8a0cc3a159bf6f912c08c030dfed5a85af328 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3399-0384e5b49a7b0bddca4018a6d42472e13ccd8bba: 0384e5b49a7b0bddca4018a6d42472e13ccd8bba
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13454/index.html
+
+--===============3455269747457288188==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_pipe_stress: Skip invalid pipe-output combinations</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151491/">https://patchwork.freedesktop.org/series/151491/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13454/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13454/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8454_BAT -&gt; XEIGTPW_13454_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13454_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8454/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13454/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +2 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xe2@render:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8454/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13454/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8454 -&gt; IGTPW_13454</li>
+</ul>
+<p>IGTPW_13454: 13454<br />
+  IGT_8454: 67f8a0cc3a159bf6f912c08c030dfed5a85af328 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3399-0384e5b49a7b0bddca4018a6d42472e13ccd8bba: 0384e5b49a7b0bddca4018a6d42472e13ccd8bba</p>
+
+</body>
+</html>
+
+--===============3455269747457288188==--
