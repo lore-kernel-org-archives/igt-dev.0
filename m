@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2C44C83F17
-	for <igt-dev@archiver.kernel.org>; Sun, 13 Jul 2025 05:41:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C3D6C83F1D
+	for <igt-dev@archiver.kernel.org>; Sun, 13 Jul 2025 06:16:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E0E010E0C6;
-	Sun, 13 Jul 2025 05:41:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m6v08HJO";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B76C010E0C6
- for <igt-dev@lists.freedesktop.org>; Sun, 13 Jul 2025 05:41:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752385266; x=1783921266;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=0qMbRBf/CjuKtZPTOtERPXm5lNx5cHuRlI+X4x+LIM8=;
- b=m6v08HJOpUCLZgvsOiCGgAkRaDknO8s74Dy35uvAU6FJZXHs8Pkh/0BO
- j+7IcNtzLt4OnZ6HfBHhUkF/LKzuwV0+sQTE2YZmrkQphJ/2J4W6hn5uT
- GsSLPwtS4iSOMe2axG8uGs0WoeUnJMCs9N+K2F98m6zinaxLjN0pt6q5o
- kKIdOtDXaGg+62Br0VZ+gkejbsZxY/0YjW/QUWesXCR7/CrRKlj7SogLe
- Z7V9J83Qzlys9UX3K/kc8WM8fa3uhMQ+/2SiqJ1u8MZ820oxYp/91vJEH
- r8BTSMRg83a/2ag2v3q/1f6yDDpUD9edLCG7Wz4GqYk8cE9S33UqxrZ4J Q==;
-X-CSE-ConnectionGUID: VtNC8ML0Ty+4TMfS6v7o9g==
-X-CSE-MsgGUID: 8lkOrYsnQTibPNc5Poemjw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54473451"
-X-IronPort-AV: E=Sophos;i="6.16,308,1744095600"; d="scan'208";a="54473451"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jul 2025 22:41:06 -0700
-X-CSE-ConnectionGUID: zei+iNrTSy2I+JENBomKAw==
-X-CSE-MsgGUID: 3M1w0ZrTTpiSFLgwmKjz7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,308,1744095600"; d="scan'208";a="162245312"
-Received: from dut4072bmgfrd.fm.intel.com ([10.105.8.119])
- by fmviesa004.fm.intel.com with ESMTP; 12 Jul 2025 22:41:05 -0700
-From: Zongyao Bai <zongyao.bai@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Zongyao Bai <zongyao.bai@intel.com>
-Subject: [PATCH] tests/intel/xe_exec_balancer: use xe_wait_ufence to replace
- sleep action
-Date: Sun, 13 Jul 2025 05:41:02 +0000
-Message-ID: <20250713054102.408779-1-zongyao.bai@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C27C10E039;
+	Sun, 13 Jul 2025 06:16:34 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7588310E039;
+ Sun, 13 Jul 2025 06:16:32 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6030489284248238708=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fbal?=
+ =?utf-8?q?ancer=3A_use_xe=5Fwait=5Fufence_to_replace_sleep_action?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Zongyao Bai" <zongyao.bai@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sun, 13 Jul 2025 06:16:32 -0000
+Message-ID: <175238739247.157244.5927324352401222548@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250713054102.408779-1-zongyao.bai@intel.com>
+In-Reply-To: <20250713054102.408779-1-zongyao.bai@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,62 +37,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-    In the test_cm() function, for cases with the INVALIDATE flag,
-    use sleep 0.25 seconds to allow all tasks to complete their jobs.
-    However, this time is sometimes insufficient.
+--===============6030489284248238708==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-    In this patch, xe_wait_ufence (referred to as "fence" for short) actions are added
-    for the second half of n_execs tasks in INVALIDATE-RACE scenarios.
-    The changes are as follows:
-        When flags hit nothing: => No change
-             -- all n_exec tasks operate with a fence.
-        When flags include INVALIDATE but do not include RACE: => No change
-             -- the last n_exec task operates with a fence.
-        When flags include both INVALIDATE and RACE => New in this patch
-             -- n_execs/2 + 1 tasks operate with a fence.
-             -- at least the last n_exec task operates with a fence
-    Furthermore, modify the xe_wait_ufence timeout value from 1s to INT64_MAX.
-    It helps avoid the fence timetout error.
+== Series Details ==
 
-    With the above changes, all n_exec tasks operate with a fence,
-    allowing us to remove the sleep part.
+Series: tests/intel/xe_exec_balancer: use xe_wait_ufence to replace sleep action
+URL   : https://patchwork.freedesktop.org/series/151536/
+State : success
 
-Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
----
- tests/intel/xe_exec_balancer.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+== Summary ==
 
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 1747e207c..8b397038a 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -527,14 +527,17 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		}
- 	}
- 
--	j = flags & INVALIDATE && n_execs ? n_execs - 1 : 0;
-+	/* Wait for all execs to complete, and the xe_wait_ufence need to be run at least once. */
-+	if (flags & INVALIDATE && n_execs) {
-+		j = flags & RACE ? (n_execs/2 + 1) : n_execs-1;
-+		if (j >= n_execs)
-+			j = n_execs - 1;
-+	} else {
-+		j = 0;
-+	}
- 	for (i = j; i < n_execs; i++)
- 		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
--			       exec_queues[i % n_exec_queues], NSEC_PER_SEC);
--
--	/* Wait for all execs to complete */
--	if (flags & INVALIDATE)
--		usleep(250000);
-+			       exec_queues[i % n_exec_queues], INT64_MAX);
- 
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_8454_BAT -> XEIGTPW_13458_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8454_BAT and XEIGTPW_13458_BAT:
+
+### New IGT tests (1) ###
+
+  * igt@xe_intel_bb@create-in-region@region-vram0:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13458_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8454/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13458/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-bmg-2:          [FAIL][3] -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8454/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13458/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8454 -> IGTPW_13458
+  * Linux: xe-3399-0384e5b49a7b0bddca4018a6d42472e13ccd8bba -> xe-3405-453e24ac0fd683880e40b3a844a774f5a427dc55
+
+  IGTPW_13458: 13458
+  IGT_8454: 67f8a0cc3a159bf6f912c08c030dfed5a85af328 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3399-0384e5b49a7b0bddca4018a6d42472e13ccd8bba: 0384e5b49a7b0bddca4018a6d42472e13ccd8bba
+  xe-3405-453e24ac0fd683880e40b3a844a774f5a427dc55: 453e24ac0fd683880e40b3a844a774f5a427dc55
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13458/index.html
+
+--===============6030489284248238708==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_balancer: use xe_wait_ufence to replace sleep action</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151536/">https://patchwork.freedesktop.org/series/151536/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13458/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13458/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8454_BAT -&gt; XEIGTPW_13458_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8454_BAT and XEIGTPW_13458_BAT:</p>
+<h3>New IGT tests (1)</h3>
+<ul>
+<li>igt@xe_intel_bb@create-in-region@region-vram0:<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13458_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8454/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13458/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xe2@render:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8454/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13458/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8454 -&gt; IGTPW_13458</li>
+<li>Linux: xe-3399-0384e5b49a7b0bddca4018a6d42472e13ccd8bba -&gt; xe-3405-453e24ac0fd683880e40b3a844a774f5a427dc55</li>
+</ul>
+<p>IGTPW_13458: 13458<br />
+  IGT_8454: 67f8a0cc3a159bf6f912c08c030dfed5a85af328 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3399-0384e5b49a7b0bddca4018a6d42472e13ccd8bba: 0384e5b49a7b0bddca4018a6d42472e13ccd8bba<br />
+  xe-3405-453e24ac0fd683880e40b3a844a774f5a427dc55: 453e24ac0fd683880e40b3a844a774f5a427dc55</p>
+
+</body>
+</html>
+
+--===============6030489284248238708==--
