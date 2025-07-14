@@ -4,57 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D53FC83F1A
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 16:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C5B8C83F17
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 16:16:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5075C10E093;
-	Mon, 14 Jul 2025 16:00:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BB26610E4E8;
+	Mon, 14 Jul 2025 16:16:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nMO815Q/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fz2Ky8vX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D76BB10E093
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 16:00:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D94810E4E8
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 16:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752508834; x=1784044834;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=YcNKiZEFa1xYqd9mPWEpdWDxzXjSd3yQbxAnNqN9Cjw=;
- b=nMO815Q/BTawW7gFWfPhwOZk6vYOJZF5O900DLKUYKalpOu8dOuN1/84
- qIsxpsiuQnf1hwbbr6u1xHdah0+s09YQzvlxjAT2hmB66tgClhFsIBof+
- XBwfGeSud/NZ+vFmuSxJAKZdY0rJpLSpdn0dAHWG2/5EPHjmBzlNdDIue
- VkfMWWgRzotC512Xzu+EdtWoxzYchy5cP48jscPLexNtvKezhRpAoIZ1h
- SzrJb76K1DavpUdcupuy7CNfikdPiaAfyNe5uGZakG5Ocpmzw+Qw2qtm8
- LBTfdaPMcNR7qnuVJcdEAaHKFkYbpwhoJtTa/fVzd6udi4Z1iyCcxjK5r w==;
-X-CSE-ConnectionGUID: yE/s9uJeS029e+FKf0dWvw==
-X-CSE-MsgGUID: 4q8jrabsTOSUUsicEveegg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66154207"
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="66154207"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 09:00:34 -0700
-X-CSE-ConnectionGUID: pwRbAqBnTp6vUkUr5vMAmg==
-X-CSE-MsgGUID: tlexbmdpTxyc/rUxnTLMdw==
+ t=1752509810; x=1784045810;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0DVqS0lI4y/DhcMQCfGgJtm9/dPrJWxH0DUDPM2CnMA=;
+ b=fz2Ky8vX5ucSwJpJYnR3kOi5EAU3+C+/S1DKurhkjesetaeYhAk1yd/S
+ oweecY0jmTOiRAledSVWNAjOfvhECEMuadJtsJiojPCO3fmzZkBqfXAvB
+ hQNgJCraskS7YEuYhn61K6HNid8r6nFQBro7CQpyWATjKLR/dna+roBRt
+ T+A3Cc5WrZiFbRTsgDqEefdLRWdK/oz8nqZcMwumPulNg0FPqOgYi/6HB
+ vUV1qqQu5brym0Oyk7i/IUgcmGhXPKdODkwRXdYSiE3iPYMxNAkceTb1S
+ /NQa7vhGPxPaZ3l3Esp/DpjXL0RRuDs4yuhgYYKiqyW/NIDEGqfqoC/4Z A==;
+X-CSE-ConnectionGUID: 3TnzKgr9QES0eegJnn4T8A==
+X-CSE-MsgGUID: vyGyXDfwS5eNg8m+2niF4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58514522"
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="58514522"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 09:16:50 -0700
+X-CSE-ConnectionGUID: ySJzVbFlQdKv9v9Yz4+ZXw==
+X-CSE-MsgGUID: A/4ugZmvRXufrqWqQdZIKw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="161516392"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.1])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 09:00:32 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="156378775"
+Received: from administrator-system-product-name.igk.intel.com
+ ([10.91.214.181])
+ by orviesa006.jf.intel.com with ESMTP; 14 Jul 2025 09:16:49 -0700
+From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Michal Czaplinski <michal.czaplinski@intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH i-g-t v5 5/5] intel-ci: Add symlinks for old i915 testlists
-Date: Mon, 14 Jul 2025 17:59:54 +0200
-Message-ID: <20250714155954.110858-6-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250714155954.110858-1-kamil.konieczny@linux.intel.com>
-References: <20250714155954.110858-1-kamil.konieczny@linux.intel.com>
+Cc: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v1 RERUN 0/2] Skip PSR when disabled
+Date: Mon, 14 Jul 2025 18:18:00 +0200
+Message-ID: <20250714161802.821516-1-michal.grzelak@intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,63 +68,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add symlinks for i915 testlists to make transition easier.
+This series again is a next rerun of v1. This time tag points to the
+kernel change which does not have any tag, thus maybe Patchwork will
+pick the IGT change this time.
 
-v4: use 'i915.' prefix for fast-feedback (Swati)
-v5: add symlinks to meson (Michal)
+Test-with: 20250714160931.821383-2-michal.grzelak@intel.com
 
-Cc: Michal Czaplinski <michal.czaplinski@intel.com>
-Suggested-by: Ryszard Knop <ryszard.knop@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
----
- tests/intel-ci/chamelium-only.testlist               | 1 +
- tests/intel-ci/fast-feedback-chamelium-only.testlist | 1 +
- tests/intel-ci/fast-feedback.testlist                | 1 +
- tests/intel-ci/meson.build                           | 3 +++
- 4 files changed, 6 insertions(+)
- create mode 120000 tests/intel-ci/chamelium-only.testlist
- create mode 120000 tests/intel-ci/fast-feedback-chamelium-only.testlist
- create mode 120000 tests/intel-ci/fast-feedback.testlist
+Best regards,
+Michał
 
-diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
-new file mode 120000
-index 000000000..3715a9469
---- /dev/null
-+++ b/tests/intel-ci/chamelium-only.testlist
-@@ -0,0 +1 @@
-+i915.chamelium-only.testlist
-\ No newline at end of file
-diff --git a/tests/intel-ci/fast-feedback-chamelium-only.testlist b/tests/intel-ci/fast-feedback-chamelium-only.testlist
-new file mode 120000
-index 000000000..44d83f366
---- /dev/null
-+++ b/tests/intel-ci/fast-feedback-chamelium-only.testlist
-@@ -0,0 +1 @@
-+i915.fast-feedback-chamelium-only.testlist
-\ No newline at end of file
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-new file mode 120000
-index 000000000..88e9d80e0
---- /dev/null
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -0,0 +1 @@
-+i915.fast-feedback.testlist
-\ No newline at end of file
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index 7efcef4be..5222b1358 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -4,6 +4,9 @@ intelci_files = [
-   'README',
-   'blacklist.txt',
-   'blacklist-pre-merge.txt',
-+  'chamelium-only.testlist',
-+  'fast-feedback.testlist',
-+  'fast-feedback-chamelium-only.testlist',
-   'i915.blocklist.txt',
-   'i915.blocklist-pre-merge.txt',
-   'i915.chamelium-only.testlist',
+Michał Grzelak (2):
+  lib/igt_psr: Skip the test when PSR is disabled
+  tests/intel/kms_frontbuffer_tracking: pass non-NULL output pointer
+
+ lib/igt_psr.c                          | 4 +++-
+ tests/intel/kms_frontbuffer_tracking.c | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
 -- 
-2.50.1
+2.45.2
 
