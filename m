@@ -4,60 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE1F0C83F1B
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 13:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 485ABC83F1B
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 13:33:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C24A10E49A;
-	Mon, 14 Jul 2025 13:32:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0022710E4A3;
+	Mon, 14 Jul 2025 13:33:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jFbRkZ52";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iwh2hziA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D50A610E49A
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 13:32:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4726E10E4A0
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 13:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752499978; x=1784035978;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+6+hBTsYZ+n1ezNqmJEyamJhkmOI5UbRrwi/HKnUXHA=;
- b=jFbRkZ52CBrY9cC9Lb56txiefif2oMkHsSyMAr87MH6jhg+X11hFgu78
- GYQHHJJsJNpCN02Oo+JB3H0GgOXYX29eW+BvStsr+RG7OKnWR6LRwCWGh
- F1uYGGNFN/oZQFboPLuIMXDh0SedK01qR+0+/gWoN7rjmkzuYZvq7sF4v
- rUDRBotHXYv9q50TZKXEL5fc4MuZzxzTTEycCF4d119wpVltblMw0WF2e
- 3mCt7nAeukiNy1fWq4XDMw3KQTN1QHEf5ZTF98C3LD+k/fi3ZLm45QxqP
- z6wRdEEc8ZRvgPRfwjv/3tUIGAb8DHGaZHwd/vyzPiUtweRKsO+qxMOqY g==;
-X-CSE-ConnectionGUID: aJbJFD/ZRxaJl0Bl5WRVNQ==
-X-CSE-MsgGUID: vatrENvGS1KNFk40mWAUCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66051249"
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="66051249"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 06:32:57 -0700
-X-CSE-ConnectionGUID: tI47J29/TyWxtZ2qolvdpg==
-X-CSE-MsgGUID: HTc7hQuGQaSyhI3WJeowgA==
+ t=1752500025; x=1784036025;
+ h=content-transfer-encoding:in-reply-to:references:subject:
+ from:cc:to:date:message-id:mime-version;
+ bh=ar6CTBs30NLDlV6diNEM92HlxHPz2cAZNGhYGvhZ9Go=;
+ b=iwh2hziAmUwd+HyNNUVDn0GP5KpZnZXA4pmQYFavqnMIi1HaxVZ7OEcd
+ +wBtNj80NSpKYWJWzLhJIdAEsUEbyMHWD9pzI2cVGTkf6c4Xfu6TXLbSe
+ CPiSXv+zp8lCO0mSkr1nnQiMCYnBak+gcfpklopnNsxR3PZtXUUr6N85v
+ y4h+2EytIbUQ/0JJA0pDZD8yDXabJIh1PE1OSvRrjxvDNrAeiBHzGscc9
+ TlDrW4W/Y9myxTQHFdn0vLzUyCtuvPaiTQ409AB1rNiMmJf4JGRoywCMI
+ 0jtSZNPfwmlm4m0o7VHBG+xdrtCMIn/DamlNWt6+I443YZ2FTIH+55rng Q==;
+X-CSE-ConnectionGUID: jWCUszUDSXCJCUc5jsLtOg==
+X-CSE-MsgGUID: Ssasy+jcRJasSVEoTDXlOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54560961"
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="54560961"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 06:33:44 -0700
+X-CSE-ConnectionGUID: qVgKT1SjQX2o/FZSx8fONw==
+X-CSE-MsgGUID: SF+o+A1tRJ6W68bmGpZ6bg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="187940643"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 06:32:56 -0700
-Date: Mon, 14 Jul 2025 15:32:36 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: Re: [PATCH i-g-t v11] tests/intel/xe_compute: Add Compute workload
- Scheduling
-Message-ID: <20250714133236.3wzp7vu6pie3jhqd@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
- zbigniew.kempczynski@intel.com,
- Andrzej Hajda <andrzej.hajda@intel.com>
-References: <20250714120213.1424596-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="161240749"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 06:33:43 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 14 Jul 2025 06:33:40 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Mon, 14 Jul 2025 06:33:40 -0700
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (40.107.101.64)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 14 Jul 2025 06:33:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rSlyiD7DjXA/3BkXPCFz1eTUezYfqEAsTexiMzYmd2zBDgEK3lMK8H3DqTirBR/hb3vb4H20d+5cEveD8rLGgnzyGKOjH32wDC5dlRvKDhvaElU7i2TREeKzeh9cF1q7mPf8QTYRrdDXozWh9hBimX8H+R4/i+2N42Dl5u7HZOGtU3X+BjTFvYXrEYFUf7rzLMuGMHziddbemXmBlfF+kL0UgEgQtn472v+hdwdcQRe3omTttzpG3pGdwu/htGJy5SWmEw1N3onKBjzEA4WlEN7uFQOZuZMaf3eCPLfA6+0C4yeFy2UTsMrtjtkpN17QliciDkxpZEodd54ZyEUoLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SzQ5WU+ys56nFQHito2QJXl+++ajkYTN0wqojs4KEUI=;
+ b=N39QZOF3/IT3QIwMpuvCHVcPd9X4XDuaTbCSUwP1wMc0OUt3HX0oza9apcs1+Oslc6OOh2PGn2rO0BdvFkQJk2Uwr8ORxOB8Gh+jMaBdVPpr0GuSrzKetViFeVnhVm0uCtiFeW1ehNxaokRqcDrB/4jT45ZGXgtAl28N6JmXZyLrM0TRvDU+FJdktEPm7DczgC9G+2PV4fqEIOzJGC3WrO4A6sUTRZTn+8IlveSXobzysJcX0tNxMxMVJkvyhHDOqSMecYpvMimHyrKFUN3iEGY8kagyYWZMy+TrHrAEm+/C6pwUf5et7diQQABaE5mEnEQeySCrXTu/rBRlIekJyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8287.namprd11.prod.outlook.com (2603:10b6:510:1c7::14)
+ by IA1PR11MB8804.namprd11.prod.outlook.com (2603:10b6:208:597::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.33; Mon, 14 Jul
+ 2025 13:32:55 +0000
+Received: from PH8PR11MB8287.namprd11.prod.outlook.com
+ ([fe80::7e8b:2e5:8ce4:2350]) by PH8PR11MB8287.namprd11.prod.outlook.com
+ ([fe80::7e8b:2e5:8ce4:2350%4]) with mapi id 15.20.8835.026; Mon, 14 Jul 2025
+ 13:32:55 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250713112354.32032-2-peter.senna@linux.intel.com>
+References: <20250713112354.32032-1-peter.senna@linux.intel.com>
+ <20250713112354.32032-2-peter.senna@linux.intel.com>
+Subject: Re: [PATCH v2 i-g-t 1/2] igt_core_get_igt_hook: igt_hook pointer for
+ other libs
+From: Gustavo Sousa <gustavo.sousa@intel.com>
+CC: Peter Senna Tschudin <peter.senna@linux.intel.com>, Gustavo Sousa
+ <gustavo.sousa@linux.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>
+Date: Mon, 14 Jul 2025 10:32:49 -0300
+Message-ID: <175249996916.2061.11232545398566672850@intel.com>
+User-Agent: alot/0.12.dev27+gd21c920b07eb
+X-ClientProxiedBy: MW4PR03CA0192.namprd03.prod.outlook.com
+ (2603:10b6:303:b8::17) To PH8PR11MB8287.namprd11.prod.outlook.com
+ (2603:10b6:510:1c7::14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250714120213.1424596-1-nishit.sharma@intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8287:EE_|IA1PR11MB8804:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2be5b0ef-40f1-43a6-3a7c-08ddc2daf0a8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dnk5a2Z1aWlaUTU5a2tiejQvT0xaR3RsTnBrdlFpaXhheFhVSFZud1ZpaUd6?=
+ =?utf-8?B?dXVlYTY3S2hDcHhhbllydkVLU1c4WFU1STFhaWlLV3JNV1VlSzh2N0wycE44?=
+ =?utf-8?B?ekxKcUJIUHpzeHA1MmJkKzZTbUdCSCt0T3B1WFl1WldSb0FIVTVCdGRoci9J?=
+ =?utf-8?B?NDRja0pXT05MNllKd0d4aFhFSGtURkUwZUZVZXVGaDBXUFlTWGVld1BqQzM2?=
+ =?utf-8?B?U2MrVGdPMFhTRlpLdm10SlgxYVFPcHNPRGJ5WHRIY3Q4OTdTTzZMQTJGbndO?=
+ =?utf-8?B?Ykg4aklGUkRZYktMTWkwcDArR3crOVkyNlgvRjRGV1dEUndRV043MjJjR09R?=
+ =?utf-8?B?N1pvcWc0SVNyblZXNU9uN01FWFZkaTgvVjVBbGxtS0FzM29lcVkrczQ4T2RR?=
+ =?utf-8?B?VU9kR0dzTk1Sai95REx5RGFHdjJSa1VnYUk5blVtcUlQL1lDcFNtQ2R0OUw2?=
+ =?utf-8?B?WkxDaGpFeHZaVWhkZWtEcjAzMjNESEJ5ODZtN1B1TkdOR2JWUFltMnI3MzlQ?=
+ =?utf-8?B?VWpWaTRaYnJLazhEVTA1bDhJYTNQWEtsTzVuN1ovU0d5dGtaNDFTVzF1WDEz?=
+ =?utf-8?B?MW1FZnFqV2ZaMDg3b29NZmtjaVlMR1E1Y0dQQVJMT1lUTTFFNHFueC93a0hC?=
+ =?utf-8?B?Mkw5MGxMR2J6TVpGWkZpTHhSaTVxT3JzR3lmUmpCM205MDRyQjFDdU1mRmcx?=
+ =?utf-8?B?Vk5GKzhiZVpnbndSQ3lEYTloWW4vRld3dlF6VWlvalFZVlRrNXlpeENOMWxJ?=
+ =?utf-8?B?UGdSME1WVDQ3dmFGcDBnZyszREdtZU8weWsvdkZ3UFZPbEVHNmhOeFVaeXVq?=
+ =?utf-8?B?RXN3N29xa011N2p3RmlCM25xc25nUjc0cUxDMi9jblN4dGxYYlphL1YxYm5I?=
+ =?utf-8?B?OGxKOFArUG90WGlPTXhUb3VQakJiTEc0K2pJK0I1Z3FSNkptdzR0RGlKYXU0?=
+ =?utf-8?B?L1FFQmJNRHZkUEhCeFBHMWRidFZQT0ZSSXZVMEJYZUxpL3o0MklMK1FBWEs4?=
+ =?utf-8?B?djRIelN6aUVpQWI5M1hWbFdieFYrUllMMXFqU054VVp2UUlzYVVteHpxSDFS?=
+ =?utf-8?B?N2N3UHhHRE1Sd2h6akxRdnQxbVNPR3B6OGh5a0VuQnNEaHEwUlZpdUpKTmp2?=
+ =?utf-8?B?L1I2QnhmZ0FudWhUSTBxd29IUUNIR2Fob3QrTGhqYnBNbkd3a0N1SzJMVWxT?=
+ =?utf-8?B?QlVtb0tmOTdFYVJUWFp4MWkxY01rZEl4MVlXUGdWd25hbnFMc21TOWVYV1lD?=
+ =?utf-8?B?ZUlYN3NIZUhoMnBEYVBsUmpJM0gyWFF5dG5sUTZ2ZTE4TlJybG8xTVFUVHR2?=
+ =?utf-8?B?RUpRb2NxRE1xSDdGZEo2U1RxaVI4TmV5VjY0UzZpellLd3B2eVJoMnBYcWdW?=
+ =?utf-8?B?RWxkcWp3WTY0MTBmbUlSbjBaN280YkVHWUdYN2szVkNkSkd6ZUt0bUQyRG16?=
+ =?utf-8?B?VVFrUFNMVmJia2JsQTFabCtCQ2dueWdTME5OK00vbElhVHN4Wm93NzlJYjBP?=
+ =?utf-8?B?U1NrTFlOeWN0T3lhcGxzbk1UNUl3K0tPV0kzK0lsUnJ0Vzk5NC9mdS84MHdv?=
+ =?utf-8?B?QmJwNDl3N1g4UCtQLy8rd2pOMEpyY3ZrQ2I5RDJWbndiNnlId083WnpaWUlV?=
+ =?utf-8?B?T0Q2cG5tL1J5emhLd210VEtNVGV5UFpXdW1ZdFZjSmcxcXA5bUJmdjllMVE3?=
+ =?utf-8?B?WmhQbjdtZkl0Y3RmZVJ0SkVVQVNLWHRkaS90NnI3dCsvSUtvVkV6bURORFJT?=
+ =?utf-8?B?UVIyQUJNYkllRnl1Ni8vb1c1bHZOZ2xBZUhXOG1GT24zSDVWMUdkY0lMZHAw?=
+ =?utf-8?B?K1UyYVkwUDJ3MnB4S0l5bWJPclpmSUc4dG9RYzNiQVFxekJxcXBZOXJ5cnRQ?=
+ =?utf-8?B?d2JkSGZDbGJBTzkwS2FvampwWmtkYVJtQ1VqVGg2Y2Q3cnVLUHI3L2VGd2lR?=
+ =?utf-8?Q?4kCjcpzR11A=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR11MB8287.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M002YXc2MzcyY1VEWnAxaXlaMi8rYlJUaHRsaVBzQXU5UGs1Ymp0MUJHamJY?=
+ =?utf-8?B?N1AxaW9lc2RDMm82WG54VEpHQ01TY08yN3hHQTRKQ0xuSHNIcFdlUlJiQXBR?=
+ =?utf-8?B?RjltcDFPYWVPZU0xbjIramhUeW15U3YrZm8wY0JpaGVBMElLQU1UMXJTelor?=
+ =?utf-8?B?WU40SE5WU1RtQi9heUNGdDRiRHU1SW1PSWplcm9VV1FNWCtWUWFZQ2NkNG05?=
+ =?utf-8?B?SlJCUHN3eEJITTFGTlF6QSs1QTJBdXNWakRuWWRjbE1JUlBvc3grQjQxNzdO?=
+ =?utf-8?B?SDcxQUtiV2l1ekFZeTQ1OHRSV00zckgwWThKbTQ5MU5EKzZoVG5weVkxYXFv?=
+ =?utf-8?B?M2RNZWl2YkFZaEpRcU1Xb2dkeWJ4dXpBTkcyUFRlOUpvWWl3RHEyMUozUll4?=
+ =?utf-8?B?b1hWMjQvS1phZ2U5d3AyWGVGNC9mOUxpN091Q0ROY3dPMVpVQUJkWWZWV01w?=
+ =?utf-8?B?ajUzMThQdy9STGdzWWZ0ZTRGMEdvSnNGWGtkdGE1aDhBWCsrSlI5OWV6T0tk?=
+ =?utf-8?B?NTFZejZ1QkNuTllYcG9lYzdkVkVvOWJ3YU5vWEI1bk56Z1pCQ0xLcTcycUhW?=
+ =?utf-8?B?U29DaERZdkhrZXMwSEtIRk9DanFMdjBCWHlENmw1cVNObUF2MmM0ck1iQ2I3?=
+ =?utf-8?B?VU8wRG5oUVl2SXhCenRKeVpmNk96NWFXWmptc2FtV3RiOWF0WkJKeW1DQXJv?=
+ =?utf-8?B?V1ZXSWhUdUhZWTJ2aHBiYVREOWZZTmZVZlluSTZhcTR4MEg0UjdKQm8vVWdm?=
+ =?utf-8?B?SmJJbHNEeFZwQXg5RmNudW4yNS9yS3pncEt0a29sL1VrWnJDYjZ2Rkc1NFpn?=
+ =?utf-8?B?KzJXV1N3NDhWdVcwbDlOWUNYd2h4S003K0JvbkFCWTYwNjNkTWgyQ2JGeE5Q?=
+ =?utf-8?B?WTRqZmlNVVFuNGtQWWRsVGtGOXJtRURUbkZ4Uk4vNDRPYkI0cU9EQ1JTVUlQ?=
+ =?utf-8?B?dFh5TmZYZ253V0N0UTczZmJXSzJacHBPL1hCK243RE5mUFRyV0J3ZnpDd0VS?=
+ =?utf-8?B?MU92MHhpYXB2VjdNc2h0c05Jd2Y2aUZRcmZ1WWpEdVVoU3hmSm5uQytnNm8v?=
+ =?utf-8?B?a3pHUi9IQUQ4bHFCdHduUDNOTVI4ck9sMWhPK1RGL3dCQmVRMis2S2I2QWdq?=
+ =?utf-8?B?cVNyMC9YODhkWUxWdzdnRlVFSHI2QlgwVWw3Tys5UmtYNS8zMWh5ekxOWm5T?=
+ =?utf-8?B?SC8remRkNWdWWGUxU05PRS8yUTBTVjBQR0ZIMlFMTCtyZWpkU0RwQ013VWQr?=
+ =?utf-8?B?ZG5VMFFobTNKQ1VleHNuNGtDa0o5OTRySjQ3UFRmK3lGQ1hwMDlpa1lYOWg1?=
+ =?utf-8?B?OTFiVjRiUDRWQlZQblVYbHF0WDRTdk9YWElFZHYvN0lqQnc0dmlkd2t0VWt4?=
+ =?utf-8?B?T1NnMFFFcm8rMjRBM0s2M0dyVmNhVlBoVG1kQlloa0g5MmFMZHd6MkdEc2V3?=
+ =?utf-8?B?Wk44K0NNN2lnNjRseGU0a3hwMkNqL09MT1BVVlF6VGdkL0UyY3NleWRxdlZO?=
+ =?utf-8?B?WXhUeC9ZeVY5RWgvbGFxV3o4YkNkSkpmcVg3R3UvUE5ES2xkQUF0bW54NTdC?=
+ =?utf-8?B?Qm9pWitidFdrQUdpNWJYT2hXWGRtWHlmWGNDYWs3eTkvVGh2NzhZakdhaUdM?=
+ =?utf-8?B?QS9hNUoyTXdBMnEyNllqN0VkUUQrSUJpUlR1Vnh1V3FyT3BIVVZiTkV0UnFa?=
+ =?utf-8?B?enBGNlc1cjhRaVhKOEFab24vVTNDVWcraUg1MTJTdEV2NUdDU0g2SzFGeW9Y?=
+ =?utf-8?B?VEV2VENmVy9aSngzK0xkWjc5Q1NpSEY4Z1Y2Z0xiVWQySjk4WnpBY0FxNmQ5?=
+ =?utf-8?B?L25hWXRCQSthcnNCZWVEUTRPRzEreXAxQUJSN3ZmZFJONEg3bVhyRmY2WGox?=
+ =?utf-8?B?N2FaZkhkbVBWT2ZrZG9MbjJaeDc5cUk4Y0xXL2JLL2dZbCtVQ01zd0JMRDJM?=
+ =?utf-8?B?UURaN3M0V3UwdkdlYmVPaXlidHNSa1JwT2Z3a2Vtay9kNVV1MDBETDd2M3ZZ?=
+ =?utf-8?B?UUJsYTVYSXM4aVg0MFFwTk5BZExEbUtGMnMvWlE0RUVjcW9RdHZiZGVQcFUw?=
+ =?utf-8?B?SlJWVkpkSW9rMzEwc1ZibkxLc3dKWEtlRndhWGtaeG1Wd3BQczRpckVBRXpK?=
+ =?utf-8?B?L3MyK1VOMWQ1ZW11VFlydU9xd2c5TU1iQ0J3TWhNSDNCU0w0a0JvL1NZdHBi?=
+ =?utf-8?B?a0E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2be5b0ef-40f1-43a6-3a7c-08ddc2daf0a8
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8287.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2025 13:32:55.5004 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: M1sjYSx7jrD6a5voIBY2UeRtdmi5DDzm7B8siylla+NJYNu0rMkQxrP9C4dRUEXBJ1HRF91PUvPh7PYPInxAXA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8804
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,662 +198,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi nishit.sharma,
-On 2025-07-14 at 12:02:13 +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> Adds compute workload scheduling and execution on multiple CCS engines
-> available. This also adds logic to show EU busyness information on console
-> during workload execution on multiple CCS engine instances.
-> 
+Quoting Peter Senna Tschudin (2025-07-13 08:23:53-03:00)
+>Previously, all igt_hooks were defined, initialized, and freed within
+>lib/igt_core.c, limiting hook creation to this file. To enable other
+>libraries to add hooks, introduce a function that returns a pointer to
+>the main hook structure.
+>
+>This change allows hooks to be created from external libraries without
+>requiring separate initialization or teardown of the hook
+>infrastructure.
+>
+>Cc: Gustavo Sousa <gustavo.sousa@linux.intel.com>
 
-+cc Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+This e-mail address does not exist. :-)
 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-> ---
+>Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 
-Describe here what changed between versions, for example:
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
 
-v10: changed subject of patch (Kamil)
-v11: ... other changes described ...
-  .. continuation of changes description ...
-
-Also check all other replays to your patch and address them
-before sending new version, or replay to request of change if
-you will not address it with explanation why.
-
-Few more nits below.
-
->  lib/intel_compute.c      |  34 ++-
->  lib/intel_compute.h      |   2 +
->  tests/intel/xe_compute.c | 475 ++++++++++++++++++++++++++++++++++++++-
->  tests/meson.build        |   1 +
->  4 files changed, 505 insertions(+), 7 deletions(-)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 147dd2916..e1685788c 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -255,8 +255,14 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
->  				break;
->  			}
->  
-> -			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
-> -							 placement, flags);
-> +			if (!execenv->user)
-> +				bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
-> +								 placement, flags);
-> +			else if (execenv->user)
-
-You didn't addressed my request here, simple 'else' is enough.
-
-> +				bo_dict[i].handle = xe_bo_create_caching(fd, execenv->vm,
-> +									 bo_dict[i].size,
-> +									 placement, flags,
-> +									 DRM_XE_GEM_CPU_CACHING_WC);
->  			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
->  			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
->  					 bo_dict[i].size, &sync, 1);
-> @@ -1849,10 +1855,26 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  				    OFFSET_KERNEL, 0, false,
->  				    execenv.array_size);
->  
-> -	bo_execenv_exec(&execenv, ADDR_BATCH);
-> -
-> -	if (!user || (user && !user->skip_results_check))
-> -		bo_check_square(input_data, output_data, execenv.array_size);
-> +	if (user && user->loop_kernel_duration) {
-> +		bo_execenv_exec_async(&execenv, ADDR_BATCH);
-> +		igt_measured_usleep(user->loop_kernel_duration);
-> +		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
-> +		bo_execenv_sync(&execenv);
-> +		user->skip_results_check = 1;
-> +	} else
-> +		bo_execenv_exec(&execenv, ADDR_BATCH);
-> +
-> +	for (int i = 0; i < execenv.array_size; i++) {
-> +		float input = input_data[i];
-> +		float output = output_data[i];
-> +		float expected_output = input * input;
-> +
-> +		if (output != expected_output)
-> +			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-> +					i, input, output, expected_output);
-> +		if (!user || (user && !user->skip_results_check))
-> +			igt_assert_eq_double(output, expected_output);
-> +	}
->  
->  	bo_execenv_unbind(&execenv, bo_dict, entries);
->  	bo_execenv_destroy(&execenv);
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index 412791d07..19977933f 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -63,6 +63,8 @@ struct user_execenv {
->  	uint64_t input_addr;
->  	/** @output_addr: override default address of the output array if provided */
->  	uint64_t output_addr;
-> +	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
-> +	uint32_t loop_kernel_duration;
->  };
->  
->  enum execenv_alloc_prefs {
-> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-> index 5e9140902..ff6a26959 100644
-> --- a/tests/intel/xe_compute.c
-> +++ b/tests/intel/xe_compute.c
-> @@ -12,6 +12,7 @@
->   */
->  
->  #include <string.h>
-> +#include <sys/ioctl.h>
-
-imho <ioctl.h> should be enough?
-
->  
->  #include "igt.h"
->  #include "igt_sysfs.h"
-> @@ -19,6 +20,39 @@
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  
-> +#include "igt_device.h"
-> +#include "tools/gputop/xe_gputop.h"
-
-Remove this include "tools/gputop..."
-
-> +#include "igt_drm_clients.h"
-
-These "igt_...h" includes should be moved before "xe/*h"
-
-> +
-> +/**
-> + * Number of supported drivers needs to be adjusted as per the length of
-> + * the drivers[] array.
-> + */
-> +#define	NUM_DRIVER	1
-> +#define	LOOP_DURATION	(1000000ull)
-> +#define engine_ptr(pmu_device, n)	(&(pmu_device)->engine + (n))
-> +#define NS_SLEEP	(1000000ull)
-> +
-> +enum utilization_type {
-> +	UTILIZATION_TYPE_ENGINE_TIME,
-> +	UTILIZATION_TYPE_TOTAL_CYCLES,
-> +};
-> +
-> +bool workload_sched;
-> +
-> +pthread_barrier_t barrier;
-> +struct thread_data {
-> +	pthread_t thread;
-> +	pthread_mutex_t *mutex;
-> +	pthread_cond_t *cond;
-> +	int class;
-> +	int fd;
-> +	int gt;
-> +	struct user_execenv *execenv;
-> +	struct drm_xe_engine_class_instance *eci;
-> +	bool *go;
-> +};
-> +
->  static int gt_sysfs_open(int gt)
->  {
->  	int fd, gt_fd;
-> @@ -203,12 +237,447 @@ test_compute_square(int fd)
->  		      "GPU not supported\n");
->  }
->  
-> +static void
-> +*intel_compute_thread(void *data)
-> +{
-> +	struct thread_data *t = (struct thread_data *)data;
-> +
-> +	usleep(3 * NS_SLEEP);
-> +
-> +	igt_info("Compute kernel executing on engine class :%s instance :%d gt: GT-%d\n",
-> +			xe_engine_class_string(t->eci->engine_class), t->eci->engine_instance,
-> +			t->eci->gt_id);
-> +
-> +	pthread_mutex_lock(t->mutex);
-> +	while (*t->go == 0)
-> +		pthread_cond_wait(t->cond, t->mutex);
-> +	pthread_mutex_unlock(t->mutex);
-> +
-> +	workload_sched = true;
-> +	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd,
-> +				t->eci,
-> +				t->execenv,
-> +				EXECENV_PREF_VRAM_IF_POSSIBLE),
-> +			"Unable to run compute kernel successfully\n");
-> +	workload_sched = false;
-> +	return NULL;
-> +}
-> +
-> +bool stop_top;
-
-Remove this, was it from 'gputop'?
-
-> +
-> +static const char
-> +*class_display_name(unsigned int class)
-> +{
-> +	switch (class) {
-> +	case DRM_XE_ENGINE_CLASS_RENDER:
-> +		return "Render/3D";
-> +	case DRM_XE_ENGINE_CLASS_COPY:
-> +		return "Blitter";
-> +	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
-> +		return "Video";
-> +	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
-> +		return "VideoEnhance";
-> +	case DRM_XE_ENGINE_CLASS_COMPUTE:
-> +		return "Compute";
-> +	default:
-> +		return "[unknown]";
-> +	}
-> +}
-> +
-> +static char *pmu_name(int fd)
-> +{
-> +	char device[30];
-> +
-> +	xe_perf_device(fd, device, sizeof(device));
-> +
-> +	return strdup(device);
-> +}
-> +
-> +static int
-> +_open_pmu(uint64_t type, unsigned int *cnt,
-> +	  struct xe_pmu_counter *pmu, int *fd)
-> +{
-> +	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
-> +
-> +	if (fd__ >= 0) {
-> +		if (*fd == -1)
-> +			*fd = fd__;
-> +		pmu->present = true;
-> +		pmu->idx = (*cnt)++;
-> +		pmu->fd = fd__;
-> +	}
-> +
-> +	return fd__;
-> +}
-> +
-> +static struct xe_pmu_device
-> +*xe_init_engines(int dev_fd)
-> +{
-> +	struct xe_pmu_device *engines;
-> +	struct drm_xe_engine *ccs_engine;
-> +	int ret = 0, engine_count = 0;
-> +	char device[30];
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	int fd;
-> +	uint32_t engine_class, engine_instance, gt_shift;
-> +	uint64_t engine_active_config, engine_total_config;
-> +	uint64_t type = igt_perf_type_id(xe_perf_device(dev_fd, device, sizeof(device)));
-> +
-> +	xe_device_get(dev_fd);
-> +
-> +	xe_for_each_engine(dev_fd, hwe) {
-> +		ccs_engine = xe_find_engine_by_class(dev_fd, DRM_XE_ENGINE_CLASS_COMPUTE);
-> +		if (ccs_engine)
-> +			engine_count++;
-> +	}
-> +
-> +	engines = calloc(1, sizeof(struct xe_pmu_device) +
-> +			engine_count * sizeof(struct xe_engine));
-> +	if (!engines)
-> +		return NULL;
-> +
-> +	engines->num_engines = 0;
-> +	engines->device = pmu_name(dev_fd);
-> +	engines->fd = -1;
-> +	engines->num_counters = 0;
-> +
-> +	perf_event_format(engines->device, "gt", &gt_shift);
-> +	perf_event_format(engines->device, "engine_class", &engine_class);
-> +	perf_event_format(engines->device, "engine_instance", &engine_instance);
-> +	ret = perf_event_config(engines->device,
-> +			"engine-active-ticks",
-> +			&engine_active_config);
-> +	if (ret < 0)
-> +		return NULL;
-> +	ret = perf_event_config(engines->device,
-> +			"engine-total-ticks",
-> +			&engine_total_config);
-> +	if (ret < 0)
-> +		return NULL;
-> +	xe_for_each_engine(dev_fd, hwe) {
-> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
-> +			uint64_t  param_config;
-> +			struct xe_engine *engine;
-> +
-> +			engine = engine_ptr(engines, engines->num_engines);
-> +			param_config = (uint64_t)hwe->gt_id << gt_shift |
-> +						hwe->engine_class << engine_class |
-> +						hwe->engine_instance << engine_instance;
-> +			engine->drm_xe_engine = *hwe;
-> +			engine->engine_active_ticks.config = engine_active_config | param_config;
-> +			engine->engine_total_ticks.config = engine_total_config | param_config;
-> +
-> +			if (engine->engine_active_ticks.config == -1 ||
-> +					engine->engine_total_ticks.config == -1) {
-> +				ret = ENOENT;
-> +				break;
-> +			}
-> +
-> +			ret = asprintf(&engine->display_name, "%s/%u",
-> +					class_display_name(engine->drm_xe_engine.engine_class),
-> +					engine->drm_xe_engine.engine_instance);
-> +
-> +			if (ret <= 0) {
-> +				ret = errno;
-> +				break;
-> +			}
-> +
-> +			fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
-> +					&engines->fd);
-> +			if (fd < 0)
-> +				return NULL;
-> +
-> +			fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
-> +					&engines->fd);
-> +			if (fd < 0)
-> +				return NULL;
-> +
-> +			engines->num_engines++;
-> +		}
-> +	}
-> +
-> +	if (!ret) {
-> +		errno = ret;
-> +		return NULL;
-> +	}
-> +
-> +	return engines;
-> +}
-> +
-> +static void
-> +eu_util_free(struct xe_pmu_device *pmu_device)
-> +{
-> +	struct xe_engine *eng;
-> +	struct xe_pmu_counter pmu;
-> +
-> +	igt_info("EU cleanup process\n");
-> +
-> +	if (pmu_device) {
-> +		for (int j = 0; j < pmu_device->num_engines ; j++) {
-> +			eng = engine_ptr(pmu_device, j);
-> +			if (eng->display_name)
-> +				free(eng->display_name);
-> +
-> +			pmu = eng->engine_active_ticks;
-> +			if (pmu.present)
-> +				close(pmu.fd);
-> +
-> +			pmu = eng->engine_total_ticks;
-> +			if (pmu.present)
-> +				close(pmu.fd);
-> +		}
-> +		free(pmu_device);
-> +	}
-> +}
-> +
-> +static void
-> +update_sample(struct xe_pmu_counter *counter, uint64_t *val)
-> +{
-> +	if (counter->present) {
-> +		counter->val.prev = counter->val.cur;
-> +		counter->val.cur = val[counter->idx];
-> +	}
-> +}
-> +
-> +static void xe_pmu_device_sample(const void *obj)
-> +{
-> +	struct xe_pmu_device *engines = ((struct xe_pmu_device *)obj);
-> +	const int num_val = engines->num_counters;
-> +	uint64_t val[2 + num_val];
-> +	uint64_t buf[2 + num_val];
-> +	unsigned int i;
-> +	ssize_t len;
-> +
-> +	memset(buf, 0, sizeof(buf));
-> +	len = read(engines->fd, buf, sizeof(buf));
-> +	assert(len == sizeof(buf));
-> +
-> +	for (i = 0; i < num_val; i++)
-> +		val[i] = buf[2 + i];
-> +
-> +	for (i = 0; i < engines->num_engines; i++) {
-> +		struct xe_engine *engine = engine_ptr(engines, i);
-> +
-> +		update_sample(&engine->engine_active_ticks, val);
-> +		update_sample(&engine->engine_total_ticks, val);
-> +	}
-> +}
-> +
-> +static double
-> +pmu_active_percentage(struct xe_engine *engine)
-> +{
-> +	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
-> +		engine->engine_active_ticks.val.prev;
-> +	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
-> +		engine->engine_total_ticks.val.prev;
-> +	double percentage;
-> +
-> +	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
-> +	return percentage;
-> +}
-> +
-> +static void xe_print_perc(const void *obj)
-> +{
-> +	struct xe_pmu_device *pmu_device = ((struct xe_pmu_device *)obj);
-> +
-> +	for (unsigned int i = 0; i < pmu_device->num_engines; i++) {
-> +		double percentage;
-> +		struct xe_engine *engine = engine_ptr(pmu_device, i);
-> +
-> +		igt_assert(engine);
-> +
-> +		percentage = pmu_active_percentage(engine);
-> +
-> +		if (engine->drm_xe_engine.engine_class == DRM_XE_ENGINE_CLASS_COMPUTE &&
-> +		    !workload_sched) {
-> +			igt_info("Engine_instance :%d EU busyness :%5.1f\n",
-> +				  engine->drm_xe_engine.engine_instance,
-> +				   percentage);
-> +			if (!percentage)
-> +				igt_info("No workload scheduled, BU busyness :%5.1f expected\n",
-> +					  percentage);
-> +			else
-> +				igt_info("Workload scheduled, BU busyness :%5.1f expected\n",
-> +					  percentage);
-> +		} else if (engine->drm_xe_engine.engine_class == DRM_XE_ENGINE_CLASS_COMPUTE &&
-> +			   workload_sched) {
-> +			igt_info("Engine_instance :%d EU busyness :%5.1f\n",
-> +				  engine->drm_xe_engine.engine_instance, percentage);
-> +			if (!percentage)
-> +				igt_info("No workload scheduled, BU busyness :%5.1f expected\n",
-> +					  percentage);
-> +			else
-> +				igt_info("Workload scheduled, BU busyness :%5.1f expected\n",
-> +					  percentage);
-> +		}
-> +	}
-> +}
-> +
-> +static void *show_eu_util(void *data)
-> +{
-> +	struct igt_drm_clients *clients = NULL;
-> +	struct xe_pmu_device *pmu_device = NULL;
-> +	int dev_fd;
-> +	long n;
-> +
-> +	dev_fd = drm_open_driver(DRIVER_XE);
-> +
-> +	pmu_device = xe_init_engines(dev_fd);
-> +	if (!pmu_device) {
-> +		fprintf(stderr,
-> +				"Failed to initialize engines! (%s)\n",
-> +				strerror(errno));
-> +		return NULL;
-> +	}
-> +
-> +	xe_pmu_device_sample(pmu_device);
-> +
-> +	clients = igt_drm_clients_init(NULL);
-> +	if (!clients)
-> +		exit(1);
-> +	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-> +	while ((n != 0) && !stop_top) {
-> +		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
-> +		xe_pmu_device_sample(pmu_device);
-> +		xe_print_perc(pmu_device);
-> +		usleep(2 * NS_SLEEP);
-> +	}
-> +	igt_drm_clients_free(clients);
-> +	eu_util_free(pmu_device);
-> +	drm_close_driver(dev_fd);
-> +
-> +	return NULL;
-> +}
-> +
-> +static void
-> +thread_init_eu_utils(void)
-> +{
-> +	pthread_t eu_utils;
-> +	int fd;
-> +	uint16_t dev_id;
-> +
-> +	fd = drm_open_driver(DRIVER_XE);
-> +	dev_id = intel_get_drm_devid(fd);
-> +
-> +	/* Creating thread to display EU utilization in BMG */
-> +	if (IS_BATTLEMAGE(dev_id))
-> +		pthread_create(&eu_utils, NULL, show_eu_util, NULL);
-> +}
-> +
-> +/**
-> + * SUBTEST: eu-busy-10-sec
-> + * Functionality: OpenCL kernel
-> + * Description:
-> + *      Run an openCL long rinning Kernel that returns output[i] = input[i] * input[i],
-> + */
-> +static void
-> +test_eu_busy(int fd, int num_gt, u32 duration_sec)
-> +{
-> +	struct user_execenv execenv = { 0 };
-> +	struct thread_data *threads_data;
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	const struct intel_compute_kernels *kernels;
-> +	pthread_mutex_t mutex;
-> +	pthread_cond_t cond;
-> +	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
-> +	bool go = false;
-> +	int ccs_mode, gt_fd;
-> +	u32 num_slices, ip_ver;
-> +
-> +	fd = drm_open_driver(DRIVER_XE);
-> +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-> +	kernels = intel_compute_square_kernels;
-> +	drm_close_driver(fd);
-> +
-> +	for (gt = 0; gt < num_gt; gt++) {
-> +		if (!get_num_cslices(gt, &num_slices))
-> +			continue;
-> +
-> +		gt_fd = gt_sysfs_open(gt);
-> +		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 2) > 0);
-
-Afaik this will not work, you need to close all fd's to be able
-to set ccs_mode here, adding Andrzej Hajda to Cc.
-
-Also you need to do it rather in igt_fixup, and also provide
-cleanup after a test. In some cases even exit_handler should
-be registered.
-
-> +		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-> +		close(gt_fd);
-> +	}
-> +
-> +	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
-> +		      ccs_mode);
-> +
-> +	fd = drm_open_driver(DRIVER_XE);
-> +	thread_init_eu_utils();
-> +
-> +	while (kernels->kernel) {
-> +		if (ip_ver == kernels->ip_ver)
-> +			break;
-> +		kernels++;
-> +	}
-> +
-> +	/*If loop_kernel_duration not set user should use different
-> +	 *kernel and size
-> +	 *use with loop kernel and loop duration it assumes we stop
-> +	 *it via memory write
-> +	 */
-> +
-> +	execenv.loop_kernel_duration = duration_sec;
-> +	execenv.kernel = kernels->loop_kernel;
-> +	execenv.kernel_size = kernels->loop_kernel_size;
-> +	for (gt = 0; gt < num_gt; gt++) {
-> +		xe_for_each_engine(fd, hwe) {
-> +			igt_assert(hwe);
-> +			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-> +				++n_instances;
-> +		}
-> +	}
-> +
-> +	threads_data = calloc(n_instances, sizeof(*threads_data));
-> +	igt_assert(threads_data);
-> +
-> +	pthread_mutex_init(&mutex, 0);
-> +	pthread_cond_init(&cond, 0);
-> +
-> +	for (gt = 0; gt < num_gt; gt++) {
-> +		xe_for_each_engine(fd, hwe) {
-> +			if (hwe->gt_id != gt ||
-> +					hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-> +				continue;
-> +
-> +			threads_data[i].mutex = &mutex;
-> +			threads_data[i].cond = &cond;
-> +			threads_data[i].fd = fd;
-> +			threads_data[i].eci = hwe;
-> +			threads_data[i].go = &go;
-> +			threads_data[i].execenv = &execenv;
-> +			++n_threads;
-> +			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-> +					&threads_data[i]);
-> +			++i;
-> +			++iterations;
-> +			usleep(2 * NS_SLEEP);
-> +		}
-> +
-> +		pthread_mutex_lock(&mutex);
-> +		go = true;
-> +		pthread_cond_broadcast(&cond);
-> +		pthread_mutex_unlock(&mutex);
-> +
-> +		for (int val = 0; val < i; ++val)
-> +			pthread_join(threads_data[val].thread, NULL);
-> +
-> +		i = 0;
-> +		n_threads = 0;
-> +		iterations = 0;
-> +		stop_top = true;
-> +	}
-> +	free(threads_data);
-> +	drm_close_driver(fd);
-> +}
-> +
->  igt_main
->  {
-> -	int xe;
-> +	int xe, num_gt;
->  
->  	igt_fixture {
->  		xe = drm_open_driver(DRIVER_XE);
-> +		num_gt = xe_number_gt(xe);
->  	}
->  
->  	igt_subtest("compute-square")
-> @@ -223,4 +692,8 @@ igt_main
->  
->  	igt_subtest("ccs-mode-compute-kernel")
->  		test_compute_kernel_with_ccs_mode();
-> +
-> +	/* test to check available EU utilisation for multi_ccs */
-> +	igt_subtest("eu-busy-10-sec")
-
-Test name should be something like 'eu-busy-with-multi-ccs' or
-'eu-busy-multi-ccs'
-
-> +		test_eu_busy(xe, num_gt, 10 * LOOP_DURATION);
-
-Why you need 10 seconds here for testing?
-
->  }
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 9b87a0d24..7945f68f8 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -405,6 +405,7 @@ extra_dependencies = {
->  	'sw_sync': [ libatomic ],
->  	'xe_fault_injection': [ lib_igt_xe_oa ],
->  	'xe_oa': [ lib_igt_xe_oa ],
-> +	'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math ],
-
-Why you need it here? This change wasn't described in commit
-message.
-
-Regards,
-Kamil
-
->  }
->  
->  test_executables = []
-> -- 
-> 2.43.0
-> 
+>---
+>
+>v2:
+> - change function name to igt_core_get_igt_hook()
+> - remove duplicated documentation from header=20
+>
+> lib/igt_core.c | 12 ++++++++++++
+> lib/igt_core.h |  2 ++
+> 2 files changed, 14 insertions(+)
+>
+>diff --git a/lib/igt_core.c b/lib/igt_core.c
+>index c2674a272..4bfffc3a8 100644
+>--- a/lib/igt_core.c
+>+++ b/lib/igt_core.c
+>@@ -3604,3 +3604,15 @@ unsigned int igt_measured_usleep(unsigned int usec)
+>=20
+>         return igt_nsec_elapsed(&ts) / NSEC_PER_USEC;
+> }
+>+
+>+/**
+>+ * igt_core_get_igt_hook: To allow for using hooks from other libraries, =
+this
+>+ * function returns the pointer to the struct that is likely already
+>+ * initialized.
+>+ *
+>+ * Returns: Pointer to the igt_hook structure.
+>+ */
+>+struct igt_hook *igt_core_get_igt_hook(void)
+>+{
+>+        return igt_hook;
+>+}
+>diff --git a/lib/igt_core.h b/lib/igt_core.h
+>index 2db579423..e658737b0 100644
+>--- a/lib/igt_core.h
+>+++ b/lib/igt_core.h
+>@@ -1601,4 +1601,6 @@ void igt_pci_system_cleanup(void);
+> void igt_emit_ignore_dmesg_regex(const char *ignore_dmesg_regex);
+>=20
+> unsigned int igt_measured_usleep(unsigned int usec);
+>+
+>+struct igt_hook *igt_core_get_igt_hook(void);
+> #endif /* IGT_CORE_H */
+>--=20
+>2.43.0
+>
