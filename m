@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1321CC83F1B
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 17:01:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D66AC83F1A
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 17:46:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2D56510E2A9;
-	Mon, 14 Jul 2025 17:01:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8E4210E08E;
+	Mon, 14 Jul 2025 17:46:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="io+QwElA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hIjZmby1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0F1410E02E
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 17:01:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2E6C10E08E
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 17:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752512491; x=1784048491;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=DnuaK2rWxi1DIMOwF3lVHKkaFVwzGcm45jes0MAKsdg=;
- b=io+QwElA7qDAUWH8WPznjk7f6FY7g6gcQYke0IKow2KqrHDhpttKiA6P
- 8cU/gsr59LmtgP807lBw9VG0Ud5J5PVupf5/db4ksRlqhYWEhFCTqTzzI
- 763xEU2wGD02WIa0ddhwMLAKEPvVbR3c9Wr9JUVXk6ZjXe9a7rmvwlhqY
- 6+2zts+/AKyn6NIgHZwV0ZyaWmbUYDttx+xpsNPk/kUMOxlxD6d+FvvT6
- QfX2h089PZtlmeNtFE2uhXbd0kPxZ55Ol3UV7lR83m29Ixwt2Ga76mhZn
- Zf2x/OI5CMnoyazx1DoU6P+0/b6M5Uvdalk5ecgJZgbSzqQyfrscMpSJf A==;
-X-CSE-ConnectionGUID: xxGnRCi3T4mtye9SXecqeg==
-X-CSE-MsgGUID: 5ymgnm7eTuWszPsQfxJ2FA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54802186"
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="54802186"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 10:01:30 -0700
-X-CSE-ConnectionGUID: cuaJjszXR3qZWRV0syrorA==
-X-CSE-MsgGUID: R9EZOsc4TsOkW5EjMvcl9w==
+ t=1752515202; x=1784051202;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=2Mc2fJfkuATbgSqFgvnWswRqoETM1uIZ7dXYuOxTp6k=;
+ b=hIjZmby1xJsL+zxuZvmmoTyUBRzeeHz3kKhjsz+RSU7t4rhp6bV1EdcQ
+ 6+F20GQnBLJZHhDwAXKXdxkczJah1o0gLlwdEKJ1XtGuMegFn3fJFgesO
+ qw9+A0iAh9NE8U9pf7YdzZPPSFzzLveDNTT/+eTih6X0pz2PzNlVOEybF
+ dGry5AZvMBmj9OYXXYatxAytXyVoh+x63vn3YwNWP51DfM10ZekirHafp
+ UCxpKguRt1ltiDpZg8hypYTpM69IemYATep1DlZujNqENWs/8v+e0jJid
+ 1s9aRUblUNo7u8ore/S0g79FI5H6LcA1ekWqutwcdnabZjBWzW9Rd0x5k g==;
+X-CSE-ConnectionGUID: dzraPVwBQeivvoyqi2hCvw==
+X-CSE-MsgGUID: QeMsBbvMSNmv0GX9Q3Rzwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65289922"
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="65289922"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 10:46:40 -0700
+X-CSE-ConnectionGUID: wvQNQjH9T8ixKXhhqvLIDw==
+X-CSE-MsgGUID: shf25qLYRdiRPTx/T4PEZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="161306015"
-Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 10:01:29 -0700
-From: Matthew Brost <matthew.brost@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="156803057"
+Received: from ifwibot07.gar.corp.intel.com (HELO
+ rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 10:46:37 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 4/5] tests/intel/xe_exec_system_allocator: Set data to
- non-zero value
-Date: Mon, 14 Jul 2025 10:03:08 -0700
-Message-Id: <20250714170309.2949211-5-matthew.brost@intel.com>
+Cc: karthik.b.s@intel.com, mohammed.thasleem@intel.com,
+ suraj.kandpal@intel.com, ankit.k.nautiyal@intel.com,
+ kamil.konieczny@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v4 0/2] Introduce intel_hdcp tool
+Date: Mon, 14 Jul 2025 23:12:43 +0530
+Message-Id: <20250714174245.1628709-1-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250714170309.2949211-1-matthew.brost@intel.com>
-References: <20250714170309.2949211-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,90 +69,17 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The compiler seems to optimize out memset of value 0, set to non-zero
-value to fault in the pages.
+Add a new HDCP tool for self-testing and easy deployment
+to client machines. This tool helps diagnose issues,
+determining whether the problem lies in the driver or user space.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Santhosh Reddy Guddati (2):
+  tools/intel_hdcp: Support for enabling and disabling HDCP
+  tools/intel_hdcp: Add interactive menu mode to tool
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 006a3dc920..dd5303855d 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -294,7 +294,7 @@ static void touch_all_pages(int fd, uint32_t exec_queue, void *ptr,
- 			   PROT_WRITE, MAP_SHARED |
- 			   MAP_ANONYMOUS, -1, 0);
- 	igt_assert(exec_ufence != MAP_FAILED);
--	memset(exec_ufence, 0, SZ_4K);
-+	memset(exec_ufence, 5, SZ_4K);
- 	sync[0].addr = to_user_pointer(exec_ufence);
- 
- 	for (i = 0; i < n_writes; ++i, addr += stride) {
-@@ -678,7 +678,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- 	data = mmap(alloc.ptr, bo_size, PROT_READ | PROT_WRITE,
- 		    MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
- 	igt_assert(data != MAP_FAILED);
--	memset(data, 0, bo_size);
-+	memset(data, 5, bo_size);
- 	old = data;
- 
- 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-@@ -692,7 +692,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- 			   PROT_WRITE, MAP_SHARED |
- 			   MAP_ANONYMOUS, -1, 0);
- 	igt_assert(exec_ufence != MAP_FAILED);
--	memset(exec_ufence, 0, SZ_4K);
-+	memset(exec_ufence, 5, SZ_4K);
- 
- 	for (i = 0; i < 2; i++) {
- 		uint64_t addr = to_user_pointer(data);
-@@ -1109,7 +1109,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			igt_assert(data);
- 		}
- 		if (!(flags & SKIP_MEMSET))
--			memset(data, 0, bo_size);
-+			memset(data, 5, bo_size);
- 		if (flags & LOCK) {
- 			igt_assert(!(flags & NEW));
- 			mlock(data, bo_size);
-@@ -1151,7 +1151,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				   PROT_WRITE, MAP_SHARED |
- 				   MAP_ANONYMOUS, -1, 0);
- 		igt_assert(exec_ufence != MAP_FAILED);
--		memset(exec_ufence, 0, SZ_4K);
-+		memset(exec_ufence, 5, SZ_4K);
- 	}
- 
- 	aligned_alloc_type = __aligned_alloc(SZ_4K, SZ_4K);
-@@ -1351,7 +1351,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 					igt_assert_eq(data[idx].data,
- 						      READ_VALUE(&data[idx]));
- 					if (flags & PREFETCH_BENCHMARK)
--						memset(data, 0, bo_size);
-+						memset(data, 5, bo_size);
- 
- 					if (flags & MULTI_FAULT) {
- 						for (j = 1; j < N_MULTI_FAULT; ++j) {
-@@ -1432,7 +1432,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			}
- 			addr = to_user_pointer(data);
- 			if (!(flags & SKIP_MEMSET))
--				memset(data, 0, bo_size);
-+				memset(data, 5, bo_size);
- 		}
- 
- 		prev_idx = idx;
-@@ -1586,7 +1586,7 @@ threads(int fd, int n_exec_queues, int n_execs, size_t bo_size,
- 		alloc = aligned_alloc(SZ_2M, alloc_size);
- 		igt_assert(alloc);
- 
--		memset(alloc, 0, alloc_size);
-+		memset(alloc, 5, alloc_size);
- 		flags &= ~SHARED_ALLOC;
- 	}
- 
+ tools/intel_hdcp.c | 227 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 212 insertions(+), 15 deletions(-)
+
 -- 
 2.34.1
 
