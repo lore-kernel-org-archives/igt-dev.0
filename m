@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96A99C83F17
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 16:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3489DC83F1A
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 16:24:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2AA7810E4DD;
-	Mon, 14 Jul 2025 16:24:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC77110E4DE;
+	Mon, 14 Jul 2025 16:24:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Kq2OldHn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h42W3sJz";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D3A810E4DD
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D10710E4DE
  for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 16:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1752510296; x=1784046296;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BjcCC9+zEZkZewmN8aSN2tEhKjylwky3GUXw2JY+lu8=;
- b=Kq2OldHnmdeymN540DleMvCFLRt3nzGtshnen3LjtLXcO7OkDlcEgYRB
- fibCAn7X7iBKr8A1vU8QC2Tj6U9jkZ7TtswIu/pIkR6MwptI5RaIlrrQD
- vlFEpbRIgIf/oEKOjjxdM3/RchevkehBPT8jgX3z6YPnKH7fFHvA1Ddgq
- 2YMApxedC1JNCaNwYDhL/1ZXsnfitADgUwmBsXYwDp+8OT7hyMcwpge4k
- ARXV4kreWfhI3V+u9Pbj3+x+DTc/6m0Z1njz1XUk1krTKa/X2m9/dm+Hg
- 4+s3ykwLbc344kVGWJ1MILbVkvs/AXrpJ/SsqvibfQxvudYby2SKUOCbU w==;
-X-CSE-ConnectionGUID: 1vbYgEnhTmmXIUpV/bFzkg==
-X-CSE-MsgGUID: JSjdsW6wSkemju/rfIHweA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54564314"
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="54564314"
+ bh=7NQ30PuAt6rrwWmKDCdnlcHdzdVIzkaOWPKSjGqCbs8=;
+ b=h42W3sJzNfP9izz9lHnVov/M7LI98wYv7cAaP3RM6NlZyGL5wzWKWn1U
+ okNmkjQecHt+HxC+H5YCAm/MclyAmddw8M31DRP4slxArkQxp0lecl+Cf
+ G9DjG6HbypfiFIyAKwV05Mu7dzxU9+z4e1CYD/suZgkqhQGIme/54FJi2
+ cVVngIJWIRde9KJ8QfSc+xeGpifpp/jPQ92qdAY5c+RXCA8mLBRNgpJZ7
+ O8tgon1XY7eb0i1+CTmEp5R/gklGcMnaRR7HNTgL4PJq0eEmyeQqe56CE
+ 6JYDdgaSDip1AWuJ+dGwbEJXYyRgeAnbwbB2yZeYZ8MlYqZTi3JEhVMRm g==;
+X-CSE-ConnectionGUID: te+DwHh6QvaxioEu21oz6w==
+X-CSE-MsgGUID: u6k2yykiS/+JKfz9ADcy4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54564329"
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="54564329"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 09:24:51 -0700
-X-CSE-ConnectionGUID: VqX9LTkNTv+JDa+SJBxE2g==
-X-CSE-MsgGUID: SgKsKlMkSA6Te2TxHCIMYg==
+ 14 Jul 2025 09:24:54 -0700
+X-CSE-ConnectionGUID: FzKrt7fIRM+CCZue1xCG3Q==
+X-CSE-MsgGUID: C01leYZFS5eKvYXtkY7OBA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="161522493"
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="161522509"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.1])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 09:24:48 -0700
+ 14 Jul 2025 09:24:52 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Michal Czaplinski <michal.czaplinski@intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH i-g-t v6 2/5] gitlab-ci: Update Intel i915 blocklists
-Date: Mon, 14 Jul 2025 18:24:32 +0200
-Message-ID: <20250714162435.112599-3-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v6 3/5] intel-ci: Add symlinks for old i915 blocklists
+Date: Mon, 14 Jul 2025 18:24:33 +0200
+Message-ID: <20250714162435.112599-4-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250714162435.112599-1-kamil.konieczny@linux.intel.com>
 References: <20250714162435.112599-1-kamil.konieczny@linux.intel.com>
@@ -69,31 +71,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Update Intel blocklist names in runner testing.
+Add symlinks to make a transition easier for CI.
 
-v2: drop xe as this should simplify change, also
-  there is no pre-merge for xe (Kamil)
+v5: add symlinks to meson (Michal)
 
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Michal Czaplinski <michal.czaplinski@intel.com>
+Suggested-by: Ryszard Knop <ryszard.knop@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- .gitlab-ci.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel-ci/blacklist-pre-merge.txt | 1 +
+ tests/intel-ci/blacklist.txt           | 1 +
+ tests/intel-ci/meson.build             | 2 ++
+ 3 files changed, 4 insertions(+)
+ create mode 120000 tests/intel-ci/blacklist-pre-merge.txt
+ create mode 120000 tests/intel-ci/blacklist.txt
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index 637112e4e..8098f2b70 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -231,7 +231,7 @@ test:verify-blacklists:
-   dependencies:
-     - build:tests-fedora
-   stage: test
--  script: for bl in tests/intel-ci/blacklist{,-pre-merge}.txt; do scripts/verify-blacklist.sh build/runner/igt_runner build/tests "$bl" || exit 1; done
-+  script: for bl in tests/intel-ci/i915.blocklist{,-pre-merge}.txt; do scripts/verify-blacklist.sh build/runner/igt_runner build/tests "$bl" || exit 1; done
+diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
+new file mode 120000
+index 000000000..124a31dbf
+--- /dev/null
++++ b/tests/intel-ci/blacklist-pre-merge.txt
+@@ -0,0 +1 @@
++i915.blocklist-pre-merge.txt
+\ No newline at end of file
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+new file mode 120000
+index 000000000..ffa658927
+--- /dev/null
++++ b/tests/intel-ci/blacklist.txt
+@@ -0,0 +1 @@
++i915.blocklist.txt
+\ No newline at end of file
+diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+index d18170402..1588d5197 100644
+--- a/tests/intel-ci/meson.build
++++ b/tests/intel-ci/meson.build
+@@ -2,6 +2,8 @@
  
- ################### DEPLOY #########################
- 
+ intelci_files = [
+   'README',
++  'blacklist.txt',
++  'blacklist-pre-merge.txt',
+   'i915.blocklist.txt',
+   'i915.blocklist-pre-merge.txt',
+   'chamelium-only.testlist',
 -- 
 2.50.1
 
