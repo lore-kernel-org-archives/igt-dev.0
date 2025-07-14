@@ -4,65 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2140EC83F1A
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 11:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41BFDC83F1B
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 12:00:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C7F3310E17A;
-	Mon, 14 Jul 2025 11:56:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DEFA810E477;
+	Mon, 14 Jul 2025 12:00:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SOfeDNlI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J4J95CaM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA6B210E17A
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 11:56:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 526DE10E48B
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 11:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752494177; x=1784030177;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=1RxNKK/2O/KJyqV7YlO6mMfyJSgM6Wm1gQGVokBInlw=;
- b=SOfeDNlIO6475sx6CfTCu7AlZ7H7NVb3YxvhBWvLgbENfug1zsrEyETl
- 6EvhfKqCeKOdoip3kp+DY8NPi4TTBANxkbxtak7PlCbq0bniRYkSOkAM7
- OWyGgj4Y6zaCp4vL6jGEr9tVZ/tuvmgvKU2Ia7r+IE0gYtet1FOmHQbHt
- Es0ePFq+6xUill5DZqoMCTFBNzNYvQc3CAlplzkNnXT2ZfdNF74CZPE2r
- kKdjp2g3vY7DsRbqDz/6/9aged7k6cmo+qyrxee+AWMQVtpu8Nw+Lr4L4
- J6gi9AvCDU6g+XX9iGr3c50k3+frCw/OTQlbFrAInLiR9J/pW3aUot/xJ w==;
-X-CSE-ConnectionGUID: zDsxx1fmR0+MViKJHAeNKA==
-X-CSE-MsgGUID: 5mRQX3ALSumbefsy8UGgoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="42317213"
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="42317213"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 04:56:16 -0700
-X-CSE-ConnectionGUID: vmuLpWGdQMCLg2ClFLDjRw==
-X-CSE-MsgGUID: KOi6OqcBQamaVctC0IeK8g==
+ t=1752494399; x=1784030399;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=LzrZXmm7aGrfKxvwdUKBTAbejlJDvtzO+8TTwNtaLBQ=;
+ b=J4J95CaMPrjYApx3tHriRQzmVcgYN7WQ64qN/xk/h74q1+mZuQM28Xra
+ gAvPj1/uV/o7ndvhWMaED2mvVA4dueCXtpjmNefLenHs6FHfJKw5maQFI
+ 0/NdPGthTGMUC/kGN7BeIKx+LAfkSg3j2mqu067U77brQbfrXOzUDXuPW
+ jOJjGDEVGZb+htKk98xNzVrwqrWuCinqUiovqqaKRxL1JwDS+FFFh17+c
+ 6tR7JkVV+d1Tp2M4fPOYfMrMWiWOK7PehLx/c4OvASTXF6CJjraJllPaE
+ Kpmw3Xk3/EqGUo+aPezHAtXxfYRt60Iv20U8OCg51jBFPsXbtsTWh/TWs g==;
+X-CSE-ConnectionGUID: rI6h+ZM+RP2+UGuTV3wpeg==
+X-CSE-MsgGUID: 0+DEXo/xR6CFnAvHoqVrow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="77220226"
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="77220226"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 04:59:58 -0700
+X-CSE-ConnectionGUID: tWuAt6/tTCqrnpInl9PPUQ==
+X-CSE-MsgGUID: kG8oyZVqRCqJRX4Uts8QyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="157257870"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 04:56:15 -0700
-Date: Mon, 14 Jul 2025 13:56:12 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Grzelak, Michal" <michal.grzelak@intel.com>
-Cc: "B, Jeevan" <jeevan.b@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
-Subject: Re: [PATCH i-g-t] tests/kms_setmode: Find compatible mode for eDP
- before selecting default mode
-Message-ID: <20250714115612.xouhsgkko26zs5fu@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Grzelak, Michal" <michal.grzelak@intel.com>,
- "B, Jeevan" <jeevan.b@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-References: <20250613054848.3279961-1-jeevan.b@intel.com>
- <SJ0PR11MB507248333ECA5D7E74CE9B118F70A@SJ0PR11MB5072.namprd11.prod.outlook.com>
+X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; d="scan'208";a="156333440"
+Received: from artdev273.igk.intel.com ([172.28.176.71])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 04:59:56 -0700
+From: Jan Sokolowski <jan.sokolowski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jan Sokolowski <jan.sokolowski@intel.com>,
+ Jan Sokolowski <jan.sokolowski@gmail.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t v1 0/2] RFC: Bash autocompletion feature for igt
+Date: Mon, 14 Jul 2025 12:01:28 +0000
+Message-Id: <20250714120130.464545-1-jan.sokolowski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <SJ0PR11MB507248333ECA5D7E74CE9B118F70A@SJ0PR11MB5072.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,61 +72,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Grzelak,,
-On 2025-06-16 at 18:35:26 +0000, Grzelak, Michal wrote:
-> Hi Jeevan,
-> 
-> >From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Jeevan B
-> >Sent: Friday, June 13, 2025 7:49 AM
-> >To: igt-dev@lists.freedesktop.org
-> >Cc: B, Jeevan <jeevan.b@intel.com>
-> >Subject: [PATCH i-g-t] tests/kms_setmode: Find compatible mode for eDP before selecting default mode
-> >
-> >This change finds a common mode for eDP before falling back to default mode.
-> >It avoids unnecessary failures by not selecting an unsupported mode for eDP.
-> >
-> >Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> >---
-> > tests/kms_setmode.c | 15 +++++++++++++++
-> > 1 file changed, 15 insertions(+)
-> >
-> >diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c index 484c3a95f..6e7e5942a 100644
-> >--- a/tests/kms_setmode.c
-> >+++ b/tests/kms_setmode.c
-> >@@ -252,6 +252,21 @@ static void get_mode_for_crtc(struct crtc_config *crtc,
-> > 			goto found;
-> > 	}
-> > 
-> >+	/*
-> >+	 * If eDP is present, try its modes to find a compatible one.
-> >+	 */
-> >+	for (int c = 0; c < crtc->connector_count; c++) {
-> >+		drmModeConnector *conn = crtc->cconfs[c].connector;
-> >+		if (conn->connector_type == DRM_MODE_CONNECTOR_eDP) {
-> >+			for (i = 0; i < conn->count_modes; i++) {
-> >+				mode = &conn->modes[i];
-> >+				if (crtc_supports_mode(crtc, mode))
-> >+					goto found;
-> >+			}
-> >+		break;
+This is a RFC for a feature that I've found to be useful not only
+for me, but according to the rest of my team, to be of use to other
+igt developers and users, that is, bash autocompletion feature.
 
-Ugh, sorry for not reading your code close enough, one nit here.
-Why 'break' ? Could it have any more eDP connectors?
+This RFC currently only has an incomplete support for igt tests,
+and supports following suggestions: --*, --run-subtest *, --device *.
 
-Regards,
-Kamil
+Before I'll continue with the work, I'd like to ask what are your
+opinions on this feature? Which tools other than tests could benefit
+from having autocompletion added? 
 
-> >+		}
-> >+	}
-> >+
-> > 	/*
-> > 	 * If none is found then just pick the default mode from all connectors
-> > 	 * with the smallest clock, hope the other connectors can support it by
-> >--
-> >2.25.1
-> 
-> This patch looks good to me.
-> Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
-> 
-> Best regards,
-> Michał
+Signed-off-by: Jan Sokolowski <jan.sokolowski@gmail.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+
+Jan Sokolowski (2):
+  RFC /scripts/bash-autocomplete: Create bash autocompletion scripts for
+    tests
+  meson: Add bash autocompletion install step
+
+ meson_options.txt                             |  5 ++
+ .../install_completions.sh                    | 47 +++++++++++++++++++
+ .../uninstall_completions.sh                  | 10 ++++
+ scripts/meson.build                           |  4 ++
+ 4 files changed, 66 insertions(+)
+ create mode 100755 scripts/bash_autocompletion/install_completions.sh
+ create mode 100755 scripts/bash_autocompletion/uninstall_completions.sh
+
+-- 
+2.34.1
+
