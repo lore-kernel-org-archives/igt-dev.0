@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03644C83F1A
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 21:24:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E54B3C83F17
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 21:29:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B0EB710E4E6;
-	Mon, 14 Jul 2025 21:24:26 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kaEJq9Bu";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B1ED10E4E6
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 21:24:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752528265; x=1784064265;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=x/kKXl+K80g9PW7arpkDOzpravzq7JhjYtiVxIDcQCc=;
- b=kaEJq9Busoihoc7rLa528VnG/0MOSi1zXmWR1QkPpQAYujh9FFL/2tKM
- IwSqAMvRA7ioZ5YFNYWTwpJqW7mdtUNmN4iSugwy83Yc8ul9U3riXY0j2
- axSS2FoMPXBmaaA3NdiVVNfzJl/n20fR6H8uQJrNJuS6dUytsIYm9WifR
- DDDuPISZvEVpqwWrF6mcVBxb+lMOMXJBu3z/W6gBaEzhn3idcdJQqzLl7
- jEapcVT/sRNnjFa6XKyqE0+a//BzyM/vtUjkapknZW271snm4mo5GBSEN
- iEqVHPim3lBQRv48+x+JLt3CbVilAIRBDCDpRmLAhdk4G98i8S1gkiZnX A==;
-X-CSE-ConnectionGUID: fC2reGyFTNevlSN5IU37tA==
-X-CSE-MsgGUID: nDe2isMaSW2ZCRgCq4cDLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54604190"
-X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="54604190"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 14:24:25 -0700
-X-CSE-ConnectionGUID: yqxFCMJHQKyuMcInemA25A==
-X-CSE-MsgGUID: vXfBM3x9QN6gcr4ebZxWXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="157380850"
-Received: from orsosgc001.jf.intel.com ([10.165.21.142])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 14:24:23 -0700
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe-oa: Use subslice_mask in pec_sanity_check
-Date: Mon, 14 Jul 2025 14:24:11 -0700
-Message-ID: <20250714212411.2325726-1-ashutosh.dixit@intel.com>
-X-Mailer: git-send-email 2.48.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9D1EA10E4ED;
+	Mon, 14 Jul 2025 21:29:08 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 796DE10E4ED;
+ Mon, 14 Jul 2025 21:29:07 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4919297988537308312=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fvrr=3A_Pull_Pan?=
+ =?utf-8?q?el_Replay_check_before_setting_up_output_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 14 Jul 2025 21:29:07 -0000
+Message-ID: <175252854749.160349.11524848341748379763@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250714145556.213318-1-jeevan.b@intel.com>
+In-Reply-To: <20250714145556.213318-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,49 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-pec_sanity_check previously relied on pec counter values being 0 to ignore
-missing xecores's. However we are now running into situations where pec
-counters are non-zero even when xecores are missing. To get past this, use
-subslice_mask (i.e. mask of present xecore's) to ignore missing xecore's.
+--===============4919297988537308312==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/intel/xe_oa.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 724fea73f0..2de5802876 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -1023,12 +1023,12 @@ static void pec_sanity_check(const u32 *report0, const u32 *report1,
- 
- 		igt_debug("n %d: pec1[n] - pec0[n] %#" PRIx64 ", tick delta %#" PRIx64 "\n",
- 			  n, pec1[n] - pec0[n], tick_delta);
--		/* 0 value for pec[xecore_idx[i]] indicates missing xecore */
--		if (pec1[n] && pec0[n])
-+
-+		/* Skip missing xecore's */
-+		if (intel_xe_perf->devinfo.subslice_mask & BIT(i)) {
-+			igt_assert(pec1[n] && pec0[n]);
- 			assert_within_epsilon(pec1[n] - pec0[n], tick_delta, 0.1);
--		/* Same test_event1_cycles_xecore* should be present in all reports */
--		if (pec1[n])
--			igt_assert(pec0[n]);
-+		}
- 	}
- 
- 	igt_debug("pec1[2] - pec0[2] %#" PRIx64 ", tick_delta * num_xecores: %#" PRIx64 "\n",
-@@ -1201,6 +1201,7 @@ init_sys_info(void)
- 	igt_debug("n_eu_slices: %"PRIu64"\n", intel_xe_perf->devinfo.n_eu_slices);
- 	igt_debug("n_eu_sub_slices: %"PRIu64"\n", intel_xe_perf->devinfo.n_eu_sub_slices);
- 	igt_debug("n_eus: %"PRIu64"\n", intel_xe_perf->devinfo.n_eus);
-+	igt_debug("subslice_mask: %#"PRIx64"\n", intel_xe_perf->devinfo.subslice_mask);
- 	igt_debug("timestamp_frequency = %"PRIu64"\n",
- 		  intel_xe_perf->devinfo.timestamp_frequency);
- 	igt_assert_neq(intel_xe_perf->devinfo.timestamp_frequency, 0);
--- 
-2.48.1
+Series: tests/kms_vrr: Pull Panel Replay check before setting up output (rev3)
+URL   : https://patchwork.freedesktop.org/series/151561/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8457_BAT -> XEIGTPW_13463_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8457 -> IGTPW_13463
+  * Linux: xe-3406-4990310f0d4505f8a92f01012eaf433c35da7822 -> xe-3411-9579a27e412210571020a1640bc8a99ed770444d
+
+  IGTPW_13463: 414c6d463822c7d5a6b2074f24e9d01230915bac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8457: 756ebdbf0e4c75f0680c0a36db206a9f6ff126ce @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3406-4990310f0d4505f8a92f01012eaf433c35da7822: 4990310f0d4505f8a92f01012eaf433c35da7822
+  xe-3411-9579a27e412210571020a1640bc8a99ed770444d: 9579a27e412210571020a1640bc8a99ed770444d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13463/index.html
+
+--===============4919297988537308312==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vrr: Pull Panel Replay check before setting up output (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151561/">https://patchwork.freedesktop.org/series/151561/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13463/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13463/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8457_BAT -&gt; XEIGTPW_13463_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8457 -&gt; IGTPW_13463</li>
+<li>Linux: xe-3406-4990310f0d4505f8a92f01012eaf433c35da7822 -&gt; xe-3411-9579a27e412210571020a1640bc8a99ed770444d</li>
+</ul>
+<p>IGTPW_13463: 414c6d463822c7d5a6b2074f24e9d01230915bac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8457: 756ebdbf0e4c75f0680c0a36db206a9f6ff126ce @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3406-4990310f0d4505f8a92f01012eaf433c35da7822: 4990310f0d4505f8a92f01012eaf433c35da7822<br />
+  xe-3411-9579a27e412210571020a1640bc8a99ed770444d: 9579a27e412210571020a1640bc8a99ed770444d</p>
+
+</body>
+</html>
+
+--===============4919297988537308312==--
