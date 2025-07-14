@@ -4,54 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B34D0C83F1A
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 08:54:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 819C7C83F1A
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Jul 2025 08:56:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 52EC810E13B;
-	Mon, 14 Jul 2025 08:54:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3908210E427;
+	Mon, 14 Jul 2025 08:56:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JLK1THsJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mFRHz8+l";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADAFF10E13B
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 08:54:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 932E110E427
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jul 2025 08:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752483268; x=1784019268;
+ t=1752483366; x=1784019366;
  h=message-id:date:mime-version:subject:to:references:from:
  in-reply-to:content-transfer-encoding;
- bh=ha4//ajBc1vuvNj89vsZIGWPlasYyjCN6wGBb/7gTm8=;
- b=JLK1THsJeMuSb8S4SM5TmyleQEUKs+dGMPVg6tFRDQM5rTBeFvzEAWdB
- xUcuri7n3fY9SHqamrZQSKI+APVADvz1MugvM9Xn/IuSqFDzESUxUIp0a
- 1UqP90+HNi3TtFU621cjOy471BnQjWq+KwKn/JhBJ6G4l+UrwFtTkob+Z
- wVlKjayI6c58vjjb6kznULFil1n4CEkuqRryqW/PGYcYx6VcjUIlWqMyq
- g3Ucr81jbA3CrXdnQX5s6O/iiwcOXldJLMBz8KEvv7nCSl+jZQsCNRMY8
- kLzgPiy6vei3txEUuGDysaqFUVcBR3gFndsBJhMkI3T6KkWWmEGWSNTsq w==;
-X-CSE-ConnectionGUID: 9vdzKj5nTP2U911rGFPxww==
-X-CSE-MsgGUID: TR2g1YjwQ46ZJts+aoNMSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58331188"
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="58331188"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 01:54:27 -0700
-X-CSE-ConnectionGUID: dkDvJah6TwuGkVGyBOCQ4Q==
-X-CSE-MsgGUID: By125TkQSNymirUszPPa7g==
+ bh=WsDpJAb3uGTXCaNnQpanRaBe7mRA+jUm44mXC9VNwg0=;
+ b=mFRHz8+l9Z00sy9gU4DQ5291HDLiiFcvE3UgmloMwUh+m4mlXn5s4UNh
+ 8hP5TFg3acVWfIPz7iQSoNvpHGWaP0HsZPjo07mxY/h0v+BOKMQTMHUU6
+ fCW6CjD4b+F7qRuMXKP5MrhZCjr77zSiKKUIf0P2A6YSQh0M52rpYxpa7
+ gQvIfs60lcZ5hPs1RX/aHUHVG0NCLd4pi9rmshU+8JALobmMNoo7orDZn
+ a3CG5a8iNg7u8w5IxIsVcVWyuZP6eV+6PZZ8uK4sYyMr9tIc7abblZbbh
+ tVev3BBCaswYVCNnrOfrSFonsG8TixBYFlgOAcoOWLU7kQUER7TkdS4/S Q==;
+X-CSE-ConnectionGUID: 8ChVizZTQPir4XktRObYtw==
+X-CSE-MsgGUID: 8iJNLm+pStKMFxG1YAhYlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54539994"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="54539994"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 01:56:06 -0700
+X-CSE-ConnectionGUID: bSxun5eNQpqllEkkejPp9g==
+X-CSE-MsgGUID: p0xiLRmbT2KM0JmkLZ5C9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="162547957"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; d="scan'208";a="187880861"
 Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
  ([10.245.118.0])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2025 01:54:27 -0700
-Message-ID: <ca460a94-4941-431b-a53d-915863ab8ce0@linux.intel.com>
-Date: Mon, 14 Jul 2025 10:54:23 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 01:56:05 -0700
+Message-ID: <7b3a473f-341e-4a79-8f7d-9da2da38ee54@linux.intel.com>
+Date: Mon, 14 Jul 2025 10:56:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v1 1/2] tests/intel/xe_eudebug: Reduce debug loglevel
+Subject: Re: [PATCH i-g-t v1 2/2] tests/intel/xe_pm: Reduce debug loglevel
 To: Jan Sokolowski <jan.sokolowski@intel.com>, igt-dev@lists.freedesktop.org
 References: <20250710080929.412509-1-jan.sokolowski@intel.com>
+ <20250710080929.412509-2-jan.sokolowski@intel.com>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250710080929.412509-1-jan.sokolowski@intel.com>
+In-Reply-To: <20250710080929.412509-2-jan.sokolowski@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -80,29 +81,21 @@ On 7/10/2025 10:09 AM, Jan Sokolowski wrote:
 > 
 > Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
 Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>> ---
->  tests/intel/xe_eudebug.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  tests/intel/xe_pm.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-> index d2a1932fb..4a2c43635 100644
-> --- a/tests/intel/xe_eudebug.c
-> +++ b/tests/intel/xe_eudebug.c
-> @@ -20,6 +20,7 @@
->  #include <sys/prctl.h>
->  
->  #include "igt.h"
-> +#include "igt_sysfs.h"
->  #include "intel_pat.h"
->  #include "lib/igt_syncobj.h"
->  #include "xe/xe_eudebug.h"
-> @@ -2800,6 +2801,9 @@ igt_main
->  	igt_fixture {
->  		fd = drm_open_driver(DRIVER_XE);
->  		was_enabled = xe_eudebug_enable(fd, true);
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index 7e9324eec..16b5fc686 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -826,6 +826,9 @@ igt_main
+>  		igt_assert(igt_setup_runtime_pm(device.fd_xe));
+>  		sysfs_fd = igt_sysfs_open(device.fd_xe);
+>  		device.res = drmModeGetResources(device.fd_xe);
 > +
 > +		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
 > +		update_debug_mask_if_ci(DRM_UT_KMS);
 >  	}
 >  
->  	igt_subtest("sysfs-toggle")
+>  	for (const struct s_state *s = s_states; s->name; s++) {
 
