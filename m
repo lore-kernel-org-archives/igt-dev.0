@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A61C83F2D
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23C80C83F22
 	for <igt-dev@archiver.kernel.org>; Tue, 15 Jul 2025 10:25:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D02E10E5A7;
-	Tue, 15 Jul 2025 10:25:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C786710E5A6;
+	Tue, 15 Jul 2025 10:25:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="HkEoZGnq";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="hJ27ZXlK";
 	dkim-atps=neutral
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
- [209.85.221.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F45F10E592
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 10:25:43 +0000 (UTC)
-Received: by mail-wr1-f43.google.com with SMTP id
- ffacd0b85a97d-3b5e6bfb427so2732219f8f.2
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 03:25:43 -0700 (PDT)
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
+ [209.85.221.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CC0310E5A3
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 10:25:40 +0000 (UTC)
+Received: by mail-wr1-f46.google.com with SMTP id
+ ffacd0b85a97d-3a531fcaa05so3028846f8f.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 03:25:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1752575141; x=1753179941; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1752575138; x=1753179938; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NrlF4KvoqYw2xTnyiKGH9jouZNGCYdrKF00T+X/Q8eg=;
- b=HkEoZGnqTslp2ZNfbrPlIqqX5v44BY9AqC1Odut9yaPIR3ZGkVLrcGLi+Ug9ZxyTcQ
- I0+Vy5fT4VOcrBpqNcYSEVsCI/70QM0dcm5m8/JUBt+8cjFriuJjf3WA7Pp3NKUvd86f
- q/Bx9jAh7leaU0Rg+JVjl/apO1AtDZpp9vHDELne3S+ndGoD7P9XyTvzwuwEL4BsAhjd
- FZJyLgVqzq+FBMfUd5+yTpGCfEe1pBcLCdcWPCapQO58RN6qjGbetwa4l6Bk/OwSXCNo
- EpGeHT8T1sQbuCSo+ym51ZJC1VQGvvgyjNuOjC/++xxOFpFswkYfVoNEL4+CD85nE7Ck
- 18Qw==
+ bh=NVjlE5ycQq6DL4EOhi66R4ZEJFOkKTZGXib/I8qQ7wg=;
+ b=hJ27ZXlKilAqPmh8k0gbFP24lrV6XFzEeF6pYBDct9jTo9KKb0noYxm/NuSiNB+awK
+ es7ayA8tJURvQWYICC0r7lVtJkIgVh/bRO3z+Cz4zT+cX78TYLhjh0tlqCBHXXDdDM1h
+ DBmrIcCdTOqrYKr6Y+TCMFr5dXJ4zsc2oxngblTlel2TpIyyEgS2KXrwVshstEq5uRSP
+ f95jeua0dVsm13TZRt+u43mJb19bwxO+4HkV0X7XkRet9vLv/+ybuUppeDJg1I0iJzNP
+ GNfDs4at82Ul0A2bSVUwCVf0dx7TL+3Cn3xlXfXoi9IaOmpftvMLEbYRD8F+i7dgyvTW
+ MHgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752575141; x=1753179941;
+ d=1e100.net; s=20230601; t=1752575138; x=1753179938;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NrlF4KvoqYw2xTnyiKGH9jouZNGCYdrKF00T+X/Q8eg=;
- b=siz/FtIAT7cXD0icGVuN8pSdBMGS9s+5mp4BbskOe+u71tIwNnyz7+YOEl4ZOlo/UF
- wXCDMrpIKUYF5DS0h1LbjynlaXDrXleJhW5ceXKXNhwi24ukAsRuJZ4eH19eh42zPIoa
- UCH7Gesgh3eGQH1NXcGwvq6RNTS0hb3gssL4F4e94F9ACdFmKV8tl8/KUuo4wy3gqEEj
- 5ZmTfftm2g5yGzTP47MgPA3abYt0YlbvK03CP1n4B83WkkREhcAp+OTwFjTI1cEyV5pS
- utT4/fF3We95qoxKgUFksor7o40xZKwLfasVeNM0MuBHO2+FN2qS7P3xFNVk3aBp29eC
- i+gg==
-X-Gm-Message-State: AOJu0Yz+NWXxnkSGSZvEjOEJiWrPaR/8GDKzWDhcn+pF2kZAVH50hyK8
- T1QtHIhHytlmMT2cZaqmbxKvoauIn5BoFfIZ6UvbnZHlss/Gb7swly/PutDwsA==
-X-Gm-Gg: ASbGncvdV0DaCR2EWEMVqjvLbwfZ3BJioAt2VHEM2oP+Ko+no4pDzjLIYp1H6ooCahH
- NKVxG97oOwllKoq5dioUWKhQTTv4GIMU2EHukteGzwv4SvpnNnQU8E0yp21zlXIng9UursO7wbU
- EAXeF+bDMC4OZiuQrIzxPshBfUDB8ZcggtqC2ooA3A+pu5ZNw6+m+jagufzfFF9+wvRJZUtru5K
- +kMcanKDM9Zkxf/jJyrvMIMvP8udY08EoElm0CyDql4xLOeRxyhMEi+ol0xCPmnUq1sVq+HMAw8
- Bo7j85GTe3gFKFDMuaEVBl+xzsDHH+u+7LcUIFpcVuNWntr3tG+4FyvS8Nh1vHVRc3StHNtBPKM
- i/qEIeRs50o8WWfaiOQ==
-X-Google-Smtp-Source: AGHT+IGTRfrWujfOMRE5HC6VkVyACi2OWVtbGhdhny2zcUblVLF64ANJL5utx9sLSZ+5fIzz1SPWdw==
-X-Received: by 2002:a05:6000:24c6:b0:3a3:6991:dcbb with SMTP id
- ffacd0b85a97d-3b5f187a48cmr12148531f8f.12.1752575141428; 
- Tue, 15 Jul 2025 03:25:41 -0700 (PDT)
+ bh=NVjlE5ycQq6DL4EOhi66R4ZEJFOkKTZGXib/I8qQ7wg=;
+ b=Z6ILa6ePBfKXa5jPqrCTgIsGiHtbwsDhF7sVkw33F3RPHII5oxCVIPSEI24WoG2l1F
+ Djrqjnk1TpnKv7dD7B3//Ha/6rESG+rrh/Uy3nn6h99lQPs95kBy7zsrUQsGe+azy2K1
+ ptlhhnBMHxl2Hix6B2YsGnKwFFMQkXDgTKNSvwO/Mc0EzMY75AlHj1cIbEgkv+pEQ7s3
+ sYderbTBbCYTE8yEGf06xczFxilsinBy8LyT5/rU/VjmBmilRUJP1emYoprPVIy5Vadn
+ F0LEs/1PmSTG2lJYgsmDWFKgfvpnqbOZawlFgOaybXcQVYokOvuf9k/KOb6B4qayou7B
+ giPw==
+X-Gm-Message-State: AOJu0Yy2+MajMRi8ILp9poa2dqrD4NZL7+YVJX9GFqyOXmWwZPoctDX4
+ sMup4g/aaLoyfwktwheCenHg06glG117eAqEoDrXl6vEg5I8j2SVuUSY8OA0yQ==
+X-Gm-Gg: ASbGncsCouUYRRslQJlcmJoS7ptp4+7qu74H90YKt8jAcFkov7zLZVrl9y8KzCrSsLr
+ 2QHZLGjnDSFuMU/lsK0tbpS4Hrs/b8lMCl+oyKnpuys6y5hCksXb/BAcXoKAipeyn3aVPSkXh56
+ frCF334Vf/g6FKyW9IGVTqnuhsW3As2Q1Mu6w9jfsMKUMcHHwU7A2CxTm6XSQXHtG0YG5uDHIg5
+ FauO6ah3kSxJhF2mXutd1Z0OkEJgmqDydQFr07kD1EPJq0fmWIqPPV2VIUu6dFsqG2eiKpmKykz
+ gDVlYomOft727bP8inJk+Yh4PMcjcyCuGGE03VBfLTvvV2yepu0QaiShmYoW9rwiFvMl5beh/F6
+ kI8BS8PZZVib3QuPArQ==
+X-Google-Smtp-Source: AGHT+IH4L+I0iTyNamgUHRQeeekLZpXhVzj1sZ9xwkGY34k8ARJcxrdMe+e+87jQiKWHgTv9kXcViQ==
+X-Received: by 2002:a05:6000:25f5:b0:3b5:d726:b7c with SMTP id
+ ffacd0b85a97d-3b5f18ea7cfmr13826283f8f.40.1752575138230; 
+ Tue, 15 Jul 2025 03:25:38 -0700 (PDT)
 Received: from fedora ([94.73.32.0]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4560394e061sm100368305e9.31.2025.07.15.03.25.40
+ 5b1f17b1804b1-4560394e061sm100368305e9.31.2025.07.15.03.25.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Jul 2025 03:25:40 -0700 (PDT)
+ Tue, 15 Jul 2025 03:25:37 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com, zbigniew.kempczynski@intel.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t v3 23/41] lib/vkms: Create VKMS device from static config
-Date: Tue, 15 Jul 2025 12:24:55 +0200
-Message-ID: <20250715102513.5636-24-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v3 20/41] lib/vkms: Test attaching connectors to encoders
+Date: Tue, 15 Jul 2025 12:24:52 +0200
+Message-ID: <20250715102513.5636-21-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250715102513.5636-1-jose.exposito89@gmail.com>
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
@@ -87,244 +87,190 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In order to make the process of creating new VKMS devices as simple as
-possible and in a declarative way, create a set of structures
-representing a VKMS device configuration and a function that reads them
-and applies the configuration.
+Add helpers to attach and detach connectors and encoders and a test
+checking the different valid and invalid cases.
 
-In addition, add a test using this new function that checks that
-creating a device without planes fails.
-
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- lib/igt_vkms.c             | 88 ++++++++++++++++++++++++++++++++++++++
- lib/igt_vkms.h             | 43 +++++++++++++++++++
- tests/vkms/vkms_configfs.c | 40 +++++++++++++++++
- 3 files changed, 171 insertions(+)
+ lib/igt_vkms.c             | 50 ++++++++++++++++++++++++++++
+ lib/igt_vkms.h             |  9 +++++
+ tests/vkms/vkms_configfs.c | 68 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 127 insertions(+)
 
 diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-index 2cd78fc95..ccc6910c4 100644
+index b6f22721d..2cd78fc95 100644
 --- a/lib/igt_vkms.c
 +++ b/lib/igt_vkms.c
-@@ -466,6 +466,94 @@ igt_vkms_t *igt_vkms_device_create(const char *name)
- 	return dev;
+@@ -410,6 +410,22 @@ void igt_vkms_get_connector_status_path(igt_vkms_t *dev, const char *name,
+ 				    VKMS_FILE_CONNECTOR_STATUS, path, len);
  }
  
 +/**
-+ * igt_vkms_device_create_from_config:
-+ * @cfg: Device configuration
++ * igt_vkms_get_connector_possible_encoders_path:
++ * @dev: Device containing the connector
++ * @name: Connector name
++ * @path: Output path
++ * @len: Maximum @path length
 + *
-+ * Create a VKMS device and set all the parameters specified by the
-+ * configuration.
++ * Returns the connector "possible_encoders" directory path.
 + */
-+igt_vkms_t *igt_vkms_device_create_from_config(igt_vkms_config_t *cfg)
++void igt_vkms_get_connector_possible_encoders_path(igt_vkms_t *dev,
++						   const char *name, char *path,
++						   size_t len)
 +{
-+	igt_vkms_t *dev;
-+	igt_vkms_plane_config_t *plane;
-+	igt_vkms_crtc_config_t *crtc;
-+	igt_vkms_encoder_config_t *encoder;
-+	igt_vkms_connector_config_t *connector;
-+	const char *name;
-+	int n, i;
-+
-+	igt_debug("Creating device from configuration:\n");
-+	igt_debug("\t- Device name: %s\n", cfg->device_name);
-+
-+	dev = igt_vkms_device_create(cfg->device_name);
-+	if (!dev)
-+		return NULL;
-+
-+	for (n = 0; (crtc = &cfg->crtcs[n])->name; n++) {
-+		igt_debug("\t- CRTC %d:\n", n);
-+		igt_debug("\t\t- name: %s\n", crtc->name);
-+		igt_debug("\t\t- writeback: %d\n", crtc->writeback);
-+
-+		igt_vkms_device_add_crtc(dev, crtc->name);
-+		igt_vkms_crtc_set_writeback_enabled(dev, crtc->name,
-+						    crtc->writeback);
-+	}
-+
-+	for (n = 0; (plane = &cfg->planes[n])->name; n++) {
-+		igt_debug("\t- Plane %d:\n", n);
-+		igt_debug("\t\t- name: %s\n", plane->name);
-+		igt_debug("\t\t- type: %d\n", plane->type);
-+		igt_debug("\t\t- possible_crtcs:\n");
-+
-+		igt_vkms_device_add_plane(dev, plane->name);
-+		igt_vkms_plane_set_type(dev, plane->name, plane->type);
-+
-+		for (i = 0; (name = plane->possible_crtcs[i]); i++) {
-+			igt_debug("\t\t\t- %s\n", name);
-+
-+			igt_vkms_plane_attach_crtc(dev, plane->name, name);
-+		}
-+	}
-+
-+	for (n = 0; (encoder = &cfg->encoders[n])->name; n++) {
-+		igt_debug("\t- Encoder %d:\n", n);
-+		igt_debug("\t\t- name: %s\n", encoder->name);
-+		igt_debug("\t\t- possible_crtcs:\n");
-+
-+		igt_vkms_device_add_encoder(dev, encoder->name);
-+
-+		for (i = 0; (name = encoder->possible_crtcs[i]); i++) {
-+			igt_debug("\t\t\t- %s\n", name);
-+
-+			igt_vkms_encoder_attach_crtc(dev, encoder->name, name);
-+		}
-+	}
-+
-+	for (n = 0; (connector = &cfg->connectors[n])->name; n++) {
-+		if (connector->status == 0)
-+			connector->status = DRM_MODE_CONNECTED;
-+
-+		igt_debug("\t- Connector %d:\n", n);
-+		igt_debug("\t\t- name: %s\n", connector->name);
-+		igt_debug("\t\t- status: %d\n", connector->status);
-+		igt_debug("\t\t- possible_encoders:\n");
-+
-+		igt_vkms_device_add_connector(dev, connector->name);
-+		igt_vkms_connector_set_status(dev, connector->name,
-+					      connector->status);
-+
-+		for (i = 0; (name = connector->possible_encoders[i]); i++) {
-+			igt_debug("\t\t\t- %s\n", name);
-+
-+			igt_vkms_connector_attach_encoder(dev, connector->name,
-+							  name);
-+		}
-+	}
-+
-+	return dev;
++	get_attach_dir_path(dev, VKMS_PIPELINE_ITEM_CONNECTOR, name, path, len);
 +}
 +
- static int detach_pipeline_items(const char *path, const struct stat *info,
- 				 const int typeflag, struct FTW *pathinfo)
- {
-diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-index 42134c82e..1e077caa8 100644
---- a/lib/igt_vkms.h
-+++ b/lib/igt_vkms.h
-@@ -10,6 +10,8 @@
- 
- #include <stdbool.h>
- 
-+#define VKMS_MAX_PIPELINE_ITEMS	40
-+
  /**
-  * igt_vkms_t:
-  * @path: VKMS root directory inside configfs mounted directory
-@@ -20,6 +22,46 @@ typedef struct igt_vkms {
- 	char *path;
- } igt_vkms_t;
+  * igt_vkms_device_create:
+  * @name: VKMS device name
+@@ -804,3 +820,37 @@ void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
  
-+typedef struct igt_vkms_crtc_config {
-+	const char *name;
-+	bool writeback; /* Default: false */
-+} igt_vkms_crtc_config_t;
-+
-+typedef struct igt_vkms_plane_config {
-+	const char *name;
-+	int type; /* Default: DRM_PLANE_TYPE_OVERLAY */
-+	const char *possible_crtcs[VKMS_MAX_PIPELINE_ITEMS];
-+} igt_vkms_plane_config_t;
-+
-+typedef struct igt_vkms_encoder_config {
-+	const char *name;
-+	const char *possible_crtcs[VKMS_MAX_PIPELINE_ITEMS];
-+} igt_vkms_encoder_config_t;
-+
-+typedef struct igt_vkms_connector_config {
-+	const char *name;
-+	int status; /* Default: DRM_MODE_CONNECTED */
-+	const char *possible_encoders[VKMS_MAX_PIPELINE_ITEMS];
-+} igt_vkms_connector_config_t;
+ 	write_int(path, status);
+ }
 +
 +/**
-+ * igt_vkms_config_t:
-+ * @device_name: Device name
-+ * @planes: NULL terminated list of plane configurations
-+ * @crtcs: NULL terminated list of CRTC configurations
-+ * @encoders: NULL terminated list of encoders configurations
-+ * @connectors: NULL terminated list of connector configurations
++ * igt_vkms_connector_attach_encoder:
++ * @dev: Target device
++ * @connector_name: Target connector name
++ * @encoder_name: Destination encoder name
 + *
-+ * Structure used to create a VKMS device from a static configuration.
++ * Attach a connector to an encoder. Return true on success and false on error.
 + */
-+typedef struct igt_vkms_config {
-+	const char *device_name;
-+	igt_vkms_plane_config_t planes[VKMS_MAX_PIPELINE_ITEMS];
-+	igt_vkms_crtc_config_t crtcs[VKMS_MAX_PIPELINE_ITEMS];
-+	igt_vkms_encoder_config_t encoders[VKMS_MAX_PIPELINE_ITEMS];
-+	igt_vkms_connector_config_t connectors[VKMS_MAX_PIPELINE_ITEMS];
-+} igt_vkms_config_t;
++bool igt_vkms_connector_attach_encoder(igt_vkms_t *dev,
++				       const char *connector_name,
++				       const char *encoder_name)
++{
++	return attach_pipeline_item(dev, VKMS_PIPELINE_ITEM_CONNECTOR,
++				    connector_name, VKMS_PIPELINE_ITEM_ENCODER,
++				    encoder_name);
++}
 +
- void igt_require_vkms_configfs(void);
- 
- void igt_vkms_get_device_enabled_path(igt_vkms_t *dev, char *path, size_t len);
-@@ -46,6 +88,7 @@ void igt_vkms_get_connector_possible_encoders_path(igt_vkms_t *dev,
- 						   size_t len);
++/**
++ * igt_vkms_connector_detach_encoder:
++ * @dev: Target device
++ * @connector_name: Target connector name
++ * @encoder_name: Destination encoder name
++ *
++ * Detach a connector from an encoder. Return true on success and false on
++ * error.
++ */
++bool igt_vkms_connector_detach_encoder(igt_vkms_t *dev,
++				       const char *connector_name,
++				       const char *encoder_name)
++{
++	return detach_pipeline_item(dev, VKMS_PIPELINE_ITEM_CONNECTOR,
++				    connector_name, encoder_name);
++}
+diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
+index 2dd91df9d..42134c82e 100644
+--- a/lib/igt_vkms.h
++++ b/lib/igt_vkms.h
+@@ -41,6 +41,9 @@ void igt_vkms_get_connector_path(igt_vkms_t *dev, const char *name, char *path,
+ 				 size_t len);
+ void igt_vkms_get_connector_status_path(igt_vkms_t *dev, const char *name,
+ 					char *path, size_t len);
++void igt_vkms_get_connector_possible_encoders_path(igt_vkms_t *dev,
++						   const char *name, char *path,
++						   size_t len);
  
  igt_vkms_t *igt_vkms_device_create(const char *name);
-+igt_vkms_t *igt_vkms_device_create_from_config(igt_vkms_config_t *cfg);
  void igt_vkms_device_destroy(igt_vkms_t *dev);
- void igt_vkms_destroy_all_devices(void);
+@@ -72,5 +75,11 @@ void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name);
+ int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name);
+ void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
+ 				   int status);
++bool igt_vkms_connector_attach_encoder(igt_vkms_t *dev,
++				       const char *connector_name,
++				       const char *encoder_name);
++bool igt_vkms_connector_detach_encoder(igt_vkms_t *dev,
++				       const char *connector_name,
++				       const char *encoder_name);
  
+ #endif /* __IGT_VKMS_H__ */
 diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-index c2cb9dbc0..355f8b72a 100644
+index fdbfa61a6..c36a795d6 100644
 --- a/tests/vkms/vkms_configfs.c
 +++ b/tests/vkms/vkms_configfs.c
-@@ -812,6 +812,45 @@ static void test_enable_no_pipeline_items(void)
- 	igt_vkms_device_destroy(dev);
+@@ -707,6 +707,73 @@ static void test_attach_encoder_to_crtc(void)
+ 	igt_vkms_device_destroy(dev2);
  }
  
 +/**
-+ * SUBTEST: enable-no-planes
-+ * Description: Try to enable a VKMS device without adding planes and test that
-+ *              it fails.
++ * SUBTEST: attach-connector-to-encoder
++ * Description: Check that errors are handled while attaching connectors to
++ *              encoders.
 + */
 +
-+static void test_enable_no_planes(void)
++static void test_attach_connector_to_encoder(void)
 +{
-+	igt_vkms_t *dev;
++	igt_vkms_t *dev1;
++	igt_vkms_t *dev2;
++	char crtc1[PATH_MAX];
++	char encoder1[PATH_MAX];
++	char connector1[PATH_MAX];
++	char encoder2[PATH_MAX];
++	char crtc1_writeback_path[PATH_MAX];
++	bool ok;
 +
-+	igt_vkms_config_t cfg = {
-+		.device_name = __func__,
-+		.planes = { },
-+		.crtcs = {
-+			{ .name = "crtc0" },
-+			{ .name = "crtc1" },
-+		},
-+		.encoders = {
-+			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
-+			{ .name = "encoder1", .possible_crtcs = { "crtc1" } },
-+		},
-+		.connectors = {
-+			{
-+				.name = "connector0",
-+				.possible_encoders = { "encoder0", "encoder1" },
-+			},
-+		},
-+	};
++	dev1 = igt_vkms_device_create("test_attach_encoder_to_crtc_1");
++	igt_assert(dev1);
 +
-+	dev = igt_vkms_device_create_from_config(&cfg);
-+	igt_assert(dev);
++	dev2 = igt_vkms_device_create("test_attach_encoder_to_crtc_2");
++	igt_assert(dev2);
 +
-+	igt_vkms_device_set_enabled(dev, true);
-+	igt_assert(!igt_vkms_device_is_enabled(dev));
-+	igt_assert(!device_exists(__func__));
++	igt_vkms_device_add_crtc(dev1, "crtc1");
++	igt_vkms_device_add_encoder(dev1, "encoder1");
++	igt_vkms_device_add_connector(dev1, "connector1");
++	igt_vkms_device_add_encoder(dev2, "encoder2");
 +
-+	igt_vkms_device_destroy(dev);
++	igt_vkms_get_crtc_path(dev1, "crtc1", crtc1, sizeof(crtc1));
++	igt_vkms_get_encoder_path(dev1, "encoder1", encoder1, sizeof(encoder1));
++	igt_vkms_get_connector_possible_encoders_path(dev1, "connector1",
++						      connector1,
++						      sizeof(connector1));
++	igt_vkms_get_encoder_path(dev2, "encoder2", encoder2, sizeof(encoder2));
++	igt_vkms_get_crtc_writeback_path(dev1, "crtc1", crtc1_writeback_path,
++					 sizeof(crtc1_writeback_path));
++
++	/* Error: Attach a connector to a CRTC */
++	ok = attach(connector1, crtc1, "crtc");
++	igt_assert_f(!ok, "Attaching connector1 to crtc1 should fail\n");
++
++	/* Error: Attach a connector to a random file */
++	ok = attach(connector1, crtc1_writeback_path, "file");
++	igt_assert_f(!ok, "Attaching connector1 to a random file should fail\n");
++
++	/* Error: Attach a connector to an encoder from other device */
++	ok = attach(connector1, encoder2, "encoder2");
++	igt_assert_f(!ok, "Attaching connector1 to encoder2 should fail\n");
++
++	/* OK: Attaching connector1 to encoder1 */
++	ok = igt_vkms_connector_attach_encoder(dev1, "connector1", "encoder1");
++	igt_assert_f(ok, "Error attaching plane1 to crtc1\n");
++
++	/* Error: Attaching connector1 to encoder1 twice */
++	ok = attach(connector1, encoder1, "encoder1_duplicated");
++	igt_assert_f(!ok, "Error attaching connector1 to encoder1 twice should fail");
++
++	/* OK: Detaching and attaching again */
++	ok = igt_vkms_connector_detach_encoder(dev1, "connector1", "encoder1");
++	igt_assert_f(ok, "Error detaching connector1 from encoder1\n");
++	ok = igt_vkms_connector_attach_encoder(dev1, "connector1", "encoder1");
++	igt_assert_f(ok, "Error attaching connector1 to encoder1\n");
++
++	igt_vkms_device_destroy(dev1);
++	igt_vkms_device_destroy(dev2);
 +}
 +
  igt_main
  {
  	struct {
-@@ -838,6 +877,7 @@ igt_main
+@@ -731,6 +798,7 @@ igt_main
+ 		{ "connector-valid-values", test_connector_valid_values },
+ 		{ "attach-plane-to-crtc", test_attach_plane_to_crtc },
  		{ "attach-encoder-to-crtc", test_attach_encoder_to_crtc },
- 		{ "attach-connector-to-encoder", test_attach_connector_to_encoder },
- 		{ "enable-no-pipeline-items", test_enable_no_pipeline_items },
-+		{ "enable-no-planes", test_enable_no_planes },
++		{ "attach-connector-to-encoder", test_attach_connector_to_encoder },
  	};
  
  	igt_fixture {
