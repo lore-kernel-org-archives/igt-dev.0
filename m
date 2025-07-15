@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D6A6C83F1A
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Jul 2025 00:21:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 449C6C83F17
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Jul 2025 00:35:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F1B3710E035;
-	Tue, 15 Jul 2025 00:21:00 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC98310E035;
- Tue, 15 Jul 2025 00:20:59 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0928056262609558850=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECC4010E0F2;
+	Tue, 15 Jul 2025 00:35:52 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XZvREO2v";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DF4310E0F2
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 00:35:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752539750; x=1784075750;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1N+Hei/4CNu/WvyfKQX/ZVA/XMLzHTEVMgcvTfqk9MM=;
+ b=XZvREO2v2DUXNNfVIM8PotwRBMSOSUs79BUuGr3aKqPJUZKl7cLD74Vp
+ FLQVTOZ9qK3tQMGB1+3Yan4quFTdxCnuEgjP44WnMhpB1HPdNpc+Cfjdf
+ sBjVzTm++SU5Vz2FeV0ZqyYGd/ZGavFpCbBhbR+wXPx2rd+6AqxTpBw/b
+ UgsNhzKOVa6ScfaPdOkL5TcoOjK5pBSzd7YqNXOYZz0v4t/58df3rT9Tx
+ /GtEzkTxx1iREGl0z6DL6F8bgrhTgfrm0d1nJCBbiiWfL3aAzT5xiHWhn
+ w4dbiWsyB5iELqFnVdUoJzqiGKpXdLuu32DKjwks1zYUlzHrbI+AGS3rV g==;
+X-CSE-ConnectionGUID: 6bvTYgIKR92kbcEcj8uoTA==
+X-CSE-MsgGUID: hEib/e0FQCekQ03r9gc+Zg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65813336"
+X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="65813336"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 17:35:50 -0700
+X-CSE-ConnectionGUID: Qmq+hegHRIuL5hKsqhOF9g==
+X-CSE-MsgGUID: xh8Mo7qKSe+JpEJLGQt1Xg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,312,1744095600"; d="scan'208";a="162622525"
+Received: from orsosgc001.jf.intel.com ([10.165.21.142])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2025 17:35:50 -0700
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH v2 i-g-t] tests/intel/xe-oa: Use subslice_mask in
+ pec_sanity_check
+Date: Mon, 14 Jul 2025 17:35:46 -0700
+Message-ID: <20250715003546.2391524-1-ashutosh.dixit@intel.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe-oa=3A_Use_?=
- =?utf-8?q?subslice=5Fmask_in_pec=5Fsanity=5Fcheck?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Jul 2025 00:20:59 -0000
-Message-ID: <175253885996.160728.14673655062389466052@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250714212411.2325726-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20250714212411.2325726-1-ashutosh.dixit@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,176 +63,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0928056262609558850==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+pec_sanity_check previously relied on pec counter values being 0 to ignore
+missing xecores's. However we are now running into situations where pec
+counters are non-zero even when xecores are missing. To get past this, use
+subslice_mask (i.e. mask of present xecore's) to ignore missing xecore's.
 
-== Series Details ==
+v2: s/xecore_idx/xecore_to_pec/ (Umesh)
 
-Series: tests/intel/xe-oa: Use subslice_mask in pec_sanity_check
-URL   : https://patchwork.freedesktop.org/series/151590/
-State : success
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/intel/xe_oa.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index 724fea73f0..68c6ccf5b5 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -998,7 +998,7 @@ static void pec_sanity_check(const u32 *report0, const u32 *report1,
+ 			     struct intel_xe_perf_metric_set *set)
+ {
+ 	u64 tick_delta = oa_tick_delta(report1, report0, set->perf_oa_format);
+-	int xecore_idx[] = {3, 4, 5, 6, 21, 22, 23, 24};
++	int xecore_to_pec[] = {3, 4, 5, 6, 21, 22, 23, 24};
+ 	u64 *pec0 = (u64 *)(report0 + 8);
+ 	u64 *pec1 = (u64 *)(report1 + 8);
+ 
+@@ -1018,17 +1018,17 @@ static void pec_sanity_check(const u32 *report0, const u32 *report1,
+ 	igt_debug("tick delta = %#" PRIx64 "\n", tick_delta);
+ 
+ 	/* Difference in test_event1_cycles_xecore* values should be close to tick_delta */
+-	for (int i = 0; i < ARRAY_SIZE(xecore_idx); i++) {
+-		int n = xecore_idx[i];
++	for (int i = 0; i < ARRAY_SIZE(xecore_to_pec); i++) {
++		int n = xecore_to_pec[i];
+ 
+ 		igt_debug("n %d: pec1[n] - pec0[n] %#" PRIx64 ", tick delta %#" PRIx64 "\n",
+ 			  n, pec1[n] - pec0[n], tick_delta);
+-		/* 0 value for pec[xecore_idx[i]] indicates missing xecore */
+-		if (pec1[n] && pec0[n])
++
++		/* Skip missing xecore's */
++		if (intel_xe_perf->devinfo.subslice_mask & BIT(i)) {
++			igt_assert(pec1[n] && pec0[n]);
+ 			assert_within_epsilon(pec1[n] - pec0[n], tick_delta, 0.1);
+-		/* Same test_event1_cycles_xecore* should be present in all reports */
+-		if (pec1[n])
+-			igt_assert(pec0[n]);
++		}
+ 	}
+ 
+ 	igt_debug("pec1[2] - pec0[2] %#" PRIx64 ", tick_delta * num_xecores: %#" PRIx64 "\n",
+@@ -1201,6 +1201,7 @@ init_sys_info(void)
+ 	igt_debug("n_eu_slices: %"PRIu64"\n", intel_xe_perf->devinfo.n_eu_slices);
+ 	igt_debug("n_eu_sub_slices: %"PRIu64"\n", intel_xe_perf->devinfo.n_eu_sub_slices);
+ 	igt_debug("n_eus: %"PRIu64"\n", intel_xe_perf->devinfo.n_eus);
++	igt_debug("subslice_mask: %#"PRIx64"\n", intel_xe_perf->devinfo.subslice_mask);
+ 	igt_debug("timestamp_frequency = %"PRIu64"\n",
+ 		  intel_xe_perf->devinfo.timestamp_frequency);
+ 	igt_assert_neq(intel_xe_perf->devinfo.timestamp_frequency, 0);
+-- 
+2.48.1
 
-CI Bug Log - changes from IGT_8457 -> IGTPW_13468
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/index.html
-
-Participating hosts (44 -> 43)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13468 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests:
-    - bat-apl-1:          [ABORT][1] ([i915#12904]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-apl-1/igt@dmabuf@all-tests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-apl-1/igt@dmabuf@all-tests.html
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-mtlp-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-mtlp-8/igt@i915_selftest@live.html
-    - bat-jsl-1:          [DMESG-FAIL][5] ([i915#13774] / [i915#13827]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-jsl-1/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-jsl-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - bat-jsl-1:          [DMESG-FAIL][7] ([i915#13774]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-jsl-1/igt@i915_selftest@live@gt_pm.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-jsl-1/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-jsl-1:          [DMESG-WARN][9] ([i915#13827]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-jsl-1/igt@i915_selftest@live@hangcheck.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-jsl-1/igt@i915_selftest@live@hangcheck.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#13774]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13774
-  [i915#13827]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13827
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8457 -> IGTPW_13468
-  * Linux: CI_DRM_16858 -> CI_DRM_16864
-
-  CI-20190529: 20190529
-  CI_DRM_16858: 4990310f0d4505f8a92f01012eaf433c35da7822 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_16864: b012f04b5be909a307ff629b297387e0ed55195a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13468: 13468
-  IGT_8457: 756ebdbf0e4c75f0680c0a36db206a9f6ff126ce @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/index.html
-
---===============0928056262609558850==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe-oa: Use subslice_mask in pec_sanity_check</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151590/">https://patchwork.freedesktop.org/series/151590/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8457 -&gt; IGTPW_13468</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/index.html</p>
-<h2>Participating hosts (44 -&gt; 43)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13468 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-apl-1/igt@dmabuf@all-tests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-jsl-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13774">i915#13774</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13827">i915#13827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-jsl-1/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-jsl-1/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13774">i915#13774</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-jsl-1/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8457/bat-jsl-1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13827">i915#13827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13468/bat-jsl-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8457 -&gt; IGTPW_13468</li>
-<li>Linux: CI_DRM_16858 -&gt; CI_DRM_16864</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_16858: 4990310f0d4505f8a92f01012eaf433c35da7822 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_16864: b012f04b5be909a307ff629b297387e0ed55195a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13468: 13468<br />
-  IGT_8457: 756ebdbf0e4c75f0680c0a36db206a9f6ff126ce @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0928056262609558850==--
