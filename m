@@ -4,69 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BCC4C83F2D
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97355C83F2E
 	for <igt-dev@archiver.kernel.org>; Tue, 15 Jul 2025 10:25:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2492E10E5B2;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E00310E5B3;
 	Tue, 15 Jul 2025 10:25:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="C7MIuo+E";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="hqmi/Jwu";
 	dkim-atps=neutral
 Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
  [209.85.128.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 582FE10E5A9
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 10:25:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E857E10E5AF
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 10:25:55 +0000 (UTC)
 Received: by mail-wm1-f50.google.com with SMTP id
- 5b1f17b1804b1-4555f89b236so37555395e9.1
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 03:25:53 -0700 (PDT)
+ 5b1f17b1804b1-4561ca74829so17376405e9.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 03:25:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1752575151; x=1753179951; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1752575154; x=1753179954; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dbjF/95uL/yPcpRi1I/eGQniXBYNr4E2PVxbk/oeNt0=;
- b=C7MIuo+Ed4TTDvGqYQjb9M3POy7eDGqzuTAyVKsa+kTzNAvXVNo/g6jKnslg1xS7zq
- 0vqTUsAuimzJJd0mGYNH5lJlYGz5t4C0I1PSFZFpksv+1uPSHpgo28mMQHGmQWK3lGXd
- b7g7TaHMdw5MF3K/+Xhk8AMS9+mdHizeCPkIM1wypvQg8Pt4J2IiwWox4ETSrscFwCe4
- 5By9QZHG1Exfl0X2rdLnEfx8qtfG57jj9xsXVrkMm+m8P4iOZSxILEj2A55/OZCQiOkr
- SabvRjsL1Spq3NiOcizNO9yZIDVb5ZzKXUMdly/r6Q7Sorr/Jtx5PMEFkKXr7atlz09p
- wgHw==
+ bh=D0mhEKiTgPA3amIKUuUigrSA4ovO4Xyr6l3MIsR9754=;
+ b=hqmi/JwuOxy2y6t/5tYn+OmkO2se9hO1W/nn427U3g57rky3FvxSWcQZPwSjKoaTc+
+ 41r7mhTWQzCiTM2ZX996bSCnVQlondVDVO3VYzLeT/dcNVFMbzi0GX97kufXnR+KftsQ
+ stKX/5aDn7L/7EE0Ct28kmzFQuC1yiDeB5jFwX4ToIGqlhT26TCpCC7Uj4Qz6uOsOZY+
+ xqFpOqrNjFku2EyjEUU+oUEPjoo8mj4PnJxkngW3QrFdrX73bWdrS8Hu4S0cZ2G+xaSw
+ fvjhXp+Nj7odbrmzPQpQlDstrFDIHSJAfl6aoWHHkqh1/rvdLlwkTsLyRudNa1qrXk2B
+ fDvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1752575151; x=1753179951;
+ d=1e100.net; s=20230601; t=1752575154; x=1753179954;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dbjF/95uL/yPcpRi1I/eGQniXBYNr4E2PVxbk/oeNt0=;
- b=oWk3ZWOFhp/L3vQffbBovXggIOOGPenXkxH9p6F83OcxIp4b03cCU7ehhEq8mEcFKk
- UWjmApz1jsPMe3OYMb/ndaV7XtaVKyWSxcsKJ5HRnLl3m0mzoicbIpyjwVRyeTNIIhsb
- KENreLS+1vTpyz1j9kvg+hGSZ1i0gGAp5Aph4ZlhPpCdlIkGsjcKg+ir4UHSjf15V+dd
- l7//2KbXngUP2tFlLY52En4Gtgwe839tk9S9UE8/iHZ4bLPfoFx9/IVcjY5WtAowNGvM
- ZUcoFYJ/9Nh+Ni94Jr1StopgeiiCugjxgJWIQHkh542ags24cAG5S42oAMDPXajcyfOg
- AsAw==
-X-Gm-Message-State: AOJu0Yy7ipm4TEPkWtd5M1PMRwx4Ld+ZIgCOeUt/l3vP34ZGaoY44pq0
- z8mEfN109O+jaINS4zIpf9sbrveK8BoydmJoW4BY9qFboTSO5/W51uJS0aRWUA==
-X-Gm-Gg: ASbGncuwWth/NDIXeQIcf0B33PE0RghiS0Q2HBoaP5YIYrRiIH2P3hJlHsTkW3l57LF
- OxrogrZ2xitLKuCh6Sn1MxrK9P9CCnqp/796kHetekf3mUaUrUaguevgyyEX1WVVFRN/PD22X0d
- 3zKhD2DP3fC0v1g/8uEm1Jydc0BM3h2FsW89fFB1aX7YJVAP84xYm/5De7IwmudHB/dEONTNwOl
- t/k47S+DltLfb4H4nuh0NXjvYz02UHktH4UeQUIKSPPQVzjk6J5ruJ6GZGeXdxVpgyueg/Geb5B
- kFJRxqk8G9+odZjv1lgnKcaPBVXrMa0Ys5mLFTIr/Z89PtsGndV/032KyK0nbKIdxBiM8XsNIGg
- I3jCgON9fexj0SbxZCA==
-X-Google-Smtp-Source: AGHT+IE3aQhTFJHX0fDiRxnueTmVB5MfhMvQVfVvtUrMB+Aek9vgw6vXY9y+mpprkJK6acE71RHTJA==
-X-Received: by 2002:a05:600c:138d:b0:453:dbe:7574 with SMTP id
- 5b1f17b1804b1-454ec15f7bcmr166183445e9.12.1752575151345; 
- Tue, 15 Jul 2025 03:25:51 -0700 (PDT)
+ bh=D0mhEKiTgPA3amIKUuUigrSA4ovO4Xyr6l3MIsR9754=;
+ b=UGxjrVX+xb/EhGLKi76tr5JNv8UGtH9CJ4aiG/C/qQkI6pWRL/RGZlnHj7sXBx7aow
+ nyp7bUQX6sRmItrHw5TcFGUxPSXTBqOslFYEybE7pIYLYzBQcaHsEdUnzbwkvCmMzmrW
+ TL4LDDgRWZDUrYnOm0eCVgaYWsbMhnQHtn3f4nNHoLk+oKw4NkbQa3FqgTEGi7iVze/6
+ JWhXzpIirSRLAb+AOLMB1MeMlRDn2eBOJS08YoGv+Tdq4I7xv35wMXjVDy5fZAlkcaM2
+ +A3GsPQOPeBIlW3C/FsO32cKK3fJ0EoWgpyBBysOF/nP296LIpKr8BJuv1m193KiSj9I
+ K5ug==
+X-Gm-Message-State: AOJu0YwB+3CfemraEFz15O9VC2xHMkBFugAPQL+bpMEmhTa8IouiUySn
+ uEPJqW4t/0gDk+efN5bzDACdMmT7f8aaYF4O8VZWBRSZS7OPziNnRITa88rtUw==
+X-Gm-Gg: ASbGncsEKmxaH4Zhe3eQkm+AikcYlSDvpJR5sC/Tnj7ufLCD4ZU9Enoj2fcm7dYktyt
+ BXlfRgkKmtsB4x9zLU+oGzFzBZ4DrSvGTGwwR7WlaclZJYuxDE5cb+idumTjasCe5/Zb5Fm4DC8
+ Da62Nr1+hlgy+UHW0vkKXkK8OCvJzkowAIvgJA5UboKvlhE1Cl3Lzr2qAqtadTUSn1Voi50U/6B
+ asemddAsVcAxJmd7HoO3VCL8fN42RUrF1RBN9JEQenPTCXFc0/VYr/oJIIZCUfGShVS+lgNG+ez
+ 1ult6hbnFMs94TWLUgR+dAIjKJNgLAiYZJKFTsjnosNufHgoMk50XqhAkMc0ioE8eGUCiyiAAEe
+ Ry8tkf/hre6oa8XsKjQ==
+X-Google-Smtp-Source: AGHT+IGdz3FGtjvohoLHKknPJpc0ech5rN80yKeW038MPwaslgMYA83OBhlg4i6Zqz1LT5Up11qQcg==
+X-Received: by 2002:a05:600c:444d:b0:456:15c7:ce90 with SMTP id
+ 5b1f17b1804b1-456288a55c4mr16494925e9.12.1752575153886; 
+ Tue, 15 Jul 2025 03:25:53 -0700 (PDT)
 Received: from fedora ([94.73.32.0]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4560394e061sm100368305e9.31.2025.07.15.03.25.50
+ 5b1f17b1804b1-4560394e061sm100368305e9.31.2025.07.15.03.25.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Jul 2025 03:25:50 -0700 (PDT)
+ Tue, 15 Jul 2025 03:25:53 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com, zbigniew.kempczynski@intel.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t v3 36/41] tests/vkms_configfs: Test enabling a device
- with too many connectors
-Date: Tue, 15 Jul 2025 12:25:08 +0200
-Message-ID: <20250715102513.5636-37-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v3 39/41] lib/vkms: Test changing enabled device encoders
+Date: Tue, 15 Jul 2025 12:25:11 +0200
+Message-ID: <20250715102513.5636-40-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250715102513.5636-1-jose.exposito89@gmail.com>
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
@@ -88,34 +87,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Try to enable a VKMS device with too many connectors and test that it
-fails.
+Test that, once a VKMS device is enabled, the encoder values can't
+change and that deleting it or the attached CRTCs doesn't change the
+VKMS device.
 
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- tests/vkms/vkms_configfs.c | 52 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ lib/igt_vkms.c             | 12 ++++++++
+ lib/igt_vkms.h             |  1 +
+ tests/vkms/vkms_configfs.c | 62 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 75 insertions(+)
 
+diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
+index 5923e8527..c42b96b11 100644
+--- a/lib/igt_vkms.c
++++ b/lib/igt_vkms.c
+@@ -862,6 +862,18 @@ void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name)
+ 	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER, name);
+ }
+ 
++/**
++ * igt_vkms_device_remove_encoder:
++ * @dev: Device to remove the encoder from
++ * @name: Encoder name
++ *
++ * Remove an existing encoder from the VKMS device.
++ */
++bool igt_vkms_device_remove_encoder(igt_vkms_t *dev, const char *name)
++{
++	return remove_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER, name);
++}
++
+ /**
+  * igt_vkms_encoder_attach_crtc:
+  * @dev: Target device
+diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
+index 9785a64e9..3081addad 100644
+--- a/lib/igt_vkms.h
++++ b/lib/igt_vkms.h
+@@ -111,6 +111,7 @@ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+ 					 bool writeback);
+ 
+ void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
++bool igt_vkms_device_remove_encoder(igt_vkms_t *dev, const char *name);
+ bool igt_vkms_encoder_attach_crtc(igt_vkms_t *dev, const char *encoder_name,
+ 				  const char *crtc_name);
+ bool igt_vkms_encoder_detach_crtc(igt_vkms_t *dev, const char *encoder_name,
 diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-index a915cb15e..ad5d72481 100644
+index 62dfb99be..747b057fe 100644
 --- a/tests/vkms/vkms_configfs.c
 +++ b/tests/vkms/vkms_configfs.c
-@@ -1442,6 +1442,57 @@ static void test_enable_no_connectors(void)
+@@ -1689,6 +1689,67 @@ static void test_enabled_crtc_cannot_change(void)
  	igt_vkms_device_destroy(dev);
  }
  
 +/**
-+ * SUBTEST: enable-too-many-connectors
-+ * Description: Try to enable a VKMS device with too many connectors and test
-+ *              that it fails.
++ * SUBTEST: enabled-encoder-cannot-change
++ * Description: Test that, once a VKMS device is enabled, the encoder values
++ *              can't change and that deleting it or the attached CRTCs doesn't
++ *              change the VKMS device.
 + */
 +
-+static void test_enable_too_many_connectors(void)
++static void test_enabled_encoder_cannot_change(void)
 +{
 +	igt_vkms_t *dev;
-+	char connector_names[VKMS_MAX_PIPELINE_ITEMS][12];
-+	int ret;
 +
 +	igt_vkms_config_t cfg = {
 +		.device_name = __func__,
@@ -123,35 +158,46 @@ index a915cb15e..ad5d72481 100644
 +			{
 +				.name = "plane0",
 +				.type = DRM_PLANE_TYPE_PRIMARY,
-+				.possible_crtcs = { "crtc0" },
++				.possible_crtcs = { "crtc0"},
++			},
++			{
++				.name = "plane1",
++				.type = DRM_PLANE_TYPE_PRIMARY,
++				.possible_crtcs = { "crtc1"},
 +			},
 +		},
 +		.crtcs = {
 +			{ .name = "crtc0" },
++			{ .name = "crtc1" },
 +		},
 +		.encoders = {
 +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
++			{ .name = "encoder1", .possible_crtcs = { "crtc1" } },
 +		},
-+		.connectors = {},
++		.connectors = {
++			{
++				.name = "connector0",
++				.possible_encoders = { "encoder0", "encoder1" },
++			},
++		},
 +	};
-+
-+	for (int n = 0; n < 32; n++) {
-+		ret = snprintf(connector_names[n], sizeof(connector_names[n]),
-+			       "connector%d", n);
-+		igt_assert(ret >= 0 && ret < sizeof(connector_names[n]));
-+
-+		cfg.connectors[n] = (igt_vkms_connector_config_t){
-+			.name = connector_names[n],
-+			.possible_encoders = { "encoder0" }
-+		};
-+	}
 +
 +	dev = igt_vkms_device_create_from_config(&cfg);
 +	igt_assert(dev);
 +
 +	igt_vkms_device_set_enabled(dev, true);
-+	igt_assert(!igt_vkms_device_is_enabled(dev));
-+	igt_assert(!device_exists(__func__));
++	igt_assert(igt_vkms_device_is_enabled(dev));
++	assert_device_config(&cfg);
++
++	/* Try to change values */
++	igt_assert(!igt_vkms_encoder_attach_crtc(dev, "encoder0", "crtc1"));
++
++	/* Deleting pipeline items doesn't affect the device */
++	igt_assert(igt_vkms_encoder_detach_crtc(dev, "encoder0", "crtc0"));
++	igt_assert(igt_vkms_connector_detach_encoder(dev, "connector0",
++						     "encoder0"));
++	igt_assert(igt_vkms_device_remove_encoder(dev, "encoder0"));
++	assert_device_config(&cfg);
 +
 +	igt_vkms_device_destroy(dev);
 +}
@@ -159,11 +205,11 @@ index a915cb15e..ad5d72481 100644
  igt_main
  {
  	struct {
-@@ -1481,6 +1532,7 @@ igt_main
- 		{ "enable-encoder-no-crtcs", test_enable_encoder_no_crtcs },
- 		{ "enable-crtc-no-encoder", test_enable_crtc_no_encoder },
- 		{ "enable-no-connectors", test_enable_no_connectors },
-+		{ "enable-too-many-connectors", test_enable_too_many_connectors },
+@@ -1731,6 +1792,7 @@ igt_main
+ 		{ "enable-too-many-connectors", test_enable_too_many_connectors },
+ 		{ "enabled-plane-cannot-change", test_enabled_plane_cannot_change },
+ 		{ "enabled-crtc-cannot-change", test_enabled_crtc_cannot_change },
++		{ "enabled-encoder-cannot-change", test_enabled_encoder_cannot_change },
  	};
  
  	igt_fixture {
