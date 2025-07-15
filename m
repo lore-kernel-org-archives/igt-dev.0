@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E2BFC83F27
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Jul 2025 13:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97232C83F17
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Jul 2025 13:37:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 375A310E5C9;
-	Tue, 15 Jul 2025 13:37:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4FD7B10E5CB;
+	Tue, 15 Jul 2025 13:37:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A967pTbV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="je6o99Ni";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 075FC10E5C9
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 13:37:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 902A710E5C6
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 13:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752586667; x=1784122667;
+ t=1752586665; x=1784122665;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rmH/E/HF62+Y0ecuJuXKZvZ6ORbM9S0MYjsr/6mMBcg=;
- b=A967pTbV4DP+0TIOmrWDWa7aurb69Yqno9TOiBlvKL4jaKjAKjMf+WgC
- MZ407JvZxpN4lpUpXi8e2OkpK1jwN7L3o4PYRRJaUG1jNTRYCQ9a0JZep
- LtEPCqO0M/aVWxESuwnZ2OMHorJZ0HjdxuzJ+K8X1ARNwc3ndlx7hY6fA
- 7jC66rh3/ySwhGHRDTmcrejPWIxYP8NCRxejAQ2IUmXDGgJbkb2TbZcNM
- UkMLmUJo8kgp2XlReeeUrdgQqWkFEkIdA6CVi2fUxxRhTaHH/C1TBV+sO
- Gd0Rm+Ux33lk15zqAlEulg2v77PzEe8ev719bZ0Ex3KFu8KlgAh6OeIrx Q==;
-X-CSE-ConnectionGUID: jfXpAycRR/Kk45VGfaSQ+w==
-X-CSE-MsgGUID: CYrYIas6TfOMsueGOgMh4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54780001"
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="54780001"
+ bh=N8SV29Dnmun/1xrgYFSfjOORjABdeWP0x+Jtsgd+ol0=;
+ b=je6o99Nikb7W1Je5Zpe6dwxBAAdmaL/0LeWz0BJLaILhYm7D1sLCR+tW
+ OWEhkBDHifH9H05H9+r+FW5bA3jmh9IexOsJuTK2PE2cPKLvF2DBTaQ2e
+ toXhUtO+3S+86/PaCIniyxTi9tL8abCjPrhnElbl9T16gB5hDs8B/bsD+
+ zkawu4AmkjrtHJ3Wk2T8vNkzPowbr6a+0LGjWHxz3g9IgG1yX9YPgdOcM
+ Wwf/k6NJD9Z93hcZSgB8TEAKIeS2ucpBIjWEHw9ID23h6Tdg5rnMfguvb
+ dB7WzlAU5B9BvTJbD3154C9ADK/5x4aPxLXLbOZ0U3QU9Tuza3JEwXzEO g==;
+X-CSE-ConnectionGUID: yHDC0rNjRJmROE1i+U0srQ==
+X-CSE-MsgGUID: IyKOVqWETt++W15mmk6T5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54779991"
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="54779991"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2025 06:37:46 -0700
-X-CSE-ConnectionGUID: YH+DhFqqSv2m8kMup8lsPQ==
-X-CSE-MsgGUID: o0KeKa29TiKGBQOhepSvOA==
+ 15 Jul 2025 06:37:45 -0700
+X-CSE-ConnectionGUID: GR86QX2sQnqV/GTvg9+3hg==
+X-CSE-MsgGUID: OGX/LKFkQTKqYMHDnLoO0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="156886361"
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; d="scan'208";a="156886357"
 Received: from mstancu-mobl1.ger.corp.intel.com (HELO
  friendship7-home.clients.intel.com) ([10.245.118.0])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2025 06:37:44 -0700
+ 15 Jul 2025 06:37:43 -0700
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
  Gustavo Sousa <gustavo.sousa@intel.com>
-Subject: [PATCH v3 i-g-t 2/2] lib/igt_kmod: Add IGT_HOOK_POST_KMOD_UNBIND
-Date: Tue, 15 Jul 2025 15:37:22 +0200
-Message-ID: <20250715133722.32559-3-peter.senna@linux.intel.com>
+Subject: [PATCH v3 i-g-t 1/2] igt_core_get_igt_hook: igt_hook pointer for
+ other libs
+Date: Tue, 15 Jul 2025 15:37:21 +0200
+Message-ID: <20250715133722.32559-2-peter.senna@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250715133722.32559-1-peter.senna@linux.intel.com>
 References: <20250715133722.32559-1-peter.senna@linux.intel.com>
@@ -69,125 +70,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Adds an igt_hook after the unbind operation of the kmod intended as
-a strategice entry point for kmemleak scans.
+Previously, all igt_hooks were defined, initialized, and freed within
+lib/igt_core.c, limiting hook creation to this file. To enable other
+libraries to add hooks, introduce a function that returns a pointer to
+the main hook structure.
 
-Can be used with --hook  'post-kmod-unbind:...'
+This change allows hooks to be created from external libraries without
+requiring separate initialization or teardown of the hook
+infrastructure.
 
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
 Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 ---
 v3:
-  - Renamed the hook to IGT_HOOK_POST_KMOD_UNBIND as the unbind can also happen
-   for snd modules
- - Changed the logic for the IGT_HOOK_KMOD_UNBIND_MODULE_NAME env var so that
-   it is only populated when the correct hook is used.
+ - unchanged
+
 v2:
- - Added code ducumentation for new hook
- - Added env var IGT_HOOK_KMOD_UNBIND_MODULE_NAME and extended help text
+ - change function name to igt_core_get_igt_hook()
+ - remove duplicated documentation from header 
 
- lib/igt_hook.c | 11 +++++++++++
- lib/igt_hook.h |  3 +++
- lib/igt_kmod.c |  8 ++++++++
- 3 files changed, 22 insertions(+)
+ lib/igt_core.c | 12 ++++++++++++
+ lib/igt_core.h |  2 ++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/lib/igt_hook.c b/lib/igt_hook.c
-index 8932d118d..f86ed56f7 100644
---- a/lib/igt_hook.c
-+++ b/lib/igt_hook.c
-@@ -74,6 +74,8 @@ static const char *igt_hook_evt_type_to_name(enum igt_hook_evt_type evt_type)
- 		return "post-subtest";
- 	case IGT_HOOK_POST_TEST:
- 		return "post-test";
-+	case IGT_HOOK_POST_KMOD_UNBIND:
-+		return "post-kmod-unbind";
- 	case IGT_HOOK_NUM_EVENTS:
- 		break;
- 	/* No "default:" case, to force a warning from -Wswitch in case we miss
-@@ -335,6 +337,8 @@ static void igt_hook_update_env_vars(struct igt_hook *igt_hook, struct igt_hook_
- 	setenv("IGT_HOOK_TEST", igt_hook->test_name, 1);
- 	setenv("IGT_HOOK_SUBTEST", igt_hook->subtest_name, 1);
- 	setenv("IGT_HOOK_DYN_SUBTEST", igt_hook->dyn_subtest_name, 1);
-+	setenv("IGT_HOOK_KMOD_UNBIND_MODULE_NAME",
-+	       evt->evt_type == IGT_HOOK_POST_KMOD_UNBIND ? evt->target_name : "", 1);
- 	setenv("IGT_HOOK_RESULT", evt->result ?: "", 1);
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index c2674a272..4bfffc3a8 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -3604,3 +3604,15 @@ unsigned int igt_measured_usleep(unsigned int usec)
+ 
+ 	return igt_nsec_elapsed(&ts) / NSEC_PER_USEC;
  }
- 
-@@ -470,6 +474,9 @@ below:\n\
- 		case IGT_HOOK_POST_TEST:
- 			desc = "Occurs after a test case has finished.";
- 			break;
-+		case IGT_HOOK_POST_KMOD_UNBIND:
-+			desc = "Occurs after the kernel module is unbound from the device.";
-+			break;
- 		default:
- 			desc = "MISSING DESCRIPTION";
- 		}
-@@ -504,6 +511,10 @@ available to the command:\n\
-   values are: SUCCESS, SKIP or FAIL. This is only applicable on \"post-*\"\n\
-   events and will be the empty string for other types of events.\n\
- \n\
-+  IGT_HOOK_KMOD_UNBIND_MODULE_NAME\n\
-+  Name of the kernel module that was unbound from the device. This is only\n\
-+  applicable on the `IGT_HOOK_POST_KMOD_UNBIND` event and will be the empty\n\
-+  string for other types of events.\n\
- \n\
- Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
- when matching events and running hook commands.\n\
-diff --git a/lib/igt_hook.h b/lib/igt_hook.h
-index e9f97b79b..11d839dfd 100644
---- a/lib/igt_hook.h
-+++ b/lib/igt_hook.h
-@@ -26,6 +26,8 @@ struct igt_hook;
-  * @IGT_HOOK_POST_SUBTEST: Occurs after the execution of a subtest..
-  * @IGT_HOOK_POST_TEST: Occurs after a test case (executable) is finished with
-  * the test code.
-+ * @IGT_HOOK_POST_KMOD_UNBIND: Occurs after the kernel module is unbound
-+ * from the device.
-  * @IGT_HOOK_NUM_EVENTS: This is not really an event and represents the number
-  * of possible events tracked by igt_hook.
-  *
-@@ -39,6 +41,7 @@ enum igt_hook_evt_type {
- 	IGT_HOOK_POST_DYN_SUBTEST,
- 	IGT_HOOK_POST_SUBTEST,
- 	IGT_HOOK_POST_TEST,
-+	IGT_HOOK_POST_KMOD_UNBIND,
- 	IGT_HOOK_NUM_EVENTS /* This must always be the last one. */
- };
- 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 6d7f5705c..a10626eed 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -41,6 +41,7 @@
- #include "igt_aux.h"
- #include "igt_core.h"
- #include "igt_debugfs.h"
-+#include "igt_hook.h"
- #include "igt_kmod.h"
- #include "igt_ktap.h"
- #include "igt_sysfs.h"
-@@ -604,6 +605,7 @@ int __igt_intel_driver_unload(char **who, const char *driver)
-  */
- int igt_kmod_unbind(const char *mod_name, const char *pci_device)
- {
-+	struct igt_hook *igt_hook = NULL;
- 	char path[PATH_MAX];
- 	struct dirent *de;
- 	int dirlen;
-@@ -634,6 +636,12 @@ int igt_kmod_unbind(const char *mod_name, const char *pci_device)
- 
- 	closedir(dir);
- 
-+	igt_hook = igt_core_get_igt_hook();
-+	igt_hook_event_notify(igt_hook, &(struct igt_hook_evt){
-+		.evt_type = IGT_HOOK_POST_KMOD_UNBIND,
-+		.target_name = mod_name,
-+	});
 +
- 	return 0;
- }
++/**
++ * igt_core_get_igt_hook: To allow for using hooks from other libraries, this
++ * function returns the pointer to the struct that is likely already
++ * initialized.
++ *
++ * Returns: Pointer to the igt_hook structure.
++ */
++struct igt_hook *igt_core_get_igt_hook(void)
++{
++	return igt_hook;
++}
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 2db579423..e658737b0 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1601,4 +1601,6 @@ void igt_pci_system_cleanup(void);
+ void igt_emit_ignore_dmesg_regex(const char *ignore_dmesg_regex);
  
+ unsigned int igt_measured_usleep(unsigned int usec);
++
++struct igt_hook *igt_core_get_igt_hook(void);
+ #endif /* IGT_CORE_H */
 -- 
 2.43.0
 
