@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3E64C83F27
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Jul 2025 10:25:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE28C83F2E
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Jul 2025 10:25:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 83F9310E596;
-	Tue, 15 Jul 2025 10:25:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0081E10E598;
+	Tue, 15 Jul 2025 10:25:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="S0poA3LN";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="j3L47aXZ";
 	dkim-atps=neutral
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
- [209.85.221.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8474A10E58F
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 10:25:27 +0000 (UTC)
-Received: by mail-wr1-f46.google.com with SMTP id
- ffacd0b85a97d-3a4fd1ba177so3464816f8f.0
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 03:25:27 -0700 (PDT)
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
+ [209.85.128.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3611E10E58F
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 10:25:28 +0000 (UTC)
+Received: by mail-wm1-f52.google.com with SMTP id
+ 5b1f17b1804b1-45600581226so32407685e9.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jul 2025 03:25:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1752575126; x=1753179926; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oPO79vNmbd5fgRZpQK3ekaoZgKXC+DJ9kCZ3d/YTBTI=;
- b=S0poA3LN2Sl3iyBwH3bkkwXvH96ttUVtBuI9Aq/aOjX3Po4EUcB14c+yqz/RS3ewEF
- w2IOCMUhrZJPgQQ1gPyWxP9qXEdk01Ylx5wWJNngFR6uVHMG4VVq4NBPxJRiZHezaJw7
- U1Bn73V2RZorx37Z6+X275QIh9uYsa8GqMDjbk08408LpHs8xFcvchR9anTlUyGScQ1n
- a5WmGLo67jwiTGfjZyyGVxAUb0orz12b3+Xye+CI0WZp4F2uKjPIxk1pqfYubtmxIoyT
- CS5WD1eyrezqfTIYrzXLZ3Rf7vnvZJlUHkeWnWP2pzn8zc7KJj1bLWI/L9Hdptm5bgeA
- YtmA==
+ bh=XhGWAA41mERDrkMKQBbc+AtO6fyA12bntl9d8aksDD4=;
+ b=j3L47aXZdDKGXqEQdjdCNwEyLPLo1qFpmyQ2ViYVbd73IgQdTuCb9fQ//zR4vvIFPF
+ wcGzGZ5yA5SOK6f9bEII4Yd383rALnZ3VXkUd5yv2g3sAkvgm7C/ssEMWG6xAZ2hc3jp
+ Pnpg9yBKf1yseNunxZD3T8MybCQxM0jVz2A/jlgp5NKIhJJohGTNX+alMjDJH6X2Rdjr
+ bFoyiiWXLEXOu+RYKtxgLpG09ZsYvksITd0ex+TBZdBfAGQYHNSrffRlKQAYraB3i2va
+ Fr2yQsPQ8KPsSIryq6kflOJXNt26n9ufD2sT3cooZqe+gO6j8+MY7LM23CJimQCVeiXP
+ Nucw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1752575126; x=1753179926;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oPO79vNmbd5fgRZpQK3ekaoZgKXC+DJ9kCZ3d/YTBTI=;
- b=t3HcYmDeKDtYrEDdg3Xq3ajUWgI1BemAWqqhXQg522d4++irTqpXB2O2P/cqbTL0mu
- m5IAsG1mstQRrmYl3FdZrH5FHdGXfBcQvAjOPgN9cZ538hb38nTz1L9eGm2S7bTZbfYV
- pP6AzWwjjwbA+D7/Sa0KhJcS7pnATzaAlpQ4loev49OQjVk1Gy7hQ1igIsWRnTZazgMO
- TuWyyqCqu2BzlPQcyXitUfaqok8hhsKvMxlCVYwfBWhcDMhSGWcTLdydcT7RkcHjWcR9
- BIW7VEwlwMbwYhxi5951AFVHPcQal0QZaLSEaynElRYTq6FnVners9gtYPT5dgRnTsge
- O9oQ==
-X-Gm-Message-State: AOJu0Yzc/9WOK2Oye5jnqaLVf0I9M2JbJxG4/2ZTmJwDF8YOzyVaSBn7
- IURCyTVMEoogaumCVMU5b9LbVGdwF66+ZPq7dM42LnJKT9NqMK0oU+zaO/yJFQ==
-X-Gm-Gg: ASbGncsfmoBN/gAN1IwasnthvZLbI1698rGZBfYAmO9ZxwsET2eDwvmaIMBPGfwoXQv
- Gf6oYyi6Mc+PPJdsZK89203eOUwxundayZGoYYMD3cNTCcc3kZjgBDNWpEICHSBG+KAtpoG9vzN
- GJojz8yCj0JdUr4vx9N1BQr9AKjtfVUmsXClWRDnXi/1uv1gelqIELgkCY7+HPP488q+M4sx9dR
- HXnorU91ssM4558NuHDMfYNu3CWDvt0DA41K5+gvViF2DGXAvoAVAF9ZzH70GqYGDNnZ+Ls6o+2
- Gi8QAOE25DgpWB814i6bmRQln2wAaz9jte/sEa16waF3BUDOIv7BZWE5EuqDkwmx0PO3NArKuHk
- 1fJ0/1ST9CHVlYEoGJQ==
-X-Google-Smtp-Source: AGHT+IG582sUaS8kLIOLrNc3TLjLaZJSY6ssnilr0wGkT+4NfnmA/InTZoWHDXUbg2J3ScAJY0Q+yQ==
-X-Received: by 2002:a5d:64e3:0:b0:3a4:eb7a:2ccb with SMTP id
- ffacd0b85a97d-3b60953af23mr2321687f8f.16.1752575125433; 
- Tue, 15 Jul 2025 03:25:25 -0700 (PDT)
+ bh=XhGWAA41mERDrkMKQBbc+AtO6fyA12bntl9d8aksDD4=;
+ b=VJIQx+91aqXD5nq5tHwjaMGZ4BIJHk/vL7t+nT9YvsMFL5RqfsfutOCRGdu89+j4Hp
+ DN/sr08BRzIOJiEGZNwLEpqEHprA03MXacR9D5JEJBPD6LNCN6kjXRgNur65zm9P3c9I
+ cAe1IfndH1EoZYniCYfx4fBFXmZJVG7TH5p/GgopT/ZQxea2ehMeP2EleJzVauE24epZ
+ d1joKCcn9o1tTxvhdppgBf+lxr4If65InenYn0Fmd7voGOc4KQqR2YGLAzjlS6OeYUBf
+ SzI4NMWPxoedadU9tFK7W8DxZbR/Ud+x7xYH9VBQ015G5hAfLpS7u7nKPxm0wdVLJliL
+ r6Dw==
+X-Gm-Message-State: AOJu0YwpHXNakMRmRziWqQQ1iw5S5sPgEgMoNcqxYdnbW5FGYLO1ez39
+ lB5t6DHTUDPIycEyOIIFzMs+eu7Il0CrQsBTLPqoKQkDERgUcFls+C6YdZPUcQ==
+X-Gm-Gg: ASbGncszOhDsM8qaRKudjMgZV/8aNyyyis2EHp7mvX6PX2tP/KR5Plx9OdDRyvVlDrR
+ Wf1lYy87A1vf0rZKKmdiUsx6lF81zDZZWTb7I1iNWyrqqg39iqv3O/rXxdN+7n2KU/so3J1scsa
+ J8Oja6i5OYVkUPLbqJaP6ZZFS7HlUoJKa3uclNX8aez/o1LTMxr4nIdHcqinps7ueYjoNpP716V
+ lxKD60aGrNy3ckEwmh+8poKvUkMuB7hNpKBVXlleNNDGqmAJxWanoYCa2kVd9EyXcmHGsq7efmA
+ iAKGEeIIpELQmavZOINvhTgHKQis6NLQMJLAMqQUTg+NS5pL3KBdl8yHdKAyYjXUyN5ANef2qBn
+ zbiaTdAu3/0+YQPuRVA==
+X-Google-Smtp-Source: AGHT+IFLXTi3vmxAPa8oJNiwhqS/c0X010OESeLe84cVscdgL0PMIZvzZNfV6Q/0h97N1UmkUCe+tg==
+X-Received: by 2002:a05:600c:3b1b:b0:450:b240:aaab with SMTP id
+ 5b1f17b1804b1-456272e0e1bmr19491575e9.8.1752575126111; 
+ Tue, 15 Jul 2025 03:25:26 -0700 (PDT)
 Received: from fedora ([94.73.32.0]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4560394e061sm100368305e9.31.2025.07.15.03.25.24
+ 5b1f17b1804b1-4560394e061sm100368305e9.31.2025.07.15.03.25.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 15 Jul 2025 03:25:25 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com, zbigniew.kempczynski@intel.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t v3 04/41] tests/vkms_configfs: Test device invalid values
-Date: Tue, 15 Jul 2025 12:24:36 +0200
-Message-ID: <20250715102513.5636-5-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v3 05/41] lib/vkms: Test plane default files
+Date: Tue, 15 Jul 2025 12:24:37 +0200
+Message-ID: <20250715102513.5636-6-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250715102513.5636-1-jose.exposito89@gmail.com>
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
@@ -87,98 +87,177 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For a VKMS device, it is only possible to set invalid values in two
-places:
-
-- The device name: The "vkms" name is reserved for the default device
-  created by the driver.
-- The device enabled status: It should only accept boolean values.
-
-Test that setting wrong values fails and that the device is not
-accidentally enabled.
+Add a helper to create a plane and a test checking that the default
+files and directories are created.
 
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- tests/vkms/vkms_configfs.c | 60 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ lib/igt_vkms.c             | 76 ++++++++++++++++++++++++++++++++++++++
+ lib/igt_vkms.h             |  4 ++
+ tests/vkms/vkms_configfs.c | 33 +++++++++++++++++
+ 3 files changed, 113 insertions(+)
 
-diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-index aa7cd9e4e..16e5f6725 100644
---- a/tests/vkms/vkms_configfs.c
-+++ b/tests/vkms/vkms_configfs.c
-@@ -24,6 +24,11 @@
- #include "igt.h"
- #include "igt_vkms.h"
+diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
+index 1fd00afd7..1f90e1569 100644
+--- a/lib/igt_vkms.c
++++ b/lib/igt_vkms.c
+@@ -24,6 +24,13 @@
+ #define VKMS_ROOT_DIR_NAME		"vkms"
+ #define VKMS_FILE_ENABLED		"enabled"
  
-+struct invalid_value {
-+	const char *value;
-+	int size;
++enum vkms_pipeline_item {
++	VKMS_PIPELINE_ITEM_PLANE,
++	VKMS_PIPELINE_ITEM_CRTC,
++	VKMS_PIPELINE_ITEM_ENCODER,
++	VKMS_PIPELINE_ITEM_CONNECTOR,
 +};
 +
- static void assert_default_files(const char *path,
- 				 const char **files, size_t n_files,
- 				 const char **dirs, size_t n_dirs)
-@@ -72,6 +77,32 @@ static void assert_default_files(const char *path,
- 	}
+ /**
+  * SECTION:igt_vkms
+  * @short_description: Helpers to create and configure VKMS devices
+@@ -97,6 +104,48 @@ static void write_bool(const char *path, bool value)
+ 	write_int(path, value ? 1 : 0);
  }
  
-+static void assert_wrong_bool_values(const char *path)
++static const char *get_pipeline_item_dir_name(enum vkms_pipeline_item item)
 +{
-+	struct invalid_value invalid_bool_values[] = {
-+		{ "", 0 },
-+		{ "\0", 1 },
-+		{ "-1", 2 },
-+		{ "2", 1 },
-+		{ "o", 1 },
-+		{ "invalid", 8 },
-+	};
-+	int fd;
++	switch (item) {
++	case VKMS_PIPELINE_ITEM_PLANE:
++		return "planes";
++	case VKMS_PIPELINE_ITEM_CRTC:
++		return "crtcs";
++	case VKMS_PIPELINE_ITEM_ENCODER:
++		return "encoders";
++	case VKMS_PIPELINE_ITEM_CONNECTOR:
++		return "connectors";
++	}
++
++	igt_assert(!"Cannot be reached: Unknown VKMS pipeline item type");
++}
++
++static void get_pipeline_item_path(igt_vkms_t *dev,
++				   enum vkms_pipeline_item item,
++				   const char *name, char *path, size_t len)
++{
++	const char *item_dir_name;
 +	int ret;
 +
-+	for (int i = 0; i < ARRAY_SIZE(invalid_bool_values); i++) {
-+		struct invalid_value v = invalid_bool_values[i];
++	item_dir_name = get_pipeline_item_dir_name(item);
++	ret = snprintf(path, len, "%s/%s/%s", dev->path, item_dir_name, name);
++	igt_assert(ret >= 0 && ret < len);
++}
 +
-+		fd = open(path, O_WRONLY);
-+		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
++static void add_pipeline_item(igt_vkms_t *dev, enum vkms_pipeline_item item,
++			      const char *name)
++{
++	char path[PATH_MAX];
++	int ret;
 +
-+		ret = write(fd, v.value, v.size);
-+		igt_assert_f(ret <= 0, "Error writing '%s' to '%s'", v.value, path);
++	get_pipeline_item_path(dev, item, name, path, sizeof(path));
 +
-+		close(fd);
-+	}
++	ret = mkdir(path, 0777);
++	igt_assert_f(ret == 0,
++		     "Unable to mkdir directory '%s'. Got errno=%d (%s)\n",
++		     path, errno, strerror(errno));
 +}
 +
  /**
-  * SUBTEST: device-default-files
-  * Description: Test that creating a VKMS device creates the default files and
-@@ -120,6 +151,34 @@ static void test_device_default_values(void)
+  * igt_require_vkms_configfs:
+  *
+@@ -131,6 +180,21 @@ void igt_vkms_get_device_enabled_path(igt_vkms_t *dev, char *path, size_t len)
+ 	igt_assert(ret >= 0 && ret < len);
+ }
+ 
++/**
++ * igt_vkms_get_plane_path:
++ * @dev: Device containing the plane
++ * @name: Plane name
++ * @path: Output path
++ * @len: Maximum @path length
++ *
++ * Returns the plane path.
++ */
++void igt_vkms_get_plane_path(igt_vkms_t *dev, const char *name, char *path,
++			     size_t len)
++{
++	get_pipeline_item_path(dev, VKMS_PIPELINE_ITEM_PLANE, name, path, len);
++}
++
+ /**
+  * igt_vkms_device_create:
+  * @name: VKMS device name
+@@ -303,3 +367,15 @@ void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled)
+ 
+ 	write_bool(path, enabled);
+ }
++
++/**
++ * igt_vkms_device_add_plane:
++ * @dev: Device to add the plane to
++ * @name: Plane name
++ *
++ * Add a new plane to the VKMS device.
++ */
++void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name)
++{
++	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
++}
+diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
+index d3741b6ee..9062cc42f 100644
+--- a/lib/igt_vkms.h
++++ b/lib/igt_vkms.h
+@@ -23,6 +23,8 @@ typedef struct igt_vkms {
+ void igt_require_vkms_configfs(void);
+ 
+ void igt_vkms_get_device_enabled_path(igt_vkms_t *dev, char *path, size_t len);
++void igt_vkms_get_plane_path(igt_vkms_t *dev, const char *name, char *path,
++			     size_t len);
+ 
+ igt_vkms_t *igt_vkms_device_create(const char *name);
+ void igt_vkms_device_destroy(igt_vkms_t *dev);
+@@ -31,4 +33,6 @@ void igt_vkms_destroy_all_devices(void);
+ bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
+ void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
+ 
++void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
++
+ #endif /* __IGT_VKMS_H__ */
+diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
+index 16e5f6725..1ac85d8f9 100644
+--- a/tests/vkms/vkms_configfs.c
++++ b/tests/vkms/vkms_configfs.c
+@@ -179,6 +179,38 @@ static void test_device_wrong_values(void)
  	igt_vkms_device_destroy(dev);
  }
  
 +/**
-+ * SUBTEST: device-wrong-values
-+ * Description: Check that setting unexpected values doesn't work.
++ * SUBTEST: plane-default-files
++ * Description: Test that creating a plane creates the default files and
++ *              directories.
 + */
 +
-+static void test_device_wrong_values(void)
++static void test_plane_default_files(void)
 +{
 +	igt_vkms_t *dev;
 +	char path[PATH_MAX];
 +
-+	/* It is not possible to create devices named "vkms" to avoid clashes
-+	 * with the default device created by VKMS
-+	 */
-+	dev = igt_vkms_device_create("vkms");
-+	igt_assert(!dev);
++	const char *files[] = {
++		"type",
++	};
 +
-+	/* Test invalid values for "enabled" */
++	const char *dirs[] = {
++		"possible_crtcs",
++	};
++
 +	dev = igt_vkms_device_create(__func__);
 +	igt_assert(dev);
 +
-+	igt_vkms_get_device_enabled_path(dev, path, sizeof(path));
++	igt_vkms_device_add_plane(dev, "plane0");
++	igt_vkms_get_plane_path(dev, "plane0", path, sizeof(path));
 +
-+	assert_wrong_bool_values(path);
-+	igt_assert(!igt_vkms_device_is_enabled(dev));
++	assert_default_files(path,
++			     files, ARRAY_SIZE(files),
++			     dirs, ARRAY_SIZE(dirs));
 +
 +	igt_vkms_device_destroy(dev);
 +}
@@ -186,11 +265,11 @@ index aa7cd9e4e..16e5f6725 100644
  igt_main
  {
  	struct {
-@@ -128,6 +187,7 @@ igt_main
- 	} tests[] = {
+@@ -188,6 +220,7 @@ igt_main
  		{ "device-default-files", test_device_default_files },
  		{ "device-default-values", test_device_default_values },
-+		{ "device-wrong-values", test_device_wrong_values },
+ 		{ "device-wrong-values", test_device_wrong_values },
++		{ "plane-default-files", test_plane_default_files },
  	};
  
  	igt_fixture {
