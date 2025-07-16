@@ -4,56 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90FBFC83F27
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:21:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8B3DC83F22
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:28:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2AB3A10E75C;
-	Wed, 16 Jul 2025 09:21:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F82C10E76D;
+	Wed, 16 Jul 2025 09:28:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yamqg9hA";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="gGFjCjWA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A22410E75C
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:21:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752657665; x=1784193665;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=PuW76IUTY/wXhivew4RAF6QWF+YQal7RoiaOh+0RKPc=;
- b=Yamqg9hAmACbRr/z7q6UBOLvQR2RByRsE0bAbSi1yjFW0vDDyw+5bZK/
- lpWJfRUqFBNj5QP+7vv/Vymwpggi7tROy2KjPuT6sdV7w3y0NXfPJUTk7
- kc5E+8LEBGeIjY3ezAD6DshkijCMxviPynykz9yZTHG2ZN27W3UP/OWzR
- nZNt1+H+fX3SRY33tH+geCDkjW5/+du7DIZnuyxtwacaV6vdjRg3LBiCC
- 8oZPB52EWeVzEUJelpSwkvpkm8GBqFEIFkuhB3gp32aA7+C7o/85WOdyC
- gGGEYJgTCwPxSnX5QznfkYPYNS4s4CQNwW8MaUOV9IVpUEBC8AS0xxANJ Q==;
-X-CSE-ConnectionGUID: 99cyzB9HRYqMtV/o53urGA==
-X-CSE-MsgGUID: 1dK1Ow/VQFmGWaaMQ9bDaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54005882"
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="54005882"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2025 02:21:05 -0700
-X-CSE-ConnectionGUID: F+zQlc75QeyFjB6BmQrQqA==
-X-CSE-MsgGUID: sj9veSPpT3O+CfuLlIWCyg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="161775905"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 02:21:03 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, pranay.samala@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 2/2] tests/kms_plane: Split pixel format tests by
- RGB/YUV filtering
-Date: Wed, 16 Jul 2025 14:50:36 +0530
-Message-ID: <20250716092036.301862-3-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250716092036.301862-1-ramanaidu.naladala@intel.com>
-References: <20250716092036.301862-1-ramanaidu.naladala@intel.com>
+X-Greylist: delayed 347 seconds by postgrey-1.36 at gabe;
+ Wed, 16 Jul 2025 09:28:28 UTC
+Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A98710E26A
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:28:28 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1AEA043142;
+ Wed, 16 Jul 2025 09:28:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+ t=1752658106;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=9x1hTaUQJXSEUW9mRETv3c1CIYLd4TWKTo7WxVU7JJo=;
+ b=gGFjCjWAfqi3cdL29jjVeibPzLZmIfr7jHrDLTfhiHFaXVaYAw0EiJmkQTU26bNTjVpcTX
+ 9KUjj7oBYz33600sYQfRqiF4TimwwAeKGdAjwKhI8k5HTe6A4U9wFsuisXpTsKljcWhPhi
+ 69wZUmTG3eOrFMWZDynztHAPuEPsm6tpir6K0tOYToi9JeHZ2y4i9ErXSvxS5AL6EZAaVe
+ 9NxLi7/P0KPO9D4hsmXGwW49fsGHIgzlrN8QGXD15py5pe4s+eAnkFwd7qcXmvtVp9YFzF
+ KooLVVHwDA+K0fLflVeVdt2k0XSGxWbo3fi5DasRDm8Q2J26XxweUvP9T3PhPA==
+Message-ID: <39315194-c2e5-4697-9fcd-af5b926285cb@bootlin.com>
+Date: Wed, 16 Jul 2025 11:28:25 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3 13/41] lib/vkms: Test encoder default files
+To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
+ igt-dev@lists.freedesktop.org
+Cc: zbigniew.kempczynski@intel.com
+References: <20250715102513.5636-1-jose.exposito89@gmail.com>
+ <20250715102513.5636-14-jose.exposito89@gmail.com>
+Content-Language: en-US
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
+ 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
+In-Reply-To: <20250715102513.5636-14-jose.exposito89@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeeivedtfeegtdekheethedttddtfefhhfegjeeljeejleduvdfhudegvdekheevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
+ ggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopeiisghighhnihgvfidrkhgvmhhptgiihihnshhkihesihhnthgvlhdrtghomh
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,101 +119,134 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduced dynamic subtests for each pixel format type, covering
-both clamped and unclamped scenarios.
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/kms_plane.c | 48 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 8 deletions(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index f7b672c7a..cb89e74c0 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -72,13 +72,18 @@
-  */
- 
- /**
-- * SUBTEST: pixel-%s
-+ * SUBTEST: pixel-format-%s
-  * Description: verify the pixel formats for given plane and pipe
-  *
-+ * SUBTEST: pixel-format-%s-source-clamping
-+ * Description: verify the pixel formats with source clamping for given
-+ *		plane and pipe
-+ *
-  * arg[1]:
-  *
-- * @format:
-- * @format-source-clamping:          with source clamping
-+ * @rgb:	rgb
-+ * @planar:	planar
-+ * @packed:	packed
-  */
- 
- /*
-@@ -114,6 +119,7 @@ typedef struct {
- 	uint32_t crop;
- 	bool extended;
- 	unsigned int flags;
-+	const char *pixel_format_type;
- } data_t;
- 
- static bool all_pipes;
-@@ -1106,6 +1112,18 @@ static void test_format_plane(data_t *data, enum pipe pipe,
- 		    f.modifier == ref.modifier)
- 			continue;
- 
-+		if (strcmp(data->pixel_format_type, "packed") == 0) {
-+			if (!igt_format_is_packedyuv(f.format))
-+				continue;
-+		} else if (strcmp(data->pixel_format_type, "planar") == 0) {
-+			if (!igt_format_is_planaryuv(f.format))
-+				continue;
-+		} else if (strcmp(data->pixel_format_type, "rgb") == 0) {
-+			if (igt_format_is_packedyuv(f.format) ||
-+			    igt_format_is_planaryuv(f.format))
-+				continue;
-+		}
-+
- 		if (skip_format_mod(data, f.format, f.modifier, &tested_formats)) {
- 			igt_info("Skipping format " IGT_FORMAT_FMT " / modifier "
- 				 IGT_MODIFIER_FMT " on %s.%u\n",
-@@ -1348,14 +1366,28 @@ static void dynamic_test_handler(data_t *data, enum pipe pipe)
- static void
- run_tests_for_pipe_plane(data_t *data)
- {
-+	uint32_t z;
-+	const char *append[3] = {
-+		"rgb",
-+		"planar",
-+		"packed"
-+	};
-+
- 	igt_describe("verify the pixel formats for given plane and pipe");
--	igt_subtest_with_dynamic_f("pixel-format")
--		run_test(data, test_pixel_formats);
-+	for (z = 0; z < ARRAY_SIZE(append); z++) {
-+		igt_subtest_with_dynamic_f("pixel-format-%s", append[z]) {
-+			data->pixel_format_type = append[z];
-+			run_test(data, test_pixel_formats);
-+		}
-+	}
- 
- 	igt_describe("verify the pixel formats for given plane and pipe with source clamping");
--	igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
--		data->crop = 4;
--		run_test(data, test_pixel_formats);
-+	for (z = 0; z < ARRAY_SIZE(append); z++) {
-+		igt_subtest_with_dynamic_f("pixel-format-%s-source-clamping", append[z]) {
-+			data->crop = 4;
-+			data->pixel_format_type = append[z];
-+			run_test(data, test_pixel_formats);
-+		}
- 	}
- 
- 	data->crop = 0;
+Le 15/07/2025 à 12:24, José Expósito a écrit :
+> Add a helper to create a encoder and a test checking that the default
+> files and directories are created.
+> 
+> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+
+> ---
+>   lib/igt_vkms.c             | 27 +++++++++++++++++++++++++++
+>   lib/igt_vkms.h             |  4 ++++
+>   tests/vkms/vkms_configfs.c | 29 +++++++++++++++++++++++++++++
+>   3 files changed, 60 insertions(+)
+> 
+> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
+> index 0a14f9af7..ed28adf9b 100644
+> --- a/lib/igt_vkms.c
+> +++ b/lib/igt_vkms.c
+> @@ -258,6 +258,21 @@ void igt_vkms_get_crtc_writeback_path(igt_vkms_t *dev, const char *name,
+>   				    VKMS_FILE_CRTC_WRITEBACK, path, len);
+>   }
+>   
+> +/**
+> + * igt_vkms_get_encoder_path:
+> + * @dev: Device containing the encoder
+> + * @name: Encoder name
+> + * @path: Output path
+> + * @len: Maximum @path length
+> + *
+> + * Returns the encoder path.
+> + */
+> +void igt_vkms_get_encoder_path(igt_vkms_t *dev, const char *name, char *path,
+> +			       size_t len)
+> +{
+> +	get_pipeline_item_path(dev, VKMS_PIPELINE_ITEM_ENCODER, name, path, len);
+> +}
+> +
+>   /**
+>    * igt_vkms_device_create:
+>    * @name: VKMS device name
+> @@ -527,3 +542,15 @@ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+>   
+>   	write_bool(path, writeback);
+>   }
+> +
+> +/**
+> + * igt_vkms_device_add_encoder:
+> + * @dev: Device to add the encoder to
+> + * @name: Encoder name
+> + *
+> + * Add a new encoder to the VKMS device.
+> + */
+> +void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name)
+> +{
+> +	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER, name);
+> +}
+> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
+> index 90cfde77a..aa6ff513d 100644
+> --- a/lib/igt_vkms.h
+> +++ b/lib/igt_vkms.h
+> @@ -31,6 +31,8 @@ void igt_vkms_get_crtc_path(igt_vkms_t *dev, const char *name, char *path,
+>   			    size_t len);
+>   void igt_vkms_get_crtc_writeback_path(igt_vkms_t *dev, const char *name,
+>   				      char *path, size_t len);
+> +void igt_vkms_get_encoder_path(igt_vkms_t *dev, const char *name, char *path,
+> +			       size_t len);
+>   
+>   igt_vkms_t *igt_vkms_device_create(const char *name);
+>   void igt_vkms_device_destroy(igt_vkms_t *dev);
+> @@ -48,4 +50,6 @@ bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
+>   void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+>   					 bool writeback);
+>   
+> +void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
+> +
+>   #endif /* __IGT_VKMS_H__ */
+> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
+> index 860a06f41..8939ef611 100644
+> --- a/tests/vkms/vkms_configfs.c
+> +++ b/tests/vkms/vkms_configfs.c
+> @@ -406,6 +406,34 @@ static void test_crtc_valid_values(void)
+>   	igt_vkms_device_destroy(dev);
+>   }
+>   
+> +/**
+> + * SUBTEST: encoder-default-files
+> + * Description: Test that creating a encoder creates the default files and
+> + *              directories.
+> + */
+> +
+> +static void test_encoder_default_files(void)
+> +{
+> +	igt_vkms_t *dev;
+> +	char path[PATH_MAX];
+> +
+> +	const char *dirs[] = {
+> +		"possible_crtcs",
+> +	};
+> +
+> +	dev = igt_vkms_device_create(__func__);
+> +	igt_assert(dev);
+> +
+> +	igt_vkms_device_add_encoder(dev, "encoder0");
+> +	igt_vkms_get_encoder_path(dev, "encoder0", path, sizeof(path));
+> +
+> +	assert_default_files(path,
+> +			     NULL, 0,
+> +			     dirs, ARRAY_SIZE(dirs));
+> +
+> +	igt_vkms_device_destroy(dev);
+> +}
+> +
+>   igt_main
+>   {
+>   	struct {
+> @@ -423,6 +451,7 @@ igt_main
+>   		{ "crtc-default-values", test_crtc_default_values },
+>   		{ "crtc-wrong-values", test_crtc_wrong_values },
+>   		{ "crtc-valid-values", test_crtc_valid_values },
+> +		{ "encoder-default-files", test_encoder_default_files },
+>   	};
+>   
+>   	igt_fixture {
+
 -- 
-2.43.0
+Louis Chauvet, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
