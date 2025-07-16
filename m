@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3756C83F22
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:39:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F778C83F1B
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:42:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 849FC10E76C;
-	Wed, 16 Jul 2025 09:39:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DCF9210E0B8;
+	Wed, 16 Jul 2025 09:41:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="YXcWvCsa";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ihkHKhNh";
 	dkim-atps=neutral
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
  [217.70.183.196])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EED810E773
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:39:17 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E269743ACA;
- Wed, 16 Jul 2025 09:39:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F057110E0B8
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:41:57 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9AC9B43423;
+ Wed, 16 Jul 2025 09:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752658755;
+ t=1752658916;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Sa+QlzfUM1LsQSTkuHOCyDpZwA13Rzc68LOg+cWPIQI=;
- b=YXcWvCsaWT48iU5JPvWesvCsYGowQyhOECopaNyMThVojQELXhYZwT2rFDvTAlHm08+Tpf
- /0Zvrxki9rw/JwGdEwI+4g73FZhJ62PjIWvDbqc0HGWtUzqFkANzFJkO5eJ/X/JxhTTA4U
- FZiMAdpPRbXTf8IjCxVVYTZkJj579nwnavXMF0Zst+pH1mAgOpqD9TPClGuIfvXusp57cX
- LjD+ttH9gSfdZOrHKvKRyX/TLCB1ZRG5gv0pnGRbmARO+c2hevwD26vha6MabO4+VvZ+G2
- 7W5h3WNzvbj056LNCIw8jqvL1b0lt1ZeqGKur5vuykc1n1s7TTzMrQuY2wsvTQ==
-Message-ID: <4e2da0c3-a6ee-4cb5-b230-30ac16552408@bootlin.com>
-Date: Wed, 16 Jul 2025 11:39:14 +0200
+ bh=lx2YHPWawg691hSgVJ7bDDPzAsFEDH5RyJi+5+hNRX0=;
+ b=ihkHKhNhTD1/Ak4u/KKN2/3dhSiIUj1axV6phQkcLbrivDu0Hf6fgQyYxLGnBhrIF64TtY
+ 3L+UJk5A/jlmNOuXQlDGmzgftjAEeGUbxoC1j8ZkoIVKyCiO9vL5HNHSeAu5SrL4PmfikC
+ 67OQ3/KD+WB+LVMAv2knW9N9i9+5TZhmrUuYZ7kT2sf0IJeUqiNtXXUgLEbPQnE9gq+R4k
+ JjypD7+JJpnDwP9TorPRLqS4HIXwcmIlnR8M713eulnYx5HwqasbpBhdtw6GMIZ/sbdseF
+ Jp7gu4AmbvFAmsvN3m3Bj/7XaTcQkIUakRKd88NnPfFrR7Fcc9HZpgayYxuBqg==
+Message-ID: <6a005b36-4bb9-4798-9b91-ffdd9165ceba@bootlin.com>
+Date: Wed, 16 Jul 2025 11:41:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 15/41] lib/vkms: Test connector default values
+Subject: Re: [PATCH i-g-t v3 16/41] lib/vkms: Test connector invalid values
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-16-jose.exposito89@gmail.com>
+ <20250715102513.5636-17-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -96,12 +96,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-16-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-17-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeeivedtfeegtdekheethedttddtfefhhfegjeeljeejleduvdfhudegvdekheevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeeivedtfeegtdekheethedttddtfefhhfegjeeljeejleduvdfhudegvdekheevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
  ggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopeiisghighhnihgvfidrkhgvmhhptgiihihnshhkihesihhnthgvlhdrtghomh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -122,118 +122,118 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/07/2025 à 12:24, José Expósito a écrit :
-> Add a helper to get the connector status and test that the default
-> value is set when a new connector is created.
+> For a VKMS connector, it is only possible to set invalid values in the
+> connector status.
+> 
+> Test that setting wrong values fails and that the connector is not
+> accidentally changed.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-
 > ---
->   lib/igt_vkms.c             | 33 +++++++++++++++++++++++++++++++++
->   lib/igt_vkms.h             |  3 +++
->   tests/vkms/vkms_configfs.c | 21 +++++++++++++++++++++
->   3 files changed, 57 insertions(+)
+>   lib/igt_vkms.c             | 24 ++++++++++++++++++
+>   lib/igt_vkms.h             |  2 ++
+>   tests/vkms/vkms_configfs.c | 50 ++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 76 insertions(+)
 > 
 > diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index eecad1977..c8b0dd071 100644
+> index c8b0dd071..1cd560038 100644
 > --- a/lib/igt_vkms.c
 > +++ b/lib/igt_vkms.c
-> @@ -25,6 +25,7 @@
->   #define VKMS_FILE_ENABLED		"enabled"
->   #define VKMS_FILE_PLANE_TYPE		"type"
->   #define VKMS_FILE_CRTC_WRITEBACK	"writeback"
-> +#define VKMS_FILE_CONNECTOR_STATUS	"status"
+> @@ -614,3 +614,27 @@ int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name)
 >   
->   enum vkms_pipeline_item {
->   	VKMS_PIPELINE_ITEM_PLANE,
-> @@ -288,6 +289,22 @@ void igt_vkms_get_connector_path(igt_vkms_t *dev, const char *name, char *path,
->   	get_pipeline_item_path(dev, VKMS_PIPELINE_ITEM_CONNECTOR, name, path, len);
->   }
->   
-> +/**
-> + * igt_vkms_get_connector_status_path:
-> + * @dev: Device containing the connector
-> + * @name: Connector name
-> + * @path: Output path
-> + * @len: Maximum @path length
-> + *
-> + * Returns the connector "status" file path.
-> + */
-> +void igt_vkms_get_connector_status_path(igt_vkms_t *dev, const char *name,
-> +					char *path, size_t len)
-> +{
-> +	get_pipeline_item_file_path(dev, VKMS_PIPELINE_ITEM_CONNECTOR, name,
-> +				    VKMS_FILE_CONNECTOR_STATUS, path, len);
-> +}
-> +
->   /**
->    * igt_vkms_device_create:
->    * @name: VKMS device name
-> @@ -581,3 +598,19 @@ void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name)
->   {
->   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_CONNECTOR, name);
+>   	return read_int(path);
 >   }
 > +
 > +/**
-> + * igt_vkms_connector_get_status:
+> + * igt_vkms_connector_set_status:
 > + * @dev: Device the connector belongs to
 > + * @name: Connector name
+> + * @type: DRM_MODE_CONNECTED, DRM_MODE_DISCONNECTED or
+> + * DRM_MODE_UNKNOWNCONNECTION
 > + *
-> + * Return the connector status.
+> + * Set a new status for the connector
 > + */
-> +int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name)
+> +void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
+> +				   int status)
 > +{
 > +	char path[PATH_MAX];
 > +
+> +	if (status != DRM_MODE_CONNECTED &&
+> +	    status != DRM_MODE_DISCONNECTED &&
+> +	    status != DRM_MODE_UNKNOWNCONNECTION)
+> +		igt_assert(!"Cannot be reached: Unknown connector status");
+
+Do we really need this? It is already checked by vkms.
+
 > +	igt_vkms_get_connector_status_path(dev, name, path, sizeof(path));
 > +
-> +	return read_int(path);
+> +	write_int(path, status);
 > +}
 > diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 6dd576b41..3d27bfebb 100644
+> index 3d27bfebb..df64bde9d 100644
 > --- a/lib/igt_vkms.h
 > +++ b/lib/igt_vkms.h
-> @@ -35,6 +35,8 @@ void igt_vkms_get_encoder_path(igt_vkms_t *dev, const char *name, char *path,
->   			       size_t len);
->   void igt_vkms_get_connector_path(igt_vkms_t *dev, const char *name, char *path,
->   				 size_t len);
-> +void igt_vkms_get_connector_status_path(igt_vkms_t *dev, const char *name,
-> +					char *path, size_t len);
->   
->   igt_vkms_t *igt_vkms_device_create(const char *name);
->   void igt_vkms_device_destroy(igt_vkms_t *dev);
-> @@ -55,5 +57,6 @@ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
->   void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
+> @@ -58,5 +58,7 @@ void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
 >   
 >   void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name);
-> +int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name);
+>   int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name);
+> +void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
+> +				   int status);
 >   
 >   #endif /* __IGT_VKMS_H__ */
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 595d258f6..d7ce4aa17 100644
+> index d7ce4aa17..c74bbc15f 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -466,6 +466,26 @@ static void test_connector_default_files(void)
+> @@ -486,6 +486,55 @@ static void test_connector_default_values(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: connector-default-values
-> + * Description: Check that the default values for the connector are correct.
+> + * SUBTEST: connector-wrong-values
+> + * Description: Check that setting unexpected values doesn't work.
 > + */
 > +
-> +static void test_connector_default_values(void)
+> +static void test_connector_wrong_values(void)
 > +{
+> +	struct invalid_value invalid_status_values[] = {
+> +		{ "", 0 },
+> +		{ "\0", 1 },
+> +		{ "-1", 2 },
+> +		{ "0", 1 },
+> +		{ "4", 1 },
+> +		{ "connected", 10 },
+> +	};
 > +	igt_vkms_t *dev;
+> +	char path[PATH_MAX];
+> +	int fd;
+> +	int ret;
 > +
+> +	/* Create a device with a disconnected connector */
 > +	dev = igt_vkms_device_create(__func__);
 > +	igt_assert(dev);
 > +
 > +	igt_vkms_device_add_connector(dev, "connector0");
+> +	igt_vkms_connector_set_status(dev, "connector0", DRM_MODE_DISCONNECTED);
+> +	igt_assert_eq(igt_vkms_connector_get_status(dev, "connector0"),
+> +		      DRM_MODE_DISCONNECTED);
+> +	igt_vkms_get_connector_status_path(dev, "connector0", path, sizeof(path));
+> +
+> +	/* Test invalid values for "status" */
+> +	for (int i = 0; i < ARRAY_SIZE(invalid_status_values); i++) {
+> +		struct invalid_value v = invalid_status_values[i];
+> +
+> +		fd = open(path, O_WRONLY);
+> +		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
+> +
+> +		ret = write(fd, v.value, v.size);
+> +		igt_assert(ret <= 0);
+> +
+> +		close(fd);
+> +	}
 > +
 > +	igt_assert_eq(igt_vkms_connector_get_status(dev, "connector0"),
-> +		      DRM_MODE_CONNECTED);
+> +		      DRM_MODE_DISCONNECTED);
 > +
 > +	igt_vkms_device_destroy(dev);
 > +}
@@ -241,11 +241,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -485,6 +505,7 @@ igt_main
->   		{ "crtc-valid-values", test_crtc_valid_values },
+> @@ -506,6 +555,7 @@ igt_main
 >   		{ "encoder-default-files", test_encoder_default_files },
 >   		{ "connector-default-files", test_connector_default_files },
-> +		{ "connector-default-values", test_connector_default_values },
+>   		{ "connector-default-values", test_connector_default_values },
+> +		{ "connector-wrong-values", test_connector_wrong_values },
 >   	};
 >   
 >   	igt_fixture {
