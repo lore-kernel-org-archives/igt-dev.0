@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24670C83F27
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:58:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF9D4C83F27
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:58:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D58C010E775;
-	Wed, 16 Jul 2025 09:58:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 95712891C0;
+	Wed, 16 Jul 2025 09:58:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Je2xGXfo";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="YOwSmk7P";
 	dkim-atps=neutral
 Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1086C10E778
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:58:12 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
- [217.70.183.200])
- by mslow3.mail.gandi.net (Postfix) with ESMTP id 28706587A9A
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:22:59 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7D29243910;
- Wed, 16 Jul 2025 09:22:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E49C310E771
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:58:29 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by mslow3.mail.gandi.net (Postfix) with ESMTP id B14AA587D7B
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:24:09 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3F8C343122;
+ Wed, 16 Jul 2025 09:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752657777;
+ t=1752657846;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=gGJofS1YlSkYyHiC4PnJCf8O6KbImsadZ3LfqlQyhss=;
- b=Je2xGXfoczYB84Q8gzXcRFNsiq5UFeYzrR02BEYNqmByUsLT0fRfjGgC5YI0vG3b3GJk78
- Yt6Fx+bKqbtlNjIY4qT8wPonInyV2bDnNrPUAtF0VjF3JYXrccOFiHimP5t1N1hP++5ccC
- fvDeZDgThnkhauqnfLkXUCuxXbG3M/HcS1ZLmB8d0eLEeNOq6xy8fJIG42uPRs5hjJMJ5m
- l+T1xs2F6uuUKI34YzYxYXta5DJ99C0YfV6wUgXA6hK9iWjK5EjZ4iE/caKI0ID9WRoN6J
- slO+zHfB4CdVy/qr+JLn2tjwe1J8w2xh2YoLsrUs2d3RlV+eaa8x1rph3IwpEw==
-Message-ID: <cd8fb16f-a130-4f09-8fc2-d21edb0d539c@bootlin.com>
-Date: Wed, 16 Jul 2025 11:22:57 +0200
+ bh=MkT7sMVUJtKmWRuWivMKXaH3yeQTgdim6CqeBH6hef4=;
+ b=YOwSmk7Ph72/3b1mEKNCgJmeJOvQ0sYN5ITx9tup2USD/kdppl0VYS+l4oRPDgDBPvB7h/
+ HsSFxHXhe9VWJXjS8qhZBwuzRpQe3/WNsXSqeudK8voxq0DD0wUpn3wCofjZjG7c87AGJt
+ hebWhH9U36j+LduQj1fQBonm6m3nwhBf+mRLuAy08ASEgox6LAlUkmmb1etTLyVx6P0jqU
+ trGKe1MaCa+JW54uGMDyuhoAB78u7qBYmtW+GrWJ/VhqnLsrWWx8QhlGyHbtpATYCMtuGV
+ zzPZpucx/DgMQIIn3tMCR2deJ2zqUui0R0WtJOpaQp+GJFkzbvj9xZx7UYvuNQ==
+Message-ID: <c99efc19-8ed3-4827-8432-976fd57d39c2@bootlin.com>
+Date: Wed, 16 Jul 2025 11:24:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t v3 04/41] tests/vkms_configfs: Test device invalid
+Subject: Re: [PATCH i-g-t v3 08/41] tests/vkms_configfs: Test plane valid
  values
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-5-jose.exposito89@gmail.com>
+ <20250715102513.5636-9-jose.exposito89@gmail.com>
 Content-Language: en-US
+From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
  5K81kIWbtQX91pD/wH5UapRF4kwMXTAqof8+m3XfYcEDVG31Kf8QkJTG/gLBi1UfJgGBahbY
@@ -100,12 +100,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-5-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-9-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeeivedtfeegtdekheethedttddtfefhhfegjeeljeejleduvdfhudegvdekheevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
  ggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopeiisghighhnihgvfidrkhgvmhhptgiihihnshhkihesihhnthgvlhdrtghomh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -126,101 +126,51 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/07/2025 à 12:24, José Expósito a écrit :
-> For a VKMS device, it is only possible to set invalid values in two
-> places:
-> 
-> - The device name: The "vkms" name is reserved for the default device
->    created by the driver.
-> - The device enabled status: It should only accept boolean values.
-> 
-> Test that setting wrong values fails and that the device is not
-> accidentally enabled.
+> Test that all valid values for the plane "type" work and that it
+> changes accordingly.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   tests/vkms/vkms_configfs.c | 60 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 60 insertions(+)
+>   tests/vkms/vkms_configfs.c | 31 +++++++++++++++++++++++++++++++
+>   1 file changed, 31 insertions(+)
 > 
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index aa7cd9e4e..16e5f6725 100644
+> index bb9c53f34..76aa6e432 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -24,6 +24,11 @@
->   #include "igt.h"
->   #include "igt_vkms.h"
->   
-> +struct invalid_value {
-> +	const char *value;
-> +	int size;
-> +};
-> +
->   static void assert_default_files(const char *path,
->   				 const char **files, size_t n_files,
->   				 const char **dirs, size_t n_dirs)
-> @@ -72,6 +77,32 @@ static void assert_default_files(const char *path,
->   	}
->   }
->   
-> +static void assert_wrong_bool_values(const char *path)
-> +{
-> +	struct invalid_value invalid_bool_values[] = {
-> +		{ "", 0 },
-> +		{ "\0", 1 },
-> +		{ "-1", 2 },
-> +		{ "2", 1 },
-> +		{ "o", 1 },
-> +		{ "invalid", 8 },
-> +	};
-> +	int fd;
-> +	int ret;
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(invalid_bool_values); i++) {
-> +		struct invalid_value v = invalid_bool_values[i];
-> +
-> +		fd = open(path, O_WRONLY);
-> +		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
-> +
-> +		ret = write(fd, v.value, v.size);
-> +		igt_assert_f(ret <= 0, "Error writing '%s' to '%s'", v.value, path);
-> +
-> +		close(fd);
-> +	}
-> +}
-> +
->   /**
->    * SUBTEST: device-default-files
->    * Description: Test that creating a VKMS device creates the default files and
-> @@ -120,6 +151,34 @@ static void test_device_default_values(void)
+> @@ -280,6 +280,36 @@ static void test_plane_wrong_values(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: device-wrong-values
-> + * Description: Check that setting unexpected values doesn't work.
+> + * SUBTEST: plane-valid-values
+> + * Description: Check that setting valid values works.
 > + */
 > +
-> +static void test_device_wrong_values(void)
+> +static void test_plane_valid_values(void)
 > +{
 > +	igt_vkms_t *dev;
-> +	char path[PATH_MAX];
 > +
-> +	/* It is not possible to create devices named "vkms" to avoid clashes
-> +	 * with the default device created by VKMS
-> +	 */
-> +	dev = igt_vkms_device_create("vkms");
-> +	igt_assert(!dev);
-> +
-> +	/* Test invalid values for "enabled" */
 > +	dev = igt_vkms_device_create(__func__);
 > +	igt_assert(dev);
 > +
-> +	igt_vkms_get_device_enabled_path(dev, path, sizeof(path));
+> +	igt_vkms_device_add_plane(dev, "plane0");
 > +
-> +	assert_wrong_bool_values(path);
-> +	igt_assert(!igt_vkms_device_is_enabled(dev));
+> +	/* Test valid values for "type" */
+> +	igt_vkms_plane_set_type(dev, "plane0", DRM_PLANE_TYPE_OVERLAY);
+> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
+> +		      DRM_PLANE_TYPE_OVERLAY);
+> +
+> +	igt_vkms_plane_set_type(dev, "plane0", DRM_PLANE_TYPE_PRIMARY);
+> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
+> +		      DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	igt_vkms_plane_set_type(dev, "plane0", DRM_PLANE_TYPE_CURSOR);
+> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
+> +		      DRM_PLANE_TYPE_CURSOR);
 > +
 > +	igt_vkms_device_destroy(dev);
 > +}
@@ -228,11 +178,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -128,6 +187,7 @@ igt_main
->   	} tests[] = {
->   		{ "device-default-files", test_device_default_files },
->   		{ "device-default-values", test_device_default_values },
-> +		{ "device-wrong-values", test_device_wrong_values },
+> @@ -292,6 +322,7 @@ igt_main
+>   		{ "plane-default-files", test_plane_default_files },
+>   		{ "plane-default-values", test_plane_default_values },
+>   		{ "plane-wrong-values", test_plane_wrong_values },
+> +		{ "plane-valid-values", test_plane_valid_values },
 >   	};
 >   
 >   	igt_fixture {
@@ -241,5 +191,4 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Louis Chauvet, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
-
 
