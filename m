@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8512CC83F22
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 19:05:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ECFDC83F22
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 19:10:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4151510E107;
-	Wed, 16 Jul 2025 19:05:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CDE2510E3B4;
+	Wed, 16 Jul 2025 19:10:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QjRqarmq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GNKBgCGG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40B2A10E107
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 19:05:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C65610E3B4
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 19:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752692712; x=1784228712;
+ t=1752693037; x=1784229037;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=eWnTWIHEE04Ls0k+uukcTwOA8MGa2HZW8H9zfzyZLNY=;
- b=QjRqarmqjvWQPtq3cyuPY3g6g2hITnWormlRxbULzcYR1VQ3sD1llJ58
- 9Hqzp8FaXwq5WtP7R1WQkE3o1HepuQYUm5CEtBPr8PgwLOlSvhSPt/T+C
- jFCpLbVPwJTxj3+N7MrO1JAaWpLs04Qx07YBhleJZi2mZkqUZbGw24u73
- UcnzjZj+A200Wxil3bw859sbVi9Ds04z+FzWoEO16ahv8Vvni9AWhze81
- PyMAd4oyLJZhPC5vIq/IeWxjoQVcJKQy5GHpadKUUShn4omK55rQrpC8t
- CVxtGNNIi0BeKQIUsvZufaddyg+Z2urN4Dx0ZEpBiZDiTTs28bJWqSJcJ Q==;
-X-CSE-ConnectionGUID: 74rywN5VR2Gnt0PIQSN/Kg==
-X-CSE-MsgGUID: ATVxgb6MQOqjQpW7mxwTXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="65210617"
-X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; d="scan'208";a="65210617"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2025 12:05:11 -0700
-X-CSE-ConnectionGUID: 4mEue3+ESTGhTpYRx3R1Ng==
-X-CSE-MsgGUID: EYqBMoyqRg+eRLXva2YPAA==
+ bh=UDVQ4Dij/+uL+zcYHYATJlndqU4TG2s5pBWoiKP0RJI=;
+ b=GNKBgCGGwSBU0h/x6mXEjGQXT4Inx/6CIBndso245+1cGYqtrRWkRPcC
+ KzhKif8BnZOT16VGGbpa9He6aciG5WfCa5ezH/3MqRLs23Lsyjlbk2Afb
+ iqzX4HVpoYRp1Xh4sAexpsScn627UoPlgYlDBFsbD08QZviIJ2C8W8sTN
+ slnJQY3bpLLV7gOkYVqKfk/HUFBRYPKeapThQQoqalhBxZHlxpA6alKRE
+ trO5oJoz7JVb1H8nu2v1ujOQ1skY7cEwQYC+lTSIYjV/dLzfwc0L1mo4D
+ dhc4rmjLcUnOOzvC7A0/ky65lHOaebym3KswjVdn80ymFrLuWDjeRHZ4M g==;
+X-CSE-ConnectionGUID: gIYFNKDBQZON3XQB6CVa+Q==
+X-CSE-MsgGUID: 2T0bNwhSTLaF9XIU3DUVPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="55072272"
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; d="scan'208";a="55072272"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2025 12:10:37 -0700
+X-CSE-ConnectionGUID: NkX3V4amRK2kJu/eewmEPQ==
+X-CSE-MsgGUID: dhPyvJsLSSKdDIONLzTqeQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; d="scan'208";a="158133816"
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; d="scan'208";a="188536931"
 Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2025 12:05:09 -0700
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2025 12:10:35 -0700
 From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, riana.tauro@intel.com, raag.jadav@intel.com,
  Sk Anirban <sk.anirban@intel.com>
 Subject: [i-g-t,v3] tests/intel/xe_wedged: Add new test csc-wedged
-Date: Thu, 17 Jul 2025 00:34:08 +0530
-Message-ID: <20250716190407.3437793-2-sk.anirban@intel.com>
+Date: Thu, 17 Jul 2025 00:39:34 +0530
+Message-ID: <20250716190933.3438730-2-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -72,6 +72,9 @@ the wedged state can only be resolved by rebinding/reprobing the driver.
 
 Check survivability mode to validate that CSC error injection correctly
 triggers the survivability state transition.
+
+v3: Update commit message (Riana)
+    Modify the uevents interrupt handling (Riana)
 
 Related kernel patch series:
 https://patchwork.freedesktop.org/series/149756/
