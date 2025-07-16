@@ -4,108 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E8B5C83F1B
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CEEDC83F27
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:37:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A5F810E6F2;
-	Wed, 16 Jul 2025 09:34:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B76B510E75B;
+	Wed, 16 Jul 2025 09:37:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="VN9Xn+tC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HdX9UIXc";
 	dkim-atps=neutral
-X-Greylist: delayed 704 seconds by postgrey-1.36 at gabe;
- Wed, 16 Jul 2025 09:34:06 UTC
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
- [217.70.183.193])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 429FC10E707
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:34:06 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6A762439E9;
- Wed, 16 Jul 2025 09:34:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752658445;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=j6UpCzg3yjwo3oNAT4Rn00z+RtvUB4u1QE8GXMylqjc=;
- b=VN9Xn+tCwMN+cifpVRzSysZEJDhfQFjWzJ8AFyDkRMC2KLQXctvFq5PLFCfM8alwU5cHHx
- FlCqNNh+gBaUoLfJ7pwMZGV+EcwQCxgJSBxLex/rReSM/vYOiEhSiFyb1AlU6W1KIrCfpa
- BrbRzHWApQ5cv0Zw2uxsnlxK3ESl6dqclW/XQ/uWacU8VryaHex1HeW9Imc2ufWSJnJtME
- hUgYPzjJ1BClxykNZHW5MR27X0SLnhLFvi7yDfkGBzhlLsd1po2AhlvaM3RwnpcuAzx5Ki
- /xFLwRGjm+KAmiKdditED1AiE1Yn9Bv1JiYyQTwFZQVvibx+flBSy1xgVmIGqw==
-Message-ID: <32737eb6-277a-4c3e-901e-182e198ee858@bootlin.com>
-Date: Wed, 16 Jul 2025 11:34:04 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F276910E75B
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:37:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752658631; x=1784194631;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=lai9ukpJy3r1xyWktCZszN8hpF5rVsEAVkxFFF+8dmU=;
+ b=HdX9UIXcYqL1kZqtbFknPRYrrdqhCX7ZoNyxdl/B2svmlDuzkcYDCoyC
+ eG/zwO6PPE35F/wApyvrSg2XwW4m0BRg1uQgJc4OrIC5f35DhJXf/OxMY
+ iAXDAsZZrviTn0z+LnKEWsM/6+ipzMl8tPQguOoTduLIYm1wkmOCpDX4F
+ 3ePp+1h+NISQlp651gvJuogIvTzmb2n+N9pt4SgbO9yWqiBwhQRE1jvaC
+ 5nxHs34BKHaCx05Tz3Un+HeWhCAmLRCVF31hak/xHdp3M8mcO1V1FXN8h
+ 3SRydf6OV+EHE4ml5aqYmE/R9bB8EcM+aW9VoR8GgJwSzoPGtF2GS2YM2 A==;
+X-CSE-ConnectionGUID: vxK/uE7PRSymgym8BOuV7g==
+X-CSE-MsgGUID: dRT0tykbTrWJjGJW4Ks3gQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54867845"
+X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="54867845"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2025 02:37:11 -0700
+X-CSE-ConnectionGUID: ah7OH17ESfabSB7h75nHAg==
+X-CSE-MsgGUID: bIiZyrzVSAqUTkkYTaHpBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="157547087"
+Received: from mstancu-mobl1.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.118.0])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2025 02:37:08 -0700
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ kamil.konieczny@linux.intel.com, katarzyna.piecielska@intel.com,
+ zbigniew.kempczynski@intel.com, michal.wajdeczko@intel.com,
+ karthik.b.s@intel.com, Jan Sokolowski <jan.sokolowski@intel.com>
+Subject: [PATCH v6 i-g-t 1/6] lib/igt_dir: utilities for directory traversal
+ and file handling
+Date: Wed, 16 Jul 2025 11:36:49 +0200
+Message-ID: <20250716093656.169619-2-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250716093656.169619-1-peter.senna@linux.intel.com>
+References: <20250716093656.169619-1-peter.senna@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 14/41] lib/vkms: Test connector default files
-To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
- igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com
-References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-15-jose.exposito89@gmail.com>
-Content-Language: en-US
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
- 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
-In-Reply-To: <20250715102513.5636-15-jose.exposito89@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeeivedtfeegtdekheethedttddtfefhhfegjeeljeejleduvdfhudegvdekheevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
- ggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopeiisghighhnihgvfidrkhgvmhhptgiihihnshhkihesihhnthgvlhdrtghomh
-X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,138 +73,469 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Introduces helper functions to simplify reading and processing files
+within a directory.  A "_simple" interface is provided to encapsulate
+all necessary function calls for the most common use cases.
 
+Cc: kamil.konieczny@linux.intel.com
+Cc: katarzyna.piecielska@intel.com
+Cc: zbigniew.kempczynski@intel.com
+Cc: michal.wajdeczko@intel.com
+Cc: karthik.b.s@intel.com
+Reviewed-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+---
+v6:
+ - unchanged from v5
+v5:
+ - Added igt_dir_process_files_simple()
+v4:
+ - unchanged from v3
+v3:
+ - unchanged from v2
+v2:
+ - changed style of comparison to NULL
 
-Le 15/07/2025 à 12:24, José Expósito a écrit :
-> Add a helper to create a connector and a test checking that the default
-> files and directories are created.
-> 
-> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+ lib/igt_dir.c   | 347 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_dir.h   |  62 +++++++++
+ lib/meson.build |   1 +
+ 3 files changed, 410 insertions(+)
+ create mode 100644 lib/igt_dir.c
+ create mode 100644 lib/igt_dir.h
 
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-
-> ---
->   lib/igt_vkms.c             | 27 +++++++++++++++++++++++++++
->   lib/igt_vkms.h             |  4 ++++
->   tests/vkms/vkms_configfs.c | 33 +++++++++++++++++++++++++++++++++
->   3 files changed, 64 insertions(+)
-> 
-> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index ed28adf9b..eecad1977 100644
-> --- a/lib/igt_vkms.c
-> +++ b/lib/igt_vkms.c
-> @@ -273,6 +273,21 @@ void igt_vkms_get_encoder_path(igt_vkms_t *dev, const char *name, char *path,
->   	get_pipeline_item_path(dev, VKMS_PIPELINE_ITEM_ENCODER, name, path, len);
->   }
->   
-> +/**
-> + * igt_vkms_get_connector_path:
-> + * @dev: Device containing the connector
-> + * @name: Connector name
-> + * @path: Output path
-> + * @len: Maximum @path length
-> + *
-> + * Returns the connector path.
-> + */
-> +void igt_vkms_get_connector_path(igt_vkms_t *dev, const char *name, char *path,
-> +				 size_t len)
-> +{
-> +	get_pipeline_item_path(dev, VKMS_PIPELINE_ITEM_CONNECTOR, name, path, len);
-> +}
-> +
->   /**
->    * igt_vkms_device_create:
->    * @name: VKMS device name
-> @@ -554,3 +569,15 @@ void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name)
->   {
->   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_ENCODER, name);
->   }
-> +
-> +/**
-> + * igt_vkms_device_add_connector:
-> + * @dev: Device to add the connector to
-> + * @name: Connector name
-> + *
-> + * Add a new connector to the VKMS device.
-> + */
-> +void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name)
-> +{
-> +	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_CONNECTOR, name);
-> +}
-> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index aa6ff513d..6dd576b41 100644
-> --- a/lib/igt_vkms.h
-> +++ b/lib/igt_vkms.h
-> @@ -33,6 +33,8 @@ void igt_vkms_get_crtc_writeback_path(igt_vkms_t *dev, const char *name,
->   				      char *path, size_t len);
->   void igt_vkms_get_encoder_path(igt_vkms_t *dev, const char *name, char *path,
->   			       size_t len);
-> +void igt_vkms_get_connector_path(igt_vkms_t *dev, const char *name, char *path,
-> +				 size_t len);
->   
->   igt_vkms_t *igt_vkms_device_create(const char *name);
->   void igt_vkms_device_destroy(igt_vkms_t *dev);
-> @@ -52,4 +54,6 @@ void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
->   
->   void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
->   
-> +void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name);
-> +
->   #endif /* __IGT_VKMS_H__ */
-> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 8939ef611..595d258f6 100644
-> --- a/tests/vkms/vkms_configfs.c
-> +++ b/tests/vkms/vkms_configfs.c
-> @@ -434,6 +434,38 @@ static void test_encoder_default_files(void)
->   	igt_vkms_device_destroy(dev);
->   }
->   
-> +/**
-> + * SUBTEST: connector-default-files
-> + * Description: Test that creating a connector creates the default files and
-> + *              directories.
-> + */
-> +
-> +static void test_connector_default_files(void)
-> +{
-> +	igt_vkms_t *dev;
-> +	char path[PATH_MAX];
-> +
-> +	const char *files[] = {
-> +		"status",
-> +	};
-> +
-> +	const char *dirs[] = {
-> +		"possible_encoders",
-> +	};
-> +
-> +	dev = igt_vkms_device_create(__func__);
-> +	igt_assert(dev);
-> +
-> +	igt_vkms_device_add_connector(dev, "connector0");
-> +	igt_vkms_get_connector_path(dev, "connector0", path, sizeof(path));
-> +
-> +	assert_default_files(path,
-> +			     files, ARRAY_SIZE(files),
-> +			     dirs, ARRAY_SIZE(dirs));
-> +
-> +	igt_vkms_device_destroy(dev);
-> +}
-> +
->   igt_main
->   {
->   	struct {
-> @@ -452,6 +484,7 @@ igt_main
->   		{ "crtc-wrong-values", test_crtc_wrong_values },
->   		{ "crtc-valid-values", test_crtc_valid_values },
->   		{ "encoder-default-files", test_encoder_default_files },
-> +		{ "connector-default-files", test_connector_default_files },
->   	};
->   
->   	igt_fixture {
-
+diff --git a/lib/igt_dir.c b/lib/igt_dir.c
+new file mode 100644
+index 000000000..1792ba7c1
+--- /dev/null
++++ b/lib/igt_dir.c
+@@ -0,0 +1,347 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#include <dirent.h>
++#include <fcntl.h>
++
++#include "igt.h"
++#include "igt_dir.h"
++
++/**
++ * SECTION:igt_dir
++ * @short_description: Dir and file processing i-g-t
++ * @title: igt_dir
++ * @include: igt_igt.h
++ *
++ * Utilities to facilitate reading and processing files within a directory.
++ * For example, to read and discard all files from debugfs:
++ *
++ * igt_fixture {
++ *	fd = drm_open_driver_master(DRIVER_ANY);
++ *	debugfs = igt_debugfs_dir(fd);
++ * }
++ *
++ * igt_dir = igt_dir_create(debugfs);
++ * igt_dir_scan_dirfd(igt_dir, -1); // -1 means unlimited scan depth
++ * igt_dir_process_files(igt_dir, NULL, NULL);
++ *
++ * igt_fixture {
++ *	igt_dir_destroy(igt_dir);
++ *	closedir(debugfs);
++ *	drm_close_driver(fd);
++ * }
++ *
++ * The igt_dir_scan_dirfd() function builds a linked list of files (using
++ * igt_list), making it easy to add or remove specific files before
++ * processing. If you only want to process a predetermined set of files,
++ * you can skip the scan step and add the files directly to the list.
++ *
++ * The last two parameters of igt_dir_process_files() specify a callback
++ * function and user data. If the callback is NULL, a default "read and
++ * discard" function is used.
++ *
++ * Alternatively a "_simple" interface is also available. This function
++ * encapsulate the calls to igt_dir_create(), igt_dir_scan_dirfd(),
++ * igt_dir_process_files(), and igt_dir_destroy(). For using the "_simple"
++ * interface:
++ *
++ * igt_fixture {
++ *	fd = drm_open_driver_master(DRIVER_ANY);
++ *	debugfs = igt_debugfs_dir(fd);
++ * }
++ *
++ * igt_dir_process_files_simple(debugfs);
++ *
++ * igt_fixture {
++ *	igt_dir_destroy(igt_dir);
++ *	closedir(debugfs);
++ *	drm_close_driver(fd);
++ * }
++ */
++
++/**
++ * igt_dir_get_fd_path: Get the path of a file descriptor
++ * @fd: file descriptor to get the path for
++ * @path: buffer to store the path
++ * @path_len: length of the buffer
++ *
++ * Returns: 0 on success, a negative error code on failure
++ */
++int igt_dir_get_fd_path(int fd, char *path, size_t path_len)
++{
++	ssize_t len;
++	char proc_path[64];
++
++	snprintf(proc_path, sizeof(proc_path), "/proc/self/fd/%d", fd);
++	len = readlink(proc_path, path, path_len - 1);
++	if (len == -1)
++		return -1;
++
++	path[path_len] = '\0';
++
++	return 0;
++}
++
++/**
++ * igt_dir_callback_read_discard: Default callback function for reading and
++ *				  discarding file contents
++ * @filename: Path to the file
++ * @callback_data: Optional pointer to user-defined data passed to the callback
++ *
++ * Returns: 0 on success, a negative error code on failure
++ */
++int igt_dir_callback_read_discard(const char *filename,
++				  void *callback_data)
++{
++	int fd;
++	char buf[4096];
++	ssize_t bytes_read;
++
++	fd = open(filename, O_RDONLY);
++	if (fd < 0) {
++		igt_debug("Failed to open file %s\n", filename);
++		return -1;
++	}
++
++	bytes_read = read(fd, buf, sizeof(buf) - 1);
++	if (bytes_read < 0) {
++		igt_debug("Failed to read file %s\n", filename);
++		close(fd);
++		return -1;
++	}
++
++	buf[bytes_read] = '\0';
++	igt_debug("Read %zd bytes from file %s: %s\n", bytes_read,
++		  filename, buf);
++	close(fd);
++
++	return 0;
++}
++
++/**
++ * igt_dir_create: Create a new igt_dir_t struct
++ * @dirfd: file descriptor of the root directory
++ *
++ * Returns: Pointer to the new igt_dir_t struct, or NULL on failure
++ */
++igt_dir_t *igt_dir_create(int dirfd)
++{
++	igt_dir_t *config;
++	size_t path_len = 512;
++	char path[path_len];
++
++	config = malloc(sizeof(igt_dir_t));
++	if (!config)
++		return NULL;
++
++	config->dirfd = dirfd;
++
++	igt_dir_get_fd_path(dirfd, path, path_len);
++	igt_require(path[0] != '\0');
++
++	config->root_path = malloc(path_len);
++	if (!config->root_path) {
++		free(config);
++		return NULL;
++	}
++
++	strncpy(config->root_path, path, path_len);
++
++	IGT_INIT_LIST_HEAD(&config->file_list_head);
++
++	config->callback = NULL;
++
++	return config;
++}
++
++static int _igt_dir_scan_dirfd(igt_dir_t *config, int scan_maxdepth,
++			       int depth, const char *current_path)
++{
++	struct dirent *entry;
++	igt_dir_file_list_t *file_list_entry;
++	DIR *dirp;
++	int dirfd;
++	int ret = 0;
++
++	if (depth > scan_maxdepth && scan_maxdepth != -1) {
++		igt_debug("Max scan depth reached\n");
++		return 0;
++	}
++
++	if (!current_path) {
++		igt_debug("Invalid current path\n");
++		return -1;
++	}
++
++	dirfd = open(current_path, O_RDONLY | O_DIRECTORY);
++	if (dirfd < 0) {
++		igt_debug("Failed to open directory %s\n", current_path);
++		return -1;
++	}
++
++	dirp = fdopendir(dirfd);
++	if (!dirp) {
++		igt_debug("Failed to fdopendir %s\n", current_path);
++		close(dirfd);
++		return -1;
++	}
++
++	while ((entry = readdir(dirp))) {
++		char entry_path[PATH_MAX];
++
++		if (strcmp(entry->d_name, ".") == 0 ||
++		    strcmp(entry->d_name, "..") == 0)
++			continue;
++
++		snprintf(entry_path, sizeof(entry_path),
++			 "%s/%s", current_path, entry->d_name);
++
++		if (entry->d_type == DT_DIR) {
++			ret = _igt_dir_scan_dirfd(config, scan_maxdepth,
++						  depth + 1, entry_path);
++			if (ret)
++				break;
++		} else {
++			/* Compute path relative to the scan root */
++			const char *relative_path = entry_path +
++						    strlen(config->root_path);
++			if (*relative_path == '/')
++				relative_path++; /* skip leading slash */
++
++			file_list_entry = malloc(sizeof(igt_dir_file_list_t));
++			if (!file_list_entry) {
++				igt_debug("Failed to allocate memory for file list entry\n");
++				continue;
++			}
++			file_list_entry->relative_path = strdup(relative_path);
++			file_list_entry->match = true;
++			igt_list_add(&file_list_entry->link,
++				     &config->file_list_head);
++		}
++	}
++
++	closedir(dirp);
++	close(dirfd);
++
++	return ret;
++}
++
++/**
++ * igt_dir_scan_dirfd: Perform a directory scan based on config.
++ * @config: Pointer to the igt_dir struct
++ * @scan_maxdepth: Maximum depth to scan the directory. -1 means no limit
++ *
++ * Returns: 0 on success, a negative error code on failure
++ */
++int igt_dir_scan_dirfd(igt_dir_t *config, int scan_maxdepth)
++{
++	igt_require(config);
++	igt_require(config->root_path);
++	igt_require(config->dirfd >= 0);
++	igt_require(scan_maxdepth >= -1);
++	igt_require(scan_maxdepth != 0);
++
++	/* If the linked list is not empty, clean it first */
++	if (!igt_list_empty(&config->file_list_head)) {
++		igt_dir_file_list_t *file_list_entry, *tmp;
++
++		igt_list_for_each_entry_safe(file_list_entry, tmp,
++					     &config->file_list_head, link) {
++			free(file_list_entry->relative_path);
++			free(file_list_entry);
++		}
++	}
++
++	return _igt_dir_scan_dirfd(config, scan_maxdepth, 0, config->root_path);
++}
++
++/**
++ * igt_dir_process_files: Process files in the directory
++ * @config: Pointer to the igt_dir struct
++ * @callback: Callback function to process each file
++ * @callback_data: Optional pointer to user-defined data passed to the callback
++ *
++ * Returns: 0 on success, a negative error code on failure
++ */
++int igt_dir_process_files(igt_dir_t *config,
++			  igt_dir_file_callback callback,
++			  void *callback_data)
++{
++	igt_dir_file_list_t *file_list_entry;
++	int ret = 0;
++
++	igt_require(config);
++	igt_require(config->root_path);
++	igt_require(config->dirfd >= 0);
++
++	if (!callback)
++		callback = igt_dir_callback_read_discard;
++
++	igt_list_for_each_entry(file_list_entry, &config->file_list_head, link) {
++		/* Only if match is true */
++		if (file_list_entry->match) {
++			char full_path[PATH_MAX];
++
++			snprintf(full_path, sizeof(full_path),
++				 "%s/%s", config->root_path,
++				 file_list_entry->relative_path);
++			ret = callback(full_path, callback_data);
++			if (ret)
++				break;
++		}
++	}
++
++	return ret;
++}
++
++/**
++ * igt_dir_destroy: Destroy the igt_dir struct
++ * @config: Pointer to the igt_dir struct
++ *
++ * Returns: 0 on success, a negative error code on failure
++ */
++void igt_dir_destroy(igt_dir_t *config)
++{
++	igt_dir_file_list_t *file_list_entry, *tmp;
++
++	igt_require(config);
++
++	igt_list_for_each_entry_safe(file_list_entry, tmp,
++				     &config->file_list_head, link) {
++		free(file_list_entry->relative_path);
++		free(file_list_entry);
++	}
++
++	free(config->root_path);
++	free(config);
++}
++
++/**
++ * igt_dir_process_files_simple: Process files in the directory using the
++ *				 default callback to read and discard file
++ *				 contents.
++ *
++ * @dirfd: file descriptor of the root directory
++ *
++ * Returns: 0 on success, a negative error code on failure
++ */
++int igt_dir_process_files_simple(int dirfd)
++{
++	igt_dir_t *config;
++	int ret;
++
++	config = igt_dir_create(dirfd);
++	if (!config)
++		return -1;
++
++	igt_dir_scan_dirfd(config, -1);
++
++	/* Use the default callback to read and discard file contents */
++	ret = igt_dir_process_files(config, NULL, NULL);
++
++	igt_dir_destroy(config);
++
++	return ret;
++}
+diff --git a/lib/igt_dir.h b/lib/igt_dir.h
+new file mode 100644
+index 000000000..5e36d8af8
+--- /dev/null
++++ b/lib/igt_dir.h
+@@ -0,0 +1,62 @@
++/* SPDX-License-Identifier: MIT
++ * Copyright © 2025 Intel Corporation
++ */
++
++#ifndef IGT_DIR_H
++#define IGT_DIR_H
++
++#include "igt_list.h"
++
++/**
++ * Callback function type for processing files
++ * The callback is blocking, meaning traversal waits for it to return
++ * before proceeding to the next file
++ * @filename: Path to the file
++ * @callback_data: Optional pointer to user-defined data passed to the callback
++ *
++ * Returns:
++ * 0 on success, a negative error code on failure.
++ */
++typedef int (*igt_dir_file_callback)(const char *filename,
++				     void *callback_data);
++
++/**
++ * igt_dir_file_list_t: List of files with a relative path
++ * @relative_path: path to a file, relative to the root directory
++ * @match: a boolean used to filter the list of files. When match=true the
++ *	   file is processed, otherwise it is skipped
++ * @link: list head for linking files in the list
++ */
++typedef struct {
++	char *relative_path;
++	bool match;
++	struct igt_list_head link;
++} igt_dir_file_list_t;
++
++/**
++ * igt_dir_t: Main struct for igt_dir
++ * @dirfd: file descriptor of the root directory
++ * @root_path: string of the root path, for example:
++ *	       /sys/kernel/debug/dri/0000:00:02.0/
++ * @file_list_head: head of the list of files
++ * @callback: Callback function for file operations. If NULL, defaults
++ *	      to reading and discarding file contents
++ */
++typedef struct {
++	int dirfd;
++	char *root_path;
++	struct igt_list_head file_list_head;
++	igt_dir_file_callback callback;
++} igt_dir_t;
++
++int igt_dir_get_fd_path(int fd, char *path, size_t path_len);
++int igt_dir_callback_read_discard(const char *filename,
++				  void *callback_data);
++igt_dir_t *igt_dir_create(int dirfd);
++int igt_dir_scan_dirfd(igt_dir_t *config, int scan_maxdepth);
++int igt_dir_process_files(igt_dir_t *config,
++			  igt_dir_file_callback callback,
++			  void *callback_data);
++void igt_dir_destroy(igt_dir_t *config);
++int igt_dir_process_files_simple(int dirfd);
++#endif /* IGT_DIR_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index 35ca0e0e9..2eaca42a4 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -92,6 +92,7 @@ lib_sources = [
+ 	'igt_kms.c',
+ 	'igt_fb.c',
+ 	'igt_core.c',
++	'igt_dir.c',
+ 	'igt_draw.c',
+ 	'igt_list.c',
+ 	'igt_map.c',
 -- 
-Louis Chauvet, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.43.0
 
