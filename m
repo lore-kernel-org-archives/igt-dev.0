@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 937B6C83F1B
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 106A7C83F22
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:54:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4874510E770;
-	Wed, 16 Jul 2025 09:53:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BDF2010E771;
+	Wed, 16 Jul 2025 09:54:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="gZoJNjch";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="AoB2RSyW";
 	dkim-atps=neutral
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D34F310E76C
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:53:31 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0805E43121;
- Wed, 16 Jul 2025 09:53:29 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [217.70.183.196])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB76410E771
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:54:44 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1155A43AD1;
+ Wed, 16 Jul 2025 09:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752659610;
+ t=1752659683;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=PCVq5f8I9cFbepMphPL92E7g9jCOaSIAnnOGZBTVPas=;
- b=gZoJNjchhJQGGMFlSS4nkKoNiRFVCm4EpupwTCidkomiZlg5PfpQoFd0v2YXUiWNjSs83J
- bLYaSIaV1gw/EDPYHlESQYBYHjXLoeeqaLjE8jtaqxD9lGuffKRNtKemgRsvIMMEH+7wvM
- Rf4TJfLWrPvcOumWtc9NUhYLWmzbPOsiLUog7GWoTs2UnLBtYutXg0SB49dCFuvRalmRB3
- cQLO9p/OpA41zWgLQvr8C9K5f6OFzxUjZiuk8X9xvgWL0J6CPnbcDkd60PpwpgwuPT5ryd
- Q5ShIp51PBumaZft4D4WAi2bSC69zZmzAOqSQvTLocpokdq2T6VywiJxbsbNRw==
-Message-ID: <41cbd099-f962-4835-84f8-d00696cf6519@bootlin.com>
-Date: Wed, 16 Jul 2025 11:53:29 +0200
+ bh=Q1mRxc1YrOznOa8uEIyVmLUxXYQi/xO5Vclpfj7qpgA=;
+ b=AoB2RSyWY4z6YDtQeZOj159+1rAIHLwnfpu7lSGY69Qe8NddBgaDtU3o9VM2RCikTEAwo7
+ 6XfHug/12czgvQDTktAd5+ijytd6C4kU/tktirQqk/Uh5nIsqbt8vDHXCn3I8JZJfkNb/n
+ sx5HGbLk8B+gC9QPoBE3YVXaBQJEALbOZ61OBsDff7dGE2SgeGEKt60MWQB95ZrAXQFzbo
+ C289raHWw2zsDZ2IauEbqiPv81J/Df0I4yjtnOjBjeBQVlUz8/+dSlizJ5xtVSl3s2oW0W
+ V4F7eWqSaKOBJJjFqLqwterHLdxFVWa4QeHvsjjhH14wYuR62dHF4evmdAT43Q==
+Message-ID: <b5978eab-0bbb-40e6-8bdf-512706310bc7@bootlin.com>
+Date: Wed, 16 Jul 2025 11:54:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 22/41] tests/vkms_configfs: Test enablement
- without pipeline items
+Subject: Re: [PATCH i-g-t v3 29/41] tests/vkms_configfs: Test enabling a
+ device without CRTCs
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-23-jose.exposito89@gmail.com>
+ <20250715102513.5636-30-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -97,7 +97,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-23-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-30-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
@@ -122,76 +122,61 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-Le 15/07/2025 à 12:24, José Expósito a écrit :
-> It shouldn't be possible to enable a device without creating and
-> attaching its pipeline items.
-> 
-> Test that the device is not enabled and also that no actual device was
-> created using libdrm.
+Le 15/07/2025 à 12:25, José Expósito a écrit :
+> Try to enable a VKMS device without adding CRTCs and test that it fails.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   tests/vkms/vkms_configfs.c | 39 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 39 insertions(+)
+>   tests/vkms/vkms_configfs.c | 42 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 42 insertions(+)
 > 
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index c36a795d6..c2cb9dbc0 100644
+> index 17f57c063..22459a547 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -22,6 +22,7 @@
->   
->   #include "drmtest.h"
->   #include "igt.h"
-> +#include "igt_device_scan.h"
->   #include "igt_vkms.h"
->   
->   struct invalid_value {
-> @@ -117,6 +118,20 @@ static bool attach(const char *src_path, const char *dst_path,
->   	return ret == 0;
->   }
->   
-> +static bool find_device(const char *name, struct igt_device_card *card)
-> +{
-> +	igt_devices_scan();
-> +
-> +	return igt_device_find_card_by_sysname(name, card);
-> +}
-> +
-> +static bool device_exists(const char *name)
-> +{
-> +	struct igt_device_card card;
-> +
-> +	return find_device(name, &card);
-> +}
-> +
->   /**
->    * SUBTEST: device-default-files
->    * Description: Test that creating a VKMS device creates the default files and
-> @@ -774,6 +789,29 @@ static void test_attach_connector_to_encoder(void)
->   	igt_vkms_device_destroy(dev2);
+> @@ -1122,6 +1122,47 @@ static void test_enable_plane_no_crtcs(void)
+>   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enable-no-pipeline-items
-> + * Description: Try to enable a VKMS device without adding any pipeline items
-> + *              and test that it fails.
+> + * SUBTEST: enable-no-crtcs
+> + * Description: Try to enable a VKMS device without adding CRTCs and test that
+> + *              it fails.
 > + */
 > +
-> +static void test_enable_no_pipeline_items(void)
+> +static void test_enable_no_crtcs(void)
 > +{
 > +	igt_vkms_t *dev;
 > +
-> +	dev = igt_vkms_device_create(__func__);
+> +	igt_vkms_config_t cfg = {
+> +		.device_name = __func__,
+> +		.planes = {
+> +			{
+> +				.name = "plane0",
+> +				.type = DRM_PLANE_TYPE_PRIMARY,
+> +				.possible_crtcs = {},
+> +			},
+> +		},
+> +		.crtcs = { },
+> +		.encoders = {
+> +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
+> +		},
+> +		.connectors = {
+> +			{
+> +				.name = "connector0",
+> +				.possible_encoders = { "encoder0" },
+> +			},
+> +		},
+> +	};
+> +
+> +	dev = igt_vkms_device_create_from_config(&cfg);
 > +	igt_assert(dev);
 > +
-> +	/* Try to enable it and check that the device is not set as enabled */
 > +	igt_vkms_device_set_enabled(dev, true);
 > +	igt_assert(!igt_vkms_device_is_enabled(dev));
-> +
-> +	/* Check that no actual device was created*/
 > +	igt_assert(!device_exists(__func__));
 > +
 > +	igt_vkms_device_destroy(dev);
@@ -200,11 +185,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -799,6 +837,7 @@ igt_main
->   		{ "attach-plane-to-crtc", test_attach_plane_to_crtc },
->   		{ "attach-encoder-to-crtc", test_attach_encoder_to_crtc },
->   		{ "attach-connector-to-encoder", test_attach_connector_to_encoder },
-> +		{ "enable-no-pipeline-items", test_enable_no_pipeline_items },
+> @@ -1154,6 +1195,7 @@ igt_main
+>   		{ "enable-multiple-primary-planes", test_enable_multiple_primary_planes },
+>   		{ "enable-multiple-cursor-planes", test_enable_multiple_cursor_planes },
+>   		{ "enable-plane-no-crtcs", test_enable_plane_no_crtcs },
+> +		{ "enable-no-crtcs", test_enable_no_crtcs },
 >   	};
 >   
 >   	igt_fixture {
