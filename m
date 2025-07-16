@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43D7AC83F1B
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:58:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24670C83F27
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:58:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F154F10E778;
-	Wed, 16 Jul 2025 09:58:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D58C010E775;
+	Wed, 16 Jul 2025 09:58:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="NiSug4fX";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Je2xGXfo";
 	dkim-atps=neutral
 Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77CBD10E774
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1086C10E778
  for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:58:12 +0000 (UTC)
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
- [IPv6:2001:4b98:dc4:8::227])
- by mslow3.mail.gandi.net (Postfix) with ESMTP id 73F4D58791A
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:22:54 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DEA4E43910;
- Wed, 16 Jul 2025 09:22:51 +0000 (UTC)
+ [217.70.183.200])
+ by mslow3.mail.gandi.net (Postfix) with ESMTP id 28706587A9A
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:22:59 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7D29243910;
+ Wed, 16 Jul 2025 09:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752657772;
+ t=1752657777;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=6T9UL+6SL7KBwpZFioF4gVU9Rd7vmFcMKUC+3QIqg5Q=;
- b=NiSug4fXP80FBOguqGRry3+6VYYikK8mdxnutGWKhDXlVT+1Uusw5UnZLuEU1Od6hjRTKG
- RjY7XuaYGYW6bLleNASl/Y4OAFasixnHea/urEsOhgMoMPuHcJn9xKK9+ej2eOegnUWG7z
- Cu44sFIXpyYC+afGDDd+6C1AsewkmSntgGTvp7EyPbHExF9OwinaEFW/swDdpOHY0iwvZI
- LCQw13XAj88pVy2wOSf/OvmlxWU9kSVVUxfJIPPw2tTuxPT4l/b+kZb/LxbywZZ1cF5o8V
- R13lKVcwau++6ALYriObHIL3z8jIiHBtWN/r5AOx56L4DvXwgGfbb4F/kreIqA==
-Message-ID: <99507698-bd73-4b55-bf33-e85e0de1a6a8@bootlin.com>
-Date: Wed, 16 Jul 2025 11:22:51 +0200
+ bh=gGJofS1YlSkYyHiC4PnJCf8O6KbImsadZ3LfqlQyhss=;
+ b=Je2xGXfoczYB84Q8gzXcRFNsiq5UFeYzrR02BEYNqmByUsLT0fRfjGgC5YI0vG3b3GJk78
+ Yt6Fx+bKqbtlNjIY4qT8wPonInyV2bDnNrPUAtF0VjF3JYXrccOFiHimP5t1N1hP++5ccC
+ fvDeZDgThnkhauqnfLkXUCuxXbG3M/HcS1ZLmB8d0eLEeNOq6xy8fJIG42uPRs5hjJMJ5m
+ l+T1xs2F6uuUKI34YzYxYXta5DJ99C0YfV6wUgXA6hK9iWjK5EjZ4iE/caKI0ID9WRoN6J
+ slO+zHfB4CdVy/qr+JLn2tjwe1J8w2xh2YoLsrUs2d3RlV+eaa8x1rph3IwpEw==
+Message-ID: <cd8fb16f-a130-4f09-8fc2-d21edb0d539c@bootlin.com>
+Date: Wed, 16 Jul 2025 11:22:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t v3 03/41] lib/vkms: Allow to enable/disable VKMS
- devices
+Subject: Re: [PATCH i-g-t v3 04/41] tests/vkms_configfs: Test device invalid
+ values
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-4-jose.exposito89@gmail.com>
+ <20250715102513.5636-5-jose.exposito89@gmail.com>
 Content-Language: en-US
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -100,12 +100,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-4-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-5-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
  ggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopeiisghighhnihgvfidrkhgvmhhptgiihihnshhkihesihhnthgvlhdrtghomh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -126,208 +126,100 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/07/2025 à 12:24, José Expósito a écrit :
-> Add helper to enable, disable and check the enabled status of a VKMS
-> device and add a test to ensure that the default value is correctly set.
+> For a VKMS device, it is only possible to set invalid values in two
+> places:
+> 
+> - The device name: The "vkms" name is reserved for the default device
+>    created by the driver.
+> - The device enabled status: It should only accept boolean values.
+> 
+> Test that setting wrong values fails and that the device is not
+> accidentally enabled.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   lib/igt_vkms.c             | 98 ++++++++++++++++++++++++++++++++++++++
->   lib/igt_vkms.h             |  7 +++
->   tests/vkms/vkms_configfs.c | 18 +++++++
->   3 files changed, 123 insertions(+)
+>   tests/vkms/vkms_configfs.c | 60 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 60 insertions(+)
 > 
-> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index fa41f741e..1fd00afd7 100644
-> --- a/lib/igt_vkms.c
-> +++ b/lib/igt_vkms.c
-> @@ -7,7 +7,12 @@
->   
->   #include <dirent.h>
->   #include <errno.h>
-> +#include <fcntl.h>
-> +#include <stddef.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
->   #include <string.h>
-> +#include <unistd.h>
->   
->   #include <ftw.h>
->   #include <linux/limits.h>
-> @@ -17,6 +22,7 @@
->   #include "igt_vkms.h"
->   
->   #define VKMS_ROOT_DIR_NAME		"vkms"
-> +#define VKMS_FILE_ENABLED		"enabled"
->   
->   /**
->    * SECTION:igt_vkms
-> @@ -47,6 +53,50 @@ static const char *mount_vkms_configfs(void)
->   	return vkms_root_path;
->   }
->   
-> +static int read_int(const char *path)
-> +{
-> +	FILE *file;
-> +	int value;
-> +	int ret;
-> +
-> +	file = fopen(path, "r");
-> +	igt_assert_f(file, "Error opening '%s'\n", path);
-> +
-> +	ret = fscanf(file, "%d", &value);
-> +	fclose(file);
-> +	igt_assert_f(ret == 1, "Error reading integer from '%s'\n", path);
-> +
-> +	return value;
-> +}
-> +
-> +static bool read_bool(const char *path)
-> +{
-> +	int ret;
-> +
-> +	ret = read_int(path);
-> +
-> +	return !!ret;
-> +}
-> +
-> +static void write_int(const char *path, int value)
-> +{
-> +	FILE *file;
-> +	int ret;
-> +
-> +	file = fopen(path, "w");
-> +	igt_assert_f(file, "Error opening '%s'\n", path);
-> +
-> +	ret = fprintf(file, "%d", value);
-> +	igt_assert_f(ret >= 0, "Error writing to '%s'\n", path);
-> +
-> +	fclose(file);
-> +}
-> +
-> +static void write_bool(const char *path, bool value)
-> +{
-> +	write_int(path, value ? 1 : 0);
-> +}
-> +
->   /**
->    * igt_require_vkms_configfs:
->    *
-> @@ -65,6 +115,22 @@ void igt_require_vkms_configfs(void)
->   		closedir(dir);
->   }
->   
-> +/**
-> + * igt_vkms_get_device_enabled_path:
-> + * @dev: Device to get the enabled path from
-> + * @path: Output path
-> + * @len: Maximum @path length
-> + *
-> + * Returns the device "enabled" file path.
-> + */
-> +void igt_vkms_get_device_enabled_path(igt_vkms_t *dev, char *path, size_t len)
-> +{
-> +	int ret;
-> +
-> +	ret = snprintf(path, len, "%s/%s", dev->path, VKMS_FILE_ENABLED);
-> +	igt_assert(ret >= 0 && ret < len);
-> +}
-> +
->   /**
->    * igt_vkms_device_create:
->    * @name: VKMS device name
-> @@ -167,6 +233,8 @@ void igt_vkms_device_destroy(igt_vkms_t *dev)
->   
->   	igt_assert(dev);
->   
-> +	igt_vkms_device_set_enabled(dev, false);
-> +
->   	ret = remove_device_dir(dev);
->   	igt_assert_f(ret == 0,
->   		     "Unable to rmdir device directory '%s'. Got errno=%d (%s)\n",
-> @@ -205,3 +273,33 @@ void igt_vkms_destroy_all_devices(void)
->   
->   	closedir(dir);
->   }
-> +
-> +/**
-> + * igt_vkms_device_is_enabled:
-> + * @dev: The device to check
-> + *
-> + * Indicate whether a VKMS device is enabled or not.
-> + */
-> +bool igt_vkms_device_is_enabled(igt_vkms_t *dev)
-> +{
-> +	char path[PATH_MAX];
-> +
-> +	igt_vkms_get_device_enabled_path(dev, path, sizeof(path));
-> +
-> +	return read_bool(path);
-> +}
-> +
-> +/**
-> + * igt_vkms_device_set_enabled:
-> + * @dev: Device to enable or disable
-> + *
-> + * Enable or disable a VKMS device.
-> + */
-> +void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled)
-> +{
-> +	char path[PATH_MAX];
-> +
-> +	igt_vkms_get_device_enabled_path(dev, path, sizeof(path));
-> +
-> +	write_bool(path, enabled);
-> +}
-> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 48c48f296..d3741b6ee 100644
-> --- a/lib/igt_vkms.h
-> +++ b/lib/igt_vkms.h
-> @@ -8,6 +8,8 @@
->   #ifndef __IGT_VKMS_H__
->   #define __IGT_VKMS_H__
->   
-> +#include <stdbool.h>
-> +
->   /**
->    * igt_vkms_t:
->    * @path: VKMS root directory inside configfs mounted directory
-> @@ -20,8 +22,13 @@ typedef struct igt_vkms {
->   
->   void igt_require_vkms_configfs(void);
->   
-> +void igt_vkms_get_device_enabled_path(igt_vkms_t *dev, char *path, size_t len);
-> +
->   igt_vkms_t *igt_vkms_device_create(const char *name);
->   void igt_vkms_device_destroy(igt_vkms_t *dev);
->   void igt_vkms_destroy_all_devices(void);
->   
-> +bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
-> +void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
-> +
->   #endif /* __IGT_VKMS_H__ */
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index b942cec64..aa7cd9e4e 100644
+> index aa7cd9e4e..16e5f6725 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -103,6 +103,23 @@ static void test_device_default_files(void)
+> @@ -24,6 +24,11 @@
+>   #include "igt.h"
+>   #include "igt_vkms.h"
+>   
+> +struct invalid_value {
+> +	const char *value;
+> +	int size;
+> +};
+> +
+>   static void assert_default_files(const char *path,
+>   				 const char **files, size_t n_files,
+>   				 const char **dirs, size_t n_dirs)
+> @@ -72,6 +77,32 @@ static void assert_default_files(const char *path,
+>   	}
+>   }
+>   
+> +static void assert_wrong_bool_values(const char *path)
+> +{
+> +	struct invalid_value invalid_bool_values[] = {
+> +		{ "", 0 },
+> +		{ "\0", 1 },
+> +		{ "-1", 2 },
+> +		{ "2", 1 },
+> +		{ "o", 1 },
+> +		{ "invalid", 8 },
+> +	};
+> +	int fd;
+> +	int ret;
+> +
+> +	for (int i = 0; i < ARRAY_SIZE(invalid_bool_values); i++) {
+> +		struct invalid_value v = invalid_bool_values[i];
+> +
+> +		fd = open(path, O_WRONLY);
+> +		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
+> +
+> +		ret = write(fd, v.value, v.size);
+> +		igt_assert_f(ret <= 0, "Error writing '%s' to '%s'", v.value, path);
+> +
+> +		close(fd);
+> +	}
+> +}
+> +
+>   /**
+>    * SUBTEST: device-default-files
+>    * Description: Test that creating a VKMS device creates the default files and
+> @@ -120,6 +151,34 @@ static void test_device_default_values(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: device-default-values
-> + * Description: Check that the default values for the device are correct.
+> + * SUBTEST: device-wrong-values
+> + * Description: Check that setting unexpected values doesn't work.
 > + */
 > +
-> +static void test_device_default_values(void)
+> +static void test_device_wrong_values(void)
 > +{
 > +	igt_vkms_t *dev;
+> +	char path[PATH_MAX];
 > +
+> +	/* It is not possible to create devices named "vkms" to avoid clashes
+> +	 * with the default device created by VKMS
+> +	 */
+> +	dev = igt_vkms_device_create("vkms");
+> +	igt_assert(!dev);
+> +
+> +	/* Test invalid values for "enabled" */
 > +	dev = igt_vkms_device_create(__func__);
 > +	igt_assert(dev);
 > +
+> +	igt_vkms_get_device_enabled_path(dev, path, sizeof(path));
+> +
+> +	assert_wrong_bool_values(path);
 > +	igt_assert(!igt_vkms_device_is_enabled(dev));
 > +
 > +	igt_vkms_device_destroy(dev);
@@ -336,11 +228,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -110,6 +127,7 @@ igt_main
->   		void (*fn)(void);
+> @@ -128,6 +187,7 @@ igt_main
 >   	} tests[] = {
 >   		{ "device-default-files", test_device_default_files },
-> +		{ "device-default-values", test_device_default_values },
+>   		{ "device-default-values", test_device_default_values },
+> +		{ "device-wrong-values", test_device_wrong_values },
 >   	};
 >   
 >   	igt_fixture {
