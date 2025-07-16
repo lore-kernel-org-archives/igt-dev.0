@@ -4,46 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF9D4C83F27
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75161C83F1B
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:59:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 95712891C0;
-	Wed, 16 Jul 2025 09:58:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 32B7E10E762;
+	Wed, 16 Jul 2025 09:59:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="YOwSmk7P";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="jxaeKZxZ";
 	dkim-atps=neutral
 Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E49C310E771
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:58:29 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by mslow3.mail.gandi.net (Postfix) with ESMTP id B14AA587D7B
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:24:09 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3F8C343122;
- Wed, 16 Jul 2025 09:24:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B284F10E762
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:59:38 +0000 (UTC)
+Received: from relay16.mail.gandi.net (relay16.mail.gandi.net
+ [IPv6:2001:4b98:dc4:8::236])
+ by mslow3.mail.gandi.net (Postfix) with ESMTP id 69BA7588589
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:26:58 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9933E43885;
+ Wed, 16 Jul 2025 09:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752657846;
+ t=1752658016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=MkT7sMVUJtKmWRuWivMKXaH3yeQTgdim6CqeBH6hef4=;
- b=YOwSmk7Ph72/3b1mEKNCgJmeJOvQ0sYN5ITx9tup2USD/kdppl0VYS+l4oRPDgDBPvB7h/
- HsSFxHXhe9VWJXjS8qhZBwuzRpQe3/WNsXSqeudK8voxq0DD0wUpn3wCofjZjG7c87AGJt
- hebWhH9U36j+LduQj1fQBonm6m3nwhBf+mRLuAy08ASEgox6LAlUkmmb1etTLyVx6P0jqU
- trGKe1MaCa+JW54uGMDyuhoAB78u7qBYmtW+GrWJ/VhqnLsrWWx8QhlGyHbtpATYCMtuGV
- zzPZpucx/DgMQIIn3tMCR2deJ2zqUui0R0WtJOpaQp+GJFkzbvj9xZx7UYvuNQ==
-Message-ID: <c99efc19-8ed3-4827-8432-976fd57d39c2@bootlin.com>
-Date: Wed, 16 Jul 2025 11:24:05 +0200
+ bh=hG2bny8LEfGkfZByhnyQ7FuKwG6Xq5nFWG0/SR1++O8=;
+ b=jxaeKZxZpkcHa6KFzmqd+LI6mlr6lfNb0xMT1Pf7E8ztcHcREaxQeW3hKadGR5MJbFZnGu
+ i27bCLuhgT6RlBdHt/ryI6c4O4pzOWj5QkBbp+JqSvx5Ns6JpRvRcUNxDjxgDOxSkShPo/
+ zA6N3dGSrhcI0m8/nwOB4BvYVh9m2rdY7U88fYzYQr21w3k7Mbc0BJiuaDelrwFYgw1cOB
+ IaJsNGQN+OlMnL3KPAyG4vV/A6dlqhIhGOoRK9nPPMwIsCxh5BgxrJSAyGFv4vcpuS13wD
+ UtehfBglGaLewESt7NvLD56pimKjQUNFy9ZHJr4OPo5YT+3eHiTU2AaYJ5UN2w==
+Message-ID: <4ebabcc9-adc0-47fa-bfa7-8d3cb5f21efb@bootlin.com>
+Date: Wed, 16 Jul 2025 11:26:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 08/41] tests/vkms_configfs: Test plane valid
- values
+Subject: Re: [PATCH i-g-t v3 12/41] tests/vkms_configfs: Test CRTC valid values
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-9-jose.exposito89@gmail.com>
+ <20250715102513.5636-13-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -100,14 +99,13 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-9-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-13-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
 X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeeivedtfeegtdekheethedttddtfefhhfegjeeljeejleduvdfhudegvdekheevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
  ggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopeiisghighhnihgvfidrkhgvmhhptgiihihnshhkihesihhnthgvlhdrtghomh
-X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,7 +124,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/07/2025 à 12:24, José Expósito a écrit :
-> Test that all valid values for the plane "type" work and that it
+> Test that all valid values for the CRTC "writeback" work and that it
 > changes accordingly.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
@@ -134,43 +132,37 @@ Le 15/07/2025 à 12:24, José Expósito a écrit :
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   tests/vkms/vkms_configfs.c | 31 +++++++++++++++++++++++++++++++
->   1 file changed, 31 insertions(+)
+>   tests/vkms/vkms_configfs.c | 25 +++++++++++++++++++++++++
+>   1 file changed, 25 insertions(+)
 > 
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index bb9c53f34..76aa6e432 100644
+> index 1d96a627c..860a06f41 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -280,6 +280,36 @@ static void test_plane_wrong_values(void)
+> @@ -382,6 +382,30 @@ static void test_crtc_wrong_values(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: plane-valid-values
+> + * SUBTEST: crtc-valid-values
 > + * Description: Check that setting valid values works.
 > + */
 > +
-> +static void test_plane_valid_values(void)
+> +static void test_crtc_valid_values(void)
 > +{
 > +	igt_vkms_t *dev;
 > +
 > +	dev = igt_vkms_device_create(__func__);
 > +	igt_assert(dev);
 > +
-> +	igt_vkms_device_add_plane(dev, "plane0");
+> +	igt_vkms_device_add_crtc(dev, "crtc0");
 > +
-> +	/* Test valid values for "type" */
-> +	igt_vkms_plane_set_type(dev, "plane0", DRM_PLANE_TYPE_OVERLAY);
-> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
-> +		      DRM_PLANE_TYPE_OVERLAY);
+> +	/* Test valid values for "writeback" */
+> +	igt_vkms_crtc_set_writeback_enabled(dev, "crtc0", true);
+> +	igt_assert(igt_vkms_crtc_is_writeback_enabled(dev, "crtc0"));
 > +
-> +	igt_vkms_plane_set_type(dev, "plane0", DRM_PLANE_TYPE_PRIMARY);
-> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
-> +		      DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_vkms_plane_set_type(dev, "plane0", DRM_PLANE_TYPE_CURSOR);
-> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
-> +		      DRM_PLANE_TYPE_CURSOR);
+> +	igt_vkms_crtc_set_writeback_enabled(dev, "crtc0", false);
+> +	igt_assert(!igt_vkms_crtc_is_writeback_enabled(dev, "crtc0"));
 > +
 > +	igt_vkms_device_destroy(dev);
 > +}
@@ -178,11 +170,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -292,6 +322,7 @@ igt_main
->   		{ "plane-default-files", test_plane_default_files },
->   		{ "plane-default-values", test_plane_default_values },
->   		{ "plane-wrong-values", test_plane_wrong_values },
-> +		{ "plane-valid-values", test_plane_valid_values },
+> @@ -398,6 +422,7 @@ igt_main
+>   		{ "crtc-default-files", test_crtc_default_files },
+>   		{ "crtc-default-values", test_crtc_default_values },
+>   		{ "crtc-wrong-values", test_crtc_wrong_values },
+> +		{ "crtc-valid-values", test_crtc_valid_values },
 >   	};
 >   
 >   	igt_fixture {
