@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB3BEC83F22
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:50:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 457DAC83F1B
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:51:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A034310E762;
-	Wed, 16 Jul 2025 09:50:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EECE310E770;
+	Wed, 16 Jul 2025 09:51:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="KnN9uCKY";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="LhoxsY8I";
 	dkim-atps=neutral
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
- [217.70.183.198])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F89110E762
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:49:58 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7AFA444251;
- Wed, 16 Jul 2025 09:49:56 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
+ [217.70.183.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED13610E771
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:51:33 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DAF551FD38;
+ Wed, 16 Jul 2025 09:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752659397;
+ t=1752659492;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=7mx32TKk8YOfU8cft1Z7XA/GO1v0vN8RJEUNhQ55m8c=;
- b=KnN9uCKYeW5qCMAIxhlwKOox8J1EyaIi1ksxuwwCPsNuZDqR3qZDWQ+BSKSTxhKjctdXlP
- hGsuOxTBaqVXMe1hrvlPtl0VjE21u7EnTHlsac1CaXRYABXqwB4P2ue/SiDb8FFx2VedLs
- erH6XtcBvd+FrRzaR6gvn3iy10M6+di6eja8/eKNrjB6ZIEeT/q3VJZ+XsdG81rMzW12BR
- O8kVu8hRQD6YyW1XLiDJqD1RMow7QJrk/Rd7C01I4T/CFyQ5hCQbeLSdo544SGMGaTirFu
- E3+Lpb/KehSVXhniniZJN0bd9qJNYo6KdYoZWA6rD+RYxrWhkjlAiI9W/XOFvg==
-Message-ID: <73393f9f-8a0b-4f4d-8072-6cde0031ec6f@bootlin.com>
-Date: Wed, 16 Jul 2025 11:49:55 +0200
+ bh=a9Hb9YmLdtx759rnzzmkyvyZWEyc5qsEkuXcdpomdaE=;
+ b=LhoxsY8I3Fk2bijSc5wKup70fYZzCcEQ8ot7fCuFL97dOJ2CcDpsqXr4K54v9e7l4KXYM3
+ MT1rxyc31oDk9Xs+i5g3pGaCgawraWS1pBVBb+SisDaCPgZ8WMZYBDjgBmTlyG6oAHUgZe
+ 8dmXKI2oMw2EY9C92+6q7MJ/qcwYcUuhYzH005scaTeIueezv/IBkDN3gJv+wt0ADLWzSJ
+ WsmDmeAgxzlPYPHav1x09vcjvdE0rBcsWtpd/ttNH4p3wuzw9xAerIZu/rdn7t0CZ3GmXp
+ QfiPYzohDWwfmS0U2yfaJT+BC9lBXkxEapoNAV2QBLN0qauG04Cr/m5fUOXv/g==
+Message-ID: <56e17beb-368e-497a-b27c-aa502cf0820e@bootlin.com>
+Date: Wed, 16 Jul 2025 11:51:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 20/41] lib/vkms: Test attaching connectors to
- encoders
+Subject: Re: [PATCH i-g-t v3 21/41] lib/igt_device_scan: Allow to find device
+ by sysname
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-21-jose.exposito89@gmail.com>
+ <20250715102513.5636-22-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -97,7 +97,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-21-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-22-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
@@ -123,196 +123,81 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/07/2025 à 12:24, José Expósito a écrit :
-> Add helpers to attach and detach connectors and encoders and a test
-> checking the different valid and invalid cases.
+> The VKMS driver allows to create multiple devices handled by the same
+> driver but with a different sysname.
+> 
+> In order to differentiate between them, allow to find devices by
+> sysname.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   lib/igt_vkms.c             | 50 ++++++++++++++++++++++++++++
->   lib/igt_vkms.h             |  9 +++++
->   tests/vkms/vkms_configfs.c | 68 ++++++++++++++++++++++++++++++++++++++
->   3 files changed, 127 insertions(+)
+>   lib/igt_device_scan.c | 22 ++++++++++++++++++++++
+>   lib/igt_device_scan.h |  2 ++
+>   2 files changed, 24 insertions(+)
 > 
-> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index b6f22721d..2cd78fc95 100644
-> --- a/lib/igt_vkms.c
-> +++ b/lib/igt_vkms.c
-> @@ -410,6 +410,22 @@ void igt_vkms_get_connector_status_path(igt_vkms_t *dev, const char *name,
->   				    VKMS_FILE_CONNECTOR_STATUS, path, len);
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index 0ab7b7a0a..abd8ca209 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -231,6 +231,7 @@ struct igt_device {
+>   	char *subsystem;
+>   	char *syspath;
+>   	char *devnode;
+> +	char *sysname;
+>   
+>   	/* /dev/dri/... paths */
+>   	char *drm_card;
+> @@ -680,6 +681,7 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev,
+>   	idev->syspath = strdup_nullsafe(udev_device_get_syspath(dev));
+>   	idev->subsystem = strdup_nullsafe(udev_device_get_subsystem(dev));
+>   	idev->devnode = strdup_nullsafe(udev_device_get_devnode(dev));
+> +	idev->sysname = strdup_nullsafe(udev_device_get_sysname(dev));
+>   
+>   	if (idev->devnode && strstr(idev->devnode, "/dev/dri/card"))
+>   		idev->drm_card = strdup(idev->devnode);
+> @@ -2145,6 +2147,26 @@ bool igt_device_card_match_pci(const char *filter,
+>          return __igt_device_card_match(filter, card, true);
 >   }
 >   
-> +/**
-> + * igt_vkms_get_connector_possible_encoders_path:
-> + * @dev: Device containing the connector
-> + * @name: Connector name
-> + * @path: Output path
-> + * @len: Maximum @path length
-> + *
-> + * Returns the connector "possible_encoders" directory path.
-> + */
-> +void igt_vkms_get_connector_possible_encoders_path(igt_vkms_t *dev,
-> +						   const char *name, char *path,
-> +						   size_t len)
+> +bool igt_device_find_card_by_sysname(const char *sysname,
+> +				     struct igt_device_card *card)
 > +{
-> +	get_attach_dir_path(dev, VKMS_PIPELINE_ITEM_CONNECTOR, name, path, len);
+> +	struct igt_device *dev;
+> +
+> +	igt_assert(card);
+> +	igt_assert(sysname);
+> +
+> +	memset(card, 0, sizeof(*card));
+> +
+> +	igt_list_for_each_entry(dev, &igt_devs.all, link) {
+> +		if (strcmp(dev->sysname, sysname) == 0) {
+> +			__copy_dev_to_card(dev, card);
+> +			return true;
+> +		}
+> +	}
+> +
+> +	return false;
 > +}
 > +
 >   /**
->    * igt_vkms_device_create:
->    * @name: VKMS device name
-> @@ -804,3 +820,37 @@ void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
->   
->   	write_int(path, status);
->   }
-> +
-> +/**
-> + * igt_vkms_connector_attach_encoder:
-> + * @dev: Target device
-> + * @connector_name: Target connector name
-> + * @encoder_name: Destination encoder name
-> + *
-> + * Attach a connector to an encoder. Return true on success and false on error.
-> + */
-> +bool igt_vkms_connector_attach_encoder(igt_vkms_t *dev,
-> +				       const char *connector_name,
-> +				       const char *encoder_name)
-> +{
-> +	return attach_pipeline_item(dev, VKMS_PIPELINE_ITEM_CONNECTOR,
-> +				    connector_name, VKMS_PIPELINE_ITEM_ENCODER,
-> +				    encoder_name);
-> +}
-> +
-> +/**
-> + * igt_vkms_connector_detach_encoder:
-> + * @dev: Target device
-> + * @connector_name: Target connector name
-> + * @encoder_name: Destination encoder name
-> + *
-> + * Detach a connector from an encoder. Return true on success and false on
-> + * error.
-> + */
-> +bool igt_vkms_connector_detach_encoder(igt_vkms_t *dev,
-> +				       const char *connector_name,
-> +				       const char *encoder_name)
-> +{
-> +	return detach_pipeline_item(dev, VKMS_PIPELINE_ITEM_CONNECTOR,
-> +				    connector_name, encoder_name);
-> +}
-> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 2dd91df9d..42134c82e 100644
-> --- a/lib/igt_vkms.h
-> +++ b/lib/igt_vkms.h
-> @@ -41,6 +41,9 @@ void igt_vkms_get_connector_path(igt_vkms_t *dev, const char *name, char *path,
->   				 size_t len);
->   void igt_vkms_get_connector_status_path(igt_vkms_t *dev, const char *name,
->   					char *path, size_t len);
-> +void igt_vkms_get_connector_possible_encoders_path(igt_vkms_t *dev,
-> +						   const char *name, char *path,
-> +						   size_t len);
->   
->   igt_vkms_t *igt_vkms_device_create(const char *name);
->   void igt_vkms_device_destroy(igt_vkms_t *dev);
-> @@ -72,5 +75,11 @@ void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name);
->   int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name);
->   void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
->   				   int status);
-> +bool igt_vkms_connector_attach_encoder(igt_vkms_t *dev,
-> +				       const char *connector_name,
-> +				       const char *encoder_name);
-> +bool igt_vkms_connector_detach_encoder(igt_vkms_t *dev,
-> +				       const char *connector_name,
-> +				       const char *encoder_name);
->   
->   #endif /* __IGT_VKMS_H__ */
-> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index fdbfa61a6..c36a795d6 100644
-> --- a/tests/vkms/vkms_configfs.c
-> +++ b/tests/vkms/vkms_configfs.c
-> @@ -707,6 +707,73 @@ static void test_attach_encoder_to_crtc(void)
->   	igt_vkms_device_destroy(dev2);
->   }
->   
-> +/**
-> + * SUBTEST: attach-connector-to-encoder
-> + * Description: Check that errors are handled while attaching connectors to
-> + *              encoders.
-> + */
-> +
-> +static void test_attach_connector_to_encoder(void)
-> +{
-> +	igt_vkms_t *dev1;
-> +	igt_vkms_t *dev2;
-> +	char crtc1[PATH_MAX];
-> +	char encoder1[PATH_MAX];
-> +	char connector1[PATH_MAX];
-> +	char encoder2[PATH_MAX];
-> +	char crtc1_writeback_path[PATH_MAX];
-> +	bool ok;
-> +
-> +	dev1 = igt_vkms_device_create("test_attach_encoder_to_crtc_1");
-> +	igt_assert(dev1);
-> +
-> +	dev2 = igt_vkms_device_create("test_attach_encoder_to_crtc_2");
-> +	igt_assert(dev2);
-> +
-> +	igt_vkms_device_add_crtc(dev1, "crtc1");
-> +	igt_vkms_device_add_encoder(dev1, "encoder1");
-> +	igt_vkms_device_add_connector(dev1, "connector1");
-> +	igt_vkms_device_add_encoder(dev2, "encoder2");
-> +
-> +	igt_vkms_get_crtc_path(dev1, "crtc1", crtc1, sizeof(crtc1));
-> +	igt_vkms_get_encoder_path(dev1, "encoder1", encoder1, sizeof(encoder1));
-> +	igt_vkms_get_connector_possible_encoders_path(dev1, "connector1",
-> +						      connector1,
-> +						      sizeof(connector1));
-> +	igt_vkms_get_encoder_path(dev2, "encoder2", encoder2, sizeof(encoder2));
-> +	igt_vkms_get_crtc_writeback_path(dev1, "crtc1", crtc1_writeback_path,
-> +					 sizeof(crtc1_writeback_path));
-> +
-> +	/* Error: Attach a connector to a CRTC */
-> +	ok = attach(connector1, crtc1, "crtc");
-> +	igt_assert_f(!ok, "Attaching connector1 to crtc1 should fail\n");
-> +
-> +	/* Error: Attach a connector to a random file */
-> +	ok = attach(connector1, crtc1_writeback_path, "file");
-> +	igt_assert_f(!ok, "Attaching connector1 to a random file should fail\n");
-> +
-> +	/* Error: Attach a connector to an encoder from other device */
-> +	ok = attach(connector1, encoder2, "encoder2");
-> +	igt_assert_f(!ok, "Attaching connector1 to encoder2 should fail\n");
-> +
-> +	/* OK: Attaching connector1 to encoder1 */
-> +	ok = igt_vkms_connector_attach_encoder(dev1, "connector1", "encoder1");
-> +	igt_assert_f(ok, "Error attaching plane1 to crtc1\n");
-> +
-> +	/* Error: Attaching connector1 to encoder1 twice */
-> +	ok = attach(connector1, encoder1, "encoder1_duplicated");
-> +	igt_assert_f(!ok, "Error attaching connector1 to encoder1 twice should fail");
-> +
-> +	/* OK: Detaching and attaching again */
-> +	ok = igt_vkms_connector_detach_encoder(dev1, "connector1", "encoder1");
-> +	igt_assert_f(ok, "Error detaching connector1 from encoder1\n");
-> +	ok = igt_vkms_connector_attach_encoder(dev1, "connector1", "encoder1");
-> +	igt_assert_f(ok, "Error attaching connector1 to encoder1\n");
-> +
-> +	igt_vkms_device_destroy(dev1);
-> +	igt_vkms_device_destroy(dev2);
-> +}
-> +
->   igt_main
->   {
->   	struct {
-> @@ -731,6 +798,7 @@ igt_main
->   		{ "connector-valid-values", test_connector_valid_values },
->   		{ "attach-plane-to-crtc", test_attach_plane_to_crtc },
->   		{ "attach-encoder-to-crtc", test_attach_encoder_to_crtc },
-> +		{ "attach-connector-to-encoder", test_attach_connector_to_encoder },
->   	};
->   
->   	igt_fixture {
+>    * igt_device_card_match_all
+>    * @filter: filter string.
+> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+> index e6e31e799..f24a193cd 100644
+> --- a/lib/igt_device_scan.h
+> +++ b/lib/igt_device_scan.h
+> @@ -94,6 +94,8 @@ bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
+>   bool igt_device_find_integrated_card(struct igt_device_card *card);
+>   bool igt_device_find_first_xe_discrete_card(struct igt_device_card *card);
+>   bool igt_device_find_xe_integrated_card(struct igt_device_card *card);
+> +bool igt_device_find_card_by_sysname(const char *sysname,
+> +				     struct igt_device_card *card);
+>   char *igt_device_get_pretty_name(struct igt_device_card *card, bool numeric);
+>   int igt_open_card(struct igt_device_card *card);
+>   int igt_open_render(struct igt_device_card *card);
 
 -- 
 Louis Chauvet, Bootlin
