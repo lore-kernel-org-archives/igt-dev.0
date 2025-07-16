@@ -4,45 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2707C83F22
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:55:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 266F2C83F22
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:58:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A71110E772;
-	Wed, 16 Jul 2025 09:55:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C7CAA10E771;
+	Wed, 16 Jul 2025 09:58:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="BkFiSjdU";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="kjMCgYCS";
 	dkim-atps=neutral
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
- [217.70.183.201])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AE1010E776
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:55:12 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 41DF84341B;
- Wed, 16 Jul 2025 09:55:10 +0000 (UTC)
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE03310E771
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:58:06 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
+ [217.70.183.193])
+ by mslow3.mail.gandi.net (Postfix) with ESMTP id 180DA5854D0
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:22:23 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6764D439F5;
+ Wed, 16 Jul 2025 09:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752659710;
+ t=1752657741;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Q1u9iLpLk5Ew/utdtdjPTXekOagSel/IZuKp+hashnc=;
- b=BkFiSjdUKziS9xA8/rgILSZ4LsoToW3Ij16D4cGlmQd3RsMQXqsFyLxxYD9BwOuY/v+8D+
- XsGG5ZHDtrdhseEDGZShkfv+XwldI4ECQmpuyvAw6dIOb+lpZ8p9DkH9/fwQDYl5xgCsOi
- 5fSsF975o1oh65PZQ5HExC/dvdXOmp8i7p8VuNm+3L2HpUeOrbML3T7b1Hn16C5Haj1fEk
- ReVZ4Ji9y6aJI68FPo6LWE5AFanYtzbc6rl7SxbBw5sFqUTjUwwgg35VZfglMp28DdVp9/
- 1bmhRFNK4mF8vGzavK7ADJZbsf+ReFFvILncQ5WR+uPQEYfs9NEvt5tQtvViWQ==
-Message-ID: <0c02403b-0159-44b3-8308-b7436d060dc7@bootlin.com>
-Date: Wed, 16 Jul 2025 11:55:09 +0200
+ bh=a3doJeU5diWWfA5WOqtCCsp/cNih1DbJz/bI3kGi76I=;
+ b=kjMCgYCS9Aba00ahNJc5/cWA4eD+hZW46yZqBk+Q/AyEs9Ydc0/HNkk/1MEBfcl9xpZjPl
+ gw2DsxpNKshig5Uh3WyQMwrWr8B4YGuRc74d5hbBMR/V5/dKELHqJxRg3+V1PMj5Tow9GG
+ HYZRJS7j2Obg2KYtVIRgrajbeRLBJJJGFSa1EdkNJUsi08UNPII/0iiayyr81HdRJqfptA
+ QRTZewi428xYASDxUE2pnAAxSnL/zcg8k/RupuT8H8svsuGgRFgCqX3S9+pqnOfWusG4Dq
+ M1n90yYaOS7sOJkkGLBLXzPAtFmN/HxrT71O4W3OvRelCcP0PTHUgyiwSwVJqg==
+Message-ID: <30847e89-6f05-49f6-88f9-08a871d6fb54@bootlin.com>
+Date: Wed, 16 Jul 2025 11:22:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 31/41] tests/vkms_configfs: Test enabling a
- device without encoders
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: Re: [PATCH i-g-t v3 01/41] lib/drmtest: Add VKMS as a known driver
+ type
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com
+Cc: zbigniew.kempczynski@intel.com, Jim Shargo <jshargo@chromium.org>,
+ Marius Vlad <marius.vlad@collabora.com>
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-32-jose.exposito89@gmail.com>
+ <20250715102513.5636-2-jose.exposito89@gmail.com>
 Content-Language: en-US
-From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
  5K81kIWbtQX91pD/wH5UapRF4kwMXTAqof8+m3XfYcEDVG31Kf8QkJTG/gLBi1UfJgGBahbY
@@ -97,13 +101,13 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-32-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-2-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeegtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeeivedtfeegtdekheethedttddtfefhhfegjeeljeejleduvdfhudegvdekheevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
- ggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopeiisghighhnihgvfidrkhgvmhhptgiihihnshhkihesihhnthgvlhdrtghomh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfhffuvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteffhfdtiefgheffudeuvdekfefgvdduudfgffetteffvdetfffgjeevudfggfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohephedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
+ ggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopeiisghighhnihgvfidrkhgvmhhptgiihihnshhkihesihhnthgvlhdrtghomhdprhgtphhtthhopehjshhhrghrghhosegthhhrohhmihhumhdrohhrghdprhgtphhtthhopehmrghrihhushdrvhhlrggusegtohhllhgrsghorhgrrdgtohhm
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -122,81 +126,101 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-Le 15/07/2025 à 12:25, José Expósito a écrit :
-> Try to enable a VKMS device without adding encoders and test that it
-> fails.
+Le 15/07/2025 à 12:24, José Expósito a écrit :
+> As we are going to add VKMS specific tests, allow to check if it is
+> available.
 > 
+> Co-developed-by: Jim Shargo <jshargo@chromium.org>
+> Signed-off-by: Jim Shargo <jshargo@chromium.org>
+> Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
+> Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   tests/vkms/vkms_configfs.c | 42 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 42 insertions(+)
+>   lib/drmtest.c | 21 +++++++++++++++++++++
+>   lib/drmtest.h |  6 +++++-
+>   2 files changed, 26 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index be856876b..5be89edef 100644
-> --- a/tests/vkms/vkms_configfs.c
-> +++ b/tests/vkms/vkms_configfs.c
-> @@ -1216,6 +1216,47 @@ static void test_enable_too_many_crtcs(void)
->   	igt_vkms_device_destroy(dev);
->   }
->   
-> +/**
-> + * SUBTEST: enable-no-encoders
-> + * Description: Try to enable a VKMS device without adding encoders and test
-> + *              that it fails.
-> + */
-> +
-> +static void test_enable_no_encoders(void)
-> +{
-> +	igt_vkms_t *dev;
-> +
-> +	igt_vkms_config_t cfg = {
-> +		.device_name = __func__,
-> +		.planes = {
-> +			{
-> +				.name = "plane0",
-> +				.type = DRM_PLANE_TYPE_PRIMARY,
-> +				.possible_crtcs = { "crtc0" },
-> +			},
-> +		},
-> +		.crtcs = {
-> +			{ .name = "crtc0" },
-> +		},
-> +		.encoders = { },
-> +		.connectors = {
-> +			{
-> +				.name = "connector0",
-> +				.possible_encoders = {},
-> +			},
-> +		},
-> +	};
-> +
-> +	dev = igt_vkms_device_create_from_config(&cfg);
-> +	igt_assert(dev);
-> +
-> +	igt_vkms_device_set_enabled(dev, true);
-> +	igt_assert(!igt_vkms_device_is_enabled(dev));
-> +	igt_assert(!device_exists(__func__));
-> +
-> +	igt_vkms_device_destroy(dev);
-> +}
-> +
->   igt_main
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 436b6de78..943ea8dbe 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -223,6 +223,7 @@ static const struct module {
+>   	{ DRIVER_V3D, "v3d" },
+>   	{ DRIVER_VC4, "vc4" },
+>   	{ DRIVER_VGEM, "vgem" },
+> +	{ DRIVER_VKMS, "vkms" },
+>   	{ DRIVER_VMWGFX, "vmwgfx" },
+>   	{ DRIVER_XE, "xe" },
+>   	{}
+> @@ -295,6 +296,8 @@ static const char *chipset_to_str(int chipset)
+>   		return "xe";
+>   	case DRIVER_VMWGFX:
+>   		return "vmwgfx";
+> +	case DRIVER_VKMS:
+> +		return "vkms";
+>   	case DRIVER_ANY:
+>   		return "any";
+>   	default:
+> @@ -971,3 +974,21 @@ void igt_require_xe(int fd)
 >   {
->   	struct {
-> @@ -1250,6 +1291,7 @@ igt_main
->   		{ "enable-plane-no-crtcs", test_enable_plane_no_crtcs },
->   		{ "enable-no-crtcs", test_enable_no_crtcs },
->   		{ "enable-too-many-crtcs", test_enable_too_many_crtcs },
-> +		{ "enable-no-encoders", test_enable_no_encoders },
->   	};
+>   	igt_require(is_xe_device(fd));
+>   }
+> +
+> +void igt_require_vkms(void)
+> +{
+> +	/*
+> +	 * Since VKMS can create and destroy virtual drivers at will, instead
+> +	 * look to make sure the driver is installed.
+> +	 */
+> +	struct stat s = {};
+> +	int ret;
+> +	const char *vkms_module_dir = "/sys/module/vkms";
+> +
+> +	ret = stat(vkms_module_dir, &s);
+> +
+> +	igt_require_f(ret == 0, "VKMS stat of %s returned %d (%s)\n",
+> +		      vkms_module_dir, ret, strerror(ret));
+> +	igt_require_f(S_ISDIR(s.st_mode),
+> +		      "VKMS stat of %s was not a directory\n", vkms_module_dir);
+> +}
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index 27e5a18e2..a9542dde2 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -55,14 +55,17 @@ int __get_drm_device_name(int fd, char *name, int name_size);
+>   #define DRIVER_MSM	(1 << 6)
+>   #define DRIVER_XE	(1 << 7)
+>   #define DRIVER_VMWGFX   (1 << 8)
+> +#define DRIVER_VKMS	(1 << 9)
 >   
->   	igt_fixture {
+>   /*
+>    * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+>    * with vgem as well as a supported driver, you can end up with a
+>    * near-100% skip rate if you don't explicitly specify the device,
+>    * depending on device-load ordering.
+> + *
+> + * Exclude VKMS to prefer hardware drivers.
+>    */
+> -#define DRIVER_ANY 	~(DRIVER_VGEM)
+> +#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS)
+>   
+>   /*
+>    * Compile friendly enum for i915/xe.
+> @@ -135,6 +138,7 @@ void igt_require_i915(int fd);
+>   void igt_require_nouveau(int fd);
+>   void igt_require_vc4(int fd);
+>   void igt_require_xe(int fd);
+> +void igt_require_vkms(void);
+>   
+>   bool is_amdgpu_device(int fd);
+>   bool is_i915_device(int fd);
 
 -- 
 Louis Chauvet, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
+
 
