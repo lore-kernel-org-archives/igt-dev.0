@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 106A7C83F22
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:54:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2707C83F22
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:55:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDF2010E771;
-	Wed, 16 Jul 2025 09:54:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A71110E772;
+	Wed, 16 Jul 2025 09:55:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="AoB2RSyW";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="BkFiSjdU";
 	dkim-atps=neutral
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
- [217.70.183.196])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB76410E771
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:54:44 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1155A43AD1;
- Wed, 16 Jul 2025 09:54:42 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AE1010E776
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:55:12 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 41DF84341B;
+ Wed, 16 Jul 2025 09:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752659683;
+ t=1752659710;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Q1mRxc1YrOznOa8uEIyVmLUxXYQi/xO5Vclpfj7qpgA=;
- b=AoB2RSyWY4z6YDtQeZOj159+1rAIHLwnfpu7lSGY69Qe8NddBgaDtU3o9VM2RCikTEAwo7
- 6XfHug/12czgvQDTktAd5+ijytd6C4kU/tktirQqk/Uh5nIsqbt8vDHXCn3I8JZJfkNb/n
- sx5HGbLk8B+gC9QPoBE3YVXaBQJEALbOZ61OBsDff7dGE2SgeGEKt60MWQB95ZrAXQFzbo
- C289raHWw2zsDZ2IauEbqiPv81J/Df0I4yjtnOjBjeBQVlUz8/+dSlizJ5xtVSl3s2oW0W
- V4F7eWqSaKOBJJjFqLqwterHLdxFVWa4QeHvsjjhH14wYuR62dHF4evmdAT43Q==
-Message-ID: <b5978eab-0bbb-40e6-8bdf-512706310bc7@bootlin.com>
-Date: Wed, 16 Jul 2025 11:54:42 +0200
+ bh=Q1u9iLpLk5Ew/utdtdjPTXekOagSel/IZuKp+hashnc=;
+ b=BkFiSjdUKziS9xA8/rgILSZ4LsoToW3Ij16D4cGlmQd3RsMQXqsFyLxxYD9BwOuY/v+8D+
+ XsGG5ZHDtrdhseEDGZShkfv+XwldI4ECQmpuyvAw6dIOb+lpZ8p9DkH9/fwQDYl5xgCsOi
+ 5fSsF975o1oh65PZQ5HExC/dvdXOmp8i7p8VuNm+3L2HpUeOrbML3T7b1Hn16C5Haj1fEk
+ ReVZ4Ji9y6aJI68FPo6LWE5AFanYtzbc6rl7SxbBw5sFqUTjUwwgg35VZfglMp28DdVp9/
+ 1bmhRFNK4mF8vGzavK7ADJZbsf+ReFFvILncQ5WR+uPQEYfs9NEvt5tQtvViWQ==
+Message-ID: <0c02403b-0159-44b3-8308-b7436d060dc7@bootlin.com>
+Date: Wed, 16 Jul 2025 11:55:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 29/41] tests/vkms_configfs: Test enabling a
- device without CRTCs
+Subject: Re: [PATCH i-g-t v3 31/41] tests/vkms_configfs: Test enabling a
+ device without encoders
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-30-jose.exposito89@gmail.com>
+ <20250715102513.5636-32-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -97,7 +97,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-30-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-32-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
@@ -123,7 +123,8 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/07/2025 à 12:25, José Expósito a écrit :
-> Try to enable a VKMS device without adding CRTCs and test that it fails.
+> Try to enable a VKMS device without adding encoders and test that it
+> fails.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
@@ -134,20 +135,20 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   1 file changed, 42 insertions(+)
 > 
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 17f57c063..22459a547 100644
+> index be856876b..5be89edef 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -1122,6 +1122,47 @@ static void test_enable_plane_no_crtcs(void)
+> @@ -1216,6 +1216,47 @@ static void test_enable_too_many_crtcs(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enable-no-crtcs
-> + * Description: Try to enable a VKMS device without adding CRTCs and test that
-> + *              it fails.
+> + * SUBTEST: enable-no-encoders
+> + * Description: Try to enable a VKMS device without adding encoders and test
+> + *              that it fails.
 > + */
 > +
-> +static void test_enable_no_crtcs(void)
+> +static void test_enable_no_encoders(void)
 > +{
 > +	igt_vkms_t *dev;
 > +
@@ -157,17 +158,17 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > +			{
 > +				.name = "plane0",
 > +				.type = DRM_PLANE_TYPE_PRIMARY,
-> +				.possible_crtcs = {},
+> +				.possible_crtcs = { "crtc0" },
 > +			},
 > +		},
-> +		.crtcs = { },
-> +		.encoders = {
-> +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
+> +		.crtcs = {
+> +			{ .name = "crtc0" },
 > +		},
+> +		.encoders = { },
 > +		.connectors = {
 > +			{
 > +				.name = "connector0",
-> +				.possible_encoders = { "encoder0" },
+> +				.possible_encoders = {},
 > +			},
 > +		},
 > +	};
@@ -185,11 +186,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -1154,6 +1195,7 @@ igt_main
->   		{ "enable-multiple-primary-planes", test_enable_multiple_primary_planes },
->   		{ "enable-multiple-cursor-planes", test_enable_multiple_cursor_planes },
+> @@ -1250,6 +1291,7 @@ igt_main
 >   		{ "enable-plane-no-crtcs", test_enable_plane_no_crtcs },
-> +		{ "enable-no-crtcs", test_enable_no_crtcs },
+>   		{ "enable-no-crtcs", test_enable_no_crtcs },
+>   		{ "enable-too-many-crtcs", test_enable_too_many_crtcs },
+> +		{ "enable-no-encoders", test_enable_no_encoders },
 >   	};
 >   
 >   	igt_fixture {
