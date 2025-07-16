@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56C93C83F1B
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 12:07:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EAF4C83F27
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 12:07:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C12510E27D;
-	Wed, 16 Jul 2025 12:07:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B2D9510E28B;
+	Wed, 16 Jul 2025 12:07:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Gc6v774A";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="HSx6DLZZ";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 844DA10E27D
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 12:07:13 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CAE5143953;
- Wed, 16 Jul 2025 12:07:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6C2B10E28B
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 12:07:44 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6044E4394A;
+ Wed, 16 Jul 2025 12:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752667632;
+ t=1752667663;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=gFsnb3SF5HtKrdEfub6VtSSTQiqSm66bPhPqGXLUcLU=;
- b=Gc6v774AlLQzHtoRydIAHPWOv/JI2gk0yBiPdHmvt3ckEjzYu+yyUKCVCh+gqNnMk/FPN4
- ch2Vp9/qxdNr6N4LP0Pu56pAP8ZvJ3KXZy1V8x3VCSFPbk5BBDNbHPc28LBpNy7SdwaO9o
- VOQ/5pTAjIYnAeUSmtJu5U7zCDWR1SBgHTfokuCDXfwHaWo8ZgdSxp7tfO9p4GghHiHAnt
- q7J2YOl27e+cblnMp2dumWwpSeRQKl5baw2iYbPRG8tDA5CQsdFi61kT5oxNpmyXZ4EJmX
- 5LywYgBahzkICkE+OVJ2xC5vz9B5r+isMHlQqdkjVtiYZUR/6BZIfYNkrdnmEQ==
-Message-ID: <121db9e8-78e7-4326-9bb9-39d263b4d7a7@bootlin.com>
-Date: Wed, 16 Jul 2025 14:07:11 +0200
+ bh=D5WAW+zVZAhqtZyNXVs41ilLhB/B2M4XewC+LfW1ElE=;
+ b=HSx6DLZZcYZ2YmGplSxC+00EpfqW720bdI8bMd5Dns0aKv5WBGGDD5buLu0q/NUh7pCxpI
+ Oua9LkmNJk7++Z0Vsfk3tvqp+aHmxl7wRpSgMiurRjO0jm8B8Krd+aDysiPAOzUrShHLDN
+ wW71ZZnph8AATyVQZogtVDX6vRTRbp4HSp6KFirPb7rReP5zPhkVZdCB1AG2r/PRdS/YNp
+ TE8MtVF6aT7pYqPN1zS/l/x8Q4u1FIDTHB+lKhZKSu5faFW7KebIlCZCyhgqci3cUyAYWT
+ myquCAsGaIgI8FPTWdo/etFllTJRXHpuDkFgS5KItjkXkeMyFPDeXofBIB8cNA==
+Message-ID: <c2cd9ab1-5367-462c-9bbf-335328ee7877@bootlin.com>
+Date: Wed, 16 Jul 2025 14:07:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 37/41] lib/vkms: Test changing enabled device
- planes
+Subject: Re: [PATCH i-g-t v3 38/41] lib/vkms: Test changing enabled device
+ CRTCs
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-38-jose.exposito89@gmail.com>
+ <20250715102513.5636-39-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -97,12 +97,12 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-38-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-39-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeeiiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeeivedtfeegtdekheethedttddtfefhhfegjeeljeejleduvdfhudegvdekheevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeeiiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeeivedtfeegtdekheethedttddtfefhhfegjeeljeejleduvdfhudegvdekheevnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejheenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhedphhgvlhhopeglkffrggeimedvtddtudemkeeiudemgedugedtmegtkeeitdemheguiedumeeifeefleemieeirgeimegvtdejhegnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepihhgthdqu
  ggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopeiisghighhnihgvfidrkhgvmhhptgiihihnshhkihesihhnthgvlhdrtghomh
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -123,179 +123,71 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/07/2025 à 12:25, José Expósito a écrit :
-> Test that, once a VKMS device is enabled, the plane values can't change
-> and that deleting it or the attached CRTCs doesn't change the VKMS
-> device.
-> 
-> Add a function that performs a basic validation checking that the
-> device created matches the expected one.
+> Test that, once a VKMS device is enabled, the CRTC values can't change
+> and that deleting it or the attached planes/encoders doesn't change the
+> VKMS device.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
-Reviewed-by: louis Chauvet <louis.chauvet@bootlin.com>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   lib/igt_vkms.c             |  24 +++++++
->   lib/igt_vkms.h             |   1 +
->   tests/vkms/vkms_configfs.c | 143 +++++++++++++++++++++++++++++++++++++
->   3 files changed, 168 insertions(+)
+>   lib/igt_vkms.c             | 12 +++++++++
+>   lib/igt_vkms.h             |  1 +
+>   tests/vkms/vkms_configfs.c | 55 ++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 68 insertions(+)
 > 
 > diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index ccc6910c4..96f13d628 100644
+> index 96f13d628..5923e8527 100644
 > --- a/lib/igt_vkms.c
 > +++ b/lib/igt_vkms.c
-> @@ -194,6 +194,18 @@ static void get_attach_dir_path(igt_vkms_t *dev, enum vkms_pipeline_item item,
->   	igt_assert(ret >= 0 && ret < len);
->   }
->   
-> +static bool remove_pipeline_item(igt_vkms_t *dev, enum vkms_pipeline_item item,
-> +				 const char *name)
-> +{
-> +	char path[PATH_MAX];
-> +	int ret;
-> +
-> +	get_pipeline_item_path(dev, item, name, path, sizeof(path));
-> +
-> +	ret = rmdir(path);
-> +	return ret == 0;
-> +}
-> +
->   static bool attach_pipeline_item(igt_vkms_t *dev,
->   				 enum vkms_pipeline_item src_item,
->   				 const char *src_item_name,
-> @@ -699,6 +711,18 @@ void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name)
->   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
+> @@ -804,6 +804,18 @@ void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name)
+>   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_CRTC, name);
 >   }
 >   
 > +/**
-> + * igt_vkms_device_remove_plane:
-> + * @dev: Device to remove the plane from
-> + * @name: Plane name
+> + * igt_vkms_device_remove_crtc:
+> + * @dev: Device to remove the CRTC from
+> + * @name: CRTC name
 > + *
-> + * Remove an existing plane from the VKMS device.
+> + * Remove an existing CRTC from the VKMS device.
 > + */
-> +bool igt_vkms_device_remove_plane(igt_vkms_t *dev, const char *name)
+> +bool igt_vkms_device_remove_crtc(igt_vkms_t *dev, const char *name)
 > +{
-> +	return remove_pipeline_item(dev, VKMS_PIPELINE_ITEM_PLANE, name);
+> +	return remove_pipeline_item(dev, VKMS_PIPELINE_ITEM_CRTC, name);
 > +}
 > +
 >   /**
->    * igt_vkms_plane_get_type:
->    * @dev: Device the plane belongs to
+>    * igt_vkms_crtc_is_writeback_enabled:
+>    * @dev: Device the CRTC belongs to
 > diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 1e077caa8..786db224e 100644
+> index 786db224e..9785a64e9 100644
 > --- a/lib/igt_vkms.h
 > +++ b/lib/igt_vkms.h
-> @@ -96,6 +96,7 @@ bool igt_vkms_device_is_enabled(igt_vkms_t *dev);
->   void igt_vkms_device_set_enabled(igt_vkms_t *dev, bool enabled);
+> @@ -105,6 +105,7 @@ bool igt_vkms_plane_detach_crtc(igt_vkms_t *dev, const char *plane_name,
+>   				const char *crtc_name);
 >   
->   void igt_vkms_device_add_plane(igt_vkms_t *dev, const char *name);
-> +bool igt_vkms_device_remove_plane(igt_vkms_t *dev, const char *name);
->   int igt_vkms_plane_get_type(igt_vkms_t *dev, const char *name);
->   void igt_vkms_plane_set_type(igt_vkms_t *dev, const char *name, int type);
->   bool igt_vkms_plane_attach_crtc(igt_vkms_t *dev, const char *plane_name,
+>   void igt_vkms_device_add_crtc(igt_vkms_t *dev, const char *name);
+> +bool igt_vkms_device_remove_crtc(igt_vkms_t *dev, const char *name);
+>   bool igt_vkms_crtc_is_writeback_enabled(igt_vkms_t *dev, const char *name);
+>   void igt_vkms_crtc_set_writeback_enabled(igt_vkms_t *dev, const char *name,
+>   					 bool writeback);
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index ad5d72481..11dea86ed 100644
+> index 11dea86ed..62dfb99be 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -132,6 +132,85 @@ static bool device_exists(const char *name)
->   	return find_device(name, &card);
->   }
->   
-> +static void assert_device_config(igt_vkms_config_t *cfg)
-> +{
-> +	struct igt_device_card card;
-> +	drmModeResPtr res;
-> +	drmModePlaneResPtr plane_res;
-> +	drmModeConnectorPtr connector_res;
-> +	igt_vkms_crtc_config_t *crtc;
-> +	igt_vkms_connector_config_t *connector;
-> +	bool found;
-> +	int n_planes = 0;
-> +	int n_crtcs = 0;
-> +	int n_encoders = 0;
-> +	int n_connectors = 0;
-> +	int n_connector_status_cfg[4] = {0};
-> +	int n_connector_status_drm[4] = {0};
-> +	int fd;
-> +
-> +	found = find_device(cfg->device_name, &card);
-> +	igt_assert_f(found, "Device '%s' not found\n", cfg->device_name);
-> +
-> +	fd = igt_open_card(&card);
-> +	igt_assert_f(fd >= 0, "Error opening device '%s' at path '%s'\n",
-> +		     cfg->device_name, card.card);
-> +	igt_assert_f(!drmSetClientCap(fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1),
-> +		     "Error setting DRM_CLIENT_CAP_UNIVERSAL_PLANES\n");
-> +	igt_assert_f(!drmSetClientCap(fd, DRM_CLIENT_CAP_ATOMIC, 1),
-> +		     "Error setting DRM_CLIENT_CAP_ATOMIC\n");
-> +	igt_assert_f(!drmSetClientCap(fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1),
-> +		     "Error setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
-> +
-> +	res = drmModeGetResources(fd);
-> +	igt_assert_f(res, "Error getting resources\n");
-> +	plane_res = drmModeGetPlaneResources(fd);
-> +	igt_assert_f(plane_res, "Error getting plane resources\n");
-> +
-> +	for (int n = 0; (&cfg->planes[n])->name; n++)
-> +		n_planes++;
-> +
-> +	for (int n = 0; (crtc = &cfg->crtcs[n])->name; n++) {
-> +		n_crtcs++;
-> +
-> +		if (crtc->writeback) {
-> +			n_encoders++;
-> +			n_connectors++;
-> +			n_connector_status_cfg[DRM_MODE_UNKNOWNCONNECTION]++;
-> +		}
-> +	}
-> +
-> +	for (int n = 0; (&cfg->encoders[n])->name; n++)
-> +		n_encoders++;
-> +
-> +	for (int n = 0; (connector = &cfg->connectors[n])->name; n++) {
-> +		n_connectors++;
-> +		n_connector_status_cfg[connector->status]++;
-> +	}
-> +
-> +	for (int n = 0; n < res->count_connectors; n++) {
-> +		connector_res = drmModeGetConnectorCurrent(fd,
-> +							   res->connectors[n]);
-> +		n_connector_status_drm[connector_res->connection]++;
-> +		drmModeFreeConnector(connector_res);
-> +	}
-> +
-> +	igt_assert_eq(n_planes, plane_res->count_planes);
-> +	igt_assert_eq(n_crtcs, res->count_crtcs);
-> +	igt_assert_eq(n_encoders, res->count_encoders);
-> +	igt_assert_eq(n_connectors, res->count_connectors);
-> +	igt_assert_eq(n_connector_status_cfg[DRM_MODE_CONNECTED],
-> +		      n_connector_status_drm[DRM_MODE_CONNECTED]);
-> +	igt_assert_eq(n_connector_status_cfg[DRM_MODE_DISCONNECTED],
-> +		      n_connector_status_drm[DRM_MODE_DISCONNECTED]);
-> +	igt_assert_eq(n_connector_status_cfg[DRM_MODE_UNKNOWNCONNECTION],
-> +		      n_connector_status_drm[DRM_MODE_UNKNOWNCONNECTION]);
-> +
-> +	drmModeFreePlaneResources(plane_res);
-> +	drmModeFreeResources(res);
-> +	close(fd);
-> +}
-> +
->   /**
->    * SUBTEST: device-default-files
->    * Description: Test that creating a VKMS device creates the default files and
-> @@ -1493,6 +1572,69 @@ static void test_enable_too_many_connectors(void)
+> @@ -1635,6 +1635,60 @@ static void test_enabled_plane_cannot_change(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enabled-plane-cannot-change
-> + * Description: Test that, once a VKMS device is enabled, the plane values can't
-> + *              change and that deleting it or the attached CRTCs doesn't change
-> + *              the VKMS device.
+> + * SUBTEST: enabled-crtc-cannot-change
+> + * Description: Test that, once a VKMS device is enabled, the CRTC values can't
+> + *              change and that deleting it or the attached planes/encoders
+> + *              doesn't change the VKMS device.
 > + */
 > +
-> +static void test_enabled_plane_cannot_change(void)
+> +static void test_enabled_crtc_cannot_change(void)
 > +{
 > +	igt_vkms_t *dev;
 > +
@@ -307,24 +199,17 @@ Reviewed-by: louis Chauvet <louis.chauvet@bootlin.com>
 > +				.type = DRM_PLANE_TYPE_PRIMARY,
 > +				.possible_crtcs = { "crtc0"},
 > +			},
-> +			{
-> +				.name = "plane1",
-> +				.type = DRM_PLANE_TYPE_PRIMARY,
-> +				.possible_crtcs = { "crtc1"},
-> +			},
 > +		},
 > +		.crtcs = {
-> +			{ .name = "crtc0" },
-> +			{ .name = "crtc1" },
+> +			{ .name = "crtc0", .writeback = true },
 > +		},
 > +		.encoders = {
 > +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
-> +			{ .name = "encoder1", .possible_crtcs = { "crtc1" } },
 > +		},
 > +		.connectors = {
 > +			{
 > +				.name = "connector0",
-> +				.possible_encoders = { "encoder0", "encoder1" },
+> +				.possible_encoders = { "encoder0" },
 > +			},
 > +		},
 > +	};
@@ -337,15 +222,13 @@ Reviewed-by: louis Chauvet <louis.chauvet@bootlin.com>
 > +	assert_device_config(&cfg);
 > +
 > +	/* Try to change values */
-> +	igt_vkms_plane_set_type(dev, "plane0", DRM_PLANE_TYPE_OVERLAY);
-> +	igt_assert_eq(igt_vkms_plane_get_type(dev, "plane0"),
-> +		      DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	igt_assert(!igt_vkms_plane_attach_crtc(dev, "plane0", "crtc1"));
+> +	igt_vkms_crtc_set_writeback_enabled(dev, "crtc0", false);
+> +	igt_assert(igt_vkms_crtc_is_writeback_enabled(dev, "crtc0"));
 > +
 > +	/* Deleting pipeline items doesn't affect the device */
 > +	igt_assert(igt_vkms_plane_detach_crtc(dev, "plane0", "crtc0"));
-> +	igt_assert(igt_vkms_device_remove_plane(dev, "plane0"));
+> +	igt_assert(igt_vkms_encoder_detach_crtc(dev, "encoder0", "crtc0"));
+> +	igt_assert(igt_vkms_device_remove_crtc(dev, "crtc0"));
 > +	assert_device_config(&cfg);
 > +
 > +	igt_vkms_device_destroy(dev);
@@ -354,11 +237,11 @@ Reviewed-by: louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -1533,6 +1675,7 @@ igt_main
->   		{ "enable-crtc-no-encoder", test_enable_crtc_no_encoder },
+> @@ -1676,6 +1730,7 @@ igt_main
 >   		{ "enable-no-connectors", test_enable_no_connectors },
 >   		{ "enable-too-many-connectors", test_enable_too_many_connectors },
-> +		{ "enabled-plane-cannot-change", test_enabled_plane_cannot_change },
+>   		{ "enabled-plane-cannot-change", test_enabled_plane_cannot_change },
+> +		{ "enabled-crtc-cannot-change", test_enabled_crtc_cannot_change },
 >   	};
 >   
 >   	igt_fixture {
