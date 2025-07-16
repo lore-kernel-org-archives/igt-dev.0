@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD11FC83F1B
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 12:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B3D3C83F27
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 12:08:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7D04410E38D;
-	Wed, 16 Jul 2025 12:08:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B71328961D;
+	Wed, 16 Jul 2025 12:08:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="SgzT92V9";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ky4lkyjS";
 	dkim-atps=neutral
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
- [217.70.183.199])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F5B610E38D
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 12:08:30 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4AFA244294;
- Wed, 16 Jul 2025 12:08:28 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E42B58961D
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 12:08:42 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E53FD43B1E;
+ Wed, 16 Jul 2025 12:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752667708;
+ t=1752667721;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=eCHqq7+g98S9y/3hwyu7H9XhJ6N3sVYDO7URs96euqI=;
- b=SgzT92V9L1vQ885aO+vPtOyDzzEGq4Z1xFiENAUFvZjCmEX1luHJyateKjIg4POdpmkTTA
- 8InwNWCo+3lIQLjVwn7hqFQ/295lumYuLqj55YVyiBV9ui+YI0JrQNABWxNSVVl9B4+rOQ
- F3vzn4b1jI5olgeVqBTw3zAv6iQBUmIwHlS//wx2wafmcZsyikpKTgPnlEHeyLF0soHAbI
- MTiv1ALeZ+0kPZ6emTyl0ZmijSCnT/Nsg7jNylHW7o/5Vp9m5RS2RENHOvOByfcelxNNs4
- Nc/qMhZbXu+DyYhFZ7xcai0MZja21XWcFzg/+6EF0LGEqNUqDRxT6TWMBFXtiQ==
-Message-ID: <8f01d305-1e11-4a64-931a-04123440ad3b@bootlin.com>
-Date: Wed, 16 Jul 2025 14:08:27 +0200
+ bh=cv+Af8gtYQt1iSZKW3y0XKUelY+HhuXV6nLA+xxy7mk=;
+ b=ky4lkyjSxaloQL1C2gfttzy23xee5DTH2Dev6ntKkp0cDnjN0abIfB62uaEeMka6p7cvNg
+ 4EDlCT+LIIBaT6x5+KpysJIrSBcQ4/+8yxhwTXd/wINu3MXlVO9qKVCbamXUP/94f85RWz
+ 0ns506Sg9GIqZNBFSj6xtCfnhIEZq+pY4dbOnR+MxgTpO03IMxSdFf0NK0z8JhXo2W5kVI
+ pN7RLRFJioLxAbccxS7m7fGhs8GeVfCe9fmaHw91UoaFseUwSCD06GPLj81gZWqF9ypAIm
+ Xsi6hgXu0cz1wtGRlZHGpunO+WOzSPLjLvFDSXtQ6/OblV53W+E7ABZ7m6qlAw==
+Message-ID: <27097ee1-0c25-4043-8965-662d2c6fae8d@bootlin.com>
+Date: Wed, 16 Jul 2025 14:08:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 40/41] lib/vkms: Test changing enabled device
- connectors
+Subject: Re: [PATCH i-g-t v3 41/41] tests/vkms_configfs: Test connector
+ hot-plug
 To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com
 References: <20250715102513.5636-1-jose.exposito89@gmail.com>
- <20250715102513.5636-41-jose.exposito89@gmail.com>
+ <20250715102513.5636-42-jose.exposito89@gmail.com>
 Content-Language: en-US
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
@@ -97,7 +97,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
  ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
  qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
-In-Reply-To: <20250715102513.5636-41-jose.exposito89@gmail.com>
+In-Reply-To: <20250715102513.5636-42-jose.exposito89@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
@@ -123,76 +123,35 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/07/2025 à 12:25, José Expósito a écrit :
-> Test that, once a VKMS device is enabled, the connector values, with
-> the exception of status, can't change and that deleting it or the
-> attached encoders doesn't change the VKMS device.
-> 
-> Connector hot-plug/unplug is not covered by this test.
+> Test that, once a VKMS device is enabled, the connectors can be
+> hot-plugged and hot-unplugged.
 > 
 > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 > ---
->   lib/igt_vkms.c             | 12 +++++++
->   lib/igt_vkms.h             |  1 +
->   tests/vkms/vkms_configfs.c | 64 ++++++++++++++++++++++++++++++++++++++
->   3 files changed, 77 insertions(+)
+>   tests/vkms/vkms_configfs.c | 84 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 84 insertions(+)
 > 
-> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index c42b96b11..5133a44a7 100644
-> --- a/lib/igt_vkms.c
-> +++ b/lib/igt_vkms.c
-> @@ -917,6 +917,18 @@ void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name)
->   	add_pipeline_item(dev, VKMS_PIPELINE_ITEM_CONNECTOR, name);
->   }
->   
-> +/**
-> + * igt_vkms_device_remove_connector:
-> + * @dev: Device to remove the connector from
-> + * @name: Connector name
-> + *
-> + * Remove an existing connector from the VKMS device.
-> + */
-> +bool igt_vkms_device_remove_connector(igt_vkms_t *dev, const char *name)
-> +{
-> +	return remove_pipeline_item(dev, VKMS_PIPELINE_ITEM_CONNECTOR, name);
-> +}
-> +
->   /**
->    * igt_vkms_connector_get_status:
->    * @dev: Device the connector belongs to
-> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 3081addad..787da601b 100644
-> --- a/lib/igt_vkms.h
-> +++ b/lib/igt_vkms.h
-> @@ -118,6 +118,7 @@ bool igt_vkms_encoder_detach_crtc(igt_vkms_t *dev, const char *encoder_name,
->   				  const char *crtc_name);
->   
->   void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name);
-> +bool igt_vkms_device_remove_connector(igt_vkms_t *dev, const char *name);
->   int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name);
->   void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
->   				   int status);
 > diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index 747b057fe..71f2f9694 100644
+> index 71f2f9694..46f2ddd7f 100644
 > --- a/tests/vkms/vkms_configfs.c
 > +++ b/tests/vkms/vkms_configfs.c
-> @@ -1750,6 +1750,69 @@ static void test_enabled_encoder_cannot_change(void)
+> @@ -1813,6 +1813,89 @@ static void test_enabled_connector_cannot_change(void)
 >   	igt_vkms_device_destroy(dev);
 >   }
 >   
 > +/**
-> + * SUBTEST: enabled-connector-cannot-change
-> + * Description: Test that, once a VKMS device is enabled, the connector values,
-> + *              with the exception of status, can't change and that deleting it
-> + *              or the attached encoders doesn't change the VKMS device.
-> + *              Connector hot-plug/unplug is not covered by this test.
+> + * SUBTEST: enabled-connector-hot-plug
+> + * Description: Test that, once a VKMS device is enabled, the connectors can be
+> + *              hot-plugged and unplugged.
 > + */
 > +
-> +static void test_enabled_connector_cannot_change(void)
+> +static void test_enabled_connector_hot_plug(void)
 > +{
 > +	igt_vkms_t *dev;
+> +	drmModeConnection status;
 > +
 > +	igt_vkms_config_t cfg = {
 > +		.device_name = __func__,
@@ -209,8 +168,8 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > +			},
 > +		},
 > +		.crtcs = {
-> +			{ .name = "crtc0" },
-> +			{ .name = "crtc1" },
+> +			{ .name = "crtc0", .writeback = true },
+> +			{ .name = "crtc1", .writeback = true },
 > +		},
 > +		.encoders = {
 > +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
@@ -219,8 +178,13 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > +		.connectors = {
 > +			{
 > +				.name = "connector0",
-> +				.status = DRM_MODE_CONNECTED,
+> +				.status = DRM_MODE_DISCONNECTED,
 > +				.possible_encoders = { "encoder0" },
+> +			},
+> +			{
+> +				.name = "connector1",
+> +				.status = DRM_MODE_DISCONNECTED,
+> +				.possible_encoders = { "encoder1" },
 > +			},
 > +		},
 > +	};
@@ -232,14 +196,30 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > +	igt_assert(igt_vkms_device_is_enabled(dev));
 > +	assert_device_config(&cfg);
 > +
-> +	/* Try to change values */
-> +	igt_assert(!igt_vkms_connector_attach_encoder(dev, "connector0",
-> +						      "encoder1"));
+> +	/* Connect both connectors */
+> +	cfg.connectors[0].status = DRM_MODE_CONNECTED;
+> +	igt_vkms_connector_set_status(dev, "connector0", DRM_MODE_CONNECTED);
+> +	status = igt_vkms_connector_get_status(dev, "connector0");
+> +	igt_assert_eq(status, DRM_MODE_CONNECTED);
+> +	assert_device_config(&cfg);
 > +
-> +	/* Deleting pipeline items doesn't affect the device */
-> +	igt_assert(igt_vkms_connector_detach_encoder(dev, "connector0",
-> +						     "encoder0"));
-> +	igt_assert(igt_vkms_device_remove_connector(dev, "connector0"));
+> +	cfg.connectors[1].status = DRM_MODE_CONNECTED;
+> +	igt_vkms_connector_set_status(dev, "connector1", DRM_MODE_CONNECTED);
+> +	status = igt_vkms_connector_get_status(dev, "connector1");
+> +	igt_assert_eq(status, DRM_MODE_CONNECTED);
+> +	assert_device_config(&cfg);
+> +
+> +	/* Set one to unknown connection and disconnect the other one */
+> +	cfg.connectors[0].status = DRM_MODE_UNKNOWNCONNECTION;
+> +	igt_vkms_connector_set_status(dev, "connector0", DRM_MODE_UNKNOWNCONNECTION);
+> +	status = igt_vkms_connector_get_status(dev, "connector0");
+> +	igt_assert_eq(status, DRM_MODE_UNKNOWNCONNECTION);
+> +	assert_device_config(&cfg);
+> +
+> +	cfg.connectors[1].status = DRM_MODE_DISCONNECTED;
+> +	igt_vkms_connector_set_status(dev, "connector1", DRM_MODE_DISCONNECTED);
+> +	status = igt_vkms_connector_get_status(dev, "connector1");
+> +	igt_assert_eq(status, DRM_MODE_DISCONNECTED);
 > +	assert_device_config(&cfg);
 > +
 > +	igt_vkms_device_destroy(dev);
@@ -248,11 +228,11 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 >   igt_main
 >   {
 >   	struct {
-> @@ -1793,6 +1856,7 @@ igt_main
->   		{ "enabled-plane-cannot-change", test_enabled_plane_cannot_change },
+> @@ -1857,6 +1940,7 @@ igt_main
 >   		{ "enabled-crtc-cannot-change", test_enabled_crtc_cannot_change },
 >   		{ "enabled-encoder-cannot-change", test_enabled_encoder_cannot_change },
-> +		{ "enabled-connector-cannot-change", test_enabled_connector_cannot_change },
+>   		{ "enabled-connector-cannot-change", test_enabled_connector_cannot_change },
+> +		{ "enabled-connector-hot-plug", test_enabled_connector_hot_plug },
 >   	};
 >   
 >   	igt_fixture {
