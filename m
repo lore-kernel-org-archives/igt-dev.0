@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DF3BC83F1B
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:21:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90FBFC83F27
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 09:21:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 225E610E75B;
-	Wed, 16 Jul 2025 09:21:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2AB3A10E75C;
+	Wed, 16 Jul 2025 09:21:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Me3ITSPL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yamqg9hA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77A9D10E758
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:21:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A22410E75C
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 09:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752657663; x=1784193663;
+ t=1752657665; x=1784193665;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yQuhU/oU+RUBkv76ICpHAwON/esSgZOzyu5tAFIDSkA=;
- b=Me3ITSPLihvKbRJXF92FJloEKtEU4P7uQjQr/FThIZeD2ylipLlWri3t
- 1/h1jzGQbBSxNuR8kvxjGSqS/d0FalCng08UB2XJqV6Go8zZUyGIXDdwW
- r/7WAPmlg7Vo3MirQ1L7tMAzI4yyQic7+ut6ARDKKCxjjn2irbnmCnZvO
- mZw4fdDJAo8A6t0ZEg0YVj+KQyaG1Ncau5xDQwgR480hPaOdIQSFLRs99
- I7KO2WZW+qHFfV4dMaJSBQZoD0hQimtcU7cNQ0hPVqb6W1G3ezkal+SJE
- 4zJEQdhHunY4zNhNhQ9uER5otv7MFzyvKJ14KliVYu5cB2gtd65EXv+BZ g==;
-X-CSE-ConnectionGUID: I3/U+nwpQyWsIW03dKxm5A==
-X-CSE-MsgGUID: PPFNVuq2TXeqJc9qU6oX+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54005875"
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="54005875"
+ bh=PuW76IUTY/wXhivew4RAF6QWF+YQal7RoiaOh+0RKPc=;
+ b=Yamqg9hAmACbRr/z7q6UBOLvQR2RByRsE0bAbSi1yjFW0vDDyw+5bZK/
+ lpWJfRUqFBNj5QP+7vv/Vymwpggi7tROy2KjPuT6sdV7w3y0NXfPJUTk7
+ kc5E+8LEBGeIjY3ezAD6DshkijCMxviPynykz9yZTHG2ZN27W3UP/OWzR
+ nZNt1+H+fX3SRY33tH+geCDkjW5/+du7DIZnuyxtwacaV6vdjRg3LBiCC
+ 8oZPB52EWeVzEUJelpSwkvpkm8GBqFEIFkuhB3gp32aA7+C7o/85WOdyC
+ gGGEYJgTCwPxSnX5QznfkYPYNS4s4CQNwW8MaUOV9IVpUEBC8AS0xxANJ Q==;
+X-CSE-ConnectionGUID: 99cyzB9HRYqMtV/o53urGA==
+X-CSE-MsgGUID: 1dK1Ow/VQFmGWaaMQ9bDaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54005882"
+X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="54005882"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2025 02:21:03 -0700
-X-CSE-ConnectionGUID: jtrxXF3bRUmUDvIyNGpG5g==
-X-CSE-MsgGUID: fmEHBNCRS/KIh5m42JoGGw==
+ 16 Jul 2025 02:21:05 -0700
+X-CSE-ConnectionGUID: F+zQlc75QeyFjB6BmQrQqA==
+X-CSE-MsgGUID: sj9veSPpT3O+CfuLlIWCyg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="161775901"
+X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="161775905"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 02:21:02 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 02:21:03 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com, pranay.samala@intel.com,
  Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 1/2] lib/igt_fb: Add helpers to identify planar and
- packed YUV formats
-Date: Wed, 16 Jul 2025 14:50:35 +0530
-Message-ID: <20250716092036.301862-2-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1 2/2] tests/kms_plane: Split pixel format tests by
+ RGB/YUV filtering
+Date: Wed, 16 Jul 2025 14:50:36 +0530
+Message-ID: <20250716092036.301862-3-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250716092036.301862-1-ramanaidu.naladala@intel.com>
 References: <20250716092036.301862-1-ramanaidu.naladala@intel.com>
@@ -69,98 +69,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add new helper logic to distinguish between planar/semi-planar and
-packed YUV formats. This classification enables more efficient test
-coverage by reducing iterations in IGT, allowing tests to focus on
-relevant format groups based on their memory layout.
+Introduced dynamic subtests for each pixel format type, covering
+both clamped and unclamped scenarios.
 
 Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 ---
- lib/igt_fb.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_fb.h |  2 ++
- 2 files changed, 59 insertions(+)
+ tests/kms_plane.c | 48 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 40 insertions(+), 8 deletions(-)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 9fc1bfc65..f68aeaf42 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -5044,6 +5044,63 @@ bool igt_format_is_yuv(uint32_t drm_format)
- 	}
- }
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index f7b672c7a..cb89e74c0 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -72,13 +72,18 @@
+  */
  
-+/**
-+ * igt_format_is_planaryuv:
-+ * @drm_format: drm fourcc
-+ *
-+ * This functions returns if @drm_format is planar/semi-planar YUV formats.
-+ */
-+
-+bool igt_format_is_planaryuv(uint32_t drm_format)
-+{
-+	switch (drm_format) {
-+	case DRM_FORMAT_YUV420:
-+	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YVU420:
-+	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_NV12:
-+	case DRM_FORMAT_NV16:
-+	case DRM_FORMAT_NV21:
-+	case DRM_FORMAT_NV61:
-+	case DRM_FORMAT_P010:
-+	case DRM_FORMAT_P012:
-+	case DRM_FORMAT_P016:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+/**
-+ * igt_format_is_yuv:
-+ * @drm_format: drm fourcc
-+ *
-+ * This functions returns if @drm_format is packed YUV formats.
-+ */
-+
-+bool igt_format_is_packedyuv(uint32_t drm_format)
-+{
-+	switch (drm_format) {
-+	case DRM_FORMAT_Y210:
-+	case DRM_FORMAT_Y212:
-+	case DRM_FORMAT_Y216:
-+	case DRM_FORMAT_XVYU2101010:
-+	case DRM_FORMAT_XVYU12_16161616:
-+	case DRM_FORMAT_XVYU16161616:
-+	case DRM_FORMAT_Y410:
-+	case DRM_FORMAT_Y412:
-+	case DRM_FORMAT_Y416:
-+	case DRM_FORMAT_YUYV:
-+	case DRM_FORMAT_YVYU:
-+	case DRM_FORMAT_UYVY:
-+	case DRM_FORMAT_VYUY:
-+	case DRM_FORMAT_XYUV8888:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
  /**
-  * igt_format_is_fp16
-  * @drm_format: drm fourcc
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index d5aa1e88a..ace02a960 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -220,6 +220,8 @@ const char *igt_format_str(uint32_t drm_format);
- bool igt_fb_supported_format(uint32_t drm_format);
- bool igt_format_is_yuv(uint32_t drm_format);
- bool igt_format_is_yuv_semiplanar(uint32_t format);
-+bool igt_format_is_planaryuv(uint32_t drm_format);
-+bool igt_format_is_packedyuv(uint32_t drm_format);
+- * SUBTEST: pixel-%s
++ * SUBTEST: pixel-format-%s
+  * Description: verify the pixel formats for given plane and pipe
+  *
++ * SUBTEST: pixel-format-%s-source-clamping
++ * Description: verify the pixel formats with source clamping for given
++ *		plane and pipe
++ *
+  * arg[1]:
+  *
+- * @format:
+- * @format-source-clamping:          with source clamping
++ * @rgb:	rgb
++ * @planar:	planar
++ * @packed:	packed
+  */
  
- uint32_t igt_drm_format_str_to_format(const char *drm_format);
+ /*
+@@ -114,6 +119,7 @@ typedef struct {
+ 	uint32_t crop;
+ 	bool extended;
+ 	unsigned int flags;
++	const char *pixel_format_type;
+ } data_t;
  
+ static bool all_pipes;
+@@ -1106,6 +1112,18 @@ static void test_format_plane(data_t *data, enum pipe pipe,
+ 		    f.modifier == ref.modifier)
+ 			continue;
+ 
++		if (strcmp(data->pixel_format_type, "packed") == 0) {
++			if (!igt_format_is_packedyuv(f.format))
++				continue;
++		} else if (strcmp(data->pixel_format_type, "planar") == 0) {
++			if (!igt_format_is_planaryuv(f.format))
++				continue;
++		} else if (strcmp(data->pixel_format_type, "rgb") == 0) {
++			if (igt_format_is_packedyuv(f.format) ||
++			    igt_format_is_planaryuv(f.format))
++				continue;
++		}
++
+ 		if (skip_format_mod(data, f.format, f.modifier, &tested_formats)) {
+ 			igt_info("Skipping format " IGT_FORMAT_FMT " / modifier "
+ 				 IGT_MODIFIER_FMT " on %s.%u\n",
+@@ -1348,14 +1366,28 @@ static void dynamic_test_handler(data_t *data, enum pipe pipe)
+ static void
+ run_tests_for_pipe_plane(data_t *data)
+ {
++	uint32_t z;
++	const char *append[3] = {
++		"rgb",
++		"planar",
++		"packed"
++	};
++
+ 	igt_describe("verify the pixel formats for given plane and pipe");
+-	igt_subtest_with_dynamic_f("pixel-format")
+-		run_test(data, test_pixel_formats);
++	for (z = 0; z < ARRAY_SIZE(append); z++) {
++		igt_subtest_with_dynamic_f("pixel-format-%s", append[z]) {
++			data->pixel_format_type = append[z];
++			run_test(data, test_pixel_formats);
++		}
++	}
+ 
+ 	igt_describe("verify the pixel formats for given plane and pipe with source clamping");
+-	igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
+-		data->crop = 4;
+-		run_test(data, test_pixel_formats);
++	for (z = 0; z < ARRAY_SIZE(append); z++) {
++		igt_subtest_with_dynamic_f("pixel-format-%s-source-clamping", append[z]) {
++			data->crop = 4;
++			data->pixel_format_type = append[z];
++			run_test(data, test_pixel_formats);
++		}
+ 	}
+ 
+ 	data->crop = 0;
 -- 
 2.43.0
 
