@@ -4,53 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D939C83F1B
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 06:26:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55CE6C83F27
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 07:26:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B43B510E247;
-	Wed, 16 Jul 2025 06:26:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VMxk53Cp";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0A4310E247
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 06:26:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752647167; x=1784183167;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Pk8gAWL3GiD/BXjwIujHdLYHbxLTuySc5I0mDqywubk=;
- b=VMxk53CpKVtB5LX8NyXktbsPrCRAkiGfn6WOmNsoS70mjEsEKfuk9h2z
- f4OCkgO4SdKhtaBDm/LFY0new/7cYN7nGP3iRHBgRgsjfiJxjRhtXQMXt
- jhzAV0C25ub/j8wMEG9z2O4msMVVUhVmorHh63a0QCGumk2LEuwPCwhf6
- 5PqMFGzSof8HTPSk2YU+c5uACupt6AhgfvSBP6jWd+Pkh+CfUazdrZYNh
- zrpQHIdciN/XN6QzZDG/iG2QzkT8fiLuKHxqIRy9c1TEeRDbkW/U/WNvm
- NortD/Z/QzBvoM1DVeqa1cqXFpXFc+mgYJOwzYh9yI2D80trfYn0yxSvQ A==;
-X-CSE-ConnectionGUID: 6Rt1dXMpQ5G+muAoiLJrxA==
-X-CSE-MsgGUID: /JrfJDawTTWjNX5Bg5XlIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54818876"
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="54818876"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2025 23:26:06 -0700
-X-CSE-ConnectionGUID: cVWPKXE4QU6vQhya8qgMIg==
-X-CSE-MsgGUID: n7EbGqo/T8yHojIDcRiBNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; d="scan'208";a="161728264"
-Received: from hchegond-ivm1.jf.intel.com ([10.165.21.208])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2025 23:26:05 -0700
-From: Harish Chegondi <harish.chegondi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Harish Chegondi <harish.chegondi@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t 1/1] lib/xe/xe_query: Add EU stall info to xe_device
-Date: Tue, 15 Jul 2025 23:25:58 -0700
-Message-ID: <6d41938517a3ab1b79e105c89af1ed74b1beeceb.1752647058.git.harish.chegondi@intel.com>
-X-Mailer: git-send-email 2.48.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 020D189F35;
+	Wed, 16 Jul 2025 07:26:30 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D75C589F35;
+ Wed, 16 Jul 2025 07:26:28 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7033155456477958968=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2C1/1=5D_lib/xe/xe=5Fquery=3A_Add_EU_stall_info_to_xe=5Fdevi?=
+ =?utf-8?q?ce?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Harish Chegondi" <harish.chegondi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 16 Jul 2025 07:26:28 -0000
+Message-ID: <175265078887.165493.2350763135434344456@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <6d41938517a3ab1b79e105c89af1ed74b1beeceb.1752647058.git.harish.chegondi@intel.com>
+In-Reply-To: <6d41938517a3ab1b79e105c89af1ed74b1beeceb.1752647058.git.harish.chegondi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,141 +38,206 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add EU stall data information obtained through the EU stall
-query IOCTL to xe_device.
+--===============7033155456477958968==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
----
- lib/xe/xe_query.c         | 28 ++++++++++++++++++++++++++++
- lib/xe/xe_query.h         |  3 +++
- tests/intel/xe_eu_stall.c | 26 ++++++--------------------
- 3 files changed, 37 insertions(+), 20 deletions(-)
+== Series Details ==
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index c0dba0182..3b8a682f8 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -160,6 +160,32 @@ static struct drm_xe_query_mem_regions *xe_query_mem_regions_new(int fd)
- 	return mem_regions;
- }
- 
-+static struct drm_xe_query_eu_stall *xe_query_eu_stall_new(int fd)
-+{
-+	struct drm_xe_query_eu_stall *query_eu_stall;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_EU_STALL,
-+		.size = 0,
-+		.data = 0,
-+	};
-+
-+	/* Support older kernels where this uapi is not yet available */
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
-+		return NULL;
-+	igt_assert_neq(query.size, 0);
-+
-+	query_eu_stall = malloc(query.size);
-+	igt_assert(query_eu_stall);
-+
-+	query.data = to_user_pointer(query_eu_stall);
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	VG(VALGRIND_MAKE_MEM_DEFINED(query_eu_stall, query.size));
-+
-+	return query_eu_stall;
-+}
-+
- static struct drm_xe_query_oa_units *xe_query_oa_units_new(int fd)
- {
- 	struct drm_xe_query_oa_units *oa_units;
-@@ -317,6 +343,7 @@ static void xe_device_free(struct xe_device *xe_dev)
- 	free(xe_dev->engines);
- 	free(xe_dev->mem_regions);
- 	free(xe_dev->vram_size);
-+	free(xe_dev->eu_stall);
- 	free(xe_dev);
- }
- 
-@@ -355,6 +382,7 @@ struct xe_device *xe_device_get(int fd)
- 	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
- 	xe_dev->engines = xe_query_engines(fd);
- 	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
-+	xe_dev->eu_stall = xe_query_eu_stall_new(fd);
- 	xe_dev->oa_units = xe_query_oa_units_new(fd);
- 
- 	/*
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index ca0b3235e..cc54ec956 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -45,6 +45,9 @@ struct xe_device {
- 	/** @engines: hardware engines */
- 	struct drm_xe_query_engines *engines;
- 
-+	/** @eu_stall: information about EU stall data */
-+	struct drm_xe_query_eu_stall *eu_stall;
-+
- 	/** @mem_regions: regions memory information and usage */
- 	struct drm_xe_query_mem_regions *mem_regions;
- 
-diff --git a/tests/intel/xe_eu_stall.c b/tests/intel/xe_eu_stall.c
-index 88202488c..f09e525eb 100644
---- a/tests/intel/xe_eu_stall.c
-+++ b/tests/intel/xe_eu_stall.c
-@@ -46,6 +46,7 @@
- #include "igt_core.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
- 
- #define OBSERVATION_PARANOID	"/proc/sys/dev/xe/observation_paranoid"
- 
-@@ -646,15 +647,10 @@ static struct option long_options[] = {
- igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
- {
- 	bool blocking_read = true;
--	int drm_fd, ret, idx;
-+	struct xe_device *xe_dev;
-+	int drm_fd, idx;
- 	uint32_t devid;
- 	struct stat sb;
--	struct drm_xe_device_query query = {
--		.extensions = 0,
--		.query = DRM_XE_DEVICE_QUERY_EU_STALL,
--		.size = 0,
--		.data = 0,
--	};
- 
- 	igt_fixture {
- 		drm_fd = drm_open_driver(DRIVER_XE);
-@@ -663,20 +659,10 @@ igt_main_args("e:g:o:r:u:w:", long_options, help_str, opt_handler, NULL)
- 
- 		igt_require_f(igt_get_gpgpu_fillfunc(devid), "no gpgpu-fill function\n");
- 		igt_require_f(!stat(OBSERVATION_PARANOID, &sb), "no observation_paranoid file\n");
-+		xe_dev = xe_device_get(drm_fd);
-+		igt_require_f(xe_dev->eu_stall, "EU stall monitoring is not available/supported\n");
- 
--		ret = igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
--		igt_skip_on_f(ret == -1 && errno == ENODEV,
--			      "EU stall monitoring is not available on this platform\n");
--		igt_skip_on_f(ret == -1 && errno == EINVAL,
--			      "EU stall monitoring is not supported in the driver\n");
--		igt_assert_neq(query.size, 0);
--
--		query_eu_stall_data = malloc(query.size);
--		igt_assert(query_eu_stall_data);
--
--		query.data = to_user_pointer(query_eu_stall_data);
--		igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
--
-+		query_eu_stall_data = xe_dev->eu_stall;
- 		igt_assert(query_eu_stall_data->num_sampling_rates > 0);
- 		/* If the user doesn't pass a sampling rate, use a mid sampling rate */
- 		if (p_rate == 0) {
--- 
-2.48.1
+Series: series starting with [i-g-t,1/1] lib/xe/xe_query: Add EU stall info to xe_device
+URL   : https://patchwork.freedesktop.org/series/151678/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8460 -> IGTPW_13479
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_13479 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@load:
+    - bat-mtlp-9:         [PASS][1] -> [ABORT][2] ([i915#13494])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-mtlp-9/igt@i915_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-mtlp-9/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live:
+    - bat-arlh-2:         [PASS][3] -> [INCOMPLETE][4] ([i915#14046] / [i915#14393])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-arlh-2/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-arlh-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-arlh-2:         [PASS][5] -> [INCOMPLETE][6] ([i915#14393])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-arlh-2/igt@i915_selftest@live@requests.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-arlh-2/igt@i915_selftest@live@requests.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [ABORT][7] ([i915#12904]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-6:         [DMESG-WARN][9] ([i915#13890]) -> [PASS][10] +78 other tests pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+    - bat-arls-6:         [DMESG-FAIL][13] ([i915#12061]) -> [PASS][14] +1 other test pass
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
+  [i915#13890]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890
+  [i915#14046]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046
+  [i915#14393]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14393
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8460 -> IGTPW_13479
+  * Linux: CI_DRM_16871 -> CI_DRM_16872
+
+  CI-20190529: 20190529
+  CI_DRM_16871: 394c972916ad8aa294c31fee993bde243b786bac @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_16872: 69e98a7d66784ff8a833b2b7ef4290ae3f083c5f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13479: 2847682743bc3ca3258f6f65399e361f1d49ff67 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8460: 8460
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/index.html
+
+--===============7033155456477958968==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/1] lib/xe/xe_query: Add EU stall info to xe_device</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151678/">https://patchwork.freedesktop.org/series/151678/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8460 -&gt; IGTPW_13479</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13479 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-mtlp-9/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-arlh-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-arlh-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14046">i915#14046</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14393">i915#14393</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-arlh-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-arlh-2/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14393">i915#14393</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> +78 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8460/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13479/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8460 -&gt; IGTPW_13479</li>
+<li>Linux: CI_DRM_16871 -&gt; CI_DRM_16872</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_16871: 394c972916ad8aa294c31fee993bde243b786bac @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_16872: 69e98a7d66784ff8a833b2b7ef4290ae3f083c5f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13479: 2847682743bc3ca3258f6f65399e361f1d49ff67 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8460: 8460</p>
+
+</body>
+</html>
+
+--===============7033155456477958968==--
