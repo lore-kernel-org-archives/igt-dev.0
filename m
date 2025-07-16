@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95E24C83F1B
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 18:45:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8512CC83F22
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Jul 2025 19:05:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B66510E2D0;
-	Wed, 16 Jul 2025 18:45:34 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8DDA310E2D0;
- Wed, 16 Jul 2025 18:45:33 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5526048268429235565=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4151510E107;
+	Wed, 16 Jul 2025 19:05:13 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QjRqarmq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40B2A10E107
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jul 2025 19:05:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1752692712; x=1784228712;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=eWnTWIHEE04Ls0k+uukcTwOA8MGa2HZW8H9zfzyZLNY=;
+ b=QjRqarmqjvWQPtq3cyuPY3g6g2hITnWormlRxbULzcYR1VQ3sD1llJ58
+ 9Hqzp8FaXwq5WtP7R1WQkE3o1HepuQYUm5CEtBPr8PgwLOlSvhSPt/T+C
+ jFCpLbVPwJTxj3+N7MrO1JAaWpLs04Qx07YBhleJZi2mZkqUZbGw24u73
+ UcnzjZj+A200Wxil3bw859sbVi9Ds04z+FzWoEO16ahv8Vvni9AWhze81
+ PyMAd4oyLJZhPC5vIq/IeWxjoQVcJKQy5GHpadKUUShn4omK55rQrpC8t
+ CVxtGNNIi0BeKQIUsvZufaddyg+Z2urN4Dx0ZEpBiZDiTTs28bJWqSJcJ Q==;
+X-CSE-ConnectionGUID: 74rywN5VR2Gnt0PIQSN/Kg==
+X-CSE-MsgGUID: ATVxgb6MQOqjQpW7mxwTXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="65210617"
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; d="scan'208";a="65210617"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2025 12:05:11 -0700
+X-CSE-ConnectionGUID: 4mEue3+ESTGhTpYRx3R1Ng==
+X-CSE-MsgGUID: EYqBMoyqRg+eRLXva2YPAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; d="scan'208";a="158133816"
+Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2025 12:05:09 -0700
+From: Sk Anirban <sk.anirban@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, riana.tauro@intel.com, raag.jadav@intel.com,
+ Sk Anirban <sk.anirban@intel.com>
+Subject: [i-g-t,v3] tests/intel/xe_wedged: Add new test csc-wedged
+Date: Thu, 17 Jul 2025 00:34:08 +0530
+Message-ID: <20250716190407.3437793-2-sk.anirban@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Fsysfs=3A_Remove_r?=
- =?utf-8?q?edundant_variable_assignment?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Jul 2025 18:45:33 -0000
-Message-ID: <175269153357.167815.7058064178482887482@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250716132752.1279098-1-pranay.samala@intel.com>
-In-Reply-To: <20250716132752.1279098-1-pranay.samala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +63,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5526048268429235565==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Inject a CSC error through uevent to cause the Xe device to enter a wedged
+state. To return the device to a normal state, reload the driver, as
+the wedged state can only be resolved by rebinding/reprobing the driver.
 
-== Series Details ==
+Check survivability mode to validate that CSC error injection correctly
+triggers the survivability state transition.
 
-Series: lib/igt_sysfs: Remove redundant variable assignment
-URL   : https://patchwork.freedesktop.org/series/151708/
-State : success
+Related kernel patch series:
+https://patchwork.freedesktop.org/series/149756/
 
-== Summary ==
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+---
+ tests/intel/xe_wedged.c | 79 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
-CI Bug Log - changes from XEIGT_8462_BAT -> XEIGTPW_13484_BAT
-====================================================
+diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+index 7fc7ca9eb..c06a167d1 100644
+--- a/tests/intel/xe_wedged.c
++++ b/tests/intel/xe_wedged.c
+@@ -14,6 +14,7 @@
+ 
+ #include <limits.h>
+ #include <dirent.h>
++#include <libudev.h>
+ 
+ #include "igt.h"
+ #include "igt_device.h"
+@@ -46,6 +47,49 @@ static void force_wedged(int fd)
+ 	sleep(1);
+ }
+ 
++static void force_wedged_csc_error(int fd)
++{
++	igt_debugfs_write(fd, "inject_csc_hw_error/probability", "100");
++	igt_debugfs_write(fd, "inject_csc_hw_error/times", "1");
++
++	xe_force_gt_reset_sync(fd, 0);
++	sleep(1);
++}
++
++static char bus_addr[NAME_MAX];
++
++static int check_survivability_and_uevents(int fd, struct udev_monitor *mon)
++{
++	struct udev_device *device;
++	struct pci_device *pci_dev;
++	char path[PATH_MAX];
++	int dirfd;
++
++	pci_dev = igt_device_get_pci_device(fd);
++	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
++		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
++	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
++	dirfd = open(path, O_RDONLY);
++
++	if (mon) {
++		device = udev_monitor_receive_device(mon);
++		const char *dev_path = udev_device_get_property_value(device, "DEVPATH");
++		const char *wedged = udev_device_get_property_value(device, "WEDGED");
++
++		igt_cleanup_uevents(mon);
++
++	igt_assert_f(wedged && !strcmp(wedged, "vendor-specific"),
++		     "Expected WEDGED property to be 'vendor-specific', got '%s'",
++		     wedged);
++
++	igt_assert_f(dev_path && strstr(dev_path, bus_addr),
++		     "Expected bus address '%s' to be part of DEVPATH '%s'",
++		     bus_addr, dev_path);
++	}
++
++	return dirfd;
++}
++
+ static int simple_ioctl(int fd)
+ {
+ 	int ret;
+@@ -208,6 +252,11 @@ simple_hang(int fd, struct drm_xe_sync *sync)
+  * SUBTEST: basic-wedged-read
+  * Description: Read wedged_mode debugfs
+  */
++/**
++ * SUBTEST: csc-wedged
++ * Description: Force Xe device wedged after injecting a failure in CSC
++ */
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -300,12 +349,42 @@ igt_main
+ 		igt_assert_f(str[0] != '\0', "Failed to read wedged_mode from debugfs!\n");
+ 	}
+ 
++	igt_subtest("csc-wedged") {
++		struct udev_monitor *mon;
++
++		igt_require(igt_debugfs_exists(fd, "inject_csc_hw_error/probability",
++					       O_RDWR));
++
++		igt_assert_f(check_survivability_and_uevents(fd, NULL) < 0,
++			     "survivability_mode sysfs available");
++		igt_debugfs_write(fd, "inject_csc_hw_error/verbose", "1");
++
++		ignore_wedged_in_dmesg();
++		mon = igt_watch_uevents();
++		force_wedged_csc_error(fd);
++
++		igt_assert_f(check_survivability_and_uevents(fd, mon) >= 0,
++			     "survivability_mode sysfs not available");
++
++		drm_close_driver(fd);
++		igt_kmod_rebind("xe", pci_slot);
++		fd = drm_open_driver(DRIVER_XE);
++		igt_assert_eq(simple_ioctl(fd), 0);
++		xe_for_each_engine(fd, hwe)
++			simple_exec(fd, hwe);
++	}
++
+ 	igt_fixture {
+ 		if (igt_debugfs_exists(fd, "fail_gt_reset/probability", O_RDWR)) {
+ 			igt_debugfs_write(fd, "fail_gt_reset/probability", "0");
+ 			igt_debugfs_write(fd, "fail_gt_reset/times", "1");
+ 		}
+ 
++		if (igt_debugfs_exists(fd, "inject_csc_hw_error/probability", O_RDWR)) {
++			igt_debugfs_write(fd, "inject_csc_hw_error/probability", "0");
++			igt_debugfs_write(fd, "inject_csc_hw_error/times", "1");
++		}
++
+ 		/* Tests might have failed, force a rebind before exiting */
+ 		drm_close_driver(fd);
+ 		igt_kmod_rebind("xe", pci_slot);
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8462 -> IGTPW_13484
-
-  IGTPW_13484: f3006f66bae5b05c30e0b3a49ac5b9928a9e6ff8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8462: f33a311145a889757f45313d2ff4bf58f7ef01d6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3423-3b965bd54a93adbf5520b143254ecb10b9a11776: 3b965bd54a93adbf5520b143254ecb10b9a11776
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13484/index.html
-
---===============5526048268429235565==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_sysfs: Remove redundant variable assignment</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151708/">https://patchwork.freedesktop.org/series/151708/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13484/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13484/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8462_BAT -&gt; XEIGTPW_13484_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8462 -&gt; IGTPW_13484</li>
-</ul>
-<p>IGTPW_13484: f3006f66bae5b05c30e0b3a49ac5b9928a9e6ff8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8462: f33a311145a889757f45313d2ff4bf58f7ef01d6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3423-3b965bd54a93adbf5520b143254ecb10b9a11776: 3b965bd54a93adbf5520b143254ecb10b9a11776</p>
-
-</body>
-</html>
-
---===============5526048268429235565==--
