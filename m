@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C7DC83F1A
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 18:46:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C881C87FC6
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 18:46:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC14910E88F;
-	Thu, 17 Jul 2025 18:46:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 024D410E896;
+	Thu, 17 Jul 2025 18:46:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="l7wUAYyL";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RMEaG9Ow";
 	dkim-atps=neutral
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
  [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 392EC10E883
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 18:46:47 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D1287442D9;
- Thu, 17 Jul 2025 18:46:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83F7510E883
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 18:46:44 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 27BA2442B0;
+ Thu, 17 Jul 2025 18:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752778006;
+ t=1752778003;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=d8ejnseLbmE4sWyV0bFnnFLZDU+KA3zE/1/WyvTMNEQ=;
- b=l7wUAYyLyZNLReEwX2rA+JIOkyCavNiBcQoqw4kz5nTOAdyK3+NvOHV6ungt8FtJxhmR3f
- XTnmUjfKSj8h1aMEcvb8Cwt8VG68n9z3cMLFV0NteHiBSvp85Aj0twNWLQcdoUTyiMvJG5
- jDWKNGHJm/wHdKRjEe/TKDkFi3abnf6O2uImRAe5mKQGMJt0TrtW8U7MeqBzzi6gxGrq4S
- P7etyVb9XRCm82YocXQn7U0I/khwy5WP3yTd/Rv9qHyEaDXbwM4TUmnbed7GFJqq2Xn6Qz
- QXCEpamikpzwQbuVwnIvromjtPcLiG4Va5oJoJwt4060KM0qcTogbV+jM2x3QA==
+ bh=e1ZAhcsJklpMg1/wlC5uffunuiVd7V13+TPYnoSfsvs=;
+ b=RMEaG9Owcom4JVP0DXzwrToZfv+sVpGgZZrp2lRYBp80520jNIrldePKU3Zxpz4ryGUgoP
+ HU5CkymC7xeUnSF6KbPbrqxyRrZ9kHBgQMbS6pMbxLwmlx1p1/yZWEzdmOLzHFHI+rTwH3
+ YmIbjH0ePPiumVTW4tCaF0spp3qJ8qs77sK5+O4FJGHVHhZb33vGQt9DldVqxw7JrEPcea
+ BSJPhj88kuBdRm0M3oEcKG2ijiEHJ05Yv7a9FjsHx5esZfOqeus7a+9T4/tEcfBY4pnJ1W
+ 34kz9VtHwSLJRbH5ntwsLdBH3EnesT4QGpEWTJ/rm+pdudsyxF1frcmG7bREew==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Thu, 17 Jul 2025 20:46:42 +0200
-Subject: [PATCH i-g-t v2 22/26] lib/unigraf: Add edid configuration
+Date: Thu, 17 Jul 2025 20:46:32 +0200
+Subject: [PATCH i-g-t v2 12/26] lib/igt_kms: Automatically connect unigraf
+ on display require
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250717-unigraf-integration-v2-22-77dc329e584c@bootlin.com>
+Message-Id: <20250717-unigraf-integration-v2-12-77dc329e584c@bootlin.com>
 References: <20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com>
 In-Reply-To: <20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, mark.yacoub@google.com, 
  Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2831;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=687;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=TRN6ywMNVoo56LEee7XuUrpWFllW32QWOoxYxWZI+Zs=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoeUUNBAB/ceonB2nfV5IZaULFfovH8drF7oS2D
- ppV+17LiNuJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaHlFDQAKCRAgrS7GWxAs
- 4p9kD/4/F3UqC6Yb0LNLoSxjvga5A/zNBfrcMq10yVdlpCTpVYqsV6orVm7TiZJXYcMbHWzK+gg
- h16rRRnX8Svf8IWFkDImx9MYHtW3yXqmHm5yl/VIEQMPUYRaR3a2M1qoBiqHHEKGgVxQ+jHwOe0
- QunMTuM3khfQdIyvm3CiCZHiXnW9ef6gIJQeNjpgbvJg+sg5Lvx8pYkmjChH0uXWlKU/cyxCEBJ
- njsWImWBDh0/s/ies6sZUep8VGPTZM37v5XOXouPP0cPi49snsBVJZOIh4N3KHgd9l1sTu8cuFX
- VaEsvs3hzcGtcBdnKwkJNZDql8KQ5UPNdhExEtKELiI7wbEFvZyHrUgQz3p9dOffgr1FQfDL685
- BmG245+g+bDZPW/6prHoBKJA52ZutFz767JX+11TYaxDynzDzUUjD5e2pNrbXmEeMZxyDKoUl25
- 5LKgmLQBtzvrYvFl4LlxXaD/QH7rOjcdF/EAYMuaxQdvsXHsl+MV+Idr37WVZi+IoSCL/P5K1Mj
- sa1GgBK5YcrLs/c+kV0s2dGEjCDjLcvIXyNio3HyaAumZDTdRx/WQmrxCmSZLsUHxOa2/zNlx8t
- wFn5felQxiM8i0+0gd1P8yjTbDQ0O2HnmEwQfpCuYPRlC2SouZdpYpDKQ9eYeJ6RI/CUFz0TdPO
- pfSZyCS0zvXG5bA==
+ bh=t84DjfYhWVLFtIrm1rbfGvnWU49O42H7tuHj1MjmbXk=;
+ b=kA0DAAgBIK0uxlsQLOIByyZiAGh5RQrI1jfCJxv9Jqj9z9bandMjN9Xcg13EpkaGEV638hXCp
+ okCMwQAAQgAHRYhBE+PuD++eDwxDFBZBCCtLsZbECziBQJoeUUKAAoJECCtLsZbECziUq8QAM7P
+ WkGrXbay1LHn6o8tPyEwEMIaO2OxF+p6gbpRiU/UVbKGEK9jfchKCVV108/Tr5Qz+AMh7jlUlNb
+ ArqN4jT1ob5IeU44R9pJGc6rZ7Z/KPvJlgraWla3w4g2EV4QmWhKeDw/yTvVW0W1wAAxe65Nh0u
+ cQgKF++PIXA3HRyrzwamkLlS3hzg98FcHw4ZL+ACJ5yzchEMMKIs9RjU3OQWAPqsztRNs4j8e78
+ v4mjsxc+1dEcG6fTSV0c7TSkYQKvR1u/boMxlvaMbCBR8J/O8ifMZaUeHIalf67r8GlomJnbaWx
+ 7FtzfTfPDOz7ANSh/IULK6yEu4nFvo6guYf+Cymh6rx0Zmnmhk3kj4HqKK6C0RDhNI/B6j5hI35
+ ed5CzTwA2f6XbEcamdmUPzLhml//VdO2FkVHwDnnKgpno8S1sP5PHDYl7+Gm97bYIDmSSZ83xHI
+ zFlTZ1ZNmqqm/uq/Ec+t80J1bZS6PXGFwIMvfgou9ZR0/Wi3+NG7kFS3W3FVEb8OFTgKk3w126V
+ JuEvqyCuilaubf67+wgAB6fezlcoi7ZMRYuM8IxLBUFJQk+l1kz2/RSeII2SUpJrEwBmUnZLhk0
+ oMZTW1hP08IxLzXAk7d1GN0M282WQbPhxdHG4Bq8J03ZPerpvDpp6krCedrPj4UAEMDfct6O5OS
+ 7qt+6
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-State: clean
@@ -79,95 +80,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As unigraf could be used as a simple screen for all tests, add a default
-EDID configuration to connect the unigraf by default on every tests using
-this EDID.
+As Unigraf can emualte a display, automatically connect it for all
+devices. If a test is already using unigraf, this have no effect.
 ---
- lib/unigraf/unigraf.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ lib/igt_kms.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 10f8c5ab671d0e8ccf27d333f6ea66c8219b0892..add5d5b2b1379bb34ff73505ee917e51398f4b66 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -10,8 +10,10 @@
- #include "unigraf.h"
- #include "TSI_types.h"
- #include "TSI.h"
-+#include "igt_edid.h"
- #include "igt_kms.h"
- #include "igt_rc.h"
-+#include "monitor_edids/monitor_edids_helper.h"
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index c79f9b946ca84c7c374ca514c05def2c34f81383..95ad7885a7dc284031e2f0fda2b0655474f295d2 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -2926,6 +2926,12 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 	int i;
+ 	bool is_intel_dev;
  
- #define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device,##__VA_ARGS__)
- 
-@@ -50,6 +52,11 @@ static char *unigraf_connector_name;
-  */
- #define UNIGRAF_CONFIG_CONNECTOR_NAME "Connector"
- 
-+/**
-+ * UNIGRAF_CONFIG_EDID_NAME - Key of the EDID name in the configuration file
-+ */
-+#define UNIGRAF_CONFIG_EDID_NAME "EDID"
-+
- /**
-  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
-  */
-@@ -165,6 +172,17 @@ static int unigraf_find_input(char *request) {
- 	return chosen_input;
- }
- 
-+static void unigraf_load_default_edid(void)
-+{
-+	struct edid *edid = get_edid_by_name(unigraf_default_edid);
-+	if (edid) {
-+		unigraf_write_edid(0, edid, edid_get_size(edid));
-+	} else {
-+		igt_warn("Impossible to find an edid named \"%s\"", unigraf_default_edid);
-+		list_edid_names(IGT_LOG_WARN);
++#ifdef HAVE_UNIGRAF
++	if (unigraf_open_device()) {
++		sleep(1);
 +	}
-+}
++#endif
 +
- static void unigraf_autodetect_connector(int drm_fd)
- {
- 	int newly_connected_count, already_connected_count, diff_len;
-@@ -228,6 +246,7 @@ bool unigraf_open_device(void)
- 	char *cfg_device = NULL;
- 	char *cfg_role = NULL;
- 	char *cfg_input = NULL;
-+	char *cfg_edid_name = NULL;
- 	int device_count;
- 	int chosen_device;
- 	int chosen_role;
-@@ -283,6 +302,13 @@ bool unigraf_open_device(void)
- 			unigraf_debug("No connector name configured, will autodetect.\n");
- 			unigraf_connector_name = NULL;
- 		}
-+
-+		cfg_error = NULL;
-+		cfg_edid_name = g_key_file_get_string(igt_key_file, cfg_group, UNIGRAF_CONFIG_EDID_NAME, &cfg_error);
-+		if (cfg_error) {
-+			unigraf_debug("No default EDID set, use IGT default.\n");
-+			unigraf_connector_name = NULL;
-+		}
- 	}
+ 	memset(display, 0, sizeof(igt_display_t));
  
- 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-@@ -341,6 +367,14 @@ bool unigraf_open_device(void)
- 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
- 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
- 
-+	if (cfg_edid_name == NULL) {
-+		cfg_edid_name = strdup("DEL_16543_DELL_P2314T_DP");
-+	}
-+	unigraf_default_edid = cfg_edid_name;
-+
-+	unigraf_set_sst();
-+	unigraf_load_default_edid();
-+
- 	return true;
- }
- 
+ 	LOG_INDENT(display, "init");
 
 -- 
 2.50.0
