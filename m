@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32041C83F34
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 179DCC87FCA
 	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 18:46:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6DDBB10E899;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F72E10E898;
 	Thu, 17 Jul 2025 18:46:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="AFc8uKhq";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="SCdisL3e";
 	dkim-atps=neutral
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
  [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B10B10E883
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 18:46:48 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DD74B442B0;
- Thu, 17 Jul 2025 18:46:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE02F10E883
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 18:46:46 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4EDD5442B2;
+ Thu, 17 Jul 2025 18:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752778007;
+ t=1752778005;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hE0wiLVzSD5T+ZVEmvzxgXT8O8EnjnL9OL3V2rIA4Gk=;
- b=AFc8uKhqYzsx9HC4KckFQgJXpyjhi7fse5saNCSqFqRyM8oIONM7foHNGrOHSi4pmIyqKD
- nyc7XTPUYD6Hhg6dTY1xzMEUNBpOJc84eQieNBh66DWqmZym7LRFYBeCYyXdYRBUSo+9ZT
- rLuJd4ESJCB3kFMIRNvVVN6JE0d17RR4g+hbv00WeZPKrQ/LxJwZyGeFZ6au1qQblaqiSn
- rjv34ESDFSwHPH1p3hWOWIQdl4F8UlaLW/it1oSnFtqi+DiYenLZXlYKpqXRPf05akHcfk
- 7dEeqO+ak3So4TP2RswchjWIQEzbUU1ieukEE2MKRXaw6Dtnbv08y6pKD0Op1A==
+ bh=oXyQu38vhS1xqbTtHq6pKinczK9wbDHm2qS7y0HPlSk=;
+ b=SCdisL3elUNDniSj727w6qMe4gN5DwrfJDXCUqKocIP/Q9jaUfTafaGvpf0T4G02mES0qt
+ 7MWfNKMdNh+13OkTDx4O+XvfrQS++RymrNRADawpX35ti9fike2s/0jYDuHzVf0P5oTCrx
+ NC63JsywruyuzyRULUik8N+o9SUvQ5N9JwSVteZ9XpueLj4pyqBRlUQR9B41Fp2lkmSfyj
+ MW9vmnUuKtEUGHAiEjjwYQsaruJeK7D52i4eQm15g7i68IjS8xKt5Lys4aHZqrDp8oKzCG
+ yQ+dPCQsHuAbs/gInq9H2Tw95AHZ1Xw1rmfS4no7EGncFXr79qZ9Xkp8gODrfw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Thu, 17 Jul 2025 20:46:46 +0200
-Subject: [PATCH i-g-t v2 26/26] lib/igt_pipe_crc: Add ungiraf crc calculation
+Date: Thu, 17 Jul 2025 20:46:40 +0200
+Subject: [PATCH i-g-t v2 20/26] lib/unigraf: Add connector configuration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250717-unigraf-integration-v2-26-77dc329e584c@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250717-unigraf-integration-v2-20-77dc329e584c@bootlin.com>
 References: <20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com>
 In-Reply-To: <20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, mark.yacoub@google.com, 
  Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1515;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3001;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=101SeUpaycFUy8V6yM2FTMKQqjrsf400qp5UEZU3ucg=;
- b=kA0DAAgBIK0uxlsQLOIByyZiAGh5RQ+hpAMBKJfAQyOJMqtmtBcm2qW6BZ1zDqVmpFO9FeeuX
- YkCMwQAAQgAHRYhBE+PuD++eDwxDFBZBCCtLsZbECziBQJoeUUPAAoJECCtLsZbECziNrUP/2R8
- CWkR5YU3Dx5+x4Bn+JWaB9MaCeDq6C9dWWxKLC5aZUZbVs79TC5naAU1CjOQDifKOjFEeZf2n/N
- YewIfV6cqa1jLfKqXBIPOcbDSRui3ONXjLaRVF7ths+4alniKv4w27m7lopPyzGXkzcqvO3cz/a
- Ezya5AGr1CLDyECRQdUr4b9BQ0fnedMoURwl1VKAc6RUL3Ta5ilMbI+cJdRLqoYDsPrUbQVakrZ
- lC1NScqZgJmD7f8cxkjj2Bsth7G9D+LCdcbptOpZ3NwX0mNaIkV5rr1dGqQ21Vvyjvu1VGd7DVR
- moQusMBRmgCbp1CjOi+YI0fTzhTiq1FP/PrDbWq1boSNUWbVXDvlytpsGk+j+KsRr4HGvtV0K8m
- kj6KPDWTHVQog+jBeCw5R7y7X+p6oS6MMoD3TGYx83NZPcPdOXcNMvh7ve426EEv7/fgR7ZjrfA
- 71GvDqTuVWc1cTJxdxyuUXJavu7KNK2nKiKhSjAwiuGq68wbPSlJuOTYnRfrkVuPtiYYE8Zr5fz
- x3F2gu2PJ26dAOd3CcTHjo8voHh1JWsm16O02cqe97paMFdvNaNSbk2onN6y1wQ49qIZ+3FGdb8
- BlZt9WanByGvFFxqr1xcuqsgP/W4t2HbrlwHKXYCqesFk7faGJrckcpAaF5y+b7qva4pOR2cD1E
- KxSub
+ bh=d+rcZK4IAt8skygpzybSwv6x+Bbs/TS6pFSPH7UDaQM=;
+ b=kA0DAAgBIK0uxlsQLOIByyZiAGh5RQ3IzB1Gx3OQusDSH84Y9xdtkIF1zXAzdF3GMpA4EnwEV
+ 4kCMwQAAQgAHRYhBE+PuD++eDwxDFBZBCCtLsZbECziBQJoeUUNAAoJECCtLsZbECziiugP/iH/
+ kigpdXkd/7sM3dP1DZiR7AIdybJWrtJCpQ58cRonPKsCFj4ARml9K0XM7p/CBF9Nl1/uBqDfpsQ
+ 54IeqCnzfe3nZN1Nf0DuMytLMecFw72d9xjwBpcotPi/XCQb9yOnKxdgoTtGE0lwRcm5K1i5O1K
+ Pay6G/k838UaV24hjunvyfxpSjAA/YCkfDKADcVYPwFnOJgVYFT9VvWpQfHJML/p6oT+vaNNOxe
+ 6pG/tTxr8Z0snhGpM9m9iCfktNg85KYg0OMWJq2coexQtguMD+PVXOpswoKjj3gs0keI2y6nZ4p
+ bwoWdM5B7NcOSJl9BayUFm7mfLib2TDGvgNzptSuLVgSiKKCVEIBnnYhCHZ7ELC7QpnHSJeLWzm
+ CHCWUJkoab4uDuIaksrLXCfh0a8go9P/mAQUUTXr2jIUTlyB0knaLy0T++O9uXtEW+B0H4NB2+z
+ TQOvlnR1jx/7SM5NWPSoVOhtWrQXdvgOJbsOpsvyb93+dhBiDyhdlVENAG69J/suli0wbzAsEM5
+ c1E0SPoXvhMyqJ/S/MHenxFWPwqum1uObpmddjjAgNmk+dQDxaINp6TZ9GP8Qgezkm2ksSX38pO
+ f3/XBJcYTsUqG5k5WYtHS6KSzT9w2DOhMkp/M05utb4uRPELBZxvHr6ccSI+jVRbhldFiikbT2I
+ fsBvs
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-State: clean
 X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeiudefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpefhfffugggtgffkfhgjvfevofesthekredtredtjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedtieevieduhedttdfgtefhuddufeffudetkeegveeuteduveehheeivedttddtkeenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrdegvddrieejngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepmhgrrhhkrdihrggtohhusgesghhoohhglhgvrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeiudefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehtdejtddtteeiiefgleejkeetteevhfdukeegleffjeehgeeivefhgeduffdvvdenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrdegvddrieejngdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepihhgthdquggvvheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepmhgrrhhkrdihrggtohhusgesghhoohhglhgvrdgtohhm
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -79,63 +79,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Unigraf can read crc from the physical output, use this CRC instead of
-internal CRC when configured. This allows to also test the hardware signal
-generation.
+As multiple connectors can be present on the DUT, add a configuration to
+tell which connector is used by the Unigraf.
 
-This small addition allows to use the unigraf device for most of the
-kms_* tests.
+The configuration will look like:
+
+[Unigraf]
+Device=UCD-500 [2434C620]
+Role=DisplayPort Source and Sink
+Input=DP RX
+Connector=DP-4
 ---
- lib/igt_pipe_crc.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ lib/unigraf/unigraf.c | 18 ++++++++++++++++++
+ lib/unigraf/unigraf.h | 11 +++++++++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
-index 866bf2881cbd04df0ae0cc8fe91fe0626367144f..76244d00934ea09fd79cfd23734196f11eee1e1a 100644
---- a/lib/igt_pipe_crc.c
-+++ b/lib/igt_pipe_crc.c
-@@ -3,6 +3,8 @@
-  * Copyright © 2013 Intel Corporation
+diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+index 6df48da4672c1774bd85125076fcc63e9891b6cc..b59a3627af30642899fcf3e4c9e5b53fb4e54eeb 100644
+--- a/lib/unigraf/unigraf.c
++++ b/lib/unigraf/unigraf.c
+@@ -10,6 +10,7 @@
+ #include "unigraf.h"
+ #include "TSI_types.h"
+ #include "TSI.h"
++#include "igt_kms.h"
+ #include "igt_rc.h"
+ 
+ #define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device,##__VA_ARGS__)
+@@ -44,6 +45,11 @@ static char *unigraf_connector_name;
   */
+ #define UNIGRAF_CONFIG_INPUT_NAME "Input"
  
-+#include "igt_core.h"
-+#include "unigraf/unigraf.h"
- #include <inttypes.h>
- #include <sys/stat.h>
- #include <sys/mount.h>
-@@ -348,6 +350,17 @@ static int read_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
- 	return bytes_read;
++/**
++ * UNIGRAF_CONFIG_CONNECTOR_NAME - Key of the connector name in the configuration file
++ */
++#define UNIGRAF_CONFIG_CONNECTOR_NAME "Connector"
++
+ /**
+  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
+  */
+@@ -159,6 +165,11 @@ static int unigraf_find_input(char *request) {
+ 	return chosen_input;
  }
  
-+#if HAVE_UNIGRAF
-+static int read_crc_unigraf(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
++drmModeConnectorPtr unigraf_get_connector(int drm_fd)
 +{
-+	unigraf_read_crc(out);
-+
-+	out->has_valid_frame = true;
-+
-+	return out->n_words;
++	return igt_get_connector_from_name(drm_fd, unigraf_connector_name);
 +}
-+#endif
 +
- static void read_one_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
+ bool unigraf_open_device(void)
  {
- 	int ret;
-@@ -359,6 +372,15 @@ static void read_one_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
- 	} while (ret == -EINTR);
+ 	TSI_RESULT r;
+@@ -215,6 +226,13 @@ bool unigraf_open_device(void)
+ 			unigraf_debug("No input name configured.\n");
+ 			cfg_input = NULL;
+ 		}
++
++		cfg_error = NULL;
++		unigraf_connector_name = g_key_file_get_string(igt_key_file, cfg_group, UNIGRAF_CONFIG_CONNECTOR_NAME, &cfg_error);
++		if (cfg_error) {
++			unigraf_debug("No connector name configured, will autodetect.\n");
++			unigraf_connector_name = NULL;
++		}
+ 	}
  
- 	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags);
-+	printf("crc: 0x%x\n", out->crc[0]);
-+
-+#if HAVE_UNIGRAF
-+	if (unigraf_open_device() && unigraf_use_crc()) {
-+		read_crc_unigraf(pipe_crc, out);
-+
-+		return;
-+	}
-+#endif
- }
+ 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
+diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+index e843aa8f2badddcfaeceb8773d5ad19e572e37d9..e014ead67b57e860907bd0cd3521fb5842240594 100644
+--- a/lib/unigraf/unigraf.h
++++ b/lib/unigraf/unigraf.h
+@@ -5,6 +5,7 @@
+ 
+ #include <stdbool.h>
+ #include <stdint.h>
++#include <xf86drmMode.h>
  
  /**
+  * unigraf_assert: Helper macro to assert a TSI return value and retrieve a detailed error message.
+@@ -45,6 +46,16 @@ bool unigraf_open_device(void);
+  */
+ void unigraf_require_device(void);
+ 
++/**
++ * unigraf_get_connector() - Get a DRM connector for the Unigraf device
++ * @drm_fd: DRM file descriptor
++ *
++ * Returns: A pointer to the drmModeConnector connected to the unigraf device,
++ * or NULL if the operation failed. The caller is responsible for freeing this
++ * pointer with drmModeFreeConnector().
++ */
++drmModeConnectorPtr unigraf_get_connector(int drm_fd);
++
+ /**
+  * unigraf_read_edid() - Read the EDID from the specified input
+  * @dev: The device handle
 
 -- 
 2.50.0
