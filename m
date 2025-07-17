@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E81AC83F1B
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 07:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5880C83F1A
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 08:09:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B86010E71B;
-	Thu, 17 Jul 2025 07:32:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4309E10E7DD;
+	Thu, 17 Jul 2025 08:09:32 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9999810E71B;
- Thu, 17 Jul 2025 07:32:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D704710E7DD;
+ Thu, 17 Jul 2025 08:09:30 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7684533867333994722=="
+ boundary="===============6982606443266716728=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Split_pixel_format_tests_b?=
- =?utf-8?q?y_RGB/YUV_filtering?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Replace_intel=5Fsysfs=5Fde?=
+ =?utf-8?q?bugfs?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 17 Jul 2025 07:32:31 -0000
-Message-ID: <175273755162.168769.17945701455175520125@1538d3639d33>
+Date: Thu, 17 Jul 2025 08:09:30 -0000
+Message-ID: <175273977087.168769.9288315133544907085@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250716092036.301862-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20250716092036.301862-1-ramanaidu.naladala@intel.com>
+References: <20250716093656.169619-1-peter.senna@linux.intel.com>
+In-Reply-To: <20250716093656.169619-1-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,15 +41,15 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7684533867333994722==
+--===============6982606443266716728==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Split pixel format tests by RGB/YUV filtering
-URL   : https://patchwork.freedesktop.org/series/151694/
+Series: Replace intel_sysfs_debugfs
+URL   : https://patchwork.freedesktop.org/series/151696/
 State : failure
 
 == Summary ==
@@ -58,9 +58,9 @@ ERROR: The runconfig 'XEIGT_8461_FULL' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13480/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13481/index.html
 
---===============7684533867333994722==
+--===============6982606443266716728==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,11 +80,11 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Split pixel format tests by RGB/YUV filtering</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151694/">https://patchwork.freedesktop.org/series/151694/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Replace intel_sysfs_debugfs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151696/">https://patchwork.freedesktop.org/series/151696/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13480/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13480/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13481/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13481/index.html</a></td></tr>
 
 </table>
 
@@ -94,4 +94,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============7684533867333994722==--
+--===============6982606443266716728==--
