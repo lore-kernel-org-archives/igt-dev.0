@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA951C83F3B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C95F7C83F1A
 	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 18:47:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9176B10E89D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D8E110E89C;
 	Thu, 17 Jul 2025 18:47:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="QP/tBYti";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="L0eEcSj3";
 	dkim-atps=neutral
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
  [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2CD3D10E883
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 18:46:46 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C0DA0442AB;
- Thu, 17 Jul 2025 18:46:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9B4910E883
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 18:46:47 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5EB25442A9;
+ Thu, 17 Jul 2025 18:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1752778004;
+ t=1752778006;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CCMRHvdvzC6ERZ/DI5lNF71YUJ22Ja7Tc0p4nP6kK2g=;
- b=QP/tBYti34GeMAwPt6pVx2L1pXbY1AwCHzlKtLt9z2ERlSso9PIthKuUOeYl1UuJxzR+vW
- PeUnwqbf8hOnkn2iCXiNZbEinhgLyxV07mRUNRr2AxJy+aXdixdc2/qwNQu00CMhv6Vj/8
- mLpOApxMnFK5vYHPIiRWNHYuhDodT+U5u4eIAZne1NDoRrXvUH/rjC/xTRoEgs1ZAJIwQG
- Wxnh6iZJwkAGfx7wIITEirBl36kSWLNVCr80K6Xq+xs8O8otQSwhq/JD1nM3VG5JSuv8lH
- hQ7gm4h+77zKcjmhsQl6NDuGnIP/yjQlpvRAxkV9BLlhAIgkloaUGe4BppZ2mg==
+ bh=L27m1qpw0fGlLaHu0km7Zy4sabMUpC3HkoZqp0lCHPM=;
+ b=L0eEcSj3vUF72CCuiwSCkwCVLXgh6V7jtz6QmSAIj4i/8D5ZrRDabWcXXedLYDTm98YuPQ
+ F4akJmFFENkHd3pUgIWMKXQIkYxYWX2PRbsmG7jXz4EIjOVfM+0wMHfCzCDukRqHjiKHjl
+ m2/usuA/9nk4toRpa7zLlmOLOBiF98s/9p3YqT/UV/5kKuGAaiM/oRE/sLBzly74C0/q6x
+ bOttVLz3esUcfOYbm7SP/pfkim7u3HJCwsgOu005Pr3tWTRZaAlje7ln25Xl2D6WUdIpx8
+ QGR1hioKzaPDkZBL78gg/WKN9KLSAget054CMps6h+9BsHBvhaxIl8Pr0WI+oA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Thu, 17 Jul 2025 20:46:38 +0200
-Subject: [PATCH i-g-t v2 18/26] lib/unigraf: Allows sst/mst configuration
+Date: Thu, 17 Jul 2025 20:46:44 +0200
+Subject: [PATCH i-g-t v2 24/26] lib/unigraf: Add unigraf CRC grab
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250717-unigraf-integration-v2-18-77dc329e584c@bootlin.com>
+Message-Id: <20250717-unigraf-integration-v2-24-77dc329e584c@bootlin.com>
 References: <20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com>
 In-Reply-To: <20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, mark.yacoub@google.com, 
  Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4448;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2161;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=C90Pqc2w056CAXdgfb2YQdsAXK/iO2xdU96cna3cTPA=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoeUUMhpEjvfEYdaA0rfQmKJCagr1FtrXj+94d9
- 9TIDraloEiJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaHlFDAAKCRAgrS7GWxAs
- 4gi2EACQfGGhx7n23iZTsnkv5PSckubjq9RrzaJlfuIEjprHv7Ow/Kui0VP9XvD/QHOB6qcDrP4
- CE+zgxeRiIGyd+ciptH29lBH0RWHGDuzGTvLl8Y2294IB7IZWyk6sH1JFlTa+hfDzhUwP24xYPw
- BzGCrX/eJfNwco8nQmO+xguT3AkvTNmDvND44+uvi0/Gx/X1InttN4nySvNAHcicQNxUkvno33y
- Scq3oqhDZqwUZXGWem/jPvtgGWsF8qsL+byXqsKSc2aA8sfu1pwrW7+jQBZa//S1e/B4K0xXncK
- 3WlzDMicq3U1/MNt0zJrD4bNJN0wJHsIyQZjojKdXfPlt8G2btxnjdpDe8qJAPVbFcI1/NzOBE8
- tR9mDoabn0hU+fuTYvapzin28B+x0fXnTydtj+3mqaGfDwgK1bm0bX0Ix8+MKvJ7IC+sJowIpf4
- 9UauTZub77rvcAbFyH3is8sPZNXCmIzO/6vEz932J3MjAKFOMA//jqf0XCIKjBygzGn9dfTFQAB
- XKpVCK/HC/hQIDHJnvX5eFSBw5m/WWWZOzeAICFPaO5u2NVgymLne+kW8MmKAxvhPsX5J2qLWqq
- GjvBIJVHKDb5RJsMP1ecTZxDJmxpmS/9YQ/JGfumcPcxM3ppmMUYpwvJZrtL1JY5vFp5M6PW0Ow
- u2mcdUvyr0ikD6w==
+ bh=kBAZvrZeYOVfOb2vWIANb8OLigprWTL03yIwj77VAB8=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoeUUOqYmCd6/MkccLFAJuifHPys7IX2foVVBKF
+ FHty8qyt5qJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaHlFDgAKCRAgrS7GWxAs
+ 4hONEADJ8+RGGZ8wgL4Wlu9v3OovlS1YumsBqK2p+zTHJQcUSVI9IT+QtHsEDf5ztKniI9f86Qf
+ q6Zblw+bMhsQ5kvuo4hNlxHKgo9ths9qKkCr2/2vV4OR6QU/iYBSnfhL+exBP9P0sHQH8K/tH7a
+ jbtJqfP4Q2ZHe6eva3Dp+womzWLAoPicaMxZj7ERikUWEAjDmE/TplKE41HXEDbFl35XUAJPP6U
+ NcMxDgOcHPbRNQSxqb8QET8ngrJEcZWw1sIvGCxDAQHSw4Ij9zutuQo0AXYEtRZlm54baTXlM3n
+ CRN9SFSExQbbSbF9/3qKKFYFh9VA01HedaLW/KBUVnwfiiY1YHKYO0acQfXwoyXy97VRugXXLhp
+ mHGq6BzbQGOxg2XJmL+tVxJDHQ20rfDAfMKxFkKHlRO9q/FaX4D2/a03zmkEXaeqlxyQEWcsxuV
+ RB+KWvJNxxS30sB3Xur8wByVrar6SRa3tWWgqPWieuoKJ7k08z9Gu1XAWOSm7GtFP6BDogPEjrT
+ TN5DWZcHtO2Cb3M3dxhhF9XQ2nFqwbuoCQsjqLAk+surv1RiHlBE8qj9sK0nxEp5W3e7/6L7t/7
+ VG0z59ts2dbAjq8v4KyTUrydjcvh4/yoecwJnERqlxRHtEptmilbAdMzqDonN/j+zrYCeJogEcU
+ 0l75fLfIg2xfx+Q==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-State: clean
@@ -79,124 +79,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Unigraf devices can emulate both SST and MST display port. In order to
-write tests using both, add fews helper to manipulate them.
-
-The define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT is taken from the
-python SDK, as it was not defined by the C sdk nor documented.
+As unigraf devices are able to grab a CRC for the current video stream,
+add an helper to read the CRC.
 ---
- lib/unigraf/unigraf.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/unigraf/unigraf.h | 34 +++++++++++++++++++++++++++++
- 2 files changed, 93 insertions(+)
+ lib/unigraf/unigraf.c | 15 +++++++++++++++
+ lib/unigraf/unigraf.h | 10 ++++++++++
+ 2 files changed, 25 insertions(+)
 
 diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 565d63d985b1ea99e839c377d7b87876ba2a12c4..15ded642c2fc6900a6722bdeb62c7126b23e9cee 100644
+index add5d5b2b1379bb34ff73505ee917e51398f4b66..9ccd53e55ab5d261d236348fa8a3c7721e87698f 100644
 --- a/lib/unigraf/unigraf.c
 +++ b/lib/unigraf/unigraf.c
-@@ -313,3 +313,62 @@ void unigraf_plug(void)
-        igt_assert(unigraf_device);
-        unigraf_write(TSI_DPRX_HPD_FORCE, &d, sizeof(d));
+@@ -12,6 +12,7 @@
+ #include "TSI.h"
+ #include "igt_edid.h"
+ #include "igt_kms.h"
++#include "igt_pipe_crc.h"
+ #include "igt_rc.h"
+ #include "monitor_edids/monitor_edids_helper.h"
+ 
+@@ -499,3 +500,17 @@ void unigraf_select_stream(int stream)
+ 	igt_assert(unigraf_device);
+ 	unigraf_write(TSI_DPRX_STREAM_SELECT, &stream, sizeof(stream));
  }
 +
-+void unigraf_set_sst(void) {
-+	int link_flags = 0xFFFFFFFF;
-+	igt_assert(unigraf_device);
-+	unigraf_unplug();
-+	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_LINK_FLAGS, &link_flags, sizeof(link_flags)));
-+	link_flags &= ~(TSI_DPRX_LINK_FLAGS_MST | TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT);
-+	unigraf_write(TSI_DPRX_LINK_FLAGS, &link_flags, sizeof(link_flags));
-+	unigraf_plug();
-+	unigraf_hpd_pulse(500000);
-+}
-+
-+void unigraf_set_mst(void) {
-+	int link_flags = 0xFFFFFFFF;
-+	igt_assert(unigraf_device);
-+	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_LINK_FLAGS, &link_flags, sizeof(link_flags)));
-+	link_flags |= TSI_DPRX_LINK_FLAGS_MST | TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT;
-+	unigraf_write(TSI_DPRX_LINK_FLAGS, &link_flags, sizeof(link_flags));
-+}
-+
-+int unigraf_get_mst_stream_max_count(void)
++bool unigraf_use_crc(void)
 +{
-+	int previous_count;
-+	int max_count = -1;
-+
-+	// You can write any value to the register, but the actual value will not be more than the supported sink count.
-+	previous_count = unigraf_get_mst_stream_count();
-+	unigraf_write(TSI_DPRX_MST_SINK_COUNT, &max_count, sizeof(max_count));
-+	max_count = unigraf_get_mst_stream_count();
-+
-+	unigraf_write(TSI_DPRX_MST_SINK_COUNT, &previous_count, sizeof(previous_count));
-+	return max_count;
++	return unigraf_crc;
 +}
 +
-+int unigraf_get_mst_stream_count(void)
-+{
-+	int count;
-+	igt_assert(unigraf_device);
-+
-+	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_MST_SINK_COUNT, &count, sizeof(count)));
-+
-+	return count;
-+}
-+
-+bool unigraf_set_mst_stream_count(int count) {
-+	int new_count;
-+
-+	unigraf_write(TSI_DPRX_MST_SINK_COUNT, &count, sizeof(count));
-+	new_count = unigraf_get_mst_stream_count();
-+
-+	igt_warn_on_f(count != new_count, "IGT:%p: Requested MST stream count (%d) differ from what was applied by the device (%d)\n", unigraf_device, count, new_count);
-+
-+	return count == new_count;
-+}
-+void unigraf_select_stream(int stream)
++void unigraf_read_crc(igt_crc_t *out)
 +{
 +	igt_assert(unigraf_device);
-+	unigraf_write(TSI_DPRX_STREAM_SELECT, &stream, sizeof(stream));
++	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_CRC_R_R, &out->crc[0], sizeof(out->crc[0])));
++	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_CRC_G_R, &out->crc[1], sizeof(out->crc[1])));
++	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_CRC_B_R, &out->crc[2], sizeof(out->crc[2])));
++	out->n_words = 3;
 +}
 diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index 7f6438da66b688b4b7d8aaa6f124474bd2c1d042..6ecd1248cdd70a2af99ae09ae19f9fc8c061ff56 100644
+index e014ead67b57e860907bd0cd3521fb5842240594..11e483312699fd9f304586bffcc5616c10fb637d 100644
 --- a/lib/unigraf/unigraf.h
 +++ b/lib/unigraf/unigraf.h
-@@ -81,4 +81,38 @@ void unigraf_plug(void);
+@@ -3,6 +3,7 @@
+ #ifndef UNIGRAF_H
+ #define UNIGRAF_H
+ 
++#include "igt_fb.h"
+ #include <stdbool.h>
+ #include <stdint.h>
+ #include <xf86drmMode.h>
+@@ -147,4 +148,13 @@ bool unigraf_set_mst_stream_count(int count);
   */
- void unigraf_unplug(void);
+ int unigraf_get_mst_stream_max_count(void);
  
 +/**
-+ * unigraf_set_sst() - Configure the device for Single Stream Transport mode
++ * unigraf_read_crc() - Read the CRC values from the Unigraf device
++ * @out: Pointer to an igt_crc_t structure where the CRC values will be stored
 + *
-+ * This function sets the device to operate in Single Stream Transport (SST) mode.
++ * This function reads the CRC values from the Unigraf device and stores them in the
++ * provided igt_crc_t structure.
 + */
-+void unigraf_set_sst(void);
-+
-+/**
-+ * unigraf_set_mst() - Configure the device for Multi Stream Transport mode
-+ *
-+ * This function sets the device to operate in Multi Stream Transport (MST) mode.
-+ */
-+void unigraf_set_mst(void);
-+
-+/**
-+ * unigraf_get_mst_stream_count() - Get the current number of MST streams
-+ *
-+ * Returns: The current number of MST streams configured on the device.
-+ */
-+int unigraf_get_mst_stream_count(void);
-+
-+/**
-+ * unigraf_set_mst_stream_count() - Set the number of accepted stream count
-+ *
-+ * Returns true when the stream count was properly applied, false if the final stream count is not the one requested
-+ */
-+bool unigraf_set_mst_stream_count(int count);
-+
-+/**
-+ * unigraf_get_mst_stream_max_count() - Get the maximum number of stream count accepted by the device
-+ * Caution: This function can be destructive to some configuration: the only way to get the information is to try and read the new value.
-+ */
-+int unigraf_get_mst_stream_max_count(void);
++void unigraf_read_crc(igt_crc_t *out);
 +
  #endif // UNIGRAF_H
 
