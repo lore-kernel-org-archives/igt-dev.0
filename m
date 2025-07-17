@@ -4,19 +4,19 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B38AC83F34
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B944C83F38
 	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 18:46:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C335110E15A;
-	Thu, 17 Jul 2025 18:46:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0507510E889;
+	Thu, 17 Jul 2025 18:46:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="jaViNi/R";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Be8n2qeH";
 	dkim-atps=neutral
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
  [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE55010E15A
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F79510E883
  for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 18:46:45 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 83C89442A9;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 42A5E441C4;
  Thu, 17 Jul 2025 18:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
  t=1752778004;
@@ -24,40 +24,41 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=z5ab6Edczrqfil2mkk7oS1UNXPEMl6IlS86/B9AU+aU=;
- b=jaViNi/RihusX4NRPX7WBJy7EgQwm4scIxPYLRvCBb5aei2q1FruZzzQK950m4z6dOH491
- ou/Da6nsCTRW4D65dO32CZdfJQ32bAPKC/oUJJjstsCAHUm67phJE307EiUTh3z13yrCd2
- 2CU6Eh+dmT7UZw+TcrR39JET6yD0nT/fubvFVt+yO91r13QcHes2yjXNUclZStOBgZm3Zv
- 6yNtVPhVsKDDFnKs9QJ6KKjbgv5/0NaDDjcOHilv8U6T0YZvPPGl1BOKkXvVDhP86zAxHV
- O40ycjO6cTj38NhX5IcbYM5dyYOvopee3rfTqWpAsvEwFu+fmsvl627ohCd2Tg==
+ bh=TBEqD4Y/6PlHlGr0AUR1l0L/dzhN59HyaRH3vJW28aU=;
+ b=Be8n2qeHPMTW9r7QRq/Wad7Rleyl+qvyVcVdRjwzPiI8I7+oR75F10T4M2SxqBr0eeQkJS
+ n9bdfqKZjIl8bSo9aiM4LH7mtM4Ew6MS/sdUBg5VB3MInRaArRPXrHNKm2CAZ0JdtQXyyk
+ 8C0H4s3tKSZD8A25zOgmUYbT+3xq1AYh1Ci5a33+XnkzP89miZvmqNJ8Nt6Qj4g5Ix5TB5
+ aRbvALz3AEmSVYRWtHAa/C9Oir6sYEoO1qeQ9V3z3u/2fnNTZi0JM1zO6L3DfLaS/7y0ES
+ aAGN9tbCDgkXTeexP3xgEw53Qil8x98GU54OK2Ov6otqdyxbFCZOySreqnlkDA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Thu, 17 Jul 2025 20:46:37 +0200
-Subject: [PATCH i-g-t v2 17/26] lib/unigraf: Add plug/unplug helpers
+Date: Thu, 17 Jul 2025 20:46:36 +0200
+Subject: [PATCH i-g-t v2 16/26] lib/unigraf: Add unigraf assert and
+ deassert helpers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250717-unigraf-integration-v2-17-77dc329e584c@bootlin.com>
+Message-Id: <20250717-unigraf-integration-v2-16-77dc329e584c@bootlin.com>
 References: <20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com>
 In-Reply-To: <20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, mark.yacoub@google.com, 
  Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1599;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2800;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=arZGxUyehIHkdqMB6vZOsoj1e7xR3ybw6JX0wtUADQI=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoeUUMPkW5KeTgh6NhdjBa5OTQYKkzDZcSii4cE
- yrYhv8tNG+JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaHlFDAAKCRAgrS7GWxAs
- 4ohwEACeMgV0K8G3OBcB7uzOeYmbJ8V2H0vH73GGCUNwc/GYNJFgHDbgL4e5yEaueIv0ERtErWt
- 6UcK6QDV45yAAaCskJXiuUt/v+F6EL8eLL078sb5eANLM6Hg1s17uj03mjYgYakg80dM8Mobz9Y
- m7H5RYZLYgF/Vht2Y2DGeXufEaZ7YanrWUS2ah4TUeJtFzJg8DTiPpkCx+mqCZiFM/vLf3rS+rx
- xIAuUIm08OEWw1izCdpKssLEBVE4oLI7mdbgaWWI79AyHEZr6fnG5GGhp+imSgFXdF47g0VyXUG
- KjOVGwIpU3BUOrZEEFaxMIMPLled6fIF8qfsjPh5BVkPSLYsX0oujNCxM2P45kOGQ1ZxVXK1nHR
- pxI2xF17GhHG7P1msyXDInr2ka5MHg7uGPGN57QpQoipooOfnoYrGTb2bEwxU0oKy0FWFA7yByK
- 53Y0druWdaoXiJEhpNKoXlU6QqXiYRqD85pOkYwcK3rYgYe5SSjaLWKJSOUFyaErxTWermnP3M2
- ObBTy1afaI/E0k9GeW7ZElGlIN++CVdCA93fPybsnw6onzo0Esq5hrjWJ4mJ3x+07ORCSTJkO5i
- 1gG9DPOYI02aaEan2kHvYj5RiODA8KBJqzBmn7wUO6miUg1M1hM8za90ZpH76XmwY0hmqAGsujG
- DGzaMB5EGtG/GMA==
+ bh=vC8230lcylr51/GiaGF8yzw5A2a5YrijIMTDizeHiis=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoeUULsZP/x9Hel1zQUuiA791ePO/bjv6ZZWdNl
+ 7pRexS/lZGJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaHlFCwAKCRAgrS7GWxAs
+ 4hJ/EACwm4kp7OvgKAxyjFoDSf0RpqqDjtYXA24PLkkT/V12bWXQXhyHR2cudYL/kt8sxNfcKTw
+ YpqCJypednf81gh5npK/oSxCNU7iZnXW1yiHAV7RR9se2tn+5KOaIEJQNfTRDzSWgxGeM8iruH2
+ zq6KGo1EIjd2naIuebpA+lR4Xprqx4skjzN2j5OxQasu7SX7EVv834IRTMaAXWDsVA3zUhPiM1l
+ G1Zsh736l9i3PUlVc9NQ2FJgMfCitay7UEMaCqgvcfxYNYHuaUUKwN0YkiNZoZqDHtwL3SFFTHr
+ f/S8i+nsdV9APNTTwfMDgqmOxBmUBJBFNv2ad2b08QNHEKGaprw3Hhji9WLNSwG5MD1Oz8h0T5H
+ +lMUsGDzI5Fj50EFu67IO9+3EOAMSrq2OAtyCQF91pLcsMYQmVr9mfdO7ERN3LDUetyBQcNoo+C
+ JHF6QtfesKTpOzGRWD6nhi1YpKDMAplJj5/TJ1IZ7iTO1I6MK3Uq1/o/DJyIVB6Oq9nUkVA2Tge
+ dR37fp+MHxLOtKIe6AbxuKK7dN+htZKUAxvwFqzxeUKBww5VpUavA5ZQe8nZCXQZm7bIxlcQOHv
+ aR794J/dH7NtFg74U5KwR6RUOGxDEyv7xiQ+co3XUjEWglL2B3XwkyXpe0g175OuffSVsL78BE5
+ We6Wn+4g3/rJ9jw==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-State: clean
@@ -79,56 +80,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The unigraf can emulate a full cable plug/unplug, so add helper to emulate
-this.
+Unigraf is able to manipulate the HPD line of the connector, add few
+helpers to manipulate them.
 ---
- lib/unigraf/unigraf.c | 14 ++++++++++++++
- lib/unigraf/unigraf.h | 14 ++++++++++++++
- 2 files changed, 28 insertions(+)
+ lib/unigraf/unigraf.c | 38 ++++++++++++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h | 22 ++++++++++++++++++++++
+ 2 files changed, 60 insertions(+)
 
 diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 3998a3af1bef4490bf9d3c796876d268957e87e2..565d63d985b1ea99e839c377d7b87876ba2a12c4 100644
+index d9e9d80a4cf19c6be67977050ef2a17f2cb489d7..3998a3af1bef4490bf9d3c796876d268957e87e2 100644
 --- a/lib/unigraf/unigraf.c
 +++ b/lib/unigraf/unigraf.c
-@@ -299,3 +299,17 @@ void unigraf_hpd_deassert(void) {
- 	igt_assert(unigraf_device);
- 	unigraf_write(TSI_FORCE_HOT_PLUG_STATE_W, &d, sizeof(d));
+@@ -88,6 +88,25 @@ static void unigraf_init(void)
+ 	igt_install_exit_handler(unigraf_exit_handler);
  }
-+
-+void unigraf_unplug(void)
-+{
-+       int d = 2 << 2;
-+       igt_assert(unigraf_device);
-+       unigraf_write(TSI_DPRX_HPD_FORCE, &d, sizeof(d));
-+}
-+
-+void unigraf_plug(void)
-+{
-+       int d = 3 << 2;
-+       igt_assert(unigraf_device);
-+       unigraf_write(TSI_DPRX_HPD_FORCE, &d, sizeof(d));
-+}
-diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index 0a872b6e5859347be371b6a28db5516f4c854d2f..7f6438da66b688b4b7d8aaa6f124474bd2c1d042 100644
---- a/lib/unigraf/unigraf.h
-+++ b/lib/unigraf/unigraf.h
-@@ -67,4 +67,18 @@ void unigraf_hpd_pulse(int duration);
-  */
- void unigraf_hpd_assert(void);
  
 +/**
-+ * unigraf_plug() - Emulate a cable plug
-+ *
-+ * This function will emulate a full cable plug (not a simple HPD line change)
++ * unigraf_write() - Helper to write a value to unigraf
++ * @dev: device handle, can be null for some config id
++ * @config: config id to write
++ * @data: data to write
++ * @data_len: length of the data
++ * Returns
 + */
-+void unigraf_plug(void);
++static void unigraf_write(TSI_CONFIG_ID config, const void *data, size_t data_len)
++{
++	unigraf_debug("Writing %zu bytes to 0x%x\n", data_len, config);
++
++	if (data_len == 4) {
++		unigraf_debug("Value = 0x%x\n", *(int*)data);
++	}
++
++	unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config, data, data_len));
++}
++
+ /**
+  * unigraf_device_count() - Return the number of scanned devices
+  *
+@@ -261,3 +280,22 @@ void unigraf_require_device(void)
+ {
+ 	igt_require(unigraf_open_device());
+ }
++
++void unigraf_hpd_assert(void)
++{
++	int d = 1;
++	igt_assert(unigraf_device);
++	unigraf_write(TSI_FORCE_HOT_PLUG_STATE_W, &d, sizeof(d));
++}
++
++void unigraf_hpd_pulse(int duration)
++{
++       igt_assert(unigraf_device);
++       unigraf_write(TSI_DPRX_HPD_PULSE_W, &duration, sizeof(duration));
++}
++
++void unigraf_hpd_deassert(void) {
++	int d = 0;
++	igt_assert(unigraf_device);
++	unigraf_write(TSI_FORCE_HOT_PLUG_STATE_W, &d, sizeof(d));
++}
+diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+index 8e0137ce30ed1bc0b334540561f93c7ade38e386..0a872b6e5859347be371b6a28db5516f4c854d2f 100644
+--- a/lib/unigraf/unigraf.h
++++ b/lib/unigraf/unigraf.h
+@@ -45,4 +45,26 @@ bool unigraf_open_device(void);
+  */
+ void unigraf_require_device(void);
+ 
++/**
++ * unigraf_hpd_deassert() - Deassert Hot Plug Detect signal
++ *
++ * This function deasserts the HPD signal, simulating a device disconnection.
++ */
++void unigraf_hpd_deassert(void);
 +
 +/**
-+ * unigraf_plug() - Emulate a cable unplug
++ * unigraf_hpd_pulse() - Pulse the Hot Plug Detect signal
++ * @duration: The duration in milliseconds for which the HPD signal should be pulsed
 + *
-+ * This function will emulate a full cable unplug (not a simple HPD line change)
++ * This function pulses the HPD signal for the specified duration.
 + */
-+void unigraf_unplug(void);
++void unigraf_hpd_pulse(int duration);
++
++/**
++ * unigraf_hpd_assert() - Assert Hot Plug Detect signal
++ *
++ * This function asserts the HPD signal, simulating a device connection.
++ */
++void unigraf_hpd_assert(void);
 +
  #endif // UNIGRAF_H
 
