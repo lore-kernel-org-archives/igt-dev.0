@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB93C83F1B
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 08:47:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DC7DC83F22
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 08:51:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B34C10E13F;
-	Thu, 17 Jul 2025 08:47:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC27510E13F;
+	Thu, 17 Jul 2025 08:51:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G60U99bD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UakA74yD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F0BD10E13F
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 08:47:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7FCD110E13F
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 08:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752742048; x=1784278048;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=SxtR6Mn6SypH79CPA1khf629YkQkdIZzNrxUzQKZSc4=;
- b=G60U99bDB3Ys7QXHTIOUPY0duxkXDwiSZn4nPu6o40/cLCdNr8f94H/X
- 1XJkgDF7FiqOOz9wFOEoJVYvqLeo2bTQkrXQe7f4LCJ5W7ciyj9rkOMnn
- BhgZRllfd49yLFMdmJ5IJGHPnDOLjgzQN1nmyORRIOC1eFDrO0XS3Y+PQ
- 2J5yYrD0rThdQ1VfZlgnztZVhLi7Uzm8eho6tTkGAgZoHPa15vgGEkQdX
- w706+IFQTuwVAURLxvK2F3BgmaOJOKnfyIq12llFzEAFEWoJQ0t28pSik
- MldoK0mF92X9+4eJmHlpdAmOaYeJtJlVg2fskc+5HkGCtOPgEq/IGsIvy A==;
-X-CSE-ConnectionGUID: GZTwdJ7cRJSH86Iic6EyVw==
-X-CSE-MsgGUID: a9uneM7sQF6KEFtC1M2vdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54979975"
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="54979975"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2025 01:47:27 -0700
-X-CSE-ConnectionGUID: kPBk0Om2RzO/zyhXNNZmQQ==
-X-CSE-MsgGUID: wBEYo7tlQOynuiA637mo1Q==
+ t=1752742308; x=1784278308;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=wtSOPqiQmpOFpay4+AeQJ+hvHnGYnf93HMffDtfT2vU=;
+ b=UakA74yDXkIpPDs1ejA+QBRdZinuxrW/lqF6P2X4/VQmBzJHUNBO45tZ
+ P74/OGUPWI62qZTbcpqmFf43Vog49TLxwli4L/B0Seh1YrWphXz+V5YBj
+ 0hzELB2JPYJwnJC8sxYFI84YCu3X/Ygom0tJ7e65lNNRVrqbBZcmkYiyJ
+ IT1Q+22jqghmcH9GL1BKZSN27WznKUjxbrNPBkw/eMs/uhlfLeDCtuuAO
+ Vuh3fmXVL5wmdxPjc4hHQHT4o10gs5hjaOBLH0Gqi+AbB43Hy0MI5DiYi
+ 20ngWqNVRQ8wKUPtelThUr6QAtUeOAmFpwWzJY4YjVrX4JAQR1ADMCd29 g==;
+X-CSE-ConnectionGUID: liRv23dZTf+aCYqansaU2w==
+X-CSE-MsgGUID: KiWO+TsbRaK+g7erxsUelg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="65578514"
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="65578514"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2025 01:51:48 -0700
+X-CSE-ConnectionGUID: ytieLwh2SUe6jTx2bZmMSw==
+X-CSE-MsgGUID: cKlhtWk5QyKS62qJlDVzaA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="181434265"
-Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
- ([10.245.118.0])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2025 01:47:26 -0700
-Message-ID: <6c614255-faa5-4db1-a3b4-e073d24678b8@linux.intel.com>
-Date: Thu, 17 Jul 2025 10:47:24 +0200
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="157113896"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 01:51:47 -0700
+Date: Thu, 17 Jul 2025 10:51:28 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com
+Subject: Re: [PATCH i-g-t] tests/intel/xe_vm: Fix skip condition to account
+ for padded BO size
+Message-ID: <20250717085128.uyd4o5p44mk46cya@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ igt-dev@lists.freedesktop.org, matthew.auld@intel.com
+References: <20250611100158.15197-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/kms_debugfs: Add a commit after
- igt_fit_modes_in_bw
-To: Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org
-Cc: rodrigo.vivi@intel.com, kamil.konieczny@intel.com
-References: <20250717032031.1065575-1-karthik.b.s@intel.com>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250717032031.1065575-1-karthik.b.s@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250611100158.15197-1-lukasz.laguna@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,31 +71,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-On 7/17/2025 5:20 AM, Karthik B S wrote:
-> A commit is required after igt_fit_modes_in_bw as this function only
-> does a try commit.
+Hi Lukasz,
+On 2025-06-11 at 12:01:58 +0200, Lukasz Laguna wrote:
+> Several subtests currently skip when the requested BO size exceeds
+> visible VRAM, but they don't take into account the padded size that is
+> actually passed to the kernel when creating BO. As a result, subtest may
+> attempt to allocate a BO that exceeds the available VRAM, resulting in
+> -E2BIG error.
 > 
-> Fixes: ebe65a923a2b ("tests: Add kms_debugfs")
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> Fix this by using the prefetch BO size in the skip condition to ensure
+> the subtests avoid allocation attempts that are guaranteed to fail.
+> 
+> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/kms_debugfs.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  tests/intel/xe_vm.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/kms_debugfs.c b/tests/kms_debugfs.c
-> index f8a3360e6..75ef15353 100644
-> --- a/tests/kms_debugfs.c
-> +++ b/tests/kms_debugfs.c
-> @@ -66,6 +66,8 @@ static void igt_display_all_on(igt_display_t *display)
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index 94cca13ba..1a21a6459 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -1385,15 +1385,15 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
+>  	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
+>  	vm = xe_vm_create(fd, 0, 0);
 >  
->  	/* Skip if bandwidth is insufficient for all simultaneous displays */
->  	igt_require(igt_fit_modes_in_bw(display));
+> +	bo_size_prefetch = xe_bb_size(fd, bo_size);
 > +
-> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->  }
+>  	if (flags & LARGE_BIND_FLAG_USERPTR) {
+> -		bo_size_prefetch = xe_bb_size(fd, bo_size);
+>  		map = aligned_alloc(xe_get_default_alignment(fd), bo_size_prefetch);
+>  		igt_assert(map);
+>  	} else {
+> -		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
+> +		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size_prefetch >
+>  			    xe_visible_vram_size(fd, 0));
 >  
->  /**
-
+> -		bo_size_prefetch = xe_bb_size(fd, bo_size);
+>  		bo = xe_bo_create(fd, vm, bo_size_prefetch,
+>  				  vram_if_possible(fd, eci->gt_id),
+>  				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> -- 
+> 2.40.0
+> 
