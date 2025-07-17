@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A2F7C83F1A
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 10:44:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 376C9C83F1B
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 10:47:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E553710E81C;
-	Thu, 17 Jul 2025 10:44:19 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R9ne/EDU";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E51AF10E7FB
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 10:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752749058; x=1784285058;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=PMu5HGbCEIzBwTwa4nZqcrx+RlkvEie5kxHGgOJBGBw=;
- b=R9ne/EDUbDA4y9L0tHY/JvIhEj/AEpjex7oCmvB8OAKhmVykGRwBNV93
- JOlEIHwG6IPPFxjPICLlPNVG0rE153Nf4kDPGeSf/QOu1kjE9DHpvxMNR
- k6OD64Bi7zS1d3rzm8aZjSx/n5Bo+AglTN2q0su2VkP2KSajCkZUGYskt
- TejJvSewUpVcV32UnoE8PDoxRapgBeREJbZubt20bS3kc9ikaU9XD5UZ7
- a1asPmZ7ZJ9d0zLSZltDQiizkYiaT7gZ2vPW1KywgyAKoQP+Fk9slV4mp
- qC04tmK27vMuk0s+p14oBY35Rt9pRKAWQS5S3HNSn1BDTb3P51adU06Z9 Q==;
-X-CSE-ConnectionGUID: w3hy2ZIRSveoyl5umDFfGw==
-X-CSE-MsgGUID: ARmXsfvwT1egjA/lHq4W9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54893309"
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="54893309"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2025 03:44:18 -0700
-X-CSE-ConnectionGUID: pkaEKvIWQtayzPn/fLXr/A==
-X-CSE-MsgGUID: qZVEQ9H8S7aY9nRDrB96hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="158119255"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 03:44:16 -0700
-Date: Thu, 17 Jul 2025 12:44:00 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Pranay Samala <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
- sameer.lattannavar@intel.com, Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t] lib/igt_sysfs: Remove redundant variable assignment
-Message-ID: <20250717104400.khgbp6oy5atpthif@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Pranay Samala <pranay.samala@intel.com>,
- igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
- sameer.lattannavar@intel.com,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-References: <20250716132752.1279098-1-pranay.samala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B518810E059;
+	Thu, 17 Jul 2025 10:47:34 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C1DB10E059;
+ Thu, 17 Jul 2025 10:47:33 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7973778305206458021=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250716132752.1279098-1-pranay.samala@intel.com>
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/xe=5Fvm=3A_Report_OO?=
+ =?utf-8?q?M_for_vm=5Fbind_ioctl_under_memory_pressure?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 17 Jul 2025 10:47:33 -0000
+Message-ID: <175274925323.169096.18197196191354848@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250716115237.3279176-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20250716115237.3279176-1-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,68 +37,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pranay,
-On 2025-07-16 at 18:57:52 +0530, Pranay Samala wrote:
+--===============7973778305206458021==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-as Ashutosh pointed out, this is a fix, as code was printing a var
-which has no assigned value. Please improve subject, for example to:
+== Series Details ==
 
-[PATCH i-g-t] lib/igt_sysfs: Fix mask printing
+Series: tests/xe_vm: Report OOM for vm_bind ioctl under memory pressure
+URL   : https://patchwork.freedesktop.org/series/151704/
+State : failure
+
+== Summary ==
+
+ERROR: The runconfig 'XEIGT_8461_FULL' does not exist in the database
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13483/index.html
+
+--===============7973778305206458021==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-> Eliminate redundant assignment in debug mask setup.
-> Simplified the logic by directly using the input
-> parameter for logging and sysfs operations.
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-Improve also description, for example:
 
-Remove variable which is printed but has no assigned value.
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe_vm: Report OOM for vm_bind ioctl under memory pressure</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151704/">https://patchwork.freedesktop.org/series/151704/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-> 
-> Fixes: 835f38b71973 ("lib/igt_sysfs: Update new debug mask requested by user")
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
-> ---
->  lib/igt_sysfs.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index aec157b5b..96ca57ed9 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -506,7 +506,6 @@ void igt_drm_debug_mask_reset_exit_handler(int sig)
->   */
->  void igt_drm_debug_mask_update(unsigned int mask_to_set)
->  {
-> -	unsigned int new_debug_mask;
->  	static bool debug_mask_read_once = true;
->  	char buf[20];
->  	int dir;
-> @@ -525,8 +524,8 @@ void igt_drm_debug_mask_update(unsigned int mask_to_set)
->  		}
->  	}
->  
-> -	igt_debug("Setting DRM debug mask to %d\n", new_debug_mask);
-> -	snprintf(buf, sizeof(buf), "%d", new_debug_mask);
-> +	igt_debug("Setting DRM debug mask to %d\n", mask_to_set);
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13483/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13483/index.html</a></td></tr>
 
-When printing to screen imho it is better to use hex values,
-as these are bits, so please use '0x%x' instead of '%d'
+</table>
 
-If you will make this change please also describe it in commit
-message, for example:
 
-Also while at this, print it's value as hex as this is bitmask.
+    <p>ERROR: The runconfig 'XEIGT_8461_FULL' does not exist in the database</p>
 
-Regards,
-Kamil
+</body>
+</html>
 
-> +	snprintf(buf, sizeof(buf), "%d", mask_to_set);
->  	igt_assert(igt_sysfs_set(dir, "debug", buf));
->  
->  	close(dir);
-> -- 
-> 2.34.1
-> 
+--===============7973778305206458021==--
