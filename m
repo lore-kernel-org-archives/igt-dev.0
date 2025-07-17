@@ -4,58 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DC7DC83F22
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 08:51:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A18BC83F1B
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 09:08:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DC27510E13F;
-	Thu, 17 Jul 2025 08:51:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A397D10E156;
+	Thu, 17 Jul 2025 09:08:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UakA74yD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="erYn7FVg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FCD110E13F
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 08:51:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63CF510E156
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 09:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752742308; x=1784278308;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=wtSOPqiQmpOFpay4+AeQJ+hvHnGYnf93HMffDtfT2vU=;
- b=UakA74yDXkIpPDs1ejA+QBRdZinuxrW/lqF6P2X4/VQmBzJHUNBO45tZ
- P74/OGUPWI62qZTbcpqmFf43Vog49TLxwli4L/B0Seh1YrWphXz+V5YBj
- 0hzELB2JPYJwnJC8sxYFI84YCu3X/Ygom0tJ7e65lNNRVrqbBZcmkYiyJ
- IT1Q+22jqghmcH9GL1BKZSN27WznKUjxbrNPBkw/eMs/uhlfLeDCtuuAO
- Vuh3fmXVL5wmdxPjc4hHQHT4o10gs5hjaOBLH0Gqi+AbB43Hy0MI5DiYi
- 20ngWqNVRQ8wKUPtelThUr6QAtUeOAmFpwWzJY4YjVrX4JAQR1ADMCd29 g==;
-X-CSE-ConnectionGUID: liRv23dZTf+aCYqansaU2w==
-X-CSE-MsgGUID: KiWO+TsbRaK+g7erxsUelg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="65578514"
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="65578514"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2025 01:51:48 -0700
-X-CSE-ConnectionGUID: ytieLwh2SUe6jTx2bZmMSw==
-X-CSE-MsgGUID: cKlhtWk5QyKS62qJlDVzaA==
+ t=1752743301; x=1784279301;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=R0Y3dkMbr7HKURJgloeo7uOFPUcu3tTmq1PEgWBzOmg=;
+ b=erYn7FVgpul280abhLuOpxKkcDlUxT3sc71fhU74xsxSDCfDsuyi5hL2
+ cMnAV16/Gw7dOm5IDPWuSjQW1hT+EionO/kUH6/y4aRJ2ONvte3jbrSO4
+ ArR8AH2uQ8dTVsk1g4JZIbQc9VDEKxc3GtNWSfrKMiDlAV/rxixDVF0rC
+ 8l8v+0C2qGvfV8BuV6IKBEOXX2RYJFWLbfUGW6Hvap24m1R2OAWZa6DG1
+ o/APx2Y1ULt1Mc7ZKmD3cNctFRMvnrU05+IejE3BVOfy8Z3T5XiF2Tq/v
+ 23T9vg/0wzJXitFaoir2kIXUcm9wjhe2q6pYSaXm5q+/aiatP51eYXDsm A==;
+X-CSE-ConnectionGUID: BvB563avQNC9t2m486MIIQ==
+X-CSE-MsgGUID: gRoCgnsDShu3FH8dJmNK6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="55129513"
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="55129513"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2025 02:08:20 -0700
+X-CSE-ConnectionGUID: JWr6PiZMQCuQ6H/uX/SwlQ==
+X-CSE-MsgGUID: BORoYNt1S7qwV+f9x26rYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="157113896"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 01:51:47 -0700
-Date: Thu, 17 Jul 2025 10:51:28 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com
-Subject: Re: [PATCH i-g-t] tests/intel/xe_vm: Fix skip condition to account
- for padded BO size
-Message-ID: <20250717085128.uyd4o5p44mk46cya@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- igt-dev@lists.freedesktop.org, matthew.auld@intel.com
-References: <20250611100158.15197-1-lukasz.laguna@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="158444278"
+Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2025 02:08:17 -0700
+From: Lukasz Laguna <lukasz.laguna@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: marcin.bernatowicz@linux.intel.com, michal.wajdeczko@intel.com,
+ michal.winiarski@intel.com, satyanarayana.k.v.p@intel.com,
+ adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
+ lukasz.laguna@intel.com
+Subject: [PATCH i-g-t 0/4] Validate VF accesses to VRAM via BAR
+Date: Thu, 17 Jul 2025 11:08:08 +0200
+Message-Id: <20250717090812.28628-1-lukasz.laguna@intel.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250611100158.15197-1-lukasz.laguna@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,49 +68,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lukasz,
-On 2025-06-11 at 12:01:58 +0200, Lukasz Laguna wrote:
-> Several subtests currently skip when the requested BO size exceeds
-> visible VRAM, but they don't take into account the padded size that is
-> actually passed to the kernel when creating BO. As a result, subtest may
-> attempt to allocate a BO that exceeds the available VRAM, resulting in
-> -E2BIG error.
-> 
-> Fix this by using the prefetch BO size in the skip condition to ensure
-> the subtests avoid allocation attempts that are guaranteed to fail.
-> 
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+Series includes a test to validate VF access to VRAM via BAR. The
+following scenarios are covered:
+- VF can access all provisioned memory via the VRAM BAR,
+- VF cannot access memory beyond what's provisioned via the VRAM BAR,
+- VF can access memory via the VRAM BAR after reprovisioning.
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Additionally, it introduces a library for VRAM accesses and helper to
+iterate over enabled VFs.
 
-> ---
->  tests/intel/xe_vm.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index 94cca13ba..1a21a6459 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -1385,15 +1385,15 @@ test_large_binds(int fd, struct drm_xe_engine_class_instance *eci,
->  	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
->  	vm = xe_vm_create(fd, 0, 0);
->  
-> +	bo_size_prefetch = xe_bb_size(fd, bo_size);
-> +
->  	if (flags & LARGE_BIND_FLAG_USERPTR) {
-> -		bo_size_prefetch = xe_bb_size(fd, bo_size);
->  		map = aligned_alloc(xe_get_default_alignment(fd), bo_size_prefetch);
->  		igt_assert(map);
->  	} else {
-> -		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size >
-> +		igt_skip_on(xe_visible_vram_size(fd, 0) && bo_size_prefetch >
->  			    xe_visible_vram_size(fd, 0));
->  
-> -		bo_size_prefetch = xe_bb_size(fd, bo_size);
->  		bo = xe_bo_create(fd, vm, bo_size_prefetch,
->  				  vram_if_possible(fd, eci->gt_id),
->  				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> -- 
-> 2.40.0
-> 
+Lukasz Laguna (4):
+  lib/igt_sriov_device: Add helper to iterate over enabled VFs
+  lib/intel_vram: Add library for VRAM accesses
+  tests/intel/xe_sriov_flr: Use VRAM access helpers from intel_vram
+    library
+  tests/intel/xe_sriov_vram: Add test checking VF access to VRAM
+
+ lib/igt_sriov_device.h      |  12 ++
+ lib/intel_vram.c            | 183 +++++++++++++++++++++
+ lib/intel_vram.h            |  22 +++
+ lib/meson.build             |   1 +
+ tests/intel/xe_sriov_flr.c  | 106 +++---------
+ tests/intel/xe_sriov_vram.c | 310 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 7 files changed, 549 insertions(+), 86 deletions(-)
+ create mode 100644 lib/intel_vram.c
+ create mode 100644 lib/intel_vram.h
+ create mode 100644 tests/intel/xe_sriov_vram.c
+
+-- 
+2.40.0
+
