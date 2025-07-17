@@ -4,56 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F06CC83F1B
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 09:08:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1853C83F22
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Jul 2025 09:28:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BBFC110E156;
-	Thu, 17 Jul 2025 09:08:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 537C810E13F;
+	Thu, 17 Jul 2025 09:28:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XQy3t20n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h+UAm05k";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBF5D10E156
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 09:08:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BC5C10E13F
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jul 2025 09:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752743315; x=1784279315;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XLPMVQn8TsUChV3c7Wp/9ZKGLhCydjIVDQk8fgvFv/s=;
- b=XQy3t20no296NENIgRR6fyxw+8GbmsbsEYHz0rtKmtjRqDrhRIb+Ys4R
- Wwl35ren0lnMQtkKcE6h3xWX5bm1oWA41ZbEhA07KPHfvdTpaxYDDbAvv
- guVz1NLbwDwbgd0+ihA01/wzEZFmnITRbWUw19VllzGevcp8VUCcdB0w6
- jT9KJdxk5DgFDRy+Ru9RY29s5Vae7uDdbMAXi0dC3cC0bsE93zTNsGIx2
- hWrth+plU3vNv+kt+t/wS3aJUXwch7Cq7VdngwQIaXCD83gpaKHL9O09R
- fs3ct+91DHY6/n9pMKWYifByMWzgNByAkqR1Sxea9ya5vDqB0mE6nawFc g==;
-X-CSE-ConnectionGUID: 5k5yRqR/RLu0BIqncMsc/w==
-X-CSE-MsgGUID: sRHCvfMITkavyo748R1a8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="55129543"
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="55129543"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2025 02:08:34 -0700
-X-CSE-ConnectionGUID: c31x2L8USG2CwzHKsuko5A==
-X-CSE-MsgGUID: bqYEncOQRGWyDdsk8ywXcA==
+ t=1752744531; x=1784280531;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=R0EDRYJ7HgGxaodBudLeqhWwDfE2/krHqFbdZzx1gpU=;
+ b=h+UAm05kerGphBmdFdiiOcryIRFhMv/aGDNIBmq+oadu7cthG730tZRn
+ 5nmOFthVoFxGYqi9TLnfMsCOu4F0RmYXZEkvQEvLeeoDsBUgidhK3R4MH
+ xKH3YW5k+1kedNzqtAfCYuHQwF0tWB51g58lvpZLZdiDSXtsDntOGHbsO
+ SUSPROQ/2W2QKzI6A4T4EHFgRMp5rd1U6E5mgXc00nVEzmdJ+WXdK2SP1
+ TzZufQlFIDDNMRGZx9D0L03x8rfJaJeLIUhq+XmSBiWTr/sITtVazEfAo
+ xdl9HAnNIqHqVAwkKY5dfW1aCU8J1T8eIFK3HauW1D3icUffFr2/divah A==;
+X-CSE-ConnectionGUID: fF8B9XiSRM+QVnhXIgnpTQ==
+X-CSE-MsgGUID: A/JX0u1YRrSW2IW2TVVdlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54872003"
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="54872003"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2025 02:28:50 -0700
+X-CSE-ConnectionGUID: OtUUcxN1QK+sgc0I9fa0Yw==
+X-CSE-MsgGUID: 6hYbZV5cTsGcfdUbx2Vixg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="158444343"
-Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2025 02:08:32 -0700
-From: Lukasz Laguna <lukasz.laguna@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,318,1744095600"; d="scan'208";a="162039845"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
+ by fmviesa005.fm.intel.com with ESMTP; 17 Jul 2025 02:28:48 -0700
+From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@linux.intel.com, michal.wajdeczko@intel.com,
- michal.winiarski@intel.com, satyanarayana.k.v.p@intel.com,
- adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
- lukasz.laguna@intel.com
-Subject: [PATCH i-g-t 4/4] tests/intel/xe_sriov_vram: Add test checking VF
- access to VRAM
-Date: Thu, 17 Jul 2025 11:08:12 +0200
-Message-Id: <20250717090812.28628-5-lukasz.laguna@intel.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20250717090812.28628-1-lukasz.laguna@intel.com>
-References: <20250717090812.28628-1-lukasz.laguna@intel.com>
+Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
+ pranay.samala@intel.com
+Subject: [PATCH i-g-t v2] tests/intel/kms_frontbuffer_tracking: Reduce test
+ complexity for simulation
+Date: Thu, 17 Jul 2025 15:06:33 +0530
+Message-Id: <20250717093633.1293628-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,347 +66,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test to validate VF access to VRAM via BAR. The following
-scenarios are covered:
-- VF can access all provisioned memory via the VRAM BAR,
-- VF cannot access memory beyond what's provisioned via the VRAM BAR,
-- VF can access memory via the VRAM BAR after reprovisioning.
+Reduce the number of iterations, draw_method combinations, and limit
+execution to a single pipe to enable this test to run on simulation.
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+v2:
+- Cache igt_run_in_simulation() in a global variable (Santhosh)
+- Reduce the duration of the loops (Jonathan)
+
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- tests/intel/xe_sriov_vram.c | 310 ++++++++++++++++++++++++++++++++++++
- tests/meson.build           |   1 +
- 2 files changed, 311 insertions(+)
- create mode 100644 tests/intel/xe_sriov_vram.c
+ tests/intel/kms_frontbuffer_tracking.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/tests/intel/xe_sriov_vram.c b/tests/intel/xe_sriov_vram.c
-new file mode 100644
-index 000000000..82f0a2f09
---- /dev/null
-+++ b/tests/intel/xe_sriov_vram.c
-@@ -0,0 +1,310 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright(c) 2025 Intel Corporation. All rights reserved.
-+ */
-+
-+#include "drmtest.h"
-+#include "igt_core.h"
-+#include "igt_sriov_device.h"
-+#include "intel_vram.h"
-+#include "xe/xe_sriov_provisioning.h"
-+#include "xe/xe_query.h"
-+
-+/**
-+ * TEST: xe_sriov_vram
-+ * Category: Core
-+ * Mega feature: SR-IOV
-+ * Sub-category: LMTT
-+ * Functionality: VRAM access
-+ * Description: Validate VF access to VRAM
-+ *
-+ * SUBTEST: vf-access-basic
-+ * Description: Verify that VF can access all the provisioned memory via VRAM BAR
-+ *
-+ * SUBTEST: vf-access-beyond
-+ * Description: Verify that VF cannot access memory beyond what's provisioned via VRAM BAR
-+ *
-+ * SUBTEST: vf-access-after-resize-down
-+ * Description: Verify that VF can access the reprovisioned memory (reduced size) via VRAM BAR
-+ *
-+ * SUBTEST: vf-access-after-resize-up
-+ * Description: Verify that VF can access the reprovisioned memory (increased size) via VRAM BAR
-+ */
-+
-+IGT_TEST_DESCRIPTION("Xe tests for VRAM in SR-IOV context");
-+
-+const size_t STEP = SZ_1M;
-+
-+static uint64_t get_provisioned_vram(unsigned int pf_fd, unsigned int vf_id)
-+{
-+	uint64_t size = 0;
-+
-+	/* TODO: adjust for multitile platforms */
-+	size = xe_sriov_pf_get_provisioned_quota(pf_fd, XE_SRIOV_SHARED_RES_LMEM, vf_id, 0);
-+
-+	return size;
-+}
-+
-+static bool validate_access_basic(struct vram_mapping *vram, unsigned int vf_id,
-+				  uint64_t provisioned_lmem)
-+{
-+	uint8_t read, orig;
-+	bool passed = true;
-+
-+	for (size_t offset = 0; offset < provisioned_lmem; offset += STEP) {
-+		orig = intel_vram_read8(vram, offset);
-+
-+		read = intel_vram_write_readback8(vram, offset, vf_id);
-+		if (read != vf_id) {
-+			igt_debug("VRAM write/read check failed on VF%u (offset: %#lx, write: %u, read: %u)\n",
-+				  vf_id, offset, vf_id, read);
-+			passed = false;
-+		}
-+
-+		read = intel_vram_write_readback8(vram, offset, orig);
-+		if (read != orig) {
-+			igt_debug("Failed to restore original value on VF%u (offset: %#lx, orig: %u, read: %u)\n",
-+				  vf_id, offset, orig, read);
-+			passed = false;
-+		}
-+	}
-+
-+	return passed;
-+}
-+
-+static void access_basic(unsigned int pf_fd, unsigned int num_vfs)
-+{
-+	uint64_t provisioned_lmem;
-+	struct vram_mapping vram;
-+	size_t vram_bar_size;
-+	bool passed = true;
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+
-+	for_each_sriov_enabled_vf(pf_fd, vf_id) {
-+		provisioned_lmem = get_provisioned_vram(pf_fd, vf_id);
-+		igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n",
-+			  vf_id, provisioned_lmem);
-+
-+		vram_bar_size = intel_vram_bar_size(pf_fd, vf_id);
-+		igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
-+
-+		if (vram_bar_size < provisioned_lmem) {
-+			igt_sriov_disable_vfs(pf_fd);
-+			igt_skip("VRAM BAR size is smaller than provisioned VRAM\n");
-+		}
-+
-+		vram = intel_vram_mmap(pf_fd, vf_id, provisioned_lmem, PROT_READ | PROT_WRITE, 0);
-+		igt_assert(vram.addr);
-+
-+		passed &= validate_access_basic(&vram, vf_id, provisioned_lmem);
-+
-+		intel_vram_munmap(&vram);
-+	}
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+
-+	igt_assert(passed);
-+}
-+
-+static bool validate_access_beyond(struct vram_mapping *vram, unsigned int vf_id,
-+				   uint64_t provisioned_lmem, size_t vram_bar_size)
-+{
-+	uint8_t read, orig;
-+	bool passed = true;
-+
-+	for (size_t offset = provisioned_lmem; offset < vram_bar_size; offset += STEP) {
-+		orig = intel_vram_read8(vram, offset);
-+
-+		read = intel_vram_write_readback8(vram, offset, vf_id);
-+		if (read == vf_id) {
-+			igt_debug("Successful VRAM write above provisioned size on VF%u (offset: %#lx)\n",
-+				  vf_id, offset);
-+			passed = false;
-+
-+			read = intel_vram_write_readback8(vram, offset, orig);
-+			if (read != orig)
-+				igt_debug("Failed to restore original value on VF%u (offset: %#lx, orig: %u, read: %u)\n",
-+					  vf_id, offset, orig, read);
-+		}
-+	}
-+
-+	return passed;
-+}
-+
-+static void access_beyond(unsigned int pf_fd, unsigned int num_vfs)
-+{
-+	uint64_t provisioned_lmem;
-+	struct vram_mapping vram;
-+	size_t vram_bar_size;
-+	bool passed = true;
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+
-+	for_each_sriov_enabled_vf(pf_fd, vf_id) {
-+		provisioned_lmem = get_provisioned_vram(pf_fd, vf_id);
-+		igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n",
-+			  vf_id, provisioned_lmem);
-+
-+		vram_bar_size = intel_vram_bar_size(pf_fd, vf_id);
-+		igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
-+
-+		if (vram_bar_size <= provisioned_lmem) {
-+			igt_sriov_disable_vfs(pf_fd);
-+			igt_skip("VRAM BAR size is smaller or equal to provisioned VRAM\n");
-+		}
-+
-+		vram = intel_vram_mmap(pf_fd, vf_id, vram_bar_size, PROT_READ | PROT_WRITE, 0);
-+		igt_assert(vram.addr);
-+
-+		passed &= validate_access_beyond(&vram, vf_id, provisioned_lmem, vram_bar_size);
-+
-+		intel_vram_munmap(&vram);
-+	}
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+
-+	igt_assert(passed);
-+}
-+
-+static void resize_and_access(unsigned int pf_fd, bool resize_up)
-+{
-+	const unsigned int vf_id = 1;
-+	uint64_t provisioned_lmem;
-+	struct vram_mapping vram;
-+	unsigned int total_vfs;
-+	size_t vram_bar_size;
-+	bool passed;
-+
-+	total_vfs = igt_sriov_get_total_vfs(pf_fd);
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, resize_up ? total_vfs : 1);
-+
-+	provisioned_lmem = get_provisioned_vram(pf_fd, vf_id);
-+	igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n", vf_id, provisioned_lmem);
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, resize_up ? 1 : total_vfs);
-+
-+	provisioned_lmem = get_provisioned_vram(pf_fd, vf_id);
-+	igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n", vf_id, provisioned_lmem);
-+
-+	vram_bar_size = intel_vram_bar_size(pf_fd, vf_id);
-+	igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
-+
-+	if (vram_bar_size <= provisioned_lmem) {
-+		igt_sriov_disable_vfs(pf_fd);
-+		igt_skip("VRAM BAR size is smaller or equal to provisioned VRAM\n");
-+	}
-+
-+	vram = intel_vram_mmap(pf_fd, vf_id, vram_bar_size, PROT_READ | PROT_WRITE, 0);
-+	igt_assert(vram.addr);
-+
-+	passed = validate_access_basic(&vram, vf_id, provisioned_lmem);
-+	passed &= validate_access_beyond(&vram, vf_id, provisioned_lmem, vram_bar_size);
-+
-+	intel_vram_munmap(&vram);
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+
-+	igt_assert(passed);
-+}
-+
-+static bool extended_scope;
-+
-+static int opts_handler(int opt, int opt_index, void *data)
-+{
-+	switch (opt) {
-+	case 'e':
-+		extended_scope = true;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+static const struct option long_opts[] = {
-+	{ .name = "extended", .has_arg = false, .val = 'e', },
-+	{}
-+};
-+
-+static const char help_str[] =
-+	"  --extended\tRun the extended test scope\n";
-+
-+igt_main_args("", long_opts, help_str, opts_handler, NULL)
-+{
-+	bool autoprobe;
-+	int pf_fd;
-+	static struct subtest_resize_variants {
-+		const char *name;
-+		bool resize_up;
-+	} resize_variant[] = {
-+		{ "up", true },
-+		{ "down", false },
-+		{ NULL },
-+	};
-+
-+	igt_fixture {
-+		pf_fd = drm_open_driver(DRIVER_XE);
-+		igt_require(igt_sriov_is_pf(pf_fd));
-+		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-+		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
-+	}
-+
-+	igt_describe("Verify that VF can access all the provisioned memory via VRAM BAR");
-+	igt_subtest_with_dynamic_f("vf-access-basic") {
-+		if (extended_scope)
-+			for_each_sriov_num_vfs(pf_fd, num_vfs)
-+				igt_dynamic_f("numvfs-%d", num_vfs)
-+					access_basic(pf_fd, num_vfs);
-+
-+		for_random_sriov_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-random") {
-+				igt_debug("numvfs=%u\n", num_vfs);
-+				access_basic(pf_fd, num_vfs);
-+			}
-+		}
-+	}
-+
-+	igt_describe("Verify that VF cannot access memory beyond what's provisioned via VRAM BAR");
-+	igt_subtest_with_dynamic_f("vf-access-beyond") {
-+		if (extended_scope)
-+			for_each_sriov_num_vfs(pf_fd, num_vfs)
-+				igt_dynamic_f("numvfs-%d", num_vfs)
-+					access_beyond(pf_fd, num_vfs);
-+
-+		for_random_sriov_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-random") {
-+				igt_debug("numvfs=%u\n", num_vfs);
-+				access_beyond(pf_fd, num_vfs);
-+			}
-+		}
-+	}
-+
-+	for (const struct subtest_resize_variants *s = resize_variant; s->name; s++) {
-+		igt_describe("Verify that VF can access the reprovisioned memory via VRAM BAR");
-+		igt_subtest_f("vf-access-after-resize-%s", s->name) {
-+			unsigned int total_vfs = igt_sriov_get_total_vfs(pf_fd);
-+
-+			igt_require(total_vfs > 1);
-+
-+			resize_and_access(pf_fd, s->resize_up);
-+		}
-+	}
-+
-+	igt_fixture {
-+		igt_sriov_disable_vfs(pf_fd);
-+		/* abort to avoid execution of next tests with enabled VFs */
-+		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
-+		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
-+			    igt_sriov_disable_driver_autoprobe(pf_fd);
-+		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
-+			       "Failed to restore sriov_drivers_autoprobe value\n");
-+		close(pf_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 5c01c64e9..6054a2c34 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -329,6 +329,7 @@ intel_xe_progs = [
- 	'xe_sriov_auto_provisioning',
- 	'xe_sriov_flr',
- 	'xe_sriov_scheduling',
-+	'xe_sriov_vram',
- 	'xe_sysfs_defaults',
- 	'xe_sysfs_preempt_timeout',
- 	'xe_sysfs_scheduler',
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 66dcdc281..061e996cc 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -890,6 +890,9 @@ struct test_mode {
+ 	enum igt_draw_method method;
+ };
+ 
++static bool in_simulation;
++static int r_max;
++
+ enum color {
+ 	COLOR_RED,
+ 	COLOR_GREEN,
+@@ -2858,6 +2861,7 @@ static void multidraw_subtest(const struct test_mode *t)
+ 	struct fb_region *target;
+ 	enum igt_draw_method m1, m2, used_method;
+ 	bool wc_used = false;
++	int draw_count, pattern_rects;
+ 
+ 	switch (t->plane) {
+ 	case PLANE_PRI:
+@@ -2874,8 +2878,11 @@ static void multidraw_subtest(const struct test_mode *t)
+ 	prepare_subtest(t, pattern);
+ 	target = pick_target(t, params);
+ 
+-	for (m1 = 0; m1 < IGT_DRAW_METHOD_COUNT; m1++) {
+-		for (m2 = m1 + 1; m2 < IGT_DRAW_METHOD_COUNT; m2++) {
++	draw_count = in_simulation ? 1 : IGT_DRAW_METHOD_COUNT;
++	pattern_rects = in_simulation ? 1 : pattern->n_rects;
++
++	for (m1 = 0; m1 < draw_count; m1++) {
++		for (m2 = m1 + 1; m2 < draw_count; m2++) {
+ 
+ 			igt_debug("Methods %s and %s\n",
+ 				  igt_draw_get_method_name(m1),
+@@ -2885,7 +2892,7 @@ static void multidraw_subtest(const struct test_mode *t)
+ 			    !igt_draw_supports_method(drm.fd, m2))
+ 				continue;
+ 
+-			for (r = 0; r < pattern->n_rects; r++) {
++			for (r = 0; r < pattern_rects; r++) {
+ 				used_method = (r % 2 == 0) ? m1 : m2;
+ 
+ 				igt_debug("Used method %s\n",
+@@ -3248,12 +3255,12 @@ static void fliptrack_subtest(const struct test_mode *t, enum flip_type type)
+  */
+ static void move_subtest(const struct test_mode *t)
+ {
+-	int r;
+ 	int assertions = ASSERT_NO_ACTION_CHANGE;
+ 	struct modeset_params *params = pick_params(t);
+ 	struct draw_pattern_info *pattern = &pattern3;
+ 	struct fb_region *reg = pick_target(t, params);
+ 	bool repeat = false;
++	r_max = in_simulation ? 2 : pattern->n_rects;
+ 
+ 	prepare_subtest(t, pattern);
+ 
+@@ -3263,7 +3270,7 @@ static void move_subtest(const struct test_mode *t)
+ 
+ 	do_assertions(assertions);
+ 
+-	for (r = 1; r < pattern->n_rects; r++) {
++	for (int r = 1; r < r_max; r++) {
+ 		struct rect rect = pattern->get_rect(&params->primary, r);
+ 
+ 		igt_plane_set_fb(reg->plane, reg->fb);
+@@ -3301,11 +3308,12 @@ static void move_subtest(const struct test_mode *t)
+  */
+ static void onoff_subtest(const struct test_mode *t)
+ {
+-	int r;
+ 	int assertions = ASSERT_NO_ACTION_CHANGE;
+ 	struct modeset_params *params = pick_params(t);
+ 	struct draw_pattern_info *pattern = &pattern3;
+ 
++	r_max = in_simulation ? 1 : 4;
++
+ 	prepare_subtest(t, pattern);
+ 
+ 	/* Just paint the right color since we start at 0x0. */
+@@ -3313,7 +3321,7 @@ static void onoff_subtest(const struct test_mode *t)
+ 	update_wanted_crc(t, &pattern->crcs[t->format][0]);
+ 	do_assertions(assertions);
+ 
+-	for (r = 0; r < 4; r++) {
++	for (int r = 0; r < r_max; r++) {
+ 		struct fb_region *reg = pick_target(t, params);
+ 
+ 		if (r % 2 == 0) {
+@@ -4100,6 +4108,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			opt.tiling = drm.display_ver >= 30 ? TILING_4 : TILING_X;
+ 
+ 		setup_environment();
++		in_simulation = igt_run_in_simulation();
+ 	}
+ 
+ 	for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {
+@@ -4184,6 +4193,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 
+ 					break; /* One output is enough. */
+ 				}
++				if (in_simulation)
++					break;
+ 			}
+ 		}
+ 
 -- 
-2.40.0
+2.34.1
 
