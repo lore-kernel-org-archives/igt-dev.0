@@ -4,181 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D57EC83F1A
-	for <igt-dev@archiver.kernel.org>; Fri, 18 Jul 2025 08:17:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6FBDC83F17
+	for <igt-dev@archiver.kernel.org>; Fri, 18 Jul 2025 08:44:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB66C10E925;
-	Fri, 18 Jul 2025 08:17:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B34710E119;
+	Fri, 18 Jul 2025 08:44:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dGUk9cQr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FSibtS70";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D305C10E922
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jul 2025 08:17:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1424B10E119
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jul 2025 08:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752826625; x=1784362625;
+ t=1752828267; x=1784364267;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=mo8ignDsCYNx8dAYsOcTkz67NVcIUlq8E80zEODECg0=;
- b=dGUk9cQrFHpubOf7RpKVJOspIA68iEyQ6kJo3CIny5BHnCzFVjh1/xgE
- jkP2ru3p2AFds/fEgblBIafM49VgPJOIy0huXsrZqfC4l2KeflTkPA95U
- poAfsu6D5AyGk8JJzXBhLPBBPORzOWFyh77hZfOcQ6Fsn4JVlP0s2ufac
- r2SAcQhQpbLHHz8LQYUZBomU0pE/PF21jj36vqSanvLifDaVpF36ouC2g
- ppQMIiGS4+rruUDFUG7y/HfBxIkor6AvjWjCaWZwbvvgF/ACx1R8rzPbi
- tl73MDrNXb0EG9VGi37k15EGXmf09u0/F9exd1J0QX3QJD8CaCrkmaUFH A==;
-X-CSE-ConnectionGUID: pBBqroGvSUKNLmUghoa9Mg==
-X-CSE-MsgGUID: +XbeLhW1RfuIdnWPT+MGhw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="72567688"
-X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; d="scan'208";a="72567688"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2025 01:16:55 -0700
-X-CSE-ConnectionGUID: ri3C3+OrQ/mTd3bwGaED2w==
-X-CSE-MsgGUID: RH6RgdYVTauTdljj3k3Grg==
+ bh=Y51rzJ7xdF93wH8TCmaf91sPlAxz0pkw/I0b83KWNtw=;
+ b=FSibtS70Sdc/auLhB0AWRUJ6TYiyf0vC/4KQZHtg2/w42Z8agXVYCnl0
+ KODN3Plql0CFG2jlUc0ktJiTXJLNwp6aNFXP7iSk2YZot+lOLIHmyig60
+ GG0oLMCPt1SMbw+Vbrzaylqn7/F/A/IxGDhhQfEpBNH68jIHTuPwZ/w91
+ zmGKRLw2rkVtRgE5bVrqdwiSixVio2998iUaOiFv+UBLRDiPzo6aCMy1L
+ c7yQsdCVT9F+ObjOnEjqCmECDmkWR1Nw2VjBLN2KpG7VjLOIVTjxx578z
+ 0JckDYp4Aiv+NkcOz9btYqylF8O5GH6RKxJRs2k9J2A2YUsBknlZbd/fU w==;
+X-CSE-ConnectionGUID: XOLY3ZWLT9WkpYVc8h9zFw==
+X-CSE-MsgGUID: Tf8tOrmJQC2zyXEf44Imww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="65808489"
+X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; d="scan'208";a="65808489"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jul 2025 01:44:26 -0700
+X-CSE-ConnectionGUID: AVbV4sjdTkyZmlDVQy7uwQ==
+X-CSE-MsgGUID: wj9cWZwzT3GnZhzVTvvPGQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; d="scan'208";a="158117422"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2025 01:16:55 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; d="scan'208";a="157396183"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jul 2025 01:44:26 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 18 Jul 2025 01:16:54 -0700
+ 15.2.1748.26; Fri, 18 Jul 2025 01:44:25 -0700
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Fri, 18 Jul 2025 01:16:54 -0700
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (40.107.212.62)
+ 15.2.1748.26 via Frontend Transport; Fri, 18 Jul 2025 01:44:25 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.65)
  by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 18 Jul 2025 01:16:54 -0700
+ 15.2.1748.26; Fri, 18 Jul 2025 01:44:24 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ROJulrGGFWsNri3Ysy3JMlKUFRmMAkZAxHXdPMC7dNxMeJjS51NQwc9Tgh1lZcOqbkdfBbGQOAnMcUZIuSpi+rZlFk2YS4zwR/Ii+6a7T+lS3GCUDwOb7Ss7TDfceFvLOKWg3/aTRozY6lCCfVnUTUsPoAhoMSlgoVXS9V2p0TrtBVYqXgDN5SRPkWZhch0i54vYp2WHrauKzx0Ak2u1OVDJHveL3fYV2npEnMmY3IvHvxOx2Z4mJwc8DiTNNzZxATrK6Mb0DRlUVeEbhM5Wj8Nrg2P/9Zc7ZOlul8k44SGvQ2oJnvAcRUzZ16Gd2AST74sGNQmHnOG9KsYuF/PFGA==
+ b=GAa6G31xwI/OU2/1+M0uMdtt10HC6k1BlggYwUcRJKSz5FxGI4ZnMTLhJkR403TUk7EBTKsYt9jOVG7TDYy00MBYCUicPPkte0cqvpRbHwyZCknooAIwXQrvmPkDB3Aq4OSgS74+MiC4NuJ5Irx54sQw1NKWQhS/z35NOajmow2unN7ZCp84rh0E6MvvfY0j1R6Wn9ahbw7/ou7L0cmXzPfQBS8Nc9GMR0pnFU8RlVii5ldaui9cZwWZ/jVbbQuTI+CH/4uTXMTagmTrjy/Jv2jyNNpZw8x4IyZ2u1+prb6p+6Z07E7HBooKXfj2PME1vg0BxlOXIku1hAixWgH7og==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p+Uws2O+xIMUgNA8ZwpXt+0On7L1cgLlWlNLzRoIf9s=;
- b=OU22uuN0ukWfCd9exmZXofWDcwIXVVM9qMLkUsdNQNclKnshAVAtOMi76LXJm9a9uhoKqnEZh6E5rtxSK9WY5Fsu8s5LDv2LOYAI1mDNokHDgZes9A/QWJbPIa25uUAQOpHHd99BKcV2HvtTUnyhfdI+p2Mv98TpfkSeRHkP1kHHF7U8u4b6elJWD3iRCJIBrW1fPOcCt/SoQiMbTaoXNMJ/qsNalW+fM6bDosesTvi+Gttm5X8M7CAQH2kj6EdaF2xgv+qH7ipXncRW+baWB1bQgSo0SgMKGspa1+Xp44lNOvBA31LUeJ0cCgamjdjU1wyD7b0hLDLmI6aTyh5G3g==
+ bh=RDmWM7pnmjehlGLKLLJkNG3iT+V2ohu8xE0O/KIz4XQ=;
+ b=NuuFW3bUFSGgtP7CWE6KP6mNCmJ0se7rvekD7j/KkWgxRANdiM67wrd+wJbWF+tjJiqiNFvIzjNGLzkhiSF1u01VdcvTCZ4fEbBhjdq545Ol4Dq6fIGvAXea9swVXi9ygam6S3bRtXRoZwQOspiHlg5urp8W3XWh+Ktnu8RbTMrjm1fTEgNNdWamM/EqnFMBmWrqAZd8OopFKrSL2nOQW1kQHGh3v2M5bZxwn6OoYZAshBEzS6/2MmoKJJI5KlWEQHU/4Rapmaltq9vEcitSX9rvU+Cb0f03wKzLjGgpo5ee3l3w4SxhVFuNYyg/4PMyRu4rsT7nrGXl3kPchfTNgQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA0PR11MB7307.namprd11.prod.outlook.com (2603:10b6:208:437::10)
- by SA1PR11MB8473.namprd11.prod.outlook.com (2603:10b6:806:3a7::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.25; Fri, 18 Jul
- 2025 08:16:38 +0000
-Received: from IA0PR11MB7307.namprd11.prod.outlook.com
- ([fe80::dafa:d38d:8ac1:e843]) by IA0PR11MB7307.namprd11.prod.outlook.com
- ([fe80::dafa:d38d:8ac1:e843%4]) with mapi id 15.20.8922.037; Fri, 18 Jul 2025
- 08:16:38 +0000
-Message-ID: <a7c67e92-87b1-4fe3-8742-e6a33b588250@intel.com>
-Date: Fri, 18 Jul 2025 13:46:32 +0530
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
+ by BL3PR11MB6316.namprd11.prod.outlook.com (2603:10b6:208:3b3::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.35; Fri, 18 Jul
+ 2025 08:43:53 +0000
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::6b98:f467:da49:e062]) by CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::6b98:f467:da49:e062%6]) with mapi id 15.20.8922.028; Fri, 18 Jul 2025
+ 08:43:53 +0000
+Message-ID: <7f832010-5908-4fa0-961d-2f9c7368c77f@intel.com>
+Date: Fri, 18 Jul 2025 14:13:45 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [2/2] tests/intel/kms_usb4_switch: add test to validate
- dock/undock and switch
-To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <imre.deak@intel.com>
-References: <20250521055619.1961965-3-kunal1.joshi@intel.com>
+Subject: Re: [PATCH i-g-t v2] tests/kms_async_flips: Replace hard coded
+ modifiers with async modifiers
+To: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <chaitanya.kumar.borah@intel.com>, <arun.r.murthy@intel.com>
+References: <20250716161231.410389-1-santhosh.reddy.guddati@intel.com>
 Content-Language: en-US
-From: "Murthy, Arun R" <arun.r.murthy@intel.com>
-In-Reply-To: <20250521055619.1961965-3-kunal1.joshi@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20250716161231.410389-1-santhosh.reddy.guddati@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MAXPR01CA0112.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:5d::30) To IA0PR11MB7307.namprd11.prod.outlook.com
- (2603:10b6:208:437::10)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0100.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:af::9) To CH0PR11MB5690.namprd11.prod.outlook.com
+ (2603:10b6:610:ed::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB7307:EE_|SA1PR11MB8473:EE_
-X-MS-Office365-Filtering-Correlation-Id: 15b3c850-9459-4f9b-3716-08ddc5d36ae7
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|BL3PR11MB6316:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66c7ee46-ed11-43a7-9b03-08ddc5d73971
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?S0YwaHorbVEyaWpKTytlSHlDbkVIRzYzZTNEK1JhVFhKeDdWd1dEWGZXQk03?=
- =?utf-8?B?cUFzVHVxMHJiS1UyeVdHa3ovUU1ZYXhKaS95RmlNa0JDZWdoa2NlZWNUdUlV?=
- =?utf-8?B?cGNNYmNHRWdlZTg4S1l5ZE5EaFR2bFRjeGMzd3FEd0grdHQyZGptOERQOHRx?=
- =?utf-8?B?RlptdFFNa1A1cjRaWjJHdUt5SkhqU3FtejNWTm1TOVNXMDdmM1NUMTZUT1lo?=
- =?utf-8?B?WUk3UzQ3Ym55eDNkbm56aUM3TDhkTmM3d1JDa2cvLzVvbTBhQTFtUkVhNmZt?=
- =?utf-8?B?Z0xocC9aaHVHU1pyWXdtZ2V6Z0JGQlFCdWk1UjI0eGZRd2dIZTBiL1NHaUUx?=
- =?utf-8?B?Z1hFYVRzWGt3NzIzQUc4ei9IMXZtQVluTWN5WWFWa3RHTWIzQ3lTTWszdTJY?=
- =?utf-8?B?djRFejNEcXZ3dVZGS2M2RytPY1RTRHpYV0IyQ1Y2L0gzTTNqb1RLMHlCN3lU?=
- =?utf-8?B?NnRvVVBuRHNoYUN0UTUrd3ZIejllMDdXZG1acmlBRDRGK1BWcDRxaEkvcXIr?=
- =?utf-8?B?bE5hRmcxTU1mdGhHdUFkVkJJUlU4WE5iZ1NLbDZpYk4xOGlDN25UdFpHSFhB?=
- =?utf-8?B?RDNhOU5EVlFLK2tuNlhTakgxUDJsRFB0NDJPeDRjZm4vSDF0VEFWbDRmYTk1?=
- =?utf-8?B?TGgyeXF6a0YxbXBINmRNcHhUdGRvMExUWkhTbjNjVWZCamRFa1ErRXA0RVF1?=
- =?utf-8?B?d21NU2tudTBHTWVwdlZMeVpnVXVjQjBJSDBhR1c4aDhwbVRDR09qcUh2Qk5H?=
- =?utf-8?B?L0R3cVhzeDE2UjF5dXRpVlBEMEkrSTg3djhqZldqL2htSytMZnU3VUM0anN5?=
- =?utf-8?B?dXBzZGJSMmVaWE9vQUV6a1EvWi81Y2FHZUFUZlFNUWhKMVluLzF0UkhyMHEv?=
- =?utf-8?B?UW1ZNm5rL1o3ZktwSE9DS0ZucGY5OWx1eitkZ2ZaZ2I3WEd2K2d2SDBEakJB?=
- =?utf-8?B?bElDcDZ3bG1mRzVUTEZPcEVtOFlMZHYvTE96TUpINXJjOVhldTNSa0ptYkFh?=
- =?utf-8?B?TS9haUR1TnlPcW9ZRzc3WURXVnArdEt5QXp3dFBrbHZWNDNDYVJ2TGVIUmsx?=
- =?utf-8?B?R2krWndVWWtGUUFwN2hpVEdIQ3RMY042c01QTC9kTFFLbThKbkJDZmRiTVdL?=
- =?utf-8?B?RGtndmNTTjJ3VnQvWmdRSUQveGs2OWFwNE1GS1FBVUtVMSsxeGlGRmNHbVZP?=
- =?utf-8?B?NDEvOUxEaiszMDhzWklqYXpxdnZvdFI1bTkwVVcvTVNGUXo2akp1Q3dOYWtU?=
- =?utf-8?B?SlV4c2FWUVlFVWw0Rkl0TkhKcGhUMWtLUUMvWktwY0NjRGducTc2QzhVUnRC?=
- =?utf-8?B?NlhDOEVieWt5WHk0VkRSY2FUcExEUkw5Wk13aHZFNVR1ZmhMaExTL3hDR09Z?=
- =?utf-8?B?SkFKR0huVjVzakZ3ZWJlTFovREdwc0w3enBNVjBTbmMvTStzOTBWcEVyTEl0?=
- =?utf-8?B?NEdyTk9FUkhwdExCeEN5TFU4TG1TMldQdjZudmdubXNHOHJrTUtXa0p4RkRp?=
- =?utf-8?B?c0FXbVhpTTE1NHJQYXFOWDQvZmExSHM5Yyt4dDBjWk1MTHdCWFV0QU4zcEZM?=
- =?utf-8?B?WHR4eXNHZnlzM0F0QnlEdHJNL242SnV1cmZSN2pzdGM1Ylh1MVAyQkdRMmQ5?=
- =?utf-8?B?bDNMbW5abEZiV1hUcnRiazZoOUhpT3FvR00rRDVQYWxZMzJRdS9nejFUUkp2?=
- =?utf-8?B?cnFSVE5ONTdrdXBJdmZZK3ZUTWdmclNvNlJFUFdONFcxenJRcUFXbzVLQzFN?=
- =?utf-8?B?NXJHSVZyR0hlMkh2U29VdGplNHgydVZzSnBkYmxFTzkrbzdVamtla0lHMEZF?=
- =?utf-8?B?VHBIbGtRYTBadm1HSndCclltWGlIaEdZb3JYbWR2MHZkZnBCOXBKTVJ0T1lS?=
- =?utf-8?B?b3ZZUmZ6Mmx0aW9tZzgwOGpkWG14NjRrS2ZZb0RFZzJGZUJGV2ZxNFhLUkF1?=
- =?utf-8?Q?xEYyhwcDB2s=3D?=
+X-Microsoft-Antispam: BCL:0; ARA:13230040|366016|376014|42112799006|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NDRSYUJMeE5qeEM5dm5HbFl4bzZnbDZlZTMvaEp3SDJDa1h4TjNNNzVNanpa?=
+ =?utf-8?B?bVRDV1d6NkVjNEttNVpmY0VNSUMrSnVqbDd5NEFVQmJVNGVwOGJ2L3FnSFA5?=
+ =?utf-8?B?b3RNL2xPMTNUUlc4dDJhMkI2dHdFZ2VWOW9UZEttV25JUFlOa0xodFYyUHZB?=
+ =?utf-8?B?eVpTdStWeVlBSmZ2dlZEdmxKT2ZnOHQ2M21sbFByVlpSK0ZDRFF0UTVsTE9q?=
+ =?utf-8?B?NUpUelRWcFp0dG1mOUlFbitOVlE4M0t4N2tMUDBuYVJHQnhJT05CS1JtaTIy?=
+ =?utf-8?B?NENkNk1JV1NFTVlpWEcrVzVzU2xnU0x6YVZvbitTdU1FN2N5NXBnZkoyWGhB?=
+ =?utf-8?B?N1I5OGZaQStvVW0yTjVadG84TFBMeVlBazkzY0NTR2ZkWllYR0paUFdKeVov?=
+ =?utf-8?B?RFFoaFFySEYxNTQwWGw0S1Noa0VnUDFTdmt3Vy9YL09wdXBxMG9NNXI0akNr?=
+ =?utf-8?B?VTg4WFVCT3E2YUk2enJZYkR2VVFnNVlaYmo1NGhCaXc0QjhsQ1g2UnRRVlJS?=
+ =?utf-8?B?ZmlzU3FOR0lpOUxaZ1JhSXNtRWk3MDlJMVhiVXl4aHJueGU1ZEZXMmI0N0VI?=
+ =?utf-8?B?SE01Q09kNXFwNEFhWkx6VlBlY0VEUUs2Zm00ZHo5UFU0enhUNEhsKzV6YWY0?=
+ =?utf-8?B?Y1NGWVlRSDdEc0VXQTNFTGxSbjkya1BOc3JNb0tNaFJ0Q2I3STRPUi9xVWNa?=
+ =?utf-8?B?L09sblN4dVNoMjk1VUViUGQ1ZHdEczM1UFE0eDJqazB4cEdFYTJ3K2VlUlha?=
+ =?utf-8?B?aFE2cW5mZzFlMVVVYjU1Wk1BcHlNaThVMUFSUCtxVlFCVm9RNW5vdXMySnBG?=
+ =?utf-8?B?ZjBNVnVCbVE0ak8vOGxqcFZvL29sR0hnc0FobEpPVjFBOG1yUTdvaGdmRnhm?=
+ =?utf-8?B?cUxOS1R1NlJOeHA5RWhlbFcxQUlPSmlxRUIvYlRqV0xQOE5pWU01SVIxSzhn?=
+ =?utf-8?B?V3AvTmFacktkT2g4bzNHdGVyK3ZpTlZRWVZaLzdFUzFrODRabFZYeTZFVnBO?=
+ =?utf-8?B?bGZLY3VabjhweUxGYjg2Q090U1VRS3JsOVh4eWdSZzI0WUw0ZFdaZnhDUGRj?=
+ =?utf-8?B?Sk92UDdNdEREZ3d3UVUveGtIZ2xMYmZkY0JYZ0VtTGJKRXpqM1E5SE5mVGFV?=
+ =?utf-8?B?aEMyR3ErMjMrcTM5ckNmWWs4VXFwOStTNGpMMDZQV2JhbFNQbEtrUGozazY0?=
+ =?utf-8?B?NklZekNES1lRZ3pzZmxqRUdSaWEzZ0ZEbEFGSjYzcDZhSHVObUZJZHlaRVQ4?=
+ =?utf-8?B?aUFCNkJ3akFIWVVSdmp1REMyV1ZXUVdFY1RIYys3MjM4MGJPZWgrT3Z1dE9j?=
+ =?utf-8?B?Z1I4N0Z5ZG1zMHg5SjVpRkdydDYwUVc0TXd5cDd3eGhDaURDRnlZRHl5YWhK?=
+ =?utf-8?B?bmhOeWRjYnZWNDhaK1RWRUx2NkFoZVk0SHhMZ1NCZzNtQ1liOXJqQzFhcnNS?=
+ =?utf-8?B?UHRzV2N2a0FvZ0JSR1RibnBOUDAraGp2ZFdCZjI3WHFWbWJBaDJXZXNTb0tU?=
+ =?utf-8?B?UEhTeUxTOWVEZTk4UForTVZvTTdaVzlLOWhseUdEa3ZtVVNNbXpMKzJyQXBW?=
+ =?utf-8?B?TlMwZWVMcnBqM1g5K0dIZFlHL204MzVZY2hTTGFZV3hNYXlNNlpZT1BmRkFt?=
+ =?utf-8?B?QzRZTUM3ejNOaHNyNUtXS1EvNmRPRUtOdnNNbWQ5UWpNVk80MEhTQTM5c2Jv?=
+ =?utf-8?B?Wncyb3VOVDdtRnkwd2FON2tndlRvU3AvSHRUN2c4eWJRTmdNbUtjekxoMzV4?=
+ =?utf-8?B?WmVaUlQ5MTVZamllSWZPbVFyQWhVY2pKQXFDTXdYVVNMYk50UFpGbmo2S2JG?=
+ =?utf-8?Q?SLIQ6upmS683OMQMyi/og0qFNoWJdEgv0spjM=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA0PR11MB7307.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(42112799006)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dFB6ejdUNUNxQVRkYUFRY1dJdGhaNU41c09vZ1ZXNVIvYmt1VjRMRDRDVG5E?=
- =?utf-8?B?TnQrckxkWm1TYVpYMmJIZytFYlhqREVCQWJRRHYyRWNHSHBiRXNVZ0ZrZE92?=
- =?utf-8?B?MkgwRlhQTGpBdmdnYWVFa1hlMnU1YXV2RTR3UzlBMUdpWUVQVWhKZWFNSnNC?=
- =?utf-8?B?em5qcHNhdWNzZGNPMkFhWXRXRWFoZ01hcHdaKyt3SERyVU5naDM1eVJKdlJZ?=
- =?utf-8?B?SVU5L0xlWlVsbys0emZJc1VXejhyWHhsWGJhVDBzRS81d015Lzhhb1dpa0RB?=
- =?utf-8?B?MmpOWlZoVDZMMlRQVjJPV2VvSlQ2UDlYbVB4cG9YTU1zb08yeUFieWkza012?=
- =?utf-8?B?RTgxNVpDMEZkVnBOMk52eUR6SUg1K2d1VnRjbnhVRkpkMk1SRUt2UVJRamtE?=
- =?utf-8?B?ckNwNXpHNW54aThvZUJFVEFXWHdFMkxTMnl2VFhXR2Q2RWJzeWdyMTA2M2Fs?=
- =?utf-8?B?OG1LaG52Zng3QWJYMDZaSDMveHNPVnlGTEdRbUhldVgwb3cyVnU1L0VQSzFo?=
- =?utf-8?B?dm1kUVdhMGl2Z0M4MVZFYVFTcExsTEtWSmRUaDUxc2lSK0VESWlMUG9wM21G?=
- =?utf-8?B?NEpBUWJOdXFRcGVpc1V3TVo4ek4reUFMTXQ0SHFyMmpNVHdqY3VnZUNaWHRP?=
- =?utf-8?B?ZW9FVW1JTGFGVlN1QW1DZ0tWYXRhUHRycU1qbGhTaFdXOUJFN2J5OXVqT0xq?=
- =?utf-8?B?VzYzdFpRdHZnYmNYLzlKSUEzL0I1QVJkZWovQWNwNFZCRXVEeHF0VGV4N2o5?=
- =?utf-8?B?aUxlRHRCbW9Ra1lsZHo5Z0VOYWlGVVlNdThlUExBODBrR0ZiMmFJaUtDSE5V?=
- =?utf-8?B?bkxGUmNkMG5CU01JcWJnZE5Xd0xHNVo3L2JDdmNud1lJcW85cjhJM25tMGJm?=
- =?utf-8?B?clJ1ZVUwTkJtOEV6UWx5UVFuaUNuaFdhbW5GOTFTb3NnRWNGeFdUaFA1WXJl?=
- =?utf-8?B?SmROTG5ZNjk1b3h3VWZnRzU3Q0x1czVYbUhZR2NTUjRpZm1oOS9CZ2szaFpq?=
- =?utf-8?B?blFJaTRBU05tKytpaE9JT1NCb0hhWjlTWDEzUmdrUXlqQVBLei9WMjRQaEdZ?=
- =?utf-8?B?RzdXdGNPelpESUVpTS9HZnRQQk5qRzJxNjhOT2xHc0tpVjFoS2x2WTh5THVl?=
- =?utf-8?B?VU5aeVZ0SDBvNWdRVHhndS9tKzRMZWlKcXpkdEtQRlJJTXFVQndzYXoxQXRB?=
- =?utf-8?B?UlZ3a2JOaS9tZVBtY0xaaFNwWUllMVd1bG8yY3hxcEZ0eWZHbWhxbERETTRI?=
- =?utf-8?B?elY3ejdQL3dTNDdtMG1keHNxMHQ1VFJqNjRmQmFXWlZ6L3d3RGZmMjY3dEJO?=
- =?utf-8?B?SFZZbkJjUFhFUjBWc2xkVWdBVlhMZDVFeTFkNVB4T0U2ODc2Q05ENDBIWnla?=
- =?utf-8?B?MmFhVXovK1YrTjR1RXNVNGZaRnVKWFd4SjgzN0ZnOXJOS2lrTVcyaUlaVGsx?=
- =?utf-8?B?dXpYWU4zdXYwK3p5dS9MODZjOUdjSndjSThaUzRDU1RTR0tMeTlod0NHU1Zz?=
- =?utf-8?B?SmFzZFovT21MQ0xpK3htRWFVQituWU5ZeTJGMHpsOE43Tmlzb25NTDhZdEdt?=
- =?utf-8?B?QnZtS2plWlA5b0h5amorV29VTC9zOWRER3JqMmVteW5DY3d4czVBRGVpS2tl?=
- =?utf-8?B?TGw3Qy9lOXF1aDBtNEFHV1A2clZSTHpZMEtQU3hKSDFmaUp6MFhvMjJjRUNR?=
- =?utf-8?B?MDJSTHdBd2JWTWxZUERtdkZrNmdaQzhpOWJXQ0lXOHA0VE43Q0lHVll3cjdP?=
- =?utf-8?B?Y2xXZDNJa1pjR1EwcXI2ZnRzU0dkM3c1ZUYyTmtDNk5uV1RnUTlpVWplamJ4?=
- =?utf-8?B?a3pscDJ3WnRjOFlQLzZFbk11TTR0aE9NbXJMWHdBem0yYkZYN3VETFczUkZw?=
- =?utf-8?B?czhuTitiV3hJTTlXc1RMaFNHR0JPY1J6Tm9yVTFIZUZmMTZZNkNPeklrTW52?=
- =?utf-8?B?elErTXEvL0NRN0o2a0xxcEVQNGVKdlhERDhCclJXbkFQdGd3WkdYYWFNY0Zw?=
- =?utf-8?B?Y0NuNGdLcVBMbUg0T3Q2Z3NoUEdUUUU3N0RrTGtyaFkwbDl1YU9XaHRxUmhZ?=
- =?utf-8?B?NlhVeGJBMjRXTU45RzRYcjNUbkVEWnBxZDFpNy9mV24vYlN4VTAyd2ZXS29C?=
- =?utf-8?Q?M5HtFoChoKVYkuGxjKDV8gZTp?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15b3c850-9459-4f9b-3716-08ddc5d36ae7
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7307.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UmtQTWtNL0o2d1RrMnFVQ0lBUDUyQVNUR09LWEF6MmZwZXdLUXl2eXhObVNp?=
+ =?utf-8?B?VHBkTkNiQmZEaXNsNER6NlFWaXlSdVNQNzYvcjVubHhXMkxxWEpZVzcxZlVR?=
+ =?utf-8?B?dVNqUnJEdmZJeUNnTkE2djZHMVVWNzFpR2ZqWkdpYXFpNldGOTN5Tm9zMGdC?=
+ =?utf-8?B?NmJFUERxSnkvb2dRVE1mTHBjUTlEVFVweW1NcWxOVmR3S20vN2JqbmVMTWZa?=
+ =?utf-8?B?Yy9PRWM4Zisxb3hoQmcwVUg2Ni9td1ZyOExRVzBhd0tybHhVRE1ibWZvNGNQ?=
+ =?utf-8?B?cXdadjE5MzBrVXJPbnlIQ3pwVTM4WGtFTUdvcWZ1bWN6ZUIxb3JkaDY3Mkxj?=
+ =?utf-8?B?MWVLMWFBRGJGOEJUd3J1Vm1DdDFudGt3NTRFSWNPUXJuNElJMmYrNDh3SjM3?=
+ =?utf-8?B?L09iQ0RndWlzdCs2a0ZiV0ZLNkdRQzJtK0g1OXNPd0kvRVg3eG1rcjM0Z0VE?=
+ =?utf-8?B?Z2pEOEVwTTdNTUoyOUF5MitLUUVyM24xUEZpZStzVmt6NWJwTXF5RmlWUGNo?=
+ =?utf-8?B?dnk5ZStSc1U5TTY0RzNQQkxqd1RzMU9ZTU5scTNVTEtxWTZ3ajFsMWI0MTRC?=
+ =?utf-8?B?OEF0NDBBdzRtZDRwTG03L3ZwTERnc1JTVnlmL0tiaWxobkd3bkZBS0QrUzNu?=
+ =?utf-8?B?TytQNFppMDNpMEQwR05ObXVCV1BsK2NCVGoyczh5eFVTa0N0ZUZsZWNaL2VD?=
+ =?utf-8?B?cDZEQXhKN0kxMTNIbUxkd1djTTIzN1doMzk4S1pJakVDeXdTSm9zdTJRQ0Jt?=
+ =?utf-8?B?MmlXeWlzYlpoVk1rS0lkbVJhRVdzc1lwbDJreSt2TVJFTmJxN1c4aHNxNU1i?=
+ =?utf-8?B?UE11aldwWmo1K3Q4NTFicnYvWEtUaTIzS1BpQXpFYjNuS2ZWN2taR1NGdVRM?=
+ =?utf-8?B?QU1JcW1McVlER0RaTjJpRml6cytoWGtidXFMSzNxRVVaZHM2MzJvSElKamxT?=
+ =?utf-8?B?VHdpTUp0VGNvZjFDVGJYWHk2VjgzMVFsYkpscG9TZWZvRFlsVW5qM2NKbU1T?=
+ =?utf-8?B?VmR3VlYveDlLek1qUEdzQ1hITFV1STRKcm8xblREVm5ldGYwRTlEOGZzblJZ?=
+ =?utf-8?B?azZMcTBWQ0JKbzRnbk5NVmt0MzFaZEhUYkk1ZEJTU3RKaW9JOHoreDdjYS83?=
+ =?utf-8?B?VU9hYWs5MmlMNURoK2xUb25tRFlaSzE2QThUQ09mMStYc1o1NVZJZFQwS3JW?=
+ =?utf-8?B?OTVXRllSSnNwU0Z2R3U0czhTU1p5MWhwVnRxTXZYYzA2Q1o3bUVMTDhYVkIx?=
+ =?utf-8?B?Zm9rVFpTUkxMb2FQRGhsZ0pEY205YnJHZWlLVitpdHFNU1oxdnNkL3pSSEU0?=
+ =?utf-8?B?SE02RnB3Y1lldm5BcXJzdE9XWlMvd1pJb2lQVm4valhDMFpxcTJZVEZ0elY3?=
+ =?utf-8?B?aWFuTjYzbnY4VjA3VWpadXpsNDVNVGU5TjhkVlJLcFFPUlNLUnpvQTh1cnpu?=
+ =?utf-8?B?UXcwK0RpZllMK2lOc1FpSTdWaU1KaUxJajBvRHk4TTNvT3JYYVAwU1lEYUxw?=
+ =?utf-8?B?eVhGVEQwWXRZNlh4S0F0VUhZTkNITzhWeHJJbVIvcE5saGJuQzNTMmMyVHQ4?=
+ =?utf-8?B?SlE0bXBSME4rUGovcGN5bTRWVFhWUUFSL3kxeW9TS0k2RWtrMWxPd056T1Rl?=
+ =?utf-8?B?RnJObnlXSlFlQnFqdTJjWkR2QmFvNnV2TTV5YldzNXA4WlM4QnR2MEtWaE1q?=
+ =?utf-8?B?M0JzakVKOWlZeFJGbVplOVhEVmRhM2p3aUkvSVE5V0tnY0hvWEZYVG8zSXBX?=
+ =?utf-8?B?bUlxck5pSHpXOEJVamFMWWt1N1VpRStGUTErYkdPeDJ0N1lBd3k3LzN3Q2o5?=
+ =?utf-8?B?ak9NZm40aGM0NENDMk1UQ0s2YWRaNHBWTFF4YktOeFdoaFBmRzZxckFybnZn?=
+ =?utf-8?B?UFp0RGdabFNoMGJpL0l1OWxBNTVTQnp4MCtXU3g1WUo4ZjlCdkFnVnFuc3Zv?=
+ =?utf-8?B?cFFlcDNBTzU4ZlZTM2RZV3Nha283ZGl0ZXNtOE5hODhIMDA3THpYV2pUTG5u?=
+ =?utf-8?B?S29QUDl1SnRBdEMveEpiY0o4Vm5LcjR2eG1NamVkWHl5SWQxMXRIYUdIZVc1?=
+ =?utf-8?B?QUhpTTRYVXBIVkFxQ3lzQkRBTDFUUE9KT0YzWjZ1d3ZOdVY4bnlYc0p2Y2dn?=
+ =?utf-8?B?bHQycW1mVXpJbEphSnVnd0ZHQ3B5Z0xVQnJ5OWxLUjhXcG4vRzdOcnR6N2JW?=
+ =?utf-8?B?aHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66c7ee46-ed11-43a7-9b03-08ddc5d73971
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2025 08:16:38.2490 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2025 08:43:53.5748 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6GR0mFOxI9YUWImFVS2nJBwMQzwoM6b4gFnlOCfCAaoqTVi0TlXFs2goOQ3kUMBjFC15RmpajRsucW4jjpyZew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8473
+X-MS-Exchange-CrossTenant-UserPrincipalName: xh0PsWr2BN8fgBmr7Sf4KsolOKZDq3QPCHTexJ7a9E+220QL935PRZN++MoSyMEwIpJOvdl/OopJ8s0xszGdOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6316
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -195,348 +195,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 21-05-2025 11:26, Kunal Joshi wrote:
-> Add test suite that validates docking/undocking
-> of TBT hubs and switch from DP-ALT to TBT or vice-versa.
+Hi Santhosh,
+
+On 7/16/2025 9:42 PM, Santhosh Reddy Guddati wrote:
+> Use the IN_FORMATS_ASYNC uAPI to get the list of async supported modifiers.
+> select the 2 unique modifiers from this list to test invalid async test,
+> removing the hard coded dependency across platforms.
 >
-> tbt-dock-undock : dock/undock each *Thunderbolt* port × 3,
-> 		  checking HPD, EDIDs and a green fullscreen fb
-> tbt-switch-alt  : start on TBT → switch to DP-ALT → verify HPD/EDIDs/modeset                             |
-> alt-switch-tbt  : start on DP-ALT → switch to TBT → verify HPD/EDIDs/modeset
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> v2: Use first and last modifier from the async supported format list for
+> invalid subtest.
+>
+> closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3768
+> Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 > ---
->   tests/intel/kms_usb4_switch.c | 299 ++++++++++++++++++++++++++++++++++
->   tests/meson.build             |   1 +
->   2 files changed, 300 insertions(+)
->   create mode 100644 tests/intel/kms_usb4_switch.c
+>   tests/kms_async_flips.c | 16 +++++++++-------
+>   1 file changed, 9 insertions(+), 7 deletions(-)
 >
-> diff --git a/tests/intel/kms_usb4_switch.c b/tests/intel/kms_usb4_switch.c
-> new file mode 100644
-> index 000000000..05a6d3651
-> --- /dev/null
-> +++ b/tests/intel/kms_usb4_switch.c
-> @@ -0,0 +11,304 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2025 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: kms usb4 switch
-> + * Category: Display
-> + * Description: Validate docking/undocking of TBT Hub and switch
-> + *		from TBT mode to DP-ALT mode and vice-versa
-> + * Driver requirement: i915, xe
-> + * Mega feature: General Display Features
-> + */
-> +
-> +/**
-> + * SUBTEST: tbt-dock-undock
-> + * Description: Repeatedly dock and undock each Thunderbolt (TBT) port
-> + *              `DOCK_UNDOCK_COUNT` times, verifying hot-plug events,
-> + *              EDID (re)appearance and successful full modesets.
-> +
-> + * SUBTEST: tbt-switch-alt
-> + * Description: Start on a TBT port, switch the USB4 switch to a
-> + *              DisplayPort-Alt-Mode (DP-ALT) port, and validate hot-plug,
-> + *              EDIDs and modeset on the new path.
-> +
-> + * SUBTEST: alt-switch-tbt
-> + * Description: Start on a DP-ALT port, switch the USB4 switch back to a
-> + *              TBT port, and validate hot-plug, EDIDs and modeset on the
-> + *              restored path.
-> + */
-> +
-> +#include <string.h>
-> +#include <stdlib.h>
-> +#include <unistd.h>
-> +#include <sys/types.h>
-> +#include <libudev.h>
-> +#include <drm_fourcc.h>
-> +#include <xf86drmMode.h>
-> +
-> +#include "igt.h"
-> +#include "igt_kms.h"
-> +#include "igt_fb.h"
-> +#include "igt_usb4_switch.h"
-> +
-> +#define DOCK_UNDOCK_COUNT 3
-> +#define HOTPLUG_TIMEOUT 20
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	struct udev_monitor *hotplug_mon;
-> +	usb4_switch_t sw;
-> +	struct usb4_switch_port_info *ports;
-> +	size_t n_ports;
-> +	int n_pipes;
-> +	int current_port;
-> +} data_t;
-> +
-> +static bool fit_modes_in_bw(data_t *d)
-> +{
-> +	int ret = igt_display_try_commit_atomic(&d->display,
-> +						DRM_MODE_ATOMIC_TEST_ONLY |
-> +						DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +						NULL);
-> +	if (ret != 0) {
-> +		bool ok = igt_override_all_active_output_modes_to_fit_bw(&d->display);
-> +
-> +		igt_require_f(ok, "Cannot fit modes in available BW\n");
-> +	}
-> +	return true;
-> +}
-> +
-> +static void setup_pipe_on_outputs(data_t *d,
-> +				  igt_output_t *outputs[],
-> +				  int output_count)
-> +{
-> +	int i = 0;
-> +	enum pipe pipe;
-> +
-> +	igt_require_f(d->n_pipes >= output_count,
-> +		      "Need %d pipes for %d outputs\n",
-> +		      d->n_pipes, output_count);
-> +
-> +	for_each_pipe(&d->display, pipe) {
-> +		if (i >= output_count)
-> +			break;
-> +		igt_info("Assigning pipe %s → %s\n",
-> +			 kmstest_pipe_name(pipe),
-> +			 igt_output_name(outputs[i]));
-> +		igt_output_set_pipe(outputs[i++], pipe);
-> +	}
-> +}
-> +
-
-This function is already present in the IGT code, can that be reused 
-instead of duplicating?
-
-Thanks and Regards,
-Arun R Murthy
---------------------
-
-> +static bool modeset_on_edid_connectors(data_t *d,
-> +				       char **edids,
-> +				       int n_edids)
-> +{
-> +	igt_output_t *output;
-> +	igt_output_t *outputs[IGT_MAX_PIPES];
-> +	int out_cnt = 0;
-> +	drmModeModeInfo * modes[IGT_MAX_PIPES];
-> +	struct igt_fb fbs[IGT_MAX_PIPES];
-> +	struct igt_plane *primaries[IGT_MAX_PIPES];
-> +	int i;
-> +
-> +	/* Find all connected outputs whose EDID matches this port */
-> +	for_each_connected_output(&d->display, output) {
-> +		for (i = 0; i < n_edids; i++) {
-> +			if (usb4_switch_port_has_edid(d->drm_fd,
-> +						      d->current_port,
-> +						      edids[i])) {
-> +				outputs[out_cnt++] = output;
-> +				igt_info("Port %d → connector %s (EDID %s)\n",
-> +					 d->current_port, igt_output_name(output),
-> +					 edids[i]);
-> +				break;
-> +			}
-> +		}
-> +	}
-> +	igt_require_f(out_cnt > 0, "No connectors found for EDIDs on port %d\n",
-> +		      d->current_port);
-> +
-> +	/* Reset display and assign pipes */
-> +	igt_display_reset(&d->display);
-> +	setup_pipe_on_outputs(d, outputs, out_cnt);
-> +
-> +	/* Create simple color framebuffers on each plane */
-> +	for (i = 0; i < out_cnt; i++) {
-> +		modes[i] = igt_output_get_mode(outputs[i]);
-> +		primaries[i] = igt_output_get_plane_type(outputs[i],
-> +							 DRM_PLANE_TYPE_PRIMARY);
-> +		igt_create_color_fb(d->drm_fd,
-> +				    modes[i]->hdisplay,
-> +				    modes[i]->vdisplay,
-> +				    DRM_FORMAT_XRGB8888,
-> +				    DRM_FORMAT_MOD_LINEAR,
-> +				    0.0, 1.0, 0.0,
-> +				    &fbs[i]);
-> +		igt_plane_set_fb(primaries[i], &fbs[i]);
-> +	}
-> +
-> +	/* Fit modes in available bandwidth */
-> +	igt_require_f(fit_modes_in_bw(d),
-> +		      "Failed BW fit on port %d\n",
-> +		      d->current_port);
-> +
-> +	/* Commit the atomic modeset */
-> +	igt_display_commit2(&d->display, COMMIT_ATOMIC);
-> +	return true;
-> +}
-> +
-> +/**
-> + * Returns the index of the first port whose .type matches 'type', or -1.
-> + */
-> +static int find_port_by_type(data_t *d, const char *type)
-> +{
-> +	for (size_t i = 0; i < d->n_ports; i++)
-> +		igt_info("Configured port: %s (looking for %s)\n",
-> +			 d->ports[i].type, type);
-> +
-> +	for (size_t i = 0; i < d->n_ports; i++) {
-> +		if (strcmp(d->ports[i].type, type) == 0)
-> +			return i;
-> +	}
-> +	return -1;
-> +}
-> +
-> +/**
-> + * Perform a dock/undock or switch action on @port_id:
-> + *  - set the switch
-> + *  - wait for hotplug
-> + *  - verify EDID presence/absence
-> + *  - full modeset on connectors for that port (only on dock)
-> + */
-> +static void port_action(data_t *d, int port_id,
-> +			char **edids, int n_edids,
-> +			bool connect, bool reset)
-> +{
-> +	const char *verb = connect ? "Docking" : "Undocking";
-> +
-> +	d->hotplug_mon = igt_watch_uevents();
-> +	igt_assert(d->hotplug_mon);
-> +	igt_info(" → %s (port %d)\n", verb, port_id);
-> +
-> +	/* Trigger the switch */
-> +	igt_assert_eq(usb4_switch_set_port(&d->sw, port_id), 0);
-> +	if (!reset)
-> +		igt_assert(igt_hotplug_detected(d->hotplug_mon, HOTPLUG_TIMEOUT));
-> +	igt_flush_uevents(d->hotplug_mon);
-> +	for (int e = 0; e < n_edids; e++) {
-> +		bool present = usb4_switch_port_has_edid(d->drm_fd, port_id, edids[e]);
-> +
-> +		if (!reset) {
-> +			if (connect)
-> +				igt_assert_f(present, "EDID %s not found after dock on port %d\n",
-> +					     edids[e], port_id);
-> +			else
-> +				igt_assert_f(!present, "EDID %s still present after undock on port %d\n",
-> +					     edids[e], port_id);
-> +		}
-> +	}
-> +
-> +	if (connect) {
-> +		d->current_port = port_id;
-> +		igt_assert_f(modeset_on_edid_connectors(d, edids, n_edids),
-> +			     "Modeset failed for port %d after EDID check\n",
-> +			     port_id);
-> +	}
-> +}
-> +
-> +/**
-> + * For a single port @p, repeat dock/undock DOCK_UNDOCK_COUNT times.
-> + */
-> +static void test_dock_undock(data_t *d,
-> +			     struct usb4_switch_port_info *p)
-> +{
-> +	/* initial undock */
-> +	port_action(d, 0, p->edids, p->n_edids, false, true);
-> +
-> +	for (int rep = 0; rep < DOCK_UNDOCK_COUNT; rep++) {
-> +		igt_info("Iteration %d/%d on %s\n", rep+1, DOCK_UNDOCK_COUNT, p->name);
-> +		port_action(d, p->port_id, p->edids, p->n_edids, true, false);
-> +		port_action(d, 0, p->edids, p->n_edids, false, false);
-> +	}
-> +}
-> +
-> +/**
-> + * Switch from src to dst port, verifying connectors at each step.
-> + */
-> +static void test_switch(data_t *d,
-> +			struct usb4_switch_port_info *src,
-> +			struct usb4_switch_port_info *dst)
-> +{
-> +	/* dock src, then switch to dst */
-> +	port_action(d, src->port_id, src->edids, src->n_edids, true, false);
-> +	port_action(d, dst->port_id, dst->edids, dst->n_edids, true, false);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data = {};
-> +
-> +	igt_fixture {
-> +		enum pipe p;
-> +
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-> +		igt_assert(data.drm_fd >= 0);
-> +		kmstest_set_vt_graphics_mode();
-> +		igt_display_require(&data.display, data.drm_fd);
-> +		data.n_pipes = 0;
-> +		for_each_pipe(&data.display, p)
-> +			data.n_pipes++;
-> +
-> +		if (!usb4_switch_load_config())
-> +			igt_skip("No USB4Switch section in ~/.igtrc\n");
-> +
-> +		data.ports = usb4_switch_list_ports(&data.n_ports);
-> +		igt_require(data.n_ports > 0);
-> +
-> +		igt_assert_eq(usb4_switch_open(&data.sw), 0);
-> +	}
-> +
-> +	igt_subtest_with_dynamic("tbt-dock-undock") {
-> +		bool saw = false;
-> +
-> +		for (size_t i = 0; i < data.n_ports; i++) {
-> +			if (strcmp(data.ports[i].type, "TBT") != 0)
-> +				continue;
-> +			saw = true;
-> +			igt_dynamic_f("%s", data.ports[i].name)
-> +				test_dock_undock(&data, &data.ports[i]);
-> +		}
-> +		if (!saw)
-> +			igt_skip("No TBT ports configured\n");
-> +	}
-> +
-> +	igt_subtest("tbt-switch-alt") {
-> +		int tbt = find_port_by_type(&data, "TBT");
-> +		int alt = find_port_by_type(&data, "DP-ALT");
-> +
-> +		igt_require_f(tbt != -1 && alt != -1,
-> +			      "Need one TBT and one DP-ALT port configured\n");
-> +		test_switch(&data, &data.ports[tbt], &data.ports[alt]);
-> +	}
-> +
-> +	igt_subtest("alt-switch-tbt") {
-> +		int tbt = find_port_by_type(&data, "TBT");
-> +		int alt = find_port_by_type(&data, "DP-ALT");
-> +
-> +		igt_require_f(tbt != -1 && alt != -1,
-> +			      "Need one TBT and one DP-ALT port configured\n");
-> +		test_switch(&data, &data.ports[alt], &data.ports[tbt]);
-> +	}
-> +
-> +	igt_fixture {
-> +		usb4_switch_close(&data.sw);
-> +		usb4_switch_free_port_info(data.ports, data.n_ports);
-> +		usb4_switch_unload_config();
-> +
-> +		igt_display_fini(&data.display);
-> +		close(data.drm_fd);
-> +		udev_monitor_unref(data.hotplug_mon);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 55bcf57ec..19a7a5ad6 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -270,6 +270,7 @@ intel_kms_progs = [
->   	'kms_psr2_su',
->   	'kms_psr_stress_test',
->   	'kms_pwrite_crc',
-> +        'kms_usb4_switch',
->   ]
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index ddac904ce..1d4684c51 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -598,6 +598,7 @@ static void test_invalid(data_t *data)
+>   	struct igt_fb fb[2];
+>   	drmModeModeInfo *mode;
+>   	int flags;
+> +	uint64_t mod1, mod2;
 >   
->   intel_xe_progs = [
+>   	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>   
+> @@ -607,10 +608,16 @@ static void test_invalid(data_t *data)
+>   
+>   	flags = DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT;
+>   
+> +	mod1 = data->plane->async_modifiers[0];
+> +	mod2 = data->plane->async_modifiers[(data->plane->async_format_mod_count) - 1];
+
+Please add a comment mentioning why we're using the first and last 
+modifier here.
+
+With this added,
+
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+
+> +
+> +	igt_info("using modifier1 %s and modifier2 %s\n",
+> +		 igt_fb_modifier_name(mod1), igt_fb_modifier_name(mod2));
+> +
+>   	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> -		      I915_FORMAT_MOD_X_TILED, &fb[0]);
+> +		      mod1, &fb[0]);
+>   	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+> -		      I915_FORMAT_MOD_Y_TILED, &fb[1]);
+> +		      mod2, &fb[1]);
+>   
+>   	igt_plane_set_fb(data->plane, &fb[0]);
+>   	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+> @@ -1113,11 +1120,6 @@ igt_main
+>   		test_init_ops(&data);
+>   		/* TODO: support more vendors */
+>   		igt_require(is_intel_device(data.drm_fd));
+> -		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
+> -						       I915_FORMAT_MOD_X_TILED));
+> -		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
+> -						       I915_FORMAT_MOD_Y_TILED));
+> -
+>   		run_test(&data, test_invalid);
+>   	}
+>   
