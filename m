@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6865BC83F17
-	for <igt-dev@archiver.kernel.org>; Fri, 18 Jul 2025 05:49:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40092C83F1A
+	for <igt-dev@archiver.kernel.org>; Fri, 18 Jul 2025 05:49:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 02B6110E00C;
+	by gabe.freedesktop.org (Postfix) with ESMTP id D730D10E112;
 	Fri, 18 Jul 2025 05:49:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JZQsSCla";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DMue2L5S";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21DCD10E00C
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jul 2025 05:49:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 779F010E00C
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jul 2025 05:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752817752; x=1784353752;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1yTpt7IQmqR/3O9znszjiK0fI2XJ2+QgwRBnPuQV2KI=;
- b=JZQsSCla/0DR7oOn1+Ylqsl70g+NpkxjFiK41++6jeBo5vZ07tH3NdCO
- FzLhHiyKg51eLOGIuECt7OH7NoJ0vZUUNsZqojky+1pqCAzwzEbFTSoZ+
- zeiNFssBoFOWYj4xBqX1Q6fRdqBgSI2sdXb6OD84TBOuz/vAeHElnbRXg
- qiEO9NLyBqRBr9LCyoTUvTSup5q9BulSlG7Z2r91aKCeqjtW45/BuKPbj
- HHrHTPZzIE5aJMeHq8nzltDr6uPEOI06I97C5+w+2hTSYVuAYw8ptlOkN
- D3wsND6dKdAHFAud40q0H7j4PEnXWdQ7XwKNGm41f8HM/TjXrRoAU5fTk A==;
-X-CSE-ConnectionGUID: gOQhcgbxTWu2YJgSYw+liA==
-X-CSE-MsgGUID: tuvAvp8qSN2+8QWj4ttfdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="55230248"
-X-IronPort-AV: E=Sophos;i="6.16,320,1744095600"; d="scan'208";a="55230248"
+ t=1752817753; x=1784353753;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=CzIEuRYgshWQWE/Vmr4fa0UtA2ipY0Ta9lDfB9cgBqo=;
+ b=DMue2L5SOus8sMpvfnojcBVPqXK9jUEtHmbU+lCo3g3rn32O2Db9tzL2
+ wOOJB3CfekmkCUYABYuQLE5E7q5OCViCzNMUFfMzbvs6u7eCmrKC/BuQL
+ S9b4+gz0C4LIIwIUiUFwm1CVhSFzOuMXyhRB+roSQuHN/3qU2/yL3mjRU
+ jvTeYO+ZuV6QKXRofzgqKceLovM2zyU8r/X4vZp7wPsTDY5kU003G7IR6
+ fyIRLB7PoN0cZ2Jam1ysJEY7XgFa0ptzgkNvpCbNpqkneBjfug9AY2/Y7
+ Z8zuJ+fRLsa5eiaQgWbFxjYqFzBThYFcPBiTxhfIGR0Y3kdkGi2qNMv79 g==;
+X-CSE-ConnectionGUID: 6hwD6tbuT2eSVuDzCKqkEQ==
+X-CSE-MsgGUID: kPEwStH4Q2ygocFC3QtHQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="55230250"
+X-IronPort-AV: E=Sophos;i="6.16,320,1744095600"; d="scan'208";a="55230250"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2025 22:49:11 -0700
-X-CSE-ConnectionGUID: OEXA9ny8T3yeXTp+KSHteg==
-X-CSE-MsgGUID: Nlds4Vg8Q1qHL32ylBNwlA==
+ 17 Jul 2025 22:49:13 -0700
+X-CSE-ConnectionGUID: oVsTbfQPQAWp+FBWuQGbfA==
+X-CSE-MsgGUID: KRoSNcQeS7u1Uz1UiEiSMA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,320,1744095600"; d="scan'208";a="158058873"
+X-IronPort-AV: E=Sophos;i="6.16,320,1744095600"; d="scan'208";a="158058883"
 Received: from dut2943pvc.iind.intel.com ([10.190.215.47])
- by orviesa007.jf.intel.com with ESMTP; 17 Jul 2025 22:49:09 -0700
+ by orviesa007.jf.intel.com with ESMTP; 17 Jul 2025 22:49:11 -0700
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
  nishit.sharma@intel.com
 Cc: matthew.d.roper@intel.com
-Subject: [PATCH i-g-t 0/2] Multi-Tile Handling in IGT
-Date: Fri, 18 Jul 2025 05:49:06 +0000
-Message-ID: <20250718054908.1502234-1-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t 1/2] lib/xe: Track valid Tile IDs
+Date: Fri, 18 Jul 2025 05:49:07 +0000
+Message-ID: <20250718054908.1502234-2-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250718054908.1502234-1-nishit.sharma@intel.com>
+References: <20250718054908.1502234-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,23 +69,76 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-In multi-tile scenario it was assumed tile_id == gt_id which is
-not always the case. The patch version 1 tracks the valid tile_id
-and patch version 2 queries valid tile_id in order to check tile_ID
-returned from UAPI is in order or out of order.
+Iterating drm_xe_gt structure to get valid tile ID instead
+of assuming tile_id == gt_id and finding sysfs path for
+GTS in multi-tile platforms. Initially it was assumed
+tile_id == gt_id in multi-tile platform and if gt_id = X
+passed, it was considered tileX.
 
-Nishit Sharma (2):
-  lib/xe: Track valid Tile IDs
-  tests/intel/xe_multi_tile: Multi-tile support in IGT
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+---
+ lib/igt_sysfs.c   |  4 +++-
+ lib/xe/xe_query.c | 12 ++++++++++++
+ lib/xe/xe_query.h |  1 +
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
- lib/igt_sysfs.c             |  11 ++-
- lib/xe/xe_query.c           |  12 +++
- lib/xe/xe_query.h           |   8 ++
- tests/intel/xe_multi_tile.c | 141 ++++++++++++++++++++++++++++++++++++
- tests/meson.build           |   1 +
- 5 files changed, 171 insertions(+), 2 deletions(-)
- create mode 100644 tests/intel/xe_multi_tile.c
-
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index aec157b5b..af80e91ee 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -226,6 +226,8 @@ int igt_sysfs_open(int device)
+ char *xe_sysfs_gt_path(int xe_device, int gt, char *path, int pathlen)
+ {
+ 	struct stat st;
++	struct xe_device *xe_dev = xe_device_get(xe_device);
++	igt_assert(xe_dev);
+ 
+ 	if (xe_device < 0)
+ 		return NULL;
+@@ -235,7 +237,7 @@ char *xe_sysfs_gt_path(int xe_device, int gt, char *path, int pathlen)
+ 
+ 	if (IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)))
+ 		snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d",
+-			 major(st.st_rdev), minor(st.st_rdev), gt, gt);
++			 major(st.st_rdev), minor(st.st_rdev), drm_xe_get_tile(xe_dev, gt), gt);
+ 	else
+ 		snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile0/gt%d",
+ 			 major(st.st_rdev), minor(st.st_rdev), gt);
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 3d628cb3f..70ce625d0 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -517,6 +517,18 @@ const struct drm_xe_gt *drm_xe_get_gt(struct xe_device *xe_dev, int gt_id)
+ 	return NULL;
+ }
+ 
++/*
++ * Given a uapi GT ID, lookup the corresponding drm_xe_gt structure in the
++ * GT list and return valid tile_id.
++ */
++uint32_t drm_xe_get_tile(struct xe_device *xe_dev, int gt_id)
++{
++	for (int i = 0; i < xe_dev->gt_list->num_gt; i++)
++		if (xe_dev->gt_list->gt_list[i].gt_id == gt_id)
++			return xe_dev->gt_list->gt_list[i].tile_id;
++
++	return -1;
++}
+ 
+ /**
+  * vram_memory:
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index ca0b3235e..6ff8576b9 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -98,6 +98,7 @@ unsigned int xe_dev_max_gt(int fd);
+ uint64_t all_memory_regions(int fd);
+ uint64_t system_memory(int fd);
+ const struct drm_xe_gt *drm_xe_get_gt(struct xe_device *xe_dev, int gt_id);
++uint32_t drm_xe_get_tile(struct xe_device *xe_dev, int gt_id);
+ uint64_t vram_memory(int fd, int gt);
+ uint64_t vram_if_possible(int fd, int gt);
+ struct drm_xe_engine *xe_engines(int fd);
 -- 
 2.43.0
 
