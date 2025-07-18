@@ -4,61 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D5E7C83F1A
-	for <igt-dev@archiver.kernel.org>; Fri, 18 Jul 2025 15:48:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34E8BC83F17
+	for <igt-dev@archiver.kernel.org>; Fri, 18 Jul 2025 15:55:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 19D7410E9EC;
-	Fri, 18 Jul 2025 15:48:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 969FD10E9EC;
+	Fri, 18 Jul 2025 15:55:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iHP8/xB4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OLF+6QWU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7A0D10E9EC
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Jul 2025 15:48:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1100D10E9EC
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jul 2025 15:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1752853715; x=1784389715;
+ t=1752854106; x=1784390106;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=0V4qgXNdDc4v0aoEHiLTis5Jo6JjfP/ATkfNEGpmZgU=;
- b=iHP8/xB41RjRij7JD9ZxOlKVMccA6BHQkUnsCiave6LlTczJCj0OWcmP
- sOIHLSpTavaGxPKpzzTDe/7rNV5PPJXBEjmPOZCEc9oBOGBo+YhWhIL5C
- Tdr73ionVtROX0OeE7GBpsF67tNlLXtAU4ugi4Q+qS+n5hM4+CpxbTmEc
- wT+0XRQeV5iHvAHZ+dzDoF9lpTzfalIfFkXU/FeFSEhHRm2ahXZasRSfF
- MO/D7+4VPhYAXN1ZgTlYt23IUmB9U2udAN+f7HvI/WY3ExIXnEtgKA/aY
- k7Uv4QJVjDp7p42VIBbd3jn9xHDq9eJECSZ7X3ekSJ4VGiY6Z99tXayct Q==;
-X-CSE-ConnectionGUID: KvCT7+LBTHyelBY2lPE3zA==
-X-CSE-MsgGUID: A+VTTQowS162VxcoKbcVmg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11496"; a="55115200"
-X-IronPort-AV: E=Sophos;i="6.16,322,1744095600"; d="scan'208";a="55115200"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2025 08:48:34 -0700
-X-CSE-ConnectionGUID: s5CStRqMTAmt9ER0zdklsg==
-X-CSE-MsgGUID: p/tf3vAbSzap/ELqzrqvhQ==
+ bh=t9bUcheCAmAKne/b7bHV4LdeeNxgw1wtXbu/jECA00I=;
+ b=OLF+6QWUOWmp5DE1aC67YoBwS2XkFtx10x3lyhdxps2faNsQnp2aY3KW
+ 5m9t5nW1CXwFcuAG6iA5XrY8XNIO1k3Lf1zwpPRpkzTNwyR9ufiQug/hr
+ GVRF1LfqFe1PKNgHRnZDafGwq1yP2YzzeMHAySBN40UjmvA+9E3KWKxhZ
+ ljPapfE13QcF4TF1xT7D8mnQRqg4W0zOyx27Xcb7xXzLlA7qWaiMOtCpx
+ kjLFxaW4d/JRu+/RFBRstc+Kfebp6JO8KZfbaCeFo4S4IbMWQe2JQjflU
+ ZOOBDjmlCsliIQBC+YCYHZWkfIkA3GyknVO96C43NcCofihWuyexgo2Qy A==;
+X-CSE-ConnectionGUID: QOwR467XQ6qYytLj6+qfzw==
+X-CSE-MsgGUID: 0rx0aWqHQ+K3dlMolKhsRg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11496"; a="77688914"
+X-IronPort-AV: E=Sophos;i="6.16,322,1744095600"; d="scan'208";a="77688914"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jul 2025 08:55:05 -0700
+X-CSE-ConnectionGUID: sQXX18OqSlKRW/1Zb1y7vQ==
+X-CSE-MsgGUID: wblyWg1/QJiB5SoHXS0jdA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; d="scan'208";a="195221104"
+X-IronPort-AV: E=Sophos;i="6.16,322,1744095600"; d="scan'208";a="158653538"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2025 08:48:33 -0700
-Date: Fri, 18 Jul 2025 17:48:30 +0200
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 08:55:03 -0700
+Date: Fri, 18 Jul 2025 17:55:01 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
- matthew.d.roper@intel.com
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_multi_tile: Multi-tile support
- in IGT
-Message-ID: <20250718154830.dketxhjjr5qiguae@kamilkon-DESK.igk.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, igt-dev@lists.freedesktop.org,
+ katarzyna.piecielska@intel.com, zbigniew.kempczynski@intel.com,
+ michal.wajdeczko@intel.com, karthik.b.s@intel.com, ewelina.musial@intel.com
+Subject: Re: [PATCH v6 i-g-t 3/6] tests: Add kms_debugfs
+Message-ID: <20250718155501.oo274ds4qtn6umrj@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
- matthew.brost@intel.com, matthew.d.roper@intel.com
-References: <20250718054908.1502234-1-nishit.sharma@intel.com>
- <20250718054908.1502234-3-nishit.sharma@intel.com>
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ igt-dev@lists.freedesktop.org, katarzyna.piecielska@intel.com,
+ zbigniew.kempczynski@intel.com, michal.wajdeczko@intel.com,
+ karthik.b.s@intel.com, ewelina.musial@intel.com
+References: <20250716093656.169619-1-peter.senna@linux.intel.com>
+ <20250716093656.169619-4-peter.senna@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250718054908.1502234-3-nishit.sharma@intel.com>
+In-Reply-To: <20250716093656.169619-4-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,254 +77,216 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nishit,
-On 2025-07-18 at 05:49:08 +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-
-subjet could be improved, from:
-
-[PATCH i-g-t 2/2] tests/intel/xe_multi_tile: Multi-tile support in IGT
-
-imho better:
-
-[PATCH i-g-t 2/2] tests/intel: Add xe_multi_tile test
-
-Feel free to propose other summary.
-
+Hi Peter,
+On 2025-07-16 at 11:36:51 +0200, Peter Senna Tschudin wrote:
+> Introduce kms_debugfs that is expected to work with any GPU, not limited
+> to i915 and Xe. The test powers off all available displays before
+> reading debugfs files, and then powers on all displays before reading
+> the files again.
 > 
-> Test checks wether platform supports multi-tile or not. Test peforms
-> sanity checks related to sysfs paths for GT IDs and Tile IDs. Test also
-> checks whether tiles returned by UAPI are in order or out of order.
-
-This is not a full review, only few nits, see below.
-
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> Cc: kamil.konieczny@linux.intel.com
+> Cc: katarzyna.piecielska@intel.com
+> Cc: zbigniew.kempczynski@intel.com
+> Cc: michal.wajdeczko@intel.com
+> Cc: karthik.b.s@intel.com
+> Cc: ewelina.musial@intel.com
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > ---
->  lib/igt_sysfs.c             |   7 +-
->  lib/xe/xe_query.h           |   7 ++
->  tests/intel/xe_multi_tile.c | 141 ++++++++++++++++++++++++++++++++++++
->  tests/meson.build           |   1 +
->  4 files changed, 155 insertions(+), 1 deletion(-)
->  create mode 100644 tests/intel/xe_multi_tile.c
+> v6:
+>  - use the new igt_fit_modes_in_bw()
 > 
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index af80e91ee..270120dd7 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -308,8 +308,13 @@ bool xe_sysfs_gt_has_node(int xe_device, int gt, const char *node)
->  char *
->  xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen)
->  {
-> +	int tile;
->  	struct stat st;
-> -	int tile = IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)) ? gt : 0;
-> +	struct xe_device *xe_dev = xe_device_get(xe_device);
-> +
-> +	igt_assert(xe_dev);
-> +
-> +	tile = IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)) ? drm_xe_get_tile(xe_dev, gt) : 0;
->  
->  	if (xe_device < 0)
->  		return NULL;
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index 6ff8576b9..49b591334 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -39,6 +39,9 @@ struct xe_device {
->  	/** @gt_mask: bitmask of GT IDs */
->  	uint64_t gt_mask;
->  
-> +	/** @tile_mask: bitmask of Tile IDs */
-> +	uint64_t tile_mask;
-> +
->  	/** @memory_regions: bitmask of all memory regions */
->  	uint64_t memory_regions;
->  
-> @@ -80,6 +83,10 @@ struct xe_device {
->  	for (uint64_t igt_unique(__mask) = xe_device_get(__fd)->gt_mask; \
->  	     __gt = ffsll(igt_unique(__mask)) - 1, igt_unique(__mask) != 0; \
->  	     igt_unique(__mask) &= ~(1ull << __gt))
-> +#define xe_for_each_tile(__fd, __tile) \
-> +	for (uint64_t igt_unique(__mask) = xe_device_get(__fd)->tile_mask; \
-> +	     __tile = ffsll(igt_unique(__mask)) - 1, igt_unique(__mask) != 0; \
-> +	     igt_unique(__mask) &= ~(1ull << __tile))
->  #define xe_for_each_mem_region(__fd, __memreg, __r) \
->  	for (uint64_t igt_unique(__i) = 0; igt_unique(__i) < igt_fls(__memreg); igt_unique(__i)++) \
->  		for_if(__r = (__memreg & (1ull << igt_unique(__i))))
-> diff --git a/tests/intel/xe_multi_tile.c b/tests/intel/xe_multi_tile.c
+> v5:
+>  - use igt_dir_process_files_simple()
+> 
+> v4:
+>  - change test name to kms_debugfs
+>  - use the wrapper function igt_fit_modes_in_bw()
+>  - use igt_display_require_output() to ensure there is at least one display
+> 
+> v3:
+>  - renamed the test
+>  - Removed reference to sysfs from comments  (thanks Kamil)
+>  - Updated description to match the display part (thanks Kamil)
+>  - Moved from "display" to "heads". Our CI uses "headless" to refer
+>    to a DUT without display and it is shorter
+>  - renamed subtests for shorter names (thanks Kamil)
+>  - fixed comments style (thanks Kamil)
+>  - updated CC list
+>  - changed the order to test first with all heads off then with all heads on
+>    to prevent the need from powering on the heads at the end of the test
+>    (thanks Kamil)
+>  - removed snprintf from test names (thanks Kamil)
+>  - removed subtest group (thanks Kamil)
+>  - deleted kms_tests() and moved the code to igt_main (thanks Kamil)
+> 
+> v2:
+>  - changed style of comparison to NULL
+>  - moved to a separate patch
+> 
+>  tests/kms_debugfs.c | 133 ++++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build   |   1 +
+>  2 files changed, 134 insertions(+)
+>  create mode 100644 tests/kms_debugfs.c
+> 
+> diff --git a/tests/kms_debugfs.c b/tests/kms_debugfs.c
 > new file mode 100644
-> index 000000000..938a0b85a
+> index 000000000..f8a3360e6
 > --- /dev/null
-> +++ b/tests/intel/xe_multi_tile.c
-> @@ -0,0 +1,141 @@
+> +++ b/tests/kms_debugfs.c
+> @@ -0,0 +1,133 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
-> + * Copyright © 2023 Intel Corporation
-
-2025 unless it is published elsewhere.
-
-> + *
-> + * Authors:
-> + *    Nishit Sharma <nishit.sharma@intel.com>
-> + *
+> + * Copyright © 2025 Intel Corporation
 > + */
-> +
-> +#include <dirent.h>
-> +#include <fcntl.h>
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +#include <unistd.h>
 > +
 > +#include "igt.h"
-> +#include "igt_sysfs.h"
-> +
-> +#include "xe_drm.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
+> +#include "igt_debugfs.h"
+> +#include "igt_dir.h"
 > +
 > +/**
-> + * TEST: To verify if multi-tile support available in platform
+> + * TEST: kms debugfs test
+> + * Description: Read entries from debugfs with all displays on and with
+> + *		all displays off.
+> + *
 > + * Category: Core
 > + * Mega feature: General Core features
-> + * Functionality: Tile/GT operations
+> + * Sub-category: uapi
+> + * Functionality: debugfs
+> + * Feature: core
+> + * Test category: uapi
+> + *
+> + * SUBTEST: display-off-read-all
+> + * Description: Read all debugfs entries with display off.
+> + *
+> + * SUBTEST: display-on-read-all
+> + * Description: Read all debugfs entries with display on.
 > + */
 > +
 > +/**
-> + * SUBTEST: multi-tile-info
-> + * Description: Test gathers Tile_ID/s,Tile_ID/s sys path,GT_ID/s path
-> + * Test category: functionality test
+> + * igt_display_all_on: Try to turn on all displays
+> + * @display: pointer to the igt_display structure
+> + *
+> + * Returns: void
 > + */
-> +
-> +uint8_t tile_mis_count = -1;
-> +
-> +/*
-> + * To check whether tiles are in order or not or if any tile order is
-> + * skipped/missing as returned through UAPI
-> + * Function returns 0 if all tiles in order or 1 otherwise
-> + */
-> +static uint8_t
-> +xe_check_tile_order(struct xe_device *xe_dev)
+> +static void igt_display_all_on(igt_display_t *display)
 > +{
-> +	int prev_tile = -1, tile_id;
+> +	struct igt_fb fb[IGT_MAX_PIPES];
+> +	enum pipe pipe;
 > +
-> +	xe_for_each_tile(xe_dev->fd, tile_id) {
-> +		printf("Tile ID :%d\n", tile_id);
-> +		if (prev_tile != tile_id) {
-> +			if (++tile_mis_count != tile_id) {
-> +				igt_warn("Out of order TileID :%d available Tile_ID :%d\n",
-> +					  tile_mis_count, tile_id);
-> +				return tile_id;
-> +			}
+> +	/* try to light all pipes */
+> +	for_each_pipe(display, pipe) {
+> +		igt_output_t *output;
+> +
+> +		for_each_valid_output_on_pipe(display, pipe, output) {
+> +			igt_plane_t *primary;
+> +			drmModeModeInfo *mode;
+> +
+> +			if (output->pending_pipe != PIPE_NONE)
+> +				continue;
+> +
+> +			igt_output_set_pipe(output, pipe);
+> +			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +			mode = igt_output_get_mode(output);
+> +			igt_create_pattern_fb(display->drm_fd,
+> +					      mode->hdisplay, mode->vdisplay,
+> +					      DRM_FORMAT_XRGB8888,
+> +					      DRM_FORMAT_MOD_LINEAR, &fb[pipe]);
+> +
+> +			/* Set a valid fb as some debugfs like to
+> +			 * inspect it on a active pipe
+> +			 */
+> +			igt_plane_set_fb(primary, &fb[pipe]);
+> +			break;
 > +		}
-> +		prev_tile = tile_id;
 > +	}
-> +	return prev_tile;
+> +
+> +	/* Skip if bandwidth is insufficient for all simultaneous displays */
+> +	igt_require(igt_fit_modes_in_bw(display));
 > +}
 > +
-> +static void
-> +xe_create_tile_mask(struct xe_device *xe_dev)
-> +{
-> +	/* GT IDs may be non-consecutive; keep a mask of valid Tile IDs */
-> +	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
-> +		xe_dev->tile_mask |= (1ull << xe_dev->gt_list->gt_list[gt].tile_id);
-> +}
-> +
-> +/*
-> + * To check whether multi-tile supported in platform
-> + * Function takes device descriptior and xe_device
-> + * structure pointer
+> +/**
+> + * igt_display_all_off: Try to turn off all displays
+> + * @display: pointer to the igt_display structure
+> + *
+> + * Returns: void
 > + */
-> +static int
-> +is_multitile_plat(struct xe_device *xe_dev)
+> +static void igt_display_all_off(igt_display_t *display)
 > +{
-> +	int gt_id;
+> +	enum pipe pipe;
+> +	igt_output_t *output;
+> +	igt_plane_t *plane;
 > +
-> +	xe_for_each_gt(xe_dev->fd, gt_id)
-> +		if (xe_dev->gt_list->gt_list[gt_id].tile_id > 0)
-> +			return true;
-> +	return false;
+> +	for_each_connected_output(display, output)
+> +		igt_output_set_pipe(output, PIPE_NONE);
+> +
+> +	for_each_pipe(display, pipe)
+> +		for_each_plane_on_pipe(display, pipe, plane)
+> +			igt_plane_set_fb(plane, NULL);
+> +
+> +	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
 > +}
+> +
+> +IGT_TEST_DESCRIPTION("Read entries from debugfs with display on/off.");
 > +
 > +igt_main
 > +{
-> +	int fd, tile_id, sysfs_path;
-> +	struct xe_device *xe_dev;
+> +	int debugfs = -1;
+> +	igt_display_t *display;
+> +	int fd = -1;
 > +
 > +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		xe_dev = xe_device_get(fd);
-> +		igt_assert(xe_dev);
-
-No asserts in fixture, turn it into igt_require.
-Or add assert in each test, before using it.
-
+> +		fd = drm_open_driver_master(DRIVER_ANY);
+> +		debugfs = igt_debugfs_dir(fd);
+> +		igt_require(debugfs >= 0);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		display = calloc(1, sizeof(*display));
+> +		igt_display_require(display, fd);
+> +
+> +		/* Make sure we have at least one output connected */
+> +		igt_display_require_output(display);
 > +	}
 > +
-> +	igt_subtest("multi-tile-info") {
+> +	igt_subtest("display-off-read-all") {
+> +		igt_display_all_off(display);
 > +
-> +		/** keep mask of valid Tile IDs **/
-> +		xe_create_tile_mask(xe_dev);
+> +		igt_dir_process_files_simple(debugfs);
+> +	}
 > +
-> +		/** check multi-tile supported in platform **/
-> +		igt_skip_on_f(!is_multitile_plat(xe_dev),
-> +				"Multi-Tile not supported on this platform.\n");
+> +	igt_subtest("display-on-read-all") {
+> +		/* try to light all pipes */
+> +		igt_display_all_on(display);
 > +
-> +		/* Sanity check for valid tile_id available
-> +		 * Arbitrary gt_id passed as second argument
-> +		 * returned negative tile_id
-> +		 *
-> +		 */
-> +		tile_id = drm_xe_get_tile(xe_dev, 1);
-> +		if (tile_id < 0) {
-> +			tile_id = 0;
-> +			igt_require(!tile_id);
-> +		}
-> +
-> +		/** check tile order whether sequential or not**/
-> +		tile_id = xe_check_tile_order(xe_dev);
-> +		if (tile_id != tile_mis_count)
-> +			igt_warn("Expected tile_id :%d, Available :%d\n", tile_mis_count, tile_id);
-> +
-> +		/** Sanity to check valid GT path **/
-> +		sysfs_path = xe_sysfs_gt_open(fd, 1);
-> +		if (sysfs_path < 0)
-> +			sysfs_path = 0;
-> +		igt_skip_on(!sysfs_path);
-> +
-> +		/** Sanity to check valid Tile path **/
-> +		sysfs_path = xe_sysfs_tile_open(fd, 1);
-> +		if (sysfs_path < 0)
-> +			sysfs_path = 0;
-> +		igt_skip_on(!sysfs_path);
-> +
-> +		igt_info("Tile_id after iterating gt :%d\n", drm_xe_get_tile(xe_dev, 0));
+> +		igt_dir_process_files_simple(debugfs);
 > +	}
 > +
 > +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> +
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 9b87a0d24..b45695f09 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -331,6 +331,7 @@ intel_xe_progs = [
->  	'xe_sysfs_scheduler',
->          'xe_sysfs_timeslice_duration',
->          'xe_tlb',
-> +        'xe_multi_tile',
+> +		igt_display_fini(display);
 
-Keep it in alphabetical order,  so add it after
-'xe_module_load',
+Missing free() here:
+
+free(display);
 
 Regards,
 Kamil
 
->  ]
->  
->  intel_xe_eudebug_progs = [
+> +		close(debugfs);
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 16c699bba..568e7db00 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -29,6 +29,7 @@ test_progs = [
+>  	'kms_cursor_crc',
+>  	'kms_cursor_edge_walk',
+>  	'kms_cursor_legacy',
+> +	'kms_debugfs',
+>  	'kms_dither',
+>  	'kms_display_modes',
+>  	'kms_dp_aux_dev',
 > -- 
 > 2.43.0
 > 
