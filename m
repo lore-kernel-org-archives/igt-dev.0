@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EA01C83F34
-	for <igt-dev@archiver.kernel.org>; Sat, 19 Jul 2025 17:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B169C83F34
+	for <igt-dev@archiver.kernel.org>; Sat, 19 Jul 2025 17:57:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B302810E2A3;
-	Sat, 19 Jul 2025 17:43:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 231BC10E299;
+	Sat, 19 Jul 2025 17:57:01 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 465E010E2A3;
- Sat, 19 Jul 2025 17:43:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 651AD10E299;
+ Sat, 19 Jul 2025 17:56:59 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5680470559847202057=="
+ boundary="===============8161205172791151593=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fpm=3A_Intr?=
- =?utf-8?q?oduce_i2c_subtests_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/kms=5Fplane=5Falpha?=
+ =?utf-8?q?=5Fblend=3A_Reduce_test_complexity_for_simulation?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Raag Jadav" <raag.jadav@intel.com>
+To: "Pranay Samala" <pranay.samala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Sat, 19 Jul 2025 17:43:14 -0000
-Message-ID: <175294699428.175185.13892093276989169041@1538d3639d33>
+Date: Sat, 19 Jul 2025 17:56:59 -0000
+Message-ID: <175294781940.175185.13456848364687644259@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250719163101.3459754-1-raag.jadav@intel.com>
-In-Reply-To: <20250719163101.3459754-1-raag.jadav@intel.com>
+References: <20250719170838.1340070-1-pranay.samala@intel.com>
+In-Reply-To: <20250719170838.1340070-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,15 +41,15 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5680470559847202057==
+--===============8161205172791151593==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_pm: Introduce i2c subtests (rev2)
-URL   : https://patchwork.freedesktop.org/series/146610/
+Series: tests/kms_plane_alpha_blend: Reduce test complexity for simulation
+URL   : https://patchwork.freedesktop.org/series/151856/
 State : failure
 
 == Summary ==
@@ -102,9 +102,9 @@ Build changes
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13499/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13500/index.html
 
---===============5680470559847202057==
+--===============8161205172791151593==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -124,11 +124,11 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pm: Introduce i2c subtests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146610/">https://patchwork.freedesktop.org/series/146610/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_alpha_blend: Reduce test complexity for simulation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151856/">https://patchwork.freedesktop.org/series/151856/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13499/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13499/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13500/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13500/index.html</a></td></tr>
 
 </table>
 
@@ -162,4 +162,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============5680470559847202057==--
+--===============8161205172791151593==--
