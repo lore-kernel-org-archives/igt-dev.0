@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4848CC83F1A
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Jul 2025 15:59:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 864ADC83F25
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Jul 2025 16:04:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F051010E477;
-	Mon, 21 Jul 2025 15:59:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3AF5A10E39A;
+	Mon, 21 Jul 2025 16:04:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T5HRExCq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P80epHHU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EEB110E2BC
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jul 2025 15:59:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C641F10E2BC;
+ Mon, 21 Jul 2025 16:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753113548; x=1784649548;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=GsOO5qcTHpDYeShToIc4xbc7DOD2sUKcbkk99AhGEZo=;
- b=T5HRExCqXnV2Ff43Jmk7HhOUeyGEqviwpQ2XGDWl8eszWhElshBadXvh
- FI9CQPufHNubYmTBIpPTtdmbpYqYDmdqFCiKfeMgvu2057Dbe/+obV3AV
- Qr/+NBGQwmBnmobT5l/yOMGYv8oipv2H/A8cxqRrt6ry8G6lgxZaW91Ju
- pM9wMqTXTRt+tvm7uKwaqPLd8R+RZxCMmpLJAfETrwgMsDMqfmYrrlpD5
- 9HArp3cE7fToiMQY7j6yBGGdkqGxcJdUH+VK6toeRzvcCgbw6CGzOuIEw
- PaHBwSjSBQDU1H7Dv7YXtMBjXo2vFUNuYDEdGsYUfnzcfyqruLHEKqvBr g==;
-X-CSE-ConnectionGUID: 6msmsz0jTvaGGM28anGsbg==
-X-CSE-MsgGUID: ICHlNKezR9KBiY3aAM30OA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="65597037"
-X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; d="scan'208";a="65597037"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jul 2025 08:59:05 -0700
-X-CSE-ConnectionGUID: vmlTB7hSQf6CFUDINuiImg==
-X-CSE-MsgGUID: 0zP8/X0dRLSGPz88BrpCWQ==
+ t=1753113844; x=1784649844;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=fr2zPYDfHZ5JDVgVztsB6Cs7m0C5JQvzz56voRBStGg=;
+ b=P80epHHUlbMv9mYjaL0p0cQe8ca7daXzVauHOByZpzl2a1BB5IkEANCj
+ niz30nyVUVilo3/nLKZ1GlHWJSkQ2Thu/NoWB5X/HrhBmJxx+WnmGTZES
+ 7hhZ4TNTJV9NrlR608/Qpg6qkdhVy6HAXjeQ14wbXBXU3A6EGRSAoyl+9
+ SU9/ev8dJH8gCxYRhN9P2KfwVtPvbgfBSWuH2mTEynR3wCTlU68Q+Rppr
+ emhBiP6OHD9wNgx45HC3O3cE0/1Fe06kQrcDSvYVCsucM6Lsrxq40qgRx
+ EFleXjsPBqtfNDX3w13U5vRGU6fYWi4pw2hAwV9ngYwCASOgRl0nInagu Q==;
+X-CSE-ConnectionGUID: 6MIwCp4hQPWaOlHz2SbLOA==
+X-CSE-MsgGUID: 9OXlWjkzSsGAf6+NR/Qurw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55291942"
+X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; d="scan'208";a="55291942"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jul 2025 09:04:03 -0700
+X-CSE-ConnectionGUID: 9uI2nonhQNyru8Jx/vQ7aA==
+X-CSE-MsgGUID: qPtqq2JqQXeR2p7Tm1aeNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; d="scan'208";a="162924237"
-Received: from oandoniu-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.55])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jul 2025 08:58:50 -0700
+X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; d="scan'208";a="158662237"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 09:04:03 -0700
+Date: Mon, 21 Jul 2025 18:03:47 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
- Melissa Wen <mwen@igalia.com>, Louis Chauvet <louis.chauvet@bootlin.com>,
- Vignesh Raman <vignesh.raman@collabora.com>
-Subject: [PATCH i-g-t v2 2/2] lib/igt_vc4: Fix musl libc compilation
-Date: Mon, 21 Jul 2025 17:58:24 +0200
-Message-ID: <20250721155824.112474-3-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250721155824.112474-1-kamil.konieczny@linux.intel.com>
-References: <20250721155824.112474-1-kamil.konieczny@linux.intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw6IGZhaWx1cg==?= =?utf-8?Q?e?= for
+ Fix follow_symlinks meson error and few other warns
+Message-ID: <20250721160347.hidpjxwuqhjqkcth@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20250718151521.105886-1-kamil.konieczny@linux.intel.com>
+ <175309939698.177010.5913074782030012596@1538d3639d33>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <175309939698.177010.5913074782030012596@1538d3639d33>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,219 +71,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fix gcc compilation on Void Linux with musl C libs, where
-PAGE_SIZE is already defined. As this is specific for GPU use
-VC4_GPU_PAGE_SIZE.
+Hi igt-dev,
+On 2025-07-21 at 12:03:16 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: Fix follow_symlinks meson error and few other warns
+> URL   : https://patchwork.freedesktop.org/series/151819/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8468_FULL -> XEIGTPW_13496_FULL
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_13496_FULL absolutely need to be
+>   verified manually.
 
-Cc: "Maíra Canal" <mcanal@igalia.com>
-Cc: Melissa Wen <mwen@igalia.com>
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: Vignesh Raman <vignesh.raman@collabora.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/igt_vc4.h               |  2 +-
- tests/vc4/vc4_create_bo.c   |  4 ++--
- tests/vc4/vc4_label_bo.c    |  6 +++---
- tests/vc4/vc4_lookup_fail.c |  2 +-
- tests/vc4/vc4_mmap.c        | 12 ++++++------
- tests/vc4/vc4_tiling.c      | 12 ++++++------
- tests/vc4/vc4_wait_bo.c     |  4 ++--
- 7 files changed, 21 insertions(+), 21 deletions(-)
+Unrelated, this is only change in meson.build files and
+should not affect any test.
 
-diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
-index fe7173c50..901bb25f8 100644
---- a/lib/igt_vc4.h
-+++ b/lib/igt_vc4.h
-@@ -31,7 +31,7 @@
- #include "igt_fb.h"
- #include "vc4_drm.h"
- 
--#define PAGE_SIZE 4096
-+#define VC4_GPU_PAGE_SIZE 4096
- 
- uint32_t igt_vc4_get_cleared_bo(int fd, size_t size, uint32_t clearval);
- int igt_vc4_create_bo(int fd, size_t size);
-diff --git a/tests/vc4/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
-index ba7db1985..c67f626f9 100644
---- a/tests/vc4/vc4_create_bo.c
-+++ b/tests/vc4/vc4_create_bo.c
-@@ -34,7 +34,7 @@ igt_main
- 	}
- 
- 	igt_subtest("create-bo-4096") {
--		int handle = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		int handle = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 		gem_close(fd, handle);
- 	}
- 
-@@ -53,7 +53,7 @@ igt_main
- 		 * to convince it to land as the only one of its size in the
- 		 * kernel BO cache
- 		 */
--		size_t size = 3 * PAGE_SIZE, i;
-+		size_t size = 3 * VC4_GPU_PAGE_SIZE, i;
- 
- 		/* Make a BO and free it on our main fd. */
- 		handle = igt_vc4_create_bo(fd, size);
-diff --git a/tests/vc4/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
-index 5d626a92d..dc0ddaa15 100644
---- a/tests/vc4/vc4_label_bo.c
-+++ b/tests/vc4/vc4_label_bo.c
-@@ -49,7 +49,7 @@ igt_main
- 	}
- 
- 	igt_subtest("set-label") {
--		int handle = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		int handle = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 		set_label(fd, handle, "a test label", 0);
- 		set_label(fd, handle, "a new test label", 0);
- 		gem_close(fd, handle);
-@@ -60,7 +60,7 @@ igt_main
- 	}
- 
- 	igt_subtest("set-bad-name") {
--		int handle = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		int handle = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 
- 		struct drm_vc4_label_bo label = {
- 			.handle = handle,
-@@ -74,7 +74,7 @@ igt_main
- 	}
- 
- 	igt_subtest("set-kernel-name") {
--		int handle = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		int handle = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 		set_label(fd, handle, "BCL", 0);
- 		set_label(fd, handle, "a test label", 0);
- 		set_label(fd, handle, "BCL", 0);
-diff --git a/tests/vc4/vc4_lookup_fail.c b/tests/vc4/vc4_lookup_fail.c
-index 9f179a3fd..76b52ecf3 100644
---- a/tests/vc4/vc4_lookup_fail.c
-+++ b/tests/vc4/vc4_lookup_fail.c
-@@ -33,7 +33,7 @@ igt_main
- 		fd = drm_open_driver(DRIVER_VC4);
- 
- 	igt_subtest("bad-color-write") {
--		uint32_t size = PAGE_SIZE;
-+		uint32_t size = VC4_GPU_PAGE_SIZE;
- 		/* A single row will be a page. */
- 		uint32_t width = 1024;
- 		uint32_t height = size / (width * 4);
-diff --git a/tests/vc4/vc4_mmap.c b/tests/vc4/vc4_mmap.c
-index fef25f334..7ca08811e 100644
---- a/tests/vc4/vc4_mmap.c
-+++ b/tests/vc4/vc4_mmap.c
-@@ -28,16 +28,16 @@ igt_main
- 	igt_describe("Test basics of newly mapped bo like default content, write and read "
- 		     "coherency, mapping existence after gem_close and unmapping.");
- 	igt_subtest("mmap-bo") {
--		int handle = igt_vc4_create_bo(fd, PAGE_SIZE);
--		uint32_t *map = igt_vc4_mmap_bo(fd, handle, PAGE_SIZE, PROT_READ | PROT_WRITE);
--		uint8_t expected[PAGE_SIZE];
-+		int handle = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
-+		uint32_t *map = igt_vc4_mmap_bo(fd, handle, VC4_GPU_PAGE_SIZE, PROT_READ | PROT_WRITE);
-+		uint8_t expected[VC4_GPU_PAGE_SIZE];
- 
- 		/* Testing contents of newly created objects. */
- 		memset(expected, 0, sizeof(expected));
- 		igt_assert_eq(memcmp(map, expected, sizeof(expected)), 0);
- 
--		memset(map, 0xd0, PAGE_SIZE);
--		memset(expected, 0xd0, PAGE_SIZE);
-+		memset(map, 0xd0, VC4_GPU_PAGE_SIZE);
-+		memset(expected, 0xd0, VC4_GPU_PAGE_SIZE);
- 		igt_assert_eq(memcmp(expected, map, sizeof(expected)), 0);
- 
- 		/* Testing that mapping stays after close */
-@@ -45,7 +45,7 @@ igt_main
- 		igt_assert_eq(memcmp(expected, map, sizeof(expected)), 0);
- 
- 		/* Testing unmapping */
--		munmap(map, PAGE_SIZE);
-+		munmap(map, VC4_GPU_PAGE_SIZE);
- 	}
- 
- 	igt_fixture
-diff --git a/tests/vc4/vc4_tiling.c b/tests/vc4/vc4_tiling.c
-index e9d3ebfb3..923e210e7 100644
---- a/tests/vc4/vc4_tiling.c
-+++ b/tests/vc4/vc4_tiling.c
-@@ -49,7 +49,7 @@ igt_main
- 	}
- 
- 	igt_subtest("get-bad-flags") {
--		int bo = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		int bo = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 		struct drm_vc4_get_tiling get = {
- 			.handle = bo,
- 			.flags = 0xd0d0d0d0,
-@@ -59,7 +59,7 @@ igt_main
- 	}
- 
- 	igt_subtest("set-bad-flags") {
--		int bo = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		int bo = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 		struct drm_vc4_set_tiling set = {
- 			.handle = bo,
- 			.flags = 0xd0d0d0d0,
-@@ -70,7 +70,7 @@ igt_main
- 	}
- 
- 	igt_subtest("get-bad-modifier") {
--		int bo = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		int bo = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 		struct drm_vc4_get_tiling get = {
- 			.handle = bo,
- 			.modifier = 0xd0d0d0d0,
-@@ -80,7 +80,7 @@ igt_main
- 	}
- 
- 	igt_subtest("set-bad-modifier") {
--		int bo = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		int bo = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 		struct drm_vc4_set_tiling set = {
- 			.handle = bo,
- 			.modifier = 0xd0d0d0d0,
-@@ -90,7 +90,7 @@ igt_main
- 	}
- 
- 	igt_subtest("set-get") {
--		int bo = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		int bo = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 
- 		/* Default is untiled. */
- 		igt_assert(igt_vc4_get_tiling(fd, bo) == DRM_FORMAT_MOD_LINEAR);
-@@ -111,7 +111,7 @@ igt_main
- 		/* Some size that probably nobody else is using, to
- 		 * encourage getting the same BO back from the cache.
- 		 */
--		int size = 91 * PAGE_SIZE;
-+		int size = 91 * VC4_GPU_PAGE_SIZE;
- 		int bo;
- 
- 		bo = igt_vc4_create_bo(fd, size);
-diff --git a/tests/vc4/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
-index d309acc95..3f4fb4dc6 100644
---- a/tests/vc4/vc4_wait_bo.c
-+++ b/tests/vc4/vc4_wait_bo.c
-@@ -28,7 +28,7 @@
- static void
- test_used_bo(int fd, uint64_t timeout)
- {
--	size_t size = PAGE_SIZE;
-+	size_t size = VC4_GPU_PAGE_SIZE;
- 	uint32_t clearval = 0xaabbccdd + timeout;
- 	int handle = igt_vc4_get_cleared_bo(fd, size, clearval);
- 	struct drm_vc4_wait_bo wait = {
-@@ -65,7 +65,7 @@ igt_main
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_VC4);
- 		igt_require(igt_vc4_is_v3d(fd));
--		bo_handle = igt_vc4_create_bo(fd, PAGE_SIZE);
-+		bo_handle = igt_vc4_create_bo(fd, VC4_GPU_PAGE_SIZE);
- 	}
- 
- 	igt_subtest("bad-bo") {
--- 
-2.50.1
+Regards,
+Kamil
 
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_13496_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 3)
+> ------------------------------
+> 
+>   Missing    (1): shard-adlp 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_13496_FULL:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@xe_exec_system_allocator@many-execqueues-malloc-mlock-nomemset:
+>     - shard-bmg:          [PASS][1] -> [TIMEOUT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8468/shard-bmg-8/igt@xe_exec_system_allocator@many-execqueues-malloc-mlock-nomemset.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13496/shard-bmg-2/igt@xe_exec_system_allocator@many-execqueues-malloc-mlock-nomemset.html
+> 
+>   * igt@xe_exec_system_allocator@threads-shared-vm-many-new-bo-map:
+>     - shard-lnl:          [PASS][3] -> [FAIL][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8468/shard-lnl-1/igt@xe_exec_system_allocator@threads-shared-vm-many-new-bo-map.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13496/shard-lnl-2/igt@xe_exec_system_allocator@threads-shared-vm-many-new-bo-map.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@xe_eu_stall@blocking-re-enable:
+>     - shard-dg2-set2:     [SKIP][5] ([Intel XE#4208]) -> [SKIP][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8468/shard-dg2-432/igt@xe_eu_stall@blocking-re-enable.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13496/shard-dg2-432/igt@xe_eu_stall@blocking-re-enable.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_13496_FULL that come from known issues:
+> 
+
+...cut...
