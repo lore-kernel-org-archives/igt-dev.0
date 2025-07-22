@@ -4,52 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2686C83F27
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Jul 2025 13:31:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76659C83F1A
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Jul 2025 13:31:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 63A3F10E2A4;
-	Tue, 22 Jul 2025 13:31:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 16C1010E2A4;
+	Tue, 22 Jul 2025 13:31:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EcWQ/aRr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y3JZXR70";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CA4410E2A4
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Jul 2025 13:31:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC9EF10E2A4
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Jul 2025 13:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753191060; x=1784727060;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Vy2VfRlp76BFleNEDveFFTVmNmXlZdsCJXXSG1XqaeM=;
- b=EcWQ/aRrmW6SDYvoCfGawRCv+4TWt6r8U0hREoE8hjNFbKljO9f5rH5S
- RMycD7xKWoWwIMwniybK/H4Swg8Anb25ebWmyveJjXuhuViGwDlzni2ro
- wJa9yC7U+Vejqj4QwMJb4/szIUSVw+OWRUiOIWzI1zfOhbPAh883IvnF0
- ktddPcRETIqW6ASyAWn46zSHeL6T6YUjOb1qBNtRxtzdUZic520BvflMN
- rJbxkVAYoo8zS/jf7CzetNrKuWxdjnZ0RbT1nvdDCksenlyaXmSvNe6RD
- ehNythjTydO9iW7kPoco9mbWqdNojJKvqFgYQu+4XwjR7yswyihtwjj90 g==;
-X-CSE-ConnectionGUID: x7FhhDcbS0K2tW8dFq3wCw==
-X-CSE-MsgGUID: 3X/tdwQdS5q8HZ171mUFjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="66781194"
-X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; d="scan'208";a="66781194"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2025 06:31:00 -0700
-X-CSE-ConnectionGUID: wSBx1UvyQIaQr4dYQCsqeA==
-X-CSE-MsgGUID: XJ4NVUNRRx+TG+wHsCXEPw==
+ t=1753191080; x=1784727080;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=6u/jfA93PSyjXnCIhDsVP8tPN/dNTPUAJAv9rTNzFRQ=;
+ b=Y3JZXR70Yg2P/TVpS1G6aBM6dhBk2j4K3WHagipkZQU6CRStSDSogByg
+ RnyooYk+SYq0ZDFNyao6eJ2wfYVCf8MeFtpsEa7uAg68wMFrI9vCgcJIS
+ WMut7C7rBCJ+3k0vrrR00k1NcsU2rm3neWsgmoOA97u/y4gnQ/0Slbfsh
+ AgO6kDDYhDYtLymAnCSzxXPIcGw7w0kSCiGya0Iv8F+EmDqFzfzP8qCsV
+ 72pTlLmkh94VJeHDJUdIWH+1Web5pAQPrwIrOadz0WjOX+myAKAa0oZi7
+ n1aRnpxCLl7xUfxB4w6IlDSCfQ2+35UCy2jWE9NkH+uvY4aGOxeMu48wb g==;
+X-CSE-ConnectionGUID: fbqTRPInSC+0If4Dp4VXCw==
+X-CSE-MsgGUID: 0m/3y9xmSumxO5HSRPdorA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="55552865"
+X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; d="scan'208";a="55552865"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2025 06:31:20 -0700
+X-CSE-ConnectionGUID: WVtmzidaSHqGuq86nVZn1Q==
+X-CSE-MsgGUID: GMFzkpy1TQuDByTjx0I56w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; d="scan'208";a="158461021"
-Received: from dut2943pvc.iind.intel.com ([10.190.215.47])
- by orviesa010.jf.intel.com with ESMTP; 22 Jul 2025 06:30:58 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t v12] tests/intel/xe_compute: Add Compute workload
- Scheduling
-Date: Tue, 22 Jul 2025 13:30:56 +0000
-Message-ID: <20250722133056.139441-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; d="scan'208";a="159215864"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2025 06:31:19 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 22 Jul 2025 06:31:19 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Tue, 22 Jul 2025 06:31:19 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.75)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 22 Jul 2025 06:31:18 -0700
+Received: from BL3PR11MB5747.namprd11.prod.outlook.com (2603:10b6:208:354::22)
+ by DS0PR11MB7442.namprd11.prod.outlook.com (2603:10b6:8:14d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.28; Tue, 22 Jul
+ 2025 13:31:16 +0000
+Received: from BL3PR11MB5747.namprd11.prod.outlook.com
+ ([fe80::603f:cea2:4626:ac38]) by BL3PR11MB5747.namprd11.prod.outlook.com
+ ([fe80::603f:cea2:4626:ac38%5]) with mapi id 15.20.8901.036; Tue, 22 Jul 2025
+ 13:31:16 +0000
+From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
+To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>, "Dandamudi,
+ Priyanka" <priyanka.dandamudi@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH i-g-t] tests/xe_vm: Report OOM for vm_bind ioctl under
+ memory pressure
+Thread-Topic: [PATCH i-g-t] tests/xe_vm: Report OOM for vm_bind ioctl under
+ memory pressure
+Thread-Index: AQHb9kgv5jozjFE5+E+NOeiqE9ZsebQ+KVKQ
+Date: Tue, 22 Jul 2025 13:31:16 +0000
+Message-ID: <BL3PR11MB5747D9B6BCD1DB53F4C69DFAD05CA@BL3PR11MB5747.namprd11.prod.outlook.com>
+References: <20250716115237.3279176-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20250716115237.3279176-1-priyanka.dandamudi@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL3PR11MB5747:EE_|DS0PR11MB7442:EE_
+x-ms-office365-filtering-correlation-id: 6b5075f9-fd46-4512-ae97-08ddc92408e0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?Oe5Qfo/q2c/UQjz6zglTxIncoX8JJNn1b3khLHdxcQFMru1G9siTqL2Z4S6E?=
+ =?us-ascii?Q?E6C+j12Z+UwmvH3vawIaG0yA8uBH8VoqFcCc0Xp5Pb3XfJJpsZFXMBrqpVIP?=
+ =?us-ascii?Q?tX4hxO9OfNV91uXMUmB7bow7zaoen5wqc0QMAJyeo0aNj980J1Xu5qhgGmFx?=
+ =?us-ascii?Q?rIoAwR/MV0farmRM001AsGOQ4M+qG521CcDjA4JRjgBscU8yanOKlsLIFVdP?=
+ =?us-ascii?Q?hzmt7qYG+ECyMcWGKC4BX633TriDVKaBjk5nWaXFtjWnsvusp68IIIcyWLpf?=
+ =?us-ascii?Q?VuZ+Omyn+rT3Hca4qZCAZdTeukI8Vxl9z6+I7ZkIt1h7bqorPgseiNfEwtK3?=
+ =?us-ascii?Q?uh27t2iLhfhbuoV+VBYqm+oAXa5F8Ve/dFMeFbWuqsYrLR2fKYOSAtoEhvh6?=
+ =?us-ascii?Q?/7JRKftSQUccXqQr+ffTFwICWA5bSxAxg6LOcJPRT9frwrGdUGjvPFiflBAk?=
+ =?us-ascii?Q?fOUQW8G5g0X5gABzFeg52a/0ySmw5mtnAp0eGy2Qz3iBfp265Tih4v2JzBKl?=
+ =?us-ascii?Q?jSC7VknEDM1C881/6r5y5IG3r0hW61LYv2+1V+gQYnXHa28+LCSvx2laLaB7?=
+ =?us-ascii?Q?E2yol1VazTtgYWq5ElcKTvDt6jdS9SVrRgHKG1KpMHbFSZk5/JmWanN/Zia1?=
+ =?us-ascii?Q?wTHtAwYERnDwULEfU+EIXeQeXQdo5Ex4w7doyQTt/yReiBgWbvUQrCMlZjsS?=
+ =?us-ascii?Q?/wMmkpNhzCgILKjdveg2G7tWdNnaQfa2VTd/p7uN7RolqxPrsXnvLjVxDdlw?=
+ =?us-ascii?Q?shA199KtPe5877eU6qt6mluOmgd3DGtPm9KywkNNe0WNqcbwAbctP6pBnq1F?=
+ =?us-ascii?Q?I1Z51xaVHIyWXaNR0KyXZsWeV8JxrmX7MTWdzfU/HWZf5LzWfFIGU0DxXYQI?=
+ =?us-ascii?Q?IESZtL+xI73Mmrzoc8NUAPnileEThFQ3/wIC6ygi66ABFGQbAMhTXwfmRW7U?=
+ =?us-ascii?Q?7smd552gyUmxOOfoAZjvBSskeGBYQbzaBlRVA6ewKoSBaC5ou7nhi3jVflPL?=
+ =?us-ascii?Q?o7KYnbwEsX30o8JDwSvPIviiaunxIs2d1WKqIVrTzZ/CjYb7pMsVvWkNKlO7?=
+ =?us-ascii?Q?iENg3EhewS1blc0eaDWBFRCi8qHYTco7QvgdAF8Q2sVbZbvyFlWaEEql8PzY?=
+ =?us-ascii?Q?Y5Bzu0FlCqPMFck087REe0yLs7O+RI4qP+2D9odVQDP6a+eai6TEhcDVGEHS?=
+ =?us-ascii?Q?i2o8+m+61aAKKjDbnY2E5LUQbe/tDcxAm8XF6Bs+mMmStCNstTMjsPVfQbLn?=
+ =?us-ascii?Q?YCCOO9dkP6Kyj91pLcIihl+rCq378PO0u6oJXbovL/tpchKFD9RYyQ3/cLbK?=
+ =?us-ascii?Q?HbKQpPhPHBK0miSdzpxwPr9Q0SLQICroDlLswMe+BwRqvufMPGDU1sFLV9yV?=
+ =?us-ascii?Q?PIp2bkJqaTseWLGKA5BWvDV6y5aGjhZY3yYari4sa9iK/ynJoEVfLsitvmC+?=
+ =?us-ascii?Q?isVLaUJszV8ibMsw0SA7qnBp/vgv5KWlCtOcPJ/8rmGBk/SB6FSWaA=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL3PR11MB5747.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?IKyiq0RJVSe5BC+9XZzY16pUZlPxXqtF0NJhWb2UI0zPElagEuJHowu9CcSL?=
+ =?us-ascii?Q?UcSWk5rlTahjYS/RERhtFHch5t3uuNBfExUEjkPI2zVPRbJZht5jKszWFHC9?=
+ =?us-ascii?Q?8S5bmfrOVd11El9gNFHd8/YcvYwcF2V/x8QKmronfPYqvwyW4QSSDb2mjCWF?=
+ =?us-ascii?Q?EmoFeARBxmjIPib/dvx2xRq5z8wgOa3N57/eobB/z05NkQIyC/yheekuMHwJ?=
+ =?us-ascii?Q?5PM3B1igXUfkMdUicJvHZHJUCKiHPn0A8lx6ZhcPSv6ao0ymlUdk/QMZxdB3?=
+ =?us-ascii?Q?hiRaIF1NEYuRSeNZbesARNZiChAXCQJnRZaoOpmrezjkPxQghw02rKQFJZo2?=
+ =?us-ascii?Q?zwm/GxJVb7gCIwrzCqYTKeXJIXv86YltW3NqaGrumhEhUOyqvKR54BEVsPQ7?=
+ =?us-ascii?Q?NDtPgerpBwRptjnptwPk4CX4rmbd6uAWOvK6r45h1ccIvu2HzvXN6GWfX49j?=
+ =?us-ascii?Q?KrFKZCA43FyIbbO7IB855CMhpE/EOKBBDO9uRziRgXXvUK7QAfp568VlXrOL?=
+ =?us-ascii?Q?GKbASc/MakZLxuDFk7noOX2aX3zdmPqJxJqUBfqoc0R18El1sjxHqd4d5Ig/?=
+ =?us-ascii?Q?VcAZMDLAsVlRlIpHVUrIBDB5nNDUFSbA1ESKMDiiNV9Z6/sdoRAUFrqfP1MI?=
+ =?us-ascii?Q?I7cQQMAwmAmgGMS6sxkxC4NSF5jW3aUKHYA/qWL7H6F1FDSY4IBOETUpvhnc?=
+ =?us-ascii?Q?Frc4EdDKLs6gWXH5FSLdO1sLuCO+TiSwUSWg2dDIRAUUQK2GQE/9/cZSxcr8?=
+ =?us-ascii?Q?+Florzy8HOGWVFK0n4CFiSxGomXn/k9X8HaDWrLfyI4Hg3B0Kzh3m1nsaGYG?=
+ =?us-ascii?Q?Pp7U71WgJ0cIJrcFFPAZ1ZUFGftqmXzMFS5/PzvWX+B49yFDtJljVenREn0c?=
+ =?us-ascii?Q?hEb1lRoMBTVWa8GQYxGHLKN5GMFpLAN2nuMKfbNsXEWTY1FSLwfdf/61qRyf?=
+ =?us-ascii?Q?eRxkPxLHWFK+n1KYHfwNXhYTYuKa3cDZ0myb9wA9qFQtN6oGpAnu0kQ9SlB1?=
+ =?us-ascii?Q?ClsVTLAmhDY9xmXgPbNyfweAVclyPnULwazGOUtNkVu8Bd3sLaw6cWHWxs08?=
+ =?us-ascii?Q?7RFiyflJ2q7k07GX+cNVN70l2WV+ultWfD+B3fC8SQHBtQYp33yqx+FlcDlO?=
+ =?us-ascii?Q?Vlq24MuSxYI+yJgEXmC+zAT5Boks0XHAdX7x9w+LvvxtynQrAp0NJtpU+PDD?=
+ =?us-ascii?Q?1a3vE9cz0LKsgR+JgxvcGlRsYMvCT/a9E77CHptV1+LAZNXTisJ2bl7CspV8?=
+ =?us-ascii?Q?Q4aqcRbVKU1nI1vFaYoGbVI6UMfzcCZdvhbw2N6EVhUWzuFasAeAa0qniqp+?=
+ =?us-ascii?Q?xkA3srNNIqZzdE7IAR6oOkosoj4VYw345O6ZwAJ9PjR8GL4UWLtGci3/Ks9j?=
+ =?us-ascii?Q?rafPWUfsqNCMJgBd0mg5tmzoqx0eBta4fOymlOhOekvzjdxlc6O/5K5o8vB8?=
+ =?us-ascii?Q?JmMUmLYrkt8g/Ewg96fgRjSeCWgdiTtFpnCSwdnt1Hxov164Ip6YWRdhR3z5?=
+ =?us-ascii?Q?z2cTfY8Pz7nPvgLoQSvt5TvjvLZ8lxwyodc8Vx7t4SSPcS0X+brW7wZuTDKB?=
+ =?us-ascii?Q?Vo6hERTMwGVrOPPHA06QZbMOrGW8UXNHLJ5mSDy1?=
+arc-seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ed0ebFAS1rRQKYhoSFIjDkJL0s6QWRx8JN2ma5Q+2ax0GA7c5k/P4nhprPJnVY907lryg/obUbuhJMCVkTEtL9DR+d/CXDkI9wFTboRpi3GsUKDf7rheLG5yjTtlm5L+jNGlD8mqVPo9MgZWLInndqhzPEWEaNz0fjrKa43xA8nvZReQeH72u8/u16AuJeTA31dr7udRO3h9MIOsIvTS7tl9jeITk8fGKhR8TiqUO60ueRyZWsINiboDjHCpePnAJ9oE57gigqwYMp9JZxqf3CWFOcGZRkCeYO+iZ0ymJnlEZh6DylARmZ7lkIWEHZr7hKdXT/c0NqKbTpxKw5ghNQ==
+arc-message-signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b91oXuoheMzDfvHCs2O6+LQ0J6zm1w1V+bKWk/m7FR8=;
+ b=QpSv6N1pGOuJEfB1MbLkMJ2XTt0VM06zAMZZe1a5buQKCk3cz7etuI6y8jH+6siDn3N8z3ByE3iMxdU84TJd9nuNmQjsoXRh3lD3ekgGg97c7VigDHCA72ek43HwXPcF2c1JOqVr51XdKYGTT6MxlcC6FK2J2ADECstsSgZf1Furmw8RI+ibj8RGFcc4HyiZs6c0X9RPDY1hjhxA4cNP2q0vJXzPev/T58pYLYl0nmhL1UaJAZl06L/J+/1/swVv9m48ci49DGelec/lS4vMC05UwG48oQrEkh82baKguZnDJonSgXZWBHTsDM4y6H/+Pd6+Te02MgtKY9KAcw+B3A==
+arc-authentication-results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+x-ms-exchange-crosstenant-authas: Internal
+x-ms-exchange-crosstenant-authsource: BL3PR11MB5747.namprd11.prod.outlook.com
+x-ms-exchange-crosstenant-network-message-id: 6b5075f9-fd46-4512-ae97-08ddc92408e0
+x-ms-exchange-crosstenant-originalarrivaltime: 22 Jul 2025 13:31:16.1169 (UTC)
+x-ms-exchange-crosstenant-fromentityheader: Hosted
+x-ms-exchange-crosstenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+x-ms-exchange-crosstenant-mailboxtype: HOSTED
+x-ms-exchange-crosstenant-userprincipalname: uwyWZO7srUCT0hK5VJiWtTHJGXP/Qnb+ALoa/Kvej/VvbAc14gv2Ip//K/1Yi0vlDFofGhC1laKTQZNOGKpjSWuokPQJB+3ImEujlifWlhE=
+x-ms-exchange-transport-crosstenantheadersstamped: DS0PR11MB7442
+x-originatororg: intel.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,583 +181,137 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Hi Priyanka,
 
-Adds compute workload scheduling and execution on multiple CCS engines
-available. This also adds logic to show EU busyness information on console
-during workload execution on multiple CCS engine instances.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- lib/intel_compute.c      |  34 ++-
- lib/intel_compute.h      |   2 +
- tests/intel/xe_compute.c | 451 ++++++++++++++++++++++++++++++++++++++-
- tests/meson.build        |   1 +
- 4 files changed, 481 insertions(+), 7 deletions(-)
+>-----Original Message-----
+>From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+>priyanka.dandamudi@intel.com
+>Sent: Wednesday, July 16, 2025 5:23 PM
+>To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; igt-
+>dev@lists.freedesktop.org
+>Subject: [PATCH i-g-t] tests/xe_vm: Report OOM for vm_bind ioctl under mem=
+ory
+>pressure
+>
+>From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>
+>Add a test which create buffer objects on an LR vm and vm_binding buffer o=
+bjects
+>in a loop until it reaches OOM.
+>This is to check that buffer objects on a single vm doesnot get evicted an=
+d instead
+>report with ENOMEM in non fault mode.
+>
+>Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 147dd2916..d9e446488 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -255,8 +255,14 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
- 				break;
- 			}
- 
--			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
--							 placement, flags);
-+			if (!execenv->user)
-+				bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
-+								 placement, flags);
-+			else if (execenv->user)
-+				bo_dict[i].handle = xe_bo_create_caching(fd, execenv->vm,
-+									 bo_dict[i].size,
-+									 placement, flags,
-+									 DRM_XE_GEM_CPU_CACHING_WC);
- 			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
- 			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
- 					 bo_dict[i].size, &sync, 1);
-@@ -1849,10 +1855,26 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 				    OFFSET_KERNEL, 0, false,
- 				    execenv.array_size);
- 
--	bo_execenv_exec(&execenv, ADDR_BATCH);
--
--	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+	if (user && user->loop_kernel_duration) {
-+		bo_execenv_exec_async(&execenv, ADDR_BATCH);
-+		igt_measured_usleep(user->loop_kernel_duration);
-+		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
-+		bo_execenv_sync(&execenv);
-+		user->skip_results_check = 1;
-+	} else
-+		bo_execenv_exec(&execenv, ADDR_BATCH);
-+
-+	for (int i = 0; i < execenv.array_size; i++) {
-+		float input = input_data[i];
-+		float output = output_data[i];
-+		float expected_output = input * input;
-+
-+		if (output != expected_output)
-+			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-+					i, input, output, expected_output);
-+		if (!user || (user && !user->skip_results_check))
-+			bo_check_square(input_data, output_data, execenv.array_size);
-+	}
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index 412791d07..19977933f 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -63,6 +63,8 @@ struct user_execenv {
- 	uint64_t input_addr;
- 	/** @output_addr: override default address of the output array if provided */
- 	uint64_t output_addr;
-+	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
-+	uint32_t loop_kernel_duration;
- };
- 
- enum execenv_alloc_prefs {
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 5e9140902..9db819c15 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -12,6 +12,7 @@
-  */
- 
- #include <string.h>
-+#include <sys/ioctl.h>
- 
- #include "igt.h"
- #include "igt_sysfs.h"
-@@ -19,6 +20,60 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#include "igt_perf.h"
-+
-+/**
-+ * Number of supported drivers needs to be adjusted as per the length of
-+ * the drivers[] array.
-+ */
-+#define	LOOP_DURATION	(1000000ull)
-+#define NS_SLEEP	(1000000ull)
-+#define engine_ptr(pmu_device, n)	(&(pmu_device)->engine + (n))
-+
-+bool eu_busy;
-+double eu_perc;
-+
-+struct xe_pmu_pair {
-+	uint64_t cur;
-+	uint64_t prev;
-+};
-+
-+struct xe_pmu_counter {
-+	uint64_t type;
-+	uint64_t config;
-+	unsigned int idx;
-+	struct xe_pmu_pair val;
-+	int fd;
-+	bool present;
-+};
-+
-+struct xe_engine {
-+	const char *name;
-+	struct drm_xe_engine_class_instance drm_xe_engine;
-+	struct xe_pmu_counter engine_active_ticks;
-+	struct xe_pmu_counter engine_total_ticks;
-+};
-+
-+struct xe_pmu_device {
-+	unsigned int num_engines;
-+	unsigned int num_counters;
-+	int fd;
-+	char *device;
-+	struct xe_engine engine;
-+};
-+
-+struct thread_data {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	int class;
-+	int fd;
-+	int gt;
-+	struct user_execenv *execenv;
-+	struct drm_xe_engine_class_instance *eci;
-+	bool *go;
-+};
-+
- static int gt_sysfs_open(int gt)
- {
- 	int fd, gt_fd;
-@@ -203,12 +258,402 @@ test_compute_square(int fd)
- 		      "GPU not supported\n");
- }
- 
-+static void
-+*intel_compute_thread(void *data)
-+{
-+	struct thread_data *t = (struct thread_data *)data;
-+
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
-+
-+	igt_info("Compute kernel executing on engine class :%s instance :%d gt: GT-%d\n",
-+			xe_engine_class_string(t->eci->engine_class), t->eci->engine_instance,
-+			t->eci->gt_id);
-+
-+	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd,
-+				t->eci,
-+				t->execenv,
-+				EXECENV_PREF_VRAM_IF_POSSIBLE),
-+			"Unable to run compute kernel successfully\n");
-+	return NULL;
-+}
-+
-+bool stop_top;
-+
-+static char *pmu_name(int fd)
-+{
-+	char device[30];
-+
-+	xe_perf_device(fd, device, sizeof(device));
-+
-+	return strdup(device);
-+}
-+
-+static int
-+_open_pmu(uint64_t type, unsigned int *cnt,
-+	  struct xe_pmu_counter *pmu, int *fd)
-+{
-+	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
-+
-+	if (fd__ >= 0) {
-+		if (*fd == -1)
-+			*fd = fd__;
-+		pmu->present = true;
-+		pmu->idx = (*cnt)++;
-+		pmu->fd = fd__;
-+	}
-+
-+	return fd__;
-+}
-+
-+static struct xe_pmu_device
-+*xe_init_engines(int dev_fd)
-+{
-+	struct xe_pmu_device *engines;
-+	int ret = 0, engine_count = 0;
-+	char device[30];
-+	struct drm_xe_engine_class_instance *hwe;
-+	int fd;
-+	uint32_t engine_class, engine_instance, gt_shift;
-+	uint64_t engine_active_config, engine_total_config;
-+	uint64_t type = igt_perf_type_id(xe_perf_device(dev_fd, device, sizeof(device)));
-+
-+	xe_device_get(dev_fd);
-+
-+	xe_for_each_engine(dev_fd, hwe)
-+		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+			engine_count++;
-+
-+	engines = calloc(1, sizeof(struct xe_pmu_device) +
-+			engine_count * sizeof(struct xe_engine));
-+	if (!engines)
-+		return NULL;
-+
-+	engines->num_engines = 0;
-+	engines->device = pmu_name(dev_fd);
-+	engines->fd = -1;
-+	engines->num_counters = 0;
-+
-+	perf_event_format(engines->device, "gt", &gt_shift);
-+	perf_event_format(engines->device, "engine_class", &engine_class);
-+	perf_event_format(engines->device, "engine_instance", &engine_instance);
-+	ret = perf_event_config(engines->device,
-+			"engine-active-ticks",
-+			&engine_active_config);
-+	if (ret < 0)
-+		return NULL;
-+	ret = perf_event_config(engines->device,
-+			"engine-total-ticks",
-+			&engine_total_config);
-+	if (ret < 0)
-+		return NULL;
-+	xe_for_each_engine(dev_fd, hwe) {
-+		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
-+			uint64_t  param_config;
-+			struct xe_engine *engine;
-+
-+			engine = engine_ptr(engines, engines->num_engines);
-+			param_config = (uint64_t)hwe->gt_id << gt_shift |
-+						hwe->engine_class << engine_class |
-+						hwe->engine_instance << engine_instance;
-+			engine->drm_xe_engine = *hwe;
-+			engine->engine_active_ticks.config = engine_active_config | param_config;
-+			engine->engine_total_ticks.config = engine_total_config | param_config;
-+
-+			if (engine->engine_active_ticks.config == -1 ||
-+					engine->engine_total_ticks.config == -1) {
-+				ret = ENOENT;
-+				break;
-+			}
-+
-+			if (ret <= 0) {
-+				ret = errno;
-+				break;
-+			}
-+
-+			fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
-+					&engines->fd);
-+			if (fd < 0)
-+				return NULL;
-+
-+			fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
-+					&engines->fd);
-+			if (fd < 0)
-+				return NULL;
-+
-+			engines->num_engines++;
-+		}
-+	}
-+
-+	return engines;
-+}
-+
-+static void
-+eu_util_free(struct xe_pmu_device *pmu_device)
-+{
-+	struct xe_engine *eng;
-+	struct xe_pmu_counter pmu;
-+
-+	igt_info("EU cleanup process\n");
-+
-+	if (pmu_device) {
-+		for (int j = 0; j < pmu_device->num_engines ; j++) {
-+			eng = engine_ptr(pmu_device, j);
-+			pmu = eng->engine_active_ticks;
-+			if (pmu.present)
-+				close(pmu.fd);
-+
-+			pmu = eng->engine_total_ticks;
-+			if (pmu.present)
-+				close(pmu.fd);
-+		}
-+		free(pmu_device);
-+	}
-+}
-+
-+static void
-+update_sample(struct xe_pmu_counter *counter, uint64_t *val)
-+{
-+	if (counter->present) {
-+		counter->val.prev = counter->val.cur;
-+		counter->val.cur = val[counter->idx];
-+	}
-+}
-+
-+static void xe_pmu_device_sample(const void *obj)
-+{
-+	struct xe_pmu_device *engines = ((struct xe_pmu_device *)obj);
-+	const int num_val = engines->num_counters;
-+	uint64_t val[2 + num_val];
-+	uint64_t buf[2 + num_val];
-+	unsigned int i;
-+	ssize_t len;
-+
-+	memset(buf, 0, sizeof(buf));
-+	len = read(engines->fd, buf, sizeof(buf));
-+	assert(len == sizeof(buf));
-+
-+	for (i = 0; i < num_val; i++)
-+		val[i] = buf[2 + i];
-+
-+	for (i = 0; i < engines->num_engines; i++) {
-+		struct xe_engine *engine = engine_ptr(engines, i);
-+
-+		update_sample(&engine->engine_active_ticks, val);
-+		update_sample(&engine->engine_total_ticks, val);
-+	}
-+}
-+
-+static double
-+pmu_active_percentage(struct xe_engine *engine)
-+{
-+	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
-+		engine->engine_active_ticks.val.prev;
-+	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
-+		engine->engine_total_ticks.val.prev;
-+	double percentage;
-+
-+	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
-+	return percentage;
-+}
-+
-+static void xe_print_perc(const void *obj)
-+{
-+	struct xe_pmu_device *pmu_device = ((struct xe_pmu_device *)obj);
-+
-+	for (unsigned int i = 0; i < pmu_device->num_engines; i++) {
-+		double percentage;
-+		struct xe_engine *engine = engine_ptr(pmu_device, i);
-+
-+		igt_assert(engine);
-+
-+		percentage = pmu_active_percentage(engine);
-+		eu_perc = percentage;
-+
-+		igt_debug("Engine_instance :%d EU busyness :%5.1f\n",
-+			  engine->drm_xe_engine.engine_instance, percentage);
-+		if (!percentage)
-+			igt_debug("No workload scheduled, BU busyness :%5.1f expected\n",
-+					percentage);
-+		else if (percentage > 10.0) {
-+			eu_busy = false;
-+			igt_info("Workload scheduled, ccs engine :%d utilized :%5.1f\n",
-+					engine->drm_xe_engine.engine_instance, percentage);
-+		}
-+	}
-+}
-+
-+static void *show_eu_util(void *data)
-+{
-+	struct xe_pmu_device *pmu_device = NULL;
-+	int dev_fd;
-+	long n;
-+
-+	dev_fd = drm_open_driver(DRIVER_XE);
-+
-+	pmu_device = xe_init_engines(dev_fd);
-+	if (!pmu_device) {
-+		fprintf(stderr,
-+				"Failed to initialize engines! (%s)\n",
-+				strerror(errno));
-+		return NULL;
-+	}
-+
-+	xe_pmu_device_sample(pmu_device);
-+
-+	while ((n != 0) && !stop_top) {
-+		xe_pmu_device_sample(pmu_device);
-+		xe_print_perc(pmu_device);
-+		usleep(2 * NS_SLEEP);
-+	}
-+	eu_util_free(pmu_device);
-+	drm_close_driver(dev_fd);
-+
-+	return NULL;
-+}
-+
-+static void
-+thread_init_eu_utils(void)
-+{
-+	pthread_t eu_utils;
-+
-+	pthread_create(&eu_utils, NULL, show_eu_util, NULL);
-+}
-+
-+static void
-+*check_eu_busy(void *data)
-+{
-+	while (!eu_busy) {
-+		igt_info("EU Busy utilizing :%5.1f\n", eu_perc);
-+		usleep(1 * NS_SLEEP);
-+	}
-+	return NULL;
-+}
-+
-+static void
-+igt_check_eu_busy(void)
-+{
-+	pthread_t eu_business;
-+
-+	/* Creating thread to poll EU business */
-+	pthread_create(&eu_business, NULL, check_eu_busy, NULL);
-+}
-+
-+/**
-+ * SUBTEST: eu-busy-10-sec
-+ * Functionality: OpenCL kernel
-+ * Description:
-+ *      Run an openCL long rinning Kernel that returns output[i] = input[i] * input[i],
-+ */
-+static void
-+test_eu_busy(int fd, int num_gt, u32 duration_sec)
-+{
-+	struct user_execenv execenv = { 0 };
-+	struct thread_data *threads_data;
-+	struct drm_xe_engine_class_instance *hwe;
-+	const struct intel_compute_kernels *kernels;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
-+	bool go = false;
-+	int ccs_mode, gt_fd;
-+	u32 num_slices, ip_ver;
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
-+		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-+		close(gt_fd);
-+	}
-+
-+	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
-+		      ccs_mode);
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	thread_init_eu_utils();
-+	usleep(2 * NS_SLEEP);
-+	igt_check_eu_busy();
-+
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/*
-+	 * User should use different kernel if loop_kernel_duration not set
-+	 * With loop kernel and loop duration it assumes we stop it via memory write
-+	 *
-+	 */
-+
-+	execenv.loop_kernel_duration = duration_sec;
-+	execenv.kernel = kernels->loop_kernel;
-+	execenv.kernel_size = kernels->loop_kernel_size;
-+	for (gt = 0; gt < num_gt; gt++) {
-+		xe_for_each_engine(fd, hwe) {
-+			igt_assert(hwe);
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+				++n_instances;
-+		}
-+	}
-+
-+	threads_data = calloc(n_instances, sizeof(*threads_data));
-+	igt_assert(threads_data);
-+
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+
-+	for (gt = 0; gt < num_gt; gt++) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->gt_id != gt ||
-+					hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+				continue;
-+
-+			threads_data[i].mutex = &mutex;
-+			threads_data[i].cond = &cond;
-+			threads_data[i].fd = fd;
-+			threads_data[i].eci = hwe;
-+			threads_data[i].go = &go;
-+			threads_data[i].execenv = &execenv;
-+			++n_threads;
-+			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-+					&threads_data[i]);
-+			++i;
-+			++iterations;
-+		}
-+
-+		pthread_mutex_lock(&mutex);
-+		go = true;
-+		pthread_cond_broadcast(&cond);
-+		pthread_mutex_unlock(&mutex);
-+
-+		for (int val = 0; val < i; ++val)
-+			pthread_join(threads_data[val].thread, NULL);
-+
-+		i = 0;
-+		n_threads = 0;
-+		iterations = 0;
-+		stop_top = true;
-+		eu_busy = true;
-+	}
-+	free(threads_data);
-+	drm_close_driver(fd);
-+}
-+
- igt_main
- {
--	int xe;
-+	int xe, num_gt;
- 
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
-+		num_gt = xe_number_gt(xe);
- 	}
- 
- 	igt_subtest("compute-square")
-@@ -223,4 +668,8 @@ igt_main
- 
- 	igt_subtest("ccs-mode-compute-kernel")
- 		test_compute_kernel_with_ccs_mode();
-+
-+	/* test to check available EU utilisation for multi_ccs */
-+	igt_subtest("eu-busy-10-sec")
-+		test_eu_busy(xe, num_gt, 10 * LOOP_DURATION);
- }
-diff --git a/tests/meson.build b/tests/meson.build
-index 9b87a0d24..e11305e26 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -405,6 +405,7 @@ extra_dependencies = {
- 	'sw_sync': [ libatomic ],
- 	'xe_fault_injection': [ lib_igt_xe_oa ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-+	'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
- }
- 
- test_executables = []
--- 
-2.43.0
+Test looks good, could be good start to test Out of Memory. However In feel=
+ few subtests can be included like testing exhaustion of system memory,
+OOM with different buffer sizes, may be a concurrent allocations can be som=
+ething like testing OOM conditions under concurrent allocations from multip=
+le processes or threads.
+
+>---
+> tests/intel/xe_vm.c | 65 +++++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 65 insertions(+)
+>
+>diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c index
+>c1abb08bb..e808a0b4e 100644
+>--- a/tests/intel/xe_vm.c
+>+++ b/tests/intel/xe_vm.c
+>@@ -2368,6 +2368,65 @@ static void invalid_vm_id(int fd)
+>       do_ioctl_err(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy, ENOENT);  }
+>
+>+/**
+>+ * SUBTEST: out-of-memory
+>+ * Description: Test if vm_bind ioctl results in oom
+>+ * when creating and vm_binding buffer objects on an LR vm beyond availab=
+le
+>visible vram size.
+>+ * Functionality: oom
+>+ * Test category: functionality test
+>+ */
+>+static void test_oom(int fd)
+>+{
+>+#define USER_FENCE_VALUE 0xdeadbeefdeadbeefull #define BO_SIZE
+>+xe_bb_size(fd, SZ_512M) #define MAX_BUFS (int)(xe_visible_vram_size(fd,
+>+0) / BO_SIZE)
+>+      uint64_t addr =3D 0x1a0000;
+>+      uint64_t vm_sync;
+>+      uint32_t bo[MAX_BUFS + 1];
+>+      uint32_t *data[MAX_BUFS + 1];
+>+      uint32_t vm;
+>+      struct drm_xe_sync sync[1] =3D {
+>+              { .type =3D DRM_XE_SYNC_TYPE_USER_FENCE, .flags =3D
+>DRM_XE_SYNC_FLAG_SIGNAL,
+>+                .timeline_value =3D USER_FENCE_VALUE },
+>+      };
+>+      size_t bo_size =3D BO_SIZE;
+>+      int total_bufs =3D MAX_BUFS;
+>+
+>+      vm =3D xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+>+      for (int iter =3D 0; iter <=3D total_bufs; iter++) {
+>+              bo[iter] =3D xe_bo_create(fd, 0, bo_size,
+>+                                      vram_if_possible(fd, 0),
+>+
+>       DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING |
+>+
+>       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>+
+>+              sync[0].addr =3D to_user_pointer(&vm_sync);
+>+              if (iter < total_bufs)
+>+                      xe_vm_bind_async(fd, vm, 0, bo[iter], 0,
+>+                                       addr + bo_size * iter, bo_size, sy=
+nc, 1);
+>+              else {
+>+                      igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo[iter], 0,
+>+                                                 addr + bo_size * iter, b=
+o_size,
+>+                                                 DRM_XE_VM_BIND_OP_MAP,
+>0, sync, 1, 0,
+>+                                                 DEFAULT_PAT_INDEX, 0), -
+>ENOMEM);
+>+                      break;
+Line space can be removed, Please check indentations.
+Rest your code looks good to me.
+Acked-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>+
+>+              }
+>+              xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0,
+>NSEC_PER_SEC);
+>+              vm_sync =3D 0;
+>+              data[iter] =3D xe_bo_map(fd, bo[iter], bo_size);
+>+              memset(data[iter], 0, bo_size);
+>+      }
+>+
+>+      for (int iter =3D 0; iter < total_bufs; iter++) {
+>+              sync[0].addr =3D to_user_pointer(&vm_sync);
+>+              xe_vm_unbind_async(fd, vm, 0, 0, addr + bo_size * iter, bo_=
+size,
+>+                                 sync, 1);
+>+              xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0,
+>NSEC_PER_SEC);
+>+              munmap(data[iter], bo_size);
+>+              gem_close(fd, bo[iter]);
+>+      }
+>+}
+>+
+> igt_main
+> {
+>       struct drm_xe_engine_class_instance *hwe, *hwe_non_copy =3D NULL;
+>@@ -2759,6 +2818,12 @@ igt_main
+>       igt_subtest("invalid-vm-id")
+>               invalid_vm_id(fd);
+>
+>+      igt_subtest("out-of-memory") {
+>+              igt_require(xe_has_vram(fd));
+>+              igt_assert(xe_visible_vram_size(fd, 0));
+>+              test_oom(fd);
+>+      }
+>+
+>       igt_fixture
+>               drm_close_driver(fd);
+> }
+>--
+>2.34.1
 
