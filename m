@@ -4,51 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D42D0C83F27
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Jul 2025 05:33:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61EA4C83F25
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Jul 2025 07:39:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8466310E154;
-	Tue, 22 Jul 2025 05:33:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1996810E30A;
+	Tue, 22 Jul 2025 07:39:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BbGl3hgl";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="kB4/kGkR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEBBB10E5E5
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Jul 2025 05:33:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753162413; x=1784698413;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=bAD4vWbLz8wnU/hqZIOdvLgmArzhYLafHIVZALMoE/A=;
- b=BbGl3hgllkLbmJd8rUlSzWYs8U3lWVh8zXx4UwFDVXOlUyTK3n+R1wYt
- kS+RE8ZAjCji5ymcaJQlJgVqa0qppFw6GgVia0HQLE66yPhdTxzvJAcST
- rm6N+94AnvpuKCSKZ2BFFCjHWPAZ/yNzPSXPkEdPImuDsu2XrXHrhA/HH
- cCeh+Yoeoqp6nzGrAAM6g2VISrv8v5oWhQhrxArukZAgUC57FMnHHpGzp
- +I31lwtMY07d5/Y950C8WcAjSYLTqtfWw0tIWnNGnM5E3ms4gXeMajxIg
- Sfxa2HkoaKG+7gGkDfgmc6Z1Buls21PxzM8ZUPJYj5/Bv/dK84BGOKEQt w==;
-X-CSE-ConnectionGUID: CSbzzBTeQqSzo7sIewZ6/g==
-X-CSE-MsgGUID: Oce8qlBbQIOlgB4psyYAIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55554146"
-X-IronPort-AV: E=Sophos;i="6.16,330,1744095600"; d="scan'208";a="55554146"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jul 2025 22:33:32 -0700
-X-CSE-ConnectionGUID: tePicj+PShymNMeBQshCNQ==
-X-CSE-MsgGUID: 88EUPTqxTD+71htTXXgxpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,330,1744095600"; d="scan'208";a="159353899"
-Received: from unknown (HELO cs1n2.iind.intel.com) ([10.223.104.22])
- by fmviesa009.fm.intel.com with ESMTP; 21 Jul 2025 22:33:29 -0700
-From: Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB88710E30A
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Jul 2025 07:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+ Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=JqxHBTpqUhh8jt+XaBD3AXbnn5NReeLSJrNJv3HwK+A=; b=kB4/kGkRsv3mp8CRcSZXdFGfmb
+ wFxs48KG806SA1HS47rAQE5dqk8QtALTjPL97/6AabfQCc3cl+FcqLyunm4fXd5i5HS5uLl7UqYgt
+ iIK7Ei6GM91CssSF52D3mbn/O0S0vFUxvPmKZgYAiDoRqeSqpf/z5l3cLHVpnnn3v80gV5pXCjT16
+ mCczX0yQLv01C75RwnOE74Vp5/WY5xIm+byM9jXGsneDB5ltk8ZgCSmw7k1qhEHUYuUcEpwbslKyd
+ PBbvnXtyX20EmFOMaoFbrYAaB0kf9Rgy4A37gV8A6DdWcwjHXDaH2pQy6RIzJDHL+i93ag8e57bQB
+ qk01GeFw==;
+Received: from [84.66.36.92] (helo=localhost)
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1ue7ag-0022kJ-Oi; Tue, 22 Jul 2025 09:39:10 +0200
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Cc: khaled.almahallawy@intel.com, jeevaka.badrappan@intel.com,
- Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
-Subject: [PATCH v2] tools/gputop/xe_gputop: Adding GPU frequency support
-Date: Tue, 22 Jul 2025 10:44:33 +0530
-Message-ID: <20250722051433.3323496-1-disantkumar.isvarbhai.mistry@intel.com>
-X-Mailer: git-send-email 2.49.0
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Imre Deak <imre.deak@intel.com>,
+ =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>,
+ Mika Kahola <mika.kahola@intel.com>
+Subject: [PATCH i-g-t] lib/intel/veboxcopy: Respect buffer MOCS index
+Date: Tue, 22 Jul 2025 08:39:06 +0100
+Message-ID: <20250722073906.99759-1-tvrtko.ursulin@igalia.com>
+X-Mailer: git-send-email 2.48.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,171 +60,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-XE PMU expose GT frequency events to user space via perf interface.
-Reading each GT's frequency using PMU interface(gt-actual-frequency,
-gt-requested-frequency). Exposing each GT frequency details in gputop
-as device description section.
+Set the MOCS indices in surface state from the source and
+destination buffers. So far it was done only for the input
+buffer and only for 4Tile formats. Always setting it alings
+with how rendercopy does it and it fixes the AuxCCS tests on
+ADL when target is of the MC flavour.
 
-Signed-off-by: Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Juha-Pekka Heikkilä <juha-pekka.heikkila@intel.com>
+Cc: Mika Kahola <mika.kahola@intel.com>
 ---
- tools/gputop/xe_gputop.c | 84 +++++++++++++++++++++++++++++++++++++---
- tools/gputop/xe_gputop.h |  3 ++
- 2 files changed, 82 insertions(+), 5 deletions(-)
+Lets see what the CI will think of this change.
 
-diff --git a/tools/gputop/xe_gputop.c b/tools/gputop/xe_gputop.c
-index 9757369a8..5b2055a19 100644
---- a/tools/gputop/xe_gputop.c
-+++ b/tools/gputop/xe_gputop.c
-@@ -47,6 +47,20 @@ void xe_clean_up(void *obj, int len)
- 		if (gputop_dev[i].card)
- 			free(gputop_dev[i].card);
- 		if (gputop_dev[i].pmu_device_obj) {
-+			/* Free FDs from GT Frequency PMU counter */
-+			for (int j = 0; j < gputop_dev[i].pmu_device_obj->num_gts; j++) {
-+				pmu_counter = gputop_dev[i].pmu_device_obj->gt_act_freq[i];
-+				if (pmu_counter.present)
-+					close(pmu_counter.fd);
-+
-+				pmu_counter = gputop_dev[i].pmu_device_obj->gt_req_freq[i];
-+				if (pmu_counter.present)
-+					close(pmu_counter.fd);
-+			}
-+
-+			free(gputop_dev[i].pmu_device_obj->gt_act_freq);
-+			free(gputop_dev[i].pmu_device_obj->gt_req_freq);
-+
- 			for (int j = 0;
- 			     j < gputop_dev[i].pmu_device_obj->num_engines;
- 			     j++) {
-@@ -127,6 +141,7 @@ void *xe_populate_engines(const void *obj, int index)
- 	struct igt_device_card *card = ptr->card;
- 	uint64_t engine_active_config, engine_total_config;
- 	uint64_t engine_class, engine_instance, gt_shift;
-+	uint64_t gt_actual_freq, gt_requested_freq;
- 	struct drm_xe_engine_class_instance *hwe;
- 	struct xe_pmu_device *engines;
- 	char device[30];
-@@ -157,7 +172,32 @@ void *xe_populate_engines(const void *obj, int index)
- 	gt_shift = pmu_format_shift(card_fd, "gt");
- 	engine_class = pmu_format_shift(card_fd, "engine_class");
- 	engine_instance = pmu_format_shift(card_fd, "engine_instance");
-+
- 	xe_perf_device(card_fd, device, sizeof(device));
-+
-+	engines->num_gts = xe_number_gt(card_fd);
-+
-+	engines->gt_act_freq = malloc(sizeof(struct xe_pmu_counter) * engines->num_gts);
-+	if (!engines->gt_act_freq)
-+		return NULL;
-+
-+	engines->gt_req_freq = malloc(sizeof(struct xe_pmu_counter) * engines->num_gts);
-+	if (!engines->gt_req_freq)
-+		return NULL;
-+
-+	ret = perf_event_config(device, "gt-actual-frequency", &gt_actual_freq);
-+	if (ret < 0)
-+		return NULL;
-+
-+	ret = perf_event_config(device, "gt-requested-frequency", &gt_requested_freq);
-+	if (ret < 0)
-+		return NULL;
-+
-+	for (int i = 0; i < engines->num_gts; i++) {
-+		engines->gt_act_freq[i].config = i << gt_shift | gt_actual_freq;
-+		engines->gt_req_freq[i].config = i << gt_shift | gt_requested_freq;
-+	}
-+
- 	engines->device = strdup(device);
- 	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
- 	if (ret < 0)
-@@ -237,6 +277,11 @@ void xe_pmu_sample(const void *obj, int index)
+Curiously the AuxCCS tests where target is RC, so rendercopy
+which does set the MOCS correctly is used, are still flaky so
+that sounds like a different problem.
+---
+ lib/veboxcopy_gen12.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c
+index 4e3aefaf1f44..2193433a1c00 100644
+--- a/lib/veboxcopy_gen12.c
++++ b/lib/veboxcopy_gen12.c
+@@ -258,6 +258,8 @@ static void emit_tiling_convert_cmd(struct intel_bb *ibb,
  
- 	pmu_read_multi(engines->fd, num_val, val);
+ 	if (HAS_4TILE(ibb->devid))
+ 		tc->tc1_2.input_mocs_idx = IS_DG2(ibb->devid) ? 3 : 9;
++	else
++		tc->tc1_2.input_mocs_idx = src->mocs_index;
  
-+	for (i = 0; i < engines->num_gts; i++) {
-+		update_sample(&engines->gt_act_freq[i], val);
-+		update_sample(&engines->gt_req_freq[i], val);
-+	}
-+
- 	for (i = 0; i < engines->num_engines; i++) {
- 		struct xe_engine *engine = engine_ptr(engines, i);
+ 	tc->tc1_2.input_tiled_resource_mode = src->tiling == I915_TILING_Yf;
  
-@@ -258,6 +303,20 @@ int xe_pmu_init(const void *obj, int index)
- 	engines->fd = -1;
- 	engines->num_counters = 0;
+@@ -278,6 +280,8 @@ static void emit_tiling_convert_cmd(struct intel_bb *ibb,
+ 			dst->compression == I915_COMPRESSION_RENDER;
+ 	}
  
-+	for (i = 0; i < engines->num_gts; i++) {
-+		fd = _open_pmu(type, &engines->num_counters,
-+			       &engines->gt_act_freq[i],
-+			       &engines->fd);
-+		if (fd < 0)
-+			return -1;
++	tc->tc3_4.output_mocs_idx = dst->mocs_index;
 +
-+		fd = _open_pmu(type, &engines->num_counters,
-+			       &engines->gt_req_freq[i],
-+			       &engines->fd);
-+		if (fd < 0)
-+			return -1;
-+	}
-+
- 	for (i = 0; i < engines->num_engines; i++) {
- 		engine = engine_ptr(engines, i);
- 		fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
-@@ -287,18 +346,33 @@ static double pmu_active_percentage(struct xe_engine *engine)
- static int
- print_device_description(const void *obj, int lines, int w, int h)
- {
--	char *desc;
--	int len;
-+	char *desc, *gt_freq = NULL;
-+	int len = 0, counter = 0;
-+	struct igt_device_card *card = ((struct xe_gputop *)obj)->card;
-+	struct xe_pmu_device *device = ((struct xe_gputop *)obj)->pmu_device_obj;
-+
-+	for (int i = 0; i < device->num_gts; i++) {
-+		long act_freq = device->gt_act_freq[i].val.cur - device->gt_act_freq[i].val.prev;
-+		long req_freq = device->gt_req_freq[i].val.cur - device->gt_req_freq[i].val.prev;
-+
-+		len += snprintf(NULL, 0, "FREQ-GT%d: %lu/%lu  ", i, act_freq, req_freq);
-+		gt_freq = (char *)realloc(gt_freq, (len + 1) * sizeof(char));
-+
-+		sprintf(gt_freq + counter, "FREQ-GT%d: %lu/%lu  ", i, act_freq, req_freq);
-+		counter = len;
-+	}
- 
--	len = asprintf(&desc, "DRIVER: %s || BDF: %s",
--		       ((struct xe_gputop *)obj)->card->driver,
--		       ((struct xe_gputop *)obj)->card->pci_slot_name);
-+	len = asprintf(&desc, "DRIVER: %s || BDF: %s || %s",
-+		       card->driver,
-+		       card->pci_slot_name,
-+		       gt_freq);
- 
- 	printf("\033[7m%s%*s\033[0m\n",
- 	       desc,
- 	       (int)(w - len), " ");
- 	lines++;
- 	free(desc);
-+	free(gt_freq);
- 	return lines;
- }
- 
-diff --git a/tools/gputop/xe_gputop.h b/tools/gputop/xe_gputop.h
-index 1e3856071..baea232fc 100644
---- a/tools/gputop/xe_gputop.h
-+++ b/tools/gputop/xe_gputop.h
-@@ -39,8 +39,11 @@ struct xe_engine {
- struct xe_pmu_device {
- 	unsigned int num_engines;
- 	unsigned int num_counters;
-+	unsigned int num_gts;
- 	int fd;
- 	char *device;
-+	struct xe_pmu_counter *gt_act_freq;
-+	struct xe_pmu_counter *gt_req_freq;
- 	struct xe_engine engine;
- };
+ 	if (HAS_4TILE(ibb->devid))
+ 		tc->tc3_4.output_mocs_idx = IS_DG2(ibb->devid) ? 3 : 9;
  
 -- 
-2.34.1
+2.48.0
 
