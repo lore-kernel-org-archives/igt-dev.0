@@ -4,58 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A007C83F17
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Jul 2025 10:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41822C83F1A
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Jul 2025 10:44:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D24FC10E138;
-	Wed, 23 Jul 2025 10:24:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F336D88FAE;
+	Wed, 23 Jul 2025 10:44:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fAz47djD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kOYhtKFf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF63D10E138
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Jul 2025 10:24:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67B5588FAE
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Jul 2025 10:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753266278; x=1784802278;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=7KMa/NSRXNT4G7IEoT+9tPHs968K5YzRhYIMcgZrhJ0=;
- b=fAz47djDhaltQBcjBxSuZO5JqCo1U5vyzzfu07xrxQVeriVFNKwgK2Ls
- L35r9DkTr8KHKaoJ9FtJnEO/INCD02nHDvdhEu8WS4E/SbhFDz5dilLrF
- LeT64V6C8w0by5D9rAA4QZRhrkuLyGHVZr/mJhjggUliiVlQqfqQi4ZIc
- OonjgrCPe8JvzO+DrovwA3PojTmdZCPB8AvGJgXgwhhd0zvmyfA6zaJUs
- 7jhvkkKzltJhmC4ahUAfqdly8F+kD1Xb/zFNxz9ldfR0i7J/C+tPh+fEJ
- jgv9MJnGowzZSKOTdH004xyQSe4NbdjddN3jUqCsK/xCwKx0wq58QymU8 A==;
-X-CSE-ConnectionGUID: n3Q8+cJlSCW+AfZvN5i+cA==
-X-CSE-MsgGUID: kXgFJMNFQ1K6mtrntT/CEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="43162948"
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="43162948"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jul 2025 03:24:37 -0700
-X-CSE-ConnectionGUID: sbc3eLVNTqKB0/ecu8CvAA==
-X-CSE-MsgGUID: ZxNkyI9RTQ+QsF9/zcyoYg==
+ t=1753267461; x=1784803461;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Ml9cIpaxkh8N13+MnpWSvY3fcZ3ZVb0N5t0qJSBMHM8=;
+ b=kOYhtKFfBsbGb8P5Rrk5v+s9ZDo0gSsqMQO4yXKnmCYIiJK2WbXcNMLD
+ HMudbcMQSuzpMvGIDa0nzUoVtvfKkSK36Puwy4sfI8BZQSGT5cH91SmgG
+ jU6rjuLPabi3YPgMa3nIx4V41olUdmPzLQb+gHffrHr32epoborDy8ubq
+ QVlHEJ2ger0i0RCpOZWqCXRK8tYnQ6dXQ/V5eeKF9kJY13CwN/WmGokTw
+ 7EOAT4VLRm9bdgCDNvtWG9eMyK4Uq2WXmuoI4fN+5ISXxa8jTJ3kCmW/G
+ 2DEZvRf/fH7noX+5g3e0NRKsaJn1C76pfl5zjhxGK3MFvV5QTGD/5E1k3 g==;
+X-CSE-ConnectionGUID: x8Oj7KZYS46sZvXg/uyHiA==
+X-CSE-MsgGUID: tJttRrJ6SJC1QAXM0zBGPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="55393772"
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="55393772"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jul 2025 03:44:20 -0700
+X-CSE-ConnectionGUID: xtoKjIyzTZWXr6XkTzkcIg==
+X-CSE-MsgGUID: bVIIjqYxThiIZ+UDtZI2RA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="163944817"
-Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
- ([10.245.118.0])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jul 2025 03:24:36 -0700
-Message-ID: <e865cf60-a919-4331-b088-1249768c50e5@linux.intel.com>
-Date: Wed, 23 Jul 2025 12:24:33 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/i915_test_config: Add all core tests
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Karthik B S <karthik.b.s@intel.com>
-References: <20250723083150.29838-1-kamil.konieczny@linux.intel.com>
-Content-Language: en-US
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="159984222"
+Received: from mstancu-mobl1.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.118.0])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jul 2025 03:44:18 -0700
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250723083150.29838-1-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH v4 i-g-t 0/3] Add post-kmod-unbind igt_hook
+Date: Wed, 23 Jul 2025 12:44:03 +0200
+Message-ID: <20250723104406.58784-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,36 +68,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Introduces a new IGT hook: IGT_HOOK_POST_KMOD_UNBIND
+(post-kmod-unbind), designed to facilitate kmemleak scans in our CI
+workflows.
 
+As suggested by Lucas de Marchi, a useful strategy for detecting memory
+leaks is to run kmemleak scans both before binding and after unbinding
+the kernel module. This patch adds support for the latter scenario,
+enabling automated scans immediately after the module is unbound.
 
-On 7/23/2025 10:31 AM, Kamil Konieczny wrote:
-> Instead of listing tests one by one add all core tests. This
-> will add two new tests core_debugfs and core_sysfs.
-> 
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Example test-list:
+ igt@xe_module_load@load
+ igt@core_hotunplug@unbind-rebind
+ igt@xe_module_load@unload
 
-> ---
->  tests/intel/i915_test_config.json | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/tests/intel/i915_test_config.json b/tests/intel/i915_test_config.json
-> index a31e00893..1394d0920 100644
-> --- a/tests/intel/i915_test_config.json
-> +++ b/tests/intel/i915_test_config.json
-> @@ -2,10 +2,7 @@
->      "description": "JSON file to be used to parse i915 documentation",
->      "name": "Tests for i915 Driver",
->      "drivers": [ "i915" ],
-> -    "files": [ "*.c", "../core_auth.c", "../core_getclient.c",
-> -               "../core_getstats.c", "../core_getversion.c",
-> -               "../core_hotunplug.c", "../core_setmaster.c",
-> -               "../core_setmaster_vs_auth.c",
-> +    "files": [ "*.c", "../core_*.c",
->                 "../device_reset.c", "../dmabuf.c",
->                 "../drm_import_export.c", "../drm_mm.c",
->                 "../dumb_buffer.c", "../prime_busy.c", "../prime_mmap.c",
+Example usage:
+ IGT_PING_HOSTNAME='10.211.176.1'
+ IGT_TEST_ROOT='/home/gta/UPSTREAM/igt-gpu-tools/build/tests/'
+ ./build/runner/igt_runner -o -l verbose -s --per-test-timeout 120 \
+   --overall-timeout 960 --piglit-style-dmesg --dmesg-warn-level=4 \
+   --use-watchdog --inactivity-timeout 90 \
+   --abort-on-monitored-error=ping,taint --disk-usage-limit=10M \
+   --facts --hook 'post-kmod-unbind:OUTF=/tmp/kmemleak-post-unbind && \
+                   echo $IGT_HOOK_TEST_FULLNAME $IGT_HOOK_TEST $IGT_HOOK_SUBTEST >> $OUTF && \
+                   echo scan > /sys/kernel/debug/kmemleak && \
+                   cat /sys/kernel/debug/kmemleak >> $OUTF' \
+   --test-list ~/igt/test-list \
+   /home/gta/igt/0
+
+Known Limitations: In certain cases, such as when running
+igt@core_hotunplug@unbind-rebind, the unbind operation is explicitly
+managed by the igt if the module is already loaded. However, if the
+unbind occurs outside of igt, the hook will not be triggered and
+the scan will not run.
+
+v4:
+ - Updated hook unit testing to account for new env var
+ - Updated cover letter
+
+v3:
+ - Wrote Gustavo's name and email address correctly (:facepalm:)
+ - Renamed the hook to IGT_HOOK_POST_KMOD_UNBIND as the unbind can also happen
+   for snd modules
+ - Changed the logic for the IGT_HOOK_KMOD_UNBIND_MODULE_NAME env var so that
+   it is only populated when the correct hook is used.
+
+v2:
+ - change function name to igt_core_get_igt_hook()
+ - Add env var IGT_HOOK_KMOD_UNBIND_MODULE_NAME
+ - Fix minor issues
+
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Peter Senna Tschudin (3):
+  lib/igt_core: Expose igt_hook pointer for other libs
+  lib/igt_kmod: Add IGT_HOOK_POST_KMOD_UNBIND
+  lib/tests: Update hook unit testing
+
+ lib/igt_core.c                   | 12 ++++++++++++
+ lib/igt_core.h                   |  2 ++
+ lib/igt_hook.c                   | 11 +++++++++++
+ lib/igt_hook.h                   |  3 +++
+ lib/igt_kmod.c                   |  8 ++++++++
+ lib/tests/igt_hook.c             |  1 +
+ lib/tests/igt_hook_integration.c |  9 +++++----
+ 7 files changed, 42 insertions(+), 4 deletions(-)
+
+-- 
+2.43.0
 
