@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61227C83F17
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Jul 2025 05:53:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B63DBC83F25
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Jul 2025 05:54:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1DAAC10E749;
-	Wed, 23 Jul 2025 05:53:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F1EA10E74B;
+	Wed, 23 Jul 2025 05:54:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kyI0NIQG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LcTzsm9f";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA35D10E748
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Jul 2025 05:53:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2B6D10E74A
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Jul 2025 05:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753250038; x=1784786038;
+ t=1753250040; x=1784786040;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Q7qsgJ/ihmeFxISqHNnllzMPgFHPVIGjMhy1+0Q0dMo=;
- b=kyI0NIQGajseAW0bL8i7KLC8TQRjtO3v4vXbFfTeS0EKgvAJA6bbhfMf
- HiZ/W3rorsxqz129rrt1QZehq1X/PV+7Xq8OzIfgGuYMyD0RrAPNFNnft
- vzAIu3ohF6KEXVyPv5e50xc58PWhiVE8dDCgs6bRs38Y7NMoCMdMXChPr
- TblqsEGvpf6y3Pa0EhIniW9L7wzfNP1GRRlB5vQQvrwxdV3a5rv0OKgCY
- 4gCjfomrNSYlvNEbWhqpSNV3VRMom5g83usP18P1+bnixt9oLgpv4d40z
- QJeaL8hpHKWk+2qRuECw96n6EbmNgp9bpg0oc7XiOxIocbEjeIxhErF18 w==;
-X-CSE-ConnectionGUID: FHwzAlcPSsu/q+JFFq0Ahg==
-X-CSE-MsgGUID: REBZxZ4VRDitXEMDxuQ39w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="66950136"
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="66950136"
+ bh=hTHUOj7azK9BzckEhXoKSWRze/rNR25Id+pnb0sQcIw=;
+ b=LcTzsm9f24XuZwxSouZvatO2mfAHLhxNapNlWH1iVIQQODh2fAuEVMbj
+ uI4biq9nCZnBdlI6Xv6kUl+wBIOwRsK+/CYJ9o1TFDCAZ8zRHOooHXGXc
+ PbT8w0tlmf2c2EuXUkG3928DnJSWxuqNfYBlCNOADweiEhMUbRQRMgC51
+ g3dA0anh775pSzqt5eXR0acVkEgJg0YYvEVrQlBotYHFrN26ILj/LVCJI
+ oclPsYsbS38mrT/N91A5ZUrbuUSV5i4dIw2MtwaruoWYRglXUG/XozjXX
+ sQOGIY18q+qrXFUpg9TX5R7UpUFmntbxwe7BJJIWECCALqQizYZDsfrrS A==;
+X-CSE-ConnectionGUID: sH+9Ng/2Q5C5GNn4AaA/4w==
+X-CSE-MsgGUID: o3MUJHfPQBeFe1uJROBw0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="66950141"
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="66950141"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2025 22:53:58 -0700
-X-CSE-ConnectionGUID: LlzpRyUFQGKDvruU7JN1hA==
-X-CSE-MsgGUID: ZWDgZlDSRHahWjPAUfe7CA==
+ 22 Jul 2025 22:54:00 -0700
+X-CSE-ConnectionGUID: MsCmHRkTQHC1Qeo1UVOQpQ==
+X-CSE-MsgGUID: 7Y19mT2VQSSKurM3zy1Xng==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="164794414"
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="164794421"
 Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2025 22:53:56 -0700
+ 22 Jul 2025 22:53:58 -0700
 From: Karthik B S <karthik.b.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: santhosh.reddy.guddati@intel.com, arun.r.murthy@intel.com,
  jeevan.b@intel.com, Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v3 4/5] lib/igt_pm: Move check_dpms to igt_pm lib
-Date: Wed, 23 Jul 2025 11:23:52 +0530
-Message-ID: <20250723055353.1137242-4-karthik.b.s@intel.com>
+Subject: [PATCH i-g-t v3 5/5] tests/kms_async_flips: Add DPMS subtest
+Date: Wed, 23 Jul 2025 11:23:53 +0530
+Message-ID: <20250723055353.1137242-5-karthik.b.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250723055353.1137242-1-karthik.b.s@intel.com>
 References: <20250723055353.1137242-1-karthik.b.s@intel.com>
@@ -68,33 +68,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The check_dpms function in kms_pm_backlight.c is moved to igt_pm lib
-to make it accessible to other subtests which need to perform a
-simple DPMS toggle.
+Test functionality of async flips with DPMS.
+
+v2: Update runtime to accomodate for first flip after DPMS (Arun)
+
+v3: Rebase.
 
 Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 ---
- lib/igt_pm.c                   | 21 +++++++++++++++++++++
- lib/igt_pm.h                   |  1 +
- tests/intel/kms_pm_backlight.c | 20 ++------------------
- 3 files changed, 24 insertions(+), 18 deletions(-)
+ tests/kms_async_flips.c | 36 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 7f9cbd69a..cf1c442f8 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -1487,3 +1487,24 @@ bool igt_has_pci_pm_capability(struct pci_device *pci_dev)
- 
- 	return (offset > 0);
- }
-+
-+/**
-+ * igt_pm_dpms_toggle:
-+ * @output: igt output for which DPMS toggle has to be performed
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 1d8ee10a9..8a943fe01 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -90,6 +90,9 @@
+  * SUBTEST: async-flip-hang
+  * Description: Verify the async flip functionality with hang cycle
+  *
++ * SUBTEST: async-flip-dpms
++ * Description: Verify the async flip functionality with dpms cycle
 + *
-+ * Toggles the DPMS state of output to OFF and then back ON.
-+ */
-+void igt_pm_dpms_toggle(igt_output_t *output)
+  * SUBTEST: overlay-atomic
+  * Description: Verify overlay planes with async flips in atomic API
+  *
+@@ -141,6 +144,7 @@ typedef struct {
+ 	bool alternate_sync_async;
+ 	bool suspend_resume;
+ 	bool hang;
++	bool dpms;
+ 	struct buf_ops *bops;
+ 	bool atomic_path;
+ 	bool overlay_path;
+@@ -386,6 +390,21 @@ static int perform_flip(data_t *data, int frame, int flags)
+ 	return ret;
+ }
+ 
++static void check_dpms(igt_output_t *output)
 +{
 +	igt_require(igt_setup_runtime_pm(output->display->drm_fd));
 +
@@ -108,62 +119,51 @@ index 7f9cbd69a..cf1c442f8 100644
 +				   DRM_MODE_DPMS_ON);
 +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
 +}
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index c73972f2a..e931e51af 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -98,5 +98,6 @@ uint64_t igt_pm_get_runtime_active_time(struct pci_device *pci_dev);
- int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
- void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
- bool igt_has_pci_pm_capability(struct pci_device *pci_dev);
-+void igt_pm_dpms_toggle(igt_output_t *output);
- 
- #endif /* IGT_PM_H */
-diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
-index 9b341c73a..a0ecf2b0e 100644
---- a/tests/intel/kms_pm_backlight.c
-+++ b/tests/intel/kms_pm_backlight.c
-@@ -142,22 +142,6 @@ static void test_fade(igt_backlight_context_t *context)
- 	}
- }
- 
--static void
--check_dpms(igt_output_t *output)
--{
--	igt_require(igt_setup_runtime_pm(output->display->drm_fd));
--
--	kmstest_set_connector_dpms(output->display->drm_fd,
--				   output->config.connector,
--				   DRM_MODE_DPMS_OFF);
--	igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
--
--	kmstest_set_connector_dpms(output->display->drm_fd,
--				   output->config.connector,
--				   DRM_MODE_DPMS_ON);
--	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
--}
--
- static void check_dpms_cycle(igt_backlight_context_t *context)
++
+ static void test_async_flip(data_t *data)
  {
- 	int max, val_1, val_2;
-@@ -168,7 +152,7 @@ static void check_dpms_cycle(igt_backlight_context_t *context)
- 	igt_backlight_write(max / 2, "brightness", context);
- 	igt_backlight_read(&val_1, "actual_brightness", context);
+ 	int ret, frame;
+@@ -395,7 +414,7 @@ static void test_async_flip(data_t *data)
+ 	uint64_t ahnd = 0;
+ 	int mid_time = RUN_TIME / 2;
+ 	float run_time;
+-	bool temp = data->suspend_resume || data->hang;
++	bool temp = data->suspend_resume || data->hang || data->dpms;
  
--	check_dpms(context->output);
-+	igt_pm_dpms_toggle(context->output);
+ 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  
- 	igt_backlight_read(&val_2, "actual_brightness", context);
- 	igt_assert_eq(val_1, val_2);
-@@ -310,7 +294,7 @@ igt_main
- 				test_setup(display, &contexts->output[j]);
+@@ -488,10 +507,15 @@ static void test_async_flip(data_t *data)
+ 			break;
+ 		}
  
- 				if (tests[i].flags == TEST_DPMS)
--					check_dpms(contexts[j].output);
-+					igt_pm_dpms_toggle(contexts[j].output);
++		if (data->dpms && diff.tv_sec == mid_time && temp) {
++			temp = false;
++			check_dpms(data->output);
++		}
++
+ 		frame++;
+ 	} while (diff.tv_sec < RUN_TIME);
  
- 				if (tests[i].flags == TEST_SUSPEND)
- 					check_suspend(contexts[j].output);
+-	if (data->suspend_resume)
++	if (data->suspend_resume || data->dpms)
+ 		run_time = RUN_TIME - (1.0 / data->refresh_rate);
+ 	else
+ 		run_time = RUN_TIME;
+@@ -1206,6 +1230,14 @@ igt_main
+ 		data.hang = false;
+ 	}
+ 
++	igt_describe("Verify the async flip functionality after dpms cycle");
++	igt_subtest_with_dynamic("async-flip-dpms") {
++		test_init_ops(&data);
++		data.dpms = true;
++		run_test(&data, test_async_flip);
++		data.dpms = false;
++	}
++
+ 	igt_fixture {
+ 		for (i = 0; i < NUM_FBS; i++) {
+ 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
 -- 
 2.43.0
 
