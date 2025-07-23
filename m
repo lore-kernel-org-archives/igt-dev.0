@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2503C83F17
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Jul 2025 16:41:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0621C83F17
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Jul 2025 16:51:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5CE6810E825;
-	Wed, 23 Jul 2025 16:41:29 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8006810E81A;
- Wed, 23 Jul 2025 16:41:28 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5950201453607414469=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 966D810E82C;
+	Wed, 23 Jul 2025 16:51:32 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PG0gWitx";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E377B10E82C
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Jul 2025 16:51:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1753289491; x=1784825491;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=L/3IEaIorLH3B7/mREsMpKhLatZjT3lMsxAUBKW9pgg=;
+ b=PG0gWitxa8Z7AxI9oqtwVG9udC5ZQGgghpRCk2pJkmU36qNHaDl3UEZq
+ oMPqTernTykNPrPgPLip1ibDfDkJcRG3VZbMNMV2S7uhF9dcPvWlKPDcY
+ 8jlb0fc0SU6hIngnHSKg/avK9Y4xUEDXfcCQEuAepmulaF4DLCUBnYyv2
+ I/4reQJcfo3vNwcK3k6gDy0UW2U3qgq+LCMlWLc5DThPi0QhG9oT6ceOO
+ +RhfBi/pd2s5Lmg5HQuAMrzxLdwfsKIRbqxuGvgMloKanuKJjJuyWFeIS
+ WPVKyaQmhTe/ZiszXPC+8YYvYcHe+WU81YqKa22gkJf7Np4SYwMna/m/j g==;
+X-CSE-ConnectionGUID: hTTcFc0MQ/Sbi51Nho7phQ==
+X-CSE-MsgGUID: TB+Xx+k0TbKqIIPJ6jM98A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55539947"
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="55539947"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jul 2025 09:51:30 -0700
+X-CSE-ConnectionGUID: TOxPegb3QEaHuWEr6Z2utA==
+X-CSE-MsgGUID: WGc0eiuMQmCmc5UpZbKZ7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; d="scan'208";a="183279753"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2025 09:51:29 -0700
+Date: Wed, 23 Jul 2025 18:51:27 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>
+Subject: Re: [PATCH i-g-t] kms_debugfs: Add missing free()
+Message-ID: <20250723165127.oybeftuljqob5dpc@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>
+References: <20250723101519.29940-1-peter.senna@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Add_post-kmod-unbind_igt=5F?=
- =?utf-8?q?hook_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Jul 2025 16:41:28 -0000
-Message-ID: <175328888851.183981.6716423468688617786@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250723104406.58784-1-peter.senna@linux.intel.com>
-In-Reply-To: <20250723104406.58784-1-peter.senna@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250723101519.29940-1-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,133 +67,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5950201453607414469==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Peter,
+On 2025-07-23 at 12:15:19 +0200, Peter Senna Tschudin wrote:
 
-== Series Details ==
+subject could be improved:
 
-Series: Add post-kmod-unbind igt_hook (rev2)
-URL   : https://patchwork.freedesktop.org/series/151642/
-State : failure
+[PATCH i-g-t] tests/kms_debugfs: Add missing free()
 
-== Summary ==
+> Commit ebe65a923a2b ("tests: Add kms_debugfs") introduced a new test.
+> Unfortunately that commit missed a call to free(display) during the
+> cleanup.
+> 
+> Fixes: ebe65a923a2b ("tests: Add kms_debugfs")
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> ---
+>  tests/kms_debugfs.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tests/kms_debugfs.c b/tests/kms_debugfs.c
+> index 75ef15353..25134e941 100644
+> --- a/tests/kms_debugfs.c
+> +++ b/tests/kms_debugfs.c
+> @@ -129,6 +129,7 @@ igt_main
+>  
+>  	igt_fixture {
+>  		igt_display_fini(display);
+> +		free(display);
 
-CI Bug Log - changes from XEIGT_8475_BAT -> XEIGTPW_13514_BAT
-====================================================
+Or use static var like in all other kms tests?
+Cause you could end up with no display allocated,
+so it should be:
 
-Summary
--------
+		if (display) {
+	  		igt_display_fini(display);
+			free(display);
+		}
 
-  **FAILURE**
+Regards,
+Kamil
 
-  Serious unknown changes coming with XEIGTPW_13514_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_13514_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_13514_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_pat@pat-index-xe2@render:
-    - bat-bmg-2:          [PASS][1] -> [FAIL][2] +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8475/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13514/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
-
-  
-
-
-Build changes
--------------
-
-  * IGT: IGT_8475 -> IGTPW_13514
-
-  IGTPW_13514: 48e3394badbecfcd70cf40881b2bd17dc133830c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8475: 1ddc997191d8aa008b49b5a4c47cf295c9a3c4f4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3464-aee6c447a624b071ccee8629d739fd89c6387ea1: aee6c447a624b071ccee8629d739fd89c6387ea1
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13514/index.html
-
---===============5950201453607414469==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add post-kmod-unbind igt_hook (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151642/">https://patchwork.freedesktop.org/series/151642/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13514/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13514/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8475_BAT -&gt; XEIGTPW_13514_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_13514_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_13514_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_13514_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_pat@pat-index-xe2@render:<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8475/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13514/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8475 -&gt; IGTPW_13514</li>
-</ul>
-<p>IGTPW_13514: 48e3394badbecfcd70cf40881b2bd17dc133830c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8475: 1ddc997191d8aa008b49b5a4c47cf295c9a3c4f4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3464-aee6c447a624b071ccee8629d739fd89c6387ea1: aee6c447a624b071ccee8629d739fd89c6387ea1</p>
-
-</body>
-</html>
-
---===============5950201453607414469==--
+>  		close(debugfs);
+>  		drm_close_driver(fd);
+>  	}
+> -- 
+> 2.43.0
+> 
