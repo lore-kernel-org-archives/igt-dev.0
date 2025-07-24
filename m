@@ -4,61 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E486C83F1A
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Jul 2025 11:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22718C83F1A
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Jul 2025 12:27:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5BEAD10E93B;
-	Thu, 24 Jul 2025 11:55:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0B3E10E1FC;
+	Thu, 24 Jul 2025 12:27:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S0Qdbdif";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dYeyi+BS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5363D10E93B
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Jul 2025 11:55:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 39FD110E1FC
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Jul 2025 12:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753358148; x=1784894148;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=1l/Pq4S0Pdj8A5frOPjT0lo7kuqR0/jgSLs4PvhF5Gc=;
- b=S0QdbdifTCeB3CTNMWv1XwcUDNZuf7GmQdMaiHpjDh9i0scvMpIizd/6
- Xi+3JQIe1s3h5is7nQ+oML8l4LML7U24V1g/CEbOceOTkhK21d35X623X
- DVsKHr+Q094IZnv91LIqIlBKVZ5wdyUEBuiZTg/cJ1QbomcXC6l2sUiry
- aL51rr4knHxL8tT70BiK4lBhDyTMSg+tmjW2Xl0vdeeDGnCWT7wmFwK/9
- OpKr1+Ht5MXdckSf5vNN/cfzttwYvi5srY+LxwQdQpjwRC2ml9MhZRkI5
- Q6yOAVEOUBa0cPSWXKCmBLO5xcPTgqWp/XJKA0bB1XkBq7RIqoYOJHLnB Q==;
-X-CSE-ConnectionGUID: piBTYS4aR6C/Cf/lpO8ACA==
-X-CSE-MsgGUID: K0s0gKAGQwCXTDuv3/F87Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55635534"
-X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; d="scan'208";a="55635534"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jul 2025 04:55:48 -0700
-X-CSE-ConnectionGUID: MOApVqgoTyuWIp4rRNAAYA==
-X-CSE-MsgGUID: lsiZcMjkRQ+dcgz0w2y30A==
+ t=1753360040; x=1784896040;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jUe38OX+Vntsw4a8ukQNigHNJ7bowzsgXqvztLZlzJA=;
+ b=dYeyi+BS1IZPrZ9HNBMHL3Kd0S2ZZ1HMdTWQyPisCaSkFyGju120TWO2
+ VnqdzQYzVSA2PhphtAAKlgI2gzNeYQTHO97nrKVMd1at6+kLB5rk9/idQ
+ 6rYbS40vGXpmac1Ue/iDSLUUqUdxtTibY2ZmJD35HG9rvXPweJqTlW+Bb
+ qZ3eQB682EAmAh7GQ623wrBJMM/xmrYgb2TNa4vo+5zZ8lU9GTZKvK53t
+ OfTMFArZ9W3HgTw0ZgcArEt5nRNfGZm40rhq7+iqlwBSPFEVg0eSYhObO
+ U0UMQqXtxjAMooSdJZaYj8yypneWmuWwZlF5NpTrHDIBNU0CNCl3fl1Yn A==;
+X-CSE-ConnectionGUID: pVupwn09QpuhppYnKiGNSg==
+X-CSE-MsgGUID: aUdcdlyyQ86ngX5Z+iOSQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55545240"
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; d="scan'208";a="55545240"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jul 2025 05:27:20 -0700
+X-CSE-ConnectionGUID: qi7vr7RpTCuhbwrYpr8YLQ==
+X-CSE-MsgGUID: Ax5Dhx7CT1eKH8Qd9bd4Ug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; d="scan'208";a="159950596"
-Received: from mstancu-mobl1.ger.corp.intel.com (HELO [10.245.118.0])
- ([10.245.118.0])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jul 2025 04:55:46 -0700
-Message-ID: <02600808-da76-4681-99f6-73ab1711ad67@linux.intel.com>
-Date: Thu, 24 Jul 2025 13:55:42 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4] runner/executor: Abort if dmesg is flooded
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Ewelina Musial <ewelina.musial@intel.com>,
- Karol Krol <karol.krol@intel.com>, Petri Latvala <adrinael@adrinael.net>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20250723160609.103140-1-kamil.konieczny@linux.intel.com>
-Content-Language: en-US
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; d="scan'208";a="159793216"
+Received: from mstancu-mobl1.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.118.0])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jul 2025 05:27:18 -0700
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20250723160609.103140-1-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Karthik B S <karthik.b.s@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH v2 i-g-t] tests/kms_debugfs: Use static var for display
+Date: Thu, 24 Jul 2025 14:27:10 +0200
+Message-ID: <20250724122710.192060-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -75,379 +68,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Commit ebe65a923a2b ("tests: Add kms_debugfs") introduced a new test.
+Unfortunately, that commit used dynamic allocation for `display` and
+missed a call to free(display) during cleanup. Use a stack variable
+instead, eliminating the need for dynamic memory management.
 
+Fixes: ebe65a923a2b ("tests: Add kms_debugfs")
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+---
+ tests/kms_debugfs.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-On 7/23/2025 6:06 PM, Kamil Konieczny wrote:
-> Current disk limit triggers once when it is exceeded during test
-> monitoring. After that happens executor no longer checks if
-> kernel is still printing plenty of messages.
-> 
-> Create a way to abort test in such scenarios with the help of
-> measureing kernel kmsg activity before first test is executed
-> and then also check it after exceeding disk limit.
-> 
-> Also print info about it after each test ends.
-> 
-> v2: fix error when kmsg open fails, fix reading proc (Kamil)
->   changed calculation of max bps (Peter)
-> v3: abort only when disk limit was actually exceeded,
->   print info instead of aborting after every test (Kamil)
-> v4: added abort at main monitoring loop, also cleaning up
->   printing messages (Kamil)
-> 
-> Cc: Ewelina Musial <ewelina.musial@intel.com>
-> Cc: Karol Krol <karol.krol@intel.com>
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> Cc: Ryszard Knop <ryszard.knop@intel.com>
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  runner/executor.c | 228 +++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 214 insertions(+), 14 deletions(-)
-> 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 847abe481..db2c05b03 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -637,6 +637,11 @@ const char *get_out_filename(int fid)
->  	return "output-filename-index-error";
->  }
->  
-> +static int open_kmsg_rdonly(void)
-> +{
-> +	return open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK);
-> +}
-> +
->  /* Returns the number of bytes written to disk, or a negative number on error */
->  static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
->  {
-> @@ -734,6 +739,95 @@ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
->  	}
->  }
->  
-> +/*
-> + * Measure how many bytes appears in dmesg.
-> + * This is the same as above dump_dmesg() but with reading only.
-> + */
-> +static unsigned long long read_dmesg2(int kmsgfd, unsigned long long size, int wrfd)
-> +{
-> +	bool underflow_once = false;
-> +	int comparefd;
-> +	char buf[2048];
-> +	unsigned int flags;
-> +	unsigned long long readed = 0;
-> +	unsigned long long seq, cmpseq, usec;
-> +	char cont;
-> +	ssize_t r;
-> +
-> +	if (kmsgfd < 0)
-> +		return 0;
-> +
-> +	if (wrfd < 0)
-> +		wrfd = 0;
-> +
-> +	comparefd = open_kmsg_rdonly();
-> +	if (comparefd < 0) {
-> +		errf("Error opening another fd for /dev/kmsg\n");
-> +		return 0;
-> +	}
-> +
-> +	lseek(comparefd, 0, SEEK_END);
-> +
-> +	while (1) {
-> +		if (comparefd >= 0) {
-> +			r = read(comparefd, buf, sizeof(buf) - 1);
-> +			if (r < 0) {
-> +				if (errno != EAGAIN && errno != EPIPE) {
-> +					errf("Warning: Error reading kmsg comparison record: %m\n");
-> +					close(comparefd);
-> +					return readed;
-> +				}
-> +			} else {
-> +				buf[r] = '\0';
-> +				if (sscanf(buf, "%u,%llu,%llu,%c;",
-> +					   &flags, &cmpseq, &usec, &cont) == 4) {
-> +					close(comparefd);
-> +					comparefd = -1;
-> +				}
-> +			}
-> +		}
-> +
-> +		r = read(kmsgfd, buf, sizeof(buf));
-> +		if (r < 0) {
-> +			if (errno == EPIPE) {
-> +				if (!underflow_once) {
-> +					errf("Warning: kernel log ringbuffer underflow, some records lost.\n");
-> +					underflow_once = true;
-> +				}
-> +				continue;
-> +			} else if (errno == EINVAL) {
-> +				errf("Warning: Buffer too small for kernel log record, record lost.\n");
-> +				continue;
-> +			} else if (errno != EAGAIN) {
-> +				errf("Error reading from kmsg: %m\n");
-> +				return 0;
-> +			}
-> +
-> +			/* EAGAIN, so we're done reading */
-> +			close(comparefd);
-> +
-> +			return readed;
-> +		}
-> +
-> +		readed += r;
-> +		if (wrfd && r)
-> +			write(wrfd, buf, r);
-> +
-> +		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
-> +					    &flags, &seq, &usec, &cont) == 4) {
-> +			if (seq >= cmpseq)
-> +				return readed;
-> +		}
-> +
-> +		if (size && readed >= size) {
-> +			if (comparefd >= 0)
-> +				close(comparefd);
-> +
-> +			return readed;
-> +		}
-> +	} /* while(1) */
-> +}
-> +
->  static bool kill_child(int sig, pid_t child)
->  {
->  	/*
-> @@ -948,6 +1042,78 @@ static size_t calc_last_dmesg_chunk(size_t limit, size_t disk_usage)
->  	return dt != 0 ? dt : -1;
->  }
->  
-> +/*
-> + * Returns:
-> + *  =>0.0 - Success, measured kmsg activity in bytes/second
-> + *  -1.0 - Failure
-> + */
-> +static double measure_dmesg_bytes_per_sec(int wrfd)
-> +{
-> +	struct timespec time_beg, time_now, nsec_sleep;
-> +	unsigned long long readed, rnow;
-> +	double time, ratio;
-> +	int kmsgfd, cnt, zero;
-> +
-> +	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
-> +		errf("Warning: Cannot open /dev/kmsg\n");
-> +
-> +		return -1.0;
-> +	}
-> +
-> +	if (wrfd < 0)
-> +		wrfd = 0;
-> +
-> +	lseek(kmsgfd, 0, SEEK_END);
-> +	nsec_sleep.tv_sec = 0;
-> +	nsec_sleep.tv_nsec = 10ULL * 1000ULL * 1000ULL; /* 10^7 nanoseconds = 10^-2 sec */
-> +	runner_gettime(&time_beg);
-> +	for (cnt = 0, zero = 0, time = 0.0, readed = 0.0; cnt < 11 && time < 0.01; ++cnt) {
-> +		if (zero)
-> +			nanosleep(&nsec_sleep, NULL);
-> +
-> +		rnow = read_dmesg2(kmsgfd, 128 * 1024, wrfd); /* 64KB max */
-> +		readed += rnow;
-> +		runner_gettime(&time_now);
-> +		time = igt_time_elapsed(&time_beg, &time_now);
-> +		if (time <= 0.0) {
-> +			errf("Warning: Time underflow\n");
-> +
-> +			return -1.0;
-> +		}
-> +
-> +		if (rnow == 0)
-> +			++zero;
-> +		else
-> +			zero = 0;
-> +	}
-> +
-> +	runner_gettime(&time_now);
-> +	time = igt_time_elapsed(&time_beg, &time_now);
-> +	if (time <= 0.0) {
-> +		errf("Warning: Time underflow\n");
-> +
-> +		return -1.0;
-> +	}
-> +
-> +	ratio = (double)readed / time;
-> +
-> +	return ratio;
-> +}
-> +
-> +/* Returns: true if ratio lower or equal than maxratio */
-> +static bool check_dmesg_ratio(double maxratio, int log_level, bool sync, int wrfd)
-> +{
-> +	double new_dmesg_bps = measure_dmesg_bytes_per_sec(wrfd);
-> +
-> +	if (log_level >= LOG_LEVEL_NORMAL) {
-> +		outf("Dmesg ratio %0.3fKB/s\n", new_dmesg_bps / 1024);
-> +		if (sync)
-> +			fflush(stdout);
-> +	}
-> +
-> +	return new_dmesg_bps <= maxratio;
-> +}
-> +
->  /*
->   * Returns:
->   *  =0 - Success
-> @@ -960,6 +1126,7 @@ static int monitor_output(pid_t child,
->  			  int *outputs,
->  			  double *time_spent,
->  			  struct settings *settings,
-> +			  double max_dmesg_ratio,
->  			  char **abortreason,
->  			  bool *abort_already_written)
->  {
-> @@ -1463,29 +1630,31 @@ static int monitor_output(pid_t child,
->  				 * exceeded the disk usage limit.
->  				 */
->  				if (killed && disk_usage_limit_exceeded(settings, disk_usage)) {
-> +					char killmsg[256];
-> +
->  					timeoutresult = false;
-> +					snprintf(killmsg, sizeof(killmsg),
-> +						 "runner: This test was killed due to exceeding disk usage limit. "
-> +						 "(Used %zd bytes, limit %zd)\n",
-> +						 disk_usage,
-> +						 settings->disk_usage_limit);
->  
->  					if (socket_comms_used) {
->  						struct runnerpacket *message;
-> -						char killmsg[256];
->  
-> -						snprintf(killmsg, sizeof(killmsg),
-> -							 "runner: This test was killed due to exceeding disk usage limit. "
-> -							 "(Used %zd bytes, limit %zd)\n",
-> -							 disk_usage,
-> -							 settings->disk_usage_limit);
->  						message = runnerpacket_log(STDOUT_FILENO, killmsg);
->  						write_packet_with_canary(outputs[_F_SOCKET], message, settings->sync);
->  						free(message);
->  					} else {
-> -						dprintf(outputs[_F_OUT],
-> -							"\nrunner: This test was killed due to exceeding disk usage limit. "
-> -							"(Used %zd bytes, limit %zd)\n",
-> -							disk_usage,
-> -							settings->disk_usage_limit);
-> +						dprintf(outputs[_F_OUT], "%s", killmsg);
->  						if (settings->sync)
->  							fdatasync(outputs[_F_OUT]);
->  					}
-> +
-> +					if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
-> +						asprintf(abortreason, "Dmesg ratio exceeded during test run.");
-> +						aborting = true;
-> +					}
->  				}
->  
->  				if (socket_comms_used) {
-> @@ -1587,7 +1756,7 @@ static int monitor_output(pid_t child,
->  	dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
->  	if (settings->sync)
->  		fdatasync(outputs[_F_DMESG]);
-> -	if (dmesgwritten > 0) {
-> +	if (dmesgwritten > 0 && !aborting) {
->  		disk_usage += dmesgwritten;
->  		if (settings->disk_usage_limit && disk_usage > settings->disk_usage_limit) {
->  			char disk[1024];
-> @@ -1599,6 +1768,11 @@ static int monitor_output(pid_t child,
->  			} else if (killed) {
->  				errf("%s", disk);
->  			}
-> +
-> +			if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
-> +				asprintf(abortreason, "Dmesg ratio exceeded after test ends.");
-> +				aborting = true;
-> +			}
->  		}
->  	}
->  
-> @@ -1766,6 +1940,7 @@ static int execute_next_entry(struct execute_state *state,
->  			      size_t total,
->  			      double *time_spent,
->  			      struct settings *settings,
-> +			      double max_dmesg_ratio,
->  			      struct job_list_entry *entry,
->  			      int testdirfd, int resdirfd,
->  			      int sigfd, sigset_t *sigmask,
-> @@ -1814,7 +1989,7 @@ static int execute_next_entry(struct execute_state *state,
->  		goto out_pipe;
->  	}
->  
-> -	if ((kmsgfd = open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK)) < 0) {
-> +	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
->  		errf("Warning: Cannot open /dev/kmsg\n");
->  	} else {
->  		/* TODO: Checking of abort conditions in pre-execute dmesg */
-> @@ -1885,7 +2060,7 @@ static int execute_next_entry(struct execute_state *state,
->  
->  	result = monitor_output(child, outfd, errfd, socketfd,
->  				kmsgfd, sigfd,
-> -				outputs, time_spent, settings,
-> +				outputs, time_spent, settings, max_dmesg_ratio,
->  				abortreason, abort_already_written);
->  
->  out_kmsgfd:
-> @@ -2418,6 +2593,8 @@ bool execute(struct execute_state *state,
->  	     struct settings *settings,
->  	     struct job_list *job_list)
->  {
-> +	static double dmesg_bps = -1.0;
-> +	static double max_dmesg_bps = -1.0;
->  	int resdirfd, testdirfd, unamefd, timefd, sigfd;
->  	struct environment_variable *env_var;
->  	struct utsname unamebuf;
-> @@ -2560,6 +2737,26 @@ bool execute(struct execute_state *state,
->  		}
->  	}
->  
-> +	if (max_dmesg_bps < 0.0) {
-> +		double ncpu_bps = 4 * 1024 * max_t(size_t, sysconf(_SC_NPROCESSORS_ONLN), 4);
-> +		double set_bps = 0.0;
-> +
-> +		dmesg_bps = measure_dmesg_bytes_per_sec(0);
-> +
-> +		if (settings->disk_usage_limit > 0 && settings->per_test_timeout > 0)
-> +			set_bps = (double)settings->disk_usage_limit / (double)settings->per_test_timeout;
-> +
-> +		outf("Dmesg KB/s ratio settings:%0.3f ncpu:%0.3f current:%0.3f\n",
-> +		     set_bps / 1024, ncpu_bps / 1024, dmesg_bps / 1024);
-> +
-> +		if (set_bps > 0.0)
-> +			max_dmesg_bps = set_bps;
-> +		else
-> +			max_dmesg_bps = dmesg_bps > ncpu_bps ? dmesg_bps : ncpu_bps;
-> +
-> +		outf("Using max level dmesg ratio %0.3fKB/s\n", max_dmesg_bps / 1024);
-> +	}
-> +
->  	for (; state->next < job_list->size;
->  	     state->next++) {
->  		char *reason = NULL;
-> @@ -2596,6 +2793,7 @@ bool execute(struct execute_state *state,
->  						    job_list->size,
->  						    &time_spent,
->  						    settings,
-> +						    max_dmesg_bps,
->  						    &job_list->entries[state->next],
->  						    testdirfd, resdirfd,
->  						    sigfd, &sigmask,
-> @@ -2651,6 +2849,8 @@ bool execute(struct execute_state *state,
->  			break;
->  		}
->  
-> +		check_dmesg_ratio(max_dmesg_bps, settings->log_level, settings->sync, 0);
-> +
->  		if (result > 0) {
->  			double time_left = state->time_left;
->  
+diff --git a/tests/kms_debugfs.c b/tests/kms_debugfs.c
+index 75ef15353..570ad1c0c 100644
+--- a/tests/kms_debugfs.c
++++ b/tests/kms_debugfs.c
+@@ -97,7 +97,7 @@ IGT_TEST_DESCRIPTION("Read entries from debugfs with display on/off.");
+ igt_main
+ {
+ 	int debugfs = -1;
+-	igt_display_t *display;
++	igt_display_t display;
+ 	int fd = -1;
+ 
+ 	igt_fixture {
+@@ -107,28 +107,27 @@ igt_main
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 
+-		display = calloc(1, sizeof(*display));
+-		igt_display_require(display, fd);
++		igt_display_require(&display, fd);
+ 
+ 		/* Make sure we have at least one output connected */
+-		igt_display_require_output(display);
++		igt_display_require_output(&display);
+ 	}
+ 
+ 	igt_subtest("display-off-read-all") {
+-		igt_display_all_off(display);
++		igt_display_all_off(&display);
+ 
+ 		igt_dir_process_files_simple(debugfs);
+ 	}
+ 
+ 	igt_subtest("display-on-read-all") {
+ 		/* try to light all pipes */
+-		igt_display_all_on(display);
++		igt_display_all_on(&display);
+ 
+ 		igt_dir_process_files_simple(debugfs);
+ 	}
+ 
+ 	igt_fixture {
+-		igt_display_fini(display);
++		igt_display_fini(&display);
+ 		close(debugfs);
+ 		drm_close_driver(fd);
+ 	}
+-- 
+2.43.0
 
