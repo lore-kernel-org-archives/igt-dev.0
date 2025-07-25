@@ -4,189 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD53CC87FCA
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Jul 2025 10:29:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B42C7C83F26
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Jul 2025 11:09:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5EA0C10E1A6;
-	Fri, 25 Jul 2025 10:29:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6913310E9D6;
+	Fri, 25 Jul 2025 11:09:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oE/w+rUs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tc2gL0OS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 16BB210E1A6
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jul 2025 10:29:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48CD010E9D6
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jul 2025 11:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753439357; x=1784975357;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=yFyiQ0RN6oTL3Vk2xRg0Zw890rwB/5jXKuvxvjys4xI=;
- b=oE/w+rUsxUAJkmVQZcTRn2jI6PA/PU93vRx2t7QRMAApWKQeM1+/74Sj
- n8hsEcnvF7+jwwD2UA597TI2oCrmo6w52UlLhRAyYZ3j9MbwIlrtHEtVH
- iJgeagaQ2npysDCSeik6eL6+keJ3oUfDySSym7M1ZEhNF+CLA6GJ6GgPt
- OgNSd2pZ3vbEhQQX35TwVP902Y/vyZx5FDquaKe8wAlsUR2WzIO5f6ktu
- C/OTr745XUn5JvUwXBQtZTD9f2IDzAx4Ka+M2l2Lvu8y/nYmz5CCXGcCI
- NBQ67RnSLv/QkivoTUc+Urv58Dd8DvjJyIKgdfINIXYNi9BH/Tt5/CNlp g==;
-X-CSE-ConnectionGUID: wPoHROsoRt6SXT5br9tFow==
-X-CSE-MsgGUID: 1REFKwrFRwmmQicfWgGe+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="66470527"
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208,217";a="66470527"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2025 03:29:16 -0700
-X-CSE-ConnectionGUID: OMg9KErzTQucOJbI8arSMw==
-X-CSE-MsgGUID: OwbVR2d8T8mEpJb/lfBu/g==
+ t=1753441751; x=1784977751;
+ h=message-id:date:subject:from:to:cc:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=jWt8f5rh2l/Q6od40p99QhZZsDD68tt4Ls5pOpJ20yQ=;
+ b=Tc2gL0OSTj8CJBHeDBb57zvAjoVzKrhGN0QvDYB4jckJAe28VICi25sg
+ u1u+0CfUHLNVwR//OYhW3kju8CvioJolpx1lYQYDp/5KDChDK2wXGTisd
+ CJVTbk3MzZmQimmuuY7oPdPhnT2Y1fNG439uPSXyS8OGvyec6kaVjR1pa
+ gfWvqZmRvlonTxzWVXiRbD7cjl8WurPGKWSAR9GruSve/L78kfS7CCLKe
+ x1IcltLFXfoGhpTy3Rlp6Ckzy4lnw095/Yf7gNEvSS+r/5CL7IWX2SPSf
+ mxUIUh/P98Bu78zNeSs2RsKitgQlvcnNSdkx5yntTgw0P0cuGoUCT4vg+ g==;
+X-CSE-ConnectionGUID: 6EZ4I01fRmqxXlRTW6QDJA==
+X-CSE-MsgGUID: E/l2ev/5RK+aWJMTW+JvXA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="67212506"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="67212506"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2025 04:09:10 -0700
+X-CSE-ConnectionGUID: h03NFe/mQxGU8yGGhwaI6g==
+X-CSE-MsgGUID: FTKFHDwCTPeYrNzJkca+Kg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
- d="scan'208,217";a="164901552"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="160585597"
 Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2025 03:29:17 -0700
+ by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2025 04:09:11 -0700
 Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 25 Jul 2025 03:29:16 -0700
+ 15.2.1748.26; Fri, 25 Jul 2025 04:09:09 -0700
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Fri, 25 Jul 2025 03:29:16 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.68)
+ 15.2.1748.26 via Frontend Transport; Fri, 25 Jul 2025 04:09:09 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.75)
  by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 25 Jul 2025 03:29:16 -0700
+ 15.2.1748.26; Fri, 25 Jul 2025 04:09:09 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fn+gM6MXtsVgeELLjIZdfwlqSt6nEcKpRHBzQdDUy0MWi9w3iDT4cDgeqP/gOS2/OdAupHYn3KtblJfO8Ol0B65mE4xaV72l9FDVSJKIVplsBk0j4lgBCE5IcuQKBMKI5V2vWMjrTw08HlkgrlO0ZENQTSBiECvwND8nphlpNCQ+Yi+SaLnAaQPZwwFEqs6BE0uerzJyY5IChqofLm5ac8vlTsp8wX7S4YwfndMGMiYK2YdQE1bhnlf/2ONooHF9vkI6Hzv/JlUVIDQLSamRrSFMVcWddsgKPv2imxGn0EYIS3zh9Gq86lnvx/SkSy7CyL7eZwOBy3OAeISlBgGlIg==
+ b=HIm7itwQypLD1T+skvehxgGr0HdxYv2ZzF+ll2YROD68heGYPs3+FfYv8uIAtkB2zuKZPQpA0F/qItiSvPi0K1UGDN7DnQk9OzIOrYMUo7lff70ZZQNLgbrBarvUOTJIDx01pcDkb260rX5TDx3Pm798fhWlDxhBkThIXfvwOzrwfmzUCtqMPxazsUV80VKKmUNvvEJCLjqWwkirs8cemwXqAJAg3JEPmLDful0Bg8391hIi1kz86ipEFxWiV6HBi/vRlF+nhj/9nRHG1jrqYm9+iWHUmiu7NPCCY2U5Ef88ZWiNPXL/L+hANZeXYHnmQam6Auh68oEoB14oLKz33Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4nlQfa1oCMYGPEnJmovHZtr34gxat5BAv+N0a2EcV/4=;
- b=eQCVFxxDcHF/c1UHyjig6HMhv/t50Ys929tnCvaLA78/abzIZ1qQZzsmjtDJve0GZT2TnV9MM8f1gC/geqwkQ3Bt5Cl21VO6rRzFuNzRebEWYkNrHs6rMCYOoqfQGnXOD0z3xyN7LzeQK8dsYSrTqDmDgu+Xgsx3Na5KBZTh9JwzjqKB2sEqzW4gfDOY7+Fa3wey9PLd2qbcStIRaV3GZH3+En4pprwPip/tbhsh12WZTvxDmiaz1PIHTGRlNRUuw/JQa7QB3eSn8ltYaD9P+uCD0cRaXPlllUsHUockCsuxOBOHqr6soe8cg8aVltsftac6BoNMKWvAUA/pcmBp9w==
+ bh=Hy9zoAF+UYAnQP8tJtan2DiediG0CZ0l8Qcmpbdj6hI=;
+ b=apps3PEKhzU6/yR7u7w0kk8QfkOPnyvuM8pYabxf0hfyKdSKuvhzhK87FCev663DPHnFYVWkIbHaRwePh6zp764gzeGjTbUY6gRnLxxPQH3AOR8epRY9x/6wvw9IQO4oAL+W7XLWvzAQ5RHzr3cn2Ui0hiFS6xgwPiPSB+8TNpvOgSLkfZve9ZcDEvWmsnrzlB65NaITsY8JrWVLPlaegHMrSHfAajn7+8RCz7i5piU5ws0hrklnXFXcZ2EwssyHsW5vyeNopmmiMA0Gp9Z0nLHqORkQNLdeVQLYRTOOZ2D0x47NfkrbZZhlHKd3r4ool3frc2OGfTOTQi+5T9MG4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com (2603:10b6:610:1d1::22)
- by MW3PR11MB4571.namprd11.prod.outlook.com (2603:10b6:303:59::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.23; Fri, 25 Jul
- 2025 10:29:01 +0000
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::36d3:6033:a101:f961]) by CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::36d3:6033:a101:f961%4]) with mapi id 15.20.8964.023; Fri, 25 Jul 2025
- 10:29:00 +0000
-Content-Type: multipart/alternative;
- boundary="------------1QbGxKRNbMFftcUkanWxiqRp"
-Message-ID: <12a291cb-ddda-49b8-84fe-f86045e3c004@intel.com>
-Date: Fri, 25 Jul 2025 15:58:52 +0530
+Received: from DM4PR11MB5309.namprd11.prod.outlook.com (2603:10b6:5:390::5) by
+ MW4PR11MB6810.namprd11.prod.outlook.com (2603:10b6:303:207::5) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8964.23; Fri, 25 Jul 2025 11:09:07 +0000
+Received: from DM4PR11MB5309.namprd11.prod.outlook.com
+ ([fe80::90cc:99cc:2d53:d848]) by DM4PR11MB5309.namprd11.prod.outlook.com
+ ([fe80::90cc:99cc:2d53:d848%3]) with mapi id 15.20.8964.023; Fri, 25 Jul 2025
+ 11:09:07 +0000
+Message-ID: <435e9a30-cc06-422e-a519-c948b661d984@intel.com>
+Date: Fri, 25 Jul 2025 16:38:59 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tools/gputop/xe_gputop: Keep engine activity
- percentage between 0 and 100
-To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
- Anshuman" <anshuman.gupta@intel.com>
-CC: "Tauro, Riana" <riana.tauro@intel.com>, "De Marchi, Lucas"
- <lucas.demarchi@intel.com>
-References: <20250724185040.3163412-1-soham.purkait@intel.com>
- <BL1PR11MB544584E2D9C75D9DC47B627DE55EA@BL1PR11MB5445.namprd11.prod.outlook.com>
+Subject: Re: [PATCH i-g-t v3 4/5] lib/igt_pm: Move check_dpms to igt_pm lib
+From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
+To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "Murthy, Arun R" <arun.r.murthy@intel.com>, "B, Jeevan"
+ <jeevan.b@intel.com>
+References: <20250723055353.1137242-1-karthik.b.s@intel.com>
+ <20250723055353.1137242-4-karthik.b.s@intel.com>
+ <DM4PR11MB53099000D44AA53800050124DB59A@DM4PR11MB5309.namprd11.prod.outlook.com>
 Content-Language: en-US
-From: "Purkait, Soham" <soham.purkait@intel.com>
-In-Reply-To: <BL1PR11MB544584E2D9C75D9DC47B627DE55EA@BL1PR11MB5445.namprd11.prod.outlook.com>
-X-ClientProxiedBy: MA5P287CA0016.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:179::6) To CH3PR11MB8706.namprd11.prod.outlook.com
- (2603:10b6:610:1d1::22)
+In-Reply-To: <DM4PR11MB53099000D44AA53800050124DB59A@DM4PR11MB5309.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA1PR01CA0156.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:71::26) To DM4PR11MB5309.namprd11.prod.outlook.com
+ (2603:10b6:5:390::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8706:EE_|MW3PR11MB4571:EE_
-X-MS-Office365-Filtering-Correlation-Id: 15eacede-3048-498a-12f2-08ddcb6611e8
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5309:EE_|MW4PR11MB6810:EE_
+X-MS-Office365-Filtering-Correlation-Id: 93d7c2d3-7803-4df6-36d8-08ddcb6bacc2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|8096899003|7053199007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Y0hTeXIzb0IrbEFFMHc0dmp4Z2c2THpGUTg5U1R3MTdUbGNLVDFhaDJiMzF4?=
- =?utf-8?B?cEVPVjREQmFzOHc3eklWUVlacFl2cXM3L1F1WkkycmhjRXBYanNKZ2xOMWQ0?=
- =?utf-8?B?dFBvVWVNMTUwTnFlMjJ0NTlVb0s2UGVQWWRONW9yaUlnUXRnS00yeTJ5azMv?=
- =?utf-8?B?QThoZjNmTUVObmM1c0xWSTAwN2M2WUlRWk14VTJyYVRPYUhOazBXeWdiajJN?=
- =?utf-8?B?Y01tanFrbnZ5bVFxS1dOd0FaRTgwMmQ0K2locWVpc0ZWUUkzTUtSTmlEZ0FU?=
- =?utf-8?B?YVk0VUpsRnBNQnNudTIxYzUvM3VuZWQ3WXFTcjhmL1dPcEVHdWdnbmtiR1Nt?=
- =?utf-8?B?aDM1d1JvU3IwMXVnUG5BeEh2a1FLTHZEUEFrbDZYK05NUnpnTjRBbDZ2UkRC?=
- =?utf-8?B?ZVpUN3ZvY1ZPRk1kREFMV3czNXl6eEFSTENwRzBzRkhmNFpFeWFJL3p5QU5U?=
- =?utf-8?B?US8zWkVCdGtldHFVTnFjV0J1UTl2VGVmSmNJd2NWQ2oxcUJaWDFTaGxmNnJM?=
- =?utf-8?B?aDZJTTYra1AzNU9YN3MzbUpNVGZ3aWFmVE1vbjVIZk1JM3E5a3FvNHE3Sk9n?=
- =?utf-8?B?SlU4cVgreE1wRTFGNTUwQ0VKT05FZXRyQndpNTQwakROTVY1WWJqUnVUZUpU?=
- =?utf-8?B?dFJxUWk2dU5LLy9MWEUwQ0x2QW5BbW1XS2hvYVBpeVlLbk5paUo5Vjc4QUN1?=
- =?utf-8?B?RUhQNUlQcC96Z0tpMkd0ZGx5aTdBY0xTbi9HanoyMGQ0anY1ZC9IcUVLOFRw?=
- =?utf-8?B?TUhVeFplNWV5RG1iSHNNa1BwS21zZm9ueGV2UjdBbUdUNGZNYjFYblBUaHpX?=
- =?utf-8?B?d1RIMVpzVWdYdmV1UGN5SVFTWWFYdUplTjNCNkdhaXRYVlBnaDJCc1BwV0pN?=
- =?utf-8?B?UHhrM1R2dkNUdUQxUjRyR3RDaHYzTDZWZlZBR0R4UUNMbTczbVcxN0NMQnRY?=
- =?utf-8?B?b3B3VWdMM2Q2akVPNnBYcEk2cktQSVorMnE2cVp5Mk9VK0Y5QmF3WjcwY1pQ?=
- =?utf-8?B?cE1mVlMxR0tIcDR4ZGpkVk9GaUpsa1ZENC9UaUt1b25aNjM3bXNSYXpPd2Jx?=
- =?utf-8?B?aVZUa2xqTXdQU1FPaHo5RGovYXVPazJrL0ZWWldidzZtcHhvOXNyNzA2RlhD?=
- =?utf-8?B?eEhqV1l5bFpHNGRRYTlRY2wycWtVUnd5UzVYeHo1dFAxRWFJamJHbmtGYklF?=
- =?utf-8?B?ZXZ1bTZJZFB2OWlhRW5Yb0pDNjVRcWUrWEFZVGJ6QlI1WGhFSnBPM2JGQWNG?=
- =?utf-8?B?Wm4yZkpkUzlYWWpROXZmWmdGMVJPcHRQcHFYKzhzYk9NUHNDT0VZZ1BSZ3pm?=
- =?utf-8?B?bFFHOHY4cnBxUDAwaG5nNTdmYlZ6V2JkMGpJYStJVndqa0dMN01vUTZ2a1dR?=
- =?utf-8?B?UkNuR3BMYjM3WHN4cXRPSkdiUS91OUJ2Q09RNEw4SS9zbTlwcEVUd3hQN1Yv?=
- =?utf-8?B?YzZLeXYzVDBTcCtuMSszcUhyK3QxVzBsVlJYS1NVMEVHbTlRYTlUbEFlNE5V?=
- =?utf-8?B?UGQ0Q0RZV1ZEQjNZQlNPZlJuYWJNb3JaWHJITmlhTjJvU3pIZmJCUUl4TEQ3?=
- =?utf-8?B?Tmk1V0Z6NDNtTXRUcXcrdTE1S2pQOTBuQjNoY2Rob1hZOGVZbCtVRWxIT0pz?=
- =?utf-8?B?SXJBUEYva3UraUZzUDM3SFY2Z1A3YU9lbDVZVVJHUFMzY3BlNEJYdnROY2Fw?=
- =?utf-8?B?L1JTcVk3SDNkanoxbS8zdG5vcW1reVRjV3BoVWRobnl5clphbHFLRE5LRmps?=
- =?utf-8?B?Wmg2cEJEK0tYRFpjOCtZT0RjYXhDejVSUUJRQ1N3UFFKWWJPR0lEUFI0MFFD?=
- =?utf-8?B?RVN0VU9aRmNtQlVxcm5odEVzY2lNaEtrRHpsSXh4RG9nRHFjdnVXR0paaFhP?=
- =?utf-8?B?TklaSlBQS3BxMVc5aGVMdnBxcjAxcWVpZVNKaDV5Nm1ZQ3d2djM0UmVSMnNj?=
- =?utf-8?Q?zaC2Vrb5LgI=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UTdzOFR3RnArUmM1Vm8rZnFQYzZEK0FsT09XU0d5a3FySy9GbExFWHJyOUVF?=
+ =?utf-8?B?U2lqK3pRcTg2T2c1UVJzWFlLQjdLTUpFWVRvRlpXUEdac2daMHdXajgzZlN0?=
+ =?utf-8?B?Q2dYOGhrSllqMytIbHpnVmo0cGJ0Y1VNNmFNWGg5WmNXWWZ2N0w5N1I5TGxN?=
+ =?utf-8?B?b29UbFFHMjVWbFFxclAyclVPWUp6dzNzSVhBVndKTE9ML21leExQMHo0cXUv?=
+ =?utf-8?B?VVN1NEpXTnVCYVBvKzliS25Ebk5oTElUK2ZZZTJNYlMrb2wxdmpSS0xmQnJP?=
+ =?utf-8?B?TXJ4aWEzdDNwVUwxK084TXI4UVBEaVVjMVpkTmZGQnBTK3R1VkV2UUdtMVBx?=
+ =?utf-8?B?elQvRWxqK1BEV3JQMEtOMUxNWFVuNE5DVWNjTGFSd1VIVW9iTXpwRStJd1Na?=
+ =?utf-8?B?YlAwdFdNS3pqVmNqQXQ1TVdUUEFaOXplc0ZJcTVPdFdNbFRkcm5aeWUyU29r?=
+ =?utf-8?B?UytmZTdSVzBPOVhFT3ZnVkNxSHJObnN0akU2SzJvVkV3Y0cvQkRObXpVUlhq?=
+ =?utf-8?B?WTNYa09pUTRkMVBnaDd5QTc3SnE2c1B1c1QxWlZqb2l3ZnpRZU51bzNNREMy?=
+ =?utf-8?B?VFEyb0FDQ1ZsRzErdXhKbEJzcDVGNkdsK3pHVzZXUU1Hc0NSWDJZYnMrbDlj?=
+ =?utf-8?B?STFGU1ErQ2N4akRINDdTYXk2ZlVWdjl0WlZwN0xLZkhQcUc5TzFvd1lSVnVN?=
+ =?utf-8?B?ZStvK0cyRitCVnBaaDkvVFRvUUVMS1BkeW5UUndqVi96ZjhMVkJhcXJzeDVu?=
+ =?utf-8?B?T3o1ejJ0eWZxWERiMGlFWFpzODBxbkpPcUlITGFPUmJyUVlqL0hPcVlSTlUx?=
+ =?utf-8?B?U0dVaUhRK0ZQSlZUeWpZSHk1Q3FnNlVKemh0N2ZaUGRnK0ZqM1pQZFJVZWNV?=
+ =?utf-8?B?WVo1elJiRE5TSDhhS1RodXJYZ0l5ZndUUVBxN1N4emhNR3dRN203RHYwVXVZ?=
+ =?utf-8?B?M3pUbjc5djhHQklTVStFWTdYV1FUemYyY0ZQK21iQnU3b0hQYS82SDlsMW9q?=
+ =?utf-8?B?L2xkc3ZSb25GNlNjRjcrOFNGOGRhSGFwVzVETnNzdVA5clRTdEswSmFCUHJC?=
+ =?utf-8?B?UGVSSEgwZDNHNHc5bkZtWVMrd1lFeVZVMjlPZU1uZVJUa3JrNWRORkhwdVdO?=
+ =?utf-8?B?d0pCTUYwTm5TQ1hHdlZONmp0SEg4NmRlZnZNTmdIanhCNHhibmtiUjM4Qys1?=
+ =?utf-8?B?ckFqNWUyckFMdFFpZERnSDFiRkFNdVFpemZHUnpVL1h1SEE1ZmlpcnVWSGps?=
+ =?utf-8?B?Qk14enFtbGJaOE5NcDEwVEJXRTBxdnNCN2xDT3piNGhJSEdHdk85N3ZZNUhm?=
+ =?utf-8?B?U2J6cStNc2VlS3ptUmdqbkxVd0JzYkVOanMzSVB1TVVFelFraEU3QngrOXA0?=
+ =?utf-8?B?cWlFcHhSYk85NkpjbU5hM1BNM0ZrU25aa2FwQkxiV0Y5Tk1KMzZhSkxObjJw?=
+ =?utf-8?B?c283VlUzWkdiaHlwbG9zSXJiNlBQVVgxSldORlpzSkRwMDFWVXg4UGFlM3B4?=
+ =?utf-8?B?Tjhob1BMcUJSMlhhL256cjJ3Zi90ZTZDN1pDN0EzeTJteG1nZVUvOFBrc2tQ?=
+ =?utf-8?B?RkE4MlFJcnB5UDZnVnRNMFp0M3hlanJqdDRRQUs0UmdSWVl2YWEwWVJyUEt0?=
+ =?utf-8?B?ZnB2blpJbXVxVVNybUxwMmJxTi9UUUJNTXZ1NUdqMkxIQVhReWZDMGlJWG1s?=
+ =?utf-8?B?aDBVSWVmaDVLZWdVckcvc1IrS0M3SjhIVHg0M2tnSVU2Z2hkY2FGM1UvQ0tM?=
+ =?utf-8?B?QmI4c1ZBYTdldWpGUUFIQldCVmdUNk5aUXNVWXc3VTJXNDNiaVFsRDZIdTJa?=
+ =?utf-8?B?OGFVTVo0cEU0TjlicTlzRDJ1a0x6bndZNDF1SjM3KzlBOWJIZkticEt1RWxD?=
+ =?utf-8?B?U3Z4dU5TMDVnSkozU21UTFdRK0xrcy9DWkhzWlV6RHUwNVNoTC93TVZkcTYw?=
+ =?utf-8?Q?sEH3RpmJKpQ=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8706.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(8096899003)(7053199007); DIR:OUT;
- SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB5309.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(7053199007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cVViWFpuWGhTRS9XY2ZqZk1ESzQwcmR1Mmpqc3dWb09DVktwbkdDVkRjRWZo?=
- =?utf-8?B?Skhxdi96dzZXcWg1Vlprd2piQzNZQ3luMk5aM2pZcXdYRHR6KzBId1pkL1pm?=
- =?utf-8?B?ZzcyMFBoU3FFc0FXV25UMjQ4SmhlSkJDMDF1MW1xQXBPUmExZjgzNlNtUng5?=
- =?utf-8?B?azkrN0tOTFV0NTBBMVkwNHdtTTNqbXE0NUdEL3lKYWpBc3pPYU9pZDVucUFh?=
- =?utf-8?B?elM5MVc1MDF3amNIVlRNcGMwQkYrVG9YSnBlaXdQMVhRMk15YTlvQ1lqcUpk?=
- =?utf-8?B?RVNRUTlXeXYxMjR5VnVpV2NOdDlKN0hEUUlXcTBXL2xXRzQwSkdPK29naks3?=
- =?utf-8?B?V2lDL3N5WTZYYnhieS96MGpCTHQwby94WEtZTEFlNThpVVIwSVRCRE1pOWxH?=
- =?utf-8?B?UWZuVE9HYldYSjFOQWZBMXdDNnJnUlR1TGVHanJPdmZWTHl6MHU0M3ZTQ21G?=
- =?utf-8?B?bW9pdy9Ud3RWWjFCZW5KU2ZacUlacW1OUmduMEd6SHU0dFJReFNOQy9hT3hm?=
- =?utf-8?B?S2VFd21Udit0WVJQUUg3WTVZMi9pVE0xNko1aTY3SmVKd05CdE4wbGVBUlpu?=
- =?utf-8?B?bGNOelkrM1RmTFRuaTNRZmFPVzVsd2RUYVZJWUVLM21pOG5LVzVXM1daSzlq?=
- =?utf-8?B?c2U0MWI4TUp4R2k5L2kyTk12RHdYNm9RSU1BZ2pQd3ZET3Zid01ibFk0elNY?=
- =?utf-8?B?dEx4RHR4UzQ5NzEyazdRUTRLc2tIMTFVc0hoeXoxOVNiWnd0eDhiQWxKc0hN?=
- =?utf-8?B?WExjOUxGR2Z5UUR5L2ZnTzZLUzVJM0oxWXdxRlZwUkFWMythY2hubGdxb0lI?=
- =?utf-8?B?M3kwaHRFWlhqb0tzNUIvUitsaVVCeHJvZ0M0UUV6djg3Sjl4UGg1U1NMSlMr?=
- =?utf-8?B?WGFMSGk1YzhQd1FUZ1A5SUFZRUVUaXVqb1U2OVRyT2hhYk1JL3A4eDhWQzA2?=
- =?utf-8?B?WWZoOCtnMU9GeFFQeS9YSHpINm54WmlTd1JqdnV2Ym8xSjZoaE9FRGlpNlhw?=
- =?utf-8?B?bVUyVmFReTNGelVSMGRHNlJXRXhCOC9jWUlIbFVhb1BzWDRPS2h4REsyb0VB?=
- =?utf-8?B?RlhTY0JZRDZCYkRCdkdNUlB1N2dmMFN4clFoQUZCdnJJOUxKUXBkTVlCNUdJ?=
- =?utf-8?B?dEV3UUdoY3l5Uko0TDY0SUhRaHlWWVQ3VkRVTDFkeklFeHIzTDhmVWZ4QXZu?=
- =?utf-8?B?cHBSZTZXQW9jZFF2SExCZCtaV2hlR0VoMjRsTkdKUTJ1Y1hadGNnVDVRbFMv?=
- =?utf-8?B?VTl1a3I4K2Zzc1BnYmRuSWkzeEZRWGVpeVQ3STA2UTVkWGtUK1B0K0Rpb3NP?=
- =?utf-8?B?Yng2a2tBZXNOQjBtak9MUnFiLzFiZ0IzUjVidE9IQ0VMK3NTTmlzRThwd2Fx?=
- =?utf-8?B?QTJxUlhIK29EWGZ1TmRzVGdza3FYbldYMzFwbTJSRTlOOCtRWnZzTVA2eGpm?=
- =?utf-8?B?Q3lTbGhxeVhMY0hyZmlIY3YxSmR5SkdBbXZFNEVhOTlBVHlFWEpuOWhCb0lH?=
- =?utf-8?B?bUhPaG9ySVRXLzRDeGJkbG9zS0R5SjkvSS9seWtnZ1lQWnZ4MEtmbHZaVVhH?=
- =?utf-8?B?eDIyN0Q0SmhSTnZKWXIyVCtEd214MEZxa3puMk1zSHZOTzlSOU9YU1NwTmtS?=
- =?utf-8?B?SUt3SWVVUWJ6bVo2amJMZStHaWJqbVRIaXErSU1rdHFUU2VNOFpyQUwzNUhs?=
- =?utf-8?B?Zjk4ckhsTkFvL21kVXVwQThhL3VVVmFOZEduRm9ocDlMVjl3UTBLaENnVTZC?=
- =?utf-8?B?M3I3aGh4WGxmWEt2dS9xMzQzcGc1V2cxaE85ck5YZFpmNDlOR1VkVllyMHRB?=
- =?utf-8?B?MUZ4cnlrcnhmNUp1a083Mi9VdEhvd2E5c1VKOFp5aXBFYU8xeWE2Wnc2UDVH?=
- =?utf-8?B?Z25yVlI3eFBmMTFSenR6MnFVckFjR1BtdWJmdDFlTlh3RUc4YmVWNG1oUDlP?=
- =?utf-8?B?cjcyUTQvSzZyOG1vVTl2aUJFUkpOV090YStvd1BpazY2WXZxQ21NL1N4U1gv?=
- =?utf-8?B?NTVud1I5Zk1Cd0Z6aS84WkZwekJSUkd4QzBIODF6L0pLSXlOd1JDb0locWZI?=
- =?utf-8?B?Yit2NDhFVkdNUEwzTkpKWkNHd3pyekxoZkQzdmhJNVJYVVc2T2NSSDkzTGVs?=
- =?utf-8?B?TnRRNGtTL2J5QnZNQkh6Q1BZVkRaVVYxa1BobFRlZ0pIeFhncVJuOTRpaFUw?=
- =?utf-8?B?S2c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15eacede-3048-498a-12f2-08ddcb6611e8
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8706.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VHMvdG9jczU5WGVRUnVpSWFlVTgxdTlmczhrZlc4TVpNZXQ3QkYxS1Vyb1c2?=
+ =?utf-8?B?YWpkOE4zUWtYZDNQRUdwVVBOUHBwNTREZm9GZE1wTk96ZTJtcTlOTEFFYzVV?=
+ =?utf-8?B?TXg3M0l6RVE3OFNmRlRsZ0NUYnFYM2RIMS9ST0wwNXhmSmJzSXZCeXdzbXhW?=
+ =?utf-8?B?ZkNYZm9mSllSZXR0eGhtcTMzR3ZlQmhiT2xtQ2ppZm5lcFZpSWZxN3pZd2Yy?=
+ =?utf-8?B?d2xXMmRuYm1VVVE5MDdvelRVbHRQNDJiZlFEajZHYS9aREROMXpvVnRPdVg3?=
+ =?utf-8?B?WnlEbndBTGZVZlZ0MVVFM01vcW5GVlVhTCtNRlRCbmlYRkRmZXd2azBLRnFi?=
+ =?utf-8?B?OEt3TXdXVVZwRzdHR3o2NlFOU0tTZEI1NXgvaFpWZVRCck9tZnBsaDdCd253?=
+ =?utf-8?B?Y0JCLzRGWWNMdUN0NmJsY1NpOWZlQWY1bHVmNldTcjFabTI1N2xGZUhYYWlo?=
+ =?utf-8?B?VEdEYitvYTZPZFR5NG9SK0ZUVW54c0dTMnE0SVhBdlVUS1BwM0NVcVFWdEY4?=
+ =?utf-8?B?SDM0NXI1MVFtNlNRR1R4Y1ROckRUbGV1bmtOZHpWUFZQa0NTTFh0UVVtMHdo?=
+ =?utf-8?B?MGE2Vlc1Y0hFVTdhQUJ5aTFLaEt1L21vMGwzdmxCZkIyQXJ5aEMxc1ZDT2t4?=
+ =?utf-8?B?ajVKK1hxSjE1dlBwOHF1Y2dDYnpwY2RHbElPbEx3cGcwY3VaTGVEeUJJem5t?=
+ =?utf-8?B?amVtUGhnRVRJaC9mYmlXSjBxSlBjZXM3cVVNNFRKcGhRUEkxUTg3MGhONkdS?=
+ =?utf-8?B?YVRjY3BPUFp4T1l6L2xORklhbklydjVkdjhkTVgyN3RXVHlDdFl3WnpVQVdK?=
+ =?utf-8?B?SGw2UUVkSU9NTkVETVpPbXRPcFJJdi9pNy94RGtER0dnaG5yQkV1M3dxUGlH?=
+ =?utf-8?B?NCtKdGE0RXpBckRUcWhGSUpGS1pmMVVpSkZIWUpLL2NqN2JKZmxESmQ2Q1Y5?=
+ =?utf-8?B?T2IreU83dllsc3huK1d5SkFCekpmU3hVdjdBSkJZTGFsRTllRmQ2Nng1b1JZ?=
+ =?utf-8?B?ak1nejgxV1FrV0dQdkFoYUIrTC9hZVFzNVA5c3ZUYzFBcXNJSGF4RHA3UFJw?=
+ =?utf-8?B?dTBDaVBSMzBPMkpKSk5ielhNaGtWWkUwb1NaMGNqQTFkWjdudjBXUzdzOXk2?=
+ =?utf-8?B?RXJZbHE1RWtDTGJmS21BM0wrUTFhVzdZSzVVdDZsMVE0NVhwM1AzVEZiaDkz?=
+ =?utf-8?B?UkEzRGJtZ1l4SEc5ZTlZdzVKQVZhOVZjUDN1czI4N1JMejZ3ZjJHQi8wTTdP?=
+ =?utf-8?B?WExSQTNqUzdkSm5QUmVkS204TDA0QkxqQi9qRW5PT3pBSjdVcWUyM2ZEdzl6?=
+ =?utf-8?B?dEIrNEEramtvTGN6bnQ4SlVuYzFIYkZEZm5Gd1RmVzlyeENFMTNjWEdGbHJY?=
+ =?utf-8?B?Ym9kUCtnUDM5dXNNODNpY2JXUWkvZ0ppN1paYit6ZTI5dHRURmxYRVFwWW1L?=
+ =?utf-8?B?YXFkcVJsaXRoeWEra0tiV0paV0VUNmJ0cHB0SGdneEo2ZklWMVNLNFFaZE9X?=
+ =?utf-8?B?WFJqNmRjN0l6WFUrbXVEbk9TY0wvMktCUDF2OTc4ZXlzeTYyd0VTVlppbmVO?=
+ =?utf-8?B?TDlFdTBHZTlqOERhbm5Za1ZxelNXa3FmY3owOUlybTFIM01uUitYTmpRUm1R?=
+ =?utf-8?B?bHd1Q3VJRVhtV0JtMm1BOFhTUzdxOWk4SXRNVkFuMmpnQktiZ3g0UWVlRjND?=
+ =?utf-8?B?WDZQVnk3U1BXK3NLcFVtUmIvY0xlYkhETnRoUnYrcVBRbUplTERsSHpic3Iy?=
+ =?utf-8?B?THp2Z1dkM3VveVZCQUdCcWMzaVVYbUNQZll1UFo3MnNaQU1xOXFEckQ4dVdJ?=
+ =?utf-8?B?dy80SWFnLy9wTm1iZ3NMWnBPTDBBdm9YWC9kTjJHaC8ydWh3K2JIOGpjYlY3?=
+ =?utf-8?B?cDczM3hZcGRSNXhQNE8rU0NwczRnQ2txK0FGdUdoc1R1TWhTVUt1bng2ZGlh?=
+ =?utf-8?B?L0hST1AyczJZbDVuKzRRWCtXSWpCNnNlY3pNL2hKRjdac3hGa3pkQWhqSi95?=
+ =?utf-8?B?ckQzbW1yWVNkbktja2NIWVQxMkJBaGlWek9TUElrdktkV1AzenhvOFM3cy9r?=
+ =?utf-8?B?L0hLUmlieDV6MlJleG50WkhRVEcwcmtTc3hmMUZxZnZWMlBaeFAzQmQ0SGpK?=
+ =?utf-8?B?OHQ2RWF0ckcwK3FncVpDNlE0WHdnMWFUNHZ5djUxZ0JtcUYxckRtSDV4d2JI?=
+ =?utf-8?Q?V5j0lg1Hjum5aIpmqIDcKGI=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93d7c2d3-7803-4df6-36d8-08ddcb6bacc2
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5309.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 10:29:00.8173 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 11:09:07.8179 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZoM+0bbmooCtN6qo6sN8eydfGmnFKxpKS0DFRyNwoidAvwxKt71KAZxgn/rDrVa8JkWzV3qN5Z0Ff8aCvUl7Gw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4571
+X-MS-Exchange-CrossTenant-UserPrincipalName: /BpV+0WgXnBOVDRwiNbRq9GaDl8sdnPRZTo6yoV99eWq9tPRkULJT12WxSqi4oCpg4NoFcNmTb388o6PxdVY0QKlXqMf47GjSCPtbhRShTfmPpKrGySFVfXS0QygoAJc
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6810
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -203,183 +199,128 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------1QbGxKRNbMFftcUkanWxiqRp
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Hi Karthik,
 
-Hi Jonathan,
+On 25-07-2025 15:20, Reddy Guddati, Santhosh wrote:
+> 
+> 
+> ------------------------------------------------------------------------
+> *From:* B S, Karthik <karthik.b.s@intel.com>
+> *Sent:* Wednesday, July 23, 2025 11:23 AM
+> *To:* igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
+> *Cc:* Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>; 
+> Murthy, Arun R <arun.r.murthy@intel.com>; B, Jeevan 
+> <jeevan.b@intel.com>; B S, Karthik <karthik.b.s@intel.com>
+> *Subject:* [PATCH i-g-t v3 4/5] lib/igt_pm: Move check_dpms to igt_pm lib
+> The check_dpms function in kms_pm_backlight.c is moved to igt_pm lib
+> to make it accessible to other subtests which need to perform a
+> simple DPMS toggle.
+> 
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   lib/igt_pm.c                   | 21 +++++++++++++++++++++
+>   lib/igt_pm.h                   |  1 +
+>   tests/intel/kms_pm_backlight.c | 20 ++------------------
+>   3 files changed, 24 insertions(+), 18 deletions(-)
+> 
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index 7f9cbd69a..cf1c442f8 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -1487,3 +1487,24 @@ bool igt_has_pci_pm_capability(struct pci_device 
+> *pci_dev)
+> 
+>           return (offset > 0);
+>   }
+> +
+> +/**
+> + * igt_pm_dpms_toggle:
+> + * @output: igt output for which DPMS toggle has to be performed
+> + *
+> + * Toggles the DPMS state of output to OFF and then back ON.
+> + */
+> +void igt_pm_dpms_toggle(igt_output_t *output)
+> +{
+> +       igt_require(igt_setup_runtime_pm(output->display->drm_fd));
+> +
+> +       kmstest_set_connector_dpms(output->display->drm_fd,
+> +                                  output->config.connector,
+> +                                  DRM_MODE_DPMS_OFF);
+> +       
+> igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +
+> +       kmstest_set_connector_dpms(output->display->drm_fd,
+> +                                  output->config.connector,
+> +                                  DRM_MODE_DPMS_ON);
+> +       igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
+> +}
 
-On 25-07-2025 02:51, Cavitt, Jonathan wrote:
-> -----Original Message-----
-> From: igt-dev<igt-dev-bounces@lists.freedesktop.org> On Behalf Of Soham Purkait
-> Sent: Thursday, July 24, 2025 11:51 AM
-> To:igt-dev@lists.freedesktop.org; Gupta, Anshuman<anshuman.gupta@intel.com>
-> Cc: Purkait, Soham<soham.purkait@intel.com>; Tauro, Riana<riana.tauro@intel.com>; De Marchi, Lucas<lucas.demarchi@intel.com>
-> Subject: [PATCH i-g-t] tools/gputop/xe_gputop: Keep engine activity percentage between 0 and 100
->> Engine activity percentage within the valid range of 0 to 100 prevents
->
-> s/Engine activity percentage/Clamping engine activity percentage to
->
-> There's also a nit below, but it's non-blocking, so:
-> Reviewed-by: Jonathan Cavitt<jonathan.cavitt@intel.com>
->
->
->> out-of-bound values that could lead to undefined behavior during runtime.
->>
->> Signed-off-by: Soham Purkait<soham.purkait@intel.com>
->> ---
->>   tools/gputop/xe_gputop.c | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/tools/gputop/xe_gputop.c b/tools/gputop/xe_gputop.c
->> index 9757369a8..ced427c0c 100644
->> --- a/tools/gputop/xe_gputop.c
->> +++ b/tools/gputop/xe_gputop.c
->> @@ -281,6 +281,12 @@ static double pmu_active_percentage(struct xe_engine *engine)
->>   	double percentage;
->>   
->>   	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
->> +
->> +	if (percentage > 100)
->> +		percentage = 100;
->> +	else if (percentage < 0)
->> +		percentage = 0;
->> +
-> NIT:
-> This clamping operation can be compressed using the fmin and fmax functions:
->
-> """
-> 	return fmax(0, fmin(percentage, 100));
-> """
->
-> However, it's not particularly important that this be compressed, and doing so might
-> obfuscate what the code does (on top of possibly being slower due to the function
-> calls), so I'm fine with either way of performing the clamp.
->
-> I should also note that we normally shouldn't clamp the percentage like this generally,
-> but since this is just a helper function used to pass a value into a pretty-print operation
-> for data visualization purposes, I suppose it's okay.  On the other hand, maybe we should
-> be printing the true, raw value separately?  Maybe as an extension of
-> print_percentage_bar?
-What could be the possible usages of the raw values ? Thanks, Soham
->
-> (Though, I guess at that point, we'd want to do the clamping there, rather than in
-> pmu_active_percentage...).
->
-> Sorry.  I'm just thinking aloud.  You can take this advice or leave it.
->
-> -Jonathan Cavitt
->
->>   	return percentage;
->>   }
->>   
->> -- 
->> 2.43.0
->>
->>
---------------1QbGxKRNbMFftcUkanWxiqRp
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+LGTM,
+Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>> 
+diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index c73972f2a..e931e51af 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -98,5 +98,6 @@ uint64_t igt_pm_get_runtime_active_time(struct 
+> pci_device *pci_dev);
+>   int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
+>   void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
+>   bool igt_has_pci_pm_capability(struct pci_device *pci_dev);
+> +void igt_pm_dpms_toggle(igt_output_t *output);
+> 
+> LGTM,
+> Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+> 
+>   #endif /* IGT_PM_H */
+> diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+> index 9b341c73a..a0ecf2b0e 100644
+> --- a/tests/intel/kms_pm_backlight.c
+> +++ b/tests/intel/kms_pm_backlight.c
+> @@ -142,22 +142,6 @@ static void test_fade(igt_backlight_context_t *context)
+>           }
+>   }
+> 
+> -static void
+> -check_dpms(igt_output_t *output)
+> -{
+> -       igt_require(igt_setup_runtime_pm(output->display->drm_fd));
+> -
+> -       kmstest_set_connector_dpms(output->display->drm_fd,
+> -                                  output->config.connector,
+> -                                  DRM_MODE_DPMS_OFF);
+> -       
+> igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> -
+> -       kmstest_set_connector_dpms(output->display->drm_fd,
+> -                                  output->config.connector,
+> -                                  DRM_MODE_DPMS_ON);
+> -       igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
+> -}
+> -
+>   static void check_dpms_cycle(igt_backlight_context_t *context)
+>   {
+>           int max, val_1, val_2;
+> @@ -168,7 +152,7 @@ static void check_dpms_cycle(igt_backlight_context_t 
+> *context)
+>           igt_backlight_write(max / 2, "brightness", context);
+>           igt_backlight_read(&val_1, "actual_brightness", context);
+> 
+> -       check_dpms(context->output);
+> +       igt_pm_dpms_toggle(context->output);
+> 
+>           igt_backlight_read(&val_2, "actual_brightness", context);
+>           igt_assert_eq(val_1, val_2);
+> @@ -310,7 +294,7 @@ igt_main
+>                                   test_setup(display, &contexts->output[j]);
+> 
+>                                   if (tests[i].flags == TEST_DPMS)
+> -                                       check_dpms(contexts[j].output);
+> +                                       
+> igt_pm_dpms_toggle(contexts[j].output);
+> 
+>                                   if (tests[i].flags == TEST_SUSPEND)
+>                                           check_suspend(contexts[j].output);
+> --
+> 2.43.0
+> 
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Hi&nbsp;Jonathan,</p>
-    <div class="moz-cite-prefix">On 25-07-2025 02:51, Cavitt, Jonathan
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:BL1PR11MB544584E2D9C75D9DC47B627DE55EA@BL1PR11MB5445.namprd11.prod.outlook.com">
-      <pre wrap="" class="moz-quote-pre">-----Original Message-----
-From: igt-dev <a class="moz-txt-link-rfc2396E" href="mailto:igt-dev-bounces@lists.freedesktop.org">&lt;igt-dev-bounces@lists.freedesktop.org&gt;</a> On Behalf Of Soham Purkait
-Sent: Thursday, July 24, 2025 11:51 AM
-To: <a class="moz-txt-link-abbreviated" href="mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.org</a>; Gupta, Anshuman <a class="moz-txt-link-rfc2396E" href="mailto:anshuman.gupta@intel.com">&lt;anshuman.gupta@intel.com&gt;</a>
-Cc: Purkait, Soham <a class="moz-txt-link-rfc2396E" href="mailto:soham.purkait@intel.com">&lt;soham.purkait@intel.com&gt;</a>; Tauro, Riana <a class="moz-txt-link-rfc2396E" href="mailto:riana.tauro@intel.com">&lt;riana.tauro@intel.com&gt;</a>; De Marchi, Lucas <a class="moz-txt-link-rfc2396E" href="mailto:lucas.demarchi@intel.com">&lt;lucas.demarchi@intel.com&gt;</a>
-Subject: [PATCH i-g-t] tools/gputop/xe_gputop: Keep engine activity percentage between 0 and 100
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">
-Engine activity percentage within the valid range of 0 to 100 prevents
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-
-s/Engine activity percentage/Clamping engine activity percentage to
-
-There's also a nit below, but it's non-blocking, so:
-Reviewed-by: Jonathan Cavitt <a class="moz-txt-link-rfc2396E" href="mailto:jonathan.cavitt@intel.com">&lt;jonathan.cavitt@intel.com&gt;</a>
-
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">out-of-bound values that could lead to undefined behavior during runtime.
-
-Signed-off-by: Soham Purkait <a class="moz-txt-link-rfc2396E" href="mailto:soham.purkait@intel.com">&lt;soham.purkait@intel.com&gt;</a>
----
- tools/gputop/xe_gputop.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/tools/gputop/xe_gputop.c b/tools/gputop/xe_gputop.c
-index 9757369a8..ced427c0c 100644
---- a/tools/gputop/xe_gputop.c
-+++ b/tools/gputop/xe_gputop.c
-@@ -281,6 +281,12 @@ static double pmu_active_percentage(struct xe_engine *engine)
- 	double percentage;
- 
- 	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
-+
-+	if (percentage &gt; 100)
-+		percentage = 100;
-+	else if (percentage &lt; 0)
-+		percentage = 0;
-+
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-NIT:
-This clamping operation can be compressed using the fmin and fmax functions:
-
-&quot;&quot;&quot;
-	return fmax(0, fmin(percentage, 100));
-&quot;&quot;&quot;
-
-However, it's not particularly important that this be compressed, and doing so might
-obfuscate what the code does (on top of possibly being slower due to the function
-calls), so I'm fine with either way of performing the clamp.
-
-I should also note that we normally shouldn't clamp the percentage like this generally,
-but since this is just a helper function used to pass a value into a pretty-print operation
-for data visualization purposes, I suppose it's okay.  On the other hand, maybe we should
-be printing the true, raw value separately?  Maybe as an extension of
-print_percentage_bar?</pre>
-    </blockquote>
-    What could be the possible usages of the&nbsp;<span style="white-space: pre-wrap">raw values ? 
-
-Thanks,
-Soham</span>
-    <blockquote type="cite" cite="mid:BL1PR11MB544584E2D9C75D9DC47B627DE55EA@BL1PR11MB5445.namprd11.prod.outlook.com">
-      <pre wrap="" class="moz-quote-pre">
-
-(Though, I guess at that point, we'd want to do the clamping there, rather than in
-pmu_active_percentage...).
-
-Sorry.  I'm just thinking aloud.  You can take this advice or leave it.
-
--Jonathan Cavitt
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre"> 	return percentage;
- }
- 
--- 
-2.43.0
-
-
-</pre>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------1QbGxKRNbMFftcUkanWxiqRp--
