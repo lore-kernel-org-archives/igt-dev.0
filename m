@@ -4,175 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24700C87FCD
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Jul 2025 09:50:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC7C4C83F26
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Jul 2025 09:57:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9FEB710E164;
-	Fri, 25 Jul 2025 09:50:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9CAE310E17E;
+	Fri, 25 Jul 2025 09:57:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UaaaErQZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kBBapD2h";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52DEA10E0C1
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jul 2025 09:50:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9862310E179
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jul 2025 09:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753437049; x=1784973049;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:mime-version;
- bh=JuAy8T/qdOLj4ZsCOBbDzdgno1qYZH2twwnEvPfjKeY=;
- b=UaaaErQZS6BEJrBz5DsqJkvIgS5kN8jwHRXtmCAFXNydgwaASOvNkFd2
- pYA3MGs547vcePK9M/DkoiDtJxn+Kzfcg10ZoyekhPPvA7sfFqpholdJk
- J9IMWkgH3cx4NJo8Qk2MbNMvCa7+tn12TcS7An9FwNubKfo6IIyt0xFLR
- HwaMBgqn033Jrm/acttvB56afQADrhLs/Q3OunC1siRTuTmWy3uUBWjTk
- SX6fUG05hFLDL1IbnElnuIJW+1h0pO8wxTuEwLKfIHA7zVv57SYXLwliM
- uvSTRD4P5TLFL4IA+6m7zldYnT9gxlmfPRIWsjcxiyY/wQqLm+ShQfyul A==;
-X-CSE-ConnectionGUID: /qVq/VodQ4eMabvSrlZfdg==
-X-CSE-MsgGUID: HK9b+TFnSY6K/VaGta7CEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="66843826"
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208,217";a="66843826"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2025 02:50:48 -0700
-X-CSE-ConnectionGUID: ciPtbo0fRfWA1uZQoTODsg==
-X-CSE-MsgGUID: 9/kSKlDyTNC6w2znwnyoRw==
+ t=1753437431; x=1784973431;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=jwU1luUHYJMYg9VqYWLTsP/5+/Isds4fc5dxn2bn3hs=;
+ b=kBBapD2hIKaq0bP8UFfJRa6Bd5o9LblwqCkzNpRFEbBfdV8PKIhPBKJx
+ JTfdkFGOvNU+LgX4xVQ6n5gkxGTNv065Dn12d7z3+cqoB3gB9HAJyqUsr
+ US4toyeDSXkiPwiYOtgum/rrXxlYpcYlGL4eAjIymrfMjfQsv7BHSOnDn
+ EdFB7Hq1wpm/8Uy3f+/D15lRDgaQoHz7KDVLia8cwb5Khj2V+bmBUjGek
+ pP1i7QBXwrgw2zDibndl4OYkqBAiyLkGDGUk9/M1nuhaduLYGO/vEzepe
+ LMhBmT+ke9Jfrku8jf7xYKapODQ3zB77JhhSb+RzLQkkDB2rtgjxuGuH4 A==;
+X-CSE-ConnectionGUID: 78/U4zb2SDGidotNP0dxuA==
+X-CSE-MsgGUID: cCRk5TwmSKumB+mcX97Dsg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="59423143"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="59423143"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2025 02:57:10 -0700
+X-CSE-ConnectionGUID: 8vNs8x4PQbONSNte4fc9tQ==
+X-CSE-MsgGUID: LEyBOZ/NQweqwvdANvO7uQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
- d="scan'208,217";a="161561634"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2025 02:50:48 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="197976602"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2025 02:57:10 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Fri, 25 Jul 2025 02:57:09 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 25 Jul 2025 02:50:47 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.1748.26 via Frontend Transport; Fri, 25 Jul 2025 02:57:09 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.47) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Fri, 25 Jul 2025 02:50:47 -0700
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (40.107.101.58)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 25 Jul 2025 02:50:46 -0700
+ 15.2.1748.26; Fri, 25 Jul 2025 02:57:09 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GSnax/w2sln3s1v8Zlt641KrX4sG9pgeUxTziZB29l31VxJrxKyaZ3jK4IXlTVL4DT6+2VC0V2WIle/MMm0soFWCNKT3ewns76+pTSqS0BQc5UNUeJkuiLfQBx0E4kbtkh4+dDQSBsmEVkIPu80yPiU2LiwZAJqGIRRgiKajaqu350NepjlxBXhhzGHaK3PTnsw2w4NzWjPaODgW0EcGiG1J9Bpsp2w2UJGA2wmYYR6Zq2LpQw6/axYpk4INp7+WqfmVSOGvnUkbfMd+ljF8BFeLpO5I8pnhvgHOrk/SCcWcvGwskcymSl3ztfzTrgRQVMThINvX5pKcGlx9OmFgiA==
+ b=dGO30SPLvBrAUCX/3a4rYMg90H1u/HOItgcmbH/MwI8kS4ryVLuGDsTZY5gJyqs16iH1ssJQxWkRBTu3h4bad0zOVfYVrKUzOiBL3CaKBI0uT+zqkoVcxQDLkh6RDJ4WwGDhXLQilHmXq2h5e7OAzAgE9pyBFDRkrxwa12ziFGzhqTtZGdHpv9AC3v/fWWlVcGUm5/gyEn8LEpeH0pDkOMfB5g2ZvDbfGPalkpi0DHtiWvD13tZDutXiJYZkx+krjZufmEJeHvYCNpyV38WE4z52jhsjzKp5s8oy2/laKpmPy7uhC9lC7+A1/jBsOt78T2yYwpeRtGwtPW4gyYPctA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rh7WM+7vLk1RG692H9F9Tg3ET3ZajY8/gOj1uyBIKfo=;
- b=XvZPFK0MuxySjVq0xhpDALHnpz2I5JRKcgII1JlIPpTUnH//Ty+1KLhVU7Y4cRN6evMBOK8RvKJVtef3cn7E/PAxCVsNknUFBLDjr7LzfWzUOiMEGVfeYdjQDln9U1DhPQ3+UsPuoqlCwvxoV4O4f+ZA4z5TWSIccXDSdno2EsF1twjmD4Yu8BQ94+QEo839u/UtI74S5We5sQf6jLhMNlNKNWfo3ObOzOY0tTM9U8fJqruXbBkdwlAXEUHHRIDIvxlBiG1jl7H/x8gluhO0oy/IbeI0i6PYB4VYOUIfwogHzEpJqZOeGpk1MQg0MEuw4U0CS26PqLM1aNYwBOFxGw==
+ bh=+QAYZw+6jLJpGtU0qXco+MBNnOD6X8ElWIbwQOPkx28=;
+ b=IA+YO4nsX0j/OWGGBp/IQa8bR5PXALkT4RoBCf1Sv6PWwa2d+hVVuP15DH+4dSoN+uYHxqFqB8Xt1bQS22bMdr5XWrog3yyKu9NEJPieSLXYD/wsM1oJILnkyodasyinXG6jsiYGSI1OJz+9/JC1rDf3h26gA9/BfatecFUqEkW/h3C7BLLVGSlkLSGLF3560Rkw9zLYMeY32iU5t2LW0C/gylRgOidQysSHL0n0dfIfmPG4O/wIF00LPfSZZx5fV8i5dEmMwrI4l3dOYXXOvawweI2hlLTPpEqmAqmrWeiueS/xrKmzmvWjvlKUx8d9JZ3SHhq4WtD0FjJu8rhgHQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DM4PR11MB5309.namprd11.prod.outlook.com (2603:10b6:5:390::5) by
- DM6PR11MB4515.namprd11.prod.outlook.com (2603:10b6:5:2a9::9) with
+ DM4PR11MB6190.namprd11.prod.outlook.com (2603:10b6:8:ad::13) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8964.21; Fri, 25 Jul 2025 09:50:30 +0000
+ 15.20.8943.29; Fri, 25 Jul 2025 09:56:21 +0000
 Received: from DM4PR11MB5309.namprd11.prod.outlook.com
  ([fe80::90cc:99cc:2d53:d848]) by DM4PR11MB5309.namprd11.prod.outlook.com
  ([fe80::90cc:99cc:2d53:d848%3]) with mapi id 15.20.8964.023; Fri, 25 Jul 2025
- 09:50:30 +0000
-From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: "Murthy, Arun R" <arun.r.murthy@intel.com>, "B, Jeevan"
- <jeevan.b@intel.com>
-Subject: Re: [PATCH i-g-t v3 4/5] lib/igt_pm: Move check_dpms to igt_pm lib
-Thread-Topic: [PATCH i-g-t v3 4/5] lib/igt_pm: Move check_dpms to igt_pm lib
-Thread-Index: AQHb+5YzPule/uTh9UOgfxl7wG/q8rRCm2N0
-Date: Fri, 25 Jul 2025 09:50:30 +0000
-Message-ID: <DM4PR11MB53099000D44AA53800050124DB59A@DM4PR11MB5309.namprd11.prod.outlook.com>
+ 09:56:21 +0000
+Message-ID: <9c2c87fa-191c-45a1-a4b3-26563c97d17e@intel.com>
+Date: Fri, 25 Jul 2025 15:26:12 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3 5/5] tests/kms_async_flips: Add DPMS subtest
+To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <arun.r.murthy@intel.com>, <jeevan.b@intel.com>
 References: <20250723055353.1137242-1-karthik.b.s@intel.com>
- <20250723055353.1137242-4-karthik.b.s@intel.com>
-In-Reply-To: <20250723055353.1137242-4-karthik.b.s@intel.com>
-Accept-Language: en-US
+ <20250723055353.1137242-5-karthik.b.s@intel.com>
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB5309:EE_|DM6PR11MB4515:EE_
-x-ms-office365-filtering-correlation-id: f34c83cc-ec69-445b-688b-08ddcb60b0dc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|10070799003|38070700018|7053199007|8096899003;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?lVDK/pFcOWfS37yAZjmXtu5VUg1TIub5DMY+SIdvQtXsYpJSeNdCq6bOsx?=
- =?iso-8859-1?Q?1PANOqlXBLV05ZAwjQXNtCdmECJR7fgKDub7oxrg44v6VAgnlMbdD55t57?=
- =?iso-8859-1?Q?KRcgWgX8x4tpMqVhZNzsMVmUVu+Kv2EuiR03/m4qFb1eT6TW8BquAeRDi4?=
- =?iso-8859-1?Q?/zRCKKZUEUhMB9S6eiSp0fN4Q6zEtZ6vRVcShKBGhLeX3R1HYBGYWFwMDZ?=
- =?iso-8859-1?Q?+26uaGJtCEtfaHHZNHdjFBbd2//PplfsEuF9xKugDa7K9Q/q/x5NiTQCcu?=
- =?iso-8859-1?Q?3ORnm0noQ+UnrWXdErUfgOAxGT0U0ReBSvjfhq8oA8l7fQotiMpeUhWs99?=
- =?iso-8859-1?Q?7B47Tz3ehHe9P5sKZcHwu4gg9oHSdoSip5tcXawamSen/tHXm2OiVwp8wp?=
- =?iso-8859-1?Q?yKLRKTSLtefRXF1zm193+2DHpledKCbQ/g1N6Vm2b9vkCFxT4WsbULgdo9?=
- =?iso-8859-1?Q?37OzWaTBvm0CleGna4SCHgSfEaQEiRvgRsawalyu3nqgMT+YbQBScN8lG8?=
- =?iso-8859-1?Q?YYsGdSKqjiQ7Z2yp8zb9hlflWABOZopn80YP9csQO1f3hfemqJDf5Xa+JM?=
- =?iso-8859-1?Q?+4E0+5mJv0Z9BDUOXYXU/xZa7j4LzYiRi+fQfn/GFxWwdRouWttITUHira?=
- =?iso-8859-1?Q?T2H/gUk3Eq6p7Pm/lYFDoKCZjun4+weE1R6ZPLS2xL4JRJIaLp5wbLwFhp?=
- =?iso-8859-1?Q?KvaQMhwxEEwSTqoGS8Ch2FqPo5fZGiqSjfoJ8/BwKAV7fUfs4jKZK5lvpn?=
- =?iso-8859-1?Q?WIOO/ASH1hR+Dqmjyh7r6bsNm8RJmGrnsjezTkvekh9dKmhkJJYIpGWrNU?=
- =?iso-8859-1?Q?SjWlPrk1Nmgpv+TTCkd2quscB7B7p/mi1tc0eUOEMelRFEBgih2XxZqO1d?=
- =?iso-8859-1?Q?wBQ+EOj7POty6JRe8UvUyjh88DwyXbYU0EjyZ8Lo0Q2AbXuRBLWseAic32?=
- =?iso-8859-1?Q?K5pCuKHzfuIiYA7G061D2gbK+kuz7NWpJgCSA4SdPeU0im4ZK/HieUbGdM?=
- =?iso-8859-1?Q?bn7cBYdx5bfxeNFNX1RDVBqkAHyiIs6W3j8C2+dlBt/v9kEHofuEtFH8QE?=
- =?iso-8859-1?Q?p/DcQTaZv2gxAbWwNpBAbSOX1u5ZQ5fL77/Tv97ZDlD+z+Uhy8n+kjoB0r?=
- =?iso-8859-1?Q?tcFlvJKRWF+y2+y+ALk0cMW7nGIN6GYj/ZNSWc75acVMhgCCK8s5LeikU+?=
- =?iso-8859-1?Q?lv2bwjJB6PTrrnDOso/HX7wxiCmyXSbMOW456rSLaegVIhbAQV0UfEp7Hq?=
- =?iso-8859-1?Q?zkEeAu+LF52qh679s8aMBJrhngpuxyI0ZqNI5uKU/4nkqgRj7t4sI6mq6/?=
- =?iso-8859-1?Q?zyJ4GR6q26bLjFQnLspmfy1XpyPvb5ipwW0gqc//40BalP3y8OU+BdkbjU?=
- =?iso-8859-1?Q?/xp1rMJvKuYZsPMjcKMHuBmarWHF2wMVpizYaeOI6t1I884adz/s5NqkUi?=
- =?iso-8859-1?Q?NGL3c5AGVWAi6L7oYdVFdLkMSb2KBYVbXEVLNlLN8huP/jtRcywI6NX1eO?=
- =?iso-8859-1?Q?0lrBVH8mdxZKVjotRJCt4YcEN8futKYTTWwGh3tUjHgQ=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5309.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(10070799003)(38070700018)(7053199007)(8096899003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?RCheLTqKhHmMdyk1PI/EmYpthWuVQIqjl/D1om+3H/uqPmZ4D2vs9WPc8O?=
- =?iso-8859-1?Q?PtARnUW/bIum+/aXp3HnbgUJt+v6G8ckelpQ0hHFSwqrq+ijdQZlBoLDrE?=
- =?iso-8859-1?Q?mo6h5vVUxQNE+7v4ICN5ZHGUQ31ouiyDm74hUM0rskZvttvrFF2Qc3PjAC?=
- =?iso-8859-1?Q?lPCzcSuFCb7fQAcEnAQ3RKmpSqlOHv2a+22IToy1BH2BOwvFPv8Rn3sao1?=
- =?iso-8859-1?Q?wU/Dm+HYeC8/h31FvmDyrFL2a7VHJUCH4QPCczz0892Jot7ITywqd67i2L?=
- =?iso-8859-1?Q?Qre7q6hhCLvX8hAHduYCxGFSikJi+e6BTeCpS8y3vXva09mLrwFCUfwRz4?=
- =?iso-8859-1?Q?5WcdUPlfeN2Wd2vq6Q27XYu6RMhuOHAEZKCEWXYccxO6FTLQTt7B7x8WXl?=
- =?iso-8859-1?Q?VaSXeqLN6BNPIeFNm0RA1vfDUOKlx7E2b327HQl+Py1eU4T2KVUq109ZzC?=
- =?iso-8859-1?Q?UHr25snPXQjA3KmmLYoYX9JNnUDIBoEBN/2i5Lb9HAE5z8VcHIu/Vi+C+z?=
- =?iso-8859-1?Q?67qSEN9KNbc8dSD6mSGxk/DwtKMjtoe1RUOS29zP5cQg/6b4ROFgu5sdbh?=
- =?iso-8859-1?Q?HAilXhzPGogVGoxc017Gr3JTlDsqH5Dw8KrUHO+6xFWuQnuTZzBcYtmd+j?=
- =?iso-8859-1?Q?Vl+8275Nc0ZLyS4OP6E5JgKapmV44WfWTduY3TsEl6ERqJhuYYvYlwwVvJ?=
- =?iso-8859-1?Q?f6u9XBvyVL84Q5uc2dn7uaKkunchcsxrY7SxNs7sNaI31G3tK2GZFpkO24?=
- =?iso-8859-1?Q?/BHQ3cgjcXfdlzrKh9jyJtQkXYuCcGhfyV7pO7uGdy7SSekgX817VEnwzN?=
- =?iso-8859-1?Q?JIVM1Alt5Zy/k6hK7d1MJueOnkFzZ8EdaBj+Swemx9C/63704A95yDchgv?=
- =?iso-8859-1?Q?G44h/1be5+CwUOiBSKbdOEDyS6+AFjSUdLKf9tTs8cJQrbQ7pJQN5/dtS4?=
- =?iso-8859-1?Q?UgRDr3AFV8oPKOZl9pg+rxjZnnDZ2NAl/5DsHu5rT0iW5yZfoNIVM3gLgk?=
- =?iso-8859-1?Q?wHyh0AK8j+Eahfs+opORRNaQ6PqYhu4vAc3FGUgF77P1RCFktEku3u28Da?=
- =?iso-8859-1?Q?YLY1/MddvN4SD0Tht6YYvTe3Uob/IkdnpTKxUWqSySCvsk4QE91WptZ37F?=
- =?iso-8859-1?Q?NGj94glxCgBtrMFtZTU+jZ+CTj+0UCD2AZCwd5IWVAy7Pb2n1xch+p3RDV?=
- =?iso-8859-1?Q?AuIPjEDT992YkZpBhEEd7gtnwwMFV5wBeLrzpijR41+zXdlIjrinMydLzz?=
- =?iso-8859-1?Q?GBAnp2rjPNGabP52yB+r4RmgUHHDd8BASYygPw+6DIZ1DEPCLg76cq/zsw?=
- =?iso-8859-1?Q?l1Z3VrqY7QhgJbfONd4XCnc8A/+ilaAanhj6VU13dF5OVQVgpjcYCgI5Ja?=
- =?iso-8859-1?Q?Ck+38kJHKlVud0cTASX533N31OxHcbhwu7OXmCdMWzMof1daX4mLkKlEAc?=
- =?iso-8859-1?Q?2ObDuSg0Auk2gqE+3uKfkT1Mq1bcrsRXH3l4fZkCNxQ4pWqKvMeFYY9O5+?=
- =?iso-8859-1?Q?5fWFGNMzegnGidUzmarHuCLKEsUVHl2Sg1DKlSfeqwJ1iw7Hj68pxjVqCw?=
- =?iso-8859-1?Q?pSEbwCR0L4bkEtztCPKA7jTvS72CBRNtIioS55YU6SJiMckykugaSuuoAY?=
- =?iso-8859-1?Q?efwxG90qv9xnf5Yp5hO2VVNYXi8MfhcD5FY0KRit60Aw+qLPgB4/JanROx?=
- =?iso-8859-1?Q?e7WDL3Ccs4CQmlnJurtmWp12BpUGH8LEBbIHXtZmdGViZUZYdlwbeCsnKS?=
- =?iso-8859-1?Q?uLKQ=3D=3D?=
-Content-Type: multipart/alternative;
- boundary="_000_DM4PR11MB53099000D44AA53800050124DB59ADM4PR11MB5309namp_"
+From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250723055353.1137242-5-karthik.b.s@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0115.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:11d::13) To DM4PR11MB5309.namprd11.prod.outlook.com
+ (2603:10b6:5:390::5)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5309:EE_|DM4PR11MB6190:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd48adf8-e3d5-4976-7c3f-08ddcb618152
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NXY3Mk9xME9DV0ptblRhYmlrZkhSZjFoRzR0NzVhRkQ0eVN2V3k3dDNISXFk?=
+ =?utf-8?B?bm5yYTNzaGE2Q21reDhuM3lUMFgyTlpaT2tOamlUNGcxa0ZUdnR5RXRHWWt2?=
+ =?utf-8?B?Qmh1d08ySnhXdUlYUG5OVCtLdVFRQVd6c2ZpTzFUNDhmeTR5NzhOVmVPS3Z5?=
+ =?utf-8?B?SGw3cXJHUndYUUJFQXhnRTJ5TmVRVGl3Szc0Tm5YS1RpcThEQ1F1N2o4dHpN?=
+ =?utf-8?B?YUJSODRnYTZNQjVVcVBzdk85cWNWWVNBWXM5eDZQYWRJS2R0elpSbE05M0Rk?=
+ =?utf-8?B?TW9iSFgrWDNabHhCMG1tNzE2VUVGWWdneFBSM3dPYXhJMHJJMCtoVndXQU1i?=
+ =?utf-8?B?OFBXZHl5RkFQVzB4UlFvbnZFN3U4UUFWbXNiT3h0R1RYYk1tbk01QVp2L1B1?=
+ =?utf-8?B?YlQydGtkZHZuUjBDUmIycVdvYWJrYVVYTlduNWl1ZEJ0MFpBUnQ5UTM1b2J2?=
+ =?utf-8?B?bThBUlBOUWowOXk5MEdXYytBU2dObHZRTnUrellUKzJ0Wm5WdmxacWN5UTk2?=
+ =?utf-8?B?L0luMXczMkRtMmRmMmE1TGJoemZldnJwLzNTbjJEYWF2cVoxVDRRakNqNXoy?=
+ =?utf-8?B?U1ZkUDN2bWNzbXZoK2Z2eHMxOTV4Vzd0dnMvT21GNG4vYTAvVUJrVi9Wc3h3?=
+ =?utf-8?B?VExkWnJmS0MwdnJQTXhrcHZpUjVuUnA1MVppbjlGMXQ3Ykh4NlArR0xOcjJy?=
+ =?utf-8?B?SklkV2svSHRaeGhLRk05blJ6bTVDaVBSZzZmNHZMYlY2U25MdVNnN2czMVpF?=
+ =?utf-8?B?VW1iMEY1VEZHOG1wTEQ4OHYxT3I2UzJvRjBFVUJpdG5hVmxlTEJ1cTRNRmxO?=
+ =?utf-8?B?VnRxdTIvYTl0NjNSVWFlWEFnbVdOYzc2M25CSzl4aW45amd1MVp4NDAzU1Fp?=
+ =?utf-8?B?Wmg2L2xuR3dWeURNVVZ1ODdSSWxNblpYbmtzd0JDajM2MmVHTjRxdyt4YWtZ?=
+ =?utf-8?B?VDFCVUpnbzB1SmY0Qk1mRXFPWUVSMWtBY3FDNE1MSHRPa3JRd3JYcTlBRmhG?=
+ =?utf-8?B?amtmclZSUWZDcU1lWFBhOTZJZXJXZEhmU0ZpNGJxSTlwdWUxcmtKTEMreXor?=
+ =?utf-8?B?bHRsNTl0S2JoL3JJSXl1L3hkR3d1NmFvd3l6WHYvMTg3K2pqUDg5MlVTRjBK?=
+ =?utf-8?B?R0JNUGV6bUlFWWRXVXdwcE84L2ZDVTljY2hKLzdzWkErZndjY3FXQ3c2TCtC?=
+ =?utf-8?B?STVSdHNpdEh0SVRtV1RTT1prT25LZ040VGNuOTZ5SU1vRks0WHZkbWo0Tkdk?=
+ =?utf-8?B?ZVFNTG51ZmNjN0xoMkJrRXBsbXhhazJHSS9OV3FVMWhJSWV4WWpDRTlzcXIr?=
+ =?utf-8?B?dmJFMVIvd1MzSGFxck9tR2F1TCtXVm1hTiszeFBsZkg1SE9Tc1NLUUNJTlNB?=
+ =?utf-8?B?SjA5bGFWNTdVeDZmRGQrcllkaXRsczZoMlpmNXlpQzNBaE5IWHNSV3ZRekM5?=
+ =?utf-8?B?ekViNlpLelQ3QXJCMVVUMnNCNkIwRUxvSzJXWjNWaU1zVVNEQW1DRnI5WG1O?=
+ =?utf-8?B?OXZ0UGhVNEc5NkdnelZXWDA1ZFpiMCtMUHhkbkRvL0tLc3JVREVCaVoxVnEy?=
+ =?utf-8?B?V29JWjd4N21HMzk5SHEzVVA3S3Y5S09rZ0ltOEU1ODhCVFNuMUkyYUJPVXZW?=
+ =?utf-8?B?VVpCQzkvRGJZZnkzQTUzaUNESGtPS2RISDFEa1BySkRBL1BOV25lMEV1ZmNR?=
+ =?utf-8?B?QTZib01Ld1pMekdFTVBWYmZhcHFoQ3J4dTlwTUJlRnJsdC9qYURrL0FGbWQ0?=
+ =?utf-8?B?Q09lSElYbVBWL2tjOGV0em5kK2ZqREFybzdlUXF1bjhkK2Q5ZzNod0VIRHJM?=
+ =?utf-8?B?WWVEekpob2VoWExWVUJLMTdJZG4zQUJFbGFnYTF3NkJGTkU4M0tLZGdNb2xL?=
+ =?utf-8?B?QUEwYm1UdVp3MzZDclJwMjZ0blorWnVpTmZzTWJ3c2E3ZTl4U28rOWYwemto?=
+ =?utf-8?Q?ZNIlEMOfOtQ=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB5309.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NTl5M2FXMkhldXB5L1lVa0tZKzJFb0xEU3pNRHNlUFYyWTF2OFczY053M1Vq?=
+ =?utf-8?B?VHI5UFA3OEEwcEFkUVJuRDNIUWJIR0t0ZUxwYTlOQ3E1Rk04c2p4Qm5kYjhM?=
+ =?utf-8?B?S2p0cE01TEk0aW5jblVNcTFpamRXUFJhSjVwbGdPUmV1UUJ0TDd0YWJ6cEZ4?=
+ =?utf-8?B?UEVHV2VnaXJYSHAxTkhqbllia3M2bmVmUFBuZjMxL1J0WFVISmo2U2NJOTM2?=
+ =?utf-8?B?S2JnZ3lDbWtvYWJkemVLdktGSkxWYU8vVEttNmlTc0JJTEpGKzlCdkF0bmZD?=
+ =?utf-8?B?VC9lYkNJVTIyVUczNXNmOExiZHlvYWpkdHA2RDFBV3FPT0FsMktCVHhsekdV?=
+ =?utf-8?B?Qjg3dkwxenZoV2VSREphejg2RXJXUW1reGhpQUoxQ0VyZXc3dDNMSWJzUDlE?=
+ =?utf-8?B?aFBtMkFXWjEveEZlOTRFb0cweXpHSDFGS2phaTBobGVrWktGTC9OcWVjbUps?=
+ =?utf-8?B?ejkrd09lWXJRVjZNZEptQzErRW5reVI1RENWam5RTmtxODRMdlRTK2pibTRE?=
+ =?utf-8?B?Z1hMUFBHOEdxWW5PZ202WWpiOWlWakxpb2dKamR4UExJQUFmQWNvMVJSdVVz?=
+ =?utf-8?B?VXZlSEFBSnF0ZFNsSzZ0Yk1UQXkxdTNHY0lUNnkzZXZvSnlrSjBNVjFzZVFx?=
+ =?utf-8?B?eFZaeFMwREN1OG9XMC9VNHk2UXpaRWtaLzNpOHJpVkc0MkFwZkRBekFnS0U3?=
+ =?utf-8?B?UzY5WVplbEoxMFdvYVRKWTJ1MXVVMXArT0o1RGhiNzlnVWdyR3ZqUVBYYURG?=
+ =?utf-8?B?azNKZUhRa05zZ2tYbXFRWFZuay9DcFJ4d2hvekJCcTk4R1EwaUUyN0pyUXA2?=
+ =?utf-8?B?Q20vQ1JtNG9wZzdYVDlUTWJsNlh3STR1WFcxUzVBTERpM2JvQ3RZaVNqWDhC?=
+ =?utf-8?B?N25MSU5CZEpVbVlicVVEOGNBMU1acU90WXp3N1pBb29RK3kvazlueHV2VVdJ?=
+ =?utf-8?B?NGw4UkE0bFIrRWxPcmVzWTJtNHdZOTJwUkovSTRvc25HUTI5Yytia1Erem91?=
+ =?utf-8?B?bGRCLytVY0JMWFZxRk95dGo3T2FvZzZBY051ZEkzL3h5UmlyV2hsQUJ0dCtv?=
+ =?utf-8?B?MU1Wck5uemJtVVd6YkRvaTZvTmg5VWVWK3NERDJWYkhQYjN3QytiSnhzTmgw?=
+ =?utf-8?B?eFltTEt0bDVLL1BJOFJmODVhRDROYTJKWXExNVdjR3FKcHE0ZWNyZlg2aFQ4?=
+ =?utf-8?B?QjRXN0h3T1V1UXQ2eVRnVzRockgvUGhlWTBWRUFZei9HVy9sR3BYd2FRMDY2?=
+ =?utf-8?B?VTVxOWphTHh3S0ovVEk2YVEwRWhhZy8yT3VIcUszZHRuOHU5ODBSZFJjTjdo?=
+ =?utf-8?B?MGUrOWNoK2NGUjBBdjJ4QzBCQ2wxRW9lMU92NDdBQi9PeG94MEw3anQ4V3pl?=
+ =?utf-8?B?bHV1bTM4M0ZlcFNtM3NZTVdTNFFrSjMvZEt2SEU4YWZSYUE0d29LNCszYTVC?=
+ =?utf-8?B?K0ZOanBYLzRCbC9aTjI2NXZnTTRNazJkWDRnZVExNVE1dmVJQkZaanRheE5U?=
+ =?utf-8?B?Z1hJbTRKazdScVNBQTFjbitrWHZQbFhNd2ZMT1dPRmt3eFREN3RSVW1vL01u?=
+ =?utf-8?B?Mk9ZZTJLNTl5VWt5THo4aCtYVzl6ckFDWVFqaGFYQXN0ZjVGV1p0OGRTc3dz?=
+ =?utf-8?B?M3V5M3NHeGo3QUhTWWFNZUJ1MUpmdzk0dDlKOWRIRlNnNjdCcmR3dDYxNzNP?=
+ =?utf-8?B?M1BXUlhsODRlM01FM0FuQzhsNVlGNXdDR3cxRytFcmVFQnZFSStuUjl5OWFJ?=
+ =?utf-8?B?U3dFQk5DdUF0ZEpPM3VDRVJ6cXVwT1JidFBiSEFNRys4ZE11a3hqMzZaVksz?=
+ =?utf-8?B?bis5Ulo2S0VzSW1rVlFPUVB1MzlLdXZTTWtNdm1qdGtweTVvOEgwQkdPOFlP?=
+ =?utf-8?B?Qno1VHI0ajQzMzdSY2x1NURNRWRFSVVjbW00dUtHU2sxTzB4bUVhM1o2SWlG?=
+ =?utf-8?B?L3NiYnlkbURwa2JFUWNTMnQwRnVUY3VET2VpaHFZTktKdG1BSnBEK2Uwdlgx?=
+ =?utf-8?B?Ti9TZVJXeEZJc2FsODdVbXBldW5sbFpYdWF4a3RENHlyU0x1RGdFSU9Ha0R1?=
+ =?utf-8?B?NCtleEloY2RFM0t0TjV4QTFBVG5tK3REM1dzaFd5RXJ5d1hsWDYxWHhML1Bj?=
+ =?utf-8?B?NWhYWEtyS2lPamo3RzI5ajFmUUpCWWc4N3dKNUtjVEpWbHpNQjlDalM1bVVa?=
+ =?utf-8?Q?/pV6lDvTRjYhK0W+MYLMTd8=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd48adf8-e3d5-4976-7c3f-08ddcb618152
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5309.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f34c83cc-ec69-445b-688b-08ddcb60b0dc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jul 2025 09:50:30.0819 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8753QGO0MgRd6Yo+CYLbdO+ZEvHWGKhYueu4psY+XRXOf2FBBnocevVW32bYNbw0ezyEmTT1lcLEVtxVq6d+0Y3aSlX/Uo1d1GjLipx3xl3h6WuvxtCMnFzd74opdprw
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4515
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 09:56:21.5512 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Yv0u9VW1wVzxw0KTy/n/HKf8QSG6DO3a49TxyCCpwPj0NTxwpGYm/Jy2TXLqJXhpCqD+g62fX0TinQ44vUFJbcwOnM7cl+BmJbS+FYLZNttMD7GSg+PUiLWcaVI/M0p3
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6190
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -189,342 +196,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---_000_DM4PR11MB53099000D44AA53800050124DB59ADM4PR11MB5309namp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Hi Karthik,
 
-
-
-________________________________
-From: B S, Karthik <karthik.b.s@intel.com>
-Sent: Wednesday, July 23, 2025 11:23 AM
-To: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
-Cc: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>; Murthy, Aru=
-n R <arun.r.murthy@intel.com>; B, Jeevan <jeevan.b@intel.com>; B S, Karthik=
- <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v3 4/5] lib/igt_pm: Move check_dpms to igt_pm lib
-
-The check_dpms function in kms_pm_backlight.c is moved to igt_pm lib
-to make it accessible to other subtests which need to perform a
-simple DPMS toggle.
-
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- lib/igt_pm.c                   | 21 +++++++++++++++++++++
- lib/igt_pm.h                   |  1 +
- tests/intel/kms_pm_backlight.c | 20 ++------------------
- 3 files changed, 24 insertions(+), 18 deletions(-)
-
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 7f9cbd69a..cf1c442f8 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -1487,3 +1487,24 @@ bool igt_has_pci_pm_capability(struct pci_device *pc=
-i_dev)
-
-         return (offset > 0);
- }
-+
-+/**
-+ * igt_pm_dpms_toggle:
-+ * @output: igt output for which DPMS toggle has to be performed
-+ *
-+ * Toggles the DPMS state of output to OFF and then back ON.
-+ */
-+void igt_pm_dpms_toggle(igt_output_t *output)
-+{
-+       igt_require(igt_setup_runtime_pm(output->display->drm_fd));
-+
-+       kmstest_set_connector_dpms(output->display->drm_fd,
-+                                  output->config.connector,
-+                                  DRM_MODE_DPMS_OFF);
-+       igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)=
-);
-+
-+       kmstest_set_connector_dpms(output->display->drm_fd,
-+                                  output->config.connector,
-+                                  DRM_MODE_DPMS_ON);
-+       igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
-+}
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index c73972f2a..e931e51af 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -98,5 +98,6 @@ uint64_t igt_pm_get_runtime_active_time(struct pci_device=
- *pci_dev);
- int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
- void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
- bool igt_has_pci_pm_capability(struct pci_device *pci_dev);
-+void igt_pm_dpms_toggle(igt_output_t *output);
+On 23-07-2025 11:23, Karthik B S wrote:
+> Test functionality of async flips with DPMS.
+> 
+> v2: Update runtime to accomodate for first flip after DPMS (Arun)
+> 
+> v3: Rebase.
+> 
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 
 LGTM,
-Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>> ---
+>   tests/kms_async_flips.c | 36 ++++++++++++++++++++++++++++++++++--
+>   1 file changed, 34 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index 1d8ee10a9..8a943fe01 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -90,6 +90,9 @@
+>    * SUBTEST: async-flip-hang
+>    * Description: Verify the async flip functionality with hang cycle
+>    *
+> + * SUBTEST: async-flip-dpms
+> + * Description: Verify the async flip functionality with dpms cycle
+> + *
+>    * SUBTEST: overlay-atomic
+>    * Description: Verify overlay planes with async flips in atomic API
+>    *
+> @@ -141,6 +144,7 @@ typedef struct {
+>   	bool alternate_sync_async;
+>   	bool suspend_resume;
+>   	bool hang;
+> +	bool dpms;
+>   	struct buf_ops *bops;
+>   	bool atomic_path;
+>   	bool overlay_path;
+> @@ -386,6 +390,21 @@ static int perform_flip(data_t *data, int frame, int flags)
+>   	return ret;
+>   }
+>   
+> +static void check_dpms(igt_output_t *output)
+> +{
+> +	igt_require(igt_setup_runtime_pm(output->display->drm_fd));
+> +
+> +	kmstest_set_connector_dpms(output->display->drm_fd,
+> +				   output->config.connector,
+> +				   DRM_MODE_DPMS_OFF);
+> +	igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+> +
+> +	kmstest_set_connector_dpms(output->display->drm_fd,
+> +				   output->config.connector,
+> +				   DRM_MODE_DPMS_ON);
+> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
+> +}
+> +
+>   static void test_async_flip(data_t *data)
+>   {
+>   	int ret, frame;
+> @@ -395,7 +414,7 @@ static void test_async_flip(data_t *data)
+>   	uint64_t ahnd = 0;
+>   	int mid_time = RUN_TIME / 2;
+>   	float run_time;
+> -	bool temp = data->suspend_resume || data->hang;
+> +	bool temp = data->suspend_resume || data->hang || data->dpms;
+>   
+>   	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>   
+> @@ -488,10 +507,15 @@ static void test_async_flip(data_t *data)
+>   			break;
+>   		}
+>   
+> +		if (data->dpms && diff.tv_sec == mid_time && temp) {
+> +			temp = false;
+> +			check_dpms(data->output);
+> +		}
+> +
+>   		frame++;
+>   	} while (diff.tv_sec < RUN_TIME);
+>   
+> -	if (data->suspend_resume)
+> +	if (data->suspend_resume || data->dpms)
+>   		run_time = RUN_TIME - (1.0 / data->refresh_rate);
+>   	else
+>   		run_time = RUN_TIME;
+> @@ -1206,6 +1230,14 @@ igt_main
+>   		data.hang = false;
+>   	}
+>   
+> +	igt_describe("Verify the async flip functionality after dpms cycle");
+> +	igt_subtest_with_dynamic("async-flip-dpms") {
+> +		test_init_ops(&data);
+> +		data.dpms = true;
+> +		run_test(&data, test_async_flip);
+> +		data.dpms = false;
+> +	}
+> +
+>   	igt_fixture {
+>   		for (i = 0; i < NUM_FBS; i++) {
+>   			igt_remove_fb(data.drm_fd, &data.bufs[i]);
 
- #endif /* IGT_PM_H */
-diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.=
-c
-index 9b341c73a..a0ecf2b0e 100644
---- a/tests/intel/kms_pm_backlight.c
-+++ b/tests/intel/kms_pm_backlight.c
-@@ -142,22 +142,6 @@ static void test_fade(igt_backlight_context_t *context=
-)
-         }
- }
-
--static void
--check_dpms(igt_output_t *output)
--{
--       igt_require(igt_setup_runtime_pm(output->display->drm_fd));
--
--       kmstest_set_connector_dpms(output->display->drm_fd,
--                                  output->config.connector,
--                                  DRM_MODE_DPMS_OFF);
--       igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED)=
-);
--
--       kmstest_set_connector_dpms(output->display->drm_fd,
--                                  output->config.connector,
--                                  DRM_MODE_DPMS_ON);
--       igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
--}
--
- static void check_dpms_cycle(igt_backlight_context_t *context)
- {
-         int max, val_1, val_2;
-@@ -168,7 +152,7 @@ static void check_dpms_cycle(igt_backlight_context_t *c=
-ontext)
-         igt_backlight_write(max / 2, "brightness", context);
-         igt_backlight_read(&val_1, "actual_brightness", context);
-
--       check_dpms(context->output);
-+       igt_pm_dpms_toggle(context->output);
-
-         igt_backlight_read(&val_2, "actual_brightness", context);
-         igt_assert_eq(val_1, val_2);
-@@ -310,7 +294,7 @@ igt_main
-                                 test_setup(display, &contexts->output[j]);
-
-                                 if (tests[i].flags =3D=3D TEST_DPMS)
--                                       check_dpms(contexts[j].output);
-+                                       igt_pm_dpms_toggle(contexts[j].outp=
-ut);
-
-                                 if (tests[i].flags =3D=3D TEST_SUSPEND)
-                                         check_suspend(contexts[j].output);
---
-2.43.0
-
-
---_000_DM4PR11MB53099000D44AA53800050124DB59ADM4PR11MB5309namp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div id=3D"appendonsend"></div>
-<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
-Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
-s=3D"elementToProof">
-<br>
-</div>
-<hr style=3D"display: inline-block; width: 98%;">
-<div id=3D"divRplyFwdMsg">
-<div style=3D"direction: ltr; font-family: Calibri, sans-serif; font-size: =
-11pt; color: rgb(0, 0, 0);">
-<b>From:</b>&nbsp;B S, Karthik &lt;karthik.b.s@intel.com&gt;<br>
-<b>Sent:</b>&nbsp;Wednesday, July 23, 2025 11:23 AM<br>
-<b>To:</b>&nbsp;igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop=
-.org&gt;<br>
-<b>Cc:</b>&nbsp;Reddy Guddati, Santhosh &lt;santhosh.reddy.guddati@intel.co=
-m&gt;; Murthy, Arun R &lt;arun.r.murthy@intel.com&gt;; B, Jeevan &lt;jeevan=
-.b@intel.com&gt;; B S, Karthik &lt;karthik.b.s@intel.com&gt;<br>
-<b>Subject:</b>&nbsp;[PATCH i-g-t v3 4/5] lib/igt_pm: Move check_dpms to ig=
-t_pm lib</div>
-<div style=3D"direction: ltr;">&nbsp;</div>
-</div>
-<div style=3D"font-size: 11pt;">The check_dpms function in kms_pm_backlight=
-.c is moved to igt_pm lib<br>
-to make it accessible to other subtests which need to perform a<br>
-simple DPMS toggle.<br>
-<br>
-Signed-off-by: Karthik B S &lt;karthik.b.s@intel.com&gt;<br>
----<br>
-&nbsp;lib/igt_pm.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 21 ++++++++++++++++++=
-+++<br>
-&nbsp;lib/igt_pm.h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; 1 +<br>
-&nbsp;tests/intel/kms_pm_backlight.c | 20 ++------------------<br>
-&nbsp;3 files changed, 24 insertions(+), 18 deletions(-)<br>
-<br>
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c<br>
-index 7f9cbd69a..cf1c442f8 100644<br>
---- a/lib/igt_pm.c<br>
-+++ b/lib/igt_pm.c<br>
-@@ -1487,3 +1487,24 @@ bool igt_has_pci_pm_capability(struct pci_device *pc=
-i_dev)<br>
-&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return (offset &gt; 0);<br=
->
-&nbsp;}<br>
-+<br>
-+/**<br>
-+ * igt_pm_dpms_toggle:<br>
-+ * @output: igt output for which DPMS toggle has to be performed<br>
-+ *<br>
-+ * Toggles the DPMS state of output to OFF and then back ON.<br>
-+ */<br>
-+void igt_pm_dpms_toggle(igt_output_t *output)<br>
-+{<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require(igt_setup_runtime_pm(outp=
-ut-&gt;display-&gt;drm_fd));<br>
-+<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kmstest_set_connector_dpms(output-&gt=
-;display-&gt;drm_fd,<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output-&gt;config.connect=
-or,<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_MODE_DPMS_OFF);<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require(igt_wait_for_pm_status(IG=
-T_RUNTIME_PM_STATUS_SUSPENDED));<br>
-+<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kmstest_set_connector_dpms(output-&gt=
-;display-&gt;drm_fd,<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output-&gt;config.connect=
-or,<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_MODE_DPMS_ON);<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert(igt_wait_for_pm_status(IGT=
-_RUNTIME_PM_STATUS_ACTIVE));<br>
-+}<br>
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h<br>
-index c73972f2a..e931e51af 100644<br>
---- a/lib/igt_pm.h<br>
-+++ b/lib/igt_pm.h<br>
-@@ -98,5 +98,6 @@ uint64_t igt_pm_get_runtime_active_time(struct pci_device=
- *pci_dev);<br>
-&nbsp;int igt_pm_get_runtime_usage(struct pci_device *pci_dev);<br>
-&nbsp;void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);=
-<br>
-&nbsp;bool igt_has_pci_pm_capability(struct pci_device *pci_dev);<br>
-+void igt_pm_dpms_toggle(igt_output_t *output);</div>
-<div style=3D"font-size: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProo=
-f"><br>
-</div>
-<div style=3D"font-size: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProo=
-f">LGTM,</div>
-<div style=3D"font-size: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProo=
-f">Reviewed-by: Santhosh Reddy Guddati &lt;santhosh.reddy.guddati@intel.com=
-&gt;</div>
-<div style=3D"font-size: 11pt;">&nbsp;<br>
-&nbsp;#endif /* IGT_PM_H */<br>
-diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.=
-c<br>
-index 9b341c73a..a0ecf2b0e 100644<br>
---- a/tests/intel/kms_pm_backlight.c<br>
-+++ b/tests/intel/kms_pm_backlight.c<br>
-@@ -142,22 +142,6 @@ static void test_fade(igt_backlight_context_t *context=
-)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
-&nbsp;}<br>
-&nbsp;<br>
--static void<br>
--check_dpms(igt_output_t *output)<br>
--{<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require(igt_setup_runtime_pm(outp=
-ut-&gt;display-&gt;drm_fd));<br>
--<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kmstest_set_connector_dpms(output-&gt=
-;display-&gt;drm_fd,<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output-&gt;config.connect=
-or,<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_MODE_DPMS_OFF);<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require(igt_wait_for_pm_status(IG=
-T_RUNTIME_PM_STATUS_SUSPENDED));<br>
--<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kmstest_set_connector_dpms(output-&gt=
-;display-&gt;drm_fd,<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output-&gt;config.connect=
-or,<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_MODE_DPMS_ON);<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert(igt_wait_for_pm_status(IGT=
-_RUNTIME_PM_STATUS_ACTIVE));<br>
--}<br>
--<br>
-&nbsp;static void check_dpms_cycle(igt_backlight_context_t *context)<br>
-&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int max, val_1, val_2;<br>
-@@ -168,7 +152,7 @@ static void check_dpms_cycle(igt_backlight_context_t *c=
-ontext)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_backlight_write(max / =
-2, &quot;brightness&quot;, context);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_backlight_read(&amp;va=
-l_1, &quot;actual_brightness&quot;, context);<br>
-&nbsp;<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_dpms(context-&gt;output);<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_pm_dpms_toggle(context-&gt;output=
-);<br>
-&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_backlight_read(&amp;va=
-l_2, &quot;actual_brightness&quot;, context);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_eq(val_1, val_2=
-);<br>
-@@ -310,7 +294,7 @@ igt_main<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; test_setup(display, &amp;context=
-s-&gt;output[j]);<br>
-&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (tests[i].flags =3D=3D TEST_D=
-PMS)<br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp; check_dpms(contexts[j].output);<br>
-+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp; igt_pm_dpms_toggle(contexts[j].output);<br>
-&nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (tests[i].flags =3D=3D TEST_S=
-USPEND)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp; check_suspend(contexts[j].output);<br>
---<br>
-2.43.0<br>
-<br>
-</div>
-</body>
-</html>
-
---_000_DM4PR11MB53099000D44AA53800050124DB59ADM4PR11MB5309namp_--
