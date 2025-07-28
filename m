@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32963C83F17
-	for <igt-dev@archiver.kernel.org>; Mon, 28 Jul 2025 20:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16B93C83F17
+	for <igt-dev@archiver.kernel.org>; Mon, 28 Jul 2025 20:20:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D8FFA10E585;
-	Mon, 28 Jul 2025 20:05:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BD91610E590;
+	Mon, 28 Jul 2025 20:20:05 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84D6910E584;
- Mon, 28 Jul 2025 20:05:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1F3810E58E;
+ Mon, 28 Jul 2025 20:20:04 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7959637260176062912=="
+ boundary="===============1405989950618228093=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_Add_multi-G?=
- =?utf-8?q?PU_command_submission_tests_with_UMQ?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/chamelium/kms=5Fchame?=
+ =?utf-8?q?lium=5Fcolor=3A_poll_connector_status_instead_of_HPD_uevents?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse.Zhang" <jesse.zhang@amd.com>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 28 Jul 2025 20:05:22 -0000
-Message-ID: <175373312253.194773.3990942639269542050@1538d3639d33>
+Date: Mon, 28 Jul 2025 20:20:04 -0000
+Message-ID: <175373400498.194773.12029617763030587815@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250728070743.3665749-1-Jesse.Zhang@amd.com>
-In-Reply-To: <20250728070743.3665749-1-Jesse.Zhang@amd.com>
+References: <20250728081520.1071884-1-kunal1.joshi@intel.com>
+In-Reply-To: <20250728081520.1071884-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7959637260176062912==
+--===============1405989950618228093==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/amdgpu: Add multi-GPU command submission tests with UMQ
-URL   : https://patchwork.freedesktop.org/series/152160/
+Series: tests/chamelium/kms_chamelium_color: poll connector status instead of HPD uevents
+URL   : https://patchwork.freedesktop.org/series/152163/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8477_BAT -> XEIGTPW_13527_BAT
+CI Bug Log - changes from XEIGT_8477_BAT -> XEIGTPW_13528_BAT
 ====================================================
 
 Summary
@@ -81,17 +81,17 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8477 -> IGTPW_13527
+  * IGT: IGT_8477 -> IGTPW_13528
 
-  IGTPW_13527: c6da595438a61c1ec60785907c523f4065420a1f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_13528: ce4f6c0c92e21e0ca71eb2e42160f5d21c0239f0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8477: 3e5ec9d06ce17d6e135901bda13957dc31ae4bf4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-3480-51feeecc1f4cd7066d2ba2cd35f5c1ff39af6a09: 51feeecc1f4cd7066d2ba2cd35f5c1ff39af6a09
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13527/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13528/index.html
 
---===============7959637260176062912==
+--===============1405989950618228093==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,16 +111,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu: Add multi-GPU command submission tests with UMQ</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152160/">https://patchwork.freedesktop.org/series/152160/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/chamelium/kms_chamelium_color: poll connector status instead of HPD uevents</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152163/">https://patchwork.freedesktop.org/series/152163/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13527/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13527/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13528/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13528/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8477_BAT -&gt; XEIGTPW_13527_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8477_BAT -&gt; XEIGTPW_13528_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -130,13 +130,13 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8477 -&gt; IGTPW_13527</li>
+<li>IGT: IGT_8477 -&gt; IGTPW_13528</li>
 </ul>
-<p>IGTPW_13527: c6da595438a61c1ec60785907c523f4065420a1f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_13528: ce4f6c0c92e21e0ca71eb2e42160f5d21c0239f0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8477: 3e5ec9d06ce17d6e135901bda13957dc31ae4bf4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-3480-51feeecc1f4cd7066d2ba2cd35f5c1ff39af6a09: 51feeecc1f4cd7066d2ba2cd35f5c1ff39af6a09</p>
 
 </body>
 </html>
 
---===============7959637260176062912==--
+--===============1405989950618228093==--
