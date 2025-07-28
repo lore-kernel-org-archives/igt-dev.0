@@ -4,57 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC40C87FCE
-	for <igt-dev@archiver.kernel.org>; Mon, 28 Jul 2025 08:34:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D427C83F26
+	for <igt-dev@archiver.kernel.org>; Mon, 28 Jul 2025 08:41:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34C7010E4B0;
-	Mon, 28 Jul 2025 08:34:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C9E2310E49A;
+	Mon, 28 Jul 2025 08:41:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZpHm3w7q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="igQLmQVM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4D7910E4B2
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Jul 2025 08:34:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0C9710E49A
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Jul 2025 08:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753691683; x=1785227683;
+ t=1753692100; x=1785228100;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=gzt5KdOlyQy1yfU2aC8qJwbwdJZ9lGoPMetbUgZfgeI=;
- b=ZpHm3w7qGqsYYyqRvmI9nzopZsUaZeymvo38/85y0i+jee1oQmT59PuC
- BMcNjUX6dfU1k/MCsjLdFhtBwffWvguv5tHrsmrKQaLgz5HgQwQhu9KJj
- HaEGIIKwMUnNHZV1uaY9zzdJ+nsxDrbY9QHIZNquWa67v5qMMtpEL2wVb
- wkCGXeh634hJ1ofsNRNWykkTyECMx3743wKxRCNgIrO+Y/URttLnzSJqa
- KC7vfZmRnCt1kfsSU6bXtHZzEdz1mQWaTmr/iNc4668/z958kaOSXnVVz
- +QnoRs5kw9vOki1CBJym9TgPTInxTW0XGgl2hHcnTH7MOxA3YsIExBXoh A==;
-X-CSE-ConnectionGUID: 0usng0VKTvavQcGkxVvkog==
-X-CSE-MsgGUID: 9oqaXAj7S+m92Ej4Q88RBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11504"; a="56080820"
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="56080820"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2025 01:34:42 -0700
-X-CSE-ConnectionGUID: eukyM5fDRlqfevDeXjOoaA==
-X-CSE-MsgGUID: wZwKzE4bRvGnNp+lQUgvkg==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=t3S1AAuAXUYrECKfKQDruRHoYwkDgLTz6cj//PhX6FE=;
+ b=igQLmQVMqAwMMMbz7EBwYzLSbKnvw3eDnpxDFUzAk1eWZ2WrTyztkI/c
+ I3znECSGh4IM+FIVwQ65wDnQNn2uV2til1Ghsc5cwgPG2rLqQbS2oPfYe
+ wjnLA4M1fQupmjtDvdGbvFZBcPMxBOXisTyFFvo5TqeOQ3bMfivX68Wtc
+ toS2Q/gbw2cVqDhfQjRxHVyqT2XoROPZj+guAtJpvh/4nkDpBN7s1FbsS
+ wCpdhEUB/ZNQkpfcuLQ4oEB1ybrMft5+Mh7BAdlbCzW6/3Z0MfUyy8qdQ
+ Fnqz1SgiTcNeh79cbdQ3mT8lOHHWo2HriCyzUM3uoUdOB9EV2YQh2Uw7q g==;
+X-CSE-ConnectionGUID: d7GHRXnDTeWK7ODIsMiQtA==
+X-CSE-MsgGUID: VyRtTJvaR6eP1VwjdgOVqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11504"; a="67285557"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="67285557"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jul 2025 01:41:40 -0700
+X-CSE-ConnectionGUID: O3K8u5iSQKW0xCEOTGkJ9g==
+X-CSE-MsgGUID: pipFT1hMRjqnXXxSs8rDZg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="166833611"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; d="scan'208";a="162414885"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 01:34:41 -0700
-Date: Mon, 28 Jul 2025 10:34:23 +0200
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 01:41:38 -0700
+Date: Mon, 28 Jul 2025 10:41:35 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>
-Subject: Re: [PATCH v2 i-g-t] tests/kms_debugfs: Use static var for display
-Message-ID: <20250728083423.vtvhkoy4vhz2gkii@kamilkon-DESK.igk.intel.com>
+To: Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
+Cc: igt-dev@lists.freedesktop.org, khaled.almahallawy@intel.com,
+ jeevaka.badrappan@intel.com, ville.syrjala@intel.com,
+ swati2.sharma@intel.com
+Subject: Re: [PATCH i-g-t v4] tools/intel_dp_compliance: Enabling XE driver
+ support
+Message-ID: <20250728084135.lkoy66pywzrbv4dx@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>
-References: <20250724122710.192060-1-peter.senna@linux.intel.com>
+ Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>,
+ igt-dev@lists.freedesktop.org, khaled.almahallawy@intel.com,
+ jeevaka.badrappan@intel.com, ville.syrjala@intel.com,
+ swati2.sharma@intel.com
+References: <20250724052339.955668-1-disantkumar.isvarbhai.mistry@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250724122710.192060-1-peter.senna@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250724052339.955668-1-disantkumar.isvarbhai.mistry@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,72 +76,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2025-07-24 at 14:27:10 +0200, Peter Senna Tschudin wrote:
-> Commit ebe65a923a2b ("tests: Add kms_debugfs") introduced a new test.
-> Unfortunately, that commit used dynamic allocation for `display` and
-> missed a call to free(display) during cleanup. Use a stack variable
-> instead, eliminating the need for dynamic memory management.
+Hi Disantkumar,
+On 2025-07-24 at 10:53:39 +0530, Disantkumar Mistry wrote:
+> i915 and XE driver have different api for mapping buffer. Enabling XE
+> driver support by using igt_fb_map_buffer function which call mapping
+> buffer api based on device type.
 > 
-> Fixes: ebe65a923a2b ("tests: Add kms_debugfs")
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> Signed-off-by: Disantkumar Mistry <disantkumar.isvarbhai.mistry@intel.com>
+> Tested-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+> -----------
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Please use only three '-' chars here, like:
 
+---
 
+so later on git will drop these version notes.
+This could be done at merge, no need for resend.
+
+Regards,
+Kamil
+
+> v2 - Fixed Alignment (Kamil)
+> v3 - Utilizing existing lib function igt_fb_map_buffer (Syrjälä)
+> v4 - updating version history (Swati)
+> -----------
 > ---
->  tests/kms_debugfs.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
+>  tools/intel_dp_compliance.c | 22 +++-------------------
+>  1 file changed, 3 insertions(+), 19 deletions(-)
 > 
-> diff --git a/tests/kms_debugfs.c b/tests/kms_debugfs.c
-> index 75ef15353..570ad1c0c 100644
-> --- a/tests/kms_debugfs.c
-> +++ b/tests/kms_debugfs.c
-> @@ -97,7 +97,7 @@ IGT_TEST_DESCRIPTION("Read entries from debugfs with display on/off.");
->  igt_main
->  {
->  	int debugfs = -1;
-> -	igt_display_t *display;
-> +	igt_display_t display;
->  	int fd = -1;
+> diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
+> index 99196a450b45..31572f6c3ebc 100644
+> --- a/tools/intel_dp_compliance.c
+> +++ b/tools/intel_dp_compliance.c
+> @@ -361,15 +361,10 @@ static int setup_framebuffers(struct connector *dp_conn)
+>  	igt_assert(dp_conn->fb);
 >  
->  	igt_fixture {
-> @@ -107,28 +107,27 @@ igt_main
+>  	/* Map the mapping of GEM object into the virtual address space */
+> -	dp_conn->pixmap = gem_mmap__device_coherent(drm_fd,
+> -					dp_conn->fb_video_pattern.gem_handle,
+> -					0, dp_conn->fb_video_pattern.size,
+> -					PROT_READ | PROT_WRITE);
+> +	dp_conn->pixmap = igt_fb_map_buffer(drm_fd, &dp_conn->fb_video_pattern);
+>  	if (dp_conn->pixmap == NULL)
+>  		return -1;
 >  
->  		kmstest_set_vt_graphics_mode();
+> -	gem_set_domain(drm_fd, dp_conn->fb_video_pattern.gem_handle,
+> -		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+>  	dp_conn->fb_size = dp_conn->fb_video_pattern.size;
 >  
-> -		display = calloc(1, sizeof(*display));
-> -		igt_display_require(display, fd);
-> +		igt_display_require(&display, fd);
+>  	/* After filling the device memory with 0s it needs to be unmapped */
+> @@ -391,15 +386,10 @@ static int setup_failsafe_framebuffer(struct connector *dp_conn)
+>  	igt_assert(dp_conn->failsafe_fb);
 >  
->  		/* Make sure we have at least one output connected */
-> -		igt_display_require_output(display);
-> +		igt_display_require_output(&display);
->  	}
+>  	/* Map the mapping of GEM object into the virtual address space */
+> -	dp_conn->failsafe_pixmap = gem_mmap__device_coherent(drm_fd,
+> -						 dp_conn->fb_failsafe_pattern.gem_handle,
+> -						 0, dp_conn->fb_failsafe_pattern.size,
+> -						 PROT_READ | PROT_WRITE);
+> +	dp_conn->failsafe_pixmap = igt_fb_map_buffer(drm_fd, &dp_conn->fb_failsafe_pattern);
+>  	if (dp_conn->failsafe_pixmap == NULL)
+>  		return -1;
 >  
->  	igt_subtest("display-off-read-all") {
-> -		igt_display_all_off(display);
-> +		igt_display_all_off(&display);
+> -	gem_set_domain(drm_fd, dp_conn->fb_failsafe_pattern.gem_handle,
+> -		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+>  	dp_conn->failsafe_size = dp_conn->fb_failsafe_pattern.size;
 >  
->  		igt_dir_process_files_simple(debugfs);
->  	}
+>  	/* After filling the device framebuffer the mapped memory needs to be freed */
+> @@ -428,16 +418,10 @@ static int setup_video_pattern_framebuffer(struct connector *dp_conn)
+>  	igt_assert(dp_conn->test_pattern.fb);
 >  
->  	igt_subtest("display-on-read-all") {
->  		/* try to light all pipes */
-> -		igt_display_all_on(display);
-> +		igt_display_all_on(&display);
+>  	/* Map the mapping of GEM object into the virtual address space */
+> -	dp_conn->test_pattern.pixmap = gem_mmap__device_coherent(drm_fd,
+> -						     dp_conn->test_pattern.fb_pattern.gem_handle,
+> -						     0, dp_conn->test_pattern.fb_pattern.size,
+> -						     PROT_READ | PROT_WRITE);
+> +	dp_conn->test_pattern.pixmap = igt_fb_map_buffer(drm_fd, &dp_conn->test_pattern.fb_pattern);
+>  	if (dp_conn->test_pattern.pixmap == NULL)
+>  		return -1;
 >  
->  		igt_dir_process_files_simple(debugfs);
->  	}
+> -	gem_set_domain(drm_fd, dp_conn->test_pattern.fb_pattern.gem_handle,
+> -		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+> -
+>  	dp_conn->test_pattern.size = dp_conn->test_pattern.fb_pattern.size;
 >  
->  	igt_fixture {
-> -		igt_display_fini(display);
-> +		igt_display_fini(&display);
->  		close(debugfs);
->  		drm_close_driver(fd);
->  	}
+>  	memset(dp_conn->test_pattern.pixmap, 0, dp_conn->test_pattern.size);
 > -- 
-> 2.43.0
+> 2.49.0
 > 
