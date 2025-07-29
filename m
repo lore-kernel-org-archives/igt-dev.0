@@ -4,49 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43D70C83F26
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Jul 2025 05:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2E33C87FC9
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Jul 2025 05:23:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E737A10E1C3;
-	Tue, 29 Jul 2025 05:16:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 66D8010E1C3;
+	Tue, 29 Jul 2025 05:23:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HaeJiquz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="es4ECfu3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88FAF10E1C3
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Jul 2025 05:16:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C99610E1C3
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Jul 2025 05:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753766185; x=1785302185;
- h=from:to:subject:date:message-id:mime-version:
+ t=1753766634; x=1785302634;
+ h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=femk7JOkX8/50RkxFPUid7oFDQsMpVYOb57d9Ou26VE=;
- b=HaeJiquzXHXdlJaCT9rWxwWUpRvT06UUfhigeEGRkqfJVjfVkAPwk63k
- ofGGdSmv6BksVwWx18HzBBUWnxksyC/XAaG4VcAg9+x1+wvkFPF1KaSbN
- pxfOu4gk9BJpk4edISgH1DZ935bhyDTpw8r6aKQgwmxu4TQZl1+H8Lcux
- 5CNPng8WYFflSqu4cHAA+fB7FLaO/LoAMVkuZTrdqUQblnGwHNQXNHphq
- eEs0reeGhmTnzRSwUyREPMzPWNmC2qHTutA5WbYSlitnxces/rphhibSp
- y3+9MM4NgVHXBnmOFg+k69C0ujA6MbSYR47UavRQEQwWIa4DzJnwgO8bK A==;
-X-CSE-ConnectionGUID: fcRL3BR+Scu3FyWPjmP6yQ==
-X-CSE-MsgGUID: NHqfTIXxSaObR0kQWugpcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55233514"
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55233514"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2025 22:16:25 -0700
-X-CSE-ConnectionGUID: U2dMnEcjTFaVG3IK7SVo6w==
-X-CSE-MsgGUID: 8k9KpOkMRk2K4FvIVRMXiA==
+ bh=qU6qVw4xTd+SqmBEKqn3OskBcVteD25AYq0UcMymZzo=;
+ b=es4ECfu3pO7Tmb+01BGKa0NY+vUv2clQRiu06Ukv4XSS6d9WoSnkIeWM
+ K31diJ+ptyiBpR/kxH44ilZOVesnCwLdEBffyrvvq1tkdzadRkex4VjGz
+ ezX2h/sdaE/esJ2oIxOFQM5pZ127SCznkkSpE45yrOmODzcGH3KHOLiH6
+ VOAnqjStfux2UZOaNQwSDfc2uX+zPwK/udqYBNmowhFhlZYDHiZ8Ka/mo
+ 0n/2HxMmK1fBkr2xgjm5AqamvarvT9Z0sA2dEQ8rffj3QG88EOxtKiYow
+ iy4XB3w0Bv3NbF3UJdJEFENvujwskoYhDahCSB+6VjoEC9XLEHTXmrRGC w==;
+X-CSE-ConnectionGUID: kU5cWyCtTHuk/9CHMK77Dg==
+X-CSE-MsgGUID: oBBHjxobTVC94MQssk/XUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="59672748"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="59672748"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jul 2025 22:23:54 -0700
+X-CSE-ConnectionGUID: oI9dhg3FQq6mQXrSgWM3yw==
+X-CSE-MsgGUID: MsWi+Ux8ROWGFoMc3489EQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="163049070"
-Received: from unknown (HELO priyanka.iind.intel.com) ([10.190.216.153])
- by fmviesa008.fm.intel.com with ESMTP; 28 Jul 2025 22:16:24 -0700
-From: priyanka.dandamudi@intel.com
-To: priyanka.dandamudi@intel.com, thomas.hellstrom@intel.com,
- igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] tests/xe_vm: Report OOM for vm_bind ioctl under memory
- pressure
-Date: Tue, 29 Jul 2025 10:46:22 +0530
-Message-Id: <20250729051622.3322969-1-priyanka.dandamudi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162174965"
+Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
+ by fmviesa007.fm.intel.com with ESMTP; 28 Jul 2025 22:23:50 -0700
+From: Raag Jadav <raag.jadav@intel.com>
+To: lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com
+Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ badal.nilawar@intel.com, riana.tauro@intel.com,
+ heikki.krogerus@linux.intel.com, karthik.poosa@intel.com,
+ Raag Jadav <raag.jadav@intel.com>
+Subject: [PATCH i-g-t v5] tests/intel/xe_pm: Introduce i2c subtests
+Date: Tue, 29 Jul 2025 10:53:03 +0530
+Message-Id: <20250729052303.104107-1-raag.jadav@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,133 +68,162 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Introduce subtests for i2c adapter which is used to control on-board
+OEM sensors on selected devices. This will test D3hot/D3cold transition
+before and after i2c adapter access for the devices that support it.
 
-Add a test which create buffer objects on an LR vm and vm_binding
-buffer objects in a loop until it reaches OOM.
-This is to check that buffer objects on a single vm doesnot get evicted
-and instead report with ENOMEM or ENOSPC in non fault mode.
+v2: Define macros for AMC constants (Lucas)
+    s/index/adapter (Lucas)
+v3: Wait for runtime suspend before ioctl (Anshuman)
+    Make i2c_test() void (Riana)
+    Fix test description (Riana)
+v4: Assert on runtime suspend timeout
+v5: Check for device power state instead of runtime state
 
-v2: When vm_bind fails with oom even before the memory allocation goes
-beyond visible vram size. Test should still pass when VRAM is smaller than
-expected may be due to leaked VRAM memory with a warning.
-VM bind error could be ENOMEM or ENOSPC for oom. VM bind should happen
-atleast once for sanity check purpose. Modified code to handle
-these changes.
-
-Cc: Thomas Hellstrom <thomas.hellstrom@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Acked-by: Karthik Poosa <karthik.poosa@intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 ---
- tests/intel/xe_vm.c | 89 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
+ tests/intel/xe_pm.c | 99 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 99 insertions(+)
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index c1abb08bb..001134387 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -2368,6 +2368,89 @@ static void invalid_vm_id(int fd)
- 	do_ioctl_err(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy, ENOENT);
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 16b5fc686..46b441c4d 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -11,12 +11,18 @@
+  * Test category: functionality test
+  */
+ 
++#include <dirent.h>
+ #include <limits.h>
+ #include <fcntl.h>
+ #include <string.h>
++#include <sys/ioctl.h>
++
++#include <linux/i2c-dev.h>
++#include <linux/i2c.h>
+ 
+ #include "igt.h"
+ #include "lib/igt_device.h"
++#include "lib/igt_kmod.h"
+ #include "lib/igt_pm.h"
+ #include "lib/igt_sysfs.h"
+ #include "lib/igt_syncobj.h"
+@@ -38,6 +44,10 @@
+ #define PREFETCH (0x1 << 1)
+ #define UNBIND_ALL (0x1 << 2)
+ 
++/* AMC slave details */
++#define I2C_AMC_ADDR	0x40
++#define I2C_AMC_REG	0x00
++
+ enum mem_op {
+ 	READ,
+ 	WRITE,
+@@ -779,6 +789,88 @@ static void test_mocs_suspend_resume(device_t device, enum igt_suspend_state s_s
+ 	}
  }
  
-+/**
-+ * SUBTEST: out-of-memory
-+ * Description: Test if vm_bind ioctl results in oom
-+ * when creating and vm_binding buffer objects on an LR vm beyond available visible vram size.
-+ * Functionality: oom
-+ * Test category: functionality test
-+ */
-+static void test_oom(int fd)
++static int find_i2c_adapter(device_t device, int sysfs_fd)
 +{
-+#define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
-+#define BO_SIZE xe_bb_size(fd, SZ_512M)
-+#define MAX_BUFS (int)(xe_visible_vram_size(fd, 0) / BO_SIZE)
-+	uint64_t addr = 0x1a0000;
-+	uint64_t vm_sync;
-+	uint32_t bo[MAX_BUFS + 1];
-+	uint32_t *data[MAX_BUFS + 1];
-+	uint32_t vm;
-+	struct drm_xe_sync sync[1] = {
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		  .timeline_value = USER_FENCE_VALUE },
++	int adapter_fd, i2c_adapter = -1;
++	struct dirent *dirent;
++	char adapter[32];
++	DIR *dir;
++
++	/* Make sure the /dev/i2c-* files exist */
++	igt_require(igt_kmod_load("i2c-dev", NULL) == 0);
++
++	snprintf(adapter, sizeof(adapter), "%s.%hu", "device/i2c_designware",
++		 (device.pci_xe->bus << 8) | (device.pci_xe->dev));
++	adapter_fd = openat(sysfs_fd, adapter, O_RDONLY);
++	igt_require_fd(adapter_fd);
++
++	dir = fdopendir(adapter_fd);
++	igt_assert(dir);
++
++	/* Find the i2c adapter */
++	while ((dirent = readdir(dir))) {
++		if (strncmp(dirent->d_name, "i2c-", 4) == 0) {
++			sscanf(dirent->d_name, "i2c-%d", &i2c_adapter);
++			break;
++		}
++	}
++
++	closedir(dir);
++	close(adapter_fd);
++	return i2c_adapter;
++}
++
++/**
++ * SUBTEST: %s-i2c
++ * Description: Validate %arg[1] transition before and after i2c adapter access.
++ * Functionality: pm-d3
++ * GPU requirements: D3 feature should be supported
++ *
++ * arg[1]:
++ *
++ * @d3hot:	d3hot
++ * @d3cold:	d3cold
++ */
++static void i2c_test(device_t device, int sysfs_fd, enum igt_acpi_d_state d_state)
++{
++	uint8_t addr = I2C_AMC_ADDR, reg = I2C_AMC_REG, buf;
++	int i2c_adapter, i2c_fd;
++	char i2c_dev[16];
++	struct i2c_msg msgs[] = {
++		{
++			.addr = addr,
++			.flags = 0,
++			.len = sizeof(reg),
++			.buf = &reg,
++		}, {
++			.addr = addr,
++			.flags = I2C_M_RD,
++			.len = sizeof(buf),
++			.buf = &buf,
++		}
 +	};
-+	size_t bo_size = BO_SIZE;
-+	int total_bufs = MAX_BUFS;
-+	int bind_vm = 0;
-+	bool oom = false;
++	struct i2c_rdwr_ioctl_data msgset = {
++		.msgs = msgs,
++		.nmsgs = ARRAY_SIZE(msgs),
++	};
 +
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+	for (int iter = 0; iter <= total_bufs; iter++) {
-+		int err = 0;
-+		bo[iter] = xe_bo_create(fd, 0, bo_size,
-+					vram_if_possible(fd, 0),
-+					DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING |
-+					DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	i2c_adapter = find_i2c_adapter(device, sysfs_fd);
++	igt_assert_lte(0, i2c_adapter);
 +
-+		sync[0].addr = to_user_pointer(&vm_sync);
-+		err = __xe_vm_bind(fd, vm, 0, bo[iter], 0,
-+				   addr + bo_size * iter, bo_size,
-+				   DRM_XE_VM_BIND_OP_MAP, 0, sync,
-+				   1, 0, DEFAULT_PAT_INDEX, 0);
++	snprintf(i2c_dev, sizeof(i2c_dev), "/dev/i2c-%hd", i2c_adapter);
++	i2c_fd = open(i2c_dev, O_RDWR);
++	igt_assert_fd(i2c_fd);
 +
-+		if (err) {
-+			if (err == -ENOMEM || err == -ENOSPC) {
-+				oom = true;
-+				break;
-+			}
-+			else
-+				igt_assert_f(err, "Unexpected error %d for vm bind\n",
-+					     err);
-+		}
-+		else
-+			bind_vm = bind_vm + 1;
++	/* Make sure open() doesn't wake the device */
++	igt_assert(in_d3(device, d_state));
 +
-+		xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
-+		vm_sync = 0;
-+		data[iter] = xe_bo_map(fd, bo[iter], bo_size);
-+		memset(data[iter], 0, bo_size);
-+	}
++	/* Perform an i2c transaction to trigger adapter wake */
++	igt_info("Accessing slave 0x%hhx on %s\n", addr, i2c_dev);
++	igt_assert_lte(0, igt_ioctl(i2c_fd, I2C_RDWR, &msgset));
 +
-+	igt_assert_f(oom, "OOM scenario is not working as expected\n");
-+
-+	if (bind_vm < total_bufs) {
-+		for (int iter = 0; iter < bind_vm; iter++) {
-+			sync[0].addr = to_user_pointer(&vm_sync);
-+			xe_vm_unbind_async(fd, vm, 0, 0, addr + bo_size * iter, bo_size,
-+					   sync, 1);
-+			xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
-+			munmap(data[iter], bo_size);
-+			gem_close(fd, bo[iter]);
-+		}
-+		igt_warn("VRAM was smaller than estimated, may due to leaked VRAM memory\n");
-+	}
-+	else {
-+		for (int iter = 0; iter < total_bufs; iter++) {
-+			sync[0].addr = to_user_pointer(&vm_sync);
-+			xe_vm_unbind_async(fd, vm, 0, 0, addr + bo_size * iter, bo_size,
-+					   sync, 1);
-+			xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
-+			munmap(data[iter], bo_size);
-+			gem_close(fd, bo[iter]);
-+		}
-+	}
++	close(i2c_fd);
 +}
 +
  igt_main
  {
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
-@@ -2759,6 +2842,12 @@ igt_main
- 	igt_subtest("invalid-vm-id")
- 		invalid_vm_id(fd);
+ 	device_t device;
+@@ -889,6 +981,13 @@ igt_main
+ 			cleanup_d3(device);
+ 		}
  
-+	igt_subtest("out-of-memory") {
-+		igt_require(xe_has_vram(fd));
-+		igt_assert(xe_visible_vram_size(fd, 0));
-+		test_oom(fd);
-+	}
++		igt_subtest_f("%s-i2c", d->name) {
++			igt_assert(setup_d3(device, d->state));
++			i2c_test(device, sysfs_fd, d->state);
++			igt_assert(in_d3(device, d->state));
++			cleanup_d3(device);
++		}
 +
- 	igt_fixture
- 		drm_close_driver(fd);
- }
+ 		igt_subtest_f("%s-multiple-execs", d->name) {
+ 			igt_assert(setup_d3(device, d->state));
+ 			test_exec(device, 16, 32, NO_SUSPEND, d->state, 0);
 -- 
 2.34.1
 
