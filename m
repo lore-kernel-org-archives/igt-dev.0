@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFCB8C87FC9
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Jul 2025 05:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43D70C83F26
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Jul 2025 05:16:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9D98910E1C3;
-	Tue, 29 Jul 2025 05:11:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E737A10E1C3;
+	Tue, 29 Jul 2025 05:16:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GKuigQsS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HaeJiquz";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B912F10E1C3
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Jul 2025 05:11:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88FAF10E1C3
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Jul 2025 05:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753765879; x=1785301879;
+ t=1753766185; x=1785302185;
  h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=8Vfjy1dAKnkVqyhgyOPcT4KUkTkR5KoTyOp3RMhkI2M=;
- b=GKuigQsSQXBLp3v5bKd5rYzkoN0QkLQMYhqYc59NU39OLGm8Hv8+9gG1
- eR7JbN+aiOUVKMJ55JwNWcHNKzMaNxLdZTrniN5sVKWPmFKlDUDqGgjod
- 6+4q1k8qK8OKmDzRjhes9aasCnE/ICZJPc0vqdwQw2gQ1mPPhnRT6e5v0
- Qi8zgHQdHBq+PkSZJ/OGQSu3ijnj7J8hn1sNppG1x0zaN/0/6dJm7n3i1
- Y1/B5h+hZV5UkBpkK2n1ROihvJpdbqhQ1tnx/bCjIy448AZ+iPW35JbIf
- ejKmCOuabfNVjzCE4mRzx2dB77jZF5q4Pnqj7tx4B8kXKEMBEjC0fe/VN A==;
-X-CSE-ConnectionGUID: YqHyVgXmRuKdrBTrBx6CYQ==
-X-CSE-MsgGUID: OAdDVRyXS1yfLFavI89yBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55233151"
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55233151"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ bh=femk7JOkX8/50RkxFPUid7oFDQsMpVYOb57d9Ou26VE=;
+ b=HaeJiquzXHXdlJaCT9rWxwWUpRvT06UUfhigeEGRkqfJVjfVkAPwk63k
+ ofGGdSmv6BksVwWx18HzBBUWnxksyC/XAaG4VcAg9+x1+wvkFPF1KaSbN
+ pxfOu4gk9BJpk4edISgH1DZ935bhyDTpw8r6aKQgwmxu4TQZl1+H8Lcux
+ 5CNPng8WYFflSqu4cHAA+fB7FLaO/LoAMVkuZTrdqUQblnGwHNQXNHphq
+ eEs0reeGhmTnzRSwUyREPMzPWNmC2qHTutA5WbYSlitnxces/rphhibSp
+ y3+9MM4NgVHXBnmOFg+k69C0ujA6MbSYR47UavRQEQwWIa4DzJnwgO8bK A==;
+X-CSE-ConnectionGUID: fcRL3BR+Scu3FyWPjmP6yQ==
+X-CSE-MsgGUID: NHqfTIXxSaObR0kQWugpcQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="55233514"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="55233514"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2025 22:11:19 -0700
-X-CSE-ConnectionGUID: Q+am3xhoQk2+2s3+vHeqQw==
-X-CSE-MsgGUID: h2w5ftruQIeO6dTkhTFxQw==
+ 28 Jul 2025 22:16:25 -0700
+X-CSE-ConnectionGUID: U2dMnEcjTFaVG3IK7SVo6w==
+X-CSE-MsgGUID: 8k9KpOkMRk2K4FvIVRMXiA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="162945451"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; d="scan'208";a="163049070"
 Received: from unknown (HELO priyanka.iind.intel.com) ([10.190.216.153])
- by fmviesa009.fm.intel.com with ESMTP; 28 Jul 2025 22:11:18 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 28 Jul 2025 22:16:24 -0700
 From: priyanka.dandamudi@intel.com
 To: priyanka.dandamudi@intel.com, thomas.hellstrom@intel.com,
  igt-dev@lists.freedesktop.org
 Subject: [PATCH i-g-t] tests/xe_vm: Report OOM for vm_bind ioctl under memory
  pressure
-Date: Tue, 29 Jul 2025 10:41:17 +0530
-Message-Id: <20250729051117.3322590-1-priyanka.dandamudi@intel.com>
+Date: Tue, 29 Jul 2025 10:46:22 +0530
+Message-Id: <20250729051622.3322969-1-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -86,7 +86,7 @@ Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
  1 file changed, 89 insertions(+)
 
 diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index c1abb08bb..0c08b583d 100644
+index c1abb08bb..001134387 100644
 --- a/tests/intel/xe_vm.c
 +++ b/tests/intel/xe_vm.c
 @@ -2368,6 +2368,89 @@ static void invalid_vm_id(int fd)
@@ -153,7 +153,7 @@ index c1abb08bb..0c08b583d 100644
 +
 +	igt_assert_f(oom, "OOM scenario is not working as expected\n");
 +
-+	if (bind_vm < total_bufs - 1) {
++	if (bind_vm < total_bufs) {
 +		for (int iter = 0; iter < bind_vm; iter++) {
 +			sync[0].addr = to_user_pointer(&vm_sync);
 +			xe_vm_unbind_async(fd, vm, 0, 0, addr + bo_size * iter, bo_size,
