@@ -4,148 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3E6DC87FC9
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Jul 2025 21:50:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2DF5C87FCB
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Jul 2025 22:20:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 870C610E6EE;
-	Wed, 30 Jul 2025 21:50:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5BB5D10E45A;
+	Wed, 30 Jul 2025 22:20:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="CyKvHKul";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="3GGKeanB";
 	dkim-atps=neutral
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2042.outbound.protection.outlook.com [40.107.237.42])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14E3310E6EE
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jul 2025 21:50:11 +0000 (UTC)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2072.outbound.protection.outlook.com [40.107.243.72])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABEEE10E45A
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Jul 2025 22:20:38 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rdPLN5cA4RVpagEg1xqads5NNRWPf/fCL6Sejsl1nl/vNfEY4oDZ7pr6J8qvzILGWHAPeU0fJ1DWG0GQoQfPBO/eOiEFOmbkjTivtfhjYvtGtMCXOn1+okgW0ddBQRO2xLl4qz9EcBnuJPiMr7xgwDcJZ+tCHiebrqGv8dvYLwRDd5SRZgk6sz893EV7kdnvU2Fdk6AyrnKDxqtGzb67kIwOvvorrQoF+e+lAS0yZZgDmklQbfRPnzs/77w0NhnbFvFGtOpYaITgyFvOXej95yTa3ni94QCeBVlFhlzfyzxMR0c69UB/Eubz9BwQL1qYMeFRyyq4qupEUkYCV57lpw==
+ b=krGkfjs8HZONr/3nDD6QRaTPPng3ehbNJbcrPzrmRbhBTJxe5ThT6K9/hKmMO/R8l4psBeXKc4fUCdgS6hyy01S0sXMmQwDq58I7rlxqcRdIiD9EZObFdySBaPoyUKFcAssBdtyYnU9f+DiYYA71Lk2EMr0fhDqGKLhTxLKzTNIPKtnEhOy02aetYMg/XVucqQWPvKKIA7kCDHyd7OkkBurDck8mJY7Fr8r1vJ9XRqldCxfMRh21bSrwANG9Ij3fq56LFx90xE6PaOYiTjYLjQ/WQ44AYplS4ISdhqMo7tGIuEmZ4lMZDsThS+KfimAYXzIOk9iGCao2BCSIF61vTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/BgiJOFjVHJJG4Cuac/9/dwvQSstxgA6mgG0wx2twYE=;
- b=RTdmmqNRmIPlTDfw2DGwlhtuIUcN7QOGshFWfvneJTE5B8em56ZjnBfnXhZpTQSIjYPrlvFQssX+G8jHRnUbYnF5wEcqWijMkPKKFDKL9aMD/iaS305s6IzUSGfHhf7hkL7AR60CFPm4KhWg62K2fvNyXQaiWn9CHxzE3Voy8pCyZpfeLG0x4yJeZg4WG9TLVLIuH04sowoGibjiIsisMdb/wh0qinBFAI0Orq/DhWHU+qz7kTrtA6nX9APTCg6JBpIBzySq3CD41/PhoYiATDlI1fbs7AVRTWfX6b/4ht6oLX1XZQo2ecqbxf81upfhqpoPQu0PEIgBItsiExcg7w==
+ bh=8sGOqte8DcPTyelSiiheq3Lw8b1k182sSfovWFgMkZg=;
+ b=GTWMzo+zroEIHnp+37yh/2xEXM5h2yf9Aq9xzZ0+cDj3odltxWLnpJud20Jx/CWzgc0u5t13Z2f+Q17IRVh4M8miko+Q812JIGVg6UoEdfpBn6eLA1W65lreT6X3o8dv7BwCmdP8ogiFrxdDHO09KC/LKB1GFeg4FtrNPJcmZbz0G8t6Sx80lGM9Ky62eWCMADnGqybQzm1Gb88kqahSgE46YJHf3xDATuN2xF+mAEANPcs4uN/TboyN/7UyV/dsk3C04zNsDYX3tFY3F/63bbCqWl1o5zJM9D9dV3nTmaYYVENx6AZPIpBGeFx8mlTHDxq/610bHJ6YT62sezN23A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/BgiJOFjVHJJG4Cuac/9/dwvQSstxgA6mgG0wx2twYE=;
- b=CyKvHKulJIX4V2zIBGIu93+wCk7p1yLjhnmW+FNDp2Lu4Vlw9u5fXRxEFxWy7WgN9LYHmasyxh/lf4LTJmvcCzeZOHw9IT3vfoWw7Yq5efP40cXs7EOoTcoryn4rS1VBHW0oB/rEHdvCxDMUvoPYBbfqFukPoy1spf6JORqCnNo=
-Received: from BN9PR12MB5146.namprd12.prod.outlook.com (2603:10b6:408:137::16)
- by CY3PR12MB9608.namprd12.prod.outlook.com (2603:10b6:930:102::7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.12; Wed, 30 Jul
- 2025 21:50:03 +0000
-Received: from BN9PR12MB5146.namprd12.prod.outlook.com
- ([fe80::b111:2482:eb49:3186]) by BN9PR12MB5146.namprd12.prod.outlook.com
- ([fe80::b111:2482:eb49:3186%7]) with mapi id 15.20.8989.010; Wed, 30 Jul 2025
- 21:50:03 +0000
-From: "Deucher, Alexander" <Alexander.Deucher@amd.com>
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>, Aravind Iddamsetty
- <aravind.iddamsetty@linux.intel.com>, "Kasiviswanathan, Harish"
- <Harish.Kasiviswanathan@amd.com>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Simona
- Vetter <simona@ffwll.ch>, David Airlie <airlied@gmail.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, "Zhang, Hawking" <Hawking.Zhang@amd.com>,
- "Lazar, Lijo" <Lijo.Lazar@amd.com>, Riana Tauro <riana.tauro@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>
-Subject: RE: [RFC i-g-t v3 0/1] A tool to demonstrate use of netlink sockets
- to read RAS error counters
-Thread-Topic: [RFC i-g-t v3 0/1] A tool to demonstrate use of netlink sockets
- to read RAS error counters
-Thread-Index: AQHcARlJ+sVYNkA3wk2l3TBAg+IW8rRLGISAgAAKBgA=
-Date: Wed, 30 Jul 2025 21:50:03 +0000
-Message-ID: <BN9PR12MB5146349A6BD4F3771CA11F6DF724A@BN9PR12MB5146.namprd12.prod.outlook.com>
-References: <20250730061342.1380217-1-aravind.iddamsetty@linux.intel.com>
- <aIp7I5OjRMx6MPmh@intel.com>
-In-Reply-To: <aIp7I5OjRMx6MPmh@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=True;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-07-30T20:42:06.0000000Z;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
- Source; MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=3;
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged
-authentication-results: dkim=none (message not signed)
+ bh=8sGOqte8DcPTyelSiiheq3Lw8b1k182sSfovWFgMkZg=;
+ b=3GGKeanBLSQeB9yNfLmRAP6Q+FxqJ/sGNPAp3QTNdUrT1cfNi6HYxzKU/f8RcLOiRVdXHmDpjlJWpBp1y1RFqPM53xnYuM52cDrvD6ypRvKVIguaKDpxL8a4+GObDEI3PCYQ3jWmuEUddNS+teM4pbWPNSvPahoHZXHd+M6h4Jw=
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN9PR12MB5146:EE_|CY3PR12MB9608:EE_
-x-ms-office365-filtering-correlation-id: a3701d0d-51d3-475e-eacd-08ddcfb30a34
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?FFgySyI1rG5pXRO9pqUr3RWdtyQDDsTIqLw88nZaF/wU4Vtt6VZDYHridQ9i?=
- =?us-ascii?Q?iVyEQC3MQOZmoUuLO6X8Aru+QVbLke5f6CY1FAY4EpuDmACl6ZERSRI3ak8h?=
- =?us-ascii?Q?BQEa72dlk//hAQULoOg5vGFiAmV7tSkW6K8bH8qLr+s41zLpRw5Pkurs3eb2?=
- =?us-ascii?Q?kkOKqJvh05gQfb8w8nKwsdtdhI0PpV9mvGL4IFzt2Hcb6fiwwCoyQCV6OC6n?=
- =?us-ascii?Q?dhndOoCLU2VPCgzG6e7k/0Ykc5BK8rrWUyOSSiHQyiJjtkS3cb7t5DSqVqY5?=
- =?us-ascii?Q?P7vGU0CYOR2y2oU9RB/vX5YYlpxJwNIlqOq3mA6tLaAgiFZ0gsIw8M/TR2wM?=
- =?us-ascii?Q?fa3Db86YRsSLxPaDnKDLt5HVDrHqaRQsYp7XtMHap//xRNM+LwyMwlfpiyVw?=
- =?us-ascii?Q?z8t7KGvWHaDH6ZKGddGydXTkMIYc5o3DrlsPOWk4qYru5jhz8coIoHuwVU73?=
- =?us-ascii?Q?3NBVGf+xIbuxb1Vtdjx+lAPZBC8PNAO7LPuEoUGGaNmd44CDh4TAClljXAnf?=
- =?us-ascii?Q?c79IUM1lISpMdwMh6XL6yJ4MV/6Y7xYCMQ5ibb3HFb/QCqN3bss+0NuK8/ov?=
- =?us-ascii?Q?4PZbkxgHXrGlaVpIG2JCNqJ3/Nv1UAY/fE8rLGw7/ugbt0N/bmHkWe7/mscU?=
- =?us-ascii?Q?YIdHX24/hRDbSwvbqUZxVQSSmVksr2/P22nhujhDwyxe2lRTDRxYnCL8xR8l?=
- =?us-ascii?Q?SntVbUvE0LFW8ZrhTm7KfHmaO0TrcZQ5e9JoiBfi15+ncgzzVBp/T4B14JCu?=
- =?us-ascii?Q?/PjUkz3s5EVu7im2mBVwuFryIhkvS4Y9iN2pT8/MpQx7DM0zSllu5HgnhcDA?=
- =?us-ascii?Q?mPPfOjxOLtq0AfV+iHm3frKXpBZiHC6p92lfUbDD8sD3vspFhUAMdik0zJrP?=
- =?us-ascii?Q?xCi6d2V3/nw1YbAbuE6I0b2e64edIld6TWlZtCLsnuURxGIGOCZvs2OXB8sd?=
- =?us-ascii?Q?nVzFZabifuG1TMvlTId0Ch6Y7p1JNAaEzBN8rqA+K6oB1gJPULvO5xDDIBBQ?=
- =?us-ascii?Q?MMpYBbyb276dwQ6kS4UYG4BGilvYOGBdHsFLKi0lWsQ1ALkrUpjBgI1ZkUim?=
- =?us-ascii?Q?RWj1kch5VwrmZweWgM/IV7EvXkmwZsWp8HYdcJueQ+9l03y5alDlNSpr687W?=
- =?us-ascii?Q?Ju6iWp5UVCecabmmeeBQ7dhh3NolJb0d6S9THgwq0WJvCf8ZHOwjOedl9t5W?=
- =?us-ascii?Q?0Otg135tFAkaN48hau/S31cmOz298GhA5Gnp/ibj5XIlnanMDU2K9GKFOiKj?=
- =?us-ascii?Q?fn/GZqY63msc/7CGTlKWL2XSlePzGH+X97IjEKPdPBwKrJFKfY/pDv6M6k2U?=
- =?us-ascii?Q?m6R+IrRFMj3cNzjtu/+3FlwryOhSwSphdOGCBQg2Q1yfXM/IW0DupX25GaZg?=
- =?us-ascii?Q?0TwizEVcIr7FHXilh/MeuP6dFjmJgs1UyMcNI0ylbTPq2tZzxK91cQHx6aIY?=
- =?us-ascii?Q?ljVluHsfgRDL5SES+OL4BbInLPACjhS5uwDLJkEf7yu+HTkAkGC2DK7KUFGf?=
- =?us-ascii?Q?BllA6ktdYgvPFNc=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN9PR12MB5146.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?jrsdhuOja1mgLoVxbJ7CpIgYV0QJWNEzaWswWBdQpcslnneSlsWZsaRkrlLV?=
- =?us-ascii?Q?DM+gnIY9zSZdSwZ/+t/t++wjdVx9Ze5n5N6vNTBrwR/0HTQqMmqqbGiKK5PA?=
- =?us-ascii?Q?bzSLF7ye3VlSt6aCgkv2sboP9UAlO4+2acA88a6f7Cs9mMgxg8CAt1wXQ6mN?=
- =?us-ascii?Q?40Q2rfYbvHFtF8lmgzTajc7y//0DemQmZhF8HXUITHvYNgKNEDBRgvKjRD3Z?=
- =?us-ascii?Q?o+x3iYvXiSwWNJv9sa605ftmcurKXcmSJ2EPnnRof6ORfyEA1lgtkoXDNfdO?=
- =?us-ascii?Q?M+pYTagz/WCz6gqD0wiOoKAB5ipObvUJpu/c187qQWiqbbl+SATdfNnoSlkE?=
- =?us-ascii?Q?ahsA3pdfak+U5WPGuaVAdN2nKkBi74VnK4iA+VjJF2S8MyNJ09OMmUOxectB?=
- =?us-ascii?Q?CF9HMfv0a/GnLHh12yEb7V+0gDM//hBZm246TVcMDM9Bo7DTRl1MMTEsVoNn?=
- =?us-ascii?Q?ritG8YVhG4obBFOrKJF/xSvPmwXP+ydskKEedo6b21/e26R0jpuM+VG7mCuy?=
- =?us-ascii?Q?jsQmvPAfffGeaOEQHDvm3bJ4SAq9QsaJhnLRbfhDtQwnyGjJ4tllKY0J/Mja?=
- =?us-ascii?Q?7QIYgl6LKyUKCMMnfYoy/iMi3jM6jOjcFKgWMG31Y2iVtAFQ5VHjsQQuQXzi?=
- =?us-ascii?Q?ae+rQloEqN/2b+tz1TmlQtM44fft3c+O6hVhGKN5G28j4Ybz9aVDxUARsiU1?=
- =?us-ascii?Q?BdPQ0D/uSv/4fXFzoiUHtDmnSIxI/nz/kLPMx+BWUDTn6qa5n31SfrGtxUV5?=
- =?us-ascii?Q?5wkeH11F3c/ukC250rs+aBuSHNBox+s+L5aopuqfxrYAMzU8WjoyYy+XVnAb?=
- =?us-ascii?Q?crfpEd9HpMgMNHHbVue2O4RvUVBbjibDWba6+hGCxDGOUOyw5ttcwQro3ew6?=
- =?us-ascii?Q?k8D5yyDDpFe9vg7g9IncvBiy6liEurZXQbYzqKv4CtDFnaDv+4cQUei3pqH+?=
- =?us-ascii?Q?qxF9fB90vmuTJErxfkoXEw+HIEsfTZ3XpIebpHpeKs06DDRkormxJmumFpv8?=
- =?us-ascii?Q?Je30Lfqw+ne0T6rVSCxp6oBfsmrD10/ffFRnR0kEPfFK4OU7iuVLmf3G8Hh3?=
- =?us-ascii?Q?d7sE1ZkmfZOLInwfEyVEoJebuL9c5SI4Y7yg6Ffv57+RSM2qLFWCbjWiOrm+?=
- =?us-ascii?Q?RzbmQDTN4wD7vocD37PIV9VCo1+UFWCrEgyX+LritoF551bYt8INOs7O1EzN?=
- =?us-ascii?Q?D4CA/mYAo5rQfxthsTVZTzDBwcN9pfwmOfb0lbsDPxly+6Of3CM5aH3cjiad?=
- =?us-ascii?Q?ZjdDUyNAcHFcsC4/GXlxn7/sD4sC1JV5XaxYuicIe30SMADckOWFQOUjQEv5?=
- =?us-ascii?Q?FdVIMV44lsqaKFnAs3+0ICAA/evymS05SX1jNaiGhK41Q8TdsOekv837mcr7?=
- =?us-ascii?Q?thiYpGhAIDYIRio8aehagW32jOxRjoXn4xabN0vgIz040YRAlaGAU15Pt4Yo?=
- =?us-ascii?Q?DrkLvUnb4nRCAOsHMjj6wA5L3sv0IyqnQRXZjLju0htzWDfekpysPs4J6wkT?=
- =?us-ascii?Q?K8X88opXV6mjFGhMRCLrTWux4IDRRJPvdkuh+SeF9sk+UpAuErcdcU5rbJzv?=
- =?us-ascii?Q?ZTfQcFv6ebzP6upQEaw=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
+ by CH3PR12MB8756.namprd12.prod.outlook.com (2603:10b6:610:17f::8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Wed, 30 Jul
+ 2025 22:20:32 +0000
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af%3]) with mapi id 15.20.8989.010; Wed, 30 Jul 2025
+ 22:20:32 +0000
+Message-ID: <ad5c8bf0-ff18-488e-b7d5-a6d4dd3a36e4@amd.com>
+Date: Wed, 30 Jul 2025 18:20:22 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2] tests/amdgpu: Add multi-GPU test cases for
+ AMDGPU basic functionality
+To: "Jesse.Zhang" <Jesse.Zhang@amd.com>, igt-dev@lists.freedesktop.org
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+References: <20250729072221.3717641-1-Jesse.Zhang@amd.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20250729072221.3717641-1-Jesse.Zhang@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YQBPR0101CA0298.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:6d::25) To PH7PR12MB6420.namprd12.prod.outlook.com
+ (2603:10b6:510:1fc::18)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|CH3PR12MB8756:EE_
+X-MS-Office365-Filtering-Correlation-Id: abd61529-52cf-4dfd-0764-08ddcfb74c0c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YUtLVkpVdnR5Qy9sZllmalRsR3pYUkhyMVBWR1p0MVRBOEkrZElLbFJlYmxF?=
+ =?utf-8?B?bnNzYmI1dkIvenBQTWJaU090MGJnTWlIbHcyVTU5ZHNieVN4emhJZXBTdXJo?=
+ =?utf-8?B?MWUyVWViVldFTUJ0N29ITE0rNmpLNWErc1pOWm5vS1B0cVNHcGJMTTcwbklE?=
+ =?utf-8?B?QUZ0Y1ZTRnU2MzFmWlgwdzNDbFo2Q3BrNUx3UXpYWWpDRzl5VlUrajFoQjFS?=
+ =?utf-8?B?cGxqM3pHNVloUit4NjZmNW45eW9jQkl4M3BqTDFoR2ZaRUtOTmtSaStjNFdh?=
+ =?utf-8?B?WlM1MUU3bWtkT01VcUJoeWFybG1VTlVOZjNRczZhcCt3bHpEMGx3bVRCdzBV?=
+ =?utf-8?B?YnluZVV6d3VHSFJJTHFGcHBJWGs5STBiam82WTJZL0JLMHh4T2Rwb3lWSlZr?=
+ =?utf-8?B?ekI2MnRqWEhvYTQrOHNhZHJSWXVUTnd1TFZtOHJiUHIzRkhHY3pBWnJpWGRB?=
+ =?utf-8?B?emxZR0R1bjNIaU84MVBYY0ZHTXBrcTEraTNVSzdlb2VHeEt2RkZIQ3kxR2FU?=
+ =?utf-8?B?V2I0NS9CM3pZMjhsY0JwRTZueStOcFc0L0liQWpDWm83MDZVZDAreWxaWllr?=
+ =?utf-8?B?YXJ2TlZXLzJpeGlsell5Uzd6bjhERHl2V3V6cVNlMForQ3FwUzBSYUVwdUdR?=
+ =?utf-8?B?WEl5MTR0SGFFREgwR3poUzg5VndwZldtMENabUIxSE4xSVNkSHloSmpEbit2?=
+ =?utf-8?B?RWllbkJMdHpNYzEzbUNDOFphK3VjVkZxTVp0Uk1lMzgyazgveFB1bE1zbXpu?=
+ =?utf-8?B?YzhDRHd4TFJUOXBsZkUzUWkxdzI2SmlBbHYxVnBLbDZROU43UitMcUtsM1Vu?=
+ =?utf-8?B?eitOR0Y3dmttck91TkQzZ0JqbEJaMmZUUlNCaXRKREVOSno5MW5qY0FJZjNq?=
+ =?utf-8?B?T2FXck5ac0tMUEJOaVMwRE43UkFsRkVuT21XMjhhMG4xbG5Gb1NNL0VEcUll?=
+ =?utf-8?B?Z2ZwamluRUVGWkVqclVxaWMzNy9vVzdxVEp6L2NCSlA3djYzSWRSR21tRGp6?=
+ =?utf-8?B?dGd4MWEvcUIvZEljYzBrZzBzRXp5bUE3NEhWWmFRNFFCU3lVaGMvK3pvY0Vv?=
+ =?utf-8?B?NGFyNkhSTnRNTjd6WFVGTEpiTk4zWGIrQnh0aEtFWTh4b2E3N1ZVZ0NKb0xm?=
+ =?utf-8?B?bTFBeGF6UjFqYWI2WCs3ZUdxcHEzWFJKUWVSaWNJVkZOeWpCeTFPUzN1RWJO?=
+ =?utf-8?B?UmpmL0FnTE9tNVlCbllVMXVQejNzQzdFbTNQWXdRUWpaa3ZEUGJoSy9UZTBE?=
+ =?utf-8?B?NE9lYm1CRTNUbEJzQTdnbnJPMWtWcS9RSEd5bElZOHBJbTRWN1V5N0RVMG1V?=
+ =?utf-8?B?aS9kcm1lQUtSdmRGZ2tJWWplZVAwVWtkN0F2WVcxWHFwd3FBL0hkT0FnNUN5?=
+ =?utf-8?B?aFNtQVg1aFZ5NWtBT1prZERPU1RsU1FzL2NWMkVZUnRMOXZJdCtzVzR1WDFa?=
+ =?utf-8?B?YUlSckYvUFhacUVVZUNnVm5DZjdNTUpsMUlNYVQ3WmUyRm9KZHd2SHF4Wmdj?=
+ =?utf-8?B?cTl3YlJQdStpZmd2cUdZK3RZUFU3TzJ4eUNsRTBCTVE1cS9XQ1VtWVVhUklJ?=
+ =?utf-8?B?VE1RdElaNWk1WkJ2dDZOcmdTa0Z4UXdWTHp4K1pTTWtZUFJFWEFhekdYWkpU?=
+ =?utf-8?B?QjZaRGF4dFk1bnpWTmVieDVVZDFvUzFWKytqSlovVG1XZmZvbjNHRWJsTHlh?=
+ =?utf-8?B?c2pGSjhmbWlsVUxoMitlM0svbHc0djIzRXFrK2JqaE9zS2FZNkpyRklRUkRO?=
+ =?utf-8?B?dkdteE5OZ0JJQy9xNWVxNjJrZDBvR2Z0S0ViUlpIV0ZkUzlOTHdrZTJldk9K?=
+ =?utf-8?B?M0VDSktJZzYxQm4vSnlvdTY4YUVhbityNnk1UWpOeWt5Z3oyYW5sdEJWR1oy?=
+ =?utf-8?B?eWpLYVpPNzhHK3pYdzFMaUwwRkJMeG9Xc0ZoSlcrN0IyUXExNVpsNVk2c2Ev?=
+ =?utf-8?Q?r0qDt/Ar63A=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?V0hyZGpYdU9CZVlzci9Yd0VoQVBGUC9qR0FxMXpqcWtWOEhzRmt0cjF0cVI2?=
+ =?utf-8?B?NjFuaXY1ejZ0cEVMNTBtK0VKMk1sZnhsZmVKbnZ6d3JCN1pFWlpIdDgxQ00r?=
+ =?utf-8?B?NE9RUnN6aWo1N253c0VoWm1oMFdTM29YOG9EZ3JtaW91WTFMeWJuNmFhYTRa?=
+ =?utf-8?B?ZzJMWm9TNEhpQXJjaGtFbjhyUzVZdmJEWFhUelZOdlVYQUdSczJLdFZBZUpl?=
+ =?utf-8?B?Q1RmTm5rQWFybFNZUUFDM3NkWlNzS3JaYURYZXQvc2VyUlV3MzlkNFJqelNm?=
+ =?utf-8?B?cnNPWFgybnRkam13bUplcU90SldwZkt3MWxtNUpjV25kbWpvTDlKRnFsd3pJ?=
+ =?utf-8?B?RTMwd0dUaHdBREJ1YVF5bVhGMHZVTnI5MEFpOTdMUFM2WVZYNUdxaWlHSmZr?=
+ =?utf-8?B?NEE0bEVDVDhybEVQTmFrRTdzSTRKU0VidXYzS0RsaVd6TnJSMXFBVnFTaUJE?=
+ =?utf-8?B?c0dwUy9kcGtFbVNOaUxYQnJ1Q1JzVkZPYlREVHIrSVM5Z0JIUjhEV1VTNU5m?=
+ =?utf-8?B?aFpoOEgrTU4vdGJ3b0tHSmxLZ1JYdEVQY1FjY296ak1FRDJvd1FaQXNudjRn?=
+ =?utf-8?B?WjJtVWlsM0pwaGt2MFh0NUVobFh0QnZKem1MOURkNTlMNVlyRUE2T00zTFRk?=
+ =?utf-8?B?OWNyYzZncXVRaVZmM2hqb1dWZGlRTGFPSVNUOXZqK2RXZ2FBR2xwWnk5OG1J?=
+ =?utf-8?B?WTVSRVluWElZTU9odzlHbVlTSVNEVEhmS1FDa1k1bDBCZnZJRFlXdCtoV3Av?=
+ =?utf-8?B?c1dnek52QjRidDVKMFJ3MkFXT0RRbWs4RlREZWcyeXVzalRuVjhJcjhnZW1L?=
+ =?utf-8?B?am5kM280alJqbUc4L2gyOC9TdCtnSDdBd0M5OWVXejZvRDJ3cll0cSs0eFYr?=
+ =?utf-8?B?RDRaVEt4WlF6SkZPVDhzNFVEWEVmQyt3YU9jZyt6dlZONHJDSStvNzhsY21n?=
+ =?utf-8?B?QkhaenVuVzJiemZNRGJhNDJkN2huMncrQndpbHl4TnJQSFF4Q2tDWFpFRHkz?=
+ =?utf-8?B?dEVBNFN4U3VYTEozOWNMNE1qMlNENm4rbDMwd0RFQWVoZVRNM3JmUjVEMTM0?=
+ =?utf-8?B?Y3dxcEhTTUN5R1ByL2l0SEkxanhHZnY1UG83MmpBc0NWK0J3aFJBM0RjeE4x?=
+ =?utf-8?B?dVJTRm00UCtwL0xNbEYwc2lzVTZUcWNOK1FEdGZEK1FLV3J6SDZNOWJ4Qm1J?=
+ =?utf-8?B?cmsxT2d1YzNnc3dEQ0tQNU54R3BSdnRycjRWNmtCTHlvbTZpaW9ablFwenYy?=
+ =?utf-8?B?R0FnTlRoVFhVcUJJUlVSTk1FNFN3clVRS1Q0V2tlVUQzdE4wQ0V3VXVHSWd4?=
+ =?utf-8?B?Zjcxd0duSytaNUp1SE1BbXd3YjZMQlJ6M0ZGakZuMXpkazg1cWs0QWgxY3Jw?=
+ =?utf-8?B?T2EwQW9FVFhGS0svaTZnZGtZTWJIRUtmRzkzc1hWUGQ4NlB4SzZKY1ZqcmFs?=
+ =?utf-8?B?QWlaaFkvM3ZPK3lVTGdZVmhMVXdGOFdKQW53bnVmQVMwczZjcFZLSXNSbWRR?=
+ =?utf-8?B?K05JZnVKV3pxSzlOMC9Ucm1pTEpva3loSDcwckppR0JFeUcrcitpeWhHY0th?=
+ =?utf-8?B?M2YvWVFoV1RDNHc5THh0R0N4OEpKR0xncm9peEZaeVhzbUNGQ1RWdmprRkdH?=
+ =?utf-8?B?U2UzUzZpN0ozS0s5VWJvVGFrM2lPaUxqT0UxNExBMllXbk8vRmQyZGd2RnZI?=
+ =?utf-8?B?WStqWTBXVTRRMC9LdTZYNktTOTJDa1dTNVBpcmJRdW1FeGNpYlAwNTZEL0Za?=
+ =?utf-8?B?NTA0V3Zia1BmOFJYVWdQcDRkNnp3VTZSUDlwRGhxb2poZmw3b1VKa3BvWTY4?=
+ =?utf-8?B?UHJRbHM1RjZmSWxPaUJBWWlPUlFST3p1bks0R25VS3c5S1c3N3FBZDlrZWZG?=
+ =?utf-8?B?bjJ3NnJhckhKNzFMUHRvTk5tZ2ZYU1luS01CMlV1ZHN1YTJWWEdVand2dDZL?=
+ =?utf-8?B?bDU1dkxsS0pBTGs5VlRWb2N5VXQ3d2RsbmRvMlF2QVdkVjcybHUyaGVkVEE0?=
+ =?utf-8?B?RU41RnFQazY2TmVheHNtMGc5aHg2QVRURkpRamJIL2VJKzRUYSt6SVhEYVhM?=
+ =?utf-8?B?YWs5dTRKOTZqeVF5RExrd04vYm52RjAvM2xmbytCWkVSWm4vbmROcERQbVYz?=
+ =?utf-8?Q?px+4ESNr3jJyDF66kcO6TYHNF?=
 X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: abd61529-52cf-4dfd-0764-08ddcfb74c0c
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5146.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3701d0d-51d3-475e-eacd-08ddcfb30a34
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2025 21:50:03.3696 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: GKtMFFEDPjGMw7nlzO54s04WcdcubbKThISrqnSH4Eu5CX1TzLHgGkyC19CDXrrN5UWzZe9ocGIuktWv3ICfaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9608
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 22:20:32.1629 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HWqoMs0/yPTyHabnEiZYNpFev+T3uZIbOGs/nyMH4XpCPvY+1G7g+w+//LfIA5syfArC+vD+yUJOIG6itseUFQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8756
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -161,638 +164,474 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-[Public]
+Reviewed-by: Vitaly Prosyak  <vitaly.prosyak@amd.com>
 
-> -----Original Message-----
-> From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Sent: Wednesday, July 30, 2025 4:06 PM
-> To: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>; Deucher, Ale=
-xander
-> <Alexander.Deucher@amd.com>
-> Cc: igt-dev@lists.freedesktop.org; Deucher, Alexander
-> <Alexander.Deucher@amd.com>; Simona Vetter <simona@ffwll.ch>; David Airli=
-e
-> <airlied@gmail.com>; Joonas Lahtinen <joonas.lahtinen@linux.intel.com>; Z=
-hang,
-> Hawking <Hawking.Zhang@amd.com>; Lazar, Lijo <Lijo.Lazar@amd.com>; Riana
-> Tauro <riana.tauro@intel.com>; Anshuman Gupta <anshuman.gupta@intel.com>
-> Subject: Re: [RFC i-g-t v3 0/1] A tool to demonstrate use of netlink sock=
-ets to read
-> RAS error counters
+On 2025-07-29 03:22, Jesse.Zhang wrote:
+> From: "Jesse.zhang" <Jesse.zhang@amd.com>
 >
-> On Wed, Jul 30, 2025 at 11:43:41AM +0530, Aravind Iddamsetty wrote:
-> > This tool is to demonstrate the use of netlink sockets to read RAS
-> > error counters, which is being proposed via series
+> This commit introduces a new test file `amd_basic_multi_gpu.c` that
+> verifies basic AMDGPU functionality across multiple GPUs. The test
+> includes:
 >
-> Alex, what tools are in use for RAS on AMD side?
-> I noticed something in the mesa repo recently. But perhaps you have other=
- high
-> level tools as well?
+> 1. Memory allocation tests for different memory domains (VRAM visible/invisible,
+>    GART cacheable/USWC)
+> 2. Command submission tests for GFX, COMPUTE and SDMA IP blocks
+> 3. Multi-fence synchronization tests
+> 4. User-mode queue (UMQ) tests when enabled via environment variable
+> 5. Combined queue testing across all IP blocks
 >
-> I'm wondering if we should we try consolidate in this tool here in IGT as=
- some
-> official one to drive the RAS netlink APIs in a unified way? Besides conv=
-erting any
-> other tool to this API of course.
-
-+ Harish
-
-Hawking, Harish, and Lijo can probably provide better feedback since they a=
-re closer to the RAS stuff more recently.  That said, we have amdsmi and rd=
-c which are used to handle RAS stuff among other things:
-https://github.com/ROCm/amdsmi
-https://github.com/ROCm/rdc
-
-We have some documentation on our kernel interface as well:
-https://docs.kernel.org/gpu/amdgpu/ras.html
-
-
-Alex
-
+> The tests leverage the existing helper functions from the AMDGPU library
+> while adding multi-GPU support through forked processes for each GPU.
 >
-> > "[RFC v5 0/5] Proposal to use netlink for RAS and Telemetry across drm
-> subsystem".
-> >
-> > v2: update uapi header.
-> > v3: Add DRM_RAS_CMD_READ_BLOCK command to read errors from an IP
-> Block.
-> >
-> > The tool supports the following commands:
-> > READ_ONE, READ_BLOCK, READ_ALL, WAIT_ON_EVENT, LIST_ERRORS
-> >
-> > read single error counter:
-> >
-> > $ ./drm_ras READ_ONE --device=3Ddrm:/dev/dri/card1
-> > --error_id=3D0x0000000000000005 counter value 0
-> >
-> > read all error counters:
-> >
-> > $ ./drm_ras READ_ALL --device=3Ddrm:/dev/dri/card1
-> > name                                                    config-id      =
-         counter
-> >
-> > error-gt0-correctable-guc                               0x0000000000000=
-001      0
-> > error-gt0-correctable-slm                               0x0000000000000=
-003      0
-> > error-gt0-correctable-eu-ic                             0x0000000000000=
-004      0
-> > error-gt0-correctable-eu-grf                            0x0000000000000=
-005      0
-> > error-gt0-fatal-guc                                     0x0000000000000=
-009      0
-> > error-gt0-fatal-slm                                     0x0000000000000=
-00d      0
-> > error-gt0-fatal-eu-grf                                  0x0000000000000=
-00f      0
-> > error-gt0-fatal-fpu                                     0x0000000000000=
-010      0
-> > error-gt0-fatal-tlb                                     0x0000000000000=
-011      0
-> > error-gt0-fatal-l3-fabric                               0x0000000000000=
-012      0
-> > error-gt0-correctable-subslice                          0x0000000000000=
-013      0
-> > error-gt0-correctable-l3bank                            0x0000000000000=
-014      0
-> > error-gt0-fatal-subslice                                0x0000000000000=
-015      0
-> > error-gt0-fatal-l3bank                                  0x0000000000000=
-016      0
-> > error-gt0-sgunit-correctable                            0x0000000000000=
-017      0
-> > error-gt0-sgunit-nonfatal                               0x0000000000000=
-018      0
-> > error-gt0-sgunit-fatal                                  0x0000000000000=
-019      0
-> > error-gt0-soc-fatal-psf-csc-0                           0x0000000000000=
-01a      0
-> > error-gt0-soc-fatal-psf-csc-1                           0x0000000000000=
-01b      0
-> > error-gt0-soc-fatal-psf-csc-2                           0x0000000000000=
-01c      0
-> > error-gt0-soc-fatal-punit                               0x0000000000000=
-01d      0
-> > error-gt0-soc-fatal-psf-0                               0x0000000000000=
-01e      0
-> > error-gt0-soc-fatal-psf-1                               0x0000000000000=
-01f      0
-> > error-gt0-soc-fatal-psf-2                               0x0000000000000=
-020      0
-> > error-gt0-soc-fatal-cd0                                 0x0000000000000=
-021      0
-> > error-gt0-soc-fatal-cd0-mdfi                            0x0000000000000=
-022      0
-> > error-gt0-soc-fatal-mdfi-east                           0x0000000000000=
-023      0
-> > error-gt0-soc-fatal-mdfi-south                          0x0000000000000=
-024      0
-> > error-gt0-soc-fatal-hbm-ss0-0                           0x0000000000000=
-025      0
-> > error-gt0-soc-fatal-hbm-ss0-1                           0x0000000000000=
-026      0
-> > error-gt0-soc-fatal-hbm-ss0-2                           0x0000000000000=
-027      0
-> > error-gt0-soc-fatal-hbm-ss0-3                           0x0000000000000=
-028      0
-> > error-gt0-soc-fatal-hbm-ss0-4                           0x0000000000000=
-029      0
-> > error-gt0-soc-fatal-hbm-ss0-5                           0x0000000000000=
-02a      0
-> > error-gt0-soc-fatal-hbm-ss0-6                           0x0000000000000=
-02b      0
-> > error-gt0-soc-fatal-hbm-ss0-7                           0x0000000000000=
-02c      0
-> > error-gt0-soc-fatal-hbm-ss1-0                           0x0000000000000=
-02d      0
-> > error-gt0-soc-fatal-hbm-ss1-1                           0x0000000000000=
-02e      0
-> > error-gt0-soc-fatal-hbm-ss1-2                           0x0000000000000=
-02f      0
-> > error-gt0-soc-fatal-hbm-ss1-3                           0x0000000000000=
-030      0
-> > error-gt0-soc-fatal-hbm-ss1-4                           0x0000000000000=
-031      0
-> > error-gt0-soc-fatal-hbm-ss1-5                           0x0000000000000=
-032      0
-> > error-gt0-soc-fatal-hbm-ss1-6                           0x0000000000000=
-033      0
-> > error-gt0-soc-fatal-hbm-ss1-7                           0x0000000000000=
-034      0
-> > error-gt0-soc-fatal-hbm-ss2-0                           0x0000000000000=
-035      0
-> > error-gt0-soc-fatal-hbm-ss2-1                           0x0000000000000=
-036      0
-> > error-gt0-soc-fatal-hbm-ss2-2                           0x0000000000000=
-037      0
-> > error-gt0-soc-fatal-hbm-ss2-3                           0x0000000000000=
-038      0
-> > error-gt0-soc-fatal-hbm-ss2-4                           0x0000000000000=
-039      0
-> > error-gt0-soc-fatal-hbm-ss2-5                           0x0000000000000=
-03a      0
-> > error-gt0-soc-fatal-hbm-ss2-6                           0x0000000000000=
-03b      0
-> > error-gt0-soc-fatal-hbm-ss2-7                           0x0000000000000=
-03c      0
-> > error-gt0-soc-fatal-hbm-ss3-0                           0x0000000000000=
-03d      0
-> > error-gt0-soc-fatal-hbm-ss3-1                           0x0000000000000=
-03e      0
-> > error-gt0-soc-fatal-hbm-ss3-2                           0x0000000000000=
-03f      0
-> > error-gt0-soc-fatal-hbm-ss3-3                           0x0000000000000=
-040      0
-> > error-gt0-soc-fatal-hbm-ss3-4                           0x0000000000000=
-041      0
-> > error-gt0-soc-fatal-hbm-ss3-5                           0x0000000000000=
-042      0
-> > error-gt0-soc-fatal-hbm-ss3-6                           0x0000000000000=
-043      0
-> > error-gt0-soc-fatal-hbm-ss3-7                           0x0000000000000=
-044      0
-> > error-gt0-gsc-correctable-sram-ecc                      0x0000000000000=
-045      0
-> > error-gt0-gsc-nonfatal-mia-shutdown                     0x0000000000000=
-046      0
-> > error-gt0-gsc-nonfatal-mia-int                          0x0000000000000=
-047      0
-> > error-gt0-gsc-nonfatal-sram-ecc                         0x0000000000000=
-048      0
-> > error-gt0-gsc-nonfatal-wdg-timeout                      0x0000000000000=
-049      0
-> > error-gt0-gsc-nonfatal-rom-parity                       0x0000000000000=
-04a      0
-> > error-gt0-gsc-nonfatal-ucode-parity                     0x0000000000000=
-04b      0
-> > error-gt0-gsc-nonfatal-glitch-det                       0x0000000000000=
-04c      0
-> > error-gt0-gsc-nonfatal-fuse-pull                        0x0000000000000=
-04d      0
-> > error-gt0-gsc-nonfatal-fuse-crc-check                   0x0000000000000=
-04e      0
-> > error-gt0-gsc-nonfatal-selfmbist                        0x0000000000000=
-04f      0
-> > error-gt0-gsc-nonfatal-aon-parity                       0x0000000000000=
-050      0
-> > error-gt1-correctable-guc                               0x1000000000000=
-001      0
-> > error-gt1-correctable-slm                               0x1000000000000=
-003      0
-> > error-gt1-correctable-eu-ic                             0x1000000000000=
-004      0
-> > error-gt1-correctable-eu-grf                            0x1000000000000=
-005      0
-> > error-gt1-fatal-guc                                     0x1000000000000=
-009      0
-> > error-gt1-fatal-slm                                     0x1000000000000=
-00d      0
-> > error-gt1-fatal-eu-grf                                  0x1000000000000=
-00f      0
-> > error-gt1-fatal-fpu                                     0x1000000000000=
-010      0
-> > error-gt1-fatal-tlb                                     0x1000000000000=
-011      0
-> > error-gt1-fatal-l3-fabric                               0x1000000000000=
-012      0
-> > error-gt1-correctable-subslice                          0x1000000000000=
-013      0
-> > error-gt1-correctable-l3bank                            0x1000000000000=
-014      0
-> > error-gt1-fatal-subslice                                0x1000000000000=
-015      0
-> > error-gt1-fatal-l3bank                                  0x1000000000000=
-016      0
-> > error-gt1-sgunit-correctable                            0x1000000000000=
-017      0
-> > error-gt1-sgunit-nonfatal                               0x1000000000000=
-018      0
-> > error-gt1-sgunit-fatal                                  0x1000000000000=
-019      0
-> > error-gt1-soc-fatal-psf-csc-0                           0x1000000000000=
-01a      0
-> > error-gt1-soc-fatal-psf-csc-1                           0x1000000000000=
-01b      0
-> > error-gt1-soc-fatal-psf-csc-2                           0x1000000000000=
-01c      0
-> > error-gt1-soc-fatal-punit                               0x1000000000000=
-01d      0
-> > error-gt1-soc-fatal-psf-0                               0x1000000000000=
-01e      0
-> > error-gt1-soc-fatal-psf-1                               0x1000000000000=
-01f      0
-> > error-gt1-soc-fatal-psf-2                               0x1000000000000=
-020      0
-> > error-gt1-soc-fatal-cd0                                 0x1000000000000=
-021      0
-> > error-gt1-soc-fatal-cd0-mdfi                            0x1000000000000=
-022      0
-> > error-gt1-soc-fatal-mdfi-east                           0x1000000000000=
-023      0
-> > error-gt1-soc-fatal-mdfi-south                          0x1000000000000=
-024      0
-> > error-gt1-soc-fatal-hbm-ss0-0                           0x1000000000000=
-025      0
-> > error-gt1-soc-fatal-hbm-ss0-1                           0x1000000000000=
-026      0
-> > error-gt1-soc-fatal-hbm-ss0-2                           0x1000000000000=
-027      0
-> > error-gt1-soc-fatal-hbm-ss0-3                           0x1000000000000=
-028      0
-> > error-gt1-soc-fatal-hbm-ss0-4                           0x1000000000000=
-029      0
-> > error-gt1-soc-fatal-hbm-ss0-5                           0x1000000000000=
-02a      0
-> > error-gt1-soc-fatal-hbm-ss0-6                           0x1000000000000=
-02b      0
-> > error-gt1-soc-fatal-hbm-ss0-7                           0x1000000000000=
-02c      0
-> > error-gt1-soc-fatal-hbm-ss1-0                           0x1000000000000=
-02d      0
-> > error-gt1-soc-fatal-hbm-ss1-1                           0x1000000000000=
-02e      0
-> > error-gt1-soc-fatal-hbm-ss1-2                           0x1000000000000=
-02f      0
-> > error-gt1-soc-fatal-hbm-ss1-3                           0x1000000000000=
-030      0
-> > error-gt1-soc-fatal-hbm-ss1-4                           0x1000000000000=
-031      0
-> > error-gt1-soc-fatal-hbm-ss1-5                           0x1000000000000=
-032      0
-> > error-gt1-soc-fatal-hbm-ss1-6                           0x1000000000000=
-033      0
-> > error-gt1-soc-fatal-hbm-ss1-7                           0x1000000000000=
-034      0
-> > error-gt1-soc-fatal-hbm-ss2-0                           0x1000000000000=
-035      0
-> > error-gt1-soc-fatal-hbm-ss2-1                           0x1000000000000=
-036      0
-> > error-gt1-soc-fatal-hbm-ss2-2                           0x1000000000000=
-037      0
-> > error-gt1-soc-fatal-hbm-ss2-3                           0x1000000000000=
-038      0
-> > error-gt1-soc-fatal-hbm-ss2-4                           0x1000000000000=
-039      0
-> > error-gt1-soc-fatal-hbm-ss2-5                           0x1000000000000=
-03a      0
-> > error-gt1-soc-fatal-hbm-ss2-6                           0x1000000000000=
-03b      0
-> > error-gt1-soc-fatal-hbm-ss2-7                           0x1000000000000=
-03c      0
-> > error-gt1-soc-fatal-hbm-ss3-0                           0x1000000000000=
-03d      0
-> > error-gt1-soc-fatal-hbm-ss3-1                           0x1000000000000=
-03e      0
-> > error-gt1-soc-fatal-hbm-ss3-2                           0x1000000000000=
-03f      0
-> > error-gt1-soc-fatal-hbm-ss3-3                           0x1000000000000=
-040      0
-> > error-gt1-soc-fatal-hbm-ss3-4                           0x1000000000000=
-041      0
-> > error-gt1-soc-fatal-hbm-ss3-5                           0x1000000000000=
-042      0
-> > error-gt1-soc-fatal-hbm-ss3-6                           0x1000000000000=
-043      0
-> > error-gt1-soc-fatal-hbm-ss3-7                           0x1000000000000=
-044      0
-> >
-> > wait on a error event:
-> >
-> > $ ./drm_ras WAIT_ON_EVENT --device=3Ddrm:/dev/dri/card1 waiting for
-> > error event error event received counter value 0
-> >
-> > list all errors:
-> >
-> > $ ./drm_ras LIST_ERRORS --device=3Ddrm:/dev/dri/card1
-> > name                                                    config-id
-> >
-> > error-gt0-correctable-guc                               0x0000000000000=
-001
-> > error-gt0-correctable-slm                               0x0000000000000=
-003
-> > error-gt0-correctable-eu-ic                             0x0000000000000=
-004
-> > error-gt0-correctable-eu-grf                            0x0000000000000=
-005
-> > error-gt0-fatal-guc                                     0x0000000000000=
-009
-> > error-gt0-fatal-slm                                     0x0000000000000=
-00d
-> > error-gt0-fatal-eu-grf                                  0x0000000000000=
-00f
-> > error-gt0-fatal-fpu                                     0x0000000000000=
-010
-> > error-gt0-fatal-tlb                                     0x0000000000000=
-011
-> > error-gt0-fatal-l3-fabric                               0x0000000000000=
-012
-> > error-gt0-correctable-subslice                          0x0000000000000=
-013
-> > error-gt0-correctable-l3bank                            0x0000000000000=
-014
-> > error-gt0-fatal-subslice                                0x0000000000000=
-015
-> > error-gt0-fatal-l3bank                                  0x0000000000000=
-016
-> > error-gt0-sgunit-correctable                            0x0000000000000=
-017
-> > error-gt0-sgunit-nonfatal                               0x0000000000000=
-018
-> > error-gt0-sgunit-fatal                                  0x0000000000000=
-019
-> > error-gt0-soc-fatal-psf-csc-0                           0x0000000000000=
-01a
-> > error-gt0-soc-fatal-psf-csc-1                           0x0000000000000=
-01b
-> > error-gt0-soc-fatal-psf-csc-2                           0x0000000000000=
-01c
-> > error-gt0-soc-fatal-punit                               0x0000000000000=
-01d
-> > error-gt0-soc-fatal-psf-0                               0x0000000000000=
-01e
-> > error-gt0-soc-fatal-psf-1                               0x0000000000000=
-01f
-> > error-gt0-soc-fatal-psf-2                               0x0000000000000=
-020
-> > error-gt0-soc-fatal-cd0                                 0x0000000000000=
-021
-> > error-gt0-soc-fatal-cd0-mdfi                            0x0000000000000=
-022
-> > error-gt0-soc-fatal-mdfi-east                           0x0000000000000=
-023
-> > error-gt0-soc-fatal-mdfi-south                          0x0000000000000=
-024
-> > error-gt0-soc-fatal-hbm-ss0-0                           0x0000000000000=
-025
-> > error-gt0-soc-fatal-hbm-ss0-1                           0x0000000000000=
-026
-> > error-gt0-soc-fatal-hbm-ss0-2                           0x0000000000000=
-027
-> > error-gt0-soc-fatal-hbm-ss0-3                           0x0000000000000=
-028
-> > error-gt0-soc-fatal-hbm-ss0-4                           0x0000000000000=
-029
-> > error-gt0-soc-fatal-hbm-ss0-5                           0x0000000000000=
-02a
-> > error-gt0-soc-fatal-hbm-ss0-6                           0x0000000000000=
-02b
-> > error-gt0-soc-fatal-hbm-ss0-7                           0x0000000000000=
-02c
-> > error-gt0-soc-fatal-hbm-ss1-0                           0x0000000000000=
-02d
-> > error-gt0-soc-fatal-hbm-ss1-1                           0x0000000000000=
-02e
-> > error-gt0-soc-fatal-hbm-ss1-2                           0x0000000000000=
-02f
-> > error-gt0-soc-fatal-hbm-ss1-3                           0x0000000000000=
-030
-> > error-gt0-soc-fatal-hbm-ss1-4                           0x0000000000000=
-031
-> > error-gt0-soc-fatal-hbm-ss1-5                           0x0000000000000=
-032
-> > error-gt0-soc-fatal-hbm-ss1-6                           0x0000000000000=
-033
-> > error-gt0-soc-fatal-hbm-ss1-7                           0x0000000000000=
-034
-> > error-gt0-soc-fatal-hbm-ss2-0                           0x0000000000000=
-035
-> > error-gt0-soc-fatal-hbm-ss2-1                           0x0000000000000=
-036
-> > error-gt0-soc-fatal-hbm-ss2-2                           0x0000000000000=
-037
-> > error-gt0-soc-fatal-hbm-ss2-3                           0x0000000000000=
-038
-> > error-gt0-soc-fatal-hbm-ss2-4                           0x0000000000000=
-039
-> > error-gt0-soc-fatal-hbm-ss2-5                           0x0000000000000=
-03a
-> > error-gt0-soc-fatal-hbm-ss2-6                           0x0000000000000=
-03b
-> > error-gt0-soc-fatal-hbm-ss2-7                           0x0000000000000=
-03c
-> > error-gt0-soc-fatal-hbm-ss3-0                           0x0000000000000=
-03d
-> > error-gt0-soc-fatal-hbm-ss3-1                           0x0000000000000=
-03e
-> > error-gt0-soc-fatal-hbm-ss3-2                           0x0000000000000=
-03f
-> > error-gt0-soc-fatal-hbm-ss3-3                           0x0000000000000=
-040
-> > error-gt0-soc-fatal-hbm-ss3-4                           0x0000000000000=
-041
-> > error-gt0-soc-fatal-hbm-ss3-5                           0x0000000000000=
-042
-> > error-gt0-soc-fatal-hbm-ss3-6                           0x0000000000000=
-043
-> > error-gt0-soc-fatal-hbm-ss3-7                           0x0000000000000=
-044
-> > error-gt0-gsc-correctable-sram-ecc                      0x0000000000000=
-045
-> > error-gt0-gsc-nonfatal-mia-shutdown                     0x0000000000000=
-046
-> > error-gt0-gsc-nonfatal-mia-int                          0x0000000000000=
-047
-> > error-gt0-gsc-nonfatal-sram-ecc                         0x0000000000000=
-048
-> > error-gt0-gsc-nonfatal-wdg-timeout                      0x0000000000000=
-049
-> > error-gt0-gsc-nonfatal-rom-parity                       0x0000000000000=
-04a
-> > error-gt0-gsc-nonfatal-ucode-parity                     0x0000000000000=
-04b
-> > error-gt0-gsc-nonfatal-glitch-det                       0x0000000000000=
-04c
-> > error-gt0-gsc-nonfatal-fuse-pull                        0x0000000000000=
-04d
-> > error-gt0-gsc-nonfatal-fuse-crc-check                   0x0000000000000=
-04e
-> > error-gt0-gsc-nonfatal-selfmbist                        0x0000000000000=
-04f
-> > error-gt0-gsc-nonfatal-aon-parity                       0x0000000000000=
-050
-> > error-gt1-correctable-guc                               0x1000000000000=
-001
-> > error-gt1-correctable-slm                               0x1000000000000=
-003
-> > error-gt1-correctable-eu-ic                             0x1000000000000=
-004
-> > error-gt1-correctable-eu-grf                            0x1000000000000=
-005
-> > error-gt1-fatal-guc                                     0x1000000000000=
-009
-> > error-gt1-fatal-slm                                     0x1000000000000=
-00d
-> > error-gt1-fatal-eu-grf                                  0x1000000000000=
-00f
-> > error-gt1-fatal-fpu                                     0x1000000000000=
-010
-> > error-gt1-fatal-tlb                                     0x1000000000000=
-011
-> > error-gt1-fatal-l3-fabric                               0x1000000000000=
-012
-> > error-gt1-correctable-subslice                          0x1000000000000=
-013
-> > error-gt1-correctable-l3bank                            0x1000000000000=
-014
-> > error-gt1-fatal-subslice                                0x1000000000000=
-015
-> > error-gt1-fatal-l3bank                                  0x1000000000000=
-016
-> > error-gt1-sgunit-correctable                            0x1000000000000=
-017
-> > error-gt1-sgunit-nonfatal                               0x1000000000000=
-018
-> > error-gt1-sgunit-fatal                                  0x1000000000000=
-019
-> > error-gt1-soc-fatal-psf-csc-0                           0x1000000000000=
-01a
-> > error-gt1-soc-fatal-psf-csc-1                           0x1000000000000=
-01b
-> > error-gt1-soc-fatal-psf-csc-2                           0x1000000000000=
-01c
-> > error-gt1-soc-fatal-punit                               0x1000000000000=
-01d
-> > error-gt1-soc-fatal-psf-0                               0x1000000000000=
-01e
-> > error-gt1-soc-fatal-psf-1                               0x1000000000000=
-01f
-> > error-gt1-soc-fatal-psf-2                               0x1000000000000=
-020
-> > error-gt1-soc-fatal-cd0                                 0x1000000000000=
-021
-> > error-gt1-soc-fatal-cd0-mdfi                            0x1000000000000=
-022
-> > error-gt1-soc-fatal-mdfi-east                           0x1000000000000=
-023
-> > error-gt1-soc-fatal-mdfi-south                          0x1000000000000=
-024
-> > error-gt1-soc-fatal-hbm-ss0-0                           0x1000000000000=
-025
-> > error-gt1-soc-fatal-hbm-ss0-1                           0x1000000000000=
-026
-> > error-gt1-soc-fatal-hbm-ss0-2                           0x1000000000000=
-027
-> > error-gt1-soc-fatal-hbm-ss0-3                           0x1000000000000=
-028
-> > error-gt1-soc-fatal-hbm-ss0-4                           0x1000000000000=
-029
-> > error-gt1-soc-fatal-hbm-ss0-5                           0x1000000000000=
-02a
-> > error-gt1-soc-fatal-hbm-ss0-6                           0x1000000000000=
-02b
-> > error-gt1-soc-fatal-hbm-ss0-7                           0x1000000000000=
-02c
-> > error-gt1-soc-fatal-hbm-ss1-0                           0x1000000000000=
-02d
-> > error-gt1-soc-fatal-hbm-ss1-1                           0x1000000000000=
-02e
-> > error-gt1-soc-fatal-hbm-ss1-2                           0x1000000000000=
-02f
-> > error-gt1-soc-fatal-hbm-ss1-3                           0x1000000000000=
-030
-> > error-gt1-soc-fatal-hbm-ss1-4                           0x1000000000000=
-031
-> > error-gt1-soc-fatal-hbm-ss1-5                           0x1000000000000=
-032
-> > error-gt1-soc-fatal-hbm-ss1-6                           0x1000000000000=
-033
-> > error-gt1-soc-fatal-hbm-ss1-7                           0x1000000000000=
-034
-> > error-gt1-soc-fatal-hbm-ss2-0                           0x1000000000000=
-035
-> > error-gt1-soc-fatal-hbm-ss2-1                           0x1000000000000=
-036
-> > error-gt1-soc-fatal-hbm-ss2-2                           0x1000000000000=
-037
-> > error-gt1-soc-fatal-hbm-ss2-3                           0x1000000000000=
-038
-> > error-gt1-soc-fatal-hbm-ss2-4                           0x1000000000000=
-039
-> > error-gt1-soc-fatal-hbm-ss2-5                           0x1000000000000=
-03a
-> > error-gt1-soc-fatal-hbm-ss2-6                           0x1000000000000=
-03b
-> > error-gt1-soc-fatal-hbm-ss2-7                           0x1000000000000=
-03c
-> > error-gt1-soc-fatal-hbm-ss3-0                           0x1000000000000=
-03d
-> > error-gt1-soc-fatal-hbm-ss3-1                           0x1000000000000=
-03e
-> > error-gt1-soc-fatal-hbm-ss3-2                           0x1000000000000=
-03f
-> > error-gt1-soc-fatal-hbm-ss3-3                           0x1000000000000=
-040
-> > error-gt1-soc-fatal-hbm-ss3-4                           0x1000000000000=
-041
-> > error-gt1-soc-fatal-hbm-ss3-5                           0x1000000000000=
-042
-> > error-gt1-soc-fatal-hbm-ss3-6                           0x1000000000000=
-043
-> > error-gt1-soc-fatal-hbm-ss3-7                           0x1000000000000=
-044
-> >
-> > Cc: Alex Deucher <alexander.deucher@amd.com>
-> > Cc: Simona Vetter <simona@ffwll.ch>
-> > Cc: David Airlie <airlied@gmail.com>
-> > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > Cc: Hawking Zhang <Hawking.Zhang@amd.com>
-> > Cc: Lijo Lazar <lijo.lazar@amd.com>
-> > Cc: Riana Tauro <riana.tauro@intel.com>
-> > Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> >
-> >
-> > Aravind Iddamsetty (1):
-> >   tools/RAS: A tool to read error counters
-> >
-> >  include/drm-uapi/drm_netlink.h | 105 ++++++++
-> >  meson.build                    |   4 +
-> >  tools/drm_ras.c                | 428 +++++++++++++++++++++++++++++++++
-> >  tools/meson.build              |   5 +
-> >  4 files changed, 542 insertions(+)
-> >  create mode 100644 include/drm-uapi/drm_netlink.h  create mode 100644
-> > tools/drm_ras.c
-> >
-> > --
-> > 2.25.1
-> >
+> v2: move the multi-GPU subtests into a separate file (Vitaly)
+>
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+> ---
+>  tests/amdgpu/amd_basic_multi_gpu.c | 425 +++++++++++++++++++++++++++++
+>  tests/amdgpu/meson.build           |   1 +
+>  2 files changed, 426 insertions(+)
+>  create mode 100644 tests/amdgpu/amd_basic_multi_gpu.c
+>
+> diff --git a/tests/amdgpu/amd_basic_multi_gpu.c b/tests/amdgpu/amd_basic_multi_gpu.c
+> new file mode 100644
+> index 000000000..22a93ca08
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_basic_multi_gpu.c
+> @@ -0,0 +1,425 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2014 Advanced Micro Devices, Inc.
+> + * Copyright 2022 Advanced Micro Devices, Inc.
+> + * Copyright 2023 Advanced Micro Devices, Inc.
+> + */
+> +
+> +#include "lib/amdgpu/amd_memory.h"
+> +#include "lib/amdgpu/amd_sdma.h"
+> +#include "lib/amdgpu/amd_PM4.h"
+> +#include "lib/amdgpu/amd_command_submission.h"
+> +#include "lib/amdgpu/amd_compute.h"
+> +#include "lib/amdgpu/amd_gfx.h"
+> +#include "lib/amdgpu/amd_shaders.h"
+> +#include "lib/amdgpu/amd_dispatch.h"
+> +#include "igt.h"
+> +#include "igt_multigpu.h"
+> +
+> +#define BUFFER_SIZE (8 * 1024)
+> +
+> +/**
+> + * MEM ALLOC TEST
+> + * @param device
+> + */
+> +static void amdgpu_memory_alloc(amdgpu_device_handle device)
+> +{
+> +	amdgpu_bo_handle bo;
+> +	amdgpu_va_handle va_handle;
+> +	uint64_t bo_mc;
+> +
+> +	/* Test visible VRAM */
+> +	bo = gpu_mem_alloc(device,
+> +			   4096, 4096,
+> +			   AMDGPU_GEM_DOMAIN_VRAM,
+> +			   AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
+> +			   &bo_mc, &va_handle);
+> +
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +
+> +	/* Test invisible VRAM */
+> +	bo = gpu_mem_alloc(device,
+> +			   4096, 4096,
+> +			   AMDGPU_GEM_DOMAIN_VRAM,
+> +			   AMDGPU_GEM_CREATE_NO_CPU_ACCESS,
+> +			   &bo_mc, &va_handle);
+> +
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +
+> +	/* Test GART Cacheable */
+> +	bo = gpu_mem_alloc(device,
+> +			   4096, 4096,
+> +			   AMDGPU_GEM_DOMAIN_GTT,
+> +			   0, &bo_mc, &va_handle);
+> +
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +
+> +	/* Test GART USWC */
+> +	bo = gpu_mem_alloc(device,
+> +			   4096, 4096,
+> +			   AMDGPU_GEM_DOMAIN_GTT,
+> +			   AMDGPU_GEM_CREATE_CPU_GTT_USWC,
+> +			   &bo_mc, &va_handle);
+> +
+> +	gpu_mem_free(bo, va_handle, bo_mc, 4096);
+> +}
+> +
+> +
+> +/**
+> + * AMDGPU_HW_IP_GFX
+> + * @param device
+> + */
+> +static void amdgpu_command_submission_gfx(amdgpu_device_handle device,
+> +					  bool ce_avails,
+> +					  bool user_queue)
+> +{
+> +
+> +	/* write data using the CP */
+> +	amdgpu_command_submission_write_linear_helper(device,
+> +						      get_ip_block(device, AMDGPU_HW_IP_GFX),
+> +						      false, user_queue);
+> +
+> +	/* const fill using the CP */
+> +	amdgpu_command_submission_const_fill_helper(device,
+> +						    get_ip_block(device, AMDGPU_HW_IP_GFX),
+> +						    user_queue);
+> +
+> +	/* copy data using the CP */
+> +	amdgpu_command_submission_copy_linear_helper(device,
+> +						     get_ip_block(device, AMDGPU_HW_IP_GFX),
+> +						     user_queue);
+> +	if (ce_avails) {
+> +		/* separate IB buffers for multi-IB submission */
+> +		amdgpu_command_submission_gfx_separate_ibs(device);
+> +		/* shared IB buffer for multi-IB submission */
+> +		amdgpu_command_submission_gfx_shared_ib(device);
+> +	} else {
+> +		igt_info("separate and shared IB buffers for multi IB submisison testes are skipped due to GFX11\n");
+> +	}
+> +}
+> +
+> +/**
+> + * AMDGPU_HW_IP_COMPUTE
+> + * @param device
+> + */
+> +static void amdgpu_command_submission_compute(amdgpu_device_handle device, bool user_queue)
+> +{
+> +	/* write data using the CP */
+> +	amdgpu_command_submission_write_linear_helper(device,
+> +						      get_ip_block(device, AMDGPU_HW_IP_COMPUTE),
+> +						      false, user_queue);
+> +	/* const fill using the CP */
+> +	amdgpu_command_submission_const_fill_helper(device,
+> +						    get_ip_block(device, AMDGPU_HW_IP_COMPUTE),
+> +						    user_queue);
+> +	/* copy data using the CP */
+> +	amdgpu_command_submission_copy_linear_helper(device,
+> +						     get_ip_block(device, AMDGPU_HW_IP_COMPUTE),
+> +						     user_queue);
+> +	/* nop test */
+> +	amdgpu_command_submission_nop(device, AMDGPU_HW_IP_COMPUTE, user_queue);
+> +}
+> +
+> +/**
+> + * AMDGPU_HW_IP_DMA
+> + * @param device
+> + */
+> +static void amdgpu_command_submission_sdma(amdgpu_device_handle device, bool user_queue)
+> +{
+> +	amdgpu_command_submission_write_linear_helper(device,
+> +						      get_ip_block(device, AMDGPU_HW_IP_DMA),
+> +						      false, user_queue);
+> +
+> +	amdgpu_command_submission_const_fill_helper(device,
+> +						    get_ip_block(device, AMDGPU_HW_IP_DMA),
+> +						    user_queue);
+> +
+> +	amdgpu_command_submission_copy_linear_helper(device,
+> +						     get_ip_block(device, AMDGPU_HW_IP_DMA),
+> +						     user_queue);
+> +	/* nop test */
+> +	amdgpu_command_submission_nop(device, AMDGPU_HW_IP_DMA, user_queue);
+> +}
+> +
+> +static void amdgpu_test_all_queues(amdgpu_device_handle device, bool user_queue)
+> +{
+> +	amdgpu_command_submission_write_linear_helper2(device, AMDGPU_HW_IP_GFX, false, user_queue);
+> +	amdgpu_command_submission_write_linear_helper2(device, AMDGPU_HW_IP_COMPUTE, false, user_queue);
+> +	amdgpu_command_submission_write_linear_helper2(device, AMDGPU_HW_IP_DMA, false, user_queue);
+> +	amdgpu_command_submission_write_linear_helper2(device, AMDGPU_HW_IP_GFX | AMDGPU_HW_IP_COMPUTE |
+> +							AMDGPU_HW_IP_DMA, false, user_queue);
+> +}
+> +/**
+> + * MULTI FENCE
+> + * @param device
+> + */
+> +static void amdgpu_command_submission_multi_fence(amdgpu_device_handle device)
+> +{
+> +	amdgpu_command_submission_multi_fence_wait_all(device, true);
+> +	amdgpu_command_submission_multi_fence_wait_all(device, false);
+> +}
+> +
+> +igt_main
+> +{
+> +	amdgpu_device_handle device;
+> +	int fd = -1;
+> +	bool enable_test = false;
+> +#ifdef AMDGPU_USERQ_ENABLED
+> +	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
+> +
+> +	enable_test = env && atoi(env);
+> +#endif
+> +
+> +	igt_fixture {
+> +		uint32_t major, minor;
+> +		int err;
+> +
+> +		fd = drm_open_driver(DRIVER_AMDGPU);
+> +
+> +		err = amdgpu_device_initialize(fd, &major, &minor, &device);
+> +		igt_require(err == 0);
+> +
+> +		igt_info("Initialized amdgpu, driver version %d.%d\n",
+> +			 major, minor);
+> +	}
+> +
+> +	igt_subtest("multi-gpu-memeory-alloc") {
+> +		igt_multi_fork_foreach_gpu(gpu_fd, gpu_idx, DRIVER_AMDGPU) {
+> +			amdgpu_device_handle dev;
+> +			uint32_t major, minor;
+> +			int res;
+> +
+> +			/* Initialize device */
+> +			res = amdgpu_device_initialize(gpu_fd, &major, &minor, &dev);
+> +			igt_assert_eq(res, 0);
+> +
+> +			/* Run test */
+> +			amdgpu_memory_alloc(dev);
+> +
+> +			amdgpu_device_deinitialize(dev);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("cs-gfx-with-IP-GFX") {
+> +		igt_multi_fork_foreach_gpu(gpu_fd, gpu_idx, DRIVER_AMDGPU) {
+> +			amdgpu_device_handle dev;
+> +			uint32_t major, minor;
+> +			struct amdgpu_gpu_info gpus_info = {0};
+> +			bool arr_caps[AMD_IP_MAX] = {0};
+> +			struct drm_amdgpu_info_hw_ip info = {0};
+> +			int res;
+> +
+> +			/* Initialize device */
+> +			res = amdgpu_device_initialize(gpu_fd, &major, &minor, &dev);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = amdgpu_query_gpu_info(dev, &gpus_info);
+> +			igt_assert_eq(res, 0);
+> +			res = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_GFX, 0, &info);
+> +			igt_assert_eq(res, 0);
+> +			res = setup_amdgpu_ip_blocks(major, minor, &gpus_info, dev);
+> +			igt_assert_eq(res, 0);
+> +			asic_rings_readness(dev, 1, arr_caps);
+> +			/* Run test */
+> +			if (arr_caps[AMD_IP_GFX])
+> +				amdgpu_command_submission_gfx(dev, info.hw_ip_version_major < 11, false);
+> +			amdgpu_device_deinitialize(dev);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("cs-compute-with-IP-COMPUTE") {
+> +		igt_multi_fork_foreach_gpu(gpu_fd, gpu_idx, DRIVER_AMDGPU) {
+> +			amdgpu_device_handle dev;
+> +			uint32_t major, minor;
+> +			struct amdgpu_gpu_info gpus_info = {0};
+> +			bool arr_caps[AMD_IP_MAX] = {0};
+> +			int res;
+> +
+> +			/* Initialize device */
+> +			res = amdgpu_device_initialize(gpu_fd, &major, &minor, &dev);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = amdgpu_query_gpu_info(dev, &gpus_info);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = setup_amdgpu_ip_blocks(major, minor, &gpus_info, dev);
+> +			igt_assert_eq(res, 0);
+> +			asic_rings_readness(dev, 1, arr_caps);
+> +			/* Run test */
+> +			if (arr_caps[AMD_IP_COMPUTE])
+> +				amdgpu_command_submission_compute(dev, false);
+> +			amdgpu_device_deinitialize(dev);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("cs-multi-fence-with-IP-GFX") {
+> +		igt_multi_fork_foreach_gpu(gpu_fd, gpu_idx, DRIVER_AMDGPU) {
+> +			amdgpu_device_handle dev;
+> +			uint32_t major, minor;
+> +			struct amdgpu_gpu_info gpus_info = {0};
+> +			struct drm_amdgpu_info_hw_ip info = {0};
+> +			bool arr_caps[AMD_IP_MAX] = {0};
+> +			int res;
+> +
+> +			/* Initialize device */
+> +			res = amdgpu_device_initialize(gpu_fd, &major, &minor, &dev);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = amdgpu_query_gpu_info(dev, &gpus_info);
+> +			igt_assert_eq(res, 0);
+> +			res = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_GFX, 0, &info);
+> +			igt_assert_eq(res, 0);
+> +			res = setup_amdgpu_ip_blocks(major, minor, &gpus_info, dev);
+> +			igt_assert_eq(res, 0);
+> +			asic_rings_readness(dev, 1, arr_caps);
+> +			/* Run test */
+> +			if (arr_caps[AMD_IP_GFX] && info.hw_ip_version_major < 11) {
+> +				amdgpu_command_submission_multi_fence(dev);
+> +			} else {
+> +				igt_info("cs-multi-fence-with-IP-GFX testes are skipped due to GFX11 or no GFX_IP\n");
+> +			}
+> +			amdgpu_device_deinitialize(dev);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("cs-sdma-with-IP-DMA") {
+> +		igt_multi_fork_foreach_gpu(gpu_fd, gpu_idx, DRIVER_AMDGPU) {
+> +			amdgpu_device_handle dev;
+> +			uint32_t major, minor;
+> +			struct amdgpu_gpu_info gpus_info = {0};
+> +			bool arr_caps[AMD_IP_MAX] = {0};
+> +			int res;
+> +
+> +			/* Initialize device */
+> +			res = amdgpu_device_initialize(gpu_fd, &major, &minor, &dev);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = amdgpu_query_gpu_info(dev, &gpus_info);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = setup_amdgpu_ip_blocks(major, minor, &gpus_info, dev);
+> +			igt_assert_eq(res, 0);
+> +			asic_rings_readness(dev, 1, arr_caps);
+> +			/* Run test */
+> +			if (arr_caps[AMD_IP_DMA])
+> +				amdgpu_command_submission_sdma(dev, false);
+> +			amdgpu_device_deinitialize(dev);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("multi-gpu-cs-gfx-with-IP-GFX-UMQ") {
+> +		igt_multi_fork_foreach_gpu(gpu_fd, gpu_idx, DRIVER_AMDGPU) {
+> +			amdgpu_device_handle dev;
+> +			uint32_t major, minor;
+> +			struct amdgpu_gpu_info gpus_info = {0};
+> +			bool userq_arr_caps[AMD_IP_MAX] = {0};
+> +			int res;
+> +
+> +			/* Initialize device */
+> +			res = amdgpu_device_initialize(gpu_fd, &major, &minor, &dev);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = amdgpu_query_gpu_info(dev, &gpus_info);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = setup_amdgpu_ip_blocks(major, minor, &gpus_info, dev);
+> +			igt_assert_eq(res, 0);
+> +			asic_userq_readiness(device, userq_arr_caps);
+> +			/* Run test */
+> +			if (enable_test && userq_arr_caps[AMD_IP_GFX])
+> +				amdgpu_command_submission_gfx(dev, false, true);
+> +			amdgpu_device_deinitialize(dev);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("multi-gpu-cs-compute-with-IP-COMPUTE-UMQ") {
+> +		igt_multi_fork_foreach_gpu(gpu_fd, gpu_idx, DRIVER_AMDGPU) {
+> +			amdgpu_device_handle dev;
+> +			uint32_t major, minor;
+> +			struct amdgpu_gpu_info gpus_info = {0};
+> +			bool userq_arr_caps[AMD_IP_MAX] = {0};
+> +			int res;
+> +
+> +			res = amdgpu_device_initialize(gpu_fd, &major, &minor, &dev);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = amdgpu_query_gpu_info(dev, &gpus_info);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = setup_amdgpu_ip_blocks(major, minor, &gpus_info, dev);
+> +			igt_assert_eq(res, 0);
+> +			asic_userq_readiness(device, userq_arr_caps);
+> +			/* Run test */
+> +			if (enable_test && userq_arr_caps[AMD_IP_COMPUTE])
+> +				amdgpu_command_submission_compute(dev, true);
+> +			amdgpu_device_deinitialize(dev);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("multi-gpu-cs-sdma-with-IP-DMA-UMQ") {
+> +		igt_multi_fork_foreach_gpu(gpu_fd, gpu_idx, DRIVER_AMDGPU) {
+> +			amdgpu_device_handle dev;
+> +			uint32_t major, minor;
+> +			struct amdgpu_gpu_info gpus_info = {0};
+> +			bool userq_arr_caps[AMD_IP_MAX] = {0};
+> +			int res;
+> +
+> +			/* Initialize device */
+> +			res = amdgpu_device_initialize(gpu_fd, &major, &minor, &dev);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = amdgpu_query_gpu_info(dev, &gpus_info);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = setup_amdgpu_ip_blocks(major, minor, &gpus_info, dev);
+> +			igt_assert_eq(res, 0);
+> +			asic_userq_readiness(dev, userq_arr_caps);
+> +			/* Run test */
+> +			if (enable_test && userq_arr_caps[AMD_IP_DMA])
+> +				amdgpu_command_submission_sdma(dev, true);
+> +			amdgpu_device_deinitialize(dev);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_subtest("multi-gpu-all-queues-test-with-UMQ") {
+> +		igt_multi_fork_foreach_gpu(gpu_fd, gpu_idx, DRIVER_AMDGPU) {
+> +			amdgpu_device_handle dev;
+> +			uint32_t major, minor;
+> +			struct amdgpu_gpu_info gpus_info = {0};
+> +			bool userq_arr_caps[AMD_IP_MAX] = {0};
+> +			int res;
+> +
+> +			/* Initialize device */
+> +			res = amdgpu_device_initialize(gpu_fd, &major, &minor, &dev);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = amdgpu_query_gpu_info(dev, &gpus_info);
+> +			igt_assert_eq(res, 0);
+> +
+> +			res = setup_amdgpu_ip_blocks(major, minor, &gpus_info, dev);
+> +			igt_assert_eq(res, 0);
+> +			asic_userq_readiness(dev, userq_arr_caps);
+> +			/* Run test */
+> +			if (enable_test && userq_arr_caps[AMD_IP_GFX] &&
+> +				userq_arr_caps[AMD_IP_COMPUTE] &&
+> +				userq_arr_caps[AMD_IP_DMA])
+> +			amdgpu_test_all_queues(dev, true);
+> +
+> +			amdgpu_device_deinitialize(dev);
+> +		}
+> +		igt_waitchildren();
+> +	}
+> +
+> +	igt_fixture {
+> +		amdgpu_device_deinitialize(device);
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index a8f85bbd8..7cb1c0f57 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -5,6 +5,7 @@ if libdrm_amdgpu.found()
+>  	amdgpu_progs += [ 'amd_abm',
+>  			  'amd_assr',
+>  			  'amd_basic',
+> +			  'amd_basic_multi_gpu',
+>  			  'amd_bo',
+>  			  'amd_bypass',
+>  			  'amd_color',
