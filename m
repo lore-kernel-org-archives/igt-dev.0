@@ -4,61 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B710C87FC9
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Jul 2025 06:15:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BB5DC87FCB
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Jul 2025 06:58:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 00CFD10E128;
-	Wed, 30 Jul 2025 06:15:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D8C5010E409;
+	Wed, 30 Jul 2025 06:58:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VdbJosry";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WX2gxpgj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A8E810E085
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jul 2025 06:15:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 020A810E409
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Jul 2025 06:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753856101; x=1785392101;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=g96SACRmIou55+hXZ0XzvaOf22BkFt4AF+KwTdxnL7w=;
- b=VdbJosryYXtfnebcygayljNe8gSwvvtpsSFVt5ZUdh6PVIWN4hwyN5HN
- Dz4riJ1XvWXNL06G8TM1NxmntrBBCFn9D9ES6xS0siezLtyMDMdo1SEUs
- Kx6bvHUm288mr7uaiS/6kXfcx7zea1wHKRewGODFam5uFTRur6AOEZbmL
- q5efVWgnCMzLwE763h4VgAXiY0YzzGIwoDZfUdib6B33TIt0LfF8lIOYS
- vHeHHwjZgEo5vn8sNEZBZTdrmCorTzNpBbI3ROKwlDv8IETbBK11zqw8L
- IV3YgDsW3NzO8N/m8w73JhVVpmyEVPBVV5y1Vtt8rZiEdwtwlf0ggvHoq Q==;
-X-CSE-ConnectionGUID: pbvqg1RoSnqhv4Tt8pU0pQ==
-X-CSE-MsgGUID: Cq6Y6X3FRSalBg3ClNttug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="56234043"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="56234043"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 23:15:01 -0700
-X-CSE-ConnectionGUID: SkDrF7YZRsOOCEBWPa+G8g==
-X-CSE-MsgGUID: Je+7nNPyQ+m6n9glYPI6qw==
+ t=1753858719; x=1785394719;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=ABdXDWecn7jw9+HTwANmh9jlRVbQw2JQToFDQoVmlSQ=;
+ b=WX2gxpgjBH/OMDrtRcVe/4SZEk+HauzOnr/1NBTe7R5wX+X5CBz4cswH
+ VD9bykuEgZmjAzqtyPQ65T+6HSYpKF2LNPrU7+znq6RNiBnPu7fq+xJWS
+ er7NWT+udZb7HP0RG/3QFqtPV3lbVFrrNPNAj+2m9dGsfY5ZcWLfSDalk
+ EbRMM5hmc6VqG+SGnhmDMZFLf9CXa1pp6mnFvKxBRmAbDuj/+CgZJE3OW
+ 5fR+ob5t5yLAeRtJ7sXj2mZlkwN9lbo1LEdYWokmbZpGzyTVsReaePwm0
+ nn7ILOZMcQdF+NmiU6AJjKRRfyHe9K9WjfHdqCApgpo3Amhv5Lh3+djJH w==;
+X-CSE-ConnectionGUID: XR3Kgf1gTVicEWAx9qYSjQ==
+X-CSE-MsgGUID: U7Hl75P9RJi+u9pQv20PWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="56227965"
+X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="56227965"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2025 23:58:30 -0700
+X-CSE-ConnectionGUID: BTi++GPDRCCB69WiG8p5zw==
+X-CSE-MsgGUID: v0QUs3VMQ3GqcDY0LCzWyg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="193890650"
-Received: from aravind-dev.iind.intel.com ([10.190.239.36])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2025 23:14:58 -0700
-From: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Alex Deucher <alexander.deucher@amd.com>, Simona Vetter <simona@ffwll.ch>,
- David Airlie <airlied@gmail.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Hawking Zhang <Hawking.Zhang@amd.com>, Lijo Lazar <lijo.lazar@amd.com>,
- Riana Tauro <riana.tauro@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>
-Subject: [RFC i-g-t v3 1/1] tools/RAS: A tool to read error counters
-Date: Wed, 30 Jul 2025 11:43:42 +0530
-Message-Id: <20250730061342.1380217-2-aravind.iddamsetty@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250730061342.1380217-1-aravind.iddamsetty@linux.intel.com>
-References: <20250730061342.1380217-1-aravind.iddamsetty@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; d="scan'208";a="200089574"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2025 23:58:27 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 29 Jul 2025 23:58:27 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Tue, 29 Jul 2025 23:58:27 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (40.107.95.46) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 29 Jul 2025 23:58:26 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FOvrh18jKV3IKU0pSLGsnmw9OMAXJ6DGl1eUOdZWTeUQMTABcag+MQjXk/JQ5PRYUKlcDEKQgC9uW/LRm+7z4zJxsO0iNHsJ+xd80Hxrar2WLCWVqFzRcWDF9Ft92YoN2MjtO61g1Fyo+SDxada4yiASMMizzeZWuozdYja4PQyNxDQG2bZR8bMwZsIkeZ4h+N2spIxtzvyWTp+9vpHtswR8G5IjhaPRSzTZCkjr1rnDPsMnlVmDgaRsivqRCy76EAT/p7elKrZZUo3uDgyVfHQBvsV3Lu3AigtSoSkJposXnGehffQS7mjB7xdW6NGzh4KoYdHmDFg2mRLCjXH1Qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0vGIuHHd4fZKfByagWqPmUTZn6dwUF7qr5zctrJ5UAA=;
+ b=LzW4536Q6H7090Ni08Xh0f/XF15d96HIX57m+GN5VKk//TxEkKFr9mEMC5E9o+igo+zsZEQjedlI71J920mupX/uQ1YMKXl1jtK5Y/DCdEqpAnvrj+X+CRelnMUJb49oWihsviQHDEcCMFhycrf1cdWupS9HrHzFjI7TaOkX+YH2Y+C1uwqzDITcdjbscPB9ytmmDEzoiQHc45XfJIGjLOgHFAEKc4cm+V/IjjBGFx30MjA/BCMHUeboT5b+uhWcchAv24QUX1GSH0uw6A7Nzj+HjhWhQ7tjBWOGeFPkVi7Gtt3SeqafQXVcrslcYa6IOzAIArNV3nq3RUOC4w3i+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW4PR11MB7151.namprd11.prod.outlook.com (2603:10b6:303:220::5)
+ by BL1PR11MB5319.namprd11.prod.outlook.com (2603:10b6:208:31b::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.25; Wed, 30 Jul
+ 2025 06:58:05 +0000
+Received: from MW4PR11MB7151.namprd11.prod.outlook.com
+ ([fe80::3e94:e15c:782b:bb92]) by MW4PR11MB7151.namprd11.prod.outlook.com
+ ([fe80::3e94:e15c:782b:bb92%6]) with mapi id 15.20.8964.024; Wed, 30 Jul 2025
+ 06:58:05 +0000
+Message-ID: <272c6c41-0ed2-4b93-9f22-ee77b6c695b8@intel.com>
+Date: Wed, 30 Jul 2025 12:28:00 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] lib/xe_gt: Assertion related to
+ xe_gt_stats_get_count
+To: <priyanka.dandamudi@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20250729054703.3323716-1-priyanka.dandamudi@intel.com>
+Content-Language: en-US
+From: "Sharma, Nishit" <nishit.sharma@intel.com>
+In-Reply-To: <20250729054703.3323716-1-priyanka.dandamudi@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0074.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ad::7) To MW4PR11MB7151.namprd11.prod.outlook.com
+ (2603:10b6:303:220::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR11MB7151:EE_|BL1PR11MB5319:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0f7c7618-278d-43bb-b276-08ddcf366e9c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MG80MlJ4UHQ2NjVYdDdYRlNHNmd1My9DWjl2T2ZVT2NnVC9LR3RyOVQ3Ynk4?=
+ =?utf-8?B?NDVJWGRqeG0rOXJjUUVXeGp0bzZzK2J3NjN1U0ZJWnBYNGdQL3BRNmkrT2FW?=
+ =?utf-8?B?T05zTEZGMzAwNjRRVGRBU0hjNWwzK1dzVTJ6ekE4Ym1ZaXdFaTNaTHNqNEhV?=
+ =?utf-8?B?QzRuT1Jrb1RGTEVRd3lhakxONDFEOEg5NWQ4RHUxZzZmcWltQ0JxV2ZvY3hD?=
+ =?utf-8?B?c3RpQUxmYW9STGZJcE8vSHRsaUhPVGVmalZBZjhSY1hVY0NvVGg5amNvZW1h?=
+ =?utf-8?B?aWZlakFMMzl3SlZXUm4wa0toa0lmWGduaytwSWRsRWNvaHk2alBzTHhNQ1FH?=
+ =?utf-8?B?OXc1ZFVuUmFQbHRIcml6OWd1RU1lRGtLcTBCTUZEdzkrK1FJUy95UHpRR1VN?=
+ =?utf-8?B?eENHbUVrQTd0Z1RuQ3dqVTJGOHByNktLYXBaVGlvcWdZZDc1eEhRY3owQjdP?=
+ =?utf-8?B?eUJPRlAyZXRKSm52L1Y0NmFua3RsM3J1SWx3YmRWTTRHclE0MHhNQzhtTGRw?=
+ =?utf-8?B?cTc2UGJ5SnBmV2J2UlBkeWZlNUo3cVV0V1NPV0w0b3NCN1hhWk5TT2htYUpu?=
+ =?utf-8?B?cVpCYkJaQ0szR2lIcG9TbWJIUC9BTzhHVGVOWDZVUFl3eDU0aGo2WVBCQVpx?=
+ =?utf-8?B?WTlhTlUvRStkMjBOYUt2cGxCUjdvVklNVFdWUEs2RU8rb0FCeU9VRFBjRnB2?=
+ =?utf-8?B?Mk8wdnpJNHhtT2FEUGhWbEh5UVdJRVJGRFJtTkE4empHZGZWQk1hOGVKbUFF?=
+ =?utf-8?B?M2pMYUhxeGhhait4TlRhQ2hvUXNPaVV0Ry9HdHEySjM1cUcySjRuN3dzbGF0?=
+ =?utf-8?B?M1J4Vm1EaXFpemNrSjdzZVlYVEhLUUIxVXduUGFDdEQrNy9nMFRFSEw0aWkr?=
+ =?utf-8?B?R2YraEhEaURreTMrelZaczljakRYM0FEc0NQcG85TFUyeVhkT1ZzclNtYWVS?=
+ =?utf-8?B?Z2wrRzhTdjBtSzFhQUM3VU13WHorYUgxYkJEUU1SWVpiQ3QwbGpoZlRZQUVL?=
+ =?utf-8?B?TEpYbDk0bXZUTkRDdGw4L2JnSlVTaHJwTk5oODJvU0w1MXpJMFZXbi9EdG9V?=
+ =?utf-8?B?SFd0K3lQN3BaRFljS3pydm52UWxoRGdjR3hicGRqcThHalZvMkxQMUd2V2Nl?=
+ =?utf-8?B?VTArdzYzayt0OGIydzZ5NkNpaEw0b3JUL1NWbzN2a2lyUFJ2ZUVVZEkrNUJS?=
+ =?utf-8?B?bnkwamJ2a2NTWkpDV3FXOG5pOXVDdFlEcjJKTnJWVjdPbjNEM2hyTERYQnpm?=
+ =?utf-8?B?Yzdvcmp2SUdDYWpHODFFTEdISkxyTWx3OGpiMytXVWtSRHR2eHNVT2ZrcHdJ?=
+ =?utf-8?B?RGxEaXVpaUJ5c0pUWGtGUmNud1BYdzVqdGFJS3RDN3I0azRWaHhueTFLcE1I?=
+ =?utf-8?B?WjZMQ0ZONU1BeXZuM0RqUnVkZWsvSzBKZTNZTjBhVHJSVEJHR21COFVIU2RQ?=
+ =?utf-8?B?V3plZnRsTzZJUkFDOVA1K3FtK01WUmE4aXl3L29yWlNnaktBT0JPOUw5WnRu?=
+ =?utf-8?B?YWRWVDA2OTYrT1NndjFMUXAyTXFSNkVMeGhUcmoxN2dwc1VLMlZRcTYxMisy?=
+ =?utf-8?B?QTNnU0V4SkZucjAzM1dlZFM3UC9Tell6M3JTbmFQQXl0UWhZa1oyZU9GbDdh?=
+ =?utf-8?B?RnhRblJFVm80NFdUSjFtbytYKzl6SlRXeHIzZTByRW5hMGc3dFJrL3gvQ0F3?=
+ =?utf-8?B?YXV0RHFMaHZxNnl5eTkrZ1JDSy96QjA4NEpLRlZoNUVxUS9zZkN1bFYybHVQ?=
+ =?utf-8?B?aDZRTDVYMmJsTnJQd2lvKzZsWTJpYW5xTy9heWhCV2gyVVpYZWx4Ym4zcTdn?=
+ =?utf-8?B?U1loUExvc2QrZHhzY1ZvM3F0UWZUKzY5OUpibU1HeDV0WW5iSXlRTCtQeHZF?=
+ =?utf-8?B?YmRFeEtuNlZXS2t5bHhNS3Y5NHlobm9RR0hOdVhrb0s3NkV6Zk5pWFo0SGNZ?=
+ =?utf-8?Q?31CX5kzaEWg=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW4PR11MB7151.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dCtTZGFJTjRyZ01TTSs5YW43ZFZMWmNteDNqZzk3SDloWHB3UnJtdUZGdzk0?=
+ =?utf-8?B?N1VnNFNzVUFGVTBraFZTNU4rcHlQaFF1bHZJVXJxSk45djZJV0dpalZXRUtV?=
+ =?utf-8?B?bEFuandrWUJmOFdBL3NqY2FoSnQ3ek9Qcmx5N0p4RHVMUUVKYXBJek96eDdW?=
+ =?utf-8?B?VlR5VzN2c1BWQ0QwalF6anJSVFBMTmgveDFlS0dBTjg0cHpIVkJCZEkzOUlO?=
+ =?utf-8?B?WUtiSktUNkJJejIvcERhUkJzblV5TTZJaGxrN1E2Qy94VnZJRDJmZVFIQnJ5?=
+ =?utf-8?B?bHNBQllkR3NMYWlSRUlURXRMNlhLbFROa28wYTFCeDMwK0trSVAvMmVyZ2JP?=
+ =?utf-8?B?SktXN3pjYTI1cVZ2TDlncWhSRVpkTm05YWFra3ZQVjdSZ0FPNVdoeU1wWVBt?=
+ =?utf-8?B?VHUxeGVXb3ErMjFLRFRJRXhvTFZjZUhhSGRJUFVkdlUzUjVpbDhSUlNiZHVu?=
+ =?utf-8?B?L3drQ2F4by9PTGo0ZTljdXBzVkkzUzNqSDhCb3ptQzV2WldwT2p0VUhQYlhF?=
+ =?utf-8?B?Umc5eW5zTnoyYkhER2ZYa2JFMUhBM1ZZYlVseHlocG83Z1F4ODR6NGlVMWFD?=
+ =?utf-8?B?c2RBMW16ZHRFTzR0d1EyL0pkL0NDTGZjVXlwZG5DczJPa2pCQTZoVmx6L2kr?=
+ =?utf-8?B?S3lJc2ZlU0QxUFFJbW51NEczNmZ4TCtUUG5RTWorZ1pzL21nb0pRcERYZ0Vn?=
+ =?utf-8?B?a2VUeEs5OVRFWU5ZWlp3d00zMmcvM2kwMDBOdm54dXAydnVlSkFETERBd3A2?=
+ =?utf-8?B?ZjNTWEFMMDdzbm9tZkt5NzZZaXptbzE5NlF1cUxKaFQyQ0cvMnk4UlFheDBV?=
+ =?utf-8?B?MXRkdERtVDAzYkNDQklzZDBUeVhiUERzUWcxUk1rTzFCMnFzMHorWUxxWGxk?=
+ =?utf-8?B?eDQ5V25QOXc1MFBNTEdlbDNydWZEQ0hsWkZkbER0cU1pdDR4U212U3NtZDNR?=
+ =?utf-8?B?cUpyN1Y3MlExdDhJWklJTzNzdTZCSDhZQXJPczYybFVlQTBkc2VlTEpaMWdL?=
+ =?utf-8?B?Qk5FSE1RekEyaWpGd2tPK3VtVlNDb1lzWmxxVjkyYWQxeURsU1owVzhuZmJG?=
+ =?utf-8?B?ZDN2aHlDbit5NjlsY2NzZmYvTGhCc1dLbUF3WHFXWnhYQVZaa0dkZXdLTWpw?=
+ =?utf-8?B?MEUwTEYvVkFlWkdSRDl0cXpkd1Q1Z2hBcS9HMXgrdU5PZ3Ridk11dDhTeGFR?=
+ =?utf-8?B?cEYzWGJ5elJ3SG9qMW1haWN4blBrWFRQQVFTd1BtRnVGYW13VnBkTE1JeXlM?=
+ =?utf-8?B?eUpvWlEvK0NJdEZONE1ROWlwYUxnL2hkNDQrQ0I0dUkxOG9sRkRqbkFPLzFI?=
+ =?utf-8?B?ZERndUtkclZ6TFBJV212amRjaG5UQkxEUFlhcHV0a2hyZjZKb0VHUDRTdkM4?=
+ =?utf-8?B?T1BhV3NreU1rNXN2YThrTGk2VkJJQ3Z3L3pObFYxVlFTOVZTRTd3SHB6NVhO?=
+ =?utf-8?B?S0JJTnlUTG41MkkzTkQrZmg1cEZzUlgrd1JVa2lBR3ZmWE9xUXUwQ2JTbnN0?=
+ =?utf-8?B?UUFpNnNpVGIyVXgvYjI0MUpXbHZmaVZoVE54STFLUHdxUkFFZkZPK1JWNWt1?=
+ =?utf-8?B?c3hCS0FGRDhENTdWZ1pYRWI3QWdNYjV0ckR4VFlQaTlhYzFIL3lFSEIwMEdU?=
+ =?utf-8?B?T2oreFpGc0RwdHBrYzVZdTZWYVdIczFTOFRhMXFpWjdudFFkbjQvekg1Sm9U?=
+ =?utf-8?B?SnpsSTBvL1pTZFZPQzF1RWVGd3VjQ3AvR3lyaTJlSEtrUW1zUFRGUE45Rnp4?=
+ =?utf-8?B?SXY4Q1p2OVc5RkRWQVp5Rnl4bkZUT1JSMW9CUnZWU0JvVUZwdisrWHZ3dkdC?=
+ =?utf-8?B?N0tlaUhsOC8rM0xvWkVxcG8wUWtOODE1Uk14aS8wRG1kN2FNZHA1empIaXZ0?=
+ =?utf-8?B?MVRWaXNYQzJlYTVKNFNmMkFaRU1jWS9SQUZRL1c2UFRxL0FMU1NXaHJBbUY2?=
+ =?utf-8?B?OVBhbFNLRWhYbkJNWEpuaThpWHNmMGdNZTVWb1VNbld1dW9CQTAyeFZwTEVv?=
+ =?utf-8?B?M01PRmo5N2lydnIvbGVUMWl1bFVvc1IySHFHcytSZStpZk8vY0NlT0J4Ylpp?=
+ =?utf-8?B?Z3JFMXpqRmo4UjY4R1A5Y3gybno3ZUFrZU53U3dYUzRpMjY2bHBrS3BxT3hN?=
+ =?utf-8?B?bmN5Y05QajlnU01ZbEl0cjlDWENpS3YvUENQS3ptaVZaMWxiN2VEV1RXcW05?=
+ =?utf-8?B?Z1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0f7c7618-278d-43bb-b276-08ddcf366e9c
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB7151.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 06:58:05.0895 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KjzQguvEKJTM8ep4mflg09HHVkxuldcmeI1q8fgbqNZlluW8YRysnfGzkrYPYgw0QOC1O+U6hqeRh/qp6E7ZTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5319
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,601 +195,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This tool demonstrates the use of netlink sockets to query and read the
-error counters on a hardware. It provides following commands LIST_ERRORS,
-READ_ONE, READ_ALL to read counters and WAIT_ON_EVENT to wait for
-occurrence on a particular event, presently hardcoded to wait on
-occurrence of correctable error event and read a error counter.
 
-v2: update uapi header.
-v3: Add DRM_RAS_CMD_READ_BLOCK command to read errors from an IP Block.
-
-Signed-off-by: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
----
- include/drm-uapi/drm_netlink.h | 105 ++++++++
- meson.build                    |   4 +
- tools/drm_ras.c                | 428 +++++++++++++++++++++++++++++++++
- tools/meson.build              |   5 +
- 4 files changed, 542 insertions(+)
- create mode 100644 include/drm-uapi/drm_netlink.h
- create mode 100644 tools/drm_ras.c
-
-diff --git a/include/drm-uapi/drm_netlink.h b/include/drm-uapi/drm_netlink.h
-new file mode 100644
-index 000000000..c978efaab
---- /dev/null
-+++ b/include/drm-uapi/drm_netlink.h
-@@ -0,0 +1,105 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright 2023 Intel Corporation
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice (including the next
-+ * paragraph) shall be included in all copies or substantial portions of the
-+ * Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ */
-+
-+#ifndef _DRM_NETLINK_H_
-+#define _DRM_NETLINK_H_
-+
-+#define DRM_GENL_VERSION 1
-+#define DRM_GENL_MCAST_GROUP_NAME_CORR_ERR	"drm_corr_err"
-+#define DRM_GENL_MCAST_GROUP_NAME_UNCORR_ERR	"drm_uncorr_err"
-+
-+#if defined(__cplusplus)
-+extern "C" {
-+#endif
-+
-+/**
-+ * enum drm_genl_error_cmds - Supported error commands
-+ *
-+ */
-+enum drm_genl_error_cmds {
-+	DRM_CMD_UNSPEC,
-+	/**
-+	 * @DRM_RAS_CMD_QUERY: Command to list all errors names with config-id in verbose mode.
-+	 * In normal mode will list IP blocks, total instances available and error types supported
-+	 */
-+	DRM_RAS_CMD_QUERY,
-+	/** @DRM_RAS_CMD_READ_ONE: Command to get a counter for a specific error */
-+	DRM_RAS_CMD_READ_ONE,
-+	/** @DRM_RAS_CMD_READ_BLOCK: Command to get a counter of specific error type from an IP
-+	 * block
-+	 */
-+	DRM_RAS_CMD_READ_BLOCK,
-+	/** @DRM_RAS_CMD_READ_ALL: Command to get counters of all errors */
-+	DRM_RAS_CMD_READ_ALL,
-+	/** @DRM_RAS_CMD_ERROR_EVENT: Command sent as part of multicast event */
-+	DRM_RAS_CMD_ERROR_EVENT,
-+
-+	__DRM_CMD_MAX,
-+	DRM_CMD_MAX = __DRM_CMD_MAX - 1,
-+};
-+
-+enum drm_cmd_request_type {
-+	DRM_RAS_CMD_QUERY_VERBOSE = 1,
-+	DRM_RAS_CMD_QUERY_NORMAL = 2,
-+};
-+
-+/**
-+ * enum drm_error_attr - Attributes to use with drm_genl_error_cmds
-+ *
-+ */
-+enum drm_error_attr {
-+	DRM_ATTR_UNSPEC,
-+	DRM_ATTR_PAD = DRM_ATTR_UNSPEC,
-+	/**
-+	 * @DRM_RAS_ATTR_QUERY: Should be used with DRM_RAS_CMD_QUERY,
-+	 * DRM_RAS_CMD_READ_ALL
-+	 */
-+	DRM_RAS_ATTR_QUERY, /* NLA_U8 */
-+	/**
-+	 * @DRM_RAS_ATTR_READ_ALL: Should be used with DRM_RAS_CMD_READ_ALL
-+	 */
-+	DRM_RAS_ATTR_READ_ALL, /* NLA_U8 */
-+	/**
-+	 * @DRM_RAS_ATTR_QUERY_REPLY: First Nested attributed sent as a
-+	 * response to DRM_RAS_CMD_QUERY, DRM_RAS_CMD_READ_ALL commands.
-+	 */
-+	DRM_RAS_ATTR_QUERY_REPLY, /* NLA_NESTED */
-+	/** @DRM_RAS_ATTR_ERROR_NAME: Used to pass error name */
-+	DRM_RAS_ATTR_ERROR_NAME, /* NLA_NUL_STRING */
-+	/** @DRM_RAS_ATTR_ERROR_ID: Used to pass error id, should be used with
-+	 * DRM_RAS_CMD_READ_ONE, DRM_RAS_CMD_READ_BLOCK
-+	 */
-+	DRM_RAS_ATTR_ERROR_ID, /* NLA_U64 */
-+	/** @DRM_RAS_ATTR_ERROR_VALUE: Used to pass error value */
-+	DRM_RAS_ATTR_ERROR_VALUE, /* NLA_U64 */
-+
-+	__DRM_ATTR_MAX,
-+	DRM_ATTR_MAX = __DRM_ATTR_MAX - 1,
-+};
-+
-+#if defined(__cplusplus)
-+}
-+#endif
-+
-+#endif
-diff --git a/meson.build b/meson.build
-index 4efad72cf..c3e5c95d5 100644
---- a/meson.build
-+++ b/meson.build
-@@ -165,6 +165,10 @@ cairo = dependency('cairo', version : '>1.12.0', required : true)
- libudev = dependency('libudev', required : true)
- glib = dependency('glib-2.0', required : true)
- 
-+libnl = dependency('libnl-3.0', required: false)
-+libnl_genl = dependency('libnl-genl-3.0', required: false)
-+libnl_cli = dependency('libnl-cli-3.0', required:false)
-+
- xmlrpc = dependency('xmlrpc', required : false)
- xmlrpc_util = dependency('xmlrpc_util', required : false)
- xmlrpc_client = dependency('xmlrpc_client', required : false)
-diff --git a/tools/drm_ras.c b/tools/drm_ras.c
-new file mode 100644
-index 000000000..68946ff6a
---- /dev/null
-+++ b/tools/drm_ras.c
-@@ -0,0 +1,428 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ */
-+
-+#include <stdio.h>
-+#include <sys/types.h>
-+#include <unistd.h>
-+#include <getopt.h>
-+#include <linux/genetlink.h>
-+#include <netlink/cli/utils.h>
-+
-+#include "drm_netlink.h"
-+#include "igt_device_scan.h"
-+
-+#define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
-+
-+struct nl_sock *sock, *mcsock;
-+int family_id;
-+
-+enum opt_val {
-+	OPT_UNKNOWN = '?',
-+	OPT_END = -1,
-+	OPT_DEVICE,
-+	OPT_CONFIG,
-+	OPT_VERBOSE,
-+	OPT_HELP,
-+};
-+
-+enum cmd_ids {
-+	INVALID_CMD = -1,
-+	LIST_ERRORS = 0,
-+	READ_ONE,
-+	READ_BLOCK,
-+	READ_ALL,
-+	WAIT_ON_EVENT,
-+
-+	__MAX_CMDS,
-+};
-+
-+static const char * const cmd_names[] = {
-+	"LIST_ERRORS",
-+	"READ_ONE",
-+	"READ_BLOCK",
-+	"READ_ALL",
-+	"WAIT_ON_EVENT",
-+};
-+
-+static void help(char **argv)
-+{
-+	int i;
-+
-+	printf("Usage: %s command [<command options>]\n", argv[0]);
-+	printf("commands:\n");
-+
-+	for (i = 0; i < __MAX_CMDS; i++) {
-+		switch (i) {
-+		case LIST_ERRORS:
-+			printf("%s %s --device=<device filter> --verbose [default normal]\n", argv[0], cmd_names[i]);
-+			break;
-+		case READ_ALL:
-+		case WAIT_ON_EVENT:
-+			printf("%s %s --device=<device filter>\n", argv[0], cmd_names[i]);
-+			break;
-+		case READ_ONE:
-+		case READ_BLOCK:
-+			printf("%s %s --device=<device filter> --error_id=<id returned from query>\n", argv[0], cmd_names[i]);
-+			break;
-+		}
-+	}
-+
-+	igt_device_print_filter_types();
-+}
-+
-+static int list_errors(struct nl_cache_ops *ops, struct genl_cmd *cmd,
-+		       struct genl_info *info, void *arg)
-+{
-+	const struct nlmsghdr *nlh = info->nlh;
-+	struct nlattr *nla;
-+	int len, remain;
-+
-+	len = GENL_HDRLEN;
-+
-+	nlmsg_for_each_attr(nla, nlh, len, remain) {
-+		if ((nla_type(nla) == DRM_RAS_ATTR_QUERY_REPLY) && nla_is_nested(nla)) {
-+			struct nlattr *cur;
-+			int rem;
-+
-+			if (cmd->c_id == DRM_RAS_CMD_READ_ALL)
-+				printf("%-50s\t%-18s\t%s\n", "name", "config-id", "counter");
-+			else
-+				printf("%-50s\t%-18s\n", "name", "config-id");
-+
-+			nla_for_each_nested(cur, nla, rem) {
-+				switch (nla_type(cur)) {
-+				case DRM_RAS_ATTR_ERROR_NAME:
-+					printf("\n%-50s", nla_get_string(cur));
-+					break;
-+				case DRM_RAS_ATTR_ERROR_ID:
-+					printf("\t0x%016lx", nla_get_u64(cur));
-+					break;
-+				case DRM_RAS_ATTR_ERROR_VALUE:
-+					printf("\t%lu", nla_get_u64(cur));
-+					break;
-+				default:
-+					break;
-+				}
-+			}
-+			printf("\n");
-+		}
-+	}
-+
-+	return NL_OK;
-+}
-+
-+static int read_single(struct nl_cache_ops *ops, struct genl_cmd *cmd,
-+		       struct genl_info *info, void *arg)
-+{
-+	if (!info->attrs[DRM_RAS_ATTR_ERROR_VALUE])
-+		nl_cli_fatal(NLE_FAILURE, "DRM_RAS_ATTR_ERROR_VALUE attribute is missing");
-+
-+	printf("counter value %lu\n", nla_get_u64(info->attrs[DRM_RAS_ATTR_ERROR_VALUE]));
-+
-+	return NL_OK;
-+}
-+
-+static int mcast_event_handler(struct nl_cache_ops *ops, struct genl_cmd *cmd,
-+			       struct genl_info *info, void *arg)
-+{
-+	struct nl_msg *msg;
-+	uint64_t config = 0x0000000000000005; /* error-gt0-correctable-eu-grf */
-+	void *msg_head;
-+	int ret;
-+
-+	printf("error event received\n");
-+
-+	msg = nlmsg_alloc();
-+	if (!msg)
-+		nl_cli_fatal(NLE_INVAL, "nlmsg_alloc failed\n");
-+
-+	msg_head = genlmsg_put(msg, NL_AUTO_PORT, NL_AUTO_SEQ, family_id, 0, 0,
-+			       DRM_RAS_CMD_READ_ONE, 1);
-+	if (!msg_head)
-+		nl_cli_fatal(ENOMEM, "genlmsg_put failed\n");
-+
-+	nla_put_u64(msg, DRM_RAS_ATTR_ERROR_ID, config);
-+
-+	ret = nl_send_auto(sock, msg);
-+	if (ret < 0)
-+		nl_cli_fatal(ret, "Unable to send message: %s", nl_geterror(ret));
-+
-+	ret = nl_recvmsgs_default(sock);
-+	if (ret < 0)
-+		nl_cli_fatal(ret, "Unable to receive message: %s", nl_geterror(ret));
-+
-+	nlmsg_free(msg);
-+
-+	return NL_OK;
-+}
-+
-+static struct nla_policy drm_genl_policy[DRM_ATTR_MAX + 1] = {
-+	[DRM_RAS_ATTR_QUERY] = { .type = NLA_U8 },
-+	[DRM_RAS_ATTR_READ_ALL] = { .type = NLA_U8 },
-+	[DRM_RAS_ATTR_QUERY_REPLY] = { .type = NLA_NESTED },
-+	[DRM_RAS_ATTR_ERROR_NAME] = { .type = NLA_NUL_STRING },
-+	[DRM_RAS_ATTR_ERROR_ID] = { .type = NLA_U64 },
-+	[DRM_RAS_ATTR_ERROR_VALUE] = { .type = NLA_U64 },
-+};
-+
-+static struct genl_cmd drm_genl_cmds[] = {
-+	{
-+		.c_id           = DRM_RAS_CMD_QUERY,
-+		.c_name         = "QUERY",
-+		.c_maxattr      = DRM_ATTR_MAX,
-+		.c_attr_policy  = drm_genl_policy,
-+		.c_msg_parser   = list_errors,
-+	},
-+	{
-+		.c_id           = DRM_RAS_CMD_READ_ONE,
-+		.c_name         = "READ_1",
-+		.c_maxattr      = DRM_ATTR_MAX,
-+		.c_attr_policy  = drm_genl_policy,
-+		.c_msg_parser   = read_single,
-+	},
-+	{
-+		.c_id           = DRM_RAS_CMD_READ_BLOCK,
-+		.c_name         = "READ_BLOCK",
-+		.c_maxattr      = DRM_ATTR_MAX,
-+		.c_attr_policy  = drm_genl_policy,
-+		.c_msg_parser   = read_single,
-+	},
-+	{
-+		.c_id           = DRM_RAS_CMD_READ_ALL,
-+		.c_name         = "READ_ALL",
-+		.c_maxattr      = DRM_ATTR_MAX,
-+		.c_attr_policy  = drm_genl_policy,
-+		.c_msg_parser   = list_errors,
-+	},
-+	{
-+		.c_id           = DRM_RAS_CMD_ERROR_EVENT,
-+		.c_name         = "ERROR_EVENT",
-+		.c_maxattr      = DRM_ATTR_MAX,
-+		.c_attr_policy  = drm_genl_policy,
-+		.c_msg_parser   = mcast_event_handler,
-+	},
-+};
-+
-+static struct genl_ops drm_genl_ops = {
-+	.o_hdrsize	= 0,
-+	.o_cmds		= drm_genl_cmds,
-+	.o_ncmds	= ARRAY_SIZE(drm_genl_cmds),
-+};
-+
-+static void send_cmd(int cmd, uint64_t config)
-+{
-+	struct nl_msg *msg;
-+	void *msg_head;
-+	int ret;
-+
-+	msg = nlmsg_alloc();
-+	if (!msg)
-+		nl_cli_fatal(NLE_INVAL, "nlmsg_alloc failed\n");
-+
-+	msg_head = genlmsg_put(msg, NL_AUTO_PORT, NL_AUTO_SEQ, family_id, 0, 0, cmd, 1);
-+	if (!msg_head)
-+		nl_cli_fatal(ENOMEM, "genlmsg_put failed\n");
-+	switch (cmd) {
-+	case DRM_RAS_CMD_QUERY:
-+		nla_put_u8(msg, DRM_RAS_ATTR_QUERY, config ? DRM_RAS_CMD_QUERY_VERBOSE :
-+							     DRM_RAS_CMD_QUERY_NORMAL);
-+		break;
-+	case DRM_RAS_CMD_READ_ONE:
-+	case DRM_RAS_CMD_READ_BLOCK:
-+		nla_put_u64(msg, DRM_RAS_ATTR_ERROR_ID, config);
-+		break;
-+	case DRM_RAS_CMD_READ_ALL:
-+		nla_put_u8(msg, DRM_RAS_ATTR_READ_ALL, 1);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	ret = nl_send_auto(sock, msg);
-+	if (ret < 0)
-+		nl_cli_fatal(ret, "Unable to send message: %s", nl_geterror(ret));
-+
-+	ret = nl_recvmsgs_default(sock);
-+	if (ret < 0)
-+		nl_cli_fatal(ret, "Unable to receive message: %s", nl_geterror(ret));
-+
-+	nlmsg_free(msg);
-+}
-+
-+static int get_cmd(char *cmd_name)
-+{
-+	int i;
-+
-+	if (!cmd_name)
-+		return -1;
-+
-+	for (i = 0; i < __MAX_CMDS; i++) {
-+		if (strcasecmp(cmd_name, cmd_names[i]) == 0)
-+			return i;
-+	}
-+
-+	return -1;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	char *endptr;
-+	enum opt_val val;
-+	enum cmd_ids cmd;
-+	char *device = NULL;
-+	uint64_t error_config_id;
-+	bool verbose = false;
-+	int  ret, mcgrp, index;
-+	struct igt_device_card card;
-+	char *dev_name, *dup;
-+
-+	static struct option options[] = {
-+		{"device",	required_argument,	NULL,	OPT_DEVICE},
-+		{"error_id",	required_argument,	NULL,	OPT_CONFIG},
-+		{"verbose",	no_argument,		NULL,	OPT_VERBOSE},
-+		{"help",	no_argument,		NULL,	OPT_HELP},
-+		{ 0 }
-+	};
-+
-+	cmd = get_cmd(argv[1]);
-+	if (cmd < 0) {
-+		fprintf(stderr, "invalid command\n");
-+		help(argv);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	for (val = 0; val != OPT_END; ) {
-+		val = getopt_long(argc, argv, "", options, &index);
-+
-+		switch (val) {
-+		case OPT_DEVICE:
-+			device = strdup(optarg);
-+			break;
-+		case OPT_CONFIG:
-+			error_config_id = strtoull(optarg, &endptr, 16);
-+			if (*endptr) {
-+				fprintf(stderr, "invalid config id %s\n", optarg);
-+				exit(EXIT_FAILURE);
-+			}
-+			break;
-+		case OPT_VERBOSE:
-+			verbose = true;
-+			break;
-+		case OPT_HELP:
-+			help(argv);
-+			exit(EXIT_FAILURE);
-+		case OPT_END:
-+			break;
-+		case OPT_UNKNOWN:
-+			exit(EXIT_FAILURE);
-+		}
-+	}
-+
-+	if (!device) {
-+		fprintf(stderr, "missing device option\n");
-+		help(argv);
-+		exit(EXIT_FAILURE);
-+	} else {
-+		ret = igt_device_card_match_pci(device, &card);
-+		if (!ret) {
-+			fprintf(stderr, "device %s not found!\n", device);
-+			exit(EXIT_FAILURE);
-+		}
-+		free(device);
-+	}
-+
-+	/* get card name */
-+	dup = strdup(card.card);
-+
-+	while (dup)
-+		dev_name = strsep(&dup, "/");
-+	free(dup);
-+
-+	drm_genl_ops.o_name = strdup(dev_name);
-+
-+	sock = nl_cli_alloc_socket();
-+	if (!sock)
-+		nl_cli_fatal(NLE_NOMEM, "Cannot allocate nl_sock");
-+
-+	ret = nl_cli_connect(sock, NETLINK_GENERIC);
-+	if (ret < 0)
-+		nl_cli_fatal(ret, "Cannot connect handle");
-+
-+	ret = genl_register_family(&drm_genl_ops);
-+	if (ret < 0)
-+		nl_cli_fatal(ret, "Cannot register xe family");
-+
-+	ret = genl_ops_resolve(sock, &drm_genl_ops);
-+	if (ret < 0)
-+		nl_cli_fatal(ret, "Unable to resolve family name");
-+
-+	family_id = genl_ctrl_resolve(sock, drm_genl_ops.o_name);
-+	if (family_id < 0)
-+		nl_cli_fatal(NLE_INVAL, "Resolving of \"%s\" failed", drm_genl_ops.o_name);
-+
-+	ret = nl_socket_modify_cb(sock, NL_CB_VALID, NL_CB_CUSTOM, genl_handle_msg, NULL);
-+	if (ret < 0)
-+		nl_cli_fatal(ret, "Unable to modify valid message callback");
-+
-+	switch (cmd) {
-+	case LIST_ERRORS:
-+		send_cmd(DRM_RAS_CMD_QUERY, verbose);
-+		break;
-+	case READ_ONE:
-+		send_cmd(DRM_RAS_CMD_READ_ONE, error_config_id);
-+		break;
-+	case READ_BLOCK:
-+		send_cmd(DRM_RAS_CMD_READ_BLOCK, error_config_id);
-+		break;
-+	case READ_ALL:
-+		send_cmd(DRM_RAS_CMD_READ_ALL, 0);
-+		break;
-+	case WAIT_ON_EVENT:
-+		mcsock = nl_cli_alloc_socket();
-+		if (!mcsock)
-+			nl_cli_fatal(NLE_NOMEM, "Cannot allocate nl_sock");
-+
-+		ret = nl_cli_connect(mcsock, NETLINK_GENERIC);
-+		if (ret < 0)
-+			nl_cli_fatal(ret, "Cannot connect handle");
-+
-+		ret = genl_ops_resolve(mcsock, &drm_genl_ops);
-+		if (ret < 0)
-+			nl_cli_fatal(ret, "Unable to resolve family name");
-+
-+		nl_socket_disable_seq_check(mcsock);
-+
-+		mcgrp = genl_ctrl_resolve_grp(mcsock, drm_genl_ops.o_name,
-+					      DRM_GENL_MCAST_GROUP_NAME_CORR_ERR);
-+		if (mcgrp < 0)
-+			nl_cli_fatal(mcgrp, "failed to resolve generic netlink multicast group");
-+
-+		/* Join the multicast group. */
-+		ret = nl_socket_add_membership(mcsock, mcgrp);
-+		if (ret < 0)
-+			nl_cli_fatal(ret, "failed to join multicast group");
-+
-+		ret = nl_socket_modify_cb(mcsock, NL_CB_VALID, NL_CB_CUSTOM, genl_handle_msg, NULL);
-+		if (ret < 0)
-+			nl_cli_fatal(ret, "Unable to modify valid message callback");
-+
-+		printf("waiting for error event\n");
-+		ret = nl_recvmsgs_default(mcsock);
-+		if (ret < 0)
-+			nl_cli_fatal(ret, "Unable to receive message: %s", nl_geterror(ret));
-+
-+		nl_close(mcsock);
-+		nl_socket_free(mcsock);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	nl_close(sock);
-+	nl_socket_free(sock);
-+
-+	return 0;
-+}
-+
-diff --git a/tools/meson.build b/tools/meson.build
-index 99a732942..5195d1f62 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -115,6 +115,11 @@ if build_vmtb
- 	install_subdir('vmtb', install_dir: libexecdir)
- endif
- 
-+executable('drm_ras', 'drm_ras.c',
-+           dependencies : [tool_deps, libnl, libnl_cli, libnl_genl],
-+           install_rpath : bindir_rpathdir,
-+           install : true)
-+
- subdir('i915-perf')
- subdir('xe-perf')
- subdir('null_state_gen')
--- 
-2.25.1
-
+On 7/29/2025 11:17 AM, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>
+> Currently, when the specific gt stats file is not found, it fails with
+> an assertion. Due to this the test using this function also fails.
+> In general, this lib function is just to count the stats count, test
+> using this need not fail.So, now the function will warn the failure
+> when file not found and return -1 as count.
+>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>   lib/xe/xe_gt.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+> index afb757bfa..ed19bec74 100644
+> --- a/lib/xe/xe_gt.c
+> +++ b/lib/xe/xe_gt.c
+> @@ -185,8 +185,11 @@ int xe_gt_stats_get_count(int fd, int gt, const char *stat)
+>   		minor(st.st_rdev), gt);
+>   	f = fopen(path, "r");
+>   
+> -	igt_assert_f(f, "Failed to open /sys/kernel/debug/dri/%d/gt%d/stats",
+> -		     minor(st.st_rdev), gt);
+> +	if (!f) {
+> +		igt_warn("Failed to open /sys/kernel/debug/dri/%d/gt%d/stats",
+> +			 minor(st.st_rdev), gt);
+> +		return -1;
+> +	}
+Looks fine!
+>   
+>   	while (fgets(tlb_path, sizeof(tlb_path), f)) {
+>   		if (strstr(tlb_path, stat) != NULL) {
