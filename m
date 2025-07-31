@@ -4,34 +4,34 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CDC7C87FD3
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A36C87FDA
 	for <igt-dev@archiver.kernel.org>; Mon,  4 Aug 2025 06:08:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C38F10E2B4;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C36610E011;
 	Mon,  4 Aug 2025 06:08:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.b="Zp/hdcJx";
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.b="OjUwsVZf";
 	dkim-atps=neutral
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9580510E740
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Jul 2025 09:24:15 +0000 (UTC)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7114710E720
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Jul 2025 08:06:41 +0000 (UTC)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sea.source.kernel.org (Postfix) with ESMTP id 3A3B343D71;
- Thu, 31 Jul 2025 09:24:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C65C4CEEF;
- Thu, 31 Jul 2025 09:24:14 +0000 (UTC)
+ by tor.source.kernel.org (Postfix) with ESMTP id 900236020C;
+ Thu, 31 Jul 2025 08:06:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825F0C4CEF5;
+ Thu, 31 Jul 2025 08:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1753953855;
- bh=oZn4nAohkSZx4730Lyy79hcp9xR/gR+wESqn1QVOdBw=;
+ s=k20201202; t=1753949200;
+ bh=7SMBQ1WU0Kqw0GFNNGkIR8EUmmMCKLouyiotBs6G6UM=;
  h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=Zp/hdcJxc8EcHkmTalLWy0p3R5G+G9L5OagsBZBVloF55Lyx2QKU7TB8Uq31sIELh
- m9MT6O77xS30oa39BtOL5MwvUyOqNBoLNs38b10uziWWXiEmiBx+0TOOWY5NJzcGeV
- w4dOlSQzCS7tQKzW+pTIg7TQ9vrOX8KCrJX7U2zYttT4K4KCdRp0A0+6U+xxdxeTjo
- ytaLiPdAJK8RJ3/taOapTCSNfWsDT7EylUtkP/Q8NdoKiTPz3Y62H67Bjs12f81YN/
- bFo0Q6DmFn9F8L5DN0ZjpAZQam6Czgq+GgG3neFZZae0qI99+00Mtl1FY0Ls1Dwpck
- Gah2Ncut9vnJg==
-Message-ID: <287bdc56-21bf-450b-8c8d-a2a2485545db@kernel.org>
-Date: Thu, 31 Jul 2025 18:21:41 +0900
+ b=OjUwsVZfXCtXqRyxY5drc2fTz7GqcuiefFYzcKywD6h2UURG1ZpaqUr7nZM3X/oTn
+ hyKNSSS+IXz8TNKYMLZjCYcBZsEVt3fP3XvUSLX5gKptnOKcsx2gvllcWG5cdSZbWz
+ URAhoiSLBsbXUdTdnmDtlwdqsNIoDLL+ugBDLcyTNjiB1uA6n5KJCknWdsM65iWTYK
+ X+D/Xw4QvZws3huwaZ3MTtJzzrhhIrk7dvrRc4fcaW6o4JPXuJwmk0EkLoGoqv/xdG
+ bLeoFMEjj1nfZm7T4FAxS89kWlfs4X1/WjBuKa325kZ80kqLP9Fxrs1mXNsM6arAP7
+ rM+30B9FXjpCw==
+Message-ID: <d696461e-bf6d-4f68-a826-02e3c362518e@kernel.org>
+Date: Thu, 31 Jul 2025 17:04:06 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH i-g-t] lib/igt_pm: Skip LPM policy control on unsupported
@@ -71,15 +71,103 @@ On 7/31/25 4:41 PM, Chaitanya Kumar Borah wrote:
 > Store/Re-store LPM policy only when it is allowed. If the sysfs entry is
 > not present assume LPM policy control is allowed. This  maintains backward
 > compatibility.
+
+Note: allowed, yes, but that does not mean it will actually work or do
+anything, since the port or the device may not be supporting LPN at all.
+
 > 
 > [1] https://lore.kernel.org/linux-ide/20250701125321.69496-8-dlemoal@kernel.org/
 > [2] https://lore.kernel.org/linux-ide/07563042-6576-41cd-9a95-de83cfc95de1@intel.com/
 > [3] https://lore.kernel.org/linux-ide/20250730001947.332661-1-dlemoal@kernel.org/
+> 
+> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-By the way, I queued up this patch and pushed it to libata for-next branch. So
-you will see it in linux-next tomorrow I expect.
-I will send this (plus other fixes) next week to Linus to have everything in
-6.17-rc1.
+Patch looks OK to me (nit below though).
+
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+
+
+> ---
+>  lib/igt_pm.c | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+> 
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index cf1c442f8..1ffcdcef3 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -321,6 +321,35 @@ void igt_pm_enable_audio_runtime_pm(void)
+>  		igt_debug("Failed to enable audio runtime PM! (%d)\n", -err);
+>  }
+>  
+> +static bool lpm_supported_by_sata_host(int host_num)
+> +{
+> +	int fd;
+> +	ssize_t len;
+> +	char buf[2];
+> +	char file_name[PATH_MAX];
+> +
+> +	snprintf(file_name, PATH_MAX,
+> +		 "/sys/class/scsi_host/host%d/link_power_management_supported",
+> +		 host_num);
+> +
+> +	fd = open(file_name, O_RDONLY);
+> +
+> +	/* assume LPM is supported if sysfs entry is absent. This preserves default behaviour */
+> +	if (fd < 0)
+> +		return true;
+> +
+> +	len = read(fd, buf, 1);
+> +
+> +	close(fd);
+
+Nit: this would all be a lot simpler using scanf:
+	
+	snprintf(file_name, PATH_MAX,
+		 "/sys/class/scsi_host/host%d/link_power_management_supported",
+		 host_num);
+
+	/*
+	 * If sysfs entry is absent, assume that LPM is supported to
+	 * preserve the default behaviour.
+	 */
+	if (scanf(file_name, "%d", &supported) != 1)
+		return true;
+
+	return supported;
+
+> +
+> +	if (len <= 0)
+> +		return true;
+> +
+> +	buf[len] = '\0';
+> +
+> +	return buf[0] == '1';
+> +}
+> +
+>  static void __igt_pm_enable_sata_link_power_management(void)
+>  {
+>  	int fd, i;
+> @@ -372,6 +401,9 @@ static void __igt_pm_enable_sata_link_power_management(void)
+>  	igt_install_exit_handler(__igt_pm_sata_link_pm_exit_handler);
+>  
+>  	for (i = 0; i < __scsi_host_cnt; i++) {
+> +		if (!lpm_supported_by_sata_host(i))
+> +			continue;
+> +
+>  		snprintf(file_name, PATH_MAX,
+>  			 "/sys/class/scsi_host/host%d/link_power_management_policy",
+>  			 i);
+> @@ -412,6 +444,9 @@ static void __igt_pm_restore_sata_link_power_management(void)
+>  	for (i = 0; i < __scsi_host_cnt; i++) {
+>  		int8_t policy;
+>  
+> +		if (!lpm_supported_by_sata_host(i))
+> +			continue;
+> +
+>  		if (__sata_pm_policies[i] == POLICY_UNKNOWN)
+>  			continue;
+>  		else
+
 
 -- 
 Damien Le Moal
