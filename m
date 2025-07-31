@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6844CC87FCC
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Jul 2025 12:02:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 500FEC83F17
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Jul 2025 12:15:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FEE310E3A7;
-	Thu, 31 Jul 2025 12:02:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E3A1210E038;
+	Thu, 31 Jul 2025 12:15:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lqEb23DE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GSo+mVtX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55C0D10E3A7
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Jul 2025 12:02:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C933210E038
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Jul 2025 12:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753963352; x=1785499352;
+ t=1753964124; x=1785500124;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=1bhM8+bwAmHwASRSr6WKN6OIF8bbfEydDdUsHamc+zs=;
- b=lqEb23DETVRXe8FwvzATCSDcCZPK5gTenUXNnXIktifiBIIbmOP7/iWe
- EABUsKuWV0Hf+VIuvRhDKdl+ZrOWhe6FqM9WY1PQ77FrWmzFt/j+2cVH7
- 90eiS+XRVQdB9NEKCrhQQ0JiCBhNfrIxKQ2fB0KdVaZEAlnO9Uz86sHNT
- xD+yOwf+Areg6q1M9Pb9L0y3P8EYEjKEinIwSLiYcwpzFlwsyOCiUs1EL
- UsOncMc+kj4TW1PexPzU2gm3QT8zqqAjm/0xD0kW8klklkkMfKiZHKEII
- W57hQDjAglbt5Go8MiZ/ccpAbUSWecsnsMxp8yiSshApP8s2r416yUwiR w==;
-X-CSE-ConnectionGUID: K8nwNY5eRX2BGGZ+yjacZA==
-X-CSE-MsgGUID: 7wDfpO8tQ7iUeowHq1xbHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="56150145"
-X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; d="scan'208";a="56150145"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2025 05:02:32 -0700
-X-CSE-ConnectionGUID: FVJpuJATSy2D0IAxd/c7fA==
-X-CSE-MsgGUID: Ic8cc/dvS8CMB85PFV1wbw==
+ bh=sT+lpKTzu49xGscpEmk48y37r73SsifAPH8JXJB9ycA=;
+ b=GSo+mVtXzNQIDFeh2h7C7Kra3mJ+aQEAkvJL2KUzCR+qTAm9xhBozPMK
+ YfCBBNUu9XjonlLLRwZ8SnzgaFOstnhc7dsO30nPfWRvKPgb90V1cBLr+
+ dYslgbR4Le1Rpz2le/OSprWst3/a+Hm/WKZ5Yr3WnyiD12skawGbfJNpL
+ UkH1qWkuiJjCA/VNSwJSsOok7qNYvYs2+yvE6VYQoAWnmM9zU2jfA3T+P
+ JUqrqcGfquMkj0O4xlZbqL53bUlX4+Z4PMu6iYyIf+pdthG64aDvorH5O
+ SGyjRHIWIMeDtHLsfsLOVgBD2cfIFo2/7hisE0G1MNJeCTcDmpz/dhR38 A==;
+X-CSE-ConnectionGUID: ZRH5CR72SHm+PuAArqs6sQ==
+X-CSE-MsgGUID: zkuHwVA5QXqoQVAMIKAidw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="67649238"
+X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; d="scan'208";a="67649238"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2025 05:15:24 -0700
+X-CSE-ConnectionGUID: 40YhQW/3TEum2RIPDJTPBw==
+X-CSE-MsgGUID: fXrtzHGjRliYhJ9SJLHYfQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; d="scan'208";a="167494090"
+X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; d="scan'208";a="162521227"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2025 05:02:30 -0700
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2025 05:15:22 -0700
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	anshuman.gupta@intel.com
 Cc: soham.purkait@intel.com, riana.tauro@intel.com, lucas.demarchi@intel.com,
  jakub1.kolakowski@intel.com
-Subject: [PATCH i-g-t v3] tests/intel/xe_pmu: Skip tests if the
+Subject: [PATCH i-g-t v4] tests/intel/xe_pmu: Skip tests if the
  engine-active-ticks event is not present
-Date: Thu, 31 Jul 2025 17:25:30 +0530
-Message-Id: <20250731115530.3237139-1-soham.purkait@intel.com>
+Date: Thu, 31 Jul 2025 17:38:15 +0530
+Message-Id: <20250731120815.3237941-1-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -77,9 +77,10 @@ v1:
    existence of engine-active-ticks event. (Riana)
 v2:
  - Refactor commit title. (Jakub)
+v3:
+ - Add generic function has_event. (Riana)
 
 Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-Reviewed-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
 ---
  tests/intel/xe_pmu.c | 15 +++++++++++++++
  1 file changed, 15 insertions(+)
