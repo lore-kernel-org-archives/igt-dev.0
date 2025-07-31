@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F148C83F17
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Jul 2025 07:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDD31C83F17
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Jul 2025 07:58:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C56F010E255;
-	Thu, 31 Jul 2025 07:50:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7880E10E255;
+	Thu, 31 Jul 2025 07:58:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N3TkA1AL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hLI0rFIu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED14210E255
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Jul 2025 07:50:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6BA0310E255
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Jul 2025 07:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1753948207; x=1785484207;
+ t=1753948732; x=1785484732;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=of+v2+3wt8T04mVstrGy8ElptsqW7O/lZE+p0dIlXTg=;
- b=N3TkA1ALh/tgzy6OXOvpBo927eipfJdLDUf8HWglp7TcWDeF5MAMRd/2
- LyZO68rU2D0gYi2kr376QZG02mEzxDfaZ9eDSV20Oy2sR6FKwgGtvF/HR
- PArrfZm+/8CrnmMJVyD4fJV5uQ1YBRzaN1yy/04+dom1sPDiV0C3IlUX1
- JbipF4iM4gf9y9lwPanfLlqit8IQtm2YGlGR7fWKd4rPFEgrdy2pEQeGH
- dYGZTi6CFTX8SP4fn+i3GfXD9pWdszGq5QOPrQ1xOKPVNOxw+BRIlmTGT
- BhCBExFHAsNH6M0KTBrZsPuIb+OuAgcdiEKGb9joo2M42P7katZs/L6zI w==;
-X-CSE-ConnectionGUID: 2m81EQcYQM+/eqEqWlE8mw==
-X-CSE-MsgGUID: pZlXwgR5RCWJWJv84EK3mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="55330228"
-X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; d="scan'208";a="55330228"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2025 00:50:07 -0700
-X-CSE-ConnectionGUID: 4RP6PRphQ9mHEHx5r0J2kw==
-X-CSE-MsgGUID: UHSQ66WDSzGk60OTfmvaTA==
+ bh=z5n80YZwEmogk+fjq0XERLPVrF8V3iFgbxe0PYWildA=;
+ b=hLI0rFIuX1R1G5mMEVVselfTUQwyxHWkBaoFuLrsuYd/1PnIcgrcbJLK
+ jknteqIZhEE+JipbN18IwfAzQFoGiCoHYWMHRX9jBgufD4xckalVYelGr
+ 6tenkYMu70ihQKhl2x4KmCg23oe5J+bsuLxmDD4WfVQqHgum/kebpRybp
+ SX3PxZg60Np0kpEQHwGMy9qzvlNEFmgybjmyDLA8YTazM81j6nKgwFzhH
+ nbMDQU1aLy+kD8jahXdi8sL9MBD3xW1aJfy+ckk88MmSLy6vXQ4+o8k18
+ yMyO+pjdTCe9wsjjkL8MYU6Yjt3UT/O4GZqFy5C70OvbO68oXeF5IGXCo w==;
+X-CSE-ConnectionGUID: N0nIXzXqQ5ifhthITFcSTw==
+X-CSE-MsgGUID: ikp6t9WjRMqCzZzTA0TWzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="56411015"
+X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; d="scan'208";a="56411015"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2025 00:58:52 -0700
+X-CSE-ConnectionGUID: U9JumNoJQ8G3Hk7YVhVJcQ==
+X-CSE-MsgGUID: PUJauhhWTGal1JRkC1cLSQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; d="scan'208";a="168591687"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2025 00:50:05 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	anshuman.gupta@intel.com
-Cc: soham.purkait@intel.com, riana.tauro@intel.com, lucas.demarchi@intel.com,
- jakub1.kolakowski@intel.com
-Subject: [PATCH i-g-t v2] tests/intel/xe_pmu: Skip tests if the
- engine-active-ticks event is not present
-Date: Thu, 31 Jul 2025 13:13:09 +0530
-Message-Id: <20250731074309.3227163-1-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; d="scan'208";a="168473973"
+Received: from dut-2a59.iind.intel.com ([10.190.239.113])
+ by fmviesa004.fm.intel.com with ESMTP; 31 Jul 2025 00:58:50 -0700
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: chaitanya.kumar.borah@intel.com, imre.deak@intel.com,
+ anshuman.gupta@intel.com, dlemoal@kernel.org
+Subject: [PATCH i-g-t] lib/igt_pm: Skip LPM policy control on unsupported SATA
+ hosts
+Date: Thu, 31 Jul 2025 13:11:06 +0530
+Message-Id: <20250731074106.2495505-1-chaitanya.kumar.borah@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,68 +66,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Skip the tests and subtests involving the engine activity if the
-engine-active-ticks event is not present for the respective
-device.
+With [1], LPM policy control is now disabled for external SATA ports.
+This led to a regression in our CI runs [2]. Discussions on the regression
+resulted in patch [3] which introduces a new sysfs entry, querying
+which we can determine if LPM policy control is allowed on a host or not.
 
-v1:
- - Add a variable has_engine_active_ticks to check for the
-   existence of engine-active-ticks event. (Riana)
-v2:
- - Refactor commit title. (Jakub)
+Store/Re-store LPM policy only when it is allowed. If the sysfs entry is
+not present assume LPM policy control is allowed. This  maintains backward
+compatibility.
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+[1] https://lore.kernel.org/linux-ide/20250701125321.69496-8-dlemoal@kernel.org/
+[2] https://lore.kernel.org/linux-ide/07563042-6576-41cd-9a95-de83cfc95de1@intel.com/
+[3] https://lore.kernel.org/linux-ide/20250730001947.332661-1-dlemoal@kernel.org/
+
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 ---
- tests/intel/xe_pmu.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ lib/igt_pm.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index 0e5a7360f..b0bd235e6 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -106,6 +106,7 @@ const double tolerance = 0.1;
- static char xe_device[NAME_MAX];
- static bool autoprobe;
- static int total_exec_quantum;
-+static bool has_engine_active_ticks;
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index cf1c442f8..1ffcdcef3 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -321,6 +321,35 @@ void igt_pm_enable_audio_runtime_pm(void)
+ 		igt_debug("Failed to enable audio runtime PM! (%d)\n", -err);
+ }
  
- #define test_each_engine(test, fd, hwe) \
- 	igt_subtest_with_dynamic(test) \
-@@ -113,6 +114,17 @@ static int total_exec_quantum;
- 			igt_dynamic_f("engine-%s%d", xe_engine_class_string(hwe->engine_class), \
- 				      hwe->engine_instance)
- 
-+static bool _has_engine_active_ticks(const char *device)
++static bool lpm_supported_by_sata_host(int host_num)
 +{
-+	char buf[512];
++	int fd;
++	ssize_t len;
++	char buf[2];
++	char file_name[PATH_MAX];
 +
-+	snprintf(buf, sizeof(buf),
-+		 "/sys/bus/event_source/devices/%s/events/%s",
-+		 device,
-+		 "engine-active-ticks");
-+	return (!!access(buf, F_OK));
++	snprintf(file_name, PATH_MAX,
++		 "/sys/class/scsi_host/host%d/link_power_management_supported",
++		 host_num);
++
++	fd = open(file_name, O_RDONLY);
++
++	/* assume LPM is supported if sysfs entry is absent. This preserves default behaviour */
++	if (fd < 0)
++		return true;
++
++	len = read(fd, buf, 1);
++
++	close(fd);
++
++	if (len <= 0)
++		return true;
++
++	buf[len] = '\0';
++
++	return buf[0] == '1';
 +}
 +
- static int open_pmu(int xe, uint64_t config)
+ static void __igt_pm_enable_sata_link_power_management(void)
  {
- 	int fd;
-@@ -191,6 +203,8 @@ static uint64_t get_event_config(unsigned int gt, struct drm_xe_engine_class_ins
- 	uint64_t pmu_config = 0;
- 	int ret;
+ 	int fd, i;
+@@ -372,6 +401,9 @@ static void __igt_pm_enable_sata_link_power_management(void)
+ 	igt_install_exit_handler(__igt_pm_sata_link_pm_exit_handler);
  
-+	igt_skip_on(has_engine_active_ticks);
+ 	for (i = 0; i < __scsi_host_cnt; i++) {
++		if (!lpm_supported_by_sata_host(i))
++			continue;
 +
- 	ret = perf_event_config(xe_device, event, &pmu_config);
- 	igt_assert(ret >= 0);
- 	pmu_config |= add_format_config("gt", gt);
-@@ -907,6 +921,7 @@ igt_main
- 		fd = drm_open_driver(DRIVER_XE);
- 		xe_perf_device(fd, xe_device, sizeof(xe_device));
- 		num_engines = xe_number_engines(fd);
-+		has_engine_active_ticks = _has_engine_active_ticks(xe_device);
- 	}
+ 		snprintf(file_name, PATH_MAX,
+ 			 "/sys/class/scsi_host/host%d/link_power_management_policy",
+ 			 i);
+@@ -412,6 +444,9 @@ static void __igt_pm_restore_sata_link_power_management(void)
+ 	for (i = 0; i < __scsi_host_cnt; i++) {
+ 		int8_t policy;
  
- 	igt_describe("Validate PMU gt-c6 residency counters when idle");
++		if (!lpm_supported_by_sata_host(i))
++			continue;
++
+ 		if (__sata_pm_policies[i] == POLICY_UNKNOWN)
+ 			continue;
+ 		else
 -- 
-2.34.1
+2.25.1
 
