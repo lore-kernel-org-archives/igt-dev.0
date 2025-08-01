@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECAE4C87FCB
-	for <igt-dev@archiver.kernel.org>; Fri,  1 Aug 2025 06:48:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46A65C87FCB
+	for <igt-dev@archiver.kernel.org>; Fri,  1 Aug 2025 06:48:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9FF8610E3BE;
-	Fri,  1 Aug 2025 06:48:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EEDD710E7FD;
+	Fri,  1 Aug 2025 06:48:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J6QCphGC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fNIM09ye";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D30910E3BE
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Aug 2025 06:48:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0173C10E3C0
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Aug 2025 06:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754030932; x=1785566932;
+ t=1754030934; x=1785566934;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vNGPSDKyv6M+frGUz+ialn9QXSfoKAx/tyTLjFKMVI4=;
- b=J6QCphGCF2ggpsR9yItoS0ZmT8b++Wh3L9YxVUDQ0JZKNAIsQRInHt0d
- 6Kie+B6rgGojO2CrmgjPrdakgkixVV3zNGVpygUoRvwXFy2Zc/stwlgZS
- v0ZIOWYHq4cJi+6w4KZFisp5WSOzKi1SoddswAbbbRuKKlVcZODLAKl0f
- 3EMyImx37qSJpT/JgIjY/D468Cba12ft9qfKp6YWW/VCY/lNzxa20MwIp
- uglWmh3FohTnN3baH59dSlk/gjK93I/OAyd+f7U9b7qEXptvyQfmIaI9n
- QLDAKQy2vOdU4kZKjVykdpzmIxqIhGfVbe68lqueIZKhCTDBmg01bSLry A==;
-X-CSE-ConnectionGUID: IzN8lkejR4mjnpUgfMxGlg==
-X-CSE-MsgGUID: 9YQeOmMORgKAesK1xYOSug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="60014042"
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; d="scan'208";a="60014042"
+ bh=o2xey6j/z7k1wkhRfNDIYgQhkdfbaWX5i8WPAW/OkLQ=;
+ b=fNIM09yeOT280pBcyY4BMomVGrrYg7+zsxTUcqHhVx9rRW9ZUvJc/bki
+ 4ETIZBafhi9v3EqwzKS4Yn124J6HoSeAT1YjQFmWIEunK/n3zdhQukx65
+ Rp6KVVmi+Z13jX3VQyV4NXpTNn02aiu8VRErCDVtLrNTwJHYkXqEp+XAn
+ gNY4A4AZdjdNA2h+a/yuuJhGz3Vkeep+FmWuwXwblms9W9zUOvlsvwQ74
+ MavFGna7sUxTVOuzSz8W8N+bq5DtmivWmmr9iFunQzLlbfsitIlHs8Ww3
+ OBv283fBpF6oYeluxIzFxKS1VTMaTfwACdnFxYDiNNOkY5CIc0JtoBkTI Q==;
+X-CSE-ConnectionGUID: 4qQWGfG5TKG2ubNerdP0eA==
+X-CSE-MsgGUID: zQ9bRQ+IQgWGTPCq+1NgpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="60014045"
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; d="scan'208";a="60014045"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2025 23:48:52 -0700
-X-CSE-ConnectionGUID: xBywybcBSnKSabYylB2qNA==
-X-CSE-MsgGUID: DLADjvX5RTqEkz9F+w5h9w==
+ 31 Jul 2025 23:48:54 -0700
+X-CSE-ConnectionGUID: Ep+FBGpPRZ2/ylalHBDwFA==
+X-CSE-MsgGUID: U1Qx3m6sRBCna6njHn379A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; d="scan'208";a="168766695"
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; d="scan'208";a="168766699"
 Received: from ifwibot07.gar.corp.intel.com (HELO
  rgsanthosh-Z690I-A-ULTRA-PLUS.iind.intel.com) ([10.190.216.152])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2025 23:48:50 -0700
+ 31 Jul 2025 23:48:52 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: suraj.kandpal@intel.com, mohammed.thasleem@intel.com,
  ankit.k.nautiyal@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v5 1/3] tools/intel_hdcp: Support for enabling and
- disabling HDCP
-Date: Fri,  1 Aug 2025 12:16:59 +0530
-Message-Id: <20250801064701.911143-2-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v5 2/3] tools/intel_hdcp: Add interactive menu mode to
+ tool
+Date: Fri,  1 Aug 2025 12:17:00 +0530
+Message-Id: <20250801064701.911143-3-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250801064701.911143-1-santhosh.reddy.guddati@intel.com>
 References: <20250801064701.911143-1-santhosh.reddy.guddati@intel.com>
@@ -71,202 +71,204 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce support for enabling and disabling HDCP on specific connectors
-using command line options.
+Introduce text based menu mode for hdcp operations
+and update command line options
 
-V2: Refactor logic, simplified frame buffer handling, remove update_display
-and integrate its logic to igt_output_set_hdcp().
+v2: Add cleanup() at the end of main to clean resources.
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tools/intel_hdcp.c | 129 ++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 115 insertions(+), 14 deletions(-)
+ tools/intel_hdcp.c | 119 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 113 insertions(+), 6 deletions(-)
 
 diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-index 8ec698828..b9e91276f 100644
+index b9e91276f..d9496050a 100644
 --- a/tools/intel_hdcp.c
 +++ b/tools/intel_hdcp.c
-@@ -9,6 +9,15 @@
- #include "igt.h"
+@@ -80,7 +80,6 @@ static void igt_output_set_hdcp(data_t *data, igt_output_t *output, bool enable)
  
- #define MAX_HDCP_BUF_LEN	5000
-+#define MAX_CONNECTORS		10
-+
-+#define CP_UNDESIRED		0
-+#define CP_DESIRED		1
-+#define CP_ENABLED		2
-+
-+/* Max time per authentication allowed = 6Sec */
-+#define KERNEL_AUTH_TIME_ALLOWED_MSEC		(6 * 1000)
-+#define KERNEL_DISABLE_TIME_ALLOWED_MSEC	(1 * 1000)
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_remove_fb(data->fd, &data->red);
+-	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ }
  
- typedef struct data {
- 	int fd;
-@@ -17,6 +26,79 @@ typedef struct data {
- 	int height, width;
- } data_t;
- 
-+static void igt_output_set_hdcp(data_t *data, igt_output_t *output, bool enable)
-+{
-+	uint64_t prop_value;
-+	igt_display_t *display = &data->display;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+
-+	mode = igt_output_get_mode(output);
-+	data->height = mode->vdisplay;
-+	data->width = mode->hdisplay;
-+
-+	igt_output_set_pipe(output, PIPE_A);
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_create_color_fb(data->fd, data->width, data->height,
-+			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1.f, 0.f, 0.f, &data->red);
-+
-+	igt_plane_set_fb(primary, &data->red);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_output_set_prop_value(output, IGT_CONNECTOR_CONTENT_PROTECTION,
-+				  enable ? CP_DESIRED : CP_UNDESIRED);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	if (enable) {
-+		usleep(KERNEL_AUTH_TIME_ALLOWED_MSEC);
-+		prop_value = igt_output_get_prop(output, IGT_CONNECTOR_CONTENT_PROTECTION);
-+
-+		if (prop_value == CP_ENABLED) {
-+			fprintf(stderr, "HDCP enabled on output %s\n", output->name);
-+			/* Switch to green to indicate success */
-+			igt_create_color_fb(data->fd, data->width, data->height,
-+					    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					    0.f, 1.f, 0.f, &data->green);
-+			igt_plane_set_fb(primary, &data->green);
-+			igt_display_commit2(display, COMMIT_ATOMIC);
-+			igt_remove_fb(data->fd, &data->green);
-+		} else {
-+			fprintf(stderr, "Failed to enable HDCP on connector %s\n", output->name);
-+		}
-+	} else {
-+		usleep(KERNEL_DISABLE_TIME_ALLOWED_MSEC);
-+		prop_value = igt_output_get_prop(output, IGT_CONNECTOR_CONTENT_PROTECTION);
-+
-+		if (prop_value == CP_UNDESIRED)
-+			fprintf(stderr, "HDCP disabled on connector %s\n", output->name);
-+		else
-+			fprintf(stderr, "Failed to disable HDCP on connector %s\n", output->name);
-+	}
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_remove_fb(data->fd, &data->red);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+}
-+
-+static void set_hdcp(data_t *data, int connector_id, bool enable)
-+{
-+	igt_output_t *output;
-+	drmModeConnector connector;
-+
-+	connector.connector_id = connector_id;
-+	output = igt_output_from_connector(&data->display, &connector);
-+	if (!output) {
-+		fprintf(stderr, "Failed to get output for connector %d\n", connector_id);
-+		return;
-+	}
-+
-+	igt_output_set_hdcp(data, output, enable);
-+}
-+
- static const char *get_hdcp_version(int fd, char *connector_name)
- {
- 	char buf[MAX_HDCP_BUF_LEN];
-@@ -57,24 +139,24 @@ static void get_hdcp_info(data_t *data)
- 	fprintf(stderr, "Connectors:\n");
- 	fprintf(stderr, "id\tencoder\tstatus\t\ttype\tHDCP\n");
- 	for (int i = 0; i < res->count_connectors; i++) {
--		drmModeConnector *c;
-+		drmModeConnector *connector;
- 
--		c = drmModeGetConnectorCurrent(data->fd, res->connectors[i]);
-+		connector = drmModeGetConnectorCurrent(data->fd, res->connectors[i]);
- 
--		if (!c)
-+		if (!connector)
- 			continue;
- 
- 		asprintf(&output_name, "%s-%d",
--			 kmstest_connector_type_str(c->connector_type),
--			 c->connector_type_id);
-+			 kmstest_connector_type_str(connector->connector_type),
-+			 connector->connector_type_id);
- 
- 		fprintf(stderr, "%d\t%d\t%s\t%s\t%s\n",
--			c->connector_id, c->encoder_id,
--			kmstest_connector_status_str(c->connection),
--			kmstest_connector_type_str(c->connector_type),
-+			connector->connector_id, connector->encoder_id,
-+			kmstest_connector_status_str(connector->connection),
-+			kmstest_connector_type_str(connector->connector_type),
- 			get_hdcp_version(data->fd, output_name));
- 
--		drmModeFreeConnector(c);
-+		drmModeFreeConnector(connector);
- 	}
- 
+@@ -162,6 +161,23 @@ static void get_hdcp_info(data_t *data)
  	drmModeFreeResources(res);
-@@ -85,7 +167,8 @@ static void print_usage(void)
+ }
+ 
++static void wait_for_keypress(void)
++{
++	printf("Press Enter to continue...");
++	fflush(stdout);
++	while (getchar() != '\n');
++}
++
++static void print_menu(void)
++{
++	printf("\n=== Intel HDCP Tool ===\n");
++	printf("1. Get HDCP Information\n");
++	printf("2. Enable HDCP on connector\n");
++	printf("3. Disable HDCP on connector\n");
++	printf("4. Exit\n");
++	printf("Enter your choice: ");
++}
++
+ static void print_usage(void)
+ {
  	fprintf(stderr, "Usage: intel_hdcp [OPTIONS]\n");
- 	fprintf(stderr, "Options:\n");
+@@ -169,6 +185,74 @@ static void print_usage(void)
  	fprintf(stderr, "-i,	--info		Get HDCP Information\n");
--	fprintf(stderr, "-h,	--help		Display this help message\n");
-+	fprintf(stderr, "-e,	--enable	Enable HDCP on the specified connector id\n");
-+	fprintf(stderr, "-d,	--disable	Disable HDCP on the specified connector id\n");
+ 	fprintf(stderr, "-e,	--enable	Enable HDCP on the specified connector id\n");
+ 	fprintf(stderr, "-d,	--disable	Disable HDCP on the specified connector id\n");
++	fprintf(stderr, "-m,	--menu		Interactive menu mode (default if no options)\n");
++}
++
++static void interactive_menu(data_t *data)
++{
++	int choice, connector_id;
++	char input[256];
++
++	while (1) {
++		print_menu();
++		fflush(stdout);
++
++		if (!fgets(input, sizeof(input), stdin)) {
++			printf("\nExiting...\n");
++			break;
++		}
++
++		choice = atoi(input);
++
++		switch (choice) {
++		case 1:
++			printf("\n--- HDCP Information ---\n");
++			get_hdcp_info(data);
++			wait_for_keypress();
++			break;
++
++		case 2:
++			printf("\n--- Enable HDCP ---\n");
++			get_hdcp_info(data);
++			printf("\nEnter connector ID to enable HDCP: ");
++			fflush(stdout);
++			if (fgets(input, sizeof(input), stdin)) {
++				connector_id = atoi(input);
++				printf("Enabling HDCP on connector %d...\n", connector_id);
++				set_hdcp(data, connector_id, true);
++			}
++			wait_for_keypress();
++			break;
++
++		case 3:
++			printf("\n--- Disable HDCP ---\n");
++			get_hdcp_info(data);
++			printf("\nEnter connector ID to disable HDCP: ");
++			fflush(stdout);
++			if (fgets(input, sizeof(input), stdin)) {
++				connector_id = atoi(input);
++				printf("Disabling HDCP on connector %d...\n", connector_id);
++				set_hdcp(data, connector_id, false);
++			}
++			wait_for_keypress();
++			break;
++
++		case 4:
++			printf("Exiting...\n");
++			return;
++
++		default:
++			printf("Invalid choice. Please try again.\n");
++			wait_for_keypress();
++			break;
++		}
++	}
++}
++
++static void test_cleanup(data_t *data)
++{
++	igt_display_reset(&data->display);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
  }
  
  static void test_init(data_t *data)
-@@ -103,11 +186,13 @@ int main(int argc, char **argv)
+@@ -180,28 +264,38 @@ static void test_init(data_t *data)
+ 	}
+ 	igt_display_require(&data->display, data->fd);
+ 	igt_display_require_output(&data->display);
++
++	igt_display_reset(&data->display);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ }
+ 
+ int main(int argc, char **argv)
  {
  	data_t data;
  	int option;
--	static const char optstr[] = "hi";
-+	static const char optstr[] = "hied:";
+-	static const char optstr[] = "hied:";
++	bool menu_mode = false;
++	static const char optstr[] = "hied:m";
  	struct option long_opts[] = {
--		{"help",	no_argument,	NULL, 'h'},
--		{"info",	no_argument,	NULL, 'i'},
--		{NULL,		0,		NULL,  0 }
-+		{"help",	no_argument,		NULL,	'h'},
-+		{"info",	no_argument,		NULL,	'i'},
-+		{"enable",	required_argument,	NULL,	'e'},
-+		{"disable",	required_argument,	NULL,	'd'},
-+		{NULL,		0,			NULL,	 0 }
+ 		{"help",	no_argument,		NULL,	'h'},
+ 		{"info",	no_argument,		NULL,	'i'},
+ 		{"enable",	required_argument,	NULL,	'e'},
+ 		{"disable",	required_argument,	NULL,	'd'},
++		{"menu",	no_argument,		NULL,	'm'},
+ 		{NULL,		0,			NULL,	 0 }
  	};
  
  	test_init(&data);
-@@ -117,6 +202,22 @@ int main(int argc, char **argv)
+ 
++	/* If no arguments provided, default to menu mode */
++	if (argc == 1)
++		menu_mode = true;
++
+ 	while ((option = getopt_long(argc, argv, optstr, long_opts, NULL)) != -1) {
+ 		switch (option) {
  		case 'i':
  			get_hdcp_info(&data);
+-			break;
++			test_cleanup(&data);
++			return 0;
+ 		case 'e':
+ 			if (!optarg) {
+ 				fprintf(stderr, "Missing connector ID for enable\n");
+@@ -209,19 +303,32 @@ int main(int argc, char **argv)
+ 				exit(EXIT_FAILURE);
+ 			}
+ 			set_hdcp(&data, atoi(optarg), true);
+-			break;
++			test_cleanup(&data);
++			return 0;
+ 		case 'd':
+ 			if (!optarg) {
+-				fprintf(stderr, "Missing connector ID for enable\n");
++				fprintf(stderr, "Missing connector ID for disable\n");
+ 				print_usage();
+ 				exit(EXIT_FAILURE);
+ 			}
+ 			set_hdcp(&data, atoi(optarg), false);
++			test_cleanup(&data);
++			return 0;
++		case 'm':
++			menu_mode = true;
  			break;
-+		case 'e':
-+			if (!optarg) {
-+				fprintf(stderr, "Missing connector ID for enable\n");
-+				print_usage();
-+				exit(EXIT_FAILURE);
-+			}
-+			set_hdcp(&data, atoi(optarg), true);
-+			break;
-+		case 'd':
-+			if (!optarg) {
-+				fprintf(stderr, "Missing connector ID for enable\n");
-+				print_usage();
-+				exit(EXIT_FAILURE);
-+			}
-+			set_hdcp(&data, atoi(optarg), false);
-+			break;
  		case 'h':
  		default:
  			print_usage();
+-			break;
++			test_cleanup(&data);
++			return (option == 'h') ? 0 : 1;
+ 		}
+ 	}
++
++	if (menu_mode)
++		interactive_menu(&data);
++
++	test_cleanup(&data);
++
++	return 0;
+ }
 -- 
 2.34.1
 
