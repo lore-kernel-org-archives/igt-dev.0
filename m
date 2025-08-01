@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2523C87FCB
-	for <igt-dev@archiver.kernel.org>; Fri,  1 Aug 2025 13:53:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DE95C87FCA
+	for <igt-dev@archiver.kernel.org>; Fri,  1 Aug 2025 13:53:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 651F010E859;
-	Fri,  1 Aug 2025 13:53:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 00E8C10E85D;
+	Fri,  1 Aug 2025 13:53:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Oz342Ws+";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="trCMMWdq";
 	dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2056.outbound.protection.outlook.com [40.107.223.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99F3710E859
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Aug 2025 13:53:55 +0000 (UTC)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2046.outbound.protection.outlook.com [40.107.243.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63E1510E859
+ for <igt-dev@lists.freedesktop.org>; Fri,  1 Aug 2025 13:53:56 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e545S10tqawA4XYkW6g93MNSmc8MY+kuMQjwzRjxxYqZC+84GIl2RHkUWqYXNZKAQOpEjJjk+sSb31V8GoEunvl39yrWiLdVB4jLsVnJsH4s9NH9htbFZgiWV94NqLrb6Mz5Xr69hU/db1AFg8Dvkoj+jB0c3Io3HYPeMiL6TmTdHjPL3Do5Ua8CXimYI1t4XWmTfbIayZyRHvnCfY27edtue4ir/UkoQQt8D4Xa3STO0bCbvK/iNb1GWgcIN6AY571DCuxCPN/mfE9gDQZA9mesCTlYbSgTjlXkNgzMGtlUJblwuh///aq0lHF6yLc2gC8DGOUDGLScVLl1yyo8YA==
+ b=K0ah1nFjIv2HIfujVK4ikqtjOaVj4ytXu4K9d3m4OaftoDnjipMj2FtrzpPXNl2y5Pl8LEUYeC3PSBQQ2petdpS12VKaf4dJGqX8gx1yaAOeqTiZZmlBqL69s0wzmj202BfR5ENca+IW6J4o2g7eiObLJDNE2dAGmaRJOOb9aBBS84RtEV+o6zaRjAuK5169X8rQx56Ius8gGbCNtGXLhaXE/kRufW7BkqJV+zEt6J+FLBFnkUAhukhogzEwlD9jMt3riMJ7QpyxAttCWa+mMw9Aiu6WTcqrqpTEeJsWbXHllQNd3GwBNq9zsGxeAwDX0+Our+mpvwL9Mr0KeCNt2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wEI3icurqB/GGW/1UTlRA5ThcPHYDqRC7oT6Y3z1sFc=;
- b=VBoijgCBk1EMbry3ANxoDLBNFd1whVmNzJYLE8HD6NgRV2l8U+WgU2Xqklis2JPexyGrYkJ8IARAiGhcQ03dUYuGPV7I0fRamPnFRrJd3C0mxj78BPj8gV+NZCMsAHnndi0P6LA1zxfzm9PCMVqKbCAhBOjDWCePMGBxU/FEGejkpPm2dGlZz+FbjWHveOiOY0504MxrLd0DqKEyAxN+aH7uBepOZw9G3n6M6x6+ntLPNHscqVuN5cf0uXPceVZm21NVQVrzOBwfOG5zOAYsneOH3sRW/QO13eVZmWQgiWG15HFmieUZQWo1GquABIMkPmSM3MfUuoI5ZnyMJGo7qg==
+ bh=KHHoKeAQC110Qp6/m2rtbPDqsVtq8KQfflPTnQCK5mk=;
+ b=MzKDJMny7blBUqxho5ojR8OFAIArtpT2s3RAaGt6KncT1+t9Pwz/QVAFceJWHpjE+MkGqsA8pcqMm/Zj6AbHJusS5Ut19i2tjdClgz0FGjgv7N4MVlV4Nh5E0rzwVkiC2EVV2dwXPDcEVn9EAFrbnkmrCouu+QO9HZzPCp4g1W36+54piTT5MxCV9O6lCqSt83mRHC/V94ZimmGcNsIR9y3awwMxPL4tCJF/QGoYbttAD4VPSXaSwHpte32MPDZ3fd8GvEf+7XFvuR7gTA9sBoFVxCTcaPNnC444h7l/d3b1wE2687nGLub/TR7lBmU3LxYh5qGZ6XMxx72v3V5S9A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wEI3icurqB/GGW/1UTlRA5ThcPHYDqRC7oT6Y3z1sFc=;
- b=Oz342Ws+6Pl3V4pzd+tCTv993gJnWIJTLatVqM3LxF3utupNm9J07vh0fOXmmZeex8DD3RSHdnkSuiuNDB4JWuQGjI3ciYsMOA8V+Qudi+yRtwloB+le+c9lzeIYyfuhzpk6A5qZm6OU+zI9aGW6KA28Gr//HGc5SUIAbV4fI2o=
-Received: from CH0P221CA0012.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11c::16)
- by BY5PR12MB4180.namprd12.prod.outlook.com (2603:10b6:a03:213::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.12; Fri, 1 Aug
+ bh=KHHoKeAQC110Qp6/m2rtbPDqsVtq8KQfflPTnQCK5mk=;
+ b=trCMMWdqJBRto8C3dGG73J4IcO+Y4TlS1AqeaTFbcc+/0t2iWpd9HihauP4MY2IHNTHntJKnDodjUQ6MnK2J3hq0v0ZDbbzmtAUAABTjmGb0IsCybKMLNtkrDXHzjiHKBFb1Hu7CEbTrm533CRb2YJW5huRGRJ8qyPBIFPEzX1c=
+Received: from CH0P221CA0008.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11c::9)
+ by CH2PR12MB4197.namprd12.prod.outlook.com (2603:10b6:610:ab::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.13; Fri, 1 Aug
  2025 13:53:53 +0000
 Received: from CH3PEPF0000000F.namprd04.prod.outlook.com
- (2603:10b6:610:11c:cafe::e8) by CH0P221CA0012.outlook.office365.com
- (2603:10b6:610:11c::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.17 via Frontend Transport; Fri,
- 1 Aug 2025 13:53:51 +0000
+ (2603:10b6:610:11c:cafe::3c) by CH0P221CA0008.outlook.office365.com
+ (2603:10b6:610:11c::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.16 via Frontend Transport; Fri,
+ 1 Aug 2025 13:53:53 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,20 +50,24 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  CH3PEPF0000000F.mail.protection.outlook.com (10.167.244.40) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9009.8 via Frontend Transport; Fri, 1 Aug 2025 13:53:51 +0000
+ 15.20.9009.8 via Frontend Transport; Fri, 1 Aug 2025 13:53:53 +0000
 Received: from srishanm-Cloudripper.amd.com (10.180.168.240) by
  SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 1 Aug 2025 08:53:50 -0500
+ 15.1.2507.39; Fri, 1 Aug 2025 08:53:51 -0500
 From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 To: Vitaly Prosyak <vitaly.prosyak@amd.com>
 CC: <igt-dev@lists.freedesktop.org>, Srinivasan Shanmugam
- <srinivasan.shanmugam@amd.com>
-Subject: [PATCH 0/2] amdgpu: Expose and test GPUVM, LDS,
- and Scratch aperture sizes
-Date: Fri, 1 Aug 2025 19:20:50 +0530
-Message-ID: <20250801135052.3487752-1-srinivasan.shanmugam@amd.com>
+ <srinivasan.shanmugam@amd.com>, David Yat Sin <David.YatSin@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>
+Subject: [PATCH 1/2] tests/amdgpu: Add test for GPUVM, LDS,
+ and Scratch Aperture Sizes
+Date: Fri, 1 Aug 2025 19:20:51 +0530
+Message-ID: <20250801135052.3487752-2-srinivasan.shanmugam@amd.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250801135052.3487752-1-srinivasan.shanmugam@amd.com>
+References: <20250801135052.3487752-1-srinivasan.shanmugam@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -72,61 +76,61 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF0000000F:EE_|BY5PR12MB4180:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b06dd03-c2cb-47a9-5cd1-08ddd102d8fb
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000F:EE_|CH2PR12MB4197:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46cf7e95-7a4e-448b-cdf0-08ddd102da36
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|376014|82310400026|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aURPNmJsM2NvQlFkaGxHUjJvN3IrNFluQVNzejgrNFVrSzJVMkU0eTJ4VFlr?=
- =?utf-8?B?K3F4YkJzblRrMUtIbXpwb2sxVG00WUZpSWlUZjAveVBHRGZFbFJzS2Z1ZnM0?=
- =?utf-8?B?b0JIWDlLSWYvTFhPaVFoQVIwM2h0L2piZDdlRDVrcmMvQXpadkw5N01ValhM?=
- =?utf-8?B?M3lKMEkwdk1kOE9odks4WmdRUE8yWXZja0xiUnhMcU9mNWJpNncrQzNDUFFX?=
- =?utf-8?B?WEk5TDNFMUFJSXhFR0ZMS2ZFSWkvQXd3eCtsWFZFb2xML3JqRGt1NTVzS0Zt?=
- =?utf-8?B?SDl1WnB1bWJNbHVZZVovOG84ajF1WXZKY0ZXeHN1N3pFTjRyb0xoU1l3QnVT?=
- =?utf-8?B?RFhlTXpmdDdqb3QwVUVCdHFUaUt5czUxeXhUeXRtRnc0U0o0elFPWDZ6bXdE?=
- =?utf-8?B?NDZlUnlOUlBBNlRGL1hUVTZNUTRhMEJsc2pTTUl0VFRTN2M4YXNLcUNkTEVD?=
- =?utf-8?B?LzgrVjUzekN1TWJCMHhvWjNNTmxrR05yeklzMkh1bmFJeGpPYlpGR05nRTBS?=
- =?utf-8?B?NjNsTUFSQmlSeHA3N09vQ2lzTzg4KzlPaXdTS1MwMmpXS1hxQThwY3ZaaGlH?=
- =?utf-8?B?THNzSzR4b2ZJZG13OXB2ZzZRWVRtelFCNDlEV2JBWkNrMGVNcU9KRjl1N3hI?=
- =?utf-8?B?OVhCU0FVR04zR28xcFlNUkpZQlp2Q1NSUVZZenNCUjQ2SSsxSXJpb0hnNjdr?=
- =?utf-8?B?UDVNZURaditKREtLYStsR3Fta253ZE1KZWFFTTVBM1FhbmNiVmJFVWRJSDUy?=
- =?utf-8?B?Y0o4cm1NRWM4dHBFNG1acFlXMU9TZHVlTXRFOUhja1dPbDczWU9meWNJUzZK?=
- =?utf-8?B?emkvYUMzMitldm0xSVJzVzNKb0FqTEZGWFNxN2dDckhxVFNsVnVPQ0twSGxy?=
- =?utf-8?B?ZmJscWhrZUtzZkM2enlSWVpyWjBSRjVWMGtXSmtJTGdPbUt3U0xuVHBsaW84?=
- =?utf-8?B?WHlFY3Nid3N4MG5ralBUejIyaWJPbEROdUdKaW84ZUZCbHArOE13MDdXdEJm?=
- =?utf-8?B?Nnc1MFBiYXd6M1hYUmlhZ0xzSmVQSWtMOXArUlZ3b3FEUWlhTFpTYTQzSVhz?=
- =?utf-8?B?VXRGTk9wUGRmVitRT1B6Y0VTWHh0ZkVZTHBNRkZMQW1WOWFEalNzS2tOLzhV?=
- =?utf-8?B?UWNCdGVpQjgrdG14MzVJOW9lT1VKU25Qd1BXZkM5S1RtMFJyb1BESXFhRStk?=
- =?utf-8?B?UEJMYlFFTlczTmN1cThCajYwNk0zOTNwUEVsS1NoZk9WZ1FyamtpZE1wb0h4?=
- =?utf-8?B?Z1FWSWRYZm5odjNxYURzbmxIaldzc1BMN2hadHNvWTZCNmJQby8vcEpocmhO?=
- =?utf-8?B?SFVSV3lHRDhybHZYblNQc2lENG9rcXNnQlp3VzVwUU4zNnVoeUxzNDMvcldx?=
- =?utf-8?B?NHArZG9XU1lCMm9XZkJvaUoyTEprTm5LWVVuZWlUNXI3QU83R2lqMmhXTWJR?=
- =?utf-8?B?d1BMOUlZbm9FeHQ0ZnhFMldBTlUzV2FvMExXWHdUQXlpT3pUKy91bFBGZ0Zt?=
- =?utf-8?B?STkrVGNDOWRpWDdUbzNYMnhVVFMzMTB2OFBQa25OMkw5bm9FK05DZ2JXcGlW?=
- =?utf-8?B?MmVlMVBOd0xoUTFxTGF5WHg5RW1ETlJ3eDJ2Qi9jMjhDK3FuRzR3Ti8vdXpj?=
- =?utf-8?B?SnFpdXN2YlA5V2gycS82K3NaS3hnVVFtc0M4emltOTNacUl6YlY2OUhGMFBJ?=
- =?utf-8?B?QWdnLzY4bEZUbElPd0NwWHlhWW9sTmQ0cGE1NFJNZFZoMUVYb3FLV2RRRlBE?=
- =?utf-8?B?RER2UHlUZzYxOHFVYjRMZmFja3BkSk5zNTJoVXRxYXdXVVJyckNPOGJwYnhJ?=
- =?utf-8?B?cTNoNGV3WVo3dGFSRHJPUVllcm5xSCtMaDNIR2xETksvNmpkOWp0dE9BbGp1?=
- =?utf-8?B?MlJ6RkVTSm81VEVONUM4TWJTcko0dkZpaW5JUlN4Zm5ZMlpYemZNS1poTmdo?=
- =?utf-8?B?STAwb0VMSWFsVTJlSkp4MWh1VGQ1SU5CSG1PamRDZnlYaDdmM2V2dmNraDBS?=
- =?utf-8?B?THU3aU00M3liTmRta0xBZmlHZjMxeUVPaUtJYWVJQSt4SzF0WCtEUGhGQWVr?=
- =?utf-8?Q?Bzllpg?=
+ ARA:13230040|376014|36860700013|1800799024|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RkRxOHN0bVhuMGpESmVGaFlkUUNNY2xNc1g5UExIWnlYMGJCMEVHcDJXOVlz?=
+ =?utf-8?B?VFlnY0M3VGhOaHM2dlc1aVZVa0YxN0tpR1hqbk4rZ0RqUXpTWWwwamJ3VXUz?=
+ =?utf-8?B?Z3g1K3R0YVZRWVduUWFTR25mOHhvYVpmbnNNVFI2bUlESEQ3d3hvL1g1RHlS?=
+ =?utf-8?B?VE96QkNjcjE4SHJ4TElUN3dKWGlwU3lqbndVMGF4R1hCOGdhQ0JQK202d3M0?=
+ =?utf-8?B?Tmt0dlZ3emluU28rT2p3akV6S1JsZllsMUFwTlhQeFhqYXZCYWdKOE5KUHdJ?=
+ =?utf-8?B?OU44M1I0Nk4vVlZObWxiY2pzbnZoQWpHaExsYWVZSkFhZXFKNzFSNG1DdnRq?=
+ =?utf-8?B?TTNnQnloSStzTGpyOU4zYzY4WHRFK2lzVHdRd0ZEVzVSYXp5bTVnNVhBNFBM?=
+ =?utf-8?B?cEVhL1ozTzROZHhwK0tKZVpON0hyQjVQbkloUkxPeWhyeFN4eTdiUlZxb1hm?=
+ =?utf-8?B?aXpMR3k3cjdMOWhJaGE5VWtNK25PMmRyQzFkazRpb2g5ZzcxSG5IbmdobkEw?=
+ =?utf-8?B?OWNSclo1MDNtTUl2SnhGVkxFSWlzYkFEMVJUdkpNYVlmZFd0TGxtUmlaSkdU?=
+ =?utf-8?B?bmxMMU1DY0FmOGNlSmdDL1VIVm0xeURNa1FkcE1RQm03R2dWZC9nTDRacHE0?=
+ =?utf-8?B?MnVrc1lWVExnZC9mcTIvQ0xpRVNFV2pFZW9PT0swZ2lOWXo5Tks1K0ZZcm9K?=
+ =?utf-8?B?bXM3aTVVclhXc0cxM21Va1JuenlaMmE2WXhPRWRVRkJLUUhhZGZKY1htaGlD?=
+ =?utf-8?B?S3FtTCtWWjB5MHlYc3p0NEJ5Y1U0dWQvNmdkZ2hjWTJ5UTJVRFN1UzJDVy91?=
+ =?utf-8?B?cTZRWXR5RlI2MWlvQzgzQlZVR25LMGdwT3llSDl6QnZITXlxVmZpNCtGbnd0?=
+ =?utf-8?B?QWxnME4wTTFTMkg2aVhlZ3dBU2xqTEFKTnpkdFhFMCtnQ0Jmc3FQRGNRZG8w?=
+ =?utf-8?B?aVVKS0dpRTFlaWVkc2RKU1NIem8vZGRNMnptN2dCWGJ1NTZNcDNHZVVFRjdD?=
+ =?utf-8?B?UHgranppMFdQYmxxY3NKbllqcWc5L1JxMytTMnpzd21RbzhVcmtnTFY0Rncy?=
+ =?utf-8?B?RG5OUnBJNkZRam53TklhUlpFaVRldmFwc2w2UDFIalBFekhlYldzdlZDTjRN?=
+ =?utf-8?B?NmtpZEVhN0Z6dFFEMWRTcmppNG9sbFBMODlZNG5yUVNKWjBpQU1XckY0dmdo?=
+ =?utf-8?B?NUlPaHNVbGtCYmhqaHhUeFBMYlVEakhkdUlpVjRLaDE5LzhyN1pzOVB1QXk4?=
+ =?utf-8?B?R3ZUZENTdjVXaWlFeXQ2UU9FM3MwTmpCQW9CbWU0WFZHcCtRVWRMcm1QNldF?=
+ =?utf-8?B?R21TM041RHZoT3V3WlZkZGJVUkdxb1Q4anFxZEdISnhLZ0dPVTRTZW1xMnpy?=
+ =?utf-8?B?NGVYWDd4M1h0VGRRd0FHTXVQSWdyZ0Z3ZTZxcEZoNFEwNHJMRHdic3RrQSto?=
+ =?utf-8?B?UW1XdEt2YTZwNFlGYktJY0pnclpqNjVrekMxZDUra1lzU29QZi84MUZjL1pV?=
+ =?utf-8?B?bzNwUlVEcTdxYUJIcHhHZ3RIVzJ2R2ZDdkxSbVJ4dkkwZWNmU095eWlDY2U2?=
+ =?utf-8?B?QjFmcnU5RERFaWR6NGVDK3dJaWVsVFFCZXo0Vmt3VGF6L29MRVExYitDVmE2?=
+ =?utf-8?B?UmZsYXpYcEw3RC9VWWNEM0NrTEdkRVVJbjBiSHlmOTR1MnY0RWdHOHlxTXNV?=
+ =?utf-8?B?c2crRkNxd21SYldoNXQ5cFFCYXZ5K2E2OGlvY2ZQMEFTNWtXeXRNTkVmaWw3?=
+ =?utf-8?B?b2E3bFZVYW55MVhieWZJWWYzcUYzcWd1a2V0UW5vbVBPeUw1Ym4wNVF5Sjda?=
+ =?utf-8?B?a0NuTEZ6NUpyNGdpSCttSGNaSkJqeWVNdEpvTGwvR3RvUVA5QnpIb01PazZq?=
+ =?utf-8?B?R0FzMzdzekxiOVRjenVubDEvWlNrdHkxZk9sUXN2MTZ5MTVVaXJENyt3Wmsz?=
+ =?utf-8?B?K0tiZUYxb2F6bjhZQ0RFUU5aWjArREQwSVIwSmNoUWdVVzNDTFhHMWZNT0Ra?=
+ =?utf-8?B?WWhZVDhuSDRIUDBiNXlTcHZXbVQwMnhzOVRIWkQycmE3MnA2anRaa01jNXBS?=
+ =?utf-8?Q?4QI8/V?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024); DIR:OUT;
+ SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 13:53:51.6411 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b06dd03-c2cb-47a9-5cd1-08ddd102d8fb
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 13:53:53.7081 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46cf7e95-7a4e-448b-cdf0-08ddd102da36
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF0000000F.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4180
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4197
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -142,26 +146,144 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch series exposes the LDS and Scratch aperture sizes in the
-amdgpu_info ioctl and adds a new IGT subtest to validate these GPUVM
-(aperture) sizes reported by the kernel driver.
+This patch adds a new IGT subtest "amdgpu-vm-aperture-sizes-test" that
+queries the AMDGPU_INFO_DEV_INFO ioctl to validate GPU virtual memory
+(GPUVM) aperture sizes, including LDS and scratch base and limit
+addresses.
 
-The ioctl updates add LDS/Scratch base and limit fields to the
-drm_amdgpu_info_device structure, enabling user space to query these
-values reliably.
+The test prints the LDS and scratch aperture sizes in bytes, gigabytes,
+and terabytes, and asserts that the sizes match expected values (e.g.,
+4GB).
 
-Patch series:
-- drm-uapi/amdgpu: Add LDS and scratch aperture fields (include/uapi/drm/amdgpu_drm.h)
-- tests/amdgpu: Add GPUVM, LDS, and Scratch aperture sizes subtest (tests/amdgpu/amd_vm.c)
+It also prints and validates the GPUVM virtual address ranges, including
+low and high virtual address ranges, and calculates the total GPUVM
+size.
 
-Srinivasan Shanmugam (2):
-  tests/amdgpu: Add test for GPUVM, LDS, and Scratch Aperture Sizes
-  drm-uapi/amdgpu: Add LDS and scratch apertures fields
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: David Yat Sin <David.YatSin@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Vitaly Prosyak  <vitaly.prosyak@amd.com>
+---
+ tests/amdgpu/amd_vm.c | 90 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
- include/drm-uapi/amdgpu_drm.h |  6 +++
- tests/amdgpu/amd_vm.c         | 90 +++++++++++++++++++++++++++++++++++
- 2 files changed, 96 insertions(+)
-
+diff --git a/tests/amdgpu/amd_vm.c b/tests/amdgpu/amd_vm.c
+index 9cd56e2b5..1c5212463 100644
+--- a/tests/amdgpu/amd_vm.c
++++ b/tests/amdgpu/amd_vm.c
+@@ -13,6 +13,9 @@
+ #include "lib/amdgpu/amd_cp_dma.h"
+ #include "lib/amdgpu/amd_memory.h"
+ 
++#define BYTES_IN_GB (1024ULL * 1024ULL * 1024ULL)
++#define BYTES_IN_TB (1024ULL * BYTES_IN_GB)
++
+ static bool
+ is_vm_tests_enable(uint32_t family_id)
+ {
+@@ -197,6 +200,88 @@ amdgpu_vm_mapping_test(amdgpu_device_handle device_handle)
+ 	amdgpu_bo_free(buf);
+ }
+ 
++static void
++amdgpu_vm_aperture_sizes_test(amdgpu_device_handle device_handle)
++{
++	struct drm_amdgpu_info_device dev_info = {0};
++	int r;
++	u64 lds_size, scratch_size;
++	u64 low_range, high_range, total_gpuvm_size;
++
++	r = amdgpu_query_info(device_handle, AMDGPU_INFO_DEV_INFO,
++			      sizeof(dev_info), &dev_info);
++	igt_assert_eq(r, 0);
++
++	lds_size = dev_info.lds_limit - dev_info.lds_base + 1;
++
++	igt_info("LDS Base: 0x%llx\n", (unsigned long long)dev_info.lds_base);
++	igt_info("LDS Limit: 0x%llx\n", (unsigned long long)dev_info.lds_limit);
++	igt_info("LDS aperture size: %llu bytes\n", (unsigned long long)lds_size);
++	igt_info("LDS aperture size: %llu bytes, approx. %llu GB, approx. %llu TB\n",
++		 (unsigned long long)lds_size,
++		 (unsigned long long)(lds_size / BYTES_IN_GB),
++		 (unsigned long long)(lds_size / BYTES_IN_TB));
++
++	scratch_size = dev_info.scratch_limit - dev_info.scratch_base + 1;
++
++	igt_info("Scratch Base: 0x%llx\n", (unsigned long long)dev_info.scratch_base);
++	igt_info("Scratch Limit: 0x%llx\n", (unsigned long long)dev_info.scratch_limit);
++	igt_info("Scratch aperture size: %llu bytes, approx. %llu GB, approx. %llu TB\n",
++		 (unsigned long long)scratch_size,
++		 (unsigned long long)(scratch_size / BYTES_IN_GB),
++		 (unsigned long long)(scratch_size / BYTES_IN_TB));
++
++	/* Validate that limits are greater than bases */
++	igt_assert(dev_info.lds_limit > dev_info.lds_base);
++	igt_assert(dev_info.scratch_limit > dev_info.scratch_base);
++
++	/* Validate size is expected (e.g., 4GB) */
++	igt_assert_eq_u64(dev_info.lds_limit - dev_info.lds_base + 1, 0x100000000ULL);
++	igt_assert_eq_u64(dev_info.scratch_limit - dev_info.scratch_base + 1, 0x100000000ULL);
++
++	/* Print and validate GPUVM virtual address ranges */
++	igt_info("GPUVM virtual_address_offset: 0x%llx\n",
++		 (unsigned long long)dev_info.virtual_address_offset);
++	igt_info("GPUVM virtual_address_max: 0x%llx\n",
++		 (unsigned long long)dev_info.virtual_address_max);
++	igt_info("GPUVM high_va_offset: 0x%llx\n",
++		 (unsigned long long)dev_info.high_va_offset);
++	igt_info("GPUVM high_va_max: 0x%llx\n",
++		 (unsigned long long)dev_info.high_va_max);
++
++	igt_assert(dev_info.virtual_address_max > dev_info.virtual_address_offset);
++
++	if (dev_info.high_va_offset)
++		igt_assert(dev_info.high_va_max > dev_info.high_va_offset);
++
++	low_range = dev_info.virtual_address_max - dev_info.virtual_address_offset;
++	igt_info("GPUVM low range size: 0x%llx\n", (unsigned long long)low_range);
++	igt_info("GPUVM low range size: %llu bytes, approx. %llu GB, approx. %llu TB\n",
++		 (unsigned long long)low_range,
++		 (unsigned long long)(low_range / BYTES_IN_GB),
++		 (unsigned long long)(low_range / BYTES_IN_TB));
++
++	high_range = dev_info.high_va_max > dev_info.high_va_offset ?
++			      dev_info.high_va_max - dev_info.high_va_offset : 0;
++	igt_info("GPUVM high range size: 0x%llx\n", (unsigned long long)high_range);
++	igt_info("GPUVM high range size: %llu bytes, approx. %llu GB, approx. %llu TB\n",
++		 (unsigned long long)high_range,
++		 (unsigned long long)(high_range / BYTES_IN_GB),
++		 (unsigned long long)(high_range / BYTES_IN_TB));
++
++	/* Calculate and print total GPUVM size */
++	total_gpuvm_size = low_range + high_range;
++	igt_info("Total GPUVM size: %llu bytes, approx. %llu GB, approx. %llu TB\n",
++		 (unsigned long long)total_gpuvm_size,
++		 (unsigned long long)(total_gpuvm_size / BYTES_IN_GB),
++		 (unsigned long long)(total_gpuvm_size / BYTES_IN_TB));
++
++	/* Size checks (adjust thresholds as appropriate) */
++	igt_assert(low_range > (1ULL << 30));  // at least 1GB low range
++	if (high_range)
++		igt_assert(high_range > (1ULL << 30));  // at least 1GB high range if present
++}
++
+ igt_main
+ {
+ 	amdgpu_device_handle device;
+@@ -230,6 +315,11 @@ igt_main
+ 	igt_subtest("amdgpu-vm-mapping-test")
+ 	amdgpu_vm_mapping_test(device);
+ 
++	/* Subtest for GPUVM, scratch, and LDS aperture sizes */
++	igt_describe("Validate GPUVM, scratch, and LDS aperture sizes from amdgpu_info ioctl");
++	igt_subtest("amdgpu-vm-aperture-sizes-test")
++		amdgpu_vm_aperture_sizes_test(device);
++
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		drm_close_driver(fd);
 -- 
 2.34.1
 
