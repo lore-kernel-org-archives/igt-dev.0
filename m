@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76561C87FDA
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Aug 2025 05:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F680C87FD3
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Aug 2025 06:01:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1032110E2B4;
-	Mon,  4 Aug 2025 05:59:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2927810E2B4;
+	Mon,  4 Aug 2025 06:01:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WrGrliUl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PVASoIaX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A273210E2B4
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Aug 2025 05:59:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A48310E2B4
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Aug 2025 06:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754287175; x=1785823175;
+ t=1754287290; x=1785823290;
  h=message-id:date:subject:to:references:from:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=iEsTiTRdcp4RimlVNtGsTOgI8Z4Laz1Y0wX7X3svZuU=;
- b=WrGrliUl4gtlFnSHXHewPbDP67OXRd8jAZ1xQYcqglEI0ZV1OlKHOfiO
- Fp0xdXzkZ6qQvLpbYaErrO/01mMvRQ5nBetHv0AG2JIOuhaHB6dXnhsGh
- PA/qaVwBfDONoijjxWffxXej3cvV5ifGmNMNqhyTwFFYF3bTZW/xNSM8v
- CXhBzaer8seW8CeLmTZC+c8dHYo0EATjdu/Cdh5Qp/UlNbC7xaO3ksXJG
- 2cDZTuNe9AFR4pZ4u+MwNHXzyRlR/3rZHNvqBSTnIHIoa4g60VohktNiz
- M9P+j0/i+SiYhSO7+w754ZnkEoMGz0DRRBwmnHiPvbdv6FFV4ZkKR28y8 w==;
-X-CSE-ConnectionGUID: s+b8YdNpSYWptIVsR2lr4Q==
-X-CSE-MsgGUID: F90+9bTyTNakKnYcZBAqKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11511"; a="56673902"
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; d="scan'208";a="56673902"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2025 22:59:34 -0700
-X-CSE-ConnectionGUID: 1+5e4rOxT1CXGr9n97wXeA==
-X-CSE-MsgGUID: B++hhyaZTjW9VetY7c5NsQ==
+ bh=yKJFClgt3ED4NZvk4zrxWUNW3bp23y4wnLfPVnoNYpE=;
+ b=PVASoIaXXmi+Ek6JItx04H8zBfbh65jMp/6zpUP4+OeEWjHyyv35iCIw
+ MFsYRl7qQQFK2YmWsxHlkxrDWetI0TJKTL7pdRYYqweQ1EtI+M/Cxhllm
+ qiD5sWkQ+PNs7danwAaM3NDikDH/zygf0LYpz1tda22NCrZgkIR3oIj8m
+ ZSe1RVWgdewVaFHgXxZgnl7pvUcvHhE3qERD3D4d3lPe6ry1bXuj+8xMI
+ /6MTvcJwL1moqWKG4FNOZFBOFzpgz9tRoJACraRtjtSex16koew8bYU4m
+ zDMinhKD4yvcZMA2AM9qksDTaiPPn6q4VVtJNmtuczThHaU4qmLZbTycP Q==;
+X-CSE-ConnectionGUID: Ahc/WFTlSsueC3sjAHT8tA==
+X-CSE-MsgGUID: zOBHLzLiSxWafGOgrFaX3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11511"; a="56501017"
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; d="scan'208";a="56501017"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Aug 2025 23:01:30 -0700
+X-CSE-ConnectionGUID: q3aqL44fQ8mCCSilS+VeTQ==
+X-CSE-MsgGUID: OSRXfDWmTvmNk+cxt6vebA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; d="scan'208";a="163343242"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2025 22:59:34 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; d="scan'208";a="164401089"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Aug 2025 23:01:30 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Sun, 3 Aug 2025 22:59:33 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.1748.26; Sun, 3 Aug 2025 23:01:29 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Sun, 3 Aug 2025 22:59:33 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.86)
- by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.1748.26 via Frontend Transport; Sun, 3 Aug 2025 23:01:29 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.44) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Sun, 3 Aug 2025 22:59:33 -0700
+ 15.2.1748.26; Sun, 3 Aug 2025 23:01:27 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nc+QXMk1BR6eoN5FynaAD3W/GFMhrkteMGfE2/K0MZdZuXrEKPnBXlC8uQ9vKoneNnZecCz3ywID6nTCRTIXIieKGoSViLMCYXUgKiUd1ptJYaHBUXkqNSV22OFP5Li7YenKG55ykQcxqpwNtdbh3jmRrIpwQAN7u0IB1fIAjnTNjYQOEd1+tVxCHlIKg3/JXp/S2hKHqYpqLA4dX9CijJUyIRn9ttLrLKt3Z+C+BnTc78lxYMYrYhGEku8vW6aFy5C5U+rABTrAXNiCvPy6VDxeStRzgRTNcs2ZfTYKeQieSbx+KOdEYVq6dGb8Qu1APBRz36HZXavLXOb96mDBUg==
+ b=xBGuevWd7Oi2S05+w+kMtsFx0CNeSZcXniT78mlVp0tTeoygfjkrrykK0jC1eMicyvhUaXcYPcIFvHWLqytaaQ8JERi5vWUd59eBIIzv8ktuGXUGUvKMJB9ePeHRQU3HozJns+hQYHH8fV2x965wBsNSZOUwd83NtpO83qohGTNXKKhY6y0ZYpnKhxPlR1tZJqUiAj4FwYSLa8mGHhNtuMZmvr8fo2SQ0ABTL90fv7qSHevD9H3jIc7UDET5QTdvQeYVxFKns0KuhHJBODlaXA3rcSnkUIZn2WW/CEn2aTnTvgGgELjV9WErOHY95Tb9mJrAsfViZ7JmSpOGP2xJLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pRSxNxf7WgK7ZwsawptvS1LzNw8gIZTcyT6aGkNQhq4=;
- b=LR2dTPVieV0VijxQ0VA3HDRlnpUAnmMd4OlZyEEkgvRW+qFaQ9nBC4OfQodersdu9CpwS+IwKqq3OaNn6Nj00dqvzYpxjfSQL1hx6GeVVVhDWRtnF/g51bHVQ1fSa3gkkbNse2JcqW6Q0fv/n6NhiHxocc6WDOTKA+tMFedoe9nqQf3dKtAHiExm5t8PBAiPg2f/JDnha5Ga8uQFqWf3Xe9/L9i6+J3jvoYahDQkti/5VHzx/Mac17cmCEbGFrT0qfidC7vog6X8QukFCXWOItxBYDfDNgygKM81O++lOcPddzTmzGrahvR+Qy0rj9NbCVlcnO+xAlMEhAKJZme7KA==
+ bh=84EyvYkZFNeyCYA6qaRnPK8pte6QaO6vC34BIplHEQA=;
+ b=A9agBjjLqjqGZD4AbeCIQ3Ll2BV7khg5LxJIcmHs0yAYv+nK8hFcSPGla44EOxV8VzH0yXI7UsC4n4io2DrUZ5efstRbo4LHpCmgRT1q5QahzmfVsnbsJr4sT69rj5PvuIs7isgQmqOS4z1h+otG8/RcDJankUEllOVSMFSXf+7bDEJaT+eoy2JwMH8R/XK5mUbY1lvuCii+u2K5ZJ61G8dQwTVjrBoazYpJlmqxcRHEIn1Jtg86y/yrdroLQdWyCkN44u1b7COGCtFTQoq0b4J23RC8mQTmw0qj66QsUpoRpLVCOb8JG1iOEl0azs3ZmcdMSI9e+lYjMh/tspVxZQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,116 +69,116 @@ Received: from DS4PPF691668CDD.namprd11.prod.outlook.com
  (2603:10b6:f:fc02::2a) by IA0PR11MB7257.namprd11.prod.outlook.com
  (2603:10b6:208:43e::21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.18; Mon, 4 Aug
- 2025 05:59:31 +0000
+ 2025 06:00:45 +0000
 Received: from DS4PPF691668CDD.namprd11.prod.outlook.com
  ([fe80::6acb:cbaa:6326:112e]) by DS4PPF691668CDD.namprd11.prod.outlook.com
  ([fe80::6acb:cbaa:6326:112e%7]) with mapi id 15.20.8989.018; Mon, 4 Aug 2025
- 05:59:31 +0000
-Message-ID: <b0f44763-20c7-45a3-9f5f-26e62a8e21d3@intel.com>
-Date: Mon, 4 Aug 2025 11:29:25 +0530
+ 06:00:45 +0000
+Message-ID: <eb97ed3c-0c68-417d-9c7d-628019688d41@intel.com>
+Date: Mon, 4 Aug 2025 11:30:36 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] tests/intel/xe_exec_system_allocator: Add prefetch
- sections
+Subject: Re: [PATCH 3/5] tests/intel/xe_exec_system_allocator: Wait on mapping
+ BO's to mirror
 To: Matthew Brost <matthew.brost@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20250714170309.2949211-1-matthew.brost@intel.com>
- <20250714170309.2949211-3-matthew.brost@intel.com>
+ <20250714170309.2949211-4-matthew.brost@intel.com>
 Content-Language: en-US
 From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
-In-Reply-To: <20250714170309.2949211-3-matthew.brost@intel.com>
+In-Reply-To: <20250714170309.2949211-4-matthew.brost@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0078.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ad::20) To DS4PPF691668CDD.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0003.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:80::16) To DS4PPF691668CDD.namprd11.prod.outlook.com
  (2603:10b6:f:fc02::2a)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS4PPF691668CDD:EE_|IA0PR11MB7257:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20aeb3f5-0f99-4d45-45d1-08ddd31c1424
+X-MS-Office365-Filtering-Correlation-Id: 6b3b9969-078e-4e66-ebc6-08ddd31c405b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?cjQ0V1FpZUQrVXRLSGFQV0hnM0hzNmR6aXhxUDlnMWFIOEZ5ckNNRTBnL3Ur?=
- =?utf-8?B?Ty9XSytFVEsranRMdHpQYVh4VERlRFZOWnlzSXZkZkx6bUQzcWRUcmRpdVdi?=
- =?utf-8?B?Mk4wNlhKRkczSDhrRFlsdnczUkRMdWk0enhMaEZET0VvMFJlQWFwNERGb09R?=
- =?utf-8?B?NWkzTUNPYzZocDhHamdEVlcvVTdZZUxmeWY2Ym9CbHFoaEFScEM1R29DOHV3?=
- =?utf-8?B?SWpobVp1cUJvejY5dk1XUUlGUmd3c3RnL0hwWlNNbVRnMkVvUmlUZWdLc3BE?=
- =?utf-8?B?N3loRWUzbE94RnVDcHU1d0h4K3E2aW1sRDc1Yk5uMjRQdHIzZkNocEJieDlU?=
- =?utf-8?B?TXhrbmd1WDlOOFU0L3RYN1RRVnNCNVdMc1NwMUVwaFZZQUNJY0dDTzQwWjgv?=
- =?utf-8?B?OXZqQkdiSFRFK0pNOHk1VlVENm0wZmpZbTNxRnNaV0JaZnM2VVhoUkI2S1pM?=
- =?utf-8?B?aEgyV3BTVWVFTWZsM0x2K1g1RSsrbkQyNW9yQXZjVXMwbG9aUGRvZlc1amR0?=
- =?utf-8?B?Nlp3RmVrVnZxUVlTMmtpUEJxbzU2ME1EeGJxelgveEh1UFRrR2pEQmFYYnRK?=
- =?utf-8?B?RG5lYWZTSzNEQnhUYnRKN3E1eFJsTVAremFsWHRKRDlxRm9UOFFSRzV0ZnlU?=
- =?utf-8?B?QlBKR3M5b3ZSakxSVTA0MkplK0ZRVVBkekJreEM2dFlXVE1QOHNGYSsyTStN?=
- =?utf-8?B?RVduVHNvL3lSTW90TGdTTjhrVGovUFlCWHRaMGs4OFVrN0RtOUVSOHVDU3Er?=
- =?utf-8?B?NTJiSVFjYlZYV1hqQWIvamlDTzloSm9iU2lXcDBKbGxDQ0FxY0ZHNFE2UE9j?=
- =?utf-8?B?WUZmYmZrMlAzeWdQZlM1Q1ZxMTNlbG0zSE9mU0Y3YWwvME0xNlBrNWhKVDVi?=
- =?utf-8?B?NnRZTzhwQS9rcUc1WUM1M0k2Z3VEa2NYL1VLRkpSRG1TNjBTQ3FZcEsxTEg2?=
- =?utf-8?B?Nm5yODVLUWlJcGlsUS9xVythMm1qTmJGaUttNVBmZ0ZQcW8rL0taN2pqU050?=
- =?utf-8?B?cVB3L1hYVWRBRElTN3JZSFVnYVJZZ2FCSUNKQkRVWDNLYkhiYjNWZ291ZFdY?=
- =?utf-8?B?NW4yTmpRUzUwQXUvOUU3YmVvMEZJZWlxTnpUVm0rVjVubzRlWWtNWVhqV0ZK?=
- =?utf-8?B?WXVvaGZiUHFsM3R2dnhIUk9sR094aUdIa2FBRVpMN2NCUkVsWnV3OG9EZVZn?=
- =?utf-8?B?WHpsdmlTUTFMMG1PdHJiRlUwZkhHcXBBajdscHhBblBTUitmU0k0cVp4c3JX?=
- =?utf-8?B?NFFTdTdRWHJveUg2ZkpycGJOcExhSzUzZXl3TkhqTDB4NFNUR0NTYStBSnNG?=
- =?utf-8?B?bHFMaHNta3EyaWNwQkNmS0lTZDF3TWJJd25Oc0hCekMrdC84cWtkeVBMekdJ?=
- =?utf-8?B?cDBQWENyYTl6aXdxYnBDbXkwaVdYTGkxTFNkNldha0pMekJ4UytqZ2dnYVhs?=
- =?utf-8?B?YzZPSklDUlRYZlk5U2NibDVnSEpBdFFiTVd4WmF6SGU5M1JZQWMxQzNKeEdt?=
- =?utf-8?B?bGJ6dmVmdFkrV3k0L3hESkszNzB1RWdKYlhEVXVYNEpMeGlad0tUQlU1aDhv?=
- =?utf-8?B?VHFUNlRzdHRPcWxzbGovNGc2UmhveTdhYi84blMwNlUrUGc1azVUM0pZYnRz?=
- =?utf-8?B?RWFKUFU3dnNCWFU2ajZ0U1dhRHBxdzJaZDNENVlEWVp5Y1hEbjZzQ0NneUFU?=
- =?utf-8?B?bFR1azRVd0Vtb3BLTXdTTkRBclRKSll3amZIZ3BhNTFiSHByTlYyWVYwRndQ?=
- =?utf-8?B?bXhkbzFnT0wwWklHTm1hRWFJOTdqVXNweHJZMDJLUkdqZWpyMi91MHh0eFA1?=
- =?utf-8?B?TEIxdEJSSFc4TTBNTmZiamE1ekdtMExGSWxQbEFSY2QrZVVmMzFiQkM5dkRx?=
- =?utf-8?B?ZXF3dlVhOG5mb2VtdGdLemhhVEVhbWNjV0NtbGpnNFU3WkhKRVFYeVpxM3Bz?=
- =?utf-8?Q?Q+ALLjzzZO0=3D?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SkY4U25CaVFMdndIdC95ejgxOEpodFE1OWR3WTJrdEtkYm1JTHRuOFI3YmIv?=
+ =?utf-8?B?TlpKb0oxYTBxTFpFRDBrVk1yVG5iblJwMHZCNDNsd3JHT2N4NFVuc1c2a2lE?=
+ =?utf-8?B?OFMzbFlsMnR4b0VOYldiWlljM0xBcFg0Y0RpL21jNTY2V241dUwyb1N1NXpM?=
+ =?utf-8?B?YzZFQlJRai9ERjFnRnVkcWpqSWl0bGE4MjZWQ2hVZ2hlQTRPU24raGg3RDhP?=
+ =?utf-8?B?NjF1NUFBSXJEeXI1bmw0eWdLMkdsenV4bHZCTS9tcHBaZDlrTUZnYWJSaE5K?=
+ =?utf-8?B?QTZwT3RzQ1FNejN2YnA1WnNaeGRlSDBPaFN3V25URy9MYWtvUnpoUmMzdU8v?=
+ =?utf-8?B?b3dKSzFaV0pCaklibGxsUC85MGJXdVZENnR5WGxjUHZDZUVPcm1HSHo4QXdW?=
+ =?utf-8?B?ZkMweVRhQXZvWllGT3NSaHpIRno0S3l5R0NWQ1NuYUYvTlBDODJVVXdaVGZv?=
+ =?utf-8?B?U2VuR3R1S2NuUitGVjZXdDZsYnJtSWpMaW1nVXpTdkplb2FPN1JSU3B6TTBh?=
+ =?utf-8?B?bVg5MHlwVnlqZUtJY2JZRTJXdTl5Y01EdGRyMTRXdEJTRm82RkRLMm9SV3dN?=
+ =?utf-8?B?U2pQM0FybWJDYzBDL2lsWWVVRWxNUGp4N2Y5S1lFWWFXT1dIcWlwTkdlYVRW?=
+ =?utf-8?B?Zkg5T3oveWYxOWVMUE5QSzVtbElBZml1OW03clF5OWJjcWRqbURJRFNjWG5P?=
+ =?utf-8?B?UTg0ZFE0VDY3d0E0bW44Z2lybTRGSlk5Z3hDZ1N2bHBwQVVtVHpjL1RaS01J?=
+ =?utf-8?B?WjVPSDVDQVFEdjlMTUJKa1NJOHBWWXhMdW12N2dPakN1V2pzbGJDeElwUUwr?=
+ =?utf-8?B?d1VVL1FYb1RyclljSkpZVU9HWHI4YUY5UjVKMk5vYVg5SVNPcERmc0t2Unpl?=
+ =?utf-8?B?ZXBpYXppVEFrdWtaZGZXdEU0MXpmck9xc0haQjFzeERZMkdWSnI4R1pWRUxH?=
+ =?utf-8?B?V3BLVWFmOEJBMGNNblo2R2lMZTBtRHIzUzFLQURFT095ZHd2dmY4TmFvQ0ln?=
+ =?utf-8?B?dktFcjZiaStXQ1BpenlTM1o2bzFBb3lZc3VJdlFGQTBHT1ZQNE1rNEY2WEMr?=
+ =?utf-8?B?a3kvNm8xYWxqZEhEN2dxTHRtL1hueVZnbnMzaFdBbmdvMVkrNG9YVnJvWXlQ?=
+ =?utf-8?B?NzVRVzZXUDZoZzVmNGVDcldXRER1Ui9BZnh3dTNWczJmYUwvVG1YYUVQMk0z?=
+ =?utf-8?B?aXByMXgxZDg5UE9LVVdLS3RmRWs1TEVJVHUzeUdqUVVEWDFyU2lKN1k3NVpI?=
+ =?utf-8?B?c1h3MjgxUUZuYnlMSG9GY1BmZ0QzekRsSjVteVVqSEg4Rk1aSlc2K3pEdG9E?=
+ =?utf-8?B?R2c2eDNoTjl2K3k4S3JJa2Z4ampUR1p1ZzVZckxaNkxwQ1ovN1E4UGVETUVY?=
+ =?utf-8?B?UHJHU3YwclllL0d3SHZEZERMSUFGNnh6Q1BQZjRBdmtiVVpCMVZDUzJScGRz?=
+ =?utf-8?B?Y1UzcWE4Zks0VGJEYklGeTRGWTZJQUZrVGhFaE1SalJMSW9saXVtbUpJRU5N?=
+ =?utf-8?B?Rm83MUdzcCtqZWRGSDF6aXVVZTJxcVFZNDk1VlpJYXYyVTZsQjA0UzJ0Uml5?=
+ =?utf-8?B?MEd2T2xZWnFaeDFrbFBVb0ZTd1VqMU02bkpRU1NlZnBpd0Q1NXdlcjgvREt6?=
+ =?utf-8?B?VjJySmNFdFhKcTNjMWd6czQxWkNGTlRtMWwyNG1mN1pJL2ZPOFRyVHdCODlo?=
+ =?utf-8?B?S0x4YVJrRm1YTjNnWnJWOTNqVXc5aFRJd1Y2NFBERjhiOG5tSWhVSHVLZ1p2?=
+ =?utf-8?B?eUxkY1oyVUgrdmNreDcxMDJMZFhzUFMxY0h6dU5uQ3JnV1VDa3NOVkFIY2ov?=
+ =?utf-8?B?K3did0cvRnFGSTNUSCs4bUNicEhRMWV3c0RtaHBtS1dMMjZEQ2Jla3h6Ynpu?=
+ =?utf-8?B?RUtBZUxFVmtRUUlPQlhsY3kvMTNEdDR5MjdtZkMvVVJIZjFzejRxSW93eE1y?=
+ =?utf-8?Q?FIfdpF5vpAw=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS4PPF691668CDD.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RmdGN3lCMHh6ZFNmOE9aOFNGaDJRajlQbWJTbFJMV2JGeWZZN1VOZlMyS295?=
- =?utf-8?B?RSsvT2x3MzBBZGhFbUI1RXVaTmlKUjc2bWtBd0RRR3RLc3VYcWlqbUNvT2tH?=
- =?utf-8?B?dnlnRmh5eFlMZVYrK0gxd3ZyaDNPQmpYNlZsa3hpZUlWMTY5QWhjYmJOVExV?=
- =?utf-8?B?OHpBRUQ4Mmt2UTBDdWx4QXVEZUNFVVExQmsyS0hiMmlsTHU0QXc0Q2VpalRT?=
- =?utf-8?B?UFFxb0t3am9FYlhtZGJFQ3lJU1BvZk5WanpPNTJiNzJWcDFnYzI1eDFscGNa?=
- =?utf-8?B?aDFQUzd0TUFuL3hnc3BEdlIyWWdCckdFdlhXNVloS1p4M3UrQzNOVmNvZFpI?=
- =?utf-8?B?WjV3enlyMUczYnZTbWN6RjkwSmJtQnNpb25oVW9kQ1JXakFVUitaM1Ixdjc5?=
- =?utf-8?B?QWJtR2tjaG5yWE1yM3JTMGdLT0tLZUdQSEJPZVByUnhnd1NKUnl2ZEY2cy9m?=
- =?utf-8?B?ckI0eFRheFZEcW1ISnovMTBIbVRKakNxRGM2TVpqUERWMUhYa1A3UHBrYURy?=
- =?utf-8?B?amZtUDFhd0d5R20xU3VYTElNMHJKV3dUMmJkaTg4eVhMYjh4RTU4TlNRNEM3?=
- =?utf-8?B?L2pBV0RFZEZiQkFPRXppczNsM3R1NXllM1RWSkRGQ3NHUmJDV1hhN3JwYkhD?=
- =?utf-8?B?a2pVN0NIZXREcHBCYXJ1dG9yaG1xaWlLRjRSM0dKa0Q3WkxKTzk5WCtZVVR6?=
- =?utf-8?B?VHhxUC9MY24zdWdMZmhVSk9ETFl6M2dBcEVpVFZhTnAwTGZFRm1RbzEzRUJU?=
- =?utf-8?B?M1RXVU1HTVRmWmFYZS9TdXo5aU5QbTk4Ti9qaDU1Q3RFZllUOEl0S2cvNjVh?=
- =?utf-8?B?SVQ0RFFOK0F5OUFXV3BDSUIxTnVtai9KYUpDVlFEd1hJNVdtT2ZwYTlNcEVG?=
- =?utf-8?B?ZVJIU0tTQ1QzaVBuM3J6TVJYTjZOYTE3SmQya3g4VHlvaWJIUFQ3SUJLUjNZ?=
- =?utf-8?B?ZnJyY3RRcTh0Q0poaWNJam1uQ3gvcDY3d2JUVEpUblhxbDF5Nll5eGJ5U3Rl?=
- =?utf-8?B?dWxEcDdGekZoVVBLWG1mdEEvTlZQeGtTcVRoRy8vREI2U1BOTzVRVkVOdGtT?=
- =?utf-8?B?QlBWS2hiazQ0d0V4dTlaYmZKcU85cXpPM2dGeVMrM3crVHZkYUpOMUhDNU5E?=
- =?utf-8?B?cE1NcFFJbU1LMVJ1czh4a3hBemx4WjBCaldOVmZLcy9MQ2laVGlWZmZZMUs5?=
- =?utf-8?B?NFE2RURiZXZjK0p5MU9Wa1o2OHpJcFBCaXJlQmgvdkxLYVhaL0QyUStEVkhO?=
- =?utf-8?B?L0RCNEJpNVBOeWhYbjJjcTFUTE1YUHo2R2gweUhwRjVtQmhjZks4K0lzSkJL?=
- =?utf-8?B?SFZhSnpKUm5yN2cvRHQzUXVhUkdmYU9lakk1aVRQRzhMYXhQUWlMZER5Rkp5?=
- =?utf-8?B?Qm9rek1PK3pPMWl3dHBGT0hmSy9paUtucUZwS20vanZiUUN4VnJtWU80TE5y?=
- =?utf-8?B?UTBhT3lRN2wvbDNic05vVEZsY05jc002SEJnenluSHdRV1o3cmdzZTBQZDE4?=
- =?utf-8?B?SVUxaWJuL3FzOEFDL0pQb3JwM0ExcGhkaXFGcEswa2xEZ2dSenZNRDhCR05P?=
- =?utf-8?B?c2RSWmhzbzFORndUUXM1MElxTjFYckVJM1AwWG9pK1MxVHhxZWczSVlFN1RL?=
- =?utf-8?B?Z2Qrc3krMzlTUGhPY2hFTC9VZ3NQcmR4R2RJOE0zZkZidEx0ajROZktiKytS?=
- =?utf-8?B?RlM2RXFKRGk1VjBkYlVWZVRGR3hjZjB2OEpJemtYa2ptbDhteTcxeElIYVUy?=
- =?utf-8?B?S1BhT1JRbTh3WGs4ZDVJS3dZczZESW1LT0FmWWFPWk0xNTY4UW5yWDlsRlRR?=
- =?utf-8?B?djIvNEw3eHVCZzZRU2RTRkE4dXNqcTlXMVlrQkY0ZHpDRENXNVJBcVZrSGpO?=
- =?utf-8?B?OElLcXhudklJdm9vU3p2SG51MXV1b2F3bVd0cFZDTWlMT0pQKzlGdnN5UUFK?=
- =?utf-8?B?VGJmZU9ZbTM3TFFrbEtJY2dTQWh2V0dZQ05IR1JtOHdHZDllTk1wRzArY1dO?=
- =?utf-8?B?RjU5dW8zbVF4YlMzNktiMnoxOVlPdngzYmk3MEkzekNrRjBnOEFLdUorUndm?=
- =?utf-8?B?NUdYQ1dKTU9DTno0UUJXUDVqOXZYdlErc2FjUko4cUFOeXNhN2RMeHhYYysw?=
- =?utf-8?B?U1lxMEZkaVl6MldpbTRQZ3NoM3o4OHJjdVpQT29ENTJDWDd6ZldWZzdtdEN0?=
- =?utf-8?Q?Nh8irbkNQVrg5GHsaBX9FpI=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20aeb3f5-0f99-4d45-45d1-08ddd31c1424
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZjJ4SDNRcHZZWDFBSjQvNlN2NWNQc283NkZPY0dMY1Z1cmNweHZrVHZJZG5l?=
+ =?utf-8?B?Q2ZHOUNWU3pJeTkxcGFhT1UrbUVWS1J3WnBIaGRsZFJ2K1JNb3U2ZGxqK1NL?=
+ =?utf-8?B?TVlCUVdWRE41OTNERmk5aUovQUxCdnN0VmdLVjlwazNPdE9tKzQ4RGZVTVhX?=
+ =?utf-8?B?dzdoMlg1STIzZmU2VmRIT2sxMDlQTU9qWlFqdUtKRURMUExSZzEyS1ZMUldE?=
+ =?utf-8?B?RWlxL2FJR1g4ZTVzYzNUNms0Wk43ODg0VFpmQ1RUSE5jUG1MekJobTVYRWhQ?=
+ =?utf-8?B?eFdKWkN6YTcvWmFpRTA3RmtKcHk2YkM1UWhvSlp6R0JvZGUxSnlXcHI5YWpr?=
+ =?utf-8?B?WmpIem8wNE80d05NWDU2ZlVycThNeWxZcitWWXdwZzFuc3gyU1N4Z2QyUFNh?=
+ =?utf-8?B?b3FtQ2NMYTUwbFZmbVlpR085Szgra0xNZDJ6aEhJY0pzL3dVSXFoZWRyNHdz?=
+ =?utf-8?B?MktPQnN1eFJxQjBKeHRKTlpMeFU4R1dNZ3ltV29PNGp2RzBPTkQweFR0YzE5?=
+ =?utf-8?B?MjQ1ZWN6MmpVVi9rRTQzU2pIaWJNR0dFREZ4eVhmRk1sSWliTUlZNmhhY0Y4?=
+ =?utf-8?B?bkhKcFB2aURGdndtSWhHcjAyQ3EyakF6SDZjMXJMRFRVcWtuMlFhQ0RNZS9P?=
+ =?utf-8?B?N0ZId2sraVhnOFB2MkZ3VFp2cmVRS2wvZHlwZU9maCsyVndTRTZRM0o0VGlW?=
+ =?utf-8?B?Q2s5ZmVjTTR5VFZwNWtkY1lTOUVxdjJObHlwVXFtMlorUS85enRrSHJ0b0I4?=
+ =?utf-8?B?bDJPY0o3RjY4Q3VibVNsV0ZhTjBxRENLYlFnYkxTVldDUWpkNmhaUFljQU5Y?=
+ =?utf-8?B?ZE42UmFsUUtaVUMrUS9tS3hsc25wc3Bqa0JJTk1BVlpTWW1FTXRKR3RUWVRm?=
+ =?utf-8?B?cUZNSi9Xd2RBT3ViZnZKM2tEREc3aGJ0TUh6MktSNm9zOEhKNXc1TU1tcEIy?=
+ =?utf-8?B?cjR6RXhQV2E5RERhSFhDV28vN1Z2WGNCdWVWZWFXWnFNQ1lXQ05EL2N0YndI?=
+ =?utf-8?B?MUhFTExJUWpFaXdzbmgwcVZLQ05SVXRIRHF1UGErbW5QRjlSQWZRS0txMHZi?=
+ =?utf-8?B?RklsbXo1TmVLT1FJUnVYZ05aMjMrWHpqaEhtVGtiRUlNVzM1MHhKbjcrbzR6?=
+ =?utf-8?B?dTQ0WUVDQmhrL2RIckxmMkZ2KzNkK21CQ2lpb2JWck5GQlpGVjJ1V2hnR3R6?=
+ =?utf-8?B?bDJYZ1BSSnVFUVNKUHJJdURvdDlrVnFoWVkvcmlDSjdSWHExSU96RUhyQnZT?=
+ =?utf-8?B?R01Rbm1BV1I3L1FLaW16d2JIZzRSNzJqMUVEMVhvc1N5OXRHRXZxODhYS2Ja?=
+ =?utf-8?B?dVNuaWhmWmkzMUZwQTJyWWJNdnkrcDd2SFJoQkErYWF6R3dVd0MyeWJHemV4?=
+ =?utf-8?B?TlplaGZDZklDMWZwc0VSOGNMRE5hTzFManA4SU1vV2p3SGxqUndMRUwvZ09r?=
+ =?utf-8?B?akhwTDNybXJXMFg1TFlHM0t2czhDcWZKK0pvNW4rRlZOVmpPN1czcEhpL1dT?=
+ =?utf-8?B?aTA2dFhIRGdHdXRaTkFOMmxkVGhuZlM3d0JmTEoyUnNxY1l2dk9UamI2Qy9n?=
+ =?utf-8?B?czQrK0p2c2JaL2g0SzR2eGVicjRrcjcxb0ViTWQxUkh2V3V5WmVJUlc4QTJ5?=
+ =?utf-8?B?ZFZrb0Roa3FldnlpUWY2VmtpVnpTcUZYMTJIdDhURzYzRXd0QUppVHhFdmU5?=
+ =?utf-8?B?RWErWkV0ZXBlUmNDQnpsZjNITlVFZWMrUWlqLzBrU2JsZTluU0d6K2YvbldS?=
+ =?utf-8?B?UHlFMkhzalFLS0lZY1VVcXByMUl0SXN3aWIrZndMbVU3UHJOa25IZGZhdnlJ?=
+ =?utf-8?B?SUdWMzFaTGxUdFpaM2tubnFQdTNERERNVXd1U0R2RkM5b21IL3dZYjJqSGt0?=
+ =?utf-8?B?ZVBneXM4TnFzMjl1WmVpdmlkaTBuMGdFaHZndkN0WGhBUzNtUXcxa1REbjBw?=
+ =?utf-8?B?QU5FQnQxZ0xyL1NiUnZkVkpYdDE4SENXbU9kQ21iSTZuVXZNeTNUOE5ZZklx?=
+ =?utf-8?B?WmlIQmh3UXZhU2J1ekJDM2R4bUZPZ3RtandFanJwQ000SkVBVzFDTE5QaHhD?=
+ =?utf-8?B?REJMV2Q5UWNaZldNYloyOEhWU0ZyQ1d0MjJENGQyYVAxTHNDVCtRZGtPamhG?=
+ =?utf-8?B?ZnV4WkR6QUJMZ2RwTlhaR1pqY1FjbWVsbGJqNmdHY0JZbVd4UitFa1FMMDRN?=
+ =?utf-8?Q?0zo1Ts5jCCnLU3H6NNYR4uI=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b3b9969-078e-4e66-ebc6-08ddd31c405b
 X-MS-Exchange-CrossTenant-AuthSource: DS4PPF691668CDD.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 05:59:31.1478 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 06:00:45.2162 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0SCSoAH78UOs45k29PXPKuOGp3abzeyX0UdBHUnV8BTheoIelTKGVgIqsIemXNg+P8ahQ9JCz1+6w3/QY8287RNHcTJqXPUZJKlQuJw7R5k=
+X-MS-Exchange-CrossTenant-UserPrincipalName: j3vxIwGv1M0HHZtEf4tWHMDu4dioE3IHD8JfdWVAWxDFr7r5g1oW5avpY4LKDYQ7ckVRLSYHHp2UpZ6kx2ODpPTRUStiMWSslA3Cj1rtRdU=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7257
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -199,302 +199,154 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 14-07-2025 22:33, Matthew Brost wrote:
-> Update the test_exec() function with flags to initiate and understand
-> prefetches. Prefetching is tested by verifying that the fault count in
-> the GT stats has not  increased. However, a mismatch does not cause the
-> test to fail—instead, a warning  is printed. This is due to the
-> unreliability of system allocator behavior; the  added sections
-> primarily serve to ensure that the driver remains stable.
+> Mapping a BO to the mirror is a non-zero time operation, especially
+> since TLB invalidations can take a while to complete. Without a wait in
+> the test, this can race, leading to possible data mismatches, job
+> timeouts, and other issues.
 > 
-> That said, if the page fault counts are consistently incorrect, it may
-> indicate a  problem in the KMD.
-> 
-> A prefetch benchmark section has also been added to help profile
-> prefetch behavior  in the KMD.
-> 
-> v2:
->   - Prefetch initial buffer on SRAM devices (CI)
+> Make mapping to the mirror a synchronized operation.
 > 
 > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 > ---
->   tests/intel/xe_exec_system_allocator.c | 121 ++++++++++++++++++++++++-
->   1 file changed, 116 insertions(+), 5 deletions(-)
+>   tests/intel/xe_exec_system_allocator.c | 57 ++++++++++++++------------
+>   1 file changed, 31 insertions(+), 26 deletions(-)
 > 
 > diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-> index 65d281c784..f8d144328e 100644
+> index f8d144328e..006a3dc920 100644
 > --- a/tests/intel/xe_exec_system_allocator.c
 > +++ b/tests/intel/xe_exec_system_allocator.c
-> @@ -21,6 +21,7 @@
->   #include "lib/intel_reg.h"
->   #include "xe_drm.h"
->   
-> +#include "xe/xe_gt.h"
->   #include "xe/xe_ioctl.h"
->   #include "xe/xe_query.h"
->   #include <string.h>
-> @@ -770,6 +771,10 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
->   #define SYNC_EXEC		(0x1 << 19)
->   #define EVERY_OTHER_CHECK	(0x1 << 20)
->   #define MULTI_FAULT		(0x1 << 21)
-> +#define PREFETCH		(0x1 << 22)
-> +#define THREADS			(0x1 << 23)
-> +#define PROCESSES		(0x1 << 24)
-> +#define PREFETCH_BENCHMARK	(0x1 << 25)
->   
->   #define N_MULTI_FAULT		4
->   
-> @@ -878,14 +883,17 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
->    * arg[1]:
->    *
->    * @malloc:				malloc single buffer for all execs, issue a command which will trigger multiple faults
-> + * @malloc-prefetch:			malloc single buffer for all execs, prefetch buffer before each exec
->    * @malloc-multi-fault:			malloc single buffer for all execs
->    * @malloc-fork-read:			malloc single buffer for all execs, fork a process to read test output
->    * @malloc-fork-read-after:		malloc single buffer for all execs, fork a process to read test output, check again after fork returns in parent
->    * @malloc-mlock:			malloc and mlock single buffer for all execs
->    * @malloc-race:			malloc single buffer for all execs with race between cpu and gpu access
-> + * @malloc-prefetch-race:		malloc single buffer for all execs, prefetch buffer before each exec, with race between cpu and gpu access
->    * @malloc-bo-unmap:			malloc single buffer for all execs, bind and unbind a BO to same address before execs
->    * @malloc-busy:			malloc single buffer for all execs, try to unbind while buffer valid
->    * @mmap:				mmap single buffer for all execs
-> + * @mmap-prefetch:			mmap single buffer for all execs, prefetch buffer before each exec
->    * @mmap-remap:				mmap and mremap a buffer for all execs
->    * @mmap-remap-dontunmap:		mmap and mremap a buffer with dontunmap flag for all execs
->    * @mmap-remap-ro:			mmap and mremap a read-only buffer for all execs
-> @@ -896,6 +904,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
->    * @mmap-remap-ro-dontunmap-eocheck:	mmap and mremap a read-only buffer with dontunmap flag for all execs, check data every other loop iteration
->    * @mmap-huge:				mmap huge page single buffer for all execs
->    * @mmap-shared:			mmap shared single buffer for all execs
-> + * @mmap-prefetch-shared:		mmap shared single buffer for all execs, prefetch buffer before each exec
->    * @mmap-shared-remap:			mmap shared and mremap a buffer for all execs
->    * @mmap-shared-remap-dontunmap:	mmap shared and mremap a buffer with dontunmap flag for all execs
->    * @mmap-shared-remap-eocheck:		mmap shared and mremap a buffer for all execs, check data every other loop iteration
-> @@ -907,6 +916,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
->    * @free:				malloc and free buffer for each exec
->    * @free-race:				malloc and free buffer for each exec with race between cpu and gpu access
->    * @new:				malloc a new buffer for each exec
-> + * @new-prefetch:			malloc a new buffer and prefetch for each exec
->    * @new-race:				malloc a new buffer for each exec with race between cpu and gpu access
->    * @new-bo-map:				malloc a new buffer or map BO for each exec
->    * @new-busy:				malloc a new buffer for each exec, try to unbind while buffers valid
-> @@ -941,6 +951,10 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
->    * @mmap-new-huge-nomemset:		mmap huge page new buffer for each exec, skip memset of buffers
->    * @mmap-new-race-nomemset:		mmap a new buffer for each exec with race between cpu and gpu access, skip memset of buffers
->    *
-> + * SUBTEST: prefetch-benchmark
-> + * Description: Prefetch a 64M buffer 128 times, measure bandwidth of prefetch
-> + * Test category: performance test
-> + *
->    * SUBTEST: threads-shared-vm-shared-alloc-many-stride-malloc
->    * Description: Create multiple threads with a shared VM triggering faults on different hardware engines to same addresses
->    * Test category: stress test
-> @@ -998,14 +1012,18 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> @@ -1012,9 +1012,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
 >   	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
 >   	struct test_exec_data *data, *next_data = NULL;
 >   	uint32_t bo_flags;
-> -	uint32_t bo = 0;
-> +	uint32_t bo = 0, prefetch_sync = 0;
+> -	uint32_t bo = 0, prefetch_sync = 0;
+> +	uint32_t bo = 0, bind_sync = 0;
 >   	void **pending_free;
-> -	u64 *exec_ufence = NULL;
-> -	int i, j, b, file_fd = -1, prev_idx;
-> +	u64 *exec_ufence = NULL, *prefetch_ufence = NULL;
-> +	int i, j, b, file_fd = -1, prev_idx, pf_count;
+> -	u64 *exec_ufence = NULL, *prefetch_ufence = NULL;
+> +	u64 *exec_ufence = NULL, *bind_ufence = NULL;
+>   	int i, j, b, file_fd = -1, prev_idx, pf_count;
 >   	bool free_vm = false;
 >   	size_t aligned_size = bo_size ?: xe_get_default_alignment(fd);
->   	size_t orig_size = bo_size;
->   	struct aligned_alloc_type aligned_alloc_type;
-> +	uint32_t mem_region = vram_if_possible(fd, eci->gt_id);
-> +	uint32_t region = mem_region & 4 ? 2 : mem_region & 2 ? 1 : 0;
-> +	uint64_t prefetch_ns = 0;
-> +	const char *pf_count_stat = "svm_pagefault_count";
->   
->   	if (flags & MULTI_FAULT) {
->   		if (!bo_size)
-> @@ -1136,6 +1154,43 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+> @@ -1154,20 +1154,19 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
 >   		memset(exec_ufence, 0, SZ_4K);
 >   	}
 >   
-> +	if (!(flags & FAULT) && flags & PREFETCH) {
-> +		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+> +	aligned_alloc_type = __aligned_alloc(SZ_4K, SZ_4K);
+> +	bind_ufence = aligned_alloc_type.ptr;
+> +	igt_assert(bind_ufence);
+> +	__aligned_partial_free(&aligned_alloc_type);
+> +	bind_sync = xe_bo_create(fd, vm, SZ_4K, system_memory(fd),
+> +				 bo_flags);
+> +	bind_ufence = xe_bo_map_fixed(fd, bind_sync, SZ_4K,
+> +				      to_user_pointer(bind_ufence));
 > +
-> +		aligned_alloc_type = __aligned_alloc(SZ_4K, SZ_4K);
-> +		prefetch_ufence = aligned_alloc_type.ptr;
-> +		igt_assert(prefetch_ufence);
-> +		__aligned_partial_free(&aligned_alloc_type);
-> +
-> +		prefetch_sync = xe_bo_create(fd, vm, SZ_4K, system_memory(fd),
-> +					     bo_flags);
-> +		prefetch_ufence = xe_bo_map_fixed(fd, prefetch_sync, SZ_4K,
-> +						  to_user_pointer(prefetch_ufence));
-> +
-> +		sync[0].addr = to_user_pointer(prefetch_ufence);
-> +
-> +		pf_count = xe_gt_stats_get_count(fd, eci->gt_id, pf_count_stat);
-> +
-> +		if (flags & (RACE | FILE_BACKED |
-> +			     LOCK | MMAP_SHARED | HUGE_PAGE) || !region) {
-> +			region = 0;
-> +			xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, sync,
-> +					     1, region);
-> +			xe_wait_ufence(fd, prefetch_ufence, USER_FENCE_VALUE, 0,
-> +				       FIVE_SEC);
-> +			prefetch_ufence[0] = 0;
-> +		}
-> +
-> +		if (exec_ufence) {
-> +			xe_vm_prefetch_async(fd, vm, 0, 0,
-> +					     to_user_pointer(exec_ufence),
-> +					     SZ_4K, sync, 1, 0);
-> +			xe_wait_ufence(fd, prefetch_ufence, USER_FENCE_VALUE, 0,
-> +				       FIVE_SEC);
-> +			prefetch_ufence[0] = 0;
-> +		}
-> +	}
-> +
->   	for (i = 0; i < n_execs; i++) {
->   		int idx = !stride ? i : i * stride, next_idx = !stride
->   			? (i + 1) : (i + 1) * stride;
-> @@ -1186,6 +1241,25 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->   		if (!exec_ufence)
->   			data[idx].exec_sync = 0;
+>   	if (!(flags & FAULT) && flags & PREFETCH) {
+>   		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
 >   
-> +		if (!(flags & FAULT) && flags & PREFETCH &&
-> +		    (region || flags & (NEW | MREMAP))) {
-> +			struct timespec tv = {};
-> +			u64 start, end;
-> +
-> +			sync[0].addr = to_user_pointer(prefetch_ufence);
-> +
-> +			start = igt_nsec_elapsed(&tv);
-> +			xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, sync,
-> +					     1, region);
-> +			end = igt_nsec_elapsed(&tv);
-> +
-> +			xe_wait_ufence(fd, prefetch_ufence, USER_FENCE_VALUE, 0,
-> +				       FIVE_SEC);
-> +			prefetch_ufence[0] = 0;
-> +
-> +			prefetch_ns += (end - start);
-> +		}
-> +
->   		sync[0].addr = exec_ufence ? to_user_pointer(exec_ufence) :
->   			addr + (char *)&data[idx].exec_sync - (char *)data;
+> -		aligned_alloc_type = __aligned_alloc(SZ_4K, SZ_4K);
+> -		prefetch_ufence = aligned_alloc_type.ptr;
+> -		igt_assert(prefetch_ufence);
+> -		__aligned_partial_free(&aligned_alloc_type);
+> -
+> -		prefetch_sync = xe_bo_create(fd, vm, SZ_4K, system_memory(fd),
+> -					     bo_flags);
+> -		prefetch_ufence = xe_bo_map_fixed(fd, prefetch_sync, SZ_4K,
+> -						  to_user_pointer(prefetch_ufence));
+> -
+> -		sync[0].addr = to_user_pointer(prefetch_ufence);
+> +		sync[0].addr = to_user_pointer(bind_ufence);
 >   
-> @@ -1277,6 +1351,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->   				} else {
->   					igt_assert_eq(data[idx].data,
->   						      READ_VALUE(&data[idx]));
-> +					if (flags & PREFETCH_BENCHMARK)
-> +						memset(data, 0, bo_size);
+>   		pf_count = xe_gt_stats_get_count(fd, eci->gt_id, pf_count_stat);
 >   
->   					if (flags & MULTI_FAULT) {
->   						for (j = 1; j < N_MULTI_FAULT; ++j) {
-> @@ -1359,6 +1435,26 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->   		prev_idx = idx;
+> @@ -1176,18 +1175,18 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>   			region = 0;
+>   			xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, sync,
+>   					     1, region);
+> -			xe_wait_ufence(fd, prefetch_ufence, USER_FENCE_VALUE, 0,
+> +			xe_wait_ufence(fd, bind_ufence, USER_FENCE_VALUE, 0,
+>   				       FIVE_SEC);
+> -			prefetch_ufence[0] = 0;
+> +			bind_ufence[0] = 0;
+>   		}
+>   
+>   		if (exec_ufence) {
+>   			xe_vm_prefetch_async(fd, vm, 0, 0,
+>   					     to_user_pointer(exec_ufence),
+>   					     SZ_4K, sync, 1, 0);
+> -			xe_wait_ufence(fd, prefetch_ufence, USER_FENCE_VALUE, 0,
+> +			xe_wait_ufence(fd, bind_ufence, USER_FENCE_VALUE, 0,
+>   				       FIVE_SEC);
+> -			prefetch_ufence[0] = 0;
+> +			bind_ufence[0] = 0;
+>   		}
 >   	}
 >   
-> +	if (flags & PREFETCH_BENCHMARK)
-> +		igt_info("Prefetch execution took %.3fms, %.1f5 GB/s\n",
-> +			 1e-6 * prefetch_ns,
-> +			 bo_size * n_execs  / (float)prefetch_ns);
-> +
-> +	if (!(flags & FAULT) && flags & PREFETCH &&
-> +	    (flags & MMAP || !(flags & (NEW | THREADS | PROCESSES)))) {
-> +		int pf_count_after = xe_gt_stats_get_count(fd, eci->gt_id,
-> +							   pf_count_stat);
-> +
-> +		/*
-> +		 * Due how system allocations work, we can't make this check
-> +		 * 100% reliable, rather than fail the test, just print a
-> +		 * warning message.
-> +		 */
-> +		if (pf_count != pf_count_after)
-> +			igt_warn("pf_count(%d) != pf_count_after(%d)\n",
-> +				 pf_count, pf_count_after);
-> +	}
-> +
+> @@ -1246,16 +1245,16 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>   			struct timespec tv = {};
+>   			u64 start, end;
+>   
+> -			sync[0].addr = to_user_pointer(prefetch_ufence);
+> +			sync[0].addr = to_user_pointer(bind_ufence);
+>   
+>   			start = igt_nsec_elapsed(&tv);
+>   			xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, sync,
+>   					     1, region);
+>   			end = igt_nsec_elapsed(&tv);
+>   
+> -			xe_wait_ufence(fd, prefetch_ufence, USER_FENCE_VALUE, 0,
+> +			xe_wait_ufence(fd, bind_ufence, USER_FENCE_VALUE, 0,
+>   				       FIVE_SEC);
+> -			prefetch_ufence[0] = 0;
+> +			bind_ufence[0] = 0;
+>   
+>   			prefetch_ns += (end - start);
+>   		}
+> @@ -1374,11 +1373,15 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>   			exec_ufence[0] = 0;
+>   
+>   		if (bo) {
+> +			sync[0].addr = to_user_pointer(bind_ufence);
+>   			__xe_vm_bind_assert(fd, vm, 0,
+>   					    0, 0, addr, bo_size,
+>   					    DRM_XE_VM_BIND_OP_MAP,
+>   					    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,
+> -					    NULL, 0, 0, 0);
+> +					    sync, 1, 0, 0);
+> +			xe_wait_ufence(fd, bind_ufence, USER_FENCE_VALUE, 0,
+> +				       FIVE_SEC);
+> +			bind_ufence[0] = 0;
+>   			munmap(data, bo_size);
+>   			gem_close(fd, bo);
+>   		}
+> @@ -1456,20 +1459,22 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>   	}
+>   
 >   	if (bo) {
+> +		sync[0].addr = to_user_pointer(bind_ufence);
 >   		__xe_vm_bind_assert(fd, vm, 0,
 >   				    0, 0, addr, bo_size,
-> @@ -1370,6 +1466,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>   				    DRM_XE_VM_BIND_OP_MAP,
+>   				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,
+> -				    NULL, 0, 0, 0);
+> +				    sync, 1, 0, 0);
+> +		xe_wait_ufence(fd, bind_ufence, USER_FENCE_VALUE, 0,
+> +			       FIVE_SEC);
+> +		bind_ufence[0] = 0;
+>   		munmap(data, bo_size);
+>   		data = NULL;
 >   		gem_close(fd, bo);
 >   	}
 >   
-> +	if (prefetch_sync) {
-> +		munmap(prefetch_ufence, SZ_4K);
-> +		gem_close(fd, prefetch_sync);
-> +	}
-> +
->   	if (flags & BUSY)
->   		igt_assert_eq(unbind_system_allocator(), -EBUSY);
->   
-> @@ -1435,7 +1536,7 @@ static void *thread(void *data)
->   
->   	test_exec(t->fd, t->eci, t->n_exec_queues, t->n_execs,
->   		  t->bo_size, t->stride, t->vm, t->alloc, t->barrier,
-> -		  t->flags);
-> +		  t->flags | THREADS);
->   
->   	return NULL;
->   }
-> @@ -1553,7 +1654,7 @@ static void process(struct drm_xe_engine_class_instance *hwe, int n_exec_queues,
->   
->   	fd = drm_open_driver(DRIVER_XE);
->   	test_exec(fd, hwe, n_exec_queues, n_execs,
-> -		  bo_size, stride, 0, NULL, NULL, flags);
-> +		  bo_size, stride, 0, NULL, NULL, flags | PROCESSES);
->   	drm_close_driver(fd);
->   
->   	close(map_fd);
-> @@ -1604,14 +1705,17 @@ igt_main
->   	struct drm_xe_engine_class_instance *hwe;
->   	const struct section sections[] = {
->   		{ "malloc", 0 },
-> +		{ "malloc-prefetch", PREFETCH },
->   		{ "malloc-multi-fault", MULTI_FAULT },
->   		{ "malloc-fork-read", FORK_READ },
->   		{ "malloc-fork-read-after", FORK_READ | FORK_READ_AFTER },
->   		{ "malloc-mlock", LOCK },
->   		{ "malloc-race", RACE },
-> +		{ "malloc-prefetch-race", RACE | PREFETCH },
->   		{ "malloc-busy", BUSY },
->   		{ "malloc-bo-unmap", BO_UNMAP },
->   		{ "mmap", MMAP },
-> +		{ "mmap-prefetch", MMAP | PREFETCH },
->   		{ "mmap-remap", MMAP | MREMAP },
->   		{ "mmap-remap-dontunmap", MMAP | MREMAP | DONTUNMAP },
->   		{ "mmap-remap-ro", MMAP | MREMAP | READ_ONLY_REMAP },
-> @@ -1626,6 +1730,7 @@ igt_main
->   			READ_ONLY_REMAP | EVERY_OTHER_CHECK },
->   		{ "mmap-huge", MMAP | HUGE_PAGE },
->   		{ "mmap-shared", MMAP | LOCK | MMAP_SHARED },
-> +		{ "mmap-prefetch-shared", MMAP | LOCK | MMAP_SHARED | PREFETCH },
->   		{ "mmap-shared-remap", MMAP | LOCK | MMAP_SHARED | MREMAP },
->   		{ "mmap-shared-remap-dontunmap", MMAP | LOCK | MMAP_SHARED |
->   			MREMAP | DONTUNMAP },
-> @@ -1640,6 +1745,7 @@ igt_main
->   		{ "free", NEW | FREE },
->   		{ "free-race", NEW | FREE | RACE },
->   		{ "new", NEW },
-> +		{ "new-prefetch", NEW | PREFETCH },
->   		{ "new-race", NEW | RACE },
->   		{ "new-bo-map", NEW | BO_MAP },
->   		{ "new-busy", NEW | BUSY },
-> @@ -1801,6 +1907,11 @@ igt_main
->   			processes(fd, 16, 128, SZ_2M, 0, s->flags);
->   	}
->   
-> +	igt_subtest_f("prefetch-benchmark")
-> +		xe_for_each_engine(fd, hwe)
-> +			test_exec(fd, hwe, 1, 128, SZ_64M, 0, 0, NULL,
-> +				  NULL, PREFETCH | PREFETCH_BENCHMARK);
-> +
+> -	if (prefetch_sync) {
+> -		munmap(prefetch_ufence, SZ_4K);
+> -		gem_close(fd, prefetch_sync);
+> -	}
 
-LGTM
 Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-
->   	igt_subtest("threads-shared-vm-shared-alloc-many-stride-malloc")
->   		threads(fd, 1, 128, 0, 256, SHARED_ALLOC, true);
+> +	munmap(bind_ufence, SZ_4K);
+> +	gem_close(fd, bind_sync);
 >   
+>   	if (flags & BUSY)
+>   		igt_assert_eq(unbind_system_allocator(), -EBUSY);
 
