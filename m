@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ABC7C87FD2
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 184FEC87FDA
 	for <igt-dev@archiver.kernel.org>; Thu,  7 Aug 2025 07:46:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ABB3410E0D6;
+	by gabe.freedesktop.org (Postfix) with ESMTP id BD14510E7FC;
 	Thu,  7 Aug 2025 07:46:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="ZvtxEir+";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="jr+dBWiF";
 	dkim-atps=neutral
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com
- [209.85.221.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBA6310E80C
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
+ [209.85.128.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 089CA10E80C
  for <igt-dev@lists.freedesktop.org>; Thu,  7 Aug 2025 07:46:42 +0000 (UTC)
-Received: by mail-wr1-f43.google.com with SMTP id
- ffacd0b85a97d-3b783ea5014so297177f8f.0
- for <igt-dev@lists.freedesktop.org>; Thu, 07 Aug 2025 00:46:42 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id
+ 5b1f17b1804b1-458aee6e86aso3871895e9.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 07 Aug 2025 00:46:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1754552801; x=1755157601; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1754552800; x=1755157600; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jHddlexvX+IMLMaelsBHM52uIAaoJgtAClPr9qbD2vg=;
- b=ZvtxEir+WP+8KwC4b8DP83D/Nu9NbuLzZ67EzGMYZ1brimDApLKHPIRvDqIQbQax4a
- K0lbd7TBdkEyEo0efrCJLkcRzBLoXjQLI87U5FaD0hIaWt2+N3aP5rZzkt7sICxprk3d
- S5mLBWfMJPG6LQkSVAjc6oLK6XPmBZihQmN/jrnBnhZojaScKSCA/0Lo730Wuc59PVCO
- MgKnUNsSh+B7aZh8Qs8ayICdFICV7LKLMQgO0cVCgku19h9mkbBlx211M8vLVZFSNr8R
- TF/ZwAVpJuFVHsC9s0De2TvCkF5FBiCQ2pYbWUOs3612sx4/KL08iB9ykDtzed8sKKy/
- myYg==
+ bh=oxe9xUmOiUIW+ae50cNfXSeP1MzSwpa3VJvWMmIGISI=;
+ b=jr+dBWiFQ6/gNE+BY1F0PyervWe1SQPuEvw66YCVe28AgGGfYyF6OmF66L21/3xr+t
+ JmEImIkY0ICwogInn9h3VwqWST9P5j75HvHt12wsrAnXo0PF8jQPmX9Vh8vVTVqE+KI4
+ VDs6+D2tviLPeKWfA8h61hW2dkOU1bQZlRAJZ5mpm4sGTZ3OnnKPZGKWjJVEo+UEnv5x
+ VcwOaX7uTMa2YzZfPYAuUElCquf4vkVqxz8KkygH+hmFvGuE7sAqPZUpwICsg8uQdrg8
+ kH+3UOfXSIa5dDrR1LeD1bRnlwQLO6bPES96GxOLjhvZhg79BbgcLsXzfno05AMDGlWl
+ 9SMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754552801; x=1755157601;
+ d=1e100.net; s=20230601; t=1754552800; x=1755157600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jHddlexvX+IMLMaelsBHM52uIAaoJgtAClPr9qbD2vg=;
- b=gLpMNM3Q0kYLGQJ24+roJJJYwRozGmpaC6H4GvaFqhUWiWyuiT7NdBqgz+7QOKagiP
- 54rWriyMEK/aV/Dsl/w/8XjX4MnYu+wBpZ1q5dr0AMMIlTv4uEIOZ797SAmcojzqcHhg
- Y4N8bOYk0SBEA1kEGEvApjeJwWtZAV05aOwe+IxAmgfNjc2Xf0zdhk61UGrnpuqGn0SH
- uKQO7znFVrCONtYLxSdgESakjRYkH1hOA4PwpFEqlMwFlpnrZFBJ1HdkBcOBCp+gF5gG
- 4Sl7goBD3+9dXOxaWbP85HajF9eK7llBRmuixaBa5P+iDAEwp9RTkSbgUrRKmK3iVeWQ
- KuYA==
-X-Gm-Message-State: AOJu0YxAU5WLdIt+JlqDFzlLkpOsUiM3pG8PcKqjTt2p1vBQxzrjAmR6
- GIascrFtLYFItGvjMODZC53onhmB0OMLb8Hw2Uu1hw2yxqOSyD3DeoF6zR6A+SNd
-X-Gm-Gg: ASbGnctxU3EfCi/YMM78SY2Mhd9ZjtBLSHiSLDMo0xV6ADfHGoaHKuj2jwStxBRQlXd
- ic4je1Ene4ZBtnEvuMdbIgIlCVDyFxGRzon74zgoTR5ScTv1g4TVxsq+KKowXgHQq/eFnA7dtZb
- BxQJBxBE2ZGf+ftfacCEs22X/rxabSae/jE1fkYBkuUvno+zeq/SayXdR0DfwSwBaIKlo01/n96
- ydhz2gnMLJEvpeF3dheu7P7G+hrNLDKEHhE27JfmAtan1uH41b5wEJ2I/8RHg4Xw03SVoUjyYI3
- NhwqwOqfi3fqbMd5PisLiJ0o6sPWM9h5gY7zEGaau2HOFrXd+QoMD0JinXjchI/LLVaaWvYJj4R
- WISWz6xyPQ2p1ZiGFhj4=
-X-Google-Smtp-Source: AGHT+IEOcxx65KmF29vTth7fINXTbFXma7uz4gFoo2OmpskxjuC5pdnL4D4jadIgG9XJ2m036O5WBw==
-X-Received: by 2002:a05:6000:4011:b0:3a4:f975:30f7 with SMTP id
- ffacd0b85a97d-3b8f49402cfmr4555486f8f.56.1754552800698; 
- Thu, 07 Aug 2025 00:46:40 -0700 (PDT)
+ bh=oxe9xUmOiUIW+ae50cNfXSeP1MzSwpa3VJvWMmIGISI=;
+ b=kmDbk5Eklgj1J1XVRP48cNee6PCB55TUoV1Cqu+d3gmH8+KhcQXV7vHUfIflrL3L3T
+ Zp82WvCWmZk6DOqYms1gGKWVbUa3gsJyP7Xpls7IqyBro5L8yhEfZvUBjsXoSTUv00MC
+ ULvqrKhi6+qhsqJfNObWJAXAu+A6bm6zZB13AzL5MEjH/CTOKPUqD5H/bxTqPXa9e71b
+ LwvepOqGnNYUON0mAvzWPb3w7B8MASJS7tq82RmHtbXGupZ5c2wMDI0iVUaNhXNO2ozr
+ DySFM4/hhSwQ/ds6EqPgMqV07hsEzaeYyh9LYkgmVLzmAhaNsCxrwD2A2EK76X921+TN
+ FJOA==
+X-Gm-Message-State: AOJu0YxBxCstn+HSkL1JmFkiJVGBVGlsYgrdZ4AO6qakLGITpFOroeET
+ ihzPDZW6VsZMWmelzcVhwoFggOlHTz53/Hcxb9Tidlwp60LaXxPw8y2OV0ObIRE4
+X-Gm-Gg: ASbGnctguNl+VnNQSwXQzzCoOmpQ4rxwSnoNHTpcCx6Sr0XCD+tI9CAZuyznpt1t7hB
+ HRvRhUZuSMX40opJ+XUOo1DQ0CsKkBitTJtHAdCOYPNiJIkdCzlWeRCrduoa8vGsVULKEMNLvA/
+ bteShauOW82DX0Vx477LHSU68IH8Z9R7wkbDMN9d8FLn/mqq6QFC7MWHpNtp+018F8OOtMgZ0Dz
+ qOUq+aO6QW9jspTlUJLASlMs0aNWpF8I3fFtjq+4FmjBFQbHHfpLnyQKyZ8WFv9GygeZwc4bcZh
+ w/FYlsYjO3KA5O+8jYko78EvAXETKKMigXY54NEIni38hl9I57prme/1OQaWA5zKYA2UzkQ1/sT
+ DEu4pnhNX7VX38GiieTc=
+X-Google-Smtp-Source: AGHT+IEgLDTz3k4lMY7dWJyGg00+41g6lhfcw6Q1zmlfCAc3sqE2SXDeIrtQdVmsr5mDbohvS/a0Mg==
+X-Received: by 2002:a05:600c:4fd5:b0:456:26a1:a0c1 with SMTP id
+ 5b1f17b1804b1-459e70eeb5cmr60130725e9.17.1754552799977; 
+ Thu, 07 Aug 2025 00:46:39 -0700 (PDT)
 Received: from fedora ([94.73.32.0]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458bb04c612sm204859355e9.0.2025.08.07.00.46.40
+ 5b1f17b1804b1-458bb04c612sm204859355e9.0.2025.08.07.00.46.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Aug 2025 00:46:40 -0700 (PDT)
+ Thu, 07 Aug 2025 00:46:39 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com, zbigniew.kempczynski@intel.com,
  kamil.konieczny@linux.intel.com, karthik.b.s@intel.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t v4 36/41] tests/vkms_configfs: Test enabling a device
- with too many connectors
-Date: Thu,  7 Aug 2025 09:45:45 +0200
-Message-ID: <20250807074550.6543-37-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v4 35/41] tests/vkms_configfs: Test enabling a device
+ without connectors
+Date: Thu,  7 Aug 2025 09:45:44 +0200
+Message-ID: <20250807074550.6543-36-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250807074550.6543-1-jose.exposito89@gmail.com>
 References: <20250807074550.6543-1-jose.exposito89@gmail.com>
@@ -89,34 +89,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Try to enable a VKMS device with too many connectors and test that it
-fails.
+Enable a VKMS device without adding connectors and test that it is
+created with the specified configuration.
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- tests/vkms/vkms_configfs.c | 52 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ tests/vkms/vkms_configfs.c | 39 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
 diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-index d9cbc24ae..466b16a62 100644
+index 0b6d395cb..d9cbc24ae 100644
 --- a/tests/vkms/vkms_configfs.c
 +++ b/tests/vkms/vkms_configfs.c
-@@ -1441,6 +1441,57 @@ static void test_enable_no_connectors(void)
+@@ -1403,6 +1403,44 @@ static void test_enable_crtc_no_encoder(void)
  	igt_vkms_device_destroy(dev);
  }
  
 +/**
-+ * SUBTEST: enable-too-many-connectors
-+ * Description: Try to enable a VKMS device with too many connectors and test
++ * SUBTEST: enable-no-connectors
++ * Description: Try to enable a VKMS device without adding connectors and test
 + *              that it fails.
 + */
 +
-+static void test_enable_too_many_connectors(void)
++static void test_enable_no_connectors(void)
 +{
 +	igt_vkms_t *dev;
-+	char connector_names[VKMS_MAX_PIPELINE_ITEMS][12];
-+	int ret;
 +
 +	igt_vkms_config_t cfg = {
 +		.device_name = __func__,
@@ -124,7 +122,7 @@ index d9cbc24ae..466b16a62 100644
 +			{
 +				.name = "plane0",
 +				.type = DRM_PLANE_TYPE_PRIMARY,
-+				.possible_crtcs = { "crtc0" },
++				.possible_crtcs = { "crtc0"},
 +			},
 +		},
 +		.crtcs = {
@@ -133,19 +131,8 @@ index d9cbc24ae..466b16a62 100644
 +		.encoders = {
 +			{ .name = "encoder0", .possible_crtcs = { "crtc0" } },
 +		},
-+		.connectors = {},
++		.connectors = { },
 +	};
-+
-+	for (int n = 0; n < 32; n++) {
-+		ret = snprintf(connector_names[n], sizeof(connector_names[n]),
-+			       "connector%d", n);
-+		igt_assert(ret >= 0 && ret < sizeof(connector_names[n]));
-+
-+		cfg.connectors[n] = (igt_vkms_connector_config_t){
-+			.name = connector_names[n],
-+			.possible_encoders = { "encoder0" }
-+		};
-+	}
 +
 +	dev = igt_vkms_device_create_from_config(&cfg);
 +	igt_assert(dev);
@@ -160,11 +147,11 @@ index d9cbc24ae..466b16a62 100644
  igt_main
  {
  	struct {
-@@ -1480,6 +1531,7 @@ igt_main
+@@ -1441,6 +1479,7 @@ igt_main
+ 		{ "enable-too-many-encoders", test_enable_too_many_encoders },
  		{ "enable-encoder-no-crtcs", test_enable_encoder_no_crtcs },
  		{ "enable-crtc-no-encoder", test_enable_crtc_no_encoder },
- 		{ "enable-no-connectors", test_enable_no_connectors },
-+		{ "enable-too-many-connectors", test_enable_too_many_connectors },
++		{ "enable-no-connectors", test_enable_no_connectors },
  	};
  
  	igt_fixture {
