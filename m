@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C498BC87FCF
-	for <igt-dev@archiver.kernel.org>; Thu,  7 Aug 2025 07:46:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83C48C87FDA
+	for <igt-dev@archiver.kernel.org>; Thu,  7 Aug 2025 07:46:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 79E0D10E801;
-	Thu,  7 Aug 2025 07:46:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4151810E802;
+	Thu,  7 Aug 2025 07:46:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="XGmHJZ+m";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="JVJzFc5m";
 	dkim-atps=neutral
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
- [209.85.221.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B44A10E801
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Aug 2025 07:46:34 +0000 (UTC)
-Received: by mail-wr1-f45.google.com with SMTP id
- ffacd0b85a97d-3b782cca9a0so326381f8f.1
- for <igt-dev@lists.freedesktop.org>; Thu, 07 Aug 2025 00:46:34 -0700 (PDT)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
+ [209.85.128.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C366F10E801
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Aug 2025 07:46:35 +0000 (UTC)
+Received: by mail-wm1-f46.google.com with SMTP id
+ 5b1f17b1804b1-458bece40fcso4086915e9.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 07 Aug 2025 00:46:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1754552793; x=1755157593; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1754552794; x=1755157594; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WnMN4hdYyZ/rYqpx7rAqxjaVzwE8QkWrzZ2NbFlWxUQ=;
- b=XGmHJZ+m0IO5zgsRCOC7jRhVulUsAUb9y2iIZD31i2G/aEpBp4+9itOOGBJHnCjjef
- e3twB5NDp7W7vcKA3J9qfMFLil5uH9VsxSJh68EcfKHgTams3Jpp5dPlNtO5CJolFVLW
- HG5P2Lb71O8smF6Qui2ZdaBxzwrqRlAKXt/83KR3U3l35LRm8u7XQ1CS/C7I7uxpf9Sm
- sq+kVQqibBy9Z9e7e48MoZoVrU94jHrx8R3e1/duJYRaR3hXKrY1Tb5EjgY8PrlhXOuL
- P8UUCgU6gIpKeu4+V2zma97XiFxuQtUvWkmD9qvtwpetjPuW6X1OQU2X6uu2wWfd+smb
- B2lA==
+ bh=4+iz36EcgldeHb3OBmoa0Iy0LP+AhV1x3D3g9dhmwGY=;
+ b=JVJzFc5m1vFGhzbsl9bmtZDTwH0RC4h5NxLrAuv34aoZCJODe0XHxQIDg0ebXByc6j
+ /OGXKQ/uGJL2muSnQ3V74HxuHklCE4nCDlfLtzeTQokFjj5y1D1UBmPc/r7B+iE19iPw
+ PGYtE6v0FK8PRi/A8BE3btFi2qApkbaCnoS0xNzf7STenEVrsZYnjbovfhWbY5K5cn0q
+ kXNJNUioNG7lbTlveovXbyYJ5s0m+Qfk4XYK/g68BUP23gWviYBZk852qvMOZHl9Sghp
+ DnDl1AVaJQZp9aLmegg0Jhgs8gakyRkG+K95QW5qa9oEinD4yUe3k1KCs2qTsWbPrbhd
+ doRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754552793; x=1755157593;
+ d=1e100.net; s=20230601; t=1754552794; x=1755157594;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WnMN4hdYyZ/rYqpx7rAqxjaVzwE8QkWrzZ2NbFlWxUQ=;
- b=RF9odwOH5i4Kl7Eyy0rvm0aqOutP1krtaTDr9uIXzRvKVtO9uq92tZjJYju6yrqfRe
- gj/6DlI1eV+gVUi+yzS8I8qSuaQ6GpOJ0huzOgBLbB5od70tOjMUsF63LtObzly8Bc/R
- ftSLdsnXtMdsjIhiQNCF5RPUUObtgQam6pJccYDvHPOmM4fPWOyYl+jdoNx/AtqXsU3g
- hW2CDjBmPHZXzzpEMi7opdyBk3gI5jY+ZZCp1HmWEmMSA4YII/hLbQI2qzEyOFwjALxD
- Wg9SvoKsSy5gQKk9TnAfxPQWFmEe0ITS3bjffmfBexGr9zRweOvxfT4wvhuyo/gh9ftc
- 2iNA==
-X-Gm-Message-State: AOJu0YxqC0kXRzgLt8+JeCX8uJgRU+P4ZlUMNQmybhefKdBHX/9+3oNo
- vGeMLFi6VAN5fr6D12S65F8dYpEiozqRDosmxZI7FDcTt442LzuWedcyVOhTKck7
-X-Gm-Gg: ASbGncu7TYk/cP5zkHP5nS//ATlBJDyxqoaCwC4jPs/Fx02Mu/KG+KA7+FZ+b8Tfzdv
- BSzJtlxyDfWaqRTAdt1dJlSX9XlgHXE8h62faUHTtloginB7L3xpITz7qAW5saC2Qy6KyzmI/LI
- X6eMrdvHk9s2TdRTd81MjWK89DVP+14LAaSxy8OHDCwd/1yZZ+Sxg+DVMKfG0FyR9YfOBQXS7Fs
- oLXkvFlD0q5/J10fKKt8WBXM0dDwbWECy+zj+KqtAVXQ/LUJdtNdi8TiKMjeMd54sSmQRKRtDfX
- ofyKguje/alvAfCil6JTR6Ey0q8bEZ34SI6Bhm80UOnlVXx6yDFCKkmEQESSslmHscRATc2cQPY
- Wnxg10v2h+VOCq5rDVp8=
-X-Google-Smtp-Source: AGHT+IEhSZI4CO6bfdoCocqxwOr0RwyDy2Z+13Gq6CuVDwavMSoa8I151WKWrVyimq4JleNyK8r++Q==
-X-Received: by 2002:a05:6000:2011:b0:3b7:940e:6520 with SMTP id
- ffacd0b85a97d-3b8f48e9072mr3854873f8f.18.1754552792652; 
- Thu, 07 Aug 2025 00:46:32 -0700 (PDT)
+ bh=4+iz36EcgldeHb3OBmoa0Iy0LP+AhV1x3D3g9dhmwGY=;
+ b=CULtLxw0FVBgxOpFuaeAPCqWyaAEvislhrXkMXWxdEq/ViOpAmODEGBx54BeIaZt9K
+ jlLYlYpT6jyEEIzVfonEkgSmNXqXMtLmWiEuBV3EfRgfrt9seVFbbi/VCYlbm9OrT570
+ uY4ucODOpce9wn12rsKgtOKCKKcyWo1zbhIZ9SKIL50ee2Hu71OEytt489M+D9T+o4rM
+ OicA4ayfk2QJVIh/gQPOSD/cyyj1KEItDdn0MB9AxWDnBM+x1pUPZ9w8SjxTm6ovUoY4
+ BVFQYWusjpxXEkxMRbuiidqHiy60D5zwKI+gYP/AD73tloEnqcS3tSzzgifhhL5AFH2p
+ 0KzA==
+X-Gm-Message-State: AOJu0YwNdKNfizTcRjvocZ0YSsjHyflNXQoafvuLN+n84qgvwf3A5R8r
+ WvPPRSuqhAEpRUF95QEaqnRXbdvkq+NxjEQbH/lVTy50PTHuOWBPP20mn3jG4ai+
+X-Gm-Gg: ASbGncvKDatSDpCdF3UADVVZfbcDl3tH5P4DMiLL2pi16rX1AiTS1bZFtTmUk2ERO4T
+ PxvVZFwyQ5PBMuEyJiYFRqiXw69ZiMeB1AlkzSEUSNvIovuEwMIJI5kY6ZmPvruo6gBWpOqQujv
+ XQGn2dVPUcqG/ncU9wxqSdhNMwK4XWjN5YiiftDUgeIuREzw6bAnhMxKxjouP8jfjJatsR1uEL2
+ KCjpG0hGQHgBTkTd5iZ6qnRfaeppIdJVEuGJ54kTdy1gWH6nPD2UB5940AYQtVmu8I/oP0X3Ouc
+ uhDUFnk2STe/IvHfSMmrGwRzejSyCqBhiZnLm1MQlStOqeq9kbPRsbHHABGdgzIIkadq8KUFZP9
+ XkJlU9xPmZEzE7ICYURk=
+X-Google-Smtp-Source: AGHT+IFkekq84MiljNh2IW3atr2ojbCfSNTTE2ZkLgxg7dcSxmIKJJbt37mgQPXasSWrcZnnJwyYIQ==
+X-Received: by 2002:a05:600c:1c9b:b0:43c:ec4c:25b4 with SMTP id
+ 5b1f17b1804b1-459ee8171c7mr18284245e9.10.1754552793934; 
+ Thu, 07 Aug 2025 00:46:33 -0700 (PDT)
 Received: from fedora ([94.73.32.0]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-458bb04c612sm204859355e9.0.2025.08.07.00.46.31
+ 5b1f17b1804b1-458bb04c612sm204859355e9.0.2025.08.07.00.46.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Aug 2025 00:46:31 -0700 (PDT)
+ Thu, 07 Aug 2025 00:46:33 -0700 (PDT)
 From: =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com, zbigniew.kempczynski@intel.com,
  kamil.konieczny@linux.intel.com, karthik.b.s@intel.com,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
-Subject: [PATCH i-g-t v4 27/41] tests/vkms_configfs: Test adding multiple
- cursor planes
-Date: Thu,  7 Aug 2025 09:45:36 +0200
-Message-ID: <20250807074550.6543-28-jose.exposito89@gmail.com>
+Subject: [PATCH i-g-t v4 28/41] tests/vkms_configfs: Test adding a plane
+ without possible CRTCs
+Date: Thu,  7 Aug 2025 09:45:37 +0200
+Message-ID: <20250807074550.6543-29-jose.exposito89@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250807074550.6543-1-jose.exposito89@gmail.com>
 References: <20250807074550.6543-1-jose.exposito89@gmail.com>
@@ -89,30 +89,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Try to enable a VKMS device with multiple cursor planes for one of its
-CRTCs and test that it fails.
+Try to enable a VKMS device with a plane without possible CRTCs and test
+that it fails.
 
 Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: José Expósito <jose.exposito89@gmail.com>
 ---
- tests/vkms/vkms_configfs.c | 61 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ tests/vkms/vkms_configfs.c | 51 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
 diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-index 87136d32a..0e6ee37e5 100644
+index 0e6ee37e5..943e28afe 100644
 --- a/tests/vkms/vkms_configfs.c
 +++ b/tests/vkms/vkms_configfs.c
-@@ -1011,6 +1011,66 @@ static void test_enable_multiple_primary_planes(void)
+@@ -1071,6 +1071,56 @@ static void test_enable_multiple_cursor_planes(void)
  	igt_vkms_device_destroy(dev);
  }
  
 +/**
-+ * SUBTEST: enable-multiple-cursor-planes
-+ * Description: Try to enable a VKMS device with multiple cursor planes for one
-+ *              of its CRTCs and test that it fails.
++ * SUBTEST: enable-plane-no-crtcs
++ * Description: Try to enable a VKMS device with a plane without possible CRTCs
++ *              and test that it fails.
 + */
 +
-+static void test_enable_multiple_cursor_planes(void)
++static void test_enable_plane_no_crtcs(void)
 +{
 +	igt_vkms_t *dev;
 +
@@ -127,17 +127,7 @@ index 87136d32a..0e6ee37e5 100644
 +			{
 +				.name = "plane1",
 +				.type = DRM_PLANE_TYPE_PRIMARY,
-+				.possible_crtcs = { "crtc1" },
-+			},
-+			{
-+				.name = "plane2",
-+				.type = DRM_PLANE_TYPE_CURSOR,
-+				.possible_crtcs = { "crtc1" },
-+			},
-+			{
-+				.name = "plane3",
-+				.type = DRM_PLANE_TYPE_CURSOR,
-+				.possible_crtcs = { "crtc1" },
++				.possible_crtcs = {},
 +			},
 +		},
 +		.crtcs = {
@@ -169,11 +159,11 @@ index 87136d32a..0e6ee37e5 100644
  igt_main
  {
  	struct {
-@@ -1041,6 +1101,7 @@ igt_main
- 		{ "enable-too-many-planes", test_enable_too_many_planes },
+@@ -1102,6 +1152,7 @@ igt_main
  		{ "enable-no-primary-plane", test_enable_no_primary_plane },
  		{ "enable-multiple-primary-planes", test_enable_multiple_primary_planes },
-+		{ "enable-multiple-cursor-planes", test_enable_multiple_cursor_planes },
+ 		{ "enable-multiple-cursor-planes", test_enable_multiple_cursor_planes },
++		{ "enable-plane-no-crtcs", test_enable_plane_no_crtcs },
  	};
  
  	igt_fixture {
