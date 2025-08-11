@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28EE3CA0EC0
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Aug 2025 08:16:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F3BCC87FD2
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Aug 2025 08:16:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BF36C10E2F1;
-	Mon, 11 Aug 2025 08:16:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 06D9210E305;
+	Mon, 11 Aug 2025 08:16:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IUznSobT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lNaHTqrU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9BD010E2F1
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Aug 2025 08:16:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C82E210E305
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Aug 2025 08:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754900193; x=1786436193;
+ t=1754900195; x=1786436195;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=eZWmpTonaFDXVVUsXMF3kh2hZd9iM/PBPn5uAaWFeK8=;
- b=IUznSobT6n+q1KhdPnrIw1rh7b3dXmRNdSFWPQNcYcgSUNmWApyX4NRG
- dZ6I6MFoSZOlKpySHbVPQ2bLnjVW6eHPAJDQIS9nSbuEkyu/QkOau2yFK
- yJKvosyPgOH1V1+rEyTSDyByVLjyLpaQVj19nCjjJO3nR6nan4iFJAOGZ
- BEAUc2pBlO0ThzCKV6pIpKa4Y7DwBj4ewUyawR+P//84kOSUNXpv/HPGk
- Ik2NornYmOR7AQnENijgMHr2rAkYnvJCOUeUSmnh4IFi68bJOfL5KBT7g
- tNiags3cNNNphUsBsdR67zEjwkXobx0Q+Ekz6Gfm3+kJw7QGFXrCRzUDG A==;
-X-CSE-ConnectionGUID: 193lQPCeSUmbLDgmMrbt9Q==
-X-CSE-MsgGUID: SHwR520bTyunQE8BW3GkQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="79715239"
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="79715239"
+ bh=glpOJ9V1cpSOzB0RPBnVnrzgzoN5IylCs4vWYxKEHQ4=;
+ b=lNaHTqrUpuEVWjO0i2ItVlSzeFkBW3oEfTq+Iz8qgYlmbygdup5DO2yN
+ g2XiG+ZjTckyH18SFMfqODbNQiHfxfNHGOJbQbB9lkgu0qlbXZJaXBBTU
+ sUH+VGEe4ZkO4MvJbw+H6TcuRgB8qxFbTKmMmWe4AuAjqXOFSgvHEN16Z
+ Bw5wtRMVbeZl2tRJQqgizLw+bvv4+uDxtex0zZ80/djqOkYCHnG9JhK5t
+ ZJ6guSaGzQoVCgUAsJbLLQLI3eAFEyLpLpL3JliguKYBYeX2JthFENHiW
+ +/cxjnTBhcOnLK7feuI6Eu5577R0R36AV2uQbJ/moQmLJNeybvO1Ygyjj Q==;
+X-CSE-ConnectionGUID: /8VPc0d/Q0C8ZmHb4MGM/g==
+X-CSE-MsgGUID: GfJ+9pGHQ9WGNJFLrTSafg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="79715243"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="79715243"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2025 01:16:33 -0700
-X-CSE-ConnectionGUID: 4ZnDsc49Tu2c+cQip6Kutg==
-X-CSE-MsgGUID: D2x8ZcDSRFO35QeGr9CbOg==
+ 11 Aug 2025 01:16:35 -0700
+X-CSE-ConnectionGUID: NDKHf6mGQnqrZn3OK0SvXw==
+X-CSE-MsgGUID: gIYcSCIfS8GgdGwKiRH/jQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="196850157"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="196850163"
 Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by orviesa002.jf.intel.com with ESMTP; 11 Aug 2025 01:16:32 -0700
+ by orviesa002.jf.intel.com with ESMTP; 11 Aug 2025 01:16:33 -0700
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: chaitanya.kumar.borah@intel.com, karthik.b.s@intel.com,
  swati2.sharma@intel.com
-Subject: [PATCH i-g-t 2/3] tests/kms_hdr: Set HDR meta-data while testing for
- panel capability
-Date: Mon, 11 Aug 2025 13:28:49 +0530
-Message-Id: <20250811075850.28146-2-chaitanya.kumar.borah@intel.com>
+Subject: [PATCH i-g-t 3/3] tests/kms_hdr: Handle HDR panels requiring DSC
+Date: Mon, 11 Aug 2025 13:28:50 +0530
+Message-Id: <20250811075850.28146-3-chaitanya.kumar.borah@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250811075850.28146-1-chaitanya.kumar.borah@intel.com>
 References: <20250811075850.28146-1-chaitanya.kumar.borah@intel.com>
@@ -68,175 +67,146 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Checking if the panel supports a max_bpc of 10 is not enough to tell
-if the panel supports HDR. Set HDR metadata on the connector before
-going through the modes. Reset after done.
+Some panels needs DSC to support HDR (at least in higher modes).
+In cases like these the output bpc and crc comparison fails if
+the SDR/non-HDR mode does not require DSC. Therefore, force DSC
+when in SDR mode so that output bpc and crc can be compared.
 
 Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 ---
- tests/kms_hdr.c | 114 ++++++++++++++++++++++++++----------------------
- 1 file changed, 61 insertions(+), 53 deletions(-)
+ tests/kms_hdr.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 50 insertions(+), 2 deletions(-)
 
 diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 33b6c42a6..76e103ac4 100644
+index 76e103ac4..c1123531a 100644
 --- a/tests/kms_hdr.c
 +++ b/tests/kms_hdr.c
-@@ -153,6 +153,59 @@ static void draw_hdr_pattern(igt_fb_t *fb)
- 	igt_put_cairo_ctx(cr);
+@@ -97,6 +97,7 @@ enum {
+ 	TEST_INVALID_METADATA_SIZES = 1 << 4,
+ 	TEST_INVALID_HDR = 1 << 5,
+ 	TEST_BRIGHTNESS = 1 << 6,
++	TEST_NEEDS_DSC = 1 << 7,
+ };
+ 
+ /* BPC connector state. */
+@@ -491,9 +492,20 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+ 	igt_plane_set_size(data->primary, data->w, data->h);
+ 	set_hdr_output_metadata(data, NULL);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++
++	if (flags & TEST_NEEDS_DSC) {
++		igt_force_dsc_enable(data->fd, output->name);
++		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
++	}
++
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
++	if (flags & TEST_NEEDS_DSC) {
++		igt_force_dsc_disable(data->fd, output->name);
++		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
++	}
++
+ 	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
+ 	set_hdr_output_metadata(data, &hdr);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+@@ -518,11 +530,22 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+ 	/* Disable HDR metadata and drop back to 8bpc. We expect a modeset for exiting. */
+ 	set_hdr_output_metadata(data, NULL);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++
++	if (flags & TEST_NEEDS_DSC) {
++		igt_force_dsc_enable(data->fd, output->name);
++		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
++	}
++
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+ 
++	if (flags & TEST_NEEDS_DSC) {
++		igt_force_dsc_disable(data->fd, output->name);
++		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
++	}
++
+ cleanup:
+ 	test_fini(data);
+ 	igt_remove_fb(data->fd, &afb);
+@@ -558,7 +581,7 @@ static void fill_hdr_output_metadata_sdr(struct hdr_output_metadata *meta)
+ 	meta->hdmi_metadata_type1.max_cll = 0;
  }
  
-+/* Converts a double to 861-G spec FP format. */
-+static uint16_t calc_hdr_float(double val)
-+{
-+	return (uint16_t)(val * 50000.0);
-+}
-+
-+/* Fills some test values for ST2048 HDR output metadata.
-+ *
-+ * Note: there isn't really a standard for what the metadata is supposed
-+ * to do on the display side of things. The display is free to ignore it
-+ * and clip the output, use it to help tonemap to the content range,
-+ * or do anything they want, really.
-+ */
-+static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
-+{
-+	memset(meta, 0, sizeof(*meta));
-+
-+	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
-+	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
-+
-+	/* Rec. 2020 */
-+	meta->hdmi_metadata_type1.display_primaries[0].x =
-+		calc_hdr_float(0.708); /* Red */
-+	meta->hdmi_metadata_type1.display_primaries[0].y =
-+		calc_hdr_float(0.292);
-+	meta->hdmi_metadata_type1.display_primaries[1].x =
-+		calc_hdr_float(0.170); /* Green */
-+	meta->hdmi_metadata_type1.display_primaries[1].y =
-+		calc_hdr_float(0.797);
-+	meta->hdmi_metadata_type1.display_primaries[2].x =
-+		calc_hdr_float(0.131); /* Blue */
-+	meta->hdmi_metadata_type1.display_primaries[2].y =
-+		calc_hdr_float(0.046);
-+	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
-+	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
-+
-+	meta->hdmi_metadata_type1.max_display_mastering_luminance =
-+		1000; /* 1000 nits */
-+	meta->hdmi_metadata_type1.min_display_mastering_luminance =
-+		500;				   /* 0.05 nits */
-+	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
-+	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
-+}
-+
-+/* Sets the HDR output metadata prop. */
-+static void set_hdr_output_metadata(data_t *data,
-+				    struct hdr_output_metadata const *meta)
-+{
-+	igt_output_replace_prop_blob(data->output,
-+				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
-+				     meta ? sizeof(*meta) : 0);
-+}
-+
- /* Prepare test data. */
- static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- {
-@@ -380,15 +433,6 @@ static bool is_panel_hdr(data_t *data, igt_output_t *output)
- 	return ret;
- }
- 
--/* Sets the HDR output metadata prop. */
--static void set_hdr_output_metadata(data_t *data,
--				    struct hdr_output_metadata const *meta)
--{
--	igt_output_replace_prop_blob(data->output,
--				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
--				     meta ? sizeof(*meta) : 0);
--}
--
- /* Sets the HDR output metadata prop with invalid size. */
- static int set_invalid_hdr_output_metadata(data_t *data,
- 					   struct hdr_output_metadata const *meta,
-@@ -401,50 +445,6 @@ static int set_invalid_hdr_output_metadata(data_t *data,
- 	return igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- }
- 
--/* Converts a double to 861-G spec FP format. */
--static uint16_t calc_hdr_float(double val)
--{
--	return (uint16_t)(val * 50000.0);
--}
--
--/* Fills some test values for ST2048 HDR output metadata.
-- *
-- * Note: there isn't really a standard for what the metadata is supposed
-- * to do on the display side of things. The display is free to ignore it
-- * and clip the output, use it to help tonemap to the content range,
-- * or do anything they want, really.
-- */
--static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
--{
--	memset(meta, 0, sizeof(*meta));
--
--	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
--	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
--
--	/* Rec. 2020 */
--	meta->hdmi_metadata_type1.display_primaries[0].x =
--		calc_hdr_float(0.708); /* Red */
--	meta->hdmi_metadata_type1.display_primaries[0].y =
--		calc_hdr_float(0.292);
--	meta->hdmi_metadata_type1.display_primaries[1].x =
--		calc_hdr_float(0.170); /* Green */
--	meta->hdmi_metadata_type1.display_primaries[1].y =
--		calc_hdr_float(0.797);
--	meta->hdmi_metadata_type1.display_primaries[2].x =
--		calc_hdr_float(0.131); /* Blue */
--	meta->hdmi_metadata_type1.display_primaries[2].y =
--		calc_hdr_float(0.046);
--	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
--	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
--
--	meta->hdmi_metadata_type1.max_display_mastering_luminance =
--		1000; /* 1000 nits */
--	meta->hdmi_metadata_type1.min_display_mastering_luminance =
--		500;				   /* 0.05 nits */
--	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
--	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
--}
--
- static void adjust_brightness(data_t *data, uint32_t flags)
- {
- 	igt_backlight_context_t context;
-@@ -652,6 +652,7 @@ static void test_hdr(data_t *data, uint32_t flags)
+-static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
++static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
  {
  	igt_display_t *display = &data->display;
- 	igt_output_t *output;
-+	struct hdr_output_metadata hdr;
- 
- 	igt_display_reset(display);
- 
-@@ -701,6 +702,9 @@ static void test_hdr(data_t *data, uint32_t flags)
- 
- 			prepare_test(data, output, pipe);
- 
-+			fill_hdr_output_metadata_st2048(&hdr);
-+			set_hdr_output_metadata(data, &hdr);
+ 	igt_crc_t ref_crc, new_crc;
+@@ -577,9 +600,20 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_plane_set_fb(data->primary, &afb);
+ 	igt_plane_set_size(data->primary, data->w, data->h);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
 +
- 			if (is_intel_device(data->fd) &&
- 			    !igt_max_bpc_constraint(display, pipe, output, 10)) {
- 				igt_info("%s: No suitable mode found to use 10 bpc.\n",
-@@ -710,6 +714,10 @@ static void test_hdr(data_t *data, uint32_t flags)
++	if (flags & TEST_NEEDS_DSC) {
++		igt_force_dsc_enable(data->fd, output->name);
++		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
++	}
++
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+ 
++	if (flags & TEST_NEEDS_DSC) {
++		igt_force_dsc_disable(data->fd, output->name);
++		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
++	}
++
+ 	/* Enter HDR, a modeset is allowed here. */
+ 	fill_hdr_output_metadata_st2048(&hdr);
+ 	set_hdr_output_metadata(data, &hdr);
+@@ -602,6 +636,10 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	else
+ 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 
++	if (flags & TEST_NEEDS_DSC) {
++		igt_force_dsc_enable(data->fd, output->name);
++		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
++	}
+ 	/* Enter SDR via metadata, no modeset allowed for
+ 	 * amd driver, whereas a modeset is required for
+ 	 * intel driver. */
+@@ -623,6 +661,11 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	/* Verify that the CRC didn't change while cycling metadata. */
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+ 
++	if (flags & TEST_NEEDS_DSC) {
++		igt_force_dsc_disable(data->fd, output->name);
++		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
++	}
++
+ 	test_fini(data);
+ 	igt_remove_fb(data->fd, &afb);
+ }
+@@ -714,6 +757,11 @@ static void test_hdr(data_t *data, uint32_t flags)
  				break;
  			}
  
-+			set_hdr_output_metadata(data, NULL);
-+			igt_display_commit2(display, display->is_atomic ?
-+					    COMMIT_ATOMIC : COMMIT_LEGACY);
++			if (igt_is_dsc_enabled(data->fd, output->name))
++				flags |= TEST_NEEDS_DSC;
++			else
++				flags &= ~TEST_NEEDS_DSC;
 +
- 			data->mode = igt_output_get_mode(output);
- 			data->w = data->mode->hdisplay;
- 			data->h = data->mode->vdisplay;
+ 			set_hdr_output_metadata(data, NULL);
+ 			igt_display_commit2(display, display->is_atomic ?
+ 					    COMMIT_ATOMIC : COMMIT_LEGACY);
+@@ -728,7 +776,7 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 					     TEST_INVALID_HDR | TEST_BRIGHTNESS))
+ 					test_static_toggle(data, pipe, output, flags);
+ 				if (flags & TEST_SWAP)
+-					test_static_swap(data, pipe, output);
++					test_static_swap(data, pipe, output, flags);
+ 				if (flags & TEST_INVALID_METADATA_SIZES)
+ 					test_invalid_metadata_sizes(data, output);
+ 			}
 -- 
 2.25.1
 
