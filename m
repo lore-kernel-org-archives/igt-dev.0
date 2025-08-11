@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A8B9CA0ECD
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Aug 2025 15:35:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39C73CA0EC4
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Aug 2025 16:10:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0249B10E50B;
-	Mon, 11 Aug 2025 15:35:13 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F9DB10E502;
- Mon, 11 Aug 2025 15:35:12 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5069865308353916762=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id EBB4D10E502;
+	Mon, 11 Aug 2025 16:10:11 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C8n+oTZ1";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A3DE10E502
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Aug 2025 16:10:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1754928611; x=1786464611;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=F+010aN5Z8fjWA3aW6J8Fu95cIE6KaQkq8CqG3hWVcA=;
+ b=C8n+oTZ1fd5DBVOSDarKHm9dVVnzd6qiIGHTmh/T+0LZNBvlDIJ48d8d
+ 8Bn18wJrjTb+aT9xwZxn7ZdxcZHPhi0RazWqpiDcjaoBs75BytKu3Z5xO
+ oqMsQyAvszIfho44BT7iYMH/xs+smwb44Z1AagYQv8eIeBHdI1asxiXSk
+ Gl8VpbgdnjoBT60osLvUHA81dvoERGRKu94GBQIIKrqiTbes86IFbl7R0
+ SG76ox0jOaJxQ19Aofww8oCchJXA4s8/DnrtuJMdcUSZ+IKSNELG8IFJI
+ y5ErExxU6nH/QjkAyjlg5uoYdaps5WYADdCeypnZ2QbEjqbLq5fVbtSYN g==;
+X-CSE-ConnectionGUID: c3lgpJYbQMKTW6qN2B63jQ==
+X-CSE-MsgGUID: oEJMCmExTzKu2GVTg0e56g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="57311479"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="57311479"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2025 09:10:11 -0700
+X-CSE-ConnectionGUID: nXuRWgZrRfWSo7ROCgMJCg==
+X-CSE-MsgGUID: Go/2fAyPTcGkB83va0Y6BQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="196794403"
+Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
+ by fmviesa001.fm.intel.com with ESMTP; 11 Aug 2025 09:10:09 -0700
+From: himanshu.girotra@intel.com
+To: satyanarayana.k.v.p@intel.com, matthew.s.atwood@intel.com,
+ igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t] intel/xe_fault_injection : Update function name for
+ xe_wa_init
+Date: Mon, 11 Aug 2025 21:40:08 +0530
+Message-Id: <20250811161008.5355-1-himanshu.girotra@intel.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tools/intel=5Fvbt=5Fdecode?=
- =?utf-8?q?=3A_sync_intel=5Fvbt=5Fdefs=2Eh_with_kernel?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jani Nikula" <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 11 Aug 2025 15:35:12 -0000
-Message-ID: <175492651238.227841.6078083853077011355@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <cover.1754916577.git.jani.nikula@intel.com>
-In-Reply-To: <cover.1754916577.git.jani.nikula@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,135 +62,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5069865308353916762==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-== Series Details ==
+Update function xe_wa_init to xe_wa_gt_init as per latest kernel changes
+introduced in https://gitlab.freedesktop.org/drm/xe/kernel/-/commit/342d1f84320994ab72a6ca96e18f2985868e1cbd
 
-Series: tools/intel_vbt_decode: sync intel_vbt_defs.h with kernel
-URL   : https://patchwork.freedesktop.org/series/152771/
-State : success
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Matt Atwood <matthew.s.atwood@intel.com>
+Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
+Reviewed-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+---
+ tests/intel/xe_fault_injection.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 00d045cd8..04de2bfd5 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -256,7 +256,7 @@ static void ignore_fail_dump_in_dmesg(const char function_name[], bool enable)
+  * @xe_sriov_init:			xe_sriov_init
+  * @xe_tile_init_early:			xe_tile_init_early
+  * @xe_uc_fw_init:			xe_uc_fw_init
+- * @xe_wa_init:				xe_wa_init
++ * @xe_wa_gt_init:			xe_wa_gt_init
+  * @xe_wopcm_init:			xe_wopcm_init
+  */
+ static int
+@@ -562,7 +562,7 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 		{ "xe_sriov_init" },
+ 		{ "xe_tile_init_early" },
+ 		{ "xe_uc_fw_init" },
+-		{ "xe_wa_init" },
++		{ "xe_wa_gt_init" },
+ 		{ "xe_wopcm_init", 0, true },
+ 		{ }
+ 	};
+-- 
+2.40.0
 
-CI Bug Log - changes from XEIGT_8491_BAT -> XEIGTPW_13569_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13569_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-plain-flip@c-edp1:
-    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8491/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13569/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
-
-
-Build changes
--------------
-
-  * IGT: IGT_8491 -> IGTPW_13569
-  * Linux: xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c -> xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e
-
-  IGTPW_13569: 7ba7847870304158c8d039bde0d6ae35ced952d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8491: 8491
-  xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c: 27315c7bb830e06a1e63fe1fd656fda48365805c
-  xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e: fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13569/index.html
-
---===============5069865308353916762==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tools/intel_vbt_decode: sync intel_vbt_defs.h with kernel</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152771/">https://patchwork.freedesktop.org/series/152771/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13569/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13569/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8491_BAT -&gt; XEIGTPW_13569_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13569_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8491/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13569/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8491 -&gt; IGTPW_13569</li>
-<li>Linux: xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c -&gt; xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e</li>
-</ul>
-<p>IGTPW_13569: 7ba7847870304158c8d039bde0d6ae35ced952d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8491: 8491<br />
-  xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c: 27315c7bb830e06a1e63fe1fd656fda48365805c<br />
-  xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e: fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e</p>
-
-</body>
-</html>
-
---===============5069865308353916762==--
