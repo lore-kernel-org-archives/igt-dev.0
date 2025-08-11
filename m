@@ -4,80 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B85C87FD2
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Aug 2025 08:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B1AC87FD2
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Aug 2025 09:02:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3DC2710E396;
-	Mon, 11 Aug 2025 08:38:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0437F10E131;
+	Mon, 11 Aug 2025 09:02:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="1gG+T4vt";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="TJQwL6nw";
 	dkim-atps=neutral
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com
- [209.85.221.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08FE410E396
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Aug 2025 08:38:27 +0000 (UTC)
-Received: by mail-wr1-f52.google.com with SMTP id
- ffacd0b85a97d-3b78d337dd9so2470334f8f.3
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Aug 2025 01:38:26 -0700 (PDT)
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com
+ [209.85.214.181])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D65C10E131
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Aug 2025 09:02:32 +0000 (UTC)
+Received: by mail-pl1-f181.google.com with SMTP id
+ d9443c01a7336-2401b855980so29334275ad.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Aug 2025 02:02:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1754901505; x=1755506305;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xZwQDIS1bNah1tiaboFo4/Ob1kVdmdgnpyg6l7dHKaM=;
- b=1gG+T4vtwTLLGBlTk3vl9iH2GsCAiH/czDWMnDW0M4VsiKYOczq6TAoOV1yRM8Qz/7
- lUB2QFSU1+yFckfLbLmFRIQBheKaa7gRiakJsHOjIeD533XiR7KgfkvPpkCgOfAP3ERQ
- Zpi62F+IgmqIviMfSTKviN+isQa1eTePVYlC/8XSfWoifdCDVjlmx+9wU+8Rw93LMlGE
- YFJBrYKQUu9Af6EW2YHDkuyI1HO7atk9FymLrh0/CN/Hnrzdr3tQfygJ2iIfNQ7gL6dW
- G91/gt78Ke75d0HYy7EZljVzgQA7uJGGYbHdYAcHHqRQt9RWV3D0kekgb2GrdDyal+4O
- pRKw==
+ d=gmail.com; s=20230601; t=1754902951; x=1755507751; darn=lists.freedesktop.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ro5R4fwRPOAVrg24VLWW5VWkTv1IA3sI90dvjDTDpQ0=;
+ b=TJQwL6nw8HQ7D1d8y3cfO3X+M5SbzO9lUYBqxprt4KUfqB0etU4Hhe62Pyqj3heTfE
+ BPd3TbTsJYgETz0pxxIFzT9k9vV0mhBYWWPSDDc3MhYWjYcXAYo6p70IHRUo9hpX8NjV
+ uvCThMir5YYDhHgy27I9peJbabL643Cb1qZqexAXOJqi98VkjJKK9JYgYd9DwDKeBJX7
+ o1ACE8AvgS4Vx/vRenQH0DrJ/rksaviqzDeG7UyQ96ej2LI2Dd7x7S1LBSKihLK5yjmP
+ 3lDZVR08E4Inc7fhGG3IKNchaUxGRsaFyeSSODyXPRdCVqb5jVFVnMcNamjMCmPQ55zX
+ 6rDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1754901505; x=1755506305;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xZwQDIS1bNah1tiaboFo4/Ob1kVdmdgnpyg6l7dHKaM=;
- b=i+BF16SE05SsReZlwq4szUS3crtcIOjG2+FdlUY7nTiHLfr6pDQvXugv0PvA2JiZSB
- asZVq01I3nuubjbS3Y8d+zW3JUg8A8w/Pi6c9W1LanedWK1h/iRR5Ohu9b/USVpfLtAd
- h8W6crK9+uY22ACxvViCPwNasERpikGJxsFEzzbX1JS8Ho8VLbId7VtQLlJoCBN7RR5B
- /8Z4IibLr0dBBv+Y5AqW7iqlD5mHzk4+57EUT+YBLTGSoBGPYQRoFO2+jWwIUVjf4QFI
- tIMUPWImHgayIxpN2sQXag7TdM0gG/AvJxMmIDuSNOkZmrYGWQzz7bIRopA3r2VZ4UCD
- 2d8Q==
+ d=1e100.net; s=20230601; t=1754902951; x=1755507751;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ro5R4fwRPOAVrg24VLWW5VWkTv1IA3sI90dvjDTDpQ0=;
+ b=kTyXwAi/aR0dIzYhf+8x4THRqQZZk0K3LnaNFctSZ5OPhf75MtFNsd6rzQk30Ioaqf
+ FnWyZXqbMN1kbubrAOBiM0NiFP8g33MRZWfsZc/SVqqQJiS7ptBSj3BR0pdgJIixx232
+ HuVZDq4/25yMHTPI50JACs9kcn0oCa/n8AfenySyl7wJSZctSnfoM6n5XXHaqjYcG34t
+ F06XOMhANdXik6TcYXwN26ZqxMw8ydh6oKslxgWL4Fy009ojMQPVj0qIdljJLHlM5OZv
+ OvtGq20mEFSqpMQQxkOTHLVbyIxwbBgnMa1LxGvvXOkBR5BU6cJNFnGR4j8/5WZN6KzS
+ 4jDw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW2PiXHzs6LIFSyV4vi6lwNS1oL5wLvOavShPVkR7q0Doh83gD6TrJDzcjYdgV/AhZKONZX+RDk@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yw/zo6aVjhaMmJWwWW2ptYp831hOncNqcIga9HgHX+Vx2iKIBOA
- YFI3NSTMhxXa6aV33IwkZPStfp5cJMNozSvC0In22Llc/pcuhq55eeJlKPQeZMEnREI=
-X-Gm-Gg: ASbGncsehJDuo+d1gfH6noW7GDvosQNblPux5/a24dHPHjc2kfjl6gRDZh6kAwiCjll
- DIsbQSPLSaxkvUiwq7w4u1BytEDD1NIU2KSxxY7yQyT78YvawOQAW3shRdrIYriXCRecrNpG3zI
- 9duAkLeDdpr0l86z4Gh+QYknfSao+9x58FiHBP4DRX/OSNhUuCJZxZ6pCRG6q2cEBPVO+tdPJw8
- XDk6GG6feK+0o9XEtoUuFXaTYUpU6qYlFMhyrcXDnwP3hytRwhpB1GoXXIpi9BF02sBL0ZQNcGw
- kOidF0Tcr+WKk/76387H4Jf964u8lYYvzIqRR1oAtDKfEnUmIMPvcAE1ew1ZA2gwLHCSRuRZtoT
- rPmW8UCNPxcBeOIqpZ2dqSQj+Fln3HGg/seo=
-X-Google-Smtp-Source: AGHT+IG1wq5sR67olc31QHIyKq2/a5Lt19lRFPecHHxNzHkfysLg1R+UWx4GdsLfyN6fg9iBv1OfYQ==
-X-Received: by 2002:a5d:64ef:0:b0:3b6:12d9:9f1b with SMTP id
- ffacd0b85a97d-3b900b2de3amr9579113f8f.22.1754901505231; 
- Mon, 11 Aug 2025 01:38:25 -0700 (PDT)
-Received: from [192.168.0.101] ([84.66.36.92])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-459e6867193sm243926055e9.6.2025.08.11.01.38.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Aug 2025 01:38:24 -0700 (PDT)
-Message-ID: <7b81801d-42aa-4364-b0a1-e5a50d817cd1@ursulin.net>
-Date: Mon, 11 Aug 2025 09:38:24 +0100
+ AJvYcCVRAhzyAKihSQYT0DSIWQB33oHdOQaZLM+VMTy9NhdefSWclIyVyxOJLtuw6hutCW4+5iJmPNqE@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YzFAS6Tjir71KJEqe1RrWQbP2hoYtEegx0MHATxJdfbi2wRv+zu
+ GfjO2ukkhNN9RLSwlgN9pmD5Ia5aEAZAxjqU3SPQKqqhffEZcnnL7qPiulW2/aUcD8AcTi/WmVK
+ ERPXdT9fIY/t60MEmvagz5g8jkuqbP38=
+X-Gm-Gg: ASbGncu6FE4Y//q39hhJDkyi91iyfmEUqgVP4u+s6d8VGZ0I5n5Xq4x2uFeBZ0ZTn+2
+ jVA9pJesXU5vaWMxocUqpSXBzDm/535Q7SYcGAMDjJTpg8bGfLf7nKSvNEppwWIWRrupP/fQUYk
+ vu7IQCM8Q+opfKx7KMXnH4/IGSx912jnhY/0HL7cmdCTpbUJhCCdcmU/9h153gQDvkEmatShKLg
+ 4gbIzQObw==
+X-Google-Smtp-Source: AGHT+IFEZMGGYElWZIwuZ4SSKwnwrBZaqJvalxgk5UJGduAhzsOV4Yi17z9Kym/g2VGUK/A3sw8SmlLMIH3XVRhd1Mg=
+X-Received: by 2002:a17:902:f544:b0:240:c9b6:f8ee with SMTP id
+ d9443c01a7336-242c225f966mr175151245ad.50.1754902951477; Mon, 11 Aug 2025
+ 02:02:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] lib/intel/veboxcopy: Respect buffer MOCS index
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, igt-dev@lists.freedesktop.org
-Cc: Imre Deak <imre.deak@intel.com>,
- =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>,
- Mika Kahola <mika.kahola@intel.com>
 References: <20250722073906.99759-1-tvrtko.ursulin@igalia.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <20250722073906.99759-1-tvrtko.ursulin@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ <7b81801d-42aa-4364-b0a1-e5a50d817cd1@ursulin.net>
+In-Reply-To: <7b81801d-42aa-4364-b0a1-e5a50d817cd1@ursulin.net>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Mon, 11 Aug 2025 12:02:20 +0300
+X-Gm-Features: Ac12FXw5jcS3RW1E6ArCAMH56OAj2vKPHPkDgfkBkf-T2KuhRBG0Uj-8x0sBWzQ
+Message-ID: <CAJ=qYWR597CmdV+7wUM3_-8936oB-ZnZOS1LGBUe_Pg8WoznDw@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] lib/intel/veboxcopy: Respect buffer MOCS index
+To: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, igt-dev@lists.freedesktop.org, 
+ Imre Deak <imre.deak@intel.com>, 
+ =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juha-pekka.heikkila@intel.com>, 
+ Mika Kahola <mika.kahola@intel.com>
+Content-Type: multipart/alternative; boundary="00000000000009c8de063c132f91"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,54 +85,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--00000000000009c8de063c132f91
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 22/07/2025 08:39, Tvrtko Ursulin wrote:
-> Set the MOCS indices in surface state from the source and
-> destination buffers. So far it was done only for the input
-> buffer and only for 4Tile formats. Always setting it alings
-> with how rendercopy does it and it fixes the AuxCCS tests on
-> ADL when target is of the MC flavour.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Cc: Imre Deak <imre.deak@intel.com>
-> Cc: Juha-Pekka Heikkilä <juha-pekka.heikkila@intel.com>
-> Cc: Mika Kahola <mika.kahola@intel.com>
-> ---
-> Lets see what the CI will think of this change.
+Hi Tvrtko,
 
-CI is happy. Any takers for review?
+I'll add this to my list, Kamil was already earlier asking me about this. I
+got back from vacation and needed to sort other things first.
 
-Regards,
+/Juha-Pekka
 
-Tvrtko
+On Mon, Aug 11, 2025 at 11:43=E2=80=AFAM Tvrtko Ursulin <tursulin@ursulin.n=
+et>
+wrote:
 
-> Curiously the AuxCCS tests where target is RC, so rendercopy
-> which does set the MOCS correctly is used, are still flaky so
-> that sounds like a different problem.
-> ---
->   lib/veboxcopy_gen12.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c
-> index 4e3aefaf1f44..2193433a1c00 100644
-> --- a/lib/veboxcopy_gen12.c
-> +++ b/lib/veboxcopy_gen12.c
-> @@ -258,6 +258,8 @@ static void emit_tiling_convert_cmd(struct intel_bb *ibb,
->   
->   	if (HAS_4TILE(ibb->devid))
->   		tc->tc1_2.input_mocs_idx = IS_DG2(ibb->devid) ? 3 : 9;
-> +	else
-> +		tc->tc1_2.input_mocs_idx = src->mocs_index;
->   
->   	tc->tc1_2.input_tiled_resource_mode = src->tiling == I915_TILING_Yf;
->   
-> @@ -278,6 +280,8 @@ static void emit_tiling_convert_cmd(struct intel_bb *ibb,
->   			dst->compression == I915_COMPRESSION_RENDER;
->   	}
->   
-> +	tc->tc3_4.output_mocs_idx = dst->mocs_index;
-> +
->   	if (HAS_4TILE(ibb->devid))
->   		tc->tc3_4.output_mocs_idx = IS_DG2(ibb->devid) ? 3 : 9;
->   
+>
+> On 22/07/2025 08:39, Tvrtko Ursulin wrote:
+> > Set the MOCS indices in surface state from the source and
+> > destination buffers. So far it was done only for the input
+> > buffer and only for 4Tile formats. Always setting it alings
+> > with how rendercopy does it and it fixes the AuxCCS tests on
+> > ADL when target is of the MC flavour.
+> >
+> > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> > Cc: Imre Deak <imre.deak@intel.com>
+> > Cc: Juha-Pekka Heikkil=C3=A4 <juha-pekka.heikkila@intel.com>
+> > Cc: Mika Kahola <mika.kahola@intel.com>
+> > ---
+> > Lets see what the CI will think of this change.
+>
+> CI is happy. Any takers for review?
+>
+> Regards,
+>
+> Tvrtko
+>
+> > Curiously the AuxCCS tests where target is RC, so rendercopy
+> > which does set the MOCS correctly is used, are still flaky so
+> > that sounds like a different problem.
+> > ---
+> >   lib/veboxcopy_gen12.c | 4 ++++
+> >   1 file changed, 4 insertions(+)
+> >
+> > diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c
+> > index 4e3aefaf1f44..2193433a1c00 100644
+> > --- a/lib/veboxcopy_gen12.c
+> > +++ b/lib/veboxcopy_gen12.c
+> > @@ -258,6 +258,8 @@ static void emit_tiling_convert_cmd(struct intel_bb
+> *ibb,
+> >
+> >       if (HAS_4TILE(ibb->devid))
+> >               tc->tc1_2.input_mocs_idx =3D IS_DG2(ibb->devid) ? 3 : 9;
+> > +     else
+> > +             tc->tc1_2.input_mocs_idx =3D src->mocs_index;
+> >
+> >       tc->tc1_2.input_tiled_resource_mode =3D src->tiling =3D=3D
+> I915_TILING_Yf;
+> >
+> > @@ -278,6 +280,8 @@ static void emit_tiling_convert_cmd(struct intel_bb
+> *ibb,
+> >                       dst->compression =3D=3D I915_COMPRESSION_RENDER;
+> >       }
+> >
+> > +     tc->tc3_4.output_mocs_idx =3D dst->mocs_index;
+> > +
+> >       if (HAS_4TILE(ibb->devid))
+> >               tc->tc3_4.output_mocs_idx =3D IS_DG2(ibb->devid) ? 3 : 9;
+> >
+>
+>
 
+--00000000000009c8de063c132f91
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi=C2=A0Tvrtko,</div><div><br></div><div>I&#39;ll add=
+ this to my list, Kamil was already earlier asking me about this. I got bac=
+k from vacation and needed to sort other things first.</div><div><br></div>=
+<div>/Juha-Pekka</div><br><div class=3D"gmail_quote gmail_quote_container">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Aug 11, 2025 at 11:43=E2=80=
+=AFAM Tvrtko Ursulin &lt;<a href=3D"mailto:tursulin@ursulin.net">tursulin@u=
+rsulin.net</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex"><br>
+On 22/07/2025 08:39, Tvrtko Ursulin wrote:<br>
+&gt; Set the MOCS indices in surface state from the source and<br>
+&gt; destination buffers. So far it was done only for the input<br>
+&gt; buffer and only for 4Tile formats. Always setting it alings<br>
+&gt; with how rendercopy does it and it fixes the AuxCCS tests on<br>
+&gt; ADL when target is of the MC flavour.<br>
+&gt; <br>
+&gt; Signed-off-by: Tvrtko Ursulin &lt;<a href=3D"mailto:tvrtko.ursulin@iga=
+lia.com" target=3D"_blank">tvrtko.ursulin@igalia.com</a>&gt;<br>
+&gt; Cc: Imre Deak &lt;<a href=3D"mailto:imre.deak@intel.com" target=3D"_bl=
+ank">imre.deak@intel.com</a>&gt;<br>
+&gt; Cc: Juha-Pekka Heikkil=C3=A4 &lt;<a href=3D"mailto:juha-pekka.heikkila=
+@intel.com" target=3D"_blank">juha-pekka.heikkila@intel.com</a>&gt;<br>
+&gt; Cc: Mika Kahola &lt;<a href=3D"mailto:mika.kahola@intel.com" target=3D=
+"_blank">mika.kahola@intel.com</a>&gt;<br>
+&gt; ---<br>
+&gt; Lets see what the CI will think of this change.<br>
+<br>
+CI is happy. Any takers for review?<br>
+<br>
+Regards,<br>
+<br>
+Tvrtko<br>
+<br>
+&gt; Curiously the AuxCCS tests where target is RC, so rendercopy<br>
+&gt; which does set the MOCS correctly is used, are still flaky so<br>
+&gt; that sounds like a different problem.<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0lib/veboxcopy_gen12.c | 4 ++++<br>
+&gt;=C2=A0 =C2=A01 file changed, 4 insertions(+)<br>
+&gt; <br>
+&gt; diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c<br>
+&gt; index 4e3aefaf1f44..2193433a1c00 100644<br>
+&gt; --- a/lib/veboxcopy_gen12.c<br>
+&gt; +++ b/lib/veboxcopy_gen12.c<br>
+&gt; @@ -258,6 +258,8 @@ static void emit_tiling_convert_cmd(struct intel_b=
+b *ibb,<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (HAS_4TILE(ibb-&gt;devid))<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tc-&gt;tc1_2.inp=
+ut_mocs_idx =3D IS_DG2(ibb-&gt;devid) ? 3 : 9;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0else<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tc-&gt;tc1_2.input_mo=
+cs_idx =3D src-&gt;mocs_index;<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0tc-&gt;tc1_2.input_tiled_resource_mode =3D s=
+rc-&gt;tiling =3D=3D I915_TILING_Yf;<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; @@ -278,6 +280,8 @@ static void emit_tiling_convert_cmd(struct intel_b=
+b *ibb,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0dst-&gt;compression =3D=3D I915_COMPRESSION_RENDER;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0tc-&gt;tc3_4.output_mocs_idx =3D dst-&gt;mocs_ind=
+ex;<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (HAS_4TILE(ibb-&gt;devid))<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tc-&gt;tc3_4.out=
+put_mocs_idx =3D IS_DG2(ibb-&gt;devid) ? 3 : 9;<br>
+&gt;=C2=A0 =C2=A0<br>
+<br>
+</blockquote></div></div>
+
+--00000000000009c8de063c132f91--
