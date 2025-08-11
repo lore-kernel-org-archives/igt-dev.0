@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7150FC87FDB
-	for <igt-dev@archiver.kernel.org>; Mon, 11 Aug 2025 12:50:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61538C87FDB
+	for <igt-dev@archiver.kernel.org>; Mon, 11 Aug 2025 12:50:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2D4E010E475;
-	Mon, 11 Aug 2025 12:50:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1BEAF10E45F;
+	Mon, 11 Aug 2025 12:50:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l2hEzz2x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LnusbU+4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1DE910E46D
- for <igt-dev@lists.freedesktop.org>; Mon, 11 Aug 2025 12:50:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83F5F10E462
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 Aug 2025 12:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754916638; x=1786452638;
+ t=1754916644; x=1786452644;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=uhOD1H0n3HhfLNhvWOxXT5WPg0kbzSq7usw9uMW65j0=;
- b=l2hEzz2xBLXGeG1YfVVPpHgUrddf805P6MCRuLg42cetnbHU6WUWGfUZ
- m6+eojoQ6wg/gJnGEFX8k+eFSsYcaYcd1M2a/t1e6L6DyzpMB52wSDZYJ
- MRYphJ/aUoSe7+D76y7jpqQnLqFWR87kQme4ayMM4/LNZ78ALDGoVyd4B
- KkNh/j9L1JcSpJOqJctPtuGCcxoL4yplcn6Z6G/4xCbSMlE4vXy5eGUC1
- 4hHNS/Mb3yIaVs5VcCUn06QqoAQeIALf33eZoCJX292k5rUCr2pJjOmnF
- yPI4AU36iSyPai6WysrdeqzpAhTXWFgsLjU94NpyLi3J3fESeVRP6FiAg Q==;
-X-CSE-ConnectionGUID: 4ydtiRpeRC+8+mPfJS3Xkw==
-X-CSE-MsgGUID: JZ78b/nQSPK/GpzZCoKt0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="57089047"
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="57089047"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2025 05:50:38 -0700
-X-CSE-ConnectionGUID: +4BplZpdRCOyBb9Wz12hfA==
-X-CSE-MsgGUID: LHaLiAtMQm6YVaj36os+zQ==
+ bh=bEIwVZPozRCz1OS+lVQ13Ru5N54GkIq+nRnSX4NQnqg=;
+ b=LnusbU+4oXr7kJXFypSojVTTh8nR2j2NPVNb6ScUuFlzfbkCCbXm6Cpn
+ buFBmGXPkqFqoVrUybQSjB4Mr0ZCVQIEyHlttlVsddxMCzp0XsIy2IK4y
+ GvrSnBnpuBJVoHj7z5ELOGUzRYhJWlzgcPYVgX3bHpXBkH8V3KhAZmkJk
+ kzBdAoJmobYTn8mvzHT3rpVzz2t36Jb3Ac+JmzZ/M4fOUMRwuy+N8+TTE
+ RvJ8dO/UIcaknrcyt7d3cssrwI9AVJQJy8H3eFwWcy2JQ1H1GbtQ9GE+l
+ bHaeXBatctLsxOmj3Ksb9tvmGDMXlQ1WrUkdSYcJaUENodb18nhpDpk+M w==;
+X-CSE-ConnectionGUID: JOX9+IiJRXuY083RpWCu/A==
+X-CSE-MsgGUID: dUkhBv6mTIaD5mjlwSQN/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="68537465"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="68537465"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2025 05:50:43 -0700
+X-CSE-ConnectionGUID: 1Yl+em6jTxmQ+uifvLpx1w==
+X-CSE-MsgGUID: KNqhBHZkQCu5aHX7S1Y2Zw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="166709188"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; d="scan'208";a="166265757"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.226])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2025 05:50:37 -0700
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2025 05:50:42 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 1/4] tools/intel_vbt_decode: sync intel_vbt_defs.h with
- kernel commit bc3ca4d94369
-Date: Mon, 11 Aug 2025 15:50:23 +0300
-Message-ID: <83082d7c5ca34f7f71002f7493bb66dc89efe7e7.1754916577.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 2/4] tools/intel_vbt_decode: sync intel_vbt_defs.h with
+ kernel commit 70c33a2710cd
+Date: Mon, 11 Aug 2025 15:50:24 +0300
+Message-ID: <983d3adaab5169aa196a3cf0519e0b3b6013b186.1754916577.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <cover.1754916577.git.jani.nikula@intel.com>
 References: <cover.1754916577.git.jani.nikula@intel.com>
@@ -72,60 +72,89 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Synchronize intel_vbt_defs.h with kernel commit:
 
-bc3ca4d94369 ("drm/i915: Make I2C terminology more inclusive")
-
-Modify the tool accordingly.
+70c33a2710cd ("drm/i915/bios: Update new entries in VBT BDB block definitions")
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tools/intel_vbt_decode.c | 4 ++--
- tools/intel_vbt_defs.h   | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ tools/intel_vbt_defs.h | 37 +++++++++++++++++++++++++++++++------
+ 1 file changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 1b0d93d37394..85a160e08b44 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -1196,7 +1196,7 @@ static void dump_child_device(struct context *context,
- 	       dvo_port(child->dvo_port), child->dvo_port);
- 
- 	printf("\t\tAIM I2C pin: 0x%02x\n", child->i2c_pin);
--	printf("\t\tAIM Slave address: 0x%02x\n", child->slave_addr);
-+	printf("\t\tAIM Target address: 0x%02x\n", child->target_addr);
- 	printf("\t\tDDC pin: 0x%02x\n", child->ddc_pin);
- 	printf("\t\tEDID buffer ptr: 0x%02x\n", child->edid_ptr);
- 	printf("\t\tDVO config: 0x%02x\n", child->dvo_cfg);
-@@ -1204,7 +1204,7 @@ static void dump_child_device(struct context *context,
- 	if (context->bdb->version < 155) {
- 		printf("\t\tDVO2 Port: 0x%02x (%s)\n", child->dvo2_port, dvo_port(child->dvo2_port));
- 		printf("\t\tI2C2 pin: 0x%02x\n", child->i2c2_pin);
--		printf("\t\tSlave2 address: 0x%02x\n", child->slave2_addr);
-+		printf("\t\tTarget2 address: 0x%02x\n", child->target2_addr);
- 		printf("\t\tDDC2 pin: 0x%02x\n", child->ddc2_pin);
- 	} else {
- 		if (context->bdb->version >= 244)
 diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
-index 1af8407e2081..e613288937e4 100644
+index e613288937e4..42022756bbd5 100644
 --- a/tools/intel_vbt_defs.h
 +++ b/tools/intel_vbt_defs.h
-@@ -493,7 +493,7 @@ struct child_device_config {
- 	u16 addin_offset;
- 	u8 dvo_port; /* See DEVICE_PORT_* and DVO_PORT_* above */
- 	u8 i2c_pin;
--	u8 slave_addr;
-+	u8 target_addr;
- 	u8 ddc_pin;
- 	u16 edid_ptr;
- 	u8 dvo_cfg; /* See DEVICE_CFG_* above */
-@@ -502,7 +502,7 @@ struct child_device_config {
- 		struct {
- 			u8 dvo2_port;
- 			u8 i2c2_pin;
--			u8 slave2_addr;
-+			u8 target2_addr;
- 			u8 ddc2_pin;
- 		} __packed;
- 		struct {
+@@ -1080,6 +1080,8 @@ struct bdb_edp {
+ 	u16 edp_fast_link_training_rate[16];			/* 224+ */
+ 	u16 edp_max_port_link_rate[16];				/* 244+ */
+ 	u16 edp_dsc_disable;					/* 251+ */
++	u16 t6_delay_support;					/* 260+ */
++	u16 link_idle_time[16];					/* 260+ */
+ } __packed;
+ 
+ /*
+@@ -1321,7 +1323,7 @@ struct als_data_entry {
+ } __packed;
+ 
+ struct aggressiveness_profile_entry {
+-	u8 dpst_aggressiveness : 4;
++	u8 dpst_aggressiveness : 4;		/* (228/252)-256 */
+ 	u8 lace_aggressiveness : 4;
+ } __packed;
+ 
+@@ -1330,12 +1332,27 @@ struct aggressiveness_profile2_entry {
+ 	u8 elp_aggressiveness : 4;
+ } __packed;
+ 
++struct aggressiveness_profile3_entry {
++	u8 apd_aggressiveness:4;
++	u8 pixoptix_aggressiveness:4;
++} __packed;
++
++struct aggressiveness_profile4_entry {
++	u8 xpst_aggressiveness:4;
++	u8 tcon_aggressiveness:4;
++} __packed;
++
++struct panel_identification {
++	u8 panel_technology:4;
++	u8 reserved:4;
++} __packed;
++
+ struct bdb_lfp_power {
+ 	struct lfp_power_features features;				/* ???-227 */
+ 	struct als_data_entry als[5];
+ 	u8 lace_aggressiveness_profile:3;				/* 210-227 */
+ 	u8 reserved1:5;
+-	u16 dpst;							/* 228+ */
++	u16 dpst;							/* 228-256 */
+ 	u16 psr;							/* 228+ */
+ 	u16 drrs;							/* 228+ */
+ 	u16 lace_support;						/* 228+ */
+@@ -1343,12 +1360,20 @@ struct bdb_lfp_power {
+ 	u16 dmrrs;							/* 228+ */
+ 	u16 adb;							/* 228+ */
+ 	u16 lace_enabled_status;					/* 228+ */
+-	struct aggressiveness_profile_entry aggressiveness[16];		/* 228+ */
++	struct aggressiveness_profile_entry aggressiveness[16];
+ 	u16 hobl;							/* 232+ */
+ 	u16 vrr_feature_enabled;					/* 233+ */
+-	u16 elp;							/* 247+ */
+-	u16 opst;							/* 247+ */
+-	struct aggressiveness_profile2_entry aggressiveness2[16];	/* 247+ */
++	u16 elp;							/* 247-256 */
++	u16 opst;							/* 247-256 */
++	struct aggressiveness_profile2_entry aggressiveness2[16];	/* 247-256 */
++	u16 apd;							/* 253-256 */
++	u16 pixoptix;							/* 253-256 */
++	struct aggressiveness_profile3_entry aggressiveness3[16];	/* 253-256 */
++	struct panel_identification panel_identification[16];		/* 257+ */
++	u16 xpst_support;						/* 257+ */
++	u16 tcon_based_backlight_optimization;				/* 257+ */
++	struct aggressiveness_profile4_entry aggressiveness4[16];	/* 257+ */
++	u16 tcon_backlight_xpst_coexistence;				/* 257+ */
+ } __packed;
+ 
+ /*
 -- 
 2.47.2
 
