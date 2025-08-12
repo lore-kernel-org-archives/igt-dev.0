@@ -4,60 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 600E6C87FCB
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Aug 2025 11:59:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A208C87FCB
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Aug 2025 12:53:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0142D10E004;
-	Tue, 12 Aug 2025 11:59:32 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GPUDd5jQ";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFB3910E004
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Aug 2025 11:59:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754999971; x=1786535971;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=p8yBTAiZ2p3mQQ5AS45/rBYMBRFWVCOhGEgVFnsRmNo=;
- b=GPUDd5jQqeW1DqFNgJhWp0RRNQ68YA0cB2cWyo71LNTRO4B5pxqBC/aX
- hBRkD0akCbUZJL/Nqs0CBHmv8HF3/9Q7doXecaI9qaqsffULKoeL+FzCe
- 6NpFTOpJnC0xfVsM36u1t42Ar0vGBe4md7eDobpZOMHPykp6sjmsIHKq9
- d+LORbWtx8x+PqJoqSHCyuGi/eYqYdrEoGMsqKNB5g+S2Y58Jcp8eUVQF
- uf2MiBnQkEE73O/RDG1gZs7CISb2Bnr/8JF4W1ObKy3/DGR6j0YT6pDD9
- 9ZgNguh6vQHgyxhcnpWfXcnJ5T3CInq9cCPr+zYaDQqPSBbhNd2kpF5De g==;
-X-CSE-ConnectionGUID: nBcvvwixTI6zeeUVyY5pkw==
-X-CSE-MsgGUID: roRbrIKnT4aoO1btMFPddQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="61115426"
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="61115426"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Aug 2025 04:59:31 -0700
-X-CSE-ConnectionGUID: DoODTx89QTq0JKrvpEYbsA==
-X-CSE-MsgGUID: 7bEGCZyqTvqb1LPJDmb8FA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="189863850"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 04:59:29 -0700
-Date: Tue, 12 Aug 2025 13:59:14 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>,
- Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-Subject: Re: [PATCH i-g-t] lib/pciids: sync pciids.h with kernel
-Message-ID: <20250812115914.chsogn6zvfxd6ugb@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
- Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>,
- Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-References: <20250811130901.288178-1-jani.nikula@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id E5D7610E11C;
+	Tue, 12 Aug 2025 12:53:28 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CD1B10E11C;
+ Tue, 12 Aug 2025 12:53:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4630068869841704151=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250811130901.288178-1-jani.nikula@intel.com>
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/kms=5Fatomic=5Ftransi?=
+ =?utf-8?q?tion=3A_Change_debug_mask_for_multi-output_modeset_tests_=28rev2?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 12 Aug 2025 12:53:27 -0000
+Message-ID: <175500320756.230209.7427883972151314212@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250812075909.2119126-1-pranay.samala@intel.com>
+In-Reply-To: <20250812075909.2119126-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,59 +38,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2025-08-11 at 16:09:01 +0300, Jani Nikula wrote:
-> Syncing lib/pciids.h with kernel include/drm/intel/pciids.h means there
-> must exist kernel and igt commits where the files are identical,
-> i.e. the file is copied verbatim at some kernel commit to igt.
-> 
-> It does *not* mean syncing the *changes* of a kernel commit to the igt
-> version of the file.
-> 
-> The latest changes to lib/pciids.h have gone out of sync with kernel,
-> completely missing kernel commit 3c0f211bc8fc ("drm/xe: Add Wildcat Lake
-> device IDs to PTL list").
-> 
-> Properly sync PCI IDs with kernel commit ccfb15b8158c ("drm/xe/bmg: Add
-> one additional PCI ID"), including the full file.
-> 
-> Fixes: 26ddb59c1d5f ("lib/pciids: Add one more PCI ID to BMG")
-> Cc: Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>
-> Cc: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+--===============4630068869841704151==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you for update of pciids, imho subject could be improved,
-something like:
+== Series Details ==
 
-[PATCH i-g-t] lib/pciids: Add Wildcat Lake
+Series: tests/kms_atomic_transition: Change debug mask for multi-output modeset tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/152517/
+State : failure
 
-so it will be more informative with git log --oneline
+== Summary ==
 
-No need for resend, this could be done at merge so
+CI Bug Log - changes from XEIGT_8491_BAT -> XEIGTPW_13569_BAT
+====================================================
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Summary
+-------
 
-> ---
->  lib/pciids.h | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/pciids.h b/lib/pciids.h
-> index 666265b5f8c8..76f8d26f9cc9 100644
-> --- a/lib/pciids.h
-> +++ b/lib/pciids.h
-> @@ -872,6 +872,8 @@
->  	MACRO__(0xB08F, ## __VA_ARGS__), \
->  	MACRO__(0xB090, ## __VA_ARGS__), \
->  	MACRO__(0xB0A0, ## __VA_ARGS__), \
-> -	MACRO__(0xB0B0, ## __VA_ARGS__)
-> +	MACRO__(0xB0B0, ## __VA_ARGS__), \
-> +	MACRO__(0xFD80, ## __VA_ARGS__), \
-> +	MACRO__(0xFD81, ## __VA_ARGS__)
->  
->  #endif /* __PCIIDS_H__ */
-> -- 
-> 2.47.2
-> 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13569_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@c-edp1:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8491/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13569/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8491 -> IGTPW_13569
+  * Linux: xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c -> xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e
+
+  IGTPW_13569: 7ba7847870304158c8d039bde0d6ae35ced952d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8491: 8491
+  xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c: 27315c7bb830e06a1e63fe1fd656fda48365805c
+  xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e: fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13574/index.html
+
+--===============4630068869841704151==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition: Change debug mask for multi-output modeset tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152517/">https://patchwork.freedesktop.org/series/152517/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13574/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13574/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8491_BAT -&gt; XEIGTPW_13569_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13569_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8491/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13569/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8491 -&gt; IGTPW_13569</li>
+<li>Linux: xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c -&gt; xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e</li>
+</ul>
+<p>IGTPW_13569: 7ba7847870304158c8d039bde0d6ae35ced952d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8491: 8491<br />
+  xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c: 27315c7bb830e06a1e63fe1fd656fda48365805c<br />
+  xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e: fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e</p>
+
+</body>
+</html>
+
+--===============4630068869841704151==--
