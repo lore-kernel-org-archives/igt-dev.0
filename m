@@ -4,65 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CED1C87FCB
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Aug 2025 15:33:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7689ACA0EC4
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Aug 2025 15:48:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AF99810E03C;
-	Tue, 12 Aug 2025 15:33:31 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CGqo9ph+";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C215810E155
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Aug 2025 15:33:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755012810; x=1786548810;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=N//2MbQd6WiRx2E5YlKwl1G9wVKq9F5HOoF3wUjLyic=;
- b=CGqo9ph+0RlRRgzHEd/1iPD9Ukug6i0cKr0MiKCO24hMGRYuoQJr1KhD
- ATGEuvxWWPy/lhug7tk1CNfGnL1yadtBYcO6BCFE+rM0YRr9cjW7GwgfT
- pnBjbNqJGV0kAYp5vVD4Op2/VhXyoOQQ5zNcRGlDXlUmflSngr1s72ayT
- 2TFjTl0XmXC0j3haC8fLB+GaF61VeK3Uzn1CYbyOGfRD1aTMMlUz1O+ck
- hg+RLMs/0kSU7JhSuNjBdC5/hEQm0CxGVLGKXrRojefJ29yZTJ8tzm0UK
- 73TATSfFC5fAtO2Lqw8Vb4hI80WZoOi4Cp5CbNsZQrl1KFYMK/TP56Nx4 A==;
-X-CSE-ConnectionGUID: /xY70R58TceJdOxnyNXlxg==
-X-CSE-MsgGUID: +YoMSRo1TY+Rnvh+o2anIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57374036"
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="57374036"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Aug 2025 08:33:30 -0700
-X-CSE-ConnectionGUID: OG/0RRCTRByey+wRQLGfMg==
-X-CSE-MsgGUID: J2ya0pCRSuGoR/OyqcgIDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="165860588"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 08:33:27 -0700
-Date: Tue, 12 Aug 2025 17:33:09 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: =?utf-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com,
- zbigniew.kempczynski@intel.com, karthik.b.s@intel.com,
- Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
-Subject: Re: [PATCH i-g-t v4 01/41] lib/drmtest: Add VKMS as a known driver
- type
-Message-ID: <20250812153309.hzybgmeztq6tlvt7@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?utf-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
- igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com,
- zbigniew.kempczynski@intel.com, karthik.b.s@intel.com,
- Jim Shargo <jshargo@chromium.org>,
- Marius Vlad <marius.vlad@collabora.com>
-References: <20250807074550.6543-1-jose.exposito89@gmail.com>
- <20250807074550.6543-2-jose.exposito89@gmail.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1651C10E03C;
+	Tue, 12 Aug 2025 15:48:33 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AAAF110E03C;
+ Tue, 12 Aug 2025 15:48:31 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7643956599970174138=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250807074550.6543-2-jose.exposito89@gmail.com>
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fvm=3A_Exte?=
+ =?utf-8?q?nd_coverage_for_bind_with_invalid_flag?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Christoph Manszewski" <christoph.manszewski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 12 Aug 2025 15:48:31 -0000
+Message-ID: <175501371169.230491.16271289722152818334@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250812130142.37988-1-christoph.manszewski@intel.com>
+In-Reply-To: <20250812130142.37988-1-christoph.manszewski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,101 +37,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi José,
-On 2025-08-07 at 09:45:10 +0200, José Expósito wrote:
-> As we are going to add VKMS specific tests, allow to check if it is
-> available.
-> 
-> Co-developed-by: Jim Shargo <jshargo@chromium.org>
-> Signed-off-by: Jim Shargo <jshargo@chromium.org>
-> Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
-> Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
-> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+--===============7643956599970174138==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-> ---
->  lib/drmtest.c | 21 +++++++++++++++++++++
->  lib/drmtest.h |  6 +++++-
->  2 files changed, 26 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 436b6de78..943ea8dbe 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -223,6 +223,7 @@ static const struct module {
->  	{ DRIVER_V3D, "v3d" },
->  	{ DRIVER_VC4, "vc4" },
->  	{ DRIVER_VGEM, "vgem" },
-> +	{ DRIVER_VKMS, "vkms" },
->  	{ DRIVER_VMWGFX, "vmwgfx" },
->  	{ DRIVER_XE, "xe" },
->  	{}
-> @@ -295,6 +296,8 @@ static const char *chipset_to_str(int chipset)
->  		return "xe";
->  	case DRIVER_VMWGFX:
->  		return "vmwgfx";
-> +	case DRIVER_VKMS:
-> +		return "vkms";
->  	case DRIVER_ANY:
->  		return "any";
->  	default:
-> @@ -971,3 +974,21 @@ void igt_require_xe(int fd)
->  {
->  	igt_require(is_xe_device(fd));
->  }
-> +
-> +void igt_require_vkms(void)
-> +{
-> +	/*
-> +	 * Since VKMS can create and destroy virtual drivers at will, instead
-> +	 * look to make sure the driver is installed.
-> +	 */
-> +	struct stat s = {};
-> +	int ret;
-> +	const char *vkms_module_dir = "/sys/module/vkms";
-> +
-> +	ret = stat(vkms_module_dir, &s);
-> +
-> +	igt_require_f(ret == 0, "VKMS stat of %s returned %d (%s)\n",
-> +		      vkms_module_dir, ret, strerror(ret));
-> +	igt_require_f(S_ISDIR(s.st_mode),
-> +		      "VKMS stat of %s was not a directory\n", vkms_module_dir);
-> +}
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 27e5a18e2..a9542dde2 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -55,14 +55,17 @@ int __get_drm_device_name(int fd, char *name, int name_size);
->  #define DRIVER_MSM	(1 << 6)
->  #define DRIVER_XE	(1 << 7)
->  #define DRIVER_VMWGFX   (1 << 8)
-> +#define DRIVER_VKMS	(1 << 9)
->  
->  /*
->   * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
->   * with vgem as well as a supported driver, you can end up with a
->   * near-100% skip rate if you don't explicitly specify the device,
->   * depending on device-load ordering.
-> + *
-> + * Exclude VKMS to prefer hardware drivers.
->   */
-> -#define DRIVER_ANY 	~(DRIVER_VGEM)
-> +#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS)
->  
->  /*
->   * Compile friendly enum for i915/xe.
-> @@ -135,6 +138,7 @@ void igt_require_i915(int fd);
->  void igt_require_nouveau(int fd);
->  void igt_require_vc4(int fd);
->  void igt_require_xe(int fd);
-> +void igt_require_vkms(void);
->  
->  bool is_amdgpu_device(int fd);
->  bool is_i915_device(int fd);
-> -- 
-> 2.50.1
-> 
+Series: tests/intel/xe_vm: Extend coverage for bind with invalid flag
+URL   : https://patchwork.freedesktop.org/series/152831/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8491_BAT -> XEIGTPW_13569_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13569_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@c-edp1:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8491/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13569/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8491 -> IGTPW_13569
+  * Linux: xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c -> xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e
+
+  IGTPW_13569: 7ba7847870304158c8d039bde0d6ae35ced952d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8491: 8491
+  xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c: 27315c7bb830e06a1e63fe1fd656fda48365805c
+  xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e: fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13575/index.html
+
+--===============7643956599970174138==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Extend coverage for bind with invalid flag</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152831/">https://patchwork.freedesktop.org/series/152831/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13575/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13575/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8491_BAT -&gt; XEIGTPW_13569_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13569_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8491/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13569/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8491 -&gt; IGTPW_13569</li>
+<li>Linux: xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c -&gt; xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e</li>
+</ul>
+<p>IGTPW_13569: 7ba7847870304158c8d039bde0d6ae35ced952d4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8491: 8491<br />
+  xe-3524-27315c7bb830e06a1e63fe1fd656fda48365805c: 27315c7bb830e06a1e63fe1fd656fda48365805c<br />
+  xe-3525-fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e: fa2a0dc7a379f3279cb68fc59e1b355e3530ae9e</p>
+
+</body>
+</html>
+
+--===============7643956599970174138==--
