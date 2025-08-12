@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65F6BCA0EC4
-	for <igt-dev@archiver.kernel.org>; Tue, 12 Aug 2025 03:52:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94374C87FCB
+	for <igt-dev@archiver.kernel.org>; Tue, 12 Aug 2025 04:50:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B02110E0BE;
-	Tue, 12 Aug 2025 03:52:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 27FB310E582;
+	Tue, 12 Aug 2025 04:50:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="askeli6N";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KJi7CDI0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC7B210E0BE
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Aug 2025 03:52:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E616F10E586
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Aug 2025 04:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1754970763; x=1786506763;
+ t=1754974247; x=1786510247;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=Zl3iPg/lrB6n/HESrhw6a2wQB6ow6eFE9StEeWFvxUc=;
- b=askeli6Nhay/TK34V0i2TgWilXgAjwxjKm6Vx56t7skH/IgFCKGSvxkT
- GoZ/Umc+9MsYLa1CwK7tSPCx8/MjF6ofxaAK2WUmtPAp0thiXKck1GYpE
- pl8q6cDdyP8IfFOxU1E3N4qKlA0snr5LosRQJe5WPj9nBY1fq8Ggwo4fu
- 6ObmU5XlF7WH/GtRyXSI+LuLjFPh+vZ8ERUjnXTQhnlYYZ82bjRL0Ad4C
- d2xOpSK1aZ67vGn4ffXvuUi8Nj3M9zd7qtwg2GBH93FfbuYNoN6L0khH7
- mlUzymJwZpdQTztdCTD+iaDe6mgAagOt7/V1EdabH1SbEfFKZkXjLR2hc A==;
-X-CSE-ConnectionGUID: LJb3pIm8QoKSQrVIzosFBA==
-X-CSE-MsgGUID: /KiXeWPOTUuZ6ncZJjzJTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="44817501"
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="44817501"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2025 20:52:42 -0700
-X-CSE-ConnectionGUID: 2FgD/XdzT9eg31d1wVIY2A==
-X-CSE-MsgGUID: ohoYSvsVSEyq0GnZ2vzO/g==
+ bh=k30jRwK+T3eyKf3NJ7Gj0M35Rb0iHLlDF4adNkFbeE4=;
+ b=KJi7CDI0RYtqL6n7ICo5nKrGuoPRQ0VHjkXif5yFOWU3tESO7TtOiDZX
+ 8vJrV7yjRQga12biIa0Tr17dplpv0rgjf73JDFWX52SOfzme+0rbua4ND
+ VE58y7cz522v2+fByiRktTSsvfk3BGzxGQvBcZOQPp3yNF4DjBTtC3yuV
+ E3vMQ3nT7AwetMGDhlJyd/uIRX4+1Ec+DFEYKDMsb5U3MYj5vkZrsNcZ5
+ yrWfrDbMbWQb+CYBee0ofCCmj1pvxiq5gE6XxO5JvX6ag8UUpNESMTBRA
+ wEVlp2eyzJuD+UeSZ102dSSlzE2w154tPYXgzCi5UbArUdWn074kaMPW8 w==;
+X-CSE-ConnectionGUID: vZuZqvQeSk6orTvOxDAAfA==
+X-CSE-MsgGUID: loP62TsgQwqdyabgQq7EHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="57106373"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="57106373"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2025 21:50:46 -0700
+X-CSE-ConnectionGUID: JUH+8wOWSHeUkIDrEd0oKQ==
+X-CSE-MsgGUID: kiitUlZoScuPinnKzJSKtw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="165280554"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2025 20:52:43 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; d="scan'208";a="170541797"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2025 21:50:46 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Mon, 11 Aug 2025 20:52:42 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.1748.26; Mon, 11 Aug 2025 21:50:45 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Mon, 11 Aug 2025 20:52:42 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.70)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.1748.26 via Frontend Transport; Mon, 11 Aug 2025 21:50:45 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.89)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 11 Aug 2025 20:52:41 -0700
+ 15.2.1748.26; Mon, 11 Aug 2025 21:50:44 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nD0XYRRnYKqa/kl2e1UElVr28dqilt/f8g9NiFi/VwCdnO5Pvg6YXKmlMD2LhcrXkUWarfQvIVEyb3FGnKDa9pick8KlKz9vqMR9ubpUwDzbracZKdL1nFk6EeKf+pUXYBQj15VN1rRCWEUtcE4XSN6f8H3emXLo5O0eYr1vEI3NDcpMN7racEIAa2qquU34UfVzB1NqMRfHE/Vw8svNieDigThZw4BQ/t6/2NEabmzrrPCCTQQlHnfQXDlKKkdGdUkr55ze3chidb6/5jnqmPAgWqSTL2+I93frwNkgXgkqX1J0mXV7gqrLvnV9onInyPytYRSDymedj1g0gUs1jQ==
+ b=VPV9syxXUu2OgYO709UZzO66CzzxI/JuM9XmDXkMXf1m7jSnIPzGY0C5tVMbZl/ghKv2T9TVt6aQDwPbGPpW0qB50NKth0EvnJ7hRJWxREm6IMuj/p7WIJBGT7lFhK0wmXojj8nv+J2lMY1206rKxmRFnOwDqNDFzS0QSb8tDAWrVPwtI5mpUIq+AdscOR2hexlabK+0Tr0L3MfVDn9shRTkfQkwVovkQBLZzA+XDPvYfPnCXM0GOghGo3DlzHJ4eY+Jhqiz/buBVe9vZTLIC9iqRFrzdMMcgW+4XOYQd+J8CqJEi265hKLtBnYX00IV8ANzRudfhHUsy8oiNYo6uQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/DothHWDPo5t5kgsBAAWIXuEbDB5B6xOs/uyveBaIdU=;
- b=e9zvynLYmshRoEbDEyRyoWfWDoUzBGiutgWQ2S0xwOsRycf+dsIR/aGaGqQaSTSclCyx4/7JGCWpPK+E/g51pu6IM9xhaoEd8MTZxdi/l8o9uS9FQ5+mtKj5yEhmmJl6uLqcGa0t+n20m2IBEopOPqeRw72Fl8aWHubfyCqimcBe3/i+fXTk6BYumKNnl+0GiaXMfok9FFKP8s0n9y/yQ9zhJibRh90u1S8nZkRNTYU0LCT08oAve99erAjEq52c6MRXzkjrbyPn7kCteT+DsLuSYxsH4kM2gTOt7a1FDqz3F5JtEugYdhFwXS+loxXD9JRW3TmMPjpr6tyVx5XofQ==
+ bh=pY++BU+6pxUJKMGqsjuzI6obGnVkgMEDi5myGXhRngk=;
+ b=d9bAC/MRBb/anHbnQfyUzqbbB737yqC+98SdZYReoSDPSNmnBZWfPJzFAxq1ehN9SHYkMj/Lgu7IFf10arcAMYrh9OxSGs5jEx/MoFzGikC+5GnpbkC3dZQyCr5bBxco3r2XEpt9XySjnqJMB0afZHe9qdc7WYYALqF/liB/3wSgbYlN2AQbUrUKXphEztqnToANZ7rxaHXE8lAYeuiSEiBm8HGmnG5pYP3VqR3mR+0DenCSWEmYinsWO5R8o5JQFzaoCwQuNSENVQIVHB5k+jrnjYMQkLpkpiSJ30Y4IG0h1VV9eSZh2ydhPj/nTM7ahAUo4Ikm2nXcyKd9kQqBIw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
- (2603:10b6:f:fc00::f13) by PH8PR11MB6829.namprd11.prod.outlook.com
- (2603:10b6:510:22f::8) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:f:fc00::f13) by DS0PR11MB6352.namprd11.prod.outlook.com
+ (2603:10b6:8:cb::5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Tue, 12 Aug
- 2025 03:52:35 +0000
+ 2025 04:50:43 +0000
 Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
  ([fe80::7aab:2a1f:f728:eb01]) by DM3PPF208195D8D.namprd11.prod.outlook.com
  ([fe80::7aab:2a1f:f728:eb01%5]) with mapi id 15.20.9009.018; Tue, 12 Aug 2025
- 03:52:34 +0000
+ 04:50:43 +0000
 From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
 To: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "B S, Karthik" <karthik.b.s@intel.com>, "Thasleem, Mohammed"
- <mohammed.thasleem@intel.com>, "B, Jeevan" <jeevan.b@intel.com>
-Subject: RE: [PATCH i-g-t v5] tests/kms_content_protection: Add force HDCP 1.4
- subtest
-Thread-Topic: [PATCH i-g-t v5] tests/kms_content_protection: Add force HDCP
- 1.4 subtest
-Thread-Index: AQHb8koVohfN/RZfEk+BjfY9BE+CTbRekxOg
-Date: Tue, 12 Aug 2025 03:52:34 +0000
-Message-ID: <DM3PPF208195D8DA8EEFF02673EA071FF26E32BA@DM3PPF208195D8D.namprd11.prod.outlook.com>
-References: <20250711095249.1622000-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20250711095249.1622000-1-santhosh.reddy.guddati@intel.com>
+CC: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>, "Nautiyal, Ankit K"
+ <ankit.k.nautiyal@intel.com>
+Subject: RE: [PATCH i-g-t v5 1/3] tools/intel_hdcp: Support for enabling and
+ disabling HDCP
+Thread-Topic: [PATCH i-g-t v5 1/3] tools/intel_hdcp: Support for enabling and
+ disabling HDCP
+Thread-Index: AQHcArBc1yImBUMhoEeoBpxBBTmkxbRedJMg
+Date: Tue, 12 Aug 2025 04:50:42 +0000
+Message-ID: <DM3PPF208195D8DFA148AECA974A4C7312EE32BA@DM3PPF208195D8D.namprd11.prod.outlook.com>
+References: <20250801064701.911143-1-santhosh.reddy.guddati@intel.com>
+ <20250801064701.911143-2-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250801064701.911143-2-santhosh.reddy.guddati@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -93,79 +94,80 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM3PPF208195D8D:EE_|PH8PR11MB6829:EE_
-x-ms-office365-filtering-correlation-id: f0d198c0-0b14-43d8-dd7a-08ddd953ac03
+x-ms-traffictypediagnostic: DM3PPF208195D8D:EE_|DS0PR11MB6352:EE_
+x-ms-office365-filtering-correlation-id: c7fe1cc2-9445-4334-9eef-08ddd95bcb2b
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?2+vMg1hGTPvlMcbaJ/SEGdk+sAfCh6v+etAU+/hkr0sSiH8C3GXZbVQOZY6k?=
- =?us-ascii?Q?TOKV7jUvWegjT7A24yWki4+wqReoo5lIMu2ebv1KnHHVK/pX1ugPfI3wAAzm?=
- =?us-ascii?Q?0Acteob2HXWPFQxwPAGer5TB1G93KQdk4QA52fAQAR/t3gmGzbkVOlSDlIMs?=
- =?us-ascii?Q?v1QO5K9Pju/QbHYDcme4odM3/3YgO5xWHusPTy6jzm6iDTh57lxzo0U4Fy+/?=
- =?us-ascii?Q?LCvuSEkMZ07osYMo/JUxgSJCLfK4/420DUCQPkTLMR160HoX4LJwB1dOxb1R?=
- =?us-ascii?Q?sc9cUasKVB94yccSMFA3j5xbiwbSEdq6zC8AaXiLbSGbCCE9xC2xeGH3Lyzt?=
- =?us-ascii?Q?tZwwpE11o7r+QnS8QbloYBJ0LlT2aCzt6uVFq45KrWnNUYr1IT3UVR3ogX9h?=
- =?us-ascii?Q?Cu/nX1nAI76Alqtx8F2/EjmIGkGa8RQ3jWtI7XWq8hEJh6CYyjQGC02oY8yN?=
- =?us-ascii?Q?sWaXfuAKSIZuJxobLUt+6CkMfaQGPWz+4esEn65jiKIPWl3BfPpDBQGsLJ11?=
- =?us-ascii?Q?mQ8v+daPgcvqtAV/9AKcJcRgK6Tz55s1tpGemInLj+SGsPSJrP4V3Mm3xRQc?=
- =?us-ascii?Q?ln5ZZhCTz2lhyiYXLUhtO+juGbWPbSpltvcoczTuPv6G47BRRp3lJ88B+tpO?=
- =?us-ascii?Q?NaahL04wTioBmqyOqnouW4E0zjFpwT3S28Jb8XpQwjgCFsB21lOPJgn06t0Y?=
- =?us-ascii?Q?4zHATiJT08MxQJeW6bJ+Pziyym0kCiTmhi3wjtfihIMf+fn75Ag72/48gZF5?=
- =?us-ascii?Q?ReTcmTg+MIt/lY1/TO3WoTW40OIanPlJ/YBeDoquuyt8ndAd27rE0bWkSRX3?=
- =?us-ascii?Q?3O8RCmA6Q26e5JRpMTR4IFVKvU7vITm8x5OVNkF8KMcznckt8ystuH9QRHdN?=
- =?us-ascii?Q?X++f20xF2qdQmhLjiHfqSpFz6K2irnV4cJwwOO8FNZRF4UMvyiGa5n3ofNsb?=
- =?us-ascii?Q?HwxSAsVRhr9waDhH27Hn9BoiVebD3ZLRuvnrXB3+bHIv+q2AXCMlzT87rsB3?=
- =?us-ascii?Q?ono6aeN57jQ8JDGX2dVXg+1/bb52Fuz4vZxDOiayyaJhGsx3QvvOJanrgTTS?=
- =?us-ascii?Q?Bkq/+HH55GXq+H5vVhUjUb1HC3UZU7W0s1yebFTieRwuqtQgJtQ3D0RoCQBr?=
- =?us-ascii?Q?fQ/xJ2eLfnX0M4p0GUKzdfJxrbwU9AsCaLBVe6oYPmlPVNd42E5sAY+C4Gid?=
- =?us-ascii?Q?kEPIpsBnfYe1118/5JOKgutBMyhGIhHxV5i5QcqxGULaIlqYxPb6+1iL+MK0?=
- =?us-ascii?Q?Y+28KF2U/KqavdVgRnN5yFlN8ljU5+iaiigpZhHlKKLfQHxwc2qQ56z8u212?=
- =?us-ascii?Q?hDmzzQf3h/kiPCsFAXc4qdoZclzM+LqwQzE8bee45okLkkD3mK3jw/Cpd4Q4?=
- =?us-ascii?Q?f8HWz+fPPoiMGML17At3I92JgETc88BFGDy8A1QmFnEWGBLzSmE/JyPHTxaX?=
- =?us-ascii?Q?jVUG0rIvwk3Mxetp/59pjhez7YKVNxxUMp4UuU0KoTm4fHz9R8aZRA=3D=3D?=
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?+HZDqZEnGXi3OZMuIW0go69f1hMduBWVNT/B7EuHH+c+ascTd1eio9YJB1TI?=
+ =?us-ascii?Q?qXU2qfIqhZlfFjt4s7CLqCX+loetbLvdVoK2J6D+PgjIcpD279/nnVENWxKd?=
+ =?us-ascii?Q?cNOrKX0O2+kdrXKmEMWYKd67EvTuauUAJIf7ku1VUMw9+qwToL+vzH/GTXTF?=
+ =?us-ascii?Q?rjlVyI/ygwZuqkV7nAdG0JGqeVSrhdxzu6VVvEVAugAh6hszI8zKNUnF5L8z?=
+ =?us-ascii?Q?4FxYvCm5wWcO3aavsRAiVgrrvX3FnJr0bpcfHwfyw5uUPAtccc7xNNiaI1q7?=
+ =?us-ascii?Q?kG9pp5elrA2/oifGq8/WNsUwFyHfK7E/L5/D7QTeZkPviXVLfgv+csAWKWJ1?=
+ =?us-ascii?Q?e/5wALWGEPrkfVYoMJj1lEsNrseXyg8ucwq1//yxBZfilVHCvJY8bFqCB1ee?=
+ =?us-ascii?Q?3XyUp8GGHIvCN+R3wG3vqWEYZLwPT0StZ+5wEJkwFvGuXNMQ9ccrzwj526Z8?=
+ =?us-ascii?Q?ZAdpe8mxWVyw54MPztg1yvIi5W14UC2NefiPO635mtrRMBgqIcYtmFPIkDDu?=
+ =?us-ascii?Q?meAtNiA8n1IC8ZnbWanwuH21OxcN0ldu5n6Dft6Sj51QnviAUO1kRrlCgn0r?=
+ =?us-ascii?Q?trMEZYoD+dQR3yIfqCUvf00JQwoIjSwLZlpoKpqhOt86C4oJwnsQwNOMRWL1?=
+ =?us-ascii?Q?5n/NcmBIQkcFjbb3l4arC5X8S5j1UONQ5TnytOzYr1sfVCokA2AxaCEzTbTw?=
+ =?us-ascii?Q?VKCUAaQIvTpLJaBMLgQ/ODfmFZAW/jRm448Ly0XP4C0+vFaeBeemEq2FK/oi?=
+ =?us-ascii?Q?Ky3CIXpNcS5/POUn9OrNXNTsUsplleqzcM9UK/tRXUmPpfgEDwOoVbbfOgqH?=
+ =?us-ascii?Q?c7x34894S8VYwVxmGKNiSsQ4rmZkE76xr/eLNs3bxKWwWUXIsKNYLFCvmZOA?=
+ =?us-ascii?Q?OK14YSkwem7yvMz2z7Sbc8XY351GQ+8/DbavCECwh5cN49IbKeYG0sccFKSP?=
+ =?us-ascii?Q?5iAj9LKXdHLU1CCenEqqlAv8DdltML7QF0cEN5vlWDttMPBiog1lhcZutmTi?=
+ =?us-ascii?Q?a6dwiyBXybig2xlMdUGPicrfP1Th8xuaq3+k2MMeGu4WzIUQaazYGO0ywVEL?=
+ =?us-ascii?Q?PUESGlV3C9QL7VvHbytfin4Ob/AN9GZrSQpByMTsHP7lwXJBs2OvUq1D9OoL?=
+ =?us-ascii?Q?/YK/btRDhvC1nSNNzzP33+AawY/AQIh1BBiNEoLEVTtPgg65FKXHp9nWB4wP?=
+ =?us-ascii?Q?MTQG+NJakDBxX4irTcArWUQQ7t6NyYRbo1+A1UyYdUA7Lhwt/DImhG9Q+iib?=
+ =?us-ascii?Q?WpXx68pYlUfxNpIM57CTkqM6ti4wPK2qRZ14/u5UVg6gPHcqMx0eVqeBkKut?=
+ =?us-ascii?Q?8CMfCuci8YCMA8PgzvW088/CPS+4moSZyVVAyTYF7N2Jk2xB7+Wg8tIJgqa7?=
+ =?us-ascii?Q?HYW3EmCIqkI2ajNbnkE0NKKafsKLtzUATfjAyX7XKXSIlCNbKAkprjQZsqhS?=
+ =?us-ascii?Q?0sNa/uxZo0jE31aqm6fcTa24VoKDU52RFYyQERlxtDbiuXoIdmS/3c/hNLta?=
+ =?us-ascii?Q?7/r4d/tV2a1KLkw=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM3PPF208195D8D.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(38070700018); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?TIyp5gCZIvozzbpXwUKpq1IM4D1UdPbRMqva8OxcE1sST4DszB7Zk8oQgZew?=
- =?us-ascii?Q?/PWzlvBByyuuLxvU678omNeM1mpwLB7/bLrEqiwxOi63WscJU2mZ2Pb/4Ggn?=
- =?us-ascii?Q?nIQAE053DM9Kz1ITT/0WZtpws4RQG8WBVrRbDZrj8ea3vym5afl+FqnrXn8V?=
- =?us-ascii?Q?8ELv0qq7dzxlHO2jG8OWPTTurvs+A17bK8LzCumoO4+WlpISLWKKXf8delMk?=
- =?us-ascii?Q?HJYuC9+amFU9HgE8iDe5lrjrfPJjjpOMgbNWx9M24INoalWIKeK3vjep+Qsz?=
- =?us-ascii?Q?I5Eu4HZCG4D4bB9UCxBpiKZLRWJGHTu4mOxpK6dbTAD7eOCGALOEyvGkK1eT?=
- =?us-ascii?Q?nL/wGDyfxOaTd8bG9P3ko/T81InEOW6f+0lAM3TxNBHEGcWmNzsH2ZLex08G?=
- =?us-ascii?Q?zksbqEOQs2hud+Ld59qv/Obl+XlEiuMkepQGHboAgWs8TvSP6pCCgU05Sf33?=
- =?us-ascii?Q?SlZLB/+Uw9btO+FB4IOb5N58gVdGmeis0azQp+xR/gdNPvngx12P5jDVziwk?=
- =?us-ascii?Q?tTWIsJWX+6/ycME6QsIj/ZzmvJA3v6bNhxrET58jK3U4OLQ7ymiV3q6f+AoL?=
- =?us-ascii?Q?Cmq3U2DI0eRiWlWUXx6TPcqy2DCJI89J1/YAyPJiFD/qTmU0HpwqxDOd776j?=
- =?us-ascii?Q?Cs5XaJj5/hDV1r7vK2dbNBTTDVEx3eiXYkS/I/WbACbTMrG+gcop+7pf/Krz?=
- =?us-ascii?Q?ZE2D4E9y/azqa4bVkXX6/v3TWcUMJA1vYJrZjAWUjxyrZ/JVfzEfiwxnpfFI?=
- =?us-ascii?Q?Y9rpjvO8H5bhjlKVGg5BBYt74pQd3ftbO5I0or5qB/fVEm+iWjEYjEOkzcrq?=
- =?us-ascii?Q?0gQimi8UHwVJAO/XT5KOXNmGcgBSk0fpSS7oGQ5wrus1k5PS2mn31EAk0dOy?=
- =?us-ascii?Q?hSU/BOY/cJVMU11MkSQzCTBEef7BJ6VGfcws7RGWihlCabQN2D+3g/pkz5m6?=
- =?us-ascii?Q?UwFYZCpkNZ66MUQ2UF4c0PCp3AtFaTGiuzZeZfOYAB3FrJy71/r+/nzHmHXA?=
- =?us-ascii?Q?O2x/r2Ti1CK0KkuR/wANOYerOy8tRnKDPW7iu85z3Aedr48lXfnq5WB6v097?=
- =?us-ascii?Q?1PEWb6VHQ66I4W1KYfEkcVXS7OgNGKOmOKUVu3xN5DWzQkTUsjqhV83BbZiP?=
- =?us-ascii?Q?cPohKAy1jrbK2dY+rJ+ee05ZHDAzyF0WOvd/TycvSZ9nNUyBANCCYtVpI9V1?=
- =?us-ascii?Q?wxyuT13Cn16wyPMMibRAvwLuNJWANkoIgwV2QlLe2XfDl/reIJe1KNt0acgz?=
- =?us-ascii?Q?Rm/i6ldMJzOa/EfCR3npiEIWy5iMnNqkPdxu0xA2721ddFZv4qG4/i9pm8io?=
- =?us-ascii?Q?2N8Bsd/drFnLzm+ut666q3H/Et0Yj6GlYNnhvYagh8YM0wdpF3T+LMcKmNVS?=
- =?us-ascii?Q?2JzrcgSsmqlxQRrLiiQyxHfkieO9kIraLI0n6eVZCVCFqJI3IJG+0L6//k26?=
- =?us-ascii?Q?rDJz0zgmzLToMMbWkFU7Gvf123heEFfHZvWn7ePYn/OCWna9LbWiBfbvnYUh?=
- =?us-ascii?Q?WPKG6/bz0OJ+vA8buYh4tA8t/gQHXpsFFnsEp1r465pf+IW9QszYbSAFewJw?=
- =?us-ascii?Q?iiy6zQ2gfE+gtAenBA61mbO9KjB2WJ7nOx1o26s2?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?FzBWRvVYdhcq2mQ7NnHFAZtml2lY0d+pIPQc9gfE7iH3NZe0ylb/d4BLNZc2?=
+ =?us-ascii?Q?SO3nKmZX/MstWJSE5xExZeiL6/5aJ1NNiAm0xt3OEUmGDiAvpgsxG3xmFcaO?=
+ =?us-ascii?Q?QqOQ0APOWTfNr6Gv7ATEultY14d6QQakLJmvG+kU90Zxo/ZwvwtGGgfTdJd1?=
+ =?us-ascii?Q?QxRaOdkRGT18UB1LxIPjffVGgp6jWbqYjOr64gX0R3Hg3V18ENsAJykQY+5X?=
+ =?us-ascii?Q?d85uvPvcb4JRpdi5TC0YbkAAhPPWMFIunLDdqdAVUHUkIf3g30NfeDGI0doE?=
+ =?us-ascii?Q?XdOk6PTq5Mjhd86ZXH2nokWpJCMX0M7BAUIfGQfinkF/u/Eai+ZDupKfN+hu?=
+ =?us-ascii?Q?xd89aOrA4COAdqNGj0PQuc75cx/yfo4M31HLOvGb8oaKktSd4gJmRiOzGJbN?=
+ =?us-ascii?Q?YuJS96XODRpKAZWg7fBx7s3pyyIe1pBMMzR5SlqcEtyS4Kxss07xUK3WTxNp?=
+ =?us-ascii?Q?KFRh23prGvgckwzYiFvarbNLnEY1lgyS2wDAjfNU5QR48GAC1q1Dd/Oqk8to?=
+ =?us-ascii?Q?ElhpT/+aLvKXJ4tbUBYnjnOuKlfUtV76XPThXuLkhdhLsEgUf5kLabqu1fdD?=
+ =?us-ascii?Q?SKIlvtD6grhkJZfm+fgZLrC+kjG8JTr2yjl6k3lktAgv+ebNAIPQ14HiAKyU?=
+ =?us-ascii?Q?A40zMGJxd+F+kwVoSQi44a/1CGpNYPYFhDKXBVhQ7Zqj1F17qnJZkrwpAOxQ?=
+ =?us-ascii?Q?jrBldB8kM640xftFqdE6hBvXLFdh/4d9/4tQn8YFoc2k2yJNefz70dF9VP7o?=
+ =?us-ascii?Q?gDoGiL2UyPsU/TJO6wiQlSdeLfJw9lHAgWLnZ8K8jdJ7TuxauATmdG243ijl?=
+ =?us-ascii?Q?h8UqkIQKEGVmfJKPg7drxVrBpvqG1B1koXvXOhfWGxdqHxLcLN18tlqKd3iU?=
+ =?us-ascii?Q?84pOAQ8KnXpgcCyORv5RNcSxQy/P3EIgPk0s7UOXpN9sKzp08OAC034ot7op?=
+ =?us-ascii?Q?W+/Ir2gXLSHtk0CzP4aGvyabEzknJKBtbiG0VbcvcW91VdhEYEcBLfUME5Z+?=
+ =?us-ascii?Q?cPI+kVPL2yb23SyToLT2KNjcauTBh8QAxx7lpUM/JTAmUQvTn4hhh98x6lVj?=
+ =?us-ascii?Q?1FT1RvcQLJvOo+yro4C23DIQzTc66ae6u4x/uW7ay0CDcTSEF+JL1zCpnKz9?=
+ =?us-ascii?Q?WowqSneUJyzja4wGr51zkBmIXLuddDY5ywil5ooMyOWofEiCbDLXeLDrVqDK?=
+ =?us-ascii?Q?4MO/KyrlxI6Dk6ABPFYNNQks6ldTWVstKtI43byLNlzpzBfu7SnBLHgIAOVA?=
+ =?us-ascii?Q?3+pK/qyfCbvWI5zuptX0a3AYkCNMdzIFa+Lw7lZN3F2grb4C+T1u8KoE+vQd?=
+ =?us-ascii?Q?1UllcEOXnBV3TjRvMmfRTxVgLUdqLLVltw0sCLvt7xqj+vup849Cj4qnCiZc?=
+ =?us-ascii?Q?7+PE2K8rj3Vel9TIhWw7BwJl4fz22PdX21d/ki50VCQ4ocDugAy7f5rcKyOG?=
+ =?us-ascii?Q?d2DMulH65o8bu6FUWomDnff3IzWGFnuCmKrmPLGga/I2Qpx2Y0YEYCoziDk+?=
+ =?us-ascii?Q?mEEgqaFuEMMEp+hIfiWYfuN/DZxIsf3cnWTNHI3kecoflTPC9U/e+ngJ1mK7?=
+ =?us-ascii?Q?wvIrE+mTFnK+mbarx4vPP3gnuBXct3uv8bFdwZXC?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DM3PPF208195D8D.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0d198c0-0b14-43d8-dd7a-08ddd953ac03
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2025 03:52:34.7521 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c7fe1cc2-9445-4334-9eef-08ddd95bcb2b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2025 04:50:43.0155 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: m5Sc4asTXyrPJlAUgOn3KGFwMqz8w7pfIjde7nFlznVd6AYZwPUfmKYTkWh/A12CeGWgtiAXdZ7qhCGdDHNIXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6829
+X-MS-Exchange-CrossTenant-userprincipalname: J9dXZfYgcckuLrcZKm8Jz/zMlYz4rZ8XUfYo+QeiLqNKZWDf8CiPjjTUDKUm+EYsFbnILp37m+yRUSjQrFxzgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6352
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -182,401 +184,263 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-> Subject: [PATCH i-g-t v5] tests/kms_content_protection: Add force HDCP 1.=
-4
-> subtest
+> Subject: [PATCH i-g-t v5 1/3] tools/intel_hdcp: Support for enabling and
+> disabling HDCP
 >=20
-> If a Panel supports both HDCP1.4 and HDCP2.2 versions, the kernel will al=
-ways
-> choose the HDCP2.2 protection path and if this fails, then
-> HDCP1.4 will be tried.
+> Introduce support for enabling and disabling HDCP on specific connectors
+> using command line options.
 >=20
-> The subtest uses debugfs support to force hdcp1.4 on the connector and ve=
-rify
-> content protection.
->=20
-> V2: Use hdcp14 debugfs for all the supported subtests (Suraj).
->=20
-> v3: Create new separate subtests for hdcp1.4 and hdcp2.2 for all the
-> supported tests. (Suraj)
->=20
-> v4: Add -hdcp14 suffix for subtests only for cases explicitly forcing hdc=
-p1.4,
-> retain original subtest names (eg atomic, type1) for default behaviour. (=
-Suraj)
->=20
-> v5: Add missing lic-type-0 subtest (Suraj)
+> V2: Refactor logic, simplified frame buffer handling, remove update_displ=
+ay
+> and integrate its logic to igt_output_set_hdcp().
+
+Quite a lot of issue with this right now
+To begin with this just sets HDCP either enables or disables it which is so=
+mething the igt test already does
+the point of the tool would be when it plays HDCP content continuously and =
+the then HDCP Status can be enabled
+and disabled at will. So this patch will require a big rework
+
 >=20
 > Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 > ---
->  tests/kms_content_protection.c | 150
-> +++++++++++++++++++++++++++++++--
->  1 file changed, 144 insertions(+), 6 deletions(-)
+>  tools/intel_hdcp.c | 129 ++++++++++++++++++++++++++++++++++++++++---
+> --
+>  1 file changed, 115 insertions(+), 14 deletions(-)
 >=20
-> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protectio=
-n.c
-> index 51fc1d3be..c4658ebf4 100644
-> --- a/tests/kms_content_protection.c
-> +++ b/tests/kms_content_protection.c
-> @@ -46,6 +46,9 @@
->   * SUBTEST: lic-type-0
->   * Description: Test for the integrity of link for type-0 content.
->   *
-> + * SUBTEST: lic-type-0-hdcp14
-> + * Description: Test for the integrity of link for type-0 content with H=
-DCP1.4.
-> + *
->   * SUBTEST: lic-type-1
->   * Description: Test for the integrity of link for type-1 content.
->   *
-> @@ -65,6 +68,11 @@
->   * Description: Test to detect the HDCP status change when we are readin=
-g
-> the
->   *              uevent sent with the corresponding connector id and prop=
-erty id.
->   *
-> + * SUBTEST: uevent-hdcp14
-> + * Description: Test to detect the status change when we are reading the
-> + *              uevent sent with the corresponding connector id and prop=
-erty id
-> + *              with HDCP1.4 content protection.
-> + *
->   * SUBTEST: %s
->   * Description: Test content protection with %arg[1]
->   *
-> @@ -74,6 +82,10 @@
->   * @atomic-dpms:    DPMS ON/OFF during atomic modesetting.
->   * @legacy:         legacy style commit
->   * @type1:          content type 1 that can be handled only through HDCP=
-2.2.
-> + * @legacy-hdcp14:  Test HDCP1.4 content protection with legacy style
-> commit.
-> + * @atomic-hdcp14:  Test HDCP1.4 content protection with atomic
-> modesetting.
-> + * @atomic-dpms-hdcp14: Test HDCP1.4 content protection with atomic
-> modesetting and DPMS.
-> + *
->   */
+> diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c index
+> 8ec698828..b9e91276f 100644
+> --- a/tools/intel_hdcp.c
+> +++ b/tools/intel_hdcp.c
+> @@ -9,6 +9,15 @@
+>  #include "igt.h"
 >=20
->  /**
-> @@ -83,8 +95,10 @@
->   * arg[1]:
->   *
->   * @lic-type-0:   Type 0 with LIC
-> + * @lic-type-0-hdcp14: Type 0 with LIC and HDCP1.4
->   * @lic-type-1:   Type 1 with LIC.
->   * @type-0:       Type 0
-> + * @type-0-hdcp14: Type 0 with HDCP1.4
->   * @type-1:       Type 1
->   */
->=20
-> @@ -96,6 +110,7 @@ struct data {
->  	struct igt_fb red, green;
->  	unsigned int cp_tests;
->  	struct udev_monitor *uevent_monitor;
-> +	bool is_force_hdcp14;
->  } data;
->=20
->  /* Test flags */
-> @@ -581,6 +596,51 @@ static bool output_hdcp_capable(igt_output_t
-> *output, int content_type)
->  		return true;
->  }
->=20
-> +static void set_i915_force_hdcp14(igt_output_t *output) {
-> +	int fd, ret;
-> +	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
+>  #define MAX_HDCP_BUF_LEN	5000
+> +#define MAX_CONNECTORS		10
 > +
-> +	fd =3D igt_debugfs_connector_dir(data.drm_fd, output->name,
-> O_RDONLY);
-> +	igt_require_f(fd >=3D 0, "Cannot open %s debugfs\n", output->name);
+> +#define CP_UNDESIRED		0
+> +#define CP_DESIRED		1
+> +#define CP_ENABLED		2
 > +
-> +	ret =3D igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf,
-> sizeof(buf));
-> +	if (ret <=3D 0) {
-> +		igt_info("i915_force_hdcp14 not supported\n");
-> +		close(fd);
+> +/* Max time per authentication allowed =3D 6Sec */
+> +#define KERNEL_AUTH_TIME_ALLOWED_MSEC		(6 * 1000)
+> +#define KERNEL_DISABLE_TIME_ALLOWED_MSEC	(1 * 1000)
+>=20
+>  typedef struct data {
+>  	int fd;
+> @@ -17,6 +26,79 @@ typedef struct data {
+>  	int height, width;
+>  } data_t;
+>=20
+> +static void igt_output_set_hdcp(data_t *data, igt_output_t *output,
+> +bool enable) {
+> +	uint64_t prop_value;
+> +	igt_display_t *display =3D &data->display;
+> +	igt_plane_t *primary;
+> +	drmModeModeInfo *mode;
+> +
+> +	mode =3D igt_output_get_mode(output);
+> +	data->height =3D mode->vdisplay;
+> +	data->width =3D mode->hdisplay;
+> +
+> +	igt_output_set_pipe(output, PIPE_A);
+
+Setting this like this is wrong
+Lets take the scenario of when you have a eDP and DP connected you take awa=
+y the
+PIPE from eDP in that case you need to add a logic to find the available pi=
+pe connector config
+. This needs to on later stages be moved on to be customizable that is let =
+the tester choose the
+PIPE and connector.
+Won't go into the MST Scenarios right now.
+
+> +	primary =3D igt_output_get_plane_type(output,
+> DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	igt_create_color_fb(data->fd, data->width, data->height,
+> +			    DRM_FORMAT_XRGB8888,
+> DRM_FORMAT_MOD_LINEAR,
+> +			    1.f, 0.f, 0.f, &data->red);
+> +
+> +	igt_plane_set_fb(primary, &data->red);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+> +	igt_output_set_prop_value(output,
+> IGT_CONNECTOR_CONTENT_PROTECTION,
+> +				  enable ? CP_DESIRED : CP_UNDESIRED);
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +	if (enable) {
+> +		usleep(KERNEL_AUTH_TIME_ALLOWED_MSEC);
+> +		prop_value =3D igt_output_get_prop(output,
+> +IGT_CONNECTOR_CONTENT_PROTECTION);
+> +
+> +		if (prop_value =3D=3D CP_ENABLED) {
+> +			fprintf(stderr, "HDCP enabled on output %s\n",
+> output->name);
+> +			/* Switch to green to indicate success */
+> +			igt_create_color_fb(data->fd, data->width, data-
+> >height,
+> +					    DRM_FORMAT_XRGB8888,
+> DRM_FORMAT_MOD_LINEAR,
+> +					    0.f, 1.f, 0.f, &data->green);
+> +			igt_plane_set_fb(primary, &data->green);
+> +			igt_display_commit2(display, COMMIT_ATOMIC);
+> +			igt_remove_fb(data->fd, &data->green);
+> +		} else {
+> +			fprintf(stderr, "Failed to enable HDCP on connector
+> %s\n", output->name);
+> +		}
+> +	} else {
+> +		usleep(KERNEL_DISABLE_TIME_ALLOWED_MSEC);
+> +		prop_value =3D igt_output_get_prop(output,
+> +IGT_CONNECTOR_CONTENT_PROTECTION);
+> +
+> +		if (prop_value =3D=3D CP_UNDESIRED)
+> +			fprintf(stderr, "HDCP disabled on connector %s\n",
+> output->name);
+> +		else
+> +			fprintf(stderr, "Failed to disable HDCP on connector
+> %s\n", output->name);
+> +	}
+> +
+> +	igt_plane_set_fb(primary, NULL);
+> +	igt_remove_fb(data->fd, &data->red);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_display_commit2(display, COMMIT_ATOMIC); }
+> +
+> +static void set_hdcp(data_t *data, int connector_id, bool enable) {
+> +	igt_output_t *output;
+> +	drmModeConnector connector;
+> +
+> +	connector.connector_id =3D connector_id;
+> +	output =3D igt_output_from_connector(&data->display, &connector);
+> +	if (!output) {
+> +		fprintf(stderr, "Failed to get output for connector %d\n",
+> connector_id);
 > +		return;
 > +	}
 > +
-> +	ret =3D igt_sysfs_write(fd, "i915_force_hdcp14", "1", 2);
-> +	igt_require_f(ret > 0, "i915_force_hdcp14 is not enabled\n");
+> +	igt_output_set_hdcp(data, output, enable); }
 > +
-> +	ret =3D igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf,
-> sizeof(buf));
-> +	igt_assert_f(ret > 0 && strstr(buf, "yes"),
-> +			 "i915_force_hdcp14 is not set to 'yes' on %s
-> debugfs\n",
-> +			 output->name);
-> +
-> +	close(fd);
-> +}
-> +
-> +static void reset_i915_force_hdcp14(igt_output_t *output) {
-> +	int fd, ret;
-> +	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
-> +
-> +	fd =3D igt_debugfs_connector_dir(data.drm_fd, output->name,
-> O_RDONLY);
-> +	igt_require_f(fd >=3D 0, "Cannot open %s debugfs\n", output->name);
-> +
-> +	ret =3D igt_sysfs_write(fd, "i915_force_hdcp14", "0", 2);
-> +	igt_require_f(ret > 0, "i915_force_hdcp14 is not disabled\n");
-> +
-> +	ret =3D igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf,
-> sizeof(buf));
-> +	igt_assert_f(ret > 0 && strstr(buf, "no"),
-> +			 "i915_force_hdcp14 is not set to 'no' on %s
-> debugfs\n",
-> +			 "i915_force_hdcp14");
-> +
-> +	close(fd);
-> +}
-> +
->  static void
->  test_fini(igt_output_t *output, enum igt_commit_style commit_style)  { @=
-@ -
-> 654,10 +714,15 @@ test_content_protection(enum igt_commit_style
-> commit_style, int content_type)
->  					  output->name);
->  				continue;
->  			}
-> +			if (data.is_force_hdcp14)
-> +				set_i915_force_hdcp14(output);
->=20
->  			igt_dynamic_f("pipe-%s-%s",
-> kmstest_pipe_name(pipe), output->name)
->  				test_content_protection_on_output(output,
-> pipe, commit_style, content_type);
->=20
-> +			if (data.is_force_hdcp14)
-> +				reset_i915_force_hdcp14(output);
-> +
->  			test_fini(output, commit_style);
->  			/*
->  			 * Testing a output with a pipe is enough for HDCP
-> @@ -719,6 +784,11 @@ test_mst_cp_enable_with_retry(igt_output_t
-> *hdcp_mst_output[], int valid_outputs
->  	int retry_orig =3D retries, count, i;
->  	bool ret;
->=20
-> +	if (data.is_force_hdcp14) {
-> +		for (count =3D 0; count < valid_outputs; count++)
-> +			set_i915_force_hdcp14(hdcp_mst_output[count]);
-> +	}
-> +
->  	do {
->  		if (retry_orig !=3D retries)
->  			test_mst_cp_disable(hdcp_mst_output,
-> COMMIT_ATOMIC, valid_outputs); @@ -752,6 +822,11 @@
-> test_mst_cp_enable_with_retry(igt_output_t *hdcp_mst_output[], int
-> valid_outputs
->  		igt_display_commit2(display, COMMIT_ATOMIC);
->  	} while (retries && !ret);
->=20
-> +	if (data.is_force_hdcp14) {
-> +		for (count =3D 0; count < valid_outputs; count++)
-> +			reset_i915_force_hdcp14(hdcp_mst_output[count]);
-> +	}
-> +
->  	igt_assert_f(ret, "Content Protection not enabled on MST outputs\n");
-> }
->=20
-> @@ -878,43 +953,70 @@ static void create_fbs(void)
->  			    0.f, 1.f, 0.f, &data.green);
->  }
->=20
-> +
-> +
->  static const struct {
->  	const char *desc;
->  	const char *name;
->  	unsigned int cp_tests;
->  	bool content_type;
-> +	bool is_force_hdcp14;
->  } subtests[] =3D {
-> +	{ .desc =3D "Test content protection with atomic modesetting with
-> HDCP1.4.",
-> +	  .name =3D "atomic-hdcp14",
-> +	  .cp_tests =3D 0,
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D true,
-> +	},
->  	{ .desc =3D "Test content protection with atomic modesetting",
->  	  .name =3D "atomic",
->  	  .cp_tests =3D 0,
-> -	  .content_type =3D HDCP_CONTENT_TYPE_0
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D false,
-> +	},
-> +	{ .desc =3D "Test content protection with DPMS ON/OFF during "
-> +		  "atomic modesetting with HDCP1.4.",
-> +	  .name =3D "atomic-dpms-hdcp14",
-> +	  .cp_tests =3D CP_DPMS,
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D true,
->  	},
-> -	{ .desc =3D "Test content protection with DPMS ON/OFF during atomic
-> modesetting.",
-> +	{ .desc =3D "Test content protection with DPMS ON/OFF during atomic
-> +modesetting",
 
-No change was required on this line you are removing the "." for no reason
-With that fixed.
-LGTM,
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+All this should be in a loop where we set HDCP then change framebuffer base=
+d on if it is enabled or not
+After that we should just check the connection status and keep changing the=
+ frame buffer color based on
+The CP Property status.
+Next this you need to introduce is a thread that listens for key presses wh=
+ere we can do the following
+'1' to enable HDCP1.4
+'2' to enable HDCP2.2 Type 0
+'3' to enable HDCP 2.2 Type1
+'4' to disable HDCP
+Also let the Display start with HDCP disabled and let user enable what he w=
+ants
+The above options can be written on the display screen itself using cairo.
+
+Regards,
+Suraj Kandpal
 
 
->  	  .name =3D "atomic-dpms",
->  	  .cp_tests =3D CP_DPMS,
-> -	  .content_type =3D HDCP_CONTENT_TYPE_0
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D false,
->  	},
->  	{ .desc =3D "Test for the integrity of link with type 0 content.",
->  	  .name =3D "lic-type-0",
->  	  .cp_tests =3D CP_LIC,
->  	  .content_type =3D HDCP_CONTENT_TYPE_0,
->  	},
-> +	{ .desc =3D "Test for the integrity of link with type 0 content.",
-> +	  .name =3D "lic-type-0-hdcp14",
-> +	  .cp_tests =3D CP_LIC,
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D true,
-> +	},
->  	{ .desc =3D "Test for the integrity of link with type 1 content",
->  	  .name =3D "lic-type-1",
->  	  .cp_tests =3D CP_LIC,
->  	  .content_type =3D HDCP_CONTENT_TYPE_1,
-> +	  .is_force_hdcp14 =3D false,
->  	},
->  	{ .desc =3D "Test content protection with content type 1 "
->  		  "that can be handled only through HDCP2.2.",
->  	  .name =3D "type1",
->  	  .cp_tests =3D 0,
->  	  .content_type =3D HDCP_CONTENT_TYPE_1,
-> +	  .is_force_hdcp14 =3D false,
->  	},
->  	{ .desc =3D "Test the teardown and rebuild of the interface between "
->  		  "Intel and mei hdcp.",
->  	  .name =3D "mei-interface",
->  	  .cp_tests =3D CP_MEI_RELOAD,
->  	  .content_type =3D HDCP_CONTENT_TYPE_1,
-> +	  .is_force_hdcp14 =3D false,
->  	},
->  	{ .desc =3D "Test the content type change when the content protection
-> already enabled",
->  	  .name =3D "content-type-change",
-> @@ -926,6 +1028,14 @@ static const struct {
->  	  .name =3D "uevent",
->  	  .cp_tests =3D CP_UEVENT,
->  	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D false,
-> +	},
-> +	{ .desc =3D "Test to detect the HDCP status change when we are reading
-> the uevent "
-> +		  "sent with the corresponding connector id and property id.",
-> +	  .name =3D "uevent-hdcp14",
-> +	  .cp_tests =3D CP_UEVENT,
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D true,
->  	},
->  	/*
->  	 *  Testing the revocation check through SRM needs a HDCP sink with
-> @@ -940,6 +1050,7 @@ static const struct {
->  	  .name =3D "srm",
->  	  .cp_tests =3D 0,
->  	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D false,
->  	},
->  };
+>  static const char *get_hdcp_version(int fd, char *connector_name)  {
+>  	char buf[MAX_HDCP_BUF_LEN];
+> @@ -57,24 +139,24 @@ static void get_hdcp_info(data_t *data)
+>  	fprintf(stderr, "Connectors:\n");
+>  	fprintf(stderr, "id\tencoder\tstatus\t\ttype\tHDCP\n");
+>  	for (int i =3D 0; i < res->count_connectors; i++) {
+> -		drmModeConnector *c;
+> +		drmModeConnector *connector;
 >=20
-> @@ -948,26 +1059,43 @@ static const struct {
->  	const char *name;
->  	unsigned int cp_tests;
->  	bool content_type;
-> +	bool is_force_hdcp14;
->  } mst_subtests[] =3D {
-> -	{ .desc =3D "Test Content protection(Type 0) over DP MST.",
-> +	{ .desc =3D "Test Content protection(Type 0) over DP MST",
->  	  .name =3D "dp-mst-type-0",
->  	  .cp_tests =3D 0,
-> -	  .content_type =3D HDCP_CONTENT_TYPE_0
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D false,
-> +	},
-> +	{ .desc =3D "Test Content protection(Type 0) over DP MST with
-> HDCP1.4.",
-> +	  .name =3D "dp-mst-type-0-hdcp14",
-> +	  .cp_tests =3D 0,
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D true,
->  	},
->  	{ .desc =3D "Test Content protection(Type 0) over DP MST with LIC.",
->  	  .name =3D "dp-mst-lic-type-0",
->  	  .cp_tests =3D CP_LIC,
-> -	  .content_type =3D HDCP_CONTENT_TYPE_0
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D false,
-> +	},
-> +	{ .desc =3D "Test Content protection(Type 0) over DP MST with LIC.",
-> +	  .name =3D "dp-mst-lic-type-0-hdcp14",
-> +	  .cp_tests =3D CP_LIC,
-> +	  .content_type =3D HDCP_CONTENT_TYPE_0,
-> +	  .is_force_hdcp14 =3D true,
->  	},
->  	{ .desc =3D "Test Content protection(Type 1) over DP MST.",
->  	  .name =3D "dp-mst-type-1",
->  	  .cp_tests =3D 0,
->  	  .content_type =3D HDCP_CONTENT_TYPE_1,
-> +	  .is_force_hdcp14 =3D false,
->  	},
->  	{ .desc =3D "Test Content protection(Type 1) over DP MST with LIC.",
->  	  .name =3D "dp-mst-lic-type-1",
->  	  .cp_tests =3D CP_LIC,
->  	  .content_type =3D HDCP_CONTENT_TYPE_1,
-> +	  .is_force_hdcp14 =3D false,
->  	},
->  };
+> -		c =3D drmModeGetConnectorCurrent(data->fd, res-
+> >connectors[i]);
+> +		connector =3D drmModeGetConnectorCurrent(data->fd, res-
+> >connectors[i]);
 >=20
-> @@ -983,6 +1111,14 @@ igt_main
->  	igt_describe("Test content protection with legacy style commit.");
->  	igt_subtest_with_dynamic("legacy") {
->  		data.cp_tests =3D 0;
-> +		data.is_force_hdcp14 =3D false;
-> +		test_content_protection(COMMIT_LEGACY,
-> HDCP_CONTENT_TYPE_0);
-> +	}
-> +
-> +	igt_describe("Test content protection with legacy style commit with
-> HDCP1.4");
-> +	igt_subtest_with_dynamic("legacy-hdcp14") {
-> +		data.cp_tests =3D 0;
-> +		data.is_force_hdcp14 =3D true;
->  		test_content_protection(COMMIT_LEGACY,
-> HDCP_CONTENT_TYPE_0);
+> -		if (!c)
+> +		if (!connector)
+>  			continue;
+>=20
+>  		asprintf(&output_name, "%s-%d",
+> -			 kmstest_connector_type_str(c->connector_type),
+> -			 c->connector_type_id);
+> +			 kmstest_connector_type_str(connector-
+> >connector_type),
+> +			 connector->connector_type_id);
+>=20
+>  		fprintf(stderr, "%d\t%d\t%s\t%s\t%s\n",
+> -			c->connector_id, c->encoder_id,
+> -			kmstest_connector_status_str(c->connection),
+> -			kmstest_connector_type_str(c->connector_type),
+> +			connector->connector_id, connector->encoder_id,
+> +			kmstest_connector_status_str(connector-
+> >connection),
+> +			kmstest_connector_type_str(connector-
+> >connector_type),
+>  			get_hdcp_version(data->fd, output_name));
+>=20
+> -		drmModeFreeConnector(c);
+> +		drmModeFreeConnector(connector);
 >  	}
 >=20
-> @@ -995,6 +1131,7 @@ igt_main
+>  	drmModeFreeResources(res);
+> @@ -85,7 +167,8 @@ static void print_usage(void)
+>  	fprintf(stderr, "Usage: intel_hdcp [OPTIONS]\n");
+>  	fprintf(stderr, "Options:\n");
+>  	fprintf(stderr, "-i,	--info		Get HDCP Information\n");
+> -	fprintf(stderr, "-h,	--help		Display this help
+> message\n");
+> +	fprintf(stderr, "-e,	--enable	Enable HDCP on the specified
+> connector id\n");
+> +	fprintf(stderr, "-d,	--disable	Disable HDCP on the
+> specified connector id\n");
+>  }
 >=20
->  			igt_subtest_with_dynamic(subtests[i].name) {
->  				data.cp_tests =3D subtests[i].cp_tests;
-> +				data.is_force_hdcp14 =3D
-> subtests[i].is_force_hdcp14;
+>  static void test_init(data_t *data)
+> @@ -103,11 +186,13 @@ int main(int argc, char **argv)  {
+>  	data_t data;
+>  	int option;
+> -	static const char optstr[] =3D "hi";
+> +	static const char optstr[] =3D "hied:";
+>  	struct option long_opts[] =3D {
+> -		{"help",	no_argument,	NULL, 'h'},
+> -		{"info",	no_argument,	NULL, 'i'},
+> -		{NULL,		0,		NULL,  0 }
+> +		{"help",	no_argument,		NULL,	'h'},
+> +		{"info",	no_argument,		NULL,	'i'},
+> +		{"enable",	required_argument,	NULL,	'e'},
+> +		{"disable",	required_argument,	NULL,	'd'},
+> +		{NULL,		0,			NULL,	 0 }
+>  	};
 >=20
->  				if (!strcmp(subtests[i].name, "srm")) {
->  					bool ret;
-> @@ -1018,6 +1155,7 @@ igt_main
->=20
->  			igt_subtest(mst_subtests[i].name) {
->  				data.cp_tests =3D mst_subtests[i].cp_tests;
-> +				data.is_force_hdcp14 =3D
-> mst_subtests[i].is_force_hdcp14;
->=20
-> 	test_content_protection_mst(mst_subtests[i].content_type);
->  			}
->  		}
+>  	test_init(&data);
+> @@ -117,6 +202,22 @@ int main(int argc, char **argv)
+>  		case 'i':
+>  			get_hdcp_info(&data);
+>  			break;
+> +		case 'e':
+> +			if (!optarg) {
+> +				fprintf(stderr, "Missing connector ID for
+> enable\n");
+> +				print_usage();
+> +				exit(EXIT_FAILURE);
+> +			}
+> +			set_hdcp(&data, atoi(optarg), true);
+> +			break;
+> +		case 'd':
+> +			if (!optarg) {
+> +				fprintf(stderr, "Missing connector ID for
+> enable\n");
+> +				print_usage();
+> +				exit(EXIT_FAILURE);
+> +			}
+> +			set_hdcp(&data, atoi(optarg), false);
+> +			break;
+>  		case 'h':
+>  		default:
+>  			print_usage();
 > --
 > 2.34.1
 
