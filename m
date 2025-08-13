@@ -4,56 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E600C87FCF
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 10:04:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08E50CA0EE0
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 10:53:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 28ABF10E1CA;
-	Wed, 13 Aug 2025 10:04:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B34FF10E4EC;
+	Wed, 13 Aug 2025 10:53:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xu3mlKVY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N+Jf3Rxj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FFF710E1CA
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 10:04:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F15AE10E4EC
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 10:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755079464; x=1786615464;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=zYh+f8E7Wfj0Zvu/4z5ypcDoXAiXtELH6JGSFwXM4v4=;
- b=Xu3mlKVYTBcIF8MIXDF9EGcJa70OBJ9h1zP+OS7prHwhlG67BhiB0s5m
- 6ue7n+PD/gDaUlDsapK+Wg2ry1XdXma+jtCztPBmCg/+qYUjc6oemvCCf
- JWmvmTM5lWzWIc07M2FUH3yMun+ry8W8OTI9Ll2ER2Wqv5BS4KNTkcYjH
- UGEvpLojhVWdAj0E+yCovSMLmhHTbHaYoeJ503HYoFRLG0bblv9lOSZJh
- ccBjL98J2AIhAcI6USHuF+ed+4KE2lnGG4smgJY7YAA2bCfgewcSq0ffD
- dDGSWD4p6zJtvAi6/UPm5bK+Cyt+Q1pBLhm2OMMtGla82e1u97Yu2qD7R A==;
-X-CSE-ConnectionGUID: d+OYJPHzSu6Nqj5RFU/TcQ==
-X-CSE-MsgGUID: u9sGdKenRPa+FMuzYvrWBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="61169610"
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="61169610"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2025 03:04:22 -0700
-X-CSE-ConnectionGUID: 5oReWSOTTkuzfyt/mTyuDg==
-X-CSE-MsgGUID: 1p2a78d6SEupPwdtPq3jBg==
+ t=1755082404; x=1786618404;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1Ww7DwZQVT/h+jEJCEs8rWV7zjdQt5pHPdfVPxDqwIc=;
+ b=N+Jf3RxjoUMd4Gl43ks4VyqZatKJhpb/LLz45K6cbqMGv8kw/nHKLh8w
+ YTTDiCKYAK4hfEegSG6MaF3alN+Jtz0RVwEpqyCnuI+UFXnA3JeduZWGM
+ Up6ZAiDzfSoQINGRJ4PUebOipgmcmifiVhMauWcLnLGXKD/4SPAY9PRJM
+ ttoaj/hVNFWrcqKbrAF6EaVhMQQ/n12AzKQgTYGnK57XJdN3DbUAcV/e3
+ oQCQB5JtOnywRaqABH4kSCw59/Jr+MA773NVy8wTBH63u3Ac2n1ggBSbi
+ GkPef4krEqQRq3Yk64EXZ7hf5tlhvrEyJwTWMq0smueyvR0pLw/ocVRlE g==;
+X-CSE-ConnectionGUID: genwHyOgSVywbyekODP7HQ==
+X-CSE-MsgGUID: lJXw26aNTfueZrQ8kw6ufg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="82803817"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="82803817"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 03:53:23 -0700
+X-CSE-ConnectionGUID: qVSBQUodShuy5eQL+sPonQ==
+X-CSE-MsgGUID: ZrCv7ZgZSJ2yv2W517dEdg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="166423721"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2025 03:04:21 -0700
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	raag.jadav@intel.com
-Cc: anshuman.gupta@intel.com, riana.tauro@intel.com,
- Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH v2] tests/intel/xe_configfs: Add i2c adapter check in
- survivability mode
-Date: Wed, 13 Aug 2025 15:31:11 +0530
-Message-ID: <20250813100117.910824-2-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="170571869"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 03:53:21 -0700
+Date: Wed, 13 Aug 2025 12:53:07 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
+ bhanuprakash.modem@gmail.com, anshuman.gupta@intel.com,
+ matthew.auld@intel.com, kamil.konieczny@intel.com,
+ kunal1.joshi@intel.com, Nidhi Gupta <nidhi1.gupta@intel.com>
+Subject: Re: [PATCH i-g-t v9 1/2] tests/kms_prime: Add XE support
+Message-ID: <20250813105307.kusjk4mcscxoe56j@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
+ bhanuprakash.modem@gmail.com, anshuman.gupta@intel.com,
+ matthew.auld@intel.com, kamil.konieczny@intel.com,
+ kunal1.joshi@intel.com, Nidhi Gupta <nidhi1.gupta@intel.com>
+References: <20250808112050.987926-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250808112050.987926-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,274 +76,343 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add i2c adapter presence check in survivability mode to ensure
-the Add-In Management Controller (AMC) can receive firmware updates
-when the device is in survivability mode.
+Hi Santhosh,
+On 2025-08-08 at 16:50:49 +0530, Santhosh Reddy Guddati wrote:
+> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> 
+> Add XE driver support for kms tests.
+> 
+> V2: - Use rendercopy method for both i915 & xe
+>     - Minor cleanup
+> V3: - New patch for cleanup & rendercopy
+> V4: - Fallback to blitter
+> V5: - Rebase
+> v7: - Rebase and patch cleanup
+> v8: - D3hot subtest is not required for xe
+> v9: - nitpicks (Matthew)
+> v10:- Rebase
+> v11:- Split the commits per subtest and refactor code (Kamil, Kunal)
+>       - Enable basic-crc-hybrid subtest for xe.
+>       - Added Xe Prime support for hybrid graphics by enabling
+>         buffer sharing between integrated and discrete GPUs.
+>       - Refactor buffer creation function for Xe discrete buffers.
+>       - Introduced helper functions for creating and mapping dumb buffers.
+>       	Also, implement fast buffer import for Xe discrete GPUs
+> 	using BLT copy operations.
+> v12: Fix CRC mismatch by using correct color depth constant.
 
-v2: Create new file for test (Riana)
+This is not full review, I spotted few nits, see below.
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- tests/intel/xe_configfs.c      |  36 +------
- tests/intel/xe_survivability.c | 174 +++++++++++++++++++++++++++++++++
- tests/meson.build              |   1 +
- 3 files changed, 177 insertions(+), 34 deletions(-)
- create mode 100644 tests/intel/xe_survivability.c
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+> ---
+>  tests/kms_prime.c | 192 +++++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 156 insertions(+), 36 deletions(-)
+> 
+> diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+> index 1d011327c..c6720e984 100644
+> --- a/tests/kms_prime.c
+> +++ b/tests/kms_prime.c
+> @@ -34,10 +34,18 @@
+>  #include "igt_debugfs.h"
+>  #include "igt_sysfs.h"
 
-diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index 5c65cd01d..e573421aa 100644
---- a/tests/intel/xe_configfs.c
-+++ b/tests/intel/xe_configfs.c
-@@ -2,7 +2,9 @@
- /*
-  * Copyright © 2025 Intel Corporation
-  */
-+#include <dirent.h>
- #include <limits.h>
-+#include <fcntl.h>
- 
- #include "igt.h"
- #include "igt_configfs.h"
-@@ -31,33 +33,6 @@ static void restore(int sig)
- 	igt_kmod_bind("xe", bus_addr);
- }
- 
--static void set_survivability_mode(int configfs_device_fd, bool value)
--{
--	igt_kmod_unbind("xe", bus_addr);
--	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
--	igt_kmod_bind("xe", bus_addr);
--}
--
--/**
-- * SUBTEST: survivability-mode
-- * Description: Validate survivability mode by setting configfs
-- */
--static void test_survivability_mode(int configfs_device_fd)
--{
--	char path[PATH_MAX];
--	int fd;
--
--	/* Enable survivability mode */
--	set_survivability_mode(configfs_device_fd, true);
--
--	/* check presence of survivability mode sysfs */
--	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
--
--	fd = open(path, O_RDONLY);
--	igt_assert_f(fd >= 0, "Survivability mode not set\n");
--	close(fd);
--}
--
- /**
-  * SUBTEST: engines-allowed-invalid
-  * Description: Validate engines_allowed attribute for invalid values
-@@ -128,13 +103,6 @@ igt_main
- 		configfs_device_fd = create_device_configfs_group(configfs_fd, fd);
- 	}
- 
--	igt_describe("Validate survivability mode");
--	igt_subtest("survivability-mode") {
--		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
--		igt_install_exit_handler(restore);
--		test_survivability_mode(configfs_device_fd);
--	}
--
- 	igt_describe("Validate engines_allowed with invalid options");
- 	igt_subtest("engines-allowed-invalid") {
- 		igt_install_exit_handler(restore);
-diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
-new file mode 100644
-index 000000000..1bfcb2756
---- /dev/null
-+++ b/tests/intel/xe_survivability.c
-@@ -0,0 +1,174 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+#include <dirent.h>
-+#include <limits.h>
-+#include <fcntl.h>
-+
-+#include "igt.h"
-+#include "igt_configfs.h"
-+#include "igt_device.h"
-+#include "igt_fs.h"
-+#include "igt_kmod.h"
-+#include "igt_sysfs.h"
-+#include "xe/xe_query.h"
-+
-+/**
-+ * TEST: Comprehensive survivability mode testing
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: survivability
-+ * Functionality: survivability mode
-+ * Description: validate survivability mode functionality including i2c and runtime behavior
-+ * Test category: functionality test
-+ */
-+
-+static char bus_addr[NAME_MAX];
-+
-+static int find_i2c_adapter(struct pci_device *pci_xe)
-+{
-+	char device_path[PATH_MAX];
-+	struct dirent *dirent;
-+	int i2c_adapter = -1;
-+	DIR *device_dir;
-+	int ret;
-+
-+	igt_require(igt_kmod_load("i2c-dev", NULL) == 0);
-+
-+	snprintf(device_path, sizeof(device_path), "/sys/bus/pci/devices/%s/%s.%hu", bus_addr,
-+		 "i2c_designware", (pci_xe->bus << 8) | (pci_xe->dev));
-+	device_dir = opendir(device_path);
-+
-+	if (!device_dir)
-+		return -1;
-+
-+	while ((dirent = readdir(device_dir))) {
-+		if (strncmp(dirent->d_name, "i2c-", 4) == 0) {
-+			ret = sscanf(dirent->d_name, "i2c-%d", &i2c_adapter);
-+			igt_assert_f(ret == 1, "Failed to parse i2c adapter number");
-+			closedir(device_dir);
-+			return i2c_adapter;
-+		}
-+	}
-+
-+	closedir(device_dir);
-+	return i2c_adapter;
-+}
-+
-+static void restore(int sig)
-+{
-+	/* Restore after survivability mode */
-+	igt_kmod_unbind("xe", bus_addr);
-+	igt_kmod_bind("xe", bus_addr);
-+}
-+
-+static void set_survivability_mode(int configfs_device_fd, bool value)
-+{
-+	igt_kmod_unbind("xe", bus_addr);
-+	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
-+	igt_kmod_bind("xe", bus_addr);
-+}
-+
-+/**
-+ * SUBTEST: i2c-functionality
-+ * Description: Validate i2c adapter functionality in survivability mode
-+ */
-+static void test_i2c_functionality(int configfs_device_fd, struct pci_device *pci_xe)
-+{
-+	int i2c_adapter_before, i2c_adapter_after;
-+	char path[PATH_MAX];
-+	int fd;
-+
-+	/* Check i2c adapter before survivability mode */
-+	i2c_adapter_before = find_i2c_adapter(pci_xe);
-+
-+	/* Enable survivability mode */
-+	set_survivability_mode(configfs_device_fd, true);
-+
-+	/* check presence of survivability mode sysfs */
-+	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
-+
-+	fd = open(path, O_RDONLY);
-+	igt_assert_f(fd >= 0, "Survivability mode not set\n");
-+	close(fd);
-+
-+	/* Check i2c adapter after survivability mode */
-+	i2c_adapter_after = find_i2c_adapter(pci_xe);
-+	if (i2c_adapter_before >= 0) {
-+		igt_assert_f(i2c_adapter_after >= 0,
-+			     "i2c adapter disappeared in survivability mode (was %d)",
-+			     i2c_adapter_before);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: survivability-mode
-+ * Description: Validate survivability mode by setting configfs
-+ */
-+static void test_survivability_mode(int configfs_device_fd)
-+{
-+	char path[PATH_MAX];
-+	int fd;
-+
-+	/* Enable survivability mode */
-+	set_survivability_mode(configfs_device_fd, true);
-+
-+	/* check presence of survivability mode sysfs */
-+	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
-+
-+	fd = open(path, O_RDONLY);
-+	igt_assert_f(fd >= 0, "Survivability mode not set\n");
-+	close(fd);
-+}
-+
-+static int create_device_configfs_group(int configfs_fd, int fd)
-+{
-+	int configfs_device_fd;
-+	struct pci_device *pci_dev;
-+	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-+
-+	pci_dev = igt_device_get_pci_device(fd);
-+	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
-+		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-+
-+	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
-+	igt_assert(configfs_device_fd);
-+
-+	return configfs_device_fd;
-+}
-+
-+igt_main
-+{
-+	int fd, configfs_fd, configfs_device_fd;
-+	struct pci_device *pci_xe;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		pci_xe = igt_device_get_pci_device(fd);
-+		configfs_fd = igt_configfs_open("xe");
-+		igt_require(configfs_fd != -1);
-+		configfs_device_fd = create_device_configfs_group(configfs_fd, fd);
-+		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
-+	}
-+
-+	igt_describe("Validate survivability mode");
-+	igt_subtest("survivability-mode") {
-+		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
-+		igt_install_exit_handler(restore);
-+		test_survivability_mode(configfs_device_fd);
-+	}
-+
-+	igt_describe("Validate i2c adapter functionality in survivability mode");
-+	igt_subtest("i2c-functionality") {
-+		igt_install_exit_handler(restore);
-+		test_i2c_functionality(configfs_device_fd, pci_xe);
-+	}
-+
-+	igt_fixture {
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+		close(configfs_device_fd);
-+		close(configfs_fd);
-+		close(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 5c01c64e9..8f264d8e8 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -329,6 +329,7 @@ intel_xe_progs = [
- 	'xe_sriov_auto_provisioning',
- 	'xe_sriov_flr',
- 	'xe_sriov_scheduling',
-+	'xe_survivability',
- 	'xe_sysfs_defaults',
- 	'xe_sysfs_preempt_timeout',
- 	'xe_sysfs_scheduler',
--- 
-2.43.0
+While you are at this, please move igt headers after system ones.
 
+>  #include <fcntl.h>
+> +#include <limits.h>
+>  
+
+Remove this empty line.
+
+>  #include <poll.h>
+>  #include <sys/ioctl.h>
+>  #include <time.h>
+
+Add here empty line.
+
+> +#include "lib/intel_blt.h"
+> +#include "lib/intel_common.h"
+> +#include "lib/intel_pat.h"
+> +#include "lib/intel_mocs.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +
+
+Remove this one last empty line.
+
+One more nit at end.
+
+>  
+>  /**
+>   * SUBTEST: D3hot
+> @@ -117,10 +125,13 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+>  		igt_display_reset(display);
+>  
+>  		igt_output_set_pipe(output, *pipe);
+> -		if (intel_pipe_output_combo_valid(display)) {
+> -			found = true;
+> -			break;
+> +		if (is_intel_dgfx(importer_fd)) {
+> +			if (!intel_pipe_output_combo_valid(display))
+> +				continue;
+>  		}
+> +
+> +		found = true;
+> +		break;
+>  	}
+>  
+>  	igt_require_f(found, "No valid connector/pipe found\n");
+> @@ -128,24 +139,63 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+>  	return output;
+>  }
+>  
+> +static uint32_t *create_and_map_dump_bo(int fd, struct dumb_bo *bo,
+> +					uint32_t width, uint32_t height,
+> +					uint32_t bpp, uint32_t *pitch,
+> +					uint64_t *size)
+> +{
+> +	uint32_t *ptr;
+> +
+> +	bo->width = width;
+> +	bo->height = height;
+> +	bo->bpp = bpp;
+> +
+> +	bo->handle = kmstest_dumb_create(fd, bo->width,
+> +					 bo->height, bo->bpp, pitch, size);
+> +
+> +	ptr = kmstest_dumb_map_buffer(fd, bo->handle, *size, PROT_READ | PROT_WRITE);
+> +	igt_assert(ptr != MAP_FAILED);
+> +
+> +	return ptr;
+> +}
+> +
+> +static uint32_t *prepare_xe_dgfx_scratch(int exporter_fd, struct dumb_bo *scratch)
+> +{
+> +	uint32_t *ptr;
+> +	struct blt_copy_data ex_blt = {};
+> +	struct blt_copy_object *src = NULL;
+> +	uint32_t region;
+> +
+> +	region = DRM_XE_MEM_REGION_CLASS_VRAM;
+> +	igt_info("Preparing scratch buffer for DGfx exporter\n");
+> +	blt_copy_init(exporter_fd, &ex_blt);
+> +	src = blt_create_object(&ex_blt, region,
+> +				scratch->width, scratch->height,
+> +				scratch->bpp, 0, T_LINEAR,
+> +				COMPRESSION_DISABLED, 0, true);
+> +	scratch->handle = src->handle;
+> +	scratch->size = src->size;
+> +	scratch->pitch = src->pitch;
+> +	ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle, scratch->size,
+> +			     PROT_READ | PROT_WRITE);
+> +	igt_assert(ptr != MAP_FAILED);
+> +	return ptr;
+> +}
+> +
+>  static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+>  			    drmModeModeInfo *mode, uint32_t color)
+>  {
+>  	uint32_t *ptr;
+> +	bool is_dgfx;
+>  
+>  	scratch->width = mode->hdisplay;
+>  	scratch->height = mode->vdisplay;
+>  	scratch->bpp = 32;
+> +	is_dgfx = is_intel_dgfx(exporter_fd);
+>  
+> -	if (!is_i915_device(exporter_fd)) {
+> -		scratch->handle = kmstest_dumb_create(exporter_fd,
+> -						      ALIGN(scratch->width, 256),
+> -						      scratch->height, scratch->bpp,
+> -						      &scratch->pitch, &scratch->size);
+> -
+> -		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
+> -					      scratch->size, PROT_WRITE);
+> -	} else {
+> +	if (is_xe_device(exporter_fd) && is_dgfx) {
+> +		ptr = prepare_xe_dgfx_scratch(exporter_fd, scratch);
+> +	} else if (is_i915_device(exporter_fd) && is_dgfx) {
+>  		struct igt_fb fb;
+>  
+>  		igt_init_fb(&fb, exporter_fd, mode->hdisplay, mode->vdisplay,
+> @@ -165,6 +215,11 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+>  
+>  		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
+>  						PROT_WRITE | PROT_READ);
+> +	} else {
+> +		ptr = create_and_map_dump_bo(exporter_fd, scratch,
+> +					     scratch->width, scratch->height,
+> +					     scratch->bpp, &scratch->pitch,
+> +					     &scratch->size);
+>  	}
+>  
+>  	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
+> @@ -184,40 +239,109 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
+>  }
+>  
+>  static void import_fb(int importer_fd, struct igt_fb *fb,
+> -		      int dmabuf_fd, uint32_t pitch)
+> +		      int dmabuf_fd, struct dumb_bo *scratch)
+>  {
+>  	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
+>  	int ret;
+>  
+> -	if (is_i915_device(importer_fd)) {
+> -		if (gem_has_lmem(importer_fd)) {
+> -			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
+> -			uint64_t fb_size = 0;
+> +	igt_debug("Importing FB: importer_fd=%d, dmabuf_fd=%d, width=%u, height=%u\n",
+> +		  importer_fd, dmabuf_fd, fb->width, fb->height);
+>  
+> -			igt_info("Importer is dGPU\n");
+> -			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> -			igt_assert(temp_buf_handle > 0);
+> -			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
+> -								       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
+> -			igt_assert(fb->gem_handle > 0);
+> +	if (is_intel_dgfx(importer_fd)) {
+> +		uint64_t fb_size = 0;
+> +		uint64_t ahnd = 0;
+> +
+> +		igt_info("Importer is dGPU\n");
+> +		temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> +		igt_assert(temp_buf_handle > 0);
+> +		fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width,
+> +							       fb->height, fb->drm_format,
+> +							       fb->modifier, scratch->pitch,
+> +							       &fb_size, NULL, NULL);
+> +		igt_assert(fb->gem_handle > 0);
+> +
+> +		if (is_i915_device(importer_fd)) {
+> +			ahnd = get_reloc_ahnd(importer_fd, 0);
+>  
+>  			igt_blitter_src_copy(importer_fd, ahnd, 0, NULL, temp_buf_handle,
+> -					     0, pitch, fb->modifier, 0, 0, fb_size, fb->width,
+> -					     fb->height, 32, fb->gem_handle, 0, pitch, fb->modifier,
+> -					     0, 0, fb_size);
+> +						 0, scratch->pitch, fb->modifier,
+> +						 0, 0, fb_size, fb->width,
+> +						 fb->height, 32, fb->gem_handle,
+> +						 0, scratch->pitch, fb->modifier,
+> +						 0, 0, fb_size);
+>  
+>  			gem_sync(importer_fd, fb->gem_handle);
+>  			gem_close(importer_fd, temp_buf_handle);
+>  			put_ahnd(ahnd);
+> -		} else {
+> -			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> +		}  else if (is_xe_device(importer_fd)) {
+> +			uint32_t xe_bb;
+> +			struct blt_copy_data blt = {0};
+> +			struct blt_copy_object *src, *dst;
+> +			uint32_t vm, xe_exec;
+> +			intel_ctx_t *xe_ctx;
+> +
+> +			struct drm_xe_engine_class_instance inst = {
+> +				.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +			};
+> +
+> +			vm = xe_vm_create(importer_fd, 0, 0);
+> +			xe_exec = xe_exec_queue_create(importer_fd, vm, &inst, 0);
+> +			xe_ctx = intel_ctx_xe(importer_fd, vm, xe_exec, 0, 0, 0);
+> +			ahnd = intel_allocator_open_full(importer_fd, xe_ctx->vm, 0, 0,
+> +							 INTEL_ALLOCATOR_SIMPLE,
+> +							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +
+> +			igt_init_fb(fb, importer_fd, scratch->width, scratch->height,
+> +				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +				    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
+> +
+> +			igt_calc_fb_size(fb);
+> +
+> +			fb->gem_handle = xe_bo_create(importer_fd, 0, fb->size,
+> +						      vram_if_possible(importer_fd, 0), 0);
+> +			igt_require(fb->gem_handle);
+> +
+> +			blt_copy_init(importer_fd, &blt);
+> +
+> +			src = blt_create_object(&blt, vram_if_possible(importer_fd, 0),
+> +						scratch->width, scratch->height, 32, 0,
+> +						T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +			blt_set_object(src, temp_buf_handle, scratch->size,
+> +				       vram_if_possible(importer_fd, 0), 0,
+> +				       DEFAULT_PAT_INDEX,
+> +				       T_LINEAR, COMPRESSION_DISABLED, 0);
+> +
+> +			dst = blt_create_object(&blt, vram_if_possible(importer_fd, 0),
+> +						scratch->width, scratch->height, 32, 0,
+> +						T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +			blt_set_object(dst, fb->gem_handle, fb->size,
+> +				       vram_if_possible(importer_fd, 0), 0,
+> +				       DEFAULT_PAT_INDEX,
+> +				       T_LINEAR, COMPRESSION_DISABLED, 0);
+> +
+> +			blt.color_depth = CD_32bit;
+> +			blt_set_copy_object(&blt.src, src);
+> +			blt_set_copy_object(&blt.dst, dst);
+> +
+> +			xe_bb = xe_bo_create(importer_fd, 0, fb->size,
+> +					     vram_if_possible(importer_fd, 0), 0);
+> +
+> +			blt_set_batch(&blt.bb, xe_bb, fb->size, vram_if_possible(importer_fd, 0));
+> +			blt_fast_copy(importer_fd, xe_ctx, NULL, ahnd, &blt);
+> +
+> +			put_offset(ahnd, dst->handle);
+> +			put_offset(ahnd, src->handle);
+> +			put_offset(ahnd, xe_bb);
+> +			intel_allocator_bind(ahnd, 0, 0);
+> +			put_ahnd(ahnd);
+>  		}
+>  	} else {
+>  		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> +		igt_assert(fb->gem_handle > 0);
+>  	}
+>  
+>  	handles[0] = fb->gem_handle;
+> -	pitches[0] = pitch;
+> +	pitches[0] = scratch->pitch;
+>  	offsets[0] = 0;
+>  
+>  	ret = drmModeAddFB2(importer_fd, fb->width, fb->height,
+> @@ -284,7 +408,7 @@ static void test_crc(int exporter_fd, int importer_fd)
+>  		gem_close(exporter_fd, scratch.handle);
+>  
+>  		prepare_fb(importer_fd, &scratch, &fb);
+> -		import_fb(importer_fd, &fb, dmabuf_fd, scratch.pitch);
+> +		import_fb(importer_fd, &fb, dmabuf_fd, &scratch);
+>  		close(dmabuf_fd);
+>  
+>  		colors[i].prime_crc.name = "prime";
+> @@ -475,6 +599,8 @@ igt_main
+>  			igt_require(second_fd_vgem >= 0);
+>  			if (is_i915_device(first_fd))
+>  				igt_require(!gem_has_lmem(first_fd));
+> +			if (is_xe_device(first_fd))
+> +				igt_require(!xe_has_vram(first_fd));
+>  		}
+>  
+>  		igt_describe("Make a dumb color buffer, export to another device and"
+> @@ -485,11 +611,5 @@ igt_main
+>  				igt_dynamic("second-to-first")
+>  					test_crc(second_fd_vgem, first_fd);
+>  		}
+> -
+> -		igt_fixture
+> -			drm_close_driver(second_fd_vgem);
+>  	}
+> -
+> -	igt_fixture
+> -		drm_close_driver(first_fd);
+
+Do not remove those fixtures.
+
+Regards,
+Kamil
+
+>  }
+> -- 
+> 2.34.1
+> 
