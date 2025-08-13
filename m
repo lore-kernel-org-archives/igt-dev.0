@@ -2,52 +2,52 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1293C87FCF
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 08:25:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E34DC87FCF
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 12:33:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 17EA810E4E2;
-	Wed, 13 Aug 2025 08:25:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EC9B410E704;
+	Wed, 13 Aug 2025 12:33:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Kzy3fQSa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I7nKFrS0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD97410E69F
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 08:25:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6C2A10E704
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 12:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755073521; x=1786609521;
+ t=1755088399; x=1786624399;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=ZCbips2QmVrC/R6fsu3lXunphYP+ir6rb0daqBPX7Ww=;
- b=Kzy3fQSatD8uvOolEUWY8fGJq1wdfuCPeJoi0bAo4jBS/4eKlUA+QcQJ
- gRSKNycRH3oQKzCS1CNnhnAZp02Bnvo+HEfDC80cTZVVtK9adg9F8zkMu
- s6PRAHXzMoXh2LUpc1wdsoM3zVwgmQNuhF7GCE4Jt7pDkOywZ/xwJOjuZ
- LolVDiAXfRS01lYcwhiuHnyJWTC7kG6/0E8jvkA2asAXZvoC0UC6lbwh2
- 0/njBsCRsKJx3hZfw9V7SugmnJUDlCUCAZy6JCgMYFqf/6+bSEw1slMUN
- mDL+3Bvd0DMinFS8SJKewTd3SCcs2u42Z92bZJiWRqEapkHcjmjTHGCV7 g==;
-X-CSE-ConnectionGUID: gI+zbhTzTROGiQZ2ewlKEA==
-X-CSE-MsgGUID: MuyMYgdeSUWeZBW+D6bphA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57319109"
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="57319109"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2025 01:25:20 -0700
-X-CSE-ConnectionGUID: YgVfkzJLQfiA8fRze5oM9w==
-X-CSE-MsgGUID: 2BoeSMnoTtSeaQKyRQhOnw==
+ b=I7nKFrS0rM/KPXQ1nPrt9mjGupGIuYRUq07S/SYNRzp5cmHlHLTJ0JJL
+ xUlsLMTvcVu+q6BBQDVNwUrY8/1WZs8n/zFqqkq0PrcPoZpnlXPaISsat
+ ojIxstFNwR4a8XchGHovjrlppQPC28gi4OfO/a39nEfH6OnrZCJXeZqtm
+ mEcbPZwpmAsrCZgcjNxu8opgsz8/j4kbzR3M+pHyYsqrKTxsdwbV/aymP
+ sZg2fdEQS9krcQt0notPWmrxONafwKYNr2Z5p6cPswJ7CxDwb4YyffKex
+ VLJJP7/FJ4moMdmgUcAXpfAnm4hM7LKUN8nhUAAynG/+YX6Y1Bs9+XGhv Q==;
+X-CSE-ConnectionGUID: p6mec5CwSbWBTdM0GvQvJw==
+X-CSE-MsgGUID: PJIadHh2SJqxRbkZQjhu7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="68834243"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="68834243"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 05:33:18 -0700
+X-CSE-ConnectionGUID: Fk+88OfmTiCBcvXib3y9Bg==
+X-CSE-MsgGUID: KTN/T7MYQE2OeeORWoZoQQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="166293135"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="171786185"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.245.170])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2025 01:25:15 -0700
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 05:33:11 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Subject: [PATCH i-g-t 1/4] lib/intel_compute_krn_sip: separate sip from the
  shaders
-Date: Wed, 13 Aug 2025 10:25:04 +0200
-Message-ID: <20250813082502.371493-7-zbigniew.kempczynski@intel.com>
+Date: Wed, 13 Aug 2025 14:33:05 +0200
+Message-ID: <20250813123304.456124-2-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250813082502.371493-6-zbigniew.kempczynski@intel.com>
 References: <20250813082502.371493-6-zbigniew.kempczynski@intel.com>
