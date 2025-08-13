@@ -4,73 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC31FCA0EE0
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 12:47:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8E82CA0EE0
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 13:02:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 64D8310E043;
-	Wed, 13 Aug 2025 12:47:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A40B10E710;
+	Wed, 13 Aug 2025 13:02:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WpI6ONxS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B/C9BiN+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6733110E043
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 12:47:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F02C110E70C
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 13:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755089220; x=1786625220;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=y9Mx6ORJypoq0wc1/7jpXvFIvAW5ZbyeE3KcW/NmNMY=;
- b=WpI6ONxSmP7o/8WE8AqertrfWyr10xSU3v2x/hQALLB5Lk0eVrCJsw6s
- aSFhE8HZWAS/vzfUdb46zKoROspJ5mCpanKthWWRxEF5FeYS6nY4gU8Vy
- AI4cqylJW3IOhxRdFCwykfGt6S4ewfHcgwJX8cyWewzp/bBU1UxJKH7xE
- JtjT62nuiRs05IgKUL+Uc6JV9jo7QBcM8YKa2SgzyrgZSRhhCG96oS2YO
- qWr7zclUIOodKYLRdsa5YbGlZyEBscqoeSanphIpTPOW9O9Hgai+QldRz
- bi6sGFR0Ea81OJwW026HQyjJo45AOKjN3AmxBEcWjudGD66lDbD7WsqXj Q==;
-X-CSE-ConnectionGUID: YU//WIRvQS6o+fLg0NI4Lw==
-X-CSE-MsgGUID: adI8DzYhQ/qWrmJBNww8bw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="44958521"
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="44958521"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2025 05:46:59 -0700
-X-CSE-ConnectionGUID: dCEwB5C7R7SGnQWFIYw0Sg==
-X-CSE-MsgGUID: WHRWprVERASOhNEzpaPhnw==
+ t=1755090129; x=1786626129;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=zY9vFEoDHihgZW5LIWZCmBEeT/c4snPOOT3YIn68dYc=;
+ b=B/C9BiN+8+CO068RuZuQGSYuPzOJMCA+69r+cyNeYSNv//5ytuy9Nizo
+ VEFk8eq6W3ZNfjGHMUhKgSV74FvokjHGOcJW2IaFo4O7Hx/MI1YfLx086
+ LWb87qRNnVEJSo9bYW1fLOmOQTdLIk88YexDnATUWSBpnAwWQ85RDPmhO
+ RFF+3Zi4uxYyr0+qGWS51cE8yUkH20yuWaPMNMQzkiNo9fsAEojbyINze
+ 8XxOC0pBqjB3LTVfH4VEjMiEyvHpZowOAST8/Tv8dJFXsn2a4lHN/sNsA
+ inyJvAo65n96qmvPWPwz5GDsKFaqWvzGfLWNkyobRZikvRbQkoBfqBko4 g==;
+X-CSE-ConnectionGUID: 8Z75T6zOQQ+KcGCG+zu4hQ==
+X-CSE-MsgGUID: RuysolZaTVGTFEvo8CJ/bA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57283895"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="57283895"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 06:01:53 -0700
+X-CSE-ConnectionGUID: 4TH29SaLS5aCr0+NY2//WA==
+X-CSE-MsgGUID: NLj2dVpCS6Gr/IqgJHUsqg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="197318845"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2025 05:46:57 -0700
-Date: Wed, 13 Aug 2025 14:46:54 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>,
- Simona Vetter <simona@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Hawking Zhang <Hawking.Zhang@amd.com>, Lijo Lazar <lijo.lazar@amd.com>,
- Riana Tauro <riana.tauro@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>
-Subject: Re: [RFC i-g-t v3 1/1] tools/RAS: A tool to read error counters
-Message-ID: <20250813124654.3tmtxtikade5eslz@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Alex Deucher <alexander.deucher@amd.com>,
- Simona Vetter <simona@ffwll.ch>, David Airlie <airlied@gmail.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Hawking Zhang <Hawking.Zhang@amd.com>,
- Lijo Lazar <lijo.lazar@amd.com>,
- Riana Tauro <riana.tauro@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>
-References: <20250730061342.1380217-1-aravind.iddamsetty@linux.intel.com>
- <20250730061342.1380217-2-aravind.iddamsetty@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="166449354"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 06:01:54 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 13 Aug 2025 06:01:53 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Wed, 13 Aug 2025 06:01:53 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.68)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Wed, 13 Aug 2025 06:01:51 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SPJVW1zTIdubKk2mf6y3JNe/+aNFP6oxHymvhPWuMEPIFgHcjCdYzOKVorPRzhB8jBGzPzG1ozKvlK4lsS4kNc/5uOfni71q9OwBW06IKyPxs8PLkIZ+kxcVoE3gF5XgBe4tlTSeFq3JbxCM/VfLjUgZ54SrbhEb/rWJM12kYLIAGpJaUFViNjM9SSyGd09bp8OWDbSt7MPDduV/Q6UYDKSLpQ5Q7K1rLgR9KmGtY7eDw+efDcJHb/7WOX3SlunheIFKNqtOfLCjGaWc/4uF2FejmVr/fcn1lmg7MDGJFdW1ppinjeOzP31HLE4DhEPraubixtJuElJ6RrIGv5peLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HfuM/CSNdyRMQOFEkEjjnnaaV2/T/H1bff1Hc4aCPHw=;
+ b=lcA3w+u/eok+B8cQHsbdi/tXfJeKf80xCcNZzjH/52LN0BQeaGP4+K8YmHF5bdrG1jmuLgcEq9+0objnhDYs19h/URBm2FaVz3BeCV/vXgWKYgQnaco9DI4OVkYnfJoW/MwWXOYBHkYQ1dFczuo9V778k5TGjYRMrZt9TOOBwvqKcsUleAnBxsK9ZL8rnAbV+ONIbscErXaQ0ew19tCsSu/fdLP5BlIDbHAc3g8Bd711E9uGTNOiSDrGrvTmE9CLHZBm5hG2//mW7rnCDmgZfylbkyftpW1MYvfYUXMaiggyjXnl5s/V0E0c8d1ph/wUE7h+Mb0WdW0l45riKfu4EA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
+ by DM4PR11MB5993.namprd11.prod.outlook.com (2603:10b6:8:5c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.22; Wed, 13 Aug
+ 2025 13:01:49 +0000
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372%4]) with mapi id 15.20.9031.014; Wed, 13 Aug 2025
+ 13:01:49 +0000
+Message-ID: <aac2592f-b4a0-4e88-894c-e076b2383118@intel.com>
+Date: Wed, 13 Aug 2025 18:31:42 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel-ci/xe.bmg.display.blocklist: update bmg
+ blocklist
+To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: Karthik B S <karthik.b.s@intel.com>, Jari Tahvanainen
+ <jari.tahvanainen@intel.com>
+References: <20250704053801.230707-1-kunal1.joshi@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20250704053801.230707-1-kunal1.joshi@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250730061342.1380217-2-aravind.iddamsetty@linux.intel.com>
+X-ClientProxiedBy: PN4P287CA0059.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:270::10) To BL1PR11MB5979.namprd11.prod.outlook.com
+ (2603:10b6:208:386::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|DM4PR11MB5993:EE_
+X-MS-Office365-Filtering-Correlation-Id: 409a580c-29e6-492c-464b-08ddda699088
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WU5SNWxMOTBsWFA3eUxXWjEzQkdRU2RzR1NzdStaNUR3eEd4ZnVhSGg5TEEr?=
+ =?utf-8?B?aVNjN0x5SzVvSHp4enZpeERXS1BQU0cyQVlGNytpQlZvM2lOYlMrb2xqSEpX?=
+ =?utf-8?B?SnYrK0UxYkZIYTRJMFpYcmVFTitvb2ZVdlRaRmtLQjJXRjlKVlY1aUhXNGtX?=
+ =?utf-8?B?anRVWUxrTktNYldTazNGZVZ2MHlpZHlCMkdRM3dQc1NiYkcxN3l0ejhuZEZx?=
+ =?utf-8?B?aTVDMkR4TXJ5YkhHZUNrcUU4MWZQTU01alFIZXFKL2kwN1lEVHh0Tnc4NkJl?=
+ =?utf-8?B?bnhxZ0I1MnoxeWtsMXRnY2JqblBUT2sxUjBLSmNNV1BZWVNyT2FvUS80dlhX?=
+ =?utf-8?B?a3JzSDAxWS9CN3c5OWN3bVZUNzZhbGdCUVBjVWFsSmdUYVl4OUowR0crYW9k?=
+ =?utf-8?B?T0QxYkgyaWVyMThjN0ZoeVRvMEhoMHlmV2JBWEU0bTRWM3FSbkdNVi9NZVpv?=
+ =?utf-8?B?eHkwMzBpN3FXbTMxcmU3M0NNS1V0QUwrb28wOWlpQ3NBQ2srZUtOSjdMRkxO?=
+ =?utf-8?B?d2FQTUx2MlpxZ1VoQ1AzdFY0SzU3RUxvNk5JYlJjTmlZSk43YXN5ZUs2aXZI?=
+ =?utf-8?B?ZkJndG9NdEZodXhkQWFCZVQ1MjZYRWdBd25PQkw3dTd1ZGR1N0RxVXdkL2tL?=
+ =?utf-8?B?d2ZHZVNGR084cEJ3L0phODJLSUVMOG0wZC8yZ3o2RTlIaXdmaStSZXk2Y2o5?=
+ =?utf-8?B?QkZkZmtFdUljQjJlckhqcVZnSjMyejgyVlNGYWlUbDVCTng5U0RUQldvbGRr?=
+ =?utf-8?B?RDIvaTE3VjdnYTN2R0FkR0ovQVg3N0RlTE1aUHB2YlNsZ3k1bER1WENYanli?=
+ =?utf-8?B?dUlOWENzUUZDQ0YvN0ZRNTZJM2pqS1M1S1kyZ2lhUjZwTW9FTWNnSjg1V1FW?=
+ =?utf-8?B?R2duZ1lndDFPeU9SQUNjanJBZVNDWlphZU1KR3hhV1NMRVJVb0ltemNycm4w?=
+ =?utf-8?B?eEhSeU1lYlpvM2J2Y1MvdDBLZ05pUHl4ZnJZRHk0cmcwaVhLb2gyQ2VXQVhp?=
+ =?utf-8?B?V3o4eUpFdVREcmJESm5lVHdRY0dXaU95YUhvZGdOZFExdFJrMWgxcWdEV1U2?=
+ =?utf-8?B?V2NCUjZDckUxNDd5ZHZLZDhCZjVnY1dQcUV3YW0ycUoxalJhZ1k4M2N1bU9J?=
+ =?utf-8?B?dERNNTB0RnlnRU4vVitlT3BMUEY0dnZTcHdzRjNOZUV2bEZaRVZ5OWk2NC8r?=
+ =?utf-8?B?dnBnSi9QWmZ4aS94SHcvdHFlQ3RQaWZFMzcwMnBDUWROSEF2Y0JtOHdkYys1?=
+ =?utf-8?B?YmVHVFR6OXNXSCsvaWNlM3RQZ1U1RGYyZE1qZlRrdGd5dDlNdUpqVDdXb1lT?=
+ =?utf-8?B?WDlOVEkwalg4S3JDdWN0MHFKY1l2TE95ODdOM0RBbis1cjhHMHY4NjBWNjRv?=
+ =?utf-8?B?anBRdkJTZTBkaWIvMlBMVXRGWG9ETnRYWUhOOHpJQVU0YldjWjdxYnJ2UGhV?=
+ =?utf-8?B?RTNkY2h3NTdkUWdtUEkweVNjaWlhbHNGTjU2T1hYQ2FueS9uMlJoNHhVREI1?=
+ =?utf-8?B?NHkrckZZNHVhR01LdGRiODhVUGNLejVRbmtqeDU3R1JjUzdlTXQzODhRSmRW?=
+ =?utf-8?B?MFZtYUJnZC8yb1haN1dIeFlyVmpHa2xOeFp3MFpIUW85WEVEai82NDFMWDJK?=
+ =?utf-8?B?b3ZEdlYrT3ZRRG44SEpMMFVmcHdGdWFVdm4vOTNML0xMeTYxWUVJc1ZZWTBJ?=
+ =?utf-8?B?S2ozYmxBN2J3S2lxNEMrdU90YzBKZXgrUlZHMW1XQkFnbkszY0RHdTNGaXd2?=
+ =?utf-8?B?N2NyNlQvK255M0hxMms3N2d2SVZsVVpCeGt3enlTOCtXcURTcjc1ZVh4UEtR?=
+ =?utf-8?B?dzNDejlYdE9NL3JCeU5BYWU0TC9seGRNL2d0OG5xbmY4dStGZzFVMStML2gw?=
+ =?utf-8?Q?WPv5OftJzXKW3?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UjZ4cHYrNVpzVjZJT2lUQW0yZGhQZzJBRU83c2d5YVFKWGZXV2xyb0E2eTZR?=
+ =?utf-8?B?TWVqTlNvN0VkMlpia2I5V2phMGoxeVQ1ZFlNSmd1RXRCQTk5V1RzT0JiVUt2?=
+ =?utf-8?B?bGJuRWdkdnk3Nk8wOG80OVhCaTBkVEx2amZ1VG1jUWZWWmhIWlZIMGVLWmor?=
+ =?utf-8?B?UHFyVlY3RVZLRVhjYmlsVHpsTkVFdXhEUFBiM2lhMllwbThvTUZLREZ6NnBG?=
+ =?utf-8?B?cVhXcExYT1JZeExQL1N0OWxIbEtEbXlvTkxlbzdIQVUwM1Z0T1FuMjZ1aW50?=
+ =?utf-8?B?b05Ed3VGN3NFakx5YjEyTmdvNGgvdTR6WjJaMU52MlpCZ2M0d1F6TWxFUUh2?=
+ =?utf-8?B?RDZONmorR20wa2VacURlb3kvS0dzaW0zbFpadlNVQkFVTGtMS25LVWozNGJ2?=
+ =?utf-8?B?R3hpMmZPZVVjM0NOZnFiMnlmZmRSNkl1OWhUWHRzalEzSjFnUHpXOU44RkZX?=
+ =?utf-8?B?WTdhdk1oVVRVdGVRbFR4SjQ3VjdPR0g0NkNOVy9ONWhWMXdVYXltSmxXMHBL?=
+ =?utf-8?B?Z2FhWFNJOG1PZERoTXZrVU5JaHdmQkc2ZGlRTjlWWm9jNVQ2dThwOCtzdDh5?=
+ =?utf-8?B?Q2dWYVY1aXNjTXo4cXM3Sm5ranB5eGJPalFaNjU3cUpUejRZLzNXaVBXdGsz?=
+ =?utf-8?B?MkFvNVprWmdKMk5yaTlhYmpxSkZQalNEdFY4TStZYSt2SUlYRlJtSm9XanV1?=
+ =?utf-8?B?VG9lYXY4YnRhZ05CRy92OStGRG9IZUdzVUlZQlZ2a00zM0ltdGRET1pVMTNS?=
+ =?utf-8?B?OXJ5UHpXM2k0cUVmQU1ld2pPZzY0NjBHSjNuRmxycGliT1pOZUxMdmdWcW1o?=
+ =?utf-8?B?M0pFTXdZQVhTMERwdzV2MWRGTzRyUTU4WVVwOVg2OHRYbHlDVC9FMzMvdjhJ?=
+ =?utf-8?B?bkNNamUzSEJVUXRaamNueDFIRkZoR0NtMk91OUFIRHIyR0lkUitGcmxxSHdq?=
+ =?utf-8?B?M0FXZzhzQW4zdmlDS2ZwUkRza0FPSjdTL2FXK3RsaW1xTFNLNkg0dVpsaG0w?=
+ =?utf-8?B?MkFaVUZHWUk4bkthRXNRMjk5VWdPemJJNWNnVkRvekd2R0s2MnFPSGlWRFJP?=
+ =?utf-8?B?OElOK1FIV1QvNlFWNk1rc1hQZzFzUkk5RHdxR25ZUzN0TnRueDZRSnVvWmMy?=
+ =?utf-8?B?MWloOGpsYzBJVlpZZzdScnF2UlFIdDQyODl3ZThxVHRVT0tRZmFvUEg1U2Zx?=
+ =?utf-8?B?TU00WDRobUkvb3lEcGI1MlhDeFJlTkcrOXFmeU5BZThVbXZIVWJTbktLbGM5?=
+ =?utf-8?B?TzFPMjNrbzVHNWtpOUhPZE9uaWlrWlZyOUFsbDBpUUFYZVNMYjRRMXo4SFhn?=
+ =?utf-8?B?bUlpUHdxcEZnWU9wNnlDY3g1QmpISXh0V1pMaE8zK3MzQkNVdHMzV3RxNUdT?=
+ =?utf-8?B?amlzK2c3VkgvVmRPMkRiVEtQTmVBWVZCY3Z6ME1HQjhDaTROTkRmcm5MdnZm?=
+ =?utf-8?B?Y2RSWTJFZHJaMG5RdFlLaklYUUs1azMwRG42RTNVT2ZVUHhyYXF3eHBocm5v?=
+ =?utf-8?B?dTJheWhsNVBDekxkYnN5Q0RFNFpLOXVrLzdZZ05VeFA3MVNndmEyL2VrYTBr?=
+ =?utf-8?B?dkpKcDlVZVdPbnBQODIwZ0srY2RUTG96RE5NNTdyOHVSQ0VvTUdGanBEY0VE?=
+ =?utf-8?B?NmdnOCsydmxseVlkMDZSOC95clZyWXdDTTRVT3JVQ0lBT0RzWUxrK3RyZ0pv?=
+ =?utf-8?B?V3gxUFpZcHErZHdVelJIYUxZeFZ0dFJTSzkrdjg3VUt1S2tGL2xtMjlNWEJT?=
+ =?utf-8?B?b2NrSExxb3VtUFQvWVQxREk4WlJMT1pKWEI2OWFPUExKVmJpVlpPMXgxQVli?=
+ =?utf-8?B?ZHgxQjltN2hhd0ViZlpBUGEzT0pCeTZVTnpsYlU3dDA3Q2dyaXJMK0xxTEJy?=
+ =?utf-8?B?T0dNeUdVeU1Ic2ZtWTVaU05LZlRxVnVNUWZUanRMMnNXanJtdVJwdUN5UERP?=
+ =?utf-8?B?WHVWcEl4Y3N3KzdPaFlhWWpDcy9LWWcxVUJhTzRjN1Rxd1RTSTVGN3UxVHFO?=
+ =?utf-8?B?aTBpdWhtSDVYNHVQaGJwdWxQeFF4TEpPOGVqYXBEaEtrWkNpL3NnUkV6WVpX?=
+ =?utf-8?B?cllMWEd4cjZaUStZRTBncEI2MGw0Zjk2c3RPbXFmaGZ3bGZ4blQ0Vzc5QWVS?=
+ =?utf-8?B?L1RDRUNSbzN1MzUra3p2b3ZOcXozbHVtNkRYeGEvUVpFeGcwNEZNemUzUDJC?=
+ =?utf-8?B?MWc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 409a580c-29e6-492c-464b-08ddda699088
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 13:01:48.9359 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6fYUY68q/GVn98YPmkJ/jcMjzoMssgPT8W5foyoc79dGq1ZBhzAJ62f05WZ6mTP2K2/Pf3WH23iB68Qmc1NNMA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5993
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,622 +196,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Aravind,
-On 2025-07-30 at 11:43:42 +0530, Aravind Iddamsetty wrote:
-> This tool demonstrates the use of netlink sockets to query and read the
-> error counters on a hardware. It provides following commands LIST_ERRORS,
-> READ_ONE, READ_ALL to read counters and WAIT_ON_EVENT to wait for
-> occurrence on a particular event, presently hardcoded to wait on
-> occurrence of correctable error event and read a error counter.
-> 
-> v2: update uapi header.
-> v3: Add DRM_RAS_CMD_READ_BLOCK command to read errors from an IP Block.
-> 
-> Signed-off-by: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+Hi Kunal,
+
+Firstly, update subject :
+     intel-ci: Update BMG KMS blocklist
+
+On 04-07-2025 11:08 am, Kunal Joshi wrote:
+> update bmg blocklist with unsupported
+> or tests which are expected to skip
+s/unsupported/unsupported tests
+>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> Signed-off-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
 > ---
->  include/drm-uapi/drm_netlink.h | 105 ++++++++
->  meson.build                    |   4 +
->  tools/drm_ras.c                | 428 +++++++++++++++++++++++++++++++++
->  tools/meson.build              |   5 +
->  4 files changed, 542 insertions(+)
->  create mode 100644 include/drm-uapi/drm_netlink.h
->  create mode 100644 tools/drm_ras.c
-> 
-> diff --git a/include/drm-uapi/drm_netlink.h b/include/drm-uapi/drm_netlink.h
-> new file mode 100644
-> index 000000000..c978efaab
-> --- /dev/null
-> +++ b/include/drm-uapi/drm_netlink.h
-> @@ -0,0 +1,105 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright 2023 Intel Corporation
+>   tests/intel-ci/xe.bmg.display.blocklist.txt | 25 ++++++++++++++++++---
+>   1 file changed, 22 insertions(+), 3 deletions(-)
+>
+> diff --git a/tests/intel-ci/xe.bmg.display.blocklist.txt b/tests/intel-ci/xe.bmg.display.blocklist.txt
+> index f145d6c0d..d315ca1a0 100644
+> --- a/tests/intel-ci/xe.bmg.display.blocklist.txt
+> +++ b/tests/intel-ci/xe.bmg.display.blocklist.txt
+> @@ -9,8 +9,9 @@ igt@(?!.*kms|testdisplay|.*display-vs-wb-transient)(.*)
+>   igt@kms_(big_fb|ccs|rotation_crc)@.*(y|yf)-(tiled|tile).*
+>   igt@kms_(plane_lowres|frontbuffer_tracking|plane_multiple)@.*tiling-y.*
+>   igt@kms_flip_scaled_crc@.*(yf|y)tile.*
+> -igt@kms_async_flips@invalid-async-flip
+> +igt@kms_async_flips@invalid-async-flip.*
+Since https://patchwork.freedesktop.org/series/151648/ is merged, we 
+should be able to run these tests now.
+>   igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+> +igt@kms_pipe_stress@.*ytiled$
+>   #########################################
+>   # Valid skip :- 90/270 rotation is not supported
+>   ##########################################
+> @@ -61,6 +62,14 @@ igt@kms_cursor_crc@cursor-(offscreen|onscreen|random|rapid-movement|sliding)-512
+>   # Valid skip as BMG doesn't have eDP supported
+>   ##########################################
+>   igt@kms_vrr@seamless-rr-switch-vrr
+> +igt@kms_vrr@cmrr.*
+> +igt@kms_atomic_transition@.*-internal-panels$
+> +igt@.*psr.*
+> +igt@kms_pm_backlight@.*
+> +igt@kms_pm_power_saving@.*
+> +igt@kms_scaling_modes@.*
+> +igt@kms_panel_fitting@.*
+> +igt@.*@.*(?!no-)drrs.*
+>   #########################################
+>   # no VGA connectors in BMG
+>   #########################################
+> @@ -71,6 +80,7 @@ igt@.*chamelium.*vga.*
+>   igt@kms_content_protection@content-type-change
+>   igt@kms_content_protection@lic-type-1
+>   igt@kms_content_protection@type1
+> +igt@kms_content_protection@mei-interface
+>   #########################################
+>   # Expected skip as BMG doesn't have PORT_A/B
+>   #########################################
+> @@ -88,6 +98,7 @@ igt@kms_getfb@getfb-reject-ccs
+>   # Expected skip for graphics ver >= 20
+>   #########################################
+>   igt@kms_getfb@getfb2-accept-ccs
+> +igt@kms_vrr@lobf
+>   ##########################################
+>   # Valid skip :- Feature is not enabled on kernel
+>   ##########################################
+> @@ -97,13 +108,17 @@ igt@kms_writeback@.*
+>   #########################################
+>   igt@kms_pm_dc@deep-pkgc
+>   igt@kms_pm_dc@dc6-dpms
+> -
+> +#########################################
+> +# Valid skip :- BMG has only one cdclk (WA)
+> +#########################################
+> +igt@kms_cdclk@.*
+>   ##########################################
+> -# Valid skip :- DG2 & MTL specific
+> +# Valid skip :- DG2 & MTL & LNL specific
+>   ##########################################
+>   igt@kms_ccs@.*-dg2-.*
+>   igt@kms_ccs@.*-mtl-.*
+>   igt@kms_flip_scaled_crc@.*dg2rcccs.*
+> +igt@kms_ccs@.*-lnl-.*
+>   ##########################################
+>   # Valid skip :- Simulation specific
+>   ##########################################
+> @@ -156,3 +171,7 @@ igt@kms_bw@linear-tiling-.*-display.*
+>   #########################################
+>   igt@kms_big_fb@linear-max-hw-stride.*hflip
+>   #########################################
+> +# Valid skip : intel_display_ver(data.devid) >= 30
+Add - after :
+> +#########################################
+> +igt@kms_pm_dc@dc5-retention-flops$
+> +#########################################
 
-Should be 2025 unless is published elsewhere, then 2023-2025
-
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-
-Remove this, it was replaces by SPDX.
-
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + */
-> +
-> +#ifndef _DRM_NETLINK_H_
-> +#define _DRM_NETLINK_H_
-> +
-> +#define DRM_GENL_VERSION 1
-> +#define DRM_GENL_MCAST_GROUP_NAME_CORR_ERR	"drm_corr_err"
-> +#define DRM_GENL_MCAST_GROUP_NAME_UNCORR_ERR	"drm_uncorr_err"
-> +
-> +#if defined(__cplusplus)
-> +extern "C" {
-> +#endif
-> +
-> +/**
-> + * enum drm_genl_error_cmds - Supported error commands
-> + *
-> + */
-> +enum drm_genl_error_cmds {
-> +	DRM_CMD_UNSPEC,
-> +	/**
-> +	 * @DRM_RAS_CMD_QUERY: Command to list all errors names with config-id in verbose mode.
-> +	 * In normal mode will list IP blocks, total instances available and error types supported
-> +	 */
-> +	DRM_RAS_CMD_QUERY,
-> +	/** @DRM_RAS_CMD_READ_ONE: Command to get a counter for a specific error */
-> +	DRM_RAS_CMD_READ_ONE,
-> +	/** @DRM_RAS_CMD_READ_BLOCK: Command to get a counter of specific error type from an IP
-> +	 * block
-> +	 */
-> +	DRM_RAS_CMD_READ_BLOCK,
-> +	/** @DRM_RAS_CMD_READ_ALL: Command to get counters of all errors */
-> +	DRM_RAS_CMD_READ_ALL,
-> +	/** @DRM_RAS_CMD_ERROR_EVENT: Command sent as part of multicast event */
-> +	DRM_RAS_CMD_ERROR_EVENT,
-> +
-> +	__DRM_CMD_MAX,
-> +	DRM_CMD_MAX = __DRM_CMD_MAX - 1,
-> +};
-> +
-> +enum drm_cmd_request_type {
-> +	DRM_RAS_CMD_QUERY_VERBOSE = 1,
-> +	DRM_RAS_CMD_QUERY_NORMAL = 2,
-> +};
-> +
-> +/**
-> + * enum drm_error_attr - Attributes to use with drm_genl_error_cmds
-> + *
-> + */
-> +enum drm_error_attr {
-> +	DRM_ATTR_UNSPEC,
-> +	DRM_ATTR_PAD = DRM_ATTR_UNSPEC,
-> +	/**
-> +	 * @DRM_RAS_ATTR_QUERY: Should be used with DRM_RAS_CMD_QUERY,
-> +	 * DRM_RAS_CMD_READ_ALL
-> +	 */
-> +	DRM_RAS_ATTR_QUERY, /* NLA_U8 */
-> +	/**
-> +	 * @DRM_RAS_ATTR_READ_ALL: Should be used with DRM_RAS_CMD_READ_ALL
-> +	 */
-> +	DRM_RAS_ATTR_READ_ALL, /* NLA_U8 */
-> +	/**
-> +	 * @DRM_RAS_ATTR_QUERY_REPLY: First Nested attributed sent as a
-> +	 * response to DRM_RAS_CMD_QUERY, DRM_RAS_CMD_READ_ALL commands.
-> +	 */
-> +	DRM_RAS_ATTR_QUERY_REPLY, /* NLA_NESTED */
-> +	/** @DRM_RAS_ATTR_ERROR_NAME: Used to pass error name */
-> +	DRM_RAS_ATTR_ERROR_NAME, /* NLA_NUL_STRING */
-> +	/** @DRM_RAS_ATTR_ERROR_ID: Used to pass error id, should be used with
-> +	 * DRM_RAS_CMD_READ_ONE, DRM_RAS_CMD_READ_BLOCK
-> +	 */
-> +	DRM_RAS_ATTR_ERROR_ID, /* NLA_U64 */
-> +	/** @DRM_RAS_ATTR_ERROR_VALUE: Used to pass error value */
-> +	DRM_RAS_ATTR_ERROR_VALUE, /* NLA_U64 */
-> +
-> +	__DRM_ATTR_MAX,
-> +	DRM_ATTR_MAX = __DRM_ATTR_MAX - 1,
-> +};
-> +
-> +#if defined(__cplusplus)
-> +}
-> +#endif
-> +
-> +#endif
-> diff --git a/meson.build b/meson.build
-> index 4efad72cf..c3e5c95d5 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -165,6 +165,10 @@ cairo = dependency('cairo', version : '>1.12.0', required : true)
->  libudev = dependency('libudev', required : true)
->  glib = dependency('glib-2.0', required : true)
->  
-> +libnl = dependency('libnl-3.0', required: false)
-> +libnl_genl = dependency('libnl-genl-3.0', required: false)
-> +libnl_cli = dependency('libnl-cli-3.0', required:false)
-> +
->  xmlrpc = dependency('xmlrpc', required : false)
->  xmlrpc_util = dependency('xmlrpc_util', required : false)
->  xmlrpc_client = dependency('xmlrpc_client', required : false)
-> diff --git a/tools/drm_ras.c b/tools/drm_ras.c
-> new file mode 100644
-> index 000000000..68946ff6a
-> --- /dev/null
-> +++ b/tools/drm_ras.c
-> @@ -0,0 +1,428 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2021 Intel Corporation
-
-Year 2025
-
-> + */
-> +
-> +#include <stdio.h>
-> +#include <sys/types.h>
-> +#include <unistd.h>
-> +#include <getopt.h>
-> +#include <linux/genetlink.h>
-> +#include <netlink/cli/utils.h>
-
-Sort system headers alphabetically, with one exception for unistd.h
-which could come as first.
-
-> +
-> +#include "drm_netlink.h"
-> +#include "igt_device_scan.h"
-> +
-> +#define ARRAY_SIZE(array) (sizeof(array) / sizeof((array)[0]))
-> +
-> +struct nl_sock *sock, *mcsock;
-> +int family_id;
-> +
-> +enum opt_val {
-> +	OPT_UNKNOWN = '?',
-> +	OPT_END = -1,
-> +	OPT_DEVICE,
-> +	OPT_CONFIG,
-> +	OPT_VERBOSE,
-> +	OPT_HELP,
-> +};
-> +
-> +enum cmd_ids {
-> +	INVALID_CMD = -1,
-> +	LIST_ERRORS = 0,
-> +	READ_ONE,
-> +	READ_BLOCK,
-> +	READ_ALL,
-> +	WAIT_ON_EVENT,
-> +
-> +	__MAX_CMDS,
-> +};
-> +
-> +static const char * const cmd_names[] = {
-> +	"LIST_ERRORS",
-> +	"READ_ONE",
-> +	"READ_BLOCK",
-> +	"READ_ALL",
-> +	"WAIT_ON_EVENT",
-> +};
-> +
-> +static void help(char **argv)
-> +{
-> +	int i;
-> +
-> +	printf("Usage: %s command [<command options>]\n", argv[0]);
-> +	printf("commands:\n");
-> +
-> +	for (i = 0; i < __MAX_CMDS; i++) {
-> +		switch (i) {
-> +		case LIST_ERRORS:
-> +			printf("%s %s --device=<device filter> --verbose [default normal]\n", argv[0], cmd_names[i]);
-> +			break;
-> +		case READ_ALL:
-> +		case WAIT_ON_EVENT:
-> +			printf("%s %s --device=<device filter>\n", argv[0], cmd_names[i]);
-> +			break;
-> +		case READ_ONE:
-> +		case READ_BLOCK:
-> +			printf("%s %s --device=<device filter> --error_id=<id returned from query>\n", argv[0], cmd_names[i]);
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_device_print_filter_types();
-> +}
-> +
-> +static int list_errors(struct nl_cache_ops *ops, struct genl_cmd *cmd,
-> +		       struct genl_info *info, void *arg)
-> +{
-> +	const struct nlmsghdr *nlh = info->nlh;
-> +	struct nlattr *nla;
-> +	int len, remain;
-> +
-> +	len = GENL_HDRLEN;
-> +
-> +	nlmsg_for_each_attr(nla, nlh, len, remain) {
-> +		if ((nla_type(nla) == DRM_RAS_ATTR_QUERY_REPLY) && nla_is_nested(nla)) {
-> +			struct nlattr *cur;
-> +			int rem;
-> +
-> +			if (cmd->c_id == DRM_RAS_CMD_READ_ALL)
-> +				printf("%-50s\t%-18s\t%s\n", "name", "config-id", "counter");
-> +			else
-> +				printf("%-50s\t%-18s\n", "name", "config-id");
-> +
-> +			nla_for_each_nested(cur, nla, rem) {
-> +				switch (nla_type(cur)) {
-> +				case DRM_RAS_ATTR_ERROR_NAME:
-> +					printf("\n%-50s", nla_get_string(cur));
-> +					break;
-> +				case DRM_RAS_ATTR_ERROR_ID:
-> +					printf("\t0x%016lx", nla_get_u64(cur));
-> +					break;
-> +				case DRM_RAS_ATTR_ERROR_VALUE:
-> +					printf("\t%lu", nla_get_u64(cur));
-> +					break;
-> +				default:
-> +					break;
-> +				}
-> +			}
-> +			printf("\n");
-> +		}
-> +	}
-> +
-> +	return NL_OK;
-> +}
-> +
-> +static int read_single(struct nl_cache_ops *ops, struct genl_cmd *cmd,
-> +		       struct genl_info *info, void *arg)
-> +{
-> +	if (!info->attrs[DRM_RAS_ATTR_ERROR_VALUE])
-> +		nl_cli_fatal(NLE_FAILURE, "DRM_RAS_ATTR_ERROR_VALUE attribute is missing");
-> +
-> +	printf("counter value %lu\n", nla_get_u64(info->attrs[DRM_RAS_ATTR_ERROR_VALUE]));
-> +
-> +	return NL_OK;
-> +}
-> +
-> +static int mcast_event_handler(struct nl_cache_ops *ops, struct genl_cmd *cmd,
-> +			       struct genl_info *info, void *arg)
-> +{
-> +	struct nl_msg *msg;
-> +	uint64_t config = 0x0000000000000005; /* error-gt0-correctable-eu-grf */
-> +	void *msg_head;
-> +	int ret;
-> +
-> +	printf("error event received\n");
-> +
-> +	msg = nlmsg_alloc();
-> +	if (!msg)
-> +		nl_cli_fatal(NLE_INVAL, "nlmsg_alloc failed\n");
-> +
-> +	msg_head = genlmsg_put(msg, NL_AUTO_PORT, NL_AUTO_SEQ, family_id, 0, 0,
-> +			       DRM_RAS_CMD_READ_ONE, 1);
-> +	if (!msg_head)
-> +		nl_cli_fatal(ENOMEM, "genlmsg_put failed\n");
-> +
-> +	nla_put_u64(msg, DRM_RAS_ATTR_ERROR_ID, config);
-> +
-> +	ret = nl_send_auto(sock, msg);
-> +	if (ret < 0)
-> +		nl_cli_fatal(ret, "Unable to send message: %s", nl_geterror(ret));
-> +
-> +	ret = nl_recvmsgs_default(sock);
-> +	if (ret < 0)
-> +		nl_cli_fatal(ret, "Unable to receive message: %s", nl_geterror(ret));
-> +
-> +	nlmsg_free(msg);
-> +
-> +	return NL_OK;
-> +}
-> +
-> +static struct nla_policy drm_genl_policy[DRM_ATTR_MAX + 1] = {
-> +	[DRM_RAS_ATTR_QUERY] = { .type = NLA_U8 },
-> +	[DRM_RAS_ATTR_READ_ALL] = { .type = NLA_U8 },
-> +	[DRM_RAS_ATTR_QUERY_REPLY] = { .type = NLA_NESTED },
-> +	[DRM_RAS_ATTR_ERROR_NAME] = { .type = NLA_NUL_STRING },
-> +	[DRM_RAS_ATTR_ERROR_ID] = { .type = NLA_U64 },
-> +	[DRM_RAS_ATTR_ERROR_VALUE] = { .type = NLA_U64 },
-> +};
-> +
-> +static struct genl_cmd drm_genl_cmds[] = {
-> +	{
-> +		.c_id           = DRM_RAS_CMD_QUERY,
-> +		.c_name         = "QUERY",
-> +		.c_maxattr      = DRM_ATTR_MAX,
-> +		.c_attr_policy  = drm_genl_policy,
-> +		.c_msg_parser   = list_errors,
-> +	},
-> +	{
-> +		.c_id           = DRM_RAS_CMD_READ_ONE,
-> +		.c_name         = "READ_1",
-> +		.c_maxattr      = DRM_ATTR_MAX,
-> +		.c_attr_policy  = drm_genl_policy,
-> +		.c_msg_parser   = read_single,
-> +	},
-> +	{
-> +		.c_id           = DRM_RAS_CMD_READ_BLOCK,
-> +		.c_name         = "READ_BLOCK",
-> +		.c_maxattr      = DRM_ATTR_MAX,
-> +		.c_attr_policy  = drm_genl_policy,
-> +		.c_msg_parser   = read_single,
-> +	},
-> +	{
-> +		.c_id           = DRM_RAS_CMD_READ_ALL,
-> +		.c_name         = "READ_ALL",
-> +		.c_maxattr      = DRM_ATTR_MAX,
-> +		.c_attr_policy  = drm_genl_policy,
-> +		.c_msg_parser   = list_errors,
-> +	},
-> +	{
-> +		.c_id           = DRM_RAS_CMD_ERROR_EVENT,
-> +		.c_name         = "ERROR_EVENT",
-> +		.c_maxattr      = DRM_ATTR_MAX,
-> +		.c_attr_policy  = drm_genl_policy,
-> +		.c_msg_parser   = mcast_event_handler,
-> +	},
-> +};
-> +
-> +static struct genl_ops drm_genl_ops = {
-> +	.o_hdrsize	= 0,
-> +	.o_cmds		= drm_genl_cmds,
-> +	.o_ncmds	= ARRAY_SIZE(drm_genl_cmds),
-> +};
-> +
-> +static void send_cmd(int cmd, uint64_t config)
-> +{
-> +	struct nl_msg *msg;
-> +	void *msg_head;
-> +	int ret;
-> +
-> +	msg = nlmsg_alloc();
-> +	if (!msg)
-> +		nl_cli_fatal(NLE_INVAL, "nlmsg_alloc failed\n");
-> +
-> +	msg_head = genlmsg_put(msg, NL_AUTO_PORT, NL_AUTO_SEQ, family_id, 0, 0, cmd, 1);
-> +	if (!msg_head)
-> +		nl_cli_fatal(ENOMEM, "genlmsg_put failed\n");
-> +	switch (cmd) {
-> +	case DRM_RAS_CMD_QUERY:
-> +		nla_put_u8(msg, DRM_RAS_ATTR_QUERY, config ? DRM_RAS_CMD_QUERY_VERBOSE :
-> +							     DRM_RAS_CMD_QUERY_NORMAL);
-> +		break;
-> +	case DRM_RAS_CMD_READ_ONE:
-> +	case DRM_RAS_CMD_READ_BLOCK:
-> +		nla_put_u64(msg, DRM_RAS_ATTR_ERROR_ID, config);
-> +		break;
-> +	case DRM_RAS_CMD_READ_ALL:
-> +		nla_put_u8(msg, DRM_RAS_ATTR_READ_ALL, 1);
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	ret = nl_send_auto(sock, msg);
-> +	if (ret < 0)
-> +		nl_cli_fatal(ret, "Unable to send message: %s", nl_geterror(ret));
-> +
-> +	ret = nl_recvmsgs_default(sock);
-> +	if (ret < 0)
-> +		nl_cli_fatal(ret, "Unable to receive message: %s", nl_geterror(ret));
-> +
-> +	nlmsg_free(msg);
-> +}
-> +
-> +static int get_cmd(char *cmd_name)
-> +{
-> +	int i;
-> +
-> +	if (!cmd_name)
-> +		return -1;
-> +
-> +	for (i = 0; i < __MAX_CMDS; i++) {
-> +		if (strcasecmp(cmd_name, cmd_names[i]) == 0)
-> +			return i;
-> +	}
-> +
-> +	return -1;
-> +}
-> +
-> +int main(int argc, char **argv)
-> +{
-> +	char *endptr;
-> +	enum opt_val val;
-> +	enum cmd_ids cmd;
-> +	char *device = NULL;
-> +	uint64_t error_config_id;
-> +	bool verbose = false;
-> +	int  ret, mcgrp, index;
-> +	struct igt_device_card card;
-> +	char *dev_name, *dup;
-> +
-> +	static struct option options[] = {
-> +		{"device",	required_argument,	NULL,	OPT_DEVICE},
-> +		{"error_id",	required_argument,	NULL,	OPT_CONFIG},
-> +		{"verbose",	no_argument,		NULL,	OPT_VERBOSE},
-> +		{"help",	no_argument,		NULL,	OPT_HELP},
-> +		{ 0 }
-> +	};
-> +
-> +	cmd = get_cmd(argv[1]);
-> +	if (cmd < 0) {
-> +		fprintf(stderr, "invalid command\n");
-> +		help(argv);
-> +		exit(EXIT_FAILURE);
-> +	}
-> +
-> +	for (val = 0; val != OPT_END; ) {
-> +		val = getopt_long(argc, argv, "", options, &index);
-> +
-> +		switch (val) {
-> +		case OPT_DEVICE:
-> +			device = strdup(optarg);
-> +			break;
-> +		case OPT_CONFIG:
-> +			error_config_id = strtoull(optarg, &endptr, 16);
-> +			if (*endptr) {
-> +				fprintf(stderr, "invalid config id %s\n", optarg);
-> +				exit(EXIT_FAILURE);
-> +			}
-> +			break;
-> +		case OPT_VERBOSE:
-> +			verbose = true;
-> +			break;
-> +		case OPT_HELP:
-> +			help(argv);
-> +			exit(EXIT_FAILURE);
-> +		case OPT_END:
-> +			break;
-> +		case OPT_UNKNOWN:
-> +			exit(EXIT_FAILURE);
-> +		}
-> +	}
-> +
-> +	if (!device) {
-> +		fprintf(stderr, "missing device option\n");
-> +		help(argv);
-> +		exit(EXIT_FAILURE);
-> +	} else {
-> +		ret = igt_device_card_match_pci(device, &card);
-> +		if (!ret) {
-> +			fprintf(stderr, "device %s not found!\n", device);
-> +			exit(EXIT_FAILURE);
-> +		}
-> +		free(device);
-> +	}
-> +
-> +	/* get card name */
-> +	dup = strdup(card.card);
-> +
-> +	while (dup)
-> +		dev_name = strsep(&dup, "/");
-> +	free(dup);
-> +
-> +	drm_genl_ops.o_name = strdup(dev_name);
-> +
-> +	sock = nl_cli_alloc_socket();
-> +	if (!sock)
-> +		nl_cli_fatal(NLE_NOMEM, "Cannot allocate nl_sock");
-> +
-> +	ret = nl_cli_connect(sock, NETLINK_GENERIC);
-> +	if (ret < 0)
-> +		nl_cli_fatal(ret, "Cannot connect handle");
-> +
-> +	ret = genl_register_family(&drm_genl_ops);
-> +	if (ret < 0)
-> +		nl_cli_fatal(ret, "Cannot register xe family");
-> +
-> +	ret = genl_ops_resolve(sock, &drm_genl_ops);
-> +	if (ret < 0)
-> +		nl_cli_fatal(ret, "Unable to resolve family name");
-> +
-> +	family_id = genl_ctrl_resolve(sock, drm_genl_ops.o_name);
-> +	if (family_id < 0)
-> +		nl_cli_fatal(NLE_INVAL, "Resolving of \"%s\" failed", drm_genl_ops.o_name);
-> +
-> +	ret = nl_socket_modify_cb(sock, NL_CB_VALID, NL_CB_CUSTOM, genl_handle_msg, NULL);
-> +	if (ret < 0)
-> +		nl_cli_fatal(ret, "Unable to modify valid message callback");
-> +
-> +	switch (cmd) {
-> +	case LIST_ERRORS:
-> +		send_cmd(DRM_RAS_CMD_QUERY, verbose);
-> +		break;
-> +	case READ_ONE:
-> +		send_cmd(DRM_RAS_CMD_READ_ONE, error_config_id);
-> +		break;
-> +	case READ_BLOCK:
-> +		send_cmd(DRM_RAS_CMD_READ_BLOCK, error_config_id);
-> +		break;
-> +	case READ_ALL:
-> +		send_cmd(DRM_RAS_CMD_READ_ALL, 0);
-> +		break;
-> +	case WAIT_ON_EVENT:
-> +		mcsock = nl_cli_alloc_socket();
-> +		if (!mcsock)
-> +			nl_cli_fatal(NLE_NOMEM, "Cannot allocate nl_sock");
-> +
-> +		ret = nl_cli_connect(mcsock, NETLINK_GENERIC);
-> +		if (ret < 0)
-> +			nl_cli_fatal(ret, "Cannot connect handle");
-> +
-> +		ret = genl_ops_resolve(mcsock, &drm_genl_ops);
-> +		if (ret < 0)
-> +			nl_cli_fatal(ret, "Unable to resolve family name");
-> +
-> +		nl_socket_disable_seq_check(mcsock);
-> +
-> +		mcgrp = genl_ctrl_resolve_grp(mcsock, drm_genl_ops.o_name,
-> +					      DRM_GENL_MCAST_GROUP_NAME_CORR_ERR);
-> +		if (mcgrp < 0)
-> +			nl_cli_fatal(mcgrp, "failed to resolve generic netlink multicast group");
-> +
-> +		/* Join the multicast group. */
-> +		ret = nl_socket_add_membership(mcsock, mcgrp);
-> +		if (ret < 0)
-> +			nl_cli_fatal(ret, "failed to join multicast group");
-> +
-> +		ret = nl_socket_modify_cb(mcsock, NL_CB_VALID, NL_CB_CUSTOM, genl_handle_msg, NULL);
-> +		if (ret < 0)
-> +			nl_cli_fatal(ret, "Unable to modify valid message callback");
-> +
-> +		printf("waiting for error event\n");
-> +		ret = nl_recvmsgs_default(mcsock);
-> +		if (ret < 0)
-> +			nl_cli_fatal(ret, "Unable to receive message: %s", nl_geterror(ret));
-> +
-> +		nl_close(mcsock);
-> +		nl_socket_free(mcsock);
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	nl_close(sock);
-> +	nl_socket_free(sock);
-> +
-> +	return 0;
-> +}
-> +
-> diff --git a/tools/meson.build b/tools/meson.build
-> index 99a732942..5195d1f62 100644
-> --- a/tools/meson.build
-> +++ b/tools/meson.build
-> @@ -115,6 +115,11 @@ if build_vmtb
->  	install_subdir('vmtb', install_dir: libexecdir)
->  endif
->  
-> +executable('drm_ras', 'drm_ras.c',
-> +           dependencies : [tool_deps, libnl, libnl_cli, libnl_genl],
-> +           install_rpath : bindir_rpathdir,
-> +           install : true)
-> +
-
-Build only if dependences are present.
-
-Regards,
-Kamil
-
->  subdir('i915-perf')
->  subdir('xe-perf')
->  subdir('null_state_gen')
-> -- 
-> 2.25.1
-> 
