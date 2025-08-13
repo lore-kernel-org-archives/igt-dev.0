@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 761CCC87FCF
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 15:13:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7438CC87FCF
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 15:22:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F6B610E74F;
-	Wed, 13 Aug 2025 15:13:01 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48D9110E749;
- Wed, 13 Aug 2025 15:12:59 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4800760812250288004=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0A89910E744;
+	Wed, 13 Aug 2025 15:22:26 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UrEZNYsC";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1126610E744
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 15:22:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755098545; x=1786634545;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ugN+VYCxZcNIc+SewY/I3HvifeeKvh2Wwg8SIpOTI7U=;
+ b=UrEZNYsCtk8RA3x7+wukgRoF6h6qgKgLXKnp9BNo3G9NkWxvd1YkMyql
+ fZ+bxJZPY8Sr815kTA8CFAsf7Hi+OTGamvF0F0+hiQKjON6u6mMZMyNwC
+ djN3GBVptukLfF9jOI3EtAn7Off8hjy3k2LhDhoTNDhh/WYcOMyq/aEVN
+ 8RbUcv78Zcvp5WKMjhd3vdXCTXDJTU2R8tMer7k+iZSCrCfVHxKEYc+Op
+ srJNHd/58oZjfmGFgymemKXbj4dT5SfLo6TsvZ0V8hOXhSvjgqLGOUMQL
+ LqZ/KolNr33cBh8WvSL1rm7lZi6vudB5KgQRO2cF2eIowLKSiOb4dGlMX Q==;
+X-CSE-ConnectionGUID: DYakc5dSTFORGErpsgyyJA==
+X-CSE-MsgGUID: wf3718GTSwOqt3vdzy1frg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="56422267"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="56422267"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 08:22:25 -0700
+X-CSE-ConnectionGUID: foxytOp1QjOGQRNEbkVorQ==
+X-CSE-MsgGUID: TPjiNFFISpChijv6V0HAHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="170636251"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 08:22:23 -0700
+Date: Wed, 13 Aug 2025 17:22:06 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>,
+ Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+Subject: Re: [PATCH i-g-t] lib/pciids: sync pciids.h with kernel
+Message-ID: <20250813152206.uzygxvqcjkcnflrj@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
+ Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>,
+ Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+References: <20250811130901.288178-1-jani.nikula@intel.com>
+ <20250812115914.chsogn6zvfxd6ugb@kamilkon-DESK.igk.intel.com>
+ <eef2cf9f34025eff3445edb74dcf98eac6d9099b@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsysfs=5Ffi?=
- =?utf-8?q?le=5Fperm=3A_Verify_sysfs_file_permissions_for_security?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 13 Aug 2025 15:12:59 -0000
-Message-ID: <175509797929.233544.11380779695175032472@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250813131948.573785-1-peter.senna@linux.intel.com>
-In-Reply-To: <20250813131948.573785-1-peter.senna@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <eef2cf9f34025eff3445edb74dcf98eac6d9099b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,135 +72,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4800760812250288004==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Jani,
+On 2025-08-12 at 18:49:38 +0300, Jani Nikula wrote:
+> On Tue, 12 Aug 2025, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+> > Hi Jani,
+> > On 2025-08-11 at 16:09:01 +0300, Jani Nikula wrote:
+> >> Syncing lib/pciids.h with kernel include/drm/intel/pciids.h means there
+> >> must exist kernel and igt commits where the files are identical,
+> >> i.e. the file is copied verbatim at some kernel commit to igt.
+> >> 
+> >> It does *not* mean syncing the *changes* of a kernel commit to the igt
+> >> version of the file.
+> >> 
+> >> The latest changes to lib/pciids.h have gone out of sync with kernel,
+> >> completely missing kernel commit 3c0f211bc8fc ("drm/xe: Add Wildcat Lake
+> >> device IDs to PTL list").
+> >> 
+> >> Properly sync PCI IDs with kernel commit ccfb15b8158c ("drm/xe/bmg: Add
+> >> one additional PCI ID"), including the full file.
+> >> 
+> >> Fixes: 26ddb59c1d5f ("lib/pciids: Add one more PCI ID to BMG")
+> >> Cc: Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>
+> >> Cc: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+> >> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> >
+> > Thank you for update of pciids, imho subject could be improved,
+> > something like:
+> >
+> > [PATCH i-g-t] lib/pciids: Add Wildcat Lake
+> >
+> > so it will be more informative with git log --oneline
+> >
+> > No need for resend, this could be done at merge so
+> >
+> > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> Thanks, pushed with the subject updated.
+> 
+> BR,
+> Jani.
 
-== Series Details ==
+It somehow ended up with two lib/...:
 
-Series: tests/intel/xe_sysfs_file_perm: Verify sysfs file permissions for security
-URL   : https://patchwork.freedesktop.org/series/152889/
-State : success
+lib/pciids: lib/pciids: Add Wildcat Lake
 
-== Summary ==
+It is not a big deal here as it is still better then former
+subject.
 
-CI Bug Log - changes from XEIGT_8493_BAT -> XEIGTPW_13578_BAT
-====================================================
+Please re-read your submission before pushing, preferably
+with
+git log -N
 
-Summary
--------
+and then with
+git log -N --oneline
 
-  **SUCCESS**
+where N is number of patches merged.
 
-  No regressions found.
+Regards,
+Kamil
 
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13578_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-plain-flip@c-edp1:
-    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8493/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13578/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
-
-
-Build changes
--------------
-
-  * IGT: IGT_8493 -> IGTPW_13578
-  * Linux: xe-3535-6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736 -> xe-3540-ec8aa890d544a1acecf63c1a23e659bb7fc7abe6
-
-  IGTPW_13578: e98597b518663add1298063be03f50b312861be3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8493: 8493
-  xe-3535-6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736: 6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736
-  xe-3540-ec8aa890d544a1acecf63c1a23e659bb7fc7abe6: ec8aa890d544a1acecf63c1a23e659bb7fc7abe6
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13578/index.html
-
---===============4800760812250288004==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_sysfs_file_perm: Verify sysfs file permissions for security</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152889/">https://patchwork.freedesktop.org/series/152889/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13578/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13578/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8493_BAT -&gt; XEIGTPW_13578_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13578_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8493/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13578/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8493 -&gt; IGTPW_13578</li>
-<li>Linux: xe-3535-6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736 -&gt; xe-3540-ec8aa890d544a1acecf63c1a23e659bb7fc7abe6</li>
-</ul>
-<p>IGTPW_13578: e98597b518663add1298063be03f50b312861be3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8493: 8493<br />
-  xe-3535-6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736: 6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736<br />
-  xe-3540-ec8aa890d544a1acecf63c1a23e659bb7fc7abe6: ec8aa890d544a1acecf63c1a23e659bb7fc7abe6</p>
-
-</body>
-</html>
-
---===============4800760812250288004==--
+> 
+> >
+> >> ---
+> >>  lib/pciids.h | 4 +++-
+> >>  1 file changed, 3 insertions(+), 1 deletion(-)
+> >> 
+> >> diff --git a/lib/pciids.h b/lib/pciids.h
+> >> index 666265b5f8c8..76f8d26f9cc9 100644
+> >> --- a/lib/pciids.h
+> >> +++ b/lib/pciids.h
+> >> @@ -872,6 +872,8 @@
+> >>  	MACRO__(0xB08F, ## __VA_ARGS__), \
+> >>  	MACRO__(0xB090, ## __VA_ARGS__), \
+> >>  	MACRO__(0xB0A0, ## __VA_ARGS__), \
+> >> -	MACRO__(0xB0B0, ## __VA_ARGS__)
+> >> +	MACRO__(0xB0B0, ## __VA_ARGS__), \
+> >> +	MACRO__(0xFD80, ## __VA_ARGS__), \
+> >> +	MACRO__(0xFD81, ## __VA_ARGS__)
+> >>  
+> >>  #endif /* __PCIIDS_H__ */
+> >> -- 
+> >> 2.47.2
+> >> 
+> 
+> -- 
+> Jani Nikula, Intel
