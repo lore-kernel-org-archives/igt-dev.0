@@ -4,62 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7438CC87FCF
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 15:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DFCBC87FCF
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 15:59:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0A89910E744;
-	Wed, 13 Aug 2025 15:22:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CE91B10E78A;
+	Wed, 13 Aug 2025 15:59:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UrEZNYsC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VPYhdBKe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1126610E744
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 15:22:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA6FF10E76F
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 15:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755098545; x=1786634545;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ugN+VYCxZcNIc+SewY/I3HvifeeKvh2Wwg8SIpOTI7U=;
- b=UrEZNYsCtk8RA3x7+wukgRoF6h6qgKgLXKnp9BNo3G9NkWxvd1YkMyql
- fZ+bxJZPY8Sr815kTA8CFAsf7Hi+OTGamvF0F0+hiQKjON6u6mMZMyNwC
- djN3GBVptukLfF9jOI3EtAn7Off8hjy3k2LhDhoTNDhh/WYcOMyq/aEVN
- 8RbUcv78Zcvp5WKMjhd3vdXCTXDJTU2R8tMer7k+iZSCrCfVHxKEYc+Op
- srJNHd/58oZjfmGFgymemKXbj4dT5SfLo6TsvZ0V8hOXhSvjgqLGOUMQL
- LqZ/KolNr33cBh8WvSL1rm7lZi6vudB5KgQRO2cF2eIowLKSiOb4dGlMX Q==;
-X-CSE-ConnectionGUID: DYakc5dSTFORGErpsgyyJA==
-X-CSE-MsgGUID: wf3718GTSwOqt3vdzy1frg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="56422267"
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="56422267"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2025 08:22:25 -0700
-X-CSE-ConnectionGUID: foxytOp1QjOGQRNEbkVorQ==
-X-CSE-MsgGUID: TPjiNFFISpChijv6V0HAHg==
+ t=1755100776; x=1786636776;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=uFXLRnH51lk2ta00aKX5crmwwSt80NnS4uBlF+hnmJ4=;
+ b=VPYhdBKeyejRmvubiZKYxXCDKqAKHYxkymOVuSgy669zG5Gq6+CZn6b3
+ Vm97hNNTjJ4Hg3MGnm6B4zrPadw0gaf4j8oJW5DxsioB12PYDhio/5ldp
+ 7G6ameCnMpNzb7nwG9qixXZL9lLYl87/KBv0D6aJuX0ag67m6wdB3BC6+
+ AxGTBq8KxLtzjdfv0W4hVZKcgQLRx65egphYHaCWvDiWEMcwyjURfXYL9
+ hBNFHw5eaehsLHyLLbImcW8BbuX+RIpuQArYqQab1Bo9Rjr2TMfzzuhbD
+ 5qwzQPRq4mJUaLpYjvPTUrx9fjw0dMTHzzzU1ZFo2GsLzJDa/sjqJM2Wh Q==;
+X-CSE-ConnectionGUID: FEMFEwHiSwmdJ4WAKGWVXA==
+X-CSE-MsgGUID: cryIKKhoS1COTgCb0RzcqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="68004181"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="68004181"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 08:59:35 -0700
+X-CSE-ConnectionGUID: Lu91S9G7SvGt7TWylyY7YA==
+X-CSE-MsgGUID: OO1pXjG3R6qELZ50I9h+Kg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="170636251"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 08:22:23 -0700
-Date: Wed, 13 Aug 2025 17:22:06 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>,
- Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-Subject: Re: [PATCH i-g-t] lib/pciids: sync pciids.h with kernel
-Message-ID: <20250813152206.uzygxvqcjkcnflrj@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
- Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>,
- Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-References: <20250811130901.288178-1-jani.nikula@intel.com>
- <20250812115914.chsogn6zvfxd6ugb@kamilkon-DESK.igk.intel.com>
- <eef2cf9f34025eff3445edb74dcf98eac6d9099b@intel.com>
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="166878591"
+Received: from dut4086lnl.fm.intel.com ([10.105.10.26])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 08:59:35 -0700
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, alex.zuo@intel.com,
+ niranjana.vishwanathapura@intel.com, matthew.brost@intel.com
+Subject: [PATCH] lib/xe/xe_spin: Add switch point for preemptible spinner
+Date: Wed, 13 Aug 2025 15:59:36 +0000
+Message-ID: <20250813155935.87329-2-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <eef2cf9f34025eff3445edb74dcf98eac6d9099b@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,88 +66,131 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2025-08-12 at 18:49:38 +0300, Jani Nikula wrote:
-> On Tue, 12 Aug 2025, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
-> > Hi Jani,
-> > On 2025-08-11 at 16:09:01 +0300, Jani Nikula wrote:
-> >> Syncing lib/pciids.h with kernel include/drm/intel/pciids.h means there
-> >> must exist kernel and igt commits where the files are identical,
-> >> i.e. the file is copied verbatim at some kernel commit to igt.
-> >> 
-> >> It does *not* mean syncing the *changes* of a kernel commit to the igt
-> >> version of the file.
-> >> 
-> >> The latest changes to lib/pciids.h have gone out of sync with kernel,
-> >> completely missing kernel commit 3c0f211bc8fc ("drm/xe: Add Wildcat Lake
-> >> device IDs to PTL list").
-> >> 
-> >> Properly sync PCI IDs with kernel commit ccfb15b8158c ("drm/xe/bmg: Add
-> >> one additional PCI ID"), including the full file.
-> >> 
-> >> Fixes: 26ddb59c1d5f ("lib/pciids: Add one more PCI ID to BMG")
-> >> Cc: Ravi Kumar Vodapalli <ravi.kumar.vodapalli@intel.com>
-> >> Cc: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-> >> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> >
-> > Thank you for update of pciids, imho subject could be improved,
-> > something like:
-> >
-> > [PATCH i-g-t] lib/pciids: Add Wildcat Lake
-> >
-> > so it will be more informative with git log --oneline
-> >
-> > No need for resend, this could be done at merge so
-> >
-> > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> Thanks, pushed with the subject updated.
-> 
-> BR,
-> Jani.
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 
-It somehow ended up with two lib/...:
+When 'preempt' option is specified, insert a MI_SEMAPHORE_WAIT
+command in the spinner batch buffer. This provides the switch
+point for preemption to happen in multi queue mode.
 
-lib/pciids: lib/pciids: Add Wildcat Lake
+Additionally, allow the user to control the preempt wait condition.
 
-It is not a big deal here as it is still better then former
-subject.
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5783
+Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+---
+ include/intel_gpu_commands.h |  1 +
+ lib/xe/xe_spin.c             | 42 +++++++++++++++++++++++++++++++++++-
+ lib/xe/xe_spin.h             |  3 +++
+ 3 files changed, 45 insertions(+), 1 deletion(-)
 
-Please re-read your submission before pushing, preferably
-with
-git log -N
+diff --git a/include/intel_gpu_commands.h b/include/intel_gpu_commands.h
+index cd281ba89d..5158bb0ea0 100644
+--- a/include/intel_gpu_commands.h
++++ b/include/intel_gpu_commands.h
+@@ -123,6 +123,7 @@
+ #define MI_SEMAPHORE_WAIT	MI_INSTR(0x1c, 2) /* GEN8+ */
+ #define MI_SEMAPHORE_WAIT_TOKEN	MI_INSTR(0x1c, 3) /* GEN12+ */
+ #define   MI_SEMAPHORE_POLL		(1 << 15)
++#define   MI_SEMAPHORE_QUEUE_SWITCH_MODE	(1 << 11)
+ #define   MI_SEMAPHORE_SAD_GT_SDD	(0 << 12)
+ #define   MI_SEMAPHORE_SAD_GTE_SDD	(1 << 12)
+ #define   MI_SEMAPHORE_SAD_LT_SDD	(2 << 12)
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 25f7555e27..d62952b539 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -30,7 +30,6 @@
+ 
+ enum { START_TS, NOW_TS };
+ 
+-
+ uint32_t xe_spin_nsec_to_ticks(int fd, int gt_id, uint64_t nsec)
+ {
+ 	uint32_t ticks = xe_nsec_to_ticks(fd, gt_id, nsec);
+@@ -57,6 +56,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 
+ 	spin->start = 0;
+ 	spin->end = 0xffffffff;
++	spin->wait_cond = 0;
+ 	spin->ticks_delta = 0;
+ 
+ 	if (opts->ctx_ticks) {
+@@ -167,6 +167,24 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 				   opts->mem_copy->dst->mocs_index;
+ 	}
+ 
++	/*
++	 * Insert a MI_SEMAPHORE_WAIT_CMD instruction with condition controlled
++	 * by the user. It also acts as a queue switch point in multi queue mode.
++	 */
++	if (opts->preempt) {
++		uint64_t wait_addr = opts->addr + offsetof(struct xe_spin, wait_cond);
++
++		spin->batch[b++] = MI_SEMAPHORE_WAIT_CMD |
++				MI_SEMAPHORE_POLL |
++				MI_SEMAPHORE_QUEUE_SWITCH_MODE |
++				MI_SEMAPHORE_SAD_EQ_SDD |
++				3;
++		spin->batch[b++] = 0;
++		spin->batch[b++] = wait_addr;
++		spin->batch[b++] = wait_addr >> 32;
++		spin->batch[b++] = 0;
++	}
++
+ 	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+ 	spin->batch[b++] = 0;
+ 	spin->batch[b++] = end_addr;
+@@ -207,6 +225,28 @@ void xe_spin_end(struct xe_spin *spin)
+ 	WRITE_ONCE(spin->end, 0);
+ }
+ 
++/**
++ * xe_spin_preempt_wait:
++ * @spin: pointer to spinner mapped bo
++ *
++ * Make the spinner wait on the preemption semaphore.
++ */
++void xe_spin_preempt_wait(struct xe_spin *spin)
++{
++	spin->wait_cond = 1;
++}
++
++/**
++ * xe_spin_preempt_nowait:
++ * @spin: pointer to spinner mapped bo
++ *
++ * Make the spinner do not wait on the preemption semaphore.
++ */
++void xe_spin_preempt_nowait(struct xe_spin *spin)
++{
++	spin->wait_cond = 0;
++}
++
+ /**
+  * xe_spin_create:
+  * @opt: controlling options such as allocator handle, exec_queue, vm etc
+diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+index c2199d0aa2..eaf2a409e0 100644
+--- a/lib/xe/xe_spin.h
++++ b/lib/xe/xe_spin.h
+@@ -64,6 +64,7 @@ struct xe_spin {
+ 	uint64_t pad;
+ 	uint32_t start;
+ 	uint32_t end;
++	uint32_t wait_cond;
+ 	uint32_t ticks_delta;
+ 	uint64_t exec_sync;
+ 	uint32_t timestamp;
+@@ -76,6 +77,8 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
+ bool xe_spin_started(struct xe_spin *spin);
+ void xe_spin_wait_started(struct xe_spin *spin);
+ void xe_spin_end(struct xe_spin *spin);
++void xe_spin_preempt_wait(struct xe_spin *spin);
++void xe_spin_preempt_nowait(struct xe_spin *spin);
+ 
+ /*
+  * xe_cork: higher level API that simplifies exec'ing an xe_spin by taking care
+-- 
+2.43.0
 
-and then with
-git log -N --oneline
-
-where N is number of patches merged.
-
-Regards,
-Kamil
-
-> 
-> >
-> >> ---
-> >>  lib/pciids.h | 4 +++-
-> >>  1 file changed, 3 insertions(+), 1 deletion(-)
-> >> 
-> >> diff --git a/lib/pciids.h b/lib/pciids.h
-> >> index 666265b5f8c8..76f8d26f9cc9 100644
-> >> --- a/lib/pciids.h
-> >> +++ b/lib/pciids.h
-> >> @@ -872,6 +872,8 @@
-> >>  	MACRO__(0xB08F, ## __VA_ARGS__), \
-> >>  	MACRO__(0xB090, ## __VA_ARGS__), \
-> >>  	MACRO__(0xB0A0, ## __VA_ARGS__), \
-> >> -	MACRO__(0xB0B0, ## __VA_ARGS__)
-> >> +	MACRO__(0xB0B0, ## __VA_ARGS__), \
-> >> +	MACRO__(0xFD80, ## __VA_ARGS__), \
-> >> +	MACRO__(0xFD81, ## __VA_ARGS__)
-> >>  
-> >>  #endif /* __PCIIDS_H__ */
-> >> -- 
-> >> 2.47.2
-> >> 
-> 
-> -- 
-> Jani Nikula, Intel
