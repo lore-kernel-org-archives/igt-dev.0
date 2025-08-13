@@ -4,183 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8E82CA0EE0
-	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 13:02:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C323FCA0EE0
+	for <igt-dev@archiver.kernel.org>; Wed, 13 Aug 2025 13:20:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A40B10E710;
-	Wed, 13 Aug 2025 13:02:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 74DCD10E712;
+	Wed, 13 Aug 2025 13:20:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B/C9BiN+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dOrKPM4S";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F02C110E70C
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 13:02:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62EE210E717
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Aug 2025 13:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755090129; x=1786626129;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=zY9vFEoDHihgZW5LIWZCmBEeT/c4snPOOT3YIn68dYc=;
- b=B/C9BiN+8+CO068RuZuQGSYuPzOJMCA+69r+cyNeYSNv//5ytuy9Nizo
- VEFk8eq6W3ZNfjGHMUhKgSV74FvokjHGOcJW2IaFo4O7Hx/MI1YfLx086
- LWb87qRNnVEJSo9bYW1fLOmOQTdLIk88YexDnATUWSBpnAwWQ85RDPmhO
- RFF+3Zi4uxYyr0+qGWS51cE8yUkH20yuWaPMNMQzkiNo9fsAEojbyINze
- 8XxOC0pBqjB3LTVfH4VEjMiEyvHpZowOAST8/Tv8dJFXsn2a4lHN/sNsA
- inyJvAo65n96qmvPWPwz5GDsKFaqWvzGfLWNkyobRZikvRbQkoBfqBko4 g==;
-X-CSE-ConnectionGUID: 8Z75T6zOQQ+KcGCG+zu4hQ==
-X-CSE-MsgGUID: RuysolZaTVGTFEvo8CJ/bA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57283895"
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="57283895"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2025 06:01:53 -0700
-X-CSE-ConnectionGUID: 4TH29SaLS5aCr0+NY2//WA==
-X-CSE-MsgGUID: NLj2dVpCS6Gr/IqgJHUsqg==
+ t=1755091222; x=1786627222;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=g9K5fuULfKRRJ6yq0UCUNEU21Y2oLZZzLTXLlKsXJpg=;
+ b=dOrKPM4SGn+HsWVGnBuZ7xqmPTtovWpM7YgHftjhZBLsLjw/XKgJFPgH
+ 0O8gus9LMXQmYaYdKb4egfTCam9kiVhMIMo/ncCjHwVTLi0e/JIMPCHWQ
+ dEcHegkDhszYzh/QVl06AFubiqiIceyOZA2jDmK3DlClDWIywMqivRBrk
+ x1jLHjpjcC0irBWe+xp1y4BgHA0hpRSC28GpNYTDomWbGkSR+Z4/VsUES
+ YiiRLeEoqogQMIFwCeeMCBFPV73vTDKgpI6UacWVjx7h+5qJ4WUlJzq9M
+ 2Ug+wztsjlR1171iWcWqw/0N2/kU2Q/6ITY0iIFASMe7D1NmmzfJ8AQwM w==;
+X-CSE-ConnectionGUID: VU/O2s1gT1e1vxe9+1jRLQ==
+X-CSE-MsgGUID: hJQPsRchRNC/6gs5VGFLFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57305831"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="57305831"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 06:20:22 -0700
+X-CSE-ConnectionGUID: 0tI7D2iTRYm7d1VgSZ8fPA==
+X-CSE-MsgGUID: tzmcg1KxSRi7JhxmEqGDww==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="166449354"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2025 06:01:54 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 13 Aug 2025 06:01:53 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Wed, 13 Aug 2025 06:01:53 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.68)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Wed, 13 Aug 2025 06:01:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SPJVW1zTIdubKk2mf6y3JNe/+aNFP6oxHymvhPWuMEPIFgHcjCdYzOKVorPRzhB8jBGzPzG1ozKvlK4lsS4kNc/5uOfni71q9OwBW06IKyPxs8PLkIZ+kxcVoE3gF5XgBe4tlTSeFq3JbxCM/VfLjUgZ54SrbhEb/rWJM12kYLIAGpJaUFViNjM9SSyGd09bp8OWDbSt7MPDduV/Q6UYDKSLpQ5Q7K1rLgR9KmGtY7eDw+efDcJHb/7WOX3SlunheIFKNqtOfLCjGaWc/4uF2FejmVr/fcn1lmg7MDGJFdW1ppinjeOzP31HLE4DhEPraubixtJuElJ6RrIGv5peLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HfuM/CSNdyRMQOFEkEjjnnaaV2/T/H1bff1Hc4aCPHw=;
- b=lcA3w+u/eok+B8cQHsbdi/tXfJeKf80xCcNZzjH/52LN0BQeaGP4+K8YmHF5bdrG1jmuLgcEq9+0objnhDYs19h/URBm2FaVz3BeCV/vXgWKYgQnaco9DI4OVkYnfJoW/MwWXOYBHkYQ1dFczuo9V778k5TGjYRMrZt9TOOBwvqKcsUleAnBxsK9ZL8rnAbV+ONIbscErXaQ0ew19tCsSu/fdLP5BlIDbHAc3g8Bd711E9uGTNOiSDrGrvTmE9CLHZBm5hG2//mW7rnCDmgZfylbkyftpW1MYvfYUXMaiggyjXnl5s/V0E0c8d1ph/wUE7h+Mb0WdW0l45riKfu4EA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
- by DM4PR11MB5993.namprd11.prod.outlook.com (2603:10b6:8:5c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.22; Wed, 13 Aug
- 2025 13:01:49 +0000
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372%4]) with mapi id 15.20.9031.014; Wed, 13 Aug 2025
- 13:01:49 +0000
-Message-ID: <aac2592f-b4a0-4e88-894c-e076b2383118@intel.com>
-Date: Wed, 13 Aug 2025 18:31:42 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel-ci/xe.bmg.display.blocklist: update bmg
- blocklist
-To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: Karthik B S <karthik.b.s@intel.com>, Jari Tahvanainen
- <jari.tahvanainen@intel.com>
-References: <20250704053801.230707-1-kunal1.joshi@intel.com>
-Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20250704053801.230707-1-kunal1.joshi@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN4P287CA0059.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:270::10) To BL1PR11MB5979.namprd11.prod.outlook.com
- (2603:10b6:208:386::9)
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; d="scan'208";a="197323233"
+Received: from jjerz-mobl1.ger.corp.intel.com (HELO
+ friendship7-home.clients.intel.com) ([10.245.96.41])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2025 06:20:19 -0700
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Michal Winiarski <michal.winiarski@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_sysfs_file_perm: Verify sysfs file
+ permissions for security
+Date: Wed, 13 Aug 2025 15:19:47 +0200
+Message-ID: <20250813131948.573785-1-peter.senna@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|DM4PR11MB5993:EE_
-X-MS-Office365-Filtering-Correlation-Id: 409a580c-29e6-492c-464b-08ddda699088
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WU5SNWxMOTBsWFA3eUxXWjEzQkdRU2RzR1NzdStaNUR3eEd4ZnVhSGg5TEEr?=
- =?utf-8?B?aVNjN0x5SzVvSHp4enZpeERXS1BQU0cyQVlGNytpQlZvM2lOYlMrb2xqSEpX?=
- =?utf-8?B?SnYrK0UxYkZIYTRJMFpYcmVFTitvb2ZVdlRaRmtLQjJXRjlKVlY1aUhXNGtX?=
- =?utf-8?B?anRVWUxrTktNYldTazNGZVZ2MHlpZHlCMkdRM3dQc1NiYkcxN3l0ejhuZEZx?=
- =?utf-8?B?aTVDMkR4TXJ5YkhHZUNrcUU4MWZQTU01alFIZXFKL2kwN1lEVHh0Tnc4NkJl?=
- =?utf-8?B?bnhxZ0I1MnoxeWtsMXRnY2JqblBUT2sxUjBLSmNNV1BZWVNyT2FvUS80dlhX?=
- =?utf-8?B?a3JzSDAxWS9CN3c5OWN3bVZUNzZhbGdCUVBjVWFsSmdUYVl4OUowR0crYW9k?=
- =?utf-8?B?T0QxYkgyaWVyMThjN0ZoeVRvMEhoMHlmV2JBWEU0bTRWM3FSbkdNVi9NZVpv?=
- =?utf-8?B?eHkwMzBpN3FXbTMxcmU3M0NNS1V0QUwrb28wOWlpQ3NBQ2srZUtOSjdMRkxO?=
- =?utf-8?B?d2FQTUx2MlpxZ1VoQ1AzdFY0SzU3RUxvNk5JYlJjTmlZSk43YXN5ZUs2aXZI?=
- =?utf-8?B?ZkJndG9NdEZodXhkQWFCZVQ1MjZYRWdBd25PQkw3dTd1ZGR1N0RxVXdkL2tL?=
- =?utf-8?B?d2ZHZVNGR084cEJ3L0phODJLSUVMOG0wZC8yZ3o2RTlIaXdmaStSZXk2Y2o5?=
- =?utf-8?B?QkZkZmtFdUljQjJlckhqcVZnSjMyejgyVlNGYWlUbDVCTng5U0RUQldvbGRr?=
- =?utf-8?B?RDIvaTE3VjdnYTN2R0FkR0ovQVg3N0RlTE1aUHB2YlNsZ3k1bER1WENYanli?=
- =?utf-8?B?dUlOWENzUUZDQ0YvN0ZRNTZJM2pqS1M1S1kyZ2lhUjZwTW9FTWNnSjg1V1FW?=
- =?utf-8?B?R2duZ1lndDFPeU9SQUNjanJBZVNDWlphZU1KR3hhV1NMRVJVb0ltemNycm4w?=
- =?utf-8?B?eEhSeU1lYlpvM2J2Y1MvdDBLZ05pUHl4ZnJZRHk0cmcwaVhLb2gyQ2VXQVhp?=
- =?utf-8?B?V3o4eUpFdVREcmJESm5lVHdRY0dXaU95YUhvZGdOZFExdFJrMWgxcWdEV1U2?=
- =?utf-8?B?V2NCUjZDckUxNDd5ZHZLZDhCZjVnY1dQcUV3YW0ycUoxalJhZ1k4M2N1bU9J?=
- =?utf-8?B?dERNNTB0RnlnRU4vVitlT3BMUEY0dnZTcHdzRjNOZUV2bEZaRVZ5OWk2NC8r?=
- =?utf-8?B?dnBnSi9QWmZ4aS94SHcvdHFlQ3RQaWZFMzcwMnBDUWROSEF2Y0JtOHdkYys1?=
- =?utf-8?B?YmVHVFR6OXNXSCsvaWNlM3RQZ1U1RGYyZE1qZlRrdGd5dDlNdUpqVDdXb1lT?=
- =?utf-8?B?WDlOVEkwalg4S3JDdWN0MHFKY1l2TE95ODdOM0RBbis1cjhHMHY4NjBWNjRv?=
- =?utf-8?B?anBRdkJTZTBkaWIvMlBMVXRGWG9ETnRYWUhOOHpJQVU0YldjWjdxYnJ2UGhV?=
- =?utf-8?B?RTNkY2h3NTdkUWdtUEkweVNjaWlhbHNGTjU2T1hYQ2FueS9uMlJoNHhVREI1?=
- =?utf-8?B?NHkrckZZNHVhR01LdGRiODhVUGNLejVRbmtqeDU3R1JjUzdlTXQzODhRSmRW?=
- =?utf-8?B?MFZtYUJnZC8yb1haN1dIeFlyVmpHa2xOeFp3MFpIUW85WEVEai82NDFMWDJK?=
- =?utf-8?B?b3ZEdlYrT3ZRRG44SEpMMFVmcHdGdWFVdm4vOTNML0xMeTYxWUVJc1ZZWTBJ?=
- =?utf-8?B?S2ozYmxBN2J3S2lxNEMrdU90YzBKZXgrUlZHMW1XQkFnbkszY0RHdTNGaXd2?=
- =?utf-8?B?N2NyNlQvK255M0hxMms3N2d2SVZsVVpCeGt3enlTOCtXcURTcjc1ZVh4UEtR?=
- =?utf-8?B?dzNDejlYdE9NL3JCeU5BYWU0TC9seGRNL2d0OG5xbmY4dStGZzFVMStML2gw?=
- =?utf-8?Q?WPv5OftJzXKW3?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UjZ4cHYrNVpzVjZJT2lUQW0yZGhQZzJBRU83c2d5YVFKWGZXV2xyb0E2eTZR?=
- =?utf-8?B?TWVqTlNvN0VkMlpia2I5V2phMGoxeVQ1ZFlNSmd1RXRCQTk5V1RzT0JiVUt2?=
- =?utf-8?B?bGJuRWdkdnk3Nk8wOG80OVhCaTBkVEx2amZ1VG1jUWZWWmhIWlZIMGVLWmor?=
- =?utf-8?B?UHFyVlY3RVZLRVhjYmlsVHpsTkVFdXhEUFBiM2lhMllwbThvTUZLREZ6NnBG?=
- =?utf-8?B?cVhXcExYT1JZeExQL1N0OWxIbEtEbXlvTkxlbzdIQVUwM1Z0T1FuMjZ1aW50?=
- =?utf-8?B?b05Ed3VGN3NFakx5YjEyTmdvNGgvdTR6WjJaMU52MlpCZ2M0d1F6TWxFUUh2?=
- =?utf-8?B?RDZONmorR20wa2VacURlb3kvS0dzaW0zbFpadlNVQkFVTGtMS25LVWozNGJ2?=
- =?utf-8?B?R3hpMmZPZVVjM0NOZnFiMnlmZmRSNkl1OWhUWHRzalEzSjFnUHpXOU44RkZX?=
- =?utf-8?B?WTdhdk1oVVRVdGVRbFR4SjQ3VjdPR0g0NkNOVy9ONWhWMXdVYXltSmxXMHBL?=
- =?utf-8?B?Z2FhWFNJOG1PZERoTXZrVU5JaHdmQkc2ZGlRTjlWWm9jNVQ2dThwOCtzdDh5?=
- =?utf-8?B?Q2dWYVY1aXNjTXo4cXM3Sm5ranB5eGJPalFaNjU3cUpUejRZLzNXaVBXdGsz?=
- =?utf-8?B?MkFvNVprWmdKMk5yaTlhYmpxSkZQalNEdFY4TStZYSt2SUlYRlJtSm9XanV1?=
- =?utf-8?B?VG9lYXY4YnRhZ05CRy92OStGRG9IZUdzVUlZQlZ2a00zM0ltdGRET1pVMTNS?=
- =?utf-8?B?OXJ5UHpXM2k0cUVmQU1ld2pPZzY0NjBHSjNuRmxycGliT1pOZUxMdmdWcW1o?=
- =?utf-8?B?M0pFTXdZQVhTMERwdzV2MWRGTzRyUTU4WVVwOVg2OHRYbHlDVC9FMzMvdjhJ?=
- =?utf-8?B?bkNNamUzSEJVUXRaamNueDFIRkZoR0NtMk91OUFIRHIyR0lkUitGcmxxSHdq?=
- =?utf-8?B?M0FXZzhzQW4zdmlDS2ZwUkRza0FPSjdTL2FXK3RsaW1xTFNLNkg0dVpsaG0w?=
- =?utf-8?B?MkFaVUZHWUk4bkthRXNRMjk5VWdPemJJNWNnVkRvekd2R0s2MnFPSGlWRFJP?=
- =?utf-8?B?OElOK1FIV1QvNlFWNk1rc1hQZzFzUkk5RHdxR25ZUzN0TnRueDZRSnVvWmMy?=
- =?utf-8?B?MWloOGpsYzBJVlpZZzdScnF2UlFIdDQyODl3ZThxVHRVT0tRZmFvUEg1U2Zx?=
- =?utf-8?B?TU00WDRobUkvb3lEcGI1MlhDeFJlTkcrOXFmeU5BZThVbXZIVWJTbktLbGM5?=
- =?utf-8?B?TzFPMjNrbzVHNWtpOUhPZE9uaWlrWlZyOUFsbDBpUUFYZVNMYjRRMXo4SFhn?=
- =?utf-8?B?bUlpUHdxcEZnWU9wNnlDY3g1QmpISXh0V1pMaE8zK3MzQkNVdHMzV3RxNUdT?=
- =?utf-8?B?amlzK2c3VkgvVmRPMkRiVEtQTmVBWVZCY3Z6ME1HQjhDaTROTkRmcm5MdnZm?=
- =?utf-8?B?Y2RSWTJFZHJaMG5RdFlLaklYUUs1azMwRG42RTNVT2ZVUHhyYXF3eHBocm5v?=
- =?utf-8?B?dTJheWhsNVBDekxkYnN5Q0RFNFpLOXVrLzdZZ05VeFA3MVNndmEyL2VrYTBr?=
- =?utf-8?B?dkpKcDlVZVdPbnBQODIwZ0srY2RUTG96RE5NNTdyOHVSQ0VvTUdGanBEY0VE?=
- =?utf-8?B?NmdnOCsydmxseVlkMDZSOC95clZyWXdDTTRVT3JVQ0lBT0RzWUxrK3RyZ0pv?=
- =?utf-8?B?V3gxUFpZcHErZHdVelJIYUxZeFZ0dFJTSzkrdjg3VUt1S2tGL2xtMjlNWEJT?=
- =?utf-8?B?b2NrSExxb3VtUFQvWVQxREk4WlJMT1pKWEI2OWFPUExKVmJpVlpPMXgxQVli?=
- =?utf-8?B?ZHgxQjltN2hhd0ViZlpBUGEzT0pCeTZVTnpsYlU3dDA3Q2dyaXJMK0xxTEJy?=
- =?utf-8?B?T0dNeUdVeU1Ic2ZtWTVaU05LZlRxVnVNUWZUanRMMnNXanJtdVJwdUN5UERP?=
- =?utf-8?B?WHVWcEl4Y3N3KzdPaFlhWWpDcy9LWWcxVUJhTzRjN1Rxd1RTSTVGN3UxVHFO?=
- =?utf-8?B?aTBpdWhtSDVYNHVQaGJwdWxQeFF4TEpPOGVqYXBEaEtrWkNpL3NnUkV6WVpX?=
- =?utf-8?B?cllMWEd4cjZaUStZRTBncEI2MGw0Zjk2c3RPbXFmaGZ3bGZ4blQ0Vzc5QWVS?=
- =?utf-8?B?L1RDRUNSbzN1MzUra3p2b3ZOcXozbHVtNkRYeGEvUVpFeGcwNEZNemUzUDJC?=
- =?utf-8?B?MWc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 409a580c-29e6-492c-464b-08ddda699088
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 13:01:48.9359 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6fYUY68q/GVn98YPmkJ/jcMjzoMssgPT8W5foyoc79dGq1ZBhzAJ62f05WZ6mTP2K2/Pf3WH23iB68Qmc1NNMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5993
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -196,99 +70,618 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kunal,
+This IGT adds checks for the 13 sysfs files identified in the Xe threat
+model, ensuring they are only writable by the root user. If any of these
+files are writable by non-root users, a warning is issued.
 
-Firstly, update subject :
-     intel-ci: Update BMG KMS blocklist
+When files are not present in the system, only informational messages
+are logged. No warnings or test aborts occur in such cases.
 
-On 04-07-2025 11:08 am, Kunal Joshi wrote:
-> update bmg blocklist with unsupported
-> or tests which are expected to skip
-s/unsupported/unsupported tests
->
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> Signed-off-by: Jari Tahvanainen <jari.tahvanainen@intel.com>
-> ---
->   tests/intel-ci/xe.bmg.display.blocklist.txt | 25 ++++++++++++++++++---
->   1 file changed, 22 insertions(+), 3 deletions(-)
->
-> diff --git a/tests/intel-ci/xe.bmg.display.blocklist.txt b/tests/intel-ci/xe.bmg.display.blocklist.txt
-> index f145d6c0d..d315ca1a0 100644
-> --- a/tests/intel-ci/xe.bmg.display.blocklist.txt
-> +++ b/tests/intel-ci/xe.bmg.display.blocklist.txt
-> @@ -9,8 +9,9 @@ igt@(?!.*kms|testdisplay|.*display-vs-wb-transient)(.*)
->   igt@kms_(big_fb|ccs|rotation_crc)@.*(y|yf)-(tiled|tile).*
->   igt@kms_(plane_lowres|frontbuffer_tracking|plane_multiple)@.*tiling-y.*
->   igt@kms_flip_scaled_crc@.*(yf|y)tile.*
-> -igt@kms_async_flips@invalid-async-flip
-> +igt@kms_async_flips@invalid-async-flip.*
-Since https://patchwork.freedesktop.org/series/151648/ is merged, we 
-should be able to run these tests now.
->   igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
-> +igt@kms_pipe_stress@.*ytiled$
->   #########################################
->   # Valid skip :- 90/270 rotation is not supported
->   ##########################################
-> @@ -61,6 +62,14 @@ igt@kms_cursor_crc@cursor-(offscreen|onscreen|random|rapid-movement|sliding)-512
->   # Valid skip as BMG doesn't have eDP supported
->   ##########################################
->   igt@kms_vrr@seamless-rr-switch-vrr
-> +igt@kms_vrr@cmrr.*
-> +igt@kms_atomic_transition@.*-internal-panels$
-> +igt@.*psr.*
-> +igt@kms_pm_backlight@.*
-> +igt@kms_pm_power_saving@.*
-> +igt@kms_scaling_modes@.*
-> +igt@kms_panel_fitting@.*
-> +igt@.*@.*(?!no-)drrs.*
->   #########################################
->   # no VGA connectors in BMG
->   #########################################
-> @@ -71,6 +80,7 @@ igt@.*chamelium.*vga.*
->   igt@kms_content_protection@content-type-change
->   igt@kms_content_protection@lic-type-1
->   igt@kms_content_protection@type1
-> +igt@kms_content_protection@mei-interface
->   #########################################
->   # Expected skip as BMG doesn't have PORT_A/B
->   #########################################
-> @@ -88,6 +98,7 @@ igt@kms_getfb@getfb-reject-ccs
->   # Expected skip for graphics ver >= 20
->   #########################################
->   igt@kms_getfb@getfb2-accept-ccs
-> +igt@kms_vrr@lobf
->   ##########################################
->   # Valid skip :- Feature is not enabled on kernel
->   ##########################################
-> @@ -97,13 +108,17 @@ igt@kms_writeback@.*
->   #########################################
->   igt@kms_pm_dc@deep-pkgc
->   igt@kms_pm_dc@dc6-dpms
-> -
-> +#########################################
-> +# Valid skip :- BMG has only one cdclk (WA)
-> +#########################################
-> +igt@kms_cdclk@.*
->   ##########################################
-> -# Valid skip :- DG2 & MTL specific
-> +# Valid skip :- DG2 & MTL & LNL specific
->   ##########################################
->   igt@kms_ccs@.*-dg2-.*
->   igt@kms_ccs@.*-mtl-.*
->   igt@kms_flip_scaled_crc@.*dg2rcccs.*
-> +igt@kms_ccs@.*-lnl-.*
->   ##########################################
->   # Valid skip :- Simulation specific
->   ##########################################
-> @@ -156,3 +171,7 @@ igt@kms_bw@linear-tiling-.*-display.*
->   #########################################
->   igt@kms_big_fb@linear-max-hw-stride.*hflip
->   #########################################
-> +# Valid skip : intel_display_ver(data.devid) >= 30
-Add - after :
-> +#########################################
-> +igt@kms_pm_dc@dc5-retention-flops$
-> +#########################################
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Michal Winiarski <michal.winiarski@intel.com>
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+---
+ tests/intel/xe_sysfs_file_perm.c | 578 +++++++++++++++++++++++++++++++
+ tests/meson.build                |   1 +
+ 2 files changed, 579 insertions(+)
+ create mode 100644 tests/intel/xe_sysfs_file_perm.c
+
+diff --git a/tests/intel/xe_sysfs_file_perm.c b/tests/intel/xe_sysfs_file_perm.c
+new file mode 100644
+index 000000000..2833de10c
+--- /dev/null
++++ b/tests/intel/xe_sysfs_file_perm.c
+@@ -0,0 +1,578 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#include <fcntl.h>
++#include <pwd.h>
++#include <regex.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <string.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++#include "igt.h"
++#include "igt_dir.h"
++#include "igt_hwmon.h"
++#include "igt_list.h"
++#include "igt_sysfs.h"
++#include "xe/xe_query.h"
++
++/**
++ * Sysfs subdirectories for Xe devices:
++ * GT_DIR      /sys/class/drm/.../tile?/gt?/
++ * HWMON_DIR   /sys/class/drm/.../hwmon/hwmon/
++ * DEVICES_DIR /sys/bus/pci/devices/.../
++ */
++#define DIR_COUNT 3
++typedef enum {
++	GT_DIR,
++	HWMON_DIR,
++	DEVICES_DIR
++} xe_fd_type;
++
++struct fd_node {
++	xe_fd_type xe_fd_type;
++	int fd;
++	struct igt_list_head link;
++};
++
++struct pattern_node {
++	xe_fd_type xe_fd_type;
++	const char *pattern;
++	regex_t regex; /* Compiled regex */
++	int match_count;
++	struct igt_list_head link;
++};
++
++/**
++ * We only care if the user and group are root or not, no need to save username
++ */
++struct file_permissions {
++	bool root_user;
++	bool root_group;
++	mode_t mode;
++};
++
++struct file_node {
++	char *full_path;
++	struct file_permissions permissions;
++	struct igt_list_head link;
++};
++
++struct dir_input {
++	xe_fd_type xe_fd_type;
++	const char * const *patterns;
++	int pattern_count;
++};
++
++struct callback_data {
++	struct igt_list_head *pattern_list;
++	struct igt_list_head *files_list;
++	xe_fd_type xe_fd_type;
++};
++
++static int get_fd_path(int fd, char *buffer, size_t bufsize)
++{
++	ssize_t len;
++	char proc_path[64];
++
++	snprintf(proc_path, sizeof(proc_path), "/proc/self/fd/%d", fd);
++	len = readlink(proc_path, buffer, bufsize - 1);
++
++	if (len == -1) {
++		igt_warn("Failed to read link for fd %d: %m\n", fd);
++		return -1;
++	}
++
++	buffer[len] = '\0';
++	return 0;
++}
++
++#define gt_mask_for_each_bit(__mask, __bit) \
++	for ( ; __bit = ffsll(__mask) - 1, __mask != 0; __mask &= ~(1ull << __bit))
++
++static bool fds_open_all(struct igt_list_head *fds_list)
++{
++	int drm_fd;
++	struct fd_node *fd_node;
++	char full_path[1024];
++	u32 gt;
++	uint64_t gt_mask;
++	int sysfs_fd;
++
++	drm_fd = drm_open_driver(DRIVER_XE);
++	if (drm_fd < 0) {
++		igt_warn("Failed to open DRM device: %m\n");
++		return false;
++	}
++
++	/* GTs */
++	gt_mask = xe_device_get(drm_fd)->gt_mask;
++	igt_debug("GT mask: 0x%lx\n", gt_mask);
++
++	/* There could be more than one GT */
++	gt_mask_for_each_bit(gt_mask, gt) {
++		fd_node = malloc(sizeof(*fd_node));
++		if (!fd_node) {
++			igt_warn("Failed to allocate memory for fd_node\n");
++			drm_close_driver(drm_fd);
++			return false;
++		}
++
++		fd_node->xe_fd_type = GT_DIR;
++		fd_node->fd = xe_sysfs_gt_open(drm_fd, gt);
++		if (fd_node->fd < 0) {
++			igt_warn("Failed to open GT sysfs for GT %d: %m\n", gt);
++			free(fd_node);
++			continue;
++		}
++
++		igt_list_add(&fd_node->link, fds_list);
++		igt_debug("GT%d: %d\n", gt, fd_node->fd);
++
++		if (get_fd_path(fd_node->fd, full_path, sizeof(full_path)) == 0)
++			igt_debug("GT: full path %s\n", full_path);
++	}
++
++	/* HWMON */
++	fd_node = malloc(sizeof(*fd_node));
++	if (!fd_node) {
++		igt_warn("Failed to allocate memory for fd_node\n");
++		drm_close_driver(drm_fd);
++		return false;
++	}
++
++	fd_node->xe_fd_type = HWMON_DIR;
++	fd_node->fd = igt_hwmon_open(drm_fd);
++	if (fd_node->fd < 0) {
++		igt_warn("Failed to open HWMon sysfs: %m\n");
++		free(fd_node);
++		drm_close_driver(drm_fd);
++		return false;
++	}
++
++	igt_list_add(&fd_node->link, fds_list);
++	igt_debug("HWMON_DIR: %d\n", fd_node->fd);
++	if (get_fd_path(fd_node->fd, full_path, sizeof(full_path)) == 0)
++		igt_debug("HWMon: full path %s\n", full_path);
++
++	/* DEVICES */
++	fd_node = malloc(sizeof(*fd_node));
++	if (!fd_node) {
++		igt_warn("Failed to allocate memory for fd_node\n");
++		close(sysfs_fd);
++		drm_close_driver(drm_fd);
++		return false;
++	}
++	fd_node->xe_fd_type = DEVICES_DIR;
++	sysfs_fd = igt_sysfs_open(drm_fd);
++	if (sysfs_fd < 0) {
++		igt_warn("Failed to open sysfs: %m\n");
++		drm_close_driver(drm_fd);
++		return false;
++	}
++
++	fd_node->fd = openat(sysfs_fd, "device", O_RDONLY | O_DIRECTORY);
++	close(sysfs_fd);
++	drm_close_driver(drm_fd);
++
++	if (fd_node->fd < 0) {
++		igt_warn("Failed to open Devices sysfs: %m\n");
++		free(fd_node);
++		return false;
++	}
++
++	igt_list_add(&fd_node->link, fds_list);
++	igt_debug("DEVICES_DIR: %d\n", fd_node->fd);
++	if (get_fd_path(fd_node->fd, full_path, sizeof(full_path)) == 0)
++		igt_debug("Devices: full path %s\n", full_path);
++
++	return true;
++}
++
++static bool fds_close_and_free_list(struct igt_list_head *fds_list)
++{
++	struct fd_node *fd_node, *tmp;
++
++	igt_list_for_each_entry_safe(fd_node, tmp, fds_list, link) {
++		if (fd_node->fd >= 0) {
++			close(fd_node->fd);
++			igt_debug("Closed fd %d\n", fd_node->fd);
++		}
++		igt_list_del(&fd_node->link);
++		free(fd_node);
++	}
++
++	return true;
++}
++
++static bool get_file_permissions(const char *filename,
++				 struct file_permissions *permissions)
++{
++	struct stat st;
++
++	if (stat(filename, &st) < 0) {
++		igt_warn("Failed to stat file %s: %m\n", filename);
++		return false;
++	}
++
++	permissions->root_user = (st.st_uid == 0);
++	permissions->root_group = (st.st_gid == 0);
++	permissions->mode = st.st_mode;
++
++	return true;
++}
++
++/**
++ * file_list_add: Adds a file node to the list if it does not already exist.
++ * If the file already exists, it skips adding it and prints a debug message.
++ *
++ * @param file_node: The file node to add
++ * @param head: The head of the list to add the file node to
++ *
++ * Returns: void
++ */
++static void file_list_add(struct file_node *file_node, struct igt_list_head *head)
++{
++	struct file_node *existing_node;
++
++	igt_list_for_each_entry(existing_node, head, link) {
++		if (strcmp(existing_node->full_path, file_node->full_path) == 0) {
++			igt_debug("File %s already exists in the list, skipping\n",
++				  file_node->full_path);
++			return;
++		}
++	}
++
++	igt_list_add(&file_node->link, head);
++	igt_debug("Added file %s to the list\n", file_node->full_path);
++}
++
++/**
++ * callback_read_file_permissions: Reads file permissions and updates the file
++ * list.
++ *
++ * @filename: Path to the file
++ * @data: Pointer to the callback data containing the pattern list and files
++ * list
++ *
++ * Returns: 0 on success, a negative error code on failure
++ */
++static int callback_read_file_permissions(const char *filename,
++					  void *data)
++{
++	struct callback_data *callback_data = (struct callback_data *)data;
++	struct file_node *file_node;
++	struct pattern_node *pattern_node;
++	int ret;
++
++	igt_list_for_each_entry(pattern_node, callback_data->pattern_list, link) {
++		/**
++		 * The list contains patterns for all directories, but we scan
++		 * only one directory at a time.
++		 */
++		if (pattern_node->xe_fd_type != callback_data->xe_fd_type) {
++			igt_debug("Skipping pattern %s for dir type %d\n",
++				  pattern_node->pattern, callback_data->xe_fd_type);
++			continue;
++		}
++
++		ret = regexec(&pattern_node->regex, filename, 0, NULL, 0);
++
++		if (ret == 0) {
++			pattern_node->match_count++;
++
++			file_node = malloc(sizeof(struct file_node));
++			if (!file_node) {
++				igt_warn("Failed to allocate memory for file node\n");
++				continue;
++			}
++
++			file_node->full_path = strdup(filename);
++			if (!file_node->full_path) {
++				igt_warn("Failed to allocate memory for the file path\n");
++				continue;
++			}
++
++			igt_require(get_file_permissions(filename, &file_node->permissions));
++
++			file_list_add(file_node, callback_data->files_list);
++			igt_debug("Matched file: %s, permissions: root_user: %d, root_group: %d, mode: %o\n",
++				  file_node->full_path,
++				  file_node->permissions.root_user,
++				  file_node->permissions.root_group,
++				  file_node->permissions.mode);
++		}
++	}
++
++	/* No match */
++	return 0;
++}
++
++/**
++ * prepare_patterns: Prepares the linked list of patterns for all xe
++ * sysfs subdirectories compiling the regex for each pattern.
++ *
++ * @inputs: Array of dir_input structures containing the patterns
++ * @pattern_list: List to store the prepared patterns
++ *
++ * Returns: true on success, false on failure
++ */
++static bool prepare_patterns(struct dir_input *inputs,
++			     struct igt_list_head *pattern_list)
++{
++	char full_regex[1024];
++
++	for (int i = 0; i < DIR_COUNT; i++) {
++		for (int j = 0; j < inputs[i].pattern_count; j++) {
++			struct pattern_node *node = malloc(sizeof(struct pattern_node));
++
++			if (!node) {
++				igt_warn("Failed to allocate memory for pattern node\n");
++				return false;
++			}
++
++			if (strlen(inputs[i].patterns[j]) >= sizeof(full_regex)) {
++				igt_warn("Pattern too long: %s\n", inputs[i].patterns[j]);
++				free(node);
++				continue;
++			}
++
++			snprintf(full_regex, sizeof(full_regex), "%s", inputs[i].patterns[j]);
++			if (regcomp(&node->regex, full_regex, REG_EXTENDED) != 0) {
++				igt_warn("Failed to compile regex: %s\n", full_regex);
++				continue;
++			}
++			node->pattern =  inputs[i].patterns[j];
++			node->xe_fd_type = inputs[i].xe_fd_type;
++			node->match_count = 0;
++
++			igt_list_add(&node->link, pattern_list);
++		}
++	}
++
++	return true;
++}
++
++/**
++ * search_files: Searches for files in the provided list of file descriptors
++ * matching the patterns in the pattern list. It uses the callback function to
++ * process each file found.
++ *
++ * @param fds_list: List of file descriptors to search
++ * @param pattern_list: List of patterns to match against
++ * @param files_list: List to store the found files
++ *
++ * Returns: true if files were found and processed, false otherwise
++ */
++static bool search_files(struct igt_list_head *fds_list,
++			 struct igt_list_head *pattern_list,
++			 struct igt_list_head *files_list)
++{
++	struct callback_data callback_data = {
++		.pattern_list = pattern_list,
++		.files_list = files_list,
++	};
++	struct fd_node *fd_node;
++	igt_dir_t *igt_dir_config = NULL;
++
++	igt_list_for_each_entry(fd_node, fds_list, link) {
++		callback_data.xe_fd_type = fd_node->xe_fd_type;
++
++		igt_dir_config = igt_dir_create(fd_node->fd);
++		igt_require(igt_dir_config);
++
++		igt_dir_scan_dirfd(igt_dir_config, -1);
++		igt_dir_process_files(igt_dir_config,
++				      callback_read_file_permissions,
++				      &callback_data);
++
++		igt_dir_destroy(igt_dir_config);
++	}
++
++	return true;
++}
++
++/**
++ * check_pattern_match: Checks if all patterns in the pattern list matched at
++ * least one file. We do not abort or warn if not all patterns match because not
++ * all nodes are present in all systems. We simply inform the user about
++ * patterns that did not match any file.
++ *
++ * @pattern_list: List of patterns to check
++ *
++ * Returns: true if all patterns matched at least one file, false otherwise
++ */
++static bool check_pattern_match(struct igt_list_head *pattern_list)
++{
++	bool header = false;
++	struct pattern_node *pattern_node;
++	bool ret = true;
++
++	igt_list_for_each_entry(pattern_node, pattern_list, link) {
++		if (pattern_node->match_count == 0) {
++			if (!header) {
++				igt_info("\n(INFO) Not all patterns matched at least one file. ");
++				igt_info("Patterns that did not match any file:\n");
++				header = true;
++			}
++			igt_info("\t- '%s'\n",
++				 pattern_node->pattern);
++			ret = false;
++		}
++	}
++	if (header)
++		igt_info("\n");
++
++	return ret;
++}
++
++/**
++ * TEST: sysfs file permission access control
++ * Description: Check if important sysfs files are only acessible by root.
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: uapi
++ * Functionality: sysfs
++ * Feature: core
++ * Test category: uapi
++ *
++ * SUBTEST: check-file-permissions
++ * Description: Check if important sysfs files are only accessible by root.
++ *
++ */
++
++IGT_TEST_DESCRIPTION("Check if only root can write to important sysfs files.");
++
++/**
++ * check_files_permissions: Checks if the files in the provided list have
++ * correct permissions. The expected permissions are:
++ * - Owner: root
++ * - Group: root
++ * - Only owner can write to the file (mode 100644).
++ * If any file does not have the expected permissions,
++ * it will print a warning and return false.
++ * If all files have the expected permissions,
++ * it will return true.
++ *
++ * @param files_list: List of files to check
++ *
++ * Returns: true if all files have correct permissions, false otherwise
++ */
++static bool check_files_permissions(struct igt_list_head *files_list)
++{
++	bool header = false;
++	struct file_node *file_node;
++	bool ret = true;
++
++	/* Check if owner and group are root and if only owner can
++	 * write to the file.
++	 */
++	igt_list_for_each_entry(file_node, files_list, link) {
++		if (!file_node->permissions.root_user ||
++		    !file_node->permissions.root_group ||
++		    (file_node->permissions.mode & 0022)) {
++			if (!header) {
++				igt_warn("\n\nFiles with incorrect permissions:\n");
++				header = true;
++			}
++
++			igt_warn("\t- %s\n\t\troot_user: %s, root_group: %s, mode: %o (expected: 100644)\n",
++				 file_node->full_path,
++				 file_node->permissions.root_user ? "true" : "false",
++				 file_node->permissions.root_group ? "true" : "false",
++				 file_node->permissions.mode);
++			ret = false;
++		}
++	}
++	if (header)
++		igt_warn("\n");
++
++	return ret;
++}
++
++igt_main
++{
++	struct igt_list_head fds_list;
++	struct igt_list_head files_list;
++	struct igt_list_head pattern_list;
++
++	/**
++	 * Do not change the list below without checking the Xe threat
++	 * modeling first. You can contact peter.senna@intel.com or
++	 * michal.winiarski@intel.com for questions and support.
++	 */
++
++	/* DO NOT CHANGE START */
++	static const char * const gt_patterns[] = {
++		"ccs_mode",
++		"engines/[a-zA-Z0-9]+/job_timeout_ms",
++		"engines/[a-zA-Z0-9]+/preempt_timeout_us",
++		"engines/[a-zA-Z0-9]+/timeslice_duration_min",
++		"engines/[a-zA-Z0-9]+/timeslice_duration_max",
++		"engines/[a-zA-Z0-9]+/timeslice_duration_us",
++		"freq0/max_freq",
++		"freq0/min_freq"
++	};
++
++	static const char * const hwmon_patterns[] = {
++		"power[0-9]+_crit",
++		"curr[0-9]+_crit",
++		"power[0-9]+_max",
++		"power[0-9]+_max_interval"
++	};
++
++	static const char * const devices_patterns[] = {
++		"vram_d3cold_threshold"
++	};
++
++	struct dir_input dir_inputs[DIR_COUNT] = {
++		{ GT_DIR, gt_patterns, ARRAY_SIZE(gt_patterns) },
++		{ HWMON_DIR, hwmon_patterns, ARRAY_SIZE(hwmon_patterns) },
++		{ DEVICES_DIR, devices_patterns, ARRAY_SIZE(devices_patterns) }
++	};
++	/* DO NOT CHANGE END */
++
++	igt_fixture {
++		IGT_INIT_LIST_HEAD(&fds_list);
++		IGT_INIT_LIST_HEAD(&pattern_list);
++		IGT_INIT_LIST_HEAD(&files_list);
++
++		igt_require(prepare_patterns(dir_inputs, &pattern_list));
++
++		igt_require(fds_open_all(&fds_list));
++		igt_require(search_files(&fds_list, &pattern_list, &files_list));
++		igt_require(fds_close_and_free_list(&fds_list));
++
++		/* We do not warn or abort if not all patterns match
++		 * because not all nodes are always available
++		 */
++		check_pattern_match(&pattern_list);
++	}
++
++	igt_describe("Check if only root can write to important sysfs files.");
++	igt_subtest("check-file-permissions")
++		igt_assert(check_files_permissions(&files_list));
++
++	igt_fixture {
++		struct pattern_node *pattern_node, *pattern_tmp;
++		struct file_node *file_node, *file_tmp;
++
++		igt_list_for_each_entry_safe(pattern_node, pattern_tmp, &pattern_list, link) {
++			/* pattern_node->pattern is static and const and
++			 * should not be freed
++			 */
++			regfree(&pattern_node->regex);
++			igt_list_del(&pattern_node->link);
++			free(pattern_node);
++		}
++
++		igt_list_for_each_entry_safe(file_node, file_tmp, &files_list, link) {
++			free(file_node->full_path);
++			igt_list_del(&file_node->link);
++			free(file_node);
++		}
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 5c01c64e9..d904dffcd 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -330,6 +330,7 @@ intel_xe_progs = [
+ 	'xe_sriov_flr',
+ 	'xe_sriov_scheduling',
+ 	'xe_sysfs_defaults',
++	'xe_sysfs_file_perm',
+ 	'xe_sysfs_preempt_timeout',
+ 	'xe_sysfs_scheduler',
+         'xe_sysfs_timeslice_duration',
+-- 
+2.43.0
 
