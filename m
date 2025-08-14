@@ -4,51 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60D18CA0EDC
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E106CCA0EE4
 	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 15:58:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1FB710E0C5;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E692F10E8A9;
 	Thu, 14 Aug 2025 15:58:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H5xJsAZx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eLiB2Uii";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33C0810E0C5
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 15:58:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FC5410E0C5
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 15:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755187098; x=1786723098;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=K+t3M6qslYB5GPy1ajJMxvgAKo2eD7tHmExgC6hYJqQ=;
- b=H5xJsAZxf1FltsdhF+10XZRA/gRlYN9q8HYw0icFpg2ol89akMLhv7vK
- VRSGsCG49j+/pc3OrgRsDVFtBB0xI1v1cNuxgOeAp1FhaWHd20T7kMHb7
- cRfjK7hDXYxJQ2QcMzerCSm5HclNodgiJn/UOIHyNgtyoNlsIzUZ0q02T
- XjaYwMAPvLw0Go7qkiNbhKvrg6Y1rmbD08i2mSLtNKJRFaMSxjmCKmWDi
- 6KCSscyojMHjAUMoagStjkMitTtqO09RdYtHp+/N+S4lIzc5UVaeUgifm
- 299jDi+rVCkWKS/hdG5kIpdXMPQ5TCraUA8CXeFMP3+QIEQmXHWAgLOeR Q==;
-X-CSE-ConnectionGUID: hpjuOH/VR1mxMU9WelhoDg==
-X-CSE-MsgGUID: PvbxUetXRX2/9mWeJ+s5JA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="57416448"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="57416448"
+ t=1755187097; x=1786723097;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=YVhEfq+NK8qUxpYJbnA5Ric1NJuqUk5+qyj7zo4Jzfg=;
+ b=eLiB2Uii34ICdqIHhE/YS6JrolDX0mmRRY31wwWcZYwd8YRLUWN17Qbq
+ EykBsq8KatFpqnjaA56np5UsihQo+ajz8s1F2T/sZq2bMV3ZNaKr9h948
+ PGEIUCSOLAxaOuL5ZKKUXXW/16Wot4at2SXFOZ1ZVf+QX3U/7GXcGyjrm
+ wxmPgf9c+C52+Xq9mTVDKLGe93HW3OAbA7/ORR2SBhtKKAe27AWsoiIcg
+ 8bNdCHjA869m7xzDn2z4AuvtUEl2dksA1N39D9KZFxtNZ6ecmwY0dXQjq
+ dCiPLGiuSNfPdSah+VJ8jW/fOGgvTg+0q9Lh17MfSyedMSzHjhtt7zgql w==;
+X-CSE-ConnectionGUID: 2vnqwcU6TZmHxELwMpbaaA==
+X-CSE-MsgGUID: ARdyl/9eRHaitxpt3cuRcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="57416443"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="57416443"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2025 08:58:18 -0700
-X-CSE-ConnectionGUID: rVTpUJcaSJC6p21Uz+ydbA==
-X-CSE-MsgGUID: IUWmyQBfTQqumqhh+zW3kg==
+ 14 Aug 2025 08:58:16 -0700
+X-CSE-ConnectionGUID: gNIt4S5+SDSVH4yiiqm0+A==
+X-CSE-MsgGUID: JNuvOGhxRR2hutH5lZiiWA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="167149812"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="167149805"
 Received: from dut2943pvc.iind.intel.com ([10.190.215.44])
- by fmviesa009.fm.intel.com with ESMTP; 14 Aug 2025 08:58:17 -0700
+ by fmviesa009.fm.intel.com with ESMTP; 14 Aug 2025 08:58:15 -0700
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  nishit.sharma@intel.com
-Subject: [PATCH 1/3] lib/intel_compute: loop_kernel_duration in Pipeline
-Date: Thu, 14 Aug 2025 15:58:12 +0000
-Message-ID: <20250814155814.130545-2-nishit.sharma@intel.com>
+Subject: [PATCH 0/3]
+Date: Thu, 14 Aug 2025 15:58:11 +0000
+Message-ID: <20250814155814.130545-1-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250814155814.130545-1-nishit.sharma@intel.com>
-References: <20250814155814.130545-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,91 +66,33 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-To execute KERNEL in GPU for specific duration a brief sleep is
-required. New variable loop_kernel_duration is introduced in
-struct user_execenv which holds duration for sleep and during this
-duration the GPU will be running kernel.
-loop_kernel_duration is checked for all pipelines.
+Added loop_kernel_duration in available pipelines. loop_kernel_duration
+holds sleep duration and during sleep GPU will be workng.
+Patch-1/3: loop_kernel_duration addition in available pipelines in
+lib/intel_compute.c. igt_skip is called in pipeline which doesn't support
+loop_kernel shader.
+Patch-2/3: Added loop-duration-2s subtest in tests/intel/xe_compute to
+test if GPU is executing shader when sleep is called. This is verfied
+using gputop in another terminal. This also tests whether the test
+executed successfully in >= 2seconds of duration set
+Patch-3/3: Added eu-busy-10s test which creates multi threads depending
+on num_slices available and schedules workload on all ccs instances
+available. This also prints engine utlization in percentage while
+workload is executing.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- lib/intel_compute.c | 21 ++++++++++++++++++++-
- lib/intel_compute.h |  2 ++
- 2 files changed, 22 insertions(+), 1 deletion(-)
+Nishit Sharma (3):
+  lib/intel_compute: loop_kernel_duration in Pipeline
+  tests/intel/xe_compute: Added loop_duration_2s subtest
+  tests/intel/xe_compute: Added eu-busy-10s test
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 147dd2916..125331c53 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -849,6 +849,9 @@ static void compute_exec(int fd, const unsigned char *kernel,
- 	uint16_t devid = intel_get_drm_devid(fd);
- 	int entries = ARRAY_SIZE(bo_dict);
- 
-+	if (user && (user->kernel || user->loop_kernel_duration))
-+		igt_skip("Pipeline doesn't support loop_kernel\n");
-+
- 	bo_execenv_create(fd, &execenv, eci, user);
- 
- 	/* Set dynamic sizes */
-@@ -1131,6 +1134,9 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
- 	int entries = ARRAY_SIZE(bo_dict);
- 
-+	if (user && (user->kernel || user->loop_kernel_duration))
-+		igt_skip("Pipeline doesn't support loop_kernel\n");
-+
- 	bo_execenv_create(fd, &execenv, eci, user);
- 
- 	/* Set dynamic sizes */
-@@ -1343,6 +1349,9 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
- 	int entries = ARRAY_SIZE(bo_dict);
- 
-+	if (user && (user->kernel || user->loop_kernel_duration))
-+		igt_skip("Pipeline doesn't support loop_kernel\n");
-+
- 	bo_execenv_create(fd, &execenv, eci, user);
- 
- 	/* Set dynamic sizes */
-@@ -1731,6 +1740,9 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
- 	int entries = ARRAY_SIZE(bo_dict);
- 
-+	if (user && (user->kernel || user->loop_kernel_duration))
-+		igt_skip("Pipeline doesn't support loop_kernel\n");
-+
- 	bo_execenv_create(fd, &execenv, eci, user);
- 
- 	/* Set dynamic sizes */
-@@ -1849,7 +1861,14 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 				    OFFSET_KERNEL, 0, false,
- 				    execenv.array_size);
- 
--	bo_execenv_exec(&execenv, ADDR_BATCH);
-+	if (user && user->loop_kernel_duration) {
-+		bo_execenv_exec_async(&execenv, ADDR_BATCH);
-+		igt_measured_usleep(user->loop_kernel_duration);
-+		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
-+		bo_execenv_sync(&execenv);
-+		user->skip_results_check = 1;
-+	} else
-+		bo_execenv_exec(&execenv, ADDR_BATCH);
- 
- 	if (!user || (user && !user->skip_results_check))
- 		bo_check_square(input_data, output_data, execenv.array_size);
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index 412791d07..54a1c7f82 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -63,6 +63,8 @@ struct user_execenv {
- 	uint64_t input_addr;
- 	/** @output_addr: override default address of the output array if provided */
- 	uint64_t output_addr;
-+	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
-+	uint64_t loop_kernel_duration;
- };
- 
- enum execenv_alloc_prefs {
+ lib/intel_compute.c       |  25 +++-
+ lib/intel_compute.h       |   2 +
+ tests/intel/igt_eu_perf.h | 255 ++++++++++++++++++++++++++++++++++
+ tests/intel/xe_compute.c  | 280 ++++++++++++++++++++++++++++++++++++++
+ tests/meson.build         |   1 +
+ 5 files changed, 562 insertions(+), 1 deletion(-)
+ create mode 100644 tests/intel/igt_eu_perf.h
+
 -- 
 2.43.0
 
