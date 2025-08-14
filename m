@@ -4,58 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21993CA0ED1
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 09:43:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE728CA0ED1
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 10:27:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C0FF910E2A8;
-	Thu, 14 Aug 2025 09:43:38 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GRc/th2V";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECA5010E2A8
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 09:43:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755164617; x=1786700617;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=vvy4LiSfTZlKG2aJ7uHRvc8gJOHiK4x7BbJKu+d6aUo=;
- b=GRc/th2VRJA/Ig1bAJJnbhNadkScos5k3hhKrfi2b2eUdLgFrVckHeIs
- 8XyczWhSy22gUdsqfLP+eswxTW1psDUSBjZUzqV5U1Ee1CC42L8afeWHh
- MCW4A3RTAyANNaBjh8S1SGo46uGSvi0wtfcSyQD4LWEL05B9fjLIcIYoY
- Vvd+JJ0yOWwnm/LSau7c+zSPl6pwBa9RUwkl0lot2996anbnbmQQFIewt
- 3FtYE+zpVc47Z2BDkwGlBFSmYtqznn+9gGuLrFh2v0qRPpb8aAMkCkiCm
- iMtzMxOXWlxMaEZ8twnejrN038HQWW7Knu1m2A9ZnRMY4PxFFX091gVPu A==;
-X-CSE-ConnectionGUID: g5nZMzPuROuQQWQ046Ixew==
-X-CSE-MsgGUID: TZMRFazMSmquqMolwwP9Wg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60103198"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="60103198"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2025 02:43:36 -0700
-X-CSE-ConnectionGUID: 4JNnKp3zT2C2iy/bO3flCg==
-X-CSE-MsgGUID: 6wQcKPRJTPGzDRCZAd+Gaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="171174119"
-Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.100])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2025 02:43:35 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 4/4] tools/intel_vbt_decode: sync intel_vbt_defs.h
- with kernel commit 96b451d53ae9
-In-Reply-To: <20250813141503.5dpg2tblm325oy4v@kamilkon-DESK.igk.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1754916577.git.jani.nikula@intel.com>
- <ba7afed7dbbc4ee1d1599bd66a7f453f15df1b4a.1754916577.git.jani.nikula@intel.com>
- <20250813141503.5dpg2tblm325oy4v@kamilkon-DESK.igk.intel.com>
-Date: Thu, 14 Aug 2025 12:43:31 +0300
-Message-ID: <5b5056b996b14c1207ed156a6833fe1f961f3bf0@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5E41110E841;
+	Thu, 14 Aug 2025 10:27:39 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 456E210E841;
+ Thu, 14 Aug 2025 10:27:38 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4380623628930586394=="
 MIME-Version: 1.0
-Content-Type: text/plain
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fatomic=5Ftransi?=
+ =?utf-8?q?tion=3A_Change_debug_mask_for_multi-output_modeset_tests_=28rev3?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 14 Aug 2025 10:27:38 -0000
+Message-ID: <175516725827.236499.16581674850942656469@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250812075909.2119126-1-pranay.samala@intel.com>
+In-Reply-To: <20250812075909.2119126-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,54 +38,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 13 Aug 2025, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
-> Hi Jani,
-> On 2025-08-11 at 15:50:26 +0300, Jani Nikula wrote:
->
-> please update subject, for example:
->
-> [PATCH i-g-t 4/4] tools/intel_vbt_decode: Fix documentation
->
-> With this
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->
-> PS. same here, no need for resend, could be done at merge time.
+--===============4380623628930586394==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks for the reviews, pushed to master with the updated commit
-messages.
+== Series Details ==
 
-BR,
-Jani.
+Series: tests/kms_atomic_transition: Change debug mask for multi-output modeset tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/152517/
+State : success
 
->
->> Synchronize intel_vbt_defs.h with kernel commit:
->> 
->> 96b451d53ae9 ("drm/{i915,xe}: convert i915 and xe display members into pointers")
->> 
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> ---
->>  tools/intel_vbt_defs.h | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
->> index e9b809568cd4..92c04811aa28 100644
->> --- a/tools/intel_vbt_defs.h
->> +++ b/tools/intel_vbt_defs.h
->> @@ -446,7 +446,7 @@ enum vbt_gmbus_ddi {
->>   * basically any of the fields to ensure the correct interpretation for the BDB
->>   * version in question.
->>   *
->> - * When we copy the child device configs to dev_priv->display.vbt.child_dev, we
->> + * When we copy the child device configs to display->vbt.child_dev, we
->>   * reserve space for the full structure below, and initialize the tail not
->>   * actually present in VBT to zeros. Accessing those fields is fine, as long as
->>   * the default zero is taken into account, again according to the BDB version.
->> -- 
->> 2.47.2
->> 
+== Summary ==
 
--- 
-Jani Nikula, Intel
+CI Bug Log - changes from XEIGT_8493_BAT -> XEIGTPW_13582_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13582_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@c-edp1:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8493/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13582/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+  [Intel XE#5826]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5826
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8493 -> IGTPW_13582
+  * Linux: xe-3535-6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736 -> xe-3543-ccbc444c19d0056abdae3509ac59186927dc1558
+
+  IGTPW_13582: 13582
+  IGT_8493: 8493
+  xe-3535-6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736: 6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736
+  xe-3543-ccbc444c19d0056abdae3509ac59186927dc1558: ccbc444c19d0056abdae3509ac59186927dc1558
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13582/index.html
+
+--===============4380623628930586394==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition: Change debug mask for multi-output modeset tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152517/">https://patchwork.freedesktop.org/series/152517/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13582/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13582/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8493_BAT -&gt; XEIGTPW_13582_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13582_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@c-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8493/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13582/bat-adlp-7/igt@kms_flip@basic-plain-flip@c-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8493 -&gt; IGTPW_13582</li>
+<li>Linux: xe-3535-6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736 -&gt; xe-3543-ccbc444c19d0056abdae3509ac59186927dc1558</li>
+</ul>
+<p>IGTPW_13582: 13582<br />
+  IGT_8493: 8493<br />
+  xe-3535-6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736: 6f1fcd1c8f6cfedca8d5d6de1dfedc561c193736<br />
+  xe-3543-ccbc444c19d0056abdae3509ac59186927dc1558: ccbc444c19d0056abdae3509ac59186927dc1558</p>
+
+</body>
+</html>
+
+--===============4380623628930586394==--
