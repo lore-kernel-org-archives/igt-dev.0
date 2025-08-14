@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17207CA0EE0
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 03:18:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3971CC87FCF
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 03:18:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9490510E1FF;
-	Thu, 14 Aug 2025 03:18:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CD1A510E0E5;
+	Thu, 14 Aug 2025 03:18:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="QbvOdASH";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="a1R37wGd";
 	dkim-atps=neutral
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2057.outbound.protection.outlook.com [40.107.94.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E6B610E0E5
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 03:18:18 +0000 (UTC)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2051.outbound.protection.outlook.com [40.107.244.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CF2010E0E5
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 03:18:19 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gknXoUtvP3bJi9K77Y2NrJzbs0tkndX4V0A/G7SZn6FihvmCMkgq72mXsljmIX79vbmm5yvlhMaVqHxv5rV1mWD012Vtx3VVYhjr1LT8E784lvqdDaBFkoY2wlk6Tvz4Ni+r7SW8XXkTJuafwO5dGb8BDviXmHKZlwv/1cfIa4kiR4/oQXdi1TQOhvKorlO/p8fBkQ9MH7CYNLfr3h91JexORr8Z+x5edF2PFScm8QlD7fdF+qtl1hOxSYb6eOQo/hcPcxH7BEe/e5SKntk30Np5WUe3eyevgaUgDEYf9auhteymcixARf6MMl0GnAMcbz/FYGrmGB8j2Ii5j0yaSg==
+ b=fnmN961kjzOIwIGFrzA/YvjN+Z3LsJ+xGsxvejjZS39ThapVV8weKfBlR4W1pxwu7bYDfEB5djjmh7OAp3/eWZzMaWBQgTMO5NFYFLDrrNN4VHmJnp6+hNUDZbhKznCVTDE6Af9HWjmqhVTDskcX+CvAkOnRv1Q/WCMsbPHftj0EBU6nWzm79XCj+jyGyFv5fAvbL8679VRqTVkn395yLGOiC0zKWHEB2Au6jKswwBKCzpcAHe7lDlhAWydJjri+uEWW1cXotaYHgUTThmZrYgHl+/JuxtRgtoLi9faAU1JDOQYR9mEYthOYPsQ6sLJiuQro6R67UnTV0zbiryfTsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G/u3pSiZD/7pSieXEnaC2XlYthp8+xOsbpEscLL9GKo=;
- b=omWEDq7kOF1P+MwGh8224hjATg0ZVGZz8b+vZqfAkwzjZB/lNAN5gFSZYFHhSzczuZSIJK00BapILStnrS2a3pW9Bj5BD9gCcts/dD+hfn4IPSWyIq4uLoMkvS+z7wYuusMSVJlqGHpTsfOE6FIuQVYZ45paZRKkI+m6TZRNpBA4oN2G2VtE5YQXstTmD5IaLQBRuCJ1IkGMHPdHnaPeGTcVrNvP0uypC+p5jFH9ULS3I5GnV/rcNwQNlFXb2dPMsITbgRe4QK8Er7UJHMXAAs/cqanxio32NfF8iH5ulCz88SUIxsK3Wa7iG+KJCsysGSMv+Hv9sKTW/BYpC0E1zg==
+ bh=CLXq1aS0f+i3Z8kjfqicjhChTHU+DxTgaIEpd+v5Mm0=;
+ b=QJUKYcMHlAptZwyrZj9ZZTVoJZ/pZZJ+MO6VPFAy63tAvfJF8nyUigtMPd9MA+4+v0H6ktTeBAuI1xHtHxFLHXlPlQM6cI09FgCv1XpS/QkcXpyciHz43bairrhje7PMJTa4m22n7NDx2BVIYmOHXU+ULguPhkKHWl9+0jLMxwdhvYg1sXD0MPyZ3VKJmDdmqDe41WBvqWXV572WVznlBxrmL6efHHfjmPQzp7qr69nG/S8PTEsewpmgcWQHMdLLEtJSm3S5FeErjzIxBufkXTP9+Q1zum74qB/MwlSTAJ5Uttba8sOfQcsW1NkDjAExBw/Ii8Q0FP/iBNbcagGgXQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G/u3pSiZD/7pSieXEnaC2XlYthp8+xOsbpEscLL9GKo=;
- b=QbvOdASH3zqC4XtWiAOCVSbIJURGOWU2w5M+Z0iZIapnDCOBhzsPPSplgJZ4sxaW7mrdijiyyBppddOLv6qVCLf6NU95akYMH20he6v/I/EnkAg4uivfWKKhqdnPwe9SIlu6Jh8xydYAqfL9Ye2NXRe+5IX2YJwyiIVVsN3x1x0=
-Received: from DS7PR03CA0293.namprd03.prod.outlook.com (2603:10b6:5:3ad::28)
- by DM4PR12MB5722.namprd12.prod.outlook.com (2603:10b6:8:5d::11) with
+ bh=CLXq1aS0f+i3Z8kjfqicjhChTHU+DxTgaIEpd+v5Mm0=;
+ b=a1R37wGd2W2jOiWJ/eTZpcwPeCgbn9asbXgc6s2fcxu3SKRJ4J4t2sApVkwYQwEIOH60QkTlgI6Icc18IjFLw6uao8e45vMriK3UPnU4zl4eKabb1OoasfYJFsfCyaJQWJEgCHorT/Qy0LZfXO1AcmueYqK/4SZuXgIzwnN+RQc=
+Received: from DS7PR03CA0278.namprd03.prod.outlook.com (2603:10b6:5:3ad::13)
+ by IA1PR12MB6627.namprd12.prod.outlook.com (2603:10b6:208:3a1::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.16; Thu, 14 Aug
  2025 03:18:14 +0000
 Received: from CY4PEPF0000EDD7.namprd03.prod.outlook.com
- (2603:10b6:5:3ad:cafe::5e) by DS7PR03CA0293.outlook.office365.com
- (2603:10b6:5:3ad::28) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:5:3ad:cafe::2f) by DS7PR03CA0278.outlook.office365.com
+ (2603:10b6:5:3ad::13) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.16 via Frontend Transport; Thu,
- 14 Aug 2025 03:18:14 +0000
+ 14 Aug 2025 03:18:13 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,15 +50,15 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  CY4PEPF0000EDD7.mail.protection.outlook.com (10.167.241.203) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9031.11 via Frontend Transport; Thu, 14 Aug 2025 03:18:14 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ 15.20.9031.11 via Frontend Transport; Thu, 14 Aug 2025 03:18:13 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 13 Aug
- 2025 22:18:13 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 13 Aug
- 2025 22:18:13 -0500
+ 2025 22:18:12 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Wed, 13 Aug
+ 2025 20:18:12 -0700
 Received: from AB350-desktop.amd.com (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
  Transport; Wed, 13 Aug 2025 22:18:12 -0500
@@ -67,74 +67,71 @@ To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>,
  =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH 2/2] amdgpu/tests: Refactor amdgpu_sync_dependency_test
-Date: Wed, 13 Aug 2025 23:18:07 -0400
-Message-ID: <20250814031807.109119-2-vitaly.prosyak@amd.com>
+Subject: [PATCH 1/2] lib/amdgpu: add ASIC-aware gfx hooks and introduce
+ amd_ip_blocks_ex
+Date: Wed, 13 Aug 2025 23:18:06 -0400
+Message-ID: <20250814031807.109119-1-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250814031807.109119-1-vitaly.prosyak@amd.com>
-References: <20250814031807.109119-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: None (SATLEXMB05.amd.com: vitaly.prosyak@amd.com does not
- designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD7:EE_|DM4PR12MB5722:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4137ae37-9955-40b8-e805-08dddae134c2
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD7:EE_|IA1PR12MB6627:EE_
+X-MS-Office365-Filtering-Correlation-Id: 851155b3-d041-49d3-806c-08dddae1341f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|36860700013|82310400026|1800799024; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?V0VRU2VVano2TmZ1RWFCTXczMzBlR0U2eDFQRFlxdHdOSFRvS1BhNEl2QnRB?=
- =?utf-8?B?K21hQTQvbGRsMjNsSDFhMkJpZ1pZa29PbjI5cGYzN0pWZXlReXlqMUpteEdl?=
- =?utf-8?B?ajFvK2ZtNnUwdXFNeFlNS1lBdkZkd1NrVTBPdTY5SXMyT0tVUXdFdDQyK2Jr?=
- =?utf-8?B?T1c2ejBrck9OQW9FRWV0dkM4cEpBRTcxVUNGQWdtdjRCM2ZVd3VaZ2RNQi9L?=
- =?utf-8?B?by9DTmowbjVBTWZFVXR1ZVl5ZGRlTWNNNVg4eEVtOFNJemptbzdZS1Z2cmI5?=
- =?utf-8?B?M3hFMEJCSlBWMHV6THFtSXNGTURjUUhKczNPNEJPMjZOZXkzUWdoZWdTYjEw?=
- =?utf-8?B?K3k2bG43ckFxMGpJM1RXNWVTU0w3RmxTVGJzd0FPaC9tSGg5Um93K2tjamU0?=
- =?utf-8?B?TXVucjFINlUwam0yNUJmZEtQVVMvVW5OdVd4d1dnUjhtMTFlOUxhQWRuZFVG?=
- =?utf-8?B?MGpFRCtXQmtJM2tUb2c0UHRvaHdTZW5yaytrdzBtWXJRUG1kdFlpUXRCL0dY?=
- =?utf-8?B?eCtqN21Gc0sxV1hNRDVCak9MV3VzSU54RW5YMkVFRG1TUzZzN1BJZ01aY3Ev?=
- =?utf-8?B?Qlk5UW8xRmlnMUhZVmJuZHZxcHJ0ZWluYXFpdm01bmlScVZSRFRJMnJPMk81?=
- =?utf-8?B?OG1yenViTWtNZ3FSMms1c3g3WkZRTmU2NFNvTVc2MVlOMXhISXJyUytOazdX?=
- =?utf-8?B?ZGpqdkJYTzVBbDlGVkw0U3oySE85czJhNnJ6Z3dPMHFXQnU5U3ZvK0dFRGhn?=
- =?utf-8?B?c05KYURzT2Frbzd2WmFVa3Q5Q3NybUxyWFk5bERVYnJ6OFVLcmZISnNJOGVy?=
- =?utf-8?B?d1FHRXdRMHFjU0FPRXo0WVNNbHpsY0xVanYwRGx6Q2M2Y0lSZ1h0RGJFTzly?=
- =?utf-8?B?S1lZckVnOGNEbWlYdzdzTGQzMGU5VG04RmRkeVBkTEtLQnlOUDlSRDZwejZl?=
- =?utf-8?B?V3R5b1Vja2QxZEdmNGlvSVd6cUkwb0p2V0JLMXZ3OVpZZzVIOXpwTXp0ZFVC?=
- =?utf-8?B?NmJKWE43TmNaWjJnWHpRQVJhNGNNM2NUamZKTjFld294c1J5amlKVDhka3hj?=
- =?utf-8?B?T3ArRjZ2QkhyZmQwVzVuWGtvVkFRK25OMTVNcEoxNTZkUDN2ZDFwaWI1WW1W?=
- =?utf-8?B?bWJxOXVNREZCY1NPMkJqZkE2OFdyVEU3WnpyRUtpWUhxNTlVTFhCT1FLcVpC?=
- =?utf-8?B?UHNaNkZhczI1dVUzU2tXVEFJZHcwM0RsbVVQS1AwUWdpVVpHMkZFdnkzeThR?=
- =?utf-8?B?YkZuYkFHbjJPMVdNVlpSeTh4T1c4OGdOYzlUVVgyZHozRXF4Nk5GN2E1T0gz?=
- =?utf-8?B?UWw1VmR2bk9HdUVEVHNNeTlOSTRPdHQ1RUM5eHgvMlJ3dU5DeUd1bkhPaW5T?=
- =?utf-8?B?UGI4RjBIenNFaTdhMjY4ZE5xV2oyUERKc1RBVThPMmdmWUxMaHp4RTJyeUZG?=
- =?utf-8?B?Mmd1eFlKd3VpVmZjckFlL2lrTFZZN2o4cnFqT29nMUc3UFY1eUZDQUJxRjIx?=
- =?utf-8?B?a3NhK1hXb0VhckhqWlpSNVRXUVdWbmFBeU0wdjNYV25WNkFmUjZRVjhUOUN0?=
- =?utf-8?B?VUhDd3V2emFNSHRnTFZXSEMvdmlCWlZCZ1pKK3FLcXJiZWtmYmhMVXBCdG4z?=
- =?utf-8?B?UFYzeGt2VE5mbjJNaklDK0NDblJjd0hSUlljSTc4TFpFVFpEQ1hMcWJTQTIy?=
- =?utf-8?B?SE05UFBLM3hOY1QzRFNlV0NzNDNqME0rUFRlOHZ2UzlpUjV5WkpTQVFpSHdC?=
- =?utf-8?B?TzNURjVxWVBvTnA1TGJuYTk2dElEMTJST0IxUXZoRjgvQnNhNWo0MjRWd2gz?=
- =?utf-8?B?OXF0djg5dFoybzJtdTVkRS9MR0JnRXVyMHZKNlNoUitzc2FhV2pUdWVlalhs?=
- =?utf-8?B?MC9sQW5mSENvcVpNMVlqUUVjUFRYa2xiQVNqQWJtZjd2elhxL3o0Z2JTNXlE?=
- =?utf-8?B?dzh2WXJ4NitzTExjN3VReVVGcC9lUW9ZUzYrSS9EcVVkN2ZTVkR4czRXZy9Z?=
- =?utf-8?B?dldhRVlINTZyZ0lPRmZwK0VpTVRBaDlmNThYSDVnSWpDTFREaHM3SzdhTi9Z?=
- =?utf-8?Q?hEjpx8?=
+ ARA:13230040|1800799024|36860700013|82310400026|376014; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?K29LeWFHNFlXcElHNUUzbzdJdEw3YzZHWVJ2eGNqVWFJQTZwaFJYc2hKZ2JR?=
+ =?utf-8?B?WDdHWis2MlU0V2dMTTdCRnU0ZGxQdUgzb0lFYS9uTWFkSytqS2cvUEdCaFdQ?=
+ =?utf-8?B?TmxQdDB0ckIxaHp0UXpWdmtnS3B3MlllNlNhSE83UVV0aWJvNlU4UWZGN0Uy?=
+ =?utf-8?B?MHoycFJWK3dHZ0thM0c5WmxaRmpURU9uUEpVQ2FMcHNudWlnVmVZYnV4bGlk?=
+ =?utf-8?B?ZkdDUmtZZmpXM1d3R3gwZ1dELzU2d0JFOUFvcERiL0d4clFRSzBnWnB5R3Mx?=
+ =?utf-8?B?YWtjRVR0c0k1MXVlbTROMzUrczVYWlZYRmpKTGhtRFo1bDJ3eVNLY3dSUWlt?=
+ =?utf-8?B?ck5hZk5SZExZZlpVYkJyelB3TlVKUTVHTlpsRmJIemVjcmRsbGkyMUJaOHR3?=
+ =?utf-8?B?Ty9JclBTZXlUKzhqNytVRnhtMk80WDRNdXk2NUc1bkJDZUFxKzNMSWhJbFBJ?=
+ =?utf-8?B?dmRkSm1JUyt2ZXZtenNsdDRFb29TU2pFa1o2UlVRWUdKaEgxOHUwWHFxc2xJ?=
+ =?utf-8?B?Q2s3Y3VBOTVnK1FwR1B6Mkp5WGJPdzZXY00rZnhpWHpIR2hNUm1JTGNaeEw2?=
+ =?utf-8?B?bnJrS0dHS2J0YXF5ajRucWtpcVRkVTBXS254bUxVL1ZiQVlrb3ZzKzlUcjhp?=
+ =?utf-8?B?VWliYkhoQkZBM1N0eFZTUTFneHhkcmEvWlB5UEdaTFJCSmJSR21uWTJWY3lK?=
+ =?utf-8?B?cVc4V1FvNm9lREs0Vm5UOUwxalFnZ0JlY0lzMzM5am5JSEMwbFRZSWRMaXlu?=
+ =?utf-8?B?SzZldDFESy85d1prbVV1VUF5L0s3a1FFNzl0SUxHOVJqZGRNMk4wdC8vMy8z?=
+ =?utf-8?B?YS9FNUU1c3FFenJtVjl5bVlmU1hDTnpSNVoyUXJrYnlxREZqcjRtdnU5eVZU?=
+ =?utf-8?B?MDRpTGRiTjhNb1ZGb3JSTStDRVVsWS9MNWp4YUlVUU1JMHRxUDlRVHhaZUZL?=
+ =?utf-8?B?dGRBT1lkN1BJajA0eDB4LzVDU0ttU1hqbVJJc3MyclppZE9DVDF3NjFuMmJp?=
+ =?utf-8?B?YVF1cS9nL1ZISlhHVDdvMVF6VlRray94VWp3d3pBQWlsWm5oSzhydDIxTXlV?=
+ =?utf-8?B?aVJkcFl0WWs0VmRLWDdKeWVqbGxZek5IdkNLME9iamJCMzNpOU45bEJIRlFj?=
+ =?utf-8?B?QlUza3hxWmRlbUo0cnYvYkhFdnd3V1JPNXlWRXgyTytEYWcxSjJrY29QR3Fv?=
+ =?utf-8?B?N0pEQk9XQjNHMkx1cGNSNWNaTmdpUHpZbkx6bHNvQmhsUjB4bkptRHNTVmFW?=
+ =?utf-8?B?VFJOUkd3cERDbytUVGVvMjgzdTJRSFd6WDRndGg4VTNIVlQxTEczSGdwTEJL?=
+ =?utf-8?B?ZXVrS0E4VFhvck80NmNyOXRKWXY0b1I4cWFiQkJwNktvQS9hY3ZKMkNUOTcx?=
+ =?utf-8?B?WmdvN0dqNkJ3aHQvQlI4MUpsUCtpeGRuUDJkZWdVU1VtZ25pSVliVFVjR1NY?=
+ =?utf-8?B?dXRMaVBoRkh2TXcrdi9RRGJiMUxQbk9TcDZqTTFiNDRNR2JONEFTUkd2RW5H?=
+ =?utf-8?B?Q3ZIWi8vaXJ1NXpUT3h2TjlzenpZcVZsbFFmSCtjY2FGQm9ZN2tDYWJPOXh2?=
+ =?utf-8?B?bmVNeC9YQ00yd1lGZTY2OXA5clBQaVI3T0hwdEdsbzhHYjBZVmREcFBSMjVY?=
+ =?utf-8?B?QUxZZ3ZGbzJib2drUlFuVEg3eEVKS3RHODRmcDJkV3pMbFF0OWVVdFZHSDI1?=
+ =?utf-8?B?dWNlMzRMc2Nvc0J5YWU4dkRicDkyYVRuUnA5U0J5OGQyUURFNnlObGFLQ1JF?=
+ =?utf-8?B?dm9FWEtLTTRBcU55SnlWUW5xQzUrSWNBdUxJR0x6NjIzMFBwRlpIWUU2VGw4?=
+ =?utf-8?B?TlJOUUR0a212aTJpMmt3UHlpTGZLZzE2K3RMekVUb1VNNDFVSjlYTm9EdUh1?=
+ =?utf-8?B?bzNmTHJEMDZLREZZcmozWkFseGU1Vm0waHpVYnIvRk5xT3I5RmVMeHRLRGxU?=
+ =?utf-8?B?WFJJVWhDcVlucHorYVRkVVNKSktHektLYldNSE1WTkxXYlViZit1UHNNMW5Y?=
+ =?utf-8?B?WXJOZ2s0cU5XNi9zeThOTUh2cDBwRkExWWF2TmFaUWFNK2V1QXNnNkxpbE4v?=
+ =?utf-8?Q?BR/ar6?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024); DIR:OUT;
+ SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 03:18:14.3291 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4137ae37-9955-40b8-e805-08dddae134c2
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 03:18:13.2578 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 851155b3-d041-49d3-806c-08dddae1341f
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD7.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5722
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6627
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -152,112 +149,315 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Refactor amdgpu_sync_dependency_test() to call the new
-amdgpu_ip_funcs hooks instead of inlining PACKET3 sequences.
-The test now:
-Uses f->gfx_program_compute(...) to program the minimal compute state.
-Uses f->gfx_dispatch_direct(...) for a 1×1×1 grid (flags resolved per family).
-Uses f->gfx_write_confirm(...)   to write the sentinel value (99) after the dispatch.
-All buffer allocation, dependency wiring, and fence logic are unchanged.
-This keeps the test focused on intent while delegating ASIC differences
-(e.g., DISPATCH flags on gfx9/gfx10/gfx11, optional TMPRING programming)
-to the per-family implementations added in the previous commit.
+add ASIC-aware gfx hooks; introduce amd_ip_blocks_ex.c and initialize
+from amd_ip_blocks.c The amdgpu IGT test suite currently hard-codes
+PACKET3 programming for basic compute bring-up (state setup,
+DISPATCH_DIRECT, and WR_CONFIRM write). Those sequences vary by GFX
+family (e.g., dispatch flags, TMPRING handling), so baking them into
+tests makes the code brittle and difficult to extend to new ASICs.
+
+This change introduces three small, ASIC-aware helpers on
+the amdgpu_ip_funcs table:
+gfx_program_compute(...) – programs a minimal compute pipeline (PGM pointers,
+                           resources, user data, thread dims).
+gfx_dispatch_direct(...) – emits a direct compute dispatch (family-specific
+                           tail flags handled inside).
+gfx_write_confirm(...)   – emits a confirmed WRITE_DATA to memory for simple
+                            dependency validation.
+
+Implementations live in a lib/amdgpu/amd_ip_blocks_ex.c, which provides
+safe defaults  and light per-family overrides (gfx9/gfx10/gfx11). We
+keep all ASIC knowledge in  the ASIC layer (amdgpu_ip_funcs) rather
+than polluting the generic PM4 builder (amdgpu_cmd_base), which remains
+a packet emitter (attach/emit helpers only).
+
+amd_ip_blocks.c now calls amd_ip_blocks_ex_init() after populating the
+device’s amdgpu_ip_funcs, so callers get the correct per-family
+hooks without changing their code paths.
 
 Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: Jesse Zhang <jesse.zhang@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- tests/amdgpu/amd_basic.c | 68 ++++++++++------------------------------
- 1 file changed, 16 insertions(+), 52 deletions(-)
+ lib/amdgpu/amd_ip_blocks.c    |   7 ++
+ lib/amdgpu/amd_ip_blocks.h    |  31 ++++++
+ lib/amdgpu/amd_ip_blocks_ex.c | 181 ++++++++++++++++++++++++++++++++++
+ lib/meson.build               |   1 +
+ 4 files changed, 220 insertions(+)
+ create mode 100644 lib/amdgpu/amd_ip_blocks_ex.c
 
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 45cf64251..9bb84221e 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -551,53 +551,19 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle, bool user_queue)
- 	/* assign cmd buffer */
- 	base->attach_buf(base, ib_result_cpu, const_size);
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 80cd89f7c..d8d7efbef 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -1031,6 +1031,13 @@ amdgpu_device_ip_block_add(struct amdgpu_ip_block_version *ip_block_version)
  
-+	/* program compute */
-+	ip_block->funcs->gfx_program_compute(
-+		ip_block->funcs,
-+		base,
-+		ib_result_mc_address + (uint64_t)code_offset * 4,
-+		ib_result_mc_address + (uint64_t)data_offset * 4,
-+		0x002c0040,
-+		0x00000010,
-+		1, 1, 1);
+ 	amdgpu_ips.ip_blocks[amdgpu_ips.num_ip_blocks++] = ip_block_version;
+ 
++	if (ip_block_version->funcs &&
++		(!ip_block_version->funcs->gfx_program_compute ||
++		 !ip_block_version->funcs->gfx_dispatch_direct ||
++		 !ip_block_version->funcs->gfx_write_confirm )) {
++		amd_ip_blocks_ex_init(ip_block_version->funcs);
++	}
 +
-+	/* dispatch (flags chosen per-family in overrides) */
-+	ip_block->funcs->gfx_dispatch_direct( ip_block->funcs, base, 1, 1, 1, 0);
+ 	return 0;
+ }
  
--	base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
--	base->emit(base, 0x80000000);
--	base->emit(base, 0x80000000);
--
--	base->emit(base, PACKET3(PKT3_CLEAR_STATE, 0));
--	base->emit(base, 0x80000000);
--
--	/* Program compute regs */
--	/* TODO ASIC registers do based on predefined offsets */
--	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
--	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_PGM_LO));
--	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 8);
--	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 40);
--
--	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
--	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_PGM_RSRC1));
--
--	base->emit(base, 0x002c0040);
--	base->emit(base, 0x00000010);
--
--	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
--	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_TMPRING_SIZE));
--	base->emit(base, 0x00000100);
--
--	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
--	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_USER_DATA_0));
--	base->emit(base, 0xffffffff & (ib_result_mc_address + data_offset * 4));
--	base->emit(base, (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
--
--	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
--	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_RESOURCE_LIMITS));
--	base->emit(base, 0);
--
--	base->emit(base, PACKET3(PKT3_SET_SH_REG, 3));
--	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_NUM_THREAD_X));
--	base->emit(base, 1);
--	base->emit(base, 1);
--	base->emit(base, 1);
--
--	/* Dispatch */
--	base->emit(base, PACKET3(PACKET3_DISPATCH_DIRECT, 3));
--	base->emit(base, 1);
--	base->emit(base, 1);
--	base->emit(base, 1);
--	base->emit(base, 0x00000045);
--	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index b5731e13b..7154b45ba 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -206,6 +206,7 @@ struct amdgpu_ring_context {
+ 	struct drm_amdgpu_info_uq_fw_areas info;
+ };
  
- 	memcpy(base->buf + code_offset, shader, size_bytes);
++struct amdgpu_cmd_base;
  
-@@ -626,12 +592,10 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle, bool user_queue)
+ struct amdgpu_ip_funcs {
+ 	uint32_t	family_id;
+@@ -231,6 +232,32 @@ struct amdgpu_ip_funcs {
+ 	void (*userq_create)(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt, unsigned int type);
+ 	void (*userq_submit)(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context, unsigned int ip_type, uint64_t mc_address);
+ 	void (*userq_destroy)(amdgpu_device_handle device_handle, struct amdgpu_ring_context *ctxt, unsigned int type);
++
++	/* program minimal compute pipeline for a raw PM4 launch */
++	void (*gfx_program_compute)(
++		const struct amdgpu_ip_funcs *funcs,
++		struct amdgpu_cmd_base *base,
++		uint64_t code_addr,
++		uint64_t user_data0_addr,
++		uint32_t rsrc1_dw,
++		uint32_t rsrc2_or_tmp,
++		uint32_t thr_x, uint32_t thr_y, uint32_t thr_z
++	);
++
++	/* launch a direct dispatch (grid + family flags) */
++	void (*gfx_dispatch_direct)(
++		const struct amdgpu_ip_funcs *funcs,
++		struct amdgpu_cmd_base *base,
++		uint32_t grid_x, uint32_t grid_y, uint32_t grid_z,
++		uint32_t flags
++	);
++
++	/* WRITE_DATA with WR_CONFIRM (or family equivalent) */
++	void (*gfx_write_confirm)(
++		const struct amdgpu_ip_funcs *funcs,
++		struct amdgpu_cmd_base *base,
++		uint64_t dst_addr, uint32_t value
++	);
+ };
  
- 	cdw_old = base->cdw;
- 
--	base->emit(base, PACKET3(PACKET3_WRITE_DATA, 3));
--	base->emit(base, WRITE_DATA_DST_SEL(5) | WR_CONFIRM);
--	base->emit(base,  0xfffffffc & (ib_result_mc_address + data_offset * 4));
--	base->emit(base,  (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
--	base->emit(base,  99);
--	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
-+	/* confirmed write */
-+	ip_block->funcs->gfx_write_confirm(
-+		ip_block->funcs, base, ib_result_mc_address + (uint64_t)data_offset * 4,
-+		99);
- 
- 	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
- 	ib_info.ib_mc_address = ib_result_mc_address + cdw_old * 4;
+ extern const struct amdgpu_ip_block_version gfx_v6_0_ip_block;
+@@ -320,4 +347,8 @@ amdgpu_bo_alloc_and_map_uq(amdgpu_device_handle device_handle, unsigned int size
+ int
+ amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
+ 				 uint32_t timeline_syncobj_handle, uint64_t point);
++
++void
++amd_ip_blocks_ex_init(struct amdgpu_ip_funcs *funcs);
++
+ #endif
+diff --git a/lib/amdgpu/amd_ip_blocks_ex.c b/lib/amdgpu/amd_ip_blocks_ex.c
+new file mode 100644
+index 000000000..21c4d952c
+--- /dev/null
++++ b/lib/amdgpu/amd_ip_blocks_ex.c
+@@ -0,0 +1,181 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright 2025 Advanced Micro Devices, Inc.
++ */
++
++#include <stdint.h>
++#include "amd_ip_blocks.h"
++#include "amd_PM4.h"
++#include "amdgpu_asic_addr.h"
++
++static void gfx_program_compute_default(
++	const struct amdgpu_ip_funcs *f,
++	struct amdgpu_cmd_base *base,
++	uint64_t code_addr,
++	uint64_t user_data0_addr,
++	uint32_t rsrc1_dw,
++	uint32_t rsrc2_or_tmp,
++	uint32_t thr_x, uint32_t thr_y, uint32_t thr_z)
++{
++	base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
++	base->emit(base, 0x80000000);
++	base->emit(base, 0x80000000);
++
++	base->emit(base, PACKET3(PKT3_CLEAR_STATE, 0));
++	base->emit(base, 0x80000000);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
++	base->emit(base, f->get_reg_offset(COMPUTE_PGM_LO));
++	base->emit(base, (uint32_t)(code_addr >> 8));
++	base->emit(base, (uint32_t)(code_addr >> 40));
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
++	base->emit(base, f->get_reg_offset(COMPUTE_PGM_RSRC1));
++	base->emit(base, rsrc1_dw);
++	base->emit(base, rsrc2_or_tmp);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
++	base->emit(base, f->get_reg_offset(COMPUTE_TMPRING_SIZE));
++	base->emit(base, 0x00000100);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
++	base->emit(base, f->get_reg_offset(COMPUTE_USER_DATA_0));
++	base->emit(base, (uint32_t)user_data0_addr);
++	base->emit(base, (uint32_t)(user_data0_addr >> 32));
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
++	base->emit(base, f->get_reg_offset(COMPUTE_RESOURCE_LIMITS));
++	base->emit(base, 0);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 3));
++	base->emit(base, f->get_reg_offset(COMPUTE_NUM_THREAD_X));
++	base->emit(base, thr_x);
++	base->emit(base, thr_y);
++	base->emit(base, thr_z);
++}
++
++static void gfx_dispatch_direct_default(
++	const struct amdgpu_ip_funcs *f,
++	struct amdgpu_cmd_base *base,
++	uint32_t gx, uint32_t gy, uint32_t gz,
++	uint32_t flags)
++{
++	base->emit(base, PACKET3(PACKET3_DISPATCH_DIRECT, 3));
++	base->emit(base, gx);
++	base->emit(base, gy);
++	base->emit(base, gz);
++	base->emit(base, flags);
++	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
++}
++
++static void gfx_write_confirm_default(
++	const struct amdgpu_ip_funcs *f,
++	struct amdgpu_cmd_base *base,
++	uint64_t dst, uint32_t val)
++{
++	base->emit(base, PACKET3(PACKET3_WRITE_DATA, 3));
++	base->emit(base, WRITE_DATA_DST_SEL(5) | WR_CONFIRM);
++	base->emit(base, (uint32_t)dst);
++	base->emit(base, (uint32_t)(dst >> 32));
++	base->emit(base, val);
++	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
++}
++
++static void gfx_dispatch_direct_gfx9(
++	const struct amdgpu_ip_funcs *f,
++	struct amdgpu_cmd_base *base,
++	uint32_t gx, uint32_t gy, uint32_t gz,
++	uint32_t flags_unused)
++{
++	gfx_dispatch_direct_default(f, base, gx, gy, gz, 0x00000000);
++}
++
++static void gfx_dispatch_direct_gfx10(
++	const struct amdgpu_ip_funcs *f,
++	struct amdgpu_cmd_base *base,
++	uint32_t gx, uint32_t gy, uint32_t gz,
++	uint32_t flags_unused)
++{
++	gfx_dispatch_direct_default(f, base, gx, gy, gz, 0x00000045);
++}
++
++static void gfx_program_compute_gfx11(
++	const struct amdgpu_ip_funcs *f,
++	struct amdgpu_cmd_base *base,
++	uint64_t code, uint64_t udata0,
++	uint32_t rsrc1, uint32_t rsrc2,
++	uint32_t tx, uint32_t ty, uint32_t tz)
++{
++	base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
++	base->emit(base, 0x80000000);
++	base->emit(base, 0x80000000);
++
++	base->emit(base, PACKET3(PKT3_CLEAR_STATE, 0));
++	base->emit(base, 0x80000000);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
++	base->emit(base, f->get_reg_offset(COMPUTE_PGM_LO));
++	base->emit(base, (uint32_t)(code >> 8));
++	base->emit(base, (uint32_t)(code >> 40));
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
++	base->emit(base, f->get_reg_offset(COMPUTE_PGM_RSRC1));
++	base->emit(base, rsrc1);
++	base->emit(base, rsrc2);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
++	base->emit(base, f->get_reg_offset(COMPUTE_USER_DATA_0));
++	base->emit(base, (uint32_t)udata0);
++	base->emit(base, (uint32_t)(udata0 >> 32));
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
++	base->emit(base, f->get_reg_offset(COMPUTE_RESOURCE_LIMITS));
++	base->emit(base, 0);
++
++	base->emit(base, PACKET3(PKT3_SET_SH_REG, 3));
++	base->emit(base, f->get_reg_offset(COMPUTE_NUM_THREAD_X));
++	base->emit(base, tx);
++	base->emit(base, ty);
++	base->emit(base, tz);
++}
++
++static void gfx_dispatch_direct_gfx11(
++	const struct amdgpu_ip_funcs *f,
++	struct amdgpu_cmd_base *base,
++	uint32_t gx, uint32_t gy, uint32_t gz,
++	uint32_t flags_unused)
++{
++	gfx_dispatch_direct_default(f, base, gx, gy, gz, 0x00000045);
++}
++
++void amd_ip_blocks_ex_init(struct amdgpu_ip_funcs *funcs)
++{
++	funcs->gfx_program_compute = gfx_program_compute_default;
++	funcs->gfx_dispatch_direct = gfx_dispatch_direct_default;
++	funcs->gfx_write_confirm = gfx_write_confirm_default;
++
++	switch (funcs->family_id) {
++	case AMDGPU_FAMILY_RV:
++	case AMDGPU_FAMILY_NV:
++	case AMDGPU_FAMILY_VGH:
++		funcs->gfx_dispatch_direct = gfx_dispatch_direct_gfx9;
++		break;
++	case AMDGPU_FAMILY_YC:
++	case AMDGPU_FAMILY_GC_10_3_6:
++	case AMDGPU_FAMILY_GC_10_3_7:
++		funcs->gfx_dispatch_direct = gfx_dispatch_direct_gfx10;
++		break;
++	case AMDGPU_FAMILY_GC_11_0_0:
++	case AMDGPU_FAMILY_GC_11_0_1:
++	case AMDGPU_FAMILY_GC_11_5_0:
++		funcs->gfx_program_compute = gfx_program_compute_gfx11;
++		funcs->gfx_dispatch_direct = gfx_dispatch_direct_gfx11;
++		break;
++	case AMDGPU_FAMILY_GC_12_0_0:
++		/*TODO*/
++		break;
++	default:
++		break;
++	}
++}
++
+diff --git a/lib/meson.build b/lib/meson.build
+index 2eaca42a4..f078dad4e 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -160,6 +160,7 @@ if libdrm_amdgpu.found()
+ 		'amdgpu/amd_cs_radv.c',
+ 		'amdgpu/amd_gfx.c',
+ 		'amdgpu/amd_ip_blocks.c',
++		'amdgpu/amd_ip_blocks_ex.c',
+ 		'amdgpu/amd_shaders.c',
+ 		'amdgpu/amd_gfx_v8_0.c',
+ 		'amdgpu/amd_gfx_v9_0.c',
 -- 
 2.34.1
 
