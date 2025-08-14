@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41DF8CA0EE8
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 15:58:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 427CCCA0EE4
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 15:58:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EAA2C10E8AA;
-	Thu, 14 Aug 2025 15:58:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EC63210E8AB;
+	Thu, 14 Aug 2025 15:58:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WCO9ClWa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FljXpYtB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D153010E8AA
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 15:58:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C270D10E8AB
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 15:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755187099; x=1786723099;
+ t=1755187101; x=1786723101;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=ygjqH49BZ0C3AnZSCMqon3TxYtSF1ZMsXC9meD1+W8w=;
- b=WCO9ClWa51PiJh/pd8chNSimHIZD3ngVkC3A6DO/86g3osftF0x9tLZq
- N/xQqHysOEwNhZ6W2San/y/68HxY5z+0jv7XaSTMbBZjdS4kWZAz19I0O
- 8eZ/ASgMPz5P2xMqBqfMBxYkrGiv+8C7UphtV1PlYCZ6EQAVBHepHaBKu
- Lq/CIFeZuikn1wwgs+0bddHeFanLqOwSy1WtQUDluefdb61iQeJZ16Wby
- /E1clMlx47VH1agCqrKBCy6mupDoTK7Lh8GPMVGLT5ZYmTMPx2/WVRIjt
- /cCYmxzJN4FXJXOXpW4i9dfHS6/AVVvUWlgSMIN7qKKt23uahv87CoafX w==;
-X-CSE-ConnectionGUID: OKSoH+H8S8OOsm8pWnd4Tg==
-X-CSE-MsgGUID: nbkDcTwcSD2SA5ztaSA29A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="57416450"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="57416450"
+ bh=YHUtFaPjxYVDMiyPK6UUIuYNBZLGSNq/Uq4Ax7rZyIk=;
+ b=FljXpYtBh4PJbmny+ui1SBNOSX9LimNemHdoCYq1vBQKhtIVKA9hhr3c
+ koTS+3a8d1BJBSofJH8Xdd4yS+p8opAM03ow+a4CiRcKSiKM+Fhk1M5nQ
+ LYFhymsSR2fA4ZfQDdMMnF7F8OARVelLwGsJR8+9AF3tRHZmFFBoU6vu8
+ Ybj8lUU4PJkc54V6FjycdQcWWAfVr006apBjZuMwVF4oG6Og+XYHaOkBD
+ MX5sUDJ2AEs97gVJdQR2xiMppCxTO/09fTqEPzaPzff6wDY3EdS6wWTlh
+ MOadxQQ0svEu3RQ3+OhvcUSd0vgS3/pXiYEyJ5Nd1yn20an7WZwoZtSBy g==;
+X-CSE-ConnectionGUID: qEhjkQPOSeyv7GiRMLvOvw==
+X-CSE-MsgGUID: p6/J2WI8QOWI6loEhcrtbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="57416461"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="57416461"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2025 08:58:19 -0700
-X-CSE-ConnectionGUID: DFaISVigS8WM3eMrUJAz3Q==
-X-CSE-MsgGUID: BdFpvM9DTbW3D/QwRYWeww==
+ 14 Aug 2025 08:58:21 -0700
+X-CSE-ConnectionGUID: knyHA0NhQLK5Fnb+NFK8CA==
+X-CSE-MsgGUID: 20aR3UgATCGKRUYgyEkqTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="167149816"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="167149823"
 Received: from dut2943pvc.iind.intel.com ([10.190.215.44])
- by fmviesa009.fm.intel.com with ESMTP; 14 Aug 2025 08:58:18 -0700
+ by fmviesa009.fm.intel.com with ESMTP; 14 Aug 2025 08:58:20 -0700
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  nishit.sharma@intel.com
-Subject: [PATCH 2/3] tests/intel/xe_compute: Added loop_duration_2s subtest
-Date: Thu, 14 Aug 2025 15:58:13 +0000
-Message-ID: <20250814155814.130545-3-nishit.sharma@intel.com>
+Subject: [PATCH 3/3] tests/intel/xe_compute: Added eu-busy-10s test
+Date: Thu, 14 Aug 2025 15:58:14 +0000
+Message-ID: <20250814155814.130545-4-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250814155814.130545-1-nishit.sharma@intel.com>
 References: <20250814155814.130545-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,89 +69,369 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-Added loop_duration_2s subtest which fills kernel and loop_kernel_duration
-members of structure user_execenv and passed as member in
-xe_run_intel_compute_kernel_on_engine() to schedule Job on CCS engine.
-This also verifies GPU is executing loop_kernel shader when sleep for
-loop_kernel_duration is called. loop_kernel shader is available on
-xe2lpg and xe3lpg pipeline. Verified GPU is working during sleep using
-gputop. Test will skip for xehpc, xehp, xelpg pipeline as they don't have
-loop_kernel shader. This checks whether the test executed successfully
-in >= sleep duration set.
+Added multi threading to utilize available CCS instances as per num_slices
+available in /sys/class/drm/cardX/device/tileX/gtX/num_cslices.
+Depending upon num_slices, number of threads will be created and
+schedule compute workload in different CCS instances. Sleep is
+called via loop_kernel_duration so that HW engine runs for sleep duration.
+During execution per EU utlization percentage is grabbed and displayed
+on console.
 
 Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 ---
- lib/intel_compute.c      |  6 ++++-
- tests/intel/xe_compute.c | 58 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 63 insertions(+), 1 deletion(-)
+ tests/intel/igt_eu_perf.h | 255 ++++++++++++++++++++++++++++++++++++++
+ tests/intel/xe_compute.c  | 222 +++++++++++++++++++++++++++++++++
+ tests/meson.build         |   1 +
+ 3 files changed, 478 insertions(+)
+ create mode 100644 tests/intel/igt_eu_perf.h
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 125331c53..51caacfa6 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -1830,6 +1830,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
- 	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
- 	int entries = ARRAY_SIZE(bo_dict);
-+	int64_t timeout_one_ns = 1;
- 
- 	bo_execenv_create(fd, &execenv, eci, user);
- 
-@@ -1861,11 +1862,14 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 				    OFFSET_KERNEL, 0, false,
- 				    execenv.array_size);
- 
-+	/* To make GPU run Kernel for specific duration, loo_kernel_duration added */
- 	if (user && user->loop_kernel_duration) {
- 		bo_execenv_exec_async(&execenv, ADDR_BATCH);
- 		igt_measured_usleep(user->loop_kernel_duration);
-+		/* Check that the loop kernel has not completed yet */
-+		igt_assert_neq(0, __xe_wait_ufence(fd, &execenv.bo_sync->sync, USER_FENCE_VALUE,
-+					execenv.exec_queue, &timeout_one_ns));
- 		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
--		bo_execenv_sync(&execenv);
- 		user->skip_results_check = 1;
- 	} else
- 		bo_execenv_exec(&execenv, ADDR_BATCH);
+diff --git a/tests/intel/igt_eu_perf.h b/tests/intel/igt_eu_perf.h
+new file mode 100644
+index 000000000..b2758a941
+--- /dev/null
++++ b/tests/intel/igt_eu_perf.h
+@@ -0,0 +1,255 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#ifndef IGT_EU_PERF_H
++#define IGT_EU_PERF_H
++
++#include "igt_perf.h"
++
++#define engine_ptr(pmu_device, n)       (&(pmu_device)->engine + (n))
++
++bool eu_busy, stop_top;
++double eu_perc;
++
++struct xe_pmu_pair {
++	uint64_t cur;
++	uint64_t prev;
++};
++
++struct xe_pmu_counter {
++	uint64_t type;
++	uint64_t config;
++	unsigned int idx;
++	struct xe_pmu_pair val;
++	int fd;
++	bool present;
++};
++
++struct xe_engine {
++	const char *name;
++	struct drm_xe_engine_class_instance drm_xe_engine;
++	struct xe_pmu_counter engine_active_ticks;
++	struct xe_pmu_counter engine_total_ticks;
++};
++
++struct xe_pmu_device {
++	unsigned int num_engines;
++	unsigned int num_counters;
++	int fd;
++	char *device;
++	struct xe_engine engine;
++};
++
++struct thread_data {
++	pthread_t thread;
++	pthread_mutex_t *mutex;
++	pthread_cond_t *cond;
++	int class;
++	int fd;
++	int gt;
++	struct user_execenv *execenv;
++	struct drm_xe_engine_class_instance *eci;
++	bool *go;
++};
++
++static char *pmu_name(int fd)
++{
++	char device[30];
++
++	xe_perf_device(fd, device, sizeof(device));
++
++	return strdup(device);
++}
++
++static int
++_open_pmu(uint64_t type, unsigned int *cnt,
++	  struct xe_pmu_counter *pmu, int *fd)
++{
++	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
++
++	if (fd__ >= 0) {
++		if (*fd == -1)
++			*fd = fd__;
++		pmu->present = true;
++		pmu->idx = (*cnt)++;
++		pmu->fd = fd__;
++	}
++
++	return fd__;
++}
++
++static struct xe_pmu_device
++*xe_init_engines(int dev_fd)
++{
++	struct xe_pmu_device *engines;
++	int ret = 0, engine_count = 0;
++	char device[30];
++	struct drm_xe_engine_class_instance *hwe;
++	int fd;
++	uint32_t engine_class, engine_instance, gt_shift;
++	uint64_t engine_active_config, engine_total_config;
++	uint64_t type = igt_perf_type_id(xe_perf_device(dev_fd, device, sizeof(device)));
++
++	xe_device_get(dev_fd);
++
++	xe_for_each_engine(dev_fd, hwe)
++		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
++			engine_count++;
++
++	engines = calloc(1, sizeof(struct xe_pmu_device) +
++			engine_count * sizeof(struct xe_engine));
++	if (!engines)
++		return NULL;
++
++	engines->num_engines = 0;
++	engines->device = pmu_name(dev_fd);
++	engines->fd = -1;
++	engines->num_counters = 0;
++
++	perf_event_format(engines->device, "gt", &gt_shift);
++	perf_event_format(engines->device, "engine_class", &engine_class);
++	perf_event_format(engines->device, "engine_instance", &engine_instance);
++	ret = perf_event_config(engines->device,
++			"engine-active-ticks",
++			&engine_active_config);
++	if (ret < 0)
++		return NULL;
++	ret = perf_event_config(engines->device,
++			"engine-total-ticks",
++			&engine_total_config);
++	if (ret < 0)
++		return NULL;
++	xe_for_each_engine(dev_fd, hwe) {
++		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
++			uint64_t  param_config;
++			struct xe_engine *engine;
++
++			engine = engine_ptr(engines, engines->num_engines);
++			param_config = (uint64_t)hwe->gt_id << gt_shift |
++				hwe->engine_class << engine_class |
++				hwe->engine_instance << engine_instance;
++			engine->drm_xe_engine = *hwe;
++			engine->engine_active_ticks.config = engine_active_config | param_config;
++			engine->engine_total_ticks.config = engine_total_config | param_config;
++
++			if (engine->engine_active_ticks.config == -1 ||
++					engine->engine_total_ticks.config == -1) {
++				ret = ENOENT;
++				break;
++			}
++
++			fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
++					&engines->fd);
++			if (fd < 0)
++				return NULL;
++
++			fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
++					&engines->fd);
++			if (fd < 0)
++				return NULL;
++
++			engines->num_engines++;
++		}
++	}
++
++	return engines;
++}
++
++static void
++eu_util_free(struct xe_pmu_device *pmu_device)
++{
++	struct xe_engine *eng;
++	struct xe_pmu_counter pmu;
++
++	igt_info("EU cleanup process\n");
++
++	if (pmu_device) {
++		for (int j = 0; j < pmu_device->num_engines ; j++) {
++			eng = engine_ptr(pmu_device, j);
++			pmu = eng->engine_active_ticks;
++			if (pmu.present)
++				close(pmu.fd);
++
++			pmu = eng->engine_total_ticks;
++			if (pmu.present)
++				close(pmu.fd);
++		}
++		free(pmu_device);
++	}
++}
++
++static void
++update_sample(struct xe_pmu_counter *counter, uint64_t *val)
++{
++	if (counter->present) {
++		counter->val.prev = counter->val.cur;
++		counter->val.cur = val[counter->idx];
++	}
++}
++
++static void xe_pmu_device_sample(const void *obj)
++{
++	struct xe_pmu_device *engines = ((struct xe_pmu_device *)obj);
++	const int num_val = engines->num_counters;
++	uint64_t val[2 + num_val];
++	uint64_t buf[2 + num_val];
++	unsigned int i;
++	ssize_t len;
++
++	memset(buf, 0, sizeof(buf));
++	len = read(engines->fd, buf, sizeof(buf));
++	assert(len == sizeof(buf));
++
++	for (i = 0; i < num_val; i++)
++		val[i] = buf[2 + i];
++
++	for (i = 0; i < engines->num_engines; i++) {
++		struct xe_engine *engine = engine_ptr(engines, i);
++
++		update_sample(&engine->engine_active_ticks, val);
++		update_sample(&engine->engine_total_ticks, val);
++	}
++}
++
++static double
++pmu_active_percentage(struct xe_engine *engine)
++{
++	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
++		engine->engine_active_ticks.val.prev;
++	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
++		engine->engine_total_ticks.val.prev;
++	double percentage;
++
++	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
++	return percentage;
++}
++
++static void xe_print_perc(const void *obj)
++{
++	struct xe_pmu_device *pmu_device = ((struct xe_pmu_device *)obj);
++
++	for (unsigned int i = 0; i < pmu_device->num_engines; i++) {
++		double percentage;
++		struct xe_engine *engine = engine_ptr(pmu_device, i);
++
++		igt_assert(engine);
++
++		percentage = pmu_active_percentage(engine);
++		eu_perc = percentage;
++
++		igt_debug("Engine_instance :%d EU busyness :%5.1f\n",
++				engine->drm_xe_engine.engine_instance, percentage);
++		if (!percentage)
++			igt_debug("No workload scheduled, BU busyness :%5.1f expected\n",
++					percentage);
++		else if (percentage > 10.0) {
++			eu_busy = false;
++			igt_info("Workload scheduled, ccs engine :%d utilized :%5.1f\n",
++					engine->drm_xe_engine.engine_instance, percentage);
++		}
++	}
++}
++#endif
++
 diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 5e9140902..9a417de15 100644
+index 9a417de15..2bf74ee70 100644
 --- a/tests/intel/xe_compute.c
 +++ b/tests/intel/xe_compute.c
 @@ -19,6 +19,8 @@
  #include "xe/xe_ioctl.h"
  #include "xe/xe_query.h"
  
-+#define LOOP_DURATION	(1000000ull)
++#include "igt_eu_perf.h"
 +
+ #define LOOP_DURATION	(1000000ull)
+ 
  static int gt_sysfs_open(int gt)
- {
- 	int fd, gt_fd;
-@@ -186,6 +188,58 @@ test_compute_kernel_with_ccs_mode(void)
- 	igt_require(num_gt_with_ccs_mode > 0);
+@@ -240,6 +242,222 @@ test_compute_kernel_loop(uint64_t loop_duration)
+ 	drm_close_driver(fd);
  }
  
-+static double elapsed(const struct timeval *start,
-+		      const struct timeval *end)
++static void
++*intel_compute_thread(void *data)
 +{
-+	return (end->tv_sec - start->tv_sec) + 1e-6*(end->tv_usec - start->tv_usec);
++	struct thread_data *t = (struct thread_data *)data;
++
++	pthread_mutex_lock(t->mutex);
++	while (*t->go == 0)
++		pthread_cond_wait(t->cond, t->mutex);
++	pthread_mutex_unlock(t->mutex);
++
++	igt_info("Compute kernel executing on engine class :%s instance :%d gt: GT-%d\n",
++			xe_engine_class_string(t->eci->engine_class), t->eci->engine_instance,
++			t->eci->gt_id);
++
++	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd,
++				t->eci,
++				t->execenv,
++				EXECENV_PREF_VRAM_IF_POSSIBLE),
++			"Unable to run compute kernel successfully\n");
++	return NULL;
 +}
 +
-+/**
-+ * SUBTEST: loop-duration-2s
-+ * Functionality: OpenCL kernel
-+ * Description:
-+ *	Run an openCL loop Kernel that for duration,
-+ *	set in loop_kernel_duration ..
-+ */
++static void *show_eu_util(void *data)
++{
++	struct xe_pmu_device *pmu_device = NULL;
++	int dev_fd;
++	long n;
++
++	n = -1;
++	dev_fd = drm_open_driver(DRIVER_XE);
++
++	pmu_device = xe_init_engines(dev_fd);
++	if (!pmu_device) {
++		fprintf(stderr,
++				"Failed to initialize engines! (%s)\n",
++				strerror(errno));
++		drm_close_driver(dev_fd);
++		return NULL;
++	}
++
++	xe_pmu_device_sample(pmu_device);
++
++	while ((n != 0) && !stop_top) {
++		xe_pmu_device_sample(pmu_device);
++		xe_print_perc(pmu_device);
++		usleep(2 * LOOP_DURATION);
++	}
++	eu_util_free(pmu_device);
++	drm_close_driver(dev_fd);
++	return NULL;
++}
++
 +static void
-+test_compute_kernel_loop(uint64_t loop_duration)
++thread_init_eu_utils(void)
++{
++	pthread_t eu_utils;
++
++	pthread_create(&eu_utils, NULL, show_eu_util, NULL);
++}
++
++/* To avoid calling igt_skip in threads which can cause issue */
++static void
++igt_check_supported_pipeline(void)
 +{
 +	int fd;
 +	unsigned int ip_ver;
 +	const struct intel_compute_kernels *kernels;
 +	struct user_execenv execenv = { 0 };
 +	struct drm_xe_engine_class_instance *hwe;
-+	struct timeval start, end;
 +
 +	fd = drm_open_driver(DRIVER_XE);
 +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
@@ -163,7 +444,7 @@ index 5e9140902..9a417de15 100644
 +	}
 +
 +	/* loop_kernel_duration used as sleep to make EU busy for loop_duration */
-+	execenv.loop_kernel_duration = loop_duration;
++	execenv.loop_kernel_duration = 1000000;
 +	execenv.kernel = kernels->loop_kernel;
 +	execenv.kernel_size = kernels->loop_kernel_size;
 +
@@ -171,28 +452,157 @@ index 5e9140902..9a417de15 100644
 +		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
 +			continue;
 +
-+		igt_info("Running loop_kernel on ccs engine %d\n", hwe->engine_instance);
-+		gettimeofday(&start, NULL);
 +		igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, &execenv, EXECENV_PREF_SYSTEM),
 +				"Unable to run compute kernel successfully\n");
-+		gettimeofday(&end, NULL);
-+		igt_info("Duration for completing Compute kernel :%.3fs\n", elapsed(&start, &end));
 +	}
++	drm_close_driver(fd);
++}
++
++/**
++ * SUBTEST: eu-busy-10s
++ * Functionality: OpenCL kernel
++ * Description: Run loop_kernel for 10 seconds and observe EU business
++ */
++static void
++test_eu_busy(int fd, uint64_t duration_sec)
++{
++	struct user_execenv execenv = { 0 };
++	struct thread_data *threads_data;
++	struct drm_xe_engine_class_instance *hwe;
++	const struct intel_compute_kernels *kernels;
++	pthread_mutex_t mutex;
++	pthread_cond_t cond;
++	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
++	bool go = false;
++	int ccs_mode, gt_fd;
++	u32 num_slices, ip_ver;
++	uint64_t gt_mask = get_gt_mask();
++
++	for_each_bit(gt_mask, gt) {
++		if (!get_num_cslices(gt, &num_slices))
++			continue;
++
++		gt_fd = gt_sysfs_open(gt);
++		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
++		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
++		close(gt_fd);
++	}
++
++	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
++			ccs_mode);
++
++	thread_init_eu_utils();
++	usleep(2 * LOOP_DURATION);
++
++	fd = drm_open_driver(DRIVER_XE);
++	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
++	kernels = intel_compute_square_kernels;
++	while (kernels->kernel) {
++		if (ip_ver == kernels->ip_ver)
++			break;
++		kernels++;
++	}
++
++	/*
++	 * User should use different kernel if loop_kernel_duration not set
++	 * With loop kernel and loop duration it assumes we stop it via memory write
++	 *
++	 */
++
++	execenv.loop_kernel_duration = duration_sec;
++	execenv.kernel = kernels->loop_kernel;
++	execenv.kernel_size = kernels->loop_kernel_size;
++	drm_close_driver(fd);
++
++	/*
++	 * Calling igt_skip in threads can cause issue during execution
++	 * To avoid this check igt_check_supported_pipeline function called
++	 * to make sure igt_skip happens before creating threads
++	 *
++	 */
++	if (ip_ver < IP_VER(20, 0))
++		igt_check_supported_pipeline();
++
++	gt_mask = get_gt_mask();
++
++	for_each_bit(gt_mask, gt) {
++		fd = drm_open_driver(DRIVER_XE);
++		xe_for_each_engine(fd, hwe) {
++			igt_assert(hwe);
++			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
++				++n_instances;
++		}
++		drm_close_driver(fd);
++	}
++
++	threads_data = calloc(n_instances, sizeof(*threads_data));
++	igt_assert(threads_data);
++
++	pthread_mutex_init(&mutex, 0);
++	pthread_cond_init(&cond, 0);
++
++	gt_mask = get_gt_mask();
++	fd = drm_open_driver(DRIVER_XE);
++	for_each_bit(gt_mask, gt) {
++		xe_for_each_engine(fd, hwe) {
++			if (hwe->gt_id != gt ||
++					hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++				continue;
++
++			threads_data[i].mutex = &mutex;
++			threads_data[i].cond = &cond;
++			threads_data[i].fd = fd;
++			threads_data[i].eci = hwe;
++			threads_data[i].go = &go;
++			threads_data[i].execenv = &execenv;
++			++n_threads;
++			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
++					&threads_data[i]);
++			++i;
++			++iterations;
++		}
++		pthread_mutex_lock(&mutex);
++		go = true;
++		pthread_cond_broadcast(&cond);
++		pthread_mutex_unlock(&mutex);
++
++		for (int val = 0; val < i; ++val)
++			pthread_join(threads_data[val].thread, NULL);
++
++		i = 0;
++		n_threads = 0;
++		iterations = 0;
++		stop_top = true;
++		eu_busy = true;
++	}
++	free(threads_data);
 +	drm_close_driver(fd);
 +}
 +
  /**
   * SUBTEST: compute-square
   * Mega feature: WMTP
-@@ -223,4 +277,8 @@ igt_main
- 
- 	igt_subtest("ccs-mode-compute-kernel")
- 		test_compute_kernel_with_ccs_mode();
+@@ -281,4 +499,8 @@ igt_main
+ 	/* To test compute function stops after loop_kernel_duration */
+ 	igt_subtest("loop-duration-2s")
+ 		test_compute_kernel_loop(2 * LOOP_DURATION);
 +
-+	/* To test compute function stops after loop_kernel_duration */
-+	igt_subtest("loop-duration-2s")
-+		test_compute_kernel_loop(2 * LOOP_DURATION);
++	/* test to check available EU utilisation in multi-ccs case */
++	igt_subtest("eu-busy-10s")
++		test_eu_busy(xe, 10 * LOOP_DURATION);
  }
+diff --git a/tests/meson.build b/tests/meson.build
+index 5c01c64e9..a4f3f3dc0 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -408,6 +408,7 @@ extra_dependencies = {
+ 	'sw_sync': [ libatomic ],
+ 	'xe_fault_injection': [ lib_igt_xe_oa ],
+ 	'xe_oa': [ lib_igt_xe_oa ],
++        'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
+ }
+ 
+ test_executables = []
 -- 
 2.43.0
 
