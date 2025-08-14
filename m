@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B62EFCA0EDC
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 18:05:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5991ACA0EDC
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 18:50:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C8C710E8CE;
-	Thu, 14 Aug 2025 18:05:18 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F8F210E8CD;
- Thu, 14 Aug 2025 18:05:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id EA28E10E123;
+	Thu, 14 Aug 2025 18:50:10 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="luKrjy1a";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4EAB10E123
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 18:50:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755197410; x=1786733410;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=rW+mt6XdVspy+imUeCrZvFXpHqw3P1C4wy9C0vJrDi4=;
+ b=luKrjy1apR2B1Xnm9e3HMBKX5ZbDRDfKx7kEOw7keKUltZWtK3qGwNEL
+ TtyUFu2JgK2hiFYbPpy378aRkl/JZXyX0ikZ9iuDr0h63qWt6TXMCFwko
+ IOkOnmmlv3ZtISLBLAsfjhwng0fKeu/fXxRyqjwUn1ogcbzfeE7tedr2L
+ bV71S6F75WlrsH0E8KvnOyiNMjMLS6+SblZSTqNBcfQE1tTWCB/mQUJhf
+ Ukr5c35xOeddf4/wS7Gv5J6GXkKqkWdiRUfrM2nLAYav655jJbct6jmMi
+ lVHfEllBMmq/1XV+2RPYJAl7MjiMYY8OZHKeHUFxaWaz203V36DTu9ctl Q==;
+X-CSE-ConnectionGUID: kWEFWlr2SB++b43xCevxMQ==
+X-CSE-MsgGUID: selrmTvnTpeETypLYgRNLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="57669639"
+X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; d="scan'208";a="57669639"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2025 11:50:09 -0700
+X-CSE-ConnectionGUID: uXbu36nNRxCemZr+kHvkWA==
+X-CSE-MsgGUID: 4iujvm/XQnKjOhHvgZNVnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; d="scan'208";a="170959473"
+Received: from dut4066lnl.fm.intel.com ([10.105.8.63])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2025 11:50:09 -0700
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, alex.zuo@intel.com,
+ matthew.brost@intel.com, zbigniew.kempczynski@intel.com,
+ niranjana.vishwanathapura@intel.com
+Subject: [PATCH] lib/xe/xe_spin: Add additional MI_ARB_CHECK to preemptable
+ spin init
+Date: Thu, 14 Aug 2025 18:50:10 +0000
+Message-ID: <20250814185009.52614-2-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tools/intel=5Fvbt=5Fdecod?=
- =?utf-8?q?e=3A_more_updates_to_VBT_definitions?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jani Nikula" <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 14 Aug 2025 18:05:17 -0000
-Message-ID: <175519471758.237804.5578797116723808171@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <cover.1755175663.git.jani.nikula@intel.com>
-In-Reply-To: <cover.1755175663.git.jani.nikula@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,24 +66,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Add an additional MI_ARB_CHECK to the spin initialization function,
+just before the conditional batch buffer end, when preemption is
+enabled.  The MI_ARB_CHECK forces a preemption in this case, which can
+allow additionally scheduled exec queues to make independent progress
+earlier than if we relied on the automatic timeout of the exec queue.
 
-Series: tools/intel_vbt_decode: more updates to VBT definitions
-URL   : https://patchwork.freedesktop.org/series/152953/
-State : failure
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5783
+Suggested-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+---
+ lib/xe/xe_spin.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-== Summary ==
-
-Applying: tools/intel_vbt_decode: Split up DSI VBT defs to a separate file
-Applying: tools/intel_vbt_decode: Remove intel_bios.h
-Using index info to reconstruct a base tree...
-Patch failed at 0002 tools/intel_vbt_decode: Remove intel_bios.h
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 25f7555e27..b3a937fe80 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -30,7 +30,6 @@
+ 
+ enum { START_TS, NOW_TS };
+ 
+-
+ uint32_t xe_spin_nsec_to_ticks(int fd, int gt_id, uint64_t nsec)
+ {
+ 	uint32_t ticks = xe_nsec_to_ticks(fd, gt_id, nsec);
+@@ -167,6 +166,9 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 				   opts->mem_copy->dst->mocs_index;
+ 	}
+ 
++	if (opts->preempt)
++		spin->batch[b++] = MI_ARB_CHECK;
++
+ 	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+ 	spin->batch[b++] = 0;
+ 	spin->batch[b++] = end_addr;
+-- 
+2.43.0
 
