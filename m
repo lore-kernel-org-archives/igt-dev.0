@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0921CCA0EE4
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 16:45:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93424CA0EE4
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 16:46:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9559710E8C3;
-	Thu, 14 Aug 2025 16:45:24 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="muaVvO/I";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1784010E8C2
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 16:45:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755189923; x=1786725923;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=sXOlriDWE04BvnVcjUqU6Y502VOMRNmtMT7M9hkVsHo=;
- b=muaVvO/IAvRTo1TemgfNQlTv3QPesJGcQX0ZNNrkNyaLabid7Lj2H+p/
- uTlvSZHDvI5rUpILKh2fCnYsdpTXM3EZKKH7GzY0AWxvk2C8IpXjfBVcY
- QarfaVb2d/38l8fT+4xCcOEmSe0GooXt8i8fVUHxxr1h3aXQF/HtAVqbq
- CEudRL7hgOqm1qIw5VEwT+5Egb5vuL6em7Y8PSur0yXKBri3USBBC2bxP
- oO7X1Tn7caDA6vAA1kHowAkZdkussnebwBwZhAfcJb+mzNsCOoyWpjg4n
- 2Aw9LiEgkAWSPulp4p4XYKFiEa7afVBXw09BlZuU5OH2SdNqRjJ/lA76J A==;
-X-CSE-ConnectionGUID: wxfvmbI5S2O4KV5ab7X9nA==
-X-CSE-MsgGUID: wrfQLgo3TyuNxpxmPsUdlQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="61353576"
-X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; d="scan'208";a="61353576"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2025 09:45:23 -0700
-X-CSE-ConnectionGUID: OjpC223CTqmMm5e/0evhFg==
-X-CSE-MsgGUID: N8aHC8E5TaaV4X71K/p/jQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; d="scan'208";a="166439610"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 09:45:22 -0700
-Date: Thu, 14 Aug 2025 18:44:51 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 2/5] tools/intel_vbt_decode: Remove intel_bios.h
-Message-ID: <20250814164451.vymqgxvjddnks6ar@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org
-References: <cover.1755175663.git.jani.nikula@intel.com>
- <7090e70d712c94aed53f52c49a8155eb4c6b966c.1755175663.git.jani.nikula@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CD5810E8C2;
+	Thu, 14 Aug 2025 16:46:36 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7EBA610E8C2;
+ Thu, 14 Aug 2025 16:46:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6033258799868801579=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7090e70d712c94aed53f52c49a8155eb4c6b966c.1755175663.git.jani.nikula@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5B1/3?=
+ =?utf-8?q?=5D_lib/intel=5Fcompute=3A_loop=5Fkernel=5Fduration_in_Pipeline?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 14 Aug 2025 16:46:35 -0000
+Message-ID: <175518999551.237772.11226157895886100540@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250814155814.130545-1-nishit.sharma@intel.com>
+In-Reply-To: <20250814155814.130545-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,126 +37,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2025-08-14 at 15:48:53 +0300, Jani Nikula wrote:
-> With the DSI VBT defs having been split to a separate file, intel_bios.h
-> has become rather small. Incorporate the remaining contents to
-> intel_vbt_decode.c. Use existing macros for LVDS config.
-> 
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+--===============6033258799868801579==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please resend this as fdo patchwork has some problems and this one
-is missing (so it cannot create a series and CI cannot test it).
+== Series Details ==
 
-Regards,
-Kamil
+Series: series starting with [1/3] lib/intel_compute: loop_kernel_duration in Pipeline
+URL   : https://patchwork.freedesktop.org/series/152959/
+State : success
 
-> ---
->  tools/intel_bios.h       | 47 ----------------------------------------
->  tools/intel_vbt_decode.c | 19 +++++++++++-----
->  2 files changed, 14 insertions(+), 52 deletions(-)
->  delete mode 100644 tools/intel_bios.h
->
-> diff --git a/tools/intel_bios.h b/tools/intel_bios.h
-> deleted file mode 100644
-> index 0bb4455d1f26..000000000000
-> --- a/tools/intel_bios.h
-> +++ /dev/null
-> @@ -1,47 +0,0 @@
-> -/*
-> - * Copyright ? 2006 Intel Corporation
-> - *
-> - * Permission is hereby granted, free of charge, to any person obtaining a
-> - * copy of this software and associated documentation files (the "Software"),
-> - * to deal in the Software without restriction, including without limitation
-> - * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> - * and/or sell copies of the Software, and to permit persons to whom the
-> - * Software is furnished to do so, subject to the following conditions:
-> - *
-> - * The above copyright notice and this permission notice (including the next
-> - * paragraph) shall be included in all copies or substantial portions of the
-> - * Software.
-> - *
-> - * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> - * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> - * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> - * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> - * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-> - * SOFTWARE.
-> - *
-> - * Authors:
-> - *    Eric Anholt <eric@anholt.net>
-> - *
-> - */
-> -
-> -#ifndef _INTEL_BIOS_H_
-> -#define _INTEL_BIOS_H_
-> -
-> -#include <stdint.h>
-> -
-> -#define DEVICE_TYPE_DP_DVI		0x68d6
-> -#define DEVICE_TYPE_DVI			0x68d2
-> -#define DEVICE_TYPE_MIPI		0x7cc2
-> -
-> -struct bdb_legacy_child_devices {
-> -	uint8_t child_dev_size;
-> -	uint8_t devices[0]; /* presumably 7 * 33 */
-> -} __attribute__ ((packed));
-> -
-> -#define BDB_DRIVER_NO_LVDS	0
-> -#define BDB_DRIVER_INT_LVDS	1
-> -#define BDB_DRIVER_SDVO_LVDS	2
-> -#define BDB_DRIVER_EDP		3
-> -
-> -#endif /* _INTEL_BIOS_H_ */
-> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-> index f7dee8646b4a..307c4da14843 100644
-> --- a/tools/intel_vbt_decode.c
-> +++ b/tools/intel_vbt_decode.c
-> @@ -40,7 +40,6 @@
->  
->  #include "igt_aux.h"
->  #include "igt_halffloat.h"
-> -#include "intel_bios.h"
->  #include "intel_chipset.h"
->  #include "intel_io.h"
->  #include "drmtest.h"
-> @@ -55,6 +54,16 @@ typedef uint64_t u64;
->  #define _INTEL_BIOS_PRIVATE
->  #include "intel_vbt_defs.h"
->  
-> +/* additional macros for parsing */
-> +#define DEVICE_TYPE_DP_DVI		0x68d6
-> +#define DEVICE_TYPE_DVI			0x68d2
-> +#define DEVICE_TYPE_MIPI		0x7cc2
-> +
-> +struct bdb_legacy_child_devices {
-> +	uint8_t child_dev_size;
-> +	uint8_t devices[0]; /* presumably 7 * 33 */
-> +} __attribute__ ((packed));
-> +
->  #define YESNO(val) ((val) ? "yes" : "no")
->  
->  /* This is not for mapping to memory layout. */
-> @@ -1816,10 +1825,10 @@ static void dump_lfp_data(struct context *context,
->  }
->  
->  static const char * const lvds_config[] = {
-> -	[BDB_DRIVER_NO_LVDS] = "No LVDS",
-> -	[BDB_DRIVER_INT_LVDS] = "Integrated LVDS",
-> -	[BDB_DRIVER_SDVO_LVDS] = "SDVO LVDS",
-> -	[BDB_DRIVER_EDP] = "Embedded DisplayPort",
-> +	[BDB_DRIVER_FEATURE_NO_LVDS] = "No LVDS",
-> +	[BDB_DRIVER_FEATURE_INT_LVDS] = "Integrated LVDS",
-> +	[BDB_DRIVER_FEATURE_SDVO_LVDS] = "SDVO LVDS",
-> +	[BDB_DRIVER_FEATURE_INT_SDVO_LVDS] = "Embedded DisplayPort",
->  };
->  
->  static const char *default_algorithm(bool algorithm)
-> -- 
-> 2.47.2
-> 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8494_BAT -> XEIGTPW_13583_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13583_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@b-edp1:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8494/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13583/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
+
+  * igt@xe_vm@bind-execqueues-independent:
+    - {bat-ptl-1}:        [FAIL][3] ([Intel XE#5783]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8494/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13583/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8494 -> IGTPW_13583
+  * Linux: xe-3545-7f1ecbbddf3bf50bf5338e86514bf77c32eb4edb -> xe-3546-626cbc58a40f062739195b03416cd0702fae339b
+
+  IGTPW_13583: 13583
+  IGT_8494: 8494
+  xe-3545-7f1ecbbddf3bf50bf5338e86514bf77c32eb4edb: 7f1ecbbddf3bf50bf5338e86514bf77c32eb4edb
+  xe-3546-626cbc58a40f062739195b03416cd0702fae339b: 626cbc58a40f062739195b03416cd0702fae339b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13583/index.html
+
+--===============6033258799868801579==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/3] lib/intel_compute: loop_kernel_duration in Pipeline</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152959/">https://patchwork.freedesktop.org/series/152959/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13583/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13583/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8494_BAT -&gt; XEIGTPW_13583_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13583_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-plain-flip@b-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8494/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13583/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_vm@bind-execqueues-independent:</p>
+<ul>
+<li>{bat-ptl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8494/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13583/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8494 -&gt; IGTPW_13583</li>
+<li>Linux: xe-3545-7f1ecbbddf3bf50bf5338e86514bf77c32eb4edb -&gt; xe-3546-626cbc58a40f062739195b03416cd0702fae339b</li>
+</ul>
+<p>IGTPW_13583: 13583<br />
+  IGT_8494: 8494<br />
+  xe-3545-7f1ecbbddf3bf50bf5338e86514bf77c32eb4edb: 7f1ecbbddf3bf50bf5338e86514bf77c32eb4edb<br />
+  xe-3546-626cbc58a40f062739195b03416cd0702fae339b: 626cbc58a40f062739195b03416cd0702fae339b</p>
+
+</body>
+</html>
+
+--===============6033258799868801579==--
