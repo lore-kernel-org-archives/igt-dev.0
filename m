@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 037ABCA0EE4
-	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 12:49:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A2FACA0EE4
+	for <igt-dev@archiver.kernel.org>; Thu, 14 Aug 2025 12:49:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AE3C410E88A;
-	Thu, 14 Aug 2025 12:49:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C8B6610E883;
+	Thu, 14 Aug 2025 12:49:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NSBG8N/T";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FkLmXCka";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC5A410E88A
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 12:49:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 305CF10E883
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Aug 2025 12:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755175764; x=1786711764;
+ t=1755175768; x=1786711768;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=w1ZJjUQzswpn4xt5PBr5Go2zaKP1GPz8I51U5M+ZeuI=;
- b=NSBG8N/TDfmzu0AV+kOOOMbkXec7xMm0mL3a5hovwnYXUF6UhUCQ6+wo
- YErc7X14XMcKQvqiS18JYykJ1yXg9DGBlZYbO0PvWte/V2Q0V1D9kzXse
- CdBfE2iXq9u0OHkOI6XP/88RXpzp8uCrZsv2uNLCna5kg5VGj2dAxdbeF
- 5EPNKEvbaeoQ1HJJfpaYz7NzeuR4R2aMs7i5h7g6/ixkynlswp3wywnOC
- RSeHy0R3AwAv03+jJ2gBapQVVeoaGbLgTtZNKPrC0PxNWmEwFnhrnEMF6
- YaRozWlhVk4Dx42H9uZikZvTAmP9XILxGZw289ETq7bgRmp6wwrY8ETup w==;
-X-CSE-ConnectionGUID: CaQnujtURu+zNul9pNwa+A==
-X-CSE-MsgGUID: j7gGQnZIRjuDMKh3b/kHMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60115606"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="60115606"
+ bh=a2i333O2FULMGJJ2MISwPuV8VLwCBTd/ijQ+/N1UMRQ=;
+ b=FkLmXCkaIBVpxMAu9s6xiBXduuhiioEjZYl3v8mSpW0iakGdOy4w6QQS
+ VpOza+JZSGED/GSPb6+o3id8U8A+ZWD0farCS/rVBbyyzktfOT8Ux9t+A
+ eip0PXE9N7eOba+w3WEsxkU1lpWVpDnNQXnTbM3w5YdUWrU/99G+AE4W3
+ b66Yo+67Eh3P7cRfHQCzESzwXGgZ21zmgCwYkLh26fqR/v7KgeFLRBXhY
+ qhYg353pltMg2g06r2lSFkuRep7RbcirEO4lnYjAYGgHercx0xf+Bb7lo
+ U87XQZT6FwmYz+/YnPfTKzjRQtcMsbdPsJuF3+DT75c+GE1bOBiZs59ZK Q==;
+X-CSE-ConnectionGUID: HqDmm258Rw6xKWiYIT8IRw==
+X-CSE-MsgGUID: ngOjjYjQQD+FZPdCcWNwTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="60115622"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="60115622"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2025 05:49:23 -0700
-X-CSE-ConnectionGUID: Mgt31Og0SiqvnhBNID2vwg==
-X-CSE-MsgGUID: iOFr912pRQOtshSAADHSZg==
+ 14 Aug 2025 05:49:28 -0700
+X-CSE-ConnectionGUID: R7tjfRdZRSS/Z2ib0HfMBg==
+X-CSE-MsgGUID: PVD0+bZMSiewVaL2IYQadQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="166242887"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; d="scan'208";a="166242897"
 Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.100])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2025 05:49:22 -0700
+ 14 Aug 2025 05:49:26 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
-Subject: [PATCH i-g-t 4/5] tools/intel_vbt_decode: Flip bta_enabled to
- bta_disable
-Date: Thu, 14 Aug 2025 15:48:55 +0300
-Message-ID: <335bfe64fb01ba488ed666142b3e092bc2a9c4ee.1755175663.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 5/5] tools/intel_vbt_decode: Add missing DSI VBT defs
+Date: Thu, 14 Aug 2025 15:48:56 +0300
+Message-ID: <4a1271e36ed9bfc70afec1e4e41f1c204aab8b5d.1755175663.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <cover.1755175663.git.jani.nikula@intel.com>
 References: <cover.1755175663.git.jani.nikula@intel.com>
@@ -72,40 +71,46 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Synchronize intel_dsi_vbt_defs.h with kernel commit:
 
-745b597a7930 ("drm/i915/vbt: flip bta_enabled to bta_disable")
+906cbdc1fffa ("drm/i915/vbt: add missing DSI VBT defs")
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tools/intel_dsi_vbt_defs.h | 2 +-
- tools/intel_vbt_decode.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/intel_dsi_vbt_defs.h | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/tools/intel_dsi_vbt_defs.h b/tools/intel_dsi_vbt_defs.h
-index 7ac872dbba8d..3f9b9ed6592c 100644
+index 3f9b9ed6592c..edc7331dcca2 100644
 --- a/tools/intel_dsi_vbt_defs.h
 +++ b/tools/intel_dsi_vbt_defs.h
-@@ -76,7 +76,7 @@ struct mipi_config {
- #define ENABLE_ROTATION_180	0x2
- #define ENABLE_ROTATION_270	0x3
- 		u32 rotation:2;
--		u32 bta_enabled:1;
-+		u32 bta_disable:1;
- 		u32 rsvd2:15;
+@@ -94,10 +94,15 @@ struct mipi_config {
+ #define DL_DCS_PORT_A_AND_C		0x02
+ 		u16 dl_dcs_cabc_ports:2;
+ 		u16 dl_dcs_backlight_ports:2;
+-		u16 rsvd3:4;
++		u16 port_sync:1;				/* 219-230 */
++		u16 rsvd3:3;
  	} __packed;
  
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 307c4da14843..6882ae1d2f63 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -2852,7 +2852,7 @@ static void dump_mipi_config(struct context *context,
- 		printf("\tPanel %d%s\n", i, panel_str(context, i));
+-	u16 rsvd4;
++	/* DSI Controller Parameters */
++	struct {
++		u16 dsi_usage:1;
++		u16 rsvd4:15;
++	} __packed;
  
- 		printf("\t\tGeneral Param\n");
--		printf("\t\t\t BTA disable: %s\n", config->bta_enabled ? "Disabled" : "Enabled");
-+		printf("\t\t\t BTA disable: %s\n", config->bta_disable ? "Disabled" : "Enabled");
- 		printf("\t\t\t Panel Rotation: %d degrees\n", config->rotation * 90);
+ 	u8 rsvd5;
+ 	u32 target_burst_mode_freq;
+@@ -118,7 +123,9 @@ struct mipi_config {
+ 		u16 dphy_param_valid:1;
+ 		u16 eot_pkt_disabled:1;
+ 		u16 enable_clk_stop:1;
+-		u16 rsvd7:13;
++		u16 blanking_packets_during_bllp:1;		/* 219+ */
++		u16 lp_clock_during_lpm:1;			/* 219+ */
++		u16 rsvd7:11;
+ 	} __packed;
  
- 		printf("\t\t\t Video Mode Color Format: ");
+ 	u32 hs_tx_timeout;
 -- 
 2.47.2
 
