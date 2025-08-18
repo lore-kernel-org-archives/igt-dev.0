@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20313CA0ED1
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 11:41:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 126FFCA0ED1
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 11:47:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D1CD810E1C9;
-	Mon, 18 Aug 2025 11:41:24 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iupdcOSn";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CEBA310E1C9
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Aug 2025 11:41:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755517283; x=1787053283;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=jYBSkcotBrst/eY6FyDYjXeQ/8NvYgix79mkQaKugkw=;
- b=iupdcOSnBk/z4VulnlYZZXaNz/EyrTbZ9bPgUk9nKREwK16xY1+RSp7l
- 3cx7Z7TwS184OnFmj/srfHzvYKvCWQcqnrzz/9U2B0kNjndRBSyAX2+F3
- BBN0owlX75w5tI6WJTF5bAD2NXm9myStaKhlMM9jejCw+GzzVnD0uZQi0
- /UW74MXen6hdeLfdskrHxhubK1CWXhS07ZQX8oPzanXRJjuQcWdpqDpdv
- LUFI4YbRdWJ1N1/d2dHmQYOQQBFUoJqZz0nPswrKz75vzgzQgIVfPsCmk
- kodH0Z2LxQMltsQD4dR8pjqPLa1k7ofI0M0QIjntY52w4+J2xrMQ9aBwK A==;
-X-CSE-ConnectionGUID: kx8G0H4sSyO9IhyWoJ8B9g==
-X-CSE-MsgGUID: jQCb7jEtRPi/7qAzCcgrTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="80318243"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; d="scan'208";a="80318243"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2025 04:41:04 -0700
-X-CSE-ConnectionGUID: uQshWjrgTHu+XKB0OZrpFQ==
-X-CSE-MsgGUID: elDoUR+YQBGceDjxUupIgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; d="scan'208";a="166786085"
-Received: from administrator-system-product-name.igk.intel.com
- ([10.91.214.181])
- by orviesa010.jf.intel.com with ESMTP; 18 Aug 2025 04:41:03 -0700
-From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t v3 1/1] tests/kms_cursor_legacy: don't inhibit pipe CRC
- calculation
-Date: Mon, 18 Aug 2025 13:42:07 +0200
-Message-ID: <20250818114207.2251823-2-michal.grzelak@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250818114207.2251823-1-michal.grzelak@intel.com>
-References: <20250818114207.2251823-1-michal.grzelak@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B87A010E437;
+	Mon, 18 Aug 2025 11:47:35 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9DA8F10E431;
+ Mon, 18 Aug 2025 11:47:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7795955648953423770=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFull=3A_success_for_Shaders_migration_to_separ?=
+ =?utf-8?q?ate_headers_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 18 Aug 2025 11:47:34 -0000
+Message-ID: <175551765463.243606.9848321752733220728@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250818073114.1014041-6-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20250818073114.1014041-6-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,48 +37,347 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Running either flip-vs-cursor-busy-crc-(legacy|atomic) subtest from
-kms_cursor_legacy results in entering PSR1 after the test. Even with
-PSR2 enabled panel, it is impossible to switch to PSR2 via
-i915_edp_psr_debug. Kernel does so because it prevents inhibiting pipe
-CRC calculation which is allowed in PSR1 but prohibited in PSR2.
-Therefore subtests from kms_psr testing PSR2 feature (e.g. psr2-no-drrs,
-psr2-primary-blt etc.) are failing after running any of those
-kms_cursor_legacy subtests.
+--===============7795955648953423770==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Restore enabling Panel Replay Selective Update by stopping pipe CRC
-calculation after running the subtest and before the clean-up.
+== Series Details ==
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5298
-Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_cursor_legacy.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Series: Shaders migration to separate headers (rev2)
+URL   : https://patchwork.freedesktop.org/series/152864/
+State : success
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 9f6e644e1..ed1c77d55 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1748,13 +1748,14 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
- 		igt_assert_crc_equal(&crcs[i], &test_crc);
- 	}
- 
-+	igt_pipe_crc_stop(pipe_crc);
-+
- 	/* Clean-up */
- 	igt_plane_set_fb(plane_primary, NULL);
- 	igt_plane_set_fb(cursor, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
--	igt_pipe_crc_stop(pipe_crc);
- 	igt_remove_fb(display->drm_fd, &fb_info[1]);
- 	igt_remove_fb(display->drm_fd, &fb_info[0]);
- 	igt_remove_fb(display->drm_fd, &cursor_fb);
--- 
-2.45.2
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8495_FULL -> XEIGTPW_13587_FULL
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 3)
+------------------------------
+
+  Missing    (1): shard-adlp 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13587_FULL that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@runner@aborted:
+    - shard-bmg:          NOTRUN -> ([FAIL][1], [FAIL][2], [FAIL][3], [FAIL][4], [FAIL][5], [FAIL][6], [FAIL][7], [FAIL][8], [FAIL][9], [FAIL][10], [FAIL][11], [FAIL][12], [FAIL][13], [FAIL][14], [FAIL][15], [FAIL][16], [FAIL][17], [FAIL][18], [FAIL][19], [FAIL][20], [FAIL][21], [FAIL][22], [FAIL][23], [FAIL][24], [FAIL][25]) ([Intel XE#5945])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-5/igt@runner@aborted.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-4/igt@runner@aborted.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-4/igt@runner@aborted.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-4/igt@runner@aborted.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-4/igt@runner@aborted.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-8/igt@runner@aborted.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-8/igt@runner@aborted.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-1/igt@runner@aborted.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-1/igt@runner@aborted.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-1/igt@runner@aborted.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-1/igt@runner@aborted.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-7/igt@runner@aborted.html
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-7/igt@runner@aborted.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-2/igt@runner@aborted.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-2/igt@runner@aborted.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-2/igt@runner@aborted.html
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-2/igt@runner@aborted.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-6/igt@runner@aborted.html
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-6/igt@runner@aborted.html
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-3/igt@runner@aborted.html
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-3/igt@runner@aborted.html
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-3/igt@runner@aborted.html
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-5/igt@runner@aborted.html
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-5/igt@runner@aborted.html
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-5/igt@runner@aborted.html
+    - shard-lnl:          NOTRUN -> ([FAIL][26], [FAIL][27], [FAIL][28], [FAIL][29], [FAIL][30], [FAIL][31], [FAIL][32], [FAIL][33], [FAIL][34], [FAIL][35], [FAIL][36], [FAIL][37], [FAIL][38], [FAIL][39], [FAIL][40], [FAIL][41], [FAIL][42], [FAIL][43], [FAIL][44], [FAIL][45], [FAIL][46], [FAIL][47], [FAIL][48], [FAIL][49], [FAIL][50]) ([Intel XE#5945])
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-1/igt@runner@aborted.html
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-1/igt@runner@aborted.html
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-1/igt@runner@aborted.html
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-8/igt@runner@aborted.html
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-8/igt@runner@aborted.html
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-8/igt@runner@aborted.html
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-8/igt@runner@aborted.html
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-4/igt@runner@aborted.html
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-4/igt@runner@aborted.html
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-4/igt@runner@aborted.html
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-4/igt@runner@aborted.html
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-3/igt@runner@aborted.html
+   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-3/igt@runner@aborted.html
+   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-3/igt@runner@aborted.html
+   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-2/igt@runner@aborted.html
+   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-2/igt@runner@aborted.html
+   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-2/igt@runner@aborted.html
+   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-2/igt@runner@aborted.html
+   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-7/igt@runner@aborted.html
+   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-7/igt@runner@aborted.html
+   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-7/igt@runner@aborted.html
+   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-5/igt@runner@aborted.html
+   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-5/igt@runner@aborted.html
+   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-5/igt@runner@aborted.html
+   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-5/igt@runner@aborted.html
+
+  
+#### Warnings ####
+
+  * igt@runner@aborted:
+    - shard-dg2-set2:     [FAIL][51] -> ([FAIL][52], [FAIL][53], [FAIL][54], [FAIL][55], [FAIL][56], [FAIL][57], [FAIL][58], [FAIL][59], [FAIL][60], [FAIL][61], [FAIL][62], [FAIL][63], [FAIL][64], [FAIL][65], [FAIL][66], [FAIL][67], [FAIL][68], [FAIL][69], [FAIL][70], [FAIL][71], [FAIL][72], [FAIL][73], [FAIL][74], [FAIL][75], [FAIL][76]) ([Intel XE#5945])
+   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8495/shard-dg2-463/igt@runner@aborted.html
+   [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-434/igt@runner@aborted.html
+   [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-434/igt@runner@aborted.html
+   [54]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-434/igt@runner@aborted.html
+   [55]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-434/igt@runner@aborted.html
+   [56]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-464/igt@runner@aborted.html
+   [57]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-464/igt@runner@aborted.html
+   [58]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-464/igt@runner@aborted.html
+   [59]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-464/igt@runner@aborted.html
+   [60]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-433/igt@runner@aborted.html
+   [61]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-433/igt@runner@aborted.html
+   [62]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-433/igt@runner@aborted.html
+   [63]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-463/igt@runner@aborted.html
+   [64]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-463/igt@runner@aborted.html
+   [65]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-463/igt@runner@aborted.html
+   [66]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-463/igt@runner@aborted.html
+   [67]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-466/igt@runner@aborted.html
+   [68]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-466/igt@runner@aborted.html
+   [69]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-466/igt@runner@aborted.html
+   [70]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-466/igt@runner@aborted.html
+   [71]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-435/igt@runner@aborted.html
+   [72]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-435/igt@runner@aborted.html
+   [73]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-435/igt@runner@aborted.html
+   [74]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-432/igt@runner@aborted.html
+   [75]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-432/igt@runner@aborted.html
+   [76]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-432/igt@runner@aborted.html
+
+  
+  [Intel XE#5945]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5945
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8495 -> IGTPW_13587
+  * Linux: xe-3551-7582d01b3cb80604bd700c37237effb7b5c6fe6e -> xe-3567-2109e38df4c111216f291cde8fd0f7eede4ebd62
+
+  IGTPW_13587: 13587
+  IGT_8495: b412b144685feadfd5675f3108de3d6820a4d1db @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3551-7582d01b3cb80604bd700c37237effb7b5c6fe6e: 7582d01b3cb80604bd700c37237effb7b5c6fe6e
+  xe-3567-2109e38df4c111216f291cde8fd0f7eede4ebd62: 2109e38df4c111216f291cde8fd0f7eede4ebd62
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/index.html
+
+--===============7795955648953423770==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+
+
+<!DOCTYPE html>
+<html xmlns=3D"http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id=3D"css-table-select" type=3D"text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Shaders migration to separate headers (rev2)=
+</td></tr>
+<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
+ries/152864/">https://patchwork.freedesktop.org/series/152864/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
+tree/intel-xe/IGTPW_13587/index.html">https://intel-gfx-ci.01.org/tree/inte=
+l-xe/IGTPW_13587/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8495_FULL -&gt; XEIGTPW_13587_FULL<=
+/h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 3)</h2>
+<p>Missing    (1): shard-adlp </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13587_FULL that come from known is=
+sues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>shard-bmg:          NOTRUN -&gt; (<a href=3D"https://intel-gfx-ci.01.or=
+g/tree/intel-xe/IGTPW_13587/shard-bmg-5/igt@runner@aborted.html">FAIL</a>, =
+<a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-=
+4/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_13587/shard-bmg-4/igt@runner@aborted.html">FAIL</a>, <=
+a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-4=
+/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/=
+tree/intel-xe/IGTPW_13587/shard-bmg-4/igt@runner@aborted.html">FAIL</a>, <a=
+ href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-8/=
+igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/t=
+ree/intel-xe/IGTPW_13587/shard-bmg-8/igt@runner@aborted.html">FAIL</a>, <a =
+href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-1/i=
+gt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tr=
+ee/intel-xe/IGTPW_13587/shard-bmg-1/igt@runner@aborted.html">FAIL</a>, <a h=
+ref=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-1/ig=
+t@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tre=
+e/intel-xe/IGTPW_13587/shard-bmg-1/igt@runner@aborted.html">FAIL</a>, <a hr=
+ef=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-7/igt=
+@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
+/intel-xe/IGTPW_13587/shard-bmg-7/igt@runner@aborted.html">FAIL</a>, <a hre=
+f=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-2/igt@=
+runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/=
+intel-xe/IGTPW_13587/shard-bmg-2/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-2/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-bmg-2/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-6/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-bmg-6/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-3/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-bmg-3/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-3/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-bmg-5/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-bmg-5/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-bmg-5/igt@runner@aborted.html">FAIL</a>) (<a href=
+=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/5945">Intel XE#5945=
+</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; (<a href=3D"https://intel-gfx-ci.01.or=
+g/tree/intel-xe/IGTPW_13587/shard-lnl-1/igt@runner@aborted.html">FAIL</a>, =
+<a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-=
+1/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_13587/shard-lnl-1/igt@runner@aborted.html">FAIL</a>, <=
+a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-8=
+/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/=
+tree/intel-xe/IGTPW_13587/shard-lnl-8/igt@runner@aborted.html">FAIL</a>, <a=
+ href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-8/=
+igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/t=
+ree/intel-xe/IGTPW_13587/shard-lnl-8/igt@runner@aborted.html">FAIL</a>, <a =
+href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-4/i=
+gt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tr=
+ee/intel-xe/IGTPW_13587/shard-lnl-4/igt@runner@aborted.html">FAIL</a>, <a h=
+ref=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-4/ig=
+t@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tre=
+e/intel-xe/IGTPW_13587/shard-lnl-4/igt@runner@aborted.html">FAIL</a>, <a hr=
+ef=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-3/igt=
+@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
+/intel-xe/IGTPW_13587/shard-lnl-3/igt@runner@aborted.html">FAIL</a>, <a hre=
+f=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-3/igt@=
+runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/=
+intel-xe/IGTPW_13587/shard-lnl-2/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-2/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-lnl-2/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-2/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-lnl-7/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-7/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-lnl-7/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-5/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-lnl-5/igt@runner@aborted.html">FAIL</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-lnl-5/igt@r=
+unner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/i=
+ntel-xe/IGTPW_13587/shard-lnl-5/igt@runner@aborted.html">FAIL</a>) (<a href=
+=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/5945">Intel XE#5945=
+</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>shard-dg2-set2:     <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8495/shard-dg2-463/igt@runner@aborted.html">FAIL</a> -&gt; (<a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-434/igt=
+@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
+/intel-xe/IGTPW_13587/shard-dg2-434/igt@runner@aborted.html">FAIL</a>, <a h=
+ref=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-434/=
+igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/t=
+ree/intel-xe/IGTPW_13587/shard-dg2-434/igt@runner@aborted.html">FAIL</a>, <=
+a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-4=
+64/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.or=
+g/tree/intel-xe/IGTPW_13587/shard-dg2-464/igt@runner@aborted.html">FAIL</a>=
+, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg=
+2-464/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01=
+.org/tree/intel-xe/IGTPW_13587/shard-dg2-464/igt@runner@aborted.html">FAIL<=
+/a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard=
+-dg2-433/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci=
+.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-433/igt@runner@aborted.html">FA=
+IL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/sh=
+ard-dg2-433/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx=
+-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-463/igt@runner@aborted.html"=
+>FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587=
+/shard-dg2-463/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://intel-=
+gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-463/igt@runner@aborted.ht=
+ml">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13=
+587/shard-dg2-463/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://int=
+el-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-466/igt@runner@aborted=
+.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW=
+_13587/shard-dg2-466/igt@runner@aborted.html">FAIL</a>, <a href=3D"https://=
+intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-466/igt@runner@abor=
+ted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IG=
+TPW_13587/shard-dg2-466/igt@runner@aborted.html">FAIL</a>, <a href=3D"https=
+://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-435/igt@runner@a=
+borted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe=
+/IGTPW_13587/shard-dg2-435/igt@runner@aborted.html">FAIL</a>, <a href=3D"ht=
+tps://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-435/igt@runne=
+r@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel=
+-xe/IGTPW_13587/shard-dg2-432/igt@runner@aborted.html">FAIL</a>, <a href=3D=
+"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13587/shard-dg2-432/igt@ru=
+nner@aborted.html">FAIL</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/in=
+tel-xe/IGTPW_13587/shard-dg2-432/igt@runner@aborted.html">FAIL</a>) (<a hre=
+f=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/5945">Intel XE#594=
+5</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8495 -&gt; IGTPW_13587</li>
+<li>Linux: xe-3551-7582d01b3cb80604bd700c37237effb7b5c6fe6e -&gt; xe-3567-2=
+109e38df4c111216f291cde8fd0f7eede4ebd62</li>
+</ul>
+<p>IGTPW_13587: 13587<br />
+  IGT_8495: b412b144685feadfd5675f3108de3d6820a4d1db @ https://gitlab.freed=
+esktop.org/drm/igt-gpu-tools.git<br />
+  xe-3551-7582d01b3cb80604bd700c37237effb7b5c6fe6e: 7582d01b3cb80604bd700c3=
+7237effb7b5c6fe6e<br />
+  xe-3567-2109e38df4c111216f291cde8fd0f7eede4ebd62: 2109e38df4c111216f291cd=
+e8fd0f7eede4ebd62</p>
+
+</body>
+</html>
+
+--===============7795955648953423770==--
