@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5C7DCA0EE4
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 16:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B64CCA0EE4
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 16:34:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A9D410E07F;
-	Mon, 18 Aug 2025 16:26:59 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D876510E07F;
- Mon, 18 Aug 2025 16:26:58 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8792126925032001086=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/kms=5Fcursor=5Flega?=
- =?utf-8?q?cy=3A_don=27t_inhibit_pipe_CRC_calculation_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 120CC10E4A1;
+	Mon, 18 Aug 2025 16:34:54 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SWUc7170";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A3B110E4A1
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Aug 2025 16:34:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755534892; x=1787070892;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=eHbKBslZB8JwCIPE4zYL0/5EOLciWRGYg7n4RXpSBM0=;
+ b=SWUc7170q0+Pw4eSnMijHY//jwcd2e8VF9Kdi+OQ6E1cbMwZg3iCX2qH
+ tKpZf4CCe0jST1RdVW7V/Y+IF8pUp5Fz8HfgP7+gH8XbC0n5CtxLPoEu+
+ nza7WYSxo6sYFE5z3Zbqx4QnHaoPacrqRK36virxjN296amihI/M+j6SO
+ WqvkRiSKxH4yUccEnx4L6dueN+vCQ26IKGfCM+tb7WlNVHdDtCBfeOG1r
+ xt+gc0p5zFmhAyv0lzYmtXCaSdUEXxh7dh+BE/FmhOJZkbnyvClBrsV24
+ goz7WD7LXAQiP16VDcjdeRn8psQQ1zoEnZ8VPU9HlrVDZ+ZRf2CIBYY/3 A==;
+X-CSE-ConnectionGUID: cRpip0SbQ42nzyu9X7LSJA==
+X-CSE-MsgGUID: +HYaiXCqRtS7/ur/0F28uQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="56791820"
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; d="scan'208";a="56791820"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Aug 2025 09:34:52 -0700
+X-CSE-ConnectionGUID: VrUySqd+TAemfIomgnRTbw==
+X-CSE-MsgGUID: K0z6PkgiRLWyu/9szD5OIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; d="scan'208";a="167579169"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 09:34:51 -0700
+Date: Mon, 18 Aug 2025 18:34:48 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Aug 2025 16:26:58 -0000
-Message-ID: <175553441886.243874.10708019156056365822@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250818114207.2251823-1-michal.grzelak@intel.com>
-In-Reply-To: <20250818114207.2251823-1-michal.grzelak@intel.com>
+Subject: Re: [PATCH i-g-t 1/5] tools/intel_vbt_decode: Split up DSI VBT defs
+ to a separate file
+Message-ID: <20250818163448.eachnfxobihzatuk@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org
+References: <cover.1755175663.git.jani.nikula@intel.com>
+ <d22624e2bd28cf074708b9ca76dada6438422e9d.1755175663.git.jani.nikula@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d22624e2bd28cf074708b9ca76dada6438422e9d.1755175663.git.jani.nikula@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,301 +69,467 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8792126925032001086==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Jani,
+On 2025-08-14 at 15:48:52 +0300, Jani Nikula wrote:
+> Synchronize intel_vbt_defs.h with kernel commit:
+> 
+> f3c65a8e9b09 ("drm/i915/vbt: split up DSI VBT defs to a separate file")
+> 
+> and copy over the new intel_dsi_vbt_defs.h, replacing similar
+> definitions in intel_bios.h. A handful of struct members have changed,
+> update accordingly.
+> 
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> ---
+>  tools/intel_bios.h         | 153 -------------------------------
+>  tools/intel_dsi_vbt_defs.h | 183 +++++++++++++++++++++++++++++++++++++
+>  tools/intel_vbt_decode.c   |  23 ++---
+>  tools/intel_vbt_defs.h     |   2 +-
+>  4 files changed, 196 insertions(+), 165 deletions(-)
+>  create mode 100644 tools/intel_dsi_vbt_defs.h
+> 
+> diff --git a/tools/intel_bios.h b/tools/intel_bios.h
+> index 01de2246e147..0bb4455d1f26 100644
+> --- a/tools/intel_bios.h
+> +++ b/tools/intel_bios.h
+> @@ -44,157 +44,4 @@ struct bdb_legacy_child_devices {
+>  #define BDB_DRIVER_SDVO_LVDS	2
+>  #define BDB_DRIVER_EDP		3
+>  
+> -/* Block 52 contains MiPi Panel info
+> - * 6 such enteries will there. Index into correct
+> - * entery is based on the panel_index in #40 LFP
+> - */
+> -#define MAX_MIPI_CONFIGURATIONS        6
+> -struct mipi_config {
+> -	uint16_t panel_id;
+> -
+> -	/* General Params */
+> -	uint32_t dithering:1;
+> -	uint32_t rsvd1:1;
+> -	uint32_t panel_type:1;
+> -	uint32_t panel_arch_type:2;
+> -	uint32_t cmd_mode:1;
+> -	uint32_t vtm:2;
+> -	uint32_t cabc:1;
+> -	uint32_t pwm_blc:1;
+> -
+> -	/* Bit 13:10
+> -	 * 000 - Reserved, 001 - RGB565, 002 - RGB666,
+> -	 * 011 - RGB666Loosely packed, 100 - RGB888,
+> -	 * others - rsvd
+> -	 */
+> -	uint32_t videomode_color_format:4;
+> -
+> -	/* Bit 15:14
+> -	 * 0 - No rotation, 1 - 90 degree
+> -	 * 2 - 180 degree, 3 - 270 degree
+> -	 */
+> -	uint32_t rotation:2;
+> -	uint32_t bta:1;
+> -	uint32_t rsvd2:15;
+> -
+> -	/* 2 byte Port Description */
+> -	uint16_t dual_link:2;
+> -	uint16_t lane_cnt:2;
+> -	uint16_t pixel_overlap:3;
+> -	uint16_t rsvd3:9;
+> -
+> -	/* 2 byte DSI COntroller params */
+> -	/* 0 - Using DSI PHY, 1 - TE usage */
+> -	uint16_t dsi_usage:1;
+> -	uint16_t rsvd4:15;
+> -
+> -	uint8_t rsvd5[5];
+> -	uint32_t dsi_ddr_clk;
+> -	uint32_t bridge_ref_clk;
+> -
+> -	uint8_t byte_clk_sel:2;
+> -	uint8_t rsvd6:6;
+> -
+> -	/* DPHY Flags */
+> -	uint16_t dphy_param_valid:1;
+> -	uint16_t eot_disabled:1;
+> -	uint16_t clk_stop:1;
+> -	uint16_t rsvd7:13;
+> -
+> -	uint32_t hs_tx_timeout;
+> -	uint32_t lp_rx_timeout;
+> -	uint32_t turn_around_timeout;
+> -	uint32_t device_reset_timer;
+> -	uint32_t master_init_timer;
+> -	uint32_t dbi_bw_timer;
+> -	uint32_t lp_byte_clk_val;
+> -
+> -	/*  4 byte Dphy Params */
+> -	uint32_t prepare_cnt:6;
+> -	uint32_t rsvd8:2;
+> -	uint32_t clk_zero_cnt:8;
+> -	uint32_t trail_cnt:5;
+> -	uint32_t rsvd9:3;
+> -	uint32_t exit_zero_cnt:6;
+> -	uint32_t rsvd10:2;
+> -
+> -	uint32_t clk_lane_switch_cnt;
+> -	uint32_t hl_switch_cnt;
+> -
+> -	uint32_t rsvd11[6];
+> -
+> -	/* timings based on dphy spec */
+> -	uint8_t tclk_miss;
+> -	uint8_t tclk_post;
+> -	uint8_t rsvd12;
+> -	uint8_t tclk_pre;
+> -	uint8_t tclk_prepare;
+> -	uint8_t tclk_settle;
+> -	uint8_t tclk_term_enable;
+> -	uint8_t tclk_trail;
+> -	uint16_t tclk_prepare_clkzero;
+> -	uint8_t rsvd13;
+> -	uint8_t td_term_enable;
+> -	uint8_t teot;
+> -	uint8_t ths_exit;
+> -	uint8_t ths_prepare;
+> -	uint16_t ths_prepare_hszero;
+> -	uint8_t rsvd14;
+> -	uint8_t ths_settle;
+> -	uint8_t ths_skip;
+> -	uint8_t ths_trail;
+> -	uint8_t tinit;
+> -	uint8_t tlpx;
+> -	uint8_t rsvd15[3];
+> -
+> -	/* GPIOs */
+> -	uint8_t panel_enable;
+> -	uint8_t bl_enable;
+> -	uint8_t pwm_enable;
+> -	uint8_t reset_r_n;
+> -	uint8_t pwr_down_r;
+> -	uint8_t stdby_r_n;
+> -
+> -} __attribute__ ((packed));
+> -
+> -/* Block 52 contains MiPi configuration block
+> - * 6 * bdb_mipi_config, followed by 6 pps data
+> - * block below
+> - */
+> -struct mipi_pps_data {
+> -	uint16_t panel_on_delay;
+> -	uint16_t bl_enable_delay;
+> -	uint16_t bl_disable_delay;
+> -	uint16_t panel_off_delay;
+> -	uint16_t panel_power_cycle_delay;
+> -} __attribute__ ((packed));
+> -
+> -/* MIPI Sequence Block definitions */
+> -enum mipi_seq {
+> -	MIPI_SEQ_END = 0,
+> -	MIPI_SEQ_ASSERT_RESET,
+> -	MIPI_SEQ_INIT_OTP,
+> -	MIPI_SEQ_DISPLAY_ON,
+> -	MIPI_SEQ_DISPLAY_OFF,
+> -	MIPI_SEQ_DEASSERT_RESET,
+> -	MIPI_SEQ_BACKLIGHT_ON,		/* sequence block v2+ */
+> -	MIPI_SEQ_BACKLIGHT_OFF,		/* sequence block v2+ */
+> -	MIPI_SEQ_TEAR_ON,		/* sequence block v2+ */
+> -	MIPI_SEQ_TEAR_OFF,		/* sequence block v3+ */
+> -	MIPI_SEQ_POWER_ON,		/* sequence block v3+ */
+> -	MIPI_SEQ_POWER_OFF,		/* sequence block v3+ */
+> -	MIPI_SEQ_MAX
+> -};
+> -
+> -enum mipi_seq_element {
+> -	MIPI_SEQ_ELEM_END = 0,
+> -	MIPI_SEQ_ELEM_SEND_PKT,
+> -	MIPI_SEQ_ELEM_DELAY,
+> -	MIPI_SEQ_ELEM_GPIO,
+> -	MIPI_SEQ_ELEM_I2C,		/* sequence block v2+ */
+> -	MIPI_SEQ_ELEM_SPI,		/* sequence block v3+ */
+> -	MIPI_SEQ_ELEM_PMIC,		/* sequence block v3+ */
+> -	MIPI_SEQ_ELEM_MAX
+> -};
+> -
+>  #endif /* _INTEL_BIOS_H_ */
+> diff --git a/tools/intel_dsi_vbt_defs.h b/tools/intel_dsi_vbt_defs.h
+> new file mode 100644
+> index 000000000000..f83d42ed0c5a
+> --- /dev/null
+> +++ b/tools/intel_dsi_vbt_defs.h
+> @@ -0,0 +1,183 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/* Copyright © 2025 Intel Corporation */
+> +
+> +#ifndef __INTEL_DSI_VBT_DEFS_H__
+> +#define __INTEL_DSI_VBT_DEFS_H__
+> +
+> +#include <linux/types.h>
 
-== Series Details ==
+This could be igt header linux_scaffold.h so it will be:
+#include "linux_scaffold.h"
 
-Series: tests/kms_cursor_legacy: don't inhibit pipe CRC calculation (rev2)
-URL   : https://patchwork.freedesktop.org/series/151943/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8495 -> IGTPW_13591
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_13591 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_13591, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/index.html
-
-Participating hosts (43 -> 42)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_13591:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@vgem_basic@unload:
-    - fi-kbl-guc:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/fi-kbl-guc/igt@vgem_basic@unload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/fi-kbl-guc/igt@vgem_basic@unload.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13591 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][4] -> [DMESG-FAIL][5] ([i915#12061]) +1 other test dmesg-fail
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-mtlp-8/igt@i915_selftest@live.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-mtlp-8/igt@i915_selftest@live.html
-    - bat-dg2-11:         [PASS][6] -> [INCOMPLETE][7] ([i915#12061] / [i915#14201] / [i915#14811])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-11/igt@i915_selftest@live.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-11/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - bat-dg2-11:         [PASS][8] -> [INCOMPLETE][9] ([i915#14201])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-11/igt@i915_selftest@live@gt_heartbeat.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-11/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-2:         [PASS][10] -> [DMESG-FAIL][11] ([i915#12061]) +1 other test dmesg-fail
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-11:         [PASS][12] -> [DMESG-FAIL][13] ([i915#12061])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][14] +6 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@client:
-    - bat-dg2-9:          [ABORT][15] ([i915#14201]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-9/igt@i915_selftest@live@client.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-9/igt@i915_selftest@live@client.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [DMESG-FAIL][17] ([i915#12061]) -> [PASS][18] +1 other test pass
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-6:         [DMESG-FAIL][19] ([i915#12061]) -> [PASS][20] +1 other test pass
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a2:
-    - fi-glk-j4005:       [ABORT][21] ([i915#14804]) -> [PASS][22] +1 other test pass
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/fi-glk-j4005/igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a2.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/fi-glk-j4005/igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a2.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live:
-    - bat-dg2-9:          [ABORT][23] ([i915#12061] / [i915#14201]) -> [DMESG-FAIL][24] ([i915#12061])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-9/igt@i915_selftest@live.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-9/igt@i915_selftest@live.html
-    - bat-atsm-1:         [DMESG-FAIL][25] ([i915#12061] / [i915#13929]) -> [DMESG-FAIL][26] ([i915#12061] / [i915#14204])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-atsm-1/igt@i915_selftest@live.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-atsm-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-atsm-1:         [DMESG-FAIL][27] ([i915#13929]) -> [DMESG-FAIL][28] ([i915#14204])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-atsm-1/igt@i915_selftest@live@mman.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-atsm-1/igt@i915_selftest@live@mman.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
-  [i915#14201]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201
-  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
-  [i915#14804]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14804
-  [i915#14811]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14811
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+Up to you if you want to change it now or later.
 
 
-Build changes
--------------
+> +
+> +/*
+> + * MIPI Sequence Block definitions
+> + *
+> + * Note the VBT spec has AssertReset / DeassertReset swapped from their
+> + * usual naming, we use the proper names here to avoid confusion when
+> + * reading the code.
+> + */
+> +enum mipi_seq {
+> +	MIPI_SEQ_END = 0,
+> +	MIPI_SEQ_DEASSERT_RESET,	/* Spec says MipiAssertResetPin */
+> +	MIPI_SEQ_INIT_OTP,
+> +	MIPI_SEQ_DISPLAY_ON,
+> +	MIPI_SEQ_DISPLAY_OFF,
+> +	MIPI_SEQ_ASSERT_RESET,		/* Spec says MipiDeassertResetPin */
+> +	MIPI_SEQ_BACKLIGHT_ON,		/* sequence block v2+ */
+> +	MIPI_SEQ_BACKLIGHT_OFF,		/* sequence block v2+ */
+> +	MIPI_SEQ_TEAR_ON,		/* sequence block v2+ */
+> +	MIPI_SEQ_TEAR_OFF,		/* sequence block v3+ */
+> +	MIPI_SEQ_POWER_ON,		/* sequence block v3+ */
+> +	MIPI_SEQ_POWER_OFF,		/* sequence block v3+ */
+> +	MIPI_SEQ_MAX
+> +};
+> +
+> +enum mipi_seq_element {
+> +	MIPI_SEQ_ELEM_END = 0,
+> +	MIPI_SEQ_ELEM_SEND_PKT,
+> +	MIPI_SEQ_ELEM_DELAY,
+> +	MIPI_SEQ_ELEM_GPIO,
+> +	MIPI_SEQ_ELEM_I2C,		/* sequence block v2+ */
+> +	MIPI_SEQ_ELEM_SPI,		/* sequence block v3+ */
+> +	MIPI_SEQ_ELEM_PMIC,		/* sequence block v3+ */
+> +	MIPI_SEQ_ELEM_MAX
+> +};
+> +
+> +#define MIPI_DSI_UNDEFINED_PANEL_ID	0
+> +#define MIPI_DSI_GENERIC_PANEL_ID	1
+> +
+> +struct mipi_config {
+> +	u16 panel_id;
+> +
+> +	/* General Params */
+> +	u32 enable_dithering:1;
+> +	u32 rsvd1:1;
+> +	u32 is_bridge:1;
+> +
+> +	u32 panel_arch_type:2;
+> +	u32 is_cmd_mode:1;
+> +
+> +#define NON_BURST_SYNC_PULSE	0x1
+> +#define NON_BURST_SYNC_EVENTS	0x2
+> +#define BURST_MODE		0x3
+> +	u32 video_transfer_mode:2;
+> +
+> +	u32 cabc_supported:1;
+> +#define PPS_BLC_PMIC   0
+> +#define PPS_BLC_SOC    1
+> +	u32 pwm_blc:1;
+> +
+> +	/* Bit 13:10 */
+> +#define PIXEL_FORMAT_RGB565			0x1
+> +#define PIXEL_FORMAT_RGB666			0x2
+> +#define PIXEL_FORMAT_RGB666_LOOSELY_PACKED	0x3
+> +#define PIXEL_FORMAT_RGB888			0x4
+> +	u32 videomode_color_format:4;
+> +
+> +	/* Bit 15:14 */
+> +#define ENABLE_ROTATION_0	0x0
+> +#define ENABLE_ROTATION_90	0x1
+> +#define ENABLE_ROTATION_180	0x2
+> +#define ENABLE_ROTATION_270	0x3
+> +	u32 rotation:2;
+> +	u32 bta_enabled:1;
+> +	u32 rsvd2:15;
+> +
+> +	/* 2 byte Port Description */
+> +#define DUAL_LINK_NOT_SUPPORTED	0
+> +#define DUAL_LINK_FRONT_BACK	1
+> +#define DUAL_LINK_PIXEL_ALT	2
+> +	u16 dual_link:2;
+> +	u16 lane_cnt:2;
+> +	u16 pixel_overlap:3;
+> +	u16 rgb_flip:1;
+> +#define DL_DCS_PORT_A			0x00
+> +#define DL_DCS_PORT_C			0x01
+> +#define DL_DCS_PORT_A_AND_C		0x02
+> +	u16 dl_dcs_cabc_ports:2;
+> +	u16 dl_dcs_backlight_ports:2;
+> +	u16 rsvd3:4;
+> +
+> +	u16 rsvd4;
+> +
+> +	u8 rsvd5;
+> +	u32 target_burst_mode_freq;
+> +	u32 dsi_ddr_clk;
+> +	u32 bridge_ref_clk;
+> +
+> +#define  BYTE_CLK_SEL_20MHZ		0
+> +#define  BYTE_CLK_SEL_10MHZ		1
+> +#define  BYTE_CLK_SEL_5MHZ		2
+> +	u8 byte_clk_sel:2;
+> +
+> +	u8 rsvd6:6;
+> +
+> +	/* DPHY Flags */
+> +	u16 dphy_param_valid:1;
+> +	u16 eot_pkt_disabled:1;
+> +	u16 enable_clk_stop:1;
+> +	u16 rsvd7:13;
+> +
+> +	u32 hs_tx_timeout;
+> +	u32 lp_rx_timeout;
+> +	u32 turn_around_timeout;
+> +	u32 device_reset_timer;
+> +	u32 master_init_timer;
+> +	u32 dbi_bw_timer;
+> +	u32 lp_byte_clk_val;
+> +
+> +	/*  4 byte Dphy Params */
+> +	u32 prepare_cnt:6;
+> +	u32 rsvd8:2;
+> +	u32 clk_zero_cnt:8;
+> +	u32 trail_cnt:5;
+> +	u32 rsvd9:3;
+> +	u32 exit_zero_cnt:6;
+> +	u32 rsvd10:2;
+> +
+> +	u32 clk_lane_switch_cnt;
+> +	u32 hl_switch_cnt;
+> +
+> +	u32 rsvd11[6];
+> +
+> +	/* timings based on dphy spec */
+> +	u8 tclk_miss;
+> +	u8 tclk_post;
+> +	u8 rsvd12;
+> +	u8 tclk_pre;
+> +	u8 tclk_prepare;
+> +	u8 tclk_settle;
+> +	u8 tclk_term_enable;
+> +	u8 tclk_trail;
+> +	u16 tclk_prepare_clkzero;
+> +	u8 rsvd13;
+> +	u8 td_term_enable;
+> +	u8 teot;
+> +	u8 ths_exit;
+> +	u8 ths_prepare;
+> +	u16 ths_prepare_hszero;
+> +	u8 rsvd14;
+> +	u8 ths_settle;
+> +	u8 ths_skip;
+> +	u8 ths_trail;
+> +	u8 tinit;
+> +	u8 tlpx;
+> +	u8 rsvd15[3];
+> +
+> +	/* GPIOs */
+> +	u8 panel_enable;
+> +	u8 bl_enable;
+> +	u8 pwm_enable;
+> +	u8 reset_r_n;
+> +	u8 pwr_down_r;
+> +	u8 stdby_r_n;
+> +
+> +} __packed;
+> +
+> +/* all delays have a unit of 100us */
+> +struct mipi_pps_data {
+> +	u16 panel_on_delay;
+> +	u16 bl_enable_delay;
+> +	u16 bl_disable_delay;
+> +	u16 panel_off_delay;
+> +	u16 panel_power_cycle_delay;
+> +} __packed;
+> +
+> +#endif /* __INTEL_DSI_VBT_DEFS_H__ */
+> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+> index 7bb3c19c3340..f7dee8646b4a 100644
+> --- a/tools/intel_vbt_decode.c
+> +++ b/tools/intel_vbt_decode.c
+> @@ -40,8 +40,9 @@
+>  
+>  #include "igt_aux.h"
+>  #include "igt_halffloat.h"
+> -#include "intel_io.h"
+> +#include "intel_bios.h"
+>  #include "intel_chipset.h"
+> +#include "intel_io.h"
+>  #include "drmtest.h"
+>  
+>  /* kernel types for intel_vbt_defs.h */
+> @@ -2842,7 +2843,7 @@ static void dump_mipi_config(struct context *context,
+>  		printf("\tPanel %d%s\n", i, panel_str(context, i));
+>  
+>  		printf("\t\tGeneral Param\n");
+> -		printf("\t\t\t BTA disable: %s\n", config->bta ? "Disabled" : "Enabled");
+> +		printf("\t\t\t BTA disable: %s\n", config->bta_enabled ? "Disabled" : "Enabled");
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8495 -> IGTPW_13591
-  * Linux: CI_DRM_17006 -> CI_DRM_17023
+Is it error code so 0 means enabled?
 
-  CI-20190529: 20190529
-  CI_DRM_17006: 7582d01b3cb80604bd700c37237effb7b5c6fe6e @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_17023: edead24a80ae92312f75626eb92f2771ec5a7697 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13591: 3577e73e0759909c000f269b20686b8ef719a7ca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8495: b412b144685feadfd5675f3108de3d6820a4d1db @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Logs ==
+Regards,
+Kamil
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/index.html
-
---===============8792126925032001086==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_cursor_legacy: don&#x27;t inhibit pipe CRC calculation (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151943/">https://patchwork.freedesktop.org/series/151943/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8495 -&gt; IGTPW_13591</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_13591 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_13591, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/index.html</p>
-<h2>Participating hosts (43 -&gt; 42)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_13591:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@vgem_basic@unload:<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/fi-kbl-guc/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/fi-kbl-guc/igt@vgem_basic@unload.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13591 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-11/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-11/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14811">i915#14811</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-11/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-11/igt@i915_selftest@live@gt_heartbeat.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +6 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@client:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-9/igt@i915_selftest@live@client.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-9/igt@i915_selftest@live@client.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a2:</p>
-<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/fi-glk-j4005/igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a2.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14804">i915#14804</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/fi-glk-j4005/igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a2.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-dg2-9/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-dg2-9/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8495/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13591/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8495 -&gt; IGTPW_13591</li>
-<li>Linux: CI_DRM_17006 -&gt; CI_DRM_17023</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17006: 7582d01b3cb80604bd700c37237effb7b5c6fe6e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_17023: edead24a80ae92312f75626eb92f2771ec5a7697 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13591: 3577e73e0759909c000f269b20686b8ef719a7ca @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8495: b412b144685feadfd5675f3108de3d6820a4d1db @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8792126925032001086==--
+>  		printf("\t\t\t Panel Rotation: %d degrees\n", config->rotation * 90);
+>  
+>  		printf("\t\t\t Video Mode Color Format: ");
+> @@ -2859,16 +2860,16 @@ static void dump_mipi_config(struct context *context,
+>  		printf("\t\t\t PPS GPIO Pins: %s \n",
+>  		       config->pwm_blc ? "Using SOC" : "Using PMIC");
+>  		printf("\t\t\t CABC Support: %s\n",
+> -		       config->cabc ? "supported" : "not supported");
+> +		       config->cabc_supported ? "supported" : "not supported");
+>  		printf("\t\t\t Mode: %s\n",
+> -		       config->cmd_mode ? "COMMAND" : "VIDEO");
+> +		       config->is_cmd_mode ? "COMMAND" : "VIDEO");
+>  		printf("\t\t\t Video transfer mode: %s (0x%x)\n",
+> -		       config->vtm == 1 ? "non-burst with sync pulse" :
+> -		       config->vtm == 2 ? "non-burst with sync events" :
+> -		       config->vtm == 3 ? "burst" : "<unknown>",
+> -		       config->vtm);
+> +		       config->video_transfer_mode == 1 ? "non-burst with sync pulse" :
+> +		       config->video_transfer_mode == 2 ? "non-burst with sync events" :
+> +		       config->video_transfer_mode == 3 ? "burst" : "<unknown>",
+> +		       config->video_transfer_mode);
+>  		printf("\t\t\t Dithering: %s\n",
+> -		       config->dithering ? "done in Display Controller" : "done in Panel Controller");
+> +		       config->enable_dithering ? "done in Display Controller" : "done in Panel Controller");
+>  
+>  		printf("\t\tPort Desc\n");
+>  		printf("\t\t\t Pixel overlap: %d\n", config->pixel_overlap);
+> @@ -2883,9 +2884,9 @@ static void dump_mipi_config(struct context *context,
+>  
+>  		printf("\t\tDphy Flags\n");
+>  		printf("\t\t\t Clock Stop: %s\n",
+> -		       config->clk_stop ? "ENABLED" : "DISABLED");
+> +		       config->enable_clk_stop ? "ENABLED" : "DISABLED");
+>  		printf("\t\t\t EOT disabled: %s\n\n",
+> -		       config->eot_disabled ? "EOT not to be sent" : "EOT to be sent");
+> +		       config->eot_pkt_disabled ? "EOT not to be sent" : "EOT to be sent");
+>  
+>  		printf("\t\tHSTxTimeOut: 0x%x\n", config->hs_tx_timeout);
+>  		printf("\t\tLPRXTimeOut: 0x%x\n", config->lp_rx_timeout);
+> diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
+> index 92c04811aa28..6612d3a4ec49 100644
+> --- a/tools/intel_vbt_defs.h
+> +++ b/tools/intel_vbt_defs.h
+> @@ -37,7 +37,7 @@
+>  #ifndef _INTEL_VBT_DEFS_H_
+>  #define _INTEL_VBT_DEFS_H_
+>  
+> -#include "intel_bios.h"
+> +#include "intel_dsi_vbt_defs.h"
+>  
+>  /* EDID derived structures */
+>  struct bdb_edid_pnp_id {
+> -- 
+> 2.47.2
+> 
