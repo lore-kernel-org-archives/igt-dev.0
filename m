@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1DF6CA0EE4
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 20:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E2C6CA0EED
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 21:44:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B47E10E0A7;
-	Mon, 18 Aug 2025 20:59:46 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0E9510E0A7;
- Mon, 18 Aug 2025 20:59:44 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3999501743373595194=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 10F4310E4D4;
+	Mon, 18 Aug 2025 21:44:33 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gJLDjPtd";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 049E910E4D1
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Aug 2025 21:44:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755553473; x=1787089473;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=UyuRZdprhL4HVADa2YKgDK/s8uVF4rHZtWScvHcMM30=;
+ b=gJLDjPtdKAoYmrZPYZUlguOLTLl4APgN+R7Y8J6niBPFf1A6cviYTG+x
+ ORobcyWmKWk+eJOh4rKVVb0HyX2GHktkDsXwZEJfHKmiAOJjbYC6ibLx5
+ VeGXUYKeODUsjdwESo7mfMOsVjSZd2mYPq+By7aqJOyxYKZxvSRBOpH9z
+ xfgGe369+wpiWdi2go34/ZhV61K8EdNDfw+oWqf0cL+CBX+o5BsjZ3ECp
+ ItYcwODWPA3C409Zk50972avFj3Ecg1Z9dy70y3XyVEgLgcQry9AauuEh
+ lJoms2BznGMarO02oIOwctVOkAg+RLRlYXq01p1/f2vkc4DpRm4mQ+7oi g==;
+X-CSE-ConnectionGUID: VH4sm6lyQeuf0pk7wHDaKQ==
+X-CSE-MsgGUID: 65wDg4FeTc+/52+/81rKYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="57645315"
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; d="scan'208";a="57645315"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Aug 2025 14:44:32 -0700
+X-CSE-ConnectionGUID: y8PChFgpReyh81yYM/bzBw==
+X-CSE-MsgGUID: 8LSpSDg+R8q632AUD+vv1Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; d="scan'208";a="198539706"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Aug 2025 14:44:30 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1 0/2] Improving Timing Precision for simulation
+ Environments
+Date: Tue, 19 Aug 2025 03:14:29 +0530
+Message-ID: <20250818214431.1331399-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fcom?=
- =?utf-8?q?pute=5Fmode=3A_Remove_non-block_section?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Brost" <matthew.brost@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Aug 2025 20:59:44 -0000
-Message-ID: <175555078484.245484.13019682988053205611@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250818165742.2648473-1-matthew.brost@intel.com>
-In-Reply-To: <20250818165742.2648473-1-matthew.brost@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +63,23 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3999501743373595194==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Refined the legacy cursor test by incorporating display frame
+duration and timing tolerance adjustments, leading to more
+accurate validation of rendering synchronization with expected
+refresh intervals.
 
-== Series Details ==
+Naladala Ramanaidu (2):
+  lib/igt_kms: Add helper to measure vblank sequence difference
+  tests/kms_cursor_legacy: Improve timing accuracy in legacy cursor test
 
-Series: tests/intel/xe_exec_compute_mode: Remove non-block section
-URL   : https://patchwork.freedesktop.org/series/153082/
-State : success
+ lib/igt_kms.c             | 21 +++++++++++++++++++++
+ lib/igt_kms.h             |  1 +
+ tests/kms_cursor_legacy.c | 18 +++++++++++++++++-
+ 3 files changed, 39 insertions(+), 1 deletion(-)
 
-== Summary ==
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8496_BAT -> XEIGTPW_13594_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8496 -> IGTPW_13594
-  * Linux: xe-3570-912c10fafebf45522f7f56e33a020284e83c27ab -> xe-3572-c3cf4289245819615518b536cd16ebe6612694f9
-
-  IGTPW_13594: 36e903d342f413b28010cea9ea54c3e67af7ab26 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8496: acea60af09e5f4b3cb0cd6838c23ef1e92c17323 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3570-912c10fafebf45522f7f56e33a020284e83c27ab: 912c10fafebf45522f7f56e33a020284e83c27ab
-  xe-3572-c3cf4289245819615518b536cd16ebe6612694f9: c3cf4289245819615518b536cd16ebe6612694f9
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13594/index.html
-
---===============3999501743373595194==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_compute_mode: Remove non-block section</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153082/">https://patchwork.freedesktop.org/series/153082/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13594/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13594/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8496_BAT -&gt; XEIGTPW_13594_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8496 -&gt; IGTPW_13594</li>
-<li>Linux: xe-3570-912c10fafebf45522f7f56e33a020284e83c27ab -&gt; xe-3572-c3cf4289245819615518b536cd16ebe6612694f9</li>
-</ul>
-<p>IGTPW_13594: 36e903d342f413b28010cea9ea54c3e67af7ab26 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8496: acea60af09e5f4b3cb0cd6838c23ef1e92c17323 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3570-912c10fafebf45522f7f56e33a020284e83c27ab: 912c10fafebf45522f7f56e33a020284e83c27ab<br />
-  xe-3572-c3cf4289245819615518b536cd16ebe6612694f9: c3cf4289245819615518b536cd16ebe6612694f9</p>
-
-</body>
-</html>
-
---===============3999501743373595194==--
