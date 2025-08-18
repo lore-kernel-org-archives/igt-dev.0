@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9C77CA0EC6
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 10:46:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A00A3CA0EC6
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 10:51:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A260010E428;
-	Mon, 18 Aug 2025 10:46:31 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 322DA10E426;
- Mon, 18 Aug 2025 10:46:30 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5699634456662939958=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54AE210E428;
+	Mon, 18 Aug 2025 10:51:43 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d0kFh5Sw";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 507DD10E428
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Aug 2025 10:51:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755514301; x=1787050301;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=maOvi26gCp2GhRbhgq/RzL7VJHL5j4YBQG5YgQhFh6I=;
+ b=d0kFh5Sw9UOPQ/IznxjmultB6ezLKudxTnJeASRatAINxYvgjSiKjYve
+ EUYYNHAKf0q97Y7me38MgsPG40dj8oi0YmsJa+NdMAmKrElL5FQ8hJFW9
+ 71bCDTe0MW3Z4x1kAg86Md+qR4PAduLDZfBwYXCk2vWYkCo17MvRW+O8I
+ Cb4EQqNxY9A2391/x5TQDJsZtkcSZTqpjtprsfQLgJcoN1P5g/pzn8rJq
+ eTGr/6Lrub5lFrwNo3gzhlWUZJpt2R9KHZX+aaP/ebj3nrc3OKJQarDs6
+ Dm3bT+zHQGtLtijvqd37AzilDaNJzwIjnr7/YoWtUOePOx3viPE79CgBO g==;
+X-CSE-ConnectionGUID: LowYFLvUS3OHCdmikIYPSw==
+X-CSE-MsgGUID: T65cPueDTMyOvFBhuZ7d2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="68000204"
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; d="scan'208";a="68000204"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Aug 2025 03:51:41 -0700
+X-CSE-ConnectionGUID: Pzg9/MJHT+iSc8JgCU0WQA==
+X-CSE-MsgGUID: Meecs4YcSw+lXS3JOKSrpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; d="scan'208";a="204708886"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.188])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Aug 2025 03:51:39 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jani.nikula@intel.com,
+	Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t] tools/intel_vbt_decode: convert copyright signs from
+ latin1 to utf8
+Date: Mon, 18 Aug 2025 13:51:33 +0300
+Message-ID: <20250818105133.2676928-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fpmu=3A_A?=
- =?utf-8?q?dd_tests_to_validate_engine_activity_accuracy_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Soham Purkait" <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 18 Aug 2025 10:46:30 -0000
-Message-ID: <175551399019.243606.6883603770112691561@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250818073249.3348233-1-soham.purkait@intel.com>
-In-Reply-To: <20250818073249.3348233-1-soham.purkait@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,285 +67,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5699634456662939958==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Various tools trip over with latin1 characters in the source, as
+nowadays everything pretty much expects utf8.
 
-== Series Details ==
+For example, [1] fails to apply in both Patchwork and b4, because
+somewhere along the way, the latin1 copyright sign has in fact been
+automagically converted to utf8, and the source still has latin1.
 
-Series: tests/intel/xe_pmu: Add tests to validate engine activity accuracy (rev2)
-URL   : https://patchwork.freedesktop.org/series/152630/
-State : failure
+Instead of debugging legacy encodings and conversions, just convert the
+remaining latin1 files to utf8 using iconv.
 
-== Summary ==
+[1] https://lore.kernel.org/all/7090e70d712c94aed53f52c49a8155eb4c6b966c.1755175663.git.jani.nikula@intel.com/
 
-CI Bug Log - changes from IGT_8495 -> IGTPW_13588
-====================================================
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-Summary
--------
+---
 
-  **FAILURE**
+I'll be trying 'git send-email --8bit-encoding=iso-8859-1' on this
+one. Fingers crossed.
+---
+ tools/intel_bios.h       | 2 +-
+ tools/intel_vbt_decode.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-  Serious unknown changes coming with IGTPW_13588 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_13588, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+diff --git a/tools/intel_bios.h b/tools/intel_bios.h
+index 01de2246e147..d874a268fe70 100644
+--- a/tools/intel_bios.h
++++ b/tools/intel_bios.h
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright © 2006 Intel Corporation
++ * Copyright Â© 2006 Intel Corporation
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+  * copy of this software and associated documentation files (the "Software"),
+diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+index 7bb3c19c3340..85bda78a2a54 100644
+--- a/tools/intel_vbt_decode.c
++++ b/tools/intel_vbt_decode.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright © 2006 Intel Corporation
++ * Copyright Â© 2006 Intel Corporation
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+  * copy of this software and associated documentation files (the "Software"),
+-- 
+2.47.2
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/index.html
-
-Participating hosts (43 -> 41)
-------------------------------
-
-  Missing    (2): fi-snb-2520m bat-adls-6 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_13588:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        NOTRUN -> [FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-hsw-4770/igt@runner@aborted.html
-    - fi-ivb-3770:        NOTRUN -> [FAIL][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-ivb-3770/igt@runner@aborted.html
-    - fi-elk-e7500:       NOTRUN -> [FAIL][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-elk-e7500/igt@runner@aborted.html
-    - fi-ilk-650:         NOTRUN -> [FAIL][4]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-ilk-650/igt@runner@aborted.html
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-bsw-n3050/igt@runner@aborted.html
-    - fi-skl-6600u:       NOTRUN -> [FAIL][6]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-skl-6600u/igt@runner@aborted.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-pnv-d510/igt@runner@aborted.html
-    - fi-glk-j4005:       NOTRUN -> [FAIL][8]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-glk-j4005/igt@runner@aborted.html
-    - fi-cfl-8700k:       NOTRUN -> [FAIL][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-cfl-8700k/igt@runner@aborted.html
-    - fi-bsw-nick:        NOTRUN -> [FAIL][10]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-bsw-nick/igt@runner@aborted.html
-    - fi-rkl-11600:       NOTRUN -> [FAIL][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-rkl-11600/igt@runner@aborted.html
-    - fi-cfl-guc:         NOTRUN -> [FAIL][12]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-cfl-guc/igt@runner@aborted.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13588 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@runner@aborted:
-    - fi-kbl-x1275:       NOTRUN -> [FAIL][13] ([i915#14832])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-kbl-x1275/igt@runner@aborted.html
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][14] ([i915#14832])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-kbl-8809g/igt@runner@aborted.html
-    - bat-mtlp-8:         NOTRUN -> [FAIL][15] ([i915#14489])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-mtlp-8/igt@runner@aborted.html
-    - bat-dg1-6:          NOTRUN -> [FAIL][16] ([i915#14832])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg1-6/igt@runner@aborted.html
-    - bat-dg2-8:          NOTRUN -> [FAIL][17] ([i915#14832])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-8/igt@runner@aborted.html
-    - fi-kbl-guc:         NOTRUN -> [FAIL][18] ([i915#14832])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-kbl-guc/igt@runner@aborted.html
-    - bat-jsl-1:          NOTRUN -> [FAIL][19] ([i915#14832])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-jsl-1/igt@runner@aborted.html
-    - fi-tgl-1115g4:      NOTRUN -> [FAIL][20] ([i915#14749])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-tgl-1115g4/igt@runner@aborted.html
-    - bat-adlp-6:         NOTRUN -> [FAIL][21] ([i915#14832])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-adlp-6/igt@runner@aborted.html
-    - bat-mtlp-6:         NOTRUN -> [FAIL][22] ([i915#14489])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-mtlp-6/igt@runner@aborted.html
-    - bat-arls-6:         NOTRUN -> [FAIL][23] ([i915#14832])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-arls-6/igt@runner@aborted.html
-    - bat-arlh-3:         NOTRUN -> [FAIL][24] ([i915#14832])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-arlh-3/igt@runner@aborted.html
-    - bat-dg1-7:          NOTRUN -> [FAIL][25] ([i915#14832])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg1-7/igt@runner@aborted.html
-    - bat-adlp-9:         NOTRUN -> [FAIL][26] ([i915#14832])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-adlp-9/igt@runner@aborted.html
-    - bat-twl-2:          NOTRUN -> [FAIL][27] ([i915#14832])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-twl-2/igt@runner@aborted.html
-    - bat-dg2-11:         NOTRUN -> [FAIL][28] ([i915#14832])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-11/igt@runner@aborted.html
-    - bat-rpls-4:         NOTRUN -> [FAIL][29] ([i915#14832])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-rpls-4/igt@runner@aborted.html
-    - fi-kbl-7567u:       NOTRUN -> [FAIL][30] ([i915#14832])
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-kbl-7567u/igt@runner@aborted.html
-    - bat-twl-1:          NOTRUN -> [FAIL][31] ([i915#14832])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-twl-1/igt@runner@aborted.html
-    - bat-apl-1:          NOTRUN -> [FAIL][32] ([i915#14832])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-apl-1/igt@runner@aborted.html
-    - bat-dg2-14:         NOTRUN -> [FAIL][33] ([i915#14832])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-14/igt@runner@aborted.html
-    - bat-kbl-2:          NOTRUN -> [FAIL][34] ([i915#14832])
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-kbl-2/igt@runner@aborted.html
-    - bat-arls-5:         NOTRUN -> [FAIL][35] ([i915#14832])
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-arls-5/igt@runner@aborted.html
-    - bat-rplp-1:         NOTRUN -> [FAIL][36] ([i915#14832])
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-rplp-1/igt@runner@aborted.html
-    - bat-arlh-2:         NOTRUN -> [FAIL][37] ([i915#14832])
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-arlh-2/igt@runner@aborted.html
-    - bat-atsm-1:         NOTRUN -> [FAIL][38] ([i915#14832])
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-atsm-1/igt@runner@aborted.html
-    - bat-dg2-13:         NOTRUN -> [FAIL][39] ([i915#14832])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-13/igt@runner@aborted.html
-    - bat-mtlp-9:         NOTRUN -> [FAIL][40] ([i915#14489])
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-mtlp-9/igt@runner@aborted.html
-    - bat-dg2-9:          NOTRUN -> [FAIL][41] ([i915#14832])
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-9/igt@runner@aborted.html
-
-  
-  [i915#14489]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14489
-  [i915#14749]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14749
-  [i915#14832]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8495 -> IGTPW_13588
-  * Linux: CI_DRM_17006 -> CI_DRM_17022
-
-  CI-20190529: 20190529
-  CI_DRM_17006: 7582d01b3cb80604bd700c37237effb7b5c6fe6e @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_17022: fd212b0ad33ee6f49ab70d807eeefe90db36e68a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13588: 13588
-  IGT_8495: b412b144685feadfd5675f3108de3d6820a4d1db @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/index.html
-
---===============5699634456662939958==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pmu: Add tests to validate engine activity accuracy (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152630/">https://patchwork.freedesktop.org/series/152630/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8495 -&gt; IGTPW_13588</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_13588 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_13588, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/index.html</p>
-<h2>Participating hosts (43 -&gt; 41)</h2>
-<p>Missing    (2): fi-snb-2520m bat-adls-6 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_13588:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@runner@aborted:<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-hsw-4770/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-ivb-3770/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-elk-e7500/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-ilk-650/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-skl-6600u/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-pnv-d510/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-glk-j4005/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-cfl-8700k/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-bsw-nick/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-rkl-11600/igt@runner@aborted.html">FAIL</a></li>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-cfl-guc/igt@runner@aborted.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13588 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@runner@aborted:<ul>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-kbl-x1275/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-kbl-8809g/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-mtlp-8/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14489">i915#14489</a>)</li>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg1-6/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-8/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-kbl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-jsl-1/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-tgl-1115g4/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14749">i915#14749</a>)</li>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-adlp-6/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-mtlp-6/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14489">i915#14489</a>)</li>
-<li>bat-arls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-arls-6/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-arlh-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-arlh-3/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg1-7/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-adlp-9/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-twl-2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-11/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-rpls-4/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/fi-kbl-7567u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-twl-1/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-apl-1/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-14/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-kbl-2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-arls-5/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-rplp-1/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-arlh-2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-atsm-1/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-dg2-13:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-13/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-mtlp-9/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14489">i915#14489</a>)</li>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13588/bat-dg2-9/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14832">i915#14832</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8495 -&gt; IGTPW_13588</li>
-<li>Linux: CI_DRM_17006 -&gt; CI_DRM_17022</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17006: 7582d01b3cb80604bd700c37237effb7b5c6fe6e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_17022: fd212b0ad33ee6f49ab70d807eeefe90db36e68a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13588: 13588<br />
-  IGT_8495: b412b144685feadfd5675f3108de3d6820a4d1db @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5699634456662939958==--
