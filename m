@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A00A3CA0EC6
-	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 10:51:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E6ADCA0EC0
+	for <igt-dev@archiver.kernel.org>; Mon, 18 Aug 2025 10:55:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 54AE210E428;
-	Mon, 18 Aug 2025 10:51:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 03A1010E1D2;
+	Mon, 18 Aug 2025 10:55:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d0kFh5Sw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C9wZkf3B";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 507DD10E428
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Aug 2025 10:51:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFDE010E1D2
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Aug 2025 10:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755514301; x=1787050301;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=maOvi26gCp2GhRbhgq/RzL7VJHL5j4YBQG5YgQhFh6I=;
- b=d0kFh5Sw9UOPQ/IznxjmultB6ezLKudxTnJeASRatAINxYvgjSiKjYve
- EUYYNHAKf0q97Y7me38MgsPG40dj8oi0YmsJa+NdMAmKrElL5FQ8hJFW9
- 71bCDTe0MW3Z4x1kAg86Md+qR4PAduLDZfBwYXCk2vWYkCo17MvRW+O8I
- Cb4EQqNxY9A2391/x5TQDJsZtkcSZTqpjtprsfQLgJcoN1P5g/pzn8rJq
- eTGr/6Lrub5lFrwNo3gzhlWUZJpt2R9KHZX+aaP/ebj3nrc3OKJQarDs6
- Dm3bT+zHQGtLtijvqd37AzilDaNJzwIjnr7/YoWtUOePOx3viPE79CgBO g==;
-X-CSE-ConnectionGUID: LowYFLvUS3OHCdmikIYPSw==
-X-CSE-MsgGUID: T65cPueDTMyOvFBhuZ7d2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="68000204"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; d="scan'208";a="68000204"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2025 03:51:41 -0700
-X-CSE-ConnectionGUID: Pzg9/MJHT+iSc8JgCU0WQA==
-X-CSE-MsgGUID: Meecs4YcSw+lXS3JOKSrpg==
+ t=1755514547; x=1787050547;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=mpKL2RmFh30JWNQnO4ejpi0pBs4Qbw/1DaYM3e8ePeY=;
+ b=C9wZkf3BP3/N9oMDcanXwreDW2Y36CMNXXSZnQ0E6iRFnqjLrKOdXhry
+ dgTxwBK3tNp+uBxbzt1jnDe/ZY9a4WHVfrhs+83k9mF1tbMu6/gtjN/kf
+ heG1Dok4b7UiFhVRnESAswdB+EWJfyyythMPc1SR6yD3TsKR1xZhugBh1
+ bY2ojchQS76vikNy6vuTB6oe98AdgRiPD+b2xahQB5xgpa7VP4oqsT2Eo
+ WLHzB9mIWNujoevYTGyszzQTOuUp/sGUKxnYRx6g7odFBi0rIznwFzcnI
+ 1rZ6njnM2ftoNYfjluEKRScpKfrs9ASo8SjSY2PAsK1aTKqrqVGuVYl4d w==;
+X-CSE-ConnectionGUID: MncYQRuDQA6tdJY0A2t1cg==
+X-CSE-MsgGUID: jmq/+COeRTihJya/BxHcSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="83165166"
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; d="scan'208";a="83165166"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Aug 2025 03:55:46 -0700
+X-CSE-ConnectionGUID: bPMT3f+BScGITlEEt2GlGw==
+X-CSE-MsgGUID: R32XUcBoRi6mnFHlC2wGfA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; d="scan'208";a="204708886"
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; d="scan'208";a="166722457"
 Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.188])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2025 03:51:39 -0700
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Aug 2025 03:55:45 -0700
 From: Jani Nikula <jani.nikula@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t] tools/intel_vbt_decode: convert copyright signs from
- latin1 to utf8
-Date: Mon, 18 Aug 2025 13:51:33 +0300
-Message-ID: <20250818105133.2676928-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.47.2
-MIME-Version: 1.0
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 2/5] tools/intel_vbt_decode: Remove intel_bios.h
+In-Reply-To: <20250814164451.vymqgxvjddnks6ar@kamilkon-DESK.igk.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+References: <cover.1755175663.git.jani.nikula@intel.com>
+ <7090e70d712c94aed53f52c49a8155eb4c6b966c.1755175663.git.jani.nikula@intel.com>
+ <20250814164451.vymqgxvjddnks6ar@kamilkon-DESK.igk.intel.com>
+Date: Mon, 18 Aug 2025 13:55:41 +0300
+Message-ID: <c6545ab607e36451fab16dbdb1602fd14050b88d@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,52 +70,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Various tools trip over with latin1 characters in the source, as
-nowadays everything pretty much expects utf8.
+On Thu, 14 Aug 2025, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+> Please resend this as fdo patchwork has some problems and this one
+> is missing (so it cannot create a series and CI cannot test it).
 
-For example, [1] fails to apply in both Patchwork and b4, because
-somewhere along the way, the latin1 copyright sign has in fact been
-automagically converted to utf8, and the source still has latin1.
+I did, but it still fails [1]. I presume it's because of the latin1
+copyright signs. I really can't be bothered to debug where it all goes
+wrong, so I sent a patch to convert the remaining latin1 files to utf8
+in igt [2]. I think that's trivial enough to push directly even if
+patchwork still trips over it, and we can move on.
 
-Instead of debugging legacy encodings and conversions, just convert the
-remaining latin1 files to utf8 using iconv.
+BR,
+Jani.
 
-[1] https://lore.kernel.org/all/7090e70d712c94aed53f52c49a8155eb4c6b966c.1755175663.git.jani.nikula@intel.com/
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+[1] https://patchwork.freedesktop.org/series/152979/
+[2] https://lore.kernel.org/r/20250818105133.2676928-1-jani.nikula@intel.com
 
----
 
-I'll be trying 'git send-email --8bit-encoding=iso-8859-1' on this
-one. Fingers crossed.
----
- tools/intel_bios.h       | 2 +-
- tools/intel_vbt_decode.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tools/intel_bios.h b/tools/intel_bios.h
-index 01de2246e147..d874a268fe70 100644
---- a/tools/intel_bios.h
-+++ b/tools/intel_bios.h
-@@ -1,5 +1,5 @@
- /*
-- * Copyright © 2006 Intel Corporation
-+ * Copyright Â© 2006 Intel Corporation
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a
-  * copy of this software and associated documentation files (the "Software"),
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 7bb3c19c3340..85bda78a2a54 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -1,5 +1,5 @@
- /*
-- * Copyright © 2006 Intel Corporation
-+ * Copyright Â© 2006 Intel Corporation
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a
-  * copy of this software and associated documentation files (the "Software"),
 -- 
-2.47.2
-
+Jani Nikula, Intel
