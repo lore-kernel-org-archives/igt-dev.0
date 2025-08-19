@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86794CA0EEB
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Aug 2025 15:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BB5ACA0EE6
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Aug 2025 15:51:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3EF0C10E62E;
-	Tue, 19 Aug 2025 15:51:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D91C610E62F;
+	Tue, 19 Aug 2025 15:51:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IaM/VoqU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CJqmjiE0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AFF1110E62E
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Aug 2025 15:51:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EE3610E62F
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Aug 2025 15:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755618676; x=1787154676;
+ t=1755618680; x=1787154680;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=S3NNV7jQB5HktFV3Yj2ah5dQlVBSi/m9UZqkvuyR2qY=;
- b=IaM/VoqUr5Cdkmd2nHcDAKWfOL1MTnGS2TcUVJZJdxo+1gmV45aR4F9U
- 10J7oWEbKJARPXFk9OXezcTkF60+m37TZvriQ+N/NEUQePjPWUVxTe23Y
- eg1KzgzrFCNCFxI/ciXNjNuSFvG+fsNYXPBMA9tpq7mjQukFTsGdaLGcU
- OPP4lrKVrDwsQsq7Y9v4ecqqqnGmIcDi59wYBSsw8xg6uG6mIHZd3NJJD
- 7fZwM7ui2U06up+X4kz3r/ZVXfQSgGfez632+Ao6KXLr151hnpdjurR5l
- +XZHodG/oOZPOLsojkcYRFf9qFy2H9JPuLQMfGVIEYVCW9zETAv6iHWPG Q==;
-X-CSE-ConnectionGUID: rAohZ3KtTbOE42oFkjYHYQ==
-X-CSE-MsgGUID: 0EX3nPkJSselO4wPdFOmMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57779694"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="57779694"
+ bh=81w/aZ0nDN11uSXNDFmJ19zd2gaesFQ3wbZXUp/bAwc=;
+ b=CJqmjiE0YjXCCeU8dI25ZA/CBJPfX+w0A8rG1fnQd3aUzTJoK0mbRPI4
+ GFZWHWcBP0CTpVXkz7ul3F6ce5ZQODudQ+SGh6yneiOy/KnnZEMsv3RGA
+ 8Z0lrqNi9IYo30Rdd926h1AOzs1Dcj1nJTpQiW/ee/0T8LoI3J4ZnqwtA
+ 6Z88iyHZAO+WwZvJvde84cCq5Xmdki7O58jmAMvfeOgLu9XTonK4HBvcJ
+ SjpKXvBz3+IdvKLYT/WhRngH264s7XFk1cwHT+yLA3BkRcTEErkt0Bh9t
+ t3qhLznlkH0LkAha3BAL47ZLNpP/9kvxMTxoX6IANe1s5ZP6tFQgwuJEH w==;
+X-CSE-ConnectionGUID: vH2JGlUJQhOJw1IAATcXHQ==
+X-CSE-MsgGUID: z2IYojdFSveGJO6pyGYI9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57779698"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="57779698"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2025 08:51:16 -0700
-X-CSE-ConnectionGUID: 5XxLzuB3TRS7qj0isCC1Ug==
-X-CSE-MsgGUID: b1xQasRKSzub5D6pDIBXyQ==
+ 19 Aug 2025 08:51:20 -0700
+X-CSE-ConnectionGUID: FwNNzXyJRiq78M2BLFBLUg==
+X-CSE-MsgGUID: qgz5k8ORTuqS9lJb86CQoQ==
 X-ExtLoop1: 1
 Received: from ettammin-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.213])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2025 08:51:15 -0700
+ 19 Aug 2025 08:51:18 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v1 2/3] tests/kms_3d: Convert to subtest
-Date: Tue, 19 Aug 2025 17:50:57 +0200
-Message-ID: <20250819155058.129794-3-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 3/3] tests/kms_3d: Add resources cleanup
+Date: Tue, 19 Aug 2025 17:50:58 +0200
+Message-ID: <20250819155058.129794-4-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250819155058.129794-1-kamil.konieczny@linux.intel.com>
 References: <20250819155058.129794-1-kamil.konieczny@linux.intel.com>
@@ -67,188 +67,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Convert this test to have one basic subtest. This will allow it
-to have a proper cleanup at end. Also while at this, fix code
-style and avoid comparision to bool.
+Add resources cleanup at test end.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/kms_3d.c | 133 ++++++++++++++++++++++++++-----------------------
- 1 file changed, 71 insertions(+), 62 deletions(-)
+ tests/kms_3d.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/tests/kms_3d.c b/tests/kms_3d.c
-index 31242c5f5..f9734ba38 100644
+index f9734ba38..86254cdcb 100644
 --- a/tests/kms_3d.c
 +++ b/tests/kms_3d.c
-@@ -34,13 +34,13 @@
- #include "xe/xe_query.h"
+@@ -135,6 +135,9 @@ igt_main
+ 			drmModeFreeConnector(connector);
+ 		}
  
- /**
-- * SUBTEST:
-- * Description: Tests 3D mode setting.
-+ * SUBTEST: basic
-+ * Description: Tests basic 3D mode setting.
-  */
- 
- IGT_TEST_DESCRIPTION("Tests 3D mode setting.");
- 
--igt_simple_main
-+igt_main
- {
- 	int drm_fd;
- 	drmModeRes *res;
-@@ -48,84 +48,93 @@ igt_simple_main
- 	const struct edid *edid;
- 	int mode_count, connector_id;
- 
--	drm_fd = drm_open_driver_master(DRIVER_ANY);
-+	igt_fixture {
-+		drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
--	res = drmModeGetResources(drm_fd);
--	igt_require(res);
-+		res = drmModeGetResources(drm_fd);
-+		igt_require(res);
-+	}
- 
--	igt_assert_f(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_STEREO_3D, 1) >= 0,
--		     "Failed to enable STEREO_3D capability.\n");
-+	igt_subtest("basic") {
-+		igt_assert_f(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_STEREO_3D, 1) >= 0,
-+			     "Failed to enable STEREO_3D capability.\n");
++		if (res)
++			drmModeFreeResources(res);
 +
-+		/* find an hdmi connector */
-+		for (int i = 0; i < res->count_connectors; i++) {
-+			connector = drmModeGetConnectorCurrent(drm_fd, res->connectors[i]);
-+			if (connector->connector_type == DRM_MODE_CONNECTOR_HDMIA)
-+				break;
-+			drmModeFreeConnector(connector);
-+			connector = NULL;
-+		}
- 
--	/* find an hdmi connector */
--	for (int i = 0; i < res->count_connectors; i++) {
--		connector = drmModeGetConnectorCurrent(drm_fd, res->connectors[i]);
--		if (connector->connector_type == DRM_MODE_CONNECTOR_HDMIA)
--			break;
--		drmModeFreeConnector(connector);
--		connector = NULL;
--	}
--	igt_require_f(connector, "No HDMI connector found.\n");
-+		igt_require_f(connector, "No HDMI connector found.\n");
- 
--	kmstest_unset_all_crtcs(drm_fd, res);
-+		kmstest_unset_all_crtcs(drm_fd, res);
- 
--	edid = igt_kms_get_3d_edid();
-+		edid = igt_kms_get_3d_edid();
- 
--	kmstest_force_edid(drm_fd, connector, edid);
--	if (!kmstest_force_connector(drm_fd, connector, FORCE_CONNECTOR_ON))
--		igt_skip("Could not force connector on\n");
-+		kmstest_force_edid(drm_fd, connector, edid);
-+		if (!kmstest_force_connector(drm_fd, connector, FORCE_CONNECTOR_ON))
-+			igt_skip("Could not force connector on\n");
- 
--	connector_id = connector->connector_id;
-+		connector_id = connector->connector_id;
- 
--	/* check for 3D modes */
--	mode_count = 0;
--	connector = drmModeGetConnectorCurrent(drm_fd, connector_id);
--	for (int i = 0; i < connector->count_modes; i++) {
--		if (connector->modes[i].flags & DRM_MODE_FLAG_3D_MASK)
--			mode_count++;
--	}
-+		/* check for 3D modes */
-+		mode_count = 0;
-+		connector = drmModeGetConnectorCurrent(drm_fd, connector_id);
-+		for (int i = 0; i < connector->count_modes; i++) {
-+			if (connector->modes[i].flags & DRM_MODE_FLAG_3D_MASK)
-+				mode_count++;
-+		}
- 
--	igt_assert_f(mode_count, "3D modes not detected.\n");
-+		igt_assert_f(mode_count, "3D modes not detected.\n");
- 
--	/* set 3D modes */
--	igt_info("Testing:\n");
--	for (int i = 0; i < connector->count_modes; i++) {
--		int fb_id;
--		struct kmstest_connector_config config;
--		int crtc_mask = -1;
--		int ret;
-+		/* set 3D modes */
-+		igt_info("Testing:\n");
-+		for (int i = 0; i < connector->count_modes; i++) {
-+			int fb_id;
-+			struct kmstest_connector_config config;
-+			int crtc_mask = -1;
-+			int ret;
- 
--		if (!(connector->modes[i].flags & DRM_MODE_FLAG_3D_MASK))
--			continue;
-+			if (!(connector->modes[i].flags & DRM_MODE_FLAG_3D_MASK))
-+				continue;
- 
--		/* create a configuration */
--		ret = kmstest_get_connector_config(drm_fd, connector_id,
--						   crtc_mask, &config);
--		if (ret != true) {
--			igt_info("Error creating configuration for:\n  ");
--			kmstest_dump_mode(&connector->modes[i]);
-+			/* create a configuration */
-+			ret = kmstest_get_connector_config(drm_fd, connector_id,
-+							   crtc_mask, &config);
-+			if (!ret) {
-+				igt_info("Error creating configuration for:\n  ");
-+				kmstest_dump_mode(&connector->modes[i]);
- 
--			continue;
--		}
-+				continue;
-+			}
- 
--		igt_info("  ");
--		kmstest_dump_mode(&connector->modes[i]);
-+			igt_info("  ");
-+			kmstest_dump_mode(&connector->modes[i]);
- 
--		/* create stereo framebuffer */
--		fb_id = igt_create_stereo_fb(drm_fd, &connector->modes[i],
--					     igt_bpp_depth_to_drm_format(32, 24),
--					     DRM_FORMAT_MOD_LINEAR);
-+			/* create stereo framebuffer */
-+			fb_id = igt_create_stereo_fb(drm_fd, &connector->modes[i],
-+						     igt_bpp_depth_to_drm_format(32, 24),
-+						     DRM_FORMAT_MOD_LINEAR);
- 
--		ret = drmModeSetCrtc(drm_fd, config.crtc->crtc_id, fb_id, 0, 0,
--				     &connector->connector_id, 1,
--				     &connector->modes[i]);
-+			ret = drmModeSetCrtc(drm_fd, config.crtc->crtc_id, fb_id, 0, 0,
-+					     &connector->connector_id, 1,
-+					     &connector->modes[i]);
- 
--		igt_assert(ret == 0);
-+			igt_assert(ret == 0);
-+		}
+ 		drm_close_driver(drm_fd);
  	}
- 
--	kmstest_force_connector(drm_fd, connector, FORCE_CONNECTOR_UNSPECIFIED);
--	kmstest_force_edid(drm_fd, connector, NULL);
-+	igt_fixture {
-+		if (connector) {
-+			kmstest_force_connector(drm_fd, connector, FORCE_CONNECTOR_UNSPECIFIED);
-+			kmstest_force_edid(drm_fd, connector, NULL);
- 
--	drmModeFreeConnector(connector);
-+			drmModeFreeConnector(connector);
-+		}
- 
--	drm_close_driver(drm_fd);
-+		drm_close_driver(drm_fd);
-+	}
  }
 -- 
 2.51.0
