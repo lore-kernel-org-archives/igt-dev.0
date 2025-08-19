@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A7ACA0EEB
-	for <igt-dev@archiver.kernel.org>; Tue, 19 Aug 2025 16:52:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F4ECA0EEB
+	for <igt-dev@archiver.kernel.org>; Tue, 19 Aug 2025 16:52:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6ACBC10E63A;
-	Tue, 19 Aug 2025 16:52:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A174710E209;
+	Tue, 19 Aug 2025 16:52:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F9XAXIWh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M9YCDc1X";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7534810E63A
- for <igt-dev@lists.freedesktop.org>; Tue, 19 Aug 2025 16:52:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89D8010E63B
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 Aug 2025 16:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755622321; x=1787158321;
+ t=1755622326; x=1787158326;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=pfuPe9FL1YhyuWvOAaAqBzkPOnMyui5mFab/RGdLpqE=;
- b=F9XAXIWhYdpYCY8emdAAGrNZEBjeC17awwxC+5K4UIA4TNS/m226l2Zn
- AxXRd8kghJeX0ArcUiOFEUPIrE1PDQyVPeKgEZACWL3PvCXUYItyEZoJW
- e5UK2rE5sQHoU5KPjIKVcUwbax9zfuBW6Vu6SbnGIXH2vdPhB969aBmct
- d7nkI14QSUhUIp2oR38BchAGXFqTRBAQaIFZ+w1mmMjfedPcoYtDeLVNV
- 7JmUnHLJn+/6LH/d+HdqlAxdtvQlg48emD/6rfbciAljCvE3bEj9zPreM
- EkddGwe+mqzSAIXY0XC0TrbaZY7G+fLVi47d7AGUUVyBKFjoC2MSogerB A==;
-X-CSE-ConnectionGUID: ydEkSzaCS6+53TYQxF3+0Q==
-X-CSE-MsgGUID: UmgGeg7UTaKapLuoJjXRRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57732305"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="57732305"
+ bh=1CT0Ue3pLnYZ/FBWNelfnlOFx9k0K5RuNGiKt3k/w38=;
+ b=M9YCDc1Xjukq5GXPyB9NGiy47n1Ew6kW8VkAfnOmqA2hI5VULB2/lHLP
+ qzBv6FgiMiF8/zemotfEEZdRZAWMT4hPVDvvcp8pR7yyEevdUVq8RAie7
+ iX7yz7zgPowouicRIiaiTB3+HSElrrm639t1f2QnQBsdyU0TOSs4cvEED
+ Q5jL1IdXR8s0SMnQOVxrOy0f65oIIbK+rPhbzOqfxFdvMsXQ8mE+AJZnH
+ uS2eM4LI0B/irZ+UHvCzcKNeeVfW8CiJDfYjIqLRSNGfkPUwfT/f96GMr
+ 4qXweMW44b2D/nDIeeKExeseyfeKVMzdzBha1ghE/IZLdUDDgMjTtt4do A==;
+X-CSE-ConnectionGUID: 9cOyJD0+QwWdXicW1bJ8cA==
+X-CSE-MsgGUID: X2h1l1ffReq0hmZa/IXhQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57732320"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="57732320"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2025 09:52:01 -0700
-X-CSE-ConnectionGUID: i6MsAWVuQ2uggOHNChnfMg==
-X-CSE-MsgGUID: v1+lRgUOQeKlVIwmA+mh/g==
+ 19 Aug 2025 09:52:06 -0700
+X-CSE-ConnectionGUID: gDxv5ZZPQlaGZWdQr6yPdA==
+X-CSE-MsgGUID: 5GYhi7z2QzaHFUVJ0n3g6w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="172146390"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="172146432"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.113.129])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2025 09:51:58 -0700
+ 19 Aug 2025 09:52:03 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
@@ -50,15 +50,14 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Lukasz Laguna <lukasz.laguna@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Subject: [PATCH v2 i-g-t 2/3] tests/intel/xe_sriov_scheduling: Compute
- throughput from completion timestamps
-Date: Tue, 19 Aug 2025 18:50:44 +0200
-Message-Id: <20250819165045.467613-3-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 3/3] tests/intel/xe_sriov_scheduling: Make in-flight
+ submissions configurable
+Date: Tue, 19 Aug 2025 18:50:45 +0200
+Message-Id: <20250819165045.467613-4-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20250819165045.467613-1-marcin.bernatowicz@linux.intel.com>
 References: <20250819165045.467613-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -75,14 +74,17 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make throughput comparisons robust under overlap/prefill and CPU jitter
-by basing the window on actual completion times rather than thread timing.
+Allow controlling (or auto-selecting) the number of concurrent
+submissions per VF to better saturate hardware, especially for short
+jobs.
 
-- Record per-sample complete_ts[] and per-slot submit_ts[].
-- Build the common window from completions: [max(first), min(last)].
-- Compute throughput as count/window within that window.
-- Push durations as submit->completion (complete_ts − submit_ts) and
-print "mean submit->signal latency".
+- Add --inflight option; 0 = auto (default), >=1 = explicit K.
+- Select K via a small heuristic (non-preempt: 1; <=12ms: 4; <=20ms: 3;
+  else 2).
+- Plumb K into subm_init() and print inflight=K in the banner.
+- Relax minimums to support short jobs: MIN_EXEC_QUANTUM_MS=1,
+  MIN_JOB_DURATION_MS=2.
+- Update CLI parsing and help text.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -91,181 +93,152 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Lukasz Laguna <lukasz.laguna@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 ---
- tests/intel/xe_sriov_scheduling.c | 65 ++++++++++++++++++-------------
- 1 file changed, 37 insertions(+), 28 deletions(-)
+ tests/intel/xe_sriov_scheduling.c | 55 ++++++++++++++++++++++++++-----
+ 1 file changed, 46 insertions(+), 9 deletions(-)
 
 diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
-index 28a2b6e26..97263cbd2 100644
+index 97263cbd2..2fc78f570 100644
 --- a/tests/intel/xe_sriov_scheduling.c
 +++ b/tests/intel/xe_sriov_scheduling.c
-@@ -39,6 +39,7 @@ struct subm_stats {
- 	igt_stats_t samples;
- 	uint64_t start_timestamp;
- 	uint64_t end_timestamp;
-+	uint64_t *complete_ts; /* absolute completion timestamps (ns) */
- 	unsigned int num_early_finish;
- 	unsigned int concurrent_execs;
- 	double concurrent_rate;
-@@ -54,13 +55,14 @@ struct subm {
- 	uint32_t vm;
- 	struct drm_xe_engine_class_instance hwe;
- 	uint32_t exec_queue_id;
--	/* K slots (K BOs / addresses / mapped spinners / done fences) */
-+	/* K slots (K BOs / addresses / mapped spinners / done fences / submit timestamps) */
- 	unsigned int slots;
- 	uint64_t *addr;
- 	uint32_t *bo;
- 	size_t bo_size;
- 	struct xe_spin **spin;
- 	uint32_t *done_fence;
-+	uint64_t *submit_ts;
- 	struct drm_xe_sync sync[1];
- 	struct drm_xe_exec exec;
+@@ -27,6 +27,8 @@ struct subm_opts {
+ 	uint32_t exec_quantum_ms;
+ 	uint32_t preempt_timeout_us;
+ 	double outlier_treshold;
++	/* --inflight=0 => auto; >=1 => explicit K */
++	unsigned int inflight;
  };
-@@ -101,8 +103,9 @@ static void subm_init(struct subm *s, int fd, int vf_num, uint64_t addr,
- 	s->bo = calloc(s->slots, sizeof(*s->bo));
- 	s->spin = calloc(s->slots, sizeof(*s->spin));
- 	s->done_fence = calloc(s->slots, sizeof(*s->done_fence));
-+	s->submit_ts = calloc(s->slots, sizeof(*s->submit_ts));
  
--	igt_assert(s->addr && s->bo && s->spin && s->done_fence);
-+	igt_assert(s->addr && s->bo && s->spin && s->done_fence && s->submit_ts);
- 
- 	base = addr ? addr : 0x1a0000;
- 	stride = ALIGN(s->bo_size, 0x10000);
-@@ -137,6 +140,7 @@ static void subm_fini(struct subm *s)
- 	free(s->bo);
- 	free(s->spin);
- 	free(s->done_fence);
-+	free(s->submit_ts);
+ struct subm_work_desc {
+@@ -496,9 +498,9 @@ static void log_sample_values(char *id, struct subm_stats *stats,
  }
  
- static void subm_workload_init(struct subm *s, struct subm_work_desc *work)
-@@ -158,6 +162,7 @@ static void subm_wait_slot(struct subm *s, unsigned int slot, uint64_t abs_timeo
- 
- static void subm_exec_slot(struct subm *s, unsigned int slot)
- {
-+	struct timespec tv;
- 	int nsync = 0;
- 
- 	syncobj_reset(s->fd, &s->done_fence[slot], 1);
-@@ -169,6 +174,8 @@ static void subm_exec_slot(struct subm *s, unsigned int slot)
- 	s->exec.num_syncs = nsync;
- 	s->exec.syncs = to_user_pointer(&s->sync[0]);
- 	s->exec.address = s->addr[slot];
-+	igt_gettime(&tv);
-+	s->submit_ts[slot] = (uint64_t)tv.tv_sec * (uint64_t)NSEC_PER_SEC + (uint64_t)tv.tv_nsec;
- 	xe_exec(s->fd, &s->exec);
+ #define MIN_NUM_REPEATS 25
+-#define MIN_EXEC_QUANTUM_MS 8
++#define MIN_EXEC_QUANTUM_MS 1
+ #define MAX_EXEC_QUANTUM_MS 32
+-#define MIN_JOB_DURATION_MS 16
++#define MIN_JOB_DURATION_MS 2
+ #define MAX_TOTAL_DURATION_MS 15000
+ #define PREFERRED_TOTAL_DURATION_MS 10000
+ #define MAX_PREFERRED_REPEATS 100
+@@ -570,6 +572,25 @@ static int adjust_num_repeats(int duration_ms, int num_threads)
+ 	return max(optimal_repeats, MIN_NUM_REPEATS);
  }
  
-@@ -214,9 +221,11 @@ static void subm_exec_loop(struct subm *s, struct subm_stats *stats,
- 	for (i = 0; i < s->work.repeats; ++i) {
- 		unsigned int slot = i % inflight;
- 
--		igt_gettime(&tv);
- 		subm_wait_slot(s, slot, INT64_MAX);
--		igt_stats_push(&stats->samples, igt_nsec_elapsed(&tv));
-+		igt_gettime(&tv);
-+		stats->complete_ts[i] = (uint64_t)tv.tv_sec * (uint64_t)NSEC_PER_SEC +
-+					(uint64_t)tv.tv_nsec;
-+		igt_stats_push(&stats->samples, stats->complete_ts[i] - s->submit_ts[slot]);
- 
- 		if (!subm_is_work_complete(s, slot)) {
- 			stats->num_early_finish++;
-@@ -386,16 +395,22 @@ static void compute_common_time_frame_stats(struct subm_set *set)
- 	struct subm_stats *stats;
- 	uint64_t common_start = 0;
- 	uint64_t common_end = UINT64_MAX;
-+	uint64_t first_ts, last_ts;
- 
--	/* Find the common time frame */
-+	/* Find common window from completion timestamps */
- 	for (i = 0; i < ndata; i++) {
- 		stats = &data[i].stats;
- 
--		if (stats->start_timestamp > common_start)
--			common_start = stats->start_timestamp;
-+		if (!stats->samples.n_values)
-+			continue;
++/* inflight K selection:
++ *   user_k == 0  => auto
++ *   user_k >= 1  => explicit K
++ */
++static unsigned int select_inflight_k(unsigned int duration_ms,
++				      unsigned int user_k,
++				      bool nonpreempt)
++{
++	if (user_k)
++		return user_k >= 1 ? user_k : 1;
++	if (nonpreempt)
++		return 1;
++	if (duration_ms <= 12)
++		return 4;
++	if (duration_ms <= 20)
++		return 3;
++	return 2;
++}
 +
-+		first_ts = stats->complete_ts[0];
-+		last_ts = stats->complete_ts[stats->samples.n_values - 1];
+ static struct vf_sched_params prepare_vf_sched_params(int num_threads,
+ 						      int min_num_repeats,
+ 						      int job_timeout_ms,
+@@ -630,12 +651,14 @@ static void throughput_ratio(int pf_fd, int num_vfs, const struct subm_opts *opt
+ 	struct job_sched_params job_sched_params = prepare_job_sched_params(num_vfs + 1,
+ 									    job_timeout_ms,
+ 									    opts);
++	const unsigned int k = select_inflight_k(job_sched_params.duration_ms,
++						 opts->inflight, false);
  
--		if (stats->end_timestamp < common_end)
--			common_end = stats->end_timestamp;
-+		if (first_ts > common_start)
-+			common_start = first_ts;
-+		if (last_ts < common_end)
-+			common_end = last_ts;
+-	igt_info("eq=%ums pt=%uus duration=%ums repeats=%d num_vfs=%d job_timeout=%ums\n",
++	igt_info("eq=%ums pt=%uus duration=%ums repeats=%d inflight=%u num_vfs=%d job_timeout=%ums\n",
+ 		 job_sched_params.sched_params.exec_quantum_ms,
+ 		 job_sched_params.sched_params.preempt_timeout_us,
+ 		 job_sched_params.duration_ms, job_sched_params.num_repeats,
+-		 num_vfs + 1, job_timeout_ms);
++		 k, num_vfs + 1, job_timeout_ms);
+ 
+ 	init_vf_ids(vf_ids, ARRAY_SIZE(vf_ids),
+ 		    &(struct init_vf_ids_opts){ .shuffle = true,
+@@ -664,7 +687,7 @@ static void throughput_ratio(int pf_fd, int num_vfs, const struct subm_opts *opt
+ 		igt_assert_fd(vf_fd);
+ 		set->data[n].opts = opts;
+ 		subm_init(&set->data[n].subm, vf_fd, vf_ids[n], 0,
+-			  xe_engine(vf_fd, 0)->instance, 1);
++			  xe_engine(vf_fd, 0)->instance, k);
+ 		subm_workload_init(&set->data[n].subm,
+ 				   &(struct subm_work_desc){
+ 					.duration_ms = job_sched_params.duration_ms,
+@@ -729,10 +752,11 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
+ 			       vf_sched_params.preempt_timeout_us / USEC_PER_MSEC;
+ 	int preemptible_end = 1;
+ 	uint8_t vf_ids[num_vfs + 1 /*PF*/];
++	const unsigned int k = select_inflight_k(duration_ms, opts->inflight, true);
+ 
+-	igt_info("eq=%ums pt=%uus duration=%" PRIu64 "ms num_vfs=%d job_timeout=%ums\n",
++	igt_info("eq=%ums pt=%uus duration=%" PRIu64 "ms inflight=%u num_vfs=%d job_timeout=%ums\n",
+ 		 vf_sched_params.exec_quantum_ms, vf_sched_params.preempt_timeout_us,
+-		 duration_ms, num_vfs, job_timeout_ms);
++		 duration_ms, k, num_vfs, job_timeout_ms);
+ 
+ 	init_vf_ids(vf_ids, ARRAY_SIZE(vf_ids),
+ 		    &(struct init_vf_ids_opts){ .shuffle = true,
+@@ -761,7 +785,7 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
+ 		igt_assert_fd(vf_fd);
+ 		set->data[n].opts = opts;
+ 		subm_init(&set->data[n].subm, vf_fd, vf_ids[n], 0,
+-			  xe_engine(vf_fd, 0)->instance, 1);
++			  xe_engine(vf_fd, 0)->instance, k);
+ 		subm_workload_init(&set->data[n].subm,
+ 				   &(struct subm_work_desc){
+ 					.duration_ms = duration_ms,
+@@ -799,6 +823,7 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
+ static struct subm_opts subm_opts = {
+ 	.sync_method = SYNC_BARRIER,
+ 	.outlier_treshold = 0.1,
++	.inflight = 0,
+ };
+ 
+ static bool extended_scope;
+@@ -825,6 +850,16 @@ static int subm_opts_handler(int opt, int opt_index, void *data)
+ 		subm_opts.outlier_treshold = atoi(optarg) / 100.0;
+ 		igt_info("Outlier threshold: %.2f\n", subm_opts.outlier_treshold);
+ 		break;
++	case 'i': {
++		int val = atoi(optarg);
++
++		subm_opts.inflight = val > 0 ? val : 0;
++		if (subm_opts.inflight)
++			igt_info("In-flight submissions: %u\n", subm_opts.inflight);
++		else
++			igt_info("In-flight submissions: auto (0)\n");
++		break;
++	}
+ 	default:
+ 		return IGT_OPT_HANDLER_ERROR;
  	}
+@@ -838,6 +873,7 @@ static const struct option long_opts[] = {
+ 	{ .name = "threshold", .has_arg = true, .val = 't', },
+ 	{ .name = "eq_ms", .has_arg = true, .val = 'q', },
+ 	{ .name = "pt_us", .has_arg = true, .val = 'p', },
++	{ .name = "inflight", .has_arg = true, .val = 'i', },
+ 	{}
+ };
  
- 	igt_info("common time frame: [%" PRIu64 ";%" PRIu64 "] %.2fms\n",
-@@ -406,8 +421,7 @@ static void compute_common_time_frame_stats(struct subm_set *set)
+@@ -846,7 +882,8 @@ static const char help_str[] =
+ 	"  --sync\tThreads synchronization method: 0 - none 1 - barrier (Default 1)\n"
+ 	"  --threshold\tSample outlier threshold (Default 0.1)\n"
+ 	"  --eq_ms\texec_quantum_ms\n"
+-	"  --pt_us\tpreempt_timeout_us\n";
++	"  --pt_us\tpreempt_timeout_us\n"
++	"  --inflight\tNumber of submissions kept in flight per VF (0=auto)\n";
  
- 	/* Compute concurrent_rate for each sample set within the common time frame */
- 	for (i = 0; i < ndata; i++) {
--		uint64_t total_samples_duration = 0;
--		uint64_t samples_duration_in_common_frame = 0;
-+		const double window_s = (common_end - common_start) * 1e-9;
- 
- 		stats = &data[i].stats;
- 		stats->concurrent_execs = 0;
-@@ -415,29 +429,20 @@ static void compute_common_time_frame_stats(struct subm_set *set)
- 		stats->concurrent_mean = 0.0;
- 
- 		for (j = 0; j < stats->samples.n_values; j++) {
--			uint64_t sample_start = stats->start_timestamp + total_samples_duration;
--			uint64_t sample_end = sample_start + stats->samples.values_u64[j];
-+			uint64_t cts = stats->complete_ts[j];
- 
--			if (sample_start >= common_start &&
--			    sample_end <= common_end) {
-+			if (cts >= common_start && cts <= common_end) {
- 				stats->concurrent_execs++;
--				samples_duration_in_common_frame +=
--					stats->samples.values_u64[j];
-+				stats->concurrent_mean += stats->samples.values_u64[j];
- 			}
--
--			total_samples_duration += stats->samples.values_u64[j];
- 		}
- 
--		stats->concurrent_rate = samples_duration_in_common_frame ?
--				     (double)stats->concurrent_execs /
--					     (samples_duration_in_common_frame *
--					      1e-9) :
--				     0.0;
-+		stats->concurrent_rate = (window_s > 0.0) ?
-+					 ((double)stats->concurrent_execs / window_s) : 0.0;
- 		stats->concurrent_mean = stats->concurrent_execs ?
--				      (double)samples_duration_in_common_frame /
--					      stats->concurrent_execs :
--				      0.0;
--		igt_info("[%s] Throughput = %.4f execs/s mean duration=%.4fms nsamples=%d\n",
-+					 (double)stats->concurrent_mean /
-+					 stats->concurrent_execs : 0.0;
-+		igt_info("[%s] Throughput = %.4f execs/s mean submit->signal latency=%.4fms nsamples=%d\n",
- 			 data[i].subm.id, stats->concurrent_rate, stats->concurrent_mean * 1e-6,
- 			 stats->concurrent_execs);
- 	}
-@@ -667,6 +672,8 @@ static void throughput_ratio(int pf_fd, int num_vfs, const struct subm_opts *opt
- 					.repeats = job_sched_params.num_repeats });
- 		igt_stats_init_with_size(&set->data[n].stats.samples,
- 					 set->data[n].subm.work.repeats);
-+		set->data[n].stats.complete_ts = calloc(set->data[n].subm.work.repeats,
-+							sizeof(uint64_t));
- 		if (set->sync_method == SYNC_BARRIER)
- 			set->data[n].barrier = &set->barrier;
- 	}
-@@ -762,6 +769,8 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
- 					.repeats = MIN_NUM_REPEATS });
- 		igt_stats_init_with_size(&set->data[n].stats.samples,
- 					 set->data[n].subm.work.repeats);
-+		set->data[n].stats.complete_ts = calloc(set->data[n].subm.work.repeats,
-+							sizeof(uint64_t));
- 		if (set->sync_method == SYNC_BARRIER)
- 			set->data[n].barrier = &set->barrier;
- 	}
+ igt_main_args("", long_opts, help_str, subm_opts_handler, NULL)
+ {
 -- 
 2.31.1
 
