@@ -4,38 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D34CA0EF7
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92637CA0EF5
 	for <igt-dev@archiver.kernel.org>; Tue, 19 Aug 2025 20:41:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4AE9F10E679;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4AE0310E677;
 	Tue, 19 Aug 2025 20:41:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DC7Mh+I2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="msVsO1bU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C2F510E672
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 544CF10E211
  for <igt-dev@lists.freedesktop.org>; Tue, 19 Aug 2025 20:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1755636069; x=1787172069;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tyT6hLPN3NxDYT1NnzVzUQ0Ais7rAqw+kRtV/mhNy74=;
- b=DC7Mh+I286a+9SKr+LvDe2C3tRDSIzV5tZ/OGbYZyozJQ9cPS7Mlw1DQ
- UuuB9KiVnc9Z77nZvUj24hQL3G8h0ClHGcRqf36tsPd7Vn5iTt5t/g2DM
- fyo5+/ZE5dWm2fiaTqd5axV4JM2ee6y2U3IIBs9p08I/BRovhhfvzNYgX
- rhgzdJUyubrXV4rTFiyUTXtmLzgmAGE1DwXwllNCCaWykt6Mu2AjFZpWR
- aPIpwXK4tO96F5Oqxs9Ax3aDlb/cMGMAaX5PF2oBCwiKv+PJUpi1NQM7a
- n5jRFSfDX55PttHADiHLKMOetkNGzDxNdZIEDoFHJJKJ+C8TLU4TJYBMc w==;
-X-CSE-ConnectionGUID: wW8TqdNvTBOMy/7Vl6P70g==
-X-CSE-MsgGUID: c5FeLpRVSla9/tGefBcbkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57846805"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="57846805"
+ bh=BCtQoeXXpJqQdzGfbIJpDw9pxbsT9PAAaLfVNo34848=;
+ b=msVsO1bUfiFNWslXb+UEA7BULfs2Dbw4wQ5le18L4YEq3dinwbgWN0jf
+ iqM5WxBdJLxUHriBA8TRmZ411+GUyzElhcJHCzkxkuiY8kxtOseO9hslU
+ 1wUObHQQ3uaF0PYEyMDmhscXFoibKtqYKJtBj5AWsZizG58ju0LRp9j0f
+ lIPZnw5aSSPLlDA1cX/NXb2KJ+EYTjvJ+Azlap7HF1mjiZaDLlxoR6gng
+ czCNWjyroEcItcbm8UUrCpS+EeT4zGDeW4sgyK0VeVjwn4uFCxoYD+2eY
+ IgtcM2QobQS1W0UqgeVlCioEwHSDoVWeun6Oii1aBnm7f5gj4TowdqV7y g==;
+X-CSE-ConnectionGUID: EDyZzcUnR6CMP0VuFfQcbw==
+X-CSE-MsgGUID: pW5h+zevQpi9XaIUJqqVbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57846804"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="57846804"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  19 Aug 2025 13:41:08 -0700
-X-CSE-ConnectionGUID: Inhxm5D7Q/+/tFx4Dx6Csg==
-X-CSE-MsgGUID: Odt2aNJFTU+wbaHtjRNHtA==
+X-CSE-ConnectionGUID: iz+YjFhdS4OIaYxG64hEnA==
+X-CSE-MsgGUID: O43kvLApTJC3W9Mqgl5YCw==
 X-ExtLoop1: 1
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
@@ -45,9 +45,10 @@ To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Riana Tauro <riana.tauro@intel.com>,
  Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Subject: [PATCH i-g-t 3/4] tests/intel/xe_configfs: Install exit handler once
-Date: Tue, 19 Aug 2025 13:40:42 -0700
-Message-ID: <20250819-configfs-unbind-v1-3-8359e66e3241@intel.com>
+Subject: [PATCH i-g-t 2/4] tests/intel/xe_configfs: Unbind before testing
+ engines_allowed
+Date: Tue, 19 Aug 2025 13:40:41 -0700
+Message-ID: <20250819-configfs-unbind-v1-2-8359e66e3241@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250819-configfs-unbind-v1-0-8359e66e3241@intel.com>
 References: <20250819-configfs-unbind-v1-0-8359e66e3241@intel.com>
@@ -70,57 +71,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-All the subtests need to restore the device to a working condition.
-Call igt_install_exit_handler() only once, after creating the custom
-settings.
+Future kernel change will require the driver not to be bound yet in
+order to allow this configfs setting because it has no effect
+otherwise. Make sure we unbind before testing this.
 
+Reference: https://patchwork.freedesktop.org/patch/669151/?series=151729&rev=4
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_configfs.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ tests/intel/xe_configfs.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index 1510f25f0..8b2b8e3c4 100644
+index f01b13e13..1510f25f0 100644
 --- a/tests/intel/xe_configfs.c
 +++ b/tests/intel/xe_configfs.c
-@@ -26,7 +26,6 @@ static char bus_addr[NAME_MAX];
+@@ -73,6 +73,12 @@ static void test_engines_allowed_invalid(int configfs_device_fd)
+ 		"rcs0asdf",
+ 	};
  
- static void restore(int sig)
- {
--	/* Restore after survivability mode */
- 	igt_kmod_unbind("xe", bus_addr);
- 	igt_kmod_bind("xe", bus_addr);
- }
-@@ -147,26 +146,22 @@ igt_main
- 		configfs_fd = igt_configfs_open("xe");
- 		igt_require(configfs_fd != -1);
- 		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		igt_install_exit_handler(restore);
- 	}
++	/*
++	 * These only test if engine parsing is correct, so just make sure
++	 * there's no device bind
++	 */
++	igt_kmod_unbind("xe", bus_addr);
++
+ 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
+ 		const char *v = values[i];
  
- 	igt_describe("Validate survivability mode");
- 	igt_subtest("survivability-mode") {
- 		igt_require(IS_BATTLEMAGE(devid));
--		igt_install_exit_handler(restore);
- 		test_survivability_mode(configfs_device_fd);
- 	}
+@@ -93,6 +99,12 @@ static void test_engines_allowed(int configfs_device_fd)
+ 		"rcs000",
+ 	};
  
- 	igt_describe("Validate engines_allowed with invalid options");
--	igt_subtest("engines-allowed-invalid") {
--		igt_install_exit_handler(restore);
-+	igt_subtest("engines-allowed-invalid")
- 		test_engines_allowed_invalid(configfs_device_fd);
--	}
++	/*
++	 * These only test if engine parsing is correct, so just make sure
++	 * there's no device bind
++	 */
++	igt_kmod_unbind("xe", bus_addr);
++
+ 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
+ 		const char *v = values[i];
  
- 	igt_describe("Validate engines_allowed");
--	igt_subtest("engines-allowed") {
--		igt_install_exit_handler(restore);
-+	igt_subtest("engines-allowed")
- 		test_engines_allowed(configfs_device_fd);
--	}
- 
- 	igt_fixture {
- 		igt_fs_remove_dir(configfs_fd, bus_addr);
 
 -- 
 2.50.1
