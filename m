@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ABE3CA0EF5
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Aug 2025 05:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09313CA0EDC
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Aug 2025 05:29:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA24010E34E;
-	Wed, 20 Aug 2025 05:13:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B03A310E350;
+	Wed, 20 Aug 2025 05:29:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JGE2o980";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YsJoHTYd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F43C10E34E
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Aug 2025 05:13:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A049510E350
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Aug 2025 05:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755666783; x=1787202783;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=DFWleH2dutp9Zqcl9CGDgoRgyt1MwHQd/NN+IHe4QkM=;
- b=JGE2o9807b2OHZGjeKWrwMJ62FF0AklFbBqqWWhjD8CV/T5D0imEVQo9
- 2fVH30t8F3TKJPa2M6s9KzVS4YPRmVs9+Qt1+m7jaIkX49JhGjMOXU7GE
- izrRMocZlQfKXwq+7npBIJ/uyul13UWd2Xq5MzWU4H8UnXwRkpYdQIEiK
- pHKPdy3hpj6B4Q8yxlq17bXUojAY4Heo8GkAWFsJwn9rUo61HRI+YdeDj
- tnWUXauxHnLjM3got/2FvuhmAwsn/DuVmOZQcBA16F2rTDYdJGhXgPabU
- XUdH7LuWHZ0lrPkTWTD3jdyzCVhFey9h8esXTSJtJkOTWkv1DT2EswW3E w==;
-X-CSE-ConnectionGUID: ABm4ttN7TCSYYpPQYCDWFg==
-X-CSE-MsgGUID: zuz6QaOeSAu26Tw6ACX4Cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="68194056"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="68194056"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2025 22:13:03 -0700
-X-CSE-ConnectionGUID: OsdUZChnSZ68iu2/YjYMYA==
-X-CSE-MsgGUID: DUbkrkcNRxKqkyj0OKNEtA==
+ t=1755667787; x=1787203787;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7wOSR7rosq1P9Ug4WX3Axa02wL18YGijT5UbPk+cM/w=;
+ b=YsJoHTYdq6Yg6KRmLGlXuVFiFBtAlyvaKJkdgAjivRWkLaYaSxrdgO/M
+ 4/NVyYtOkLm5jlG4lMXC8CzgbkEhHj4Jxeuq8PbO+BPISISzstpGQmCaF
+ +Z7+u/AK30IF5ptB0J/mWuNgSpByPPAYpiYc8iiuh1wEgOfxsRZisQkS2
+ PltSTGYSDOABj3uhDC2zlW27HsYipUppj7hlhok5oXX9IUKlDuIkvZkmL
+ QEF89z1/++X1eOemPxb1IBfvEWSTFy8q4Txz/I9wzAeobGNwOL2VPZbrf
+ AwCWGTgGhqj0bmXY/nPUZU7kcVo9UDgaMcYG+NhrRpBYPbNXnxGTzRMHK w==;
+X-CSE-ConnectionGUID: iFMIozNCSyy/T5gBwNkmEg==
+X-CSE-MsgGUID: 1RpLvv3nTiejkNDwXmQ0ww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="56953282"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="56953282"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2025 22:29:46 -0700
+X-CSE-ConnectionGUID: tUhR8QqMRHWvl7SsakSc/w==
+X-CSE-MsgGUID: 2JpurJj1SiKMoI/Vp6Lmrw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="172455768"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="167254892"
 Received: from agladkov-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.238])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2025 22:12:58 -0700
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2025 22:29:45 -0700
 From: Pawel Sikora <pawel.sikora@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
- Pawel Sikora <pawel.sikora@linux.intel.com>
-Subject: [PATCH i-g-t v2 3/3] gitlab-ci: Add MkDocs documentation support
-Date: Wed, 20 Aug 2025 07:12:24 +0200
-Message-Id: <20250820051224.121006-4-pawel.sikora@intel.com>
+ Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v3 0/3] Establish MkDocs Documentation Framework for IGT
+ GPU Tools
+Date: Wed, 20 Aug 2025 07:29:31 +0200
+Message-Id: <20250820052934.121604-1-pawel.sikora@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250820051224.121006-1-pawel.sikora@intel.com>
-References: <20250820051224.121006-1-pawel.sikora@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,61 +68,140 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit ensures two things:
+Dear Maintainers,
 
- * The API reference manual is built and copied to the MkDocs documentation directory.
+I am submitting a series of patches to introduce a comprehensive 
+documentation framework for the IGT GPU Tools project using MkDocs.
 
- * The MkDocs documentation (from the docs directory) is also built.
-
-As a result, the existing API reference manual will still be available via an internal
-link in the MkDocs documentation.
-(Note: the API reference will retain its original theme for now.)
-
-A relative link to api_reference/index.html is included in the MkDocs navigation.
-This file will be generated by the deploy job after the API reference manual is built.
-
-After both builds are complete, all content will be copied into the site directory
-and then manually moved into public, for hosting on freedesktop GitLab Pages.
-
-Signed-off-by: Pawel Sikora <pawel.sikora@linux.intel.com>
----
- .gitlab-ci.yml | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index fb5713fba..22689ceb1 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -75,12 +75,15 @@ build:tests-fedora:
-   stage: build
-   script:
-     - meson setup --prefix=/opt/igt $MESON_OPTIONS build
-+    - pip install -r docs/requirements-docs.txt
-     - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
-     - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
-+    - cd docs && mkdocs build && cd ..
-     - DESTDIR="$PWD/installdir" ninja -C build install
-   artifacts:
-     paths:
-       - build
-+      - site
-       - installdir
+For details regarding MkDocs please see: https://www.mkdocs.org/
  
- build:tests-fedora-no-libunwind:
-@@ -241,8 +244,11 @@ pages:
-     - build:tests-fedora
-   stage: deploy
-   script:
--    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
--    - cp -r build/docs/reference/igt-gpu-tools/html public
-+    - pip install -r docs/requirements-docs.txt
-+    - cp -r build/docs/reference/igt-gpu-tools/html/ docs/api_reference
-+    - mkdir -p docs/api_reference
-+    - cd docs && mkdocs build && cd ..
-+    - cp -r site public
-   artifacts:
-     paths:
-       - public
+This effort aims to enhance organization and presentation of our documentation,
+making it easier for users and contributors to navigate and understand the project.
+
+How to build it for review:
+
+$ pip3 install -r ./docs/requirements-docs.txt
+$ mkdocs build
+$ mkdocs serve
+
+Then, open in browser: http://127.0.0.1:8000/
+
+Patch 1: docs: Set up MkDocs for documentation site
+
+This patch lays the foundation for the documentation site by adding essential 
+configuration files and assets. 
+The mkdocs.yml file is introduced to define the site's structure, including 
+project information, navigation, theme settings(Material for MkDocs: 
+https://squidfunk.github.io/mkdocs-material/), and plugins. 
+
+Additionally, requirements-docs.txt lists the necessary dependencies for 
+building the site with MkDocs.
+
+Custom styling is applied through extra.css, which incorporates a Monokai 
+theme, and visual assets such as the logo are included. 
+This patch establishes the initial framework for generating the IGT GPU Tools 
+documentation site using MkDocs. 
+
+For more details on MkDocs, please refer to MkDocs Documentation.
+
+Patch 2: docs: Initialize MkDocs documentation structure
+
+This patch focuses on organizing the documentation content within the project.
+
+The README is updated with basic content to reflect the reorganization, while 
+detailed documentation is moved into the docs directory. 
+
+The content is split across multiple markdown files, setting up a structure 
+that allows for automatic site generation using MkDocs. 
+
+This reorganization enhances the accessibility and maintenance of the 
+documentation, providing a clear and navigable structure for users.
+
+Patch 3: gitlab-ci: Add MkDocs documentation support
+
+This patch integrates MkDocs documentation support into the GitLab CI pipeline. 
+It ensures that the current API reference manual (which is currently hosted on 
+GitLab pages) is built and copied to the MkDocs documentation directory, 
+maintaining its availability via an internal link. 
+
+The MkDocs documentation from the docs directory is also built, 
+with a relative link to api_reference/index.html included in the navigation. 
+
+After both builds are complete, all content is copied into the site directory 
+and manually moved into public for hosting on freedesktop GitLab Pages. 
+This integration ensures that the documentation is consistently updated 
+and accessible alongside the API reference manual.
+
+Together, these patches improve the presentation and accessibility of the 
+IGT GPU Tools project. 
+
+I look forward to your feedback.
+
+
+v2:
+ - Add many new documentation content and corrections to v1 (Swati)
+ - Add colorblind friendly theme css (Kamil)
+ - Fix line width to 100 characters (Kamil)
+ - Keep MAINTAINERS file in the root dir, but second version(formatted)
+   is created in the docs dir (Kamil)
+
+v3:
+ - Simplify mkdocs build (Pawel)
+
+Regards,
+Pawel
+
+Pawel Sikora (3):
+  docs: Set up MkDocs for documentation site
+  docs: Initialize MkDocs documentation structure
+  gitlab-ci: Add MkDocs documentation support
+
+ .gitlab-ci.yml                       |   10 +-
+ README.md                            |  203 +---
+ docs/CONTRIBUTING.md                 |   91 ++
+ docs/MAINTAINERS.md                  |   16 +
+ docs/NEWS.md                         | 1471 ++++++++++++++++++++++++++
+ docs/api.md                          |   30 +
+ docs/assets/intel_logo.png           |  Bin 0 -> 34697 bytes
+ docs/blocklists.md                   |  387 +++++++
+ docs/building.md                     |   27 +
+ docs/{chamelium.txt => chamelium.md} |    2 +-
+ docs/ci_infrastructure.md            |  419 ++++++++
+ docs/cross-building.md               |  240 +++++
+ docs/cross-building.txt              |  122 ---
+ docs/css/extra.css                   |  323 ++++++
+ docs/faq.md                          |   92 ++
+ docs/new_driver.md                   |  230 ++++
+ docs/overview.md                     |  249 +++++
+ docs/patchwork.md                    |   18 +
+ docs/requirements-docs.txt           |    7 +
+ docs/running_tests.md                |  130 +++
+ docs/test_categories.md              |  266 +++++
+ docs/test_plan.md                    |  216 ++++
+ mkdocs.yml                           |  225 ++++
+ 23 files changed, 4475 insertions(+), 299 deletions(-)
+ create mode 100644 docs/CONTRIBUTING.md
+ create mode 100644 docs/MAINTAINERS.md
+ create mode 100644 docs/NEWS.md
+ create mode 100644 docs/api.md
+ create mode 100644 docs/assets/intel_logo.png
+ create mode 100644 docs/blocklists.md
+ create mode 100644 docs/building.md
+ rename docs/{chamelium.txt => chamelium.md} (99%)
+ create mode 100644 docs/ci_infrastructure.md
+ create mode 100644 docs/cross-building.md
+ delete mode 100644 docs/cross-building.txt
+ create mode 100644 docs/css/extra.css
+ create mode 100644 docs/faq.md
+ create mode 100644 docs/new_driver.md
+ create mode 100644 docs/overview.md
+ create mode 100644 docs/patchwork.md
+ create mode 100644 docs/requirements-docs.txt
+ create mode 100644 docs/running_tests.md
+ create mode 100644 docs/test_categories.md
+ create mode 100644 docs/test_plan.md
+ create mode 100644 mkdocs.yml
+
 -- 
 2.34.1
 
