@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8ADBCA0EE4
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Aug 2025 13:56:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39D25CA0EE4
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Aug 2025 14:00:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 96BC310E73C;
-	Wed, 20 Aug 2025 13:56:52 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B6E710E73C;
- Wed, 20 Aug 2025 13:56:51 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5841232082510793463=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E545710E73D;
+	Wed, 20 Aug 2025 14:00:18 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ELj/UCqM";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE46B10E73D
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Aug 2025 14:00:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755698418; x=1787234418;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=N0elbA2j5HK8eCIvvEOne9NBWPlL9zgijvbyGOpfFSQ=;
+ b=ELj/UCqM8+xb3TEkFqN6OBuChMfZh1DocKW8WDEUVejJ+UbRtiyOVS1o
+ uo7KdLXlsX8O4VFsSq0+zgLQbyX8djg2DM8mAGpAvEVaapCjjgvhqBuYi
+ 1iLvvcmQPOg+BZIjmOx25fbIyIJKwxLE5QHmBvMSDvI2KluuuwVd/CwAw
+ lP9a5wIoq6V/GoMbvlX7VfVuS29eLGTVRuZuwWUMVBn9cdyp/4/n2atiB
+ OCx9dzB9CB74AQzdnV2Q/3qO9HPbX+c8nWNJ66rUDCFdUYAe2tw3FQdBZ
+ p+TKJzYb0o+FnN8bYGhj2szzZE960Ta8ld+gEAwrRw7GesTa6ZNCVDH9A A==;
+X-CSE-ConnectionGUID: Kp8qol/7QoCRLiFsDZHyOQ==
+X-CSE-MsgGUID: Y8F5pzDVQ6WBP3BTAdYVVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57881331"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="57881331"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2025 07:00:17 -0700
+X-CSE-ConnectionGUID: L1fjrlqKTjexo2UjN0A7jw==
+X-CSE-MsgGUID: faUXBgIxS/+ciym5HKeG6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="172393311"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 07:00:16 -0700
+Date: Wed, 20 Aug 2025 16:00:13 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, kunal1.joshi@intel.com,
+ pranay.samala@intel.com
+Subject: Re: [PATCH i-g-t v1 1/2] lib/igt_fb: Add helpers to identify planar
+ and packed YUV formats
+Message-ID: <20250820140013.hupfwi6v5iku6hmn@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org, kunal1.joshi@intel.com,
+ pranay.samala@intel.com
+References: <20250716092036.301862-1-ramanaidu.naladala@intel.com>
+ <20250716092036.301862-2-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fasync=5Fflips?=
- =?utf-8?q?=3A_Remove_unused_format_modifier_checks?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 20 Aug 2025 13:56:51 -0000
-Message-ID: <175569821136.251998.2117241525759035536@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250820062656.1081253-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20250820062656.1081253-1-santhosh.reddy.guddati@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250716092036.301862-2-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,163 +71,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5841232082510793463==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Naladala,
+On 2025-07-16 at 14:50:35 +0530, Naladala Ramanaidu wrote:
 
-== Series Details ==
+in subject there is 'v1' while it is 'v2'? Or am I missing something?
 
-Series: tests/kms_async_flips: Remove unused format modifier checks
-URL   : https://patchwork.freedesktop.org/series/153190/
-State : success
+Subject: Re: [PATCH i-g-t v1 1/2] lib/igt_fb: Add helpers to identify planar
+> Add new helper logic to distinguish between planar/semi-planar and
+> packed YUV formats. This classification enables more efficient test
+> coverage by reducing iterations in IGT, allowing tests to focus on
+> relevant format groups based on their memory layout.
 
-== Summary ==
+Please add information here about what changed, for example:
 
-CI Bug Log - changes from XEIGT_8499_BAT -> XEIGTPW_13608_BAT
-====================================================
+v2: add helper functions (Santosh)
+> 
 
-Summary
--------
+This is following Santosh suggestion so add here to Cc:
 
-  **SUCCESS**
+Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+> ---
+>  lib/igt_fb.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_fb.h |  2 ++
+>  2 files changed, 59 insertions(+)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 9fc1bfc65..f68aeaf42 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -5044,6 +5044,63 @@ bool igt_format_is_yuv(uint32_t drm_format)
+>  	}
+>  }
+>  
+> +/**
+> + * igt_format_is_planaryuv:
 
-  No regressions found.
+Add '_' before youv, so it will be:
 
-  
++ * igt_format_is_planar_yuv:
 
-Participating hosts (9 -> 9)
-------------------------------
+> + * @drm_format: drm fourcc
+> + *
+> + * This functions returns if @drm_format is planar/semi-planar YUV formats.
+> + */
+> +
+> +bool igt_format_is_planaryuv(uint32_t drm_format)
 
-  No changes in participating hosts
+Same here:
 
-Known issues
-------------
++bool igt_format_is_planar_yuv(uint32_t drm_format)
 
-  Here are the changes found in XEIGTPW_13608_BAT that come from known issues:
+> +{
+> +	switch (drm_format) {
+> +	case DRM_FORMAT_YUV420:
+> +	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YVU420:
+> +	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_NV12:
+> +	case DRM_FORMAT_NV16:
+> +	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV61:
+> +	case DRM_FORMAT_P010:
+> +	case DRM_FORMAT_P012:
+> +	case DRM_FORMAT_P016:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+> +/**
+> + * igt_format_is_yuv:
 
-### IGT changes ###
+Incorrect, function below has other name.
 
-#### Issues hit ####
+> + * @drm_format: drm fourcc
+> + *
+> + * This functions returns if @drm_format is packed YUV formats.
+> + */
+> +
+> +bool igt_format_is_packedyuv(uint32_t drm_format)
 
-  * igt@kms_flip@basic-plain-flip@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8499/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13608/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
+Same here:
++bool igt_format_is_packed_yuv(uint32_t drm_format)
 
-  
-#### Possible fixes ####
+> +{
+> +	switch (drm_format) {
+> +	case DRM_FORMAT_Y210:
+> +	case DRM_FORMAT_Y212:
+> +	case DRM_FORMAT_Y216:
+> +	case DRM_FORMAT_XVYU2101010:
+> +	case DRM_FORMAT_XVYU12_16161616:
+> +	case DRM_FORMAT_XVYU16161616:
+> +	case DRM_FORMAT_Y410:
+> +	case DRM_FORMAT_Y412:
+> +	case DRM_FORMAT_Y416:
+> +	case DRM_FORMAT_YUYV:
+> +	case DRM_FORMAT_YVYU:
+> +	case DRM_FORMAT_UYVY:
+> +	case DRM_FORMAT_VYUY:
+> +	case DRM_FORMAT_XYUV8888:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+>  /**
+>   * igt_format_is_fp16
+>   * @drm_format: drm fourcc
+> diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+> index d5aa1e88a..ace02a960 100644
+> --- a/lib/igt_fb.h
+> +++ b/lib/igt_fb.h
+> @@ -220,6 +220,8 @@ const char *igt_format_str(uint32_t drm_format);
+>  bool igt_fb_supported_format(uint32_t drm_format);
+>  bool igt_format_is_yuv(uint32_t drm_format);
+>  bool igt_format_is_yuv_semiplanar(uint32_t format);
+> +bool igt_format_is_planaryuv(uint32_t drm_format);
+> +bool igt_format_is_packedyuv(uint32_t drm_format);
 
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#4543]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8499/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13608/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
+Same here, add '_' before 'yuv'.
 
-  * igt@xe_vm@bind-execqueues-independent:
-    - {bat-ptl-1}:        [FAIL][5] ([Intel XE#5783]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8499/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13608/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html
+Regards,
+Kamil
 
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
-
-
-Build changes
--------------
-
-  * IGT: IGT_8499 -> IGTPW_13608
-  * Linux: xe-3585-8bb519764f4dc55fccfd5a1f97941d5c3bb6f524 -> xe-3586-7566d2cb0eb389084c208a764ce4ca287ec2242f
-
-  IGTPW_13608: e5cf67a4384afba9c1cdc8bc231b98ca29d0cf68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8499: e5e236fad9e36c3a868bc851262ee34ca57f9e5c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3585-8bb519764f4dc55fccfd5a1f97941d5c3bb6f524: 8bb519764f4dc55fccfd5a1f97941d5c3bb6f524
-  xe-3586-7566d2cb0eb389084c208a764ce4ca287ec2242f: 7566d2cb0eb389084c208a764ce4ca287ec2242f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13608/index.html
-
---===============5841232082510793463==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_async_flips: Remove unused format modifier checks</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153190/">https://patchwork.freedesktop.org/series/153190/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13608/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13608/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8499_BAT -&gt; XEIGTPW_13608_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13608_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8499/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13608/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8499/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13608/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_vm@bind-execqueues-independent:</p>
-<ul>
-<li>{bat-ptl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8499/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13608/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8499 -&gt; IGTPW_13608</li>
-<li>Linux: xe-3585-8bb519764f4dc55fccfd5a1f97941d5c3bb6f524 -&gt; xe-3586-7566d2cb0eb389084c208a764ce4ca287ec2242f</li>
-</ul>
-<p>IGTPW_13608: e5cf67a4384afba9c1cdc8bc231b98ca29d0cf68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8499: e5e236fad9e36c3a868bc851262ee34ca57f9e5c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3585-8bb519764f4dc55fccfd5a1f97941d5c3bb6f524: 8bb519764f4dc55fccfd5a1f97941d5c3bb6f524<br />
-  xe-3586-7566d2cb0eb389084c208a764ce4ca287ec2242f: 7566d2cb0eb389084c208a764ce4ca287ec2242f</p>
-
-</body>
-</html>
-
---===============5841232082510793463==--
+>  
+>  uint32_t igt_drm_format_str_to_format(const char *drm_format);
+>  
+> -- 
+> 2.43.0
+> 
