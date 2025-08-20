@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF5FCA0EE4
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Aug 2025 13:11:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E12FCA0EDC
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Aug 2025 13:20:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7FC8810E731;
-	Wed, 20 Aug 2025 13:11:24 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD43710E731;
- Wed, 20 Aug 2025 13:11:23 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8114113338056701902=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0EEC610E262;
+	Wed, 20 Aug 2025 13:20:43 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ifkIHY2w";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08D4310E262
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Aug 2025 13:20:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755696042; x=1787232042;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=LEoRQ0HvFo680fnwfxICgikodE22I846opPUhl/3gX0=;
+ b=ifkIHY2wIQ/wzkRvo09IqcLs5HDx24lDF5Mjjpro0Q8b7gNlwfAiZ1IR
+ Zpj038bgCztZHXldKcXc6fD7JeLzDrVCyiIkJjVCEnn4sQFmkyHyRt3uW
+ aHedOOwriZj8EkNx0o9X6GkCFerLOpfEKswefDQp09kgLLMPs/6/mqtDh
+ SjBUoj5oXY+ggDrL2+PzdepJq6uNZntfth5fHjhaS4zIfzDmhFDWRo5ox
+ OAiWzerWAZ8ZFFVinKXU7ZeJa81w1wa+WlBMghEEFFeByaY3M9BU0QX5P
+ B74S+OJDwRNdzqbWUiJF2CkH/i8Ut6UgVnllEBBBDDQGfha5q7RL/TVzA A==;
+X-CSE-ConnectionGUID: pyQJtpF0SC2kerdrG+9aMQ==
+X-CSE-MsgGUID: zzHfRTuOSKCd2CJO+ZmS8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57159718"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="57159718"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2025 06:20:41 -0700
+X-CSE-ConnectionGUID: 5DexN0fjR+61sF4CCpwC9Q==
+X-CSE-MsgGUID: YV7qMgOYTtKydrFAgqjU2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="167323802"
+Received: from intel-s2600wft.iind.intel.com (HELO
+ ec8f73bc045b.iind.intel.com) ([10.223.26.161])
+ by orviesa006.jf.intel.com with ESMTP; 20 Aug 2025 06:20:40 -0700
+From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: carlos.santa@intel.com, s.sebinraj@intel.com,
+ Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Subject: [PATCH i-g-t] tools/xe_gpu_frequency: Add tool to set/get Intel GPU
+ frequency for Xe
+Date: Wed, 20 Aug 2025 18:21:17 +0530
+Message-ID: <20250820125121.1387843-1-jeevaka.badrappan@intel.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fasync=5Fflips?=
- =?utf-8?q?=3A_Remove_unused_format_modifier_checks?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 20 Aug 2025 13:11:23 -0000
-Message-ID: <175569548389.251998.13847213605377856727@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250820062656.1081253-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20250820062656.1081253-1-santhosh.reddy.guddati@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,192 +65,268 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8114113338056701902==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Introduces a new tool, `xe_gpu_frequency`, which provides options to get
+and set frequencies for Intel Graphics cards using the Xe driver.
 
-== Series Details ==
+Example usages:
+$xe_gpu_frequency -g
+Opened device: /dev/dri/card0
 
-Series: tests/kms_async_flips: Remove unused format modifier checks
-URL   : https://patchwork.freedesktop.org/series/153190/
-State : success
+=====GT0=====
+cur: 700 MHz
+min: 700 MHz
+rpe: 600 MHz
+max: 700 MHz
 
-== Summary ==
+=====GT1=====
+cur: 400 MHz
+min: 400 MHz
+rpe: 400 MHz
+max: 400 MHz
 
-CI Bug Log - changes from IGT_8499 -> IGTPW_13608
-====================================================
+$xe_gpu_frequency -s 300 -g
+Opened device: /dev/dri/card0
 
-Summary
--------
+=====GT0=====
+cur: 300 MHz
+min: 300 MHz
+rpe: 600 MHz
+max: 300 MHz
 
-  **SUCCESS**
+=====GT1=====
+cur: 300 MHz
+min: 300 MHz
+rpe: 400 MHz
+max: 300 MHz
 
-  No regressions found.
+$xe_gpu_frequency -c gt=0,max=900 -g
+Opened device: /dev/dri/card0
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/index.html
+=====GT0=====
+cur: 300 MHz
+min: 300 MHz
+rpe: 600 MHz
+max: 900 MHz
 
-Participating hosts (44 -> 43)
-------------------------------
+=====GT1=====
+cur: 300 MHz
+min: 300 MHz
+rpe: 400 MHz
+max: 300 MHz
 
-  Missing    (1): fi-snb-2520m 
+Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+---
+ tools/meson.build        |   1 +
+ tools/xe_gpu_frequency.c | 185 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 186 insertions(+)
+ create mode 100644 tools/xe_gpu_frequency.c
 
-Known issues
-------------
+diff --git a/tools/meson.build b/tools/meson.build
+index 99a732942..3a0c53d68 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -47,6 +47,7 @@ tools_progs = [
+ 	'intel_gvtg_test',
+ 	'dpcd_reg',
+ 	'lsgpu',
++	'xe_gpu_frequency',
+ ]
+ tool_deps = igt_deps
+ tool_deps += zlib
+diff --git a/tools/xe_gpu_frequency.c b/tools/xe_gpu_frequency.c
+new file mode 100644
+index 000000000..4ba362be7
+--- /dev/null
++++ b/tools/xe_gpu_frequency.c
+@@ -0,0 +1,185 @@
++/*
++ * Copyright © 2025 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++ * DEALINGS IN THE SOFTWARE.
++ */
++
++#include <getopt.h>
++
++#include "xe/xe_gt.h"
++
++#define VERSION "1.0"
++
++enum {
++	CUR = 0,
++	MIN,
++	EFF,
++	MAX,
++	RP0,
++	RPn
++};
++
++struct freq_info {
++	const char *name;
++	const char *mode;
++};
++
++static struct freq_info info[] = {
++	{ "cur", "r"  },
++	{ "min", "rb+" },
++	{ "rpe", "r" },
++	{ "max", "rb+" },
++	{ "rp0", "r" },
++	{ "rpn", "r" }
++};
++
++static void usage(const char *prog)
++{
++	printf("%s A program to manipulate Intel GPU frequencies.\n\n", prog);
++	printf("Usage: %s [-e] [--min | --max] [--get] [--set frequency_mhz]\n\n", prog);
++	printf("Options:\n");
++	printf("  -e		Lock frequency to the most efficient frequency\n");
++	printf("  -g, --get     Get all the frequency settings\n");
++	printf("  -s, --set     Lock frequency to an absolute value (MHz)\n");
++	printf("  -c, --custom  Set a min, max frequency or both for a gt\"gt=X,min=Y,max=Z\"\n");
++	printf("  -m  --max     Lock frequency to max frequency\n");
++	printf("  -h  --help    Returns this\n");
++	printf("  -v  --version Version\n");
++	printf("\n");
++	printf("Examples:\n");
++	printf("   xe_gpu_frequency --get\t\tGet the current and minimum frequency for all gt\n");
++	printf("   xe_gpu_frequency --set 400\tLock frequency to 400Mhz for all gt\n");
++	printf("   xe_gpu_frequency --custom gt=0,max=750\tSet the max frequency to 750MHz\n");
++	printf("\n");
++	printf("Report bugs to https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues\n");
++}
++
++static void version(const char *prog)
++{
++	printf("%s: %s\n", prog, VERSION);
++	printf("Copyright © 2025 Intel Corporation\n");
++}
++
++int main(int argc, char *argv[])
++{
++	uint32_t frequency;
++	int fd, c, gt;
++	int ret = EXIT_FAILURE;
++
++	fd = __drm_open_driver(DRIVER_XE);
++	if (fd < 0) {
++		fprintf(stderr, "Xe device open failed\n");
++		exit(EXIT_FAILURE);
++	}
++
++	while (1) {
++		int option_index = 0;
++		static struct option long_options[] = {
++			{ "get", no_argument, NULL, 'g' },
++			{ "set", required_argument, NULL, 's' },
++			{ "custom", required_argument, NULL, 'c'},
++			{ "max", no_argument, NULL, 'm' },
++			{ "help", no_argument, NULL, 'h' },
++			{ "version", no_argument, NULL, 'v' },
++			{ NULL, 0, NULL, 0}
++		};
++
++		c = getopt_long(argc, argv, "egs:c:mh", long_options, &option_index);
++		if (c == -1)
++			break;
++
++		switch (c) {
++		case 'g':
++			xe_for_each_gt(fd, gt) {
++				printf("\n=====GT%d=====\n", gt);
++				for (int i = 0; i < (MAX + 1); i++) {
++					printf("%s: %d MHz\n",  info[i].name,
++					       xe_gt_get_freq(fd, gt, info[i].name));
++				}
++			}
++			break;
++		case 's':
++			if (!optarg) {
++				usage(argv[0]);
++				goto failure;
++			}
++
++			sscanf(optarg, "%u", &frequency);
++			xe_for_each_gt(fd, gt) {
++				xe_gt_set_freq(fd, gt, info[MIN].name, frequency);
++				xe_gt_set_freq(fd, gt, info[MAX].name, frequency);
++			}
++			break;
++		case 'c': {
++			char *arg, *token;
++
++			if (!optarg) {
++				usage(argv[0]);
++				goto failure;
++			}
++
++			arg = strdup(optarg);
++			token = strtok(arg, ",");
++			while (token != NULL) {
++				if (!strncmp("gt=", token, 3)) {
++					sscanf(token + 3, "%d", &gt);
++				} else if (!strncmp("min=", token, 4)) {
++					sscanf(token + 4, "%u", &frequency);
++					xe_gt_set_freq(fd, gt, info[MIN].name, frequency);
++				} else if (!strncmp("max=", token, 4)) {
++					sscanf(token + 4, "%u", &frequency);
++					xe_gt_set_freq(fd, gt, info[MAX].name, frequency);
++				} else {
++					fprintf(stderr, "Selected unmodifiable frequency\n");
++				}
++				token = strtok(NULL, ",");
++			}
++			free(arg);
++			break;
++		}
++		case 'e': /* efficient */
++			xe_for_each_gt(fd, gt) {
++				frequency = xe_gt_get_freq(fd, gt, info[EFF].name);
++				xe_gt_set_freq(fd, gt, info[MIN].name, frequency);
++				xe_gt_set_freq(fd, gt, info[MAX].name, frequency);
++			}
++			break;
++		case 'm': /* max */
++			xe_for_each_gt(fd, gt) {
++				frequency = xe_gt_get_freq(fd, gt, info[RP0].name);
++				xe_gt_set_freq(fd, gt, info[MIN].name, frequency);
++				xe_gt_set_freq(fd, gt, info[MAX].name, frequency);
++			}
++			break;
++		case 'v':
++			version(argv[0]);
++			break;
++		case 'h':
++		default:
++			usage(argv[0]);
++			break;
++		}
++	}
++
++	ret = EXIT_SUCCESS;
++failure:
++	close(fd);
++	return ret;
++}
+-- 
+2.50.1
 
-  Here are the changes found in IGTPW_13608 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_auth@basic-auth:
-    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] ([i915#13890])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-adlp-6/igt@core_auth@basic-auth.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-adlp-6/igt@core_auth@basic-auth.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-9:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * {igt@core_debugfs@read-all-entries}:
-    - bat-adlp-6:         [DMESG-WARN][5] ([i915#13890]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-adlp-6/igt@core_debugfs@read-all-entries.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-adlp-6/igt@core_debugfs@read-all-entries.html
-
-  * igt@gem_exec_fence@basic-await@ccs0:
-    - bat-arlh-3:         [FAIL][7] -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-arlh-3/igt@gem_exec_fence@basic-await@ccs0.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-arlh-3/igt@gem_exec_fence@basic-await@ccs0.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-    - bat-arls-6:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13890]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8499 -> IGTPW_13608
-
-  CI-20190529: 20190529
-  CI_DRM_17038: 7566d2cb0eb389084c208a764ce4ca287ec2242f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13608: e5cf67a4384afba9c1cdc8bc231b98ca29d0cf68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8499: e5e236fad9e36c3a868bc851262ee34ca57f9e5c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/index.html
-
---===============8114113338056701902==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_async_flips: Remove unused format modifier checks</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153190/">https://patchwork.freedesktop.org/series/153190/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8499 -&gt; IGTPW_13608</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/index.html</p>
-<h2>Participating hosts (44 -&gt; 43)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13608 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_auth@basic-auth:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-adlp-6/igt@core_auth@basic-auth.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-adlp-6/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>{igt@core_debugfs@read-all-entries}:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-adlp-6/igt@core_debugfs@read-all-entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13890">i915#13890</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-adlp-6/igt@core_debugfs@read-all-entries.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fence@basic-await@ccs0:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-arlh-3/igt@gem_exec_fence@basic-await@ccs0.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-arlh-3/igt@gem_exec_fence@basic-await@ccs0.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8499/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13608/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8499 -&gt; IGTPW_13608</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17038: 7566d2cb0eb389084c208a764ce4ca287ec2242f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13608: e5cf67a4384afba9c1cdc8bc231b98ca29d0cf68 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8499: e5e236fad9e36c3a868bc851262ee34ca57f9e5c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8114113338056701902==--
