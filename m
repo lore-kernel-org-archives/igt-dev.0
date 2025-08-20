@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABD85CA0EED
-	for <igt-dev@archiver.kernel.org>; Wed, 20 Aug 2025 08:41:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCDD9CA0EDC
+	for <igt-dev@archiver.kernel.org>; Wed, 20 Aug 2025 08:58:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5C55110E6BB;
-	Wed, 20 Aug 2025 08:41:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6FFA410E6BE;
+	Wed, 20 Aug 2025 08:58:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nqH22HIh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UTBBZRZY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EC7C10E35E;
- Wed, 20 Aug 2025 08:41:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B4FE10E6BE
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Aug 2025 08:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755679310; x=1787215310;
+ t=1755680287; x=1787216287;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=hLNb/Vn1NS8e9AfeQRu51jSyXK9M5aAX0MzQAacGnHQ=;
- b=nqH22HIhQeAr/o0zsJbX9HjjY9T9gYz6LkJ5Xbby0r0Pc12mEo8+tbYF
- 6qAeHu9z0Am6m7nBIiV9kdQE+dBRp0l1+NvuWrhvlNITdiUCoTtubX9fL
- 5S8NpighZQhX8UhU3CS1d2bkDW0b5zhMGO3mVbyut3M6QYVePHHJCykJo
- 0OKJUAFet7C4IntBGwfrsMWnilFOXRZoo5l+YWT2gHYMBvkV6As9mKygv
- N/uZhkkE4VqYgdTz5MmYYCH8hezRm0SEAHpHH64/LplZ0tHfG3GNP8ZE2
- ebUflgCCQRBD8nZy5yF4tgU8H2p0OGh/2Mi1JhyY9sX/e/06/t62PRpW7 w==;
-X-CSE-ConnectionGUID: rbbDBwnXR7WVlWvSCVh7lw==
-X-CSE-MsgGUID: 7svjY5pTTvSv86YaMzcYNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="58088629"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="58088629"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2025 01:41:49 -0700
-X-CSE-ConnectionGUID: 9iZiG+4sRZCY7euGV0DHMQ==
-X-CSE-MsgGUID: xHPr0Gv/Rx6AEU5wh+s+7w==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=3mcVNpc4/uFCX5zcXvoWI2AZtyvA/rcPml19w/7itm8=;
+ b=UTBBZRZYAK0KnTHsoKw7KWm0/1nx5pXaL6+Dy4RftmcwMc4rdEcRIbxA
+ tSQ9kUVwsCvWLIdjhJb2aAvStz+dF1brDAnKK46xQu6615zq/Mc1OTviC
+ euvSecipnVapsE0dlI9wcF8emK9i1O+BdYiP8LTBo1txoeNdpxABVBlxO
+ MgTRW+b0w+JYK2uylzZ823aEZZBWWluIkulQxE1lYoEFq3jYsEyXcGpia
+ U5Xb5tmLuqUkw41ZLe4++RfFqnqphQuFzWR+kixc7EvzEODXEwBPAIgQ4
+ 4PMHIC1p4Y0W4phUpU4WFGGa7C3UPRwBT+2oPuIZfPalM8vTdzIA0QWzt w==;
+X-CSE-ConnectionGUID: 6tTYiMb0R0Ofs8XrjWNvrQ==
+X-CSE-MsgGUID: fWUGBUhqQnqFDjyexdIK/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="68540621"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="68540621"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2025 01:58:07 -0700
+X-CSE-ConnectionGUID: a0IbeaC3S5imy+c0xR6UXA==
+X-CSE-MsgGUID: Sv17p8IfT9+3GwwV+N6pjQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="172317192"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; d="scan'208";a="191767870"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 01:41:48 -0700
-Date: Wed, 20 Aug 2025 10:41:46 +0200
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 01:58:05 -0700
+Date: Wed, 20 Aug 2025 10:58:03 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
- Convert kms_3d into subtest
-Message-ID: <20250820084146.y5msam5o253dlgoj@kamilkon-DESK.igk.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v2] tools/intel_vbt_decode: convert copyright signs
+ from latin1 to utf8
+Message-ID: <20250820085803.nryt4obuw5wgjkva@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20250819155058.129794-1-kamil.konieczny@linux.intel.com>
- <175566336946.250473.13965416509169453641@1538d3639d33>
+ Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org
+References: <20250820072405.3518554-1-jani.nikula@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <175566336946.250473.13965416509169453641@1538d3639d33>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250820072405.3518554-1-jani.nikula@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,93 +71,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-08-20 at 04:16:09 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Jani,
+On 2025-08-20 at 10:24:05 +0300, Jani Nikula wrote:
+> Various tools trip over with latin1 characters in the source, as
+> nowadays everything pretty much expects utf8.
 > 
-> Series: Convert kms_3d into subtest
-> URL   : https://patchwork.freedesktop.org/series/153155/
-> State : failure
+> For example, [1] fails to apply in both Patchwork and b4, because
+> somewhere along the way, the latin1 copyright sign has in fact been
+> automagically converted to utf8, and the source still has latin1.
 > 
-> == Summary ==
+> Instead of debugging legacy encodings and conversions, just convert the
+> remaining latin1 files to utf8 using iconv.
 > 
-> CI Bug Log - changes from CI_DRM_17032_full -> IGTPW_13600_full
-> ====================================================
+> [1] https://lore.kernel.org/all/7090e70d712c94aed53f52c49a8155eb4c6b966c.1755175663.git.jani.nikula@intel.com/
 > 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_13600_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_13600_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13600/index.html
-> 
-> Participating hosts (12 -> 11)
-> ------------------------------
-> 
->   Missing    (1): shard-dg2-set2 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_13600_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_suspend@forcewake:
->     - shard-tglu:         [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17032/shard-tglu-3/igt@i915_suspend@forcewake.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13600/shard-tglu-2/igt@i915_suspend@forcewake.html
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-This is unrelated, no need for rerun.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Thank you for a fix, I will merge it soon with small change in
+subject, s/sings/sign/ as this is only one file and one char.
 
 Regards,
 Kamil
 
 > 
->   
-> New tests
-> ---------
+> ---
 > 
->   New tests have been introduced between CI_DRM_17032_full and IGTPW_13600_full:
+> v2: Rebase, intel_bios.h no longer exists.
 > 
-> ### New IGT tests (1) ###
+> I'll be trying 'git send-email --8bit-encoding=iso-8859-1' on this
+> one. Fingers crossed.
+> ---
+>  tools/intel_vbt_decode.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->   * igt@kms_3d@basic:
->     - Statuses : 5 pass(s)
->     - Exec time: [1.42, 3.46] s
+> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+> index 6882ae1d2f63..a4e76b7559d2 100644
+> --- a/tools/intel_vbt_decode.c
+> +++ b/tools/intel_vbt_decode.c
+> @@ -1,5 +1,5 @@
+>  /*
+> - * Copyright © 2006 Intel Corporation
+> + * Copyright Â© 2006 Intel Corporation
+>   *
+>   * Permission is hereby granted, free of charge, to any person obtaining a
+>   * copy of this software and associated documentation files (the "Software"),
+> -- 
+> 2.47.2
 > 
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_13600_full that come from known issues:
-
-...cut...
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_8498 -> IGTPW_13600
->   * Piglit: piglit_4509 -> None
-> 
->   CI-20190529: 20190529
->   CI_DRM_17032: 8093b67375779a975c13b9a23c8fcc25cb1e9c83 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_13600: e50acf4e67e6826b14605753615c30666f704747 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   IGT_8498: 8498
->   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13600/index.html
