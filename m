@@ -4,172 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDA7DCA0EEB
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 09:10:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18ED3CA0EEB
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 09:48:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A2A9410E8C3;
-	Thu, 21 Aug 2025 09:10:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B4B9E10E2E5;
+	Thu, 21 Aug 2025 09:48:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F3WLWivw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Coo6UBt7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3D5D10E8C3
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 09:10:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C78010E2E5
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 09:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755767435; x=1787303435;
- h=from:to:cc:subject:date:message-id:references:
+ t=1755769710; x=1787305710;
+ h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=2V0hotRC44SaIuRSUQKKnrxHx/6pxWtF/xtFt1GcC8U=;
- b=F3WLWivwMK1PRPNH+3mQ5PYXjt0EuuTvN2oLthMSFp1wKwWpPBtr9LsN
- EUQcO0AsjmScrvbxJkDTdiksFloj5mvKZR++swMOW+wSOW7o/KJ0SZoyN
- DTBeSXpyIiUVQThuAMqvZGpLgl8lE83sAwj5NmhLQz88CH1C7qTI7XZXy
- xw0MaFXAPOMr/zPyDH1N/3r+3uyaaB/YTvSS9HmiGhwuK4CWus466HOop
- JVblo4sGaROpd4cfEkSHBac5Tnak19S9vwkQxQiTw7pkZPyPRBiHN7Xs6
- bqEIZFe5Slvs26AmGoKPtPEk+ejm3PMYtyTO/q6jROjULbsp3T7UlJLOS g==;
-X-CSE-ConnectionGUID: KLvsH1BPT0SMX2l0pb6NQQ==
-X-CSE-MsgGUID: 9M63TZKUT9i+Wmg7F59STA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="58119584"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="58119584"
+ bh=R2d9YwITjIOUSd/9UWy5AFMitYHwMzp4PJbonhFyrN4=;
+ b=Coo6UBt7eNpL90qV/efGu8E3kVfqGJYDcklkicvk030zDdszp3gvSRkf
+ MJ6UVZO6cr/5nHgGFIH3goUFMEIpU0+kAyxPU49oM/P55Gex+ViOHzlM3
+ yk8AO/gOmoz3v74nJQulyLavqH70MJ2zuZoXshpdWzhoIVFwYBIZvlMsi
+ wAj3S54B5x5u7jymCskjH2eu1l3jNccsmbuMPbRv+mocgVSkuxsk5vGO2
+ 28u+mJGokNihEwcTGFuuBoPbV4PZtM/0Kh/cdV4E/oPTit4pCq9ZGUfqE
+ IOPxhHwGJij7ZTUmk5xTBTozFou6rb7kNgkU39IKPWtsKYRT3fcLhO6qu A==;
+X-CSE-ConnectionGUID: Q0eG+kgXSYyg5HrJVB/ykQ==
+X-CSE-MsgGUID: Jsw4D1z0T0yb9p+DbOzRkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57912462"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="57912462"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 02:10:34 -0700
-X-CSE-ConnectionGUID: jDnVl6SsSdGQnx+S4JsadA==
-X-CSE-MsgGUID: hhPohfBqTqO/1uXfrOPmxA==
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 02:48:30 -0700
+X-CSE-ConnectionGUID: alX5Tqp4Sly2pwKFIEGbvg==
+X-CSE-MsgGUID: RfsugUfeTo+NGteotXT5LA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="192045202"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="192054572"
 Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 02:10:34 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ 21 Aug 2025 02:48:28 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 21 Aug 2025 02:10:34 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.17; Thu, 21 Aug 2025 02:48:28 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Thu, 21 Aug 2025 02:10:34 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.59)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Thu, 21 Aug 2025 02:48:28 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.64)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 21 Aug 2025 02:10:33 -0700
+ 15.2.2562.17; Thu, 21 Aug 2025 02:48:28 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nehKaGtHbMoEXEOu/ujs7zDZJuhEOtbQDKWVO1L7PnNeoTOsIP0579PzSLOxSdbsR9NVZvNV9E1LZXcKMIv50hVJnq6Ja33NE2oPJ3Fv07EEprQM4D9X/xunBIj4MdhnVV8ACtHO1+Yk7WBLEw/wT9P+G6iDjeb8v0BpExHJGIJODxM0EdrD4/0Vxoz5AprTEfGpWmL+0gwqHlTmNVmXNTjn7xHzutnZDqbMMRhKGj/8lFztLy1BbiXLNFfqUT7knPEHAAElZ772eyXHyJtypUUTyHv6iXKDnQMATsw8TGypRJNzvF8fZfz2rhooIOgB/5pQgxzkk3PhR85bmNIqqQ==
+ b=kolDXhrHST02EkW8VJleH5AEM5yoeGTlWJ+swDtJqD5yFp846szJAK4FkCWjX64d3F+7r26Z1KqUY5DTY7Cq0zoLnrO3GgPPXdVFGxW+1X8q/zaPiM5Y8NXYhaPcMjlasg11w9N3lYpn6KDrjG+Hu76cU+Tk8Ga5z++K7uAFFbLSlC7mxIw/urA+H88XSDK0Idt/URBu9f8J265bUOtkTDSJD7niYPzCQFTd/QShM6DOAdGLHvFvCwQx3RXjLSp6j3zm9Pgr+3MKf8ObinT+CtnQ7sPmeRtk/ZKsjPqPa2UA59kGWHw3RnLwsACrly0PrK2uoYA3GDXD8um5+LFeYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2V0hotRC44SaIuRSUQKKnrxHx/6pxWtF/xtFt1GcC8U=;
- b=UG/+nydjZSSRRZRXkEXUMm2BCh4PdVchLFQAf7I6+Om/8lXDEwZN5rNcf0oK1KK7zo8j97+8AUBZQKfeGnZYkQX8lQ+whuxhdtXTsIArHSeAPANqbfW6MISP4dxm0/AzphxsUNQpL/u0TWxoeX0zYyxaCg5G6L4LgYETG+lJght+i1E2NiNGM9b6AzWZSo9r4RODTfD8GeaQK0sgEa7oSwxXga2a7zzQxA1QA4xzT4lyNHG05d/uu9zzzXmfnABop8tCbahxYlVGwo3+CYpzp/WG8znjT78N3dGXrbYvBvt/W1vLIkBXQALaw3kd+rpA/uZY1XqqpzCuXvJzSXqv7g==
+ bh=s+JaSufXJOyYYnX8PTmeTHFAYyPkMTNwOGrjEZdyevY=;
+ b=ogUrxxSM+omxCaBWykTj0jtx2+wOTvpvSjNh+hKW2PMqYr+3ksJ5x6xizcAbgNQRsrNQu3lHF0g27Mzk8KPnlFvgNyX4WHwaFRMgjExPinrlq8KE7Q35zJ8G3CRYzb8/6yfH0xJGP3r2EVkHWjhpHzoQOQNt+3MyEYYedMoSYSZnq7ZvCWV1oY6tE48nsQEYn7abOmgobfK+eC0wXz+ojxZknnFTdmbTUuwKa92MvBMkT3xiE6xoRiJP3nend6TFGaJr2PfMmMoXhDonoLKomJ4MTs6aLnCcp5ZvPvAcJ4oEeKcVklvsWTHTLCpjN4tj1esg8V3HOxbrwp2cIQ7M0w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6268.namprd11.prod.outlook.com (2603:10b6:208:3e4::8)
- by IA3PR11MB9274.namprd11.prod.outlook.com (2603:10b6:208:578::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Thu, 21 Aug
- 2025 09:10:27 +0000
-Received: from IA1PR11MB6268.namprd11.prod.outlook.com
- ([fe80::7149:569a:183a:f3c9]) by IA1PR11MB6268.namprd11.prod.outlook.com
- ([fe80::7149:569a:183a:f3c9%3]) with mapi id 15.20.9052.013; Thu, 21 Aug 2025
- 09:10:27 +0000
-From: "Badrappan, Jeevaka" <jeevaka.badrappan@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Santa, Carlos" <carlos.santa@intel.com>, "Sebinraj, S"
- <s.sebinraj@intel.com>, "B S, Karthik" <karthik.b.s@intel.com>
-Subject: Re: [PATCH i-g-t] tools/xe_gpu_frequency: Add tool to set/get Intel
- GPU frequency for Xe
-Thread-Topic: [PATCH i-g-t] tools/xe_gpu_frequency: Add tool to set/get Intel
- GPU frequency for Xe
-Thread-Index: AQHcEdVB76OI3OYOX0OdS//gtyYw4LRrvTUAgAEUmi4=
-Date: Thu, 21 Aug 2025 09:10:26 +0000
-Message-ID: <IA1PR11MB6268A74F8E0560EDE84E03BBED32A@IA1PR11MB6268.namprd11.prod.outlook.com>
-References: <20250820125121.1387843-1-jeevaka.badrappan@intel.com>
- <20250820163528.trzmxfbwojmg74p6@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20250820163528.trzmxfbwojmg74p6@kamilkon-DESK.igk.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6268:EE_|IA3PR11MB9274:EE_
-x-ms-office365-filtering-correlation-id: c0c79b6d-5900-4208-697b-08dde09291a6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?gwQVOuq9At5v4g4iqv7XuTvaiw4/afni4K7PohYQVY2oY12U0HercaRxVm?=
- =?iso-8859-1?Q?2X6NsySurId1zyLBqmo+mjsC+cMJ7pGXjtoxf6kkvDsHrKnEi4mhV4VLmk?=
- =?iso-8859-1?Q?2e45U4J2h5nEXFNgfwwdOID6+RZbOfGL07Eln9XZK8LUWzEFS9Fw98XDfH?=
- =?iso-8859-1?Q?6wXL/StpLfVFBD0vPWsdKCvQubtPkzQwSIRNsXbOZzLRO/F/ywfYj0eCcW?=
- =?iso-8859-1?Q?C+8dLqvSpJ3zGbQj431WwfWybddpqgsTqGxr0OczkE3NZttobn59U60ZO2?=
- =?iso-8859-1?Q?deZMX4AXuEq3xJyrk9T7TFEdoj8WBcxQ7tHl4wwIyVbarWwS3JamFcIt1c?=
- =?iso-8859-1?Q?zbjKN6eWRcY6kvwC1rUKwT3FwF8r14X4lQNGkNUJz7A+RHdj+3w7fCUV9y?=
- =?iso-8859-1?Q?6bIPksmvIqoDU+D9D2MgmMHJVzyZPL3X1Umu79UBam7OSUFH1/pg6VBK78?=
- =?iso-8859-1?Q?7mZ7PauSfBIThDwI9dSrclRoBXMRNzhmtlCeV2vP+rnsK4PQRGQKrGKaaF?=
- =?iso-8859-1?Q?DyXuYyLP8i/f8ylF9Y2OduCnxoNGowQQSm8lN4dPlWQX790xs05CsUKmX/?=
- =?iso-8859-1?Q?LIcEXK0Yf34OED/Tw0lln/zgZntyPiQ+SnsCI+UOcwfTpgfnKvA1rqtm5H?=
- =?iso-8859-1?Q?KcLJW2iiojZ+DZ+ajf7CTWBPCDMDoUozD7uHuB1nZ/ksK99HoKAWfs7cIQ?=
- =?iso-8859-1?Q?XmOf+QKTDiu0DnW81gzJh1w8iC6GBTmJm9hQswhfXu7E5xLDuDYBJwFvEi?=
- =?iso-8859-1?Q?dcJvNrf9toMKo1iIy3YpBbWz4jDOhcMi8zqPCc+Kp1AK5mIXHDv/YZ/0q9?=
- =?iso-8859-1?Q?xlMLjRaVNgeLFP68IM75bbKSGhvygVILNZJiG36cXsVlRBGCZld4/wMWEh?=
- =?iso-8859-1?Q?VKrmgsZbKr8bSp9d0qUkyWirERoZRmXcmkFsfAr0aJOTXu3AqL4w7e2fLK?=
- =?iso-8859-1?Q?fFXp2J36QclmyU8Nn/hili1FGTwrS/jYfzv+n8BSpSWS5rymeGOUltTIaK?=
- =?iso-8859-1?Q?7XMVpoosYM9Nl4sbYFmqnG+hAM5m8d0RPrHKM/CBYCC6u2bupBTzKS9lZw?=
- =?iso-8859-1?Q?PjjUNo1b62rtngYmEnht/lXVulfswQt62pkOrMTg5fbGr+Z4cwrYM9J2uH?=
- =?iso-8859-1?Q?fwkcAE1G4LFmFWDRLUY8UbIIirkqwBejeAYrgnB4fX6u16ToVk6bZiInkc?=
- =?iso-8859-1?Q?VOSDgL0LdTCdFiYN5CGbBojkbEKdOR4U8jZpioNlfu783jnzJBwe86O2YB?=
- =?iso-8859-1?Q?+dHKODNlXISdKevW+d20ivzO3YRENdEWeKfigb4i1lqbvF9KbXuXo0068X?=
- =?iso-8859-1?Q?s6sf00RzQiMBfifEix2E2R3kmCVfW0ftPtzoVsKJAn92ZrGvVTH2LjvN4V?=
- =?iso-8859-1?Q?OneOJdsPAkVdM8iwjdT74wns4fEhiyDudtuWZ6eepMVmM/vMroRfobsLvY?=
- =?iso-8859-1?Q?uZ3BTD2YihbnY3WrqT4z3Pl1ObIHtY9l6OzcDOkDMWhmDAq2dc7hc/MH5+?=
- =?iso-8859-1?Q?+7TmDcy+KLwAIZxG4dpNMeUzvc6RnwenJpiijd7cHyRQ=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR11MB6268.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Py2uDLdn4vsJROIjFnfmohxN/IOUcKrk26Dr+18zPoeaqH01hRueVN6WJR?=
- =?iso-8859-1?Q?7j6iUTVKz6OQWtLx7O6Y5fyiDKkVPelAsYRJPRQXZNobuXGfOlPWBtZtzw?=
- =?iso-8859-1?Q?SFpDXxPLvLC0dVmvSeeRj9cX83aIziuoWz+7JPMDScTZ4c1j6SQ93TfyOX?=
- =?iso-8859-1?Q?XW8XNv0H0A82hciTgYI1sWosrJ67V3c8XLsfV4IAFdY3NBHVS46tRWSOEP?=
- =?iso-8859-1?Q?FjoIaqWBXnxiBWBdtNxUPjkoDhMqZRUFe4vqDoqxztOLm1Q6d2ohbqoOvY?=
- =?iso-8859-1?Q?gJ7DPRRcP9D4I+vtr83FrH/ypqNi+WBwpdwp1gP0qQ/Xxlar0ETjOQHFvo?=
- =?iso-8859-1?Q?nzAMfWphLmPYmnJkSm06oZmYIWICLL1LCVNm9u52spgZPIrGtSnQZVLSZt?=
- =?iso-8859-1?Q?St01cEdSe/zUzlX1oRQyEuszjGnyqb4gCjTv/cT9PJkBng0HW+GsqiJ4Ni?=
- =?iso-8859-1?Q?OEJpc26U6IeTT4iVOBYbDhtLyH/jwn7kFpzZu6z3ARCt0qFELBqFUWHf13?=
- =?iso-8859-1?Q?UNytA2OwYwaa0JfJA/SOiGi+3a5np0NW2UlFIxOhz9ZEwe3mb+WIZ9W2G4?=
- =?iso-8859-1?Q?OC5GtRhmvv+ZlTeUMJ62kIqd8CBDIL/D4kOQMRHxCv1LtZFJV86z+lfW0E?=
- =?iso-8859-1?Q?6B0+Rc0X2EDWfviWE0En8FwJkbnJcS+C6sJNnpv27cdIWlTD8nm+XQ3/BL?=
- =?iso-8859-1?Q?vptKPgqNIb44Lp2LmPYjir4q4fmonqJRmSalMoW8qmaEx6nmR5MGL91D2l?=
- =?iso-8859-1?Q?yZCiEzhB/ln/OBrGLEUJDDud/38fydmMxO6V1z2hKNvRSxDYWDDfYZKR6E?=
- =?iso-8859-1?Q?KeVTCt23uNgFX14tqusJR+hbJymIfkDwmjkKqc4Q3yoSQ52rXeqdRN4LqW?=
- =?iso-8859-1?Q?zR+HFOKChDBatr7pzTsodEi/ukKGLGZskVk2Gx6IpjcfcD+VvkI3cqhf0s?=
- =?iso-8859-1?Q?tDrqy05qP5DqgIJpfHHHx98xWawAd3pmrVLwYP+V+I7A63stuIzJ+NplvX?=
- =?iso-8859-1?Q?1JMZEpRcDoLJ+Z60EU5/UF/Nvin5qwDlfW4e+7X3bEgU4NpYsnyysZtsZ3?=
- =?iso-8859-1?Q?Vbr6mMEdS/s8c3bmUaiI4yvrXWvXV3kvEkUBre/kGSPO6E+difRxXeox9u?=
- =?iso-8859-1?Q?4Y388oOT8sJ7+D0suuNPNPnwBdlvBBSum9hKKyoF0jG692vIbdh86vxlCu?=
- =?iso-8859-1?Q?hU0iA6+prY0m44ekm8nW9IaxzflFUFuDtOLy3I1B+OErKMKVXNSRvYwOd2?=
- =?iso-8859-1?Q?x3L26Vu+zdXzUS1glagcM/QCcSZDpXrsJfk6NS0GAMxwwHc7T81+jA9HTn?=
- =?iso-8859-1?Q?Az0PjAsYxFL4LJZ9J7a6IFKZJcVx5p4U+P/JhMl+JcRiAYOoJJUNF8qXjL?=
- =?iso-8859-1?Q?8XYhqVaXAv9QwQGN5mGdqtVB+xqhXc3oxagGEcWb9LUuyvxYxOntmLd21+?=
- =?iso-8859-1?Q?cs64TUWOo/AcomK0loKTplOGnsxRM23dbmRlvcb/SuAAfxiyWTFjWOKYzU?=
- =?iso-8859-1?Q?rbBfRIRzdswcZvgeWyu9f8yvlSX+HZMKKPKZeQ4xFU83DeXBynvDe+/Xpf?=
- =?iso-8859-1?Q?cC8h2mfWXpcp7p7wBVXp0XUUNQZgrqoxHCUMzPmH1qyEOppcxM2Egq/aBd?=
- =?iso-8859-1?Q?rNCPYUdhQGawlZ7iNAqinZj8w6PrVt/Brq?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Received: from SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12)
+ by CH3PR11MB8342.namprd11.prod.outlook.com (2603:10b6:610:167::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.25; Thu, 21 Aug
+ 2025 09:48:26 +0000
+Received: from SJ1PR11MB6129.namprd11.prod.outlook.com
+ ([fe80::21c3:4b36:8cc5:b525]) by SJ1PR11MB6129.namprd11.prod.outlook.com
+ ([fe80::21c3:4b36:8cc5:b525%6]) with mapi id 15.20.9052.013; Thu, 21 Aug 2025
+ 09:48:26 +0000
+Message-ID: <2acb6714-e2d5-4543-90a8-fdf8d6ad7f93@intel.com>
+Date: Thu, 21 Aug 2025 15:18:20 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 2/3] tests/kms_hdr: Set HDR meta-data while testing
+ for panel capability
+Content-Language: en-GB
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <karthik.b.s@intel.com>
+References: <20250811075850.28146-1-chaitanya.kumar.borah@intel.com>
+ <20250811075850.28146-2-chaitanya.kumar.borah@intel.com>
+ <bf5410b3-cc19-4a16-8f59-def4e4c4a7f9@intel.com>
+From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+In-Reply-To: <bf5410b3-cc19-4a16-8f59-def4e4c4a7f9@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA0PR01CA0092.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ae::16) To SJ1PR11MB6129.namprd11.prod.outlook.com
+ (2603:10b6:a03:488::12)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PR11MB6129:EE_|CH3PR11MB8342:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8b194723-c53e-457d-10e8-08dde097dff7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SWltaDAzaUdjclpKZGU1WWljOWEyb2g5Y2U0MWVvV2R6YnZXZXhaZGZZWk1Q?=
+ =?utf-8?B?UUNkTGdXazFiT0tFVDRuUHdxRVFBditNSEdjbVk3U0JBZmRvSWwxOW1VMUNQ?=
+ =?utf-8?B?RzRQTDhIUXYyNmU5NGZKamVib3pYalZDOG5vditsOHk5VmZRcVBvVkdnWDlX?=
+ =?utf-8?B?UzdKUjZSY1NjdVNPT2JTS2lFNkthdGtSc1ZhemtGUnJMUFVtRG1YaTBWd01y?=
+ =?utf-8?B?am8yb0JIKy95QWw3eDlQTXc5Z2t5MHRLMyt6eEIzczJHeEVSMGNvR3J5cUNC?=
+ =?utf-8?B?MnVmcGpOMlpKMUlSRFNoQklMcEJLL3FXUDVNSmJOUERlclJ0enhLeW1XbnBw?=
+ =?utf-8?B?bHZITExGaW1rQzVxK2hWN2x0RTNMTzBKQnp6OWp4ZnRLZTRwY3dIT2pkaGgy?=
+ =?utf-8?B?ZE5yODNpVEtGMXMrcnBnekxhNU9wcmMyY1A0Wk5xUEFuSVBRQXhQVHlnVEN2?=
+ =?utf-8?B?UDBjeWRyV2R3UWZpZENLb1M3ZC9qRGtqaGx1cWpFV2FJV1BoYWMxWlVhL1VL?=
+ =?utf-8?B?NmdrTGNXQklyTTY1dEJKQk84RXlVKzJJZHdRRlVCWCtYaC91SzV5bDV4Q2kv?=
+ =?utf-8?B?WUQxcUhxSk9wUHMwc0JZa3VFM1daSCtNeUdkYlpxcDZ3SjJmZzMrd1BGbFZI?=
+ =?utf-8?B?TnZzckV2SnZPWWNzWVlJczNMeUdFWk5LNnl6SnJPVU5tWnZ1NzhDZGlsZTNw?=
+ =?utf-8?B?ZHJLekROUG5aZFhYdHY1Q0t4K0RpNFJBckR0a08vWE0zc3lHRjg2WGRBM3or?=
+ =?utf-8?B?Z1p1eXF6OXNXWVFNWkdoT2lWZklBYWtTc3c0SHkrMi93VkZwNWJVNmNjaitQ?=
+ =?utf-8?B?c1ZFNDlZNXVWSUM2alI1cElxejBkZi9ieG1MSVVPbEthTHhLak85QS9samlX?=
+ =?utf-8?B?NHNyNE9JTUo0Rkdzblc4YllsM1NLbkZXSDNDV2FvSXM0cURRSmdBSVc2ZTBi?=
+ =?utf-8?B?VWlVRys1NEJ6UkpmSkdwbitZVWFlc20zVVhuUGd0N3E2K0k3RldkOTk2V09j?=
+ =?utf-8?B?UjQySWxzNWZEa0hNb3FydXBJSHNscXEyQkIzUU16ZW9rTEVYY1JtcWNjSXFq?=
+ =?utf-8?B?cHI5SUNLM3E2VUVXQm8zQ3RobnNXU0pxNE81ckUxNjlYL2JVTXVaaWdzRlRE?=
+ =?utf-8?B?VGZJamc4NTRGUDY5UG5UNTFUc1dMUlQ3UGFBbmtENVgyRnFlTThLRm9BWldN?=
+ =?utf-8?B?azhBZWFkUGlYZjR0WnhueVRJOElrak01UnFzUXdzZFNiLzk2TkpLbmRRNFA0?=
+ =?utf-8?B?cVhqeVFjU2ZOcnhCcVdOT2pBME90c1FVbEZ5aFlweGlpdGFsK0FRVUpDMHM1?=
+ =?utf-8?B?QnVLZkw3Sk95by9ZSjB1TEpkalFJZ28xRGVyckJMTm9reDNUZzBvSEMvRnND?=
+ =?utf-8?B?eXc4SmliMmJNQUlOOTVlWXU4RHJHbmxlWlJnVHJJaFh2QXNXSzVtR3RESVRJ?=
+ =?utf-8?B?VVlQM25lWlVzcnVlZkhjYU5SNGRQVU03OFQ0YWNEWUllL2UxNE1nalZtSlZ1?=
+ =?utf-8?B?UnZsZ1AwbEZjVng4RDVMcEpTajJLTmgwK0gvY0RnWXVBdmlEMUlZcy9lUVJt?=
+ =?utf-8?B?c0EyUE9BUlNWd3JNMWFSMjdnZUtZcWl4dFJraHprMU5FdjFGdFoyTGtidmxM?=
+ =?utf-8?B?K3pHTzl5a3ZEVkxWM3F1RWJTU0NtS0dhVTVIQ1BISzNnZ0pPZyt4RFdXTkVY?=
+ =?utf-8?B?aWN4NzU4WHFKZ3lBUC9LbWRGUld1OVFDT3ArUkFSUWZlQzg5TDJjU3l1Mk11?=
+ =?utf-8?B?bmZmalMxTTR6VVFRWDlKMkJzTnlkenRjTUhIQnNvTyt6b1dueDkvUWJHOVN0?=
+ =?utf-8?B?UGRBM0lsSk9XZnpjd3N4cGNtcUFaT2Q0MENXMkxwOUl3eU85c2p6NlFIb1Fw?=
+ =?utf-8?B?SllHZGdpK0UzT3Mzd29IWWpVYTYzaTJUcHE3NmQwU3ZKRGZWSGNzcVJJVEhG?=
+ =?utf-8?Q?aem1TChwzps=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ1PR11MB6129.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aElURUtaemZKY3FBREt3MHg4b0IwL3VkUHRIa0ZuZE16bDJDQmlWR0NBampS?=
+ =?utf-8?B?Q0g5YlJEVWVNb3pPcVZ1ajdITmExallvNU8wc2hHZDZkL0FjbWJDN0V2bEFm?=
+ =?utf-8?B?NW9zRzBjdjhBYzAwd1dhbzZFdUpERWMxZmpKRHowODJZVDFFMHNVMzRsS1Nw?=
+ =?utf-8?B?OTRDQ2czQjQrVTRGSTlhUys2UTdkK2JyQTBzb1NvRnF1eHVycWxEMy9DMnly?=
+ =?utf-8?B?MmdqY3FZN042bnNZV3dBUWVSQytGckRuTDlNekx2dHV5RHIrNElubzhMMFRw?=
+ =?utf-8?B?YWJBQTgwcjVTUWtHeHNDRWcxMDltYUk2MENFamNxa0hGd1JNcnFrZjBvcGZ5?=
+ =?utf-8?B?WXkyKy93Q21HVGs1N3RKRkZ0QnZuc25wbEtnNlVYVmo0ZWZXb0MxS3VYNGFr?=
+ =?utf-8?B?QVpLZjlvOG9KN0RnM1BMdXp4VE55YjNGSTNwWWJMbWJwMUtuQmpJSEhNTDNM?=
+ =?utf-8?B?MVZ4Vm54N0RsaU9OQy8xU0tBZy9iS2xFSXhBM3BhZmJjWjBvMUZCbDFGR3hZ?=
+ =?utf-8?B?d3I0dHJFSnlLQnZwK0U5QUMyVDV0QTZEbXZtNkZoaEd3TWNhTUxIQll2T2py?=
+ =?utf-8?B?bHFHMGNqakVxOXByZmJDNnd5RGREdFhpeUZCT01VRms0S0xLNmhCeDNKVnhN?=
+ =?utf-8?B?UHRpZ1I4SjRFR245R1EzNTg3d1J6THBiSXphYmtobWREWUg2QllacHVRMjY3?=
+ =?utf-8?B?VklLMDFqdno5QzJBSmpEMlFycnJSZjlaNGRMcENRS2RCTkMxQXpKWHJoODh2?=
+ =?utf-8?B?VzdQdHdic0UvNjM0aUZycEFFdUNiUnprN1FZY2JVNm9MSGhKSWN4Uy9OUXpU?=
+ =?utf-8?B?ZWs4Zkp6SFlRSHFFOWJLTlVQUXBlTi9iZ2ZFaWxQU0pWUTlHZFhZeUE0VWUr?=
+ =?utf-8?B?RmYyM3NCVVZBaUJ0M3FXaGxweDhZSys1dzZ5NER2WnRZQjNNcHYvQTA1aW5n?=
+ =?utf-8?B?V0JJUHZNTHN4UGE4bno5SGRqL0NBRHl2WXJ2SkNwRjhZL3VnQVNiTmUxeW9y?=
+ =?utf-8?B?cWUwUVJmSitHYlJHMHJvaHNHOWkrOVB6aDUvM3pPbGxyRGJzaSttZC9UK1pI?=
+ =?utf-8?B?QzQrclNORVhWM0hUSm9PUnl6NkwzWkpDMm9iY0FGQjV4OFoyWnlmWGpyb3R3?=
+ =?utf-8?B?VWk4ZjIxVWhGc0NqbzFjT0t4SmJkemJHL0pPTkNKZ3RoS1VsbmFLVzNpalFM?=
+ =?utf-8?B?eEUvZlR1NzgrQUU0citMTWt5a3EydTBOMDFKNXJTUG45dTBsa3V5Z2FiUktU?=
+ =?utf-8?B?WHY0bXNoVitrZG4vS0o5VmU1cVNoekRGQ2RYUXFZRXpnOTN5MzFYRitYZ3Nj?=
+ =?utf-8?B?SFpIcEMyemVOM25vc244ajRvWWtGY3h5SDVoR1pnMjF5YUh0dkZWd1lpMkVO?=
+ =?utf-8?B?eUVVQ2RoeWxoUEpOeFJhZWJOK0xGM3VBNWtacHUzeWRsdXdHVW0xZmxJQURH?=
+ =?utf-8?B?UUV6R0VPUDdJaklhVUxDL2JWRWs4cCtraHFmdVZOYmtuOUlUcDkyUGlRUzhz?=
+ =?utf-8?B?RjZ3UW5pMS9XWjlXZnNKYURpc2FIUisxZXRMUGVBZGRkNnpOSEljc3N5TTNR?=
+ =?utf-8?B?Q29Lc2dSQm1GZEdCTGxGN0cxazNpREFWOS9maXBBYWZjNjU0K0NzdkVscDFu?=
+ =?utf-8?B?UDBlVG96Vkk0Z1VpeFNsNWR0OWJnUVJPdFFoRTRwUkNWRHZxQjErZGRLT3lL?=
+ =?utf-8?B?elY4cnA4NVhLY3pPYWsyYVhpZjFuZDV3dWxWNGZjS08yZlgwVHd4L3NJMVgr?=
+ =?utf-8?B?ZFg0S3pUeU1FRWZJN2tsTkZHWFpLRU5MTFE2WDIyTVJtRzAzaVBPSlVaUWQ5?=
+ =?utf-8?B?YUFXMXgrVnd4L1AyWGtZdCtURU9MVG5GdDJUWkVkL2JSQVpIUlpJTzRxVCsy?=
+ =?utf-8?B?Y1c2SHNCVGQrUGV6Y0lVWWlodkFRRFkxbzFuSUNuUTl0a0NpVUR1M2NvQXdi?=
+ =?utf-8?B?Lzc4dEtzSDFCWE16QzIyeEVGU2l0SytmNGR3NDVyZnR6cWsyNktmSFBMTW1Y?=
+ =?utf-8?B?ZXNHZTQzcy9GckNvL1lYMFBZUUxiSkQ0ZENkM1dKSnlZdW5PMVFpL1UzNW9t?=
+ =?utf-8?B?bjV2L1BzS1JiOGVRMXFkSEJKZU1VQy85ckJtVlVWQzNTenZWZDI4N2dpMlhp?=
+ =?utf-8?B?Q3FsQzErYkJTei9GTXNaVHNIek4rdGJJenNjYXdack44eU5SVzVCUzVGY1Q4?=
+ =?utf-8?Q?9H0TlxiNOqmy6skxnL194mw=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b194723-c53e-457d-10e8-08dde097dff7
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6129.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6268.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0c79b6d-5900-4208-697b-08dde09291a6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2025 09:10:26.9670 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: w03F0sXw1N2I9C5Qbo/I3owmTrlWYTpoL5oP5Ep3MeoBX9hm3MhhVYke19JjN1pO8UD8PjzWVQes7t+f7Ehgf4y89DlOgYhjugA8VMulp/g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9274
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 09:48:26.1700 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ertlsEQm3VrJ90+F/TDA/omQWdwj7GSLaD289sMoooueaDYgccKN5vYWU9RruyTQtrImq1BhCDtf2wADyVTw0IZ5w/gxDZjrXVDS9+Zi9a8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8342
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -186,52 +198,198 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,=0A=
-=0A=
-> Please consider improving already existing tool intel_gpu_frequency inste=
-ad of copy-paste.=0A=
-=0A=
-There were 2 solutions considered:=0A=
-1. Add support for Xe driver to the existing intel_gpu_frequency=0A=
-2. Separate tool that will build on intel_gpu_frequency but specific to Xe =
-driver=0A=
-=0A=
-2nd solution was chosen for the below reasons:=0A=
-- sysfs frequency path for i915 and Xe is different.=0A=
-- tile and gt needs to be taken into consideration.=0A=
-- Might not be accepted due to readability because of device type checks, n=
-ame based on device types, extending i915 tool to support Xe driver.=0A=
-=0A=
-If the recommendation is to extend intel_gpu_frequency, can provide a patch=
- that adds supports for Xe driver to existing intel_gpu_frequency tool. Ple=
-ase confirm.=0A=
-=0A=
-> Please do not write exact output here, it could be in cover=0A=
-=0A=
-> letter but rather not in commit message. You could add how=0A=
-=0A=
-> it could be called into examples, when program is called with=0A=
-=0A=
-> --help=0A=
-=0A=
-Will address in next patch set.=0A=
-=0A=
-=0A=
-> +/*=0A=
-=0A=
-> + * Copyright =A9 2025 Intel Corporation=0A=
-=0A=
-> + *=0A=
-=0A=
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a=0A=
-=0A=
-=0A=
-=0A=
-> We use SPDX licence, please look into few other tools/tests which uses th=
-em.=0A=
-=0A=
-Will address in next patch set.=0A=
-=0A=
-Regards,=0A=
-Jeevaka=0A=
+
+
+On 8/12/2025 2:41 PM, Sharma, Swati2 wrote:
+> Hi Chaitanya,
+> 
+> On 11-08-2025 01:28 pm, Chaitanya Kumar Borah wrote:
+>> Checking if the panel supports a max_bpc of 10 is not enough to tell
+>> if the panel supports HDR. Set HDR metadata on the connector before
+>> going through the modes. Reset after done.
+> Can you please add closes tag gitlab# for the bug which is getting fixed 
+> (if exists) ?
+> Also, please elaborate "why" existing checks not enough?
+
+Unfortunately, there is no gitlab issue or public reference for this.
+
+I will extend the commit message.
+
+>>
+>> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+>> ---
+>>   tests/kms_hdr.c | 114 ++++++++++++++++++++++++++----------------------
+>>   1 file changed, 61 insertions(+), 53 deletions(-)
+>>
+>> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+>> index 33b6c42a6..76e103ac4 100644
+>> --- a/tests/kms_hdr.c
+>> +++ b/tests/kms_hdr.c
+>> @@ -153,6 +153,59 @@ static void draw_hdr_pattern(igt_fb_t *fb)
+>>       igt_put_cairo_ctx(cr);
+>>   }
+>> +/* Converts a double to 861-G spec FP format. */
+>> +static uint16_t calc_hdr_float(double val)
+>> +{
+>> +    return (uint16_t)(val * 50000.0);
+>> +}
+>> +
+>> +/* Fills some test values for ST2048 HDR output metadata.
+>> + *
+>> + * Note: there isn't really a standard for what the metadata is supposed
+>> + * to do on the display side of things. The display is free to ignore it
+>> + * and clip the output, use it to help tonemap to the content range,
+>> + * or do anything they want, really.
+>> + */
+>> +static void fill_hdr_output_metadata_st2048(struct 
+>> hdr_output_metadata *meta)
+>> +{
+>> +    memset(meta, 0, sizeof(*meta));
+>> +
+>> +    meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
+>> +    meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
+>> +
+>> +    /* Rec. 2020 */
+>> +    meta->hdmi_metadata_type1.display_primaries[0].x =
+>> +        calc_hdr_float(0.708); /* Red */
+>> +    meta->hdmi_metadata_type1.display_primaries[0].y =
+>> +        calc_hdr_float(0.292);
+>> +    meta->hdmi_metadata_type1.display_primaries[1].x =
+>> +        calc_hdr_float(0.170); /* Green */
+>> +    meta->hdmi_metadata_type1.display_primaries[1].y =
+>> +        calc_hdr_float(0.797);
+>> +    meta->hdmi_metadata_type1.display_primaries[2].x =
+>> +        calc_hdr_float(0.131); /* Blue */
+>> +    meta->hdmi_metadata_type1.display_primaries[2].y =
+>> +        calc_hdr_float(0.046);
+>> +    meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
+>> +    meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
+>> +
+>> +    meta->hdmi_metadata_type1.max_display_mastering_luminance =
+>> +        1000; /* 1000 nits */
+>> +    meta->hdmi_metadata_type1.min_display_mastering_luminance =
+>> +        500;                   /* 0.05 nits */
+>> +    meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
+>> +    meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
+>> +}
+>> +
+>> +/* Sets the HDR output metadata prop. */
+>> +static void set_hdr_output_metadata(data_t *data,
+>> +                    struct hdr_output_metadata const *meta)
+>> +{
+>> +    igt_output_replace_prop_blob(data->output,
+>> +                     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
+>> +                     meta ? sizeof(*meta) : 0);
+>> +}
+>> +
+>>   /* Prepare test data. */
+>>   static void prepare_test(data_t *data, igt_output_t *output, enum 
+>> pipe pipe)
+>>   {
+>> @@ -380,15 +433,6 @@ static bool is_panel_hdr(data_t *data, 
+>> igt_output_t *output)
+>>       return ret;
+>>   }
+>> -/* Sets the HDR output metadata prop. */
+>> -static void set_hdr_output_metadata(data_t *data,
+>> -                    struct hdr_output_metadata const *meta)
+>> -{
+>> -    igt_output_replace_prop_blob(data->output,
+>> -                     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
+>> -                     meta ? sizeof(*meta) : 0);
+>> -}
+>> -
+>>   /* Sets the HDR output metadata prop with invalid size. */
+>>   static int set_invalid_hdr_output_metadata(data_t *data,
+>>                          struct hdr_output_metadata const *meta,
+>> @@ -401,50 +445,6 @@ static int set_invalid_hdr_output_metadata(data_t 
+>> *data,
+>>       return igt_display_try_commit_atomic(&data->display, 
+>> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>>   }
+>> -/* Converts a double to 861-G spec FP format. */
+>> -static uint16_t calc_hdr_float(double val)
+>> -{
+>> -    return (uint16_t)(val * 50000.0);
+>> -}
+>> -
+>> -/* Fills some test values for ST2048 HDR output metadata.
+>> - *
+>> - * Note: there isn't really a standard for what the metadata is supposed
+>> - * to do on the display side of things. The display is free to ignore it
+>> - * and clip the output, use it to help tonemap to the content range,
+>> - * or do anything they want, really.
+>> - */
+>> -static void fill_hdr_output_metadata_st2048(struct 
+>> hdr_output_metadata *meta)
+>> -{
+>> -    memset(meta, 0, sizeof(*meta));
+>> -
+>> -    meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
+>> -    meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
+>> -
+>> -    /* Rec. 2020 */
+>> -    meta->hdmi_metadata_type1.display_primaries[0].x =
+>> -        calc_hdr_float(0.708); /* Red */
+>> -    meta->hdmi_metadata_type1.display_primaries[0].y =
+>> -        calc_hdr_float(0.292);
+>> -    meta->hdmi_metadata_type1.display_primaries[1].x =
+>> -        calc_hdr_float(0.170); /* Green */
+>> -    meta->hdmi_metadata_type1.display_primaries[1].y =
+>> -        calc_hdr_float(0.797);
+>> -    meta->hdmi_metadata_type1.display_primaries[2].x =
+>> -        calc_hdr_float(0.131); /* Blue */
+>> -    meta->hdmi_metadata_type1.display_primaries[2].y =
+>> -        calc_hdr_float(0.046);
+>> -    meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
+>> -    meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
+>> -
+>> -    meta->hdmi_metadata_type1.max_display_mastering_luminance =
+>> -        1000; /* 1000 nits */
+>> -    meta->hdmi_metadata_type1.min_display_mastering_luminance =
+>> -        500;                   /* 0.05 nits */
+>> -    meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
+>> -    meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
+>> -}
+>> -
+>>   static void adjust_brightness(data_t *data, uint32_t flags)
+>>   {
+>>       igt_backlight_context_t context;
+>> @@ -652,6 +652,7 @@ static void test_hdr(data_t *data, uint32_t flags)
+>>   {
+>>       igt_display_t *display = &data->display;
+>>       igt_output_t *output;
+>> +    struct hdr_output_metadata hdr;
+>>       igt_display_reset(display);
+>> @@ -701,6 +702,9 @@ static void test_hdr(data_t *data, uint32_t flags)
+>>               prepare_test(data, output, pipe);
+> Please add comment here, "why" this is required.
+
+Will do
+
+>> +            fill_hdr_output_metadata_st2048(&hdr);
+>> +            set_hdr_output_metadata(data, &hdr);
+> Don't we need a commit here?
+
+There is a commit inside igt_max_bpc_constraint but I agree we should 
+add one here to maintain symmetry and avoid future bugs.
+
+==
+Chaitanya
+
+>> +
+>>               if (is_intel_device(data->fd) &&
+>>                   !igt_max_bpc_constraint(display, pipe, output, 10)) {
+>>                   igt_info("%s: No suitable mode found to use 10 bpc.\n",
+>> @@ -710,6 +714,10 @@ static void test_hdr(data_t *data, uint32_t flags)
+>>                   break;
+>>               }
+>> +            set_hdr_output_metadata(data, NULL);
+>> +            igt_display_commit2(display, display->is_atomic ?
+>> +                        COMMIT_ATOMIC : COMMIT_LEGACY);
+>> +
+>>               data->mode = igt_output_get_mode(output);
+>>               data->w = data->mode->hdisplay;
+>>               data->h = data->mode->vdisplay;
+> 
+
