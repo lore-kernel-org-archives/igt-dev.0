@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB2EDCA0EF8
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 08:02:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D049CA0EEB
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 08:02:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7EE1610E89F;
-	Thu, 21 Aug 2025 08:02:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0A3D210E8A0;
+	Thu, 21 Aug 2025 08:02:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CrD2aFJC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GPASQMya";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0EC710E8A0
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 08:02:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9AC310E8A0
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 08:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755763375; x=1787299375;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=vJi2f3U+ZS4uWcbvBadi+MSHmvxrbXO4H3Cblq3JFNM=;
- b=CrD2aFJCXyQWcVuyy+U1AzeDt0zp9haG6pUtAkXWcA6c8qo/7wxzfCby
- TnNZ99UesBQA8uQQfTwmo5z7iQc1moTIaLdLtIlLkuS6acIZpM0E8+z/C
- 8WyhccAXuAg7NdKpxPAiSCsnS1ivBxLYet42fKAbHphKVXRkdjNbnyRDT
- x9zcUmOGCbXCOEeNmnu0nrTtRdHDJXcUIZuY2yHm3e34leRpFifPBd0R7
- /7QxBWbACoEoMbvMWbgmcC2Go3KuXIpxdO272ZvCjHauDka7fJKtntPfE
- AGDE18aDBKzgsjM6PnQX/HvDiarNFmv0jFmXOiaTaxpaTN/1T1UlCWbTA A==;
-X-CSE-ConnectionGUID: IjqQlAC+TCmyylcG1R6e4A==
-X-CSE-MsgGUID: F11VoDorQ1+BMRPxjspN9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="80640348"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="80640348"
+ t=1755763376; x=1787299376;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=DgoHIa+SWqr0wz0Om//3JMp0YUE6PAjyj0niw30m59E=;
+ b=GPASQMya2z1RnWthRqCIbjjEQEDHATQDFbr2hr+lhQBv2iomoKzgp8N7
+ xAPVMdE565ZHuYdI5p1V5fDKDVWMyCY/HVPRAOjAwW6vOQR8yAjuRxcr4
+ 0jxzh4kC5d8/okuQ1tqZGXQ6wlT01so7/omAnw4CCHi+R/q7idEfcFS7Q
+ oXmwftGA+1zD4bj7mqbMZqw/gKQR4wDvqYS22ELu0prSIK+moaNhBJfn2
+ K0pXuxvPNN9E2OlafvXx5iNW+Ad+xtwXKxwzBxOyWczxOLIHMs4XvULE8
+ wGEMZc/tdluHQWd88TsnPvXiKMOic0Fq7hoiqy6WHdd8h8lB5pTaMH1yg A==;
+X-CSE-ConnectionGUID: eAp8eNe1Roq8HmnZmlc7xw==
+X-CSE-MsgGUID: oY0EZ/ZiTw2L3jGN8DIrAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="80640351"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="80640351"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 01:02:54 -0700
-X-CSE-ConnectionGUID: ke6KnMc6QbmvuxG/VNn7Mg==
-X-CSE-MsgGUID: r2W5EDTXSRGWRDEFsqxmhw==
+ 21 Aug 2025 01:02:56 -0700
+X-CSE-ConnectionGUID: BopSYl5bRH6VM+aMM0hKyg==
+X-CSE-MsgGUID: +yocftPOR9iX40ljk2ldCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="168267990"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="168267994"
 Received: from dut6245dg2frd.fm.intel.com ([10.80.55.42])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 01:02:54 -0700
+ 21 Aug 2025 01:02:56 -0700
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	matthew.brost@intel.com
 Cc: Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v2 0/1] tests/intel/xe_exec_reset: Wait for spin jobs
-Date: Thu, 21 Aug 2025 08:02:37 +0000
-Message-Id: <20250821080238.467357-1-sobin.thomas@intel.com>
+Subject: [PATCH v2 i-g-t] tests/intel/xe_exec_reset: Wait for spin jobs 
+Date: Thu, 21 Aug 2025 08:02:38 +0000
+Message-Id: <20250821080238.467357-2-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250821080238.467357-1-sobin.thomas@intel.com>
+References: <20250821080238.467357-1-sobin.thomas@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,18 +69,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 This fix will allow waiting for the spin jobs to be triggered
-before performing the gt reset. This allows all the parallel job
+before performing the gt reset. This allows all the job
 to be started on the guc ids and prevents the timeout message
 in dmesg as warnings.
-This will wait until all the jobs are completed before triggering the 
-gt reset.
 
-Sobin Thomas (1):
-  tests/intel/xe_exec_rest: Wait for spin jobs to start
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+---
+ tests/intel/xe_exec_reset.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- tests/intel/xe_exec_reset.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 7ae53c679..94768b48c 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -251,6 +251,9 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+ 			xe_spin_wait_started(&data[i].spin);
+ 
+ 	}
++	for (i = 0; i < n_exec_queues && n_execs; i++)
++		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, 
++					NULL));
+ 
+ 	if (flags & GT_RESET)
+ 		xe_force_gt_reset_async(fd, gt);
+@@ -266,9 +269,6 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+ 		return;
+ 	}
+ 
+-	for (i = 0; i < n_exec_queues && n_execs; i++)
+-		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
+-					NULL));
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+ 
+ 	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
 -- 
 2.34.1
 
