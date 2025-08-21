@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CE6ACA0EEB
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 15:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A1FDCA0EFC
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 16:53:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 32DA110E9C6;
-	Thu, 21 Aug 2025 15:23:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA11710E080;
+	Thu, 21 Aug 2025 16:53:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h9SH5trS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="baxTjAMX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3ABB110E9C6
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 15:23:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E93A10E080
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 16:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755789788; x=1787325788;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=1pMJvFTjhF8dts0R4EXEnZ7Y4Nqq6mtyDUW+7BNy/VE=;
- b=h9SH5trSLMv9cXLAr08VCTm9RBdaTyQJOJADlzzqfbUWBkXja+lE0xKz
- XK+FWmsintoQSpq7F/H+6QgehJidkqPFkjOXPFbZEn1ecm+EBjJc1bxFr
- CCGCAY9Rf82LB43s004uft+hqHQMck1j6LaeW5BE7KlMIOBV46w1n5gYY
- H11uXEFCc5rLHliZ+cevtaz0h5T907Y3C1hXFTiVPOSpxEiTi1IUjm4hL
- CI6qDa3ZZUZ+ONv74uKVoTgNpE6dgDrd9UOzOf3bwR5TZ2q8zxMTlzApt
- hMC8/5a44B5PcX/y5rzHotVSvxHPCHQFM4baZEojTpkL4DWNlsbZYqbAo Q==;
-X-CSE-ConnectionGUID: m+mZT1bLROyXZapRfEWHOQ==
-X-CSE-MsgGUID: kLs8lAWFSvOX5+hE0SgLmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="83501125"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="83501125"
+ t=1755795223; x=1787331223;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=gFHmW5lA8qmTGEIbdSH+5YtEoOi7oeTQ5Hhlecjh5/g=;
+ b=baxTjAMXyYybTlfqFev0RTW+FHHQTB8ZpAzBJ4Eb+3IlH4CdTKpmSRdL
+ 9rimyALgAxobPSY5JEJ8E3HFIbOh/Bt2kn9UGkZZnq7fsuUvBXmTyVWtM
+ rOWG/3rpVmb1fzWJS8UNANjiDijofNFEAx2DPm4D0B53nKY49/GHVtdIS
+ /XXI5kVMZAKb/cz+wRufUfD1vxBOnaI3SsYS8ceafIgPm+HA7z21pbF1G
+ GtN328WOjUY3tLrIByCxUwyppoEp36sqq/hq8B2lurdpPZffu7GTTc9K9
+ 0q0ne4AwSOJIfVuCAMd3J8YTcsi4R2WAKCrcnLN65fRQhUORQkxBkyOmk g==;
+X-CSE-ConnectionGUID: K5dyaXFYSJaKfQoEsVgdpg==
+X-CSE-MsgGUID: jFN2qgHTTJaMdp17C25fEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="61927587"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="61927587"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 08:23:08 -0700
-X-CSE-ConnectionGUID: LTX9YTuOQwumD17G47l3cg==
-X-CSE-MsgGUID: TPUU+CBPT4yClPUGhEmQgA==
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 09:53:43 -0700
+X-CSE-ConnectionGUID: i0TenYrlTOa4ZX0Es02g6Q==
+X-CSE-MsgGUID: k/ceBMaMQsuoGsuu/fVsSw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="173775452"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 08:23:06 -0700
-Date: Thu, 21 Aug 2025 17:23:03 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sk Anirban <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org, raag.jadav@intel.com,
- anshuman.gupta@intel.com, riana.tauro@intel.com
-Subject: Re: [PATCH v2] tests/intel/xe_configfs: Add i2c adapter check in
- survivability mode
-Message-ID: <20250821152303.ykhyym5ikjnl6ly7@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sk Anirban <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
- raag.jadav@intel.com, anshuman.gupta@intel.com,
- riana.tauro@intel.com
-References: <20250813100117.910824-2-sk.anirban@intel.com>
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="173795285"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.85.180])
+ ([10.245.85.180])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 09:53:41 -0700
+Message-ID: <efe4389c-9380-45a6-af0b-157121595e82@linux.intel.com>
+Date: Thu, 21 Aug 2025 18:53:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250813100117.910824-2-sk.anirban@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 4/4] tests/intel/xe_sriov_vram: Add test checking VF
+ access to VRAM
+To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
+Cc: michal.wajdeczko@intel.com, michal.winiarski@intel.com,
+ satyanarayana.k.v.p@intel.com, adam.miszczak@linux.intel.com,
+ jakub1.kolakowski@intel.com
+References: <20250717090812.28628-1-lukasz.laguna@intel.com>
+ <20250717090812.28628-5-lukasz.laguna@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250717090812.28628-5-lukasz.laguna@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,305 +74,359 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sk,
-On 2025-08-13 at 15:31:11 +0530, Sk Anirban wrote:
 
-please make it explicit that this is adding new test, maybe
-something like:
 
-[PATCH v2] tests/intel: Add new xe_survivability test for i2c adapter
-
-Few more nits below.
-
-> Add i2c adapter presence check in survivability mode to ensure
-> the Add-In Management Controller (AMC) can receive firmware updates
-> when the device is in survivability mode.
-
-Could above be also a part of a comment or description
-in a test or subtest?
-
+On 7/17/2025 11:08 AM, Lukasz Laguna wrote:
+> Add a test to validate VF access to VRAM via BAR. The following
+> scenarios are covered:
+> - VF can access all provisioned memory via the VRAM BAR,
+> - VF cannot access memory beyond what's provisioned via the VRAM BAR,
+> - VF can access memory via the VRAM BAR after reprovisioning.
 > 
-> v2: Create new file for test (Riana)
-> 
-> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 > ---
->  tests/intel/xe_configfs.c      |  36 +------
->  tests/intel/xe_survivability.c | 174 +++++++++++++++++++++++++++++++++
->  tests/meson.build              |   1 +
->  3 files changed, 177 insertions(+), 34 deletions(-)
->  create mode 100644 tests/intel/xe_survivability.c
+>   tests/intel/xe_sriov_vram.c | 310 ++++++++++++++++++++++++++++++++++++
+>   tests/meson.build           |   1 +
+>   2 files changed, 311 insertions(+)
+>   create mode 100644 tests/intel/xe_sriov_vram.c
 > 
-> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-> index 5c65cd01d..e573421aa 100644
-> --- a/tests/intel/xe_configfs.c
-> +++ b/tests/intel/xe_configfs.c
-> @@ -2,7 +2,9 @@
->  /*
->   * Copyright © 2025 Intel Corporation
->   */
-> +#include <dirent.h>
->  #include <limits.h>
-> +#include <fcntl.h>
-
-Move fcntl.h  after dirent.h
-
->  
->  #include "igt.h"
->  #include "igt_configfs.h"
-> @@ -31,33 +33,6 @@ static void restore(int sig)
->  	igt_kmod_bind("xe", bus_addr);
->  }
->  
-> -static void set_survivability_mode(int configfs_device_fd, bool value)
-> -{
-> -	igt_kmod_unbind("xe", bus_addr);
-> -	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
-> -	igt_kmod_bind("xe", bus_addr);
-> -}
-> -
-> -/**
-> - * SUBTEST: survivability-mode
-> - * Description: Validate survivability mode by setting configfs
-> - */
-> -static void test_survivability_mode(int configfs_device_fd)
-> -{
-> -	char path[PATH_MAX];
-> -	int fd;
-> -
-> -	/* Enable survivability mode */
-> -	set_survivability_mode(configfs_device_fd, true);
-> -
-> -	/* check presence of survivability mode sysfs */
-> -	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
-> -
-> -	fd = open(path, O_RDONLY);
-> -	igt_assert_f(fd >= 0, "Survivability mode not set\n");
-> -	close(fd);
-> -}
-> -
->  /**
->   * SUBTEST: engines-allowed-invalid
->   * Description: Validate engines_allowed attribute for invalid values
-> @@ -128,13 +103,6 @@ igt_main
->  		configfs_device_fd = create_device_configfs_group(configfs_fd, fd);
->  	}
->  
-> -	igt_describe("Validate survivability mode");
-> -	igt_subtest("survivability-mode") {
-> -		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
-> -		igt_install_exit_handler(restore);
-> -		test_survivability_mode(configfs_device_fd);
-> -	}
-> -
->  	igt_describe("Validate engines_allowed with invalid options");
->  	igt_subtest("engines-allowed-invalid") {
->  		igt_install_exit_handler(restore);
-> diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
+> diff --git a/tests/intel/xe_sriov_vram.c b/tests/intel/xe_sriov_vram.c
 > new file mode 100644
-> index 000000000..1bfcb2756
+> index 000000000..82f0a2f09
 > --- /dev/null
-> +++ b/tests/intel/xe_survivability.c
-> @@ -0,0 +1,174 @@
+> +++ b/tests/intel/xe_sriov_vram.c
+> @@ -0,0 +1,310 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
-> + * Copyright © 2025 Intel Corporation
+> + * Copyright(c) 2025 Intel Corporation. All rights reserved.
 > + */
-> +#include <dirent.h>
-> +#include <limits.h>
-> +#include <fcntl.h>
-
-Same here, fcntl.h header should be after dirent.h
-
 > +
-> +#include "igt.h"
-> +#include "igt_configfs.h"
-> +#include "igt_device.h"
-> +#include "igt_fs.h"
-> +#include "igt_kmod.h"
-> +#include "igt_sysfs.h"
+> +#include "drmtest.h"
+> +#include "igt_core.h"
+> +#include "igt_sriov_device.h"
+> +#include "intel_vram.h"
+> +#include "xe/xe_sriov_provisioning.h"
 > +#include "xe/xe_query.h"
 > +
 > +/**
-> + * TEST: Comprehensive survivability mode testing
+> + * TEST: xe_sriov_vram
 > + * Category: Core
-> + * Mega feature: General Core features
-> + * Sub-category: survivability
-> + * Functionality: survivability mode
-> + * Description: validate survivability mode functionality including i2c and runtime behavior
-> + * Test category: functionality test
+> + * Mega feature: SR-IOV
+> + * Sub-category: LMTT
+> + * Functionality: VRAM access
+> + * Description: Validate VF access to VRAM
+> + *
+> + * SUBTEST: vf-access-basic
+> + * Description: Verify that VF can access all the provisioned memory via VRAM BAR
+> + *
+> + * SUBTEST: vf-access-beyond
+> + * Description: Verify that VF cannot access memory beyond what's provisioned via VRAM BAR
+> + *
+> + * SUBTEST: vf-access-after-resize-down
+> + * Description: Verify that VF can access the reprovisioned memory (reduced size) via VRAM BAR
+> + *
+> + * SUBTEST: vf-access-after-resize-up
+> + * Description: Verify that VF can access the reprovisioned memory (increased size) via VRAM BAR
 > + */
 > +
-> +static char bus_addr[NAME_MAX];
+> +IGT_TEST_DESCRIPTION("Xe tests for VRAM in SR-IOV context");
 > +
-> +static int find_i2c_adapter(struct pci_device *pci_xe)
+> +const size_t STEP = SZ_1M;
+> +
+> +static uint64_t get_provisioned_vram(unsigned int pf_fd, unsigned int vf_id)
 > +{
-> +	char device_path[PATH_MAX];
-> +	struct dirent *dirent;
-> +	int i2c_adapter = -1;
-> +	DIR *device_dir;
-> +	int ret;
+> +	uint64_t size = 0;
 > +
-> +	igt_require(igt_kmod_load("i2c-dev", NULL) == 0);
+> +	/* TODO: adjust for multitile platforms */
+> +	size = xe_sriov_pf_get_provisioned_quota(pf_fd, XE_SRIOV_SHARED_RES_LMEM, vf_id, 0);
 > +
-> +	snprintf(device_path, sizeof(device_path), "/sys/bus/pci/devices/%s/%s.%hu", bus_addr,
-> +		 "i2c_designware", (pci_xe->bus << 8) | (pci_xe->dev));
-> +	device_dir = opendir(device_path);
+> +	return size;
+> +}
 > +
-> +	if (!device_dir)
-> +		return -1;
+> +static bool validate_access_basic(struct vram_mapping *vram, unsigned int vf_id,
+> +				  uint64_t provisioned_lmem)
+> +{
+> +	uint8_t read, orig;
+> +	bool passed = true;
 > +
-> +	while ((dirent = readdir(device_dir))) {
-> +		if (strncmp(dirent->d_name, "i2c-", 4) == 0) {
-> +			ret = sscanf(dirent->d_name, "i2c-%d", &i2c_adapter);
-> +			igt_assert_f(ret == 1, "Failed to parse i2c adapter number");
-> +			closedir(device_dir);
-> +			return i2c_adapter;
+> +	for (size_t offset = 0; offset < provisioned_lmem; offset += STEP) {
+> +		orig = intel_vram_read8(vram, offset);
+> +
+> +		read = intel_vram_write_readback8(vram, offset, vf_id);
+> +		if (read != vf_id) {
+> +			igt_debug("VRAM write/read check failed on VF%u (offset: %#lx, write: %u, read: %u)\n",
+> +				  vf_id, offset, vf_id, read);
+> +			passed = false;
+
+Do we want to continue after first fail (isn't it too noisy) ?
+
+> +		}
+> +
+> +		read = intel_vram_write_readback8(vram, offset, orig);
+> +		if (read != orig) {
+> +			igt_debug("Failed to restore original value on VF%u (offset: %#lx, orig: %u, read: %u)\n",
+> +				  vf_id, offset, orig, read);
+> +			passed = false;
 > +		}
 > +	}
 > +
-> +	closedir(device_dir);
-> +	return i2c_adapter;
+> +	return passed;
 > +}
 > +
-> +static void restore(int sig)
+> +static void access_basic(unsigned int pf_fd, unsigned int num_vfs)
 > +{
-> +	/* Restore after survivability mode */
-> +	igt_kmod_unbind("xe", bus_addr);
-> +	igt_kmod_bind("xe", bus_addr);
-> +}
+> +	uint64_t provisioned_lmem;
+> +	struct vram_mapping vram;
+> +	size_t vram_bar_size;
+> +	bool passed = true;
 > +
-> +static void set_survivability_mode(int configfs_device_fd, bool value)
-> +{
-> +	igt_kmod_unbind("xe", bus_addr);
-> +	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
-> +	igt_kmod_bind("xe", bus_addr);
-> +}
+> +	igt_sriov_disable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
 > +
-> +/**
-> + * SUBTEST: i2c-functionality
-> + * Description: Validate i2c adapter functionality in survivability mode
-> + */
-> +static void test_i2c_functionality(int configfs_device_fd, struct pci_device *pci_xe)
-> +{
-> +	int i2c_adapter_before, i2c_adapter_after;
-> +	char path[PATH_MAX];
-> +	int fd;
+> +	for_each_sriov_enabled_vf(pf_fd, vf_id) {
+> +		provisioned_lmem = get_provisioned_vram(pf_fd, vf_id);
+> +		igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n",
+> +			  vf_id, provisioned_lmem);
 > +
-> +	/* Check i2c adapter before survivability mode */
-> +	i2c_adapter_before = find_i2c_adapter(pci_xe);
+> +		vram_bar_size = intel_vram_bar_size(pf_fd, vf_id);
+> +		igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
 > +
-> +	/* Enable survivability mode */
-> +	set_survivability_mode(configfs_device_fd, true);
+> +		if (vram_bar_size < provisioned_lmem) {
+> +			igt_sriov_disable_vfs(pf_fd);
+> +			igt_skip("VRAM BAR size is smaller than provisioned VRAM\n");
+> +		}
 > +
-> +	/* check presence of survivability mode sysfs */
-> +	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
+> +		vram = intel_vram_mmap(pf_fd, vf_id, provisioned_lmem, PROT_READ | PROT_WRITE, 0);
+> +		igt_assert(vram.addr);
 > +
-> +	fd = open(path, O_RDONLY);
-> +	igt_assert_f(fd >= 0, "Survivability mode not set\n");
-> +	close(fd);
+> +		passed &= validate_access_basic(&vram, vf_id, provisioned_lmem);
 > +
-> +	/* Check i2c adapter after survivability mode */
-> +	i2c_adapter_after = find_i2c_adapter(pci_xe);
-> +	if (i2c_adapter_before >= 0) {
-> +		igt_assert_f(i2c_adapter_after >= 0,
-> +			     "i2c adapter disappeared in survivability mode (was %d)",
-> +			     i2c_adapter_before);
+> +		intel_vram_munmap(&vram);
 > +	}
+> +
+> +	igt_sriov_disable_vfs(pf_fd);
+> +
+> +	igt_assert(passed);
 > +}
 > +
-> +/**
-> + * SUBTEST: survivability-mode
-> + * Description: Validate survivability mode by setting configfs
-> + */
-> +static void test_survivability_mode(int configfs_device_fd)
+> +static bool validate_access_beyond(struct vram_mapping *vram, unsigned int vf_id,
+> +				   uint64_t provisioned_lmem, size_t vram_bar_size)
 > +{
-> +	char path[PATH_MAX];
-> +	int fd;
+> +	uint8_t read, orig;
+> +	bool passed = true;
 > +
-> +	/* Enable survivability mode */
-> +	set_survivability_mode(configfs_device_fd, true);
+> +	for (size_t offset = provisioned_lmem; offset < vram_bar_size; offset += STEP) {
+> +		orig = intel_vram_read8(vram, offset);
 > +
-> +	/* check presence of survivability mode sysfs */
-> +	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
+> +		read = intel_vram_write_readback8(vram, offset, vf_id);
+> +		if (read == vf_id) {
+> +			igt_debug("Successful VRAM write above provisioned size on VF%u (offset: %#lx)\n",
+> +				  vf_id, offset);
+
+Current wording sounds as if the test succeeded, maybe: "Unexpected VRAM 
+write beyond provisioned size ..." or "ERROR: VF%u was able to write 
+beyond provisioned VRAM ..."
+
+> +			passed = false;
+
+Do we want to continue after first fail ?
+
 > +
-> +	fd = open(path, O_RDONLY);
-> +	igt_assert_f(fd >= 0, "Survivability mode not set\n");
-> +	close(fd);
+> +			read = intel_vram_write_readback8(vram, offset, orig);
+> +			if (read != orig)
+> +				igt_debug("Failed to restore original value on VF%u (offset: %#lx, orig: %u, read: %u)\n",
+> +					  vf_id, offset, orig, read);
+> +		}
+> +	}
+> +
+> +	return passed;
 > +}
 > +
-> +static int create_device_configfs_group(int configfs_fd, int fd)
+> +static void access_beyond(unsigned int pf_fd, unsigned int num_vfs)
 > +{
-> +	int configfs_device_fd;
-> +	struct pci_device *pci_dev;
-> +	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+> +	uint64_t provisioned_lmem;
+> +	struct vram_mapping vram;
+> +	size_t vram_bar_size;
+> +	bool passed = true;
 > +
-> +	pci_dev = igt_device_get_pci_device(fd);
-> +	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +	igt_sriov_disable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, num_vfs);
 > +
-> +	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
-> +	igt_assert(configfs_device_fd);
+> +	for_each_sriov_enabled_vf(pf_fd, vf_id) {
+> +		provisioned_lmem = get_provisioned_vram(pf_fd, vf_id);
+> +		igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n",
+> +			  vf_id, provisioned_lmem);
 > +
-> +	return configfs_device_fd;
+> +		vram_bar_size = intel_vram_bar_size(pf_fd, vf_id);
+> +		igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
+> +
+> +		if (vram_bar_size <= provisioned_lmem) {
+> +			igt_sriov_disable_vfs(pf_fd);
+> +			igt_skip("VRAM BAR size is smaller or equal to provisioned VRAM\n");
+> +		}
+> +
+> +		vram = intel_vram_mmap(pf_fd, vf_id, vram_bar_size, PROT_READ | PROT_WRITE, 0);
+> +		igt_assert(vram.addr);
+> +
+> +		passed &= validate_access_beyond(&vram, vf_id, provisioned_lmem, vram_bar_size);
+> +
+> +		intel_vram_munmap(&vram);
+> +	}
+> +
+> +	igt_sriov_disable_vfs(pf_fd);
+> +
+> +	igt_assert(passed);
 > +}
 > +
-> +igt_main
+> +static void resize_and_access(unsigned int pf_fd, bool resize_up)
 > +{
-> +	int fd, configfs_fd, configfs_device_fd;
-> +	struct pci_device *pci_xe;
+> +	const unsigned int vf_id = 1;
+> +	uint64_t provisioned_lmem;
+> +	struct vram_mapping vram;
+> +	unsigned int total_vfs;
+> +	size_t vram_bar_size;
+> +	bool passed;
+> +
+> +	total_vfs = igt_sriov_get_total_vfs(pf_fd);
+> +
+> +	igt_sriov_disable_driver_autoprobe(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, resize_up ? total_vfs : 1);
+> +
+> +	provisioned_lmem = get_provisioned_vram(pf_fd, vf_id);
+> +	igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n", vf_id, provisioned_lmem);
+> +
+> +	igt_sriov_disable_vfs(pf_fd);
+> +	igt_sriov_enable_vfs(pf_fd, resize_up ? 1 : total_vfs);
+> +
+> +	provisioned_lmem = get_provisioned_vram(pf_fd, vf_id);
+> +	igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n", vf_id, provisioned_lmem);
+> +
+> +	vram_bar_size = intel_vram_bar_size(pf_fd, vf_id);
+> +	igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
+> +
+> +	if (vram_bar_size <= provisioned_lmem) {
+> +		igt_sriov_disable_vfs(pf_fd);
+> +		igt_skip("VRAM BAR size is smaller or equal to provisioned VRAM\n");
+> +	}
+> +
+> +	vram = intel_vram_mmap(pf_fd, vf_id, vram_bar_size, PROT_READ | PROT_WRITE, 0);
+> +	igt_assert(vram.addr);
+> +
+> +	passed = validate_access_basic(&vram, vf_id, provisioned_lmem);
+> +	passed &= validate_access_beyond(&vram, vf_id, provisioned_lmem, vram_bar_size);
+> +
+> +	intel_vram_munmap(&vram);
+> +
+> +	igt_sriov_disable_vfs(pf_fd);
+> +
+> +	igt_assert(passed);
+> +}
+> +
+> +static bool extended_scope;
+> +
+> +static int opts_handler(int opt, int opt_index, void *data)
+> +{
+> +	switch (opt) {
+> +	case 'e':
+> +		extended_scope = true;
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static const struct option long_opts[] = {
+> +	{ .name = "extended", .has_arg = false, .val = 'e', },
+> +	{}
+> +};
+> +
+> +static const char help_str[] =
+> +	"  --extended\tRun the extended test scope\n";
+> +
+> +igt_main_args("", long_opts, help_str, opts_handler, NULL)
+> +{
+> +	bool autoprobe;
+> +	int pf_fd;
+> +	static struct subtest_resize_variants {
+> +		const char *name;
+> +		bool resize_up;
+> +	} resize_variant[] = {
+> +		{ "up", true },
+> +		{ "down", false },
+> +		{ NULL },
+> +	};
 > +
 > +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		pci_xe = igt_device_get_pci_device(fd);
-> +		configfs_fd = igt_configfs_open("xe");
-> +		igt_require(configfs_fd != -1);
-> +		configfs_device_fd = create_device_configfs_group(configfs_fd, fd);
-> +		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
+> +		pf_fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(igt_sriov_is_pf(pf_fd));
+> +		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> +		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
 > +	}
 > +
-> +	igt_describe("Validate survivability mode");
-> +	igt_subtest("survivability-mode") {
-> +		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
-> +		igt_install_exit_handler(restore);
-> +		test_survivability_mode(configfs_device_fd);
+> +	igt_describe("Verify that VF can access all the provisioned memory via VRAM BAR");
+> +	igt_subtest_with_dynamic_f("vf-access-basic") {
+> +		if (extended_scope)
+> +			for_each_sriov_num_vfs(pf_fd, num_vfs)
+> +				igt_dynamic_f("numvfs-%d", num_vfs)
+> +					access_basic(pf_fd, num_vfs);
+> +
+> +		for_random_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-random") {
+> +				igt_debug("numvfs=%u\n", num_vfs);
+> +				access_basic(pf_fd, num_vfs);
+> +			}
+> +		}
 > +	}
 > +
-> +	igt_describe("Validate i2c adapter functionality in survivability mode");
-> +	igt_subtest("i2c-functionality") {
-> +		igt_install_exit_handler(restore);
-> +		test_i2c_functionality(configfs_device_fd, pci_xe);
+> +	igt_describe("Verify that VF cannot access memory beyond what's provisioned via VRAM BAR");
+> +	igt_subtest_with_dynamic_f("vf-access-beyond") {
+> +		if (extended_scope)
+> +			for_each_sriov_num_vfs(pf_fd, num_vfs)
+> +				igt_dynamic_f("numvfs-%d", num_vfs)
+> +					access_beyond(pf_fd, num_vfs);
+> +
+> +		for_random_sriov_num_vfs(pf_fd, num_vfs) {
+> +			igt_dynamic_f("numvfs-random") {
+> +				igt_debug("numvfs=%u\n", num_vfs);
+> +				access_beyond(pf_fd, num_vfs);
+> +			}
+> +		}
+> +	}
+> +
+> +	for (const struct subtest_resize_variants *s = resize_variant; s->name; s++) {
+> +		igt_describe("Verify that VF can access the reprovisioned memory via VRAM BAR");
+> +		igt_subtest_f("vf-access-after-resize-%s", s->name) {
+> +			unsigned int total_vfs = igt_sriov_get_total_vfs(pf_fd);
+> +
+> +			igt_require(total_vfs > 1);
+> +
+> +			resize_and_access(pf_fd, s->resize_up);
+> +		}
 > +	}
 > +
 > +	igt_fixture {
-> +		igt_fs_remove_dir(configfs_fd, bus_addr);
-> +		close(configfs_device_fd);
-> +		close(configfs_fd);
-> +		close(fd);
-
-Use drm_close_driver() here. Also see Lucas patchseries
-
-https://patchwork.freedesktop.org/series/153175/
-tests/intel/xe_configfs: Unbind before tests
-
-for possible improvements needed in your test.
-
-Regards,
-Kamil
-
+> +		igt_sriov_disable_vfs(pf_fd);
+> +		/* abort to avoid execution of next tests with enabled VFs */
+> +		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
+> +		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
+> +			    igt_sriov_disable_driver_autoprobe(pf_fd);
+> +		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
+> +			       "Failed to restore sriov_drivers_autoprobe value\n");
+> +		close(pf_fd);
 > +	}
 > +}
 > diff --git a/tests/meson.build b/tests/meson.build
-> index 5c01c64e9..8f264d8e8 100644
+> index 5c01c64e9..6054a2c34 100644
 > --- a/tests/meson.build
 > +++ b/tests/meson.build
 > @@ -329,6 +329,7 @@ intel_xe_progs = [
->  	'xe_sriov_auto_provisioning',
->  	'xe_sriov_flr',
->  	'xe_sriov_scheduling',
-> +	'xe_survivability',
->  	'xe_sysfs_defaults',
->  	'xe_sysfs_preempt_timeout',
->  	'xe_sysfs_scheduler',
-> -- 
-> 2.43.0
-> 
+>   	'xe_sriov_auto_provisioning',
+>   	'xe_sriov_flr',
+>   	'xe_sriov_scheduling',
+> +	'xe_sriov_vram',
+>   	'xe_sysfs_defaults',
+>   	'xe_sysfs_preempt_timeout',
+>   	'xe_sysfs_scheduler',
+
