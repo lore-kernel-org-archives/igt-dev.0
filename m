@@ -4,58 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 490BECA0EF8
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 10:12:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC438CA0EEB
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 10:14:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DC1A610E8F3;
-	Thu, 21 Aug 2025 10:12:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A72F410E908;
+	Thu, 21 Aug 2025 10:14:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nnm79luP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SKvwjgi8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7830610E8F3
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 10:12:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8038210E908
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 10:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755771152; x=1787307152;
+ t=1755771263; x=1787307263;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=sBmcJwPYV8OfIhYQeIplcroh2pwE8BaFQViUzrizOkQ=;
- b=Nnm79luPMYuWXNy4kXslI8N7u7tYwIINBZX3ZG9JxVaR1KibM6LfKRkZ
- koeVO3DH9cQAYiLvv/M/qbRlYstNx5i9zRMjnWeLTTcyghTbjRwxeBFob
- UBJxNPCrW8mAiO6b8PCOlYRRYn0L4AdR4Ppk6egotw+UDBytXgqjTQg+5
- wIwk0jkITX7JT3t6LoI+BzIUq4HQ7LEd60Hmy93+3MCyvrxM1fgSfFuSu
- YrJwtsMZlUlWk7gLKfeR62RbZBz43jaawUyFQOo3qAm6HlnF6QVUqq2ry
- 3c3sTBBC7lFiEkp7yy8YsA2ooaB4WHStnLoV5fIep4/D9WBhY+Y1p8Fqz Q==;
-X-CSE-ConnectionGUID: ybNDVIvDSLuz42uiIkvYOA==
-X-CSE-MsgGUID: eVRUH7MmRn6+vxsHQoPd/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="58124226"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="58124226"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 03:12:32 -0700
-X-CSE-ConnectionGUID: Wj8ZeVZnTVmIczaFNFDuDw==
-X-CSE-MsgGUID: t0oUCaopR1GosWZeoKyQFQ==
+ mime-version:in-reply-to;
+ bh=tfrRN4EF+v4IkjN9oLHWr8bEoMg0YEsLtnzKwrdwx0w=;
+ b=SKvwjgi8QiSHRJxys49J43SIgaan3jYCd3Nfcyqm1t0O1A0K3VLviMp6
+ FTaVnIkJU2R5Y5VWOmuBo9QqJ50NIKp3eyEvkxNixtnYmx0y1TOyewsgD
+ VT5pLd75nGjYAp7WzZCeWt0mVKqIV0PWaAfbCCfAYOZbWSTVT04N7LwqX
+ CqwuC3mNf5HFo5v3W3bweAyc+5lBCWJSamNXjc+V12ESkfJtgmiiId4hf
+ RWZA3s6BnfcunpjgRKRiZyOQW+h8AyfQ6PSbgDKz/yot5HlHkFjw4dIKK
+ 3sytTxhMawnvZ6O5gLO7EIHwSKZ4xRZXTKTpK9rB0PnlT9BlIiCiP86Vd w==;
+X-CSE-ConnectionGUID: LTOMDxzXTMqaWteM3MKi+g==
+X-CSE-MsgGUID: Yi8OpG3mQKyuDZfH4fy++A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="58123438"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="58123438"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 03:14:22 -0700
+X-CSE-ConnectionGUID: H+bpts0FSsKeoBfJ2I51xA==
+X-CSE-MsgGUID: 8x76tuGkQtaZch3Wa+NRyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="167883449"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="199249620"
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.184])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 03:12:31 -0700
-Date: Thu, 21 Aug 2025 12:12:28 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 03:14:21 -0700
+Date: Thu, 21 Aug 2025 12:14:18 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: nishit.sharma@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/3] lib/intel_compute: loop_kernel_duration in
- Pipeline
-Message-ID: <hp2legfstnvgdz4ok37hzf4ohyir6mpnsvf2uvv6wgnffug5lg@yzu4ys5t7wyx>
-References: <20250818075447.15230-1-nishit.sharma@intel.com>
- <20250818075447.15230-2-nishit.sharma@intel.com>
+Subject: Re: [PATCH 1/3] lib/intel_compute: loop_kernel_duration in Pipeline
+Message-ID: <tyh3rdvgwfh5i3exucm2l26yahkwulxwirf5uun6mer5occiwn@af3xloxocgxr>
+References: <20250819074338.238525-1-nishit.sharma@intel.com>
+ <20250819074338.238525-2-nishit.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250818075447.15230-2-nishit.sharma@intel.com>
+In-Reply-To: <20250819074338.238525-2-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,7 +69,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Aug 18, 2025 at 07:54:44AM +0000, nishit.sharma@intel.com wrote:
+On Tue, Aug 19, 2025 at 07:43:36AM +0000, nishit.sharma@intel.com wrote:
 > From: Nishit Sharma <nishit.sharma@intel.com>
 > 
 > To execute KERNEL in GPU for specific duration a brief sleep is
@@ -84,15 +82,9 @@ On Mon, Aug 18, 2025 at 07:54:44AM +0000, nishit.sharma@intel.com wrote:
 > xe3lpg pipeline support loop_kernel shader hence loop_kernel_duration
 > works in these pipelines only.
 
-Generally patch is fine, but some additional information should
-occur in your commit message. Kernel which you support is loop kernel
-which comes from opencl/loop.cl file. This information is important
-because unblock comes from cpu memory write and likely other shaders
-we use in igt won't work like loop kernel.
-
-With this information added to commit message:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+I've reviewed your patch and I missed there's missing ufence. So
+r-b applies to this one after you alter a commit message according
+to my comment.
 
 --
 Zbigniew
@@ -100,12 +92,12 @@ Zbigniew
 > 
 > Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 > ---
->  lib/intel_compute.c | 21 ++++++++++++++++++++-
+>  lib/intel_compute.c | 25 ++++++++++++++++++++++++-
 >  lib/intel_compute.h |  2 ++
->  2 files changed, 22 insertions(+), 1 deletion(-)
+>  2 files changed, 26 insertions(+), 1 deletion(-)
 > 
 > diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 147dd2916..125331c53 100644
+> index 147dd2916..5a919deb8 100644
 > --- a/lib/intel_compute.c
 > +++ b/lib/intel_compute.c
 > @@ -849,6 +849,9 @@ static void compute_exec(int fd, const unsigned char *kernel,
@@ -148,7 +140,15 @@ Zbigniew
 >  	bo_execenv_create(fd, &execenv, eci, user);
 >  
 >  	/* Set dynamic sizes */
-> @@ -1849,7 +1861,14 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+> @@ -1818,6 +1830,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+>  	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
+>  	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
+>  	int entries = ARRAY_SIZE(bo_dict);
+> +	int64_t timeout_one_ns = 1;
+>  
+>  	bo_execenv_create(fd, &execenv, eci, user);
+>  
+> @@ -1849,7 +1862,17 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
 >  				    OFFSET_KERNEL, 0, false,
 >  				    execenv.array_size);
 >  
@@ -156,6 +156,9 @@ Zbigniew
 > +	if (user && user->loop_kernel_duration) {
 > +		bo_execenv_exec_async(&execenv, ADDR_BATCH);
 > +		igt_measured_usleep(user->loop_kernel_duration);
+> +		/* Check that the loop kernel has not completed yet */
+> +		igt_assert_neq(0, __xe_wait_ufence(fd, &execenv.bo_sync->sync, USER_FENCE_VALUE,
+> +					execenv.exec_queue, &timeout_one_ns));
 > +		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
 > +		bo_execenv_sync(&execenv);
 > +		user->skip_results_check = 1;
