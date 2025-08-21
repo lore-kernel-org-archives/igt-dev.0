@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2893CA0EFA
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 20:27:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A4F8CA0EEB
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 20:30:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3BF0D10E3AC;
-	Thu, 21 Aug 2025 20:27:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0723F10E2FA;
+	Thu, 21 Aug 2025 20:30:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fVk9Izl4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P/EoTdPk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D486710E3AC
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 20:26:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67E1810E2FA
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 20:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755808019; x=1787344019;
+ t=1755808230; x=1787344230;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=QKhQ4iqqgNebNRnTyjAfW+GmaxSjE5SzhMzgFg+k0IQ=;
- b=fVk9Izl4YyxVuqCNltgHMdR6VamjdHI3eyVaOsONXVKBrLSS5AULwP6Q
- ThGDMmMwtoggmo8PADSK4t/cjo07AqxT753By/cwQQsjzbCiFxP41TMtV
- BhwjN03lFOukvpZm16Ur8UZ4wlfLyyP6YQ6Z8AGw370UD+OPoAxPPvzrv
- zbhRUetr2MMQYOSZZ1lUtHspvy+HUCEDf7TB9WwyK0ONkF+IVDQroelT+
- 0pL8CT+q1zgLzupRRYyKrOWyjX5pzn4SGia40RDYdtC7q5u02Ij9Mywvf
- oj2CXuZPSXdZ0W4bFqsM+Jy8eObR4tJo0i7w0xUuy1cTvHZ+XDUZNeKyu Q==;
-X-CSE-ConnectionGUID: ZEnzfe9+Qc6MLA0GqBXqJA==
-X-CSE-MsgGUID: LVP5AM4jRPSfJ0R4BU6tkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58207317"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="58207317"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 13:26:58 -0700
-X-CSE-ConnectionGUID: MEzXBHDVSsWwoi2fz177ZQ==
-X-CSE-MsgGUID: Y/YCm9Y/Sq2zPnJOjtkIZA==
+ bh=TWIqVM4MXDQiJfZ7M30YjPK+n0pTaSsLI0lsm0qGtWY=;
+ b=P/EoTdPkMr+SdoPO8xhiafNyRiyYmV1EYoJfiCMaX9BbDCIj63jaBi/k
+ vY7NW0pEwn3TLjhnSSQwWKmJ01elpAPI3IdaE/jhWy9LYVNhcX+QvnUoa
+ yVEMyoGhBAaVAgCsuJQyWnwPJE81KYQMjvydwMLREMDSGTiqqZCbAsrJ5
+ T12nDYNy7AZWaqY1HUdGojYpG7bVDKr0aiJgFXds/kMAbGl1Q5q+no9Zk
+ hkgLriN/PCgiNk63FgpJVfzpuF0Uaf6R148OnBnoKjPKtSu8QXthWloOo
+ GwczuxvLBxieJn8NYi0iq1iwvNIAWtdCee7VwxJBTnLpzYi7iE1zMhNgl Q==;
+X-CSE-ConnectionGUID: WDI82FyDTz6rLaUauOqLig==
+X-CSE-MsgGUID: X6QC/ft7Q7uY66hKgftz7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58060418"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="58060418"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 13:30:29 -0700
+X-CSE-ConnectionGUID: F1TddulRRrW5vyHNdemaQA==
+X-CSE-MsgGUID: TqI/yCpATWSlTs+LqC8e7w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="167741164"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="169321983"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.85.180])
  ([10.245.85.180])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 13:26:56 -0700
-Message-ID: <c52ed674-bb65-4a08-8b50-38822a1cbfa0@linux.intel.com>
-Date: Thu, 21 Aug 2025 22:26:53 +0200
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 13:30:27 -0700
+Message-ID: <5b9a0e88-4cb9-4296-9039-c67742438dfb@linux.intel.com>
+Date: Thu, 21 Aug 2025 22:30:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/4] lib/intel_vram: Add library for VRAM accesses
+Subject: Re: [PATCH i-g-t 3/4] tests/intel/xe_sriov_flr: Use VRAM access
+ helpers from intel_vram library
 To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
 Cc: michal.wajdeczko@intel.com, michal.winiarski@intel.com,
  satyanarayana.k.v.p@intel.com, adam.miszczak@linux.intel.com,
  jakub1.kolakowski@intel.com
 References: <20250717090812.28628-1-lukasz.laguna@intel.com>
- <20250717090812.28628-3-lukasz.laguna@intel.com>
+ <20250717090812.28628-4-lukasz.laguna@intel.com>
 Content-Language: en-US
 From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250717090812.28628-3-lukasz.laguna@intel.com>
+In-Reply-To: <20250717090812.28628-4-lukasz.laguna@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,354 +77,171 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 7/17/2025 11:08 AM, Lukasz Laguna wrote:
-
-Hi Łukasz,
-
-Thanks for the patch. I feel guilty as a co-author of the original code,
-but since we are moving it into a library maybe we can do a few small
-API tweaks to make it safer on 32-bit and easier to extend.
-
-> Prepare a library with helpers to map and unmap VRAM BAR region and
-> perform read/write operations.
+> Replace local VRAM access helper functions with the helpers provided by
+> the intel_vram library.
 > 
 > Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 > ---
->   lib/intel_vram.c | 183 +++++++++++++++++++++++++++++++++++++++++++++++
->   lib/intel_vram.h |  22 ++++++
->   lib/meson.build  |   1 +
->   3 files changed, 206 insertions(+)
->   create mode 100644 lib/intel_vram.c
->   create mode 100644 lib/intel_vram.h
+>   tests/intel/xe_sriov_flr.c | 106 +++++++------------------------------
+>   1 file changed, 20 insertions(+), 86 deletions(-)
 > 
-> diff --git a/lib/intel_vram.c b/lib/intel_vram.c
-> new file mode 100644
-> index 000000000..38e2ccf36
-> --- /dev/null
-> +++ b/lib/intel_vram.c
-> @@ -0,0 +1,183 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2025 Intel Corporation
-> + */
-> +
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <inttypes.h>
-> +#include <sys/mman.h>
-> +#include <sys/stat.h>
-> +
-> +#include "igt_core.h"
-> +#include "igt_sriov_device.h"
+> diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
+> index 0c6a0c97e..3b7001ec7 100644
+> --- a/tests/intel/xe_sriov_flr.c
+> +++ b/tests/intel/xe_sriov_flr.c
+> @@ -11,6 +11,7 @@
+>   #include "igt_device.h"
+>   #include "igt_sriov_device.h"
+>   #include "intel_chipset.h"
 > +#include "intel_vram.h"
-> +
-> +static int intel_vram_open_bar(int pf_fd, unsigned int vf_num, int mode)
-> +{
-> +	int sysfs, fd;
-> +
-> +	sysfs = igt_sriov_device_sysfs_open(pf_fd, vf_num);
-> +	if (sysfs < 0) {
-> +		igt_debug("Failed to open sysfs for VF%d: %s\n", vf_num, strerror(errno));
-> +		return -1;
-> +	}
-> +
-> +	fd = openat(sysfs, "resource2", mode | O_SYNC);
+>   #include "linux_scaffold.h"
+>   #include "xe/xe_mmio.h"
+>   #include "xe/xe_query.h"
+> @@ -676,94 +677,28 @@ struct lmem_data {
+>   	size_t *vf_lmem_size;
+>   };
+>   
+> -struct lmem_info {
+> -	/* pointer to the mapped area */
+> -	char *addr;
+> -	/* size of mapped area */
+> -	size_t size;
+> -};
+> -
+>   const size_t STEP = SZ_1M;
+>   
+> -static void *mmap_vf_lmem(int pf_fd, int vf_num, size_t length, int prot, off_t offset)
+> -{
+> -	int open_flags = ((prot & PROT_WRITE) != 0) ? O_RDWR : O_RDONLY;
+> -	struct stat st;
+> -	int sysfs, fd;
+> -	void *addr;
+> -
+> -	sysfs = igt_sriov_device_sysfs_open(pf_fd, vf_num);
+> -	if (sysfs < 0) {
+> -		igt_debug("Failed to open sysfs for VF%d: %s\n", vf_num, strerror(errno));
+> -		return NULL;
+> -	}
+> -
+> -	fd = openat(sysfs, "resource2", open_flags | O_SYNC);
+> -	close(sysfs);
+> -	if (fd < 0) {
+> -		igt_debug("Failed to open resource2 for VF%d: %s\n", vf_num, strerror(errno));
+> -		return NULL;
+> -	}
+> -
+> -	if (fstat(fd, &st)) {
+> -		igt_debug("Failed to stat resource2 for VF%d: %s\n", vf_num, strerror(errno));
+> -		close(fd);
+> -		return NULL;
+> -	}
+> -
+> -	if (st.st_size < length) {
+> -		igt_debug("Mapping length (%zu) exceeds BAR2 size (%" PRIu64 ")\n", length, (uint64_t)st.st_size);
+> -		close(fd);
+> -		return NULL;
+> -	}
+> -
+> -	addr = mmap(NULL, length, prot, MAP_SHARED, fd, offset);
+> -	close(fd);
+> -	if (addr == MAP_FAILED) {
+> -		igt_debug("Failed mmap resource2 for VF%d: %s\n", vf_num, strerror(errno));
+> -		return NULL;
+> -	}
+> -
+> -	return addr;
+> -}
+> -
+> -static void munmap_vf_lmem(struct lmem_info *lmem)
+> -{
+> -	igt_debug_on_f(munmap(lmem->addr, lmem->size),
+> -		       "Failed munmap %p: %s\n", lmem->addr, strerror(errno));
+> -}
+> -
+> -static char lmem_read(const char *addr, size_t idx)
+> -{
+> -	return READ_ONCE(*(addr + idx));
+> -}
+> -
+> -static char lmem_write_readback(char *addr, size_t idx, char value)
+> -{
+> -	WRITE_ONCE(*(addr + idx), value);
+> -	return lmem_read(addr, idx);
+> -}
+> -
+> -static bool lmem_write_pattern(struct lmem_info *lmem, char value, size_t start, size_t step)
+> +static bool lmem_write_pattern(struct vram_mapping *m, uint8_t value, size_t start, size_t step)
+>   {
+> -	char read;
+> +	uint8_t read;
+>   
+> -	for (; start < lmem->size; start += step) {
+> -		read = lmem_write_readback(lmem->addr, start, value);
+> +	for (; start < m->size; start += step) {
+> +		read = intel_vram_write_readback8(m, start, value);
+>   		if (igt_debug_on_f(read != value, "LMEM[%zu]=%u != %u\n", start, read, value))
+>   			return false;
+>   	}
+>   	return true;
+>   }
+>   
+> -static bool lmem_contains_expected_values_(struct lmem_info *lmem,
+> -					   char expected, size_t start,
+> +static bool lmem_contains_expected_values_(struct vram_mapping *m,
+> +					   uint8_t expected, size_t start,
+>   					   size_t step)
+>   {
+> -	char read;
+> +	uint8_t read;
+>   
+> -	for (; start < lmem->size; start += step) {
+> -		read = lmem_read(lmem->addr, start);
+> +	for (; start < m->size; start += step) {
+> +		read = intel_vram_read8(m, start);
+>   		if (igt_debug_on_f(read != expected,
+>   				   "LMEM[%zu]=%u != %u\n", start, read, expected))
+>   			return false;
+> @@ -774,30 +709,29 @@ static bool lmem_contains_expected_values_(struct lmem_info *lmem,
+>   static bool lmem_contains_expected_values(int pf_fd, int vf_num, size_t length,
+>   					  char expected)
+>   {
+> -	struct lmem_info lmem = { .size = length };
+> +	struct vram_mapping vram;
+>   	bool result;
+>   
+> -	lmem.addr = mmap_vf_lmem(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
+> -	if (igt_debug_on(!lmem.addr))
+> +	vram = intel_vram_mmap(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
+> +	if (igt_debug_on(!vram.addr))
+>   		return false;
+>   
+> -	result = lmem_contains_expected_values_(&lmem, expected, 0, STEP);
+> -	munmap_vf_lmem(&lmem);
+> +	result = lmem_contains_expected_values_(&vram, expected, 0, STEP);
+> +	intel_vram_munmap(&vram);
+>   
+>   	return result;
+>   }
+>   
+>   static bool lmem_mmap_write_munmap(int pf_fd, int vf_num, size_t length, char value)
+>   {
+> -	struct lmem_info lmem;
+> +	struct vram_mapping vram;
+>   	bool result;
+>   
+> -	lmem.size = length;
+> -	lmem.addr = mmap_vf_lmem(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
+> -	if (igt_debug_on(!lmem.addr))
+> +	vram = intel_vram_mmap(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
+> +	if (igt_debug_on(!vram.addr))
+>   		return false;
+> -	result = lmem_write_pattern(&lmem, value, 0, STEP);
+> -	munmap_vf_lmem(&lmem);
+> +	result = lmem_write_pattern(&vram, value, 0, STEP);
+> +	intel_vram_munmap(&vram);
+>   
+>   	return result;
+>   }
 
-O_SYNC has no effect on mmap, can be dropped.
-
-> +	if (fd < 0)
-> +		igt_debug("Failed to open resource2 for VF%d: %s\n", vf_num, strerror(errno));
-> +
-> +	close(sysfs);
-> +
-> +	return fd;
-> +}
-> +
-> +/**
-> + * intel_vram_bar_size - Get the size of the VRAM BAR
-> + * @pf_fd: PF device file descriptor
-> + * @vf_num: VF number (1-based), or 0 for the PF
-> + *
-> + * Opens the VRAM BAR file descriptor for the specified device and retrieves
-> + * its size by using fstat().
-> + *
-> + * Return: The size of the VRAM BAR in bytes on success,
-> + *         or negative value on failure.
-> + */
-> +ssize_t intel_vram_bar_size(int pf_fd, unsigned int vf_num)
-> +{
-> +	int fd;
-> +	struct stat st;
-> +
-> +	fd = intel_vram_open_bar(pf_fd, vf_num, O_RDONLY);
-> +	if (fd < 0)
-> +		return fd;
-> +
-> +	if (fstat(fd, &st)) {
-> +		igt_debug("Failed to stat resource2 for VF%u: %s\n", vf_num, strerror(errno));
-> +		close(fd);
-> +		return -1;
-> +	}
-> +
-> +	close(fd);
-> +
-> +	return st.st_size;
-> +}
-
-Using ssize_t may be problematic: on 32-bit it truncates BARs >2 GiB.
-maybe return int and fill a uint64_t *out_size.
-
-int intel_vram_bar_size(int pf_fd, unsigned int vf_num, uint64_t *out_size)
-{
-	int fd;
-
-	if (!out_size)
-		return -EINVAL;
-	fd = intel_vram_open_bar(pf_fd, vf_num, O_RDONLY);
-	if (fd < 0)
-		return fd;
-
-	struct stat st;
-	if (fstat(fd, &st)) {
-		int saved_err = errno;
-
-		close(fd);
-		return -saved_err;
-	}
-	close(fd);
-	if (st.st_size < 0)
-		return -EOVERFLOW;
-	*out_size = (uint64_t)st.st_size;
-	return 0;
-}
-
-> +
-> +/**
-> + * intel_vram_mmap - Map VRAM BAR region
-> + * @pf_fd: PF device file descriptor
-> + * @vf_num: VF number (1-based), or 0 for the PF
-> + * @length: Number of bytes to map
-> + * @prot: Memory protection flags
-> + * @offset: Offset (in bytes) within the BAR to begin the mapping
-> + *
-> + * Maps a PF or VF VRAM BAR into user space using mmap().
-> + *
-> + * Return: A vram_mapping struct with the mapped address and size on success,
-> + *         or NULL address and zero size on failure.
-> + */
-> +struct vram_mapping intel_vram_mmap(int pf_fd, unsigned int vf_num, size_t length, int prot,
-> +				    off_t offset)
-
-Returning struct by value hides error codes and may be problematic to 
-changes (ex. extending fields). As it's a library maybe better to return 
-int (for error codes and let callers branch on cause, assert) and fill a 
-pointer to struct. Also, offsets are unsigned and large, maybe use 
-uint64_t for offset in the API, and cast down to off_t only at mmap().
-
-> +{
-> +	int open_flags = ((prot & PROT_WRITE) != 0) ? O_RDWR : O_RDONLY;
-> +	struct vram_mapping m = { .addr = NULL, .size = 0 };
-> +	ssize_t vram_bar_size;
-> +	int vram_bar_fd;
-> +	void *addr;
-> +
-> +	vram_bar_size = intel_vram_bar_size(pf_fd, vf_num);
-> +	if (vram_bar_size < 0) {
-> +		igt_debug("Failed to get VRAM BAR size for VF%u: %s\n", vf_num, strerror(errno));
-> +		return m;
-> +	}
-> +
-> +	if (vram_bar_size < length) {
-> +		igt_debug("Mapping length (%zu) exceeds VRAM BAR size (%" PRIu64 ")\n",
-> +			  length, (uint64_t)vram_bar_size);
-> +		return m;
-> +	}
-
-Needs a proper range check: offset + length <= bar_size
-
-> +
-> +	vram_bar_fd = intel_vram_open_bar(pf_fd, vf_num, open_flags);
-> +	if (vram_bar_fd < 0) {
-> +		igt_debug("Failed to open VRAM BAR file for VF%u: %s\n", vf_num, strerror(errno));
-> +		return m;
-> +	}
-> +
-> +	addr = mmap(NULL, length, prot, MAP_SHARED, vram_bar_fd, offset);
-> +	close(vram_bar_fd);
-> +	if (addr == MAP_FAILED) {
-> +		igt_debug("Failed to map VRAM BAR for VF%u: %s\n", vf_num, strerror(errno));
-> +		return m;
-> +	}
-> +
-> +	m.addr = addr;
-> +	m.size = length;
-> +	return m;
-> +}
-
-Proposed version:
-
-int intel_vram_mmap(int pf_fd, unsigned int vf_num, uint64_t offset,
-		    size_t length, int prot, struct vram_mapping *out)
-{
-	uint64_t bar_size, end;
-	int fd, ret, saved_err;
-	void *addr;
-
-	if (!out)
-		return -EINVAL;
-	out->addr = NULL;
-	out->size = 0;
-	if (!length)
-		return 0;
-
-	ret = intel_vram_bar_size(pf_fd, vf_num, &bar_size);
-	if (ret)
-		return ret;
-
-	end = offset + (uint64_t)length;
-	if (end < offset || end > bar_size)
-		return -EINVAL;
-
-	fd = intel_vram_open_bar(pf_fd, vf_num,
-							 (prot & PROT_WRITE) ? O_RDWR : O_RDONLY);
-	if (fd < 0)
-		return fd;
-
-	addr = mmap(NULL, length, prot, MAP_SHARED, fd, (off_t)offset);
-	saved_err = errno;
-	close(fd);
-	if (addr == MAP_FAILED)
-		return -saved_err;
-
-	out->addr = addr;
-	out->size = length;
-	return 0;
-}
-
-> +
-> +/**
-> + * intel_vram_munmap - Unmap previously mapped VRAM region
-> + * @m: Pointer to a vram_mapping struct representing the mapped region
-> + *
-> + * Unmaps the user-space memory region previously mapped by intel_vram_mmap().
-> + *
-> + * Return: 0 on success, or negative value on failure.
-> + */
-> +int intel_vram_munmap(struct vram_mapping *m)
-> +{
-> +	int ret;
-> +
-> +	ret = munmap(m->addr, m->size);
-> +	if (ret < 0)
-> +		igt_debug("Failed munmap %p: %s\n", m->addr, strerror(errno));
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * intel_vram_read8 - Read 8-bit value from a mapped VRAM region
-> + * @m: Pointer to a vram_mapping struct representing the mapped region
-> + * @offset: Offset (in bytes) to read from
-> + *
-> + * Reads a single 8-bit value from the specified offset in the mapped VRAM.
-> + *
-> + * Return: The 8-bit value read from the given offset.
-> + */
-> +uint8_t intel_vram_read8(struct vram_mapping *m, size_t offset)
-> +{
-> +	igt_assert(offset < m->size);
-> +
-> +	return READ_ONCE(*((uint8_t *)m->addr + offset));
-> +}
-> +
-> +/**
-> + * intel_vram_write8 - Write 8-bit value to a mapped VRAM region
-> + * @m: Pointer to a vram_mapping struct representing the mapped region
-> + * @offset: Offset (in bytes) to write to
-> + * @value: The 8-bit value to write
-> + *
-> + * Writes a single 8-bit value to the specified offset in the mapped VRAM.
-> + */
-> +void intel_vram_write8(struct vram_mapping *m, size_t offset, uint8_t value)
-> +{
-> +	igt_assert(offset < m->size);
-> +
-> +	WRITE_ONCE(*((uint8_t *)m->addr + offset), value);
-> +}
-> +
-> +/**
-> + * intel_vram_write_readback8 - Write and then read back an 8-bit value
-> + * @m: Pointer to a vram_mapping struct representing the mapped region
-> + * @offset: Offset (in bytes) to write to and read from
-> + * @value: The 8-bit value to write
-> + *
-> + * Writes an 8-bit value to the specified offset in the mapped VRAM and
-> + * reads it back to verify if the write was successful.
-> + *
-> + * Return: The 8-bit value read back from the given offset.
-> + */
-> +uint8_t intel_vram_write_readback8(struct vram_mapping *m, size_t offset, uint8_t value)
-> +{
-> +	intel_vram_write8(m, offset, value);
-> +	return intel_vram_read8(m, offset);
-> +}
-> diff --git a/lib/intel_vram.h b/lib/intel_vram.h
-> new file mode 100644
-> index 000000000..b93f915e9
-> --- /dev/null
-> +++ b/lib/intel_vram.h
-> @@ -0,0 +1,22 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2025 Intel Corporation
-> + */
-> +
-> +#ifndef __INTEL_VRAM_H__
-> +#define __INTEL_VRAM_H__
-> +
-> +struct vram_mapping {
-> +	void *addr; /* Pointer to the mapped VRAM */
-> +	size_t size; /* Size of the mapped VRAM region */
-> +};
-> +
-> +ssize_t intel_vram_bar_size(int pf_fd, unsigned int vf_num);
-> +struct vram_mapping intel_vram_mmap(int pf_fd, unsigned int vf_num, size_t length, int prot,
-> +				    off_t offset);
-> +int intel_vram_munmap(struct vram_mapping *m);
-> +uint8_t intel_vram_read8(struct vram_mapping *m, size_t offset);
-> +void intel_vram_write8(struct vram_mapping *m, size_t offset, uint8_t value);
-> +uint8_t intel_vram_write_readback8(struct vram_mapping *m, size_t offset, uint8_t value);
-> +
-
-Proposed API
-
-/*
-  * Design choices:
-  *
-  * - Use uint64_t for BAR sizes/offsets (unsigned device semantics, no 
-truncation on 32-bit).
-  * - Functions return int (0 on success, -errno on failure).
-  * - No internal alignment: if offset isn’t page aligned, mmap() will 
-fail with EINVAL.
-  */
-
-int  intel_vram_bar_size(int pf_fd, unsigned int vf_num, uint64_t 
-*out_size);
-int  intel_vram_mmap(int pf_fd, unsigned int vf_num,
-                      uint64_t offset, size_t length, int prot,
-                      struct vram_mapping *out);
-...
-
-> +#endif	/* INTEL_VRAM_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 2eaca42a4..25c68011d 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -70,6 +70,7 @@ lib_sources = [
->   	'intel_mocs.c',
->   	'igt_multigpu.c',
->   	'intel_pat.c',
-> +	'intel_vram.c',
->   	'ioctl_wrappers.c',
->   	'media_spin.c',
->   	'media_fill.c',
-
+LGTM. If intel_vram lib is going to be modified, we should also apply 
+the same adjustments here.
