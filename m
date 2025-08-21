@@ -4,66 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABE6CCA0EF8
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 15:03:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD251CA0EEB
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 15:04:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6727210E9C4;
-	Thu, 21 Aug 2025 15:03:47 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GjnvzH4l";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A47A10E9C0
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 15:03:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755788626; x=1787324626;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=oAuFL1qna9OT7NtdRwmf/PTcfGs0yRIfGGy3GKKSvIk=;
- b=GjnvzH4llLg8tcwrzaIuKeWedTlApze8Pvjqh0qbnjNePvuK+QncG3mb
- g3tzuD17YEAg2eqtL/E3+dABscT/QVohHdXqDOWhBhwwY7xjLffwFpQKx
- AZnaHUJoPL24cBIDy0wfHDHDrX81RaHRXm8Rz7yUQSjJEGhk4p2GAiqvr
- S0KV4v2urAqqN9vPcog71NAxvqiGCe4apR3kU824ppsgVsSV41fVhxXuv
- GVtJNg7W8+Qgtn4TtyE6+EJdgoLpPys9hUQQghSiSUVSM3A9Z5R2a7Zy1
- 80bZqRw5iVsnkU2Uh9c4JbjrMD/7bFY7fiq3BrMm5d1liIYHNh3FwMuB3 A==;
-X-CSE-ConnectionGUID: fuzC09T0RG+5C+3WrPzqVA==
-X-CSE-MsgGUID: /c7UWjfdRpuV+2EdldWDUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58228289"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="58228289"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 08:03:46 -0700
-X-CSE-ConnectionGUID: 4kAwHo7gSxO3yzPgEFA3MQ==
-X-CSE-MsgGUID: JdHri9ocTHe12jz/x1ksYw==
-X-ExtLoop1: 1
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 08:03:43 -0700
-Date: Thu, 21 Aug 2025 17:03:29 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Badrappan, Jeevaka" <jeevaka.badrappan@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Santa, Carlos" <carlos.santa@intel.com>,
- "Sebinraj, S" <s.sebinraj@intel.com>,
- "B S, Karthik" <karthik.b.s@intel.com>
-Subject: Re: [PATCH i-g-t] tools/xe_gpu_frequency: Add tool to set/get Intel
- GPU frequency for Xe
-Message-ID: <20250821150329.6ujm5eyh4oqujnea@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Badrappan, Jeevaka" <jeevaka.badrappan@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Santa, Carlos" <carlos.santa@intel.com>,
- "Sebinraj, S" <s.sebinraj@intel.com>,
- "B S, Karthik" <karthik.b.s@intel.com>
-References: <20250820125121.1387843-1-jeevaka.badrappan@intel.com>
- <20250820163528.trzmxfbwojmg74p6@kamilkon-DESK.igk.intel.com>
- <IA1PR11MB6268A74F8E0560EDE84E03BBED32A@IA1PR11MB6268.namprd11.prod.outlook.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 887A410E9B8;
+	Thu, 21 Aug 2025 15:04:35 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6353610E9B8;
+ Thu, 21 Aug 2025 15:04:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5264108179349003605=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <IA1PR11MB6268A74F8E0560EDE84E03BBED32A@IA1PR11MB6268.namprd11.prod.outlook.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bv2?=
+ =?utf-8?q?=2Ci-g-t=2C1/3=5D_lib/dsc=3A_Add_helpers_to_disable_force_dsc?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Chaitanya Kumar Borah" <chaitanya.kumar.borah@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 21 Aug 2025 15:04:34 -0000
+Message-ID: <175578867439.257383.14726254808038031063@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250821093511.937552-1-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20250821093511.937552-1-chaitanya.kumar.borah@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,70 +37,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevaka,
-On 2025-08-21 at 09:10:26 +0000, Badrappan, Jeevaka wrote:
-> Hi Kamil,
-> 
-> > Please consider improving already existing tool intel_gpu_frequency instead of copy-paste.
-> 
-> There were 2 solutions considered:
-> 1. Add support for Xe driver to the existing intel_gpu_frequency
-> 2. Separate tool that will build on intel_gpu_frequency but specific to Xe driver
-> 
-> 2nd solution was chosen for the below reasons:
-> - sysfs frequency path for i915 and Xe is different.
+--===============5264108179349003605==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please give example.
+== Series Details ==
 
-> - tile and gt needs to be taken into consideration.
+Series: series starting with [v2,i-g-t,1/3] lib/dsc: Add helpers to disable force dsc
+URL   : https://patchwork.freedesktop.org/series/153277/
+State : success
 
-Do we need more options here?
+== Summary ==
 
-> - Might not be accepted due to readability because of device type checks, name based on device types, extending i915 tool to support Xe driver.
-> 
-> If the recommendation is to extend intel_gpu_frequency,
-> can provide a patch that adds supports for Xe driver to
-> existing intel_gpu_frequency tool. Please confirm.
+CI Bug Log - changes from XEIGT_8503_BAT -> XEIGTPW_13611_BAT
+====================================================
 
-From user point perspective, when there are two tools it becomes
-more complicated which tool to use. This one is simple enough
-and imho this should stay as a one tool. 
+Summary
+-------
 
-Please try to extend existing tool first. If it will become more
-complicated you could then consider splitting sources into two or
-three C files but first lets see how it will fit into one.
+  **SUCCESS**
 
-Regards,
-Kamil
+  No regressions found.
 
-> 
-> > Please do not write exact output here, it could be in cover
-> 
-> > letter but rather not in commit message. You could add how
-> 
-> > it could be called into examples, when program is called with
-> 
-> > --help
-> 
-> Will address in next patch set.
-> 
-> 
-> > +/*
-> 
-> > + * Copyright © 2025 Intel Corporation
-> 
-> > + *
-> 
-> > + * Permission is hereby granted, free of charge, to any person obtaining a
-> 
-> 
-> 
-> > We use SPDX licence, please look into few other tools/tests which uses them.
-> 
-> Will address in next patch set.
-> 
-> Regards,
-> Jeevaka
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13611_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8503/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-bmg-1:          [PASS][3] -> [FAIL][4] ([Intel XE#5507]) +1 other test fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8503/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#5507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8503 -> IGTPW_13611
+
+  IGTPW_13611: 66610a9dfd04011fe06360bfca11253f8b4b7864 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8503: 8503
+  xe-3591-16e133c7e6922a9f224b272a48ac172cf06e3408: 16e133c7e6922a9f224b272a48ac172cf06e3408
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/index.html
+
+--===============5264108179349003605==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [v2,i-g-t,1/3] lib/dsc: Add helpers to disable force dsc</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153277/">https://patchwork.freedesktop.org/series/153277/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8503_BAT -&gt; XEIGTPW_13611_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13611_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-plain-flip@a-edp1:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8503/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2@render:</p>
+<ul>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8503/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507">Intel XE#5507</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8503 -&gt; IGTPW_13611</li>
+</ul>
+<p>IGTPW_13611: 66610a9dfd04011fe06360bfca11253f8b4b7864 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8503: 8503<br />
+  xe-3591-16e133c7e6922a9f224b272a48ac172cf06e3408: 16e133c7e6922a9f224b272a48ac172cf06e3408</p>
+
+</body>
+</html>
+
+--===============5264108179349003605==--
