@@ -4,27 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD251CA0EEB
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 15:04:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 685D1CA0EF8
+	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 15:10:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 887A410E9B8;
-	Thu, 21 Aug 2025 15:04:35 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6353610E9B8;
- Thu, 21 Aug 2025 15:04:34 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5264108179349003605=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 18ACE10E9BF;
+	Thu, 21 Aug 2025 15:10:11 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dvsQ4dtU";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDA7910E9BF
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 15:10:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1755789010; x=1787325010;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=z8f1Xkt82MFohMeFmMkKTtQDvxA7sa7MrOkR3ElumXs=;
+ b=dvsQ4dtURbXQyRGP0OmGbO7KwSL6jMNzVOOTuC88nju/fZtRepBIxgs0
+ 6hma8AV5hmbYo8gd5AqQb/B6AU5x2ThkxMSIpCGqxQV7uVn9VSOaiubz9
+ IBpmfUynlw0QBxmpy8uiQDLKLPPPPCqvq4WHb2jf17LRcmwL7qSt/EL3b
+ GhgqPdfjHhi6FEOH//UprPsXRjqeku3q4jUKiWaS+fRr4CuVApijSbIMu
+ TkVQzWwJaEAQDBTsenJI8J26gUkMXUvFvgclmu0NZBKUiV4Fx4xWvzo1z
+ dqkXUyywHndQlpGh9LcLCirJD1YphC6uiWP/SJYzNDktI5MLivttpHSvG Q==;
+X-CSE-ConnectionGUID: juKYe1rdQXWHbJUfWHJhSw==
+X-CSE-MsgGUID: sEpj08ekT1WL9r0Iisj5jQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="75665677"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="75665677"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 08:06:31 -0700
+X-CSE-ConnectionGUID: /bfbbQpVSF+SoZ/pZaAHRg==
+X-CSE-MsgGUID: Vje9oX6IQd6k/V9kIfS6AA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; d="scan'208";a="205609857"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 08:06:29 -0700
+Date: Thu, 21 Aug 2025 17:06:26 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Pawel Sikora <pawel.sikora@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Pawel Sikora <pawel.sikora@linux.intel.com>
+Subject: Re: [PATCH i-g-t v3 2/3] docs: Initialize MkDocs documentation
+ structure
+Message-ID: <20250821150626.dut3ywgzmkjnsba4@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Pawel Sikora <pawel.sikora@linux.intel.com>
+References: <20250820052934.121604-1-pawel.sikora@intel.com>
+ <20250820052934.121604-3-pawel.sikora@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bv2?=
- =?utf-8?q?=2Ci-g-t=2C1/3=5D_lib/dsc=3A_Add_helpers_to_disable_force_dsc?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Chaitanya Kumar Borah" <chaitanya.kumar.borah@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 21 Aug 2025 15:04:34 -0000
-Message-ID: <175578867439.257383.14726254808038031063@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250821093511.937552-1-chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20250821093511.937552-1-chaitanya.kumar.borah@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250820052934.121604-3-pawel.sikora@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,139 +75,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5264108179349003605==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Pawel,
+On 2025-08-20 at 07:29:33 +0200, Pawel Sikora wrote:
+> This commit establishes the groundwork for a comprehensive
+> documentation site, enhancing accessibility and organization.
+> 
+>  * Update README with basic content, reflecting
+>    the reorganization of documentation files.
+>  * Move detailed documentation into the docs directory,
+>    splitting content across multiple markdown files.
+>  * Set up the structure for automatic site generation using MkDocs,
+>    facilitating easier navigation and maintenance.
+> 
+> v2:
+>  - Add new content and make corrections (Swati)
+>  - Fix line width to 100 characters (Kamil)
+>  - Fix moved/copied files (Kamil)
+> 
+> Co-authored-by: Swati Sharma <swati2.sharma@intel.com>
+> Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Series Details ==
+Please remove both r-b, this should be explicitly given by
+e-mail or irc or other ways.
 
-Series: series starting with [v2,i-g-t,1/3] lib/dsc: Add helpers to disable force dsc
-URL   : https://patchwork.freedesktop.org/series/153277/
-State : success
+> Signed-off-by: Pawel Sikora <pawel.sikora@linux.intel.com>
+> ---
+>  README.md                            |  203 +---
+>  docs/CONTRIBUTING.md                 |   91 ++
+>  docs/MAINTAINERS.md                  |   16 +
+>  docs/NEWS.md                         | 1471 ++++++++++++++++++++++++++
 
-== Summary ==
+As discussed offline, please add only symlinks in docs/
+to original files.
 
-CI Bug Log - changes from XEIGT_8503_BAT -> XEIGTPW_13611_BAT
-====================================================
+Regards,
+Kamil
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13611_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-plain-flip@a-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8503/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
-
-  * igt@xe_pat@pat-index-xe2@render:
-    - bat-bmg-1:          [PASS][3] -> [FAIL][4] ([Intel XE#5507]) +1 other test fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8503/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-  [Intel XE#5507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507
-
-
-Build changes
--------------
-
-  * IGT: IGT_8503 -> IGTPW_13611
-
-  IGTPW_13611: 66610a9dfd04011fe06360bfca11253f8b4b7864 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8503: 8503
-  xe-3591-16e133c7e6922a9f224b272a48ac172cf06e3408: 16e133c7e6922a9f224b272a48ac172cf06e3408
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/index.html
-
---===============5264108179349003605==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [v2,i-g-t,1/3] lib/dsc: Add helpers to disable force dsc</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153277/">https://patchwork.freedesktop.org/series/153277/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8503_BAT -&gt; XEIGTPW_13611_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13611_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-plain-flip@a-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8503/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2@render:</p>
-<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8503/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13611/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507">Intel XE#5507</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8503 -&gt; IGTPW_13611</li>
-</ul>
-<p>IGTPW_13611: 66610a9dfd04011fe06360bfca11253f8b4b7864 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8503: 8503<br />
-  xe-3591-16e133c7e6922a9f224b272a48ac172cf06e3408: 16e133c7e6922a9f224b272a48ac172cf06e3408</p>
-
-</body>
-</html>
-
---===============5264108179349003605==--
+>  docs/api.md                          |   30 +
+>  docs/blocklists.md                   |  387 +++++++
+>  docs/building.md                     |   27 +
+>  docs/{chamelium.txt => chamelium.md} |    2 +-
+>  docs/ci_infrastructure.md            |  419 ++++++++
+>  docs/cross-building.md               |  240 +++++
+>  docs/cross-building.txt              |  122 ---
+>  docs/faq.md                          |   92 ++
+>  docs/new_driver.md                   |  230 ++++
+>  docs/overview.md                     |  249 +++++
+>  docs/patchwork.md                    |   18 +
+>  docs/running_tests.md                |  130 +++
+>  docs/test_categories.md              |  266 +++++
+>  docs/test_plan.md                    |  216 ++++
+>  docs/mkdocs.yml => mkdocs.yml        |    2 +
+>  19 files changed, 3914 insertions(+), 297 deletions(-)
+>  create mode 100644 docs/CONTRIBUTING.md
+>  create mode 100644 docs/MAINTAINERS.md
+>  create mode 100644 docs/NEWS.md
+>  create mode 100644 docs/api.md
+>  create mode 100644 docs/blocklists.md
+>  create mode 100644 docs/building.md
+>  rename docs/{chamelium.txt => chamelium.md} (99%)
+>  create mode 100644 docs/ci_infrastructure.md
+>  create mode 100644 docs/cross-building.md
+>  delete mode 100644 docs/cross-building.txt
+>  create mode 100644 docs/faq.md
+>  create mode 100644 docs/new_driver.md
+>  create mode 100644 docs/overview.md
+>  create mode 100644 docs/patchwork.md
+>  create mode 100644 docs/running_tests.md
+>  create mode 100644 docs/test_categories.md
+>  create mode 100644 docs/test_plan.md
+>  rename docs/mkdocs.yml => mkdocs.yml (98%)
+> 
+[cut]
