@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 899F2CA0EFC
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Aug 2025 12:28:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D170CA0EFC
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Aug 2025 12:40:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 473DB10E116;
-	Fri, 22 Aug 2025 12:28:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 53E1110EAF0;
+	Fri, 22 Aug 2025 12:40:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hj/HTtKu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NdSt89z/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E215510E116
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Aug 2025 12:28:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5449B10EAE5
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Aug 2025 12:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755865700; x=1787401700;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=pvztyvDdxmpVc31bKKemGCnmraEvfVgyouK+7/Q6D88=;
- b=Hj/HTtKuc2d+WuqwkbdxBQ6CqxnYQcmMpAkb7kJsDffNrvCYNaTOxG+m
- lk9cTGsB5i4Xs/xYDhBClRjP31jh5sUGNRfPHnH9mVv29MXkHQ+pR7fix
- ktfb7wCx6DMGa+Nx/9WbQ54R3I9S9yzO5OZrDQbOrhzpUZMIQFQxH898K
- dqm+n3oPhjLue5uZZExSL0g4zcWLTd5RzPsc53LyMwDBohAjpeB79+d0x
- lxeNEVntTUBDMwqyr6aCCJ5g+YpsSLhSQAApKnmgaMwecRbxZ2xjBc1Ty
- s5YJS2sWBhpbDtTLir8+Tzd71wuCHhVBwSrRyGrSH2TndxeHX33V9jqJp w==;
-X-CSE-ConnectionGUID: +VhmQiqTTR2TBfoSADWXmw==
-X-CSE-MsgGUID: ZDI961fMQK6UjpLCxJ6EXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="60797714"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="60797714"
+ t=1755866456; x=1787402456;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=0I3CCrWBQJEi37ZBmkn2m8SQY/B4vc8DGFiD/INR7hc=;
+ b=NdSt89z/a41mnlxs4iGPEwlWLiF2whAxe+42yGWbTgDiifye0qQhzvVe
+ Z5kw5VipCeVBiDntliwHufa6XG4f1W/W8Qb5xUpD/PRn8A7+urTrP2sLu
+ Q8QH81bDm3VbDxHMv9dGA6xbO/RWPm6OrdYnEmxuvT/Znm8K33hRE3SBM
+ Y8ctYXy8ve7e9SBKsTtHd0z0LjbD5IElE1rG3huYIM0RdsyJd2b+WrRqE
+ rji0v1L3RNeuHpoChzayIIOKHuqCP5jPIHoWYW6i+Ray0E9LH9ktISq9H
+ dkBNhLbcG/meadOaMCKIgeAb02+tMCrUuZl1mI8nbj/a6nW7aatIxHZQ/ A==;
+X-CSE-ConnectionGUID: doR0RDvVSJCYbeV7kk8FPg==
+X-CSE-MsgGUID: roaJ+JWHT3yDD7Vb606gmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="60798932"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="60798932"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2025 05:28:20 -0700
-X-CSE-ConnectionGUID: OvOllc+qQtCp3fX6eVphUQ==
-X-CSE-MsgGUID: CrrpvYAnRC+ojJF5Qe790A==
+ 22 Aug 2025 05:40:56 -0700
+X-CSE-ConnectionGUID: KtZglf+gRxO6+bVE0IyasA==
+X-CSE-MsgGUID: UrrWjpqGSgaOjAbuU7dbdQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="168298173"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.190])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2025 05:28:17 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Pawel Sikora <pawel.sikora@linux.intel.com>
-Cc: Pawel Sikora <pawel.sikora@intel.com>, igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, Zbigniew Kempczynski
- <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v3 0/3] Establish MkDocs Documentation Framework
- for IGT GPU Tools
-In-Reply-To: <20250822105101.7ottbv6sytmwmpjo@pawelsik-desk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250820052934.121604-1-pawel.sikora@intel.com>
- <4206527b03af5e923f42f6e1ec87e07c3935879c@intel.com>
- <20250822105101.7ottbv6sytmwmpjo@pawelsik-desk>
-Date: Fri, 22 Aug 2025 15:28:14 +0300
-Message-ID: <3d83d59669d62f004a507a25510b21f9bd273410@intel.com>
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="168303258"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 05:40:55 -0700
+Date: Fri, 22 Aug 2025 14:40:37 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org, himal.prasad.ghimiray@intel.com
+Subject: Re: [PATCH i-g-t 1/5] include/drm-uap: Added drm_xe_madvise structure
+Message-ID: <20250822124037.fbdazjjszei4wgfb@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
+ himal.prasad.ghimiray@intel.com
+References: <20250822090639.508747-1-nishit.sharma@intel.com>
+ <20250822090639.508747-2-nishit.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250822090639.508747-2-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,118 +72,398 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 22 Aug 2025, Pawel Sikora <pawel.sikora@linux.intel.com> wrote:
-> On Fri, Aug 22, 2025 at 12:59:26PM +0300, Jani Nikula wrote:
->> On Wed, 20 Aug 2025, Pawel Sikora <pawel.sikora@intel.com> wrote:
->> > I am submitting a series of patches to introduce a comprehensive 
->> > documentation framework for the IGT GPU Tools project using MkDocs.
->
-> Hi Jani,
->
-> Thanks for your feedback - below are my observations.
->
->> 
->> I'm extremely biased, but I think there'd be more synergy in using
->> Sphinx and reStructuredText, aligning with what the kernel, mesa, and
->> several fdo projects, including our maintainer-tools and intel-docs
->> projects, are doing.
->
-> I agree that there would be more synergy and unification by using
-> one tool instead of two, specifically by adopting MkDocs.
+Hi nishit.sharma,
+On 2025-08-22 at 09:06:35 +0000, nishit.sharma@intel.com wrote:
+> From: Nishit Sharma <nishit.sharma@intel.com>
+> 
+> Defined IOCTL number for madvise operation. Added drm_xe_madvise
+> which is passed as Input to MADVISE IOCTL.
+> 
+> Note: DON'T MERGE
 
-There are already two tools being used, Sphinx and gtk-doc. Three if you
-count scripts/igt_doc.py.
+Please add this in subject:
 
-It's not about adding a second one, it's about adding a third or fourth!
+[PATCH i-g-t 1/5] DO-NOT-MERGE: drm-uapi/xe: Add drm_xe_madvise
 
-> The reasons for doing it this way are:
->
-> 1. This is general-purpose documentation, and Markdown is sufficient.
->    If we need more complex usage, such as an API reference, 
->    we can still generate it using Sphinx and link to it as a subpage,
->    exactly as is done with the API reference in the fourth patch.
->    I consider it an advantage and a modular design approach,
->    as even documentation serves different purposes (general purpose,
->    API, backlog, feature mapping, etc.)
->    Having a different set of tools for different types
->    of documentation modules is a matter worth considering,
->    taking into account the maturity of the solution, of course. 
+One more nit below.
 
-On the contrary, I don't think you can really get a unified experience
-with 2-4 different tools. You'll get 2-4 different web sites with
-completely different styles and navigation, and you're limited in the
-cross-referencing between them.
+> 
+> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> ---
+>  include/drm-uapi/xe_drm.h | 289 ++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 281 insertions(+), 8 deletions(-)
+> 
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index a52f95593..e9a27a844 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -3,8 +3,8 @@
+>   * Copyright © 2023 Intel Corporation
+>   */
+>  
+> -#ifndef _XE_DRM_H_
+> -#define _XE_DRM_H_
+> +#ifndef _UAPI_XE_DRM_H_
+> +#define _UAPI_XE_DRM_H_
 
-> 2. There is already existing documentation in the project written
->    in Markdown, which is widely supported by editors. 
->    RST is primarily for Sphinx.
+This should not appear here, please read doc how to create
+uapi patch in README.
 
-Sphinx does support writing individual pages in Markdown if that's
-desirable.
+Regards,
+Kamil
 
-> I understand that you have a bias, as do I. 
-> However, I'm not so biased that I wouldn't be willing to drop the tool
-> and start using Sphinx if my use of MkDocs here is rejected.
->
-> Both are great tools, so why not use both and gain knowledge about them,
-> rather than limiting ourselves to just one solution? 
->
-> Especially since they can complement each other and be used side by side.
->
-> This is just an example of MkDocs with Markdown, but the API reference 
-> will continue to use Sphinx with RST.
->
-> Is having a second choice of tools and methods for creating
-> automatically generated documentation, and using it for different
-> purposes alongside Sphinx, a waste of resources or rather
-> an opportunity for the future to have more possibilities in this area?
-
-I should think it's desirable for any project to focus on one
-documentation tool, and one documentation build, not many.
-
-I don't know enough about MkDocs to really say if it can cover all the
-needs of IGT documentation, but I do know Sphinx can. (Granted, even
-that does take some plumbing to convert from gtk-doc and to incorporate
-scripts/igt_doc.py as an extension. But it's possible.)
-
-I think the question to consider is, if you were to convert all IGT
-documentation to one tool, as a long term goal, does MkDocs have you
-covered? I don't know the answer to that question, and maybe you do.
-
-Ultimately, you'll have to convince the IGT maintainers and
-contributors, and maybe not so much about the relative merits of the
-tools, but about the burden of the fragmentation. I think it's a real
-issue in many projects. People are usually streched thin, and it's just
-generally easier to have one way of doing things than many.
-
-And in all honesty, I am not the one that needs convincing. I'm not
-really contributing to IGT documentation anymore, no matter which tool
-it uses.
-
-
-BR,
-Jani.
-
-
->
->> 
->> We also have extensive experience with writing Sphinx extensions in the
->> graphics community.
->
-> I would like to expand my experience in this area, as I currently have
-> experience writing MkDocs extensions, and I believe that could
-> be valuable as well.
->
-> Kind Regards,
-> Pawel
->
->> 
->> 
->> BR,
->> Jani.
->> 
->> -- 
->> Jani Nikula, Intel
-
--- 
-Jani Nikula, Intel
+>  
+>  #include "drm.h"
+>  
+> @@ -81,6 +81,8 @@ extern "C" {
+>   *  - &DRM_IOCTL_XE_EXEC
+>   *  - &DRM_IOCTL_XE_WAIT_USER_FENCE
+>   *  - &DRM_IOCTL_XE_OBSERVATION
+> + *  - &DRM_IOCTL_XE_MADVISE
+> + *  - &DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS
+>   */
+>  
+>  /*
+> @@ -102,6 +104,8 @@ extern "C" {
+>  #define DRM_XE_EXEC			0x09
+>  #define DRM_XE_WAIT_USER_FENCE		0x0a
+>  #define DRM_XE_OBSERVATION		0x0b
+> +#define DRM_XE_MADVISE			0x0c
+> +#define DRM_XE_VM_QUERY_MEM_REGION_ATTRS	0x0d
+>  
+>  /* Must be kept compact -- no holes */
+>  
+> @@ -117,6 +121,8 @@ extern "C" {
+>  #define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
+>  #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
+>  #define DRM_IOCTL_XE_OBSERVATION		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_OBSERVATION, struct drm_xe_observation_param)
+> +#define DRM_IOCTL_XE_MADVISE			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_MADVISE, struct drm_xe_madvise)
+> +#define DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_QUERY_MEM_REGION_ATTRS, struct drm_xe_vm_query_mem_range_attr)
+>  
+>  /**
+>   * DOC: Xe IOCTL Extensions
+> @@ -134,7 +140,7 @@ extern "C" {
+>   * redefine the interface more easily than an ever growing struct of
+>   * increasing complexity, and for large parts of that interface to be
+>   * entirely optional. The downside is more pointer chasing; chasing across
+> - * the boundary with pointers encapsulated inside u64.
+> + * the __user boundary with pointers encapsulated inside u64.
+>   *
+>   * Example chaining:
+>   *
+> @@ -925,9 +931,9 @@ struct drm_xe_gem_mmap_offset {
+>   *  - %DRM_XE_VM_CREATE_FLAG_LR_MODE - An LR, or Long Running VM accepts
+>   *    exec submissions to its exec_queues that don't have an upper time
+>   *    limit on the job execution time. But exec submissions to these
+> - *    don't allow any of the flags DRM_XE_SYNC_FLAG_SYNCOBJ,
+> - *    DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ, DRM_XE_SYNC_FLAG_DMA_BUF,
+> - *    used as out-syncobjs, that is, together with DRM_XE_SYNC_FLAG_SIGNAL.
+> + *    don't allow any of the sync types DRM_XE_SYNC_TYPE_SYNCOBJ,
+> + *    DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ, used as out-syncobjs, that is,
+> + *    together with sync flag DRM_XE_SYNC_FLAG_SIGNAL.
+>   *    LR VMs can be created in recoverable page-fault mode using
+>   *    DRM_XE_VM_CREATE_FLAG_FAULT_MODE, if the device supports it.
+>   *    If that flag is omitted, the UMD can not rely on the slightly
+> @@ -1003,6 +1009,10 @@ struct drm_xe_vm_destroy {
+>   *    valid on VMs with DRM_XE_VM_CREATE_FLAG_FAULT_MODE set. The CPU address
+>   *    mirror flag are only valid for DRM_XE_VM_BIND_OP_MAP operations, the BO
+>   *    handle MBZ, and the BO offset MBZ.
+> + *
+> + * The @prefetch_mem_region_instance for %DRM_XE_VM_BIND_OP_PREFETCH can also be:
+> + *  - %DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC, which ensures prefetching occurs in
+> + *    the memory region advised by madvise.
+>   */
+>  struct drm_xe_vm_bind_op {
+>  	/** @extensions: Pointer to the first extension struct, if any */
+> @@ -1108,6 +1118,7 @@ struct drm_xe_vm_bind_op {
+>  	/** @flags: Bind flags */
+>  	__u32 flags;
+>  
+> +#define DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC	-1
+>  	/**
+>  	 * @prefetch_mem_region_instance: Memory region to prefetch VMA to.
+>  	 * It is a region instance, not a mask.
+> @@ -1394,7 +1405,7 @@ struct drm_xe_sync {
+>  
+>  	/**
+>  	 * @timeline_value: Input for the timeline sync object. Needs to be
+> -	 * different than 0 when used with %DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ.
+> +	 * different than 0 when used with %DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ.
+>  	 */
+>  	__u64 timeline_value;
+>  
+> @@ -1974,8 +1985,270 @@ struct drm_xe_query_eu_stall {
+>  	__u64 sampling_rates[];
+>  };
+>  
+> +/**
+> + * struct drm_xe_madvise - Input of &DRM_IOCTL_XE_MADVISE
+> + *
+> + * This structure is used to set memory attributes for a virtual address range
+> + * in a VM. The type of attribute is specified by @type, and the corresponding
+> + * union member is used to provide additional parameters for @type.
+> + *
+> + * Supported attribute types:
+> + * - DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC: Set preferred memory location.
+> + * - DRM_XE_MEM_RANGE_ATTR_ATOMIC: Set atomic access policy.
+> + * - DRM_XE_MEM_RANGE_ATTR_PAT: Set page attribute table index.
+> + *
+> + * Example:
+> + *
+> + * .. code-block:: C
+> + *
+> + * struct drm_xe_madvise madvise = {
+> + *          .vm_id = vm_id,
+> + *          .start = 0x100000,
+> + *          .range = 0x2000,
+> + *          .type = DRM_XE_MEM_RANGE_ATTR_ATOMIC,
+> + *          .atomic_val = DRM_XE_ATOMIC_DEVICE,
+> + *          .pad = 0,
+> + *         };
+> + *
+> + * ioctl(fd, DRM_IOCTL_XE_MADVISE, &madvise);
+> + *
+> + */
+> +struct drm_xe_madvise {
+> +	/** @extensions: Pointer to the first extension struct, if any */
+> +	__u64 extensions;
+> +
+> +	/** @start: start of the virtual address range */
+> +	__u64 start;
+> +
+> +	/** @range: size of the virtual address range */
+> +	__u64 range;
+> +
+> +	/** @vm_id: vm_id of the virtual range */
+> +	__u32 vm_id;
+> +
+> +#define DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC	0
+> +#define DRM_XE_MEM_RANGE_ATTR_ATOMIC		1
+> +#define DRM_XE_MEM_RANGE_ATTR_PAT		2
+> +	/** @type: type of attribute */
+> +	__u32 type;
+> +
+> +	union {
+> +		/**
+> +		 * @preferred_mem_loc: preferred memory location
+> +		 *
+> +		 * Used when @type == DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC
+> +		 *
+> +		 * Supported values for @preferred_mem_loc.devmem_fd:
+> +		 * - DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE: set vram of faulting tile as preferred loc
+> +		 * - DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM: set smem as preferred loc
+> +		 *
+> +		 * Supported values for @preferred_mem_loc.migration_policy:
+> +		 * - DRM_XE_MIGRATE_ALL_PAGES
+> +		 * - DRM_XE_MIGRATE_ONLY_SYSTEM_PAGES
+> +		 */
+> +		struct {
+> +#define DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE	0
+> +#define DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM	-1
+> +			/** @preferred_mem_loc.devmem_fd: fd for preferred loc */
+> +			__u32 devmem_fd;
+> +
+> +#define DRM_XE_MIGRATE_ALL_PAGES		0
+> +#define DRM_XE_MIGRATE_ONLY_SYSTEM_PAGES	1
+> +			/** @preferred_mem_loc.migration_policy: Page migration policy */
+> +			__u16 migration_policy;
+> +
+> +			/** @preferred_mem_loc.pad : MBZ */
+> +			__u16 pad;
+> +
+> +			/** @preferred_mem_loc.reserved : Reserved */
+> +			__u64 reserved;
+> +		} preferred_mem_loc;
+> +
+> +		/**
+> +		 * @atomic: Atomic access policy
+> +		 *
+> +		 * Used when @type == DRM_XE_MEM_RANGE_ATTR_ATOMIC.
+> +		 *
+> +		 * Supported values for @atomic.val:
+> +		 * - DRM_XE_ATOMIC_UNDEFINED: Undefined or default behaviour
+> +		 *   Support both GPU and CPU atomic operations for system allocator
+> +		 *   Support GPU atomic operations for normal(bo) allocator
+> +		 * - DRM_XE_ATOMIC_DEVICE: Support GPU atomic operations
+> +		 * - DRM_XE_ATOMIC_GLOBAL: Support both GPU and CPU atomic operations
+> +		 * - DRM_XE_ATOMIC_CPU: Support CPU atomic
+> +		 */
+> +		struct {
+> +#define DRM_XE_ATOMIC_UNDEFINED	0
+> +#define DRM_XE_ATOMIC_DEVICE	1
+> +#define DRM_XE_ATOMIC_GLOBAL	2
+> +#define DRM_XE_ATOMIC_CPU	3
+> +			/** @atomic.val: value of atomic operation */
+> +			__u32 val;
+> +
+> +			/** @atomic.pad: MBZ */
+> +			__u32 pad;
+> +
+> +			/** @atomic.reserved: Reserved */
+> +			__u64 reserved;
+> +		} atomic;
+> +
+> +		/**
+> +		 * @pat_index: Page attribute table index
+> +		 *
+> +		 * Used when @type == DRM_XE_MEM_RANGE_ATTR_PAT.
+> +		 */
+> +		struct {
+> +			/** @pat_index.val: PAT index value */
+> +			__u32 val;
+> +
+> +			/** @pat_index.pad: MBZ */
+> +			__u32 pad;
+> +
+> +			/** @pat_index.reserved: Reserved */
+> +			__u64 reserved;
+> +		} pat_index;
+> +	};
+> +
+> +	/** @reserved: Reserved */
+> +	__u64 reserved[2];
+> +};
+> +
+> +/**
+> + * struct drm_xe_mem_range_attr - Output of &DRM_IOCTL_XE_VM_QUERY_MEM_RANGES_ATTRS
+> + *
+> + * This structure is provided by userspace and filled by KMD in response to the
+> + * DRM_IOCTL_XE_VM_QUERY_MEM_RANGES_ATTRS ioctl. It describes memory attributes of
+> + * a memory ranges within a user specified address range in a VM.
+> + *
+> + * The structure includes information such as atomic access policy,
+> + * page attribute table (PAT) index, and preferred memory location.
+> + * Userspace allocates an array of these structures and passes a pointer to the
+> + * ioctl to retrieve attributes for each memory ranges
+> + *
+> + * @extensions: Pointer to the first extension struct, if any
+> + * @start: Start address of the memory range
+> + * @end: End address of the virtual memory range
+> + *
+> + */
+> +struct drm_xe_mem_range_attr {
+> +	 /** @extensions: Pointer to the first extension struct, if any */
+> +	__u64 extensions;
+> +
+> +	/** @start: start of the memory range */
+> +	__u64 start;
+> +
+> +	/** @end: end of the memory range */
+> +	__u64 end;
+> +
+> +	/** @preferred_mem_loc: preferred memory location */
+> +	struct {
+> +		/** @preferred_mem_loc.devmem_fd: fd for preferred loc */
+> +		__u32 devmem_fd;
+> +
+> +		/** @preferred_mem_loc.migration_policy: Page migration policy */
+> +		__u32 migration_policy;
+> +	} preferred_mem_loc;
+> +
+> +	struct {
+> +		/** @atomic.val: atomic attribute */
+> +		__u32 val;
+> +
+> +		/** @atomic.reserved: Reserved */
+> +		__u32 reserved;
+> +	} atomic;
+> +
+> +	struct {
+> +		/** @pat_index.val: PAT index */
+> +		__u32 val;
+> +
+> +		/** @pat_index.reserved: Reserved */
+> +		__u32 reserved;
+> +	} pat_index;
+> +
+> +	/** @reserved: Reserved */
+> +	__u64 reserved[2];
+> +};
+> +
+> +/**
+> + * struct drm_xe_vm_query_mem_range_attr - Input of &DRM_IOCTL_XE_VM_QUERY_MEM_ATTRIBUTES
+> + *
+> + * This structure is used to query memory attributes of memory regions
+> + * within a user specified address range in a VM. It provides detailed
+> + * information about each memory range, including atomic access policy,
+> + * page attribute table (PAT) index, and preferred memory location.
+> + *
+> + * Userspace first calls the ioctl with @num_mem_ranges = 0,
+> + * @sizeof_mem_ranges_attr = 0 and @vector_of_vma_mem_attr = NULL to retrieve
+> + * the number of memory regions and size of each memory range attribute.
+> + * Then, it allocates a buffer of that size and calls the ioctl again to fill
+> + * the buffer with memory range attributes.
+> + *
+> + * If second call fails with -ENOSPC, it means memory ranges changed between
+> + * first call and now, retry IOCTL again with @num_mem_ranges = 0,
+> + * @sizeof_mem_ranges_attr = 0 and @vector_of_vma_mem_attr = NULL followed by
+> + * Second ioctl call.
+> + *
+> + * Example:
+> + *
+> + * .. code-block:: C
+> + *    struct drm_xe_vm_query_mem_range_attr query = {
+> + *         .vm_id = vm_id,
+> + *         .start = 0x100000,
+> + *         .range = 0x2000,
+> + *     };
+> + *
+> + *    // First ioctl call to get num of mem regions and sizeof each attribute
+> + *    ioctl(fd, DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS, &query);
+> + *
+> + *    // Allocate buffer for the memory region attributes
+> + *    void *ptr = malloc(query.num_mem_ranges * query.sizeof_mem_range_attr);
+> + *
+> + *    query.vector_of_mem_attr = (uintptr_t)ptr;
+> + *
+> + *    // Second ioctl call to actually fill the memory attributes
+> + *    ioctl(fd, DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS, &query);
+> + *
+> + *    // Iterate over the returned memory region attributes
+> + *    for (unsigned int i = 0; i < query.num_mem_ranges; ++i) {
+> + *       struct drm_xe_mem_range_attr *attr = (struct drm_xe_mem_range_attr *)ptr;
+> + *
+> + *       // Do something with attr
+> + *
+> + *       // Move pointer by one entry
+> + *       ptr += query.sizeof_mem_range_attr;
+> + *     }
+> + *
+> + *    free(ptr);
+> + */
+> +struct drm_xe_vm_query_mem_range_attr {
+> +	/** @extensions: Pointer to the first extension struct, if any */
+> +	__u64 extensions;
+> +
+> +	/** @vm_id: vm_id of the virtual range */
+> +	__u32 vm_id;
+> +
+> +	/** @num_mem_ranges: number of mem_ranges in range */
+> +	__u32 num_mem_ranges;
+> +
+> +	/** @start: start of the virtual address range */
+> +	__u64 start;
+> +
+> +	/** @range: size of the virtual address range */
+> +	__u64 range;
+> +
+> +	/** @sizeof_mem_range_attr: size of struct drm_xe_mem_range_attr */
+> +	__u64 sizeof_mem_range_attr;
+> +
+> +	/** @vector_of_ops: userptr to array of struct drm_xe_mem_range_attr */
+> +	__u64 vector_of_mem_attr;
+> +
+> +	/** @reserved: Reserved */
+> +	__u64 reserved[2];
+> +
+> +};
+> +
+>  #if defined(__cplusplus)
+>  }
+>  #endif
+>  
+> -#endif /* _XE_DRM_H_ */
+> +#endif /* _UAPI_XE_DRM_H_ */
+> -- 
+> 2.43.0
+> 
