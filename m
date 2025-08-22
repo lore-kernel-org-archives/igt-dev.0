@@ -4,62 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A67E3CA0EEB
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Aug 2025 13:14:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF616CA0EED
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Aug 2025 13:21:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5E56C10EB0E;
-	Fri, 22 Aug 2025 13:14:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 87B7510E0DE;
+	Fri, 22 Aug 2025 13:21:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J4tiSsyn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nMtitL8e";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B70B410EB0E;
- Fri, 22 Aug 2025 13:14:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA55A10E0DE
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Aug 2025 13:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755868492; x=1787404492;
+ t=1755868893; x=1787404893;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=hWSnmjlYJrVn6iyIHI6od7y8D08FhKQUCjTtv1e/sQY=;
- b=J4tiSsynbyKsm6kkSUxJJGJIWCcAyfuMex0axJJdHOt647ym2rTwgrO/
- GvaXqetAiQWvG8B02vb7cv5g2NrN3D/EbcdFHe2zJ7TcNpQRGMXa5MJ98
- YOlcC4pjUrByPfcshTIH1+oNZb9zZKkEsDnLocAPZXf7e00LSOtUYC7UE
- Q7jnWbemWVGkDrBeF764kpJsvnxKS0vIX+HKgE01mFG5enXJqBLQX3M1m
- Lm1UDXX898NWvCdnuqSO1P3WzkWlT/nIaFV3ncguJsx30SLGC19I4DERA
- yYIi2g4UunmpqXnfHrbEgi1MGitOPHJkKNP1Z+ILGufFs43kcVcB3NI/n g==;
-X-CSE-ConnectionGUID: /ijURUGXTbmvRYh8j8EBlw==
-X-CSE-MsgGUID: Hc2WKHKdTpKUE1ufmSJDYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="75630832"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="75630832"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2025 06:14:51 -0700
-X-CSE-ConnectionGUID: VvCaIFmITDGJfsenyO6gbQ==
-X-CSE-MsgGUID: /5yhmyfDQmKBhcuwOnRJyQ==
+ bh=xdBkmluGqyO6i1vrrejlLZeRIuf2/1afHbDJ16cWOMw=;
+ b=nMtitL8eJqHSHg7ndL8Td+nunTMHOdIl7QgHwnVXRDG/eGwzyg222tsK
+ Lc0mM4aune+3DtPD9AQrWBJDFA6o345QM51p9Z+3+RXzvjjCVkR6vqYz6
+ Thyz2CaE76k1428j2/5BcIpnBmURReT0lTBl/5jeoqurXM2hALyX2dY/0
+ Hnp1wu9NhCtuLsyCR6Ecyai2kefBqNRaDsfFn7cdZcrPJwvD+NPrY5j21
+ MGNRXDxzgu6eArUC6GBtazD/l+dYbmIPG03XvWecRo4u13uDHE+SRDGVv
+ EUOii+rmqKkivQrKaDSd6Gp+9VqrZtVXZg2evZO7cAuGXPWZHTjbFmZSy Q==;
+X-CSE-ConnectionGUID: BdxxF2jEQTKI1lfHaGrpWQ==
+X-CSE-MsgGUID: kRzmYw4aSDODcTTUAa45HQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="60801580"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="60801580"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Aug 2025 06:21:33 -0700
+X-CSE-ConnectionGUID: WfNYuRmCTmmENOpTkF/0RQ==
+X-CSE-MsgGUID: mE0j9b/aRcCFzUHeCkaglA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="172966853"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="199583660"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 06:14:50 -0700
-Date: Fri, 22 Aug 2025 15:14:47 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Aug 2025 06:21:31 -0700
+Date: Fri, 22 Aug 2025 15:21:28 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests=2Fint?=
- =?utf-8?B?ZWwveGVfc3lzZnNfZmlsZV9wZXJt?= =?utf-8?Q?=3A?= Verify sysfs file
- permissions for security
-Message-ID: <20250822131447.qjhtcwsftotkgo7t@kamilkon-DESK.igk.intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Riana Tauro <riana.tauro@intel.com>,
+ Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Subject: Re: [PATCH i-g-t 1/4] tests/intel/xe_configfs: Do not execute with
+ open fd
+Message-ID: <20250822132128.nwalcgd6fb6v3grz@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20250813131948.573785-1-peter.senna@linux.intel.com>
- <175510600771.234050.17665444740202199680@1538d3639d33>
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ igt-dev@lists.freedesktop.org, Riana Tauro <riana.tauro@intel.com>,
+ Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+References: <20250819-configfs-unbind-v1-0-8359e66e3241@intel.com>
+ <20250819-configfs-unbind-v1-1-8359e66e3241@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <175510600771.234050.17665444740202199680@1538d3639d33>
+In-Reply-To: <20250819-configfs-unbind-v1-1-8359e66e3241@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,86 +74,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-08-13 at 17:26:47 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Lucas,
+On 2025-08-19 at 13:40:40 -0700, Lucas De Marchi wrote:
+> The survivability_mode test does an unbind/set-configfs/bind sequence.
+> If and fd is open, that will still refer to the old instance of the
+> driver and is a dangling fd. Close it right when it's not needed anymore
+> as in future other tests will also unbind/bind.
 > 
-> Series: tests/intel/xe_sysfs_file_perm: Verify sysfs file permissions for security
-> URL   : https://patchwork.freedesktop.org/series/152889/
-> State : failure
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  tests/intel/xe_configfs.c | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
 > 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8493_FULL -> XEIGTPW_13578_FULL
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_13578_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_13578_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 3)
-> ------------------------------
-> 
->   Missing    (1): shard-adlp 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_13578_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_hdr@bpc-switch-suspend:
->     - shard-dg2-set2:     [PASS][1] -> [TIMEOUT][2] +1 other test timeout
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8493/shard-dg2-466/igt@kms_hdr@bpc-switch-suspend.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13578/shard-dg2-466/igt@kms_hdr@bpc-switch-suspend.html
-> 
+> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+> index 5c65cd01d..f01b13e13 100644
+> --- a/tests/intel/xe_configfs.c
+> +++ b/tests/intel/xe_configfs.c
+> @@ -101,15 +101,19 @@ static void test_engines_allowed(int configfs_device_fd)
+>  	}
+>  }
+>  
+> -static int create_device_configfs_group(int configfs_fd, int fd)
+> +static void set_bus_addr(int fd)
+>  {
+> -	int configfs_device_fd;
+>  	struct pci_device *pci_dev;
+> -	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+>  
+>  	pci_dev = igt_device_get_pci_device(fd);
+>  	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
+>  		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +}
+> +
+> +static int create_device_configfs_group(int configfs_fd)
+> +{
+> +	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+> +	int configfs_device_fd;
+>  
+>  	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
+>  	igt_assert(configfs_device_fd);
+> @@ -120,17 +124,22 @@ static int create_device_configfs_group(int configfs_fd, int fd)
+>  igt_main
+>  {
+>  	int fd, configfs_fd, configfs_device_fd;
+> +	uint32_t devid;
+>  
+>  	igt_fixture {
+>  		fd = drm_open_driver(DRIVER_XE);
+> +		devid = intel_get_drm_devid(fd);
+> +		set_bus_addr(fd);
+> +		close(fd);
 
-This is unrelated.
-
->   * {igt@xe_sysfs_file_perm@check-file-permissions} (NEW):
->     - shard-dg2-set2:     NOTRUN -> [FAIL][3]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13578/shard-dg2-432/igt@xe_sysfs_file_perm@check-file-permissions.html
->     - shard-lnl:          NOTRUN -> [SKIP][4]
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13578/shard-lnl-2/igt@xe_sysfs_file_perm@check-file-permissions.html
-> 
-
-This is unexpectedm this new test should not skip on LNL.
+Please use drm_close_driver().
 
 Regards,
 Kamil
 
->   
-> New tests
-> ---------
+> +
+>  		configfs_fd = igt_configfs_open("xe");
+>  		igt_require(configfs_fd != -1);
+> -		configfs_device_fd = create_device_configfs_group(configfs_fd, fd);
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  	}
+>  
+>  	igt_describe("Validate survivability mode");
+>  	igt_subtest("survivability-mode") {
+> -		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
+> +		igt_require(IS_BATTLEMAGE(devid));
+>  		igt_install_exit_handler(restore);
+>  		test_survivability_mode(configfs_device_fd);
+>  	}
+> @@ -151,6 +160,5 @@ igt_main
+>  		igt_fs_remove_dir(configfs_fd, bus_addr);
+>  		close(configfs_device_fd);
+>  		close(configfs_fd);
+> -		close(fd);
+>  	}
+>  }
 > 
->   New tests have been introduced between XEIGT_8493_FULL and XEIGTPW_13578_FULL:
+> -- 
+> 2.50.1
 > 
-> ### New IGT tests (1) ###
-> 
->   * igt@xe_sysfs_file_perm@check-file-permissions:
->     - Statuses : 1 fail(s) 1 pass(s) 1 skip(s)
->     - Exec time: [0.0, 0.09] s
-> 
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_13578_FULL that come from known issues:
-> 
-
-...cut...
-
