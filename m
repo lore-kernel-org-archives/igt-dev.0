@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6656CA0FE1
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Aug 2025 09:06:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36098CA0EEB
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Aug 2025 09:06:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B75310EAAA;
-	Fri, 22 Aug 2025 09:06:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC43B10EAA9;
+	Fri, 22 Aug 2025 09:06:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IqMYxbNL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ea11gikJ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE55610EAA9
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Aug 2025 09:06:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51BBF10EAA9
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Aug 2025 09:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755853605; x=1787389605;
+ t=1755853606; x=1787389606;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=oreWiOT7Vwd6B2aFIZ0V97RD1wcc2Z15X7PDmIbXrz0=;
- b=IqMYxbNLu4OT+5iITbhRV7Mz/C3qpJavfmZzqTJRKIG9ZhoC7lKvevrH
- rhUxbjbwFe6Vmdqfd73ODxX2Ut2Xip0daMQ2sajI1HIkri0Ba1ALb3jtr
- azp4fksEwmHR/Ckgn17L4H1UawEe55S8uSM+6QSi02nXU5cCIiFqVauRH
- kDmxaXQhMnaZyHBwO4UUiBglHYd6KjuPMHHu8spTF65pfgCEGjDMdbgam
- NjzFaF42smWMRQcBNRdG+15Kbhqb+87ETFAGAVCz16GO8FKPrrKcMjLot
- UrZ5K1G88K0utRUqJsffUa+VInpinRRo5FCr4HdrsAaDLQ1mH51aSJ+UN A==;
-X-CSE-ConnectionGUID: qsgbAcWMQnacFO6kqJcg5A==
-X-CSE-MsgGUID: H40cXz/oQqiotwyUF/J0mQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58021093"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="58021093"
+ bh=wdtF0DdJQtsLZ48aQ2s9c2P0HhoBaYwnTexWuj65dRM=;
+ b=ea11gikJoYPKjQuxosnCfnYE2ppHebq5Gv0pZh1NVR/CNMngDfmlsSTt
+ gJ/AE9Etk+VhzofT9hx5eTRiGI7TJbwhpRoNSNown0ieUe7gW/WWRN8/t
+ ajTvMI9n4PXXghE+d2viOP9lBys/UjCllvHxgywpYEHuFo/mvPfHGl/aE
+ SqylWlx42A3vC5UyQRY+5Ivu8ffUkJw1oDMEMrRTL1p1wMBJCpOpqIW3F
+ m6iVUqWaG9Nc2KW+BwT5IzxeRT7zqYc0iYIzt0Cvo4zp1nIAUlMzEp6pQ
+ AOCU8oIWk0yN/686cZpbO8dvInc5+UXK333GjjikLsMAAekzuYF+Dd1xp Q==;
+X-CSE-ConnectionGUID: /OEnlnhWS6Csjfn1tr9dtQ==
+X-CSE-MsgGUID: oYa1D/T4RP6sXwYtiCbDog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58021097"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="58021097"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2025 02:06:44 -0700
-X-CSE-ConnectionGUID: Hp7Ch2CFRKSMvn5RCtmZ8w==
-X-CSE-MsgGUID: WAEBzq/MQBy3VCfWTcG3Tg==
+ 22 Aug 2025 02:06:46 -0700
+X-CSE-ConnectionGUID: nZU8pE8sRuGodLAuz2/Qzw==
+X-CSE-MsgGUID: kIU+FZtKRXqUw0X6m+d1ZA==
 X-ExtLoop1: 1
 Received: from dut2051bmgfrd.iind.intel.com ([10.190.232.68])
- by fmviesa003.fm.intel.com with ESMTP; 22 Aug 2025 02:06:43 -0700
+ by fmviesa003.fm.intel.com with ESMTP; 22 Aug 2025 02:06:44 -0700
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org, himal.prasad.ghimiray@intel.com,
  nishit.sharma@intel.com
-Subject: [PATCH i-g-t 2/5] lib/xe: Added xe_vm_madvise ioctl support
-Date: Fri, 22 Aug 2025 09:06:36 +0000
-Message-ID: <20250822090639.508747-3-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t 3/5] lib/xe: Helper added to get memory attributes
+Date: Fri, 22 Aug 2025 09:06:37 +0000
+Message-ID: <20250822090639.508747-4-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250822090639.508747-1-nishit.sharma@intel.com>
 References: <20250822090639.508747-1-nishit.sharma@intel.com>
@@ -67,96 +67,132 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-Added xe_vm_madvise() which issues madvise ioctl DRM_IOCTL_XE_MADVISE for
-VM region advising the driver about expected usage or memory policy for
-specified address range. MADVISE ioctl requires pointer to drm_xe_madvise
-structure as one of the inputs. Depending upon type of madvise operation
-like Atomic, Preferred LOC or PAT required members of drm_xe_madvise
-structure are initialized and passed in MADVISE ioctl.
+xe_vm_print_mem_attr_values_in_range() function added which calls
+QUERY_MEM_RANGES_ATTRS ioctl to get different memory attributes from KMD
+and then prints memory attributes returned by KMD for different access
+policies like atomic access, preferred loc and pat index.
 
 Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 ---
- lib/xe/xe_ioctl.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_ioctl.h |  5 ++++-
- 2 files changed, 60 insertions(+), 1 deletion(-)
+ lib/xe/xe_ioctl.c | 92 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_ioctl.h |  4 +++
+ 2 files changed, 96 insertions(+)
 
 diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 1e95af409..43bad8452 100644
+index 43bad8452..4ab2ef39c 100644
 --- a/lib/xe/xe_ioctl.c
 +++ b/lib/xe/xe_ioctl.c
-@@ -585,3 +585,59 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 	igt_assert_eq(__xe_wait_ufence(fd, addr, value, exec_queue, &timeout), 0);
- 	return timeout;
+@@ -57,6 +57,98 @@ uint64_t xe_bb_size(int fd, uint64_t reqsize)
+ 	             xe_get_default_alignment(fd));
  }
-+
-+int __xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range,
-+		    uint64_t ext, uint32_t type, uint32_t op_val, uint16_t policy)
+ 
++int xe_vm_number_vmas_in_range(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr)
 +{
-+	struct drm_xe_madvise madvise = {};
++	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS, vmas_attr))
++		return -errno;
++	return 0;
++}
 +
-+	madvise.extensions = ext;
-+	madvise.vm_id = vm;
-+	madvise.start = addr;
-+	madvise.range = range;
-+
-+	if (type == DRM_XE_MEM_RANGE_ATTR_ATOMIC) {
-+		madvise.type = DRM_XE_MEM_RANGE_ATTR_ATOMIC;
-+		madvise.atomic.val = op_val;
-+	} else if (type == DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC) {
-+		madvise.type = DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC;
-+		madvise.preferred_mem_loc.devmem_fd = op_val;
-+		madvise.preferred_mem_loc.migration_policy = policy;
-+		igt_debug("madvise.preferred_mem_loc.devmem_fd = %d\n",
-+			  madvise.preferred_mem_loc.devmem_fd);
-+	} else if (type == DRM_XE_MEM_RANGE_ATTR_PAT) {
-+		madvise.type = DRM_XE_MEM_RANGE_ATTR_PAT;
-+		madvise.pat_index.val = op_val;
-+	} else {
-+		igt_warn("Unknown attribute\n");
++int xe_vm_vma_attrs(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr,
++		    struct drm_xe_mem_range_attr *mem_attr)
++{
++	if (!mem_attr)
 +		return -EINVAL;
-+	}
 +
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_MADVISE, &madvise))
++	vmas_attr->vector_of_mem_attr = (uintptr_t)mem_attr;
++
++	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS, vmas_attr))
 +		return -errno;
 +
 +	return 0;
 +}
 +
 +/**
-+ * xe_vm_madvise:
++ * xe_vm_print_mem_attr_values_in_range:
 + * @fd: xe device fd
 + * @vm: vm_id of the virtual range
-+ * @addr: start of the virtual address range
++ * @start: start of the virtual address range
 + * @range: size of the virtual address range
-+ * @ext: Pointer to the first extension struct, if any
-+ * @type: type of attribute
-+ * @op_val: fd/atomic value/pat index, depending upon type of operation
-+ * @policy: Page migration policy
 + *
-+ * Function initializes different members of struct drm_xe_madvise and calls
-+ * MADVISE IOCTL .
++ * Calls QUERY_MEM_RANGES_ATTRS ioctl to get memory attributes for different
++ * memory ranges from KMD. prints memory attributes as returned by KMD for
++ * atomic, prefrred loc and pat index types.
 + *
-+ * Returns 0 if success and asserts otherwise.
++ * Returns 0 for success or error for failure
 + */
-+int xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range,
-+		  uint64_t ext, uint32_t type, uint32_t op_val, uint16_t policy)
++
++int xe_vm_print_mem_attr_values_in_range(int fd, uint32_t vm, uint64_t start, uint64_t range)
 +{
-+	igt_assert_eq(__xe_vm_madvise(fd, vm, addr, range, ext, type, op_val, policy), 0);
++
++	void *ptr_start, *ptr;
++	int err;
++	struct drm_xe_vm_query_mem_range_attr query = {
++		.vm_id = vm,
++		.start = start,
++		.range = range,
++		.num_mem_ranges = 0,
++		.sizeof_mem_range_attr = 0,
++		.vector_of_mem_attr = (uintptr_t)NULL,
++	};
++
++	igt_debug("mem_attr_values_in_range called start = %"PRIu64"\n range = %"PRIu64"\n",
++		  start, range);
++
++	err  = xe_vm_number_vmas_in_range(fd, &query);
++	if (err || !query.num_mem_ranges || !query.sizeof_mem_range_attr) {
++		igt_warn("ioctl failed for xe_vm_number_vmas_in_range\n");
++		igt_debug("vmas_in_range err = %d query.num_mem_ranges = %u query.sizeof_mem_range_attr=%lld\n",
++			 err, query.num_mem_ranges, query.sizeof_mem_range_attr);
++		return err;
++	}
++
++	/* Allocate buffer for the memory region attributes */
++	ptr = malloc(query.num_mem_ranges * query.sizeof_mem_range_attr);
++	ptr_start = ptr;
++
++	if (!ptr)
++		return -ENOMEM;
++
++	err = xe_vm_vma_attrs(fd, &query, ptr);
++	if (err) {
++		igt_warn("ioctl failed for vma_attrs err = %d\n", err);
++		return err;
++	}
++
++	/* Iterate over the returned memory region attributes */
++	for (unsigned int i = 0; i < query.num_mem_ranges; ++i) {
++		struct drm_xe_mem_range_attr *mem_attrs = (struct drm_xe_mem_range_attr *)ptr;
++
++		igt_info("vma_id = %d\nvma_start = 0x%016llx\nvma_end = 0x%016llx\n"
++				"vma:atomic = %d\nvma:pat_index = %d\nvma:preferred_loc_region = %d\n"
++				"vma:preferred_loc_devmem_fd = %d\n\n\n", i, mem_attrs->start,
++				mem_attrs->end,
++				mem_attrs->atomic.val, mem_attrs->pat_index.val,
++				mem_attrs->preferred_mem_loc.migration_policy,
++				mem_attrs->preferred_mem_loc.devmem_fd);
++
++		ptr += query.sizeof_mem_range_attr;
++	}
++
++	free(ptr_start);
 +	return 0;
 +}
++
+ uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext)
+ {
+ 	struct drm_xe_vm_create create = {
 diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 6302d1a7d..a5996cf65 100644
+index a5996cf65..ae16af233 100644
 --- a/lib/xe/xe_ioctl.h
 +++ b/lib/xe/xe_ioctl.h
-@@ -99,5 +99,8 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		     uint32_t exec_queue, int64_t *timeout);
- int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
- 		       uint32_t exec_queue, int64_t timeout);
--
-+int __xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t ext,
-+		    uint32_t type, uint32_t op_val, uint16_t policy);
-+int xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t ext,
-+		  uint32_t type, uint32_t op_val, uint16_t policy);
+@@ -103,4 +103,8 @@ int __xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t
+ 		    uint32_t type, uint32_t op_val, uint16_t policy);
+ int xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t ext,
+ 		  uint32_t type, uint32_t op_val, uint16_t policy);
++int xe_vm_number_vmas_in_range(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr);
++int xe_vm_vma_attrs(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr,
++		    struct drm_xe_mem_range_attr *mem_attr);
++int xe_vm_print_mem_attr_values_in_range(int fd, uint32_t vm, uint64_t start, uint64_t range);
  #endif /* XE_IOCTL_H */
 -- 
 2.43.0
