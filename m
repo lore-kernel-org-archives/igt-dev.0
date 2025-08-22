@@ -4,61 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A4F8CA0EEB
-	for <igt-dev@archiver.kernel.org>; Thu, 21 Aug 2025 20:30:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 457DBCA0EFA
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Aug 2025 00:20:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0723F10E2FA;
-	Thu, 21 Aug 2025 20:30:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE15610E065;
+	Fri, 22 Aug 2025 00:20:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P/EoTdPk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BuHe98MI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67E1810E2FA
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Aug 2025 20:30:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D021F10E065
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Aug 2025 00:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755808230; x=1787344230;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=TWIqVM4MXDQiJfZ7M30YjPK+n0pTaSsLI0lsm0qGtWY=;
- b=P/EoTdPkMr+SdoPO8xhiafNyRiyYmV1EYoJfiCMaX9BbDCIj63jaBi/k
- vY7NW0pEwn3TLjhnSSQwWKmJ01elpAPI3IdaE/jhWy9LYVNhcX+QvnUoa
- yVEMyoGhBAaVAgCsuJQyWnwPJE81KYQMjvydwMLREMDSGTiqqZCbAsrJ5
- T12nDYNy7AZWaqY1HUdGojYpG7bVDKr0aiJgFXds/kMAbGl1Q5q+no9Zk
- hkgLriN/PCgiNk63FgpJVfzpuF0Uaf6R148OnBnoKjPKtSu8QXthWloOo
- GwczuxvLBxieJn8NYi0iq1iwvNIAWtdCee7VwxJBTnLpzYi7iE1zMhNgl Q==;
-X-CSE-ConnectionGUID: WDI82FyDTz6rLaUauOqLig==
-X-CSE-MsgGUID: X6QC/ft7Q7uY66hKgftz7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58060418"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="58060418"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 13:30:29 -0700
-X-CSE-ConnectionGUID: F1TddulRRrW5vyHNdemaQA==
-X-CSE-MsgGUID: TqI/yCpATWSlTs+LqC8e7w==
+ t=1755822050; x=1787358050;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=U7iH8a6yVOLum+ni5yTkINMU3p3McBIVL/BaWmnbSQc=;
+ b=BuHe98MIa9S5ncov6S44lzC35GCpkns+dsJDA6ywq8QNkBUr3vbaw36x
+ CV1kqKLVCq1j2wY0nAFw6W7BEbbqpRbXRf1SfGy851PHjiGMUsykxIJKy
+ wuerDSoVav1Ju4AoanjIY6hdMJQIwWsDXS5PURVRPioNbsgptCqEH0/JI
+ rhYL7L3SK6lrAYAhBNBE0pZIY0ou/O23Ia7Er22QpyoPpQqH26GGpsav4
+ X1g01Vl8YnKf/k/T3u23XujP7ztNfxx0B7ezgenxMcRZJr1pnRKyMNwI5
+ sJ5c+WvS4+8KnTTvBpNZLi85J9DHfsDLD7GshH100FapJxpACFw/hmN5V g==;
+X-CSE-ConnectionGUID: LzMx2nW4SoejdbmL6i0HNQ==
+X-CSE-MsgGUID: vCnyfT/4SSCrFqB8koh4GQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58193129"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="58193129"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2025 17:20:50 -0700
+X-CSE-ConnectionGUID: kY/8MnzpTYScQbolNqz2IQ==
+X-CSE-MsgGUID: mIQP06fIQOaxDUR7JJu2KA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="169321983"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.85.180])
- ([10.245.85.180])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 13:30:27 -0700
-Message-ID: <5b9a0e88-4cb9-4296-9039-c67742438dfb@linux.intel.com>
-Date: Thu, 21 Aug 2025 22:30:24 +0200
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="173880027"
+Received: from dut4072bmgfrd.fm.intel.com ([10.105.8.119])
+ by orviesa005.jf.intel.com with ESMTP; 21 Aug 2025 17:20:49 -0700
+From: Zongyao Bai <zongyao.bai@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Zongyao Bai <zongyao.bai@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Daniel Charles <daniel.charles@intel.com>
+Subject: [PATCH v3] tests/intel/xe_exec_balancer: use xe_wait_ufence to
+ replace sleep action
+Date: Fri, 22 Aug 2025 00:20:35 +0000
+Message-ID: <20250822002035.1038268-1-zongyao.bai@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 3/4] tests/intel/xe_sriov_flr: Use VRAM access
- helpers from intel_vram library
-To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-Cc: michal.wajdeczko@intel.com, michal.winiarski@intel.com,
- satyanarayana.k.v.p@intel.com, adam.miszczak@linux.intel.com,
- jakub1.kolakowski@intel.com
-References: <20250717090812.28628-1-lukasz.laguna@intel.com>
- <20250717090812.28628-4-lukasz.laguna@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250717090812.28628-4-lukasz.laguna@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,174 +67,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+    In the test_cm() function, for cases with the INVALIDATE flag,
+    use sleep 0.25 seconds to allow all tasks to complete their jobs.
+    However, this time is sometimes insufficient.
 
+    In this patch, xe_wait_ufence (referred to as "fence" for short) actions are added
+    for the second half of n_execs tasks in INVALIDATE-RACE scenarios.
+    The changes are as follows:
+        When flags hit nothing: => No change
+             -- all n_exec tasks operate with a fence.
+        When flags include INVALIDATE but do not include RACE: => No change
+             -- the last n_exec task operates with a fence.
+        When flags include both INVALIDATE and RACE => New in this patch
+             -- n_execs/2 + 1 tasks operate with a fence.
+             -- at least the last n_exec task operates with a fence
 
-On 7/17/2025 11:08 AM, Lukasz Laguna wrote:
-> Replace local VRAM access helper functions with the helpers provided by
-> the intel_vram library.
-> 
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->   tests/intel/xe_sriov_flr.c | 106 +++++++------------------------------
->   1 file changed, 20 insertions(+), 86 deletions(-)
-> 
-> diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-> index 0c6a0c97e..3b7001ec7 100644
-> --- a/tests/intel/xe_sriov_flr.c
-> +++ b/tests/intel/xe_sriov_flr.c
-> @@ -11,6 +11,7 @@
->   #include "igt_device.h"
->   #include "igt_sriov_device.h"
->   #include "intel_chipset.h"
-> +#include "intel_vram.h"
->   #include "linux_scaffold.h"
->   #include "xe/xe_mmio.h"
->   #include "xe/xe_query.h"
-> @@ -676,94 +677,28 @@ struct lmem_data {
->   	size_t *vf_lmem_size;
->   };
->   
-> -struct lmem_info {
-> -	/* pointer to the mapped area */
-> -	char *addr;
-> -	/* size of mapped area */
-> -	size_t size;
-> -};
-> -
->   const size_t STEP = SZ_1M;
->   
-> -static void *mmap_vf_lmem(int pf_fd, int vf_num, size_t length, int prot, off_t offset)
-> -{
-> -	int open_flags = ((prot & PROT_WRITE) != 0) ? O_RDWR : O_RDONLY;
-> -	struct stat st;
-> -	int sysfs, fd;
-> -	void *addr;
-> -
-> -	sysfs = igt_sriov_device_sysfs_open(pf_fd, vf_num);
-> -	if (sysfs < 0) {
-> -		igt_debug("Failed to open sysfs for VF%d: %s\n", vf_num, strerror(errno));
-> -		return NULL;
-> -	}
-> -
-> -	fd = openat(sysfs, "resource2", open_flags | O_SYNC);
-> -	close(sysfs);
-> -	if (fd < 0) {
-> -		igt_debug("Failed to open resource2 for VF%d: %s\n", vf_num, strerror(errno));
-> -		return NULL;
-> -	}
-> -
-> -	if (fstat(fd, &st)) {
-> -		igt_debug("Failed to stat resource2 for VF%d: %s\n", vf_num, strerror(errno));
-> -		close(fd);
-> -		return NULL;
-> -	}
-> -
-> -	if (st.st_size < length) {
-> -		igt_debug("Mapping length (%zu) exceeds BAR2 size (%" PRIu64 ")\n", length, (uint64_t)st.st_size);
-> -		close(fd);
-> -		return NULL;
-> -	}
-> -
-> -	addr = mmap(NULL, length, prot, MAP_SHARED, fd, offset);
-> -	close(fd);
-> -	if (addr == MAP_FAILED) {
-> -		igt_debug("Failed mmap resource2 for VF%d: %s\n", vf_num, strerror(errno));
-> -		return NULL;
-> -	}
-> -
-> -	return addr;
-> -}
-> -
-> -static void munmap_vf_lmem(struct lmem_info *lmem)
-> -{
-> -	igt_debug_on_f(munmap(lmem->addr, lmem->size),
-> -		       "Failed munmap %p: %s\n", lmem->addr, strerror(errno));
-> -}
-> -
-> -static char lmem_read(const char *addr, size_t idx)
-> -{
-> -	return READ_ONCE(*(addr + idx));
-> -}
-> -
-> -static char lmem_write_readback(char *addr, size_t idx, char value)
-> -{
-> -	WRITE_ONCE(*(addr + idx), value);
-> -	return lmem_read(addr, idx);
-> -}
-> -
-> -static bool lmem_write_pattern(struct lmem_info *lmem, char value, size_t start, size_t step)
-> +static bool lmem_write_pattern(struct vram_mapping *m, uint8_t value, size_t start, size_t step)
->   {
-> -	char read;
-> +	uint8_t read;
->   
-> -	for (; start < lmem->size; start += step) {
-> -		read = lmem_write_readback(lmem->addr, start, value);
-> +	for (; start < m->size; start += step) {
-> +		read = intel_vram_write_readback8(m, start, value);
->   		if (igt_debug_on_f(read != value, "LMEM[%zu]=%u != %u\n", start, read, value))
->   			return false;
->   	}
->   	return true;
->   }
->   
-> -static bool lmem_contains_expected_values_(struct lmem_info *lmem,
-> -					   char expected, size_t start,
-> +static bool lmem_contains_expected_values_(struct vram_mapping *m,
-> +					   uint8_t expected, size_t start,
->   					   size_t step)
->   {
-> -	char read;
-> +	uint8_t read;
->   
-> -	for (; start < lmem->size; start += step) {
-> -		read = lmem_read(lmem->addr, start);
-> +	for (; start < m->size; start += step) {
-> +		read = intel_vram_read8(m, start);
->   		if (igt_debug_on_f(read != expected,
->   				   "LMEM[%zu]=%u != %u\n", start, read, expected))
->   			return false;
-> @@ -774,30 +709,29 @@ static bool lmem_contains_expected_values_(struct lmem_info *lmem,
->   static bool lmem_contains_expected_values(int pf_fd, int vf_num, size_t length,
->   					  char expected)
->   {
-> -	struct lmem_info lmem = { .size = length };
-> +	struct vram_mapping vram;
->   	bool result;
->   
-> -	lmem.addr = mmap_vf_lmem(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
-> -	if (igt_debug_on(!lmem.addr))
-> +	vram = intel_vram_mmap(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
-> +	if (igt_debug_on(!vram.addr))
->   		return false;
->   
-> -	result = lmem_contains_expected_values_(&lmem, expected, 0, STEP);
-> -	munmap_vf_lmem(&lmem);
-> +	result = lmem_contains_expected_values_(&vram, expected, 0, STEP);
-> +	intel_vram_munmap(&vram);
->   
->   	return result;
->   }
->   
->   static bool lmem_mmap_write_munmap(int pf_fd, int vf_num, size_t length, char value)
->   {
-> -	struct lmem_info lmem;
-> +	struct vram_mapping vram;
->   	bool result;
->   
-> -	lmem.size = length;
-> -	lmem.addr = mmap_vf_lmem(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
-> -	if (igt_debug_on(!lmem.addr))
-> +	vram = intel_vram_mmap(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
-> +	if (igt_debug_on(!vram.addr))
->   		return false;
-> -	result = lmem_write_pattern(&lmem, value, 0, STEP);
-> -	munmap_vf_lmem(&lmem);
-> +	result = lmem_write_pattern(&vram, value, 0, STEP);
-> +	intel_vram_munmap(&vram);
->   
->   	return result;
->   }
+    With the changes, all n_exec tasks operate with a fence,
+    allowing us to remove the sleep part.
 
-LGTM. If intel_vram lib is going to be modified, we should also apply 
-the same adjustments here.
+    v2: xe_wait_ufence timeout change back to NSEC_PER_SEC.(Matt)
+
+    v3: Correct typo in comments.(Matt)
+
+Cc: Matthew Brost <matthew.brost@intel.com>
+Acked-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Daniel Charles <daniel.charles@intel.com>
+Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
+---
+ tests/intel/xe_exec_balancer.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
+index 1747e207c..27ed91d5f 100644
+--- a/tests/intel/xe_exec_balancer.c
++++ b/tests/intel/xe_exec_balancer.c
+@@ -527,15 +527,18 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
+ 		}
+ 	}
+ 
+-	j = flags & INVALIDATE && n_execs ? n_execs - 1 : 0;
++	/* Wait for all execs to complete, and the xe_wait_ufence need to be run at least once. */
++	if (flags & INVALIDATE && n_execs) {
++		j = flags & RACE ? (n_execs/2 + 1) : n_execs-1;
++		if (j >= n_execs)
++			j = n_execs - 1;
++	} else {
++		j = 0;
++	}
+ 	for (i = j; i < n_execs; i++)
+ 		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+ 			       exec_queues[i % n_exec_queues], NSEC_PER_SEC);
+ 
+-	/* Wait for all execs to complete */
+-	if (flags & INVALIDATE)
+-		usleep(250000);
+-
+ 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
+-- 
+2.43.0
+
