@@ -4,54 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 457DBCA0EFA
-	for <igt-dev@archiver.kernel.org>; Fri, 22 Aug 2025 00:20:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E5ACA0FE4
+	for <igt-dev@archiver.kernel.org>; Fri, 22 Aug 2025 00:51:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE15610E065;
-	Fri, 22 Aug 2025 00:20:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BuHe98MI";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D021F10E065
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Aug 2025 00:20:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755822050; x=1787358050;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=U7iH8a6yVOLum+ni5yTkINMU3p3McBIVL/BaWmnbSQc=;
- b=BuHe98MIa9S5ncov6S44lzC35GCpkns+dsJDA6ywq8QNkBUr3vbaw36x
- CV1kqKLVCq1j2wY0nAFw6W7BEbbqpRbXRf1SfGy851PHjiGMUsykxIJKy
- wuerDSoVav1Ju4AoanjIY6hdMJQIwWsDXS5PURVRPioNbsgptCqEH0/JI
- rhYL7L3SK6lrAYAhBNBE0pZIY0ou/O23Ia7Er22QpyoPpQqH26GGpsav4
- X1g01Vl8YnKf/k/T3u23XujP7ztNfxx0B7ezgenxMcRZJr1pnRKyMNwI5
- sJ5c+WvS4+8KnTTvBpNZLi85J9DHfsDLD7GshH100FapJxpACFw/hmN5V g==;
-X-CSE-ConnectionGUID: LzMx2nW4SoejdbmL6i0HNQ==
-X-CSE-MsgGUID: vCnyfT/4SSCrFqB8koh4GQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="58193129"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="58193129"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2025 17:20:50 -0700
-X-CSE-ConnectionGUID: kY/8MnzpTYScQbolNqz2IQ==
-X-CSE-MsgGUID: mIQP06fIQOaxDUR7JJu2KA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; d="scan'208";a="173880027"
-Received: from dut4072bmgfrd.fm.intel.com ([10.105.8.119])
- by orviesa005.jf.intel.com with ESMTP; 21 Aug 2025 17:20:49 -0700
-From: Zongyao Bai <zongyao.bai@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Zongyao Bai <zongyao.bai@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Daniel Charles <daniel.charles@intel.com>
-Subject: [PATCH v3] tests/intel/xe_exec_balancer: use xe_wait_ufence to
- replace sleep action
-Date: Fri, 22 Aug 2025 00:20:35 +0000
-Message-ID: <20250822002035.1038268-1-zongyao.bai@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7743010E156;
+	Fri, 22 Aug 2025 00:51:23 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24B6B10E156;
+ Fri, 22 Aug 2025 00:51:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7670113712467959052=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fbal?=
+ =?utf-8?q?ancer=3A_use_xe=5Fwait=5Fufence_to_replace_sleep_action_=28rev3?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Zongyao Bai" <zongyao.bai@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 22 Aug 2025 00:51:22 -0000
+Message-ID: <175582388212.259528.4530620496851833751@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250822002035.1038268-1-zongyao.bai@intel.com>
+In-Reply-To: <20250822002035.1038268-1-zongyao.bai@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,67 +38,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-    In the test_cm() function, for cases with the INVALIDATE flag,
-    use sleep 0.25 seconds to allow all tasks to complete their jobs.
-    However, this time is sometimes insufficient.
+--===============7670113712467959052==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-    In this patch, xe_wait_ufence (referred to as "fence" for short) actions are added
-    for the second half of n_execs tasks in INVALIDATE-RACE scenarios.
-    The changes are as follows:
-        When flags hit nothing: => No change
-             -- all n_exec tasks operate with a fence.
-        When flags include INVALIDATE but do not include RACE: => No change
-             -- the last n_exec task operates with a fence.
-        When flags include both INVALIDATE and RACE => New in this patch
-             -- n_execs/2 + 1 tasks operate with a fence.
-             -- at least the last n_exec task operates with a fence
+== Series Details ==
 
-    With the changes, all n_exec tasks operate with a fence,
-    allowing us to remove the sleep part.
+Series: tests/intel/xe_exec_balancer: use xe_wait_ufence to replace sleep action (rev3)
+URL   : https://patchwork.freedesktop.org/series/151536/
+State : success
 
-    v2: xe_wait_ufence timeout change back to NSEC_PER_SEC.(Matt)
+== Summary ==
 
-    v3: Correct typo in comments.(Matt)
+CI Bug Log - changes from XEIGT_8503_BAT -> XEIGTPW_13612_BAT
+====================================================
 
-Cc: Matthew Brost <matthew.brost@intel.com>
-Acked-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Daniel Charles <daniel.charles@intel.com>
-Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
----
- tests/intel/xe_exec_balancer.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Summary
+-------
 
-diff --git a/tests/intel/xe_exec_balancer.c b/tests/intel/xe_exec_balancer.c
-index 1747e207c..27ed91d5f 100644
---- a/tests/intel/xe_exec_balancer.c
-+++ b/tests/intel/xe_exec_balancer.c
-@@ -527,15 +527,18 @@ test_cm(int fd, int gt, int class, int n_exec_queues, int n_execs,
- 		}
- 	}
- 
--	j = flags & INVALIDATE && n_execs ? n_execs - 1 : 0;
-+	/* Wait for all execs to complete, and the xe_wait_ufence need to be run at least once. */
-+	if (flags & INVALIDATE && n_execs) {
-+		j = flags & RACE ? (n_execs/2 + 1) : n_execs-1;
-+		if (j >= n_execs)
-+			j = n_execs - 1;
-+	} else {
-+		j = 0;
-+	}
- 	for (i = j; i < n_execs; i++)
- 		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
- 			       exec_queues[i % n_exec_queues], NSEC_PER_SEC);
- 
--	/* Wait for all execs to complete */
--	if (flags & INVALIDATE)
--		usleep(250000);
--
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
--- 
-2.43.0
+  **SUCCESS**
 
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13612_BAT that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8503 -> IGTPW_13612
+  * Linux: xe-3591-16e133c7e6922a9f224b272a48ac172cf06e3408 -> xe-3597-cca87ca63e2f5b8a785dc59c23e526987530b27f
+
+  IGTPW_13612: 13612
+  IGT_8503: 8503
+  xe-3591-16e133c7e6922a9f224b272a48ac172cf06e3408: 16e133c7e6922a9f224b272a48ac172cf06e3408
+  xe-3597-cca87ca63e2f5b8a785dc59c23e526987530b27f: cca87ca63e2f5b8a785dc59c23e526987530b27f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13612/index.html
+
+--===============7670113712467959052==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_balancer: use xe_wait_ufence to replace sleep action (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151536/">https://patchwork.freedesktop.org/series/151536/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13612/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13612/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8503_BAT -&gt; XEIGTPW_13612_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13612_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8503 -&gt; IGTPW_13612</li>
+<li>Linux: xe-3591-16e133c7e6922a9f224b272a48ac172cf06e3408 -&gt; xe-3597-cca87ca63e2f5b8a785dc59c23e526987530b27f</li>
+</ul>
+<p>IGTPW_13612: 13612<br />
+  IGT_8503: 8503<br />
+  xe-3591-16e133c7e6922a9f224b272a48ac172cf06e3408: 16e133c7e6922a9f224b272a48ac172cf06e3408<br />
+  xe-3597-cca87ca63e2f5b8a785dc59c23e526987530b27f: cca87ca63e2f5b8a785dc59c23e526987530b27f</p>
+
+</body>
+</html>
+
+--===============7670113712467959052==--
