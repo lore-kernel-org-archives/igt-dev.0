@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0D20CA0FE8
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAD10CA0EFC
 	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 73EBA10E191;
+	by gabe.freedesktop.org (Postfix) with ESMTP id A4E6110E193;
 	Sat, 23 Aug 2025 02:20:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RPrlj5JQ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="nPg3Jue7";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9089610E193
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 901B410E191
  for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:33 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id CACCFC8EC77
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:11:50 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 3A6D1C8EC76
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:11:40 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id B1E2A606A7;
- Sat, 23 Aug 2025 02:12:04 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 204E4606A7;
+ Sat, 23 Aug 2025 02:11:54 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id DFAF01C22D036; 
- Sat, 23 Aug 2025 04:12:03 +0200 (CEST)
+ with ESMTPSA id 8595C1C22D3FC; 
+ Sat, 23 Aug 2025 04:11:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1755915124; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1755915113; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=pij1GWLYj23t0g4rQTy1tjHRXS3rTaBAt97tf5OInXk=;
- b=RPrlj5JQzSXTSgyVH2e5HYKQa5DYf1kJ4uwe6sJu3f+K0AGFn4u7SOhu/rhhbFdlP4DPOW
- zRO8rQw46fiWcYBb7YBPKlJ3bAWZYHxDvwtXNCvfSRiSn/TFRo66wUfScJPUaQnU61DzFQ
- Mcp5EplkgrIuhwx1iVMJMR3y313qexetY1+CBQe0ubanpkHkdwcCYx8ulRry98dqzxBN8k
- T4ISECRMc8gqGVR0ZjkBvLvL0DgoboK5Fq0Ar6DDumRoRJk3azsTZ0ilZQGwf1DzKQnVMg
- UMEVn+8IlsuOWvc+vMiHEZmYehk6jl+xxMFLPq1HPho+CvYQzSDnExu3EM155w==
+ bh=qqMcTc0ezNGRDNFAMZY3oMw+GbxMpI29LT+pycW2FRg=;
+ b=nPg3Jue7fzBAqOomkITHOaBWcU8Sxd8I9BKDzF7cDy7Utd9FdgHPpLUJ+lB2yN1KXUFP2v
+ VxNe0/ZZFXWBg0cGS1n3ftutZk+TDLRKyKUNJ46m/WfKRuxQLa9RipVX5GrWbGEmiMIoUn
+ AOSeG4gRdfV7DwxcSIdveXkGBcKRlDfi5SLSGeTAOgfZ5Wf8c53SAc6n9TRThUEqeDYx/Q
+ Sh3ZlgkbDmRua3oThiyjHC0K4YMg6QAqlsiHKMxUflcN1IJVoud+MM3uvwweYWYjrN6lyv
+ FV5vlBM3t05vijf9Ym4F0ARBAQOnhnVgwMYC6mCf8BWKmU5vMYQmR5DWMY1n5A==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Sat, 23 Aug 2025 04:11:48 +0200
-Subject: [PATCH i-g-t v3 28/29] lib/igt_pipe_crc: Add ungiraf crc calculation
+Date: Sat, 23 Aug 2025 04:11:31 +0200
+Subject: [PATCH i-g-t v3 11/29] lib/unigraf: Add TSI.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250823-unigraf-integration-v3-28-cdc36d5fab4c@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250823-unigraf-integration-v3-11-cdc36d5fab4c@bootlin.com>
 References: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 In-Reply-To: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2229;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10144;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=tEhmu+xoRRvSKCAe1r1tvzRCEQW3Kp8DDQ+wKfLqX5o=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNYx2dze1TyThuBRlfLVMIo0O3NxV2r+2eCy
- 65806tZms6JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjWAAKCRAgrS7GWxAs
- 4u4GD/9e8a6vhN5t9gJuKJEKGxAirXXUxM4NKmvEJBhZa6vpX8/vU4CfqK12tsVPeSpVMvzYKcB
- SVu5PFp3FV6kMzxQotmP7Gb0K7A6HgIayF/quq0OBwlvT9q6DmyimN6lC7M0QfvpA5dz6seXyS5
- Eehh7r+yLelCwQQbdO9nwu48QRYGjv0Dn30OIeb/lnDVHWon5HZ2smrrLNziHbfTjt47L37k+Bz
- S5wkDia5nnZbcSgfje5tXJFL+8sFseOmFW4HxCt3nqrSdz3p7FItTNWgBxU6MjwsSOAmwlF3cIx
- FMaF1pXdpk6sb/ZB7r3MIUOyZhVF0Lvd3Ti3GhyAVEewjC4Io7pmj2Ai3E6dMyloI8xc1zDpayR
- 6Xe8guDhPUhxhksHadzQmH2F2a5A0HqNZx4t9Zj30c60x/RreZPFuQkkiCHTYd5MC9tA9EGyxet
- XDsb9tsN/bz3fVJIUTdzw9hlaFKuRUNhXLuLrR+UlgVQMRUXVIBxZ3iWjFz+9VspSZq/+Y/jteU
- J60QLtt9cGINAu8jcq90alzjOHuXLDOvuJw5lfj0DPVeGISWQFUAthjxq8ahFA8MPd81MfY24ds
- SEEQyKeXl/YIktDwzK7XJCSa/FGlA3ITrIO52gl21zdlnx9Vc536QIVLhYrAOv2Y4Cb+UnAgAqY
- KG4Bzn9EWpoMGaA==
+ bh=/Uzb3Q359cCetYK6nVsMm/ArzhHbaPuOrf0uhqTHkQk=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNUmCGSLbUdcfPbMCglCSrwbzUr7si09q1Fc
+ nLGKVnuxx+JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjVAAKCRAgrS7GWxAs
+ 4nhUEADGAtoqVIuRpPnHT0XoNL0hGW+FB1jERf1WX2jEYbzcMh4XfQb+t29HQUifL2Hdl9L3+7d
+ aN0CtEzf+XkKLulslYL1sQLBnreGJ5lqsiPrykbGQu4goS/6aI3dQQs3aJoAQrHpPXFBheeaObO
+ 7CbUsqbpurfG3SBzvyqnZLKE4/Ilg3l0Y/hRFrfQqsDDa2mjU3tMCL/q7JQXx0hpNilqdOJp1lx
+ D8BMqnY2+kE8emuz321Mq1RyIWEmuh8/nqcUuo75O1HiQYR7s4+utkxLGRQ/yRQ+NrQJ6/fP0jN
+ odZk57WMpLnqYeJqNLV5itMX+A/Xy/U53TLGX9iK/LHIOGCyItSCXWdPe81bCwhfKPDqndDBXE2
+ sskLzmM6PlbSdguSNT626grSMmP7Qqu1Hh1jRVowUhHEwBoCl5M7jmEewpo7sSOCZ7sHufi8tE2
+ 4YOFHYEVEMWuPvBU3L0J7bBXJKlkZ412BEDbqp527esZJVjwJxWfeIZDOjeyJQpu4mQMFWvbJaJ
+ mkeuWVz94eszkzC05WKq4M9wN1MglhchRQ0hwJaYaLU5yDemhJvqv22SqTW4m4NiRKC5AvMp0RM
+ T4URYtMYosg324fgX4Ahp6uDlG2MIryZbHaWAYa2IKAccOffUstOi6n4/wfpW0atgBQ48Spr5uK
+ whHVX6R9iuLZUBg==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,79 +79,257 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Unigraf can read crc from the physical output, use this CRC instead of
-internal CRC when configured. This allows to also test the hardware signal
-generation.
+Unigraf does not provide header for the libTSI.so file, only dynamic
+library loading helpers for windows.
 
-This small addition allows to use the unigraf device for most of the
-kms_* tests.
+In order to link against this library and use unigraf devices, add the
+function declaration used in the dynamic library loading wrappers.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_pipe_crc.c    | 27 +++++++++++++++++++++++++++
- lib/unigraf/unigraf.c |  1 +
- 2 files changed, 28 insertions(+)
+ lib/unigraf/TSI.h | 234 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 234 insertions(+)
 
-diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
-index 866bf2881cbd04df0ae0cc8fe91fe0626367144f..64ef1fe47ea5735b56cf56b007831d404dd5cf5d 100644
---- a/lib/igt_pipe_crc.c
-+++ b/lib/igt_pipe_crc.c
-@@ -3,9 +3,12 @@
-  * Copyright © 2013 Intel Corporation
-  */
- 
-+#include "igt_core.h"
-+#include "unigraf/unigraf.h"
- #include <inttypes.h>
- #include <sys/stat.h>
- #include <sys/mount.h>
-+#include <xf86drmMode.h>
- #ifdef __linux__
- #include <sys/sysmacros.h>
- #endif
-@@ -359,6 +362,30 @@ static void read_one_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
- 	} while (ret == -EINTR);
- 
- 	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags);
+diff --git a/lib/unigraf/TSI.h b/lib/unigraf/TSI.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..62daaab6300e3ad0057217af869749cd9dc287ee
+--- /dev/null
++++ b/lib/unigraf/TSI.h
+@@ -0,0 +1,234 @@
++/* SPDX-License-Identifier: MIT */
 +
-+#if HAVE_UNIGRAF
-+	if (unigraf_open_device(pipe_crc->fd) && unigraf_use_crc()) {
-+		int pipe_id;
-+		int stream_id;
-+		drmModeConnectorPtr connector = unigraf_get_connector(pipe_crc->fd);
-+		if (!connector)
-+			return;
++/*
++ * tsi.h - Header for libTSI.so
++ * Documentation here is taken from official documentation and developer observation.
++ */
 +
-+		pipe_id = igt_get_pipe_from_connector(pipe_crc->fd, connector->connector_id);
-+		if (pipe_id != PIPE_NONE && pipe_id == pipe_crc->pipe) {
-+			unigraf_read_crc(0, out);
-+			return;
-+		}
++#ifndef TSI_H
++#define TSI_H
 +
-+		for (stream_id = 0; stream_id < unigraf_get_mst_stream_count(); stream_id++) {
-+			pipe_id = unigraf_get_connector_by_stream(pipe_crc->fd, stream_id);
-+			if (pipe_id != PIPE_NONE && pipe_id == pipe_crc->pipe) {
-+				unigraf_read_crc(stream_id, out);
-+				return;
-+			}
-+		}
-+	}
++#define TSI_CURRENT_VERSION	12
++#define MAX_EDID_SIZE		4096
++
++#define TSI_SUCCESS		0
++
++typedef unsigned int		TSI_VERSION_ID;
++typedef unsigned int		TSI_SEARCH_OPTIONS;
++typedef unsigned int		TSI_DEVICE_CAPS;
++typedef unsigned int		TSI_CONFIG_ID;
++typedef unsigned int		TSI_DEVICE_ID;
++typedef unsigned int		TSI_INPUT_ID;
++typedef int			TSI_RESULT;
++typedef void			*TSI_HANDLE;
++typedef int			TSI_FLAGS;
++
++/**
++ * TSI_Init() - Initialize the TSI library
++ * @ClientVersion: Indicates the version used to call the libTSI.so functions.
++ *
++ * Initialize libTSI for use and sets up internal state. It can be called
++ * multiple times, but TSI_Clean must be called the exact same number of time.
++ *
++ * Returns:
++ * - In case of success: Reference count to the API (number of times to call TSI_Clean)
++ * - TSI_ERROR_NOT_COMPATIBLE if the requested client version is not supported
++ *   by the library
++ * - TSI_ERROR_COMPATIBILITY_MISMATCH if TSI_Init is called twice with
++ *   different client version
++ */
++TSI_RESULT TSI_Init(TSI_VERSION_ID ClientVersion);
++
++/**
++ * TSI_Clean() - Cleans and closes the TSI library
++ *
++ * When TSI_Clean is called for the last time, cleanup the internal state. It
++ * should be called exactly the same number of time as TSI_Init
++ */
++TSI_RESULT TSI_Clean(void);
++
++/**
++ * TSI_MISC_GetErrorDescription() - Get a human readable error message
++ * @ErrorCode: Error code for which you want the message
++ * @ErrorString: Pointer where to copy the message
++ * @StringMaxLen: Size of the allocated string @ErrorString
++ *
++ * The official documentation states: If the function succeeds, the
++ * return value is the number of characters required for the complete
++ * error description string.
++ * In reality, this function always returns 0 or error, so there is no way to
++ * tell if the allocated memory was big enough
++ *
++ * Returns:
++ * - >= 0 on success, theorically the required string len to store the message
++ * - < 0 on failure
++ */
++TSI_RESULT TSI_MISC_GetErrorDescription(TSI_RESULT ErrorCode,
++					char *ErrorString,
++					unsigned int StringMaxLen);
++
++/**
++ * TSIX_TS_GetConfigItem() - Read a configuration item from the UCD device
++ * @Device: Device handle to read config from. Can be NULL for certain configuration items.
++ * @ConfigItemID: Identifier of the requested configuration item.
++ * @ConfigItemData: Pointer to store the read value.
++ * @ItemMaxSize: Size of the allocated memory for @ConfigItemData.
++ *
++ * Returns: The size of the raw data. If the return value is larger than ItemMaxSize, no data
++ *          is copied to ConfigItemData.
++ * Note:
++ * - Some configurations require specific size and alignment for the allocated buffer. Refer to
++ *   the specific item configuration documentation for details.
++ * - Data may still be written to @ConfigItemData even if the return value is larger than
++ *   @ItemMaxSize, potentially causing buffer overflow.
++ */
++TSI_RESULT TSIX_TS_GetConfigItem(TSI_HANDLE Device, TSI_CONFIG_ID ConfigItemID,
++				 void *ConfigItemData,
++				 unsigned int ItemMaxSize);
++
++/**
++ * TSIX_DEV_RescanDevices() - Refresh the internal list of devices for libTSI
++ * @SearchOptions: Options to filter the list of devices (e.g.,
++ *                 TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE to include
++ *                 devices already in use).
++ * @RequiredCaps: Filter to list only devices with specific capabilities.
++ * @UnallowedCaps: Filter to list only devices without specific capabilities.
++ *
++ * Returns: >=0 in case of success.
++ *
++ * This function should be called every time you need to update the list of connected devices,
++ * and it must be called at least once before calling TSI_DEV_GetDeviceCount.
++ */
++TSI_RESULT TSIX_DEV_RescanDevices(TSI_SEARCH_OPTIONS SearchOptions,
++				  TSI_DEVICE_CAPS RequiredCaps,
++				  TSI_DEVICE_CAPS UnallowedCaps);
++/**
++ * TSIX_DEV_GetDeviceCount() - Get the count of scanned devices
++ * Returns: the number of devices that the previous call to TSIX_DEV_RescanDevices() detected
++ *
++ * Must be called after a TSIX_DEV_RescanDevices.
++ */
++TSI_RESULT TSIX_DEV_GetDeviceCount(void);
++
++/**
++ * TSIX_DEV_OpenDevice() - Open a device from the scanned list
++ * @DeviceID: index in the TSI_DEV_RescanDevices list
++ * @Result: Pointer to store the error code returned while opening the device
++ * Returns: if the device is found, an opaque pointer that can be used for other
++ * API calls. If some error occurred during the detection, the status code is
++ * written in the pointer @Result.
++ */
++TSI_HANDLE TSIX_DEV_OpenDevice(TSI_DEVICE_ID DeviceID, TSI_RESULT *Result);
++
++/**
++ * TSIX_DEV_CloseDevice() - Close the device handle when finished
++ * @Device: Device handle to close
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_DEV_CloseDevice(TSI_HANDLE Device);
++
++/**
++ * TSIX_VIN_Disable() - Disable video input on the specified device
++ * @Device: Device handle to disable video input on
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_VIN_Disable(TSI_HANDLE Device);
++
++/**
++ * TSIX_VIN_Select() - Select a specific video input on the specified device
++ * @Device: Device handle on which to select the input
++ * @InputID: Identifier of the input to select
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_VIN_Select(TSI_HANDLE Device, TSI_INPUT_ID InputID);
++
++/**
++ * TSIX_DEV_SelectRole() - Select a specific role for the specified device
++ * @Device: Device handle on which to assign the role
++ * @RoleIndex: Index of the role to assign
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_DEV_SelectRole(TSI_HANDLE Device, int RoleIndex);
++
++/**
++ * TSIX_TS_SetConfigItem() - Set a configuration item on the specified device
++ * @Device: Device handle to set the configuration on
++ * @ConfigItemID: Identifier of the configuration item to set
++ * @ItemData: Pointer to the data to set
++ * @ItemSize: Size of the data to set
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_TS_SetConfigItem(TSI_HANDLE Device, TSI_CONFIG_ID ConfigItemID,
++				 const void *ItemData, unsigned int ItemSize);
++
++/**
++ * TSIX_VIN_Enable() - Enable video input on the specified device
++ * @Device: Device handle to enable video input on
++ * @Flags: Flags to specify the options for enabling the video input
++ * Returns: >=0 in case of success
++ */
++TSI_RESULT TSIX_VIN_Enable(TSI_HANDLE Device, TSI_FLAGS Flags);
++
++/**
++ * TSIX_VIN_GetInputCount() - Get the number of video inputs available on a device
++ * @Device: Device handle to query
++ *
++ * Returns: >=0 in case of success, the number of video inputs available on the device
++ */
++TSI_RESULT TSIX_VIN_GetInputCount(TSI_HANDLE Device);
++
++/**
++ * TSIX_DEV_GetDeviceName() - Get the name of a device from the scanned list
++ * @DeviceID: Index in the TSI_DEV_RescanDevices list
++ * @DevNameString: Pointer to store the device name
++ * @NameStringMaxLength: Size of the allocated memory for @DevNameString
++ *
++ * Returns: >=0 in case of success, the length of the device name string
++ * Note: If the return value is larger than NameStringMaxLength, the string may be truncated
++ */
++TSI_RESULT TSIX_DEV_GetDeviceName(TSI_DEVICE_ID DeviceID, char *DevNameString,
++				  unsigned int NameStringMaxLength);
++
++/**
++ * TSIX_DEV_GetDeviceRoleCount() - Get the number of roles available for a device
++ * @Device: Device handle to query
++ *
++ * Returns: >=0 in case of success, the number of roles available for the device
++ */
++TSI_RESULT TSIX_DEV_GetDeviceRoleCount(TSI_HANDLE Device);
++
++/**
++ * TSIX_DEV_GetDeviceRoleName() - Get the name of a specific role for a device
++ * @Device: Device handle to query
++ * @RoleIndex: Index of the role to get the name for
++ * @RoleNameString: Pointer to store the role name
++ * @RoleStringMaxLength: Size of the allocated memory for @RoleNameString
++ *
++ * Returns: >=0 in case of success, the length of the role name string
++ * Note: If the return value is larger than RoleStringMaxLength, the string may be truncated
++ */
++TSI_RESULT TSIX_DEV_GetDeviceRoleName(TSI_HANDLE Device, int RoleIndex,
++				      char *RoleNameString, unsigned int RoleStringMaxLength);
++
++/**
++ * TSIX_VIN_GetInputCount() - Get the number of video inputs available on a device
++ * @Device: Device handle to query
++ *
++ * Returns: >=0 in case of success, the number of video inputs available on the device
++ */
++TSI_RESULT TSIX_VIN_GetInputCount(TSI_HANDLE Device);
++
++/**
++ * TSIX_VIN_GetInputName() - Get the name of a specific video input on a device
++ * @Device: Device handle to query
++ * @InputID: Identifier of the input to get the name for
++ * @InputNameString: Pointer to store the input name
++ * @NameStringMaxLen: Size of the allocated memory for @InputNameString
++ *
++ * Returns: >=0 in case of success, the length of the input name string
++ * Note: If the return value is larger than NameStringMaxLen, the string may be truncated
++ */
++TSI_RESULT TSIX_VIN_GetInputName(TSI_HANDLE Device, TSI_INPUT_ID InputID,
++				 char *InputNameString, unsigned int NameStringMaxLen);
++
 +#endif
- }
- 
- /**
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 8de2c74affdda741b11933a1a55f1c2d2b1bb61b..d4403a6d42eabc748a841b307f76856454360279 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: MIT
- 
- #include "glib.h"
-+#include "igt_aux.h"
- #include "igt_core.h"
- #include <stdint.h>
- #include <stdio.h>
 
 -- 
 2.50.1
