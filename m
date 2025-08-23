@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDC90CA0EFF
-	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 18:25:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3C8ACA0EFA
+	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 18:47:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 304DD10E16F;
-	Sat, 23 Aug 2025 18:25:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3FE6D10E00E;
+	Sat, 23 Aug 2025 18:47:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UJgjYO+r";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hMuQy3mT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA5ED10E16F
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 18:25:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34DF910E00E
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 18:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755973508; x=1787509508;
+ t=1755974857; x=1787510857;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=rE6HJNiwwSs08XHd6S/8tJAj/dxJarJZiTC1cPsPR5E=;
- b=UJgjYO+rPouwRxbR8AUtBxOSlaUH3FcltJKmKAjqTossIfcNv8kdkY3B
- +XLBxUFJv1QQ0+zOfXkzzF0kML6DIGSps7e89nxNBnZ0gUaEERcFZ022t
- rlXzs8uLumuTGR21WAgy5s45ZPpFLW7wwusHHS57SmZu7+9xv7gjxUgbr
- MkpQvUtMVz1psDvkxEXIVSgGvGRA++vp/Ar+QwXXIctPHZ8ynqiFyjRaP
- Ho12FfRNqdRBE/84drNe3GyGnH8s0iMSenE6zNG9z+WR5wHciEl+TDrd7
- GuVG3Kp+i1zNA18OvFR3R+oavGJHJvkq9YCjP8XD0Sy5lBdyqVgplJ+e/ w==;
-X-CSE-ConnectionGUID: xkhdCk+PSMee03GzrwzIgg==
-X-CSE-MsgGUID: 1yPsrwsfRKSodwRg/h6E6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="69678904"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="69678904"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2025 11:25:08 -0700
-X-CSE-ConnectionGUID: ejaL16gdQhqw15RNnM96Rw==
-X-CSE-MsgGUID: KiOHUUvnRr+UM+YRS/f48w==
+ bh=xbNKofIKNpJACJ3xHbIYzJqLcbmmq4iMdISuPAz3pbo=;
+ b=hMuQy3mT4HttG9JrB/LtsaRidpmpSX1fWddKPeX6y7bCNBK/qqETvYLq
+ N9JCkrDpEALkybTfRKifa3VBVAKYmGP6bwUzMzNed9dK/723hmCDrHsWg
+ TzKnQxPFLxi5BKNmuSsgAE2830DSiH6F/9/WNGxVSLOmHhGo9YWEKMs/b
+ 3eub1yRfCIm4Mwf3a04Imhy0senwgh9yjwj9NZCjDKJc0RQRZJNVo7Fml
+ Kh8gm65t8t4AxdQ1EaySH50June2yHzEuQ0XlemJUX03JUKxZ9t52LSt3
+ weoy+8e9yciqQF4AODDazZ1BBN/lzRUSuDi6UDGZo+MJRIm7x74RXycuf g==;
+X-CSE-ConnectionGUID: t7a+shMPQDmV2D3pH7OWOQ==
+X-CSE-MsgGUID: QDU24dJRRmi6/+c9h6+cIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="45820494"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="45820494"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Aug 2025 11:47:36 -0700
+X-CSE-ConnectionGUID: ZzXmTO/2SkqW2r/mfn6RWw==
+X-CSE-MsgGUID: z6vf3hlcScmJIv+SRtNhYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="168859503"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="168471315"
 Received: from shreyans-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.124.32.227])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2025 11:25:08 -0700
-Date: Sat, 23 Aug 2025 11:25:07 -0700
-Message-ID: <87tt1xyjy4.wl-ashutosh.dixit@intel.com>
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Aug 2025 11:47:36 -0700
+Date: Sat, 23 Aug 2025 11:47:35 -0700
+Message-ID: <87sehhyiwo.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 1/4] tests/intel/xe_oa: Fix report dumps in sanity
- check
-In-Reply-To: <20250823003401.109978-7-umesh.nerlige.ramappa@intel.com>
-References: <20250823003401.109978-6-umesh.nerlige.ramappa@intel.com>	<20250823003401.109978-7-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t 2/4] tests/intel/xe_oa: Fix waiting for mmaped
+ reports
+In-Reply-To: <20250823003401.109978-8-umesh.nerlige.ramappa@intel.com>
+References: <20250823003401.109978-6-umesh.nerlige.ramappa@intel.com>
+ <20250823003401.109978-8-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,56 +72,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 22 Aug 2025 17:34:03 -0700, Umesh Nerlige Ramappa wrote:
+On Fri, 22 Aug 2025 17:34:04 -0700, Umesh Nerlige Ramappa wrote:
 >
-
-Hi Umesh,
-
-> Fix report dumps in sanity check to dump the right amount of dwords.
+> When iterating over reports using a uint32_t pointer, ensure that the
+> report size is expressed in 32 bits.
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+
 > ---
->  tests/intel/xe_oa.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  tests/intel/xe_oa.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
 > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 63b59028fc5d..35d25150ec7d 100644
+> index 35d25150ec7d..745f364e52e9 100644
 > --- a/tests/intel/xe_oa.c
 > +++ b/tests/intel/xe_oa.c
-> @@ -1052,8 +1052,8 @@ static void pec_sanity_check_reports(const u32 *report0, const u32 *report1,
->		return;
+> @@ -4448,6 +4448,7 @@ static void mmap_wait_for_periodic_reports(void *oa_vaddr, uint32_t n,
+>	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+>	uint64_t fmt = test_set->perf_oa_format;
+>	uint32_t num_periodic_reports = 0;
+> +	uint32_t report_words = get_oa_format(fmt).size >> 2;
+>	uint32_t *reports;
+>
+>	while (num_periodic_reports < n) {
+> @@ -4455,7 +4456,7 @@ static void mmap_wait_for_periodic_reports(void *oa_vaddr, uint32_t n,
+>		num_periodic_reports = 0;
+>		for (reports = (uint32_t *)oa_vaddr;
+>		     reports[0] && oa_timestamp(reports, fmt) && oa_report_is_periodic(reports);
+> -		     reports += get_oa_format(fmt).size) {
+> +		     reports += report_words) {
+>			num_periodic_reports++;
+>		}
 >	}
->
-> -	dump_report(report0, set->perf_raw_size, "pec_report0");
-> -	dump_report(report1, set->perf_raw_size, "pec_report1");
-> +	dump_report(report0, set->perf_raw_size / 4, "pec_report0");
-> +	dump_report(report1, set->perf_raw_size / 4, "pec_report1");
-
-This is correct.
-
->
->	pec_sanity_check(report0, report1, set);
->  }
-> @@ -1471,8 +1471,6 @@ read_2_oa_reports(int format_id,
->				break;
->			}
->
-> -			dump_report(report, format_size / 4, "oa-formats");
-> -
-
-Not sure about this. Could you move this to a different patch with
-justification, if it's needed? I think this is there to dump Xe1 reports,
-which pec_sanity_check_reports() will not dump, though maybe for Xe2 it
-double dumps? I'd rather have more data there for debug, rather than data
-missing.
-
->			igt_debug("read report: reason = %x, timestamp = %"PRIx64", exponent mask=%x\n",
->				  report[0], oa_timestamp(report, format_id), exponent_mask);
->
 > --
 > 2.43.0
 >
-
-Thanks.
---
-Ashutosh
