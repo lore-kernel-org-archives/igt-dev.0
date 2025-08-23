@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56822CA0FE8
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7C62CA0FEF
 	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:17:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBDF410EBD1;
-	Sat, 23 Aug 2025 02:17:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 877C110EBD8;
+	Sat, 23 Aug 2025 02:17:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Vl/teLr3";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="epH4mpGQ";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B752310E199
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B346010E191
  for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:17:18 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 7F1C61A0D74
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:11:42 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 5DC8B1A0D96
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:11:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 45DAD606B0;
- Sat, 23 Aug 2025 02:11:42 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 35E8D606A7;
+ Sat, 23 Aug 2025 02:11:57 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 5FC9B1C22D355; 
- Sat, 23 Aug 2025 04:11:41 +0200 (CEST)
+ with ESMTPSA id 8C9B61C22D4AD; 
+ Sat, 23 Aug 2025 04:11:56 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1755915101; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1755915116; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=6r/0J/YHq1MDu3EzZEcszTj4Aee+dPWg62IhOCmF/TY=;
- b=Vl/teLr31TVgnxbVFQthdlVn14F5PXJ8+sOlQwxMqHMHa/1uKoq4HWZrAJ/VvfhoFBz+zC
- JHMKnMuS95FgEX8gfvZc1Ck+2Ko/YCyitmUkU/SUyTd8aPpSid3emhJLiOjemm6gymQCUZ
- poEUxnh08VOH3vSMb4qVwV1vrnN7IIrSrig12Jet9rmkm1bytDPfl1qw2KKJFqICVNRAbV
- AW1d0EAcSddlGQiQTtqWHCftvK9/57mM9vIHYf32zFjszU+/HLYwCSNdQ1tBiq1xUgf7ZE
- zmvoUtJSJRHy/f4z9zFgY/KwPLfu4Z9HSv24ymYWvJ126ZsWYA+XqUo2EHfHfA==
+ bh=ql7eTvUuXFPtahXHdMUiRjPmvuQ7uOoHDkgzceAiqmE=;
+ b=epH4mpGQZtNYjQyHvk8aTC8krrhqZd7wAFORHCnUxdI++yn+rx2tbbm8gy+OG+3FQW0I87
+ rVXqNLNzgzJff1Z4Ojjl2sTYd4f1hr4aSgVBx6B9qg9mCWeIArbY9OQ9M8zpD0/BJmMR0E
+ mrKx1x7Qlc5x0TciLQ4ncXWIEqtdonojtEKpKuihKwYC0K8yV0TB8R0TsC/PN1cJhacBMU
+ tA09lUEcjCbITfj/qKFOjVIc6Fzei+85+zPTPD5UObUCV5UhRV/hxQmGTXgeEDjPFpjSHn
+ /57082beBbuyN0Q/stWn3pjSDkCRehHtgUcLj5D6I3HelNKaaDRXhkndOpGjoA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Sat, 23 Aug 2025 04:11:21 +0200
-Subject: [PATCH i-g-t v3 01/29] lib/igt_kms: Add a detect timeout value
+Date: Sat, 23 Aug 2025 04:11:36 +0200
+Subject: [PATCH i-g-t v3 16/29] lib/unigraf: Introduce input configuration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250823-unigraf-integration-v3-1-cdc36d5fab4c@bootlin.com>
+Message-Id: <20250823-unigraf-integration-v3-16-cdc36d5fab4c@bootlin.com>
 References: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 In-Reply-To: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3126;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4126;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=XwAx7CkiZ3KAVB35Ml5U8FSr0NuuLTf23xLfcXpd9VU=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNSSFj5RBpM8fKVbizRnDaHaOH2FKU/UwV5K
- tJxDa7ehG6JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjUgAKCRAgrS7GWxAs
- 4k1mEACDcM5RHnWPt5U1LDY4qJgQdhvyWMBbZWZNQn118ERDADL1AGauenD3sgaJi6Few0ITzWY
- NwYosIHUCauPA04Mx6yGwTild+G3y5xjT++aUYNc08AVEEHVtu7TZZCf+yMAVTCNDluWVKtXqDI
- JF37CSOhLG3RzcCcuvwM9iODjPRBDDSdtWV/uBxeOdbu/j5pMxjt1Y0mWbSaR8RKxYgWmADFJM5
- ViLyHhN655h4HSM1WDue1sYGsdWyZGToBNKK7IxSWcsYuNBn1Uxk9f5DbUTHcddsLKmzdDpLA9P
- 99FqkU4HzjjxreWvGPiVxXIXE2KUYo3Qltmzdbc8Nb/udkNfNqU+Df9CynlbHPpc+f0DGYQFTjv
- 38iG3lldGqn6pgmKs+LmRYBbS8A8laHrUkfbW03IFF+keA1N/cySVwq5GP4+ASwzRPekgXA/Onx
- Ef7b7Wejlh7xJ3M0CYhgHoVh876SVVooDm3pFUJBb3yx0PZKWSD9lKHq61pPeZZOhpb1luX1TWo
- ZGc9wB0b/z0yVld3YFJZ68EjoMDT51KY4z37khRPioyuGFFXgJyGfi4yYHM6vNkQda4gtaqMJjd
- LoRnsN+r3PkZXj6NElNCtRTw6BzACCqjllSg+YIMe0LP1X3iukdiyr8Q0lv5/3ZpLO6u/iC+OmR
- udDPJG+y6bF51EA==
+ bh=ZAyJ1tts2V9oeMWckKHfqs0j70moSWSGYK2+QfVNLYM=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNV3sHslIisXaJHnJEEvHdVoU3EwKtIqxh9L
+ 3+sBfbpanCJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjVQAKCRAgrS7GWxAs
+ 4ox5EACP4OBeAUQlezHQ9anUVRPpVMlxuTJNCGTEtX6DxDFgL+cNiszNWiTmmy7wLZGDnu0fo5f
+ 1rJCeYaSRjfRE8/cMAeLDDb0+NqWr6tRVbQ2wM9KYcQ5HY1R4PnA0wJ033zhrzAV2+lUcjXg16V
+ jxnYNVxmelsGwmdU65/oxJCg1rYCmBBZWKiuFEVwGsVGxIWrGkSKZwCfQlpAXB0aW4ze1k6e69Z
+ 4+yhy7ZXKtfTztE2hdRQN1BV+NirbxQOEk6XBJbfYMS5UjopXlQeOpN2MkdEiAP+por2jD2cc4Z
+ 38dgPOEmO30cBokHUpLUmvxsWdNxE3Jx/FqC76sTWDZouepEotDxM0ElddUNz6WnYQnHcOT74tx
+ NAdWrzogFJAcwVz3411BygfOnIq4XvGjq5SDHPZM0XYijY/SNsowReN/AaZFrFmXIeVNBQQaxN8
+ BEuPF8fmPr5Xhrxzqzp6mDqQdjwTRv+KBIDu2/T2M8TxxWfm3N7mgouGniT2xGolKvKNNIVQagh
+ NqPWYhYghVwTot9MaC1itVpEOTmY6wFbuinSb8FOjDBJQDkJtpZsZYodv1bEO7n4ni/SEPHUOFD
+ Nx/QeI3oGNST1VRw90LtUQU8vhF5wOG46VaWv3b8HmfjrAJeJv44cyItaRQTI9fkAWYL7NRiogA
+ IzURJh7Vh2JUI1Q==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,107 +79,135 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some tests need to wait for a specific connector status. In order to make
-the timeout customisable for each target, add an option in the
-configuration file.
+As multiple input can be present on unigraf devices, add a configuration
+field to select the proper input. By default it will take the first
+available.
+
+The configuration can look like:
+
+[Unigraf]
+Device=UCD-500 [2434C620]
+Role=DisplayPort Source and Sink
+Input=DP RX
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_core.c |  4 ++++
- lib/igt_kms.c  | 34 ++++++++++++++++++++++++++++++++++
- lib/igt_kms.h  | 10 ++++++++++
- 3 files changed, 48 insertions(+)
+ lib/unigraf/unigraf.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 58 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 4477cfef157a26d33552a2dd9209c130bb26afb8..1f4b4c256e64e87712e5f20dfb02adf56e2d6e02 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -271,6 +271,10 @@
-  *	&num; It is not mandatory and allows overriding default values.
-  *	[DUT]
-  *	SuspendResumeDelay=10
-+ *
-+ *	&num; The following option define the timeout for detection feature
-+ *	&num; (waiting for a connector status)
-+ *	DisplayDetectTimeout=10.0
-  * ]|
-  *
-  * Some specific configuration options may be used by specific parts of IGT,
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index d240c7ac5bdaae6b30281a701f437252ae84ca55..11e957171a1000889601d56b2c12af9d3d95f754 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -59,6 +59,7 @@
- #include "intel_chipset.h"
- #include "igt_debugfs.h"
- #include "igt_device.h"
-+#include "igt_rc.h"
- #include "igt_sysfs.h"
- #include "sw_sync.h"
- #ifdef HAVE_CHAMELIUM
-@@ -7538,3 +7539,36 @@ uint32_t igt_get_connected_output_count(igt_display_t *display)
- 	}
- 	return conn_outputs;
- }
+diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+index 0b8fe11a957b0ebaf7e9c4c4fc23b5f52c4632df..59a85e1b84c9df47a56f0273dac37d2dcba175c3 100644
+--- a/lib/unigraf/unigraf.c
++++ b/lib/unigraf/unigraf.c
+@@ -39,11 +39,21 @@ static char *unigraf_connector_name;
+  */
+ #define UNIGRAF_CONFIG_DEVICE_ROLE "Role"
+ 
 +/**
-+ * igt_default_display_detect_timeout:
-+ *
-+ * Get the default timeout value for detection feature
-+ *
-+ * Some tests requires to wait for a specific connector status. This value will determine the
-+ * timeout value for this waiting.
++ * UNIGRAF_CONFIG_INPUT_NAME - Key of the input name in the configuration file
 + */
-+double igt_default_display_detect_timeout(void)
++#define UNIGRAF_CONFIG_INPUT_NAME "Input"
++
+ /**
+  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
+  */
+ #define UNIGRAF_DEFAULT_ROLE_NAME "USB-C, DP Alt Mode Source and Sink"
+ 
++/**
++ * UNIGRAF_DEFAULT_INPUT_NAME - Default input name to search on the unigraf device
++ */
++#define UNIGRAF_DEFAULT_INPUT_NAME "DP RX"
++
+ static void unigraf_close_device(void)
+ {
+ 	unigraf_debug("Closing...\n");
+@@ -124,6 +134,24 @@ static int unigraf_find_role(const char *request)
+ 	return chosen_role;
+ }
+ 
++static int unigraf_find_input(const char *request)
 +{
-+	static double timeout = 0.0;
-+	static bool first_call = true;
-+	GError *error = NULL;
++	int chosen_input = -1;
++	int role_count = unigraf_assert(TSIX_VIN_GetInputCount(unigraf_device));
 +
-+	if (first_call) {
-+		if (igt_key_file) {
-+			timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",
-+							&error);
-+			if (error) {
-+				igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",
-+					  DEFAULT_DETECT_TIMEOUT);
-+				g_clear_error(&error);
-+				timeout = DEFAULT_DETECT_TIMEOUT;
-+			}
-+		} else {
-+			timeout = DEFAULT_DETECT_TIMEOUT;
++	for (int i = 0; i < role_count; i++) {
++		char input_name[UNIGRAF_NAME_MAX];
++
++		memset(input_name, 0, UNIGRAF_NAME_MAX);
++		unigraf_assert(TSIX_VIN_GetInputName(unigraf_device, i,
++						     input_name, UNIGRAF_NAME_MAX));
++		unigraf_debug("Input %d: %s\n", i, input_name);
++		if (!strncmp(input_name, request, UNIGRAF_NAME_MAX))
++			chosen_input = i;
++	}
++	return chosen_input;
++}
++
+ bool unigraf_open_device(int drm_fd)
+ {
+ 	TSI_RESULT r;
+@@ -131,10 +159,11 @@ bool unigraf_open_device(int drm_fd)
+ 	GError *cfg_error = NULL;
+ 	char *cfg_device = NULL;
+ 	char *cfg_role = NULL;
++	char *cfg_input = NULL;
+ 	int device_count;
+ 	int chosen_device;
+ 	int chosen_role;
+-	int chosen_input = 0;
++	int chosen_input;
+ 
+ 	assert(igt_can_fail());
+ 
+@@ -158,6 +187,7 @@ bool unigraf_open_device(int drm_fd)
+ 		unigraf_debug("No device configured, will try to find the first available.\n");
+ 		cfg_device = NULL;
+ 		cfg_role = NULL;
++		cfg_input = NULL;
+ 		unigraf_connector_name = NULL;
+ 	} else {
+ 		cfg_device = g_key_file_get_string(igt_key_file, cfg_group,
+@@ -174,6 +204,14 @@ bool unigraf_open_device(int drm_fd)
+ 			unigraf_debug("No device role configured.\n");
+ 			cfg_role = NULL;
+ 		}
++
++		cfg_error = NULL;
++		cfg_input = g_key_file_get_string(igt_key_file, cfg_group,
++						  UNIGRAF_CONFIG_INPUT_NAME, &cfg_error);
++		if (cfg_error) {
++			unigraf_debug("No input name configured.\n");
++			cfg_input = NULL;
 +		}
+ 	}
+ 
+ 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
+@@ -218,6 +256,25 @@ bool unigraf_open_device(int drm_fd)
+ 	}
+ 
+ 	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
 +
-+		first_call = false;
++	if (!cfg_input) {
++		unigraf_debug("No input configured, trying " UNIGRAF_DEFAULT_INPUT_NAME "\n");
++		chosen_input = unigraf_find_input(UNIGRAF_DEFAULT_INPUT_NAME);
++		if (chosen_input < 0) {
++			char input_name[UNIGRAF_NAME_MAX];
++
++			chosen_input = 0;
++			unigraf_assert(TSIX_VIN_GetInputName(unigraf_device, chosen_input,
++							     input_name, UNIGRAF_NAME_MAX));
++			unigraf_debug("Input " UNIGRAF_DEFAULT_INPUT_NAME " not found, using input 0 (%s).\n",
++				      input_name);
++		}
++	} else  {
++		chosen_input = unigraf_find_input(cfg_input);
++		igt_assert_f(chosen_input >= 0, "TSI:%p: Input %s not found.",
++			     unigraf_device, cfg_input);
 +	}
 +
-+	return timeout;
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 6ef6871d5a97c7beecb364453bb2ffdfc3c5c6e9..83d1ed427cdf39875a8f9db48b17eb20978ebfc2 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -40,6 +40,14 @@
- #include "igt_fb.h"
- #include "ioctl_wrappers.h"
+ 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
+ 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
  
-+/**
-+ * define DEFAULT_DETECT_TIMEOUT - Default timeout in second used for some screen detection
-+ * functions
-+ *
-+ * It can be overiden by option DetectTimeout in the .igtrc file.
-+ */
-+#define DEFAULT_DETECT_TIMEOUT 10.0
-+
- /* Low-level helpers with kmstest_ prefix */
- 
- /**
-@@ -1289,4 +1297,6 @@ uint32_t igt_get_connected_output_count(igt_display_t *display);
- 
- drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output);
- 
-+double igt_default_display_detect_timeout(void);
-+
- #endif /* __IGT_KMS_H__ */
 
 -- 
 2.50.1
