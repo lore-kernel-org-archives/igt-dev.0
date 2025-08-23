@@ -4,63 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7C62CA0FEF
-	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:17:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3428DCA0EFC
+	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 877C110EBD8;
-	Sat, 23 Aug 2025 02:17:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DBDE910E189;
+	Sat, 23 Aug 2025 02:20:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="epH4mpGQ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WCjWzxon";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B346010E191
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:17:18 +0000 (UTC)
+X-Greylist: delayed 506 seconds by postgrey-1.36 at gabe;
+ Sat, 23 Aug 2025 02:20:10 UTC
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E63710E187
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:10 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 5DC8B1A0D96
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:11:57 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 76D444E40C24;
+ Sat, 23 Aug 2025 02:11:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 35E8D606A7;
- Sat, 23 Aug 2025 02:11:57 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 4B60F606A7;
+ Sat, 23 Aug 2025 02:11:45 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 8C9B61C22D4AD; 
- Sat, 23 Aug 2025 04:11:56 +0200 (CEST)
+ with ESMTPSA id 7431F1C22D34F; 
+ Sat, 23 Aug 2025 04:11:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1755915116; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1755915104; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=ql7eTvUuXFPtahXHdMUiRjPmvuQ7uOoHDkgzceAiqmE=;
- b=epH4mpGQZtNYjQyHvk8aTC8krrhqZd7wAFORHCnUxdI++yn+rx2tbbm8gy+OG+3FQW0I87
- rVXqNLNzgzJff1Z4Ojjl2sTYd4f1hr4aSgVBx6B9qg9mCWeIArbY9OQ9M8zpD0/BJmMR0E
- mrKx1x7Qlc5x0TciLQ4ncXWIEqtdonojtEKpKuihKwYC0K8yV0TB8R0TsC/PN1cJhacBMU
- tA09lUEcjCbITfj/qKFOjVIc6Fzei+85+zPTPD5UObUCV5UhRV/hxQmGTXgeEDjPFpjSHn
- /57082beBbuyN0Q/stWn3pjSDkCRehHtgUcLj5D6I3HelNKaaDRXhkndOpGjoA==
+ bh=x1RxgEsM837ym8zmtznanaX7AzxSn77mpDNnE98RGmo=;
+ b=WCjWzxon2XbnK0vDOPm3bRUFUPEVkui8qqzSjaTC+pIL8MoQI3Ux7vqgAS/103enehSHXn
+ UTF6lA+/vmxcJYHXPco6qhKKal9uPrIVTjbAZXTn3eVYQ5X5RQvU6EqKVycB43kxgom2dl
+ yi1bFYlnwSOSe0OOb53iCnjayg2ntfNWchskTA3c/1i2JOLo1rl1YQug7NC0aRaQzEE2fI
+ h71MXUx+sxM2B+enfa4s1JnB9URNjWnpKyfSIj8UqIkGSoUdcEDHixEvbjVZnnYBCizfar
+ O1rNLKBug/xscvRD8Xg2DVee/OvvBssQQW6gk+IDYlTTcJ1L9Q77YKCSiiU/Ag==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Sat, 23 Aug 2025 04:11:36 +0200
-Subject: [PATCH i-g-t v3 16/29] lib/unigraf: Introduce input configuration
+Date: Sat, 23 Aug 2025 04:11:26 +0200
+Subject: [PATCH i-g-t v3 06/29] lib/igt_kms: Add helper to get a pipe from
+ a connector
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250823-unigraf-integration-v3-16-cdc36d5fab4c@bootlin.com>
+Message-Id: <20250823-unigraf-integration-v3-6-cdc36d5fab4c@bootlin.com>
 References: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 In-Reply-To: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4126;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2394;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=ZAyJ1tts2V9oeMWckKHfqs0j70moSWSGYK2+QfVNLYM=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNV3sHslIisXaJHnJEEvHdVoU3EwKtIqxh9L
- 3+sBfbpanCJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjVQAKCRAgrS7GWxAs
- 4ox5EACP4OBeAUQlezHQ9anUVRPpVMlxuTJNCGTEtX6DxDFgL+cNiszNWiTmmy7wLZGDnu0fo5f
- 1rJCeYaSRjfRE8/cMAeLDDb0+NqWr6tRVbQ2wM9KYcQ5HY1R4PnA0wJ033zhrzAV2+lUcjXg16V
- jxnYNVxmelsGwmdU65/oxJCg1rYCmBBZWKiuFEVwGsVGxIWrGkSKZwCfQlpAXB0aW4ze1k6e69Z
- 4+yhy7ZXKtfTztE2hdRQN1BV+NirbxQOEk6XBJbfYMS5UjopXlQeOpN2MkdEiAP+por2jD2cc4Z
- 38dgPOEmO30cBokHUpLUmvxsWdNxE3Jx/FqC76sTWDZouepEotDxM0ElddUNz6WnYQnHcOT74tx
- NAdWrzogFJAcwVz3411BygfOnIq4XvGjq5SDHPZM0XYijY/SNsowReN/AaZFrFmXIeVNBQQaxN8
- BEuPF8fmPr5Xhrxzqzp6mDqQdjwTRv+KBIDu2/T2M8TxxWfm3N7mgouGniT2xGolKvKNNIVQagh
- NqPWYhYghVwTot9MaC1itVpEOTmY6wFbuinSb8FOjDBJQDkJtpZsZYodv1bEO7n4ni/SEPHUOFD
- Nx/QeI3oGNST1VRw90LtUQU8vhF5wOG46VaWv3b8HmfjrAJeJv44cyItaRQTI9fkAWYL7NRiogA
- IzURJh7Vh2JUI1Q==
+ bh=Z22Y/L5LvHQKUKCkT7CShtvdPiobxgYVAdm4PQDbRF8=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNTxWqJuGuYegABMazpD1sgRXRsA6KN0383d
+ UgZHygTQgCJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjUwAKCRAgrS7GWxAs
+ 4gLPEADTK7IAJWt+cQCS3hAYeZX+7EOgpDTMUARqdlFIEQ0jVNaU7dQc3CPoFtZPcRPpQfT9PL/
+ YbFVdb1cEUX1oSSqVmr1S3qM8sTLZvlx4llYyfKljvXxEVvv1ZJpe9gnNAnepP9EJfpui8X5zh3
+ +aAwEkGMS+i2CztO860RI2tdhxp+hYL0YDrj/luyEIbZ7NdKPJ3FZXTWQcmCRJED2zMsA3Lu337
+ ygXpNBR4Zjf9dC3++9O7wG7NUGggSyDfjgr5tRdPqEiIVIr8PMkRjpVjEUbiMtq3fGNSWJnwYgQ
+ zBIJiGkzIge2DQ46eFruEsf9Be60w4Vb0BxT9SIYAWRw+ZmOW8feAVud743Rr6Wf2BeP1Ow17ua
+ ztLjf/ibNj6dkKD5yDEQyTyS3PdOoBsCZ0tnke3UmfxP1PZoWbAunWW56SyKZpRcVVo0PcuzOeQ
+ YgYgNaqzF/68bfEO319jKKSBWr2n7wq2hI/wspKfzkqFk0eQW/Tel/X74ZhtGmzkHb43aPChykn
+ bPpz2iZx6/0htfhXqbSHDlYrzpzoXpwTtJ5tR5fz05/JNoCmVGo3/jc/IiaxRW6OstPjxueYUnW
+ JLWsh2n+xJGNO4okBZrPxHiNDXu5gJGsTmeO5dJWY+ZSsbK9/q3KJqylUYVxHAjZcDj0QvBXj3O
+ x5+7YDQG1lQIkpg==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,135 +82,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As multiple input can be present on unigraf devices, add a configuration
-field to select the proper input. By default it will take the first
-available.
-
-The configuration can look like:
-
-[Unigraf]
-Device=UCD-500 [2434C620]
-Role=DisplayPort Source and Sink
-Input=DP RX
+Currently there is no way to get a pipe from the connector. Add this tiny
+helper that will try to get the currently used pipe for a specific
+connector.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 58 insertions(+), 1 deletion(-)
+ lib/igt_kms.c | 34 ++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  8 ++++++++
+ 2 files changed, 42 insertions(+)
 
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 0b8fe11a957b0ebaf7e9c4c4fc23b5f52c4632df..59a85e1b84c9df47a56f0273dac37d2dcba175c3 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -39,11 +39,21 @@ static char *unigraf_connector_name;
-  */
- #define UNIGRAF_CONFIG_DEVICE_ROLE "Role"
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 843924e79eae1e21542b0dd916bd92627f7a8473..6929b7ea87ab04e945499ea73f014ef68c60d3aa 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -7878,3 +7878,37 @@ int kms_wait_for_new_connectors(uint32_t **newly_connected,
  
-+/**
-+ * UNIGRAF_CONFIG_INPUT_NAME - Key of the input name in the configuration file
-+ */
-+#define UNIGRAF_CONFIG_INPUT_NAME "Input"
-+
- /**
-  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
-  */
- #define UNIGRAF_DEFAULT_ROLE_NAME "USB-C, DP Alt Mode Source and Sink"
- 
-+/**
-+ * UNIGRAF_DEFAULT_INPUT_NAME - Default input name to search on the unigraf device
-+ */
-+#define UNIGRAF_DEFAULT_INPUT_NAME "DP RX"
-+
- static void unigraf_close_device(void)
- {
- 	unigraf_debug("Closing...\n");
-@@ -124,6 +134,24 @@ static int unigraf_find_role(const char *request)
- 	return chosen_role;
+ 	return newly_connected_count;
  }
- 
-+static int unigraf_find_input(const char *request)
++
++enum pipe igt_get_pipe_from_connector(int drm_fd, int connector_id)
 +{
-+	int chosen_input = -1;
-+	int role_count = unigraf_assert(TSIX_VIN_GetInputCount(unigraf_device));
++	drmModeObjectPropertiesPtr proplist;
++	drmModePropertyPtr crtc_id_prop;
++	drmModePropertyPtr prop;
++	uint32_t crtc_id;
++	enum pipe pipe_id;
++	int i;
 +
-+	for (int i = 0; i < role_count; i++) {
-+		char input_name[UNIGRAF_NAME_MAX];
++	proplist = drmModeObjectGetProperties(drm_fd, connector_id, DRM_MODE_OBJECT_CONNECTOR);
++	crtc_id_prop = NULL;
 +
-+		memset(input_name, 0, UNIGRAF_NAME_MAX);
-+		unigraf_assert(TSIX_VIN_GetInputName(unigraf_device, i,
-+						     input_name, UNIGRAF_NAME_MAX));
-+		unigraf_debug("Input %d: %s\n", i, input_name);
-+		if (!strncmp(input_name, request, UNIGRAF_NAME_MAX))
-+			chosen_input = i;
++	for (i = 0; i < proplist->count_props; i++) {
++		prop = drmModeGetProperty(drm_fd, proplist->props[i]);
++
++		if (strcmp(prop->name, "CRTC_ID") == 0) {
++			crtc_id_prop = prop;
++			break;
++		}
++		drmModeFreeProperty(prop);
 +	}
-+	return chosen_input;
++
++	igt_assert(crtc_id_prop);
++	igt_assert((crtc_id_prop->flags & DRM_MODE_PROP_EXTENDED_TYPE) == DRM_MODE_PROP_OBJECT);
++	crtc_id = proplist->prop_values[i];
++	drmModeFreeProperty(crtc_id_prop);
++	drmModeFreeObjectProperties(proplist);
++	if (crtc_id != 0) {
++		pipe_id = kmstest_get_pipe_from_crtc_id(drm_fd, crtc_id);
++		return pipe_id;
++	}
++	return PIPE_NONE;
 +}
-+
- bool unigraf_open_device(int drm_fd)
- {
- 	TSI_RESULT r;
-@@ -131,10 +159,11 @@ bool unigraf_open_device(int drm_fd)
- 	GError *cfg_error = NULL;
- 	char *cfg_device = NULL;
- 	char *cfg_role = NULL;
-+	char *cfg_input = NULL;
- 	int device_count;
- 	int chosen_device;
- 	int chosen_role;
--	int chosen_input = 0;
-+	int chosen_input;
- 
- 	assert(igt_can_fail());
- 
-@@ -158,6 +187,7 @@ bool unigraf_open_device(int drm_fd)
- 		unigraf_debug("No device configured, will try to find the first available.\n");
- 		cfg_device = NULL;
- 		cfg_role = NULL;
-+		cfg_input = NULL;
- 		unigraf_connector_name = NULL;
- 	} else {
- 		cfg_device = g_key_file_get_string(igt_key_file, cfg_group,
-@@ -174,6 +204,14 @@ bool unigraf_open_device(int drm_fd)
- 			unigraf_debug("No device role configured.\n");
- 			cfg_role = NULL;
- 		}
-+
-+		cfg_error = NULL;
-+		cfg_input = g_key_file_get_string(igt_key_file, cfg_group,
-+						  UNIGRAF_CONFIG_INPUT_NAME, &cfg_error);
-+		if (cfg_error) {
-+			unigraf_debug("No input name configured.\n");
-+			cfg_input = NULL;
-+		}
- 	}
- 
- 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-@@ -218,6 +256,25 @@ bool unigraf_open_device(int drm_fd)
- 	}
- 
- 	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
-+
-+	if (!cfg_input) {
-+		unigraf_debug("No input configured, trying " UNIGRAF_DEFAULT_INPUT_NAME "\n");
-+		chosen_input = unigraf_find_input(UNIGRAF_DEFAULT_INPUT_NAME);
-+		if (chosen_input < 0) {
-+			char input_name[UNIGRAF_NAME_MAX];
-+
-+			chosen_input = 0;
-+			unigraf_assert(TSIX_VIN_GetInputName(unigraf_device, chosen_input,
-+							     input_name, UNIGRAF_NAME_MAX));
-+			unigraf_debug("Input " UNIGRAF_DEFAULT_INPUT_NAME " not found, using input 0 (%s).\n",
-+				      input_name);
-+		}
-+	} else  {
-+		chosen_input = unigraf_find_input(cfg_input);
-+		igt_assert_f(chosen_input >= 0, "TSI:%p: Input %s not found.",
-+			     unigraf_device, cfg_input);
-+	}
-+
- 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
- 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
- 
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 94e9b4dec45603b26568c82cfa253c30e403b90c..97e91455faf0d08527c254123d3013393d981fb7 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1312,4 +1312,12 @@ int kms_wait_for_new_connectors(uint32_t **newly_connected,
+ int
+ get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t *list_b, int list_b_len,
+ 	      uint32_t **diff);
++/**
++ * igt_get_pipe_from_connector() - Get a pipe from the connector id
++ * @drm_fd: drm file descriptor to which the connector belongs
++ * @connector_id: connector to inspect
++ *
++ * Returns PIPE_NONE if the connector is not connected to any pipe
++ */
++enum pipe igt_get_pipe_from_connector(int drm_fd, int connector_id);
+ #endif /* __IGT_KMS_H__ */
 
 -- 
 2.50.1
