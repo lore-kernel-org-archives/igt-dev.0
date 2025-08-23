@@ -4,64 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06705CA0FEB
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403D0CA0FEC
 	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 99EDE10E31E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E1A9710E31F;
 	Sat, 23 Aug 2025 02:20:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="kRxe6IYG";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="kQ8OJmJL";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDD8110E2A5
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0618E10E31D
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:12 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 167614E40C58
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:11:58 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id CEB5F4E40C49
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:11:56 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id E388A606A7;
- Sat, 23 Aug 2025 02:11:57 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id A916C606A7;
+ Sat, 23 Aug 2025 02:11:56 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 301E41C22D8D5; 
- Sat, 23 Aug 2025 04:11:57 +0200 (CEST)
+ with ESMTPSA id 0C5161C22D4A8; 
+ Sat, 23 Aug 2025 04:11:55 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1755915117; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1755915116; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=HEpYQT6kfwkkA1ng+5ifZre6EI+M1au7yuut/UNW+WQ=;
- b=kRxe6IYGoebKwMGWy/mGdJ2R2TiD+kAwYUmffxjvhoM9gi3DmqgQKrHgZ3lhnaN+juwcZ5
- Rg0nqHhYMnRSOYCoUhAnSkEM+NwiWsHhqCOYitglnUF+ObqtlRy90DRw6e4sYhvq/EuRts
- ofoyaJIZkffxT7vzTvzkEffu8CMss7T/yYXBnaXZ/Bj7LtqPce3iSRHSHjNsLFm150UD5P
- asXmc9PiR8dazSoH8qzOuJ9p6gK/lQuf7eYL5X3eVPnFUkuRS0IPRNzsm5UNk7iIF7t6fV
- nQeRRTJnfzQpCWFzIXr36H6U0blk5WZB9nFQOxPuq2xfangtCclA3eHbi/KbGQ==
+ bh=Vf7QgIqA24SsKQxQELnelFrlzcsCuJhBszHL3XrZzl8=;
+ b=kQ8OJmJLwgtTyGhGPJxrUXaTcqdlhzJ+87ueiZ0KNjuY9SEyHU23+6xYq67uKBIroPzyE/
+ fr1hwLmi+3Y+xduUoNvglBxmyU3K6BfBbUMwpg06fDbdl+hbFJWFtWjTDmnQuSXaawQAhw
+ Rd8VD97WX/6YBELw7SRXj1gDXQcNfpxkcWp8Nor/Hz9dwF/4KdDAG00nIuNtECwT48/h7Y
+ xDlIA1nU4yamfWDNwKPTGBghU5FhjDNa8o/EM/0GTyOoM6RMzduThUIBiLC6r02WoYZzrp
+ Y1ibYM6kVWc/W1pjlsvsnVppHrDE9qn3/sTvAPqFHPeKt4Nxkk/oq6sFhy6hqw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Sat, 23 Aug 2025 04:11:37 +0200
-Subject: [PATCH i-g-t v3 17/29] lib/unigraf: Add unigraf assert and
- deassert helpers
+Date: Sat, 23 Aug 2025 04:11:35 +0200
+Subject: [PATCH i-g-t v3 15/29] lib/unigraf: Introduce role configuration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250823-unigraf-integration-v3-17-cdc36d5fab4c@bootlin.com>
+Message-Id: <20250823-unigraf-integration-v3-15-cdc36d5fab4c@bootlin.com>
 References: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 In-Reply-To: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2876;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4503;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=9suOCLHghdrpnE89p+6n+EXuGQtusw+QRhsGVhdSJ6Y=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNWWX8CuXRSDxztpVxW+7kHGVMgBKMQ0dNi+
- tsEwupr0ZeJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjVgAKCRAgrS7GWxAs
- 4km9D/40glkgcLByYpvqxBmU97MWRpbJWIqo/0SPwYI2qD4dy24zy6IAjeT175UkYuyItEbQ7p2
- nBaVlXd/rd/hil+7M0vjfKJGF6cPuvaTsGzDihQSOufhhzhD8zS7ilID891nH60Xw88OZYZ6KQ9
- 54yer2roq8S+wnXylryFknlE+V8AQ6FuEpjFEeP64Ato+9pdpO0O5js5sVIuHoIYDUPqp5L+4St
- rB6RS2CJCstIYWDjhKdfXw1qn0v663I+xNoOlDuf70YOBhp3s3q3gDgVDjWESQUE5CZZBw9ED0H
- xuqmPeQR6Txm37cseiXZMMflGFwrG3yP+RtGSCzO3HLBcY4L2gRr6FMzqZNXzo3/8NNd+RIZT5N
- Cdjx9KiESPQ3tKZn0nj0BNzB0LGTBlAdJ8edtTgpnZtR8XiQXUqXwYd6cSHeuYnMCJIxpY1ykvH
- La32YjtogOZqmK2//EViJeVuhzkct93IntJklEpLSiVJ++6iDAn9rZweSO9cZ1Maiym20ar+msD
- UxtYQoRtL3EL/7ydEbYhrV0wZtIQ1DxMUeG5aWP2J2pJCiGbvfdnRevCkZCvo4pDzn5+kNyCzjB
- laPCPitTbEFz3oT9jfqRRyvEMeEFTBu/8Nz6Esur5YN69VyLxTk0lgfO8NLq9IIYXUc/LbEP5nm
- UBQtV8r9kCL3Xwg==
+ bh=VJrU5hKnmS933OTMbtbwlmnAGWbqzhflS8qstscsTpc=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNVsS5ZvfJl+hBH5aiU+Z73aPh+QWxZi2wKy
+ 6HVndvTVh+JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjVQAKCRAgrS7GWxAs
+ 4kw0EACH8+Poq3GYQ6d7je2TaQ0I3XRhrytWiPvPNcxf5+BVQv+3Cn3uqhjqv8fjunl0WBCpAWa
+ RkbvnqgAEfUfI7zBeBzosEtan9aR4G2b6q6lorIDTfaNmKqPnmcXDQZbxt9YLZtTZSEPF0am3As
+ a+lJM3T9diObUwuczrsp+WqSX32Evqczs/pjMeOw75R/EglMX/qDV8pUSpUm1TS9yX6YEIZeu2f
+ Pqv5p9KqSbCldNniQ7OhtIbHa3+jawhJpqQ7SXFVi60+tyFWJoz22rT+LtMNJupCi4HvZJ+Kplb
+ Z56Np9CHVQRhYxaQRiDhlEbTwExDV4g6nGKP3LIhB5BU+UARlcm68rgWscIS5lRvXmiXtNZmrWv
+ qR91KvCAXF4fOJoTfCzQ+pQyyqAYA1QV1+jSiEzKfYlDFstvKvNmzGQY54Y1OEmzQbsh/9k0a4p
+ 30+5142rEauR10i5zOUvEPQm2QimhH9j34Waw5oY6ELL0lzP03LwuRkUqkrr7R+4L6/vFlyh01l
+ 1q2nlYuraf0y+qQq622/Y81FQuyE88gth8q6sUrzL5gdXUKHb8Sk8cMx1joFwkqXBM1WrJpiIKS
+ 3aSiMQgNdp+phvPF3cX1eB1rfTgjLzA/o1m9ClZGUyOVLUO5eIbAelzbyhuthRMyZMB7kN7nslH
+ Fw0M6hDEgvpShEA==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,101 +79,142 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Unigraf is able to manipulate the HPD line of the connector, add few
-helpers to manipulate them.
+Some unigraf devices, like the UCD-500 can have multiple hardware
+configurations: displayport input/output, usbc input/output.
+
+The device configuration can look like:
+
+[Unigraf]
+Device=UCD-500 [2434C620]
+Role=DisplayPort Source and Sink
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 40 ++++++++++++++++++++++++++++++++++++++++
- lib/unigraf/unigraf.h | 22 ++++++++++++++++++++++
- 2 files changed, 62 insertions(+)
+ lib/unigraf/unigraf.c | 65 ++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 62 insertions(+), 3 deletions(-)
 
 diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 59a85e1b84c9df47a56f0273dac37d2dcba175c3..0682f383aaa0f5eb8d4b40bb88c2ea88975f311f 100644
+index 304567467b27a5e68cc2db6ce66b3a8b53fb87a3..0b8fe11a957b0ebaf7e9c4c4fc23b5f52c4632df 100644
 --- a/lib/unigraf/unigraf.c
 +++ b/lib/unigraf/unigraf.c
-@@ -88,6 +88,24 @@ static void unigraf_init(void)
- 	igt_install_exit_handler(unigraf_exit_handler);
- }
+@@ -19,18 +19,30 @@ static TSI_HANDLE unigraf_device;
+ static char *unigraf_default_edid;
+ static char *unigraf_connector_name;
  
 +/**
-+ * unigraf_write() - Helper to write a value to unigraf
-+ * @dev: device handle, can be null for some config id
-+ * @config: config id to write
-+ * @data: data to write
-+ * @data_len: length of the data
-+ * Returns
++ * UNIGRAF_NAME_MAX - Maximum name length to be used for TSI functions
 + */
-+static void unigraf_write(TSI_CONFIG_ID config, const void *data, size_t data_len)
-+{
-+	unigraf_debug("Writing %zu bytes to 0x%x\n", data_len, config);
-+
-+	if (data_len == 4)
-+		unigraf_debug("Value = 0x%x\n", *(int *)data);
-+
-+	unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config, data, data_len));
-+}
++#define UNIGRAF_NAME_MAX 1024
 +
  /**
-  * unigraf_device_count() - Return the number of scanned devices
-  *
-@@ -285,3 +303,25 @@ void unigraf_require_device(int drm_fd)
- {
- 	igt_require(unigraf_open_device(drm_fd));
- }
-+
-+void unigraf_hpd_assert(void)
-+{
-+	int d = 1;
-+
-+	igt_assert(unigraf_device);
-+	unigraf_write(TSI_FORCE_HOT_PLUG_STATE_W, &d, sizeof(d));
-+}
-+
-+void unigraf_hpd_pulse(int duration)
-+{
-+	igt_assert(unigraf_device);
-+	unigraf_write(TSI_DPRX_HPD_PULSE_W, &duration, sizeof(duration));
-+}
-+
-+void unigraf_hpd_deassert(void)
-+{
-+	int d = 0;
-+
-+	igt_assert(unigraf_device);
-+	unigraf_write(TSI_FORCE_HOT_PLUG_STATE_W, &d, sizeof(d));
-+}
-diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index 8cdbf00201b2a0467ec15259cf4bc0a2d8f9b61e..c5ae949c54729bf293a4629ec3bf5d995de9fb6b 100644
---- a/lib/unigraf/unigraf.h
-+++ b/lib/unigraf/unigraf.h
-@@ -47,4 +47,26 @@ bool unigraf_open_device(int drm_fd);
+  * UNIGRAF_CONFIG_GROUP - Name of the unigraf group in the configuration file
   */
- void unigraf_require_device(int drm_fd);
+ #define UNIGRAF_CONFIG_GROUP "Unigraf"
++
+ /**
+  * UNIGRAF_CONFIG_DEVICE_NAME - Key of the device name in the configuration file
+  */
+ #define UNIGRAF_CONFIG_DEVICE_NAME "Device"
++
+ /**
+- * UNIGRAF_NAME_MAX - Maximum name length to be used for TSI functions
++ * UNIGRAF_CONFIG_DEVICE_ROLE - Key of the device role in the configuration file
+  */
+-#define UNIGRAF_NAME_MAX 1024
++#define UNIGRAF_CONFIG_DEVICE_ROLE "Role"
++
++/**
++ * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
++ */
++#define UNIGRAF_DEFAULT_ROLE_NAME "USB-C, DP Alt Mode Source and Sink"
  
-+/**
-+ * unigraf_hpd_deassert() - Deassert Hot Plug Detect signal
-+ *
-+ * This function deasserts the HPD signal, simulating a device disconnection.
-+ */
-+void unigraf_hpd_deassert(void);
+ static void unigraf_close_device(void)
+ {
+@@ -93,15 +105,35 @@ static int unigraf_find_device(char *request)
+ 	return chosen_device;
+ }
+ 
++static int unigraf_find_role(const char *request)
++{
++	int chosen_role = -1;
++	int role_count = unigraf_assert(TSIX_DEV_GetDeviceRoleCount(unigraf_device));
 +
-+/**
-+ * unigraf_hpd_pulse() - Pulse the Hot Plug Detect signal
-+ * @duration: The duration in milliseconds for which the HPD signal should be pulsed
-+ *
-+ * This function pulses the HPD signal for the specified duration.
-+ */
-+void unigraf_hpd_pulse(int duration);
++	for (int i = 0; i < role_count; i++) {
++		char role_name[UNIGRAF_NAME_MAX];
 +
-+/**
-+ * unigraf_hpd_assert() - Assert Hot Plug Detect signal
-+ *
-+ * This function asserts the HPD signal, simulating a device connection.
-+ */
-+void unigraf_hpd_assert(void);
++		memset(role_name, 0, UNIGRAF_NAME_MAX);
++		unigraf_assert(TSIX_DEV_GetDeviceRoleName(unigraf_device, i,
++							  role_name,
++							  UNIGRAF_NAME_MAX));
++		unigraf_debug("Role %d: %s\n", i, role_name);
++		if (!strncmp(role_name, request, UNIGRAF_NAME_MAX))
++			chosen_role = i;
++	}
++	return chosen_role;
++}
 +
- #endif // UNIGRAF_H
+ bool unigraf_open_device(int drm_fd)
+ {
+ 	TSI_RESULT r;
+ 	char *cfg_group = NULL;
+ 	GError *cfg_error = NULL;
+ 	char *cfg_device = NULL;
++	char *cfg_role = NULL;
+ 	int device_count;
+ 	int chosen_device;
+-	int chosen_role = 0;
++	int chosen_role;
+ 	int chosen_input = 0;
+ 
+ 	assert(igt_can_fail());
+@@ -125,6 +157,7 @@ bool unigraf_open_device(int drm_fd)
+ 	if (!cfg_group) {
+ 		unigraf_debug("No device configured, will try to find the first available.\n");
+ 		cfg_device = NULL;
++		cfg_role = NULL;
+ 		unigraf_connector_name = NULL;
+ 	} else {
+ 		cfg_device = g_key_file_get_string(igt_key_file, cfg_group,
+@@ -133,6 +166,14 @@ bool unigraf_open_device(int drm_fd)
+ 			unigraf_debug("No device name configured, uses first device available.\n");
+ 			cfg_device = NULL;
+ 		}
++
++		cfg_error = NULL;
++		cfg_role = g_key_file_get_string(igt_key_file, cfg_group,
++						 UNIGRAF_CONFIG_DEVICE_ROLE, &cfg_error);
++		if (cfg_error) {
++			unigraf_debug("No device role configured.\n");
++			cfg_role = NULL;
++		}
+ 	}
+ 
+ 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
+@@ -158,6 +199,24 @@ bool unigraf_open_device(int drm_fd)
+ 	igt_assert(unigraf_device);
+ 	unigraf_debug("Successfully opened the unigraf device %d.\n", chosen_device);
+ 
++	if (!cfg_role) {
++		unigraf_debug("No role configured, trying " UNIGRAF_DEFAULT_ROLE_NAME "\n");
++		chosen_role = unigraf_find_role(UNIGRAF_DEFAULT_ROLE_NAME);
++		if (chosen_role < 0) {
++			char role_name[UNIGRAF_NAME_MAX];
++
++			chosen_role = 0;
++			unigraf_assert(TSIX_DEV_GetDeviceRoleName(unigraf_device, chosen_role,
++								  role_name, UNIGRAF_NAME_MAX));
++			unigraf_debug("Role " UNIGRAF_DEFAULT_ROLE_NAME " not found, using role 0 (%s)\n",
++				      role_name);
++		}
++	} else {
++		chosen_role = unigraf_find_role(cfg_role);
++		igt_assert_f(chosen_role >= 0, "TSI:%p: Role %s not found.",
++			     unigraf_device, cfg_role);
++	}
++
+ 	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
+ 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
+ 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
 
 -- 
 2.50.1
