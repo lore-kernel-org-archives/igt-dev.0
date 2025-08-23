@@ -4,66 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3428DCA0EFC
-	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63A28CA0EEB
+	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBDE910E189;
-	Sat, 23 Aug 2025 02:20:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 122C010E187;
+	Sat, 23 Aug 2025 02:20:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WCjWzxon";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="oLXAh4ib";
 	dkim-atps=neutral
-X-Greylist: delayed 506 seconds by postgrey-1.36 at gabe;
- Sat, 23 Aug 2025 02:20:10 UTC
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E63710E187
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB92310E187
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:11 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 76D444E40C24;
- Sat, 23 Aug 2025 02:11:45 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 357DE4E40C48;
+ Sat, 23 Aug 2025 02:11:47 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 4B60F606A7;
- Sat, 23 Aug 2025 02:11:45 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 0FAF4606A7;
+ Sat, 23 Aug 2025 02:11:47 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 7431F1C22D34F; 
- Sat, 23 Aug 2025 04:11:44 +0200 (CEST)
+ with ESMTPSA id 5BAF61C22D355; 
+ Sat, 23 Aug 2025 04:11:46 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1755915104; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1755915106; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=x1RxgEsM837ym8zmtznanaX7AzxSn77mpDNnE98RGmo=;
- b=WCjWzxon2XbnK0vDOPm3bRUFUPEVkui8qqzSjaTC+pIL8MoQI3Ux7vqgAS/103enehSHXn
- UTF6lA+/vmxcJYHXPco6qhKKal9uPrIVTjbAZXTn3eVYQ5X5RQvU6EqKVycB43kxgom2dl
- yi1bFYlnwSOSe0OOb53iCnjayg2ntfNWchskTA3c/1i2JOLo1rl1YQug7NC0aRaQzEE2fI
- h71MXUx+sxM2B+enfa4s1JnB9URNjWnpKyfSIj8UqIkGSoUdcEDHixEvbjVZnnYBCizfar
- O1rNLKBug/xscvRD8Xg2DVee/OvvBssQQW6gk+IDYlTTcJ1L9Q77YKCSiiU/Ag==
+ bh=eJsdEIPTcAdw+HYL2rv534XJHtcYfcmkbBW5Uo8Bg4k=;
+ b=oLXAh4ib1CKzhPm0BtazK+oz3VdWlVVo8nfOIDmeSyQ3Qv1xEmVnu0shbJypOXhNFkbvjC
+ egGnohwxOhmmEvX1i7e1RbpyM/5Bzlm5M35+XaTTIHD4FjHEvgCaFfQAP6xDCTlUJG7kEr
+ dI3LT3aCdw6egAiNOguVbBoetJN8uY3T1vrZi+Em4NgJBS9TltQg1gY2b2qYd7yvh5BeNh
+ YcNf31rsSaseWTAlmf3JMQwaQjGawi3X84v6zitFlOofzz/TvqmYKzm3QhY+WVjRcDY4J4
+ l69OnxVRu1JBNiS7GX1OVUY3ksNzH31Oc6zgBuFAX49L4o8o96x7B7AwWkXM0A==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Sat, 23 Aug 2025 04:11:26 +0200
-Subject: [PATCH i-g-t v3 06/29] lib/igt_kms: Add helper to get a pipe from
- a connector
+Date: Sat, 23 Aug 2025 04:11:29 +0200
+Subject: [PATCH i-g-t v3 09/29] lib/monitor_edids: Add helper to print all
+ available EDID names
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250823-unigraf-integration-v3-6-cdc36d5fab4c@bootlin.com>
+Message-Id: <20250823-unigraf-integration-v3-9-cdc36d5fab4c@bootlin.com>
 References: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 In-Reply-To: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2394;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2062;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=Z22Y/L5LvHQKUKCkT7CShtvdPiobxgYVAdm4PQDbRF8=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNTxWqJuGuYegABMazpD1sgRXRsA6KN0383d
- UgZHygTQgCJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjUwAKCRAgrS7GWxAs
- 4gLPEADTK7IAJWt+cQCS3hAYeZX+7EOgpDTMUARqdlFIEQ0jVNaU7dQc3CPoFtZPcRPpQfT9PL/
- YbFVdb1cEUX1oSSqVmr1S3qM8sTLZvlx4llYyfKljvXxEVvv1ZJpe9gnNAnepP9EJfpui8X5zh3
- +aAwEkGMS+i2CztO860RI2tdhxp+hYL0YDrj/luyEIbZ7NdKPJ3FZXTWQcmCRJED2zMsA3Lu337
- ygXpNBR4Zjf9dC3++9O7wG7NUGggSyDfjgr5tRdPqEiIVIr8PMkRjpVjEUbiMtq3fGNSWJnwYgQ
- zBIJiGkzIge2DQ46eFruEsf9Be60w4Vb0BxT9SIYAWRw+ZmOW8feAVud743Rr6Wf2BeP1Ow17ua
- ztLjf/ibNj6dkKD5yDEQyTyS3PdOoBsCZ0tnke3UmfxP1PZoWbAunWW56SyKZpRcVVo0PcuzOeQ
- YgYgNaqzF/68bfEO319jKKSBWr2n7wq2hI/wspKfzkqFk0eQW/Tel/X74ZhtGmzkHb43aPChykn
- bPpz2iZx6/0htfhXqbSHDlYrzpzoXpwTtJ5tR5fz05/JNoCmVGo3/jc/IiaxRW6OstPjxueYUnW
- JLWsh2n+xJGNO4okBZrPxHiNDXu5gJGsTmeO5dJWY+ZSsbK9/q3KJqylUYVxHAjZcDj0QvBXj3O
- x5+7YDQG1lQIkpg==
+ bh=tEl+5VJE+UaONltsAl/aqNEh33hENN0zbPG7557jBJs=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNTPgPcxzeviAtQOpMXtia3kNHCzxZcQO7Fu
+ kl37MG9SuOJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjUwAKCRAgrS7GWxAs
+ 4vuOD/9o0KvDj4ENYqfvQSyUXUXBNetp1smHKKi77Mtzl7sjOYETcK5qxFTPU3LoVSqtJ5ghEmn
+ z1FTH02i5idBEJvBxOCgm8i7GHQ2FXkukseqEbxyBqdYyWkpzrvS3e1XJ/wfskpdb959XLIlO6m
+ aPRVQ7aUR2LJxnnekWFn+d4wFZSlaIPRjNgB5oXq+ETq+Zapk7m45PC0EuLB4gzvhEyyMr05jrk
+ K6CKBE62KFhMYRoaLkCKG0ERSbVsvI4kM2bLUh0Sc1IJK5Rovc1rkslcM2iGsf9+RvbAtWkV6nl
+ HiL2lCxwyWeKAuRqywLzqbMcSsNoNrVFykeor2qODc1jbijwLv9WmuaAJWI+Z7nbyhDkRkfJ+0Z
+ Nhq0r+PcLdMfUl3zdX7Vuz0MClRx4u9d2WcIFtH36fQuBwwUb7iVvHxB4kK6s0xY4WuJVkgPCpm
+ mNsYvvhlE5a6D2OzuwgppPmNJg13s5US9kUadaD49LbQh4iOOYQyzVYMAfd+a0/GwZLOaBvPMk4
+ mwnTOw4kWn4ShdStUJsvU4Z1ccKzYD+CdEHJW4C2zNVeEk+5aeAuNzLxE5yUPu6OupKP9epcjrE
+ Bvlk+8x5VSldLi6dJyOU3lh7kSaUTkHysPX4lZdgMXJJldsGGWh8g0X7ra5B0GkhmrduDjkPafJ
+ WcauJO4UUU4rwtQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -82,75 +80,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently there is no way to get a pipe from the connector. Add this tiny
-helper that will try to get the currently used pipe for a specific
-connector.
+During the unigraf configuration, it may be required to know the list
+of supported EDID names, so add an helper to print them.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 34 ++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  8 ++++++++
- 2 files changed, 42 insertions(+)
+ lib/monitor_edids/monitor_edids_helper.c | 16 ++++++++++++++++
+ lib/monitor_edids/monitor_edids_helper.h |  2 ++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 843924e79eae1e21542b0dd916bd92627f7a8473..6929b7ea87ab04e945499ea73f014ef68c60d3aa 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -7878,3 +7878,37 @@ int kms_wait_for_new_connectors(uint32_t **newly_connected,
+diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+index 01feb34a5516916b615a741f773316159c38fccf..0f9f5269471c69d48a374d94059462d690d3b844 100644
+--- a/lib/monitor_edids/monitor_edids_helper.c
++++ b/lib/monitor_edids/monitor_edids_helper.c
+@@ -200,3 +200,19 @@ struct edid *get_edid_by_name(const char *name)
  
- 	return newly_connected_count;
+ 	return NULL;
  }
 +
-+enum pipe igt_get_pipe_from_connector(int drm_fd, int connector_id)
-+{
-+	drmModeObjectPropertiesPtr proplist;
-+	drmModePropertyPtr crtc_id_prop;
-+	drmModePropertyPtr prop;
-+	uint32_t crtc_id;
-+	enum pipe pipe_id;
-+	int i;
-+
-+	proplist = drmModeObjectGetProperties(drm_fd, connector_id, DRM_MODE_OBJECT_CONNECTOR);
-+	crtc_id_prop = NULL;
-+
-+	for (i = 0; i < proplist->count_props; i++) {
-+		prop = drmModeGetProperty(drm_fd, proplist->props[i]);
-+
-+		if (strcmp(prop->name, "CRTC_ID") == 0) {
-+			crtc_id_prop = prop;
-+			break;
-+		}
-+		drmModeFreeProperty(prop);
-+	}
-+
-+	igt_assert(crtc_id_prop);
-+	igt_assert((crtc_id_prop->flags & DRM_MODE_PROP_EXTENDED_TYPE) == DRM_MODE_PROP_OBJECT);
-+	crtc_id = proplist->prop_values[i];
-+	drmModeFreeProperty(crtc_id_prop);
-+	drmModeFreeObjectProperties(proplist);
-+	if (crtc_id != 0) {
-+		pipe_id = kmstest_get_pipe_from_crtc_id(drm_fd, crtc_id);
-+		return pipe_id;
-+	}
-+	return PIPE_NONE;
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 94e9b4dec45603b26568c82cfa253c30e403b90c..97e91455faf0d08527c254123d3013393d981fb7 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1312,4 +1312,12 @@ int kms_wait_for_new_connectors(uint32_t **newly_connected,
- int
- get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t *list_b, int list_b_len,
- 	      uint32_t **diff);
-+/**
-+ * igt_get_pipe_from_connector() - Get a pipe from the connector id
-+ * @drm_fd: drm file descriptor to which the connector belongs
-+ * @connector_id: connector to inspect
++/*
++ * list_edid_names:
++ * @level: Log level to write the names on
 + *
-+ * Returns PIPE_NONE if the connector is not connected to any pipe
++ * Print all the EDID available in igt.
 + */
-+enum pipe igt_get_pipe_from_connector(int drm_fd, int connector_id);
- #endif /* __IGT_KMS_H__ */
++void list_edid_names(enum igt_log_level level)
++{
++	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
++		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
++			igt_log(IGT_LOG_DOMAIN, level, " - \"%s\"\n",
++				ALL_EDIDS[i].edid_list[j].name);
++		}
++	}
++}
+diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+index 6d9e3fc89592229cac5122c9275fcf226465ab3e..7ae0fd40c041b5d37e09b3bd494c6c90cf12fe97 100644
+--- a/lib/monitor_edids/monitor_edids_helper.h
++++ b/lib/monitor_edids/monitor_edids_helper.h
+@@ -15,6 +15,7 @@
+ #include <stddef.h>
+ #include <stdbool.h>
+ 
++#include "igt_core.h"
+ #include "igt_chamelium.h"
+ 
+ /* Max Length can be increased as needed, when new EDIDs are added. */
+@@ -35,5 +36,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
+ struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
+ struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
+ struct edid *get_edid_by_name(const char *name);
++void list_edid_names(enum igt_log_level level);
+ 
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
 
 -- 
 2.50.1
