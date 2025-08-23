@@ -4,64 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD025CA0EEB
-	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3325CA0EFC
+	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7915E10E327;
-	Sat, 23 Aug 2025 02:20:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7022510E187;
+	Sat, 23 Aug 2025 02:20:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fcFnnHDW";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="pYQdwgnm";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCB2E10E193
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:11 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8FAFC10E189
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:33 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 00ABB4E40C34;
- Sat, 23 Aug 2025 02:11:46 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 14905C8EC78;
+ Sat, 23 Aug 2025 02:11:47 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id CE33B606A7;
- Sat, 23 Aug 2025 02:11:45 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id EF87C606A7;
+ Sat, 23 Aug 2025 02:12:00 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 2FFE81C22D382; 
- Sat, 23 Aug 2025 04:11:45 +0200 (CEST)
+ with ESMTPSA id 4788E1C22C887; 
+ Sat, 23 Aug 2025 04:12:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1755915105; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1755915120; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=zwsc+sqpk+vCeFFICOGbWSzwueafbjLnThRhLR6lkg0=;
- b=fcFnnHDWYtuHjzVa9aGjLllKAL1QJT20suz1RyVW+DjWl2R6K0xPSFyAU0mbuzp229E98r
- yQRMHW69rfhiSpX7X4EXCuWxT4YuArrodlBAdjZdDoMqrgDml8odpd+Ye1+WapMMnGuqMk
- 9PUeQkk4sAmQ19hpZ2JO1+Psd+fHdVuIM+2RguezjIf8Tk+UoqO45T6MR3XvKqkmMcZEEa
- fJK2S4C7HLYib3NjGv/Nhzj+jTY79VgCiYH/jg+MIEtyrfZekI52TtU3FSeGTPreXI8Yil
- WT2ffgCWb4kli7yWQTefl4aas3mRMgAIWpBIiscwsCu7PhhxJirfIu41PblxIw==
+ bh=YUAQyAmAZNo60fLvGE05nVuBgavjTgZRnwM04FC/XLc=;
+ b=pYQdwgnmDpXbdLyDZs0yVs3jV6YSvOw7CB8LykLrPECc7nwrNlMiWxIxFiWil71oP6G3r5
+ ndLCjlp19pUC4P9ZO5hNcdQy0df6mbVxjGJs58ylXOXgPXk9yuzxhQ/D4KMl8jFLtBRwHI
+ 8CS3rrHzmM1reV77oI6M6ekkmxHy5XyhuPjypU1imOLRJvYmrYvc2gSP4nahIdGT9QXIXf
+ rcBqSVByRmKq6syGGiITJ/K87Gs06GUBHK+XbeFGfnOAX0kCMYsuX3Z9LRMdwUG2dyUTxL
+ E1uvzOAmbHYT/EKW9PuuHXcDvTO7p0iNMPv7BtOS02jHfSP95gBioX/J49IWfA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Sat, 23 Aug 2025 04:11:27 +0200
-Subject: [PATCH i-g-t v3 07/29] lib/monitor_edids: Add helper functions for
- using monitor_edid objects
+Date: Sat, 23 Aug 2025 04:11:42 +0200
+Subject: [PATCH i-g-t v3 22/29] lib/unigraf: Add connector autodetection
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250823-unigraf-integration-v3-7-cdc36d5fab4c@bootlin.com>
+Message-Id: <20250823-unigraf-integration-v3-22-cdc36d5fab4c@bootlin.com>
 References: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 In-Reply-To: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5675;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3283;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=7Zukm1/sr+BZr3vDW+XqxhAwWy4aSx4g/mCF/2fqvXM=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNTc/C1larsFAaurdvQP6MUUd24k5K442kaO
- Ji44NgpUdKJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjUwAKCRAgrS7GWxAs
- 4hiYEACj9Sik/nzOdH53MsFxyz2bQcqwPR5aqNBFuA5B+RdhS1XpdYaHQCDzT1jXiHtXGMFm9Sr
- c9xTeLtEL715cLwOeFlvHcIkDPX1zAHDR8Qz1ZZWb5VtoKMMe5mYoBE1n2cZbJLcZ2Q+lqnRYNn
- CPnHOtpzI3Vy/y5ifOJNMTaWAEXEUJfxNWj9+5RgRXfMSqiq0jtttmp5ONe5qzZvuWLtKgJu0Oz
- mGEIX/XnVaasCsDjN/lwVnk9D1sMrzEjmgcRmNdHSGi7verJQMy2fCxOoZJBb1GoNf2msaybwJy
- VmVYV3Zn78KEYJ5/RrAOnzXBj6efrUtKdknRpp54YOZ1QkwP7khU+HmHejZ8Cus8N40EJmjKpD0
- aK0yw9eCwd4vCC1KySEtq/WAUvLYBxpVbzZoG3REVmxsvL185nehleOOsnAwwOoOsjVIHQy9HCQ
- CoZdr6lV5isBYJjP2+56jD6O6pDs7Io67x3zA/bakh4Uy3eAjY6610wO7OUBfT3AYfpyOqRy8zw
- X4/a4LB/ha/yQDdKoKc5jIuRb4Fa54AFokKZs5zxeNNrQPyB497js2vIiWmmWixd/u2mV4r2GFr
- MX5dBYwD2wWjKjtTUBBb6V33Nv3U1A8OSspYNjOAFa0u3icEXjxeUvPhzc2rVt133DmnpfVVYFh
- LTO+d3CdU2a1ayQ==
+ bh=6yZgujdtVaZqxUNgwsjV9oWYBxRcCUHaiM6gvPw9beI=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNXKsGWTODFUbnMCCIzUvn2jR1So63zcPJrt
+ Wmyyrm1h0CJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjVwAKCRAgrS7GWxAs
+ 4piQEADHo1kn6t64L43/gGSIWskJU28UIAEsVAYwp+K1pvBF5Ajg9QPSTesQvm7K5yd5QZTbFl+
+ SX6JP+Tm26cl4fcF+d89sh2GH4tQZoHUEwwNVt4XYesLyihulIyVFe2WssSghuuvft8OQgKzRBj
+ gfGtqw7GzUWjcefHEm5w10AVKLqnSo+miE40MZ5GXTpVLcCx2iM33Tr1LS4W12LdGuKsxaKX6Iq
+ d4OsDSYcrTqtB7TsNiZZxx4TFx+ClhX3l7gQSqmhJMUXkp6IUfi3yAfkGqCAmhf0022xGqlc3QA
+ dvjJxfQZ90hiC5AwElt8TwGKpovFfzpn7nswH2+PklWZ/rYMYth1aVd+lSccNp7dkcjDwToVSCd
+ QaTunMdGTTwvM78kz4Xzvpj2k6z4azsUAuk/DOvvOSQIyE4G/s5fNUnTvAS7uarYANI8ZipJs42
+ W6OHCzOXM1Hi4aZnaCXBTjvAZs1mUr+yAlT+n55iYVUTSI5k3a2lno55k8IHfr8Q1IL/35v/eG1
+ 3omkMQbPw/VZ7+3wYGfHv3DQSQxb5O0KFfdHYRU3MzW/exIdV4RBMlqRaJW/qJcVPOr52E1U4QB
+ ozES2AFZA8dxHiqUqewZV9wqOqhKUPrz0QBRaJ+seE05WDqmrmzc7suTR+xA/h/E2gSnVGLaoer
+ ycIMnkCOJ9v7GiA==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,162 +79,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the functions edid_from_monitor_edid() and
-get_edids_for_connector_type(). The former converts a monitor_edid object
-to a struct edid, which can then be utilized by igt_kms helpers. The
-latter returns a list of monitor_edid objects for a specific connector
-with certain characteristics
+In order to avoid writing custom configuration for each DUT, add a simple
+autodetection algorithm.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/monitor_edids/dp_edids.h             |  3 ++
- lib/monitor_edids/hdmi_edids.h           |  3 ++
- lib/monitor_edids/monitor_edids_helper.c | 80 ++++++++++++++++++++++++++++++++
- lib/monitor_edids/monitor_edids_helper.h |  7 ++-
- 4 files changed, 92 insertions(+), 1 deletion(-)
+ lib/unigraf/unigraf.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 64 insertions(+), 2 deletions(-)
 
-diff --git a/lib/monitor_edids/dp_edids.h b/lib/monitor_edids/dp_edids.h
-index 144907558be1faa306b646ce3b47b24c13050968..07793381257e0082a1fa7b4321fcef7e5aeaa5a9 100644
---- a/lib/monitor_edids/dp_edids.h
-+++ b/lib/monitor_edids/dp_edids.h
-@@ -194,4 +194,7 @@ monitor_edid DP_EDIDS_NON_4K[] = {
- 
-  };
- 
-+#define DP_EDIDS_4K_COUNT ARRAY_SIZE(DP_EDIDS_4K)
-+#define DP_EDIDS_NON_4K_COUNT ARRAY_SIZE(DP_EDIDS_NON_4K)
-+
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_ */
-diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-index f6cfe82ff6e1c4419160bcdcc851a5e28eb08726..3984241775c3d8e0f39732bdc41cb44f491ce62b 100644
---- a/lib/monitor_edids/hdmi_edids.h
-+++ b/lib/monitor_edids/hdmi_edids.h
-@@ -604,4 +604,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "1620582c2500baac4200009e0000006b" },
- };
- 
-+#define HDMI_EDIDS_4K_COUNT ARRAY_SIZE(HDMI_EDIDS_4K)
-+#define HDMI_EDIDS_NON_4K_COUNT ARRAY_SIZE(HDMI_EDIDS_NON_4K)
-+
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_ */
-diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
-index 1cbf1c22f0bbc5fb4047ce42bde2042ec8170efb..6043e7a084b320263f1c0525369aaa59a5d32bcc 100644
---- a/lib/monitor_edids/monitor_edids_helper.c
-+++ b/lib/monitor_edids/monitor_edids_helper.c
-@@ -15,6 +15,10 @@
- #include <assert.h>
- 
- #include "igt_core.h"
-+#include "igt_edid.h"
-+#include "dp_edids.h"
-+#include "drmtest.h"
-+#include "hdmi_edids.h"
- 
- static uint8_t convert_hex_char_to_byte(char c)
- {
-@@ -90,3 +94,79 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid)
- 	free(edid);
- 	edid = NULL;
+diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+index 41c1015aa942ccaf9c93890656d403997b19e661..b90025425d232bd5269adfe9f17f2813eac7754d 100644
+--- a/lib/unigraf/unigraf.c
++++ b/lib/unigraf/unigraf.c
+@@ -176,8 +176,58 @@ static int unigraf_find_input(const char *request)
+ 	return chosen_input;
  }
-+
-+/**
-+ * edid_from_monitor_edid:
-+ * @mon_edid: Monitor EDID to convert
-+ *
-+ * Get a struct edid from a monitor_edid. This returns a pointer to a newly allocated struct edid.
-+ * The caller is in charge to free this pointer when required.
-+ */
-+struct edid *edid_from_monitor_edid(const monitor_edid *mon_edid)
+ 
++static void unigraf_autodetect_connector(int drm_fd)
 +{
-+	uint8_t *raw_edid;
-+	size_t edid_size;
-+	int i;
++	int newly_connected_count, already_connected_count, diff_len;
++	uint32_t *newly_connected = NULL, *already_connected = NULL;
++	drmModeConnectorPtr connector;
++	uint32_t *diff = NULL;
 +
-+	edid_size = strlen(mon_edid->edid) / 2; /* each ascii is a nibble. */
-+	raw_edid = malloc(edid_size);
-+	igt_assert(raw_edid);
++	igt_assert(drm_fd);
++	unigraf_set_sst();
++	unigraf_hpd_deassert();
 +
-+	for (i = 0; i < edid_size; i++) {
-+		raw_edid[i] = convert_hex_char_to_byte(mon_edid->edid[i * 2]) << 4 |
-+			      convert_hex_char_to_byte(mon_edid->edid[i * 2 + 1]);
-+	}
++	/*
++	 * Hard sleep is required here as we don't know how long it will take for the device under
++	 * test to properly detect the port disconnection.
++	 */
++	sleep(igt_default_display_detect_timeout());
 +
-+	if (edid_get_size((struct edid *)raw_edid) > edid_size) {
-+		uint8_t *new_edid;
++	already_connected_count = igt_get_connected_connectors(drm_fd, &already_connected);
 +
-+		igt_debug("The edid size stored in the raw edid is longer than the edid stored in the table.");
-+		new_edid = realloc(raw_edid, edid_get_size((struct edid *)raw_edid));
-+		igt_assert(new_edid);
-+		raw_edid = new_edid;
-+	}
++	unigraf_hpd_assert();
 +
-+	return (struct edid *)raw_edid;
-+}
++	newly_connected_count = kms_wait_for_new_connectors(&newly_connected,
++							    already_connected,
++							    already_connected_count,
++							    drm_fd);
 +
-+/**
-+ * get_edids_for_connector_type:
-+ * @type: The connector type to get the EDIDs from
-+ * @count: Used to store the number of EDIDs in the returned list
-+ * @four_k: Use true to fetch 4k EDIDs, false to fetch non-4k EDIDs
-+ *
-+ * Get the list of EDIDS for a specific connector type. This returns a pointer to a static list,
-+ * so no need to free the pointer.
-+ */
-+struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k)
-+{
-+	if (four_k) {
-+		switch (type) {
-+		case DRM_MODE_CONNECTOR_DisplayPort:
-+			*count = DP_EDIDS_4K_COUNT;
-+			return DP_EDIDS_4K;
-+		case DRM_MODE_CONNECTOR_HDMIA:
-+			*count = HDMI_EDIDS_4K_COUNT;
-+			return HDMI_EDIDS_4K;
-+		default:
-+			*count = 0;
-+			igt_debug("No 4k EDID for the connector %s\n",
-+				  kmstest_connector_type_str(type));
-+			return NULL;
-+		}
++	diff_len = get_list_diff(newly_connected, newly_connected_count,
++				 already_connected, already_connected_count, &diff);
++
++	if (diff_len == 0) {
++		unigraf_debug("No newly connected connector, assuming that the unigraf is not connected.\n");
++	} else if (diff_len > 1) {
++		unigraf_debug("More than one new connectors connected, this is not supported by autodetection.\n");
 +	} else {
-+		switch (type) {
-+		case DRM_MODE_CONNECTOR_DisplayPort:
-+			*count = DP_EDIDS_NON_4K_COUNT;
-+			return DP_EDIDS_NON_4K;
-+		case DRM_MODE_CONNECTOR_HDMIA:
-+			*count = HDMI_EDIDS_NON_4K_COUNT;
-+			return HDMI_EDIDS_NON_4K;
-+		default:
-+			*count = 0;
-+			igt_debug("No EDID for the connector %s\n",
-+				  kmstest_connector_type_str(type));
-+			return NULL;
-+		}
++		unigraf_debug("Found one connector (%d) connected to the Unigraf\n", diff[0]);
++		connector = drmModeGetConnector(drm_fd, diff[0]);
++		igt_assert(connector);
++		igt_assert(asprintf(&unigraf_connector_name, "%s-%u",
++				    kmstest_connector_type_str(connector->connector_type),
++				    connector->connector_type_id) != -1);
++		drmModeFreeConnector(connector);
 +	}
-+}
-diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
-index 05679f0897f3d0618d656cc071b565b48d31da28..e5069868683d97053d8e66666e83692f1b733db3 100644
---- a/lib/monitor_edids/monitor_edids_helper.h
-+++ b/lib/monitor_edids/monitor_edids_helper.h
-@@ -12,6 +12,8 @@
- #define TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_
- 
- #include <stdint.h>
-+#include <stddef.h>
-+#include <stdbool.h>
- 
- #include "igt_chamelium.h"
- 
-@@ -30,4 +32,7 @@ get_chameleon_edid_from_monitor_edid(struct chamelium *chamelium,
- 				     const monitor_edid *edid);
- void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
- 
--#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
-\ No newline at end of file
-+struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
-+struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
 +
-+#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
++	free(already_connected);
++	free(newly_connected);
++	free(diff);
++}
++
+ drmModeConnectorPtr unigraf_get_connector(int drm_fd)
+ {
++	if (!unigraf_connector_name)
++		unigraf_autodetect_connector(drm_fd);
+ 	return igt_get_connector_from_name(drm_fd, unigraf_connector_name);
+ }
+ 
+@@ -197,7 +247,7 @@ bool unigraf_open_device(int drm_fd)
+ 	assert(igt_can_fail());
+ 
+ 	if (unigraf_device)
+-		return true;
++		return unigraf_connector_name != NULL;
+ 
+ 	unigraf_init();
+ 
+@@ -316,7 +366,19 @@ bool unigraf_open_device(int drm_fd)
+ 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
+ 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
+ 
+-	return true;
++	if (!unigraf_connector_name) {
++		unigraf_hpd_deassert();
++		unigraf_set_sst();
++		unigraf_hpd_assert();
++		sleep(1);
++		unigraf_autodetect_connector(drm_fd);
++	}
++
++	unigraf_hpd_deassert();
++	unigraf_set_sst();
++	unigraf_hpd_assert();
++	sleep(1);
++	return unigraf_connector_name != NULL;
+ }
+ 
+ void unigraf_require_device(int drm_fd)
 
 -- 
 2.50.1
