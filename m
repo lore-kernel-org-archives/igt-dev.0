@@ -4,63 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 767DCCA0EEB
-	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD025CA0EEB
+	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 29AA310E320;
-	Sat, 23 Aug 2025 02:20:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7915E10E327;
+	Sat, 23 Aug 2025 02:20:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="u8ox78KT";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fcFnnHDW";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04DCB10E30D
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCB2E10E193
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:11 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id F1A284E40C0B
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:11:54 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 00ABB4E40C34;
+ Sat, 23 Aug 2025 02:11:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id CA570606A7;
- Sat, 23 Aug 2025 02:11:54 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id CE33B606A7;
+ Sat, 23 Aug 2025 02:11:45 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 155351C22D406; 
- Sat, 23 Aug 2025 04:11:54 +0200 (CEST)
+ with ESMTPSA id 2FFE81C22D382; 
+ Sat, 23 Aug 2025 04:11:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1755915114; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1755915105; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=LSY0r9Y2LIk8fZHcKhU+K6u74k7Mrv9Up+nLqkRqk3A=;
- b=u8ox78KTGil0Q3koRBpiIgd2IpK6Vg1YZg9Ln5YHgmcwyOdN9/lZlthACHvNLKM816BDYD
- qO6d3XGHdmmyQEFxp47d2rKgU6u9N9ausKD41rBmzNK3WwdAMy7uHlqzviX1sV1ftJpmkp
- g1pyb0FEiPrGXMdNVFopParxbpt0j6TxzX+bH2BRuls0fdvEddtSaPeASudnMhtfGrfpn4
- vPYKaBqUmNRJm1v9DFbwv1fZjVSqlH+DTEemoj1jmRRLhxv71adxwT9vNLTEdp3AHOSaUf
- 5REj+28/edBevhR7CaWrOn0+8XdQScu6jyTkEF1DcgbM3PkIYrs8DTB5hS7txQ==
+ bh=zwsc+sqpk+vCeFFICOGbWSzwueafbjLnThRhLR6lkg0=;
+ b=fcFnnHDWYtuHjzVa9aGjLllKAL1QJT20suz1RyVW+DjWl2R6K0xPSFyAU0mbuzp229E98r
+ yQRMHW69rfhiSpX7X4EXCuWxT4YuArrodlBAdjZdDoMqrgDml8odpd+Ye1+WapMMnGuqMk
+ 9PUeQkk4sAmQ19hpZ2JO1+Psd+fHdVuIM+2RguezjIf8Tk+UoqO45T6MR3XvKqkmMcZEEa
+ fJK2S4C7HLYib3NjGv/Nhzj+jTY79VgCiYH/jg+MIEtyrfZekI52TtU3FSeGTPreXI8Yil
+ WT2ffgCWb4kli7yWQTefl4aas3mRMgAIWpBIiscwsCu7PhhxJirfIu41PblxIw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Sat, 23 Aug 2025 04:11:32 +0200
-Subject: [PATCH i-g-t v3 12/29] lib/unigraf: Initial Unigraf support
+Date: Sat, 23 Aug 2025 04:11:27 +0200
+Subject: [PATCH i-g-t v3 07/29] lib/monitor_edids: Add helper functions for
+ using monitor_edid objects
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250823-unigraf-integration-v3-12-cdc36d5fab4c@bootlin.com>
+Message-Id: <20250823-unigraf-integration-v3-7-cdc36d5fab4c@bootlin.com>
 References: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 In-Reply-To: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8857;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5675;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=y+SMbEQE2wwx2ShUH4+UrtY96+l5VpXv5Ut1EVfm3uM=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNUKDgVEWqhB1cjmzCHET1MrXJGqObKsVQe9
- SXf9yXhFsOJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjVAAKCRAgrS7GWxAs
- 4os+EADXm00ywdsUr01rU/RBLG5NYamK4BWyuF/2vL6B4nmCIhzVJjZfuhC6Hk+hMsxtpv8e7kb
- aM7frajLDgwZdAQ+VR0S6CAriKzR4a3wNiHgC6WCI2J95FFcdmWnyGI0dqF383gaaqAS9RU9xFF
- CHV58Lx6iIE1NPgZrciMxAaJVp6N2H4X2ELtC3nTANgxk9l8iRjIP5iALPT2DcVZTl/VgaAO7NW
- 4PVXVlTXyMmF5BE5mgtm6MuEVJuM/tiarvpppRHF6RC7WOurYJmReontfGT3iRj7jsA3FTZ44dQ
- qVeXpS4TzXh2FB5KBM4B6ffFbrpH772Zy7EzP1b2mCJu/lItUsn3ocrcNIbQziQVQNTcvoQ0Yz7
- zbF0wBghDMZLMeJtWYg6laG1BM0AH+qTmgmlJxcMob+OfHGugE9gteqjhDSXGGJL+TcVyw4xpiE
- jdBeIA5/zEYQ27NvAhrg2o3OHBVfgk0QBiGpyPaYb+zxcJPDyS6iB8jtZyQn6q+gKZkMuUC4Xlf
- e1mMNLQewfS3blSzRME3g4pXMa1Ye2EaHyn+Pr970P0cANFupVVAwRXlMyKnYOKxoAHgP+zyjXy
- HHZrbQGEyaw4WcUFvp/xybCgjSyuGoLeSnn8W7RT8ityGnzYrf+WxSsGtBfTetabB2kZEiox4N0
- 5Wko9raglC4kWxw==
+ bh=7Zukm1/sr+BZr3vDW+XqxhAwWy4aSx4g/mCF/2fqvXM=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNTc/C1larsFAaurdvQP6MUUd24k5K442kaO
+ Ji44NgpUdKJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjUwAKCRAgrS7GWxAs
+ 4hiYEACj9Sik/nzOdH53MsFxyz2bQcqwPR5aqNBFuA5B+RdhS1XpdYaHQCDzT1jXiHtXGMFm9Sr
+ c9xTeLtEL715cLwOeFlvHcIkDPX1zAHDR8Qz1ZZWb5VtoKMMe5mYoBE1n2cZbJLcZ2Q+lqnRYNn
+ CPnHOtpzI3Vy/y5ifOJNMTaWAEXEUJfxNWj9+5RgRXfMSqiq0jtttmp5ONe5qzZvuWLtKgJu0Oz
+ mGEIX/XnVaasCsDjN/lwVnk9D1sMrzEjmgcRmNdHSGi7verJQMy2fCxOoZJBb1GoNf2msaybwJy
+ VmVYV3Zn78KEYJ5/RrAOnzXBj6efrUtKdknRpp54YOZ1QkwP7khU+HmHejZ8Cus8N40EJmjKpD0
+ aK0yw9eCwd4vCC1KySEtq/WAUvLYBxpVbzZoG3REVmxsvL185nehleOOsnAwwOoOsjVIHQy9HCQ
+ CoZdr6lV5isBYJjP2+56jD6O6pDs7Io67x3zA/bakh4Uy3eAjY6610wO7OUBfT3AYfpyOqRy8zw
+ X4/a4LB/ha/yQDdKoKc5jIuRb4Fa54AFokKZs5zxeNNrQPyB497js2vIiWmmWixd/u2mV4r2GFr
+ MX5dBYwD2wWjKjtTUBBb6V33Nv3U1A8OSspYNjOAFa0u3icEXjxeUvPhzc2rVt133DmnpfVVYFh
+ LTO+d3CdU2a1ayQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,287 +80,162 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This introduce the basic boilerplate to connect to a unigraf device.
-
-This integration currently only supports one device openned to simplify
-its usage and cleanup.
-
-The functions unigraf_open_device and unigraf_require_device will register
-a handler to do proper cleanup on IGT exit.
+Introduce the functions edid_from_monitor_edid() and
+get_edids_for_connector_type(). The former converts a monitor_edid object
+to a struct edid, which can then be utilized by igt_kms helpers. The
+latter returns a list of monitor_edid objects for a specific connector
+with certain characteristics
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/meson.build       |  10 +++++
- lib/unigraf/TSI.h     |   8 ----
- lib/unigraf/unigraf.c | 109 ++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/unigraf/unigraf.h |  50 +++++++++++++++++++++++
- meson.build           |  14 +++++++
- 5 files changed, 183 insertions(+), 8 deletions(-)
+ lib/monitor_edids/dp_edids.h             |  3 ++
+ lib/monitor_edids/hdmi_edids.h           |  3 ++
+ lib/monitor_edids/monitor_edids_helper.c | 80 ++++++++++++++++++++++++++++++++
+ lib/monitor_edids/monitor_edids_helper.h |  7 ++-
+ 4 files changed, 92 insertions(+), 1 deletion(-)
 
-diff --git a/lib/meson.build b/lib/meson.build
-index f078dad4e5b17159849716f6698d6b4f1fd74475..f21e36ab5319bbdfb93533ee72e22d6b6e4197cb 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -143,6 +143,13 @@ lib_deps = [
- 	zlib
- ]
+diff --git a/lib/monitor_edids/dp_edids.h b/lib/monitor_edids/dp_edids.h
+index 144907558be1faa306b646ce3b47b24c13050968..07793381257e0082a1fa7b4321fcef7e5aeaa5a9 100644
+--- a/lib/monitor_edids/dp_edids.h
++++ b/lib/monitor_edids/dp_edids.h
+@@ -194,4 +194,7 @@ monitor_edid DP_EDIDS_NON_4K[] = {
  
-+if libtsi.found()
-+	lib_deps += libtsi
-+	lib_sources += [
-+		'unigraf/unigraf.c'
-+	]
-+endif
-+
- if libdrm_nouveau.found()
- 	lib_deps += libdrm_nouveau
- 	lib_sources += [
-@@ -212,6 +219,9 @@ endif
- if chamelium.found()
- 	lib_deps += chamelium
- 	lib_sources += [ 'igt_chamelium.c', 'igt_chamelium_stream.c' ]
-+endif
-+
-+if chamelium.found() or libtsi.found()
- 	lib_sources += 'monitor_edids/monitor_edids_helper.c'
- endif
+  };
  
-diff --git a/lib/unigraf/TSI.h b/lib/unigraf/TSI.h
-index 62daaab6300e3ad0057217af869749cd9dc287ee..669748c91aace505921e53ac872d453acb6ff7c3 100644
---- a/lib/unigraf/TSI.h
-+++ b/lib/unigraf/TSI.h
-@@ -210,14 +210,6 @@ TSI_RESULT TSIX_DEV_GetDeviceRoleCount(TSI_HANDLE Device);
- TSI_RESULT TSIX_DEV_GetDeviceRoleName(TSI_HANDLE Device, int RoleIndex,
- 				      char *RoleNameString, unsigned int RoleStringMaxLength);
- 
--/**
-- * TSIX_VIN_GetInputCount() - Get the number of video inputs available on a device
-- * @Device: Device handle to query
-- *
-- * Returns: >=0 in case of success, the number of video inputs available on the device
-- */
--TSI_RESULT TSIX_VIN_GetInputCount(TSI_HANDLE Device);
--
- /**
-  * TSIX_VIN_GetInputName() - Get the name of a specific video input on a device
-  * @Device: Device handle to query
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..55c3c445fa5efae9559c10f4f56052442027346f
---- /dev/null
-+++ b/lib/unigraf/unigraf.c
-@@ -0,0 +1,109 @@
-+// SPDX-License-Identifier: MIT
++#define DP_EDIDS_4K_COUNT ARRAY_SIZE(DP_EDIDS_4K)
++#define DP_EDIDS_NON_4K_COUNT ARRAY_SIZE(DP_EDIDS_NON_4K)
 +
-+#include "drmtest.h"
-+#include "glib.h"
-+#include "igt_core.h"
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_ */
+diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
+index f6cfe82ff6e1c4419160bcdcc851a5e28eb08726..3984241775c3d8e0f39732bdc41cb44f491ce62b 100644
+--- a/lib/monitor_edids/hdmi_edids.h
++++ b/lib/monitor_edids/hdmi_edids.h
+@@ -604,4 +604,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
+ 		  "1620582c2500baac4200009e0000006b" },
+ };
+ 
++#define HDMI_EDIDS_4K_COUNT ARRAY_SIZE(HDMI_EDIDS_4K)
++#define HDMI_EDIDS_NON_4K_COUNT ARRAY_SIZE(HDMI_EDIDS_NON_4K)
++
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_ */
+diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+index 1cbf1c22f0bbc5fb4047ce42bde2042ec8170efb..6043e7a084b320263f1c0525369aaa59a5d32bcc 100644
+--- a/lib/monitor_edids/monitor_edids_helper.c
++++ b/lib/monitor_edids/monitor_edids_helper.c
+@@ -15,6 +15,10 @@
+ #include <assert.h>
+ 
+ #include "igt_core.h"
 +#include "igt_edid.h"
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <time.h>
-+
-+#include "unigraf.h"
-+#include "TSI.h"
-+#include "TSI_types.h"
-+#include "igt_kms.h"
-+#include "igt_pipe_crc.h"
-+#include "igt_rc.h"
-+#include "monitor_edids/monitor_edids_helper.h"
-+
-+#define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device, ##__VA_ARGS__)
-+
-+static int unigraf_open_count;
-+static TSI_HANDLE unigraf_device;
-+static char *unigraf_default_edid;
-+static char *unigraf_connector_name;
-+
-+static void unigraf_close_device(void)
-+{
-+	unigraf_debug("Closing...\n");
-+	unigraf_assert(TSIX_DEV_CloseDevice(unigraf_device));
-+	TSI_Clean();
-+	unigraf_device = NULL;
-+	free(unigraf_default_edid);
-+	free(unigraf_connector_name);
-+}
++#include "dp_edids.h"
++#include "drmtest.h"
++#include "hdmi_edids.h"
+ 
+ static uint8_t convert_hex_char_to_byte(char c)
+ {
+@@ -90,3 +94,79 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid)
+ 	free(edid);
+ 	edid = NULL;
+ }
 +
 +/**
-+ * unigraf_exit_handler - Handle the exit signal and clean up unigraf resources.
-+ * @sig: The signal number received.
++ * edid_from_monitor_edid:
++ * @mon_edid: Monitor EDID to convert
 + *
-+ * This function is called when the program receives an exit signal. It ensures
-+ * that all unigraf resources are properly cleaned up by calling unigraf_deinit
-+ * for each open instance.
++ * Get a struct edid from a monitor_edid. This returns a pointer to a newly allocated struct edid.
++ * The caller is in charge to free this pointer when required.
 + */
-+static void unigraf_exit_handler(int sig)
++struct edid *edid_from_monitor_edid(const monitor_edid *mon_edid)
 +{
-+	if (unigraf_open_count)
-+		unigraf_close_device();
-+}
++	uint8_t *raw_edid;
++	size_t edid_size;
++	int i;
 +
-+static void unigraf_init(void)
-+{
-+	int ret;
++	edid_size = strlen(mon_edid->edid) / 2; /* each ascii is a nibble. */
++	raw_edid = malloc(edid_size);
++	igt_assert(raw_edid);
 +
-+	unigraf_debug("Initialize unigraf...\n");
-+	ret = TSI_Init(TSI_CURRENT_VERSION);
-+	unigraf_assert(ret);
-+	igt_install_exit_handler(unigraf_exit_handler);
-+}
-+
-+/**
-+ * unigraf_device_count() - Return the number of scanned devices
-+ *
-+ * Must be called after a unigraf_rescan_devices().
-+ */
-+static unsigned int unigraf_device_count(void)
-+{
-+	return unigraf_assert(TSIX_DEV_GetDeviceCount());
-+}
-+
-+bool unigraf_open_device(int drm_fd)
-+{
-+	TSI_RESULT r;
-+	int device_count;
-+	int chosen_device = 0;
-+	int chosen_role = 0;
-+	int chosen_input = 0;
-+
-+	assert(igt_can_fail());
-+
-+	if (unigraf_device)
-+		return true;
-+
-+	unigraf_init();
-+
-+	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-+
-+	device_count = unigraf_device_count();
-+	if (device_count < 1) {
-+		unigraf_debug("No device found.\n");
-+		return false;
++	for (i = 0; i < edid_size; i++) {
++		raw_edid[i] = convert_hex_char_to_byte(mon_edid->edid[i * 2]) << 4 |
++			      convert_hex_char_to_byte(mon_edid->edid[i * 2 + 1]);
 +	}
 +
-+	unigraf_device = TSIX_DEV_OpenDevice(chosen_device, &r);
-+	unigraf_assert(r);
-+	igt_assert(unigraf_device);
-+	unigraf_debug("Successfully opened the unigraf device %d.\n", chosen_device);
++	if (edid_get_size((struct edid *)raw_edid) > edid_size) {
++		uint8_t *new_edid;
 +
-+	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
-+	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
-+	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
++		igt_debug("The edid size stored in the raw edid is longer than the edid stored in the table.");
++		new_edid = realloc(raw_edid, edid_get_size((struct edid *)raw_edid));
++		igt_assert(new_edid);
++		raw_edid = new_edid;
++	}
 +
-+	return true;
++	return (struct edid *)raw_edid;
 +}
 +
-+void unigraf_require_device(int drm_fd)
++/**
++ * get_edids_for_connector_type:
++ * @type: The connector type to get the EDIDs from
++ * @count: Used to store the number of EDIDs in the returned list
++ * @four_k: Use true to fetch 4k EDIDs, false to fetch non-4k EDIDs
++ *
++ * Get the list of EDIDS for a specific connector type. This returns a pointer to a static list,
++ * so no need to free the pointer.
++ */
++struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k)
 +{
-+	igt_require(unigraf_open_device(drm_fd));
++	if (four_k) {
++		switch (type) {
++		case DRM_MODE_CONNECTOR_DisplayPort:
++			*count = DP_EDIDS_4K_COUNT;
++			return DP_EDIDS_4K;
++		case DRM_MODE_CONNECTOR_HDMIA:
++			*count = HDMI_EDIDS_4K_COUNT;
++			return HDMI_EDIDS_4K;
++		default:
++			*count = 0;
++			igt_debug("No 4k EDID for the connector %s\n",
++				  kmstest_connector_type_str(type));
++			return NULL;
++		}
++	} else {
++		switch (type) {
++		case DRM_MODE_CONNECTOR_DisplayPort:
++			*count = DP_EDIDS_NON_4K_COUNT;
++			return DP_EDIDS_NON_4K;
++		case DRM_MODE_CONNECTOR_HDMIA:
++			*count = HDMI_EDIDS_NON_4K_COUNT;
++			return HDMI_EDIDS_NON_4K;
++		default:
++			*count = 0;
++			igt_debug("No EDID for the connector %s\n",
++				  kmstest_connector_type_str(type));
++			return NULL;
++		}
++	}
 +}
-diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..8cdbf00201b2a0467ec15259cf4bc0a2d8f9b61e
---- /dev/null
-+++ b/lib/unigraf/unigraf.h
-@@ -0,0 +1,50 @@
-+/* SPDX-License-Identifier: MIT */
-+
-+#ifndef UNIGRAF_H
-+#define UNIGRAF_H
-+
+diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+index 05679f0897f3d0618d656cc071b565b48d31da28..e5069868683d97053d8e66666e83692f1b733db3 100644
+--- a/lib/monitor_edids/monitor_edids_helper.h
++++ b/lib/monitor_edids/monitor_edids_helper.h
+@@ -12,6 +12,8 @@
+ #define TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_
+ 
+ #include <stdint.h>
++#include <stddef.h>
 +#include <stdbool.h>
-+#include <stdint.h>
-+
-+/**
-+ * unigraf_assert: Helper macro to assert a TSI return value and retrieve a detailed error message.
-+ * @result: libTSI return value to check
-+ *
-+ * This macro checks the return value of a libTSI function call. If the return value indicates an
-+ * error, it retrieves a detailed error message and asserts with that message.
-+ * If retrieving the error description fails, it asserts with a generic error message.
-+ */
-+#define unigraf_assert(result)										\
-+({													\
-+	char msg[256];											\
-+	TSI_RESULT __r = (result);									\
-+	if (__r < TSI_SUCCESS) {									\
-+		TSI_RESULT __r2 = TSI_MISC_GetErrorDescription(__r, msg, sizeof(msg));			\
-+		if (__r2 < TSI_SUCCESS)									\
-+			igt_assert_f(false, "unigraf error: %d (get error description failed: %d)\n",	\
-+				     __r, __r2);							\
-+		else											\
-+			igt_assert_f(false, "unigraf error: %d (%s)\n", __r, msg);			\
-+	}												\
-+	(__r);												\
-+})
-+
-+/**
-+ * unigraf_open_device() - Search and open a device.
-+ * @drm_fd: File descriptor of the currently used drm device
-+ *
-+ * Returns: true if a device was found and initialized, otherwise false.
-+ *
-+ * This function searches for a compatible device and opens it.
-+ */
-+bool unigraf_open_device(int drm_fd);
-+
-+/**
-+ * unigraf_require_device() - Search and open a device.
-+ * @drm_fd: File descriptor of the currently used drm device
-+ *
-+ * This is a shorthand to reduce test boilerplate when a unigraf device must be present.
-+ */
-+void unigraf_require_device(int drm_fd);
-+
-+#endif // UNIGRAF_H
-diff --git a/meson.build b/meson.build
-index aeed3b1d2240c4f224933600a531482791e612d1..f6d60243658148ead523bd0ad5c52d3ae997bdbc 100644
---- a/meson.build
-+++ b/meson.build
-@@ -165,6 +165,12 @@ cairo = dependency('cairo', version : '>1.12.0', required : true)
- libudev = dependency('libudev', required : true)
- glib = dependency('glib-2.0', required : true)
  
-+libtsi = cc.find_library('TSI', required : false)
-+
-+if libtsi.found()
-+	config.set('HAVE_UNIGRAF', 1)
-+endif
-+
- xmlrpc = dependency('xmlrpc', required : false)
- xmlrpc_util = dependency('xmlrpc_util', required : false)
- xmlrpc_client = dependency('xmlrpc_client', required : false)
-@@ -288,6 +294,7 @@ libexecdir = join_paths(get_option('libexecdir'), 'igt-gpu-tools')
- amdgpudir = join_paths(libexecdir, 'amdgpu')
- msmdir = join_paths(libexecdir, 'msm')
- panfrostdir = join_paths(libexecdir, 'panfrost')
-+unigrafdir = join_paths(libexecdir, 'unigraf')
- v3ddir = join_paths(libexecdir, 'v3d')
- vc4dir = join_paths(libexecdir, 'vc4')
- vmwgfxdir = join_paths(libexecdir, 'vmwgfx')
-@@ -357,6 +364,12 @@ if get_option('use_rpath')
- 		vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
- 	endforeach
- 	vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, libdir)
-+
-+	unigraf_rpathdir = '$ORIGIN'
-+	foreach p : unigrafdir.split('/')
-+		unigraf_rpathdir = join_paths(unigraf_rpathdir, '..')
-+	endforeach
-+	unigraf_rpathdir = join_paths(unigraf_rpathdir, libdir)
- else
- 	bindir_rpathdir = ''
- 	libexecdir_rpathdir = ''
-@@ -366,6 +379,7 @@ else
- 	v3d_rpathdir = ''
- 	vc4_rpathdir = ''
- 	vmwgfx_rpathdir = ''
-+	unigraf_rpathdir = ''
- endif
+ #include "igt_chamelium.h"
  
- build_testplan = get_option('testplan')
+@@ -30,4 +32,7 @@ get_chameleon_edid_from_monitor_edid(struct chamelium *chamelium,
+ 				     const monitor_edid *edid);
+ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
+ 
+-#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
+\ No newline at end of file
++struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
++struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
++
++#endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
 
 -- 
 2.50.1
