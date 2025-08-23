@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3C8ACA0EFA
-	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 18:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6602BCA0EE4
+	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 19:01:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3FE6D10E00E;
-	Sat, 23 Aug 2025 18:47:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 00FAF10E00E;
+	Sat, 23 Aug 2025 19:01:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hMuQy3mT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sjlx1vgs";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34DF910E00E
- for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 18:47:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93C8410E05C
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 19:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1755974857; x=1787510857;
+ t=1755975670; x=1787511670;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=xbNKofIKNpJACJ3xHbIYzJqLcbmmq4iMdISuPAz3pbo=;
- b=hMuQy3mT4HttG9JrB/LtsaRidpmpSX1fWddKPeX6y7bCNBK/qqETvYLq
- N9JCkrDpEALkybTfRKifa3VBVAKYmGP6bwUzMzNed9dK/723hmCDrHsWg
- TzKnQxPFLxi5BKNmuSsgAE2830DSiH6F/9/WNGxVSLOmHhGo9YWEKMs/b
- 3eub1yRfCIm4Mwf3a04Imhy0senwgh9yjwj9NZCjDKJc0RQRZJNVo7Fml
- Kh8gm65t8t4AxdQ1EaySH50June2yHzEuQ0XlemJUX03JUKxZ9t52LSt3
- weoy+8e9yciqQF4AODDazZ1BBN/lzRUSuDi6UDGZo+MJRIm7x74RXycuf g==;
-X-CSE-ConnectionGUID: t7a+shMPQDmV2D3pH7OWOQ==
-X-CSE-MsgGUID: QDU24dJRRmi6/+c9h6+cIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="45820494"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="45820494"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2025 11:47:36 -0700
-X-CSE-ConnectionGUID: ZzXmTO/2SkqW2r/mfn6RWw==
-X-CSE-MsgGUID: z6vf3hlcScmJIv+SRtNhYg==
+ bh=EX519a9Nt3QTDuyYtKDO42ec7y7Qjp+DS2U8p6+T1k0=;
+ b=Sjlx1vgsBd22g3X42o/QbvmsEAQf7LsNRcgRaz+xk4MSeFmk/DynB6do
+ DOFZYi2rpOCOULt4bju8tA38Dt0SFQTgqn2a+dFF57YSN4+R2rt1yRHLb
+ 7c+4LIruq2EXvM9R0GEBnk+ib7vLMzT5Kv/OGZ9vYjw4FFDUvS/h4d/J5
+ UHcTT7GinZk4ksHS4WzLTgh7sh09iScsq7S7S1t/utX+QRHXbvgDeVaOK
+ gNUpZuB9ut08ADbpQ7MvHzC1MZvAF1riQTsBqBRq91qWclW7a0Q7cjLA2
+ AfiigacUI/+c4yWSlIEdNjMc8vae8Ur3B7ZbPwxt2ffCbKKT8AcWxHkd7 g==;
+X-CSE-ConnectionGUID: afPf+jIiSC2UooLEJK7dAA==
+X-CSE-MsgGUID: t+IjNQyZQgyGtMPq6hURLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="80842700"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="80842700"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Aug 2025 12:01:10 -0700
+X-CSE-ConnectionGUID: PPzQMdsSTUGBMKSX0krvpg==
+X-CSE-MsgGUID: jA148gkQRfyblcsElkaOXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="168471315"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="168551403"
 Received: from shreyans-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.124.32.227])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2025 11:47:36 -0700
-Date: Sat, 23 Aug 2025 11:47:35 -0700
-Message-ID: <87sehhyiwo.wl-ashutosh.dixit@intel.com>
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Aug 2025 12:01:09 -0700
+Date: Sat, 23 Aug 2025 12:01:08 -0700
+Message-ID: <87qzx1yia3.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 2/4] tests/intel/xe_oa: Fix waiting for mmaped
- reports
-In-Reply-To: <20250823003401.109978-8-umesh.nerlige.ramappa@intel.com>
-References: <20250823003401.109978-6-umesh.nerlige.ramappa@intel.com>
- <20250823003401.109978-8-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t 4/4] tests/intel/xe_oa: Add an option to capture
+ ftrace
+In-Reply-To: <20250823003401.109978-10-umesh.nerlige.ramappa@intel.com>
+References: <20250823003401.109978-6-umesh.nerlige.ramappa@intel.com>	<20250823003401.109978-10-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -72,40 +71,125 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 22 Aug 2025 17:34:04 -0700, Umesh Nerlige Ramappa wrote:
+On Fri, 22 Aug 2025 17:34:06 -0700, Umesh Nerlige Ramappa wrote:
 >
-> When iterating over reports using a uint32_t pointer, ensure that the
-> report size is expressed in 32 bits.
+> Capture ftrace with the --trace option when needed. This is not intended
+> to run as default, but more of a debug functionality when manually
+> running individual tests.
+
+Maybe mention here or in the commit title that we are capturing register
+read/writes in ftrace.
+
+>
+> In addition configure the ftrace buffer using the --trace_buf_size_mb
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> ---
+>  tests/intel/xe_oa.c | 58 ++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 57 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> index 7381e7b9bd44..e5473a5ff70f 100644
+> --- a/tests/intel/xe_oa.c
+> +++ b/tests/intel/xe_oa.c
+> @@ -307,6 +307,8 @@ static struct oa_format lnl_oa_formats[XE_OA_FORMAT_MAX] = {
+>		.bc_report = 0 },
+>  };
+>
+> +static bool oa_trace = false;
+> +static uint32_t oa_trace_buf_mb = 20;
+>  static int drm_fd = -1;
+>  static int sysfs = -1;
+>  static int pm_fd = -1;
+> @@ -389,6 +391,31 @@ static u32 get_stream_status(int fd)
+>	return status.oa_status;
+>  }
+>
+> +static void enable_trace_log(void)
+> +{
+> +	char cmd[64] = {0};
+> +
+> +	if (!oa_trace || oa_trace_buf_mb > 20)
+> +		return;
+> +
+> +	snprintf(cmd, sizeof(cmd) - 1, "echo %d > /sys/kernel/debug/tracing/buffer_size_kb", oa_trace_buf_mb * 1000);
+> +	system(cmd);
+> +	system("echo 0 > /sys/kernel/debug/tracing/tracing_on");
+> +	system("echo > /sys/kernel/debug/tracing/trace");
+> +	system("echo 1 > /sys/kernel/debug/tracing/events/xe/enable");
+> +	system("echo 1 > /sys/kernel/debug/tracing/events/xe/xe_reg_rw/enable");
+> +	system("echo 1 > /sys/kernel/debug/tracing/tracing_on");
+> +}
+> +
+> +static void disable_trace_log(void)
+> +{
+> +	if (!oa_trace || oa_trace_buf_mb > 20)
+> +		return;
+> +
+> +	system("echo 0 > /sys/kernel/debug/tracing/tracing_on");
+> +	system("cat /sys/kernel/debug/tracing/trace");
+> +}
+> +
+>  static void
+>  dump_report(const uint32_t *report, uint32_t size, const char *message) {
+>	uint32_t i;
+> @@ -4937,7 +4964,34 @@ static const char *xe_engine_class_name(uint32_t engine_class)
+>	igt_require_f(hwe, "no render engine\n"); \
+>	igt_dynamic_f("rcs-%d", hwe->engine_instance)
+>
+> -igt_main
+> +static int opt_handler(int opt, int opt_index, void *data)
+> +{
+> +	switch (opt) {
+> +	case 'b':
+> +		oa_trace_buf_mb = strtoul(optarg, NULL, 0);
+> +		igt_debug("Trace buffer %d Mb\n", oa_trace_buf_mb);
+> +		break;
+> +	case 't':
+> +		oa_trace = true;
+> +		igt_debug("Trace enabled\n");
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static const char *help_str =  "  --trace | -t\t\tEnable ftrace\n"
+> +			       "  --trace_buf_size_mb | -b\t\tSet ftrace buffer size in Mb (default = 0, max = 20)\n";
+> +
+> +static struct option long_options[] = {
+> +	{"trace", 0, 0, 't'},
+> +	{"trace_buf_size_mb", 0, 0, 'b'},
+> +	{ NULL, 0, 0, 0 }
+> +};
+> +
+> +igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
+>  {
+>	const struct sync_section {
+>		const char *name;
+> @@ -4981,6 +5035,7 @@ igt_main
+>		 */
+>		igt_assert_eq(drm_fd, -1);
+>
+> +		enable_trace_log();
+>		drm_fd = drm_open_driver(DRIVER_XE);
+>		xe_dev = xe_device_get(drm_fd);
+>
+> @@ -5210,5 +5265,6 @@ igt_main
+>			intel_xe_perf_free(intel_xe_perf);
+>
+>		drm_close_driver(drm_fd);
+> +		disable_trace_log();
+
+Does this get disabled even if the test crashes? Anyway since it is for
+debug and not enabled by default, this is:
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-> ---
->  tests/intel/xe_oa.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 35d25150ec7d..745f364e52e9 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -4448,6 +4448,7 @@ static void mmap_wait_for_periodic_reports(void *oa_vaddr, uint32_t n,
->	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
->	uint64_t fmt = test_set->perf_oa_format;
->	uint32_t num_periodic_reports = 0;
-> +	uint32_t report_words = get_oa_format(fmt).size >> 2;
->	uint32_t *reports;
->
->	while (num_periodic_reports < n) {
-> @@ -4455,7 +4456,7 @@ static void mmap_wait_for_periodic_reports(void *oa_vaddr, uint32_t n,
->		num_periodic_reports = 0;
->		for (reports = (uint32_t *)oa_vaddr;
->		     reports[0] && oa_timestamp(reports, fmt) && oa_report_is_periodic(reports);
-> -		     reports += get_oa_format(fmt).size) {
-> +		     reports += report_words) {
->			num_periodic_reports++;
->		}
 >	}
+>  }
 > --
 > 2.43.0
 >
