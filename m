@@ -4,64 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E623CA0FE9
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7F84CA0EFC
 	for <igt-dev@archiver.kernel.org>; Sat, 23 Aug 2025 02:20:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2FC510E2A5;
-	Sat, 23 Aug 2025 02:20:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FEC710E30D;
+	Sat, 23 Aug 2025 02:20:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Fpbf3PLl";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="bCsHSL5Q";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A051A10E193
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FA4F10E191
  for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:20:10 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 6F90B4E40C10;
- Sat, 23 Aug 2025 02:11:43 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 7FA6D4E40BFB
+ for <igt-dev@lists.freedesktop.org>; Sat, 23 Aug 2025 02:11:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 48755606A7;
- Sat, 23 Aug 2025 02:11:43 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 3CED9606A7;
+ Sat, 23 Aug 2025 02:11:42 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 9805E1C22D3AB; 
- Sat, 23 Aug 2025 04:11:42 +0200 (CEST)
+ with ESMTPSA id EC2551C22D34F; 
+ Sat, 23 Aug 2025 04:11:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1755915102; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=NWEsCQM68PF5Iyar7eVvO9GdfgUV4wCj+8gB+hcOmFQ=;
- b=Fpbf3PLl3xfONpQhJ3r14x+ZSsCq8MirQ8h3ZBV6yDpDW0VM2Fn28qohL+F0MqkJt2xR+J
- ZGLcM6M5gGLoVOgxyvXpHXBP4FDa3X2w8OgSE3u47+0g87bkA93CpkGy8R/Q8hwcKa85ok
- A7bQCj2BLcuLow71E41y40hv/f2Jami3TAL5SUYUOCqcOxG6aOieiL3Q7rUoXHUzvIrDaN
- goPe3EfjWxQ1Egk3Boze/NL7qB4EBw8ybmKlkzGEBz3/kpQvzW7d5GJOjmk5pjc3pKm/dv
- B4pClbKR5g18SOEhE6TxYjt0b8I+E1ZqgDQPee2uelzurVIAa2UPdNQessPYvA==
+ t=1755915100; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding; bh=BAjUHwVtr8fDyzcd1blem8m2I+GIYMshJ24PJFLtPzg=;
+ b=bCsHSL5Qgcb8aas5Vy635Nz5d+juwL49YOLo7CpDOTPtWqqO6AY0xQHBAYaCSAJ0KxfyGt
+ f6n7vkz/AXDsnqDdazSdDBcO3dn6JlCQSbQ/k4eRTrjMkrg2wCHVv0VeFB09dlma9iXD9r
+ CeH43Qvfr29wFUmG53xAZ5BgbrZytjIogsfN9vpXUvriYOl1aVF6FiJtLQccHkP7aunLTC
+ PE0QRoMdAFd0REHVOBt2kDGXcic/pBbMz946pXZ9ouv65tZhVbmrXZE2kiO/FgQAwDDR/T
+ J3uZQwXTJtczWo2w8hr6JV6V7B6IphQrNEigM0ONgyAmc/BlPw+2R8wYGrOV/g==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Sat, 23 Aug 2025 04:11:23 +0200
-Subject: [PATCH i-g-t v3 03/29] lib/igt_kms: Add function to list connected
- connectors
+Subject: [PATCH i-g-t v3 00/29] Unigraf integration
+Date: Sat, 23 Aug 2025 04:11:20 +0200
+Message-Id: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250823-unigraf-integration-v3-3-cdc36d5fab4c@bootlin.com>
-References: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
-In-Reply-To: <20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAEgjqWgC/3XNSw7CIBAG4Ks0s3YMjxLUlfcwLirQdhIFA0g0T
+ e8uYWNMdDf/PL5ZILlILsGhWyC6QomCr0FuOjDz4CeHZGsGwYRivVD48DTFYUTy2dUi133k3Fk
+ pmVbKKqiX9+hGejb1BIQTZjjX9kwph/hqvwpvw8Yqrn+yhSNH1veDsYJLae3xEkK+kt+acGtiE
+ R9F/1MEMtTaGin2Tu16862s6/oGnHjJ3AUBAAA=
+X-Change-ID: 20250425-unigraf-integration-11ed330755d5
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3569;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5466;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=YZtgwyjd/u/RIVJ9mvLLPfoDcHnH/Sm634D8D4P2pG8=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNSqIQGkxz+2JH0kImRTjAJHtvjMSR912Frz
- Li7WqWWZbGJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjUgAKCRAgrS7GWxAs
- 4sJ3D/9TOYeEGsBXK/uFkoBe3ZyymliIaptidzAFzpTi9mw7Xdnaw+/ljVilV+jtJZp1eqNUIWR
- EN1+OC5VDBdSPj3t6GELYr3En/LH6S2gkKRkAqlqgGP5S07a8jjVEBLodg1JvirC2GbzRYQZM/b
- 7ZQVuTwd0o2aZVBLu1fpQnZu0SU6eJLbOEqYYrtUIkqoVubqunGurdrT/Re4Wi7fl2pWAdnsr5W
- f6ssmUBCifk4l9UksQCdA6X/7IzGlXo67FC9Saiptt72zPLc++Ns2Nt98p9UVz759Mfw67pfxCp
- rwjb0lzLg/QGREydDFhP3S3O8NDkdtrrwO+sGOo0uM17tQvp/dJf6m7sEX6E29ougENmHeZE32+
- trYqYagO9ARHfAVcVgEqrfu30z7pF38O5D2j+Ek56RaMDfP9WYixQX979bOvNj1Zff/2Dd1n5+v
- SVgo3aS4cwz14JARyrnV18zBWjd6Jmayp8vD0f1S0aRWysYImD7g2X2INEhpbnIQYqAEvzzGHzX
- pIx3/QehvxFw6McqmVBnACLaMLDJSRKG8lgm9CcV1Tsz0D5s1NKh1Ak6y/sqZMesustj07T7KKn
- Mr5v7uY297m3HcMpGAJd36w2fmyzzjicghPkmssUX+DArrdjDH39rRtrkDwZ7zzhofL9s7dA9Hq
- M9fYDXOtz45G5Ww==
+ bh=45sRQZgkf8xZUZp56pBKJ8lWIGMFaWCYikd/+E6/HTs=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBoqSNROmoOe8ee1iOudy0fqecIgzV7rYVxxBbGI
+ jrBjNanMwaJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaKkjUQAKCRAgrS7GWxAs
+ 4hCNEACSa39c2QK3HG3CQ1y51xX+yiFEZjc049FONUWarJ3RoVMUTKPFfDx2QWCs9fz6VF1QARC
+ IqhrKrV8s5Duh+S75B4hcb+99dEZ5r9+lo7NbFrRlVrLd5pywcXPDxUSO2jUSKSSufuSTyaydMZ
+ fYEB/8R7uPsO/dPe3ObaOogT+Zffh6lKNMXY1a84BX8FGyV7stcH6QrEkEWlqrOZ+vpMoE6sMZv
+ np9XUBigxasYWOEewkq+of8lu4QbB3g21JFvbaZoNl09jaxahEmFl9kFMJs4OyJ0j9MkjyNTTe0
+ fBU4Hm6IqrgGRvGY8k4xJeW567dWiqnXZGfgCQrikPJ6NQHwB+lc8m6Wh/A6XfH2PzD+0+zPve5
+ jFdpdZq9/d/vcs7cgXWLuzKBZ5S6o0sLBnMhnKPhN6mENFEfPQwn2liIhKkEaPbk8xmyS4M1rWq
+ 9J7oGW9biSOuARqCEnVEshz6i48GWXpQAKHz8XR+WmxPIBUnfgTKvqFWPXfX1vclIO1HuwOODke
+ BRRdEoivkgBnDLQayNFq8e5hc6D+WPnSV+9ctCSkuhxqiSsIP7josKgEhsJR04L+nGnJMrzEU7t
+ F5rpxmFiEOGw5i2Ep21L8Gb3ZWGHpHVJeMAgsWsh/CcYyjOvDBo+OvOgK6D/Gc2iCHq2POOvy/a
+ Xe5x+BJg0ddM7eg==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,114 +81,121 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the igt_get_connected_connectors() function, which returns a
-list of connector IDs that are currently connected according to DRM.
+Hi everyone,
 
-This function includes a timeout mechanism because connectors can be
-unplugged at any time. Also, especially with MST, the connector can be
-listed by drmModeGetResources() but not yet accessible with
-drmModeGetConnector().
+I am excited to share I currently have access to a Unigraf device,
+which I believe could significantly enhance the capabilities within IGT.
+This device has the potential to enable testing of low-level hardware
+features that are currently not covered. Specifically, Unigraf devices can
+assist in testing link training, signal integrity, HDCP, DSC, and more.
+
+It's important to note that the Unigraf SDK is not open-source, and the
+communication protocol with the device is proprietary. As a result, I have
+utilized the libTSI.so library, which can be downloaded from [1]. In this
+RFC, I have not used the official TSI_types.h header because it was
+incompatible with C, so I hardcoded some necessary values. The next
+iteration will use the official TSI_types.h (they plan to fix it for the
+next release).
+
+This RFC is intentionally concise to gather initial feedback from the
+community regarding the integration of a proprietary device into the test
+suite. I plan to expand on this work by adding more features and pushing
+the developments upstream.
+
+I have also started to work on MST testing (hotplug, link training, 
+bandwith limitation), but I have a big issue: connector detection is very 
+strange when changing MST configurat (MST->SST, sink count...).
+
+If I use the Unigraf GUI or my own C script outside IGT, everything seems 
+fine: `watch -n0 modetest -c` update connector status almost immediatly 
+after a HDP pulse, never hang and always have the correct result.
+
+But if I do the same in IGT (same script in igt_main), igt have too 
+much/not all connectors, and some of them are broken (no EDID property 
+for example). I tried to run `watch -n0 modetest -c` in parallel, but 
+modetest can:
+- hang
+- only update once igt test is finished.
+
+Do you have any hint about something I missed in IGT to properly enumerate 
+connectors? I tried close/open the DRM device, added a lot of delay 
+everywhere, emulate plug/unplug... I used kms_wait_for_new_connectors (in 
+this series) and for_each_connected_output to get list the connectors.
+
+Looking forward to your thoughts and suggestions!
+
+Thanks,
+Louis Chauvet
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 68 insertions(+)
+Changes in v3:
+- Rebased on master
+- Added support for MST
+- Repair autodetection and CRC usage
+- Link to v2: https://lore.kernel.org/r/20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f24fa52ae715607515c18962f30e1c45d5860303..3109882461f2b5db83286503444cf06c907fd9e3 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -7573,6 +7573,29 @@ double igt_default_display_detect_timeout(void)
- 	return timeout;
- }
- 
-+static drmModeConnectorPtr igt_wait_for_connector(int drm_fd, unsigned int connector_id,
-+						  double timeout)
-+{
-+	drmModeConnectorPtr connector = NULL;
-+	struct timespec start, end;
-+
-+	connector = drmModeGetConnector(drm_fd, connector_id);
-+	/*
-+	 * This time is required as sometimes some id in the connector list are not totally
-+	 * ready or can disappear
-+	 */
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+	end = start;
-+
-+	while (!connector &&
-+	       igt_time_elapsed(&start, &end) <= timeout) {
-+		connector = drmModeGetConnector(drm_fd, connector_id);
-+		clock_gettime(CLOCK_MONOTONIC, &end);
-+	}
-+
-+	return connector;
-+}
-+
- /**
-  * igt_wait_for_connector_status:
-  * @drm_fd: drm file descriptor
-@@ -7611,3 +7634,47 @@ bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double
- 		  connector_id);
- 	return false;
- }
-+
-+/**
-+ * igt_get_connected_connectors:
-+ *
-+ * @drm_fd: DRM file description
-+ * @connector_ids: Out pointer for the list of connector ids connected. It must be freed by the
-+ * caller.
-+ *
-+ * This will probe all the connectors and return the list of all
-+ * connected connectors.
-+ * Returns: The number of connectors in @connector_ids
-+ */
-+int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
-+{
-+	int connected_count = 0;
-+	double timeout = igt_default_display_detect_timeout();
-+	drmModeResPtr resources;
-+
-+	igt_assert(drm_fd);
-+	*connector_ids = NULL;
-+
-+	resources = drmModeGetResources(drm_fd);
-+	igt_assert(resources);
-+	for (int j = 0; j < resources->count_connectors; j++) {
-+		drmModeConnectorPtr connector = igt_wait_for_connector(drm_fd,
-+								       resources->connectors[j],
-+								       timeout);
-+
-+		if (connector) {
-+			if (connector->connection == DRM_MODE_CONNECTED) {
-+				*connector_ids = reallocarray(*connector_ids,
-+							      connected_count
-+							      + 1, sizeof(**connector_ids));
-+				igt_assert(*connector_ids);
-+				(*connector_ids)[connected_count] = resources->connectors[j];
-+				connected_count++;
-+			}
-+			drmModeFreeConnector(connector);
-+		}
-+	}
-+	drmModeFreeResources(resources);
-+
-+	return connected_count;
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 02c68737fd68a3dfee9aeba17489a17300e0bf67..6609b6ea2a5707e198379818ffc12de852380c07 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1301,5 +1301,6 @@ double igt_default_display_detect_timeout(void);
- 
- bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
- 				   int drm_mode);
-+int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
- 
- #endif /* __IGT_KMS_H__ */
+Changes in v2:
+- Splitted in many commits
+- Add CRC support
+- Link to v1: https://lore.kernel.org/r/20250517-unigraf-integration-v1-1-044acd2133dd@bootlin.com
 
+---
+Louis Chauvet (29):
+      lib/igt_kms: Add a detect timeout value
+      lib/igt_kms: Add helper to wait for a specific status on a connector
+      lib/igt_kms: Add function to list connected connectors
+      lib/igt_kms: Add helper to obtain a connector by its name or MST path
+      lib/igt_kms: Add helper to wait for new connectors
+      lib/igt_kms: Add helper to get a pipe from a connector
+      lib/monitor_edids: Add helper functions for using monitor_edid objects
+      lib/monitor_edids: Add helper to get an EDID by its name
+      lib/monitor_edids: Add helper to print all available EDID names
+      [DO NOT MERGE] lib/unigraf: Add used defines for TSI_Types
+      lib/unigraf: Add TSI.h
+      lib/unigraf: Initial Unigraf support
+      lib/igt_kms: Automatically connect unigraf on display require
+      lib/unigraf: Introduce device configuration
+      lib/unigraf: Introduce role configuration
+      lib/unigraf: Introduce input configuration
+      lib/unigraf: Add unigraf assert and deassert helpers
+      lib/unigraf: Add plug/unplug helpers
+      lib/unigraf: Allows sst/mst configuration
+      lib/unigraf: Add helpers to read and write edid
+      lib/unigraf: Add connector configuration
+      lib/unigraf: Add connector autodetection
+      lib/unigraf: Add edid configuration
+      tests/unigraf: Add basic unigraf tests
+      lib/unigraf: Add unigraf CRC capture
+      lib/unigraf: Add configuration for CRC usage
+      lib/unigraf: add unigraf_get_connector_by_stream
+      lib/igt_pipe_crc: Add ungiraf crc calculation
+      docs/unigraf: Add unigraf documentation
+
+ docs/unigraf.txt                         |  81 ++++
+ lib/igt_core.c                           |   4 +
+ lib/igt_kms.c                            | 381 +++++++++++++++++++
+ lib/igt_kms.h                            |  31 ++
+ lib/igt_pipe_crc.c                       |  27 ++
+ lib/meson.build                          |  10 +
+ lib/monitor_edids/dp_edids.h             |   3 +
+ lib/monitor_edids/hdmi_edids.h           |   3 +
+ lib/monitor_edids/monitor_edids_helper.c | 126 ++++++
+ lib/monitor_edids/monitor_edids_helper.h |  10 +-
+ lib/unigraf/TSI.h                        | 226 +++++++++++
+ lib/unigraf/TSI_types.h                  |  50 +++
+ lib/unigraf/unigraf.c                    | 631 +++++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h                    | 182 +++++++++
+ meson.build                              |  14 +
+ tests/meson.build                        |   4 +
+ tests/unigraf/meson.build                |  12 +
+ tests/unigraf/unigraf_connectivity.c     | 123 ++++++
+ 18 files changed, 1917 insertions(+), 1 deletion(-)
+---
+base-commit: 131624097de9acfac3466e51198beb176d572f9f
+change-id: 20250425-unigraf-integration-11ed330755d5
+
+Best regards,
 -- 
-2.50.1
+Louis Chauvet <louis.chauvet@bootlin.com>
 
