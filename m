@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2668FCA0EFA
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Aug 2025 10:25:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E847CA0FE1
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Aug 2025 10:37:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D15DF10E426;
-	Mon, 25 Aug 2025 10:25:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C776F10E355;
+	Mon, 25 Aug 2025 10:37:09 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C46010E426;
- Mon, 25 Aug 2025 10:25:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1015910E355;
+ Mon, 25 Aug 2025 10:37:09 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5691521653709147013=="
+ boundary="===============0754662080603023854=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/xe=3A_Track_valid_Tile_?=
- =?utf-8?q?IDs?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsriov=5Fsc?=
+ =?utf-8?q?heduling=3A_Refactor_submission/measurement_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: nishit.sharma@intel.com
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 25 Aug 2025 10:25:28 -0000
-Message-ID: <175611752836.265384.9365118322374987376@1538d3639d33>
+Date: Mon, 25 Aug 2025 10:37:09 -0000
+Message-ID: <175611822905.265384.16884608299221666220@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250825061054.304277-1-nishit.sharma@intel.com>
-In-Reply-To: <20250825061054.304277-1-nishit.sharma@intel.com>
+References: <20250825082254.444880-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250825082254.444880-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5691521653709147013==
+--===============0754662080603023854==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/xe: Track valid Tile IDs
-URL   : https://patchwork.freedesktop.org/series/153422/
+Series: tests/intel/xe_sriov_scheduling: Refactor submission/measurement (rev2)
+URL   : https://patchwork.freedesktop.org/series/153162/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8505_BAT -> XEIGTPW_13627_BAT
+CI Bug Log - changes from XEIGT_8505_BAT -> XEIGTPW_13629_BAT
 ====================================================
 
 Summary
@@ -74,37 +74,40 @@ Participating hosts (11 -> 11)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_13627_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_13629_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
+#### Possible fixes ####
 
-  * igt@kms_flip@basic-plain-flip@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8505/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13627/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
+  * igt@xe_vm@bind-execqueues-independent:
+    - {bat-ptl-vm}:       [FAIL][1] ([Intel XE#5783]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8505/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13629/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html
 
   
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8505 -> IGTPW_13627
+  * IGT: IGT_8505 -> IGTPW_13629
   * Linux: xe-3607-cbc942aacf73e2198bbd9c7a2c31e866d0ce892b -> xe-3609-5481954bd63bd4d34a5acb2b89fb2caf55bb0695
 
-  IGTPW_13627: 435fbaf3053129c4e62641c38e9c4a998cb2961c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_13629: 13629
   IGT_8505: 8505
   xe-3607-cbc942aacf73e2198bbd9c7a2c31e866d0ce892b: cbc942aacf73e2198bbd9c7a2c31e866d0ce892b
   xe-3609-5481954bd63bd4d34a5acb2b89fb2caf55bb0695: 5481954bd63bd4d34a5acb2b89fb2caf55bb0695
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13627/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13629/index.html
 
---===============5691521653709147013==
+--===============0754662080603023854==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -124,37 +127,39 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/xe: Track valid Tile IDs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153422/">https://patchwork.freedesktop.org/series/153422/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_sriov_scheduling: Refactor submission/measurement (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153162/">https://patchwork.freedesktop.org/series/153162/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13627/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13627/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13629/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13629/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8505_BAT -&gt; XEIGTPW_13627_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8505_BAT -&gt; XEIGTPW_13629_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (11 -&gt; 11)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13627_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_13629_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
+<h4>Possible fixes</h4>
 <ul>
-<li>igt@kms_flip@basic-plain-flip@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8505/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13627/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
+<li>igt@xe_vm@bind-execqueues-independent:<ul>
+<li>{bat-ptl-vm}:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8505/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13629/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
 </ul>
 </li>
 </ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8505 -&gt; IGTPW_13627</li>
+<li>IGT: IGT_8505 -&gt; IGTPW_13629</li>
 <li>Linux: xe-3607-cbc942aacf73e2198bbd9c7a2c31e866d0ce892b -&gt; xe-3609-5481954bd63bd4d34a5acb2b89fb2caf55bb0695</li>
 </ul>
-<p>IGTPW_13627: 435fbaf3053129c4e62641c38e9c4a998cb2961c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_13629: 13629<br />
   IGT_8505: 8505<br />
   xe-3607-cbc942aacf73e2198bbd9c7a2c31e866d0ce892b: cbc942aacf73e2198bbd9c7a2c31e866d0ce892b<br />
   xe-3609-5481954bd63bd4d34a5acb2b89fb2caf55bb0695: 5481954bd63bd4d34a5acb2b89fb2caf55bb0695</p>
@@ -162,4 +167,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============5691521653709147013==--
+--===============0754662080603023854==--
