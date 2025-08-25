@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F1FBCA0FE7
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Aug 2025 16:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 636B9CA0EFA
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Aug 2025 16:12:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D214010E4F5;
-	Mon, 25 Aug 2025 16:11:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1EFE310E4FB;
+	Mon, 25 Aug 2025 16:12:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i3FKpBB5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ui9G1V0t";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD71F10E4F5
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Aug 2025 16:11:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC44D10E4FB
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Aug 2025 16:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756138298; x=1787674298;
+ t=1756138332; x=1787674332;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=atXBrfEBVholEO+5xgU8CPCsAP2fO2SRL6lZ030+Zw0=;
- b=i3FKpBB5tdVohPW+X+3xzOR3qXNbJFb5pQNa3KPPhtVZ/IXGJU31Fh2u
- v7OIEsHyqeWIaRlsS0QI8Iv6SFvkRMBt5MxCo9q8vUbrPeh1fTWp7OwyT
- EFfj0YebvKVTW6UYX8szX7wGhGsivGSKxBhWtEQn/3iGTCfinn1y52K93
- yuvU/THAvQBGfEqAtA67oQNVP7ZCZTWQ78UBG38VYNDAe6ogev35CfS/p
- qasACUHf04tl9wKQJr+hIUGR0on7wP5tbIaBa9HFH00yGL6OYWb3O+/jq
- i6aBDXGoG63oIldyZ3y9xtIDyAjb29cwWzCSiyxcp+nlpTXxVwTPXb5o2 Q==;
-X-CSE-ConnectionGUID: GoJT+liLQmWZu+/ZrkUAow==
-X-CSE-MsgGUID: U5gIF+cpRf6vJHiqYNccpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="58424925"
-X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="58424925"
+ bh=1+i6A46lCjgib6Kk+yv9X5LmcqpfnhefnXJ8TzrDyuQ=;
+ b=Ui9G1V0tXln/T6h7Yzi3EFlFY09Obg0Nao5efC/912VV9wQi2MzfvGif
+ cOcKyULyavRlIBQHJzVu7KQhMVB9TWlMAIkdxysxs5H4wnEr/6fAtPXi0
+ JfkqlMM0APaW4fuhx1u5DwHxB7Cmrm4+ahx2on5wYdCqOOMUJg6EtGKf6
+ coBEXxyoq01csefx5xXLdh2yYecb+o201zK6vB6j2tJu72+PE3aL/DjGe
+ F3TIOcVWrxWMbelsZroMGrc9XMxBs+rAhoOvSS9jwwQUoGc2gq+JHsTGs
+ 2pvBDHCEOVOeLPdA0X4X0m0qGhC5a2bcRgNkv7UKCgS3jd0HnnCTzWRJJ w==;
+X-CSE-ConnectionGUID: TjEOjp+tRR2uXQIOEY5zrw==
+X-CSE-MsgGUID: JQr8UO23Swuq9H9mz+eg0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="58425024"
+X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="58425024"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Aug 2025 09:11:37 -0700
-X-CSE-ConnectionGUID: dSg2hv2TSambgMxzFQH1tQ==
-X-CSE-MsgGUID: PSCn5hSGTtuKjw1mfBi+yg==
+ 25 Aug 2025 09:12:01 -0700
+X-CSE-ConnectionGUID: d11DIdjaQv6V9ecW0bQrHA==
+X-CSE-MsgGUID: 0CrRmsBLQCSxNZCxOjBQuA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="168939586"
+X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="168939668"
 Received: from tmistat.igk.intel.com ([10.91.214.42])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Aug 2025 09:11:36 -0700
+ 25 Aug 2025 09:12:00 -0700
 From: Jakub Kolakowski <jakub1.kolakowski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
@@ -48,9 +48,10 @@ Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  Lukasz Laguna <lukasz.laguna@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/intel-ci/: Extend VF and VM blocklists
-Date: Mon, 25 Aug 2025 16:53:45 +0000
-Message-Id: <20250825165346.504290-2-jakub1.kolakowski@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/xe_test_config.json: Add SR-IOV
+ testlists
+Date: Mon, 25 Aug 2025 16:53:46 +0000
+Message-Id: <20250825165346.504290-3-jakub1.kolakowski@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250825165346.504290-1-jakub1.kolakowski@intel.com>
 References: <20250825165346.504290-1-jakub1.kolakowski@intel.com>
@@ -71,14 +72,12 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently VF and VM blocklists are supposed to be short and only
-contain tests that are breaking/aborting the CI run. However with the
-huge amount of expected skips present in VM runs it is justified to
-change the approach of using those blocklists and include all tests that
-are expected to skip when driver is in VF mode.
-Extend VF and VM blocklists and include expected skips. This should
-speed up CI runs in configurations where driver is in VF mode (mainly VM
-runs where many kms tests are skipping).
+Currently we have bat.testlist and full.testlist being generated
+by igt_doc.py script.
+Add SR-IOV testlists to be generated:
+- bat-vf.testlist
+- bat-vm.testlist
+- full-vm.testlist
 
 Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -86,134 +85,31 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Lukasz Laguna <lukasz.laguna@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 ---
- tests/intel-ci/xe-sriov-vf.blocklist.txt | 54 +++++++++++++++++++++++-
- tests/intel-ci/xe-sriov-vm.blocklist.txt | 52 +++++++++++++++++++++++
- 2 files changed, 105 insertions(+), 1 deletion(-)
+ tests/intel/xe_test_config.json | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel-ci/xe-sriov-vf.blocklist.txt b/tests/intel-ci/xe-sriov-vf.blocklist.txt
-index 03371d80c..69d647ef0 100644
---- a/tests/intel-ci/xe-sriov-vf.blocklist.txt
-+++ b/tests/intel-ci/xe-sriov-vf.blocklist.txt
-@@ -4,4 +4,56 @@
- #
- # Prevent potential module reloads during tests
- #
--igt@xe_module_load
-+igt@xe_module_load@.*
-+#
-+# tests applicable for PF only
-+#
-+igt@sriov_basic.*
-+igt@xe_eudebug_sriov.*
-+igt@xe_pmu@.*fn-engine-activity.*
-+igt@xe_sriov.*
-+#
-+# display related tests
-+#
-+igt@fbdev.*
-+igt@kms.*
-+igt@testdisplay
-+igt@xe_pat@.*display.*
-+igt@xe_pxp@.*display.*
-+#
-+# power management related tests
-+#
-+igt@xe_gt_freq.*
-+igt@xe_pm_residency.*
-+#
-+# OA is disabled in VF mode
-+#
-+igt@xe_oa@.*
-+igt@xe_fault_injection@oa-add-config-fail-xe_oa_alloc_regs
-+igt@xe_query@.*query-oa-units
-+#
-+# engine utilization data not available in VF mode
-+#
-+igt@xe_drm_fdinfo@.*utilization.*
-+#
-+# EU stall feature not available in VF mode
-+#
-+igt@xe_eu_stall.*
-+#
-+# The "mocs" debugfs entry is expected to be missing in VF mode
-+#
-+igt@xe_exec_reset@gt-mocs-reset
-+igt@xe_live_ktest@xe_mocs
-+igt@xe_pm@.*-mocs
-+#
-+# PCI power management capability not present in VF mode
-+#
-+igt@xe_pm@.*d3
-+#
-+# freq0 node not available for VF
-+#
-+igt@xe_pmu@gt-frequency
-+#
-+# The feature query_cs_cycles is not supported on VF
-+#
-+igt@xe_query@.*cs-cycles
-\ No newline at end of file
-diff --git a/tests/intel-ci/xe-sriov-vm.blocklist.txt b/tests/intel-ci/xe-sriov-vm.blocklist.txt
-index 06ed60b52..6271b1a70 100644
---- a/tests/intel-ci/xe-sriov-vm.blocklist.txt
-+++ b/tests/intel-ci/xe-sriov-vm.blocklist.txt
-@@ -6,3 +6,55 @@
- #
- igt@xe_pm@s2idle.*
- igt@xe_ccs@suspend-resume
-+#
-+# tests applicable for PF only
-+#
-+igt@sriov_basic.*
-+igt@xe_eudebug_sriov.*
-+igt@xe_pmu@.*fn-engine-activity.*
-+igt@xe_sriov.*
-+#
-+# display related tests
-+#
-+igt@fbdev.*
-+igt@kms.*
-+igt@testdisplay
-+igt@xe_pat@.*display.*
-+igt@xe_pxp@.*display.*
-+#
-+# power management related tests
-+#
-+igt@xe_gt_freq.*
-+igt@xe_pm_residency.*
-+#
-+# OA is disabled in VF mode
-+#
-+igt@xe_oa@.*
-+igt@xe_fault_injection@oa-add-config-fail-xe_oa_alloc_regs
-+igt@xe_query@.*query-oa-units
-+#
-+# engine utilization data not available in VF mode
-+#
-+igt@xe_drm_fdinfo@.*utilization.*
-+#
-+# EU stall feature not available in VF mode
-+#
-+igt@xe_eu_stall.*
-+#
-+# The "mocs" debugfs entry is expected to be missing in VF mode
-+#
-+igt@xe_exec_reset@gt-mocs-reset
-+igt@xe_live_ktest@xe_mocs
-+igt@xe_pm@.*-mocs
-+#
-+# PCI power management capability not present in VF mode
-+#
-+igt@xe_pm@.*d3
-+#
-+# freq0 node not available for VF
-+#
-+igt@xe_pmu@gt-frequency
-+#
-+# The feature query_cs_cycles is not supported on VF
-+#
-+igt@xe_query@.*cs-cycles
-\ No newline at end of file
+diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+index 27de0efaa..a754ccda8 100644
+--- a/tests/intel/xe_test_config.json
++++ b/tests/intel/xe_test_config.json
+@@ -11,12 +11,14 @@
+                 "default-testlist": "FULL",
+                 "update-from-file": {
+                     "exclude-type": "regex-ignorecase",
+-                    "append-value-if-not-excluded": "Xe FULL",
++                    "append-value-if-not-excluded": "Xe FULL, Xe FULL VM",
+                     "include": [
+-                        { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
++                        { "Xe BAT, Xe BAT VF, Xe BAT VM": "../intel-ci/xe-fast-feedback.testlist" }
+                     ],
+                     "exclude": [
+-                        { "Xe BAT, Xe FULL": "../intel-ci/xe.blocklist.txt" }
++                        { "Xe BAT, Xe BAT VF, Xe BAT VM, Xe FULL, Xe FULL VM": "../intel-ci/xe.blocklist.txt" },
++                        { "Xe BAT VF": "../intel-ci/xe-sriov-vf.blocklist.txt"},
++                        { "Xe BAT VM, Xe FULL VM": "../intel-ci/xe-sriov-vm.blocklist.txt"}
+                     ]
+                 },
+                 "order": [
 -- 
 2.25.1
 
