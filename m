@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEBC5CA0FED
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Aug 2025 16:00:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19CC6CA0FE8
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Aug 2025 16:00:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7964310E4F5;
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF98910E4FB;
 	Mon, 25 Aug 2025 16:00:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LQG5rFHs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ENdZ79IX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9342110E4FB
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C830310E4F8
  for <igt-dev@lists.freedesktop.org>; Mon, 25 Aug 2025 16:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1756137605; x=1787673605;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=61+3SDnzXIxbBu0fE5SuAujp8GAObcY89YlK3ld38mA=;
- b=LQG5rFHsekq2cj78hSe7UjZKRYRgeaThlgQegBUCKbW34xKtuCQPa0cc
- Had25fYN16lSDuseFH2laG/aaLrMw0QOUnFmO7lKeWDohLZrUyFdhLJL5
- fvG6E2Pyf3pVLM+w6WXwCbphXFJWMoqX/2wPjgjzl1j/uRUUntADal6Cf
- zdlCS5PjIwaJcM0HMsa6Xt4WPl5QLhJA4P3aG4vYE+bNWX1mldeqUr2Zk
- OfSXtLrVlWiG4rA40jTG/yrFeFk/KVVYWUIO8/Td4fGat5HW3Nw9YfVYB
- agY6gtn8MgoGWGdOlTEmIFnQtC1a2w+cQowjJlpTqfoBFSMAkTfA74m0W Q==;
-X-CSE-ConnectionGUID: B0cKWVuxT2CD6Er5+MLQQw==
-X-CSE-MsgGUID: ZjF87mWtR0iUaIY8QrF9vQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68948330"
-X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="68948330"
+ bh=TpzBau2aYiOERfFT28GpdOuLYeoN+arrbRirZSmOlrU=;
+ b=ENdZ79IXl32gDCO/Hqj0EdKgZclubY+WlVcJdohnNFTQ0O7740ryqw50
+ uiKo0GFOSXNapcFoBLhHKHQ5o3sh3Q1BYIBpzQ/yH9aLwOQkZ/IkvGOb9
+ WbxrF81E6NILZiCHc4Pezz808FTn5ssv35rA6wwbuV8ziKEERlol7WOYZ
+ rs7ivWSJQeR3H6xfr+1Ta8Pd07EfzBgHU7TGDl8AMpeatJEM77sQPUibV
+ TWzd9cZowI3D1eWbnKlyztnhW23zRdXJY4hIfO00z3nHr+5CM/ykAmm22
+ +5gaidKVXCY8Nk9xTAkzryws9RRjI0TfiQDrMb4PTYJZDRT3lPUJMpR9V A==;
+X-CSE-ConnectionGUID: ONbEjyKqRZGJMY4fAI/Xaw==
+X-CSE-MsgGUID: jrbYhLL1RcW5waWeZPKjQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68948332"
+X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="68948332"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Aug 2025 09:00:04 -0700
-X-CSE-ConnectionGUID: 03w7VkXQSZyUfQHO3GLStA==
-X-CSE-MsgGUID: t0eRoG9wQ5O+bLP8z7/EyA==
+X-CSE-ConnectionGUID: s5V+S1iATRulhwi8xqq2Dw==
+X-CSE-MsgGUID: skW42Z4rQESAJx21fn2Ouw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="168578240"
+X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="168578246"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Aug 2025 09:00:03 -0700
@@ -47,10 +47,10 @@ Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Riana Tauro <riana.tauro@intel.com>,
  Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Subject: [PATCH i-g-t v2 1/4] tests/intel/xe_configfs: Do not execute with
- open fd
-Date: Mon, 25 Aug 2025 08:59:43 -0700
-Message-ID: <20250825-configfs-unbind-v2-1-62e7508d3ed7@intel.com>
+Subject: [PATCH i-g-t v2 3/4] tests/intel/xe_configfs: Install exit handler
+ once
+Date: Mon, 25 Aug 2025 08:59:45 -0700
+Message-ID: <20250825-configfs-unbind-v2-3-62e7508d3ed7@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250825-configfs-unbind-v2-0-62e7508d3ed7@intel.com>
 References: <20250825-configfs-unbind-v2-0-62e7508d3ed7@intel.com>
@@ -73,81 +73,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The survivability_mode test does an unbind/set-configfs/bind sequence.
-If and fd is open, that will still refer to the old instance of the
-driver and is a dangling fd. Close it right when it's not needed anymore
-as in future other tests will also unbind/bind.
+All the subtests need to restore the device to a working condition.
+Call igt_install_exit_handler() only once, after creating the custom
+settings.
 
-While moving this code around, also make sure to use drm_close_driver()
-so the fd is dropped from the cache.
+Also remove the leftover comment in restore() since that function is
+used by other tests too.
 
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
-v2:
-- Use drm_close_driver()  (Kamil)
----
- tests/intel/xe_configfs.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ tests/intel/xe_configfs.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
 diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index 5c65cd01d..57f770b0b 100644
+index bed92714f..4f8b873d2 100644
 --- a/tests/intel/xe_configfs.c
 +++ b/tests/intel/xe_configfs.c
-@@ -101,15 +101,19 @@ static void test_engines_allowed(int configfs_device_fd)
- 	}
+@@ -26,7 +26,6 @@ static char bus_addr[NAME_MAX];
+ 
+ static void restore(int sig)
+ {
+-	/* Restore after survivability mode */
+ 	igt_kmod_unbind("xe", bus_addr);
+ 	igt_kmod_bind("xe", bus_addr);
  }
- 
--static int create_device_configfs_group(int configfs_fd, int fd)
-+static void set_bus_addr(int fd)
- {
--	int configfs_device_fd;
- 	struct pci_device *pci_dev;
--	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
- 
- 	pci_dev = igt_device_get_pci_device(fd);
- 	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
- 		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-+}
-+
-+static int create_device_configfs_group(int configfs_fd)
-+{
-+	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-+	int configfs_device_fd;
- 
- 	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
- 	igt_assert(configfs_device_fd);
-@@ -120,17 +124,22 @@ static int create_device_configfs_group(int configfs_fd, int fd)
- igt_main
- {
- 	int fd, configfs_fd, configfs_device_fd;
-+	uint32_t devid;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
-+		devid = intel_get_drm_devid(fd);
-+		set_bus_addr(fd);
-+		drm_close_driver(fd);
-+
+@@ -147,26 +146,22 @@ igt_main
  		configfs_fd = igt_configfs_open("xe");
  		igt_require(configfs_fd != -1);
--		configfs_device_fd = create_device_configfs_group(configfs_fd, fd);
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
+ 		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		igt_install_exit_handler(restore);
  	}
  
  	igt_describe("Validate survivability mode");
  	igt_subtest("survivability-mode") {
--		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
-+		igt_require(IS_BATTLEMAGE(devid));
- 		igt_install_exit_handler(restore);
+ 		igt_require(IS_BATTLEMAGE(devid));
+-		igt_install_exit_handler(restore);
  		test_survivability_mode(configfs_device_fd);
  	}
-@@ -151,6 +160,5 @@ igt_main
+ 
+ 	igt_describe("Validate engines_allowed with invalid options");
+-	igt_subtest("engines-allowed-invalid") {
+-		igt_install_exit_handler(restore);
++	igt_subtest("engines-allowed-invalid")
+ 		test_engines_allowed_invalid(configfs_device_fd);
+-	}
+ 
+ 	igt_describe("Validate engines_allowed");
+-	igt_subtest("engines-allowed") {
+-		igt_install_exit_handler(restore);
++	igt_subtest("engines-allowed")
+ 		test_engines_allowed(configfs_device_fd);
+-	}
+ 
+ 	igt_fixture {
  		igt_fs_remove_dir(configfs_fd, bus_addr);
- 		close(configfs_device_fd);
- 		close(configfs_fd);
--		close(fd);
- 	}
- }
 
 -- 
 2.50.1
