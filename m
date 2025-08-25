@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BB1BCA0FE7
-	for <igt-dev@archiver.kernel.org>; Mon, 25 Aug 2025 17:18:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD70FCA0FE7
+	for <igt-dev@archiver.kernel.org>; Mon, 25 Aug 2025 18:03:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4FBE510E267;
-	Mon, 25 Aug 2025 17:18:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7967A10E522;
+	Mon, 25 Aug 2025 18:03:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CrFrH5FX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BuztuJYh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0DE610E267
- for <igt-dev@lists.freedesktop.org>; Mon, 25 Aug 2025 17:18:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BDF110E52F
+ for <igt-dev@lists.freedesktop.org>; Mon, 25 Aug 2025 18:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756142305; x=1787678305;
+ t=1756145019; x=1787681019;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=JTonnHRwvslim/z+VxxfYQ4iTX7b8jL3NWne8PEiAuA=;
- b=CrFrH5FXDGP03y1O+kUwf0BYXU9+Pdgc/Jk/IdvH0MDuU32ORgFL1nx4
- biwCFsjZbF1rUlk9vw99z3MofDGFWomDCCwt31TOXVzixtT2Te784wPQe
- 7mtDQgpagpCZmvecuqqrk6Ukm9424jZZqyeO6S5wuwDaVgCihnj5tZMY+
- ld2cfuEXes3vcUayF2hY8kRtgy7zdkg3mBl1I7KUn9hQJioq+Tm9tfCsV
- 2v2ehMY7cxwUktXbMjnnYKIr34Hx92llyS5X8IcLXG3QjmtvxbykQTxpm
- gmSz1Kyu4REAFmUZT7W0N8vgxvVzbGtRtnmCJ88/Jr5sRg6T0oQyxCGxG w==;
-X-CSE-ConnectionGUID: BTGLfa+qSyC8Lq7Fxf5Nvg==
-X-CSE-MsgGUID: 9UsSFcQBQUC2dZMUbySfxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="62008574"
-X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="62008574"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Aug 2025 10:18:15 -0700
-X-CSE-ConnectionGUID: a3bXWadrT6Wtyb15aaGVTQ==
-X-CSE-MsgGUID: KbAaRIkuSKetxFcDkw6vSw==
+ bh=s1k/qAtFkEZrZK8hAKKIwPOqDgLvPri59dFJaAbOZL0=;
+ b=BuztuJYhtUPgBGNfNhYDOcOgNkcUe6IJ541DdX5LZMU1sC88kcD1WsdO
+ rcxmSJ371FXbFcoX3/jyH8Re2Ab+hMjJnG2bpe7HyyQIHBMIvy1BMeR40
+ sEXt0zdtNUpByhJvdTjHF+l7KDIpKsKc9jmv8SWi6wjYvS6Hy47QkOUHo
+ +LiylD0P3d5xi5WyLM7Fw8BG5cH/3OYjA8DfXoBNVuVaCJb5GQUgHU4xE
+ IeqdHAknLhMJBcwOp+MZmL1fvWY7vqOeFML0a42n23Cx3fbo2/QiYcn6n
+ jCf+yGvdkbpH2A0i8lsnxHoj09pS3cMh2p9IVWqZv2U/rm34QGJviV8c1 w==;
+X-CSE-ConnectionGUID: Cw1+RdLqTN+iOfrZa7gotA==
+X-CSE-MsgGUID: 3fWeq5RGRDOcHQ/iFdEouQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="45943439"
+X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="45943439"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Aug 2025 11:03:38 -0700
+X-CSE-ConnectionGUID: LGqDLnBrRW2jmtHZxc72Lg==
+X-CSE-MsgGUID: JUFipNlcRWOtLFQfkO/mkg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="193020086"
-Received: from lmrodriq-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
- ([10.246.169.244])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Aug 2025 10:18:13 -0700
-Date: Mon, 25 Aug 2025 10:18:12 -0700
-Message-ID: <87ldn7miaz.wl-ashutosh.dixit@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; d="scan'208";a="168608591"
+Received: from jmmaglun-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.124.32.28])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Aug 2025 11:03:38 -0700
+Date: Mon, 25 Aug 2025 11:03:37 -0700
+Message-ID: <87jz2rmg7a.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 4/4] tests/intel/xe_oa: Add an option to capture
- ftrace
-In-Reply-To: <87qzx1yia3.wl-ashutosh.dixit@intel.com>
-References: <20250823003401.109978-6-umesh.nerlige.ramappa@intel.com>	<20250823003401.109978-10-umesh.nerlige.ramappa@intel.com>	<87qzx1yia3.wl-ashutosh.dixit@intel.com>
+Subject: Re: [PATCH i-g-t 3/4] tests/intel/xe_oa: Add a test for tail address
+ wrap
+In-Reply-To: <20250823003401.109978-9-umesh.nerlige.ramappa@intel.com>
+References: <20250823003401.109978-6-umesh.nerlige.ramappa@intel.com>	<20250823003401.109978-9-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,158 +71,150 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Sat, 23 Aug 2025 12:01:08 -0700, Dixit, Ashutosh wrote:
+On Fri, 22 Aug 2025 17:34:05 -0700, Umesh Nerlige Ramappa wrote:
 >
-> On Fri, 22 Aug 2025 17:34:06 -0700, Umesh Nerlige Ramappa wrote:
-> >
-> > Capture ftrace with the --trace option when needed. This is not intended
-> > to run as default, but more of a debug functionality when manually
-> > running individual tests.
+
+Hi Umesh,
+
+OK good to add such as test, previously tail address wrap was only tested
+indirectly, e.g. by report headers being incorrect. But with multiple
+problems such as report sizes being wrong for different formats, a specific
+test for tail address wrap is good to have.
+
+> Add a test to verify that the HW wraps to start of the OA buffer when a
+> report does not fit in the remaining space in the buffer.
 >
-> Maybe mention here or in the commit title that we are capturing register
-> read/writes in ftrace.
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> ---
+>  tests/intel/xe_oa.c | 74 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 74 insertions(+)
 >
-> >
-> > In addition configure the ftrace buffer using the --trace_buf_size_mb
-> >
-> > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> > ---
-> >  tests/intel/xe_oa.c | 58 ++++++++++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 57 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> > index 7381e7b9bd44..e5473a5ff70f 100644
-> > --- a/tests/intel/xe_oa.c
-> > +++ b/tests/intel/xe_oa.c
-> > @@ -307,6 +307,8 @@ static struct oa_format lnl_oa_formats[XE_OA_FORMAT_MAX] = {
-> >		.bc_report = 0 },
-> >  };
-> >
-> > +static bool oa_trace = false;
-> > +static uint32_t oa_trace_buf_mb = 20;
-> >  static int drm_fd = -1;
-> >  static int sysfs = -1;
-> >  static int pm_fd = -1;
-> > @@ -389,6 +391,31 @@ static u32 get_stream_status(int fd)
-> >	return status.oa_status;
-> >  }
-> >
-> > +static void enable_trace_log(void)
-> > +{
-> > +	char cmd[64] = {0};
-> > +
-> > +	if (!oa_trace || oa_trace_buf_mb > 20)
+> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> index 745f364e52e9..7381e7b9bd44 100644
+> --- a/tests/intel/xe_oa.c
+> +++ b/tests/intel/xe_oa.c
+> @@ -4535,6 +4535,76 @@ static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_insta
+>	try_invalid_access(vaddr);
+>  }
+>
+> +/**
+> + * SUBTEST: tail-address-wrap
+> + * Description: Test tail address wrap on odd format sizes. Ensure that the
+> + * format size is not a power of 2. This means that the last report will not be
+> + * broken down across the OA buffer end. Instead it will be written to the
+> + * beginning of the OA buffer. We will check the end of the buffer to ensure it
+> + * has zeroes in it.
+> + */
+> +static void
+> +test_tail_address_wrap(const struct drm_xe_engine_class_instance *hwe)
+> +{
+> +#define TIMER_PERIOD_US 20
 
-Actually, why is this oa_trace_buf_mb condition there in enable/disable? If
-we don't want the trace buf to be > 20 MB, maybe return an error in
-opt_handler?
+Let's not call this "TIMER_PERIOD", something like ADDR_WRAP_US etc.
 
-Also, do we really need this oa_trace_buf_mb option? Maybe just select a
-size and hardcode it? Or we need the option because we don't know the
-hardcoded value?
+> +	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+> +	uint64_t exponent = max_oa_exponent_for_period_lte(TIMER_PERIOD_US * 1000);
+> +	uint64_t fmt = test_set->perf_oa_format;
+> +	uint64_t properties[] = {
+> +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+> +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+> +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+> +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+> +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, exponent,
+> +		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+> +		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, buffer_fill_size,
+> +	};
+> +	struct intel_xe_oa_open_prop param = {
+> +		.num_properties = ARRAY_SIZE(properties) / 2,
+> +		.properties_ptr = to_user_pointer(properties),
+> +	};
+> +	uint32_t fmt_size = get_oa_format(fmt).size;
+> +	uint32_t fit_reports = buffer_fill_size / fmt_size;
+> +	uint32_t wrap_offset = (fit_reports * fmt_size) >> 2;
+> +	uint32_t end_offset = buffer_fill_size >> 2;
+> +	uint32_t *report, *zero_area, *buffer_end;
+> +	void *buffer_start;
+> +	int i, tolerance = 10;
+> +
+> +	igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_BUFFER_SIZE);
+> +
+> +	/* Ensure report does not fit */
+> +	igt_require(wrap_offset < end_offset);
+> +
+> +	/* mmap the buffer */
+> +	stream_fd = __perf_open(drm_fd, &param, false);
+> +	buffer_start = mmap(0, buffer_fill_size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+> +	igt_assert(buffer_start);
+> +
+> +	/* Wait for reports to fill the buffer with some tolerance */
+> +	report = buffer_start;
+> +	for (i = 0; fit_reports && i < fit_reports + tolerance; i++) {
 
-Since we are only tracing xe_reg_rw, maybe even the default size is ok? How
-many reg r/w's are there for an OA IGT? Maybe not that many? Since the reg
-r/w's done by batches won't be captured here anyway, just the direct mmio
-r/w's?
+Since fit_reports is decreasing below and i is increasing, looks like this
+loop will exit when OA buffer is half full? Maybe that is why the test is
+always passing? Tolerance is not making much sense either since it will
+make the report pointer go over the OA buffer? So we need to simplify the
+loop.
 
-When we generate lots of ftrace, I have previously found the default ftrace
-buffer size is not sufficient and printf's get dropped. Previously I used
-512 KB (the largest size which worked in those old kernels) and that seemed
-sufficient. But anyway even larger values are ok.
+Maybe we can add an argument to mmap_wait_for_periodic_reports() to also
+count all reports, so make the function work for both periodic and
+non-periodic reports and use it here?
 
-Anyway, ok to leave as is too. Just some ideas.
+So wait for the buffer to first fill once and once that happens wait for it
+to completely fill again (maybe even more than once). Something like
+that. But maybe will need to zero out the buffer for
+mmap_wait_for_periodic_reports() which probably is not allowed by the
+kernel. So anyway, need some way to figure out if the buffer is filled
+again, like read the tail pointer. Or go back to verifying OA packet
+headers...
 
-> > +		return;
-> > +
-> > +	snprintf(cmd, sizeof(cmd) - 1, "echo %d > /sys/kernel/debug/tracing/buffer_size_kb", oa_trace_buf_mb * 1000);
+> +		usleep(TIMER_PERIOD_US);
+> +		if (*report && oa_timestamp(report, fmt)) {
+> +			fit_reports--;
+> +			report += (fmt_size >> 2);
+> +		}
+> +	}
+> +
+> +	/* Let some reports land in the start of the buffer */
+> +	usleep(tolerance * TIMER_PERIOD_US);
 
-Maybe * 1024 instead?
+My preference is to not use direct usleep's since it breaks in different
+environments (sim etc.), see comments above. We've eliminated several such
+things in Xe OA IGT's previously iirc.
 
-> > +	system(cmd);
-> > +	system("echo 0 > /sys/kernel/debug/tracing/tracing_on");
-> > +	system("echo > /sys/kernel/debug/tracing/trace");
-> > +	system("echo 1 > /sys/kernel/debug/tracing/events/xe/enable");
-> > +	system("echo 1 > /sys/kernel/debug/tracing/events/xe/xe_reg_rw/enable");
-> > +	system("echo 1 > /sys/kernel/debug/tracing/tracing_on");
-> > +}
-> > +
-> > +static void disable_trace_log(void)
-> > +{
-> > +	if (!oa_trace || oa_trace_buf_mb > 20)
-> > +		return;
-> > +
-> > +	system("echo 0 > /sys/kernel/debug/tracing/tracing_on");
-> > +	system("cat /sys/kernel/debug/tracing/trace");
-> > +}
-> > +
-> >  static void
-> >  dump_report(const uint32_t *report, uint32_t size, const char *message) {
-> >	uint32_t i;
-> > @@ -4937,7 +4964,34 @@ static const char *xe_engine_class_name(uint32_t engine_class)
-> >	igt_require_f(hwe, "no render engine\n"); \
-> >	igt_dynamic_f("rcs-%d", hwe->engine_instance)
-> >
-> > -igt_main
-> > +static int opt_handler(int opt, int opt_index, void *data)
-> > +{
-> > +	switch (opt) {
-> > +	case 'b':
-> > +		oa_trace_buf_mb = strtoul(optarg, NULL, 0);
-> > +		igt_debug("Trace buffer %d Mb\n", oa_trace_buf_mb);
-> > +		break;
-> > +	case 't':
-> > +		oa_trace = true;
-> > +		igt_debug("Trace enabled\n");
-> > +		break;
-> > +	default:
-> > +		return IGT_OPT_HANDLER_ERROR;
-> > +	}
-> > +
-> > +	return IGT_OPT_HANDLER_SUCCESS;
-> > +}
-> > +
-> > +static const char *help_str =  "  --trace | -t\t\tEnable ftrace\n"
-> > +			       "  --trace_buf_size_mb | -b\t\tSet ftrace buffer size in Mb (default = 0, max = 20)\n";
-
-s/Mb/MB/ ?
+Maybe separate out this patch so that the other patches can get merged
+first?
 
 Thanks.
 --
 Ashutosh
 
-> > +
-> > +static struct option long_options[] = {
-> > +	{"trace", 0, 0, 't'},
-> > +	{"trace_buf_size_mb", 0, 0, 'b'},
-> > +	{ NULL, 0, 0, 0 }
-> > +};
-> > +
-> > +igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
-> >  {
-> >	const struct sync_section {
-> >		const char *name;
-> > @@ -4981,6 +5035,7 @@ igt_main
-> >		 */
-> >		igt_assert_eq(drm_fd, -1);
-> >
-> > +		enable_trace_log();
-> >		drm_fd = drm_open_driver(DRIVER_XE);
-> >		xe_dev = xe_device_get(drm_fd);
-> >
-> > @@ -5210,5 +5265,6 @@ igt_main
-> >			intel_xe_perf_free(intel_xe_perf);
-> >
-> >		drm_close_driver(drm_fd);
-> > +		disable_trace_log();
+> +
+> +	zero_area = (uint32_t *)buffer_start + wrap_offset;
+> +	buffer_end = (uint32_t *)buffer_start + end_offset;
+> +
+> +	/* Ensure HW did not write to this area */
+> +	while (zero_area < buffer_end)
+> +		igt_assert_eq(*zero_area++, 0);
+> +
+> +	munmap(buffer_start, buffer_fill_size);
+> +	__perf_close(stream_fd);
+> +}
+> +
+>  /**
+>   * SUBTEST: map-oa-buffer
+>   * Description: Verify mapping of oa buffer
+> @@ -5091,6 +5161,10 @@ igt_main
+>		igt_subtest_with_dynamic("closed-fd-and-unmapped-access")
+>			__for_one_hwe_in_oag(hwe)
+>				closed_fd_and_unmapped_access(hwe);
+> +
+> +		igt_subtest_with_dynamic("tail-address-wrap")
+> +			__for_one_hwe_in_oag(hwe)
+> +				test_tail_address_wrap(hwe);
+>	}
 >
-> Does this get disabled even if the test crashes? Anyway since it is for
-> debug and not enabled by default, this is:
+>	igt_subtest_group {
+> --
+> 2.43.0
 >
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->
-> >	}
-> >  }
-> > --
-> > 2.43.0
-> >
