@@ -4,127 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57F3FCA0EFA
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 06:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9992CA0EE4
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 06:45:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F0CF10E184;
-	Tue, 26 Aug 2025 06:45:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 76D6110E5CB;
+	Tue, 26 Aug 2025 06:45:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="uQem13ma";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="2y8dgIBg";
 	dkim-atps=neutral
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2057.outbound.protection.outlook.com [40.107.243.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2C0610E5CB
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2047.outbound.protection.outlook.com [40.107.223.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A80F810E184
  for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 06:45:45 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g3PNbur9H6bmuYlAsurP1cgnveOOdgqPSHlNfoz3YfqizwMNO38IiZ+YWa5Hc35qgjgwuGT1vbw2LhncnZv90PfaCIg7ktaYPD2o3/JCKKITbnK6KkzzS7eg0311E9kFfmn3Bgb19/+hH7ryu+zgCZ+nxVE1WxZ0SLnznV3/jMXmeSYoHF40UJrXxiBTM9kriTZ/TZuo4WJHBShb9uJWxyOk0dwLv0T1ngN/k08q/5C1pdxRKV/xMMFH7lC4LlMfdQ5RUG0SaFcceE8cCxmxzdNkDClTM9tN0nwtF1ks6bcUhjEoMhA/1mWjMZBopd6fT+pkkvI4eOGlmaN2e90qPQ==
+ b=xINIjqqOQ1rhwQpzz1HnSfAuKqIZjtzN4nLyfY+ayFaNi0FaiRrKcIE0gNJ4jWETD1NJ8JGuNNpP2mENf8j1VxhcrUR81rGh2EcYc9tKC6OATBQ5W8YVfZv92yiwgMixSPh16/Vr8kwjy/a5cdTFCqYPQOZXUR0+2wUJZV+PksKBzljtUtlj3Vh6h5gCNxVAvjkaKxFonzLrCeV64JVI6Wl//RKNrIgB2A+usEz38y4n21CLkS/93uq5IXckzSz2t77mN+EYVscRVzrktGoEcWUGK15EeOAqeyAebVLadxMuTAT9nnJK/PA6dJt3/JuuOmncM8T+ppEz0odh2aGOgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JIJxE6gYgACt0HeDi8tlw2LcUaWq0GVTc0OWYmEwR1o=;
- b=hZmRjRCvBU71fFoBx/kPyN6L80gq6cq93PObxbpWgMrMYako0Dh0rJ0/WzkBMFKou2F9SWivORSO4vKH9enJPhwYLErHxcI61mLabwDfkqJ1MOZn4hYkcJzjgXjaiJd/000K3RuuZNkvxYyc7Vv29b2FL4T7pa4qbSW1C44KMwRkQIwyYeXZLwjtKUWiftDsEORpjUjr1xMMkP52N0/syM7cxkG/nCqaqDSEFb0FDm2Xp/wnZaoj/nlfJ14VmxuhPO3hcXE8LYPzI3uiFIKKrRGYiH5v/Xxez1oym2Z3uyWkKCNvZqk1qTmGlIloTgv78gEP5qb+ChkiZVkE2CIjFQ==
+ bh=62vsQyU1AToA9BknKAThfMyxEghv2hDLM4tX081mQwg=;
+ b=Nr55xqNt1GLiOqz2Oj93VKeU8+HywcfQTtjt9xuSW6hKEAQJ76L5B61+FqUN1nXGr7YVN7mGqMdPcxhQ95+tjtEGvMKXTHxUv0tMp5PgGK91EFDIL2Zt77iPyBLdH7GgBZ2PHVQ4zEVdaHb0EFm7RtuPVWJ4SnjK6M7OveANYlwTmF9oaqCBudMdLECJPlfMoR8omMpFvlukMyDMACMxKjuChXAIJQUXw14FUdctNQ6bbnhDKQyk/Ww7w0n3QBEX3uGcl06hZw4bvgmbMOsxilOFzWocAE5BozZfp9CK89ttS5cNwEBp3xTo1InjcBeLco3MYthjacjosIJc7/cBzA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JIJxE6gYgACt0HeDi8tlw2LcUaWq0GVTc0OWYmEwR1o=;
- b=uQem13mamMkT14QO7DAnFQr+LRnoUq1Lofj789C+EIYhWrvVCmGZpDwljzuzXjLyFvZ5YD/e/IuRJlDtsSY5bmv8W8iDf9UJrFfq/PAuF1UfrbJ/B/3+qE+6PlHOU7OZjvUrS0xfyVVpIQE3oTyoVZfO2WHUEeHslOfKHHWapAM=
-Received: from MW3PR06CA0022.namprd06.prod.outlook.com (2603:10b6:303:2a::27)
- by DS7PR12MB6144.namprd12.prod.outlook.com (2603:10b6:8:98::8) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9052.21; Tue, 26 Aug 2025 06:45:41 +0000
-Received: from SA2PEPF000015C9.namprd03.prod.outlook.com
- (2603:10b6:303:2a:cafe::e) by MW3PR06CA0022.outlook.office365.com
- (2603:10b6:303:2a::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.21 via Frontend Transport; Tue,
+ bh=62vsQyU1AToA9BknKAThfMyxEghv2hDLM4tX081mQwg=;
+ b=2y8dgIBgyl+Q+7S8TbC63jYbhY/IX+2dttRK4ujOyK6cyPYN3+rLIsijMEClwCAkaw2Tr2W0k3fM++dRAHUc27gpJd+bIB+WdRiNfHhJeHY19w260iCqZKFifaUVe0dFXKqgtDrR/RRsLrKA39hkRLkOLnw2oV84qYdvQYsAR5E=
+Received: from BL1P223CA0035.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:5b6::19)
+ by IA1PR12MB9465.namprd12.prod.outlook.com (2603:10b6:208:593::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Tue, 26 Aug
+ 2025 06:45:41 +0000
+Received: from BN3PEPF0000B076.namprd04.prod.outlook.com
+ (2603:10b6:208:5b6:cafe::e9) by BL1P223CA0035.outlook.office365.com
+ (2603:10b6:208:5b6::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.13 via Frontend Transport; Tue,
  26 Aug 2025 06:45:40 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- SA2PEPF000015C9.mail.protection.outlook.com (10.167.241.199) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B076.mail.protection.outlook.com (10.167.243.121) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.20.9073.11 via Frontend Transport; Tue, 26 Aug 2025 06:45:40 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 26 Aug
- 2025 01:45:39 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ 2025 01:45:37 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Mon, 25 Aug
- 2025 23:45:38 -0700
+ 2025 23:45:37 -0700
 Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
  SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Tue, 26 Aug 2025 01:45:38 -0500
+ via Frontend Transport; Tue, 26 Aug 2025 01:45:36 -0500
 From: Jesse.Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
  Jesse.Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH 2/2] tests/amdgpu: Add user queue tests for SDMA in deadlock
- tests
-Date: Tue, 26 Aug 2025 14:45:12 +0800
-Message-ID: <20250826064530.1721892-2-Jesse.Zhang@amd.com>
+Subject: [PATCH 1/2] lib/amdgpu: Add user queue support to
+ amdgpu_wait_memory_helper
+Date: Tue, 26 Aug 2025 14:45:11 +0800
+Message-ID: <20250826064530.1721892-1-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250826064530.1721892-1-Jesse.Zhang@amd.com>
-References: <20250826064530.1721892-1-Jesse.Zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015C9:EE_|DS7PR12MB6144:EE_
-X-MS-Office365-Filtering-Correlation-Id: 47b83c05-c403-4dfd-bcb9-08dde46c2c07
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B076:EE_|IA1PR12MB9465:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4146ccdb-18fc-43ae-3174-08dde46c2c3b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|36860700013|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?+enSKevxXJ22xMA93nv2/w5PTbAQ8ynX/Mh08kuMYfcm1S1Z1idD0feZ4sxx?=
- =?us-ascii?Q?nZObGJmzBd9g8iAJNe0wUn6mi2ZdnMiaodlzq3JHP5Fqjqq5oaKGr2W9caKQ?=
- =?us-ascii?Q?qq9tQs0NikTaa0eLw/woeAMklNbOmZpTv4yPkVTEaYDbZr7HcVN+yBfHCvyg?=
- =?us-ascii?Q?9gatI7M4eyM/0KD4CEApV1AHcrjDoX81cwzAATOZ+iBaKqL+Oma31iCJcLYp?=
- =?us-ascii?Q?hhDLMC8UEScRv0sDS0Bi/Mc2GID8hUYNMBFSrjIh2+iS5iwsRExjpKfKMVOC?=
- =?us-ascii?Q?71XGMdtO9ex0mUD/roTtC61wEexMVlas4sna8dX5Nug3WOGRM7rb4oOq1dVM?=
- =?us-ascii?Q?yvL6Kg7EQTxW1z5QgRwtPh4egfI2ZBNbDH4Wkm7EkTiveXUZbJCTzTSAt62R?=
- =?us-ascii?Q?0ILnoMANrJtvtoeAiiRdyh2Y0FWkR+To4sfcxuLykJi3jLHqTQJUmph+SWD4?=
- =?us-ascii?Q?cQY7r3Tfvs4tnRQlA2/oHm3aOKLNrFH+5RkOrgUrRF9LWLfn2LEOyU7vnuPx?=
- =?us-ascii?Q?y8jjZ5a5hKY1SFIRHlFlKyjlarjbwb+tJd383msVOCNgTuVHah3VKwUkWBOa?=
- =?us-ascii?Q?JcWGa0Y1OMkdRwq/TsFZmNhPf45c7PhAJpasfZuQZTB17j7IGfNfWj/ry4H4?=
- =?us-ascii?Q?EPmBSZYBOGT7uuOksh0O9URMayy2Wm0ZBOV5IX7QloNlUewm1OmOT0YmiG8X?=
- =?us-ascii?Q?z4h1MBTZPUqQSd4fV3ExZCoPUq0o4QbPJRC4NbxYHdea0j6s1iT6GDdalvaK?=
- =?us-ascii?Q?Px9DJ8rG4WIgTd3T2yo2V3TZJ8rEKMwnkosGSbFy59PCwPWJujB0BjynDnax?=
- =?us-ascii?Q?ULn7WyWqpBaTuHLAJSDumthsPiNtf2gVSlK5zzzVdnCG9AdNysYhnvmBedDD?=
- =?us-ascii?Q?5XSNNCWIdjOeT9rHInS69UQ8+aVmXJ5CcFTsnzvYPAG2p9J39KmR1dBgPWAH?=
- =?us-ascii?Q?HH9LEjUuYqTCm4mk5LyCGbUa88zHJUH5BMzmWMyfrRPfg+VqXtDrzQLdsbao?=
- =?us-ascii?Q?yNd7LdkQvrPNYvQcesUniCD7Ga4efIgGD5DVVXdN0qyrpjjP6XZQjXHQ+h1V?=
- =?us-ascii?Q?+MoKDe9dTrQ5k8KxobfZpMKBRfqR/VYk2wW8NLsVn5XrPBiTH1dlsMNcJEts?=
- =?us-ascii?Q?2SPsMEC8UUz/2oNTscIih+fWJ8CnGfQFs4qnbzB5zkLUyf29+5TrWvNTIeyQ?=
- =?us-ascii?Q?bpWT4bRl/O42byMSzlzFYTiyTjK/ty8rjKOruEePlkS/SSzANwoWmOTrBift?=
- =?us-ascii?Q?Nw0IQs8/s+GQLRJ2Av+eC4nY6DAbW2T+qCnFjTex3Pqow+MvEf+0Oj/xz5UU?=
- =?us-ascii?Q?RGDezIFnIByGgUiSBXE8+Q/mcyIyibMINqC1qZIxxyj0XCVvZZOlhtLI4Gvj?=
- =?us-ascii?Q?I9Fo2lxdO9vlP8TCmDL60L2unXTw+yWMDXJ7Wguvz2lTI+D3v9ZxwhwJweCn?=
- =?us-ascii?Q?XRFsggBC/4DE+cxt+neynGOVVIFZv/5hysOsW20cmAqh1gU6Rs6857w0VrsQ?=
- =?us-ascii?Q?IbvgB10KgodKuHIQW+cUPWwo+O9OON+bustY?=
+ ARA:13230040|82310400026|36860700013|376014|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?9IXaVvhYPSLCv4382SInXy6U6D1p5kzVLzjj7fUw7EQ4YWaRfC+uHXT/pChT?=
+ =?us-ascii?Q?NXavDSDQaV4gxdCjWF3Zabq1qL56k6Lc3FWKQRjaXVpHSNSi95ZiDcfsRa8a?=
+ =?us-ascii?Q?2aCG3EsA+gOCjiYAImsWdhp8DOS0jobvg2uRdwLFMVtYJEgwpwyNJUYIZVV/?=
+ =?us-ascii?Q?0RfwuHy/wZBYK5gfrMKshR4eFgPuoIthWwisFgwzxr0qQfLcQ78GdsdDegIu?=
+ =?us-ascii?Q?CCbXR2p3dLXhJY+kbS6B55gtiEtm/tJ4m0KlTItNcuHmJcb4Ul6cwFHlnG9O?=
+ =?us-ascii?Q?0gymIWRbhekxBAnsV4WJk9ziIaXHHQUF1Zj+96LFyiFCexgJ/E2/A43tPyVg?=
+ =?us-ascii?Q?BOTREM2A4mFt9571Y1r+qeLpUj5TnLWHspiz3Fydyzk5OnNMH2darz3eugP2?=
+ =?us-ascii?Q?eKF1UP/I3mfjDbmCHSwbrS+M/qZwOU7hitpr347jpPtgcfpTu5XEdATTRVRV?=
+ =?us-ascii?Q?bMMmEw2eCNel0kSe6u2OR+u1/u7axrxsof6IOg5VWwwN9qfs9pA/nwdzRiz4?=
+ =?us-ascii?Q?N8Fx/+X+10onxGVWaxfczfRZgJZRkxXWF6D9jkZh2zSR2lzkKtzEeOLScNFv?=
+ =?us-ascii?Q?Ykf6RWXoO6qkF6DoiTu7iVAondge/GsTna9MbSL0S9KaxzCukV4zMSic2+bz?=
+ =?us-ascii?Q?2q1q9ZRHN76C/Ayz67RB/7QX7BepvrF0gyr4+CLzCMA/ExbjhasdgitILmod?=
+ =?us-ascii?Q?ri+NUL5X1OUwFFFnuEDEvQoGxwOqvOD0xvTo2nG81C0LMMWFUI+jsnx5xiP5?=
+ =?us-ascii?Q?BOf/JrrqQoLIhoqHw/sK4ygDBi3VivsW8iPodX1lCV8IO5ekHj+4w7BNchUU?=
+ =?us-ascii?Q?1Kzis3VrAjcOJ10Qjq3ENvqZAggpcrKaStqK5KV3Pup0cYPlfO6VUBMYS5IH?=
+ =?us-ascii?Q?MRi7pNT9WEUU/H7kqL4uO6VLuLLkrtcsvd3BguJ04919bYDdkbw00jxu8DJG?=
+ =?us-ascii?Q?6jeNDZ0NcpNSMeEDi27EDYXR+TLXmauOwDE2Lw9XWsIPDK8ddoPgKzwQlQPx?=
+ =?us-ascii?Q?NWokK8EpXisncP39S8Qk8drzc/Df1LDYXEaFV+01gwMlPMZyJBKDWA6jSoxY?=
+ =?us-ascii?Q?EARdvMoK4n9oWl3WRNodNo2VJ1DrL/uxEeXpdHxq35ar3KQsMGqoAzrsJiHa?=
+ =?us-ascii?Q?K7uzvF8fQvWloBBfxC+AjNf+j4EbB9Nq8/BnmahAExW+qxo+a941bUV79qaL?=
+ =?us-ascii?Q?uz/J0gq12+AMqJpj8ACkCbZHy0iOAikyZeagOY0FSmetygdOBcGT/WJQnMW/?=
+ =?us-ascii?Q?Hbf8b+6Wy9K/3gMcgfX3pdCHfWWrDzQY8vEnuFwtHYfN6WWc8idMxUjJhLLT?=
+ =?us-ascii?Q?NrzAay46UrcaB/G5M8SGK/q+BgrFjZ0SKHmhvJ5D0Kouut4/ggaEVjqswo3x?=
+ =?us-ascii?Q?7UACcI3bQ+CDILnvlPYwWdfwZZWJn3gEGBcNHyL0eUoUhFgKiV8A92c6IDXV?=
+ =?us-ascii?Q?6cZYS+4NsBC744v3Cp6GEeZkPXLMFtbmac+MzuFSwMicvpC2kSXrg8FBTesL?=
+ =?us-ascii?Q?7+xq8OVjerdbdg+uT513IYEiE/2MS8o0FPgk?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026); DIR:OUT;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 06:45:40.2131 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47b83c05-c403-4dfd-bcb9-08dde46c2c07
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 06:45:40.5718 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4146ccdb-18fc-43ae-3174-08dde46c2c3b
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF000015C9.namprd03.prod.outlook.com
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B076.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6144
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9465
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -140,107 +138,210 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-- Modify existing tests to pass an additional 'false' parameter to the
-  amdgpu_wait_memory_helper function to disable the reset functionality.
-- Add new tests to cover various GPU reset scenarios triggered by SDMA:
-  - Test GPU reset by SDMA with bad opcode
-  - Test GPU reset by SDMA with bad memory access
-  - Test GPU reset by SDMA with bad register access
-  - Test GPU reset by SDMA with bad packet length
-  - Test GPU reset by flooding the SDMA ring with jobs
-- Update the test descriptions to reflect the new test cases and their purposes.
+This commit enhances the amdgpu_wait_memory_helper function to support
+user queues in addition to  kernel queues.
+
+The changes maintain backward compatibility with existing kernel queue
+functionality while adding support for the newer user queue model.
 
 Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 ---
- tests/amdgpu/amd_deadlock.c | 54 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 51 insertions(+), 3 deletions(-)
+ lib/amdgpu/amd_deadlock_helpers.c | 100 ++++++++++++++++++++----------
+ lib/amdgpu/amd_deadlock_helpers.h |   2 +-
+ 2 files changed, 67 insertions(+), 35 deletions(-)
 
-diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-index 3456f42c8..41b3aa15e 100644
---- a/tests/amdgpu/amd_deadlock.c
-+++ b/tests/amdgpu/amd_deadlock.c
-@@ -78,7 +78,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma")
--			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA, &pci);
-+			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA, &pci, false);
+diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
+index 84635e043..c7799b00a 100644
+--- a/lib/amdgpu/amd_deadlock_helpers.c
++++ b/lib/amdgpu/amd_deadlock_helpers.c
+@@ -45,7 +45,7 @@ write_mem_address(void *data)
+ }
+ 
+ static void
+-amdgpu_wait_memory(amdgpu_device_handle device_handle, unsigned int ip_type, uint32_t priority)
++amdgpu_wait_memory(amdgpu_device_handle device_handle, unsigned int ip_type, uint32_t priority, bool userq)
+ {
+ 	amdgpu_context_handle context_handle;
+ 	amdgpu_bo_handle ib_result_handle;
+@@ -56,7 +56,7 @@ amdgpu_wait_memory(amdgpu_device_handle device_handle, unsigned int ip_type, uin
+ 	struct amdgpu_cs_ib_info ib_info;
+ 	struct amdgpu_cs_fence fence_status;
+ 	uint32_t expired;
+-	int r;
++	int r = 0;
+ 	amdgpu_bo_list_handle bo_list;
+ 	amdgpu_va_handle va_handle;
+ 	int bo_cmd_size = 4096;
+@@ -64,23 +64,34 @@ amdgpu_wait_memory(amdgpu_device_handle device_handle, unsigned int ip_type, uin
+ 	pthread_t stress_thread = {0};
+ 	struct thread_param param = {0};
+ 	int job_count = 0;
++	struct amdgpu_ring_context *ring_context = NULL;
+ 	struct amdgpu_cmd_base *base_cmd = get_cmd_base();
++	const struct amdgpu_ip_block_version *ip_block = get_ip_block(device_handle, ip_type);
+ 
+-	if (priority == AMDGPU_CTX_PRIORITY_HIGH)
+-		r = amdgpu_cs_ctx_create2(device_handle, AMDGPU_CTX_PRIORITY_HIGH, &context_handle);
+-	else
+-		r = amdgpu_cs_ctx_create(device_handle, &context_handle);
+-
+-	igt_assert_eq(r, 0);
++	if (userq) {
++		ring_context = calloc(1, sizeof(*ring_context));
++		igt_assert(ring_context);
++		ip_block->funcs->userq_create(device_handle, ring_context, ip_block->type);
++	} else {
++		if (priority == AMDGPU_CTX_PRIORITY_HIGH)
++			r = amdgpu_cs_ctx_create2(device_handle, AMDGPU_CTX_PRIORITY_HIGH, &context_handle);
++		else
++			r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++		igt_assert_eq(r, 0);
++	}
+ 
+ 	r = amdgpu_bo_alloc_and_map_raw(device_handle, bo_cmd_size, bo_cmd_size,
+ 			AMDGPU_GEM_DOMAIN_GTT, 0, use_uc_mtype ? AMDGPU_VM_MTYPE_UC : 0,
+ 						    &ib_result_handle, &ib_result_cpu,
+ 						    &ib_result_mc_address, &va_handle);
+ 	igt_assert_eq(r, 0);
+-
+-	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
+-	igt_assert_eq(r, 0);
++	if (userq) {
++		r = amdgpu_timeline_syncobj_wait(device_handle, ring_context->timeline_syncobj_handle, ring_context->point);
++		igt_assert_eq(r, 0);
++	} else {
++		r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL, &bo_list);
++		igt_assert_eq(r, 0);
++	}
+ 
+ 	base_cmd->attach_buf(base_cmd, ib_result_cpu, bo_cmd_size);
+ 
+@@ -145,42 +156,55 @@ amdgpu_wait_memory(amdgpu_device_handle device_handle, unsigned int ip_type, uin
+ 		/* GPU hung is detected becouse we wait for register value*/
+ 		/* submit jobs until it is cancelled , it is about 33 jobs for gfx */
+ 		/* before GPU hung */
+-		r = amdgpu_cs_submit(context_handle, 0, &ibs_request, 1);
++		if (userq) {
++			ring_context->pm4_dw = ib_info.size;
++			ip_block->funcs->userq_submit(device_handle, ring_context, ip_block->type, ib_result_mc_address);
++		} else {
++			r = amdgpu_cs_submit(context_handle, 0, &ibs_request, 1);
++		}
+ 		job_count++;
+ 	} while (r == 0 && job_count < MAX_JOB_COUNT);
+ 
+ 	if (r != 0 && r != -ECANCELED && r != -ENODATA)
+ 		igt_assert(0);
+ 
+-
+-
+-	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
+-	fence_status.context = context_handle;
+-	fence_status.ip_type = ip_type;
+-	fence_status.ip_instance = 0;
+-	fence_status.ring = 0;
+-	fence_status.fence = ibs_request.seq_no;
+-
+-	r = amdgpu_cs_query_fence_status(&fence_status, AMDGPU_TIMEOUT_INFINITE, 0,
+-			&expired);
+-	if (r != 0 && r != -ECANCELED && r != -ENODATA && r != -ETIME)
+-		igt_assert(0);
+-
++	// Wait for completion (syncobj for userq, fence for kernel queue)
++	if (userq) {
++		r = amdgpu_timeline_syncobj_wait(device_handle, ring_context->timeline_syncobj_handle, ring_context->point);
++	} else {
++		memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
++		fence_status.context = context_handle;
++		fence_status.ip_type = ip_type;
++		fence_status.ip_instance = 0;
++		fence_status.ring = 0;
++		fence_status.fence = ibs_request.seq_no;
++
++		r = amdgpu_cs_query_fence_status(&fence_status, AMDGPU_TIMEOUT_INFINITE, 0,
++				&expired);
++		if (r != 0 && r != -ECANCELED && r != -ENODATA && r != -ETIME)
++			igt_assert(0);
++	}
+ 	/* send signal to modify the memory we wait for */
+ 	pthread_kill(stress_thread, SIGUSR2);
+ 
+ 	pthread_join(stress_thread, NULL);
+ 
+-	amdgpu_bo_list_destroy(bo_list);
++	// Cleanup
++	if (!userq) {
++		amdgpu_bo_list_destroy(bo_list);
++		amdgpu_cs_ctx_free(context_handle);
++	} else {
++		ip_block->funcs->userq_destroy(device_handle, ring_context, ip_block->type);
++		free(ring_context);
++	}
+ 
+ 	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
+ 							 ib_result_mc_address, 4096);
+-
+ 	amdgpu_cs_ctx_free(context_handle);
+ 	free_cmd_base(base_cmd);
+ }
+ 
+-void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int ip_type, struct pci_addr *pci)
++void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int ip_type, struct pci_addr *pci, bool userq)
+ {
+ 	int r;
+ 	FILE *fp;
+@@ -197,6 +221,18 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
+ 	if (!info.available_rings)
+ 		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
+ 
++	if (userq) {
++		/* User queue specific setup */
++		igt_info("Using user queue mode\n");
++
++		/* For user queues, we typically want to use normal priority */
++		prio = AMDGPU_CTX_PRIORITY_NORMAL;
++
++		/* Skip the scheduler mask manipulation for user queues */
++		amdgpu_wait_memory(device_handle, ip_type, prio, true);
++		return;
++	}
++
+ 	support_page = is_support_page_queue(ip_type, pci);
+ 
+ 	if (ip_type == AMD_IP_GFX)
+@@ -267,7 +303,7 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
+ 			igt_assert_eq(r, 0);
  		}
+ 
+-		amdgpu_wait_memory(device_handle, ip_type, prio);
++		amdgpu_wait_memory(device_handle, ip_type, prio, false);
  	}
  
-@@ -107,7 +107,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-gfx") {
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f("amdgpu-deadlock-gfx")
--			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_GFX, &pci);
-+			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_GFX, &pci, false);
- 		}
- 	}
+ 	/* recover the sched mask */
+@@ -466,10 +502,6 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
+ 		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
  
-@@ -124,7 +124,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-compute") {
- 		if (arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-deadlock-compute")
--			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_COMPUTE, &pci);
-+			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_COMPUTE, &pci, false);
- 		}
- 	}
+ 	if (user_queue) {
+-		if (info.hw_ip_version_major < 11) {
+-			igt_info("SKIP ... as user queueu doesn't support %d\n", ip_type);
+-			return;
+-		}
+ 		/* No need to iterate each ring, user queues are scheduled by hardware */
+ 		bad_access_helper(device_handle, cmd_error, ip_type, prio, user_queue);
+ 		return;
+diff --git a/lib/amdgpu/amd_deadlock_helpers.h b/lib/amdgpu/amd_deadlock_helpers.h
+index fdbeb409c..c46ebb67b 100644
+--- a/lib/amdgpu/amd_deadlock_helpers.h
++++ b/lib/amdgpu/amd_deadlock_helpers.h
+@@ -27,7 +27,7 @@
+ #include "amd_ip_blocks.h"
  
-@@ -196,6 +196,54 @@ igt_main
- 					       AMDGPU_HW_IP_GFX, &pci, true);
- 		}
- 	}
-+
-+	igt_describe("Test-GPU-reset-by-sdma-badop-with-jobs");
-+	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-badop-test-umq") {
-+		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
-+			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
-+			igt_dynamic_f("amdgpu-deadlock-sdma-badop-test-umq")
-+			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_OPCODE,
-+					AMDGPU_HW_IP_DMA, &pci, true);
-+		}
-+	}
-+
-+	igt_describe("Test-GPU-reset-by-sdma-bad-mem-with-jobs");
-+	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-mem-test-umq") {
-+		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
-+			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
-+			igt_dynamic_f("amdgpu-deadlock-sdma-bad-mem-test-umq")
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
-+					AMDGPU_HW_IP_DMA, &pci, true);
-+		}
-+	}
-+
-+	igt_describe("Test-GPU-reset-by-sdma-bad-reg-with-jobs");
-+	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-reg-test-umq") {
-+		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
-+			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
-+			igt_dynamic_f("amdgpu-deadlock-sdma-bad-reg-test-umq")
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
-+					AMDGPU_HW_IP_DMA, &pci, true);
-+		}
-+	}
-+
-+	igt_describe("Test-GPU-reset-by-sdma-bad-length-with-jobs");
-+	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-length-test-umq") {
-+		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
-+			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
-+			igt_dynamic_f("amdgpu-deadlock-sdma-bad-length-test-umq")
-+			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
-+					AMDGPU_HW_IP_DMA, &pci, true);
-+		}
-+	}
-+
-+	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
-+	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-umq") {
-+		if (enable_test && userq_arr_cap[AMD_IP_DMA]) {
-+			igt_dynamic_f("amdgpu-deadlock-sdma-umq")
-+			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA, &pci, true);
-+		}
-+	}
- #endif
+ void
+-amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int ip_type, struct pci_addr *pci);
++amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int ip_type, struct pci_addr *pci, bool userq);
+ void
+ bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd_error, unsigned int ip_type, struct pci_addr *pci, bool user_queue);
  
- 	igt_fixture {
 -- 
 2.49.0
 
