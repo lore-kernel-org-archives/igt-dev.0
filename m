@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 583CECA0FF0
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 23:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F365CA0FF0
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 23:52:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F13CD10E173;
-	Tue, 26 Aug 2025 23:49:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E399310E173;
+	Tue, 26 Aug 2025 23:52:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ELMkHv76";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jKGfWU85";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6317E10E173
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 23:49:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BAF010E173
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 23:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756252170; x=1787788170;
+ t=1756252336; x=1787788336;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=BcqqgwfpQGldoSp++LbdGqd3iZbipLJyVZf3pQYE4+o=;
- b=ELMkHv76HmGHWTQgIdNbuhio5QjDFkBef35I3AKzu+dj6I+DkF5c9Pzu
- zBrn1TvX6AkW0Yc1nhy9XfgB/3NK8W6QiT32ra8P7lUz9XqmIIQPz+7/T
- W1YczMkLGEUBi37HjHed8dHwaC4oFVhDqFs7+FpygtcFiT/vxQ/jw7mae
- qlzPR/AW4rwKHFXSzePbXFdZ/EJ0lrc8K5l6HIsdzoTw3X+S5fZ2X1AEf
- +G49EjgG6hVQa6D3gXowvlzlvdFPcCkd4klFhaOqGoFMfa7Ad/JEk4sNR
- rx1wHZKObMWfFp1IBZHJczbAqoJw4fOtPeku0Sx3N3NaL9BApjOEZbsX6 A==;
-X-CSE-ConnectionGUID: SpOBmsxDRka5yG8m7NHgeQ==
-X-CSE-MsgGUID: lTNbZRmRQ8+IB0KzyfxxWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="58357147"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="58357147"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 16:49:30 -0700
-X-CSE-ConnectionGUID: 2/1CIooSR0mrmGmlIbjMcQ==
-X-CSE-MsgGUID: swCpo5O+QRu5e8f5iO1/6g==
+ bh=HUnz/N3WGXZhpvJwg3xVZQgQSo1Mlx3rWkOcGl46gj4=;
+ b=jKGfWU85bSIgbFJsyf3HbdBBFDuyjV8klhjx7YrqU2/aKUJk5+D1ziMb
+ qyrrzYII/xTtVsEEjDdzV9U5EVPKXqvh57ixQAs4HqIb9b+AFgxPpHjut
+ ZCYgehLHUhKotNvW5okKyyNL/dLtnQ3fv7X5D1m92j56V05+nZ0961BVy
+ wcWaG/aEFbixsx2bVyl3gaJu/C+ZbxZMyltqVMMDNFnfixPt6C2TX4WPS
+ Gy9tvx48bz2tq1HYeynzluvJiFGCrm35fb5iDHLmXCFoIRtxgnJgAvr3p
+ 64udvnw7CitNfvuu25+aODzy5VS09CvQXrv+UjvpOI8MKh4fXby+4CFjP Q==;
+X-CSE-ConnectionGUID: 4dI+kzCKTHKoXLQ6ZwbKDA==
+X-CSE-MsgGUID: B11fZnwoQmu1apHuJu5cPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="58654212"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="58654212"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 16:52:15 -0700
+X-CSE-ConnectionGUID: T8ljvdX/SWut7waPV2lgRA==
+X-CSE-MsgGUID: j0P2+gzCTxC5sZDXk0uoLw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="169613183"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="169637399"
 Received: from bhlee-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.208.192])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 16:49:29 -0700
-Date: Tue, 26 Aug 2025 16:49:28 -0700
-Message-ID: <87frddmynr.wl-ashutosh.dixit@intel.com>
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 16:52:15 -0700
+Date: Tue, 26 Aug 2025 16:52:14 -0700
+Message-ID: <87ecsxmyj5.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t v2 1/4] tests/intel/xe_oa: Fix report dumps in
- sanity check
-In-Reply-To: <20250826224256.510692-7-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t v2 4/4] tests/intel/xe_oa: Add an option to capture
+ register accesses in ftrace
+In-Reply-To: <20250826224256.510692-10-umesh.nerlige.ramappa@intel.com>
 References: <20250826224256.510692-6-umesh.nerlige.ramappa@intel.com>
- <20250826224256.510692-7-umesh.nerlige.ramappa@intel.com>
+ <20250826224256.510692-10-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -72,34 +72,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 26 Aug 2025 15:42:58 -0700, Umesh Nerlige Ramappa wrote:
+On Tue, 26 Aug 2025 15:43:01 -0700, Umesh Nerlige Ramappa wrote:
 >
-> Fix report dumps in sanity check to dump the right amount of dwords.
+> Capture ftrace with the --trace option when needed. This is not intended
+> to run as default, but more of a debug functionality when manually
+> running individual tests.
 >
-> v2: Fix double dump on Xe2 separately (Ashutosh)
+> v2: (Ashutosh)
+> - Update commit title
+> - Check ftrace buffer size sooner. Use defaults
+> - s/Mb/MB
+> - x 1024 instead of x 1000
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 > ---
->  tests/intel/xe_oa.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  tests/intel/xe_oa.c | 63 ++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 62 insertions(+), 1 deletion(-)
 >
 > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index c7952c46dc3d..f81e95dcd8d6 100644
+> index 24442e4b83c6..2fb7c332226e 100644
 > --- a/tests/intel/xe_oa.c
 > +++ b/tests/intel/xe_oa.c
-> @@ -1052,8 +1052,8 @@ static void pec_sanity_check_reports(const u32 *report0, const u32 *report1,
->		return;
+> @@ -307,6 +307,8 @@ static struct oa_format lnl_oa_formats[XE_OA_FORMAT_MAX] = {
+>		.bc_report = 0 },
+>  };
+>
+> +static bool oa_trace = false;
+> +static uint32_t oa_trace_buf_mb = 1;
+>  static int drm_fd = -1;
+>  static int sysfs = -1;
+>  static int pm_fd = -1;
+> @@ -389,6 +391,31 @@ static u32 get_stream_status(int fd)
+>	return status.oa_status;
+>  }
+>
+> +static void enable_trace_log(void)
+> +{
+> +	char cmd[64] = {0};
+> +
+> +	if (!oa_trace)
+> +		return;
+> +
+> +	snprintf(cmd, sizeof(cmd) - 1, "echo %d > /sys/kernel/debug/tracing/buffer_size_kb", oa_trace_buf_mb * 1024);
+> +	system(cmd);
+> +	system("echo 0 > /sys/kernel/debug/tracing/tracing_on");
+> +	system("echo > /sys/kernel/debug/tracing/trace");
+> +	system("echo 1 > /sys/kernel/debug/tracing/events/xe/enable");
+> +	system("echo 1 > /sys/kernel/debug/tracing/events/xe/xe_reg_rw/enable");
+> +	system("echo 1 > /sys/kernel/debug/tracing/tracing_on");
+> +}
+> +
+> +static void disable_trace_log(void)
+> +{
+> +	if (!oa_trace)
+> +		return;
+> +
+> +	system("echo 0 > /sys/kernel/debug/tracing/tracing_on");
+> +	system("cat /sys/kernel/debug/tracing/trace");
+> +}
+> +
+>  static void
+>  dump_report(const uint32_t *report, uint32_t size, const char *message) {
+>	uint32_t i;
+> @@ -4958,7 +4985,39 @@ static const char *xe_engine_class_name(uint32_t engine_class)
+>	igt_require_f(hwe, "no render engine\n"); \
+>	igt_dynamic_f("rcs-%d", hwe->engine_instance)
+>
+> -igt_main
+> +static int opt_handler(int opt, int opt_index, void *data)
+> +{
+> +	uint32_t tmp;
+> +
+> +	switch (opt) {
+> +	case 'b':
+> +		tmp = strtoul(optarg, NULL, 0);
+> +		if (tmp <= 20 && tmp >= 1)
+> +			oa_trace_buf_mb = tmp;
+> +
+> +		igt_debug("Trace buffer %d Mb\n", oa_trace_buf_mb);
+> +		break;
+> +	case 't':
+> +		oa_trace = true;
+> +		igt_debug("Trace enabled\n");
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static const char *help_str =  "  --trace		| -t\t\tEnable ftrace\n"
+> +			       "  --trace_buf_size_mb	| -b\t\tSet ftrace buffer size in MB (default = 1, min = 1, max = 20)\n";
+> +
+> +static struct option long_options[] = {
+> +	{"trace", 0, 0, 't'},
+> +	{"trace_buf_size_mb", 0, 0, 'b'},
+> +	{ NULL, 0, 0, 0 }
+> +};
+> +
+> +igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
+>  {
+>	const struct sync_section {
+>		const char *name;
+> @@ -5002,6 +5061,7 @@ igt_main
+>		 */
+>		igt_assert_eq(drm_fd, -1);
+>
+> +		enable_trace_log();
+>		drm_fd = drm_open_driver(DRIVER_XE);
+>		xe_dev = xe_device_get(drm_fd);
+>
+> @@ -5235,5 +5295,6 @@ igt_main
+>			intel_xe_perf_free(intel_xe_perf);
+>
+>		drm_close_driver(drm_fd);
+> +		disable_trace_log();
 >	}
->
-> -	dump_report(report0, set->perf_raw_size, "pec_report0");
-> -	dump_report(report1, set->perf_raw_size, "pec_report1");
-> +	dump_report(report0, set->perf_raw_size / 4, "pec_report0");
-> +	dump_report(report1, set->perf_raw_size / 4, "pec_report1");
->
->	pec_sanity_check(report0, report1, set);
 >  }
 > --
 > 2.43.0
