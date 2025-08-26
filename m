@@ -4,184 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0851CA0EFA
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 11:53:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 123A1CA0EFA
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 12:32:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4067010E0CD;
-	Tue, 26 Aug 2025 11:53:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A591D10E65C;
+	Tue, 26 Aug 2025 12:32:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N9c2QDXL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eyGzJGCy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AE1C10E0CD
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 11:53:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45E0910E64F
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 12:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756209205; x=1787745205;
+ t=1756211555; x=1787747555;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=xZSSvGnWJ647Ze6fjkRVpTSvKwUy2SDQC9EaMAjvLYY=;
- b=N9c2QDXL3PwfY+8tPkhsRQBZqOr2ZpUuls4zzl1P24yBZaLXZdMGFNK7
- FRM/FBDBM1My8ghN2NAcPwcu2HmeL/hUbWzX6tp9x5Q1KvPRF8ZZpx5pi
- 5N7jkiltpAySOf+WLASKVWaB1RxmYzizlmIgXTdT6N8WBDF3fYWiaG891
- BYbVEYohzwYXpqM7r/PGlMPYRbsnyV4ScEt+M/ss3xzUyUd7nXtUnV2Cb
- hO2TXIz0rJN1++hWnpDSVurIbVzZjjKWLVOQzhzTt27yg/c5cN6uo1tLX
- jUjhgyyU8iEZrHK/w60zT2qi9APNnp88Am/LbuHOv1gQc99RCkNMM+LpL g==;
-X-CSE-ConnectionGUID: Q5YP1XvNQaSmhbtnYQPBQg==
-X-CSE-MsgGUID: OlU+Nv95QE+CGg4I1SLLng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="69876891"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="69876891"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 04:53:24 -0700
-X-CSE-ConnectionGUID: S8cBwKBPQQqbnMSKQSf8zQ==
-X-CSE-MsgGUID: kv6VHazaQ6SgGrbtjn2lbA==
+ bh=Yk53jfj6iGwS3R5d2qoXQVwWBAUxO7XPItEOf2j43Mk=;
+ b=eyGzJGCyf+8c0JdUuqAW+62hOrkhYnIChqAsFqCZzjhV03DIqYr5nVzp
+ MX4e0yCFufG437HCmM9wdbdo6qI3yc58tNvmaHyQs6ZsNH0RS+e8VALoz
+ uxO+d2udv82ZFkah51mMovL0dndACxnBeRCfdY+dECbCW/hPG3yKY30n4
+ x0Ic7YeXMFIncgrJULWQdLrF3g3vCg+e7o7DHMRCK4rOzu9j7OEVc7eqw
+ OZ/JyBPbqnKiorMyZkNQcWZ2SMV+oagZuZRderODnlaA/g/SmovbRFKAm
+ btwLfUn9tP5N525Lv6klCGK8vf/9ZStQNmewSZcg3cEayyK86sXhOTng9 A==;
+X-CSE-ConnectionGUID: 0KJ3JWIdQEefiAKQnc5OFQ==
+X-CSE-MsgGUID: tIpzO2zXRamPZTGYdKsBOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="69813015"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="69813015"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 05:32:34 -0700
+X-CSE-ConnectionGUID: uU6HAwDHQvqiJ55/ITRFJQ==
+X-CSE-MsgGUID: ZAxu4xPZTjC0ZTL7MaC3jA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="174861736"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 04:53:24 -0700
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="206728423"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 05:32:35 -0700
 Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 26 Aug 2025 04:53:23 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ 15.2.2562.17; Tue, 26 Aug 2025 05:32:33 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
  FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Tue, 26 Aug 2025 04:53:23 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.65) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Tue, 26 Aug 2025 05:32:33 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.88)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 26 Aug 2025 04:53:23 -0700
+ 15.2.2562.17; Tue, 26 Aug 2025 05:32:33 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c7F3Q53DzdcQ9v73AmTMxT5S2YjXBsZzKWGwPASo6ZKupA3BfkC6aPeCnPj9kn6Hszt1502pc+sbnmczVf2sPcmxgY6EiL8AODRZDFErw4TI3HcaCpirgOwC5P7IVvATdgHjukb/fj2XRV2aqmkBJCEFS5k3PtUNeWPWXz8dCt8/2RRXzZ+HdZz8zch84gvFPq0CsR3rs+HbNOzLZ8JRCykIpb2ZkIJTVD1PR41bdlV/rD7M9SCe1wCIhHYLLKVTsGtFIsiyUz8vMUV880DWuB9A742AuV8SzBu84H4975hPvu8c4ZG3m9TqleVxxvY+QsbCWL3XlRSDnEUsoJ/ihg==
+ b=FfTkZ/yAmj6CKuWRcFXgJX75fradBv6QdJqxSjXrJw5zchMhlrte2rtw9pak4wV6FUpaP7aimqqdv61C5LR2BgAqPXQCeX9vF7qgfZ9P8hrU5IDtUDdSi/4na6F6+nXd/gSBqdRp3PtFzMPFFml2Vlz6ak38w0wb6jLNY1z7vn54mJ5UCx6/1JXDTUSJzbBm0CuxaffwAROlivYC46L+lK4WNSrKvna8GEXoVy61QUdahoIcTL0J3dx8BuLjirYr52lGHHTt8ot2Z9AC6uAzGfMZhhhCCvCvaz5oX0brWl7sXcWwJ11l0b6Cx7/Jjosibc13iNhAMm7+AuCaleuhvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ax11DznbeY4GMLpbsd4JEmJj7ypQLgx1uwYtuXSb/YU=;
- b=AlIPP/4Rj3JZ8Fo06EnS0xhGMEGPUJ89dKhJWtalRCYvSCkysRTUGHEghP07d/PUAY8v4eJA89A79e6+Ctsza+gA81a6s1bR7S6CAgD/IcwtrIDrE16Eb5ba1DkIjvgpxJfmyBZnvZ7Bzn+w7srcAxZwFEmReJ7Jdx9JU9cr8CwfiPgzjwWyB6JeWluRmnYV8W5tY2qz+0EuXXcJCLm9Htitxk6bANmpmLj5bCDNIx7c6rx2rhRswxaxSCBgH2fq2PfSpJNtcUJ5SC9s2co9CkMR+c6RZUZt9E1WkNo/r57Y1wLcbHBcm5oUaNfOwc/BVNOxsiqvPDcUXjrDuOTmbA==
+ bh=anQ4J6p/1+G5Moe4xmxK2hf7a2C7gImxpXRNm/JG1wY=;
+ b=d9KVAcgugtjRdNuwI7p18OdeitXw8Hc8ogQdblO9md2SAimDlAN/gThL0nLdYZIX3r9CbB9GVxw5BEKS5TXQ28kPec0Kp9H3rniYMgL+Y4CPiTCi0zToyqY5RiQIuzHNd2rWZzcdgQYVU2r7EVBidmNqna5JxkrhH2l7pHmCsoFT0jlOXEvPnr4krRY+TaGP7YAazMJ3KdQI2tuCQuhdtweVP7BXnpVz6lWuh7wphl2gohJr4I6BqjkRGKdN5V1te7TP+L4Ma2g3ctpSji19IYF2z8ubNkkV04AQVw3n58NTRcrMARnQu853vICz8pec25edAlm8ShbPizOiMqFZdw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
- by MW3PR11MB4763.namprd11.prod.outlook.com (2603:10b6:303:2c::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Tue, 26 Aug
- 2025 11:53:19 +0000
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::b0f6:fbc:94be:2372%4]) with mapi id 15.20.9052.019; Tue, 26 Aug 2025
- 11:53:19 +0000
-Message-ID: <16f6dde6-cde1-466a-964f-5d1afdd7d3d5@intel.com>
-Date: Tue, 26 Aug 2025 17:23:13 +0530
+Received: from DM3PR11MB8716.namprd11.prod.outlook.com (2603:10b6:0:43::13) by
+ PH7PR11MB7121.namprd11.prod.outlook.com (2603:10b6:510:20c::7) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9052.21; Tue, 26 Aug 2025 12:32:31 +0000
+Received: from DM3PR11MB8716.namprd11.prod.outlook.com
+ ([fe80::ee65:895f:bcc5:8521]) by DM3PR11MB8716.namprd11.prod.outlook.com
+ ([fe80::ee65:895f:bcc5:8521%5]) with mapi id 15.20.9052.021; Tue, 26 Aug 2025
+ 12:32:31 +0000
+Message-ID: <a17c328d-ba76-49d0-b408-3d3b9ab7fb8c@intel.com>
+Date: Tue, 26 Aug 2025 18:02:22 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 i-g-t 2/3] tests/kms_hdr: Set HDR meta-data while
- testing for panel capability
-To: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: <karthik.b.s@intel.com>
-References: <20250821093511.937552-1-chaitanya.kumar.borah@intel.com>
- <20250821093511.937552-2-chaitanya.kumar.borah@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_pm: Test to validate vram-sr through
+ Mods during host s2idle
+To: "Anirban, Sk" <sk.anirban@intel.com>, <igt-dev@lists.freedesktop.org>,
+ <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>,
+ <karthik.poosa@intel.com>
+CC: <lucas.demarchi@intel.com>, <ashutosh.dixit@intel.com>,
+ <riana.tauro@intel.com>
+References: <20250602110300.1324145-1-soham.purkait@intel.com>
+ <141d9d4f-d718-4df4-9ac9-ea0a222919a1@intel.com>
 Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20250821093511.937552-2-chaitanya.kumar.borah@intel.com>
+From: "Purkait, Soham" <soham.purkait@intel.com>
+In-Reply-To: <141d9d4f-d718-4df4-9ac9-ea0a222919a1@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0007.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:174::16) To BL1PR11MB5979.namprd11.prod.outlook.com
- (2603:10b6:208:386::9)
+X-ClientProxiedBy: MA5PR01CA0005.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:174::9) To DM3PR11MB8716.namprd11.prod.outlook.com
+ (2603:10b6:0:43::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|MW3PR11MB4763:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4c25ad7-8072-4c37-02ba-08dde4972685
+X-MS-TrafficTypeDiagnostic: DM3PR11MB8716:EE_|PH7PR11MB7121:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0cf2044a-83de-4095-bb09-08dde49c9ffd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?bVVqTFB1ZTVsYnhkRENibDIveDNlSm9pS0pYSEJBVXRlclJNNVlpYVZJMmto?=
- =?utf-8?B?MDc3VldLckxUL2lYRitnRXREVzRDZUJzT2YvMWZYcEY3aFRvMEFJUzBUSTBl?=
- =?utf-8?B?dmJCR1hFODRWM2pCcnI2SHE1Ukc1RDdIVXZwSXkvTWVFdWYrOWY5azU2YUJp?=
- =?utf-8?B?SUcyS1BMVEhoREZRUmJrajhZUUZ6NXdXQ3J5U21VbWVFV2hzWktHb0YvTDlD?=
- =?utf-8?B?RERId01UcGpqWUdhQ1pnYlJMTmZUL29mZExXYXVLdFdYT3hFT2FFdjN4bWdu?=
- =?utf-8?B?SDhBSzBESmhsTG5aR3V5TGFsandGbEc2MDJqdVk0RjYwZWdVSEx4VFpkcHpP?=
- =?utf-8?B?YlVtMDBUUFBROEg5Y1JxbkJxdlNncCt5S0VadHY5QUhORFNwUUdUY2JXSjZP?=
- =?utf-8?B?Q3piclRyak1nQzB0bXNnSTZ2cXh3dWNzUWJ4Qjllc1RDbGpaanRTeFZZZW9u?=
- =?utf-8?B?b3VYWEl0WWdxTW1CT3ZSc3Z4VkxUaEpqK0l6Q3UvVEJST2RmZFZLd0E1ODFV?=
- =?utf-8?B?UHBNemRzcDBHOU9XT3VQUkd4dVVuR2JDU1V0NlhES1hQY3RZUWxlRElVRU5S?=
- =?utf-8?B?S2xmS3IwNHNISmZuYXNnVm1nWE9QZkNVRm5jcGZLN3hiMFB0NUNTd2NNSEpw?=
- =?utf-8?B?M1hMQ0NwSXpxQURTazRuVFN4aGlXanZ5TnpjRE45L3g1ZTAzdzNFc0RNTmdI?=
- =?utf-8?B?VG5UMnhRMElyYUNoYU1hZHg3Z2twM2hubG03d09PQ0RSZ2pyYzBObkFQTmpD?=
- =?utf-8?B?azI5bDRoY0NVejBRd1ZoS3F5R0xtUEJBZHc5cGpzMitEdG1DTlJudTdIby9Z?=
- =?utf-8?B?UkpWbXMzUi9BTmh1VmQrdFhCU2VMZzBRWmw5c2p2cURJS0s3cHpmYzBDenpR?=
- =?utf-8?B?cjg2dFI1T0hFTWF0ZG56eHJ6bStlNFUxSGtEanFOeWVJRDJYc2g4ek9INGta?=
- =?utf-8?B?TGo2WmJOOUswdnhkZC9xSU5xNEtWc2tocnRwQWY5WEo0TUlRenhSZjliWkRI?=
- =?utf-8?B?dmZHbzZWMkgwemxKR1NGM2JUQ0NzTEZSTUp6VTR6ODBFWmpPQjVxQ1J2ZjRD?=
- =?utf-8?B?YU5MWVR1cHRqRUpwOWFiQ1RoQ1NHWFlKV3BZSFNnM3NDWCswN1Vtb3RjQzIw?=
- =?utf-8?B?ajI2SVVOR3gwMXQrbUhlVU8vOTU0ZjN0T2ptSHRCSjlpNDFUVlhpVXk1Zi9O?=
- =?utf-8?B?VnQ0N1R2SGNEWmpTaG9mRlJKck01L283YWt2WmxjelNpTVVCdlZ1N0RMdmNU?=
- =?utf-8?B?VnkxRk1EaWpmM2Y4b2RGQkRtcWV2dmNsTFpoeHdrVW14Q2J2U3pQbDAvU3px?=
- =?utf-8?B?c3Q4NWhHYmpsSnN3ZjJRVHhsQXhmaTN2OWFld1ozWHF3OUV4MWJmdWlrd0Nt?=
- =?utf-8?B?QitFbVBKKzBqL2hxUDhqQnV3NXBITkVENk9SN25QQXg2eVQyV25NUWtQWFJs?=
- =?utf-8?B?bmJtSGU2bVNRelIyYS9vQmpxcW1XTXVoM1podFh6aWF3Z3VQYi9vSUdDOVJq?=
- =?utf-8?B?Tnl2aGx3bC9CaVJ2M1V5UVFmQk1ZTW8zZGxnNEFrZUlZSGNnQ3pUZndyS2NZ?=
- =?utf-8?B?U0JVWTVPcHRDUlRIMjBuUGZCVTc0b2F5RXlPYk5lTFFTS2prRm5vUUxXSEN1?=
- =?utf-8?B?QWtITjhEL0VWVzc0R3ZlWHpjNkJINHlxNjRkbXI2OHhNZ3p6cEhEeDQ1cC9l?=
- =?utf-8?B?UGRnb3IxR0V5RncvemxpVVdhUDV5L3crdG42TVpxQkxDejZPS3YzaUEyYzV6?=
- =?utf-8?B?TFFNMmtWTDFIcW9TYTVqVXJLcGZ0dkxlczk0MStXV0tyZE5vNzZjTmFtQUxM?=
- =?utf-8?B?TWUyWU1iaklFemFaclFpaFNrZU1hQm9JOGNCM1FCd1RhZEZ4c00wMk0wdVB2?=
- =?utf-8?B?OVZvV0ROZjdUNkM0eGtHbjlOTEtRZHIwMUNEbEVhWWFDeTFBWFhQY1VFNmFO?=
- =?utf-8?Q?XVdafXADRCI=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UXpSQ0ErWDRlWHVGWjlLZHMzRFZEQkpQVVViNTEzZHBKS3FKUHp2Z1BPcjVR?=
+ =?utf-8?B?WHFGYXJ4eXZ3d0kwc2JRRE9nVUQ1WVNOWVRSRDBwQkl4OG8xWHBkME5QOGQw?=
+ =?utf-8?B?eWdJdVNUdmt1NWNiR3hzRW9rY1BYRGlmdVlTSk9CNGRpMnNqQ3d6S252cXBp?=
+ =?utf-8?B?Uk4rWS9SQVlHKzlsQmRTVG9ubnRiMlhNZEl4N0Y0WEhnYzhwODhtYkJNcjlP?=
+ =?utf-8?B?clRpWEtFemJVVGdYdlMzVTFBMGw5TGI5alZiZ0c2YXRyQnR1NFRtODBnRVRG?=
+ =?utf-8?B?U2dqNlFuYkNEcHJTVGdkSlZ5MExLY1J2dHo0SGR0WEZBRzM3Z050QTRidDl2?=
+ =?utf-8?B?NFNjVzZFdWNwMnIwRFFsRkRwalJXeXBTUDdFOFdKS0dROGxkSnVOaU1QWFo0?=
+ =?utf-8?B?dTkzL2JQQ0JHNG9ncEV1Uk9Qb0VkWU1DTmhheThMc3l3d1NxeUVhY0lCMVBT?=
+ =?utf-8?B?dEF3MTVFZWY4b2I0RGJhQkVNOWZVT2ZUTytPU0hidEZnR3JtUkV3V21HckZa?=
+ =?utf-8?B?a1kxTDhCSnFzd3d1N0MrSFFFclpacEJuOElBT2x2RE4yUTM1NWdrbnIzL09i?=
+ =?utf-8?B?QjdnMm5hZ1R2SkhQbkZ6SEZPb1hKN2tkL3NSR2hGazRlVHcxZ1JqSTBnWitu?=
+ =?utf-8?B?aTA0amtDem1DZDZKVVJ0czZaN2hyeGJneFhhWFJGWXlndDcyMGc1Y04ybExw?=
+ =?utf-8?B?NHpVLzI1TVdWRk5Tb3VGMG82dWtiblJ1alRPVUxFRjdJVVdzb0s3bExiZ05z?=
+ =?utf-8?B?VkZwUlpSaWNRTHN1WUoyRGRERzNXZ2pYMjFaM3JjNnpCbVY4TUZLa1ZJdmJG?=
+ =?utf-8?B?T1Jza1lBT2JRYnUxR2xXbldBZDQ5ekNocU55Q1N4TW1rT2duYmJJTjY3Q1hu?=
+ =?utf-8?B?ODBCTC9DU0l4dmJ5OEl6KzdlcEkwb3hUU0RlcVdqTDdNWXlSNmtEZ0RzV2p4?=
+ =?utf-8?B?aHVSdjZTdTlMQ3RyeStPZllqVnAxL1pvVzYwQkl3TWhVYlM0d0lXL1NMOEpW?=
+ =?utf-8?B?NWhqdC9OMFhjNmdhZlZWNkdUbEtxQ1lZTm5jWkd5cmNGODJ5ZDQ3dTZqaCtp?=
+ =?utf-8?B?UHNSMkJzYUhHS1JVNDlNeFpKZTRRM1FSZU5nbjRJTTJvNnRpTSsyV0NnK25R?=
+ =?utf-8?B?cjkrZlB6cCtWQ1l4UGxTSTBLSU0vTkV5a3RFWUZqMXdrVGJ5TXBrakpLRU8y?=
+ =?utf-8?B?K1l6Y0tBNFNSdDBpdlZLMTY2MUI4Q0NlOFNkMXA3UVI2NGJRNm5tWUlkV1Jx?=
+ =?utf-8?B?WWtSODk4U29RcHB3SngrUHlRbGZGL0xNWDRhQ1haS3h3SkJlUDhJS3FYNFk3?=
+ =?utf-8?B?NzJMQm5BbndDRDlvMnZIMENWUGVUc2VwbEtHQ2V1MndpNFdyRkljTFdUdnQ2?=
+ =?utf-8?B?NzA4YVdJUStEMVBCelROOHhMa2FuOG9DWTFXczNxWTFxMjgwSDRnTmgyMHJ2?=
+ =?utf-8?B?TFJzTGcvSXhrNlRqUXplLzZGL1ZnbFpjNDZzMDZVaEx6NG1mUW1wcU01b05p?=
+ =?utf-8?B?K2RndEROSkZ4QWZrbW9ZRWxUUVdJS3A2ZldManRMREZPS1k4OEpaVlpCVEhD?=
+ =?utf-8?B?SXA4dFFYOCtaNXpvSXFBbUdsN3hjbE5WMDFUMTF1N25FWnpjbzZCb3dzTHph?=
+ =?utf-8?B?OEw1OVVrbVNvU2MrVW5IOHIzTlBDaHhWeXZjTDh0d3pHUENnY0JoUjZVWGk1?=
+ =?utf-8?B?M3dqM3FRcjQ5WEh1MkRLSjNKWllFK2dicEc0RDUwb09Qa3ZOYytBOHpQVVNh?=
+ =?utf-8?B?UGwrRENGWWp4VWYxTVJCN0wrNHJ1cStkcW8rVDEwWmMrMlBMNFNpRjZOY0N2?=
+ =?utf-8?Q?LDCH6/4UYuWhB9pIHq5gEeyo8DRcQpVjSxV3E=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:DM3PR11MB8716.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YUY0WFhhNm9leCsyemNncWx6dGFTWlptYWd6a0VtOXZTN0w4UWVnN013VlhK?=
- =?utf-8?B?SENuY1JtWmJKY1B0L3BlUTFpMTdiVVRwMkRJR3h6S0FaR1lDTldIUzdpZ04z?=
- =?utf-8?B?YVo4b1NTUjZlQnNNQjh0ZHlPcjBTM1ZzSWx4anVvV3JDUytSSmtCVXEyUTBj?=
- =?utf-8?B?QkZkL1BhQkpMNFBvWnhjR1RzNjJDTEZQS0FhMDNGamhJbGlFdjVYb2NONWlE?=
- =?utf-8?B?Q1BZcncxVU9aQXdTd3Y1S1NGeFVGbDg5WC9HWVhhMXI4YzVkTjdER0pWSEdy?=
- =?utf-8?B?dEFKalhKdHhUTW1aY3RhU3ByR3A3dGYvVGxzOHhKTCtvcFJRekthTytFdFVU?=
- =?utf-8?B?YWZHb2h4SFNBUFdUTHQ1Tng2ak5IWG5SaFlDdm5ibmk3SGE1c1FtTDVDU2hn?=
- =?utf-8?B?QTBrYzBVeDN4UWRkYlphZS9JQXJPWUdPb2M3TVcvMkRxM3FzSEhreXFtM0Qz?=
- =?utf-8?B?Y25aR1RONGwrcjVDZFU0T0ZvV3ZPMHFncXNydHVhTkUwUjZ4eXpnVDhoQzA3?=
- =?utf-8?B?djNiNWUrTlZ1OVRROElRbllSQ3JtVHh3V3ZlNmRlSGdTa2pOVWlUamluQW5D?=
- =?utf-8?B?QlByaUd3dThvSzRnY1ArTmxLN1lzZjZtNnY3NDlOaGdGQ1hiTEZZNkptSWdY?=
- =?utf-8?B?MUx0ZDE2VzdMN3dUSmx2R0pGQTBEOWlOSjlsOTdyK1ZnRGxqOE1TZFBiMEdB?=
- =?utf-8?B?Q1haSkRFcGQyOW92UzRkUjB1UUxtOHJMbEhXKzd3ckNKRitldU4wdTFXdmd3?=
- =?utf-8?B?SjBRZ2IwQmxDdHk2dDN5V2VjRjFzUFliNy9rcmo0VFpuK2RHZDd4SGR6TERl?=
- =?utf-8?B?TW1VZ2tndC9OYXZ5b2xFbjBacjdNMnp5UG9FdVl3Nm16M0tuVWhPSUZJN3lN?=
- =?utf-8?B?V0lEeXFZb1ZpMDJGTXFlQTRTZEhlWnMyQWt2OEJFTnRSdWhvTzM2NU4ydzhH?=
- =?utf-8?B?Q0hYU3V6UXkzazNBaVVYNVpwKzZZUE01SnA5TUJMUE8xWlM3c25rb2Z2NTVx?=
- =?utf-8?B?am9LL3A5bkdudTF3TnBkZTZKOEVZNGorTDV2YzFvQmdaUlY1b3VwL1Z5ZnQ1?=
- =?utf-8?B?RkMxOFNvSEJoMzdJRmphejREUFJQWTRnb25JWFRLbnBwM0dFZXJkU2xQNnB3?=
- =?utf-8?B?VWFucWo2ZEMyVU1Ob25ST3djZWJ5TXE5QmkrOHN6aUV2TGk5eGlOUTl2SzN6?=
- =?utf-8?B?dUgrMllIaTBTL0c1TGxSQWNhbWNldU1hQ1h1ckdNS0FndjRYVlVHcGExUUEv?=
- =?utf-8?B?a204ek5aVW9xWnNoRUd5NkZua0FOVVlsSzB0ODVmUzkzRUVsUnpIdE1YZFVs?=
- =?utf-8?B?SGxKZ1llMWsvQzVhY3dhcDBXRDk1bmdhQzB3UE4welp0dGRrbHVRZHRaNTh1?=
- =?utf-8?B?OXJPc2hIQnZvOXVWL0xPRU5ueGwySVdKVmlnYjRhTE04aUEwaGFZY3BrMEdi?=
- =?utf-8?B?Z3A2Ti9OUmZaVzdGakc4UzNqTkRHMGovaUM0eDE0MVNQYkhzb2t5YnpYY0Jn?=
- =?utf-8?B?dGFCdW9wck1Zbnh5TXY4VkozUXVLS1JHd1QycmRubUZXUTlZRURFR0hjQ2Vj?=
- =?utf-8?B?L2hNWVROR2U0WWdHQndMbGszd0plTUZnNUdiUzJseEFVblBWWWZ2S3RYemRI?=
- =?utf-8?B?VnlJMnVSSmQ0Sy9YVncvR2p6Sk9FM3RQU1lCZWFMUnNQdExpTUFlOWZ4UzBD?=
- =?utf-8?B?OGtkK040YVBCREJtMVc3bHVZQkFQYmFCY29yVloyMkNMVFNqNHJLT2dIbHE0?=
- =?utf-8?B?cjlFdmIrVVNidy9CTWYxWTFRZzIxNWlSMVB2RWpzRCtITEl6Q052SWMxQ2py?=
- =?utf-8?B?M2EzdU90ZStlZWZrU0FhWVNZc1JlSFZJcWgyVDdWNlRZdkQ0eDVXbjd0MXJC?=
- =?utf-8?B?Q1BiZ1lDZkdNOHNXQytsdlM5Mm9aNS9obmY0OGZPRXRhTTlYK0lZdGhTMmlS?=
- =?utf-8?B?cDBmV1dFNTNjQjQ1ekF1Vk90MS94aHM3QWpraXM3Zis0cjdqU0MxeFVWZmRR?=
- =?utf-8?B?QUVnaVVzZ3h5UDNMOTI3R2xIVzdtSjNFNkhTMTV6bzExR29rNVVubU9nVHNR?=
- =?utf-8?B?NVBSYWhwMU1UaHhpN3pKSGNJTy8wZGROR0hZNmhtZEpXREgwejB4cXI1MXJ1?=
- =?utf-8?B?UkhidGh2bWc3SHhSR3kxRXpvNjdKU1kvOXFyOFVvUmFtNThCN1lJeVI3NUtT?=
- =?utf-8?B?cEE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4c25ad7-8072-4c37-02ba-08dde4972685
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a3V2bmhyTituYzlnUUlUSkczcjU4aTRTVnIxNmppMG5yUUxQTFdXUjRCdXRG?=
+ =?utf-8?B?dXZrZnZyZGIwVXdLUG4wcEEvamhYVE1VU0wrY0pMcjJiMk1saHJjdERaN0pl?=
+ =?utf-8?B?VDNmVW1nQnNwdy8xWEg4STB6cEJyM0pZWTJEQ1A0M29WOHBhODdXY0dlemp3?=
+ =?utf-8?B?ZUhERGpKMXlYamNZZ0NOZlR2cjFiOGxFcEtxb0Q4NUh4VC82bEQ2NXVOb0th?=
+ =?utf-8?B?N0trR0dBTXJqOWlERFJ3TUhxV2lCVVpiMzZ0Q0dJVGtyelNwaDF1cHdOc0No?=
+ =?utf-8?B?ZU1PNkNvd0wwYzlGNEZTeVFybmo0eVdaWUxxWTdYUU1xZjdFalVBMFdDSzBS?=
+ =?utf-8?B?VXE2M1F6TDFGYkZ4Q0RoZlMrS3RBb0RlOEIzZTFGNkZBUFlMY1FVd08rRE8y?=
+ =?utf-8?B?YmFSZUVoNldMODBNZVp2VXpWanhTa2t3emZZMHVqb1A4OFBGLzFJYWYrbiti?=
+ =?utf-8?B?Q1ZLTllPL08yWGJXdW1KN05jamlCV0lrVXBKRnIzU1VVKzg4RG82aTZyUVhG?=
+ =?utf-8?B?eGJFR1cxUVFnWm1JMVYyUC9aM1E3QnRwdmEzVTZPZE1rczJGWWNhaW9WRW1Y?=
+ =?utf-8?B?TkllRkxreGh6b0JWaE9SZSt6Q3lmcTlYVVlSTXV4NlJIckJGZ1Myb1BJeXZ1?=
+ =?utf-8?B?NWY4RHRlNklKM3hiUS9uZG1kUitwY3NOUjRxd3l1cm95RGUxaGQzem50azJi?=
+ =?utf-8?B?WVNMQVZKZzg3dktXVklBWUtPQk8yRmdTbWQ3dG0vVjBDajF0bUVCeHpFZGZu?=
+ =?utf-8?B?MVZvaEtvYkhpandxeC9YOTZWWVViT3VqdHJIRjVEcm9Ob3oyNUZUK1pGWnNy?=
+ =?utf-8?B?RklpVUpUZW9LMkU4cHhMSHJGMzF1QURnb1NmU1Q2NFZPNU5XMGtORWl3R1hw?=
+ =?utf-8?B?MjRaZzc5MzBQamZ4R2QyUyt5TzIxeElnVXJtNTQwMENJUkRkWldFVUpUZGJk?=
+ =?utf-8?B?OU5aY3ZFejNLWlR5MEFUZzVDdG5zb1dMSjJNaGlVVGJVTUYxNXg4d00yN3JO?=
+ =?utf-8?B?SjRXT2d6QXE0SDdKTks5YWhTcTVuV0kvY0l5ekpMWjlOL1BNSi9SR2pPd3ZL?=
+ =?utf-8?B?SW4razdsVVphRkw2Zzl4ZEs0MWtlUzcxekVoRjhOYmFHOXVtQzVNZzRCSkpk?=
+ =?utf-8?B?K0tkdUkzV3JxYlpmZklNM1hmaWlGRUFBcHBEdEc4cDQ1Z3dNS3BnRXAyRWpM?=
+ =?utf-8?B?eUgxODBaUWxuVm5uL2F6RmlaZzgrYzFMd1pPVE8xQzROeXJvUGx2TmtrTjl3?=
+ =?utf-8?B?MzBqNHVMU1NuN1h0RkxoblFnNjFUbFc1VDlxZ3R0LzNoTTN3bllUdTBicERp?=
+ =?utf-8?B?UmxRS2k5bXNxTHFyYkhzd2RPeGhHZXU0WGN5Y0FQSHM2bkN3dndNRHVvVWhX?=
+ =?utf-8?B?dXVaTnVqQjcxdjNVb1lEcm0wVGhBS3RIbVJ2WnFnOVUycW9Jd1NZczlyVGhN?=
+ =?utf-8?B?M3ovcUZQZkROVzMzdmFtcXdUc3pSRFlhWW9qSkhQcENGc3FEZ0lEamRLYUJo?=
+ =?utf-8?B?dThiM1pKUnFjWUR3TE9nRjBCS0dubnpoaEZ0bE5vNmhSY1hEc2p6UXFGb3ZO?=
+ =?utf-8?B?MkRKK1F6UjNWNUhKSlhpZ09XRjBJQzNBVW43NjBBSkRQalRZSHF6U05RRXRx?=
+ =?utf-8?B?NkpkTTlMT2ZDWEIxTnRxNXVOQ0RZcmdnV0lYaW9XQkN6VnlEZXpURjB2Wnl6?=
+ =?utf-8?B?eE1oOEowQ3lNYXloL0xhZXJGYUExamlCTGdxdDFGajlsT1IxRkRwRFh2TkQw?=
+ =?utf-8?B?aDl5KzNycWl4QWZ5a1NrQzg1K0xzL2FSY2J5NEUxRUlKS0dKTmpaWGErS3JN?=
+ =?utf-8?B?R2FQTjRlQjBENDduUlZKdG85K3p4MDhQdS82aVkrMFJldEpjcFplYTVHTUJK?=
+ =?utf-8?B?NVdQaWVRakVSbTYzMXFmOXQ5aG1PdU0rZjc1WHBuQUFFQ2pKdmMwRmJxMnEy?=
+ =?utf-8?B?ZDYrVnliaytsZEdpME1EQTY4cVRHQ3kyTS9FNXpQSFAyUnZ2QW5xRkZ1dkw0?=
+ =?utf-8?B?R1h4VGw1V3UzeGdtY28vRFdSa3A3b2llMUJEUkZuWlZ6ZkpZckZLckhvcFJE?=
+ =?utf-8?B?VzV3MCtkTzRaQ2k1TkpKNGcwQkJHZzRaSGM2QTJ6ZGR5QmhqSnhkT3lzZGZk?=
+ =?utf-8?B?WVhEK0RwdnBLYzJmN0NDSzRZUDNlYUplb0RQbys3QnFhQkllRmE2ck9tb21w?=
+ =?utf-8?B?emc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0cf2044a-83de-4095-bb09-08dde49c9ffd
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR11MB8716.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 11:53:19.7765 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 12:32:31.0339 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y9dctzlbJZO/sxiWpiyMA5rCi94p+TTtE4Dm5q1rolkIdUzpEQhTvLMC3ILuMOAAmiqBhKWbdnvWx4yhjw0xyg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4763
+X-MS-Exchange-CrossTenant-UserPrincipalName: lakHwjc12paov0Wz+up25u8z31K0EIGG30NBDVMR7xpH8SMqm0cMu6mPFPTS4fuDUFfSApAxhdhcxrZ0/YYaIw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7121
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -198,202 +198,182 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Chaitanya,
+Hi Anirban,
 
-On 21-08-2025 03:05 pm, Chaitanya Kumar Borah wrote:
-> Setting max_bpc simply configures the pipeline to drive
-> 10 bits per color channel, but HDR requires more than higher bit
-> depth. HDR also depends on metadata such as EOTF, peak luminance,
-> and colorimetry.
+On 24-06-2025 00:28, Anirban, Sk wrote:
+> Hi Soham,
 >
-> Update the test to set HDR metadata on the connector to signal that
-> we need an HDR pipeline, before running through the modes. Reset
-> it afterwards.
->
-> If setting HDR metadata fails for all advertised modes on a supported
-> panel, it implies the kernel cannot drive HDR — for example, due to
-> bandwidth limitations.
->
-> v2:
-> 	- Update commit message (Swati)
-> 	- Add comment on why we set HDR meta data (Swati)
-> 	- Commit after setting HDR meta data (Swati)
->
-> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-> ---
->   tests/kms_hdr.c | 117 ++++++++++++++++++++++++++----------------------
->   1 file changed, 64 insertions(+), 53 deletions(-)
->
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index 33b6c42a6..ee64543a0 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -153,6 +153,59 @@ static void draw_hdr_pattern(igt_fb_t *fb)
->   	igt_put_cairo_ctx(cr);
->   }
->   
-> +/* Converts a double to 861-G spec FP format. */
-> +static uint16_t calc_hdr_float(double val)
-> +{
-> +	return (uint16_t)(val * 50000.0);
-> +}
-> +
-> +/* Fills some test values for ST2048 HDR output metadata.
-> + *
-> + * Note: there isn't really a standard for what the metadata is supposed
-> + * to do on the display side of things. The display is free to ignore it
-> + * and clip the output, use it to help tonemap to the content range,
-> + * or do anything they want, really.
-> + */
-> +static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
-> +{
-> +	memset(meta, 0, sizeof(*meta));
-> +
-> +	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
-> +	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
-> +
-> +	/* Rec. 2020 */
-> +	meta->hdmi_metadata_type1.display_primaries[0].x =
-> +		calc_hdr_float(0.708); /* Red */
-> +	meta->hdmi_metadata_type1.display_primaries[0].y =
-> +		calc_hdr_float(0.292);
-> +	meta->hdmi_metadata_type1.display_primaries[1].x =
-> +		calc_hdr_float(0.170); /* Green */
-> +	meta->hdmi_metadata_type1.display_primaries[1].y =
-> +		calc_hdr_float(0.797);
-> +	meta->hdmi_metadata_type1.display_primaries[2].x =
-> +		calc_hdr_float(0.131); /* Blue */
-> +	meta->hdmi_metadata_type1.display_primaries[2].y =
-> +		calc_hdr_float(0.046);
-> +	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
-> +	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
-> +
-> +	meta->hdmi_metadata_type1.max_display_mastering_luminance =
-> +		1000; /* 1000 nits */
-> +	meta->hdmi_metadata_type1.min_display_mastering_luminance =
-> +		500;				   /* 0.05 nits */
-> +	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
-> +	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
-> +}
-> +
-> +/* Sets the HDR output metadata prop. */
-> +static void set_hdr_output_metadata(data_t *data,
-> +				    struct hdr_output_metadata const *meta)
-> +{
-> +	igt_output_replace_prop_blob(data->output,
-> +				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
-> +				     meta ? sizeof(*meta) : 0);
-> +}
-> +
->   /* Prepare test data. */
->   static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
->   {
-> @@ -380,15 +433,6 @@ static bool is_panel_hdr(data_t *data, igt_output_t *output)
->   	return ret;
->   }
->   
-> -/* Sets the HDR output metadata prop. */
-> -static void set_hdr_output_metadata(data_t *data,
-> -				    struct hdr_output_metadata const *meta)
-> -{
-> -	igt_output_replace_prop_blob(data->output,
-> -				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
-> -				     meta ? sizeof(*meta) : 0);
-> -}
-> -
->   /* Sets the HDR output metadata prop with invalid size. */
->   static int set_invalid_hdr_output_metadata(data_t *data,
->   					   struct hdr_output_metadata const *meta,
-> @@ -401,50 +445,6 @@ static int set_invalid_hdr_output_metadata(data_t *data,
->   	return igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->   }
->   
-> -/* Converts a double to 861-G spec FP format. */
-> -static uint16_t calc_hdr_float(double val)
-> -{
-> -	return (uint16_t)(val * 50000.0);
-> -}
-> -
-> -/* Fills some test values for ST2048 HDR output metadata.
-> - *
-> - * Note: there isn't really a standard for what the metadata is supposed
-> - * to do on the display side of things. The display is free to ignore it
-> - * and clip the output, use it to help tonemap to the content range,
-> - * or do anything they want, really.
-> - */
-> -static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
-> -{
-> -	memset(meta, 0, sizeof(*meta));
-> -
-> -	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
-> -	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
-> -
-> -	/* Rec. 2020 */
-> -	meta->hdmi_metadata_type1.display_primaries[0].x =
-> -		calc_hdr_float(0.708); /* Red */
-> -	meta->hdmi_metadata_type1.display_primaries[0].y =
-> -		calc_hdr_float(0.292);
-> -	meta->hdmi_metadata_type1.display_primaries[1].x =
-> -		calc_hdr_float(0.170); /* Green */
-> -	meta->hdmi_metadata_type1.display_primaries[1].y =
-> -		calc_hdr_float(0.797);
-> -	meta->hdmi_metadata_type1.display_primaries[2].x =
-> -		calc_hdr_float(0.131); /* Blue */
-> -	meta->hdmi_metadata_type1.display_primaries[2].y =
-> -		calc_hdr_float(0.046);
-> -	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
-> -	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
-> -
-> -	meta->hdmi_metadata_type1.max_display_mastering_luminance =
-> -		1000; /* 1000 nits */
-> -	meta->hdmi_metadata_type1.min_display_mastering_luminance =
-> -		500;				   /* 0.05 nits */
-> -	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
-> -	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
-> -}
-> -
->   static void adjust_brightness(data_t *data, uint32_t flags)
->   {
->   	igt_backlight_context_t context;
-> @@ -652,6 +652,7 @@ static void test_hdr(data_t *data, uint32_t flags)
->   {
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
-> +	struct hdr_output_metadata hdr;
->   
->   	igt_display_reset(display);
->   
-> @@ -701,6 +702,12 @@ static void test_hdr(data_t *data, uint32_t flags)
->   
->   			prepare_test(data, output, pipe);
->   
-> +			/* Signal HDR requirement via metadata */
-> +			fill_hdr_output_metadata_st2048(&hdr);
-> +			set_hdr_output_metadata(data, &hdr);
-> +			igt_display_commit2(display, display->is_atomic ?
-> +					    COMMIT_ATOMIC : COMMIT_LEGACY);
-If this commit fails, test will fail. Ideally, we should skip.
-Can we add try_commit() instead?
-if (igt_display_try_commit_atomic(&data->display,
- >------->------->------->------- DRM_MODE_ATOMIC_ALLOW_MODESET,
- >------->------->------->-------  NULL) != 0) {
- >-------igt_info("Commit failed, couldn't set HDR metadata in 
-infoframe\n");
- >-------break;
-}
-> +
->   			if (is_intel_device(data->fd) &&
->   			    !igt_max_bpc_constraint(display, pipe, output, 10)) {
->   				igt_info("%s: No suitable mode found to use 10 bpc.\n",
-> @@ -710,6 +717,10 @@ static void test_hdr(data_t *data, uint32_t flags)
->   				break;
->   			}
->   
-> +			set_hdr_output_metadata(data, NULL);
-> +			igt_display_commit2(display, display->is_atomic ?
-> +					    COMMIT_ATOMIC : COMMIT_LEGACY);
-> +
->   			data->mode = igt_output_get_mode(output);
->   			data->w = data->mode->hdisplay;
->   			data->h = data->mode->vdisplay;
+> On 02-06-2025 16:33, Soham Purkait wrote:
+>>      Add test to validate vram-sr through Mods during host s2idle. It 
+>> checks
+>> whether vram self refresh capability is supported through debugfs 
+>> node and
+>> then introduce host s2idle to check ModS residency to confirm vram self
+>> refresh capability upon success.
+>>
+>> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+>> ---
+>>   tests/intel/xe_pm.c | 99 ++++++++++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 98 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+>> index 6eb21d5ec..322b22eb0 100644
+>> --- a/tests/intel/xe_pm.c
+>> +++ b/tests/intel/xe_pm.c
+>> @@ -10,9 +10,10 @@
+>>    * Sub-category: Suspend-resume tests
+>>    * Test category: functionality test
+>>    */
+>> -
+>> +#include <ctype.h>
+>>   #include <limits.h>
+>>   #include <fcntl.h>
+>> +#include <stddef.h>
+>>   #include <string.h>
+>>     #include "igt.h"
+>> @@ -413,6 +414,46 @@ child_exec(void *arguments)
+>>       return NULL;
+>>   }
+>>   +static char *read_content_line(const char *content, const char 
+>> *prefix)
+>> +{
+>> +    const char *line_start = content;
+>> +    char line[1024];
+>> +    char *result;
+>> +    size_t len;
+>> +
+>> +    while (*line_start) {
+>> +        const char *line_end = strchr(line_start, '\n');
+>> +        size_t line_len = line_end ? (size_t)(line_end - line_start) 
+>> : strlen(line_start);
+>> +
+>> +        if (line_len >= sizeof(line))
+>> +            line_len = sizeof(line) - 1;
+>> +
+>> +        memcpy(line, line_start, line_len);
+>> +        line[line_len] = '\0';
+>> +
+>> +        if (strstr(line, prefix)) {
+>> +            char *colon = strchr(line, ':');
+>> +
+>> +            if (colon) {
+>> +                colon++;
+>> +                while (isspace((unsigned char)*colon))
+>> +                    colon++;
+>> +
+>> +                result = strdup(colon);
+>> +                len = strlen(result);
+>> +                if (len > 0 && result[len - 1] == '\n')
+>> +                    result[len - 1] = '\0';
+>> +
+>> +                return result;
+>> +            }
+>> +        }
+>> +        line_start = line_end ? line_end + 1 : NULL;
+>> +        if (!line_start)
+>> +            break;
+>> +    }
+>> +    return NULL;
+>> +}
+> imho this function is not required, explained below.
 
+I guess a generic read function is more appropriate and it could be 
+reusable for other residencies as well.
+
+Thanks,
+Soham
+
+>> +
+>>   /**
+>>    * SUBTEST: %s-basic
+>>    * Description: test CPU/GPU in and out of s/d state from %arg[1]
+>> @@ -777,6 +818,57 @@ static void test_mocs_suspend_resume(device_t 
+>> device, enum igt_suspend_state s_s
+>>       }
+>>   }
+>>   +/**
+>> + * SUBTEST: vrsr-capability-during-host-s2idle
+>> + * Functionality: pm - vram-sr
+>> + * Description: Test to validate vram self refresh through
+>> + * ModS residency counter during host s2idle
+>> + */
+>> +
+>> +static void test_vrsr_capability_during_host_s2idle(device_t device)
+>> +{
+>> +    u32 bo, placement;
+>> +    u64 s2idle_start_mods, s2idle_end_mods;
+>> +    int dir, ret;
+>> +    char buf[4096] = {0};
+> You can reduce the side, buf[256] should be enough to store data.
+>> +    char *result;
+>> +    void *map;
+>> +
+>> +    dir = igt_debugfs_dir(device.fd_xe);
+>> +    ret = igt_debugfs_simple_read(dir, "vrsr_capable",
+>> +                      buf, sizeof(buf));
+>> +    igt_assert_f(ret >= 0, "vrsr_capable node is not present in 
+>> debugfs.\n");
+>> +    igt_assert_f(strstr(buf, "true"), "VRSR capability is not 
+>> supported.");
+>> +
+>> +    placement = vram_memory(device.fd_xe, 0);
+>> +#define XE_BO_SIZE (350 * 1024 * 1024)
+> define these macros at the top.
+>> +    bo = xe_bo_create(device.fd_xe, 0, XE_BO_SIZE, placement, 0);
+>> +    map = xe_bo_map(device.fd_xe, bo, XE_BO_SIZE);
+>> +    memset(map, 0, XE_BO_SIZE);
+>> +
+>> +    ret = igt_debugfs_simple_read(dir, 
+>> "gtidle/dgfx_pkg_residencies", buf, sizeof(buf));
+>> +    igt_assert_f(ret >= 0, "dgfx_pkg_residencies node is not present 
+>> in debugfs.\n");
+>> +
+>> +#define MODS_PREFIX "ModS"
+> same as above.
+>> +    result = read_content_line(buf, MODS_PREFIX);
+> Just to read the package residency here, you can use sscanf. For more 
+> details please refer to the function read_mods here:
+> https://patchwork.freedesktop.org/patch/660150/?series=149557&rev=2
+>> +    igt_assert(result);
+>> +    s2idle_start_mods = (uint64_t)strtoull(result, NULL, 10);
+>> +    free(result);
+>> +
+>> +    igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, 
+>> SUSPEND_TEST_NONE);
+>> +    munmap(map, XE_BO_SIZE);
+>> +    memset(buf, 0, sizeof(buf));
+>> +    ret = igt_debugfs_simple_read(dir, 
+>> "gtidle/dgfx_pkg_residencies", buf, sizeof(buf));
+>> +
+>> +    result = read_content_line(buf, MODS_PREFIX);
+> same as above.
+>> +    igt_assert(result);
+>> +
+>> +    s2idle_end_mods = (uint64_t)strtoull(result, NULL, 10);
+>> +    free(result);
+>> +
+>> +    igt_assert(s2idle_start_mods != s2idle_end_mods);
+> Maybe we can check if the end counter is greater than the first one or 
+> not.
+>
+> Regards,
+> Anirban
+>> +}
+>> +
+>>   igt_main
+>>   {
+>>       device_t device;
+>> @@ -936,6 +1028,11 @@ igt_main
+>>           test_vram_d3cold_threshold(device, sysfs_fd);
+>>       }
+>>   +    igt_describe("Validate VRAM self refresh capability during 
+>> host s2idle");
+>> +    igt_subtest("vrsr-capability-during-host-s2idle") {
+>> +        test_vrsr_capability_during_host_s2idle(device);
+>> +    }
+>> +
+>>       igt_fixture {
+>>           close(sysfs_fd);
+>>           igt_pm_set_d3cold_allowed(device.pci_slot_name, 
+>> d3cold_allowed);
+>
