@@ -4,54 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 138E8CA0FED
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 08:41:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46420CA0FE9
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 08:43:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BF47210E60B;
-	Tue, 26 Aug 2025 08:41:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E882E10E2EC;
+	Tue, 26 Aug 2025 08:43:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Rs6nbh+r";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="zEVrMPBR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 154AC10E60B
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 08:41:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756197710; x=1787733710;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=f5unJkgfJtuheuGOJt0oTijBeqYlIQdsXrKYZTbH0+w=;
- b=Rs6nbh+rFB8yd8kW16Pqzx3Rr9LHM0LLFGujOmuyPesJTu1+PsT/aqAY
- ugjzECoGUkP4O1/s/2la3snUHUTvuNQedpbr1xn6+oXEqQjXDNurQmx5w
- eurupMdPoMYA07vPhf7dA3cEJeNb0bkxZzqJSiZFqn8Otn/+LFWB4cWTY
- 3aGX8Z4zC2Prn5nFzGZqgGAGnK94qbhCyufXA763dop5zNrdoSycyoMnH
- g9Vrx+568KSO3vQS6H2Vsmy0sGDz5+XyW0TrdtBDrnwNFUe4VLzKFejYm
- ayjAeeL/KO6WQHgbvvzj/u2fSB/xxa/oSPLurTeRZVBf7bdYH8IRx82cA Q==;
-X-CSE-ConnectionGUID: nLq7KjHESN+Y+p4kRbpcvA==
-X-CSE-MsgGUID: N0wKo0bXT6GTzxKIEeTf6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="69020507"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="69020507"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 01:41:49 -0700
-X-CSE-ConnectionGUID: F+G9D96USzOJr1Rg4I4TuQ==
-X-CSE-MsgGUID: aXfRrJqHSJCv8rnZDNh3NA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="169124865"
-Received: from dut2051bmgfrd.iind.intel.com ([10.190.232.68])
- by orviesa009.jf.intel.com with ESMTP; 26 Aug 2025 01:41:44 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, himal.prasad.ghimiray@intel.com,
- matthew.brost@intel.com, nishit.sharma@intel.com
-Subject: [PATCH i-g-t 5/5] tests/intel/xe_exec_system_allocator: Added
- atomic_batch test in IGT
-Date: Tue, 26 Aug 2025 08:41:33 +0000
-Message-ID: <20250826084133.897768-6-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250826084133.897768-1-nishit.sharma@intel.com>
-References: <20250826084133.897768-1-nishit.sharma@intel.com>
-MIME-Version: 1.0
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2077.outbound.protection.outlook.com [40.107.223.77])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF54E10E2EC
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 08:43:34 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dBxOA7gYHUQAnJAkpnmZ3Y4/YWlHjM+7nv2NuhWI6NcAbbSpKL4kBsBwWXxOY340fOoGcklSbEqtdIO8XYVkfxrlxdf7a9kQl4bOel4CylMU8gNpnJ6Om6X3HKC4j9XbEz+DKY7ozbdE6N6QQwHDpTjEfhYVdFmnunZy4eFNRZS3fPc9SlYeHt71ClQX95v8iL/QKzqDQtRzBmuHaZkHqvMEKP3FaR4tUvXSw7cfSyC3h3mzHlzy6F7guoCEptHMNcI5jcUAWp+xTiWyPzjpjdwN6TcqjaKBhOuj/raB5z7pzKUOn2Ygykb1oDaH7v+QsszYBHJOCj+w+o/ropSDkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Xg+P1h5V13v75jS4PkgMSfKH7TF8k6dgIOZ7PT86bvU=;
+ b=JZeNGHW1TRCyQy/kZxYD4Sv+jjWSEwZ9ZH/ru1ltnN6MQO/4abrgwk1FqPw+PxmjP7vrdhoA+qsenaEuzwXEJJP2aPoM8Pxd5Lx1te9V8BuyaqMbmLfnRMPEbFTYZNoMJ7GOQIy334xGVMkbjMmqmzXLJlCbmdvuZOM2Z1JYteGHCs1Npo+DDEQth1j9CmuMQC44MOSAhfV2DRKNX37U2/9mBWy/CAPL1K/SM0aG89IOhqUOHlj2Tvb6EQlY6vWeg37AlklsSyfHj2vwzeDI1Tz74K3DkHijIHJBk1g3IRgFxvU1lgh/ZXWC790wkdDm4mzc4+Q/5qcbXkLnbg31oA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xg+P1h5V13v75jS4PkgMSfKH7TF8k6dgIOZ7PT86bvU=;
+ b=zEVrMPBRyN73TdPylKAcss7LwfI02PvT/+eeEiWWvKT0jTi1/W3Tg6pF8e45ImibX+B1HY6x6WcfXwM0ON9FlKcM0m9bhO3jdq8QucrpUoRIlvwU4JW+E3M1Woe1Wqwf31sz1aagXc2jsFv17gAJiZVEZiF0AEUk8C5EUXOw6Zs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by DS0PR12MB8815.namprd12.prod.outlook.com (2603:10b6:8:14f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.13; Tue, 26 Aug
+ 2025 08:43:32 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.9052.019; Tue, 26 Aug 2025
+ 08:43:31 +0000
+Message-ID: <982eef5f-6237-4d92-a954-13830941d6a7@amd.com>
+Date: Tue, 26 Aug 2025 10:43:26 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] amdgpu/tests: make amdgpu_sync_dependency_test work on
+ gfx12
+To: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>,
+ "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>
+References: <20250825181047.45203-1-vitaly.prosyak@amd.com>
+ <DM4PR12MB515260D67BCA40FBC02A6E27E339A@DM4PR12MB5152.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <DM4PR12MB515260D67BCA40FBC02A6E27E339A@DM4PR12MB5152.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MN2PR19CA0027.namprd19.prod.outlook.com
+ (2603:10b6:208:178::40) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS0PR12MB8815:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e6ecfac-e01c-47c3-db15-08dde47ca2f2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eWZqY3gyNjFWT0I4YTlTMFZOb0F6L1RxQVJZSnJRWENUUlJIaksxL0RTbnRy?=
+ =?utf-8?B?bk4ramIwaEh5clN3SUMrKzZIa0ZkV2FRSFhlT09zU1A1OGVXYS9tNEVqalkz?=
+ =?utf-8?B?dU9YYzdDQUR5dXVXOXMxZG9HNno0VUpkeHZtR1owNUcvR3B0c0VnY0FPVHo4?=
+ =?utf-8?B?YndPNm8vN2tGY3FoTHRQa0lKRXNhYnBua2hRWnJwK3NvOGJKMlo1cERQNW1T?=
+ =?utf-8?B?UmZzSUYvZXVzamVkSXNmdTFRbi9BdjlpUkEvQkxpYjBwUEtRUUlDUS9FR0lB?=
+ =?utf-8?B?aWM1ZTA0b1VSaTR3Zkg3MjU5RzFWNmxaYUpyRVprenIwcnZSbkdxUFhUTnlS?=
+ =?utf-8?B?NFptcUV4VzlEZ3FIM0kyd0tIZDc2QUFXZlZYbXUwcEpqb0Q0S3hxVlBxYTdG?=
+ =?utf-8?B?bVpoMG05WDFDbm8wMFJkdFNzclhPRVMvcVF0VTM4eW9ITXd6Z1o1bGZObUVU?=
+ =?utf-8?B?LzQrdXlQQytKcXo4TzQ0TXJTSkt2RHNqL0o2UURPT3dSdUVBQy9jUGZIK1dq?=
+ =?utf-8?B?ZU16dk5vT3MzQUJsb0VTYjI4UUY4bjJ6M0VtSmVkendYV3pZM1FMQUVSYW5j?=
+ =?utf-8?B?anFnZ0RuelRqS203WmQ2WHE4VTdnalRwVzN2V0hyT1dhRmxpTE84dU41a1c3?=
+ =?utf-8?B?VVJlWENRUG5nNjlaV1BMeHRrK1BaR3JobDQweXFCRXVEd2U5b1hrQ0Rub1hx?=
+ =?utf-8?B?VDFaL25VdTVKYUlVK3NPTmNWWVdrdWphWjc4VmozZWJvd0hPV2tGdnJKdWNO?=
+ =?utf-8?B?dzcwR2xpZnR4c1NxQ3E1MWx3MDg4TFFUNkNNQ1lBSlFvUlNHNDBjdFdEZzQ5?=
+ =?utf-8?B?NkRtV0FQN0k3dVdhOE9LQ1RjVm9vY0ZvK1JPVk53R01qbno5WlFyN2NWMnFk?=
+ =?utf-8?B?SnlCK3BDeEp2NW5tcjNYcjZpcExZV3pZbDByS2l0M1JQcU4yK0hPWWNiOTNx?=
+ =?utf-8?B?ZW1kWHN1ZDloUHpTbG5od3YzMXVRRUpVY1V5UDYrMkNGSWZVVE5ySHFtbHNk?=
+ =?utf-8?B?OTdaUGRuRWV1N3JJNTVIWHpDNFR6c3JoQUw1a3IyRHVhQ09SR3hrSzZCMDJS?=
+ =?utf-8?B?ZlpGdi92N1NlYk5zUVJhT3lRS0l5R1lRNVlpWC9Qcm01TjJ5NkZOQVlMcXVZ?=
+ =?utf-8?B?Z1NldVlCeDUzSHdYSmFvd1NxU3ZaSVVJUnd5bEVsdkJ1cUN3QVJZN3J6NEZF?=
+ =?utf-8?B?REluRlhPOXRyS1VOYUJuZWxDT2c3L0hKT05aSVY4ZzkyTEI1TlY1dzlkM3c4?=
+ =?utf-8?B?cUZFM3hVUnIwQzAwbTNoVmhFbVc5UnBQeERFaUU2UHhxbkFSOWY4S1BJaDdl?=
+ =?utf-8?B?SXdNTnV4YmlkTGhuQlI4ZzZteWtoQzFBUkpWRnJXTEduTEZEdndKZmZFelRz?=
+ =?utf-8?B?ODJ5UUhHY1FpZk9ZSC9sQm1EOS9DTkRmWWl4N2Z2Wjh0UzFZMUdna3g4WFNX?=
+ =?utf-8?B?ZlRGMGh3aHY2c0V2S2oxQ3pUQTFyYWEyNXpKWkJuMmdxNm42cnpEaTd5TXE5?=
+ =?utf-8?B?WVNuVUw1VnFPRVJ6Z2szZTJwanR2RDErN0gwL3hHZTVuV242OFpzcFZ3eVFy?=
+ =?utf-8?B?NEc0NzVBNG5tMk9NeTRub3hueDFhNjNNY0JLK2dxOEVDM3l5VThYV1k3ZXJK?=
+ =?utf-8?B?ZXBxYk1VRlRSenVJMmZYQTJWNUhRc0d6dWRPZ0diL3gwUHoyTEVWcmJmaWYr?=
+ =?utf-8?B?TG1ubUZIRWtjQTA0bUVDTkwzNk5TU2l0WDBVamxtek9iQVBFU0VnMTBST3Vl?=
+ =?utf-8?B?UTg0TDcxNVo4OW1pWDFJb1ZLbFpWcGU4Vys1NDFleHgvY3BsYU1lbHhibUVw?=
+ =?utf-8?B?YnJzRWo1aGR2TFFjb0VhWkhYMjdTdUtKbkNqakVlNkRjbzhORzQ4REZOTVJa?=
+ =?utf-8?B?QnVETjRlK1piL2tFOXdqVDZseFhrQWFpWkdwTUtyRW9mR1ZiMlFhZ3VnM080?=
+ =?utf-8?Q?DgUgq2DuK5o=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB5685.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b25aK3R0c2tIRmdwUnZLWFpsVXRkajFJaHkxcUF4RW50VmJoczVKcGdWd3Bo?=
+ =?utf-8?B?Q2I5b2hEcEwrQzcxNEZsZ2V3WjF5R24yVGlhZDR6QWNvV1greEh2eHY4REdW?=
+ =?utf-8?B?Mlk1NkluSzhaVHZQRjIybERFd3dmY3JHbm9Ua0dtWFRKa3VwbW5EZGlNdEVk?=
+ =?utf-8?B?cTQwUzAwaisvMVF5d01saW5ES3pjYUpROFd5RktxdWFRNEsrTDdnZDY4aWUr?=
+ =?utf-8?B?UXFSUUtTMnpXWmRCSmxOdDZkT2pjSFpsZG1xekRrMzF0OHYvc0h2a29VUHB4?=
+ =?utf-8?B?cUw0dWNVUkRDRE5pSUtrZWNVMnQraWJlVTMwQVJMeHNwL0tzdlVlV3g0dFJI?=
+ =?utf-8?B?Kys2cStwQkdtdktpeFdRQjliNjl4ODJseTAxVkJDUDJHNWtqMDJwdG45ajcz?=
+ =?utf-8?B?NFVaN1VEc0N2R3FBRjBZOGFtVGJoVSsrb3hBMmM2THNhTEovTk05N2c0WWRB?=
+ =?utf-8?B?VFhHbEdzcVlSSzVhZ2IxaEVFcUM2Y2xSRlZQRjhHYjBhVGdETFp5YjRKb240?=
+ =?utf-8?B?QnVid3JncHR1ZlFNbXVaWGNDOXY2QklxbWNVdU1nS1NUSFJGb3BrbmNsM2U3?=
+ =?utf-8?B?K3pyd211L0ZvelRReHBWRVA2ZVlQakhQMDlqQnNsc3pKSCs2amt6OS90c2Ru?=
+ =?utf-8?B?SHQ0N05jUUZKeUVrUTVHUGt5Q1g3ZGdKeGZkZ2FDWjFabmlMdzNDVm1kZEk2?=
+ =?utf-8?B?UmtqeWtOS3pOQWJZU1VYWW92aklUb09wejBIUHQ4NXVsQzNHOHZEVlhuTE0w?=
+ =?utf-8?B?R21venA0WFl4bDZIR0RiVnQrcWZkeUNIWURhYm5rbDJISzFvU0ZpSWV6bWhq?=
+ =?utf-8?B?OGZyRXpQNmhtZlUvMms3bnJYMTY3bXhhczZHaHp3UmNQRm8zU0Q5VTJLT3pp?=
+ =?utf-8?B?VkhUdUQ4WC8rZTVXNkYzL09KeU5lZVNtSTdhOCs0R21GVUJ2MWxMSUx2S09i?=
+ =?utf-8?B?VityeWV6RmRGNkdZWWc0QjlGRjNla1lYUHZBVWVVeFdmb1NlTE1IaDRSalVl?=
+ =?utf-8?B?R1pFbDZwSTNoTTVTQ2VjbjFRamQ2NFFIT0taV1E2VytHb3g5L0lzUnZjRUJS?=
+ =?utf-8?B?bEM4bVU2R0N6N2pBdmNLQmxZa2VUbmtZeUxwMkxkWndkcGpRTUFScHpWUVVV?=
+ =?utf-8?B?RkJxYU1kdXUzbmlGblliN0xYVkRmYWh1cFFCbDhpRWtQTG5Kc1R4b3U3clEw?=
+ =?utf-8?B?Rm4wMTlXSk1sYzZXTnZaNUg4Rm40M1NBcndBZ0N0ZU9BaTRvNkJYSWdvbVNS?=
+ =?utf-8?B?TE1uQWtZUlo4UnVKNGE5c0lnc05QOFI1M0lxQWo1K3Z5WkxWNzlZc2ZiM0dZ?=
+ =?utf-8?B?STlsQlRHNEZIM3JxZGJIclc2MmxxMWU2UUp3UlhaaE5UTGFQbE9WZzJiZkk0?=
+ =?utf-8?B?RkV2UUFidVZSblpySWdxRXRiZ2RNWmxkSnJkZTJSMEc4dnRsa3FjNUU2dXFl?=
+ =?utf-8?B?cnhOcHFKaE54RmxJdWZHN2JpV0dTdlh4aXhDeGVSV0Y0aUk3U0dJbVl2MFdw?=
+ =?utf-8?B?V05aRFNBTlNUdy93a0IvMmxKU1BsTG10RUVRMlBuOWdpYXJkOXZaWUZPeWtT?=
+ =?utf-8?B?cExhS0xZOXNXY2NmZHpqVWt3NGQyU09COEdLeUQrYkpHcXJRUTJHa2xBYVM5?=
+ =?utf-8?B?Qm50YTIyMzlTT2FubVd1bWJNelFJWmo1L1NJZ1F6RUFsUmNQdG9DT0p2L210?=
+ =?utf-8?B?QkpvUStaRjJUbWEvdkxpTTBNb3J1WFhyUXdzWWdQTDhDdTZtbCtycDh4Vk0v?=
+ =?utf-8?B?dnJmMC9NeGdiUWZPOU16aGY5NTBxbFBGWDRTbWw4STIyQ2VSdGFkQ01MUVdr?=
+ =?utf-8?B?UTR4bVZocUZtaUJLVTczK0h1bUNKWGpISnpWclp5ZHExVDFSaXFPNWRja1ph?=
+ =?utf-8?B?L2Jsb2kxQ0d4OHJxU0NGSmlHM3Y2RzNaWmNSbEdBKzg4SW90endrMG13VmtM?=
+ =?utf-8?B?L01ZMFQxeTdTMStnME05MlN6b1E1U0Nrdm9oSk94bW5mcUhVMUZ5Vlhvcytn?=
+ =?utf-8?B?WUhWczMrUklxRGUzMVNZakEraDdtWmV1cFB0Y1J1VnVqTkhhcXFvaGNLeG5L?=
+ =?utf-8?B?RWRGY3hQamQwQk82UzZNOTR0UWtSUFBjY3BjWkpLUnBEbXlEQWhyZHVmRVBI?=
+ =?utf-8?Q?SVcgtKJT9HbJg8UUxilqVweRg?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e6ecfac-e01c-47c3-db15-08dde47ca2f2
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 08:43:31.9169 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: A79g+i4xcs6jiLaBteJu8vcYaKUa5xZTi1BMh8NeoHpWJXJT2PA/dJ/hSfPoNNFT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8815
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,729 +166,359 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Acked-by: Christian König <christian.koenig@amd.com>
 
-ATOMIC_BATCH flag is introduced when true MI_ATOMIC | MI_ATOMIC_INC
-operation will be called. This will avoid writing another function which
-performs atomic increment operations. ATOMIC_BATCH flag is passed as
-argument in write_dword() if true then value will be written on passed
-address and incremented by ATOMIC_INC operation. For all memory
-operations this flag will be used to verify if ATOMIC operation is
-working or not.
+Good to have that fixed.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 482 +++++++++++++++++++++----
- 1 file changed, 412 insertions(+), 70 deletions(-)
+Thanks,
+Christian.
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 70ca5fc2e..4569ace8d 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -29,6 +29,14 @@
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- #define QUARTER_SEC		(NSEC_PER_SEC / 4)
- #define FIVE_SEC		(5LL * NSEC_PER_SEC)
-+struct test_exec_data {
-+	uint32_t batch[32];
-+	uint64_t pad;
-+	uint64_t vm_sync;
-+	uint64_t exec_sync;
-+	uint32_t data;
-+	uint32_t expected_data;
-+};
- 
- struct batch_data {
- 	uint32_t batch[16];
-@@ -37,6 +45,7 @@ struct batch_data {
- 	uint32_t expected_data;
- };
- 
-+#define VAL_ATOMIC_EXPECTED  56
- #define WRITE_VALUE(data__, i__)	({			\
- 	if (!(data__)->expected_data)				\
- 		(data__)->expected_data = rand() << 12 | (i__);	\
-@@ -53,10 +62,19 @@ static void __write_dword(uint32_t *batch, uint64_t sdi_addr, uint32_t wdata,
- 	batch[(*idx)++] = wdata;
- }
- 
--static void write_dword(uint32_t *batch, uint64_t sdi_addr, uint32_t wdata,
--			int *idx)
-+static void write_dword(struct test_exec_data *data, uint64_t sdi_addr, uint32_t wdata,
-+			int *idx, bool atomic)
- {
--	__write_dword(batch, sdi_addr, wdata, idx);
-+	uint32_t *batch = data->batch;
-+
-+	if (atomic) {
-+		data->data = 55;
-+		batch[(*idx)++] = MI_ATOMIC | MI_ATOMIC_INC;
-+		batch[(*idx)++] = sdi_addr;
-+		batch[(*idx)++] = sdi_addr >> 32;
-+	} else {
-+		__write_dword(batch, sdi_addr, wdata, idx);
-+	}
- 	batch[(*idx)++] = MI_BATCH_BUFFER_END;
- }
- 
-@@ -271,7 +289,7 @@ check_all_pages_threads(void *ptr, uint64_t alloc_size, uint64_t stride,
- 
- static void touch_all_pages(int fd, uint32_t exec_queue, void *ptr,
- 			    uint64_t alloc_size, uint64_t stride,
--			    struct timespec *tv, uint64_t *submit)
-+			    struct timespec *tv, uint64_t *submit, bool atomic)
- {
- 	struct drm_xe_sync sync[1] = {
- 		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
-@@ -302,7 +320,8 @@ static void touch_all_pages(int fd, uint32_t exec_queue, void *ptr,
- 		uint64_t sdi_addr = addr + sdi_offset;
- 		int b = 0;
- 
--		write_dword(data->batch, sdi_addr, WRITE_VALUE(data, i), &b);
-+		write_dword((struct test_exec_data *)data, sdi_addr, WRITE_VALUE(data, i),
-+			     &b, atomic ? true : false);
- 		igt_assert(b <= ARRAY_SIZE(data->batch));
- 	}
- 
-@@ -407,34 +426,45 @@ static void __aligned_partial_free(struct aligned_alloc_type  *aligned_alloc_typ
- 
- #define MAX_N_EXEC_QUEUES       16
- 
--#define MMAP                    (0x1 << 0)
--#define NEW                     (0x1 << 1)
--#define BO_UNMAP                (0x1 << 2)
--#define FREE                    (0x1 << 3)
--#define BUSY                    (0x1 << 4)
--#define BO_MAP                  (0x1 << 5)
--#define RACE                    (0x1 << 6)
--#define SKIP_MEMSET             (0x1 << 7)
--#define FAULT                   (0x1 << 8)
--#define FILE_BACKED             (0x1 << 9)
--#define LOCK                    (0x1 << 10)
--#define MMAP_SHARED             (0x1 << 11)
--#define HUGE_PAGE               (0x1 << 12)
--#define SHARED_ALLOC            (0x1 << 13)
--#define FORK_READ               (0x1 << 14)
--#define FORK_READ_AFTER         (0x1 << 15)
--#define MREMAP                  (0x1 << 16)
--#define DONTUNMAP               (0x1 << 17)
--#define READ_ONLY_REMAP         (0x1 << 18)
--#define SYNC_EXEC               (0x1 << 19)
--#define EVERY_OTHER_CHECK       (0x1 << 20)
--#define MULTI_FAULT             (0x1 << 21)
--#define PREFETCH                (0x1 << 22)
--#define THREADS                 (0x1 << 23)
--#define PROCESSES               (0x1 << 24)
--#define PREFETCH_BENCHMARK      (0x1 << 25)
--#define PREFETCH_SYS_BENCHMARK	(0x1 << 26)
--#define PREFERRED_LOC_SMEM      (0x1 << 27)
-+#define MMAP				(0x1 << 0)
-+#define NEW				(0x1 << 1)
-+#define BO_UNMAP			(0x1 << 2)
-+#define FREE				(0x1 << 3)
-+#define BUSY				(0x1 << 4)
-+#define BO_MAP				(0x1 << 5)
-+#define RACE				(0x1 << 6)
-+#define SKIP_MEMSET			(0x1 << 7)
-+#define FAULT				(0x1 << 8)
-+#define FILE_BACKED			(0x1 << 9)
-+#define LOCK				(0x1 << 10)
-+#define MMAP_SHARED			(0x1 << 11)
-+#define HUGE_PAGE			(0x1 << 12)
-+#define SHARED_ALLOC			(0x1 << 13)
-+#define FORK_READ			(0x1 << 14)
-+#define FORK_READ_AFTER			(0x1 << 15)
-+#define MREMAP				(0x1 << 16)
-+#define DONTUNMAP			(0x1 << 17)
-+#define READ_ONLY_REMAP			(0x1 << 18)
-+#define SYNC_EXEC			(0x1 << 19)
-+#define EVERY_OTHER_CHECK		(0x1 << 20)
-+#define MULTI_FAULT			(0x1 << 21)
-+#define PREFETCH			(0x1 << 22)
-+#define THREADS				(0x1 << 23)
-+#define PROCESSES			(0x1 << 24)
-+#define PREFETCH_BENCHMARK		(0x1 << 25)
-+#define PREFETCH_SYS_BENCHMARK		(0x1 << 26)
-+#define PREFERRED_LOC_SMEM		(0x1 << 27)
-+#define ATOMIC_BATCH			(0x1 << 28)
-+#define MIGRATE_ALL_PAGES		(0x1 << 29)
-+#define PREFERRED_LOC_ATOMIC_DEVICE	(0x1 << 30)
-+#define PREFERRED_LOC_ATOMIC_GL		(0x1ull << 31)
-+#define PREFERRED_LOC_ATOMIC_CPU	(0x1ull << 32)
-+#define MADVISE_MULTI_VMA		(0x1ull << 33)
-+#define MADVISE_SPLIT_VMA		(0x1ull << 34)
-+#define MADVISE_ATOMIC_VMA		(0x1ull << 35)
-+#define PREFETCH_SPLIT_VMA		(0x1ull << 36)
-+#define PREFETCH_CHANGE_ATTR		(0x1ull << 37)
-+#define PREFETCH_SAME_ATTR		(0x1ull << 38)
- 
- #define N_MULTI_FAULT           4
- 
-@@ -478,6 +508,47 @@ static void __aligned_partial_free(struct aligned_alloc_type  *aligned_alloc_typ
-  * SUBTEST: processes-evict-malloc-mix-bo
-  * Description: multi-process trigger eviction of VRAM allocated via malloc and BO create
-  * Test category: stress test
-+ *
-+ * SUBTEST: madvise-multi-vma
-+ * Description: performs multiple madvise operations on multiple virtual memory area using atomic device attributes
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-split-vma
-+ * Description: perform madvise operations on multiple type VMAs (BO and CPU VMAs)
-+ * Test category: perform madvise operations on multiple type VMAs (BO and CPU VMAs)
-+ *
-+ * SUBTEST: madvise-atomic-vma
-+ * Description: perform madvise atomic operations on BO in VRAM/SMEM if atomic ATTR global/device
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-split-vma-with-mapping
-+ * Description: performs prefetch and page migration
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-vram
-+ * Description: performs both atomic and preferred loc madvise operations atomic device attributes set
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-gl
-+ * Description: performs both atomic and preferred loc madvise operations with atomic global attributes set
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-cpu
-+ * Description: performs both atomic and preferred loc madvise operations with atomic cpu attributes set
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-sram-migrate-pages
-+ * Description: performs preferred loc madvise operations and migrating all pages in smem
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-no-range-invalidate-same-attr
-+ * Description: performs atomic global madvise operation, prefetch and again madvise operation with same atomic attribute
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-range-invalidate-change-attr
-+ * Description: performs atomic global madvise operation, prefetch and again madvise operation with different atomic attribute
-+ * Test category: functionality test
-+ *
-  */
- 
- static void
-@@ -544,7 +615,7 @@ many_allocs(int fd, struct drm_xe_engine_class_instance *eci,
- 		allocs[i] = alloc;
- 
- 		touch_all_pages(fd, exec_queue, allocs[i].ptr, alloc_size, stride,
--				&tv, &submit);
-+				&tv, &submit, flags & ATOMIC_BATCH);
- 	}
- 
- 	if (barrier)
-@@ -692,7 +763,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- 		.num_syncs = 1,
- 		.syncs = to_user_pointer(sync),
- 	};
--	struct {
-+	struct batch_data {
- 		uint32_t batch[16];
- 		uint64_t pad;
- 		uint64_t vm_sync;
-@@ -750,7 +821,8 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- 		uint64_t sdi_addr = addr + sdi_offset;
- 		int b = 0;
- 
--		write_dword(data[i].batch, sdi_addr, WRITE_VALUE(&data[i], i), &b);
-+		write_dword((struct test_exec_data *)&data[i], sdi_addr, WRITE_VALUE(&data[i], i),
-+			     &b, ATOMIC_BATCH ? true : false);
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
- 		if (!i)
-@@ -773,7 +845,10 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- 		xe_wait_ufence(fd, new ?: exec_ufence, USER_FENCE_VALUE,
- 			       exec_queue, FIVE_SEC);
- 		if (i || (flags & CPU_FAULT))
--			igt_assert_eq(data[i].data, READ_VALUE(&data[i]));
-+			igt_assert_eq(data[i].data,
-+				      flags & ATOMIC_BATCH
-+				      ? VAL_ATOMIC_EXPECTED
-+				      : READ_VALUE(&data[i]));
- 		exec_ufence[0] = 0;
- 
- 		if (!i) {
-@@ -1072,16 +1147,6 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
-  * Description: Create multiple threads with a faults on different hardware engines to same addresses, racing between CPU and GPU access
-  * Test category: stress test
-  */
--
--struct test_exec_data {
--	uint32_t batch[32];
--	uint64_t pad;
--	uint64_t vm_sync;
--	uint64_t exec_sync;
--	uint32_t data;
--	uint32_t expected_data;
--};
--
- static void igt_require_hugepages(void)
- {
- 	igt_skip_on_f(!igt_get_meminfo("HugePages_Total"),
-@@ -1090,11 +1155,52 @@ static void igt_require_hugepages(void)
- 		      "No huge pages available!\n");
- }
- 
-+static int
-+xe_vm_madvixe_pat_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
-+			int pat_index)
-+{
-+	int err;
-+
-+	err = xe_vm_madvise(fd, vm, addr, range, 0,
-+			    DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0);
-+	if (err)
-+		return err;
-+	return 0;
-+}
-+
-+static int
-+xe_vm_madvise_atomic_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
-+			  int mem_attr)
-+{
-+	int err;
-+
-+	err = xe_vm_madvise(fd, vm, addr, range, 0,
-+			    DRM_XE_MEM_RANGE_ATTR_ATOMIC,
-+			    mem_attr, 0);
-+	if (err)
-+		return err;
-+	return 0;
-+}
-+
-+static int
-+xe_vm_madvise_migrate_pages(int fd, uint32_t vm, uint64_t addr, uint64_t range)
-+{
-+	int err;
-+
-+	err = xe_vm_madvise(fd, vm, addr, range, 0,
-+			    DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+			    DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM,
-+			    DRM_XE_MIGRATE_ALL_PAGES);
-+	if (err)
-+		return err;
-+	return 0;
-+}
-+
- static void
- test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	  int n_exec_queues, int n_execs, size_t bo_size,
- 	  size_t stride, uint32_t vm, void *alloc, pthread_barrier_t *barrier,
--	  unsigned int flags)
-+	  unsigned long long flags)
- {
- 	uint64_t addr;
- 	struct drm_xe_sync sync[1] = {
-@@ -1107,9 +1213,10 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
--	struct test_exec_data *data, *next_data = NULL;
-+	struct test_exec_data *data, *next_data = NULL, *org_data;
- 	uint32_t bo_flags;
- 	uint32_t bo = 0, bind_sync = 0;
-+	uint32_t val;
- 	void **pending_free;
- 	u64 *exec_ufence = NULL, *bind_ufence = NULL;
- 	int i, j, b, file_fd = -1, prev_idx, pf_count, err;
-@@ -1234,6 +1341,133 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				 strerror(errno), vm, to_user_pointer(data), bo_size);
- 	}
- 
-+	if (flags & PREFERRED_LOC_SMEM) {
-+		if (flags & MIGRATE_ALL_PAGES) {
-+			err = xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+			if (err)
-+				igt_warn("failure in page migration err = %s, vm =%u, data=%"PRIu64"\n",
-+					 strerror(errno), vm, to_user_pointer(data));
-+		} else {
-+			err = xe_vm_madvise(fd, vm, to_user_pointer(data), bo_size, 0,
-+					    DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+					    DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM, 0);
-+		}
-+	}
-+	if (flags & PREFERRED_LOC_ATOMIC_DEVICE) {
-+		err = xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+		if (err)
-+			igt_warn("failure in page migration err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+
-+		err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+						DRM_XE_ATOMIC_DEVICE);
-+		if (err)
-+			igt_warn("failure in atomic device attr err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+	}
-+	if (flags & PREFERRED_LOC_ATOMIC_GL) {
-+		err = xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+		if (err)
-+			igt_warn("failure in page migration err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+		err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+						DRM_XE_ATOMIC_GLOBAL);
-+		if (err)
-+			igt_warn("failure in atomic global attr err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+	}
-+	if (flags & PREFERRED_LOC_ATOMIC_CPU) {
-+		err = xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+		if (err)
-+			igt_warn("failure in page migration err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+
-+		err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+						DRM_XE_ATOMIC_CPU);
-+		if (err)
-+			igt_warn("failure in atomic cpu attr err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+	}
-+	if (flags & MADVISE_MULTI_VMA) {
-+		if (bo_size)
-+			bo_size = ALIGN(bo_size, SZ_4K);
-+		err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data) + bo_size/2,
-+						bo_size/2, DRM_XE_ATOMIC_DEVICE);
-+		if (err)
-+			igt_warn("failure in atomic device attr err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+
-+		err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data) + bo_size,
-+						bo_size, DRM_XE_ATOMIC_DEVICE);
-+		if (err)
-+			igt_warn("failure in atomic multi_vma err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+
-+		err = xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data), bo_size, 4);
-+		if (err)
-+			igt_warn("failure in pat attr index 4 err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+
-+		err = xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data), bo_size, 3);
-+		if (err)
-+			igt_warn("failure in pat attr index 3 err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+
-+		err = xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data) + bo_size/2, bo_size/2,
-+					     8);
-+		if (err)
-+			igt_warn("failure in pat attr index 8 err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+	}
-+	if (flags & MADVISE_SPLIT_VMA) {
-+		if (bo_size)
-+			bo_size = ALIGN(bo_size, SZ_4K);
-+
-+		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-+		bo = xe_bo_create(fd, vm, bo_size,
-+				  vram_if_possible(fd, eci->gt_id), bo_flags);
-+		xe_vm_bind_async(fd, vm, 0, bo, 0, to_user_pointer(data) + bo_size/2,
-+				 bo_size/2, 0, 0);
-+
-+		__xe_vm_bind_assert(fd, vm, 0, 0, 0, to_user_pointer(data) + bo_size/2,
-+				    bo_size/2, DRM_XE_VM_BIND_OP_MAP,
-+				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR, sync,
-+				    1, 0, 0);
-+		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-+		data[0].vm_sync = 0;
-+		gem_close(fd, bo);
-+		bo = 0;
-+
-+		err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data),
-+						bo_size/2, DRM_XE_ATOMIC_DEVICE);
-+		if (err)
-+			igt_warn("failure in split atomic device attr err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+	}
-+	if (flags & MADVISE_ATOMIC_VMA) {
-+		if (bo_size)
-+			bo_size = ALIGN(bo_size, SZ_4K);
-+
-+		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-+		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id), bo_flags);
-+		xe_vm_bind_async(fd, vm, 0, bo, 0, to_user_pointer(data), bo_size, 0, 0);
-+
-+		__xe_vm_bind_assert(fd, vm, 0, 0, 0, to_user_pointer(data), bo_size,
-+				    DRM_XE_VM_BIND_OP_MAP,
-+				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR, sync,
-+				    1, 0, 0);
-+		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-+		data[0].vm_sync = 0;
-+		gem_close(fd, bo);
-+		bo = 0;
-+
-+		err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size/2,
-+						DRM_XE_ATOMIC_GLOBAL);
-+		if (err)
-+			igt_warn("failure in atomic vma err = %s, vm =%u data=%"PRIu64"\n",
-+				 strerror(errno), vm, to_user_pointer(data));
-+	}
-+
- 	if (flags & BO_UNMAP) {
- 		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
- 		bo = xe_bo_create(fd, vm, bo_size,
-@@ -1307,6 +1541,16 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		bool fault_inject = (FAULT & flags) && i == n_execs / 2;
- 		bool fault_injected = (FAULT & flags) && i > n_execs;
- 
-+		if (flags & MADVISE_MULTI_VMA) {
-+			addr = addr + bo_size;
-+			org_data = data;
-+			data = from_user_pointer(addr);
-+			batch_offset = (char *)&(data[idx].batch) - (char *)data;
-+			batch_addr = addr + batch_offset;
-+			sdi_offset = (char *)&(data[idx].data) - (char *)data;
-+			sdi_addr = addr + sdi_offset;
-+		}
-+
- 		if (barrier)
- 			pthread_barrier_wait(barrier);
- 
-@@ -1316,18 +1560,74 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				__write_dword(data[idx].batch,
- 					      sdi_addr + j * orig_size,
- 					      WRITE_VALUE(&data[idx], idx), &b);
--			write_dword(data[idx].batch, sdi_addr + j * orig_size,
--				    WRITE_VALUE(&data[idx], idx), &b);
-+			write_dword(&data[idx], sdi_addr + j * orig_size,
-+				    WRITE_VALUE(&data[idx], idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
- 		} else if (!(flags & EVERY_OTHER_CHECK)) {
- 			b = 0;
--			write_dword(data[idx].batch, sdi_addr,
--				    WRITE_VALUE(&data[idx], idx), &b);
-+			write_dword(&data[idx], sdi_addr,
-+				    WRITE_VALUE(&data[idx], idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
-+			if (flags & PREFETCH) {
-+				if (flags & PREFETCH_SPLIT_VMA) {
-+					bo_size = ALIGN(bo_size, SZ_4K);
-+
-+					xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0, 0);
-+
-+					igt_info("num_vmas before madvise = %d \n", val);
-+
-+					val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+					err = xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size/2);
-+					if (err)
-+						igt_warn("failure in prefetch split vma err = %s, vm =%u data=%"PRIu64"\n",
-+								strerror(errno), vm, to_user_pointer(data));
-+					igt_info("num_vmas after madvise= %d \n", val);
-+					val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+				} else if (flags & PREFETCH_SAME_ATTR) {
-+					err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+							DRM_XE_ATOMIC_GLOBAL);
-+					if (err)
-+						igt_warn("failure in prefetch same attr err = %s, vm =%u data=%"PRIu64"\n",
-+								strerror(errno), vm, to_user_pointer(data));
-+					val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+					xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0, DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
-+					err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size/2,
-+							DRM_XE_ATOMIC_GLOBAL);
-+					if (err)
-+						igt_warn("failure in prefetch atomic attr err = %s, vm =%u data=%"PRIu64"\n",
-+								strerror(errno), vm, to_user_pointer(data));
-+				} else if (flags & PREFETCH_CHANGE_ATTR) {
-+					err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+							DRM_XE_ATOMIC_GLOBAL);
-+					if (err)
-+						igt_warn("failure in prefetch atomic attr err = %s, vm =%u data=%"PRIu64"\n",
-+								strerror(errno), vm, to_user_pointer(data));
-+					val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+					xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0, DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
-+
-+					err = xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+							DRM_XE_ATOMIC_DEVICE);
-+					if (err)
-+						igt_warn("failure in prefetch change attr err = %s, vm =%u data=%"PRIu64"\n",
-+								strerror(errno), vm, to_user_pointer(data));
-+					val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+					}
-+				} else {
-+					b = 0;
-+					write_dword((struct test_exec_data *)&data[idx], sdi_addr,
-+						     WRITE_VALUE(&data[idx], idx), &b,
-+						     flags & ATOMIC_BATCH ? true : false);
-+						     igt_assert(b <= ARRAY_SIZE(data[idx].batch));
-+				}
- 		} else if (flags & EVERY_OTHER_CHECK && !odd(i)) {
- 			b = 0;
--			write_dword(data[idx].batch, sdi_addr,
--				    WRITE_VALUE(&data[idx], idx), &b);
-+			write_dword(&data[idx], sdi_addr,
-+				    WRITE_VALUE(&data[idx], idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
- 
- 			aligned_alloc_type = __aligned_alloc(aligned_size, bo_size);
-@@ -1346,10 +1646,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			__aligned_partial_free(&aligned_alloc_type);
- 
- 			b = 0;
--			write_dword(data[next_idx].batch,
-+			write_dword(&data[next_idx],
- 				    to_user_pointer(next_data) +
- 				    (char *)&data[next_idx].data - (char *)data,
--				    WRITE_VALUE(&data[next_idx], next_idx), &b);
-+				    WRITE_VALUE(&data[next_idx], next_idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[next_idx].batch));
- 		}
- 
-@@ -1404,9 +1705,18 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 					       exec_queues[e], &timeout);
- 			igt_assert(err == -ETIME || err == -EIO);
- 		} else {
--			xe_wait_ufence(fd, exec_ufence ? exec_ufence :
--				       &data[idx].exec_sync, USER_FENCE_VALUE,
--				       exec_queues[e], FIVE_SEC);
-+			if (flags & PREFERRED_LOC_ATOMIC_CPU) {
-+				int64_t timeout = QUARTER_SEC;
-+				err = __xe_wait_ufence(fd, exec_ufence ? exec_ufence :
-+						       &data[idx].exec_sync,
-+						       USER_FENCE_VALUE,
-+						       exec_queues[e], &timeout);
-+				if (err)
-+					goto cleanup;
-+			} else
-+				xe_wait_ufence(fd, exec_ufence ? exec_ufence :
-+					       &data[idx].exec_sync, USER_FENCE_VALUE,
-+					       exec_queues[e], FIVE_SEC);
- 			if (flags & LOCK && !i)
- 				munlock(data, bo_size);
- 
-@@ -1456,17 +1766,17 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				if (flags & FORK_READ) {
- 					igt_fork(child, 1)
- 						igt_assert_eq(data[idx].data,
--							      READ_VALUE(&data[idx]));
-+							      flags & ATOMIC_BATCH ? VAL_ATOMIC_EXPECTED : READ_VALUE(&data[idx]));
- 					if (!(flags & FORK_READ_AFTER))
- 						igt_assert_eq(data[idx].data,
--							      READ_VALUE(&data[idx]));
-+							      flags & ATOMIC_BATCH ? VAL_ATOMIC_EXPECTED : READ_VALUE(&data[idx]));
- 					igt_waitchildren();
- 					if (flags & FORK_READ_AFTER)
- 						igt_assert_eq(data[idx].data,
--							      READ_VALUE(&data[idx]));
-+							      flags & ATOMIC_BATCH ? VAL_ATOMIC_EXPECTED : READ_VALUE(&data[idx]));
- 				} else {
- 					igt_assert_eq(data[idx].data,
--						      READ_VALUE(&data[idx]));
-+						      flags & ATOMIC_BATCH ? VAL_ATOMIC_EXPECTED : READ_VALUE(&data[idx]));
- 
- 					if (flags & PREFETCH_SYS_BENCHMARK) {
- 						struct timespec tv = {};
-@@ -1494,13 +1804,13 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 								((void *)data) + j * orig_size;
- 
- 							igt_assert_eq(__data[idx].data,
--								      READ_VALUE(&data[idx]));
-+								      flags & ATOMIC_BATCH ? VAL_ATOMIC_EXPECTED : READ_VALUE(&data[idx]));
- 						}
- 					}
- 				}
- 				if (flags & EVERY_OTHER_CHECK)
- 					igt_assert_eq(data[prev_idx].data,
--						      READ_VALUE(&data[prev_idx]));
-+						      flags & ATOMIC_BATCH ? VAL_ATOMIC_EXPECTED : READ_VALUE(&data[prev_idx]));
- 			}
- 		}
- 
-@@ -1521,6 +1831,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			gem_close(fd, bo);
- 		}
- 
-+		if (flags & MADVISE_MULTI_VMA)
-+			data = org_data;
-+
- 		if (flags & NEW) {
- 			if (flags & MMAP) {
- 				if (flags & FREE)
-@@ -1610,6 +1923,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				 pf_count, pf_count_after);
- 	}
- 
-+cleanup:
- 	if (bo) {
- 		sync[0].addr = to_user_pointer(bind_ufence);
- 		__xe_vm_bind_assert(fd, vm, 0,
-@@ -1864,7 +2178,7 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
- 
- struct section {
- 	const char *name;
--	unsigned int flags;
-+	unsigned long long flags;
- };
- 
- igt_main
-@@ -1964,6 +2278,19 @@ igt_main
- 		{ "malloc-mix-bo", MIX_BO_ALLOC },
- 		{ NULL },
- 	};
-+	const struct section msections[] = {
-+		{ "preffered-loc-sram-migrate-pages", PREFERRED_LOC_SMEM | MIGRATE_ALL_PAGES | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-vram", PREFERRED_LOC_ATOMIC_DEVICE | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-gl", PREFERRED_LOC_ATOMIC_GL | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-cpu", PREFERRED_LOC_ATOMIC_CPU | ATOMIC_BATCH },
-+		{ "multi-vma", MADVISE_MULTI_VMA | ATOMIC_BATCH },
-+		{ "split-vma", MADVISE_SPLIT_VMA | ATOMIC_BATCH },
-+		{ "atomic-vma", MADVISE_ATOMIC_VMA | ATOMIC_BATCH },
-+		{ "split-vma-with-mapping", PREFETCH | PREFETCH_SPLIT_VMA | ATOMIC_BATCH },
-+		{ "range-invalidate-change-attr", PREFETCH | PREFETCH_CHANGE_ATTR | ATOMIC_BATCH },
-+		{ "no-range-invalidate-same-attr", PREFETCH | PREFETCH_SAME_ATTR | ATOMIC_BATCH },
-+		{ NULL },
-+	};
- 	int fd;
- 	int num_sections;
- 
-@@ -1983,15 +2310,22 @@ igt_main
- 	for (const struct section *s = sections; s[num_sections].name; num_sections++)
- 		;
- 
--	for (int i = 0; i < num_sections * 2; i++) {
--		struct section *s = &sections[i % num_sections];
-+	for (int i = 0; i < num_sections * 3; i++) {
-+		struct section p = sections[i % num_sections];
-+		struct section *s = &p;
- 
--		if (i/num_sections == 0) {
-+		if (i/num_sections == 1) {
- 			static char modified_name[256];
- 			snprintf(modified_name, sizeof(modified_name), "%s-preferred-loc-smem", s->name);
- 			s->name = modified_name;
- 			s->flags |= PREFERRED_LOC_SMEM;
- 		}
-+		if (i/num_sections == 2) {
-+			static char modified_name[256];
-+			snprintf(modified_name, sizeof(modified_name), "atomic-batch-%s", s->name);
-+			s->name = modified_name;
-+			s->flags |= ATOMIC_BATCH;
-+		}
- 
- 		igt_subtest_f("once-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
-@@ -2175,6 +2509,14 @@ igt_main
- 			processes_evict(fd, SZ_8M, SZ_1M, s->flags);
- 	}
- 
-+	for (const struct section *s = msections; s->name; s++) {
-+		igt_subtest_f("madvise-%s", s->name) {
-+			xe_for_each_engine(fd, hwe)
-+				test_exec(fd, hwe, 1, 1, SZ_64K, 0, 0, NULL,
-+						NULL, s->flags);
-+		}
-+	}
-+
- 	igt_fixture {
- 		xe_device_put(fd);
- 		drm_close_driver(fd);
--- 
-2.43.0
+On 26.08.25 02:37, Zhang, Jesse(Jie) wrote:
+> [AMD Official Use Only - AMD Internal Distribution Only]
+> 
+> This patch is good for me,
+> Reviewed-by: "Jesse.zhang@amd.com"
+> 
+> -----Original Message-----
+> From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
+> Sent: Tuesday, August 26, 2025 2:11 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Pelloux-Prayer, Pierre-Eric <Pierre-eric.Pelloux-prayer@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; Deucher, Alexander <Alexander.Deucher@amd.com>; Zhang, Jesse(Jie) <Jesse.Zhang@amd.com>
+> Subject: [PATCH] amdgpu/tests: make amdgpu_sync_dependency_test work on gfx12
+> 
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> 
+> drop CLEAR_STATE and fix malformed preamble
+> 
+> On GC 12.0.0 (RX 9070/ gfx12) the amdgpu_sync_dependency_test reliably timed out and was canceled (amdgpu_cs_query_fence_status() -> -ECANCELED).
+> Root cause was a bad PM4 preamble:
+> 
+>   1) We emitted PKT3_CLEAR_STATE (0-dword packet) and then incorrectly
+>      wrote an extra dword 0x80000000. That stray word is a TYPE2 packet
+>      and wedges the parser on gfx12.
+> 
+>   2) Even when well-formed, CLEAR_STATE is a graphics packet and is not
+>      accepted in the paths we use on gfx12. The ucode/queue is stricter
+>      and the job stalls.
+> 
+> This change removes CLEAR_STATE from the GFX12 and fixes the malformed emission. We keep CONTEXT_CONTROL (harmless across gens).
+> 
+> The test logic is unchanged: IB#1 launches a tiny kernel that spins and stores 42 to data_addr; IB#2 depends on IB#1’s fence and then WRITE_DATA
+> (WR_CONFIRM) writes 99 to the same location. Seeing 99 proves the kernel completed and the dependency was honored.
+> 
+> With these fixes the test completes on gfx9/gfx10/gfx11 as before and now passes on gfx12 without GPU reset.
+> 
+> Fixes: spurious -ECANCELED due to hangcheck after malformed/illegal PM4 preamble on gfx12
+> 
+> Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Jesse Zhang <jesse.zhang@amd.com>
+> 
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> ---
+>  lib/amdgpu/amd_family.h       |  1 +
+>  lib/amdgpu/amd_ip_blocks.c    | 74 +++++++++++++++++++++++------
+>  lib/amdgpu/amd_ip_blocks_ex.c | 41 +++++++++++++++-
+>  lib/amdgpu/amd_shaders.c      | 88 +++++++++++++++++++++++++++--------
+>  4 files changed, 169 insertions(+), 35 deletions(-)
+> 
+> diff --git a/lib/amdgpu/amd_family.h b/lib/amdgpu/amd_family.h index 60190c639..4514fff2a 100644
+> --- a/lib/amdgpu/amd_family.h
+> +++ b/lib/amdgpu/amd_family.h
+> @@ -128,6 +128,7 @@ enum chip_class {
+>         GFX10,
+>         GFX10_3,
+>         GFX11,
+> +       GFX12,
+>         NUM_GFX_VERSIONS
+>  };
+> 
+> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c index d8d7efbef..6955ba7dc 100644
+> --- a/lib/amdgpu/amd_ip_blocks.c
+> +++ b/lib/amdgpu/amd_ip_blocks.c
+> @@ -1031,13 +1031,21 @@ amdgpu_device_ip_block_add(struct amdgpu_ip_block_version *ip_block_version)
+> 
+>         amdgpu_ips.ip_blocks[amdgpu_ips.num_ip_blocks++] = ip_block_version;
+> 
+> +       return 0;
+> +}
+> +
+> +static int
+> +amdgpu_device_ip_block_ex_setup(struct amdgpu_ip_block_version
+> +*ip_block_version) {
+> +       if (amdgpu_ips.num_ip_blocks >= AMD_IP_MAX)
+> +               return -1;
+> +
+>         if (ip_block_version->funcs &&
+>                 (!ip_block_version->funcs->gfx_program_compute ||
+>                  !ip_block_version->funcs->gfx_dispatch_direct ||
+>                  !ip_block_version->funcs->gfx_write_confirm )) {
+>                 amd_ip_blocks_ex_init(ip_block_version->funcs);
+>         }
+> -
+>         return 0;
+>  }
+> 
+> @@ -1221,9 +1229,11 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
+>                 {"GFX10",                               GFX10},
+>                 {"GFX10_3",                             GFX10_3},
+>                 {"GFX11",                               GFX11},
+> +               {"GFX12",                               GFX12},
+>                 {},
+>         };
+>         struct chip_info *info = &g_chip;
+> +       int i;
+> 
+>         g_pChip = &g_chip;
+> 
+> @@ -1318,7 +1328,9 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
+>         igt_info("amdgpu: %s (family_id, chip_external_rev): (%u, %u)\n",
+>                                 info->name, amdinfo->family_id, amdinfo->chip_external_rev);
+> 
+> -       if (info->family >= CHIP_GFX1100) {
+> +       if (info->family >= CHIP_GFX1200) {
+> +               info->chip_class = GFX12;
+> +       } else if (info->family >= CHIP_GFX1100) {
+>                 info->chip_class = GFX11;
+>         } else if (info->family >= CHIP_SIENNA_CICHLID) {
+>                 info->chip_class = GFX10_3;
+> @@ -1348,30 +1360,62 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
+>         case GFX10:/* tested */
+>         case GFX10_3: /* tested */
+>         case GFX11: /* tested */
+> +       case GFX12: /* tested */
+> +               /* extra precaution if re-factor again */
+> +               igt_assert_eq(gfx_v8_x_ip_block.major, 8);
+> +               igt_assert_eq(compute_v8_x_ip_block.major, 8);
+> +               igt_assert_eq(sdma_v3_x_ip_block.major, 3);
+> +
+> +               /* Add three default IP blocks: GFX, Compute, and SDMA.
+> +                *
+> +                * These represent the base hardware engines available on the ASIC.
+> +                * - gfx_v8_x_ip_block: graphics + compute pipeline control
+> +                * - compute_v8_x_ip_block: dedicated compute support (user queues, shaders)
+> +                * - sdma_v3_x_ip_block: asynchronous DMA engine for buffer transfers
+> +                */
+>                 amdgpu_device_ip_block_add(&gfx_v8_x_ip_block);
+>                 amdgpu_device_ip_block_add(&compute_v8_x_ip_block);
+>                 amdgpu_device_ip_block_add(&sdma_v3_x_ip_block);
+> -               /*
+> -                * The handling of a particular family _id is done into
+> -                * each function and as a result the field family_id would be overwritten
+> -                * during initialization which matches to actual family_id.
+> -                * The initial design assumed that for different GPU families, we may
+> -                * have different implementations, but it is not necessary.
+> -                * TO DO: move family id as a parameter into IP functions and
+> -                * remove it as a field
+> +
+> +               /* Assign the actual hardware identifiers to all registered IP blocks.
+> +                *
+> +                * These fields are taken from amdinfo (queried from the kernel):
+> +                * - family_id: ASIC family (gfx9/gfx10/gfx11/gfx12, etc.)
+> +                * - chip_external_rev: revision exposed to firmware
+> +                * - chip_rev: internal revision used by HW-specific hooks
+>                  */
+> -               for (int i = 0; i <  amdgpu_ips.num_ip_blocks; i++) {
+> +               for (i = 0; i < amdgpu_ips.num_ip_blocks; i++) {
+>                         amdgpu_ips.ip_blocks[i]->funcs->family_id = amdinfo->family_id;
+>                         amdgpu_ips.ip_blocks[i]->funcs->chip_external_rev = amdinfo->chip_external_rev;
+>                         amdgpu_ips.ip_blocks[i]->funcs->chip_rev = amdinfo->chip_rev;
+>                 }
+> -               /* extra precaution if re-factor again */
+> -               igt_assert_eq(gfx_v8_x_ip_block.major, 8);
+> -               igt_assert_eq(compute_v8_x_ip_block.major, 8);
+> -               igt_assert_eq(sdma_v3_x_ip_block.major, 3);
+> 
+> +               /* Configure ASIC-specific function hooks.
+> +                *
+> +                * Depending on family_id, each IP block installs the correct
+> +                * callback implementations for:
+> +                * - PM4 packet encoding (e.g., gfx10/gfx11/gfx12 differences)
+> +                * - Register offsets (PGM_LO/PGM_RSRC, etc.)
+> +                * - Compute and dispatch programming
+> +                *
+> +                * This ensures that test code emits commands in the correct
+> +                * hardware-specific format for the active GPU.
+> +                */
+> +               for (i = 0; i < amdgpu_ips.num_ip_blocks; i++)
+> +                       amdgpu_device_ip_block_ex_setup(amdgpu_ips.ip_blocks[i]);
+> +
+> +               /* Sanity-check the initialized IP blocks to ensure the family_id matches
+> +                * the ASIC info from the kernel. If these assertions fail, it usually
+> +                * means that:
+> +                * - IP block registration order changed, or
+> +                * - amdinfo data mismatches the active hooks, or
+> +                * - future refactoring broke expected initialization paths.
+> +                */
+>                 igt_assert_eq(gfx_v8_x_ip_block.funcs->family_id, amdinfo->family_id);
+>                 igt_assert_eq(sdma_v3_x_ip_block.funcs->family_id, amdinfo->family_id);
+> +
+> +
+> +
+>                 break;
+>         default:
+>                 igt_info("amdgpu: GFX11 or old.\n");
+> diff --git a/lib/amdgpu/amd_ip_blocks_ex.c b/lib/amdgpu/amd_ip_blocks_ex.c index 21c4d952c..aab9a2a4a 100644
+> --- a/lib/amdgpu/amd_ip_blocks_ex.c
+> +++ b/lib/amdgpu/amd_ip_blocks_ex.c
+> @@ -139,6 +139,44 @@ static void gfx_program_compute_gfx11(
+>         base->emit(base, tz);
+>  }
+> 
+> +static void gfx_program_compute_gfx12(
+> +       const struct amdgpu_ip_funcs *f,
+> +       struct amdgpu_cmd_base *base,
+> +       uint64_t code, uint64_t udata0,
+> +       uint32_t rsrc1, uint32_t rsrc2,
+> +       uint32_t tx, uint32_t ty, uint32_t tz) {
+> +       base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
+> +       base->emit(base, 0x80000000);
+> +       base->emit(base, 0x80000000);
+> +
+> +       base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
+> +       base->emit(base, f->get_reg_offset(COMPUTE_PGM_LO));
+> +       base->emit(base, (uint32_t)(code >> 8));
+> +       base->emit(base, (uint32_t)(code >> 40));
+> +
+> +       base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
+> +       base->emit(base, f->get_reg_offset(COMPUTE_PGM_RSRC1));
+> +       base->emit(base, rsrc1);
+> +       base->emit(base, rsrc2);
+> +
+> +       base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
+> +       base->emit(base, f->get_reg_offset(COMPUTE_USER_DATA_0));
+> +       base->emit(base, (uint32_t)udata0);
+> +       base->emit(base, (uint32_t)(udata0 >> 32));
+> +
+> +       base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
+> +       base->emit(base, f->get_reg_offset(COMPUTE_RESOURCE_LIMITS));
+> +       base->emit(base, 0);
+> +
+> +       base->emit(base, PACKET3(PKT3_SET_SH_REG, 3));
+> +       base->emit(base, f->get_reg_offset(COMPUTE_NUM_THREAD_X));
+> +       base->emit(base, tx);
+> +       base->emit(base, ty);
+> +       base->emit(base, tz);
+> +}
+> +
+> +
+>  static void gfx_dispatch_direct_gfx11(
+>         const struct amdgpu_ip_funcs *f,
+>         struct amdgpu_cmd_base *base,
+> @@ -172,7 +210,8 @@ void amd_ip_blocks_ex_init(struct amdgpu_ip_funcs *funcs)
+>                 funcs->gfx_dispatch_direct = gfx_dispatch_direct_gfx11;
+>                 break;
+>         case AMDGPU_FAMILY_GC_12_0_0:
+> -               /*TODO*/
+> +               funcs->gfx_program_compute =gfx_program_compute_gfx12;
+> +               funcs->gfx_dispatch_direct = gfx_dispatch_direct_gfx11;
+>                 break;
+>         default:
+>                 break;
+> diff --git a/lib/amdgpu/amd_shaders.c b/lib/amdgpu/amd_shaders.c index e4931961c..adc4fc051 100644
+> --- a/lib/amdgpu/amd_shaders.c
+> +++ b/lib/amdgpu/amd_shaders.c
+> @@ -30,27 +30,77 @@
+>  #define DATA_OFFSET 1024
+> 
+>  #define SWAP_32(num) (((num & 0xff000000) >> 24) | \
+> -                     ((num & 0x0000ff00) << 8) | \
+> -                     ((num & 0x00ff0000) >> 8) | \
+> -                     ((num & 0x000000ff) << 24))
+> -/**
+> +                               ((num & 0x0000ff00) << 8) | \
+> +                               ((num & 0x00ff0000) >> 8) | \
+> +                               ((num & 0x000000ff) << 24))
+> +/*
+> + * C equivalent of the shader_bin below. This tiny compute kernel
+> +performs a
+> + * busy-wait loop, then writes the constant value 42 into a GPU virtual
+> + * address passed via COMPUTE_USER_DATA_0..1. This shader is
+> +intentionally
+> + * simple and designed to work across all GFX generations.
+>   *
+> - *s_mov_b32 s2, 0
+> - * s_cmp_gt_u32 s2, 0x98967f
+> - * ;;
+> - * s_cbranch_scc1 4
+> - * s_add_i32 s2, s2, 1
+> - * s_cmp_gt_u32 s2, 0x98967f
+> - * ;;
+> - * s_cbranch_scc0 65532
+> - * s_mov_b32 s3, 0xf000
+> - * ;;
+> - * s_mov_b32 s2, -1
+> - * v_mov_b32_e32 v0, 42
+> - * buffer_store_dword v0, off, s[0:3], 0
+> - * ;;
+> - * s_endpgm
+> + * Host-side logic equivalent in C:
+> + *
+> + *     static void gpu_shader_standalone(volatile u32 *dst, u64 iters)
+> + *     {
+> + *             Busy loop comparable to the ISA spin, prevents compiler optimization.
+> + *             for (u64 i = 0; i <= iters; i++)
+> + *                     asm volatile("" ::: "memory");
+> + *
+> + *             After spin completes, write sentinel value 42.
+> + *             *dst = 42;
+> + *     }
+> + *
+> + * The binary shader blob generated below executes equivalent logic on the GPU.
+>   */
+> +
+> +/*
+> + * Shader ISA: spin_store_flat.s
+> + *
+> + * This kernel expects a 64-bit flat/global address provided in s[0:1]
+> + * (passed via COMPUTE_USER_DATA_0..1) and behaves as follows:
+> + *
+> + *     1) Initialize a counter register (s2 = 0).
+> + *     2) Increment s2 until it exceeds 0x0098967f (~10 million).
+> + *     3) When the loop completes, store the literal 42 at *(u32 *)(s1:s0).
+> + *     4) Terminate with s_endpgm.
+> + *
+> + * Notes:
+> + *     - Uses flat/global addressing — no buffer SRD required.
+> + *     - Works with 1x1x1 dispatches; single work-item.
+> + *     - Safe for all GFX generations; no HW-specific instructions.
+> + *
+> + * Annotated assembly:
+> + *
+> + *     .text
+> + *     .p2align 8
+> + *     .globl spin_store_flat
+> + *     .type   spin_store_flat,@function
+> + *
+> + * spin_store_flat:
+> + *     s_mov_b32 s2, 0                         Initialize loop counter.
+> + *
+> + *     s_cmp_gt_u32 s2, 0x0098967f             Early exit if counter exceeds limit.
+> + *     s_cbranch_scc1 .Lexit
+> + *
+> + * .Lloop:
+> + *     s_add_i32 s2, s2, 1                     Increment counter.
+> + *     s_cmp_gt_u32 s2, 0x0098967f             Continue looping if below threshold.
+> + *     s_cbranch_scc0 .Lloop
+> + *
+> + *     v_mov_b32_e32 v0, 42                    Load value 42 into v0.
+> + *     v_mov_b32_e32 v1, s0                    Load address low bits into v1.
+> + *     v_mov_b32_e32 v2, s1                    Load address high bits into v2.
+> + *
+> + *     flat_store_dword v[1:2], v0             Store 42 to *(u32 *)(s1:s0).
+> + *
+> + * .Lexit:
+> + *     s_endpgm                                End program.
+> + *
+> + *     .size spin_store_flat, .-spin_store_flat
+> + */
+> +
+> +
+>  static  const
+>  uint32_t shader_bin[] = {
+>         SWAP_32(0x800082be), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0x040085bf),
+> --
+> 2.34.1
+> 
 
