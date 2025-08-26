@@ -4,58 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BBD3CA0EFA
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 12:51:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 196A7CA0EFA
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 12:53:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1943110E65F;
-	Tue, 26 Aug 2025 12:51:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A904D10E654;
+	Tue, 26 Aug 2025 12:53:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ih8S+daC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ww6xuJeF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E470E10E651
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 12:51:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4B8410E654
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 12:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756212704; x=1787748704;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=i5FYLFIETTer6G23fukVijYZBrKud0KAj8eEfBlThwg=;
- b=ih8S+daC9SHr42k3DphDrQiZ00c1q+ijHylo9x8mvyGl5OoVQjmVMU4N
- fTrJWwIRSvKuOqdT4/8Ipk7xMZfWLjJGYSnpx5hPFhSe7WZuwGOtKjDqm
- f1zGBSF9iUlnILCqw7/YWAaeOhvabF300QjxnwOgnLVeDjQJupcTsIEM9
- wVBW8WebeuTx1WBMXbWIToRl3dbqCF+uMNGBzGkH/0xU+erN43F0yOspX
- QW+CSzIIPg5a7Drwz/CVSiLCMX5jf72ghZ/heaX7O4DmB0RXJtNjF55GE
- GHfaWLmaHF9Zaj7LT3K7VXTrOMBInVc5c2VgkgSnpiVLDmuv+NIH60dW9 w==;
-X-CSE-ConnectionGUID: 93wTCZ1eSjS70gHn/Y/fUw==
-X-CSE-MsgGUID: 1EA+zDuGQmK6eYXdYTnbpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="61081307"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="61081307"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 05:51:43 -0700
-X-CSE-ConnectionGUID: 0WlWTknNQWmG6c/funYN6w==
-X-CSE-MsgGUID: lwwGz4/6Sc6LAtTlshBeYQ==
+ t=1756212822; x=1787748822;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1YFcBqZrzogIiZlfFymOG5lWTOtiPn6U1+rl27Tkup0=;
+ b=Ww6xuJeFgRCNgMz6Kzrz/yNc9mCTpnZXYAow61S9AFG1Egh3y8STMqOq
+ J4Cjdu1SR4IsyKPXpBZ8T+M0rjqjyjg4xbVh/cy8Sd6wzq20K5MMRXTMS
+ +6XSrwxLBDZ8cOcPt39EGtZlCNbQMdfceNHQzDr9LH6D+2mDNzhMXcBNa
+ y10ccohGQMOGSeVAmJDEipvweMl+3vbtCI+CUg860KxjDqQmLgaGtFP3j
+ +0ejd9BwU4BLsQzon127Do7Pf2RzwVeQAklhnKXEN1DUwfyLH2+JRGDmq
+ tfxs4AgjvZV8g7ZtzY1lALfw/d0faBCzHUxbhynEa46J9ozGYpbHHeP7s w==;
+X-CSE-ConnectionGUID: Eq30CLNZRkqhWmV8eIjHJg==
+X-CSE-MsgGUID: dE/88w8OTtaYMc0gV1O84w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58365270"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="58365270"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 05:53:42 -0700
+X-CSE-ConnectionGUID: etBo72C9Rh+JNKO9cEnWuw==
+X-CSE-MsgGUID: dig3CEIXRNCWdFpsmbS/bw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="174871936"
-Received: from jmkrefta-mobl2.ger.corp.intel.com (HELO [10.245.255.250])
- ([10.245.255.250])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 05:51:42 -0700
-Message-ID: <140addea-b8f2-4a5e-8c62-2d40e16ed38d@linux.intel.com>
-Date: Tue, 26 Aug 2025 14:51:38 +0200
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="174829818"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.192])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 05:53:39 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ewelina Musial <ewelina.musial@intel.com>,
+ Karol Krol <karol.krol@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v5] runner/executor: Abort if dmesg is flooded
+Date: Tue, 26 Aug 2025 14:53:29 +0200
+Message-ID: <20250826125329.109160-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/xe_sysfs_file_perm: Verify sysfs file
- permissions for security
-To: Michal Winiarski <michal.winiarski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20250813131948.573785-1-peter.senna@linux.intel.com>
- <tt62zjh6s72wxgz2eozbnm34ewxob323gcxfzwrm5sjv6l6e3y@u5dhkues2i4d>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <tt62zjh6s72wxgz2eozbnm34ewxob323gcxfzwrm5sjv6l6e3y@u5dhkues2i4d>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,178 +75,302 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
+Current disk limit triggers once when it is exceeded during test
+monitoring. After that happens executor no longer checks if
+kernel is still printing plenty of messages.
 
-Just a note to let you know that I am abandoning this patch. I will
-modify existing tests instead of creating a a separate security test
-like I attempted with this patch.
+Create a way to abort test in such scenarios with the help of
+measuring kernel kmsg activity before first test is executed
+and then also check it after exceeding disk limit.
 
-Thank you for your comments,
+Also print info about it after each test ends.
 
-Peter
+v2: fix error when kmsg open fails, fix reading proc (Kamil)
+  changed calculation of max bps (Peter)
+v3: abort only when disk limit was actually exceeded,
+  print info instead of aborting after every test (Kamil)
+v4: added abort at main monitoring loop, also cleaning up
+  printing messages (Kamil)
+v5: fix typo, use less vars in a loop  (Krzysztof)
+  reused existing dmesg reading function (Kamil)
 
-On 8/25/2025 4:09 PM, Michal Winiarski wrote:
-> On Wed, Aug 13, 2025 at 03:19:47PM +0200, Peter Senna Tschudin wrote:
->> This IGT adds checks for the 13 sysfs files identified in the Xe threat
->> model, ensuring they are only writable by the root user. If any of these
->> files are writable by non-root users, a warning is issued.
-> 
-> As sysfs is a proper uAPI, I'd expect we already have tests that
-> excercise those sysfs'es from functional angle.
-> 
->>
->> When files are not present in the system, only informational messages
->> are logged. No warnings or test aborts occur in such cases.
->>
->> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
->> Cc: Michal Winiarski <michal.winiarski@intel.com>
->> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
->> ---
->>  tests/intel/xe_sysfs_file_perm.c | 578 +++++++++++++++++++++++++++++++
->>  tests/meson.build                |   1 +
->>  2 files changed, 579 insertions(+)
->>  create mode 100644 tests/intel/xe_sysfs_file_perm.c
->>
->> diff --git a/tests/intel/xe_sysfs_file_perm.c b/tests/intel/xe_sysfs_file_perm.c
->> new file mode 100644
->> index 000000000..2833de10c
->> --- /dev/null
->> +++ b/tests/intel/xe_sysfs_file_perm.c
->> @@ -0,0 +1,578 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2025 Intel Corporation
->> + */
->> +
-> 
-> [...]
-> 
->> +
->> +igt_main
->> +{
->> +	struct igt_list_head fds_list;
->> +	struct igt_list_head files_list;
->> +	struct igt_list_head pattern_list;
->> +
->> +	/**
->> +	 * Do not change the list below without checking the Xe threat
->> +	 * modeling first. You can contact peter.senna@intel.com or
->> +	 * michal.winiarski@intel.com for questions and support.
->> +	 */
->> +
-> 
-> And indeed - it looks like we do have at least one existing test for
-> each of those files.
-> 
->> +	/* DO NOT CHANGE START */
->> +	static const char * const gt_patterns[] = {
->> +		"ccs_mode",
-> 
-> xe_compute
-> 
->> +		"engines/[a-zA-Z0-9]+/job_timeout_ms",
->> +		"engines/[a-zA-Z0-9]+/preempt_timeout_us",
->> +		"engines/[a-zA-Z0-9]+/timeslice_duration_min",
->> +		"engines/[a-zA-Z0-9]+/timeslice_duration_max",
->> +		"engines/[a-zA-Z0-9]+/timeslice_duration_us",
-> 
-> xe_sysfs_scheduler
-> 
->> +		"freq0/max_freq",
->> +		"freq0/min_freq"
-> 
-> xe_gt_freq
-> 
->> +	};
->> +
->> +	static const char * const hwmon_patterns[] = {
->> +		"power[0-9]+_crit",
->> +		"curr[0-9]+_crit",
->> +		"power[0-9]+_max",
->> +		"power[0-9]+_max_interval"
-> 
-> intel_hwmon
-> 
->> +	};
->> +
->> +	static const char * const devices_patterns[] = {
->> +		"vram_d3cold_threshold"
-> 
-> xe_pm
-> 
-> Access rights are just a property of some functionality, and I would
-> prefer to test it in the right context.
-> This could be handled as a subtest in a functional test (checking
-> whether the API being used has proper access rights), instead of having
-> a test that tries to check the access rights of everything that the
-> driver exposes.
-> 
-> Thanks,
-> -Michał
-> 
->> +	};
->> +
->> +	struct dir_input dir_inputs[DIR_COUNT] = {
->> +		{ GT_DIR, gt_patterns, ARRAY_SIZE(gt_patterns) },
->> +		{ HWMON_DIR, hwmon_patterns, ARRAY_SIZE(hwmon_patterns) },
->> +		{ DEVICES_DIR, devices_patterns, ARRAY_SIZE(devices_patterns) }
->> +	};
->> +	/* DO NOT CHANGE END */
->> +
->> +	igt_fixture {
->> +		IGT_INIT_LIST_HEAD(&fds_list);
->> +		IGT_INIT_LIST_HEAD(&pattern_list);
->> +		IGT_INIT_LIST_HEAD(&files_list);
->> +
->> +		igt_require(prepare_patterns(dir_inputs, &pattern_list));
->> +
->> +		igt_require(fds_open_all(&fds_list));
->> +		igt_require(search_files(&fds_list, &pattern_list, &files_list));
->> +		igt_require(fds_close_and_free_list(&fds_list));
->> +
->> +		/* We do not warn or abort if not all patterns match
->> +		 * because not all nodes are always available
->> +		 */
->> +		check_pattern_match(&pattern_list);
->> +	}
->> +
->> +	igt_describe("Check if only root can write to important sysfs files.");
->> +	igt_subtest("check-file-permissions")
->> +		igt_assert(check_files_permissions(&files_list));
->> +
->> +	igt_fixture {
->> +		struct pattern_node *pattern_node, *pattern_tmp;
->> +		struct file_node *file_node, *file_tmp;
->> +
->> +		igt_list_for_each_entry_safe(pattern_node, pattern_tmp, &pattern_list, link) {
->> +			/* pattern_node->pattern is static and const and
->> +			 * should not be freed
->> +			 */
->> +			regfree(&pattern_node->regex);
->> +			igt_list_del(&pattern_node->link);
->> +			free(pattern_node);
->> +		}
->> +
->> +		igt_list_for_each_entry_safe(file_node, file_tmp, &files_list, link) {
->> +			free(file_node->full_path);
->> +			igt_list_del(&file_node->link);
->> +			free(file_node);
->> +		}
->> +	}
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 5c01c64e9..d904dffcd 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -330,6 +330,7 @@ intel_xe_progs = [
->>  	'xe_sriov_flr',
->>  	'xe_sriov_scheduling',
->>  	'xe_sysfs_defaults',
->> +	'xe_sysfs_file_perm',
->>  	'xe_sysfs_preempt_timeout',
->>  	'xe_sysfs_scheduler',
->>          'xe_sysfs_timeslice_duration',
->> -- 
->> 2.43.0
->>
+Cc: Ewelina Musial <ewelina.musial@intel.com>
+Cc: Karol Krol <karol.krol@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/executor.c | 143 +++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 128 insertions(+), 15 deletions(-)
+
+diff --git a/runner/executor.c b/runner/executor.c
+index 847abe481..b11381f39 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -637,6 +637,11 @@ const char *get_out_filename(int fid)
+ 	return "output-filename-index-error";
+ }
+ 
++static int open_kmsg_rdonly(void)
++{
++	return open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK);
++}
++
+ /* Returns the number of bytes written to disk, or a negative number on error */
+ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
+ {
+@@ -646,6 +651,8 @@ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
+ 	 * /dev/kmsg doesn't support seeking to -1 from SEEK_END
+ 	 * so we need to use a second fd to read a message to
+ 	 *  match against, or stop when we reach EAGAIN.
++	 * If outfd==0 it will not write anything but still count
++	 * how many bytes was readed from dmesg.
+ 	 */
+ 
+ 	int comparefd;
+@@ -711,7 +718,9 @@ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
+ 			return written;
+ 		}
+ 
+-		write(outfd, buf, r);
++		if (outfd)
++			write(outfd, buf, r);
++
+ 		written += r;
+ 
+ 		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
+@@ -948,6 +957,76 @@ static size_t calc_last_dmesg_chunk(size_t limit, size_t disk_usage)
+ 	return dt != 0 ? dt : -1;
+ }
+ 
++/*
++ * Tries to read from dmesg for 0.1 seconds
++ *
++ * Returns:
++ *  =>0.0 - Success, measured kmsg activity in bytes/second
++ *  -1.0 - Failure
++ */
++static double measure_dmesg_bytes_per_sec(int wrfd)
++{
++	struct timespec time_beg, time_now, nsec_sleep;
++	unsigned long long dmsg_read, rnow;
++	double time;
++	int kmsgfd;
++
++	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
++		errf("Warning: Cannot open /dev/kmsg\n");
++
++		return -1.0;
++	}
++
++	lseek(kmsgfd, 0, SEEK_END);
++	nsec_sleep.tv_sec = 0;
++	nsec_sleep.tv_nsec = 10ULL * 1000ULL * 1000ULL; /* 10^7 nanoseconds = 10^-2 sec */
++	runner_gettime(&time_beg);
++	time = 0.0;
++	dmsg_read = 0.0;
++	while (1) {
++		rnow = dump_dmesg(kmsgfd, wrfd, 64 * 4096); /* 64KB max */
++		if (rnow > 0)
++			dmsg_read += rnow;
++
++		runner_gettime(&time_now);
++		time = igt_time_elapsed(&time_beg, &time_now);
++		if (time <= 0.0) {
++			errf("Warning: Time underflow\n");
++			return -1.0;
++		}
++
++		if (time >= 0.1)
++			break;
++
++		if (rnow == 0)
++			nanosleep(&nsec_sleep, NULL);
++	}
++
++	runner_gettime(&time_now);
++	time = igt_time_elapsed(&time_beg, &time_now);
++	if (time <= 0.0) {
++		errf("Warning: Time underflow\n");
++
++		return -1.0;
++	}
++
++	return (double)dmsg_read / time;
++}
++
++/* Returns: true if ratio lower or equal than maxratio */
++static bool check_dmesg_ratio(double maxratio, int log_level, bool sync, int wrfd)
++{
++	double new_dmesg_bps = measure_dmesg_bytes_per_sec(wrfd);
++
++	if (log_level >= LOG_LEVEL_NORMAL) {
++		outf("Dmesg ratio %0.3fKB/s\n", new_dmesg_bps / 1024);
++		if (sync)
++			fflush(stdout);
++	}
++
++	return new_dmesg_bps <= maxratio;
++}
++
+ /*
+  * Returns:
+  *  =0 - Success
+@@ -960,6 +1039,7 @@ static int monitor_output(pid_t child,
+ 			  int *outputs,
+ 			  double *time_spent,
+ 			  struct settings *settings,
++			  double max_dmesg_ratio,
+ 			  char **abortreason,
+ 			  bool *abort_already_written)
+ {
+@@ -1463,29 +1543,31 @@ static int monitor_output(pid_t child,
+ 				 * exceeded the disk usage limit.
+ 				 */
+ 				if (killed && disk_usage_limit_exceeded(settings, disk_usage)) {
++					char killmsg[256];
++
+ 					timeoutresult = false;
++					snprintf(killmsg, sizeof(killmsg),
++						 "runner: This test was killed due to exceeding disk usage limit. "
++						 "(Used %zd bytes, limit %zd)\n",
++						 disk_usage,
++						 settings->disk_usage_limit);
+ 
+ 					if (socket_comms_used) {
+ 						struct runnerpacket *message;
+-						char killmsg[256];
+ 
+-						snprintf(killmsg, sizeof(killmsg),
+-							 "runner: This test was killed due to exceeding disk usage limit. "
+-							 "(Used %zd bytes, limit %zd)\n",
+-							 disk_usage,
+-							 settings->disk_usage_limit);
+ 						message = runnerpacket_log(STDOUT_FILENO, killmsg);
+ 						write_packet_with_canary(outputs[_F_SOCKET], message, settings->sync);
+ 						free(message);
+ 					} else {
+-						dprintf(outputs[_F_OUT],
+-							"\nrunner: This test was killed due to exceeding disk usage limit. "
+-							"(Used %zd bytes, limit %zd)\n",
+-							disk_usage,
+-							settings->disk_usage_limit);
++						dprintf(outputs[_F_OUT], "%s", killmsg);
+ 						if (settings->sync)
+ 							fdatasync(outputs[_F_OUT]);
+ 					}
++
++					if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
++						asprintf(abortreason, "Dmesg ratio exceeded during test run.");
++						aborting = true;
++					}
+ 				}
+ 
+ 				if (socket_comms_used) {
+@@ -1587,7 +1669,7 @@ static int monitor_output(pid_t child,
+ 	dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
+ 	if (settings->sync)
+ 		fdatasync(outputs[_F_DMESG]);
+-	if (dmesgwritten > 0) {
++	if (dmesgwritten > 0 && !aborting) {
+ 		disk_usage += dmesgwritten;
+ 		if (settings->disk_usage_limit && disk_usage > settings->disk_usage_limit) {
+ 			char disk[1024];
+@@ -1599,6 +1681,11 @@ static int monitor_output(pid_t child,
+ 			} else if (killed) {
+ 				errf("%s", disk);
+ 			}
++
++			if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
++				asprintf(abortreason, "Dmesg ratio exceeded after test ends.");
++				aborting = true;
++			}
+ 		}
+ 	}
+ 
+@@ -1766,6 +1853,7 @@ static int execute_next_entry(struct execute_state *state,
+ 			      size_t total,
+ 			      double *time_spent,
+ 			      struct settings *settings,
++			      double max_dmesg_ratio,
+ 			      struct job_list_entry *entry,
+ 			      int testdirfd, int resdirfd,
+ 			      int sigfd, sigset_t *sigmask,
+@@ -1814,7 +1902,7 @@ static int execute_next_entry(struct execute_state *state,
+ 		goto out_pipe;
+ 	}
+ 
+-	if ((kmsgfd = open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK)) < 0) {
++	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
+ 		errf("Warning: Cannot open /dev/kmsg\n");
+ 	} else {
+ 		/* TODO: Checking of abort conditions in pre-execute dmesg */
+@@ -1885,7 +1973,7 @@ static int execute_next_entry(struct execute_state *state,
+ 
+ 	result = monitor_output(child, outfd, errfd, socketfd,
+ 				kmsgfd, sigfd,
+-				outputs, time_spent, settings,
++				outputs, time_spent, settings, max_dmesg_ratio,
+ 				abortreason, abort_already_written);
+ 
+ out_kmsgfd:
+@@ -2418,6 +2506,8 @@ bool execute(struct execute_state *state,
+ 	     struct settings *settings,
+ 	     struct job_list *job_list)
+ {
++	static double dmesg_bps = -1.0;
++	static double max_dmesg_bps = -1.0;
+ 	int resdirfd, testdirfd, unamefd, timefd, sigfd;
+ 	struct environment_variable *env_var;
+ 	struct utsname unamebuf;
+@@ -2560,6 +2650,26 @@ bool execute(struct execute_state *state,
+ 		}
+ 	}
+ 
++	if (max_dmesg_bps < 0.0) {
++		double ncpu_bps = 4 * 1024 * max_t(size_t, sysconf(_SC_NPROCESSORS_ONLN), 4);
++		double set_bps = 0.0;
++
++		dmesg_bps = measure_dmesg_bytes_per_sec(0);
++
++		if (settings->disk_usage_limit > 0 && settings->per_test_timeout > 0)
++			set_bps = (double)settings->disk_usage_limit / (double)settings->per_test_timeout;
++
++		outf("Dmesg KB/s ratio settings:%0.3f ncpu:%0.3f current:%0.3f\n",
++		     set_bps / 1024, ncpu_bps / 1024, dmesg_bps / 1024);
++
++		if (set_bps > 0.0)
++			max_dmesg_bps = set_bps;
++		else
++			max_dmesg_bps = dmesg_bps > ncpu_bps ? dmesg_bps : ncpu_bps;
++
++		outf("Using max level dmesg ratio %0.3fKB/s\n", max_dmesg_bps / 1024);
++	}
++
+ 	for (; state->next < job_list->size;
+ 	     state->next++) {
+ 		char *reason = NULL;
+@@ -2596,6 +2706,7 @@ bool execute(struct execute_state *state,
+ 						    job_list->size,
+ 						    &time_spent,
+ 						    settings,
++						    max_dmesg_bps,
+ 						    &job_list->entries[state->next],
+ 						    testdirfd, resdirfd,
+ 						    sigfd, &sigmask,
+@@ -2651,6 +2762,8 @@ bool execute(struct execute_state *state,
+ 			break;
+ 		}
+ 
++		check_dmesg_ratio(max_dmesg_bps, settings->log_level, settings->sync, 0);
++
+ 		if (result > 0) {
+ 			double time_left = state->time_left;
+ 
+-- 
+2.51.0
 
