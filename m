@@ -4,61 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C67CA0EFA
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 15:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BE4DCA0FE7
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 16:28:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 17DC510E37B;
-	Tue, 26 Aug 2025 15:40:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 21F1C10E0DA;
+	Tue, 26 Aug 2025 16:28:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I9rnmwFU";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="jSSPBEAD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8901D10E37B
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 15:40:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756222818; x=1787758818;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8jqfvXaHxS/cg9ZkPO6awlkbKaoobErI+965sLNyfSU=;
- b=I9rnmwFUXbK0YE1WX6MYsdnVIgWE0Qz4Hjd9DsdP/iu8jQGTsft+h91g
- 4YFvwIRvxb30pR5BrfridMZaQnzB4IIDHXZ+iUdZiEFCzBYLTsn7OV45n
- mO81gi09jFqBrWjk/q9GQMFvwF1dBQKX+G+2i/arXWqJdNnXYnMhCnsu5
- 1aJo5TYiDmmhxM5BdyndGiGC/qelpOSIVxjmvQYEmgNSX+AKVgfJPq7dk
- MnvqE1hT9rSf+RJ+UWaqmxXDoXYJ4PsBARndiFlhwDHwxkMzBuq3uLvPl
- RaACrFkBj9WoLxkPcQd8stYTfoH3vvTRhSaPs76qBHlYjyok8NZZoI8vf w==;
-X-CSE-ConnectionGUID: QQ+Y+XrTQ4WGzrnxrvWwZg==
-X-CSE-MsgGUID: ThQCWjeLTFq90v3WsQeLHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58522229"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="58522229"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 08:40:17 -0700
-X-CSE-ConnectionGUID: 1f6UWPyuRy6FWxLksnQpfw==
-X-CSE-MsgGUID: MAV6QtiOTh62H++iSo63lA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="200549761"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 08:40:13 -0700
-Date: Tue, 26 Aug 2025 17:39:59 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sobin Thomas <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- zbigniew.kempczynski@intel.com
-Subject: Re: [PATCH i-g-t 1/1] tests/xe_evict_ccs:Adjust object size as per
- VRAM
-Message-ID: <20250826153959.wox4n55idnicw4l3@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sobin Thomas <sobin.thomas@intel.com>,
- igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- zbigniew.kempczynski@intel.com
-References: <20250826055049.505047-1-sobin.thomas@intel.com>
- <20250826055049.505047-2-sobin.thomas@intel.com>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2050.outbound.protection.outlook.com [40.107.223.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4954E10E0DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 16:28:25 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fmfK1RcB1ernjxrPJMg8MmzN04tZm9K6HuRG1kJbqDYBxxhDbExI1vAy62S3v6gcNWdKPENwyIE5KqZ1L4m5RFlECUT9KkMVsHHmdko6Hq1i01iJpyyZoiSQOss3NU8jlH+WDyVSzEN7LieTpwoLAqyCtdzRW07lJSKaf9o/+Q0xF+A3p0N+erkfPz7uaik6CQyv+YV166QUYhIiUQmmsgvRPE6DRhW0AYprS3IhHIMit3E72GFOP8tlm0QYTveONirlizhQErb/VMhSpgA49ILYLF2ADAvw4sK76/Dy4JFCVRYaG4aalzAkOHITJE3jq77/EikL+ehvuQSamQ+amQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Vqv+1kMCKxHMpaED+88T18mIzJp/L5VTbnX9FF3hqWE=;
+ b=KlwjliduKC+JmxnKqaW3a60WtDQdm4zH0JXl6eVVQbG3yVwa91q2sxjjZ/+bKgN4IWH3w8JoYQJsZ1GrtbQR1n8+IizR/7NOPccLrpa8Mj+oX1RtFIu2NDj0K1ZQsQ6k4w3iQIRxljhvjf80HU81tG/6zMNpHe2lbAv9olODAQTRsmz4bs3SQtzRcT7zMydyD9Or5A5mt2LhZsfJ/MMB+iZUHGRuFJxqhyrFpds8204uqcFM71iOXOMZTAvjJcIIiqCYjvvwgKI1dU1c8E/ntNKO8+CjSjvqZoGyo0ipmL3CJvNVG6j/cebrBeZUZdBnDVMMGoIoOfXIGBahlsfHNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Vqv+1kMCKxHMpaED+88T18mIzJp/L5VTbnX9FF3hqWE=;
+ b=jSSPBEADp9W99L2vxaybVDySzbj7HZC6sHFgu3DJcUDxS/ocle02/FOvBZwMELtDoFxuWlXYV/pV++j9oAq7lSMQ0eslR3u1gBizpd4KUxBfh1xk9LKF6EPh7iie9OxypmCVLhX5sDeArEH/ZGqIcR9/KZ9CIQhwwPcaW9QmNRk=
+Received: from MW4PR04CA0031.namprd04.prod.outlook.com (2603:10b6:303:6a::6)
+ by SJ1PR12MB6241.namprd12.prod.outlook.com (2603:10b6:a03:458::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Tue, 26 Aug
+ 2025 16:28:20 +0000
+Received: from BY1PEPF0001AE1A.namprd04.prod.outlook.com
+ (2603:10b6:303:6a:cafe::75) by MW4PR04CA0031.outlook.office365.com
+ (2603:10b6:303:6a::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.20 via Frontend Transport; Tue,
+ 26 Aug 2025 16:28:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BY1PEPF0001AE1A.mail.protection.outlook.com (10.167.242.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9073.11 via Frontend Transport; Tue, 26 Aug 2025 16:28:20 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 26 Aug
+ 2025 11:28:19 -0500
+Received: from [10.4.12.116] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Tue, 26 Aug 2025 11:28:19 -0500
+Message-ID: <b8f99aa7-a0fd-459b-a33e-21875f830d0a@amd.com>
+Date: Tue, 26 Aug 2025 12:28:13 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250826055049.505047-2-sobin.thomas@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V10 17/30] lib/igt_color: Support color transform for
+ XRGB2101010
+To: <igt-dev@lists.freedesktop.org>
+References: <20250815040659.3321102-1-alex.hung@amd.com>
+ <20250815040659.3321102-18-alex.hung@amd.com>
+Content-Language: en-US
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+In-Reply-To: <20250815040659.3321102-18-alex.hung@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB04.amd.com: aurabindo.pillai@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1A:EE_|SJ1PR12MB6241:EE_
+X-MS-Office365-Filtering-Correlation-Id: 88f5384e-f3ca-4e28-e27a-08dde4bd91c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|82310400026|376014; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Y3M3UEFrVUgwVEsveThiSUJ5ZU1QOERwS3ZKL1YzdDRocDhhUkxIdVVZanho?=
+ =?utf-8?B?ZEFiSHVjQ2p0c3NMd09CUjNWNC9yRjVlU0JmZnBCYjJXNWQ2T0g0YXkvQjlX?=
+ =?utf-8?B?NjI2bUYvanROZXlZdWJVSjBrNG1HQWl5RTQ0UE5hSTBnMllmWitBdm5JQ282?=
+ =?utf-8?B?NkFERlhkUklORnY1Nk9ERk43dFFBMTI3VlpVL1kvWXBmQmFDRng3MGJ5VVpi?=
+ =?utf-8?B?OWk1NmhSVEEvMUtBclpKaWFqYUk0ZE1maWZwTEJGdWxEN3lxdVFPK2pTNkM2?=
+ =?utf-8?B?YmNvR29udElwSDJ0dzJJMkNQRTlzVytZdndYWkREWHc2dUhVV1dTVVpoWUQx?=
+ =?utf-8?B?dDU3Y0IxcW9GTWMranpEbU9kOXBVSGNTSXdOMUEwcGd2R21QcHdVMzlsOHcx?=
+ =?utf-8?B?aDNGeW92TWwyWUJqTGZ0TDkzYU9BMmxnNHFwR0gzR292K2dtZVNUYkxJT215?=
+ =?utf-8?B?QWxKaUVTWDNVQUJpRmlqenNVdmluVkNGN1pEYnF3dW9pM2JUbWc5eGNCcytX?=
+ =?utf-8?B?RHRXdzViMTZRalA3N3I0YVZhWVhEcE5LWlAzb251cWJNU0hNNTE1KzZKZzg5?=
+ =?utf-8?B?SlFRWXJEc3pLenE0L2EyYTdYbEJBbVQ0K2VrMFpVUUZUWGZZWVpFdStaNjl5?=
+ =?utf-8?B?R3Q4OHdTM3U5OGh3YU5RRFl5N2pER2RLSHdUTStrSnF3Q2dzYzNmajJNMWM0?=
+ =?utf-8?B?WnE4VFFiNk95TTkyaXZpL3Z2OFVQbUZxTDBqelJyQ0hIK3BsRS9RRHV4amV3?=
+ =?utf-8?B?ZlpTK3NOUzBGZi8vRklsMjVwN3Uxbk1ReGJCbitNU0JGWDBGOFlqS1IrMFpM?=
+ =?utf-8?B?RHBUSWtRMEs0R0kwQi8yWlpvblJXR2pTNDNuRldYNHpQYW1lWnh5andSOE5u?=
+ =?utf-8?B?ajh0N0dwdVhIMDI4Y0ovYzgvNWtMaDlZbXNCSGp4alJRblVETWZvQWdkTVBy?=
+ =?utf-8?B?OHdkVWhkUU5yaEZPd1ptZ2xPQ09nQklIZElMeERKQm5NWS9Fb2tPa1FuckVH?=
+ =?utf-8?B?V0daZmlYMWRDSDBvektHVUpsL2d6V0VTM1huaktRV0FDZG84VFpvWEIzYTAx?=
+ =?utf-8?B?eDhwZ3lzbWdXNmVOOFBhOHl5aVVQM0RsRjlUTEJrMjNaTXdpQ0ZWNzRoMFIw?=
+ =?utf-8?B?Yjk1YU5UQXRBRmhzc01ZdzU3ancrUGo3dHVUR0Uxb2pjeHpxT1B2dGtjYU51?=
+ =?utf-8?B?dWNpUVZCTWNzNlRhMGp3VzZGMXdCZHFJU3RValpoZE9wZ09abTFBMVZhNnZJ?=
+ =?utf-8?B?a2NZdFdleitlT1NGQW16VEx6VkF2NU9RenlUTDJOWkUrSERDamx1U0tlKzV0?=
+ =?utf-8?B?REhNT0s5eEpRSzZsS1I5MkR2K21sZkE1V2o0SGpmc1FvK3o4ckNicmJLblE1?=
+ =?utf-8?B?K2NOcTUraWNEYmo0SHFYcDlPOUlpbGJPRmFQUEd3b0xMV3l4UkN2eVAvRkU1?=
+ =?utf-8?B?dzBkc01USUx6SUNoQStCRFFwcjlia3U5d01kWlBwZEVIZHpHUlE4M2djOTN0?=
+ =?utf-8?B?WW00L0tQNDNHRUlEdTNZTDdZb0VCUXE4N3BhTTZuV3NMUHlBdE9ESW9idXB3?=
+ =?utf-8?B?R2JKTzlUbzhWUmZTSzByUEY5d1dKUTdDOVVGbUU1NFI1ZDVFSkdxcVJNZFhq?=
+ =?utf-8?B?R280bmZTQUltcGJCdW4vRnpMTmVmTVFka3lyYmlUdDRIMVlLRkRubHJEV2Vj?=
+ =?utf-8?B?MGlRWkN3dmNPdzFib3I5a0FkTENGQWpHOEdRN0wyS1dySkg4UVhGWGtUZHRC?=
+ =?utf-8?B?L1YzOVIrd2NrZnI4YnFJMEtOakhlSG02ajRDSU1Iek5WMzBvb29seWg3cHdG?=
+ =?utf-8?B?Qy9mR0tLM1REWE9HZU5hZDJzbTRDZkNaTkxiQzJsdlZtZTkvaDF6TVNwVlly?=
+ =?utf-8?B?OEJOSG1YUzMxWXg5SUpvd2dsZnQzQi9Rei91NG9jcHBzb2NxaVFRN1YxVXZu?=
+ =?utf-8?B?aWVFejNteWVCNHVpVWV1YXBJWHlkMmVjQUNRUXBPcG5xdmpTRFhWU2xrWlYv?=
+ =?utf-8?B?cy9LeXhhbG5wMG02d09qRG1oRnRXSlduU3gybm1SNCtHRmxxSXprVWQ4ODZy?=
+ =?utf-8?Q?WmIgIW?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 16:28:20.0534 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88f5384e-f3ca-4e28-e27a-08dde4bd91c2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BY1PEPF0001AE1A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6241
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,101 +146,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sobin,
-On 2025-08-26 at 05:50:49 +0000, Sobin Thomas wrote:
 
-change subject, add 'intel/' prefix, also add space after ':'
-so it will be like:
 
-[PATCH i-g-t 1/1] tests/intel/xe_evict_ccs: Adjust object size as per VRAM
-
-> Some BIOS configurations do not support or enable resizable BAR,
-> resulting in a maximum BAR size of 256MB. This patch adjusts the
-
-s/This patch adjust/Adjust/
-
-> maximum object size used in test conditions based on the available
-> VRAM.
+On 8/15/25 12:06 AM, Alex Hung wrote:
+> From: Harry Wentland <harry.wentland@amd.com>
 > 
-> v2: Adjusted the subject name
+> Support color format XRGB2101010.
 > 
-> v3: Inco-operated review comments [kamil]
-> 
-> v4: Fixed typo.
-> 
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
+> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 > ---
->  tests/intel/xe_evict_ccs.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+>   lib/igt_color.c     | 113 +++++++++++++++++++++++++++-----------------
+>   tests/kms_colorop.c |   3 ++
+>   2 files changed, 73 insertions(+), 43 deletions(-)
 > 
-> diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-> index 281d27015..841ed2997 100644
-> --- a/tests/intel/xe_evict_ccs.c
-> +++ b/tests/intel/xe_evict_ccs.c
-> @@ -343,6 +343,35 @@ static void set_config(int fd, uint32_t flags, const struct param *param,
->  	igt_debug("nproc: %d, mem per proc: %dMB\n", nproc, config->mb_per_proc);
->  }
->  
-> +static void adjust_params_for_vram_size(uint64_t vram_size)
+> diff --git a/lib/igt_color.c b/lib/igt_color.c
+> index bc90fbdca..adf08fa2a 100644
+> --- a/lib/igt_color.c
+> +++ b/lib/igt_color.c
+> @@ -132,6 +132,74 @@ void igt_color_ctm_3x4_bt709_dec(igt_pixel_t *pixel)
+>   	igt_color_apply_3x4_ctm(pixel, &igt_matrix_3x4_bt709_dec);
+>   }
+>   
+> +static void
+> +igt_color_fourcc_to_pixel(uint32_t raw_pixel, uint32_t drm_format, igt_pixel_t *pixel)
 > +{
-> +	uint64_t vram_mb = vram_size / (1024 * 1024);
-> +	int recommended_max_size_kb;
-> +	bool user_set_max_size = (params.max_size_kb != MAX_OBJ_KB);
-
-Maybe you should remember that user changed this?
-What if user will give MAX_OBJ_KB as input param?
-
+> +	if (drm_format == DRM_FORMAT_XRGB8888) {
+> +		raw_pixel &= 0x00ffffff;
 > +
-> +	 /* max_object_mb = VRAM_mb / 64, clamped between 2MB and 256MB
-> +	  * Formula works for all VRAM sizes with consistent behavior
-
-Remove this 2nd sentence and make it a one-liner comment.
-
-> +	  */
-> +	int max_object_mb = vram_mb / MIN_OBJ_KB;
+> +		pixel->r = (raw_pixel & 0x00ff0000) >> 16;
+> +		pixel->g = (raw_pixel & 0x0000ff00) >> 8;
+> +		pixel->b = (raw_pixel & 0x000000ff);
 > +
-> +	max_object_mb = max_t(int, 2, min_t(int, max_object_mb, 256));
-> +	recommended_max_size_kb = max_object_mb * 1024;
+> +		/* normalize for 8-bit */
+> +		pixel->r /= (0xff);
+> +		pixel->g /= (0xff);
+> +		pixel->b /= (0xff);
+> +	} else if (drm_format == DRM_FORMAT_XRGB2101010) {
+> +		raw_pixel &= 0x3fffffff;
 > +
-> +	igt_info("VRAM (%"PRIu64"MB): Calculated %d%% usage, %dMB max objects\n",
-> +		 vram_mb, params.vram_percent, max_object_mb);
+> +		pixel->r = (raw_pixel & 0x3ff00000) >> 20;
+> +		pixel->g = (raw_pixel & 0x000ffc00) >> 10;
+> +		pixel->b = (raw_pixel & 0x000003ff);
 > +
-> +	if (user_set_max_size) {
-
-Warn only when user actually wants to have larger size, so add:
-
-	if (user_set_max_size &&
-	    recommended_max_size_kb < params.max_size_kb) {
-
-> +		igt_warn("User specified max object size (%dKB) may not be"
-> +				"optimal for %"PRIu64"MB VRAM (recommended: %dKB)\n",
-> +				params.max_size_kb, vram_mb, recommended_max_size_kb);
-
-Any reason for printing sizes in KB? Imho it is better to print
-in MB or both.
-
-Regards,
-Kamil
-
+> +		/* normalize for 10-bit */
+> +		pixel->r /= (0x3ff);
+> +		pixel->g /= (0x3ff);
+> +		pixel->b /= (0x3ff);
 > +	} else {
-> +		params.max_size_kb = recommended_max_size_kb;
+> +		igt_skip("pixel format support not implemented");
 > +	}
-> +
-> +	igt_info("Final settings: %d%% VRAM, %dMB max object\n",
-> +		 params.vram_percent, params.max_size_kb / 1024);
 > +}
 > +
->  static void evict_ccs(int fd, uint32_t flags, const struct param *param)
->  {
->  	struct config config;
-> @@ -500,6 +529,7 @@ igt_main_args("bdDn:p:s:S:V", NULL, help_str, opt_handler, NULL)
->  		igt_require(xe_has_vram(fd));
->  		vram_size = xe_visible_vram_size(fd, 0);
->  		igt_assert(vram_size);
-> +		adjust_params_for_vram_size(vram_size);
->  		has_flatccs = HAS_FLATCCS(intel_get_drm_devid(fd));
->  	}
->  
-> -- 
-> 2.34.1
-> 
+> +static uint32_t
+> +igt_color_pixel_to_fourc(uint32_t drm_format, igt_pixel_t *pixel)
+
+Maybe rename this to fourcc?
+
