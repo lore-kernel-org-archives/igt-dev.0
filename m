@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C667CA0FF0
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 22:44:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56192CA0FED
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 23:22:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3251D10E6D4;
-	Tue, 26 Aug 2025 22:44:39 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AhYP/jFN";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD89F10E2E6
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 22:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756248273; x=1787784273;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=La70DOxXPXb0YYxFZB3Cv/VuzW1PnqicTYo42EiYQos=;
- b=AhYP/jFNeIRMC3bBb/JSRlme73tJIzBNSVjwPqWxKbbTB8YmoR5hB05/
- YvWJ/+b00fpgvEyGzgHs2BMDELW7DjSg8aY9Zeo59jBl2Qz4Ge1u0yUfh
- zv9RcHGWj2azXTj+a4I/oZGY+Q/5ebcyaaqBqt94WzofPr5vx3sqBA/Ai
- p87cl6j4d8JSu0md5wpyBTgEdYXPsUjJdRvCeGr6V/Vziu/G6QZIYP8zi
- cqEmre5TRW/aEZ+/0fcAE+bSb0agmyO0PRX8YDDSMYOvYTWeNdTeloE8B
- zXIvUFsFCYo//C8CSm0dbpfii/nM5hv9n0LvVS7X6MmpaZw2CQEoG4fS3 g==;
-X-CSE-ConnectionGUID: mX/YJRE7TySBFoZjWdsyUg==
-X-CSE-MsgGUID: i2sBI16JQRuMGhJ6gg8LrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="58595535"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="58595535"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 15:44:32 -0700
-X-CSE-ConnectionGUID: lmF9DQxiRuu2iTPDmWgXrQ==
-X-CSE-MsgGUID: sAZ3yLw6S0GWh7qR2ep3fg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="200647267"
-Received: from unerlige-desk1.jf.intel.com ([10.165.21.138])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 15:44:29 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t v2 2/4] tests/intel/xe_oa: Fix waiting for mmaped reports
-Date: Tue, 26 Aug 2025 15:42:59 -0700
-Message-ID: <20250826224256.510692-8-umesh.nerlige.ramappa@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250826224256.510692-6-umesh.nerlige.ramappa@intel.com>
-References: <20250826224256.510692-6-umesh.nerlige.ramappa@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id E74E210E6DD;
+	Tue, 26 Aug 2025 23:22:40 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C39D10E6DD;
+ Tue, 26 Aug 2025 23:22:40 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6669832008421476415=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_IGT_xe=5Foa_fixes=2C_debug_?=
+ =?utf-8?q?and_new_test_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 26 Aug 2025 23:22:40 -0000
+Message-ID: <175625056042.272549.2162150387260414032@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250826224256.510692-6-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20250826224256.510692-6-umesh.nerlige.ramappa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,39 +37,158 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When iterating over reports using a uint32_t pointer, ensure that the
-report size is expressed in 32 bits.
+--===============6669832008421476415==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/intel/xe_oa.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index f81e95dcd8d6..d10ef00d6abc 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -4450,6 +4450,7 @@ static void mmap_wait_for_periodic_reports(void *oa_vaddr, uint32_t n,
- 	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
- 	uint64_t fmt = test_set->perf_oa_format;
- 	uint32_t num_periodic_reports = 0;
-+	uint32_t report_words = get_oa_format(fmt).size >> 2;
- 	uint32_t *reports;
- 
- 	while (num_periodic_reports < n) {
-@@ -4457,7 +4458,7 @@ static void mmap_wait_for_periodic_reports(void *oa_vaddr, uint32_t n,
- 		num_periodic_reports = 0;
- 		for (reports = (uint32_t *)oa_vaddr;
- 		     reports[0] && oa_timestamp(reports, fmt) && oa_report_is_periodic(reports);
--		     reports += get_oa_format(fmt).size) {
-+		     reports += report_words) {
- 			num_periodic_reports++;
- 		}
- 	}
--- 
-2.43.0
+Series: IGT xe_oa fixes, debug and new test (rev2)
+URL   : https://patchwork.freedesktop.org/series/153380/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8511_BAT -> XEIGTPW_13647_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13647_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-plain-flip@b-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8511/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_vm@bind-execqueues-independent:
+    - {bat-ptl-1}:        [FAIL][3] ([Intel XE#5783]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8511/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html
+    - {bat-ptl-vm}:       [FAIL][5] ([Intel XE#5783]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8511/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html
+    - {bat-ptl-2}:        [FAIL][7] ([Intel XE#5783]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8511/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8511 -> IGTPW_13647
+  * Linux: xe-3620-03ce398526a784c3afb2f18cb7d04b80f1a90ecf -> xe-3623-3a2760f3080e5188b19cdb4640cec5eb0926d578
+
+  IGTPW_13647: 13647
+  IGT_8511: 8511
+  xe-3620-03ce398526a784c3afb2f18cb7d04b80f1a90ecf: 03ce398526a784c3afb2f18cb7d04b80f1a90ecf
+  xe-3623-3a2760f3080e5188b19cdb4640cec5eb0926d578: 3a2760f3080e5188b19cdb4640cec5eb0926d578
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/index.html
+
+--===============6669832008421476415==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>IGT xe_oa fixes, debug and new test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153380/">https://patchwork.freedesktop.org/series/153380/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8511_BAT -&gt; XEIGTPW_13647_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13647_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@b-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8511/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_vm@bind-execqueues-independent:<ul>
+<li>{bat-ptl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8511/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/bat-ptl-1/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
+<li>{bat-ptl-vm}:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8511/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
+<li>{bat-ptl-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8511/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13647/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8511 -&gt; IGTPW_13647</li>
+<li>Linux: xe-3620-03ce398526a784c3afb2f18cb7d04b80f1a90ecf -&gt; xe-3623-3a2760f3080e5188b19cdb4640cec5eb0926d578</li>
+</ul>
+<p>IGTPW_13647: 13647<br />
+  IGT_8511: 8511<br />
+  xe-3620-03ce398526a784c3afb2f18cb7d04b80f1a90ecf: 03ce398526a784c3afb2f18cb7d04b80f1a90ecf<br />
+  xe-3623-3a2760f3080e5188b19cdb4640cec5eb0926d578: 3a2760f3080e5188b19cdb4640cec5eb0926d578</p>
+
+</body>
+</html>
+
+--===============6669832008421476415==--
