@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BACE8CA0FF7
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 20:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF81FCA0FF0
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 20:18:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DFEB510E38D;
-	Tue, 26 Aug 2025 20:18:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A36610E662;
+	Tue, 26 Aug 2025 20:18:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e3XxG5KC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DPBhntHL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D82010E132
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5F2A10E132
  for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 20:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1756239513; x=1787775513;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iob4MAGuwPZch8CvSHPLsf/x/fI/TBXhfnndwLxNDeI=;
- b=e3XxG5KCvBsCAyBXfxMTJ9znpKyUARVGXiEBitF9q3SQ0vzVH2tEU+wz
- E0tcblJ/Fm8J2JLKJsAad6cT8fAp4Df18yYRPGrnR3hgCTsYjiaPJNAqr
- xlJU7zIn8U9ARSiaAZPasygEr/kloKu04TGG556V81QgkqCFwtWav90D0
- TxLBm0zYdiXXmRGLCCARmw4Da9O+qCYKv+4CNZO1k51CSrZGaonjiil2+
- 7s5/eWQfuix3LtkyKIhaIskfvAHkTwVed5p9plWi/7X7YIs49QZYRKfrg
- 6JYlEoFISy4FbIbCYvCL3s4ZH88R+/id0m1W1+S+7srrMc9/gdpxZ16Vh A==;
-X-CSE-ConnectionGUID: JR8z8sb0R/qj1T86dFulAA==
-X-CSE-MsgGUID: AbU/XV5QS3CbskN3odq0mQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="46068141"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="46068141"
+ bh=ok5E8nZKQWszjvUTaU9vQ+ubiopVLe6xH5tCJ5RTtV0=;
+ b=DPBhntHL69xOFrM/SPAwN3AYaACYQD7Z4Q8zd5Ovtc4G6lMQJeCGkcI/
+ fCeQJkRN1Py5HlvPwOooJQdEENTP1r4t+WQiFhIiyIHHjeXOuvrwfZ5Gq
+ gTE/Q0i7IlHb/cRrxe+extIWGnsqjH+LUVngbYapoGplUTny7GHr06rUs
+ EnPeELsbuz9nOLniNIa+8GMu08K71hMjB1ps5005vBPu9TIkmxp5pGj3A
+ 1NQvf8GKADI+hLBheyIIgxc20LcnIPvPnmziHa9ah3ZhuewtlSyXAaQKi
+ JPWRDsbCTQKeVURC33ujqSOMOVn/s/dZOp9gW/cLuSY5yzmgItSdEbs6V w==;
+X-CSE-ConnectionGUID: ihu5M3BpSwq9hbYvWdqPwg==
+X-CSE-MsgGUID: jeTk1iW6Rb6LeWHn8zkvjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="46068143"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="46068143"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  26 Aug 2025 13:18:32 -0700
-X-CSE-ConnectionGUID: 3IU/7jASRWmxGfIwJ8FVxw==
-X-CSE-MsgGUID: G6UV+ygdS12kNPZoPkkJ3A==
+X-CSE-ConnectionGUID: FeQtJNZOT92GfzLSHJgduQ==
+X-CSE-MsgGUID: ScVK1bfoQTGKhEYPuJly9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="168907875"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="168907883"
 Received: from dut4086lnl.fm.intel.com ([10.105.10.138])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  26 Aug 2025 13:18:32 -0700
@@ -45,10 +45,10 @@ From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: saurabhg.gupta@intel.com, alex.zuo@intel.com, jonathan.cavitt@intel.com,
  john.c.harrison@intel.com, matthew.brost@intel.com
-Subject: [PATCH v2 2/4] tests/intel/xe_vm: Use fault injection interface for
- error injection test
-Date: Tue, 26 Aug 2025 20:18:27 +0000
-Message-ID: <20250826201829.190241-8-jonathan.cavitt@intel.com>
+Subject: [PATCH v2 4/4] tests/intel/xe_vm: Move vm fault tests from
+ xe_fault_injection to xe_vm
+Date: Tue, 26 Aug 2025 20:18:29 +0000
+Message-ID: <20250826201829.190241-10-jonathan.cavitt@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250826201829.190241-6-jonathan.cavitt@intel.com>
 References: <20250826201829.190241-6-jonathan.cavitt@intel.com>
@@ -69,123 +69,335 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The test xe_vm@bind-array-conflict-error-inject currently uses a
-separate error injection mechanism that isn't unified with the existing
-error injection framework.  This separate error injection framework is
-disabled when CONFIG_DRM_XE_DEBUG is not set, which violates the
-guarantee CONFIG_DRM_XE_DEBUG has no functional impact.  Modify the test
-to use the fault injection framework that the other xe_fault_injection
-tests use.
+Move the fault injection tests that exercise the xe vm ioctl from the
+xe_fault_injection test suite to the xe_vm test suite.
 
-v2: Allow error injection into xe_pt_update_ops_prepare and
-xe_pt_update_ops_run as a part of the bind-array-conflict-error-inject
-test.  Additionally, update the name of the test to denote which
-function is being error injected (Brost, Harrison)
-
-Suggested-by: John Harrison <john.c.harrison@intel.com>
 Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Matthew Brost <matthew.d.brost@intel.com>
 ---
- tests/intel/xe_vm.c | 46 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 12 deletions(-)
+ tests/intel/xe_fault_injection.c | 121 ---------------------------
+ tests/intel/xe_vm.c              | 138 +++++++++++++++++++++++++++++++
+ 2 files changed, 138 insertions(+), 121 deletions(-)
 
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index 92b09cbb90..06b7bcab3d 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -172,104 +172,6 @@ exec_queue_create_fail(int fd, struct drm_xe_engine_class_instance *instance,
+ 	xe_exec_queue_destroy(fd, exec_queue_id);
+ }
+ 
+-static int
+-simple_vm_create(int fd, unsigned int flags)
+-{
+-	struct drm_xe_vm_create create = {
+-		.flags = flags,
+-	};
+-
+-	return igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
+-}
+-
+-/**
+- * SUBTEST: vm-create-fail-%s
+- * Description: inject an error in function %arg[1] used in vm create IOCTL to make it fail
+- * Functionality: fault
+- *
+- * arg[1]:
+- * @xe_exec_queue_create_bind:	xe_exec_queue_create_bind
+- * @xe_pt_create:		xe_pt_create
+- * @xe_vm_create_scratch:	xe_vm_create_scratch
+- */
+-static void
+-vm_create_fail(int fd, const char pci_slot[],
+-	       const char function_name[], unsigned int flags)
+-{
+-	igt_assert_eq(simple_vm_create(fd, flags), 0);
+-
+-	injection_ignore_dmesg_errors_from_dut(pci_slot);
+-	injection_list_add(function_name);
+-	injection_set_retval(function_name, INJECT_ERRNO);
+-	igt_assert(simple_vm_create(fd, flags) != 0);
+-	injection_list_remove(function_name);
+-
+-	igt_assert_eq(simple_vm_create(fd, flags), 0);
+-}
+-
+-static int
+-simple_vm_bind(int fd, uint32_t vm)
+-{
+-	struct {
+-		uint32_t batch[16];
+-		uint64_t pad;
+-		uint32_t data;
+-	} *data;
+-	struct drm_xe_sync syncobj = {
+-		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
+-		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+-		.handle = syncobj_create(fd, 0),
+-	};
+-	struct drm_xe_vm_bind bind = {
+-		.vm_id = vm,
+-		.num_binds = 1,
+-		.bind.obj = 0,
+-		.bind.range = BO_SIZE,
+-		.bind.addr = BO_ADDR,
+-		.bind.op = DRM_XE_VM_BIND_OP_MAP_USERPTR,
+-		.bind.pat_index = intel_get_pat_idx_wb(fd),
+-		.bind.flags = 0,
+-		.num_syncs = 1,
+-		.syncs = (uintptr_t)&syncobj,
+-		.exec_queue_id = 0,
+-	};
+-
+-	data = aligned_alloc(xe_get_default_alignment(fd), BO_SIZE);
+-	bind.bind.obj_offset = to_user_pointer(data);
+-
+-	return igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
+-}
+-
+-/**
+- * SUBTEST: vm-bind-fail-%s
+- * Description: inject an error in function %arg[1] used in vm bind IOCTL
+- *		to make it fail
+- * Functionality: fault
+- *
+- * arg[1]:
+- * @vm_bind_ioctl_ops_create:		vm_bind_ioctl_ops_create
+- * @vm_bind_ioctl_ops_execute:		vm_bind_ioctl_ops_execute
+- * @xe_pt_update_ops_prepare:		xe_pt_update_ops_prepare
+- * @xe_pt_update_ops_run:		xe_pt_update_ops_run
+- * @xe_vma_ops_alloc:			xe_vma_ops_alloc
+- * @xe_sync_entry_parse:		xe_sync_entry_parse
+- */
+-static void
+-vm_bind_fail(int fd, const char pci_slot[], const char function_name[])
+-{
+-	uint32_t vm = xe_vm_create(fd, 0, 0);
+-
+-	igt_assert_eq(simple_vm_bind(fd, vm), 0);
+-
+-	injection_ignore_dmesg_errors_from_dut(pci_slot);
+-	injection_list_add(function_name);
+-	injection_set_retval(function_name, INJECT_ERRNO);
+-	igt_assert(simple_vm_bind(fd, vm) != 0);
+-	injection_list_remove(function_name);
+-
+-	igt_assert_eq(simple_vm_bind(fd, vm), 0);
+-}
+-
+ static int opt_handler(int opt, int opt_index, void *data)
+ {
+ 	int in_param;
+@@ -325,21 +227,6 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 		{ "xe_wopcm_init", 0, true },
+ 		{ }
+ 	};
+-	const struct section vm_create_fail_functions[] = {
+-		{ "xe_exec_queue_create_bind", 0 },
+-		{ "xe_pt_create", 0 },
+-		{ "xe_vm_create_scratch", DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE },
+-		{ }
+-	};
+-	const struct section vm_bind_fail_functions[] = {
+-		{ "vm_bind_ioctl_ops_create" },
+-		{ "vm_bind_ioctl_ops_execute" },
+-		{ "xe_pt_update_ops_prepare" },
+-		{ "xe_pt_update_ops_run" },
+-		{ "xe_vma_ops_alloc" },
+-		{ "xe_sync_entry_parse" },
+-		{ }
+-	};
+ 
+ 	const struct section exec_queue_create_fail_functions[] = {
+ 		{ "xe_exec_queue_create", 0 },
+@@ -369,14 +256,6 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 		is_vf_device = intel_is_vf_device(fd);
+ 	}
+ 
+-	for (const struct section *s = vm_create_fail_functions; s->name; s++)
+-		igt_subtest_f("vm-create-fail-%s", s->name)
+-			vm_create_fail(fd, pci_slot, s->name, s->flags);
+-
+-	for (const struct section *s = vm_bind_fail_functions; s->name; s++)
+-		igt_subtest_f("vm-bind-fail-%s", s->name)
+-			vm_bind_fail(fd, pci_slot, s->name);
+-
+ 	for (const struct section *s = exec_queue_create_fail_functions; s->name; s++)
+ 		igt_subtest_f("exec-queue-create-fail-%s", s->name)
+ 			xe_for_each_engine(fd, hwe)
 diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 7a37bfe052..6bef25851e 100644
+index 6bef25851e..2af77350ff 100644
 --- a/tests/intel/xe_vm.c
 +++ b/tests/intel/xe_vm.c
-@@ -16,6 +16,7 @@
- #include "lib/intel_reg.h"
- #include "xe_drm.h"
- 
-+#include "xe/xe_fault_injection.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_spin.h"
-@@ -1038,14 +1039,18 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
-  * Description: Test binding with conflicting address
-  * Test category: functionality test
-  *
-- * SUBTEST: bind-array-conflict-error-inject
-- * Functionality: bind exec_queues and page table updates error paths
-+ * SUBTEST: bind-array-conflict-error-inject-%s
-+ * Functionality: bind exec_queues and page table updates error paths by injecting into %arg[1]
-  * Description: Test bind array with conflicting address plus error injection
-  * Test category: functionality test
-+ *
-+ * arg[1].values: vm_bind_ioctl_ops_lock_and_prep
-+ * arg[1].values: xe_pt_update_ops_prepare
-+ * arg[1].values: xe_pt_update_ops_run
+@@ -11,6 +11,7 @@
   */
- static void
- test_bind_array_conflict(int fd, struct drm_xe_engine_class_instance *eci,
--			 bool no_array, bool error_inject)
-+			 bool no_array, const char error_inject[])
+ 
+ #include "igt.h"
++#include "igt_device.h"
+ #include "intel_pat.h"
+ #include "lib/igt_syncobj.h"
+ #include "lib/intel_reg.h"
+@@ -2465,10 +2466,109 @@ static void test_oom(int fd)
+ 	}
+ }
+ 
++static int
++simple_vm_create(int fd, unsigned int flags)
++{
++	struct drm_xe_vm_create create = {
++		.flags = flags,
++	};
++
++	return igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
++}
++
++/**
++ * SUBTEST: vm-create-fail-%s
++ * Description: inject an error in function %arg[1] used in vm create IOCTL to make it fail
++ * Functionality: fault
++ *
++ * arg[1]:
++ * @xe_exec_queue_create_bind:	xe_exec_queue_create_bind
++ * @xe_pt_create:		xe_pt_create
++ * @xe_vm_create_scratch:	xe_vm_create_scratch
++ */
++static void
++vm_create_fail(int fd, const char pci_slot[],
++	       const char function_name[], unsigned int flags)
++{
++	igt_assert_eq(simple_vm_create(fd, flags), 0);
++
++	injection_ignore_dmesg_errors_from_dut(pci_slot);
++	injection_list_add(function_name);
++	injection_set_retval(function_name, -ENOMEM);
++	igt_assert(simple_vm_create(fd, flags) != 0);
++	injection_list_remove(function_name);
++
++	igt_assert_eq(simple_vm_create(fd, flags), 0);
++}
++
++static int
++simple_vm_bind(int fd, uint32_t vm)
++{
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++	} *data;
++	struct drm_xe_sync syncobj = {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = syncobj_create(fd, 0),
++	};
++	struct drm_xe_vm_bind bind = {
++		.vm_id = vm,
++		.num_binds = 1,
++		.bind.obj = 0,
++		.bind.range = BO_SIZE,
++		.bind.addr = 0x1a0000,
++		.bind.op = DRM_XE_VM_BIND_OP_MAP_USERPTR,
++		.bind.pat_index = intel_get_pat_idx_wb(fd),
++		.bind.flags = 0,
++		.num_syncs = 1,
++		.syncs = (uintptr_t)&syncobj,
++		.exec_queue_id = 0,
++	};
++
++	data = aligned_alloc(xe_get_default_alignment(fd), BO_SIZE);
++	bind.bind.obj_offset = to_user_pointer(data);
++
++	return igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
++}
++
++/**
++ * SUBTEST: vm-bind-fail-%s
++ * Description: inject an error in function %arg[1] used in vm bind IOCTL
++ *		to make it fail
++ * Functionality: fault
++ *
++ * arg[1]:
++ * @vm_bind_ioctl_ops_create:		vm_bind_ioctl_ops_create
++ * @vm_bind_ioctl_ops_execute:		vm_bind_ioctl_ops_execute
++ * @xe_pt_update_ops_prepare:		xe_pt_update_ops_prepare
++ * @xe_pt_update_ops_run:		xe_pt_update_ops_run
++ * @xe_vma_ops_alloc:			xe_vma_ops_alloc
++ * @xe_sync_entry_parse:		xe_sync_entry_parse
++ */
++static void
++vm_bind_fail(int fd, const char pci_slot[], const char function_name[])
++{
++	uint32_t vm = xe_vm_create(fd, 0, 0);
++
++	igt_assert_eq(simple_vm_bind(fd, vm), 0);
++
++	injection_ignore_dmesg_errors_from_dut(pci_slot);
++	injection_list_add(function_name);
++	injection_set_retval(function_name, -ENOMEM);
++	igt_assert(simple_vm_bind(fd, vm) != 0);
++	injection_list_remove(function_name);
++
++	igt_assert_eq(simple_vm_bind(fd, vm), 0);
++}
++
+ igt_main
  {
- 	uint32_t vm;
- 	uint64_t addr = 0x1a00000;
-@@ -1178,13 +1183,12 @@ test_bind_array_conflict(int fd, struct drm_xe_engine_class_instance *eci,
+ 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
+ 	uint64_t bind_size;
++	char pci_slot[NAME_MAX];
+ 	int fd;
+ 	const struct section {
+ 		const char *name;
+@@ -2583,6 +2683,27 @@ igt_main
+ 		"xe_pt_update_ops_run",
+ 	};
  
- 		if (error_inject) {
- 			sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
--			bind_ops[BIND_ARRAY_CONFLICT_NUM_BINDS - 1].flags |=
--				0x1 << 31;
-+			injection_list_add(error_inject);
-+			injection_set_retval(error_inject, -ENOSPC);
- 			xe_vm_bind_array_err(fd, vm, 0, bind_ops,
- 					     BIND_ARRAY_CONFLICT_NUM_BINDS,
- 					     sync, 1, ENOSPC);
--			bind_ops[BIND_ARRAY_CONFLICT_NUM_BINDS - 1].flags &=
--				~(0x1 << 31);
-+			injection_list_remove(error_inject);
- 
- 			/* Verify existing mappings still works */
- 			i = 1;
-@@ -2573,6 +2577,12 @@ igt_main
-                 { }
-         };
- 
-+	const char *error_inject_list[] = {
-+		"vm_bind_ioctl_ops_lock_and_prep",
-+		"xe_pt_update_ops_prepare",
-+		"xe_pt_update_ops_run",
++	const struct fault_section {
++		const char *name;
++		unsigned int flags;
++		bool pf_only;
++	} vm_create_fail_functions[] = {
++		{ "xe_exec_queue_create_bind", 0 },
++		{ "xe_pt_create", 0 },
++		{ "xe_vm_create_scratch", DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE },
++		{ }
++	};
++
++	const struct fault_section vm_bind_fail_functions[] = {
++		{ "vm_bind_ioctl_ops_create" },
++		{ "vm_bind_ioctl_ops_execute" },
++		{ "xe_pt_update_ops_prepare" },
++		{ "xe_pt_update_ops_run" },
++		{ "xe_vma_ops_alloc" },
++		{ "xe_sync_entry_parse" },
++		{ }
 +	};
 +
  	igt_fixture {
  		fd = drm_open_driver(DRIVER_XE);
  
-@@ -2667,15 +2677,27 @@ igt_main
+@@ -2883,6 +3004,23 @@ igt_main
+ 		test_oom(fd);
+ 	}
  
- 	igt_subtest("bind-array-conflict")
- 		xe_for_each_engine(fd, hwe)
--			test_bind_array_conflict(fd, hwe, false, false);
-+			test_bind_array_conflict(fd, hwe, false, NULL);
- 
- 	igt_subtest("bind-no-array-conflict")
- 		xe_for_each_engine(fd, hwe)
--			test_bind_array_conflict(fd, hwe, true, false);
-+			test_bind_array_conflict(fd, hwe, true, NULL);
- 
--	igt_subtest("bind-array-conflict-error-inject")
--		xe_for_each_engine(fd, hwe)
--			test_bind_array_conflict(fd, hwe, false, true);
 +	igt_subtest_group {
 +		igt_fixture {
 +			igt_require(fail_function_injection_enabled());
 +			injection_setup_fault(&default_fault_params);
 +			injection_exit_handler();
++			igt_device_get_pci_slot_name(fd, pci_slot);
 +		}
 +
-+		for (int i = 0; i < ARRAY_SIZE(error_inject_list); i++) {
-+			const char *func_name = error_inject_list[i];
-+			igt_subtest_f("bind-array-conflict-error-inject-%s", func_name) {
-+				xe_for_each_engine(fd, hwe)
-+					test_bind_array_conflict(fd, hwe, false, func_name);
-+			}
-+		}
++		for (const struct fault_section *s = vm_create_fail_functions; s->name; s++)
++			igt_subtest_f("vm-create-fail-%s", s->name)
++				vm_create_fail(fd, pci_slot, s->name, s->flags);
++
++		for (const struct fault_section *s = vm_bind_fail_functions; s->name; s++)
++			igt_subtest_f("vm-bind-fail-%s", s->name)
++				vm_bind_fail(fd, pci_slot, s->name);
 +	}
- 
- 	igt_subtest("bind-array-flag-invalid")
- 		test_bind_flag_invalid(fd, 16);
++
+ 	igt_fixture
+ 		drm_close_driver(fd);
+ }
 -- 
 2.43.0
 
