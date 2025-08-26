@@ -4,62 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 196A7CA0EFA
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 12:53:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0411DCA0FE7
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 13:07:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A904D10E654;
-	Tue, 26 Aug 2025 12:53:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B0F5F10E655;
+	Tue, 26 Aug 2025 13:07:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ww6xuJeF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hLldrg60";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4B8410E654
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 12:53:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D88310E655
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 13:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756212822; x=1787748822;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1YFcBqZrzogIiZlfFymOG5lWTOtiPn6U1+rl27Tkup0=;
- b=Ww6xuJeFgRCNgMz6Kzrz/yNc9mCTpnZXYAow61S9AFG1Egh3y8STMqOq
- J4Cjdu1SR4IsyKPXpBZ8T+M0rjqjyjg4xbVh/cy8Sd6wzq20K5MMRXTMS
- +6XSrwxLBDZ8cOcPt39EGtZlCNbQMdfceNHQzDr9LH6D+2mDNzhMXcBNa
- y10ccohGQMOGSeVAmJDEipvweMl+3vbtCI+CUg860KxjDqQmLgaGtFP3j
- +0ejd9BwU4BLsQzon127Do7Pf2RzwVeQAklhnKXEN1DUwfyLH2+JRGDmq
- tfxs4AgjvZV8g7ZtzY1lALfw/d0faBCzHUxbhynEa46J9ozGYpbHHeP7s w==;
-X-CSE-ConnectionGUID: Eq30CLNZRkqhWmV8eIjHJg==
-X-CSE-MsgGUID: dE/88w8OTtaYMc0gV1O84w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58365270"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="58365270"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 05:53:42 -0700
-X-CSE-ConnectionGUID: etBo72C9Rh+JNKO9cEnWuw==
-X-CSE-MsgGUID: dig3CEIXRNCWdFpsmbS/bw==
+ t=1756213678; x=1787749678;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-id:content-transfer-encoding: mime-version;
+ bh=J0IsD9Wr9tB8luj61I8QcYaYqWZ1jKY/CLG0tbzSdKU=;
+ b=hLldrg603cQKzQuQ49uzRss+DeuSt0eKcCGEhHBZubFOF2Qa8/sT1UcL
+ x8/h+w/xpI8ee1rUeaUU/kRxwiBuEnZhrNxLXYG3B5Xc67X1ummGBZXiT
+ jsvPIEcLiHLYpFfKxynffyMFNEvc89P1WZXkjeoeHecXbE2JTAvcJu0fY
+ iq8kFIdOR+7Akoav+Lmh+Ds+QBYKg/ifCh5PojKCxENIFMGxwyFHqf7UP
+ xU1dWer+GCNImscowMB6qGyTUICnIC3je6LogtvPq+gFfUj39Tbx3aeEy
+ o5J45NNP470136A55xKFJ8ZD9/PfxAG7OJ3dM8BxTs+Vh/3JVUSs5+PiZ A==;
+X-CSE-ConnectionGUID: nU2pv+P1TNWp2irOTSWEqw==
+X-CSE-MsgGUID: 4Tc2CNxgQMqEsrFsa+EUlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62280593"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62280593"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 06:07:55 -0700
+X-CSE-ConnectionGUID: kbJojtJmS6aMdslDo8z81Q==
+X-CSE-MsgGUID: DAUdL7v+RR2fcFZwJrSFbQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="174829818"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.192])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2025 05:53:39 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ewelina Musial <ewelina.musial@intel.com>,
- Karol Krol <karol.krol@intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v5] runner/executor: Abort if dmesg is flooded
-Date: Tue, 26 Aug 2025 14:53:29 +0200
-Message-ID: <20250826125329.109160-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.51.0
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="169475356"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 06:07:55 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 26 Aug 2025 06:07:54 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Tue, 26 Aug 2025 06:07:54 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.42)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 26 Aug 2025 06:07:54 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gSq64RODFlPGzjC8uiL8DSf7a7ZiL2a+MhP4SKqw5naVcUD7H3rRj5QwkoK7sdDL/cKfZIU2OvAKD/QDZUo0iCv7HS+Hmsm6uPhT+1uT5ri1G7XqdE5e1T/AfSkovf+VIMnJvnWSplRSSNjU+fUgzPaGfr3LCLGfmRp1Pd/ZP9tHD4MWpYjknk75ZbnBfMnc/v5s0xAt3TOyuqHDIwJHY9g7BZVT+9XCxKTQnn3LGlI3E9XDGVWDMJJhgT1sb7DGBAdUGl1mYgLbRk3aL755BBL0qQOz11fbQL0Lv9E4zS8ifKCrb/rs4F3ojoz1+wg/xxslKzN6Mnd29hWH7XgLnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J0IsD9Wr9tB8luj61I8QcYaYqWZ1jKY/CLG0tbzSdKU=;
+ b=ciNSJeeaosyMThk1OlMdLh7oZWVvX6Su2qYLrAkXOhjKwnMUo90DFFperas5dX88k5Pvn6f5taPVYEipUXIf33TPr77r2Wd3O6UCbo86Nut9oZKYsU6PMaHSRvM43vzMJraQH2cmz6c1ZTRj1TCkXoA/0guc7MpmWEkxniHg/x5jkwTDY7imnDRDF5L+VL5o++JB06jUaG56EEhdLMbWckmhZQGGlLlqr/4yAZhG4Ub5qdUcit87K1lXKDbj/XPosB3PaJTFuXuXbJUJ64CY1IeMYKORhEXnyheq5ME7qVu0T6ffMkebvsJsRcHTeoX1gBaQJXVKCYEf1UFoE3Am2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CY8PR11MB7777.namprd11.prod.outlook.com (2603:10b6:930:71::14)
+ by PH7PR11MB6932.namprd11.prod.outlook.com (2603:10b6:510:207::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Tue, 26 Aug
+ 2025 13:07:52 +0000
+Received: from CY8PR11MB7777.namprd11.prod.outlook.com
+ ([fe80::60a1:eab8:65ee:6bb8]) by CY8PR11MB7777.namprd11.prod.outlook.com
+ ([fe80::60a1:eab8:65ee:6bb8%4]) with mapi id 15.20.9052.019; Tue, 26 Aug 2025
+ 13:07:52 +0000
+From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Reddy
+ Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
+CC: "B S, Karthik" <karthik.b.s@intel.com>, "Sharma, Swati2"
+ <swati2.sharma@intel.com>, "B, Jeevan" <jeevan.b@intel.com>
+Subject: Re: [PATCH i-g-t v1] tests/intel/kms_fbc_dirty_rect: Limit to single
+ pipe on simulation
+Thread-Topic: [PATCH i-g-t v1] tests/intel/kms_fbc_dirty_rect: Limit to single
+ pipe on simulation
+Thread-Index: AQHcFliaGqwO/zFchkiseQxLW0TBC7R06CgA
+Date: Tue, 26 Aug 2025 13:07:51 +0000
+Message-ID: <bba9401b5382e1c52ce6f4bae77d0474d1191c7e.camel@intel.com>
+References: <20250826070734.1117429-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250826070734.1117429-1-santhosh.reddy.guddati@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.52.3-0ubuntu1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR11MB7777:EE_|PH7PR11MB6932:EE_
+x-ms-office365-filtering-correlation-id: 88abd2d0-e061-4968-2fb9-08dde4a1905f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?eW9ZbzRlbjNIaEc1SGFVL0VUc1M3VzVmQkNzSzhTN051elJMTzBjN0kyYnVO?=
+ =?utf-8?B?eDVMZkNDSHE2RDBDT2hUMzdMTTdiL0FpZjA4OXFJUXNpSUVEbkVBd2Z1TmVK?=
+ =?utf-8?B?MWdiUjJYcVY0RWo2UmhYeXh5ZkFhMjNSOWQrTjFleVpKeUpmRi9pcDZQM0Va?=
+ =?utf-8?B?RUtrdVR1dmRRZTMwMEd3Nlc4K2VLRWhIOERmY2dMeEswenVuWkp0RDQzMlVx?=
+ =?utf-8?B?eTNCN3pCRCtVeFZ6M2FLUlZVMEVFSzB1L281M1BDbVp5RTd3VVdFNWVXUHd5?=
+ =?utf-8?B?S3hzOWVjellEYXZMVXZoZlFQNk9sREhVRVk1ZWZEa1dUMUt1ajdadmtOT0M5?=
+ =?utf-8?B?WkpNTUc0c1hmMzJ2OUkrSjlZdlBUNThjUmk2Z3pWc3RBb3R0RnY2d1hLWmtu?=
+ =?utf-8?B?VFRWVjhTK3JBcC8xbk40VUM0b3psNXA1bHFqREx0MkozenU5WURjN3V1amUy?=
+ =?utf-8?B?Q0t2UmQ1K3k4SG9LSUdpRzBLV1lETEFNTU1ORWFadlhRcmdvTnhFWUk4aEdp?=
+ =?utf-8?B?dHVzNGpGUmJmZjBmc1lrbTREWlhrWWR4aHhzOTlZZkgyRzd6V2FNaldmaEwv?=
+ =?utf-8?B?OUpyTUZJY0F3OFZub0FFNTRUdCs5cHRHODJhMTYvc2pSQnI5bkNLTlduekJ3?=
+ =?utf-8?B?bWNWV3BHamN6UmxCTDhmWWR5UEwwTHp3WVBoazFKbHI5K1ZMUUxpSFlnV1BM?=
+ =?utf-8?B?TjJMUWZEUTFQZWZ2OUZ6RzQvUzlVbzZia3M1VG1NZ2lLN1pyZnBRV1ZtMmhZ?=
+ =?utf-8?B?YjVOTDhJRi9qVldpY25NemJHQlJtdHZiTzkzZUl0eXNtbDRvRldCSVk5SjNw?=
+ =?utf-8?B?ZmJmd3ZKVWRsMGFxbnAzeXpVY1hwQ0hvc0d3SjZ1QlUvaFpiSGtEUFVVNFhj?=
+ =?utf-8?B?OHVrcHpSYURzZTlnMEtxenkvRlN2RVRxa09wZE8yQ0tXTDBzUG5mcmJmeWNr?=
+ =?utf-8?B?cmZYaGRtbkRnc1plQXN0aHhSMnFNenlON05tZDNlQjZPYnNBNXg0clBQSnVI?=
+ =?utf-8?B?L0lPa2g1RGczSGtkTGhlWVkxRkp6MWpzUmVoVHpwNlJzNzVPRVIzMWdrVW53?=
+ =?utf-8?B?YWdUekY0djhzU2IzYXMzUWE2V0lRWG4yT0pGa3R6Tjh1ajRIRUJOMk44OENn?=
+ =?utf-8?B?VnpoYkJUOWtRRG1rSlFhNmtxOGxlZFFlSkR6VUV4S0p3Q09ud3BKQmV3TnpN?=
+ =?utf-8?B?SkwrNGJSY0dGSWxKZ2c0VmIyekpjaENlNzdJVnBVb1hwUVJyc1BueDdaaUtS?=
+ =?utf-8?B?THlwVm5sNUZzNkR4cVdQVHAwbkdLUmJTQnVaN0lDS0x3blAzYmlJc1J6d2ZG?=
+ =?utf-8?B?ZE5vVGJUTmlkZExKTTRCbkpydTFBNFl1SGhsazhNY01DQ2Yzc2ZoQmFDZ3RT?=
+ =?utf-8?B?bEtmUjJWbElrZGhkYnZMaEVOMGJSVVRQOC8rSXA1ZXJRc1d4KzY2dEt2QS9O?=
+ =?utf-8?B?RE9VNjQ2V2J0LzZoaE1Od0tBbXhEOHpvZFd4UkFmRzdsQzVzbU9TaGVrZnov?=
+ =?utf-8?B?YlcvT0VBdjNXQ2cxVXVQTENXZXJoUlhvK292VUR3OTkxaSt0c2Ezbjh4ZFha?=
+ =?utf-8?B?WWQzc1JRY0NsM2pCRU5Kb21rL3ZidW5sT21LUm5GVFAxMEoxOVpMQXN1Zzhk?=
+ =?utf-8?B?UG10cTZLT1ZBY1Z4S2h4Z0loR3k3SytUTzRoUjhyNnVOZHhyYzVTQ0twbmF0?=
+ =?utf-8?B?N0NlVXBNMWJQeHpOQy93TDE5S0p2Zm9MUWdmS0dMQmMvb3daMnppTkVvK1FS?=
+ =?utf-8?B?dHF6d1RBMGJ6S2VicTZtS1I2Y3VnNEd3bTJvNytySUFzdFA1eEUyRW43bHhP?=
+ =?utf-8?B?M1RSRHd1a1k3TEp5UTdYZ3FiK0w1K2RJdWk2dndLMGprcEtUM2gyditZU0hM?=
+ =?utf-8?B?N2UzU050N0M3UzRzSm5DMFV3bmxWdzNXakNKMXJRSUJ4N1h3TEwwL2k1WUtO?=
+ =?utf-8?B?eFF3OGs3b2Q2bk5TU09iUzBWUFdtQnVXOXhSV2xUd3RsZmpmQW84SVl1SUxl?=
+ =?utf-8?B?dnFsU1M5Ly9nPT0=?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY8PR11MB7777.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WGIrdXlNdWZDV01NSEl3U0N1M1NiRGIwQjVPMjZrMkhNUzNYZjVodEV0YmdR?=
+ =?utf-8?B?bjhNK1puYStQakZxSzFHdWFXSDJBOGVQajZrQXh6VUxNRDhnc1ozcVVsbk0y?=
+ =?utf-8?B?ZGZUREhFYmFXZVBqdi9Na21wcmVSbld1S05iVnNqMW11eXBSQ2RvdFhqbjJq?=
+ =?utf-8?B?Z2tjWllKN1haM3BMT0txakpTMlRiaGNRd0VqblQ4MzY3OHZMaVpZWnhZWWdq?=
+ =?utf-8?B?UHRGOEdtYTMwMDhqbkdHanZXbW9saHRPd0ZaVnlqcmlJNmxEMUwwZTZaR3Y5?=
+ =?utf-8?B?N1dSUXM2MXJWK04zYUtBSU4xSkdxL0hsYkY4UWZMTWVTb3Urb2JWME0vb2FS?=
+ =?utf-8?B?NytTeGVxeDhFOTV4MlFWTEdTeUt2Ynp1TTFDNnZlYWRWZzZJTWZ3OVJ0YmtD?=
+ =?utf-8?B?Y3lic3ljbTJIc0cxcGo2ajRwdWc3NEdjY1dhOGRDbHlsa0Rob3crWHlzbTNR?=
+ =?utf-8?B?c2Rkd01RNkdXTlJJTHg4UkJHNGNhYmJsMVdyL3dnYURnODN1cENSL1BCNEFm?=
+ =?utf-8?B?UlBnWlpwQnFGNTgrZU1YNGlCSzM3dUIrQ2IweUppbUhtZlVOcFJBdHAwQWVT?=
+ =?utf-8?B?c3JCYXdFNGdIMUQ3ckJnU2tTLzBCSVFmUVVCYkRMRzZPUU9kazlaZFlaRE1H?=
+ =?utf-8?B?MEhNWHRQZzNZWDg2a3ZwM3pHZUV2bXJXenZLTFVmRVNpOFdkOFY5ZDV1Z0hZ?=
+ =?utf-8?B?cmV6QjhWQjUzZE5RODA3eDZ6bHVnZFptaDB5OEx0RDdMak02NVdadXlvemdw?=
+ =?utf-8?B?OGZaNmJEV040ZUd6d0cyek5FaVo0bWk1bHdJV2Z4eHNFYVVWT0o2UlZNUHds?=
+ =?utf-8?B?Nkw1bDM5SzJsU0tmV2kzclQ3NW5EcTlqMVNWL1ZXSHhxTGpCMDNScThXa2tZ?=
+ =?utf-8?B?dHdsV0lFQ3BaM1ZlQWl0UVYvOUUreTcyUXUzVTFQTUpOLzJSQlFLQXllTnJ4?=
+ =?utf-8?B?a0xOWERWNHNXVit2VnpWSkNZaG1IVWZFelllOHA2akpaTE5keXZsamFKUWpQ?=
+ =?utf-8?B?Q0ZCWlhPRkpBRGZCcTBSeG0xTjlhS0VucXlMR0hZcm5QdFZZSEFoaGxDN2R2?=
+ =?utf-8?B?aGIweGFxMGRqdnlBbnRHNmR5QzNlQWFieEpKSmdQUWhHbVEySmNHY3pxRHJX?=
+ =?utf-8?B?Y01Ec04wRDV1QmVlN0Y4aXZnSUh0d2NRYnpWVnQzSVVhaTI3ZlhSQkVYdEVl?=
+ =?utf-8?B?UWJ0ZnQvcFByYWY2MUs0RDhPUHJwWE43S0lPTHg1eCtRVnIyZ0hMNlB0eGRa?=
+ =?utf-8?B?R05sTmUwNFdpYUxLNHJEdU9xOEU4MWc2N2JBOEhoRkFVNXJ5djVKTHZzdjJY?=
+ =?utf-8?B?VUdjYVBNVElFK0VDTE1Bd1Y1RkwyNmYvUE81Ri9Uc2c4aUZyMTFJeVZaOFBM?=
+ =?utf-8?B?Y0J5UG4zNXlPZnVzdGIvM2xTaXJBZTdHN0xuS2xLUUtTYzgvT29OM2lKbE5W?=
+ =?utf-8?B?U1pUQVFkbUNaaGtsOFhDRXdaWlVDeDFLYk5id21MeDRMVm5RaVozbTZuSHRl?=
+ =?utf-8?B?UzdiQlJPWGRLNzdjaVMxNDFjOEZ6dHlsRS9WeVVMNFVOcEVvNktXdkl4MGRC?=
+ =?utf-8?B?blhqTk5CWkhEM28zWjNPRkVaY2Q2RVd1RXo3emNzQTFWcmVxQVVKbnNZcVBk?=
+ =?utf-8?B?TGlhZFFZVFNvU2dKa0hMWGhoaGRVTTZsRHUrQkFzd1Z0V0Ntb0d3T25POFJX?=
+ =?utf-8?B?SEhqbjdjMUQzcThUV1hkSkxoWGt1Q2FFNnJCTXVvWFhBWVJEdEloeVBnemwy?=
+ =?utf-8?B?czlZQnM1amlMelJidzQ3VkZvWFVmS09MMTJ4YUNTWGRXR2krWXAxN1VOcEVG?=
+ =?utf-8?B?VEFlOWNmZSt0Y1RsaWZXVkRnaDkxUnc4TVRXUTJrUzNEdWJDeWpvMnBjS21m?=
+ =?utf-8?B?QnliK0lDYldZTTFEeU14Y2gxSFg4aG00MHhWRDJGQWVwUDg3U3hLRldvVm5l?=
+ =?utf-8?B?Y29WdEZTT2VFbW9vRkFlTHVSTG1lU0hEd0xyS2kwMDlOQks3MStZaVUwQ0RH?=
+ =?utf-8?B?bHZsSUpTTlNZejJRTnpUU2RkcjJzWDVaRWlMekRYK3lJdjEwYWIzdk5ieVU2?=
+ =?utf-8?B?Wk9OeVJQczJnMmRFL2Ywc054MWlScE9ZMVdzRU93YmlLUzRwRkpGTzBpNXhN?=
+ =?utf-8?B?TUg0ZVdnSDNMcENwUGNuNFFiY0htYzgwMHNnelpOTHhQaXhzRVhNSjYya3Ew?=
+ =?utf-8?Q?D6Jo97RKP5ofYPIGmq5I8Oo=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EA1D8192AC5DFC4B842DEA27ED426AAD@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7777.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88abd2d0-e061-4968-2fb9-08dde4a1905f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2025 13:07:51.9178 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Ru2GKZqmimBoSGCLd5J9PZ0WivjO/9PT7hv+npI4rkJuTHm6+jCOGP2gDFv6BfAb/XXG2xMAQi3LMa25VoKkhrXhOEz7idr4/Ijmre4dB8Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6932
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,302 +203,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Current disk limit triggers once when it is exceeded during test
-monitoring. After that happens executor no longer checks if
-kernel is still printing plenty of messages.
-
-Create a way to abort test in such scenarios with the help of
-measuring kernel kmsg activity before first test is executed
-and then also check it after exceeding disk limit.
-
-Also print info about it after each test ends.
-
-v2: fix error when kmsg open fails, fix reading proc (Kamil)
-  changed calculation of max bps (Peter)
-v3: abort only when disk limit was actually exceeded,
-  print info instead of aborting after every test (Kamil)
-v4: added abort at main monitoring loop, also cleaning up
-  printing messages (Kamil)
-v5: fix typo, use less vars in a loop  (Krzysztof)
-  reused existing dmesg reading function (Kamil)
-
-Cc: Ewelina Musial <ewelina.musial@intel.com>
-Cc: Karol Krol <karol.krol@intel.com>
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- runner/executor.c | 143 +++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 128 insertions(+), 15 deletions(-)
-
-diff --git a/runner/executor.c b/runner/executor.c
-index 847abe481..b11381f39 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -637,6 +637,11 @@ const char *get_out_filename(int fid)
- 	return "output-filename-index-error";
- }
- 
-+static int open_kmsg_rdonly(void)
-+{
-+	return open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK);
-+}
-+
- /* Returns the number of bytes written to disk, or a negative number on error */
- static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
- {
-@@ -646,6 +651,8 @@ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
- 	 * /dev/kmsg doesn't support seeking to -1 from SEEK_END
- 	 * so we need to use a second fd to read a message to
- 	 *  match against, or stop when we reach EAGAIN.
-+	 * If outfd==0 it will not write anything but still count
-+	 * how many bytes was readed from dmesg.
- 	 */
- 
- 	int comparefd;
-@@ -711,7 +718,9 @@ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
- 			return written;
- 		}
- 
--		write(outfd, buf, r);
-+		if (outfd)
-+			write(outfd, buf, r);
-+
- 		written += r;
- 
- 		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
-@@ -948,6 +957,76 @@ static size_t calc_last_dmesg_chunk(size_t limit, size_t disk_usage)
- 	return dt != 0 ? dt : -1;
- }
- 
-+/*
-+ * Tries to read from dmesg for 0.1 seconds
-+ *
-+ * Returns:
-+ *  =>0.0 - Success, measured kmsg activity in bytes/second
-+ *  -1.0 - Failure
-+ */
-+static double measure_dmesg_bytes_per_sec(int wrfd)
-+{
-+	struct timespec time_beg, time_now, nsec_sleep;
-+	unsigned long long dmsg_read, rnow;
-+	double time;
-+	int kmsgfd;
-+
-+	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
-+		errf("Warning: Cannot open /dev/kmsg\n");
-+
-+		return -1.0;
-+	}
-+
-+	lseek(kmsgfd, 0, SEEK_END);
-+	nsec_sleep.tv_sec = 0;
-+	nsec_sleep.tv_nsec = 10ULL * 1000ULL * 1000ULL; /* 10^7 nanoseconds = 10^-2 sec */
-+	runner_gettime(&time_beg);
-+	time = 0.0;
-+	dmsg_read = 0.0;
-+	while (1) {
-+		rnow = dump_dmesg(kmsgfd, wrfd, 64 * 4096); /* 64KB max */
-+		if (rnow > 0)
-+			dmsg_read += rnow;
-+
-+		runner_gettime(&time_now);
-+		time = igt_time_elapsed(&time_beg, &time_now);
-+		if (time <= 0.0) {
-+			errf("Warning: Time underflow\n");
-+			return -1.0;
-+		}
-+
-+		if (time >= 0.1)
-+			break;
-+
-+		if (rnow == 0)
-+			nanosleep(&nsec_sleep, NULL);
-+	}
-+
-+	runner_gettime(&time_now);
-+	time = igt_time_elapsed(&time_beg, &time_now);
-+	if (time <= 0.0) {
-+		errf("Warning: Time underflow\n");
-+
-+		return -1.0;
-+	}
-+
-+	return (double)dmsg_read / time;
-+}
-+
-+/* Returns: true if ratio lower or equal than maxratio */
-+static bool check_dmesg_ratio(double maxratio, int log_level, bool sync, int wrfd)
-+{
-+	double new_dmesg_bps = measure_dmesg_bytes_per_sec(wrfd);
-+
-+	if (log_level >= LOG_LEVEL_NORMAL) {
-+		outf("Dmesg ratio %0.3fKB/s\n", new_dmesg_bps / 1024);
-+		if (sync)
-+			fflush(stdout);
-+	}
-+
-+	return new_dmesg_bps <= maxratio;
-+}
-+
- /*
-  * Returns:
-  *  =0 - Success
-@@ -960,6 +1039,7 @@ static int monitor_output(pid_t child,
- 			  int *outputs,
- 			  double *time_spent,
- 			  struct settings *settings,
-+			  double max_dmesg_ratio,
- 			  char **abortreason,
- 			  bool *abort_already_written)
- {
-@@ -1463,29 +1543,31 @@ static int monitor_output(pid_t child,
- 				 * exceeded the disk usage limit.
- 				 */
- 				if (killed && disk_usage_limit_exceeded(settings, disk_usage)) {
-+					char killmsg[256];
-+
- 					timeoutresult = false;
-+					snprintf(killmsg, sizeof(killmsg),
-+						 "runner: This test was killed due to exceeding disk usage limit. "
-+						 "(Used %zd bytes, limit %zd)\n",
-+						 disk_usage,
-+						 settings->disk_usage_limit);
- 
- 					if (socket_comms_used) {
- 						struct runnerpacket *message;
--						char killmsg[256];
- 
--						snprintf(killmsg, sizeof(killmsg),
--							 "runner: This test was killed due to exceeding disk usage limit. "
--							 "(Used %zd bytes, limit %zd)\n",
--							 disk_usage,
--							 settings->disk_usage_limit);
- 						message = runnerpacket_log(STDOUT_FILENO, killmsg);
- 						write_packet_with_canary(outputs[_F_SOCKET], message, settings->sync);
- 						free(message);
- 					} else {
--						dprintf(outputs[_F_OUT],
--							"\nrunner: This test was killed due to exceeding disk usage limit. "
--							"(Used %zd bytes, limit %zd)\n",
--							disk_usage,
--							settings->disk_usage_limit);
-+						dprintf(outputs[_F_OUT], "%s", killmsg);
- 						if (settings->sync)
- 							fdatasync(outputs[_F_OUT]);
- 					}
-+
-+					if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
-+						asprintf(abortreason, "Dmesg ratio exceeded during test run.");
-+						aborting = true;
-+					}
- 				}
- 
- 				if (socket_comms_used) {
-@@ -1587,7 +1669,7 @@ static int monitor_output(pid_t child,
- 	dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
- 	if (settings->sync)
- 		fdatasync(outputs[_F_DMESG]);
--	if (dmesgwritten > 0) {
-+	if (dmesgwritten > 0 && !aborting) {
- 		disk_usage += dmesgwritten;
- 		if (settings->disk_usage_limit && disk_usage > settings->disk_usage_limit) {
- 			char disk[1024];
-@@ -1599,6 +1681,11 @@ static int monitor_output(pid_t child,
- 			} else if (killed) {
- 				errf("%s", disk);
- 			}
-+
-+			if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
-+				asprintf(abortreason, "Dmesg ratio exceeded after test ends.");
-+				aborting = true;
-+			}
- 		}
- 	}
- 
-@@ -1766,6 +1853,7 @@ static int execute_next_entry(struct execute_state *state,
- 			      size_t total,
- 			      double *time_spent,
- 			      struct settings *settings,
-+			      double max_dmesg_ratio,
- 			      struct job_list_entry *entry,
- 			      int testdirfd, int resdirfd,
- 			      int sigfd, sigset_t *sigmask,
-@@ -1814,7 +1902,7 @@ static int execute_next_entry(struct execute_state *state,
- 		goto out_pipe;
- 	}
- 
--	if ((kmsgfd = open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK)) < 0) {
-+	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
- 		errf("Warning: Cannot open /dev/kmsg\n");
- 	} else {
- 		/* TODO: Checking of abort conditions in pre-execute dmesg */
-@@ -1885,7 +1973,7 @@ static int execute_next_entry(struct execute_state *state,
- 
- 	result = monitor_output(child, outfd, errfd, socketfd,
- 				kmsgfd, sigfd,
--				outputs, time_spent, settings,
-+				outputs, time_spent, settings, max_dmesg_ratio,
- 				abortreason, abort_already_written);
- 
- out_kmsgfd:
-@@ -2418,6 +2506,8 @@ bool execute(struct execute_state *state,
- 	     struct settings *settings,
- 	     struct job_list *job_list)
- {
-+	static double dmesg_bps = -1.0;
-+	static double max_dmesg_bps = -1.0;
- 	int resdirfd, testdirfd, unamefd, timefd, sigfd;
- 	struct environment_variable *env_var;
- 	struct utsname unamebuf;
-@@ -2560,6 +2650,26 @@ bool execute(struct execute_state *state,
- 		}
- 	}
- 
-+	if (max_dmesg_bps < 0.0) {
-+		double ncpu_bps = 4 * 1024 * max_t(size_t, sysconf(_SC_NPROCESSORS_ONLN), 4);
-+		double set_bps = 0.0;
-+
-+		dmesg_bps = measure_dmesg_bytes_per_sec(0);
-+
-+		if (settings->disk_usage_limit > 0 && settings->per_test_timeout > 0)
-+			set_bps = (double)settings->disk_usage_limit / (double)settings->per_test_timeout;
-+
-+		outf("Dmesg KB/s ratio settings:%0.3f ncpu:%0.3f current:%0.3f\n",
-+		     set_bps / 1024, ncpu_bps / 1024, dmesg_bps / 1024);
-+
-+		if (set_bps > 0.0)
-+			max_dmesg_bps = set_bps;
-+		else
-+			max_dmesg_bps = dmesg_bps > ncpu_bps ? dmesg_bps : ncpu_bps;
-+
-+		outf("Using max level dmesg ratio %0.3fKB/s\n", max_dmesg_bps / 1024);
-+	}
-+
- 	for (; state->next < job_list->size;
- 	     state->next++) {
- 		char *reason = NULL;
-@@ -2596,6 +2706,7 @@ bool execute(struct execute_state *state,
- 						    job_list->size,
- 						    &time_spent,
- 						    settings,
-+						    max_dmesg_bps,
- 						    &job_list->entries[state->next],
- 						    testdirfd, resdirfd,
- 						    sigfd, &sigmask,
-@@ -2651,6 +2762,8 @@ bool execute(struct execute_state *state,
- 			break;
- 		}
- 
-+		check_dmesg_ratio(max_dmesg_bps, settings->log_level, settings->sync, 0);
-+
- 		if (result > 0) {
- 			double time_left = state->time_left;
- 
--- 
-2.51.0
-
+T24gVHVlLCAyMDI1LTA4LTI2IGF0IDEyOjM3ICswNTMwLCBTYW50aG9zaCBSZWRkeSBHdWRkYXRp
+IHdyb3RlOg0KPiBMaW1pdCB0aGUgc3VidGVzdHMgdG8gZXhlY3V0ZSBvbmx5IG9uIHRoZSBmaXJz
+dCB2YWxpZCBwaXBlL291dHB1dA0KPiBhcyBleGVjdXRpb24gaXMgc2xvdyBvbiBzaW11bGF0aW9u
+IGVudmlyb25tZW50cy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFNhbnRob3NoIFJlZGR5IEd1ZGRh
+dGkgPHNhbnRob3NoLnJlZGR5Lmd1ZGRhdGlAaW50ZWwuY29tPg0KPiAtLS0NCj4gwqB0ZXN0cy9p
+bnRlbC9rbXNfZmJjX2RpcnR5X3JlY3QuYyB8IDI0ICsrKysrKysrKysrKysrKysrKysrKystLQ0K
+PiDCoDEgZmlsZSBjaGFuZ2VkLCAyMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiAN
+Cj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL2ttc19mYmNfZGlydHlfcmVjdC5jIGIvdGVzdHMv
+aW50ZWwva21zX2ZiY19kaXJ0eV9yZWN0LmMNCj4gaW5kZXggMDdkNjE2ZDkwLi42MWMwNTU1YzYg
+MTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2ludGVsL2ttc19mYmNfZGlydHlfcmVjdC5jDQo+ICsrKyBi
+L3Rlc3RzL2ludGVsL2ttc19mYmNfZGlydHlfcmVjdC5jDQo+IEBAIC03Myw2ICs3Myw3IEBAIHR5
+cGVkZWYgc3RydWN0IHsNCj4gwqAJCUZFQVRVUkVfQ09VTlQgPSA4LA0KPiDCoAkJRkVBVFVSRV9E
+RUZBVUxUID0gOCwNCj4gwqAJfSBmZWF0dXJlOw0KPiArCWJvb2wgaXNfc2ltdWxhdGlvbjsNCj4g
+wqB9IGRhdGFfdDsNCj4gwqANCj4gwqBzdGF0aWMgdm9pZCBzZXRfZGFtYWdlX2NsaXBfdyhzdHJ1
+Y3QgZHJtX21vZGVfcmVjdCAqZGFtYWdlLCBpbnQgeDEsIGludCB5MSwgaW50IHdpZHRoLCBpbnQN
+Cj4gaGVpZ2h0KQ0KPiBAQCAtNDQ5LDEyICs0NTAsMTYgQEAgaWd0X21haW4NCj4gwqAJCWlndF9k
+aXNwbGF5X3JlcXVpcmVfb3V0cHV0KCZkYXRhLmRpc3BsYXkpOw0KPiDCoAkJaWd0X3JlcXVpcmVf
+ZihpbnRlbF9kaXNwbGF5X3ZlcihpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEuZHJtX2ZkKSkgPj0g
+MzAsDQo+IMKgCQkJwqDCoMKgwqDCoCAiRkJDIHdpdGggZGlydHkgcmVnaW9uIGlzIG5vdCBzdXBw
+b3J0ZWRcbiIpOw0KPiArCQlkYXRhLmlzX3NpbXVsYXRpb24gPSBpZ3RfcnVuX2luX3NpbXVsYXRp
+b24oKTsNCj4gwqAJfQ0KPiDCoA0KPiDCoAlpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMoImZiYy1k
+aXJ0eS1yZWN0YW5nbGUtb3V0LXZpc2libGUtYXJlYSIpIHsNCj4gKwkJYm9vbCBzaW5nbGVfcGlw
+ZSA9IGZhbHNlOw0KPiDCoAkJZGF0YS5mZWF0dXJlID0gRkVBVFVSRV9GQkM7DQo+IMKgDQo+IMKg
+CQlmb3JfZWFjaF9waXBlKCZkYXRhLmRpc3BsYXksIGRhdGEucGlwZSkgew0KPiArCQkJaWYgKGRh
+dGEuaXNfc2ltdWxhdGlvbiAmJiBzaW5nbGVfcGlwZSkNCj4gKwkJCQlicmVhazsNCj4gwqAJCQlm
+b3JfZWFjaF92YWxpZF9vdXRwdXRfb25fcGlwZSgmZGF0YS5kaXNwbGF5LCBkYXRhLnBpcGUsIGRh
+dGEub3V0cHV0KSB7DQo+IMKgCQkJCWRhdGEuZm9ybWF0ID0gRFJNX0ZPUk1BVF9YUkdCODg4ODsN
+Cj4gwqANCj4gQEAgLTQ2NCwxNCArNDY5LDIwIEBAIGlndF9tYWluDQo+IMKgCQkJCQlmYmNfZGly
+dHlfcmVjdGFuZ2xlX3Rlc3QoJmRhdGEsDQo+IMKgCQkJCQkJZmJjX2RpcnR5X3JlY3RhbmdsZV9v
+dXRzaWRlX3Zpc2libGVfcmVnaW9uKTsNCj4gwqAJCQkJfQ0KPiArCQkJCXNpbmdsZV9waXBlID0g
+dHJ1ZTsNCj4gKwkJCQlpZiAoZGF0YS5pc19zaW11bGF0aW9uKQ0KPiArCQkJCQlicmVhazsNCj4g
+wqAJCQl9DQo+IMKgCQl9DQo+IMKgCX0NCj4gwqANCj4gwqAJaWd0X3N1YnRlc3Rfd2l0aF9keW5h
+bWljKCJmYmMtZGlydHktcmVjdGFuZ2xlLWRpcnR5ZmItdGVzdHMiKSB7DQo+ICsJCWJvb2wgc2lu
+Z2xlX3BpcGUgPSBmYWxzZTsNCj4gwqAJCWRhdGEuZmVhdHVyZSA9IEZFQVRVUkVfRkJDOw0KPiDC
+oA0KPiDCoAkJZm9yX2VhY2hfcGlwZSgmZGF0YS5kaXNwbGF5LCBkYXRhLnBpcGUpIHsNCj4gKwkJ
+CWlmIChkYXRhLmlzX3NpbXVsYXRpb24gJiYgc2luZ2xlX3BpcGUpDQo+ICsJCQkJYnJlYWs7DQo+
+IMKgCQkJZm9yX2VhY2hfdmFsaWRfb3V0cHV0X29uX3BpcGUoJmRhdGEuZGlzcGxheSwgZGF0YS5w
+aXBlLCBkYXRhLm91dHB1dCkgew0KPiDCoAkJCQlkYXRhLmZvcm1hdCA9IERSTV9GT1JNQVRfWFJH
+Qjg4ODg7DQo+IMKgDQo+IEBAIC00ODEsNiArNDkyLDkgQEAgaWd0X21haW4NCj4gwqAJCQkJCWZi
+Y19kaXJ0eV9yZWN0YW5nbGVfdGVzdCgmZGF0YSwNCj4gwqAJCQkJCQkJZmJjX2RpcnR5X3JlY3Rh
+bmdsZV9kaXJ0eWZiKTsNCj4gwqAJCQkJfQ0KPiArCQkJCXNpbmdsZV9waXBlID0gdHJ1ZTsNCj4g
+KwkJCQlpZiAoZGF0YS5pc19zaW11bGF0aW9uKQ0KPiArCQkJCQlicmVhazsNCj4gwqAJCQl9DQo+
+IMKgCQl9DQo+IMKgCX0NCj4gQEAgLTQ4OCwxMyArNTAyLDE2IEBAIGlndF9tYWluDQo+IMKgCWln
+dF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiZmJjLWRpcnR5LXJlY3RhbmdsZS1kaWZmZXJlbnQtZm9y
+bWF0cyIpIHsNCj4gwqAJCXVpbnQzMl90IGZvcm1hdHNbXSA9IHtEUk1fRk9STUFUX1hSR0I4ODg4
+LCBEUk1fRk9STUFUX0FSR0I4ODg4LA0KPiBEUk1fRk9STUFUX1JHQjU2NX07DQo+IMKgCQlpbnQg
+bnVtX2Zvcm1hdHMgPSBBUlJBWV9TSVpFKGZvcm1hdHMpOw0KPiAtDQo+ICsJCWJvb2wgc2luZ2xl
+X3BpcGUgPSBmYWxzZTsNCj4gwqAJCWRhdGEuZmVhdHVyZSA9IEZFQVRVUkVfRkJDOw0KPiDCoA0K
+PiDCoAkJZm9yX2VhY2hfcGlwZSgmZGF0YS5kaXNwbGF5LCBkYXRhLnBpcGUpIHsNCj4gKwkJCWlm
+IChkYXRhLmlzX3NpbXVsYXRpb24gJiYgc2luZ2xlX3BpcGUpDQo+ICsJCQkJYnJlYWs7DQo+IMKg
+CQkJZm9yX2VhY2hfdmFsaWRfb3V0cHV0X29uX3BpcGUoJmRhdGEuZGlzcGxheSwgZGF0YS5waXBl
+LCBkYXRhLm91dHB1dCkgew0KPiAtDQo+IMKgCQkJCWZvciAoaW50IGkgPSAwOyBpIDwgbnVtX2Zv
+cm1hdHM7IGkrKykgew0KPiArCQkJCQlpZiAoZGF0YS5pc19zaW11bGF0aW9uICYmIGkgPiAwKQ0K
+PiArCQkJCQkJYnJlYWs7DQpJIGd1ZXNzLCB5b3UgY2FuIGp1c3QgYnJlYWsgYXQgdGhlIGVuZCBv
+ZiB0aGlzIGZvciBsb29wLiBubyBuZWVkIHRvIGNoZWNrIGlmIGkgPiAwDQoNCkJ1dCBpcyB0aGlz
+IGFsc28gcmVxdWlyZWQ/IE9ubHkgb25lIGZvcm1hdD8gU2hvdWxkIHRoaXMgYmUgYSBzZXBhcmF0
+ZSBwYXRjaCB0aGVuPw0KDQoNCj4gwqAJCQkJCWlndF9keW5hbWljX2YoInBpcGUtJXMtJXMtZm9y
+bWF0LSVzIiwNCj4gwqAJCQkJCQnCoMKgwqDCoMKgwqAga21zdGVzdF9waXBlX25hbWUoZGF0YS5w
+aXBlKSwNCj4gwqAJCQkJCQnCoMKgwqDCoMKgwqAgaWd0X291dHB1dF9uYW1lKGRhdGEub3V0cHV0
+KSwNCj4gQEAgLTUwNCw2ICs1MjEsOSBAQCBpZ3RfbWFpbg0KPiDCoAkJCQkJCQlmYmNfZGlydHlf
+cmVjdGFuZ2xlX2Jhc2ljKTsNCj4gwqAJCQkJCX0NCj4gwqAJCQkJfQ0KPiArCQkJCXNpbmdsZV9w
+aXBlID0gdHJ1ZTsNCj4gKwkJCQlpZiAoZGF0YS5pc19zaW11bGF0aW9uKQ0KPiArCQkJCQlicmVh
+azsNCg0KQW5kIGEgc3VnZ2VzdGlvbiB0aGF0IHRoZSBhYm92ZSB3b3VsZCBiZSBiaXQgbW9yZSBs
+b2dpY2FsIGlmIHdlIGhhdmUsDQoNCgkJCSAgICAgc2luZ2xlXyBwaXBlID0gZGF0YS5pc19zaW11
+bGF0aW9uDQoJCQkgICAgIGlmIChzaW5nbGVfcGlwZSkNCgkJCSAgICAgCWJyZWFrOyANCj4gwqAJ
+CQl9DQoJCQlpZiAoc2luZ2xlX3BpcGUpDQoJCQkJYnJlYWs7IA0KDQpCUg0KVmlub2QNCg0KPiDC
+oAkJfQ0KPiDCoAl9DQoNCg==
