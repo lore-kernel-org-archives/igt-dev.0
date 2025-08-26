@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37956CA0FF0
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 13:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D075FCA0EFA
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 13:38:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C73DE10E2FE;
-	Tue, 26 Aug 2025 13:25:48 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78AA910E2F2;
- Tue, 26 Aug 2025 13:25:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3020438715296096409=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E7C110E37A;
+	Tue, 26 Aug 2025 13:38:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P9HuNRQL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 147FC10E37A
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 13:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756215533; x=1787751533;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4bgweftez/fJ5bz+e82PAgqXSQT1hspy2u3JvUZ8g18=;
+ b=P9HuNRQLghAWwAxRC+3LXK/JHhmRob2ncLgZj8SDtdrK7oMZ6kGEv9Wf
+ VLTiACaMBAmkKxmCat2Gjk1a5en49xYUeNp2UwkrEWG3TrYKSMZGWPBu1
+ yIHKJULh1cK0jaNjshiPl47RtHndnORaCAYAbugupUYpSxcENrsCRRDPf
+ 82YHDB2Fd90ypGgrB/75SghO+eaxEkGPbryK3pRkBX6hoes6T/7EfgoIz
+ 11TYaeBeusnIDZx557lxUhwnhr5MuIAbckmreXfozGkvvBGNb+O6jGR6H
+ wFeqo0y4Kawk1owhgTMzXZdziOqSjm93/2VIFetKImBGdYVMCFVRz83cZ Q==;
+X-CSE-ConnectionGUID: PakXy3irTRq2nJ2cwFXCoQ==
+X-CSE-MsgGUID: P3GVbCvjQnqMc76IDCrUeg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="69550594"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="69550594"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 06:38:52 -0700
+X-CSE-ConnectionGUID: wFACdUznTVGGvghlw/fGug==
+X-CSE-MsgGUID: NJHLpvIWSJux3ECJeHZCPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="173743035"
+Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 06:38:51 -0700
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ sk.anirban@intel.com
+Cc: soham.purkait@intel.com, riana.tauro@intel.com, lucas.demarchi@intel.com
+Subject: [PATCH i-g-t v1] tests/intel/xe_pm: Test to validate vram-sr through
+ Mods during host s2idle
+Date: Tue, 26 Aug 2025 19:01:05 +0530
+Message-Id: <20250826133105.3380147-1-soham.purkait@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/xe=5Fevict=5Fccs=3A?=
- =?utf-8?q?Adjust_object_size_as_per_VRAM_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 26 Aug 2025 13:25:48 -0000
-Message-ID: <175621474848.269761.5245479298035370541@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250826055049.505047-1-sobin.thomas@intel.com>
-In-Reply-To: <20250826055049.505047-1-sobin.thomas@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,160 +64,163 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3020438715296096409==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add test to validate vram-sr through Mods during host s2idle. It checks
+whether vram self refresh capability is supported through debugfs node and
+then introduce host s2idle to check ModS residency to confirm vram self
+refresh capability upon success.
 
-== Series Details ==
+v1:
+ - Define macros at the top. (Anirban)
 
-Series: tests/xe_evict_ccs:Adjust object size as per VRAM (rev2)
-URL   : https://patchwork.freedesktop.org/series/153423/
-State : success
+Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+---
+ tests/intel/xe_pm.c | 98 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 98 insertions(+)
 
-== Summary ==
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index a3a26f62a..918431641 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -10,10 +10,12 @@
+  * Sub-category: Suspend-resume tests
+  * Test category: functionality test
+  */
++#include <ctype.h>
+ 
+ #include <dirent.h>
+ #include <limits.h>
+ #include <fcntl.h>
++#include <stddef.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+ 
+@@ -48,6 +50,9 @@
+ #define I2C_AMC_ADDR	0x40
+ #define I2C_AMC_REG	0x00
+ 
++#define XE_BO_SIZE (350 * 1024 * 1024)
++#define MODS_PREFIX "ModS"
++
+ enum mem_op {
+ 	READ,
+ 	WRITE,
+@@ -423,6 +428,46 @@ child_exec(void *arguments)
+ 	return NULL;
+ }
+ 
++static char *read_content_line(const char *content, const char *prefix)
++{
++	const char *line_start = content;
++	char line[1024];
++	char *result;
++	size_t len;
++
++	while (*line_start) {
++		const char *line_end = strchr(line_start, '\n');
++		size_t line_len = line_end ? (size_t)(line_end - line_start) : strlen(line_start);
++
++		if (line_len >= sizeof(line))
++			line_len = sizeof(line) - 1;
++
++		memcpy(line, line_start, line_len);
++		line[line_len] = '\0';
++
++		if (strstr(line, prefix)) {
++			char *colon = strchr(line, ':');
++
++			if (colon) {
++				colon++;
++				while (isspace((unsigned char)*colon))
++					colon++;
++
++				result = strdup(colon);
++				len = strlen(result);
++				if (len > 0 && result[len - 1] == '\n')
++					result[len - 1] = '\0';
++
++				return result;
++			}
++		}
++		line_start = line_end ? line_end + 1 : NULL;
++		if (!line_start)
++			break;
++	}
++	return NULL;
++}
++
+ /**
+  * SUBTEST: %s-basic
+  * Description: test CPU/GPU in and out of s/d state from %arg[1]
+@@ -871,6 +916,54 @@ static void i2c_test(device_t device, int sysfs_fd, enum igt_acpi_d_state d_stat
+ 	close(i2c_fd);
+ }
+ 
++/**
++ * SUBTEST: vrsr-capability-during-host-s2idle
++ * Functionality: pm - vram-sr
++ * Description: Test to validate vram self refresh through
++ * ModS residency counter during host s2idle
++ */
++static void test_vrsr_capability_during_host_s2idle(device_t device)
++{
++	u32 bo, placement;
++	u64 s2idle_start_mods, s2idle_end_mods;
++	int dir, ret;
++	char buf[4096] = {0};
++	char *result;
++	void *map;
++
++	dir = igt_debugfs_dir(device.fd_xe);
++	ret = igt_debugfs_simple_read(dir, "vrsr_capable",
++				      buf, sizeof(buf));
++	igt_assert_f(ret >= 0, "vrsr_capable node is not present in debugfs.\n");
++	igt_assert_f(strstr(buf, "true"), "VRSR capability is not supported.");
++
++	placement = vram_memory(device.fd_xe, 0);
++	bo = xe_bo_create(device.fd_xe, 0, XE_BO_SIZE, placement, 0);
++	map = xe_bo_map(device.fd_xe, bo, XE_BO_SIZE);
++	memset(map, 0, XE_BO_SIZE);
++
++	ret = igt_debugfs_simple_read(dir, "gtidle/dgfx_pkg_residencies", buf, sizeof(buf));
++	igt_assert_f(ret >= 0, "dgfx_pkg_residencies node is not present in debugfs.\n");
++
++	result = read_content_line(buf, MODS_PREFIX);
++	igt_assert(result);
++	s2idle_start_mods = (uint64_t)strtoull(result, NULL, 10);
++	free(result);
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
++	munmap(map, XE_BO_SIZE);
++	memset(buf, 0, sizeof(buf));
++	ret = igt_debugfs_simple_read(dir, "gtidle/dgfx_pkg_residencies", buf, sizeof(buf));
++
++	result = read_content_line(buf, MODS_PREFIX);
++	igt_assert(result);
++
++	s2idle_end_mods = (uint64_t)strtoull(result, NULL, 10);
++	free(result);
++
++	igt_assert(s2idle_start_mods != s2idle_end_mods);
++}
++
+ igt_main
+ {
+ 	device_t device;
+@@ -1040,6 +1133,11 @@ igt_main
+ 		test_vram_d3cold_threshold(device, sysfs_fd);
+ 	}
+ 
++	igt_describe("Validate VRAM self refresh capability during host s2idle");
++	igt_subtest("vrsr-capability-during-host-s2idle") {
++		test_vrsr_capability_during_host_s2idle(device);
++	}
++
+ 	igt_fixture {
+ 		close(sysfs_fd);
+ 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
+-- 
+2.34.1
 
-CI Bug Log - changes from IGT_8510 -> IGTPW_13636
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/index.html
-
-Participating hosts (43 -> 43)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13636 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@client:
-    - bat-dg2-8:          [PASS][1] -> [ABORT][2] ([i915#14201]) +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8510/bat-dg2-8/igt@i915_selftest@live@client.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/bat-dg2-8/igt@i915_selftest@live@client.html
-
-  
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests@dma_fence_chain:
-    - fi-bsw-n3050:       [ABORT][3] ([i915#12904]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8510/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-11:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8510/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
-  [i915#14201]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8510 -> IGTPW_13636
-
-  CI-20190529: 20190529
-  CI_DRM_17070: 9a7b262940bab808a7f3470846922306f686bd84 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13636: 13636
-  IGT_8510: 8510
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/index.html
-
---===============3020438715296096409==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe_evict_ccs:Adjust object size as per VRAM (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153423/">https://patchwork.freedesktop.org/series/153423/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8510 -&gt; IGTPW_13636</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/index.html</p>
-<h2>Participating hosts (43 -&gt; 43)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13636 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@client:<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8510/bat-dg2-8/igt@i915_selftest@live@client.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/bat-dg2-8/igt@i915_selftest@live@client.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>) +1 other test abort</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8510/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8510/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13636/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8510 -&gt; IGTPW_13636</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17070: 9a7b262940bab808a7f3470846922306f686bd84 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13636: 13636<br />
-  IGT_8510: 8510</p>
-
-</body>
-</html>
-
---===============3020438715296096409==--
