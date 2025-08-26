@@ -4,134 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A99CDCA0FF2
-	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 16:39:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A84ECA0FF2
+	for <igt-dev@archiver.kernel.org>; Tue, 26 Aug 2025 17:00:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5F05710E381;
-	Tue, 26 Aug 2025 16:39:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4D9E210E39B;
+	Tue, 26 Aug 2025 17:00:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="ZyJb5A2m";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="em9hcBa8";
 	dkim-atps=neutral
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com
- (mail-bn1nam02on2072.outbound.protection.outlook.com [40.107.212.72])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 864AB10E381
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 16:39:15 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M5kPgMUD6xSm3aqjKHzIhC92f9Xv/UpJFx06+a90Hha5No0O6NL2O0DH6OzqnNOAtBy3V1Ur3yDxDzPWETMx7miTXMwUaIEiIHphkMPWqyhD+omTf8jMMns9H9+acM904IpQ1JHbvk7OlLRp7vkO2UbPOTsxD6f/dh8q03hLjJh/Lh/breleqZhpadJrKQ6pGQnPV1yiz4TqY8HNLmkbL/XKAaeipLP94soEj5aUg0qsS4651+plLsERxwgdPF5MV3NdDTMNuvV4yDt+Ap2pEGTXE0H5iqT9TXr9DsPDWc/wBM78K2S3EOcgtzcjhpJ/Ei3C7HxSAppjh9HlSB1v0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t7F1bTlnJWAfv0aVeprspdWvzpWHnr4v4ynr5HQLTTc=;
- b=I5/o2YBRNhg6LEILwxCt+6llocN5JQpAiz5eXYCCx8YGw5QO/be3cvRKoW6iMtmAhlcKdVT79NgJganBEapa3euOdNmlL1c4JVIyk/8VV1AvGYZBFRLNj7q327nAR6IEWracN8CqQfamEcQGxHA79HpOl/HCB/39SJaCdM119PjHhQVMVXhTk8uxAnrdb/iBmGwsupSDL3TPMRAHBg4uEdc0K8qVuve242Nhp7ENC8WxhYxLPeVOjIKPi/1TDLGqlW8XHJtGawxPGLyAyDs+obMyCgiYAgYrVX3wAwqEp3xMyC0d3HYDmLn9+hUera07U2ce3ok+SeLPvG3Hv+VASA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t7F1bTlnJWAfv0aVeprspdWvzpWHnr4v4ynr5HQLTTc=;
- b=ZyJb5A2mss8V2HbRZe6r8h2bGdc2PgCfxGh+edW7QLQRjOH8WtwG1Enw9AzuDEcXTDseH7SEaJHLB38FL6LyL5G19s90DF5QzS+NBjkNikCUjbRi9vfftWY/0RTpHLaQmghwTNF6W9YyKAo9No7xmkYtp7E4vC0VnlVh5zePKsM=
-Received: from BN0PR04CA0067.namprd04.prod.outlook.com (2603:10b6:408:ea::12)
- by IA1PR12MB6388.namprd12.prod.outlook.com (2603:10b6:208:388::7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Tue, 26 Aug
- 2025 16:39:09 +0000
-Received: from BN3PEPF0000B073.namprd04.prod.outlook.com
- (2603:10b6:408:ea:cafe::6c) by BN0PR04CA0067.outlook.office365.com
- (2603:10b6:408:ea::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.13 via Frontend Transport; Tue,
- 26 Aug 2025 16:39:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BN3PEPF0000B073.mail.protection.outlook.com (10.167.243.118) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9073.11 via Frontend Transport; Tue, 26 Aug 2025 16:39:08 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 26 Aug
- 2025 11:39:07 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 26 Aug
- 2025 11:39:07 -0500
-Received: from [10.4.12.116] (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 26 Aug 2025 11:39:07 -0500
-Message-ID: <f4d00185-a70e-44d6-b7c1-fea675665b15@amd.com>
-Date: Tue, 26 Aug 2025 12:39:07 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E605F10E6AA
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Aug 2025 17:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756227609; x=1787763609;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=DwnJ6QMS56fYiAJ/Oj6iw0H6uSroToPgaaWv+OA6I5U=;
+ b=em9hcBa8tbSg8/Xu0KHsOHzKE5wV3nfKJsf7gdN/0PR2wiRvDgQF6enN
+ Eb/+wvnw2Knk6ht5xC7lInObUmI8y3SInMm2Iv42JMtyP85Sx1vtp4JhE
+ pZzjt2JHxooX7Z/PgTAFbjdlSoiby45sc/LWH30ZxWo9DP1yXdqu0fW17
+ PzSsnMPpj+c3RcCVs5SVYpS8e4IOvQoPF7pkzNlOLOboW/wQ24S3XeiMe
+ mZDMYOBtMptojZmwKxbmkIzpOfgqQYtmI9aS5kusaJZ6eNyofUGJI/Htt
+ WFIw023dZ7i94tr+92fJgGMN/SAgDiQO9btrR4mTCj1B7Q+YBfBSPOS+l w==;
+X-CSE-ConnectionGUID: 7PyFQFTjTDao4kByG0hsGg==
+X-CSE-MsgGUID: 4P8LRplMSz2fEZsvRQjccA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="69572505"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="69572505"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 10:00:09 -0700
+X-CSE-ConnectionGUID: SFm0HU6gTHycbKBnp9i7fA==
+X-CSE-MsgGUID: SZc0Clq1QJCmd9JuPT/lYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; d="scan'208";a="206793961"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO fdugast-desk.home)
+ ([10.245.246.90])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2025 10:00:07 -0700
+From: Francois Dugast <francois.dugast@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Francois Dugast <francois.dugast@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_exec_system_allocator: Add compute test
+Date: Tue, 26 Aug 2025 18:59:52 +0200
+Message-ID: <20250826165952.507970-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V10 27/30] tests/kms_colorop: Add a 3D LUT subtest
-To: <igt-dev@lists.freedesktop.org>
-References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-28-alex.hung@amd.com>
-Content-Language: en-US
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-In-Reply-To: <20250815040659.3321102-28-alex.hung@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B073:EE_|IA1PR12MB6388:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ae63c4c-fde1-492d-6a9f-08dde4bf1406
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|36860700013|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RWhSZkJWcEY5cldBS0xCZzR4WjdBWUs1ZVBFS2ZCS0thQWRDK0JicnE1SlZR?=
- =?utf-8?B?cXQ4U3pocGpLZ3ZiRzcvRVVqQ2lqcjZBQjR0N2xXWWs3OVExM3Vqd3lUbXpj?=
- =?utf-8?B?c3NtU0IwZmdsczJRTzh4ZVpYRExrVjQ2THhmMzN4ZmpGL0VjdTJrN2NkM3dD?=
- =?utf-8?B?R1dVM0d2REF4bUY2anljUHJJa1FyOUYxeXdrR2hUa0xzb29LT1R2R1lHZVhJ?=
- =?utf-8?B?Tld4aVRYa1R1Mlo2UlVHeTRnUWhOY2Z0dlBKdThJNFllUFFyMHhZVm9vMVJw?=
- =?utf-8?B?U2JLODdXRFdCS2RGR29xNDRsUU1aV2FBM0FMOHdUNzU3dkx3eGh0Q09KMVR1?=
- =?utf-8?B?V0VsQ1dHSnErRGdtZ3dBYTh3VVMwaElHaGZHR0M3RUZXN2FDbnZzU3BhTzBT?=
- =?utf-8?B?UGFJZTNRQTBxVk9RZWRtd21KbUxRamhlNGJzajFtcjZSdTMrM3l2ZGJKbGEw?=
- =?utf-8?B?R2RZbzNuOTJsR2lTQWZkZm9UTkhvQWVETnZuWWF2QWJmWjIybEwwSVhGZUVE?=
- =?utf-8?B?UkZ0ZlpwUUJGRzJJTHp6MmxzM1hUN0JJalVTWEhVTDhRK3Y1KzlCRG5uUDAv?=
- =?utf-8?B?bXFEbE8rUDFpZEJDSjFhWkljQXcxYXBKRzJ1MFFIKzZTODROYVBubGNXaktP?=
- =?utf-8?B?Ty8zaFJ1c3pxT0ZXYWthTDhHdEx5OTd5ODVHam1jN2I2OWQxLzY2ZXlMM2cz?=
- =?utf-8?B?clM4Qmhab3FtTzFmME9MWWdSazQ1SkxDdGdmSXVKcTVBL0FrZEp3WlVjT0tS?=
- =?utf-8?B?UDYyaGxFTHg1WUlDWmF4eXg1VE55VFg0b3JQT2JwNHpWT2xmZkFENG9DY3lq?=
- =?utf-8?B?bE1sM3Q2NlkvVHB3Nll1S1lHR2J2S3dGcysvRDVkVksyN0xBMU94dWdicjR0?=
- =?utf-8?B?YlBxVWpZZitZNnhQZ08zMncrQXA3RjZjK3dQSlpBWHRZeFVXZUhGS3B3d0pY?=
- =?utf-8?B?K0V2NDBtMzFHSEwrclRkbzBOVlpyMzJQdlFqR2VZdjJ6QVBXNSt3YWp2VUVY?=
- =?utf-8?B?b3VyaTU2ekQ4amVmRUovSFFDNGtuTXVPT1RuSnNqSEU4VHVuZGdNR0Z4VU9w?=
- =?utf-8?B?R2JYeWxQeS84bXhVNkVSMFBKd1FTeGR3VHRqN0ZJRjFOV0RuUXY0bm1lanBS?=
- =?utf-8?B?dkZEU1BDYkkzUTJuQjZYTFNqTHpxYXZRblNhTzV4QlNXL2oxZFZVSXNMWjE0?=
- =?utf-8?B?YlFSb0pocnU3UEdidzlYQzViWWtYekZjMEFpZThzenRLaGlLcmN3a0Y5ZWxr?=
- =?utf-8?B?QnZoZVFpcWJ4clVNS0xDUk45MWM3ckVMTnhUTHo1WW9qbnNGQ0h2c1MxdExr?=
- =?utf-8?B?VFBDNEQ1cFdMbnBzazFLdFhBRFNMdjNSd0R2bDVSMmhYQ21EcUVDK0J4SHk4?=
- =?utf-8?B?QUMybWZRWU4wVVJVMURwZDJPUXZqTUkwZngwekhvaTBMNGZOZ1RlZjRXeXRN?=
- =?utf-8?B?M2JXUy9LWlJVdFZqWU1WbVZ5Z2o0aGtrWHpncFlpU1lXUU0wYTcvRHppeWpr?=
- =?utf-8?B?NzREVyt4M1VpR0h6K2JjY1Y4WGZidW1Cd2Z2OFZXQkNnUTFnR1E3Tm5lTkJv?=
- =?utf-8?B?ZlVqM2VScE5XL2QzOEg5blVtdWhaZ0FmWWJOeklPNFFocGtKaTZLamJHL2E0?=
- =?utf-8?B?MTJqSFRvSXF4aVo1MXQzM1ZzZmkvREFSbmJIZnVPalI5RXNUTFhNVGhMd1dn?=
- =?utf-8?B?dnI2dHlMakJ5cXdEWTF2Q01EZzhTVGpneGZLQmtSN0ZmdXRPUUg2SmVqM2J6?=
- =?utf-8?B?VDRkeEpURE9HWG9BRWtZUnBsWEZjcWJXK3QwUXkwNmRXMEtGOEVWOVlZaVJh?=
- =?utf-8?B?VEFSOC9JTGNWR01HVkVlZVR5a2Iwa2taWEJZc0lIdUQ2ZkZLZlY4OTBTRHhN?=
- =?utf-8?B?SkVmbVdrZFRYZTFxVC9qOWo2OENoQmt1aFAzVWFxQXQ2VGVFNStxakI5VlRO?=
- =?utf-8?B?ZWtHdFNuaWs5T2g0MU1lN1pQbjlUdi9LSTVCRXVFNFgyU2Rqb1FoUFYyc0tY?=
- =?utf-8?B?RWl6QmNqRkludVd4OVFMUUlhcC9QL0VCUDVBRGJyclh3T0NiVTQ1Qjk4VEYw?=
- =?utf-8?Q?tdxKLw?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 16:39:08.1899 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ae63c4c-fde1-492d-6a9f-08dde4bf1406
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B073.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6388
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -147,39 +67,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+The IGT compute library recently received multiple series of updates to
+make it usable with the system allocator. This new test makes use of it
+to trigger SVM faults from EUs.
 
+Cc: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+---
+ tests/intel/xe_exec_system_allocator.c | 56 ++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-On 8/15/25 12:06 AM, Alex Hung wrote:
-> This includes a subtests 3dlut_17_12_rgb.
-> 
-> Signed-off-by: Alex Hung<alex.hung@amd.com>
-> ---
->   include/drm-uapi/drm_mode.h |   18 +
->   lib/igt_color.c             |  186 ++
->   lib/igt_color.h             |   10 +
->   lib/igt_color_lut.h         | 4946 +++++++++++++++++++++++++++++++++++
->   lib/igt_kms.c               |    2 +
->   lib/igt_kms.h               |    2 +
->   tests/kms_colorop.c         |   35 +-
->   tests/kms_colorop.h         |   19 +
->   8 files changed, 5217 insertions(+), 1 deletion(-)
->   create mode 100644 lib/igt_color_lut.h
-> 
-> diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-> index fe3e98e20..009bb3e7f 100644
-> --- a/include/drm-uapi/drm_mode.h
-> +++ b/include/drm-uapi/drm_mode.h
-> @@ -891,6 +891,24 @@ enum drm_colorop_type {
->   	DRM_COLOROP_1D_LUT,
->   	DRM_COLOROP_CTM_3X4,
->   	DRM_COLOROP_MULTIPLIER,
-> +	DRM_COLOROP_3D_LUT,
-> +};
-> +
-> +enum drm_colorop_interpolation_type {
-> +	DRM_COLOROP_TETRAHEDRAL,
-> +};
-> +
-
-This doesnt seem to be used anywhere, so drop?
+diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+index 007d9bdc0..e7f3d423a 100644
+--- a/tests/intel/xe_exec_system_allocator.c
++++ b/tests/intel/xe_exec_system_allocator.c
+@@ -18,6 +18,7 @@
+ 
+ #include "igt.h"
+ #include "lib/igt_syncobj.h"
++#include "lib/intel_compute.h"
+ #include "lib/intel_reg.h"
+ #include "xe_drm.h"
+ 
+@@ -1728,6 +1729,57 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
+ 	munmap(pdata, sizeof(*pdata));
+ }
+ 
++/**
++ * SUBTEST: compute
++ * Description: Run a simple compute kernel with the system allocator
++ * Test category: functionality test
++ */
++static void
++test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size)
++{
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.timeline_value = USER_FENCE_VALUE,
++	};
++	struct bo_sync {
++		uint64_t sync;
++	} *bo_sync;
++	uint32_t vm;
++	struct user_execenv env = {
++		.array_size = size / sizeof(float),
++	};
++	float *compute_input, *compute_output;
++	int i;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++	bo_sync = aligned_alloc(xe_get_default_alignment(fd), sizeof(*bo_sync));
++	sync.addr = to_user_pointer(&bo_sync->sync);
++	bind_system_allocator(&sync, 1);
++	xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
++
++	compute_input = aligned_alloc(SZ_2M, size);
++	igt_assert(compute_input);
++	compute_output = aligned_alloc(SZ_2M, size);
++	igt_assert(compute_output);
++
++	for (i = 0; i < env.array_size; i++)
++		compute_input[i] = rand() / (float)RAND_MAX;
++
++	env.input_addr = to_user_pointer(compute_input);
++	env.output_addr = to_user_pointer(compute_output);
++	env.vm = vm;
++	run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
++
++	for (i = 0; i < env.array_size; i++)
++		igt_assert_eq_double(compute_input[i] * compute_input[i], compute_output[i]);
++
++	free(compute_output);
++	free(compute_input);
++	unbind_system_allocator();
++	xe_vm_destroy(fd, vm);
++}
++
+ struct section {
+ 	const char *name;
+ 	unsigned int flags;
+@@ -2026,6 +2078,10 @@ igt_main
+ 			processes_evict(fd, SZ_8M, SZ_1M, s->flags);
+ 	}
+ 
++	igt_subtest("compute")
++		xe_for_each_engine(fd, hwe)
++			test_compute(fd, hwe, SZ_2M);
++
+ 	igt_fixture {
+ 		xe_device_put(fd);
+ 		drm_close_driver(fd);
+-- 
+2.43.0
 
