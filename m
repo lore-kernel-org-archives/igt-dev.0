@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 225BBCA0EFF
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Aug 2025 14:49:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A24CA0FED
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Aug 2025 18:38:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD9AA10E844;
-	Wed, 27 Aug 2025 14:49:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 064DE10E0FA;
+	Wed, 27 Aug 2025 18:38:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XT1tMbef";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X9BIqebi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 843D910E836
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Aug 2025 14:49:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77C8210E0FA
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Aug 2025 18:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756306180; x=1787842180;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=mRF1Dg4KWDTPn/mL0S/AlPxMk3XCByri75CAhVKHWrw=;
- b=XT1tMbefpd/RXNawQkCzQwPhEN3hJsZJZH+MGNQj7CH26Yu6v1S9Qefr
- GbioLk4qKCkuYuKwHz9/BimQu3zZR+hNEL1LZDjlJRphJKHEhR1HzC+ZV
- eHayBvMCpdcP/0+wEn/xEHK4mVsbwF9BKcMjF5A16hsRf2iIR4JTr63wD
- HykHVw4fwtTRrb/m5g57W+DFpdfuKLCEKHiHqQEXqov8e8nIJT51OKYt1
- KdXbE7kFa5hytAgTQBfEKvsxxl+McCNw1FTAaX9ZLq2MNS2WaMl3TisuD
- IuaFhSAdCVkB2yKcL9ng6Rd7JBIpFLWRBmCZNWRl174Mk6/Q+Q7+TFMK0 g==;
-X-CSE-ConnectionGUID: NpxOhqi7TtekXLDDgx/CdQ==
-X-CSE-MsgGUID: 15dJ03UzQwuTsW14fIHxOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58625904"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="58625904"
+ t=1756319897; x=1787855897;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=ZgB3RAXLNPRYVR0Y2DIHKyHgOJUVgCPM82OvF7PuLkM=;
+ b=X9BIqebiUTEPcMXJdAviuWb71eWxQWa+WFHoBmZlN4g5DU4eDGjCBCMk
+ vCok8nNS6NT0czZEzzKn886uu7Ka5HSs6v4T4XG6GtBavqjnIvOsaFdnv
+ Ykvd+c9TBGmDzBi+9JyB823T+7FWhf0MKkoUNIiwwvl7udHhyQ2NdG6Ud
+ /1nNjWdL2tL9A075wBH2Mx0eaR7gLE4QdXJ8GTMmG4aDCECMQ2FHNuCAo
+ 7zSw3Pg7r4lTubtZdUf2b2HkfzJ7QGmOqUkeoLVx/IFshyewYZMEkA9zL
+ xcRGILLpbIQmHiiyAOLMJCHdgL+k8wIJa88cI/PXmo2kTktZmu+plIWrd A==;
+X-CSE-ConnectionGUID: zgNF3b8ORlqhXvNc+DT/sw==
+X-CSE-MsgGUID: oe9U/798S+mPXBf2JSM+JA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="69293224"
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="69293224"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2025 07:49:40 -0700
-X-CSE-ConnectionGUID: rFkQSY5VTJ+awjDYqideUA==
-X-CSE-MsgGUID: Kigg+7dLQo6N0Nrmj55Eig==
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2025 11:38:17 -0700
+X-CSE-ConnectionGUID: IOyQwZ44Q/CBe0H92U19hg==
+X-CSE-MsgGUID: ILgBETDgSMitUbFZe8M6jg==
 X-ExtLoop1: 1
-Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
+Received: from lmansuet-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.87.18])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2025 07:49:39 -0700
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@intel.com, piotr.piorkowski@intel.com,
- lukasz.laguna@intel.com
-Subject: [PATCH i-g-t v2 4/4] tests/intel/xe_sriov_vram: Add test checking VF
- access to VRAM
-Date: Wed, 27 Aug 2025 16:49:16 +0200
-Message-Id: <20250827144916.18558-5-lukasz.laguna@intel.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20250827144916.18558-1-lukasz.laguna@intel.com>
-References: <20250827144916.18558-1-lukasz.laguna@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ 27 Aug 2025 11:38:17 -0700
+Date: Wed, 27 Aug 2025 11:38:15 -0700
+Message-ID: <87cy8gmwyw.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v2 3/4] tests/intel/xe_oa: Add a test for tail
+ address wrap
+In-Reply-To: <20250826224256.510692-9-umesh.nerlige.ramappa@intel.com>
+References: <20250826224256.510692-6-umesh.nerlige.ramappa@intel.com>	<20250826224256.510692-9-umesh.nerlige.ramappa@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,357 +70,146 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test to validate VF access to VRAM via BAR. The following
-scenarios are covered:
-- VF can access all provisioned memory via the VRAM BAR,
-- VF cannot access memory beyond what's provisioned via the VRAM BAR,
-- VF can access memory via the VRAM BAR after reprovisioning.
+On Tue, 26 Aug 2025 15:43:00 -0700, Umesh Nerlige Ramappa wrote:
+>
+> Add a test to verify that the HW wraps to start of the OA buffer when a
+> report does not fit in the remaining space in the buffer.
+>
+> v2:
+> - Make test more robust
+>
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> ---
+>  tests/intel/xe_oa.c | 97 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 97 insertions(+)
+>
+> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> index d10ef00d6abc..24442e4b83c6 100644
+> --- a/tests/intel/xe_oa.c
+> +++ b/tests/intel/xe_oa.c
+> @@ -4537,6 +4537,95 @@ static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_insta
+>	try_invalid_access(vaddr);
+>  }
+>
+> +static void read_reports(int fd, uint8_t *buf, size_t size)
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
-v2:
-- adjust the patch for lib changes
-- don't define random dynamic subtest in extended variant of the test
-  (Piotr)
-- refactor debug messages (Piotr, Marcin)
-- change test sub-category (Piotr)
-- Replace variable name from provisioned_lmem to provisioned_vram
----
- tests/intel/xe_sriov_vram.c | 312 ++++++++++++++++++++++++++++++++++++
- tests/meson.build           |   1 +
- 2 files changed, 313 insertions(+)
- create mode 100644 tests/intel/xe_sriov_vram.c
+> +{
+> +	int len, total = 0;
+> +
+> +	while (total < size) {
+> +		len = read(fd, &buf[total], size - total);
+> +		if (len == -1 && (errno == EIO || errno == EINTR))
+> +			continue;
+> +
+> +		igt_assert(len);
+> +		total += len;
+> +	}
+> +}
+> +
+> +/**
+> + * SUBTEST: tail-address-wrap
+> + * Description: Test tail address wrap on odd format sizes. Ensure that the
+> + * format size is not a power of 2. This means that the last report will not be
+> + * broken down across the OA buffer end. Instead it will be written to the
+> + * beginning of the OA buffer. We will check the end of the buffer to ensure it
+> + * has zeroes in it.
+> + */
+> +static void
+> +test_tail_address_wrap(const struct drm_xe_engine_class_instance *hwe, size_t oa_buffer_size)
+> +{
+> +	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+> +	uint64_t exponent = max_oa_exponent_for_period_lte(20000);
+> +	uint64_t buffer_size = oa_buffer_size ?: buffer_fill_size;
 
-diff --git a/tests/intel/xe_sriov_vram.c b/tests/intel/xe_sriov_vram.c
-new file mode 100644
-index 000000000..e9b367371
---- /dev/null
-+++ b/tests/intel/xe_sriov_vram.c
-@@ -0,0 +1,312 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright(c) 2025 Intel Corporation. All rights reserved.
-+ */
-+
-+#include "drmtest.h"
-+#include "igt_core.h"
-+#include "igt_sriov_device.h"
-+#include "intel_vram.h"
-+#include "xe/xe_sriov_provisioning.h"
-+#include "xe/xe_query.h"
-+
-+/**
-+ * TEST: xe_sriov_vram
-+ * Category: Core
-+ * Mega feature: SR-IOV
-+ * Sub-category: VRAM
-+ * Functionality: VRAM access
-+ * Description: Validate VF access to VRAM
-+ *
-+ * SUBTEST: vf-access-basic
-+ * Description: Verify that VF can access all the provisioned memory via VRAM BAR
-+ *
-+ * SUBTEST: vf-access-beyond
-+ * Description: Verify that VF cannot access memory beyond what's provisioned via VRAM BAR
-+ *
-+ * SUBTEST: vf-access-after-resize-down
-+ * Description: Verify that VF can access the reprovisioned memory (reduced size) via VRAM BAR
-+ *
-+ * SUBTEST: vf-access-after-resize-up
-+ * Description: Verify that VF can access the reprovisioned memory (increased size) via VRAM BAR
-+ */
-+
-+IGT_TEST_DESCRIPTION("Xe tests for VRAM in SR-IOV context");
-+
-+const size_t STEP = SZ_1M;
-+
-+static uint64_t get_provisioned_vram(unsigned int pf_fd, unsigned int vf_id)
-+{
-+	uint64_t size = 0;
-+
-+	/* TODO: adjust for multitile platforms */
-+	size = xe_sriov_pf_get_provisioned_quota(pf_fd, XE_SRIOV_SHARED_RES_LMEM, vf_id, 0);
-+
-+	return size;
-+}
-+
-+static bool validate_access_basic(struct vram_mapping *vram, unsigned int vf_id,
-+				  size_t provisioned_vram)
-+{
-+	uint8_t read, orig;
-+	bool passed = true;
-+
-+	for (size_t offset = 0; offset < provisioned_vram; offset += STEP) {
-+		orig = intel_vram_read8(vram, offset);
-+
-+		read = intel_vram_write_readback8(vram, offset, vf_id);
-+		if (read != vf_id) {
-+			igt_debug("VRAM write/read check failed on VF%u (offset: %#lx, write: %u, read: %u)\n",
-+				  vf_id, offset, vf_id, read);
-+			passed = false;
-+		}
-+
-+		read = intel_vram_write_readback8(vram, offset, orig);
-+		if (read != orig) {
-+			igt_debug("Failed to restore original value on VF%u (offset: %#lx, original: %u, read: %u)\n",
-+				  vf_id, offset, orig, read);
-+			passed = false;
-+		}
-+	}
-+
-+	return passed;
-+}
-+
-+static void access_basic(unsigned int pf_fd, unsigned int num_vfs)
-+{
-+	struct vram_mapping vram;
-+	size_t provisioned_vram;
-+	uint64_t vram_bar_size;
-+	bool passed = true;
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+
-+	for_each_sriov_enabled_vf(pf_fd, vf_id) {
-+		provisioned_vram = get_provisioned_vram(pf_fd, vf_id);
-+		igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n",
-+			  vf_id, provisioned_vram);
-+
-+		igt_assert(!intel_vram_bar_size(pf_fd, vf_id, &vram_bar_size));
-+		igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
-+
-+		if (vram_bar_size < provisioned_vram) {
-+			igt_sriov_disable_vfs(pf_fd);
-+			igt_skip("VRAM BAR size is smaller than provisioned VRAM\n");
-+		}
-+
-+		igt_assert(!intel_vram_mmap(pf_fd, vf_id, 0, provisioned_vram,
-+					    PROT_READ | PROT_WRITE, &vram));
-+
-+		passed &= validate_access_basic(&vram, vf_id, provisioned_vram);
-+
-+		intel_vram_munmap(&vram);
-+	}
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+
-+	igt_assert(passed);
-+}
-+
-+static bool validate_access_beyond(struct vram_mapping *vram, unsigned int vf_id,
-+				   size_t provisioned_vram, size_t vram_bar_size)
-+{
-+	uint8_t read, orig;
-+	bool passed = true;
-+
-+	for (size_t offset = provisioned_vram; offset < vram_bar_size; offset += STEP) {
-+		orig = intel_vram_read8(vram, offset);
-+
-+		read = intel_vram_write_readback8(vram, offset, vf_id);
-+		if (read == vf_id) {
-+			igt_debug("Unexpected VRAM write beyond provisioned size on VF%u (offset: %#lx)\n",
-+				  vf_id, offset);
-+			passed = false;
-+
-+			read = intel_vram_write_readback8(vram, offset, orig);
-+			if (read != orig)
-+				igt_debug("Failed to restore original value on VF%u (offset: %#lx, original: %u, read: %u)\n",
-+					  vf_id, offset, orig, read);
-+		}
-+	}
-+
-+	return passed;
-+}
-+
-+static void access_beyond(unsigned int pf_fd, unsigned int num_vfs)
-+{
-+	struct vram_mapping vram;
-+	size_t provisioned_vram;
-+	uint64_t vram_bar_size;
-+	bool passed = true;
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+
-+	for_each_sriov_enabled_vf(pf_fd, vf_id) {
-+		provisioned_vram = get_provisioned_vram(pf_fd, vf_id);
-+		igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n",
-+			  vf_id, provisioned_vram);
-+
-+		igt_assert(!intel_vram_bar_size(pf_fd, vf_id, &vram_bar_size));
-+		igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
-+
-+		if (vram_bar_size <= provisioned_vram) {
-+			igt_sriov_disable_vfs(pf_fd);
-+			igt_skip("VRAM BAR size is smaller or equal to provisioned VRAM\n");
-+		}
-+
-+		igt_assert(!intel_vram_mmap(pf_fd, vf_id, 0, vram_bar_size,
-+					    PROT_READ | PROT_WRITE, &vram));
-+
-+		passed &= validate_access_beyond(&vram, vf_id, provisioned_vram, vram_bar_size);
-+
-+		intel_vram_munmap(&vram);
-+	}
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+
-+	igt_assert(passed);
-+}
-+
-+static void resize_and_access(unsigned int pf_fd, bool resize_up)
-+{
-+	struct vram_mapping vram;
-+	size_t provisioned_vram;
-+	uint64_t vram_bar_size;
-+	unsigned int total_vfs;
-+	const unsigned int vf_id = 1;
-+	bool passed;
-+
-+	total_vfs = igt_sriov_get_total_vfs(pf_fd);
-+
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, resize_up ? total_vfs : 1);
-+
-+	provisioned_vram = get_provisioned_vram(pf_fd, vf_id);
-+	igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n", vf_id, provisioned_vram);
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, resize_up ? 1 : total_vfs);
-+
-+	provisioned_vram = get_provisioned_vram(pf_fd, vf_id);
-+	igt_debug("VF%u provisioned with %" PRIu64 " bytes of VRAM\n", vf_id, provisioned_vram);
-+
-+	igt_assert(!intel_vram_bar_size(pf_fd, vf_id, &vram_bar_size));
-+	igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
-+
-+	if (vram_bar_size <= provisioned_vram) {
-+		igt_sriov_disable_vfs(pf_fd);
-+		igt_skip("VRAM BAR size is smaller or equal to provisioned VRAM\n");
-+	}
-+
-+	igt_assert(!intel_vram_mmap(pf_fd, vf_id, 0, vram_bar_size, PROT_READ | PROT_WRITE,
-+				    &vram));
-+
-+	passed = validate_access_basic(&vram, vf_id, provisioned_vram);
-+	passed &= validate_access_beyond(&vram, vf_id, provisioned_vram, vram_bar_size);
-+
-+	intel_vram_munmap(&vram);
-+
-+	igt_sriov_disable_vfs(pf_fd);
-+
-+	igt_assert(passed);
-+}
-+
-+static bool extended_scope;
-+
-+static int opts_handler(int opt, int opt_index, void *data)
-+{
-+	switch (opt) {
-+	case 'e':
-+		extended_scope = true;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+static const struct option long_opts[] = {
-+	{ .name = "extended", .has_arg = false, .val = 'e', },
-+	{}
-+};
-+
-+static const char help_str[] =
-+	"  --extended\tRun the extended test scope\n";
-+
-+igt_main_args("", long_opts, help_str, opts_handler, NULL)
-+{
-+	bool autoprobe;
-+	int pf_fd;
-+	static struct subtest_resize_variants {
-+		const char *name;
-+		bool resize_up;
-+	} resize_variant[] = {
-+		{ "up", true },
-+		{ "down", false },
-+		{ NULL },
-+	};
-+
-+	igt_fixture {
-+		pf_fd = drm_open_driver(DRIVER_XE);
-+		igt_require(igt_sriov_is_pf(pf_fd));
-+		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-+		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
-+	}
-+
-+	igt_describe("Verify that VF can access all the provisioned memory via VRAM BAR");
-+	igt_subtest_with_dynamic_f("vf-access-basic") {
-+		if (extended_scope) {
-+			for_each_sriov_num_vfs(pf_fd, num_vfs)
-+				igt_dynamic_f("numvfs-%d", num_vfs)
-+					access_basic(pf_fd, num_vfs);
-+		} else {
-+			for_random_sriov_num_vfs(pf_fd, num_vfs) {
-+				igt_dynamic_f("numvfs-random") {
-+					igt_debug("numvfs=%u\n", num_vfs);
-+					access_basic(pf_fd, num_vfs);
-+				}
-+			}
-+		}
-+	}
-+
-+	igt_describe("Verify that VF cannot access memory beyond what's provisioned via VRAM BAR");
-+	igt_subtest_with_dynamic_f("vf-access-beyond") {
-+		if (extended_scope) {
-+			for_each_sriov_num_vfs(pf_fd, num_vfs)
-+				igt_dynamic_f("numvfs-%d", num_vfs)
-+					access_beyond(pf_fd, num_vfs);
-+		} else {
-+			for_random_sriov_num_vfs(pf_fd, num_vfs) {
-+				igt_dynamic_f("numvfs-random") {
-+					igt_debug("numvfs=%u\n", num_vfs);
-+					access_beyond(pf_fd, num_vfs);
-+				}
-+			}
-+		}
-+	}
-+
-+	for (const struct subtest_resize_variants *s = resize_variant; s->name; s++) {
-+		igt_describe("Verify that VF can access the reprovisioned memory via VRAM BAR");
-+		igt_subtest_f("vf-access-after-resize-%s", s->name) {
-+			unsigned int total_vfs = igt_sriov_get_total_vfs(pf_fd);
-+
-+			igt_require(total_vfs > 1);
-+
-+			resize_and_access(pf_fd, s->resize_up);
-+		}
-+	}
-+
-+	igt_fixture {
-+		igt_sriov_disable_vfs(pf_fd);
-+		/* abort to avoid execution of next tests with enabled VFs */
-+		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
-+		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
-+			    igt_sriov_disable_driver_autoprobe(pf_fd);
-+		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
-+			       "Failed to restore sriov_drivers_autoprobe value\n");
-+		close(pf_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 5c01c64e9..6054a2c34 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -329,6 +329,7 @@ intel_xe_progs = [
- 	'xe_sriov_auto_provisioning',
- 	'xe_sriov_flr',
- 	'xe_sriov_scheduling',
-+	'xe_sriov_vram',
- 	'xe_sysfs_defaults',
- 	'xe_sysfs_preempt_timeout',
- 	'xe_sysfs_scheduler',
--- 
-2.40.0
+We are providing oa_buffer_size in the caller, so maybe can just use
+oa_buffer_size? But otherwise ok to leave as is too.
 
+> +	uint64_t fmt = test_set->perf_oa_format;
+> +	uint64_t properties[] = {
+> +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+> +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+> +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+> +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+> +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, exponent,
+> +		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+> +		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, buffer_size,
+> +		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+> +	};
+> +	struct intel_xe_oa_open_prop param = {
+> +		.num_properties = ARRAY_SIZE(properties) / 2,
+> +		.properties_ptr = to_user_pointer(properties),
+> +	};
+> +	uint32_t fmt_size = get_oa_format(fmt).size;
+> +	uint32_t fit_reports = buffer_size / fmt_size;
+> +	uint32_t extra_reports = 10;
+> +	uint32_t total_reports = fit_reports + extra_reports;
+> +	uint32_t total_size = total_reports * fmt_size;
+> +	uint8_t *buf = malloc(total_size);
+> +
+> +	uint32_t wrap_offset = (fit_reports * fmt_size) >> 2;
+> +	uint32_t end_offset = buffer_size >> 2;
+> +	uint32_t *zero_area, *buffer_end, *buffer_start;
+
+You can just use u32, instead of the longer uint32_t, for these...
+
+> +	int i;
+> +
+> +	/* Ensure report does not fit */
+
+This comment needs to be more specific, or just drop it.
+
+> +	igt_require(wrap_offset < end_offset);
+> +
+> +	stream_fd = __perf_open(drm_fd, &param, false);
+> +
+> +	/* Read fit_reports + extra_reports */
+> +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+> +	read_reports(stream_fd, buf, total_size);
+> +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
+> +
+> +	/* Quick check for valid reports */
+> +	for (i = 0; i < total_reports; i++) {
+> +		uint32_t *report = (uint32_t *)&buf[i * fmt_size];
+> +
+> +		igt_assert(report_reason(report) && oa_timestamp(report, fmt));
+> +	}
+> +
+> +	/* mmap the buffer and check that the end of the buffer has zeroes */
+> +	buffer_start = mmap(0, buffer_size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+> +	igt_assert(buffer_start);
+> +
+> +	zero_area = buffer_start + wrap_offset;
+> +	buffer_end = buffer_start + end_offset;
+> +
+> +	/* Ensure HW did not write to this area */
+> +	while (zero_area < buffer_end)
+> +		igt_assert_eq(*zero_area++, 0);
+> +
+> +	munmap(buffer_start, buffer_size);
+> +
+> +	__perf_close(stream_fd);
+> +	free(buf);
+> +}
+> +
+>  /**
+>   * SUBTEST: map-oa-buffer
+>   * Description: Verify mapping of oa buffer
+> @@ -5095,6 +5184,14 @@ igt_main
+>				closed_fd_and_unmapped_access(hwe);
+>	}
+>
+> +	igt_subtest_with_dynamic("tail-address-wrap") {
+> +		long k = random() % num_buf_sizes;
+> +
+> +		igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_BUFFER_SIZE);
+> +		__for_one_hwe_in_oag_w_arg(hwe, buf_sizes[k].name)
+> +			test_tail_address_wrap(hwe, buf_sizes[k].size);
+> +	}
+> +
+>	igt_subtest_group {
+>		igt_fixture {
+>			perf_init_whitelist();
+
+Otherwise, this is also:
+
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
