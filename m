@@ -4,154 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7F03CA0FED
-	for <igt-dev@archiver.kernel.org>; Wed, 27 Aug 2025 00:28:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1861BCA0FF0
+	for <igt-dev@archiver.kernel.org>; Wed, 27 Aug 2025 00:31:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6BD8710E1C1;
-	Wed, 27 Aug 2025 00:28:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C146A10E6E3;
+	Wed, 27 Aug 2025 00:31:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="VDUrtdO4";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="mHC+nd2Y";
 	dkim-atps=neutral
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2080.outbound.protection.outlook.com [40.107.244.80])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AADEE10E1C1
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Aug 2025 00:28:31 +0000 (UTC)
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2040.outbound.protection.outlook.com [40.107.223.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECB4A10E6E3
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Aug 2025 00:31:31 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GUb260OKhKgMfZ0gXUqjezP6XTEZf5V8rCS4CZ2gQZn9CbDMpNyVKsAGjP3qydOJuadS+M0vTt/epToyndcRvA7WLAg6c9CtOd9Qzp3Uw+zTxnbrLg4GOnAgaywNeR11pB720fj+TOEROo2cf1FCkKT6Cw7Vau2JqygJV3qRwRS8v4qPPFmxONqzs2tL6bm1ZtcG5+6IBkC7OHve7J+v+sBpUweQ5Xcq/az15D4WtzAd5/DWmABcAcx1YEfxeikGTgfM/qwsZVn4Jdn8UFVDjrwB8Lw4N+3tpTpauJbVzxpgekkIIp+kiL5x1EP7PRHZYn3KSoOIUa9TmnOHkfQzkg==
+ b=HwIWgwiiy5HwXkaMrWHpPJuhYKu9TCvpw0U63im/Wm5C8DLxw7LH0JwoB7MUfyZ6z5rhOEjlL4BnTbsyWG1Jd2ocuSO9fgoBvCWF0z1jK1D8RLZamf+iBqAdehVoGMsRh2KutxOCo1671ozLoNzpx9XGCvy4VPK0yGH6NYoTodYrdX8gQsBVODo8ZXO8Uu2K1OVf5mNQkz+lxyDkBveFyjh1G7B4Yx4/RH8jeOHa1yjj4sEUj+MOqckKVinCoyBlkJ0FAAaACdo3RVNJdONceMYFfKVyEhLAJ6Fh7KqESD5mS0j2f8tIwA01KAccdBb3kTV9G01jPNHpUFbv+YzHdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T99kHUXWIesrKWdshNHeDG7K4bmSTmhoahzqLqjq0sQ=;
- b=ZSbagogBQe1fjvLWVzO5XTwury4WzfF2XRnwIQfD6exGCDPdhhy+KchdnYNTcein6xQEPwCNTVc6qPjccTHMNTkPVcE/y1dZg0/PWT/K2/PYOFlYj1ElziZqDtiJRdzxWH4zS5sykV6+nPLlM5r1GynSriqeHjy9E0Re9mNcH7ZHWgFNxFDCEXQT5DkIIz5+t/L6zLi/egQ9eogX+bMgyYCcrJXmACukzyGr7aymZLlHX+GDe4stxSns1oVX46iElTdpadvJVuht8FDXYKOY6do7L6Kabfilqn+sGZ/dk+muo3UH5hGXvWEnOsUnbsOc9D2QevJFOuZL7QiYwGQaXQ==
+ bh=QU7TlUScd/SIdlqoTNCX4S+cK+g8cVwSvf3zD5Fad+k=;
+ b=qibhTVAr4+Kk+4g68otVzir2b8+Oe/N1noXKU1/uCt9LAIQMWxTdEehXCP/M8rMtt6js35fMHcrRMP86HnfM5a0Ub8Mar7LkVPOufiFzD1oG+T02kv+QESSl01fJNsgyotv0UFVYBXGXapoccDpECZFrL3vF/kmn/EY9YqjQMcZp1RiFCwoQ38IEZIa8vBSbrYIXnNmcO/RD1S1J7z1efWTJUxkzqs//i7GYiz+69toHn/TyZt6PizDvOvfk6pedDpnQwSA1jiSFNttUWXSqvO4tP4wlkHB+QQCMB8L5zf3Om9lFtZTnT/PXjdsN+PkSSoELoYsYKOpgxuoXo7gaVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T99kHUXWIesrKWdshNHeDG7K4bmSTmhoahzqLqjq0sQ=;
- b=VDUrtdO4cQ15fFjNGjB+dV1u4Cz1YeuvxLbP3nAKmXdLzc5cF/TjfOCBn6bc113daHVZsIP1v6gzBIZ+9cpDb3XBNkgyT4wS8wCgQHLH8ian3qkHIdxd2No8bsB5sGK8ATkOQDFw0C76eOtqbTIANDFZwpHaleCiDWfefnWjqGM=
+ bh=QU7TlUScd/SIdlqoTNCX4S+cK+g8cVwSvf3zD5Fad+k=;
+ b=mHC+nd2YSMwxYj4Pld1qscHxoayuno1f3Y7e5rVp3QSs464WUN/omsoI2JpsxbLQaLQR+2xYKdCEr75J2lzYaLvwc+Pn69OldVgfT7haOypAX4RrwT9HyJ76Zfe+KxzF7worRJZGJ7Zs3VLWw/Kli577Zw0QEHUM5vWKI+Kqujs=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
- by MN0PR12MB5906.namprd12.prod.outlook.com (2603:10b6:208:37a::10)
+ by PH8PR12MB7182.namprd12.prod.outlook.com (2603:10b6:510:229::21)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Wed, 27 Aug
- 2025 00:28:28 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.19; Wed, 27 Aug
+ 2025 00:31:27 +0000
 Received: from PH7PR12MB6420.namprd12.prod.outlook.com
  ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
  ([fe80::e0e7:bd76:e99:43af%3]) with mapi id 15.20.9052.019; Wed, 27 Aug 2025
- 00:28:28 +0000
-Message-ID: <945c23dd-6f1e-49cf-b212-9273995e7b5e@amd.com>
-Date: Tue, 26 Aug 2025 20:28:25 -0400
+ 00:31:27 +0000
+Message-ID: <1ef2eaa7-5ac6-4c0c-8ebf-595a81487922@amd.com>
+Date: Tue, 26 Aug 2025 20:31:24 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4] runner/executor: Abort if dmesg is flooded
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Ewelina Musial <ewelina.musial@intel.com>,
- Karol Krol <karol.krol@intel.com>, Petri Latvala <adrinael@adrinael.net>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20250723160609.103140-1-kamil.konieczny@linux.intel.com>
- <02600808-da76-4681-99f6-73ab1711ad67@linux.intel.com>
+Subject: Re: [PATCH 2/2] tests/amdgpu: Add user queue tests for SDMA in
+ deadlock tests
+To: "Jesse.Zhang" <Jesse.Zhang@amd.com>, igt-dev@lists.freedesktop.org
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+References: <20250826064530.1721892-1-Jesse.Zhang@amd.com>
+ <20250826064530.1721892-2-Jesse.Zhang@amd.com>
 Content-Language: en-US
 From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <02600808-da76-4681-99f6-73ab1711ad67@linux.intel.com>
+In-Reply-To: <20250826064530.1721892-2-Jesse.Zhang@amd.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YT1PR01CA0110.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:2c::19) To PH7PR12MB6420.namprd12.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YT4PR01CA0356.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:fc::21) To PH7PR12MB6420.namprd12.prod.outlook.com
  (2603:10b6:510:1fc::18)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|MN0PR12MB5906:EE_
-X-MS-Office365-Filtering-Correlation-Id: c05a03eb-ee0a-4f90-1add-08dde500a4a0
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|PH8PR12MB7182:EE_
+X-MS-Office365-Filtering-Correlation-Id: ebde26e6-c802-4c4d-6c0e-08dde5010f55
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SHVId0I0eUQzUHl5ZkM4VEwwSlFOM2xHNmxRWlE0bjlMblErU2RYMFRrNStX?=
- =?utf-8?B?bWxGYm1kRnM1YlZVQTRiamZ1YXhMZlJZN0hDTExYOTlMaUxEdmZwU0M2SVlp?=
- =?utf-8?B?eXhaZ09vdUFCQ1RrSjRXL3QzVHZMMzJzU0xwclBRdnByc3JLUlhTclQvQS81?=
- =?utf-8?B?TE9jUCtIMWlTZ0d6Z1puWEZNNGsvUmE1TzJmOUY1elArbS9iTGEwZXlVb0hV?=
- =?utf-8?B?dGdrakJFTjM3SGVhQzJlTXkvOERBRjFNaXRlUGw0WEsyeldDMjNlWVA0MWdv?=
- =?utf-8?B?bFNVRlF3eUFLY242bUZIQ2oyb0R5Qm1aR3pSbEhmLzRmNjJ4UWxLY2NyYy90?=
- =?utf-8?B?UGdGNXBjL0l2NjE5c0oyQjB1WU9HNVdTT0ZTa2hUTXZYSVlZVG9UaExiVmJz?=
- =?utf-8?B?UWNCSDNNbkgwRDY3SUUyR3JQeWdLamp3STIzZG1CL0tKRFFMWVROblM1NXJO?=
- =?utf-8?B?U2tVd0JQMUhUNzFqdUQ5VUFrSDhqakpTTi9yVTNMU0dmZVBFRXZ1N21MWXoz?=
- =?utf-8?B?OFJCeXhZYkNWQ2RhTUNVVzZQWlArS2ZKVm4rc0prL2pZazNjc1R1cjBPWWhI?=
- =?utf-8?B?VGJQNEh4WnZVK1IwOW5ITFNXNU1mV0p3U0QxVGhkVkwvT0ZMalVKTmJCTXNm?=
- =?utf-8?B?Mm1IQTFVd0pzUkVYVDg5TlJJQTZXUmJ3TmU3OU1xemQ1YWw4SnNvVkJlcDAz?=
- =?utf-8?B?MjF0dkFjRjlJb2hBMUczaUFoVXh5Q0ZQQm94b1kvOVAwaFFIQkdJTVVRRVhm?=
- =?utf-8?B?WEtMVjhjMTc3YkFleXEzdHlwSnA3YXFHUS9kbzkvSG9xd1Q0TEhVOENaNE56?=
- =?utf-8?B?RlhUSVlEOG4zbWFlVXpJMXpCL0tESnd5NzkvblNTN0dZVzR1bVFiVFpaQ1Ns?=
- =?utf-8?B?aFcyVmJFU3BaejZlMWtmYThVVG1scWU1SG8vRy9hTEIyOFY4MmJvUmRxTVJy?=
- =?utf-8?B?ajNxc3d5WkR3ZWJiaUpNRGN1TXN1cVFNYWw2TXNHSVRLa04rbkd1V2lzVGp2?=
- =?utf-8?B?R0F3QnBWMnFnZy9WellMOEMwV1VsTjQvU1VKNTE0bDJIYjI3U0ZkSWFoNXNC?=
- =?utf-8?B?R3NsWjQ3ZDkvVjJzTG0vYWtObmZsUEJadnk1R0tMT0FNUnREUkNvb1VIcmtw?=
- =?utf-8?B?ek1ySnZ4c0VVMHJoUkxzeFF5bkxwSFZoTkFpVFJNdDZnTEh4dkpXU0lFV0Ro?=
- =?utf-8?B?Syt1OWdyZGVwNUZDM3BXTE1lTmRSbk53d3Exc3o4bEpQVnpuaXJEL0llRXV4?=
- =?utf-8?B?U0N2U0swdmZ5K1dCOE1aZ0FJTjhoQVhXN0pYTlBjUCs0S2Q0WDd1Tmt3VWRu?=
- =?utf-8?B?ZTcycVdUdURsQld3QS81eTc0bU55V2ViOFZXNi9aN1o2MFFOYmtsUnNCUU4x?=
- =?utf-8?B?SXlPRWp6L2hLWE85MUh0Tk1aeTlJYndCNVFGbldiUjFVK1U2ZC8xVUgwOXVE?=
- =?utf-8?B?dEI2VGZMbjNQYlovdzNSRlY0dGJjMU9zWXE3TXhQKzRiL1YvS1BJVlBWTklQ?=
- =?utf-8?B?NzQ1WXFDNUYyUFBxZ3lmRjBIUGpKNVhMTEh2Z0ZYSS92ajdoUmRtWkZvVFBk?=
- =?utf-8?B?MVZkUmhyRnhHTWNwY29qcHU0USsrcTdtYWp1Tk9GRTQ4OUpNWkdmbzRIeDVO?=
- =?utf-8?B?bVExdW9Yc3pKaWUva1plaXRlTHZxWWRmdkV2eWNlVHU1TUNNOGZzZ01vN2xD?=
- =?utf-8?B?WUY5ZUkwV1pqUUlESDJoMmZjR2pyMzlpc09STnlsdG4reWhFQUVOMnQ1MGNX?=
- =?utf-8?B?UXVwY0lNVE1HRlRERkU4YkZ2Vng0SCtTbkw5RDJiNCsvMHZrZWt4R3MrUEtt?=
- =?utf-8?B?MjZ1eG5QbTdaYWdSemxoTG5LcVJZc25GSG9hcXgzZUEySXc5RzgwY3pWalgy?=
- =?utf-8?B?SXhZOEJuQlB5SXdvQ2srM0plQmZXcGxsZmFvNWY1eXZ5SkE9PQ==?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YitRQldGdEhIVW1UeDQ5NHMvTElwMkRGTmZ3eU5CcVBQb28xZVVEUU9yU2Vz?=
+ =?utf-8?B?alR3cjlsa2pUZFlZVXV4ZmVUclpKVEhuTXJtR29oQ2paNnFzbTBBemNtSUtN?=
+ =?utf-8?B?K2pvcWlTZWxmQWhUOGIwbVlEVVFkaXZpdGFwZ1BVTCtmWGs5QzdSZEhmUmkx?=
+ =?utf-8?B?d1FXRGFWZEl1dlluN3hQWWlFcDl3emdOYlNRMXdNdnJhUVZNekNqMitGdElz?=
+ =?utf-8?B?eVZMVngrNFlibVh2OXBJZUNyNjFvdG83RlB3bkNLSzBCUlVqV0F2L2lhcUha?=
+ =?utf-8?B?dGJXNjkyQTd2KzQ4akI3c0Y0elp4ckkxVkd3eGdoUDB1VzdzUVR1SGd6ajJB?=
+ =?utf-8?B?bkNEdGlSUzJJVGE3dFVSRnJDTExyRWw3cENIdHpIdUJmK2FBMS9YVmVGMmdq?=
+ =?utf-8?B?TUIvN2haaE9hWVQ1cDd5RDdhL0lBdmU4L25ITEZ6M2NHK2NGd21Ia2VoUHJY?=
+ =?utf-8?B?aGlReVlnSFNweEUzbW1TVStyb3Bya3R2OXlnUktuaWl6UlZjUWJDQ2Rvc2lq?=
+ =?utf-8?B?TVFEU1FkRHdrNU1tVDlVeXYzSENBTmttZ1BuTllEZk9kenZmY3JLN0o5eUNT?=
+ =?utf-8?B?SGNSUnY4blZ3bi9ycUwzTnhzMFRldHFHQmJYbWlHd0pKWThFR1dEZkJZbjMw?=
+ =?utf-8?B?cXk0OFk5L3ZyaWo5Qzl1NlNoRlJtQWxIcHVNTGZPQmxpQWdQUkVybEUyZ1lt?=
+ =?utf-8?B?eXhhendhR3VjODI2aU1yL2puRWZiamJvcFh4dTRqcGlRamtNcjgrWEw3bnlQ?=
+ =?utf-8?B?U1Z3UTRyT0c1MEpweFhoTytjZlVLNWg2LzRmZmxPL0ZJbldjS0kwNTRFWjJN?=
+ =?utf-8?B?c0ZVeFdUTUJVSTVDWVR2alNiQXVJcUhsNmpSZHdabmJ0SVJ3a0ZHNFJOeFFN?=
+ =?utf-8?B?NFhaRWlhRkpveTI3UDJmZUdhaDJnTGtmRTRGQlBoQWlFVHZQZ0RTNkt4RUJ2?=
+ =?utf-8?B?TkczMDNBeEMwNlAraXJMK3JEcm5RdW1TbTVoQkZ4N3VpSGhwWWJRdllzeUpk?=
+ =?utf-8?B?Ny96WmZXV3hVWU1OanhVZG9WbG5PRUpaOXlTNjdkb0dXeDFzQnZQbndNa2JC?=
+ =?utf-8?B?ZnZzTURWWlpwUFZyUnRWSEY2WVM4MVVjcFBoczYrVnNCaWEweTRnUFl5TEk4?=
+ =?utf-8?B?V00vS1hlTzRiMGdMRVgrUUg0RkhmbHJBeTBBYXFScXJjaFRENGp1Nkg5Nnpw?=
+ =?utf-8?B?eTA1NGNCQWk2a2lNNWwzdWljZHlIMWxwam5hRklQLzNxVjQyQnkzMGJ1TVZK?=
+ =?utf-8?B?QUwrQzlESGNlbFlyR0U4ampEdTlKR1FDcVlGZU05bitRK0w0S0g1cUtjZmd6?=
+ =?utf-8?B?Rk5xOEhPeW5NbG5neDdXOGMvMG5Mbm1RN3Uwc3VJUFh3bHB2a1FVQkloRkYv?=
+ =?utf-8?B?ekhPTEdZaVd6bWhjUGx4Z0RWNDBMS0s1UDVUMmZibGQ1cFM3UTVZSTAxQTFL?=
+ =?utf-8?B?MUhJQzl3SVpoWXppcmUrTDNqNzNGSjAvN2l6NHhnWi9Sc2hlNWM1bEFkb2FU?=
+ =?utf-8?B?WXVLd3J1OEJIbWNDc0lmU0dSUmNYSGNyaS8vNG42aG9EdWU1KzI3cWNTQXBF?=
+ =?utf-8?B?RDRONWhQSFlsQnZkaUhJYkc0WFhGb05VandmS3E3cFFOeG0vMWRPRlBvQmNM?=
+ =?utf-8?B?Vk1WUm9xT0lzWUc0WUNiUkdoRWZpY3EzZHVkZ1RnU1N5aUVwdTExY3REdVU1?=
+ =?utf-8?B?ZHhVNk5uanNnaFlleWJBQ1pYTmxnN1ZpNnBlaGljcTVrYmtKS1hGSDVUZDNS?=
+ =?utf-8?B?czB1enJIRnJnOVRNSmNDbmZ4MFpwTDZyVzRLTFR4Sk42ZnFsNU1pNGttMUNn?=
+ =?utf-8?B?c1U4ZzhhKy9RYitmWEcyd3B3YzUzV2w1K2p6QWdOTE12TGlWMjRXcGRoREhL?=
+ =?utf-8?B?U0tLKzBmVVo0MzBYNG9NU1JlaVRSU3o4aEx5VEQySnFOUVdXaXZMNG1TMmxx?=
+ =?utf-8?Q?1IRTa1ySj0A=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(7053199007); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WnVEbEVGS2dRekZueE9tS045d0JBbTcyZUZKMDVLREhIeld4NjQ2UVFJckRs?=
- =?utf-8?B?U1VkZHI3dEt3T3JndmhHTVcrVTRZb2s5bzVwV05BVFRWTldXaU5JS3RlOVl6?=
- =?utf-8?B?RlFzN01uOG9KUU1hc2lLSDFMS2gyL3JUdWhxR3VLaUJLQm9QWjBLZVVOemZF?=
- =?utf-8?B?dkZGOXF3czJhellJV2tEL1gyemgvYyt3VVhLV0VWcUpicHY2OTRyTzlHM3lG?=
- =?utf-8?B?eUZzM0pZU3J2SkRNQnFLYUgzc2ZwR2drM2syQnpNTjBodXVST09aZHpFNFR0?=
- =?utf-8?B?OWFNb2pCWjV4aVozNjZZRnI3L2pwM2VZcHFTNEdBV3VRKzcvT1lCNnF1c2xu?=
- =?utf-8?B?Sm04UktoSzNuNE9PR1NsREJ0WFlleDdyMDhVVWlXUDlsOTFCUVIyZ0ZYSWlW?=
- =?utf-8?B?cnVYWVk5UTRGaTY5N3kwZ3ZJWTY2dzdaanJLZWhRREhJZFl2d2xSSCtseW5q?=
- =?utf-8?B?WUo5My9vT0dGaEZaWUE3dDcrQUNCSm83WkdkZ0h0R1FCa1dhSzVHTXpLS3ZE?=
- =?utf-8?B?OXBoSVhpQVRwcitRRE9acWwzY2xyNXcrOTJVSWdWQjh5SVZDY1RNK25VM0VJ?=
- =?utf-8?B?Wnh5MElEM1RySDR6NGpzOHh0QWl5U2wzMnY5bDRsS3N5WTF3NnVqcnBjMllV?=
- =?utf-8?B?RFlHbXpXR3JkeHZrMzhad1o5N05kSTc1cWU4M0JWcHF2T0NuOUdZbVFxaGF0?=
- =?utf-8?B?cXBtL2RsTzZuWUVqZ01EdTdKam8vUVFkYlVjR25JbWs2NDhvUDZSQTZxNUdp?=
- =?utf-8?B?Z0pNcHE3V3ZENjhqNkNHMzBleFhadXkxT1FMLzlERXdBZXdtY0dxZGh2dWFO?=
- =?utf-8?B?NzRVTE9zeVdqUXJ5RHl6ditkZkhxMngyUSt1Tk13R21nWXBnWHZKaGtrcWNm?=
- =?utf-8?B?b3ZUT1ZIM2lGTUxFNTd4Si9OcWZBVTRER3o5T1lLb3JDL2hObXpwd3lqVU9P?=
- =?utf-8?B?UnY4Mlh4TkJWRUpIejNVMmYzQldtWng5N3V3ZDVUM01tSzkzT3JZcVNjbFZ5?=
- =?utf-8?B?aVlyTVpMOCtKZHdKelA0L2tacTV6d3poMHo0elZRd0VkM1RVT2xsN2JTRGFR?=
- =?utf-8?B?VkFZMHV0cGZ4Sm9YQjN1SG9PQXRHSTlQNEMyclFmMmNVZk5WVWFBMVZBUTZD?=
- =?utf-8?B?N01Tc1FuazZ5VVhuK1RNRGNkSXEvT2lKd0M3aXhsTU4xK05sa3prSElJK3Vz?=
- =?utf-8?B?N3d4dG5aZ1g4MDRsRERERGlhQStGYm10VXFiRmpQNU1sVFdHcVgvYkk1QWNa?=
- =?utf-8?B?Y0drbWpqOG83VWMveklVQzFuSjZvT2hzZEUzMkFOcFR3USsxd3R0RUd6UjBm?=
- =?utf-8?B?MWFscEs1RWVWekZ5SXJhSWF0ZExnakxCcWpyRnJsN0g0U0NIUDJPNmpjOU5s?=
- =?utf-8?B?UjFzQnNyaUtndXJWSEhKKzRpTllJT0ZqOHBmMEU3MVBISFZpdXUreTJMWlBo?=
- =?utf-8?B?YlkvcFlMY1FqN2x5dWdUVDdGY1A3YVdGdENnYmNYWGxSRG1WUVBmakVkelRB?=
- =?utf-8?B?V0FUaDZ2KzdXKzlyMmhSZ2dyVVVkMGJDY1NJN1J0VXM2b1BTM250VEdTdTN0?=
- =?utf-8?B?Y0hNd0lzSWtISkZ6Y0Y5Q1l6ajZPcFRQVWtZVVRVRmdoWGlYd0tQOVNlQU9v?=
- =?utf-8?B?Y3ZhMlVyWm8vWWlkZUlrREJqb3JkcDNWdjBvdHBha2E0b052YVVuSEVYNlB3?=
- =?utf-8?B?UUJaVEVaTzA1N0tsdXV2NlFNQ3ByOHBNbWZScms3M0NYMmE1WFcxY1ZMREV1?=
- =?utf-8?B?bS9NUm9OOTd0eGZNRWtGYys3bnNqc0ZvTkJ3cFZ6MHR3RnhhRTBxa0lhSCtQ?=
- =?utf-8?B?bzVlQ29HaFVrOEs2bGczMG5vMVUyTHhGNkFzWENDZm9LOFRiR2hxTGhySnE1?=
- =?utf-8?B?MmM0N3o4Y0RTckEwUzJXZkRBSC91cU1OVmY2dmVTV1o3Q0UvMGcrOXI5ZHR4?=
- =?utf-8?B?R2JNbG5VdDhLQXdyUlBuSDBMdVdxek90OE05WTM1ZmhiVThMLzVuelJaVkJ3?=
- =?utf-8?B?QnpxWXdvREZkYTI2dlpocjB4ZkkwYkNpbUVMUk9uRUlRcmNvMDJmUEk1SHl2?=
- =?utf-8?B?b1dyc0l3ZEozUkc4aXdXVFdWNGRYd2Nvdy9IS2pRUFNJODJpTHlYUEZSMlVY?=
- =?utf-8?Q?j9w8KHLmwMWZp0MHVvCtJ+24o?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?enZ4aWNlWElDbHJ2TmlWcHZkSmxrVlRnTnFjWFZEZERpRjg4MEpBeU1XTUVi?=
+ =?utf-8?B?R3pzYnpKeVgzeGhZeDFGdGhzdU1iNFJ3ZFBhSXFieDJTaWFuNytiY2pIK1Jn?=
+ =?utf-8?B?cVVwd2tSNlY0allHRlVWZHhKbFZEdHA4T3BKTTlXTm9MMkhkN1pqY2RWaTUw?=
+ =?utf-8?B?bHhITkJ6TmRBaFEya2dOT29KcjloTklEb2o0L09FaHBzWWdzRWJ5Q2hxb2o0?=
+ =?utf-8?B?MExyblgrbWJRWVNkQ0s2c01LWjNDSEVNYk54dmZ5Y2RSR29yalBFaTk2bzMy?=
+ =?utf-8?B?aVNrZEhveWZqWnpwYXhRc3NBakJ5WG5UU0gvT2xmSnZmVkYwTVJHK281VWNH?=
+ =?utf-8?B?dTBkQlh4MHFZM3BGQU84QklRY2QveGlGV0NXZEpEQmNDbzlJaG0xNStxak16?=
+ =?utf-8?B?UFFkMXZNZW5MQkNXampFbmw3SGdkaHMwbFJYTm84TlJ6TGFORXJSVHVQcFRG?=
+ =?utf-8?B?VS9Jek9tTTc1Y3BQaVc5c0cyWE1wMlM3ejZPR2xLZ2VZaWtqUVA0aEJyQ09V?=
+ =?utf-8?B?anlDMzIzWWhxQktNbmVqV0tGRHBIblJsbHRmMS8rMUtWR3JxV2xGYVpoTFdY?=
+ =?utf-8?B?cmk3WWhBc2VvZnRiNGw3U0M3d2tiK1Vhd3BNVEhsVDhzN2pBTW92UnFSK25D?=
+ =?utf-8?B?WG55M1EvYjIzZGJRK1hEKzB4bHptY09CT2sxa0o4VHl5enpUTjlRM1ByUEhS?=
+ =?utf-8?B?dm5qK1U5cVNCaElmcHhubGx1NzVxYk5DUDZKUEhBUm4ydGNEdlZIaGFWSWhS?=
+ =?utf-8?B?c3g1WjlmVGRQZkZEVzM1REhyS25mV0JZZDgwM25GTU4ySkNXeXQ1dUNJY0wr?=
+ =?utf-8?B?d3hQR0N0Ukc3eEh4K3NZa3pnblhxWWJGNjlGZzE3d0NjTU10VWFVMWxWRjI3?=
+ =?utf-8?B?UjBlNHFXWE9UdlhYN2h4dlBnekJ5dm1yMktHeUVpNDVWMnJWbElDekdiUFMx?=
+ =?utf-8?B?dnZjcE45cDAyTDB6NDB6a3RFSzJuWXk2N3JEMXFtcitXVDJCNnpXNUdDU0JQ?=
+ =?utf-8?B?Y1Y5VEpsU2VneW5qM1RTOW11ekpObHVTME94UDhJTUoybWhCcjA3NlNpc1h3?=
+ =?utf-8?B?dWQ1cGlaRW5NcVpJcS81cUNTQnBPUktBWU4vTnFnUDRHT3NiYThqQ1lUUVZE?=
+ =?utf-8?B?QjBWdjZqenVJNEVudXAwUFdVZTlhd2NyZk9UUEZXR0FZeEJJNU1JUCtMRmdQ?=
+ =?utf-8?B?cjlBSlByOC95czMvQ3c2N3A5M29HSnJNL1lEWnk4ME5iMU10SGJBemtUTWUy?=
+ =?utf-8?B?QlVoaTVpaERDSm5GdjUzcVVnZ1pHcytOOXo3TURvQmttRVppcHdYSTBFZUs0?=
+ =?utf-8?B?YjF4OThVMWs5M0JyMkNjWmtFcnRNTXRYeWVmdXJJTE56dHMwSXU4WUYzSjNJ?=
+ =?utf-8?B?b2tDb2szZzMyVDJTZW1LbjR0QlV0Mmd4QXZKVlpiYm9rMmExT0I1U1NCRXZ3?=
+ =?utf-8?B?azZvMWEvanRlekVUSnkvWGZITFlBeTB5VTFPREtlN0pYL2pZQ3FhZU4zYWQz?=
+ =?utf-8?B?UGNrSGYxYStyc3BzdklIaXFyNFhYNWJNNjQ2d1lkWnNkVkowb25hQ1prU3Ba?=
+ =?utf-8?B?VVRkaHI3dmM1WXZDazN6NlduNHJBZWZ6a1U4bElmU1ZWT2p6NDhBY1EwM1Uv?=
+ =?utf-8?B?SlZPK0FKK2tzbFB3cFNEcFV1Q0F5ZzRuNkhGQlpUdVlsaVVSNmIvSzVSSStv?=
+ =?utf-8?B?Qzgya3ZITi9hVzFZUG94Y3V3WW1YVjllVXBDd1lQQ01pWm5nR1pNemQ2TTFn?=
+ =?utf-8?B?MHNUK2NVQ2docEM2MmZqZjFpa1BaNHVqbXpHV2hjRlhjNjVFVDVNNGhpeWFY?=
+ =?utf-8?B?eWIvbDNvb0szaXFUeElGMUxxOW5Kckh4R2RwTnc3R29JbkdHdUZ5RzRES1Jx?=
+ =?utf-8?B?S2gzV1FhUnJVU0hIQUkvNWZkSDhxMUVBWHdVTjJCdDJTSXAyRWZFYS9zMis3?=
+ =?utf-8?B?NUI0aytCVWR0MDZ2aFBMVU5IM1E4QWxGWDlXWmIvblJ2YnAxQnNuaXlDSFVX?=
+ =?utf-8?B?LzJuOWtSZ3pnMWcwVCtrSDNKYjVKR2JEeGZaekZJNjZham02MGNOZG0xK3Y0?=
+ =?utf-8?B?YWpkYnBacGF0LzdxYkZzU21MYllCUDZoL29JSEFoeGdiR0NkU2hFNmF2RnV2?=
+ =?utf-8?Q?+SoP9BDqAFgXjHmR139Mp5PgP?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c05a03eb-ee0a-4f90-1add-08dde500a4a0
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebde26e6-c802-4c4d-6c0e-08dde5010f55
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 00:28:28.3553 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 00:31:27.3329 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r3IWmadrGpX6FPnIb2qYqOwsf1u3B+cipLCdnlEqqLio7h/5BqGjTQ/WaTqmO33WJTHN9Oapi1eM9jov+VJX6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5906
+X-MS-Exchange-CrossTenant-UserPrincipalName: hk1HF047SeD+/yckZK130ih+IN8zZBIHyl93u6FksWXdXoekxKyqTprb4vpYQqi3fXiO7aV2hHWhONXMi93QxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7182
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -167,380 +165,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by Vitaly Prosyak <vitaly.prosyak@amd.com>
+Both patches looks good to me. Reviewed-by Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-On 2025-07-24 07:55, Peter Senna Tschudin wrote:
+On 2025-08-26 02:45, Jesse.Zhang wrote:
+> - Modify existing tests to pass an additional 'false' parameter to the
+>   amdgpu_wait_memory_helper function to disable the reset functionality.
+> - Add new tests to cover various GPU reset scenarios triggered by SDMA:
+>   - Test GPU reset by SDMA with bad opcode
+>   - Test GPU reset by SDMA with bad memory access
+>   - Test GPU reset by SDMA with bad register access
+>   - Test GPU reset by SDMA with bad packet length
+>   - Test GPU reset by flooding the SDMA ring with jobs
+> - Update the test descriptions to reflect the new test cases and their purposes.
 >
-> On 7/23/2025 6:06 PM, Kamil Konieczny wrote:
->> Current disk limit triggers once when it is exceeded during test
->> monitoring. After that happens executor no longer checks if
->> kernel is still printing plenty of messages.
->>
->> Create a way to abort test in such scenarios with the help of
->> measureing kernel kmsg activity before first test is executed
->> and then also check it after exceeding disk limit.
->>
->> Also print info about it after each test ends.
->>
->> v2: fix error when kmsg open fails, fix reading proc (Kamil)
->>   changed calculation of max bps (Peter)
->> v3: abort only when disk limit was actually exceeded,
->>   print info instead of aborting after every test (Kamil)
->> v4: added abort at main monitoring loop, also cleaning up
->>   printing messages (Kamil)
->>
->> Cc: Ewelina Musial <ewelina.musial@intel.com>
->> Cc: Karol Krol <karol.krol@intel.com>
->> Cc: Petri Latvala <adrinael@adrinael.net>
->> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
->> Cc: Ryszard Knop <ryszard.knop@intel.com>
->> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-> Tested-by: Peter Senna Tschudin <peter.senna@linux.intel.com>>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> ---
->>  runner/executor.c | 228 +++++++++++++++++++++++++++++++++++++++++++---
->>  1 file changed, 214 insertions(+), 14 deletions(-)
->>
->> diff --git a/runner/executor.c b/runner/executor.c
->> index 847abe481..db2c05b03 100644
->> --- a/runner/executor.c
->> +++ b/runner/executor.c
->> @@ -637,6 +637,11 @@ const char *get_out_filename(int fid)
->>  	return "output-filename-index-error";
->>  }
->>  
->> +static int open_kmsg_rdonly(void)
->> +{
->> +	return open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK);
->> +}
->> +
->>  /* Returns the number of bytes written to disk, or a negative number on error */
->>  static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
->>  {
->> @@ -734,6 +739,95 @@ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
->>  	}
->>  }
->>  
->> +/*
->> + * Measure how many bytes appears in dmesg.
->> + * This is the same as above dump_dmesg() but with reading only.
->> + */
->> +static unsigned long long read_dmesg2(int kmsgfd, unsigned long long size, int wrfd)
->> +{
->> +	bool underflow_once = false;
->> +	int comparefd;
->> +	char buf[2048];
->> +	unsigned int flags;
->> +	unsigned long long readed = 0;
->> +	unsigned long long seq, cmpseq, usec;
->> +	char cont;
->> +	ssize_t r;
->> +
->> +	if (kmsgfd < 0)
->> +		return 0;
->> +
->> +	if (wrfd < 0)
->> +		wrfd = 0;
->> +
->> +	comparefd = open_kmsg_rdonly();
->> +	if (comparefd < 0) {
->> +		errf("Error opening another fd for /dev/kmsg\n");
->> +		return 0;
->> +	}
->> +
->> +	lseek(comparefd, 0, SEEK_END);
->> +
->> +	while (1) {
->> +		if (comparefd >= 0) {
->> +			r = read(comparefd, buf, sizeof(buf) - 1);
->> +			if (r < 0) {
->> +				if (errno != EAGAIN && errno != EPIPE) {
->> +					errf("Warning: Error reading kmsg comparison record: %m\n");
->> +					close(comparefd);
->> +					return readed;
->> +				}
->> +			} else {
->> +				buf[r] = '\0';
->> +				if (sscanf(buf, "%u,%llu,%llu,%c;",
->> +					   &flags, &cmpseq, &usec, &cont) == 4) {
->> +					close(comparefd);
->> +					comparefd = -1;
->> +				}
->> +			}
->> +		}
->> +
->> +		r = read(kmsgfd, buf, sizeof(buf));
->> +		if (r < 0) {
->> +			if (errno == EPIPE) {
->> +				if (!underflow_once) {
->> +					errf("Warning: kernel log ringbuffer underflow, some records lost.\n");
->> +					underflow_once = true;
->> +				}
->> +				continue;
->> +			} else if (errno == EINVAL) {
->> +				errf("Warning: Buffer too small for kernel log record, record lost.\n");
->> +				continue;
->> +			} else if (errno != EAGAIN) {
->> +				errf("Error reading from kmsg: %m\n");
->> +				return 0;
->> +			}
->> +
->> +			/* EAGAIN, so we're done reading */
->> +			close(comparefd);
->> +
->> +			return readed;
->> +		}
->> +
->> +		readed += r;
->> +		if (wrfd && r)
->> +			write(wrfd, buf, r);
->> +
->> +		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
->> +					    &flags, &seq, &usec, &cont) == 4) {
->> +			if (seq >= cmpseq)
->> +				return readed;
->> +		}
->> +
->> +		if (size && readed >= size) {
->> +			if (comparefd >= 0)
->> +				close(comparefd);
->> +
->> +			return readed;
->> +		}
->> +	} /* while(1) */
->> +}
->> +
->>  static bool kill_child(int sig, pid_t child)
->>  {
->>  	/*
->> @@ -948,6 +1042,78 @@ static size_t calc_last_dmesg_chunk(size_t limit, size_t disk_usage)
->>  	return dt != 0 ? dt : -1;
->>  }
->>  
->> +/*
->> + * Returns:
->> + *  =>0.0 - Success, measured kmsg activity in bytes/second
->> + *  -1.0 - Failure
->> + */
->> +static double measure_dmesg_bytes_per_sec(int wrfd)
->> +{
->> +	struct timespec time_beg, time_now, nsec_sleep;
->> +	unsigned long long readed, rnow;
->> +	double time, ratio;
->> +	int kmsgfd, cnt, zero;
->> +
->> +	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
->> +		errf("Warning: Cannot open /dev/kmsg\n");
->> +
->> +		return -1.0;
->> +	}
->> +
->> +	if (wrfd < 0)
->> +		wrfd = 0;
->> +
->> +	lseek(kmsgfd, 0, SEEK_END);
->> +	nsec_sleep.tv_sec = 0;
->> +	nsec_sleep.tv_nsec = 10ULL * 1000ULL * 1000ULL; /* 10^7 nanoseconds = 10^-2 sec */
->> +	runner_gettime(&time_beg);
->> +	for (cnt = 0, zero = 0, time = 0.0, readed = 0.0; cnt < 11 && time < 0.01; ++cnt) {
->> +		if (zero)
->> +			nanosleep(&nsec_sleep, NULL);
->> +
->> +		rnow = read_dmesg2(kmsgfd, 128 * 1024, wrfd); /* 64KB max */
->> +		readed += rnow;
->> +		runner_gettime(&time_now);
->> +		time = igt_time_elapsed(&time_beg, &time_now);
->> +		if (time <= 0.0) {
->> +			errf("Warning: Time underflow\n");
->> +
->> +			return -1.0;
->> +		}
->> +
->> +		if (rnow == 0)
->> +			++zero;
->> +		else
->> +			zero = 0;
->> +	}
->> +
->> +	runner_gettime(&time_now);
->> +	time = igt_time_elapsed(&time_beg, &time_now);
->> +	if (time <= 0.0) {
->> +		errf("Warning: Time underflow\n");
->> +
->> +		return -1.0;
->> +	}
->> +
->> +	ratio = (double)readed / time;
->> +
->> +	return ratio;
->> +}
->> +
->> +/* Returns: true if ratio lower or equal than maxratio */
->> +static bool check_dmesg_ratio(double maxratio, int log_level, bool sync, int wrfd)
->> +{
->> +	double new_dmesg_bps = measure_dmesg_bytes_per_sec(wrfd);
->> +
->> +	if (log_level >= LOG_LEVEL_NORMAL) {
->> +		outf("Dmesg ratio %0.3fKB/s\n", new_dmesg_bps / 1024);
->> +		if (sync)
->> +			fflush(stdout);
->> +	}
->> +
->> +	return new_dmesg_bps <= maxratio;
->> +}
->> +
->>  /*
->>   * Returns:
->>   *  =0 - Success
->> @@ -960,6 +1126,7 @@ static int monitor_output(pid_t child,
->>  			  int *outputs,
->>  			  double *time_spent,
->>  			  struct settings *settings,
->> +			  double max_dmesg_ratio,
->>  			  char **abortreason,
->>  			  bool *abort_already_written)
->>  {
->> @@ -1463,29 +1630,31 @@ static int monitor_output(pid_t child,
->>  				 * exceeded the disk usage limit.
->>  				 */
->>  				if (killed && disk_usage_limit_exceeded(settings, disk_usage)) {
->> +					char killmsg[256];
->> +
->>  					timeoutresult = false;
->> +					snprintf(killmsg, sizeof(killmsg),
->> +						 "runner: This test was killed due to exceeding disk usage limit. "
->> +						 "(Used %zd bytes, limit %zd)\n",
->> +						 disk_usage,
->> +						 settings->disk_usage_limit);
->>  
->>  					if (socket_comms_used) {
->>  						struct runnerpacket *message;
->> -						char killmsg[256];
->>  
->> -						snprintf(killmsg, sizeof(killmsg),
->> -							 "runner: This test was killed due to exceeding disk usage limit. "
->> -							 "(Used %zd bytes, limit %zd)\n",
->> -							 disk_usage,
->> -							 settings->disk_usage_limit);
->>  						message = runnerpacket_log(STDOUT_FILENO, killmsg);
->>  						write_packet_with_canary(outputs[_F_SOCKET], message, settings->sync);
->>  						free(message);
->>  					} else {
->> -						dprintf(outputs[_F_OUT],
->> -							"\nrunner: This test was killed due to exceeding disk usage limit. "
->> -							"(Used %zd bytes, limit %zd)\n",
->> -							disk_usage,
->> -							settings->disk_usage_limit);
->> +						dprintf(outputs[_F_OUT], "%s", killmsg);
->>  						if (settings->sync)
->>  							fdatasync(outputs[_F_OUT]);
->>  					}
->> +
->> +					if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
->> +						asprintf(abortreason, "Dmesg ratio exceeded during test run.");
->> +						aborting = true;
->> +					}
->>  				}
->>  
->>  				if (socket_comms_used) {
->> @@ -1587,7 +1756,7 @@ static int monitor_output(pid_t child,
->>  	dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
->>  	if (settings->sync)
->>  		fdatasync(outputs[_F_DMESG]);
->> -	if (dmesgwritten > 0) {
->> +	if (dmesgwritten > 0 && !aborting) {
->>  		disk_usage += dmesgwritten;
->>  		if (settings->disk_usage_limit && disk_usage > settings->disk_usage_limit) {
->>  			char disk[1024];
->> @@ -1599,6 +1768,11 @@ static int monitor_output(pid_t child,
->>  			} else if (killed) {
->>  				errf("%s", disk);
->>  			}
->> +
->> +			if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
->> +				asprintf(abortreason, "Dmesg ratio exceeded after test ends.");
->> +				aborting = true;
->> +			}
->>  		}
->>  	}
->>  
->> @@ -1766,6 +1940,7 @@ static int execute_next_entry(struct execute_state *state,
->>  			      size_t total,
->>  			      double *time_spent,
->>  			      struct settings *settings,
->> +			      double max_dmesg_ratio,
->>  			      struct job_list_entry *entry,
->>  			      int testdirfd, int resdirfd,
->>  			      int sigfd, sigset_t *sigmask,
->> @@ -1814,7 +1989,7 @@ static int execute_next_entry(struct execute_state *state,
->>  		goto out_pipe;
->>  	}
->>  
->> -	if ((kmsgfd = open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK)) < 0) {
->> +	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
->>  		errf("Warning: Cannot open /dev/kmsg\n");
->>  	} else {
->>  		/* TODO: Checking of abort conditions in pre-execute dmesg */
->> @@ -1885,7 +2060,7 @@ static int execute_next_entry(struct execute_state *state,
->>  
->>  	result = monitor_output(child, outfd, errfd, socketfd,
->>  				kmsgfd, sigfd,
->> -				outputs, time_spent, settings,
->> +				outputs, time_spent, settings, max_dmesg_ratio,
->>  				abortreason, abort_already_written);
->>  
->>  out_kmsgfd:
->> @@ -2418,6 +2593,8 @@ bool execute(struct execute_state *state,
->>  	     struct settings *settings,
->>  	     struct job_list *job_list)
->>  {
->> +	static double dmesg_bps = -1.0;
->> +	static double max_dmesg_bps = -1.0;
->>  	int resdirfd, testdirfd, unamefd, timefd, sigfd;
->>  	struct environment_variable *env_var;
->>  	struct utsname unamebuf;
->> @@ -2560,6 +2737,26 @@ bool execute(struct execute_state *state,
->>  		}
->>  	}
->>  
->> +	if (max_dmesg_bps < 0.0) {
->> +		double ncpu_bps = 4 * 1024 * max_t(size_t, sysconf(_SC_NPROCESSORS_ONLN), 4);
->> +		double set_bps = 0.0;
->> +
->> +		dmesg_bps = measure_dmesg_bytes_per_sec(0);
->> +
->> +		if (settings->disk_usage_limit > 0 && settings->per_test_timeout > 0)
->> +			set_bps = (double)settings->disk_usage_limit / (double)settings->per_test_timeout;
->> +
->> +		outf("Dmesg KB/s ratio settings:%0.3f ncpu:%0.3f current:%0.3f\n",
->> +		     set_bps / 1024, ncpu_bps / 1024, dmesg_bps / 1024);
->> +
->> +		if (set_bps > 0.0)
->> +			max_dmesg_bps = set_bps;
->> +		else
->> +			max_dmesg_bps = dmesg_bps > ncpu_bps ? dmesg_bps : ncpu_bps;
->> +
->> +		outf("Using max level dmesg ratio %0.3fKB/s\n", max_dmesg_bps / 1024);
->> +	}
->> +
->>  	for (; state->next < job_list->size;
->>  	     state->next++) {
->>  		char *reason = NULL;
->> @@ -2596,6 +2793,7 @@ bool execute(struct execute_state *state,
->>  						    job_list->size,
->>  						    &time_spent,
->>  						    settings,
->> +						    max_dmesg_bps,
->>  						    &job_list->entries[state->next],
->>  						    testdirfd, resdirfd,
->>  						    sigfd, &sigmask,
->> @@ -2651,6 +2849,8 @@ bool execute(struct execute_state *state,
->>  			break;
->>  		}
->>  
->> +		check_dmesg_ratio(max_dmesg_bps, settings->log_level, settings->sync, 0);
->> +
->>  		if (result > 0) {
->>  			double time_left = state->time_left;
->>  
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+> ---
+>  tests/amdgpu/amd_deadlock.c | 54 ++++++++++++++++++++++++++++++++++---
+>  1 file changed, 51 insertions(+), 3 deletions(-)
+>
+> diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+> index 3456f42c8..41b3aa15e 100644
+> --- a/tests/amdgpu/amd_deadlock.c
+> +++ b/tests/amdgpu/amd_deadlock.c
+> @@ -78,7 +78,7 @@ igt_main
+>  	igt_subtest_with_dynamic("amdgpu-deadlock-sdma") {
+>  		if (arr_cap[AMD_IP_DMA]) {
+>  			igt_dynamic_f("amdgpu-deadlock-sdma")
+> -			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA, &pci);
+> +			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA, &pci, false);
+>  		}
+>  	}
+>  
+> @@ -107,7 +107,7 @@ igt_main
+>  	igt_subtest_with_dynamic("amdgpu-deadlock-gfx") {
+>  		if (arr_cap[AMD_IP_GFX]) {
+>  			igt_dynamic_f("amdgpu-deadlock-gfx")
+> -			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_GFX, &pci);
+> +			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_GFX, &pci, false);
+>  		}
+>  	}
+>  
+> @@ -124,7 +124,7 @@ igt_main
+>  	igt_subtest_with_dynamic("amdgpu-deadlock-compute") {
+>  		if (arr_cap[AMD_IP_COMPUTE]) {
+>  			igt_dynamic_f("amdgpu-deadlock-compute")
+> -			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_COMPUTE, &pci);
+> +			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_COMPUTE, &pci, false);
+>  		}
+>  	}
+>  
+> @@ -196,6 +196,54 @@ igt_main
+>  					       AMDGPU_HW_IP_GFX, &pci, true);
+>  		}
+>  	}
+> +
+> +	igt_describe("Test-GPU-reset-by-sdma-badop-with-jobs");
+> +	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-badop-test-umq") {
+> +		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
+> +			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
+> +			igt_dynamic_f("amdgpu-deadlock-sdma-badop-test-umq")
+> +			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_OPCODE,
+> +					AMDGPU_HW_IP_DMA, &pci, true);
+> +		}
+> +	}
+> +
+> +	igt_describe("Test-GPU-reset-by-sdma-bad-mem-with-jobs");
+> +	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-mem-test-umq") {
+> +		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
+> +			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
+> +			igt_dynamic_f("amdgpu-deadlock-sdma-bad-mem-test-umq")
+> +			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
+> +					AMDGPU_HW_IP_DMA, &pci, true);
+> +		}
+> +	}
+> +
+> +	igt_describe("Test-GPU-reset-by-sdma-bad-reg-with-jobs");
+> +	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-reg-test-umq") {
+> +		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
+> +			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
+> +			igt_dynamic_f("amdgpu-deadlock-sdma-bad-reg-test-umq")
+> +			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
+> +					AMDGPU_HW_IP_DMA, &pci, true);
+> +		}
+> +	}
+> +
+> +	igt_describe("Test-GPU-reset-by-sdma-bad-length-with-jobs");
+> +	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-length-test-umq") {
+> +		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
+> +			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
+> +			igt_dynamic_f("amdgpu-deadlock-sdma-bad-length-test-umq")
+> +			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
+> +					AMDGPU_HW_IP_DMA, &pci, true);
+> +		}
+> +	}
+> +
+> +	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
+> +	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-umq") {
+> +		if (enable_test && userq_arr_cap[AMD_IP_DMA]) {
+> +			igt_dynamic_f("amdgpu-deadlock-sdma-umq")
+> +			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA, &pci, true);
+> +		}
+> +	}
+>  #endif
+>  
+>  	igt_fixture {
