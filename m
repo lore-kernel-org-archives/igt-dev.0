@@ -4,54 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39FBCCA0EED
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 14:16:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 903AFCA0EED
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 14:42:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AEED510E9D3;
-	Thu, 28 Aug 2025 14:16:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 284BB10E9FC;
+	Thu, 28 Aug 2025 14:42:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PMBMUnAS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FZRbMTX4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 301F110E6BE
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 07:31:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7856E10E9FB
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 14:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756366284; x=1787902284;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=pKu+YeW8xRK1FHZguf9mYKKBOQTYvVhPj1zWNBuSaFA=;
- b=PMBMUnASRUffGsDK5DvQinlUUzqoXW+PJS2SomeVMW76X74E221UR8jP
- dgMO5qbLLtaXkFB/idEnov02MovcTpc7r4wlh26PWm/5daFKLPcFmVqdL
- ED4Deptg6Ah6bzbIM6cVOqCmgc6wUvZ9tuGwkkvsZQc2pKDMazybbdJiL
- sxkZtVaZTNl2/CW/wj6AHfCCz7bjoQuwdXnYTCQmG49ublxxEqZMPSyYA
- J75NFAPQjARf68RzarYd6Hn/sqmpvfbcuK0UJKMhmtQh2XG4mN7XZ6foG
- Q2WWFvZwva2CLST5c/n4DUTk35II315Cy5uFi1d3/UpYZuYlbgvdVV4iK A==;
-X-CSE-ConnectionGUID: tCtFsjvXTZ2XRWoJEutVXg==
-X-CSE-MsgGUID: E50EOGlqSv+FuiB4UexUtQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="69335322"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="69335322"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 00:31:23 -0700
-X-CSE-ConnectionGUID: 2cpzmLerSZW/3p7XRAQ6HQ==
-X-CSE-MsgGUID: SJLKKrHUR2aXsfmg6PIcrA==
+ t=1756392169; x=1787928169;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=XtwFiSUrA/GXt/xDAMcWLN5sKfQ+m677z0aKSoB+J9o=;
+ b=FZRbMTX4IlwZn496yVmx3cUXUoBRRE5tE+1kgaZCwcI13uqQ5wgOqeoN
+ 3QKWjArDEZ0TFzQ1qrTUvWOdq5F+qhJ1DcsiqunHE6NF84nUHtj0o9p29
+ z1Kt4o7kVctvc9zzV++5g7upwkfeHI9GGgJtAC8SBP0ajQCdB9wLVh8Pg
+ WznPKqjmd0flP1u/OC4YES85U1/mvV06oDAaEqC9ofqlPojZfuPkBpGx/
+ THQtMoAT8WC/OHl3wSwq1uJKKWO8qQMKDn6E4AyrRaKIGhaV4alDVino/
+ T95KTOY5Eqz1pWa8vmohqm28M8mHk3DJ96onpB4ue35JxP81R9DGSG9ff Q==;
+X-CSE-ConnectionGUID: 5lJ4rnJgSZmmMTOczpReQg==
+X-CSE-MsgGUID: Kj7B/WwdSZe95LQCoBt3jQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58587906"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="58587906"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2025 07:42:48 -0700
+X-CSE-ConnectionGUID: 3ZxRqa02RsmmOf6QqT3IEQ==
+X-CSE-MsgGUID: jpMybUFNRhiuyYxSOFD52w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="201004481"
-Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
- by orviesa002.jf.intel.com with ESMTP; 28 Aug 2025 00:31:21 -0700
-From: mallesh.koujalagi@intel.com
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, sk.anirban@intel.com, raag.jadav@intel.com,
- Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/intel/i915_pm_rps: Added Multi-GT support
-Date: Thu, 28 Aug 2025 13:01:13 +0530
-Message-Id: <20250828073114.1884451-1-mallesh.koujalagi@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="193793911"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2025 07:42:48 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 28 Aug 2025 07:42:46 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Thu, 28 Aug 2025 07:42:46 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.55)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 28 Aug 2025 07:42:46 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aBh4ubFgnnE2xjEatIV1TphEgz1Ckd4YdN11ciLWdVA5rKOLYh5ofL8dNdQe5IRCA0osPk8KvgJriKYQCqk4V1jscNKS2iqn+cvE3nIAjmLAGI0hD3cLIjQLhke8ZfFyQWp3uv0X42+bcRmIVeyRWfrzNZxXrrQLri1C9EQdHwbbUIwCNZTQfurmAu1mQyLBamGirrww6AWy6XGPaPG9P9B5OdJJhqXZ+eH30yJ8IUAOHhXKLaREu2BTRP1i1BCYHYKM5FAY+vYbF0X7DB09RpzeDoNLPNJM3lZvrzJTGOiq3b1V96b4hn210phj6QHjWd4YpW+QcDkdUyD18N56qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XtwFiSUrA/GXt/xDAMcWLN5sKfQ+m677z0aKSoB+J9o=;
+ b=Qkmu5pjV9CN/Q/Hi0pZPWWrEOzuHiM4sx/cEjoZL7pVOzLsN7BlW/T+Xw2R4wKWS1/XVyJj+Wtlzihp9j6HRUhrV8mWubX3XH3QMgnRfyURwsYMOBj6kKXeMlzbycnD1LfeWyg5sfK9mS7qQdl0iinIOBBcUQkXZjveFjkQyFA58AJ/7G27sw11VYpD4ygCVIGirSwdmCRcW6FL+1qdYAdrEKUofl1AO5e1MEBkpeMMM8C4Jy9ierv2BtL6VgzJaQe6XjQsR1JIWZMw58TgPkxh5EkKb836/NJegivBdKEUgJbmEgm6NoaoCYk5SnRSRgHtUhEBGhDBBbSxJug28Ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL1PR11MB5525.namprd11.prod.outlook.com (2603:10b6:208:31f::10)
+ by PH0PR11MB5927.namprd11.prod.outlook.com (2603:10b6:510:14e::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Thu, 28 Aug
+ 2025 14:42:35 +0000
+Received: from BL1PR11MB5525.namprd11.prod.outlook.com
+ ([fe80::1a2f:c489:24a5:da66]) by BL1PR11MB5525.namprd11.prod.outlook.com
+ ([fe80::1a2f:c489:24a5:da66%4]) with mapi id 15.20.9073.016; Thu, 28 Aug 2025
+ 14:42:35 +0000
+From: "Gurram, Pravalika" <pravalika.gurram@intel.com>
+To: "Sharma, Nishit" <nishit.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ghimiray,
+ Himal Prasad" <himal.prasad.ghimiray@intel.com>, "Brost, Matthew"
+ <matthew.brost@intel.com>, "Sharma, Nishit" <nishit.sharma@intel.com>
+Subject: RE: [PATCH i-g-t 1/5] include/drm-uap: Added drm_xe_madvise structure
+Thread-Topic: [PATCH i-g-t 1/5] include/drm-uap: Added drm_xe_madvise structure
+Thread-Index: AQHcFmVHF9xA3Ckn3EKKRav2ni1CI7R4I9aQ
+Date: Thu, 28 Aug 2025 14:42:35 +0000
+Message-ID: <BL1PR11MB55259B94A6C7801EA2395427843BA@BL1PR11MB5525.namprd11.prod.outlook.com>
+References: <20250826084133.897768-1-nishit.sharma@intel.com>
+ <20250826084133.897768-2-nishit.sharma@intel.com>
+In-Reply-To: <20250826084133.897768-2-nishit.sharma@intel.com>
+Accept-Language: en-US
+Content-Language: en-GB
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5525:EE_|PH0PR11MB5927:EE_
+x-ms-office365-filtering-correlation-id: ffff2733-c972-43e3-5060-08dde64120be
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|1800799024|376014|7053199007|38070700018; 
+x-microsoft-antispam-message-info: =?utf-8?B?WmdRTVpkbDFrUE5ZS3g2ZEZaVnNOVTZoSHBPbnp0TWQ2WlFhclVvSVIxczVl?=
+ =?utf-8?B?NExrVWhnYUFLcEVhcitnSGpXTDA5bHU1anBwWW53eXZpM0pGWEk3K3p0d1BG?=
+ =?utf-8?B?NCtUUUswYnRXQnppSldPVEE3aWZnWjVnclAzWXg0cFRKUkxkT0RUeFR5Vk0y?=
+ =?utf-8?B?QlRQSGlRNWVZTlVtaUVDNjV6UndIOFMxSHJRVjFIdTBUYlBGVDZJN2x2b0Zu?=
+ =?utf-8?B?T0t4YUYrcGd2M0s3WVZPWkx2L3gwa3R5cytWczd1NDh6MGdIeXhiSzdMRFhR?=
+ =?utf-8?B?ay9mazYrWThoTkhGa1ZRbWh6QWVTTktTUXY5dHJPUjFsS1A2N0tHZXlGc1Ey?=
+ =?utf-8?B?YjRmdmNnbnovRmh5S3BqTDdCekFMYUlTVjNLWlA2QUdWUkJxOU9hSzc5dkN6?=
+ =?utf-8?B?WVZodS9SbVcwS2N2aUh2OVdrSjB5S2oyOXVQUWExdy9ROGlZOW1JOStHeE8z?=
+ =?utf-8?B?OE5Odjk1TWErWHlzSFNaTXl0UTBOcHlkM2Z2dXJZYjBWV25tT0R0NW5qY0k2?=
+ =?utf-8?B?ZTN3QmY4T2d1T2pMU1dEUnNRbldpTzlCM2toWFVrVXJsQ2Vyd1hVa1liUVB5?=
+ =?utf-8?B?Nm9VOFVNY2REUjlHMllWeUluMHU2cXJoZjNXdFRuWjIvbEVRaXlVanBRT1Ix?=
+ =?utf-8?B?WnRac1FlTFhOZlQ2Vkp6NW1nTGJDb2hFOFY3amdFREJMTXNRV2tPd2w0THlx?=
+ =?utf-8?B?MzFmMit1dTdOTlJkZ2xZZk5oY1VBVUFxYzJQYVM0NkRxelFiRjdBdERuRGZI?=
+ =?utf-8?B?ZlNYazR3QlJMQUpmSHhhNGg3WXR3bzZReVk4aXMzN2E2TXU4Wks4YTlLZk53?=
+ =?utf-8?B?OXc1NUJ3MzMxQTVoR0YzWTFDK2ptTDVjYkdYTFVvc0NCZmN6WWo1clltWTI0?=
+ =?utf-8?B?enI4R213eDlMaHduT0JOUnM2K1JHeTJlVVJtZGFZeDMrVXVsTHBGOSt4REV5?=
+ =?utf-8?B?UTF6TnF5eGZCR1V4TG9zbTBDZ3JNWUl0aWlqdmRHRG5vRVRZZUJpRXB0S1JZ?=
+ =?utf-8?B?NlVsR3I4dTZiQWJOeW1uaTBhQ2F3eW1qVVRSVWZvVExWYnFERUhiV2hZTVFw?=
+ =?utf-8?B?Qk5qaDU0OEhNejVBK01OZS91QzZucnF5bVhXeEZoOVlYS2Exb01rUEtiTXEx?=
+ =?utf-8?B?K1dKMFppYjU5OGxvdkE1aitVYVRXR0VDdHAvWnRyVEhLWG9hWnVGMUtZd1RG?=
+ =?utf-8?B?bEwyaCtLVVZQZGwxdi9KS0JEZWtTcjRPbE13b2ZnMys5bXFtem5QN3lvRndB?=
+ =?utf-8?B?dEdheU5Ib1N2OFNyYXV2S25zdk9JVGhWd01sak1QWUNtZStpZmthbHJ3NEFs?=
+ =?utf-8?B?a3I2VThjRWhJeWYzQW5nZ2VVaGR1WVF1Tk9UK0ZpcXU5dDBwc1Bhb3hrK2pH?=
+ =?utf-8?B?WjFVNFpjTDRCZXlaLzRsMkxoTm1KNWpjNFVETUdpSC9pbndDZ083d2wxQ0VT?=
+ =?utf-8?B?QzB2empjaVdMNXB0ckNDMVNnMjZnODVZN2g0eXcxZ1dsNlBiaEROK2JybjVu?=
+ =?utf-8?B?RXhqaHRreTFPeGJaSDVoMmlmWDl3Vklqejd3VEMva3FGYVk3U1k2SVBEOGVn?=
+ =?utf-8?B?azBCTVNCMVVEMnBDbW1mRXBmM0pUWVZuRXQvV3RvYW5wY3pGdXB6MUJ3OWNi?=
+ =?utf-8?B?THRRKzgxdVRRaFluSTRFcHd3cFpjZmcyTFlpK1VLeWZzeDBNeTNUN0c5eTNu?=
+ =?utf-8?B?aG1BdmNuWXE1ZURvUjlvTG45T3pNZno4UFdtM095VUVxWlNXUzVaMmduRUFk?=
+ =?utf-8?B?TDFKeFR0T3NXaFMrV01wNFEzSUN4N3BuVXcvVUV6c3AvMXNSak9XSTNSOGZk?=
+ =?utf-8?B?N1V3THBMOVkycUNwZ3NTNXdOd0lPWGNtTG5qVTRUVFV2UWIyTlZBNGZ5WUox?=
+ =?utf-8?B?ZVZQNk5McG4rUDBxM0RzUnV3VXBwWlFHS2NhYUpvYkk3YW11MHJib2ZvZ1Vl?=
+ =?utf-8?B?SFBOVkJMc2Q5VytkcVhVeFlnek5VTmpIV0ZzcDhaWk82K1JNeFE5WW14bTVp?=
+ =?utf-8?B?NFNmSzcrMW5BPT0=?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR11MB5525.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(7053199007)(38070700018); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VENxTWRENUlRS3RnWFR4aWVFRzhIOHFyQzIzcjdpQm1YYmFNVlpYMzJOL0Zr?=
+ =?utf-8?B?SjlONHdMWjk5SXNjMUxXeHhSZzFqY0N3V3JNYitDb2Rmb3RkbmVZbHNPUkpD?=
+ =?utf-8?B?d3ZFUHd4eFgxZ1hWYkFydW5pOUY4VlkvMW9TOXoyRFUwQS9xVFBhaWhtcC9a?=
+ =?utf-8?B?RDJPLzdFTFRnSGdEdkJuREhTVUFLdzRXajFaU1NnczhZdkVCWmZzNXFhNDZI?=
+ =?utf-8?B?dGpXYXpxSkE3ZWFJM0g1R3pQNmNEZ09WY3oxZ3Fid25mcHpmditlbVJCanFL?=
+ =?utf-8?B?WVJSWndXYzZhS1B0NFZHU1Zha0t1VlRYOWtTVDYyYkhQalpZK1lhRXVvZ3FF?=
+ =?utf-8?B?elhINGV1UFdJTi9JNXliNmJZYStiVTVudENMWlM0cXNZVDRqM0RvYkZMUEt5?=
+ =?utf-8?B?eWVHNld6TEkyenVYbWxMSjg3UWVPZXpFUG5OQ0lkcGpJSDUwMmxtTDNLN0Rl?=
+ =?utf-8?B?YzdLcFc4UVpzY08wVDhxL0FQVVJyRk9Nc0ZtZldyaVBBWWJHeXA2UVJIcGQz?=
+ =?utf-8?B?U2dnM041MzFFV3NyUWhud2c3cnNiYmJvTU1iQldwcXVLRDNlVUdUUHViVm54?=
+ =?utf-8?B?U3lsQ0ZvUEt0NlFlcndvcGxwTVNlQjNENlZEeUtlWFR0S0UrTFJWVDlxZFpw?=
+ =?utf-8?B?eDVMNVVKdkdxMTNMbEt3eldDemh5bGVIcE5EVk56QTdjMmRnRytnQWt2Yy9q?=
+ =?utf-8?B?Qmpkc1BZN2d3T2FYeVhITFlSYytnQkZEelhGYzhJSUkvRkQyV2RUZnJSbHdn?=
+ =?utf-8?B?NXZobjdXUWJZY0VrZWVyYlA5Rlp3RG9CMWVHeHE0R3U5MnlNZVBJdGpxTTBD?=
+ =?utf-8?B?RkNwckFGV2xKLzhCYmkrb0k4MTRpdWtuZEVxSHBtbDBPeUlwMWtFQk85MXhX?=
+ =?utf-8?B?TkNuSTc1MVVtSHBoU3VkQ2RsN2taeEhCQVhDTlEreWxRbFRiOUFFUW5MVW5I?=
+ =?utf-8?B?V1dmaUFyeTFTYldhVXUySURoZitTQVAxQ1orVFcvRkR2K1BCbVdzeXJTdExh?=
+ =?utf-8?B?L0JlUHpJNUNEejYwNXlxY00xSm13QnJvVlNKUUdMZDlvbnp1czh1K3lDdWRk?=
+ =?utf-8?B?ei9nTWV1VG5QdVBmTHNuL0NDVTBKdHV3Yi9ZVkxwYWZuMDhENnhMTWhGOVFY?=
+ =?utf-8?B?ejdHR1RRZTFpTUVNUlV3K01ObG01NGpXbnNwL1V5S3hITnk3c0p3c3pxalRk?=
+ =?utf-8?B?YmRDM1ptWGIvR0VvaFY0WlJpelMrZzJiTHI5Szc5V011bjZmQ1lHTGJxYXBs?=
+ =?utf-8?B?cTI0WStqTUYxYm9rUGU0TmNwMnUybFk0RCtTZnhkQXVZbzdDZXlBL0NTUitQ?=
+ =?utf-8?B?dERxOTRmeEdIL2FHNTdxK1dHdWVFeGh3Vmo4aC9SbkJGZ2ttdmlxU3F5S28z?=
+ =?utf-8?B?ZDBDYlo4cmRxK1o2cHNmVkQ5RlBUdjJWTnNsR3lKKytnRU5ZNEVIbU1OV3FN?=
+ =?utf-8?B?RkJOVmo5YUphQ3ZuL2JaaTgyVnJLUFRuM0tIV2t1Sk1yZkNjRUpLRjBnaEdX?=
+ =?utf-8?B?Q0ZCWUtOVWdhQURZU3g5L1VJV05qV013ZGRJTm0xeW5rMS9YcGsyempGR2Ur?=
+ =?utf-8?B?TXoxdlpWNkxUTmNScTgrdEI0ZjBCU2NUQmo5a01nZEZqNGhHeDdtT2RCZnlY?=
+ =?utf-8?B?emZOVCtSem0weUFrRDRMVDRmVWdheWdDUStXU2VZYjV1WTNZRVdBYjZIM1dj?=
+ =?utf-8?B?dFFBRHpKZkZsdEF6dlhDaW45VFdpT1ludlVXc01UUnZBSVM4QjZlSU91OU5p?=
+ =?utf-8?B?UHBXSHB5dlZsamJXa0RvcWZOeElBNWNoZmlpZmFIZG53SklWeXVGQUxNdW1L?=
+ =?utf-8?B?VXlPazhCc0doV3E5bFBxQzBZYlZJREtNTUhTRWdEWnUxWFpnenR5bi91Q1Ns?=
+ =?utf-8?B?dEFicmhEek9DQy95QUpTeFhnbDZXa1pBYjNpK1M5anpveldRMG1ta1d0Qldt?=
+ =?utf-8?B?WWdEYXFrcWROSnIyalFXdWo3Q0Zrdko2RzhVNTlqLzVuMCs3M2pnekF1czBL?=
+ =?utf-8?B?RTdld3ZWd3ExbG5GVkgyaFNRTDhraTFMc3pyaTROUlJKQXRNbjVxRDVSZEEv?=
+ =?utf-8?B?dWkvc2UrcE1kSzR1dmMrK2FqZEcyQnZZTThpVVd0bnhucGpaUUsvVGM4K1RM?=
+ =?utf-8?Q?umuBg/TTF6wzdzlkS5iDxp2vH?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 28 Aug 2025 14:16:24 +0000
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5525.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffff2733-c972-43e3-5060-08dde64120be
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2025 14:42:35.2477 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iBI28LPQRRxrp65+V4hDwGebcc4nqJQoioXbrVR7uNFkEiGeit7S7aN0jLICt55DqHs90x61h4gLI34RsCTd7/CqSoBwg8x98R8ueJrP2+o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5927
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,699 +201,265 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-
-Multi-GT support for various functionalities
-- Enhanced basic API to accommodate multi-GT configurations.
-- Implemented min-max configuration handling for idle states.
-- Updated min-max configuration handling for loaded states.
-- Improved waitboost functionality for multi-GT scenarios.
-- Refined reset test cases to ensure compatibility with multi-GT setups
-
-Signed-off-by: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
----
- tests/intel/i915_pm_rps.c | 345 +++++++++++++++++++++-----------------
- 1 file changed, 189 insertions(+), 156 deletions(-)
-
-diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
-index 80f3e76c1..38e641dec 100644
---- a/tests/intel/i915_pm_rps.c
-+++ b/tests/intel/i915_pm_rps.c
-@@ -77,6 +77,9 @@
-  * SUBTEST: waitboost
-  */
- 
-+#define NUMFREQ		8
-+#define MAX_GTS		2
-+
- IGT_TEST_DESCRIPTION("Render P-States tests - verify GPU frequency changes");
- 
- static int drm_fd;
-@@ -89,26 +92,36 @@ enum {
- 	RP0,
- 	RP1,
- 	RPn,
--	BOOST,
--	NUMFREQ
-+	BOOST
- };
- 
--static int origfreqs[NUMFREQ];
-+static int origfreqs[MAX_GTS][NUMFREQ];
- 
- struct sysfs_file {
- 	const char *name;
- 	const char *mode;
- 	FILE *filp;
--} sysfs_files[] = {
--	{ "act", "r", NULL },
--	{ "cur", "r", NULL },
--	{ "min", "rb+", NULL },
--	{ "max", "rb+", NULL },
--	{ "RP0", "r", NULL },
--	{ "RP1", "r", NULL },
--	{ "RPn", "r", NULL },
--	{ "boost", "rb+", NULL },
--	{ NULL, NULL, NULL }
-+} sysfs_files[MAX_GTS][NUMFREQ] = {
-+	{
-+		{ "act", "r", NULL },
-+		{ "cur", "r", NULL },
-+		{ "min", "rb+", NULL },
-+		{ "max", "rb+", NULL },
-+		{ "RP0", "r", NULL },
-+		{ "RP1", "r", NULL },
-+		{ "RPn", "r", NULL },
-+		{ "boost", "rb+", NULL },
-+	},
-+	{
-+		{ "act", "r", NULL },
-+		{ "cur", "r", NULL },
-+		{ "min", "rb+", NULL },
-+		{ "max", "rb+", NULL },
-+		{ "RP0", "r", NULL },
-+		{ "RP1", "r", NULL },
-+		{ "RPn", "r", NULL },
-+		{ "boost", "rb+", NULL },
-+	}
- };
- 
- static int readval(FILE *filp)
-@@ -123,12 +136,12 @@ static int readval(FILE *filp)
- 	return val;
- }
- 
--static void read_freqs(int *freqs)
-+static void read_freqs(int *freqs, int sysfs_gt)
- {
- 	int i;
- 
- 	for (i = 0; i < NUMFREQ; i++)
--		freqs[i] = readval(sysfs_files[i].filp);
-+		freqs[i] = readval(sysfs_files[sysfs_gt][i].filp);
- }
- 
- static void nsleep(unsigned long ns)
-@@ -147,23 +160,23 @@ static void nsleep(unsigned long ns)
- 	} while (ret && errno == EINTR);
- }
- 
--static void wait_freq_settle(void)
-+static void wait_freq_settle(int sysfs_gt)
- {
- 	int timeout = 10;
- 
- 	while (1) {
- 		int freqs[NUMFREQ];
--
--		read_freqs(freqs);
-+		read_freqs(freqs, sysfs_gt);
- 		if (freqs[CUR] >= freqs[MIN] && freqs[CUR] <= freqs[MAX])
- 			break;
- 		nsleep(1000000);
- 		if (!timeout--)
- 			break;
-+
- 	}
- }
- 
--static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check)
-+static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check, int sysfs_gt)
- {
- 	int ret, orig;
- 
-@@ -179,16 +192,17 @@ static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check)
- 	} else {
- 		/* Expecting no error */
- 		igt_assert_lt(0, ret);
--		wait_freq_settle();
-+		wait_freq_settle(sysfs_gt);
- 		if (readback_check)
- 			igt_assert_eq(readval(filp), val);
- 	}
- 
- 	return ret;
- }
--#define writeval(filp, val) do_writeval(filp, val, 0, true)
--#define writeval_inval(filp, val) do_writeval(filp, val, EINVAL, true)
--#define writeval_nocheck(filp, val) do_writeval(filp, val, 0, false)
-+
-+#define writeval(filp, val, sysfs_gt) do_writeval(filp, val, 0, true, sysfs_gt)
-+#define writeval_inval(filp, val, sysfs_gt) do_writeval(filp, val, EINVAL, true, sysfs_gt)
-+#define writeval_nocheck(filp, val, sysfs_gt) do_writeval(filp, val, 0, false, sysfs_gt)
- 
- static void check_freq_constraints(const int *freqs)
- {
-@@ -203,14 +217,13 @@ static void check_freq_constraints(const int *freqs)
- 	igt_assert_neq(freqs[RP1], 0);
- }
- 
--static void dump(const int *freqs)
-+static void dump(const int *freqs, int sysfs_gt)
- {
- 	int i;
- 
- 	igt_debug("gt freq (MHz):");
- 	for (i = 0; i < NUMFREQ; i++)
--		igt_debug("  %s=%d", sysfs_files[i].name, freqs[i]);
--
-+		igt_debug("  %s=%d", sysfs_files[sysfs_gt][i].name, freqs[i]);
- 	igt_debug("\n");
- }
- 
-@@ -375,14 +388,14 @@ static void do_load_gpu(void)
- }
- 
- /* Return a frequency rounded by HW to the nearest supported value */
--static int get_hw_rounded_freq(int target)
-+static int get_hw_rounded_freq(int target, int sysfs_gt)
- {
- 	int freqs[NUMFREQ];
- 	int old_freq;
- 	int idx;
- 	int ret;
- 
--	read_freqs(freqs);
-+	read_freqs(freqs, sysfs_gt);
- 
- 	if (freqs[MIN] > target)
- 		idx = MIN;
-@@ -390,10 +403,10 @@ static int get_hw_rounded_freq(int target)
- 		idx = MAX;
- 
- 	old_freq = freqs[idx];
--	writeval_nocheck(sysfs_files[idx].filp, target);
--	read_freqs(freqs);
-+	writeval_nocheck(sysfs_files[sysfs_gt][idx].filp, target, sysfs_gt);
-+	read_freqs(freqs, sysfs_gt);
- 	ret = freqs[idx];
--	writeval_nocheck(sysfs_files[idx].filp, old_freq);
-+	writeval_nocheck(sysfs_files[sysfs_gt][idx].filp, old_freq, sysfs_gt);
- 
- 	return ret;
- }
-@@ -402,112 +415,112 @@ static int get_hw_rounded_freq(int target)
-  * Modify softlimit MIN and MAX freqs to valid and invalid levels. Depending
-  * on subtest run different check after each modification.
-  */
--static void min_max_config(void (*check)(void), bool load_gpu)
-+static void min_max_config(void (*check)(int), bool load_gpu, int sysfs_gt)
- {
--	int fmid = (origfreqs[RPn] + origfreqs[RP0]) / 2;
-+	int fmid = (origfreqs[sysfs_gt][RPn] + origfreqs[sysfs_gt][RP0]) / 2;
- 
- 	/*
- 	 * hw (and so kernel) rounds to the nearest value supported by
- 	 * the given platform.
- 	 */
--	fmid = get_hw_rounded_freq(fmid);
-+	fmid = get_hw_rounded_freq(fmid, sysfs_gt);
- 
- 	igt_debug("\nCheck original min and max...\n");
- 	if (load_gpu)
- 		do_load_gpu();
--	check();
-+	check(sysfs_gt);
- 
- 	igt_debug("\nSet min=RPn and max=RP0...\n");
--	writeval(sysfs_files[MIN].filp, origfreqs[RPn]);
--	writeval(sysfs_files[MAX].filp, origfreqs[RP0]);
-+	writeval(sysfs_files[sysfs_gt][MIN].filp, origfreqs[sysfs_gt][RPn], sysfs_gt);
-+	writeval(sysfs_files[sysfs_gt][MAX].filp, origfreqs[sysfs_gt][RP0], sysfs_gt);
- 	if (load_gpu)
- 		do_load_gpu();
--	check();
-+	check(sysfs_gt);
- 
- 	igt_debug("\nIncrease min to midpoint...\n");
--	writeval(sysfs_files[MIN].filp, fmid);
-+	writeval(sysfs_files[sysfs_gt][MIN].filp, fmid, sysfs_gt);
- 	if (load_gpu)
- 		do_load_gpu();
--	check();
-+	check(sysfs_gt);
- 
- 	igt_debug("\nIncrease min to RP0...\n");
--	writeval(sysfs_files[MIN].filp, origfreqs[RP0]);
-+	writeval(sysfs_files[sysfs_gt][MIN].filp, origfreqs[sysfs_gt][RP0], sysfs_gt);
- 	if (load_gpu)
- 		do_load_gpu();
--	check();
-+	check(sysfs_gt);
- 
- 	igt_debug("\nIncrease min above RP0 (invalid)...\n");
--	writeval_inval(sysfs_files[MIN].filp, origfreqs[RP0] + 1000);
--	check();
-+	writeval_inval(sysfs_files[sysfs_gt][MIN].filp, origfreqs[sysfs_gt][RP0] + 1000, sysfs_gt);
-+	check(sysfs_gt);
- 
--	if (origfreqs[RPn] < origfreqs[RP0]) {
-+	if (origfreqs[sysfs_gt][RPn] < origfreqs[sysfs_gt][RP0]) {
- 		igt_debug("\nDecrease max to RPn (invalid)...\n");
--		writeval_inval(sysfs_files[MAX].filp, origfreqs[RPn]);
--		check();
-+		writeval_inval(sysfs_files[sysfs_gt][MAX].filp, origfreqs[sysfs_gt][RPn], sysfs_gt);
-+		check(sysfs_gt);
- 	}
- 
- 	igt_debug("\nDecrease min to midpoint...\n");
--	writeval(sysfs_files[MIN].filp, fmid);
-+	writeval(sysfs_files[sysfs_gt][MIN].filp, fmid, sysfs_gt);
- 	if (load_gpu)
- 		do_load_gpu();
--	check();
-+	check(sysfs_gt);
- 
- 	igt_debug("\nDecrease min to RPn...\n");
--	writeval(sysfs_files[MIN].filp, origfreqs[RPn]);
-+	writeval(sysfs_files[sysfs_gt][MIN].filp, origfreqs[sysfs_gt][RPn], sysfs_gt);
- 	if (load_gpu)
- 		do_load_gpu();
--	check();
-+	check(sysfs_gt);
- 
- 	igt_debug("\nDecrease min below RPn (invalid)...\n");
--	writeval_inval(sysfs_files[MIN].filp, 0);
--	check();
-+	writeval_inval(sysfs_files[sysfs_gt][MIN].filp, 0, sysfs_gt);
-+	check(sysfs_gt);
- 
- 	igt_debug("\nDecrease max to midpoint...\n");
--	writeval(sysfs_files[MAX].filp, fmid);
--	check();
-+	writeval(sysfs_files[sysfs_gt][MAX].filp, fmid, sysfs_gt);
-+	check(sysfs_gt);
- 
- 	igt_debug("\nDecrease max to RPn...\n");
--	writeval(sysfs_files[MAX].filp, origfreqs[RPn]);
--	check();
-+	writeval(sysfs_files[sysfs_gt][MAX].filp, origfreqs[sysfs_gt][RPn], sysfs_gt);
-+	check(sysfs_gt);
- 
- 	igt_debug("\nDecrease max below RPn (invalid)...\n");
--	writeval_inval(sysfs_files[MAX].filp, 0);
--	check();
-+	writeval_inval(sysfs_files[sysfs_gt][MAX].filp, 0, sysfs_gt);
-+	check(sysfs_gt);
- 
--	if (origfreqs[RP0] > origfreqs[RPn]) {
-+	if (origfreqs[sysfs_gt][RP0] > origfreqs[sysfs_gt][RPn]) {
- 		igt_debug("\nIncrease min to RP0 (invalid)...\n");
--		writeval_inval(sysfs_files[MIN].filp, origfreqs[RP0]);
--		check();
-+		writeval_inval(sysfs_files[sysfs_gt][MIN].filp, origfreqs[sysfs_gt][RP0], sysfs_gt);
-+		check(sysfs_gt);
- 	}
- 
- 	igt_debug("\nIncrease max to midpoint...\n");
--	writeval(sysfs_files[MAX].filp, fmid);
--	check();
-+	writeval(sysfs_files[sysfs_gt][MAX].filp, fmid, sysfs_gt);
-+	check(sysfs_gt);
- 
- 	igt_debug("\nIncrease max to RP0...\n");
--	writeval(sysfs_files[MAX].filp, origfreqs[RP0]);
--	check();
-+	writeval(sysfs_files[sysfs_gt][MAX].filp, origfreqs[sysfs_gt][RP0], sysfs_gt);
-+	check(sysfs_gt);
- 
- 	igt_debug("\nIncrease max above RP0 (invalid)...\n");
--	writeval_inval(sysfs_files[MAX].filp, origfreqs[RP0] + 1000);
--	check();
-+	writeval_inval(sysfs_files[sysfs_gt][MAX].filp, origfreqs[sysfs_gt][RP0] + 1000, sysfs_gt);
-+	check(sysfs_gt);
- 
--	writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--	writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+	writeval(sysfs_files[sysfs_gt][MIN].filp, origfreqs[sysfs_gt][MIN], sysfs_gt);
-+	writeval(sysfs_files[sysfs_gt][MAX].filp, origfreqs[sysfs_gt][MAX], sysfs_gt);
- }
- 
--static void basic_check(void)
-+static void basic_check(int sysfs_gt)
- {
- 	int freqs[NUMFREQ];
- 
--	read_freqs(freqs);
--	dump(freqs);
-+	read_freqs(freqs, sysfs_gt);
-+	dump(freqs, sysfs_gt);
- 	check_freq_constraints(freqs);
- }
- 
- #define IDLE_WAIT_TIMESTEP_MSEC 250
- #define IDLE_WAIT_TIMEOUT_MSEC 2500
--static void idle_check(void)
-+static void idle_check(int sysfs_gt)
- {
- 	int freqs[NUMFREQ];
- 	int wait = 0;
-@@ -515,8 +528,8 @@ static void idle_check(void)
- 	/* Monitor frequencies until cur settles down to min, which should
- 	 * happen within the allotted time */
- 	do {
--		read_freqs(freqs);
--		dump(freqs);
-+		read_freqs(freqs, sysfs_gt);
-+		dump(freqs, sysfs_gt);
- 		check_freq_constraints(freqs);
- 		if (freqs[ACT] <= freqs[RPn])
- 			break;
-@@ -532,7 +545,7 @@ static void idle_check(void)
- 
- #define LOADED_WAIT_TIMESTEP_MSEC 100
- #define LOADED_WAIT_TIMEOUT_MSEC 3000
--static void loaded_check(void)
-+static void loaded_check(int sysfs_gt)
- {
- 	int freqs[NUMFREQ];
- 	int wait = 0;
-@@ -540,8 +553,8 @@ static void loaded_check(void)
- 	/* Monitor frequencies until cur increases to max, which should
- 	 * happen within the allotted time */
- 	do {
--		read_freqs(freqs);
--		dump(freqs);
-+		read_freqs(freqs, sysfs_gt);
-+		dump(freqs, sysfs_gt);
- 		check_freq_constraints(freqs);
- 		if (freqs[CUR] >= freqs[MAX])
- 			break;
-@@ -556,19 +569,19 @@ static void loaded_check(void)
- 
- #define STABILIZE_WAIT_TIMESTEP_MSEC 250
- #define STABILIZE_WAIT_TIMEOUT_MSEC 15000
--static void stabilize_check(int *out)
-+static void stabilize_check(int *out, int sysfs_gt)
- {
- 	int freqs[NUMFREQ];
- 	int wait = 0;
- 
- 	/* Monitor frequencies until HW will stabilize cur frequency.
- 	 * It should happen within allotted time */
--	read_freqs(freqs);
--	dump(freqs);
-+	read_freqs(freqs, sysfs_gt);
-+	dump(freqs, sysfs_gt);
- 	usleep(1000 * STABILIZE_WAIT_TIMESTEP_MSEC);
- 	do {
--		read_freqs(out);
--		dump(out);
-+		read_freqs(out, sysfs_gt);
-+		dump(out, sysfs_gt);
- 
- 		if (memcmp(freqs, out, sizeof(freqs)) == 0)
- 			break;
-@@ -581,75 +594,82 @@ static void stabilize_check(int *out)
- 	igt_debug("Waited %d msec to stabilize cur\n", wait);
- }
- 
--static void boost_freq(int fd, int *boost_freqs)
-+static void restore_sysfs_on_each_gt(void)
- {
--	int64_t timeout = 1;
--	igt_spin_t *load;
--	/* We need to keep dependency spin offset for load->handle */
--	uint64_t ahnd = get_simple_l2h_ahnd(fd, 0);
--
--	load = igt_spin_new(fd, .ahnd = ahnd);
--
--	/* Strip off extra fences from the object, and keep it from starting */
--	igt_spin_free(fd, igt_spin_new(fd, .ahnd = ahnd, .dependency = load->handle));
-+	int tmp, gt;
- 
--	/* Waiting will grant us a boost to maximum */
--	gem_wait(fd, load->handle, &timeout);
--
--	read_freqs(boost_freqs);
--	dump(boost_freqs);
-+	i915_for_each_gt(drm_fd, tmp, gt) {
-+		writeval(sysfs_files[gt][MIN].filp, origfreqs[gt][MIN], gt);
-+		writeval(sysfs_files[gt][MAX].filp, origfreqs[gt][MAX], gt);
-+		writeval(sysfs_files[gt][BOOST].filp, origfreqs[gt][BOOST], gt);
-+	}
-+}
- 
--	/* Avoid downlocking till boost request is pending */
--	igt_spin_end(load);
--	gem_sync(fd, load->handle);
--	igt_spin_free(fd, load);
--	put_ahnd(ahnd);
-+static void boost_freq(int fd, int *boost_freqs, int sysfs_gt)
-+{
-+	const intel_ctx_t *ctx;
-+	uint64_t ahnd;
-+	int64_t timeout = 1;
-+	igt_spin_t *spin;
-+
-+	ctx = intel_ctx_create_for_gt(fd, sysfs_gt);
-+	ahnd = get_reloc_ahnd(fd, ctx->id);
-+	spin = igt_spin_new(fd,
-+			    .ahnd = ahnd,
-+			    .ctx = ctx);
-+
-+	igt_assert(gem_bo_busy(fd, spin->handle));
-+	gem_wait(fd, spin->handle, &timeout);
-+	read_freqs(boost_freqs, sysfs_gt);
-+	dump(boost_freqs, sysfs_gt);
-+	igt_spin_end(spin);
-+	igt_spin_free(fd, spin);
- }
- 
--static void waitboost(int fd, bool reset)
-+static void waitboost(int fd, bool reset, int sysfs_gt)
- {
- 	int pre_freqs[NUMFREQ];
- 	int boost_freqs[NUMFREQ];
- 	int post_freqs[NUMFREQ];
--	int fmid = (origfreqs[RPn] + origfreqs[RP0]) / 2;
--	fmid = get_hw_rounded_freq(fmid);
-+	int fmid = (origfreqs[sysfs_gt][RPn] + origfreqs[sysfs_gt][RP0]) / 2;
- 
--	igt_require(origfreqs[RP0] > origfreqs[RPn]);
-+	fmid = get_hw_rounded_freq(fmid, sysfs_gt);
-+
-+	igt_require(origfreqs[sysfs_gt][RP0] > origfreqs[sysfs_gt][RPn]);
- 
- 	load_helper_run(LOW);
- 
- 	igt_debug("Apply low load...\n");
- 	sleep(1);
--	stabilize_check(pre_freqs);
-+	stabilize_check(pre_freqs, sysfs_gt);
- 
- 	if (reset) {
- 		igt_debug("Reset gpu...\n");
- 		igt_force_gpu_reset(fd);
- 		sleep(1);
- 	}
--
- 	/* Set max freq to less than boost freq */
--	writeval(sysfs_files[MAX].filp, fmid);
-+	writeval(sysfs_files[sysfs_gt][MAX].filp, fmid, sysfs_gt);
- 
- 	/* When we wait upon the GPU, we want to temporarily boost it
- 	 * to maximum.
- 	 */
--	boost_freq(fd, boost_freqs);
-+	boost_freq(fd, boost_freqs,  sysfs_gt);
- 
- 	/* Set max freq to original softmax */
--	writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+	writeval(sysfs_files[sysfs_gt][MAX].filp, origfreqs[sysfs_gt][MAX], sysfs_gt);
- 
- 	igt_debug("Apply low load again...\n");
- 	sleep(1);
--	stabilize_check(post_freqs);
-+	stabilize_check(post_freqs, sysfs_gt);
- 
- 	igt_debug("Removing load...\n");
- 	load_helper_stop();
--	idle_check();
-+	idle_check(sysfs_gt);
- 
--	igt_assert_lt(pre_freqs[CUR], pre_freqs[MAX]);
-+	igt_assert_lte(pre_freqs[CUR], pre_freqs[MAX]);
- 	igt_assert_eq(boost_freqs[CUR], boost_freqs[BOOST]);
--	igt_assert_lt(post_freqs[CUR], post_freqs[MAX]);
-+	igt_assert_lte(post_freqs[CUR], post_freqs[MAX]);
- }
- 
- static uint32_t batch_create(int i915, uint64_t sz)
-@@ -899,13 +919,17 @@ static void engine_order(int i915)
- 
- static void pm_rps_exit_handler(int sig)
- {
--	if (sysfs_files[MAX].filp) {
--		if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
--			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
--			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--		} else {
--			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+	int tmp, gt;
-+
-+	i915_for_each_gt(drm_fd, tmp, gt) {
-+		if (sysfs_files[gt][MAX].filp) {
-+			if (origfreqs[gt][MIN] > readval(sysfs_files[gt][MAX].filp)) {
-+				writeval(sysfs_files[gt][MAX].filp, origfreqs[gt][MAX], gt);
-+				writeval(sysfs_files[gt][MIN].filp, origfreqs[gt][MIN], gt);
-+			} else {
-+				writeval(sysfs_files[gt][MIN].filp, origfreqs[gt][MIN], gt);
-+				writeval(sysfs_files[gt][MAX].filp, origfreqs[gt][MAX], gt);
-+			}
- 		}
- 	}
- 
-@@ -1082,8 +1106,8 @@ static void test_thresholds(int i915, unsigned int gt, unsigned int flags)
- 
- igt_main
- {
-+	int tmp, gt;
- 	igt_fixture {
--		struct sysfs_file *sysfs_file = sysfs_files;
- 		char sysfs_path[80];
- 		int ret;
- 
-@@ -1094,23 +1118,24 @@ igt_main
- 		igt_assert(igt_sysfs_path(drm_fd, sysfs_path,
- 					  sizeof(sysfs_path)));
- 
--		do {
--			int val = -1;
--			char *path;
--
--			ret = asprintf(&path, "%s/gt_%s_freq_mhz",
--				       sysfs_path, sysfs_file->name);
--			igt_assert(ret != -1);
--			sysfs_file->filp = fopen(path, sysfs_file->mode);
--			igt_require(sysfs_file->filp);
--			setbuf(sysfs_file->filp, NULL);
--
--			val = readval(sysfs_file->filp);
--			igt_assert(val >= 0);
--			sysfs_file++;
--		} while (sysfs_file->name != NULL);
--
--		read_freqs(origfreqs);
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			for (int j = 0; j < NUMFREQ; j++) {
-+				struct sysfs_file *sysfs_file = &sysfs_files[gt][j];
-+				int val = -1;
-+				char *path;
-+
-+				ret = asprintf(&path, "%s/gt/gt%d/rps_%s_freq_mhz",
-+					       sysfs_path, gt, sysfs_file->name);
-+				igt_assert(ret != -1);
-+				sysfs_file->filp = fopen(path, sysfs_file->mode);
-+				igt_require(sysfs_file->filp);
-+				setbuf(sysfs_file->filp, NULL);
-+
-+				val = readval(sysfs_file->filp);
-+				igt_assert(val >= 0);
-+				origfreqs[gt][j] = val;
-+			}
-+		}
- 
- 		igt_install_exit_handler(pm_rps_exit_handler);
- 	}
-@@ -1118,28 +1143,35 @@ igt_main
- 	igt_subtest("basic-api") {
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
--		min_max_config(basic_check, false);
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			min_max_config(basic_check, false, gt);
-+		}
- 	}
--
- 	/* Verify the constraints, check if we can reach idle */
- 	igt_subtest("min-max-config-idle") {
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
--		min_max_config(idle_check, true);
-+			i915_for_each_gt(drm_fd, tmp, gt) {
-+				min_max_config(idle_check, true, gt);
-+			}
- 	}
- 
- 	/* Verify the constraints with high load, check if we can reach max */
- 	igt_subtest("min-max-config-loaded") {
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
--		load_helper_run(HIGH);
--		min_max_config(loaded_check, false);
--		load_helper_stop();
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			load_helper_run(HIGH);
-+			min_max_config(loaded_check, false, gt);
-+			load_helper_stop();
-+		}
- 	}
--
- 	/* Checks if we achieve boost using gem_wait */
- 	igt_subtest("waitboost") {
--		waitboost(drm_fd, false);
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			igt_info("gt%u\n", gt);
-+			waitboost(drm_fd, false, gt);
-+		}
- 	}
- 
- 	igt_describe("Check if the order of fences does not affect waitboosting");
-@@ -1155,13 +1187,18 @@ igt_main
- 	/* Test boost frequency after GPU reset */
- 	igt_subtest("reset") {
- 		igt_hang_t hang;
-+
-+		restore_sysfs_on_each_gt();
-+		sleep(1);
- 		hang = igt_allow_hang(drm_fd, 0, 0);
--		waitboost(drm_fd, true);
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			igt_info("gt%u\n", gt);
-+			waitboost(drm_fd, true, gt);
-+		}
- 		igt_disallow_hang(drm_fd, hang);
- 	}
- 
- 	igt_subtest_with_dynamic("thresholds-idle") {
--		int tmp, gt;
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
- 		i915_for_each_gt(drm_fd, tmp, gt) {
-@@ -1171,7 +1208,6 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("thresholds") {
--		int tmp, gt;
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
- 		i915_for_each_gt(drm_fd, tmp, gt) {
-@@ -1181,7 +1217,6 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("thresholds-park") {
--		int tmp, gt;
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
- 		i915_for_each_gt(drm_fd, tmp, gt) {
-@@ -1191,7 +1226,6 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("thresholds-idle-park") {
--		int tmp, gt;
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
- 
-@@ -1200,7 +1234,6 @@ igt_main
- 				test_thresholds(drm_fd, gt, TEST_IDLE | TEST_PARK);
- 		}
- 	}
--
- 	igt_fixture
- 		drm_close_driver(drm_fd);
- }
--- 
-2.34.1
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
+di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mDQo+IG5pc2hpdC5z
+aGFybWFAaW50ZWwuY29tDQo+IFNlbnQ6IFR1ZXNkYXksIEF1Z3VzdCAyNiwgMjAyNSAyOjExIFBN
+DQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsgR2hpbWlyYXksIEhpbWFsIFBy
+YXNhZA0KPiA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGludGVsLmNvbT47IEJyb3N0LCBNYXR0aGV3
+DQo+IDxtYXR0aGV3LmJyb3N0QGludGVsLmNvbT47IFNoYXJtYSwgTmlzaGl0IDxuaXNoaXQuc2hh
+cm1hQGludGVsLmNvbT4NCj4gU3ViamVjdDogW1BBVENIIGktZy10IDEvNV0gaW5jbHVkZS9kcm0t
+dWFwOiBBZGRlZCBkcm1feGVfbWFkdmlzZQ0KPiBzdHJ1Y3R1cmUNCj4gDQoNCmNvbW1pdCB0aXR0
+bGUgY2FuIGJlIGxpa2UgdGhpcyANCltQQVRDSCBpLWctdCAxLzVdIGRybS11YXBpL3hlOiBBZGQg
+ZHJtX3hlX21hZHZpc2UNCg0KPiBGcm9tOiBOaXNoaXQgU2hhcm1hIDxuaXNoaXQuc2hhcm1hQGlu
+dGVsLmNvbT4NCj4gDQo+IERlZmluZWQgSU9DVEwgbnVtYmVyIGZvciBtYWR2aXNlIG9wZXJhdGlv
+bi4gQWRkZWQgZHJtX3hlX21hZHZpc2UNCj4gd2hpY2ggaXMgcGFzc2VkIGFzIElucHV0IHRvIE1B
+RFZJU0UgSU9DVEwuDQo+IA0KDQpQbGVhc2UgdXNlIEFkZCANCg0KPiBOb3RlOiBET04nVCBNRVJH
+RQ0KSXQgY2FuIGJlIGxpa2UgdGhpcyANCltQQVRDSCBpLWctdCAxLzVdIERPLU5PVC1NRVJHRTog
+ZHJtLXVhcGkveGU6IEFkZCBkcm1feGVfbWFkdmlzZQ0KDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBO
+aXNoaXQgU2hhcm1hIDxuaXNoaXQuc2hhcm1hQGludGVsLmNvbT4NCj4gLS0tDQo+ICBpbmNsdWRl
+L2RybS11YXBpL3hlX2RybS5oIHwgMjg5DQo+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKy0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgMjgxIGluc2VydGlvbnMoKyksIDggZGVsZXRp
+b25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9kcm0tdWFwaS94ZV9kcm0uaCBiL2lu
+Y2x1ZGUvZHJtLXVhcGkveGVfZHJtLmggaW5kZXgNCj4gYTUyZjk1NTkzLi5lOWEyN2E4NDQgMTAw
+NjQ0DQo+IC0tLSBhL2luY2x1ZGUvZHJtLXVhcGkveGVfZHJtLmgNCj4gKysrIGIvaW5jbHVkZS9k
+cm0tdWFwaS94ZV9kcm0uaA0KPiBAQCAtMyw4ICszLDggQEANCj4gICAqIENvcHlyaWdodCDCqSAy
+MDIzIEludGVsIENvcnBvcmF0aW9uDQo+ICAgKi8NCj4gDQo+IC0jaWZuZGVmIF9YRV9EUk1fSF8N
+Cj4gLSNkZWZpbmUgX1hFX0RSTV9IXw0KPiArI2lmbmRlZiBfVUFQSV9YRV9EUk1fSF8NCj4gKyNk
+ZWZpbmUgX1VBUElfWEVfRFJNX0hfDQo+IA0KQXMgS2FtaWwgc3VnZ2VzdGVkLCBwbGVhc2UgcmVm
+ZXIgdG8gdGhlIGRvY3VtZW50YXRpb24gZm9yIGluc3RydWN0aW9ucyBvbiBob3cgdG8gZ2VuZXJh
+dGUgdGhpcy4NCnRoZSBkaWZmIHNob3VsZCBub3QgYmUgc2VlbiANCg0KPiAgI2luY2x1ZGUgImRy
+bS5oIg0KPiANCj4gQEAgLTgxLDYgKzgxLDggQEAgZXh0ZXJuICJDIiB7DQo+ICAgKiAgLSAmRFJN
+X0lPQ1RMX1hFX0VYRUMNCj4gICAqICAtICZEUk1fSU9DVExfWEVfV0FJVF9VU0VSX0ZFTkNFDQo+
+ICAgKiAgLSAmRFJNX0lPQ1RMX1hFX09CU0VSVkFUSU9ODQo+ICsgKiAgLSAmRFJNX0lPQ1RMX1hF
+X01BRFZJU0UNCj4gKyAqICAtICZEUk1fSU9DVExfWEVfVk1fUVVFUllfTUVNX1JBTkdFX0FUVFJT
+DQo+ICAgKi8NCj4gDQo+ICAvKg0KPiBAQCAtMTAyLDYgKzEwNCw4IEBAIGV4dGVybiAiQyIgew0K
+PiAgI2RlZmluZSBEUk1fWEVfRVhFQwkJCTB4MDkNCj4gICNkZWZpbmUgRFJNX1hFX1dBSVRfVVNF
+Ul9GRU5DRQkJMHgwYQ0KPiAgI2RlZmluZSBEUk1fWEVfT0JTRVJWQVRJT04JCTB4MGINCj4gKyNk
+ZWZpbmUgRFJNX1hFX01BRFZJU0UJCQkweDBjDQo+ICsjZGVmaW5lIERSTV9YRV9WTV9RVUVSWV9N
+RU1fUkVHSU9OX0FUVFJTCTB4MGQNCj4gDQo+ICAvKiBNdXN0IGJlIGtlcHQgY29tcGFjdCAtLSBu
+byBob2xlcyAqLw0KPiANCj4gQEAgLTExNyw2ICsxMjEsOCBAQCBleHRlcm4gIkMiIHsNCj4gICNk
+ZWZpbmUgRFJNX0lPQ1RMX1hFX0VYRUMNCj4gCURSTV9JT1coRFJNX0NPTU1BTkRfQkFTRSArIERS
+TV9YRV9FWEVDLCBzdHJ1Y3QNCj4gZHJtX3hlX2V4ZWMpDQo+ICAjZGVmaW5lIERSTV9JT0NUTF9Y
+RV9XQUlUX1VTRVJfRkVOQ0UNCj4gCURSTV9JT1dSKERSTV9DT01NQU5EX0JBU0UgKw0KPiBEUk1f
+WEVfV0FJVF9VU0VSX0ZFTkNFLCBzdHJ1Y3QgZHJtX3hlX3dhaXRfdXNlcl9mZW5jZSkNCj4gICNk
+ZWZpbmUgRFJNX0lPQ1RMX1hFX09CU0VSVkFUSU9ODQo+IAlEUk1fSU9XKERSTV9DT01NQU5EX0JB
+U0UgKyBEUk1fWEVfT0JTRVJWQVRJT04sDQo+IHN0cnVjdCBkcm1feGVfb2JzZXJ2YXRpb25fcGFy
+YW0pDQo+ICsjZGVmaW5lIERSTV9JT0NUTF9YRV9NQURWSVNFDQo+IAlEUk1fSU9XKERSTV9DT01N
+QU5EX0JBU0UgKyBEUk1fWEVfTUFEVklTRSwgc3RydWN0DQo+IGRybV94ZV9tYWR2aXNlKQ0KPiAr
+I2RlZmluZSBEUk1fSU9DVExfWEVfVk1fUVVFUllfTUVNX1JBTkdFX0FUVFJTDQo+IAlEUk1fSU9X
+UihEUk1fQ09NTUFORF9CQVNFICsNCj4gRFJNX1hFX1ZNX1FVRVJZX01FTV9SRUdJT05fQVRUUlMs
+IHN0cnVjdA0KPiBkcm1feGVfdm1fcXVlcnlfbWVtX3JhbmdlX2F0dHIpDQo+IA0KPiAgLyoqDQo+
+ICAgKiBET0M6IFhlIElPQ1RMIEV4dGVuc2lvbnMNCj4gQEAgLTEzNCw3ICsxNDAsNyBAQCBleHRl
+cm4gIkMiIHsNCj4gICAqIHJlZGVmaW5lIHRoZSBpbnRlcmZhY2UgbW9yZSBlYXNpbHkgdGhhbiBh
+biBldmVyIGdyb3dpbmcgc3RydWN0IG9mDQo+ICAgKiBpbmNyZWFzaW5nIGNvbXBsZXhpdHksIGFu
+ZCBmb3IgbGFyZ2UgcGFydHMgb2YgdGhhdCBpbnRlcmZhY2UgdG8gYmUNCj4gICAqIGVudGlyZWx5
+IG9wdGlvbmFsLiBUaGUgZG93bnNpZGUgaXMgbW9yZSBwb2ludGVyIGNoYXNpbmc7IGNoYXNpbmcg
+YWNyb3NzDQo+IC0gKiB0aGUgYm91bmRhcnkgd2l0aCBwb2ludGVycyBlbmNhcHN1bGF0ZWQgaW5z
+aWRlIHU2NC4NCj4gKyAqIHRoZSBfX3VzZXIgYm91bmRhcnkgd2l0aCBwb2ludGVycyBlbmNhcHN1
+bGF0ZWQgaW5zaWRlIHU2NC4NCj4gICAqDQoNClRoZXNlIGFwcGVhciB0byBiZSBkb2N1bWVudGF0
+aW9uIGNoYW5nZXMuIENvdWxkIHlvdSBwbGVhc2UgYWRkIHRoZW0gaW4gYSBzZXBhcmF0ZSBwYXRj
+aD8NCg0KPiAgICogRXhhbXBsZSBjaGFpbmluZzoNCj4gICAqDQo+IEBAIC05MjUsOSArOTMxLDkg
+QEAgc3RydWN0IGRybV94ZV9nZW1fbW1hcF9vZmZzZXQgew0KPiAgICogIC0gJURSTV9YRV9WTV9D
+UkVBVEVfRkxBR19MUl9NT0RFIC0gQW4gTFIsIG9yIExvbmcgUnVubmluZyBWTQ0KPiBhY2NlcHRz
+DQo+ICAgKiAgICBleGVjIHN1Ym1pc3Npb25zIHRvIGl0cyBleGVjX3F1ZXVlcyB0aGF0IGRvbid0
+IGhhdmUgYW4gdXBwZXIgdGltZQ0KPiAgICogICAgbGltaXQgb24gdGhlIGpvYiBleGVjdXRpb24g
+dGltZS4gQnV0IGV4ZWMgc3VibWlzc2lvbnMgdG8gdGhlc2UNCj4gLSAqICAgIGRvbid0IGFsbG93
+IGFueSBvZiB0aGUgZmxhZ3MgRFJNX1hFX1NZTkNfRkxBR19TWU5DT0JKLA0KPiAtICogICAgRFJN
+X1hFX1NZTkNfRkxBR19USU1FTElORV9TWU5DT0JKLA0KPiBEUk1fWEVfU1lOQ19GTEFHX0RNQV9C
+VUYsDQo+IC0gKiAgICB1c2VkIGFzIG91dC1zeW5jb2JqcywgdGhhdCBpcywgdG9nZXRoZXIgd2l0
+aA0KPiBEUk1fWEVfU1lOQ19GTEFHX1NJR05BTC4NCj4gKyAqICAgIGRvbid0IGFsbG93IGFueSBv
+ZiB0aGUgc3luYyB0eXBlcyBEUk1fWEVfU1lOQ19UWVBFX1NZTkNPQkosDQo+ICsgKiAgICBEUk1f
+WEVfU1lOQ19UWVBFX1RJTUVMSU5FX1NZTkNPQkosIHVzZWQgYXMgb3V0LXN5bmNvYmpzLCB0aGF0
+DQo+IGlzLA0KPiArICogICAgdG9nZXRoZXIgd2l0aCBzeW5jIGZsYWcgRFJNX1hFX1NZTkNfRkxB
+R19TSUdOQUwuDQoNClRoZXNlIGFwcGVhciB0byBiZSBkb2N1bWVudGF0aW9uIGNoYW5nZXMuIENv
+dWxkIHlvdSBwbGVhc2UgYWRkIHRoZW0gaW4gYSBzZXBhcmF0ZSBwYXRjaD8NCg0KPiAgICogICAg
+TFIgVk1zIGNhbiBiZSBjcmVhdGVkIGluIHJlY292ZXJhYmxlIHBhZ2UtZmF1bHQgbW9kZSB1c2lu
+Zw0KPiAgICogICAgRFJNX1hFX1ZNX0NSRUFURV9GTEFHX0ZBVUxUX01PREUsIGlmIHRoZSBkZXZp
+Y2Ugc3VwcG9ydHMgaXQuDQo+ICAgKiAgICBJZiB0aGF0IGZsYWcgaXMgb21pdHRlZCwgdGhlIFVN
+RCBjYW4gbm90IHJlbHkgb24gdGhlIHNsaWdodGx5DQo+IEBAIC0xMDAzLDYgKzEwMDksMTAgQEAg
+c3RydWN0IGRybV94ZV92bV9kZXN0cm95IHsNCj4gICAqICAgIHZhbGlkIG9uIFZNcyB3aXRoIERS
+TV9YRV9WTV9DUkVBVEVfRkxBR19GQVVMVF9NT0RFIHNldC4gVGhlDQo+IENQVSBhZGRyZXNzDQo+
+ICAgKiAgICBtaXJyb3IgZmxhZyBhcmUgb25seSB2YWxpZCBmb3IgRFJNX1hFX1ZNX0JJTkRfT1Bf
+TUFQIG9wZXJhdGlvbnMsDQo+IHRoZSBCTw0KPiAgICogICAgaGFuZGxlIE1CWiwgYW5kIHRoZSBC
+TyBvZmZzZXQgTUJaLg0KPiArICoNCj4gKyAqIFRoZSBAcHJlZmV0Y2hfbWVtX3JlZ2lvbl9pbnN0
+YW5jZSBmb3INCj4gJURSTV9YRV9WTV9CSU5EX09QX1BSRUZFVENIIGNhbiBhbHNvIGJlOg0KPiAr
+ICogIC0gJURSTV9YRV9DT05TVUxUX01FTV9BRFZJU0VfUFJFRl9MT0MsIHdoaWNoIGVuc3VyZXMN
+Cj4gcHJlZmV0Y2hpbmcgb2NjdXJzIGluDQo+ICsgKiAgICB0aGUgbWVtb3J5IHJlZ2lvbiBhZHZp
+c2VkIGJ5IG1hZHZpc2UuDQo+ICAgKi8NCj4gIHN0cnVjdCBkcm1feGVfdm1fYmluZF9vcCB7DQo+
+ICAJLyoqIEBleHRlbnNpb25zOiBQb2ludGVyIHRvIHRoZSBmaXJzdCBleHRlbnNpb24gc3RydWN0
+LCBpZiBhbnkgKi8gQEAgLQ0KPiAxMTA4LDYgKzExMTgsNyBAQCBzdHJ1Y3QgZHJtX3hlX3ZtX2Jp
+bmRfb3Agew0KPiAgCS8qKiBAZmxhZ3M6IEJpbmQgZmxhZ3MgKi8NCj4gIAlfX3UzMiBmbGFnczsN
+Cj4gDQo+ICsjZGVmaW5lIERSTV9YRV9DT05TVUxUX01FTV9BRFZJU0VfUFJFRl9MT0MJLTENCj4g
+IAkvKioNCj4gIAkgKiBAcHJlZmV0Y2hfbWVtX3JlZ2lvbl9pbnN0YW5jZTogTWVtb3J5IHJlZ2lv
+biB0byBwcmVmZXRjaA0KPiBWTUEgdG8uDQo+ICAJICogSXQgaXMgYSByZWdpb24gaW5zdGFuY2Us
+IG5vdCBhIG1hc2suDQo+IEBAIC0xMzk0LDcgKzE0MDUsNyBAQCBzdHJ1Y3QgZHJtX3hlX3N5bmMg
+ew0KPiANCj4gIAkvKioNCj4gIAkgKiBAdGltZWxpbmVfdmFsdWU6IElucHV0IGZvciB0aGUgdGlt
+ZWxpbmUgc3luYyBvYmplY3QuIE5lZWRzIHRvIGJlDQo+IC0JICogZGlmZmVyZW50IHRoYW4gMCB3
+aGVuIHVzZWQgd2l0aA0KPiAlRFJNX1hFX1NZTkNfRkxBR19USU1FTElORV9TWU5DT0JKLg0KPiAr
+CSAqIGRpZmZlcmVudCB0aGFuIDAgd2hlbiB1c2VkIHdpdGgNCj4gJURSTV9YRV9TWU5DX1RZUEVf
+VElNRUxJTkVfU1lOQ09CSi4NClRoZXNlIGFwcGVhciB0byBiZSBEb2N1bWVudGF0aW9uIGNoYW5n
+ZXMuIENvdWxkIHlvdSBwbGVhc2UgYWRkIHRoZW0gaW4gYSBzZXBhcmF0ZSBwYXRjaCBub3QgcmVs
+YXRlZCB0aGUgbWFkdmlzZSBmdW5jdGlvbmFsaXR5ID8NCj4gIAkgKi8NCj4gIAlfX3U2NCB0aW1l
+bGluZV92YWx1ZTsNCj4gDQo+IEBAIC0xOTc0LDggKzE5ODUsMjcwIEBAIHN0cnVjdCBkcm1feGVf
+cXVlcnlfZXVfc3RhbGwgew0KPiAgCV9fdTY0IHNhbXBsaW5nX3JhdGVzW107DQo+ICB9Ow0KPiAN
+Cj4gKy8qKg0KPiArICogc3RydWN0IGRybV94ZV9tYWR2aXNlIC0gSW5wdXQgb2YgJkRSTV9JT0NU
+TF9YRV9NQURWSVNFDQo+ICsgKg0KPiArICogVGhpcyBzdHJ1Y3R1cmUgaXMgdXNlZCB0byBzZXQg
+bWVtb3J5IGF0dHJpYnV0ZXMgZm9yIGEgdmlydHVhbA0KPiArYWRkcmVzcyByYW5nZQ0KPiArICog
+aW4gYSBWTS4gVGhlIHR5cGUgb2YgYXR0cmlidXRlIGlzIHNwZWNpZmllZCBieSBAdHlwZSwgYW5k
+IHRoZQ0KPiArY29ycmVzcG9uZGluZw0KPiArICogdW5pb24gbWVtYmVyIGlzIHVzZWQgdG8gcHJv
+dmlkZSBhZGRpdGlvbmFsIHBhcmFtZXRlcnMgZm9yIEB0eXBlLg0KPiArICoNCj4gKyAqIFN1cHBv
+cnRlZCBhdHRyaWJ1dGUgdHlwZXM6DQo+ICsgKiAtIERSTV9YRV9NRU1fUkFOR0VfQVRUUl9QUkVG
+RVJSRURfTE9DOiBTZXQgcHJlZmVycmVkIG1lbW9yeQ0KPiBsb2NhdGlvbi4NCj4gKyAqIC0gRFJN
+X1hFX01FTV9SQU5HRV9BVFRSX0FUT01JQzogU2V0IGF0b21pYyBhY2Nlc3MgcG9saWN5Lg0KPiAr
+ICogLSBEUk1fWEVfTUVNX1JBTkdFX0FUVFJfUEFUOiBTZXQgcGFnZSBhdHRyaWJ1dGUgdGFibGUg
+aW5kZXguDQo+ICsgKg0KPiArICogRXhhbXBsZToNCj4gKyAqDQo+ICsgKiAuLiBjb2RlLWJsb2Nr
+OjogQw0KPiArICoNCj4gKyAqIHN0cnVjdCBkcm1feGVfbWFkdmlzZSBtYWR2aXNlID0gew0KPiAr
+ICogwqDCoMKgwqDCoMKgwqDCoCAudm1faWQgPSB2bV9pZCwNCj4gKyAqIMKgwqDCoMKgwqDCoMKg
+wqAgLnN0YXJ0ID0gMHgxMDAwMDAsDQo+ICsgKiDCoMKgwqDCoMKgwqDCoMKgIC5yYW5nZSA9IDB4
+MjAwMCwNCj4gKyAqIMKgwqDCoMKgwqDCoMKgwqAgLnR5cGUgPSBEUk1fWEVfTUVNX1JBTkdFX0FU
+VFJfQVRPTUlDLA0KPiArICogwqDCoMKgwqDCoMKgwqAgIC5hdG9taWNfdmFsID0gRFJNX1hFX0FU
+T01JQ19ERVZJQ0UsDQo+ICsgKiAgICAgICAgICAucGFkID0gMCwNCj4gKyAqICAgICAgICAgfTsN
+Cj4gKyAqDQo+ICsgKiBpb2N0bChmZCwgRFJNX0lPQ1RMX1hFX01BRFZJU0UsICZtYWR2aXNlKTsN
+Cj4gKyAqDQo+ICsgKi8NCj4gK3N0cnVjdCBkcm1feGVfbWFkdmlzZSB7DQo+ICsJLyoqIEBleHRl
+bnNpb25zOiBQb2ludGVyIHRvIHRoZSBmaXJzdCBleHRlbnNpb24gc3RydWN0LCBpZiBhbnkgKi8N
+Cj4gKwlfX3U2NCBleHRlbnNpb25zOw0KPiArDQo+ICsJLyoqIEBzdGFydDogc3RhcnQgb2YgdGhl
+IHZpcnR1YWwgYWRkcmVzcyByYW5nZSAqLw0KPiArCV9fdTY0IHN0YXJ0Ow0KPiArDQo+ICsJLyoq
+IEByYW5nZTogc2l6ZSBvZiB0aGUgdmlydHVhbCBhZGRyZXNzIHJhbmdlICovDQo+ICsJX191NjQg
+cmFuZ2U7DQo+ICsNCj4gKwkvKiogQHZtX2lkOiB2bV9pZCBvZiB0aGUgdmlydHVhbCByYW5nZSAq
+Lw0KPiArCV9fdTMyIHZtX2lkOw0KPiArDQo+ICsjZGVmaW5lIERSTV9YRV9NRU1fUkFOR0VfQVRU
+Ul9QUkVGRVJSRURfTE9DCTANCj4gKyNkZWZpbmUgRFJNX1hFX01FTV9SQU5HRV9BVFRSX0FUT01J
+QwkJMQ0KPiArI2RlZmluZSBEUk1fWEVfTUVNX1JBTkdFX0FUVFJfUEFUCQkyDQo+ICsJLyoqIEB0
+eXBlOiB0eXBlIG9mIGF0dHJpYnV0ZSAqLw0KPiArCV9fdTMyIHR5cGU7DQo+ICsNCj4gKwl1bmlv
+biB7DQo+ICsJCS8qKg0KPiArCQkgKiBAcHJlZmVycmVkX21lbV9sb2M6IHByZWZlcnJlZCBtZW1v
+cnkgbG9jYXRpb24NCj4gKwkJICoNCj4gKwkJICogVXNlZCB3aGVuIEB0eXBlID09DQo+IERSTV9Y
+RV9NRU1fUkFOR0VfQVRUUl9QUkVGRVJSRURfTE9DDQo+ICsJCSAqDQo+ICsJCSAqIFN1cHBvcnRl
+ZCB2YWx1ZXMgZm9yIEBwcmVmZXJyZWRfbWVtX2xvYy5kZXZtZW1fZmQ6DQo+ICsJCSAqIC0gRFJN
+X1hFX1BSRUZFUlJFRF9MT0NfREVGQVVMVF9ERVZJQ0U6IHNldCB2cmFtDQo+IG9mIGZhdWx0aW5n
+IHRpbGUgYXMgcHJlZmVycmVkIGxvYw0KPiArCQkgKiAtIERSTV9YRV9QUkVGRVJSRURfTE9DX0RF
+RkFVTFRfU1lTVEVNOiBzZXQgc21lbQ0KPiBhcyBwcmVmZXJyZWQgbG9jDQo+ICsJCSAqDQo+ICsJ
+CSAqIFN1cHBvcnRlZCB2YWx1ZXMgZm9yDQo+IEBwcmVmZXJyZWRfbWVtX2xvYy5taWdyYXRpb25f
+cG9saWN5Og0KPiArCQkgKiAtIERSTV9YRV9NSUdSQVRFX0FMTF9QQUdFUw0KPiArCQkgKiAtIERS
+TV9YRV9NSUdSQVRFX09OTFlfU1lTVEVNX1BBR0VTDQo+ICsJCSAqLw0KPiArCQlzdHJ1Y3Qgew0K
+PiArI2RlZmluZSBEUk1fWEVfUFJFRkVSUkVEX0xPQ19ERUZBVUxUX0RFVklDRQkwDQo+ICsjZGVm
+aW5lIERSTV9YRV9QUkVGRVJSRURfTE9DX0RFRkFVTFRfU1lTVEVNCS0xDQo+ICsJCQkvKiogQHBy
+ZWZlcnJlZF9tZW1fbG9jLmRldm1lbV9mZDogZmQgZm9yDQo+IHByZWZlcnJlZCBsb2MgKi8NCj4g
+KwkJCV9fdTMyIGRldm1lbV9mZDsNCj4gKw0KPiArI2RlZmluZSBEUk1fWEVfTUlHUkFURV9BTExf
+UEFHRVMJCTANCj4gKyNkZWZpbmUgRFJNX1hFX01JR1JBVEVfT05MWV9TWVNURU1fUEFHRVMJMQ0K
+PiArCQkJLyoqIEBwcmVmZXJyZWRfbWVtX2xvYy5taWdyYXRpb25fcG9saWN5OiBQYWdlDQo+IG1p
+Z3JhdGlvbiBwb2xpY3kgKi8NCj4gKwkJCV9fdTE2IG1pZ3JhdGlvbl9wb2xpY3k7DQo+ICsNCj4g
+KwkJCS8qKiBAcHJlZmVycmVkX21lbV9sb2MucGFkIDogTUJaICovDQo+ICsJCQlfX3UxNiBwYWQ7
+DQo+ICsNCj4gKwkJCS8qKiBAcHJlZmVycmVkX21lbV9sb2MucmVzZXJ2ZWQgOiBSZXNlcnZlZCAq
+Lw0KPiArCQkJX191NjQgcmVzZXJ2ZWQ7DQo+ICsJCX0gcHJlZmVycmVkX21lbV9sb2M7DQo+ICsN
+Cj4gKwkJLyoqDQo+ICsJCSAqIEBhdG9taWM6IEF0b21pYyBhY2Nlc3MgcG9saWN5DQo+ICsJCSAq
+DQo+ICsJCSAqIFVzZWQgd2hlbiBAdHlwZSA9PQ0KPiBEUk1fWEVfTUVNX1JBTkdFX0FUVFJfQVRP
+TUlDLg0KPiArCQkgKg0KPiArCQkgKiBTdXBwb3J0ZWQgdmFsdWVzIGZvciBAYXRvbWljLnZhbDoN
+Cj4gKwkJICogLSBEUk1fWEVfQVRPTUlDX1VOREVGSU5FRDogVW5kZWZpbmVkIG9yIGRlZmF1bHQN
+Cj4gYmVoYXZpb3VyDQo+ICsJCSAqICAgU3VwcG9ydCBib3RoIEdQVSBhbmQgQ1BVIGF0b21pYyBv
+cGVyYXRpb25zIGZvciBzeXN0ZW0NCj4gYWxsb2NhdG9yDQo+ICsJCSAqICAgU3VwcG9ydCBHUFUg
+YXRvbWljIG9wZXJhdGlvbnMgZm9yIG5vcm1hbChibykgYWxsb2NhdG9yDQo+ICsJCSAqIC0gRFJN
+X1hFX0FUT01JQ19ERVZJQ0U6IFN1cHBvcnQgR1BVIGF0b21pYw0KPiBvcGVyYXRpb25zDQo+ICsJ
+CSAqIC0gRFJNX1hFX0FUT01JQ19HTE9CQUw6IFN1cHBvcnQgYm90aCBHUFUgYW5kIENQVQ0KPiBh
+dG9taWMgb3BlcmF0aW9ucw0KPiArCQkgKiAtIERSTV9YRV9BVE9NSUNfQ1BVOiBTdXBwb3J0IENQ
+VSBhdG9taWMNCj4gKwkJICovDQo+ICsJCXN0cnVjdCB7DQo+ICsjZGVmaW5lIERSTV9YRV9BVE9N
+SUNfVU5ERUZJTkVECTANCj4gKyNkZWZpbmUgRFJNX1hFX0FUT01JQ19ERVZJQ0UJMQ0KPiArI2Rl
+ZmluZSBEUk1fWEVfQVRPTUlDX0dMT0JBTAkyDQo+ICsjZGVmaW5lIERSTV9YRV9BVE9NSUNfQ1BV
+CTMNCj4gKwkJCS8qKiBAYXRvbWljLnZhbDogdmFsdWUgb2YgYXRvbWljIG9wZXJhdGlvbiAqLw0K
+PiArCQkJX191MzIgdmFsOw0KPiArDQo+ICsJCQkvKiogQGF0b21pYy5wYWQ6IE1CWiAqLw0KPiAr
+CQkJX191MzIgcGFkOw0KPiArDQo+ICsJCQkvKiogQGF0b21pYy5yZXNlcnZlZDogUmVzZXJ2ZWQg
+Ki8NCj4gKwkJCV9fdTY0IHJlc2VydmVkOw0KPiArCQl9IGF0b21pYzsNCj4gKw0KPiArCQkvKioN
+Cj4gKwkJICogQHBhdF9pbmRleDogUGFnZSBhdHRyaWJ1dGUgdGFibGUgaW5kZXgNCj4gKwkJICoN
+Cj4gKwkJICogVXNlZCB3aGVuIEB0eXBlID09IERSTV9YRV9NRU1fUkFOR0VfQVRUUl9QQVQuDQo+
+ICsJCSAqLw0KPiArCQlzdHJ1Y3Qgew0KPiArCQkJLyoqIEBwYXRfaW5kZXgudmFsOiBQQVQgaW5k
+ZXggdmFsdWUgKi8NCj4gKwkJCV9fdTMyIHZhbDsNCj4gKw0KPiArCQkJLyoqIEBwYXRfaW5kZXgu
+cGFkOiBNQlogKi8NCj4gKwkJCV9fdTMyIHBhZDsNCj4gKw0KPiArCQkJLyoqIEBwYXRfaW5kZXgu
+cmVzZXJ2ZWQ6IFJlc2VydmVkICovDQo+ICsJCQlfX3U2NCByZXNlcnZlZDsNCj4gKwkJfSBwYXRf
+aW5kZXg7DQo+ICsJfTsNCj4gKw0KPiArCS8qKiBAcmVzZXJ2ZWQ6IFJlc2VydmVkICovDQo+ICsJ
+X191NjQgcmVzZXJ2ZWRbMl07DQo+ICt9Ow0KPiArDQo+ICsvKioNCj4gKyAqIHN0cnVjdCBkcm1f
+eGVfbWVtX3JhbmdlX2F0dHIgLSBPdXRwdXQgb2YNCj4gKyZEUk1fSU9DVExfWEVfVk1fUVVFUllf
+TUVNX1JBTkdFU19BVFRSUw0KPiArICoNCj4gKyAqIFRoaXMgc3RydWN0dXJlIGlzIHByb3ZpZGVk
+IGJ5IHVzZXJzcGFjZSBhbmQgZmlsbGVkIGJ5IEtNRCBpbg0KPiArcmVzcG9uc2UgdG8gdGhlDQo+
+ICsgKiBEUk1fSU9DVExfWEVfVk1fUVVFUllfTUVNX1JBTkdFU19BVFRSUyBpb2N0bC4gSXQgZGVz
+Y3JpYmVzDQo+IG1lbW9yeQ0KPiArYXR0cmlidXRlcyBvZg0KPiArICogYSBtZW1vcnkgcmFuZ2Vz
+IHdpdGhpbiBhIHVzZXIgc3BlY2lmaWVkIGFkZHJlc3MgcmFuZ2UgaW4gYSBWTS4NCj4gKyAqDQo+
+ICsgKiBUaGUgc3RydWN0dXJlIGluY2x1ZGVzIGluZm9ybWF0aW9uIHN1Y2ggYXMgYXRvbWljIGFj
+Y2VzcyBwb2xpY3ksDQo+ICsgKiBwYWdlIGF0dHJpYnV0ZSB0YWJsZSAoUEFUKSBpbmRleCwgYW5k
+IHByZWZlcnJlZCBtZW1vcnkgbG9jYXRpb24uDQo+ICsgKiBVc2Vyc3BhY2UgYWxsb2NhdGVzIGFu
+IGFycmF5IG9mIHRoZXNlIHN0cnVjdHVyZXMgYW5kIHBhc3NlcyBhDQo+ICtwb2ludGVyIHRvIHRo
+ZQ0KPiArICogaW9jdGwgdG8gcmV0cmlldmUgYXR0cmlidXRlcyBmb3IgZWFjaCBtZW1vcnkgcmFu
+Z2VzDQo+ICsgKg0KPiArICogQGV4dGVuc2lvbnM6IFBvaW50ZXIgdG8gdGhlIGZpcnN0IGV4dGVu
+c2lvbiBzdHJ1Y3QsIGlmIGFueQ0KPiArICogQHN0YXJ0OiBTdGFydCBhZGRyZXNzIG9mIHRoZSBt
+ZW1vcnkgcmFuZ2UNCj4gKyAqIEBlbmQ6IEVuZCBhZGRyZXNzIG9mIHRoZSB2aXJ0dWFsIG1lbW9y
+eSByYW5nZQ0KPiArICoNCj4gKyAqLw0KPiArc3RydWN0IGRybV94ZV9tZW1fcmFuZ2VfYXR0ciB7
+DQo+ICsJIC8qKiBAZXh0ZW5zaW9uczogUG9pbnRlciB0byB0aGUgZmlyc3QgZXh0ZW5zaW9uIHN0
+cnVjdCwgaWYgYW55ICovDQo+ICsJX191NjQgZXh0ZW5zaW9uczsNCj4gKw0KPiArCS8qKiBAc3Rh
+cnQ6IHN0YXJ0IG9mIHRoZSBtZW1vcnkgcmFuZ2UgKi8NCj4gKwlfX3U2NCBzdGFydDsNCj4gKw0K
+PiArCS8qKiBAZW5kOiBlbmQgb2YgdGhlIG1lbW9yeSByYW5nZSAqLw0KPiArCV9fdTY0IGVuZDsN
+Cj4gKw0KPiArCS8qKiBAcHJlZmVycmVkX21lbV9sb2M6IHByZWZlcnJlZCBtZW1vcnkgbG9jYXRp
+b24gKi8NCj4gKwlzdHJ1Y3Qgew0KPiArCQkvKiogQHByZWZlcnJlZF9tZW1fbG9jLmRldm1lbV9m
+ZDogZmQgZm9yIHByZWZlcnJlZCBsb2MNCj4gKi8NCj4gKwkJX191MzIgZGV2bWVtX2ZkOw0KPiAr
+DQo+ICsJCS8qKiBAcHJlZmVycmVkX21lbV9sb2MubWlncmF0aW9uX3BvbGljeTogUGFnZSBtaWdy
+YXRpb24NCj4gcG9saWN5ICovDQo+ICsJCV9fdTMyIG1pZ3JhdGlvbl9wb2xpY3k7DQo+ICsJfSBw
+cmVmZXJyZWRfbWVtX2xvYzsNCj4gKw0KPiArCXN0cnVjdCB7DQo+ICsJCS8qKiBAYXRvbWljLnZh
+bDogYXRvbWljIGF0dHJpYnV0ZSAqLw0KPiArCQlfX3UzMiB2YWw7DQo+ICsNCj4gKwkJLyoqIEBh
+dG9taWMucmVzZXJ2ZWQ6IFJlc2VydmVkICovDQo+ICsJCV9fdTMyIHJlc2VydmVkOw0KPiArCX0g
+YXRvbWljOw0KPiArDQo+ICsJc3RydWN0IHsNCj4gKwkJLyoqIEBwYXRfaW5kZXgudmFsOiBQQVQg
+aW5kZXggKi8NCj4gKwkJX191MzIgdmFsOw0KPiArDQo+ICsJCS8qKiBAcGF0X2luZGV4LnJlc2Vy
+dmVkOiBSZXNlcnZlZCAqLw0KPiArCQlfX3UzMiByZXNlcnZlZDsNCj4gKwl9IHBhdF9pbmRleDsN
+Cj4gKw0KPiArCS8qKiBAcmVzZXJ2ZWQ6IFJlc2VydmVkICovDQo+ICsJX191NjQgcmVzZXJ2ZWRb
+Ml07DQo+ICt9Ow0KPiArDQo+ICsvKioNCj4gKyAqIHN0cnVjdCBkcm1feGVfdm1fcXVlcnlfbWVt
+X3JhbmdlX2F0dHIgLSBJbnB1dCBvZg0KPiArJkRSTV9JT0NUTF9YRV9WTV9RVUVSWV9NRU1fQVRU
+UklCVVRFUw0KPiArICoNCj4gKyAqIFRoaXMgc3RydWN0dXJlIGlzIHVzZWQgdG8gcXVlcnkgbWVt
+b3J5IGF0dHJpYnV0ZXMgb2YgbWVtb3J5IHJlZ2lvbnMNCj4gKyAqIHdpdGhpbiBhIHVzZXIgc3Bl
+Y2lmaWVkIGFkZHJlc3MgcmFuZ2UgaW4gYSBWTS4gSXQgcHJvdmlkZXMgZGV0YWlsZWQNCj4gKyAq
+IGluZm9ybWF0aW9uIGFib3V0IGVhY2ggbWVtb3J5IHJhbmdlLCBpbmNsdWRpbmcgYXRvbWljIGFj
+Y2VzcyBwb2xpY3ksDQo+ICsgKiBwYWdlIGF0dHJpYnV0ZSB0YWJsZSAoUEFUKSBpbmRleCwgYW5k
+IHByZWZlcnJlZCBtZW1vcnkgbG9jYXRpb24uDQo+ICsgKg0KPiArICogVXNlcnNwYWNlIGZpcnN0
+IGNhbGxzIHRoZSBpb2N0bCB3aXRoIEBudW1fbWVtX3JhbmdlcyA9IDAsDQo+ICsgKiBAc2l6ZW9m
+X21lbV9yYW5nZXNfYXR0ciA9IDAgYW5kIEB2ZWN0b3Jfb2Zfdm1hX21lbV9hdHRyID0gTlVMTA0K
+PiB0bw0KPiArcmV0cmlldmUNCj4gKyAqIHRoZSBudW1iZXIgb2YgbWVtb3J5IHJlZ2lvbnMgYW5k
+IHNpemUgb2YgZWFjaCBtZW1vcnkgcmFuZ2UgYXR0cmlidXRlLg0KPiArICogVGhlbiwgaXQgYWxs
+b2NhdGVzIGEgYnVmZmVyIG9mIHRoYXQgc2l6ZSBhbmQgY2FsbHMgdGhlIGlvY3RsIGFnYWluDQo+
+ICt0byBmaWxsDQo+ICsgKiB0aGUgYnVmZmVyIHdpdGggbWVtb3J5IHJhbmdlIGF0dHJpYnV0ZXMu
+DQo+ICsgKg0KPiArICogSWYgc2Vjb25kIGNhbGwgZmFpbHMgd2l0aCAtRU5PU1BDLCBpdCBtZWFu
+cyBtZW1vcnkgcmFuZ2VzIGNoYW5nZWQNCj4gK2JldHdlZW4NCj4gKyAqIGZpcnN0IGNhbGwgYW5k
+IG5vdywgcmV0cnkgSU9DVEwgYWdhaW4gd2l0aCBAbnVtX21lbV9yYW5nZXMgPSAwLA0KPiArICog
+QHNpemVvZl9tZW1fcmFuZ2VzX2F0dHIgPSAwIGFuZCBAdmVjdG9yX29mX3ZtYV9tZW1fYXR0ciA9
+IE5VTEwNCj4gK2ZvbGxvd2VkIGJ5DQo+ICsgKiBTZWNvbmQgaW9jdGwgY2FsbC4NCj4gKyAqDQo+
+ICsgKiBFeGFtcGxlOg0KPiArICoNCj4gKyAqIC4uIGNvZGUtYmxvY2s6OiBDDQo+ICsgKiAgICBz
+dHJ1Y3QgZHJtX3hlX3ZtX3F1ZXJ5X21lbV9yYW5nZV9hdHRyIHF1ZXJ5ID0gew0KPiArICogICAg
+ICAgICAudm1faWQgPSB2bV9pZCwNCj4gKyAqICAgICAgICAgLnN0YXJ0ID0gMHgxMDAwMDAsDQo+
+ICsgKiAgICAgICAgIC5yYW5nZSA9IDB4MjAwMCwNCj4gKyAqICAgICB9Ow0KPiArICoNCj4gKyAq
+ICAgIC8vIEZpcnN0IGlvY3RsIGNhbGwgdG8gZ2V0IG51bSBvZiBtZW0gcmVnaW9ucyBhbmQgc2l6
+ZW9mIGVhY2ggYXR0cmlidXRlDQo+ICsgKiAgICBpb2N0bChmZCwgRFJNX0lPQ1RMX1hFX1ZNX1FV
+RVJZX01FTV9SQU5HRV9BVFRSUywgJnF1ZXJ5KTsNCj4gKyAqDQo+ICsgKiAgICAvLyBBbGxvY2F0
+ZSBidWZmZXIgZm9yIHRoZSBtZW1vcnkgcmVnaW9uIGF0dHJpYnV0ZXMNCj4gKyAqICAgIHZvaWQg
+KnB0ciA9IG1hbGxvYyhxdWVyeS5udW1fbWVtX3JhbmdlcyAqDQo+IHF1ZXJ5LnNpemVvZl9tZW1f
+cmFuZ2VfYXR0cik7DQpwbGVhc2UgYWRkIHRoaXMgDQp2b2lkICpwdHJfc3RhcnQgPSBwdHI7IA0K
+PiArICoNCj4gKyAqICAgIHF1ZXJ5LnZlY3Rvcl9vZl9tZW1fYXR0ciA9ICh1aW50cHRyX3QpcHRy
+Ow0KPiArICoNCj4gKyAqICAgIC8vIFNlY29uZCBpb2N0bCBjYWxsIHRvIGFjdHVhbGx5IGZpbGwg
+dGhlIG1lbW9yeSBhdHRyaWJ1dGVzDQo+ICsgKiAgICBpb2N0bChmZCwgRFJNX0lPQ1RMX1hFX1ZN
+X1FVRVJZX01FTV9SQU5HRV9BVFRSUywgJnF1ZXJ5KTsNCj4gKyAqDQo+ICsgKiAgICAvLyBJdGVy
+YXRlIG92ZXIgdGhlIHJldHVybmVkIG1lbW9yeSByZWdpb24gYXR0cmlidXRlcw0KPiArICogICAg
+Zm9yICh1bnNpZ25lZCBpbnQgaSA9IDA7IGkgPCBxdWVyeS5udW1fbWVtX3JhbmdlczsgKytpKSB7
+DQo+ICsgKiAgICAgICBzdHJ1Y3QgZHJtX3hlX21lbV9yYW5nZV9hdHRyICphdHRyID0gKHN0cnVj
+dA0KPiBkcm1feGVfbWVtX3JhbmdlX2F0dHIgKilwdHI7DQo+ICsgKg0KPiArICogICAgICAgLy8g
+RG8gc29tZXRoaW5nIHdpdGggYXR0cg0KPiArICoNCj4gKyAqICAgICAgIC8vIE1vdmUgcG9pbnRl
+ciBieSBvbmUgZW50cnkNCj4gKyAqICAgICAgIHB0ciArPSBxdWVyeS5zaXplb2ZfbWVtX3Jhbmdl
+X2F0dHI7DQo+ICsgKiAgICAgfQ0KPiArICoNCj4gKyAqICAgIGZyZWUocHRyKTsNCj4gKyAqLw0K
+ZnJlZShwdHJfc3RhcnQpOyBub3QgZnJlZShwdHIpDQo+ICtzdHJ1Y3QgZHJtX3hlX3ZtX3F1ZXJ5
+X21lbV9yYW5nZV9hdHRyIHsNCj4gKwkvKiogQGV4dGVuc2lvbnM6IFBvaW50ZXIgdG8gdGhlIGZp
+cnN0IGV4dGVuc2lvbiBzdHJ1Y3QsIGlmIGFueSAqLw0KPiArCV9fdTY0IGV4dGVuc2lvbnM7DQo+
+ICsNCj4gKwkvKiogQHZtX2lkOiB2bV9pZCBvZiB0aGUgdmlydHVhbCByYW5nZSAqLw0KPiArCV9f
+dTMyIHZtX2lkOw0KPiArDQo+ICsJLyoqIEBudW1fbWVtX3JhbmdlczogbnVtYmVyIG9mIG1lbV9y
+YW5nZXMgaW4gcmFuZ2UgKi8NCj4gKwlfX3UzMiBudW1fbWVtX3JhbmdlczsNCj4gKw0KPiArCS8q
+KiBAc3RhcnQ6IHN0YXJ0IG9mIHRoZSB2aXJ0dWFsIGFkZHJlc3MgcmFuZ2UgKi8NCj4gKwlfX3U2
+NCBzdGFydDsNCj4gKw0KPiArCS8qKiBAcmFuZ2U6IHNpemUgb2YgdGhlIHZpcnR1YWwgYWRkcmVz
+cyByYW5nZSAqLw0KPiArCV9fdTY0IHJhbmdlOw0KPiArDQo+ICsJLyoqIEBzaXplb2ZfbWVtX3Jh
+bmdlX2F0dHI6IHNpemUgb2Ygc3RydWN0DQo+IGRybV94ZV9tZW1fcmFuZ2VfYXR0ciAqLw0KPiAr
+CV9fdTY0IHNpemVvZl9tZW1fcmFuZ2VfYXR0cjsNCj4gKw0KPiArCS8qKiBAdmVjdG9yX29mX29w
+czogdXNlcnB0ciB0byBhcnJheSBvZiBzdHJ1Y3QNCj4gZHJtX3hlX21lbV9yYW5nZV9hdHRyICov
+DQo+ICsJX191NjQgdmVjdG9yX29mX21lbV9hdHRyOw0KPiArDQo+ICsJLyoqIEByZXNlcnZlZDog
+UmVzZXJ2ZWQgKi8NCj4gKwlfX3U2NCByZXNlcnZlZFsyXTsNCj4gKw0KPiArfTsNCj4gKw0KPiAg
+I2lmIGRlZmluZWQoX19jcGx1c3BsdXMpDQo+ICB9DQo+ICAjZW5kaWYNCj4gDQo+IC0jZW5kaWYg
+LyogX1hFX0RSTV9IXyAqLw0KPiArI2VuZGlmIC8qIF9VQVBJX1hFX0RSTV9IXyAqLw0KPiAtLQ0K
+PiAyLjQzLjANCg0K
