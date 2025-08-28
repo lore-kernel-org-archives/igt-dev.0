@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 871A2CA0FF6
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 21:49:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7526CA0EED
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 21:49:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3CFF210EAEA;
-	Thu, 28 Aug 2025 21:49:17 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hw2XyM07";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 576BD10EAE4
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 21:49:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756417754; x=1787953754;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=+NitqMZVUC1H67lj0YTYk/p7NKVaYzLZjye3MCGMMX8=;
- b=hw2XyM07Y5otXamQihcyfaRy492mzygRzGE1radHQ//HJ4+B0Ryk3rtS
- MR8mmaKgp2A0dp86Xk8pWCa0Kxs3m2PcPCPPTM0wBGA35ybGr349qYPeF
- OYDVU4Zg9yzgGvkP8Un+/PmcqO5UkJOCbEYsUA1UQ7l0X3xnuGn14XT7C
- UIQb5MRWvQPbcNBoznZSYletd+KdYS+0xGSn9Kvr2smBOu34QS9CtYcTq
- IXAxvdBtPJf2XbLQ/xmgGLVb74OKIU8x7grfW4OWV+Lsjwx5GxkuO8OvJ
- rdLEZTosaP1UfiKLUbWEBQz2Kzds4yp2C+RRlazD1sty/cWjy15xSV+MD A==;
-X-CSE-ConnectionGUID: UwHQoX6+TOaR3s5W3uS1KA==
-X-CSE-MsgGUID: UuhgdDNoTzyE/Nv1ZC8TkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="62346787"
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="62346787"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 14:49:14 -0700
-X-CSE-ConnectionGUID: upVdzpfiRP6qDVuKBdu+mw==
-X-CSE-MsgGUID: QPoB87m4QueaT1R11xIpfg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="170607771"
-Received: from dut6306bmgfrd.fm.intel.com ([10.36.25.21])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 14:49:13 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v3 2/2] tests/intel/xe_oa: Add a test for tail address
- wrap
-Date: Thu, 28 Aug 2025 21:49:07 +0000
-Message-ID: <20250828214907.94311-3-umesh.nerlige.ramappa@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250828214907.94311-1-umesh.nerlige.ramappa@intel.com>
-References: <20250828214907.94311-1-umesh.nerlige.ramappa@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8144510EAE9;
+	Thu, 28 Aug 2025 21:49:44 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C1A810EAE9;
+ Thu, 28 Aug 2025 21:49:44 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2714021157181253002=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_runner/executor=3A_Abort_if?=
+ =?utf-8?q?_dmesg_is_flooded_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 28 Aug 2025 21:49:44 -0000
+Message-ID: <175641778417.280646.14007263583236223868@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250828103124.36280-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20250828103124.36280-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,106 +37,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a test to verify that the HW wraps to start of the OA buffer when a
-report does not fit in the remaining space in the buffer.
+--===============2714021157181253002==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2:
-- Make test more robust
+== Series Details ==
 
-v3:
-- Just wait for buffer overflow status instead of reading reports
+Series: runner/executor: Abort if dmesg is flooded (rev6)
+URL   : https://patchwork.freedesktop.org/series/150246/
+State : success
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tests/intel/xe_oa.c | 65 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+== Summary ==
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 3b3cdf9314c2..443e0b1761ef 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -4541,6 +4541,63 @@ static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_insta
- 	try_invalid_access(vaddr);
- }
- 
-+/**
-+ * SUBTEST: tail-address-wrap
-+ * Description: Test tail address wrap on odd format sizes. Ensure that the
-+ * format size is not a power of 2. This means that the last report will not be
-+ * broken down across the OA buffer end. Instead it will be written to the
-+ * beginning of the OA buffer. We will check the end of the buffer to ensure it
-+ * has zeroes in it.
-+ */
-+static void
-+test_tail_address_wrap(const struct drm_xe_engine_class_instance *hwe, size_t oa_buffer_size)
-+{
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	u64 exponent = max_oa_exponent_for_period_lte(20000);
-+	u64 buffer_size = oa_buffer_size ?: buffer_fill_size;
-+	u64 fmt = test_set->perf_oa_format;
-+	u64 properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, exponent,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, buffer_size,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	u32 fmt_size = get_oa_format(fmt).size;
-+	u32 zero_size = buffer_size % fmt_size;
-+	u32 *zero_area, *buffer_end, *buffer_start;
-+
-+	igt_require(zero_size);
-+
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+	set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-+	wait_for_oa_buffer_overflow(stream_fd, 100);
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
-+
-+	buffer_start = mmap(0, buffer_size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
-+	igt_assert(buffer_start);
-+
-+	zero_area = buffer_start + (buffer_size - zero_size) / 4;
-+	buffer_end = buffer_start + buffer_size / 4;
-+
-+	dump_report(zero_area, zero_size / 4, "zero_area");
-+	while (zero_area < buffer_end)
-+		igt_assert_eq(*zero_area++, 0);
-+
-+	munmap(buffer_start, buffer_size);
-+
-+	__perf_close(stream_fd);
-+}
-+
- /**
-  * SUBTEST: map-oa-buffer
-  * Description: Verify mapping of oa buffer
-@@ -5099,6 +5156,14 @@ igt_main
- 				closed_fd_and_unmapped_access(hwe);
- 	}
- 
-+	igt_subtest_with_dynamic("tail-address-wrap") {
-+		long k = random() % num_buf_sizes;
-+
-+		igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_BUFFER_SIZE);
-+		__for_one_hwe_in_oag_w_arg(hwe, buf_sizes[k].name)
-+			test_tail_address_wrap(hwe, buf_sizes[k].size);
-+	}
-+
- 	igt_subtest_group {
- 		igt_fixture {
- 			perf_init_whitelist();
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_8514_BAT -> XEIGTPW_13652_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13652_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_vm@bind-execqueues-independent:
+    - {bat-ptl-2}:        [FAIL][1] ([Intel XE#5783]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8514/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8514 -> IGTPW_13652
+
+  IGTPW_13652: 13a2aaad0a309d26ad657be98296a8bc0fe1c01d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8514: 8514
+  xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/index.html
+
+--===============2714021157181253002==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>runner/executor: Abort if dmesg is flooded (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150246/">https://patchwork.freedesktop.org/series/150246/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8514_BAT -&gt; XEIGTPW_13652_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13652_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_vm@bind-execqueues-independent:<ul>
+<li>{bat-ptl-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8514/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8514 -&gt; IGTPW_13652</li>
+</ul>
+<p>IGTPW_13652: 13a2aaad0a309d26ad657be98296a8bc0fe1c01d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8514: 8514<br />
+  xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97</p>
+
+</body>
+</html>
+
+--===============2714021157181253002==--
