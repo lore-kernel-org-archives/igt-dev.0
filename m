@@ -4,59 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83A73CA0EED
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 12:23:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACF73CA0EED
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 13:04:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 391C310E9A0;
-	Thu, 28 Aug 2025 12:23:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 64E9F10E332;
+	Thu, 28 Aug 2025 13:04:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JbLPvQJ8";
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="dLrzlf2v";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03FB510E9AF
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 12:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756383830; x=1787919830;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=i9ybiFgLddknfFRz6pwYr4CBgldaGBzlN3Lqz7SuHuI=;
- b=JbLPvQJ8w7wgpNavWIr165MitVF+u4HhMuI+RKGJCJal/Obcn4IXt2VM
- uRKW0hBbNY7EtbXVlnXrF5hXG7OxS6TsDwpXI+pdHwvocGcCAFv5HQ6fT
- cWqEEatI0VvlRUssUmR2YFLAmMeSuXNZhHttLctF5XvmNyIghaMnmAVkQ
- DQDoal0W3z9D/3Tb3F4gdd2+zNFaOAODIMvK9yJacjJ2eF4b1ViRSfMM3
- DUrq/pddUseobnJBY9lCxA0Qqc/jJOdCxXUDMcnudbMCAXOw0tpG6tx5Y
- bzpQdL/jRKVrrKOqYAtvaataGEZS3gszRy7F/tndLwhfv5HZFKmL4DP3o Q==;
-X-CSE-ConnectionGUID: LWM7KHToRR6rqMtOB+b9gg==
-X-CSE-MsgGUID: 1AYfRAsfQSeiZ7D/vVbcHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="57848877"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="57848877"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 05:23:49 -0700
-X-CSE-ConnectionGUID: eaxjKccPQ9+KXGlHFRdExg==
-X-CSE-MsgGUID: CD2t1Uw9QkOoEcVaIB21jQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="175392554"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.246.1.180])
- ([10.246.1.180])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 05:23:48 -0700
-Message-ID: <0678359a-09d4-49a3-baa9-850c8a26f2d7@linux.intel.com>
-Date: Thu, 28 Aug 2025 14:23:45 +0200
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com
+ [136.143.188.112])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCB5C89FA5;
+ Thu, 28 Aug 2025 13:04:31 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1756386268; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=csnNT2V5O/weQ37OjUKmud7xFK5iN6x4+NYeN2hT6TLerMpt2vINqpus/GI6nwvUWQgQm5AytDKke7xLBwFhtbvd+5cWoMffx5olUhInKGrRi40zLqhpmnkmV91Cs/9QH5m5JWbjWsB8Q9YvlxOvpXkJ2lWjX/U4kuYJGPRDKCc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1756386268;
+ h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=oB8UEk1UXs11oWU5zM1XCwjRVX/YkLCvELRxa6BXhUw=; 
+ b=jqipcGR9jQyj1ZvKNqJhTVJ7Z3XvXrmN9JQAsyz1dQNhHk6kmfmTjc3FkFWzIwRxWA04O82ZAmMt/x56lOPTZvhiwEFb1MWeb8W2jnwKApmM4vjGEpGwl42GdKYVCnIy39hT5BZdutO31UEZ3LzgLco6oppgFpQ7JKaBBclQkDY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+ dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756386268; 
+ s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=oB8UEk1UXs11oWU5zM1XCwjRVX/YkLCvELRxa6BXhUw=;
+ b=dLrzlf2vwUi/DFw1kext2roHGWwzy6XLGNKZPptYBYvKnxxkT/IxR3+s9AMSHMLd
+ SoaVHu3r3jg76pntd9nnnxIdZz7T6MXbiBFfSvi7v1p3h6Iah3rrCtNOHsrznBFlkBz
+ zMZZXjtbBW+t1v7JJeJeFzxGC9xOnhcE0uhcaCcg=
+Received: by mx.zohomail.com with SMTPS id 1756386266810603.6137903602568;
+ Thu, 28 Aug 2025 06:04:26 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+To: adrinael@adrinael.net, arek@hiler.eu, kamil.konieczny@linux.intel.com,
+ juhapekka.heikkila@gmail.com, bhanuprakash.modem@gmail.com,
+ ashutosh.dixit@intel.com, karthik.b.s@intel.com,
+ boris.brezillon@collabora.com, liviu.dudau@arm.com, steven.price@arm.com
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+ intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Subject: [PATCH i-g-t 0/4] Add initial Panthor tests
+Date: Thu, 28 Aug 2025 10:03:56 -0300
+Message-ID: <20250828130402.2549948-1-daniel.almeida@collabora.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 3/4] tests/intel/xe_sriov_flr: Use VRAM access
- helpers from intel_vram library
-To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@intel.com, piotr.piorkowski@intel.com
-References: <20250827144916.18558-1-lukasz.laguna@intel.com>
- <20250827144916.18558-4-lukasz.laguna@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250827144916.18558-4-lukasz.laguna@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,174 +68,45 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
+This series adds basic Panthor tests. In particular, these are being
+used to test both Panthor and Tyr, i.e.: the new Rust GPU driver that
+implements Panthor's uAPI. Most of the initial tests were chosen in
+order to have something to test Tyr with, but this series lays the
+groundwork so that more interesting tests can be added to test more of
+Panthor itself.
 
-On 8/27/2025 4:49 PM, Lukasz Laguna wrote:
-> Replace local VRAM access helper functions with the helpers provided by
-> the intel_vram library.
-> 
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
-> v2:
-> - adjust the patch for lib changes
-> ---
->   tests/intel/xe_sriov_flr.c | 104 +++++++------------------------------
->   1 file changed, 18 insertions(+), 86 deletions(-)
-> 
-> diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-> index fc08703c0..1a04c6891 100644
-> --- a/tests/intel/xe_sriov_flr.c
-> +++ b/tests/intel/xe_sriov_flr.c
-> @@ -11,6 +11,7 @@
->   #include "igt_device.h"
->   #include "igt_sriov_device.h"
->   #include "intel_chipset.h"
-> +#include "intel_vram.h"
->   #include "linux_scaffold.h"
->   #include "xe/xe_mmio.h"
->   #include "xe/xe_query.h"
-> @@ -676,94 +677,28 @@ struct lmem_data {
->   	size_t *vf_lmem_size;
->   };
->   
-> -struct lmem_info {
-> -	/* pointer to the mapped area */
-> -	char *addr;
-> -	/* size of mapped area */
-> -	size_t size;
-> -};
-> -
->   const size_t STEP = SZ_1M;
->   
-> -static void *mmap_vf_lmem(int pf_fd, int vf_num, size_t length, int prot, off_t offset)
-> -{
-> -	int open_flags = ((prot & PROT_WRITE) != 0) ? O_RDWR : O_RDONLY;
-> -	struct stat st;
-> -	int sysfs, fd;
-> -	void *addr;
-> -
-> -	sysfs = igt_sriov_device_sysfs_open(pf_fd, vf_num);
-> -	if (sysfs < 0) {
-> -		igt_debug("Failed to open sysfs for VF%d: %s\n", vf_num, strerror(errno));
-> -		return NULL;
-> -	}
-> -
-> -	fd = openat(sysfs, "resource2", open_flags | O_SYNC);
-> -	close(sysfs);
-> -	if (fd < 0) {
-> -		igt_debug("Failed to open resource2 for VF%d: %s\n", vf_num, strerror(errno));
-> -		return NULL;
-> -	}
-> -
-> -	if (fstat(fd, &st)) {
-> -		igt_debug("Failed to stat resource2 for VF%d: %s\n", vf_num, strerror(errno));
-> -		close(fd);
-> -		return NULL;
-> -	}
-> -
-> -	if (st.st_size < length) {
-> -		igt_debug("Mapping length (%zu) exceeds BAR2 size (%" PRIu64 ")\n", length, (uint64_t)st.st_size);
-> -		close(fd);
-> -		return NULL;
-> -	}
-> -
-> -	addr = mmap(NULL, length, prot, MAP_SHARED, fd, offset);
-> -	close(fd);
-> -	if (addr == MAP_FAILED) {
-> -		igt_debug("Failed mmap resource2 for VF%d: %s\n", vf_num, strerror(errno));
-> -		return NULL;
-> -	}
-> -
-> -	return addr;
-> -}
-> -
-> -static void munmap_vf_lmem(struct lmem_info *lmem)
-> -{
-> -	igt_debug_on_f(munmap(lmem->addr, lmem->size),
-> -		       "Failed munmap %p: %s\n", lmem->addr, strerror(errno));
-> -}
-> -
-> -static char lmem_read(const char *addr, size_t idx)
-> -{
-> -	return READ_ONCE(*(addr + idx));
-> -}
-> -
-> -static char lmem_write_readback(char *addr, size_t idx, char value)
-> -{
-> -	WRITE_ONCE(*(addr + idx), value);
-> -	return lmem_read(addr, idx);
-> -}
-> -
-> -static bool lmem_write_pattern(struct lmem_info *lmem, char value, size_t start, size_t step)
-> +static bool lmem_write_pattern(struct vram_mapping *m, uint8_t value, size_t start, size_t step)
->   {
-> -	char read;
-> +	uint8_t read;
->   
-> -	for (; start < lmem->size; start += step) {
-> -		read = lmem_write_readback(lmem->addr, start, value);
-> +	for (; start < m->size; start += step) {
-> +		read = intel_vram_write_readback8(m, start, value);
->   		if (igt_debug_on_f(read != value, "LMEM[%zu]=%u != %u\n", start, read, value))
->   			return false;
->   	}
->   	return true;
->   }
->   
-> -static bool lmem_contains_expected_values_(struct lmem_info *lmem,
-> -					   char expected, size_t start,
-> +static bool lmem_contains_expected_values_(struct vram_mapping *m,
-> +					   uint8_t expected, size_t start,
->   					   size_t step)
->   {
-> -	char read;
-> +	uint8_t read;
->   
-> -	for (; start < lmem->size; start += step) {
-> -		read = lmem_read(lmem->addr, start);
-> +	for (; start < m->size; start += step) {
-> +		read = intel_vram_read8(m, start);
->   		if (igt_debug_on_f(read != expected,
->   				   "LMEM[%zu]=%u != %u\n", start, read, expected))
->   			return false;
-> @@ -774,30 +709,27 @@ static bool lmem_contains_expected_values_(struct lmem_info *lmem,
->   static bool lmem_contains_expected_values(int pf_fd, int vf_num, size_t length,
->   					  char expected)
->   {
-> -	struct lmem_info lmem = { .size = length };
-> +	struct vram_mapping vram;
->   	bool result;
->   
-> -	lmem.addr = mmap_vf_lmem(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
-> -	if (igt_debug_on(!lmem.addr))
-> +	if (igt_debug_on(intel_vram_mmap(pf_fd, vf_num, 0, length, PROT_READ | PROT_WRITE, &vram)))
->   		return false;
->   
-> -	result = lmem_contains_expected_values_(&lmem, expected, 0, STEP);
-> -	munmap_vf_lmem(&lmem);
-> +	result = lmem_contains_expected_values_(&vram, expected, 0, STEP);
-> +	intel_vram_munmap(&vram);
->   
->   	return result;
->   }
->   
->   static bool lmem_mmap_write_munmap(int pf_fd, int vf_num, size_t length, char value)
->   {
-> -	struct lmem_info lmem;
-> +	struct vram_mapping vram;
->   	bool result;
->   
-> -	lmem.size = length;
-> -	lmem.addr = mmap_vf_lmem(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
-> -	if (igt_debug_on(!lmem.addr))
-> +	if (igt_debug_on(intel_vram_mmap(pf_fd, vf_num, 0, length, PROT_READ | PROT_WRITE, &vram)))
->   		return false;
-> -	result = lmem_write_pattern(&lmem, value, 0, STEP);
-> -	munmap_vf_lmem(&lmem);
-> +	result = lmem_write_pattern(&vram, value, 0, STEP);
-> +	intel_vram_munmap(&vram);
->   
->   	return result;
->   }
-LGTM,
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Also, please note that this is my first IGT patch, so apologies in
+advance in case I forgot to follow any IGT-specific workflow when
+submitting this. I don't see a checkpatch.pl equivalent, so there was
+nothing to check this submission with as far as I am aware.
+
+Daniel Almeida (4):
+  lib: add support for opening Panthor devices
+  tests: panthor: add initial infrastructure
+  lib: initial panthor infrastructure
+  tests/panthor: add panthor tests
+
+ lib/drmtest.c                 |   1 +
+ lib/drmtest.h                 |   1 +
+ lib/igt_panthor.c             | 150 +++++++++++++++++++
+ lib/igt_panthor.h             |  28 ++++
+ lib/meson.build               |   1 +
+ meson.build                   |   8 ++
+ tests/meson.build             |   2 +
+ tests/panthor/meson.build     |  15 ++
+ tests/panthor/panthor_gem.c   |  59 ++++++++
+ tests/panthor/panthor_group.c | 264 ++++++++++++++++++++++++++++++++++
+ tests/panthor/panthor_query.c |  25 ++++
+ tests/panthor/panthor_vm.c    |  73 ++++++++++
+ 12 files changed, 627 insertions(+)
+ create mode 100644 lib/igt_panthor.c
+ create mode 100644 lib/igt_panthor.h
+ create mode 100644 tests/panthor/meson.build
+ create mode 100644 tests/panthor/panthor_gem.c
+ create mode 100644 tests/panthor/panthor_group.c
+ create mode 100644 tests/panthor/panthor_query.c
+ create mode 100644 tests/panthor/panthor_vm.c
+
+-- 
+2.50.1
 
