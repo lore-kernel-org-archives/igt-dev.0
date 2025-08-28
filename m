@@ -4,61 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 034CFC8303F
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 10:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8B3ACA0EED
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 10:49:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B86AE10E322;
-	Thu, 28 Aug 2025 10:48:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6DE6F10E322;
+	Thu, 28 Aug 2025 10:49:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Oft5FLQV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h34cJzjf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 382E010E322
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 10:48:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4BA5810E1D1
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 10:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756378115; x=1787914115;
+ t=1756378195; x=1787914195;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=sASoIwTMe6ZtNgbLArdv+fTK9THiLT1GFoq+VFIv45A=;
- b=Oft5FLQVzf3EDS/63v8jRFohOiBVPR1GCTLcdjj1RCPMCDw9Yiu2tNcn
- 5HKIso8cUgx2nKUaufQHlfb1TJeeelL20uTf+lGE32p1aOTAuOtI9jqhj
- 4QDsM3lQFI0YQ3wN1SvKLN6IeGJqCSwO5mChHUpzx1+WPCLzpGRgY3Ms4
- s48BnyEUlayEm5cmAsvGvQq1i+SwMn09GCquYTjIU6WmRIGo9tC41jlIE
- 3kGN1k4xKREtGZvImLeJWxO4wjMu4Bo+ZQZwyGAkjuNPY24ZVJpRiSkql
- +zaTw72nLobeodWbpdEymRoG5NrkfpTu/jB+RXYty6UeVlSDV0fp6vX/K Q==;
-X-CSE-ConnectionGUID: nm7XYcp6RLe8tngBmZNZew==
-X-CSE-MsgGUID: YrDmYwCDQ16uhxzBe4NQ/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="57668451"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="57668451"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 03:48:35 -0700
-X-CSE-ConnectionGUID: sHibiZ+8SBygMLBdup4PEg==
-X-CSE-MsgGUID: aHVJ+H+HSPStIjEYJu9StA==
+ bh=UGMuK+yVJayqhQRUr4sqAcJ7PzEhWqCPakIJVBfosn4=;
+ b=h34cJzjfzexa2uVT18tqYw4+zeBCcoQrVknO660sAfKG+TH4Feai4x3X
+ kPDQqixM6k3OrV7stF0cJ1TLd9uw5bfIUCOS+2dTNEePwQF+I0zxcS8GQ
+ E2gVMYuWiaQwxMdOmO3bh9WEVcqvb1l1/t8BZJTfl/+DIY+/KtF5q7O+o
+ f7Ebgv6eUcgYAUu35ddcW5AccC74fTdu2Ytlf7Ebzo0KJC/1vmohFyKst
+ XJSBzsdrvAawF4365J2dyQ6cYc+d31rCZQPDcNDHEjFzwWVsB8a/TUJay
+ nf6ia17fO6LNsVWGS5GkqMgHd3NxMF4dnOXlUQQKaSi3EFG66W23DlnFV g==;
+X-CSE-ConnectionGUID: nXxk54bUTW+m1Sx90zgNsQ==
+X-CSE-MsgGUID: JrGe7bZSR5iqJi5XnRB3KA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="69236573"
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="69236573"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2025 03:49:55 -0700
+X-CSE-ConnectionGUID: VW+obaEoQWuB3JBOImvRhw==
+X-CSE-MsgGUID: 2MTceRmqQgSVnQ27hIuzNQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="201045642"
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="174418667"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 03:48:33 -0700
-Date: Thu, 28 Aug 2025 12:48:30 +0200
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 03:49:53 -0700
+Date: Thu, 28 Aug 2025 12:49:50 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: =?utf-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>
 Cc: igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com,
- zbigniew.kempczynski@intel.com, karthik.b.s@intel.com
-Subject: Re: [PATCH i-g-t v4 16/41] lib/vkms: Test connector invalid values
-Message-ID: <20250828104830.hrvxbokiuhlqhd3z@kamilkon-DESK.igk.intel.com>
+ zbigniew.kempczynski@intel.com, karthik.b.s@intel.com,
+ Jim Shargo <jshargo@chromium.org>, Marius Vlad <marius.vlad@collabora.com>
+Subject: Re: [PATCH i-g-t v4 02/41] lib/vkms: Add minimal VKMS library and
+ test device default files
+Message-ID: <20250828104950.cy33isjurqcavq34@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  =?utf-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
  igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com,
- zbigniew.kempczynski@intel.com, karthik.b.s@intel.com
+ zbigniew.kempczynski@intel.com, karthik.b.s@intel.com,
+ Jim Shargo <jshargo@chromium.org>,
+ Marius Vlad <marius.vlad@collabora.com>
 References: <20250807074550.6543-1-jose.exposito89@gmail.com>
- <20250807074550.6543-17-jose.exposito89@gmail.com>
+ <20250807074550.6543-3-jose.exposito89@gmail.com>
+ <20250813132826.oogpkwws3524ddx5@kamilkon-DESK.igk.intel.com>
+ <aJ2_5pdRf2Ag_Iiw@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250807074550.6543-17-jose.exposito89@gmail.com>
+In-Reply-To: <aJ2_5pdRf2Ag_Iiw@fedora>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,151 +81,86 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi José,
-On 2025-08-07 at 09:45:25 +0200, José Expósito wrote:
-> For a VKMS connector, it is only possible to set invalid values in the
-> connector status.
+On 2025-08-14 at 12:52:22 +0200, José Expósito wrote:
+> Hi Kamil,
 > 
-> Test that setting wrong values fails and that the connector is not
-> accidentally changed.
+> On Wed, Aug 13, 2025 at 03:28:26PM +0200, Kamil Konieczny wrote:
+> > Hi José,
+> > On 2025-08-07 at 09:45:11 +0200, José Expósito wrote:
+> > > Create a library containing helpers for creating VKMS devices and
+> > > configuring them dynamically using configfs.
+> > > For the moment, add the minimal number of helpers to be able to start
+> > > testing VKMS's configfs support: Create device, destroy device and
+> > > destroy all devices.
+> > > 
+> > > Also, include the simplest possible test using those helpers (checking
+> > > the device's default files) and the scaffolding required to generate
+> > > the documentation.
+> > > 
+> > > Co-developed-by: Jim Shargo <jshargo@chromium.org>
+> > > Signed-off-by: Jim Shargo <jshargo@chromium.org>
+> > > Co-developed-by: Marius Vlad <marius.vlad@collabora.com>
+> > > Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+> > > Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+> > > ---
+> > >  lib/igt_vkms.c             | 206 +++++++++++++++++++++++++++++++++++++
+> > >  lib/igt_vkms.h             |  27 +++++
+> > >  lib/meson.build            |   1 +
+> > >  meson.build                |   8 ++
+> > >  tests/meson.build          |   2 +
+> > >  tests/vkms/meson.build     |  13 +++
+> > >  tests/vkms/vkms_configfs.c | 131 +++++++++++++++++++++++
+> > 
+> > I checked changes as they are only minimal, imho you could keep
+> > Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> > 
+> > Also, you removed changes from testplan and docs building so
+> > for build/meson changes
+> > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > 
+> > Btw checkpatch suggests even one more const 
+> > static const char * array should probably be static const char * const
+> > but you could fix that later.
 > 
-> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-> ---
->  lib/igt_vkms.c             | 24 ++++++++++++++++++
->  lib/igt_vkms.h             |  2 ++
->  tests/vkms/vkms_configfs.c | 50 ++++++++++++++++++++++++++++++++++++++
->  3 files changed, 76 insertions(+)
+> Thanks a lot for your reviews. Almost all patches are reviewed now.
+> Let's see if the DRM series get merged soon and we can merge this
+> one as well :)
 > 
-> diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
-> index 5d9e13ed7..a86d5e05d 100644
-> --- a/lib/igt_vkms.c
-> +++ b/lib/igt_vkms.c
-> @@ -613,3 +613,27 @@ int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name)
->  
->  	return read_int(path);
->  }
-> +
-> +/**
-> + * igt_vkms_connector_set_status:
-> + * @dev: Device the connector belongs to
-> + * @name: Connector name
-> + * @type: DRM_MODE_CONNECTED, DRM_MODE_DISCONNECTED or
-> + * DRM_MODE_UNKNOWNCONNECTION
-> + *
-> + * Set a new status for the connector
-> + */
-> +void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
-> +				   int status)
-> +{
-> +	char path[PATH_MAX];
-> +
-> +	if (status != DRM_MODE_CONNECTED &&
-> +	    status != DRM_MODE_DISCONNECTED &&
-> +	    status != DRM_MODE_UNKNOWNCONNECTION)
-> +		igt_assert(!"Cannot be reached: Unknown connector status");
-> +
-> +	igt_vkms_get_connector_status_path(dev, name, path, sizeof(path));
-> +
-> +	write_int(path, status);
-> +}
-> diff --git a/lib/igt_vkms.h b/lib/igt_vkms.h
-> index 13d7ed094..596990547 100644
-> --- a/lib/igt_vkms.h
-> +++ b/lib/igt_vkms.h
-> @@ -58,5 +58,7 @@ void igt_vkms_device_add_encoder(igt_vkms_t *dev, const char *name);
->  
->  void igt_vkms_device_add_connector(igt_vkms_t *dev, const char *name);
->  int igt_vkms_connector_get_status(igt_vkms_t *dev, const char *name);
-> +void igt_vkms_connector_set_status(igt_vkms_t *dev, const char *name,
-> +				   int status);
->  
->  #endif /* __IGT_VKMS_H__ */
-> diff --git a/tests/vkms/vkms_configfs.c b/tests/vkms/vkms_configfs.c
-> index b3fafc069..987491373 100644
-> --- a/tests/vkms/vkms_configfs.c
-> +++ b/tests/vkms/vkms_configfs.c
-> @@ -485,6 +485,55 @@ static void test_connector_default_values(void)
->  	igt_vkms_device_destroy(dev);
->  }
->  
-> +/**
-> + * SUBTEST: connector-wrong-values
-> + * Description: Check that setting unexpected values doesn't work.
-> + */
-> +
-> +static void test_connector_wrong_values(void)
-> +{
-> +	struct invalid_value invalid_status_values[] = {
-> +		{ "", 0 },
+> About the additional const, I noticed it, but then ARRAY_SIZE() would
+> trigger a warning about that extra const, so I decided to ignore
+> checkpatch and avoid unnecessary refactors.
 
-Write of zero bytes will not reach your driver, see man 2 write.
-With this line removed
-
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-PS. Louis - gentle ping on review this last patch.
-
-> +		{ "\0", 1 },
-
-btw imho 
-		{ "", 1 },
-is also valid.
-
-> +		{ "-1", 2 },
-> +		{ "0", 1 },
-> +		{ "4", 1 },
-> +		{ "connected", 10 },
-> +	};
-> +	igt_vkms_t *dev;
-> +	char path[PATH_MAX];
-> +	int fd;
-> +	int ret;
-> +
-> +	/* Create a device with a disconnected connector */
-> +	dev = igt_vkms_device_create(__func__);
-> +	igt_assert(dev);
-> +
-> +	igt_vkms_device_add_connector(dev, "connector0");
-> +	igt_vkms_connector_set_status(dev, "connector0", DRM_MODE_DISCONNECTED);
-> +	igt_assert_eq(igt_vkms_connector_get_status(dev, "connector0"),
-> +		      DRM_MODE_DISCONNECTED);
-> +	igt_vkms_get_connector_status_path(dev, "connector0", path, sizeof(path));
-> +
-> +	/* Test invalid values for "status" */
-> +	for (int i = 0; i < ARRAY_SIZE(invalid_status_values); i++) {
-> +		struct invalid_value v = invalid_status_values[i];
-> +
-> +		fd = open(path, O_WRONLY);
-> +		igt_assert_f(fd >= 0, "Error opening '%s'\n", path);
-> +
-> +		ret = write(fd, v.value, v.size);
-> +		igt_assert(ret <= 0);
-
-With zero-byte write removed this should be 'ret < 0'?
+Makes sense, thx for explanation.
 
 Regards,
 Kamil
 
-> +
-> +		close(fd);
-> +	}
-> +
-> +	igt_assert_eq(igt_vkms_connector_get_status(dev, "connector0"),
-> +		      DRM_MODE_DISCONNECTED);
-> +
-> +	igt_vkms_device_destroy(dev);
-> +}
-> +
->  igt_main
->  {
->  	struct {
-> @@ -505,6 +554,7 @@ igt_main
->  		{ "encoder-default-files", test_encoder_default_files },
->  		{ "connector-default-files", test_connector_default_files },
->  		{ "connector-default-values", test_connector_default_values },
-> +		{ "connector-wrong-values", test_connector_wrong_values },
->  	};
->  
->  	igt_fixture {
-> -- 
-> 2.50.1
 > 
+> Thanks,
+> Jose
+> 
+> > Regards,
+> > Kamil
+> > 
+> > >  7 files changed, 388 insertions(+)
+> > >  create mode 100644 lib/igt_vkms.c
+> > >  create mode 100644 lib/igt_vkms.h
+> > >  create mode 100644 tests/vkms/meson.build
+> > >  create mode 100644 tests/vkms/vkms_configfs.c
+> > > 
+> > > diff --git a/lib/igt_vkms.c b/lib/igt_vkms.c
+> > > new file mode 100644
+> > > index 000000000..03931d2e4
+> > > --- /dev/null
+> > > +++ b/lib/igt_vkms.c
+> > > @@ -0,0 +1,206 @@
+> > > +// SPDX-License-Identifier: MIT
+> > > +/*
+> > > + * Copyright © 2023 Google LLC.
+> > > + * Copyright © 2023 Collabora, Ltd.
+> > > + * Copyright © 2024-2025 Red Hat, Inc.
+> > > + */
+> > > +
+
+[cut]
+
