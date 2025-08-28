@@ -4,51 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21761CA0EED
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 14:02:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D2AAC8303F
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 14:16:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A679710E9BD;
-	Thu, 28 Aug 2025 14:01:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6FE5710E9CE;
+	Thu, 28 Aug 2025 14:16:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="KJqbyTtM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bPehvRxV";
 	dkim-atps=neutral
-Received: from bali.collaboradmins.com (bali.collaboradmins.com
- [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD7C610E9BA;
- Thu, 28 Aug 2025 14:01:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1756389716;
- bh=lCguA9efneea2yG9g+DfE92m0deh/wCKq1TZlgaDIQE=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=KJqbyTtMW6EbTwUcTzCui/R+89DLlnUgSWgFru071A6U9b9aFqmBBK1fB2W0vYVqc
- PDjoBPGGJERjKw9ZnOi2B8PYvKRSjwUsENQ7aOWY3mFmoSXBfAHm+WAdvwbkm+8kR3
- Qk7PuVrGPHXPlQtkYn8UzkkEZRspofugfu+ikRkxMF3OYS/VfKm1fBHPrD8CbxK7T0
- 4ZEFH6+2FbfCB64ONrI3YNxtW3OgqUd7P6PsVXob6DZbbDU9p6Idj1jAaUK0NM1IbH
- LwJQCM1zZDyQS+YqPaYDkUS8qmyQsj2BBcUxuCFfFQzyJ3FfxaFefjaaFejMBslBU9
- 7FRlHIfCsiBEA==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested) (Authenticated sender: bbrezillon)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id A086A17E0488;
- Thu, 28 Aug 2025 16:01:55 +0200 (CEST)
-Date: Thu, 28 Aug 2025 16:01:51 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: adrinael@adrinael.net, arek@hiler.eu, kamil.konieczny@linux.intel.com,
- juhapekka.heikkila@gmail.com, bhanuprakash.modem@gmail.com,
- ashutosh.dixit@intel.com, karthik.b.s@intel.com, liviu.dudau@arm.com,
- steven.price@arm.com, intel-gfx@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 0/4] Add initial Panthor tests
-Message-ID: <20250828160151.5674fa67@fedora>
-In-Reply-To: <20250828130402.2549948-1-daniel.almeida@collabora.com>
-References: <20250828130402.2549948-1-daniel.almeida@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50F8A10E6BA
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 07:31:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756366286; x=1787902286;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=bM7rL2q58PAoWlb7GxrOspCSlhcIk0QW+5gn/VAFO54=;
+ b=bPehvRxVJJZ3mUDP6zek2KIM1r+HdopQLe18NkiqzKfP4KyCnX/dMFxE
+ yySvj4CkFgzcG2FUc/uD/RLmtu2CLss0TF9HVmF7H9vy6fbD4LNsiUUSf
+ kfEBrEoSNiXZsTBRM6AMMmvjj3vE9Q6xHmP/PhjzX4IMDEzmuljW+M67x
+ 7uAWfIhaCPWkNu+nWkuGoHRUAUqLqItO4A3x9Y+kuNVkcFg/w/JaTtWXm
+ QyCeLdWDzoLEc27iSKEvO/oMPUDrDpL4E0aceUDdAa2JvaQei8XtCw1xl
+ OUISq0kty1NuelrGyl9+XevKsN6M1jPZfA1DuccofPLxkGg0RY8SEvhJ8 A==;
+X-CSE-ConnectionGUID: kbH/lXkAQGGz4URwRag+KQ==
+X-CSE-MsgGUID: kHf6kxUFTleGK9nXEe++2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="69335328"
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="69335328"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2025 00:31:26 -0700
+X-CSE-ConnectionGUID: XcTY0w6HSpOFlcX/kBVhuA==
+X-CSE-MsgGUID: Yelj3AomSpCe3PEeAU9Ezg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="201004493"
+Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
+ by orviesa002.jf.intel.com with ESMTP; 28 Aug 2025 00:31:24 -0700
+From: mallesh.koujalagi@intel.com
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, sk.anirban@intel.com, raag.jadav@intel.com,
+ Mallesh Koujalagi <mallesh.Koujalagi@intel.com>
+Subject: [PATCH i-g-t 2/2] HAX: Added list of test cases to fastfeedback list
+Date: Thu, 28 Aug 2025 13:01:14 +0530
+Message-Id: <20250828073114.1884451-2-mallesh.koujalagi@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250828073114.1884451-1-mallesh.koujalagi@intel.com>
+References: <20250828073114.1884451-1-mallesh.koujalagi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 28 Aug 2025 14:16:24 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,62 +69,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 28 Aug 2025 10:03:56 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+From: Mallesh Koujalagi <mallesh.Koujalagi@intel.com>
 
-> This series adds basic Panthor tests. In particular, these are being
-> used to test both Panthor and Tyr, i.e.: the new Rust GPU driver that
-> implements Panthor's uAPI. Most of the initial tests were chosen in
-> order to have something to test Tyr with, but this series lays the
-> groundwork so that more interesting tests can be added to test more of
-> Panthor itself.
-> 
-> Also, please note that this is my first IGT patch, so apologies in
-> advance in case I forgot to follow any IGT-specific workflow when
-> submitting this. I don't see a checkpatch.pl equivalent, so there was
-> nothing to check this submission with as far as I am aware.
-> 
-> Daniel Almeida (4):
->   lib: add support for opening Panthor devices
->   tests: panthor: add initial infrastructure
->   lib: initial panthor infrastructure
->   tests/panthor: add panthor tests
+List of test cases added to fast feedback list
+i915_pm_rps@basic-api
+i915_pm_rps@min-max-config-idle
+i915_pm_rps@min-max-config-loaded
+i915_pm_rps@waitboost
+i915_pm_rps@reset
 
-Can't really comment on the patches themselves, as I have not been
-working on IGT tests myself in while, but I'm really happy to see that
-happening at last, so thanks a lot for doing that, and here's my
+Signed-off-by: Mallesh Koujalagi <mallesh.Koujalagi@intel.com>
+---
+ tests/intel-ci/i915.fast-feedback.testlist | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
-
-if that's of any value to the IGT maintainers.
-
-BTW, I'm hoping to extend the test coverage of panthor once this
-initial bringup series is merged.
-
-Regards,
-
-Boris
-
-> 
->  lib/drmtest.c                 |   1 +
->  lib/drmtest.h                 |   1 +
->  lib/igt_panthor.c             | 150 +++++++++++++++++++
->  lib/igt_panthor.h             |  28 ++++
->  lib/meson.build               |   1 +
->  meson.build                   |   8 ++
->  tests/meson.build             |   2 +
->  tests/panthor/meson.build     |  15 ++
->  tests/panthor/panthor_gem.c   |  59 ++++++++
->  tests/panthor/panthor_group.c | 264 ++++++++++++++++++++++++++++++++++
->  tests/panthor/panthor_query.c |  25 ++++
->  tests/panthor/panthor_vm.c    |  73 ++++++++++
->  12 files changed, 627 insertions(+)
->  create mode 100644 lib/igt_panthor.c
->  create mode 100644 lib/igt_panthor.h
->  create mode 100644 tests/panthor/meson.build
->  create mode 100644 tests/panthor/panthor_gem.c
->  create mode 100644 tests/panthor/panthor_group.c
->  create mode 100644 tests/panthor/panthor_query.c
->  create mode 100644 tests/panthor/panthor_vm.c
-> 
+diff --git a/tests/intel-ci/i915.fast-feedback.testlist b/tests/intel-ci/i915.fast-feedback.testlist
+index 2799bbaa5..69e45a597 100644
+--- a/tests/intel-ci/i915.fast-feedback.testlist
++++ b/tests/intel-ci/i915.fast-feedback.testlist
+@@ -166,6 +166,12 @@ igt@gem_lmem_swapping@random-engines
+ igt@gem_lmem_swapping@verify-random
+ igt@i915_pm_rpm@module-reload
+ 
++igt@i915_pm_rps@basic-api
++igt@i915_pm_rps@min-max-config-idle
++igt@i915_pm_rps@min-max-config-loaded
++igt@i915_pm_rps@waitboost
++igt@i915_pm_rps@reset
++
+ # Kernel selftests
+ igt@i915_selftest@live
+ igt@dmabuf@all-tests
+-- 
+2.34.1
 
