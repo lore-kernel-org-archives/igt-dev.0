@@ -4,23 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C3E9CA0FF6
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 22:38:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD0E8CA0EED
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 22:52:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 42E7B10E06E;
-	Thu, 28 Aug 2025 22:38:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 74EA710EAF0;
+	Thu, 28 Aug 2025 22:52:15 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC61B10E06E;
- Thu, 28 Aug 2025 22:38:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 048EB10EAF0;
+ Thu, 28 Aug 2025 22:52:15 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8682593807394918049=="
+ boundary="===============1560133570607154745=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_initial_Panthor_tests?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_initial_Panthor_tests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Daniel Almeida" <daniel.almeida@collabora.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Aug 2025 22:38:53 -0000
-Message-ID: <175642073370.280646.9034427580540504245@1538d3639d33>
+Date: Thu, 28 Aug 2025 22:52:14 -0000
+Message-ID: <175642153499.279562.13916471578593714930@1538d3639d33>
 X-Patchwork-Hint: ignore
 References: <20250828130402.2549948-1-daniel.almeida@collabora.com>
 In-Reply-To: <20250828130402.2549948-1-daniel.almeida@collabora.com>
@@ -40,7 +40,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8682593807394918049==
+--===============1560133570607154745==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -53,7 +53,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8514_BAT -> XEIGTPW_13654_BAT
+CI Bug Log - changes from IGT_8514 -> IGTPW_13654
 ====================================================
 
 Summary
@@ -63,40 +63,66 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/index.html
 
-Participating hosts (11 -> 11)
+Participating hosts (43 -> 40)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (3): bat-rpls-4 fi-snb-2520m fi-skl-6600u 
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_13654_BAT that come from known issues:
+  Here are the changes found in IGTPW_13654 that come from known issues:
 
 ### IGT changes ###
 
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+#### Issues hit ####
 
-  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+  * igt@i915_selftest@live@reset:
+    - bat-atsm-1:         [PASS][1] -> [INCOMPLETE][2] ([i915#14201])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8514/bat-atsm-1/igt@i915_selftest@live@reset.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/bat-atsm-1/igt@i915_selftest@live@reset.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-n3050:       [ABORT][3] ([i915#12904]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8514/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][5] ([i915#12061] / [i915#13929]) -> [INCOMPLETE][6] ([i915#12061] / [i915#14201])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8514/bat-atsm-1/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/bat-atsm-1/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
+  [i915#14201]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_8514 -> IGTPW_13654
 
+  CI-20190529: 20190529
+  CI_DRM_17082: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_13654: 13654
   IGT_8514: 8514
-  xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13654/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/index.html
 
---===============8682593807394918049==
+--===============1560133570607154745==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -120,31 +146,53 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153632/">https://patchwork.freedesktop.org/series/153632/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13654/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13654/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8514_BAT -&gt; XEIGTPW_13654_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8514 -&gt; IGTPW_13654</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/index.html</p>
+<h2>Participating hosts (43 -&gt; 40)</h2>
+<p>Missing    (3): bat-rpls-4 fi-snb-2520m fi-skl-6600u </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13654_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_13654 that come from known issues:</p>
 <h3>IGT changes</h3>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@reset:<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8514/bat-atsm-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/bat-atsm-1/igt@i915_selftest@live@reset.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@dmabuf@all-tests@dma_fence_chain:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8514/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8514/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13654/bat-atsm-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>)</li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8514 -&gt; IGTPW_13654</li>
 </ul>
-<p>IGTPW_13654: 13654<br />
-  IGT_8514: 8514<br />
-  xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17082: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13654: 13654<br />
+  IGT_8514: 8514</p>
 
 </body>
 </html>
 
---===============8682593807394918049==--
+--===============1560133570607154745==--
