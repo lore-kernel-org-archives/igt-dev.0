@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D622CA0EED
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 22:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3663CA0FF6
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 23:02:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D306710EAF2;
-	Thu, 28 Aug 2025 22:56:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 42DB110EB05;
+	Thu, 28 Aug 2025 23:02:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LKq1wDMw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kQPZvJqG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B93BC10EAF2
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 22:56:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8D3510EAF3
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 23:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756421790; x=1787957790;
+ t=1756422145; x=1787958145;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=62tphjGpUvREzl7J7KdfPXi1o1G5BJEpvoH6axpADF8=;
- b=LKq1wDMwqOZkvEzWWyT8PnZMcLtAAXMcELjJHxsP6FrRqTSBeRSxCtf2
- 0oretoT9LZZ+T2RK5Y18AzJW278eLlfl3musCCJKLxETpfpoOD2j51aDf
- GtFl9xZwOzKoNpbHqGPQCjzv3xvDTb7lYcGiqUiJKJlnF/9dvL1ouc1KC
- NDMZYUi2KW9YrKheLTFCUBflpk/a8OLmNZjrwnq28qN9Dqg9gxHwS3Wzr
- wUs5DwYrjweHwq/pvB0BhP0g7gLS62q0sdMDacvlH0MnoFWSMo+GwzpxU
- B9+wmsa5+L3GDUB8Nn385/YI1BMu7JEF9f0Okur5jxougbg/CNpVX2RUV Q==;
-X-CSE-ConnectionGUID: 8HXjNkrIQf+XGV6XdPYCDA==
-X-CSE-MsgGUID: 8PNbrPqvS5yhnoPlfmamYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="58808220"
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="58808220"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 15:56:29 -0700
-X-CSE-ConnectionGUID: wyoloNWFRzWrfKyhrEl5ew==
-X-CSE-MsgGUID: KjE17eKCTXGOeV27FQJKGg==
+ bh=73YPfwLAOpm5xCpGFJEmzaKkkdEoI6To0XgkWkxN3vw=;
+ b=kQPZvJqGcTPibysUppe7o4zO7q4ja/xy7WgRp+p2roCdEE2JYOdT/Lje
+ KjFM0zwvudZOIPKdgOw0u4WPR8t9x3hdCmI9vUC6hIsCXhzOJVtwTRV8C
+ ct3AQert8Mzc6sd1aO6XA6asz8GFg97dgijJQ0IP3wj+MwJJ4LP4MWhDE
+ h+aLXCyVXgWI56EkySXYcNRQbIu+rLmd6Vw05B5bQ7Bprx0D+iS7uYwLk
+ 8sOz0r8B7BHwcwC+1TNfItnHlUT/QkcYSDSa4meUJPLsjRL/Y3IiwD5X7
+ la3+Tp44uzatt5sLdrVLNGJAsfz1VwDGhgInbEkwaUJBN07+zdUv4lFMz A==;
+X-CSE-ConnectionGUID: OtGi+W7ZRfi81ubQulEHYQ==
+X-CSE-MsgGUID: oygHbJj1Tli5KJnX/CFFuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="69415720"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="69415720"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2025 16:02:25 -0700
+X-CSE-ConnectionGUID: 3fRKziCMQpqd0YQmnfhR+g==
+X-CSE-MsgGUID: QAD6piIFSm+wCzKb/plDTQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="174610442"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="174405913"
 Received: from nmou-mobl5.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.214.109])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 15:56:30 -0700
-Date: Thu, 28 Aug 2025 15:56:28 -0700
-Message-ID: <87bjnzm4wz.wl-ashutosh.dixit@intel.com>
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2025 16:02:24 -0700
+Date: Thu, 28 Aug 2025 16:02:23 -0700
+Message-ID: <87qzwv124g.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t v3 1/2] tests/intel/xe_oa: Clean up buffer-fill test
-In-Reply-To: <20250828214907.94311-2-umesh.nerlige.ramappa@intel.com>
-References: <20250828214907.94311-1-umesh.nerlige.ramappa@intel.com>	<20250828214907.94311-2-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t v3 2/2] tests/intel/xe_oa: Add a test for tail
+ address wrap
+In-Reply-To: <20250828214907.94311-3-umesh.nerlige.ramappa@intel.com>
+References: <20250828214907.94311-1-umesh.nerlige.ramappa@intel.com>	<20250828214907.94311-3-umesh.nerlige.ramappa@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -70,88 +71,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 28 Aug 2025 14:49:06 -0700, Umesh Nerlige Ramappa wrote:
+On Thu, 28 Aug 2025 14:49:07 -0700, Umesh Nerlige Ramappa wrote:
 >
-> Checking for overflow status before enabling the OA buffer is always
-> going to return false. Drop the logic.
+> Add a test to verify that the HW wraps to start of the OA buffer when a
+> report does not fit in the remaining space in the buffer.
 >
-> Move out core buffer overflow check to a helper for reuse by other tests
-> when needed.
+> v2:
+> - Make test more robust
+>
+> v3:
+> - Just wait for buffer overflow status instead of reading reports
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 > ---
->  tests/intel/xe_oa.c | 36 ++++++++++++++++++++----------------
->  1 file changed, 20 insertions(+), 16 deletions(-)
+>  tests/intel/xe_oa.c | 65 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 65 insertions(+)
 >
 > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 1826623ab864..3b3cdf9314c2 100644
+> index 3b3cdf9314c2..443e0b1761ef 100644
 > --- a/tests/intel/xe_oa.c
 > +++ b/tests/intel/xe_oa.c
-> @@ -2488,6 +2488,25 @@ test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
->	igt_assert(num_reports2 > 0.95 * num_expected_reports);
+> @@ -4541,6 +4541,63 @@ static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_insta
+>	try_invalid_access(vaddr);
 >  }
 >
-> +/*
-> + * This is a blocking read trying to read 0 bytes, so it will return ENOSPC
-> + * until there is data available. Once the OA buffer overflows, we should see an
-
-What does it mean "until there is data available"? Won't reading 0 bytes
-always return ENOSPC? Or you mean until it returns EIO instead of ENOSPC?
-
-> + * EIO with the oevrflow status set.
-
-s/oevrflow/overflow/
-
+> +/**
+> + * SUBTEST: tail-address-wrap
+> + * Description: Test tail address wrap on odd format sizes. Ensure that the
+> + * format size is not a power of 2. This means that the last report will not be
+> + * broken down across the OA buffer end. Instead it will be written to the
+> + * beginning of the OA buffer. We will check the end of the buffer to ensure it
+> + * has zeroes in it.
 > + */
 > +static void
-> +wait_for_oa_buffer_overflow(int fd, int poll_period_us)
+> +test_tail_address_wrap(const struct drm_xe_engine_class_instance *hwe, size_t oa_buffer_size)
 > +{
-> +	char buf;
+> +	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+> +	u64 exponent = max_oa_exponent_for_period_lte(20000);
+> +	u64 buffer_size = oa_buffer_size ?: buffer_fill_size;
+> +	u64 fmt = test_set->perf_oa_format;
+> +	u64 properties[] = {
+> +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+> +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+> +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+> +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+> +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, exponent,
+> +		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+> +		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, buffer_size,
+> +		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+> +	};
+> +	struct intel_xe_oa_open_prop param = {
+> +		.num_properties = ARRAY_SIZE(properties) / 2,
+> +		.properties_ptr = to_user_pointer(properties),
+> +	};
+> +	u32 fmt_size = get_oa_format(fmt).size;
+> +	u32 zero_size = buffer_size % fmt_size;
+> +	u32 *zero_area, *buffer_end, *buffer_start;
 > +
-> +	while (-1 == read(fd, &buf, 0)) {
-> +		if (errno == EIO &&
-> +		    get_stream_status(fd) & DRM_XE_OASTATUS_BUFFER_OVERFLOW)
-> +			return;
+> +	igt_require(zero_size);
 > +
-> +		usleep(poll_period_us);
-> +	}
+> +	stream_fd = __perf_open(drm_fd, &param, false);
+> +	set_fd_flags(stream_fd, O_CLOEXEC);
+> +
+> +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
+> +	wait_for_oa_buffer_overflow(stream_fd, 100);
+
+OK, this is a neat trick. If this works as expected in all environments,
+this is:
+
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+
+> +	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
+
+Is this enable/disable really needed? What if just open the stream as
+enabled and leave it enabled after the buffer overflow? Anyway, ok to leave
+as is.
+
+> +
+> +	buffer_start = mmap(0, buffer_size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+> +	igt_assert(buffer_start);
+> +
+> +	zero_area = buffer_start + (buffer_size - zero_size) / 4;
+> +	buffer_end = buffer_start + buffer_size / 4;
+> +
+> +	dump_report(zero_area, zero_size / 4, "zero_area");
+> +	while (zero_area < buffer_end)
+> +		igt_assert_eq(*zero_area++, 0);
+> +
+> +	munmap(buffer_start, buffer_size);
+> +
+> +	__perf_close(stream_fd);
 > +}
 > +
 >  /**
->   * SUBTEST: buffer-fill
->   * Description: Test filling and overflow of OA buffer
-> @@ -2526,24 +2545,9 @@ test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
->	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
->          set_fd_flags(stream_fd, O_CLOEXEC);
+>   * SUBTEST: map-oa-buffer
+>   * Description: Verify mapping of oa buffer
+> @@ -5099,6 +5156,14 @@ igt_main
+>				closed_fd_and_unmapped_access(hwe);
+>	}
 >
-> -	/* OA buffer is disabled, we do not expect any error status */
-> -	oa_status = get_stream_status(stream_fd);
-> -	overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
-> -	igt_assert_eq(overflow_seen, 0);
-> -
->	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
->
-> -	/* Read 0 bytes repeatedly until you see an EIO */
-> -	while (-1 == read(stream_fd, buf, 0)) {
-> -		if (errno == EIO) {
-> -			oa_status = get_stream_status(stream_fd);
-> -			overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
-> -			if (overflow_seen)
-> -				break;
-> -		}
-> -		usleep(100);
-> -	}
-> -	igt_assert(overflow_seen);
-> +	wait_for_oa_buffer_overflow(stream_fd, 100);
->
->	/* Make sure the buffer overflow is cleared */
->	read(stream_fd, buf, 0);
+> +	igt_subtest_with_dynamic("tail-address-wrap") {
+> +		long k = random() % num_buf_sizes;
+> +
+> +		igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_BUFFER_SIZE);
+> +		__for_one_hwe_in_oag_w_arg(hwe, buf_sizes[k].name)
+> +			test_tail_address_wrap(hwe, buf_sizes[k].size);
+> +	}
+> +
+>	igt_subtest_group {
+>		igt_fixture {
+>			perf_init_whitelist();
 > --
 > 2.43.0
 >
-
-Also the ftrace patch is not merged so maybe add that to the series too.
-
-Otherwise this is:
-
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
