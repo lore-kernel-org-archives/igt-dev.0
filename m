@@ -4,73 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F34A2CA0FF2
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 09:16:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9D3DCA0EED
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 09:56:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9DC7110E94D;
-	Thu, 28 Aug 2025 09:16:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 630B410E96B;
+	Thu, 28 Aug 2025 09:56:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ii9DJD7+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P/x1lEGy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7612810E94D
- for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 09:16:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64A4B10E96B
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Aug 2025 09:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756372608; x=1787908608;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=eMnXzVeU2JjnQpPqerlrRETICiWsD9DRpPpvg2ypC9M=;
- b=Ii9DJD7+KykAcd2ZVeLuQ5QavGvGybcWMucaWEc484ShRtq7nnmZRKaq
- LNsH7Hio7RcSnYmpOVYXlYTF33cSujTlmHIvwK402JmBjYFUbg3i7OO5W
- +qsAgiOYYj0o4THNbszW9dVu7fJRV2DksFIaNBgq1fI0vs9wJ+X/pNNcT
- NNZBYMvVGMxlATSupjJMn54M+nzrYjkricLwGNhFyf1VE6q4R0C4DcoqI
- jSBqcxqk6bm6eGkSa9ZxCgCgzuAFeec4UsDSiqXbiZYAfoiTxLblKKlV6
- 74tTjDsHJZzp9Nl5w4cWESa0YXzXxF9ug/+VeJUeoZT3ajCMV6j9wN64d w==;
-X-CSE-ConnectionGUID: IzSQOA21SRi5YVHS+nuWQA==
-X-CSE-MsgGUID: eWO1rKXHSQOgeq/Rr5TdHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="57661314"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="57661314"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2025 02:16:48 -0700
-X-CSE-ConnectionGUID: c6EOLjLZR+yzJto2RbpUBw==
-X-CSE-MsgGUID: aYBggzADR8qGY6M+33O5bw==
+ t=1756375007; x=1787911007;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=sb+WmJYQWake+QIYtcLyXvnCV9Yx18HGiPGRnfkKlOw=;
+ b=P/x1lEGyWgtGq+fxWMN1hL6C3M9LfG9h6rOX/x/xCEUFmmi+aVnn66WI
+ JT/5uQ4sa95guP2hBRdMmzHUtjsPRI8ZICtVPMiLLCk3oWZitT80r7n8x
+ J76WW5m0Oz15dsq1BV4mz4aadAY+2tqc+HYiZO46BxirwWVotk9MH/6E8
+ T/tWUcG26LiuztYFoHJKcLdlRCEz9BE0p2v1PWXHAnlPdZ9KI/lVT+U7q
+ /V4+I2PB5eFnMWk7MVh5sqbtWjIMtYayLx/p+K8lWcRfvEZg5Zq4Lua94
+ F/LaVURKqr4JxYnuvTVxcecwTLtVRBuiqBHPXLuRN6mC9/TUIi6Q4Sek0 w==;
+X-CSE-ConnectionGUID: xOiTlr0oQ1+AdCYizuQ7Bg==
+X-CSE-MsgGUID: epONy9gaQ1mGNCiYTy9T8Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="70011318"
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="70011318"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2025 02:56:47 -0700
+X-CSE-ConnectionGUID: vaSCZKeARY2gpqXiuMwB6g==
+X-CSE-MsgGUID: +x366At+ToiDZ4Z6vLsHBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="174402100"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 02:16:46 -0700
-Date: Thu, 28 Aug 2025 11:16:43 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: vitaly prosyak <vprosyak@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Ewelina Musial <ewelina.musial@intel.com>,
- Karol Krol <karol.krol@intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v5] runner/executor: Abort if dmesg is flooded
-Message-ID: <20250828091643.mwes23etokiwaala@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- vitaly prosyak <vprosyak@amd.com>, igt-dev@lists.freedesktop.org,
- Ewelina Musial <ewelina.musial@intel.com>,
- Karol Krol <karol.krol@intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20250826125329.109160-1-kamil.konieczny@linux.intel.com>
- <4109a6fd-f3a9-41e3-b033-7d1db03cdf0e@amd.com>
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; d="scan'208";a="169592511"
+Received: from dut-2a59.iind.intel.com ([10.190.239.113])
+ by fmviesa007.fm.intel.com with ESMTP; 28 Aug 2025 02:56:45 -0700
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: chaitanya.kumar.borah@intel.com, karthik.b.s@intel.com,
+ swati2.sharma@intel.com
+Subject: [PATCH v3 i-g-t 2/3] tests/kms_hdr: Set HDR meta-data while testing
+ for panel capability
+Date: Thu, 28 Aug 2025 15:09:12 +0530
+Message-Id: <20250828093913.1630962-2-chaitanya.kumar.borah@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250828093913.1630962-1-chaitanya.kumar.borah@intel.com>
+References: <20250828093913.1630962-1-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4109a6fd-f3a9-41e3-b033-7d1db03cdf0e@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,346 +69,200 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi vitaly,
-On 2025-08-27 at 22:02:41 -0400, vitaly prosyak wrote:
-> The change looks good to me. Reviewed-by  Vitaly Prosyak <vitaly.prosyak@amd.com>
-> 
+Setting max_bpc simply configures the pipeline to drive
+10 bits per color channel, but HDR requires more than higher bit
+depth. HDR also depends on metadata such as EOTF, peak luminance,
+and colorimetry.
 
-Thank you!
+Update the test to set HDR metadata on the connector to signal that
+we need an HDR pipeline, before running through the modes. Reset
+it afterwards.
 
-> Just small correction below for edge case.
-> 
-> On 2025-08-26 08:53, Kamil Konieczny wrote:
-> > Current disk limit triggers once when it is exceeded during test
-> > monitoring. After that happens executor no longer checks if
-> > kernel is still printing plenty of messages.
-> >
-> > Create a way to abort test in such scenarios with the help of
-> > measuring kernel kmsg activity before first test is executed
-> > and then also check it after exceeding disk limit.
-> >
-> > Also print info about it after each test ends.
-> >
-> > v2: fix error when kmsg open fails, fix reading proc (Kamil)
-> >   changed calculation of max bps (Peter)
-> > v3: abort only when disk limit was actually exceeded,
-> >   print info instead of aborting after every test (Kamil)
-> > v4: added abort at main monitoring loop, also cleaning up
-> >   printing messages (Kamil)
-> > v5: fix typo, use less vars in a loop  (Krzysztof)
-> >   reused existing dmesg reading function (Kamil)
-> >
-> > Cc: Ewelina Musial <ewelina.musial@intel.com>
-> > Cc: Karol Krol <karol.krol@intel.com>
-> > Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-> > Cc: Petri Latvala <adrinael@adrinael.net>
-> > Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> > Cc: Ryszard Knop <ryszard.knop@intel.com>
-> > Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> > Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  runner/executor.c | 143 +++++++++++++++++++++++++++++++++++++++++-----
-> >  1 file changed, 128 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/runner/executor.c b/runner/executor.c
-> > index 847abe481..b11381f39 100644
-> > --- a/runner/executor.c
-> > +++ b/runner/executor.c
-> > @@ -637,6 +637,11 @@ const char *get_out_filename(int fid)
-> >  	return "output-filename-index-error";
-> >  }
-> >  
-> > +static int open_kmsg_rdonly(void)
-> > +{
-> > +	return open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK);
-> > +}
-> > +
-> >  /* Returns the number of bytes written to disk, or a negative number on error */
-> >  static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
-> >  {
-> > @@ -646,6 +651,8 @@ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
-> >  	 * /dev/kmsg doesn't support seeking to -1 from SEEK_END
-> >  	 * so we need to use a second fd to read a message to
-> >  	 *  match against, or stop when we reach EAGAIN.
-> > +	 * If outfd==0 it will not write anything but still count
-> > +	 * how many bytes was readed from dmesg.
-> >  	 */
-> >  
-> >  	int comparefd;
-> > @@ -711,7 +718,9 @@ static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
-> >  			return written;
-> >  		}
-> >  
-> > -		write(outfd, buf, r);
-> > +		if (outfd)
-> > +			write(outfd, buf, r);
-> > +
-> >  		written += r;
-> >  
-> >  		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
-> > @@ -948,6 +957,76 @@ static size_t calc_last_dmesg_chunk(size_t limit, size_t disk_usage)
-> >  	return dt != 0 ? dt : -1;
-> >  }
-> >  
-> > +/*
-> > + * Tries to read from dmesg for 0.1 seconds
-> > + *
-> > + * Returns:
-> > + *  =>0.0 - Success, measured kmsg activity in bytes/second
-> > + *  -1.0 - Failure
-> > + */
-> > +static double measure_dmesg_bytes_per_sec(int wrfd)
-> > +{
-> > +	struct timespec time_beg, time_now, nsec_sleep;
-> > +	unsigned long long dmsg_read, rnow;
-> > +	double time;
-> > +	int kmsgfd;
-> > +
-> > +	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
-> > +		errf("Warning: Cannot open /dev/kmsg\n");
-> > +
-> > +		return -1.0;
-> > +	}
-> > +
-> > +	lseek(kmsgfd, 0, SEEK_END);
-> > +	nsec_sleep.tv_sec = 0;
-> > +	nsec_sleep.tv_nsec = 10ULL * 1000ULL * 1000ULL; /* 10^7 nanoseconds = 10^-2 sec */
-> > +	runner_gettime(&time_beg);
-> > +	time = 0.0;
-> > +	dmsg_read = 0.0;
-> > +	while (1) {
-> > +		rnow = dump_dmesg(kmsgfd, wrfd, 64 * 4096); /* 64KB max */
-> > +		if (rnow > 0)
-> > +			dmsg_read += rnow;
-> > +
-> > +		runner_gettime(&time_now);
-> > +		time = igt_time_elapsed(&time_beg, &time_now);
-> > +		if (time <= 0.0) {
-> > +			errf("Warning: Time underflow\n");
-> > +			return -1.0;
-> > +		}
-> > +
-> > +		if (time >= 0.1)
-> > +			break;
-> > +
-> > +		if (rnow == 0)
-> > +			nanosleep(&nsec_sleep, NULL);
-> > +	}
-> > +
-> > +	runner_gettime(&time_now);
-> > +	time = igt_time_elapsed(&time_beg, &time_now);
-> > +	if (time <= 0.0) {
-> > +		errf("Warning: Time underflow\n");
-> > +
-> > +		return -1.0;
-> > +	}
-> > +
-> > +	return (double)dmsg_read / time;
-> > +}
-> > +
-> > +/* Returns: true if ratio lower or equal than maxratio */
-> > +static bool check_dmesg_ratio(double maxratio, int log_level, bool sync, int wrfd)
-> > +{
-> > +	double new_dmesg_bps = measure_dmesg_bytes_per_sec(wrfd);
-> > +
-> In the current patch, if /dev/kmsg can’t be opened, measure_dmesg_bytes_per_sec() 
-> returns -1.0, but later code still compares it against max_dmesg_ratio. That 
-> means a negative value could accidentally be treated as “ok” and cause misleading 
-> results.
-> 
-> The safe fix is to short-circuit inside check_dmesg_ratio() whenever 
-> measure_dmesg_bytes_per_sec() returns a negative number. For example:
-> 
-> static bool check_dmesg_ratio(double maxratio, int log_level, bool sync, int wrfd)
-> {
->     double new_dmesg_bps = measure_dmesg_bytes_per_sec(wrfd);
-> 
->     if (new_dmesg_bps < 0.0) {
+If setting HDR metadata fails for all advertised modes on a supported
+panel, it implies the kernel cannot drive HDR — for example, due to
+bandwidth limitations.
 
-You are right, without this it will print -1/1024 as a bps ratio,
-I will correct it according to your suggestion.
+v2:
+	- Update commit message (Swati)
+	- Add comment on why we set HDR meta data (Swati)
+	- Commit after setting HDR meta data (Swati)
 
-Regards,
-Kamil
+v3:
+	- Handle error while committing meta data (Swati)
 
->         if (log_level >= LOG_LEVEL_NORMAL) {
->             outf("Dmesg ratio: unavailable (no /dev/kmsg)\n");
->             if (sync)
->                 fflush(stdout);
->         }
->         return true; /* don’t gate on missing measurement */
->     }
-> 
->     if (log_level >= LOG_LEVEL_NORMAL) {
->         outf("Dmesg ratio %0.3fKB/s\n", new_dmesg_bps / 1024);
->         if (sync)
->             fflush(stdout);
->     }
-> 
->     return new_dmesg_bps <= maxratio;
-> }
-> 
-> > +	if (log_level >= LOG_LEVEL_NORMAL) {
-> > +		outf("Dmesg ratio %0.3fKB/s\n", new_dmesg_bps / 1024);
-> > +		if (sync)
-> > +			fflush(stdout);
-> > +	}
-> > +
-> > +	return new_dmesg_bps <= maxratio;
-> > +}
-> > +
-> >  /*
-> >   * Returns:
-> >   *  =0 - Success
-> > @@ -960,6 +1039,7 @@ static int monitor_output(pid_t child,
-> >  			  int *outputs,
-> >  			  double *time_spent,
-> >  			  struct settings *settings,
-> > +			  double max_dmesg_ratio,
-> >  			  char **abortreason,
-> >  			  bool *abort_already_written)
-> >  {
-> > @@ -1463,29 +1543,31 @@ static int monitor_output(pid_t child,
-> >  				 * exceeded the disk usage limit.
-> >  				 */
-> >  				if (killed && disk_usage_limit_exceeded(settings, disk_usage)) {
-> > +					char killmsg[256];
-> > +
-> >  					timeoutresult = false;
-> > +					snprintf(killmsg, sizeof(killmsg),
-> > +						 "runner: This test was killed due to exceeding disk usage limit. "
-> > +						 "(Used %zd bytes, limit %zd)\n",
-> > +						 disk_usage,
-> > +						 settings->disk_usage_limit);
-> >  
-> >  					if (socket_comms_used) {
-> >  						struct runnerpacket *message;
-> > -						char killmsg[256];
-> >  
-> > -						snprintf(killmsg, sizeof(killmsg),
-> > -							 "runner: This test was killed due to exceeding disk usage limit. "
-> > -							 "(Used %zd bytes, limit %zd)\n",
-> > -							 disk_usage,
-> > -							 settings->disk_usage_limit);
-> >  						message = runnerpacket_log(STDOUT_FILENO, killmsg);
-> >  						write_packet_with_canary(outputs[_F_SOCKET], message, settings->sync);
-> >  						free(message);
-> >  					} else {
-> > -						dprintf(outputs[_F_OUT],
-> > -							"\nrunner: This test was killed due to exceeding disk usage limit. "
-> > -							"(Used %zd bytes, limit %zd)\n",
-> > -							disk_usage,
-> > -							settings->disk_usage_limit);
-> > +						dprintf(outputs[_F_OUT], "%s", killmsg);
-> >  						if (settings->sync)
-> >  							fdatasync(outputs[_F_OUT]);
-> >  					}
-> > +
-> > +					if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
-> > +						asprintf(abortreason, "Dmesg ratio exceeded during test run.");
-> > +						aborting = true;
-> > +					}
-> >  				}
-> >  
-> >  				if (socket_comms_used) {
-> > @@ -1587,7 +1669,7 @@ static int monitor_output(pid_t child,
-> >  	dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
-> >  	if (settings->sync)
-> >  		fdatasync(outputs[_F_DMESG]);
-> > -	if (dmesgwritten > 0) {
-> > +	if (dmesgwritten > 0 && !aborting) {
-> >  		disk_usage += dmesgwritten;
-> >  		if (settings->disk_usage_limit && disk_usage > settings->disk_usage_limit) {
-> >  			char disk[1024];
-> > @@ -1599,6 +1681,11 @@ static int monitor_output(pid_t child,
-> >  			} else if (killed) {
-> >  				errf("%s", disk);
-> >  			}
-> > +
-> > +			if (!check_dmesg_ratio(max_dmesg_ratio, settings->log_level, settings->sync, outputs[_F_DMESG])) {
-> > +				asprintf(abortreason, "Dmesg ratio exceeded after test ends.");
-> > +				aborting = true;
-> > +			}
-> >  		}
-> >  	}
-> >  
-> > @@ -1766,6 +1853,7 @@ static int execute_next_entry(struct execute_state *state,
-> >  			      size_t total,
-> >  			      double *time_spent,
-> >  			      struct settings *settings,
-> > +			      double max_dmesg_ratio,
-> >  			      struct job_list_entry *entry,
-> >  			      int testdirfd, int resdirfd,
-> >  			      int sigfd, sigset_t *sigmask,
-> > @@ -1814,7 +1902,7 @@ static int execute_next_entry(struct execute_state *state,
-> >  		goto out_pipe;
-> >  	}
-> >  
-> > -	if ((kmsgfd = open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK)) < 0) {
-> > +	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
-> >  		errf("Warning: Cannot open /dev/kmsg\n");
-> >  	} else {
-> >  		/* TODO: Checking of abort conditions in pre-execute dmesg */
-> > @@ -1885,7 +1973,7 @@ static int execute_next_entry(struct execute_state *state,
-> >  
-> >  	result = monitor_output(child, outfd, errfd, socketfd,
-> >  				kmsgfd, sigfd,
-> > -				outputs, time_spent, settings,
-> > +				outputs, time_spent, settings, max_dmesg_ratio,
-> >  				abortreason, abort_already_written);
-> >  
-> >  out_kmsgfd:
-> > @@ -2418,6 +2506,8 @@ bool execute(struct execute_state *state,
-> >  	     struct settings *settings,
-> >  	     struct job_list *job_list)
-> >  {
-> > +	static double dmesg_bps = -1.0;
-> > +	static double max_dmesg_bps = -1.0;
-> >  	int resdirfd, testdirfd, unamefd, timefd, sigfd;
-> >  	struct environment_variable *env_var;
-> >  	struct utsname unamebuf;
-> > @@ -2560,6 +2650,26 @@ bool execute(struct execute_state *state,
-> >  		}
-> >  	}
-> >  
-> > +	if (max_dmesg_bps < 0.0) {
-> > +		double ncpu_bps = 4 * 1024 * max_t(size_t, sysconf(_SC_NPROCESSORS_ONLN), 4);
-> > +		double set_bps = 0.0;
-> > +
-> > +		dmesg_bps = measure_dmesg_bytes_per_sec(0);
-> > +
-> > +		if (settings->disk_usage_limit > 0 && settings->per_test_timeout > 0)
-> > +			set_bps = (double)settings->disk_usage_limit / (double)settings->per_test_timeout;
-> > +
-> > +		outf("Dmesg KB/s ratio settings:%0.3f ncpu:%0.3f current:%0.3f\n",
-> > +		     set_bps / 1024, ncpu_bps / 1024, dmesg_bps / 1024);
-> > +
-> > +		if (set_bps > 0.0)
-> > +			max_dmesg_bps = set_bps;
-> > +		else
-> > +			max_dmesg_bps = dmesg_bps > ncpu_bps ? dmesg_bps : ncpu_bps;
-> > +
-> > +		outf("Using max level dmesg ratio %0.3fKB/s\n", max_dmesg_bps / 1024);
-> > +	}
-> > +
-> >  	for (; state->next < job_list->size;
-> >  	     state->next++) {
-> >  		char *reason = NULL;
-> > @@ -2596,6 +2706,7 @@ bool execute(struct execute_state *state,
-> >  						    job_list->size,
-> >  						    &time_spent,
-> >  						    settings,
-> > +						    max_dmesg_bps,
-> >  						    &job_list->entries[state->next],
-> >  						    testdirfd, resdirfd,
-> >  						    sigfd, &sigmask,
-> > @@ -2651,6 +2762,8 @@ bool execute(struct execute_state *state,
-> >  			break;
-> >  		}
-> >  
-> > +		check_dmesg_ratio(max_dmesg_bps, settings->log_level, settings->sync, 0);
-> > +
-> >  		if (result > 0) {
-> >  			double time_left = state->time_left;
-> >  
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+---
+ tests/kms_hdr.c | 122 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 69 insertions(+), 53 deletions(-)
+
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index 33b6c42a6..41fbf3766 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -153,6 +153,59 @@ static void draw_hdr_pattern(igt_fb_t *fb)
+ 	igt_put_cairo_ctx(cr);
+ }
+ 
++/* Converts a double to 861-G spec FP format. */
++static uint16_t calc_hdr_float(double val)
++{
++	return (uint16_t)(val * 50000.0);
++}
++
++/* Fills some test values for ST2048 HDR output metadata.
++ *
++ * Note: there isn't really a standard for what the metadata is supposed
++ * to do on the display side of things. The display is free to ignore it
++ * and clip the output, use it to help tonemap to the content range,
++ * or do anything they want, really.
++ */
++static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
++{
++	memset(meta, 0, sizeof(*meta));
++
++	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
++	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
++
++	/* Rec. 2020 */
++	meta->hdmi_metadata_type1.display_primaries[0].x =
++		calc_hdr_float(0.708); /* Red */
++	meta->hdmi_metadata_type1.display_primaries[0].y =
++		calc_hdr_float(0.292);
++	meta->hdmi_metadata_type1.display_primaries[1].x =
++		calc_hdr_float(0.170); /* Green */
++	meta->hdmi_metadata_type1.display_primaries[1].y =
++		calc_hdr_float(0.797);
++	meta->hdmi_metadata_type1.display_primaries[2].x =
++		calc_hdr_float(0.131); /* Blue */
++	meta->hdmi_metadata_type1.display_primaries[2].y =
++		calc_hdr_float(0.046);
++	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
++	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
++
++	meta->hdmi_metadata_type1.max_display_mastering_luminance =
++		1000; /* 1000 nits */
++	meta->hdmi_metadata_type1.min_display_mastering_luminance =
++		500;				   /* 0.05 nits */
++	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
++	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
++}
++
++/* Sets the HDR output metadata prop. */
++static void set_hdr_output_metadata(data_t *data,
++				    struct hdr_output_metadata const *meta)
++{
++	igt_output_replace_prop_blob(data->output,
++				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
++				     meta ? sizeof(*meta) : 0);
++}
++
+ /* Prepare test data. */
+ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ {
+@@ -380,15 +433,6 @@ static bool is_panel_hdr(data_t *data, igt_output_t *output)
+ 	return ret;
+ }
+ 
+-/* Sets the HDR output metadata prop. */
+-static void set_hdr_output_metadata(data_t *data,
+-				    struct hdr_output_metadata const *meta)
+-{
+-	igt_output_replace_prop_blob(data->output,
+-				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
+-				     meta ? sizeof(*meta) : 0);
+-}
+-
+ /* Sets the HDR output metadata prop with invalid size. */
+ static int set_invalid_hdr_output_metadata(data_t *data,
+ 					   struct hdr_output_metadata const *meta,
+@@ -401,50 +445,6 @@ static int set_invalid_hdr_output_metadata(data_t *data,
+ 	return igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ }
+ 
+-/* Converts a double to 861-G spec FP format. */
+-static uint16_t calc_hdr_float(double val)
+-{
+-	return (uint16_t)(val * 50000.0);
+-}
+-
+-/* Fills some test values for ST2048 HDR output metadata.
+- *
+- * Note: there isn't really a standard for what the metadata is supposed
+- * to do on the display side of things. The display is free to ignore it
+- * and clip the output, use it to help tonemap to the content range,
+- * or do anything they want, really.
+- */
+-static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
+-{
+-	memset(meta, 0, sizeof(*meta));
+-
+-	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
+-	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
+-
+-	/* Rec. 2020 */
+-	meta->hdmi_metadata_type1.display_primaries[0].x =
+-		calc_hdr_float(0.708); /* Red */
+-	meta->hdmi_metadata_type1.display_primaries[0].y =
+-		calc_hdr_float(0.292);
+-	meta->hdmi_metadata_type1.display_primaries[1].x =
+-		calc_hdr_float(0.170); /* Green */
+-	meta->hdmi_metadata_type1.display_primaries[1].y =
+-		calc_hdr_float(0.797);
+-	meta->hdmi_metadata_type1.display_primaries[2].x =
+-		calc_hdr_float(0.131); /* Blue */
+-	meta->hdmi_metadata_type1.display_primaries[2].y =
+-		calc_hdr_float(0.046);
+-	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
+-	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
+-
+-	meta->hdmi_metadata_type1.max_display_mastering_luminance =
+-		1000; /* 1000 nits */
+-	meta->hdmi_metadata_type1.min_display_mastering_luminance =
+-		500;				   /* 0.05 nits */
+-	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
+-	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
+-}
+-
+ static void adjust_brightness(data_t *data, uint32_t flags)
+ {
+ 	igt_backlight_context_t context;
+@@ -652,6 +652,7 @@ static void test_hdr(data_t *data, uint32_t flags)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
++	struct hdr_output_metadata hdr;
+ 
+ 	igt_display_reset(display);
+ 
+@@ -701,6 +702,17 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 
+ 			prepare_test(data, output, pipe);
+ 
++			/* Signal HDR requirement via metadata */
++			fill_hdr_output_metadata_st2048(&hdr);
++			set_hdr_output_metadata(data, &hdr);
++			if (igt_display_try_commit2(display, display->is_atomic ?
++						    COMMIT_ATOMIC : COMMIT_LEGACY)) {
++				igt_info("%s: Couldn't set HDR metadata\n",
++					 igt_output_name(output));
++				test_fini(data);
++				break;
++			}
++
+ 			if (is_intel_device(data->fd) &&
+ 			    !igt_max_bpc_constraint(display, pipe, output, 10)) {
+ 				igt_info("%s: No suitable mode found to use 10 bpc.\n",
+@@ -710,6 +722,10 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 				break;
+ 			}
+ 
++			set_hdr_output_metadata(data, NULL);
++			igt_display_commit2(display, display->is_atomic ?
++					    COMMIT_ATOMIC : COMMIT_LEGACY);
++
+ 			data->mode = igt_output_get_mode(output);
+ 			data->w = data->mode->hdisplay;
+ 			data->h = data->mode->vdisplay;
+-- 
+2.25.1
+
