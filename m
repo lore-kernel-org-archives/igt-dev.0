@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7526CA0EED
-	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 21:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7A03CA0FF6
+	for <igt-dev@archiver.kernel.org>; Thu, 28 Aug 2025 22:08:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8144510EAE9;
-	Thu, 28 Aug 2025 21:49:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F4A210EAEA;
+	Thu, 28 Aug 2025 22:08:18 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C1A810EAE9;
- Thu, 28 Aug 2025 21:49:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 20B9F10EAEA;
+ Thu, 28 Aug 2025 22:08:18 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2714021157181253002=="
+ boundary="===============5009251444339094009=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_runner/executor=3A_Abort_if?=
- =?utf-8?q?_dmesg_is_flooded_=28rev6=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Skip_PSR_when_disabled_=28r?=
+ =?utf-8?q?ev7=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+To: =?utf-8?q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 28 Aug 2025 21:49:44 -0000
-Message-ID: <175641778417.280646.14007263583236223868@1538d3639d33>
+Date: Thu, 28 Aug 2025 22:08:18 -0000
+Message-ID: <175641889813.280646.14305510202832535382@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250828103124.36280-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20250828103124.36280-1-kamil.konieczny@linux.intel.com>
+References: <20250828104311.1279788-1-michal.grzelak@intel.com>
+In-Reply-To: <20250828104311.1279788-1-michal.grzelak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2714021157181253002==
+--===============5009251444339094009==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: runner/executor: Abort if dmesg is flooded (rev6)
-URL   : https://patchwork.freedesktop.org/series/150246/
+Series: Skip PSR when disabled (rev7)
+URL   : https://patchwork.freedesktop.org/series/148962/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8514_BAT -> XEIGTPW_13652_BAT
+CI Bug Log - changes from XEIGT_8514_BAT -> XEIGTPW_13653_BAT
 ====================================================
 
 Summary
@@ -74,7 +74,7 @@ Participating hosts (11 -> 11)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_13652_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_13653_BAT that come from known issues:
 
 ### IGT changes ###
 
@@ -83,7 +83,7 @@ Known issues
   * igt@xe_vm@bind-execqueues-independent:
     - {bat-ptl-2}:        [FAIL][1] ([Intel XE#5783]) -> [PASS][2]
    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8514/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13653/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -95,17 +95,17 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_8514 -> IGTPW_13652
+  * IGT: IGT_8514 -> IGTPW_13653
 
-  IGTPW_13652: 13a2aaad0a309d26ad657be98296a8bc0fe1c01d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_13653: 13653
   IGT_8514: 8514
   xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13653/index.html
 
---===============2714021157181253002==
+--===============5009251444339094009==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -125,28 +125,28 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>runner/executor: Abort if dmesg is flooded (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/150246/">https://patchwork.freedesktop.org/series/150246/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Skip PSR when disabled (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/148962/">https://patchwork.freedesktop.org/series/148962/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13653/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13653/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8514_BAT -&gt; XEIGTPW_13652_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8514_BAT -&gt; XEIGTPW_13653_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (11 -&gt; 11)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13652_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_13653_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Possible fixes</h4>
 <ul>
 <li>igt@xe_vm@bind-execqueues-independent:<ul>
-<li>{bat-ptl-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8514/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13652/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
+<li>{bat-ptl-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8514/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13653/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
 </ul>
 </li>
 </ul>
@@ -154,13 +154,13 @@ Content-Transfer-Encoding: 7bit
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8514 -&gt; IGTPW_13652</li>
+<li>IGT: IGT_8514 -&gt; IGTPW_13653</li>
 </ul>
-<p>IGTPW_13652: 13a2aaad0a309d26ad657be98296a8bc0fe1c01d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_13653: 13653<br />
   IGT_8514: 8514<br />
   xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97</p>
 
 </body>
 </html>
 
---===============2714021157181253002==--
+--===============5009251444339094009==--
