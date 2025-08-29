@@ -4,62 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43950CA0FF7
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Aug 2025 11:18:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2091CA0FF0
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Aug 2025 11:27:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F1E6B10EB87;
-	Fri, 29 Aug 2025 11:18:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 896F010EB88;
+	Fri, 29 Aug 2025 11:27:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EAIm97xw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cHrw8/EF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAF7510EB87
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Aug 2025 11:18:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 39C4210EB88
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Aug 2025 11:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756466311; x=1788002311;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=i0S1FwHO1qqtOHABAowJ9ZiYqy8GyCFuc+Iswor96Qw=;
- b=EAIm97xwvTRjE8+ZonYVRFbTX8felKwfeE0RIUsddU0N44T0y/cz9eIN
- Rp+iTLQKXTuKVQMGpPVmWeFYif5UOc0IiSgGutbfNsMqX7mimNU5cmAF7
- v1R5W6ExxPqqVmb7KUzgbGUSvVahWx/DPmuQAXeeRFDX1q11EVGuDF3jn
- MRuh5LTSpEbUHgZqTuNb75MKukQgPkOPmCsqk3gvHyioPVpQ1J9m3Ul5u
- dutzd0ce36KhDedRLVn9RAEL3wsgq4kGyV4tKDrO9Q6JoY4oCwZzyzD+O
- hQbt6eJYvhH4GEz2JuIVkd7mi9o3i9kR27P3OQtXuTU7C8JQiPOcea6V1 A==;
-X-CSE-ConnectionGUID: HZG9MDIdQEKr/KoGbsLKRg==
-X-CSE-MsgGUID: BR2PryE4RtK2kLfvi5g0pg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="81341466"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="81341466"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2025 04:18:30 -0700
-X-CSE-ConnectionGUID: ofDGLS4FQROiz9LzaIFyzg==
-X-CSE-MsgGUID: BcukN73ASumT7SWLzfcU1Q==
+ t=1756466858; x=1788002858;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=cwA1Ad1ESu9Qi+yiUA8cfR6p5AufoDXj5c4hpXhF8qI=;
+ b=cHrw8/EFyVDEEHkdSx9W9UsMmV/XwlEfufQ4xzyCAhUcuN/guRfXbL9I
+ jWaciYvn1XUXEU1GUfbDb2mZZWbOs1FFTmSGlR3JBQTDk8QAKGMtPBxF4
+ ZENUFq6DdGSDTwlEZRbhqqhtNlXxpOp+WTYMKFh2lLZyzoGj+sJ6Jj1EN
+ SV1FXzbK28RLFL3e5pylYOc1mhvXLNwLfcsvosWlKt7oM0SUdfpx3ym7q
+ qp6bmj8oU+z0P4FVk5M22ITyESze4jdTL9ED/+0I3D/C01i9mrmjAmdI/
+ DlfKeiWrxoGaMhq+lR7Bj9o9PyHk/QKtan/tynLNZAklgAFwYItFCkWGC Q==;
+X-CSE-ConnectionGUID: NykKZY00RdihqjZ4xHbrRQ==
+X-CSE-MsgGUID: DzID6wH1R1+XKDmR9Mn53w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="58680586"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="58680586"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2025 04:27:38 -0700
+X-CSE-ConnectionGUID: FEU5YbxgTQGrmKvCjSAFTg==
+X-CSE-MsgGUID: XHxzH7noROqnvn3bIAp9aA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="169927427"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.112.195])
- ([10.245.112.195])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2025 04:18:29 -0700
-Message-ID: <c2abf462-f367-43c6-9097-4d805cd9136d@linux.intel.com>
-Date: Fri, 29 Aug 2025 13:18:26 +0200
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="174732426"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 04:27:35 -0700
+Date: Fri, 29 Aug 2025 13:27:32 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: mallesh.koujalagi@intel.com
+Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, sk.anirban@intel.com, raag.jadav@intel.com
+Subject: Re: [PATCH i-g-t 2/2] HAX: Added list of test cases to fastfeedback
+ list
+Message-ID: <20250829112732.yaodbjdvglnxyeb2@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ mallesh.koujalagi@intel.com, igt-dev@lists.freedesktop.org,
+ anshuman.gupta@intel.com, badal.nilawar@intel.com,
+ riana.tauro@intel.com, karthik.poosa@intel.com,
+ sk.anirban@intel.com, raag.jadav@intel.com
+References: <20250828073114.1884451-1-mallesh.koujalagi@intel.com>
+ <20250828073114.1884451-2-mallesh.koujalagi@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_test_config.json: Add SR-IOV
- testlists
-To: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-References: <20250825165346.504290-1-jakub1.kolakowski@intel.com>
- <20250825165346.504290-3-jakub1.kolakowski@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250825165346.504290-3-jakub1.kolakowski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250828073114.1884451-2-mallesh.koujalagi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,46 +76,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-On 8/25/2025 6:53 PM, Jakub Kolakowski wrote:
-> Currently we have bat.testlist and full.testlist being generated
-> by igt_doc.py script.
-> Add SR-IOV testlists to be generated:
-> - bat-vf.testlist
-> - bat-vm.testlist
-> - full-vm.testlist
+Hi mallesh.koujalagi,
+On 2025-08-28 at 13:01:14 +0530, mallesh.koujalagi@intel.com wrote:
+> From: Mallesh Koujalagi <mallesh.Koujalagi@intel.com>
 > 
-> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+> List of test cases added to fast feedback list
+> i915_pm_rps@basic-api
+> i915_pm_rps@min-max-config-idle
+> i915_pm_rps@min-max-config-loaded
+> i915_pm_rps@waitboost
+> i915_pm_rps@reset
+
+Please subscribe to igt-dev mailing list, you can do it here:
+
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+When you want to experiment with HAX please send
+series with HAX into Trybot first.
+
+intel-gfx-trybot@lists.freedesktop.org
+https://patchwork.freedesktop.org/project/igt-trybot/
+
+Regards,
+Kaml
+
+> 
+> Signed-off-by: Mallesh Koujalagi <mallesh.Koujalagi@intel.com>
 > ---
->   tests/intel/xe_test_config.json | 8 +++++---
->   1 file changed, 5 insertions(+), 3 deletions(-)
+>  tests/intel-ci/i915.fast-feedback.testlist | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-> index 27de0efaa..a754ccda8 100644
-> --- a/tests/intel/xe_test_config.json
-> +++ b/tests/intel/xe_test_config.json
-> @@ -11,12 +11,14 @@
->                   "default-testlist": "FULL",
->                   "update-from-file": {
->                       "exclude-type": "regex-ignorecase",
-> -                    "append-value-if-not-excluded": "Xe FULL",
-> +                    "append-value-if-not-excluded": "Xe FULL, Xe FULL VM",
->                       "include": [
-> -                        { "Xe BAT": "../intel-ci/xe-fast-feedback.testlist" }
-> +                        { "Xe BAT, Xe BAT VF, Xe BAT VM": "../intel-ci/xe-fast-feedback.testlist" }
->                       ],
->                       "exclude": [
-> -                        { "Xe BAT, Xe FULL": "../intel-ci/xe.blocklist.txt" }
-> +                        { "Xe BAT, Xe BAT VF, Xe BAT VM, Xe FULL, Xe FULL VM": "../intel-ci/xe.blocklist.txt" },
-> +                        { "Xe BAT VF": "../intel-ci/xe-sriov-vf.blocklist.txt"},
-> +                        { "Xe BAT VM, Xe FULL VM": "../intel-ci/xe-sriov-vm.blocklist.txt"}
->                       ]
->                   },
->                   "order": [
-LGTM,
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> diff --git a/tests/intel-ci/i915.fast-feedback.testlist b/tests/intel-ci/i915.fast-feedback.testlist
+> index 2799bbaa5..69e45a597 100644
+> --- a/tests/intel-ci/i915.fast-feedback.testlist
+> +++ b/tests/intel-ci/i915.fast-feedback.testlist
+> @@ -166,6 +166,12 @@ igt@gem_lmem_swapping@random-engines
+>  igt@gem_lmem_swapping@verify-random
+>  igt@i915_pm_rpm@module-reload
+>  
+> +igt@i915_pm_rps@basic-api
+> +igt@i915_pm_rps@min-max-config-idle
+> +igt@i915_pm_rps@min-max-config-loaded
+> +igt@i915_pm_rps@waitboost
+> +igt@i915_pm_rps@reset
+> +
+>  # Kernel selftests
+>  igt@i915_selftest@live
+>  igt@dmabuf@all-tests
+> -- 
+> 2.34.1
+> 
