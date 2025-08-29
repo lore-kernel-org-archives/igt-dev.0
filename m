@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71DC9CA0FF0
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Aug 2025 03:41:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C36CA0FF0
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Aug 2025 03:56:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF5F110E1F0;
-	Fri, 29 Aug 2025 03:41:38 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E70E410E1F0;
- Fri, 29 Aug 2025 03:41:37 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8431384900382454489=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA77410E1F5;
+	Fri, 29 Aug 2025 03:56:18 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mBYkr05z";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8567310E1F2
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Aug 2025 03:56:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1756439778; x=1787975778;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=IrlMn9Th/wqbdVIYLnYDSV/wbh7qqOjCiX3G4q9awoo=;
+ b=mBYkr05zuEijSSiwSo8Xqm6+Qkb2PC8oOBGVeGl5nA9l8cBcWKMiRJS4
+ KCEQWlsOBj/IPucTDIbJ96Z5D8duBr5mZ5GWUD2hOWzXq9hZ1hknkKtMb
+ PRQ4g/miXgc1BUhnMmv7TsZzkjqrXmnlwc4xk+ApCfrqUeFtyEY9uli5h
+ bQbusZPUfjZEErKdyuXv8m1kH/2fkMnVKEZXLR0fRU6Y/9NLEhyUTPlH7
+ J0ur/UcgQT6Xo2YyJoRgkXRPKAg9/A340ir4UvruG+RG3ieyAIGESp9HC
+ hi+sT4IOzEbXiJFUW1ATqaGkhA6AGTI90gyzlUk+Hp91Lzzqc6o+pTKps g==;
+X-CSE-ConnectionGUID: BRigF/hzTRyhkEWXl0wIuA==
+X-CSE-MsgGUID: YwQwA7UyRK+WLAqkRBZ+xQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="81314110"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="81314110"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2025 20:56:17 -0700
+X-CSE-ConnectionGUID: 1AJAv7o8Tbyvm1PZ8zOlMQ==
+X-CSE-MsgGUID: hyVFhGW4Q3yDPMWtym2dlA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="169808975"
+Received: from dut6245dg2frd.fm.intel.com ([10.80.55.42])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2025 20:56:16 -0700
+From: Sobin Thomas <sobin.thomas@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com,
+ Sobin Thomas <sobin.thomas@intel.com>
+Subject: [PATCH i-g-t v5 0/1] tests/intel/xe_evict_ccs: This patch adjust
+ object size as per VRAM
+Date: Fri, 29 Aug 2025 03:56:08 +0000
+Message-Id: <20250829035609.858784-1-sobin.thomas@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_a_test_for_tail_address?=
- =?utf-8?q?_wrap?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 29 Aug 2025 03:41:37 -0000
-Message-ID: <175643889794.282463.10135978182406081739@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250828214907.94311-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20250828214907.94311-1-umesh.nerlige.ramappa@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,150 +64,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8431384900382454489==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Some BIOS configurations do not support or enable resizable BAR,
+resulting in a maximum VRAM size of 256MB. This patch adjusts the
+maximum object size used in test conditions based on the available
+VRAM.
 
-== Series Details ==
+v2: Adjusted the subject name
 
-Series: Add a test for tail address wrap
-URL   : https://patchwork.freedesktop.org/series/153670/
-State : success
+v3: Inco-operated review comments [kamil]
 
-== Summary ==
+v4: Fixed typo.
 
-CI Bug Log - changes from XEIGT_8514_BAT -> XEIGTPW_13658_BAT
-====================================================
+v5: Fixed review comment for igt warnings and commit subject. [kamil]
+    Fixed the condition for user provided max size value. [kamil]
 
-Summary
--------
+Sobin Thomas (1):
+  tests/xe_evict_ccs:Adjust object size as per VRAM
 
-  **SUCCESS**
+ tests/intel/xe_evict_ccs.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-  No regressions found.
+-- 
+2.34.1
 
-  
-
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13658_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_pat@pat-index-xe2@render:
-    - bat-bmg-1:          [PASS][1] -> [FAIL][2] ([Intel XE#5507]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8514/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13658/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_vm@bind-execqueues-independent:
-    - {bat-ptl-2}:        [FAIL][3] ([Intel XE#5783]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8514/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13658/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#5507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507
-  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
-
-
-Build changes
--------------
-
-  * IGT: IGT_8514 -> IGTPW_13658
-  * Linux: xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97 -> xe-3635-669eae0e8de0328817f4ce7d3c4a3ef834850751
-
-  IGTPW_13658: 13658
-  IGT_8514: 8514
-  xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97
-  xe-3635-669eae0e8de0328817f4ce7d3c4a3ef834850751: 669eae0e8de0328817f4ce7d3c4a3ef834850751
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13658/index.html
-
---===============8431384900382454489==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add a test for tail address wrap</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153670/">https://patchwork.freedesktop.org/series/153670/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13658/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13658/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8514_BAT -&gt; XEIGTPW_13658_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13658_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_pat@pat-index-xe2@render:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8514/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13658/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507">Intel XE#5507</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_vm@bind-execqueues-independent:<ul>
-<li>{bat-ptl-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8514/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13658/bat-ptl-2/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8514 -&gt; IGTPW_13658</li>
-<li>Linux: xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97 -&gt; xe-3635-669eae0e8de0328817f4ce7d3c4a3ef834850751</li>
-</ul>
-<p>IGTPW_13658: 13658<br />
-  IGT_8514: 8514<br />
-  xe-3631-a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97: a59cf1d7fe0e19ce3a6e8cf2a20cfb24896baa97<br />
-  xe-3635-669eae0e8de0328817f4ce7d3c4a3ef834850751: 669eae0e8de0328817f4ce7d3c4a3ef834850751</p>
-
-</body>
-</html>
-
---===============8431384900382454489==--
