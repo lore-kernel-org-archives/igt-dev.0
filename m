@@ -4,184 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 908A2CA0FF0
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Aug 2025 18:05:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A87B4CA0FF9
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Aug 2025 19:05:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4479910EC21;
-	Fri, 29 Aug 2025 18:05:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5DFE110EC32;
+	Fri, 29 Aug 2025 19:05:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HQPp+XRd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SebmSL3+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 147D410EC21
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Aug 2025 18:05:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4BD5510E1E9
+ for <igt-dev@lists.freedesktop.org>; Fri, 29 Aug 2025 19:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756490748; x=1788026748;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=lYpco9Tb2Kd3nAmqWe9D437i50fRsWaxkdeVscby9u8=;
- b=HQPp+XRdx21XWeqWFMmzNCbM2yBASd9ElEaHnujQf/YLYVtYuDI8ibzI
- PX80foHNsYaNiFzSCI7k1I1LZmvtnMsY1iqDgtOGLS6r6TQuyjoEm0Ri1
- GlJ8cYsMdufDt99FrBoPjwcXS0sTfPRBweLD9n0+58HjryT+uwWMf0J9h
- QWkEE7YLf8P7F/pdRubjBWhVd2Tu0KcuIOy2IsZl/2ZV43X+s+UrZ/u3/
- O09e/ESxNCceHFIGWT/LGNotAEjqNmSm/ku4BfIAZP8W8B00DBjXySDkP
- VcR9d9jwL84MAahYUZmboO2NapTJWyP3ccdudcL2WzzOuInCv39sAWseM w==;
-X-CSE-ConnectionGUID: ZSBFGyFBSfWE1+jcwscY2A==
-X-CSE-MsgGUID: 63WUQak/TXmueCyljKpmmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11537"; a="58491171"
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208,217";a="58491171"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2025 11:05:39 -0700
-X-CSE-ConnectionGUID: ej2y9/TITka/JUQEDuscRg==
-X-CSE-MsgGUID: FRMHf3rlS1Ox/De3FtPQ5w==
+ t=1756494307; x=1788030307;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=uniTjfhN8vyP/2C4/jX67hNSQMN2qeLCcHj3kFG9YHE=;
+ b=SebmSL3+sjQV+KbjZXKrqTRD/iuVJERIZyQ2NkdwfA8EBrTwDq3bbox+
+ dg/K26Qw0Z3ik2tqKHVRlfCGKz8+CUoenK83fzIoSvF7kk9fk8TSrH6IL
+ ERTmr81CkmBR2/mxfPjXYrpap2/S/XNMnfLEWx+Wsh6mGYfQUrHi4ygr/
+ Ni4MZPkXrLMwxStnspEt6F2C1UAwBP+EbTyZbGMBtNxESz5JiYfVqyg6h
+ 6F1UCkZ+vrf0sqT5s9S6m11M5KxH/w9He1X9pUZmvvTUHmJ58F76FJtPh
+ EGON4tMZaGHE3aG9guQ52j7mXHyYvciDnmHZPyGARb/RvwyK3dgqLd5WQ Q==;
+X-CSE-ConnectionGUID: Dp01fJ7vSCWbMNZNvcPFzA==
+X-CSE-MsgGUID: qmndMK/7RfG6tZZvFna8iA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11537"; a="46358256"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="46358256"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2025 12:05:07 -0700
+X-CSE-ConnectionGUID: I+ImDHwVQKG7eGA/wLt70w==
+X-CSE-MsgGUID: mZUALIlIS6aVSgTmAmi9IQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
- d="scan'208,217";a="169736974"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2025 11:05:39 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 29 Aug 2025 11:05:38 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Fri, 29 Aug 2025 11:05:38 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.45)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 29 Aug 2025 11:05:37 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UIMKH3AT6wEJBIur7v8V6y+MD8Kwsu60jLxjlLQf0OdPMkEIrmxdv52LwvWyC35ZKmemgJf6Jr/wIZkw8ZmYbcB1UqRMMHcMq2FItH5fCtQUpd7ol9pKLJOMdTpBfjppFSrh6TCYJJkUyHNNTuIEOEiNzj9rYsS06lU0FK3NMVx96JTPijVWszw2uXq5vcNgQL2W6Gc2AA48wJ4DUXghoxlnOVM/Iimvc3yJ2WIbdF+tpCZux70xdB5O+p7m9KUjG9AwrzmGYxSqcT631EGG4l7riat8avcnlddYmKh0juSNTunfW00oj45Jk6NCbKLJyLzitq69A7p0AO8cW4VE3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hG3y6GNJ0MMbnaFshI0DHvuetGrZ4pautdkrP7v+PUA=;
- b=gQoZcrz5/gsQDNAYxnjcNjHALpI73TjXl6vkkNn1JbSItlJuA9vlROMl2PH87U8QMsQGMDYDlwedzV9xAzxxRc4vi7lwMhCryV4wTG34dyuA6YVznM9fhkHAgu15nJqZRvFeLx0+K7XTLLkag2JPvCJr1077Sqh7RZ2xUUJr7699Qbx84FUaNy+SFg6ETC/VHX/0U13EbQx7rFlKEnTVeOMw8jFZd5qH2JlFLBIr5EW3bzWHOQ6uHKCmRbazWrZkjqhHHzksV2zSAvLFrP2u5iqu+yBizt20mX2imrPi17M1BB6mCJ6wbBbLeyFW0z1jw92kQd4jzZsEDqfWlICcOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com (2603:10b6:610:1d1::22)
- by CH2PR11MB8816.namprd11.prod.outlook.com (2603:10b6:610:285::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Fri, 29 Aug
- 2025 18:05:28 +0000
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::36d3:6033:a101:f961]) by CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::36d3:6033:a101:f961%4]) with mapi id 15.20.9073.021; Fri, 29 Aug 2025
- 18:05:28 +0000
-Content-Type: multipart/alternative;
- boundary="------------068DoLC1O2S009VOtXqBXJoF"
-Message-ID: <04379511-9381-4313-a09c-9a5a1e181975@intel.com>
-Date: Fri, 29 Aug 2025 23:35:20 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t, v3] tests/intel/xe_pm: Enhance vram-d3cold-threshold test
- to verify VRAM self-refresh
-To: Sk Anirban <sk.anirban@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <karthik.poosa@intel.com>
-References: <20250630051145.2572003-2-sk.anirban@intel.com>
-Content-Language: en-US
-From: "Purkait, Soham" <soham.purkait@intel.com>
-In-Reply-To: <20250630051145.2572003-2-sk.anirban@intel.com>
-X-ClientProxiedBy: BM1P287CA0003.INDP287.PROD.OUTLOOK.COM
- (2603:1096:b00:40::16) To CH3PR11MB8706.namprd11.prod.outlook.com
- (2603:10b6:610:1d1::22)
+Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2025 12:05:05 -0700
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ sk.anirban@intel.com
+Cc: soham.purkait@intel.com, riana.tauro@intel.com, lucas.demarchi@intel.com
+Subject: [PATCH i-g-t v2] tests/intel/xe_pm: Test to validate vram-sr through
+ Mods during host s2idle
+Date: Sat, 30 Aug 2025 00:26:58 +0530
+Message-Id: <20250829185658.3418527-1-soham.purkait@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8706:EE_|CH2PR11MB8816:EE_
-X-MS-Office365-Filtering-Correlation-Id: 01396067-ef9e-488e-c9f1-08dde726a2a9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|366016|1800799024|8096899003|13003099007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aHpIKy9CMUttTitGZVN3emZHdVZiOFp6MkUwUFVZOXc4VUVQVnZDcmNyZUxo?=
- =?utf-8?B?alZZblNLNjMvWTVneHpnenlML1pkUDg1NUllYTZhUndBZU9rU1lobHd2TFlt?=
- =?utf-8?B?REVmcEJEK2tzbmhJTGVYNTNiTmZTWkRmS29iMVJoeXEzSjVjQWFEZmg2VU15?=
- =?utf-8?B?K0V3WStNS2c4cTNzMzFyWFhrYUxKdDZZVDdXOW4zeW5pVkgxMC9PSVpWWWxv?=
- =?utf-8?B?NVM3RDNxcFlOMHl0Q0k5YjYrSXVpaDJ5aVgvQWlKMGIwRUVFZExkMGVSNGZE?=
- =?utf-8?B?eFltZzNqSGh2bTE0SVFZSW9YSmZPSFRzTFJoL2dvNjEzMDltZDlJRy83N1d1?=
- =?utf-8?B?SHhJc1Q3LzMybDdaTlMvb1VHQWRPREVoNWhtYUVLUDNXNFJzOGhlV2JRREpv?=
- =?utf-8?B?WEFLbWFha20rMjZ1QnRVOU9YbGpOeHZlT3dIL29CTlluelNKRWhhOTJTN3U3?=
- =?utf-8?B?d3VIdzladmR4eElUaWtIUTFmZzBEWEp5R3BNTUJXZ1VyLzdOUWtyRFVXQ1VX?=
- =?utf-8?B?dER0WjlMU2tndiszMkdwUG9FYkFDUjNKdklidkRXaHJoVXBXM3VraGcrUHNT?=
- =?utf-8?B?emVHRE1saWxueTNlNUFab21UMENqUEUvcXRtSUZ4NVhuREhwQXdjUWkwRzkx?=
- =?utf-8?B?Szd3bDRpdUptcGRIZzV3M1NqaVl5NUdxeVJsRlNFbi9wZmJ3Y2hSTE1uWWI2?=
- =?utf-8?B?NndBTmJxWVhTTkYyckxpalhxMUZVV3NuNGVjTDVUUXZ0RTRYbktZZ2xtZGY4?=
- =?utf-8?B?UGZER3VhMDRFRVJMVUpTcDEvcWlSeXVDTWc3NzJuSnIvSDQ1YkF5blcvdHRl?=
- =?utf-8?B?R2ZMc2NXUmxEUzJYZUR3a3ZFV0Y4MmQ3V1NKeDZFMHJWK3RQVVFhVThIOUFp?=
- =?utf-8?B?aTNGa0g1QnhnNzR6L2RIL3VPVXlzeDF2azloSjBTRXl3dFBoMXMzV2pRL2J3?=
- =?utf-8?B?M3ZaSDFZeTJDSjkrd09IdEVRdDNEc3JrakNHc0pHcHA2NVNuVzIzbDhOOFY0?=
- =?utf-8?B?U3dXS3FFUGRsaWNDWFA5eVVvRUZIaFRESHBleTh0WWR5eWRncFNFeWFXUkpZ?=
- =?utf-8?B?V3F5R0I3VTlxRWFIR0tidW1tR20xNG5acGZ0UHJVZWJPQk5Kem9taTdDOWhz?=
- =?utf-8?B?aGJTd3BTdFNkck1EaHM1amIzRjZSK1FadVlaYThKK1F3NGJtcVlJV2g3cENG?=
- =?utf-8?B?ekJaNTBHMFJEd3VIQmRjQUNjaGtCbjFadi9KQVZ5bEJKUXo2VVMyVmRwaDkr?=
- =?utf-8?B?MEt5S0hya3RCeDdEZUl0Qlc3dFRpRi9GWEY0bGZocGZsNEsyRDRtb1R0TGZq?=
- =?utf-8?B?QWhZRTd4MWl4Mjk4ZTJ3YUJjNmgvL3hnR0xZVHV6d21KcnBsT3BITWRkSmVF?=
- =?utf-8?B?ZjMySEV2aVVOclRlR2VUZE9UbCt4RUZGeHJsVUxTeDNzbmJYamZqT2ZMUFlF?=
- =?utf-8?B?R0VHUHJ1RFRyalIvZXBHQjRybVhkZmlJVGV2TVdIZTI2MERYb2toMG1CYlpI?=
- =?utf-8?B?RElmQS85bnNkUENMQ0ZoRG9XaWNSQjE5aTlWQmxEQTI0UkhLSi82WnF1bGlw?=
- =?utf-8?B?VUtMRXkyUGUzMGZ5TWQvQ1NNbUNDOEo3TEhOSUQvb0wrVlp6V1B4Z2phc1NE?=
- =?utf-8?B?eVVTRjNYbE1xZktuRGl6eDU5TFJPQjZINUhXVlliU292TTU0ckdoZXZ4ZHV4?=
- =?utf-8?B?YVRQL1p0ZDVnL3JPemRsYVJKUnBHbGV6TldxOEI3N1RSRHJOOHNNek5ESE00?=
- =?utf-8?B?VlN5ZGVheUx2RHVwQ29jREUvQk82MWZWaTc2VS9iOGxKL1FPOGxFbTNlK29E?=
- =?utf-8?Q?9/4y7xJQqtS6ffc3djIBLD9C7oxD48DhUF28A=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8706.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(8096899003)(13003099007); DIR:OUT;
- SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UFA3aFZjSEdhMkVZYldOb1JoaDNzSWZjYzN3Vm14dGtCR0kzRDkrZXY2QjlS?=
- =?utf-8?B?TklQaXRPM2NmZ3NIb3JWeXI3ajhya0doVWIvZkhNU0dGQ2lkMFFsV2g2T3Vj?=
- =?utf-8?B?eVhNN0lpUVlFd3QrcXAxNnFRL21GSGU5U1UyNllGamY3WGZEclZPVWlDZ2Jk?=
- =?utf-8?B?UFg4eTd3UWRyYzI4OVV2dGhJYWE1M0Uxc3RSWHVHZ0wvMllKeHNoZmtvZ3BF?=
- =?utf-8?B?c1JVdUNBZ2hjTEg2SE10Nm1TeEljb1VRUHNDSzlDNVRDek9CY3psZHFVQm9G?=
- =?utf-8?B?THdsZkhTSmJ0dEVyczMybHpuR2hZVEZBQ0FJUERRbnZEUzZmOUl0Y1lHeWhN?=
- =?utf-8?B?dThOamJoNnZRR0V4bGF4ekx3OUV0OVVTNDFwY1QrQTZEbUJjRDNpRi9aczlx?=
- =?utf-8?B?ZG9UMDNHK0phaVovUS9nR0ZaV0loOXdIbVRPUFVwWFN3VVRDWXp1MmxaVEdi?=
- =?utf-8?B?N0NtZWs1SnV5ay8wMVhDRklTaUJncUNOaXdmWW1DWjBPb1pOeHEydW1mbWx2?=
- =?utf-8?B?QkZzN004aS9ZTFkycFBtYnlFV1c4WUhnSEJPWEx5L05FZFlZNE1Xb2RKbGFF?=
- =?utf-8?B?MnZoMmVXZ2RiY20vSFBJV1BMU3BoUkM3ck1xQkt4alc2NEdMRy9yaUpKOXhs?=
- =?utf-8?B?UUZCL2dnSTZuQys1OXpCWko3M1dFazJZUFY4RUtaam5XTmRNWTc5Ny9pRlJL?=
- =?utf-8?B?d0twdk5wbUF4bkVKbno2b2djdVEyRitreVY1c3VlSlIzbVBhMS95UUJRVlFX?=
- =?utf-8?B?SXExSEJBSXhoWE9GTDlmMHgvcDRuVWxjcWJNbzdKdisydHBSMjUxNGx6bVhp?=
- =?utf-8?B?cFFDbVdpdi9HWXN4SmJRZVRxYU9TRWN1ZCtndTVqOURyc3NwZENxY1ZKUUg0?=
- =?utf-8?B?NFk1dG5VMFJyR0EzazMvc0lGdUJoUkZqNy9vTnkxekZLdWxndFpNK2RuYkpI?=
- =?utf-8?B?a01UWVBxMGpzM0c1R0FHNWlkN3p4dkMxelNyOEJQeHc1UXlEUFVjVFJtK0tX?=
- =?utf-8?B?VmVuc1kycDhreGpaWUw0R1IvWnV0SUFsTm1CaGRrKzFMU1kwUGNxdVFVdXIw?=
- =?utf-8?B?VmdvR1V3elFrcjZCUVFldDNQajQya0NzS3FYVWhYK0ZOVEFWVkJ1Skd0TUwr?=
- =?utf-8?B?K2dQSzVBcHlFdlVNdURzcmkzdStCZHAxckFHYTFOUlVlMnlNVndQbHpCUFFr?=
- =?utf-8?B?aHAxMGZXbzFlelp2bERhT21WTERkWVB2QmdLOVN0Q1FmQmoyUlZ3NDhvZFVW?=
- =?utf-8?B?cmdHYy8wbGh5eFNQSmxZMVk4ZkJETVMxYjAzLzlXaWMwL3VoTHFFMmJJUEdB?=
- =?utf-8?B?Mnc4TEtLYzc1akx0NWU5V0JwRnJrUDlVN2htdmhxMlVxU0t0OTR0Q3lnQVZs?=
- =?utf-8?B?YURXWDhwcXJPWkUwUU4ydmdkZ1lyNWthelMwQWpham1UcTNOZjZmNHp1Y3Ju?=
- =?utf-8?B?WllLNXJFYnNiTEVGTDZHRjM3L3N0Ym9ydkRhVnczNlEvZ0IxREppUnBBNUU4?=
- =?utf-8?B?WG9GbEdEZVFGN055SXBCUnFNUk85R0lVWEJSekw4bE5SUjdvSkNWZzVVYjV5?=
- =?utf-8?B?ZitGbGgrRnZTOXdxdTFxNFAyS0VVaGlyUWdHdHA1M3dHMG1pTncwckJyd3Ni?=
- =?utf-8?B?N0Roak1yRUpseTNpc3pXdUNHcGdJalNzZDVqbjlqUlBUNTcxSzJGeE1LZ05r?=
- =?utf-8?B?VXNSVjR3b3hMMDVIZ3VMZTNqQVJ1bmlORFlHVldlMkt3clArUERseW55bHEz?=
- =?utf-8?B?UmdtV1dySC9wMldhUFp6NW90dEhWTkN6ck5BTzZOeU9LYWdCbmJBd2RkS1dK?=
- =?utf-8?B?TzdlWEJsOEZmS1NCdWpjek5kTFZXdE51ZGlUb1ZVSnhCR3BuTXZwNTFKZVF6?=
- =?utf-8?B?MzBWT240bDNWODZkMFRhQ1JFSFQyYWRmSVptM2luSGFsRGpld0xxL0xXNW5E?=
- =?utf-8?B?QjdTVGdjVXp6RldEdVJZcWlES1MzQ2d0d25iWTErSkVPRnlLN21QRE5vdHBR?=
- =?utf-8?B?RE5oNDJ0UWVsMzJWZFQwSEZNamZDVmIrKzhEM0s5Q2ZYejREUlQ3TTFYMDhy?=
- =?utf-8?B?Y2h5dkpHT3dxU00xeGEwZjlOb2xmYldwVmJWYldnbFpDTFYyZWhjVTBoOXdK?=
- =?utf-8?B?QnovQmNpUytJeERGdEdVc0doTmNLZUVXL3gwekdrWFhzVzlpbjc2b2ovMk5V?=
- =?utf-8?B?cVE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01396067-ef9e-488e-c9f1-08dde726a2a9
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8706.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2025 18:05:28.4225 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jAJp62xcMGI1KoXbOE2pjEwIA/92moPGXLURNkiYqiRNUWAZJP1IxP3h6vP8jsxBQuLzi9Wdc/svsIQ8G9nkFg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR11MB8816
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -197,238 +66,190 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------068DoLC1O2S009VOtXqBXJoF
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Add test to validate vram-sr through Mods during host s2idle. It checks
+whether vram self refresh capability is supported through debugfs node and
+then introduce host s2idle to check ModS residency to confirm vram self
+refresh capability upon success.
 
-Hi Anirban,
+v1:
+ - Define macros at the top. (Anirban)
+v2:
+ - gtidle no longer exists. (Anirban)
+ - Skip test if the system is not VRSR-capable. (Anirban)
+ - Release bo to avoid resource leaking. (Anirban)
 
-On 30-06-2025 10:41, Sk Anirban wrote:
-> Update the vram-d3cold-threshold test to include validation of VRAM
-> self-refresh (VRSR) functionality, by including checks for VRSR capability
-> and ModS residency. The test now differentiates between D3Cold and D3Hot
-> states based on VRAM self-refresh capability.
->
-> v2: Buffer size reduced from 4K to 256 and 8 bytes (Karthik)
-> v3: Update error message (Karthik)
->
-> Signed-off-by: Sk Anirban<sk.anirban@intel.com>
-> ---
->   tests/intel/xe_pm.c | 49 ++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 48 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 7e9324eec..c9582d337 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -144,6 +144,27 @@ static void vram_d3cold_threshold_restore(int sig)
->   	close(fd);
->   }
->   
-> +static uint64_t read_mods(device_t device)
-It would be even better if you could use a generic function for reading 
-the residencies.
-Better to use "read_content_line" from the patch : 
-https://patchwork.freedesktop.org/series/149731
-> +{
-> +	uint64_t mods_value;
-> +	char buf[256];
-> +	int dir, ret;
-> +	char *mods_ptr;
-> +
-> +	dir = igt_debugfs_dir(device.fd_xe);
-> +	igt_assert(dir >= 0);
-> +	ret = igt_debugfs_simple_read(dir, "gtidle/dgfx_pkg_residencies", buf, sizeof(buf));
-
-Remove "gtidle", it no longer exists.
-
-Thanks, Soham
-
-> +	igt_assert_f(ret >= 0, "Debugfs dgfx_pkg_residencies is not present.\n");
-> +
-> +	close(dir);
-> +
-> +	mods_ptr = strstr(buf, "Package ModS: ");
-> +	if (mods_ptr)
-> +		sscanf(mods_ptr, "Package ModS: %"PRIu64"\n", &mods_value);
-> +
-> +	return mods_value;
-> +}
-> +
->   static bool setup_d3(device_t device, enum igt_acpi_d_state state)
->   {
->   	igt_require_f(igt_has_pci_pm_capability(device.pci_xe),
-> @@ -561,10 +582,25 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->   	};
->   	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold;
->   	uint32_t bo, placement;
-> +	int vrsr_capability = 0;
-> +	uint64_t mods_value = 0;
-> +	char buf[8];
-> +	int dir, ret;
->   	bool active;
->   	void *map;
->   	int i;
->   
-> +	dir = igt_debugfs_dir(device.fd_xe);
-> +	igt_assert(dir >= 0);
-> +
-> +	ret = igt_debugfs_simple_read(dir, "vrsr_capable",
-> +				      buf, sizeof(buf));
-> +	igt_assert_f(ret >= 0, "Debugfs vrsr_capable is not present.\n");
-> +	close(dir);
-> +
-> +	if (strstr(buf, "true"))
-> +		vrsr_capability = 1;
-> +
->   	igt_require(xe_has_vram(device.fd_xe));
->   
->   	placement = vram_memory(device.fd_xe, 0);
-> @@ -595,10 +631,21 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->   	munmap(map, SIZE);
->   	set_vram_d3cold_threshold(sysfs_fd, threshold);
->   
-> +	if (vrsr_capability)
-> +		mods_value = read_mods(device);
-> +
->   	/* Setup D3Cold but card should be in D3hot */
->   	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
->   	sleep(1);
-> -	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-> +	if (vrsr_capability) {
-> +		igt_assert(in_d3(device, IGT_ACPI_D3Cold));
-> +		mods_value = read_mods(device) - mods_value;
-> +		igt_assert_f(mods_value > 0,
-> +			     "GPU couldn't enter ModS!");
-> +	} else {
-> +		igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-> +	}
-> +
->   	igt_assert(igt_pm_get_acpi_real_d_state(device.pci_root) == IGT_ACPI_D0);
->   	gem_close(device.fd_xe, bo);
->   
---------------068DoLC1O2S009VOtXqBXJoF
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Hi Anirban,</p>
-    <div class="moz-cite-prefix">On 30-06-2025 10:41, Sk Anirban wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20250630051145.2572003-2-sk.anirban@intel.com">
-      <pre wrap="" class="moz-quote-pre">Update the vram-d3cold-threshold test to include validation of VRAM
-self-refresh (VRSR) functionality, by including checks for VRSR capability
-and ModS residency. The test now differentiates between D3Cold and D3Hot
-states based on VRAM self-refresh capability.
-
-v2: Buffer size reduced from 4K to 256 and 8 bytes (Karthik)
-v3: Update error message (Karthik)
-
-Signed-off-by: Sk Anirban <a class="moz-txt-link-rfc2396E" href="mailto:sk.anirban@intel.com">&lt;sk.anirban@intel.com&gt;</a>
+Signed-off-by: Soham Purkait <soham.purkait@intel.com>
 ---
- tests/intel/xe_pm.c | 49 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 48 insertions(+), 1 deletion(-)
+ tests/intel/xe_pm.c | 105 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 105 insertions(+)
 
 diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 7e9324eec..c9582d337 100644
+index a3a26f62a..8ddc01bf1 100644
 --- a/tests/intel/xe_pm.c
 +++ b/tests/intel/xe_pm.c
-@@ -144,6 +144,27 @@ static void vram_d3cold_threshold_restore(int sig)
- 	close(fd);
+@@ -10,10 +10,12 @@
+  * Sub-category: Suspend-resume tests
+  * Test category: functionality test
+  */
++#include <ctype.h>
+ 
+ #include <dirent.h>
+ #include <limits.h>
+ #include <fcntl.h>
++#include <stddef.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+ 
+@@ -48,6 +50,9 @@
+ #define I2C_AMC_ADDR	0x40
+ #define I2C_AMC_REG	0x00
+ 
++#define XE_BO_SIZE (350 * 1024 * 1024)
++#define MODS_PREFIX "ModS"
++
+ enum mem_op {
+ 	READ,
+ 	WRITE,
+@@ -55,6 +60,7 @@ enum mem_op {
+ 
+ typedef struct {
+ 	int fd_xe;
++	int debugfs_dir;
+ 	struct pci_device *pci_xe;
+ 	struct pci_device *pci_root;
+ 	char pci_slot_name[NAME_MAX];
+@@ -423,6 +429,46 @@ child_exec(void *arguments)
+ 	return NULL;
  }
  
-+static uint64_t read_mods(device_t device)</pre>
-    </blockquote>
-    It would be even better if you could use a generic function for
-    reading the residencies.<br>
-    Better to use &quot;<span class="cf0">read_content_line</span>&quot; from the
-    patch :&nbsp;<span class="cf0"><a class="moz-txt-link-freetext" href="https://patchwork.freedesktop.org/series/149731">https://patchwork.freedesktop.org/series/149731</a></span>
-    <blockquote type="cite" cite="mid:20250630051145.2572003-2-sk.anirban@intel.com">
-      <pre wrap="" class="moz-quote-pre">
++static char *read_content_line(const char *content, const char *prefix)
 +{
-+	uint64_t mods_value;
-+	char buf[256];
-+	int dir, ret;
-+	char *mods_ptr;
++	const char *line_start = content;
++	char line[1024];
++	char *result;
++	size_t len;
 +
-+	dir = igt_debugfs_dir(device.fd_xe);
-+	igt_assert(dir &gt;= 0);
-+	ret = igt_debugfs_simple_read(dir, &quot;gtidle/dgfx_pkg_residencies&quot;, buf, sizeof(buf));</pre>
-    </blockquote>
-    <p>Remove&nbsp;<span style="white-space: pre-wrap">&quot;gtidle&quot;, it no longer exists.</span></p>
-    <p><span style="white-space: pre-wrap">Thanks,
-Soham</span></p>
-    <blockquote type="cite" cite="mid:20250630051145.2572003-2-sk.anirban@intel.com">
-      <pre wrap="" class="moz-quote-pre">
-+	igt_assert_f(ret &gt;= 0, &quot;Debugfs dgfx_pkg_residencies is not present.\n&quot;);
++	while (*line_start) {
++		const char *line_end = strchr(line_start, '\n');
++		size_t line_len = line_end ? (size_t)(line_end - line_start) : strlen(line_start);
 +
-+	close(dir);
++		if (line_len >= sizeof(line))
++			line_len = sizeof(line) - 1;
 +
-+	mods_ptr = strstr(buf, &quot;Package ModS: &quot;);
-+	if (mods_ptr)
-+		sscanf(mods_ptr, &quot;Package ModS: %&quot;PRIu64&quot;\n&quot;, &amp;mods_value);
++		memcpy(line, line_start, line_len);
++		line[line_len] = '\0';
 +
-+	return mods_value;
++		if (strstr(line, prefix)) {
++			char *colon = strchr(line, ':');
++
++			if (colon) {
++				colon++;
++				while (isspace((unsigned char)*colon))
++					colon++;
++
++				result = strdup(colon);
++				len = strlen(result);
++				if (len > 0 && result[len - 1] == '\n')
++					result[len - 1] = '\0';
++
++				return result;
++			}
++		}
++		line_start = line_end ? line_end + 1 : NULL;
++		if (!line_start)
++			break;
++	}
++	return NULL;
 +}
 +
- static bool setup_d3(device_t device, enum igt_acpi_d_state state)
- {
- 	igt_require_f(igt_has_pci_pm_capability(device.pci_xe),
-@@ -561,10 +582,25 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- 	};
- 	uint64_t vram_used_mb = 0, vram_total_mb = 0, threshold;
- 	uint32_t bo, placement;
-+	int vrsr_capability = 0;
-+	uint64_t mods_value = 0;
-+	char buf[8];
-+	int dir, ret;
- 	bool active;
- 	void *map;
- 	int i;
+ /**
+  * SUBTEST: %s-basic
+  * Description: test CPU/GPU in and out of s/d state from %arg[1]
+@@ -871,6 +917,57 @@ static void i2c_test(device_t device, int sysfs_fd, enum igt_acpi_d_state d_stat
+ 	close(i2c_fd);
+ }
  
-+	dir = igt_debugfs_dir(device.fd_xe);
-+	igt_assert(dir &gt;= 0);
++/**
++ * SUBTEST: vrsr-capability-during-host-s2idle
++ * Functionality: pm - vram-sr
++ * Description: Test to validate vram self refresh through
++ * ModS residency counter during host s2idle
++ */
++static void test_vrsr_capability_during_host_s2idle(device_t device)
++{
++	u32 bo, placement;
++	u64 s2idle_start_mods, s2idle_end_mods;
++	int ret;
++	char buf[4096] = {0};
++	char *result;
++	void *map;
 +
-+	ret = igt_debugfs_simple_read(dir, &quot;vrsr_capable&quot;,
++	ret = igt_debugfs_simple_read(device.debugfs_dir, "vrsr_capable", buf, sizeof(buf));
++	igt_skip_on_f(ret < 0, "vrsr_capable node is not present in debugfs.\n");
++	igt_skip_on_f(!strstr(buf, "true"), "VRSR capability is not supported.\n");
++
++	placement = vram_memory(device.fd_xe, 0);
++	bo = xe_bo_create(device.fd_xe, 0, XE_BO_SIZE, placement, 0);
++	map = xe_bo_map(device.fd_xe, bo, XE_BO_SIZE);
++	memset(map, 0, XE_BO_SIZE);
++
++	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
 +				      buf, sizeof(buf));
-+	igt_assert_f(ret &gt;= 0, &quot;Debugfs vrsr_capable is not present.\n&quot;);
-+	close(dir);
++	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
 +
-+	if (strstr(buf, &quot;true&quot;))
-+		vrsr_capability = 1;
++	result = read_content_line(buf, MODS_PREFIX);
++	igt_assert(result);
++	s2idle_start_mods = (uint64_t)strtoull(result, NULL, 10);
++	free(result);
 +
- 	igt_require(xe_has_vram(device.fd_xe));
++	igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
++	munmap(map, XE_BO_SIZE);
++	memset(buf, 0, sizeof(buf));
++
++	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
++				      buf, sizeof(buf));
++	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
++
++	result = read_content_line(buf, MODS_PREFIX);
++	igt_assert(result);
++	s2idle_end_mods = (uint64_t)strtoull(result, NULL, 10);
++	free(result);
++
++	gem_close(device.fd_xe, bo);
++
++	igt_assert(s2idle_start_mods != s2idle_end_mods);
++}
++
+ igt_main
+ {
+ 	device_t device;
+@@ -907,6 +1004,8 @@ igt_main
+ 	igt_fixture {
+ 		memset(&device, 0, sizeof(device));
+ 		device.fd_xe = drm_open_driver(DRIVER_XE);
++		device.debugfs_dir = igt_debugfs_dir(device.fd_xe);
++		igt_assert(device.debugfs_dir >= 0);
+ 		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
+ 		device.pci_root = igt_device_get_pci_root_port(device.fd_xe);
+ 		igt_device_get_pci_slot_name(device.fd_xe, device.pci_slot_name);
+@@ -1040,11 +1139,17 @@ igt_main
+ 		test_vram_d3cold_threshold(device, sysfs_fd);
+ 	}
  
- 	placement = vram_memory(device.fd_xe, 0);
-@@ -595,10 +631,21 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- 	munmap(map, SIZE);
- 	set_vram_d3cold_threshold(sysfs_fd, threshold);
- 
-+	if (vrsr_capability)
-+		mods_value = read_mods(device);
-+
- 	/* Setup D3Cold but card should be in D3hot */
- 	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
- 	sleep(1);
--	igt_assert(in_d3(device, IGT_ACPI_D3Hot));
-+	if (vrsr_capability) {
-+		igt_assert(in_d3(device, IGT_ACPI_D3Cold));
-+		mods_value = read_mods(device) - mods_value;
-+		igt_assert_f(mods_value &gt; 0,
-+			     &quot;GPU couldn't enter ModS!&quot;);
-+	} else {
-+		igt_assert(in_d3(device, IGT_ACPI_D3Hot));
++	igt_describe("Validate VRAM self refresh capability during host s2idle");
++	igt_subtest("vrsr-capability-during-host-s2idle") {
++		test_vrsr_capability_during_host_s2idle(device);
 +	}
 +
- 	igt_assert(igt_pm_get_acpi_real_d_state(device.pci_root) == IGT_ACPI_D0);
- 	gem_close(device.fd_xe, bo);
- 
-</pre>
-    </blockquote>
-  </body>
-</html>
+ 	igt_fixture {
+ 		close(sysfs_fd);
+ 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
+ 		igt_restore_runtime_pm();
+ 		drmModeFreeResources(device.res);
++		close(device.debugfs_dir);
+ 		drm_close_driver(device.fd_xe);
+ 	}
+ }
+-- 
+2.34.1
 
---------------068DoLC1O2S009VOtXqBXJoF--
