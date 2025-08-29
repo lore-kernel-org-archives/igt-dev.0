@@ -4,63 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2091CA0FF0
-	for <igt-dev@archiver.kernel.org>; Fri, 29 Aug 2025 11:27:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0830ECA0FF9
+	for <igt-dev@archiver.kernel.org>; Fri, 29 Aug 2025 11:31:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 896F010EB88;
-	Fri, 29 Aug 2025 11:27:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF33C10E035;
+	Fri, 29 Aug 2025 11:31:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cHrw8/EF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CiBrjVZw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39C4210EB88
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Aug 2025 11:27:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C933B10E035;
+ Fri, 29 Aug 2025 11:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756466858; x=1788002858;
+ t=1756467118; x=1788003118;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=cwA1Ad1ESu9Qi+yiUA8cfR6p5AufoDXj5c4hpXhF8qI=;
- b=cHrw8/EFyVDEEHkdSx9W9UsMmV/XwlEfufQ4xzyCAhUcuN/guRfXbL9I
- jWaciYvn1XUXEU1GUfbDb2mZZWbOs1FFTmSGlR3JBQTDk8QAKGMtPBxF4
- ZENUFq6DdGSDTwlEZRbhqqhtNlXxpOp+WTYMKFh2lLZyzoGj+sJ6Jj1EN
- SV1FXzbK28RLFL3e5pylYOc1mhvXLNwLfcsvosWlKt7oM0SUdfpx3ym7q
- qp6bmj8oU+z0P4FVk5M22ITyESze4jdTL9ED/+0I3D/C01i9mrmjAmdI/
- DlfKeiWrxoGaMhq+lR7Bj9o9PyHk/QKtan/tynLNZAklgAFwYItFCkWGC Q==;
-X-CSE-ConnectionGUID: NykKZY00RdihqjZ4xHbrRQ==
-X-CSE-MsgGUID: DzID6wH1R1+XKDmR9Mn53w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="58680586"
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="58680586"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2025 04:27:38 -0700
-X-CSE-ConnectionGUID: FEU5YbxgTQGrmKvCjSAFTg==
-X-CSE-MsgGUID: XHxzH7noROqnvn3bIAp9aA==
+ bh=rqZFIZg6hhjuXI2cqRkKrKAgoibbV8tjWAJYKVqXfUk=;
+ b=CiBrjVZwtA4mqzUlqESl98qbZWvpZM6kBCb0No8LwvGcONyGrwfcsCe/
+ fP3U2LTDs1DyaXkZBfjTKC08ioys3C9PVNx10BIdWQG55nUEYzYrin/np
+ 8qMyrRh8BSWl8tZCSN0RLhTYr+49AmniJaSjFBeI+4L5wqZ7IboCrjjY0
+ Lon2QSr436uriLgeROdA7Ww3WjgZI6WvELktDXFFF1HbhZvJBurf5TUBm
+ bnQ/vx2bvB2lVqarmEiPoLPjG0qfUZdkv+Br8KXJZwYXPbL3lQBiYBXhV
+ cA7wizRBT3Q/vp7NkWXAotcs6gGd1KhJPscR5+SxejdGHltHWRUIE/jMu w==;
+X-CSE-ConnectionGUID: 2xN0tbc7Se27hRevTsVjdw==
+X-CSE-MsgGUID: xCjNXAepTweolFaJqEG0fg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="84155536"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="84155536"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2025 04:31:57 -0700
+X-CSE-ConnectionGUID: DVhZKaykSVehyhCfsVbEmA==
+X-CSE-MsgGUID: upnz0RL4Qnytrpitnfze+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="174732426"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; d="scan'208";a="201303668"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 04:27:35 -0700
-Date: Fri, 29 Aug 2025 13:27:32 +0200
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 04:31:55 -0700
+Date: Fri, 29 Aug 2025 13:31:51 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: mallesh.koujalagi@intel.com
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, sk.anirban@intel.com, raag.jadav@intel.com
-Subject: Re: [PATCH i-g-t 2/2] HAX: Added list of test cases to fastfeedback
- list
-Message-ID: <20250829112732.yaodbjdvglnxyeb2@kamilkon-DESK.igk.intel.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: adrinael@adrinael.net, arek@hiler.eu, juhapekka.heikkila@gmail.com,
+ bhanuprakash.modem@gmail.com, ashutosh.dixit@intel.com,
+ karthik.b.s@intel.com, boris.brezillon@collabora.com,
+ liviu.dudau@arm.com, steven.price@arm.com,
+ intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 4/4] tests/panthor: add panthor tests
+Message-ID: <20250829113151.hb2jcmcy2wq5g5fd@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- mallesh.koujalagi@intel.com, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, badal.nilawar@intel.com,
- riana.tauro@intel.com, karthik.poosa@intel.com,
- sk.anirban@intel.com, raag.jadav@intel.com
-References: <20250828073114.1884451-1-mallesh.koujalagi@intel.com>
- <20250828073114.1884451-2-mallesh.koujalagi@intel.com>
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ adrinael@adrinael.net, arek@hiler.eu, juhapekka.heikkila@gmail.com,
+ bhanuprakash.modem@gmail.com, ashutosh.dixit@intel.com,
+ karthik.b.s@intel.com, boris.brezillon@collabora.com,
+ liviu.dudau@arm.com, steven.price@arm.com,
+ intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+References: <20250828130402.2549948-1-daniel.almeida@collabora.com>
+ <20250828130402.2549948-5-daniel.almeida@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250828073114.1884451-2-mallesh.koujalagi@intel.com>
+In-Reply-To: <20250828130402.2549948-5-daniel.almeida@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,53 +81,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi mallesh.koujalagi,
-On 2025-08-28 at 13:01:14 +0530, mallesh.koujalagi@intel.com wrote:
-> From: Mallesh Koujalagi <mallesh.Koujalagi@intel.com>
+Hi Daniel,
+On 2025-08-28 at 10:04:00 -0300, Daniel Almeida wrote:
+> Add an initial test suit covering query device properties, allocating
+> memory, binding and unbinding VA ranges through VM_BIND and submitting a
+> simple piece of work through GROUP_SUBMIT.
+
+Missing s-o-b here.
+
+> ---
+>  lib/igt_panthor.c             | 136 ++++++++++++++++++
+>  lib/igt_panthor.h             |  20 +++
+>  tests/panthor/meson.build     |   4 +
+>  tests/panthor/panthor_gem.c   |  59 ++++++++
+>  tests/panthor/panthor_group.c | 264 ++++++++++++++++++++++++++++++++++
+>  tests/panthor/panthor_query.c |  25 ++++
+>  tests/panthor/panthor_vm.c    |  73 ++++++++++
+>  7 files changed, 581 insertions(+)
+>  create mode 100644 tests/panthor/panthor_gem.c
+>  create mode 100644 tests/panthor/panthor_group.c
+>  create mode 100644 tests/panthor/panthor_query.c
+>  create mode 100644 tests/panthor/panthor_vm.c
 > 
-> List of test cases added to fast feedback list
-> i915_pm_rps@basic-api
-> i915_pm_rps@min-max-config-idle
-> i915_pm_rps@min-max-config-loaded
-> i915_pm_rps@waitboost
-> i915_pm_rps@reset
+> diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
+> index 3e2c29b17..c422320c5 100644
+> --- a/lib/igt_panthor.c
+> +++ b/lib/igt_panthor.c
+> @@ -2,6 +2,9 @@
+>  // SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
+>  
+>  #include "igt_panthor.h"
+> +#include "drmtest.h"
 
-Please subscribe to igt-dev mailing list, you can do it here:
+Keep it in alphabetical order, so "drmtest.h" before "igt_panthor.h"
 
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> +#include "ioctl_wrappers.h"
+> +#include "panthor_drm.h"
+>  
+>  /**
+>   * SECTION:igt_panthor
+> @@ -12,3 +15,136 @@
+>   * This library provides various auxiliary helper functions for writing Panthor
+>   * tests.
+>   */
+> +
+> +void igt_panthor_query(int fd, int32_t type, void* data, size_t size, int err)
+> +{
+> +    struct drm_panthor_dev_query query = {
 
-When you want to experiment with HAX please send
-series with HAX into Trybot first.
-
-intel-gfx-trybot@lists.freedesktop.org
-https://patchwork.freedesktop.org/project/igt-trybot/
+Here and everywhere below use tabs in beginnig of line,
+as checkpatch.pl should tell you. Also, in IGT there is
+.checkpatch.conf in root folder, you could reuse it.
 
 Regards,
-Kaml
+Kamil
 
-> 
-> Signed-off-by: Mallesh Koujalagi <mallesh.Koujalagi@intel.com>
-> ---
->  tests/intel-ci/i915.fast-feedback.testlist | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/tests/intel-ci/i915.fast-feedback.testlist b/tests/intel-ci/i915.fast-feedback.testlist
-> index 2799bbaa5..69e45a597 100644
-> --- a/tests/intel-ci/i915.fast-feedback.testlist
-> +++ b/tests/intel-ci/i915.fast-feedback.testlist
-> @@ -166,6 +166,12 @@ igt@gem_lmem_swapping@random-engines
->  igt@gem_lmem_swapping@verify-random
->  igt@i915_pm_rpm@module-reload
->  
-> +igt@i915_pm_rps@basic-api
-> +igt@i915_pm_rps@min-max-config-idle
-> +igt@i915_pm_rps@min-max-config-loaded
-> +igt@i915_pm_rps@waitboost
-> +igt@i915_pm_rps@reset
+> +        .type = type,
+> +        .pointer = (uintptr_t)data,
+> +        .size = size,
+> +    };
 > +
->  # Kernel selftests
->  igt@i915_selftest@live
->  igt@dmabuf@all-tests
-> -- 
-> 2.34.1
-> 
+> +    if (err) {
+> +        do_ioctl_err(fd, DRM_IOCTL_PANTHOR_DEV_QUERY, &query, err);
+> +    } else {
+> +        do_ioctl(fd, DRM_IOCTL_PANTHOR_DEV_QUERY, &query);
+> +    }
+> +}
+
+[cut]
