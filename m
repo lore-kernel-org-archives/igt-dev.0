@@ -4,52 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E2A5CA0FFD
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Sep 2025 08:12:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FBB5CA0FFD
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Sep 2025 08:43:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DCBE310E07E;
-	Mon,  1 Sep 2025 08:12:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1890E10E3AC;
+	Mon,  1 Sep 2025 08:43:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MUTEVYnp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V1ysJzvu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 948AC10E07E
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Sep 2025 08:12:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5356810E3B0
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Sep 2025 08:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756714330; x=1788250330;
+ t=1756716228; x=1788252228;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=V/gYYV2HWBaYVUjKGbxoDK/JqiOS3qdZrpJSor0w93E=;
- b=MUTEVYnpkM42URztaO1QCFCViiPvCEcBPSm3l5qzmQFGlSocJdXbM6BR
- D+dqfFin1duevnOg5kTQN1eWsPuRj9ceaETapf/ivmxAGm0IGG3T7gBnZ
- cf1fhbzIpYCW+e4veyofwHXJ9JRX8kdI4LGk7hpv78+RtI4+Ui/gxLV6D
- QeCXsimReeEZ+psGS6RfIKjQKlc6gEyllmFb1UaqAlVrkcciKo05j+uHs
- lE4OZ4k5x6NpXGJ5hEgqdUq9pAaY+iYDfsDINlfHPPNdYtOn2ikrwXfk0
- R0AT9K7dWzxRwqjsve8v5F7ErszCz8ELmGX8Kl8WPiutOy6b+RYR1UVaB g==;
-X-CSE-ConnectionGUID: Wo+5gWE/RDGcKJGkaOvGDg==
-X-CSE-MsgGUID: PRzDdZQTQlGvgoSS3l9Q4w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="69554641"
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; d="scan'208";a="69554641"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2025 01:05:43 -0700
-X-CSE-ConnectionGUID: +SaS6i+eSkOO7wiEn81g4w==
-X-CSE-MsgGUID: z8VCIYu5QGyBa2AEjrm5Vg==
+ bh=czFyySzao8CjACi3pQpLBniYiMoKYbWqZZQFFjdSybI=;
+ b=V1ysJzvudVsWTHtXv2LeMD+D5hx5KZwVs736LEaLOcb42CkrQiSVQBKw
+ 5KsmfseJUs8n0ZvXbRoBLzZWuonLEg0wp0wWaxxtKhKnEFWFLbMqhxiVm
+ WMAT65R0xAboVMqmrHt2Ba5Re1YtfT0yzzIpjwGr53boxRW/ynW532ag3
+ Tho6i7ETbLsVGbWR5HZBU31pOWVFDjQs8644N30lyrooNb2KapSHBq1B5
+ jq2D+k60kGjiCUSpPiSoUqIyKadWrz0dfmrFTRSRGDDdZB45McIb9BHGu
+ 1YT35+AeYH0d6Z1KUv9RU6OR55Te3gZJeM/Hmm/siRUk/lUTaOmRpSl/I w==;
+X-CSE-ConnectionGUID: T8qIZYsJTQCfnyugj9ye4Q==
+X-CSE-MsgGUID: YPJptGS6RxqM75DgHBrMAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59033166"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59033166"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2025 01:43:47 -0700
+X-CSE-ConnectionGUID: 8RjJwXjMTJe1KRVafprWqw==
+X-CSE-MsgGUID: ykmrdx1mTTSg++3SGuIZzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; d="scan'208";a="176235112"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 01:05:42 -0700
-From: Kunal Joshi <kunal1.joshi@intel.com>
+Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2025 01:43:46 -0700
+From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] intel-ci: Block unsupported test on chamelium v1
-Date: Mon,  1 Sep 2025 13:51:30 +0530
-Message-Id: <20250901082130.1787813-1-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+Subject: [PATCH] lib/intel_blt: Fix MEM_SET instruction for Xe2+ platforms
+Date: Mon,  1 Sep 2025 14:15:34 +0530
+Message-Id: <20250901084534.909825-1-balasubramani.vivekanandan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,54 +65,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Chamelium V1 HDMI reciever can support max 4k@30
-Test forces EDID with 4k@60 which isn't supported
-Blocklist test untill we have newer V3 boards
+The structure of the MEM_SET instruction has changed related to the
+destination MOCS starting with Xe2 platforms.
 
-v2: Fix typo and rephrase (Swati)
-    Fix commit subject (Kamil/Swati)
-    Block i915 as well (Kamil)
-
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Bspec: 57562
+Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
 ---
- tests/intel-ci/i915.blocklist.txt | 8 ++++++++
- tests/intel-ci/xe.blocklist.txt   | 7 +++++++
- 2 files changed, 15 insertions(+)
+ lib/intel_blt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel-ci/i915.blocklist.txt b/tests/intel-ci/i915.blocklist.txt
-index ac9bb2f0b..b36015b53 100644
---- a/tests/intel-ci/i915.blocklist.txt
-+++ b/tests/intel-ci/i915.blocklist.txt
-@@ -178,3 +178,11 @@ igt@kms_fbc_dirty_rect.*
- # platforms connected to different displays.
- ###############################################
- igt@kms_sysfs_edid_timing
-+##################################################################
-+# Chamelium V1 HDMI receiver supports a maximum resolution
-+# of 4K @ 30Hz. This test enforces an EDID with 4K @ 60Hz,
-+# which exceeds the capabilities of V1 hardware and results
-+# in failures. Temporarily blocklist this test until V3 Chamelium
-+# boards (which support 4K @ 60Hz) are available in the test environment.
-+##################################################################
-+igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
-diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-index 14e0b9482..2e1ebf299 100644
---- a/tests/intel-ci/xe.blocklist.txt
-+++ b/tests/intel-ci/xe.blocklist.txt
-@@ -117,3 +117,10 @@ igt@xe_evict@.*-multi-vm-cm.*
- igt@xe_evict@.*-threads-.*
- # igt@xe_evict@.*-cm.* # Rebind and VM_BIND may race.
- ##################################################################
-+# Chamelium V1 HDMI receiver supports a maximum resolution
-+# of 4K @ 30Hz. This test enforces an EDID with 4K @ 60Hz,
-+# which exceeds the capabilities of V1 hardware and results
-+# in failures. Temporarily blocklist this test until V3 Chamelium
-+# boards (which support 4K @ 60Hz) are available in the test environment.
-+##################################################################
-+igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 8a05f482f..71ed891c3 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -2117,6 +2117,7 @@ static void emit_blt_mem_set(int fd, uint64_t ahnd,
+ 	int b;
+ 	uint32_t *batch;
+ 	uint32_t value;
++	uint32_t devid = intel_get_drm_devid(fd);
+ 
+ 	dst_offset = get_offset_pat_index(ahnd, mem->dst.handle, mem->dst.size,
+ 					  0, mem->dst.pat_index);
+@@ -2131,7 +2132,11 @@ static void emit_blt_mem_set(int fd, uint64_t ahnd,
+ 	batch[b++] = mem->dst.pitch - 1;
+ 	batch[b++] = dst_offset;
+ 	batch[b++] = dst_offset << 32;
+-	batch[b++] = value | mem->dst.mocs_index;
++	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
++		batch[b++] = value | (mem->dst.mocs_index << 3);
++	else
++		batch[b++] = value | mem->dst.mocs_index;
++
+ 	batch[b++] = MI_BATCH_BUFFER_END;
+ 
+ 	munmap(batch, mem->bb.size);
 -- 
-2.25.1
+2.34.1
 
