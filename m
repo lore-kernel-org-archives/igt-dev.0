@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FBB5CA0FFD
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Sep 2025 08:43:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB1B8CA0FFD
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Sep 2025 09:17:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1890E10E3AC;
-	Mon,  1 Sep 2025 08:43:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 84E5B10E3A4;
+	Mon,  1 Sep 2025 09:17:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V1ysJzvu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dYDybwcY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5356810E3B0
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Sep 2025 08:43:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA5F110E3A4
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Sep 2025 09:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756716228; x=1788252228;
+ t=1756718237; x=1788254237;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=czFyySzao8CjACi3pQpLBniYiMoKYbWqZZQFFjdSybI=;
- b=V1ysJzvudVsWTHtXv2LeMD+D5hx5KZwVs736LEaLOcb42CkrQiSVQBKw
- 5KsmfseJUs8n0ZvXbRoBLzZWuonLEg0wp0wWaxxtKhKnEFWFLbMqhxiVm
- WMAT65R0xAboVMqmrHt2Ba5Re1YtfT0yzzIpjwGr53boxRW/ynW532ag3
- Tho6i7ETbLsVGbWR5HZBU31pOWVFDjQs8644N30lyrooNb2KapSHBq1B5
- jq2D+k60kGjiCUSpPiSoUqIyKadWrz0dfmrFTRSRGDDdZB45McIb9BHGu
- 1YT35+AeYH0d6Z1KUv9RU6OR55Te3gZJeM/Hmm/siRUk/lUTaOmRpSl/I w==;
-X-CSE-ConnectionGUID: T8qIZYsJTQCfnyugj9ye4Q==
-X-CSE-MsgGUID: YPJptGS6RxqM75DgHBrMAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59033166"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59033166"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2025 01:43:47 -0700
-X-CSE-ConnectionGUID: 8RjJwXjMTJe1KRVafprWqw==
-X-CSE-MsgGUID: ykmrdx1mTTSg++3SGuIZzA==
+ bh=tJk9uZ93Cu/r8IJ8L7nagfI04xnAQo7Ghx/nmIzOlwo=;
+ b=dYDybwcYOVvoBualoCiDt74c3rvAnsW48PQVXAgfrqwtj/92LH42QdPT
+ AflsN5EVL75lNfO/csvNohHx0OOuUl2awLebwxJ4cP0LOlyHLDCLRxOfy
+ cwJkAp2nCex2aZqq4HNLZ4GbdlBjU/3ocZPPyPMQy9qxrw05hWSCXTgc1
+ fxUDsPHLUWIirxYIyMu9Ch5pYsoFMlcdG9V7NeKa850hDVjU3g7R3QG93
+ G7kTj2UUEXQxrPJ5YgUnbY8pYC5c760aACEUBQm8GrqNd/WsQ4EiLVj0f
+ aKYm33PMp6FA2sQXYTmbc3DmBTj4/1kUscxbFh0RY1ybE4x8OOSkEAIvF g==;
+X-CSE-ConnectionGUID: i9ValSVZQxiW8OYVMlN+rg==
+X-CSE-MsgGUID: bp+CZFHiRfetKEXuRZgZyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="46551313"
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; d="scan'208";a="46551313"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2025 02:17:16 -0700
+X-CSE-ConnectionGUID: FMIXsynfTaOGt6P2/FIK7g==
+X-CSE-MsgGUID: hBkPjF31Rquof00Q5lD+Aw==
 X-ExtLoop1: 1
-Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2025 01:43:46 -0700
-From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; d="scan'208";a="175339214"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.133])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2025 02:17:14 -0700
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Subject: [PATCH] lib/intel_blt: Fix MEM_SET instruction for Xe2+ platforms
-Date: Mon,  1 Sep 2025 14:15:34 +0530
-Message-Id: <20250901084534.909825-1-balasubramani.vivekanandan@intel.com>
-X-Mailer: git-send-email 2.34.1
+ Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH i-g-t] lib/xe_util: use valid pat_index during vm-bind/unbind
+Date: Mon,  1 Sep 2025 11:17:09 +0200
+Message-ID: <20250901091708.125589-2-zbigniew.kempczynski@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,40 +68,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The structure of the MEM_SET instruction has changed related to the
-destination MOCS starting with Xe2 platforms.
+For single operation instead of object pat_index default index was used.
+Change bind/unbind call to one which supports passing it.
 
-Bspec: 57562
-Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
 ---
- lib/intel_blt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ lib/xe/xe_util.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 8a05f482f..71ed891c3 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -2117,6 +2117,7 @@ static void emit_blt_mem_set(int fd, uint64_t ahnd,
- 	int b;
- 	uint32_t *batch;
- 	uint32_t value;
-+	uint32_t devid = intel_get_drm_devid(fd);
+diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
+index 794f2b6390..96287423ff 100644
+--- a/lib/xe/xe_util.c
++++ b/lib/xe/xe_util.c
+@@ -218,13 +218,17 @@ void xe_bind_unbind_async(int xe, uint32_t vm, uint32_t bind_engine,
  
- 	dst_offset = get_offset_pat_index(ahnd, mem->dst.handle, mem->dst.size,
- 					  0, mem->dst.pat_index);
-@@ -2131,7 +2132,11 @@ static void emit_blt_mem_set(int fd, uint64_t ahnd,
- 	batch[b++] = mem->dst.pitch - 1;
- 	batch[b++] = dst_offset;
- 	batch[b++] = dst_offset << 32;
--	batch[b++] = value | mem->dst.mocs_index;
-+	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
-+		batch[b++] = value | (mem->dst.mocs_index << 3);
-+	else
-+		batch[b++] = value | mem->dst.mocs_index;
-+
- 	batch[b++] = MI_BATCH_BUFFER_END;
- 
- 	munmap(batch, mem->bb.size);
+ 	if (num_binds == 1) {
+ 		if ((bind_ops[0].op & 0xffff) == DRM_XE_VM_BIND_OP_MAP)
+-			xe_vm_bind_async(xe, vm, bind_engine, bind_ops[0].obj, 0,
+-					 bind_ops[0].addr, bind_ops[0].range,
+-					 syncs, num_syncs);
++			igt_assert_eq(__xe_vm_bind(xe, vm, bind_engine, bind_ops[0].obj,
++						   0, bind_ops[0].addr, bind_ops[0].range,
++						   DRM_XE_VM_BIND_OP_MAP, 0,
++						   syncs, num_syncs, 0,
++						   bind_ops[0].pat_index, 0), 0);
+ 		else
+-			xe_vm_unbind_async(xe, vm, bind_engine, 0,
+-					   bind_ops[0].addr, bind_ops[0].range,
+-					   syncs, num_syncs);
++			igt_assert_eq(__xe_vm_bind(xe, vm, bind_engine, 0,
++						   0, bind_ops[0].addr, bind_ops[0].range,
++						   DRM_XE_VM_BIND_OP_UNMAP, 0,
++						   syncs, num_syncs, 0,
++						   bind_ops[0].pat_index, 0), 0);
+ 	} else {
+ 		xe_vm_bind_array(xe, vm, bind_engine, bind_ops,
+ 				 num_binds, syncs, num_syncs);
 -- 
-2.34.1
+2.43.0
 
