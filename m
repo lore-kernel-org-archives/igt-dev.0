@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA54ECA1007
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Sep 2025 04:26:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CB28CA1007
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Sep 2025 05:17:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7956710E58E;
-	Tue,  2 Sep 2025 04:26:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0395510E58F;
+	Tue,  2 Sep 2025 05:17:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PaFO9oA6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N4FctbjT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7624510E588
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Sep 2025 04:26:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC97210E58F
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Sep 2025 05:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756787181; x=1788323181;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=muXlHjdugNi/fHM1gqYKctoWGgSePxOOe8GweO4TjUA=;
- b=PaFO9oA6kJ0pU08B5JEsVqpCScT/3HtLhB+GCW0x76Tk8X4GLWcKSTlY
- YalgVWFaRiTPHuCoLcNgt09RBcIyk38IetbZ0Ah6D9i/spJYOblcSnRO1
- seuDhdZFXQ325ydZumXJmLh61ITzQKUaYj6Wia39kDuKQ6CSWChBh0fEE
- pmmPN4FzKRLtuy0XRSOzetqahtz2W9hh/8fyfh6tXuVakomiFOEe8IFVy
- KycwgCHw9rz2pIcyqnDnlkDqjuH/25WT8dC4CxTEIGBZyadtw5SmjmoXk
- CTGlJaPWRLjmhv8xSRcI6SOG7854S1RdMjJMhob5lGpZl8f11f7luqehx g==;
-X-CSE-ConnectionGUID: ZyXuSw5fRXuwdNvRWCKlPQ==
-X-CSE-MsgGUID: A+I2JyQ8R3S6t2EHHKmEQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="58977234"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; d="scan'208";a="58977234"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2025 21:26:21 -0700
-X-CSE-ConnectionGUID: wxnX1G4HSkSqdbGSbSQUuw==
-X-CSE-MsgGUID: Gb3pwY9RTZerdfJuryj1aw==
+ t=1756790240; x=1788326240;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=idNH+PzTePc7l3CL5WgoBvMP21PqvfkUPfJsVR1+drY=;
+ b=N4FctbjTx7fS+2+0YzynqVBTdW+0rrvH1mrV5lOuFjaGGr9DkHONMIck
+ jJYPZC3v81M0Iv9TmJt20LbSgzcwJrimkqIVOw4SKQaBKyxf0OJaqtRgg
+ nEcx19wiVkQ8fSaNxO4ujmH/II45e+DpyieetAPfDk2bMDl3LwhF9grzu
+ ZuaBolFOlRvrpoYfWUJY2LYhnxVREZ94FjWur826l0fZzxe6IHZf6TUeX
+ nqQ8OiPgtquN/RqI6CIge2yL82Ujy7FMD+XTzuGL7Dndo/JXk5Pi1ErtR
+ q9G4iRveJM4aoDv52e88tppHB1Fx+lDQ1TutRXs5feHshUMpXdasN84ux A==;
+X-CSE-ConnectionGUID: 85prHyn1SDarVMAJPJ6WAw==
+X-CSE-MsgGUID: PxBIToMxRrePp/LX4LjZ1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59111414"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59111414"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2025 22:17:20 -0700
+X-CSE-ConnectionGUID: jqxtm3boQ1u9ZsTtOSziMA==
+X-CSE-MsgGUID: WgeC061RQnCu4i3QKDClQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; d="scan'208";a="175529977"
-Received: from dut2051bmgfrd.iind.intel.com ([10.190.232.68])
- by orviesa004.jf.intel.com with ESMTP; 01 Sep 2025 21:26:18 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, pravalika.gurram@intel.com,
- himal.prasad.ghimiray@intel.com, matthew.brost@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t v7 5/5] tests/intel/xe_exec_system_allocator: Add
- atomic_batch test in IGT
-Date: Tue,  2 Sep 2025 04:26:05 +0000
-Message-ID: <20250902042605.1223524-6-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250902042605.1223524-1-nishit.sharma@intel.com>
-References: <20250902042605.1223524-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; d="scan'208";a="171622896"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 22:17:16 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, bhanuprakash.modem@gmail.com,
+ anshuman.gupta@intel.com, matthew.auld@intel.com,
+ kamil.konieczny@intel.com, kunal1.joshi@intel.com,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Nidhi Gupta <nidhi1.gupta@intel.com>,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v13 1/2] tests/kms_prime: Add XE support
+Date: Tue,  2 Sep 2025 10:43:17 +0530
+Message-Id: <20250902051318.1163571-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,683 +70,303 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-ATOMIC_BATCH flag is introduced when true MI_ATOMIC | MI_ATOMIC_INC
-operation will be called. This will avoid writing another function which
-performs atomic increment operations. ATOMIC_BATCH flag is passed as
-argument in write_dword() if true then value will be written on passed
-address and incremented by ATOMIC_INC operation. For all memory
-operations this flag will be used to verify if ATOMIC operation is
-working or not.
-Added MADVISE_SWIZZLE flag which covers tests related to
-migration_policy
+Add XE driver support for kms tests.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+V2: - Use rendercopy method for both i915 & xe
+    - Minor cleanup
+V3: - New patch for cleanup & rendercopy
+V4: - Fallback to blitter
+V5: - Rebase
+v7: - Rebase and patch cleanup
+v8: - D3hot subtest is not required for xe
+v9: - nitpicks (Matthew)
+v10:- Rebase
+v11:- Split the commits per subtest and refactor code (Kamil, Kunal)
+      - Enable basic-crc-hybrid subtest for xe.
+      - Added Xe Prime support for hybrid graphics by enabling
+        buffer sharing between integrated and discrete GPUs.
+      - Refactor buffer creation function for Xe discrete buffers.
+      - Introduced helper functions for creating and mapping dumb buffers.
+      	Also, implement fast buffer import for Xe discrete GPUs
+	using BLT copy operations.
+v12: Fix CRC mismatch by using correct color depth constant.
+v13: Align B0 width to 256 for consitancy with existing logic,
+     cleanup of xe resources after use (Kunal)
+     - Reorder header includes and add missing closing calls (Kamil)
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tests/intel/xe_exec_system_allocator.c | 444 ++++++++++++++++++++++---
- 1 file changed, 401 insertions(+), 43 deletions(-)
+ tests/kms_prime.c | 187 ++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 155 insertions(+), 32 deletions(-)
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 1bf56195a..3c0d1555a 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -22,6 +22,7 @@
- #include "lib/intel_reg.h"
- #include "xe_drm.h"
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index 1d011327c..d10fe776d 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -29,16 +29,24 @@
+  * Mega feature: General Display Features
+  */
  
-+#include "intel_pat.h"
- #include "xe/xe_gt.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-@@ -30,6 +31,14 @@
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- #define QUARTER_SEC		(NSEC_PER_SEC / 4)
- #define FIVE_SEC		(5LL * NSEC_PER_SEC)
-+struct test_exec_data {
-+	uint32_t batch[32];
-+	uint64_t pad;
-+	uint64_t vm_sync;
-+	uint64_t exec_sync;
-+	uint32_t data;
-+	uint32_t expected_data;
-+};
+-#include "igt.h"
+-#include "igt_device.h"
+-#include "igt_debugfs.h"
+-#include "igt_sysfs.h"
+ #include <fcntl.h>
+-
++#include <limits.h>
+ #include <poll.h>
+ #include <sys/ioctl.h>
+ #include <time.h>
  
- struct batch_data {
- 	uint32_t batch[16];
-@@ -38,6 +47,7 @@ struct batch_data {
- 	uint32_t expected_data;
- };
- 
-+#define VAL_ATOMIC_EXPECTED  56
- #define WRITE_VALUE(data__, i__)	({			\
- 	if (!(data__)->expected_data)				\
- 		(data__)->expected_data = rand() << 12 | (i__);	\
-@@ -54,10 +64,19 @@ static void __write_dword(uint32_t *batch, uint64_t sdi_addr, uint32_t wdata,
- 	batch[(*idx)++] = wdata;
++#include "lib/intel_blt.h"
++#include "lib/intel_common.h"
++#include "lib/intel_pat.h"
++#include "lib/intel_mocs.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++#include "igt.h"
++#include "igt_device.h"
++#include "igt_debugfs.h"
++#include "igt_sysfs.h"
++
+ /**
+  * SUBTEST: D3hot
+  * Description: Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU
+@@ -128,24 +136,64 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+ 	return output;
  }
  
--static void write_dword(uint32_t *batch, uint64_t sdi_addr, uint32_t wdata,
--			int *idx)
-+static void write_dword(struct test_exec_data *data, uint64_t sdi_addr, uint32_t wdata,
-+			int *idx, bool atomic)
- {
--	__write_dword(batch, sdi_addr, wdata, idx);
-+	uint32_t *batch = data->batch;
++static uint32_t *create_and_map_dumb_bo(int fd, struct dumb_bo *bo,
++					uint32_t width, uint32_t height,
++					uint32_t bpp, uint32_t *pitch,
++					uint64_t *size)
++{
++	uint32_t *ptr;
 +
-+	if (atomic) {
-+		data->data = 55;
-+		batch[(*idx)++] = MI_ATOMIC | MI_ATOMIC_INC;
-+		batch[(*idx)++] = sdi_addr;
-+		batch[(*idx)++] = sdi_addr >> 32;
++	bo->width = ALIGN(width, 256);
++	bo->height = height;
++	bo->bpp = bpp;
++
++	bo->handle = kmstest_dumb_create(fd, bo->width,
++					 bo->height, bo->bpp, pitch, size);
++
++	ptr = kmstest_dumb_map_buffer(fd, bo->handle, *size, PROT_READ | PROT_WRITE);
++	igt_assert(ptr != MAP_FAILED);
++
++	return ptr;
++}
++
++static uint32_t *prepare_xe_dgfx_scratch(int exporter_fd, struct dumb_bo *scratch)
++{
++	uint32_t *ptr;
++	struct blt_copy_data ex_blt = {};
++	struct blt_copy_object *src = NULL;
++	uint32_t region;
++
++	igt_debug("Preparing scratch buffer for DGfx exporter\n");
++
++	region = DRM_XE_MEM_REGION_CLASS_VRAM;
++	blt_copy_init(exporter_fd, &ex_blt);
++	src = blt_create_object(&ex_blt, region,
++				scratch->width, scratch->height,
++				scratch->bpp, 0, T_LINEAR,
++				COMPRESSION_DISABLED, 0, true);
++	scratch->handle = src->handle;
++	scratch->size = src->size;
++	scratch->pitch = src->pitch;
++	ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle, scratch->size,
++			     PROT_READ | PROT_WRITE);
++	igt_assert(ptr != MAP_FAILED);
++	return ptr;
++}
++
+ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+ 			    drmModeModeInfo *mode, uint32_t color)
+ {
+ 	uint32_t *ptr;
++	bool is_dgfx;
+ 
+ 	scratch->width = mode->hdisplay;
+ 	scratch->height = mode->vdisplay;
+ 	scratch->bpp = 32;
++	is_dgfx = is_intel_dgfx(exporter_fd);
+ 
+-	if (!is_i915_device(exporter_fd)) {
+-		scratch->handle = kmstest_dumb_create(exporter_fd,
+-						      ALIGN(scratch->width, 256),
+-						      scratch->height, scratch->bpp,
+-						      &scratch->pitch, &scratch->size);
+-
+-		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
+-					      scratch->size, PROT_WRITE);
+-	} else {
++	if (is_xe_device(exporter_fd) && is_dgfx) {
++		ptr = prepare_xe_dgfx_scratch(exporter_fd, scratch);
++	} else if (is_i915_device(exporter_fd)) {
+ 		struct igt_fb fb;
+ 
+ 		igt_init_fb(&fb, exporter_fd, mode->hdisplay, mode->vdisplay,
+@@ -165,6 +213,11 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+ 
+ 		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
+ 						PROT_WRITE | PROT_READ);
 +	} else {
-+		__write_dword(batch, sdi_addr, wdata, idx);
-+	}
- 	batch[(*idx)++] = MI_BATCH_BUFFER_END;
++		ptr = create_and_map_dumb_bo(exporter_fd, scratch,
++					     scratch->width, scratch->height,
++					     scratch->bpp, &scratch->pitch,
++					     &scratch->size);
+ 	}
+ 
+ 	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
+@@ -184,40 +237,108 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
  }
  
-@@ -304,7 +323,7 @@ static void touch_all_pages(int fd, uint32_t exec_queue, void *ptr,
- 		uint64_t sdi_addr = addr + sdi_offset;
- 		int b = 0;
- 
--		write_dword(data->batch, sdi_addr, WRITE_VALUE(data, i), &b);
-+		write_dword((struct test_exec_data *)data, sdi_addr, WRITE_VALUE(data, i), &b, false);
- 		igt_assert(b <= ARRAY_SIZE(data->batch));
- 	}
- 
-@@ -447,6 +466,54 @@ static void __aligned_partial_free(struct aligned_alloc_type  *aligned_alloc_typ
-  * SUBTEST: processes-evict-malloc-mix-bo
-  * Description: multi-process trigger eviction of VRAM allocated via malloc and BO create
-  * Test category: stress test
-+ *
-+ * SUBTEST: madvise-multi-vma
-+ * Description: performs multiple madvise operations on multiple virtual memory area using atomic device attributes
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-split-vma
-+ * Description: perform madvise operations on multiple type VMAs (BO and CPU VMAs)
-+ * Test category: perform madvise operations on multiple type VMAs (BO and CPU VMAs)
-+ *
-+ * SUBTEST: madvise-atomic-vma
-+ * Description: perform madvise atomic operations on BO in VRAM/SMEM if atomic ATTR global/device
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-split-vma-with-mapping
-+ * Description: performs prefetch and page migration
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-vram
-+ * Description: performs both atomic and preferred loc madvise operations atomic device attributes set
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-gl
-+ * Description: performs both atomic and preferred loc madvise operations with atomic global attributes set
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-cpu
-+ * Description: performs both atomic and preferred loc madvise operations with atomic cpu attributes set
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-sram-migrate-pages
-+ * Description: performs preferred loc madvise operations and migrating all pages in smem
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-no-range-invalidate-same-attr
-+ * Description: performs atomic global madvise operation, prefetch and again madvise operation with same atomic attribute
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-range-invalidate-change-attr
-+ * Description: performs atomic global madvise operation, prefetch and again madvise operation with different atomic attribute
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-und
-+ * Description: Tests madvise with preferred location set for atomic operations, but with an undefined
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-atomic-inc
-+ * Description: Tests madvise atomic operations
-+ * Test category: functionality test
-  */
- 
- static void
-@@ -701,7 +768,8 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- 		uint64_t sdi_addr = addr + sdi_offset;
- 		int b = 0;
- 
--		write_dword(data[i].batch, sdi_addr, WRITE_VALUE(&data[i], i), &b);
-+		write_dword((struct test_exec_data *)&data[i], sdi_addr, WRITE_VALUE(&data[i], i),
-+			     &b, false);
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
- 		if (!i)
-@@ -724,7 +792,8 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- 		xe_wait_ufence(fd, new ?: exec_ufence, USER_FENCE_VALUE,
- 			       exec_queue, FIVE_SEC);
- 		if (i || (flags & CPU_FAULT))
--			igt_assert_eq(data[i].data, READ_VALUE(&data[i]));
-+			igt_assert_eq(data[i].data,
-+				      READ_VALUE(&data[i]));
- 		exec_ufence[0] = 0;
- 
- 		if (!i) {
-@@ -778,9 +847,21 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- #define PREFETCH_BENCHMARK	(0x1 << 25)
- #define PREFETCH_SYS_BENCHMARK	(0x1 << 26)
- 
--#define MADVISE_SWIZZLE		(0x1 << 0)
--#define MADVISE_OP		(0x2 << 0)
--
-+#define MADVISE_SWIZZLE			(0x1 << 27)
-+#define MADVISE_OP			(0x1 << 28)
-+#define ATOMIC_BATCH			(0x1 << 29)
-+#define MIGRATE_ALL_PAGES		(0x1 << 30)
-+#define PREFERRED_LOC_ATOMIC_DEVICE	(0x1ull << 31)
-+#define PREFERRED_LOC_ATOMIC_GL		(0x1ull << 32)
-+#define PREFERRED_LOC_ATOMIC_CPU	(0x1ull << 33)
-+#define MADVISE_MULTI_VMA		(0x1ull << 34)
-+#define MADVISE_SPLIT_VMA		(0x1ull << 35)
-+#define MADVISE_ATOMIC_VMA		(0x1ull << 36)
-+#define PREFETCH_SPLIT_VMA		(0x1ull << 37)
-+#define PREFETCH_CHANGE_ATTR		(0x1ull << 38)
-+#define PREFETCH_SAME_ATTR		(0x1ull << 39)
-+#define PREFERRED_LOC_ATOMIC_UND	(0x1ull << 40)
-+#define MADVISE_ATOMIC_INC		(0x1ull << 41)
- 
- #define N_MULTI_FAULT		4
- 
-@@ -889,7 +970,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
-  * arg[1]:
-  *
-  * @malloc:				malloc single buffer for all execs, issue a command which will trigger multiple faults
-- * @malloc-madvise:			malloc single buffer for all execs, issue a command which will trigger multiple faults, perfoems madvise operation
-+ * @malloc-madvise:			malloc single buffer for all execs, issue a command which will trigger multiple faults, performs madvise operation
-  * @malloc-prefetch:			malloc single buffer for all execs, prefetch buffer before each exec
-  * @malloc-prefetch-madvise:		malloc single buffer for all execs, prefetch buffer before each exec, performs madvise operation
-  * @malloc-multi-fault:			malloc single buffer for all execs
-@@ -990,16 +1071,6 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
-  * Description: Create multiple threads with a faults on different hardware engines to same addresses, racing between CPU and GPU access
-  * Test category: stress test
-  */
--
--struct test_exec_data {
--	uint32_t batch[32];
--	uint64_t pad;
--	uint64_t vm_sync;
--	uint64_t exec_sync;
--	uint32_t data;
--	uint32_t expected_data;
--};
--
- static void igt_require_hugepages(void)
+ static void import_fb(int importer_fd, struct igt_fb *fb,
+-		      int dmabuf_fd, uint32_t pitch)
++		      int dmabuf_fd, struct dumb_bo *scratch)
  {
- 	igt_skip_on_f(!igt_get_meminfo("HugePages_Total"),
-@@ -1009,10 +1080,39 @@ static void igt_require_hugepages(void)
- }
+ 	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
+ 	int ret;
  
- static void
--xe_vm_parse_execute_madvise(int fd, uint32_t vm, struct test_exec_data * data,
-+xe_vm_madvixe_pat_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
-+		       int pat_index)
-+{
-+	xe_vm_madvise(fd, vm, addr, range, 0,
-+		     DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0);
-+}
+-	if (is_i915_device(importer_fd)) {
+-		if (gem_has_lmem(importer_fd)) {
+-			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
+-			uint64_t fb_size = 0;
++	igt_debug("Importing FB: importer_fd=%d, dmabuf_fd=%d, width=%u, height=%u\n",
++		  importer_fd, dmabuf_fd, fb->width, fb->height);
 +
-+static void
-+xe_vm_madvise_atomic_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
-+			  int mem_attr)
-+{
-+	xe_vm_madvise(fd, vm, addr, range, 0,
-+		      DRM_XE_MEM_RANGE_ATTR_ATOMIC,
-+		      mem_attr, 0);
-+}
++	if (is_intel_dgfx(importer_fd)) {
++		uint64_t fb_size = 0;
++		uint64_t ahnd = 0;
 +
-+static void
-+xe_vm_madvise_migrate_pages(int fd, uint32_t vm, uint64_t addr, uint64_t range)
-+{
-+	xe_vm_madvise(fd, vm, addr, range, 0,
-+		      DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+		      DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM,
-+		      DRM_XE_MIGRATE_ALL_PAGES);
-+}
++		temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
++		igt_assert(temp_buf_handle > 0);
++		fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width,
++							       fb->height, fb->drm_format,
++							       fb->modifier, scratch->pitch,
++							       &fb_size, NULL, NULL);
++		igt_assert(fb->gem_handle > 0);
+ 
+-			igt_info("Importer is dGPU\n");
+-			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+-			igt_assert(temp_buf_handle > 0);
+-			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
+-								       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
+-			igt_assert(fb->gem_handle > 0);
++		if (is_i915_device(importer_fd)) {
++			ahnd = get_reloc_ahnd(importer_fd, 0);
+ 
+ 			igt_blitter_src_copy(importer_fd, ahnd, 0, NULL, temp_buf_handle,
+-					     0, pitch, fb->modifier, 0, 0, fb_size, fb->width,
+-					     fb->height, 32, fb->gem_handle, 0, pitch, fb->modifier,
+-					     0, 0, fb_size);
++						 0, scratch->pitch, fb->modifier,
++						 0, 0, fb_size, fb->width,
++						 fb->height, 32, fb->gem_handle,
++						 0, scratch->pitch, fb->modifier,
++						 0, 0, fb_size);
+ 
+ 			gem_sync(importer_fd, fb->gem_handle);
+ 			gem_close(importer_fd, temp_buf_handle);
+ 			put_ahnd(ahnd);
+-		} else {
+-			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
++		}  else if (is_xe_device(importer_fd)) {
++			uint32_t xe_bb;
++			struct blt_copy_data blt = {0};
++			struct blt_copy_object *src, *dst;
++			uint32_t vm, xe_exec;
++			intel_ctx_t *xe_ctx;
 +
-+static void
-+xe_vm_parse_execute_madvise(int fd, uint32_t vm, struct test_exec_data *data,
- 			    size_t bo_size, struct drm_xe_engine_class_instance *eci,
--			    uint64_t addr, unsigned int flags)
-+			    uint64_t addr, unsigned long long flags,
-+			    struct drm_xe_sync *sync)
- {
-+	uint32_t bo_flags, bo = 0;
++			struct drm_xe_engine_class_instance inst = {
++				.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++			};
 +
- 	if (flags & MADVISE_SWIZZLE) {
- 		for (int i_loc = 0; i_loc < 2; i_loc++) {
- 			uint64_t preferred_loc;
-@@ -1029,13 +1129,194 @@ xe_vm_parse_execute_madvise(int fd, uint32_t vm, struct test_exec_data * data,
++			vm = xe_vm_create(importer_fd, 0, 0);
++			xe_exec = xe_exec_queue_create(importer_fd, vm, &inst, 0);
++			xe_ctx = intel_ctx_xe(importer_fd, vm, xe_exec, 0, 0, 0);
++			ahnd = intel_allocator_open_full(importer_fd, xe_ctx->vm, 0, 0,
++							 INTEL_ALLOCATOR_SIMPLE,
++							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++
++			igt_calc_fb_size(fb);
++
++			fb->gem_handle = xe_bo_create(importer_fd, 0, fb->size,
++						      vram_if_possible(importer_fd, 0), 0);
++			igt_require(fb->gem_handle);
++
++			blt_copy_init(importer_fd, &blt);
++
++			src = blt_create_object(&blt, vram_if_possible(importer_fd, 0),
++						scratch->width, scratch->height, 32, 0,
++						T_LINEAR, COMPRESSION_DISABLED, 0, true);
++			blt_set_object(src, temp_buf_handle, scratch->size,
++				       vram_if_possible(importer_fd, 0), 0,
++				       DEFAULT_PAT_INDEX,
++				       T_LINEAR, COMPRESSION_DISABLED, 0);
++
++			dst = blt_create_object(&blt, vram_if_possible(importer_fd, 0),
++						scratch->width, scratch->height, 32, 0,
++						T_LINEAR, COMPRESSION_DISABLED, 0, true);
++			blt_set_object(dst, fb->gem_handle, fb->size,
++				       vram_if_possible(importer_fd, 0), 0,
++				       DEFAULT_PAT_INDEX,
++				       T_LINEAR, COMPRESSION_DISABLED, 0);
++
++			blt.color_depth = CD_32bit;
++			blt_set_copy_object(&blt.src, src);
++			blt_set_copy_object(&blt.dst, dst);
++
++			xe_bb = xe_bo_create(importer_fd, 0, fb->size,
++					     vram_if_possible(importer_fd, 0), 0);
++
++			blt_set_batch(&blt.bb, xe_bb, fb->size, vram_if_possible(importer_fd, 0));
++			blt_fast_copy(importer_fd, xe_ctx, NULL, ahnd, &blt);
++
++			put_offset(ahnd, dst->handle);
++			put_offset(ahnd, src->handle);
++			put_offset(ahnd, xe_bb);
++			intel_allocator_bind(ahnd, 0, 0);
++			put_ahnd(ahnd);
++			xe_exec_queue_destroy(importer_fd, xe_exec);
++			xe_vm_destroy(importer_fd, vm);
++
++			gem_close(importer_fd, temp_buf_handle);
  		}
+ 	} else {
+ 		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
++		igt_assert(fb->gem_handle > 0);
  	}
  
-+	if (flags & MADVISE_ATOMIC_INC)
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+					  DRM_XE_ATOMIC_DEVICE);
-+
-+	if (flags & PREFERRED_LOC_ATOMIC_UND) {
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+					  DRM_XE_ATOMIC_UNDEFINED);
-+	}
-+
-+	if (flags & PREFERRED_LOC_ATOMIC_DEVICE) {
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+					  DRM_XE_ATOMIC_DEVICE);
-+	}
-+
-+	if (flags & PREFERRED_LOC_ATOMIC_GL) {
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+					  DRM_XE_ATOMIC_GLOBAL);
-+	}
-+
-+	if (flags & PREFERRED_LOC_ATOMIC_CPU) {
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+					  DRM_XE_ATOMIC_CPU);
-+	}
-+
-+	if (flags & MADVISE_MULTI_VMA) {
-+		if (bo_size)
-+			bo_size = ALIGN(bo_size, SZ_4K);
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data) + bo_size/2,
-+					  bo_size/2, DRM_XE_ATOMIC_DEVICE);
-+
-+		xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data) + bo_size/2, bo_size/2,
-+				       intel_get_pat_idx_wb(fd));
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data) + bo_size,
-+					  bo_size, DRM_XE_ATOMIC_DEVICE);
-+
-+		xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data), bo_size,
-+				       intel_get_pat_idx_wb(fd));
-+	}
-+
-+	if (flags & MADVISE_SPLIT_VMA) {
-+		if (bo_size)
-+			bo_size = ALIGN(bo_size, SZ_4K);
-+
-+		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-+		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id),
-+				  bo_flags);
-+		xe_vm_bind_async(fd, vm, 0, bo, 0, to_user_pointer(data) + bo_size/2,
-+				 bo_size/2, 0, 0);
-+
-+		__xe_vm_bind_assert(fd, vm, 0, 0, 0, to_user_pointer(data) + bo_size/2,
-+				    bo_size/2, DRM_XE_VM_BIND_OP_MAP,
-+				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR, sync,
-+				    1, 0, 0);
-+		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-+		data[0].vm_sync = 0;
-+		gem_close(fd, bo);
-+		bo = 0;
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data),
-+					  bo_size/2,
-+					  DRM_XE_ATOMIC_DEVICE);
-+	}
-+
-+	if (flags & MADVISE_ATOMIC_VMA) {
-+		if (bo_size)
-+			bo_size = ALIGN(bo_size, SZ_4K);
-+
-+		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-+		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id), bo_flags);
-+		xe_vm_bind_async(fd, vm, 0, bo, 0, to_user_pointer(data), bo_size, 0, 0);
-+
-+		__xe_vm_bind_assert(fd, vm, 0, 0, 0, to_user_pointer(data), bo_size,
-+				    DRM_XE_VM_BIND_OP_MAP,
-+				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR, sync,
-+				    1, 0, 0);
-+		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-+		data[0].vm_sync = 0;
-+		gem_close(fd, bo);
-+		bo = 0;
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size/2,
-+					  DRM_XE_ATOMIC_GLOBAL);
-+	}
-+}
-+
-+static void
-+madvise_prefetch_op(int fd, uint32_t vm, uint64_t addr, size_t bo_size,
-+		    unsigned long long flags, struct test_exec_data *data)
-+{
-+	uint32_t val;
-+
-+	if (flags & PREFETCH_SPLIT_VMA) {
-+		bo_size = ALIGN(bo_size, SZ_4K);
-+
-+		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0, 0);
-+
-+		igt_debug("num_vmas before madvise = %d\n", val);
-+
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size/2);
-+
-+		igt_debug("num_vmas after madvise= %d\n", val);
-+
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+	} else if (flags & PREFETCH_SAME_ATTR) {
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+					  DRM_XE_ATOMIC_GLOBAL);
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0,
-+				     DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size/2,
-+					  DRM_XE_ATOMIC_GLOBAL);
-+	} else if (flags & PREFETCH_CHANGE_ATTR) {
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+					  DRM_XE_ATOMIC_GLOBAL);
-+
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0,
-+				     DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+					  DRM_XE_ATOMIC_DEVICE);
-+
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+	}
-+}
-+
-+static void
-+madvise_op_data_store(uint64_t addr, int i, int idx, size_t bo_size,
-+		      struct test_exec_data *data,
-+		      uint64_t *batch_offset,
-+		      uint64_t *batch_addr, uint64_t *sdi_offset, uint64_t *sdi_addr,
-+		      unsigned long long flags)
-+{
-+	if (flags & MADVISE_MULTI_VMA) {
-+		addr = addr + i * bo_size;
-+		data = from_user_pointer(addr);
-+		*batch_offset = (size_t)((char *)&(data[idx].batch) - (char *)data);
-+		*batch_addr = addr + *batch_offset;
-+		*sdi_offset = (size_t)((char *)&(data[idx].data) - (char *)data);
-+		*sdi_addr = addr + *sdi_offset;
-+	}
-+
-+	if (flags & MADVISE_SPLIT_VMA) {
-+		// Write to first half of split VMA
-+		uint64_t first_half_addr, sdi_addr_1;
-+		uint64_t second_half_addr, sdi_addr_2;
-+		int b;
-+
-+		*sdi_offset = (size_t)((char *)&(data[idx].data) - (char *)data);
-+		sdi_addr_1 = first_half_addr + *sdi_offset;
-+		first_half_addr = addr;
-+
-+		b = 0;
-+		write_dword(&data[idx], sdi_addr_1,
-+				WRITE_VALUE(&data[idx], idx), &b,
-+				flags & ATOMIC_BATCH ? true : false);
-+		igt_assert(b <= ARRAY_SIZE(data[idx].batch));
-+
-+		// Write to second half of split VMA
-+		second_half_addr = addr + bo_size/2;
-+		sdi_addr_2 = second_half_addr + *sdi_offset;
-+		b = 0;
-+		write_dword(&data[idx], sdi_addr_2,
-+				WRITE_VALUE(&data[idx], idx), &b,
-+				flags & ATOMIC_BATCH ? true : false);
-+		igt_assert(b <= ARRAY_SIZE(data[idx].batch));
-+	}
- }
+ 	handles[0] = fb->gem_handle;
+-	pitches[0] = pitch;
++	pitches[0] = scratch->pitch;
+ 	offsets[0] = 0;
  
- static void
- test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	  int n_exec_queues, int n_execs, size_t bo_size,
- 	  size_t stride, uint32_t vm, void *alloc, pthread_barrier_t *barrier,
--	  unsigned int flags)
-+	  unsigned long long flags)
- {
- 	uint64_t addr;
- 	struct drm_xe_sync sync[1] = {
-@@ -1048,7 +1329,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
--	struct test_exec_data *data, *next_data = NULL;
-+	struct test_exec_data *data, *next_data = NULL, *original_data;
- 	uint32_t bo_flags;
- 	uint32_t bo = 0, bind_sync = 0;
- 	void **pending_free;
-@@ -1167,7 +1448,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	addr = to_user_pointer(data);
+ 	ret = drmModeAddFB2(importer_fd, fb->width, fb->height,
+@@ -284,7 +405,7 @@ static void test_crc(int exporter_fd, int importer_fd)
+ 		gem_close(exporter_fd, scratch.handle);
  
- 	if (flags & MADVISE_OP)
--		xe_vm_parse_execute_madvise(fd, vm, data, bo_size, eci, addr, flags);
-+		xe_vm_parse_execute_madvise(fd, vm, data, bo_size, eci, addr, flags, sync);
+ 		prepare_fb(importer_fd, &scratch, &fb);
+-		import_fb(importer_fd, &fb, dmabuf_fd, scratch.pitch);
++		import_fb(importer_fd, &fb, dmabuf_fd, &scratch);
+ 		close(dmabuf_fd);
  
- 	if (flags & BO_UNMAP) {
- 		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-@@ -1242,6 +1523,13 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		bool fault_inject = (FAULT & flags) && i == n_execs / 2;
- 		bool fault_injected = (FAULT & flags) && i > n_execs;
- 
-+		if (flags & MADVISE_OP) {
-+			if (flags & MADVISE_MULTI_VMA)
-+				original_data = data;
-+
-+			madvise_op_data_store(addr, i, idx, bo_size, data, &batch_offset,
-+					      &batch_addr, &sdi_offset, &sdi_addr, flags);
-+		}
- 		if (barrier)
- 			pthread_barrier_wait(barrier);
- 
-@@ -1251,30 +1539,38 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				__write_dword(data[idx].batch,
- 					      sdi_addr + j * orig_size,
- 					      WRITE_VALUE(&data[idx], idx), &b);
--			write_dword(data[idx].batch, sdi_addr + j * orig_size,
--				    WRITE_VALUE(&data[idx], idx), &b);
-+			write_dword(&data[idx], sdi_addr + j * orig_size,
-+				    WRITE_VALUE(&data[idx], idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
- 		} else if (!(flags & EVERY_OTHER_CHECK)) {
- 			b = 0;
--			write_dword(data[idx].batch, sdi_addr,
--				    WRITE_VALUE(&data[idx], idx), &b);
-+			write_dword(&data[idx], sdi_addr,
-+				    WRITE_VALUE(&data[idx], idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
-+			if (flags & PREFETCH)
-+				madvise_prefetch_op(fd, vm, addr, bo_size, flags, data);
- 		} else if (flags & EVERY_OTHER_CHECK && !odd(i)) {
- 			b = 0;
--			write_dword(data[idx].batch, sdi_addr,
--				    WRITE_VALUE(&data[idx], idx), &b);
-+			write_dword(&data[idx], sdi_addr,
-+				    WRITE_VALUE(&data[idx], idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
- 
- 			aligned_alloc_type = __aligned_alloc(aligned_size, bo_size);
- 			next_data = aligned_alloc_type.ptr;
- 			igt_assert(next_data);
-+
-+			xe_vm_parse_execute_madvise(fd, vm, data, bo_size, eci, addr, flags, sync);
- 			__aligned_partial_free(&aligned_alloc_type);
- 
- 			b = 0;
--			write_dword(data[next_idx].batch,
-+			write_dword(&data[next_idx],
- 				    to_user_pointer(next_data) +
- 				    (char *)&data[next_idx].data - (char *)data,
--				    WRITE_VALUE(&data[next_idx], next_idx), &b);
-+				    WRITE_VALUE(&data[next_idx], next_idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[next_idx].batch));
+ 		colors[i].prime_crc.name = "prime";
+@@ -475,6 +596,8 @@ igt_main
+ 			igt_require(second_fd_vgem >= 0);
+ 			if (is_i915_device(first_fd))
+ 				igt_require(!gem_has_lmem(first_fd));
++			if (is_xe_device(first_fd))
++				igt_require(!xe_has_vram(first_fd));
  		}
  
-@@ -1328,9 +1624,19 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 					       exec_queues[e], &timeout);
- 			igt_assert(err == -ETIME || err == -EIO);
- 		} else {
--			xe_wait_ufence(fd, exec_ufence ? exec_ufence :
--				       &data[idx].exec_sync, USER_FENCE_VALUE,
--				       exec_queues[e], FIVE_SEC);
-+			if (flags & PREFERRED_LOC_ATOMIC_CPU || flags & PREFERRED_LOC_ATOMIC_UND) {
-+				int64_t timeout = QUARTER_SEC;
-+
-+				err = __xe_wait_ufence(fd, exec_ufence ? exec_ufence :
-+						       &data[idx].exec_sync,
-+						       USER_FENCE_VALUE,
-+						       exec_queues[e], &timeout);
-+				if (err)
-+					goto cleanup;
-+			} else
-+				xe_wait_ufence(fd, exec_ufence ? exec_ufence :
-+					       &data[idx].exec_sync, USER_FENCE_VALUE,
-+					       exec_queues[e], FIVE_SEC);
- 			if (flags & LOCK && !i)
- 				munlock(data, bo_size);
- 
-@@ -1380,17 +1686,25 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				if (flags & FORK_READ) {
- 					igt_fork(child, 1)
- 						igt_assert_eq(data[idx].data,
--							      READ_VALUE(&data[idx]));
-+							      flags & ATOMIC_BATCH
-+							      ? VAL_ATOMIC_EXPECTED
-+							      : READ_VALUE(&data[idx]));
- 					if (!(flags & FORK_READ_AFTER))
- 						igt_assert_eq(data[idx].data,
--							      READ_VALUE(&data[idx]));
-+							      flags & ATOMIC_BATCH
-+							      ? VAL_ATOMIC_EXPECTED
-+							      : READ_VALUE(&data[idx]));
- 					igt_waitchildren();
- 					if (flags & FORK_READ_AFTER)
- 						igt_assert_eq(data[idx].data,
--							      READ_VALUE(&data[idx]));
-+							      flags & ATOMIC_BATCH
-+							      ? VAL_ATOMIC_EXPECTED
-+							      : READ_VALUE(&data[idx]));
- 				} else {
- 					igt_assert_eq(data[idx].data,
--						      READ_VALUE(&data[idx]));
-+						      flags & ATOMIC_BATCH
-+						      ? VAL_ATOMIC_EXPECTED
-+						      : READ_VALUE(&data[idx]));
- 					if (flags & PREFETCH_SYS_BENCHMARK) {
- 						struct timespec tv = {};
- 						u64 start, end;
-@@ -1417,13 +1731,17 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 								((void *)data) + j * orig_size;
- 
- 							igt_assert_eq(__data[idx].data,
--								      READ_VALUE(&data[idx]));
-+								      flags & ATOMIC_BATCH
-+								      ? VAL_ATOMIC_EXPECTED
-+								      : READ_VALUE(&data[idx]));
- 						}
- 					}
- 				}
- 				if (flags & EVERY_OTHER_CHECK)
- 					igt_assert_eq(data[prev_idx].data,
--						      READ_VALUE(&data[prev_idx]));
-+						      flags & ATOMIC_BATCH
-+						      ? VAL_ATOMIC_EXPECTED
-+						      : READ_VALUE(&data[prev_idx]));
- 			}
- 		}
- 
-@@ -1444,6 +1762,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			gem_close(fd, bo);
- 		}
- 
-+		if (flags & MADVISE_MULTI_VMA) {
-+			data = original_data;
-+			original_data = NULL;
-+		}
-+
- 		if (flags & NEW) {
- 			if (flags & MMAP) {
- 				if (flags & FREE)
-@@ -1522,6 +1845,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				 pf_count, pf_count_after);
- 	}
- 
-+cleanup:
- 	if (bo) {
- 		sync[0].addr = to_user_pointer(bind_ufence);
- 		__xe_vm_bind_assert(fd, vm, 0,
-@@ -1817,7 +2141,7 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size)
- 
- struct section {
- 	const char *name;
--	unsigned int flags;
-+	unsigned long long flags;
- };
- 
- igt_main
-@@ -1923,6 +2247,32 @@ igt_main
- 		{ "malloc-mix-bo", MIX_BO_ALLOC },
- 		{ NULL },
- 	};
-+	const struct section msections[] = {
-+		{ "atomic-inc", MADVISE_OP | MADVISE_ATOMIC_INC | ATOMIC_BATCH },
-+		{ "preffered-loc-sram-migrate-pages",
-+		  MADVISE_OP | MADVISE_SWIZZLE | MIGRATE_ALL_PAGES | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-vram",
-+		  MADVISE_OP | PREFERRED_LOC_ATOMIC_DEVICE | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-gl",
-+		  MADVISE_OP | PREFERRED_LOC_ATOMIC_GL | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-cpu",
-+		  MADVISE_OP | PREFERRED_LOC_ATOMIC_CPU | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-und",
-+		  MADVISE_OP | PREFERRED_LOC_ATOMIC_UND | ATOMIC_BATCH },
-+		{ "multi-vma",
-+		  MADVISE_OP | MADVISE_MULTI_VMA | ATOMIC_BATCH },
-+		{ "split-vma",
-+		  MADVISE_OP | MADVISE_SPLIT_VMA | ATOMIC_BATCH },
-+		{ "atomic-vma",
-+		  MADVISE_OP | MADVISE_ATOMIC_VMA | ATOMIC_BATCH },
-+		{ "split-vma-with-mapping",
-+		  MADVISE_OP | PREFETCH | PREFETCH_SPLIT_VMA | ATOMIC_BATCH },
-+		{ "range-invalidate-change-attr",
-+		  MADVISE_OP | PREFETCH | PREFETCH_CHANGE_ATTR | ATOMIC_BATCH },
-+		{ "no-range-invalidate-same-attr",
-+		  MADVISE_OP | PREFETCH | PREFETCH_SAME_ATTR | ATOMIC_BATCH },
-+		{ NULL },
-+	};
- 	int fd;
- 
- 	igt_fixture {
-@@ -2119,6 +2469,14 @@ igt_main
- 			processes_evict(fd, SZ_8M, SZ_1M, s->flags);
- 	}
- 
-+	for (const struct section *s = msections; s->name; s++) {
-+		igt_subtest_f("madvise-%s", s->name) {
-+			xe_for_each_engine(fd, hwe)
-+				test_exec(fd, hwe, 1, 1, SZ_64K, 0, 0, NULL,
-+					  NULL, s->flags);
-+		}
-+	}
-+
- 	igt_subtest("compute")
- 		xe_for_each_engine(fd, hwe)
- 			test_compute(fd, hwe, SZ_2M);
+ 		igt_describe("Make a dumb color buffer, export to another device and"
 -- 
-2.43.0
+2.34.1
 
