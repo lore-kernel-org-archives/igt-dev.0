@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D70CA0FF2
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Sep 2025 14:13:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7426BCA1009
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Sep 2025 14:13:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 30EE110E8AD;
-	Wed,  3 Sep 2025 14:13:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2FBE910E8B0;
+	Wed,  3 Sep 2025 14:13:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O9i+dDJ6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XtB7xbuF";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4F7E10E8AD
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Sep 2025 14:13:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A340210E8AE
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Sep 2025 14:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756908825; x=1788444825;
+ t=1756908827; x=1788444827;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=HemP26mDPhvTTGURA6SXMaR2sGffyv5GPAwpXFjNJAg=;
- b=O9i+dDJ688Ttl1TBHuIgvTIzqbs9HOvNeEvfxD8bad62Zh9Yn2+Igw95
- f41pvqcUpVm8Wv2ircYYk1mfNbnqzlE+GS9wlKWWxmsAkiK11nLcwyj8J
- 9fH0nhK5+/oUEI/r6JdkFP3p70WklvSx3htuuD0VRA79bRt00u2mEYhFf
- k/cjxV6Qo5lQcsckgnlt2A7h+9N+LGiEHUA0dsfdDWLk/J2MWSCOctqCb
- 2T742Wj85BkerUFrU5rhdfrW7DXjYTK4J1FiKbFI3elHrQFf0Qssl7gDJ
- xh5z34HIqQw24dvGcW3TtOxWoe8ZBzVATpsdLvBCT6LuPG07SjmpW7+rT w==;
-X-CSE-ConnectionGUID: 8sQCpbf6S/mcU5HPY3W3yQ==
-X-CSE-MsgGUID: EJGFVY8OQDqkGRVfiOcyKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59292124"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59292124"
+ bh=/n+vI716coA8GRHYOx0sOW7z19NG9SA2RzCuWyBHQcE=;
+ b=XtB7xbuF4ecGd60RmWWEgVG6hYLs6DdPbbydyOhDyYYtQzoePJFwIlae
+ cxDcolNNRp4EQWZ+IeYqPFQya5AAnhIh25GnOiQDhXODdemzDMxNLn33J
+ lnI/9Jkx4iDuwpCTHUeFyPNDBgxK/RRgFCrdJI6Oq0Nmd/EVzYNO9Bo1A
+ IJU+BXp2X5+xKvxqr5Spl8uyuuaOEKzJ7S8726gyYQ+lYzDv4/42kXlaz
+ FoaLipR5Zwfi5w+Sh8+u3rRY+0hxkzjR9gNlgR5kgB1zn3rKOOV5iWIys
+ eNgZjU0uiH3jGrB+b0mTeuShky+r88s3Xsb/xQKndsvBUgCRzSs5a6lOR g==;
+X-CSE-ConnectionGUID: Lp0D+9f7QVCDP34Lf8sbsw==
+X-CSE-MsgGUID: J+KN9/+zSzSlkDkat3ciBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59292128"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59292128"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2025 07:13:45 -0700
-X-CSE-ConnectionGUID: 3G9KyBJnSL+WdaGnBVcF2A==
-X-CSE-MsgGUID: iTbN0mcTRiWWYVmt3sjLZQ==
+ 03 Sep 2025 07:13:46 -0700
+X-CSE-ConnectionGUID: bU5UmVGcQ4W+E21iWmIbNg==
+X-CSE-MsgGUID: dMaF1tvbRyGVYjJXyDrvnw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; d="scan'208";a="172435957"
+X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; d="scan'208";a="172435961"
 Received: from dut2051bmgfrd.iind.intel.com ([10.190.232.68])
- by fmviesa010.fm.intel.com with ESMTP; 03 Sep 2025 07:13:42 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 03 Sep 2025 07:13:44 -0700
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org, pravalika.gurram@intel.com,
  himal.prasad.ghimiray@intel.com, matthew.brost@intel.com,
  nishit.sharma@intel.com
-Subject: [PATCH i-g-t v11 1/5] uapi/xe: Sync latest uAPI KMD header
-Date: Wed,  3 Sep 2025 14:13:35 +0000
-Message-ID: <20250903141339.1859497-2-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v11 2/5] lib/xe: Add xe_vm_madvise ioctl support
+Date: Wed,  3 Sep 2025 14:13:36 +0000
+Message-ID: <20250903141339.1859497-3-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250903141339.1859497-1-nishit.sharma@intel.com>
 References: <20250903141339.1859497-1-nishit.sharma@intel.com>
@@ -69,370 +69,98 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-Pull in latest uAPI KMD header to enable testing of madvise feature.
+xe_vm_madvise() defined which issues madvise ioctl DRM_IOCTL_XE_MADVISE for
+VM region advising the driver about expected usage or memory policy for
+specified address range. MADVISE ioctl requires pointer to drm_xe_madvise
+structure as one of the inputs. Depending upon type of madvise operation
+like Atomic, Preferred LOC or PAT required members of drm_xe_madvise
+structure are initialized and passed in MADVISE ioctl.
 
 Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 290 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 285 insertions(+), 5 deletions(-)
+ lib/xe/xe_ioctl.c | 57 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_ioctl.h |  5 ++++-
+ 2 files changed, 61 insertions(+), 1 deletion(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index a52f95593..89ab54935 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -81,6 +81,8 @@ extern "C" {
-  *  - &DRM_IOCTL_XE_EXEC
-  *  - &DRM_IOCTL_XE_WAIT_USER_FENCE
-  *  - &DRM_IOCTL_XE_OBSERVATION
-+ *  - &DRM_IOCTL_XE_MADVISE
-+ *  - &DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS
-  */
- 
- /*
-@@ -102,6 +104,8 @@ extern "C" {
- #define DRM_XE_EXEC			0x09
- #define DRM_XE_WAIT_USER_FENCE		0x0a
- #define DRM_XE_OBSERVATION		0x0b
-+#define DRM_XE_MADVISE			0x0c
-+#define DRM_XE_VM_QUERY_MEM_RANGE_ATTRS	0x0d
- 
- /* Must be kept compact -- no holes */
- 
-@@ -117,6 +121,8 @@ extern "C" {
- #define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
- #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
- #define DRM_IOCTL_XE_OBSERVATION		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_OBSERVATION, struct drm_xe_observation_param)
-+#define DRM_IOCTL_XE_MADVISE			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_MADVISE, struct drm_xe_madvise)
-+#define DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_QUERY_MEM_RANGE_ATTRS, struct drm_xe_vm_query_mem_range_attr)
- 
- /**
-  * DOC: Xe IOCTL Extensions
-@@ -760,7 +766,11 @@ struct drm_xe_device_query {
-  * gem creation
-  *
-  * The @flags can be:
-- *  - %DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING
-+ *  - %DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING - Modify the GEM object
-+ *    allocation strategy by deferring physical memory allocation
-+ *    until the object is either bound to a virtual memory region via
-+ *    VM_BIND or accessed by the CPU. As a result, no backing memory is
-+ *    reserved at the time of GEM object creation.
-  *  - %DRM_XE_GEM_CREATE_FLAG_SCANOUT
-  *  - %DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM - When using VRAM as a
-  *    possible placement, ensure that the corresponding VRAM allocation
-@@ -925,9 +935,9 @@ struct drm_xe_gem_mmap_offset {
-  *  - %DRM_XE_VM_CREATE_FLAG_LR_MODE - An LR, or Long Running VM accepts
-  *    exec submissions to its exec_queues that don't have an upper time
-  *    limit on the job execution time. But exec submissions to these
-- *    don't allow any of the flags DRM_XE_SYNC_FLAG_SYNCOBJ,
-- *    DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ, DRM_XE_SYNC_FLAG_DMA_BUF,
-- *    used as out-syncobjs, that is, together with DRM_XE_SYNC_FLAG_SIGNAL.
-+ *    don't allow any of the sync types DRM_XE_SYNC_TYPE_SYNCOBJ,
-+ *    DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ, used as out-syncobjs, that is,
-+ *    together with sync flag DRM_XE_SYNC_FLAG_SIGNAL.
-  *    LR VMs can be created in recoverable page-fault mode using
-  *    DRM_XE_VM_CREATE_FLAG_FAULT_MODE, if the device supports it.
-  *    If that flag is omitted, the UMD can not rely on the slightly
-@@ -1003,6 +1013,10 @@ struct drm_xe_vm_destroy {
-  *    valid on VMs with DRM_XE_VM_CREATE_FLAG_FAULT_MODE set. The CPU address
-  *    mirror flag are only valid for DRM_XE_VM_BIND_OP_MAP operations, the BO
-  *    handle MBZ, and the BO offset MBZ.
-+ *
-+ * The @prefetch_mem_region_instance for %DRM_XE_VM_BIND_OP_PREFETCH can also be:
-+ *  - %DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC, which ensures prefetching occurs in
-+ *    the memory region advised by madvise.
-  */
- struct drm_xe_vm_bind_op {
- 	/** @extensions: Pointer to the first extension struct, if any */
-@@ -1108,6 +1122,7 @@ struct drm_xe_vm_bind_op {
- 	/** @flags: Bind flags */
- 	__u32 flags;
- 
-+#define DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC	-1
- 	/**
- 	 * @prefetch_mem_region_instance: Memory region to prefetch VMA to.
- 	 * It is a region instance, not a mask.
-@@ -1394,7 +1409,7 @@ struct drm_xe_sync {
- 
- 	/**
- 	 * @timeline_value: Input for the timeline sync object. Needs to be
--	 * different than 0 when used with %DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ.
-+	 * different than 0 when used with %DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ.
- 	 */
- 	__u64 timeline_value;
- 
-@@ -1974,6 +1989,271 @@ struct drm_xe_query_eu_stall {
- 	__u64 sampling_rates[];
- };
- 
-+/**
-+ * struct drm_xe_madvise - Input of &DRM_IOCTL_XE_MADVISE
-+ *
-+ * This structure is used to set memory attributes for a virtual address range
-+ * in a VM. The type of attribute is specified by @type, and the corresponding
-+ * union member is used to provide additional parameters for @type.
-+ *
-+ * Supported attribute types:
-+ *  - DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC: Set preferred memory location.
-+ *  - DRM_XE_MEM_RANGE_ATTR_ATOMIC: Set atomic access policy.
-+ *  - DRM_XE_MEM_RANGE_ATTR_PAT: Set page attribute table index.
-+ *
-+ * Example:
-+ *
-+ * .. code-block:: C
-+ *
-+ *    struct drm_xe_madvise madvise = {
-+ *         .vm_id = vm_id,
-+ *         .start = 0x100000,
-+ *         .range = 0x2000,
-+ *         .type = DRM_XE_MEM_RANGE_ATTR_ATOMIC,
-+ *         .atomic_val = DRM_XE_ATOMIC_DEVICE,
-+ *    };
-+ *
-+ *    ioctl(fd, DRM_IOCTL_XE_MADVISE, &madvise);
-+ *
-+ */
-+struct drm_xe_madvise {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 1e95af409..5608c8780 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -585,3 +585,60 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 	igt_assert_eq(__xe_wait_ufence(fd, addr, value, exec_queue, &timeout), 0);
+ 	return timeout;
+ }
 +
-+	/** @start: start of the virtual address range */
-+	__u64 start;
-+
-+	/** @range: size of the virtual address range */
-+	__u64 range;
-+
-+	/** @vm_id: vm_id of the virtual range */
-+	__u32 vm_id;
-+
-+#define DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC	0
-+#define DRM_XE_MEM_RANGE_ATTR_ATOMIC		1
-+#define DRM_XE_MEM_RANGE_ATTR_PAT		2
-+	/** @type: type of attribute */
-+	__u32 type;
-+
-+	union {
-+		/**
-+		 * @preferred_mem_loc: preferred memory location
-+		 *
-+		 * Used when @type == DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC
-+		 *
-+		 * Supported values for @preferred_mem_loc.devmem_fd:
-+		 *  - DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE: set vram of fault tile as preferred loc
-+		 *  - DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM: set smem as preferred loc
-+		 *
-+		 * Supported values for @preferred_mem_loc.migration_policy:
-+		 *  - DRM_XE_MIGRATE_ALL_PAGES
-+		 *  - DRM_XE_MIGRATE_ONLY_SYSTEM_PAGES
-+		 */
-+		struct {
-+#define DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE	0
-+#define DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM	-1
-+			/** @preferred_mem_loc.devmem_fd: fd for preferred loc */
-+			__u32 devmem_fd;
-+
-+#define DRM_XE_MIGRATE_ALL_PAGES		0
-+#define DRM_XE_MIGRATE_ONLY_SYSTEM_PAGES	1
-+			/** @preferred_mem_loc.migration_policy: Page migration policy */
-+			__u16 migration_policy;
-+
-+			/** @preferred_mem_loc.pad : MBZ */
-+			__u16 pad;
-+
-+			/** @preferred_mem_loc.reserved : Reserved */
-+			__u64 reserved;
-+		} preferred_mem_loc;
-+
-+		/**
-+		 * @atomic: Atomic access policy
-+		 *
-+		 * Used when @type == DRM_XE_MEM_RANGE_ATTR_ATOMIC.
-+		 *
-+		 * Supported values for @atomic.val:
-+		 *  - DRM_XE_ATOMIC_UNDEFINED: Undefined or default behaviour.
-+		 *    Support both GPU and CPU atomic operations for system allocator.
-+		 *    Support GPU atomic operations for normal(bo) allocator.
-+		 *  - DRM_XE_ATOMIC_DEVICE: Support GPU atomic operations.
-+		 *  - DRM_XE_ATOMIC_GLOBAL: Support both GPU and CPU atomic operations.
-+		 *  - DRM_XE_ATOMIC_CPU: Support CPU atomic only, no GPU atomics supported.
-+		 */
-+		struct {
-+#define DRM_XE_ATOMIC_UNDEFINED	0
-+#define DRM_XE_ATOMIC_DEVICE	1
-+#define DRM_XE_ATOMIC_GLOBAL	2
-+#define DRM_XE_ATOMIC_CPU	3
-+			/** @atomic.val: value of atomic operation */
-+			__u32 val;
-+
-+			/** @atomic.pad: MBZ */
-+			__u32 pad;
-+
-+			/** @atomic.reserved: Reserved */
-+			__u64 reserved;
-+		} atomic;
-+
-+		/**
-+		 * @pat_index: Page attribute table index
-+		 *
-+		 * Used when @type == DRM_XE_MEM_RANGE_ATTR_PAT.
-+		 */
-+		struct {
-+			/** @pat_index.val: PAT index value */
-+			__u32 val;
-+
-+			/** @pat_index.pad: MBZ */
-+			__u32 pad;
-+
-+			/** @pat_index.reserved: Reserved */
-+			__u64 reserved;
-+		} pat_index;
++int __xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range,
++		    uint64_t ext, uint32_t type, uint32_t op_val, uint16_t policy)
++{
++	struct drm_xe_madvise madvise = {
++		.type = type,
++		.extensions = ext,
++		.vm_id = vm,
++		.start = addr,
++		.range = range,
 +	};
 +
-+	/** @reserved: Reserved */
-+	__u64 reserved[2];
-+};
++	switch (type) {
++	case DRM_XE_MEM_RANGE_ATTR_ATOMIC:
++		madvise.atomic.val = op_val;
++		break;
++	case DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC:
++		madvise.preferred_mem_loc.devmem_fd = op_val;
++		madvise.preferred_mem_loc.migration_policy = policy;
++		igt_debug("madvise.preferred_mem_loc.devmem_fd = %d\n",
++			  madvise.preferred_mem_loc.devmem_fd);
++		break;
++	case DRM_XE_MEM_RANGE_ATTR_PAT:
++		madvise.pat_index.val = op_val;
++		break;
++	default:
++		igt_warn("Unknown attribute\n");
++		return -EINVAL;
++	}
++
++	if (igt_ioctl(fd, DRM_IOCTL_XE_MADVISE, &madvise))
++		return -errno;
++
++	return 0;
++}
 +
 +/**
-+ * struct drm_xe_mem_range_attr - Output of &DRM_IOCTL_XE_VM_QUERY_MEM_RANGES_ATTRS
++ * xe_vm_madvise:
++ * @fd: xe device fd
++ * @vm: vm_id of the virtual range
++ * @addr: start of the virtual address range
++ * @range: size of the virtual address range
++ * @ext: Pointer to the first extension struct, if any
++ * @type: type of attribute
++ * @op_val: fd/atomic value/pat index, depending upon type of operation
++ * @policy: Page migration policy
 + *
-+ * This structure is provided by userspace and filled by KMD in response to the
-+ * DRM_IOCTL_XE_VM_QUERY_MEM_RANGES_ATTRS ioctl. It describes memory attributes of
-+ * a memory ranges within a user specified address range in a VM.
++ * Function initializes different members of struct drm_xe_madvise and calls
++ * MADVISE IOCTL .
 + *
-+ * The structure includes information such as atomic access policy,
-+ * page attribute table (PAT) index, and preferred memory location.
-+ * Userspace allocates an array of these structures and passes a pointer to the
-+ * ioctl to retrieve attributes for each memory ranges
-+ *
-+ * @extensions: Pointer to the first extension struct, if any
-+ * @start: Start address of the memory range
-+ * @end: End address of the virtual memory range
-+ *
++ * Asserts in case of error returned by DRM_IOCTL_XE_MADVISE.
 + */
-+struct drm_xe_mem_range_attr {
-+	 /** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
-+
-+	/** @start: start of the memory range */
-+	__u64 start;
-+
-+	/** @end: end of the memory range */
-+	__u64 end;
-+
-+	/** @preferred_mem_loc: preferred memory location */
-+	struct {
-+		/** @preferred_mem_loc.devmem_fd: fd for preferred loc */
-+		__u32 devmem_fd;
-+
-+		/** @preferred_mem_loc.migration_policy: Page migration policy */
-+		__u32 migration_policy;
-+	} preferred_mem_loc;
-+
-+	/** @atomic: Atomic access policy */
-+	struct {
-+		/** @atomic.val: atomic attribute */
-+		__u32 val;
-+
-+		/** @atomic.reserved: Reserved */
-+		__u32 reserved;
-+	} atomic;
-+
-+	 /** @pat_index: Page attribute table index */
-+	struct {
-+		/** @pat_index.val: PAT index */
-+		__u32 val;
-+
-+		/** @pat_index.reserved: Reserved */
-+		__u32 reserved;
-+	} pat_index;
-+
-+	/** @reserved: Reserved */
-+	__u64 reserved[2];
-+};
-+
-+/**
-+ * struct drm_xe_vm_query_mem_range_attr - Input of &DRM_IOCTL_XE_VM_QUERY_MEM_ATTRIBUTES
-+ *
-+ * This structure is used to query memory attributes of memory regions
-+ * within a user specified address range in a VM. It provides detailed
-+ * information about each memory range, including atomic access policy,
-+ * page attribute table (PAT) index, and preferred memory location.
-+ *
-+ * Userspace first calls the ioctl with @num_mem_ranges = 0,
-+ * @sizeof_mem_ranges_attr = 0 and @vector_of_vma_mem_attr = NULL to retrieve
-+ * the number of memory regions and size of each memory range attribute.
-+ * Then, it allocates a buffer of that size and calls the ioctl again to fill
-+ * the buffer with memory range attributes.
-+ *
-+ * If second call fails with -ENOSPC, it means memory ranges changed between
-+ * first call and now, retry IOCTL again with @num_mem_ranges = 0,
-+ * @sizeof_mem_ranges_attr = 0 and @vector_of_vma_mem_attr = NULL followed by
-+ * Second ioctl call.
-+ *
-+ * Example:
-+ *
-+ * .. code-block:: C
-+ *
-+ *    struct drm_xe_vm_query_mem_range_attr query = {
-+ *         .vm_id = vm_id,
-+ *         .start = 0x100000,
-+ *         .range = 0x2000,
-+ *     };
-+ *
-+ *    // First ioctl call to get num of mem regions and sizeof each attribute
-+ *    ioctl(fd, DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS, &query);
-+ *
-+ *    // Allocate buffer for the memory region attributes
-+ *    void *ptr = malloc(query.num_mem_ranges * query.sizeof_mem_range_attr);
-+ *    void *ptr_start = ptr;
-+ *
-+ *    query.vector_of_mem_attr = (uintptr_t)ptr;
-+ *
-+ *    // Second ioctl call to actually fill the memory attributes
-+ *    ioctl(fd, DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS, &query);
-+ *
-+ *    // Iterate over the returned memory region attributes
-+ *    for (unsigned int i = 0; i < query.num_mem_ranges; ++i) {
-+ *       struct drm_xe_mem_range_attr *attr = (struct drm_xe_mem_range_attr *)ptr;
-+ *
-+ *       // Do something with attr
-+ *
-+ *       // Move pointer by one entry
-+ *       ptr += query.sizeof_mem_range_attr;
-+ *     }
-+ *
-+ *    free(ptr_start);
-+ */
-+struct drm_xe_vm_query_mem_range_attr {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
-+
-+	/** @vm_id: vm_id of the virtual range */
-+	__u32 vm_id;
-+
-+	/** @num_mem_ranges: number of mem_ranges in range */
-+	__u32 num_mem_ranges;
-+
-+	/** @start: start of the virtual address range */
-+	__u64 start;
-+
-+	/** @range: size of the virtual address range */
-+	__u64 range;
-+
-+	/** @sizeof_mem_range_attr: size of struct drm_xe_mem_range_attr */
-+	__u64 sizeof_mem_range_attr;
-+
-+	/** @vector_of_mem_attr: userptr to array of struct drm_xe_mem_range_attr */
-+	__u64 vector_of_mem_attr;
-+
-+	/** @reserved: Reserved */
-+	__u64 reserved[2];
-+
-+};
-+
- #if defined(__cplusplus)
- }
- #endif
++void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range,
++		  uint64_t ext, uint32_t type, uint32_t op_val, uint16_t policy)
++{
++	igt_assert_eq(__xe_vm_madvise(fd, vm, addr, range, ext, type, op_val, policy), 0);
++}
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 6302d1a7d..8e13ffe65 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -99,5 +99,8 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		     uint32_t exec_queue, int64_t *timeout);
+ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		       uint32_t exec_queue, int64_t timeout);
+-
++int __xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t ext,
++		    uint32_t type, uint32_t op_val, uint16_t policy);
++void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t ext,
++		  uint32_t type, uint32_t op_val, uint16_t policy);
+ #endif /* XE_IOCTL_H */
 -- 
 2.43.0
 
