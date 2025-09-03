@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D71FFCA0FF2
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Sep 2025 16:23:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD044CA1009
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Sep 2025 16:41:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8DAF310E1A4;
-	Wed,  3 Sep 2025 16:23:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6FBB210E8F1;
+	Wed,  3 Sep 2025 16:41:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q5hzEvUP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c9plwYbh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7588E10E1A4
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Sep 2025 16:23:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57A8610E8F1
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Sep 2025 16:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756916600; x=1788452600;
+ t=1756917678; x=1788453678;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=5pWE3DieZhncxfmCav+51gnzBaw4vVzZonalmsMvJls=;
- b=Q5hzEvUPjbCygzvXCNml83MBkIIMYwFfLWJ5Th+chrY4ZMcUYVO/t3Sr
- 5TentiQ2cOs/yWHrZ6Nk5ytRDbGvZStwd+8ZIBEpP9pKb92zSpUXMT5/I
- ah70WEcyjy8t4y58+3928VxWkHa7dWEUbgD4Llpehui9p3nqwI2uc9bVi
- Buc+P9hAaldazNxXdfLWNfkVquTimo6jfKehnD8uu2KbqmJjJ14GdAPR7
- 7Im3FljLgqK3+cPAxV+zlAB3ny9EUNqmIWFknlHSE3V4roV+3gQjUcr7v
- fFpl1xt7GgHTLM+0l2EEncxhbaktsMl0JebaZEIpGoEM+XIS7bYQknMEo Q==;
-X-CSE-ConnectionGUID: xkIb8TtlSXem9Q+HIQ0Clw==
-X-CSE-MsgGUID: Lu5NNUFCTdqtl6Z39++mAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="59172603"
-X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; d="scan'208";a="59172603"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2025 09:23:20 -0700
-X-CSE-ConnectionGUID: zbsXQl8XTSe/H8oWDCSQuQ==
-X-CSE-MsgGUID: ot/zWJxPQ1iFHTZMgbFDyQ==
+ mime-version:in-reply-to;
+ bh=RYCnHbPGSpSjcsUjUEAMlJg8sUjgm9mIIP/9r2SlmZY=;
+ b=c9plwYbhk1JDAybQgoWorgTb2OgkfmFjyeLQRX4e2CZ4UZgw2aYlTs9P
+ GmFFN3eP8xT+31rZ5AakJDdCEoS61DL7P0+EBbnUmEfqjJjI9EJt+kDoc
+ 2hFQ67hAmy/XQ9+M7/INN1rTA44FAOxPkH6vpV1qd/n65yo7hFC5HT/7D
+ lvRRHzFCMVNEojjkLSvcf3WGgtHSqkIfSQFG5MLlEYArjq8+SCUj/tCQu
+ aDtQI8mSHSrlgcnU57evMLUk77B1Llj7ytbIGcnoFPWU+sUbWgfOkdkI6
+ KIP8BbkFU0NZN9P2sBQb2mwEH7K6dEegQaNDW2o9y1vNV0E6YkpUtYCYh Q==;
+X-CSE-ConnectionGUID: DMPnauEDSdqMIp2lg14Nog==
+X-CSE-MsgGUID: yxd9aug8Q/KiBVt6sHNpRg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="76684446"
+X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; d="scan'208";a="76684446"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2025 09:41:17 -0700
+X-CSE-ConnectionGUID: zOKGZ+XeRLWVlHmtv0V3Rg==
+X-CSE-MsgGUID: OXNAW+apTxqJophicSERvQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; d="scan'208";a="202584477"
+X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; d="scan'208";a="176001191"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2025 09:23:19 -0700
-Date: Wed, 3 Sep 2025 18:23:04 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 09:41:16 -0700
+Date: Wed, 3 Sep 2025 18:41:12 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org,
- kunal1.joshi@intel.com
-Subject: Re: [PATCH] chamelium-only.testlist: Reorder audio tests to fix init
- issue
-Message-ID: <20250903162304.4v2h77u2rhnsatpe@kamilkon-DESK.igk.intel.com>
+To: Alex Hung <alex.hung@amd.com>
+Cc: igt-dev@lists.freedesktop.org, harry.wentland@amd.com, leo.liu@amd.com
+Subject: Re: [PATCH V10 28/30] drm-uapi: Update kernel doc for drm_colorop_type
+Message-ID: <20250903164112.yxyrmo34p2eyudym@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Karthik B S <karthik.b.s@intel.com>, Jeevan B <jeevan.b@intel.com>,
- igt-dev@lists.freedesktop.org, kunal1.joshi@intel.com
-References: <20250825052941.1135136-1-jeevan.b@intel.com>
- <034cfcf2-11c8-4fbf-8e3d-74bc6dfd1079@intel.com>
+ Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org,
+ harry.wentland@amd.com, leo.liu@amd.com
+References: <20250815040659.3321102-1-alex.hung@amd.com>
+ <20250815040659.3321102-29-alex.hung@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <034cfcf2-11c8-4fbf-8e3d-74bc6dfd1079@intel.com>
+In-Reply-To: <20250815040659.3321102-29-alex.hung@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,65 +71,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Karthik,
-On 2025-08-26 at 08:46:40 +0530, Karthik B S wrote:
-> Hi  Jeevan,
-> 
-> Please update subject line.
-> 
-> "intel-ci: Reorder chamelium audio tests to fix init issue"
-> 
-> On 8/25/2025 10:59 AM, Jeevan B wrote:
-> > Fix audio failures caused when HDMI audio test ran after DP audio.
-> Nit: "test runs after"
-> > Reordering ensures HDMI audio gets enough time to initialize before
-> > running the tests.
-> 
-> Please add fixes tag pointing the gitlab issue.
-> 
-> With these updates, LGTM.
-> 
-> Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> 
-> > 
-> > Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> > ---
-> >   tests/intel-ci/i915.chamelium-only.testlist | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/tests/intel-ci/i915.chamelium-only.testlist b/tests/intel-ci/i915.chamelium-only.testlist
-> > index fa4e4e588..22e12108d 100644
-> > --- a/tests/intel-ci/i915.chamelium-only.testlist
-> > +++ b/tests/intel-ci/i915.chamelium-only.testlist
-> > @@ -1,8 +1,6 @@
-> >   igt@kms_feature_discovery@chamelium
-> >   igt@kms_chamelium_audio@dp-audio
-> >   igt@kms_chamelium_audio@dp-audio-edid
-> > -igt@kms_chamelium_audio@hdmi-audio
-> > -igt@kms_chamelium_audio@hdmi-audio-edid
+Hi Alex,
+On 2025-08-14 at 22:06:57 -0600, Alex Hung wrote:
 
-If change from dp-audio to hdmi-audio is causing some trouble
-with initial setup, could it be solved with a test itself?
+please improve subject, imho add 'drm_mode' prefix:
 
-For example there are some kms lib patches from:
-https://patchwork.freedesktop.org/series/151772/
+[PATCH V10 28/30] drm-uapi/drm_mode: Update kernel doc for drm_colorop_type
 
-and maybe this one will be helpfull:
-https://patchwork.freedesktop.org/patch/670381/?series=151772&rev=2
-[i-g-t,v3,02/29] lib/igt_kms: Add helper to wait for a specific status on a connector
+> Sync up with kernel documents.
+
+Provide kernel commit here, link to lore.kernel.org also
+could be added.
+Or look into history and do similar commit:
+git log -- include/drm-uapi/drm_mode.h
 
 Regards,
 Kamil
 
-> >   igt@kms_chamelium_color@ctm-0-25
-> >   igt@kms_chamelium_color@ctm-0-50
-> >   igt@kms_chamelium_color@ctm-0-75
-> > @@ -58,6 +56,8 @@ igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe
-> >   igt@kms_chamelium_hpd@hdmi-hpd-storm
-> >   igt@kms_chamelium_hpd@hdmi-hpd-storm-disable
-> >   igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode
-> > +igt@kms_chamelium_audio@hdmi-audio
-> > +igt@kms_chamelium_audio@hdmi-audio-edid
-> >   igt@kms_chamelium_hpd@vga-hpd
-> >   igt@kms_chamelium_hpd@vga-hpd-after-suspend
-> >   igt@kms_chamelium_hpd@vga-hpd-enable-disable-mode
+> 
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
+> ---
+>  include/drm-uapi/drm_mode.h | 44 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 44 insertions(+)
+> 
+> diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
+> index 009bb3e7f..e00b21067 100644
+> --- a/include/drm-uapi/drm_mode.h
+> +++ b/include/drm-uapi/drm_mode.h
+> @@ -886,11 +886,55 @@ struct drm_color_lut32 {
+>  	__u32 reserved;
+>  };
+>  
+> +/**
+> + * enum drm_colorop_type - Type of color operation
+> + *
+> + *
+> + * drm_colorops can be of many different types. Each type behaves differently
+> + * and defines a different set of properties. This enum defines all types and
+> + * gives a high-level description.
+> + */
+>  enum drm_colorop_type {
+> +	/**
+> +	 * @DRM_COLOROP_1D_CURVE:
+> +	 *
+> +	 * A 1D curve that is being applied to all color channels. The
+> +	 * curve is specified via tha CURVE_1D_TYPE colorop property.
+> +	 */
+>  	DRM_COLOROP_1D_CURVE,
+> +
+> +	/**
+> +	 * @DRM_COLOROP_1D_LUT:
+> +	 *
+> +	 * A simple 1D LUT of uniformly spaced &drm_color_lut32 entries,
+> +	 * packed into a blob via the DATA property. The driver's expected
+> +	 * LUT size is advertised via the SIZE property.
+> +	 */
+>  	DRM_COLOROP_1D_LUT,
+> +
+> +	/**
+> +	 * @DRM_COLOROP_CTM_3X4:
+> +	 *
+> +	 * A 3x4 matrix. Its values are specified via the
+> +	 * &drm_color_ctm_3x4 struct provided via the DATA property.
+> +	 */
+>  	DRM_COLOROP_CTM_3X4,
+> +
+> +	/**
+> +	 * @DRM_COLOROP_MULTIPLIER:
+> +	 *
+> +	 * A simple multiplier, applied to all color values. The
+> +	 * multiplier is specified as a S31.32 via the MULTIPLIER
+> +	 * property.
+> +	 */
+>  	DRM_COLOROP_MULTIPLIER,
+> +	/**
+> +	 * @DRM_COLOROP_3D_LUT:
+> +	 *
+> +	 * A 3D LUT of &drm_color_lut entries,
+> +	 * packed into a blob via the DATA property. The driver's expected
+> +	 * LUT size is advertised via the SIZE property.
+> +	 */
+>  	DRM_COLOROP_3D_LUT,
+>  };
+>  
+> -- 
+> 2.43.0
+> 
