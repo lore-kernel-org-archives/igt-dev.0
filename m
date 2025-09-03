@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0294ECA1007
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Sep 2025 05:24:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BA0ECA100B
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Sep 2025 05:24:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A97E10E870;
-	Wed,  3 Sep 2025 05:24:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E87F10E872;
+	Wed,  3 Sep 2025 05:24:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ewvtKCiM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dbjERIjc";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1D0610E86F
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Sep 2025 05:24:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69E7B10E872
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Sep 2025 05:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756877092; x=1788413092;
+ t=1756877093; x=1788413093;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5yF1nLNJGPJZ/F0afDSQWMAF0E7M7zIKHdOrPNukiNk=;
- b=ewvtKCiMwX3y4ahtHFqOvdlvnbBpr8KkD1eiKcIQfT6IeN4E3ZMMDMi2
- fInCAqYh4oFrpIsswTYwWfBIzMlHFXuLDrp1u6D4ptsQgcuOrlAiHxLGA
- JI6jMeB5k6CCHyqcm71NAnll2l+ymUDRVTh/gjb1LxPlpwo3HyAXHB0wV
- qbTvGwJLltUPEgJT5QsEwVjGjXS8/ynS6TZIJjEfeoZELa4/2VCJu9nfA
- bQ0sFVuzrI6NeGyDrDSWCz38GwxuQlQc8dOcixTKZtrxSXdhtpQgGMDO2
- ufCdXNka9stMgYVOwkmyv3ZCvBvHKZ94z611gRPJYgndADB4NFpgNE5W9 g==;
-X-CSE-ConnectionGUID: fAGwIFUPSDKECJ/Qy9gY6g==
-X-CSE-MsgGUID: KO/LXFGqQGKWvGBcN62xcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="69881343"
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="69881343"
+ bh=8F6gnCaFMS8gI9ZajhYU/HY/PtVWLkpC9Lsj0i6QKI8=;
+ b=dbjERIjcI8rf9siLyJncSZBySFMotn81UGw9+cdqs+VXaIzIz3CmNmBj
+ NZoShCxOi/5t+HhP3CQ+Z1+l4/lax6MQhglYDu9tjprRahDpTwOJTIaNH
+ Drfs1rCLAWMnLe2CfvjbkN/fL89Bq+zFt6elB7X19+tPfHD7Ixu20wUIO
+ 3jfxsEKFs0ULnD2+TYLP+Hdbi2Zv2Ry6COc0SNauS8GaBcSBjaEvPpqI/
+ 2l3J3DWTbM5c/hK++UeN231XWq81zuxD6nzXy0KzP1izNkFXNe7nkRA/3
+ K3VPZfoO2TL1yZ0ziixFgzMNh3SIUnyyV9xalPrRopwzjT+kyqRg/QLkA g==;
+X-CSE-ConnectionGUID: nD0ukc21TY27CUSgOFKNcQ==
+X-CSE-MsgGUID: Smuvc5J/S6mRHW8Pb2ytQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="69881344"
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="69881344"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2025 22:24:51 -0700
-X-CSE-ConnectionGUID: eW+JO7bLQ1KVcJQHgD5K7w==
-X-CSE-MsgGUID: f5qlkdtMSW29p66phK99oQ==
+ 02 Sep 2025 22:24:53 -0700
+X-CSE-ConnectionGUID: v903YcFHTHqvJO4f/vOuEQ==
+X-CSE-MsgGUID: +tyGUnziTv615efquGID9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="176743689"
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; d="scan'208";a="176743692"
 Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by fmviesa004.fm.intel.com with ESMTP; 02 Sep 2025 22:24:50 -0700
+ by fmviesa004.fm.intel.com with ESMTP; 02 Sep 2025 22:24:52 -0700
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: chaitanya.kumar.borah@intel.com, karthik.b.s@intel.com,
  swati2.sharma@intel.com
-Subject: [PATCH v4 i-g-t 3/4] tests/kms_hdr: Handle HDR panels requiring DSC
-Date: Wed,  3 Sep 2025 10:37:17 +0530
-Message-Id: <20250903050718.1976201-3-chaitanya.kumar.borah@intel.com>
+Subject: [PATCH v4 i-g-t 4/4] lib/igt_kms: Handle commit failures while
+ checking bpc constraints
+Date: Wed,  3 Sep 2025 10:37:18 +0530
+Message-Id: <20250903050718.1976201-4-chaitanya.kumar.borah@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250903050718.1976201-1-chaitanya.kumar.borah@intel.com>
 References: <20250903050718.1976201-1-chaitanya.kumar.borah@intel.com>
@@ -67,147 +68,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some panels needs DSC to support HDR (at least in higher modes).
-In cases like these the output bpc and crc comparison fails if
-the SDR/non-HDR mode does not require DSC. Therefore, force DSC
-when in SDR mode so that output bpc and crc can be compared.
+With [1], the kernel may return -EINVAL if the requested bpc exceeds
+available bandwidth. Update handling to catch commit failures instead of
+exiting, allowing iteration over all modes to find one that supports the
+maximum bpc.
+
+[1] https://lore.kernel.org/intel-gfx/20250730055523.2214966-1-chaitanya.kumar.borah@intel.com/
 
 Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_hdr.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 50 insertions(+), 2 deletions(-)
+ lib/igt_kms.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 41fbf3766..efa5964cf 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -97,6 +97,7 @@ enum {
- 	TEST_INVALID_METADATA_SIZES = 1 << 4,
- 	TEST_INVALID_HDR = 1 << 5,
- 	TEST_BRIGHTNESS = 1 << 6,
-+	TEST_NEEDS_DSC = 1 << 7,
- };
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index d240c7ac5..df4a96a17 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6376,7 +6376,9 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
+ 		    !igt_check_bigjoiner_support(display))
+ 			continue;
  
- /* BPC connector state. */
-@@ -491,9 +492,20 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
- 	igt_plane_set_size(data->primary, data->w, data->h);
- 	set_hdr_output_metadata(data, NULL);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
-+
-+	if (flags & TEST_NEEDS_DSC) {
-+		igt_force_dsc_enable(data->fd, output->name);
-+		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
-+	}
-+
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
+-		igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++		if (igt_display_try_commit2(display,
++					    display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY))
++			continue;
  
-+	if (flags & TEST_NEEDS_DSC) {
-+		igt_force_dsc_disable(data->fd, output->name);
-+		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
-+	}
-+
- 	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
- 	set_hdr_output_metadata(data, &hdr);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
-@@ -518,11 +530,22 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
- 	/* Disable HDR metadata and drop back to 8bpc. We expect a modeset for exiting. */
- 	set_hdr_output_metadata(data, NULL);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
-+
-+	if (flags & TEST_NEEDS_DSC) {
-+		igt_force_dsc_enable(data->fd, output->name);
-+		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
-+	}
-+
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
- 
- 	igt_assert_crc_equal(&ref_crc, &new_crc);
- 
-+	if (flags & TEST_NEEDS_DSC) {
-+		igt_force_dsc_disable(data->fd, output->name);
-+		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
-+	}
-+
- cleanup:
- 	test_fini(data);
- 	igt_remove_fb(data->fd, &afb);
-@@ -558,7 +581,7 @@ static void fill_hdr_output_metadata_sdr(struct hdr_output_metadata *meta)
- 	meta->hdmi_metadata_type1.max_cll = 0;
- }
- 
--static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
-+static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
- 	igt_crc_t ref_crc, new_crc;
-@@ -577,9 +600,20 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_plane_set_fb(data->primary, &afb);
- 	igt_plane_set_size(data->primary, data->w, data->h);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
-+
-+	if (flags & TEST_NEEDS_DSC) {
-+		igt_force_dsc_enable(data->fd, output->name);
-+		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
-+	}
-+
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
- 
-+	if (flags & TEST_NEEDS_DSC) {
-+		igt_force_dsc_disable(data->fd, output->name);
-+		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
-+	}
-+
- 	/* Enter HDR, a modeset is allowed here. */
- 	fill_hdr_output_metadata_st2048(&hdr);
- 	set_hdr_output_metadata(data, &hdr);
-@@ -602,6 +636,10 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
- 	else
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 
-+	if (flags & TEST_NEEDS_DSC) {
-+		igt_force_dsc_enable(data->fd, output->name);
-+		igt_assert(igt_is_force_dsc_enabled(data->fd, output->name));
-+	}
- 	/* Enter SDR via metadata, no modeset allowed for
- 	 * amd driver, whereas a modeset is required for
- 	 * intel driver. */
-@@ -623,6 +661,11 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
- 	/* Verify that the CRC didn't change while cycling metadata. */
- 	igt_assert_crc_equal(&ref_crc, &new_crc);
- 
-+	if (flags & TEST_NEEDS_DSC) {
-+		igt_force_dsc_disable(data->fd, output->name);
-+		igt_assert(igt_is_force_dsc_disabled(data->fd, output->name));
-+	}
-+
- 	test_fini(data);
- 	igt_remove_fb(data->fd, &afb);
- }
-@@ -722,6 +765,11 @@ static void test_hdr(data_t *data, uint32_t flags)
- 				break;
- 			}
- 
-+			if (igt_is_dsc_enabled(data->fd, output->name))
-+				flags |= TEST_NEEDS_DSC;
-+			else
-+				flags &= ~TEST_NEEDS_DSC;
-+
- 			set_hdr_output_metadata(data, NULL);
- 			igt_display_commit2(display, display->is_atomic ?
- 					    COMMIT_ATOMIC : COMMIT_LEGACY);
-@@ -736,7 +784,7 @@ static void test_hdr(data_t *data, uint32_t flags)
- 					     TEST_INVALID_HDR | TEST_BRIGHTNESS))
- 					test_static_toggle(data, pipe, output, flags);
- 				if (flags & TEST_SWAP)
--					test_static_swap(data, pipe, output);
-+					test_static_swap(data, pipe, output, flags);
- 				if (flags & TEST_INVALID_METADATA_SIZES)
- 					test_invalid_metadata_sizes(data, output);
- 			}
+ 		if (!igt_check_output_bpc_equal(display->drm_fd, pipe,
+ 						output->name, bpc))
 -- 
 2.25.1
 
