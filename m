@@ -4,182 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A13CA1012
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Sep 2025 21:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE5ECA1012
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Sep 2025 21:07:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A968C10EAE6;
-	Thu,  4 Sep 2025 21:03:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DBC9C10EAE5;
+	Thu,  4 Sep 2025 21:07:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aMAG7Qwu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W/3aKj/i";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48EBA10EAE5
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Sep 2025 21:03:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24E7010EAE5
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Sep 2025 21:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757019789; x=1788555789;
+ t=1757020066; x=1788556066;
  h=message-id:date:subject:to:references:from:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=55WH171tzX4KI1Irl65YR8pGplfOAjP/4kvvLt/rTX8=;
- b=aMAG7QwuunCZmgzBbIxwZGxj9M28zgtW/+OZ/4hZN0Lz0c/tuq+kgQAa
- B15eSmeBoT/WWoTNedDMtAduO/eef530REbOG8Zu4i+HPqtp58/bUkRae
- 9lNWRUIakIIbnLJOm020K68MLkcIGyKLZs/zRRggPcLehPvECMn9d1iIz
- 8HANip3n4jzp0VD15QFriFtZpRaQrCsG3YHRz9NG+0t13BR2iHsS5dWaS
- gbojPVEcyR3e6DRu/dkKani31nrzYSNCT7tvX+S0zbTn4z9HToMFBExsY
- 1vjzz5jPJLy2MWEu+85M8K/Foy7+xVbIavh+JTwsfRkKLrcAjxfnxyQOx A==;
-X-CSE-ConnectionGUID: C/gcFYb0RwyKaxQPlS61kQ==
-X-CSE-MsgGUID: hPz9xaAhT5GD5zMbzXol5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11543"; a="46945241"
-X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; d="scan'208";a="46945241"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2025 14:03:00 -0700
-X-CSE-ConnectionGUID: U8JPGQcpTUa9d9ssiuHx+w==
-X-CSE-MsgGUID: FLiBWwErTyigRc0WKesiaw==
+ bh=/IIl4sUHL4B7vzie3aG6LhxqlTqvcx2rp8i7DjC/3J4=;
+ b=W/3aKj/iGJmNgSpDXCJhh+kkNU7xBhEDbBFYTWE84VuSG8VYL00yezOQ
+ Xe6IUmmLpo+Ur+k14p+6++4kM175O/IuGVdiXl7PGqqXD2Qq4Td20JC4v
+ ljydai+fP4opaOqKOfK6w1rnWhBmctYk5AAgkP0b1xY6aHig6HD0z+jFM
+ yLgMBIKK1M5jXRWFEKGr9OpWKlDCSSuP9xyMZW/NtZx5Ua4qERgh4DtVE
+ n/8eix/3ac9CAZ7LFnnBAxa4Scng7Lqv9bT51whkKTmBWnnhaACTB/IGp
+ CG3W3uRJlFJMiJCI6OSZDlB0+H7p/GIEneEugqlumQoy5VWEy6Z9kpQZi Q==;
+X-CSE-ConnectionGUID: //jSbhFhTiqjxRZBlhHWlQ==
+X-CSE-MsgGUID: 07Bhedb4T8ipcuIelJCV5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11543"; a="76980099"
+X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; d="scan'208";a="76980099"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2025 14:07:45 -0700
+X-CSE-ConnectionGUID: cVNJrR2VSt68yy2nUYGhNQ==
+X-CSE-MsgGUID: 7X8G4I40QqaeOQwNAR01nQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; d="scan'208";a="171885407"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2025 14:02:59 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; d="scan'208";a="171285384"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2025 14:07:44 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Sep 2025 14:02:58 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.17; Thu, 4 Sep 2025 14:07:43 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Thu, 4 Sep 2025 14:02:58 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.65) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Thu, 4 Sep 2025 14:07:43 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.76)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Sep 2025 14:02:58 -0700
+ 15.2.2562.17; Thu, 4 Sep 2025 14:07:43 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PBWn43Rbqg2rdwZYib1+C5f990n1DSvgPXnDrhASb2k2OSnIKoPbko/g/2R2y0iHmIFlazMt1hBT+FyE3qDSZUpPgQrbpihFD1w78k/c41OwIl2lkHnoQ17ZmGzcwzs4fZLnvwjyNRVPtEzNHjqRa+WHS8i8frN++zCNgD9wYotiTpV+Jx0u0JG5j4fuVJnNCt3jKGDJYmflFWxKnirE41HQ+W2BXGcqHOdigHpMGvBVAoZ6UZxqwvL9SQ2VoweKislNG8VVAh72c7++t9UxT2UPMtSvq7TjHps5tJkfoiHgmA8kr0Wg4TyVzadjMg2IwBcNpQwTX4PXxkLA3EgEGA==
+ b=RJXcEXSu8Ou9/qyoy/IpBuwXrwLcKN5Qcu3YXoZyZ69bKQuluGJdBT61RVnf8LWqw4wg4JSr1aOvAx3sIAhR/aKVX9m4BJnJU/D/q2PbDzz5qPI41Y3qilP9iLBRa+wcyrNOtVx/xiaZEUBwo3dw8OJjuuUqPNx1GvHHI7a5xdIlgUmZtUZGule8ko2AOu+JZ95jyVnmcFDHhz/RqaOIgAMwLBM3ypmwe+/HG7iAx4GFFpOkRtJIpBBHlN/2i41ENPYxboPukD6Hs3j5FOKQrOvgIvteNwU0ChGpdSdxkAVzQwS827DzIFwgGmd4P1uyqT+pOjHilKmT8faHcmZUxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=80bS0A9JC7qYJPSThaqUN6QNQltedOmuijJxUyr+py0=;
- b=I3zfPoGhS4URBp5LOTkvbBsbH2TTLWPhao1B/XdAaRyQxCusivF6rjtzyC/stQLS1/u4dQF4FbpTdZ/9jmdp0zC451qEIC1KiO0V5/GPXmCknFS15q0yo7Lx/jTsw04ESfKE8oSXCzW58ORa+a7tZ2QJTw61sGkEbGaetgaxOUXJoqEeaT/2G5uWFkSZwm/qwiXGooGWtlueBksXPPubZw1Y19UW1UfCw0sHMEDOjhZ3Lb3HssA73xmsofKF6wfLO7qSGzK8jBsMU1TL6XioHJrL1ipWZTpBMtUc9HK3569yqGJ5itGhakNcWLWKFstIv+6/rioE6GWmvoZpqLZOuA==
+ bh=rZedQY4fwqB6dX7PvPLZhk9aiIX0TqY+andtsP0bdnc=;
+ b=YilzXQ83aF2T0ypnkEwhnU0OFmI8/GraLSB3zpbhj6xUxKEM9qhZYfFrI+ACI0E0gaQUJx6wImiSReWJ/LMeuQFUjZz747kDpBgrQMh5M7tpevJO/xQCGFIhD31X8C+ae8JEsE6WTbkVR3VHsKlTbT5C+whbDn7bXw3FSNtMHnD4NxuAKwsvItHx3Ca/k3hGeveOsYAs3CmBv3PGS+pIYOURboI8/HgVrJhKCe41+7OLqWWeaT4KIMuv3YLYgwJzw/P6+jJ4BBe6hJTh2ej4dyhnkoNlcKpIStDOmQ3hvQapFuLfHiWPIX4obYmcWWAAErldRIV2KBXiWGgGYJp/qA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CY5PR11MB6391.namprd11.prod.outlook.com (2603:10b6:930:38::21)
- by CO1PR11MB5140.namprd11.prod.outlook.com (2603:10b6:303:9e::21)
+ by DM3PPF7C7D8332C.namprd11.prod.outlook.com (2603:10b6:f:fc00::f31)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Thu, 4 Sep
- 2025 21:02:51 +0000
+ 2025 21:07:41 +0000
 Received: from CY5PR11MB6391.namprd11.prod.outlook.com
  ([fe80::d1d5:6fa6:9a2d:92e2]) by CY5PR11MB6391.namprd11.prod.outlook.com
  ([fe80::d1d5:6fa6:9a2d:92e2%7]) with mapi id 15.20.9094.016; Thu, 4 Sep 2025
- 21:02:51 +0000
-Message-ID: <a75e8d62-9c18-4a13-ac6a-fa976fcc282f@intel.com>
-Date: Thu, 4 Sep 2025 14:02:50 -0700
+ 21:07:41 +0000
+Message-ID: <3e67789f-ba94-4778-b83f-b27261180f17@intel.com>
+Date: Thu, 4 Sep 2025 14:07:40 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] lib/xe/xe_query: move PXP query functions to
- common file
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_fault_injection: Add test for
+ xe_pxp_exec_queue_add
 To: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20250819005622.2970399-3-daniele.ceraolospurio@intel.com>
+ <20250819005622.2970399-4-daniele.ceraolospurio@intel.com>
 Content-Language: en-US
 From: John Harrison <john.c.harrison@intel.com>
-In-Reply-To: <20250819005622.2970399-3-daniele.ceraolospurio@intel.com>
+In-Reply-To: <20250819005622.2970399-4-daniele.ceraolospurio@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW2PR2101CA0001.namprd21.prod.outlook.com
- (2603:10b6:302:1::14) To CY5PR11MB6391.namprd11.prod.outlook.com
+X-ClientProxiedBy: MW4PR04CA0141.namprd04.prod.outlook.com
+ (2603:10b6:303:84::26) To CY5PR11MB6391.namprd11.prod.outlook.com
  (2603:10b6:930:38::21)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6391:EE_|CO1PR11MB5140:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa9f302d-fc90-49e4-baf7-08ddebf668bc
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6391:EE_|DM3PPF7C7D8332C:EE_
+X-MS-Office365-Filtering-Correlation-Id: bba87d8a-462d-476e-b127-08ddebf715c9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WE11ZGlFU2FaRkVIaHgwZHVWYVdac0EyWGU0dVBKVDdwR0o2REdjZHNJV0Jh?=
- =?utf-8?B?WUZaMDZkU2VOZXF4SktvVDZmUmszcjk3b3lGanhuN2taeHdSR21mSllKek1o?=
- =?utf-8?B?VVkyRXdpT2xxei9SRHgrQXp5aEgzMHJZb25YdE1pVHZmVk9lR3BxWG5Hck5S?=
- =?utf-8?B?aGhYejh2U0hPQ3h2dW5rT2xUNlJVTDRoRUdraXZzYU1aQTNRYXlFRG8wYWNp?=
- =?utf-8?B?VXlVdEVRdk1kWU9SRXBmN0ZIb1Z5OGxmNkxHMjNTV3gzZ1hCOVJXZHRVei9v?=
- =?utf-8?B?STNMTGdRdjEzNjMyMFNZdUNlOWdqWnFNVHhlNU5zMjRUQ0h0ZFlPS0lvZ1RF?=
- =?utf-8?B?c3I2REJnVWdJUi9CTjJuUHBGKzlXRURSYWxjbHpqWGVKMC92Sk02NTZnR21p?=
- =?utf-8?B?eGdBUDhlR2RmcnVwS2tTWEM3L1NUOFhlQ3Jkd0Ivc3ZEWnhrZy9VVTAwODEv?=
- =?utf-8?B?dlNvQ0JLRmJvaGtDTUF0REhFb1loL1FkQ0w1Y09ja3duWUUvZTRmVHAwWEF2?=
- =?utf-8?B?S05NSVRZSVNucjFZNmY2cmNKc0huVFJOVmlHQVBwNCtuY2c1Znk3SkNrZUZN?=
- =?utf-8?B?dmpiT3B3YWd0UU1SZ3lNb2VWSkNZTm5CWkpnNzI3bXhySm1jcFdqbXQ5SWZx?=
- =?utf-8?B?Z2Qxb1MycE5PODJuSnZONFRrMmttODZWUmhBNkxDajVWUGlUVnA5dUxRM0cx?=
- =?utf-8?B?Y29vOHNjOHhPYUZiNEMzMDRxM0xBMytJem1FekdwT2hRT0NmZ05WeGF5bEVH?=
- =?utf-8?B?UFdzSzc1aGVSb01jMFNxb041SXM1M1ZaZk1BSm1zL1dSajRpNWJiOG9rRWd3?=
- =?utf-8?B?OW5zejJsYlFKNVZDZXE0WnRUczRaWFZDSi9JUDZqaWQ4T1YwaXYxeDVOanlH?=
- =?utf-8?B?TlRhcUI1czFiZVh0amFjTzJ5aDd6VW1mR3VpaFJsSjN0RUNMeGFPQWtvWDRM?=
- =?utf-8?B?eGZVWW04MCsxZ1dCd1ZsZGswckgzb3ZMUCs5R2lwMVZOcldDOXZyRHBwM0xs?=
- =?utf-8?B?TzJ5WjVlbkpOS25GQkNsYUV6eVh1d1BrS01QdG5zWkhVY2FqUCtyNWRacWhm?=
- =?utf-8?B?ZmVhaWZGQVg2SEZsZWt5OW8vZzdETlRmMlBIcGhCemVRa2trYThPM2x4RG56?=
- =?utf-8?B?ZXdGR1ErbW9jY0NNakFhOEh5VE5GdFFFelgzMGdJT0g1eWJwOUpoWUtEUGRC?=
- =?utf-8?B?UWs1RlhOOTM2aVVDcEIzNTlVdXdwQU1ZU2s3ZE5EbXh2K2ZTbC81U2lub0Vz?=
- =?utf-8?B?elpKNlByLy9scStjOVIzVGx0KzVYbU0rR0ZvVXF2blo3OHR3OXNBSnVkelhQ?=
- =?utf-8?B?TFZzbDUycDVhLzkrcGdEOEtBL2l5djd4ZVAxZXFtVVA5K3NlaGRtazJ1REJx?=
- =?utf-8?B?bkszMXdyMVlWQXp5SGF5ektMOXA5V0tRRVJZS05jekpnaWVBRGNKRlJ1ZFNP?=
- =?utf-8?B?ZFEwdCtVc0ZvRTNoays0WW1kYWs1V1VmRDhvMnNUU25ha3hVM2s5bkVqdzU4?=
- =?utf-8?B?N04wUi9FZURHZFRabmtCT2k3bDRDVnREZEtjdithRlF5SmFoWnRCVzd2ZlJr?=
- =?utf-8?B?L0VZd0VyRlhjYVY5dnc2dmw1d1ZjdUJWSjcvWnhRRkRjeWplekFuWmR3RUpy?=
- =?utf-8?B?ZXUrWWJJMVBydkZMODVPZUdibU42bmtqVGVHeUVTeC9RN3llbTRVbU5XUlpM?=
- =?utf-8?B?SUxTcXMrRWl4YVFxdldpeHI1NFQ3bHhudnEyYnVoQ1RjMnBBNEp0L3BvcHJT?=
- =?utf-8?B?ZjR3S3NDMTVHKzhDRndKdjg2Ui9GOWNSUllzUSt6ZDNlYTN5QXdMd29RVmpZ?=
- =?utf-8?B?WFVPblN5YW9EY0p2U25nMHRwQzZLaUExWlVKQWM0YU5rZ1gvcEcrR1Q3MkNT?=
- =?utf-8?B?eDY4amxGTmJXQUFraTltYXdTdGh3dGZISXBUNkhsQkZKVnRKUGVzSXRGdEln?=
- =?utf-8?Q?x5oEZ62r0Vk=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?aDZEYU83Z09pZHdPTjRPU0ZCdEZZMTdUNmEyQkFrNm45cnVRWkN1K1VnSEhi?=
+ =?utf-8?B?RTZ2SE5OOE1UemlzbE1QVzcxT1FQOGxzQ0FZeDB4cXN5VTNVWWNxS21FU1Rt?=
+ =?utf-8?B?SUZuMTZzUFplNDhVTzZOTlBvNmtDMEM1bm5QQmxDMzA1ZmF0WE0wRWh3SENz?=
+ =?utf-8?B?QTNpTmJvTlNTeXNvbWUyTDdkZkdEQ05Lb052TGVGcUFsZnkzL3JxNGJ2akxx?=
+ =?utf-8?B?ZGE1UW0vQkdqeUdIbGhpa1B4TGM3MkpvMnl1clQwT05FamFoVytPTDF0VmFo?=
+ =?utf-8?B?WGk5RTNVaXRVUTF0MlRnMGJmeVg4TkljYWswSzI3VXozMFRiNVVTTmJ6L1kz?=
+ =?utf-8?B?UE1SUUVyRnJ1Mmd2S1puVTFmaS93QkhERkFiTjNhZmxpK2s0QWpraWVSMldl?=
+ =?utf-8?B?Z3ppZHRndnpEVjJISzF2eVlSblFzc3lJZDR6Z1YrbnEzak1zdnNPRTNNVHBh?=
+ =?utf-8?B?YitTZHF4WXlSK3ZoUlFrcUs0QVlDNTlsOG1zaXlNSFBsVllYMXg1eXNydWJs?=
+ =?utf-8?B?Nytoei9mMUZtenY5OTZWb1RJNmgxVVNXWURvQUNQdmRWUERlTTJJRnRSbk0w?=
+ =?utf-8?B?T2JXSFZIckM1TmRzb0M1WEliYTNmMXZPOWxuYzBES0UxRlVnQmhPa2EwUXNq?=
+ =?utf-8?B?S2FJZ2RQdlJ0TjM1dEtnM3JuMWQ2WjlHUTRrRnpNZG83VmRWTWRLTWpnT3JD?=
+ =?utf-8?B?K3VidXk1OW9nTnJJRkg1NDIwc0JZTU9jK0VyVU1BL0hyT24vbmIrajB1Vmpn?=
+ =?utf-8?B?MWVIajZEYjVBOGNnOEVVdFErN1l4RjVzcU0yOGxmT3VLRUJJam1QcUlkQ0V1?=
+ =?utf-8?B?NGNtVWRZQXIyWU9pVEdRdFVyR28vRkVuRVlMK2UwS0MyMUdSOHZVSE1hdkFO?=
+ =?utf-8?B?YlpPbDZvajNZQ1QvWXd5aWI4TFoyRDZFcmVzNXhoblEyL0ZmOVJwOXg2Ny9Q?=
+ =?utf-8?B?bmlyOU5MTjljRXloM05sekxPL2xMcGxDRk9qQ3BkTzEwYnY4QXJVMWlTbDJC?=
+ =?utf-8?B?U20xU1ZjWnUzbU5seG5KZjJYaFd5SXpPRVhObmR4c2ZGVmo4ZDR6eDVsWWph?=
+ =?utf-8?B?bkxtNU1zWis5KytaQzZWclJTTGwzMyt1Z1A0MkJOTFE4bStkdnJEYmZ6T0s4?=
+ =?utf-8?B?RytYMzdtMEowTm5IVUpTVndtTW1VOFk2dkV0Y3JKdTJhUXlRWDFONWEzWlZn?=
+ =?utf-8?B?bjRzNHdnNlF1UzA1aDdNWktJOVBSNzZzNFpndzJ1TjRvUElQTzUyQ2tFM1E2?=
+ =?utf-8?B?b1RkREZJMmdIQTN6Q0ZWOThwdm52ZlR4VjcyekFWYlBBM2loUW04RCtwSGVH?=
+ =?utf-8?B?WHFZUmxZajVKK3pROVRMcnpjeWhBV0NDc09BM1Z1Z0RQcFc5Unl2eC92cGlF?=
+ =?utf-8?B?N25pNmF4cC9rTDlQeWYvV09JY2h0d29va0c2eTRiYUk4cHRTZkdvaVlIaG5G?=
+ =?utf-8?B?dXlnWW5GRHFTTzV3OWU0YTRGVTBpUVoybFhWTXIxVG5NYjEzWlhsNjQxM0tZ?=
+ =?utf-8?B?SGdhZHFUUVdGOWdWdGJacDRkV3JSMHdsMlFLSlBqT1lGMlRGMStBbDdvNC9Z?=
+ =?utf-8?B?RkxsVEpkYzJicGthQWM0c0NzaXRXZ3pEeEdnd2x4MUhPdEdBanN4SVNQSVhZ?=
+ =?utf-8?B?YzVrUHdPekx0ampRVFpPRkNvOHYyTU4vajgranFHYy9tOEkzZkN0WFRoK3Zr?=
+ =?utf-8?B?YjduRlloc1lJMkdxbnMvVUdWSmkwZVRNR2oweHdJcmxxeG1MdU9pVlVPVXcx?=
+ =?utf-8?B?dTVzQ0FEQVdNRFpZT1I1ZVFtQ3NNYVZyZkpuQUI1Y0dpNWZVREIzSnRIc2l1?=
+ =?utf-8?Q?M0Pdxwsut7PcWMet3ETatLE0h0jlMBIKLPDyU=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CY5PR11MB6391.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WlJFWG50OUZERytXK1dvOGVmMlh1a1VpZFo0a29PcE15MlFHcDh4WVc0dnhr?=
- =?utf-8?B?NXNqY0JVOEhOdWJkQWFjQzlYNS8renlrcWczdzc2SEMxQW5scS84aTNRWnJY?=
- =?utf-8?B?blhaUTBaUXFVcFc1MjBWMER4ZERodEJ6YjU3eGpyMDV5bEJLcTFIUS9saUc4?=
- =?utf-8?B?N29FYkVYR1VNL2Q1TmtJMXJ3Q2FaK1BmNTBTdkNpaVJueGo1V1J4TnVYQmlQ?=
- =?utf-8?B?dFI0L2tBQWxBSXZwdkQ3TEQ2UElMV1hPVDZtbDZNSDhDRWYyb0lEMXg0ZEwx?=
- =?utf-8?B?UjJsQ1hEZnE3MGxWNGN6Vkw1QkpLK3BtQnRubmRGZGNNRXMzQnAyRHlicEpO?=
- =?utf-8?B?K3V2TDExeEE0d1d5WHVqN3BhY1dHcW9PbmNLTHlibVFxTk5hSmJWU0wxSmdF?=
- =?utf-8?B?cUpFbXcxYVZlRGEyNkxXaWNNQXBpdHl5VDZlTXVVN01neU85M0IrN3Yyck80?=
- =?utf-8?B?SHBNa0VaMC9jYjR1aU11RU9oTlFnQmVZUXRqTUdtRUZ1Z041ZzNycW5nRnRI?=
- =?utf-8?B?MjVlM0tudTRianVuTXpobk9EakhreDdvUUgwSGlQVnQvQkJUaTdSbExsbUhX?=
- =?utf-8?B?bGZmSFhLVGV2c25uMDhTVlk1dWNEUldrMmlYN3owTm5VRmNwZHdzR2N6WERH?=
- =?utf-8?B?M1hBVThJVDg4VndVY2dTeGhBdG1ndnhYcWlmSk9hZkJVaW1aN1hOVCtoNG52?=
- =?utf-8?B?YlpTWjRFenRsa1hsYmc2bkt2ZFJENjhKdzFtUjVnb2J4Rk94QitRbXY2bjVh?=
- =?utf-8?B?RHhYZSs1cGUzRDE0VEJIM05KRjdxZURsbXVXWmdodWJuWFAwY3kvNXU0V3hK?=
- =?utf-8?B?NlBRNjQ2ZHd2VjJhQ3FHYmVLY2NGZDExNmhXNE11KzdLTEt6VHpkMFZkL0Ir?=
- =?utf-8?B?R2JQb1JDZXlUMGFvemVUNkhuSkowRjByOGxKMENiWWRYNjlDeHYvaUZNMld2?=
- =?utf-8?B?QXNwSWZPU1F4cStjREZYdExzSCtNK3hyVisya2piUGs2bWtFQ29TQllIdEp5?=
- =?utf-8?B?M05rQ0t1cTBJYnp3YVYzMkNIeTV6Y1BSRU1qWE1sQXo4ek1GZ1JjRlpsWjFi?=
- =?utf-8?B?Tk50cUdtSW1lSWVqaEtEajNYUXpxZkZiNnpoRXY4UnhpWnpGWDFHeUk5QStp?=
- =?utf-8?B?blFIWHNGUGFxVjNwUXlTVm8vQjhEUlRUem9PQUZ2c3ppOEJzS2NGbnRCS1JN?=
- =?utf-8?B?SmVnTk1pTEpnM255ZmxKYmRVUUFpdVg0Q1dBekZkOE44N01uU1R6QXR1bFZp?=
- =?utf-8?B?SzhvUU5VZG8xVXFEVUkvRDV4amdSaFVhclVuRVJZTzJCdHVOVkdKN0hRSXlM?=
- =?utf-8?B?UURrNjdyUUh1dUdNcmJUUHpQRWdJT1ZkbWFnMkt0SWtPOGRKazY1Q3pnSlBi?=
- =?utf-8?B?dk0xaXNjRHhSSms5aWloaThWVngvbGN0YTFSNzRKNVVsMlBybHNWell1OGl3?=
- =?utf-8?B?STdIcEh4MmttRGt0NlNRYWcxWkd1Y1ZvdjBPZG9Tai9ORmFFbmtGQVRjbm0x?=
- =?utf-8?B?eVl1RzN6SlNkeGQyMmtNWnlrRUtGTGZxazBNY2hmNW1maFJOSWhsS3NwSG9K?=
- =?utf-8?B?K1czUTRqa0UxN1lZSEExUVlzeEFvU0h2cHdXSXVYdDRzMk5zVW1qc2NOaGpC?=
- =?utf-8?B?OXhFSkRKby9XdzZLR2c5bW9HRVYvT2FaT25vYURSNk9TcUxZNUlPRis2d3Fl?=
- =?utf-8?B?cGdEcU8ydmxETGpCR1l4NXpGdnZXTmhGbVg1eXdLNkpPd1FkQzBWMFVEVnd0?=
- =?utf-8?B?Y1dUcFpGaUhKdjhjYkRManhKSXkxQUVMenlhVzNmSHVvQjFSOGlKQm5iT3FZ?=
- =?utf-8?B?THFyUEk0bHFqN3VETEFodU1ENHdVK3c2SjlsTDBjSHppT1FuenZ6U2gyNk9k?=
- =?utf-8?B?a25IQWtDclNIaUMxMXZHRi9GT01GR2djY1QrSit3bzJrVGpwcjVPVFVFKzJo?=
- =?utf-8?B?c24raFN3S1NRT2txM0hmVFlyUU5JeVBFRHVOQ0FWaWU1Y1BnalZxeGxDSCsw?=
- =?utf-8?B?VDlwL3F0dVZlampoUFRhM3AzTHR4alBSazRrOUV3Z0xZQ0hZN0plT21qanhj?=
- =?utf-8?B?MVdhcXJXODNyQVdxTXFRRE9OaTJuTllnUTJwVllmbjFQa0lqMHFSbVJYSTBU?=
- =?utf-8?B?SEhrUWFJNFErc2o4NTJnZ2YyQm1GQkV4cURhdis4NlZTcEt0YUE1b0tEWmo3?=
- =?utf-8?B?K3c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa9f302d-fc90-49e4-baf7-08ddebf668bc
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bDhxcUs0dHlhRlJ0OVN1MitkNE1rN1dJbkVwM2NhTXNVUXR1Rms3c09yUlhn?=
+ =?utf-8?B?NjZ5V2V4dFVMQTd3dDJrSGwyYmkrdGc3c1hJTDFlcHZOenZNMlkwK1psRExC?=
+ =?utf-8?B?R1RlWUlDNnlGQmpFN1Z3aWtKZEtEcnFCaHdpNDNBWjN0MWpDa0dwc2VuRTIz?=
+ =?utf-8?B?dzhNQkIxUGVobGc5ZnRaa3pvdFM2cytDY1poSEZQV3hybWoyTS9mVTBUbkxz?=
+ =?utf-8?B?TXh4OTBYNS9LbE95VlBES2dKM0hFc1FxdlFnOFVsbU1xRWNQQ01jbUFvcHJI?=
+ =?utf-8?B?MUdrNmlYNHZHY0hhdk05dC83SVNaS2lnVXlkK25LblRkMUFVcXBOQWtuSHQv?=
+ =?utf-8?B?WC9VekVoQWhBMG91UnRiemk2Y1F4ajZOY3ByVmVrNkFOL0dyUExBcUVZZGFB?=
+ =?utf-8?B?c2ovdWRzcWpTWWtLSWN1elFEK3ppbGlCVEphTDdFUlRpTU81RlNrLzhVZEhJ?=
+ =?utf-8?B?ZEZCT0ZVZzRLR21xWk11UlNBaDU0N2NubUxFd2hvUnF0eTdsYlY1NERvSzNG?=
+ =?utf-8?B?UHFxZDFveVpsSWxucFozOXhpSGdIUGVqd1pCRHlWcjFGcG0yQ2JDY0lBaW9O?=
+ =?utf-8?B?dTdaUG05cG9jazFodXBuWTRjUXNWMG5kd1ZUUlRPN1N3ZHVmMkxuaUtnNW5w?=
+ =?utf-8?B?R29HTThDbnNHMm1KdDliclN6M2I0R0xaaVlTU1Jnd0szOVdpazZzYW1meGF4?=
+ =?utf-8?B?NmN2UnJmSzIyR0ZDZVRHQTBqQXI1TGhoS1FGZUtNZkNURVVhTWFXZ0duZXMw?=
+ =?utf-8?B?bmlZNTNIaW84bHF6eSsxR1hCOFZLSTVTNE5tcytuNkYyUHhlWDRHRXRxQk5h?=
+ =?utf-8?B?ZzhuUHVUbUFKdW9yT1Nsd1lUckRUa0dTOFpMbTE2Nm1rdFNEMEtvclhoMm45?=
+ =?utf-8?B?cU1vZDZpZWlwTVZ0QjllRFozb0tRT1JHSTVBQWdsVFA1WlI1bGVydHNSNjNF?=
+ =?utf-8?B?aFR0U0pKYUU0NUl0WVJVMXc5N0tsK0M3OStRUFN3VFo5YmpLS3pKOEU2VEFC?=
+ =?utf-8?B?WEU0cTd3RWppYmRadzQ0eU8zV0w3S1oveU9aK1EwQ216YmRPSk5zTzNJWUlS?=
+ =?utf-8?B?VlRIaDJleUZIUFdvRjhZaDZ0SnFBdS8vdXpnbktzT0NWMjdQOG4ydVFwUHFJ?=
+ =?utf-8?B?b0NZczE3ZEdaU0VkOTlaOTZNazBlSURzSXdTRTltbUxCZG1mWWNPRTk2Wldj?=
+ =?utf-8?B?L0FwaUVrM0J6ZkpOQ3lYZUNlZlprRjRjdFQ1YnZXNlRhZy9MSFY3RmVVNWla?=
+ =?utf-8?B?SjNIeTJFNHRQbGQzenE2elo4N1J0eVhqTktUUXU0UGExTEhxYWN3K1VMSlRn?=
+ =?utf-8?B?N0QrM3BzL0pQN25TTlViZ2pKWTlpZDhsRDJLTTJLNysybmF1OUMzTjkzYU41?=
+ =?utf-8?B?TlJwdFJMdllxa01CclRaR21wZkF6WHZINTI2dENTN2RlRzJ3dEFhY2ZHcTJV?=
+ =?utf-8?B?R0FEQUx4VzBjb053eTlIamVNZkJuZFZ4bnRsTFhQRkdPWE5qQ0ZFbHZnWUl5?=
+ =?utf-8?B?UWpUaWF2dTkzNFdyVm9PRTllRlMrL0JlcGRmRVE5UUdnQzNsbUFSN0NqcVhH?=
+ =?utf-8?B?TzB3TXpHRE5KWThYNTZITHZ3TmpDT3VIc3h2Q3JSNUpmN2tQY0g3OVlFaUov?=
+ =?utf-8?B?eDRVRm1uVkdQZG1zaE5HQ2h0VFcyNEZkTklXRlBBUXJTNTl4a21wcDVqV2RQ?=
+ =?utf-8?B?UXBtTWkwYnlvZG9qMnp2ajN5aWJPbFYrUkpMZDNJTlpOYWZjcXo1eXBldFNm?=
+ =?utf-8?B?dWEyZXFxM2s3T2VOeDJ1Qkg3cnZ2OWtFUUg5dVBJQjFxMDQ5T3lOd1c1dmhP?=
+ =?utf-8?B?WnR0ZDBrVmxybFNhZXo5U21NZ2ZSaDQzbEdDUkZtTTRncENkR3lEVS94WmNS?=
+ =?utf-8?B?RW5jbkwvdTJRUFVzNFE4OVMxUmN4ZEx6WjNNd1VUdmpEQUtLb21vQU5TOFhw?=
+ =?utf-8?B?NE5hRmdkOTErVzlEWWExWTRuNm9BZnNwcVBjNEpKVTV5eGdQTmU5SERxSkFr?=
+ =?utf-8?B?UGRUaEJ6bEowUW9hdXpYbnZQaHJKNjNxWlV6VTZLcWU1aXZmTkNDYjZ4NEQw?=
+ =?utf-8?B?ODVSSUpIK2pLcmNBdEpzOUNOQlVXbnRwVzZPZHZzRE50Vy8wSGUrMnNscEdB?=
+ =?utf-8?B?TkpCc2dqYUwxaEcvYVFFV3Y2czZhNVo3SDkveVlzWTlibmxvUjgvZnNKbWUv?=
+ =?utf-8?B?d1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: bba87d8a-462d-476e-b127-08ddebf715c9
 X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6391.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 21:02:50.9721 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 21:07:41.2876 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CA4qmQwb7yFbt17XN+ArURF/H8LjBc5PoD8N69/fYGf7G3B4oj9DAeQ8ICkWXzfzHE/+kFXtB4D77oJ6fRyX/jYuod5e5FsMdYgkceXO7Bw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5140
+X-MS-Exchange-CrossTenant-UserPrincipalName: RjAuBByLgrBzd2akb6yEHEciPOSEvhZ78VgEMyUq6N6y4k0CMux9oBN2bIUJ9/FWz1CcGpN5BkqO6RlbJ+w//Kxh8/qlebmH19MfK0PvTDI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF7C7D8332C
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -197,223 +196,82 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On 8/18/2025 5:56 PM, Daniele Ceraolo Spurio wrote:
-> We already have a few tests using the PXP query functions and a new one
-> will be added in the next patch, so move the code to the common query
-> file to reduce duplication.
+> This test will make sure that the error path in the exec_queue creation
+> code works correctly if there is a PXP error.
 >
+> Since this is the first queue creation case that requires an extension,
+> the code has been updated to add support for that
+>
+> This patch requires the matching kernel code [1] to be merged first.
+>
+> [1] https://patchwork.freedesktop.org/series/153095/
 > Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
 
 > ---
->   lib/xe/xe_query.c    | 81 ++++++++++++++++++++++++++++++++++++++++++++
->   lib/xe/xe_query.h    |  2 ++
->   tests/intel/xe_pxp.c | 61 +++------------------------------
->   tests/intel/xe_vm.c  | 13 +------
->   4 files changed, 88 insertions(+), 69 deletions(-)
+>   tests/intel/xe_fault_injection.c | 29 ++++++++++++++++++++++++-----
+>   1 file changed, 24 insertions(+), 5 deletions(-)
 >
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index 3b8a682f8..920c20b06 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -996,6 +996,87 @@ uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32
->   	return NULL;
->   }
->   
-> +/**
-> + * xe_query_pxp_status:
-> + * @fd: xe device fd
-> + *
-> + * Returns the PXP status value if PXP is supported, a negative errno otherwise.
-> + * See DRM_XE_DEVICE_QUERY_PXP_STATUS documentation for the possible errno
-> + * values and their meaning.
-> + */
-> +int xe_query_pxp_status(int fd)
-> +{
-> +	struct drm_xe_query_pxp_status *pxp_query;
-> +	struct drm_xe_device_query query = {
-> +		.extensions = 0,
-> +		.query = DRM_XE_DEVICE_QUERY_PXP_STATUS,
-> +		.size = 0,
-> +		.data = 0,
-> +	};
-> +	int ret;
+> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+> index 00d045cd8..778148766 100644
+> --- a/tests/intel/xe_fault_injection.c
+> +++ b/tests/intel/xe_fault_injection.c
+> @@ -339,25 +339,43 @@ static void probe_fail_guc(int fd, const char pci_slot[], const char function_na
+>    * @xe_hw_engine_group_add_exec_queue:    xe_hw_engine_group_add_exec_queue
+>    * @xe_vm_add_compute_exec_queue:         xe_vm_add_compute_exec_queue
+>    * @xe_exec_queue_create_bind:            xe_exec_queue_create_bind
+> + * @xe_pxp_exec_queue_add:                xe_pxp_exec_queue_add
+>    */
 > +
-> +	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
-> +		return -errno;
+> +#define EXEC_QUEUE_LR	BIT(0)
+> +#define EXEC_QUEUE_PXP	BIT(1)
+>   static void
+>   exec_queue_create_fail(int fd, struct drm_xe_engine_class_instance *instance,
+>   		       const char pci_slot[], const char function_name[],
+>   		       unsigned int flags)
+>   {
+>   	uint32_t exec_queue_id;
+> -	uint32_t vm = xe_vm_create(fd, flags, 0);
+> +	struct drm_xe_ext_set_property ext = { 0 };
+> +	uint64_t ext_ptr = 0;
+> +	uint32_t vm;
 > +
-> +	pxp_query = malloc(query.size);
-> +	igt_assert(pxp_query);
-> +	memset(pxp_query, 0, query.size);
+> +	if (flags & EXEC_QUEUE_PXP) {
+> +		igt_require(xe_wait_for_pxp_init(fd) == 0);
 > +
-> +	query.data = to_user_pointer(pxp_query);
-> +
-> +	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
-> +		ret = -errno;
-> +	else
-> +		ret = pxp_query->status;
-> +
-> +	free(pxp_query);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * xe_wait_for_pxp_init:
-> + * @fd: xe device fd
-> + *
-> + * Returns 0 once PXP is initialized and ready, -EINVAL if PXP is not supported
-> + * in the kernel, -ENODEV if PXP is not supported in HW. This function asserts
-> + * if something went wrong during PXP initialization.
-> + */
-> +int xe_wait_for_pxp_init(int fd)
-> +{
-> +	int pxp_status;
-> +	int i = 0;
-> +
-> +	/* PXP init completes after driver init, so we might have to wait for it */
-> +	while (i++ < 50) {
-> +		pxp_status = xe_query_pxp_status(fd);
-> +
-> +		/*
-> +		 * -EINVAL and -ENODEV are both valid return values and they
-> +		 * respectively indicate that the the PXP interface is not
-> +		 * available (i.e., kernel too old) and that PXP is not
-> +		 * supported or disabled in HW.
-> +		 */
-> +		if (pxp_status == -EINVAL || pxp_status == -ENODEV)
-> +			return pxp_status;
-> +
-> +		/* status 1 means pxp is ready */
-> +		if (pxp_status == 1)
-> +			return 0;
-> +
-> +		/*
-> +		 * 0 means init still in progress, any other remaining state
-> +		 * is an unexpected error
-> +		 */
-> +		igt_assert_eq(pxp_status, 0);
-> +
-> +		usleep(50*1000);
+> +		ext.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+> +		ext.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE,
+> +		ext.value = DRM_XE_PXP_TYPE_HWDRM;
+> +		ext_ptr = to_user_pointer(&ext);
 > +	}
 > +
-> +	igt_assert_f(0, "PXP failed to initialize within the timeout\n");
-> +	return -ETIMEDOUT;
-> +}
+> +	vm = xe_vm_create(fd, flags & EXEC_QUEUE_LR ? DRM_XE_VM_CREATE_FLAG_LR_MODE : 0, 0);
 > +
->   igt_constructor
->   {
->   	xe_device_cache_init();
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index cc54ec956..32917991d 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -130,6 +130,8 @@ bool xe_has_media_gt(int fd);
->   bool xe_is_media_gt(int fd, int gt);
->   uint16_t xe_gt_get_tile_id(int fd, int gt);
->   uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32_t *len);
-> +int xe_query_pxp_status(int fd);
-> +int xe_wait_for_pxp_init(int fd);
+>   	/* sanity check */
+> -	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id), 0);
+> +	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, ext_ptr, &exec_queue_id), 0);
+>   	xe_exec_queue_destroy(fd, exec_queue_id);
 >   
->   struct xe_device *xe_device_get(int fd);
->   void xe_device_put(int fd);
-> diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
-> index 9eddc03fc..98f06ae13 100644
-> --- a/tests/intel/xe_pxp.c
-> +++ b/tests/intel/xe_pxp.c
-> @@ -105,67 +105,14 @@ static uint32_t create_regular_rcs_queue(int fd, uint32_t vm)
->   	return xe_exec_queue_create(fd, vm, &inst, 0);
+>   	ignore_dmesg_errors_from_dut(pci_slot);
+>   	injection_list_add(function_name);
+>   	set_retval(function_name, INJECT_ERRNO);
+> -	igt_assert(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id) != 0);
+> +	igt_assert(__xe_exec_queue_create(fd, vm, 1, 1, instance, ext_ptr, &exec_queue_id) != 0);
+>   	injection_list_remove(function_name);
+>   
+> -	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id), 0);
+> +	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, ext_ptr, &exec_queue_id), 0);
+>   	xe_exec_queue_destroy(fd, exec_queue_id);
 >   }
 >   
-> -static int query_pxp_status(int fd)
-> -{
-> -	struct drm_xe_query_pxp_status *pxp_query;
-> -	struct drm_xe_device_query query = {
-> -		.extensions = 0,
-> -		.query = DRM_XE_DEVICE_QUERY_PXP_STATUS,
-> -		.size = 0,
-> -		.data = 0,
-> -	};
-> -	int ret;
-> -
-> -	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
-> -		return -errno;
-> -
-> -	pxp_query = malloc(query.size);
-> -	igt_assert(pxp_query);
-> -	memset(pxp_query, 0, query.size);
-> -
-> -	query.data = to_user_pointer(pxp_query);
-> -
-> -	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
-> -		ret = -errno;
-> -	else
-> -		ret = pxp_query->status;
-> -
-> -	free(pxp_query);
-> -
-> -	return ret;
-> -}
-> -
->   static bool is_pxp_hw_supported(int fd)
->   {
-> -	int pxp_status;
-> -	int i = 0;
-> -
-> -	/* PXP init completes after driver init, so we might have to wait for it */
-> -	while (i++ < 50) {
-> -		pxp_status = query_pxp_status(fd);
-> -
-> -		/* -EINVAL means the PXP interface is not available */
-> -		igt_require(pxp_status != -EINVAL);
-> -
-> -		/* -ENODEV means PXP not supported or disabled */
-> -		if (pxp_status == -ENODEV)
-> -			return false;
-> +	int ret = xe_wait_for_pxp_init(fd);
+> @@ -585,7 +603,8 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+>   	const struct section exec_queue_create_fail_functions[] = {
+>   		{ "xe_exec_queue_create", 0 },
+>   		{ "xe_hw_engine_group_add_exec_queue", 0 },
+> -		{ "xe_vm_add_compute_exec_queue", DRM_XE_VM_CREATE_FLAG_LR_MODE },
+> +		{ "xe_vm_add_compute_exec_queue", EXEC_QUEUE_LR },
+> +		{ "xe_pxp_exec_queue_add", EXEC_QUEUE_PXP },
+>   		{ }
+>   	};
 >   
-> -		/* status 1 means pxp is ready */
-> -		if (pxp_status == 1)
-> -			return true;
-> -
-> -		/*
-> -		 * 0 means init still in progress, any other remaining state
-> -		 * is an error
-> -		 */
-> -		igt_assert_eq(pxp_status, 0);
-> -
-> -		usleep(50*1000);
-> -	}
-> +	/* -EINVAL means the PXP interface is not available */
-> +	igt_require(ret != -EINVAL);
->   
-> -	igt_assert_f(0, "PXP failed to initialize within the timeout\n");
-> -	return false;
-> +	return ret == 0;
->   }
->   
->   /**
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index 3ce54053c..90bd2722b 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -2177,18 +2177,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
->   
->   static bool pxp_interface_supported(int fd)
->   {
-> -	struct drm_xe_device_query query = {
-> -		.extensions = 0,
-> -		.query = DRM_XE_DEVICE_QUERY_PXP_STATUS,
-> -		.size = 0,
-> -		.data = 0,
-> -	};
-> -	int ret = 0;
-> -
-> -	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
-> -		ret = -errno;
-> -
-> -	return ret != -EINVAL;
-> +	return xe_query_pxp_status(fd) != -EINVAL;
->   }
->   
->   /**
 
