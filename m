@@ -4,165 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A899FCA1013
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Sep 2025 19:59:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A13CA1012
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Sep 2025 21:03:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4E9E910E27D;
-	Thu,  4 Sep 2025 19:59:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A968C10EAE6;
+	Thu,  4 Sep 2025 21:03:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T2kEYMJ/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aMAG7Qwu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E9C910E27D
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Sep 2025 19:59:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48EBA10EAE5
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Sep 2025 21:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757015967; x=1788551967;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=sdrf9OdNMMv9n3qThzwuCgXgB86BQYd4a3h7hgVQ32M=;
- b=T2kEYMJ/opHCsc7N2rLWROeEqCTBIGBqhVuRU77dADiKV8LUh/R/rxzg
- safe8Xn8il9uGo6jQ/VkvFQC6Z3Ogedkcn0K7f/TqjvKB06uSBhZaEY3C
- CBFibsR6Zz3C+fDofIhjT+dxhd+SCRJjJsX7GHRV3//lIXIj43+XmmFLv
- Gro0QeFLkUCORSO3pJoa3B2TJaN7gcm4LM6Ekmz5Emyz+er+e3j8CmTqB
- WhJnKeqNcz20hY+prEF7waVErPU6Ylp7l58gbeAWzFQuM/cPWtH2B6Vgp
- KAKTqW5aqKGh9PONEbrBuNsgy0rwquRD1PWLDSjK0OggzXaos/tFG7SPh g==;
-X-CSE-ConnectionGUID: A4ZBRh1ERduW5H8cHIAUbA==
-X-CSE-MsgGUID: uRZvLEzuQOiWptXSHfryiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11543"; a="59515915"
-X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; d="scan'208";a="59515915"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2025 12:59:27 -0700
-X-CSE-ConnectionGUID: 1O8vPfMaTBG0gZSAtZO1yA==
-X-CSE-MsgGUID: A6GVfJIESdGLeK/Ochj0jg==
+ t=1757019789; x=1788555789;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=55WH171tzX4KI1Irl65YR8pGplfOAjP/4kvvLt/rTX8=;
+ b=aMAG7QwuunCZmgzBbIxwZGxj9M28zgtW/+OZ/4hZN0Lz0c/tuq+kgQAa
+ B15eSmeBoT/WWoTNedDMtAduO/eef530REbOG8Zu4i+HPqtp58/bUkRae
+ 9lNWRUIakIIbnLJOm020K68MLkcIGyKLZs/zRRggPcLehPvECMn9d1iIz
+ 8HANip3n4jzp0VD15QFriFtZpRaQrCsG3YHRz9NG+0t13BR2iHsS5dWaS
+ gbojPVEcyR3e6DRu/dkKani31nrzYSNCT7tvX+S0zbTn4z9HToMFBExsY
+ 1vjzz5jPJLy2MWEu+85M8K/Foy7+xVbIavh+JTwsfRkKLrcAjxfnxyQOx A==;
+X-CSE-ConnectionGUID: C/gcFYb0RwyKaxQPlS61kQ==
+X-CSE-MsgGUID: hPz9xaAhT5GD5zMbzXol5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11543"; a="46945241"
+X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; d="scan'208";a="46945241"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2025 14:03:00 -0700
+X-CSE-ConnectionGUID: U8JPGQcpTUa9d9ssiuHx+w==
+X-CSE-MsgGUID: FLiBWwErTyigRc0WKesiaw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; d="scan'208";a="172423599"
+X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; d="scan'208";a="171885407"
 Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2025 12:59:27 -0700
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2025 14:02:59 -0700
 Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
  fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Sep 2025 12:59:26 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ 15.2.2562.17; Thu, 4 Sep 2025 14:02:58 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
  FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Thu, 4 Sep 2025 12:59:26 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.76)
- by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Thu, 4 Sep 2025 14:02:58 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.65) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Sep 2025 12:59:26 -0700
+ 15.2.2562.17; Thu, 4 Sep 2025 14:02:58 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hBZ2zscrQ3M0P7r8iEepXkkj4/7QCZdUNFznijStRFNoA1f/KQGO5doQa2Audnh1eoF/tywISXlqXIGkGIO9Q8tc9/mhWowDnvt8TseyxQ6nTnmeFNDXmoy5bWqdaq+K9nYa5+fnaTGbtwI8dD1HJzJgIwEHBi7GZwM+qU2pzDctU+omn/S1V11ma2LGNGUuMw9RlyAYVkAWEwFYj/PPtwkj6kzBrH4YedaT+wl5mxhW3GdO98cGLZqCeFzJXi5DaB1OZk8CWOSga1CYN07nqa9ngA9kcItXUF9QI3pt4AwxTe2zxUh438thUf8uGNuGsSGPdzr2Ktb3PZUF+PG4mg==
+ b=PBWn43Rbqg2rdwZYib1+C5f990n1DSvgPXnDrhASb2k2OSnIKoPbko/g/2R2y0iHmIFlazMt1hBT+FyE3qDSZUpPgQrbpihFD1w78k/c41OwIl2lkHnoQ17ZmGzcwzs4fZLnvwjyNRVPtEzNHjqRa+WHS8i8frN++zCNgD9wYotiTpV+Jx0u0JG5j4fuVJnNCt3jKGDJYmflFWxKnirE41HQ+W2BXGcqHOdigHpMGvBVAoZ6UZxqwvL9SQ2VoweKislNG8VVAh72c7++t9UxT2UPMtSvq7TjHps5tJkfoiHgmA8kr0Wg4TyVzadjMg2IwBcNpQwTX4PXxkLA3EgEGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IqWPzBGQ/mwFN0a6RiGNkibVBKd7g05xF5XS7L1qKw8=;
- b=SBSAVLbkGpBonOjgaTV+DYpgao/nMyQpTOCfZeOPsMhwO1YD2w2n4VbVIhiwm/d0Q8guoLrhqsD1q7L96q6UeP31DEI0jWIjl+eOXxKOLEuloY2Zxwy9CGORxSuQeLNpWFKgnLG2JP6aTapw3Lrjab9fYVw3QnRBUfWTnRIRhv6J43/kOnigsuizZj3097y1HUvDB25D3Kq/JmpqzV53gdk2xesuPytCwkHDI4XcVdlDDvEKxc2aoA9rkaDnwWqI1LNhw69F/0KoHd25fZ5w7NQrO4N7/U3CgU+/n2bFwM41F75jiYjdKJh8yYJdU0TnNTw+1NYxy/jrxEX00e/wAA==
+ bh=80bS0A9JC7qYJPSThaqUN6QNQltedOmuijJxUyr+py0=;
+ b=I3zfPoGhS4URBp5LOTkvbBsbH2TTLWPhao1B/XdAaRyQxCusivF6rjtzyC/stQLS1/u4dQF4FbpTdZ/9jmdp0zC451qEIC1KiO0V5/GPXmCknFS15q0yo7Lx/jTsw04ESfKE8oSXCzW58ORa+a7tZ2QJTw61sGkEbGaetgaxOUXJoqEeaT/2G5uWFkSZwm/qwiXGooGWtlueBksXPPubZw1Y19UW1UfCw0sHMEDOjhZ3Lb3HssA73xmsofKF6wfLO7qSGzK8jBsMU1TL6XioHJrL1ipWZTpBMtUc9HK3569yqGJ5itGhakNcWLWKFstIv+6/rioE6GWmvoZpqLZOuA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SJ5PPFEF71E136E.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::85f) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
- 2025 19:59:22 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%4]) with mapi id 15.20.9094.018; Thu, 4 Sep 2025
- 19:59:21 +0000
-Date: Thu, 4 Sep 2025 12:59:19 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: <nishit.sharma@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, <pravalika.gurram@intel.com>,
- <himal.prasad.ghimiray@intel.com>
-Subject: Re: [PATCH v12 4/5] tests/intel/xe_exec_system_allocator: Add
- madvise-swizzle test
-Message-ID: <aLnvl4yoMo17PXFr@lstrano-desk.jf.intel.com>
-References: <20250904082701.2154029-1-nishit.sharma@intel.com>
- <20250904082701.2154029-5-nishit.sharma@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250904082701.2154029-5-nishit.sharma@intel.com>
-X-ClientProxiedBy: MW4PR03CA0258.namprd03.prod.outlook.com
- (2603:10b6:303:b4::23) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+Received: from CY5PR11MB6391.namprd11.prod.outlook.com (2603:10b6:930:38::21)
+ by CO1PR11MB5140.namprd11.prod.outlook.com (2603:10b6:303:9e::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Thu, 4 Sep
+ 2025 21:02:51 +0000
+Received: from CY5PR11MB6391.namprd11.prod.outlook.com
+ ([fe80::d1d5:6fa6:9a2d:92e2]) by CY5PR11MB6391.namprd11.prod.outlook.com
+ ([fe80::d1d5:6fa6:9a2d:92e2%7]) with mapi id 15.20.9094.016; Thu, 4 Sep 2025
+ 21:02:51 +0000
+Message-ID: <a75e8d62-9c18-4a13-ac6a-fa976fcc282f@intel.com>
+Date: Thu, 4 Sep 2025 14:02:50 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/2] lib/xe/xe_query: move PXP query functions to
+ common file
+To: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20250819005622.2970399-3-daniele.ceraolospurio@intel.com>
+Content-Language: en-US
+From: John Harrison <john.c.harrison@intel.com>
+In-Reply-To: <20250819005622.2970399-3-daniele.ceraolospurio@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW2PR2101CA0001.namprd21.prod.outlook.com
+ (2603:10b6:302:1::14) To CY5PR11MB6391.namprd11.prod.outlook.com
+ (2603:10b6:930:38::21)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SJ5PPFEF71E136E:EE_
-X-MS-Office365-Filtering-Correlation-Id: b4002ab2-1a95-4f45-a3b7-08ddebed8a5c
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6391:EE_|CO1PR11MB5140:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa9f302d-fc90-49e4-baf7-08ddebf668bc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?6xGLdIJL8juZ4lhSC/uwjX/pTFBaaErcMfRU/GEo0nh2K/Te7ogkqSJOeEZQ?=
- =?us-ascii?Q?06vozqZ1w+aB0y9XySMIjswGk3TPp0LKgH4+VeeZCoHpYvKjCFAIpuSxAu1x?=
- =?us-ascii?Q?cDkK/MjyAlGokD2IsDU8VNvXeGZifErwNZHiH+XiyFRdPyhjasSddPy6oerz?=
- =?us-ascii?Q?R3Gs5u4Yo+kI80BGsEFBUb5M9rAlL22vHulfERKV+5yOTwcHJw9F9Ckd1+nq?=
- =?us-ascii?Q?BLAgYYaIVyDzJMPUC7+93FSYgvmhPzTBYyFrm5WkBYcdUjyxnNei2FMNlIm+?=
- =?us-ascii?Q?uu6LdB81o1BxByLa9esht4lZ9nEIwKLMx2qmzx90Vkrt/y8ocRh2lDhD+wjR?=
- =?us-ascii?Q?udFJuXSUwM5ppswQb9dkss6G+jPmmhHeX3M+8hN3nRAbSuOLQWNyZ+CnOVbn?=
- =?us-ascii?Q?dgBVeo6ezMejMyonoHB2FTVOw5Xmjly4f+rvsD46Y0MdPE6WAevxlLezyymr?=
- =?us-ascii?Q?oci5/deItOSz1znDwugOjzQ348sX16Ht+smoYkQE+P/sYsKoBamuzDPJY+s0?=
- =?us-ascii?Q?UvPuRQkuCfxRT2zOxtkwABEvtWZGHdnNIe8dinq29/5xfdf+oShdZCIwO5Zp?=
- =?us-ascii?Q?fsZ0h76bnvg+6AIUB1rjB6643yVgFrTDgN21z8/wvmF62HhjnsEBVnpnc3sc?=
- =?us-ascii?Q?QQna1nraXHUbUFDtulBrKCh/hwzbFC7lbcME3cIMyQtVQ/SE2sScK/EAVR0c?=
- =?us-ascii?Q?GMWPpkV77SlInYs5iCwED6d6or5OllkCSgn9ZYeupsSgZpRU+TuAabtBl+61?=
- =?us-ascii?Q?X3Y8RaGxKVxTOPhCww63oT7RvnE8LcgEu6+6P6Tq+NOOKl608x4ui2dytT5/?=
- =?us-ascii?Q?Cr1y/Jyv7XZIhfmBDCJfizniDMsc97j7TVvHRCVzyE1k17TB9I+91mJHf3JX?=
- =?us-ascii?Q?OTZqfCVuhFgiGiG9+FzPcP1zSKahiUHN6pwUwPA551dJF2Ih3qpeA9Vdfngx?=
- =?us-ascii?Q?HLyusEg8b3px3UauycxPg5MsYJd0YfuVbndcv8va3KRGXBCuK9yw39JwPo5U?=
- =?us-ascii?Q?05TI5F6i3I/+oqrhZJVf5y3lWP6GQWumDxf1YM238kcfAuULty+wvId5Z0ST?=
- =?us-ascii?Q?NqySAoOkgUXxp7L2AGQuA9FMkjBTrIyzYGMqa4dg9KwoiRmW+gz8wDAguxsQ?=
- =?us-ascii?Q?ePo3xXDOfRECATVNR6s2XfGsgqdl/JWNjgo9XQBeSVrlDqZi51XAuyggeDJn?=
- =?us-ascii?Q?biq/qvj5gkZ/8Cy1V47gEpd7GN5e2R4QS0wypKEg1Jb4Ivn0yfLvluZThQ4P?=
- =?us-ascii?Q?+Z7/ATg1GCnM/XOQ1s9KBpkUCZ0BQB6DQhJ6LssrqVl5/mogV9WeAFzm2fPz?=
- =?us-ascii?Q?widniDAePQtXIyqUyU35JoFdXOwxwirUIU5laQHfSXDn4G/hBVh4sFKKF9hF?=
- =?us-ascii?Q?HKlR0eZzFw0yLHQTCvWnwuPG5LYikis76UvLqV4nwe5ijXsrorxfwAOLehD1?=
- =?us-ascii?Q?mbizzC1vw3U=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WE11ZGlFU2FaRkVIaHgwZHVWYVdac0EyWGU0dVBKVDdwR0o2REdjZHNJV0Jh?=
+ =?utf-8?B?WUZaMDZkU2VOZXF4SktvVDZmUmszcjk3b3lGanhuN2taeHdSR21mSllKek1o?=
+ =?utf-8?B?VVkyRXdpT2xxei9SRHgrQXp5aEgzMHJZb25YdE1pVHZmVk9lR3BxWG5Hck5S?=
+ =?utf-8?B?aGhYejh2U0hPQ3h2dW5rT2xUNlJVTDRoRUdraXZzYU1aQTNRYXlFRG8wYWNp?=
+ =?utf-8?B?VXlVdEVRdk1kWU9SRXBmN0ZIb1Z5OGxmNkxHMjNTV3gzZ1hCOVJXZHRVei9v?=
+ =?utf-8?B?STNMTGdRdjEzNjMyMFNZdUNlOWdqWnFNVHhlNU5zMjRUQ0h0ZFlPS0lvZ1RF?=
+ =?utf-8?B?c3I2REJnVWdJUi9CTjJuUHBGKzlXRURSYWxjbHpqWGVKMC92Sk02NTZnR21p?=
+ =?utf-8?B?eGdBUDhlR2RmcnVwS2tTWEM3L1NUOFhlQ3Jkd0Ivc3ZEWnhrZy9VVTAwODEv?=
+ =?utf-8?B?dlNvQ0JLRmJvaGtDTUF0REhFb1loL1FkQ0w1Y09ja3duWUUvZTRmVHAwWEF2?=
+ =?utf-8?B?S05NSVRZSVNucjFZNmY2cmNKc0huVFJOVmlHQVBwNCtuY2c1Znk3SkNrZUZN?=
+ =?utf-8?B?dmpiT3B3YWd0UU1SZ3lNb2VWSkNZTm5CWkpnNzI3bXhySm1jcFdqbXQ5SWZx?=
+ =?utf-8?B?Z2Qxb1MycE5PODJuSnZONFRrMmttODZWUmhBNkxDajVWUGlUVnA5dUxRM0cx?=
+ =?utf-8?B?Y29vOHNjOHhPYUZiNEMzMDRxM0xBMytJem1FekdwT2hRT0NmZ05WeGF5bEVH?=
+ =?utf-8?B?UFdzSzc1aGVSb01jMFNxb041SXM1M1ZaZk1BSm1zL1dSajRpNWJiOG9rRWd3?=
+ =?utf-8?B?OW5zejJsYlFKNVZDZXE0WnRUczRaWFZDSi9JUDZqaWQ4T1YwaXYxeDVOanlH?=
+ =?utf-8?B?TlRhcUI1czFiZVh0amFjTzJ5aDd6VW1mR3VpaFJsSjN0RUNMeGFPQWtvWDRM?=
+ =?utf-8?B?eGZVWW04MCsxZ1dCd1ZsZGswckgzb3ZMUCs5R2lwMVZOcldDOXZyRHBwM0xs?=
+ =?utf-8?B?TzJ5WjVlbkpOS25GQkNsYUV6eVh1d1BrS01QdG5zWkhVY2FqUCtyNWRacWhm?=
+ =?utf-8?B?ZmVhaWZGQVg2SEZsZWt5OW8vZzdETlRmMlBIcGhCemVRa2trYThPM2x4RG56?=
+ =?utf-8?B?ZXdGR1ErbW9jY0NNakFhOEh5VE5GdFFFelgzMGdJT0g1eWJwOUpoWUtEUGRC?=
+ =?utf-8?B?UWs1RlhOOTM2aVVDcEIzNTlVdXdwQU1ZU2s3ZE5EbXh2K2ZTbC81U2lub0Vz?=
+ =?utf-8?B?elpKNlByLy9scStjOVIzVGx0KzVYbU0rR0ZvVXF2blo3OHR3OXNBSnVkelhQ?=
+ =?utf-8?B?TFZzbDUycDVhLzkrcGdEOEtBL2l5djd4ZVAxZXFtVVA5K3NlaGRtazJ1REJx?=
+ =?utf-8?B?bkszMXdyMVlWQXp5SGF5ektMOXA5V0tRRVJZS05jekpnaWVBRGNKRlJ1ZFNP?=
+ =?utf-8?B?ZFEwdCtVc0ZvRTNoays0WW1kYWs1V1VmRDhvMnNUU25ha3hVM2s5bkVqdzU4?=
+ =?utf-8?B?N04wUi9FZURHZFRabmtCT2k3bDRDVnREZEtjdithRlF5SmFoWnRCVzd2ZlJr?=
+ =?utf-8?B?L0VZd0VyRlhjYVY5dnc2dmw1d1ZjdUJWSjcvWnhRRkRjeWplekFuWmR3RUpy?=
+ =?utf-8?B?ZXUrWWJJMVBydkZMODVPZUdibU42bmtqVGVHeUVTeC9RN3llbTRVbU5XUlpM?=
+ =?utf-8?B?SUxTcXMrRWl4YVFxdldpeHI1NFQ3bHhudnEyYnVoQ1RjMnBBNEp0L3BvcHJT?=
+ =?utf-8?B?ZjR3S3NDMTVHKzhDRndKdjg2Ui9GOWNSUllzUSt6ZDNlYTN5QXdMd29RVmpZ?=
+ =?utf-8?B?WFVPblN5YW9EY0p2U25nMHRwQzZLaUExWlVKQWM0YU5rZ1gvcEcrR1Q3MkNT?=
+ =?utf-8?B?eDY4amxGTmJXQUFraTltYXdTdGh3dGZISXBUNkhsQkZKVnRKUGVzSXRGdEln?=
+ =?utf-8?Q?x5oEZ62r0Vk=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6522.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6391.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jvygHSkYJKwuvChitlXky/JdPMKzjIZIht6w4d9ZgPo6+jURsTBcyXgxzGEI?=
- =?us-ascii?Q?o1eviabtNmply7LZIEVJS6DXXkct2dj5r3JarHb4yIoNk3QaJJlxN6thKJ8Y?=
- =?us-ascii?Q?smbZFldNq8tzlqJWeJdWMDcOEWzjz+2F6aVD1DgtXY0pkZrpQ5RQ85WgX/R1?=
- =?us-ascii?Q?6FT+wySv81PNLp3IQ0NScTAm5RrpKqGcE/wa0sVmosbHLhEIzG9fuB+dJggp?=
- =?us-ascii?Q?XgwEObUhzmusrrfqDujhG6HWI3XmJkerOxjFc3+WoCfTkVn3SUIvvI1g6kwv?=
- =?us-ascii?Q?CrrrcEr1R8FlyUIOxi6ii3ZnjiUqYCKe0x99tVPjoLTEpxQSO+rDiK8NLAbl?=
- =?us-ascii?Q?umMWAcmU82RQfEYXshnEp2yG+vbuE2tgdAVffGkljs80S/c/rvClEcSqWKHI?=
- =?us-ascii?Q?qw5UMbpCQnVg4+silDINcnmRYd1bxN6pAN7VuuA69LzkoMDB0RL3a0Jsl9LS?=
- =?us-ascii?Q?D4xYMpg9cVfJdWnrAvlN6uqLdIZt0FfwVL1JZpKEhrUsiXey1MG0kC/I6/pp?=
- =?us-ascii?Q?BN8tsuvIQ2xituJPQrmALR3TZ1du6LNgVy8VX0y2HVPYveFqmekLufhbu3Kb?=
- =?us-ascii?Q?yHinhRUb2/sk2D7242f9Ae9ma1yLxXm2pkEeZrYnkJmH3MftFTWNpciqARjJ?=
- =?us-ascii?Q?gI0MzJJqCPc/m2GMFQ0lcNC4Ia37idhRtFGpYfiEHUebFUIRfhdZWBaZ8ZSg?=
- =?us-ascii?Q?czRaoiNMeufYKASbJC1WLclDpe4vgKU6zuVSSccimtldVNusEm5GrOnpM1L+?=
- =?us-ascii?Q?bggKIxfdUddj4TLf00BqJh7q/0qKMV7I8chHBnnCaFQ/S/dOnNoMiMMwz+sL?=
- =?us-ascii?Q?Ef/znr12dIPp6Wf02KTdVmuwaKxV0BA8ESGh/I1yDUIkBnX1U3blQHvCuDVN?=
- =?us-ascii?Q?+1FXPfNVZ5CO/oITGWPsI9AjDMm08PSxUBPJD3c2tGpf9ksh36egB24xoAdQ?=
- =?us-ascii?Q?YA1wbRAlOsdubyaz4dEYsikESWSptrWTBy537lg1djHuMQN+Hug7t2uhnHjN?=
- =?us-ascii?Q?NX17m8Os7l3wMxCGgZyFtc7fojE/v7Y5Zh3/apnKOeW9hiP504DH+cFvBMWF?=
- =?us-ascii?Q?kG5YK3gdTkEmCwCdrNnN6V038dvU7fL/nxmlPXmCvBrMprXLn4PppPGirKl9?=
- =?us-ascii?Q?rTB3y86t2+ulvQow9hHGCuTxseRuVLhoHITMfCeGyVf+Bb3khiHHlCxVqO0S?=
- =?us-ascii?Q?V8xv4uZWN3TdgtZnordxr8sZx8CcywYb0VA8A3icLoLOhOg/DLRnejbKoJxL?=
- =?us-ascii?Q?/DlJEPfYGCnX5jh6p29MD94RytWxQuvFf0ej8g7t+1UChS9EOPYbX6OecCyV?=
- =?us-ascii?Q?mNyQloTlZKfJiUkoRaRNJSnVE9gIAYPG4FTdqh3oyPzH58cL2JAhs24e037f?=
- =?us-ascii?Q?c5LC4gR8eowfLDBK4ZHIWewECIJiUPwA+E6BHtHg0StHaOeDj9WKt35Jybrb?=
- =?us-ascii?Q?auRWsvIwxa8k6CgjR7lgl5SBqUgSo5Ix/aC5d/f31U+7hRpGiORa6oGpOnGL?=
- =?us-ascii?Q?IdMKFVLh9MR1xlse8MR6uvXwenX6kJlqsTRA2mXxAiD5ZOLDPf9XfI28BBwF?=
- =?us-ascii?Q?xtYtW6iI6dQsnnKmfqnapaow/PXxuWpwGEwiFc/KqzMIa65pPVKY1u+h+kCm?=
- =?us-ascii?Q?0g=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4002ab2-1a95-4f45-a3b7-08ddebed8a5c
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WlJFWG50OUZERytXK1dvOGVmMlh1a1VpZFo0a29PcE15MlFHcDh4WVc0dnhr?=
+ =?utf-8?B?NXNqY0JVOEhOdWJkQWFjQzlYNS8renlrcWczdzc2SEMxQW5scS84aTNRWnJY?=
+ =?utf-8?B?blhaUTBaUXFVcFc1MjBWMER4ZERodEJ6YjU3eGpyMDV5bEJLcTFIUS9saUc4?=
+ =?utf-8?B?N29FYkVYR1VNL2Q1TmtJMXJ3Q2FaK1BmNTBTdkNpaVJueGo1V1J4TnVYQmlQ?=
+ =?utf-8?B?dFI0L2tBQWxBSXZwdkQ3TEQ2UElMV1hPVDZtbDZNSDhDRWYyb0lEMXg0ZEwx?=
+ =?utf-8?B?UjJsQ1hEZnE3MGxWNGN6Vkw1QkpLK3BtQnRubmRGZGNNRXMzQnAyRHlicEpO?=
+ =?utf-8?B?K3V2TDExeEE0d1d5WHVqN3BhY1dHcW9PbmNLTHlibVFxTk5hSmJWU0wxSmdF?=
+ =?utf-8?B?cUpFbXcxYVZlRGEyNkxXaWNNQXBpdHl5VDZlTXVVN01neU85M0IrN3Yyck80?=
+ =?utf-8?B?SHBNa0VaMC9jYjR1aU11RU9oTlFnQmVZUXRqTUdtRUZ1Z041ZzNycW5nRnRI?=
+ =?utf-8?B?MjVlM0tudTRianVuTXpobk9EakhreDdvUUgwSGlQVnQvQkJUaTdSbExsbUhX?=
+ =?utf-8?B?bGZmSFhLVGV2c25uMDhTVlk1dWNEUldrMmlYN3owTm5VRmNwZHdzR2N6WERH?=
+ =?utf-8?B?M1hBVThJVDg4VndVY2dTeGhBdG1ndnhYcWlmSk9hZkJVaW1aN1hOVCtoNG52?=
+ =?utf-8?B?YlpTWjRFenRsa1hsYmc2bkt2ZFJENjhKdzFtUjVnb2J4Rk94QitRbXY2bjVh?=
+ =?utf-8?B?RHhYZSs1cGUzRDE0VEJIM05KRjdxZURsbXVXWmdodWJuWFAwY3kvNXU0V3hK?=
+ =?utf-8?B?NlBRNjQ2ZHd2VjJhQ3FHYmVLY2NGZDExNmhXNE11KzdLTEt6VHpkMFZkL0Ir?=
+ =?utf-8?B?R2JQb1JDZXlUMGFvemVUNkhuSkowRjByOGxKMENiWWRYNjlDeHYvaUZNMld2?=
+ =?utf-8?B?QXNwSWZPU1F4cStjREZYdExzSCtNK3hyVisya2piUGs2bWtFQ29TQllIdEp5?=
+ =?utf-8?B?M05rQ0t1cTBJYnp3YVYzMkNIeTV6Y1BSRU1qWE1sQXo4ek1GZ1JjRlpsWjFi?=
+ =?utf-8?B?Tk50cUdtSW1lSWVqaEtEajNYUXpxZkZiNnpoRXY4UnhpWnpGWDFHeUk5QStp?=
+ =?utf-8?B?blFIWHNGUGFxVjNwUXlTVm8vQjhEUlRUem9PQUZ2c3ppOEJzS2NGbnRCS1JN?=
+ =?utf-8?B?SmVnTk1pTEpnM255ZmxKYmRVUUFpdVg0Q1dBekZkOE44N01uU1R6QXR1bFZp?=
+ =?utf-8?B?SzhvUU5VZG8xVXFEVUkvRDV4amdSaFVhclVuRVJZTzJCdHVOVkdKN0hRSXlM?=
+ =?utf-8?B?UURrNjdyUUh1dUdNcmJUUHpQRWdJT1ZkbWFnMkt0SWtPOGRKazY1Q3pnSlBi?=
+ =?utf-8?B?dk0xaXNjRHhSSms5aWloaThWVngvbGN0YTFSNzRKNVVsMlBybHNWell1OGl3?=
+ =?utf-8?B?STdIcEh4MmttRGt0NlNRYWcxWkd1Y1ZvdjBPZG9Tai9ORmFFbmtGQVRjbm0x?=
+ =?utf-8?B?eVl1RzN6SlNkeGQyMmtNWnlrRUtGTGZxazBNY2hmNW1maFJOSWhsS3NwSG9K?=
+ =?utf-8?B?K1czUTRqa0UxN1lZSEExUVlzeEFvU0h2cHdXSXVYdDRzMk5zVW1qc2NOaGpC?=
+ =?utf-8?B?OXhFSkRKby9XdzZLR2c5bW9HRVYvT2FaT25vYURSNk9TcUxZNUlPRis2d3Fl?=
+ =?utf-8?B?cGdEcU8ydmxETGpCR1l4NXpGdnZXTmhGbVg1eXdLNkpPd1FkQzBWMFVEVnd0?=
+ =?utf-8?B?Y1dUcFpGaUhKdjhjYkRManhKSXkxQUVMenlhVzNmSHVvQjFSOGlKQm5iT3FZ?=
+ =?utf-8?B?THFyUEk0bHFqN3VETEFodU1ENHdVK3c2SjlsTDBjSHppT1FuenZ6U2gyNk9k?=
+ =?utf-8?B?a25IQWtDclNIaUMxMXZHRi9GT01GR2djY1QrSit3bzJrVGpwcjVPVFVFKzJo?=
+ =?utf-8?B?c24raFN3S1NRT2txM0hmVFlyUU5JeVBFRHVOQ0FWaWU1Y1BnalZxeGxDSCsw?=
+ =?utf-8?B?VDlwL3F0dVZlampoUFRhM3AzTHR4alBSazRrOUV3Z0xZQ0hZN0plT21qanhj?=
+ =?utf-8?B?MVdhcXJXODNyQVdxTXFRRE9OaTJuTllnUTJwVllmbjFQa0lqMHFSbVJYSTBU?=
+ =?utf-8?B?SEhrUWFJNFErc2o4NTJnZ2YyQm1GQkV4cURhdis4NlZTcEt0YUE1b0tEWmo3?=
+ =?utf-8?B?K3c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa9f302d-fc90-49e4-baf7-08ddebf668bc
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6391.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 19:59:21.9116 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 21:02:50.9721 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P9hgVJgkQT9DorDL1vZlub5gHM2/clp3TczMV/9lGIwiSOBduKiHPgaJyWWXtDUz8Fto7ov01p7F+C8v5HedUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFEF71E136E
+X-MS-Exchange-CrossTenant-UserPrincipalName: CA4qmQwb7yFbt17XN+ArURF/H8LjBc5PoD8N69/fYGf7G3B4oj9DAeQ8ICkWXzfzHE/+kFXtB4D77oJ6fRyX/jYuod5e5FsMdYgkceXO7Bw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5140
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -179,149 +196,224 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Sep 04, 2025 at 08:27:00AM +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> madvise-swizzle test introduced which is called in combination with other
-> tests as well. In this test the buffer object preferred location is
-> system memory. MADVISE_SWIZZLE called in main loop to toggle between
-> SYSTEM/DEVICE on each pass.
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-
-Feel free to merge the first 4 patches in this series. Reviewing the
-last patch may take a bit more time.
+On 8/18/2025 5:56 PM, Daniele Ceraolo Spurio wrote:
+> We already have a few tests using the PXP query functions and a new one
+> will be added in the next patch, so move the code to the common query
+> file to reduce duplication.
+>
+> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
 
 > ---
->  tests/intel/xe_exec_system_allocator.c | 35 ++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
-> 
-> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-> index e7f3d423a..8d9696a33 100644
-> --- a/tests/intel/xe_exec_system_allocator.c
-> +++ b/tests/intel/xe_exec_system_allocator.c
-> @@ -777,6 +777,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
->  #define PROCESSES		(0x1 << 24)
->  #define PREFETCH_BENCHMARK	(0x1 << 25)
->  #define PREFETCH_SYS_BENCHMARK	(0x1 << 26)
-> +#define MADVISE_SWIZZLE			(0x1 << 27)
->  
->  #define N_MULTI_FAULT		4
->  
-> @@ -885,7 +886,9 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
->   * arg[1]:
->   *
->   * @malloc:				malloc single buffer for all execs, issue a command which will trigger multiple faults
-> + * @malloc-madvise:			malloc single buffer for all execs, issue a command which will trigger multiple faults, perfoems madvise operation
->   * @malloc-prefetch:			malloc single buffer for all execs, prefetch buffer before each exec
-> + * @malloc-prefetch-madvise:		malloc single buffer for all execs, prefetch buffer before each exec, performs madvise operation
->   * @malloc-multi-fault:			malloc single buffer for all execs
->   * @malloc-fork-read:			malloc single buffer for all execs, fork a process to read test output
->   * @malloc-fork-read-after:		malloc single buffer for all execs, fork a process to read test output, check again after fork returns in parent
-> @@ -897,6 +900,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
->   * @mmap:				mmap single buffer for all execs
->   * @mmap-prefetch:			mmap single buffer for all execs, prefetch buffer before each exec
->   * @mmap-remap:				mmap and mremap a buffer for all execs
-> + * @mmap-remap-madvise:			mmap and mremap a buffer for all execs, performs madvise operations
->   * @mmap-remap-dontunmap:		mmap and mremap a buffer with dontunmap flag for all execs
->   * @mmap-remap-ro:			mmap and mremap a read-only buffer for all execs
->   * @mmap-remap-ro-dontunmap:		mmap and mremap a read-only buffer with dontunmap flag for all execs
-> @@ -916,16 +920,20 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
->   * @mmap-file-mlock:			mmap and mlock single buffer, with file backing, for all execs
->   * @mmap-race:				mmap single buffer for all execs with race between cpu and gpu access
->   * @free:				malloc and free buffer for each exec
-> + * @free-madvise:			malloc and free buffer for each exec, performs madvise operation
->   * @free-race:				malloc and free buffer for each exec with race between cpu and gpu access
->   * @new:				malloc a new buffer for each exec
-> + * @new-madvise:			malloc a new buffer for each exec, performs madvise operation
->   * @new-prefetch:			malloc a new buffer and prefetch for each exec
->   * @new-race:				malloc a new buffer for each exec with race between cpu and gpu access
->   * @new-bo-map:				malloc a new buffer or map BO for each exec
->   * @new-busy:				malloc a new buffer for each exec, try to unbind while buffers valid
->   * @mmap-free:				mmap and free buffer for each exec
-> + * @mmap-free-madvise:			mmap and free buffer for each exec, performs madvise operation
->   * @mmap-free-huge:			mmap huge page and free buffer for each exec
->   * @mmap-free-race:			mmap and free buffer for each exec with race between cpu and gpu access
->   * @mmap-new:				mmap a new buffer for each exec
-> + * @mmap-new-madvise:			mmap a new buffer for each exec and perform madvise operation
->   * @mmap-new-huge:			mmap huge page a new buffer for each exec
->   * @mmap-new-race:			mmap a new buffer for each exec with race between cpu and gpu access
->   * @malloc-nomemset:			malloc single buffer for all execs, skip memset of buffers
-> @@ -999,6 +1007,23 @@ static void igt_require_hugepages(void)
->  		      "No huge pages available!\n");
->  }
->  
-> +static void
-> +madvise_swizzle_op_exec(int fd, uint32_t vm, struct test_exec_data *data,
-> +		size_t bo_size, uint64_t addr, int index)
+>   lib/xe/xe_query.c    | 81 ++++++++++++++++++++++++++++++++++++++++++++
+>   lib/xe/xe_query.h    |  2 ++
+>   tests/intel/xe_pxp.c | 61 +++------------------------------
+>   tests/intel/xe_vm.c  | 13 +------
+>   4 files changed, 88 insertions(+), 69 deletions(-)
+>
+> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> index 3b8a682f8..920c20b06 100644
+> --- a/lib/xe/xe_query.c
+> +++ b/lib/xe/xe_query.c
+> @@ -996,6 +996,87 @@ uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32
+>   	return NULL;
+>   }
+>   
+> +/**
+> + * xe_query_pxp_status:
+> + * @fd: xe device fd
+> + *
+> + * Returns the PXP status value if PXP is supported, a negative errno otherwise.
+> + * See DRM_XE_DEVICE_QUERY_PXP_STATUS documentation for the possible errno
+> + * values and their meaning.
+> + */
+> +int xe_query_pxp_status(int fd)
 > +{
-> +	int preferred_loc;
+> +	struct drm_xe_query_pxp_status *pxp_query;
+> +	struct drm_xe_device_query query = {
+> +		.extensions = 0,
+> +		.query = DRM_XE_DEVICE_QUERY_PXP_STATUS,
+> +		.size = 0,
+> +		.data = 0,
+> +	};
+> +	int ret;
 > +
-> +	if (index % 2 == 0)
-> +		preferred_loc = DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM;
+> +	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
+> +		return -errno;
+> +
+> +	pxp_query = malloc(query.size);
+> +	igt_assert(pxp_query);
+> +	memset(pxp_query, 0, query.size);
+> +
+> +	query.data = to_user_pointer(pxp_query);
+> +
+> +	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
+> +		ret = -errno;
 > +	else
-> +		preferred_loc = DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE;
+> +		ret = pxp_query->status;
 > +
-> +	xe_vm_madvise(fd, vm, to_user_pointer(data), bo_size, 0,
-> +			DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-> +			preferred_loc,
-> +			0);
+> +	free(pxp_query);
+> +
+> +	return ret;
 > +}
 > +
->  static void
->  test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  	  int n_exec_queues, int n_execs, size_t bo_size,
-> @@ -1210,6 +1235,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
->  		if (barrier)
->  			pthread_barrier_wait(barrier);
->  
-> +		if (flags & MADVISE_SWIZZLE)
-> +			madvise_swizzle_op_exec(fd, vm, data, bo_size, addr, i);
+> +/**
+> + * xe_wait_for_pxp_init:
+> + * @fd: xe device fd
+> + *
+> + * Returns 0 once PXP is initialized and ready, -EINVAL if PXP is not supported
+> + * in the kernel, -ENODEV if PXP is not supported in HW. This function asserts
+> + * if something went wrong during PXP initialization.
+> + */
+> +int xe_wait_for_pxp_init(int fd)
+> +{
+> +	int pxp_status;
+> +	int i = 0;
 > +
->  		if (flags & MULTI_FAULT) {
->  			b = 0;
->  			for (j = 0; j < N_MULTI_FAULT - 1; ++j)
-> @@ -1790,7 +1818,9 @@ igt_main
->  	struct drm_xe_engine_class_instance *hwe;
->  	const struct section sections[] = {
->  		{ "malloc", 0 },
-> +		{ "malloc-madvise", MADVISE_SWIZZLE },
->  		{ "malloc-prefetch", PREFETCH },
-> +		{ "malloc-prefetch-madvise", PREFETCH | MADVISE_SWIZZLE },
->  		{ "malloc-multi-fault", MULTI_FAULT },
->  		{ "malloc-fork-read", FORK_READ },
->  		{ "malloc-fork-read-after", FORK_READ | FORK_READ_AFTER },
-> @@ -1802,6 +1832,7 @@ igt_main
->  		{ "mmap", MMAP },
->  		{ "mmap-prefetch", MMAP | PREFETCH },
->  		{ "mmap-remap", MMAP | MREMAP },
-> +		{ "mmap-remap-madvise", MMAP | MREMAP | MADVISE_SWIZZLE },
->  		{ "mmap-remap-dontunmap", MMAP | MREMAP | DONTUNMAP },
->  		{ "mmap-remap-ro", MMAP | MREMAP | READ_ONLY_REMAP },
->  		{ "mmap-remap-ro-dontunmap", MMAP | MREMAP | DONTUNMAP |
-> @@ -1828,16 +1859,20 @@ igt_main
->  		{ "mmap-file-mlock", MMAP | LOCK | FILE_BACKED },
->  		{ "mmap-race", MMAP | RACE },
->  		{ "free", NEW | FREE },
-> +		{ "free-madvise", NEW | FREE | MADVISE_SWIZZLE },
->  		{ "free-race", NEW | FREE | RACE },
->  		{ "new", NEW },
-> +		{ "new-madvise", NEW | MADVISE_SWIZZLE },
->  		{ "new-prefetch", NEW | PREFETCH },
->  		{ "new-race", NEW | RACE },
->  		{ "new-bo-map", NEW | BO_MAP },
->  		{ "new-busy", NEW | BUSY },
->  		{ "mmap-free", MMAP | NEW | FREE },
-> +		{ "mmap-free-madvise", MMAP | NEW | FREE | MADVISE_SWIZZLE },
->  		{ "mmap-free-huge", MMAP | NEW | FREE | HUGE_PAGE },
->  		{ "mmap-free-race", MMAP | NEW | FREE | RACE },
->  		{ "mmap-new", MMAP | NEW },
-> +		{ "mmap-new-madvise", MMAP | NEW | MADVISE_SWIZZLE },
->  		{ "mmap-new-huge", MMAP | NEW | HUGE_PAGE },
->  		{ "mmap-new-race", MMAP | NEW | RACE },
->  		{ "malloc-nomemset", SKIP_MEMSET },
-> -- 
-> 2.43.0
-> 
+> +	/* PXP init completes after driver init, so we might have to wait for it */
+> +	while (i++ < 50) {
+> +		pxp_status = xe_query_pxp_status(fd);
+> +
+> +		/*
+> +		 * -EINVAL and -ENODEV are both valid return values and they
+> +		 * respectively indicate that the the PXP interface is not
+> +		 * available (i.e., kernel too old) and that PXP is not
+> +		 * supported or disabled in HW.
+> +		 */
+> +		if (pxp_status == -EINVAL || pxp_status == -ENODEV)
+> +			return pxp_status;
+> +
+> +		/* status 1 means pxp is ready */
+> +		if (pxp_status == 1)
+> +			return 0;
+> +
+> +		/*
+> +		 * 0 means init still in progress, any other remaining state
+> +		 * is an unexpected error
+> +		 */
+> +		igt_assert_eq(pxp_status, 0);
+> +
+> +		usleep(50*1000);
+> +	}
+> +
+> +	igt_assert_f(0, "PXP failed to initialize within the timeout\n");
+> +	return -ETIMEDOUT;
+> +}
+> +
+>   igt_constructor
+>   {
+>   	xe_device_cache_init();
+> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> index cc54ec956..32917991d 100644
+> --- a/lib/xe/xe_query.h
+> +++ b/lib/xe/xe_query.h
+> @@ -130,6 +130,8 @@ bool xe_has_media_gt(int fd);
+>   bool xe_is_media_gt(int fd, int gt);
+>   uint16_t xe_gt_get_tile_id(int fd, int gt);
+>   uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32_t *len);
+> +int xe_query_pxp_status(int fd);
+> +int xe_wait_for_pxp_init(int fd);
+>   
+>   struct xe_device *xe_device_get(int fd);
+>   void xe_device_put(int fd);
+> diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
+> index 9eddc03fc..98f06ae13 100644
+> --- a/tests/intel/xe_pxp.c
+> +++ b/tests/intel/xe_pxp.c
+> @@ -105,67 +105,14 @@ static uint32_t create_regular_rcs_queue(int fd, uint32_t vm)
+>   	return xe_exec_queue_create(fd, vm, &inst, 0);
+>   }
+>   
+> -static int query_pxp_status(int fd)
+> -{
+> -	struct drm_xe_query_pxp_status *pxp_query;
+> -	struct drm_xe_device_query query = {
+> -		.extensions = 0,
+> -		.query = DRM_XE_DEVICE_QUERY_PXP_STATUS,
+> -		.size = 0,
+> -		.data = 0,
+> -	};
+> -	int ret;
+> -
+> -	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
+> -		return -errno;
+> -
+> -	pxp_query = malloc(query.size);
+> -	igt_assert(pxp_query);
+> -	memset(pxp_query, 0, query.size);
+> -
+> -	query.data = to_user_pointer(pxp_query);
+> -
+> -	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
+> -		ret = -errno;
+> -	else
+> -		ret = pxp_query->status;
+> -
+> -	free(pxp_query);
+> -
+> -	return ret;
+> -}
+> -
+>   static bool is_pxp_hw_supported(int fd)
+>   {
+> -	int pxp_status;
+> -	int i = 0;
+> -
+> -	/* PXP init completes after driver init, so we might have to wait for it */
+> -	while (i++ < 50) {
+> -		pxp_status = query_pxp_status(fd);
+> -
+> -		/* -EINVAL means the PXP interface is not available */
+> -		igt_require(pxp_status != -EINVAL);
+> -
+> -		/* -ENODEV means PXP not supported or disabled */
+> -		if (pxp_status == -ENODEV)
+> -			return false;
+> +	int ret = xe_wait_for_pxp_init(fd);
+>   
+> -		/* status 1 means pxp is ready */
+> -		if (pxp_status == 1)
+> -			return true;
+> -
+> -		/*
+> -		 * 0 means init still in progress, any other remaining state
+> -		 * is an error
+> -		 */
+> -		igt_assert_eq(pxp_status, 0);
+> -
+> -		usleep(50*1000);
+> -	}
+> +	/* -EINVAL means the PXP interface is not available */
+> +	igt_require(ret != -EINVAL);
+>   
+> -	igt_assert_f(0, "PXP failed to initialize within the timeout\n");
+> -	return false;
+> +	return ret == 0;
+>   }
+>   
+>   /**
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index 3ce54053c..90bd2722b 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -2177,18 +2177,7 @@ test_mmap_style_bind(int fd, struct drm_xe_engine_class_instance *eci,
+>   
+>   static bool pxp_interface_supported(int fd)
+>   {
+> -	struct drm_xe_device_query query = {
+> -		.extensions = 0,
+> -		.query = DRM_XE_DEVICE_QUERY_PXP_STATUS,
+> -		.size = 0,
+> -		.data = 0,
+> -	};
+> -	int ret = 0;
+> -
+> -	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
+> -		ret = -errno;
+> -
+> -	return ret != -EINVAL;
+> +	return xe_query_pxp_status(fd) != -EINVAL;
+>   }
+>   
+>   /**
+
