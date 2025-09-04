@@ -4,55 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 579FECA1013
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Sep 2025 08:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8E68CA1012
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Sep 2025 09:08:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D91E10E9B6;
-	Thu,  4 Sep 2025 08:27:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5111C10E9A3;
+	Thu,  4 Sep 2025 09:08:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JqTjRgmV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cRhxRts7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5535510E9B6
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Sep 2025 08:27:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A706E10E9A3
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Sep 2025 09:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1756974437; x=1788510437;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=JhP0ACsk3DbFG3rQknroQMAxqK6EPEOItGxqyCCXhtk=;
- b=JqTjRgmVANyv4BnxdnIzki2Ept3QX5o+KUxABN4lsExCSXXC9dEfwegc
- cZ3C3Nq+adjFHBkweC5dpMA3JzkYnXRQnASBlQv60VmaE28dKExURZoch
- jS51RwgTGx334y50vNniNwhvJhFdEexhit2DVeb8ci8Et5LR2IogqOkqY
- KRe6C1Ep3RkEtL5Xp9JqZ/Ii1HJLJQwt4LYct88QrlzOyMXXP/wU4S4du
- CUFmXxYy4BP6T5/ItIRRctbv2sbwnYrXR6Yb5oETmw17xkotae3R0MNL8
- kC85KhYhaHVReTiqmY8Ugm1q39WxJza2fZQvxd7jT8I1I7yOIn+SIM6yO g==;
-X-CSE-ConnectionGUID: xaBywWeIRVSgZixNad5/og==
-X-CSE-MsgGUID: ErErp1QnSTuIGuTb9KBYFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="61938010"
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; d="scan'208";a="61938010"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2025 01:27:16 -0700
-X-CSE-ConnectionGUID: z3Qle5CKSl+uX3K0MZz1qA==
-X-CSE-MsgGUID: PIgsdXo2SdqyepyIwKfomA==
+ t=1756976934; x=1788512934;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=+gdr/ml6bv0JTxA9fv4SNkgj/5QPkb9Hw2ajWwqJcQo=;
+ b=cRhxRts75kLnHEEe0P8L27clrlQnJunNExM+BZuINOqjm1VWxN+82Cew
+ bSqinbsfoM3iPQVLUFQKjzl1ErleVZXxvpJRI9K0/HyCUkWd3pYxt7S47
+ /N/2sxR9dutmygSjk/QSkrt0CIap1l/sSVzO5DzsaLK6x5ifW88cjg3NI
+ 9HPUdg8a9/mWbKXHAga7dQlrjai6PuThCOO6BPvXGLHII6XrT3KhQ2Bdq
+ YBG36EU3m462r5w9umCMPxy54NwE3WuPTrp3JWozUd4NZLn+ZnWbB1oA8
+ 4vvUbeOqELnAswq5P7JX7ke7axL1G02oIxP9o1I+uCnf3fjWuVbd6Mwtv w==;
+X-CSE-ConnectionGUID: qXFUsyPLRHWDWdeFJqyfCA==
+X-CSE-MsgGUID: OKr1TSPlSSyfm1iYeDIhKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="69573327"
+X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; d="scan'208";a="69573327"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2025 02:08:46 -0700
+X-CSE-ConnectionGUID: 8Xy/Oa0uSZanjiKJM0mmYg==
+X-CSE-MsgGUID: YIF7MiX4RSK5tE5GQmQ/Hg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; d="scan'208";a="171945432"
-Received: from dut2051bmgfrd.iind.intel.com ([10.190.232.68])
- by orviesa008.jf.intel.com with ESMTP; 04 Sep 2025 01:27:13 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, pravalika.gurram@intel.com,
- himal.prasad.ghimiray@intel.com, matthew.brost@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH v12 5/5] tests/intel/xe_exec_system_allocator: Add
- atomic_batch test in IGT
-Date: Thu,  4 Sep 2025 08:27:01 +0000
-Message-ID: <20250904082701.2154029-6-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250904082701.2154029-1-nishit.sharma@intel.com>
-References: <20250904082701.2154029-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; d="scan'208";a="171384479"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2025 02:08:46 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 4 Sep 2025 02:08:45 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Thu, 4 Sep 2025 02:08:45 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.74)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 4 Sep 2025 02:08:44 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gc6e/NW16PeUhUbGvKIYMZ17rBwF0sANKT3hCG+eyIJkO5uY85FJx/5o2+CYlrhpYIzaTazd5yp95s8lM4g9lYdP7UTTPnY6cSD0R3m2ITuxsWPpLPJG6+vFhz6J6ePFhSEm5eG3uleZMVGx5l5TkyUKcpgh5uyQU5mTCEvODWXSVagNN79PmoMyL+y9jvN/8btONn6H/lkNjxpYi6/Gv41kHR3EyC4CcgJuiUj7Q+phWKsJJFY5PdkZei+TssB0/QMgwX+N6+w/g79XHHLg7io2KpkbBP8bhDi4ijVYssjr6TCXOOigVTEM7ntcHft50Y3WRXSojVm8C4UJv6EN1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I6sYy+jVUHRAv7QBgmi+fzfzDi2hjKRwA2ImBkTTa9c=;
+ b=FxNNm40sw/JSebyleiSMQdPSqSde3z4aLXvdetUphY3hhoXW51Pv6s3Z8CqEeumU/fjjcelz4Yfpnv9hs7z3suSMJKhN62oWlfvLisp1L0wsxAJEsS7qT6XbHzN82ZSxK2DH5Y49566P+b2lMZJD1qhf/hEe1PhZ9afpZcSbHi672SmaZiqOE5/7J+731qqPgw1d0AOdyBrD2pVuRPWuQbQqPc0veAxol86jRnU1rM6/Nqam7SxNZWoxygTjYIyc7lHdP4UVJZFKzHZX9JwmN9fimBs25/WFYas6E8U+9Cu9fyq3t4hE1NbP3yyUTxZ4fkNiS85tIrbs1Exy/bgGcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
+ by SJ2PR11MB8513.namprd11.prod.outlook.com (2603:10b6:a03:56e::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Thu, 4 Sep
+ 2025 09:08:37 +0000
+Received: from BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372]) by BL1PR11MB5979.namprd11.prod.outlook.com
+ ([fe80::b0f6:fbc:94be:2372%4]) with mapi id 15.20.9073.026; Thu, 4 Sep 2025
+ 09:08:37 +0000
+Message-ID: <b4293061-3d01-4820-83d3-1b3e22123237@intel.com>
+Date: Thu, 4 Sep 2025 14:38:30 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 i-g-t 4/4] lib/igt_kms: Handle commit failures while
+ checking bpc constraints
+To: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <karthik.b.s@intel.com>
+References: <20250903050718.1976201-1-chaitanya.kumar.borah@intel.com>
+ <20250903050718.1976201-4-chaitanya.kumar.borah@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20250903050718.1976201-4-chaitanya.kumar.borah@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0016.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:179::6) To BL1PR11MB5979.namprd11.prod.outlook.com
+ (2603:10b6:208:386::9)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|SJ2PR11MB8513:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d3628ad-66f9-434e-9957-08ddeb92a1a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?emUrVk1FM2dTb1ZuNlZiOUFldWtITWtTdFprMFNNa1pMeHRQMHgrdUs0M2N0?=
+ =?utf-8?B?a2s1MGhYQlFHejRSaVNHMXpEaTB5N0lRQUlLbU5MelhMMGlIMm40TVVXZG96?=
+ =?utf-8?B?NWdRMzRwWnNaWHJnc2hMOUVPZXRRSVNod3NVWXdpQmxibjJPclMxT2FQK255?=
+ =?utf-8?B?TFV3RFBqUHNvUFFzT0hHZk9QbktWRGYvc0t0MVhidVF1V2thUHMzNEJWWHJP?=
+ =?utf-8?B?NlFQR0M5eWx6cE91ZldYcmNqN3laOGVJSnUrd3JHSW1xVkdYSUpvcGhOSFVo?=
+ =?utf-8?B?Yk9iMUdFWGNFMUVvVzdJM2NsZGZWSkt6WGlqSHJ4SklnRk1QR21PRVJtcnVt?=
+ =?utf-8?B?bEVmRkpJMTF1Y3FoWStiQ1g5aExmYU8wQXVleWJuZFVEdWc2Z09pcWhJSmI0?=
+ =?utf-8?B?d1ZYTXgzcDhHSEpicnNVaFppMml2SmpsSUROVnZTTjZ0TkpET3phd25kY1k3?=
+ =?utf-8?B?RllPR2F2TzRNRkJlREt6aFRBakdFUW9udmVsbjdlbVZpejVvMWkrNEZHbHEz?=
+ =?utf-8?B?WS9QeEZ2NUpjMEt0YzRpTzlQeHZuN2owcmFNcXl5Y2VoNS9Ld1Y4R0c3QVIv?=
+ =?utf-8?B?TFBucGt1Sms4T243TE1ZbUVNUDhoRzV6MTErbngxV3RLUVF0b3JqV2JKNHFQ?=
+ =?utf-8?B?OWljY1NBMlJaeXN6Rm1MWTIzdDdKSnVuR3dlUGRsdkZMWkxJQk03RmJPK0xr?=
+ =?utf-8?B?VEI5bjQ0dVg1TFZHNTNSb0I5b1pvZ0NVbmhVZWV6NmJ5ZDdBaWlnTjdiTVZu?=
+ =?utf-8?B?Z2cwL2dhMzdwdDU5Mkk2UHdWaU1UUVU5L091a3Z2OHRQNjlMMkVUN003YjNM?=
+ =?utf-8?B?b3VsSlhiY085NU1iRUJ4aU9oRk8zZXhOR3lqMEJPaUVBUy81WWpJd0FUUFV6?=
+ =?utf-8?B?Qzl4N1lXcEpYc0tQUDd3bkkwWmFiS3lRamI2ZFlZSXRCVnY1QkprcSt3T2JY?=
+ =?utf-8?B?VVd1b3dndTBhVmdiNTdCSUNzTTFpS3RPT0dhR0I3ZjFwaXVSd1FyZ1FXWXEy?=
+ =?utf-8?B?Vnc5Z1Yyb1pBN3BmNTN4RGxiZ1JkRDAxVWcxQ0xBSWNlTThRcGFrM1NNekhM?=
+ =?utf-8?B?UWMveC9STnBhNkhMUHY0KzBWYWEvVVFNcE5LbkdVZWtzd1M4SGdsaDVRTUI4?=
+ =?utf-8?B?bnI5QVlmRi8zejM3U3lyM2QvU3B2azlwa1BaWkJ6a1hZenNmd0htdmptbDNU?=
+ =?utf-8?B?VEU1a3N0dGRPY2loY1VkZ1JFUmdGMlA1VjR2SnM5RUdvMGxrT1REUDd0KzJJ?=
+ =?utf-8?B?TGNsYStCanBLWU9oQTF4QzVHVlpMLzNVYXB5cjBsRjJzdE9IajJNUE9PM1RO?=
+ =?utf-8?B?VWRvQ3gwUUtPa2lWWmI4TWJKckNKVytyR1Y2WlA0Y0RySC9tYUdwTnFIZlU4?=
+ =?utf-8?B?WFp6TnBQNlBMZ0IyV0lkbGR6ZVBYK25rcnRwQy9xUE5VN09rUjh1K3V0Qkxi?=
+ =?utf-8?B?QWJleHhpTFpuem0yNlpJb2FLYVZqaUVFcGhYbnZxWlhMR2JuTTV0UnBlajZK?=
+ =?utf-8?B?KzRWa0MwbTByeWs4OXJsNEh6U2o2dmkxWU52ZkV3UnBQazg4ZWdqNEZtc3RX?=
+ =?utf-8?B?dEpVWUZqZmtUSHpLclhMNWdnN3R3Ui8wSmhiOWNQWjdmczE4R0UxSHNNWkN2?=
+ =?utf-8?B?a215RVRuU2FwblQ2NXlmYjlsOXlOWHljdXRNN0dPQys1Wkl0VzRjTXhDUUgw?=
+ =?utf-8?B?RUtvVW4vNmhMaHYraGpqMzVYSjBFb1N6Y2JRSThQWmpYRlloZ1FZYklkQ0ZW?=
+ =?utf-8?B?YkZVd0w4OXpneW5tbEVZd20xdnF4M1hYL2pLSmVhSHF3S0NzMUpQV0swaDVU?=
+ =?utf-8?B?Ry91TThtYU1KK2VTaE9wUWExRnRPTEhNYXJjM0llTUtoWHpqVUZEeW1ZajN1?=
+ =?utf-8?B?Rlk5TXFpbTgrMTNnTDBRM2JZSW9oWHVUakhxVGJiVHloTGxwSnR6MDJ5RjlR?=
+ =?utf-8?Q?plC8/qW36WA=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WEFZNXZpNFZjMXFUSXZ4Z2lFUU5DUEpWeGdPTS9IRlFNSXk0a1Z3NjVOdUk0?=
+ =?utf-8?B?ZmVZbDZqcmhDRDZHWTk2MTNNTE9SaFZ4RzJmaDB6M1VxL0tveFRRaFM3eW01?=
+ =?utf-8?B?dXBadmhmNWRaYzNwdVEvbGhHRGJ3blU2ZHZoWElERDUrM2dEdmtHMWhRTnEw?=
+ =?utf-8?B?bzlXbEk4OFFZTzB6V2Mwcy9Hek1BL3R5MUx5Y3pkNTlXeTYxQU1vb3FRZU1B?=
+ =?utf-8?B?YkNlRGtScVR3eWp5MkNDMnQ4RmhRSk5yMW0vYTEwMndISGRsNHlSSVJ3a3ZO?=
+ =?utf-8?B?TFFiS2ZhanRMc09XOG9wKzNKSjFsalJjSFY4bjV2cUM2S0dIQ21nTVV5VWxZ?=
+ =?utf-8?B?VFBITUNGTnBFOVBObnZBNytTY3lBZWpPVjd6Q2NaS3pvRTEwb2JzbldkZjVH?=
+ =?utf-8?B?eXZONVl1YWc4cVJGU2oraDBkK2Rmc25MdUdTcnkwUUpxTG9wS0tuc3BBM3BM?=
+ =?utf-8?B?UHBFTmgxYW04Z3hUZG1RTWx5LzYwRGRMdlFUQ3FndWt5WWYwblAybisxYU4z?=
+ =?utf-8?B?V283ZzhGQU9VNTk2bTNTN3I1MXd5UllGTDhTR3JtRkZQWFpRS0VKb3Z3bGFW?=
+ =?utf-8?B?ZjRWeXhYaXhqci9BajJhYW04YmxPS2dMejhkb1pBL1hDN3ZDR1ZjYTV6cXc0?=
+ =?utf-8?B?NWJaR2ZzMUdWbHZpL3dpSW1ZT200dnNoS0c1N1YyaDV2dzBXTUlJQlBxTDBS?=
+ =?utf-8?B?MXNlOUNBZElBTnZqeHIySTU3WFBVK0NHTGFJTE9Na08vN240bW1Ja2luNE1L?=
+ =?utf-8?B?anNSTmtlczdrYTFGeWtSOGo1c0FZMnpJRnZibTF6TmtwRVQzU0NIajFNZlIy?=
+ =?utf-8?B?VGU2S0Nwdlk5WDJVQ1YyOWZ5bUJHc21pc1pwc29Ya3VYS1dzL01MYUdyVWxX?=
+ =?utf-8?B?QnpuNFZvblMyOTJsWXVNSCtPekhvZ3ZaZUVUdXhlR3ExL0Q5U1pFSXBneUxX?=
+ =?utf-8?B?V3RZOWZnRWhPQnJqbFowYjNLYWVGdm5CZDhnQm5DbTN0RHRoajJET2Q4TG16?=
+ =?utf-8?B?c0ticmluNG1hY0pNdFJOZ1diYmNqamU3UGhzdkVmNVNFMHBJNG5acWFvcUcx?=
+ =?utf-8?B?RGxQU2h5SDNLY242dVdKcnpFZXpnL3dmTm0xRURLRXhGNE05RE92ZDJtZjBs?=
+ =?utf-8?B?cEFRTTJ0Z2MrcGlraUhLMXJ0ZHFWL0JnQitIQlVRUThGZTEzbkpzNXF0dTVj?=
+ =?utf-8?B?RU0zM0NDUGJCMlhRZmVlZ3FVQzc2ejhWZXk1dUdhTVBJMHNPNkV2ZktrWFAy?=
+ =?utf-8?B?dnYxbVJMaG9XRnQrZU9DYlZNQ2puMTJZb09EMDkyVlRaVFcyNnhEUUpCUW1Q?=
+ =?utf-8?B?MWQycmQxemE5VndXa2lWZm1mdDJHZTdMQVhzdlpHaGM5c0tPb2xnQ21KdDVR?=
+ =?utf-8?B?anhHTmpwYVZKVzYweSs3Q3R1UjZaM2xac0l2aW9YbitSTGNzZlFXUUhwcURs?=
+ =?utf-8?B?MS8ydnVGK0RWMjgxNGZOczQ5UlpoMzBkZzVwTFpURFdYdkNuY09xRnJqR2ll?=
+ =?utf-8?B?cCtGNlZnUndyWVRzY2h5MitCa0Zyd2tBRTNIR1BJYnhMT3NqM0Flb0F4VTZp?=
+ =?utf-8?B?bjZObng5RCtONWlsblYxQ1F1czVCd1NCb3VqZjlIdHcrSE9DTytFYzFWckRC?=
+ =?utf-8?B?UGN6a2JXUFN3RVZSazR5K2Y0b1lYRGYzM28yQ1dCR0RuK0pXQnRuay9CNEx5?=
+ =?utf-8?B?Smg0eTdwVlNJYW5UdjUvVDdIN2JQamFoTHFGekxjSTNZU3Y2L3RSVFBoK1Ix?=
+ =?utf-8?B?WS9ER3c5SFB5YlYvei9aTjA1N0VYZFQ3RUtDSkVhSmhRQkF4b0RCaStXdlp1?=
+ =?utf-8?B?QjdqTU9IbFFmQ2FYdU92TEpnUy85L2lpRm5NZG11aUJxd0lDbHhTN04yOGk1?=
+ =?utf-8?B?NkdSdDk1OStDNVRybU9xZ1l3ZWFZcFV6bndCdEt6NU13RnZkTUpxNkJkZjJD?=
+ =?utf-8?B?ZUcvSVFZR05Nc3k2V294ZndsNk0wNmxSNFJLQkJXRnhMeTdiWXVJa2xOMklT?=
+ =?utf-8?B?bncwL2xSVndnU2hJam8zMHEydFdBbm96dVVPL1BrWm4wcXMyVmQ0dFg1MUxv?=
+ =?utf-8?B?NXdaV2tVRS9CYWdEZTFYNk5KVXVQaEpES2VTRjFCMlJNN0NNYWNhZy9ra1Rt?=
+ =?utf-8?B?UisxcU1XaVFDdDBuZnRYdFlla2dNaGliTFZFWWx4Q1hCMW56K2daMDFyeGJJ?=
+ =?utf-8?B?c1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d3628ad-66f9-434e-9957-08ddeb92a1a2
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 09:08:36.9007 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: THnHqDrQg0ekim+iuuuQQQdINdb22nA9Qzod3xQKYYy+uiC0hK3GMGehiePGEVY+cuI+j2hmSEtp+4HdFr8Kaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8513
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,634 +198,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Hi Chaitanya,
 
-ATOMIC_BATCH flag is introduced when true MI_ATOMIC | MI_ATOMIC_INC
-operation will be called. This will avoid writing another function which
-performs atomic increment operations. ATOMIC_BATCH flag is passed as
-argument in write_dword() if true then value will be written on passed
-address and incremented by ATOMIC_INC operation. For all memory
-operations this flag will be used to verify if ATOMIC operation is
-working or not.
+On 03-09-2025 10:37 am, Chaitanya Kumar Borah wrote:
+> With [1], the kernel may return -EINVAL if the requested bpc exceeds
+> available bandwidth. Update handling to catch commit failures instead of
+> exiting, allowing iteration over all modes to find one that supports the
+> maximum bpc.
+Patch LGTM
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 403 ++++++++++++++++++++++---
- 1 file changed, 366 insertions(+), 37 deletions(-)
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 8d9696a33..67f22dbff 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -17,6 +17,7 @@
- #include <time.h>
- 
- #include "igt.h"
-+#include "intel_pat.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_compute.h"
- #include "lib/intel_reg.h"
-@@ -31,6 +32,15 @@
- #define QUARTER_SEC		(NSEC_PER_SEC / 4)
- #define FIVE_SEC		(5LL * NSEC_PER_SEC)
- 
-+struct test_exec_data {
-+	uint32_t batch[32];
-+	uint64_t pad;
-+	uint64_t vm_sync;
-+	uint64_t exec_sync;
-+	uint32_t data;
-+	uint32_t expected_data;
-+};
-+
- struct batch_data {
- 	uint32_t batch[16];
- 	uint64_t pad;
-@@ -38,6 +48,7 @@ struct batch_data {
- 	uint32_t expected_data;
- };
- 
-+#define VAL_ATOMIC_EXPECTED  56
- #define WRITE_VALUE(data__, i__)	({			\
- 	if (!(data__)->expected_data)				\
- 		(data__)->expected_data = rand() << 12 | (i__);	\
-@@ -54,10 +65,19 @@ static void __write_dword(uint32_t *batch, uint64_t sdi_addr, uint32_t wdata,
- 	batch[(*idx)++] = wdata;
- }
- 
--static void write_dword(uint32_t *batch, uint64_t sdi_addr, uint32_t wdata,
--			int *idx)
-+static void write_dword(struct test_exec_data *data, uint64_t sdi_addr, uint32_t wdata,
-+			int *idx, bool atomic)
- {
--	__write_dword(batch, sdi_addr, wdata, idx);
-+	uint32_t *batch = data->batch;
-+
-+	if (atomic) {
-+		data->data = 55;
-+		batch[(*idx)++] = MI_ATOMIC | MI_ATOMIC_INC;
-+		batch[(*idx)++] = sdi_addr;
-+		batch[(*idx)++] = sdi_addr >> 32;
-+	} else
-+		__write_dword(batch, sdi_addr, wdata, idx);
-+
- 	batch[(*idx)++] = MI_BATCH_BUFFER_END;
- }
- 
-@@ -304,7 +324,7 @@ static void touch_all_pages(int fd, uint32_t exec_queue, void *ptr,
- 		uint64_t sdi_addr = addr + sdi_offset;
- 		int b = 0;
- 
--		write_dword(data->batch, sdi_addr, WRITE_VALUE(data, i), &b);
-+		write_dword((struct test_exec_data *)data, sdi_addr, WRITE_VALUE(data, i), &b, false);
- 		igt_assert(b <= ARRAY_SIZE(data->batch));
- 	}
- 
-@@ -447,6 +467,54 @@ static void __aligned_partial_free(struct aligned_alloc_type  *aligned_alloc_typ
-  * SUBTEST: processes-evict-malloc-mix-bo
-  * Description: multi-process trigger eviction of VRAM allocated via malloc and BO create
-  * Test category: stress test
-+ *
-+ * SUBTEST: madvise-multi-vma
-+ * Description: performs multiple madvise operations on multiple virtual memory area using atomic device attributes
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-split-vma
-+ * Description: perform madvise operations on multiple type VMAs (BO and CPU VMAs)
-+ * Test category: perform madvise operations on multiple type VMAs (BO and CPU VMAs)
-+ *
-+ * SUBTEST: madvise-atomic-vma
-+ * Description: perform madvise atomic operations on BO in VRAM/SMEM if atomic ATTR global/device
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-split-vma-with-mapping
-+ * Description: performs prefetch and page migration
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-vram
-+ * Description: performs both atomic and preferred loc madvise operations atomic device attributes set
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-gl
-+ * Description: performs both atomic and preferred loc madvise operations with atomic global attributes set
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-cpu
-+ * Description: performs both atomic and preferred loc madvise operations with atomic cpu attributes set
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-sram-migrate-pages
-+ * Description: performs preferred loc madvise operations and migrating all pages in smem
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-no-range-invalidate-same-attr
-+ * Description: performs atomic global madvise operation, prefetch and again madvise operation with same atomic attribute
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-range-invalidate-change-attr
-+ * Description: performs atomic global madvise operation, prefetch and again madvise operation with different atomic attribute
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-preffered-loc-atomic-und
-+ * Description: Tests madvise with preferred location set for atomic operations, but with an undefined
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: madvise-atomic-inc
-+ * Description: Tests madvise atomic operations
-+ * Test category: functionality test
-  */
- 
- static void
-@@ -701,7 +769,8 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- 		uint64_t sdi_addr = addr + sdi_offset;
- 		int b = 0;
- 
--		write_dword(data[i].batch, sdi_addr, WRITE_VALUE(&data[i], i), &b);
-+		write_dword((struct test_exec_data *)&data[i], sdi_addr, WRITE_VALUE(&data[i], i),
-+			     &b, false);
- 		igt_assert(b <= ARRAY_SIZE(data[i].batch));
- 
- 		if (!i)
-@@ -778,6 +847,20 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- #define PREFETCH_BENCHMARK	(0x1 << 25)
- #define PREFETCH_SYS_BENCHMARK	(0x1 << 26)
- #define MADVISE_SWIZZLE			(0x1 << 27)
-+#define MADVISE_OP			(0x1 << 28)
-+#define ATOMIC_BATCH			(0x1 << 29)
-+#define MIGRATE_ALL_PAGES		(0x1 << 30)
-+#define PREFERRED_LOC_ATOMIC_DEVICE	(0x1ull << 31)
-+#define PREFERRED_LOC_ATOMIC_GL		(0x1ull << 32)
-+#define PREFERRED_LOC_ATOMIC_CPU	(0x1ull << 33)
-+#define MADVISE_MULTI_VMA		(0x1ull << 34)
-+#define MADVISE_SPLIT_VMA		(0x1ull << 35)
-+#define MADVISE_ATOMIC_VMA		(0x1ull << 36)
-+#define PREFETCH_SPLIT_VMA		(0x1ull << 37)
-+#define PREFETCH_CHANGE_ATTR		(0x1ull << 38)
-+#define PREFETCH_SAME_ATTR		(0x1ull << 39)
-+#define PREFERRED_LOC_ATOMIC_UND	(0x1ull << 40)
-+#define MADVISE_ATOMIC_DEVICE		(0x1ull << 41)
- 
- #define N_MULTI_FAULT		4
- 
-@@ -886,7 +969,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
-  * arg[1]:
-  *
-  * @malloc:				malloc single buffer for all execs, issue a command which will trigger multiple faults
-- * @malloc-madvise:			malloc single buffer for all execs, issue a command which will trigger multiple faults, perfoems madvise operation
-+ * @malloc-madvise:			malloc single buffer for all execs, issue a command which will trigger multiple faults, performs madvise operation
-  * @malloc-prefetch:			malloc single buffer for all execs, prefetch buffer before each exec
-  * @malloc-prefetch-madvise:		malloc single buffer for all execs, prefetch buffer before each exec, performs madvise operation
-  * @malloc-multi-fault:			malloc single buffer for all execs
-@@ -989,16 +1072,6 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
-  * Description: Create multiple threads with a faults on different hardware engines to same addresses, racing between CPU and GPU access
-  * Test category: stress test
-  */
--
--struct test_exec_data {
--	uint32_t batch[32];
--	uint64_t pad;
--	uint64_t vm_sync;
--	uint64_t exec_sync;
--	uint32_t data;
--	uint32_t expected_data;
--};
--
- static void igt_require_hugepages(void)
- {
- 	igt_skip_on_f(!igt_get_meminfo("HugePages_Total"),
-@@ -1024,11 +1097,184 @@ madvise_swizzle_op_exec(int fd, uint32_t vm, struct test_exec_data *data,
- 			0);
- }
- 
-+static void
-+xe_vm_madvixe_pat_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
-+		int pat_index)
-+{
-+	xe_vm_madvise(fd, vm, addr, range, 0,
-+			DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0);
-+}
-+
-+static void
-+xe_vm_madvise_atomic_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
-+		int mem_attr)
-+{
-+	xe_vm_madvise(fd, vm, addr, range, 0,
-+			DRM_XE_MEM_RANGE_ATTR_ATOMIC,
-+			mem_attr, 0);
-+}
-+
-+static void
-+xe_vm_madvise_migrate_pages(int fd, uint32_t vm, uint64_t addr, uint64_t range)
-+{
-+	xe_vm_madvise(fd, vm, addr, range, 0,
-+			DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+			DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM,
-+			DRM_XE_MIGRATE_ALL_PAGES);
-+}
-+
-+static void
-+xe_vm_parse_execute_madvise(int fd, uint32_t vm, struct test_exec_data *data,
-+		size_t bo_size, struct drm_xe_engine_class_instance *eci,
-+		uint64_t addr, unsigned long long flags,
-+		struct drm_xe_sync *sync)
-+{
-+	uint32_t bo_flags, bo = 0;
-+
-+
-+	if (flags & MADVISE_ATOMIC_DEVICE)
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+				DRM_XE_ATOMIC_DEVICE);
-+
-+	if (flags & PREFERRED_LOC_ATOMIC_UND) {
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+				DRM_XE_ATOMIC_UNDEFINED);
-+	}
-+
-+	if (flags & PREFERRED_LOC_ATOMIC_DEVICE) {
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+				DRM_XE_ATOMIC_DEVICE);
-+	}
-+
-+	if (flags & PREFERRED_LOC_ATOMIC_GL) {
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+				DRM_XE_ATOMIC_GLOBAL);
-+	}
-+
-+	if (flags & PREFERRED_LOC_ATOMIC_CPU) {
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+				DRM_XE_ATOMIC_CPU);
-+	}
-+
-+	if (flags & MADVISE_MULTI_VMA) {
-+		if (bo_size)
-+			bo_size = ALIGN(bo_size, SZ_4K);
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data) + bo_size/2,
-+				bo_size/2, DRM_XE_ATOMIC_DEVICE);
-+
-+		xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data) + bo_size/2, bo_size/2,
-+				intel_get_pat_idx_wb(fd));
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data) + bo_size,
-+				bo_size, DRM_XE_ATOMIC_DEVICE);
-+
-+		xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data), bo_size,
-+				intel_get_pat_idx_wb(fd));
-+	}
-+
-+	if (flags & MADVISE_SPLIT_VMA) {
-+		if (bo_size)
-+			bo_size = ALIGN(bo_size, SZ_4K);
-+
-+		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-+		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id),
-+				bo_flags);
-+		xe_vm_bind_async(fd, vm, 0, bo, 0, to_user_pointer(data) + bo_size/2,
-+				bo_size/2, 0, 0);
-+
-+		__xe_vm_bind_assert(fd, vm, 0, 0, 0, to_user_pointer(data) + bo_size/2,
-+				bo_size/2, DRM_XE_VM_BIND_OP_MAP,
-+				DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR, sync,
-+				1, 0, 0);
-+		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-+		data[0].vm_sync = 0;
-+		gem_close(fd, bo);
-+		bo = 0;
-+
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size/2,
-+				DRM_XE_ATOMIC_GLOBAL);
-+	}
-+}
-+
-+static void
-+madvise_prefetch_op(int fd, uint32_t vm, uint64_t addr, size_t bo_size,
-+		unsigned long long flags, struct test_exec_data *data)
-+{
-+	uint32_t val;
-+
-+	if (flags & PREFETCH_SPLIT_VMA) {
-+		bo_size = ALIGN(bo_size, SZ_4K);
-+
-+		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0, 0);
-+
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+		igt_debug("num_vmas before madvise = %d\n", val);
-+
-+		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size/2);
-+
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+		igt_debug("num_vmas after madvise= %d\n", val);
-+	} else if (flags & PREFETCH_SAME_ATTR) {
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+				DRM_XE_ATOMIC_GLOBAL);
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0,
-+				DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size/2,
-+				DRM_XE_ATOMIC_GLOBAL);
-+	} else if (flags & PREFETCH_CHANGE_ATTR) {
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+				DRM_XE_ATOMIC_GLOBAL);
-+
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0,
-+				DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
-+
-+		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
-+				DRM_XE_ATOMIC_DEVICE);
-+
-+		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+	}
-+}
-+
-+static void
-+madvise_vma_addr_map(uint64_t addr, int i, int idx, size_t bo_size,
-+		     struct test_exec_data *data,
-+		     uint64_t *batch_offset,
-+		     uint64_t *batch_addr, uint64_t *sdi_offset,
-+		     uint64_t *sdi_addr,
-+		     unsigned long long flags,
-+		     uint64_t *split_vma_offset)
-+{
-+	if (flags & MADVISE_MULTI_VMA) {
-+		addr = addr + i * bo_size;
-+		data = from_user_pointer(addr);
-+		*batch_offset = (size_t)((char *)&(data[idx].batch) - (char *)data);
-+		*batch_addr = addr + *batch_offset;
-+		*sdi_offset = (size_t)((char *)&(data[idx].data) - (char *)data);
-+		*sdi_addr = addr + *sdi_offset;
-+	}
-+}
-+
- static void
- test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	  int n_exec_queues, int n_execs, size_t bo_size,
- 	  size_t stride, uint32_t vm, void *alloc, pthread_barrier_t *barrier,
--	  unsigned int flags)
-+	  unsigned long long flags)
- {
- 	uint64_t addr;
- 	struct drm_xe_sync sync[1] = {
-@@ -1041,7 +1287,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		.syncs = to_user_pointer(sync),
- 	};
- 	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
--	struct test_exec_data *data, *next_data = NULL;
-+	struct test_exec_data *data, *next_data = NULL, *original_data = NULL;
- 	uint32_t bo_flags;
- 	uint32_t bo = 0, bind_sync = 0;
- 	void **pending_free;
-@@ -1159,6 +1405,9 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	addr = to_user_pointer(data);
- 
-+	if (flags & MADVISE_OP)
-+		xe_vm_parse_execute_madvise(fd, vm, data, bo_size, eci, addr, flags, sync);
-+
- 	if (flags & BO_UNMAP) {
- 		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
- 		bo = xe_bo_create(fd, vm, bo_size,
-@@ -1232,42 +1481,61 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		bool fault_inject = (FAULT & flags) && i == n_execs / 2;
- 		bool fault_injected = (FAULT & flags) && i > n_execs;
- 
-+		uint64_t split_vma_offset;
-+
- 		if (barrier)
- 			pthread_barrier_wait(barrier);
- 
- 		if (flags & MADVISE_SWIZZLE)
- 			madvise_swizzle_op_exec(fd, vm, data, bo_size, addr, i);
- 
-+		if (flags & MADVISE_OP) {
-+			if (flags & MADVISE_MULTI_VMA)
-+				original_data = data;
-+
-+			madvise_vma_addr_map(addr, i, idx, bo_size, data, &batch_offset,
-+					      &batch_addr, &sdi_offset, &sdi_addr, flags,
-+					      &split_vma_offset);
-+		}
-+
- 		if (flags & MULTI_FAULT) {
- 			b = 0;
- 			for (j = 0; j < N_MULTI_FAULT - 1; ++j)
- 				__write_dword(data[idx].batch,
- 					      sdi_addr + j * orig_size,
- 					      WRITE_VALUE(&data[idx], idx), &b);
--			write_dword(data[idx].batch, sdi_addr + j * orig_size,
--				    WRITE_VALUE(&data[idx], idx), &b);
-+			write_dword(&data[idx], sdi_addr + j * orig_size,
-+				    WRITE_VALUE(&data[idx], idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
- 		} else if (!(flags & EVERY_OTHER_CHECK)) {
- 			b = 0;
--			write_dword(data[idx].batch, sdi_addr,
--				    WRITE_VALUE(&data[idx], idx), &b);
-+			write_dword(&data[idx], sdi_addr,
-+					WRITE_VALUE(&data[idx], idx), &b,
-+					flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
-+			if (flags & PREFETCH)
-+				madvise_prefetch_op(fd, vm, addr, bo_size, flags, data);
- 		} else if (flags & EVERY_OTHER_CHECK && !odd(i)) {
- 			b = 0;
--			write_dword(data[idx].batch, sdi_addr,
--				    WRITE_VALUE(&data[idx], idx), &b);
-+			write_dword(&data[idx], sdi_addr,
-+				    WRITE_VALUE(&data[idx], idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[idx].batch));
- 
- 			aligned_alloc_type = __aligned_alloc(aligned_size, bo_size);
- 			next_data = aligned_alloc_type.ptr;
- 			igt_assert(next_data);
-+
-+			xe_vm_parse_execute_madvise(fd, vm, data, bo_size, eci, addr, flags, sync);
- 			__aligned_partial_free(&aligned_alloc_type);
- 
- 			b = 0;
--			write_dword(data[next_idx].batch,
-+			write_dword(&data[next_idx],
- 				    to_user_pointer(next_data) +
- 				    (char *)&data[next_idx].data - (char *)data,
--				    WRITE_VALUE(&data[next_idx], next_idx), &b);
-+				    WRITE_VALUE(&data[next_idx], next_idx), &b,
-+				    flags & ATOMIC_BATCH ? true : false);
- 			igt_assert(b <= ARRAY_SIZE(data[next_idx].batch));
- 		}
- 
-@@ -1301,7 +1569,6 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			exec.address = batch_addr * 2;
- 		else
- 			exec.address = batch_addr;
--
- 		if (fault_injected) {
- 			err = __xe_exec(fd, &exec);
- 			igt_assert(err == -ENOENT);
-@@ -1321,9 +1588,19 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 					       exec_queues[e], &timeout);
- 			igt_assert(err == -ETIME || err == -EIO);
- 		} else {
--			xe_wait_ufence(fd, exec_ufence ? exec_ufence :
--				       &data[idx].exec_sync, USER_FENCE_VALUE,
--				       exec_queues[e], FIVE_SEC);
-+			if (flags & PREFERRED_LOC_ATOMIC_CPU || flags & PREFERRED_LOC_ATOMIC_UND) {
-+				int64_t timeout = QUARTER_SEC;
-+
-+				err = __xe_wait_ufence(fd, exec_ufence ? exec_ufence :
-+						       &data[idx].exec_sync,
-+						       USER_FENCE_VALUE,
-+						       exec_queues[e], &timeout);
-+				if (err)
-+					goto cleanup;
-+			} else
-+				xe_wait_ufence(fd, exec_ufence ? exec_ufence :
-+					       &data[idx].exec_sync, USER_FENCE_VALUE,
-+					       exec_queues[e], FIVE_SEC);
- 			if (flags & LOCK && !i)
- 				munlock(data, bo_size);
- 
-@@ -1373,17 +1650,25 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				if (flags & FORK_READ) {
- 					igt_fork(child, 1)
- 						igt_assert_eq(data[idx].data,
--							      READ_VALUE(&data[idx]));
-+							      flags & ATOMIC_BATCH
-+							      ? VAL_ATOMIC_EXPECTED
-+							      : READ_VALUE(&data[idx]));
- 					if (!(flags & FORK_READ_AFTER))
- 						igt_assert_eq(data[idx].data,
--							      READ_VALUE(&data[idx]));
-+							      flags & ATOMIC_BATCH
-+							      ? VAL_ATOMIC_EXPECTED
-+							      : READ_VALUE(&data[idx]));
- 					igt_waitchildren();
- 					if (flags & FORK_READ_AFTER)
- 						igt_assert_eq(data[idx].data,
--							      READ_VALUE(&data[idx]));
-+							      flags & ATOMIC_BATCH
-+							      ? VAL_ATOMIC_EXPECTED
-+							      : READ_VALUE(&data[idx]));
- 				} else {
- 					igt_assert_eq(data[idx].data,
--						      READ_VALUE(&data[idx]));
-+						      flags & ATOMIC_BATCH
-+						      ? VAL_ATOMIC_EXPECTED
-+						      : READ_VALUE(&data[idx]));
- 					if (flags & PREFETCH_SYS_BENCHMARK) {
- 						struct timespec tv = {};
- 						u64 start, end;
-@@ -1410,13 +1695,17 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 								((void *)data) + j * orig_size;
- 
- 							igt_assert_eq(__data[idx].data,
--								      READ_VALUE(&data[idx]));
-+								      flags & ATOMIC_BATCH
-+								      ? VAL_ATOMIC_EXPECTED
-+								      : READ_VALUE(&data[idx]));
- 						}
- 					}
- 				}
- 				if (flags & EVERY_OTHER_CHECK)
- 					igt_assert_eq(data[prev_idx].data,
--						      READ_VALUE(&data[prev_idx]));
-+						      flags & ATOMIC_BATCH
-+						      ? VAL_ATOMIC_EXPECTED
-+						      : READ_VALUE(&data[prev_idx]));
- 			}
- 		}
- 
-@@ -1437,6 +1726,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			gem_close(fd, bo);
- 		}
- 
-+		if (flags & MADVISE_MULTI_VMA) {
-+			data = original_data;
-+			original_data = NULL;
-+		}
-+
- 		if (flags & NEW) {
- 			if (flags & MMAP) {
- 				if (flags & FREE)
-@@ -1515,6 +1809,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 				 pf_count, pf_count_after);
- 	}
- 
-+cleanup:
- 	if (bo) {
- 		sync[0].addr = to_user_pointer(bind_ufence);
- 		__xe_vm_bind_assert(fd, vm, 0,
-@@ -1810,7 +2105,7 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size)
- 
- struct section {
- 	const char *name;
--	unsigned int flags;
-+	unsigned long long flags;
- };
- 
- igt_main
-@@ -1917,6 +2212,32 @@ igt_main
- 		{ "malloc-mix-bo", MIX_BO_ALLOC },
- 		{ NULL },
- 	};
-+	const struct section msections[] = {
-+		{ "atomic-inc", MADVISE_OP | MADVISE_ATOMIC_DEVICE | ATOMIC_BATCH },
-+		{ "preffered-loc-sram-migrate-pages",
-+		  MADVISE_OP | MADVISE_SWIZZLE | MIGRATE_ALL_PAGES | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-vram",
-+		  MADVISE_OP | PREFERRED_LOC_ATOMIC_DEVICE | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-gl",
-+		  MADVISE_OP | PREFERRED_LOC_ATOMIC_GL | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-cpu",
-+		  MADVISE_OP | PREFERRED_LOC_ATOMIC_CPU | ATOMIC_BATCH },
-+		{ "preffered-loc-atomic-und",
-+		  MADVISE_OP | PREFERRED_LOC_ATOMIC_UND | ATOMIC_BATCH },
-+		{ "multi-vma",
-+		  MADVISE_OP | MADVISE_MULTI_VMA | ATOMIC_BATCH },
-+		{ "split-vma",
-+		  MADVISE_OP | MADVISE_SPLIT_VMA | ATOMIC_BATCH },
-+		{ "atomic-vma",
-+		  MADVISE_OP | MADVISE_ATOMIC_VMA | ATOMIC_BATCH },
-+		{ "split-vma-with-mapping",
-+		  MADVISE_OP | PREFETCH | PREFETCH_SPLIT_VMA | ATOMIC_BATCH },
-+		{ "range-invalidate-change-attr",
-+		  MADVISE_OP | PREFETCH | PREFETCH_CHANGE_ATTR | ATOMIC_BATCH },
-+		{ "no-range-invalidate-same-attr",
-+		  MADVISE_OP | PREFETCH | PREFETCH_SAME_ATTR | ATOMIC_BATCH },
-+		{ NULL },
-+	};
- 	int fd;
- 
- 	igt_fixture {
-@@ -2113,6 +2434,14 @@ igt_main
- 			processes_evict(fd, SZ_8M, SZ_1M, s->flags);
- 	}
- 
-+	for (const struct section *s = msections; s->name; s++) {
-+		igt_subtest_f("madvise-%s", s->name) {
-+			xe_for_each_engine(fd, hwe)
-+				test_exec(fd, hwe, 1, 1, SZ_64K, 0, 0, NULL,
-+					  NULL, s->flags);
-+		}
-+	}
-+
- 	igt_subtest("compute")
- 		xe_for_each_engine(fd, hwe)
- 			test_compute(fd, hwe, SZ_2M);
--- 
-2.43.0
+>
+> [1] https://lore.kernel.org/intel-gfx/20250730055523.2214966-1-chaitanya.kumar.borah@intel.com/
+>
+> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> ---
+>   lib/igt_kms.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index d240c7ac5..df4a96a17 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6376,7 +6376,9 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
+>   		    !igt_check_bigjoiner_support(display))
+>   			continue;
+>   
+> -		igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+> +		if (igt_display_try_commit2(display,
+> +					    display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY))
+> +			continue;
+>   
+>   		if (!igt_check_output_bpc_equal(display->drm_fd, pipe,
+>   						output->name, bpc))
 
