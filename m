@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD0F1CA0FED
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Sep 2025 21:01:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 198B1CA1017
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Sep 2025 21:01:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 56F5310EC46;
-	Fri,  5 Sep 2025 21:01:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C318810EC48;
+	Fri,  5 Sep 2025 21:01:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fF7KQ0u8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HeSAtEre";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA90010EC46
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Sep 2025 21:01:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA39210EC46
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Sep 2025 21:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757106087; x=1788642087;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=7o6F/e4BFHVefzzFGWVyRz+/2FvMnJSJod9w0RZOTVs=;
- b=fF7KQ0u83oFYdR9kVRDpU2zaiFtNqTnyAKgnqOYiLEoR574VM1bHA5Wf
- x1EYhjM/jSfh0nqANVHuL6fcueULc5CYm0oAH/eJi97dg/f1i8ICaEL8J
- kr4SNvD1quYWp1hqkBKvMkJrea4nyKwAMqi2wqWzUI3zs+edwh2rKS6HG
- L7KmVj/bCtyi0b7K5xmhOyV0drDB6Se9LaJe4UDqbJFqieRkc7r7YENlP
- ftZy5dYMva0WFibz0wuNEBtUjAKUFhxAdzFWXjMD6rd9Y9/+do1LAi2Tw
- MhoS1DAFsoBbWE+E7q1EoejIUPemiUnu5apisnzB7FckOsK6NFLK8YChn Q==;
-X-CSE-ConnectionGUID: 4bDybyjmTDGZAYKNa8XQdQ==
-X-CSE-MsgGUID: xbLEZzDQQDiNaKNRCgeK5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59530904"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59530904"
+ t=1757106088; x=1788642088;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=k1Xdbt+N9CQj2Olk6qf3IoYWA/3IYCAi+w9hYX5pRso=;
+ b=HeSAtEreCVjQUvbbbjf9FdoZ04x7c45YskfThkTmAFTp++h70HEI4RkF
+ H80+ga1yIG6+uNtlmCcrDpuTfxFY84NCN1lmQeETL/DxUY+YCUQ3A9dtL
+ xt8iU23uJOKuldSJWLsCYQaJgQeEAxT2IDOcGpARkKqAapZNbVZFHhr4n
+ sRMMFKED/DkdiXpbstcpGn+WSX+EQLWpGT8hqt0zjRfGVUR6avlTsO7eE
+ ionSp5uJW4/92fRjAexFMundJpK2as/kArZDIaXUXQgKltb4GjcUycKHz
+ LmjZT7HFBgN4/AcRp7lrzFp7An3FvxpNkeu6FePcuWZav7xEg0gXc6fYg w==;
+X-CSE-ConnectionGUID: SsRpcZRRT0mftm4lUAsxZg==
+X-CSE-MsgGUID: XixG/NTbR7m0k+7wxdpzSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59530905"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59530905"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Sep 2025 14:01:26 -0700
-X-CSE-ConnectionGUID: gk4EppxYTKGIE6CJkp2zYw==
-X-CSE-MsgGUID: ME/dJhT4Snq4bXtmbSSqVg==
+ 05 Sep 2025 14:01:27 -0700
+X-CSE-ConnectionGUID: FA231agBSlCo1UagKGZYGA==
+X-CSE-MsgGUID: +AyUQmOFSumkezdTnMWivQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,242,1751266800"; d="scan'208";a="177459191"
+X-IronPort-AV: E=Sophos;i="6.18,242,1751266800"; d="scan'208";a="177459196"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 14:01:25 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 14:01:26 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t,v4 0/4] Add dsc+bigjoiner subtest
-Date: Sat,  6 Sep 2025 02:38:12 +0530
-Message-Id: <20250905210816.319104-1-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t,v4 1/4] lib/igt_kms: Add igt_get_joined_pipes_name()
+Date: Sat,  6 Sep 2025 02:38:13 +0530
+Message-Id: <20250905210816.319104-2-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250905210816.319104-1-swati2.sharma@intel.com>
+References: <20250905210816.319104-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,25 +68,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-New subtest is added to validate dsc + big/ultra joiner use cases.
+Add function to transform the enum into a string.
 
-Swati Sharma (4):
-  lib/igt_kms: Add igt_get_joined_pipes_name()
-  tests/kms_joiner_helper: Add igt_is_joiner_supported_by_source()
-  tests/intel/kms_dsc_helper: Add helper func()
-  tests/intel/kms_dsc: Add force dsc and joiner test cases
+v2: -Improved func() doc (Jeevan)
 
- lib/igt_kms.c                   |  22 ++++
- lib/igt_kms.h                   |   1 +
- tests/intel/kms_dsc.c           | 198 ++++++++++++++++++++------------
- tests/intel/kms_dsc_helper.c    |  54 +++++++++
- tests/intel/kms_dsc_helper.h    |   3 +
- tests/intel/kms_joiner.c        |   9 +-
- tests/intel/kms_joiner_helper.c |  33 ++++++
- tests/intel/kms_joiner_helper.h |   2 +
- tests/meson.build               |  17 ++-
- 9 files changed, 255 insertions(+), 84 deletions(-)
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ lib/igt_kms.c | 22 ++++++++++++++++++++++
+ lib/igt_kms.h |  1 +
+ 2 files changed, 23 insertions(+)
 
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index d240c7ac5..1d059a8bf 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1801,6 +1801,28 @@ bool kmstest_force_connector_joiner(int drm_fd, drmModeConnector *connector, int
+ 	return true;
+ }
+ 
++/**
++ * igt_get_joined_pipes_name:
++ * @val: forced value
++ *
++ * Returns: A joined_pipes enum value into a readable string.
++ */
++const char *igt_get_joined_pipes_name(enum joined_pipes val)
++{
++	switch (val) {
++	case JOINED_PIPES_DEFAULT:
++		return "";
++	case JOINED_PIPES_NONE:
++		return "-none";
++	case JOINED_PIPES_BIG_JOINER:
++		return "-bigjoiner";
++	case JOINED_PIPES_ULTRA_JOINER:
++		return "-ultrajoiner";
++	default:
++		igt_assert(false);
++	}
++}
++
+ /**
+  * kmstest_force_edid:
+  * @drm_fd: drm file descriptor
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 6ef6871d5..b52429bdc 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1286,6 +1286,7 @@ void igt_set_link_params(int drm_fd, igt_output_t *output,
+ int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
+ int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
+ uint32_t igt_get_connected_output_count(igt_display_t *display);
++const char *igt_get_joined_pipes_name(enum joined_pipes val);
+ 
+ drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output);
+ 
 -- 
 2.25.1
 
