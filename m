@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 752BBCA1013
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Sep 2025 12:39:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49765CA0FED
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Sep 2025 12:39:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 28A6410EB99;
-	Fri,  5 Sep 2025 12:39:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E866710E0CD;
+	Fri,  5 Sep 2025 12:39:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JL4OJkPA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ifTYbj8N";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CF3F10EB99
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Sep 2025 12:39:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6273410EB9C
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Sep 2025 12:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757075988; x=1788611988;
+ t=1757075992; x=1788611992;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=83XeUdssGY/5XEh+ISpfBBazZRLfhaP5EaF7K/wAg5g=;
- b=JL4OJkPAzgw7xzI32hfXg74cO7/5l46rUs2wA907XdKiO517/Nr6D97b
- xnXTCzbFfoJAOzaxCbtKyq5DTLC2zUbboelxWp0bxte3fLW3h0POL7mLs
- F8xcoR/72XnXVDgKLJhe4thtW9CEyu9jPboYpXtOnPC9qLqI4Rdj2WtcS
- a5r22AV1tRNFnhJGLqghXkc8ZGr3zJGnNMlbCjxMPgMOOVv4gGe+woepE
- cMAxtJD4YYp+I5mklQY6Asb0h7BM1kBZM4b+wwcSYPkziZR8+K9HO3FHI
- kZRVeuzs4Ou6Ebc1tasGJEs0KtTV2iisAwO9mVxgSJ7PN3KK1koqqbBzI Q==;
-X-CSE-ConnectionGUID: Cfn/R4VdSiCfFwhnKSPkGA==
-X-CSE-MsgGUID: ZyLteZSzR1CEtQYIfShD+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59492796"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59492796"
+ bh=bAunf4Kf8kl86f+mfjryxJNdsu6dmkSKtfPNnkZm90M=;
+ b=ifTYbj8NhFcJEtGPsIp9H+9Pn46fZod8OtKQnz8kZG7fNkJXPDdloFfG
+ lMvjE/bZU6/fTIxww4he+UWMjsXx7bnm0jOOjZf+J3zVIU3Ry7yDgr0c3
+ y3gkqdjEO+LMSxRUc0XNrtxdO7EEsqMhQ6R7PXhJlPRwrer1510MOY2NJ
+ 7/D55PiIv8DreBtUl1X1KgKoEpek7ql0E4XDNQiHv+90PdWogIl/AnVUk
+ 7zCo8qp/7+M3zkOpRwgfNVeh9qnANVRvz6Rqg98s6e2iH5Dg8dyp22HGT
+ vO8dGVNowfy8/kgVjLS/rk6Ux2/cnm5mn77YcBAtsDtWXma3gjnxkgr7f g==;
+X-CSE-ConnectionGUID: 7HDD5CqzSDSCVDoDyxG+wQ==
+X-CSE-MsgGUID: 0ipC75nRRiagVGgjir8G+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59492799"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59492799"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Sep 2025 05:39:48 -0700
-X-CSE-ConnectionGUID: JU6lN2c2RH+IzR6T+a/Hcw==
-X-CSE-MsgGUID: pjpEa3uoRa2OzrBZ8bP3ag==
+ 05 Sep 2025 05:39:52 -0700
+X-CSE-ConnectionGUID: lkVH9p6aTUuIT2o29xoPwA==
+X-CSE-MsgGUID: VmJf5P63QzC6MgvAhBZZJg==
 X-ExtLoop1: 1
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.226])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Sep 2025 05:39:46 -0700
+ 05 Sep 2025 05:39:50 -0700
 From: Pawel Sikora <pawel.sikora@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v7 2/6] docs: create symlinks for
- NEWS/MAINTAINERS/CONTRIB
-Date: Fri,  5 Sep 2025 14:39:23 +0200
-Message-ID: <20250905123928.130927-3-pawel.sikora@intel.com>
+Subject: [PATCH i-g-t v7 3/6] docs: change cross-building.txt to .md
+Date: Fri,  5 Sep 2025 14:39:24 +0200
+Message-ID: <20250905123928.130927-4-pawel.sikora@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250905123928.130927-1-pawel.sikora@intel.com>
 References: <20250905123928.130927-1-pawel.sikora@intel.com>
@@ -68,56 +67,24 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some files needs to appear in the documentation and they are
-needed in the 'docs' directory.
+This commit is to move cross-building.txt
+to cross-building.md in order to be properly
+processed by the mkdocs documentation tool.
 
-Creating symbolic links in the 'docs' directory for:
-
-* docs/CONTRIBUTING -> CONTRIBUTING.md
-* docs/NEWS.md -> NEWS
-* docs/MAINTAINERS.md -> MAINTAINERS
-
-This allows a legacy way of using those files from the root
-directory of the project and for a new format and usage
-by the mkdocs tool.
-
-v4:
- - Add symlinks instead of moving files into docs dir (Kamil)
+This commit moves cross-building.txt to
+cross-building.md in order to be properly
+processed by the MkDocs documentation tool.
 
 Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
 ---
- docs/CONTRIBUTING.md | 1 +
- docs/MAINTAINERS.md  | 1 +
- docs/NEWS.md         | 1 +
- 3 files changed, 3 insertions(+)
- create mode 120000 docs/CONTRIBUTING.md
- create mode 120000 docs/MAINTAINERS.md
- create mode 120000 docs/NEWS.md
+ docs/{cross-building.txt => cross-building.md} | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename docs/{cross-building.txt => cross-building.md} (100%)
 
-diff --git a/docs/CONTRIBUTING.md b/docs/CONTRIBUTING.md
-new file mode 120000
-index 000000000..44fcc6343
---- /dev/null
-+++ b/docs/CONTRIBUTING.md
-@@ -0,0 +1 @@
-+../CONTRIBUTING.md
-\ No newline at end of file
-diff --git a/docs/MAINTAINERS.md b/docs/MAINTAINERS.md
-new file mode 120000
-index 000000000..67231b1e1
---- /dev/null
-+++ b/docs/MAINTAINERS.md
-@@ -0,0 +1 @@
-+../MAINTAINERS
-\ No newline at end of file
-diff --git a/docs/NEWS.md b/docs/NEWS.md
-new file mode 120000
-index 000000000..0fae0f802
---- /dev/null
-+++ b/docs/NEWS.md
-@@ -0,0 +1 @@
-+../NEWS
-\ No newline at end of file
+diff --git a/docs/cross-building.txt b/docs/cross-building.md
+similarity index 100%
+rename from docs/cross-building.txt
+rename to docs/cross-building.md
 -- 
 2.51.0
 
