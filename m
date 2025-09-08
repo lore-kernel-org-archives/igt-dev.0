@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC7D8CAC585
-	for <igt-dev@archiver.kernel.org>; Mon,  8 Sep 2025 17:14:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 087B7CA1016
+	for <igt-dev@archiver.kernel.org>; Mon,  8 Sep 2025 17:43:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 648F310E584;
-	Mon,  8 Sep 2025 17:14:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C02110E595;
+	Mon,  8 Sep 2025 17:43:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="acgW0LBA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hnBp9Yop";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7988F10E583
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Sep 2025 17:14:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C89D10E595
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Sep 2025 17:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757351671; x=1788887671;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=qDJdpexZENs/1jZkv+TxKj24FITOuRt1GFppekmLQp8=;
- b=acgW0LBAK/NmiFdlE/1iBKHh2zqM3X3/5huWXK4cc1xVBTc9Hy6Pug+5
- ELb5txksOK8CPot80Jqppoh2sNuFvkTwg/2Xkn0dNq0TXMkGPP4K2Wz6h
- IEj1FXBnZtLwdYHlBNVMR4mz8wKA6ifueUycxFaMGASCC3ex2mdgsWXdY
- wUEq5il+dRO4FIhxvUqWyvXo8QyfoWyCf4+ojFEkeIDjwMT+hGuMkrzWg
- 2lL0VmSEMNcdkSamyUvyejXmkxDEUyQfZSoFOzl4pJd6RqJZImJBRijLw
- 7JpPBu5sgFjvL7kPxKi1n1gax27+oxHtVIftDpnESx40L4741JwSY0fgN w==;
-X-CSE-ConnectionGUID: WXa4qg1wSgmwFL7kQ/vKYQ==
-X-CSE-MsgGUID: EdTdfG2qQiOI5ClFeEl5Hg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59543992"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59543992"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Sep 2025 10:14:31 -0700
-X-CSE-ConnectionGUID: nJsOde/QSrC97hyF0CIWgQ==
-X-CSE-MsgGUID: 3w582VPdTjuJPwJslfRiNA==
+ t=1757353408; x=1788889408;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=p0Ld0Zcp0Mok453JNuLSCZCsddr8JMo7iKm3KP2iWtg=;
+ b=hnBp9YopQwOQ/1mX2RuC+Q9D3wuDYSADh4mxlZYF9gnKVSZVbsKl2Bv0
+ ovlpBr5bGjLSikvL1fNwRlJwdKwRw9oNysah0WOOXKzpFgVxp8/aGCSsE
+ FGSiUvpEncSp/4SxHgv6rCGs8+WkGzAXyR3QksvbhPAwGJ9gWvd6iP1mE
+ c+SpDKNkwU7W3cvsp5FkvvJ7/evh9m5Dhji700fBDdiLl5OhliHUsM1WG
+ APbYCycTh+znkkPUwctpR4l2qWrFj66uF7EcqHu7Z8WL3vxqR+Ascd0Jf
+ fzhzlB4umOabtDfkCXw9N2oaGJMeAYZZ78ZtBvaxBCFfclpiTz9u36AQg A==;
+X-CSE-ConnectionGUID: sU4OnafjS/6TkK5Fh+2OtQ==
+X-CSE-MsgGUID: XCBkUHIPRfamWr9csS+w0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="58832409"
+X-IronPort-AV: E=Sophos;i="6.18,249,1751266800"; d="scan'208";a="58832409"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Sep 2025 10:43:28 -0700
+X-CSE-ConnectionGUID: RwVapxwASPin0LdRRyEiOQ==
+X-CSE-MsgGUID: 8wIyrK0xQcSzyuo1RRhh1g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,249,1751266800"; d="scan'208";a="178057346"
-Received: from dut6245dg2frd.fm.intel.com ([10.80.55.42])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Sep 2025 10:14:31 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,249,1751266800"; d="scan'208";a="172987738"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.244])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Sep 2025 10:43:25 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com, priyanka.dandamudi@intel.com,
- Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH v2 i-g-t 1/1] tests/intel/xe_compute_preempt: GPU
- Compatibility check
-Date: Mon,  8 Sep 2025 17:14:21 +0000
-Message-Id: <20250908171421.1787165-2-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250908171421.1787165-1-sobin.thomas@intel.com>
-References: <20250908171421.1787165-1-sobin.thomas@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ewelina Musial <ewelina.musial@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>, Petri Latvala <adrinael@adrinael.net>,
+ Ryszard Knop <rk@dragonic.eu>
+Subject: [PATCH i-g-t v1 0/2] runner: Add new option --disk-limit-per-run
+Date: Mon,  8 Sep 2025 19:43:17 +0200
+Message-ID: <20250908174319.93968-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,119 +69,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On platforms that do not support walker mid-thread preemption, running
-tests in forked threads can lead to inconsistent states due to
-igt_skip being called mid-execution. This patch introduces a GPU
-compatibility check at the beginning of the xe_compute_preempt test.
-If the GPU version does not support the required features, the
-entire test is skipped gracefully, ensuring consistent behavior across
-platforms.
+Add new option for global disk limit, with disk used accumulated
+between each test run. This should allow to plan resources used
+by igt_runner.
 
-v2: Fixed review comments to move the compatibility check
-    into the igt_fixture.
+Cc: Ewelina Musial <ewelina.musial@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Ryszard Knop <rk@dragonic.eu>
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
----
- lib/intel_compute.c              | 45 +++++++++++++++++++-------------
- lib/intel_compute.h              |  2 ++
- tests/intel/xe_compute_preempt.c |  1 +
- 3 files changed, 30 insertions(+), 18 deletions(-)
+Kamil Konieczny (2):
+  runner: Add alias option disk-usage-limit-per-test
+  runner: Add option disk-usage-limit-per-run
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 147dd2916..2bb70824e 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -2219,24 +2219,6 @@ static bool __run_intel_compute_kernel_preempt(int fd,
- 	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
- 	unsigned int batch;
- 	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
--	enum intel_driver driver = get_intel_driver(fd);
--
--	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
--		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
--			break;
--
--
--	if (batch == ARRAY_SIZE(intel_compute_preempt_batches)) {
--		igt_debug("GPU version 0x%x not supported\n", ip_ver);
--		return false;
--	}
--
--	if (!(COMPAT_DRIVER_FLAG(driver) & intel_compute_preempt_batches[batch].compat)) {
--		igt_debug("Driver is not supported: flags %x & %x\n",
--			  COMPAT_DRIVER_FLAG(driver),
--			  intel_compute_preempt_batches[batch].compat);
--		return false;
--	}
- 
- 	while (kernels->kernel) {
- 		if (ip_ver == kernels->ip_ver)
-@@ -2260,6 +2242,31 @@ static bool __run_intel_compute_kernel_preempt(int fd,
- 
- 	return true;
- }
-+
-+bool check_gpu_compatibility_kernel_preempt(int fd)
-+{
-+	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	unsigned int batch;
-+	enum intel_driver driver = get_intel_driver(fd);
-+
-+	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
-+		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
-+			break;
-+
-+	if (batch == ARRAY_SIZE(intel_compute_preempt_batches)) {
-+		igt_debug("GPU version 0x%x not supported\n", ip_ver);
-+		return false;
-+	}
-+
-+	if (!(COMPAT_DRIVER_FLAG(driver) & intel_compute_preempt_batches[batch].compat)) {
-+		igt_debug("Driver is not supported: flags %x & %x\n",
-+			COMPAT_DRIVER_FLAG(driver),
-+			intel_compute_preempt_batches[batch].compat);
-+		return false;
-+	}
-+	return true;
-+}
-+
- /**
-  * run_intel_compute_kernel_preempt - runs compute kernels to
-  * exercise preemption scenario.
-@@ -2275,6 +2282,8 @@ bool run_intel_compute_kernel_preempt(int fd,
- 		bool threadgroup_preemption,
- 		enum execenv_alloc_prefs alloc_prefs)
- {
-+	if (!check_gpu_compatibility_kernel_preempt(fd))
-+		return false;
- 	return __run_intel_compute_kernel_preempt(fd, eci, threadgroup_preemption,
- 						  alloc_prefs);
- }
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index 412791d07..0998fd661 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -73,6 +73,8 @@ enum execenv_alloc_prefs {
- 
- extern const struct intel_compute_kernels intel_compute_square_kernels[];
- 
-+bool check_gpu_compatibility_kernel_preempt(int fd);
-+
- bool run_intel_compute_kernel(int fd, struct user_execenv *user,
- 			      enum execenv_alloc_prefs alloc_prefs);
- bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci,
-diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-index c9b194869..5722ef3d4 100644
---- a/tests/intel/xe_compute_preempt.c
-+++ b/tests/intel/xe_compute_preempt.c
-@@ -73,6 +73,7 @@ igt_main
- 		ram_mb = igt_get_avail_ram_mb();
- 		swap_mb = igt_get_total_swap_mb();
- 		vram_mb = xe_visible_vram_size(xe, 0) >> 20;
-+		igt_require_f(check_gpu_compatibility_kernel_preempt(xe), "GPU not supported\n");
- 	}
- 
- 	igt_subtest_with_dynamic("compute-preempt") {
+ runner/executor.c     | 70 ++++++++++++++++++++++++++++++-------------
+ runner/executor.h     |  1 +
+ runner/runner_tests.c | 52 +++++++++++++++++++-------------
+ runner/settings.c     | 22 ++++++++++++--
+ runner/settings.h     |  1 +
+ 5 files changed, 103 insertions(+), 43 deletions(-)
+
 -- 
-2.34.1
+2.51.0
 
