@@ -4,60 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79DF7CA0FED
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 08:42:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CDF3CA0FED
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 08:42:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1CAF410E65B;
-	Tue,  9 Sep 2025 08:42:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CEE6A10E659;
+	Tue,  9 Sep 2025 08:42:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L8Cab1Z+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PNdXRPCW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 850AE10E65B
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 08:42:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 778D610E659
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 08:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757407366; x=1788943366;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=pqC/DkjOIca1mhMCTO9TjGhwO9vRexUhf50+dA3BsSs=;
- b=L8Cab1Z+i+7eU+x6lh4qh9MnT1Ep/mObwCd6kdoX+LcSv/AOPoUqAxFX
- OVz0FBR4bYg2wxKmeQiiTAPfTfYpZhW26bicuUmOUC7MEy4THZJ1CNmxa
- gvQbo0tIPujqInFkzh2YT+2X3eW7XWgd+N8XAgGKMcpQevxNZnIsO873t
- 2uG91ebF/EVT9aXFpC2YhyvmTkPiAT8SAAE98NoAPBfxb6hvDO4Z84B7H
- gtzdl6K8KdsgqpsVzqzfgLIpQQwRd6H8naYtDQCw7o92FkzeZoKZUivBf
- u/vFA4ZxC1UH4RSxTFaYelYpw5JdkkiO7Con3xyCOkGJgIXDe3/3IZ86c A==;
-X-CSE-ConnectionGUID: V7tvvtM3QlyVmP5MLeNKtA==
-X-CSE-MsgGUID: lUey9mm/QiW8KH2UN1xmFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59749038"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59749038"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 01:42:46 -0700
-X-CSE-ConnectionGUID: 3vnl8cHnSrOecCLW14H5Fw==
-X-CSE-MsgGUID: TCdOYogzSF2oigy+LzpvNw==
+ t=1757407368; x=1788943368;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=HcKzsypPB9cplNmAsfZG59ZrpXtUWzHtPaVZU1ymW4E=;
+ b=PNdXRPCW1Vly6zfdoGCmE/im1V9YSRUcEd1mW3tBZIEUEPFwSWrhbEK/
+ cwjzhx7gQEjwePNAJNZJF0yyj4JqlFD5jWLNTXWi44zRj16C3zWgWpk/w
+ dmFmWPbGb32Z74YSQZE0a1CWLtKaRSQPFsPC9Ix7Y30Ptn4wS1kqYSvd4
+ L8sPYR2lMLiOoyBK3FE/ZFaSaMQqttpNnq5OBoEjIwFo35GgPmKZE5gBa
+ +tmYzZ6qp7FFvnZx+i9zAhJpOzr9zBkcjoXmyhii5uMSmsC7zww2/7UXI
+ fN8IqfHy80XniZ9mpov8naPUmkoFghmx0rDpA0onvN9sArmhpTH2OiPlm Q==;
+X-CSE-ConnectionGUID: U9SI0XuAQXa/FFNNOzGO1w==
+X-CSE-MsgGUID: /gBvr1khT/GxnADSzjW8jQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="59377642"
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="59377642"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 01:42:48 -0700
+X-CSE-ConnectionGUID: fVDrWUP0TIWd1UOvHJ0JhQ==
+X-CSE-MsgGUID: AGQGjlZtTDiOz9JbP6228A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="172191970"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 01:42:44 -0700
-Date: Tue, 9 Sep 2025 10:42:41 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: S Sebinraj <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t] tests/kms_concurrent: Add SYSVIPC support check
-Message-ID: <20250909084241.kowpxt55wwicrp6n@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
- jeevaka.badrappan@intel.com,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20250908084631.2676274-1-s.sebinraj@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="172900245"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.129])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 01:42:46 -0700
+From: Pawel Sikora <pawel.sikora@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v9 1/5] docs: Set up MkDocs for documentation site
+Date: Tue,  9 Sep 2025 10:42:27 +0200
+Message-ID: <20250909084233.183885-2-pawel.sikora@intel.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250909084233.183885-1-pawel.sikora@intel.com>
+References: <20250909084233.183885-1-pawel.sikora@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250908084631.2676274-1-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,87 +68,578 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi S,
-On 2025-09-08 at 14:16:31 +0530, S Sebinraj wrote:
-> Check for System V IPC support in kms_concurrent test to handle
-> targets that don't have SYSVIPC enabled in their kernel. Without this
-> check, the test would fail with assertion errors when trying to use
-> message queues.
+This establishes the initial framework configuration
+for the IGT GPU Tools documentation site using MkDocs.
 
-Please use cover letter and give an example of such error
-or give a link to bug report. On which systems you observe
-this? I am afraid that almost none of tests will run
-without it (maybe some core_ will do).
+ * Add mkdocs.yml for site configuration, including project
+   info, navigation, theme, and plugins.
+ * Create requirements-docs.txt for MkDocs dependencies.
+ * Add extra.css for custom styling with Monokai theme.
+ * Include logo and CSS assets.
 
-> 
-> The implementation checks if the target supports IPC,
-> if not found it skips the test.
-> 
+For details regarding MkDocs please refer to:
+https://www.mkdocs.org/
 
-+cc Zbigniew
-Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+v2:
+ - Colorblind friendly theme (Kamil)
 
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> ---
->  lib/igt_core.h         |  2 ++
->  tests/kms_concurrent.c | 18 ++++++++++++++++++
->  2 files changed, 20 insertions(+)
-> 
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index 6f462205f..413e83bc8 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -45,6 +45,8 @@
->  #include <getopt.h>
->  #include <unistd.h>
->  
-> +bool device_supports_sysvipc(void);
+v5:
+ - Remove Intel logo (Lucas)
+ - Remove unnecessary plugins/extras from mkdocs.yml (Pawel)
 
-Please add this after all includes, not here.
+v6:
+ - Add information about MIT licence in footer
+ - Change Download section to separate .md page instead of url
 
-Regards,
-Kamil
+Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
+---
+ docs/css/extra.css         | 323 +++++++++++++++++++++++++++++++++++++
+ docs/requirements-docs.txt |   7 +
+ mkdocs.yml                 | 191 ++++++++++++++++++++++
+ 3 files changed, 521 insertions(+)
+ create mode 100644 docs/css/extra.css
+ create mode 100644 docs/requirements-docs.txt
+ create mode 100644 mkdocs.yml
 
-> +
->  #ifdef __FreeBSD__
->  #include "igt_freebsd.h"
->  #endif
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-> index 4f16f8b89..80512a140 100644
-> --- a/tests/kms_concurrent.c
-> +++ b/tests/kms_concurrent.c
-> @@ -107,6 +107,22 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
->  	data->fb = NULL;
->  }
->  
-> +/**
-> + * Checks if the current device supports SYSVIPC by verifying the existence and accessibility
-> + * of the /proc/sysvipc directory.
-> + * Returns: true if accessible for read and write, false otherwise.
-> + */
-> +bool device_supports_sysvipc(void)
-> +{
-> +	char path[128] = {'\0'};
-> +
-> +	snprintf(path, sizeof(path), "/proc/sysvipc");
-> +	if (access(path, R_OK | W_OK) == 0)
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->  static void
->  create_fb_for_mode_position(data_t *data, drmModeModeInfo *mode,
->  			    int *rect_x, int *rect_y,
-> @@ -395,6 +411,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  		igt_display_require(&data.display, data.drm_fd);
->  		igt_require(data.display.is_atomic);
->  		igt_display_require_output(&data.display);
-> +		igt_require(device_supports_sysvipc());
-> +
->  		if (is_intel_device(data.drm_fd))
->  			intel_allocator_multiprocess_start();
->  	}
-> -- 
-> 2.34.1
-> 
+diff --git a/docs/css/extra.css b/docs/css/extra.css
+new file mode 100644
+index 000000000..ff1b47cb8
+--- /dev/null
++++ b/docs/css/extra.css
+@@ -0,0 +1,323 @@
++/* Clean MkDocs Material Theme - Colorblind Friendly */
++
++:root {
++  /* Blue-based color scheme (colorblind safe) */
++  --primary-blue: #2196f3;
++  --primary-blue-dark: #1976d2;
++  --primary-blue-light: #64b5f6;
++  --accent-blue: #42a5f5;
++
++  /* Gradients (keeping as requested) */
++  --gradient-primary: linear-gradient(135deg, #111111 0%, #1142ff 100%);
++  --gradient-accent: linear-gradient(135deg, #42a5f5 0%, #1142ff 100%);
++
++  /* Neutral colors */
++  --text-primary: #212121;
++  --text-secondary: #757575;
++  --border-light: rgba(0, 0, 0, 0.12);
++  --background-light: #fafafa;
++}
++
++/* Dark theme colors */
++[data-md-color-scheme="slate"] {
++  --md-default-bg-color: #1e1e1e;
++  --md-default-fg-color: #ffffff;
++  --md-code-bg-color: #0d0d0d;
++  --md-code-fg-color: #f5f5f5;
++}
++
++/* Typography - Clean and spacious */
++.md-typeset h1 {
++  color: var(--primary-blue);
++  font-weight: 600;
++  font-size: 1.6rem;
++  margin: 0 0 2rem;
++  padding-bottom: 0.5rem;
++  border-bottom: 2px solid var(--border-light);
++}
++
++.md-typeset h2 {
++  color: var(--primary-blue-dark);
++  font-weight: 600;
++  font-size: 1.4rem;
++  margin: 2.5rem 0 1.5rem;
++}
++
++.md-typeset h3 {
++  color: var(--primary-blue-light);
++  font-weight: 600;
++  font-size: 1.3rem;
++  margin: 2rem 0 1rem;
++}
++
++.md-typeset p {
++  line-height: 1.7;
++  margin-bottom: 1.2rem;
++  margin-left: 0.5rem;
++}
++
++/* Header - Gradient for both themes */
++.md-header {
++  background: var(--gradient-primary);
++  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
++}
++
++/* Ensure white text on gradient header for both themes */
++.md-header-nav__button,
++.md-header-nav__title,
++.md-header__title,
++.md-header__button {
++  color: white;
++}
++
++/* Tabs - Black background for light theme */
++.md-tabs {
++  font-weight: 500;
++  border-bottom: 1px solid var(--border-light);
++}
++
++[data-md-color-scheme="default"] .md-tabs {
++  background: #eeeeee;
++}
++
++[data-md-color-scheme="default"] .md-tabs__link {
++  color: rgba(0, 0, 0, 0.9);
++}
++
++[data-md-color-scheme="default"] .md-tabs__link--active,
++[data-md-color-scheme="default"] .md-tabs__link:hover {
++  color: var(--primary-blue);
++}
++
++/* Dark theme tabs */
++[data-md-color-scheme="slate"] .md-tabs {
++  background: #1e1e1e;
++}
++
++[data-md-color-scheme="slate"] .md-tabs__link {
++  color: rgba(255, 255, 255, 0.7);
++}
++
++[data-md-color-scheme="slate"] .md-tabs__link--active,
++[data-md-color-scheme="slate"] .md-tabs__link:hover {
++  color: white;
++}
++
++/* Navigation - Simple active states */
++.md-nav__item .md-nav__link--active {
++  color: var(--primary-blue);
++  font-weight: 600;
++}
++
++.md-nav__item .md-nav__link:hover {
++  color: var(--primary-blue-light);
++}
++
++/* Code - High contrast */
++.md-typeset code {
++  background: rgba(33, 150, 243, 0.1);
++  color: var(--primary-blue-dark);
++  padding: 0.125em 0.25em;
++  border-radius: 3px;
++  font-size: 0.9em;
++}
++
++.md-typeset pre code {
++  background: transparent;
++  padding: 1rem;
++  display: block;
++}
++
++.md-typeset .highlight {
++  margin: 1.5rem 0;
++  border-left: 3px solid var(--primary-blue);
++  border-radius: 4px;
++  overflow: hidden;
++}
++
++/* Admonitions - Simple with left border */
++.md-typeset .admonition {
++  margin: 1.5rem 0rem;
++  padding: 0;
++  border-left: 4px solid;
++  border-radius: 4px;
++  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
++  font-size: 0.8rem;
++}
++
++.md-typeset .admonition.note {
++  border-color: var(--primary-blue);
++  background: rgba(33, 150, 243, 0.05);
++}
++
++.md-typeset .admonition.tip {
++  border-color: #4caf50;
++  background: rgba(76, 175, 80, 0.05);
++}
++
++.md-typeset .admonition.warning {
++  border-color: #ff9800;
++  background: rgba(255, 152, 0, 0.05);
++}
++
++.md-typeset .admonition > .admonition-title {
++  margin: 0px;
++  padding: 0rem 0.6rem -1rem 0rem;
++  font-weight: 600;
++  font-size: 1rem;
++}
++
++/* Links - Underlined for accessibility */
++.md-typeset a {
++  color: var(--primary-blue);
++  text-decoration: underline;
++  text-decoration-thickness: 1px;
++  text-underline-offset: 2px;
++}
++
++.md-typeset a:hover {
++  color: var(--primary-blue-dark);
++  text-decoration-thickness: 2px;
++}
++
++/* Tables - Clean borders */
++.md-typeset table {
++  margin: 1.5rem 0;
++}
++
++.md-typeset table th {
++  background: var(--background-light);
++  font-weight: 600;
++  border-bottom: 2px solid var(--border-light);
++}
++
++[data-md-color-scheme="slate"] .md-typeset table th {
++  background: rgba(255, 255, 255, 0.05);
++}
++
++.md-typeset table td {
++  border-bottom: 1px solid var(--border-light);
++}
++
++/* Lists - Simple bullets */
++.md-typeset ul {
++  margin: 1rem 0;
++}
++
++.md-typeset ul li {
++  margin-bottom: 0.5rem;
++  line-height: 1.6;
++}
++
++.md-typeset ol li {
++  margin-bottom: 0.5rem;
++  line-height: 1.6;
++}
++
++/* Buttons - Clean and simple */
++.md-button {
++  background: var(--primary-blue);
++  color: white;
++  border-radius: 4px;
++  padding: 0.5rem 1rem;
++  font-weight: 500;
++  transition: background 0.2s;
++}
++
++.md-button:hover {
++  background: var(--primary-blue-dark);
++}
++
++/* Focus states for accessibility */
++*:focus {
++  outline: 2px solid var(--accent-blue);
++  outline-offset: 2px;
++}
++
++/* Search - Clean style */
++.md-search__input {
++  border-radius: 4px;
++}
++
++.md-search__input::placeholder {
++  opacity: 0.7;
++}
++
++/* Footer */
++.md-footer {
++  border-top: 1px solid var(--border-light);
++}
++
++/* Grid cards - Simple */
++.md-typeset .grid.cards > ol > li,
++.md-typeset .grid.cards > ul > li {
++  border: 1px solid var(--border-light);
++  border-radius: 4px;
++  padding: 1rem;
++  transition: box-shadow 0.2s;
++}
++
++.md-typeset .grid.cards > ol > li:hover,
++.md-typeset .grid.cards > ul > li:hover {
++  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
++}
++
++/* Horizontal rule */
++.md-typeset hr {
++  border: none;
++  height: 1px;
++  background: var(--border-light);
++  margin: 2rem 0;
++}
++
++/* Scrollbar */
++::-webkit-scrollbar {
++  width: 8px;
++  height: 8px;
++}
++
++::-webkit-scrollbar-track {
++  background: var(--background-light);
++}
++
++[data-md-color-scheme="slate"] ::-webkit-scrollbar-track {
++  background: rgba(255, 255, 255, 0.05);
++}
++
++::-webkit-scrollbar-thumb {
++  background: var(--primary-blue);
++  border-radius: 4px;
++}
++
++::-webkit-scrollbar-thumb:hover {
++  background: var(--primary-blue-dark);
++}
++
++/* Print styles */
++@media print {
++  .md-header,
++  .md-tabs,
++  .md-nav,
++  .md-footer {
++    display: none;
++  }
++}
++
++/* High contrast mode support */
++@media (prefers-contrast: high) {
++  .md-typeset code {
++    border: 1px solid var(--primary-blue);
++  }
++
++  .md-typeset a {
++    text-decoration-thickness: 2px;
++  }
++}
++
++/* Reduced motion support */
++@media (prefers-reduced-motion: reduce) {
++  * {
++    animation: none !important;
++    transition: none !important;
++  }
++}
+diff --git a/docs/requirements-docs.txt b/docs/requirements-docs.txt
+new file mode 100644
+index 000000000..c25f94c56
+--- /dev/null
++++ b/docs/requirements-docs.txt
+@@ -0,0 +1,7 @@
++mkdocs
++mkdocs-minify-plugin
++mkdocs-material
++mkdocs-mermaid2-plugin
++mkdocs-git-authors-plugin
++mkdocs-git-latest-changes-plugin
++mike
+diff --git a/mkdocs.yml b/mkdocs.yml
+new file mode 100644
+index 000000000..09eae6d62
+--- /dev/null
++++ b/mkdocs.yml
+@@ -0,0 +1,191 @@
++# Project information
++site_name: "IGT GPU Tools"
++site_description: 'Documentation about IGT GPU Tools'
++site_author: 'IGT Team'
++site_url: 'https://drm.pages.freedesktop.org/igt-gpu-tools'
++docs_dir: 'docs'
++site_dir: 'site'
++# Repo information
++repo_name: 'igt-gpu-tools'
++repo_url: 'https://gitlab.freedesktop.org/drm/igt-gpu-tools'
++
++# Navigation bar
++nav:
++  - Overview:
++    - How to start: 'overview.md'
++  - Installation:
++    - How to install: 'building.md'
++    - How to cross build: 'cross-building.md'
++  - Usage:
++    - How to run tests: 'running_tests.md'
++  - Code:
++    - How to use the code: 'api.md'
++    - How to track/submit changes: 'patchwork.md'
++  - External tools:
++    - Chamelium: 'chamelium.md'
++  - Contributing:
++    - How to contribute: 'CONTRIBUTING.md'
++    - How to document tests: 'test_documentation.md'
++    - How to categorize tests: 'test_categories.md'
++    - How to blocklist tests: 'blocklists.md'
++    - How to get code coverage: 'code_coverage.md'
++    - How to port new IGT driver: 'new_driver.md'
++    - How to plan a new test: 'test_plan.md'
++    - How to build this documentation: 'how_to_build_docs.md'
++    - Maintainers: 'MAINTAINERS.md'
++  - Issues:
++    - How to view/report an issue: 'issues.md'
++  - CI:
++    - CI infrastructure: "ci_infrastructure.md"
++    - Intel GFX CI: 'https://intel-gfx-ci.01.org'
++  - Download: 'download.md'
++  - API Reference: 'api_reference/index.html'
++  - News: 'NEWS.md'
++  - FAQ: 'faq.md'
++
++extra:
++  repo_icon: 'gitlab'
++
++# Theme
++theme:
++  name: material
++  palette:
++    - media: "(prefers-color-scheme: light)"
++      primary: custom
++      accent: blue
++      toggle:
++        icon: material/link
++        name: Switch to dark mode
++    - media: "(prefers-color-scheme: dark)"
++      scheme: slate
++      primary: black
++      accent: blue
++      toggle:
++        icon: material/toggle-switch-off
++        name: Switch to light mode
++  # Font configuration
++  font:
++    text: Inter
++    code: JetBrains Mono
++
++  # Logo and favicon
++  repo: fontawesome/brands/gitlab
++  # Features
++  features:
++    # Navigation
++    - navigation.instant
++    - navigation.instant.prefetch
++    - navigation.instant.progress
++    - navigation.tracking
++    - navigation.sections
++    - navigation.expand
++    - navigation.path
++    - navigation.prune
++    - navigation.indexes
++    - navigation.top
++    - navigation.footer
++    - navigation.tabs
++    - navigation.tabs.sticky
++
++    # Table of contents
++    - toc.follow
++    - toc.integrate
++
++    # Search
++    - search.suggest
++    - search.highlight
++    - search.share
++
++    # Header
++    - header.autohide
++
++    # Content
++    - content.action.edit
++    - content.action.view
++    - content.code.copy
++    - content.code.select
++    - content.code.annotate
++    - content.tabs.link
++    - content.tooltips
++
++# Plugins
++plugins:
++  - mike:
++      # These fields are all optional; the defaults are as below...
++      alias_type: symlink
++      redirect_template: null
++      deploy_prefix: ''
++      canonical_version: null
++      version_selector: true
++      css_dir: css
++      javascript_dir: js
++  - search
++  - minify:
++      minify_html: true
++      minify_js: true
++      minify_css: true
++      htmlmin_opts:
++        remove_comments: true
++  - mermaid2:
++        arguments:
++          theme: 'dark'
++          lineColor: 0xfffff
++
++extra_css:
++  - css/extra.css
++
++extra_javascript:
++  - https://polyfill.io/v3/polyfill.min.js?features=es6
++
++markdown_extensions:
++  - abbr
++  - admonition
++  - attr_list
++  - def_list
++  - footnotes
++  - md_in_html
++  - toc:
++      permalink: true
++      title: On this page
++
++  # Python Markdown Extensions
++  - pymdownx.arithmatex:
++      generic: true
++  - pymdownx.betterem:
++      smart_enable: all
++  - pymdownx.caret
++  - pymdownx.mark
++  - pymdownx.tilde
++  - pymdownx.critic
++  - pymdownx.details
++  - pymdownx.emoji:
++      emoji_index: !!python/name:material.extensions.emoji.twemoji
++      emoji_generator: !!python/name:material.extensions.emoji.to_svg
++  - pymdownx.highlight:
++      anchor_linenums: true
++      line_spans: __span
++      pygments_lang_class: true
++  - pymdownx.inlinehilite
++  - pymdownx.keys
++  - pymdownx.mark
++  - pymdownx.smartsymbols
++  - pymdownx.snippets:
++      auto_append:
++        - includes/abbreviations.md
++  - pymdownx.superfences:
++      custom_fences:
++        - name: mermaid
++          class: mermaid
++          format: !!python/name:pymdownx.superfences.fence_code_format
++  - pymdownx.tabbed:
++      alternate_style: true
++      combine_header_slug: true
++      slugify: !!python/object/apply:pymdownx.slugs.slugify
++        kwds:
++          case: lower
++  - pymdownx.tasklist:
++      custom_checkbox: true
++  - pymdownx.blocks.caption
++  - pymdownx.blocks.details
++
++copyright: 'Copyright Intel, 2025 , made by IGT Team. SPDX-License-Identifier: MIT'
+-- 
+2.51.0
+
