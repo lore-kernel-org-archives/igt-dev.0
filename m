@@ -4,54 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E18CAC583
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 12:47:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F21FCAC583
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 12:47:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3475310E251;
-	Tue,  9 Sep 2025 12:47:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C545B10E6F5;
+	Tue,  9 Sep 2025 12:47:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m/M0XYhy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bYKgJxYf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27BF210E251
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 12:47:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97DC010E6F5
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 12:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757422020; x=1788958020;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=TqAUT+JEM8b49J4ez9HGrGIXlrLjsQQ7r0tvN+zqKF0=;
- b=m/M0XYhyi7OI/3mLrlNmrKuHakiPBB83jcUYDAjpG79kEr/7fUS1XUwH
- x1IexL4nWg7gEQhA1WnjVb0pTDnLAFU5fRkzJFPONzPIXGE/OpoG5qFY9
- 49yXShTNyE44cbyvCzhmpruuS1YzMPqunhlOJfMcn4SvFi6Qn6CQzWxdR
- QFvfG8X00RYNEXwTyvNJgzwDXkvq4CT7FjkOu450Pb3IcBjb6qscsdPie
- QN0sQvQgowrI4WIPf4e6Wtj+7fg9vfmVbLZTWyknjqcrzMbyD7MCTYgH6
- ryPeUZkZPpHiCPJ/geKFxywJbA2c27lsUpbH0YxYqGiPPvrAuoFG/7odV g==;
-X-CSE-ConnectionGUID: DHVHtYuxSmipnr6UwjO2RQ==
-X-CSE-MsgGUID: insE89WbSiKQH92S6aYXGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="62330824"
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; d="scan'208";a="62330824"
+ t=1757422024; x=1788958024;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=TnWXZzLyZdKJP5oggnRg4C/YnK3+eGXPZm0YG+B1V3w=;
+ b=bYKgJxYf6ScTWZ5hpnqpSrVVen0D74TBq/MKR4QESrSGiHQr1YLHRlYH
+ Jp1Uu1vgCmHvyguLdJsAknfmySHx0sllT/H6uVU9n0nVOATt8n8k7KEXM
+ S8FgdfG2HeVMGd9vO9B75imz49pgNeRtMjd+wRNJcw7kgRTB1PcQSbxv+
+ ib4GoJHReDgLmWgg2DXlPqIdxJQTPoOR9dDqiWEn7xJry+iQd/w5RRWqr
+ /GVe02lfBs5N3u1uub3gGKfTdhPIGtaETflVJb03tD+l2kYaJvjfuHiMF
+ SObMVrLH3DMNjxKCoL5mx1vD50mT/7pivYsoO00AtJ7P5wz12L6LzeizU Q==;
+X-CSE-ConnectionGUID: KhZxg/ffRqCnsnk+z4HYXQ==
+X-CSE-MsgGUID: eXfzX/twRGud2gGLMduAPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="62330848"
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; d="scan'208";a="62330848"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 05:46:59 -0700
-X-CSE-ConnectionGUID: 5+dyGM48RF6+FXPMDIcpaQ==
-X-CSE-MsgGUID: ITA6Bf3zRjqLANxEtXHOnA==
+ 09 Sep 2025 05:47:04 -0700
+X-CSE-ConnectionGUID: j/YwDkTgTdOy3mqmhrAcbQ==
+X-CSE-MsgGUID: tNrvhhzpT4SwttRtEaa66A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; d="scan'208";a="203850711"
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; d="scan'208";a="203850770"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.244.132])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 05:46:57 -0700
+ 09 Sep 2025 05:47:02 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ewelina Musial <ewelina.musial@intel.com>,
- Karthik B S <karthik.b.s@intel.com>, Petri Latvala <adrinael@adrinael.net>,
- Ryszard Knop <rk@dragonic.eu>
-Subject: [PATCH i-g-t v2 0/2] runner: Add new option --disk-limit-per-run
-Date: Tue,  9 Sep 2025 14:46:49 +0200
-Message-ID: <20250909124651.173431-1-kamil.konieczny@linux.intel.com>
+ Ewelina Musial <ewelina.musial@intel.com>, Ryszard Knop <rk@dragonic.eu>,
+ Ryszard Knop <ryszard.knop@intel.com>
+Subject: [PATCH i-g-t v2 1/2] runner: Add alias option disk-limit-per-test
+Date: Tue,  9 Sep 2025 14:46:50 +0200
+Message-ID: <20250909124651.173431-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250909124651.173431-1-kamil.konieczny@linux.intel.com>
+References: <20250909124651.173431-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,31 +70,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add new option for global disk limit, with disk used accumulated
-between each test run. This should allow to plan resources used
-by igt_runner.
+Old option name disk-usage-limit is a little too vague, introduce
+an alias disk-limit-per-subtest which should be more explanatory.
 
-Also add an alias --disk-limit-per-subtest for option --disk-usage-limit
+Also while at this, explain that for dynamic subtest this option
+applies to each of sub-subtest separately.
 
-v2: fix compilation, make options shorter, add explantaion for dynamic
-subtest. (Kamil)
+v2: fix compilation, make alias option shorter, add explantaion
+  for dynamic sub-subtests. (Kamil)
 
 Cc: Ewelina Musial <ewelina.musial@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
 Cc: Ryszard Knop <rk@dragonic.eu>
+Suggested-by: Ryszard Knop <ryszard.knop@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/runner_tests.c | 52 ++++++++++++++++++++++++++-----------------
+ runner/settings.c     |  4 ++++
+ 2 files changed, 36 insertions(+), 20 deletions(-)
 
-Kamil Konieczny (2):
-  runner: Add alias option disk-limit-per-test
-  runner: Add option disk-limit-per-run
-
- runner/executor.c     | 70 ++++++++++++++++++++++++++++++-------------
- runner/executor.h     |  1 +
- runner/runner_tests.c | 58 ++++++++++++++++++++++-------------
- runner/settings.c     | 23 ++++++++++++--
- runner/settings.h     |  1 +
- 5 files changed, 110 insertions(+), 43 deletions(-)
-
+diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+index e62e7b34d..af1650101 100644
+--- a/runner/runner_tests.c
++++ b/runner/runner_tests.c
+@@ -261,6 +261,36 @@ static void write_packet_with_canary(int fd, struct runnerpacket *packet)
+ 	free(packet);
+ }
+ 
++static void test_disk_usage_limit_suffixes(const char *param, struct settings *settings)
++{
++	const char *argv[] = { "runner",
++			       "--disk-usage-limit=0",
++			       "test-root-dir",
++			       "results-path",
++	};
++	char disk[128];
++
++	snprintf(disk, sizeof(disk), "%s=4096", param);
++	argv[1] = disk;
++	igt_assert(parse_options(ARRAY_SIZE(argv), (char **)argv, settings));
++	igt_assert_eq_u64(settings->disk_usage_limit, 4096UL);
++
++	snprintf(disk, sizeof(disk), "%s=4k", param);
++	argv[1] = disk;
++	igt_assert(parse_options(ARRAY_SIZE(argv), (char **)argv, settings));
++	igt_assert_eq_u64(settings->disk_usage_limit, 4096UL);
++
++	snprintf(disk, sizeof(disk), "%s=1M", param);
++	argv[1] = disk;
++	igt_assert(parse_options(ARRAY_SIZE(argv), (char **)argv, settings));
++	igt_assert_eq_u64(settings->disk_usage_limit, 1024UL * 1024UL);
++
++	snprintf(disk, sizeof(disk), "%s=1G", param);
++	argv[1] = disk;
++	igt_assert(parse_options(ARRAY_SIZE(argv), (char **)argv, settings));
++	igt_assert_eq_u64(settings->disk_usage_limit, 1024UL * 1024UL * 1024UL);
++}
++
+ igt_main
+ {
+ 	struct settings *settings = malloc(sizeof(*settings));
+@@ -672,26 +702,8 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("disk-usage-limit-suffixes") {
+-		const char *argv[] = { "runner",
+-				       "--disk-usage-limit=4096",
+-				       "test-root-dir",
+-				       "results-path",
+-		};
+-
+-		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
+-		igt_assert_eq_u64(settings->disk_usage_limit, 4096UL);
+-
+-		argv[1] = "--disk-usage-limit=4k";
+-		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
+-		igt_assert_eq_u64(settings->disk_usage_limit, 4096UL);
+-
+-		argv[1] = "--disk-usage-limit=1M";
+-		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
+-		igt_assert_eq_u64(settings->disk_usage_limit, 1024UL * 1024UL);
+-
+-		argv[1] = "--disk-usage-limit=1G";
+-		igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
+-		igt_assert_eq_u64(settings->disk_usage_limit, 1024UL * 1024UL * 1024UL);
++		test_disk_usage_limit_suffixes("--disk-usage-limit", settings);
++		test_disk_usage_limit_suffixes("--disk-limit-per-subtest", settings);
+ 	}
+ 
+ 	igt_subtest("prune-modes") {
+diff --git a/runner/settings.c b/runner/settings.c
+index 85980dc96..47f244a0d 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -276,6 +276,9 @@ static const char *usage_str =
+ 	"                        kernel logs, exceed the given limit in bytes. The limit\n"
+ 	"                        parameter can use suffixes k, M and G for kilo/mega/gigabytes,\n"
+ 	"                        respectively. Limit of 0 (default) disables the limit.\n"
++	"                        For dynamic tests, it applies to sub-subtests separately.\n"
++	"  --disk-limit-per-subtest <limit>\n"
++	"                        Alias for --disk-usage-limit\n"
+ 	"  --use-watchdog        Use hardware watchdog for lethal enforcement of the\n"
+ 	"                        above timeout. Killing the test process is still\n"
+ 	"                        attempted at timeout trigger.\n"
+@@ -728,6 +731,7 @@ bool parse_options(int argc, char **argv,
+ 		{"environment", required_argument, NULL, OPT_ENVIRONMENT},
+ 		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
+ 		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
++		{"disk-limit-per-subtest", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
+ 		{"facts", no_argument, NULL, OPT_FACTS},
+ 		{"kmemleak", optional_argument, NULL, OPT_KMEMLEAK},
+ 		{"sync", no_argument, NULL, OPT_SYNC},
 -- 
 2.51.0
 
