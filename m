@@ -4,70 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA199CA0FED
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 08:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 122BCCA0FED
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 08:33:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 640AE10E657;
-	Tue,  9 Sep 2025 08:26:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B9C9A10E655;
+	Tue,  9 Sep 2025 08:33:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iDdO456i";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hOk1G43T";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81FE110E650
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 08:26:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA90110E655
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 08:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757406376; x=1788942376;
+ t=1757406785; x=1788942785;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=d/TDJvi6lZVlVUi9Zdp9GPT37jgISJ+FRoqE1ps6mE4=;
- b=iDdO456iefpUlzhYWIFOmbQ7eK7Y0D3I7f2ShNwlDDvIX1gWBb/p4Qay
- ezEY7+pBnDcc8GtvJqmqkKLOcDpqg2EaTg01UdJnKyRj0UK+vLt0VJ5We
- 6GMydMHJs0n3z5q0Mg+YW8nZgpmgPbhNBAZxIE39YdCdyLB3iZ22176Td
- 6OE0/tKsqCFWIVcDkYbAWRNGriX90u2oBQSpee/oNRleQz5+zkbKFhXL5
- 8vMg/6XEd4ECH/Cas7y/4HOOSjHb3agY7eU5uLSOsCZJfRDYc6movysfk
- BWIEbWhlzy4uRCvKLgN/FJM2Ui3qGaxjukmbr8AA9xXCHGU1EhZQGiQcJ w==;
-X-CSE-ConnectionGUID: cOTBLDy1QNSkrLLi/VS3pA==
-X-CSE-MsgGUID: xGAVe6OkTkiw0tdnoU+9kg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="69937943"
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="69937943"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 01:26:16 -0700
-X-CSE-ConnectionGUID: dz+qcW3gTQGVCoX5hGBL/g==
-X-CSE-MsgGUID: Q+gbBRbOTwSEerZWdfY+vg==
+ mime-version:in-reply-to;
+ bh=p9Z7ABVAVZzfs/ueKshgknPWX1uvvUER6VuKICkKJZs=;
+ b=hOk1G43T3gJw7Hggn1ZlzefLd/q96Asqh9sLXeVNBCKaTKkKnUfChGJ9
+ CxaRNaeoGdLyy1W+qCF7bfY3iW59/I5wb45XxlP3rzA4zP7YmyXDhwsht
+ hN8MQBO8xga1YIhLOA/+/EfVpMYGHWEPrwSrwjvMivWHaNb0CS5jQsT3j
+ MlZ+KoRF/qZfMcMWZLFtdg/rWoaHvyGmB3LfgoEp4pkNHRdtEsL7xJHaa
+ t+lT+ZZQQF1aT3NeCJUdDD0wmTZGVjDLcoz+6j78t4NU3MXTMRmf7ubwG
+ Tov3njs0Gggg+QwTGPx+4mBtcmFaQVvZIFpejnaxOkqgZkpddod1XtXJA Q==;
+X-CSE-ConnectionGUID: qlFDF90oT4iYBlyWTIfxuA==
+X-CSE-MsgGUID: dqtOypVRSJSZa2igxynP0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="59828538"
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="59828538"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 01:33:05 -0700
+X-CSE-ConnectionGUID: tO4JgC71Sh+uFVLrYMv59g==
+X-CSE-MsgGUID: ZBnu+hLAQmWqNHwz8aXCvw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="177368499"
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="173490267"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 01:26:14 -0700
-Date: Tue, 9 Sep 2025 10:26:12 +0200
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 01:33:03 -0700
+Date: Tue, 9 Sep 2025 10:33:00 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Piotr =?utf-8?Q?Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_sriov_flr: Use xe_for_each_gt()
- for GT iteration
-Message-ID: <20250909082612.uoj6t5lpttracmut@kamilkon-DESK.igk.intel.com>
+To: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
+Cc: igt-dev@lists.freedesktop.org, dwarakanath.ramadeva@intel.com,
+ pravalika.gurram@intel.com
+Subject: Re: [PATCH v3 i-g-t 1/7] benchmarks/latency: Add xe_blt latency test
+Message-ID: <20250909083300.yrgb7e5net2shtpv@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Piotr =?utf-8?Q?Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-References: <20250908160723.1723178-1-marcin.bernatowicz@linux.intel.com>
- <20250908160723.1723178-3-marcin.bernatowicz@linux.intel.com>
+ Gajendra Uttamchand <gajendra.uttamchand@intel.com>,
+ igt-dev@lists.freedesktop.org, dwarakanath.ramadeva@intel.com,
+ pravalika.gurram@intel.com
+References: <20250908144314.42275-9-gajendra.uttamchand@intel.com>
+ <20250908144314.42275-10-gajendra.uttamchand@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250908160723.1723178-3-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250908144314.42275-10-gajendra.uttamchand@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,55 +73,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Marcin,
-On 2025-09-08 at 18:07:23 +0200, Marcin Bernatowicz wrote:
-> Switch from indexing with num_gts to xe_for_each_gt(),
-> ensuring we use real GT IDs from gt_mask and not assume
-> sequential numbering.
+Hi Gajendra,
+On 2025-09-08 at 14:43:12 +0000, Gajendra Uttamchand wrote:
+> From: Gurram Pravalika <pravalika.gurram@intel.com>
+
+No need for adding From here unless this was done by Pravalika
+and you just take it and resended. Also proper name would be:
+
+Pravalika Gurram <pravalika.gurram@intel.com>
+
 > 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Add block transfer latency measurement test for the Intel XE
+> driver. Measures performance of BLT operations for user-
+> configurable buffer sizes, batch counts, and parallelism to
+> identify transfer bottlenecks and regression patterns.
+> 
+> Test supports statistical sampling (repetitions, timed
+> iterations) for reliable performance characterization of XE
+> block transfer operations. Buffer size, batch count,
+> repetitions, and CPU parallelism are configurable via command-
+> line options.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Please describe here what you did, this is not adding anything
+new but moving existing file to new folder, so no need to
+add Pravalika as an author in 'From:' and 'Author:' below.
 
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
-> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Description would be for example:
+
+Move existing benchmark into folder intel_benachmark to
+separate those from other tools.
+
+Feel free to improve description.
+
+> 
+> V2: Added original author attribution and handle relocation
+> preserving git history
+> 
+> Signed-off-by: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
+> Author:    Gurram Pravalika <pravalika.gurram@intel.com>
+
+No need for Author here.
+
 > ---
->  tests/intel/xe_sriov_flr.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  benchmarks/{ => latency}/xe_blt.c | 0
+
+imho this folder should be 'intel_latency'
+ rename benchmarks/{ => intel_latency}/xe_blt.c (100%)
+
+Regards,
+Kamil
+
+>  1 file changed, 0 insertions(+), 0 deletions(-)
+>  rename benchmarks/{ => latency}/xe_blt.c (100%)
 > 
-> diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-> index 448b63521..2138debfe 100644
-> --- a/tests/intel/xe_sriov_flr.c
-> +++ b/tests/intel/xe_sriov_flr.c
-> @@ -1012,13 +1012,13 @@ static void clear_tests(int pf_fd, int num_vfs, flr_exec_strategy exec_strategy)
->  	};
->  	const unsigned int num_checks = num_gts + 3;
->  	struct subcheck checks[num_checks];
-> -	int i;
-> +	int i = 0, gt_id;
->  
->  	memset(mmio, 0, sizeof(mmio));
->  
-> -	for (i = 0; i < num_gts; ++i) {
-> +	xe_for_each_gt(pf_fd, gt_id) {
->  		gdata[i] = (struct ggtt_data){
-> -			.base = { .pf_fd = pf_fd, .num_vfs = num_vfs, .gt = i },
-> +			.base = { .pf_fd = pf_fd, .num_vfs = num_vfs, .gt = gt_id },
->  			.mmio = &xemmio
->  		};
->  		checks[i] = (struct subcheck){
-> @@ -1029,6 +1029,7 @@ static void clear_tests(int pf_fd, int num_vfs, flr_exec_strategy exec_strategy)
->  			.verify_vf = ggtt_subcheck_verify_vf,
->  			.cleanup = ggtt_subcheck_cleanup
->  		};
-> +		i++;
->  	}
->  	checks[i++] = (struct subcheck) {
->  		.data = (struct subcheck_data *)&ldata,
+> diff --git a/benchmarks/xe_blt.c b/benchmarks/latency/xe_blt.c
+> similarity index 100%
+> rename from benchmarks/xe_blt.c
+> rename to benchmarks/latency/xe_blt.c
 > -- 
-> 2.31.1
+> 2.43.0
 > 
