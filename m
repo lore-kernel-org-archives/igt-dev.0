@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92440CAC589
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 08:43:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FA7CAC589
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 08:47:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 469FA10E65E;
-	Tue,  9 Sep 2025 08:43:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2210310E23A;
+	Tue,  9 Sep 2025 08:47:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F/n6dGXg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eCpmVnf3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 102D510E65E
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 08:43:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7463D10E23A
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 08:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757407387; x=1788943387;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=FXQ/4J7ELHPITan6TFSp/zlmUr4ncUQ2AbDKFTTgjss=;
- b=F/n6dGXgUjM/TexgQB25CdEi5KQvYvapKfG4KHMg36b/MPD7jIYpglQe
- 4/SL4cBuNRTmSocdgzuh4jgfaKko3tUMTcE4KE8ew/Q9fw9Y3ebDP7sJ6
- brEFW3jo7TyOJCAiX7EffzTxITSv0BctHFKGyNx0z3lBvyAFvm8Dx8tAe
- /fF5ltLrXO0ET4+Bq+qBpRSSvwZ/S1PBhN0qVY/cXYIIolx3+QqcHcaZN
- iMTnM/VM44VorDE++m5ceS9y69ak0Vw8xSYIGAKtYP182mqKPLABADFig
- 6/+/6TnTcYLehAb5iRkTak7vyZTS19OXC57Vo9JI3FUosuheXadN/8bO4 Q==;
-X-CSE-ConnectionGUID: LqSYmadtR4aa+IKFrzeH7A==
-X-CSE-MsgGUID: UnW6uV+EQqKtFZ3+EjkcAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="59377682"
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="59377682"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 01:43:07 -0700
-X-CSE-ConnectionGUID: fEBtPYsnS3aJfb42qYtX5A==
-X-CSE-MsgGUID: RBqADphkQt6LfHHZB2B7vw==
+ t=1757407667; x=1788943667;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=gN/Vvl4330j2FFCM0LQUOLHRYGdWFVVl2dOJAcRby38=;
+ b=eCpmVnf3mkxQDskaP/bofMhe5CrTc90pWt+EL9hNDtuMW1gE+rnzyJtq
+ d0AsHIEd0g92LrW+rpvS/6a8c44WtNjPGqAHt187jIIV1hwg+xBOppPvn
+ 7JIruMNgObSS+4YFb85oTOYuZIWjuQrDnoljk5H+gZBWn3dB/WqUy/U1w
+ rwJs0CtD5wn0Bz8tAaOYjJhHIXlMeWU2VzCPQG1yIV1Kb6v4z7Dn004Yp
+ Vv5HAWsiCaCuOWSI2nKn/aQkH5Eg8CCXIpowG/6zd/bxmAg1mhZC1jFNI
+ xqd0riNSO/82iJp4+SRMJ6/s3S/ZZ94OLTPQBCv4i9WekJJly1erg80+e Q==;
+X-CSE-ConnectionGUID: 07l3LOcFSpGcPREIvzAWjA==
+X-CSE-MsgGUID: ypN4YZEpQIqj5NE9bR+PxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59634399"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59634399"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 01:47:47 -0700
+X-CSE-ConnectionGUID: rkpHCDOlR2mPc8WwWSR+sQ==
+X-CSE-MsgGUID: Ut0AyaXnSGmU9peQeBaa5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="172900276"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.129])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 01:43:01 -0700
-From: Pawel Sikora <pawel.sikora@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t v9 4/5] docs: Initialize MkDocs documentation structure
-Date: Tue,  9 Sep 2025 10:42:30 +0200
-Message-ID: <20250909084233.183885-5-pawel.sikora@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250909084233.183885-1-pawel.sikora@intel.com>
-References: <20250909084233.183885-1-pawel.sikora@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="177324435"
+Received: from unknown (HELO [172.28.180.113]) ([172.28.180.113])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 01:47:46 -0700
+Message-ID: <cbcca40a-63c3-4b0b-b753-8431f63c605a@linux.intel.com>
+Date: Tue, 9 Sep 2025 10:47:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel?=
+ =?UTF-8?Q?/xe=5Fpm=3A_Don=E2=80=99t_fail_when_runtime_PM_is_disabled?=
+To: igt-dev@lists.freedesktop.org, lgci.bug.filing@intel.com
+References: <20250904091009.1584332-1-marcin.bernatowicz@linux.intel.com>
+ <175704536586.305944.2681718649927204639@1538d3639d33>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <175704536586.305944.2681718649927204639@1538d3639d33>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,2822 +70,916 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit establishes the groundwork for a comprehensive
-documentation site, enhancing accessibility and organization.
 
- * Move detailed documentation into the docs directory,
-   splitting content across multiple markdown files.
- * Set up the structure for automatic site generation using
-   MkDocs,facilitating easier navigation and maintenance.
- * Moved some content from README.md to docs/overview.md,
-   docs/building.md
 
-v2:
- - Add new content and make corrections (Swati)
- - Fix line width to 100 characters (Kamil)
- - Fix moved/copied files (Kamil)
+On 9/5/2025 6:09 AM, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/intel/xe_pm: Don’t fail when runtime PM is disabled
+> URL   : https://patchwork.freedesktop.org/series/154016/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8524_FULL -> XEIGTPW_13695_FULL
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>    **FAILURE**
+> 
+>    Serious unknown changes coming with XEIGTPW_13695_FULL absolutely need to be
+>    verified manually.
+>    
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in XEIGTPW_13695_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>    to document this new failure mode, which will reduce false positives in CI.
+> 
+>    
+> 
+> Participating hosts (4 -> 3)
+> ------------------------------
+> 
+>    Missing    (1): shard-adlp
+> 
+> Possible new issues
+> -------------------
+> 
+>    Here are the unknown changes that may have been introduced in XEIGTPW_13695_FULL:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>    * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@ac-hdmi-a6-dp4:
+>      - shard-dg2-set2:     [PASS][1] -> [FAIL][2] +1 other test fail
+>     [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-434/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@ac-hdmi-a6-dp4.html
+>     [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@ac-hdmi-a6-dp4.html
+> 
 
-v5:
- - Minor documentation content changes (Kasia)
-
-v6:
- - Add information about MIT licence in footer
- - Add download.md page
-
-Co-developed-by: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
----
- docs/api.md                          |  30 ++
- docs/blocklists.md                   | 354 +++++++++++++++++++++++
- docs/building.md                     |  27 ++
- docs/{chamelium.txt => chamelium.md} |   2 +-
- docs/ci_infrastructure.md            | 414 +++++++++++++++++++++++++++
- docs/code_coverage.md                |  68 +++--
- docs/cross-building.md               | 260 ++++++++++++-----
- docs/download.md                     |  23 ++
- docs/faq.md                          |  92 ++++++
- docs/how_to_build_docs.md            |  54 ++++
- docs/issues.md                       |  31 ++
- docs/new_driver.md                   | 231 +++++++++++++++
- docs/overview.md                     | 249 ++++++++++++++++
- docs/patchwork.md                    |  18 ++
- docs/running_tests.md                | 130 +++++++++
- docs/test_categories.md              | 266 +++++++++++++++++
- docs/test_documentation.md           |   5 +-
- docs/test_plan.md                    | 216 ++++++++++++++
- 18 files changed, 2361 insertions(+), 109 deletions(-)
- create mode 100644 docs/api.md
- create mode 100644 docs/blocklists.md
- create mode 100644 docs/building.md
- rename docs/{chamelium.txt => chamelium.md} (99%)
- create mode 100644 docs/ci_infrastructure.md
- create mode 100644 docs/download.md
- create mode 100644 docs/faq.md
- create mode 100644 docs/how_to_build_docs.md
- create mode 100644 docs/issues.md
- create mode 100644 docs/new_driver.md
- create mode 100644 docs/overview.md
- create mode 100644 docs/patchwork.md
- create mode 100644 docs/running_tests.md
- create mode 100644 docs/test_categories.md
- create mode 100644 docs/test_plan.md
-
-diff --git a/docs/api.md b/docs/api.md
-new file mode 100644
-index 000000000..cbe2a7da1
---- /dev/null
-+++ b/docs/api.md
-@@ -0,0 +1,30 @@
-+# IGT GPU Tools API
-+
-+**IGT GPU Tools** provides a set of C libraries and helper macros for writing and
-+running test cases targeting the Linux graphics stack.
-+
-+Generated documentation is available at:
-+
-+ - [IGT API Reference](https://drm.pages.freedesktop.org/igt-gpu-tools/)
-+
-+## Purpose
-+
-+The API is designed to:
-+
-+ - Simplify interaction with kernel graphics drivers (e.g., via DRM ioctls)
-+ - Provide reusable infrastructure for writing test cases
-+ - Offer abstractions for managing displays, buffers, events, and execution contexts
-+
-+## Key Components
-+
-+ - `igt_assert`, `igt_skip`, `igt_require`: Macros for managing test flow
-+ - `igt_fixture`, `igt_subtest`: Infrastructure for setup/teardown and subtest isolation
-+
-+Helper modules for:
-+  - Buffer objects (e.g., `intel_buf`)
-+  - Display configuration (e.g., `kmstest`, `igt_display`)
-+  - Memory mapping, fences, command streams, and performance counters
-+
-+##  Examples
-+
-+For code examples, browse the `tests/` and `lib/` directories.
-diff --git a/docs/blocklists.md b/docs/blocklists.md
-new file mode 100644
-index 000000000..265a1e240
---- /dev/null
-+++ b/docs/blocklists.md
-@@ -0,0 +1,354 @@
-+# :material-block-helper: Blocklists
-+
-+## :material-information-outline: Overview
-+
-+Blocklists in IGT GPU Tools are essential mechanisms for
-+excluding problematic, unstable, or inappropriate tests from automated CI runs. They help
-+maintain CI stability by filtering out tests that are known to cause issues, while still
-+preserving the tests in the codebase for manual execution or future fixing.
-+
-+!!! info "Purpose"
-+    Blocklists allow CI systems to run comprehensive test suites while automatically
-+    excluding tests that:
-+
-+    - Are known to be flaky or unstable
-+    - Require specific hardware configurations not available in CI
-+    - Are under development and not ready for production testing
-+    - Cause system hangs or crashes
-+    - Coverage for older generations—not in active use but required to maintain
-+      historical continuity.
-+
-+## :material-file-outline: Blocklist Files
-+
-+### Driver-Specific Blocklists
-+
-+IGT maintains separate blocklists for different GPU drivers and testing scenarios:
-+
-+| File | Purpose | Usage |
-+|||--|
-+| **`blocklist.txt`** | i915 driver test exclusions | Full IGT runs on i915 hardware |
-+| **`xe.blocklist.txt`** | Xe driver test exclusions | Full IGT runs on Xe hardware |
-+| **Test lists** | Positive inclusion lists | BAT and fast-feedback testing |
-+
-+### File Locations
-+
-+```
-+tests/intel-ci/
-+├── blocklist.txt              # i915 driver blocklist
-+├── xe.blocklist.txt          # Xe driver blocklist
-+├── fast-feedback.testlist    # i915 BAT test list
-+└── xe-fast-feedback.testlist # Xe BAT test list
-+```
-+
-+## :material-format-text: Blocklist Format and Syntax
-+
-+### Basic Pattern Matching
-+
-+Blocklists use pattern matching to exclude tests flexibly:
-+
-+```bash
-+# Exact test match
-+igt@i915_module_load@load
-+
-+# Wildcard patterns
-+igt@gem_caching@.*              # All gem_caching subtests
-+igt@kms_prime@.*               # All kms_prime subtests
-+igt@prime_vgem@coherency-.*    # All coherency subtests
-+
-+# Binary-level exclusions
-+igt@gem_workarounds@.*         # Entire gem_workarounds test binary
-+```
-+
-+### Pattern Types
-+
-+| Pattern | Description | Example |
-+||-||
-+| **Exact Match** | Specific test/subtest | `igt@core_auth@getclient-simple` |
-+| **Wildcard (.*)**| All subtests in a test | `igt@gem_exec_nop@.*` |
-+| **Partial Match** | Tests matching prefix | `igt@kms_.*@basic` |
-+| **Regex Support** | Advanced pattern matching | `igt@.*@.*-suspend` |
-+
-+### Comment Syntax
-+
-+```bash
-+# Full line comments start with #
-+igt@problematic_test@.*
-+
-+# Inline comments after patterns
-+igt@flaky_test@.* # Known to be unstable
-+
-+############################################
-+# Section separators for organization
-+############################################
-+```
-+
-+## :material-cog: Driver-Specific Blocklists
-+
-+### i915 Driver Blocklist (`blocklist.txt`)
-+
-+**Purpose:** Exclude tests from Full IGT runs on i915 hardware
-+
-+**Common Exclusion Categories:**
-+
-+```bash
-+# Hardware-specific exclusions
-+igt@gem_caching@.*              # Requires specific cache coherency
-+igt@gem_userptr_blits@.*        # Userptr functionality issues
-+
-+# Display-specific exclusions
-+igt@kms_cursor_legacy@.*        # Legacy cursor compatibility
-+igt@kms_scaling_modes@.*        # Scaling mode limitations
-+
-+# Performance/stability exclusions
-+igt@gem_exec_whisper@.*         # Resource-intensive stress tests
-+igt@gem_concurrent_blit@.*      # Concurrent operation stability
-+```
-+
-+### Xe Driver Blocklist (`xe.blocklist.txt`)
-+
-+**Purpose:** Exclude tests from Full IGT runs on Xe hardware
-+
-+**Xe-Specific Exclusions:**
-+
-+```bash
-+# KMS tests requiring i915-specific features
-+igt@kms_prime@.*               # Prime buffer sharing limitations
-+igt@kms_cursor_legacy@.*       # Legacy API compatibility
-+
-+# Memory management differences
-+igt@gem_caching@.*             # Different memory architecture
-+igt@gem_mmap_gtt@.*           # GTT mapping not applicable
-+
-+# SR-IOV test management
-+igt@sriov_basic@.*            # Controlled SR-IOV test execution
-+```
-+
-+## :material-lightning-bolt: Dynamic Blocklist Management
-+
-+### Adding Tests to Blocklists
-+
-+**For systematic exclusions:**
-+```bash
-+# Include issue tracking and reasoning
-+# In blocklist file:
-+############################################
-+# Blocked due to hardware incompatibility
-+# See: https://gitlab.freedesktop.org/drm/intel/-/issues/XXXX
-+############################################
-+igt@hardware_specific_test@.*
-+```
-+
-+!!! warning "Use this for exceptional use-cases only"
-+
-+**For urgent CI stability:**
-+```bash
-+# Add to appropriate blocklist file
-+echo "igt@problematic_test@.*" >> tests/intel-ci/blocklist.txt
-+
-+# Commit with clear justification
-+git commit -m "intel-ci: Blocklist problematic_test due to [issue]"
-+```
-+
-+
-+### Removing Tests from Blocklists
-+
-+**When issues are resolved:**
-+
-+1. **Verify fix** - Ensure the underlying issue is resolved
-+2. **Test locally** - Run the test on affected hardware
-+3. **Remove from blocklist** - Delete the line from appropriate file
-+4. **Monitor CI** - Watch for regressions after removal
-+
-+## :material-timeline-check: Blocklist Categories
-+
-+### By Test Stability
-+
-+| Category | Description | Examples |
-+|-|-|-|
-+| **Flaky Tests** | Intermittent failures | Tests with timing dependencies |
-+| **Hardware-Specific** | Requires unavailable hardware | Specific GPU generations only |
-+| **Environment-Dependent** | Needs special configuration | Display connection requirements |
-+| **Under Development** | Work-in-progress features | New functionality testing |
-+
-+### By Impact Level
-+
-+| Level | Description | Action |
-+|-|-|--|
-+| **Critical** | Causes system hangs/crashes | Immediate blocklisting |
-+| **High** | Consistent CI failures | Blocklist until fixed |
-+| **Medium** | Intermittent issues | Monitor and consider blocklisting |
-+| **Low** | Minor failures | Keep in CI with issue tracking |
-+
-+## :material-chart-timeline: CI Integration
-+
-+### How Blocklists Are Applied
-+
-+**During CI Execution:**
-+
-+1. **Test Discovery** - CI enumerates all available IGT tests
-+2. **Blocklist Filtering** - Excludes tests matching blocklist patterns
-+3. **Test Execution** - Runs remaining tests in filtered set
-+4. **Result Reporting** - Reports only on tests that were attempted
-+
-+**CI Run Types:**
-+
-+| Run Type | Blocklist Used | Test Scope |
-+|-|-||
-+| **BAT (Basic Acceptance)** | Test lists (positive) | Curated fast tests |
-+| **Full IGT** | Blocklists (negative) | All tests minus blocked |
-+| **Idle Runs** | Blocklists (negative) | Extended coverage |
-+
-+### Integration with Intel GFX CI
-+
-+**Automatic Application:**
-+
-+- **i915 Full IGT:** All IGT tests filtered by `blocklist.txt`
-+- **Xe Full IGT:** All IGT tests filtered by `xe.blocklist.txt`
-+- **Cross-platform:** Same blocklist patterns across different hardware
-+
-+**Result Filtering:**
-+
-+- Blocked tests don't appear in CI results
-+- No false positives from known problematic tests
-+- Focus on real regressions and new issues
-+
-+## :material-bug: Issue Tracking Integration
-+
-+### Linking Blocklists to Issues
-+
-+**Best Practices:**
-+```bash
-+# Include issue references in blocklist comments
-+############################################
-+# Blocked due to regression in foo feature
-+# See: https://gitlab.freedesktop.org/drm/intel/-/issues/1234
-+# Remove when fixed
-+############################################
-+igt@affected_test@.*
-+```
-+
-+**Issue Lifecycle Management:**
-+
-+1. **Issue Reported** - Problem identified in CI or manual testing
-+2. **Temporary Blocklist** - Add to blocklist to stabilize CI
-+3. **Issue Investigation** - Development team investigates root cause
-+4. **Fix Implementation** - Code changes to resolve issue
-+5. **Blocklist Removal** - Remove from blocklist after verification
-+6. **Monitoring** - Watch for regressions
-+
-+### Automated Issue Tracking
-+
-+**CI Bug Log Integration:**
-+
-+- Links blocklist entries to GitLab issues
-+- Tracks issue lifecycle and resolution
-+- Automatic notifications when issues are resolved
-+- Historical data on blocklist effectiveness
-+
-+## :material-wrench: Maintenance and Best Practices
-+
-+### Regular Maintenance Tasks
-+
-+**Periodic Review:**
-+```bash
-+# Review blocklist contents quarterly
-+# Check for resolved issues
-+# Remove outdated entries
-+# Update issue references
-+```
-+
-+**Validation Procedures:**
-+
-+1. **Test Removal Candidates** - Try removing old entries
-+2. **Hardware Updates** - Review when new hardware is added
-+3. **Driver Updates** - Check blocklists after major driver changes
-+4. **CI Infrastructure Changes** - Verify patterns after CI updates
-+
-+### Best Practices for Contributors
-+
-+**Adding Blocklist Entries:**
-+
-+- ✅ Include clear justification and issue references
-+- ✅ Use minimal patterns (specific as possible)
-+- ✅ Add comments explaining the exclusion reason
-+- ✅ Link to tracking issues when available
-+
-+**Pattern Guidelines:**
-+
-+- Use `.*` for all subtests in a test binary
-+- Use specific subtest names when only some subtests fail
-+- Avoid overly broad patterns that exclude working tests
-+- Test patterns locally before committing
-+
-+**Documentation Requirements:**
-+```bash
-+# Good blocklist entry:
-+############################################
-+# gem_caching tests require coherent memory
-+# Not supported on DG2 hardware - see issue #1234
-+############################################
-+igt@gem_caching@.*
-+
-+# Poor blocklist entry:
-+igt@gem_caching@.*  # broken
-+```
-+
-+## :material-file-code: Example Blocklist Configurations
-+
-+### Complete i915 Blocklist Example
-+
-+```bash
-+############################################
-+# i915 Driver Test Blocklist
-+# Last Updated: 2024-XX-XX
-+############################################
-+
-+# Memory management tests requiring specific hardware
-+igt@gem_caching@.*              # Cache coherency not universal
-+igt@gem_userptr_blits@.*        # Userptr stability issues
-+
-+# Display tests with hardware dependencies
-+igt@kms_cursor_legacy@.*        # Legacy cursor compatibility
-+igt@kms_scaling_modes@.*        # Hardware scaling limitations
-+
-+# Resource-intensive stress tests
-+igt@gem_exec_whisper@.*         # CPU/memory intensive
-+igt@gem_concurrent_blit@.*      # Concurrent stability
-+
-+############################################
-+# Module loading tests - BAT only
-+# See: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6227
-+############################################
-+igt@i915_module_load@load       # Requires unloaded i915 module
-+```
-+
-+### Complete Xe Blocklist Example
-+
-+```bash
-+############################################
-+# Xe Driver Test Blocklist
-+# Last Updated: 2025-XX-XX
-+############################################
-+
-+# KMS tests requiring i915-specific features
-+igt@kms_prime@.*               # Prime implementation differences
-+igt@kms_cursor_legacy@.*       # Legacy API not supported
-+
-+# Memory architecture differences
-+igt@gem_caching@.*             # Different memory subsystem
-+igt@gem_mmap_gtt@.*           # GTT not applicable to Xe
-+
-+############################################
-+# SR-IOV test management
-+# Only specific subtests should run in CI
-+############################################
-+igt@sriov_basic@enable-vfs-autoprobe-off.*
-+igt@sriov_basic@enable-vfs-bind-unbind-each.*
-+igt@sriov_basic@bind-unbind-vf.*
-+
-+############################################
-+# Platform-specific exclusions
-+############################################
-+igt@xe_wedged@.*              # Controlled error injection
-+```
-+
-diff --git a/docs/building.md b/docs/building.md
-new file mode 100644
-index 000000000..12b1b4f44
---- /dev/null
-+++ b/docs/building.md
-@@ -0,0 +1,27 @@
-+## :material-hammer-wrench: Tests
-+
-+To get started quickly and build tests:
-+
-+```bash
-+meson setup build && ninja -C build
-+```
-+
-+!!! info "Meson requires that builds be done in a separate directory from the source tree!"
-+
-+To run self-tests from `lib/tests` and `tests/`:
-+
-+```bash
-+ninja -C build test
-+```
-+## :material-book: Documentation
-+
-+To build the documentation:
-+
-+```bash
-+ninja -C build igt-gpu-tools-doc
-+```
-+
-+!!! info "Missing documentation for a new test?"
-+    Some drivers (e.g., Xe, i915) and KMS tests require proper documentation in a
-+    **test plan**. The build will fail if documentation is missing! See
-+    [`test_documentation.md`](test_documentation.md) for details.
-diff --git a/docs/chamelium.txt b/docs/chamelium.md
-similarity index 99%
-rename from docs/chamelium.txt
-rename to docs/chamelium.md
-index 64f851c28..240c8e2c8 100644
---- a/docs/chamelium.txt
-+++ b/docs/chamelium.md
-@@ -41,7 +41,7 @@ While the FPGA is used for logic control, the CPU runs daemons that allow the
- board to be controlled over the network via a XMLRPC interface.
- 
- [Current limitation] Cv3 hardware uses an ITE chip which allows only 1 port to
--be plugged in a time. This limitation will be fixed in the upcoming iteration. 
-+be plugged in a time. This limitation will be fixed in the upcoming iteration.
- 
- Chamelium V2 Documentation
- --------------------------
-diff --git a/docs/ci_infrastructure.md b/docs/ci_infrastructure.md
-new file mode 100644
-index 000000000..47f2ca9d8
---- /dev/null
-+++ b/docs/ci_infrastructure.md
-@@ -0,0 +1,414 @@
-+# :material-cloud-cog: CI Infrastructure
-+
-+## :material-information-outline: Overview
-+
-+IGT GPU Tools employs a comprehensive Continuous Integration (CI) infrastructure to ensure
-+code quality, prevent regressions, and maintain driver stability. The CI system operates
-+across multiple platforms and architectures, providing automated testing for both pre-merge
-+and post-merge scenarios.
-+
-+The infrastructure consists of two main components:
-+
-+- **GitLab CI** (Freedesktop.org) - Build validation and cross-platform testing
-+- **Intel GFX CI** - Comprehensive hardware testing on real Intel GPU systems
-+
-+## :material-gitlab: GitLab CI (Freedesktop.org)
-+
-+### Infrastructure Overview
-+
-+IGT uses GitLab CI hosted at `gitlab.freedesktop.org` for:
-+
-+- **Build validation** across multiple architectures
-+- **Container-based testing** for reproducible environments
-+- **Cross-platform compatibility** checks
-+- **Documentation generation** and validation
-+
-+### Container Infrastructure
-+
-+IGT leverages containerized builds for consistency and reliability:
-+
-+```bash
-+# Pre-built containers available at:
-+registry.freedesktop.org/drm/igt-gpu-tools/igt:master
-+
-+# Run IGT in container:
-+podman run --rm --privileged registry.freedesktop.org/drm/igt-gpu-tools/igt:master
-+```
-+
-+### Build Matrix
-+
-+| Platform | Architecture | Purpose |
-+|-|-||
-+| **Debian** | x86_64 | Primary build and test platform |
-+| **Fedora** | x86_64 | Alternative distro validation |
-+| **Debian Minimal** | x86_64 | Minimal dependency testing |
-+| **Multi-arch** | arm64, mips | Cross-platform compatibility |
-+
-+### Container Technology Stack
-+
-+The CI migrated from Docker to modern container tools for improved reliability:
-+
-+- **Buildah** - Container building (replaces docker build)
-+- **Podman** - Container runtime (replaces docker run)
-+- **Skopeo** - Image management and registry operations
-+- **Containerfile/Dockerfile** - Build definitions
-+
-+**Benefits of the modern stack:**
-+
-+- No daemon dependencies (more reliable in CI)
-+- Better isolation using chroot
-+- Improved network handling for nested containers
-+- Faster builds and reduced resource usage
-+
-+
-+
-+## :material-cpu-64-bit: Intel GFX CI
-+
-+### Mission-Critical Testing
-+
-+Intel GFX CI provides the backbone for Intel GPU driver validation:
-+
-+!!! quote "Intel GFX CI Mission"
-+    "Test each patch that goes into i915, Intel Xe, or IGT GPU Tools **before** it lands
-+    in the repository, comparing results with post-merge baselines to catch regressions
-+    early."
-+
-+### Hardware Infrastructure
-+
-+**Diverse GPU Coverage:**
-+
-+- Multiple Intel GPU generations (Gen7 through latest)
-+- Various form factors (desktop, mobile, server)
-+- Different display configurations (HDMI, DP, eDP, VGA)
-+- Specialized hardware for specific features
-+
-+**Sample Hardware Types:**
-+
-+- `bat-apl-1` - Apollo Lake platform
-+- `bat-jsl-3` - Jasper Lake system
-+- `bat-rpls-1` - Raptor Lake S
-+- `bat-mtlp-8` - Meteor Lake P
-+- `shard-tglb1` - Tiger Lake (sharded testing)
-+
-+### Test Execution Tiers
-+
-+#### 1. Basic Acceptance Tests (BAT)
-+**Purpose:** Fast feedback and gating mechanism
-+**Duration:** ~1 hour
-+**Test List:** `tests/intel-ci/fast-feedback.testlist`
-+
-+```bash
-+# Example BAT tests:
-+igt@core_auth@getclient-simple
-+igt@i915_module_load@load
-+igt@kms_busy@basic@modeset
-+igt@debugfs_test@read_all_entries
-+```
-+
-+**Key Characteristics:**
-+
-+- Ensures testing configuration is working
-+- Gates all further testing (sharded runs)
-+- Fast-feedback tests for quick validation
-+- Must pass before proceeding to full testing
-+
-+#### 2. Full IGT (Sharded Runs)
-+**Purpose:** Comprehensive validation
-+**Duration:** ~6 hours
-+**Scope:** All IGT tests (filtered by blocklists)
-+
-+**Driver-Specific Execution:**
-+
-+- **i915:** All IGT tests filtered by `blocklist.txt`
-+- **Xe:** All IGT tests filtered by `xe.blocklist.txt`
-+
-+**Sharding Strategy:**
-+Tests are distributed across multiple machines for parallel execution:
-+
-+- `shard-tglb1`, `shard-tglb2` - Tiger Lake systems
-+- `shard-dg2` - DG2/Arc GPU systems
-+- Multiple concurrent executions for faster results
-+
-+#### 3. Specialized Runs
-+
-+| Run Type | Purpose | Characteristics |
-+|-||--|
-+| **Idle Runs** | Extra coverage during quiet periods | Run when CI is idle |
-+| **KASAN Runs** | Memory safety validation | Kernel Address Sanitizer enabled |
-+| **100 Re-runs** | Flaky test detection | Same test 100 times for statistics |
-+| **Resume Runs** | Suspend/resume validation | Single machine, resume capability |
-+| **drmtip Runs** | Extended coverage | Full IGT on BAT hardware |
-+
-+
-+
-+## :material-email-fast: Pre-Merge Testing Workflow
-+
-+### Patch Submission Process
-+
-+ 1. **Mailing List Submission**
-+   ```bash
-+   # IGT patches should include i-g-t tag:
-+   git config --local format.subjectPrefix "PATCH i-g-t"
-+   # Example subject:
-+   [PATCH i-g-t] tests/kms_atomic: Add new subtest for cursor planes
-+   ```
-+ 2. **Automatic CI Triggering**
-+    - CI automatically detects patches on mailing lists
-+    - Both BAT and Full IGT are scheduled
-+    - Results sent as email replies to original patch
-+
-+ 3. **Result Timeline**
-+    - BAT Results: ~1 hour
-+    - Full IGT Results: ~6 hours
-+    - All results emailed even on success
-+
-+### Forcing Custom Test Configurations
-+
-+For specific testing needs, developers can override CI behavior:
-+
-+```bash
-+# Force specific tests in BAT (mark with HAX):
-+[PATCH i-g-t HAX] tests/intel-ci: Add kms_example to fast-feedback
-+
-+# Change kernel configuration:
-+[PATCH HAX] kernel: Enable CONFIG_EXAMPLE for testing
-+
-+# Force IGT test list changes:
-+# Modify tests/intel-ci/fast-feedback.testlist in a HAX patch
-+```
-+
-+### Trybot System
-+
-+!!! info "Works for i915 only"
-+**Purpose:** Test changes before formal review
-+
-+**Usage:**
-+
-+- Submit to trybot mailing list
-+- Get CI feedback without formal patch review
-+- Useful for experimental changes
-+
-+
-+
-+## :material-bug: Results and Bug Tracking
-+
-+### Result Categories
-+
-+| Result | Description | Action Required |
-+|--|-|--|
-+| **PASS** | Test completed successfully | None |
-+| **SKIP** | Test skipped (missing hardware/feature) | Generally acceptable |
-+| **FAIL** | Test failed | Investigation required |
-+| **Dmesg-Warn** | Kernel warnings detected | Review warnings |
-+| **Incomplete** | Test didn't complete | Infrastructure issue |
-+
-+### Bug Tracking Integration
-+
-+**Automated Bug Filtering:**
-+
-+- Known issues are filtered out using pattern matching
-+- New failures automatically trigger investigation
-+- Results tied to specific dmesg patterns and hardware
-+
-+**Bug Trackers:**
-+
-+- **freedesktop GitLab** - Kernel, Xe, and IGT issues
-+- **Hardware-specific filters** - Machine type patterns
-+- **Pattern-based matching** - dmesg output analysis
-+
-+## :material-git: Repository Integration
-+
-+### CI-Tagged Repositories
-+
-+**IGT CI Tags:** `https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags.git`
-+
-+- Contains CI-specific tags and metadata
-+- Used for tracking tested versions
-+- Integration with kernel development
-+
-+**Kernel Integration:** `git://anongit.freedesktop.org/gfx-ci/linux`
-+
-+- Kernel tree with CI integration
-+- Automated testing of kernel + IGT combinations
-+- Firmware coordination
-+
-+### Firmware Management
-+
-+**Firmware Repositories:**
-+
-+- **intel-staging** - Upcoming firmware blobs ready for merge
-+- **intel-for-ci** - CI-specific firmware with intel-ci directory
-+- **Automatic deployment** - Firmware updated on test machines
-+
-+**Firmware Deployment Process:**
-+
-+1. New pushes detected on firmware branches
-+2. Extract i915 and xe directories from intel-staging
-+3. Extract intel-ci from intel-for-ci
-+4. Deploy all three directories to test machines
-+5. Integrate with base OS firmware tree (Ubuntu)
-+
-+
-+
-+## :material-docker: Container Registry
-+
-+### Available Images
-+
-+**Primary IGT Container:**
-+```bash
-+registry.freedesktop.org/drm/igt-gpu-tools/igt:master
-+```
-+
-+**Build Images:**
-+
-+- Debian-based development environment
-+- Fedora-based testing environment
-+- Multi-architecture build support
-+- Documentation generation environment
-+
-+### Usage Examples
-+
-+```bash
-+# Run tests in container:
-+podman run --rm --privileged \
-+  registry.freedesktop.org/drm/igt-gpu-tools/igt:master \
-+  /usr/libexec/igt-gpu-tools/core_auth
-+
-+# Build IGT in container:
-+podman run --rm -v $(pwd):/workspace \
-+  registry.freedesktop.org/drm/igt-gpu-tools/igt:master \
-+  bash -c "cd /workspace && meson build && ninja -C build"
-+```
-+
-+
-+
-+## :material-chart-timeline-variant: CI Configuration Files
-+
-+### GitLab CI Configuration
-+
-+**Primary Configuration:** `.gitlab-ci.yml`
-+
-+- Multi-stage pipeline definition
-+- Container build and test stages
-+- Cross-architecture build matrix
-+- Documentation generation jobs
-+
-+**Key Configuration Sections:**
-+```yaml
-+# Build stage example:
-+build:
-+  stage: build
-+  script:
-+    - meson build
-+    - ninja -C build
-+  artifacts:
-+    paths:
-+      - build/
-+
-+# Test stage example:
-+test:
-+  stage: test
-+  script:
-+    - cd build && meson test
-+```
-+
-+### Intel CI Configuration
-+
-+**Test Lists:**
-+
-+- `tests/intel-ci/fast-feedback.testlist` - BAT test definitions
-+- `tests/intel-ci/xe-fast-feedback.testlist` - Xe-specific BAT tests
-+- `tests/intel-ci/blocklist.txt` - i915 test exclusions
-+- `tests/intel-ci/xe.blocklist.txt` - Xe test exclusions
-+
-+**Hardware Configuration:**
-+
-+- Platform-specific test routing
-+- Display configuration requirements
-+- GPU generation compatibility matrices
-+
-+## :material-monitor-dashboard: Monitoring and Maintenance
-+
-+### Performance Metrics
-+
-+**CI Health Indicators:**
-+
-+- Queue depth and processing time
-+- Success/failure rates by platform
-+- Hardware utilization statistics
-+- Container build performance
-+
-+**Continuous Monitoring:**
-+
-+- Real-time queue status
-+- Historical trend analysis
-+- Capacity planning metrics
-+- Infrastructure reliability tracking
-+
-+### Maintenance Operations
-+
-+**Regular Tasks:**
-+
-+- Container image updates
-+- Hardware firmware updates
-+- Test list maintenance
-+- Bug filter updates
-+
-+**Scaling Operations:**
-+
-+- Hardware addition/retirement
-+- Load balancing adjustments
-+- Performance optimization
-+- Capacity expansion
-+
-+
-+
-+## :material-account-group: Development Integration
-+
-+### Developer Workflow
-+
-+1. **Local Development**
-+   ```bash
-+   # Test locally with containers:
-+   podman run --rm --privileged \
-+     -v $(pwd):/workspace \
-+     registry.freedesktop.org/drm/igt-gpu-tools/igt:master
-+   ```
-+
-+2. **Patch Submission**
-+
-+   - Email patches to mailing lists
-+   - CI automatically triggered
-+   - Results delivered via email
-+
-+3. **Result Analysis**
-+
-+   - Review BAT results first (~1 hour)
-+   - Full results available later (~6 hours)
-+   - Investigate any failures or warnings
-+
-+### Best Practices
-+
-+**For Contributors:**
-+
-+- Test patches locally before submission
-+- Use appropriate subject line tags ([PATCH i-g-t])
-+- Mark experimental patches with HAX
-+- Monitor CI results and respond to failures
-+
-+**For Maintainers:**
-+
-+- Review CI results before merging
-+- Update test lists as needed
-+- Maintain bug filters
-+- Coordinate with hardware teams
-+
-+
-+
-+## :material-link-variant: Resources and References
-+
-+### CI Infrastructure Links
-+
-+- **Intel GFX CI:** https://intel-gfx-ci.01.org/
-+- **Container Registry:** https://gitlab.freedesktop.org/drm/igt-gpu-tools/container_registry
-+- **CI Tags Repository:** https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags
-diff --git a/docs/code_coverage.md b/docs/code_coverage.md
-index 8c4857412..fdfab5a7f 100644
---- a/docs/code_coverage.md
-+++ b/docs/code_coverage.md
-@@ -16,24 +16,22 @@ is available at the Linux Kernel since 2009.
- 
- Enabling GCOV at the Linux Kernel requires two steps:
- 
--1. Enable GCOV_KERNEL:
-+ 1. Enable GCOV_KERNEL:
- 
-    ```
-    ./scripts/config -e DEBUG_FS -e GCOV_KERNEL
-    ```
-+ 2. Enable per-driver or per-makefile GCOV support. In order to enable support
-+    for all DRM drivers:
- 
-+    ```
-+    for i in $(find drivers/gpu/drm/ -name Makefile); do
-+        sed '1 a GCOV_PROFILE := y' -i $i
-+    done
-+    ```
- 
--2. Enable per-driver or per-makefile GCOV support. In order to enable support
--   for all DRM drivers:
--
--   ```
--   for i in $(find drivers/gpu/drm/ -name Makefile); do
--       sed '1 a GCOV_PROFILE := y' -i $i
--   done
--   ```
--
--When gcov is enabled for a given driver or directory, GCC will generate
--some special object files, like:
-+    When gcov is enabled for a given driver or directory, GCC will generate
-+    some special object files, like:
- 
- ```
- ...
-@@ -96,16 +94,16 @@ and store on some file.
- Enabling code coverage data collect can be done either per test or as
- a hole for an entire test list, by using those command line options:
- 
--- `--collect-code-cov`
-+`--collect-code-cov`
- 
-   Enables gcov-based collect of code coverage for tests.
- 
--- `--coverage-per-test`
-+`--coverage-per-test`
- 
-   Stores code coverage results per each test. This option implies
-   `--collect-code-cov`.
- 
--For those options to work, it is mandatory to specifiy what script will
-+For those options to work, it is mandatory to specify what script will
- be used to collect the data with `--collect-script` _file_name_.
- 
- ### calling `./scripts/run-tests.sh` script
-@@ -113,15 +111,15 @@ be used to collect the data with `--collect-script` _file_name_.
- The `run-tests.sh` script can used instead as a frontend for igt_runner.
- It has the following options:
- 
--- `-c <capture_script>`
-+`-c <capture_script>`
- 
-   Capture gcov code coverage using the _capture_script_
- 
--- `-P`
-+`-P`
- 
-   Store code coverage results per each test.
- 
--- `-k` _kernel_dir_
-+`-k` _kernel_dir_
- 
-   Linux Kernel source code directory used to generate code coverage builds.
-   This is passed through the capture script via the `IGT_KERNEL_TREE`
-@@ -155,7 +153,7 @@ under the IGT's `scripts/` source directory:
-   Generates a gzipped tarbal with the code coverage counters in
-   binary format. Such kind of output should then be parsed at
-   the same machine where the Kernel as built, as its content is not
--  ony dependent on the Kernel source, but also on the Kernel output
-+  only dependent on the Kernel source, but also on the Kernel output
-   objects.
- 
- For each script, the igt_runner passes just one parameter: the results
-@@ -199,7 +197,7 @@ The `code_cov_parse_info` script has some logic on it that allows
- printing the called functions stored inside the `*.info` file. It can also
- optionally apply the following filters. Its main options are:
- 
--- `--stat` or `--statistics`
-+`--stat` or `--statistics`
- 
-   Prints code coverage statistics.
- 
-@@ -207,7 +205,7 @@ optionally apply the following filters. Its main options are:
- 
-   The statistics report is affected by the applied filters.
- 
--- `--print-coverage`, `--print` or `-p`
-+`--print-coverage`, `--print` or `-p`
- 
- 
-   Prints the functions that were executed in runtime and how many times
-@@ -215,29 +213,29 @@ optionally apply the following filters. Its main options are:
- 
-   The function coverage report is affected by the applied filters.
- 
--- `--print-unused` or `-u`
-+`--print-unused` or `-u`
- 
-   Prints the functions that were never reached.
- 
-   The function coverage report is affected by the applied filters.
- 
--- `--show-lines` or `--show_lines`
-+`--show-lines` or `--show_lines`
- 
-   When printing per-function code coverage data, always output the source
-   file and the line number where the function is defined.
- 
--- `--output` *output file* or `-o` *output file*
-+`--output` *output file* or `-o` *output file*
- 
-   Produces an output file merging all input files.
- 
-   The generated output file is affected by the applied filters.
- 
--- `--show-files` or `--show_files`
-+`--show-files` or `--show_files`
- 
-    Shows the list of files that were useed to produce the code coverage
-    results.
- 
--- It also has a set of parameters that filters the code coverage results:
-+  It also has a set of parameters that filters the code coverage results:
-   `--only-drm`, `--only-i915`, `--func-filters`, `--source-filters`,
-   `--ignore-unused`.
-   When used, all coverage displayed reports, and the stored output file
-@@ -323,39 +321,39 @@ used when generating the HTML reports.
- 
- It requires the following arguments:
- 
--- `--read`  _file or dir_ (or `-r` _file or dir_)
-+`--read`  _file or dir_ (or `-r` _file or dir_)
- 
-   File or directory where the code coverage capture file(s) is(are) located.
- 
--- `--kernel-source` _dir_ (or `-k` _dir_)
-+`--kernel-source` _dir_ (or `-k` _dir_)
- 
-   Kernel source directory.
- 
--- `--kernel-object` _dir_ (or `-O` _dir_)
-+`--kernel-object` _dir_ (or `-O` _dir_)
- 
-   Kernel object directory. Only needed when Kernel was built with `make O=dir`.
- 
--- `--output-dir` _dir_ (or `-o` _dir)
-+`--output-dir` _dir_ (or `-o` _dir)
- 
-   Directory where the html output will be stored. By default, the script
-   won't let re-use an already existing directory.
- 
--- `--info`
-+`--info`
- 
-   The files specified by `--read` parameter are at lcov's `*.info` format.
- 
--- `--tar`
-+`--tar`
- 
-   The files specified by `--read` are gzipped tarballs containing all
-   `*.gcno` files and all `*.gcda` softlinks from the `/sys/kernel/debug/gcov/`
-   directory at the test machine, created by `code_cov_gather_on_test` script.
- 
--- `--force-override`
-+`--force-override`
- 
-   Allow using a non-empty directory for `--output-dir`.
- 
--- It also accepts `--print`, `--only-drm`, `--only-i915` and `--ignore-unused`
--  options from `code_cov_parse_info`.
-+It also accepts `--print`, `--only-drm`, `--only-i915` and `--ignore-unused`
-+options from `code_cov_parse_info`.
- 
- `--info` and `--tar` are mutually exclusive and at least one of them should
- be specified.
-diff --git a/docs/cross-building.md b/docs/cross-building.md
-index 2c0e3caf3..b14182878 100644
---- a/docs/cross-building.md
-+++ b/docs/cross-building.md
-@@ -1,97 +1,185 @@
--Producing an IGT for another architecture
--=========================================
-+# :material-hammer-screwdriver: Cross-Building IGT
- 
--Cross-build toolchain
-----------------------
-+## :material-information-outline: Overview
- 
--Producing cross-builds require installing a toolchain with support
--to the target architecture, or a toolchain built for the target,
--plus an emulator (like qemu). In the case of IGT, the minimal toolchain
--is GCC and binutils. For instance, on Fedora, to cross-build with arm64
--as the target architecture, those packages are needed:
-+Producing an IGT build for another architecture requires setting up a cross-compilation
-+environment with the appropriate toolchain, system root directory, and Meson
-+configuration. This guide covers the essential steps for cross-building IGT GPU Tools
-+for different target architectures.
- 
--	binutils-aarch64-linux-gnu
--	gcc-aarch64-linux-gnu
-+## :material-wrench-cog: Cross-Build Toolchain
- 
--There are also tarballs with cross-compiler chains that can be used
--instead, like:
-+### Required Components
- 
--	https://toolchains.bootlin.com/
-+Cross-building requires installing a toolchain with support for the target architecture,
-+or a toolchain built specifically for the target, plus an emulator (like QEMU). For IGT,
-+the minimal toolchain consists of GCC and binutils.
- 
--System root directory (sysroot)
---------------------------------
-+**Example: ARM64 on Fedora**
- 
--Besides a toolchain, a system root directory containing the libraries
--used by IGT pre-compiled to the target architecture is required.
-+For cross-building with ARM64 as the target architecture, install these packages:
- 
--This can be obtained by either cross-building a distribution using
--Yocto, buildroot or similar, or by copying the system root from
--an existing installation for the desired architecture, containing
--the IGT needed build time and runtime library dependencies.
-+```bash
-+# Fedora packages for ARM64 cross-compilation
-+binutils-aarch64-linux-gnu
-+gcc-aarch64-linux-gnu
-+```
- 
--Please notice that cross-build toolchains may require some
--dependent object files and libraries used by it to also be copied
--to the system root directory. For instance, in the case of Fedora,
--the files are located  under /usr/aarch64-linux-gnu/sys-root/
--(for aarch64 architecture) shall also be stored at the sysroot
--directory used by Meson, as otherwise the preparation step will fail.
-+### Alternative Toolchain Sources
- 
--Meson preparation
-------------------
-+Pre-built cross-compiler toolchain tarballs are also available:
- 
--Meson requires an extra configuration file to be used for
--non-native builds. This is passed via --cross-file parameter to it.
-+- **Bootlin Toolchains**: https://toolchains.bootlin.com/
-+- Various distribution-specific cross-compilation packages
-+- Custom-built toolchains for specific targets
- 
--Such file contains details about the target OS/architecture, about
--the host (native) OS/architecture and declares the location of
--sysroot:
-+## :material-folder-cog: System Root Directory (sysroot)
- 
--- the [host_machine] section defines the system and architecture from
--  the native OS;
--  At the example below, the native OS is Linux x86_64 architecture.
--- the [target_machine] section contains details about the target
--  OS/architecture.
--  At the example below, the target is aarch64 (arm 64 bits architecture).
--- the [constants] section is optional, but it helps to use the sysroot
--  path directory on multiple keys at the [properties] section;
--- the [properties] section contains arguments to be used by the
--  the binaries;
--- the [binaries] section contains the binaries to be used during the
--  build. It can either be a native or a target toolchain.
--  If a target toolchan is used, an exe_wrapper key pointing to an arch
--  emulalor like qemu-arm is needed.
-+### Purpose
- 
--The sysroot directory is where IGT dependent libraries and header
--files, compiled for a given architecture, are stored. At the example
--below, the sysroot is /aarch64-sysroot.
-+Besides a toolchain, a system root directory containing the libraries used by IGT
-+pre-compiled to the target architecture is required.
- 
--Preparing for cross compilation is done by calling meson with the
--cross-compilation config file name, plus a build directory:
-+### Obtaining a Sysroot
- 
--	meson --cross-file arm64_cross.txt build
-+The sysroot can be obtained through several methods:
- 
--The actual compilation can then be done using ninja:
-+1. **Cross-building a distribution** using Yocto, buildroot, or similar tools
-+2. **Copying the system root** from an existing installation for the desired architecture
-+3. **Building dependencies** manually for the target architecture
- 
--	ninja -C build
-+The sysroot must contain all IGT build-time and runtime library dependencies compiled
-+for the target architecture.
- 
--Please notice that some parts of the IGT build are disabled during
--cross-compilation, like testlist file creation and documentation,
--as such steps depend on running the generated code at the native
--machine.
-+### Important Considerations
- 
--The IGT root directory has already 3 examples that uses qemu to
--run a target-OS machine toolchain:
-+!!! warning "Toolchain Dependencies"
-+    Cross-build toolchains may require some dependent object files and libraries to
-+    also be copied to the system root directory. For instance, with Fedora, files
-+    located under `/usr/aarch64-linux-gnu/sys-root/` (for aarch64 architecture) should
-+    also be stored in the sysroot directory used by Meson, otherwise the preparation
-+    step will fail.
- 
--	meson-cross-arm64.txt
--	meson-cross-armhf.txt
--	meson-cross-mips.txt
-+## :material-cog-outline: Meson Configuration
- 
--The example below contains cross-build instructions when using
--a native cross-build toolchain.
-+### Cross-File Requirement
- 
--Example: arm64_cross.txt with a native cross-builder toolchain
----------------------------------------------------------------
-+Meson requires an extra configuration file for non-native builds, passed via the
-+`--cross-file` parameter. This file contains details about:
- 
-+- Target OS/architecture specifications
-+- Host (native) OS/architecture information
-+- Sysroot location and compiler configurations
-+- Binary locations and execution wrappers
-+
-+### Configuration Sections
-+
-+#### `[host_machine]` Section
-+Defines the system and architecture of the native OS.
-+
-+**Example:** Native OS is Linux x86_64 architecture
-+```ini
-+[host_machine]
-+system = 'linux'
-+cpu_family = 'x86_64'
-+cpu = 'x86_64'
-+endian = 'little'
-+```
-+
-+#### `[target_machine]` Section
-+Contains details about the target OS/architecture.
-+
-+**Example:** Target is aarch64 (ARM 64-bit architecture)
-+```ini
-+[target_machine]
-+system = 'linux'
-+cpu_family = 'aarch64'
-+cpu = 'aarch64'
-+endian = 'little'
-+```
-+
-+#### `[constants]` Section (Optional)
-+Helps define reusable paths and arguments for use in other sections.
-+
-+```ini
-+[constants]
-+sysroot = '/aarch64-sysroot'
-+common_args = ['--sysroot=' + sysroot]
-+```
-+
-+#### `[properties]` Section
-+Contains arguments to be used by the build binaries.
-+
-+```ini
-+[properties]
-+sys_root = sysroot
-+c_args = common_args
-+c_link_args = common_args
-+pkg_config_libdir = [
-+    sysroot + '/usr/lib64/pkgconfig',
-+    sysroot + '/usr/share/pkgconfig',
-+    sysroot + '/usr/local/lib/pkgconfig'
-+]
-+```
-+
-+#### `[binaries]` Section
-+Contains the binaries to be used during the build.
-+
-+- Can use either native or target toolchain
-+- If using target toolchain, requires `exe_wrapper` pointing to an architecture
-+  emulator like `qemu-arm`
-+
-+```ini
-+[binaries]
-+c = '/usr/bin/aarch64-linux-gnu-gcc'
-+ar = '/usr/bin/aarch64-linux-gnu-gcc-ar'
-+ld = '/usr/bin/aarch64-linux-gnu-ld'
-+strip = '/usr/bin/aarch64-linux-gnu-strip'
-+pkgconfig = 'pkg-config'
-+```
-+
-+## :material-play-circle-outline: Build Process
-+
-+### Preparation
-+
-+Prepare for cross-compilation by calling Meson with the cross-compilation config file
-+and build directory:
-+
-+```bash
-+meson --cross-file arm64_cross.txt build
-+```
-+
-+### Compilation
-+
-+Execute the actual compilation using Ninja:
-+
-+```bash
-+ninja -C build
-+```
-+
-+### Build Limitations
-+
-+!!! info "Cross-Compilation Limitations"
-+    Some parts of the IGT build are disabled during cross-compilation, including:
-+
-+    - Testlist file creation
-+    - Documentation generation
-+    - Other steps that depend on running generated code on the native machine
-+
-+## :material-file-code: Pre-configured Examples
-+
-+The IGT root directory contains pre-configured cross-compilation examples using QEMU
-+to run target-OS machine toolchains:
-+
-+- `meson-cross-arm64.txt` - ARM64 architecture
-+- `meson-cross-armhf.txt` - ARM hard-float architecture
-+- `meson-cross-mips.txt` - MIPS architecture
-+
-+## :material-script-text: Complete Example Configuration
-+
-+### Native Cross-Builder Toolchain: `arm64_cross.txt`
-+
-+```ini
- [constants]
- sysroot = '/aarch64-sysroot'
- common_args = ['--sysroot=' + sysroot]
-@@ -100,7 +188,11 @@ common_args = ['--sysroot=' + sysroot]
- sys_root = sysroot
- c_args = common_args
- c_link_args = common_args
--pkg_config_libdir = [sysroot + '/usr/lib64/pkgconfig', sysroot +'/usr/share/pkgconfig', sysroot +'/usr/local/lib/pkgconfig']
-+pkg_config_libdir = [
-+    sysroot + '/usr/lib64/pkgconfig',
-+    sysroot + '/usr/share/pkgconfig',
-+    sysroot + '/usr/local/lib/pkgconfig'
-+]
- 
- [binaries]
- c = '/usr/bin/aarch64-linux-gnu-gcc'
-@@ -120,3 +212,29 @@ system = 'linux'
- cpu_family = 'aarch64'
- cpu = 'aarch64'
- endian = 'little'
-+```
-+
-+## :material-lightbulb-outline: Best Practices
-+
-+### Sysroot Management
-+
-+- Ensure all required dependencies are present in the sysroot
-+- Verify library paths match the target architecture
-+- Include both runtime and development packages
-+
-+### Toolchain Verification
-+
-+- Test the cross-compilation toolchain independently before building IGT
-+- Verify that the toolchain can produce working binaries for the target
-+- Check that all required tools (gcc, binutils, etc.) are available
-+
-+### Build Validation
-+
-+- Use emulation (QEMU) to test cross-compiled binaries when possible
-+- Validate that the cross-compiled IGT works on actual target hardware
-+- Compare functionality with native builds to ensure completeness
-+
-+## :material-link: References
-+
-+- [Meson Cross-compilation Documentation](https://mesonbuild.com/Cross-compilation.html)
-+- [Bootlin Toolchains](https://toolchains.bootlin.com/)
-diff --git a/docs/download.md b/docs/download.md
-new file mode 100644
-index 000000000..60749a3d0
---- /dev/null
-+++ b/docs/download.md
-@@ -0,0 +1,23 @@
-+# Download
-+
-+Below you can find an archive with the corresponding release version.
-+
-+This archive contains source code, so it means you need to build and install it in order to use it.
-+
-+Every package has a PGP signature ('.sig') file, where you can check against the hash.
-+
-+## Latest
-+
-+**File**: [igt-gpu-tools-2.1.tar.xz](https://xorg.freedesktop.org/archive/individual/app/igt-gpu-tools-2.1.tar.xz)
-+
-+**PGP**: [igt-gpu-tools-2.1.tar.xz.sig](https://xorg.freedesktop.org/archive/individual/app/igt-gpu-tools-2.1.tar.xz.sig)
-+
-+**MD5**: e6f66340b8f8d1bc45834757a599de4d
-+
-+**SHA1**: 260747754af49bc79c207aa168c64c3f63815b20
-+
-+**SHA256**: bf72beff71093db692f386c9359b557dfa8e8c45250439c952564b1b6fe343f8
-+
-+## Archive
-+
-+You can find older versions [HERE](https://xorg.freedesktop.org/archive/individual/app/)
-diff --git a/docs/faq.md b/docs/faq.md
-new file mode 100644
-index 000000000..189bf6b62
---- /dev/null
-+++ b/docs/faq.md
-@@ -0,0 +1,92 @@
-+# Frequently Asked Questions (FAQ)
-+
-+This FAQ covers common questions about using, building, and contributing to
-+**IGT GPU Tools**.
-+
-+### What is IGT GPU Tools?
-+
-+IGT GPU Tools is a collection of low-level tests and utilities used to validate and
-+debug Linux DRM (Direct Rendering Manager) graphics drivers. It focuses primarily on
-+Intel GPUs but supports other platforms in varying degrees.
-+
-+### How do I build IGT?
-+
-+You can build IGT using [Meson](https://mesonbuild.com/) and Ninja. Here's a quick
-+example:
-+
-+```sh
-+meson setup build && ninja -C build
-+```
-+
-+Make sure required dependencies are installed. You can refer to:
-+
-+- `Dockerfile.build-fedora`
-+- `Dockerfile.build-debian` or `Dockerfile.build-debian-minimal`
-+
-+They contain up-to-date package lists for common distros.
-+
-+### How do I run tests?
-+
-+Tests are located in the `tests/` directory and can be run directly. For example:
-+
-+```sh
-+sudo ./build/tests/core_auth
-+```
-+
-+Use `--list-subtests` to list available subtests and `--run-subtest` to run a specific
-+one:
-+
-+```sh
-+sudo ./build/tests/core_auth --list-subtests
-+sudo ./build/tests/core_auth --run-subtest basic-auth
-+```
-+
-+You can also run tests using the `scripts/run-tests.sh` wrapper, which supports
-+filtering and batch execution.
-+
-+### Do I need to run as root?
-+
-+Most tests require root privileges and a system without a running graphical session
-+(X or Wayland). Some tools may work without root, especially those that only inspect
-+or decode state.
-+
-+### What platforms are supported?
-+
-+IGT primarily targets Intel GPUs (Gen9+), but partial support exists for:
-+
-+- AMD (amdgpu)
-+- NVIDIA (nouveau)
-+- Virtual GPUs (e.g., virtio-gpu in QEMU/KVM)
-+
-+Hardware coverage may vary by test.
-+
-+### What's the difference between `tests/`, `tools/`, and `benchmarks/`?
-+
-+- `tests/` – Automated functional tests, designed for CI and driver validation
-+- `tools/` – Debugging and inspection utilities (e.g., checking GPU state)
-+- `benchmarks/` – Performance-oriented microbenchmarks (e.g., memory or rendering speed)
-+
-+### Where do I report security issues?
-+
-+Do **not** report vulnerabilities in public issues or mailing lists.
-+Instead, contact a maintainer directly. See the `MAINTAINERS` file for contact
-+information.
-+
-+### How do I submit a patch?
-+
-+Use `git send-email` to send your patch to:
-+
-+```
-+igt-dev@lists.freedesktop.org
-+```
-+
-+Prefix your subject with `PATCH i-g-t`. You can track submissions at:
-+
-+- [Patchwork](https://patchwork.freedesktop.org/project/igt/series/)
-+- [Lore Archive](https://lore.kernel.org/igt-dev/)
-+
-+More details are in `CONTRIBUTING.md`.
-+
-+If your question isn't answered here, feel free to ask on the
-+[igt-dev mailing list](mailto:igt-dev@lists.freedesktop.org) or open an issue on GitLab.
-+
-diff --git a/docs/how_to_build_docs.md b/docs/how_to_build_docs.md
-new file mode 100644
-index 000000000..86285f6b3
---- /dev/null
-+++ b/docs/how_to_build_docs.md
-@@ -0,0 +1,54 @@
-+# How to Build the IGT GPU Tools Documentation
-+
-+This guide provides instructions on how to build the documentation
-+for the IGT GPU Tools project using MkDocs.
-+This effort aims to enhance the organization and presentation of our documentation,
-+making it easier for users and contributors to navigate and understand the project.
-+
-+## Prerequisites
-+
-+Before you begin, ensure you have Python installed on your system.
-+It is strongly recommended to use a virtual environment for the local installation
-+of required packages. 
-+Please refer to your OS/distro instructions for setting up a virtual environment.
-+
-+## Setting Up the Virtual Environment
-+
-+1. **Create a virtual environment:**
-+
-+   ```bash
-+   $ python3 -m venv venv
-+   ```
-+
-+2. **Activate the virtual environment:**
-+
-+   ```bash
-+   $ source ./venv/bin/activate
-+   ```
-+
-+## Installing Requirements
-+
-+Install the necessary packages required to build the documentation:
-+
-+```bash
-+$ pip3 install -r ./docs/requirements-docs.txt
-+```
-+
-+## Building the Documentation
-+
-+To build the documentation, execute the following command:
-+
-+```bash
-+$ mkdocs build
-+```
-+
-+## Hosting Locally
-+
-+To host the documentation locally and review it in your browser, start the MkDocs server:
-+
-+```bash
-+$ mkdocs serve
-+```
-+
-+Then, open your favorite browser and navigate to: 
-+[http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-diff --git a/docs/issues.md b/docs/issues.md
-new file mode 100644
-index 000000000..7eb3049f4
---- /dev/null
-+++ b/docs/issues.md
-@@ -0,0 +1,31 @@
-+# Reporting Issues
-+
-+!!! info "**IGT GPU Tools** is a testing framework for Linux graphics drivers."
-+    We welcome bug reports, notes on regressions, and information about test failures –
-+    your input helps us improve reliability and coverage across platforms.
-+
-+### 📌 How to Report an Issue
-+
-+You can report issues in either of the following ways:
-+
-+ - **Open a GitLab issue** in the [IGT project repository](https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues).
-+   Please provide clear details, including logs, test steps, and system information.
-+
-+ - **Send an email** to the development mailing list:
-+   **📧 igt-dev@lists.freedesktop.org**
-+
-+   Email reports are recommended if your issue is part of an ongoing patch discussion
-+   or relates closely to a test or CI behavior.
-+
-+When reporting, be sure to include:
-+
-+ - Steps to reproduce the issue
-+ - Platform, hardware, and kernel version
-+ - Logs or output from relevant test runs
-+ - Any CI job links (if applicable)
-+
-+You can view current discussions and threads via:
-+
-+ - [GitLab Issues](https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues)
-+ - [Patchwork](https://patchwork.freedesktop.org/project/igt/series/)
-+ - [Lore Archive](https://lore.kernel.org/igt-dev/)
-diff --git a/docs/new_driver.md b/docs/new_driver.md
-new file mode 100644
-index 000000000..0ac8b928c
---- /dev/null
-+++ b/docs/new_driver.md
-@@ -0,0 +1,231 @@
-+# :material-plus-circle: Add support for new driver in IGT
-+
-+Here is a detailed procedure to support a new driver in IGT, using Intel's "XE" driver as
-+an example.
-+
-+## Detect the Driver
-+
-+Add support in IGT lib to detect the driver, so that IGT will recognize the driver. The
-+device name should match with the DRIVER_NAME configured in the Linux Kernel Module.
-+
-+Example: 
-+https://gitlab.freedesktop.org/drm/xe/kernel/-/blob/drm-xe-next/drivers/gpu/drm/xe/xe_drv.h#L11
-+
-+### KMD Changes:
-+
-+```c
-+#define DRIVER_NAME     "xe"
-+
-+#define DRIVER_DESC     "Intel Xe Graphics"
-+
-+#define DRIVER_DATE     "20201103"
-+```
-+
-+### IGT Changes:
-+
-+```diff
-+diff --git a/lib/drmtest.c b/lib/drmtest.c
-+
-+index 8e2d1ac50b..0ceab10389 100644
-+
-+--- a/lib/drmtest.c
-+
-++++ b/lib/drmtest.c
-+
-+@@ -189,6 +189,7 @@  static const struct module {
-+
-+ 	{ DRIVER_V3D, "v3d" },
-+
-+ 	{ DRIVER_VC4, "vc4" },
-+
-+ 	{ DRIVER_VGEM, "vgem" },
-+
-++	{ DRIVER_XE, "xe" },
-+
-+ 	{}
-+
-+ };
-+
-+
-+
-+@@ -547,6 +548,8 @@  static const char *chipset_to_str(int chipset)
-+
-+ 		return "panfrost";
-+
-+ 	case DRIVER_MSM:
-+
-+ 		return "msm";
-+
-++	case DRIVER_XE:
-+
-++		return "xe";
-+
-+ 	case DRIVER_ANY:
-+
-+ 		return "any";
-+
-+ 	default:
-+
-+diff --git a/lib/drmtest.h b/lib/drmtest.h
-+
-+index b5debd44b3..448ac03b49 100644
-+
-+--- a/lib/drmtest.h
-+
-++++ b/lib/drmtest.h
-+
-+@@ -51,6 +51,7 @@
-+
-+ #define DRIVER_V3D	(1 << 4)
-+
-+ #define DRIVER_PANFROST	(1 << 5)
-+
-+ #define DRIVER_MSM	(1 << 6)
-+
-++#define DRIVER_XE	(1 << 7)
-+```
-+
-+
-+With the above changes, the simple IGT snippet `int fd = drm_open_driver_master(DRIVER_XE);`
-+can open the "XE" driver.
-+
-+## :material-code-braces: UAPI Changes to Support Driver-Specific IOCTLs
-+
-+Import UAPI headers: https://gitlab.freedesktop.org/drm/igt-gpu-tools#includedrm-uapi
-+
-+## :material-wrench: Develop IGT Helpers
-+
-+Now we can develop driver-specific IGT helpers based on DRM_IOCTL_VERSION.
-+
-+Example:
-+
-+```diff
-++++ b/lib/drmtest.c
-+
-+@@ -139,6 +139,16 @@  bool is_vc4_device(int fd)
-+
-+ 	return __is_device(fd, "vc4");
-+
-+ }
-+
-+
-+
-++bool is_xe_device(int fd)
-+
-++{
-+
-++	return __is_device(fd, "xe");
-+
-++}
-+
-+
-+
-++++ b/lib/intel_chipset.c
-+
-+@@ -125,22 +163,18 @@  intel_get_pci_device(void)
-+
-+ uint32_t
-+
-+ intel_get_drm_devid(int fd)
-+
-+ {
-+
-+
-+
-++	if (is_xe_device(fd))
-+
-++		return __xe_get_drm_devid(fd);
-+
-++	else
-+
-++		return __i915_get_drm_devid(fd);
-+
-+}
-+```
-+
-+## :material-monitor: Porting All Display IGTs to Support XE Driver
-+
-+The task of porting all display-specific IGTs to support the XE driver is significant and
-+critical. This process involves several steps.
-+
-+### :material-eye: Understanding the Current IGTs
-+
-+The existing codebase must be thoroughly understood. This involves reviewing the code for
-+all display IGTs, understanding their functionality, and identifying any potential issues
-+that may arise when porting to the XE driver.
-+
-+!!! info "Challenges"
-+    As there are several hundreds of display subtests, it's always a challenge to
-+    read/review the codebase.
-+
-+### :material-chip: Understanding the XE Driver
-+
-+The XE driver's specifications and capabilities must be understood. This will allow for
-+the identification of any features that the IGTs can take advantage of, as well as any
-+limitations that must be worked around.
-+
-+!!! info "Challenges"
-+    Identify all i915 display-specific ioctls and find the corresponding ioctl in XE.
-+
-+    Different approach of using modparams and missing debugfs.
-+
-+### :material-map: Mapping the IGTs to the XE Driver
-+
-+Once we understand both the IGTs and the XE driver, we can start mapping the functionality
-+of the IGTs to the XE driver. This involves identifying which tests can be supported by
-+the XE driver, which ones need to be modified, and which ones cannot be supported.
-+
-+### :material-library: Modifying IGT Libraries
-+
-+Start modifying the IGT libraries to support the XE driver and try to make the APIs as
-+unified (to support both i915 and XE). To achieve this, collaborate and contribute with
-+the core-mm and other development teams.
-+
-+!!! info "Challenges"
-+    Make the core team understand the display use cases to write unified APIs
-+    (Ex: VM bind, GPU HANG, and BUSY).
-+
-+    Integrate XE-specific APIs with existing IGT display libraries (Ex: BO creation).
-+
-+**Notable contributions by Bhanu:**
-+
-+- Add IGT helpers to check for the XE driver
-+- Add an interface to query dev_id
-+- Get and cache the XE_config at driver opening level and uncache at driver closing level
-+- Support to create a BO for display framebuffers
-+- Add rendercopy support for display tests
-+- Add tiling support for XE
-+- API support to get the pipe index
-+
-+### :material-code-tags: Modifying the IGTs
-+
-+Based on the mapping, we can start modifying the IGTs to support the XE driver. This
-+could involve changing the code, adding new lib helpers, adding new tests, or removing
-+unsupported tests. This process involves the following steps:
-+
-+- Modify test initialization code to open the XE driver instead of Intel where applicable
-+- Update any Intel-specific code/defines in the tests to use equivalent XE APIs
-+- Ensure all relevant XE driver features are properly exercised by the tests. Add any
-+  missing test coverage
-+- Update documentation like man pages, comments, etc. to cover XE driver usage
-+
-+!!! info "Challenges"
-+    Some KMS tests are complex and very difficult to update.
-+
-+### :material-test-tube: Testing the Ported IGTs
-+
-+After the IGTs have been modified, they need to be tested to ensure they work correctly
-+with the XE driver. This involves running the tests, analyzing the results, and fixing
-+any issues that are identified.
-+
-+## :material-file-document: Test-Plan Documentation
-+
-+With the addition of the Xe driver, a new way to document tests was added. It is based on
-+special comment-like annotation inside the C code. We need to update each and every IGT
-+with this new style of documentation.
-+
-+!!! info "Challenges"
-+    - Time-consuming process, as we have several hundreds of subtests
-+    - Add missing documentation in existing legacy way
-+    - Identify different features and align with several internal tools like
-+      feature-mapping, Grafana, etc.
-diff --git a/docs/overview.md b/docs/overview.md
-new file mode 100644
-index 000000000..f7d1c3924
---- /dev/null
-+++ b/docs/overview.md
-@@ -0,0 +1,249 @@
-+# :material-clipboard-check-outline: General
-+
-+
-+
-+!!! info "IGT GPU Tools"
-+
-+    **IGT GPU Tools** is a collection of low-level tools and tests for developing and testing
-+    DRM(Direct Rendering Manager) drivers.
-+    While macro-level test suites like `xtest`, `rendercheck`, `piglit`,
-+    and `oglconform` are useful, they can be hard to trace back to kernel-level issues.
-+    IGT focuses on targeted, low-level testing that's easier to build,
-+    debug, and trace to the kernel.
-+
-+:material-book-outline: Latest API documentation:
-+<https://drm.pages.freedesktop.org/igt-gpu-tools/>
-+
-+## :material-cog-outline: Requirements
-+
-+- Fedora users: see `Dockerfile.build-fedora` for package dependencies.
-+- Debian-based systems: check `Dockerfile.build-debian` or `Dockerfile.build-debian-minimal`.
-+
-+If IGT is available in your distro's package manager:
-+
-+```bash
-+dnf builddep igt-gpu-tools
-+```
-+
-+:material-alert-circle-outline: **Note:** Package dependencies may be outdated compared to
-+`master` branch requirements.
-+
-+## :material-folder-outline: Directory Overview
-+
-+This section explains the purpose of each major directory in the IGT GPU Tools project.
-+Understanding the structure will help new contributors and users navigate the codebase
-+more effectively.
-+
-+### :material-file-tree-outline: `tests/`
-+
-+Contains test cases and subtests – the core of IGT validation.
-+
-+- Each test is a standalone executable built from a `.c` file.
-+- Tests follow naming conventions and are managed by `igt_runner`.
-+- Subtests are organized using `igt_subtest` and described using `igt_describe()`.
-+- Certain tests may be specific to `i915` or `Xe` drivers and follow respective
-+  documentation requirements.
-+
-+### :material-puzzle-outline: `lib/`
-+
-+Shared helper libraries used across tests.
-+
-+- Provides wrappers for kernel interactions, memory management, and display configuration.
-+- Contains useful macros like `igt_assert`, `igt_require`, and `igt_info`.
-+- Some helpers are hardware-specific (e.g., Intel platform tools).
-+
-+### :material-tools: `tools/`
-+
-+Standalone utilities that use IGT libraries but aren't part of the test suite.
-+
-+- Often used for debugging or GPU state inspection.
-+- May require root access depending on functionality.
-+
-+### :material-database-outline: `data/`
-+
-+Contains test data files and reference materials used by IGT tests.
-+
-+- **Reference images and frames**: Used for visual comparison tests and CRC validation
-+- **Test configuration files**: Standard test data and expected outputs for validation
-+- **Binary test data**: GPU-specific test patterns, EDID data, and hardware configurations
-+- **Frame dump data**: Reference frames for display testing and Chamelium validation
-+
-+**Key features:**
-+
-+- Accessed via `igt_fopen_data(filename)` helper function
-+- Automatic fallback search: installation directory → build directory → current directory
-+- Used for frame comparison tests, display validation, and hardware-specific test data
-+- Essential for tests that require known-good reference data or specific input patterns
-+
-+**Common use cases:**
-+
-+```c
-+// Open a reference frame for comparison
-+FILE *ref_file = igt_fopen_data("reference_frame_1080p.raw");
-+
-+// Load test pattern data
-+FILE *pattern = igt_fopen_data("test_patterns/gradient.bin");
-+```
-+
-+### :material-book-open-outline: `docs/`
-+
-+Contains developer documentation, test plan tools, and API references.
-+
-+- Some content is generated via `gtk-doc`.
-+- Tests for `i915` and `Xe` drivers are subject to test plan validation.
-+  Documentation must be kept in sync – see `docs/test_documentation.md`.
-+
-+To regenerate:
-+
-+```bash
-+ninja -C build igt-gpu-tools-doc
-+```
-+
-+### :material-play-circle-outline: `runner/`
-+
-+The `igt_runner` test harness manages batch execution and filtering.
-+
-+- Supports result summaries, filtering by subtest, and dry-run modes.
-+- Used heavily in CI and automation.
-+
-+### :material-file-document-outline: `include/`
-+
-+Public headers and UAPI headers:
-+
-+- Includes types and APIs exposed by IGT.
-+- Subdirectories such as `drm-uapi/` and `linux-uapi/` are synced from upstream kernel
-+  headers (e.g., `drm-next`).
-+
-+### :material-chart-box-outline: `benchmarks/`
-+
-+Microbenchmarks for evaluating GPU performance.
-+
-+- Focus on throughput, memory speed, and latency.
-+- Useful for low-level tuning and regression checks.
-+
-+### :material-script-text-outline: `scripts/`
-+
-+Helper scripts for CI, patch formatting, and test orchestration.
-+
-+- Not always cross-platform.
-+- Includes the `run-tests.sh` script to simplify test execution.
-+
-+### :material-console-line: Build Files
-+
-+- `meson.build`, `configure.ac`, `Makefile.am`: Build system support.
-+- Autotools and Meson support may coexist but Meson is preferred for modern development.
-+
-+
-+
-+## :material-chip: Recommended Hardware
-+
-+**IGT GPU Tools** is designed to validate Linux DRM drivers across a variety of Intel
-+and non-Intel platforms. While virtual environments help with development, real hardware
-+is recommended for full test coverage, performance metrics, and regression tracking.
-+
-+### :material-lightbulb-outline: General Guidelines
-+
-+- **Use modern Intel GPUs (Gen9+)** for maximum test compatibility.
-+- Prefer **dedicated test systems** for kernel and firmware flexibility.
-+- Ensure **reliable cooling** to avoid throttling during performance tests.
-+- **Use `Xe` hardware** if contributing to or testing the next-generation driver stack.
-+
-+
-+
-+### :material-table-large: Recommended Intel Platforms
-+
-+| GPU Generation | Example Platform / CPU      | Notes                                        |
-+|-||-|
-+| Gen9           | Skylake (e.g., i5-6200U)    | Stable, well-supported baseline              |
-+| Gen11          | Ice Lake (e.g., i7-1065G7)  | Better display/media support                 |
-+| Gen12          | Tiger Lake / Alder Lake     | Used for both `i915` and early `Xe` testing  |
-+| DG2            | Intel Arc A-Series GPUs     | Required for `Xe` HPG-specific validation    |
-+| XeHP/XeHPC     | (If available)              | Specialized use by hardware teams/devs       |
-+
-+:material-information-outline: *Older GPUs (Gen7/Gen8) are still useful for regression
-+testing but may not support new test features.*
-+
-+### :material-chip: Non-Intel GPU Support
-+
-+Although IGT is Intel-focused, basic support exists for other platforms:
-+
-+- **AMD (AMDGPU):** Some display and KMS tests run; feature support may vary.
-+- **NVIDIA (nouveau):** Partial functionality; manual testing encouraged.
-+- **VirtIO-GPU / QEMU / GVT-g:** Useful for automation and limited pipeline testing.
-+- **ARM SoCs (e.g., Mali, Vivante):** Experimental – not all tests apply.
-+
-+:material-account-group-outline: Community contributions are welcome to expand non-Intel
-+support!
-+
-+
-+
-+### :material-lan: Special Testing Scenarios
-+
-+- **Multi-GPU testing:** Useful for scenarios involving iGPU + dGPU switching.
-+- **Display testing:** EDID dongles or connected screens required.
-+- **Power management:** Laptops or devices with sensors give better PM insights.
-+- **Virtualization:** Run in KVM/QEMU to emulate certain configurations.
-+
-+### :material-wrench-clock: Optional Tools
-+
-+- **EDID dongles** – simulate display hotplug events.
-+- **Serial/UART debug cables** – capture early boot logs.
-+- **Power meters (RAPL, Watts Up Pro)** – validate runtime PM and energy use.
-+- **CI hardware** – watchdog-capable systems with remote boot and serial access.
-+- **Chamelium** - automates external display testing across VGA, HDMI, and DisplayPort
-+  (DP). More: [External Tools -> Chamelium](chamelium.md) or [The Chromium Projects - Chamelium](https://www.chromium.org/chromium-os/developer-library/guides/hardware-schematics/chamelium/)
-+
-+### :material-cloud-outline: CI and Development Tips
-+
-+- Ensure **firmware can be updated** easily on your test hardware.
-+- Be prepared to **compile and switch kernels** frequently.
-+- Run tests on a **known-good setup** to rule out config or version issues.
-+
-+
-+
-+## :material-shield-account-outline: i915 vs Xe Drivers
-+
-+IGT supports two major Intel GPU drivers in the kernel:
-+
-+Here are some basic information, for more please visit an official
-+[Intel Graphics for Linux - Documentation](https://drm.pages.freedesktop.org/intel-docs/)
-+
-+### :material-chip: `i915` Driver
-+
-+- Supports older Intel platforms (Gen9–Gen12).
-+- Mature, well-tested, and fully integrated into kernel and userspace stacks.
-+- Tests targeting `i915` must include proper documentation (using `igt_describe`) and
-+  follow test plan validation rules.
-+
-+### :material-flash: `Xe` Driver
-+
-+- Next-generation Intel GPU driver for **DG2 (Arc)** and newer architectures.
-+- Designed to replace `i915` for future platforms.
-+- Modular, uses a new codebase and device model.
-+- Tests targeting `Xe` must follow the same documentation and validation practices but may
-+  focus on newer UAPI/ABI interactions.
-+
-+### :material-alert-outline: Key Differences
-+
-+| Aspect           | i915                         | Xe                                    |
-+|||-|
-+| Target Platforms | Gen9–Gen12, some DG1         | DG2 (Arc), XeHP/HPG/HPC               |
-+| Kernel Interface | Legacy DRM, widely used      | New driver stack with modernized UAPI |
-+| Development      | Stable, long-maintained      | In active development                 |
-+| Test Requirements| Strict documentation rules   | Same, with new feature emphasis       |
-+
-+
-+
-+If you're unsure which driver your hardware uses, check:
-+
-+```bash
-+lspci -nn | grep VGA
-+dmesg | grep drm
-+```
-+
-+And refer to the platform-specific driver documentation for more details.
-+
-+
-+
-+:material-email-outline: Questions? Reach out via
-+[igt-dev@lists.freedesktop.org](mailto:igt-dev@lists.freedesktop.org)
-diff --git a/docs/patchwork.md b/docs/patchwork.md
-new file mode 100644
-index 000000000..248ea1592
---- /dev/null
-+++ b/docs/patchwork.md
-@@ -0,0 +1,18 @@
-+# Patchwork for IGT GPU Tools
-+
-+**Patchwork** is used to track patches submitted to the IGT GPU Tools mailing list.
-+
-+- View submitted patches: [IGT Patchwork](https://patchwork.freedesktop.org/project/igt/series/)
-+- Patch status archive: [Lore: igt-dev](https://lore.kernel.org/igt-dev/)
-+
-+##  What it is
-+
-+Patchwork collects patches sent to: :material-email-outline:
-+[igt-dev@lists.freedesktop.org](mailto:igt-dev@lists.freedesktop.org)
-+
-+It helps maintainers and contributors:
-+
-+ - Track patch series
-+ - See review status
-+ - Check CI results
-+ - Organize accepted, rejected, or pending changes
-diff --git a/docs/running_tests.md b/docs/running_tests.md
-new file mode 100644
-index 000000000..b0f22ca64
---- /dev/null
-+++ b/docs/running_tests.md
-@@ -0,0 +1,130 @@
-+## :material-play-circle-outline: General
-+
-+Tests are located in the `tests/` directory.
-+
-+- List available subtests:
-+
-+```bash
-+build/tests/core_auth --list-subtests
-+```
-+
-+- Run a specific subtest:
-+
-+```bash
-+build/tests/core_auth --run-subtest getclient-simple
-+```
-+
-+- If `--run-subtest` is not used, all subtests will be executed.
-+
-+!!! info "Most tests must be run as **root** and with **no X or Wayland compositor** running."
-+
-+Example output:
-+
-+```
-+# build/tests/core_auth
-+IGT-Version: 1.24 (x86_64) (Linux: 5.3.0 x86_64)
-+Starting subtest: getclient-simple
-+Subtest getclient-simple: SUCCESS (0.001s)
-+...
-+
-+```
-+
-+### Dynamic Subtests
-+
-+IGT supports dynamic subtests using `igt_subtest_with_dynamic` for cases where the full
-+set of possible subtests is too large or impossible to know beforehand. Dynamic subtests
-+are useful for operations like testing each KMS pipe separately.
-+
-+**Key characteristics of dynamic subtests:**
-+
-+- Used when reporting several aspects separately is desired
-+- Useful when the full possible set is too big or impossible to know beforehand
-+- Each dynamic subtest runs within a parent subtest block
-+- Results are aggregated: SKIP if no dynamic subtests run, PASS if all pass, FAIL if
-+  any fail
-+
-+**Example use case:** Testing KMS pipes where the number of available pipes varies by
-+hardware:
-+```c
-+igt_subtest_with_dynamic("pipe-tests") {
-+    igt_require(is_kms_available(fd));
-+    for_each_pipe(display, pipe) {
-+        igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
-+            test_pipe_operation(pipe);
-+        }
-+    }
-+}
-+```
-+
-+**Running dynamic subtests:**
-+
-+- List dynamic subtests: `--list-subtests` shows both parent and dynamic subtests
-+- Run specific dynamic subtest: `--run-subtest parent-subtest@dynamic-name`
-+- Run all dynamic subtests under a parent: `--run-subtest parent-subtest`
-+
-+**Dynamic subtest naming:**
-+
-+- Parent subtest name followed by `@` and dynamic name
-+- Example: `pipe-tests@pipe-A`, `pipe-tests@pipe-B`
-+- Dynamic names are generated at runtime based on available hardware
-+
-+**Example listing dynamic subtests:**
-+```bash
-+# List all subtests including dynamic ones
-+build/tests/kms_atomic --list-subtests
-+atomic-commits
-+atomic-commits@pipe-A-HDMI-1
-+atomic-commits@pipe-B-DP-1
-+atomic-commits@pipe-C-eDP-1
-+```
-+
-+**Example running dynamic subtests:**
-+```bash
-+# Run all dynamic subtests under atomic-commits
-+build/tests/kms_atomic --run-subtest atomic-commits
-+
-+# Run specific dynamic subtest
-+build/tests/kms_atomic --run-subtest atomic-commits@pipe-A-HDMI-1
-+```
-+
-+### Using `run-tests.sh`
-+
-+You can also use the `scripts/run-tests.sh` wrapper script:
-+
-+```bash
-+meson -Drunner=enabled build && ninja -C build
-+```
-+
-+Run tests with filters:
-+
-+```bash
-+scripts/run-tests.sh -t <regex>       # Include tests matching regex
-+scripts/run-tests.sh -x <regex>       # Exclude tests matching regex
-+```
-+
-+- List all tests and subtests:
-+
-+```bash
-+scripts/run-tests.sh -l
-+```
-+
-+- Get help on options:
-+
-+```bash
-+scripts/run-tests.sh -h
-+```
-+
-+Test results are saved as a JSON file.
-+
-+For the tests API reference please look at: [API Reference Documentation](api_reference/index.html)
-+
-+
-+## :material-docker: Running via Container
-+
-+You can run IGT in a container using `podman` or `docker`:
-+
-+```bash
-+podman run --rm --privileged registry.freedesktop.org/drm/igt-gpu-tools/igt:master
-+```
-+
-+This avoids installing build dependencies locally.
-diff --git a/docs/test_categories.md b/docs/test_categories.md
-new file mode 100644
-index 000000000..4bba9e521
---- /dev/null
-+++ b/docs/test_categories.md
-@@ -0,0 +1,266 @@
-+# IGT GPU Tools Test Documentation Categories
-+
-+This document explains the different types of test categorization and documentation markup
-+used in the IGT GPU Tools project for organizing and documenting test cases.
-+
-+## Overview
-+
-+IGT GPU Tools uses a structured documentation system with various categories and
-+subcategories to organize tests. The project has been evolving its documentation markup
-+to make it more precise and maintainable, with recent changes removing some deprecated
-+fields like 'Functionality' and 'Test category' that were dependent on developer
-+interpretation.
-+
-+!!! warning "Deprecated fields"
-+    Some tests (e.g. for Core sub-category) have still deprecated fields like
-+    'Functionality', 'Test category'. There is a work in progress to remove them.
-+
-+## Primary Documentation Fields
-+
-+### 1. **Sub-category**
-+The Sub-category field is the primary organizational unit for grouping related tests.
-+This field has been actively maintained and expanded with new subcategories being
-+introduced regularly.
-+
-+Recent Sub-categories include:
-+
-+- **Core** : Basic DRM functionality tests
-+- **Synchronization** : Tests for synchronization mechanisms
-+- **CMD submission** : Command submission related tests
-+- **Blitter** : Blitter engine tests (unified for i915 and Xe)
-+- **GPGPU** : General Purpose GPU compute tests
-+- **Compute** : Computational workload tests
-+- **Performance** : Performance measurement tests
-+- **Memory management** : Memory allocation and management tests
-+- **Power management** : Power-related functionality tests
-+- **Display** : Display/KMS related tests
-+- **Firmware** : Firmware interaction tests
-+- **Media** : Media processing tests
-+- **Render copy** : Render copy operation tests
-+- **Debugging** : Debug and diagnostic tests
-+- **Workarounds** : Hardware workaround tests
-+- **Obsolete** : Deprecated or legacy tests
-+- **SysMan** : System management tests
-+- **FDinfo** : File descriptor information tests
-+- **Flat-ccs** : Flat CCS (Color Compression Surface) tests
-+
-+### 2. **Mega-feature**
-+While not explicitly detailed in the current documentation, mega-feature appears to be a
-+higher-level categorization that groups multiple related sub-categories under broader
-+functional areas.
-+
-+### 3. **Test Description**
-+IGT uses the `igt_describe()` macro to attach descriptions to subtests. The description
-+should complement the test/subtest name and provide context on what is being tested. It
-+should explain the idea of the test without mentioning implementation details.
-+
-+**Best practices for descriptions:**
-+
-+- Focus on the userspace perspective
-+- Capture the reason for the test's existence
-+- Be brief and avoid implementation details
-+- Don't translate code into English
-+
-+**Good examples:**
-+
-+- "make sure that legacy cursor updates do not stall atomic commits"
-+- "check that atomic updates of many planes are indeed atomic and take effect
-+  immediately after the commit"
-+- "make sure that the meta-data exposed by the kernel to the userspace is correct and
-+  matches the used EDID"
-+
-+## Deprecated Fields
-+
-+### **Test Category**
-+The 'Test category' field has been removed from KMS tests documentation as it was not
-+being used consistently.
-+
-+### **Functionality**
-+The 'Functionality' field has also been removed as it "solely depends upon developer's
-+interpretation" and was making documentation maintenance difficult.
-+
-+### **Run Type**
-+The 'Run type' documentation field has been removed from recent versions.
-+
-+## Documentation Structure
-+
-+### **Test Organization**
-+Tests can be organized using `igt_subtest_group` blocks, where the resulting subtest
-+documentation is a concatenation of its own description and all parenting subtest group
-+descriptions, starting from the outermost one.
-+
-+### **Dynamic Subtests**
-+IGT supports dynamic subtests using `igt_subtest_with_dynamic` for cases where the full
-+set of possible subtests is too large or impossible to know beforehand. Dynamic subtests
-+are useful for operations like testing each KMS pipe separately.
-+
-+## Driver-Specific Categories
-+
-+### **Intel Tests**
-+The Intel-specific tests have their own subcategory system:
-+
-+- **i915** driver tests
-+- **Xe** driver tests (newer Intel GPU architecture)
-+- **DRM** general Direct Rendering Manager tests
-+
-+### **Vendor-Specific**
-+
-+- **AMDGPU** - AMD GPU specific tests
-+- **intel-nouveau** - Intel and Nouveau driver interaction tests
-+
-+## Documentation Generation
-+
-+The test documentation is automatically generated and can be accessed via the `--describe`
-+command line switch. The IGT framework also supports `--list-subtests` to enumerate
-+available subtests and `--run-subtest` to execute specific subtests.
-+
-+## Recent Changes and Evolution
-+
-+The IGT project has been actively refining its documentation system, with version 1.29
-+introducing numerous subcategory additions and removing inconsistent documentation fields.
-+The focus has shifted toward more precise categorization that is easier to maintain.
-+
-+### Key Improvements:
-+
-+- Unification of Blitter subcategory across i915 and Xe
-+- Standardization of Sub-category/Functionality naming
-+- Removal of developer-dependent interpretation fields
-+- Addition of missing documentation fields for SRIOV and Display tests
-+
-+## Usage
-+
-+When adding new tests to IGT, developers should:
-+
-+1. Use appropriate Sub-category classification
-+2. Provide clear, implementation-agnostic descriptions using `igt_describe()`
-+3. Follow the established naming conventions
-+4. Avoid using deprecated documentation fields
-+5. Ensure consistency with existing test organization
-+
-+This categorization system helps maintain the large IGT test suite by providing clear
-+organization and making it easier for developers to find relevant tests and understand
-+their purpose.
-+
-+## Documentation Fields and Values Table
-+
-+Based on the current IGT GPU Tools codebase, here are the documented fields and their
-+possible values:
-+
-+### Primary Documentation Fields
-+
-+| Field | Status | Description | Possible Values |
-+|-------|--------|-------------|-----------------|
-+| **Sub-category** | Active | Primary organizational unit for grouping related tests | See detailed list below |
-+| **Test Description** | Active | Human-readable description using `igt_describe()` | Free text (implementation-agnostic) |
-+| **Mega-feature** | Active | High-level categorization grouping multiple sub-categories | Driver-specific groupings |
-+
-+### Main Test Categories (Top-level)
-+
-+| Category | Description | Examples |
-+|----------|-------------|----------|
-+| **Core Tests** | Tests for core DRM ioctls and behaviour | Authentication, basic operations |
-+| **KMS Tests** | Tests for kernel mode setting | Display functionality, connectors |
-+| **GEM Tests** | Tests for graphics execution manager | Memory management, buffer operations |
-+| **i915 Tests** | Tests for overall i915 driver behaviour | Intel-specific functionality |
-+| **Display Tests** | Tests for display validation | Panel fitting, CRC validation |
-+| **Perf Tests** | Tests for performance metrics | GPU performance counters |
-+| **PM Tests** | Tests for power management features | Suspend/resume, power states |
-+| **Prime Tests** | Tests for buffer sharing | Inter-device buffer sharing |
-+| **Debugfs Tests** | Tests for debugfs behaviour | Debug filesystem functionality |
-+| **DRM Tests** | Tests for libdrm behaviour | Library functionality |
-+| **Meta Tests** | Tests for the CI system itself | Test infrastructure validation |
-+| **SW Sync Tests** | Tests for software sync (fencing) | Synchronization primitives |
-+| **vGEM Tests** | Tests for virtual graphics execution manager | Virtual GPU functionality |
-+| **Tools Tests** | Tests for IGT tools behaviour | Tool validation |
-+
-+### Sub-category Values (Detailed)
-+
-+#### Core Infrastructure
-+| Sub-category | Description |
-+|--------------|-------------|
-+| **Core** | Basic DRM functionality tests |
-+| **Synchronization** | Tests for synchronization mechanisms |
-+| **Device** | Device enumeration and management |
-+| **Authentication** | DRM authentication mechanisms |
-+
-+#### Intel-Specific Sub-categories
-+| Sub-category | Description |
-+|--------------|-------------|
-+| **CMD submission** | Command submission related tests |
-+| **Blitter** | Blitter engine tests (unified for i915 and Xe) |
-+| **GPGPU** | General Purpose GPU compute tests |
-+| **Compute** | Computational workload tests |
-+| **Performance** | Performance measurement tests |
-+| **Memory management** | Memory allocation and management tests |
-+| **Power management** | Power-related functionality tests |
-+| **Firmware** | Firmware interaction tests |
-+| **Media** | Media processing tests |
-+| **Render copy** | Render copy operation tests |
-+| **Debugging** | Debug and diagnostic tests |
-+| **Workarounds** | Hardware workaround tests |
-+| **SysMan** | System management tests |
-+| **FDinfo** | File descriptor information tests |
-+| **Flat-ccs** | Flat CCS (Color Compression Surface) tests |
-+
-+#### Display Sub-categories
-+| Sub-category | Description |
-+|--------------|-------------|
-+| **Display** | General display functionality |
-+| **KMS** | Kernel Mode Setting tests |
-+| **Chamelium** | External test device integration |
-+| **Panel** | Panel-specific functionality |
-+| **HDMI** | HDMI interface tests |
-+| **DisplayPort** | DisplayPort interface tests |
-+| **VGA** | VGA interface tests |
-+
-+#### Vendor-Specific Sub-categories
-+| Sub-category | Description |
-+|--------------|-------------|
-+| **AMDGPU** | AMD GPU specific tests |
-+| **intel-nouveau** | Intel and Nouveau driver interaction |
-+| **i915** | Intel i915 driver tests |
-+| **Xe** | Intel Xe driver tests |
-+
-+#### Legacy/Deprecated Sub-categories
-+| Sub-category | Description |
-+|--------------|-------------|
-+| **Obsolete** | Deprecated or legacy tests |
-+
-+### Deprecated Fields
-+
-+| Field | Status | Reason for Deprecation |
-+|-------|--------|----------------------|
-+| **Test Category** | WIP | Not used consistently |
-+| **Functionality** | WIP | Developer-dependent interpretation |
-+| **Run Type** | WIP | Unclear usage patterns |
-+
-+### Driver-Specific Mega-features
-+
-+| Driver | Mega-feature Examples |
-+|--------|---------------------|
-+| **i915** | Display, GEM, Performance, Power Management |
-+| **Xe** | Compute, CMD Submission, Memory Management |
-+| **AMDGPU** | Display, Compute, Performance |
-+
-+### Documentation Markup Examples
-+
-+```c
-+/**
-+ * SUBTEST: %s
-+ * Description: %s
-+ * Sub-category: %s
-+ */
-+
-+// Example usage:
-+igt_describe("check that atomic updates are indeed atomic");
-+igt_subtest_with_dynamic("atomic-plane-updates") {
-+    // Test implementation
-+}
-+```
-+
-+### Field Usage Guidelines
-+
-+1. **Sub-category**: Always required, must match established categories
-+2. **Test Description**: Should be implementation-agnostic and focus on what is tested
-+3. **Mega-feature**: Used for high-level organization, typically driver-specific
-+4. **Avoid deprecated fields**: Do not use Test Category, Functionality, or Run Type
-diff --git a/docs/test_documentation.md b/docs/test_documentation.md
-index 5c33b0c2a..ea0436e55 100644
---- a/docs/test_documentation.md
-+++ b/docs/test_documentation.md
-@@ -126,7 +126,7 @@ the field description. The same applies to the subsequent wildcards.
- The above will produce the following output (using the example
- configuration file described at the past session:
- 
--```
-+```c
- ``igt@test@test-large-<buffer size>-size``
- 
- :Description: Test large something with <buffer size> size
-@@ -155,13 +155,14 @@ configuration file described at the past session:
- ``igt@test@test-small-binds-with-<buffer size>-size-userptr-binds``
- 
- :Description: Test user pointer small something binds with <buffer size> size
-+
- ```
- 
- Wildcard replacement can also be used to maintain an argument with the
- same name at the replaced description. That makes easy to document
- numeric arguments with a fixed testset, like:
- 
--```
-+```c
- /**
-  * SUBTEST: unbind-all-%d-vmas
-  * Description: unbind all with %arg[1] VMAs
-diff --git a/docs/test_plan.md b/docs/test_plan.md
-new file mode 100644
-index 000000000..edda50f4b
---- /dev/null
-+++ b/docs/test_plan.md
-@@ -0,0 +1,216 @@
-+# :material-clipboard-text: Test Plan
-+
-+## :material-information-outline: Overview
-+
-+IGT GPU Tools implements a comprehensive test plan system to ensure proper documentation
-+and validation of all tests. The test plan is particularly important for maintaining
-+quality and consistency across different GPU drivers and test categories.
-+
-+!!! warning "Build Requirement"
-+    **Some drivers and test sets require that all tests be properly documented via
-+    testplan.** By default, the build will fail if documentation is missing or outdated.
-+    This is currently enabled for:
-+
-+    - **Xe driver tests**
-+    - **i915 driver tests**
-+    - **KMS (Kernel Mode Setting) tests**
-+
-+For more details, see `docs/test_documentation.md` in the IGT source tree.
-+
-+## :material-file-document-outline: Test Plan Structure
-+
-+### Documentation Requirements
-+
-+Every test that falls under test plan validation must include proper documentation using
-+the IGT documentation system:
-+
-+```c
-+/**
-+ * TEST: test_name
-+ * Category: Display|Core|Performance|etc
-+ * Description: Brief description of what the test validates
-+ * Sub-category: Specific functional area
-+ */
-+
-+/**
-+ * SUBTEST: subtest_name
-+ * Description: What this specific subtest validates
-+ */
-+```
-+
-+## :material-cog-outline: Test Plan Validation
-+
-+### Build-Time Validation
-+
-+The IGT build system automatically validates test documentation:
-+
-+```bash
-+# Build will fail if documentation is missing
-+meson build
-+ninja -C build
-+
-+# Error example:
-+# ERROR: Test 'kms_example' is missing required documentation
-+# Please add proper TEST and SUBTEST documentation blocks
-+```
-+
-+### Documentation Generation
-+
-+IGT provides tools to generate and validate test documentation:
-+
-+```bash
-+# Generate test documentation
-+./scripts/igt_doc.py --config=tests/kms_test_config.json
-+
-+# Filter by functionality
-+./scripts/igt_doc.py --config=tests/kms_test_config.json \
-+    --filter-field=Functionality=~'kms_core,synchronization'
-+
-+# Validate specific test categories
-+./scripts/igt_doc.py --config=tests/intel_test_config.json \
-+    --filter-field=Category=Display
-+```
-+
-+## :material-script-text-outline: Documentation Examples
-+
-+### Basic Test Documentation
-+
-+```c
-+/**
-+ * TEST: kms_atomic
-+ * Category: Display
-+ * Description: Test atomic modesetting functionality
-+ * Sub-category: Atomic
-+ */
-+
-+/**
-+ * SUBTEST: plane-cursor-legacy
-+ * Description: Test interaction between cursor plane and legacy cursor API
-+ */
-+igt_subtest("plane-cursor-legacy") {
-+    igt_describe("Verify cursor plane behavior when mixing atomic and legacy APIs");
-+    test_cursor_interaction();
-+}
-+```
-+
-+### Advanced Documentation with Dynamic Subtests
-+
-+```c
-+/**
-+ * TEST: kms_pipe_operations
-+ * Category: Display
-+ * Description: Validate operations across different display pipes
-+ * Sub-category: Core
-+ */
-+
-+/**
-+ * SUBTEST: pipe-%s-basic-modeset
-+ * Description: Basic modeset validation for pipe %arg[1]
-+ */
-+igt_subtest_with_dynamic("pipe-basic-modeset") {
-+    for_each_pipe(display, pipe) {
-+        igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
-+            igt_describe("Verify basic modeset functionality on a single pipe");
-+            test_basic_modeset(pipe);
-+        }
-+    }
-+}
-+```
-+
-+## :material-check-circle-outline: Test Plan Compliance
-+
-+### Mandatory Requirements
-+
-+For Xe, i915, and KMS tests:
-+
-+1. **Complete Documentation**: Every test and subtest must have proper documentation blocks
-+2. **Accurate Descriptions**: Descriptions must be implementation-agnostic and focus on
-+   what is tested
-+3. **Proper Categorization**: Tests must use established categories and sub-categories
-+4. **Build Validation**: Documentation is validated at build time
-+
-+### Best Practices
-+
-+1. **Descriptive Names**: Use clear, descriptive test and subtest names
-+2. **Consistent Categories**: Follow established category hierarchies
-+3. **Implementation-Agnostic**: Avoid describing how tests work, focus on what they
-+   validate
-+4. **Regular Updates**: Keep documentation in sync with test changes
-+
-+### Common Documentation Issues
-+
-+❌ **Bad Documentation:**
-+```c
-+// Too implementation-specific
-+"spawn 10 threads, each pinning cpu core with a busy loop..."
-+
-+// Too vague
-+"test stuff"
-+
-+// Missing required fields
-+/**
-+ * TEST: example
-+ * Description: Some test
-+ */
-+// Missing Category and Sub-category
-+```
-+
-+✅ **Good Documentation:**
-+```c
-+/**
-+ * TEST: kms_cursor_legacy
-+ * Category: Display
-+ * Description: Test legacy cursor interface functionality and compatibility
-+ * Sub-category: Cursor
-+ */
-+
-+/**
-+ * SUBTEST: basic-flip-before-cursor
-+ * Description: Verify cursor updates work correctly after page flips
-+ */
-+```
-+
-+
-+## :material-tools: Validation Tools
-+
-+### igt_doc.py Script
-+
-+The main tool for test plan validation and generation:
-+
-+```bash
-+# Basic validation
-+./scripts/igt_doc.py --config=tests/kms_test_config.json
-+
-+# Generate HTML documentation
-+./scripts/igt_doc.py --config=tests/kms_test_config.json --output-dir=docs/
-+
-+# Validate specific functionality
-+./scripts/igt_doc.py --filter-field=Sub-category=Synchronization
-+
-+# Check for missing documentation
-+./scripts/igt_doc.py --validate-only
-+```
-+
-+### Configuration Files
-+
-+Test configurations are stored in JSON files:
-+
-+- `tests/kms_test_config.json` - KMS test configuration
-+- `tests/intel_test_config.json` - Intel driver test configuration
-+- `tests/xe_test_config.json` - Xe driver test configuration
-+
-+### CI Integration
-+
-+Test plan validation is integrated into CI systems:
-+
-+- **Pre-merge testing**: Documentation is validated before patches are merged
-+- **Post-merge validation**: Ensures documentation stays up-to-date
-+- **Automated reporting**: Missing documentation triggers build failures
-+
-+
-+## :material-link: References
-+
-+- `docs/test_documentation.md` - Detailed documentation requirements
-+- IGT source tree test files - Examples of proper documentation
-+- CI system logs - Build validation feedback
-+- `scripts/igt_doc.py` - Documentation generation tool
--- 
-2.51.0
+Not related to the change.
+--
+marcin>
+> Known issues
+> ------------
+> 
+>    Here are the changes found in XEIGTPW_13695_FULL that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>    * igt@kms_async_flips@test-cursor:
+>      - shard-lnl:          NOTRUN -> [SKIP][3] ([Intel XE#664])
+>     [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-8/igt@kms_async_flips@test-cursor.html
+> 
+>    * igt@kms_big_fb@4-tiled-32bpp-rotate-270:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][4] ([Intel XE#316]) +3 other tests skip
+>     [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-464/igt@kms_big_fb@4-tiled-32bpp-rotate-270.html
+> 
+>    * igt@kms_big_fb@linear-64bpp-rotate-90:
+>      - shard-bmg:          NOTRUN -> [SKIP][5] ([Intel XE#2327]) +1 other test skip
+>     [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_big_fb@linear-64bpp-rotate-90.html
+> 
+>    * igt@kms_big_fb@x-tiled-32bpp-rotate-90:
+>      - shard-lnl:          NOTRUN -> [SKIP][6] ([Intel XE#1407]) +2 other tests skip
+>     [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-1/igt@kms_big_fb@x-tiled-32bpp-rotate-90.html
+> 
+>    * igt@kms_big_fb@y-tiled-addfb-size-overflow:
+>      - shard-bmg:          NOTRUN -> [SKIP][7] ([Intel XE#610])
+>     [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-2/igt@kms_big_fb@y-tiled-addfb-size-overflow.html
+> 
+>    * igt@kms_big_fb@yf-tiled-32bpp-rotate-0:
+>      - shard-bmg:          NOTRUN -> [SKIP][8] ([Intel XE#1124]) +7 other tests skip
+>     [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-8/igt@kms_big_fb@yf-tiled-32bpp-rotate-0.html
+> 
+>    * igt@kms_big_fb@yf-tiled-8bpp-rotate-0:
+>      - shard-lnl:          NOTRUN -> [SKIP][9] ([Intel XE#1124]) +3 other tests skip
+>     [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-4/igt@kms_big_fb@yf-tiled-8bpp-rotate-0.html
+> 
+>    * igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow:
+>      - shard-bmg:          NOTRUN -> [SKIP][10] ([Intel XE#607])
+>     [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-4/igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow.html
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][11] ([Intel XE#607])
+>     [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow.html
+> 
+>    * igt@kms_big_fb@yf-tiled-addfb-size-overflow:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][12] ([Intel XE#610])
+>     [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-435/igt@kms_big_fb@yf-tiled-addfb-size-overflow.html
+> 
+>    * igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-hflip:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][13] ([Intel XE#1124]) +9 other tests skip
+>     [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-436/igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-hflip.html
+> 
+>    * igt@kms_bw@linear-tiling-1-displays-1920x1080p:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][14] ([Intel XE#367]) +1 other test skip
+>     [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-436/igt@kms_bw@linear-tiling-1-displays-1920x1080p.html
+> 
+>    * igt@kms_bw@linear-tiling-1-displays-2560x1440p:
+>      - shard-bmg:          NOTRUN -> [SKIP][15] ([Intel XE#367])
+>     [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_bw@linear-tiling-1-displays-2560x1440p.html
+> 
+>    * igt@kms_ccs@bad-rotation-90-4-tiled-mtl-mc-ccs:
+>      - shard-bmg:          NOTRUN -> [SKIP][16] ([Intel XE#2887]) +5 other tests skip
+>     [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-mc-ccs.html
+>      - shard-lnl:          NOTRUN -> [SKIP][17] ([Intel XE#2887]) +3 other tests skip
+>     [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-5/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-mc-ccs.html
+> 
+>    * igt@kms_ccs@crc-primary-basic-4-tiled-lnl-ccs@pipe-b-dp-2:
+>      - shard-bmg:          NOTRUN -> [SKIP][18] ([Intel XE#2652] / [Intel XE#787]) +3 other tests skip
+>     [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-3/igt@kms_ccs@crc-primary-basic-4-tiled-lnl-ccs@pipe-b-dp-2.html
+> 
+>    * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][19] ([Intel XE#3442])
+>     [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-433/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html
+> 
+>    * igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs:
+>      - shard-bmg:          NOTRUN -> [SKIP][20] ([Intel XE#3432])
+>     [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs.html
+> 
+>    * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-bmg-ccs@pipe-a-edp-1:
+>      - shard-lnl:          NOTRUN -> [SKIP][21] ([Intel XE#2669]) +3 other tests skip
+>     [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-4/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-bmg-ccs@pipe-a-edp-1.html
+> 
+>    * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-rc-ccs-cc@pipe-c-hdmi-a-6:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][22] ([Intel XE#787]) +139 other tests skip
+>     [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-rc-ccs-cc@pipe-c-hdmi-a-6.html
+> 
+>    * igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs@pipe-b-dp-4:
+>      - shard-dg2-set2:     NOTRUN -> [INCOMPLETE][23] ([Intel XE#2705] / [Intel XE#4212] / [Intel XE#4345])
+>     [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-463/igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs@pipe-b-dp-4.html
+> 
+>    * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs-cc@pipe-a-dp-4:
+>      - shard-dg2-set2:     [PASS][24] -> [INCOMPLETE][25] ([Intel XE#2705] / [Intel XE#4212])
+>     [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-463/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs-cc@pipe-a-dp-4.html
+>     [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-464/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs-cc@pipe-a-dp-4.html
+> 
+>    * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-a-dp-4:
+>      - shard-dg2-set2:     [PASS][26] -> [INCOMPLETE][27] ([Intel XE#3124])
+>     [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-464/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-a-dp-4.html
+>     [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-464/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-a-dp-4.html
+> 
+>    * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-a-hdmi-a-6:
+>      - shard-dg2-set2:     [PASS][28] -> [DMESG-WARN][29] ([Intel XE#1727] / [Intel XE#3113])
+>     [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-464/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-a-hdmi-a-6.html
+>     [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-464/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs@pipe-a-hdmi-a-6.html
+> 
+>    * igt@kms_ccs@random-ccs-data-y-tiled-ccs@pipe-d-dp-2:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][30] ([Intel XE#455] / [Intel XE#787]) +26 other tests skip
+>     [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@kms_ccs@random-ccs-data-y-tiled-ccs@pipe-d-dp-2.html
+> 
+>    * igt@kms_cdclk@plane-scaling:
+>      - shard-lnl:          NOTRUN -> [SKIP][31] ([Intel XE#4416]) +3 other tests skip
+>     [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-4/igt@kms_cdclk@plane-scaling.html
+> 
+>    * igt@kms_chamelium_color@ctm-max:
+>      - shard-lnl:          NOTRUN -> [SKIP][32] ([Intel XE#306])
+>     [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-8/igt@kms_chamelium_color@ctm-max.html
+>      - shard-bmg:          NOTRUN -> [SKIP][33] ([Intel XE#2325])
+>     [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@kms_chamelium_color@ctm-max.html
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][34] ([Intel XE#306])
+>     [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@kms_chamelium_color@ctm-max.html
+> 
+>    * igt@kms_chamelium_edid@hdmi-edid-change-during-suspend:
+>      - shard-bmg:          NOTRUN -> [SKIP][35] ([Intel XE#2252]) +3 other tests skip
+>     [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-5/igt@kms_chamelium_edid@hdmi-edid-change-during-suspend.html
+> 
+>    * igt@kms_chamelium_edid@hdmi-mode-timings:
+>      - shard-lnl:          NOTRUN -> [SKIP][36] ([Intel XE#373]) +2 other tests skip
+>     [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-3/igt@kms_chamelium_edid@hdmi-mode-timings.html
+> 
+>    * igt@kms_chamelium_hpd@vga-hpd:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][37] ([Intel XE#373]) +5 other tests skip
+>     [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@kms_chamelium_hpd@vga-hpd.html
+> 
+>    * igt@kms_content_protection@atomic-dpms@pipe-a-dp-2:
+>      - shard-bmg:          NOTRUN -> [FAIL][38] ([Intel XE#1178]) +1 other test fail
+>     [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-5/igt@kms_content_protection@atomic-dpms@pipe-a-dp-2.html
+> 
+>    * igt@kms_content_protection@dp-mst-type-0:
+>      - shard-lnl:          NOTRUN -> [SKIP][39] ([Intel XE#307])
+>     [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-8/igt@kms_content_protection@dp-mst-type-0.html
+> 
+>    * igt@kms_content_protection@srm:
+>      - shard-dg2-set2:     NOTRUN -> [FAIL][40] ([Intel XE#1178]) +1 other test fail
+>     [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@kms_content_protection@srm.html
+> 
+>    * igt@kms_cursor_crc@cursor-offscreen-512x512:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][41] ([Intel XE#308])
+>     [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-436/igt@kms_cursor_crc@cursor-offscreen-512x512.html
+>      - shard-lnl:          NOTRUN -> [SKIP][42] ([Intel XE#2321])
+>     [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-1/igt@kms_cursor_crc@cursor-offscreen-512x512.html
+> 
+>    * igt@kms_cursor_crc@cursor-onscreen-128x42:
+>      - shard-bmg:          NOTRUN -> [SKIP][43] ([Intel XE#2320]) +1 other test skip
+>     [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-2/igt@kms_cursor_crc@cursor-onscreen-128x42.html
+> 
+>    * igt@kms_cursor_crc@cursor-random-512x512:
+>      - shard-bmg:          NOTRUN -> [SKIP][44] ([Intel XE#2321]) +2 other tests skip
+>     [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-2/igt@kms_cursor_crc@cursor-random-512x512.html
+> 
+>    * igt@kms_cursor_crc@cursor-sliding-32x32:
+>      - shard-lnl:          NOTRUN -> [SKIP][45] ([Intel XE#1424]) +1 other test skip
+>     [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-1/igt@kms_cursor_crc@cursor-sliding-32x32.html
+> 
+>    * igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic:
+>      - shard-bmg:          NOTRUN -> [SKIP][46] ([Intel XE#2291])
+>     [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html
+>      - shard-lnl:          NOTRUN -> [SKIP][47] ([Intel XE#309]) +2 other tests skip
+>     [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-4/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html
+> 
+>    * igt@kms_cursor_legacy@2x-long-flip-vs-cursor-legacy:
+>      - shard-bmg:          [PASS][48] -> [SKIP][49] ([Intel XE#2291]) +1 other test skip
+>     [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-3/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-legacy.html
+>     [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-legacy.html
+> 
+>    * igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions-varying-size:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][50] ([Intel XE#323])
+>     [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-463/igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions-varying-size.html
+> 
+>    * igt@kms_dirtyfb@drrs-dirtyfb-ioctl:
+>      - shard-bmg:          NOTRUN -> [SKIP][51] ([Intel XE#1508])
+>     [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.html
+> 
+>    * igt@kms_dither@fb-8bpc-vs-panel-6bpc@pipe-a-hdmi-a-2:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][52] ([Intel XE#4494])
+>     [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@kms_dither@fb-8bpc-vs-panel-6bpc@pipe-a-hdmi-a-2.html
+> 
+>    * igt@kms_dp_link_training@non-uhbr-mst:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][53] ([Intel XE#4354])
+>     [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-463/igt@kms_dp_link_training@non-uhbr-mst.html
+> 
+>    * igt@kms_dsc@dsc-with-bpc-formats:
+>      - shard-bmg:          NOTRUN -> [SKIP][54] ([Intel XE#2244])
+>     [54]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-8/igt@kms_dsc@dsc-with-bpc-formats.html
+> 
+>    * igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-dirtyfb-tests:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][55] ([Intel XE#4422])
+>     [55]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-435/igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-dirtyfb-tests.html
+> 
+>    * igt@kms_feature_discovery@display-3x:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][56] ([Intel XE#703])
+>     [56]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-435/igt@kms_feature_discovery@display-3x.html
+> 
+>    * igt@kms_flip@2x-blocking-absolute-wf_vblank-interruptible:
+>      - shard-lnl:          NOTRUN -> [SKIP][57] ([Intel XE#1421])
+>     [57]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-3/igt@kms_flip@2x-blocking-absolute-wf_vblank-interruptible.html
+> 
+>    * igt@kms_flip@2x-flip-vs-dpms-on-nop:
+>      - shard-bmg:          [PASS][58] -> [SKIP][59] ([Intel XE#2316]) +6 other tests skip
+>     [58]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-7/igt@kms_flip@2x-flip-vs-dpms-on-nop.html
+>     [59]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_flip@2x-flip-vs-dpms-on-nop.html
+> 
+>    * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling@pipe-a-default-mode:
+>      - shard-lnl:          NOTRUN -> [SKIP][60] ([Intel XE#1401]) +1 other test skip
+>     [60]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-3/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling@pipe-a-default-mode.html
+> 
+>    * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling:
+>      - shard-lnl:          NOTRUN -> [SKIP][61] ([Intel XE#1397] / [Intel XE#1745])
+>     [61]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-1/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling.html
+> 
+>    * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling@pipe-a-default-mode:
+>      - shard-lnl:          NOTRUN -> [SKIP][62] ([Intel XE#1397])
+>     [62]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-1/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling@pipe-a-default-mode.html
+> 
+>    * igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-upscaling:
+>      - shard-lnl:          NOTRUN -> [FAIL][63] ([Intel XE#4683]) +1 other test fail
+>     [63]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-4/igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-upscaling.html
+> 
+>    * igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-upscaling:
+>      - shard-bmg:          NOTRUN -> [SKIP][64] ([Intel XE#2293] / [Intel XE#2380]) +3 other tests skip
+>     [64]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-upscaling.html
+> 
+>    * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][65] ([Intel XE#455]) +12 other tests skip
+>     [65]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-435/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling.html
+>      - shard-lnl:          NOTRUN -> [SKIP][66] ([Intel XE#1401] / [Intel XE#1745]) +1 other test skip
+>     [66]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-7/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling.html
+> 
+>    * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling@pipe-a-valid-mode:
+>      - shard-bmg:          NOTRUN -> [SKIP][67] ([Intel XE#2293]) +3 other tests skip
+>     [67]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-downscaling@pipe-a-valid-mode.html
+> 
+>    * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-render:
+>      - shard-bmg:          NOTRUN -> [SKIP][68] ([Intel XE#2312]) +4 other tests skip
+>     [68]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-draw-render.html
+> 
+>    * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-onoff:
+>      - shard-lnl:          NOTRUN -> [SKIP][69] ([Intel XE#656]) +10 other tests skip
+>     [69]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-1/igt@kms_frontbuffer_tracking@drrs-2p-primscrn-cur-indfb-onoff.html
+> 
+>    * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-fullscreen:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][70] ([Intel XE#651]) +23 other tests skip
+>     [70]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-spr-indfb-fullscreen.html
+> 
+>    * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-indfb-msflip-blt:
+>      - shard-bmg:          NOTRUN -> [SKIP][71] ([Intel XE#5390]) +4 other tests skip
+>     [71]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-indfb-msflip-blt.html
+> 
+>    * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-render:
+>      - shard-bmg:          NOTRUN -> [SKIP][72] ([Intel XE#2311]) +14 other tests skip
+>     [72]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-4/igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscren-pri-shrfb-draw-render.html
+> 
+>    * igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-blt:
+>      - shard-lnl:          NOTRUN -> [SKIP][73] ([Intel XE#651]) +4 other tests skip
+>     [73]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-8/igt@kms_frontbuffer_tracking@fbcdrrs-rgb101010-draw-blt.html
+> 
+>    * igt@kms_frontbuffer_tracking@fbcdrrs-tiling-y:
+>      - shard-lnl:          NOTRUN -> [SKIP][74] ([Intel XE#1469])
+>     [74]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-5/igt@kms_frontbuffer_tracking@fbcdrrs-tiling-y.html
+> 
+>    * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-mmap-wc:
+>      - shard-bmg:          NOTRUN -> [SKIP][75] ([Intel XE#2313]) +11 other tests skip
+>     [75]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-mmap-wc.html
+> 
+>    * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-blt:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][76] ([Intel XE#653]) +21 other tests skip
+>     [76]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-436/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-blt.html
+> 
+>    * igt@kms_hdr@invalid-hdr:
+>      - shard-dg2-set2:     [PASS][77] -> [SKIP][78] ([Intel XE#455])
+>     [77]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-463/igt@kms_hdr@invalid-hdr.html
+>     [78]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@kms_hdr@invalid-hdr.html
+> 
+>    * igt@kms_hdr@static-toggle:
+>      - shard-bmg:          [PASS][79] -> [SKIP][80] ([Intel XE#1503]) +1 other test skip
+>     [79]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-5/igt@kms_hdr@static-toggle.html
+>     [80]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_hdr@static-toggle.html
+> 
+>    * igt@kms_joiner@basic-big-joiner:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][81] ([Intel XE#346])
+>     [81]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-436/igt@kms_joiner@basic-big-joiner.html
+> 
+>    * igt@kms_joiner@invalid-modeset-big-joiner:
+>      - shard-bmg:          NOTRUN -> [SKIP][82] ([Intel XE#346])
+>     [82]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-5/igt@kms_joiner@invalid-modeset-big-joiner.html
+> 
+>    * igt@kms_plane_cursor@primary@pipe-a-hdmi-a-2-size-256:
+>      - shard-dg2-set2:     NOTRUN -> [FAIL][83] ([Intel XE#616]) +3 other tests fail
+>     [83]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@kms_plane_cursor@primary@pipe-a-hdmi-a-2-size-256.html
+> 
+>    * igt@kms_plane_multiple@2x-tiling-4:
+>      - shard-bmg:          [PASS][84] -> [SKIP][85] ([Intel XE#4596])
+>     [84]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-2/igt@kms_plane_multiple@2x-tiling-4.html
+>     [85]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_plane_multiple@2x-tiling-4.html
+> 
+>    * igt@kms_plane_multiple@2x-tiling-yf:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][86] ([Intel XE#5021])
+>     [86]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@kms_plane_multiple@2x-tiling-yf.html
+> 
+>    * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-a:
+>      - shard-bmg:          NOTRUN -> [SKIP][87] ([Intel XE#2763]) +4 other tests skip
+>     [87]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-a.html
+>      - shard-lnl:          NOTRUN -> [SKIP][88] ([Intel XE#2763]) +3 other tests skip
+>     [88]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-7/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-a.html
+> 
+>    * igt@kms_pm_dc@dc3co-vpb-simulation:
+>      - shard-lnl:          NOTRUN -> [SKIP][89] ([Intel XE#736])
+>     [89]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-2/igt@kms_pm_dc@dc3co-vpb-simulation.html
+> 
+>    * igt@kms_pm_dc@dc5-psr:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][90] ([Intel XE#1129]) +1 other test skip
+>     [90]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-463/igt@kms_pm_dc@dc5-psr.html
+> 
+>    * igt@kms_pm_dc@deep-pkgc:
+>      - shard-bmg:          NOTRUN -> [SKIP][91] ([Intel XE#2505])
+>     [91]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-3/igt@kms_pm_dc@deep-pkgc.html
+> 
+>    * igt@kms_pm_rpm@modeset-lpsp:
+>      - shard-bmg:          NOTRUN -> [SKIP][92] ([Intel XE#1439] / [Intel XE#3141] / [Intel XE#836])
+>     [92]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-2/igt@kms_pm_rpm@modeset-lpsp.html
+> 
+>    * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area:
+>      - shard-lnl:          NOTRUN -> [SKIP][93] ([Intel XE#1406] / [Intel XE#2893])
+>     [93]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-3/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html
+> 
+>    * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][94] ([Intel XE#1406] / [Intel XE#1489]) +7 other tests skip
+>     [94]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf.html
+> 
+>    * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:
+>      - shard-lnl:          NOTRUN -> [SKIP][95] ([Intel XE#1406] / [Intel XE#4608])
+>     [95]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-1/igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1.html
+> 
+>    * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:
+>      - shard-bmg:          NOTRUN -> [SKIP][96] ([Intel XE#1406] / [Intel XE#1489]) +4 other tests skip
+>     [96]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-8/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
+> 
+>    * igt@kms_psr2_su@page_flip-p010:
+>      - shard-bmg:          NOTRUN -> [SKIP][97] ([Intel XE#1406] / [Intel XE#2387])
+>     [97]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_psr2_su@page_flip-p010.html
+> 
+>    * igt@kms_psr@fbc-psr2-cursor-plane-onoff:
+>      - shard-lnl:          NOTRUN -> [SKIP][98] ([Intel XE#1406]) +3 other tests skip
+>     [98]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-2/igt@kms_psr@fbc-psr2-cursor-plane-onoff.html
+> 
+>    * igt@kms_psr@fbc-psr2-cursor-plane-onoff@edp-1:
+>      - shard-lnl:          NOTRUN -> [SKIP][99] ([Intel XE#1406] / [Intel XE#4609])
+>     [99]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-2/igt@kms_psr@fbc-psr2-cursor-plane-onoff@edp-1.html
+> 
+>    * igt@kms_psr@psr-dpms:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][100] ([Intel XE#1406] / [Intel XE#2850] / [Intel XE#929]) +9 other tests skip
+>     [100]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-436/igt@kms_psr@psr-dpms.html
+> 
+>    * igt@kms_psr@psr-sprite-plane-onoff:
+>      - shard-bmg:          NOTRUN -> [SKIP][101] ([Intel XE#1406] / [Intel XE#2234] / [Intel XE#2850]) +7 other tests skip
+>     [101]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-2/igt@kms_psr@psr-sprite-plane-onoff.html
+> 
+>    * igt@kms_rotation_crc@primary-y-tiled-reflect-x-0:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][102] ([Intel XE#1127])
+>     [102]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@kms_rotation_crc@primary-y-tiled-reflect-x-0.html
+> 
+>    * igt@kms_rotation_crc@primary-y-tiled-reflect-x-90:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][103] ([Intel XE#3414])
+>     [103]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-463/igt@kms_rotation_crc@primary-y-tiled-reflect-x-90.html
+>      - shard-bmg:          NOTRUN -> [SKIP][104] ([Intel XE#3414] / [Intel XE#3904])
+>     [104]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_rotation_crc@primary-y-tiled-reflect-x-90.html
+> 
+>    * igt@kms_rotation_crc@sprite-rotation-90-pos-100-0:
+>      - shard-lnl:          NOTRUN -> [SKIP][105] ([Intel XE#3414] / [Intel XE#3904])
+>     [105]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-4/igt@kms_rotation_crc@sprite-rotation-90-pos-100-0.html
+> 
+>    * igt@kms_vrr@lobf:
+>      - shard-bmg:          NOTRUN -> [SKIP][106] ([Intel XE#2168])
+>     [106]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@kms_vrr@lobf.html
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][107] ([Intel XE#2168])
+>     [107]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@kms_vrr@lobf.html
+>      - shard-lnl:          NOTRUN -> [SKIP][108] ([Intel XE#1499])
+>     [108]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-5/igt@kms_vrr@lobf.html
+> 
+>    * igt@kms_vrr@seamless-rr-switch-drrs:
+>      - shard-bmg:          NOTRUN -> [SKIP][109] ([Intel XE#1499]) +1 other test skip
+>     [109]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-8/igt@kms_vrr@seamless-rr-switch-drrs.html
+> 
+>    * igt@xe_compute@ccs-mode-compute-kernel:
+>      - shard-bmg:          NOTRUN -> [FAIL][110] ([Intel XE#5963])
+>     [110]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-5/igt@xe_compute@ccs-mode-compute-kernel.html
+>      - shard-lnl:          NOTRUN -> [SKIP][111] ([Intel XE#1447])
+>     [111]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-5/igt@xe_compute@ccs-mode-compute-kernel.html
+> 
+>    * igt@xe_compute_preempt@compute-preempt-many-all-ram@engine-drm_xe_engine_class_compute:
+>      - shard-dg2-set2:     NOTRUN -> [FAIL][112] ([Intel XE#5890]) +1 other test fail
+>     [112]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-435/igt@xe_compute_preempt@compute-preempt-many-all-ram@engine-drm_xe_engine_class_compute.html
+> 
+>    * igt@xe_eu_stall@non-blocking-re-enable:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][113] ([Intel XE#5626]) +1 other test skip
+>     [113]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@xe_eu_stall@non-blocking-re-enable.html
+> 
+>    * igt@xe_eudebug@discovery-empty-clients:
+>      - shard-lnl:          NOTRUN -> [SKIP][114] ([Intel XE#4837]) +5 other tests skip
+>     [114]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-2/igt@xe_eudebug@discovery-empty-clients.html
+> 
+>    * igt@xe_eudebug@vm-bind-clear-faultable:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][115] ([Intel XE#4837]) +10 other tests skip
+>     [115]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@xe_eudebug@vm-bind-clear-faultable.html
+> 
+>    * igt@xe_eudebug_online@basic-breakpoint:
+>      - shard-bmg:          NOTRUN -> [SKIP][116] ([Intel XE#4837]) +10 other tests skip
+>     [116]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@xe_eudebug_online@basic-breakpoint.html
+> 
+>    * igt@xe_evict_ccs@evict-overcommit-standalone-instantfree-reopen:
+>      - shard-lnl:          NOTRUN -> [SKIP][117] ([Intel XE#688]) +2 other tests skip
+>     [117]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-3/igt@xe_evict_ccs@evict-overcommit-standalone-instantfree-reopen.html
+> 
+>    * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate:
+>      - shard-bmg:          NOTRUN -> [SKIP][118] ([Intel XE#2322]) +4 other tests skip
+>     [118]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate.html
+> 
+>    * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind:
+>      - shard-dg2-set2:     [PASS][119] -> [SKIP][120] ([Intel XE#1392]) +6 other tests skip
+>     [119]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-433/igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind.html
+>     [120]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind.html
+> 
+>    * igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap:
+>      - shard-lnl:          NOTRUN -> [SKIP][121] ([Intel XE#1392]) +2 other tests skip
+>     [121]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-5/igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap.html
+> 
+>    * igt@xe_exec_fault_mode@twice-userptr-invalidate-race:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][122] ([Intel XE#288]) +15 other tests skip
+>     [122]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@xe_exec_fault_mode@twice-userptr-invalidate-race.html
+> 
+>    * igt@xe_exec_mix_modes@exec-simple-batch-store-dma-fence:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][123] ([Intel XE#2360])
+>     [123]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-435/igt@xe_exec_mix_modes@exec-simple-batch-store-dma-fence.html
+> 
+>    * igt@xe_exec_system_allocator@many-large-mmap-new-nomemset:
+>      - shard-bmg:          [PASS][124] -> [ABORT][125] ([Intel XE#5790])
+>     [124]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-2/igt@xe_exec_system_allocator@many-large-mmap-new-nomemset.html
+>     [125]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-2/igt@xe_exec_system_allocator@many-large-mmap-new-nomemset.html
+> 
+>    * igt@xe_exec_system_allocator@threads-shared-vm-many-large-malloc:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][126] ([Intel XE#4915]) +213 other tests skip
+>     [126]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-436/igt@xe_exec_system_allocator@threads-shared-vm-many-large-malloc.html
+> 
+>    * igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-free-huge:
+>      - shard-bmg:          NOTRUN -> [SKIP][127] ([Intel XE#4943]) +14 other tests skip
+>     [127]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-free-huge.html
+> 
+>    * igt@xe_exec_system_allocator@twice-large-mmap-free-huge:
+>      - shard-lnl:          NOTRUN -> [SKIP][128] ([Intel XE#4943]) +8 other tests skip
+>     [128]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-5/igt@xe_exec_system_allocator@twice-large-mmap-free-huge.html
+> 
+>    * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][129] ([Intel XE#2229])
+>     [129]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+> 
+>    * igt@xe_mmap@pci-membarrier:
+>      - shard-lnl:          NOTRUN -> [SKIP][130] ([Intel XE#5100])
+>     [130]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-7/igt@xe_mmap@pci-membarrier.html
+> 
+>    * igt@xe_mmap@vram:
+>      - shard-lnl:          NOTRUN -> [SKIP][131] ([Intel XE#1416])
+>     [131]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-5/igt@xe_mmap@vram.html
+> 
+>    * igt@xe_module_load@force-load:
+>      - shard-lnl:          NOTRUN -> [SKIP][132] ([Intel XE#378])
+>     [132]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-1/igt@xe_module_load@force-load.html
+> 
+>    * igt@xe_oa@closed-fd-and-unmapped-access:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][133] ([Intel XE#3573]) +5 other tests skip
+>     [133]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-433/igt@xe_oa@closed-fd-and-unmapped-access.html
+> 
+>    * igt@xe_pat@display-vs-wb-transient:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][134] ([Intel XE#1337])
+>     [134]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-435/igt@xe_pat@display-vs-wb-transient.html
+> 
+>    * igt@xe_peer2peer@read:
+>      - shard-bmg:          NOTRUN -> [SKIP][135] ([Intel XE#2427])
+>     [135]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@xe_peer2peer@read.html
+> 
+>    * igt@xe_peer2peer@read@read-gpua-vram01-gpub-system-p2p:
+>      - shard-dg2-set2:     NOTRUN -> [FAIL][136] ([Intel XE#1173]) +1 other test fail
+>     [136]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@xe_peer2peer@read@read-gpua-vram01-gpub-system-p2p.html
+> 
+>    * igt@xe_pm@d3cold-basic-exec:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][137] ([Intel XE#2284] / [Intel XE#366])
+>     [137]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@xe_pm@d3cold-basic-exec.html
+> 
+>    * igt@xe_pm@s4-basic:
+>      - shard-bmg:          [PASS][138] -> [DMESG-FAIL][139] ([Intel XE#5545])
+>     [138]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@xe_pm@s4-basic.html
+>     [139]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-2/igt@xe_pm@s4-basic.html
+> 
+>    * igt@xe_pm_residency@cpg-basic:
+>      - shard-lnl:          NOTRUN -> [SKIP][140] ([Intel XE#584])
+>     [140]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-8/igt@xe_pm_residency@cpg-basic.html
+> 
+>    * igt@xe_pmu@all-fn-engine-activity-load:
+>      - shard-lnl:          NOTRUN -> [SKIP][141] ([Intel XE#4650])
+>     [141]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-7/igt@xe_pmu@all-fn-engine-activity-load.html
+> 
+>    * igt@xe_pmu@fn-engine-activity-sched-if-idle:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][142] ([Intel XE#4650])
+>     [142]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-435/igt@xe_pmu@fn-engine-activity-sched-if-idle.html
+> 
+>    * igt@xe_pxp@display-black-pxp-fb:
+>      - shard-bmg:          NOTRUN -> [SKIP][143] ([Intel XE#4733]) +1 other test skip
+>     [143]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@xe_pxp@display-black-pxp-fb.html
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][144] ([Intel XE#4733]) +2 other tests skip
+>     [144]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-433/igt@xe_pxp@display-black-pxp-fb.html
+> 
+>    * igt@xe_query@multigpu-query-config:
+>      - shard-lnl:          NOTRUN -> [SKIP][145] ([Intel XE#944])
+>     [145]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-1/igt@xe_query@multigpu-query-config.html
+> 
+>    * igt@xe_query@multigpu-query-uc-fw-version-guc:
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][146] ([Intel XE#944]) +2 other tests skip
+>     [146]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-433/igt@xe_query@multigpu-query-uc-fw-version-guc.html
+> 
+>    * igt@xe_query@multigpu-query-uc-fw-version-huc:
+>      - shard-bmg:          NOTRUN -> [SKIP][147] ([Intel XE#944]) +1 other test skip
+>     [147]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@xe_query@multigpu-query-uc-fw-version-huc.html
+> 
+>    * igt@xe_sriov_auto_provisioning@fair-allocation:
+>      - shard-lnl:          NOTRUN -> [SKIP][148] ([Intel XE#4130]) +1 other test skip
+>     [148]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-3/igt@xe_sriov_auto_provisioning@fair-allocation.html
+>      - shard-dg2-set2:     NOTRUN -> [SKIP][149] ([Intel XE#4130])
+>     [149]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-432/igt@xe_sriov_auto_provisioning@fair-allocation.html
+> 
+>    
+> #### Possible fixes ####
+> 
+>    * igt@kms_async_flips@async-flip-with-page-flip-events-linear-atomic@pipe-c-edp-1:
+>      - shard-lnl:          [FAIL][150] -> [PASS][151] +3 other tests pass
+>     [150]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-lnl-1/igt@kms_async_flips@async-flip-with-page-flip-events-linear-atomic@pipe-c-edp-1.html
+>     [151]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-8/igt@kms_async_flips@async-flip-with-page-flip-events-linear-atomic@pipe-c-edp-1.html
+> 
+>    * igt@kms_async_flips@async-flip-with-page-flip-events-linear@pipe-c-edp-1:
+>      - shard-lnl:          [FAIL][152] ([Intel XE#5993]) -> [PASS][153] +3 other tests pass
+>     [152]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-lnl-2/igt@kms_async_flips@async-flip-with-page-flip-events-linear@pipe-c-edp-1.html
+>     [153]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-8/igt@kms_async_flips@async-flip-with-page-flip-events-linear@pipe-c-edp-1.html
+> 
+>    * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
+>      - shard-bmg:          [INCOMPLETE][154] ([Intel XE#3862]) -> [PASS][155] +1 other test pass
+>     [154]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-7/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html
+>     [155]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html
+> 
+>    * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-bmg-ccs@pipe-a-dp-2:
+>      - shard-bmg:          [FAIL][156] ([Intel XE#5376]) -> [PASS][157] +1 other test pass
+>     [156]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-2/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-bmg-ccs@pipe-a-dp-2.html
+>     [157]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-3/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-bmg-ccs@pipe-a-dp-2.html
+> 
+>    * igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs@pipe-a-hdmi-a-6:
+>      - shard-dg2-set2:     [INCOMPLETE][158] ([Intel XE#1727] / [Intel XE#3113] / [Intel XE#4212] / [Intel XE#4522]) -> [PASS][159]
+>     [158]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-436/igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs@pipe-a-hdmi-a-6.html
+>     [159]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-463/igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs@pipe-a-hdmi-a-6.html
+> 
+>    * igt@kms_cursor_legacy@2x-cursor-vs-flip-legacy:
+>      - shard-bmg:          [SKIP][160] ([Intel XE#2291]) -> [PASS][161]
+>     [160]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_cursor_legacy@2x-cursor-vs-flip-legacy.html
+>     [161]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-5/igt@kms_cursor_legacy@2x-cursor-vs-flip-legacy.html
+> 
+>    * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
+>      - shard-bmg:          [FAIL][162] ([Intel XE#1475]) -> [PASS][163]
+>     [162]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-7/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
+>     [163]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
+> 
+>    * igt@kms_dither@fb-8bpc-vs-panel-6bpc:
+>      - shard-bmg:          [SKIP][164] ([Intel XE#1340]) -> [PASS][165]
+>     [164]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_dither@fb-8bpc-vs-panel-6bpc.html
+>     [165]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-4/igt@kms_dither@fb-8bpc-vs-panel-6bpc.html
+> 
+>    * igt@kms_flip@2x-flip-vs-modeset-vs-hang:
+>      - shard-bmg:          [SKIP][166] ([Intel XE#2316]) -> [PASS][167] +4 other tests pass
+>     [166]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_flip@2x-flip-vs-modeset-vs-hang.html
+>     [167]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-8/igt@kms_flip@2x-flip-vs-modeset-vs-hang.html
+> 
+>    * igt@kms_flip@flip-vs-expired-vblank@a-edp1:
+>      - shard-lnl:          [FAIL][168] ([Intel XE#301]) -> [PASS][169] +1 other test pass
+>     [168]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-lnl-3/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
+>     [169]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-5/igt@kms_flip@flip-vs-expired-vblank@a-edp1.html
+> 
+>    * igt@kms_flip@flip-vs-expired-vblank@c-hdmi-a6:
+>      - shard-dg2-set2:     [FAIL][170] ([Intel XE#301]) -> [PASS][171] +1 other test pass
+>     [170]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-466/igt@kms_flip@flip-vs-expired-vblank@c-hdmi-a6.html
+>     [171]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-464/igt@kms_flip@flip-vs-expired-vblank@c-hdmi-a6.html
+> 
+>    * igt@kms_flip@flip-vs-suspend:
+>      - shard-bmg:          [INCOMPLETE][172] ([Intel XE#2049] / [Intel XE#2597]) -> [PASS][173] +1 other test pass
+>     [172]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_flip@flip-vs-suspend.html
+>     [173]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-5/igt@kms_flip@flip-vs-suspend.html
+> 
+>    * igt@kms_flip@flip-vs-suspend@d-dp4:
+>      - shard-dg2-set2:     [INCOMPLETE][174] ([Intel XE#2049] / [Intel XE#2597]) -> [PASS][175] +1 other test pass
+>     [174]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-433/igt@kms_flip@flip-vs-suspend@d-dp4.html
+>     [175]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-433/igt@kms_flip@flip-vs-suspend@d-dp4.html
+> 
+>    * igt@kms_pm_dc@dc6-dpms:
+>      - shard-lnl:          [FAIL][176] ([Intel XE#718]) -> [PASS][177]
+>     [176]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-lnl-4/igt@kms_pm_dc@dc6-dpms.html
+>     [177]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-8/igt@kms_pm_dc@dc6-dpms.html
+> 
+>    * igt@kms_vrr@flipline:
+>      - shard-lnl:          [FAIL][178] ([Intel XE#4227]) -> [PASS][179] +1 other test pass
+>     [178]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-lnl-8/igt@kms_vrr@flipline.html
+>     [179]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-lnl-8/igt@kms_vrr@flipline.html
+> 
+>    * igt@xe_exec_basic@multigpu-once-basic-defer-mmap:
+>      - shard-dg2-set2:     [SKIP][180] ([Intel XE#1392]) -> [PASS][181] +3 other tests pass
+>     [180]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-432/igt@xe_exec_basic@multigpu-once-basic-defer-mmap.html
+>     [181]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-466/igt@xe_exec_basic@multigpu-once-basic-defer-mmap.html
+> 
+>    * igt@xe_exec_reset@parallel-gt-reset:
+>      - shard-dg2-set2:     [DMESG-WARN][182] ([Intel XE#3876]) -> [PASS][183]
+>     [182]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-433/igt@xe_exec_reset@parallel-gt-reset.html
+>     [183]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-435/igt@xe_exec_reset@parallel-gt-reset.html
+> 
+>    * {igt@xe_exec_system_allocator@many-stride-malloc-prefetch}:
+>      - shard-bmg:          [WARN][184] ([Intel XE#5786]) -> [PASS][185]
+>     [184]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-7/igt@xe_exec_system_allocator@many-stride-malloc-prefetch.html
+>     [185]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@xe_exec_system_allocator@many-stride-malloc-prefetch.html
+> 
+>    * igt@xe_exec_threads@threads-cm-fd-rebind:
+>      - shard-bmg:          [FAIL][186] -> [PASS][187]
+>     [186]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-7/igt@xe_exec_threads@threads-cm-fd-rebind.html
+>     [187]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-7/igt@xe_exec_threads@threads-cm-fd-rebind.html
+> 
+>    
+> #### Warnings ####
+> 
+>    * igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs:
+>      - shard-dg2-set2:     [INCOMPLETE][188] ([Intel XE#1727] / [Intel XE#3113] / [Intel XE#4212] / [Intel XE#4345] / [Intel XE#4522]) -> [INCOMPLETE][189] ([Intel XE#2705] / [Intel XE#4212] / [Intel XE#4345])
+>     [188]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-436/igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs.html
+>     [189]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-463/igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs.html
+> 
+>    * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs:
+>      - shard-dg2-set2:     [INCOMPLETE][190] ([Intel XE#2705] / [Intel XE#4212] / [Intel XE#4522]) -> [INCOMPLETE][191] ([Intel XE#1727] / [Intel XE#3113] / [Intel XE#3124])
+>     [190]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-464/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs.html
+>     [191]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-464/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs.html
+> 
+>    * igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs-cc:
+>      - shard-dg2-set2:     [INCOMPLETE][192] ([Intel XE#1727] / [Intel XE#2705] / [Intel XE#3113] / [Intel XE#4212] / [Intel XE#4522]) -> [INCOMPLETE][193] ([Intel XE#2705] / [Intel XE#4212])
+>     [192]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-dg2-463/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs-cc.html
+>     [193]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-dg2-464/igt@kms_ccs@random-ccs-data-4-tiled-dg2-rc-ccs-cc.html
+> 
+>    * igt@kms_content_protection@legacy:
+>      - shard-bmg:          [SKIP][194] ([Intel XE#2341]) -> [FAIL][195] ([Intel XE#1178]) +1 other test fail
+>     [194]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_content_protection@legacy.html
+>     [195]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-5/igt@kms_content_protection@legacy.html
+> 
+>    * igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-pgflip-blt:
+>      - shard-bmg:          [SKIP][196] ([Intel XE#2312]) -> [SKIP][197] ([Intel XE#2311]) +8 other tests skip
+>     [196]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-pgflip-blt.html
+>     [197]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-3/igt@kms_frontbuffer_tracking@drrs-2p-primscrn-indfb-pgflip-blt.html
+> 
+>    * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-render:
+>      - shard-bmg:          [SKIP][198] ([Intel XE#5390]) -> [SKIP][199] ([Intel XE#2312]) +3 other tests skip
+>     [198]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-2/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-render.html
+>     [199]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-render.html
+> 
+>    * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-render:
+>      - shard-bmg:          [SKIP][200] ([Intel XE#2312]) -> [SKIP][201] ([Intel XE#5390]) +1 other test skip
+>     [200]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-render.html
+>     [201]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-render.html
+> 
+>    * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc:
+>      - shard-bmg:          [SKIP][202] ([Intel XE#2311]) -> [SKIP][203] ([Intel XE#2312]) +11 other tests skip
+>     [202]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-2/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc.html
+>     [203]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc.html
+> 
+>    * igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc:
+>      - shard-bmg:          [SKIP][204] ([Intel XE#2313]) -> [SKIP][205] ([Intel XE#2312]) +11 other tests skip
+>     [204]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-5/igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc.html
+>     [205]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-6/igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-wc.html
+> 
+>    * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-wc:
+>      - shard-bmg:          [SKIP][206] ([Intel XE#2312]) -> [SKIP][207] ([Intel XE#2313]) +5 other tests skip
+>     [206]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-wc.html
+>     [207]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-2/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-wc.html
+> 
+>    * igt@kms_hdr@brightness-with-hdr:
+>      - shard-bmg:          [SKIP][208] ([Intel XE#3374] / [Intel XE#3544]) -> [SKIP][209] ([Intel XE#3544])
+>     [208]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_hdr@brightness-with-hdr.html
+>     [209]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@kms_hdr@brightness-with-hdr.html
+> 
+>    * igt@kms_plane_multiple@2x-tiling-y:
+>      - shard-bmg:          [SKIP][210] ([Intel XE#4596]) -> [SKIP][211] ([Intel XE#5021])
+>     [210]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_plane_multiple@2x-tiling-y.html
+>     [211]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-3/igt@kms_plane_multiple@2x-tiling-y.html
+> 
+>    * igt@kms_tiled_display@basic-test-pattern-with-chamelium:
+>      - shard-bmg:          [SKIP][212] ([Intel XE#2426]) -> [SKIP][213] ([Intel XE#2509])
+>     [212]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-6/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html
+>     [213]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-1/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html
+> 
+>    * igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv:
+>      - shard-bmg:          [ABORT][214] ([Intel XE#5466] / [Intel XE#5530]) -> [ABORT][215] ([Intel XE#4917] / [Intel XE#5466] / [Intel XE#5530])
+>     [214]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8524/shard-bmg-4/igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv.html
+>     [215]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/shard-bmg-4/igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv.html
+> 
+>    
+>    {name}: This element is suppressed. This means it is ignored when computing
+>            the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>    [Intel XE#1124]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124
+>    [Intel XE#1127]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1127
+>    [Intel XE#1129]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1129
+>    [Intel XE#1173]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1173
+>    [Intel XE#1178]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1178
+>    [Intel XE#1337]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1337
+>    [Intel XE#1340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1340
+>    [Intel XE#1392]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1392
+>    [Intel XE#1397]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1397
+>    [Intel XE#1401]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1401
+>    [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
+>    [Intel XE#1407]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1407
+>    [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
+>    [Intel XE#1421]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1421
+>    [Intel XE#1424]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1424
+>    [Intel XE#1439]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1439
+>    [Intel XE#1447]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1447
+>    [Intel XE#1469]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1469
+>    [Intel XE#1475]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1475
+>    [Intel XE#1489]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1489
+>    [Intel XE#1499]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499
+>    [Intel XE#1503]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1503
+>    [Intel XE#1508]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1508
+>    [Intel XE#1727]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1727
+>    [Intel XE#1745]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1745
+>    [Intel XE#2049]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2049
+>    [Intel XE#2168]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2168
+>    [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+>    [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
+>    [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+>    [Intel XE#2252]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252
+>    [Intel XE#2284]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2284
+>    [Intel XE#2291]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2291
+>    [Intel XE#2293]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2293
+>    [Intel XE#2311]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2311
+>    [Intel XE#2312]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2312
+>    [Intel XE#2313]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2313
+>    [Intel XE#2316]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2316
+>    [Intel XE#2320]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2320
+>    [Intel XE#2321]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2321
+>    [Intel XE#2322]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2322
+>    [Intel XE#2325]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2325
+>    [Intel XE#2327]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2327
+>    [Intel XE#2341]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2341
+>    [Intel XE#2360]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2360
+>    [Intel XE#2380]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2380
+>    [Intel XE#2387]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2387
+>    [Intel XE#2426]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2426
+>    [Intel XE#2427]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2427
+>    [Intel XE#2505]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2505
+>    [Intel XE#2509]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2509
+>    [Intel XE#2597]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2597
+>    [Intel XE#2652]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2652
+>    [Intel XE#2669]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2669
+>    [Intel XE#2705]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2705
+>    [Intel XE#2763]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2763
+>    [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+>    [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+>    [Intel XE#2887]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887
+>    [Intel XE#2893]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2893
+>    [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
+>    [Intel XE#306]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/306
+>    [Intel XE#307]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/307
+>    [Intel XE#308]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/308
+>    [Intel XE#309]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/309
+>    [Intel XE#3113]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3113
+>    [Intel XE#3124]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3124
+>    [Intel XE#3141]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3141
+>    [Intel XE#316]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/316
+>    [Intel XE#323]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/323
+>    [Intel XE#3374]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3374
+>    [Intel XE#3414]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3414
+>    [Intel XE#3432]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3432
+>    [Intel XE#3442]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3442
+>    [Intel XE#346]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/346
+>    [Intel XE#3544]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3544
+>    [Intel XE#3573]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3573
+>    [Intel XE#366]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/366
+>    [Intel XE#367]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/367
+>    [Intel XE#373]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/373
+>    [Intel XE#378]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/378
+>    [Intel XE#3862]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3862
+>    [Intel XE#3876]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3876
+>    [Intel XE#3904]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3904
+>    [Intel XE#4130]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4130
+>    [Intel XE#4212]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4212
+>    [Intel XE#4227]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4227
+>    [Intel XE#4345]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4345
+>    [Intel XE#4354]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4354
+>    [Intel XE#4416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4416
+>    [Intel XE#4422]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4422
+>    [Intel XE#4494]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4494
+>    [Intel XE#4522]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4522
+>    [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+>    [Intel XE#4596]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4596
+>    [Intel XE#4608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608
+>    [Intel XE#4609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4609
+>    [Intel XE#4650]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4650
+>    [Intel XE#4683]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4683
+>    [Intel XE#4733]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4733
+>    [Intel XE#4837]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837
+>    [Intel XE#4915]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4915
+>    [Intel XE#4917]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4917
+>    [Intel XE#4943]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4943
+>    [Intel XE#5007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5007
+>    [Intel XE#5021]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5021
+>    [Intel XE#5100]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5100
+>    [Intel XE#5300]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5300
+>    [Intel XE#5376]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5376
+>    [Intel XE#5390]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5390
+>    [Intel XE#5466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5466
+>    [Intel XE#5530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5530
+>    [Intel XE#5545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5545
+>    [Intel XE#5626]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5626
+>    [Intel XE#5786]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5786
+>    [Intel XE#5790]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5790
+>    [Intel XE#584]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/584
+>    [Intel XE#5890]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5890
+>    [Intel XE#5963]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5963
+>    [Intel XE#5993]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5993
+>    [Intel XE#607]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/607
+>    [Intel XE#610]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/610
+>    [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+>    [Intel XE#651]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/651
+>    [Intel XE#653]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/653
+>    [Intel XE#656]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/656
+>    [Intel XE#664]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/664
+>    [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+>    [Intel XE#703]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/703
+>    [Intel XE#718]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/718
+>    [Intel XE#736]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/736
+>    [Intel XE#787]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/787
+>    [Intel XE#836]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/836
+>    [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+>    [Intel XE#944]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/944
+> 
+> 
+> Build changes
+> -------------
+> 
+>    * IGT: IGT_8524 -> IGTPW_13695
+> 
+>    IGTPW_13695: 13695
+>    IGT_8524: 8524
+>    xe-3677-3345c879b0492f1283042ae6bdecb0e65ec4ff97: 3345c879b0492f1283042ae6bdecb0e65ec4ff97
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13695/index.html
+> 
 
