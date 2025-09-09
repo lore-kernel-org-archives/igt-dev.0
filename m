@@ -4,51 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B566CAC587
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 10:14:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26A17CAC587
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 10:27:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55BBB10E6A0;
-	Tue,  9 Sep 2025 10:14:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C214410E6A0;
+	Tue,  9 Sep 2025 10:27:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ecomuDAF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DSUGphql";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF8D510E6A0
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 10:14:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E603010E6A0
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 10:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757412865; x=1788948865;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=2iNgQzoHelhKKo+YWSedBNgqgEBH512zUkyuW8ClEzA=;
- b=ecomuDAFvN7w6ETkdvGHYyLAYUUr+Nh23jjXz40r+H0BGvTwWdzKps/2
- ZHulxXsyoBTbNp47GSB2vKgGxAVI9Aw8ieBzFjTw4C7+xpiI33osjgBWd
- AT+G6zDfKORLjp4OP/pZtQryuza7rPHMKWJ7vA96bKnAxCksEyoXWJA1J
- LjZ+B6uFMr5l+aViUz92hSXbWTdkdvI9nhbrsbnRBsrG27NbfNNdibrJO
- ebFpTsykG2aUiaJUVn0IQ3tZtxRZJSZvKK52Fp3iEI9xKkE65NF/xORp4
- CCejC3vql/4RKmsxn0YEgBmmzt3CSxYyzdRKaHDVIRR77oqu15VUWsoEI A==;
-X-CSE-ConnectionGUID: JCNEhioYQyCTInIhSA/SKA==
-X-CSE-MsgGUID: bDfX6MXPRwewovvw2w5hrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="58731016"
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; d="scan'208";a="58731016"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 03:14:24 -0700
-X-CSE-ConnectionGUID: NYX3pr5vTw+eL1Ief9O3NA==
-X-CSE-MsgGUID: IUNXZcCrR02oQ85FK6qlwg==
+ t=1757413664; x=1788949664;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=XFP7f0fBSSufmnlBdvs3fth3/TC2HUkBYk2Hi8LPjUk=;
+ b=DSUGphqlppLBddLYlhlC18Q/QqgO55DHI4yAPcMULs9hTbHvnEQ+A5QX
+ Xio1Z1hKzBHGYlbENAZnSe9BuFpF5sJkMp3W/BaGRbiBTG+MohKjamL4f
+ ufo3FctTd+gmPYox77OZBsfkZAh+POGEN01QRZ8/7kiwm4pM5zKbOhyw1
+ 4EOVDj7QK+IqR+rrAtwYCYx+f5BJEctpiiUNj1DnDiQtJNEIF0/NkCNJx
+ 3oJ8xlT/EZrdnzp7jwa2QtP1takNFqVMJbvrbcpm6CaN8wISo0XXbaP4h
+ O9vMYAeSKKiPBexrI5Sv3jwU46fHOSKEaZChf32IluDBrzl42eAQWeNlF g==;
+X-CSE-ConnectionGUID: EZJcqIh2SSm4ipy4xGPJbg==
+X-CSE-MsgGUID: MgP7DNTPQWWoxwm0RLxrPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="77147782"
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; d="scan'208";a="77147782"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 03:27:44 -0700
+X-CSE-ConnectionGUID: fKCqZu2rTl2UD1aiGbzXxw==
+X-CSE-MsgGUID: XEM0MfxkSwq5D0pULucxHQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; d="scan'208";a="196710021"
-Received: from dut2943pvc.iind.intel.com ([10.190.215.44])
- by fmviesa002.fm.intel.com with ESMTP; 09 Sep 2025 03:14:23 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t] lib/xe: Track valid Tile IDs
-Date: Tue,  9 Sep 2025 10:14:21 +0000
-Message-ID: <20250909101421.1254774-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; d="scan'208";a="178272982"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 03:27:42 -0700
+Date: Tue, 9 Sep 2025 12:27:27 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Pawel Sikora <pawel.sikora@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v9 1/5] docs: Set up MkDocs for documentation site
+Message-ID: <20250909102727.m6j7h6dkfiso7qnq@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250909084233.183885-1-pawel.sikora@intel.com>
+ <20250909084233.183885-2-pawel.sikora@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250909084233.183885-2-pawel.sikora@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,128 +72,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Hi Pawel,
+On 2025-09-09 at 10:42:27 +0200, Pawel Sikora wrote:
+> This establishes the initial framework configuration
+> for the IGT GPU Tools documentation site using MkDocs.
+> 
+>  * Add mkdocs.yml for site configuration, including project
+>    info, navigation, theme, and plugins.
+>  * Create requirements-docs.txt for MkDocs dependencies.
+>  * Add extra.css for custom styling with Monokai theme.
+>  * Include logo and CSS assets.
+> 
+> For details regarding MkDocs please refer to:
+> https://www.mkdocs.org/
+> 
+> v2:
+>  - Colorblind friendly theme (Kamil)
+> 
+> v5:
+>  - Remove Intel logo (Lucas)
+>  - Remove unnecessary plugins/extras from mkdocs.yml (Pawel)
+> 
+> v6:
+>  - Add information about MIT licence in footer
+>  - Change Download section to separate .md page instead of url
+> 
+> Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
+> ---
+>  docs/css/extra.css         | 323 +++++++++++++++++++++++++++++++++++++
+>  docs/requirements-docs.txt |   7 +
+>  mkdocs.yml                 | 191 ++++++++++++++++++++++
 
-Iterating drm_xe_gt structure to get valid tile ID instead
-of assuming tile_id == gt_id and finding sysfs path for
-GTS in multi-tile platforms. Initially it was assumed
-tile_id == gt_id in multi-tile platform and if gt_id = X
-passed as input, it was considered tileX.
+This looks almost ok, I am not an expert with www sites
+but do we need external dependency?
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- lib/igt_sysfs.c   | 19 ++++++++++---------
- lib/xe/xe_query.c | 16 ++++++++++++++++
- lib/xe/xe_query.h |  4 ++++
- 3 files changed, 30 insertions(+), 9 deletions(-)
+>  3 files changed, 521 insertions(+)
+>  create mode 100644 docs/css/extra.css
+>  create mode 100644 docs/requirements-docs.txt
+>  create mode 100644 mkdocs.yml
+> 
+[cut]
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 96ca57ed9..68f7a19e8 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -226,6 +226,7 @@ int igt_sysfs_open(int device)
- char *xe_sysfs_gt_path(int xe_device, int gt, char *path, int pathlen)
- {
- 	struct stat st;
-+	struct xe_device *xe_dev;
- 
- 	if (xe_device < 0)
- 		return NULL;
-@@ -233,12 +234,12 @@ char *xe_sysfs_gt_path(int xe_device, int gt, char *path, int pathlen)
- 	if (igt_debug_on(fstat(xe_device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
- 		return NULL;
- 
--	if (IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)))
--		snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d",
--			 major(st.st_rdev), minor(st.st_rdev), gt, gt);
--	else
--		snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile0/gt%d",
--			 major(st.st_rdev), minor(st.st_rdev), gt);
-+	xe_dev = xe_device_get(xe_device);
-+
-+	igt_assert(xe_dev);
-+
-+	snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d",
-+		 major(st.st_rdev), minor(st.st_rdev), drm_xe_get_tile(xe_dev, gt), gt);
- 
- 	if (!access(path, F_OK))
- 		return path;
-@@ -307,7 +308,7 @@ char *
- xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen)
- {
- 	struct stat st;
--	int tile = IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)) ? gt : 0;
-+	char base_path[96];
- 
- 	if (xe_device < 0)
- 		return NULL;
-@@ -315,8 +316,8 @@ xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen)
- 	if (igt_debug_on(fstat(xe_device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
- 		return NULL;
- 
--	snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d/engines/%s",
--		 major(st.st_rdev), minor(st.st_rdev), tile, gt,
-+	xe_sysfs_gt_path(xe_device, gt, base_path, sizeof(base_path));
-+	snprintf(path, pathlen, "%s/engines/%s", base_path,
- 		 xe_engine_class_short_string(class));
- 
- 	if (!access(path, F_OK))
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 9b88cce8d..d735edf30 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -379,6 +379,10 @@ struct xe_device *xe_device_get(int fd)
- 	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
- 		xe_dev->gt_mask |= (1ull << xe_dev->gt_list->gt_list[gt].gt_id);
- 
-+	/* Tile IDs may be non-consecutive; keep a mask of valid IDs */
-+	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
-+		xe_dev->tile_mask |= (1ull << xe_dev->gt_list->gt_list[gt].tile_id);
-+
- 	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
- 	xe_dev->engines = xe_query_engines(fd);
- 	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
-@@ -545,6 +549,18 @@ const struct drm_xe_gt *drm_xe_get_gt(struct xe_device *xe_dev, int gt_id)
- 	return NULL;
- }
- 
-+/*
-+ * Given a uapi GT ID, lookup the corresponding drm_xe_gt structure in the
-+ * GT list and return valid tile_id otherwise invalid.
-+ */
-+int drm_xe_get_tile(struct xe_device *xe_dev, int gt_id)
-+{
-+	for (int i = 0; i < xe_dev->gt_list->num_gt; i++)
-+		if (xe_dev->gt_list->gt_list[i].gt_id == gt_id)
-+			return xe_dev->gt_list->gt_list[i].tile_id;
-+
-+	return -EINVAL;
-+}
- 
- /**
-  * vram_memory:
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 4b8a6ee77..2fdd860cd 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -39,6 +39,9 @@ struct xe_device {
- 	/** @gt_mask: bitmask of GT IDs */
- 	uint64_t gt_mask;
- 
-+	/** @tile_mask: bitmask of Tile IDs */
-+	uint64_t tile_mask;
-+
- 	/** @memory_regions: bitmask of all memory regions */
- 	uint64_t memory_regions;
- 
-@@ -101,6 +104,7 @@ unsigned int xe_dev_max_gt(int fd);
- uint64_t all_memory_regions(int fd);
- uint64_t system_memory(int fd);
- const struct drm_xe_gt *drm_xe_get_gt(struct xe_device *xe_dev, int gt_id);
-+int drm_xe_get_tile(struct xe_device *xe_dev, int gt_id);
- uint64_t vram_memory(int fd, int gt);
- uint64_t vram_if_possible(int fd, int gt);
- struct drm_xe_engine *xe_engines(int fd);
--- 
-2.43.0
+Found in yml file:
+
+> +
+> +extra_css:
+> +  - css/extra.css
+> +
+> +extra_javascript:
+> +  - https://polyfill.io/v3/polyfill.min.js?features=es6
+
+Can we avoid using it?
+
+> +
+[cut]
+> +
+> +copyright: 'Copyright Intel, 2025 , made by IGT Team. SPDX-License-Identifier: MIT'
+
+It is useally:
+Copyright © 2025 Intel Corporation
+
+e.g. (c) year copyright-holder
+
+Not sure also about 'made by' here. imho better:
+
+Copyright © 2025 Intel Corporation . SPDX-License-Identifier: MIT'
+
+> -- 
+> 2.51.0
+
+Regards,
+Kamil
 
