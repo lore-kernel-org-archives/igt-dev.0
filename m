@@ -4,57 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00917CA0FED
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 07:40:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08DC4CA0FED
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 08:23:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A94D310E163;
-	Tue,  9 Sep 2025 07:40:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B8FAC10E650;
+	Tue,  9 Sep 2025 08:23:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X8j8osZU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kZQnOxYD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0879A10E163
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 07:40:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BB8810E650
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 08:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757403620; x=1788939620;
+ t=1757406215; x=1788942215;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=nEg77qr4U3wjqdifH05R77bbMtfR7lpuTE5ItTRfwwM=;
- b=X8j8osZURauabAXIzSADwe/6qlt7LkxFrMEzcDpwoarzTGxNICtrAecJ
- B/pTX9EkqW7kv0KDCPO+fAWV0wOGq3NeQUJ3d/VG3k0C873rPKmVJ67hL
- 8ggIR27BhvfTyQgmdqfRY/FUTGf7yDGjG3kwO8ckyAupX3+9Ne6gEKfwO
- 0StRTDnZHQzbMFx5WKKTcU9eA+jLs/uBJkzV8YchW73c6osGOPD3eX+FZ
- n9cvTLGkl4MGmYNP6pbwhpsalJa7DPhXMNdAylb06HPMUKQOl5uqVFLzE
- SFmhXQaD1uA8hqsbomxJ7wojlTvSRYBDUyFixV1amKAY4S3jVnX+twMX9 A==;
-X-CSE-ConnectionGUID: N0ycgMHBSxqGqxFVR7rrjg==
-X-CSE-MsgGUID: Plq94NyxSdqT01o+tpN34A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="59823950"
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="59823950"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 00:40:19 -0700
-X-CSE-ConnectionGUID: OMy8iKloTh6JiLSOB6Uo+g==
-X-CSE-MsgGUID: c9b4g/HYQia/5u691+jEoQ==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=g9inY+Icv/Wz6yRGpebtt4ykTq2W2N6fjjYd6iqOX40=;
+ b=kZQnOxYDoScoq0ZJDKOUeoQ4bdtr7Xwf6F+hDUAlMVsqhlL2eQ1QvNuz
+ bgsPraIN1xQVe/E+10ubdbsQYR9OGSFwXYqrfyTwW2ABUqASxkMrrNF6v
+ zTDyFoL8w4yluz5N6e17kgUut0+j1fHijzQr9vuj13HcAV1a54+glY/KZ
+ W4YqsABQNQCyOec3uZPmqNCT9XfdbYb+/jerBUzGZvsqSr+6jbrNz+lWv
+ NSa2dgkgheBjRHd6G3PyoeZLnOQUfuzhiXvtbKP19342mx0tPJSnMqmmn
+ sjV2hSMDsrhXLfwDyW9g0TGsDgLy+9vtKjI/pBnRPC0JV8gK2W4DQHzFP w==;
+X-CSE-ConnectionGUID: a3asLa3/Q4yzf+31bacijw==
+X-CSE-MsgGUID: NALQ1VzKSW214nROnULRog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="62308602"
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="62308602"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 01:23:33 -0700
+X-CSE-ConnectionGUID: yMapBF08TGyrl652qcSoFg==
+X-CSE-MsgGUID: LwztIKaFQqSKe6gobxr4Zw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="173809209"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
- ([10.245.244.82])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 00:40:18 -0700
-Date: Tue, 9 Sep 2025 09:40:15 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Sobin Thomas <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
-Subject: Re: [PATCH v2 i-g-t 1/1] tests/intel/xe_compute_preempt: GPU
- Compatibility check
-Message-ID: <yyl5mgwoj5rqmturynlub5w3riu4bngqpmvjagdy7oeb6paqpz@kxibybz2mhq6>
-References: <20250908171421.1787165-1-sobin.thomas@intel.com>
- <20250908171421.1787165-2-sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="196685888"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 01:23:31 -0700
+Date: Tue, 9 Sep 2025 10:23:16 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Piotr =?utf-8?Q?Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+ Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Subject: Re: [PATCH i-g-t 1/2] lib/xe/xe_query: =?utf-8?B?RG9u4oCZ?=
+ =?utf-8?Q?t?= assume sequential GT IDs in xe_gt_type()
+Message-ID: <20250909082316.3nti5skkfetlir5l@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Piotr =?utf-8?Q?Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+ Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+References: <20250908160723.1723178-1-marcin.bernatowicz@linux.intel.com>
+ <20250908160723.1723178-2-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250908171421.1787165-2-sobin.thomas@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250908160723.1723178-2-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,140 +83,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Sep 08, 2025 at 05:14:21PM +0000, Sobin Thomas wrote:
-> On platforms that do not support walker mid-thread preemption, running
-> tests in forked threads can lead to inconsistent states due to
-> igt_skip being called mid-execution. This patch introduces a GPU
-> compatibility check at the beginning of the xe_compute_preempt test.
-> If the GPU version does not support the required features, the
-> entire test is skipped gracefully, ensuring consistent behavior across
-> platforms.
+Hi Marcin,
+On 2025-09-08 at 18:07:22 +0200, Marcin Bernatowicz wrote:
+> Replace direct gt_list indexing with drm_xe_get_gt() and check
+> gt_mask before use. This ensures xe_gt_type() works with real
+> GT IDs instead of assuming list index == uapi ID, consistent
+> with other helpers.
 > 
-> v2: Fixed review comments to move the compatibility check
->     into the igt_fixture.
+> Fixes: 3bb0c49ac668 ("lib/xe/xe_query: Add xe_gt_type() and xe_is_main_gt() helpers")
 > 
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 > ---
->  lib/intel_compute.c              | 45 +++++++++++++++++++-------------
->  lib/intel_compute.h              |  2 ++
->  tests/intel/xe_compute_preempt.c |  1 +
->  3 files changed, 30 insertions(+), 18 deletions(-)
+>  lib/xe/xe_query.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 147dd2916..2bb70824e 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -2219,24 +2219,6 @@ static bool __run_intel_compute_kernel_preempt(int fd,
->  	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
->  	unsigned int batch;
->  	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
-> -	enum intel_driver driver = get_intel_driver(fd);
-> -
-> -	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
-> -		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
-> -			break;
-> -
-> -
-> -	if (batch == ARRAY_SIZE(intel_compute_preempt_batches)) {
-> -		igt_debug("GPU version 0x%x not supported\n", ip_ver);
-> -		return false;
-> -	}
-> -
-> -	if (!(COMPAT_DRIVER_FLAG(driver) & intel_compute_preempt_batches[batch].compat)) {
-> -		igt_debug("Driver is not supported: flags %x & %x\n",
-> -			  COMPAT_DRIVER_FLAG(driver),
-> -			  intel_compute_preempt_batches[batch].compat);
-> -		return false;
-> -	}
->  
->  	while (kernels->kernel) {
->  		if (ip_ver == kernels->ip_ver)
-> @@ -2260,6 +2242,31 @@ static bool __run_intel_compute_kernel_preempt(int fd,
->  
->  	return true;
->  }
-> +
-> +bool check_gpu_compatibility_kernel_preempt(int fd)
-> +{
-> +	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-> +	unsigned int batch;
-> +	enum intel_driver driver = get_intel_driver(fd);
-> +
-> +	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
-> +		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
-> +			break;
-> +
-> +	if (batch == ARRAY_SIZE(intel_compute_preempt_batches)) {
-> +		igt_debug("GPU version 0x%x not supported\n", ip_ver);
-> +		return false;
-> +	}
-> +
-> +	if (!(COMPAT_DRIVER_FLAG(driver) & intel_compute_preempt_batches[batch].compat)) {
-> +		igt_debug("Driver is not supported: flags %x & %x\n",
-> +			COMPAT_DRIVER_FLAG(driver),
-> +			intel_compute_preempt_batches[batch].compat);
-> +		return false;
-> +	}
-> +	return true;
-> +}
-> +
->  /**
->   * run_intel_compute_kernel_preempt - runs compute kernels to
->   * exercise preemption scenario.
-> @@ -2275,6 +2282,8 @@ bool run_intel_compute_kernel_preempt(int fd,
->  		bool threadgroup_preemption,
->  		enum execenv_alloc_prefs alloc_prefs)
+> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> index 9b88cce8d..17045f3fb 100644
+> --- a/lib/xe/xe_query.c
+> +++ b/lib/xe/xe_query.c
+> @@ -927,12 +927,15 @@ bool xe_has_media_gt(int fd)
+>  uint16_t xe_gt_type(int fd, int gt)
 >  {
-> +	if (!check_gpu_compatibility_kernel_preempt(fd))
-> +		return false;
-
-This check doesn't diverge between WMTP and TG preemption.
-On PVC we're technically able to run TG preemption tests
-(but noone did it before).
-
->  	return __run_intel_compute_kernel_preempt(fd, eci, threadgroup_preemption,
->  						  alloc_prefs);
->  }
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index 412791d07..0998fd661 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -73,6 +73,8 @@ enum execenv_alloc_prefs {
+>  	struct xe_device *xe_dev = find_in_cache(fd);
+> +	const struct drm_xe_gt *xe_gt;
 >  
->  extern const struct intel_compute_kernels intel_compute_square_kernels[];
->  
-> +bool check_gpu_compatibility_kernel_preempt(int fd);
+>  	igt_assert(xe_dev);
+> -	igt_assert_f(gt >= 0 && gt < xe_number_gt(fd),
+> -		     "gt %d out of range [0..%d)\n", gt, xe_number_gt(fd));
+> +	igt_assert(xe_dev->gt_mask & BIT(gt));
+
+Remove this assert, next one below is enough.
+With this
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > +
->  bool run_intel_compute_kernel(int fd, struct user_execenv *user,
->  			      enum execenv_alloc_prefs alloc_prefs);
->  bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_instance *eci,
-> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-> index c9b194869..5722ef3d4 100644
-> --- a/tests/intel/xe_compute_preempt.c
-> +++ b/tests/intel/xe_compute_preempt.c
-> @@ -73,6 +73,7 @@ igt_main
->  		ram_mb = igt_get_avail_ram_mb();
->  		swap_mb = igt_get_total_swap_mb();
->  		vram_mb = xe_visible_vram_size(xe, 0) >> 20;
-> +		igt_require_f(check_gpu_compatibility_kernel_preempt(xe), "GPU not supported\n");
-
-And here we eliminate both preemptions in the same time
-even if platform may support TG preemption. I would use
-this require in each test separately - extend array
-struct intel_compute_preempt_batches to include preempt_type
-similar to compat and use in the test individually.
-This would allow us to use this code in the future if
-from some reason platform will have only one of supported
-preemptions.
-
---
-Zbigniew
-
-
-
->  	}
+> +	xe_gt = drm_xe_get_gt(xe_dev, gt);
+> +	igt_assert(xe_gt);
 >  
->  	igt_subtest_with_dynamic("compute-preempt") {
+> -	return xe_dev->gt_list->gt_list[gt].type;
+> +	return xe_gt->type;
+>  }
+>  
+>  /**
 > -- 
-> 2.34.1
+> 2.31.1
 > 
