@@ -4,54 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21F20CAC589
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 08:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79DF7CA0FED
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Sep 2025 08:42:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C3CC910E2BA;
-	Tue,  9 Sep 2025 08:42:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CAF410E65B;
+	Tue,  9 Sep 2025 08:42:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KKwW2ToU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L8Cab1Z+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A017710E2BA
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 08:42:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 850AE10E65B
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Sep 2025 08:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757407363; x=1788943363;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1kDQ1fkMsir8z7mZXqYUSWC67VrQqLUPgAQ28KtTBao=;
- b=KKwW2ToUFNMS9/FWFTNg3RZwPJJWWEYKhvC1WkwyoiZ1cW7DAtwFviN1
- mSSGxdamEnCWXzrwIJFDI0XetjtSQQrH9BDvWJ470gOed3pt4nhIkMjdl
- SQ3uA1IOjqCYyiuO/OBYOk1S4uPilizPBy/n94utf76ifAr/KhAXCQpSB
- mhV4vOgBWpXjp2xedoUNhkvBn1FTEvrxEYTf9nqfc+6XqY0f1sIr24007
- JJR/9D6W2fq16S1K3DFmC1f2mjwdD1tIgaREjHbxuioopSe7rhl2t2fng
- OOyMtXuteWCZFk186Q1GiHbfluU6XrbG8po2pupHV45gcxOLQE8PXYRjH w==;
-X-CSE-ConnectionGUID: 2NlZsHd0SxSGvZFeXEQtwA==
-X-CSE-MsgGUID: QODJ+E0sSImroZaH4a6I9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="59377622"
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="59377622"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 01:42:43 -0700
-X-CSE-ConnectionGUID: yaoWaNi0TT2eb9/714MY3Q==
-X-CSE-MsgGUID: 82rLxEtHS/ClARVsP5CAjQ==
+ t=1757407366; x=1788943366;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=pqC/DkjOIca1mhMCTO9TjGhwO9vRexUhf50+dA3BsSs=;
+ b=L8Cab1Z+i+7eU+x6lh4qh9MnT1Ep/mObwCd6kdoX+LcSv/AOPoUqAxFX
+ OVz0FBR4bYg2wxKmeQiiTAPfTfYpZhW26bicuUmOUC7MEy4THZJ1CNmxa
+ gvQbo0tIPujqInFkzh2YT+2X3eW7XWgd+N8XAgGKMcpQevxNZnIsO873t
+ 2uG91ebF/EVT9aXFpC2YhyvmTkPiAT8SAAE98NoAPBfxb6hvDO4Z84B7H
+ gtzdl6K8KdsgqpsVzqzfgLIpQQwRd6H8naYtDQCw7o92FkzeZoKZUivBf
+ u/vFA4ZxC1UH4RSxTFaYelYpw5JdkkiO7Con3xyCOkGJgIXDe3/3IZ86c A==;
+X-CSE-ConnectionGUID: V7tvvtM3QlyVmP5MLeNKtA==
+X-CSE-MsgGUID: lUey9mm/QiW8KH2UN1xmFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59749038"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59749038"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 01:42:46 -0700
+X-CSE-ConnectionGUID: 3vnl8cHnSrOecCLW14H5Fw==
+X-CSE-MsgGUID: TCdOYogzSF2oigy+LzpvNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="172900242"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.129])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 01:42:41 -0700
-From: Pawel Sikora <pawel.sikora@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v9 0/5] Establish MkDocs Documentation Framework for IGT
- GPU Tools
-Date: Tue,  9 Sep 2025 10:42:26 +0200
-Message-ID: <20250909084233.183885-1-pawel.sikora@intel.com>
-X-Mailer: git-send-email 2.51.0
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; d="scan'208";a="172191970"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 01:42:44 -0700
+Date: Tue, 9 Sep 2025 10:42:41 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: S Sebinraj <s.sebinraj@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: Re: [PATCH i-g-t] tests/kms_concurrent: Add SYSVIPC support check
+Message-ID: <20250909084241.kowpxt55wwicrp6n@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
+ jeevaka.badrappan@intel.com,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20250908084631.2676274-1-s.sebinraj@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250908084631.2676274-1-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,207 +73,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Dear Maintainers,
+Hi S,
+On 2025-09-08 at 14:16:31 +0530, S Sebinraj wrote:
+> Check for System V IPC support in kms_concurrent test to handle
+> targets that don't have SYSVIPC enabled in their kernel. Without this
+> check, the test would fail with assertion errors when trying to use
+> message queues.
 
-I am submitting a series of patches to introduce a comprehensive 
-documentation framework for the IGT GPU Tools project using MkDocs.
+Please use cover letter and give an example of such error
+or give a link to bug report. On which systems you observe
+this? I am afraid that almost none of tests will run
+without it (maybe some core_ will do).
 
-For details regarding MkDocs please see: https://www.mkdocs.org/
- 
-This effort aims to enhance organization and presentation of our
-documentation, making it easier for users and contributors to navigate
-and understand the project.
+> 
+> The implementation checks if the target supports IPC,
+> if not found it skips the test.
+> 
 
-How to build it for review (strongly recommended to use virtual
-environment - please relate to your OS/distro instructions)
++cc Zbigniew
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
 
-Set up venv for python local installation of required packages:
-$ python3 -m venv venv
-$ source ./venv/bin/activate
+> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+> ---
+>  lib/igt_core.h         |  2 ++
+>  tests/kms_concurrent.c | 18 ++++++++++++++++++
+>  2 files changed, 20 insertions(+)
+> 
+> diff --git a/lib/igt_core.h b/lib/igt_core.h
+> index 6f462205f..413e83bc8 100644
+> --- a/lib/igt_core.h
+> +++ b/lib/igt_core.h
+> @@ -45,6 +45,8 @@
+>  #include <getopt.h>
+>  #include <unistd.h>
+>  
+> +bool device_supports_sysvipc(void);
 
-Install requirements:
-$ pip3 install -r ./docs/requirements-docs.txt
-
-Build documentation:
-$ mkdocs build
-
-Start the server to host a local website:
-$ mkdocs serve
-
-Then, open in your favorite browser: http://127.0.0.1:8000/
-
-Detailed description of patches:
-
-Patch 1: docs: Set up MkDocs for documentation site
-
-This patch lays the foundation for the documentation site by adding essential 
-configuration files and assets. 
-The mkdocs.yml file is introduced to define the site's structure, including 
-project information, navigation, theme settings(Material for MkDocs: 
-https://squidfunk.github.io/mkdocs-material/), and plugins. 
-
-Additionally, requirements-docs.txt lists the necessary dependencies for 
-building the site with MkDocs.
-
-Custom styling is applied through extra.css, which incorporates a Monokai 
-theme, and visual assets such as the logo are included. 
-This patch establishes the initial framework for generating the IGT GPU Tools 
-documentation site using MkDocs. 
-
-For more details on MkDocs, please refer to MkDocs Documentation.
-
-Patch 2:
-
-In a current mkdocs configuration (initial, actually) all
-documentation files need to be placed in the 'docs' directory.
-
-Thus, some files like CONTRIBUTING.md, MAINTAINERS, NEWS,
-README.md are left out of the scope for mkdocs.
-
-To mitigate that and maintain backward compatibility for
-current tools that may use those files, this patch creates
-symlinks in the 'docs' folder to those files (except README.md)
-and give an '.md' extention where it was missing for clarity.
-
-In the current MkDocs configuration (initial, actually),
-all documentation files need to be placed in the 'docs' directory.
-
-Thus, some files like CONTRIBUTING.md, MAINTAINERS, NEWS,
-and README.md are left out of the scope for MkDocs.
-
-To mitigate that and maintain backward compatibility for current
-tools that may use those files, this patch creates symlinks
-in the 'docs' folder to those files (except README.md) and adds
-a '.md' extension where it was missing for clarity.
-
-Patch 3: docs: Initialize MkDocs documentation structure
-
-This patch focuses on organizing the documentation content within the project.
-
-The README is updated with basic content to reflect the reorganization, while 
-detailed documentation is moved into the docs directory. 
-
-The content is split across multiple markdown files, setting up a structure 
-that allows for automatic site generation using MkDocs. 
-
-This reorganization enhances the accessibility and maintenance of the 
-documentation, providing a clear and navigable structure for users.
-
-Patch 3: gitlab-ci: Add MkDocs documentation support
-
-This patch integrates MkDocs documentation support into the GitLab CI pipeline. 
-It ensures that the current API reference manual (which is currently hosted on 
-GitLab pages) is built and copied to the MkDocs documentation directory, 
-maintaining its availability via an internal link. 
-
-The MkDocs documentation from the docs directory is also built, 
-with a relative link to api_reference/index.html included in the navigation. 
-
-After both builds are complete, all content is copied into the site directory 
-and manually moved into public for hosting on freedesktop GitLab Pages. 
-This integration ensures that the documentation is consistently updated 
-and accessible alongside the API reference manual.
-
-Together, these patches improve the presentation and accessibility of the 
-IGT GPU Tools project. 
-
-I look forward to your feedback.
-
-
-v2:
- - Add many new documentation content and corrections to v1 (Swati)
- - Add colorblind friendly theme css (Kamil)
- - Fix line width to 100 characters (Kamil)
- - Keep MAINTAINERS file in the root dir, but second version(formatted)
-   is created in the docs dir (Kamil)
-
-v3:
- - Simplify mkdocs build (Pawel)
-
-v4:
- - Add symlinks instead of moving files into docs dir (Kamil)
-
-v5:
- - Minor changes to documentation content (Kasia)
- - Remove Intel logo (Lukas)
- - Remove some unnecessary configuration from mkdocs.yml
-
-v6:
- - Add information about MIT license in footer
- - Add download.md and link Download section to it
-
-v7:
- - Move changes into README.md and docs/cross-building.txt
-   into separate patches (Kamil)
- - Fix mentions about 'blacklist' to 'blocklist'
-
-v8:
- - Restore README.md to its original
-
-v9:
- - Site directory creation dir change to just ./site
+Please add this after all includes, not here.
 
 Regards,
-Pawel
+Kamil
 
-Pawel Sikora (5):
-  docs: Set up MkDocs for documentation site
-  docs: create symlinks for NEWS/MAINTAINERS/CONTRIB
-  docs: rename cross-building.txt to .md
-  docs: Initialize MkDocs documentation structure
-  gitlab-ci: Add MkDocs documentation support
-
- .gitlab-ci.yml                       |  10 +-
- docs/CONTRIBUTING.md                 |   1 +
- docs/MAINTAINERS.md                  |   1 +
- docs/NEWS.md                         |   1 +
- docs/api.md                          |  30 ++
- docs/blocklists.md                   | 354 +++++++++++++++++++++++
- docs/building.md                     |  27 ++
- docs/{chamelium.txt => chamelium.md} |   2 +-
- docs/ci_infrastructure.md            | 414 +++++++++++++++++++++++++++
- docs/code_coverage.md                |  68 +++--
- docs/cross-building.md               | 240 ++++++++++++++++
- docs/cross-building.txt              | 122 --------
- docs/css/extra.css                   | 323 +++++++++++++++++++++
- docs/download.md                     |  23 ++
- docs/faq.md                          |  92 ++++++
- docs/how_to_build_docs.md            |  54 ++++
- docs/issues.md                       |  31 ++
- docs/new_driver.md                   | 231 +++++++++++++++
- docs/overview.md                     | 249 ++++++++++++++++
- docs/patchwork.md                    |  18 ++
- docs/requirements-docs.txt           |   7 +
- docs/running_tests.md                | 130 +++++++++
- docs/test_categories.md              | 266 +++++++++++++++++
- docs/test_documentation.md           |   5 +-
- docs/test_plan.md                    | 216 ++++++++++++++
- mkdocs.yml                           | 191 ++++++++++++
- 26 files changed, 2944 insertions(+), 162 deletions(-)
- create mode 120000 docs/CONTRIBUTING.md
- create mode 120000 docs/MAINTAINERS.md
- create mode 120000 docs/NEWS.md
- create mode 100644 docs/api.md
- create mode 100644 docs/blocklists.md
- create mode 100644 docs/building.md
- rename docs/{chamelium.txt => chamelium.md} (99%)
- create mode 100644 docs/ci_infrastructure.md
- create mode 100644 docs/cross-building.md
- delete mode 100644 docs/cross-building.txt
- create mode 100644 docs/css/extra.css
- create mode 100644 docs/download.md
- create mode 100644 docs/faq.md
- create mode 100644 docs/how_to_build_docs.md
- create mode 100644 docs/issues.md
- create mode 100644 docs/new_driver.md
- create mode 100644 docs/overview.md
- create mode 100644 docs/patchwork.md
- create mode 100644 docs/requirements-docs.txt
- create mode 100644 docs/running_tests.md
- create mode 100644 docs/test_categories.md
- create mode 100644 docs/test_plan.md
- create mode 100644 mkdocs.yml
-
--- 
-2.51.0
-
+> +
+>  #ifdef __FreeBSD__
+>  #include "igt_freebsd.h"
+>  #endif
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> index 4f16f8b89..80512a140 100644
+> --- a/tests/kms_concurrent.c
+> +++ b/tests/kms_concurrent.c
+> @@ -107,6 +107,22 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
+>  	data->fb = NULL;
+>  }
+>  
+> +/**
+> + * Checks if the current device supports SYSVIPC by verifying the existence and accessibility
+> + * of the /proc/sysvipc directory.
+> + * Returns: true if accessible for read and write, false otherwise.
+> + */
+> +bool device_supports_sysvipc(void)
+> +{
+> +	char path[128] = {'\0'};
+> +
+> +	snprintf(path, sizeof(path), "/proc/sysvipc");
+> +	if (access(path, R_OK | W_OK) == 0)
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+>  static void
+>  create_fb_for_mode_position(data_t *data, drmModeModeInfo *mode,
+>  			    int *rect_x, int *rect_y,
+> @@ -395,6 +411,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  		igt_display_require(&data.display, data.drm_fd);
+>  		igt_require(data.display.is_atomic);
+>  		igt_display_require_output(&data.display);
+> +		igt_require(device_supports_sysvipc());
+> +
+>  		if (is_intel_device(data.drm_fd))
+>  			intel_allocator_multiprocess_start();
+>  	}
+> -- 
+> 2.34.1
+> 
