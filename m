@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91139CA0FED
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Sep 2025 06:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1470BCA0FED
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Sep 2025 06:20:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B3B710E145;
-	Wed, 10 Sep 2025 06:08:48 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gfw3NrGC";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C26E10E145
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Sep 2025 06:08:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757484526; x=1789020526;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=RUZl5iwxstQfl4mwqS9BQTeaJM0KPba70KpqUaFXjVI=;
- b=Gfw3NrGCgh+b/Fems5cpqfG5QLfBjS2ifSWSHZTcBzA0yWXkgqjUIY3z
- 9hSNUyz9+ifs03TFpyNdeThnXHN7SBJVnlrBW3tSi3+dyTs2+L1w1ssgd
- fqVe5EMqyR62qV3DI4auMXQeESr+cfWeIbL2uFG5Yg/L2sDh+sgcKbXRb
- HFQirgDPYw7+0GZ0JBSbBj4XaYZYYrEYkRmVT312bVrD4EgOqjfn1/7IT
- u6D8dhficelzUpErQCYuZmr266U9aiXPMHu/O8pZ8xaPbJuuEVWvosG3J
- eLQwIjcW9HH7fhEczOnPcgMX67yZdTS8N8Xyo0W4EmeyrvzG4N4QSpdSq w==;
-X-CSE-ConnectionGUID: 41z1DFMUTkG+Gq27kufUTA==
-X-CSE-MsgGUID: yq2AwGKsTnmMGjydfc+MaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="70474804"
-X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; d="scan'208";a="70474804"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 23:08:46 -0700
-X-CSE-ConnectionGUID: F/mN8FdeQ1m1jfGF5L/fNw==
-X-CSE-MsgGUID: lhrveuHaTGq55XFabBcnHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; d="scan'208";a="173143804"
-Received: from agladkov-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.244.238])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 23:08:45 -0700
-Date: Wed, 10 Sep 2025 08:08:41 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Subject: Re: [PATCH v2 i-g-t 2/4] lib/igt_core: Block SIGINT during igt_vlog
-Message-ID: <ldkqnliynzdrqu3ycge6qba7z5m336e4gk7xbacfcs76afqxo7@uvmgnhz3icxc>
-References: <20250908125448.13420-1-dominik.karol.piatkowski@intel.com>
- <20250908125448.13420-3-dominik.karol.piatkowski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B119510E2BD;
+	Wed, 10 Sep 2025 06:20:31 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC2C910E2BD;
+ Wed, 10 Sep 2025 06:20:30 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1408366390456612755=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250908125448.13420-3-dominik.karol.piatkowski@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpmu=3A_Add?=
+ =?utf-8?q?_tests_to_validate_engine_activity_accuracy_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Soham Purkait" <soham.purkait@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 10 Sep 2025 06:20:30 -0000
+Message-ID: <175748523083.320354.8231616767305208505@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250818073249.3348233-1-soham.purkait@intel.com>
+In-Reply-To: <20250818073249.3348233-1-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,69 +37,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Sep 08, 2025 at 02:54:46PM +0200, Dominik Karol Piątkowski wrote:
-> Block SIGINT during igt_vlog to avoid deadlocks in multi-threaded SIGINT
-> scenarios.
-> 
-> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> ---
->  lib/igt_core.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index 4477cfef1..414fd9bce 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -3198,6 +3198,11 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
->  		"CRITICAL",
->  		"NONE"
->  	};
-> +	sigset_t set, oldset;
-> +
+--===============1408366390456612755==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I think this part deserves for a comment explaining why we need this,
-because this is heavy hammer.
+== Series Details ==
 
-I also wonder shouldn't we have some global variable which we turn
-on only in eudebug case. I mean in the test fixture:
+Series: tests/intel/xe_pmu: Add tests to validate engine activity accuracy (rev3)
+URL   : https://patchwork.freedesktop.org/series/152630/
+State : success
 
-igt_block_signals_in_print(true);
+== Summary ==
 
-then in ending fixture:
+CI Bug Log - changes from XEIGT_8528_BAT -> XEIGTPW_13718_BAT
+====================================================
 
-igt_block_signals_in_print(false);
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13718_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_vm@bind-execqueues-independent:
+    - {bat-ptl-vm}:       [FAIL][1] ([Intel XE#5783]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8528/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13718/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
 
 
-> +	sigemptyset(&set);
-> +	sigaddset(&set, SIGINT);
-> +	sigprocmask(SIG_BLOCK, &set, &oldset);
+Build changes
+-------------
 
-And this would be:
+  * IGT: IGT_8528 -> IGTPW_13718
 
-if (do_block_signals_in_print())
-    ...
+  IGTPW_13718: 13718
+  IGT_8528: 9252073bde221857c96656b6c96749c444aa1890 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3715-b3bf929e6bb3fefb6ff8ebdbddbeee61d03bb671: b3bf929e6bb3fefb6ff8ebdbddbeee61d03bb671
 
-Anyway - definitely we have to protect igt_vlog(), we don't
-know when fork will be done with print_mutex locked.
+== Logs ==
 
---
-Zbigniew
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13718/index.html
+
+--===============1408366390456612755==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
->  
->  	assert(format);
->  
-> @@ -3276,6 +3281,7 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
->  	pthread_mutex_unlock(&print_mutex);
->  
->  out:
-> +	sigprocmask(SIG_SETMASK, &oldset, NULL);
->  	free(line);
->  	free(thread_id);
->  }
-> -- 
-> 2.34.1
-> 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pmu: Add tests to validate engine activity accuracy (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152630/">https://patchwork.freedesktop.org/series/152630/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13718/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13718/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8528_BAT -&gt; XEIGTPW_13718_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13718_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_vm@bind-execqueues-independent:<ul>
+<li>{bat-ptl-vm}:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8528/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13718/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8528 -&gt; IGTPW_13718</li>
+</ul>
+<p>IGTPW_13718: 13718<br />
+  IGT_8528: 9252073bde221857c96656b6c96749c444aa1890 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3715-b3bf929e6bb3fefb6ff8ebdbddbeee61d03bb671: b3bf929e6bb3fefb6ff8ebdbddbeee61d03bb671</p>
+
+</body>
+</html>
+
+--===============1408366390456612755==--
