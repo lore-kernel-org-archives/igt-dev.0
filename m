@@ -4,26 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDF29CA101F
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Sep 2025 11:04:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11B51CA101F
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Sep 2025 11:06:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D9E610E2D5;
-	Wed, 10 Sep 2025 11:04:26 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87EDA10E2D5;
- Wed, 10 Sep 2025 11:04:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4888695435243670100=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Reduce_simulation_runtime?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 94DBC10E2D5;
+	Wed, 10 Sep 2025 11:06:54 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dHqlBL2s";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C07710E2D5
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Sep 2025 11:06:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1757502414; x=1789038414;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=mfH9+B4e0RCBBQYc+VmFs5/Y57ELmpw89u9OsxJjDxM=;
+ b=dHqlBL2sWgx+9WYOTbGSlsLY9BSPZGbaQMIsNjpVtxx5q09pvfZ8t0T2
+ Lobqi4GS422gUEsEo0vmpcHGi3WPo94KNTTzXbWKRJ1zaKGlrgPQgYO/9
+ ceoAsRbYK7xbjI8UgMKeVleN6N+mzfxlKJ98fgDiBkyH40srcuAg6XvyD
+ 0iTlJwMv9QbOVgZZLNxlEQLFTaPi+foptLkcxZtG3Qu1v3rUcJDUxCqEQ
+ MQ30tyG1qcg/E6ndoPUs50DqutQ45PgGNNGxunIVR+LoNY4xeMl1EylNl
+ mGxXyutS+S7jZrfLfS+DAFBIk18Jvb3aTYXVNJsdp9uFG9gOY9ZpevjKH Q==;
+X-CSE-ConnectionGUID: E2HzS4HcQdmA0xnMW7dBRw==
+X-CSE-MsgGUID: Wg+IctF3ROeEeFkVkBqt7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="70908274"
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; d="scan'208";a="70908274"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2025 04:06:53 -0700
+X-CSE-ConnectionGUID: o3oFF4BsTBaLPaTPP+rMbw==
+X-CSE-MsgGUID: 4up/Se8DS4K77sK9WkfWhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; d="scan'208";a="177627596"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 04:06:52 -0700
+Date: Wed, 10 Sep 2025 13:06:36 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 10 Sep 2025 11:04:25 -0000
-Message-ID: <175750226555.321411.14437761196509920859@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250910090059.351698-1-swati2.sharma@intel.com>
-In-Reply-To: <20250910090059.351698-1-swati2.sharma@intel.com>
+Subject: Re: [PATCH i-g-t] lib/xe_ioctl: use valid type for bo
+Message-ID: <20250910110636.a3mi6zmizneez57w@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250910092318.117177-2-zbigniew.kempczynski@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250910092318.117177-2-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,135 +68,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4888695435243670100==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Zbigniew,
+On 2025-09-10 at 11:23:19 +0200, Zbigniew Kempczyński wrote:
+> Fix bo handle type as it is uint32_t, not uint16_t.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Series Details ==
+Thank you for fixing it,
 
-Series: Reduce simulation runtime
-URL   : https://patchwork.freedesktop.org/series/154316/
-State : success
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
+Regards,
+Kamil
 
-CI Bug Log - changes from XEIGT_8530_BAT -> XEIGTPW_13719_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13719_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-plain-flip@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8530/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13719/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
-
-
-Build changes
--------------
-
-  * IGT: IGT_8530 -> IGTPW_13719
-  * Linux: xe-3716-0c2a2d0297af2a2a439b63b1e56e4d57c039dabb -> xe-3717-7e108295b43fdb2cd8faa3f992fdabafcaf7d2d5
-
-  IGTPW_13719: 13719
-  IGT_8530: 8530
-  xe-3716-0c2a2d0297af2a2a439b63b1e56e4d57c039dabb: 0c2a2d0297af2a2a439b63b1e56e4d57c039dabb
-  xe-3717-7e108295b43fdb2cd8faa3f992fdabafcaf7d2d5: 7e108295b43fdb2cd8faa3f992fdabafcaf7d2d5
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13719/index.html
-
---===============4888695435243670100==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Reduce simulation runtime</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154316/">https://patchwork.freedesktop.org/series/154316/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13719/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13719/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8530_BAT -&gt; XEIGTPW_13719_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13719_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8530/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13719/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8530 -&gt; IGTPW_13719</li>
-<li>Linux: xe-3716-0c2a2d0297af2a2a439b63b1e56e4d57c039dabb -&gt; xe-3717-7e108295b43fdb2cd8faa3f992fdabafcaf7d2d5</li>
-</ul>
-<p>IGTPW_13719: 13719<br />
-  IGT_8530: 8530<br />
-  xe-3716-0c2a2d0297af2a2a439b63b1e56e4d57c039dabb: 0c2a2d0297af2a2a439b63b1e56e4d57c039dabb<br />
-  xe-3717-7e108295b43fdb2cd8faa3f992fdabafcaf7d2d5: 7e108295b43fdb2cd8faa3f992fdabafcaf7d2d5</p>
-
-</body>
-</html>
-
---===============4888695435243670100==--
+> ---
+>  lib/xe/xe_ioctl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> index 62e9fe9ebf..edd36db9d3 100644
+> --- a/lib/xe/xe_ioctl.c
+> +++ b/lib/xe/xe_ioctl.c
+> @@ -514,7 +514,7 @@ uint64_t xe_bo_mmap_offset(int fd, uint32_t bo)
+>  	return mmo.offset;
+>  }
+>  
+> -static void *__xe_bo_map(int fd, uint16_t bo, size_t size, int prot)
+> +static void *__xe_bo_map(int fd, uint32_t bo, size_t size, int prot)
+>  {
+>  	uint64_t mmo;
+>  	void *map;
+> -- 
+> 2.43.0
+> 
