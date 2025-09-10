@@ -4,182 +4,191 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A5E6CA0FED
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Sep 2025 04:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0708CA101F
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Sep 2025 04:42:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0EE7310E2AD;
-	Wed, 10 Sep 2025 04:34:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B5A510E2AD;
+	Wed, 10 Sep 2025 04:42:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bx9RJyE9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HrU4wmzG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF1D210E2AD
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Sep 2025 04:34:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B444C10E2AD
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Sep 2025 04:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757478875; x=1789014875;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=5PLTeziPIHwuJItGGGW/eic2oN3N0Y9igeq61Qg7TUw=;
- b=bx9RJyE97I2QYF6bqc5vkixSSrRtSpmOGyaE/L851KCsWqrqqivx4+L/
- MS8Io+lpDWNdDnsNLv7uVRszxydMxti48w+GYyW+KAuhBizRVuFk9dcrI
- e30x+xIs/GUFhRtPPWQCed6uTGP79HdQGB2Ox9zxOXaFV3AuWMkP0ivbS
- Qy8Sxe1MjKsMZQo3Wvzno+INSdwfLKRmpYrA8+dJA6MCJeYFn2berXyOf
- nB4e0gMSQPTvO2QC0RQzCmu8caUvzkl+MW5/9QuYj9beR7kGdhquB4rlI
- Hi0J20DvdM/t9MxRDOTltNk3MVgdRqcTsf61Q46jZ7UNM+VT/pMmkyAoh Q==;
-X-CSE-ConnectionGUID: VN7isLjuTIy14yDdNjkKpA==
-X-CSE-MsgGUID: DzlnLbsVRAmCidQ/K6nKqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="58817734"
-X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; d="scan'208";a="58817734"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 21:34:35 -0700
-X-CSE-ConnectionGUID: NIH3B6dXTZqA1lQL/RF3RA==
-X-CSE-MsgGUID: CZyEuXP3RMaIEjidiShYBQ==
+ t=1757479333; x=1789015333;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=CnB+jYeMbHG4geYIGVGkgnEnr43i8faSVIDc53fJ17A=;
+ b=HrU4wmzGuKn86u0QsIvCxhcT7TzunN4A/vKYikqNcZQ7RDl4Qz8nBDUY
+ DpnatyVSu56Oj/Tv0V37UOjCRKYOlCjnj9Btw8sy4v9kvAuEp5nuaYY/t
+ r8Mi5e1acfbDgvnwHcj3Y+0pz6oNplk6MUIMpqu/MNZEkG5zkzqgHNC22
+ WKuNKbOpI64572Q2WTkJFtSHyFGl3GfKizklKsil2Kvvm7pHXLkYQDtnR
+ ntmU0zWnaTCGkXNU7AromO3onkgo3riXNBuR9Yt9beW80WqBKEtdewmSk
+ EDHn2DmK/bLD2UShLsUL9r8IOkb7lBLXz23LC8J4KSyBM3PB0vLJpdQ2W A==;
+X-CSE-ConnectionGUID: YD1wgVpHT+a3mSMpsNGbJg==
+X-CSE-MsgGUID: M8PBcYXPTo+vTcTV9k98sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="70395790"
+X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; d="scan'208";a="70395790"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 21:42:12 -0700
+X-CSE-ConnectionGUID: KQGPJ5F0T9Sm2gQP+hDEjw==
+X-CSE-MsgGUID: cjr06V6TTCaJIXgGQVXwKQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; d="scan'208";a="210409909"
 Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2025 21:34:34 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2025 21:42:12 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
  fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 9 Sep 2025 21:34:33 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.17; Tue, 9 Sep 2025 21:42:11 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Tue, 9 Sep 2025 21:34:33 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (40.107.96.69) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Tue, 9 Sep 2025 21:42:11 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (40.107.95.62) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 9 Sep 2025 21:34:33 -0700
+ 15.2.2562.17; Tue, 9 Sep 2025 21:42:11 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qZ/Yu/DIfgndlby1P1RG4gk9HpaEbMdio527htpGuWTdD/2Zfe5f0v3oxvTISWTG4pkoWYaO5hW9PXLI/j9E0nAwoBnKW7RgHKAOashgxwu/n+VHPoZMdPgrNnvbcXOjQamspOQk/+g5hYhGEx/qaOeDjNs/w5xmG/BaAM2FU4zfO9xjX0YjstlwAexbAqqxsl+VKa2XGhZHVzh5LdP6vMYIzsM3quUQY9aHIaEHv5jc4VUqW/byi2ytn84gQXaZ2O6Zt54G7NrArlIQfmTdMQf5GafEZ5wKjdytkvMjkRT7XAYnyC7T4gHEKSS8/22t9DlgpCMOM10p7PKILp5FcQ==
+ b=QiWloEBCfPYRLRvXgxqcvtr83gREZpww514czD0tkpgG4R+GWHq+J+pudA2hIg32IK6n66Km8fD17alJzqaKA2+cYIwFzknursLhMecrHcPJnKLwOHPsw+rKcRkKJHHO1nkwaan7rWcKT7ie/h0OELDa37ifEzvRpjehIDzsSfOKPFiNha0irHSGYQVWemVO8+dT3DqInvOPbtlwRBmX8JKFs6B2sUIYl7s/HMbnE5c9VJMusK2QcjIvUYW4XRjCnB2vspPt/Wvm2DU85aMAgOBKGGMwwii8AqyUYqj8vGTApGixudW7NU+BsNScRH/ais3Bo9Dyfjj4UezLkvWnLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XXMUBH0xeXgtJtV40jQ2k1HSdX3CdqyoZVXYu0hqvAM=;
- b=l3v4FAmh6xa+mrcikZtTY0GhmLraXuOKI4EJizjY4Atp3wZUtMzCNaXUUCTTFkqACkDlQu2VPnD9RaUhZjljVt6oKhbKmq69XjZ5p8EYfwFpPK/WnmzdUtU3QKP0MZtGMwfpQobvcrLWKgrwKRo5/b2JwFcc0rN5HmK7DURclRFVFcfznQ8ThjaZ974cVi8sBzkmvRQmhLzJl7B/19Vz+/3eT28VA8PtQ9D3Ff4GoWtmtjeh7iM48RYsyFbodAEiNi01JD9p8VHA2juL3OSc1chYyrNLv+IFP3vjp1CbmYCaSVlYWe4+GmkTzDMWoApl59GeRbCK2bsuFIcu8gtaig==
+ bh=CnB+jYeMbHG4geYIGVGkgnEnr43i8faSVIDc53fJ17A=;
+ b=fHhbL2ux9FXQ/bBWxC6sf8YI3aBwGuDH6BPL85XFIdmiwwsRaMvkpmsnOz9/woK57bXL3R1C5P5XQlHfUsSfSS1ja/XWyRjJMmjFqv34Lri4d6H/1jlVbsmxR8TczLISViJgiT7w+1tXpPGbw2SOR0rKQVu3+3vjCqMFmkmHxY9z7deDgD4ligAbL+aRNh6Wo46tUY98LpVR3OPU54PJJ7XWeB7Pkd+wKbt707czxijC79F1uw6MDs9dlpbtXAz0s6yd/PjpfNTGyXv6AHBwGKOmmHcBH1dDoEUqeeYGmaOzAzg/pREl72Eor/yet+caBUmGwrvAKVGMD3aqyg41BQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5309.namprd11.prod.outlook.com (2603:10b6:5:390::5) by
- SA2PR11MB4827.namprd11.prod.outlook.com (2603:10b6:806:11f::19) with
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
+ by MW3PR11MB4554.namprd11.prod.outlook.com (2603:10b6:303:5d::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
- 2025 04:34:26 +0000
-Received: from DM4PR11MB5309.namprd11.prod.outlook.com
- ([fe80::90cc:99cc:2d53:d848]) by DM4PR11MB5309.namprd11.prod.outlook.com
- ([fe80::90cc:99cc:2d53:d848%3]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
- 04:34:26 +0000
-Message-ID: <4c36f7b1-6765-4cd3-8b7a-a1fb77e4a8c5@intel.com>
-Date: Wed, 10 Sep 2025 10:04:19 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t, v4 4/4] tests/intel/kms_dsc: Add force dsc and
- joiner test cases
-To: <igt-dev@lists.freedesktop.org>
-References: <20250905210816.319104-1-swati2.sharma@intel.com>
- <20250905210816.319104-5-swati2.sharma@intel.com>
+ 2025 04:42:03 +0000
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::1670:23da:3abe:c525]) by CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::1670:23da:3abe:c525%5]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
+ 04:42:03 +0000
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Uttamchand, Gajendra" <gajendra.uttamchand@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Ramadeva, Dwarakanath" <dwarakanath.ramadeva@intel.com>, "Gurram,
+ Pravalika" <pravalika.gurram@intel.com>, "Uttamchand, Gajendra"
+ <gajendra.uttamchand@intel.com>
+Subject: RE: [PATCH v3 i-g-t 5/7] benchmarks/latency: Add xe_bo_create_destroy
+ latency test
+Thread-Topic: [PATCH v3 i-g-t 5/7] benchmarks/latency: Add
+ xe_bo_create_destroy latency test
+Thread-Index: AQHcIM8N4wuENbsMfEGYYGSHfPZY3LSL1+zQ
+Date: Wed, 10 Sep 2025 04:42:03 +0000
+Message-ID: <CH3PR11MB8434C97178BEC68DF6E4743A8D0EA@CH3PR11MB8434.namprd11.prod.outlook.com>
+References: <20250908144314.42275-9-gajendra.uttamchand@intel.com>
+ <20250908144314.42275-14-gajendra.uttamchand@intel.com>
+In-Reply-To: <20250908144314.42275-14-gajendra.uttamchand@intel.com>
+Accept-Language: en-IN, en-US
 Content-Language: en-US
-From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20250905210816.319104-5-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0002.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:80::8) To DM4PR11MB5309.namprd11.prod.outlook.com
- (2603:10b6:5:390::5)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|MW3PR11MB4554:EE_
+x-ms-office365-filtering-correlation-id: 86eb1967-61b0-42a1-8be4-08ddf0246396
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|10070799003|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?utf-8?B?ay9iVWlCOWErYVUyelplSHVXODdGTUhaekU1ZGxHalRaSlllVUlIak9nRzBT?=
+ =?utf-8?B?d2wwRkZONi9rMWNkaTBDQXIvdzczbjRYOWsxbEFjajJ5cldXTUw4dDY5bDJy?=
+ =?utf-8?B?UFd2MG9nMVlvVlBwWnovQ2thSDR1N1FXU3B3LzZUWmV4ZnFoZUIycmhUNXpl?=
+ =?utf-8?B?WFBhRU5mLzVVdGowTS9taXFNZVlFd1NSaExURzYrQmdDam4wU1VUcVFTYk1n?=
+ =?utf-8?B?ZGxhV3NtQzJNMzAyNEROamh2b3dtam5rekdtVmczOHE4Y2ZydWtHQllHS2h6?=
+ =?utf-8?B?YStRVUhGVWdUVEQvd1A4MmdSdzlRbUEzUXJaR1NxZ3JYNTFoeTZsNEVSM1FE?=
+ =?utf-8?B?WjNzdnE2aWFmcUdQSktSSnozUHd6TFViTS9aTkRhZnJPRCtBZDU3RkgybmRX?=
+ =?utf-8?B?S0taUWhObmMyME1VVjBxT3dTam5CSEpVNDhxNXgwRWpoYWx1YVQ2ZmpQTlFK?=
+ =?utf-8?B?SE4zUHJyTlBEYStkZlZnZ0VyN09RbGJqeDM1SVN2SG9PZjFjalE5SWQxVW9S?=
+ =?utf-8?B?NDE0QUo5eDNwVnhCMVI1a3kvYjg1Sk5MNEhxUHJ4azZqZ1pmaysyVFhWQXVn?=
+ =?utf-8?B?c21LRUdBcFI5ejRnd2V3d3MxVEcwL21jV0xXMGkyUnZOSlhMTXFhNUpPYWZz?=
+ =?utf-8?B?TndrZGpLSU5icWNDNzJFOXVTeVF0d1R5Y0ZaaXJDK01LeUdZdHhJcGhjTzdj?=
+ =?utf-8?B?WS94OUF2OER0SjVvZFZMSmpORy90N2xUcWFZNUxpaGFvNDdnNUpPR1VCYnNj?=
+ =?utf-8?B?T1RZbHFEZnlnL1hyRWptelBnOGRhOU9EODdWbDBhb2VYbEdYODdheU1UUjd0?=
+ =?utf-8?B?QklLYjdyamluRmsyL1NvS3NpQXluVDNHWnpCMHZEVDF3ajlEeC9uRjFWUEJH?=
+ =?utf-8?B?MUl6bTh6eFYrUWFkTEI2YXpIMmlnYUxYTTg2NWl3TEg5ZzZTOHFNYVJrQ2ti?=
+ =?utf-8?B?aVU4Wm5HYmNtMWk1MHZwVW0yQ01BcHBMcWtFK25rbDVjaGttMXlXcit5eEtM?=
+ =?utf-8?B?a3ZwNjlVV0JpVkJkQkdzd1ZRME9zZERZL29pT2lMS3JWejNsWGJvSEtVK0lZ?=
+ =?utf-8?B?azRpU1RobnNDK3pVOW83clJzbDdIaHhRQkxNMWVJUDlGNVR0QXBHQStwN0Nn?=
+ =?utf-8?B?b3dsWnJYWWlTbis2OWthYWJaSEJ3UTI0SUZHbGNkckwzQ3hBT1lrN2VFU3lM?=
+ =?utf-8?B?dmZjTi9WSHczYUVlRnlYakoreExBaEZKTlpEWStFMHNwekRIa2UxUjllOEcx?=
+ =?utf-8?B?NlpLeFE0VnNJWGxVTXhEb2pYU2lNUmlvaW45Z0NBdldkWkVHQzAzMEJuYWl3?=
+ =?utf-8?B?UzZiU0ZwZTloUSt4NDRTYzVaRFhFdTRYYjRvVDZZOE42Ky9RbGZXYzhJbWlq?=
+ =?utf-8?B?OTlGWktXVVpLVlRubVE2TCsyWFl4U0UvdU1sMHAxSFF1N3VZVWRuNysxTVNF?=
+ =?utf-8?B?Y1QyZyt4Z09obFdnV1NILytXVTdFN1NpQjdnSmlabzJHU3AxVVZNVkw0aWJJ?=
+ =?utf-8?B?cFh1bG1ZaE5GNzV2UUhCeDZ0L0lxdGsxSTJjaWdKR3I0Q0E2ZUtpUDQ0WkJm?=
+ =?utf-8?B?Smh0c214dDF1SE5VTGRmZlBuTnhBZlV4NVJkd2svdVA0TTdGd09SeHJCQjB5?=
+ =?utf-8?B?aDNBQVJCMDd2Z3lLOFlXaWhkNGFOTnA1azJUYVhOUkxzR2M3aXAxcUtJRU5Z?=
+ =?utf-8?B?UkVERytxdXpKWUJ0b1FmME9rUWJtaVdIdWJ6Q0t4MnNtTXlqZW9rT1B1VzZ4?=
+ =?utf-8?B?SXZ1TWt0a1JMbjRGT0JCeUFNSGdlaWFLajk2b0pKTzNzUnR4OUsxMTQ2c05Y?=
+ =?utf-8?B?eldFcW42QWQxSmdYTkRKd0cwYWJwTEhtTkgwUHptU2JONnNSKzZMRG1oamlE?=
+ =?utf-8?B?S0R3OTNMcWxkMGJUeWs1Y25XM09YS3NoeHZTUC9KOVJWY2xPNDIwWmdKRlg2?=
+ =?utf-8?B?d2FSeTh4SGRuaEthWEFicEtMMVhxQzlWY2h3bmFsbFUxZlp4Q1BzQUV3R2FT?=
+ =?utf-8?Q?Ay2e3Yj/weARHMevoxKWDhiUbfnGm0=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(10070799003)(38070700021)(7053199007);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZnVneVpvZUZjRjRXdEJDNGhzUzdkVXRrcmJrU0dYOXF5N2NBTGtGSWFUUmVG?=
+ =?utf-8?B?VitFaGNjUUY0OWRMODMrNGdUcnEyS3JZZmNkL0dLMXlTRnBoY1JFSDJlL2xh?=
+ =?utf-8?B?WlVzQkRBZlhuTWNwUWRER0FVODJHZnc3aWxUdTF0K2xIcHZVaDZGM0d0WHhI?=
+ =?utf-8?B?czZxc0dWQlgzTzg3eUJYQVNXN3FsSDFwMWtoUTZhWmZ5QTNvaE9ycUNpR2pN?=
+ =?utf-8?B?SDNXZDkrZ2dXdlNidFBSU1NMYXlZQkdiZkZvYi9UbHNpYnZjUXVyczNLMGxu?=
+ =?utf-8?B?QWlyUVhTTVJHbWVyR1pUUkVESDBsM1hiTzUycEJPbmR0UjZ0a2NTRTBBd0ht?=
+ =?utf-8?B?RXZwdDZIYnM2Q0VMNW1rSDdTeGt3YmlMODZlemJLUVpoaFZhaXFBN1Rsd1M5?=
+ =?utf-8?B?T2Q1a3BvUklKOTBPTktFWFN3REoxVmxxeU9ScXdoZUd6bVdLcGVpK3U2Z3oz?=
+ =?utf-8?B?cUNjOHBvSUJXVThrNEdZTE1lenA4c0lncWlWb05GbEpSclAwWWlFeVBkL0ps?=
+ =?utf-8?B?WGlraVpGeDNIaU0zdEJBK05WVm9wMFRFNHIrcWE1ZUl5UE9RWnB3TExQc3Ay?=
+ =?utf-8?B?eDczbExCRWRTcEtoR1l2MllacmdGck55REF3bjlUS2dGb01OMTZvajYrbGQw?=
+ =?utf-8?B?czdOb0F6SEdsUTZvYlhZQlBSVU5YWis3bjJTYUI4WlhxL0wvd1lObHZWTVVQ?=
+ =?utf-8?B?QjhTcmU2alRLUnFMZGxVSHV3eFRRMk5Dc1ZjZ2tWa0V1Qnk0RmF4U3hZZFlU?=
+ =?utf-8?B?WEk4c1FMZDhRYmdWWkVsd0ZyTFh5dWR6eUNibWg0Qjl5Q2owM0twekJpYWFO?=
+ =?utf-8?B?TzVCbTRKZkZ3cTg2Zk1jNXI3VUNhRVI1TkNKdURhdXlRQ3Ayd1Vhd01wOG1j?=
+ =?utf-8?B?WFYwQUtnSnlScGpQZEdWSTNXa2wzU1RIL29hd2N0R3FnbS8rTHNNOHlIQ0V5?=
+ =?utf-8?B?ZkdsZ3BjV0FpdG9JdFUvVVdQeS9yMGY4cDNYZkJGYkNRYmdVV3g3N3pKdUsw?=
+ =?utf-8?B?Y1M3aEc0YjE0UnpmQlVOdlFOTXg0WVAyNFBLRXdaNVRRL1lWUlFVZXc1aDZn?=
+ =?utf-8?B?akt2RGNscUI4ekcxVVdOVmpodi9ubXdEN1lQQklWVERtclJnb1lVV0ZBbEJM?=
+ =?utf-8?B?ZVFJYnFwZ1BYelJCdTBWSFZsd0M5T3VCbTZOcHlJVVNGZm16S0kvNzkydjhZ?=
+ =?utf-8?B?L05kRTJVaG9wOWpDendYR1BNK1grUGhCZGsxRUN6NzEyOFhiclVUODB0OVdJ?=
+ =?utf-8?B?RWNaeEVIUXVBdXBYb2lIcTlPaFJJMTZMemhDRm5xMkxZK3ZDS3JZSWZpYlFV?=
+ =?utf-8?B?UWUvZ3MzbTNaWHZ6YndxTFRKMGdzdC9vekRaa2g4SFBwSzhGQkdoaE5veTA3?=
+ =?utf-8?B?NXdESktkbWViL3ZyeXdTOGptUzVZbng3Tk85Y1hSVTluclRMcGtQZVVKbWVs?=
+ =?utf-8?B?UDJsZDA4MEl5UjUvaFpNN0tFR0tITUZlSC9UZjIrTnJ5ekVSWGRNd3BETnNr?=
+ =?utf-8?B?L0d4NXJkZ1NycUplZGZ2U2hIZWZscFIrREswRnUxSEJJV2s4RXdQYTRVY2l5?=
+ =?utf-8?B?L1ZrTk5Zalp0YlpTQVF0YmFZT2ljVG5IUEQ5a1ZYY0t6K2cvanlHUlBaQUNP?=
+ =?utf-8?B?KzBoTHZ3ZkJQOVFUQ0RNNDRaV2Z4SHR3MmtwUEk1L1ZLd3VNQ2VxNnBRcWVP?=
+ =?utf-8?B?a2w2VXRWRzNFOEJxUFZuY2VhbGZaY3FJZGFESVRYUnpyZmJBS0RpcmdVQnBX?=
+ =?utf-8?B?NmNVV3F0M2FVRmlRVVBmNmFTNWhrR0FZWHMzUlNBN1dVOXZlTzF2NlppN2Vh?=
+ =?utf-8?B?OGZlMDVQSS9IU05Wak9STG84RzFHS2hRc1JGSWl5RjJRL2ZPTnlIbFJzcEdj?=
+ =?utf-8?B?cExLQWdkQnZyaWEyMm9mNUEyVkdwZ1RDcnRiUFp0SmxianZrem94ZmNjUk41?=
+ =?utf-8?B?VGF3YlNreDJjUmtUZmVYSDJ6RjFoRWxTL3ZMbDNiM1d6VFJnZ01JTmFGMFBa?=
+ =?utf-8?B?aXljczJpeEpaRlZTcWhobDExT3ljbVVoYWNVQ2FEWjZnaDBOVU5yVkpxQ1lu?=
+ =?utf-8?B?aEpJT0k1T3JHc2EzdEo3SUJUZC9LWGlLcVk3UmJ1a3R4RTJUSCtHdkFoVzRB?=
+ =?utf-8?B?eXNNRVlSNVpvQ2REa2szZkxraEJjSFg2SVpxT093UEFwajN0K1dVYkJGU1pY?=
+ =?utf-8?B?TjlYQ3pYanNtY2ZXMjVDZGxhWTlnV0thUWQzS1dTUnpJbUYvM2VORGppbDVL?=
+ =?utf-8?B?Qm5ZVVJNa0pyOWpoREZQdU1Ybm9nPT0=?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5309:EE_|SA2PR11MB4827:EE_
-X-MS-Office365-Filtering-Correlation-Id: 995edc2f-eb3c-420f-ecde-08ddf02352cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aDYvUXV5bFZPOGplTGtMbUZrZzZxckJRdUtkVlNLOTMvdVRDeUlyZTNFTDFz?=
- =?utf-8?B?OTZBU05xcWxrWmRsdnFUNGN1TzA4Ukp6ZGttZ0FFRzUwSE1vdWVlbTBoV1pF?=
- =?utf-8?B?Nld2ckhjNHRHVHNvUnhHM1YyWjYzZVhXVy9PTElGcjBxVHlvb3IwUkZTb2pY?=
- =?utf-8?B?YVRkR2dNUzFDVlpjY29hUTJNVnh3S1BKdk5iQ2FJSnJZUzhvcnplN215VUpR?=
- =?utf-8?B?NmpjVmhvMnpEcmtOcm1GTCsvTkpjam5wZEhoR2dKZStnZFpNWm02VHpaa0gv?=
- =?utf-8?B?emxCanFrYmpMb3hVOWk0OXZWMXFZUGtDYXhwZFpaajZoUGJRUE9RZmw0Kysw?=
- =?utf-8?B?cm1HRzV4dC82d29MaTE5NVJwcEdBQ2Q5VjdENVNqTWF3cDY4ZU9GNWZmOUtW?=
- =?utf-8?B?NWNkeDBVYkdqUUZVQkw3NndIejZBVk1id25uM0hvcUFyWXlPWkRoSXJNdy9V?=
- =?utf-8?B?a2xYdWl4L3l3SDBmOG1PTEJIRmp1bDlkeWx0eDI3MkZOUmxHMGNFZDdIZWxQ?=
- =?utf-8?B?Q01uaXAveTg1TWd5REsrOStEdTBHSmRxODZlYU5UazVkUWZxeUdNd21DdlBs?=
- =?utf-8?B?b2tHUjRmSHpwUHVBT2Z0YzBQLzFsMGVoL3Rndy9qRE1WTE1hSFliaks3R3ZE?=
- =?utf-8?B?NmFWaFJMaCs5eHEwVEVrR2Q1Zmx1Ni9vZjRYNVRoaXRrNnpWck9Md04yTEM4?=
- =?utf-8?B?UWh5ejVUcEVwYjFxdnZuN2w1aTA0eEtSNlpQV1FnWml6bENkK09hQ21mQS9K?=
- =?utf-8?B?RXUyUDJ6NU5yUGVPZTZ2ZFhsdlJyL2dud0NGZE1UVFY1ZHBET2swd2xncXpN?=
- =?utf-8?B?V3JXNGhaNEJoYnFNRVgwTkMyUndQUHFsOHZzSGxHeUdVSU5aeUNSdUg5dVY3?=
- =?utf-8?B?bWY1NENqUDlrS0Z3UlNVSVMzU3JFZCtKOEE2SHg0MFNGbTlnaGRRbUFncG1B?=
- =?utf-8?B?T3pLMkNSays1ckhaNFQzRTJtenM4dHhZRis4L0hIR2hVZ0hJdnlqT3k5c0lS?=
- =?utf-8?B?NTRDN1NPZTZKbzNPc3A3b3Q1SEdMb1BSYU03Y1ZhbTkxbVJzKzE0RzFIbDlG?=
- =?utf-8?B?UnBUY1NScE50VXlKZDdjWE5zdjI1endTS3BjVkxiQjlwT1I2bUVHeUtuWkFj?=
- =?utf-8?B?RWtncU1sQ0dqKzFRdVdqbDl4Rk9aRDdXdnNpdTVNVzlrT2I3a1gzcDdxRVVn?=
- =?utf-8?B?RTdpZGVNbzlyT0p1Vis0Y251MDFIU1BuN3VCRXNNWHRCWVFOVWVRZTdKZXpn?=
- =?utf-8?B?V042YmdnMXJhdEVOTy83WVhmTU4wQXhmVlROa0g3WFNaY0s2YStGancwdW9a?=
- =?utf-8?B?MU8xd0RrNnhhdzNnSXc5Zk1FZyswQ2NITE5uSWs2amwxRzJBRXlaM2FoU1NF?=
- =?utf-8?B?K2lINmMzOWdqUGt4V1VJaTRUTnFrL2FJMkd4RnRoT2lIa2dueTM0eURnZVJ1?=
- =?utf-8?B?dzdxeWxnMVdmT1Jld0Y4b3I5QlBPMUNtOHpBeTFEQWtpYnBRbGxvTVZGakFh?=
- =?utf-8?B?RzlCT3Vhb2lxRzg3aHkvdzN5Q0svT08rM1JQY0xvLzFlT001Wk1Jejd2MkFX?=
- =?utf-8?B?UFFMbGtiMi9CN1ZLc25NK3hCZ2xOSW5pSWtKU281NUVkdTdhNEg2L3FrdG5S?=
- =?utf-8?B?eFQyMXpSSVN3b2hlMEt3UklERFBqVTB5SEhxdllLam5SRHVwT3E1WVNWcmVW?=
- =?utf-8?B?TVgzOFF2UXB0amJ4a2VYSVIvekFqckYxQ28wbkJkcThoL1pzSFVFSGlsMWVq?=
- =?utf-8?B?N0h1aW9DNzdyTHhpdlZuSDVMSkhwMGRvNFdQcWtONm1yWXFpeVVzNzYraGQv?=
- =?utf-8?B?UUNSWW16bUJFaFUxWUg4U3NVdjgveXR0SjJUVklRYjRFVXJ0RENCb0hqWmpJ?=
- =?utf-8?B?YnJ6K2tJbmVhWW5vZ0VXSHJZc1IycTlqelJZQXRLeWt6QzhHU241aGVxZi9X?=
- =?utf-8?Q?csde1hi1qsM=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5309.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L1BtMWRlMG1MUFBHWFRuNk54K1E0R0l2RStkZ2h6a053cjh2aTFDY1FQVEFu?=
- =?utf-8?B?STFvVURWOER1ZjUrSjVDakZ1KzZueU16QTh6L1R6ZEdVbXRQMUdoeWZ3S2JK?=
- =?utf-8?B?aDZUSkQyNk9mRjJyRTdJZXhXOG9JUExIeVltamhyY21BZlEwRHVaekxIUWNS?=
- =?utf-8?B?aEJjcisraURmR1dyUU9NcFdVcVpVc3N2RG90a1RiN1FEb3VIQlk3UTVSMEg1?=
- =?utf-8?B?QUh5K0Q3QkduWEFucVRjZU1OLzluRkxvRXl4TzBhT0ZSZDlITlZwdzBMYWRF?=
- =?utf-8?B?aEpVYjZJcURsOWc0UThGei9ERmplVEREQllURXk0UExhVzdocVgyS0JoSm4y?=
- =?utf-8?B?M1JCSmlBUnE3YkFuUlVESHd3MnRYSkxMcDZRQTI2UllkVzd3OHJ3K1dBWXhH?=
- =?utf-8?B?aXl3ekg2am1kdHA4d0dJVENVNE5FaDZHcXlmeFkvMGQrTTdXcVZQNjlYdlF0?=
- =?utf-8?B?NGhxSFQ1RVRTY1hScWl5Mjcza2R0L1hscVc1WGdYMVMvUGxIZWVGcjN6N3Ev?=
- =?utf-8?B?VWVxTmVSWXFjUkVGVzNGMlg3VWNXemZOeVZzRFUxV0QzMW4wMnZKVTlpQ2lm?=
- =?utf-8?B?VU5MVW9KckdjRDY0UWJLWm9TOTBKM3pmRGJuY29JalJ1S3R6SEVDQWtUWXdy?=
- =?utf-8?B?YU5taG10YnB4MWgramt1d2ZpbEdOazhkZmhOR3UxMXhQeVNmZjJWUTdhSDUv?=
- =?utf-8?B?R2p2akcyeTlqeXdEc05URnBVKzFYUVhadFB0RmlSQWc2WnBkc2dwNGN4WG5l?=
- =?utf-8?B?cVVCaFRzeWVmaDRmZXQ2YVRXY3JQcHBod0MrTVl0bU82ZEd2ZWgvNVdkMlhj?=
- =?utf-8?B?dmdadEVSRjg1bFdXaCtqOTErcnNaSzFFRy9YNDIvUEJ5YTFmRzVOUWZxR0Ux?=
- =?utf-8?B?UzV4bmVSYm1QSi81N2VUOW43N2hwM0grNlVXY0tjTzdEMy9FMTdRQmlRUUtS?=
- =?utf-8?B?T2gweHB4MWZBclRHbFhmYVJwZTk3VVc2bGxVVG5OUVZoUkN6MGV3OEV5VFZw?=
- =?utf-8?B?UkpZTkkvaVorMnhadGJ1aGdESW9yeElqRVdKNDNDMGZkbnVSQW1qWWpDd0lK?=
- =?utf-8?B?T1VSdUZOZjdESDJBVTNWazB6TytaUWhvNzZ3Z3hScEcxUTgydzFSNFBid3hw?=
- =?utf-8?B?bTlwd2tlV0srR2IvNnc0dzU1dldaZzlmak4xOGZ6SkEwSktHd3B4dlpsbDRF?=
- =?utf-8?B?UnZ0QWY0VXMrQWd5elBKL1ZiaStpYytHTzVmdnpxRUlnZGcrOXZmSVFQUElB?=
- =?utf-8?B?MHlWbHBJb1FFUis3VFRWTVBQc05DL0FPUVN4czdxWVhBdHlnRWZ1S1JaVVl2?=
- =?utf-8?B?M2Myc2FRK3l5TnhDMDd5cHJEcGpaUkNLVXN1ZE1VVDJ0YUlvVGlLanBmQUo0?=
- =?utf-8?B?RFZJOGxwSTVPZ25YYWJqbGZzeldFR21DQ2pETVRjdit2L2pLbWtDaVJkd3dV?=
- =?utf-8?B?ekt0MklrcjhSTGJieTg3MXVNWUpDMDNVOFVsZGRpRzhWNktXWTlMSFVBcVo2?=
- =?utf-8?B?bmxsR2JsMFNnY2JjTGJzdUdhbWtIQlhiQytQcXI4S01NMWV2Y1pkM01sZnN6?=
- =?utf-8?B?K2JHZHJPOWxkYjdkZ0JWcFNwa0FkcGNJcHVJNFQzSG1mN1JDWWhXNERWNFpl?=
- =?utf-8?B?RitoNnZIcjBFWXg5YjhXSnQ0VTFzVTY2NTYzVXdxSGQrY2NZSDFxdjJ2RVQ0?=
- =?utf-8?B?MmRsZDhmOXEyYTRCdmUzRG9uRllCYm5LTkFXdUNVQVlLSk53OEU0Mmt2OFpR?=
- =?utf-8?B?T3RwWWgwU21QNG1vbnJ1N1N3eWNOZHZicWFMNnEwOVU5Sy9oeUVKaXFUbUJv?=
- =?utf-8?B?Q0EzTmprdWt0eVJCV3dpSlRVSllqYmx4VUMzL1Q0WlVJWktqdm5wQ2lWOTd2?=
- =?utf-8?B?VkgzOGdxeWFSc25HVG1xbkt2alN4RnVSM2xzL3pvR3JndWV0V1ROZXN6WUNu?=
- =?utf-8?B?djFPMTkvSkwxeVp0MmJ6RXlHdEIwWTM0ZFpUL1k2RGxZN3hvNVN1T1dpNTFJ?=
- =?utf-8?B?cmlzYXc4TXdleXQzeHl1R05iZC9pdUN3alRGODFKanpHQWVTaVBBSzRxRmln?=
- =?utf-8?B?bDhVbTNlc2VraTdKTmIrSzljdWIwNTlZK1hhMzFrU3RvM0pWcyszcEFpclR4?=
- =?utf-8?B?Wis5Skx1SlA5dzFJQkNtY2lqTVEvZitnOW9acFFiZEwxRExUcm5XbVh4Nlp2?=
- =?utf-8?Q?Ujl8jbR+B9f4YAcCC1LfJkk=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 995edc2f-eb3c-420f-ecde-08ddf02352cc
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5309.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 04:34:26.5919 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YamRM9F8fA16+I/MFCd950NtCOBEERLUFM6ixZtCDPXGEgVntzlndcgYBtQ/Zw8cU0B5iVYxhEvgnE+uUPtA5Y+9J7/Q2TAvWuE6vToR7Fjb4KISZ5AkncJv416RdI9x
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4827
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86eb1967-61b0-42a1-8be4-08ddf0246396
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2025 04:42:03.6200 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xho3JPwOnUmp5fHUmD6RzYBQNDkSpVbm5vN37mZbzV50zLhe5TJcZ3pANeKcsSrUz1wYXOsrNhismzjqYsvTTLqsOLd1+f36JHCRglpv99U=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4554
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -196,301 +205,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Swati,
-
-On 06-09-2025 02:38, Swati Sharma wrote:
-> Add test cases where we are validating force dsc and force
-> joiner.
-> 
-> v2: -fix if() for ultra/big joiner (Ankit)
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/intel/kms_dsc.c | 198 +++++++++++++++++++++++++++---------------
->   1 file changed, 126 insertions(+), 72 deletions(-)
-> 
-> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-> index 7f0745370..5720167a4 100644
-> --- a/tests/intel/kms_dsc.c
-> +++ b/tests/intel/kms_dsc.c
-> @@ -55,7 +55,27 @@
->    * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
->    * @fractional-bpp:               DSC with fractional bpp with default parameters
->    * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
-> - */
-> + *
-> + * SUBTEST: dsc-%s-%s
-> + * Description: Tests Display Stream Compression functionality if supported by a
-> + *              connector by forcing %arg[1] and %arg[2] on all connectors that support it
-> + *
-> + * arg[1]:
-> + *
-> + * @basic:                        DSC with default parameters
-> + * @with-bpc:                     DSC with certain input BPC for the connector
-> + * @with-bpc-formats:             DSC with certain input BPC for the connector and diff formats
-> + * @with-formats:                 DSC with default parameters and creating fb with diff formats
-> + * @with-output-formats:          DSC with output formats
-> + * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
-> + * @fractional-bpp:               DSC with fractional bpp with default parameters
-> + * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
-> + *
-> + * arg[2]:
-> + *
-> + * @bigjoiner:			  big joiner
-> + * @ultrajoiner:		  ultra joiner
-> +*/
->   
->   IGT_TEST_DESCRIPTION("Test to validate display stream compression");
->   
-> @@ -81,11 +101,13 @@ typedef struct {
->   	int disp_ver;
->   	enum pipe pipe;
->   	bool limited;
-> +	int joined_pipes;
->   } data_t;
->   
->   static int output_format_list[] = {DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
->   static int format_list[] = {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
->   static uint32_t bpc_list[] = {8, 10, 12};
-> +static int joiner_tests[] = {JOINED_PIPES_DEFAULT, JOINED_PIPES_BIG_JOINER, JOINED_PIPES_ULTRA_JOINER};
->   
->   static inline void manual(const char *expected)
->   {
-> @@ -135,6 +157,7 @@ static void update_display(data_t *data, uint32_t test_type)
->   	int current_bpc = 0;
->   	igt_plane_t *primary;
->   	drmModeModeInfo *mode;
-> +	bool status;
->   	igt_output_t *output = data->output;
->   	igt_display_t *display = &data->display;
->   	drmModeConnector *connector = output->config.connector;
-> @@ -147,6 +170,11 @@ static void update_display(data_t *data, uint32_t test_type)
->   	save_force_dsc_en(data->drm_fd, data->output);
->   	force_dsc_enable(data->drm_fd, data->output);
->   
-> +	if (data->joined_pipes == JOINED_PIPES_BIG_JOINER || data->joined_pipes == JOINED_PIPES_ULTRA_JOINER) {
-> +		status = kmstest_force_connector_joiner(data->drm_fd, connector, data->joined_pipes);
-> +		igt_assert_f(status, "Failed to toggle force joiner\n");
-> +	}
-> +
->   	if (test_type & TEST_DSC_BPC) {
->   		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
->   		force_dsc_enable_bpc(data->drm_fd, data->output, data->input_bpc);
-> @@ -246,17 +274,22 @@ reset:
->   
->   static void test_dsc(data_t *data, uint32_t test_type, int bpc,
->   		     unsigned int plane_format,
-> -		     enum dsc_output_format output_format)
-> +		     enum dsc_output_format output_format,
-> +		     int joined_pipes)
->   {
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
->   	enum pipe pipe;
-> +	int n_pipes = 0;
->   	char name[3][LEN] = {
->   				{0},
->   				{0},
->   				{0},
->   			    };
->   
-> +	for_each_pipe(display, pipe)
-> +		n_pipes++;
-> +
->   	igt_require(check_gen11_bpc_constraint(data->drm_fd, data->input_bpc));
->   
->   	for_each_pipe_with_valid_output(display, pipe, output) {
-> @@ -265,6 +298,7 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
->   		data->input_bpc = bpc;
->   		data->output = output;
->   		data->pipe = pipe;
-> +		data->joined_pipes = joined_pipes;
->   
->   		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
->   		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
-> @@ -285,6 +319,22 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
->   						      data->drm_fd, data->output)))
->   			continue;
->   
-> +		/*
-> +		 * Skip invalid starting pipes:
-> +		 * - Bigjoiner needs 2 consecutive pipes : skip last pipe (n_pipes - 1)
-> +		 * - Ultrajoiner needs 4 consecutive pipes : skip last 3 pipes (data->pipe > n_pipes - 4)
-> +		 */
-> +		if ((joined_pipes == JOINED_PIPES_BIG_JOINER &&
-> +		    (data->pipe == n_pipes - 1 ||
-> +		     !check_dsc_joiner_constraints(data->drm_fd, data->output,
-> +						   n_pipes, joined_pipes))) ||
-> +		    (joined_pipes == JOINED_PIPES_ULTRA_JOINER &&
-> +		    (data->pipe > n_pipes - 4 ||
-> +		     !check_dsc_joiner_constraints(data->drm_fd, data->output,
-> +						   n_pipes, joined_pipes)))) {
-> +			continue;
-> +		}
-> +
->   		if (test_type & TEST_DSC_OUTPUT_FORMAT)
->   			snprintf(&name[0][0], LEN, "-%s", kmstest_dsc_output_format_str(data->output_format));
->   		if (test_type & TEST_DSC_FORMAT)
-> @@ -334,85 +384,89 @@ igt_main_args("l", NULL, help_str, opt_handler, &data)
->   		igt_require(is_dsc_supported_by_source(data.drm_fd));
->   	}
->   
-> -	igt_describe("Tests basic display stream compression functionality if supported "
-> -		     "by a connector by forcing DSC on all connectors that support it "
-> -		     "with default parameters");
-> -	igt_subtest_with_dynamic("dsc-basic")
-> -			test_dsc(&data, TEST_DSC_BASIC, DEFAULT_BPC,
-> -				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
-> -
-> -	igt_describe("Tests basic display stream compression functionality if supported "
-> -		     "by a connector by forcing DSC on all connectors that support it "
-> -		     "with default parameters and creating fb with diff formats");
-> -	igt_subtest_with_dynamic("dsc-with-formats") {
-> -		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
-> -			test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
-> -				 format_list[k], DSC_FORMAT_RGB);
-> -	}
->   
-> -	igt_describe("Tests basic display stream compression functionality if supported "
-> -		     "by a connector by forcing DSC on all connectors that support it "
-> -		     "with certain input BPC for the connector");
-> -	igt_subtest_with_dynamic("dsc-with-bpc") {
-> -		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
-> -			test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
-> -				 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB);
-> -	}
-> +	for (int i = 0; i < ARRAY_SIZE(joiner_tests) ; i++) {
-> +		igt_describe("Tests basic display stream compression functionality if supported "
-> +			     "by a connector by forcing DSC on all connectors that support it "
-> +			     "with default parameters");
-> +		igt_subtest_with_dynamic_f("dsc-basic%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-Can this be dsc-basic-%s to be consistant with other tests here and same 
-at other places where applicable?> +				test_dsc(&data, TEST_DSC_BASIC, 
-DEFAULT_BPC,
-> +					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
-> +		}
->   
-> -	igt_describe("Tests basic display stream compression functionality if supported "
-> -		     "by a connector by forcing DSC on all connectors that support it "
-> -		     "with certain input BPC for the connector with diff formats");
-> -	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
-> -		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
-> -			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
-> -				test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
-> -				bpc_list[j], format_list[k],
-> -				DSC_FORMAT_RGB);
-> -			}
-> +		igt_describe("Tests basic display stream compression functionality if supported "
-> +			     "by a connector by forcing DSC on all connectors that support it "
-> +			     "with default parameters and creating fb with diff formats");
-> +		igt_subtest_with_dynamic_f("dsc-with-formats%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-> +			for (int k = 0; k < ARRAY_SIZE(format_list); k++)
-> +				test_dsc(&data, TEST_DSC_FORMAT, DEFAULT_BPC,
-> +					 format_list[k], DSC_FORMAT_RGB, joiner_tests[i]);
->   		}
-> -	}
->   
-> -	igt_describe("Tests basic display stream compression functionality if supported "
-> -		     "by a connector by forcing DSC and output format on all connectors "
-> -		     "that support it");
-> -	igt_subtest_with_dynamic("dsc-with-output-formats") {
-> -		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
-> -			test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
-> -				 DRM_FORMAT_XRGB8888,
-> -				 output_format_list[k]);
-> -	}
-> +		igt_describe("Tests basic display stream compression functionality if supported "
-> +			     "by a connector by forcing DSC on all connectors that support it "
-> +			     "with certain input BPC for the connector");
-> +		igt_subtest_with_dynamic_f("dsc-with-bpc%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-> +			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
-> +				test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
-> +					 DRM_FORMAT_XRGB8888, DSC_FORMAT_RGB, joiner_tests[i]);
-> +		}
->   
-> -	igt_describe("Tests basic display stream compression functionality if supported "
-> -		     "by a connector by forcing DSC and output format on all connectors "
-> -		     "that support it with certain input BPC for the connector");
-> -	igt_subtest_with_dynamic("dsc-with-output-formats-with-bpc") {
-> -		for (int k = 0; k < ARRAY_SIZE(output_format_list); k++) {
-> +		igt_describe("Tests basic display stream compression functionality if supported "
-> +			     "by a connector by forcing DSC on all connectors that support it "
-> +			     "with certain input BPC for the connector with diff formats");
-> +		igt_subtest_with_dynamic_f("dsc-with-bpc-formats%s", igt_get_joined_pipes_name(joiner_tests[i])) {
->   			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
-> -				test_dsc(&data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
-> -					 bpc_list[j], DRM_FORMAT_XRGB8888,
-> -					 output_format_list[k]);
-> +				for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
-> +					test_dsc(&data, TEST_DSC_BPC | TEST_DSC_FORMAT,
-> +					bpc_list[j], format_list[k],
-> +					DSC_FORMAT_RGB, joiner_tests[i]);
-> +				}
->   			}
->   		}
-> -	}
->   
-> -	igt_describe("Tests fractional compressed bpp functionality if supported "
-> -		     "by a connector by forcing fractional_bpp on all connectors that support it "
-> -		     "with default parameter. While finding the optimum compressed bpp, driver will "
-> -		     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
-> -		     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
-> -	igt_subtest_with_dynamic("dsc-fractional-bpp")
-> -			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
-> -				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
-> -				 DSC_FORMAT_RGB);
-> -
-> -	igt_describe("Tests fractional compressed bpp functionality if supported "
-> -		     "by a connector by forcing fractional_bpp on all connectors that support it "
-> -		     "with certain input BPC for the connector.");
-> -	igt_subtest_with_dynamic("dsc-fractional-bpp-with-bpc") {
-> -		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
-> -			test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
-> -				 bpc_list[j], DRM_FORMAT_XRGB8888,
-> -				 DSC_FORMAT_RGB);
-> +		igt_describe("Tests basic display stream compression functionality if supported "
-> +			     "by a connector by forcing DSC and output format on all connectors "
-> +			     "that support it");
-> +		igt_subtest_with_dynamic_f("dsc-with-output-formats%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-> +			for (int k = 0; k < ARRAY_SIZE(output_format_list); k++)
-> +				test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, DEFAULT_BPC,
-> +					 DRM_FORMAT_XRGB8888,
-> +					 output_format_list[k], joiner_tests[i]);
-> +		}
-> +
-> +		igt_describe("Tests basic display stream compression functionality if supported "
-> +			     "by a connector by forcing DSC and output format on all connectors "
-> +			     "that support it with certain input BPC for the connector");
-> +		igt_subtest_with_dynamic_f("dsc-with-output-formats-with-bpc%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-> +			for (int k = 0; k < ARRAY_SIZE(output_format_list); k++) {
-> +				for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
-> +					test_dsc(&data, TEST_DSC_OUTPUT_FORMAT | TEST_DSC_BPC,
-> +						 bpc_list[j], DRM_FORMAT_XRGB8888,
-> +						 output_format_list[k], joiner_tests[i]);
-> +				}
-> +			}
-> +		}
-> +
-> +		igt_describe("Tests fractional compressed bpp functionality if supported "
-> +			     "by a connector by forcing fractional_bpp on all connectors that support it "
-> +			     "with default parameter. While finding the optimum compressed bpp, driver will "
-> +			     "skip over the compressed bpps with integer values. It will go ahead with DSC, "
-> +			     "iff compressed bpp is fractional, failing in which, it will fail the commit.");
-> +		igt_subtest_with_dynamic_f("dsc-fractional-bpp%s", igt_get_joined_pipes_name(joiner_tests[i]))
-> +				test_dsc(&data, TEST_DSC_FRACTIONAL_BPP,
-> +					 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
-> +					 DSC_FORMAT_RGB, joiner_tests[i]);
-> +
-> +		igt_describe("Tests fractional compressed bpp functionality if supported "
-> +			     "by a connector by forcing fractional_bpp on all connectors that support it "
-> +			     "with certain input BPC for the connector.");
-> +		igt_subtest_with_dynamic_f("dsc-fractional-bpp-with-bpc%s", igt_get_joined_pipes_name(joiner_tests[i])) {
-> +			for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
-> +				test_dsc(&data, TEST_DSC_FRACTIONAL_BPP | TEST_DSC_BPC,
-> +					 bpc_list[j], DRM_FORMAT_XRGB8888,
-> +					 DSC_FORMAT_RGB, joiner_tests[i]);
-> +			}
->   	}
->   
->   	igt_fixture {
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogaWd0LWRldiA8aWd0LWRl
+di1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmIE9mDQo+IEdhamVuZHJh
+IFV0dGFtY2hhbmQNCj4gU2VudDogMDggU2VwdGVtYmVyIDIwMjUgMDg6MTMgUE0NCj4gVG86IGln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBSYW1hZGV2YSwgRHdhcmFrYW5hdGgg
+PGR3YXJha2FuYXRoLnJhbWFkZXZhQGludGVsLmNvbT47IEd1cnJhbSwNCj4gUHJhdmFsaWthIDxw
+cmF2YWxpa2EuZ3VycmFtQGludGVsLmNvbT47IFV0dGFtY2hhbmQsIEdhamVuZHJhDQo+IDxnYWpl
+bmRyYS51dHRhbWNoYW5kQGludGVsLmNvbT4NCj4gU3ViamVjdDogW1BBVENIIHYzIGktZy10IDUv
+N10gYmVuY2htYXJrcy9sYXRlbmN5OiBBZGQgeGVfYm9fY3JlYXRlX2Rlc3Ryb3kNCj4gbGF0ZW5j
+eSB0ZXN0DQo+IA0KPiBBZGQgYnVmZmVyIG9iamVjdCBsaWZlY3ljbGUgbGF0ZW5jeSB0ZXN0IGZv
+ciB0aGUgWEUgZHJpdmVyLg0KPiBNZWFzdXJlcyBhbGxvY2F0aW9uIGFuZCBkZWFsbG9jYXRpb24g
+dGltaW5nIGZvciBidWZmZXIgb2JqZWN0cyBhY3Jvc3MgZGlmZmVyZW50DQo+IHNpemVzIGFuZCB1
+c2FnZSBwYXR0ZXJucy4NCj4gDQo+IERlZmF1bHRzOiBidWZmZXIgc2l6ZXMgZnJvbSA0S0IgdG8g
+OE1CLCAxMyByZXBldGl0aW9ucywgMTAwMCBpdGVyYXRpb25zIHBlcg0KPiByZXBldGl0aW9uLCAy
+IHNlY29uZHMgcGVyIHNhbXBsZSwgc2luZ2xlIENQVS4NCj4gUGFyYWxsZWxpc20gaXMgY29uZmln
+dXJhYmxlIHZpYSBjb21tYW5kLWxpbmUgb3B0aW9ucy4NCj4gDQo+IEltcG9ydGFudCBmb3IgYXBw
+bGljYXRpb25zIHdpdGggZHluYW1pYyBidWZmZXIgbWFuYWdlbWVudCBhbmQgaGVscHMNCj4gaWRl
+bnRpZnkgbWVtb3J5IGFsbG9jYXRpb24gYm90dGxlbmVja3MgaW4gZ3JhcGhpY3Mgd29ya2xvYWRz
+Lg0KPiANCj4gVjI6IEZpeGVkIHRyYWlsaW5nIHdoaXRlc3BhY2UgYW5kIGNvZGUgZm9ybWF0dGlu
+Zy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEdhamVuZHJhIFV0dGFtY2hhbmQgPGdhamVuZHJhLnV0
+dGFtY2hhbmRAaW50ZWwuY29tPg0KPiAtLS0NCj4gIGJlbmNobWFya3MvbGF0ZW5jeS94ZV9ib19j
+cmVhdGVfZGVzdHJveS5jIHwgMTMwDQo+ICsrKysrKysrKysrKysrKysrKysrKysNCj4gIDEgZmls
+ZSBjaGFuZ2VkLCAxMzAgaW5zZXJ0aW9ucygrKQ0KPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGJlbmNo
+bWFya3MvbGF0ZW5jeS94ZV9ib19jcmVhdGVfZGVzdHJveS5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
+YmVuY2htYXJrcy9sYXRlbmN5L3hlX2JvX2NyZWF0ZV9kZXN0cm95LmMNCj4gYi9iZW5jaG1hcmtz
+L2xhdGVuY3kveGVfYm9fY3JlYXRlX2Rlc3Ryb3kuYw0KPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0K
+PiBpbmRleCAwMDAwMDAwMDAuLjE4YzlhZWJlZA0KPiAtLS0gL2Rldi9udWxsDQo+ICsrKyBiL2Jl
+bmNobWFya3MvbGF0ZW5jeS94ZV9ib19jcmVhdGVfZGVzdHJveS5jDQo+IEBAIC0wLDAgKzEsMTMw
+IEBADQo+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUDQo+ICsvKg0KPiArICogQ29w
+eXJpZ2h0IMKpIDIwMjUgSW50ZWwgQ29ycG9yYXRpb24NCj4gKyAqLw0KPiArDQo+ICsjaW5jbHVk
+ZSAiaWd0LmgiDQo+ICsjaW5jbHVkZSAiaWd0X3N5bmNvYmouaCINCj4gKyNpbmNsdWRlICJ4ZS94
+ZV9pb2N0bC5oIg0KPiArI2luY2x1ZGUgInhlL3hlX3F1ZXJ5LmgiDQo+ICsNCj4gKyNkZWZpbmUg
+T0JKRUNUX1NJWkUgKDEgPDwgMjMpDQo+ICsNCj4gK3N0YXRpYyBkb3VibGUgZWxhcHNlZChjb25z
+dCBzdHJ1Y3QgdGltZXNwZWMgKnN0YXJ0LA0KPiArCQkgICAgICBjb25zdCBzdHJ1Y3QgdGltZXNw
+ZWMgKmVuZCkNCj4gK3sNCj4gKwlyZXR1cm4gKGVuZC0+dHZfc2VjIC0gc3RhcnQtPnR2X3NlYykg
+KyAxZS05ICogKGVuZC0+dHZfbnNlYyAtDQo+ICtzdGFydC0+dHZfbnNlYyk7IH0NCj4gKw0KPiAr
+c3RhdGljIHZvaWQgdGVzdF9ib19jcmVhdGUoaW50IGZkLCB1aW50MzJfdCB2bSwgaW50IHNpemUp
+IHsNCj4gKwl1aW50MzJfdCBibzsNCj4gKwl1aW50NjRfdCBib19zaXplID0geGVfYmJfc2l6ZShm
+ZCwgc2l6ZSk7DQo+ICsNCj4gKwkvL2JvID0geGVfYm9fY3JlYXRlKGZkLCB2bSwgYm9fc2l6ZSwg
+c3lzdGVtX21lbW9yeShmZCksIDApOw0KPiArCWJvID0geGVfYm9fY3JlYXRlKGZkLCAwLCBib19z
+aXplLCB2cmFtX2lmX3Bvc3NpYmxlKGZkLCAwKSwNCj4gRFJNX1hFX0dFTV9DUkVBVEVfRkxBR19O
+RUVEU19WSVNJQkxFX1ZSQU0pOw0KPiArCWdlbV9jbG9zZShmZCwgYm8pOw0KPiArDQo+ICt9DQo+
+ICsNCj4gK2ludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikNCj4gK3sNCj4gKwlpbnQgZmQg
+PSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX1hFKTsNCj4gKwlpbnQgc2l6ZSA9IDA7DQo+ICsJaW50
+IGJ1c3kgPSAwOw0KPiArCWludCByZXBzID0gMTM7DQo+ICsJaW50IG5jcHVzID0gMTsNCj4gKwlp
+bnQgYywgbiwgczsNCj4gKwl1aW50MzJfdCB2bTsNCj4gKw0KPiArCXdoaWxlICgoYyA9IGdldG9w
+dChhcmdjLCBhcmd2LCAiczpiOnI6ZiIpKSAhPSAtMSkgew0KPiArCQlzd2l0Y2ggKGMpIHsNCj4g
+KwkJY2FzZSAncyc6DQo+ICsJCQlzaXplID0gYXRvaShvcHRhcmcpOw0KPiArCQkJYnJlYWs7DQo+
+ICsNCj4gKwkJY2FzZSAncic6DQo+ICsJCQlyZXBzID0gYXRvaShvcHRhcmcpOw0KPiArCQkJaWYg
+KHJlcHMgPCAxKQ0KPiArCQkJCXJlcHMgPSAxOw0KPiArCQkJYnJlYWs7DQo+ICsNCj4gKwkJY2Fz
+ZSAnZic6DQo+ICsJCQluY3B1cyA9IHN5c2NvbmYoX1NDX05QUk9DRVNTT1JTX09OTE4pOw0KPiAr
+CQkJYnJlYWs7DQo+ICsNCj4gKwkJY2FzZSAnYic6DQo+ICsJCQlidXN5ID0gdHJ1ZTsNCj4gKwkJ
+CWJyZWFrOw0KPiArDQo+ICsJCWRlZmF1bHQ6DQo+ICsJCQlicmVhazsNCj4gKwkJfQ0KPiArCX0N
+Cj4gKw0KPiArDQo+ICsJaWYgKHNpemUgPT0gMCkgew0KPiArCQlmb3IgKHMgPSA0MDk2OyBzIDw9
+ICBPQkpFQ1RfU0laRTsgcyA8PD0gMSkgew0KPiArCQkJaWd0X3N0YXRzX3Qgc3RhdHM7DQo+ICsN
+Cj4gKwkJCWlndF9zdGF0c19pbml0X3dpdGhfc2l6ZSgmc3RhdHMsIHJlcHMpOw0KPiArDQo+ICsJ
+CQlmb3IgKG4gPSAwOyBuIDwgcmVwczsgbisrKSB7DQo+ICsgICAgICAgICAgICAgICAgdm0gPSB4
+ZV92bV9jcmVhdGUoZmQsIDAsIDApOw0KSSBzZWUgbWlzYWxpZ25tZW50IG92ZXIgaGVyZSBhbmQg
+aW4gdGhlIGVuZCBhcyB3ZWxsIGF0IHJldHVybiAwLCBwbGVhc2UgY2hlY2sgYWxpZ25tZW50IG92
+ZXIgaGVyZS4NCk9uZSBtb3JlIHRoaW5nIGlzIHRoYXQgdGhlcmUgaXMgc2FtZSBpZiBhbmQgZWxz
+ZSBhY3Jvc3MgYWxsIGJlbmNobWFyayB0ZXN0cy4gSSB0aGluayB3ZSBjYW4gY3JlYXRlIGEgc3Ry
+dWN0dXJlIGFuZCByZXVzZSB0aGUgc2FtZSBjb2RlIHdpdGggZmxhZ3MsICBzZWUgZm9yIGV4YW1w
+bGUgeGVfZXhlY19mYXVsdF9tb2RlIGFuZCBsb3Qgb3RoZXIgdGVzdHMuIFRoaXMgd291bGQgaW1w
+cm92ZSBjb2RlIHJlYWRhYmlsaXR5Lg0KLS1Qcml5YW5rYQ0KPiArCQkJCXN0cnVjdCB0aW1lc3Bl
+YyBzdGFydCwgZW5kOw0KPiArCQkJCXVpbnQ2NF90IGNvdW50ID0gMDsNCj4gKw0KPiArCQkJCWNs
+b2NrX2dldHRpbWUoQ0xPQ0tfTU9OT1RPTklDLCAmc3RhcnQpOw0KPiArCQkJCWRvIHsNCj4gKwkJ
+CQkJZm9yIChjID0gMDsgYyA8IDEwMDA7IGMrKykNCj4gKwkJCQkJCXRlc3RfYm9fY3JlYXRlKGZk
+LCB2bSwgcyk7DQo+ICsNCj4gKwkJCQkJY291bnQgKz0gYzsNCj4gKwkJCQkJY2xvY2tfZ2V0dGlt
+ZShDTE9DS19NT05PVE9OSUMsDQo+ICZlbmQpOw0KPiArCQkJCX0gd2hpbGUgKGVuZC50dl9zZWMg
+LSBzdGFydC50dl9zZWMgPCAyKTsNCj4gKw0KPiArICAgICAgICAgICAgICAgIHhlX3ZtX2Rlc3Ry
+b3koZmQsIHZtKTsNCj4gKwkJCQlpZ3Rfc3RhdHNfcHVzaF9mbG9hdCgmc3RhdHMsIGNvdW50IC8N
+Cj4gZWxhcHNlZCgmc3RhcnQsICZlbmQpKTsNCj4gKwkJCX0NCj4gKwkJCXByaW50ZigiJWZcbiIs
+IGlndF9zdGF0c19nZXRfdHJpbWVhbigmc3RhdHMpKTsNCj4gKwkJCWlndF9zdGF0c19maW5pKCZz
+dGF0cyk7DQo+ICsJCX0NCj4gKwl9IGVsc2Ugew0KPiArCQlkb3VibGUgKnNoYXJlZDsNCj4gKwkJ
+c2hhcmVkID0gbW1hcCgwLCA0MDk2LCBQUk9UX1dSSVRFLCBNQVBfU0hBUkVEIHwNCj4gTUFQX0FO
+T04sIC0xLCAwKTsNCj4gKw0KPiArICAgICAgICB2bSA9IHhlX3ZtX2NyZWF0ZShmZCwgMCwgMCk7
+DQo+ICsNCj4gKwkJZm9yIChuID0gMDsgbiA8IHJlcHM7IG4rKykgew0KPiArCQkJbWVtc2V0KHNo
+YXJlZCwgMCwgNDA5Nik7DQo+ICsNCj4gKwkJCWlndF9mb3JrKGNoaWxkLCBuY3B1cykgew0KPiAr
+CQkJCXN0cnVjdCB0aW1lc3BlYyBzdGFydCwgZW5kOw0KPiArCQkJCXVpbnQ2NF90IGNvdW50ID0g
+MDsNCj4gKw0KPiArCQkJCWNsb2NrX2dldHRpbWUoQ0xPQ0tfTU9OT1RPTklDLCAmc3RhcnQpOw0K
+PiArCQkJCWRvIHsNCj4gKwkJCQkJZm9yIChjID0gMDsgYyA8IDEwMDA7IGMrKykNCj4gKwkJCQkJ
+CXRlc3RfYm9fY3JlYXRlKGZkLCBidXN5LCBzaXplKTsNCj4gKw0KPiArCQkJCQljb3VudCArPSBj
+Ow0KPiArCQkJCQljbG9ja19nZXR0aW1lKENMT0NLX01PTk9UT05JQywNCj4gJmVuZCk7DQo+ICsJ
+CQkJfSB3aGlsZSAoZW5kLnR2X3NlYyAtIHN0YXJ0LnR2X3NlYyA8IDIpOw0KPiArDQo+ICsNCj4g
+KwkJCQlzaGFyZWRbY2hpbGRdID0gY291bnQgLyBlbGFwc2VkKCZzdGFydCwgJmVuZCk7DQo+ICsJ
+CQl9DQo+ICsJCQlpZ3Rfd2FpdGNoaWxkcmVuKCk7DQo+ICsNCj4gKwkJCWZvciAoaW50IGNoaWxk
+ID0gMDsgY2hpbGQgPCBuY3B1czsgY2hpbGQrKykNCj4gKwkJCQlzaGFyZWRbbmNwdXNdICs9IHNo
+YXJlZFtjaGlsZF07DQo+ICsNCj4gKwkJCXByaW50ZigiJTcuM2ZcbiIsIHNoYXJlZFtuY3B1c10p
+Ow0KPiArCQl9DQo+ICsgICAgICAgIHhlX3ZtX2Rlc3Ryb3koZmQsIHZtKTsNCj4gKyAgICAgICAg
+bXVubWFwKHNoYXJlZCwgNDA5Nik7DQo+ICsJfQ0KPiArDQo+ICsgICAgY2xvc2UoZmQpOw0KPiAr
+CXJldHVybiAwOw0KPiArfQ0KPiAtLQ0KPiAyLjQzLjANCg0K
