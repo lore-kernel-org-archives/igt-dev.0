@@ -4,56 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FCD6CA101F
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Sep 2025 13:54:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A190ECA101F
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Sep 2025 13:59:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D95B310E303;
-	Wed, 10 Sep 2025 13:54:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 38F4410E2DF;
+	Wed, 10 Sep 2025 13:59:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PL7spCz0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GUHouMav";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 034D710E303
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Sep 2025 13:54:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2284210E2DF
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Sep 2025 13:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757512473; x=1789048473;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=yLjOQ2BWm5CodkLweoJ4mPe92XR+IVfiSkcC+XTcS3A=;
- b=PL7spCz07irtdPufFlw7HHyl567TXA5i/XK//32bnlY9NYphUyz3OP0g
- c/5JS+aZrmFnIvY+NII/Pjzxo5bysKZsrQUchKGR7JsPe03PJMGo2ElaJ
- 7LFOxz8ZjooRUgk8epQvi7woMDJ78XaJ3gqhYQXmE17CI97haP903BR/T
- JabETuOkPmNtuOykEs2Mvl0iPKp3I6WyJ2gGizfn1iuo9ZX4vNx1lkGMu
- IKLp726o1NPzn5IrKL10YcyEHnnQmCVj1a7Y+zXtJzYP7uEN54dUNQax6
- CBAnlteTUNzcPrgwxyhFmQ0IgeTyVbsTuww/R9WQ3lwi9fDo3tTg4eecN A==;
-X-CSE-ConnectionGUID: gYsWKO3vRWqcy/qMwqJWjQ==
-X-CSE-MsgGUID: L+Lyl43mS9WGH2lT0Kw9tg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="47393476"
-X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; d="scan'208";a="47393476"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2025 06:54:32 -0700
-X-CSE-ConnectionGUID: I/EL8IbyQjCP6bbvzes3JA==
-X-CSE-MsgGUID: +HEB7o0CSBOhiHKHkAb2yQ==
+ t=1757512793; x=1789048793;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=+05KTvK4+kSSHNzL+WdcZFTmviddL6XTGdezE3YtQ30=;
+ b=GUHouMavO2am/l9hHHT3hJKvDLs8Cx174jX5sp91gXpuHklUngQbw+98
+ gB6/IOR42t4b5ztwBqRIPNLnlK+sFNcn163J3KNPm+aCdBfzKNswJ146J
+ hEEpJddJ2J3ypeBhW9vU3Jpd5KtN35VIq1V9BjimT8SAo3RlMgxeGk9wE
+ J/HK7PJPM1mBEFf8PkF7SsApB3eP37EncGNUrvcDdcMZk/+YyYekbIKM8
+ 1zcc5YNHQRpuPX4krM7LRW9srpGy9dUpTlTUYheeaAYZ3QDQJFlspQ8Sy
+ numGypAj20l3P0jxFnjZAb0xldZyN1r6+faw4InIrr9RvarBJXKAOAKtB w==;
+X-CSE-ConnectionGUID: bRTUSgVDTjqSVsVLNbQdew==
+X-CSE-MsgGUID: hJe4DiXNR/iuXv3BSm3w9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="58863982"
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; d="scan'208";a="58863982"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2025 06:59:52 -0700
+X-CSE-ConnectionGUID: SiCyG3sxQaGNtLxdhds3xA==
+X-CSE-MsgGUID: JrmMKZBBQ7WHVna7p0thqw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; d="scan'208";a="172962410"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 06:54:31 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, vinod.govindapillai@intel.com, jeevan.b@intel.com,
- swati2.sharma@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/kms_fbc_dirty_rect: Limit to one format on
- simulation
-Date: Wed, 10 Sep 2025 19:22:43 +0530
-Message-Id: <20250910135243.252684-2-santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; d="scan'208";a="172575907"
+Received: from pgurram-desk.iind.intel.com ([10.190.238.70])
+ by orviesa006.jf.intel.com with ESMTP; 10 Sep 2025 06:59:51 -0700
+From: pravalika.gurram@intel.com
+To: igt-dev@lists.freedesktop.org, nishit.sharma@intel.com,
+ himal.prasad.ghimiray@intel.com
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>
+Subject: [PATCH v2 0/2] Add pat-index-madvise
+Date: Wed, 10 Sep 2025 19:40:43 +0530
+Message-Id: <20250910141045.1141826-1-pravalika.gurram@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250910135243.252684-1-santhosh.reddy.guddati@intel.com>
-References: <20250826070734.1117429-1-santhosh.reddy.guddati@intel.com>
- <20250910135243.252684-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,30 +65,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-limit fbc-dirty-rectangle-different-formats subtest to execute on single
-format on simulation platforms to avoid CI timeouts while still
-validating functionality.
+From: Pravalika Gurram <pravalika.gurram@intel.com>
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/intel/kms_fbc_dirty_rect.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Add pat-index-madvise test to verify setting different
+pat_index values for multiple VMAs. This test uses
+madvise to set various pat_index values and
+verifies that different PAT values can be assigned to multiple VMAs as expected.
 
-diff --git a/tests/intel/kms_fbc_dirty_rect.c b/tests/intel/kms_fbc_dirty_rect.c
-index b187a5942..c3a86aeda 100644
---- a/tests/intel/kms_fbc_dirty_rect.c
-+++ b/tests/intel/kms_fbc_dirty_rect.c
-@@ -510,6 +510,10 @@ igt_main
- 				break;
- 			for_each_valid_output_on_pipe(&data.display, data.pipe, data.output) {
- 				for (int i = 0; i < num_formats; i++) {
-+					/* on simulation platforms , limit to single format */
-+					if (data.is_simulation && i > 0)
-+						break;
-+
- 					igt_dynamic_f("pipe-%s-%s-format-%s",
- 						       kmstest_pipe_name(data.pipe),
- 						       igt_output_name(data.output),
+Nishit Sharma (1):
+  DO-NOT-REVIEW: tests/intel/xe_exec_system_allocator: Add atomic_batch
+    test in IGT
+
+Pravalika Gurram (1):
+  tests/intel/xe_exec_system_allocator: Add pat-index-madvise
+
+ lib/xe/xe_ioctl.c                      |  27 +-
+ lib/xe/xe_ioctl.h                      |   2 +-
+ tests/intel/xe_exec_system_allocator.c | 554 ++++++++++++++++++++++---
+ 3 files changed, 521 insertions(+), 62 deletions(-)
+
 -- 
 2.34.1
 
