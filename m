@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05822CA1016
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Sep 2025 06:17:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0650CAC583
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Sep 2025 06:17:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A5C4110E0BE;
-	Thu, 11 Sep 2025 06:17:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A6B8310EA1D;
+	Thu, 11 Sep 2025 06:17:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mK2V03jE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NSCeyVoV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C37010E0BE
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Sep 2025 06:17:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3C8710EA1D
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Sep 2025 06:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757571464; x=1789107464;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=8/lcFiY9MUFmD5y2mObJkEXkIv1kLwGEd0fZbrbyj38=;
- b=mK2V03jEqrdhLYJ4MWU4FdbFJxtY4F8ruBXRzSQA6TNHhhkFSVlzz5hs
- nX9TomgAZdGr/HjpP0vE3zPICIXmPASSyRC9/g5BCv6V2sNNMOqteGjrc
- vZVXrXE2ohF2VV0smTgKZBJC245fK18MpT+B175losJVijZtmNKtFywg2
- YbDMmxUIvMOPyxhXjZCEHW19zeJXr8Sn/euLW+onRnhvh8OfN7IKQf2HQ
- 58aBiV/XXsN1KjZBnyiTMx9rHmH2+ZgJKitZpucoIqyXnzDMChuvAT1P+
- Mi0t1Yg/zLuEhKbOw+Nm/tD5/L5Hx6vepdpl++BdWYrMiDcpyfrxPgmcZ w==;
-X-CSE-ConnectionGUID: AKSzIF8lQhmdHVi4kV+2MQ==
-X-CSE-MsgGUID: VjLEV33ISBuioUktstFBMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="70148973"
-X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; d="scan'208";a="70148973"
+ t=1757571465; x=1789107465;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Ry0AsBxTLxvKqUtSnUFp7M3DnPreDzOhVzjzHnmOrMw=;
+ b=NSCeyVoVTuKUdu1l7HS+QB9PQ23IaZsdI4C+vIIy1uCv8GKFN1JLJ5xS
+ Eh0cKkNvVVxLaYlC8b8P0NYMh/j9ULPaoCkBbGPj863OIjsv4Iz8vALqb
+ CB0cxczB+fqRt8lwZXeI3Vz4nmyZxEQXLDcCpaY58qsdfEhT6bwaeKHbR
+ VeGvP4sjio8JOAlWlNaJpQKDF8TFJ0y3kZSh2fpbYBTrFTYinILhaAjll
+ o+TDrLCeQebo+UFMb9RwjTTi3Wxj+fTdtyY/tRSWxoU4CvGvZsXDIkMGp
+ Hdd2CGxs7pAkadnsu4f8sjK6dLq/UG1+CytzouX6xevSflXaWvlmaz3pT Q==;
+X-CSE-ConnectionGUID: CBcMuiiMRLuoZGpGmakZ8g==
+X-CSE-MsgGUID: JPPhvEKcQ4CaOn5O4KtQpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="70148976"
+X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; d="scan'208";a="70148976"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2025 23:17:44 -0700
-X-CSE-ConnectionGUID: ZqBy/DzrSVy+yQk/0qG7qw==
-X-CSE-MsgGUID: kCIpX3+PR0WydCzm7EhLuA==
+ 10 Sep 2025 23:17:45 -0700
+X-CSE-ConnectionGUID: TjZeS0ixSCuBBNJZa/poBg==
+X-CSE-MsgGUID: FnwNDPhBSDSal6enghoL9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; d="scan'208";a="177644390"
+X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; d="scan'208";a="177644395"
 Received: from dut6245dg2frd.fm.intel.com ([10.80.55.42])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2025 23:17:43 -0700
+ 10 Sep 2025 23:17:45 -0700
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	kamil.konieczny@intel.com
 Cc: zbigniew.kempczynski@intel.com,
 	Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH v6 i-g-t 1/1] tests/intel/xe_evict_ccs: Adjust object size for
+Subject: [PATCH i-g-t 1/1] tests/intel/xe_evict_ccs: Adjust object size for
  non-resizable BAR
-Date: Thu, 11 Sep 2025 06:17:29 +0000
-Message-Id: <20250911061730.1855974-1-sobin.thomas@intel.com>
+Date: Thu, 11 Sep 2025 06:17:30 +0000
+Message-Id: <20250911061730.1855974-2-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250911061730.1855974-1-sobin.thomas@intel.com>
+References: <20250911061730.1855974-1-sobin.thomas@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -83,12 +85,92 @@ v5: Fixed review comment for igt warnings and commit subject. [kamil]
     Fixed the condition for user provided max size value. [kamil]
 v6: Modified to adjust params only incase vram_mb <= 256MB. [kamil]
 
-Sobin Thomas (1):
-  tests/intel/xe_evict_ccs: Adjust object size for non-resizable BAR
-
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+---
  tests/intel/xe_evict_ccs.c | 36 ++++++++++++++++++++++++++++++++++++
  1 file changed, 36 insertions(+)
 
+diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
+index 281d27015..cdf3811da 100644
+--- a/tests/intel/xe_evict_ccs.c
++++ b/tests/intel/xe_evict_ccs.c
+@@ -39,12 +39,14 @@ static struct param {
+ 	int vram_percent;
+ 	int min_size_kb;
+ 	int max_size_kb;
++	bool user_set_max_size;
+ 	bool verify;
+ } params = {
+ 	.num_objs = 0,
+ 	.vram_percent = OVERCOMMIT_VRAM_PERCENT,
+ 	.min_size_kb = MIN_OBJ_KB,
+ 	.max_size_kb = MAX_OBJ_KB,
++	.user_set_max_size = false,
+ };
+ 
+ struct object {
+@@ -343,6 +345,31 @@ static void set_config(int fd, uint32_t flags, const struct param *param,
+ 	igt_debug("nproc: %d, mem per proc: %dMB\n", nproc, config->mb_per_proc);
+ }
+ 
++static void adjust_params_for_vram_size(uint64_t vram_sz)
++{
++	int recommended_max_size_kb;
++	int max_object_mb = vram_sz / MIN_OBJ_KB;
++
++	/* max_object_mb clamped between 2MB and 256MB */
++	max_object_mb = max_t(int, 2, min_t(int, max_object_mb, 256));
++	recommended_max_size_kb = max_object_mb * 1024;
++
++	igt_info("VRAM (%"PRIu64"MB): Calculated %d%% usage, %dMB max objects\n ",
++		 vram_sz, params.vram_percent, max_object_mb);
++
++	if (params.user_set_max_size &&
++	    params.max_size_kb > recommended_max_size_kb) {
++		igt_warn("User specified size (%dMB) may not be optimal for %"PRIu64"MB VRAM\n "
++			 "(recommended size: %dMB)\n", params.max_size_kb / 1024, vram_sz,
++			 recommended_max_size_kb / 1024);
++	} else {
++		params.max_size_kb = recommended_max_size_kb;
++	}
++
++	igt_info("Final settings: %d%% VRAM, %dMB max object\n",
++		 params.vram_percent, params.max_size_kb / 1024);
++}
++
+ static void evict_ccs(int fd, uint32_t flags, const struct param *param)
+ {
+ 	struct config config;
+@@ -440,6 +467,7 @@ static int opt_handler(int opt, int opt_index, void *data)
+ 		break;
+ 	case 'S':
+ 		params.max_size_kb = atoi(optarg);
++		params.user_set_max_size = true;
+ 		igt_debug("Max size kb: %d\n", params.max_size_kb);
+ 		break;
+ 	case 'V':
+@@ -492,6 +520,7 @@ igt_main_args("bdDn:p:s:S:V", NULL, help_str, opt_handler, NULL)
+ 		{ },
+ 	};
+ 	uint64_t vram_size;
++	uint64_t vram_mb;
+ 	bool has_flatccs;
+ 	int fd;
+ 
+@@ -500,6 +529,13 @@ igt_main_args("bdDn:p:s:S:V", NULL, help_str, opt_handler, NULL)
+ 		igt_require(xe_has_vram(fd));
+ 		vram_size = xe_visible_vram_size(fd, 0);
+ 		igt_assert(vram_size);
++		vram_mb = vram_size / (1024 * 1024);
++		/* Adjust the parameter to adjust the compression parameters
++		 * if the VRAM Size <= 256MB
++		 */
++		if (vram_mb <= 256)
++			adjust_params_for_vram_size(vram_mb);
++
+ 		has_flatccs = HAS_FLATCCS(intel_get_drm_devid(fd));
+ 	}
+ 
 -- 
 2.34.1
 
