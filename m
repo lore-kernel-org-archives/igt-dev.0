@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F7D2CA1016
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Sep 2025 07:16:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C872CA1016
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Sep 2025 07:39:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 471EA10E2FF;
-	Thu, 11 Sep 2025 07:16:30 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="knRY1vSj";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 037D910E2FF
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Sep 2025 07:16:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757574989; x=1789110989;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=etMSfw2lfagmAcZMbii8Bv5rzV6QP7rvzutzNLrSfvc=;
- b=knRY1vSjIehXrYeO0Ztsgnk4rbpONcm+aM+F8wPgKolem3Pj0UMfmB9B
- USxfAZJWuiRjuPxVlFFGVOct0C8ZDrPWpHgICGBgzHt3AkLoAjULqrQOS
- mkbglr3vmOPBsGKXcP0tXQwPnBeZbLaispN/Oewkphuy83/9DNBY4atua
- XSbOFQ/BvTWaxqsi4UO/iaVHfzYneVO4qV0akpJKv2+dyhze2fDNzL+du
- 9V0pDgDiAGtmtHChBot2togjVIR1m0/m/ahg0znag1idRCkiS8OvNTd5l
- MndDY/YPKxXDL2+oKImYS4WS9KrNNHjd1IRaG4op0C6LRVHix2xZS/DJ0 A==;
-X-CSE-ConnectionGUID: WMPZbRvfRJWBMy4WhRvnGw==
-X-CSE-MsgGUID: kCpSPUG2Tim/aEccEivZaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="85342666"
-X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; d="scan'208";a="85342666"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2025 00:16:28 -0700
-X-CSE-ConnectionGUID: L+7dSVERTwCx4/C2XOcuFg==
-X-CSE-MsgGUID: F+nxg2VIRZuDbPl6ireWFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; d="scan'208";a="204606423"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.154])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2025 00:16:27 -0700
-Date: Thu, 11 Sep 2025 09:16:24 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Sobin Thomas <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com
-Subject: Re: [PATCH v3 i-g-t 1/1] tests/intel/xe_compute_preempt: Compute
- preemption check
-Message-ID: <z2dy75pz7bcf4k5uiqqo4dz4gzqlwnl54pn7ifbyhxkleookxs@33sg4hlmku7j>
-References: <20250910171959.1852534-1-sobin.thomas@intel.com>
- <20250910171959.1852534-2-sobin.thomas@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4513910EA21;
+	Thu, 11 Sep 2025 07:39:54 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 255F210EA21;
+ Thu, 11 Sep 2025 07:39:53 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8996897400214447781=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910171959.1852534-2-sobin.thomas@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fquery=3A_P?=
+ =?utf-8?q?rint_both_GT_and_tile_in_query-engines_test_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Varun Gupta" <varun.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 11 Sep 2025 07:39:53 -0000
+Message-ID: <175757639314.324297.7353568804821907099@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250911060812.648416-1-varun.gupta@intel.com>
+In-Reply-To: <20250911060812.648416-1-varun.gupta@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,163 +37,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Sep 10, 2025 at 05:19:59PM +0000, Sobin Thomas wrote:
-> On platforms like PVC that lack walker mid-thread preemption, running
-> tests in forked threads can cause inconsistent states due to mid-
-> execution igt_skip calls. This patch adds a kernel preemption check
-> at the start of each subtest to ensure consistent behavior. If the
-> GPU lacks required preemption, the test is skipped gracefully.
-> 
-> v2: Moved compatibility check to igt_fixture per review.
-> v3: - Added thread group preemption and WMTP checks;
->     - Introduced enum flags for preemption types. [Zbigniew]
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-> ---
->  lib/intel_compute.c              | 22 ++++++++++++++++++++++
->  lib/intel_compute.h              |  7 +++++++
->  tests/intel/xe_compute_preempt.c |  6 ++++++
->  3 files changed, 35 insertions(+)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 147dd2916..7538c4b42 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -2193,21 +2193,25 @@ static const struct {
->  			     bool threadgroup_preemption,
->  			     enum execenv_alloc_prefs alloc_prefs);
->  	uint32_t compat;
-> +	enum xe_compute_preempt_type preempt_type;
->  } intel_compute_preempt_batches[] = {
->  	{
->  		.ip_ver = IP_VER(20, 01),
->  		.compute_exec = xe2lpg_compute_preempt_exec,
->  		.compat = COMPAT_DRIVER_XE,
-> +		.preempt_type = PREEMPT_WMTP | PREEMPT_TGP,
->  	},
->  	{
->  		.ip_ver = IP_VER(20, 04),
->  		.compute_exec = xe2lpg_compute_preempt_exec,
->  		.compat = COMPAT_DRIVER_XE,
-> +		.preempt_type = PREEMPT_WMTP | PREEMPT_TGP,
->  	},
->  	{
->  		.ip_ver = IP_VER(30, 00),
->  		.compute_exec = xe2lpg_compute_preempt_exec,
->  		.compat = COMPAT_DRIVER_XE,
-> +		.preempt_type = PREEMPT_WMTP | PREEMPT_TGP,
->  	},
->  };
->  
-> @@ -2260,6 +2264,24 @@ static bool __run_intel_compute_kernel_preempt(int fd,
+--===============8996897400214447781==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please add here check similar to compat, but for wmtp/tgp call. Just for
-making sure if someone wouldn't use check_kernel_preempt().
+== Series Details ==
 
---
-Zbigniew
+Series: tests/intel/xe_query: Print both GT and tile in query-engines test (rev2)
+URL   : https://patchwork.freedesktop.org/series/154318/
+State : success
 
->  
->  	return true;
->  }
-> +
-> +bool check_kernel_preempt(int fd, enum xe_compute_preempt_type required_preempt)
-> +{
-> +	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-> +	unsigned int batch;
-> +
-> +	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
-> +		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
-> +			break;
-> +
-> +	if (required_preempt &&
-> +	    !(intel_compute_preempt_batches[batch].preempt_type & required_preempt)) {
-> +		igt_info("Preemption type not supported %x", required_preempt);
-> +		return false;
-> +	}
-> +	return true;
-> +}
-> +
->  /**
->   * run_intel_compute_kernel_preempt - runs compute kernels to
->   * exercise preemption scenario.
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index 412791d07..b70cd7185 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -71,6 +71,11 @@ enum execenv_alloc_prefs {
->  	EXECENV_PREF_VRAM_IF_POSSIBLE,
->  };
->  
-> +enum xe_compute_preempt_type {
-> +	PREEMPT_TGP  = 1 << 0,    /* ThreadGroup Preemption */
-> +	PREEMPT_WMTP  = 1 << 1,  /* Walker Mid Thread Preemption */
-> +};
-> +
->  extern const struct intel_compute_kernels intel_compute_square_kernels[];
->  
->  bool run_intel_compute_kernel(int fd, struct user_execenv *user,
-> @@ -81,4 +86,6 @@ bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_in
->  bool run_intel_compute_kernel_preempt(int fd, struct drm_xe_engine_class_instance *eci,
->  				      bool threadgroup_preemption,
->  				      enum execenv_alloc_prefs alloc_prefs);
-> +
-> +bool check_kernel_preempt(int fd, enum xe_compute_preempt_type required_preempt);
->  #endif	/* INTEL_COMPUTE_H */
-> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-> index c9b194869..a4c0bc59b 100644
-> --- a/tests/intel/xe_compute_preempt.c
-> +++ b/tests/intel/xe_compute_preempt.c
-> @@ -76,6 +76,7 @@ igt_main
->  	}
->  
->  	igt_subtest_with_dynamic("compute-preempt") {
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -86,6 +87,7 @@ igt_main
->  	}
->  
->  	igt_subtest_with_dynamic("compute-preempt-many") {
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -112,6 +114,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-all-ram") {
->  		igt_require(swap_mb > CONTEXT_MB * 10);
->  
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -138,6 +141,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-vram") {
->  		igt_require(xe_has_vram(xe));
->  
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -164,6 +168,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-vram-evict") {
->  		igt_require(xe_has_vram(xe));
->  
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -188,6 +193,7 @@ igt_main
->  	}
->  
->  	igt_subtest_with_dynamic("compute-threadgroup-preempt") {
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_TGP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> -- 
-> 2.34.1
-> 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8532_BAT -> XEIGTPW_13728_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13728_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-bmg-2:          [PASS][1] -> [FAIL][2] ([Intel XE#5507]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8532/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13728/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#4543]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8532/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13728/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#5507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8532 -> IGTPW_13728
+  * Linux: xe-3718-85cfc47b2b83d80db129438ad20d86008bb36ff6 -> xe-3722-e74a5e2dc4306c0a79d5f8d5f3ca81a274760f8c
+
+  IGTPW_13728: 13728
+  IGT_8532: 3b9f234d6efe0529a233b81bb0d5ffee5adddb01 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3718-85cfc47b2b83d80db129438ad20d86008bb36ff6: 85cfc47b2b83d80db129438ad20d86008bb36ff6
+  xe-3722-e74a5e2dc4306c0a79d5f8d5f3ca81a274760f8c: e74a5e2dc4306c0a79d5f8d5f3ca81a274760f8c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13728/index.html
+
+--===============8996897400214447781==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_query: Print both GT and tile in query-engines test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154318/">https://patchwork.freedesktop.org/series/154318/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13728/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13728/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8532_BAT -&gt; XEIGTPW_13728_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13728_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xe2@render:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8532/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13728/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507">Intel XE#5507</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8532/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13728/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8532 -&gt; IGTPW_13728</li>
+<li>Linux: xe-3718-85cfc47b2b83d80db129438ad20d86008bb36ff6 -&gt; xe-3722-e74a5e2dc4306c0a79d5f8d5f3ca81a274760f8c</li>
+</ul>
+<p>IGTPW_13728: 13728<br />
+  IGT_8532: 3b9f234d6efe0529a233b81bb0d5ffee5adddb01 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3718-85cfc47b2b83d80db129438ad20d86008bb36ff6: 85cfc47b2b83d80db129438ad20d86008bb36ff6<br />
+  xe-3722-e74a5e2dc4306c0a79d5f8d5f3ca81a274760f8c: e74a5e2dc4306c0a79d5f8d5f3ca81a274760f8c</p>
+
+</body>
+</html>
+
+--===============8996897400214447781==--
