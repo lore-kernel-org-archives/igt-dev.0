@@ -4,174 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92B05CA1016
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Sep 2025 06:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6089CA1016
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Sep 2025 06:59:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4BF5A10E08A;
-	Thu, 11 Sep 2025 06:49:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C17410EA2D;
+	Thu, 11 Sep 2025 06:59:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K0xbnvVL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mpy7ztzy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 497CE10E08A
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Sep 2025 06:49:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A6A0510EA21
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Sep 2025 06:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757573393; x=1789109393;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=1Ai1BjLNcuJ5avNE+0Mc1RecRKzVK6gFNnYj/x66PT4=;
- b=K0xbnvVLr+GIji4fVWK1QVqTK7FlugmuNQPWwkJemjSEmxVMANgOiOKr
- 9fRwOJDAXyOUCfNWSHNzhYjNzjoOpBz05XXvFbsJUkkEsBqjTSxbfS/W4
- DjPlk2gSFqwiN3hI8Dt4HXtKogBUFBNcrHQSPBCdIzv9MMZHXqTestbw8
- n2EBke8JHGEM4kRXfr+vOMhkd7ePJfmR+nbCEOdMwYFzYmqBGnWKSS1N6
- olCxyCoMCpLQEvT77KVR36/93vuH0grwXMTmAA5nZl8eE6Aq6V3Biw/Dp
- YzEDTPPwmOtcth0KbT6UJ0Dj00lrw5afPaKUsPLQ2tf0JqPdCgn1VcmSm w==;
-X-CSE-ConnectionGUID: 4dL2C/1mSKSnOoW5Khc8rw==
-X-CSE-MsgGUID: wUikrzhPSKmbid0OXNaGPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59814792"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="59814792"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2025 23:49:47 -0700
-X-CSE-ConnectionGUID: IMZkXwGRTC+nVi35qZ5zwg==
-X-CSE-MsgGUID: 1brwPczNSIuGW7E9/pw+9w==
+ t=1757573973; x=1789109973;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=h7CQl4N9M6bLlLWcwSTt2VmMolwkiY9wMdw7D11OTe8=;
+ b=mpy7ztzyZYhZngLSHWFvuj7qUwM0mnvezJiT6QxOu+B3mHF42VLJTwHc
+ ZeorDEJkASlmOMP+Mj6gd0I8D3yo7KANXEaBKtDgmVaQ8dALRyIQRhtOM
+ Umt30QV5tK79avL6vK3k+RXOQHzdIL5DhCffSB2K4roOKyMKAZXNgGEq6
+ 6+VkLsGepuDvEASozMMLXpDkaj/x+UySZvg4+zfjWV9BvImtYZOxH/5o7
+ dD9gFWeP7V5Kmr/rgZS4RPKdqN56hdwi0F6F42mq66XId5eoZAcTMOQn3
+ nskNxLndzkbefJEwhizyTn0QkPSZywLUmIPH1ZlhTlIJz8RCTnycUxljM g==;
+X-CSE-ConnectionGUID: ubPbf5loRam79s1i94maJw==
+X-CSE-MsgGUID: RpFo+sDBRUKtPgXxrgjuQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="85340450"
+X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; d="scan'208";a="85340450"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2025 23:59:33 -0700
+X-CSE-ConnectionGUID: q+xi+Qw2Q5WaUD8W1ACQsA==
+X-CSE-MsgGUID: 6LgMZVFfSHGXgj56tu1jmQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; d="scan'208";a="177912534"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2025 23:49:46 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 10 Sep 2025 23:49:44 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Wed, 10 Sep 2025 23:49:44 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.68)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 10 Sep 2025 23:49:43 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lS07Qf1kVpSWKgmGMk4gJ2+xhcSyseGNrRxSqmJVIsr6B+sXt0iKKsJa8FoaZLsjuoajfQZ18Fy2EK8chWAyTUrmranq0lx2a4/ThhIwAVOhDVT03JKICwp4ifBZ9aHDNZwhvxW7fIJ0vveGwDfDvovW5vBltRvU+1G6060J08JKgXPdF2Jmcg2SIRWcM/Wb/aruooE9F4Fo0c1yrXAVvwkoyO2uN8bmlhOK119N3cOEQ0dFEygBO8t5C/EgsbtkTvODmu6f8UUUfiZQ9buEoV3L5pGMpzw5qvtsBo45JVgi4HyXg7qw9D03uAXw23+ZmV4o1iyVgGQf/SdmOA59iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zVeCx0XyUzEbvyalK9TchddGCwmzC0SQM4HZq1fIXOU=;
- b=fV28VEEMOmxRcp2oORopNjv+ylrmspgylLF8ghHKfGEY3ylDTSJq7ajGeBPwmHOWLK+kSrA2PIrC0FM9/EQIgb3Fb4Bgv8GKy4m4zZTiaRN+nH05afCXn8g6+Rx48KLOEokA1bJ96wGATvsJGSTWemWo+TgKukcOBeSv0zbXdcaZ3zH9VAtnFWUD4LvHOWF8QmeITKkACN0ifguyo8CTxj2xkADVP5CMzjduqkPNyg5jsNOmhp86RDuusht9IO6R65wIec0FOzzNfAZJmURZqe8lrMGqZXid7bNi3CCv/r2QE6dPOtETaAAjTz7238owiytf8bJAR+5Rv6+egAwGQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
- by CYXPR11MB8730.namprd11.prod.outlook.com (2603:10b6:930:e3::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Thu, 11 Sep
- 2025 06:49:42 +0000
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::1670:23da:3abe:c525]) by CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::1670:23da:3abe:c525%5]) with mapi id 15.20.9094.021; Thu, 11 Sep 2025
- 06:49:42 +0000
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Thomas, Sobin" <sobin.thomas@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Konieczny,
- Kamil" <kamil.konieczny@intel.com>, "Thomas, Sobin" <sobin.thomas@intel.com>
-Subject: RE: [PATCH v3 i-g-t 1/1] tests/intel/xe_compute_preempt: Compute
- preemption check
-Thread-Topic: [PATCH v3 i-g-t 1/1] tests/intel/xe_compute_preempt: Compute
- preemption check
-Thread-Index: AQHcInc32mD5QfxiNESuPDgWV9QjL7SNieyw
-Date: Thu, 11 Sep 2025 06:49:41 +0000
-Message-ID: <CH3PR11MB843412041E1150999B18C36A8D09A@CH3PR11MB8434.namprd11.prod.outlook.com>
-References: <20250910171959.1852534-1-sobin.thomas@intel.com>
- <20250910171959.1852534-2-sobin.thomas@intel.com>
-In-Reply-To: <20250910171959.1852534-2-sobin.thomas@intel.com>
-Accept-Language: en-IN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|CYXPR11MB8730:EE_
-x-ms-office365-filtering-correlation-id: 0a2952a7-f518-4d3d-f5ed-08ddf0ff62b4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|38070700021|7053199007; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?stWT5yJOPBIiUkp7Ifz+r7k4WRZFx4J1apsi7NsVuPd+8to3sa5kReOFVU6s?=
- =?us-ascii?Q?h8EM3vMN6p75WIA4HKV0svke0JOu4nFbb/+gEfN6J3ebjsc7JM8VNC013Tyw?=
- =?us-ascii?Q?LTNBMg3EVO57UtvE0k6+72AhPyvGaStAhEIqXx5qLU6OM+jwdnBJUw8CuS0v?=
- =?us-ascii?Q?beEs/bDc910XiS/FWi1XqODvENStiwRB7f1F52Nrot6Jyvl0OLn2inl2olxY?=
- =?us-ascii?Q?2AWfq/IoYLYcXg9i3UeG+BHlXT44CxZOy4G1ibdYtGxnbUt0LKw/w7yKvmuu?=
- =?us-ascii?Q?fVRIvlrjn0K/yZh/ddFFLxKsfxHemR9IqrZ/Gp5hejxbsaHPzR5jJyP0NKup?=
- =?us-ascii?Q?9n0Sy3VdLav6dx9HBWUhWEWm/UJSRNJybtZVsWl3X3Qk4poMqSJsrAd3VwNR?=
- =?us-ascii?Q?s9ZKKutE/gi5IqMm4AX+JE8r7/iI+asyB4Ip5qVwi7TsB5z4/mNOJGeTr97J?=
- =?us-ascii?Q?+FRe0nVmBJgNUXSOuXM36QXi4VPHWG0cA6O23o9vyPBf7bR5Daf0Bt8B/C5N?=
- =?us-ascii?Q?ukdVZ3OQHv7bwVsbKjVGWndMGQwmE0Px3jXpOuKzRb/V6yUzcGMTJWF3rywJ?=
- =?us-ascii?Q?DmiJnzp36DidrcvaI0ElOnWmHlCwi7iLXwZzDUdqq6HX1GtPpqPu3Xp+8FAl?=
- =?us-ascii?Q?U1XDHv4p6DLrYjRECwvR/3SOPDr85a7hmQGQbWn1LwpidPmlEiUmr1mY7rLp?=
- =?us-ascii?Q?UNtA6eK5jmkwZQQ2iVoOy2wcOQpaWY+Quj6JKRTYjLJZDspYdQFGIF+RVV95?=
- =?us-ascii?Q?lZ+GvoKrykGC7y8CeIWtOrZ48M8FlxLpQS9OcwlaXlKuypouNi7z9/WqOBPv?=
- =?us-ascii?Q?gZKxY0+4dCRBASsWnEdgLtIq0O8vIyRIbdbu5vaq5JIWuHK7ZgHL92bMBUmd?=
- =?us-ascii?Q?dlU04KG0qWGAC0vjFZZViByDggPvEmxkl7W0N3Oucto5dE4mu7+IWvjINnL6?=
- =?us-ascii?Q?0RjAunLQCQibjEvxF8MfY/5ypjdNQNVs8WCbc5KUtA2mU99pUncp6LsdY6yw?=
- =?us-ascii?Q?JR3VIzAEM4mTYdeCb3QuGIjdmwFEvHIpljFtSysvPk2OXN+sRcsVuTVShSXD?=
- =?us-ascii?Q?MkQEpRo8k8+rWqY/l2tyMFZZbNrrqq0o1ge25DyoyDUls7iqTqVjUQynaO3M?=
- =?us-ascii?Q?k14paCsbsq+moo0rZafXZ4TsCnuLpe24YcPgPD/UAlR5C59ECnX7cJdp2uXb?=
- =?us-ascii?Q?r2I4WVBMn7Fi5i6+3wGeEPymERgG5NPi7qZwiYkelQJE8tVvphU+mTcIB8GK?=
- =?us-ascii?Q?ojdaTTzVeUDCT6JTM4Huyu7WswHr9K9HSlMFXVvRLxkPL+MtTKrKtuovxy7w?=
- =?us-ascii?Q?g9w6oSth47JUMmD6o+pBLaXCgTOPMWArv/zcBUTyL013AUpqB965N0Cw8oqN?=
- =?us-ascii?Q?f/gCWXFmhAOBnSR1iKz2sr1OE15tkmiiWEJKTRq2T3TSmYVlx42rxBTuPDG8?=
- =?us-ascii?Q?99sFuvT9t5FylbK/qkNbF7b9K4nmQ2q7scTrSE88kbTsuYvk+UN6iqh7YFFk?=
- =?us-ascii?Q?1BDWyn6sNtWikxc=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(38070700021)(7053199007); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ED6P5v4TYCXphaGtBfq2GrKdyMOexLqafmbMC5EUksEBZSWhgU+gFiv6XIqC?=
- =?us-ascii?Q?I7B3MTRtfgkaKXWS1hCfUp5E9Uzp78usP4oEnRUSeKLbxLP+rw47n+y7QqaN?=
- =?us-ascii?Q?aABfzFr6KANabqnNa4/GX2hWZ7VyGXvzcKEHcc0vtN7KfsRtuniqOv2C8M9D?=
- =?us-ascii?Q?s1FN+lwWTTdbef6UXEGHOn0kAbomcdfEYBg2IncfXJ3yThPZbuKN08vMBKUz?=
- =?us-ascii?Q?bpmobCsk+lE4obr2kWVQtk+lbIkF/aige9rrsYt5/KvatvSXeucB4Y0u2Kyn?=
- =?us-ascii?Q?ntQSSx+Fkvb6psXr2MhBUbSxd1XX5G+7nKxadj1l+wbCivGCnIz32nDWy73Z?=
- =?us-ascii?Q?ooxG2HI4C+OX3oGyKrpqRCJrPF1l3vC5+yYhps98Y2eOtu4CWlkYcUlZ8VwK?=
- =?us-ascii?Q?d9x9TVcwLIHBPDNM2OHKld1QU1j/j9EloRK0pdmbjPOMtvupuWNXRgs7ym9s?=
- =?us-ascii?Q?dI7qU93ojliImzaHJYgDb6ufzfJ6vSAVfgY/2X9RnaM3sDKtdMUdAidZCvSk?=
- =?us-ascii?Q?G3De1VWM3TUqRtUJEh9/NuMdZIvH9vz4rvqbw5VWQFrGoWumrcaWsKojjQQ9?=
- =?us-ascii?Q?HJ1HrwyWGVWtf3USNiX9zjZTSVfQoeuvUhrm1KU/WrhV10I4Kvmv+EjipmGr?=
- =?us-ascii?Q?1muIqiCMDrhHUJLNnj4p1dDo3jzSDMP2R46CQq+3UYY2S1tTTyNtrng4E5A2?=
- =?us-ascii?Q?2LYFciC8AqzPDSQzZlRv6A0Kstjp0M3MgbXedvmY+70pt/qDSX/i7GocW7tB?=
- =?us-ascii?Q?vMmz1xTVxKgttduW2kxokNdNbm4YZZrGLZWvHC0c1dcFwvuyvsyg4jgI9iN2?=
- =?us-ascii?Q?vEO94bX41oyf/8c0zP1ZhO2uxqxftgjupT+MhuyN9DY9eWd5FP/Csj5DSnIn?=
- =?us-ascii?Q?nEGGRraovLh9FFBlA837zug3O66Ia63+Vp5Fno69xMraC7WExt/29+Z/lLLq?=
- =?us-ascii?Q?G/8EPJeRjVE8kz/nTZXNJxrZ6gM+EDwQDMEvJgdwTTXcGogyFOANzMIxD1sX?=
- =?us-ascii?Q?kyfY9qr2Ja9Plx0DTcXYpix6PuT8mw4XWd4pxUM/Y+otWP2Diwi7uAgnv0nv?=
- =?us-ascii?Q?ay0vCTtH330UtitT8hIV+qPTgxFYa1nNSHab14TklyDvVEboE+lUkxo6pzlD?=
- =?us-ascii?Q?l7MiYawaDpFaXN9E01GJCeUWstgv2zZXFiBUJzdWAM87tn6pul3gU7a5Np8w?=
- =?us-ascii?Q?hU0Yx/FG94B9/z0fpfvdZelygA+rrUi99zTWav/w3waM0HwyMAdM9YwnGiRm?=
- =?us-ascii?Q?oCHW3tJ938k+CeceLAgnrxKGs13E86k9WlKcU+cfJKmwCn6pIci+eQ/67RCx?=
- =?us-ascii?Q?I+wQV9Wycn3orYuYrBHSo9yCv3ZIb+wIXKAy6WQpVVnX81O8X9yQxMOLrYqK?=
- =?us-ascii?Q?UvbTwZh+eUsa48QTAipDh7PdxRMmSqY9rDbB8/4hAgH7iL2ePa3GiVPRCGof?=
- =?us-ascii?Q?qL/NNPTN9HQB5/4qFM4bX6x86x9DU5LpPXpAVPSXQs3/m8Mda0h6byQ/bPXp?=
- =?us-ascii?Q?nFox5VB0lWbOLxE55twmLCghHNL7DyDpEUmi12qPjNke7BkhSDVORRjJYFsD?=
- =?us-ascii?Q?sSYLeGiHiHDG33uHoc++OxgA/xKbPZIMW0WWuXZ+8/qBBhIl9s/y9YGFxieD?=
- =?us-ascii?Q?Lw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.154])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2025 23:59:30 -0700
+Date: Thu, 11 Sep 2025 08:59:27 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v3 3/3] tests/intel/xe_compute: Added eu-busy-10s
+ test
+Message-ID: <e4hgfddh3uouq57nk3vcgjwoffixgdi6hyvsbzl3kig2aaoz6r@nw66hvgeydhw>
+References: <20250908144629.938071-1-nishit.sharma@intel.com>
+ <20250908144629.938071-4-nishit.sharma@intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a2952a7-f518-4d3d-f5ed-08ddf0ff62b4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2025 06:49:41.9567 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3KQQEwqFI4ze+KQNmgKGBO5qr/86XcGxFAjY+sW7YUvADwPAaHwDRSBvVoqGGEEVa/Ir5X6Mt6bAHf15if6omi2QFwY8qrfC3L4OAF7feRw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR11MB8730
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250908144629.938071-4-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -187,191 +70,611 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Sobin
-> Thomas
-> Sent: 10 September 2025 10:50 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>; Konieczny,
-> Kamil <kamil.konieczny@intel.com>; Thomas, Sobin
-> <sobin.thomas@intel.com>
-> Subject: [PATCH v3 i-g-t 1/1] tests/intel/xe_compute_preempt: Compute
-> preemption check
->=20
-> On platforms like PVC that lack walker mid-thread preemption, running tes=
-ts
-> in forked threads can cause inconsistent states due to mid- execution igt=
-_skip
-> calls. This patch adds a kernel preemption check at the start of each sub=
-test to
-> ensure consistent behavior. If the GPU lacks required preemption, the tes=
-t is
-> skipped gracefully.
->=20
-> v2: Moved compatibility check to igt_fixture per review.
-> v3: - Added thread group preemption and WMTP checks;
->     - Introduced enum flags for preemption types. [Zbigniew]
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-You are sending every version as new series but it should be sent as new ve=
-rsion for same series. So that it would be easy to review. Please check tha=
-t out.
-
+On Mon, Sep 08, 2025 at 02:46:29PM +0000, nishit.sharma@intel.com wrote:
+> From: Nishit Sharma <nishit.sharma@intel.com>
+> 
+> Added multi threading to utilize available CCS instances as per num_slices
+> available in /sys/class/drm/cardX/device/tileX/gtX/num_cslices.
+> Depending upon num_slices, number of threads will be created and
+> schedule compute workload in different CCS instances. Sleep is
+> called via loop_kernel_duration so that HW engine runs for sleep duration.
+> During execution per EU utlization percentage is grabbed and displayed
+> on console. Added igt_skip() if sriov is enabled in platform, so if
+> sriov_numvfs > 0 then test will be skipped.
+> 
+> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 > ---
->  lib/intel_compute.c              | 22 ++++++++++++++++++++++
->  lib/intel_compute.h              |  7 +++++++
->  tests/intel/xe_compute_preempt.c |  6 ++++++
->  3 files changed, 35 insertions(+)
->=20
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c index
-> 147dd2916..7538c4b42 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -2193,21 +2193,25 @@ static const struct {
->  			     bool threadgroup_preemption,
->  			     enum execenv_alloc_prefs alloc_prefs);
->  	uint32_t compat;
-> +	enum xe_compute_preempt_type preempt_type;
->  } intel_compute_preempt_batches[] =3D {
->  	{
->  		.ip_ver =3D IP_VER(20, 01),
->  		.compute_exec =3D xe2lpg_compute_preempt_exec,
->  		.compat =3D COMPAT_DRIVER_XE,
-> +		.preempt_type =3D PREEMPT_WMTP | PREEMPT_TGP,
->  	},
->  	{
->  		.ip_ver =3D IP_VER(20, 04),
->  		.compute_exec =3D xe2lpg_compute_preempt_exec,
->  		.compat =3D COMPAT_DRIVER_XE,
-> +		.preempt_type =3D PREEMPT_WMTP | PREEMPT_TGP,
->  	},
->  	{
->  		.ip_ver =3D IP_VER(30, 00),
->  		.compute_exec =3D xe2lpg_compute_preempt_exec,
->  		.compat =3D COMPAT_DRIVER_XE,
-> +		.preempt_type =3D PREEMPT_WMTP | PREEMPT_TGP,
->  	},
->  };
->=20
-> @@ -2260,6 +2264,24 @@ static bool
-> __run_intel_compute_kernel_preempt(int fd,
->=20
->  	return true;
->  }
+>  tests/intel/igt_eu_perf.h | 255 ++++++++++++++++++++++++++++++++++++++
+>  tests/intel/xe_compute.c  | 233 ++++++++++++++++++++++++++++++++++
+>  tests/meson.build         |   1 +
+>  3 files changed, 489 insertions(+)
+>  create mode 100644 tests/intel/igt_eu_perf.h
+> 
+> diff --git a/tests/intel/igt_eu_perf.h b/tests/intel/igt_eu_perf.h
+
+It seems you're trying to abstract collecting counters to a separate file.
+That's fine, but there're some things you should to follow.
+
+> new file mode 100644
+> index 000000000..b2758a941
+> --- /dev/null
+> +++ b/tests/intel/igt_eu_perf.h
+
+Name suggests I can use it in i915.
+
+> @@ -0,0 +1,255 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2025 Intel Corporation
+> + */
 > +
-You haven't removed the below code in  __run_intel_compute_kernel_preempt w=
-hich you made that change in previous version.
-> +bool check_kernel_preempt(int fd, enum xe_compute_preempt_type
-> +required_preempt) {
-> +	unsigned int ip_ver =3D intel_graphics_ver(intel_get_drm_devid(fd));
-> +	unsigned int batch;
+> +#ifndef IGT_EU_PERF_H
+> +#define IGT_EU_PERF_H
 > +
-> +	for (batch =3D 0; batch < ARRAY_SIZE(intel_compute_preempt_batches);
-> batch++)
-> +		if (ip_ver =3D=3D intel_compute_preempt_batches[batch].ip_ver)
-> +			break;
+> +#include "igt_perf.h"
 > +
-Here there is no condition to check for ip version failure. If ip version i=
-s not found then also it might return true. Please check that out.
-> +	if (required_preempt &&
-> +	    !(intel_compute_preempt_batches[batch].preempt_type &
-> required_preempt)) {
-> +		igt_info("Preemption type not supported %x",
-> required_preempt);
-> +		return false;
+> +#define engine_ptr(pmu_device, n)       (&(pmu_device)->engine + (n))
+> +
+> +bool eu_busy, stop_top;
+> +double eu_perc;
+
+Globals in header file? Really bad idea.
+
+> +
+> +struct xe_pmu_pair {
+> +	uint64_t cur;
+> +	uint64_t prev;
+> +};
+> +
+> +struct xe_pmu_counter {
+> +	uint64_t type;
+> +	uint64_t config;
+> +	unsigned int idx;
+> +	struct xe_pmu_pair val;
+> +	int fd;
+> +	bool present;
+> +};
+> +
+> +struct xe_engine {
+> +	const char *name;
+> +	struct drm_xe_engine_class_instance drm_xe_engine;
+> +	struct xe_pmu_counter engine_active_ticks;
+> +	struct xe_pmu_counter engine_total_ticks;
+> +};
+> +
+> +struct xe_pmu_device {
+> +	unsigned int num_engines;
+> +	unsigned int num_counters;
+> +	int fd;
+> +	char *device;
+> +	struct xe_engine engine;
+> +};
+> +
+> +struct thread_data {
+> +	pthread_t thread;
+> +	pthread_mutex_t *mutex;
+> +	pthread_cond_t *cond;
+> +	int class;
+> +	int fd;
+> +	int gt;
+> +	struct user_execenv *execenv;
+> +	struct drm_xe_engine_class_instance *eci;
+> +	bool *go;
+> +};
+
+thread_data is not used, what is for?
+
+> +
+> +static char *pmu_name(int fd)
+> +{
+> +	char device[30];
+> +
+> +	xe_perf_device(fd, device, sizeof(device));
+> +
+> +	return strdup(device);
+> +}
+> +
+> +static int
+> +_open_pmu(uint64_t type, unsigned int *cnt,
+> +	  struct xe_pmu_counter *pmu, int *fd)
+> +{
+> +	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
+> +
+> +	if (fd__ >= 0) {
+> +		if (*fd == -1)
+> +			*fd = fd__;
+> +		pmu->present = true;
+> +		pmu->idx = (*cnt)++;
+> +		pmu->fd = fd__;
 > +	}
-> +	return true;
+> +
+> +	return fd__;
+> +}
+> +
+> +static struct xe_pmu_device
+> +*xe_init_engines(int dev_fd)
+> +{
+> +	struct xe_pmu_device *engines;
+> +	int ret = 0, engine_count = 0;
+> +	char device[30];
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	int fd;
+> +	uint32_t engine_class, engine_instance, gt_shift;
+> +	uint64_t engine_active_config, engine_total_config;
+> +	uint64_t type = igt_perf_type_id(xe_perf_device(dev_fd, device, sizeof(device)));
+> +
+> +	xe_device_get(dev_fd);
+> +
+> +	xe_for_each_engine(dev_fd, hwe)
+> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
+> +			engine_count++;
+
+You provide sth what is kind of library part, but you're narrowing
+its use to compute. What if I would like to check bcs engine?
+
+And worst thing here are static functions (in the header file).
+
+> +
+> +	engines = calloc(1, sizeof(struct xe_pmu_device) +
+> +			engine_count * sizeof(struct xe_engine));
+> +	if (!engines)
+> +		return NULL;
+> +
+> +	engines->num_engines = 0;
+> +	engines->device = pmu_name(dev_fd);
+> +	engines->fd = -1;
+> +	engines->num_counters = 0;
+> +
+> +	perf_event_format(engines->device, "gt", &gt_shift);
+> +	perf_event_format(engines->device, "engine_class", &engine_class);
+> +	perf_event_format(engines->device, "engine_instance", &engine_instance);
+> +	ret = perf_event_config(engines->device,
+> +			"engine-active-ticks",
+> +			&engine_active_config);
+> +	if (ret < 0)
+> +		return NULL;
+> +	ret = perf_event_config(engines->device,
+> +			"engine-total-ticks",
+> +			&engine_total_config);
+> +	if (ret < 0)
+> +		return NULL;
+> +	xe_for_each_engine(dev_fd, hwe) {
+> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
+> +			uint64_t  param_config;
+> +			struct xe_engine *engine;
+> +
+> +			engine = engine_ptr(engines, engines->num_engines);
+> +			param_config = (uint64_t)hwe->gt_id << gt_shift |
+> +				hwe->engine_class << engine_class |
+> +				hwe->engine_instance << engine_instance;
+> +			engine->drm_xe_engine = *hwe;
+> +			engine->engine_active_ticks.config = engine_active_config | param_config;
+> +			engine->engine_total_ticks.config = engine_total_config | param_config;
+> +
+> +			if (engine->engine_active_ticks.config == -1 ||
+> +					engine->engine_total_ticks.config == -1) {
+> +				ret = ENOENT;
+> +				break;
+> +			}
+> +
+> +			fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
+> +					&engines->fd);
+> +			if (fd < 0)
+> +				return NULL;
+> +
+> +			fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
+> +					&engines->fd);
+> +			if (fd < 0)
+> +				return NULL;
+> +
+> +			engines->num_engines++;
+> +		}
+> +	}
+> +
+> +	return engines;
+> +}
+> +
+> +static void
+> +eu_util_free(struct xe_pmu_device *pmu_device)
+> +{
+> +	struct xe_engine *eng;
+> +	struct xe_pmu_counter pmu;
+> +
+> +	igt_info("EU cleanup process\n");
+> +
+> +	if (pmu_device) {
+> +		for (int j = 0; j < pmu_device->num_engines ; j++) {
+> +			eng = engine_ptr(pmu_device, j);
+> +			pmu = eng->engine_active_ticks;
+> +			if (pmu.present)
+> +				close(pmu.fd);
+> +
+> +			pmu = eng->engine_total_ticks;
+> +			if (pmu.present)
+> +				close(pmu.fd);
+> +		}
+> +		free(pmu_device);
+> +	}
+> +}
+> +
+> +static void
+> +update_sample(struct xe_pmu_counter *counter, uint64_t *val)
+> +{
+> +	if (counter->present) {
+> +		counter->val.prev = counter->val.cur;
+> +		counter->val.cur = val[counter->idx];
+> +	}
+> +}
+> +
+> +static void xe_pmu_device_sample(const void *obj)
+> +{
+> +	struct xe_pmu_device *engines = ((struct xe_pmu_device *)obj);
+> +	const int num_val = engines->num_counters;
+> +	uint64_t val[2 + num_val];
+> +	uint64_t buf[2 + num_val];
+> +	unsigned int i;
+> +	ssize_t len;
+> +
+> +	memset(buf, 0, sizeof(buf));
+> +	len = read(engines->fd, buf, sizeof(buf));
+> +	assert(len == sizeof(buf));
+> +
+> +	for (i = 0; i < num_val; i++)
+> +		val[i] = buf[2 + i];
+> +
+> +	for (i = 0; i < engines->num_engines; i++) {
+> +		struct xe_engine *engine = engine_ptr(engines, i);
+> +
+> +		update_sample(&engine->engine_active_ticks, val);
+> +		update_sample(&engine->engine_total_ticks, val);
+> +	}
+> +}
+> +
+> +static double
+> +pmu_active_percentage(struct xe_engine *engine)
+> +{
+> +	double pmu_active_ticks = engine->engine_active_ticks.val.cur -
+> +		engine->engine_active_ticks.val.prev;
+> +	double pmu_total_ticks = engine->engine_total_ticks.val.cur -
+> +		engine->engine_total_ticks.val.prev;
+> +	double percentage;
+> +
+> +	percentage = (pmu_active_ticks * 100) / pmu_total_ticks;
+> +	return percentage;
+> +}
+> +
+> +static void xe_print_perc(const void *obj)
+> +{
+> +	struct xe_pmu_device *pmu_device = ((struct xe_pmu_device *)obj);
+> +
+> +	for (unsigned int i = 0; i < pmu_device->num_engines; i++) {
+> +		double percentage;
+> +		struct xe_engine *engine = engine_ptr(pmu_device, i);
+> +
+> +		igt_assert(engine);
+> +
+> +		percentage = pmu_active_percentage(engine);
+> +		eu_perc = percentage;
+> +
+> +		igt_debug("Engine_instance :%d EU busyness :%5.1f\n",
+> +				engine->drm_xe_engine.engine_instance, percentage);
+> +		if (!percentage)
+> +			igt_debug("No workload scheduled, BU busyness :%5.1f expected\n",
+> +					percentage);
+> +		else if (percentage > 10.0) {
+> +			eu_busy = false;
+
+If gpu is doing some job and takes more than 10% it becomes
+not busy?
+
+> +			igt_info("Workload scheduled, ccs engine :%d utilized :%5.1f\n",
+> +					engine->drm_xe_engine.engine_instance, percentage);
+> +		}
+> +	}
+> +}
+> +#endif
+> +
+
+So if you want to provide universal mechanism to check engine
+busyness it should be more generic, not narrowed to compute only.
+And you should expose only necessary interface outside, keeping
+implementation details private. Another thing is such library
+code should be in separate patch and contain the documentation.
+
+
+> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> index d5641e428..4373a992e 100644
+> --- a/tests/intel/xe_compute.c
+> +++ b/tests/intel/xe_compute.c
+> @@ -19,6 +19,9 @@
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  
+> +#include "igt_sriov_device.h"
+> +#include "igt_eu_perf.h"
+> +
+>  #define LOOP_DURATION_2s	(1000000ull * 2)
+>  #define DURATION_MARGIN		0.2
+>  
+> @@ -242,6 +245,232 @@ test_compute_kernel_loop(uint64_t loop_duration)
+>  	drm_close_driver(fd);
+>  }
+>  
+> +static void
+> +*intel_compute_thread(void *data)
+> +{
+> +	struct thread_data *t = (struct thread_data *)data;
+> +
+> +	pthread_mutex_lock(t->mutex);
+> +	while (*t->go == 0)
+> +		pthread_cond_wait(t->cond, t->mutex);
+> +	pthread_mutex_unlock(t->mutex);
+> +
+> +	igt_info("Compute kernel executing on engine class :%s instance :%d gt: GT-%d\n",
+> +			xe_engine_class_string(t->eci->engine_class), t->eci->engine_instance,
+> +			t->eci->gt_id);
+> +
+> +	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd,
+> +				t->eci,
+> +				t->execenv,
+> +				EXECENV_PREF_VRAM_IF_POSSIBLE),
+> +			"Unable to run compute kernel successfully\n");
+> +	return NULL;
+> +}
+> +
+> +static void *show_eu_util(void *data)
+> +{
+> +	struct xe_pmu_device *pmu_device = NULL;
+> +	int dev_fd;
+> +	long n;
+> +
+> +	n = -1;
+> +	dev_fd = drm_open_driver(DRIVER_XE);
+> +
+> +	pmu_device = xe_init_engines(dev_fd);
+> +	if (!pmu_device) {
+> +		fprintf(stderr,
+> +				"Failed to initialize engines! (%s)\n",
+> +				strerror(errno));
+
+Why not igt_critical()?
+
+> +		drm_close_driver(dev_fd);
+> +		return NULL;
+> +	}
+> +
+> +	xe_pmu_device_sample(pmu_device);
+> +
+> +	while ((n != 0) && !stop_top) {
+> +		xe_pmu_device_sample(pmu_device);
+> +		xe_print_perc(pmu_device);
+> +		usleep(1 * LOOP_DURATION_2s);
+> +	}
+> +	eu_util_free(pmu_device);
+> +	drm_close_driver(dev_fd);
+> +	return NULL;
+> +}
+> +
+> +static void
+> +thread_init_eu_utils(void)
+> +{
+> +	pthread_t eu_utils;
+> +
+> +	pthread_create(&eu_utils, NULL, show_eu_util, NULL);
+> +}
+> +
+> +/* To avoid calling igt_skip in threads which can cause issue */
+> +static void
+> +igt_check_supported_pipeline(void)
+> +{
+> +	int fd;
+> +	unsigned int ip_ver;
+> +	const struct intel_compute_kernels *kernels;
+> +	struct user_execenv execenv = { 0 };
+> +	struct drm_xe_engine_class_instance *hwe;
+> +
+> +	fd = drm_open_driver(DRIVER_XE);
+> +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+> +	kernels = intel_compute_square_kernels;
+> +
+> +	while (kernels->kernel) {
+> +		if (ip_ver == kernels->ip_ver)
+> +			break;
+> +		kernels++;
+> +	}
+> +
+> +	/* loop_kernel_duration used as sleep to make EU busy for loop_duration */
+> +	execenv.loop_kernel_duration = 1000000;
+> +	execenv.kernel = kernels->loop_kernel;
+> +	execenv.kernel_size = kernels->loop_kernel_size;
+> +
+> +	xe_for_each_engine(fd, hwe) {
+> +		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+> +			continue;
+> +
+> +		igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, &execenv, EXECENV_PREF_SYSTEM),
+> +				"Unable to run compute kernel successfully\n");
+> +	}
+> +	drm_close_driver(fd);
+> +}
+> +
+> +/**
+> + * SUBTEST: eu-busy-10s
+> + * Functionality: OpenCL kernel
+> + * Description: Run loop_kernel for 10 seconds and observe EU business
+> + */
+> +static void
+> +test_eu_busy(uint64_t duration_sec)
+> +{
+> +	struct user_execenv execenv = { 0 };
+> +	struct thread_data *threads_data;
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	const struct intel_compute_kernels *kernels;
+> +	pthread_mutex_t mutex;
+> +	pthread_cond_t cond;
+> +	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
+> +	bool go = false;
+> +	int ccs_mode, gt_fd, fd;
+> +	u32 num_slices, ip_ver;
+> +	uint64_t gt_mask = get_gt_mask();
+> +
+> +	fd = drm_open_driver(DRIVER_XE);
+> +
+> +	igt_skip_on_f(igt_sriov_is_pf(fd) && igt_sriov_vfs_supported(fd),
+> +		     "Skipping test when SRIOV is enabled\n");
+> +	drm_close_driver(fd);
+> +
+> +	for_each_bit(gt_mask, gt) {
+> +		if (!get_num_cslices(gt, &num_slices))
+> +			continue;
+> +
+> +		gt_fd = gt_sysfs_open(gt);
+> +		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
+> +		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
+> +		close(gt_fd);
+> +	}
+> +
+> +	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
+> +			ccs_mode);
+> +
+> +	thread_init_eu_utils();
+
+What will happen if your collecting thread will fail for some
+reason? Executing rest of the code doesn't makes sense as you
+won't be able to collect counters.
+
+> +	usleep(1 * LOOP_DURATION_2s);
+> +
+> +	fd = drm_open_driver(DRIVER_XE);
+> +
+> +	igt_skip_on_f(igt_sriov_is_pf(fd) && igt_sriov_vfs_supported(fd),
+> +		     "Skipping test when SRIOV is enabled\n");
+> +
+> +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+> +	kernels = intel_compute_square_kernels;
+> +	while (kernels->kernel) {
+> +		if (ip_ver == kernels->ip_ver)
+> +			break;
+> +		kernels++;
+> +	}
+> +
+> +	/*
+> +	 * User should use different kernel if loop_kernel_duration not set
+> +	 * With loop kernel and loop duration it assumes we stop it via memory write
+> +	 *
+> +	 */
+> +
+> +	execenv.loop_kernel_duration = duration_sec;
+> +	execenv.kernel = kernels->loop_kernel;
+> +	execenv.kernel_size = kernels->loop_kernel_size;
+> +	drm_close_driver(fd);
+> +
+> +	/*
+> +	 * Calling igt_skip in threads can cause issue during execution
+> +	 * To avoid this check igt_check_supported_pipeline function called
+> +	 * to make sure igt_skip happens before creating threads
+> +	 *
+> +	 */
+> +	if (ip_ver < IP_VER(20, 0))
+> +		igt_check_supported_pipeline();
+
+Test makes sense for ver20 only. You can check this on the beginning
+of the test and skip if this condition is not met. If you want to
+check is loop_kernel supported it also should happen on the very
+beginning, before spawning any threads.
+
+In general - checking of test conditions should execute first, then
+rest. And do error handling.
+
+BTW - do we need to have separate threads for collecting pmu counters?
+Can't we simply read the counters before and after you spawn compute
+kernels. We don't need to visualize counters like gputop so two reads
+for each engine should be enough.
+
+--
+Zbigniew
+
+> +
+> +	gt_mask = get_gt_mask();
+> +
+> +	for_each_bit(gt_mask, gt) {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		xe_for_each_engine(fd, hwe) {
+> +			igt_assert(hwe);
+> +			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
+> +				++n_instances;
+> +		}
+> +		drm_close_driver(fd);
+> +	}
+> +
+> +	threads_data = calloc(n_instances, sizeof(*threads_data));
+> +	igt_assert(threads_data);
+> +
+> +	pthread_mutex_init(&mutex, 0);
+> +	pthread_cond_init(&cond, 0);
+> +
+> +	gt_mask = get_gt_mask();
+> +	fd = drm_open_driver(DRIVER_XE);
+> +	for_each_bit(gt_mask, gt) {
+> +		xe_for_each_engine(fd, hwe) {
+> +			if (hwe->gt_id != gt ||
+> +					hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+> +				continue;
+> +
+> +			threads_data[i].mutex = &mutex;
+> +			threads_data[i].cond = &cond;
+> +			threads_data[i].fd = fd;
+> +			threads_data[i].eci = hwe;
+> +			threads_data[i].go = &go;
+> +			threads_data[i].execenv = &execenv;
+> +			++n_threads;
+> +			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
+> +					&threads_data[i]);
+> +			++i;
+> +			++iterations;
+> +		}
+> +		pthread_mutex_lock(&mutex);
+> +		go = true;
+> +		pthread_cond_broadcast(&cond);
+> +		pthread_mutex_unlock(&mutex);
+> +
+> +		for (int val = 0; val < i; ++val)
+> +			pthread_join(threads_data[val].thread, NULL);
+> +
+> +		i = 0;
+> +		n_threads = 0;
+> +		iterations = 0;
+> +		stop_top = true;
+> +		eu_busy = true;
+> +	}
+> +	free(threads_data);
+> +	drm_close_driver(fd);
 > +}
 > +
 >  /**
->   * run_intel_compute_kernel_preempt - runs compute kernels to
->   * exercise preemption scenario.
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h index
-> 412791d07..b70cd7185 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -71,6 +71,11 @@ enum execenv_alloc_prefs {
->  	EXECENV_PREF_VRAM_IF_POSSIBLE,
->  };
->=20
-> +enum xe_compute_preempt_type {
-> +	PREEMPT_TGP  =3D 1 << 0,    /* ThreadGroup Preemption */
-> +	PREEMPT_WMTP  =3D 1 << 1,  /* Walker Mid Thread Preemption */ };
+>   * SUBTEST: compute-square
+>   * Mega feature: WMTP
+> @@ -283,4 +512,8 @@ igt_main
+>  	/* To test compute function stops after loop_kernel_duration */
+>  	igt_subtest("loop-duration-2s")
+>  		test_compute_kernel_loop(LOOP_DURATION_2s);
 > +
->  extern const struct intel_compute_kernels intel_compute_square_kernels[]=
-;
->=20
->  bool run_intel_compute_kernel(int fd, struct user_execenv *user, @@ -81,=
-4
-> +86,6 @@ bool xe_run_intel_compute_kernel_on_engine(int fd, struct
-> drm_xe_engine_class_in  bool run_intel_compute_kernel_preempt(int fd,
-> struct drm_xe_engine_class_instance *eci,
->  				      bool threadgroup_preemption,
->  				      enum execenv_alloc_prefs alloc_prefs);
-> +
-> +bool check_kernel_preempt(int fd, enum xe_compute_preempt_type
-> +required_preempt);
->  #endif	/* INTEL_COMPUTE_H */
-> diff --git a/tests/intel/xe_compute_preempt.c
-> b/tests/intel/xe_compute_preempt.c
-> index c9b194869..a4c0bc59b 100644
-> --- a/tests/intel/xe_compute_preempt.c
-> +++ b/tests/intel/xe_compute_preempt.c
-> @@ -76,6 +76,7 @@ igt_main
->  	}
->=20
->  	igt_subtest_with_dynamic("compute-preempt") {
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class !=3D
-> DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -86,6 +87,7 @@ igt_main
->  	}
->=20
->  	igt_subtest_with_dynamic("compute-preempt-many") {
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class !=3D
-> DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -112,6 +114,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-all-ram") {
->  		igt_require(swap_mb > CONTEXT_MB * 10);
->=20
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class !=3D
-> DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -138,6 +141,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-vram") {
->  		igt_require(xe_has_vram(xe));
->=20
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class !=3D
-> DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -164,6 +168,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-vram-evict") {
->  		igt_require(xe_has_vram(xe));
->=20
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class !=3D
-> DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -188,6 +193,7 @@ igt_main
->  	}
->=20
->  	igt_subtest_with_dynamic("compute-threadgroup-preempt") {
-> +		igt_require(check_kernel_preempt(xe, PREEMPT_TGP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class !=3D
-> DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> --
-> 2.34.1
-
+> +	/* test to check available EU utilisation in multi-ccs case */
+> +	igt_subtest("eu-busy-10s")
+> +		test_eu_busy(5 * LOOP_DURATION_2s);
+>  }
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a7b9375ed..a7ffc6383 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -408,6 +408,7 @@ extra_dependencies = {
+>  	'sw_sync': [ libatomic ],
+>  	'xe_fault_injection': [ lib_igt_xe_oa ],
+>  	'xe_oa': [ lib_igt_xe_oa ],
+> +        'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
+>  }
+>  
+>  test_executables = []
+> -- 
+> 2.43.0
+> 
