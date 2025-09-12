@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 645C1CAC58F
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Sep 2025 12:29:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DBDBCAC582
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Sep 2025 13:01:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2268710EC3D;
-	Fri, 12 Sep 2025 12:29:32 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TXsf527Z";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7349C10E1BD
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Sep 2025 12:29:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757680168; x=1789216168;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0iV+lXTzUPqg3yWj9xQEb/0zrucQa/lwqX/7MRU3OGw=;
- b=TXsf527ZqAht4jJnn77DhaoEpFavRk7guu24U+24piUxhc/7Bm7lpgkw
- EcCSPk/RvsI84CafsKQ3N4H86rU1zHiaf7uL5CMmVcYIIhrnVMFjXNMI4
- Y5Jimkw/xvy358AaU5Bv1hMMcH/cuBiRcRuky3TRvS73tWxJNDr4cOl5a
- SoCXnHtPYZ988ziAgoJ/1eqCuBgUoI/uyYDBSo1Ae5bM3EffxC1Ru26vb
- UD/3M9/qdelADKeFgpYc30Y1hufZ6ZdKhJwAVpCEm0UMUHZrheXZzkDwD
- mSTOloOlR3Uz+7/HY/4ziL6+aHN9PfOyI33nviOXr8MbKk/q2p08Ro22u w==;
-X-CSE-ConnectionGUID: AMaH1WZpTnWVjvdu3DQ4pg==
-X-CSE-MsgGUID: spiQowOpR0OiXK39YNCPKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="77635107"
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="77635107"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2025 05:26:52 -0700
-X-CSE-ConnectionGUID: gsQQH2dWRb2styWQVeqEJQ==
-X-CSE-MsgGUID: l6sqbGWQRKKDi4Za0DCOvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="177988916"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2025 05:26:47 -0700
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [i-g-t, v4,
- 1/3] tests/intel/xe_survivability: Add new xe_survivability test for
- i2c adapter
-Date: Fri, 12 Sep 2025 17:55:40 +0530
-Message-ID: <20250912122541.2238004-6-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250912122541.2238004-5-sk.anirban@intel.com>
-References: <20250912122541.2238004-5-sk.anirban@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 138A510E39A;
+	Fri, 12 Sep 2025 13:01:01 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B84A10E1CE;
+ Fri, 12 Sep 2025 13:01:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8466710930687689197=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsurvivabil?=
+ =?utf-8?q?ity=3A_Add_xe=5Fsurvivability_test_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sk Anirban" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 12 Sep 2025 13:01:00 -0000
+Message-ID: <175768206056.329996.13832053505591833347@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250912122541.2238004-5-sk.anirban@intel.com>
+In-Reply-To: <20250912122541.2238004-5-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,212 +37,408 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add i2c adapter presence check in survivability mode to ensure
-the Add-In Management Controller (AMC) can receive firmware updates
-when the device is in survivability mode.
+--===============8466710930687689197==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Create new file for test (Riana)
-v3: Update subject, description, nitpick (Kamil)
-    Use drm_close_driver() (Kamil)
-v4: Update test details (Riana)
-    Align with xe_configfs (Riana)
-    Create separate function for sysfs (Riana)
+== Series Details ==
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- tests/intel/xe_survivability.c | 167 +++++++++++++++++++++++++++++++++
- tests/meson.build              |   1 +
- 2 files changed, 168 insertions(+)
- create mode 100644 tests/intel/xe_survivability.c
+Series: tests/intel/xe_survivability: Add xe_survivability test (rev2)
+URL   : https://patchwork.freedesktop.org/series/154342/
+State : success
 
-diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
-new file mode 100644
-index 000000000..72bc9e0a2
---- /dev/null
-+++ b/tests/intel/xe_survivability.c
-@@ -0,0 +1,167 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+#include <dirent.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+
-+#include "igt.h"
-+#include "igt_configfs.h"
-+#include "igt_device.h"
-+#include "igt_fs.h"
-+#include "igt_kmod.h"
-+#include "igt_sysfs.h"
-+#include "xe/xe_query.h"
-+
-+/**
-+ * TEST: Comprehensive survivability mode testing
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: Telemetry
-+ * Functionality: survivability mode
-+ * Description: Validate survivability mode functionality
-+ * Test category: Functional tests
-+ *
-+ * SUBTEST: i2c-functionality
-+ * Description: Validate i2c adapter functionality in survivability mode
-+ */
-+
-+static char bus_addr[NAME_MAX];
-+
-+static int check_survivability_mode_sysfs(void)
-+{
-+	char path[PATH_MAX];
-+	int fd;
-+
-+	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
-+	fd = open(path, O_RDONLY);
-+	if (fd >= 0)
-+		close(fd);
-+
-+	return fd;
-+}
-+
-+static int find_i2c_adapter(struct pci_device *pci_xe)
-+{
-+	char device_path[PATH_MAX];
-+	struct dirent *dirent;
-+	int i2c_adapter = -1;
-+	DIR *device_dir;
-+	int ret;
-+
-+	igt_require(igt_kmod_load("i2c-dev", NULL) == 0);
-+
-+	snprintf(device_path, sizeof(device_path), "/sys/bus/pci/devices/%s/%s.%hu", bus_addr,
-+		 "i2c_designware", (pci_xe->bus << 8) | (pci_xe->dev));
-+	device_dir = opendir(device_path);
-+
-+	if (!device_dir)
-+		return -1;
-+
-+	while ((dirent = readdir(device_dir))) {
-+		if (strncmp(dirent->d_name, "i2c-", 4) == 0) {
-+			ret = sscanf(dirent->d_name, "i2c-%d", &i2c_adapter);
-+			igt_assert_f(ret == 1, "Failed to parse i2c adapter number");
-+			closedir(device_dir);
-+			return i2c_adapter;
-+		}
-+	}
-+
-+	closedir(device_dir);
-+	return i2c_adapter;
-+}
-+
-+static void restore(int sig)
-+{
-+	int configfs_fd;
-+
-+	igt_kmod_unbind("xe", bus_addr);
-+
-+	configfs_fd = igt_configfs_open("xe");
-+	if (configfs_fd >= 0)
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	close(configfs_fd);
-+
-+	igt_kmod_bind("xe", bus_addr);
-+}
-+
-+static void set_survivability_mode(int configfs_device_fd, bool value)
-+{
-+	igt_kmod_unbind("xe", bus_addr);
-+	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
-+	igt_kmod_bind("xe", bus_addr);
-+}
-+
-+static void test_i2c_functionality(int configfs_device_fd, struct pci_device *pci_xe)
-+{
-+	int i2c_adapter_before = 1, i2c_adapter_after;
-+	int fd;
-+
-+	/* Check i2c adapter before survivability mode */
-+	i2c_adapter_before = find_i2c_adapter(pci_xe);
-+
-+	/* Enable survivability mode */
-+	set_survivability_mode(configfs_device_fd, true);
-+
-+	/* check presence of survivability mode sysfs */
-+	fd = check_survivability_mode_sysfs();
-+	igt_assert_f(fd >= 0, "Survivability mode not set\n");
-+	close(fd);
-+
-+	/* Check i2c adapter after survivability mode */
-+	i2c_adapter_after = find_i2c_adapter(pci_xe);
-+	if (i2c_adapter_before >= 0) {
-+		igt_assert_f(i2c_adapter_after >= 0,
-+			     "i2c not initialized\n");
-+	}
-+}
-+
-+static int create_device_configfs_group(int configfs_fd)
-+{
-+	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-+	int configfs_device_fd;
-+
-+	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
-+	igt_assert(configfs_device_fd);
-+
-+	return configfs_device_fd;
-+}
-+
-+static void set_bus_addr(int fd)
-+{
-+	struct pci_device *pci_dev;
-+
-+	pci_dev = igt_device_get_pci_device(fd);
-+	snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
-+		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-+}
-+
-+igt_main
-+{
-+	int fd, configfs_fd, configfs_device_fd;
-+	struct pci_device *pci_xe;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		pci_xe = igt_device_get_pci_device(fd);
-+		set_bus_addr(fd);
-+		configfs_fd = igt_configfs_open("xe");
-+		igt_require(configfs_fd != -1);
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
-+		igt_install_exit_handler(restore);
-+	}
-+
-+	igt_describe("Validate i2c adapter functionality in survivability mode");
-+	igt_subtest("i2c-functionality") {
-+		test_i2c_functionality(configfs_device_fd, pci_xe);
-+	}
-+
-+	igt_fixture {
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+		close(configfs_device_fd);
-+		close(configfs_fd);
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index a7b9375ed..1d0f1700b 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -329,6 +329,7 @@ intel_xe_progs = [
- 	'xe_sriov_auto_provisioning',
- 	'xe_sriov_flr',
- 	'xe_sriov_scheduling',
-+	'xe_survivability',
- 	'xe_sysfs_defaults',
- 	'xe_sysfs_preempt_timeout',
- 	'xe_sysfs_scheduler',
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8537_BAT -> XEIGTPW_13740_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (10 -> 11)
+------------------------------
+
+  Additional (1): bat-lnl-2 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13740_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@xe_survivability@i2c-functionality} (NEW):
+    - bat-lnl-2:          NOTRUN -> [SKIP][1] +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_survivability@i2c-functionality.html
+    - {bat-ptl-2}:        NOTRUN -> [SKIP][2] +1 other test skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-ptl-2/igt@xe_survivability@i2c-functionality.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-dg2-oem2/igt@xe_survivability@i2c-functionality.html
+    - bat-adlp-vm:        NOTRUN -> [SKIP][4] +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-adlp-vm/igt@xe_survivability@i2c-functionality.html
+
+  * {igt@xe_survivability@runtime-survivability} (NEW):
+    - bat-adlp-7:         NOTRUN -> [SKIP][5] +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-adlp-7/igt@xe_survivability@runtime-survivability.html
+    - {bat-ptl-1}:        NOTRUN -> [SKIP][6] +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-ptl-1/igt@xe_survivability@runtime-survivability.html
+    - {bat-ptl-vm}:       NOTRUN -> [SKIP][7] +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-ptl-vm/igt@xe_survivability@runtime-survivability.html
+    - bat-lnl-1:          NOTRUN -> [SKIP][8] +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-1/igt@xe_survivability@runtime-survivability.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8537_BAT and XEIGTPW_13740_BAT:
+
+### New IGT tests (2) ###
+
+  * igt@xe_survivability@i2c-functionality:
+    - Statuses : 2 pass(s) 8 skip(s)
+    - Exec time: [0.0, 0.66] s
+
+  * igt@xe_survivability@runtime-survivability:
+    - Statuses : 2 pass(s) 8 skip(s)
+    - Exec time: [0.0, 2.14] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13740_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-lnl-2:          NOTRUN -> [ABORT][9] ([Intel XE#6122])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@fbdev@nullptr:
+    - bat-lnl-2:          NOTRUN -> [SKIP][10] ([Intel XE#2134]) +4 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@fbdev@nullptr.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-lnl-2:          NOTRUN -> [SKIP][11] ([Intel XE#1466] / [Intel XE#2235])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - bat-lnl-2:          NOTRUN -> [SKIP][12] ([Intel XE#2235] / [Intel XE#2482]) +3 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_flip@basic-flip-vs-dpms.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-lnl-2:          NOTRUN -> [SKIP][13] ([Intel XE#2235] / [Intel XE#352]) +2 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-lnl-2:          NOTRUN -> [SKIP][14] ([Intel XE#2235] / [Intel XE#2548])
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-lnl-2:          NOTRUN -> [SKIP][15] ([Intel XE#1470] / [Intel XE#2235] / [Intel XE#2853])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-lnl-2:          NOTRUN -> [SKIP][16] ([Intel XE#2235]) +13 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-lnl-2:          NOTRUN -> [SKIP][17] ([Intel XE#1406] / [Intel XE#2850] / [Intel XE#929]) +2 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_psr@psr-cursor-plane-move.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-lnl-2:          NOTRUN -> [SKIP][18] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:
+    - bat-lnl-2:          NOTRUN -> [SKIP][19] ([Intel XE#688]) +1 other test skip
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html
+
+  * igt@xe_mmap@vram:
+    - bat-lnl-2:          NOTRUN -> [SKIP][20] ([Intel XE#1416])
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-lnl-2:          NOTRUN -> [SKIP][21] ([Intel XE#1420] / [Intel XE#2838])
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-lnl-2:          NOTRUN -> [SKIP][22] ([Intel XE#977])
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-lnl-2:          NOTRUN -> [SKIP][23] ([Intel XE#2236] / [Intel XE#979])
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-lnl-2:          NOTRUN -> [SKIP][24] ([Intel XE#3342])
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_vm@bind-execqueues-independent:
+    - {bat-ptl-vm}:       [FAIL][25] ([Intel XE#5783]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8537/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
+  [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#1466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466
+  [Intel XE#1470]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470
+  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
+  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
+  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
+  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
+  [Intel XE#2548]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#2853]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+  [Intel XE#6122]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6122
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8537 -> IGTPW_13740
+
+  IGTPW_13740: 13740
+  IGT_8537: 8537
+  xe-3734-1d4af05c0899ee6a00ba2bfdfb4c07aeef704f2a: 1d4af05c0899ee6a00ba2bfdfb4c07aeef704f2a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/index.html
+
+--===============8466710930687689197==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_survivability: Add xe_survivability test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154342/">https://patchwork.freedesktop.org/series/154342/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8537_BAT -&gt; XEIGTPW_13740_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (10 -&gt; 11)</h2>
+<p>Additional (1): bat-lnl-2 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13740_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>{igt@xe_survivability@i2c-functionality} (NEW):</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+<li>{bat-ptl-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-ptl-2/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-dg2-oem2/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-adlp-vm/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_survivability@runtime-survivability} (NEW):</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-adlp-7/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>{bat-ptl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-ptl-1/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>{bat-ptl-vm}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-ptl-vm/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-1/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8537_BAT and XEIGTPW_13740_BAT:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@xe_survivability@i2c-functionality:</p>
+<ul>
+<li>Statuses : 2 pass(s) 8 skip(s)</li>
+<li>Exec time: [0.0, 0.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_survivability@runtime-survivability:</p>
+<ul>
+<li>Statuses : 2 pass(s) 8 skip(s)</li>
+<li>Exec time: [0.0, 2.14] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13740_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6122">Intel XE#6122</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@nullptr:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@fbdev@nullptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466">Intel XE#1466</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/352">Intel XE#352</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548">Intel XE#2548</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470">Intel XE#1470</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2853">Intel XE#2853</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/929">Intel XE#929</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#1416</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-lnl-2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_vm@bind-execqueues-independent:<ul>
+<li>{bat-ptl-vm}:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8537/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783">Intel XE#5783</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13740/bat-ptl-vm/igt@xe_vm@bind-execqueues-independent.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8537 -&gt; IGTPW_13740</li>
+</ul>
+<p>IGTPW_13740: 13740<br />
+  IGT_8537: 8537<br />
+  xe-3734-1d4af05c0899ee6a00ba2bfdfb4c07aeef704f2a: 1d4af05c0899ee6a00ba2bfdfb4c07aeef704f2a</p>
+
+</body>
+</html>
+
+--===============8466710930687689197==--
