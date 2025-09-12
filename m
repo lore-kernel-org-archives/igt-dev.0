@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30CC9CAC582
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Sep 2025 12:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 383AECAC582
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Sep 2025 12:29:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D962710E1BD;
-	Fri, 12 Sep 2025 12:29:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB85610E1C4;
+	Fri, 12 Sep 2025 12:29:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MLos/qpA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UM0ryo6N";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 857A510E1BD
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Sep 2025 12:29:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2609A10E1C4
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Sep 2025 12:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757680167; x=1789216167;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=16dEEVYsLFe+gl6j+y4XmwcgnW4Ph+FJx6hwPQasfII=;
- b=MLos/qpA3xA7h6I8qWAVGs0f8BsZc3Rh1C52w90F0Wr6em2ACkENofrV
- KL3VhJIhk3MW+QaW0AJB/zFbuH7i1LpSHMA77HU3aczytu6G9mcXEdygA
- LC0WTCVKGMPkRHyY7JC57F0UBweZ/9csj7bU+sC4pNLyE8DD4XlwDYYU0
- mqz0vUCMmzzF4WfQv5ThCMqVG7AArlXuAwVonIWDET+357shzHahVLgpL
- EvYxx6l0pZ8cYbrndJ//tUyO/7n7XVs4dNKogzgsvdFsIAReLU5XJDL3o
- U3YWoWvKbj9r7VBZC01glTaFsSYL0v++Sr57OoKaxIO+0yk23+XpGWavS A==;
-X-CSE-ConnectionGUID: pVjHftBfS8yKGNLuFTe3RQ==
-X-CSE-MsgGUID: P5py2jjfQPWInflZFJ1dEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="77635103"
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="77635103"
+ t=1757680169; x=1789216169;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=TK+GAFt3OR1y8ULwvF5hvKfprcdsL7pcAmvlnMNQrJY=;
+ b=UM0ryo6NtLA6D1f1xX+ar8Ar8cJTQaUUPqmlC2/I5krJ8WUsxL3Towbk
+ +tc3ooqMcEBDpjWKgNg8l/e8latSB0q1SoEzZQvD4hFDDyA4gUjlGiXDi
+ UmbZSCfSoEu+T4J2vmb3s3pqVKzJRPm2gAW3O3Se1xwKKBMtWfN1/llcC
+ GwOnqz4V6ZFBjStC0/I8olLg1+5P064O8URNq1pX/x9iuOzahD43JoU7Y
+ vHpX7h5l9P4jNbFmXKWtmEqxpV8DX0gS5FsfDPdaW5qQZuevkd5FtxzeA
+ SbBexmuI9JLcohj6eANmlmgXgikFFYU5tHLiQN+obBP7IXUHTqFsrTSFO A==;
+X-CSE-ConnectionGUID: b4tXQnQKREm0Bfz9LR40dQ==
+X-CSE-MsgGUID: 7kscnHfrQOC8qgdK69/sxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="77635129"
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="77635129"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2025 05:26:52 -0700
-X-CSE-ConnectionGUID: xd/W5msITUmO0vjGFH4QpQ==
-X-CSE-MsgGUID: KB52/o6qSVqN6ucbXGqRWQ==
+ 12 Sep 2025 05:26:56 -0700
+X-CSE-ConnectionGUID: qvvNX2MIRUS3UsWt8eWrow==
+X-CSE-MsgGUID: 332uBRhqSqOKZtSHO7Bpyw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="177988903"
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; d="scan'208";a="177988943"
 Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2025 05:26:44 -0700
+ 12 Sep 2025 05:26:54 -0700
 From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
  karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH v5 0/3] tests/intel/xe_survivability: Add xe_survivability test
-Date: Fri, 12 Sep 2025 17:55:39 +0530
-Message-ID: <20250912122541.2238004-5-sk.anirban@intel.com>
+Subject: [PATCH v5 3/3] HAX: Add xe_survivability tests to fast feedback list
+Date: Fri, 12 Sep 2025 17:55:42 +0530
+Message-ID: <20250912122541.2238004-8-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250912122541.2238004-5-sk.anirban@intel.com>
+References: <20250912122541.2238004-5-sk.anirban@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,24 +69,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series creates a new xe_survivability.c test file with two subtests.
-i2c-functionality validates i2c adapter preservation in survivability
-mode for AMC firmware updates, and runtime-survivability tests CSC error
-injection, device wedged state recovery, and post-recovery GPU
-functionality validation.
+Add xe_survivability to xe-fast-feedback
 
-Sk Anirban (3):
-  tests/intel/xe_survivability: Add new xe_survivability test for i2c
-    adapter
-  tests/intel/xe_survivability: Add new test runtime survivability
-  HAX: Add xe_survivability tests to fast feedback list
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist | 2 ++
+ 1 file changed, 2 insertions(+)
 
- tests/intel-ci/xe-fast-feedback.testlist |   2 +
- tests/intel/xe_survivability.c           | 260 +++++++++++++++++++++++
- tests/meson.build                        |   1 +
- 3 files changed, 263 insertions(+)
- create mode 100644 tests/intel/xe_survivability.c
-
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 017e3ba2a..5f27baafb 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -185,6 +185,8 @@ igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
+ igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
+ igt@xe_sysfs_scheduler@job_timeout_ms-invalid
+ igt@xe_sysfs_scheduler@job_timeout_ms-min-max
++igt@xe_survivability@i2c-functionality
++igt@xe_survivability@runtime-survivability
+ #igt@xe_vm@bind-once
+ #igt@xe_vm@scratch
+ igt@xe_vm@shared-pte-page
 -- 
 2.43.0
 
