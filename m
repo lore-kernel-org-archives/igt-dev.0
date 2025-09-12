@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6549CCAC582
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Sep 2025 20:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EA3ACAC582
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Sep 2025 20:49:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 09C4410ECE1;
-	Fri, 12 Sep 2025 20:09:47 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=nfraprado@collabora.com header.b="Fcp+hYmi";
-	dkim-atps=neutral
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com
- [136.143.188.112])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86D4310ECD9
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Sep 2025 20:09:45 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; t=1757707782; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=lVH/hEQQDs+Qdj9I7L326WeHAwz6uyusngsSe/W/fGlSG0827tNCQbUHX3Iodh7VFEOnn9/pn9CRXUvOm5LumcaVpxAbr0NWCqbUjhbi6GyhGYSK2qftqd8HnXt3YA3bpd7rJHAoixt+CzCmNJejfOH57k5oU3NvkKB7CJikMmo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1757707782;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=PGNIaUxxTB/S/vF0cE87rLfpcRfxGVwOo3Kmx3BO9Jk=; 
- b=Nk/fYPn/Bsbkqsl8FKocRepfYAAeh9q8vp2uBCxu8ldEB6j2wGHtDCd+/nv79vkhHJhGZGIMHe4LlfyVt+Gcxvc6wx/u89df795tLHszEtuDWGv1EuczAsCbs/Dg3x6/xQ8dX7AOzh0wm3emtxFW4N4v+fa3uFTNnAqjwryO2TQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=nfraprado@collabora.com;
- dmarc=pass header.from=<nfraprado@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757707782; 
- s=zohomail; d=collabora.com; i=nfraprado@collabora.com;
- h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
- bh=PGNIaUxxTB/S/vF0cE87rLfpcRfxGVwOo3Kmx3BO9Jk=;
- b=Fcp+hYmizWr9dGyEIpUbEyP4RNTe61bnXHGbppHwt/ksrw/CKq2SU4OO1cv1Ex2R
- ukt293HTISb/Z4T357MvJXMiWCJCzCf3ICGq457kIb8aSkK1y2W4uCHOciknfqXltKk
- pPokiAEvFMPdzLeloogu4EJdsag+qc/nmkSqhpxA=
-Received: by mx.zohomail.com with SMTPS id 1757707779994523.8129609557723;
- Fri, 12 Sep 2025 13:09:39 -0700 (PDT)
-Message-ID: <2c59491cf48b386d9d2e7787bd44f02b6201bcc3.camel@collabora.com>
-Subject: Re: [PATCH V10 03/30] drm-uapi: Add COLOROP object
-From: =?ISO-8859-1?Q?N=EDcolas?= "F. R. A. Prado" <nfraprado@collabora.com>
-To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
-Cc: harry.wentland@amd.com, leo.liu@amd.com
-Date: Fri, 12 Sep 2025 16:09:36 -0400
-In-Reply-To: <20250815040659.3321102-4-alex.hung@amd.com>
-References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-4-alex.hung@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-2+b1 
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD81A10ECD9;
+	Fri, 12 Sep 2025 20:49:01 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A96D10E1E3;
+ Fri, 12 Sep 2025 20:49:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6252785127360303291=="
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_initial_Panthor_tests_?=
+ =?utf-8?q?=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 12 Sep 2025 20:49:00 -0000
+Message-ID: <175771014062.331444.17469441701208944240@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250912181931.3738444-1-daniel.almeida@collabora.com>
+In-Reply-To: <20250912181931.3738444-1-daniel.almeida@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,57 +37,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 2025-08-14 at 22:06 -0600, Alex Hung wrote:
-> From: Harry Wentland <harry.wentland@amd.com>
->=20
-> DRM is introducing a new DRM core obejct, a drm_colorop. This
-> object will represent one color operation in a color pipeline.
->=20
-> Introduce the object type in the drm-uapi, including the
-> following types:
-> - DRM_COLOROP_1D_CURVE,
-> - DRM_COLOROP_1D_LUT,
-> - DRM_COLOROP_CTM_3X4,
->=20
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-> ---
-> =C2=A0include/drm-uapi/amdgpu_drm.h |=C2=A0=C2=A0 9 --
-> =C2=A0include/drm-uapi/drm_mode.h=C2=A0=C2=A0 |=C2=A0 23 +++
-> =C2=A0lib/igt_kms.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 272
-> +++++++++++++++++++++++++++++++++-
-> =C2=A0lib/igt_kms.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 89 +++++++++++
-> =C2=A0tests/kms_properties.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0=C2=A0 3 +
-> =C2=A05 files changed, 381 insertions(+), 15 deletions(-)
-[..]
-> @@ -4519,6 +4774,11 @@ static int igt_atomic_commit(igt_display_t
-> *display, uint32_t flags, void *user_
-> =C2=A0
-> =C2=A0			if (plane->changed)
-> =C2=A0				igt_atomic_prepare_plane_commit(plan
-> e, pipe_obj, req);
-> +
-> +			/* TODO iterate over assigned color pipeline
-> and prepare colorop commit */
-> +			if (plane->assigned_color_pipeline)
-> +				igt_atomic_prepare_colorop_commit(pl
-> ane->assigned_color_pipeline,
-> +								=C2=A0
-> pipe_obj, req);
-> =C2=A0		}
-> =C2=A0
-> =C2=A0	}
+--===============6252785127360303291==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This seems to be a stale TODO as you're doing exactly that here
-already.
+== Series Details ==
 
---=20
-Thanks,
+Series: Add initial Panthor tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/153632/
+State : success
 
-N=C3=ADcolas
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8539_BAT -> XEIGTPW_13742_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13742_BAT that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#5783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5783
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8539 -> IGTPW_13742
+  * Linux: xe-3737-6cb617616dbbd591f1f34fb95d55dd66cf43f2b2 -> xe-3738-baa40f33abb81ba90ff4f5272d2fde8ab061df8d
+
+  IGTPW_13742: 13742
+  IGT_8539: 8539
+  xe-3737-6cb617616dbbd591f1f34fb95d55dd66cf43f2b2: 6cb617616dbbd591f1f34fb95d55dd66cf43f2b2
+  xe-3738-baa40f33abb81ba90ff4f5272d2fde8ab061df8d: baa40f33abb81ba90ff4f5272d2fde8ab061df8d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13742/index.html
+
+--===============6252785127360303291==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add initial Panthor tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153632/">https://patchwork.freedesktop.org/series/153632/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13742/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13742/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8539_BAT -&gt; XEIGTPW_13742_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13742_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8539 -&gt; IGTPW_13742</li>
+<li>Linux: xe-3737-6cb617616dbbd591f1f34fb95d55dd66cf43f2b2 -&gt; xe-3738-baa40f33abb81ba90ff4f5272d2fde8ab061df8d</li>
+</ul>
+<p>IGTPW_13742: 13742<br />
+  IGT_8539: 8539<br />
+  xe-3737-6cb617616dbbd591f1f34fb95d55dd66cf43f2b2: 6cb617616dbbd591f1f34fb95d55dd66cf43f2b2<br />
+  xe-3738-baa40f33abb81ba90ff4f5272d2fde8ab061df8d: baa40f33abb81ba90ff4f5272d2fde8ab061df8d</p>
+
+</body>
+</html>
+
+--===============6252785127360303291==--
