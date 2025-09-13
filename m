@@ -4,46 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B5C2CAC582
-	for <igt-dev@archiver.kernel.org>; Sat, 13 Sep 2025 00:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17630CAC593
+	for <igt-dev@archiver.kernel.org>; Sat, 13 Sep 2025 00:04:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C746710E055;
-	Sat, 13 Sep 2025 00:03:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B769610E233;
+	Sat, 13 Sep 2025 00:03:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="O+z33Ec5";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="Hv6gBxvy";
 	dkim-atps=neutral
 Received: from bali.collaboradmins.com (bali.collaboradmins.com
  [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 705B010E055
- for <igt-dev@lists.freedesktop.org>; Sat, 13 Sep 2025 00:03:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A45210E16F
+ for <igt-dev@lists.freedesktop.org>; Sat, 13 Sep 2025 00:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1757721835;
- bh=5111/UQeF7wMdB8kZXdl6smKP35xnfgZkYWxf2OySE4=;
- h=From:Subject:Date:To:Cc:From;
- b=O+z33Ec5B9F2E49721OIvh/9ihZwD3v6EAl4/ODC+F8ZW8pf5b5TdseKKOX1ZC18Q
- iohtNvKshfTpAaDAMIG0Z6DNyUqnBfw5+U4lSoMTsLRIDTJlAun4F8luAUYlPUM9kH
- cxLpN1hsAgHy36LelU3PLBd984ViBzhBzOdKGf2+YQgNk0qN20uWsYjgnh9awJQ1BQ
- dOCss2wLfuGGgITGVEwcHxK1qb0bHcU6t6fefkzdKQ032MrMk2lnfc6ucat+/OuDkU
- o0vcldzxredrj0Jet1pwScWEny/ZyYxMG9gCCr/ZbRMuxOm0YySj4yrCOIfJR2cDb7
- 6yVAcDvW0gwTg==
+ s=mail; t=1757721836;
+ bh=Wy8KghKsxMU/Qv3NpUFujnqOweQ50VNiMpNE7GEjBn8=;
+ h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+ b=Hv6gBxvyErIifDymFjD5TUqr2XMRA0MJnNiYaYddnBipKy9PdM9iwrVDfrXx2uHSy
+ VWXWueyWuLeYHjQsvvaaivCaWMw/7U4tclqbLUkqr1apmLSWvu1aqk3ABKl/QUbtUk
+ ff9Ii+tElO2ohJyMcoAv6BYHVgX/Xal+UnI4Jq3LRLlUihGUh/1O+gSIdh8B2e8tw2
+ BREY70yLY2yX6ltsi5n+qmzlv3czprIybCnf7bXjtjBUleHG5JGK/54E7FtxUVE7Br
+ lYhSx04Iyy0DbKhszuJOUvz9M/gG9yERTSiN/KU5u/Q3GcJFLZ1ed7qyrjq6ElZR2a
+ x/ykIgd362Ikw==
 Received: from [127.0.1.1] (unknown
  [IPv6:2600:4041:5b1a:9400:62f0:406e:ac79:4a96])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: nfraprado)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id B059D17E1091;
- Sat, 13 Sep 2025 02:03:53 +0200 (CEST)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id 6FC4917E129D;
+ Sat, 13 Sep 2025 02:03:55 +0200 (CEST)
 From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-Subject: [PATCH 0/9] Support post-blend color pipeline API
-Date: Fri, 12 Sep 2025 20:02:52 -0400
-Message-Id: <20250912-post-blend-colorops-v1-0-83fc62420cba@collabora.com>
+Date: Fri, 12 Sep 2025 20:02:53 -0400
+Subject: [PATCH 1/9] include/drm-uapi: Sync with drm-next
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAKy0xGgC/x3MSwqAMAwA0atI1gZsxe9VxIXWqAFpSiMiiHe3u
- HyLmQeUIpNCnz0Q6WJl8Qkmz8Dtk98IeUkGW9iq6IzFIHrifJBf0MkhUYLiTK6rS9u0k2khlSH
- Syvd/Hcb3/QB2YSWTZQAAAA==
-X-Change-ID: 20250912-post-blend-colorops-bec963278a18
+Message-Id: <20250912-post-blend-colorops-v1-1-83fc62420cba@collabora.com>
+References: <20250912-post-blend-colorops-v1-0-83fc62420cba@collabora.com>
+In-Reply-To: <20250912-post-blend-colorops-v1-0-83fc62420cba@collabora.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
 Cc: Alex Hung <alex.hung@amd.com>, harry.wentland@amd.com, leo.liu@amd.com, 
  daniels@collabora.com, leandro.ribeiro@collabora.com, 
@@ -64,64 +62,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series introduces support for the KMS post-blend color pipeline
-API, which is currently under review as an RFC [1], and extends the test
-coverage for it.
+Sync with drm-next commit <TODO: update when kernel series lands>.
 
-This series is based on the pre-blend color pipeline API IGT series [2].
-
-Tested on VKMS. At the moment the post-blend color pipeline support in
-VKMS is only available at the development branch [3], but it will be
-added to the kernel patch series submission for v2.
-
-Caveats:
-
-* The new tests
-
-  kms_colorop@xr24-xr24-plane-ctm_3x4_bt709_dec-crtc-ctm_3x4_bt709_enc
-  kms_colorop@xr24-xr24-plane-ctm_3x4_bt709_enc-crtc-ctm_3x4_bt709_dec
-
-  fail when running on the VKMS driver due to clamping to u16 happening
-  in-between pre- and post-blend pipelines.
-
-* The tests
-
-  kms_color@gamma
-  kms_color@invalid-gamma-lut-sizes
-  kms_color@legacy-gamma-reset
-
-  now get skipped since DRM_CLIENT_CAP_POST_BLEND_COLOR_PIPELINE is set
-  in the common igt_display_require(), hiding the now deprecated color
-  properties (GAMMA_LUT, DEGAMMA_LUT, CTM) required for those tests.
-
-[1] https://lore.kernel.org/dri-devel/20250822-mtk-post-blend-color-pipeline-v1-0-a9446d4aca82@collabora.com/
-[2] https://lore.kernel.org/igt-dev/20250815040659.3321102-1-alex.hung@amd.com/
-[3] https://gitlab.collabora.com/nfraprado/linux/-/commits/b4/mtk-post-blend-color-pipeline
+This is required for the post-blend color pipeline client cap define.
 
 Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 ---
-Nícolas F. R. A. Prado (9):
-      include/drm-uapi: Sync with drm-next
-      lib/igt_kms: Store pointer to display instead of plane in colorop
-      lib/igt_kms: Move color pipeline properties in igt_plane_t to struct
-      lib/igt_kms: Support post-blend colorops
-      tests/kms_colorop: Check for colorop unique id in CRTCs as well
-      tests/kms_colorop: Allow specifying post-blend colorops
-      tests/kms_colorop: Add tests for post-blend color pipeline
-      tests/kms_properties: Ignore color properties in CRTC based on pipeline
-      tests/kms_properties: Test colorop properties on CRTC
+ include/drm-uapi/drm.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
- include/drm-uapi/drm.h |  16 ++++
- lib/igt_kms.c          | 111 +++++++++++++++++++-------
- lib/igt_kms.h          |  23 ++++--
- tests/kms_colorop.c    | 207 ++++++++++++++++++++++++++++++++++---------------
- tests/kms_properties.c |  39 +++++++++-
- 5 files changed, 296 insertions(+), 100 deletions(-)
----
-base-commit: 302ff647cccb615f32942cdbe0e8084fe462cd05
-change-id: 20250912-post-blend-colorops-bec963278a18
+diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
+index 6b9af3348a1c086a08df1d19392fba94c44adfc8..be26805c43bde1b1a57ad7f787f7a4ffdad55632 100644
+--- a/include/drm-uapi/drm.h
++++ b/include/drm-uapi/drm.h
+@@ -884,6 +884,22 @@ struct drm_get_cap {
+  */
+ #define DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE	7
+ 
++/**
++ * DRM_CLIENT_CAP_POST_BLEND_COLOR_PIPELINE
++ *
++ * If set to 1 the DRM core will allow setting the COLOR_PIPELINE
++ * property on a &drm_crtc, as well as drm_colorop properties.
++ *
++ * Setting of these crtc properties will be rejected when this client
++ * cap is set:
++ * - GAMMA_LUT
++ * - DEGAMMA_LUT
++ * - CTM
++ *
++ * The client must enable &DRM_CLIENT_CAP_ATOMIC first.
++ */
++#define DRM_CLIENT_CAP_POST_BLEND_COLOR_PIPELINE	8
++
+ /* DRM_IOCTL_SET_CLIENT_CAP ioctl argument type */
+ struct drm_set_client_cap {
+ 	__u64 capability;
 
-Best regards,
 -- 
-Nícolas F. R. A. Prado <nfraprado@collabora.com>
+2.50.1
 
