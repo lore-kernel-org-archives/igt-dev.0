@@ -4,42 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BBA7CAC593
-	for <igt-dev@archiver.kernel.org>; Sat, 13 Sep 2025 00:04:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23940CA101F
+	for <igt-dev@archiver.kernel.org>; Sat, 13 Sep 2025 00:04:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE48410ECF3;
-	Sat, 13 Sep 2025 00:04:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC76C10ECF4;
+	Sat, 13 Sep 2025 00:04:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="fsl9bMJR";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="ldrsAlsd";
 	dkim-atps=neutral
 Received: from bali.collaboradmins.com (bali.collaboradmins.com
  [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9921010ECF1
- for <igt-dev@lists.freedesktop.org>; Sat, 13 Sep 2025 00:04:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E135A10ECF4
+ for <igt-dev@lists.freedesktop.org>; Sat, 13 Sep 2025 00:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1757721845;
- bh=zZXDKhi+8n8hUpHk875H3WdE4wWEZBUZYjMYS9zcEqM=;
+ s=mail; t=1757721846;
+ bh=ZQnj7/7Qmq9oFn0Wp8LYT7oP1XuhZO1QTnP1WyORaLk=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=fsl9bMJR+rjEYT2p3CP0HPy+5wOGM0x7BeBTPNSxUwwVg+j3rnQYn0teMtXNU+8ke
- 6GyHI/CQWvPUS0+ZYdK9h8LsYAw1/xpr3kJkYFv/2MctLBmijc2xRyHavVe6hOAPCO
- +KsIBeLBqgdG1JStswXvFcBTZ8e6lTl2/Cmll8DQpCmkq0755O8qhnNbRGPskzqBbJ
- lEK3wb1+VTq6qS9xW3mmsC/55OoYFcXgHX09hVe72qApHgn7De5ytXSv3bow4jlUa6
- L/JS0ZC/GLJ1QXTzFftKiMfalrn4m0uf3pbzwS2TMi/5B7/ovljVjClr2oeARQYFtR
- EcSiyn6XCS2sw==
+ b=ldrsAlsdWdPWCXJ2SzRWsag7TP9Jj0Y0l8E5ap5shVPTN6beKkzmi+23hkQn+Csf6
+ cX0sq/bJ6gNkK0b3rH3fyVFwYMBrYaCO4wMYw+p1Sg/fbPb34Y7+DvMTEEbyiZ7V6G
+ yShxgYANF0i2Ci1wx7dSktCp+7XyZpUXp4WRMZlkjnryBAivWsD2iExwBa2pxI5DVH
+ WeN8SZj25GOiq/wLatIE/EaBEXmbyK9XfJ02ygMFno43VDVDun2NC4tp6LPbI38RBz
+ o6rc9F17sv/ort2MsCZMlxNyyRDxjvXyQpy7epMF7ZmDV1wb/g/XmwwQJykLoQQBjq
+ 6ScEX/6D6YfUw==
 Received: from [127.0.1.1] (unknown
  [IPv6:2600:4041:5b1a:9400:62f0:406e:ac79:4a96])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: nfraprado)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id EFEFF17E1091;
- Sat, 13 Sep 2025 02:04:03 +0200 (CEST)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id 8150717E129D;
+ Sat, 13 Sep 2025 02:04:05 +0200 (CEST)
 From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-Date: Fri, 12 Sep 2025 20:02:59 -0400
-Subject: [PATCH 7/9] tests/kms_colorop: Add tests for post-blend color pipeline
+Date: Fri, 12 Sep 2025 20:03:00 -0400
+Subject: [PATCH 8/9] tests/kms_properties: Ignore color properties in CRTC
+ based on pipeline
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250912-post-blend-colorops-v1-7-83fc62420cba@collabora.com>
+Message-Id: <20250912-post-blend-colorops-v1-8-83fc62420cba@collabora.com>
 References: <20250912-post-blend-colorops-v1-0-83fc62420cba@collabora.com>
 In-Reply-To: <20250912-post-blend-colorops-v1-0-83fc62420cba@collabora.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
@@ -62,43 +63,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add additional tests that set colorops on the post-blend color pipeline,
-as well as tests that set both the pre-blend and the post-blend color
-pipelines.
-
-Note: The tests with BT709 encoding/decoding split across pre- and
-post-blend color pipelines fail on VKMS due to u16 clamping between the
-pre- and post-blend color pipelines transformations.
+Ignore color-related properties - the new COLOR_PIPELINE and now legacy
+gamma and ctm properties - in the CRTC based on the status of the color
+pipeline client cap.
 
 Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 ---
- tests/kms_colorop.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/kms_properties.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index a19b1a19314d08491eab9977227a98605a26f915..e68a6e5d9cd57b57b66d99782fe76d841aa74fec 100644
---- a/tests/kms_colorop.c
-+++ b/tests/kms_colorop.c
-@@ -682,6 +682,19 @@ igt_main
- 		{ { &kms_colorop_multiply_125, NULL }, { NULL }, "plane-multiply_125" },
- 		{ { &kms_colorop_multiply_inv_125, NULL }, { NULL }, "plane-multiply_inv_125" },
- 		{ { &kms_colorop_3dlut_17_12_rgb, NULL }, { NULL }, "plane-3dlut_17_12_rgb" },
-+		{ { NULL }, { &kms_colorop_srgb_eotf, NULL }, "crtc-srgb_eotf" },
-+		{ { NULL }, { &kms_colorop_srgb_inv_eotf, NULL }, "crtc-srgb_inv_eotf" },
-+		{ { NULL }, { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, NULL }, "crtc-srgb_eotf-srgb_inv_eotf" },
-+		{ { NULL }, { &kms_colorop_ctm_3x4_50_desat, NULL }, "crtc-ctm_3x4_50_desat" },
-+		{ { NULL }, { &kms_colorop_ctm_3x4_overdrive, NULL }, "crtc-ctm_3x4_overdrive" },
-+		{ { NULL }, { &kms_colorop_ctm_3x4_oversaturate, NULL }, "crtc-ctm_3x4_oversaturate" },
-+		{ { NULL }, { &kms_colorop_ctm_3x4_bt709_enc, NULL }, "crtc-ctm_3x4_bt709_enc" },
-+		{ { NULL }, { &kms_colorop_ctm_3x4_bt709_dec, NULL }, "crtc-ctm_3x4_bt709_dec" },
-+		{ { NULL }, { &kms_colorop_ctm_3x4_bt709_enc, &kms_colorop_ctm_3x4_bt709_dec, NULL }, "crtc-ctm_3x4_bt709_enc-ctm_3x4_bt709_dec" },
-+		{ { NULL }, { &kms_colorop_ctm_3x4_bt709_dec, &kms_colorop_ctm_3x4_bt709_enc, NULL }, "crtc-ctm_3x4_bt709_dec-ctm_3x4_bt709_enc" },
-+		{ { &kms_colorop_srgb_eotf, NULL }, { &kms_colorop_srgb_inv_eotf, NULL }, "plane-srgb_eotf-crtc-srgb_inv_eotf" },
-+		{ { &kms_colorop_ctm_3x4_bt709_enc, NULL }, { &kms_colorop_ctm_3x4_bt709_dec, NULL }, "plane-ctm_3x4_bt709_enc-crtc-ctm_3x4_bt709_dec" },
-+		{ { &kms_colorop_ctm_3x4_bt709_dec, NULL }, { &kms_colorop_ctm_3x4_bt709_enc, NULL }, "plane-ctm_3x4_bt709_dec-crtc-ctm_3x4_bt709_enc" },
- 	};
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index 084f7cdc04fcace28d9cab317a2679bf23bd9c31..e005ee6b35436a9305dbc3fa7de8460234091601 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -122,6 +122,20 @@ static bool ignore_property(uint32_t obj_type, uint32_t prop_flags,
+ 		if (has_color_pipeline && !strcmp(name, "COLOR_ENCODING"))
+ 			return true;
  
- 	struct {
++		break;
++	case DRM_MODE_OBJECT_CRTC:
++		if (!has_color_pipeline && !strcmp(name, "COLOR_PIPELINE"))
++			return true;
++
++		if (has_color_pipeline && !strcmp(name, "GAMMA_LUT"))
++			return true;
++
++		if (has_color_pipeline && !strcmp(name, "DEGAMMA_LUT"))
++			return true;
++
++		if (has_color_pipeline && !strcmp(name, "CTM"))
++			return true;
++
+ 		break;
+ 	default:
+ 		break;
+@@ -289,7 +303,7 @@ static void run_crtc_property_tests(igt_display_t *display, enum pipe pipe, igt_
+ 
+ 	igt_info("Testing crtc properties on %s (output: %s)\n", kmstest_pipe_name(pipe), output->name);
+ 
+-	test_properties(display->drm_fd, DRM_MODE_OBJECT_CRTC, display->pipes[pipe].crtc_id, atomic, false);
++	test_properties(display->drm_fd, DRM_MODE_OBJECT_CRTC, display->pipes[pipe].crtc_id, atomic, display->has_post_blend_color_pipeline);
+ 
+ 	cleanup_pipe(display, pipe, output, &fb);
+ }
 
 -- 
 2.50.1
