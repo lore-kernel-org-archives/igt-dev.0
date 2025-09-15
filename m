@@ -4,59 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB8B0CAC597
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Sep 2025 12:19:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C247CAC597
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Sep 2025 12:29:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7855610E470;
-	Mon, 15 Sep 2025 12:19:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C45EF10E47B;
+	Mon, 15 Sep 2025 12:28:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lVJvWk5Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d9iafeK5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 839C610E470
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Sep 2025 12:19:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E71BC10E47B
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Sep 2025 12:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757938783; x=1789474783;
+ t=1757939339; x=1789475339;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=v4PkQozohZguTuJq59QNd5D0PpuIDl0+a4x1Xh/w8P8=;
- b=lVJvWk5YkhEkw0A6HL/3/O3yoiNOLz24xjBs/sxgLJqExkQv+JYw9DSJ
- 81CGuOjWMet9LTJECzVWhONCBUi/fAyczT5EgE+zko5o0ie6cw9XYVfvo
- uCGH4CFBzTRkSxxc/Go7moKaYC2ufOoef5f80ewXPe2L+TQTBpmCg4hP+
- LZ745LLRODJLoPNwSTiVRtuCBBZhEvMVkOt15ewDKi09mBQyePFLGeMaU
- TZZbQ0eSRfr37PwLEykf0e1AFMGEAOF6bzyKtf59fivn4ZmDErEJh11Hr
- Lcs1Ff9P3+ttfe9xu0YCXrvWab4EGW7iaL/76I08UWBJniS6WP8ZTmK9B Q==;
-X-CSE-ConnectionGUID: V1R4XnEIQVWDHIcrlVYBfQ==
-X-CSE-MsgGUID: 6jeL0EeSTvWvERV/7a2KUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="71614730"
-X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; d="scan'208";a="71614730"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2025 05:19:43 -0700
-X-CSE-ConnectionGUID: Gbd2rpIsQ1qHhC5pBeXy+w==
-X-CSE-MsgGUID: sSBQco5kRveV7CXHz0L03g==
+ bh=9TWDsa0ZypDjMi8U9AFjVxvu6FK2m7KpCKx61wUAeo0=;
+ b=d9iafeK5+D1/b5gVrMVhjV4rQP4a0fHn68PPK0POGRSeC9Bz7Sa19ruK
+ YFySZKfPofSKgDNhuJZa1R0CjavtX1sC0FXlTA3GBVpoC1OZNVVpWX53s
+ Lrvaf4wsuCw9AYHtyyKvnSemJv7kCN3EfzUq722ObFIJk9ppIg7jvHGbQ
+ 2sdtBSGnk0glXEv/WH2/IEb4in44n7/u3YP/Ihdu/Iv+CVtNpTExzKGaP
+ pF5WQ41tMTw9zqdlyJnILOrrVFsHJ0JcV7j80NmBfQrpdjyb02PXKRvud
+ IJyKq2PRk0z8MGuFYvtp2mAEAJXKb3tMF4ua0H1f8gjrnGY2QUt7SAh+I A==;
+X-CSE-ConnectionGUID: BYMxDV/NTZmspKXGQ/vaGg==
+X-CSE-MsgGUID: O/1VfrGNSF2FebmDffCqFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="71286799"
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; d="scan'208";a="71286799"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2025 05:28:59 -0700
+X-CSE-ConnectionGUID: GXq0sbmNTJO95n9ARdQu4Q==
+X-CSE-MsgGUID: DoNSd27USQGICPnWVWhtVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; d="scan'208";a="174166534"
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; d="scan'208";a="174237546"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 05:19:42 -0700
-Date: Mon, 15 Sep 2025 14:19:39 +0200
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 05:28:57 -0700
+Date: Mon, 15 Sep 2025 14:28:54 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: S Sebinraj <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com
-Subject: Re: [PATCH i-g-t v2 1/1] tests/kms_concurrent: Add SYSVIPC support
- check
-Message-ID: <20250915121939.oit6d67hvu44hpar@kamilkon-DESK.igk.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Michal Winiarski <michal.winiarski@intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_compute: check root-only write
+ permission for ccs_mode
+Message-ID: <20250915122854.4wixiotol5ay6slw@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
- jeevaka.badrappan@intel.com
-References: <20250915073231.2093842-1-s.sebinraj@intel.com>
- <20250915073231.2093842-2-s.sebinraj@intel.com>
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Michal Winiarski <michal.winiarski@intel.com>
+References: <20250909130808.54117-1-peter.senna@linux.intel.com>
+ <20250909130808.54117-3-peter.senna@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250915073231.2093842-2-s.sebinraj@intel.com>
+In-Reply-To: <20250909130808.54117-3-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,86 +75,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi S,
-On 2025-09-15 at 13:02:31 +0530, S Sebinraj wrote:
-> Check for System V IPC support in kms_concurrent test to handle
-> targets that don't have SYSVIPC enabled in their kernel. Without this
-> check, the test would fail with assertion errors when trying to use
-> message queues.
+Hi Peter,
+On 2025-09-09 at 15:08:08 +0200, Peter Senna Tschudin wrote:
+> Add a call to igt_fs_check_root_perm() in test_ccs_mode() to verify that
+> the "ccs_mode" sysfs attribute is writable only by root. This enforces a
+> security requirement that only root can modify "ccs_mode", preventing
+> unintended or unauthorized writes by other users.
 > 
-> The implementation checks if the target supports IPC,
-> if not found it skips the test.
-
-Sorry, I replied to your v1 twice. I do see error log
-in cover letter but I want to also know on which GPU (or GPUs)
-and what board (or boards) do you see those errors.
-
-If this is on non-Intel GPUs than a better solution would
-be to disable sysvipc functionality in igt_core, that in turn
-will allow to run kms tests.
-
-> 
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: Michal Winiarski <michal.winiarski@intel.com>
+> Cc: Kamil Konieczny  <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > ---
->  lib/igt_core.h         |  2 ++
->  tests/kms_concurrent.c | 18 ++++++++++++++++++
->  2 files changed, 20 insertions(+)
+>  tests/intel/xe_compute.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index 6f462205f..413e83bc8 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -45,6 +45,8 @@
->  #include <getopt.h>
->  #include <unistd.h>
+> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> index 5e9140902..cedcb23d9 100644
+> --- a/tests/intel/xe_compute.c
+> +++ b/tests/intel/xe_compute.c
+> @@ -15,6 +15,7 @@
 >  
-> +bool device_supports_sysvipc(void);
-> +
+>  #include "igt.h"
+>  #include "igt_sysfs.h"
+> +#include "igt_fs.h"
 
-Still wrong place, move after all #include directives.
+Move this before igt_sysfs.h
+
+>  #include "intel_compute.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+> @@ -80,6 +81,12 @@ test_ccs_mode(void)
+>  
+>  		num_gt_with_ccs_mode++;
+>  		gt_fd = gt_sysfs_open(gt);
+> +
+> +		/* Check if ccs_mode is writeble only by root. Having root only
+> +		 * write permission is a security requirement.
+> +		 */
+
+imho add here a skip if ccs_mode file do not exists.
 
 Regards,
 Kamil
 
->  #ifdef __FreeBSD__
->  #include "igt_freebsd.h"
->  #endif
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-> index 4f16f8b89..80512a140 100644
-> --- a/tests/kms_concurrent.c
-> +++ b/tests/kms_concurrent.c
-> @@ -107,6 +107,22 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
->  	data->fb = NULL;
->  }
->  
-> +/**
-> + * Checks if the current device supports SYSVIPC by verifying the existence and accessibility
-> + * of the /proc/sysvipc directory.
-> + * Returns: true if accessible for read and write, false otherwise.
-> + */
-> +bool device_supports_sysvipc(void)
-> +{
-> +	char path[128] = {'\0'};
+> +		igt_assert(igt_fs_check_root_perm(gt_fd, "ccs_mode"));
 > +
-> +	snprintf(path, sizeof(path), "/proc/sysvipc");
-> +	if (access(path, R_OK | W_OK) == 0)
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->  static void
->  create_fb_for_mode_position(data_t *data, drmModeModeInfo *mode,
->  			    int *rect_x, int *rect_y,
-> @@ -395,6 +411,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  		igt_display_require(&data.display, data.drm_fd);
->  		igt_require(data.display.is_atomic);
->  		igt_display_require_output(&data.display);
-> +		igt_require(device_supports_sysvipc());
-> +
->  		if (is_intel_device(data.drm_fd))
->  			intel_allocator_multiprocess_start();
->  	}
+>  		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 0) < 0);
+>  		for (m = 1; m <= num_slices; m++) {
+>  			/* compute slices are to be equally distributed among enabled engines */
 > -- 
-> 2.34.1
+> 2.43.0
 > 
