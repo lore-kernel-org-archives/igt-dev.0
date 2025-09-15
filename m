@@ -4,57 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D159DCAC597
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Sep 2025 12:14:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB8B0CAC597
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Sep 2025 12:19:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 749B210E46E;
-	Mon, 15 Sep 2025 12:14:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7855610E470;
+	Mon, 15 Sep 2025 12:19:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BbSXeAuP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lVJvWk5Y";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B9FA10E46E
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Sep 2025 12:14:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 839C610E470
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Sep 2025 12:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757938470; x=1789474470;
+ t=1757938783; x=1789474783;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=VFFXyMofLzoBrjGOXO+76Z4SDSHQVUHBJZ8SrRYQzvQ=;
- b=BbSXeAuPfbeETEli4/ws6Ah1/QWMXeGX+dcS6YNyrYqoPvNAMkL6LROb
- IKhJE7JFnEsIhYo2kBQG6AT3AqVa2u4zBweINpLV2HlYUcluIPpCj6i3F
- 9RLauVrXonpinFaRK2VhNTC0nHivynF5rfHCliKxJcQgJJcfCcCFhseau
- AiM9+SpxxghEW8Or+kNc6OWtVv7ARVDjZ66dHZd6ssQVQXYsq2R/qWgjq
- lfziNepwI5EM3uJLsbgwiJa7vwdd+f/qYrpGpHZFMVOclJCJsTUS9zIz3
- qyBY/+xE3UA2MtLTLVTsQc2CcsI6KuFnpU7c1pSCzB8dBPtbcYtO7/gHy A==;
-X-CSE-ConnectionGUID: y2W5ZM1ySMCS/BXCWZNxMQ==
-X-CSE-MsgGUID: 5Wrr+l6SQJGNp/k0lS2cXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11553"; a="82777120"
-X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; d="scan'208";a="82777120"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2025 05:14:30 -0700
-X-CSE-ConnectionGUID: iXVdSC2sQ9KSp0UrR4nWTQ==
-X-CSE-MsgGUID: xrBC4b8ARLyh4IVe8AxIUQ==
+ bh=v4PkQozohZguTuJq59QNd5D0PpuIDl0+a4x1Xh/w8P8=;
+ b=lVJvWk5YkhEkw0A6HL/3/O3yoiNOLz24xjBs/sxgLJqExkQv+JYw9DSJ
+ 81CGuOjWMet9LTJECzVWhONCBUi/fAyczT5EgE+zko5o0ie6cw9XYVfvo
+ uCGH4CFBzTRkSxxc/Go7moKaYC2ufOoef5f80ewXPe2L+TQTBpmCg4hP+
+ LZ745LLRODJLoPNwSTiVRtuCBBZhEvMVkOt15ewDKi09mBQyePFLGeMaU
+ TZZbQ0eSRfr37PwLEykf0e1AFMGEAOF6bzyKtf59fivn4ZmDErEJh11Hr
+ Lcs1Ff9P3+ttfe9xu0YCXrvWab4EGW7iaL/76I08UWBJniS6WP8ZTmK9B Q==;
+X-CSE-ConnectionGUID: V1R4XnEIQVWDHIcrlVYBfQ==
+X-CSE-MsgGUID: 6jeL0EeSTvWvERV/7a2KUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="71614730"
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; d="scan'208";a="71614730"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2025 05:19:43 -0700
+X-CSE-ConnectionGUID: Gbd2rpIsQ1qHhC5pBeXy+w==
+X-CSE-MsgGUID: sSBQco5kRveV7CXHz0L03g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; d="scan'208";a="205582197"
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; d="scan'208";a="174166534"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2025 05:14:28 -0700
-Date: Mon, 15 Sep 2025 14:14:25 +0200
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 05:19:42 -0700
+Date: Mon, 15 Sep 2025 14:19:39 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: S Sebinraj <s.sebinraj@intel.com>
 Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com
-Subject: Re: [PATCH i-g-t] tests/kms_concurrent: Add SYSVIPC support check
-Message-ID: <20250915121425.iunhf3bqmffpw62g@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t v2 1/1] tests/kms_concurrent: Add SYSVIPC support
+ check
+Message-ID: <20250915121939.oit6d67hvu44hpar@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
  jeevaka.badrappan@intel.com
-References: <20250908084631.2676274-1-s.sebinraj@intel.com>
+References: <20250915073231.2093842-1-s.sebinraj@intel.com>
+ <20250915073231.2093842-2-s.sebinraj@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250908084631.2676274-1-s.sebinraj@intel.com>
+In-Reply-To: <20250915073231.2093842-2-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,7 +73,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi S,
-On 2025-09-08 at 14:16:31 +0530, S Sebinraj wrote:
+On 2025-09-15 at 13:02:31 +0530, S Sebinraj wrote:
 > Check for System V IPC support in kms_concurrent test to handle
 > targets that don't have SYSVIPC enabled in their kernel. Without this
 > check, the test would fail with assertion errors when trying to use
@@ -80,11 +82,13 @@ On 2025-09-08 at 14:16:31 +0530, S Sebinraj wrote:
 > The implementation checks if the target supports IPC,
 > if not found it skips the test.
 
-On what GPU/GPUs and board/s do you see this errors?
-Depending on your answer, maybe a better solution would be
-to turn off that part in igt_core and make a test running?
+Sorry, I replied to your v1 twice. I do see error log
+in cover letter but I want to also know on which GPU (or GPUs)
+and what board (or boards) do you see those errors.
 
-Please also give an example error log.
+If this is on non-Intel GPUs than a better solution would
+be to disable sysvipc functionality in igt_core, that in turn
+will allow to run kms tests.
 
 > 
 > Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
@@ -104,7 +108,7 @@ Please also give an example error log.
 > +bool device_supports_sysvipc(void);
 > +
 
-Move this below all #include
+Still wrong place, move after all #include directives.
 
 Regards,
 Kamil
