@@ -4,56 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B858CAC598
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Sep 2025 13:09:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF424CAC598
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Sep 2025 14:21:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9DB2710E317;
-	Tue, 16 Sep 2025 13:09:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 646C610E039;
+	Tue, 16 Sep 2025 14:21:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jEI1ldZt";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="gZV4Dy9z";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECA2B10E317
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Sep 2025 13:09:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758028157; x=1789564157;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=EQnlo5djhvSTmh3DbAhiBkVwH8MIlIQgkMYQwyuKXwM=;
- b=jEI1ldZtnnAAbM6KtFD8boKyyPslBDkPNJBFE7+zCjppVBlGqXqCZts7
- 5M6y0QkhkLqtGUUuTHDR2Ta18aSuvf1RV9r+wYSfFzbEssfsZQ4cgqzdD
- qVAH63H1EYI+S7yg7t2fCV54/MYoKhj7N4nF/S85dtqIi51Y1PTZzLtUe
- Qx3cdR3nLHwMa0i1WQ8T6vNHpPluRqawQ/j6gbCds4zZWN6x9iHa+WaPT
- a0Nv132g8Hr9tkul7a2OxYanoR5qK7eQEr4YFAdfWekJ85B6vKWkCQT9F
- IGT5RsLn/1TvObTvq9cK29d6/6sTIWtm0UFGW2077NIQv8u1A7YMyrdoc g==;
-X-CSE-ConnectionGUID: YQuutYn8Q1aN/RD8c2E75A==
-X-CSE-MsgGUID: 8y4as/6xTX+p5/AxWivHMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="70929027"
-X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; d="scan'208";a="70929027"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2025 06:09:17 -0700
-X-CSE-ConnectionGUID: aiIAVXkXSyG0glzK5xRdlw==
-X-CSE-MsgGUID: A1tVjw2GRfCWl5qgvXxupA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; d="scan'208";a="180074634"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.193])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2025 06:09:16 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v1 1/1] Revert "runner/settings: Add function to set
- IGT_DATA_PATH environment variable"
-Date: Tue, 16 Sep 2025 15:09:04 +0200
-Message-ID: <20250916130904.166885-2-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250916130904.166885-1-kamil.konieczny@linux.intel.com>
-References: <20250916130904.166885-1-kamil.konieczny@linux.intel.com>
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com
+ [209.85.216.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1E1E10E039
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Sep 2025 14:20:59 +0000 (UTC)
+Received: by mail-pj1-f43.google.com with SMTP id
+ 98e67ed59e1d1-32bb1132c11so4952999a91.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Sep 2025 07:20:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1758032459; x=1758637259; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=K32W988IhTN6XTfvBXIi2pj+GErDX1G1Usl1o1/yuzo=;
+ b=gZV4Dy9zmSN/vwUA5+WVkvX/uDl0k0GIgihL+3EOGhQq3K49g8jiBR3C2HJyve6hSH
+ iSYPrPwLMvnfbFabfI+Jpm1wCkoSBDG0udVnGQ00XeF29fj5+eH5i4deOLVcLA/aDtFQ
+ F2y9FEJWZTTZdUHxmvEF9XIMF4w8B7TuLmJktWXcox90X8baHqmGo6Kg8ecqRsDn+Ket
+ qcFvB9qJE5tI6u0Wde7q1s4/MPN868PUSmHS77fohNY8U4S1tzExPS3b89uGELzATzwv
+ MbInNhmV2uEztys3xAHNbEA/YbRKCohFQi2LbFy2CZc0bQrpwsfOKk49Gedz4x/+0qif
+ Xmrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1758032459; x=1758637259;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=K32W988IhTN6XTfvBXIi2pj+GErDX1G1Usl1o1/yuzo=;
+ b=QwpY8uKeeGsHOr5Yg8cSiFN3gbo7l3/lpdeelpkNNXLyBROiuH0qzEuOoG52eTdxnI
+ yRk7i4NQPBLgSm+51nHPBH1i5ghjRqNXEuIGd/GZU762uiqfWgE4sjjP7kKQ2SXxpYb2
+ /UjnBTIf3NxRHcF3ch5HMstw+4ztqi0kQg0e39itRqsOPdNgNqFA9haEvKdyqBCCbwsW
+ VA1RZwVNk84Mf8pudzh/ywoLiarLuJqG2HAgAPsxePY/icnLCiLrn7CKF7YjDb9FY99R
+ 8KedyGJrFSq9/TOmg0eSvw1GuryvzOkgIqSsjmLyKLVar77R0nFRbpLUOjE1+pvtQ8vR
+ quAg==
+X-Gm-Message-State: AOJu0YzNrodUilkEvpFEY6mfI/P9ilGWreOEKYisO9ZvRVJT21x1tQw7
+ WszY4YDZGKM1JGYi/8/s4aeDOEo3Z8u6Iv3qYCWCqHJ8yF+hWyAhnFq/TGDVMNWYcaJxWctafAO
+ DxXnorrLeAnVPBMc7FHwmcxvOHLg9FPN9f/f0lAG45w==
+X-Gm-Gg: ASbGnctPKqq9n2TE4ets1G6Mu9IYzF5OTb06Ffac+ckkIDCHB6K7FWigQdUJ/UZ0Utu
+ GSJyaN96BmBrokmhYhB9+oetilZ8bbX7gYphbZ2N5yhvybg4u/LXHhpI3X6j0hw0yNuV/vJOGtY
+ tgEUSmqfOfexO4gA6esoNEgjr9K7pkdzz5Wc3PkJr4QmiyjPZUkR/ismsxmNSOBpWEJI2SLIyU7
+ ZKS5KMw7g==
+X-Google-Smtp-Source: AGHT+IFLQtjwONKUzI+VOm7jd+9bzYkwBg8ZqleXOyIQfUe1Ip7kh+PjBaH4HQE0wbj2tMWBhzCUe8XYQW7aqlJ90r8=
+X-Received: by 2002:a17:90b:2ec8:b0:32e:72bd:6d5a with SMTP id
+ 98e67ed59e1d1-32ea60cd08bmr3214025a91.1.1758032458891; Tue, 16 Sep 2025
+ 07:20:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250915160536.2839057-1-nemesa.garg@intel.com>
+In-Reply-To: <20250915160536.2839057-1-nemesa.garg@intel.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Tue, 16 Sep 2025 17:20:42 +0300
+X-Gm-Features: AS18NWBqc74kRB3TUALyVY98pXgxxky4HKsIw5RKh91rLTTO4IhV1R_mJ7kD-5I
+Message-ID: <CAJ=qYWRZ+H3JS_CYg0gWS94AQR7BSqOy3hJPZit1=aZWe-A4rw@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] tests/kms_plane: Add test to validate odd panning
+To: Nemesa Garg <nemesa.garg@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,85 +81,211 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This reverts commit eacde5c2acc37c1570e27b68b8b6c39d8b61fb32.
+Hi Nemesa,
 
-IGT_DATA_PATH is currently used only when loading PNG images
-by kms_3d test. It looks like more proper way would be to
-place such path discovery into igt library, not in runner.
+few comments below
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- runner/settings.c | 36 ------------------------------------
- 1 file changed, 36 deletions(-)
+On Mon, Sep 15, 2025 at 7:10=E2=80=AFPM Nemesa Garg <nemesa.garg@intel.com>=
+ wrote:
+>
+> This feature creates a NV12 plane having two framebuffers
+> and moving it to odd position and then do continuous flip
+> along with the change in the width of framebuffer.
+> This is to check whether panning at odd position is
+> supported or not.
+>
+> v2: Add test in kms_plane.[Swati]
+> v3: Remove extra parameters[Pranay]
+> v4: Add check for modifier
+> v5: Adding the break condition
+> v6: Change the fb size
+>
+> Signed-off-by: Nemesa Garg <nemesa.garg@intel.com>
+> ---
+>  tests/kms_plane.c | 107 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 107 insertions(+)
+>
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index d08ec81e4..4872b8ce5 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -81,6 +81,15 @@
+>   * @format-source-clamping:          with source clamping
+>   */
+>
+> +/**
+> + * SUBTEST: odd-panning
+> + * Description: Verify that odd panning in horizontal direction for plan=
+ar format
+> + * Driver requirement: i915, xe
+> + * Functionality: plane, panning
+> + * Mega feature: General Display Features
+> + * Test category: functionality test
+> + */
+> +
+>  /*
+>   * Throw away enough lsbs in pixel formats tests
+>   * to get a match despite some differences between
+> @@ -93,6 +102,9 @@
+>  #define CRTC_RESTRICT_CNT      2
+>  #define SIM_CRTC_RESTRICT_CNT  1
+>
+> +#define PLANE_WIDTH 810
+> +#define PLANE_HEIGHT 590
+> +
+>  typedef struct {
+>         float red;
+>         float green;
+> @@ -1323,6 +1335,97 @@ static bool is_pipe_limit_reached(int count)
+>                 return count >=3D CRTC_RESTRICT_CNT && !all_pipes;
+>  }
+>
+> +static void
+> +prepare_planes_panning(igt_display_t *display, const enum pipe pipe_id,
+> +                      igt_output_t *output)
+> +{
 
-diff --git a/runner/settings.c b/runner/settings.c
-index 85980dc96..3ccf71870 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -90,8 +90,6 @@ static const char settings_filename[] = "metadata.txt";
- static const char env_filename[] = "environment.txt";
- static const char hooks_filename[] = "hooks.txt";
- 
--static bool igt_data_path_set_by_runner;
--
- static bool set_log_level(struct settings* settings, const char *level)
- {
- 	typeof(*log_levels) *it;
-@@ -614,31 +612,6 @@ char *absolute_path(const char *path)
- 	return result;
- }
- 
--static int set_tests_datadir(void)
--{
--	const char *datapath = "../share/igt-gpu-tools";
--	char *abpath;
--
--	if (getenv("IGT_DATA_PATH"))
--		return 0;
--
--	abpath = absolute_path(datapath);
--	if (!abpath) {
--		fprintf(stderr, "Error: Failed to get absolute path for '%s'\n",
--			datapath);
--		return -EINVAL;
--	}
--
--	if (setenv("IGT_DATA_PATH", abpath, 0) == 0) {
--		igt_data_path_set_by_runner = true;
--		return 0;
--	}
--
--	return -EINVAL;
--}
--
--
--
- static char *bin_path(char *fname)
- {
- 	char *path, *p;
-@@ -681,10 +654,6 @@ void init_settings(struct settings *settings)
- {
- 	memset(settings, 0, sizeof(*settings));
- 	IGT_INIT_LIST_HEAD(&settings->env_vars);
--
--	if (set_tests_datadir())
--		fprintf(stderr, "Data dir path not set\n");
--
- 	igt_vec_init(&settings->hook_strs, sizeof(char *));
- }
- 
-@@ -702,11 +671,6 @@ void clear_settings(struct settings *settings)
- 	free_hook_strs(&settings->hook_strs);
- 	free_array_deep((void **)settings->cmdline.argv, settings->cmdline.argc);
- 
--	if (igt_data_path_set_by_runner) {
--		unsetenv("IGT_DATA_PATH");
--		igt_data_path_set_by_runner = false;
--	}
--
- 	init_settings(settings);
- }
- 
--- 
-2.51.0
+prepare_planes_panning name maybe could be changed to something that
+says this is the test, not just prepare.
 
+> +       igt_plane_t *primary;
+> +       struct igt_fb primary_fb_1, primary_fb_2;
+> +       unsigned int fb_id_1, fb_id_2;
+> +       int j =3D 0, ret;
+> +
+> +       igt_output_set_pipe(output, pipe_id);
+> +
+> +       primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIM=
+ARY);
+> +
+> +       if (!igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+> +                                     DRM_FORMAT_MOD_LINEAR)) {
+> +               igt_info("plane-%d does not supports NV12 format and Line=
+ar modifier\n",
+> +                        primary->index);
+> +               return;
+
+I think this make the test report success when nothing was tested?
+Maybe need something along the lines of igt_skip_on(..) or so?
+
+> +       }
+> +
+> +       fb_id_1 =3D igt_create_pattern_fb(display->drm_fd,
+> +                                       810, 590,
+^
+this size you have defined in PLANE_WIDTH and PLANE_HEIGHT
+
+> +                                       DRM_FORMAT_NV12,
+> +                                       DRM_FORMAT_MOD_LINEAR,
+> +                                       &primary_fb_1);
+> +
+> +       fb_id_2 =3D igt_create_pattern_fb(display->drm_fd,
+> +                                       810, 590,
+^
+here also PLANE_WIDTH and PLANE_HEIGHT
+
+> +                                       DRM_FORMAT_NV12,
+> +                                       DRM_FORMAT_MOD_LINEAR,
+> +                                       &primary_fb_2);
+
+I was wondering why 2 framebuffers? Does this test need flipping?
+
+> +
+> +       igt_assert(fb_id_1);
+> +       igt_assert(fb_id_2);
+
+igt_create_pattern_fb already asserts these fb_ids, but as this is not
+crc test you could above just use igt_create_fb instead of
+igt_create_pattern_fb (and then would need these asserts)
+
+> +
+> +       igt_plane_set_fb(primary, &primary_fb_1);
+> +
+> +       igt_plane_set_size(primary, PLANE_WIDTH, PLANE_HEIGHT);
+> +       igt_plane_set_position(primary, -501, 200);
+> +
+> +       ret =3D igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_AL=
+LOW_MODESET, NULL);
+> +
+> +       do {
+> +               if (j % 2 =3D=3D 0) {
+> +                       igt_plane_set_fb(primary, &primary_fb_1);
+> +                       igt_plane_set_size(primary, PLANE_WIDTH - j, PLAN=
+E_HEIGHT);
+
+when you change plane width but not fb width, I think here fb will be scale=
+d?
+
+> +                       ret =3D igt_display_try_commit_atomic(display, 0,=
+ NULL);
+> +                       if (ret =3D=3D -22)
+> +                               break;
+> +               } else {
+> +                       igt_plane_set_fb(primary, &primary_fb_2);
+> +                       igt_plane_set_size(primary, PLANE_WIDTH - j, PLAN=
+E_HEIGHT);
+> +                       ret =3D igt_display_try_commit_atomic(display, 0,=
+ NULL);
+> +                       if (ret =3D=3D -22)
+> +                               break;
+> +               }
+> +               j++;
+> +       } while (j < 20);
+
+test description talk about "Verify that odd panning in horizontal"
+but your loop set fb, then set plane size. I think for pan you'd need
+to either set fb or plane position? Now it look like this is more a
+scaler test for nv12 at the edge of pipe.
+
+> +
+> +       igt_assert_eq(ret, -22);
+> +
+> +       igt_plane_set_fb(primary, NULL);
+> +       igt_output_set_pipe(output, PIPE_NONE);
+> +       igt_display_try_commit2(display, COMMIT_ATOMIC);
+> +
+> +       igt_remove_fb(display->drm_fd, &primary_fb_1);
+> +       igt_remove_fb(display->drm_fd, &primary_fb_2);
+> +}
+> +
+> +static void run_test_odd_pan(data_t *data)
+> +{
+> +       igt_display_t *display =3D &data->display;
+> +       enum pipe pipe;
+> +       igt_output_t *output;
+> +       int count =3D 0;
+> +
+> +       for_each_pipe_with_valid_output(display, pipe, output) {
+> +               igt_display_reset(display);
+> +
+> +               igt_output_set_pipe(output, pipe);
+> +               if (!intel_pipe_output_combo_valid(display))
+> +                       continue;
+> +
+> +               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_=
+output_name(output))
+> +                       prepare_planes_panning(display, pipe, output);
+> +
+> +               if (is_pipe_limit_reached(++count))
+> +                       break;
+> +       }
+> +}
+> +
+>  static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+>  {
+>         enum pipe pipe;
+> @@ -1401,6 +1504,10 @@ run_tests_for_pipe_plane(data_t *data)
+>                 run_test(data, dynamic_test_handler);
+>         }
+>
+> +       igt_describe("verify whether odd panning is supported or not");
+> +       igt_subtest_with_dynamic("odd-panning")
+> +               run_test_odd_pan(data);
+> +
+>         igt_describe("verify planar settings for pixel format are accepte=
+d or rejected correctly");
+>         igt_subtest_f("planar-pixel-format-settings")
+>                 test_planar_settings(data);
+> --
+> 2.25.1
+>
