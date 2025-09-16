@@ -4,49 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 658ECCAC592
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C33DCAC59B
 	for <igt-dev@archiver.kernel.org>; Tue, 16 Sep 2025 20:25:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 176C710E170;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CAB310E785;
 	Tue, 16 Sep 2025 20:25:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PKPBRqYA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KdKBspMp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EABB510E170
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Sep 2025 20:24:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF36410E785
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Sep 2025 20:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758054299; x=1789590299;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=CKZf4aSQoZ+2xQtWz9LZcvXKEn3elEpcFzO/9AvSOr8=;
- b=PKPBRqYAeLrXdi9YxyLauDgz/EK/tx176JbPFekcwRVJGMsaP/ylHQ5I
- ZdbJFWEL7Q5qo7anN8l3Nvn9qgoHEGiG6p+UTBtCAmuQlFDC8ebd8P2dq
- Kfy/ZJ4IBrYXnSaR9PrjbB/Vn0RhyyBCkwhJFtsLlVrM95+O/buUFr9TS
- 4R/dnIJOXA4pwoDA6tr1OwlcjHuRHIQ+B4FehOpmwTQJAvz5B77Gmk99y
- HW1kjAlxDE02vYJu2TMmxaTmMh7zQc4JAZBc/XDA38mviReQD+iolDapN
- odPqFQesqBX5AM4qAN+UDOgNqcQKPQsi5UwfmyHYv61ifTicF93/KuWYJ g==;
-X-CSE-ConnectionGUID: Q/Ao5VvWQbS3vcLkIvrCSA==
-X-CSE-MsgGUID: 1/w/1bHDQI+4hMyPYtbLFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="59569998"
-X-IronPort-AV: E=Sophos;i="6.18,270,1751266800"; d="scan'208";a="59569998"
+ t=1758054300; x=1789590300;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=ZTwa0gH4hYZ1diod6u3M1coXY5wZQIia92i5xXvXsDc=;
+ b=KdKBspMpeebZXmSNxWhs3Qzz+d3r5x89hyIiX9mIy1FZyzOCxlAixltg
+ 5hN2QYWBwUAswn3HfzYwYrkQnvEnqohgtPIfzmyqCvSCcBKR7cxHiZ636
+ jD6pTcH+zR8FEKaKhrK2Fh9NsVibtDBUmoTmtX9sx3fhveeDFMfh1kC0f
+ Q3QaAfqRE6vLweaz+jEtvATJcxcULpzSfJZJy/PyuW69poxAFwZym8IlG
+ C7Kv1GrIMy5fzM1bVYSPezSZtEsk/sXgbOQ5HKgC5tExrsb/NMetuIxiL
+ htPr0hdDVdJKDMoQirlaeFEaNJoJrVWrcdPDamu+OWgiJG82Ndd7a0TWA A==;
+X-CSE-ConnectionGUID: hY7xCcipTA2oqxvY647Brg==
+X-CSE-MsgGUID: lFHVkB2eT0SkhldNXY8WYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="59570001"
+X-IronPort-AV: E=Sophos;i="6.18,270,1751266800"; d="scan'208";a="59570001"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Sep 2025 13:24:58 -0700
-X-CSE-ConnectionGUID: vuXacv8tSnKgbfKgvdAseQ==
-X-CSE-MsgGUID: CQy5qm6bTNumcQHJethXPQ==
+X-CSE-ConnectionGUID: kMF6EAwUS9Wrg7Tp/oEt2A==
+X-CSE-MsgGUID: IesOPbajTRmroQ+IksOyzQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,270,1751266800"; d="scan'208";a="212190528"
+X-IronPort-AV: E=Sophos;i="6.18,270,1751266800"; d="scan'208";a="212190530"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Sep 2025 13:24:59 -0700
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 0/3] Add tests to help verify VF migration
-Date: Tue, 16 Sep 2025 13:24:51 -0700
-Message-Id: <20250916202454.3758884-1-matthew.brost@intel.com>
+Subject: [PATCH 2/3] tests/intel/xe_exec_reset: Add timeslice preempt test
+Date: Tue, 16 Sep 2025 13:24:53 -0700
+Message-Id: <20250916202454.3758884-3-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250916202454.3758884-1-matthew.brost@intel.com>
+References: <20250916202454.3758884-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -64,19 +66,113 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-These are proving helpful to find VF migration issues.
+Add tests in which submit multiple preemptable spinners to same hardware
+engine ensuring a cumulative longer timeout and validating the restart
+paths in the DRM scheduler TDR (Timeout Detection and Recovery).
 
-Matt
+v3:
+ - Spell out TDR (Kamal)
 
-Matthew Brost (3):
-  tests/intel/xe_exec_reset: Add job cancel tests
-  tests/intel/xe_exec_reset: Add timeslice preempt test
-  tests/intel/xe_exec_reset: Long spin tests
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ lib/xe/xe_legacy.c          |  5 +++--
+ tests/intel/xe_exec_reset.c | 25 +++++++++++++++++++++++--
+ 2 files changed, 26 insertions(+), 4 deletions(-)
 
- lib/xe/xe_legacy.c          |  56 ++++++++++-
- tests/intel/xe_exec_reset.c | 193 +++++++++++++++++++++++++++++++++++-
- 2 files changed, 241 insertions(+), 8 deletions(-)
-
+diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
+index 669ecff7aa..9d2da7f413 100644
+--- a/lib/xe/xe_legacy.c
++++ b/lib/xe/xe_legacy.c
+@@ -12,6 +12,7 @@
+ 
+ /* Batch buffer element count, in number of dwords(u32) */
+ #define BATCH_DW_COUNT			16
++#define CANCEL				(0x1 << 7)
+ #define PREEMPT				(0x1 << 6)
+ #define CAT_ERROR			(0x1 << 5)
+ #define CLOSE_EXEC_QUEUES		(0x1 << 2)
+@@ -100,7 +101,7 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		u64 exec_addr;
+ 		int e = i % n_exec_queues;
+ 
+-		if (!i) {
++		if (!i || flags & CANCEL) {
+ 			spin_opts.addr = base_addr + spin_offset;
+ 			xe_spin_init(&data[i].spin, &spin_opts);
+ 			exec_addr = spin_opts.addr;
+@@ -155,7 +156,7 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+ 
+-	if (!use_capture_mode && !(flags & GT_RESET)) {
++	if (!use_capture_mode && !(flags & (GT_RESET | CANCEL))) {
+ 		for (i = 1; i < n_execs; i++)
+ 			igt_assert_eq(data[i].data, 0xc0ffee);
+ 	}
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 72b85d3e7b..88e9df6fbb 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -117,6 +117,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
+ #define PARALLEL			(0x1 << 4)
+ #define CAT_ERROR			(0x1 << 5)
+ #define PREEMPT				(0x1 << 6)
++#define CANCEL				(0x1 << 7)
+ 
+ /**
+  * SUBTEST: %s-cat-error
+@@ -302,6 +303,12 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+  * SUBTEST: cancel-preempt
+  * Description: Test job cancel with a preemptable job
+  *
++ * SUBTEST: cancel-timeslice-preempt
++ * Description: Test job cancel with 2 preemptable jobs
++ *
++ * SUBTEST: cancel-timeslice-many-preempt
++ * Description: Test job cancel with many preemptable jobs
++ *
+  * SUBTEST: gt-reset
+  * Description: Test GT reset
+  *
+@@ -396,7 +403,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		uint64_t exec_addr;
+ 		int e = i % n_exec_queues;
+ 
+-		if (!i) {
++		if (!i || flags & CANCEL) {
+ 			spin_opts.addr = base_addr + spin_offset;
+ 			xe_spin_init(&data[i].spin, &spin_opts);
+ 			exec_addr = spin_opts.addr;
+@@ -451,7 +458,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, 3 * NSEC_PER_SEC);
+ 
+-	if (!(flags & GT_RESET)) {
++	if (!(flags & (GT_RESET | CANCEL))) {
+ 		for (i = 1; i < n_execs; i++)
+ 			igt_assert_eq(data[i].data, 0xc0ffee);
+ 	}
+@@ -680,6 +687,20 @@ igt_main
+ 			break;
+ 		}
+ 
++	igt_subtest("cancel-timeslice-preempt")
++		xe_for_each_engine(fd, hwe) {
++			xe_legacy_test_mode(fd, hwe, 2, 2, CANCEL | PREEMPT,
++					    LEGACY_MODE_ADDR, false);
++			break;
++		}
++
++	igt_subtest("cancel-timeslice-many-preempt")
++		xe_for_each_engine(fd, hwe) {
++			xe_legacy_test_mode(fd, hwe, 4, 4, CANCEL | PREEMPT,
++					    LEGACY_MODE_ADDR, false);
++			break;
++		}
++
+ 	igt_subtest("gt-reset")
+ 		xe_for_each_engine(fd, hwe)
+ 			xe_legacy_test_mode(fd, hwe, 2, 2, GT_RESET,
 -- 
 2.34.1
 
