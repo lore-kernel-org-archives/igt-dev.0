@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5198DCAC599
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Sep 2025 04:48:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C971CAC599
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Sep 2025 05:30:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 09C0C10E63D;
-	Tue, 16 Sep 2025 04:48:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 95D0B10E2F8;
+	Tue, 16 Sep 2025 05:30:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eRfL/6Ua";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y3ypBfWe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A92A610E63D
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Sep 2025 04:48:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 814CC10E2F8
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Sep 2025 05:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1757998101; x=1789534101;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=V32gYTm+NWJOeHhKhkzIMWLK1IGvASDlotboLyWGzho=;
- b=eRfL/6Uarv7kGd7+vGIbN2FLmbnRrZ3cdizGRoN7BM0Z6BQbFdtDn2nL
- PlcuklijXgQodePhVcSGIyvxK3j1Ur6VumeHjQf7NsFmNqmRPgg0Vx5JF
- vnatDrXSQ8D3qqzw9RTFxn1ebNerGh4F7gZqVFR7SyITDFLlS8w+whDZb
- hlLB58J+KIytExIMui5AltXju/iWMHR6At5G2YdYsjBAe3eRt9DRsfyTl
- 9RYbybL4J7ueNShQQ9sV+eILpcQwXYQJI05rt0AdMwduXUFjsD7vMsUjd
- wc9lKofDs/qAb9aXC4l2qNMuvbD9w8jp1K6Twhl+oXhbgQOmTYhtLWYJd w==;
-X-CSE-ConnectionGUID: 9SpAofzLQOi1SXZDyy3W6A==
-X-CSE-MsgGUID: CjAVG2PCRgOcovIyCb4Mew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60215041"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="60215041"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2025 21:48:21 -0700
-X-CSE-ConnectionGUID: /c5YSixrSxC3UMwbIfKQmA==
-X-CSE-MsgGUID: Zm3kWGf2SauopvlRVU6beQ==
+ t=1758000622; x=1789536622;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=V7Wj/qVzmh5MXJnh0vwPHtm2gsHYTV0QcuVEZYmiMJ0=;
+ b=Y3ypBfWeYq5zUq0PsbhZlnx5zzUD96SLtRm+FAHfg1npi5AI2V+5NaH6
+ n/4gDzBcat/pDgIeH77tOdb/5tgH9i/4kPw8t81tqO3Dmt/+TJ3teqsQo
+ mLBpw9QeET5vV/wpKRyBMC45o/KMHC0aPijLpPXKJJXHunWKFmHTYaNnP
+ z7DYYtKFwm8Ah2qoSfcJP8iM9vrv1AyD/YKBe65HkO3Tgopky0kQcnx78
+ +BRokbvJqHroQwpt67ryah6YMuujq7hhuO1614UNJWqNfelIh1eROWWfX
+ NWxMYwrO+nxVgMp+QGsoGmS8Lcy5ZY0sdAmBjgSgOU3iT5ppSlb3waxGv Q==;
+X-CSE-ConnectionGUID: mGLyfS8XR02oGiyC769w7A==
+X-CSE-MsgGUID: YhNXf3TzQVGEVQ+RIKv5CA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="59316074"
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="59316074"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2025 22:30:22 -0700
+X-CSE-ConnectionGUID: /vyTBY7jRfyQNT6aLIGjTA==
+X-CSE-MsgGUID: QDotQJgFRCmGNG1v+qWfeg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="174380575"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
- ([10.245.245.140])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2025 21:48:18 -0700
-Date: Tue, 16 Sep 2025 06:48:14 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>, 
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>, 
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/gem_exec_schedule: Improve
- synchronization in pi-ringfull
-Message-ID: <meqnvgkskt6mq3dshte2u6nlmlahdxqkhgnosprvsew3d7suv6@aiqecfel7qoj>
-References: <20250915155427.417074-2-krzysztof.niemiec@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="174919014"
+Received: from soc-dcgdq34.clients.intel.com (HELO [10.66.118.22])
+ ([10.66.118.22])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2025 22:30:18 -0700
+Message-ID: <3634896d-df22-418f-92d3-74bc9c0f900c@intel.com>
+Date: Tue, 16 Sep 2025 11:00:17 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915155427.417074-2-krzysztof.niemiec@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [i-g-t,v13,1/2] tests/kms_prime: Add XE support
+To: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, bhanuprakash.modem@gmail.com,
+ anshuman.gupta@intel.com, matthew.auld@intel.com, kamil.konieczny@intel.com,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Nidhi Gupta <nidhi1.gupta@intel.com>
+References: <20250902051318.1163571-1-santhosh.reddy.guddati@intel.com>
+Content-Language: en-US
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20250902051318.1163571-1-santhosh.reddy.guddati@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,89 +74,305 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Sep 15, 2025 at 05:54:28PM +0200, Krzysztof Niemiec wrote:
-> Move the interrupt timer from the parent thread to the child thread as
-> an explicit signal raise, and make sure the order of execution between
-> them is always the same. This reduces nondeterminism in the test, fixing
-> bugs like [1], where the child is starved out of CPU time up until the
-> parent gets signalled and monopolizes the CPU before the child could
-> submit its own execbuf, failing the test.
-> 
-> [1] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14898
-> 
-> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Hello Santhosh,
+
+On 02-09-2025 10:43, Santhosh Reddy Guddati wrote:
+> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>
+> Add XE driver support for kms tests.
+>
+> V2: - Use rendercopy method for both i915 & xe
+>      - Minor cleanup
+> V3: - New patch for cleanup & rendercopy
+> V4: - Fallback to blitter
+> V5: - Rebase
+> v7: - Rebase and patch cleanup
+> v8: - D3hot subtest is not required for xe
+> v9: - nitpicks (Matthew)
+> v10:- Rebase
+> v11:- Split the commits per subtest and refactor code (Kamil, Kunal)
+>        - Enable basic-crc-hybrid subtest for xe.
+>        - Added Xe Prime support for hybrid graphics by enabling
+>          buffer sharing between integrated and discrete GPUs.
+>        - Refactor buffer creation function for Xe discrete buffers.
+>        - Introduced helper functions for creating and mapping dumb buffers.
+>        	Also, implement fast buffer import for Xe discrete GPUs
+> 	using BLT copy operations.
+> v12: Fix CRC mismatch by using correct color depth constant.
+> v13: Align B0 width to 256 for consitancy with existing logic,
+>       cleanup of xe resources after use (Kunal)
+>       - Reorder header includes and add missing closing calls (Kamil)
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 > ---
->  tests/intel/gem_exec_schedule.c | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
-> index 84219b4cf..d387725d2 100644
-> --- a/tests/intel/gem_exec_schedule.c
-> +++ b/tests/intel/gem_exec_schedule.c
-> @@ -2446,6 +2446,7 @@ static void test_pi_ringfull(int fd, const intel_ctx_cfg_t *cfg,
->  	unsigned int last, count;
->  	struct itimerval itv;
->  	IGT_CORK_HANDLE(c);
-> +	char volatile sync;
->  	bool *result;
->  
->  	/*
-> @@ -2528,10 +2529,15 @@ static void test_pi_ringfull(int fd, const intel_ctx_cfg_t *cfg,
->  
->  	/* both parent + child on the same cpu, only parent is RT */
->  	bind_to_cpu(0);
-> +	sync = 0;
->  
->  	igt_fork(child, 1) {
->  		int err;
->  
-> +		/* We want the parent to always go first */
-> +		if (!sync)
-> +			sched_yield();
+LGTM
+Reviewed-by : Kunal1.joshi@intel.com
+>   tests/kms_prime.c | 187 ++++++++++++++++++++++++++++++++++++++--------
+>   1 file changed, 155 insertions(+), 32 deletions(-)
+>
+> diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+> index 1d011327c..d10fe776d 100644
+> --- a/tests/kms_prime.c
+> +++ b/tests/kms_prime.c
+> @@ -29,16 +29,24 @@
+>    * Mega feature: General Display Features
+>    */
+>   
+> -#include "igt.h"
+> -#include "igt_device.h"
+> -#include "igt_debugfs.h"
+> -#include "igt_sysfs.h"
+>   #include <fcntl.h>
+> -
+> +#include <limits.h>
+>   #include <poll.h>
+>   #include <sys/ioctl.h>
+>   #include <time.h>
+>   
+> +#include "lib/intel_blt.h"
+> +#include "lib/intel_common.h"
+> +#include "lib/intel_pat.h"
+> +#include "lib/intel_mocs.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
 > +
->  		/* Replace our batch to avoid conflicts over shared resources? */
->  		if (!(flags & SHARED)) {
->  			obj[1].handle = gem_create(fd, 4096);
-> @@ -2542,7 +2548,6 @@ static void test_pi_ringfull(int fd, const intel_ctx_cfg_t *cfg,
->  
->  		igt_debug("Waking parent\n");
->  		kill(getppid(), SIGALRM);
-> -		sched_yield();
->  		result[1] = true;
->  
->  		sigaction(SIGALRM, &sa, NULL);
-> @@ -2566,17 +2571,19 @@ static void test_pi_ringfull(int fd, const intel_ctx_cfg_t *cfg,
->  
->  		if (!(flags & SHARED))
->  			gem_close(fd, obj[1].handle);
+> +#include "igt.h"
+> +#include "igt_device.h"
+> +#include "igt_debugfs.h"
+> +#include "igt_sysfs.h"
 > +
-> +		/* Interrupt parent's execbuf now that the child is done */
-> +		kill(getppid(), SIGALRM);
->  	}
->  
-> +	sync = 1;
-
-Why this assignment would be ever visible in child process?
-
-I guess you want to use mmaped mem visible to both?
-
---
-Zbigniew
-
+>   /**
+>    * SUBTEST: D3hot
+>    * Description: Validate pci state of dGPU when dGPU is idle and  scanout is on iGPU
+> @@ -128,24 +136,64 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+>   	return output;
+>   }
+>   
+> +static uint32_t *create_and_map_dumb_bo(int fd, struct dumb_bo *bo,
+> +					uint32_t width, uint32_t height,
+> +					uint32_t bpp, uint32_t *pitch,
+> +					uint64_t *size)
+> +{
+> +	uint32_t *ptr;
 > +
->  	/* Relinquish CPU just to allow child to create a context */
-> -	sleep(1);
-> +	pause();
->  	igt_assert_f(result[0], "HP context (child) not created\n");
->  	igt_assert_f(!result[1], "Child released too early!\n");
->  
->  	/* Parent sleeps waiting for ringspace, releasing child */
-> -	itv.it_value.tv_sec = 0;
-> -	itv.it_value.tv_usec = 50000;
-> -	setitimer(ITIMER_REAL, &itv, NULL);
->  	igt_debug("LP parent executing\n");
->  	igt_assert_eq(__execbuf(fd, &execbuf), -EINTR);
->  	igt_assert_f(result[1], "Child was not released!\n");
-> -- 
-> 2.45.2
-> 
+> +	bo->width = ALIGN(width, 256);
+> +	bo->height = height;
+> +	bo->bpp = bpp;
+> +
+> +	bo->handle = kmstest_dumb_create(fd, bo->width,
+> +					 bo->height, bo->bpp, pitch, size);
+> +
+> +	ptr = kmstest_dumb_map_buffer(fd, bo->handle, *size, PROT_READ | PROT_WRITE);
+> +	igt_assert(ptr != MAP_FAILED);
+> +
+> +	return ptr;
+> +}
+> +
+> +static uint32_t *prepare_xe_dgfx_scratch(int exporter_fd, struct dumb_bo *scratch)
+> +{
+> +	uint32_t *ptr;
+> +	struct blt_copy_data ex_blt = {};
+> +	struct blt_copy_object *src = NULL;
+> +	uint32_t region;
+> +
+> +	igt_debug("Preparing scratch buffer for DGfx exporter\n");
+> +
+> +	region = DRM_XE_MEM_REGION_CLASS_VRAM;
+> +	blt_copy_init(exporter_fd, &ex_blt);
+> +	src = blt_create_object(&ex_blt, region,
+> +				scratch->width, scratch->height,
+> +				scratch->bpp, 0, T_LINEAR,
+> +				COMPRESSION_DISABLED, 0, true);
+> +	scratch->handle = src->handle;
+> +	scratch->size = src->size;
+> +	scratch->pitch = src->pitch;
+> +	ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle, scratch->size,
+> +			     PROT_READ | PROT_WRITE);
+> +	igt_assert(ptr != MAP_FAILED);
+> +	return ptr;
+> +}
+> +
+>   static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+>   			    drmModeModeInfo *mode, uint32_t color)
+>   {
+>   	uint32_t *ptr;
+> +	bool is_dgfx;
+>   
+>   	scratch->width = mode->hdisplay;
+>   	scratch->height = mode->vdisplay;
+>   	scratch->bpp = 32;
+> +	is_dgfx = is_intel_dgfx(exporter_fd);
+>   
+> -	if (!is_i915_device(exporter_fd)) {
+> -		scratch->handle = kmstest_dumb_create(exporter_fd,
+> -						      ALIGN(scratch->width, 256),
+> -						      scratch->height, scratch->bpp,
+> -						      &scratch->pitch, &scratch->size);
+> -
+> -		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
+> -					      scratch->size, PROT_WRITE);
+> -	} else {
+> +	if (is_xe_device(exporter_fd) && is_dgfx) {
+> +		ptr = prepare_xe_dgfx_scratch(exporter_fd, scratch);
+> +	} else if (is_i915_device(exporter_fd)) {
+>   		struct igt_fb fb;
+>   
+>   		igt_init_fb(&fb, exporter_fd, mode->hdisplay, mode->vdisplay,
+> @@ -165,6 +213,11 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+>   
+>   		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
+>   						PROT_WRITE | PROT_READ);
+> +	} else {
+> +		ptr = create_and_map_dumb_bo(exporter_fd, scratch,
+> +					     scratch->width, scratch->height,
+> +					     scratch->bpp, &scratch->pitch,
+> +					     &scratch->size);
+>   	}
+>   
+>   	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
+> @@ -184,40 +237,108 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
+>   }
+>   
+>   static void import_fb(int importer_fd, struct igt_fb *fb,
+> -		      int dmabuf_fd, uint32_t pitch)
+> +		      int dmabuf_fd, struct dumb_bo *scratch)
+>   {
+>   	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
+>   	int ret;
+>   
+> -	if (is_i915_device(importer_fd)) {
+> -		if (gem_has_lmem(importer_fd)) {
+> -			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
+> -			uint64_t fb_size = 0;
+> +	igt_debug("Importing FB: importer_fd=%d, dmabuf_fd=%d, width=%u, height=%u\n",
+> +		  importer_fd, dmabuf_fd, fb->width, fb->height);
+> +
+> +	if (is_intel_dgfx(importer_fd)) {
+> +		uint64_t fb_size = 0;
+> +		uint64_t ahnd = 0;
+> +
+> +		temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> +		igt_assert(temp_buf_handle > 0);
+> +		fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width,
+> +							       fb->height, fb->drm_format,
+> +							       fb->modifier, scratch->pitch,
+> +							       &fb_size, NULL, NULL);
+> +		igt_assert(fb->gem_handle > 0);
+>   
+> -			igt_info("Importer is dGPU\n");
+> -			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> -			igt_assert(temp_buf_handle > 0);
+> -			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
+> -								       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
+> -			igt_assert(fb->gem_handle > 0);
+> +		if (is_i915_device(importer_fd)) {
+> +			ahnd = get_reloc_ahnd(importer_fd, 0);
+>   
+>   			igt_blitter_src_copy(importer_fd, ahnd, 0, NULL, temp_buf_handle,
+> -					     0, pitch, fb->modifier, 0, 0, fb_size, fb->width,
+> -					     fb->height, 32, fb->gem_handle, 0, pitch, fb->modifier,
+> -					     0, 0, fb_size);
+> +						 0, scratch->pitch, fb->modifier,
+> +						 0, 0, fb_size, fb->width,
+> +						 fb->height, 32, fb->gem_handle,
+> +						 0, scratch->pitch, fb->modifier,
+> +						 0, 0, fb_size);
+>   
+>   			gem_sync(importer_fd, fb->gem_handle);
+>   			gem_close(importer_fd, temp_buf_handle);
+>   			put_ahnd(ahnd);
+> -		} else {
+> -			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> +		}  else if (is_xe_device(importer_fd)) {
+> +			uint32_t xe_bb;
+> +			struct blt_copy_data blt = {0};
+> +			struct blt_copy_object *src, *dst;
+> +			uint32_t vm, xe_exec;
+> +			intel_ctx_t *xe_ctx;
+> +
+> +			struct drm_xe_engine_class_instance inst = {
+> +				.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +			};
+> +
+> +			vm = xe_vm_create(importer_fd, 0, 0);
+> +			xe_exec = xe_exec_queue_create(importer_fd, vm, &inst, 0);
+> +			xe_ctx = intel_ctx_xe(importer_fd, vm, xe_exec, 0, 0, 0);
+> +			ahnd = intel_allocator_open_full(importer_fd, xe_ctx->vm, 0, 0,
+> +							 INTEL_ALLOCATOR_SIMPLE,
+> +							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +
+> +			igt_calc_fb_size(fb);
+> +
+> +			fb->gem_handle = xe_bo_create(importer_fd, 0, fb->size,
+> +						      vram_if_possible(importer_fd, 0), 0);
+> +			igt_require(fb->gem_handle);
+> +
+> +			blt_copy_init(importer_fd, &blt);
+> +
+> +			src = blt_create_object(&blt, vram_if_possible(importer_fd, 0),
+> +						scratch->width, scratch->height, 32, 0,
+> +						T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +			blt_set_object(src, temp_buf_handle, scratch->size,
+> +				       vram_if_possible(importer_fd, 0), 0,
+> +				       DEFAULT_PAT_INDEX,
+> +				       T_LINEAR, COMPRESSION_DISABLED, 0);
+> +
+> +			dst = blt_create_object(&blt, vram_if_possible(importer_fd, 0),
+> +						scratch->width, scratch->height, 32, 0,
+> +						T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +			blt_set_object(dst, fb->gem_handle, fb->size,
+> +				       vram_if_possible(importer_fd, 0), 0,
+> +				       DEFAULT_PAT_INDEX,
+> +				       T_LINEAR, COMPRESSION_DISABLED, 0);
+> +
+> +			blt.color_depth = CD_32bit;
+> +			blt_set_copy_object(&blt.src, src);
+> +			blt_set_copy_object(&blt.dst, dst);
+> +
+> +			xe_bb = xe_bo_create(importer_fd, 0, fb->size,
+> +					     vram_if_possible(importer_fd, 0), 0);
+> +
+> +			blt_set_batch(&blt.bb, xe_bb, fb->size, vram_if_possible(importer_fd, 0));
+> +			blt_fast_copy(importer_fd, xe_ctx, NULL, ahnd, &blt);
+> +
+> +			put_offset(ahnd, dst->handle);
+> +			put_offset(ahnd, src->handle);
+> +			put_offset(ahnd, xe_bb);
+> +			intel_allocator_bind(ahnd, 0, 0);
+> +			put_ahnd(ahnd);
+> +			xe_exec_queue_destroy(importer_fd, xe_exec);
+> +			xe_vm_destroy(importer_fd, vm);
+> +
+> +			gem_close(importer_fd, temp_buf_handle);
+>   		}
+>   	} else {
+>   		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
+> +		igt_assert(fb->gem_handle > 0);
+>   	}
+>   
+>   	handles[0] = fb->gem_handle;
+> -	pitches[0] = pitch;
+> +	pitches[0] = scratch->pitch;
+>   	offsets[0] = 0;
+>   
+>   	ret = drmModeAddFB2(importer_fd, fb->width, fb->height,
+> @@ -284,7 +405,7 @@ static void test_crc(int exporter_fd, int importer_fd)
+>   		gem_close(exporter_fd, scratch.handle);
+>   
+>   		prepare_fb(importer_fd, &scratch, &fb);
+> -		import_fb(importer_fd, &fb, dmabuf_fd, scratch.pitch);
+> +		import_fb(importer_fd, &fb, dmabuf_fd, &scratch);
+>   		close(dmabuf_fd);
+>   
+>   		colors[i].prime_crc.name = "prime";
+> @@ -475,6 +596,8 @@ igt_main
+>   			igt_require(second_fd_vgem >= 0);
+>   			if (is_i915_device(first_fd))
+>   				igt_require(!gem_has_lmem(first_fd));
+> +			if (is_xe_device(first_fd))
+> +				igt_require(!xe_has_vram(first_fd));
+>   		}
+>   
+>   		igt_describe("Make a dumb color buffer, export to another device and"
