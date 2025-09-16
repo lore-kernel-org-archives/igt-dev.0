@@ -4,53 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ED94CAC598
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Sep 2025 05:51:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CBB8CAC598
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Sep 2025 06:15:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E3F2210E274;
-	Tue, 16 Sep 2025 05:51:02 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ii4+DBfu";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8AF010E274
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Sep 2025 05:51:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758001861; x=1789537861;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=aadJlrhYyyRVg6f9iNEYJrymWEeR3eMmjo7QCZgeUko=;
- b=ii4+DBfuoudnJBmffMfpn3/qak0vKyovIJqxrX3eyRtJGxhUT1TKvhCo
- Yt9YB+9g4MGd7UHuQVcmRK2AU1LbSZ/H0r+2gZGv2vZ3/ctz+RdDEciDa
- m7xFYSp3iBGfxXNaIZG+SIM0Ap7PiTrutiru8aoNt9b7hpPFVSeqP3zin
- XvgTMS4qSHMcoR6Ho171pYq4NYs8MJHGSCPHzXmoQXZrff8qs58vSe2m5
- F+2HwYb5UZLPjKpFaIaPMR0wQ4ENz1G3ROeipoGF1iV0HFW+DmVigSToO
- 67O1dr2ovM/nq8O+/ndPlwZESBGi5dO0clc/N0Dla2jCXkj35MA8PPeWW Q==;
-X-CSE-ConnectionGUID: /PPVwZRUSACHIIgzso+VSQ==
-X-CSE-MsgGUID: smbxEGHcTpqSZZj4i1MX7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="77711892"
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="77711892"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2025 22:51:01 -0700
-X-CSE-ConnectionGUID: 9EI4QBt5SQCxBequgQdJ6g==
-X-CSE-MsgGUID: f0oBJsknRE26GKalgFP8PA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; d="scan'208";a="174655733"
-Received: from dg2adlp-alder-lake-client-platform.iind.intel.com
- ([10.223.55.76])
- by orviesa007.jf.intel.com with ESMTP; 15 Sep 2025 22:50:59 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_pm_rpm: Add test to validate G7
- residency
-Date: Tue, 16 Sep 2025 11:18:30 +0530
-Message-Id: <20250916054830.23112-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id DCE8610E65C;
+	Tue, 16 Sep 2025 06:15:18 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0967310E65D;
+ Tue, 16 Sep 2025 06:15:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1344912823625036332=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2Cv2=2C1/2=5D_tests/intel/kms=5Ffbc=5Fdirty=5Frect=3A_Limit_?=
+ =?utf-8?q?to_single_pipe_on_simulation?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 16 Sep 2025 06:15:17 -0000
+Message-ID: <175800331703.336326.15845620426387403325@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250916040455.267648-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250916040455.267648-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,164 +38,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test validates the dgfx Package G7 residency.
+--===============1344912823625036332==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel/kms_pm_rpm.c | 116 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 115 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
-index d22f165b8..c5970de43 100644
---- a/tests/intel/kms_pm_rpm.c
-+++ b/tests/intel/kms_pm_rpm.c
-@@ -128,6 +128,9 @@
-  *
-  * SUBTEST: universal-planes-dpms
-  * Description: Validate universal plane (set/unset/change) with dpms.
-+ *
-+ * SUBTEST: package-g7
-+ * Description: Validate the package-g7 residency.
-  */
- 
- #define MSR_PC8_RES	0x630
-@@ -178,7 +181,10 @@ struct mode_set_data {
- 	drmModeConnectorPtr connectors[MAX_CONNECTORS];
- 	drmModePropertyBlobPtr edids[MAX_CONNECTORS];
- 	igt_display_t display;
--
-+	igt_output_t *output;
-+	drmModeModeInfo *mode;
-+	igt_plane_t *primary;
-+	struct igt_fb fb_white;
- 	uint32_t devid;
- 	int fw_fd;
- };
-@@ -1572,6 +1578,108 @@ static void pm_test_caching(void)
- 	gem_close(drm_fd, handle);
- }
- 
-+static void set_mode(void)
-+{
-+	enum pipe pipe;
-+	bool found = false;
-+	igt_output_t *output;
-+	drmModeModeInfo *mode = NULL;
-+	igt_display_t *display = &ms_data.display;
-+
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+		drmModeConnectorPtr connector = output->config.connector;
-+
-+		if (connector->connection != DRM_MODE_CONNECTED)
-+			continue;
-+
-+		igt_display_reset(display);
-+		igt_output_set_pipe(output, pipe);
-+
-+		if (!intel_pipe_output_combo_valid(display))
-+			continue;
-+
-+		for (int i = 0; i < output->config.connector->count_modes; i++) {
-+			mode = &output->config.connector->modes[i];
-+			if (mode->hdisplay == 3840 && mode->vdisplay == 2160 && mode->vrefresh == 60) {
-+				igt_output_override_mode(output, mode);
-+
-+				ms_data.output = output;
-+				ms_data.mode = igt_output_get_mode(output);
-+				ms_data.primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+				found = true;
-+				break;
-+			}
-+		}
-+		if (found)
-+			break;
-+	}
-+
-+	igt_require_f(found, "No 8K@60Hz mode found on any connected output \n");
-+}
-+
-+static void set_output(void)
-+{
-+	igt_plane_set_fb(ms_data.primary, NULL);
-+	igt_create_color_fb(drm_fd,
-+			    ms_data.mode->hdisplay, ms_data.mode->vdisplay,
-+			    DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR,
-+			    1.0, 1.0, 1.0,
-+			    &ms_data.fb_white);
-+	igt_plane_set_fb(ms_data.primary, &ms_data.fb_white);
-+
-+	igt_display_commit(&ms_data.display);
-+}
-+
-+static void cleanup(void)
-+{
-+	igt_plane_set_fb(ms_data.primary, NULL);
-+	igt_output_override_mode(ms_data.output, NULL);
-+	igt_display_commit(&ms_data.display);
-+	igt_remove_fb(drm_fd, &ms_data.fb_white);
-+}
-+
-+static uint64_t get_pkg_count(char *pkg_data)
-+{
-+	char *e;
-+	long long ret;
-+	char *s = strchr(pkg_data, ':');
-+
-+	igt_assert(s);
-+	s++;
-+	ret = strtol(s, &e, 10);
-+	igt_assert(((ret != LLONG_MIN && ret != LLONG_MAX) || errno != ERANGE) && e > s && *e == '\n' && ret >= 0);
-+
-+	return ret;
-+}
-+
-+static uint64_t read_g7(void)
-+{
-+	char buf[256];
-+	int ret;
-+	char *str;
-+
-+	ret = igt_debugfs_simple_read(debugfs, "dgfx_pkg_residencies", buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "Debugfs dgfx_pkg_residencies file not present.\n");
-+
-+	str = strstr(buf, "Package G10");
-+	igt_skip_on_f(!str, "Package G7 is not supported.\n");
-+
-+	return get_pkg_count(str);
-+}
-+
-+static void test_g7(void)
-+{
-+	uint64_t prev_count = 0, curr_count = 0;
-+
-+	prev_count = read_g7();
-+	sleep(10);
-+	curr_count = read_g7();
-+
-+	igt_assert_f(curr_count > prev_count, "Package G7 residency is not achived\n");
-+}
-+
- int rounds = 10;
- bool stay = false;
- 
-@@ -1695,6 +1803,12 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		gem_require_mappable_ggtt(drm_fd);
- 		pm_test_caching();
- 	}
-+	igt_subtest("package-g7") {
-+		set_mode();
-+		set_output();
-+		test_g7();
-+		cleanup();
-+	}
- 
- 	igt_fixture {
- 		teardown_environment();
--- 
-2.43.0
+Series: series starting with [i-g-t,v2,1/2] tests/intel/kms_fbc_dirty_rect: Limit to single pipe on simulation
+URL   : https://patchwork.freedesktop.org/series/154558/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8540 -> IGTPW_13750
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/index.html
+
+Participating hosts (44 -> 41)
+------------------------------
+
+  Missing    (3): fi-glk-j4005 fi-snb-2520m bat-adls-6 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_13750 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8540/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-6:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8540/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [ABORT][5] ([i915#12904]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8540/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8540/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8540 -> IGTPW_13750
+  * Linux: CI_DRM_17201 -> CI_DRM_17209
+
+  CI-20190529: 20190529
+  CI_DRM_17201: 51af14333ff43882546ee70cdd2ee9f8bb9b068c @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17209: e9c137c33746d8007daa202af67b6aefd18a0121 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13750: dff55b9f204bfb38925d20ce3808e35693a8f7e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8540: 8540
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/index.html
+
+--===============1344912823625036332==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/2] tests/intel/kms_fbc_dirty_rect: Limit to single pipe on simulation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154558/">https://patchwork.freedesktop.org/series/154558/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8540 -&gt; IGTPW_13750</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/index.html</p>
+<h2>Participating hosts (44 -&gt; 41)</h2>
+<p>Missing    (3): fi-glk-j4005 fi-snb-2520m bat-adls-6 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13750 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8540/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8540/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8540/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8540/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13750/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8540 -&gt; IGTPW_13750</li>
+<li>Linux: CI_DRM_17201 -&gt; CI_DRM_17209</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17201: 51af14333ff43882546ee70cdd2ee9f8bb9b068c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17209: e9c137c33746d8007daa202af67b6aefd18a0121 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13750: dff55b9f204bfb38925d20ce3808e35693a8f7e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8540: 8540</p>
+
+</body>
+</html>
+
+--===============1344912823625036332==--
