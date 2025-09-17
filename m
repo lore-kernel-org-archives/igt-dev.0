@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A02ACA0EE8
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 09:51:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3A86CA0EE8
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 10:11:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8C1410E037;
-	Wed, 17 Sep 2025 09:51:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 639F010E193;
+	Wed, 17 Sep 2025 10:11:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d90r8I5y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BONb+y6W";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 206E410E037
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 09:51:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5F7010E193
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 10:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758102699; x=1789638699;
- h=date:from:to:subject:message-id:references:mime-version:
- in-reply-to; bh=zWu/8YKHyOtRULxQIPh0ji/PfimPkUPm5h9ZaZ5DcWI=;
- b=d90r8I5yKq420OgxK71rsMCdFk36xiIzGnLo07hYetNVQU5x4qkMc5wX
- zc8rNKUcuxXoGZk+gFO9oV+KBwsW0Le4FY3a4YGCAZNtU/7ffWwJxr5CW
- eCqF90PQeznVcsphkHaL+jDcJwCd3CxxoWeMF7ae+9yAR8Zn2s9+sKDvX
- RNl2hBj8DNCVRdOJi3hD7jxxKTAZY8KDlANlmg6Ss8pDAtca9QCE6RE66
- WbBf5JdAPtPvyy1LoEaOthyEoySGleSlJ9Kr+b4vurEQexvAGrriezKbV
- KfGIBC0+YQ8jZpq+DY8PoXTW4ZsgY0YTIILnPvqlqtMmxOxPErXgr7m3G w==;
-X-CSE-ConnectionGUID: vUaOULC6QHO7yjgaXm40hg==
-X-CSE-MsgGUID: is5HYWqoQF+BRc4d7lQLdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="59623034"
-X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="59623034"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 02:51:39 -0700
-X-CSE-ConnectionGUID: Ra/VEIOCRhef2cCf/x/EVw==
-X-CSE-MsgGUID: uE1pKpYlR+26TMcjHUoTmQ==
+ t=1758103874; x=1789639874;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=V+sEQsk9kIm1pPJT/HvQSZ1v7UmosDsNbewakpMM20c=;
+ b=BONb+y6WNcl4cLOWx6iFHtHyNZbHndaqY+KAAtofBDxh0P1xgIBnsRHn
+ /bMs5CV1gMtAJGrR8mht0O7YB+f9VBt1f70asWRCFEbnz+X0m571MNtNE
+ T0x1jlqZ1gqDtqB+UnKMUE1PHwPhvkw1aKGQapTFGSgjKODp9M1oU7RgR
+ quUGs5NFhQxg6dqlRt4vUgSU6UZrBX70Hol1g7NI7+x9ojmzw33tOCfZq
+ fxwL6NIS/epG/NycNKzPENjWIUt1+F9+0QDNEfnQWiGWDD9wVCN0A6UWc
+ JCn0lujhz5VtLkrof08sZ+lhYpuribWT88mhrzpxcpyPaM8Rg+RbbNqrQ Q==;
+X-CSE-ConnectionGUID: Wk/s80Q3Q8iM/pomecPoVQ==
+X-CSE-MsgGUID: T2UiHfOuREOJ/iAby9iWUQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="64037594"
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="64037594"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 03:11:13 -0700
+X-CSE-ConnectionGUID: xg5lxvzoQMiJ2s9sP6JQRw==
+X-CSE-MsgGUID: 9/Lc/w0cQH+vCUcb0inPng==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="179204036"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 02:51:38 -0700
-Date: Wed, 17 Sep 2025 11:51:34 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
- Revert IGT_DATA_PATH env setting in runner
-Message-ID: <20250917095134.imvr4fpfowvyjv4w@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20250916130904.166885-1-kamil.konieczny@linux.intel.com>
- <175807482332.339936.5067043546074581918@1538d3639d33>
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="175126197"
+Received: from dut6245dg2frd.fm.intel.com ([10.80.55.42])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 03:11:13 -0700
+From: Sobin Thomas <sobin.thomas@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@intel.com
+Cc: zbigniew.kempczynski@intel.com,
+	Sobin Thomas <sobin.thomas@intel.com>
+Subject: [PATCH v6 i-g-t 0/1] tests/intel/xe_compute_preempt: Compute
+ preemption check
+Date: Wed, 17 Sep 2025 10:11:04 +0000
+Message-Id: <20250917101105.236457-1-sobin.thomas@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <175807482332.339936.5067043546074581918@1538d3639d33>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,88 +68,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-09-17 at 02:07:03 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: Revert IGT_DATA_PATH env setting in runner
-> URL   : https://patchwork.freedesktop.org/series/154598/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8541_FULL -> XEIGTPW_13756_FULL
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_13756_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_13756_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 3)
-> ------------------------------
-> 
->   Missing    (1): shard-adlp 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_13756_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@xe_exec_threads@threads-mixed-fd-userptr-invalidate:
->     - shard-bmg:          [PASS][1] -> [FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8541/shard-bmg-5/igt@xe_exec_threads@threads-mixed-fd-userptr-invalidate.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13756/shard-bmg-1/igt@xe_exec_threads@threads-mixed-fd-userptr-invalidate.html
-> 
+On platforms (like PVC) that do not support walker mid-thread
+preemption, running tests in forked threads can lead to inconsistent
+states due to igt_skip being called mid-execution. Made changes to
+perform kernel preemption check at the beginning of each subtests.
+If the GPU version does not support the required features, the
+test is skipped gracefully, ensuring consistent behavior across
+different platforms.
 
-Unrelated to igt_runner change.
+TODO: Add the kernel for PVC
 
-Regards,
-Kamil
+v2: Fixed review comments to move the compatibility check
+    into the igt_fixture. [Priyanka]
 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_13756_FULL that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@kms_async_flips@async-flip-with-page-flip-events-linear-atomic@pipe-c-edp-1:
->     - shard-lnl:          [PASS][3] -> [FAIL][4] ([Intel XE#6084]) +3 other tests fail
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8541/shard-lnl-8/igt@kms_async_flips@async-flip-with-page-flip-events-linear-atomic@pipe-c-edp-1.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13756/shard-lnl-4/igt@kms_async_flips@async-flip-with-page-flip-events-linear-atomic@pipe-c-edp-1.html
-> 
+v3: Added check for thread group preemption and WMTP.
+    Added enum flags for preemption type as per review . [Zbigniew]
 
-...cut...
+v4: Added check for preempt inside __run_intel_compute_kernel_preempt
+    Refactored the code.  [priyanka]
 
-> 
-> Build changes
-> -------------
-> 
->   * IGT: IGT_8541 -> IGTPW_13756
->   * Linux: xe-3769-bbb6481c2b5e8ff72500665846dc121b6f093481 -> xe-3776-c3610fc0ab7c1c668031b3804549187d75550e93
-> 
->   IGTPW_13756: 8075649ff33d83c1db5ffe1f3fdb37ca49b022df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   IGT_8541: 8541
->   xe-3769-bbb6481c2b5e8ff72500665846dc121b6f093481: bbb6481c2b5e8ff72500665846dc121b6f093481
->   xe-3776-c3610fc0ab7c1c668031b3804549187d75550e93: c3610fc0ab7c1c668031b3804549187d75550e93
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13756/index.html
+v5: Refactor for finding the kernel and out of bound check. [Zbigniew]
+
+v6: Added NULL Check for kernel. [Zbigniew]
+
+Sobin Thomas (1):
+  tests/intel/xe_compute_preempt: Compute preemption check
+
+ lib/intel_compute.c              | 104 ++++++++++++++++++++++++-------
+ lib/intel_compute.h              |   7 +++
+ tests/intel/xe_compute_preempt.c |   6 ++
+ 3 files changed, 95 insertions(+), 22 deletions(-)
+
+-- 
+2.34.1
+
