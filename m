@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D670CAC599
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 13:10:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDA5CAC59A
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 13:11:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 16DAF10E836;
-	Wed, 17 Sep 2025 13:10:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6ED7410E835;
+	Wed, 17 Sep 2025 13:11:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZWBc3QYv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Kuy5NloL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C83510E836
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 13:10:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28E4F10E832
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 13:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758114626; x=1789650626;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=8wqZaewws/JmARSS1AQoAZ53THLs16M3a9xJ4RbGFqQ=;
- b=ZWBc3QYvjCOQW2/vJtGBayW9oUJ4Vhl+FrO2/BhRHLfMUthAtuaFgEGq
- s5sna76Mu4+ygy5YHNov4wjLUdm7G4To2wmKEGqt/j5hv+TFwT07F6jly
- or+0d1mmQtRVuJKfAMlSxoQam7soRFx3KuHDMJCW0vc/MIizbYPAjHNqF
- hZg48k2adnPvcESffTdnVTQkchbN2ZieZsUZTSLvqA9wUccuLQvFXQUx5
- BrmYC3p/UiDzg2TyqEn33T6CMpoT0WOWsyMdXVmt7CCZ+v/EMtNLqx9R/
- EBowIz9vS8+LiKJE5G9BJ+ELBWAPiPhA4ZuIY5hJdzZJ81FlABDJnjU4J w==;
-X-CSE-ConnectionGUID: t+oyGz3kSy2ISPQvct1fBQ==
-X-CSE-MsgGUID: uUL/xZ7cQPGKLTnwHnNKAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60477384"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="60477384"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 06:10:26 -0700
-X-CSE-ConnectionGUID: JVIrS36yRSOJfM6AQqmjsg==
-X-CSE-MsgGUID: N0ctuuINRRmC1auBhjKBZw==
+ t=1758114711; x=1789650711;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=UxwVZic43hc5HpkoMfmnZ1fNdRBj/SkYvQDqfavyGsA=;
+ b=Kuy5NloL8jri8jZYN5AEGKPSjezqUpNhL4bIVVke6IZAeaHk7YQXP+QI
+ VLGKjzZroqAdA0CwOK6r7h5cWYeBXtapG0llf8OdEcDh5eX4wDqTSBYNw
+ YSmKnOO1NcKhoGpq4pFysaaixeLceuSRyC6lIobQ5zA9h1ZLvYx8WWPh0
+ 9EUMKah2kGJEOX1cVQLuDsVG0HiZABacy14oTnZCrAiHO+zT6iIefqzfz
+ XiQ5IX14B548T1QIEzRHgNsUTaab3RS7eTfPY2yIAaprGARWrI9ywfaHO
+ CJF5MvcNnBz+eWdubcjM/RVm6RElu48dcmSsO9Zv+m4ZiTfhB5XxOQ+1Y w==;
+X-CSE-ConnectionGUID: rEh/ZQB2QDG1XFQ+rQZnDA==
+X-CSE-MsgGUID: kkgrlxxjSya1FN3JKRIAVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="60348579"
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="60348579"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 06:11:51 -0700
+X-CSE-ConnectionGUID: 38ZuPj13R1ivPgJ4QZz6pw==
+X-CSE-MsgGUID: MHbruJiFQqic5qUBbXc4qw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="174526369"
-Received: from dut2144ptlh.iind.intel.com ([10.190.232.53])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 06:10:25 -0700
-From: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: gajendra.uttamchand@intel.com
-Subject: [PATCH v4 i-g-t 6/6] benchmarks/intel_latency: Integrate xe latency
- tests with build system
-Date: Wed, 17 Sep 2025 13:10:08 +0000
-Message-ID: <20250917131003.71762-14-gajendra.uttamchand@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250917131003.71762-8-gajendra.uttamchand@intel.com>
-References: <20250908144314.42275-9-gajendra.uttamchand@intel.com>
- <20250917131003.71762-8-gajendra.uttamchand@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="175656092"
+Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 06:11:49 -0700
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ sk.anirban@intel.com
+Cc: soham.purkait@intel.com, riana.tauro@intel.com, lucas.demarchi@intel.com
+Subject: [PATCH i-g-t v3] tests/intel/xe_pm: Test to validate vram-sr through
+ Mods during host s2idle
+Date: Wed, 17 Sep 2025 18:33:23 +0530
+Message-Id: <20250917130323.3560097-1-soham.purkait@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,74 +67,191 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add and configure the 'intel_latency' subdirectory for xe driver
-latency benchmarks. Create dedicated latency/meson.build to manage
-xe latency test modules and update benchmarks/meson.build to include
-the latency suite in the build process.
+Add test to validate vram-sr through Mods during host s2idle. It checks
+whether vram self refresh capability is supported through debugfs node and
+then introduce host s2idle to check ModS residency to confirm vram self
+refresh capability upon success.
 
-Enables building of latency test modules:
-- xe_blt: Block transfer latency measurement
-- xe_create: Device initialization overhead
-- xe_vm: Virtual memory timing
-- xe_execqueue: Execution queue management
-- xe_bo_create_destroy: Buffer object lifecycle
-- xe_vm_create_destroy: VM lifecycle
+v1:
+ - Define macros at the top. (Anirban)
+v2:
+ - gtidle no longer exists. (Anirban)
+ - Skip test if the system is not VRSR-capable. (Anirban)
+ - Release bo to avoid resource leaking. (Anirban)
 
-Provides comprehensive build integration for xe driver performance
-measurement capabilities.
-
-Signed-off-by: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
+Signed-off-by: Soham Purkait <soham.purkait@intel.com>
 ---
- benchmarks/intel_latency/meson.build | 18 ++++++++++++++++++
- benchmarks/meson.build               |  6 +++---
- 2 files changed, 21 insertions(+), 3 deletions(-)
- create mode 100644 benchmarks/intel_latency/meson.build
+ tests/intel/xe_pm.c | 105 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 105 insertions(+)
 
-diff --git a/benchmarks/intel_latency/meson.build b/benchmarks/intel_latency/meson.build
-new file mode 100644
-index 000000000..f3bcb2506
---- /dev/null
-+++ b/benchmarks/intel_latency/meson.build
-@@ -0,0 +1,18 @@
-+xe_latency_progs = [
-+	'xe_blt',
-+	'xe_create',
-+	'xe_exec_ctx',
-+	'xe_execqueue',
-+	'xe_vm',
-+	'xe_vm_create_destroy',
-+	'xe_bo_create_destroy',
-+]
-+
-+latencydir = join_paths(libexecdir, 'benchmarks', 'intel_latency')
-+
-+foreach prog : xe_latency_progs
-+	executable(prog, prog + '.c',
-+		   install : true,
-+		   install_dir : latencydir,
-+		   dependencies : igt_deps)
-+endforeach
-diff --git a/benchmarks/meson.build b/benchmarks/meson.build
-index 080eeab11..21296d296 100644
---- a/benchmarks/meson.build
-+++ b/benchmarks/meson.build
-@@ -21,9 +21,6 @@ benchmark_progs = [
- 	'kms_vblank',
- 	'prime_lookup',
- 	'vgem_mmap',
--        'xe_blt',
--	'xe_create',
--	'xe_exec_ctx',
- ]
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 1db28a899..9b51ca7e2 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -10,10 +10,12 @@
+  * Sub-category: Suspend-resume tests
+  * Test category: functionality test
+  */
++#include <ctype.h>
  
- benchmarksdir = join_paths(libexecdir, 'benchmarks')
-@@ -42,3 +39,6 @@ lib_gem_exec_tracer = shared_module(
-   include_directories : inc,
-   install_dir : benchmarksdir,
-   install: true)
+ #include <dirent.h>
+ #include <limits.h>
+ #include <fcntl.h>
++#include <stddef.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+ 
+@@ -48,6 +50,9 @@
+ #define I2C_AMC_ADDR	0x40
+ #define I2C_AMC_REG	0x00
+ 
++#define XE_BO_SIZE (350 * 1024 * 1024)
++#define MODS_PREFIX "ModS"
 +
-+# Include latency for build
-+  subdir('intel_latency')
+ enum mem_op {
+ 	READ,
+ 	WRITE,
+@@ -55,6 +60,7 @@ enum mem_op {
+ 
+ typedef struct {
+ 	int fd_xe;
++	int debugfs_dir;
+ 	struct pci_device *pci_xe;
+ 	struct pci_device *pci_root;
+ 	char pci_slot_name[NAME_MAX];
+@@ -423,6 +429,46 @@ child_exec(void *arguments)
+ 	return NULL;
+ }
+ 
++static char *read_content_line(const char *content, const char *prefix)
++{
++	const char *line_start = content;
++	char line[1024];
++	char *result;
++	size_t len;
++
++	while (*line_start) {
++		const char *line_end = strchr(line_start, '\n');
++		size_t line_len = line_end ? (size_t)(line_end - line_start) : strlen(line_start);
++
++		if (line_len >= sizeof(line))
++			line_len = sizeof(line) - 1;
++
++		memcpy(line, line_start, line_len);
++		line[line_len] = '\0';
++
++		if (strstr(line, prefix)) {
++			char *colon = strchr(line, ':');
++
++			if (colon) {
++				colon++;
++				while (isspace((unsigned char)*colon))
++					colon++;
++
++				result = strdup(colon);
++				len = strlen(result);
++				if (len > 0 && result[len - 1] == '\n')
++					result[len - 1] = '\0';
++
++				return result;
++			}
++		}
++		line_start = line_end ? line_end + 1 : NULL;
++		if (!line_start)
++			break;
++	}
++	return NULL;
++}
++
+ /**
+  * SUBTEST: %s-basic
+  * Description: test CPU/GPU in and out of s/d state from %arg[1]
+@@ -871,6 +917,57 @@ static void i2c_test(device_t device, int sysfs_fd, enum igt_acpi_d_state d_stat
+ 	close(i2c_fd);
+ }
+ 
++/**
++ * SUBTEST: vrsr-capability-during-host-s2idle
++ * Functionality: pm - vram-sr
++ * Description: Test to validate vram self refresh through
++ * ModS residency counter during host s2idle
++ */
++static void test_vrsr_capability_during_host_s2idle(device_t device)
++{
++	u32 bo, placement;
++	u64 s2idle_start_mods, s2idle_end_mods;
++	int ret;
++	char buf[4096] = {0};
++	char *result;
++	void *map;
++
++	ret = igt_debugfs_simple_read(device.debugfs_dir, "vrsr_capable", buf, sizeof(buf));
++	igt_skip_on_f(ret < 0, "vrsr_capable node is not present in debugfs.\n");
++	igt_skip_on_f(!strstr(buf, "true"), "VRSR capability is not supported.\n");
++
++	placement = vram_memory(device.fd_xe, 0);
++	bo = xe_bo_create(device.fd_xe, 0, XE_BO_SIZE, placement, 0);
++	map = xe_bo_map(device.fd_xe, bo, XE_BO_SIZE);
++	memset(map, 0, XE_BO_SIZE);
++
++	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
++				      buf, sizeof(buf));
++	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
++
++	result = read_content_line(buf, MODS_PREFIX);
++	igt_assert(result);
++	s2idle_start_mods = (uint64_t)strtoull(result, NULL, 10);
++	free(result);
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
++	munmap(map, XE_BO_SIZE);
++	memset(buf, 0, sizeof(buf));
++
++	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
++				      buf, sizeof(buf));
++	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
++
++	result = read_content_line(buf, MODS_PREFIX);
++	igt_assert(result);
++	s2idle_end_mods = (uint64_t)strtoull(result, NULL, 10);
++	free(result);
++
++	gem_close(device.fd_xe, bo);
++
++	igt_assert(s2idle_start_mods != s2idle_end_mods);
++}
++
+ igt_main
+ {
+ 	device_t device;
+@@ -908,6 +1005,8 @@ igt_main
+ 	igt_fixture {
+ 		memset(&device, 0, sizeof(device));
+ 		device.fd_xe = drm_open_driver(DRIVER_XE);
++		device.debugfs_dir = igt_debugfs_dir(device.fd_xe);
++		igt_assert(device.debugfs_dir >= 0);
+ 		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
+ 		device.pci_root = igt_device_get_pci_root_port(device.fd_xe);
+ 		igt_device_get_pci_slot_name(device.fd_xe, device.pci_slot_name);
+@@ -1052,12 +1151,18 @@ igt_main
+ 		test_vram_d3cold_threshold(device, sysfs_fd);
+ 	}
+ 
++	igt_describe("Validate VRAM self refresh capability during host s2idle");
++	igt_subtest("vrsr-capability-during-host-s2idle") {
++		test_vrsr_capability_during_host_s2idle(device);
++	}
++
+ 	igt_fixture {
+ 		close(sysfs_fd);
+ 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
+ 		if (has_runtime_pm)
+ 			igt_restore_runtime_pm();
+ 		drmModeFreeResources(device.res);
++		close(device.debugfs_dir);
+ 		drm_close_driver(device.fd_xe);
+ 	}
+ }
 -- 
-2.43.0
+2.34.1
 
