@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F6F6CAC5A5
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 17:04:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2511CAC59A
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 17:04:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 54B4E10E1D4;
-	Wed, 17 Sep 2025 17:04:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 64A4E10E574;
+	Wed, 17 Sep 2025 17:04:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hVB1+eXz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bHaTiIGD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A787110E061
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 17:04:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13A0410E1D4
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 17:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758128641; x=1789664641;
+ t=1758128642; x=1789664642;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zfLvp6PvHEYbzE2VV/dx5BXCQjFcbsaL1QU/AA8f0VA=;
- b=hVB1+eXz29Di3mu2s7LzXktJvAO+mnWKor9IWKAuEZ1daTe5zd+ZJhWY
- 3UsGMjwkUPowf1vYfkiCGS2jtlSn67oyKNgMMcsDL8nh8UVmY/5DxvQHq
- JckxXIWgyNFFtqnUwlG50Nt1Bu8S4BOmnUoMFLbT297IW/FwTDSQfQQmf
- 3nXz1R8sUDM2z70fFJud0rt5tAApv/KD5ohoQ1o1m0HPCAI0+sDVhL6ZI
- ySqW4leR6TzqXip6vWkr6/j4J70R+bLQQHrUJNdgrmarNvLcQgjqyA9Qe
- F9e7EGct+E54d/UlOOKnhRIYSVkZpMZZxA6y9SKpd/XTzOOPkT8XjiZTn w==;
-X-CSE-ConnectionGUID: O2NJb5rfTLOJ43MA3uDSAg==
-X-CSE-MsgGUID: BjDgbv+YRq6cjrcA1+6j6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="71073532"
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="71073532"
+ bh=LP+jcTuesVogVmpwFelNAwltJqujSCYbCPcfLZMwcGs=;
+ b=bHaTiIGDdqvaqd3TFp5xUYQaciCvGLNe4S7q2CfH5xqGPlTbL9eC9m7U
+ 7+JK/2a5ueyJcAJ0vL+LhYfRlpiXjjlrm1wCQbRvMSiOluieuB1jyKCQM
+ EIGMEqIY60HYaMnlZnQ47IGilAWKvTcDz0ET6HSkHbfRdg9Os036+HeMC
+ Cu0tkUCN8yjfMiEh8YXcZzokbiX5fs4tEsr43jTNcbFlEc6sYDV2ZmM9N
+ LGiPajkpzRmZ4EP/aneGEB/j/p+YnEKTf05LggSCndBRD7KjZGdjDoMIw
+ I8dR/NIrFsTxq1bBLEpbQtgGrY78vs+zw+RvqebbRTU3T2mpU8EyN1H0h g==;
+X-CSE-ConnectionGUID: jhQV1xQnTwCWc+ZAqmKxeA==
+X-CSE-MsgGUID: 0uFf2//QSKu/rQHhnuvfng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="71073542"
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="71073542"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 09:55:59 -0700
-X-CSE-ConnectionGUID: z4pDj851Qm6t6c6/FGxXZQ==
-X-CSE-MsgGUID: OwIWkdshT4SxidbSxLawnQ==
+ 17 Sep 2025 09:56:01 -0700
+X-CSE-ConnectionGUID: CTAfyHBVQvu3CycVRVSWeg==
+X-CSE-MsgGUID: zWo9tZYjQLmQJ1y/4rtUjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="212449753"
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="212449832"
 Received: from art-dev-395.igk.intel.com ([10.211.135.233])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 09:55:56 -0700
+ 17 Sep 2025 09:56:00 -0700
 From: Jan Maslak <jan.maslak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: gwan-gyeong.mun@intel.com, andrzej.hajda@intel.com,
  Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH 2/4] lib/gpgpu_shader: add function for computing max number
- of threads per tg
-Date: Wed, 17 Sep 2025 16:55:39 +0000
-Message-Id: <20250917165541.85203-3-jan.maslak@intel.com>
+Subject: [PATCH 4/4] tests/intel/xe_eudebug_online: add pagefault stress tests
+Date: Wed, 17 Sep 2025 16:55:41 +0000
+Message-Id: <20250917165541.85203-5-jan.maslak@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250917165541.85203-1-jan.maslak@intel.com>
 References: <20250917165541.85203-1-jan.maslak@intel.com>
@@ -69,145 +68,173 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Adds function gpgpu_shader__get_max_threads_in_tg() that computes the
-maximum allowed amount of threads in a thread group based on the provided
-shader.
+Add a stress variant of the already existing
+xe_eudebug_online@pagefault-[read|write] tests that increases
+number of threads in the shader and number of threads in
+threadgroup to their maximum available amounts.
 
 Signed-off-by: Jan Maslak <jan.maslak@intel.com>
 ---
- lib/gpgpu_shader.c | 75 ++++++++++++++++++++++++++++++++++++++++++++++
- lib/gpgpu_shader.h | 10 +++++++
- 2 files changed, 85 insertions(+)
+ tests/intel/xe_eudebug_online.c | 61 +++++++++++++++++++++++++++------
+ 1 file changed, 51 insertions(+), 10 deletions(-)
 
-diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index e8600de23..39908c491 100644
---- a/lib/gpgpu_shader.c
-+++ b/lib/gpgpu_shader.c
-@@ -282,6 +282,9 @@ struct gpgpu_shader *gpgpu_shader_create(int fd)
- 	shdr->code = malloc(4 * shdr->max_size);
- 	shdr->labels = igt_map_create(igt_map_hash_32, igt_map_equal_32);
- 	shdr->num_threads_in_tg = 1;
-+	shdr->large_grf_mode = false;
-+	shdr->simd_size = 16;  /* Default SIMD size */
-+	shdr->hw_local_id_generation = false;
- 	shdr->vrt = VRT_DISABLED;
- 	igt_assert(shdr->code);
- 
-@@ -333,6 +336,78 @@ void gpgpu_shader_set_vrt(struct gpgpu_shader *shdr, enum gpgpu_shader_vrt_modes
- 	shdr->vrt = vrt;
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index 535f00818..7f719e690 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -40,6 +40,7 @@
+ #define SHADER_PAGEFAULT_READ		(1 << 14)
+ #define SHADER_PAGEFAULT_WRITE		(1 << 15)
+ #define FAULTABLE_VM			(1 << 16)
++#define PAGEFAULT_STRESS_TEST		(1 << 17)
+ #define TRIGGER_UFENCE_SET_BREAKPOINT	(1 << 24)
+ #define TRIGGER_RESUME_SINGLE_WALK	(1 << 25)
+ #define TRIGGER_RESUME_PARALLEL_WALK	(1 << 26)
+@@ -125,8 +126,22 @@ static struct intel_buf *create_uc_buf(int fd, int width, int height, uint64_t r
+ 	return buf;
  }
  
-+static uint32_t compute_max_threads_in_tg_no_vrt(bool large_grf_mode,
-+						 uint32_t simd_size)
-+{
-+	/* BSpec: 56590 */
-+	if (large_grf_mode)
-+		return 32;
-+	if (simd_size == 16)
-+		return 64;
-+	if (simd_size == 32)
-+		return 32;
+-static int get_number_of_threads(uint64_t flags)
++static int get_maximum_number_of_threads(int fd)
+ {
++	uint32_t subslices = xe_hwconfig_lookup_value_u32(fd, INTEL_HWCONFIG_MAX_SUBSLICE);
++	uint32_t eus_per_subslice =
++		xe_hwconfig_lookup_value_u32(fd, INTEL_HWCONFIG_MAX_EU_PER_SUBSLICE);
++	uint32_t threads_per_eu =
++		xe_hwconfig_lookup_value_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU);
 +
-+	igt_warn("Unsupported SIMD size %d\n", simd_size);
-+	return 1;
++	return subslices * eus_per_subslice * threads_per_eu;
 +}
 +
-+static uint32_t compute_max_threads_in_tg_vrt(enum gpgpu_shader_vrt_modes vrt,
-+					      uint32_t simd_size,
-+					      bool hw_local_id_generation)
++static int get_number_of_threads(int fd, uint64_t flags)
 +{
-+	/* BSpec: 56590 */
-+	if (vrt <= VRT_128) {
-+		if (simd_size == 16)
-+			return 64;
-+		if (simd_size == 32) {
-+			if (hw_local_id_generation)
-+				return 32;
-+			else
-+				return 64;
-+		}
-+	} else if (vrt == VRT_160) {
-+		if (simd_size == 16)
-+			return 48;
-+		if (simd_size == 32) {
-+			if (hw_local_id_generation)
-+				return 32;
-+			else
-+				return 48;
-+		}
-+	} else if (vrt == VRT_192) {
-+		if (simd_size == 16)
-+			return 40;
-+		if (simd_size == 32) {
-+			if (hw_local_id_generation)
-+				return 32;
-+			else
-+				return 40;
-+		}
-+	}
++	if (flags & (PAGEFAULT_STRESS_TEST))
++		return get_maximum_number_of_threads(fd);
 +
-+	igt_warn("Unsupported VRT mode %d or SIMD size %d\n", vrt, simd_size);
-+	return 1;
-+}
+ 	if (flags & (SHADER_MIN_THREADS | SHADER_PAGEFAULT))
+ 		return 16;
+ 
+@@ -154,8 +169,8 @@ static int caching_get_instruction_count(int fd, uint32_t s_dim__x, int flags)
+ 
+ static struct gpgpu_shader *get_shader(int fd, const unsigned int flags)
+ {
+-	struct dim_t w_dim = walker_dimensions(get_number_of_threads(flags));
+-	struct dim_t s_dim = surface_dimensions(get_number_of_threads(flags));
++	struct dim_t w_dim = walker_dimensions(get_number_of_threads(fd, flags));
++	struct dim_t s_dim = surface_dimensions(get_number_of_threads(fd, flags));
+ 	static struct gpgpu_shader *shader;
+ 
+ 	shader = gpgpu_shader_create(fd);
+@@ -163,6 +178,11 @@ static struct gpgpu_shader *get_shader(int fd, const unsigned int flags)
+ 	if (shader->gen_ver == 3000)
+ 		gpgpu_shader_set_vrt(shader, VRT_96);
+ 
++	shader->simd_size = SIMD_SIZE;
 +
-+/**
-+ * gpgpu__shader_get_max_threads_in_tg:
-+ * @shdr: shader to query
++	if (flags & PAGEFAULT_STRESS_TEST)
++		shader->num_threads_in_tg = gpgpu_shader__get_max_threads_in_tg(shader);
++
+ 	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
+ 	if (flags & SHADER_BREAKPOINT) {
+ 		gpgpu_shader__nop(shader);
+@@ -208,7 +228,7 @@ static struct gpgpu_shader *get_shader(int fd, const unsigned int flags)
+ 
+ static struct gpgpu_shader *get_sip(int fd, const unsigned int flags)
+ {
+-	struct dim_t w_dim = walker_dimensions(get_number_of_threads(flags));
++	struct dim_t w_dim = walker_dimensions(get_number_of_threads(fd, flags));
+ 	static struct gpgpu_shader *sip;
+ 
+ 	sip = gpgpu_shader_create(fd);
+@@ -671,7 +691,7 @@ static void eu_attention_resume_trigger(struct xe_eudebug_debugger *d,
+ 	}
+ 
+ 	if (d->flags & (SHADER_LOOP | SHADER_PAGEFAULT)) {
+-		uint32_t threads = get_number_of_threads(d->flags);
++		uint32_t threads = get_number_of_threads(d->master_fd, d->flags);
+ 		uint32_t val = STEERING_END_LOOP;
+ 
+ 		igt_assert_eq(pwrite(data->vm_fd, &val, sizeof(uint32_t),
+@@ -693,7 +713,7 @@ static void eu_attention_resume_single_step_trigger(struct xe_eudebug_debugger *
+ {
+ 	struct drm_xe_eudebug_event_eu_attention *att = (void *) e;
+ 	struct online_debug_data *data = d->ptr;
+-	const int threads = get_number_of_threads(d->flags);
++	const int threads = get_number_of_threads(d->fd, d->flags);
+ 	uint32_t val;
+ 	size_t sz = sizeof(uint32_t);
+ 
+@@ -918,7 +938,7 @@ static void eu_attention_resume_caching_trigger(struct xe_eudebug_debugger *d,
+ {
+ 	struct drm_xe_eudebug_event_eu_attention *att = (void *)e;
+ 	struct online_debug_data *data = d->ptr;
+-	struct dim_t s_dim = surface_dimensions(get_number_of_threads(d->flags));
++	struct dim_t s_dim = surface_dimensions(get_number_of_threads(d->fd, d->flags));
+ 	uint32_t *kernel_offset = &data->kernel_offset;
+ 	int *counter = &data->att_event_counter;
+ 	int val;
+@@ -1042,7 +1062,7 @@ static uint64_t get_memory_region(int fd, int flags, int region_bitmask)
+ 
+ static void run_online_client(struct xe_eudebug_client *c)
+ {
+-	int threads = get_number_of_threads(c->flags);
++	int threads;
+ 	const uint64_t target_offset = 0x1a000000;
+ 	const uint64_t bb_offset = 0x1b000000;
+ 	size_t bb_size;
+@@ -1059,8 +1079,8 @@ static void run_online_client(struct xe_eudebug_client *c)
+ 		.num_placements = 1,
+ 		.extensions = c->flags & DISABLE_DEBUG_MODE ? 0 : to_user_pointer(&ext)
+ 	};
+-	struct dim_t w_dim = walker_dimensions(threads);
+-	struct dim_t s_dim = surface_dimensions(threads);
++	struct dim_t w_dim;
++	struct dim_t s_dim;
+ 	struct timespec ts = { };
+ 	struct gpgpu_shader *sip, *shader;
+ 	uint32_t metadata_id[2];
+@@ -1077,6 +1097,10 @@ static void run_online_client(struct xe_eudebug_client *c)
+ 
+ 	fd = xe_eudebug_client_open_driver(c);
+ 
++	threads = get_number_of_threads(fd, c->flags);
++	w_dim = walker_dimensions(threads);
++	s_dim = surface_dimensions(threads);
++
+ 	shader = get_shader(fd, c->flags);
+ 	bb_size = get_bb_size(fd, shader);
+ 
+@@ -1630,6 +1654,18 @@ static void test_set_breakpoint_online_sigint_debugger(int fd,
+  * Description:
+  *     Check whether KMD sends pagefault event for workload in debug mode that
+  *     triggers a write pagefault.
 + *
-+ * Returns the maximum number of threads in thread group for the given shader
-+ * based on its current configuration (VRT mode, SIMD size, etc.).
++ * SUBTEST: pagefault-read-stress
++ * Functionality: page faults
++ * Description:
++ *     Check whether KMD sends read pagefault event for workload in debug mode
++ *     with many threads.
 + *
-+ * Returns: maximum number of threads in thread group
-+ */
-+uint32_t gpgpu_shader__get_max_threads_in_tg(struct gpgpu_shader *shdr)
-+{
-+	if (shdr->vrt == VRT_DISABLED) {
-+		return compute_max_threads_in_tg_no_vrt(shdr->large_grf_mode, shdr->simd_size);
-+	} else {
-+		return compute_max_threads_in_tg_vrt(shdr->vrt, shdr->simd_size,
-+						     shdr->hw_local_id_generation);
-+	}
-+}
++ * SUBTEST: pagefault-write-stress
++ * Functionality: page faults
++ * Description:
++ *     Check whether KMD sends write pagefault event for workload in debug mode
++ *     with many threads.
+  */
+ static void test_pagefault_online(int fd, struct drm_xe_engine_class_instance *hwe,
+ 				  int flags)
+@@ -2665,6 +2701,11 @@ igt_main
+ 	test_gt_render_or_compute("pagefault-write", fd, hwe)
+ 		test_pagefault_online(fd, hwe, SHADER_PAGEFAULT_WRITE);
+ 
++	test_gt_render_or_compute("pagefault-read-stress", fd, hwe)
++		test_pagefault_online(fd, hwe, SHADER_PAGEFAULT_READ | PAGEFAULT_STRESS_TEST);
++	test_gt_render_or_compute("pagefault-write-stress", fd, hwe)
++		test_pagefault_online(fd, hwe, SHADER_PAGEFAULT_WRITE | PAGEFAULT_STRESS_TEST);
 +
- /**
-  * gpgpu_shader__breakpoint_on:
-  * @shdr: shader to create breakpoint in
-diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-index 90ef3eec8..be84525ce 100644
---- a/lib/gpgpu_shader.h
-+++ b/lib/gpgpu_shader.h
-@@ -14,7 +14,12 @@ struct intel_bb;
- struct intel_buf;
+ 	igt_fixture {
+ 		xe_eudebug_enable(fd, was_enabled);
  
- enum gpgpu_shader_vrt_modes {
-+	VRT_32 = 0x0,
-+	VRT_64 = 0x1,
- 	VRT_96 = 0x2,
-+	VRT_128 = 0x3,
-+	VRT_160 = 0x4,
-+	VRT_192 = 0x5,
- 	VRT_DISABLED,
- };
- 
-@@ -29,6 +34,9 @@ struct gpgpu_shader {
- 	struct igt_map *labels;
- 	bool illegal_opcode_exception_enable;
- 	uint32_t num_threads_in_tg;
-+	bool large_grf_mode;
-+	uint32_t simd_size;
-+	bool hw_local_id_generation;
- 	enum gpgpu_shader_vrt_modes vrt;
- };
- 
-@@ -72,6 +80,8 @@ static inline uint32_t gpgpu_shader_last_instr(struct gpgpu_shader *shdr)
- 
- void gpgpu_shader_set_vrt(struct gpgpu_shader *shdr, enum gpgpu_shader_vrt_modes vrt);
- 
-+uint32_t gpgpu_shader__get_max_threads_in_tg(struct gpgpu_shader *shdr);
-+
- void gpgpu_shader__wait(struct gpgpu_shader *shdr);
- void gpgpu_shader__breakpoint_on(struct gpgpu_shader *shdr, uint32_t cmd_no);
- void gpgpu_shader__breakpoint(struct gpgpu_shader *shdr);
 -- 
 2.34.1
 
