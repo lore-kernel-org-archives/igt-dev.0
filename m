@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C70DCCA0EE8
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 05:05:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60D1CCAC59A
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 05:17:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B5FF10E069;
-	Wed, 17 Sep 2025 05:05:18 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85A8510E069;
- Wed, 17 Sep 2025 05:05:17 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2796062495830644644=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fcompute?=
- =?utf-8?q?=5Fpreempt=3A_Compute_preemption_check_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 17 Sep 2025 05:05:17 -0000
-Message-ID: <175808551753.340256.4623240373136591930@1538d3639d33>
-X-Patchwork-Hint: ignore
+	by gabe.freedesktop.org (Postfix) with ESMTP id 032DF10E041;
+	Wed, 17 Sep 2025 05:17:13 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YxPdT5f5";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 927CA10E041
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 05:17:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1758086232; x=1789622232;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=E0SKJFxXTDLNsDPndyji0EHO8DR2WFjjVG1kSeL3oZE=;
+ b=YxPdT5f5t8sIM8NAEpSCPjh6bcl53Jpianr9h1O6UqiE+VAy9rW5wIxz
+ nPlsp1Lw2KlkjOjDbrv+7CqgYaODsWEuF5fNzcfzLNNFk/0zhtTYVXg0V
+ BidwqYwSEoICpKFum0K3iCxZ0WyXZhHiEfK+Hws0Ea8s//ZQK2SYS2Ubp
+ x1D08RCRsAbZTPv4RnGwPwoXe3zihDV3SDPC3hDx/K/aURHRikzZ3M4wq
+ FMCznAa3Cxp0D4nSTkDBoXQr1DJzi74BIXttCx3vpilhG9xTdWotCcFbM
+ TLXsb/Ne+byWBt0x+UB/thdm3fOBm30yM8s4kLR1MvxT/JJFJXNzSE4Qh g==;
+X-CSE-ConnectionGUID: g11S2HGrSwOOdwXnCqUj8g==
+X-CSE-MsgGUID: 5dR7M7/7T66sFfI8W0qhjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="47957373"
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="47957373"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Sep 2025 22:17:11 -0700
+X-CSE-ConnectionGUID: DfgK5FOpRpWL0/efAj7CGg==
+X-CSE-MsgGUID: VHPZpLJCSMah+270ewVLjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="179430972"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.7])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Sep 2025 22:17:08 -0700
+Date: Wed, 17 Sep 2025 07:17:06 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Sobin Thomas <sobin.thomas@intel.com>
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com
+Subject: Re: [PATCH v5 i-g-t 1/1] tests/intel/xe_compute_preempt: Compute
+ preemption check
+Message-ID: <rfmrr2brjgu4ydmm6viq25kabconqjyxt5u4ogbhif2owzoo4x@pmiv3xlbx5ii>
 References: <20250917035639.187462-1-sobin.thomas@intel.com>
-In-Reply-To: <20250917035639.187462-1-sobin.thomas@intel.com>
+ <20250917035639.187462-2-sobin.thomas@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250917035639.187462-2-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,179 +67,290 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2796062495830644644==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Sep 17, 2025 at 03:56:39AM +0000, Sobin Thomas wrote:
+> On platforms (like PVC) that do not support walker mid-thread
+> preemption, running tests in forked threads can lead to inconsistent
+> states due to igt_skip being called mid-execution. Made changes to
+> perform kernel preemption check at the beginning of each subtests.
+> If the GPU version does not support the required features, the
+> test is skipped gracefully, ensuring consistent behavior across
+> different platforms.
+> 
+> TODO: Add the kernel for PVC
+> 
+> v2: Fixed review comments to move the compatibility check
+>     into the igt_fixture.
+> 
+> v3: Added check for thread group preemption and WMTP.
+>     Added enum flags for preemption type as per review . [Zbigniew]
+> 
+> v4: Added check for preempt inside __run_intel_compute_kernel_preempt
+>     Refactored the code.  [priyanka]
+> 
+> v5: Refactor for finding the kernel and out of bound check. [Zbigniew]
+> 
+> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+> ---
+>  lib/intel_compute.c              | 95 +++++++++++++++++++++++++-------
+>  lib/intel_compute.h              |  7 +++
+>  tests/intel/xe_compute_preempt.c |  6 ++
+>  3 files changed, 89 insertions(+), 19 deletions(-)
+> 
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index 147dd2916..f698ea17d 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -1921,14 +1921,33 @@ static const struct {
+>  	},
+>  };
+>  
+> +static const struct intel_compute_kernels
+> +		*find_kernel(const struct intel_compute_kernels  *kernels,
+> +		unsigned int ip_ver)
+> +{
+> +	if (!kernels) {
+> +		igt_debug("%s: kernel_list is NULL\n", __func__);
+> +		return NULL;
+> +	}
+> +
+> +	while (kernels->kernel) {
+> +		if (ip_ver == kernels->ip_ver)
+> +			return kernels;
+> +		kernels++;
+> +	}
+> +	igt_info("%s: No Match found for ip_ver=%u\n", __func__, ip_ver);
+> +
+> +	return NULL;
+> +}
+> +
+>  static bool __run_intel_compute_kernel(int fd,
+>  				       struct drm_xe_engine_class_instance *eci,
+>  				       struct user_execenv *user,
+>  				       enum execenv_alloc_prefs alloc_prefs)
+>  {
+>  	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+> -	unsigned int batch;
+> -	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
+> +	int batch;
+> +	const struct intel_compute_kernels *kernel_entries = intel_compute_square_kernels, *kernels;
+>  	enum intel_driver driver = get_intel_driver(fd);
+>  	const unsigned char *kernel;
+>  	unsigned int kernel_size;
+> @@ -1954,11 +1973,7 @@ static bool __run_intel_compute_kernel(int fd,
+>  		kernel = user->kernel;
+>  		kernel_size = user->kernel_size;
+>  	} else {
+> -		while (kernels->kernel) {
+> -			if (ip_ver == kernels->ip_ver)
+> -				break;
+> -			kernels++;
+> -		}
+> +		kernels = find_kernel(kernel_entries, ip_ver);
+>  		if (!kernels->kernel)
 
-== Series Details ==
+Segv if kernels == NULL.
 
-Series: tests/intel/xe_compute_preempt: Compute preemption check (rev3)
-URL   : https://patchwork.freedesktop.org/series/154338/
-State : success
+>  			return false;
+>  		kernel = kernels->kernel;
+> @@ -2193,24 +2208,47 @@ static const struct {
+>  			     bool threadgroup_preemption,
+>  			     enum execenv_alloc_prefs alloc_prefs);
+>  	uint32_t compat;
+> +	enum xe_compute_preempt_type preempt_type;
+>  } intel_compute_preempt_batches[] = {
+>  	{
+>  		.ip_ver = IP_VER(20, 01),
+>  		.compute_exec = xe2lpg_compute_preempt_exec,
+>  		.compat = COMPAT_DRIVER_XE,
+> +		.preempt_type = PREEMPT_WMTP,
+>  	},
+>  	{
+>  		.ip_ver = IP_VER(20, 04),
+>  		.compute_exec = xe2lpg_compute_preempt_exec,
+>  		.compat = COMPAT_DRIVER_XE,
+> +		.preempt_type = PREEMPT_WMTP,
+>  	},
+>  	{
+>  		.ip_ver = IP_VER(30, 00),
+>  		.compute_exec = xe2lpg_compute_preempt_exec,
+>  		.compat = COMPAT_DRIVER_XE,
+> +		.preempt_type = PREEMPT_WMTP,
+>  	},
+> +	{}
+>  };
+>  
+> +static int find_preempt_batch(unsigned int ip_ver)
+> +{
+> +	for (int batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
+> +		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
+> +			return batch;
+> +	return -1;
+> +}
+> +
+> +static bool is_preemptable(int batch, enum xe_compute_preempt_type required_preempt)
+> +{
+> +	if (required_preempt &&
+> +	    !(intel_compute_preempt_batches[batch].preempt_type & required_preempt)) {
+> +		igt_info("Preemption not supported\n");
+> +		return false;
+> +	}
+> +	return true;
+> +}
+> +
+>  static bool __run_intel_compute_kernel_preempt(int fd,
+>  		struct drm_xe_engine_class_instance *eci,
+>  		bool threadgroup_preemption,
+> @@ -2218,15 +2256,12 @@ static bool __run_intel_compute_kernel_preempt(int fd,
+>  {
+>  	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+>  	unsigned int batch;
+> -	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
+> +	const struct intel_compute_kernels *kernel_entries = intel_compute_square_kernels, *kernels;
+>  	enum intel_driver driver = get_intel_driver(fd);
+> +	int required_preempt = threadgroup_preemption ? PREEMPT_TGP : PREEMPT_WMTP;
+>  
+> -	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
+> -		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
+> -			break;
+> -
+> -
+> -	if (batch == ARRAY_SIZE(intel_compute_preempt_batches)) {
+> +	batch = find_preempt_batch(ip_ver);
+> +	if (batch < 0) {
+>  		igt_debug("GPU version 0x%x not supported\n", ip_ver);
+>  		return false;
+>  	}
+> @@ -2238,12 +2273,10 @@ static bool __run_intel_compute_kernel_preempt(int fd,
+>  		return false;
+>  	}
+>  
+> -	while (kernels->kernel) {
+> -		if (ip_ver == kernels->ip_ver)
+> -			break;
+> -		kernels++;
+> -	}
+> +	if (!is_preemptable(batch, required_preempt))
+> +		return false;
+>  
+> +	kernels = find_kernel(kernel_entries, ip_ver);
+>  	if (!kernels->kernel || !kernels->sip_kernel || !kernels->long_kernel)
 
-== Summary ==
+Same.
 
-CI Bug Log - changes from IGT_8541 -> IGTPW_13761
-====================================================
+--
+Zbigniew
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/index.html
-
-Participating hosts (43 -> 42)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13761 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-apl-1:          NOTRUN -> [SKIP][1] +3 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-apl-1/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][2] -> [DMESG-FAIL][3] ([i915#12061]) +1 other test dmesg-fail
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8541/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-9:         [PASS][4] -> [DMESG-FAIL][5] ([i915#12061]) +1 other test dmesg-fail
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8541/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-apl-1:          [ABORT][6] -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8541/bat-apl-1/igt@core_hotunplug@unbind-rebind.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-apl-1/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-adlp-6:         [ABORT][8] ([i915#14365]) -> [PASS][9] +1 other test pass
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8541/bat-adlp-6/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-adlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#14365]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8541 -> IGTPW_13761
-  * Linux: CI_DRM_17211 -> CI_DRM_17219
-
-  CI-20190529: 20190529
-  CI_DRM_17211: bbb6481c2b5e8ff72500665846dc121b6f093481 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_17219: ab86b32a024c2a431a0300c91745fca9aa0b9370 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13761: 13761
-  IGT_8541: 8541
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/index.html
-
---===============2796062495830644644==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_compute_preempt: Compute preemption check (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154338/">https://patchwork.freedesktop.org/series/154338/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8541 -&gt; IGTPW_13761</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/index.html</p>
-<h2>Participating hosts (43 -&gt; 42)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13761 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-apl-1/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8541/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8541/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8541/bat-apl-1/igt@core_hotunplug@unbind-rebind.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-apl-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8541/bat-adlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365">i915#14365</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13761/bat-adlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8541 -&gt; IGTPW_13761</li>
-<li>Linux: CI_DRM_17211 -&gt; CI_DRM_17219</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17211: bbb6481c2b5e8ff72500665846dc121b6f093481 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_17219: ab86b32a024c2a431a0300c91745fca9aa0b9370 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13761: 13761<br />
-  IGT_8541: 8541</p>
-
-</body>
-</html>
-
---===============2796062495830644644==--
+>  		return 0;
+>  
+> @@ -2260,6 +2293,30 @@ static bool __run_intel_compute_kernel_preempt(int fd,
+>  
+>  	return true;
+>  }
+> +
+> +/**
+> + * check_kernel_preempt- Checks ip version to confirm if  provided 
+> + * preempt type is supported.
+> + * @fd: file descriptor of the opened DRM Xe device
+> + * @required_preempt: Preemption type ( WMTP/TGP)
+> + *
+> + * Returns true on success, false otherwise.
+> + */
+> +bool check_kernel_preempt(int fd, enum xe_compute_preempt_type required_preempt)
+> +{
+> +	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+> +	unsigned int batch = find_preempt_batch(ip_ver);
+> +
+> +	if (batch < 0) {
+> +		igt_debug("GPU version 0x%x not supported\n", ip_ver);
+> +		return false;
+> +	}
+> +	if (!is_preemptable(batch, required_preempt))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>  /**
+>   * run_intel_compute_kernel_preempt - runs compute kernels to
+>   * exercise preemption scenario.
+> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+> index 412791d07..b70cd7185 100644
+> --- a/lib/intel_compute.h
+> +++ b/lib/intel_compute.h
+> @@ -71,6 +71,11 @@ enum execenv_alloc_prefs {
+>  	EXECENV_PREF_VRAM_IF_POSSIBLE,
+>  };
+>  
+> +enum xe_compute_preempt_type {
+> +	PREEMPT_TGP  = 1 << 0,    /* ThreadGroup Preemption */
+> +	PREEMPT_WMTP  = 1 << 1,  /* Walker Mid Thread Preemption */
+> +};
+> +
+>  extern const struct intel_compute_kernels intel_compute_square_kernels[];
+>  
+>  bool run_intel_compute_kernel(int fd, struct user_execenv *user,
+> @@ -81,4 +86,6 @@ bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_in
+>  bool run_intel_compute_kernel_preempt(int fd, struct drm_xe_engine_class_instance *eci,
+>  				      bool threadgroup_preemption,
+>  				      enum execenv_alloc_prefs alloc_prefs);
+> +
+> +bool check_kernel_preempt(int fd, enum xe_compute_preempt_type required_preempt);
+>  #endif	/* INTEL_COMPUTE_H */
+> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
+> index c9b194869..a4c0bc59b 100644
+> --- a/tests/intel/xe_compute_preempt.c
+> +++ b/tests/intel/xe_compute_preempt.c
+> @@ -76,6 +76,7 @@ igt_main
+>  	}
+>  
+>  	igt_subtest_with_dynamic("compute-preempt") {
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -86,6 +87,7 @@ igt_main
+>  	}
+>  
+>  	igt_subtest_with_dynamic("compute-preempt-many") {
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -112,6 +114,7 @@ igt_main
+>  	igt_subtest_with_dynamic("compute-preempt-many-all-ram") {
+>  		igt_require(swap_mb > CONTEXT_MB * 10);
+>  
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -138,6 +141,7 @@ igt_main
+>  	igt_subtest_with_dynamic("compute-preempt-many-vram") {
+>  		igt_require(xe_has_vram(xe));
+>  
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -164,6 +168,7 @@ igt_main
+>  	igt_subtest_with_dynamic("compute-preempt-many-vram-evict") {
+>  		igt_require(xe_has_vram(xe));
+>  
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -188,6 +193,7 @@ igt_main
+>  	}
+>  
+>  	igt_subtest_with_dynamic("compute-threadgroup-preempt") {
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_TGP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> -- 
+> 2.34.1
+> 
