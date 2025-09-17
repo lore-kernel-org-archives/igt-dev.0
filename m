@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76E0CCAC598
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 09:25:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7698BCA0EE8
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 09:34:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2CD8410E444;
-	Wed, 17 Sep 2025 09:25:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C30110E644;
+	Wed, 17 Sep 2025 09:34:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vjs5Oj5c";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bmsH89fu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A86A10E444
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 09:25:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EA3E10E644
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 09:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758101153; x=1789637153;
- h=from:to:cc:subject:date:message-id:mime-version:
+ t=1758101657; x=1789637657;
+ h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=R2Nk5bMFCC4teHkI2DUhbKNMJJToi2p6bSobNAld1O0=;
- b=Vjs5Oj5cUOpeptJuQiiWceUt9fSylxBOeBHDHAZLCgMh4REb6E70sFFL
- T300HGjZW12JccFhpp0TkuDiMl1G5tDJ8HeTEOdM9oWUiuOMCkK0ECMhQ
- S/a+o07SBV1VrH3/P1iVI0siSHL8rNGRaQ4HdeQMx3glra3zwxf7mwIwa
- jRnay18C9VtkpgeXGzFszy8qylhmunaIT7/cdQghWg4pXF6dYIXKmtloY
- Qc1S5+oKhSN0vWz6l4rfvAh4pBhYuOVtXlPebBpyRTJsjtTWtBymQ0y8k
- KW3MSAtcIOSdyyj7yq2MCCW+Ei/RGCNH/26Y2e/BJgZhX57hMoVoanDUa w==;
-X-CSE-ConnectionGUID: QHMybC2LSfaglozolv7fLg==
-X-CSE-MsgGUID: 8EIy9zuTRNmUzDO7LYQ4YA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="77840770"
-X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="77840770"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 02:25:53 -0700
-X-CSE-ConnectionGUID: Sthxrzj4QKiwidcD6h77Fg==
-X-CSE-MsgGUID: bKJlvHTDTLCpi9Qyrb4CeQ==
+ bh=CNwjmJe0kwjmZHP8YqEhXkCQIGOyRMffaHN7L9nb9wE=;
+ b=bmsH89fuKloTpTfURO/nSa1BBrykknelF1mJzOJ78LXHECR8U1rX/QEJ
+ r3lLjw7HZqJAyTbmNQhlSP6fuVuK7z1MyjRalkBhCJ0IMBYSofDRkXhoc
+ K386XUNGWJZmoLetHYeIDYbwi6XFiJJ1lCnMlmUpRdhM+TPl5BB1LiDvt
+ N5d1HSFKi3oM3swdFU9OlqqdalE0wRbvsqzMbNw//PT0WV5Md60oMj1+B
+ BnKnGBhB/uEv7/PAyJQ4aATt9D2T0zGtRw/0+M6nTbwLcIyiA1n5txVeC
+ nVHvnGSCfkpfxBwE5Rtj0VeW+WxPKx7s2HQfc06mzhTPbBTyVvKfNgO7i w==;
+X-CSE-ConnectionGUID: J4HV7HSGSc+IgxK11eUaxw==
+X-CSE-MsgGUID: P4gmK4P0QR6Ff0S/NdZUTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="59621931"
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="59621931"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 02:34:17 -0700
+X-CSE-ConnectionGUID: p4LvxoeOTnuxb5ovfeKtIw==
+X-CSE-MsgGUID: kXgShkk8SWeFh6D/PdAP/g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="174484810"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 02:25:52 -0700
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] intel-ci: Update BMG blocklist
-Date: Wed, 17 Sep 2025 15:11:43 +0530
-Message-Id: <20250917094143.2275560-1-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; d="scan'208";a="175600372"
+Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
+ by fmviesa008.fm.intel.com with ESMTP; 17 Sep 2025 02:34:16 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ nishit.sharma@intel.com
+Subject: [PATCH i-g-t v4 0/3] Multi-CCS support in IGT
+Date: Wed, 17 Sep 2025 09:34:11 +0000
+Message-ID: <20250917093414.36124-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,182 +65,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-update bmg blocklist with unsupported, while at it
-update skip message
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel-ci/xe.bmg.display.blocklist.txt | 65 ++++++++++++---------
- 1 file changed, 37 insertions(+), 28 deletions(-)
+Revision 1:
+Added loop_kernel_duration in available pipelines. loop_kernel_duration
+holds sleep duration and during sleep GPU will be workng.
+Patch-1/3: loop_kernel_duration addition in available pipelines in
+lib/intel_compute.c. igt_skip is called in pipeline which doesn't support
+loop_kernel shader.
+Patch-2/3: Added loop-duration-2s subtest in tests/intel/xe_compute to
+test if GPU is executing shader when sleep is called. This is verfied
+using gputop in another terminal. This also tests whether the test
+executed successfully in >= 2seconds of duration set
+Patch-3/3: Added eu-busy-10s test which creates multi threads depending
+on num_slices available and schedules workload on all ccs instances
+available. This also prints engine utlization in percentage while
+workload is executing.
 
-diff --git a/tests/intel-ci/xe.bmg.display.blocklist.txt b/tests/intel-ci/xe.bmg.display.blocklist.txt
-index f145d6c0d..1686499bd 100644
---- a/tests/intel-ci/xe.bmg.display.blocklist.txt
-+++ b/tests/intel-ci/xe.bmg.display.blocklist.txt
-@@ -1,8 +1,7 @@
- #########################################
- # non-KMS tests
- #########################################
--igt@(?!.*kms|testdisplay|.*display-vs-wb-transient)(.*)
--
-+igt@(?!.*kms|testdisplay|fbdev|.*display-vs-wb-transient)(.*)
- #########################################
- # Valid skip :- Y and Yf-Tiling are not supported
- #########################################
-@@ -11,6 +10,7 @@ igt@kms_(plane_lowres|frontbuffer_tracking|plane_multiple)@.*tiling-y.*
- igt@kms_flip_scaled_crc@.*(yf|y)tile.*
- igt@kms_async_flips@invalid-async-flip
- igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
-+igt@kms_pipe_stress@.*ytiled$
- #########################################
- # Valid skip :- 90/270 rotation is not supported
- ##########################################
-@@ -23,7 +23,7 @@ igt@kms_rotation_crc@sprite-rotation-90-pos-100-0
- ##########################################
- igt@kms_atomic@plane-primary-overlay-mutable-zpos
- ##########################################
--# Valid skip :- Requires TV connector not present on BMG
-+# Valid skip :- Requires TV connector
- ##########################################
- igt@kms_tv_load_detect@load-detect
- ##########################################
-@@ -43,7 +43,6 @@ igt@kms_cursor_crc@.*-(32x10|32x32|512x)
- # Valid skip :- Downscaling factor is not supported
- ##########################################
- igt@kms_plane_scaling@.*downscale-factor-0-25.*
--igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-(5|75)
- igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-(5|75)
- ##########################################
- # Valid skip :- Downscaling is not supported on second plane MTL+
-@@ -58,21 +57,30 @@ igt@kms_cursor_crc@.*128x42
- igt@kms_cursor_crc@.*256x85
- igt@kms_cursor_crc@cursor-(offscreen|onscreen|random|rapid-movement|sliding)-512x(512|170)
- ##########################################
--# Valid skip as BMG doesn't have eDP supported
-+# Valid skip :- BMG doesn't have eDP support
- ##########################################
- igt@kms_vrr@seamless-rr-switch-vrr
-+igt@kms_vrr@cmrr.*
-+igt@kms_atomic_transition@.*-internal-panels$
-+igt@.*psr.*
-+igt@kms_pm_backlight@.*
-+igt@kms_pm_power_saving@.*
-+igt@kms_scaling_modes@.*
-+igt@kms_panel_fitting@.*
-+igt@.*@.*(?!no-)drrs.*
- #########################################
--# no VGA connectors in BMG
-+# Valid skip :- Require VGA connector
- #########################################
- igt@.*chamelium.*vga.*
- ##########################################
--# Expected skip as GSC not present in BMG
-+# Valid skip :- GSC not present in BMG
- ##########################################
- igt@kms_content_protection@content-type-change
- igt@kms_content_protection@lic-type-1
- igt@kms_content_protection@type1
-+igt@kms_content_protection@mei-interface
- #########################################
--# Expected skip as BMG doesn't have PORT_A/B
-+# Valid skip :- BMG doesn't have PORT_A/B
- #########################################
- igt@kms_pm_rpm@modeset-lpsp
- igt@kms_pm_rpm@modeset-lpsp-stress
-@@ -81,49 +89,46 @@ igt@kms_pm_rpm@dpms-lpsp
- igt@kms_pm_lpsp@kms-lpsp
- igt@kms_pm_rpm@modeset-lpsp-stress-no-wait
- #########################################
--# Expected Skip : flat ccs has only one buffer
-+# Valid skip :- Flat ccs has only one buffer
- #########################################
- igt@kms_getfb@getfb-reject-ccs
- #########################################
--# Expected skip for graphics ver >= 20
-+# Valid skip :- Valid for graphics ver >= 20
- #########################################
- igt@kms_getfb@getfb2-accept-ccs
-+igt@kms_vrr@lobf
- ##########################################
--# Valid skip :- Feature is not enabled on kernel
--##########################################
--igt@kms_writeback@.*
--##########################################
--# Valid skip :- dc6 is not supported by dgfx
-+# Valid skip :- DC6 is not supported by dgfx
- #########################################
- igt@kms_pm_dc@deep-pkgc
- igt@kms_pm_dc@dc6-dpms
--
-+#########################################
-+# Valid skip :- BMG has only one cdclk (WA)
-+#########################################
-+igt@kms_cdclk@.*
- ##########################################
--# Valid skip :- DG2 & MTL specific
-+# Valid skip :- DG2 & MTL specific & LNL specific
- ##########################################
- igt@kms_ccs@.*-dg2-.*
- igt@kms_ccs@.*-mtl-.*
- igt@kms_flip_scaled_crc@.*dg2rcccs.*
-+igt@kms_ccs@.*-lnl-.*
- ##########################################
- # Valid skip :- Simulation specific
- ##########################################
- igt@kms_pm_dc@dc3co-vpb-simulation
- igt@kms_simulation_hpd@sim-hpd
- #########################################
--# Chamelium v1 HDMI receiver doesn't support 4k
- #########################################
--igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
--#########################################
--# Valid skip on non-hybrid configuration
-+# Valid skip :- Require non-hybrid configuration
- #########################################
- igt@kms_addfb_basic@invalid-smem-bo-on-discrete
- #########################################
- # crc-random cases are resource intensive
- #########################################
- igt@.*chamelium.*random.*
--
- ##########################################
--# Valid skip :- cursor moving doesn't take slowpath
-+# Valid skip :- Cursor moving doesn't take slowpath
- ##########################################
- igt@kms_cursor_legacy@(short|basic)-busy-flip-before
- igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-(transitions|transitions-varying-size)
-@@ -139,20 +144,24 @@ igt@kms_setmode@basic-clone-single-crtc
- ##########################################
- igt@kms_setmode@invalid-clone-exclusive-crtc
- ##########################################
--# Valid skip for display ver < 20
-+# Valid skip :- For display ver < 20
- ##########################################
- igt@kms_frontbuffer_tracking@plane-fbc-rte
- #########################################
--Unsupported for platform with Wa_16023588340
-+# Valid skip :- Unsupported for platform with Wa_16023588340
- #########################################
- igt@kms.*fbc.*
- #########################################
--# Use either of linear-tiling or
--# connected-linear-tiling
-+# Valid skip :- Use either of linear-tiling or
-+#               connected-linear-tiling
- #########################################
- igt@kms_bw@linear-tiling-.*-display.*
- #########################################
--# Linear + hflip combination is not supported on BMG
-+# Valid skip :- Linear + hflip combination is not supported on BMG
- #########################################
- igt@kms_big_fb@linear-max-hw-stride.*hflip
- #########################################
-+# Valid skip :- For display ver >= 30
-+#########################################
-+igt@kms_pm_dc@dc5-retention-flops
-+#########################################
+v2:
+- Addressed review comments from Zbyshek on description in Patch-1.
+- Added execution time check in Patch-2 regarding single iteration of
+  scheduling and executing workload on single instance of CCS engine.
+
+v3:
+- Added missing code section in Patch-1.
+- Modified LOOP_DURATIOn macro to LOOP_DURATION_2s to avoid confusion.
+- Used LOOP_DURATION_2s in place of LOOP_DURATION and adjusted sleep
+  durations.
+
+v4:
+- Test will skip if sriov is enabled and sriov_numfs > 0.
+- Test will continue runing if sriov_numvfs = 0
+
+v5:
+- Incorporated review comments (Zbigniew)
+
+v6:
+- Simplified logic to capture EU busyness
+- Removed header which had pmu counter and engine instance logic
+- Moved pthread_data structure to xe_compute file which is used during
+  thread creation
+
+Nishit Sharma (3):
+  lib/intel_compute: loop_kernel_duration in Pipeline
+  tests/intel/xe_compute: Add loop_duration_2s subtest
+  tests/intel/xe_compute: Add eu-busy-10s test
+
+ lib/intel_compute.c      |  25 +++-
+ lib/intel_compute.h      |   2 +
+ tests/intel/xe_compute.c | 304 +++++++++++++++++++++++++++++++++++++++
+ tests/meson.build        |   1 +
+ 4 files changed, 331 insertions(+), 1 deletion(-)
+
 -- 
-2.25.1
+2.43.0
 
