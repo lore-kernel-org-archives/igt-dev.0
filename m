@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ADE2CAC59D
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 13:10:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F3EACAC5A0
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 13:10:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E10F810E834;
-	Wed, 17 Sep 2025 13:10:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3548210E835;
+	Wed, 17 Sep 2025 13:10:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eZOwD4+h";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZD71UChl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 815A710E831
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 13:10:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C985710E831
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 13:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758114621; x=1789650621;
+ t=1758114625; x=1789650625;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+5LUBdD4gM+unptjshGChWJ6iOQaXZlDH6TJ7KZa4Q4=;
- b=eZOwD4+hHg1EZKclejg2gyEJC9GntAdXlkSvXHHOt4NZ5QCSKt7l5oej
- EQIo018vdi3vsyJ8jyHlUIf0JAcAjK7K9vbQb5SYp7HVZeBghGu71OvDS
- 9zea69ARkMOb6cOOJoPTpxtvk14AzEUrRJPo5KwcqTgpmCKh0nXwMsG93
- x3j/8DaDrDjbOg5JMDgzEZDqoz2RDTO18J9CzdcKpm9wwB+qXT5V2xKb5
- AqnsvYHRPIKkSTLCUgQSgwYZCpZtmkou0CavL48JcRItXq5LyAXM1fjub
- rB2O/ZYMnuED1PMMAqPLJM6lAo05Bz+ujJRAiHvTwLGrfjamMeNmdpmcG g==;
-X-CSE-ConnectionGUID: /AK3ZkK5Q86e/nLaIHP5sw==
-X-CSE-MsgGUID: ZNudJDyYTPeClbVi18P2ig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60477371"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="60477371"
+ bh=dTE1y/sQd5Yn64D9PvCWsEDnbAJWR9dKPL+v18g7lpA=;
+ b=ZD71UChlH5ZshKxXjYoZzV4PtrqCmXBayuei2fy4Y8+1jT0OtNkq+rRF
+ oV7hsLIscbNhmFbURT5qihQWYgMcwXFMLXvf3nWkFK4fMatPcONBLQpzD
+ FwrTr7fby2+wyb4PiIYmcmCN4QXSpeF965i4xCZYJbXJgvmhjnQkx87ts
+ 7gPeataw5S02X+44k1Cam35G7xafLYqHh8gB+KNvK8CuSK3yLG4brdDlv
+ SSdMmJ8U7xSrpSn6J1qE3o7p4cAvVcV1hZ81jdxjEDrKTCHq5mrURNs/c
+ X5jG/9Fi3C2lMOp2UhidR7Dd4GBZw6ZtbxSnEcUA4Ld8pMfudK9oOlj++ w==;
+X-CSE-ConnectionGUID: zi3mE0TFTmmqlkFkYXj30A==
+X-CSE-MsgGUID: rQ6Nlo/pQ3Sr3kRUYHeaTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60477381"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="60477381"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 06:10:20 -0700
-X-CSE-ConnectionGUID: aRaySroQRd+7vxuM02/CRA==
-X-CSE-MsgGUID: 9g0B4Bu9Ty6vCSi+9Fnm4Q==
+ 17 Sep 2025 06:10:25 -0700
+X-CSE-ConnectionGUID: DxQ5gDKcQR+FKbnifzZ9Ag==
+X-CSE-MsgGUID: ukpcIOuMQNOAsBoPhCSJcQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="174526349"
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="174526366"
 Received: from dut2144ptlh.iind.intel.com ([10.190.232.53])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 06:10:19 -0700
+ 17 Sep 2025 06:10:23 -0700
 From: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: gajendra.uttamchand@intel.com
-Subject: [PATCH v4 i-g-t 2/6] benchmarks/intel_latency: Add xe_execqueue test
-Date: Wed, 17 Sep 2025 13:10:04 +0000
-Message-ID: <20250917131003.71762-10-gajendra.uttamchand@intel.com>
+Subject: [PATCH v4 i-g-t 5/6] benchmarks/intel_latency: Add
+ xe_bo_create_destroy test
+Date: Wed, 17 Sep 2025 13:10:07 +0000
+Message-ID: <20250917131003.71762-13-gajendra.uttamchand@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250917131003.71762-8-gajendra.uttamchand@intel.com>
 References: <20250908144314.42275-9-gajendra.uttamchand@intel.com>
@@ -69,30 +70,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add execution queue management latency test for the XE driver.
-Measures performance of command queue operations including queue
-creation and destruction.
+Add buffer object lifecycle latency test for the XE driver.
+Measures allocation and deallocation timing for buffer objects
+across different sizes and usage patterns.
 
 Defaults: buffer sizes from 4KB to 8MB, 13 repetitions, 1000
 iterations per repetition, 2 seconds per sample, single CPU.
-Parallelism and busy mode are configurable via command-line
-options.
+Parallelism is configurable via command-line options.
 
-Critical for understanding command submission overhead and
-optimizing graphics workload execution pipelines.
+Important for applications with dynamic buffer management and
+helps identify memory allocation bottlenecks in graphics
+workloads.
 
 Signed-off-by: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
 ---
- benchmarks/intel_latency/xe_execqueue.c | 127 ++++++++++++++++++++++++
- 1 file changed, 127 insertions(+)
- create mode 100644 benchmarks/intel_latency/xe_execqueue.c
+ .../intel_latency/xe_bo_create_destroy.c      | 130 ++++++++++++++++++
+ 1 file changed, 130 insertions(+)
+ create mode 100644 benchmarks/intel_latency/xe_bo_create_destroy.c
 
-diff --git a/benchmarks/intel_latency/xe_execqueue.c b/benchmarks/intel_latency/xe_execqueue.c
+diff --git a/benchmarks/intel_latency/xe_bo_create_destroy.c b/benchmarks/intel_latency/xe_bo_create_destroy.c
 new file mode 100644
-index 000000000..cb7401faa
+index 000000000..f6c24d0ad
 --- /dev/null
-+++ b/benchmarks/intel_latency/xe_execqueue.c
-@@ -0,0 +1,127 @@
++++ b/benchmarks/intel_latency/xe_bo_create_destroy.c
+@@ -0,0 +1,130 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2025 Intel Corporation
@@ -106,28 +107,21 @@ index 000000000..cb7401faa
 +#define OBJECT_SIZE (1 << 23)
 +
 +static double elapsed(const struct timespec *start,
-+		      const struct timespec *end)
++			  const struct timespec *end)
 +{
 +	return (end->tv_sec - start->tv_sec) + 1e-9 * (end->tv_nsec - start->tv_nsec);
 +}
 +
-+static void test_exec(int fd, int busy, int size)
++static void test_bo_create(int fd, uint32_t vm, int size)
 +{
-+	uint32_t vm;
-+	int err;
++	uint32_t bo;
++	uint64_t bo_size = xe_bb_size(fd, size);
 +
-+	vm = xe_vm_create(fd, 0, 0);
++	//bo = xe_bo_create(fd, vm, bo_size, system_memory(fd), 0);
++	bo = xe_bo_create(fd, 0, bo_size, vram_if_possible(fd, 0),
++				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	gem_close(fd, bo);
 +
-+	if (busy) {
-+		uint32_t exec_queue_id;
-+		err = __xe_exec_queue_create(fd, vm, 1, 1, &xe_engine(fd, 0)->instance, 0,
-+					     &exec_queue_id);
-+		igt_assert_f(!err, "Failed to create exec queue (%d)\n", err);
-+
-+		xe_exec_queue_destroy(fd, exec_queue_id);
-+	}
-+
-+	xe_vm_destroy(fd, vm);
 +}
 +
 +int main(int argc, char **argv)
@@ -138,6 +132,7 @@ index 000000000..cb7401faa
 +	int reps = 13;
 +	int ncpus = 1;
 +	int c, n, s;
++	uint32_t vm;
 +
 +	while ((c = getopt(argc, argv, "s:b:r:f")) != -1) {
 +		switch (c) {
@@ -169,19 +164,22 @@ index 000000000..cb7401faa
 +			igt_stats_t stats;
 +
 +			igt_stats_init_with_size(&stats, reps);
++
 +			for (n = 0; n < reps; n++) {
++				vm = xe_vm_create(fd, 0, 0);
 +				struct timespec start, end;
 +				uint64_t count = 0;
 +
 +				clock_gettime(CLOCK_MONOTONIC, &start);
 +				do {
 +					for (c = 0; c < 1000; c++)
-+						test_exec(fd, busy, s);
++						test_bo_create(fd, vm, s);
 +
 +					count += c;
 +					clock_gettime(CLOCK_MONOTONIC, &end);
 +				} while (end.tv_sec - start.tv_sec < 2);
 +
++				xe_vm_destroy(fd, vm);
 +				igt_stats_push_float(&stats, count / elapsed(&start, &end));
 +			}
 +			printf("%f\n", igt_stats_get_trimean(&stats));
@@ -191,6 +189,9 @@ index 000000000..cb7401faa
 +		double *shared;
 +
 +		shared = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++
++		vm = xe_vm_create(fd, 0, 0);
++
 +		for (n = 0; n < reps; n++) {
 +			memset(shared, 0, 4096);
 +
@@ -201,7 +202,7 @@ index 000000000..cb7401faa
 +				clock_gettime(CLOCK_MONOTONIC, &start);
 +				do {
 +					for (c = 0; c < 1000; c++)
-+						test_exec(fd, busy, size);
++						test_bo_create(fd, busy, size);
 +
 +					count += c;
 +					clock_gettime(CLOCK_MONOTONIC, &end);
@@ -216,8 +217,11 @@ index 000000000..cb7401faa
 +
 +			printf("%7.3f\n", shared[ncpus]);
 +		}
++		xe_vm_destroy(fd, vm);
++		munmap(shared, 4096);
 +	}
 +
++	close(fd);
 +	return 0;
 +}
 -- 
