@@ -4,56 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42B7DCAC59A
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 13:15:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AFFBCAC599
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 14:40:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB77010E826;
-	Wed, 17 Sep 2025 13:15:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B12C89FEA;
+	Wed, 17 Sep 2025 14:40:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DR5AMH2j";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KrFn+NH7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B1EC10E826
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 13:15:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A91989FEA
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 14:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758114939; x=1789650939;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=qD8lvAGnUgIlg3iwTjOyTpEyqazd/34Ch7dZ01VFeSI=;
- b=DR5AMH2jC92yz2IElpeA35RaVXbeKZXR0ucUwWnei9t2z4LIKl+4BfVr
- VGsaUVZb2wi8+IsZLl7ELSg0CydfAieouI32VEuT/B0n3ENM4L0f9Ac19
- wXm1JEHslJK0QX3Fb0ZUz1SshYeBPEayXFQIPhN3/ED/9YHioe9H7OIbR
- BfNKKkkUWXK43gB29QyVqdyGHxulTNGRco7KSzYWhFT66MNc3IxCd6a7V
- 8g+2ZRqcEBMxB61IcLKnm3aWKCeS7EXP4wY1T5q+HczjT0X3UNpvFBeQt
- dFkjojctzmeWxB1vdQYug0uhWmeR8HbLf26BJYl8PcAmqW7j7UzACYGvH A==;
-X-CSE-ConnectionGUID: D89n2pmlRfG5R2pWpClfbA==
-X-CSE-MsgGUID: NGZI8QFfRF6BzaGvnjJJ9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="85861112"
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="85861112"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 06:15:39 -0700
-X-CSE-ConnectionGUID: OXTABmwtTzGLiyPBA/lpiQ==
-X-CSE-MsgGUID: v5WrvMZ7ROqVDj3dUc1oFA==
+ t=1758120010; x=1789656010;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=o/3Rh1cMSKZ9pi0Y/7rHo+o25dy/9PAzR4GODReY1Tk=;
+ b=KrFn+NH7et+UWC/pbsPkl1h6TcKRUzHSCfP2DQe50gkmkppoV9zDumcS
+ lwv6r2Of6NvquEL1O1hvyJ7q5l7dihECMmbeYQa7HZW+M1yV0VliF9fHZ
+ zSh9IrspiQgupJRpfQ0ALhzavh0aGhZAw/93mUmyN32yeeSuvjza/1Od5
+ mjDiw+OSbTn7jqUEEYq3sWNean/D939RnfXfkVGA2xqAxHJI2Fz6tVYUv
+ JP3AYejjMw3afRmpLjfGByFWkX3HkDcAtsc3RRF3Iugmz+z6XEotqfkBG
+ fBkWGOO2oPfXkRIdyXL2YdKL0lNOc9Z5yK1vWWTaln0GFpXyXsG6SuyP7 Q==;
+X-CSE-ConnectionGUID: zswKD1gQScOVUyfqQGKtqQ==
+X-CSE-MsgGUID: R8JfB8qYQmSkpbrVwYbi6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="78034422"
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="78034422"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 07:40:10 -0700
+X-CSE-ConnectionGUID: kwNCR3O7Spa05XhTVaKicw==
+X-CSE-MsgGUID: +P59VP7xQCmGgatuKIPQJA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="175673010"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 06:15:37 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	anshuman.gupta@intel.com
-Cc: soham.purkait@intel.com, riana.tauro@intel.com, lucas.demarchi@intel.com,
- umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v3] tests/intel/xe_pmu: Add tests to validate engine
- activity accuracy
-Date: Wed, 17 Sep 2025 18:37:12 +0530
-Message-Id: <20250917130712.3560197-1-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="206196116"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 07:40:08 -0700
+Date: Wed, 17 Sep 2025 16:39:48 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: himanshu.girotra@intel.com
+Cc: aditya.chauhan@intel.com, ramadevi.gandi@intel.com,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] Update Platform wise Blocklist file
+Message-ID: <20250917143948.le5pyjntk75o3rtz@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ himanshu.girotra@intel.com, aditya.chauhan@intel.com,
+ ramadevi.gandi@intel.com, igt-dev@lists.freedesktop.org
+References: <20250917115859.14876-1-himanshu.girotra@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250917115859.14876-1-himanshu.girotra@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,199 +71,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test to validate the engine activity is reported with expected
-accuracy. Load the engine for 2%, 50% and 90%.
+Hi Himanshu,
+On 2025-09-17 at 17:28:59 +0530, himanshu.girotra@intel.com wrote:
+> From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-Co-developed-by: Riana Tauro <riana.tauro@intel.com>
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tests/intel/xe_pmu.c | 157 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 157 insertions(+)
+please use 'intel-ci:' prefix, also note which lists you changes,
+so better subject:
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index a98fba5a4..d1050ee11 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -72,6 +72,15 @@
-  * SUBTEST: engine-activity-render-node-load-idle
-  * Description: Test to validate engine activity on render node by running workload and trailing idle
-  *
-+ * SUBTEST: engine-activity-accuracy-2
-+ * Description: Test to validate accuracy of engine activity for 2% by running workload
-+ *
-+ * SUBTEST: engine-activity-accuracy-50
-+ * Description: Test to validate accuracy of engine activity for 50% by running workload
-+ *
-+ * SUBTEST: engine-activity-accuracy-90
-+ * Description: Test to validate accuracy of engine activity for 90% by running workload
-+ *
-  * SUBTEST: all-fn-engine-activity-load
-  * Description: Test to validate engine activity by running load on all functions simultaneously
-  *
-@@ -482,6 +491,140 @@ static void engine_activity_load_all(int fd, int num_engines, unsigned int flags
- 	check_all_engines(num_engines, flag, before, after);
- }
- 
-+#define assert_within(x, ref, tol) \
-+	igt_assert_f((double)(x) <= ((double)(ref) + (tol)) && \
-+		     (double)(x) >= ((double)(ref) - (tol)), \
-+		     "%f not within +%f/-%f of %f! ('%s' vs '%s')\n", \
-+		     (double)(x), (double)(tol), (double)(tol), \
-+		     (double)(ref), #x, #ref)
-+
-+static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
-+		     unsigned long target_percentage, unsigned long target_iter)
-+{
-+	unsigned long active_us, cycle_us, calibration_us, idle_us, test_us;
-+	const unsigned long min_test_us = 1e6;
-+	uint64_t config, before[2], after[2];
-+	int link[2], pmu_fd[2];
-+	double engine_activity, expected;
-+
-+	cycle_us = min_test_us / target_iter;
-+	active_us = cycle_us * target_percentage / 100;
-+	idle_us = cycle_us - active_us;
-+	test_us = cycle_us * target_iter;
-+	calibration_us = test_us / 2;
-+
-+	while (idle_us < 2500 || active_us < 2500) {
-+		active_us *= 2;
-+		idle_us *= 2;
-+	}
-+
-+	igt_info("calibration=%lums, test=%lums, cycle=%lums; ratio=%.2f%% (%luus/%luus)\n",
-+		 calibration_us / 1000, test_us / 1000, cycle_us / 1000,
-+		 ((double)active_us / cycle_us) * 100.0, active_us, idle_us);
-+
-+	igt_assert(pipe(link) == 0);
-+
-+	igt_fork(child, 1) {
-+		const unsigned int timeout[] = { calibration_us * 1000, test_us * 1000 };
-+		uint64_t total_active_ns = 0, total_ns = 0;
-+		igt_spin_t *spin;
-+		uint64_t vm, ahnd;
-+
-+		vm = xe_vm_create(fd, 0, 0);
-+		intel_allocator_init();
-+		ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+
-+		for (int pass = 0; pass < ARRAY_SIZE(timeout); pass++) {
-+			unsigned int target_idle_us = idle_us;
-+			struct timespec start = { };
-+			uint64_t pass_active_ns = 0;
-+			unsigned long pass_ns = 0;
-+			double avg = 0.0, var = 0.0;
-+			int n = 0;
-+
-+			igt_nsec_elapsed(&start);
-+
-+			while (pass_ns < timeout[pass]) {
-+				unsigned long loop_ns, loop_active_ns, loop_idle_ns, now;
-+				double err, prev_avg, cur_val;
-+
-+				/* idle sleep */
-+				igt_measured_usleep(target_idle_us);
-+
-+				/* start spinner */
-+				spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = eci);
-+				loop_idle_ns = igt_nsec_elapsed(&start);
-+				igt_measured_usleep(active_us);
-+				igt_spin_free(fd, spin);
-+
-+				now = igt_nsec_elapsed(&start);
-+				loop_active_ns = now - loop_idle_ns;
-+				loop_ns = now - pass_ns;
-+				pass_ns = now;
-+
-+				pass_active_ns += loop_active_ns;
-+				total_active_ns += loop_active_ns;
-+				total_ns += loop_ns;
-+
-+				/* Re-calibrate according to err */
-+				err = (double)total_active_ns / total_ns -
-+				      (double)target_percentage / 100.0;
-+
-+				target_idle_us = (double)target_idle_us * (1.0 + err);
-+
-+				/* Running average and variance for debug. */
-+				cur_val = 100.0 * total_active_ns / total_ns;
-+				prev_avg = avg;
-+				avg += (cur_val - avg) / ++n;
-+				var += (cur_val - avg) * (cur_val - prev_avg);
-+			}
-+
-+			expected = (double)pass_active_ns / pass_ns;
-+
-+			igt_info("%u: %d cycles, busy %" PRIu64 " us, idle %" PRIu64 " us -> %.2f%% "
-+				 "(target: %lu%%; average = %.2f ± %.3f%%)\n",
-+				 pass, n, pass_active_ns / 1000, (pass_ns - pass_active_ns) / 1000,
-+				 100 * expected, target_percentage, avg, sqrt(var / n));
-+
-+			igt_assert_eq(write(link[1], &expected, sizeof(expected)),
-+				      sizeof(expected));
-+		}
-+
-+		xe_vm_destroy(fd, vm);
-+		put_ahnd(ahnd);
-+	}
-+
-+	config = get_event_config(eci->gt_id, eci, "engine-active-ticks");
-+	pmu_fd[0] = open_group(fd, config, -1);
-+
-+	config = get_event_config(eci->gt_id, eci, "engine-total-ticks");
-+	pmu_fd[1] = open_group(fd, config, pmu_fd[0]);
-+
-+	/* wait for calibration cycle to complete */
-+	igt_assert_eq(read(link[0], &expected, sizeof(expected)),
-+		      sizeof(expected));
-+
-+	pmu_read_multi(pmu_fd[0], 2, before);
-+	igt_assert_eq(read(link[0], &expected, sizeof(expected)),
-+		      sizeof(expected));
-+	pmu_read_multi(pmu_fd[0], 2, after);
-+
-+	close(pmu_fd[0]);
-+	close(pmu_fd[1]);
-+
-+	close(link[1]);
-+	close(link[0]);
-+
-+	igt_waitchildren();
-+
-+	engine_activity = (double)(after[0] - before[0]) / (after[1] - before[1]);
-+
-+	igt_info("error=%.2f%% (%.2f%% vs %.2f%%)\n",
-+		 (engine_activity - expected) * 100, 100 * engine_activity, 100 * expected);
-+
-+	assert_within(100.0 * engine_activity, 100.0 * expected, 3);
-+}
-+
- static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *eci, int num_fns)
- {
- 	uint64_t config, engine_active_ticks, engine_total_ticks;
-@@ -986,6 +1129,20 @@ igt_main
- 		engine_activity_load_all(fd, num_engines, TEST_LOAD);
- 	}
- 
-+	igt_subtest_group {
-+		const unsigned int percent[] = { 2, 50, 90 };
-+
-+		for (unsigned int i = 0; i < ARRAY_SIZE(percent); i++) {
-+			char test_name[NAME_MAX];
-+
-+			igt_describe_f("Validate accuracy of engine activity for %u%%"
-+				       " workload", percent[i]);
-+			snprintf(test_name, NAME_MAX, "engine-activity-accuracy-%u", percent[i]);
-+			test_each_engine(test_name, fd, eci)
-+				accuracy(fd, eci, percent[i], 10);
-+		}
-+	}
-+
- 	igt_describe("Validate engine activity when PMU is opened after load");
- 	test_each_engine("engine-activity-after-load-start", fd, eci)
- 		engine_activity_load_start(fd, eci);
--- 
-2.34.1
+[PATCH i-g-t] intel-ci: Update BMG and LNL core blocklists
 
+No need for resend, it could be done at merge.
+
+> 
+> Update expected skips as per the current kernel behaviour for LNL & BMG
+> 
+> Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
+
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> ---
+>  tests/intel-ci/xe.bmg.core.blocklist.txt | 15 +++++++++++++++
+>  tests/intel-ci/xe.lnl.core.blocklist.txt | 14 ++++++++++++++
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/tests/intel-ci/xe.bmg.core.blocklist.txt b/tests/intel-ci/xe.bmg.core.blocklist.txt
+> index 6207d6af6..25da760aa 100644
+> --- a/tests/intel-ci/xe.bmg.core.blocklist.txt
+> +++ b/tests/intel-ci/xe.bmg.core.blocklist.txt
+> @@ -56,6 +56,8 @@ igt@xe_eudebug_online@.*
+>  igt@xe_exec_sip@.*
+>  igt@xe_exec_sip_eudebug@.*
+>  igt@xe_live_ktest@xe_eudebug
+> +igt@xe_eudebug_sriov@deny-sriov
+> +igt@xe_eudebug_sriov@deny-eudebug
+>  ##################################################################
+>  # Expected Skip as per the current behaviour
+>  ##################################################################
+> @@ -72,3 +74,16 @@ igt@xe_evict@evict-(beng-)?mixed-threads-large$
+>  igt@xe_evict@evict-(beng-)?threads-large$
+>  igt@xe_evict@evict-(beng-)?large-multi-vm-cm$
+>  ##################################################################
+> +# pxp support not available for BMG
+> +##################################################################
+> +igt@xe_pxp@(?!pxp-bo-alloc$|pxp-queue-alloc$).*
+> +##################################################################
+> +# I2c tests needs AMC capable BMG in CI
+> +##################################################################
+> +igt@xe_pm@d3hot-i2c
+> +##################################################################
+> +# Hugepages tests needs extra setting in CI
+> +# echo 128 >  /proc/sys/vm/nr_hugepages
+> +##################################################################
+> +igt@xe_exec_system_allocator@.*huge.*
+> +##################################################################
+> diff --git a/tests/intel-ci/xe.lnl.core.blocklist.txt b/tests/intel-ci/xe.lnl.core.blocklist.txt
+> index 1e69170d8..a3cd52935 100644
+> --- a/tests/intel-ci/xe.lnl.core.blocklist.txt
+> +++ b/tests/intel-ci/xe.lnl.core.blocklist.txt
+> @@ -22,6 +22,8 @@ igt@xe_noexec_ping_pong
+>  igt@xe_pm@d3-mmap-vram
+>  igt@xe_pm@d3hot-mmap-vram
+>  igt@xe_sysfs_tile@physical_vram_size_bytes
+> +igt@xe_vm@out-of-memory
+> +igt@xe_compute_preempt@compute-preempt-many-vram.*
+>  ##################################################################
+>  # No d3cold support for LNL
+>  ##################################################################
+> @@ -82,4 +84,16 @@ igt@xe_live_ktest@xe_eudebug
+>  ##################################################################
+>  igt@xe_oa@oa-tlb-invalidate
+>  igt@xe_oa@unprivileged-single-ctx-counters
+> +igt@xe_pmu@.*fn.*
+> +igt@xe_mmap@pci-membarrier.*
+> +igt@xe_module_load@force-load
+> +##################################################################
+> +# I2c tests needs AMC capable machines in CI
+> +#################################################################
+> +igt@xe_pm@d3hot-i2c
+> +##################################################################
+> +# Hugepages tests needs extra setting in CI
+> +# echo 128 >  /proc/sys/vm/nr_hugepages
+> +##################################################################
+> +igt@xe_exec_system_allocator@.*huge.*
+>  ##################################################################
+> -- 
+> 2.40.0
+> 
