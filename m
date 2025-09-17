@@ -4,56 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDEAACAC5A0
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 17:19:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08DFACAC59A
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 18:32:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 820A710E061;
-	Wed, 17 Sep 2025 17:19:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F9D110E57A;
+	Wed, 17 Sep 2025 18:32:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gU+jr1aY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RFlSOhkk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DEBC10E061
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 17:19:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2EEB10E579;
+ Wed, 17 Sep 2025 18:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758129588; x=1789665588;
+ t=1758133952; x=1789669952;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oAXadDgDMI8JEDClG4lScRJMpgJL8S+y9zXVEXrGj0A=;
- b=gU+jr1aYOh90N+DFRfXGYT8PkVvIx9qtm4tWo80tGxrbGY41Qqz2SZ1N
- J8QSbW6Y5io2nGuBk4AcbQpYxbFY4ZLYfAAUIfyFP1bhdyDcRR/cM8xp+
- QlX00sNsVQ6fttxpAOkIsEJC0PJaqiz5/diDfv6UVlloDpgt6D2pJEjhe
- DoH2S9ugYK3kjn/5yF0p+myRcl3dqLh7u7mxjLZkTvRAFEJEzYyL+HtVn
- 4badvyn9epoxudYw6kFTAsz6MbvntNUmmPWzk+ZnH7CzfNb94iMwSX3zc
- 21/P8TxodcRXG9Koc0RvH0q/cDjqKHV33Q8/BV/D4mlZVRAzOvexzRw1j Q==;
-X-CSE-ConnectionGUID: DXTk4kxqTpSPzKnrbtdhDA==
-X-CSE-MsgGUID: DMcscYwlQ4utXJ9QxLrm+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="59487707"
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="59487707"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 10:19:48 -0700
-X-CSE-ConnectionGUID: 6ExFzpYRRfSP0VYpfs7WGA==
-X-CSE-MsgGUID: a9RZ4gQHT9CcE4NfUXcURw==
+ bh=hKhsV0DTKfHcZHhQSlACQ2V9nltecXOvtlLqKQxGrmM=;
+ b=RFlSOhkk41xvTn3pbvHO6GTnatn6Sn6FD+uPuJtfpVWnbxJAhVS7kSO3
+ 28l/DlX5onUxNTxg0TVmdU4GtiuRWp2tjBKwmZG010v0dG0Sc6rYE0GTU
+ 6lBOho/QEiG1YutcomPM9rBAHN+u3z0+4vnwhgT9XGIJEKvEMAAxP4Q1P
+ OSw4FvwUwuEfwbaq1eAQu2pOKZDePWgVw77a5U980Km5Jt105JsKjEhUN
+ WwEaFkv6wOh1HUMvfewDlRRSk2W8YzHZoB2vlZvnxvZ2Pf3T+uAwycKAR
+ JamlY4VP6AhN6KUz3Gcd5y64rSIFWkN8gofmp5mdckHZdTHTYhu5ABbxQ Q==;
+X-CSE-ConnectionGUID: xqQdZjhPQVG3A2n/IEkKZA==
+X-CSE-MsgGUID: B+fvLnU2SO6wcAeY0a7Dgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="85892171"
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="85892171"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 11:32:31 -0700
+X-CSE-ConnectionGUID: G+OrrZGWTPCYzmSLn778rw==
+X-CSE-MsgGUID: do31WYqyRRaskv43POty6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="175745565"
-Received: from dut2051bmgfrd.iind.intel.com ([10.190.232.68])
- by fmviesa009.fm.intel.com with ESMTP; 17 Sep 2025 10:19:45 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, pravalika.gurram@intel.com,
- nishit.sharma@intel.com
-Cc: ashutosh.dixit@intel.com, himal.prasad.ghimiray@intel.com,
- kamil.konieczny@intel.com
-Subject: [PATCH v8 1/1] tests/intel/xe_exec_system_allocator: Add
- pat-index-madvise
-Date: Wed, 17 Sep 2025 17:19:41 +0000
-Message-ID: <20250917171941.3025392-2-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250917171941.3025392-1-nishit.sharma@intel.com>
-References: <20250917171941.3025392-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="175393701"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.244.65])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 11:32:29 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: dri-devel@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/syncobj_timeline: Exercise signaling of
+ awaited points
+Date: Wed, 17 Sep 2025 20:32:26 +0200
+Message-ID: <3568023.QJadu78ljV@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <b1897f06-bac3-4677-aa38-c959dedb6c39@amd.com>
+References: <20250916095707.918819-2-janusz.krzysztofik@linux.intel.com>
+ <b1897f06-bac3-4677-aa38-c959dedb6c39@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,492 +74,489 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Pravalika Gurram <pravalika.gurram@intel.com>
+Hi Christian,
 
-Add pat-index-madvise test to verify setting different
-pat_index values for multiple VMAs. This test uses
-madvise to set various pat_index values and
-verifies that different PAT values can be assigned to multiple
-VMAs as expected. Add skip for igpu.
+On Tuesday, 16 September 2025 12:58:22 CEST Christian K=C3=B6nig wrote:
+>=20
+> On 16.09.25 11:55, Janusz Krzysztofik wrote:
+> > CI reports kernel soft lockups when running a wait_backward test case of
+> > igt@dmabuf@all-tests@dma_fence_chain selftest on less powerful machines.
+> > A kernel fix has been developed that has proven to resolve the issue, b=
+ut
+> > it hasn't been accepted upstream, with a recommendation for dropping th=
+at
+> > test case as a "nonsense".
+> >=20
+> > Before we decide to take that path, try to implement the problematic te=
+st
+> > case in user space as an IGT subtest.  Since no kernel uAPIs have been
+> > found that allow strict reimplementation of exact algorithm of the
+> > problematic test case, where every link of a dma-fence chain is signaled
+> > one by one from a loop running in kernel space, provide two approximate
+> > variants, one that signals each fence with an individual system call, a=
+nd
+> > one that signals them all in one shot with one system call.
+>=20
+> Those tests are unrealistic outside of the syncobj framework.
+>=20
+> E.g. a test which exercises signaling each fence individually would requi=
+re=20
+HW which would do that to happen in reality.
 
-v2:
-  - Remove macro which is not needed and alignment (Nishit)
-  - use existing struct by adding new member
-  - Remove num_ranges to NULL assignment
-v3:
-  - checkpatch.pl (Nishit)
-v4:
-  - skip test based on platform (Ashutosh)
+I've been trying to understand what you meant but I've failed.  If a user=20
+submits a number of DRM exec requests, each with an out fence, then HW will=
+=20
+signal each of those fences when its corresponding request completes, won't=
+=20
+it?
 
-Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
-Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Himal Prasad <himal.prasad.ghimiray@intel.com>
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- lib/xe/xe_ioctl.c                      |  29 ++--
- lib/xe/xe_ioctl.h                      |   4 +-
- tests/intel/xe_exec_system_allocator.c | 186 +++++++++++++++++++++----
- 3 files changed, 178 insertions(+), 41 deletions(-)
+But anyway, some of those subtests, e.g. stress-enable-all-signal-all-forwa=
+rd=20
+or stress-enable-all-signal-all-backward, can trigger hard lockups.  Should=
+n't=20
+we care?
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index edd36db9d..39c4667a1 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -79,20 +79,23 @@ int xe_vm_vma_attrs(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr,
- }
- 
- /**
-- * xe_vm_print_mem_attr_values_in_range:
-+ * xe_vm_get_mem_attr_values_in_range:
-  * @fd: xe device fd
-  * @vm: vm_id of the virtual range
-  * @start: start of the virtual address range
-  * @range: size of the virtual address range
-+ * @num_ranges: number of vma ranges
-  *
-  * Calls QUERY_MEM_RANGES_ATTRS ioctl to get memory attributes for different
-- * memory ranges from KMD. prints memory attributes as returned by KMD for
-+ * memory ranges from KMD. return memory attributes as returned by KMD for
-  * atomic, prefrred loc and pat index types.
-  *
-- * Returns 0 for success or error for failure
-+ * Returns struct drm_xe_mem_range_attr for success or error for failure
-  */
- 
--int xe_vm_print_mem_attr_values_in_range(int fd, uint32_t vm, uint64_t start, uint64_t range)
-+struct drm_xe_mem_range_attr
-+*xe_vm_get_mem_attr_values_in_range(int fd, uint32_t vm, uint64_t start,
-+				    uint64_t range, uint32_t *num_ranges)
- {
- 	void *ptr_start, *ptr;
- 	int err;
-@@ -113,22 +116,26 @@ int xe_vm_print_mem_attr_values_in_range(int fd, uint32_t vm, uint64_t start, ui
- 		igt_warn("ioctl failed for xe_vm_number_vmas_in_range\n");
- 		igt_debug("vmas_in_range err = %d query.num_mem_ranges = %u query.sizeof_mem_range_attr=%lld\n",
- 			  err, query.num_mem_ranges, query.sizeof_mem_range_attr);
--		return err;
-+		return NULL;
- 	}
- 
- 	/* Allocate buffer for the memory region attributes */
- 	ptr = malloc(query.num_mem_ranges * query.sizeof_mem_range_attr);
- 	ptr_start = ptr;
- 
--	if (!ptr)
--		return -ENOMEM;
-+	if (!ptr) {
-+		igt_debug("memory allocation failed\n");
-+		return NULL;
-+	}
- 
- 	err = xe_vm_vma_attrs(fd, &query, ptr);
- 	if (err) {
- 		igt_warn("ioctl failed for vma_attrs err = %d\n", err);
--		return err;
-+		free(ptr_start);
-+		return NULL;
- 	}
- 
-+	ptr = ptr_start; // Reset pointer for iteration
- 	/* Iterate over the returned memory region attributes */
- 	for (unsigned int i = 0; i < query.num_mem_ranges; ++i) {
- 		struct drm_xe_mem_range_attr *mem_attrs = (struct drm_xe_mem_range_attr *)ptr;
-@@ -144,8 +151,10 @@ int xe_vm_print_mem_attr_values_in_range(int fd, uint32_t vm, uint64_t start, ui
- 		ptr += query.sizeof_mem_range_attr;
- 	}
- 
--	free(ptr_start);
--	return 0;
-+	if (num_ranges)
-+		*num_ranges = query.num_mem_ranges;
-+
-+	return (struct drm_xe_mem_range_attr *)ptr_start;
- }
- 
- uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext)
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index a1df810de..ae8a23a54 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -106,5 +106,7 @@ void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t
- int xe_vm_number_vmas_in_range(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr);
- int xe_vm_vma_attrs(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr,
- 		    struct drm_xe_mem_range_attr *mem_attr);
--int xe_vm_print_mem_attr_values_in_range(int fd, uint32_t vm, uint64_t start, uint64_t range);
-+struct drm_xe_mem_range_attr
-+*xe_vm_get_mem_attr_values_in_range(int fd, uint32_t vm, uint64_t start,
-+				    uint64_t range, uint32_t *num_ranges);
- #endif /* XE_IOCTL_H */
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 30012af4f..9ab8b43de 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -517,6 +517,46 @@ static void __aligned_partial_free(struct aligned_alloc_type  *aligned_alloc_typ
-  * SUBTEST: madvise-atomic-inc
-  * Description: Tests madvise atomic operations
-  * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-max-pat-index-multi-vma
-+ * Description: Tests madvise max pat index multi operations
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-max-pat-index-single-vma
-+ * Description: Test madvise with max pat index single operations
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-pat-idx-uc-comp-single-vma
-+ * Description: Tests madvise with uc-comp single operations
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-pat-idx-uc-comp-multi-vma
-+ * Description: Tests madvise with uc-comp multi operations
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-pat-idx-uc-multi-vma
-+ * Description: Tests madvise with uc multi operations
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-pat-idx-uc-single-vma
-+ * Description: Tests madvise with uc single operations
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-pat-idx-wb-multi-vma
-+ * Description: Tests madvise with wb multi operations
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-pat-idx-wb-single-vma
-+ * Description: Tests madvise with wb single operations
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-pat-idx-wt-multi-vma
-+ * Description: Tests madvise with wt multi operations
-+ * Test category: functionality test
-+ *
-+ * SUBTEST: pat-index-madvise-pat-idx-wt-single-vma
-+ * Description: Tests madvise with wt single operations
-+ * Test category: functionality test
-  */
- 
- static void
-@@ -863,6 +903,7 @@ partial(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
- #define PREFETCH_SAME_ATTR		(0x1ull << 39)
- #define PREFERRED_LOC_ATOMIC_UND	(0x1ull << 40)
- #define MADVISE_ATOMIC_DEVICE		(0x1ull << 41)
-+#define MADVISE_PAT_INDEX		(0x1ull << 42)
- 
- #define N_MULTI_FAULT		4
- 
-@@ -1130,7 +1171,7 @@ xe_vm_parse_execute_madvise(int fd, uint32_t vm, struct test_exec_data *data,
- 			    size_t bo_size,
- 			    struct drm_xe_engine_class_instance *eci,
- 			    uint64_t addr, unsigned long long flags,
--			    struct drm_xe_sync *sync)
-+			    struct drm_xe_sync *sync, uint8_t (*pat_value)(int))
- {
- 	uint32_t bo_flags, bo = 0;
- 
-@@ -1204,32 +1245,74 @@ xe_vm_parse_execute_madvise(int fd, uint32_t vm, struct test_exec_data *data,
- 		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size / 2,
- 					  DRM_XE_ATOMIC_GLOBAL);
- 	}
-+
-+	if (flags & MADVISE_PAT_INDEX) {
-+		uint32_t num_ranges;
-+		struct drm_xe_mem_range_attr *mem_attrs;
-+
-+		if (bo_size)
-+			bo_size = ALIGN(bo_size, SZ_4K);
-+
-+		if (flags & MADVISE_MULTI_VMA) {
-+			xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data) + bo_size,
-+					       bo_size / 2, pat_value(fd));
-+			xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data), bo_size,
-+					       pat_value(fd));
-+			xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data) + bo_size / 2,
-+					       bo_size / 4, pat_value(fd));
-+		} else {
-+			xe_vm_madvixe_pat_attr(fd, vm, to_user_pointer(data), bo_size,
-+					       pat_value(fd));
-+		}
-+
-+		mem_attrs = xe_vm_get_mem_attr_values_in_range(fd, vm, addr, bo_size, &num_ranges);
-+		if (!mem_attrs) {
-+			igt_debug("Failed to get memory attributes\n");
-+			return;
-+		}
-+
-+		for (uint32_t i = 0; i < num_ranges; i++)
-+			igt_assert_eq_u32(mem_attrs[i].pat_index.val, pat_value(fd));
-+
-+		free(mem_attrs);
-+	}
- }
- 
- static void
- madvise_prefetch_op(int fd, uint32_t vm, uint64_t addr, size_t bo_size,
- 		    unsigned long long flags, struct test_exec_data *data)
- {
--	uint32_t val;
-+	struct drm_xe_mem_range_attr *mem_attrs;
-+	uint32_t num_ranges;
- 
- 	if (flags & PREFETCH_SPLIT_VMA) {
- 		bo_size = ALIGN(bo_size, SZ_4K);
- 
- 		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0, 0);
- 
--		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
--
--		igt_debug("num_vmas before madvise = %d\n", val);
-+		mem_attrs = xe_vm_get_mem_attr_values_in_range(fd, vm, addr, bo_size, &num_ranges);
-+		if (!mem_attrs) {
-+			igt_info("Failed to get memory attributes\n");
-+			return;
-+		}
- 
- 		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size / 2);
- 
--		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+		mem_attrs = xe_vm_get_mem_attr_values_in_range(fd, vm, addr, bo_size, &num_ranges);
-+		if (!mem_attrs) {
-+			igt_info("Failed to get memory attributes\n");
-+			return;
-+		}
- 
--		igt_debug("num_vmas after madvise= %d\n", val);
- 	} else if (flags & PREFETCH_SAME_ATTR) {
- 		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
- 					  DRM_XE_ATOMIC_GLOBAL);
--		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+
-+		mem_attrs = xe_vm_get_mem_attr_values_in_range(fd, vm, addr, bo_size, &num_ranges);
-+		if (!mem_attrs) {
-+			igt_info("Failed to get memory attributes\n");
-+			return;
-+		}
- 
- 		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0,
- 				     DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
-@@ -1240,16 +1323,19 @@ madvise_prefetch_op(int fd, uint32_t vm, uint64_t addr, size_t bo_size,
- 		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
- 					  DRM_XE_ATOMIC_GLOBAL);
- 
--		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+		mem_attrs = xe_vm_get_mem_attr_values_in_range(fd, vm, addr, bo_size, &num_ranges);
-+		if (!mem_attrs) {
-+			igt_info("Failed to get memory attributes\n");
-+			return;
- 
- 		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0,
- 				     DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
- 
- 		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
- 					  DRM_XE_ATOMIC_DEVICE);
--
--		val = xe_vm_print_mem_attr_values_in_range(fd, vm, addr,  bo_size);
-+		}
- 	}
-+	free(mem_attrs);
- }
- 
- static void
-@@ -1275,7 +1361,7 @@ static void
- test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	  int n_exec_queues, int n_execs, size_t bo_size,
- 	  size_t stride, uint32_t vm, void *alloc, pthread_barrier_t *barrier,
--	  unsigned long long flags)
-+	  unsigned long long flags, uint8_t (*pat_value)(int))
- {
- 	uint64_t addr;
- 	struct drm_xe_sync sync[1] = {
-@@ -1407,7 +1493,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	addr = to_user_pointer(data);
- 
- 	if (flags & MADVISE_OP)
--		xe_vm_parse_execute_madvise(fd, vm, data, bo_size, eci, addr, flags, sync);
-+		xe_vm_parse_execute_madvise(fd, vm, data, bo_size, eci, addr, flags, sync,
-+					    pat_value);
- 
- 	if (flags & BO_UNMAP) {
- 		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
-@@ -1528,7 +1615,8 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			next_data = aligned_alloc_type.ptr;
- 			igt_assert(next_data);
- 
--			xe_vm_parse_execute_madvise(fd, vm, data, bo_size, eci, addr, flags, sync);
-+			xe_vm_parse_execute_madvise(fd, vm, data, bo_size, eci, addr, flags, sync,
-+						    pat_value);
- 			__aligned_partial_free(&aligned_alloc_type);
- 
- 			b = 0;
-@@ -1895,7 +1983,7 @@ static void *thread(void *data)
- 
- 	test_exec(t->fd, t->eci, t->n_exec_queues, t->n_execs,
- 		  t->bo_size, t->stride, t->vm, t->alloc, t->barrier,
--		  t->flags | THREADS);
-+		  t->flags | THREADS, NULL);
- 
- 	return NULL;
- }
-@@ -2013,7 +2101,7 @@ static void process(struct drm_xe_engine_class_instance *hwe, int n_exec_queues,
- 
- 	fd = drm_open_driver(DRIVER_XE);
- 	test_exec(fd, hwe, n_exec_queues, n_execs,
--		  bo_size, stride, 0, NULL, NULL, flags | PROCESSES);
-+		  bo_size, stride, 0, NULL, NULL, flags | PROCESSES, NULL);
- 	drm_close_driver(fd);
- 
- 	close(map_fd);
-@@ -2108,6 +2196,7 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size)
- struct section {
- 	const char *name;
- 	unsigned long long flags;
-+	uint8_t (*fn)(int pat);
- };
- 
- igt_main
-@@ -2240,6 +2329,31 @@ igt_main
- 		  MADVISE_OP | PREFETCH | PREFETCH_SAME_ATTR | ATOMIC_BATCH },
- 		{ NULL },
- 	};
-+
-+	const struct section intel_get_pat_idx_functions[] = {
-+		{ "madvise-pat-idx-wb-single-vma", MADVISE_OP | MADVISE_PAT_INDEX,
-+		  intel_get_pat_idx_wb },
-+		{ "madvise-pat-idx-wb-multi-vma", MADVISE_OP | MADVISE_PAT_INDEX |
-+		  MADVISE_MULTI_VMA, intel_get_pat_idx_wb },
-+		{ "madvise-pat-idx-wt-single-vma", MADVISE_OP | MADVISE_PAT_INDEX,
-+		  intel_get_pat_idx_wt },
-+		{ "madvise-pat-idx-wt-multi-vma", MADVISE_OP | MADVISE_PAT_INDEX |
-+		   MADVISE_MULTI_VMA, intel_get_pat_idx_wt },
-+		{ "madvise-pat-idx-uc-single-vma", MADVISE_OP | MADVISE_PAT_INDEX,
-+		  intel_get_pat_idx_uc },
-+		{ "madvise-pat-idx-uc-multi-vma", MADVISE_OP | MADVISE_PAT_INDEX |
-+		   MADVISE_MULTI_VMA, intel_get_pat_idx_uc },
-+		{ "madvise-pat-idx-uc-comp-single-vma", MADVISE_OP | MADVISE_PAT_INDEX,
-+		  intel_get_pat_idx_uc_comp },
-+		{ "madvise-pat-idx-uc-comp-multi-vma", MADVISE_OP | MADVISE_PAT_INDEX |
-+		  MADVISE_MULTI_VMA, intel_get_pat_idx_uc_comp },
-+		{ "madvise-max-pat-index-single-vma", MADVISE_OP | MADVISE_PAT_INDEX,
-+		  intel_get_max_pat_index },
-+		{ "madvise-max-pat-index-multi-vma", MADVISE_OP | MADVISE_PAT_INDEX |
-+		  MADVISE_MULTI_VMA, intel_get_max_pat_index },
-+		{ NULL },
-+	};
-+
- 	int fd;
- 
- 	igt_fixture {
-@@ -2257,52 +2371,52 @@ igt_main
- 		igt_subtest_f("once-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 1, 0, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("once-large-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 1, SZ_2M, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("twice-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 2, 0, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("twice-large-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 2, SZ_2M, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("many-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 128, 0, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("many-stride-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 128, 0, 256, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("many-execqueues-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 16, 128, 0, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("many-large-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 128, SZ_2M, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("many-64k-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 128, SZ_64K, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("many-large-execqueues-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 16, 128, SZ_2M, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
- 
- 		igt_subtest_f("threads-many-%s", s->name)
- 			threads(fd, 1, 128, 0, 0, s->flags, false);
-@@ -2353,13 +2467,13 @@ igt_main
- 	igt_subtest_f("prefetch-benchmark")
- 		xe_for_each_engine(fd, hwe)
- 			test_exec(fd, hwe, 1, 128, SZ_64M, 0, 0, NULL,
--				  NULL, PREFETCH | PREFETCH_BENCHMARK);
-+				  NULL, PREFETCH | PREFETCH_BENCHMARK, NULL);
- 
- 	igt_subtest_f("prefetch-sys-benchmark")
- 		xe_for_each_engine(fd, hwe)
- 			test_exec(fd, hwe, 1, 128, SZ_64M, 0, 0, NULL,
- 				  NULL, PREFETCH | PREFETCH_BENCHMARK |
--				  PREFETCH_SYS_BENCHMARK);
-+				  PREFETCH_SYS_BENCHMARK, NULL);
- 
- 	igt_subtest("threads-shared-vm-shared-alloc-many-stride-malloc")
- 		threads(fd, 1, 128, 0, 256, SHARED_ALLOC, true);
-@@ -2379,7 +2493,7 @@ igt_main
- 	igt_subtest_f("fault")
- 		xe_for_each_engine(fd, hwe)
- 			test_exec(fd, hwe, 4, 1, SZ_2M, 0, 0, NULL, NULL,
--				  FAULT);
-+				  FAULT, NULL);
- 
- 	for (const struct section *s = psections; s->name; s++) {
- 		igt_subtest_f("partial-%s", s->name)
-@@ -2440,7 +2554,19 @@ igt_main
- 		igt_subtest_f("madvise-%s", s->name) {
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 1, SZ_64K, 0, 0, NULL,
--					  NULL, s->flags);
-+					  NULL, s->flags, NULL);
-+		}
-+	}
-+
-+	for (const struct section *s = intel_get_pat_idx_functions; s->name; s++) {
-+		igt_subtest_f("pat-index-%s", s->name) {
-+			if ((strstr(s->name, "madvise-pat-idx-wt-") ||
-+			     strstr(s->name, "madvise-pat-idx-uc-comp-")) &&
-+			     !xe_has_vram(fd)) {
-+				igt_skip("Skipping compression-related PAT index\n");
-+			}
-+			xe_for_each_engine(fd, hwe)
-+				test_exec(fd, hwe, 1, 1, SZ_4M, 0, 0, NULL, NULL, s->flags, s->fn);
- 		}
- 	}
- 
--- 
-2.43.0
+Thanks,
+Janusz
+
+>=20
+> Regards,
+> Christian.
+>=20
+> >=20
+> > For more comprehensive testing, also implement the _forward and _random
+> > scenarios from the original selftest, as well as simplified variants th=
+at
+> > don't enable signaling on each link of the dma-fence chain, and yet oth=
+ers
+> > that not only enable but also wait on every link of the chain.
+> >=20
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > ---
+> >  tests/syncobj_timeline.c | 289 +++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 289 insertions(+)
+> >=20
+> > diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+> > index a77896ec1d..80c5970687 100644
+> > --- a/tests/syncobj_timeline.c
+> > +++ b/tests/syncobj_timeline.c
+> > @@ -427,6 +427,61 @@
+> >   *
+> >   * SUBTEST: wait-zero-handles
+> >   * Description: Verifies that waiting on an empty list of syncobj hand=
+les=20
+is accepted
+> > + *
+> > + * SUBTEST: stress-wait-last-signal-forward
+> > + * Description: Signals each fence of a large timeline while another=20
+thread is waiting on that timeline
+> > + *
+> > + * SUBTEST: stress-wait-last-signal-backward
+> > + * Description: Signals each fence of a large timeline in reverse orde=
+r=20
+while another thread is waiting on that timeline
+> > + *
+> > + * SUBTEST: stress-wait-last-signal-random
+> > + * Description: Signals each fence of a large timeline in random order=
+=20
+while another thread is waiting on that timeline
+> > + *
+> > + * SUBTEST: stress-wait-last-signal-all-forward
+> > + * Description: Signals all fences of a large timeline while another=20
+thread is waiting on that timeline
+> > + *
+> > + * SUBTEST: stress-wait-last-signal-all-backward
+> > + * Description: Signals all fences of a large reverse ordered timeline=
+=20
+while another thread is waiting on that timeline
+> > + *
+> > + * SUBTEST: stress-wait-last-signal-all-random
+> > + * Description: Signals all fences of a large randomly ordered timelin=
+e=20
+while another thread is waiting on that timeline
+> > + *
+> > + * SUBTEST: stress-enable-all-signal-forward
+> > + * Description: Signals each fence of a large timeline with signaling=
+=20
+enabled on each point while another thread is waiting on that timeline
+> > + *
+> > + * SUBTEST: stress-enable-all-signal-backward
+> > + * Description: Signals each fence of a large timeline in reversed ord=
+er=20
+with signaling enabled on each point while another thread is waiting on tha=
+t=20
+timeline
+> > + *
+> > + * SUBTEST: stress-enable-all-signal-random
+> > + * Description: Signals each fence of a large timeline in random order=
+=20
+with signaling enabled on each point while another thread is waiting on tha=
+t=20
+timeline
+> > + *
+> > + * SUBTEST: stress-enable-all-signal-all-forward
+> > + * Description: Signals all fences of a large timeline with signaling=
+=20
+enabled on each point while another thread is waiting on that timeline
+> > + *
+> > + * SUBTEST: stress-enable-all-signal-all-backward
+> > + * Description: Signals all fences of a large reversed ordered timelin=
+e=20
+with signaling enabled on each point while another thread is waiting on tha=
+t=20
+timeline
+> > + *
+> > + * SUBTEST: stress-enable-all-signal-all-random
+> > + * Description: Signals all fences of a large randomly ordered timelin=
+e=20
+with signaling enabled on each point while another thread is waiting on tha=
+t=20
+timeline
+> > + *
+> > + * SUBTEST: stress-wait-all-signal-forward
+> > + * Description: Signals each fence of a large timeline while another=20
+thread is waiting on each point of that timeline
+> > + *
+> > + * SUBTEST: stress-wait-all-signal-backward
+> > + * Description: Signals each fence of a large timeline in reversed ord=
+er=20
+while another thread is waiting on each point of that timeline
+> > + *
+> > + * SUBTEST: stress-wait-all-signal-random
+> > + * Description: Signals each fence of a large timeline in random order=
+=20
+while another thread is waiting on each point of that timeline
+> > + *
+> > + * SUBTEST: stress-wait-all-signal-all-forward
+> > + * Description: Signals all fences of a large timeline while another=20
+thread is waiting on each point of that timeline
+> > + *
+> > + * SUBTEST: stress-wait-all-signal-all-backward
+> > + * Description: Signals all fences of a large reversed ordered timelin=
+e=20
+while another thread is waiting on each point of that timeline
+> > + *
+> > + * SUBTEST: stress-wait-all-signal-all-random
+> > + * Description: Signals all fences of a large randomly ordered timelin=
+e=20
+while another thread is waiting on each point of that timeline
+> > + *
+> >   */
+> > =20
+> >  IGT_TEST_DESCRIPTION("Tests for the drm timeline sync object API");
+> > @@ -1675,6 +1730,217 @@ test_32bits_limit(int fd)
+> >  	close(timeline);
+> >  }
+> > =20
+> > +#define STRESS_FLAGS_WAIT_ALL	=09
+DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL
+> > +#define STRESS_FLAGS_ENABLE_ALL		(STRESS_FLAGS_WAIT_ALL <<=20
+1)
+> > +#define STRESS_FLAGS_SIGNAL_ALL		(STRESS_FLAGS_ENABLE_ALL <<=20
+1)
+> > +#define STRESS_FLAGS_SIGNAL_BACKWARD	(STRESS_FLAGS_SIGNAL_ALL <<=20
+1)
+> > +#define STRESS_FLAGS_SIGNAL_RANDOM	(STRESS_FLAGS_SIGNAL_BACKWARD << 1)
+> > +
+> > +const char *stress_descriptions[] =3D {
+> > +	/* stress-wait-last-signal-forward */
+> > +	[0] =3D
+> > +		"Signals each fence of a large timeline while another=20
+thread is waiting on that timeline",
+> > +	/* stress-wait-last-signal-backward */
+> > +	[STRESS_FLAGS_SIGNAL_BACKWARD] =3D
+> > +		"Signals each fence of a large timeline in reverse order=20
+while another thread is waiting on that timeline",
+> > +	/* stress-wait-last-signal-random */
+> > +	[STRESS_FLAGS_SIGNAL_RANDOM] =3D
+> > +		"Signals each fence of a large timeline in random order=20
+while another thread is waiting on that timeline",
+> > +	/* stress-wait-last-signal-all-forward */
+> > +	[STRESS_FLAGS_SIGNAL_ALL] =3D
+> > +		"Signals all fences of a large timeline while another=20
+thread is waiting on that timeline",
+> > +	/* stress-wait-last-signal-all-backward */
+> > +	[STRESS_FLAGS_SIGNAL_ALL | STRESS_FLAGS_SIGNAL_BACKWARD] =3D
+> > +		"Signals all fences of a large reverse ordered timeline=20
+while another thread is waiting on that timeline",
+> > +	/* stress-wait-last-signal-all-random */
+> > +	[STRESS_FLAGS_SIGNAL_ALL | STRESS_FLAGS_SIGNAL_RANDOM] =3D
+> > +		"Signals all fences of a large randomly ordered timeline=20
+while another thread is waiting on that timeline",
+> > +	/* stress-enable-all-signal-forward */
+> > +	[STRESS_FLAGS_ENABLE_ALL] =3D
+> > +		"Signals each fence of a large timeline with signaling=20
+enabled on each point while another thread is waiting on that timeline",
+> > +	/* stress-enable-all-signal-backward */
+> > +	[STRESS_FLAGS_ENABLE_ALL | STRESS_FLAGS_SIGNAL_BACKWARD] =3D
+> > +		"Signals each fence of a large timeline in reversed order=20
+with signaling enabled on each point while another thread is waiting on tha=
+t=20
+timeline",
+> > +	/* stress-enable-all-signal-random */
+> > +	[STRESS_FLAGS_ENABLE_ALL | STRESS_FLAGS_SIGNAL_RANDOM] =3D
+> > +		"Signals each fence of a large timeline in random order=20
+with signaling enabled on each point while another thread is waiting on tha=
+t=20
+timeline",
+> > +	/* stress-enable-all-signal-all-forward */
+> > +	[STRESS_FLAGS_ENABLE_ALL | STRESS_FLAGS_SIGNAL_ALL] =3D
+> > +		"Signals all fences of a large timeline with signaling=20
+enabled on each point while another thread is waiting on that timeline",
+> > +	/* stress-enable-all-signal-all-backward */
+> > +	[STRESS_FLAGS_ENABLE_ALL | STRESS_FLAGS_SIGNAL_ALL |=20
+STRESS_FLAGS_SIGNAL_BACKWARD] =3D
+> > +		"Signals all fences of a large reversed ordered timeline=20
+with signaling enabled on each point while another thread is waiting on tha=
+t=20
+timeline",
+> > +	/* stress-enable-all-signal-all-random */
+> > +	[STRESS_FLAGS_ENABLE_ALL | STRESS_FLAGS_SIGNAL_ALL |=20
+STRESS_FLAGS_SIGNAL_RANDOM] =3D
+> > +		"Signals all fences of a large randomly ordered timeline=20
+with signaling enabled on each point while another thread is waiting on tha=
+t=20
+timeline",
+> > +	/* stress-wait-all-signal-forward */
+> > +	[STRESS_FLAGS_WAIT_ALL] =3D
+> > +		"Signals each fence of a large timeline while another=20
+thread is waiting on each point of that timeline",
+> > +	/* stress-wait-all-signal-backward */
+> > +	[STRESS_FLAGS_WAIT_ALL | STRESS_FLAGS_SIGNAL_BACKWARD] =3D
+> > +		"Signals each fence of a large timeline in reversed order=20
+while another thread is waiting on each point of that timeline",
+> > +	/* stress-wait-all-signal-random */
+> > +	[STRESS_FLAGS_WAIT_ALL | STRESS_FLAGS_SIGNAL_RANDOM] =3D
+> > +		"Signals each fence of a large timeline in random order=20
+while another thread is waiting on each point of that timeline",
+> > +	/* stress-wait-all-signal-all-forward */
+> > +	[STRESS_FLAGS_WAIT_ALL | STRESS_FLAGS_SIGNAL_ALL] =3D
+> > +		"Signals all fences of a large timeline while another=20
+thread is waiting on each point of that timeline",
+> > +	/* stress-wait-all-signal-all-backward */
+> > +	[STRESS_FLAGS_WAIT_ALL | STRESS_FLAGS_SIGNAL_ALL |=20
+STRESS_FLAGS_SIGNAL_BACKWARD] =3D
+> > +		"Signals all fences of a large reversed ordered timeline=20
+while another thread is waiting on each point of that timeline",
+> > +	/* stress-wait-all-signal-all-random */
+> > +	[STRESS_FLAGS_WAIT_ALL | STRESS_FLAGS_SIGNAL_ALL |=20
+STRESS_FLAGS_SIGNAL_RANDOM] =3D
+> > +		"Signals all fences of a large randomly ordered timeline=20
+while another thread is waiting on each point of that timeline",
+> > +};
+> > +
+> > +#define TL_LENGTH 4096
+> > +
+> > +struct stress_timeline {
+> > +	int fd;
+> > +	int swsync;
+> > +	uint32_t syncobj;
+> > +	int tmp_fence;
+> > +	uint32_t *syncobjs;
+> > +	uint64_t *points;
+> > +	unsigned int length;
+> > +	unsigned int flags;
+> > +	pthread_t thread;
+> > +	int retval;
+> > +};
+> > +
+> > +static void stress_init(int fd, struct stress_timeline **timeline,=20
+unsigned int flags)
+> > +{
+> > +	struct stress_timeline *tl;
+> > +	uint64_t point;
+> > +	int i;
+> > +
+> > +	tl =3D calloc(TL_LENGTH, sizeof(*tl));
+> > +	igt_assert(tl);
+> > +	*timeline =3D tl;
+> > +
+> > +	tl->fd =3D fd;
+> > +	tl->tmp_fence =3D -1;
+> > +	tl->length =3D TL_LENGTH;
+> > +	tl->flags =3D flags;
+> > +
+> > +	tl->swsync =3D sw_sync_timeline_create();
+> > +	tl->syncobj =3D syncobj_create(fd, 0);
+> > +
+> > +	tl->syncobjs =3D calloc(tl->length, sizeof(*tl->syncobjs));
+> > +	igt_assert(tl->syncobjs);
+> > +
+> > +	tl->points =3D calloc(tl->length, sizeof(*tl->points));
+> > +	igt_assert(tl->points);
+> > +
+> > +	for (i =3D 0; i < tl->length; i++)
+> > +		tl->points[i] =3D (flags & STRESS_FLAGS_SIGNAL_BACKWARD) ?=20
+tl->length - 1 : i + 1;
+> > +	if (flags & STRESS_FLAGS_SIGNAL_RANDOM)
+> > +		igt_permute_array(tl->points, tl->length,=20
+igt_exchange_int64);
+> > +
+> > +	for (i =3D 0; i < tl->length; i++) {
+> > +		tl->tmp_fence =3D sw_sync_timeline_create_fence(tl->swsync,=20
+tl->points[i]);
+> > +		tl->syncobjs[i] =3D syncobj_create(fd, 0);
+> > +
+> > +		syncobj_import_sync_file(fd, tl->syncobjs[i], tl-
+>tmp_fence);
+> > +		close(tl->tmp_fence);
+> > +		tl->tmp_fence =3D -1;
+> > +
+> > +		syncobj_binary_to_timeline(fd, tl->syncobj, i + 1, tl-
+>syncobjs[i]);
+> > +		syncobj_destroy(fd, tl->syncobjs[i]);
+> > +
+> > +		tl->syncobjs[i] =3D tl->syncobj;
+> > +		tl->points[i] =3D i + 1;
+> > +	}
+> > +
+> > +	if (flags & STRESS_FLAGS_ENABLE_ALL)
+> > +		igt_assert_eq(syncobj_timeline_wait_err(tl->fd, tl-
+>syncobjs,
+> > +							tl-
+>points, tl->length, 0,
+> > +						=09
+DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL), -ETIME);
+> > +
+> > +	syncobj_timeline_query(fd, &tl->syncobj, &point, 1);
+> > +	igt_assert_eq(point, 0);
+> > +}
+> > +
+> > +static void *stress_wait_syncobj_thread_func(void *data)
+> > +{
+> > +	struct stress_timeline *tl =3D data;
+> > +	unsigned int count =3D (tl->flags & STRESS_FLAGS_WAIT_ALL) ? tl-
+>length : 1;
+> > +	uint64_t *points =3D &tl->points[tl->length - count];
+> > +
+> > +	tl->retval =3D -EINPROGRESS;
+> > +
+> > +	/* Wait for the timeline signaled */
+> > +	tl->retval =3D syncobj_timeline_wait_err(tl->fd, tl->syncobjs, points=
+,=20
+count,
+> > +					       gettime_ns() + 600 *=20
+NSECS_PER_SEC,
+> > +					       tl->flags &=20
+DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL);
+> > +
+> > +	return &tl->retval;
+> > +}
+> > +
+> > +static void test_stress_enable_wait_signal(int fd, struct stress_timel=
+ine=20
+**timeline,
+> > +					   unsigned int flags)
+> > +{
+> > +	struct stress_timeline *tl;
+> > +	int64_t dt;
+> > +	int i;
+> > +
+> > +	stress_init(fd, timeline, flags);
+> > +	tl =3D *timeline;
+> > +
+> > +	tl->retval =3D 0;
+> > +	igt_assert_eq(pthread_create(&tl->thread, NULL,
+> > +				     stress_wait_syncobj_thread_func,=20
+tl), 0);
+> > +	igt_assert_eq(sched_yield(), 0);
+> > +	while (READ_ONCE(tl->retval) !=3D -EINPROGRESS)
+> > +		;
+> > +	igt_assert_eq(sched_yield(), 0);
+> > +
+> > +	dt =3D -gettime_ns();
+> > +	if (flags & STRESS_FLAGS_SIGNAL_ALL)
+> > +		sw_sync_timeline_inc(tl->swsync, tl->length);
+> > +	else
+> > +		for (i =3D 0; i < tl->length; i++)
+> > +			sw_sync_timeline_inc(tl->swsync, 1);
+> > +	dt +=3D gettime_ns();
+> > +	igt_info("%s: %d signals in %ld ns\n", __func__, tl->length, dt);
+> > +
+> > +	igt_assert_eq(pthread_join(tl->thread, NULL), 0);
+> > +	tl->thread =3D 0;
+> > +	igt_assert_eq(tl->retval, 0);
+> > +}
+> > +
+> > +static void stress_cleanup(struct stress_timeline *timeline)
+> > +{
+> > +	if (!timeline)
+> > +		return;
+> > +
+> > +	if (timeline->thread)
+> > +		igt_warn_on(pthread_join(timeline->thread, NULL));
+> > +
+> > +	if (timeline->points)
+> > +		free(timeline->points);
+> > +
+> > +	if (timeline->syncobjs) {
+> > +		int i;
+> > +
+> > +		for (i =3D 0; i < timeline->length; i++)
+> > +			if (timeline->syncobjs && timeline->syncobjs[i]=20
+!=3D timeline->syncobj)
+> > +				syncobj_destroy(timeline->fd,=20
+timeline->syncobjs[i]);
+> > +		free(timeline->syncobjs);
+> > +	}
+> > +
+> > +	if (timeline->tmp_fence >=3D 0)
+> > +		igt_warn_on(close(timeline->tmp_fence));
+> > +
+> > +	if (timeline->syncobj)
+> > +		syncobj_destroy(timeline->fd, timeline->syncobj);
+> > +
+> > +	if (timeline->swsync >=3D 0)
+> > +		igt_warn_on(close(timeline->swsync));
+> > +
+> > +	free(timeline);
+> > +}
+> > +
+> >  static bool
+> >  has_syncobj_timeline_wait(int fd)
+> >  {
+> > @@ -1934,6 +2200,29 @@ igt_main
+> >  	igt_subtest("32bits-limit")
+> >  		test_32bits_limit(fd);
+> > =20
+> > +	for (unsigned int flags =3D 0;
+> > +	     flags < (STRESS_FLAGS_WAIT_ALL | STRESS_FLAGS_SIGNAL_ALL |
+> > +		      STRESS_FLAGS_ENABLE_ALL |=20
+STRESS_FLAGS_SIGNAL_RANDOM);
+> > +	     flags++) {
+> > +		struct stress_timeline *timeline =3D NULL;
+> > +
+> > +		if (flags & STRESS_FLAGS_ENABLE_ALL && flags &=20
+STRESS_FLAGS_WAIT_ALL)
+> > +			continue;
+> > +
+> > +		igt_describe(stress_descriptions[flags]);
+> > +		igt_subtest_f("stress-%s-%s-signal%s-%s",
+> > +			      (flags & STRESS_FLAGS_ENABLE_ALL) ?=20
+"enable" : "wait",
+> > +			      (flags & (STRESS_FLAGS_WAIT_ALL |=20
+STRESS_FLAGS_ENABLE_ALL)) ? "all" :
+> > +							=09
+			    "last",
+> > +			      (flags & STRESS_FLAGS_SIGNAL_ALL) ? "-all"=20
+: "",
+> > +			      (flags & STRESS_FLAGS_SIGNAL_RANDOM) ?=20
+"random" :
+> > +			      (flags & STRESS_FLAGS_SIGNAL_BACKWARD) ?=20
+"backward" : "forward")
+> > +			test_stress_enable_wait_signal(fd, &timeline,=20
+flags);
+> > +
+> > +		igt_fixture
+> > +			stress_cleanup(READ_ONCE(timeline));
+> > +	}
+> > +
+> >  	igt_fixture {
+> >  		drm_close_driver(fd);
+> >  	}
+>=20
+>=20
+
+
+
 
