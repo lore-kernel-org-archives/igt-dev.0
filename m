@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDA5CAC59A
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 13:11:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42B7DCAC59A
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Sep 2025 13:15:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6ED7410E835;
-	Wed, 17 Sep 2025 13:11:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB77010E826;
+	Wed, 17 Sep 2025 13:15:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Kuy5NloL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DR5AMH2j";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28E4F10E832
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 13:11:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B1EC10E826
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Sep 2025 13:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758114711; x=1789650711;
+ t=1758114939; x=1789650939;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=UxwVZic43hc5HpkoMfmnZ1fNdRBj/SkYvQDqfavyGsA=;
- b=Kuy5NloL8jri8jZYN5AEGKPSjezqUpNhL4bIVVke6IZAeaHk7YQXP+QI
- VLGKjzZroqAdA0CwOK6r7h5cWYeBXtapG0llf8OdEcDh5eX4wDqTSBYNw
- YSmKnOO1NcKhoGpq4pFysaaixeLceuSRyC6lIobQ5zA9h1ZLvYx8WWPh0
- 9EUMKah2kGJEOX1cVQLuDsVG0HiZABacy14oTnZCrAiHO+zT6iIefqzfz
- XiQ5IX14B548T1QIEzRHgNsUTaab3RS7eTfPY2yIAaprGARWrI9ywfaHO
- CJF5MvcNnBz+eWdubcjM/RVm6RElu48dcmSsO9Zv+m4ZiTfhB5XxOQ+1Y w==;
-X-CSE-ConnectionGUID: rEh/ZQB2QDG1XFQ+rQZnDA==
-X-CSE-MsgGUID: kkgrlxxjSya1FN3JKRIAVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="60348579"
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="60348579"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 06:11:51 -0700
-X-CSE-ConnectionGUID: 38ZuPj13R1ivPgJ4QZz6pw==
-X-CSE-MsgGUID: MHbruJiFQqic5qUBbXc4qw==
+ bh=qD8lvAGnUgIlg3iwTjOyTpEyqazd/34Ch7dZ01VFeSI=;
+ b=DR5AMH2jC92yz2IElpeA35RaVXbeKZXR0ucUwWnei9t2z4LIKl+4BfVr
+ VGsaUVZb2wi8+IsZLl7ELSg0CydfAieouI32VEuT/B0n3ENM4L0f9Ac19
+ wXm1JEHslJK0QX3Fb0ZUz1SshYeBPEayXFQIPhN3/ED/9YHioe9H7OIbR
+ BfNKKkkUWXK43gB29QyVqdyGHxulTNGRco7KSzYWhFT66MNc3IxCd6a7V
+ 8g+2ZRqcEBMxB61IcLKnm3aWKCeS7EXP4wY1T5q+HczjT0X3UNpvFBeQt
+ dFkjojctzmeWxB1vdQYug0uhWmeR8HbLf26BJYl8PcAmqW7j7UzACYGvH A==;
+X-CSE-ConnectionGUID: D89n2pmlRfG5R2pWpClfbA==
+X-CSE-MsgGUID: NGZI8QFfRF6BzaGvnjJJ9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="85861112"
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="85861112"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 06:15:39 -0700
+X-CSE-ConnectionGUID: OXTABmwtTzGLiyPBA/lpiQ==
+X-CSE-MsgGUID: v5WrvMZ7ROqVDj3dUc1oFA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="175656092"
+X-IronPort-AV: E=Sophos;i="6.18,272,1751266800"; d="scan'208";a="175673010"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2025 06:11:49 -0700
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2025 06:15:37 -0700
 From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- sk.anirban@intel.com
-Cc: soham.purkait@intel.com, riana.tauro@intel.com, lucas.demarchi@intel.com
-Subject: [PATCH i-g-t v3] tests/intel/xe_pm: Test to validate vram-sr through
- Mods during host s2idle
-Date: Wed, 17 Sep 2025 18:33:23 +0530
-Message-Id: <20250917130323.3560097-1-soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	anshuman.gupta@intel.com
+Cc: soham.purkait@intel.com, riana.tauro@intel.com, lucas.demarchi@intel.com,
+ umesh.nerlige.ramappa@intel.com
+Subject: [PATCH i-g-t v3] tests/intel/xe_pmu: Add tests to validate engine
+ activity accuracy
+Date: Wed, 17 Sep 2025 18:37:12 +0530
+Message-Id: <20250917130712.3560197-1-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,191 +69,199 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test to validate vram-sr through Mods during host s2idle. It checks
-whether vram self refresh capability is supported through debugfs node and
-then introduce host s2idle to check ModS residency to confirm vram self
-refresh capability upon success.
+Add test to validate the engine activity is reported with expected
+accuracy. Load the engine for 2%, 50% and 90%.
 
-v1:
- - Define macros at the top. (Anirban)
-v2:
- - gtidle no longer exists. (Anirban)
- - Skip test if the system is not VRSR-capable. (Anirban)
- - Release bo to avoid resource leaking. (Anirban)
-
+Co-developed-by: Riana Tauro <riana.tauro@intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_pm.c | 105 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 105 insertions(+)
+ tests/intel/xe_pmu.c | 157 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 157 insertions(+)
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 1db28a899..9b51ca7e2 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -10,10 +10,12 @@
-  * Sub-category: Suspend-resume tests
-  * Test category: functionality test
-  */
-+#include <ctype.h>
- 
- #include <dirent.h>
- #include <limits.h>
- #include <fcntl.h>
-+#include <stddef.h>
- #include <string.h>
- #include <sys/ioctl.h>
- 
-@@ -48,6 +50,9 @@
- #define I2C_AMC_ADDR	0x40
- #define I2C_AMC_REG	0x00
- 
-+#define XE_BO_SIZE (350 * 1024 * 1024)
-+#define MODS_PREFIX "ModS"
-+
- enum mem_op {
- 	READ,
- 	WRITE,
-@@ -55,6 +60,7 @@ enum mem_op {
- 
- typedef struct {
- 	int fd_xe;
-+	int debugfs_dir;
- 	struct pci_device *pci_xe;
- 	struct pci_device *pci_root;
- 	char pci_slot_name[NAME_MAX];
-@@ -423,6 +429,46 @@ child_exec(void *arguments)
- 	return NULL;
+diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+index a98fba5a4..d1050ee11 100644
+--- a/tests/intel/xe_pmu.c
++++ b/tests/intel/xe_pmu.c
+@@ -72,6 +72,15 @@
+  * SUBTEST: engine-activity-render-node-load-idle
+  * Description: Test to validate engine activity on render node by running workload and trailing idle
+  *
++ * SUBTEST: engine-activity-accuracy-2
++ * Description: Test to validate accuracy of engine activity for 2% by running workload
++ *
++ * SUBTEST: engine-activity-accuracy-50
++ * Description: Test to validate accuracy of engine activity for 50% by running workload
++ *
++ * SUBTEST: engine-activity-accuracy-90
++ * Description: Test to validate accuracy of engine activity for 90% by running workload
++ *
+  * SUBTEST: all-fn-engine-activity-load
+  * Description: Test to validate engine activity by running load on all functions simultaneously
+  *
+@@ -482,6 +491,140 @@ static void engine_activity_load_all(int fd, int num_engines, unsigned int flags
+ 	check_all_engines(num_engines, flag, before, after);
  }
  
-+static char *read_content_line(const char *content, const char *prefix)
++#define assert_within(x, ref, tol) \
++	igt_assert_f((double)(x) <= ((double)(ref) + (tol)) && \
++		     (double)(x) >= ((double)(ref) - (tol)), \
++		     "%f not within +%f/-%f of %f! ('%s' vs '%s')\n", \
++		     (double)(x), (double)(tol), (double)(tol), \
++		     (double)(ref), #x, #ref)
++
++static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
++		     unsigned long target_percentage, unsigned long target_iter)
 +{
-+	const char *line_start = content;
-+	char line[1024];
-+	char *result;
-+	size_t len;
++	unsigned long active_us, cycle_us, calibration_us, idle_us, test_us;
++	const unsigned long min_test_us = 1e6;
++	uint64_t config, before[2], after[2];
++	int link[2], pmu_fd[2];
++	double engine_activity, expected;
 +
-+	while (*line_start) {
-+		const char *line_end = strchr(line_start, '\n');
-+		size_t line_len = line_end ? (size_t)(line_end - line_start) : strlen(line_start);
++	cycle_us = min_test_us / target_iter;
++	active_us = cycle_us * target_percentage / 100;
++	idle_us = cycle_us - active_us;
++	test_us = cycle_us * target_iter;
++	calibration_us = test_us / 2;
 +
-+		if (line_len >= sizeof(line))
-+			line_len = sizeof(line) - 1;
++	while (idle_us < 2500 || active_us < 2500) {
++		active_us *= 2;
++		idle_us *= 2;
++	}
 +
-+		memcpy(line, line_start, line_len);
-+		line[line_len] = '\0';
++	igt_info("calibration=%lums, test=%lums, cycle=%lums; ratio=%.2f%% (%luus/%luus)\n",
++		 calibration_us / 1000, test_us / 1000, cycle_us / 1000,
++		 ((double)active_us / cycle_us) * 100.0, active_us, idle_us);
 +
-+		if (strstr(line, prefix)) {
-+			char *colon = strchr(line, ':');
++	igt_assert(pipe(link) == 0);
 +
-+			if (colon) {
-+				colon++;
-+				while (isspace((unsigned char)*colon))
-+					colon++;
++	igt_fork(child, 1) {
++		const unsigned int timeout[] = { calibration_us * 1000, test_us * 1000 };
++		uint64_t total_active_ns = 0, total_ns = 0;
++		igt_spin_t *spin;
++		uint64_t vm, ahnd;
 +
-+				result = strdup(colon);
-+				len = strlen(result);
-+				if (len > 0 && result[len - 1] == '\n')
-+					result[len - 1] = '\0';
++		vm = xe_vm_create(fd, 0, 0);
++		intel_allocator_init();
++		ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
 +
-+				return result;
++		for (int pass = 0; pass < ARRAY_SIZE(timeout); pass++) {
++			unsigned int target_idle_us = idle_us;
++			struct timespec start = { };
++			uint64_t pass_active_ns = 0;
++			unsigned long pass_ns = 0;
++			double avg = 0.0, var = 0.0;
++			int n = 0;
++
++			igt_nsec_elapsed(&start);
++
++			while (pass_ns < timeout[pass]) {
++				unsigned long loop_ns, loop_active_ns, loop_idle_ns, now;
++				double err, prev_avg, cur_val;
++
++				/* idle sleep */
++				igt_measured_usleep(target_idle_us);
++
++				/* start spinner */
++				spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = eci);
++				loop_idle_ns = igt_nsec_elapsed(&start);
++				igt_measured_usleep(active_us);
++				igt_spin_free(fd, spin);
++
++				now = igt_nsec_elapsed(&start);
++				loop_active_ns = now - loop_idle_ns;
++				loop_ns = now - pass_ns;
++				pass_ns = now;
++
++				pass_active_ns += loop_active_ns;
++				total_active_ns += loop_active_ns;
++				total_ns += loop_ns;
++
++				/* Re-calibrate according to err */
++				err = (double)total_active_ns / total_ns -
++				      (double)target_percentage / 100.0;
++
++				target_idle_us = (double)target_idle_us * (1.0 + err);
++
++				/* Running average and variance for debug. */
++				cur_val = 100.0 * total_active_ns / total_ns;
++				prev_avg = avg;
++				avg += (cur_val - avg) / ++n;
++				var += (cur_val - avg) * (cur_val - prev_avg);
 +			}
++
++			expected = (double)pass_active_ns / pass_ns;
++
++			igt_info("%u: %d cycles, busy %" PRIu64 " us, idle %" PRIu64 " us -> %.2f%% "
++				 "(target: %lu%%; average = %.2f ± %.3f%%)\n",
++				 pass, n, pass_active_ns / 1000, (pass_ns - pass_active_ns) / 1000,
++				 100 * expected, target_percentage, avg, sqrt(var / n));
++
++			igt_assert_eq(write(link[1], &expected, sizeof(expected)),
++				      sizeof(expected));
 +		}
-+		line_start = line_end ? line_end + 1 : NULL;
-+		if (!line_start)
-+			break;
++
++		xe_vm_destroy(fd, vm);
++		put_ahnd(ahnd);
 +	}
-+	return NULL;
++
++	config = get_event_config(eci->gt_id, eci, "engine-active-ticks");
++	pmu_fd[0] = open_group(fd, config, -1);
++
++	config = get_event_config(eci->gt_id, eci, "engine-total-ticks");
++	pmu_fd[1] = open_group(fd, config, pmu_fd[0]);
++
++	/* wait for calibration cycle to complete */
++	igt_assert_eq(read(link[0], &expected, sizeof(expected)),
++		      sizeof(expected));
++
++	pmu_read_multi(pmu_fd[0], 2, before);
++	igt_assert_eq(read(link[0], &expected, sizeof(expected)),
++		      sizeof(expected));
++	pmu_read_multi(pmu_fd[0], 2, after);
++
++	close(pmu_fd[0]);
++	close(pmu_fd[1]);
++
++	close(link[1]);
++	close(link[0]);
++
++	igt_waitchildren();
++
++	engine_activity = (double)(after[0] - before[0]) / (after[1] - before[1]);
++
++	igt_info("error=%.2f%% (%.2f%% vs %.2f%%)\n",
++		 (engine_activity - expected) * 100, 100 * engine_activity, 100 * expected);
++
++	assert_within(100.0 * engine_activity, 100.0 * expected, 3);
 +}
 +
- /**
-  * SUBTEST: %s-basic
-  * Description: test CPU/GPU in and out of s/d state from %arg[1]
-@@ -871,6 +917,57 @@ static void i2c_test(device_t device, int sysfs_fd, enum igt_acpi_d_state d_stat
- 	close(i2c_fd);
- }
- 
-+/**
-+ * SUBTEST: vrsr-capability-during-host-s2idle
-+ * Functionality: pm - vram-sr
-+ * Description: Test to validate vram self refresh through
-+ * ModS residency counter during host s2idle
-+ */
-+static void test_vrsr_capability_during_host_s2idle(device_t device)
-+{
-+	u32 bo, placement;
-+	u64 s2idle_start_mods, s2idle_end_mods;
-+	int ret;
-+	char buf[4096] = {0};
-+	char *result;
-+	void *map;
-+
-+	ret = igt_debugfs_simple_read(device.debugfs_dir, "vrsr_capable", buf, sizeof(buf));
-+	igt_skip_on_f(ret < 0, "vrsr_capable node is not present in debugfs.\n");
-+	igt_skip_on_f(!strstr(buf, "true"), "VRSR capability is not supported.\n");
-+
-+	placement = vram_memory(device.fd_xe, 0);
-+	bo = xe_bo_create(device.fd_xe, 0, XE_BO_SIZE, placement, 0);
-+	map = xe_bo_map(device.fd_xe, bo, XE_BO_SIZE);
-+	memset(map, 0, XE_BO_SIZE);
-+
-+	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
-+				      buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
-+
-+	result = read_content_line(buf, MODS_PREFIX);
-+	igt_assert(result);
-+	s2idle_start_mods = (uint64_t)strtoull(result, NULL, 10);
-+	free(result);
-+
-+	igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
-+	munmap(map, XE_BO_SIZE);
-+	memset(buf, 0, sizeof(buf));
-+
-+	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
-+				      buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
-+
-+	result = read_content_line(buf, MODS_PREFIX);
-+	igt_assert(result);
-+	s2idle_end_mods = (uint64_t)strtoull(result, NULL, 10);
-+	free(result);
-+
-+	gem_close(device.fd_xe, bo);
-+
-+	igt_assert(s2idle_start_mods != s2idle_end_mods);
-+}
-+
- igt_main
+ static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *eci, int num_fns)
  {
- 	device_t device;
-@@ -908,6 +1005,8 @@ igt_main
- 	igt_fixture {
- 		memset(&device, 0, sizeof(device));
- 		device.fd_xe = drm_open_driver(DRIVER_XE);
-+		device.debugfs_dir = igt_debugfs_dir(device.fd_xe);
-+		igt_assert(device.debugfs_dir >= 0);
- 		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
- 		device.pci_root = igt_device_get_pci_root_port(device.fd_xe);
- 		igt_device_get_pci_slot_name(device.fd_xe, device.pci_slot_name);
-@@ -1052,12 +1151,18 @@ igt_main
- 		test_vram_d3cold_threshold(device, sysfs_fd);
+ 	uint64_t config, engine_active_ticks, engine_total_ticks;
+@@ -986,6 +1129,20 @@ igt_main
+ 		engine_activity_load_all(fd, num_engines, TEST_LOAD);
  	}
  
-+	igt_describe("Validate VRAM self refresh capability during host s2idle");
-+	igt_subtest("vrsr-capability-during-host-s2idle") {
-+		test_vrsr_capability_during_host_s2idle(device);
++	igt_subtest_group {
++		const unsigned int percent[] = { 2, 50, 90 };
++
++		for (unsigned int i = 0; i < ARRAY_SIZE(percent); i++) {
++			char test_name[NAME_MAX];
++
++			igt_describe_f("Validate accuracy of engine activity for %u%%"
++				       " workload", percent[i]);
++			snprintf(test_name, NAME_MAX, "engine-activity-accuracy-%u", percent[i]);
++			test_each_engine(test_name, fd, eci)
++				accuracy(fd, eci, percent[i], 10);
++		}
 +	}
 +
- 	igt_fixture {
- 		close(sysfs_fd);
- 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
- 		if (has_runtime_pm)
- 			igt_restore_runtime_pm();
- 		drmModeFreeResources(device.res);
-+		close(device.debugfs_dir);
- 		drm_close_driver(device.fd_xe);
- 	}
- }
+ 	igt_describe("Validate engine activity when PMU is opened after load");
+ 	test_each_engine("engine-activity-after-load-start", fd, eci)
+ 		engine_activity_load_start(fd, eci);
 -- 
 2.34.1
 
