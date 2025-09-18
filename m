@@ -4,71 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C031CAC5A0
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Sep 2025 13:41:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C0D4CAC59A
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Sep 2025 13:46:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4158110E8BB;
-	Thu, 18 Sep 2025 13:41:05 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MVuse7yy";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A265610E8BB
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Sep 2025 13:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758202864; x=1789738864;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=PKibFcmlOvG7hYVsyo3VaMLRDmtD0SAloSYEjV5eA74=;
- b=MVuse7yyY1eGHIO4CgHRP/etXBbIiR45Uur9B03hy5otZ0humP9RnxdU
- /0ACTU9weDyp53YSm+rKLTfRMIXwzJe/z0rVSHO/zL3wCJvMTaaEsOiR7
- Of1W3bp04wnThNrIZkwELi+CWynGe0aeAj0RNh6x3Cy8lHJCsy5Nd8IQE
- dd8hzQgrRhm2pvTB9qOFMCWxPfbyPPR7CVXYbVV0zbW1SYktAiP4V8vyY
- m1vCn/BqUO6Pa6bKqfaz7pkXkLFEesxIT4ALvVuAQ6nDV9r0GBOlzlVLu
- mpQdEsSZLkjqJungtRt+qMVSwen0/EWIP2JilID4xiQOJsc2FzO8osIZY w==;
-X-CSE-ConnectionGUID: t8Q/j/T8RTuZgP5pVmfaHw==
-X-CSE-MsgGUID: ZtgoRwhvTCGuEcBVgZjlPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="71958517"
-X-IronPort-AV: E=Sophos;i="6.18,275,1751266800"; d="scan'208";a="71958517"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2025 06:41:01 -0700
-X-CSE-ConnectionGUID: k8p/I3xxRRucMxyouPIRfg==
-X-CSE-MsgGUID: ozlsXH87ToqEccqyyTxwYQ==
-X-ExtLoop1: 1
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 06:40:58 -0700
-Date: Thu, 18 Sep 2025 15:40:41 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Ewelina Musial <ewelina.musial@intel.com>,
- Karol Krol <karol.krol@intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v6] runner/executor: Abort if dmesg is flooded
-Message-ID: <20250918134041.np42cnwjzt4n3bhj@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Ewelina Musial <ewelina.musial@intel.com>,
- Karol Krol <karol.krol@intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20250828103124.36280-1-kamil.konieczny@linux.intel.com>
- <955f10d6-fb39-4c50-b781-e2e6e0bc9dcb@linux.intel.com>
- <62e5b79c-7343-4f94-8c3a-dc4162c90888@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C2FD10E8BE;
+	Thu, 18 Sep 2025 13:46:24 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4296910E8B6;
+ Thu, 18 Sep 2025 13:46:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4520092352273207644=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <62e5b79c-7343-4f94-8c3a-dc4162c90888@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_Exercise_MM?=
+ =?utf-8?q?IO=5FREMAP_remap_page_=28alloc/map_+_HDP_flush=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Srinivasan Shanmugam" <srinivasan.shanmugam@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 18 Sep 2025 13:46:22 -0000
+Message-ID: <175820318225.344369.536152461632752451@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250918084655.2192395-1-srinivasan.shanmugam@amd.com>
+In-Reply-To: <20250918084655.2192395-1-srinivasan.shanmugam@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,66 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2025-09-02 at 15:31:20 +0200, Peter Senna Tschudin wrote:
-> After discussing with Kamil, I tested it again. I believe that there
-> were two issues with my previous testing:
-> 1. The first run of igt_runner takes a little longer than the second.
-> This gave me a larger window to start the dmesg flooder
-> 2. The BAT test list I am using has a bunch of skips which are not
-> affected by the disk limit.
-> 
-> I changed the test to start the dmesg flooder *before* starting
-> igt_runner. Then it always works as expected:
+--===============4520092352273207644==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you for testing, it shows that it is impossible to calculate
-correct value for dmesg-ratio, so I will send new version with a
-new option and with a description, so it will help to understand
-its scope and limitations.
+== Series Details ==
 
-Regards,
-Kamil
+Series: tests/amdgpu: Exercise MMIO_REMAP remap page (alloc/map + HDP flush)
+URL   : https://patchwork.freedesktop.org/series/154688/
+State : success
 
-> 
-> $ sudo dmesger.sh&
-> 
-> $ sudo IGT_PING_HOSTNAME='10.211.176.1'
-> IGT_TEST_ROOT='/home/gta/UPSTREAM/igt-gpu-tools/build/tests/'
-> ./build/runner/igt_runner -o -l verbose -s --per-test-timeout 120
-> --overall-timeout 960 --piglit-style-dmesg --dmesg-warn-level=4
-> --use-watchdog --inactivity-timeout 90
-> --abort-on-monitored-error=ping,taint --disk-usage-limit=128K --facts
-> --test-list ~/igt/test-list /home/gta/igt/A0
+== Summary ==
 
-[cut]
+CI Bug Log - changes from XEIGT_8543_BAT -> XEIGTPW_13776_BAT
+====================================================
 
-> 
-> However the issue of setting an artificially low disk limit size such as
-> 1K resulting in runner restarting instead of terminating seems like an
-> issue:
-> 
-> $ sudo IGT_PING_HOSTNAME='10.211.176.1'
-> IGT_TEST_ROOT='/home/gta/UPSTREAM/igt-gpu-tools/build/tests/'
-> ./build/runner/igt_runner -o -l verbose -s --per-test-timeout 120
-> --overall-timeout 960 --piglit-style-dmesg --dmesg-warn-level=4
-> --use-watchdog --inactivity-timeout 90
-> --abort-on-monitored-error=ping,taint --disk-usage-limit
-> =1K --facts --test-list ~/igt/test-list /home/gta/igt/D0
-> [53.595429] Initializing watchdogs
+Summary
+-------
 
-[cut]
+  **SUCCESS**
 
-> 
-> $ sudo IGT_PING_HOSTNAME='10.211.176.1'
-> IGT_TEST_ROOT='/home/gta/UPSTREAM/igt-gpu-tools/build/tests/'
-> ./build/runner/igt_runner -o -l verbose -s --per-test-timeout 120
-> --overall-timeout 960 --piglit-style-dmesg --dmesg-warn-level=4
-> --use-watchdog --inactivity-timeout 90
-> --abort-on-monitored-error=ping,taint --disk-usage-limit=1K --facts
-> --test-list ~/igt/test-list /home/gta/igt/D1
+  No regressions found.
 
-[cut]
+  
 
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13776_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8543/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13776/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8543 -> IGTPW_13776
+  * Linux: xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e -> xe-3790-31f149f6d10616688087056856c29390e28d7e44
+
+  IGTPW_13776: 13776
+  IGT_8543: 8543
+  xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e: d84b3514a845885db8cf928cc246c8efbd80a00e
+  xe-3790-31f149f6d10616688087056856c29390e28d7e44: 31f149f6d10616688087056856c29390e28d7e44
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13776/index.html
+
+--===============4520092352273207644==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: Exercise MMIO_REMAP remap page (alloc/map + HDP flush)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154688/">https://patchwork.freedesktop.org/series/154688/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13776/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13776/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8543_BAT -&gt; XEIGTPW_13776_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13776_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8543/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13776/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8543 -&gt; IGTPW_13776</li>
+<li>Linux: xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e -&gt; xe-3790-31f149f6d10616688087056856c29390e28d7e44</li>
+</ul>
+<p>IGTPW_13776: 13776<br />
+  IGT_8543: 8543<br />
+  xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e: d84b3514a845885db8cf928cc246c8efbd80a00e<br />
+  xe-3790-31f149f6d10616688087056856c29390e28d7e44: 31f149f6d10616688087056856c29390e28d7e44</p>
+
+</body>
+</html>
+
+--===============4520092352273207644==--
