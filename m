@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A492DCAC597
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Sep 2025 19:06:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE748CAC597
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Sep 2025 19:13:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55ADD10E8E9;
-	Thu, 18 Sep 2025 19:06:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hboQNS1b";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 620CE10E8E9
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Sep 2025 19:06:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758222396; x=1789758396;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=QJJIfb8gyPmrsmakY/lLh4EyHRdsonLN1kWo3RZ+DYI=;
- b=hboQNS1bG5/jK97QE0xDBMDSE/+un54FZkLDGPX+iFyCk7Z4cx4jzNCN
- vufBpvhIaN4wJB9Q+XM0FlG6347WORj3vdkhAyXfnUjKlOuAvOj/M2HfI
- YwzR5ZQZDSlApse93WS9EG2cyJcajsww+ldWrUvQJOlc2iGMRD2HC1TZz
- m1+W/XbskYjemfcKCibGiV5QgvPkUYQOD8oOHQCM0CDLSLEZf5gxN/VGb
- yZKX7EyatjfrWgd7bMzO2XIYLweAPMoeiHRHolJc6k29+RHxdhxh3xxsS
- AVOszCfhNo/csLyQNXkt9zWYciii1i4XwzHjE71oAG4StXAuD3xVB94YX Q==;
-X-CSE-ConnectionGUID: ILIycrsASWe0VIU3ZhVE9g==
-X-CSE-MsgGUID: KrLQkSIGQwuynhCBsD2pjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="63193919"
-X-IronPort-AV: E=Sophos;i="6.18,275,1751266800"; d="scan'208";a="63193919"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2025 12:06:36 -0700
-X-CSE-ConnectionGUID: bt2vYt3zQCmUMGIaIKGETA==
-X-CSE-MsgGUID: 1e/CoXdJRmqcz6QtEDrgVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,275,1751266800"; d="scan'208";a="206412755"
-Received: from unknown (HELO linux-Raptor-Lake-Client-Platform.iind.intel.com)
- ([10.227.90.114])
- by orviesa002.jf.intel.com with ESMTP; 18 Sep 2025 12:06:35 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/kms_pm_rpm: Add system suspend idle
- test case
-Date: Fri, 19 Sep 2025 00:36:32 +0530
-Message-ID: <20250918190632.37576-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250918190105.37420-1-mohammed.thasleem@intel.com>
-References: <20250918190105.37420-1-mohammed.thasleem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7738510E8E5;
+	Thu, 18 Sep 2025 19:13:37 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C79C10E0EC;
+ Thu, 18 Sep 2025 19:13:36 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5230367183834156840=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2Cv14=2C1/2=5D_tests/kms=5Fprime=3A_Add_XE_support?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 18 Sep 2025 19:13:36 -0000
+Message-ID: <175822281636.345795.1345592952726943788@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250918092651.306828-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250918092651.306828-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,47 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Added a new subtest that tests S0ix (suspend-to-idle/freeze state)
-functionality using SUSPEND_STATE_FREEZE.
+--===============5230367183834156840==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This expands power management test coverage to include modern low-power
-idle states for comprehensive suspend testing.
+== Series Details ==
 
-v2: Update subtest name with system-suspend-idle. (Kamil)
-    Update the subject title.
+Series: series starting with [i-g-t,v14,1/2] tests/kms_prime: Add XE support
+URL   : https://patchwork.freedesktop.org/series/154691/
+State : success
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel/kms_pm_rpm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+== Summary ==
 
-diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
-index 344ef8c94..1610404ff 100644
---- a/tests/intel/kms_pm_rpm.c
-+++ b/tests/intel/kms_pm_rpm.c
-@@ -128,6 +128,9 @@
-  *
-  * SUBTEST: universal-planes-dpms
-  * Description: Validate universal plane (set/unset/change) with dpms.
-+ *
-+ * SUBTEST: system-suspend-idle
-+ * Description: Validate suspend-to-idle (S0ix) functionality.
-  */
- 
- #define MSR_PC8_RES	0x630
-@@ -1685,6 +1688,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	igt_subtest("system-suspend-modeset")
- 		system_suspend_modeset_subtest(SUSPEND_STATE_MEM,
- 					       SUSPEND_TEST_NONE);
-+	igt_subtest("system-suspend-idle")
-+		system_suspend_modeset_subtest(SUSPEND_STATE_FREEZE,
-+					       SUSPEND_TEST_NONE);
- 
- 	/* power-wake reference tests */
- 	igt_subtest("pm-tiling") {
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_8543_BAT -> XEIGTPW_13778_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13778_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8543/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13778/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8543 -> IGTPW_13778
+  * Linux: xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e -> xe-3792-c1b827f32471e37d88d3016a2a93f88b363f0c8c
+
+  IGTPW_13778: 13778
+  IGT_8543: 8543
+  xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e: d84b3514a845885db8cf928cc246c8efbd80a00e
+  xe-3792-c1b827f32471e37d88d3016a2a93f88b363f0c8c: c1b827f32471e37d88d3016a2a93f88b363f0c8c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13778/index.html
+
+--===============5230367183834156840==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v14,1/2] tests/kms_prime: Add XE support</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154691/">https://patchwork.freedesktop.org/series/154691/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13778/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13778/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8543_BAT -&gt; XEIGTPW_13778_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13778_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8543/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13778/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8543 -&gt; IGTPW_13778</li>
+<li>Linux: xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e -&gt; xe-3792-c1b827f32471e37d88d3016a2a93f88b363f0c8c</li>
+</ul>
+<p>IGTPW_13778: 13778<br />
+  IGT_8543: 8543<br />
+  xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e: d84b3514a845885db8cf928cc246c8efbd80a00e<br />
+  xe-3792-c1b827f32471e37d88d3016a2a93f88b363f0c8c: c1b827f32471e37d88d3016a2a93f88b363f0c8c</p>
+
+</body>
+</html>
+
+--===============5230367183834156840==--
