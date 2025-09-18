@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EF44CAC59A
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Sep 2025 09:01:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E1D2CAC59A
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Sep 2025 09:01:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1026510E3AD;
-	Thu, 18 Sep 2025 09:01:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 52E8810E67A;
+	Thu, 18 Sep 2025 09:01:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OOEfphtC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cqEPYpJd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E58F10E320
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Sep 2025 09:01:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7177E10E67A
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Sep 2025 09:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758186074; x=1789722074;
+ t=1758186076; x=1789722076;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=u0oqlF70EC938JGKjPPzxCi6L6x4GB5VsrG8Ky1ezK8=;
- b=OOEfphtCqchCJhYS6jitgfX7sjIB/9wutDSojp2mGZpKRzzqrLYRkrZ6
- u9TbrcF86GtZZ6HINMk9p045bInJ00ClI18KGArXB/lAaDzkVEFx/wGWJ
- IFBL4hrrsISBamtFhN0HG9jeNLQ8NUKyF52QJR8daHRImBe53RiaqIwY3
- q+R2o+MYjsJa+fGe1w+Al5FUsWqQqld98bZHPGLTYDJP/GsX+mnKv3GgS
- ZIeZ/rU7FqQ4VBu9Im3cyUtF+PQvRd8vgApk6qlD8hgaLP9iepAtf3OF7
- G/vrsfOQTqFLuxEy5ZtkwsXPa/ftUOIfY2NZlooSYHVbInADs/aZ3VIdZ w==;
-X-CSE-ConnectionGUID: LE/8+K3TQEib+f7zmFRfwg==
-X-CSE-MsgGUID: KaW3s/R+SF+WD6MoS/WGXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64313253"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="64313253"
+ bh=ixIG9GiaRDMPhpf0OmmzlmbzBaSZ6gewdwso5jMaoao=;
+ b=cqEPYpJd7e2LJ6Dnpcfew/dLdD71QN7kIA7Mh4f4js6hBdopNugEA5Me
+ Qnn9Yp5xGzFTTq0eOO974AY2TsY/onWBRkqSkruIQgNG51FV+qmVdQBY8
+ pdYTwoCOjNs9VNJPnmI6FbVhQ7fEOFBM1apkYGVRjdKzFo9npsJnFgqPo
+ cCzDC8ft3Q8N1SbQBzIjpQOWiFCCiUme5NVl0RzQftb8zNgetmbRfwvYD
+ +27CBiRuSpOH3HJ0vHRcM7A5GGfVie45r/ggjnJIRexg1w83I8jCtQnO8
+ YZiaYxtlCmASyJ+dxJQsPT4JZ96tCmK5JVjWu653smx61ytL+fLEwmQ2l A==;
+X-CSE-ConnectionGUID: r7jocb3YRGCrtF71JBQIEQ==
+X-CSE-MsgGUID: WC6b7u6xTFu2VKiKIiji0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64313257"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="64313257"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2025 02:01:14 -0700
-X-CSE-ConnectionGUID: tXJx1YvjT0acDNGbrE/B2g==
-X-CSE-MsgGUID: GWEPqGxUQ7mrzMJFwApa4w==
+ 18 Sep 2025 02:01:16 -0700
+X-CSE-ConnectionGUID: NpVOCyPHRpKR+tLyRfisbw==
+X-CSE-MsgGUID: +zvONLJ/TI2Esljl63ZbTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="206281477"
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; d="scan'208";a="206281482"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 02:01:13 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 02:01:15 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevan.b@intel.com,
 	Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 2/3] tests/kms_vrr: extend lobf test for supported
- connectors
-Date: Thu, 18 Sep 2025 14:47:01 +0530
-Message-Id: <20250918091702.2339227-3-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 3/3] tests/kms_vrr: remove check for PR support in sink
+Date: Thu, 18 Sep 2025 14:47:02 +0530
+Message-Id: <20250918091702.2339227-4-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250918091702.2339227-1-kunal1.joshi@intel.com>
 References: <20250918091702.2339227-1-kunal1.joshi@intel.com>
@@ -69,39 +68,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend lobf test for all connectors that
-exposes i915_edp_lobf_status debugfs
+LOBF can be enabled on sinks that do not support PR
+as well.
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_vrr.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tests/kms_vrr.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 233143770..820a982d0 100644
+index 820a982d0..ce75c7123 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -948,7 +948,7 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
- {
- 	data->debugfs_fd = igt_debugfs_dir(data->drm_fd);
+@@ -966,11 +966,6 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
+ 				 igt_output_name(output));
+ 			return false;
+ 		}
+-		if (!psr_sink_support(data->drm_fd,
+-				      data->debugfs_fd, PR_MODE, NULL)) {
+-			igt_info("LOBF not supported\n");
+-			return false;
+-		}
  
--	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS | TEST_CMRR | TEST_LINK_OFF)) &&
-+	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS | TEST_CMRR)) &&
- 	    output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP) {
- 		igt_info("%s: Connected panel is not eDP.\n", igt_output_name(output));
- 		return false;
-@@ -961,6 +961,11 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
- 	}
- 
- 	if (flags & TEST_LINK_OFF) {
-+		if (igt_has_lobf_debugfs(data->drm_fd, output)) {
-+			igt_info("i915_edp_lobf_status not present for %s\n",
-+				 igt_output_name(output));
-+			return false;
-+		}
- 		if (!psr_sink_support(data->drm_fd,
- 				      data->debugfs_fd, PR_MODE, NULL)) {
- 			igt_info("LOBF not supported\n");
+ 		if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL) ||
+ 		    psr_sink_support(data->drm_fd, data->debugfs_fd, PR_MODE, NULL))
 -- 
 2.25.1
 
