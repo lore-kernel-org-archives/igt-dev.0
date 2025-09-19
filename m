@@ -4,184 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 761BFCAC592
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Sep 2025 07:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7532CAC592
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Sep 2025 08:19:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B44110E227;
-	Fri, 19 Sep 2025 07:19:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A4F010E22A;
+	Fri, 19 Sep 2025 08:19:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ROEf3cSv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W8E3N4A2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 276A310E227
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Sep 2025 07:19:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 02E0A10E22A
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Sep 2025 08:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758266390; x=1789802390;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=lbl2k5Ynx+TmU0qqWypCTiUrWakqCjAueJO9icsPBjo=;
- b=ROEf3cSv8lc+NwtM0gsB+NheiAlcnt9vxIcP4H2gWUMrkIDp8uube4s8
- To0plkxhlbuFxO2Qf7rMN0sn5fKkNX/whRnQXJ/YwS9U0LAhD6GLu0+Rq
- bIVU8clMtRCGpYJ0aqnP478a+6cVPcBG8PIv1HDTWNZt6zk9SExuXE0LK
- yJfy8VjFMwBQKRE/SyLgdJ2Zj/QqGwLfwtWZZasXFC1B8RE4dNBe8kHao
- h/IM4zLRBiFd4x7f7mwMOKvqLQEEvXPBmcMfR/8dw6DkkkaNrWrg+CL07
- xew5vnC+hgFDP/oierU4ZE12Qv3oiXH7CZmKX4WmEly50bLxoqb0tTWoC w==;
-X-CSE-ConnectionGUID: uVVDmcRzR4qyBUJcdiRdpA==
-X-CSE-MsgGUID: vPPh4Em5SgOWYGgBGJ69/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="83209273"
-X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; d="scan'208";a="83209273"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ t=1758269982; x=1789805982;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=Xkt23QwBPRDanCnMfqoUpYX36unMjrV8xJ+jP3KJowI=;
+ b=W8E3N4A2YvuqoUFdhDObJUUS3y75pAB6brBb/J4CRtSg2Cz7t60KdojY
+ bDNZT/7J6fIP+cCCx72cz7u+aWZHK5be3L5Xv6Qk2a45dgKKDdjV12Jn4
+ WsqGO4iF2bWgSLwQZ9G8L/5Sf43Yotw2UKs95wTJSDudvBKZzwCqbbAqA
+ J01NcsdffZEOLsyME/kg3fzA+SnR8N3v2LZfzHNCuNRMOXvzudbFA4VwZ
+ 9z46x6wo3VipxO5Nbp8eZSISP9bwmKrmA7/SVcZPe8egpiWHfxamLs9DU
+ KXLR1l8BsTwljOU6WyhvHF82DnDZKblG/dCLC06xKkPdk9WmAZhZAbYpM w==;
+X-CSE-ConnectionGUID: apkxXET6Q02bzXuJwsSr2w==
+X-CSE-MsgGUID: /Fj7mJIzRYuQWJyYUwoZFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="83213880"
+X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; d="scan'208";a="83213880"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Sep 2025 00:19:50 -0700
-X-CSE-ConnectionGUID: UoDZC6qbSmaM99XIsJk7rQ==
-X-CSE-MsgGUID: QySRxevrSwCm19JoiFHa5w==
+ 19 Sep 2025 01:19:42 -0700
+X-CSE-ConnectionGUID: JiFOSIorT/aUZOls87jnWg==
+X-CSE-MsgGUID: VdkU0g9pSj+S9FwTTV56Cw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; d="scan'208";a="206711703"
+X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; d="scan'208";a="180032052"
 Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Sep 2025 00:19:49 -0700
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Sep 2025 01:19:41 -0700
 Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 19 Sep 2025 00:19:48 -0700
+ 15.2.2562.17; Fri, 19 Sep 2025 01:19:41 -0700
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Fri, 19 Sep 2025 00:19:48 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.68)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Fri, 19 Sep 2025 01:19:41 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.58) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 19 Sep 2025 00:19:47 -0700
+ 15.2.2562.17; Fri, 19 Sep 2025 01:19:40 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JxMNeJd+hfPLQh4Zzd45UKGpGqvuUOWkGpZpnypTM8hENNmFA3BkeDfPx75+VbvzInsD7Dt5Uoo/3n7hFNE0KuKSgSRTBmstmHCmta+T4UB9NETYE2Y49g5+7k8hs7Tmtk3Uh1Ak8H9BcHJ/pPBvqVS70q/ifhQBkbxmfyOYoRdYtGWQYFqVO7HQRqvPPoVghmcpk4udGmP1/0Q++h8uyqAWKzNs+SBjSQLV/qxXbbKdH4aXRkL4DLgobRpFzr8Zoh/uWeMIQ7JynjYpM4Nezq6T0K8+OVeLmdHr5YAuHD64pEYvAnAVJte967W+EuEiZXHuYOGhBDY92W3ii+2Miw==
+ b=AS2On2TlWy9G2i7fuKxWQ8jMS0LB0tXiJXvHryOE33/2kkk0GwweMIaPCzBzNlvLxxm61ovcS1aShAOEMe9L0YxB1zsaTMu//g36xtD9D12jYlt7oj3B12G0qN0dzs0kN/Z/we8pw0VbWCbgHkhv0VrYv++b51e1FsMYeubW4RviAHoeNdTe5jAg+XkbSDF7ZMq/BXvz5XaG6mTvtA3ztN0hGzi5j4u5s1Nh03VzO74y9BM16+85bGa+gD6NgAe48mxVYtSBW2u5xL0THKCp8bT8/qdA5+EUyDrqRQeJhyd6s3Vn2oHccI0TkV5onrIP8nTKGnqTKTofASE2zmacXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mN+UcM032f5QE73fRep58lUJQGSjPoA/U4PlIUhU5lI=;
- b=iCxMU0NNVBpg4H7jBICt3TYVKwe9i0e2nYw0zH2VuGm72MQdDVWFzLRQBBQ8UoPn4UewC1rUP8ykVSzBR1LYy/YaUHfuaJStrKojyY/wIxOQ+z+uRarLUwJLQT8j1637AYN804rkHLu0GcFtnEvg3hTFlME2/9SmfK7PrAGNxDGQZh8BeHbz7vfdtLEny6ktqL3PfJRXrVoINptb+4+YYAqxdLHkr+AxA8GbpiJRcRwvLpnb6VI2VieIPXfwA8BeICN7o/U38cCn7FT3Te9HQz7Tk1aQN/JM6lPeZE6gzSNTBLyXXlTzUnpoTbHOS+18bIYHc3RrCRUvPAdl0oHXwA==
+ bh=F5m/eUS1ZTghqTYH/w4xTydmjE2cZmUh6TIzdq2dDdk=;
+ b=uFAhiDE9f5Q8tsBYfU/5Knl98lavIt2sfm024x0kEU8x2vUQ0CWhdIbizXefsfjPWGb0cUB4D6O8cU67TDndDuHxg1LiVjWmWo+s0BZhh/wHK7S56EisS4Es4dufdpFTUnPWr+8BG4If+gbu75Zck1PWmnu2fWiNDR2pdVDx06Ej10hqhACL1QzyUG0CWZ4cM2pql3QKvrg9We2C8VwNo3W/GYPSXR8bdwtNSF/uvsGaFECKdX12++Lr7011QsKXCsinAFeXgBtpC71kpZVpbCHcN/M47o3U37eGibJc9sYIvZlVQ8R/YZGZl1vABqShURa9TRdsYgtSc5hxLr9IFQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com (2603:10b6:208:386::9)
- by SJ0PR11MB5920.namprd11.prod.outlook.com (2603:10b6:a03:42e::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.13; Fri, 19 Sep
- 2025 07:19:45 +0000
-Received: from BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::246b:dc12:ea88:b19c]) by BL1PR11MB5979.namprd11.prod.outlook.com
- ([fe80::246b:dc12:ea88:b19c%5]) with mapi id 15.20.9137.012; Fri, 19 Sep 2025
- 07:19:45 +0000
-Message-ID: <5b909804-494f-4ffa-909d-25cbd38ea17c@intel.com>
-Date: Fri, 19 Sep 2025 12:49:36 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V10 09/30] tests/kms_colorop: Add kms_colorop tests
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Alex Hung
- <alex.hung@amd.com>, <igt-dev@lists.freedesktop.org>,
- <harry.wentland@amd.com>, <leo.liu@amd.com>
-References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-10-alex.hung@amd.com>
- <20250827105359.kg2x5jmo2w25iqxa@kamilkon-DESK.igk.intel.com>
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
+ by DS0PR11MB7288.namprd11.prod.outlook.com (2603:10b6:8:13b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Fri, 19 Sep
+ 2025 08:19:37 +0000
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::1670:23da:3abe:c525]) by CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::1670:23da:3abe:c525%4]) with mapi id 15.20.9137.012; Fri, 19 Sep 2025
+ 08:19:37 +0000
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Thomas, Sobin" <sobin.thomas@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>, "Konieczny, Kamil"
+ <kamil.konieczny@intel.com>
+CC: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Thomas, Sobin"
+ <sobin.thomas@intel.com>
+Subject: RE: [PATCH v6 i-g-t 1/1] tests/intel/xe_compute_preempt: Compute
+ preemption check
+Thread-Topic: [PATCH v6 i-g-t 1/1] tests/intel/xe_compute_preempt: Compute
+ preemption check
+Thread-Index: AQHcJ7t0GdySym8kv0CGh3evV4Q/9LSaK+EQ
+Date: Fri, 19 Sep 2025 08:19:37 +0000
+Message-ID: <CH3PR11MB84340AE3825F7ABDF2E7555C8D11A@CH3PR11MB8434.namprd11.prod.outlook.com>
+References: <20250917101105.236457-1-sobin.thomas@intel.com>
+ <20250917101105.236457-2-sobin.thomas@intel.com>
+In-Reply-To: <20250917101105.236457-2-sobin.thomas@intel.com>
+Accept-Language: en-IN, en-US
 Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20250827105359.kg2x5jmo2w25iqxa@kamilkon-DESK.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0079.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ae::7) To BL1PR11MB5979.namprd11.prod.outlook.com
- (2603:10b6:208:386::9)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|DS0PR11MB7288:EE_
+x-ms-office365-filtering-correlation-id: 413a671d-44d8-4251-fdd5-08ddf7554610
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|1800799024|10070799003|366016|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?vC4e770Ne4hYmskhxuDzdHVt4pt8pGM07ERfSXDCZ9+eeCbnUkvbSLEdQG0E?=
+ =?us-ascii?Q?CjrLX4jNTJXFovMmOXgEic1pRPthGx9uOEkWXrul1NLaTmq7Htg+3iTgLmST?=
+ =?us-ascii?Q?4zmbmreMeNowpBT4WQdbslO3Kd4WLKC9DptI4YPssvZkDTSbBSEMTZ+8FV9D?=
+ =?us-ascii?Q?5x1aFYms6VxK2YfJt0hBEEH441K5ZOQTkccuS4kw0bt6MFb2+FEhNZodUClX?=
+ =?us-ascii?Q?hTHfI/Z6135NA2xu07smg6itlefh0iDO6wOa65Iz4ihdj1WWpM0mVbuCQtPw?=
+ =?us-ascii?Q?aPQgDyiYnbgvluYwF2pBoyy4Ogqwe9rdcs8XBtceCORfwffgRGwbVKmAD9pU?=
+ =?us-ascii?Q?iAOndYNLtZV0toGSaknx+PVAnvsrZZFbv+38coeTOWich7P+PFg+7tDjq4nv?=
+ =?us-ascii?Q?FGXJ1V18lKrodzTbHqyZ9TNUFljBOxy9lhO//u2iFxzLCK1V8z6dW3al1fx6?=
+ =?us-ascii?Q?sGIt9LDxrpgB9QYM7P9Geh2v/Fop0SkyOD7bMkzmKP9G8OC9jMeNW79aa8Op?=
+ =?us-ascii?Q?t7vldJ0jTwOxy59XfV45HWbQASGtFGlNyJNSpVY2AXJlxNTmDUFwqBoJ9P5R?=
+ =?us-ascii?Q?A7UvIkW7oLYVYPV8MdPveuTSmTMYgHZafUzPXYb5zJflFDM1R5/f86TW/bhL?=
+ =?us-ascii?Q?lwM5LC5jf/Rsyhg09nIEkxVRoYEE1XTBtxTnYPfyfwbeLKpYVvnWtS8wOZFB?=
+ =?us-ascii?Q?UtkSypKnD3NKNbwG5oxkwdIzxAKRke3tQtTKZXsBSsi1c8fJEVnZYbGwCC39?=
+ =?us-ascii?Q?6MXfNNLMZUs77mwzaiYY8TQ42JuLSfEGNX6aOzkSI9Uh5nWZnboDJPNOf2c3?=
+ =?us-ascii?Q?ViO7yQ6d5iG4YU63Mns1KNcxIKxlg/qNwBQsz8s5+M8rBpn4VnyIETld5+Yd?=
+ =?us-ascii?Q?OGGeeu4VEYYjB4jUBs1ZXx1otQrYADXPbObiH8qm6Z+kk/ZexovbqLPENib/?=
+ =?us-ascii?Q?Lwxv5k+lC/wRGGsDLmlIEKiuDd+3CvruIUCtkZE7k1LQMtm9ZB7j6vaWmRJS?=
+ =?us-ascii?Q?sr6Ljj5VF5ugJctUL92wJqR2r8wEMuDwUXg7RdoP9y6UI2gU+bFYFwvISvke?=
+ =?us-ascii?Q?rplHfS+b9dNbKeAFHDumhrpizosT7M07N/eQFnwGmpgo6dIsFVQNossieg0q?=
+ =?us-ascii?Q?Biji/o4/Ce0Mw7CCEPCfTLaAnoCwg/mCFEgL7nt52SwNuAQSqNZsvwnzevVY?=
+ =?us-ascii?Q?EES4ar5BwF7xoHmTOmcaEdwYoLT/8pHxWxSsEs3DEDGLjFInCOwWRWYS4sR7?=
+ =?us-ascii?Q?E20k6Nicb2yVDTK/XR5Oq0y3fNYDaUT7jjdoLRDVAKv2SAw8fw4oDm0RQUnz?=
+ =?us-ascii?Q?/IVBO1OvDtkiC2K7BvCfO0DnxN7r9mPqOqtoNF1XrWVkD/nX2C0G89XWyE5p?=
+ =?us-ascii?Q?A61WlZQMGAZlDpMR00YQg/IxLXjhiqEA3W4eYP1YdlBDcnDQt9TJQUb5Pa6e?=
+ =?us-ascii?Q?AYveJVn0p/9tgKt6+Rm9WyEl3qnpECMSLPkRAIlMAzmetnYnzfSYzOvwkwfT?=
+ =?us-ascii?Q?J2h3C7mNZK/8PYY=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(10070799003)(366016)(38070700021)(7053199007);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?0h3HvTDN+unGLpKb61mXP+HC7hAHMunEhSpsv19J1Uju9hjqTd9emJJPvCzx?=
+ =?us-ascii?Q?uaZlVPwMABTwD44X/8wHpBO96r1XFP1T3bKJlwZHOIPWsD8nE9eTUsAc0dmj?=
+ =?us-ascii?Q?6MLURNC06u3qoRNuc9U1h/Z4rgLbsNlwtJb+X31Fabyb/7uTzseWt20hyqTx?=
+ =?us-ascii?Q?EVLGM/3znOnws4os9dbNu6ryDqauPBPRBwPvwNwjdinEdumkONAeZm81TYo1?=
+ =?us-ascii?Q?S5FcmoouJoXqYt6lNPDKwM39YG2sTloPuuzBw+JyrKFrqDyEbsXYYkv8Inil?=
+ =?us-ascii?Q?tjKwI2QLGzhYhuhBsd4tjYetdLsET//QWDRk6hXw1puBCEAzrSyJDnHTVlDS?=
+ =?us-ascii?Q?XY66wLXKXz3r4IuJWzrqlSsD1RCbzIz5ybI7mMr6ycgchfkChW4lwzMBQWWP?=
+ =?us-ascii?Q?Qq6iuwPV+By9/vaDNPpPPNw/wgTIONweyfZmuTVjgk9z9J1JRsiHN58qg5Ag?=
+ =?us-ascii?Q?A+0gYKHzyfvxpcdq2aMPRnIwERD/S7q9T60/lurD+RRvdFUO9WtNtWCvnK19?=
+ =?us-ascii?Q?tcocRfNiOxifvJj3IfRUXzoqRwQRPvtcZsRSyV0tl/C0l7cNlAeVZNmfb42h?=
+ =?us-ascii?Q?Iv9132Gi20vTiv6LC8VKwJgCLyUPXqtp3BMj2REIprBLYic5/zbJV3Roqisf?=
+ =?us-ascii?Q?DHANf1dSdOzqvDOXNAwzICpqbWhYrq0zr0P1YDm2oXn2+Ofe5psX1HYbHCv1?=
+ =?us-ascii?Q?FXtqeZ4P/RfBMA+zqylS01Q3ebLH3ImH+Pmsepms8L8nN7K00FjK07X9npjg?=
+ =?us-ascii?Q?WVt5l4qc5qimHMRJLIQ8rLyF9dYOGe6Jj/qUwIiIqvgsuR+hQsEC8r3jM0/M?=
+ =?us-ascii?Q?sMGUC17AIcjdPRRtJxSKJY8ZUIFa0NINaL+TPZFs2eDpeE3RFoXAJJ2cWicQ?=
+ =?us-ascii?Q?bC0ALOMsIddzrepWRQiSeWr8NJqGTpYC6J3FTansBghA51Zxu6TdofVzbsz4?=
+ =?us-ascii?Q?kEMu7w5Y+Dk99Z1+Wgp/UEGdtz+ejmxUL69Jcuzae8/Ebbcw3wO3f1LWll+6?=
+ =?us-ascii?Q?KfuwIPmnqygNFI3ZyX0BHgglhEjQCkU3ikN2aGpCH4rglCvxRv1Jp2rH8Ir5?=
+ =?us-ascii?Q?01CkpYpnNsUwvm0LSC4BWpPyvjMmqllqXezEsLZx5QcvHCwtifSa760bI2gU?=
+ =?us-ascii?Q?6bsjBb9eFwpUSMGNzJCaPBNQ+3Z3DUKr9/K8H8Rl8pqulEA0En8qFICAIDVF?=
+ =?us-ascii?Q?Hugd3S9L3McPTDSn5/6Eez6Di5alwyYKpJHs3qVJ15A1s51yqIQvHmHxu7n7?=
+ =?us-ascii?Q?jEKIM9zs6J77wuxi3ca2+yZPBlYGyP8aKmYBsAdRbNuxQWUgq9OEaviSy4jX?=
+ =?us-ascii?Q?dvD7Ri0L4+5Hc4NkVj805w6OwTYv4rAGRTjhIkUKljot0N7SxKMHEu6ZR9jh?=
+ =?us-ascii?Q?S6W6/A8/1z5hOREZNHNYbAhDuB2x9I7Vb3K4gZ1hmArugFRepNn/NJ24PUYw?=
+ =?us-ascii?Q?Xi2zyJGcLb2XmQ+tvKzlINCnP7iFBKz251kR2QZBR9MNLWUmdu2iPAH37w4B?=
+ =?us-ascii?Q?X2h9zKvyOicwD/kbLumA95CAsolk92dsiucytLJ9+tOypeNx7uWTrN+vhh/B?=
+ =?us-ascii?Q?8tM4himta+LCVSxNjkyT71cPERSQ8q+4zJJCc0Bz5a3t+Yd1tXmUwa/5Kira?=
+ =?us-ascii?Q?ZpBQM2mE//CXcQZM4acK2GLn6gM8XTMwpPLAuDFtm7n2v2HJYVOQ+yhYceX4?=
+ =?us-ascii?Q?SEOxsQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5979:EE_|SJ0PR11MB5920:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8df788a-4ff0-4399-458a-08ddf74ce8c5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WGRaU1doQjlMV2hpNjA1cTNNODRaenZMOVdwQ2ExYXZzeU02L2o4Yjd2SnBV?=
- =?utf-8?B?ZnJZRUJLbWtodjRPcUd5em1lQWhpeHljLzRiOXBlT2ZDY2FQZk5pa04wVWh3?=
- =?utf-8?B?cWY1SmlFZmlleU5QU09oUDRxQXNOaDNUcEUxbVFnTmNjMEtFaXg1eStuLy9G?=
- =?utf-8?B?YVJnZTBBNXJxNmZHWUhBYTdDZWNTVFBhQ09mU3VMVkdwVksvMktid0xtK3FH?=
- =?utf-8?B?RmNZZmV3Qm1ZaDZKRmV4WnlxQVBDbjlxdkplSTA4di9YaE9CdDhnd3VUd2g4?=
- =?utf-8?B?RUNHOWU5SExoelp1aUtHVmUwSE5ldUdsMHhkMVRKbjZPMldyTjBJc21hbG9z?=
- =?utf-8?B?dWdZTTVlcFdZakVCdkV6NnI5bGtUMkxOaDRDMUFpRGF4bmJRcFMvc0VCZVZx?=
- =?utf-8?B?SlBENzZTcWdIRmhPQ2U1Z3F1T1pWM3lTMklpVHRwd2tEeW83eURWMHdISkZ3?=
- =?utf-8?B?bVNZclI5cHV5dzBjZithelhydTEyanpyRmhtZXJMOFVSOWNTRnhobzUzZWla?=
- =?utf-8?B?MWtuWnZEdXZySUxtRW5NVVFSR1hjcjlBNlRjVWFLSzNoMHc4Wkk0TlZCWDNn?=
- =?utf-8?B?WFFrMEVsSGVpZERrWWJCVUtpOG92WXdpaDVyejVXamRmTnQ2YWNTS3RIZEtu?=
- =?utf-8?B?elUwU3VOcTZpVktOMnJneXcrRHFCWGVWV3QyV3pPVGs3NnFGTWhXMXNKbml1?=
- =?utf-8?B?cHhOenkvOXRYQjczVnZxcmVUMjk0aUFqU2w2R3RzMnJHTW4vVGZURStmbm9T?=
- =?utf-8?B?c1FHQ2xJdlYySk9RUzJMTWtURG1XTDVQanA4SnFHRWVhRFU5WitBeVVJSDFk?=
- =?utf-8?B?UFJjQUVVQUpMOE4vWGlUei9ycVhKQnVRQml0Vk02azl2cU9IdlFmZ3VpRTAy?=
- =?utf-8?B?UHBNbDg2SHBEK1pob045a1BETUhjamVCZ3pNSHkxeUZ0eUtYeWVtQjh3WTM5?=
- =?utf-8?B?dGZvY2QzQTM4R2xoVnhoeG9RcTNxd1o0QkdCSzRkck4wZVRLODZOaXh6Rks2?=
- =?utf-8?B?cXRYR3lyblVvK2xOcllnamc3dGUzMElWVEFjY2l2WTRLS1ZyTGRkWTBLVjNq?=
- =?utf-8?B?SFM4dkVOdnhHNDdEQUMvbnh5RVhFWk9LdHpNZUlTckZkZk9tUUtqNlZVSmNN?=
- =?utf-8?B?L0xPdWRBVHJaL3RxUVp4NDMybGdjK1d2UDVKQzdlSEJRblBXc2RVeFBlTG8w?=
- =?utf-8?B?c2pPVEd0ZUpNUUtYVjVPallrTHJOSmgyeVdaeGFjcEVOWEZXejhzYk9hQmYx?=
- =?utf-8?B?MHRXUDNDY05kck1RQjBZdTNlRnE1NGdCQnNsQ3hwcTdxMEpLTEFRL052U1BM?=
- =?utf-8?B?UFBNRkZaK293UEJ1Wkg1b0xyTTB5NkNvcFlNWnBHVjFhbUNoMDRtQ1ZiYWJB?=
- =?utf-8?B?UWZTa1lIelBOcWd0RlRqQWZvcXlqZE5xaloxdzdyN25XV2Q2dHNJMlJuNVBG?=
- =?utf-8?B?Z3dSSms2SDV6OTlodlBQMWQ0Rks1Tm1pRjdvVXkyTlVvcHBCMm40RlJvVzNx?=
- =?utf-8?B?WitUN2k3eFE2Unl0SnIzanFHQng4WlJJTlNENzlmWldWaFZKU2RvMllxdmwx?=
- =?utf-8?B?bEZlNFJaQ05pbno3TFlYNndmVGRMWFgxRDhDai9idUl4dHJzeHlWQUhsZk9N?=
- =?utf-8?B?ZmlLS21lSXpZWGpuUnhyc0xmMTVjSlk3MFg1OEkvOEp4blNIalY2a0ZtV2Yw?=
- =?utf-8?B?SmNyYVp1bG8wc3pJa3lkR2JQd2FjaC84Snh3a20xVnVLcDRwL0ovRFdtaU0v?=
- =?utf-8?B?WFZ3eWRuSE03bTRUN1AwMDl1L0JEN0F1Mi9ZWEtIdThiUFh2U0Z4MXJ4eWl6?=
- =?utf-8?B?SHI1dFlnV3FuTWVCaTNIUTVVRUtUZUxLdlhwSlIyWUlzQTl6cFJJWm12VUJ3?=
- =?utf-8?B?WWFCbUVUV2ZNbFlSU0c5cGJ0Q2VHa3dtRVdjWklKQk1xMVNhei84ZFVzUWtp?=
- =?utf-8?Q?TGPom0l66eQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR11MB5979.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZG5SaFhpYzRaT0tzQ3VjSzA0QitzTnNmMVhwdVNEWU9MNTFibjl1Y2RQQWRu?=
- =?utf-8?B?eTVIVXhCRm5xSDRnSVF3MnJhV05XcW9JSkV1Sy9RekxrVGdWR0F4SkVEMG5R?=
- =?utf-8?B?V1ZRVm1VamhaM3JqVFFvYU9rdytyMnRLSVBpMHFZYW5lMGhQMlY3bXREVmk1?=
- =?utf-8?B?OW02OFVzUFlQR1poUFNFa05xWUp4Y3lZMUt4cFM0YXMreDBSWmhiVHdRQmMx?=
- =?utf-8?B?Ukc2WDQrdzFjOTUwMEhDNFNLei9GaE9MM3JyOEp1TitkMXVhdWJMWkNsVi9C?=
- =?utf-8?B?N3NUVGMySzdSaG84R0dMNUFlcHB6ZEtCM3hoYWZpSkx0VmY0QmhueklEWmhp?=
- =?utf-8?B?ZVRYL3U5dG1EeDMvUWxWT2ptMjVKRjJCMHpvcU9hUzl5T2JST3Y4c3RET0Zu?=
- =?utf-8?B?d2l6Q0M2c0NoOUpVWVJGUXU4UkVCa0tlMTd5cGprZjV5dWpZOEdxTjJUT0pr?=
- =?utf-8?B?WE93TG96VlkzNkRjejFIU3phd1Zkd0hnZW5LRFhpS2JlSVNZMWo0SElVdUFH?=
- =?utf-8?B?c0NiQmRVSEM1a0pXVlBGbTZQTi9aSGJZeVlJR0dxc2xlbzdURmtMTlRuekMw?=
- =?utf-8?B?QTlKTHF1RWwybUp3U1lFazZ6SC9QSmxna3ZCOXB0WXV0Qmc3elNyaGpDelU3?=
- =?utf-8?B?SXFtaEY4K3J5Y2wvUFZKQ1RKTXJwb0dDdFNueVVwSHZDeHVuQ3FmdnQwM0hT?=
- =?utf-8?B?Ym04bVI5Vml6U3UwZFRwSEcwNDRNa3VjNWJhZEZ5SWV4d0ExeW5pRWNLd0NG?=
- =?utf-8?B?aDFZaWFib09HeEhFalRBV0p4dEVlM0NoM0VaMVhFb3htWDUyRGVid2RVVkF0?=
- =?utf-8?B?cEloK3hoK2ROblp5NVdzNno0d3pCR21qMGxoT2V1NlpraGxwVjJNT3FZVmdJ?=
- =?utf-8?B?cS9EaTNqaFJrQzJHbUxTWGhvNElBRm1UMWVmcVdoWStNT01YdzZ6blp4cERP?=
- =?utf-8?B?MTZHcVpweWlsaGZNS0VTR1pPa0VhQk9jcWx3dWZ1N3hqQnpNZTIrdDR4VmlL?=
- =?utf-8?B?cTNmanJyR3lQbWF1RURSeTFxYXloeExXQ24vcTkyVTUxUFRNRkRySkZDdGMr?=
- =?utf-8?B?Ni93Y2x3T2ZOUHB3d016MTdBc2dQc0ozUkhtT0dwajhHSzJ4Zm41dVRKaFRQ?=
- =?utf-8?B?WlI4b1dHRi9xaURabURLRHZqRUp5WnFPN2xGaWNZRmlmVGlEeDU5ck5mMGMv?=
- =?utf-8?B?TkhyYnROSWxhVVZaL01HT2txa3ZvSkoyRm9SSkl6Ky9nSTBxc0NUa2lmS2F4?=
- =?utf-8?B?V0ZSU3ZxVmVaZ0ZmdXozRUlBbVR1cG1OczNMMFZJbXJSUlluQ245U25NSXd6?=
- =?utf-8?B?TjRmMVFqZXAwbEUrb0Z2dDR6OVp6NXl6Q0VTaFpodHRSQmtFRVdtQjhWTEp4?=
- =?utf-8?B?cjNwUEpiODJhVVRVNmtEZ0xPc2lqeXR1NUZmQUx4MUg1THRIcms1MDlXWTRZ?=
- =?utf-8?B?VHZuZE0vNmtSTGFtZSsrR1lJb3I3MEZBTVFCK2I5aU5xUmZtRWlWVzh2R2tz?=
- =?utf-8?B?ZVMrMGxsNnRBM3BCSnNkVTk1bnJCT0dBcXQvM0ZQNm0yd3JqbnZsaG4wV3N3?=
- =?utf-8?B?NCsrSzZPY2RTS0hWRUNtU2VNRW50NG9BelBZMlUyVVNWNk1GczlYci9KMm5r?=
- =?utf-8?B?SnhDejdLSWxlZTBNR2VsSERlKytucVBQWGFsdTFscVFJcDBoc3gyOHd1SGhl?=
- =?utf-8?B?bjVqMUNmVmdyelpLYkd0ZlRqd20vVWRFUWd2eFEwdUsrTjhPWTNUdVdrUlhS?=
- =?utf-8?B?THpXb3FDWE5JaWhMZEtxaVVBVDF5RUd2bmNMNXFRZHYwRCtJYy8wdXJBUFRr?=
- =?utf-8?B?Yk5KYzFacEp1Tjh1ZVpNTWRqbzdWL3dMaHJhYlU1ZTZxaWhrbGI1My9GTjJj?=
- =?utf-8?B?YzFZeEdjcDFVcndwTVZSR1BRdGFyUEJrWnd2MXNTYUJ2OTBQY3VtWG91SUIy?=
- =?utf-8?B?NmkvcFc0bThJZGlKcmdSNnhIUGE5UW96VzZmbkIxem8wSTNyYlZsSjJ0S2ho?=
- =?utf-8?B?YmxIYi9BZ2QrMU5LZmFkSVpIUVZiK3hubnYrOGo5WTg2d0trd1ZuNFZLWkFs?=
- =?utf-8?B?OE5SdHZJYTJIWHhvN3VFbm9kdStncFkyQ3dYNzY2M3lXYmp6TlJ3TzFhNkdB?=
- =?utf-8?B?aTJOSVY5ZHV3cFZ3cWRlZU5oWnRnUVBUa2VBMjNrd2ZKNmpaREZ0K3dNRHRB?=
- =?utf-8?B?b1E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8df788a-4ff0-4399-458a-08ddf74ce8c5
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5979.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 07:19:45.5518 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KUP+Qf00cGRkHg5zUdA+avm/Oz2+426mAGUTMGpqilPigeMoOfsIMg3uhB+VBsUSEbzHsLk/DR3OjJiet3a6WQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5920
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 413a671d-44d8-4251-fdd5-08ddf7554610
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Sep 2025 08:19:37.6194 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Yj/v/9mCwdkbC9Gbe9Ayp7XSnzEWrWsxJKHmFh2O+Syo5x/zyWEOB7Zothz1XEh49qin1kvV9+9CEfjuaM/qvdEPxZvpjJpWRVs5DHAVZiM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7288
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -198,674 +189,330 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Alex,
 
-Is it possible to move colorop basic func() like
-can_use_colorop(), map_to_pipline(), etc. to lib?
 
-On 27-08-2025 04:23 pm, Kamil Konieczny wrote:
-> Hi Alex,
-> On 2025-08-14 at 22:06:38 -0600, Alex Hung wrote:
->> From: Harry Wentland <harry.wentland@amd.com>
->>
->> This tests the color pipeline API, exposed via the
->> COLOR PIPELINE plane property and drm_colorop objects.
->>
->> We introduce tests for:
->>   - sRGB EOTF
->>   - sRGB Inverse EOTF
->>   - sRGB EOTF + sRGB Inverse EOTF
->>
->> The last one is the holy grail of LUT testing. It tests that
->> after applying an EOTF, followed by its inverse EOTF we arrive
->> back at the original value. We can use this to test for
->> precision loss in the pipeline.
->>
->> All tests are tested via writeback. All transforms are done in
->> SW (in floating point) and at the end the SW transformed buffer
->> is compared with the KMS writeback output buffer. The two should
->> match within a bracket of acceptable deviations. Since these
->> deviations might look different for different KMS drivers we'll
->> do this check on a driver-specific basis.
->>
->> Signed-off-by: Alex Hung <alex.hung@amd.com>
->> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
->> ---
->>   tests/kms_colorop.c | 508 ++++++++++++++++++++++++++++++++++++++++++++
->>   tests/kms_colorop.h |  88 ++++++++
->>   tests/meson.build   |   1 +
->>   3 files changed, 597 insertions(+)
->>   create mode 100644 tests/kms_colorop.c
->>   create mode 100644 tests/kms_colorop.h
->>
->> diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
->> new file mode 100644
->> index 000000000..e247477ec
->> --- /dev/null
->> +++ b/tests/kms_colorop.c
->> @@ -0,0 +1,508 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright 2023 Advanced Micro Devices, Inc.
->> + *
->> + * Permission is hereby granted, free of charge, to any person obtaining a
-> Please remove this text as it is replaced by SPDX above.
->
->> + * copy of this software and associated documentation files (the "Software"),
->> + * to deal in the Software without restriction, including without limitation
->> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
->> + * and/or sell copies of the Software, and to permit persons to whom the
->> + * Software is furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice shall be included in
->> + * all copies or substantial portions of the Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
->> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
->> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
->> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
->> + * OTHER DEALINGS IN THE SOFTWARE.
->> + */
->> +
->> +#include "igt.h"
->> +#include "igt_color.h"
->> +#include "sw_sync.h"
->> +#include "kms_colorop.h"
->> +
->> +/**
->> + * TEST: kms colorop
->> + * Category: Display
->> + * Description: Test to validate the retrieving and setting of DRM colorops
->> + *
->> + * SUBTEST: plane-%s
->> + * Description: Tests DRM colorop properties on a plane
->> + * Driver requirement: amdgpu
->> + * Functionality: kms_core
->> + * Mega feature: General Display Features
->> + * Test category: functionality test
->> + *
->> + * arg[1]:
->> + *
->> + * @srgb_eotf:                   sRGB EOTF
->> + * @srgb_inv_eotf:               sRGB Inverse EOTF
->> + * @srgb_eotf-srgb_inv_eotf:     sRGB EOTF -> sRGB Inverse EOTF
->> + *
->> + */
->> +
->> +/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
->> +static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
->> +				    drmModeModeInfo override_mode)
->> +{
->> +	igt_fb_t input_fb, output_fb;
->> +	igt_plane_t *plane;
->> +	uint32_t writeback_format = DRM_FORMAT_XRGB8888;
->> +	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
->> +	int width, height, ret;
->> +
->> +	igt_output_override_mode(output, &override_mode);
->> +
->> +	width = override_mode.hdisplay;
->> +	height = override_mode.vdisplay;
->> +
->> +	ret = igt_create_fb(display->drm_fd, width, height,
->> +			    DRM_FORMAT_XRGB8888, modifier, &input_fb);
->> +	igt_assert(ret >= 0);
->> +
->> +	ret = igt_create_fb(display->drm_fd, width, height,
->> +			    writeback_format, modifier, &output_fb);
->> +	igt_assert(ret >= 0);
->> +
->> +	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->> +	igt_plane_set_fb(plane, &input_fb);
->> +	igt_output_set_writeback_fb(output, &output_fb);
->> +
->> +	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
->> +					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->> +	igt_plane_set_fb(plane, NULL);
->> +	igt_remove_fb(display->drm_fd, &input_fb);
->> +	igt_remove_fb(display->drm_fd, &output_fb);
->> +
->> +	return !ret;
->> +}
->> +
->> +/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
->> +typedef struct {
->> +	bool builtin_mode;
->> +	bool custom_mode;
->> +	bool list_modes;
->> +	bool dump_check;
->> +	int mode_index;
->> +	drmModeModeInfo user_mode;
->> +} data_t;
->> +
->> +static data_t data;
->> +
->> +/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
->> +static igt_output_t *kms_writeback_get_output(igt_display_t *display)
->> +{
->> +	int i;
->> +	enum pipe pipe;
->> +
->> +	drmModeModeInfo override_mode = {
->> +		.clock = 25175,
->> +		.hdisplay = 640,
->> +		.hsync_start = 656,
->> +		.hsync_end = 752,
->> +		.htotal = 800,
->> +		.hskew = 0,
->> +		.vdisplay = 480,
->> +		.vsync_start = 490,
->> +		.vsync_end = 492,
->> +		.vtotal = 525,
->> +		.vscan = 0,
->> +		.vrefresh = 60,
->> +		.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
->> +		.name = {"640x480-60"},
->> +	};
->> +
->> +	for (i = 0; i < display->n_outputs; i++) {
->> +		igt_output_t *output = &display->outputs[i];
->> +
->> +		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
->> +			continue;
->> +
->> +		for_each_pipe(display, pipe) {
->> +			igt_output_set_pipe(output, pipe);
->> +
->> +			if (data.custom_mode)
->> +				override_mode = data.user_mode;
->> +			if (data.builtin_mode)
->> +				override_mode = output->config.connector->modes[data.mode_index];
->> +
->> +			if (check_writeback_config(display, output, override_mode)) {
->> +				igt_debug("Using connector %u:%s on pipe %d\n",
->> +					  output->config.connector->connector_id,
->> +					  output->name, pipe);
->> +				return output;
->> +			}
->> +		}
->> +
->> +		igt_debug("We found %u:%s, but this test will not be able to use it.\n",
->> +			  output->config.connector->connector_id, output->name);
->> +
->> +		/* Restore any connectors we don't use, so we don't trip on them later */
->> +		kmstest_force_connector(display->drm_fd, output->config.connector, FORCE_CONNECTOR_UNSPECIFIED);
->> +	}
->> +
->> +	return NULL;
->> +}
->> +
->> +/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
->> +static uint64_t get_writeback_fb_id(igt_output_t *output)
->> +{
->> +	return igt_output_get_prop(output, IGT_CONNECTOR_WRITEBACK_FB_ID);
->> +}
->> +
->> +/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
->> +static void detach_crtc(igt_display_t *display, igt_output_t *output)
->> +{
->> +	if (get_writeback_fb_id(output) == 0)
->> +		return;
->> +
->> +	igt_output_set_pipe(output, PIPE_NONE);
->> +	igt_display_commit2(display, COMMIT_ATOMIC);
->> +}
->> +
->> +static void get_and_wait_out_fence(igt_output_t *output)
->> +{
->> +	int ret;
->> +
->> +	igt_assert(output->writeback_out_fence_fd >= 0);
->> +
->> +	ret = sync_fence_wait(output->writeback_out_fence_fd, 1000);
->> +	igt_assert_f(ret == 0, "sync_fence_wait failed: %s\n", strerror(-ret));
->> +	close(output->writeback_out_fence_fd);
->> +	output->writeback_out_fence_fd = -1;
->> +}
->> +
->> +static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_colorop_t *desired)
->> +{
->> +	switch (desired->type) {
->> +	case KMS_COLOROP_ENUMERATED_LUT1D:
->> +		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE)
->> +			return true;
->> +	case KMS_COLOROP_CUSTOM_LUT1D:
->> +	case KMS_COLOROP_CTM:
->> +	case KMS_COLOROP_LUT3D:
->> +	default:
->> +		return false;
->> +	}
->> +}
->> +
->> +/**
->> + * Iterate color pipeline that begins with colorop and try to map
->> + * colorops[] to it.
->> + */
->> +static bool map_to_pipeline(igt_display_t *display,
->> +			    igt_colorop_t *colorop,
->> +			    kms_colorop_t *colorops[])
->> +{
->> +	igt_colorop_t *next = colorop;
->> +	kms_colorop_t *current_op;
->> +	int i = 0;
->> +	int prop_val = 0;
->> +
->> +	current_op = colorops[i++];
->> +	igt_require(current_op);
->> +
->> +	while (next) {
->> +		if (can_use_colorop(display, next, current_op)) {
->> +			current_op->colorop = next;
->> +			current_op = colorops[i++];
->> +			if (!current_op)
->> +				break;
->> +		}
->> +		prop_val = igt_colorop_get_prop(display, next,
->> +						IGT_COLOROP_NEXT);
->> +		next = igt_find_colorop(display, prop_val);
->> +	}
->> +
->> +	if (current_op) {
->> +		/* we failed to map the pipeline */
->> +
->> +		/* clean up colorops[i].colorop mappings */
->> +		for (i = 0, current_op = colorops[0]; current_op; current_op = colorops[i++])
->> +			current_op->colorop = NULL;
->> +
->> +		return false;
->> +	}
->> +
->> +	return true;
->> +}
->> +
->> +static igt_colorop_t *get_color_pipeline(igt_display_t *display,
->> +					 igt_plane_t *plane,
->> +					 kms_colorop_t *colorops[])
->> +{
->> +	igt_colorop_t *colorop = NULL;
->> +	int i;
->> +
->> +	/* go through all color pipelines */
->> +	for (i = 0; i < plane->num_color_pipelines; ++i) {
->> +		if (map_to_pipeline(display, plane->color_pipelines[i], colorops)) {
->> +			colorop = plane->color_pipelines[i];
->> +			break;
->> +		}
->> +	}
->> +
->> +	return colorop;
->> +}
->> +
->> +static void set_colorop(igt_display_t *display,
->> +			kms_colorop_t *colorop)
->> +{
->> +	igt_assert(colorop->colorop);
->> +	igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_BYPASS, 0);
->> +
->> +	/* Set to desired value from kms_colorop_t */
->> +	switch (colorop->type) {
->> +	case KMS_COLOROP_ENUMERATED_LUT1D:
->> +		switch (colorop->enumerated_lut1d_info.tf) {
->> +		case KMS_COLOROP_LUT1D_SRGB_EOTF:
->> +			igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_CURVE_1D_TYPE, "sRGB EOTF");
->> +			break;
->> +		case KMS_COLOROP_LUT1D_SRGB_INV_EOTF:
->> +			igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_CURVE_1D_TYPE, "sRGB Inverse EOTF");
->> +			break;
->> +		case KMS_COLOROP_LUT1D_PQ_EOTF:
->> +		case KMS_COLOROP_LUT1D_PQ_INV_EOTF:
->> +		default:
->> +			igt_fail(IGT_EXIT_FAILURE);
->> +		}
->> +		break;
->> +	case KMS_COLOROP_CUSTOM_LUT1D:
->> +	case KMS_COLOROP_CTM:
->> +	case KMS_COLOROP_LUT3D:
->> +	default:
->> +		igt_fail(IGT_EXIT_FAILURE);
->> +	}
->> +}
->> +
->> +static void set_color_pipeline(igt_display_t *display,
->> +			       igt_plane_t *plane,
->> +			       kms_colorop_t *colorops[],
->> +			       igt_colorop_t *color_pipeline)
->> +{
->> +	igt_colorop_t *next;
->> +	int prop_val = 0;
->> +	int i;
->> +
->> +	igt_plane_set_color_pipeline(plane, color_pipeline);
->> +
->> +	for (i = 0; colorops[i]; i++)
->> +		set_colorop(display, colorops[i]);
->> +
->> +	/* set unused ops in pipeline to bypass */
->> +	next = color_pipeline;
->> +	i = 0;
->> +	while (next) {
->> +		if (!colorops[i] || colorops[i]->colorop != next)
->> +			igt_colorop_set_prop_value(next, IGT_COLOROP_BYPASS, 1);
->> +		else
->> +			i++;
->> +
->> +		prop_val = igt_colorop_get_prop(display, next,
->> +						IGT_COLOROP_NEXT);
->> +		next = igt_find_colorop(display, prop_val);
->> +	}
->> +}
->> +
->> +static void set_color_pipeline_bypass(igt_plane_t *plane)
->> +{
->> +	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
->> +}
->> +
->> +static bool compare_with_bracket(igt_fb_t *in, igt_fb_t *out)
->> +{
->> +	if (is_vkms_device(in->fd))
->> +		return igt_cmp_fb_pixels(in, out, 1, 1);
->> +
->> +	/*
->> +	 * By default we'll look for a [0, 0] bracket. We can then
->> +	 * define it for each driver that implements support for this
->> +	 * test. That way we can understand the precision of each
->> +	 * driver better.
->> +	 */
->> +	return igt_cmp_fb_pixels(in, out, 0, 0);
->> +}
->> +
->> +#define DUMP_FBS 1
->> +
->> +#define MAX_COLOROPS 3
->> +#define NUM_COLOROP_TESTS 3
->> +#define MAX_NAME_SIZE 256
->> +
->> +static void apply_transforms(kms_colorop_t *colorops[], igt_fb_t *sw_transform_fb)
->> +{
->> +	int i;
->> +	igt_pixel_transform transforms[MAX_COLOROPS];
->> +
->> +	for (i = 0; colorops[i]; i++)
->> +		transforms[i] = colorops[i]->transform;
->> +
->> +	igt_color_transform_pixels(sw_transform_fb, transforms, i);
->> +}
->> +
->> +static void colorop_plane_test(igt_display_t *display,
->> +			       kms_colorop_t *colorops[])
->> +{
->> +	igt_colorop_t *color_pipeline = NULL;
->> +	igt_output_t *output;
->> +	igt_plane_t *plane;
->> +	igt_fb_t input_fb;
->> +	igt_fb_t sw_transform_fb;
->> +	igt_fb_t output_fb;
->> +	drmModeModeInfo mode;
->> +	unsigned int fb_id;
->> +	igt_crc_t input_crc, output_crc;
->> +
->> +	output = kms_writeback_get_output(display);
->> +	igt_require(output);
->> +
->> +	if (output->use_override_mode)
->> +		memcpy(&mode, &output->override_mode, sizeof(mode));
->> +	else
->> +		memcpy(&mode, &output->config.default_mode, sizeof(mode));
->> +
->> +	/* create input fb */
->> +	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->> +	igt_assert(plane);
->> +
->> +	fb_id = igt_create_color_pattern_fb(display->drm_fd,
->> +					mode.hdisplay, mode.vdisplay,
->> +					DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->> +					0.2, 0.2, 0.2, &input_fb);
->> +	igt_assert(fb_id >= 0);
->> +	igt_plane_set_fb(plane, &input_fb);
->> +#if DUMP_FBS
->> +	igt_dump_fb(display, &input_fb, ".", "input");
->> +#endif
->> +
->> +	/* create output fb */
->> +	fb_id = igt_create_fb(display->drm_fd, mode.hdisplay, mode.vdisplay,
->> +				DRM_FORMAT_XRGB8888,
->> +				igt_fb_mod_to_tiling(0),
->> +				&output_fb);
->> +	igt_require(fb_id > 0);
->> +
->> +	igt_fb_get_fnv1a_crc(&input_fb, &input_crc);
->> +
->> +	igt_require(igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE));
->> +
->> +	/* reset color pipeline*/
->> +
->> +	set_color_pipeline_bypass(plane);
->> +
->> +	/* Commit */
->> +	igt_plane_set_fb(plane, &input_fb);
->> +	igt_output_set_writeback_fb(output, &output_fb);
->> +
->> +	igt_display_commit_atomic(output->display,
->> +				DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +				NULL);
->> +	get_and_wait_out_fence(output);
->> +
->> +	/* Compare input and output buffers. They should be equal here. */
->> +	igt_fb_get_fnv1a_crc(&output_fb, &output_crc);
->> +
->> +	igt_assert_crc_equal(&input_crc, &output_crc);
->> +
->> +	/* create sw transformed buffer */
->> +
->> +	igt_copy_fb(display->drm_fd, &input_fb, &sw_transform_fb);
->> +	igt_assert(igt_cmp_fb_pixels(&input_fb, &sw_transform_fb, 0, 0));
->> +
->> +	apply_transforms(colorops, &sw_transform_fb);
->> +#if DUMP_FBS
->> +	igt_dump_fb(display, &sw_transform_fb, ".", "sw_transform");
->> +#endif
->> +	/* discover and set COLOR PIPELINE */
->> +
->> +	/* get COLOR_PIPELINE enum */
->> +	color_pipeline = get_color_pipeline(display, plane, colorops);
->> +
->> +	/* skip test if we can't find applicable pipeline */
->> +	igt_skip_on(!color_pipeline);
->> +
->> +	set_color_pipeline(display, plane, colorops, color_pipeline);
->> +
->> +	igt_output_set_writeback_fb(output, &output_fb);
->> +
->> +	/* commit COLOR_PIPELINE */
->> +	igt_display_commit_atomic(display,
->> +				DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +				NULL);
->> +	get_and_wait_out_fence(output);
->> +#if DUMP_FBS
->> +	igt_dump_fb(display, &output_fb, ".", "output");
->> +#endif
->> +
->> +	/* compare sw transformed and KMS transformed FBs */
->> +	igt_assert(compare_with_bracket(&sw_transform_fb, &output_fb));
->> +
->> +	/* reset color pipeline*/
->> +	set_color_pipeline_bypass(plane);
->> +
->> +	/* Commit */
->> +	igt_plane_set_fb(plane, &input_fb);
->> +	igt_output_set_writeback_fb(output, &output_fb);
->> +
->> +	igt_display_commit_atomic(output->display,
->> +				DRM_MODE_ATOMIC_ALLOW_MODESET,
->> +				NULL);
->> +	get_and_wait_out_fence(output);
->> +
->> +	/* cleanup */
->> +	detach_crtc(display, output);
->> +	igt_remove_fb(display->drm_fd, &input_fb);
->> +	igt_remove_fb(display->drm_fd, &output_fb);
->> +}
->> +
->> +igt_main
->> +{
->> +
->> +	struct {
->> +		kms_colorop_t *colorops[MAX_COLOROPS];
->> +		const char *name;
->> +	} tests[] = {
->> +		{ { &kms_colorop_srgb_eotf, NULL }, "srgb_eotf" },
->> +		{ { &kms_colorop_srgb_inv_eotf, NULL }, "srgb_inv_eotf" },
->> +		{ { &kms_colorop_srgb_eotf, &kms_colorop_srgb_inv_eotf, NULL }, "srgb_eotf-srgb_inv_eotf" }
->> +	};
->> +
->> +	igt_display_t display;
->> +	int i, ret;
->> +
->> +	igt_fixture {
->> +		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
->> +
->> +		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
->> +			display.is_atomic = 1;
->> +
->> +		ret = drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
->> +
->> +		igt_require_f(!ret, "error setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
->> +
->> +		igt_display_require(&display, display.drm_fd);
->> +
->> +		kmstest_set_vt_graphics_mode();
->> +
->> +		igt_display_require(&display, display.drm_fd);
->> +
->> +		igt_require(display.is_atomic);
->> +
->> +	}
->> +
->> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
->> +		igt_describe("Check color ops on a plane");
->> +		igt_subtest_f("plane-%s", tests[i].name)
->> +			colorop_plane_test(&display, tests[i].colorops);
->> +	}
->> +
->> +	igt_describe("Tests getting and setting COLOR_PIPELINE property on plane");
->> +	igt_fixture {
->> +		igt_display_fini(&display);
->> +	}
->> +}
->> diff --git a/tests/kms_colorop.h b/tests/kms_colorop.h
->> new file mode 100644
->> index 000000000..f414895dd
->> --- /dev/null
->> +++ b/tests/kms_colorop.h
->> @@ -0,0 +1,88 @@
->> +/* SPDX-License-Identifier: MIT */
->> +/*
->> + * Copyright 2023 Advanced Micro Devices, Inc.
->> + *
->> + * Permission is hereby granted, free of charge, to any person obtaining a
-> Same here, remove this text.
->
-> Regards,
-> Kamil
->
->> + * copy of this software and associated documentation files (the "Software"),
->> + * to deal in the Software without restriction, including without limitation
->> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
->> + * and/or sell copies of the Software, and to permit persons to whom the
->> + * Software is furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice shall be included in
->> + * all copies or substantial portions of the Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
->> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
->> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
->> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
->> + * OTHER DEALINGS IN THE SOFTWARE.
->> + */
->> +
->> +#ifndef __KMS_COLOROP_H__
->> +#define __KMS_COLOROP_H__
->> +
->> +#include "igt_color.h"
->> +
->> +typedef bool (*compare_fb_t)(igt_fb_t *in, igt_fb_t *out);
->> +
->> +typedef int (*transform_fb)(igt_fb_t *in);
->> +
->> +typedef int (*transform_pixel)(igt_pixel_t *pixel);
->> +
->> +/* Test version definitions */
->> +typedef enum kms_colorop_type {
->> +	KMS_COLOROP_ENUMERATED_LUT1D,
->> +	KMS_COLOROP_CUSTOM_LUT1D,
->> +	KMS_COLOROP_CTM,
->> +	KMS_COLOROP_LUT3D
->> +} kms_colorop_type_t;
->> +
->> +typedef enum kms_colorop_lut1d_tf {
->> +	KMS_COLOROP_LUT1D_SRGB_EOTF,
->> +	KMS_COLOROP_LUT1D_SRGB_INV_EOTF,
->> +	KMS_COLOROP_LUT1D_PQ_EOTF,
->> +	KMS_COLOROP_LUT1D_PQ_INV_EOTF,
->> +} kms_colorop_lut1d_tf_t;
->> +
->> +typedef struct kms_colorop_enumerated_lut1d_info {
->> +	kms_colorop_lut1d_tf_t tf;
->> +} kms_colorop_enumerated_lut1d_info_t;
->> +
->> +typedef struct kms_colorop {
->> +	kms_colorop_type_t type;
->> +
->> +	union {
->> +		kms_colorop_enumerated_lut1d_info_t enumerated_lut1d_info;
->> +	};
->> +
->> +	const char *name;
->> +
->> +	igt_pixel_transform transform;
->> +
->> +	/* Mapped colorop */
->> +	igt_colorop_t *colorop;
->> +
->> +} kms_colorop_t;
->> +
->> +kms_colorop_t kms_colorop_srgb_eotf = {
->> +	.type = KMS_COLOROP_ENUMERATED_LUT1D,
->> +	.enumerated_lut1d_info = {
->> +		.tf = KMS_COLOROP_LUT1D_SRGB_EOTF
->> +	},
->> +	.name = "srgb_eotf",
->> +	.transform = &igt_color_srgb_eotf
->> +};
->> +
->> +kms_colorop_t kms_colorop_srgb_inv_eotf = {
->> +	.type = KMS_COLOROP_ENUMERATED_LUT1D,
->> +	.enumerated_lut1d_info = {
->> +		.tf = KMS_COLOROP_LUT1D_SRGB_INV_EOTF
->> +	},
->> +	.name = "srgb_inv_eotf",
->> +	.transform = &igt_color_srgb_inv_eotf
->> +};
->> +
->> +#endif /* __KMS_COLOROP_H__ */
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 5c01c64e9..e612e1a05 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -26,6 +26,7 @@ test_progs = [
->>   	'kms_bw',
->>   	'kms_color',
->>   	'kms_concurrent',
->> +	'kms_colorop',
->>   	'kms_content_protection',
->>   	'kms_cursor_crc',
->>   	'kms_cursor_edge_walk',
->> -- 
->> 2.43.0
->>
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Sobin
+> Thomas
+> Sent: 17 September 2025 03:41 PM
+> To: igt-dev@lists.freedesktop.org; Konieczny, Kamil
+> <kamil.konieczny@intel.com>
+> Cc: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>; Thomas,
+> Sobin <sobin.thomas@intel.com>
+> Subject: [PATCH v6 i-g-t 1/1] tests/intel/xe_compute_preempt: Compute
+> preemption check
+>=20
+> On platforms (like PVC) that do not support walker mid-thread preemption,
+> running tests in forked threads can lead to inconsistent states due to ig=
+t_skip
+> being called mid-execution. Made changes to perform kernel preemption
+> check at the beginning of each subtests.
+> If the GPU version does not support the required features, the test is sk=
+ipped
+> gracefully, ensuring consistent behavior across different platforms.
+>=20
+> TODO: Add the kernel for PVC
+>=20
+> v2: Fixed review comments to move the compatibility check
+>     into the igt_fixture. [Priyanka]
+>=20
+> v3: Added check for thread group preemption and WMTP.
+>     Added enum flags for preemption type as per review . [Zbigniew]
+>=20
+> v4: Added check for preempt inside __run_intel_compute_kernel_preempt
+>     Refactored the code.  [priyanka]
+>=20
+> v5: Refactor for finding the kernel and out of bound check. [Zbigniew]
+>=20
+> v6: Added NULL Check for kernel. [Zbigniew]
+>=20
+> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+> ---
+>  lib/intel_compute.c              | 104 ++++++++++++++++++++++++-------
+>  lib/intel_compute.h              |   7 +++
+>  tests/intel/xe_compute_preempt.c |   6 ++
+>  3 files changed, 95 insertions(+), 22 deletions(-)
+>=20
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c index
+> 147dd2916..93f56b1b0 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -1921,14 +1921,33 @@ static const struct {
+>  	},
+>  };
+>=20
+> +static const struct intel_compute_kernels
+> +		*intel_compute_find_kernel(const struct
+> intel_compute_kernels  *kernels,
+> +		unsigned int ip_ver)
+> +{
+> +	if (!kernels) {
+> +		igt_debug("%s: kernel_list is NULL\n", __func__);
+> +		return NULL;
+> +	}
+> +
+> +	while (kernels->kernel) {
+> +		if (ip_ver =3D=3D kernels->ip_ver)
+> +			return kernels;
+> +		kernels++;
+> +	}
+> +	igt_info("%s: No Match found for ip_ver=3D%u\n", __func__, ip_ver);
+Here instead of info just debug can be added.
+> +
+> +	return NULL;
+> +}
+> +
+>  static bool __run_intel_compute_kernel(int fd,
+>  				       struct drm_xe_engine_class_instance
+> *eci,
+>  				       struct user_execenv *user,
+>  				       enum execenv_alloc_prefs alloc_prefs)  {
+>  	unsigned int ip_ver =3D intel_graphics_ver(intel_get_drm_devid(fd));
+> -	unsigned int batch;
+> -	const struct intel_compute_kernels *kernels =3D
+> intel_compute_square_kernels;
+> +	int batch;
+> +	const struct intel_compute_kernels *kernel_entries =3D
+> +intel_compute_square_kernels, *kernels;
+>  	enum intel_driver driver =3D get_intel_driver(fd);
+>  	const unsigned char *kernel;
+>  	unsigned int kernel_size;
+> @@ -1954,12 +1973,8 @@ static bool __run_intel_compute_kernel(int fd,
+>  		kernel =3D user->kernel;
+>  		kernel_size =3D user->kernel_size;
+>  	} else {
+> -		while (kernels->kernel) {
+> -			if (ip_ver =3D=3D kernels->ip_ver)
+> -				break;
+> -			kernels++;
+> -		}
+> -		if (!kernels->kernel)
+> +		kernels =3D intel_compute_find_kernel(kernel_entries, ip_ver);
+> +		if (!kernel || !kernels->kernel)
+>  			return false;
+>  		kernel =3D kernels->kernel;
+>  		kernel_size =3D kernels->size;
+> @@ -2193,24 +2208,46 @@ static const struct {
+>  			     bool threadgroup_preemption,
+>  			     enum execenv_alloc_prefs alloc_prefs);
+>  	uint32_t compat;
+> +	enum xe_compute_preempt_type preempt_type;
+>  } intel_compute_preempt_batches[] =3D {
+>  	{
+>  		.ip_ver =3D IP_VER(20, 01),
+>  		.compute_exec =3D xe2lpg_compute_preempt_exec,
+>  		.compat =3D COMPAT_DRIVER_XE,
+> +		.preempt_type =3D PREEMPT_WMTP,
+>  	},
+>  	{
+>  		.ip_ver =3D IP_VER(20, 04),
+>  		.compute_exec =3D xe2lpg_compute_preempt_exec,
+>  		.compat =3D COMPAT_DRIVER_XE,
+> +		.preempt_type =3D PREEMPT_WMTP,
+>  	},
+>  	{
+>  		.ip_ver =3D IP_VER(30, 00),
+>  		.compute_exec =3D xe2lpg_compute_preempt_exec,
+>  		.compat =3D COMPAT_DRIVER_XE,
+> -	},
+> +		.preempt_type =3D PREEMPT_WMTP,
+> +	}
+>  };
+>=20
+> +static int find_preempt_batch(unsigned int ip_ver) {
+> +	for (int batch =3D 0; batch <
+> ARRAY_SIZE(intel_compute_preempt_batches); batch++)
+> +		if (ip_ver =3D=3D intel_compute_preempt_batches[batch].ip_ver)
+> +			return batch;
+> +	return -1;
+> +}
+> +
+> +static bool is_preemptable(int batch, enum xe_compute_preempt_type
+> +required_preempt) {
+> +	if (required_preempt &&
+> +	    !(intel_compute_preempt_batches[batch].preempt_type &
+> required_preempt)) {
+> +		igt_info("Preemption not supported\n");
+> +		return false;
+> +	}
+> +	return true;
+> +}
+> +
+>  static bool __run_intel_compute_kernel_preempt(int fd,
+>  		struct drm_xe_engine_class_instance *eci,
+>  		bool threadgroup_preemption,
+> @@ -2218,15 +2255,12 @@ static bool
+> __run_intel_compute_kernel_preempt(int fd,  {
+>  	unsigned int ip_ver =3D intel_graphics_ver(intel_get_drm_devid(fd));
+>  	unsigned int batch;
+> -	const struct intel_compute_kernels *kernels =3D
+> intel_compute_square_kernels;
+> +	const struct intel_compute_kernels *kernel_entries =3D
+> +intel_compute_square_kernels, *kernels;
+>  	enum intel_driver driver =3D get_intel_driver(fd);
+> +	int required_preempt =3D threadgroup_preemption ? PREEMPT_TGP :
+> +PREEMPT_WMTP;
+>=20
+> -	for (batch =3D 0; batch < ARRAY_SIZE(intel_compute_preempt_batches);
+> batch++)
+> -		if (ip_ver =3D=3D intel_compute_preempt_batches[batch].ip_ver)
+> -			break;
+> -
+> -
+> -	if (batch =3D=3D ARRAY_SIZE(intel_compute_preempt_batches)) {
+> +	batch =3D find_preempt_batch(ip_ver);
+> +	if (batch < 0) {
+>  		igt_debug("GPU version 0x%x not supported\n", ip_ver);
+>  		return false;
+>  	}
+> @@ -2238,14 +2272,16 @@ static bool
+> __run_intel_compute_kernel_preempt(int fd,
+>  		return false;
+>  	}
+>=20
+> -	while (kernels->kernel) {
+> -		if (ip_ver =3D=3D kernels->ip_ver)
+> -			break;
+> -		kernels++;
+> -	}
+> +	if (!is_preemptable(batch, required_preempt))
+> +		return false;
+>=20
+> +	kernels =3D intel_compute_find_kernel(kernel_entries, ip_ver);
+> +	if (!kernels) {
+> +		igt_debug("No Matching kernel found for ip_ver=3D%u",
+> ip_ver);
+This debug info whether null or not matching is already present in the comp=
+ute find kernel method, again no need to use this print. This entire if con=
+dition can be removed and add it in the below if condition like added  in _=
+_run_intel_compute_kernel if (!kernel || !kernels->kernel)
+> +		return false;
+> +	}
+>  	if (!kernels->kernel || !kernels->sip_kernel || !kernels->long_kernel)
+> -		return 0;
+> +		return false;
+>=20
+>  	intel_compute_preempt_batches[batch].compute_exec(fd, kernels-
+> >long_kernel,
+>  							  kernels-
+> >long_kernel_size,
+> @@ -2260,6 +2296,30 @@ static bool
+> __run_intel_compute_kernel_preempt(int fd,
+>=20
+>  	return true;
+>  }
+> +
+> +/**
+> + * check_kernel_preempt- Checks ip version to confirm if  provided
+> + * preempt type is supported.
+> + * @fd: file descriptor of the opened DRM Xe device
+> + * @required_preempt: Preemption type ( WMTP/TGP)
+> + *
+> + * Returns true on success, false otherwise.
+> + */
+> +bool check_kernel_preempt(int fd, enum xe_compute_preempt_type
+> +required_preempt) {
+> +	unsigned int ip_ver =3D intel_graphics_ver(intel_get_drm_devid(fd));
+> +	unsigned int batch =3D find_preempt_batch(ip_ver);
+> +
+> +	if (batch < 0) {
+> +		igt_debug("GPU version 0x%x not supported\n", ip_ver);
+> +		return false;
+> +	}
+> +	if (!is_preemptable(batch, required_preempt))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>  /**
+>   * run_intel_compute_kernel_preempt - runs compute kernels to
+>   * exercise preemption scenario.
+> diff --git a/lib/intel_compute.h b/lib/intel_compute.h index
+> 412791d07..b70cd7185 100644
+> --- a/lib/intel_compute.h
+> +++ b/lib/intel_compute.h
+> @@ -71,6 +71,11 @@ enum execenv_alloc_prefs {
+>  	EXECENV_PREF_VRAM_IF_POSSIBLE,
+>  };
+>=20
+> +enum xe_compute_preempt_type {
+> +	PREEMPT_TGP  =3D 1 << 0,    /* ThreadGroup Preemption */
+> +	PREEMPT_WMTP  =3D 1 << 1,  /* Walker Mid Thread Preemption */ };
+> +
+>  extern const struct intel_compute_kernels intel_compute_square_kernels[]=
+;
+>=20
+>  bool run_intel_compute_kernel(int fd, struct user_execenv *user, @@ -81,=
+4
+> +86,6 @@ bool xe_run_intel_compute_kernel_on_engine(int fd, struct
+> drm_xe_engine_class_in  bool run_intel_compute_kernel_preempt(int fd,
+> struct drm_xe_engine_class_instance *eci,
+>  				      bool threadgroup_preemption,
+>  				      enum execenv_alloc_prefs alloc_prefs);
+> +
+> +bool check_kernel_preempt(int fd, enum xe_compute_preempt_type
+> +required_preempt);
+>  #endif	/* INTEL_COMPUTE_H */
+> diff --git a/tests/intel/xe_compute_preempt.c
+> b/tests/intel/xe_compute_preempt.c
+> index c9b194869..a4c0bc59b 100644
+> --- a/tests/intel/xe_compute_preempt.c
+> +++ b/tests/intel/xe_compute_preempt.c
+> @@ -76,6 +76,7 @@ igt_main
+>  	}
+>=20
+>  	igt_subtest_with_dynamic("compute-preempt") {
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class !=3D
+> DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -86,6 +87,7 @@ igt_main
+>  	}
+>=20
+>  	igt_subtest_with_dynamic("compute-preempt-many") {
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class !=3D
+> DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -112,6 +114,7 @@ igt_main
+>  	igt_subtest_with_dynamic("compute-preempt-many-all-ram") {
+>  		igt_require(swap_mb > CONTEXT_MB * 10);
+>=20
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class !=3D
+> DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -138,6 +141,7 @@ igt_main
+>  	igt_subtest_with_dynamic("compute-preempt-many-vram") {
+>  		igt_require(xe_has_vram(xe));
+>=20
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class !=3D
+> DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -164,6 +168,7 @@ igt_main
+>  	igt_subtest_with_dynamic("compute-preempt-many-vram-evict") {
+>  		igt_require(xe_has_vram(xe));
+>=20
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_WMTP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class !=3D
+> DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> @@ -188,6 +193,7 @@ igt_main
+>  	}
+>=20
+>  	igt_subtest_with_dynamic("compute-threadgroup-preempt") {
+> +		igt_require(check_kernel_preempt(xe, PREEMPT_TGP));
+>  		xe_for_each_engine(xe, hwe) {
+>  			if (hwe->engine_class !=3D
+> DRM_XE_ENGINE_CLASS_COMPUTE)
+>  				continue;
+> --
+> 2.34.1
 
