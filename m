@@ -4,28 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AF10CAC592
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Sep 2025 03:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5178CA1013
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Sep 2025 03:17:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A345110E927;
-	Fri, 19 Sep 2025 03:08:04 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F280E10E926;
- Fri, 19 Sep 2025 03:08:03 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6125904166491767709=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40AE110E0F8;
+	Fri, 19 Sep 2025 03:17:52 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XzdHriWj";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F228310E0F8
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Sep 2025 03:17:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1758251870; x=1789787870;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1eJQ0IkbNxh6BEUsgz/z3kej6wiEyOO1GrGaw2iY0IE=;
+ b=XzdHriWjzSjJvTgGe0OJ5EIMfPYVcHoGK9FqxyZZkEvLWrtoaCePQ6b8
+ 6SWf6DZw1JfhejxCquNHysGD0+f5Ht1+uMCwxQLvN+URZyeYN2jVBvN21
+ uJdS5lUqdRg9x6KGNIDaWME645uhFZxAb3Yznp5fd0r3jewRJp71gbEuD
+ bXLOza/2m3dG5gDuml3vPeO7i9j4C0DRvsetd585iTFMKnwrAegCoXEaP
+ nnZyJZiM1shT9I5Tg1GI7z+Rd2gOg6wkpjZEYdBMYuZ5A16+mF9wgnv14
+ YLBgCyN/lKuL56ByjXSrHDdlU7RPbxbzexgledcVJdNU5ysUGceLL640U Q==;
+X-CSE-ConnectionGUID: Lz6cAGYwTCuxdWpkMeRkQA==
+X-CSE-MsgGUID: TPldBmeRT6eGa/2kg41xOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60526897"
+X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; d="scan'208";a="60526897"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2025 20:17:49 -0700
+X-CSE-ConnectionGUID: BIZB1Va4RbGHiaEHhNW06g==
+X-CSE-MsgGUID: TXBrOl8WS9+mJvFFd/vA5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; d="scan'208";a="179988688"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 20:17:48 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com,
+	Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t 0/2] tests/kms_setmode: Fix clone mode mismatch by
+ preferring eDP mode
+Date: Fri, 19 Sep 2025 08:47:34 +0530
+Message-ID: <20250919031736.1362484-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/2=5D_tests/intel/kms=5Fpm=5Frpm=3A_Refactor_system_suspend?=
- =?utf-8?q?_test_function_parameters_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 19 Sep 2025 03:08:03 -0000
-Message-ID: <175825128396.347163.16673827533732491478@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250918105709.25093-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20250918105709.25093-1-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,144 +65,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6125904166491767709==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+If an eDP connector is present, prefer selecting its default mode for
+cloning. Some eDP panels support only high refresh rate (HRR) modes,
+which may not be compatible with external displays. To avoid invalid
+clone configurations and test failures, we choose the default mode
+from the eDP connector when available.
 
-== Series Details ==
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 
-Series: series starting with [i-g-t,1/2] tests/intel/kms_pm_rpm: Refactor system suspend test function parameters (rev3)
-URL   : https://patchwork.freedesktop.org/series/154694/
-State : success
+Jeevan B (2):
+  tests/kms_setmode: simplify mode selection by removing goto
+  tests/kms_setmode: Fix clone mode mismatch by preferring eDP mode
 
-== Summary ==
+ tests/kms_setmode.c | 36 ++++++++++++++++++++++++++++++------
+ 1 file changed, 30 insertions(+), 6 deletions(-)
 
-CI Bug Log - changes from XEIGT_8543_BAT -> XEIGTPW_13783_BAT
-====================================================
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13783_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-dpms:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8543/bat-adlp-7/igt@kms_flip@basic-flip-vs-dpms.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13783/bat-adlp-7/igt@kms_flip@basic-flip-vs-dpms.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-plain-flip@a-edp1:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#4543]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8543/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13783/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-
-
-Build changes
--------------
-
-  * IGT: IGT_8543 -> IGTPW_13783
-  * Linux: xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e -> xe-3795-3e79699fa1b216e9246e406a8649235e894772d2
-
-  IGTPW_13783: 13783
-  IGT_8543: 8543
-  xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e: d84b3514a845885db8cf928cc246c8efbd80a00e
-  xe-3795-3e79699fa1b216e9246e406a8649235e894772d2: 3e79699fa1b216e9246e406a8649235e894772d2
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13783/index.html
-
---===============6125904166491767709==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/intel/kms_pm_rpm: Refactor system suspend test function parameters (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154694/">https://patchwork.freedesktop.org/series/154694/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13783/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13783/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8543_BAT -&gt; XEIGTPW_13783_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13783_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-dpms:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8543/bat-adlp-7/igt@kms_flip@basic-flip-vs-dpms.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13783/bat-adlp-7/igt@kms_flip@basic-flip-vs-dpms.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8543/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13783/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8543 -&gt; IGTPW_13783</li>
-<li>Linux: xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e -&gt; xe-3795-3e79699fa1b216e9246e406a8649235e894772d2</li>
-</ul>
-<p>IGTPW_13783: 13783<br />
-  IGT_8543: 8543<br />
-  xe-3784-d84b3514a845885db8cf928cc246c8efbd80a00e: d84b3514a845885db8cf928cc246c8efbd80a00e<br />
-  xe-3795-3e79699fa1b216e9246e406a8649235e894772d2: 3e79699fa1b216e9246e406a8649235e894772d2</p>
-
-</body>
-</html>
-
---===============6125904166491767709==--
