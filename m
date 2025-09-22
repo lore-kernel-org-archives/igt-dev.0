@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78851CAC5A7
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 04:43:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D84FECAC5A7
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 04:43:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E04B10E3A4;
-	Mon, 22 Sep 2025 04:43:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8FD0310E3A0;
+	Mon, 22 Sep 2025 04:43:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PMVSYdmX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R5sGh8tf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D785E10E3A4
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 04:43:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6198A10E3A7
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 04:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758516198; x=1790052198;
+ t=1758516200; x=1790052200;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=LNZBm/YxvWAMu5NsGcqc13lHhM9uacpKcrd/dt3jlSI=;
- b=PMVSYdmXpK4z57Et9mI6yNzh1pUxjgfijs69w56h4V5Hs/RB4c8aao11
- M2VkOfi5/jCs9W+2sc3FnnNRLMn9DVNxdpNaPvnN3DYVshSfnW5uPmQss
- F2l5H4+Dr+f/d1rkzqzC+yG843l+3k2x6+QvSt/Bfg47GuUo7QgzUAdtw
- PDrYLfD1SukbgGuzMHw3kSaFt6Lsn1A1Kek+6V+DvK/29SOwH51SGJ+2b
- xHQIABHWebCpmUW+++ceewjMXnJRrFQnup0S4YMhJvTp8wtpYFMJ3hkbK
- wizm14Tq13FErS/e5HN5h03hmhNXc28hn3qghpXV67+Nf0HZLzm6WbFQa A==;
-X-CSE-ConnectionGUID: xAkMqGRvTmuXj+9byofLVw==
-X-CSE-MsgGUID: MCF9dYS4SmGzaBtim1GOjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="60467134"
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; d="scan'208";a="60467134"
+ bh=q+x4NEB6lNkA8nPGqUkDaT5s4AIk3OrFiVcMZdZMefE=;
+ b=R5sGh8tfZWMYlFyxdjKNbXTzvfDOW6b8MZ8NMQifgmZPyN4g1DeDetrL
+ +grprnqKWFJ1UDHH1B9CosjyVGUT/Amz5b9t1V40QRR4IcdoroaFnzimN
+ HxNj8YfPWPPhCta7ZP/48pDPKIHkp8qqHFNx/GahshjUggpMWf1J0Lgco
+ 8q5KA/z9pb+jCi3J+mAti39M7u4VHHGePuX6AItMuf0QecTx+wWNpxA4N
+ l4j3UoeKkvllI+BOfF6F9h+dEl7Msbwh0wXJ8B77jHqB8j9b6pGKepKT5
+ 5ZQkAVWsCFHOn16Wpvt7KZ0aoYxHf/tP0nNjxMvNVdLtOSOlUAtyS0rR+ w==;
+X-CSE-ConnectionGUID: 5gdRrHNMRj6e4BRPGfg7sw==
+X-CSE-MsgGUID: EFu+y5B6Tk2AC/YBVg4ytA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="60467139"
+X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; d="scan'208";a="60467139"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2025 21:43:18 -0700
-X-CSE-ConnectionGUID: eqELUAu+SYmApENTxjQVIw==
-X-CSE-MsgGUID: JKF4qWEuSOKOCi5efzL1Kw==
+ 21 Sep 2025 21:43:20 -0700
+X-CSE-ConnectionGUID: 10WKYbcdQQqv9EwmZOv2Cw==
+X-CSE-MsgGUID: cBoVkQg6SY2ZhTdZ7XCu4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; d="scan'208";a="207344501"
+X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; d="scan'208";a="207344514"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2025 21:43:16 -0700
+ 21 Sep 2025 21:43:18 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com,
 	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/kms_setmode: simplify mode selection by
- removing goto
-Date: Mon, 22 Sep 2025 10:12:48 +0530
-Message-ID: <20250922044249.1374338-2-jeevan.b@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/kms_setmode: Fix clone mode mismatch by
+ preferring eDP mode
+Date: Mon, 22 Sep 2025 10:12:49 +0530
+Message-ID: <20250922044249.1374338-3-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250922044249.1374338-1-jeevan.b@intel.com>
 References: <20250922044249.1374338-1-jeevan.b@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,62 +70,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replaced 'goto found' with early returns in get_mode_for_crtc() and
-added braces around the fallback loop. This makes the logic cleaner
-and easier to follow without changing behavior.
+If an eDP connector is present, prefer selecting its lowest clock mode for
+cloning. Some eDP panels support only high refresh rate (HRR) modes,
+which may not match modes supported by external displays. To avoid invalid
+clone configurations and test failures, we choose the lowest clock mode
+from the eDP connector when available.
 
-v2: write to *mode_ret before returning from function.
+v2: Fix logic for eDP fallback.
+v3: Fix comment to say ‘lowest clock mode selected’ instead of
+    ‘default mode’.
+v4: Update commit message.
 
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13780
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_setmode.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ tests/kms_setmode.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 484c3a95f..48d0c3e1e 100644
+index 48d0c3e1e..135918007 100644
 --- a/tests/kms_setmode.c
 +++ b/tests/kms_setmode.c
-@@ -238,8 +238,10 @@ static void get_mode_for_crtc(struct crtc_config *crtc,
- 	 */
- 	for (i = 0; i < crtc->connector_count; i++) {
- 		mode = &crtc->cconfs[i].default_mode;
--		if (crtc_supports_mode(crtc, mode))
--			goto found;
-+		if (crtc_supports_mode(crtc, mode)) {
+@@ -256,6 +256,25 @@ static void get_mode_for_crtc(struct crtc_config *crtc,
+ 		}
+ 	}
+ 
++	/* If an eDP connector is present, iterate through its modes and
++	 * pick a mode with lowest clock, since internal panels typically
++	 * dictate the clone mode and may have HRR support, making them
++	 * incompatible with modes supported by external displays.
++	 */
++	for (i = 0; i < crtc->connector_count; i++) {
++		drmModeConnector *conn = crtc->cconfs[i].connector;
++
++		if (conn->connector_type == DRM_MODE_CONNECTOR_eDP) {
++			mode = &conn->modes[0];
++			for (int j = 1; j < conn->count_modes; j++) {
++				if (conn->modes[j].clock < mode->clock)
++					mode = &conn->modes[j];
++			}
 +			*mode_ret = *mode;
 +			return;
 +		}
- 	}
- 
- 	/*
-@@ -248,8 +250,10 @@ static void get_mode_for_crtc(struct crtc_config *crtc,
- 	 */
- 	for (i = 0; i < crtc->cconfs[0].connector->count_modes; i++) {
- 		mode = &crtc->cconfs[0].connector->modes[i];
--		if (crtc_supports_mode(crtc, mode))
--			goto found;
-+		if (crtc_supports_mode(crtc, mode)) {
-+			*mode_ret = *mode;
-+			return;
-+		}
- 	}
- 
- 	/*
-@@ -258,10 +262,11 @@ static void get_mode_for_crtc(struct crtc_config *crtc,
- 	 * scaling etc.
- 	 */
- 	mode = &crtc->cconfs[0].default_mode;
--	for (i = 1; i < crtc->connector_count; i++)
-+	for (i = 1; i < crtc->connector_count; i++) {
- 		if (crtc->cconfs[i].default_mode.clock < mode->clock)
- 			mode = &crtc->cconfs[i].default_mode;
--found:
 +	}
 +
- 	*mode_ret = *mode;
- }
- 
+ 	/*
+ 	 * If none is found then just pick the default mode from all connectors
+ 	 * with the smallest clock, hope the other connectors can support it by
 -- 
 2.43.0
 
