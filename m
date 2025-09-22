@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66024CA100F
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 16:10:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F5D8CAC592
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 16:10:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BB2110E04D;
-	Mon, 22 Sep 2025 16:10:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2241310E1E1;
+	Mon, 22 Sep 2025 16:10:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L/SYH7WK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hDLQm8mq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBC6D10E04D
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 16:10:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D132310E4A1
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 16:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758557410; x=1790093410;
+ t=1758557414; x=1790093414;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=8ElaSYIWCP0r0lprptV7+XATAbBADu6wRk19A/mcr50=;
- b=L/SYH7WKywyRCj5RDMGJmmQSn22yGAe0F8tLrds8fmWkJw21X1rlxjyy
- hBTZUqZmSiHzgsJFQ9I4Vt91qIdZ0dY/ETrR3SVbHxXVLuG0qIGWTB7D4
- KigpXZuAXJJB008vpx1Uba3Mg64yP6M6ApiG2PrUv66UlReFmd67QcD4y
- jsnX4/ujgYKzLewf7T/nFuL+1oqHpj96M54zwoSotUQBLoU0u+SGikPUS
- 3RUqCAfR6GVH8Hxl2i4aTijNbYVPBQlTk1r93UblCba9iaTGFQGFvcEq+
- uPO51A+XoisCwClsMG2ukNgVRDY4CVWbccu/W7bJ+RPE2SRjsHQ3MpjC2 Q==;
-X-CSE-ConnectionGUID: GRpRItPmRnejE1roqP3dzg==
-X-CSE-MsgGUID: FWtPdQwkQVaO3DKIquD8Uw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="83425536"
-X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="83425536"
+ bh=G2dvT4r2jBaUKWBcKwRUPbkd+JPgBmh8x8FOWWbWi7o=;
+ b=hDLQm8mq9H64Y1BV+5LmeEQ9yueGW76o6B0624Hc7qN1XUuQtXS8A6Qg
+ VjIkeJwYShO4T1g4wZjzC2ggz+9tgMhzmk7X9x2elJyoX3ZFrdWgF0Bu8
+ Cemm0lN1Z35OgE/WFJ+f8j/XXjhRvWwY4PeWXlrBky07r6OlkGgkF3QLK
+ zmREdFRgd+xPIEAjRi5XougjEFLFuhsYbcwv2Rk0V79ZiTUKcVLkSAT86
+ gH7VCnqKN1LwnJ6efVkwteeWIybtOgO/6hK0DQsNpJsn85rHYb1Hauraz
+ szyfC9DoYih0OdAC8P/qlKgVLYkJzfHaPzfkQvY+RIYufRShthlXxTlbY g==;
+X-CSE-ConnectionGUID: DfRez2uMSXiYau4xHAsIgw==
+X-CSE-MsgGUID: kQutr9suQFakiKJmLdPjBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="83425540"
+X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="83425540"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 09:10:10 -0700
-X-CSE-ConnectionGUID: Mxrk9g3YQZKrdcRrhfBlxw==
-X-CSE-MsgGUID: /HlT2K/jRlaeCy2oz8bsag==
+ 22 Sep 2025 09:10:14 -0700
+X-CSE-ConnectionGUID: 3aNRu0k0REi/HgcdPUGm/A==
+X-CSE-MsgGUID: ZrRNf07JRw+Sfm/knbTyiQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="181664993"
+X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="181664999"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.115])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 09:10:08 -0700
+ 22 Sep 2025 09:10:12 -0700
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 4/7] tools/intel_display_poller: Add
- --scanline-offset/-o command line option
-Date: Mon, 22 Sep 2025 19:09:46 +0300
-Message-ID: <20250922160950.27250-5-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 5/7] tools/intel_display_poller: Add
+ --auto-scanline-offset/-O comamnd line option
+Date: Mon, 22 Sep 2025 19:09:47 +0300
+Message-ID: <20250922160950.27250-6-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250922160950.27250-1-ville.syrjala@linux.intel.com>
 References: <20250922160950.27250-1-ville.syrjala@linux.intel.com>
@@ -72,372 +72,131 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Our hardware has a slightly warped view of scanline numbers.
-Eg. on most platforms it reports DSL=vblank_start-1 when the
-start of vblank actaully occurs.
+Using the --scanline-offset/-o option to manually specify the scanline
+offset can be a bit error prone since the appropriate offset depends
+not only on the hardware generation, but sometimes also on the output
+type (HDMI vs. not). Add a --auto-scanline-offset/-O option that tries
+to automagically determin the correct offset by examinign the current
+hardware state.
 
-On the kernel side we have helpers to convert between the hardware
-and software scanline numbers. Add the same for intel_display_poller
-in the form of a new --scanline-offset/-o command line option. With
-this one doesn't constantly have to waste brarin power to convert the
-hardware numbers into something more sensible.
-
-Caveat: unlike the kernel side we don't do the appropriate %vtotal
-on the adjusted values (since figuring out the actual vtotal would take
-quite a bit of work due to VRR/etc.). So when using --scanline-offset
-one has to keep in mind that we might see slightly funky scanline
-numbers. Eg. scanline >= vtotal when the scanline offset of positive,
-and negative value (due to a negative scanline offset) we just
-saturate to 0. Howver for most interesting hardware events the
-scanline tends to be in a range where this issue doesn't matter.
+Note that DSI outputs aren't really handled properly by
+hsw_ddi_is_hdmi(), or even by trans_reg() in general. So this
+might give the wrong answer there.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_display_poller.c | 155 ++++++++++++++---------------------
- 1 file changed, 62 insertions(+), 93 deletions(-)
+ lib/intel_reg.h              |  1 +
+ tools/intel_display_poller.c | 45 ++++++++++++++++++++++++++++++++++--
+ 2 files changed, 44 insertions(+), 2 deletions(-)
 
+diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+index 66911d015bd5..57d4420cf605 100644
+--- a/lib/intel_reg.h
++++ b/lib/intel_reg.h
+@@ -3531,6 +3531,7 @@ typedef enum {
+ /* Those bits are ignored by pipe EDP since it can only connect to DDI A */
+ #define  PIPE_DDI_PORT_MASK		(0xf<<28)
+ #define  PIPE_DDI_SELECT_PORT(x)	((x)<<28)
++#define  PIPE_DDI_MODE_SELECT_MASK	(7<<24)
+ #define  PIPE_DDI_MODE_SELECT_HDMI	(0<<24)
+ #define  PIPE_DDI_MODE_SELECT_DVI	(1<<24)
+ #define  PIPE_DDI_MODE_SELECT_DP_SST	(2<<24)
 diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
-index e02506128e04..24ed28ccf7da 100644
+index 24ed28ccf7da..b077390d14a1 100644
 --- a/tools/intel_display_poller.c
 +++ b/tools/intel_display_poller.c
-@@ -65,6 +65,7 @@ enum test {
- 
- static uint32_t vlv_offset;
- static uint16_t pipe_offset[4] = { 0, 0x1000, 0x2000, 0x3000, };
-+static int scanline_offset = 0;
- 
- #define PIPE_REG(pipe, reg_a) (pipe_offset[(pipe)] + (reg_a))
- 
-@@ -85,6 +86,29 @@ static uint32_t read_reg(uint32_t reg)
- 	return INREG(vlv_offset + reg);
+@@ -207,6 +207,37 @@ static uint32_t trans_reg(uint32_t devid, int pipe, uint32_t reg)
+ 	return PIPE_REG(trans, reg);
  }
  
-+static uint32_t read_scanline(uint32_t reg, bool *field)
++static bool hsw_ddi_is_hdmi(uint32_t devid, int pipe)
 +{
-+	uint32_t dsl;
-+	int scanline;
++	uint32_t tmp = read_reg(trans_reg(devid, pipe, PIPE_DDI_FUNC_CTL_A));
 +
-+	dsl = INREG(vlv_offset + reg);
++	if (!(tmp & PIPE_DDI_FUNC_ENABLE))
++		return false;
 +
-+	*field = dsl & 0x80000000;
-+	scanline = dsl & ~0x80000000;
-+
-+	/*
-+	 * FIXME would need to know vtotal to make
-+	 * this wrap around properly. For now just
-+	 * avoid reporting negative numbers and just
-+	 * potentially report sligtly incorrect numbers
-+	 * near the wraparound point.
-+	 *
-+	 * scanline_offset==0 by default to avoid people
-+	 * shooting themselves in the foot with this.
-+	 */
-+	return max(scanline + scanline_offset, 0);
++	switch (tmp & PIPE_DDI_MODE_SELECT_MASK) {
++	case PIPE_DDI_MODE_SELECT_HDMI:
++	case PIPE_DDI_MODE_SELECT_DVI:
++		return true;
++	default:
++		return false;
++	}
 +}
 +
- static void write_reg_16(uint32_t reg, uint16_t val)
++static int default_scanline_offset(uint32_t devid, int pipe)
++{
++	int display_ver = intel_display_ver(devid);
++
++	if (display_ver >= 20 || IS_BATTLEMAGE(devid))
++		return 1;
++	else if (display_ver >= 9 ||
++		 IS_BROADWELL(devid) || IS_HASWELL(devid))
++		return hsw_ddi_is_hdmi(devid, pipe) ? 2 : 1;
++	else if (display_ver >= 3)
++		return 1;
++	else
++		return -1;
++}
++
+ static void enable_async_flip(uint32_t devid, int pipe, bool enable)
  {
- 	OUTREG16(vlv_offset + reg, val);
-@@ -203,6 +227,7 @@ static void push_vrr(uint32_t devid, int pipe, int vrr_push_scanline)
- {
- 	uint32_t dsl = PIPE_REG(pipe, PIPEA_DSL);
- 	uint32_t push = trans_reg(devid, pipe, TRANS_PUSH_A);
-+	bool field;
- 
- 	if (vrr_push_scanline < 0)
- 		return;
-@@ -211,7 +236,7 @@ static void push_vrr(uint32_t devid, int pipe, int vrr_push_scanline)
- 		return;
- 
- 	while (!quit) {
--		uint32_t dsl1 = read_reg(dsl) & ~0x80000000;
-+		uint32_t dsl1 = read_scanline(dsl, &field);
- 		if (dsl1 == vrr_push_scanline)
- 			break;
- 	}
-@@ -224,8 +249,7 @@ static int wait_scanline(int pipe, int target_scanline, bool *field)
- 	uint32_t dsl_reg = PIPE_REG(pipe, PIPEA_DSL);
- 
- 	while (!quit) {
--		uint32_t dsl = read_reg(dsl_reg);
--		*field = dsl & 0x80000000;
-+		uint32_t dsl = read_scanline(dsl_reg, field);
- 		dsl &= ~0x80000000;
- 		if (dsl == target_scanline)
- 			return dsl;
-@@ -457,15 +481,10 @@ static void poll_dsl_pipestat(int pipe, int bit,
- 	write_reg(iir, iir_mask | iir_bit);
- 
- 	while (!quit) {
--		dsl1 = read_reg(dsl);
-+		dsl1 = read_scanline(dsl, &field1);
- 		iir1 = read_reg(iir);
- 		iir2 = read_reg(iir);
--		dsl2 = read_reg(dsl);
--
--		field1 = dsl1 & 0x80000000;
--		field2 = dsl2 & 0x80000000;
--		dsl1 &= ~0x80000000;
--		dsl2 &= ~0x80000000;
-+		dsl2 = read_scanline(dsl, &field2);
- 
- 		if (!(iir2 & iir_bit))
- 			continue;
-@@ -505,15 +524,10 @@ static void poll_dsl_iir_gen2(int pipe, int bit,
- 	write_reg_16(IIR, bit);
- 
- 	while (!quit) {
--		dsl1 = read_reg(dsl);
-+		dsl1 = read_scanline(dsl, &field1);
- 		iir1 = read_reg_16(IIR);
- 		iir2 = read_reg_16(IIR);
--		dsl2 = read_reg(dsl);
--
--		field1 = dsl1 & 0x80000000;
--		field2 = dsl2 & 0x80000000;
--		dsl1 &= ~0x80000000;
--		dsl2 &= ~0x80000000;
-+		dsl2 = read_scanline(dsl, &field2);
- 
- 		if (!(iir2 & bit))
- 			continue;
-@@ -556,15 +570,10 @@ static void poll_dsl_iir_gen3(int pipe, int bit,
- 	write_reg(IIR, bit);
- 
- 	while (!quit) {
--		dsl1 = read_reg(dsl);
-+		dsl1 = read_scanline(dsl, &field1);
- 		iir1 = read_reg(IIR);
- 		iir2 = read_reg(IIR);
--		dsl2 = read_reg(dsl);
--
--		field1 = dsl1 & 0x80000000;
--		field2 = dsl2 & 0x80000000;
--		dsl1 &= ~0x80000000;
--		dsl2 &= ~0x80000000;
-+		dsl2 = read_scanline(dsl, &field2);
- 
- 		if (!(iir2 & bit))
- 			continue;
-@@ -622,15 +631,10 @@ static void poll_dsl_deiir(uint32_t devid, int pipe, int bit,
- 		push_vrr(devid, pipe, vrr_push_scanline);
- 
- 		while (!quit) {
--			dsl1 = read_reg(dsl);
-+			dsl1 = read_scanline(dsl, &field1);
- 			iir1 = read_reg(iir);
- 			iir2 = read_reg(iir);
--			dsl2 = read_reg(dsl);
--
--			field1 = dsl1 & 0x80000000;
--			field2 = dsl2 & 0x80000000;
--			dsl1 &= ~0x80000000;
--			dsl2 &= ~0x80000000;
-+			dsl2 = read_scanline(dsl, &field2);
- 
- 			if (iir2 & bit)
- 				break;
-@@ -670,15 +674,10 @@ static void poll_dsl_framecount_g4x(uint32_t devid, int pipe,
- 		push_vrr(devid, pipe, vrr_push_scanline);
- 
- 		while (!quit) {
--			dsl1 = read_reg(dsl);
-+			dsl1 = read_scanline(dsl, &field1);
- 			frm1 = read_reg(frm);
- 			frm2 = read_reg(frm);
--			dsl2 = read_reg(dsl);
--
--			field1 = dsl1 & 0x80000000;
--			field2 = dsl2 & 0x80000000;
--			dsl1 &= ~0x80000000;
--			dsl2 &= ~0x80000000;
-+			dsl2 = read_scanline(dsl, &field2);
- 
- 			if (frm1 + 1 == frm2)
- 				break;
-@@ -709,14 +708,9 @@ static void poll_dsl_flipcount_g4x(uint32_t devid, int pipe,
- 
- 	while (!quit) {
- 		usleep(10);
--		dsl1 = read_reg(dsl);
-+		dsl1 = read_scanline(dsl, &field1);
- 		flp1 = read_reg(flp);
--		dsl2 = read_reg(dsl);
--
--		field1 = dsl1 & 0x80000000;
--		field2 = dsl2 & 0x80000000;
--		dsl1 &= ~0x80000000;
--		dsl2 &= ~0x80000000;
-+		dsl2 = read_scanline(dsl, &field2);
- 
- 		if (field1 != field2)
- 			printf("fields are different (%u:%u -> %u:%u)\n",
-@@ -765,15 +759,10 @@ static void poll_dsl_framecount_gen3(int pipe, uint32_t *min, uint32_t *max, con
- 	dsl = PIPE_REG(pipe, PIPEA_DSL);
- 
- 	while (!quit) {
--		dsl1 = read_reg(dsl);
-+		dsl1 = read_scanline(dsl, &field1);
- 		frm1 = read_reg(frm) >> 24;
- 		frm2 = read_reg(frm) >> 24;
--		dsl2 = read_reg(dsl);
--
--		field1 = dsl1 & 0x80000000;
--		field2 = dsl2 & 0x80000000;
--		dsl1 &= ~0x80000000;
--		dsl2 &= ~0x80000000;
-+		dsl2 = read_scanline(dsl, &field2);
- 
- 		if (frm1 + 1 != frm2)
- 			continue;
-@@ -805,15 +794,10 @@ static void poll_dsl_frametimestamp(uint32_t devid, int pipe,
- 		push_vrr(devid, pipe, vrr_push_scanline);
- 
- 		while (!quit) {
--			dsl1 = read_reg(dsl);
-+			dsl1 = read_scanline(dsl, &field1);
- 			frm1 = read_reg(frm);
- 			frm2 = read_reg(frm);
--			dsl2 = read_reg(dsl);
--
--			field1 = dsl1 & 0x80000000;
--			field2 = dsl2 & 0x80000000;
--			dsl1 &= ~0x80000000;
--			dsl2 &= ~0x80000000;
-+			dsl2 = read_scanline(dsl, &field2);
- 
- 			if (frm1 != frm2)
- 				break;
-@@ -859,9 +843,6 @@ static void poll_dsl_timestamp(uint32_t devid, int pipe, int target_scanline,
- 		frm1 = read_reg(frm);
- 		ts1 = read_reg(ts);
- 
--		field1 = dsl1 & 0x80000000;
--		dsl1 &= ~0x80000000;
--
- 		min[field1*count+i[field1]] = dsl1;
- 		max[field1*count+i[field1]] = ts1 - frm1;
- 		if (++i[field1] >= count)
-@@ -980,10 +961,7 @@ static void poll_dsl_flipdone_pipestat(uint32_t devid, int pipe, int target_scan
- 
- 		while (!quit) {
- 			pipestat2 = read_reg(pipestat);
--			dsl2 = read_reg(dsl);
--
--			field2 = dsl2 & 0x80000000;
--			dsl2 &= ~0x80000000;
-+			dsl2 = read_scanline(dsl, &field2);
- 
- 			if (pipestat2 & bit)
- 				break;
-@@ -1065,10 +1043,7 @@ static void poll_dsl_flipdone_deiir(uint32_t devid, int pipe, int target_scanlin
- 
- 		while (!quit) {
- 			iir2 = read_reg(iir);
--			dsl2 = read_reg(dsl);
--
--			field2 = dsl2 & 0x80000000;
--			dsl2 &= ~0x80000000;
-+			dsl2 = read_scanline(dsl, &field2);
- 
- 			if (iir2 & bit)
- 				break;
-@@ -1116,15 +1091,10 @@ static void poll_dsl_surflive(uint32_t devid, int pipe,
- 		push_vrr(devid, pipe, vrr_push_scanline);
- 
- 		while (!quit) {
--			dsl1 = read_reg(dsl);
-+			dsl1 = read_scanline(dsl, &field1);
- 			surfl1 = read_reg(surflive) & ~0xfff;
- 			surfl2 = read_reg(surflive) & ~0xfff;
--			dsl2 = read_reg(dsl);
--
--			field1 = dsl1 & 0x80000000;
--			field2 = dsl2 & 0x80000000;
--			dsl1 &= ~0x80000000;
--			dsl2 &= ~0x80000000;
-+			dsl2 = read_scanline(dsl, &field2);
- 
- 			if (surfl2 == surf2)
- 				break;
-@@ -1164,6 +1134,10 @@ static void poll_dsl_wrap(uint32_t devid, int pipe,
- 		push_vrr(devid, pipe, vrr_push_scanline);
- 
- 		while (!quit) {
-+			/*
-+			 * raw read_reg() instead of read_scanline()
-+			 * to avoid scanline_offset screwing this up.
-+			 */
- 			dsl1 = read_reg(dsl);
- 			dsl2 = read_reg(dsl);
- 
-@@ -1196,13 +1170,8 @@ static void poll_dsl_field(int pipe, uint32_t *min, uint32_t *max, const int cou
- 	dsl = PIPE_REG(pipe, PIPEA_DSL);
- 
- 	while (!quit) {
--		dsl1 = read_reg(dsl);
--		dsl2 = read_reg(dsl);
--
--		field1 = dsl1 & 0x80000000;
--		field2 = dsl2 & 0x80000000;
--		dsl1 &= ~0x80000000;
--		dsl2 &= ~0x80000000;
-+		dsl1 = read_scanline(dsl, &field1);
-+		dsl2 = read_scanline(dsl, &field2);
- 
- 		if (field1 == field2)
- 			continue;
-@@ -1230,15 +1199,10 @@ static void poll_dsl_vrr_push(uint32_t devid, int pipe,
- 		push_vrr(devid, pipe, vrr_push_scanline);
- 
- 		while (!quit) {
--			dsl1 = read_reg(dsl);
-+			dsl1 = read_scanline(dsl, &field1);
- 			vrr1 = read_reg(vrr);
- 			vrr2 = read_reg(vrr);
--			dsl2 = read_reg(dsl);
--
--			field1 = dsl1 & 0x80000000;
--			field2 = dsl2 & 0x80000000;
--			dsl1 &= ~0x80000000;
--			dsl2 &= ~0x80000000;
-+			dsl2 = read_scanline(dsl, &field2);
- 
- 			if (!(vrr2 & 0x40000000))
- 				break;
-@@ -1330,7 +1294,8 @@ static void __attribute__((noreturn)) usage(const char *name)
- 		" -f,--fuzz <target fuzz>\n"
+ 	int plane = pipe_to_plane(devid, pipe);
+@@ -1295,7 +1326,8 @@ static void __attribute__((noreturn)) usage(const char *name)
  		" -x,--pixel\n"
  		" -a,--async\n"
--		" -v,--vrr-push <push scanline>\n",
-+		" -v,--vrr-push <push scanline>\n"
-+		" -o,--scanline-offset <offset>\n",
+ 		" -v,--vrr-push <push scanline>\n"
+-		" -o,--scanline-offset <offset>\n",
++		" -o,--scanline-offset <offset>\n"
++		" -O,--auto-scanline-offset\n",
  		name);
  	exit(1);
  }
-@@ -1360,10 +1325,11 @@ int main(int argc, char *argv[])
- 			{ .name = "pixel", .has_arg = no_argument, .val = 'x', },
+@@ -1314,6 +1346,7 @@ int main(int argc, char *argv[])
+ 	uint32_t a, b;
+ 	enum test test = TEST_INVALID;
+ 	const int count = ARRAY_SIZE(min)/2;
++	bool auto_scanline_offset = false;
+ 
+ 	for (;;) {
+ 		static const struct option long_options[] = {
+@@ -1326,10 +1359,11 @@ int main(int argc, char *argv[])
  			{ .name = "async", .has_arg = no_argument, .val = 'a', },
  			{ .name = "vrr-push", .has_arg = required_argument, .val = 'v', },
-+			{ .name = "scanline-offset", .has_arg = required_argument, .val = 'o', },
+ 			{ .name = "scanline-offset", .has_arg = required_argument, .val = 'o', },
++			{ .name = "auto-scanline-offset", .has_arg = no_argument, .val = 'O', },
  			{ },
  		};
  
--		int opt = getopt_long(argc, argv, "t:p:b:l:f:xav:", long_options, NULL);
-+		int opt = getopt_long(argc, argv, "t:p:b:l:f:xav:o:", long_options, NULL);
+-		int opt = getopt_long(argc, argv, "t:p:b:l:f:xav:o:", long_options, NULL);
++		int opt = getopt_long(argc, argv, "t:p:b:l:f:xav:o:O", long_options, NULL);
  		if (opt == -1)
  			break;
  
-@@ -1439,6 +1405,9 @@ int main(int argc, char *argv[])
- 			if (vrr_push_scanline < 0)
+@@ -1406,8 +1440,12 @@ int main(int argc, char *argv[])
  				usage(argv[0]);
  			break;
-+		case 'o':
-+			scanline_offset = atoi(optarg);
+ 		case 'o':
++			auto_scanline_offset = false;
+ 			scanline_offset = atoi(optarg);
+ 			break;
++		case 'O':
++			auto_scanline_offset = true;
 +			break;
  		}
  	}
  
+@@ -1578,6 +1616,9 @@ int main(int argc, char *argv[])
+ 
+ 	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
+ 
++	if (auto_scanline_offset)
++		scanline_offset = default_scanline_offset(devid, pipe);
++
+ 	printf("%s?\n", test_name(test, pipe, bit, test_pixelcount));
+ 
+ 	signal(SIGHUP, sighandler);
 -- 
 2.49.1
 
