@@ -4,56 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62C81CAC5A8
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 14:36:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09744CAC592
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 15:35:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 115ED10E4BE;
-	Mon, 22 Sep 2025 14:36:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ACD5710E4D0;
+	Mon, 22 Sep 2025 15:35:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HhN7xWpX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AhA3JhFb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93FF010E4BF
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 14:36:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42F6A10E4D3
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 15:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758551795; x=1790087795;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=jRUY2kcR4blUviN20SYES4dqqKdesHyuWuoQs1QAuZ4=;
- b=HhN7xWpXEBEmgZx76Bcj4atmRk+egI20Gor7fBrZLfkhbZsjmprw5vww
- JfMetMT1A7aeV4B7XDHneJThF0K6QT/E9pp49H5x78Yt2nRMAhs06r/Ox
- texrHLQB0J1vyRzaEf5kcA41wm72wVm/te6jVerqd7cIIWtJaQFwBKg/R
- qYfR0CNpHKR93A5Yl5S9OjAEpR9Qvty7umzE4lHW5KTHNdxUnzq9W9Ki4
- ckjCJ5P08aoE5WL5R1N1inPh79fhUnFESYCamLS0GpEF2UpGzZjAKuQCK
- 6KGobPeAqy69G/WNdKw2DIlWWvYFrUTJVm12G4s4Oyt8EH0wPMW2LBfso g==;
-X-CSE-ConnectionGUID: 76Hhyq6NQjCP1/WFWBp5aQ==
-X-CSE-MsgGUID: b+iIDkmdSli6fBNTuiB+2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60868908"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="60868908"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 07:36:30 -0700
-X-CSE-ConnectionGUID: jhT6eLWPTbWHbGy18bP4aw==
-X-CSE-MsgGUID: /hgUIf0uTsaFUH6ZvgJSIw==
+ t=1758555357; x=1790091357;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=rb44PoZKzkLda00QC1sSv15xrT3wHkmTVxVIklDEXm4=;
+ b=AhA3JhFbDHKFaq0P1bJcCv1OqC/g7kFctYefrxg3BuzD+S1eY9pt+IEa
+ wh3IB9ySV1ek9PenfP3eYBlspG+FYNuMiGzDiD6gh7JNM2ziOUUTCn+vD
+ /3cYWRiCXtKoNQFr1oZT8b8i5BZdFZltzsNTbfe1QSvYk/ttnk1YhZrdu
+ /0u5WURd4JEEqYZ9qzYuC+xcMfA6i1wX4GhBNMIbTGQ33uL5fFKf8nt93
+ HknR0EI6tMzThNOkYQNrKpSAAiqOz5zjilgppuZhgbmsY/zsPinqgod+f
+ qbKLdYRz8mniOBhb3jrdxN/B6BUpXvwRQQ8uJPuAljVxEuE2dw2bdtFsz w==;
+X-CSE-ConnectionGUID: 05/7nHH+RaaDtKAUC2adkw==
+X-CSE-MsgGUID: 6MjAYw4mQxqfD7BhCtQuNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60760063"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="60760063"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2025 08:35:57 -0700
+X-CSE-ConnectionGUID: z1UP1bNcRLigV78R5AcfCg==
+X-CSE-MsgGUID: c2wcc/XFQU+txz1xfn/jCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="176104831"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
- ([10.245.244.64])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 07:36:28 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Matthew Auld <matthew.auld@intel.com>,
- Nakshtra Goyal <nakshtra.goyal@intel.com>
-Subject: [PATCH i-g-t] tests/xe_pat: Check source surface is intact
-Date: Mon, 22 Sep 2025 16:36:22 +0200
-Message-ID: <20250922143621.209312-2-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="207245346"
+Received: from kthiru1x-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.178.192])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2025 08:35:55 -0700
+Date: Mon, 22 Sep 2025 08:35:54 -0700
+Message-ID: <87348esdnp.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Daniel Charles <daniel.charles@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH] tests/intel/xe_exec_reset: expect error or complete on
+ CAT_ERROR
+In-Reply-To: <de1dbb13-b9ba-42e1-a9c4-a9ff57006dfc@intel.com>
+References: <20250919222836.82407-1-daniel.charles@intel.com>	<854isyxabr.wl-ashutosh.dixit@intel.com>	<de1dbb13-b9ba-42e1-a9c4-a9ff57006dfc@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,35 +71,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Theoretically nothing should influence on source surface during
-render-copy operation. But I observe there's some interfence
-between different pat-index surfaces.
+On Fri, 19 Sep 2025 17:07:28 -0700, Daniel Charles wrote:
+>
+> On 9/19/2025 4:59 PM, Dixit, Ashutosh wrote:
+> > On Fri, 19 Sep 2025 15:28:36 -0700, Daniel Charles wrote:
+> >> when running cm job, it could be that after the fence is checked, a
+> >> CAT_ERROR will throw an error in the same way as GT_RESET does.
+> >>
+> >> Signed-off-by: Daniel Charles <daniel.charles@intel.com>
+> >> ---
+> >>   tests/intel/xe_exec_reset.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+> >> index 7ae53c679..73c5c7e20 100644
+> >> --- a/tests/intel/xe_exec_reset.c
+> >> +++ b/tests/intel/xe_exec_reset.c
+> >> @@ -433,7 +433,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> >>
+> >>		err = __xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+> >>				       exec_queues[i % n_exec_queues], &timeout);
+> >> -		if (flags & GT_RESET)
+> >> +		if (flags & GT_RESET || flags & CAT_ERROR)
+> > Hi Daniel,
+> >
+> > 1. Is there a gitlab bug about this? If yes, could you please add a
+> >     'Closes:' tag to this patch (see git log)
+> not that I'm aware of.
 
-Add source surface check which should never asserts.
+There should have been a previous failure which this patch is fixing,
+correct? So we would expect there to be a previous bug. Anyway.
 
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5507
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Nakshtra Goyal <nakshtra.goyal@intel.com>
----
- tests/intel/xe_pat.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> >
+> > 2. Would you have a reference to the kernel code that a CAT error returns
+> >     -EIO?
+>
+> when there's an engine reset a job that was sent to execution and didn't
+> finish before the cat error, the driver will return -EIO as it does with a
+> full reset.
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 8bb0ac167d..8201720777 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -430,6 +430,10 @@ static void pat_index_render(struct xe_pat_param *p)
- 		    0, 0);
- 	intel_bb_sync(ibb);
- 
-+	/* Ensure nothing corrupted source */
-+	for (i = 0; i < size / sizeof(uint32_t); i++)
-+		igt_assert_eq(p->r1_map[i], i);
-+
- 	if (do_slow_check) {
- 		for (i = 0; i < size / 4; i++)
- 			igt_assert_eq(p->r2_map[i], i);
--- 
-2.43.0
+OK, from xe_guc_exec_queue_memory_cat_error_handler(), what happens is the
+exec_queue is reset on CAT error, which in turn would return -EIO.
 
+So this is:
+
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+
+
+>
+> > Thanks.
+> > --
+> > Ashutosh
+> >
+> >>			/* exec races with reset: may return -EIO or complete */
+> >>			igt_assert(err == -EIO || !err);
+> >>		else
+> >> --
+> >> 2.43.0
+> >>
