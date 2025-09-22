@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F5D8CAC592
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 16:10:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72470CAC592
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 16:10:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2241310E1E1;
-	Mon, 22 Sep 2025 16:10:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2601810E499;
+	Mon, 22 Sep 2025 16:10:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hDLQm8mq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DzTd0qnM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D132310E4A1
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 16:10:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BB1610E499
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 16:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758557414; x=1790093414;
+ t=1758557417; x=1790093417;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=G2dvT4r2jBaUKWBcKwRUPbkd+JPgBmh8x8FOWWbWi7o=;
- b=hDLQm8mq9H64Y1BV+5LmeEQ9yueGW76o6B0624Hc7qN1XUuQtXS8A6Qg
- VjIkeJwYShO4T1g4wZjzC2ggz+9tgMhzmk7X9x2elJyoX3ZFrdWgF0Bu8
- Cemm0lN1Z35OgE/WFJ+f8j/XXjhRvWwY4PeWXlrBky07r6OlkGgkF3QLK
- zmREdFRgd+xPIEAjRi5XougjEFLFuhsYbcwv2Rk0V79ZiTUKcVLkSAT86
- gH7VCnqKN1LwnJ6efVkwteeWIybtOgO/6hK0DQsNpJsn85rHYb1Hauraz
- szyfC9DoYih0OdAC8P/qlKgVLYkJzfHaPzfkQvY+RIYufRShthlXxTlbY g==;
-X-CSE-ConnectionGUID: DfRez2uMSXiYau4xHAsIgw==
-X-CSE-MsgGUID: kQutr9suQFakiKJmLdPjBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="83425540"
-X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="83425540"
+ bh=VYSY1DfZb/CeI1wsTFw1Z1KdWht33VQU6wcKiQ5nA5o=;
+ b=DzTd0qnMRR8vuEU0YMy8yldW/zAJXilLhN86P6eIObSq0JQ27/3a2aId
+ TN0Pm8FrIeFJb7Ql5rgbZhgZmo5FXqIj9bttyWmiiFtNdAbhURUtITHFT
+ dRJ4x7fNckd671Ij+mHPjYWqZjJdLQXAP1z1e9FIw584oV8kxobi8Stpz
+ PynyoI/l5YOXU7jUEPGicUVagFq7CNMAENR1ZYLH70y8kR5zQ9SZedTEW
+ dO+8MgMmKAqnUWtJBcNMFOIAvXiHEPOfky8ixkMbdHRAga+dbBT5WK7C1
+ QAknAPYwbKm/xLIh8mIYyDoK3KyHQv0/0w4YJkVe+5kIl3nefEcI26fqZ g==;
+X-CSE-ConnectionGUID: Leoum/FoRXaY8LEIkf3X7Q==
+X-CSE-MsgGUID: WKO0JenhTXq0Lm0V/HIvVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="83425543"
+X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="83425543"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 09:10:14 -0700
-X-CSE-ConnectionGUID: 3aNRu0k0REi/HgcdPUGm/A==
-X-CSE-MsgGUID: ZrRNf07JRw+Sfm/knbTyiQ==
+ 22 Sep 2025 09:10:17 -0700
+X-CSE-ConnectionGUID: z7kaBVBAT7S8madDM48pBw==
+X-CSE-MsgGUID: eGn11ADBQeClTQ4jKZSdGA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="181664999"
+X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; d="scan'208";a="181665018"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.115])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 09:10:12 -0700
+ 22 Sep 2025 09:10:16 -0700
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 5/7] tools/intel_display_poller: Add
- --auto-scanline-offset/-O comamnd line option
-Date: Mon, 22 Sep 2025 19:09:47 +0300
-Message-ID: <20250922160950.27250-6-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 6/7] tools/intel_display_poller: Add dsb-status-live test
+Date: Mon, 22 Sep 2025 19:09:48 +0300
+Message-ID: <20250922160950.27250-7-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250922160950.27250-1-ville.syrjala@linux.intel.com>
 References: <20250922160950.27250-1-ville.syrjala@linux.intel.com>
@@ -72,131 +71,152 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Using the --scanline-offset/-o option to manually specify the scanline
-offset can be a bit error prone since the appropriate offset depends
-not only on the hardware generation, but sometimes also on the output
-type (HDMI vs. not). Add a --auto-scanline-offset/-O option that tries
-to automagically determin the correct offset by examinign the current
-hardware state.
+Add a dsb-status-live test that can be used to poll for live
+status bits in the DSB_STATUS register.
 
-Note that DSI outputs aren't really handled properly by
-hsw_ddi_is_hdmi(), or even by trans_reg() in general. So this
-might give the wrong answer there.
+Eg.
+intel_display_poller --pipe a --test dsb-status-live --bit 26
+will look for the DSB safe window rising edge.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/intel_reg.h              |  1 +
- tools/intel_display_poller.c | 45 ++++++++++++++++++++++++++++++++++--
- 2 files changed, 44 insertions(+), 2 deletions(-)
+ lib/intel_reg.h              |  4 +++
+ tools/intel_display_poller.c | 57 +++++++++++++++++++++++++++++++++++-
+ 2 files changed, 60 insertions(+), 1 deletion(-)
 
 diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index 66911d015bd5..57d4420cf605 100644
+index 57d4420cf605..fd35e4bb366a 100644
 --- a/lib/intel_reg.h
 +++ b/lib/intel_reg.h
-@@ -3531,6 +3531,7 @@ typedef enum {
- /* Those bits are ignored by pipe EDP since it can only connect to DDI A */
- #define  PIPE_DDI_PORT_MASK		(0xf<<28)
- #define  PIPE_DDI_SELECT_PORT(x)	((x)<<28)
-+#define  PIPE_DDI_MODE_SELECT_MASK	(7<<24)
- #define  PIPE_DDI_MODE_SELECT_HDMI	(0<<24)
- #define  PIPE_DDI_MODE_SELECT_DVI	(1<<24)
- #define  PIPE_DDI_MODE_SELECT_DP_SST	(2<<24)
+@@ -2275,6 +2275,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #define FW_BLC2		0x020dc
+ #define FW_BLC_SELF	0x020e0 /* 915+ only */
+ 
++#define DSB_STATUS_0_A			0x70B24
++#define   DSB_SAFE_WINDOW_LIVE		(1 << 26)
++#define   DSB_SAFE_WINDOW_STICKY	(1 << 19)
++
+ #define DSPARB			0x70030
+ #define   DSPARB_CSTART_SHIFT	7
+ #define   DSPARB_BSTART_SHIFT	0
 diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
-index 24ed28ccf7da..b077390d14a1 100644
+index b077390d14a1..21e4e847a6b6 100644
 --- a/tools/intel_display_poller.c
 +++ b/tools/intel_display_poller.c
-@@ -207,6 +207,37 @@ static uint32_t trans_reg(uint32_t devid, int pipe, uint32_t reg)
- 	return PIPE_REG(trans, reg);
+@@ -61,6 +61,7 @@ enum test {
+ 	TEST_WRAP,
+ 	TEST_FIELD,
+ 	TEST_VRR_PUSH,
++	TEST_DSB_STATUS_LIVE,
+ };
+ 
+ static uint32_t vlv_offset;
+@@ -1253,6 +1254,46 @@ static void poll_dsl_vrr_push(uint32_t devid, int pipe,
+ 	}
  }
  
-+static bool hsw_ddi_is_hdmi(uint32_t devid, int pipe)
++static void poll_dsl_dsb_status_live(uint32_t devid, int pipe, int bit,
++				     uint32_t *min, uint32_t *max, const int count,
++				     int vrr_push_scanline)
 +{
-+	uint32_t tmp = read_reg(trans_reg(devid, pipe, PIPE_DDI_FUNC_CTL_A));
++	uint32_t dsl, dsl1, dsl2;
++	uint32_t dsb, dsb1, dsb2;
++	bool field1, field2;
++	int i[2] = {};
 +
-+	if (!(tmp & PIPE_DDI_FUNC_ENABLE))
-+		return false;
++	bit = 1 << bit;
++	dsl = PIPE_REG(pipe, PIPEA_DSL);
++	dsb = PIPE_REG(pipe, DSB_STATUS_0_A);
 +
-+	switch (tmp & PIPE_DDI_MODE_SELECT_MASK) {
-+	case PIPE_DDI_MODE_SELECT_HDMI:
-+	case PIPE_DDI_MODE_SELECT_DVI:
-+		return true;
-+	default:
-+		return false;
++	while (!quit) {
++		push_vrr(devid, pipe, vrr_push_scanline);
++
++		while (!quit) {
++			dsl1 = read_scanline(dsl, &field1);
++			dsb1 = read_reg(dsb);
++			dsb2 = read_reg(dsb);
++			dsl2 = read_scanline(dsl, &field2);
++
++			if (dsb2 & bit)
++				break;
++		}
++
++		if (dsb1 & bit)
++			continue;
++
++		if (field1 != field2)
++			printf("fields are different (%u:%u -> %u:%u)\n",
++			       field1, dsl1, field2, dsl2);
++
++		min[field1*count+i[field1]] = dsl1;
++		max[field1*count+i[field1]] = dsl2;
++		if (++i[field1] >= count)
++			break;
 +	}
 +}
 +
-+static int default_scanline_offset(uint32_t devid, int pipe)
-+{
-+	int display_ver = intel_display_ver(devid);
-+
-+	if (display_ver >= 20 || IS_BATTLEMAGE(devid))
-+		return 1;
-+	else if (display_ver >= 9 ||
-+		 IS_BROADWELL(devid) || IS_HASWELL(devid))
-+		return hsw_ddi_is_hdmi(devid, pipe) ? 2 : 1;
-+	else if (display_ver >= 3)
-+		return 1;
-+	else
-+		return -1;
-+}
-+
- static void enable_async_flip(uint32_t devid, int pipe, bool enable)
+ static const char *test_name(enum test test, int pipe, int bit, bool test_pixel_count)
  {
- 	int plane = pipe_to_plane(devid, pipe);
-@@ -1295,7 +1326,8 @@ static void __attribute__((noreturn)) usage(const char *name)
- 		" -x,--pixel\n"
- 		" -a,--async\n"
- 		" -v,--vrr-push <push scanline>\n"
--		" -o,--scanline-offset <offset>\n",
-+		" -o,--scanline-offset <offset>\n"
-+		" -O,--auto-scanline-offset\n",
- 		name);
- 	exit(1);
- }
-@@ -1314,6 +1346,7 @@ int main(int argc, char *argv[])
- 	uint32_t a, b;
- 	enum test test = TEST_INVALID;
- 	const int count = ARRAY_SIZE(min)/2;
-+	bool auto_scanline_offset = false;
- 
- 	for (;;) {
+ 	static char str[64];
+@@ -1310,6 +1351,9 @@ static const char *test_name(enum test test, int pipe, int bit, bool test_pixel_
+ 	case TEST_VRR_PUSH:
+ 		snprintf(str, sizeof str, "%s / pipe %c / VRR push", type, pipe_name(pipe));
+ 		return str;
++	case TEST_DSB_STATUS_LIVE:
++		snprintf(str, sizeof str, "%s / pipe %c / DSB_STATUS[%d]", type, pipe_name(pipe), bit);
++		return str;
+ 	default:
+ 		return "";
+ 	}
+@@ -1318,8 +1362,9 @@ static const char *test_name(enum test test, int pipe, int bit, bool test_pixel_
+ static void __attribute__((noreturn)) usage(const char *name)
+ {
+ 	fprintf(stderr, "Usage: %s [options]\n"
+-		" -t,--test <pipestat|iir|framecount|flipcount|frametimestamp|timestamp|pan|flip|flipdone|surflive|wrap|field|vrr-push>\n"
++		" -t,--test <pipestat|iir|framecount|flipcount|frametimestamp|timestamp|pan|flip|flipdone|surflive|wrap|field|vrr-push|dsb-status>\n"
+ 		" -p,--pipe <pipe>\n"
++		" -d,--dsb-id <dsb id>\n"
+ 		" -b,--bit <bit>\n"
+ 		" -l,--line <target scanline/pixel>\n"
+ 		" -f,--fuzz <target fuzz>\n"
+@@ -1352,6 +1397,7 @@ int main(int argc, char *argv[])
  		static const struct option long_options[] = {
-@@ -1326,10 +1359,11 @@ int main(int argc, char *argv[])
- 			{ .name = "async", .has_arg = no_argument, .val = 'a', },
- 			{ .name = "vrr-push", .has_arg = required_argument, .val = 'v', },
- 			{ .name = "scanline-offset", .has_arg = required_argument, .val = 'o', },
-+			{ .name = "auto-scanline-offset", .has_arg = no_argument, .val = 'O', },
- 			{ },
- 		};
- 
--		int opt = getopt_long(argc, argv, "t:p:b:l:f:xav:o:", long_options, NULL);
-+		int opt = getopt_long(argc, argv, "t:p:b:l:f:xav:o:O", long_options, NULL);
- 		if (opt == -1)
- 			break;
- 
-@@ -1406,8 +1440,12 @@ int main(int argc, char *argv[])
+ 			{ .name = "test", .has_arg = required_argument, .val = 't', },
+ 			{ .name = "pipe", .has_arg = required_argument, .val = 'b', },
++			{ .name = "dsb-id", .has_arg = required_argument, .val = 'd', },
+ 			{ .name = "bit", .has_arg = required_argument, .val = 'b', },
+ 			{ .name = "line", .has_arg = required_argument, .val = 'l', },
+ 			{ .name = "fuzz", .has_arg = required_argument, .val = 'f', },
+@@ -1395,6 +1441,8 @@ int main(int argc, char *argv[])
+ 				test = TEST_FIELD;
+ 			else if (!strcmp(optarg, "vrr-push"))
+ 				test = TEST_VRR_PUSH;
++			else if (!strcmp(optarg, "dsb-status-live"))
++				test = TEST_DSB_STATUS_LIVE;
+ 			else
  				usage(argv[0]);
  			break;
- 		case 'o':
-+			auto_scanline_offset = false;
- 			scanline_offset = atoi(optarg);
+@@ -1590,6 +1638,10 @@ int main(int argc, char *argv[])
+ 			if (intel_display_ver(devid) < 11)
+ 				usage(argv[0]);
  			break;
-+		case 'O':
-+			auto_scanline_offset = true;
++		case TEST_DSB_STATUS_LIVE:
++			if (intel_display_ver(devid) < 12)
++				usage(argv[0]);
 +			break;
- 		}
+ 		case TEST_FLIPCOUNT:
+ 		case TEST_PAN:
+ 		case TEST_FLIP:
+@@ -1707,6 +1759,9 @@ int main(int argc, char *argv[])
+ 	case TEST_VRR_PUSH:
+ 		poll_dsl_vrr_push(devid, pipe, min, max, count, vrr_push_scanline);
+ 		break;
++	case TEST_DSB_STATUS_LIVE:
++		poll_dsl_dsb_status_live(devid, pipe, bit, min, max, count, vrr_push_scanline);
++		break;
+ 	default:
+ 		assert(0);
  	}
- 
-@@ -1578,6 +1616,9 @@ int main(int argc, char *argv[])
- 
- 	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0);
- 
-+	if (auto_scanline_offset)
-+		scanline_offset = default_scanline_offset(devid, pipe);
-+
- 	printf("%s?\n", test_name(test, pipe, bit, test_pixelcount));
- 
- 	signal(SIGHUP, sighandler);
 -- 
 2.49.1
 
