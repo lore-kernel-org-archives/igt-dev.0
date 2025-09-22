@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DFDCA100F
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 23:09:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B069DCAC5AC
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 23:21:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E236D10E00E;
-	Mon, 22 Sep 2025 23:09:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4ABEC10E00E;
+	Mon, 22 Sep 2025 23:21:57 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28F4210E00E;
- Mon, 22 Sep 2025 23:09:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A63910E00E;
+ Mon, 22 Sep 2025 23:21:56 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7935665108296571109=="
+ boundary="===============8864204400306359262=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fconfigfs?=
- =?utf-8?q?=3A_Test_invalid_engine_with_valid_class?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFull=3A_success_for_tools/intel=5Fdisplay=5Fpo?=
+ =?utf-8?q?ller=3A_Various_things?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 22 Sep 2025 23:09:02 -0000
-Message-ID: <175858254214.355661.3512976423793900578@1538d3639d33>
+Date: Mon, 22 Sep 2025 23:21:56 -0000
+Message-ID: <175858331608.355749.9760377805164496769@1538d3639d33>
 X-Patchwork-Hint: ignore
-References: <20250922221315.111774-2-lucas.demarchi@intel.com>
-In-Reply-To: <20250922221315.111774-2-lucas.demarchi@intel.com>
+References: <20250922160950.27250-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20250922160950.27250-1-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,111 +41,59 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7935665108296571109==
+--===============8864204400306359262==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_configfs: Test invalid engine with valid class
-URL   : https://patchwork.freedesktop.org/series/154871/
+Series: tools/intel_display_poller: Various things
+URL   : https://patchwork.freedesktop.org/series/154853/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8548 -> IGTPW_13799
+CI Bug Log - changes from XEIGT_8547_FULL -> XEIGTPW_13796_FULL
 ====================================================
 
 Summary
 -------
 
-  **WARNING**
+  **SUCCESS**
 
-  Minor unknown changes coming with IGTPW_13799 need to be verified
-  manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_13799, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/index.html
-
-Participating hosts (39 -> 39)
+Participating hosts (4 -> 3)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): shard-adlp 
 
-Possible new issues
--------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_13799:
+Changes
+-------
 
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_module_load@load:
-    - fi-cfl-8700k:       [ABORT][1] ([i915#15020]) -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/fi-cfl-8700k/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/fi-cfl-8700k/igt@i915_module_load@load.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13799 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - fi-kbl-8809g:       [PASS][3] -> [ABORT][4] ([i915#15020])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/fi-kbl-8809g/igt@kms_force_connector_basic@force-connector-state.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/fi-kbl-8809g/igt@kms_force_connector_basic@force-connector-state.html
-
-  
-#### Warnings ####
-
-  * igt@i915_module_load@load:
-    - fi-elk-e7500:       [ABORT][5] -> [ABORT][6] ([i915#15020])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/fi-elk-e7500/igt@i915_module_load@load.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/fi-elk-e7500/igt@i915_module_load@load.html
-
-  * igt@i915_selftest@live:
-    - bat-atsm-1:         [DMESG-FAIL][7] ([i915#12061] / [i915#14204]) -> [DMESG-FAIL][8] ([i915#12061] / [i915#13929])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/bat-atsm-1/igt@i915_selftest@live.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/bat-atsm-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-atsm-1:         [DMESG-FAIL][9] ([i915#14204]) -> [DMESG-FAIL][10] ([i915#13929])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/bat-atsm-1/igt@i915_selftest@live@mman.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/bat-atsm-1/igt@i915_selftest@live@mman.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
-  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
-  [i915#15020]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8548 -> IGTPW_13799
+  * IGT: IGT_8547 -> IGTPW_13796
+  * Linux: xe-3812-c4d19320a0e2f7d8dec97d4a59309349a3a63ec0 -> xe-3813-3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1
 
-  CI-20190529: 20190529
-  CI_DRM_17254: 3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13799: 13799
-  IGT_8548: 8548
+  IGTPW_13796: bdc7bb7c338b0c00eed2d5258e2e997533da9813 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8547: 8547
+  xe-3812-c4d19320a0e2f7d8dec97d4a59309349a3a63ec0: c4d19320a0e2f7d8dec97d4a59309349a3a63ec0
+  xe-3813-3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1: 3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13796/index.html
 
---===============7935665108296571109==
+--===============8864204400306359262==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -165,78 +113,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_configfs: Test invalid engine with valid class</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154871/">https://patchwork.freedesktop.org/series/154871/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tools/intel_display_poller: Various things</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154853/">https://patchwork.freedesktop.org/series/154853/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13796/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13796/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8548 -&gt; IGTPW_13799</h1>
+    <h1>CI Bug Log - changes from XEIGT_8547_FULL -&gt; XEIGTPW_13796_FULL</h1>
 <h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with IGTPW_13799 need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_13799, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/index.html</p>
-<h2>Participating hosts (39 -&gt; 39)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_13799:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_module_load@load:<ul>
-<li>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/fi-cfl-8700k/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020">i915#15020</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/fi-cfl-8700k/igt@i915_module_load@load.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13799 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_force_connector_basic@force-connector-state:<ul>
-<li>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/fi-kbl-8809g/igt@kms_force_connector_basic@force-connector-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/fi-kbl-8809g/igt@kms_force_connector_basic@force-connector-state.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020">i915#15020</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/fi-elk-e7500/igt@i915_module_load@load.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/fi-elk-e7500/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15020">i915#15020</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8548/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13799/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 3)</h2>
+<p>Missing    (1): shard-adlp </p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8548 -&gt; IGTPW_13799</li>
+<li>IGT: IGT_8547 -&gt; IGTPW_13796</li>
+<li>Linux: xe-3812-c4d19320a0e2f7d8dec97d4a59309349a3a63ec0 -&gt; xe-3813-3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17254: 3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13799: 13799<br />
-  IGT_8548: 8548</p>
+<p>IGTPW_13796: bdc7bb7c338b0c00eed2d5258e2e997533da9813 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8547: 8547<br />
+  xe-3812-c4d19320a0e2f7d8dec97d4a59309349a3a63ec0: c4d19320a0e2f7d8dec97d4a59309349a3a63ec0<br />
+  xe-3813-3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1: 3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1</p>
 
 </body>
 </html>
 
---===============7935665108296571109==--
+--===============8864204400306359262==--
