@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 206D3CAC5A7
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 04:02:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A04D5CAC592
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Sep 2025 04:43:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A30CE10E3A1;
-	Mon, 22 Sep 2025 04:02:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1438D10E3A0;
+	Mon, 22 Sep 2025 04:43:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AwPT5YVf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AaSgU6cR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B2ED10E3A0
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 04:02:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07FC810E3A0
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Sep 2025 04:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758513740; x=1790049740;
+ t=1758516189; x=1790052189;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=1eJQ0IkbNxh6BEUsgz/z3kej6wiEyOO1GrGaw2iY0IE=;
- b=AwPT5YVfD0SYuB98HtuUUZNAD7/e2wHHSSm8wfEc9nBoXcGALhFn2zeh
- NPQ8ePnErK1LH7jImCIPklq0FCawp795ACaFFK2NuHazJdltz+ACcLtU+
- EJTysUzb7b3qUwDoERjgBK4LNtdSxry/VRngbTKSqqcLhjfyu/Od8yY+a
- 2gW4C5ZXMl/Q1TX3M8I/Qm7xHklsyCMeIpMSAKe2Mx7VGMNtBITKKgFVa
- t1vEGMdttoHac/7m9HcPH/AL1pXRR5GawumB4P5sLM3tIYbu1KMJb6k0N
- /5w0J9ui0rGkF2Aq6OVjdEj0YumHhYBj4k6Ur4BYxbcYvuizQwMbrPUpA g==;
-X-CSE-ConnectionGUID: zQTnhxm7QdmZT5ottIIFfA==
-X-CSE-MsgGUID: 30iCVbm1RhOAnJfhI/EuxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="48347795"
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; d="scan'208";a="48347795"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2025 21:02:05 -0700
-X-CSE-ConnectionGUID: SGkJXSphR6KMnQ3Kb88zlQ==
-X-CSE-MsgGUID: Qk5s/ecyQj6lNO8sCJOM2Q==
+ b=AaSgU6cRlfI5+vwRfXn+ImEXQcAZS2GYWaIbLkYBlPR1Cbx2qGsBLIhX
+ Jv6ZxLLKF+3Jz5mLPXc6V+4Yv8PNbXUgP/EMqwdStoD7JfixXF4VgDwGk
+ 2A/kT2uzVaX0VdksZGbdFtQAMKzzan0m6GLllgS7at0htszID5lvq5n7S
+ 4Tgj4mi1DfTJ85ByZ14ir4sDK8B2yIebiGcS4AJTR5iQjQVBWNcMBlvQZ
+ UU8MjSMSLP9DuCnWYk4+lCErIIVI8AU1t+ITLlkZB/FncezBGhZU9o5fj
+ eCF0xs/xldD7izU1YTwC4z18sq4RN3rijz56vwerVRkYHjsG0mhjiazVG w==;
+X-CSE-ConnectionGUID: j0LusWnZRHa3rxUPy2DDjg==
+X-CSE-MsgGUID: L5V7UnPpQEWI600ISVexSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="60467118"
+X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; d="scan'208";a="60467118"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2025 21:43:09 -0700
+X-CSE-ConnectionGUID: ju4G7Z4BT6Obaaqb02lNaA==
+X-CSE-MsgGUID: FolXBy1mTZ6yT14DZQsbBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; d="scan'208";a="176192634"
+X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; d="scan'208";a="207344443"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 21:01:59 -0700
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2025 21:43:07 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com,
 	Jeevan B <jeevan.b@intel.com>
 Subject: [PATCH i-g-t 0/2] tests/kms_setmode: Fix clone mode mismatch by
  preferring eDP mode
-Date: Mon, 22 Sep 2025 09:31:49 +0530
-Message-ID: <20250922040151.1374078-1-jeevan.b@intel.com>
+Date: Mon, 22 Sep 2025 10:12:47 +0530
+Message-ID: <20250922044249.1374338-1-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
