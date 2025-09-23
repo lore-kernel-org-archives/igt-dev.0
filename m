@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EF98CAC5A5
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 04:02:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72E9CCAC5A7
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 04:25:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA37010E067;
-	Tue, 23 Sep 2025 04:02:56 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DHTda+c3";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D87110E067
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 04:02:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758600176; x=1790136176;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1KzmiNNhRH5anwpR9NZwelpMhL0NkdA8nP5BZj3vk0E=;
- b=DHTda+c3Y9qBUN+NAIvLDYG/v4IHmHY7JDi0fZfo97jCcRLS/Vnvy/4c
- sdCNLI+B/YgYhoqbhCyQDwC3+e4/YKGNk786jyyoBj1dalYVVb/gqtkwO
- E35J2KM01XvMTGNpnE1LJqXbzXzPv3RP3zi3nqSwRGFhDkGplTaEHx3Pg
- W/4pJ2YPJt0+y9oq+kMgMKxUmSJZcI9ubNnI1AFm9wkOXhZXwGslUdmh+
- NAavBFhv4Y8gSaWso8VI6wUMgFCRGCCmUU/B94Dmerg9NB8nVTuR9P3pj
- 0SrBaIoPm/x1aOiatiWNqDk8qRpzYlV22Kb3g6HlI3nYZyYSbEPc1/CsB w==;
-X-CSE-ConnectionGUID: J2qUK9ylQyeac9M3Ue7JpA==
-X-CSE-MsgGUID: dqUg3d+VT/KoEzQ+p0qiJg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64676678"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="64676678"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 21:02:56 -0700
-X-CSE-ConnectionGUID: u5diXgi4QBS8zonKulawUQ==
-X-CSE-MsgGUID: 6jsg/L6qSdS0qlqgYEDg3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="176729645"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 21:02:54 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com, swati2.sharma@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 1/1] tests/kms_plane: Optimize pixel format testing
- for simulation mode
-Date: Tue, 23 Sep 2025 09:32:43 +0530
-Message-ID: <20250923040243.3664141-1-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 10B4A10E02E;
+	Tue, 23 Sep 2025 04:25:13 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7082E10E02E;
+ Tue, 23 Sep 2025 04:25:11 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7135404866100879784=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFull=3A_success_for_tests/intel/xe=5Fconfigfs?=
+ =?utf-8?q?=3A_Test_invalid_engine_with_valid_class?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 23 Sep 2025 04:25:11 -0000
+Message-ID: <175860151145.356427.12146682496483639203@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250922221315.111774-2-lucas.demarchi@intel.com>
+In-Reply-To: <20250922221315.111774-2-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,55 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To improve test efficiency in simulation mode, logic was added to
-skip pixel format tests involving the "linear" modifier, which is
-known to be slow due to framebuffer fill operations. Additionally,
-test execution was limited to a single plane to further reduce
-runtime.
+--===============7135404866100879784==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/kms_plane.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+== Series Details ==
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index f7b672c7a..1de789ca2 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1106,6 +1106,16 @@ static void test_format_plane(data_t *data, enum pipe pipe,
- 		    f.modifier == ref.modifier)
- 			continue;
- 
-+		/*
-+		 * Filling framebuffers with the "linear" format is relatively slow,
-+		 * which significantly increases the duration of the test. To
-+		 * improve timing and efficiency in simulation mode, linear formats
-+		 * are skipped.
-+		 */
-+		if (!strcmp(igt_fb_modifier_name(f.modifier), "linear") &&
-+		    igt_run_in_simulation())
-+			continue;
-+
- 		if (skip_format_mod(data, f.format, f.modifier, &tested_formats)) {
- 			igt_info("Skipping format " IGT_FORMAT_FMT " / modifier "
- 				 IGT_MODIFIER_FMT " on %s.%u\n",
-@@ -1229,6 +1239,13 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 			continue;
- 		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(pipe), plane->index)
- 			test_format_plane(data, pipe, output, plane, &primary_fb);
-+
-+		/*
-+		 * In simulation mode, we only run the pixel format test on the first plane
-+		 * to reduce test execution time.
-+		 */
-+		if (igt_run_in_simulation())
-+			break;
- 	}
- 
- 	test_fini(data);
--- 
-2.43.0
+Series: tests/intel/xe_configfs: Test invalid engine with valid class
+URL   : https://patchwork.freedesktop.org/series/154871/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8548_FULL -> XEIGTPW_13799_FULL
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 3)
+------------------------------
+
+  Missing    (1): shard-adlp 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8548 -> IGTPW_13799
+
+  IGTPW_13799: 13799
+  IGT_8548: 8548
+  xe-3813-3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1: 3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13799/index.html
+
+--===============7135404866100879784==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_configfs: Test invalid engine with valid class</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154871/">https://patchwork.freedesktop.org/series/154871/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13799/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13799/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8548_FULL -&gt; XEIGTPW_13799_FULL</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 3)</h2>
+<p>Missing    (1): shard-adlp </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8548 -&gt; IGTPW_13799</li>
+</ul>
+<p>IGTPW_13799: 13799<br />
+  IGT_8548: 8548<br />
+  xe-3813-3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1: 3ff214d6c6a86025aa3feadcb5bba4abfc2dd8f1</p>
+
+</body>
+</html>
+
+--===============7135404866100879784==--
