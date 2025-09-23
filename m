@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0E17CAC5A7
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 06:46:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DFDACAC5B1
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 08:14:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A18810E0E3;
-	Tue, 23 Sep 2025 06:46:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ABB3610E590;
+	Tue, 23 Sep 2025 08:14:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hSQ12kdH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ezkLCV+n";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 531F310E0E3
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 06:46:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C40310E590
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 08:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758609999; x=1790145999;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=tpj6Oyyw2pflXO7+QR7mUU+p+FaZHWv1wxHxomSIO0w=;
- b=hSQ12kdHL+ruT9WgcTbuXdhPW2H0PU6vY3FMXiidc24tAQAqblz0m2/P
- A8vjtBBfqSUAP/N+Ij+PNS0Hf//7kOJdbPKRfq33z4IHz76fZHYOTaTzH
- A9UFzg1nFu5fN/nah/XSN/5OOMFuuAkv/e6ssi6NTSIngqHnqRsT7tV9Q
- NzpYq3SKVjuW9QcBSEUAxVWnRFGLp7R2YUHmE7tjUZS0JxZ51rVAtEHDw
- UNQeE3FVJY+S77SAzfiMjQa7ioYMA83UQU0Zju8AsCxyXfkr4zSIM9DwA
- CJEvamZBrt1yNCBavtPSCq0DVD8xP5hMyW65483TmdlDqggGGoarPSOBw Q==;
-X-CSE-ConnectionGUID: nfjM7E4TQK2oU/xuxlsdiA==
-X-CSE-MsgGUID: nwauA53fT+6vgoSUhzWHcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="71503779"
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="71503779"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 23:46:39 -0700
-X-CSE-ConnectionGUID: BJHPqQF7TJWu3U1WHa5NDw==
-X-CSE-MsgGUID: Lu6HQVEGRVOSCiEq6bwt4Q==
+ t=1758615269; x=1790151269;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=wEguYrksVkwioP2U089ogmcSZWYr3B4yHvnIUu9pBt0=;
+ b=ezkLCV+nqKZcrImlfz+UDNkCpDe1acXLipXmaMV9cwzp6ycohSs9MNzR
+ +t8jmSgOFWBYHLkbqIDPSqIOictfqzb6gUodXI9MQcZXP4XCy7kPe4fwX
+ 1uBVoxCG+99OSi9UdXyzpYNgkv8lUb1JJunmjQNVMyL1bOV0pb1FtExE0
+ zLDIgp1SzSwXp2jSAnmxq6/Ds4DT0kezFE1K/FWoTwx4sBYmjVlfxWOxJ
+ rMe5c4uI3T+LuK+Di3tUlbJbNT2B7Aldkf98c5WEwoAoe5b3UOiLHw3l4
+ kDioVM5uY6MxpadUsiWRnb0c8HMWPzaLahUL081G8a53nneuGLok6jEjE w==;
+X-CSE-ConnectionGUID: EJMlpZqyQZit0ij8awigVA==
+X-CSE-MsgGUID: SiMqkUcgR7i21wyD3zv56A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="86323772"
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="86323772"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2025 01:14:18 -0700
+X-CSE-ConnectionGUID: 3SMtoUmVTbu9AExU63HqCQ==
+X-CSE-MsgGUID: Qcfl4fWzQqmrdxejf2jh/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="213844312"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.223])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 23:46:37 -0700
-Date: Tue, 23 Sep 2025 08:46:33 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Subject: Re: [PATCH v3 i-g-t 5/5] tests/xe_eudebug_online: Improve issuing
- SIGINT in set-breakpoint-sigint-debugger
-Message-ID: <ukypm24nf6jrkoljgnzo4jc2h2cml3edjp5xal5fnuusozye7p@uketg4fr3zng>
-References: <20250918123401.5433-1-dominik.karol.piatkowski@intel.com>
- <20250918123401.5433-6-dominik.karol.piatkowski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="181092522"
+Received: from cmanszew-mobl2.igk.intel.com (HELO [172.28.180.190])
+ ([172.28.180.190])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2025 01:14:17 -0700
+Message-ID: <0a1dc4a1-a910-43c5-b078-4e9cf3cc3f91@intel.com>
+Date: Tue, 23 Sep 2025 10:14:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250918123401.5433-6-dominik.karol.piatkowski@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] lib/igt_list: igt_list_empty() Detect uninitialized
+ list
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250922162340.20034-1-peter.senna@linux.intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20250922162340.20034-1-peter.senna@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,40 +73,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Sep 18, 2025 at 02:34:01PM +0200, Dominik Karol Piątkowski wrote:
-> Use pthread_sigqueue instead of pthread_kill in order to be able to pass
-> debugger to signal handler. Wait for the SIGINT handling to complete
-> before closing the debugger fd to avoid tripping over asserts.
+Hi Peter,
+
+On 22.09.2025 18:23, Peter Senna Tschudin wrote:
+> Add a check to igt_list_empty() to return true if the list head pointer
+> or its next/prev pointers are NULL, preventing segfaults when operating
+> on uninitialized or potentially broken lists.
 > 
-> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 > ---
->  tests/intel/xe_eudebug_online.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>   lib/igt_list.c | 4 ++++
+>   1 file changed, 4 insertions(+)
 > 
-> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-> index aa58e5f99..2576477eb 100644
-> --- a/tests/intel/xe_eudebug_online.c
-> +++ b/tests/intel/xe_eudebug_online.c
-> @@ -1600,7 +1600,11 @@ static void test_set_breakpoint_online_sigint_debugger(int fd,
->  		else if (event_count > 0 && event_count < events_max)
->  			sigints_during_test++;
->  
-> -		igt_assert_eq(pthread_kill(s->debugger->worker_thread, SIGINT), 0);
-> +		pthread_sigqueue(s->debugger->worker_thread, SIGINT,
-> +				 (union sigval){ .sival_ptr = (void*)s->debugger });
+> diff --git a/lib/igt_list.c b/lib/igt_list.c
+> index 37ae139c4..f77aef7dd 100644
+> --- a/lib/igt_list.c
+> +++ b/lib/igt_list.c
+> @@ -79,5 +79,9 @@ int igt_list_length(const struct igt_list_head *head)
+>   
+>   bool igt_list_empty(const struct igt_list_head *head)
+>   {
+> +	/* Detect uninitialized / potentially broken list */
+> +	if (!head || !head->next || !head->prev)
+> +		return true;
+> +
 
-This imo should be part 4/5 (debugger_worker_loop()). Gracefully handling
-sigint should be part of the debugger code, not the test.
+Without this change:
+1. Passing an uninitialized list is a bug
+2. The function doesn't check any condition and returns 'normally' 
+regardless
 
---
-Zbigniew
+With this change:
+1. Passing an uninitialized list is a bug (still)
+2. The function *may* detect an uninitialized list which is a bug but 
+returns 'normally' regardless
 
-> +		/* XXX: Don't close debugger fd before it dies */
-> +		while (!s->debugger->handled_sigint)
-> +			usleep(1000);
->  		close(s->debugger->fd);
->  
->  		igt_assert_eq(READ_ONCE(s->debugger->worker_state), DEBUGGER_WORKER_ACTIVE);
-> -- 
-> 2.34.1
-> 
+If we are adding a check that catches some invalid/buggy condition the 
+reasonable thing to do would be to assert/abort.
+
+Regards,
+Christoph
+
+
+>   	return head->next == head;
+>   }
+
