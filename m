@@ -4,57 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D628CAC5A7
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 16:49:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9D0CCAC5A5
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 21:13:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C869910E21E;
-	Tue, 23 Sep 2025 16:49:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 68E0C10E32F;
+	Tue, 23 Sep 2025 21:13:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BGSbpeXp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dSaTU2HY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83CC910E323
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 16:49:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2719A10E1CD
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 21:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758646173; x=1790182173;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:reply-to:mime-version: content-transfer-encoding;
- bh=unCaIQoybZEiBI3v71ZzgqoerhMkQtmzGjjDbTTEY9Q=;
- b=BGSbpeXp1zpx6xssfvTISLMj2up8KHE8sqvXdK8+NotcB2gk3GKouW/O
- aY80Kcmb5r0dv3tEKuwcIx51GW00bF2BehGWTV3eie5AzqHeBjjxR0sNk
- V0SHOMNfVvEwn7Zeg/vyeBVCqZWTJU2E2xLD+nlWpd2hyAn/7jnFcKyd2
- Z3JVpSN5ZCtbRwUrGkACXrgfcPtvlEIMPBcmNkaRCZAH3GnFYA8gE9Elh
- 4RtqLgttToXWwm/5NypWcHN0xcqEVExtWm7rDhc4REa0XnbjAXD+UvisV
- 9mg8nK/42k77HOrG9DGQeeE4W0wbKxiG0bJgvolYYgD9J1vK1ZldS7mq+ g==;
-X-CSE-ConnectionGUID: 8+IQUxobQV+oe8sVLMB9rw==
-X-CSE-MsgGUID: iQ2haczQTQSxqQSfMnbIog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="60149115"
-X-IronPort-AV: E=Sophos;i="6.18,288,1751266800"; d="scan'208";a="60149115"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2025 09:49:32 -0700
-X-CSE-ConnectionGUID: 9gtlCiZAT9mj+IcT/Lf4xg==
-X-CSE-MsgGUID: NKiecCAUTGKvBfHIUxFZRw==
+ t=1758662019; x=1790198019;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=3tlVHPJLnLX6hib1eLf0EQGKMzY1d2fKk6ZTPydrkD0=;
+ b=dSaTU2HYsbCSAYvXBdNPHq6ot3BMxBaaAeKMfIXVv9PB6Iwtf0EQ9hY4
+ nu3rAQtFlpC1G3iEHkFnxpM0AbBsnkg94G5r0HX5ebQUmNdkn/H2V0/61
+ NJRRRQns1+VcRnjSZAxYWOMfQonO3jdxbHNoGtZ6eloys7bEgVIuBHScz
+ fqXR33aRBkH/4Ha5dRTIy87a910a5Nl7LFTM7LkTP3XTTJ39WVBIZqQR3
+ 772UYND7209Jq5TGRuSbXhWTYBfJUsA0p3vZ/8Y0kw394OCupRyF94LZH
+ pmhyjAoOLZ5Fzt5IjUKs87KLhhKk+2lvA4fo5eXd/ULbjxXzxB+HDzFeE A==;
+X-CSE-ConnectionGUID: hJuYv+u9SVSrAdAzP7QnXQ==
+X-CSE-MsgGUID: hmtNo0SaSQSAWyHwqofYgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="71624703"
+X-IronPort-AV: E=Sophos;i="6.18,289,1751266800"; d="scan'208";a="71624703"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2025 14:13:39 -0700
+X-CSE-ConnectionGUID: ZZ/lN9bUQlK6MUbxM35BUw==
+X-CSE-MsgGUID: NnaOmL3USq+ArQhwIp00dw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,288,1751266800"; d="scan'208";a="200510940"
-Received: from bfilipch-desk.jf.intel.com ([10.88.27.152])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2025 09:49:32 -0700
-From: Julia Filipchuk <julia.filipchuk@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,289,1751266800"; d="scan'208";a="207616535"
+Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2025 14:13:38 -0700
+From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- John Harrison <John.C.Harrison@Intel.com>
-Subject: [i-g-t, 2/2] tests/intel/xe_fault_injection: Add test for
- xe_pxp_exec_queue_add
-Date: Tue, 23 Sep 2025 09:48:59 -0700
-Message-ID: <20250819005622.2970399-4-daniele.ceraolospurio@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250923164912.763020-2-julia.filipchuk@intel.com>
-References: <20250923164912.763020-2-julia.filipchuk@intel.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v3 3/5] tests/intel/xe_exec_reset: Long spin tests
+Date: Tue, 23 Sep 2025 14:13:31 -0700
+Message-Id: <20250923211333.766147-4-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250923211333.766147-1-matthew.brost@intel.com>
+References: <20250923211333.766147-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-X-Patchwork-Id: 669222
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,87 +63,329 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: 20250819005622.2970399-3-daniele.ceraolospurio@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <20250923164859.9xpwnUcoU1bECPfCE0b9OLlO4elBQ8LDazcotKFqFsI@z>
 
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Add a long spin test places multiple spinners on an engine instance to
+ensure they can properly timeslice and complete successfully. This
+extends the single engine instance tests to multiple threads as well.
 
-This test will make sure that the error path in the exec_queue creation
-code works correctly if there is a PXP error.
+These tests are particularly useful for verifying that VF migration
+works as expected while jobs are actively running on the hardware during
+the migration process.
 
-Since this is the first queue creation case that requires an extension,
-the code has been updated to add support for that
-
-This patch requires the matching kernel code [1] to be merged first.
-
-[1] https://patchwork.freedesktop.org/series/153095/
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tests/intel/xe_fault_injection.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ lib/xe/xe_legacy.c          |  52 ++++++++++-
+ tests/intel/xe_exec_reset.c | 177 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 225 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 00d045cd8..778148766 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -339,25 +339,43 @@ static void probe_fail_guc(int fd, const char pci_slot[], const char function_na
-  * @xe_hw_engine_group_add_exec_queue:    xe_hw_engine_group_add_exec_queue
-  * @xe_vm_add_compute_exec_queue:         xe_vm_add_compute_exec_queue
-  * @xe_exec_queue_create_bind:            xe_exec_queue_create_bind
-+ * @xe_pxp_exec_queue_add:                xe_pxp_exec_queue_add
-  */
+diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
+index 9d2da7f413..c0c0c4605c 100644
+--- a/lib/xe/xe_legacy.c
++++ b/lib/xe/xe_legacy.c
+@@ -12,6 +12,8 @@
+ 
+ /* Batch buffer element count, in number of dwords(u32) */
+ #define BATCH_DW_COUNT			16
++#define LONG_SPIN_REUSE_QUEUE		(0x1 << 11)
++#define LONG_SPIN			(0x1 << 8)
+ #define CANCEL				(0x1 << 7)
+ #define PREEMPT				(0x1 << 6)
+ #define CAT_ERROR			(0x1 << 5)
+@@ -58,8 +60,14 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		u64 pad;
+ 		u32 data;
+ 	} *data;
+-	struct xe_spin_opts spin_opts = { .preempt = flags & PREEMPT };
++	struct xe_spin_opts spin_opts = {
++		.preempt = flags & PREEMPT,
++#define THREE_SEC	(3 * 1000000000ull)
++		.ctx_ticks = flags & LONG_SPIN ?
++			xe_spin_nsec_to_ticks(fd, 0, THREE_SEC) : 0,
++	};
+ 	int i, b;
++	int extra_execs = (flags & LONG_SPIN_REUSE_QUEUE) ? n_exec_queues : 0;
+ 
+ 	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
+ 
+@@ -67,7 +75,7 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		fd = drm_open_driver(DRIVER_XE);
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+-	bo_size = sizeof(*data) * n_execs;
++	bo_size = sizeof(*data) * (n_execs + extra_execs);
+ 	bo_size = xe_bb_size(fd, bo_size);
+ 
+ 	bo = xe_bo_create(fd, vm, bo_size,
+@@ -101,7 +109,8 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		u64 exec_addr;
+ 		int e = i % n_exec_queues;
+ 
+-		if (!i || flags & CANCEL) {
++		if (!i || flags & CANCEL ||
++		    (flags & LONG_SPIN && i < n_exec_queues)) {
+ 			spin_opts.addr = base_addr + spin_offset;
+ 			xe_spin_init(&data[i].spin, &spin_opts);
+ 			exec_addr = spin_opts.addr;
+@@ -152,12 +161,47 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+ 
++	for (i = n_execs; i < n_execs + extra_execs; i++) {
++		u64 base_addr = (!use_capture_mode && (flags & CAT_ERROR) && !i)
++			? (addr + bo_size * 128) : addr;
++		u64 batch_offset = (char *)&data[i].batch - (char *)data;
++		u64 batch_addr = base_addr + batch_offset;
++		u64 sdi_offset = (char *)&data[i].data - (char *)data;
++		u64 sdi_addr = base_addr + sdi_offset;
++		u64 exec_addr;
++		int e = i % n_exec_queues;
 +
-+#define EXEC_QUEUE_LR	BIT(0)
-+#define EXEC_QUEUE_PXP	BIT(1)
- static void
- exec_queue_create_fail(int fd, struct drm_xe_engine_class_instance *instance,
- 		       const char pci_slot[], const char function_name[],
- 		       unsigned int flags)
- {
- 	uint32_t exec_queue_id;
--	uint32_t vm = xe_vm_create(fd, flags, 0);
-+	struct drm_xe_ext_set_property ext = { 0 };
-+	uint64_t ext_ptr = 0;
-+	uint32_t vm;
++		b = 0;
++		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data[i].batch[b++] = sdi_addr;
++		data[i].batch[b++] = sdi_addr >> 32;
++		data[i].batch[b++] = 0xc0ffee;
++		data[i].batch[b++] = MI_BATCH_BUFFER_END;
++		igt_assert(b <= ARRAY_SIZE(data[i].batch));
 +
-+	if (flags & EXEC_QUEUE_PXP) {
-+		igt_require(xe_wait_for_pxp_init(fd) == 0);
++		exec_addr = batch_addr;
 +
-+		ext.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		ext.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE,
-+		ext.value = DRM_XE_PXP_TYPE_HWDRM;
-+		ext_ptr = to_user_pointer(&ext);
++		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[1].handle = syncobjs[e];
++
++		exec.exec_queue_id = exec_queues[e];
++		exec.address = exec_addr;
++
++		syncobj_reset(fd, &syncobjs[e], 1);
++		xe_exec(fd, &exec);
 +	}
 +
-+	vm = xe_vm_create(fd, flags & EXEC_QUEUE_LR ? DRM_XE_VM_CREATE_FLAG_LR_MODE : 0, 0);
++	for (i = 0; i < n_exec_queues && extra_execs; i++)
++		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
 +
- 	/* sanity check */
--	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id), 0);
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, ext_ptr, &exec_queue_id), 0);
- 	xe_exec_queue_destroy(fd, exec_queue_id);
+ 	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
  
- 	ignore_dmesg_errors_from_dut(pci_slot);
- 	injection_list_add(function_name);
- 	set_retval(function_name, INJECT_ERRNO);
--	igt_assert(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id) != 0);
-+	igt_assert(__xe_exec_queue_create(fd, vm, 1, 1, instance, ext_ptr, &exec_queue_id) != 0);
- 	injection_list_remove(function_name);
+ 	if (!use_capture_mode && !(flags & (GT_RESET | CANCEL))) {
+-		for (i = 1; i < n_execs; i++)
++		for (i = flags & LONG_SPIN ? n_exec_queues : 1;
++		     i < n_execs + extra_execs; i++)
+ 			igt_assert_eq(data[i].data, 0xc0ffee);
+ 	}
  
--	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, 0, &exec_queue_id), 0);
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, instance, ext_ptr, &exec_queue_id), 0);
- 	xe_exec_queue_destroy(fd, exec_queue_id);
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 88e9df6fbb..8685b84270 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -118,6 +118,10 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
+ #define CAT_ERROR			(0x1 << 5)
+ #define PREEMPT				(0x1 << 6)
+ #define CANCEL				(0x1 << 7)
++#define LONG_SPIN			(0x1 << 8)
++#define GT0				(0x1 << 9)
++#define GT1				(0x1 << 10)
++#define LONG_SPIN_REUSE_QUEUE		(0x1 << 11)
+ 
+ /**
+  * SUBTEST: %s-cat-error
+@@ -309,6 +313,18 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+  * SUBTEST: cancel-timeslice-many-preempt
+  * Description: Test job cancel with many preemptable jobs
+  *
++ * SUBTEST: long-spin-many-preempt
++ * Description: Test long spinners with many preemptable jobs
++ *
++ * SUBTEST: long-spin-many-preempt-media
++ * Description: Test long spinners with many preemptable jobs on media GT
++ *
++ * SUBTEST: long-spin-reuse-many-preempt
++ * Description: Test long spinners with many preemptable jobs, use queues again spinners complete
++ *
++ * SUBTEST: long-spin-reuse-many-preempt-media
++ * Description: Test long spinners with many preemptable jobs, use queues again spinners complete on media GT
++ *
+  * SUBTEST: gt-reset
+  * Description: Test GT reset
+  *
+@@ -642,6 +658,108 @@ gt_mocs_reset(int fd, int gt)
+ 	free(mocs_contents_post);
  }
  
-@@ -585,7 +603,8 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
- 	const struct section exec_queue_create_fail_functions[] = {
- 		{ "xe_exec_queue_create", 0 },
- 		{ "xe_hw_engine_group_add_exec_queue", 0 },
--		{ "xe_vm_add_compute_exec_queue", DRM_XE_VM_CREATE_FLAG_LR_MODE },
-+		{ "xe_vm_add_compute_exec_queue", EXEC_QUEUE_LR },
-+		{ "xe_pxp_exec_queue_add", EXEC_QUEUE_PXP },
- 		{ }
- 	};
++struct thread_data {
++	pthread_t thread;
++	pthread_mutex_t *mutex;
++	pthread_cond_t *cond;
++	int fd;
++	struct drm_xe_engine_class_instance *hwe;
++	int n_exec_queue;
++	int n_exec;
++	int flags;
++	bool *go;
++};
++
++static void *thread(void *data)
++{
++	struct thread_data *t = data;
++
++	pthread_mutex_lock(t->mutex);
++	while (*t->go == 0)
++		pthread_cond_wait(t->cond, t->mutex);
++	pthread_mutex_unlock(t->mutex);
++
++	xe_legacy_test_mode(t->fd, t->hwe, t->n_exec_queue, t->n_exec,
++			    t->flags, LEGACY_MODE_ADDR, false);
++
++	return NULL;
++}
++
++/**
++ * SUBTEST: long-spin-many-preempt-threads
++ * Description: Test long spinners with many preemptable jobs on each engine instance with a thread, both GTs
++ *
++ * SUBTEST: long-spin-many-preempt-gt0-threads
++ * Description: Test long spinners with many preemptable jobs on each engine instance with a thread, primary GT
++ *
++ * SUBTEST: long-spin-many-preempt-gt1-threads
++ * Description: Test long spinners with many preemptable jobs on each engine instance with a thread, media GT
++ *
++ * SUBTEST: long-spin-reuse-many-preempt-threads
++ * Description: Test long spinners with many preemptable jobs on each engine instance with a thread, use queues again spinners complete, both GTs
++ *
++ * SUBTEST: long-spin-reuse-many-preempt-gt0-threads
++ * Description: Test long spinners with many preemptable jobs on each engine instance with a thread, use queues again spinners complete, primary GT
++ *
++ * SUBTEST: long-spin-reuse-many-preempt-gt1-threads
++ * Description: Test long spinners with many preemptable jobs on each engine instance with a thread, use queues again spinners complete,  media GT
++ */
++
++static void threads(int fd, int n_exec_queues, int n_execs, unsigned int flags)
++{
++	struct thread_data *threads_data;
++	struct drm_xe_engine_class_instance *hwe;
++	pthread_mutex_t mutex;
++	pthread_cond_t cond;
++	int n_engines = 0, i;
++	bool go = false;
++
++	xe_for_each_engine(fd, hwe) {
++		if (hwe->gt_id && (flags & GT0))
++			continue;
++		if (!hwe->gt_id && (flags & GT1))
++			continue;
++
++		++n_engines;
++	}
++
++	threads_data = calloc(n_engines, sizeof(*threads_data));
++	igt_assert(threads_data);
++
++	pthread_mutex_init(&mutex, 0);
++	pthread_cond_init(&cond, 0);
++
++	xe_for_each_engine(fd, hwe) {
++		if (hwe->gt_id && (flags & GT0))
++			continue;
++		if (!hwe->gt_id && (flags & GT1))
++			continue;
++
++		threads_data[i].fd = fd;
++		threads_data[i].mutex = &mutex;
++		threads_data[i].cond = &cond;
++		threads_data[i].hwe = hwe;
++		threads_data[i].n_exec_queue = n_exec_queues;
++		threads_data[i].n_exec = n_execs;
++		threads_data[i].flags = flags;
++		threads_data[i].go = &go;
++
++		pthread_create(&threads_data[i].thread, 0, thread,
++			       &threads_data[i]);
++		++i;
++	}
++
++	pthread_mutex_lock(&mutex);
++	go = true;
++	pthread_cond_broadcast(&cond);
++	pthread_mutex_unlock(&mutex);
++
++	for (i = 0; i < n_engines; ++i)
++		pthread_join(threads_data[i].thread, NULL);
++
++	free(threads_data);
++}
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -701,6 +819,65 @@ igt_main
+ 			break;
+ 		}
  
++	igt_subtest("long-spin-many-preempt")
++		xe_for_each_engine(fd, hwe) {
++			xe_legacy_test_mode(fd, hwe, 4, 8,
++					    LONG_SPIN | PREEMPT,
++					    LEGACY_MODE_ADDR, false);
++			break;
++		}
++
++	igt_subtest("long-spin-many-preempt-media")
++		xe_for_each_engine(fd, hwe) {
++			if (!hwe->gt_id)
++				continue;
++			xe_legacy_test_mode(fd, hwe, 4, 8,
++					    LONG_SPIN | PREEMPT,
++					    LEGACY_MODE_ADDR, false);
++			break;
++		}
++
++	igt_subtest("long-spin-reuse-many-preempt")
++		xe_for_each_engine(fd, hwe) {
++			xe_legacy_test_mode(fd, hwe, 4, 8,
++					    LONG_SPIN | PREEMPT |
++					    LONG_SPIN_REUSE_QUEUE,
++					    LEGACY_MODE_ADDR, false);
++			break;
++		}
++
++	igt_subtest("long-spin-reuse-many-preempt-media")
++		xe_for_each_engine(fd, hwe) {
++			if (!hwe->gt_id)
++				continue;
++			xe_legacy_test_mode(fd, hwe, 4, 8,
++					    LONG_SPIN | PREEMPT |
++					    LONG_SPIN_REUSE_QUEUE,
++					    LEGACY_MODE_ADDR, false);
++			break;
++		}
++
++	igt_subtest("long-spin-many-preempt-threads")
++		threads(fd, 2, 16, LONG_SPIN | PREEMPT);
++
++	igt_subtest("long-spin-many-preempt-gt0-threads")
++		threads(fd, 2, 16, LONG_SPIN | PREEMPT | GT0);
++
++	igt_subtest("long-spin-many-preempt-gt1-threads")
++		threads(fd, 2, 16, LONG_SPIN | PREEMPT | GT1);
++
++	igt_subtest("long-spin-reuse-many-preempt-threads")
++		threads(fd, 2, 16, LONG_SPIN | PREEMPT |
++			LONG_SPIN_REUSE_QUEUE);
++
++	igt_subtest("long-spin-reuse-many-preempt-gt0-threads")
++		threads(fd, 2, 16, LONG_SPIN | PREEMPT | GT0 |
++			LONG_SPIN_REUSE_QUEUE);
++
++	igt_subtest("long-spin-reuse-many-preempt-gt1-threads")
++		threads(fd, 2, 16, LONG_SPIN | PREEMPT | GT1 |
++			LONG_SPIN_REUSE_QUEUE);
++
+ 	igt_subtest("gt-reset")
+ 		xe_for_each_engine(fd, hwe)
+ 			xe_legacy_test_mode(fd, hwe, 2, 2, GT_RESET,
+-- 
+2.34.1
+
