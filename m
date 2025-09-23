@@ -4,56 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B766ECAC5B0
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 08:50:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 160F0CAC5B0
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 09:21:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6615D88F94;
-	Tue, 23 Sep 2025 08:50:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BC7C510E5C6;
+	Tue, 23 Sep 2025 09:21:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W0nJlFjd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eL/xzm2L";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF0D210E06E
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 08:50:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BB7810E5C6
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 09:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758617403; x=1790153403;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=3ra1aeT+LfJAmrOBkA/lz6rLdcT1WIIgXkeLodAXX/k=;
- b=W0nJlFjdewz9rNUV8K42Y2lbp05wh///HBg5OKNkQ7Avvi3a2x2om/zZ
- VbV1lW2naNazVuhnEkdnV+OrChlmcPnNQEW/zJGr42bwDJZJSFf9TT1wO
- 7m547SAATD5XCRvK32VURpsJNq6H0LZAPEpTuA6biLx832aD6owGWcWK7
- 7YChfMjODYOz2H+r+v6NEvQqPGceBkoLG1PvLIkzyE2j4XUWT3IrKKf1d
- M9K190VZK70CUt1IPi9odDDfr1q2kCDxwVOfPNCZjDXHGidBtbJdxcoAW
- lNjDcrI+0iEPUnYFqgKqidn3ZWrjSJx66A5EOD0k0qyTjJ6nTQw1Z3TJW g==;
-X-CSE-ConnectionGUID: i+piwP8gRIu6RxVSh7Npyw==
-X-CSE-MsgGUID: j0b5RbOfSXKNYOUgfzRxBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="63520487"
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="63520487"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2025 01:50:03 -0700
-X-CSE-ConnectionGUID: rM27iGN6QR2qU5qCzs1Eiw==
-X-CSE-MsgGUID: uhf6pqzGRsCnowDAdtsBMA==
+ t=1758619294; x=1790155294;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=PqD1aWzb+j1302ZNCJn1GR9wfEcH52yjnnNMuO8Ql+A=;
+ b=eL/xzm2Lrq5D5cEkq5pLsZzySn0QjPqLYhLX56OrINLoZwiLUwyB4dIT
+ 0Vm6m/qDVtxyO1fyn5w7K/MI16WIk6FfKEnOmLJZmJ6pQiNJQ6LbhBZhX
+ YkLA0hYs6cyS2/9rhZ6SV6n2dPgTMQleWOpZDxhteQq0DHQXX+JbL+hLI
+ vZ/24gBr154PooCbYF9Bzm/snI4AarXr9R/DhIfr56IPLq/y29HQDH5St
+ W3JgsEGL8ma0OqZ9XAQIqgID7L24X2iC/VbCY9EJ1YVMhZ/yAJq/UPb9a
+ 2O1FLffa75uhPUoPFUM4g1L05vsoJSd4aYaT2C/X6ib9Dix3OsXtmhb6p Q==;
+X-CSE-ConnectionGUID: 6s00Qg5PTOy7tPnUg0FasA==
+X-CSE-MsgGUID: ueVsHyGeRHSh46pQzPaJYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="60783607"
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="60783607"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2025 02:21:34 -0700
+X-CSE-ConnectionGUID: r6n50trPRKisrCg14MgRGQ==
+X-CSE-MsgGUID: Tro+vvntTxeiC4XbW5/Vsg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="200411060"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.245.31])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2025 01:50:01 -0700
-Date: Tue, 23 Sep 2025 10:49:58 +0200
-From: Pawel Sikora <pawel.sikora@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Pawel Sikora <pawel.sikora@intel.com>
-Subject: Re: [PATCH i-g-t] README: refer to lastest software version
-Message-ID: <20250923084958.bx6xeuvxxuuwabd2@pawelsik-desk>
-References: <20250923083136.16576-1-kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="176008657"
+Received: from dstepnow-mobl.amr.corp.intel.com (HELO [10.246.0.32])
+ ([10.246.0.32])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2025 02:21:31 -0700
+Message-ID: <f750c914-c68e-4fe6-9ecd-9cf1731c502e@linux.intel.com>
+Date: Tue, 23 Sep 2025 11:20:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] lib/igt_list: igt_list_empty() Detect uninitialized
+ list
+To: "Manszewski, Christoph" <christoph.manszewski@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <20250922162340.20034-1-peter.senna@linux.intel.com>
+ <0a1dc4a1-a910-43c5-b078-4e9cf3cc3f91@intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <0a1dc4a1-a910-43c5-b078-4e9cf3cc3f91@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250923083136.16576-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,55 +73,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
+Hi Christoph,
 
-LGTM.
-
-Reviewed-by: Pawel Sikora <pawel.sikora@intel.com>
-
-Regards,
-Paweł
-
-On Tue, Sep 23, 2025 at 10:31:36AM +0200, Kamil Konieczny wrote:
-> When talking about most recent source use 'version' word.
+On 9/23/2025 10:14 AM, Manszewski, Christoph wrote:
+> Hi Peter,
 > 
-> Cc: Pawel Sikora <pawel.sikora@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  README.md | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> On 22.09.2025 18:23, Peter Senna Tschudin wrote:
+>> Add a check to igt_list_empty() to return true if the list head pointer
+>> or its next/prev pointers are NULL, preventing segfaults when operating
+>> on uninitialized or potentially broken lists.
+>>
+>> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+>> ---
+>>   lib/igt_list.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/lib/igt_list.c b/lib/igt_list.c
+>> index 37ae139c4..f77aef7dd 100644
+>> --- a/lib/igt_list.c
+>> +++ b/lib/igt_list.c
+>> @@ -79,5 +79,9 @@ int igt_list_length(const struct igt_list_head *head)
+>>     bool igt_list_empty(const struct igt_list_head *head)
+>>   {
+>> +    /* Detect uninitialized / potentially broken list */
+>> +    if (!head || !head->next || !head->prev)
+>> +        return true;
+>> +
 > 
-> diff --git a/README.md b/README.md
-> index ed6647726..c0382ce43 100644
-> --- a/README.md
-> +++ b/README.md
-> @@ -13,7 +13,7 @@ complicated build procedures or specific testing environments to get useful
->  results. Therefore, IGT GPU Tools includes low-level tools and tests
->  specifically for development and testing of the DRM Drivers.
->  
-> -Generated documentation for the latest master is published under
-> +Generated documentation for the latest version is published under
->  <https://drm.pages.freedesktop.org/igt-gpu-tools/>.
->  
->  
-> @@ -29,7 +29,7 @@ install the dependencies, e.g.:
->      # dnf builddep igt-gpu-tools
->  
->  But keep in mind that this may be slightly outdated and miss some
-> -recently added dependencies for building the current master.
-> +recently added dependencies for building the current version.
->  
->  
->  Building
-> @@ -113,7 +113,7 @@ IGT is packed into nifty docker-compatible containers for ease of execution
->  and to avoid having to install all the dependencies. You can use
->  podman/docker to to run it on your system.
->  
-> -Oneliner to get you started with the latest master:
-> +Oneliner to get you started with the latest version:
->  
->      # podman run --rm --privileged registry.freedesktop.org/drm/igt-gpu-tools/igt:master
->  
-> -- 
-> 2.51.0
+> Without this change:
+> 1. Passing an uninitialized list is a bug
+> 2. The function doesn't check any condition and returns 'normally'
+> regardless
 > 
+> With this change:
+> 1. Passing an uninitialized list is a bug (still)
+> 2. The function *may* detect an uninitialized list which is a bug but
+> returns 'normally' regardless
+> 
+> If we are adding a check that catches some invalid/buggy condition the
+> reasonable thing to do would be to assert/abort.
+
+I agree with you. I would say that even more concerning is to distance
+our implementation from the kernel implementation. I suggest we nack
+this change. If you are ok with it
+
+Nacked-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+
+> 
+> Regards,
+> Christoph
+> 
+> 
+>>       return head->next == head;
+>>   }
+> 
+
