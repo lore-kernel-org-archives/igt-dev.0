@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55DA7CAC5AC
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 21:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5603CAC5AC
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 23:07:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 03A0810E674;
-	Tue, 23 Sep 2025 21:13:45 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gOHZXd1H";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 724E010E3BC
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 21:13:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758662019; x=1790198019;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=/ZxfnK0W/8K/mirup5VuQds7yiuk8sUM42hdh+UmugM=;
- b=gOHZXd1HYOTs8OT8duKt7+w+OAK3qazZF7r7plNr73679TuWreB/FEvx
- rvZxxC+HtiR1cKWZgQkGOAPLxtfNWG996R3yxy6Qxbcv9vuTkZKs8R0Zg
- lXhKAOOA7naa614voHRa24G58DaOm9H/Pctz503O6XareQrtigSdskSxi
- DX5lalp82WAVwzIhYllLYW8cMOQXQMccvkTjiRp2zUZi+hZR0ORopmq4g
- x77Jszg6MiGWd4bSyaVaVNtIJdygJ5YET/8byGNBPbBuf+H4Z6fu+ysOx
- mOiEQj3wty6tbqbGfkPhzdZDv3MtROLRNE1STGuQoNTfWfPYSmODsDXpG Q==;
-X-CSE-ConnectionGUID: zfebark3RvyozpxZi+0LWQ==
-X-CSE-MsgGUID: luwXTG7jQ1O5A2j2PU9Fiw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="71624706"
-X-IronPort-AV: E=Sophos;i="6.18,289,1751266800"; d="scan'208";a="71624706"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2025 14:13:39 -0700
-X-CSE-ConnectionGUID: sdoYoOBKTm6ZMrL1whkpyA==
-X-CSE-MsgGUID: IP+UPXATQMuofUDrQMsDYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,289,1751266800"; d="scan'208";a="207616537"
-Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2025 14:13:38 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH v3 5/5] tests/intel/xe_exec_reset: Add
- long-spin-comp-reuse-many-preempt-threads
-Date: Tue, 23 Sep 2025 14:13:33 -0700
-Message-Id: <20250923211333.766147-6-matthew.brost@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250923211333.766147-1-matthew.brost@intel.com>
-References: <20250923211333.766147-1-matthew.brost@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 767A310E66C;
+	Tue, 23 Sep 2025 23:07:46 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A62410E66C;
+ Tue, 23 Sep 2025 23:07:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2449820390574429015=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci=3A_Fix_typo_in_Xe_?=
+ =?utf-8?q?LNL_display_blocklist?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 23 Sep 2025 23:07:45 -0000
+Message-ID: <175866886523.359961.11188935323917743193@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250923113718.78290-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20250923113718.78290-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,138 +37,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add long-spin-comp-reuse-many-preempt-threads which verifies compressed
-memory can be used during this test. Useful to test VF migration.
+--===============2449820390574429015==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- lib/xe/xe_legacy.c          | 38 +++++++++++++++++++++++++++++--------
- tests/intel/xe_exec_reset.c |  8 ++++++++
- 2 files changed, 38 insertions(+), 8 deletions(-)
+== Series Details ==
 
-diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
-index cb53a8cfc8..74432a4b3a 100644
---- a/lib/xe/xe_legacy.c
-+++ b/lib/xe/xe_legacy.c
-@@ -9,9 +9,11 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_legacy.h"
- #include "xe/xe_spin.h"
-+#include "intel_pat.h"
- 
- /* Batch buffer element count, in number of dwords(u32) */
- #define BATCH_DW_COUNT			16
-+#define COMPRESSION			(0x1 << 13)
- #define SYSTEM				(0x1 << 12)
- #define LONG_SPIN_REUSE_QUEUE		(0x1 << 11)
- #define LONG_SPIN			(0x1 << 8)
-@@ -72,6 +74,9 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
- 
-+	if (flags & COMPRESSION)
-+		igt_require(intel_gen(intel_get_drm_devid(fd)) >= 20);
-+
- 	if (flags & CLOSE_FD)
- 		fd = drm_open_driver(DRIVER_XE);
- 
-@@ -79,11 +84,20 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	bo_size = sizeof(*data) * (n_execs + extra_execs);
- 	bo_size = xe_bb_size(fd, bo_size);
- 
--	bo = xe_bo_create(fd, vm, bo_size,
--			  flags & SYSTEM ?
--			  system_memory(fd) :
--			  vram_if_possible(fd, eci->gt_id),
--			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	if (flags & COMPRESSION) {
-+		bo = xe_bo_create_caching(fd, vm, bo_size,
-+					  flags & SYSTEM ?
-+					  system_memory(fd) :
-+					  vram_if_possible(fd, eci->gt_id),
-+					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+					  DRM_XE_GEM_CPU_CACHING_WC);
-+	} else {
-+		bo = xe_bo_create(fd, vm, bo_size,
-+				  flags & SYSTEM ?
-+				  system_memory(fd) :
-+				  vram_if_possible(fd, eci->gt_id),
-+				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	}
- 	data = xe_bo_map(fd, bo, bo_size);
- 
- 	for (i = 0; i < n_exec_queues; i++) {
-@@ -94,7 +108,14 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	sync[0].handle = syncobj_create(fd, 0);
- 
- 	/* Binding mechanism based on use_capture_mode */
--	if (use_capture_mode) {
-+	if (flags & COMPRESSION) {
-+		int ret;
-+
-+		ret = __xe_vm_bind(fd, vm, 0, bo, 0, addr, bo_size,
-+				   DRM_XE_VM_BIND_OP_MAP, 0, sync, 1, 0,
-+				   intel_get_pat_idx_uc_comp(fd), 0);
-+		igt_assert(!ret);
-+	} else if (use_capture_mode) {
- 		__xe_vm_bind_assert(fd, vm, 0, bo, 0, addr, bo_size,
- 				    DRM_XE_VM_BIND_OP_MAP, flags, sync, 1, 0, 0);
- 	} else {
-@@ -141,7 +162,8 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 
- 		xe_exec(fd, &exec);
- 
--		if (!i && !(flags & CAT_ERROR) && !use_capture_mode)
-+		if (!i && !(flags & CAT_ERROR) && !use_capture_mode &&
-+		    !(flags & COMPRESSION))
- 			xe_spin_wait_started(&data[i].spin);
- 	}
- 
-@@ -202,7 +224,7 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	if (!use_capture_mode && !(flags & (GT_RESET | CANCEL))) {
-+	if (!use_capture_mode && !(flags & (GT_RESET | CANCEL | COMPRESSION))) {
- 		for (i = flags & LONG_SPIN ? n_exec_queues : 1;
- 		     i < n_execs + extra_execs; i++)
- 			igt_assert_eq(data[i].data, 0xc0ffee);
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 113ceb2178..f5db1ff8ba 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -123,6 +123,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
- #define GT1				(0x1 << 10)
- #define LONG_SPIN_REUSE_QUEUE		(0x1 << 11)
- #define SYSTEM				(0x1 << 12)
-+#define COMPRESSION			(0x1 << 13)
- 
- /**
-  * SUBTEST: %s-cat-error
-@@ -702,6 +703,9 @@ static void *thread(void *data)
-  * SUBTEST: long-spin-sys-reuse-many-preempt-threads
-  * Description: Test long spinners with many preemptable jobs on each engine instance with a thread, use queues again spinners complete, both GTs, use system memory
-  *
-+ * SUBTEST: long-spin-comp-reuse-many-preempt-threads
-+ * Description: Test long spinners with many preemptable jobs on each engine instance with a thread, use queues again spinners complete, both GTs, use compressed memory
-+ *
-  * SUBTEST: long-spin-reuse-many-preempt-gt0-threads
-  * Description: Test long spinners with many preemptable jobs on each engine instance with a thread, use queues again spinners complete, primary GT
-  *
-@@ -878,6 +882,10 @@ igt_main
- 		threads(fd, 2, 16, SYSTEM | LONG_SPIN | PREEMPT |
- 			LONG_SPIN_REUSE_QUEUE);
- 
-+	igt_subtest("long-spin-comp-reuse-many-preempt-threads")
-+		threads(fd, 2, 16, COMPRESSION | LONG_SPIN | PREEMPT |
-+			LONG_SPIN_REUSE_QUEUE);
-+
- 	igt_subtest("long-spin-reuse-many-preempt-gt0-threads")
- 		threads(fd, 2, 16, LONG_SPIN | PREEMPT | GT0 |
- 			LONG_SPIN_REUSE_QUEUE);
--- 
-2.34.1
+Series: intel-ci: Fix typo in Xe LNL display blocklist
+URL   : https://patchwork.freedesktop.org/series/154899/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8550_BAT -> XEIGTPW_13801_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 11)
+------------------------------
+
+  Additional (2): bat-ptl-1 bat-ptl-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13801_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-bmg-2:          [FAIL][1] ([Intel XE#5507]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8550/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13801/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
+  [Intel XE#5507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507
+  [Intel XE#5764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764
+  [Intel XE#5765]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5765
+  [Intel XE#5766]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5766
+  [Intel XE#5769]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5769
+  [Intel XE#5771]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771
+  [Intel XE#5773]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5773
+  [Intel XE#5774]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5774
+  [Intel XE#5775]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775
+  [Intel XE#5776]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776
+  [Intel XE#5777]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777
+  [Intel XE#5778]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5778
+  [Intel XE#5780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780
+  [Intel XE#5781]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5781
+  [Intel XE#5907]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5907
+  [Intel XE#6203]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6203
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8550 -> IGTPW_13801
+  * Linux: xe-3814-d2f002c868da5926fabd73b1ba2ab7a2b66d81dc -> xe-3822-af3cdefd0a1ad2dad29fcde0854ccbce494cc28a
+
+  IGTPW_13801: 13801
+  IGT_8550: 4f8c7886ad02e116804ec08714f17bce1755c6e4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3814-d2f002c868da5926fabd73b1ba2ab7a2b66d81dc: d2f002c868da5926fabd73b1ba2ab7a2b66d81dc
+  xe-3822-af3cdefd0a1ad2dad29fcde0854ccbce494cc28a: af3cdefd0a1ad2dad29fcde0854ccbce494cc28a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13801/index.html
+
+--===============2449820390574429015==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci: Fix typo in Xe LNL display blocklist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154899/">https://patchwork.freedesktop.org/series/154899/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13801/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13801/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8550_BAT -&gt; XEIGTPW_13801_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 11)</h2>
+<p>Additional (2): bat-ptl-1 bat-ptl-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13801_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xe2@render:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8550/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507">Intel XE#5507</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13801/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8550 -&gt; IGTPW_13801</li>
+<li>Linux: xe-3814-d2f002c868da5926fabd73b1ba2ab7a2b66d81dc -&gt; xe-3822-af3cdefd0a1ad2dad29fcde0854ccbce494cc28a</li>
+</ul>
+<p>IGTPW_13801: 13801<br />
+  IGT_8550: 4f8c7886ad02e116804ec08714f17bce1755c6e4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3814-d2f002c868da5926fabd73b1ba2ab7a2b66d81dc: d2f002c868da5926fabd73b1ba2ab7a2b66d81dc<br />
+  xe-3822-af3cdefd0a1ad2dad29fcde0854ccbce494cc28a: af3cdefd0a1ad2dad29fcde0854ccbce494cc28a</p>
+
+</body>
+</html>
+
+--===============2449820390574429015==--
