@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C58CAC5A7
-	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 06:34:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0E17CAC5A7
+	for <igt-dev@archiver.kernel.org>; Tue, 23 Sep 2025 06:46:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0645010E1EC;
-	Tue, 23 Sep 2025 06:34:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A18810E0E3;
+	Tue, 23 Sep 2025 06:46:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Rmd2vukP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hSQ12kdH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8CD810E1EC
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 06:34:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 531F310E0E3
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Sep 2025 06:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758609298; x=1790145298;
+ t=1758609999; x=1790145999;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=6aJ8lYPP4vujZTP8ACj2tRw52NceEmOvfwbZ56PCZL0=;
- b=Rmd2vukPhUIqC1Eq//++CiHcG+0UO1pOfOYcWgBJK6MPLE7AV+2WvRDE
- zygzzB/OYdi3I5hWC3bhrc1Qwgh9GDnJ4vNvj32gC01zHH6ieM1J+i4fC
- vD2zly1Zwbp5g828A507E2McFPg+UGqVbPLPmrRie34ECdFIScOoWUoo5
- eJae7m9PBUZInbGuMDIlSLdvbZTdJJnymxPupB18F1S8l+eP/559k/hsQ
- YNgJY1iuyXY3c0ExpfcfB/TgQ3J4r9BJUUqfrVqFUH95+WQI8JPBo7vqo
- q66lQQ2JyU/Q46e6Yvef9fDpF04/rYxXPhClN3mweSJkGNNA5WoorYxFm A==;
-X-CSE-ConnectionGUID: 0YHLIFzdR9G675S8LhxWlg==
-X-CSE-MsgGUID: YPG34kKWR929MS9iQHNdTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="71555534"
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="71555534"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 23:34:57 -0700
-X-CSE-ConnectionGUID: gcADFs9aQDebCgaaEu6xUA==
-X-CSE-MsgGUID: BX0ri7J9TCW2gvAJf2kvgg==
+ bh=tpj6Oyyw2pflXO7+QR7mUU+p+FaZHWv1wxHxomSIO0w=;
+ b=hSQ12kdHL+ruT9WgcTbuXdhPW2H0PU6vY3FMXiidc24tAQAqblz0m2/P
+ A8vjtBBfqSUAP/N+Ij+PNS0Hf//7kOJdbPKRfq33z4IHz76fZHYOTaTzH
+ A9UFzg1nFu5fN/nah/XSN/5OOMFuuAkv/e6ssi6NTSIngqHnqRsT7tV9Q
+ NzpYq3SKVjuW9QcBSEUAxVWnRFGLp7R2YUHmE7tjUZS0JxZ51rVAtEHDw
+ UNQeE3FVJY+S77SAzfiMjQa7ioYMA83UQU0Zju8AsCxyXfkr4zSIM9DwA
+ CJEvamZBrt1yNCBavtPSCq0DVD8xP5hMyW65483TmdlDqggGGoarPSOBw Q==;
+X-CSE-ConnectionGUID: nfjM7E4TQK2oU/xuxlsdiA==
+X-CSE-MsgGUID: nwauA53fT+6vgoSUhzWHcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="71503779"
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="71503779"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2025 23:46:39 -0700
+X-CSE-ConnectionGUID: BJHPqQF7TJWu3U1WHa5NDw==
+X-CSE-MsgGUID: Lu6HQVEGRVOSCiEq6bwt4Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="176522312"
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; d="scan'208";a="213844312"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.223])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2025 23:34:55 -0700
-Date: Tue, 23 Sep 2025 08:34:52 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2025 23:46:37 -0700
+Date: Tue, 23 Sep 2025 08:46:33 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Jan Maslak <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org, gwan-gyeong.mun@intel.com, 
- andrzej.hajda@intel.com
-Subject: Re: [PATCH 3/4] lib/xe/xe_query: add function to retrieve uint32_t
- value from hwconfig
-Message-ID: <rufvyvh7y3gxz3qggmeuqzqkj5pjhxw7dcynxfc2zhi7vaz2nx@asvdgpakcbyo>
-References: <20250917165541.85203-1-jan.maslak@intel.com>
- <20250917165541.85203-4-jan.maslak@intel.com>
+To: Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org, 
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Subject: Re: [PATCH v3 i-g-t 5/5] tests/xe_eudebug_online: Improve issuing
+ SIGINT in set-breakpoint-sigint-debugger
+Message-ID: <ukypm24nf6jrkoljgnzo4jc2h2cml3edjp5xal5fnuusozye7p@uketg4fr3zng>
+References: <20250918123401.5433-1-dominik.karol.piatkowski@intel.com>
+ <20250918123401.5433-6-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250917165541.85203-4-jan.maslak@intel.com>
+In-Reply-To: <20250918123401.5433-6-dominik.karol.piatkowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,57 +73,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Sep 17, 2025 at 04:55:40PM +0000, Jan Maslak wrote:
-> Adds helper function to xe_query which retrieves a single u32 value out of
-> hwconfig.
+On Thu, Sep 18, 2025 at 02:34:01PM +0200, Dominik Karol Piątkowski wrote:
+> Use pthread_sigqueue instead of pthread_kill in order to be able to pass
+> debugger to signal handler. Wait for the SIGINT handling to complete
+> before closing the debugger fd to avoid tripping over asserts.
 > 
-> Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 > ---
->  lib/xe/xe_query.c | 9 +++++++++
->  lib/xe/xe_query.h | 1 +
->  2 files changed, 10 insertions(+)
+>  tests/intel/xe_eudebug_online.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index da2788372..ae3d30b33 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -1035,6 +1035,15 @@ uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32
->  	return NULL;
->  }
+> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+> index aa58e5f99..2576477eb 100644
+> --- a/tests/intel/xe_eudebug_online.c
+> +++ b/tests/intel/xe_eudebug_online.c
+> @@ -1600,7 +1600,11 @@ static void test_set_breakpoint_online_sigint_debugger(int fd,
+>  		else if (event_count > 0 && event_count < events_max)
+>  			sigints_during_test++;
 >  
-> +uint32_t xe_hwconfig_lookup_value_u32(int fd, enum intel_hwconfig attribute)
-> +{
-> +	uint32_t len, *val;
-> +
-> +	val = xe_hwconfig_lookup_value(fd, attribute, &len);
-> +	igt_assert(val && len == 1);
-> +	return *val;
-> +}
-> +
+> -		igt_assert_eq(pthread_kill(s->debugger->worker_thread, SIGINT), 0);
+> +		pthread_sigqueue(s->debugger->worker_thread, SIGINT,
+> +				 (union sigval){ .sival_ptr = (void*)s->debugger });
 
-Small nit, add documentation for above function as it is public API.
-With this:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+This imo should be part 4/5 (debugger_worker_loop()). Gracefully handling
+sigint should be part of the debugger code, not the test.
 
 --
 Zbigniew
 
->  igt_constructor
->  {
->  	xe_device_cache_init();
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index 26535bb74..6404d800f 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -136,6 +136,7 @@ bool xe_is_media_gt(int fd, int gt);
->  bool xe_is_main_gt(int fd, int gt);
->  uint16_t xe_gt_get_tile_id(int fd, int gt);
->  uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32_t *len);
-> +uint32_t xe_hwconfig_lookup_value_u32(int fd, enum intel_hwconfig attribute);
+> +		/* XXX: Don't close debugger fd before it dies */
+> +		while (!s->debugger->handled_sigint)
+> +			usleep(1000);
+>  		close(s->debugger->fd);
 >  
->  struct xe_device *xe_device_get(int fd);
->  void xe_device_put(int fd);
+>  		igt_assert_eq(READ_ONCE(s->debugger->worker_state), DEBUGGER_WORKER_ACTIVE);
 > -- 
 > 2.34.1
 > 
