@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B47CAC5AE
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Sep 2025 19:51:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC4CCAC5AE
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Sep 2025 19:55:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5327010E068;
-	Wed, 24 Sep 2025 19:51:48 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D78B10E068;
- Wed, 24 Sep 2025 19:51:47 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4171134765651745976=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B56D810E068;
+	Wed, 24 Sep 2025 19:55:04 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PiMmBPWZ";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3765B10E068
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Sep 2025 19:55:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1758743703; x=1790279703;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=dEL8UhE7zlEYHwZ/HTcsDEOivEIr0iOjPcK2nPMBSkM=;
+ b=PiMmBPWZGkFPoRX/CkphZ7vnDulzCnYe1VwG8aF95ngH//szvQpOco3v
+ Qu+2Hyl+CHdFoBiwGvJaqwljNwxdB/1IU0kWVVl2476XhlZnTvDaWTguq
+ qvM7t2nuhdyJVyetjsJjblKa0wQVWH6YTDbNmrf/d/Jp280S3BmVHLpe7
+ ZCv+ubNdIUCQfukrzKtQMMg4c0MlG7wHirlT2sDrCSxmbiFIdqR9F2Vs8
+ uVCgW8yAGWeqHvsSjwNiFFo9J7XMmMuFm9V3vSYtsASbiHkOnGh2K51Hg
+ 6em/z+HVng2StXvndmamzGin/jhTqBaqfKEkU0DX4sXjYJCd0Rvwc4lpU A==;
+X-CSE-ConnectionGUID: V6nnV5UlTm2X6ImpXRegMQ==
+X-CSE-MsgGUID: NYHbIEycSs6L5l6jah+m0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="60267469"
+X-IronPort-AV: E=Sophos;i="6.18,291,1751266800"; d="scan'208";a="60267469"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2025 12:55:03 -0700
+X-CSE-ConnectionGUID: 77ONJT5QQBWIsVmc/D1OXA==
+X-CSE-MsgGUID: gfmq/a0tSY2Bp/baDzXj7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,291,1751266800"; d="scan'208";a="181395217"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.22])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2025 12:55:00 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ewelina Musial <ewelina.musial@intel.com>,
+ Karol Krol <karol.krol@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v7 0/2] Runner: Abort run when dmesg is flooded
+Date: Wed, 24 Sep 2025 21:54:51 +0200
+Message-ID: <20250924195453.92680-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_extend_lobf_test_for_suppor?=
- =?utf-8?q?ted_connectors_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 24 Sep 2025 19:51:47 -0000
-Message-ID: <175874350724.363593.8178501474319082676@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250922074401.2494339-1-kunal1.joshi@intel.com>
-In-Reply-To: <20250922074401.2494339-1-kunal1.joshi@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,154 +72,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4171134765651745976==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+I am not sure if this is enough for preventing flood, also
+this could be a limitation for kernel OOPs hapenning just
+after test end its execution. Maybe better way would be to
+intoduce a size and time limit for dmesg prints after test
+exits, or wait a little to let kernel OOPs prints its data
+and then check again.
 
-== Series Details ==
+Lets introduce option --dmsg-ratio-limit, active only after
+disk usage triggers for option --disk-usage-limit.
 
-Series: extend lobf test for supported connectors (rev3)
-URL   : https://patchwork.freedesktop.org/series/154689/
-State : success
+With this change comes also HAX test commit with --dmsg-ratio-limit=256KB/s
 
-== Summary ==
+Previous version:
 
-CI Bug Log - changes from XEIGT_8552_BAT -> XEIGTPW_13810_BAT
-====================================================
+https://patchwork.freedesktop.org/series/150246/
+runner/executor: Abort if dmesg is flooded
 
-Summary
--------
+Cc: Ewelina Musial <ewelina.musial@intel.com>
+Cc: Karol Krol <karol.krol@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
 
-  **SUCCESS**
+Kamil Konieczny (2):
+  runner: Abort if dmesg is flooded
+  HAX DO_NOT_MERGE: runner/settings: set default ratio to 256KB/s
 
-  No regressions found.
+ runner/executor.c | 149 ++++++++++++++++++++++++++++++++++++++--------
+ runner/settings.c |  61 ++++++++++++++++++-
+ runner/settings.h |   1 +
+ 3 files changed, 184 insertions(+), 27 deletions(-)
 
-  
+-- 
+2.51.0
 
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13810_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-plain-flip@b-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8552/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13810/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
-
-  * igt@xe_pat@pat-index-xe2@render:
-    - bat-bmg-1:          [PASS][3] -> [FAIL][4] ([Intel XE#5507]) +1 other test fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8552/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13810/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-plain-flip@a-edp1:
-    - bat-adlp-7:         [DMESG-WARN][5] ([Intel XE#4543]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8552/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13810/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-  [Intel XE#5507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507
-
-
-Build changes
--------------
-
-  * IGT: IGT_8552 -> IGTPW_13810
-
-  IGTPW_13810: 13810
-  IGT_8552: 8552
-  xe-3825-a4d9163251f4832a7d34d4b59449f9a68b9b7adf: a4d9163251f4832a7d34d4b59449f9a68b9b7adf
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13810/index.html
-
---===============4171134765651745976==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>extend lobf test for supported connectors (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154689/">https://patchwork.freedesktop.org/series/154689/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13810/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13810/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8552_BAT -&gt; XEIGTPW_13810_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13810_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-plain-flip@b-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8552/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13810/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2@render:</p>
-<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8552/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13810/bat-bmg-1/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507">Intel XE#5507</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8552/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13810/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8552 -&gt; IGTPW_13810</li>
-</ul>
-<p>IGTPW_13810: 13810<br />
-  IGT_8552: 8552<br />
-  xe-3825-a4d9163251f4832a7d34d4b59449f9a68b9b7adf: a4d9163251f4832a7d34d4b59449f9a68b9b7adf</p>
-
-</body>
-</html>
-
---===============4171134765651745976==--
