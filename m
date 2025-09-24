@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF81CAC5B3
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Sep 2025 09:32:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9FB1CAC5A5
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Sep 2025 10:01:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F38A910E6D1;
-	Wed, 24 Sep 2025 09:32:36 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N62PSqe4";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B8AB10E6D1
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Sep 2025 09:32:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758706356; x=1790242356;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=y8bfvUrTBDykg6RGlKSfEDcpXv2pT65K4I2YEa4rd5M=;
- b=N62PSqe44bcOIo90U1gZZ1YAO7CLxWp7eQnRYxNrpXl6tm3qFSEU5Kwk
- AIQ/wV6f8tN8QJuj108zhha25fZ6aAdZLVidhyI9X7VbD6YaYfzZH8zBB
- PYx7FiLnX7HjpLcG4nwEpwR9u4a2/JpS9Z3mk9L/qopRQ3da0RQPxBIcU
- dC2sUeKeTtiM5ueTTqjMKFipu2rTzpf4WyAK5sLdf7mux6jRyeL7H+oIX
- tUAOYOUVu1iOE0hs/5MK4/f4q54IJU40qIsvWTwQ5YkPMaoQkcMvqzgyC
- FXXlQEqVoN7Lyrxe7if2pj/rwUBXHe4rFxxw0gpaJoZ8HwcovVDZllAnX g==;
-X-CSE-ConnectionGUID: zlws2gXkT2y7GUw228VTJQ==
-X-CSE-MsgGUID: KZjuAil1SueRjk+3J9n01w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60913236"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="60913236"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Sep 2025 02:32:36 -0700
-X-CSE-ConnectionGUID: zb1fFriZS0WG2edu+81vaw==
-X-CSE-MsgGUID: W3JsKVo7Q9KjNJ2Ho9C0Ww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="181286025"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 02:32:34 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com, ankit.k.nautiyal@intel.com,
- mitulkumar.ajitkumar.golani@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1] tests/kms_vrr: Skip DRRS-related tests on LNL+
-Date: Wed, 24 Sep 2025 15:02:26 +0530
-Message-ID: <20250924093226.3899875-1-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FB2C10E6D8;
+	Wed, 24 Sep 2025 10:01:14 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1864610E6D8;
+ Wed, 24 Sep 2025 10:01:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7398418402870104632=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Introduce_intel=5Fhdcp_tool?=
+ =?utf-8?q?_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 24 Sep 2025 10:01:13 -0000
+Message-ID: <175870807308.360964.4217936787090420455@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250924072940.413695-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20250924072940.413695-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,49 +37,166 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To prevent false failures and maintain test relevance, seamless VRR
-and DRRS test cases are skipped. This ensures the test suite aligns
-with current hardware capabilities and avoids unnecessary execution
-on platforms where DRRS is no longer supported.
+--===============7398418402870104632==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Bspec: 68917
-HSD: 14016007525
-Link: https://lore.kernel.org/intel-gfx/20250912135926.18910-1-ville.syrjala@linux.intel.com/
+== Series Details ==
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/kms_vrr.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Series: Introduce intel_hdcp tool (rev4)
+URL   : https://patchwork.freedesktop.org/series/149007/
+State : success
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 233143770..94ff029b7 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -1016,7 +1016,7 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
- 		return false;
- 	}
- 
--	if (flags & TEST_SEAMLESS_DRRS)
-+	if (flags & TEST_LINK_OFF)
- 		goto out;
- 
- 	/* For Negative tests, panel should be non-vrr. */
-@@ -1030,6 +1030,12 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
- 		return false;
- 	}
- 
-+	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)) &&
-+	    (intel_display_ver(data->drm_fd) >= 14)) {
-+		igt_info("Can't run DRRS has been defeatured on LNL+\n");
-+		return false;
-+	}
-+
- out:
- 	if (!output_constraint(data, output, flags))
- 		return false;
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8550_BAT -> XEIGTPW_13808_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 11)
+------------------------------
+
+  Additional (2): bat-ptl-1 bat-ptl-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13808_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-plain-flip@d-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8550/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13808/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-bmg-2:          [FAIL][3] ([Intel XE#5507]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8550/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13808/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#5507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507
+  [Intel XE#5764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764
+  [Intel XE#5765]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5765
+  [Intel XE#5766]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5766
+  [Intel XE#5769]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5769
+  [Intel XE#5771]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771
+  [Intel XE#5773]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5773
+  [Intel XE#5774]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5774
+  [Intel XE#5775]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775
+  [Intel XE#5776]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776
+  [Intel XE#5777]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777
+  [Intel XE#5778]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5778
+  [Intel XE#5780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780
+  [Intel XE#5781]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5781
+  [Intel XE#5907]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5907
+  [Intel XE#6203]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6203
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8550 -> IGTPW_13808
+  * Linux: xe-3814-d2f002c868da5926fabd73b1ba2ab7a2b66d81dc -> xe-3823-53ee7e373ce454dc86b39ac27aa84d95c536b670
+
+  IGTPW_13808: 13808
+  IGT_8550: 4f8c7886ad02e116804ec08714f17bce1755c6e4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3814-d2f002c868da5926fabd73b1ba2ab7a2b66d81dc: d2f002c868da5926fabd73b1ba2ab7a2b66d81dc
+  xe-3823-53ee7e373ce454dc86b39ac27aa84d95c536b670: 53ee7e373ce454dc86b39ac27aa84d95c536b670
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13808/index.html
+
+--===============7398418402870104632==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Introduce intel_hdcp tool (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149007/">https://patchwork.freedesktop.org/series/149007/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13808/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13808/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8550_BAT -&gt; XEIGTPW_13808_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 11)</h2>
+<p>Additional (2): bat-ptl-1 bat-ptl-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13808_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8550/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13808/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xe2@render:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8550/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507">Intel XE#5507</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13808/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8550 -&gt; IGTPW_13808</li>
+<li>Linux: xe-3814-d2f002c868da5926fabd73b1ba2ab7a2b66d81dc -&gt; xe-3823-53ee7e373ce454dc86b39ac27aa84d95c536b670</li>
+</ul>
+<p>IGTPW_13808: 13808<br />
+  IGT_8550: 4f8c7886ad02e116804ec08714f17bce1755c6e4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3814-d2f002c868da5926fabd73b1ba2ab7a2b66d81dc: d2f002c868da5926fabd73b1ba2ab7a2b66d81dc<br />
+  xe-3823-53ee7e373ce454dc86b39ac27aa84d95c536b670: 53ee7e373ce454dc86b39ac27aa84d95c536b670</p>
+
+</body>
+</html>
+
+--===============7398418402870104632==--
