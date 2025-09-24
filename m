@@ -4,57 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE9A1CAC5A5
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Sep 2025 11:06:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54009CAC5B3
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Sep 2025 11:42:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7D8E510E6FB;
-	Wed, 24 Sep 2025 11:06:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0004110E70C;
+	Wed, 24 Sep 2025 11:42:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hxn9dtET";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DaZFlIPD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 638AB10E6FB
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Sep 2025 11:06:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BFCE10E70E
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Sep 2025 11:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758711985; x=1790247985;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0kA2RD51txELcQoRXunf2GTV4zt4Ibhhm1VhK5dcP1w=;
- b=Hxn9dtETILcckS8K41EvMuzT/Sse+QcGAqO0UFhb/Bx8ov8x95R0UQxy
- CM59eMex5AQLzmU61BQnnWOm8OXGs384ObURaAUgt7h3GXgEsmiSS1mgB
- pF8Nv17QaE3pGsXcoy/p4waQ4K+DTJFJPT1jMzbshXPrUuhx2tyQtAsy4
- N4yNgQUAF0CjE4347iQ052/KxhVsm0AVZiFk+6bRpXP7bGbJcQFg23W7v
- PxXjL+vfKuS+5maXT4yWm06jgdVRHD6QGONJR8p75AsYNpqV/C73XybiD
- JC7oO9UHpcsGIxuGRiWVRWcs9MxS66s//PDnT5pdc3uvTLMwWDXA8hCLu g==;
-X-CSE-ConnectionGUID: 0c3fuea+Q6GujPnbSQkONA==
-X-CSE-MsgGUID: UEMviUsOQ2Shc3PxtzHBvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="72362645"
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="72362645"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Sep 2025 04:06:25 -0700
-X-CSE-ConnectionGUID: 4+PJIwpHQlKwkl5sqQSDgA==
-X-CSE-MsgGUID: j0sThGgiSt6WVlh9zg3S3g==
+ t=1758714164; x=1790250164;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=a09GNMeZBuNFrZAgTPmbNymmmMFCAcEt+buBHpPLkIQ=;
+ b=DaZFlIPDg6/6ciVfHkSGGx1MWkpC88y21tsh0lILWh71YxhlM0t+pVjn
+ pDRCAwffYXKfh41OaCBkYIb+q7XMX5D5erXIyjvgTIH7q21saT9yLOCXh
+ SZBuS6kK0S6V49bz/bExFnu3NFL3Gc1ouF2vtA9EXJCuS9wAA3dWq7Vlm
+ ASDOhDTK3M7h071sV4SGQE4J6dFmP9HMyeflOwC8V1GkfIKVAeF1QSk9+
+ vG2aMz4cQ5SoUt//SLbLPeqya6dqMvOUtlfS4NskSv+wFGrOzpds4A333
+ Yd0nXZBkIoEHxVJf/ulCZONcJRtWqaS8pzAnTtdYm+sWVwZgGB1dmnR8O A==;
+X-CSE-ConnectionGUID: JE7k35xSQnqF3YU7N2X3Sw==
+X-CSE-MsgGUID: e6XNM7fBRfem50ZyIpRcjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="63635193"
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="63635193"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2025 04:42:44 -0700
+X-CSE-ConnectionGUID: +emO98K3SqibpSAOsQNlHg==
+X-CSE-MsgGUID: LdKuXug6Rzux3Am8ZMhlJg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="181299035"
-Received: from unknown (HELO localhost) ([172.28.180.114])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Sep 2025 04:06:23 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>
-Subject: [PATCH i-g-t 2/2] benchmarks/gem_wsim: Verify Xe spinner batch
- completion
-Date: Wed, 24 Sep 2025 13:06:07 +0200
-Message-Id: <20250924110607.563913-3-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20250924110607.563913-1-marcin.bernatowicz@linux.intel.com>
-References: <20250924110607.563913-1-marcin.bernatowicz@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="181025637"
+Received: from cmanszew-mobl2.igk.intel.com (HELO [172.28.180.190])
+ ([172.28.180.190])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2025 04:42:41 -0700
+Message-ID: <411a13c9-cb01-4d30-aad7-970497b3e571@intel.com>
+Date: Wed, 24 Sep 2025 13:42:35 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 i-g-t 4/6] lib/xe_eudebug: Improve SIGINT handling
+To: =?UTF-8?Q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>
+References: <20250923131002.24708-1-dominik.karol.piatkowski@intel.com>
+ <20250923131002.24708-5-dominik.karol.piatkowski@intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20250923131002.24708-5-dominik.karol.piatkowski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,118 +75,118 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce an opt-in post-sync check for bounded Xe BATCH steps to
-detect premature finishes. Store the per-step requested_ticks and, when
--V is set, assert after sync that completion did not occur early.
+Hi Dominik,
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
----
- benchmarks/gem_wsim.c | 41 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 33 insertions(+), 8 deletions(-)
+On 23.09.2025 15:10, Dominik Karol Piątkowski wrote:
+> Rewrite SIGINT signal handler to toggle a variable instead of calling
+> pthread_exit instantly, as the thread could be in critical section,
+> causing a deadlock on the attempt of next entry into that critical
+> section.
+> 
+> Introduce received_signal, received_sigint and handled_sigint variables
+> to help with coordination of handling SIGINT and other signals.
+> 
+> Use the received_sigint variable in debugger_worker_loop to safely kill
+> the thread, set handled_sigint to help with coordination outside the
+> debugger loop.
+> 
+> Rename terminate_debugger to debugger_signal_handler to describe its
+> new function better. Add SIGTERM to signals that are handled by
+> debugger_signal_handler.
+> 
+> Don't kill debugger thread on non-SIGINT signals. Don't break on poll
+> failure if signal was received.
+> 
+> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+> ---
+>   lib/xe/xe_eudebug.c | 26 ++++++++++++++++++++++----
+>   lib/xe/xe_eudebug.h |  4 ++++
+>   2 files changed, 26 insertions(+), 4 deletions(-)
+> 
+> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+> index deaea25cd..647da7b32 100644
+> --- a/lib/xe/xe_eudebug.c
+> +++ b/lib/xe/xe_eudebug.c
+> @@ -1072,9 +1072,14 @@ xe_eudebug_read_event(int fd, struct drm_xe_eudebug_event *event)
+>   	return ret;
+>   }
+>   
+> -static void terminate_debugger(int sig)
+> +static void debugger_signal_handler(int sig, siginfo_t *info, void *context)
+>   {
+> -	pthread_exit(NULL);
+> +	struct xe_eudebug_debugger *d = info->si_ptr;
+> +
+> +	d->received_signal = true;
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 098415b53..bebb59f28 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -110,6 +110,7 @@ static const char *intel_engine_class_string(uint16_t engine_class)
- struct duration {
- 	unsigned int min, max;
- 	bool unbound;
-+	uint32_t requested_ticks;
- };
- 
- enum w_type {
-@@ -325,6 +326,7 @@ static struct drm_i915_gem_context_param_sseu device_sseu = {
- #define FLAG_SYNCEDCLIENTS	(1<<1)
- #define FLAG_DEPSYNC		(1<<2)
- #define FLAG_SSEU		(1<<3)
-+#define FLAG_VERIFY_COMPLETION	(1 << 4)
- 
- static void w_step_sync(struct w_step *w)
- {
-@@ -1796,10 +1798,12 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
- 		intel_allocator_alloc_with_strategy(vm->ahnd, w->bb_handle, w->bb_size,
- 						    0, ALLOC_STRATEGY_LOW_TO_HIGH);
- 	xe_vm_bind_sync(fd, vm->id, w->bb_handle, 0, w->xe.exec.address, w->bb_size);
--	xe_spin_init_opts(&w->xe.data->spin, .addr = w->xe.exec.address,
--				   .preempt = (w->preempt_us > 0),
--				   .ctx_ticks = xe_spin_nsec_to_ticks(fd, eq->hwe_list[0].gt_id,
--								      1000LL * get_duration(wrk, w)));
-+	w->duration.requested_ticks = xe_spin_nsec_to_ticks(fd, eq->hwe_list[0].gt_id,
-+							    1000LL * get_duration(wrk, w));
-+	xe_spin_init_opts(&w->xe.data->spin,
-+			  .addr = w->xe.exec.address,
-+			  .preempt = (w->preempt_us > 0),
-+			  .ctx_ticks = w->duration.requested_ticks);
- 	w->xe.exec.exec_queue_id = eq->id;
- 	w->xe.exec.num_batch_buffer = 1;
- 	/* always at least one out fence */
-@@ -2652,15 +2656,30 @@ static void do_xe_exec(struct workload *wrk, struct w_step *w)
- 		syncobj_reset(fd, &w->xe.syncs[0].handle, 1);
- 
- 	/* update duration if random */
--	if (w->duration.max != w->duration.min)
-+	if (w->duration.max != w->duration.min) {
-+		w->duration.requested_ticks = xe_spin_nsec_to_ticks(fd, eq->hwe_list[0].gt_id,
-+								    1000LL * get_duration(wrk, w));
- 		xe_spin_init_opts(&w->xe.data->spin,
- 				  .addr = w->xe.exec.address,
- 				  .preempt = (w->preempt_us > 0),
--				  .ctx_ticks = xe_spin_nsec_to_ticks(fd, eq->hwe_list[0].gt_id,
--								     1000LL * get_duration(wrk, w)));
-+				  .ctx_ticks = w->duration.requested_ticks);
-+	}
- 	xe_exec(fd, &w->xe.exec);
- }
- 
-+static void xe_w_step_sync_and_verify(struct w_step *w)
-+{
-+	if (!is_xe && w->type != BATCH)
-+		return;
-+
-+	w_step_sync(w);
-+
-+	if (!w->duration.unbound) {
-+		igt_assert(w->duration.requested_ticks && w->xe.data->spin.ticks_delta);
-+		igt_assert_lte(w->duration.requested_ticks, ~w->xe.data->spin.ticks_delta);
-+	}
-+}
-+
- static void
- do_eb(struct workload *wrk, struct w_step *w)
- {
-@@ -2910,6 +2929,9 @@ static void *run_workload(void *data)
- 				close(w->emit_fence);
- 				w->emit_fence = -1;
- 			}
-+
-+			if (wrk->flags & FLAG_VERIFY_COMPLETION)
-+				xe_w_step_sync_and_verify(w);
- 		}
- 	}
- 
-@@ -3108,7 +3130,7 @@ int main(int argc, char **argv)
- 	master_prng = time(NULL);
- 
- 	while ((c = getopt(argc, argv,
--			   "LlhqvsSdc:r:w:W:a:p:I:f:F:D:")) != -1) {
-+			   "LlhqvVsSdc:r:w:W:a:p:I:f:F:D:")) != -1) {
- 		switch (c) {
- 		case 'L':
- 			list_devices_arg = true;
-@@ -3153,6 +3175,9 @@ int main(int argc, char **argv)
- 		case 'v':
- 			verbose++;
- 			break;
-+		case 'V':
-+			flags |= FLAG_VERIFY_COMPLETION;
-+			break;
- 		case 'S':
- 			flags |= FLAG_SYNCEDCLIENTS;
- 			break;
--- 
-2.31.1
+If I understand correctly, without the two commits that follow, this is 
+a NULL pointer dereference. But even after combining those commits, 
+won't this cause a NULL pointer dereference if a IGT user presses 'CTRL-C'?
+> +
+> +	if (sig == SIGINT)
+> +		d->received_sigint = true;
+>   }
+>   
+>   static void *debugger_worker_loop(void *data)
+> @@ -1092,14 +1097,24 @@ static void *debugger_worker_loop(void *data)
+>   	igt_assert(d->master_fd >= 0);
+>   
+>   	igt_assert_eq(sigaction(SIGINT, NULL, &sa), 0);
+> -	sa.sa_handler = terminate_debugger;
+> +	sa.sa_sigaction = debugger_signal_handler;
+> +	sa.sa_flags |= SA_SIGINFO;
+>   	igt_assert_eq(sigaction(SIGINT, &sa, NULL), 0);
+>   
+> +	igt_assert_eq(sigaction(SIGTERM, NULL, &sa), 0);
+> +	sa.sa_sigaction = debugger_signal_handler;
+> +	sa.sa_flags |= SA_SIGINFO;
+> +	igt_assert_eq(sigaction(SIGTERM, &sa, NULL), 0);
+> +
+>   	do {
+>   		p.fd = d->fd;
+>   		ret = poll(&p, 1, timeout_ms);
+> +		if (d->received_sigint) {
+> +			d->handled_sigint = true;
+> +			pthread_exit(NULL);
+> +		}
+>   
+> -		if (ret == -1) {
+> +		if (!d->received_signal && ret == -1) {
+
+I am not sure I understand what the SIGTERM handling is supposed to 
+influence here? From patch 6/6 I gather that it is supposed to maximize 
+the chance of hitting the read IOCTL but I don't see how.
+
+Regards,
+Christoph
+
+
+>   			igt_info("poll failed with errno %d\n", errno);
+>   			break;
+>   		}
+> @@ -1168,6 +1183,9 @@ xe_eudebug_debugger_create(int master_fd, uint64_t flags, void *data)
+>   	d->fd = -1;
+>   	d->master_fd = master_fd;
+>   	d->ptr = data;
+> +	d->received_signal = false;
+> +	d->received_sigint = false;
+> +	d->handled_sigint = false;
+>   
+>   	return d;
+>   }
+> diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
+> index 8f7f66220..46cd3463e 100644
+> --- a/lib/xe/xe_eudebug.h
+> +++ b/lib/xe/xe_eudebug.h
+> @@ -44,6 +44,10 @@ struct xe_eudebug_debugger {
+>   	pthread_t worker_thread;
+>   	enum xe_eudebug_debugger_worker_state worker_state;
+>   
+> +	bool received_signal;
+> +	bool received_sigint;
+> +	bool handled_sigint;
+> +
+>   	int p_client[2];
+>   };
+>   
 
