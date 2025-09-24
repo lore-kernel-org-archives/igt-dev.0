@@ -4,60 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B49ECAC5B0
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Sep 2025 11:03:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D1A2CAC5B0
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Sep 2025 11:06:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2942610E6EF;
-	Wed, 24 Sep 2025 11:03:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E39C910E6F8;
+	Wed, 24 Sep 2025 11:06:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jidszqbl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c0XGXYbE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85C5910E6EF
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Sep 2025 11:03:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FAEA10E6F8
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Sep 2025 11:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758711833; x=1790247833;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=DwrOaqSYP7F0w92M07QU41/zIuKFbAbsVk/aJD3XiUQ=;
- b=jidszqblXXpRghHZDCCwHKplexhh3S8oKiOGbCfiN2OZNgGKrNNa4Bnr
- kRAaT6zR+3VOrY6Y4FdkOVG8L7au6W1P9ibUlCZL94K5b2lHa0RYflwAk
- 1eiWkepn+XCMK6Eg12bk6teQmB+iaAU2f4VJ1kTtHzGvGcxxQoICVr90u
- U9wIXo+0UV+Jg4oP8eHVUfxS/AIWuQlMW8r2b3NCfiGNz2/8DrfCZk1Z1
- G0ORYAlPSXBpUDqojcq3E9NVXJGu8N+a5yZvPFMETxzgTVkmDUhcfNZ4+
- 2ZPWYQcOgV0BJWN6wYd1DImfxf5HOtgLI2tmqzJcKVyx++ue7CgMORsf+ A==;
-X-CSE-ConnectionGUID: Ms/5i2wFQSuP7z4XeGCDCA==
-X-CSE-MsgGUID: 6ibYv9V3SYGylpBUA6MVoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="72362378"
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="72362378"
+ t=1758711975; x=1790247975;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=SY8zKssO+lluDqfNDTnA4ecK75ZftEGWLOAjL2MG7jw=;
+ b=c0XGXYbEkWiewazFEyvEJ1d3iDtBzm7j4wOV8waOqopXjZ2dCCH3jyVO
+ LtuTy65sRuM99HvR4KPIHK2g5Ypp8soRlEzI23zqYSKk41PCvptRE+Vm8
+ gKHmzwW+5lTE7q8mb96Sg9StU08DkzIM4z2hDEekCdda24FN0bWs2WvHZ
+ 6wSXxdmdCNzk1aWWnwWxIMRTynJyLDPrmsDeDoXZXme2mK0Jog+aPJjd9
+ UacVL7XZPBj/WJoEpR65JgM9FWFeEzrzPihOw+GDe+lSIf3UI8i5LyqV0
+ RzoH6Az+RhATzbT6CIy0Qp6nrMwUaMxT+hyplm+X6uefVXCBqo2hilIDP Q==;
+X-CSE-ConnectionGUID: WCf2+oXoQfeQxNbzNbsWpw==
+X-CSE-MsgGUID: Xl1vGVFdQfOadVkHEz5byA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="72362618"
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="72362618"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Sep 2025 04:03:53 -0700
-X-CSE-ConnectionGUID: +hPgvWsQRrShJOFk+wOQQA==
-X-CSE-MsgGUID: 5ZJ1I7C0S92emIwDHRrOPQ==
+ 24 Sep 2025 04:06:14 -0700
+X-CSE-ConnectionGUID: teX4H8xKQmmZR4M+UPyvHA==
+X-CSE-MsgGUID: 9kElHXDPQS+a+psUq9MeRg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="181298624"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 04:03:51 -0700
-Date: Wed, 24 Sep 2025 13:03:34 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/2] tests/intel/xe_configfs: Check
- ctx_restore_post_bb
-Message-ID: <20250924110334.pxdqtw3qvjfmcq7a@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- igt-dev@lists.freedesktop.org,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-References: <20250918-configfs-ctx-restore-v2-0-5df035e27e42@intel.com>
- <20250918-configfs-ctx-restore-v2-2-5df035e27e42@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; d="scan'208";a="181299011"
+Received: from unknown (HELO localhost) ([172.28.180.114])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2025 04:06:12 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+Subject: [PATCH i-g-t 0/2] benchmarks/gem_wsim: Thread failures and Xe batch
+ verification
+Date: Wed, 24 Sep 2025 13:06:05 +0200
+Message-Id: <20250924110607.563913-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250918-configfs-ctx-restore-v2-2-5df035e27e42@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,87 +69,22 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
-On 2025-09-18 at 21:50:21 -0700, Lucas De Marchi wrote:
-> Add sanity checks for some bb written to ctx_restore_post_bb and
-> ctx_restore_mid_bb. For invalid values, it validates the xe configfs
-> implementation correctly rejects them. For valid values, it checks the
-> values are written correctly and that later when we driver binds that
-> the HW register contains the expected value.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  tests/intel/xe_configfs.c | 177 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 177 insertions(+)
-> 
-> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-> index 794c76132..7a7a7edf4 100644
-> --- a/tests/intel/xe_configfs.c
-> +++ b/tests/intel/xe_configfs.c
-> @@ -26,6 +26,31 @@
->  static char bus_addr[NAME_MAX];
->  static struct pci_device *pci_dev;
->  
-> +static bool check_registers(const uint32_t reg[], const uint32_t val[],
-> +			    size_t max)
-> +{
-> +	struct intel_mmio_data mmio_data = { };
-> +	bool ret = false;
-> +
-> +	intel_register_access_init(&mmio_data, pci_dev, 0);
-> +
-> +	for (int i = 0; i < max && reg[i]; i++) {
-> +		uint32_t v = intel_register_read(&mmio_data, reg[i]);
-> +
-> +		if (v != val[i]) {
-> +			igt_debug("Expecting [%x]=%x but found %x\n",
-> +				  reg[i], val[i], v);
-> +			goto out;
-> +		}
-> +	}
-> +
-> +	ret = true;
-> +
-> +out:
-> +	intel_register_access_fini(&mmio_data);
-> +	return ret;
-> +}
-> +
->  static void restore(int sig)
->  {
->  	int configfs_fd;
-> @@ -124,6 +149,142 @@ static void test_engines_allowed(int configfs_device_fd)
->  	}
->  }
->  
-> +/**
-> + * SUBTEST: ctx-restore-post-bb-invalid
-> + * Description: Validate ctx_restore_post_bb attribute for invalid values
-> + *
-> + * SUBTEST: ctx-restore-mid-bb-invalid
-> + * Description: Validate ctx_restore_mid_bb attribute for invalid values
-> + */
-> +static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
-> +{
-> +	static const struct value {
-> +		const char *test;
-> +		const char *in;
-> +	} values[] = {
-> +		{ .test = "invalid-engine",
-> +		  .in = "foobar cmd 11000001 4F100 DEADBEEF",
-> +		},
-> +		{ .test = "invalid-type",
-> +		  .in = "rcs 11000001 4F100 DEADBEEF",
-> +		},
-> +		{ .test = "invalid-number",
-> +		  .in = "rcs cmd 1100000g 4F100 DEADBEEF",
-> +		},
-> +		{ .test = "invalid-number",
-> +		  .in = "rcs cmd 1100000g 4F100 DEADBEEF",
+Propagate thread assertion failures to the exit status.
+Add an opt-in post-sync verification for Xe spinner batches to catch
+premature finishes (-V).
 
-This is repeated, is it intended?
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
 
-Regards,
-Kamil
+Marcin Bernatowicz (2):
+  benchmarks/gem_wsim: Fail on thread assertions
+  benchmarks/gem_wsim: Verify Xe spinner batch completion
 
-[cut]
+ benchmarks/gem_wsim.c | 44 +++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 36 insertions(+), 8 deletions(-)
+
+-- 
+2.31.1
+
