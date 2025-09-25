@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37A0CCAC5A7
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Sep 2025 12:42:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62867CAC5A7
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Sep 2025 12:43:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E4B0710E2C7;
-	Thu, 25 Sep 2025 12:42:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A3B3A10E8FD;
+	Thu, 25 Sep 2025 12:43:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="clJBDYkH";
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NxoHGJeR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF24310E2C7
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Sep 2025 12:42:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758804127; x=1790340127;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=0wBGYwP+xOdmAQuvWqGjr/GusWSTfMdm9kwBpMfxp/Q=;
- b=clJBDYkHDw92cVTtZaSr+mkddBzxeXy6RwY8VlXbrAfsyaraaAn/Zlrv
- i0CLt5qo5KF+nzVZ+Ai6e82tYS+F4sQmYpYHC8c8qt5SVyDvdg/p23wMy
- cYUXvtZqzlJcIZNMdVV1EjPS95595fWt9pLSFdFV5ol+F+uLZM3cFK5KE
- rgdAuevJbqLydTC+xgLRe93i2blKyNzDNO5LqJgW89TDOyrBXC2O7lEHl
- YTpOLsDIJ5CjRDOYVir1QDg6yM6HKsHuseaLLJ0Vk9jJYm1Q9DnsKZ3Dn
- vCflWTmIzLIJBbdG/ZhdjE+xchzoQL4/W39BryNc/1eAY08dscfaqq+Mn w==;
-X-CSE-ConnectionGUID: zLWPZ1MfSIeA9/+6e6bGGQ==
-X-CSE-MsgGUID: pIVCgKyZRAK82h9ED0nhnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="60819474"
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; d="scan'208";a="60819474"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2025 05:42:06 -0700
-X-CSE-ConnectionGUID: pcirNgMiT22dxXmXdC4AMw==
-X-CSE-MsgGUID: VW1L8R60TCmC7EsT6CrJ+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; d="scan'208";a="181330309"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 05:42:05 -0700
-Date: Thu, 25 Sep 2025 14:41:48 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2] tools/lsgpu: iterate over all matching devices
-Message-ID: <20250925124148.lohnirhf3gruqg35@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org,
- Peter Senna Tschudin <peter.senna@linux.intel.com>
-References: <20250925091847.134577-2-zbigniew.kempczynski@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250925091847.134577-2-zbigniew.kempczynski@intel.com>
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com
+ [136.143.188.112])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F52510E2C7;
+ Thu, 25 Sep 2025 12:43:19 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1758804196; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=nxWJj00YuVsDyeDvU8IqYqiDlQ+QD3FJNew9v03B6anFh7IdeXaK2JwNu7pEO7l75bFKxajA+nJlwE6SUxupSVQ5uJ1hdi6ep4OFi8rV+bYIbHuKa1JizYrtRwwNIhVDTPUU2pqdwTXxwXs88Jqn38CQ4DYwjXFXLi4X9OUhSlQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1758804196;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=iBO1OeXpKcig6ea81LX6zk9gp84tYRDi2U2yH/+iQ/E=; 
+ b=fWSI29h5MzUyBqjGBZ1JVl5JMDlxd14xOreZmFL18Aj3pbbtvHolotoI2gRD2IXuc3dEBKnhcXCPW2tQz95zZ+r4plAixlUj+3qNGrdpJ116f3e+MHPj+9dMF1ah4ipDPKaZDYYLANEh9ZcjN9beuWRtXQuraFy9gVmqJ+5jrR4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+ dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1758804196; 
+ s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+ h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+ bh=iBO1OeXpKcig6ea81LX6zk9gp84tYRDi2U2yH/+iQ/E=;
+ b=NxoHGJeRolhKIGVigNzYlznpQAQHmNNraxSJKX9bpkeI/XXVcwFC/hKsFenzxIJh
+ JdZ1lTEIFiU52CbxJGKUCb6hyRt2X/yjpvzFu6qUKWtfqInpb/4iLXmTmdoyFWXbI/1
+ K0zHhspsuPa14FKBSAozDQj25cdVpsm8QAnu76yQ=
+Received: by mx.zohomail.com with SMTPS id 1758804191518870.7044586273115;
+ Thu, 25 Sep 2025 05:43:11 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH i-g-t v2 2/3] panthor: add initial infrastructure
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250916121240.3e7eideofkifj2hd@kamilkon-DESK.igk.intel.com>
+Date: Thu, 25 Sep 2025 14:42:44 +0200
+Cc: adrinael@adrinael.net, arek@hiler.eu, juhapekka.heikkila@gmail.com,
+ bhanuprakash.modem@gmail.com, ashutosh.dixit@intel.com,
+ karthik.b.s@intel.com, boris.brezillon@collabora.com, liviu.dudau@arm.com,
+ steven.price@arm.com, aliceryhl@google.com, jeffv@google.com,
+ intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A6EF2C90-617D-4EE3-83E1-5D6CE3857F66@collabora.com>
+References: <20250912181931.3738444-1-daniel.almeida@collabora.com>
+ <20250912181931.3738444-3-daniel.almeida@collabora.com>
+ <20250916121240.3e7eideofkifj2hd@kamilkon-DESK.igk.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,107 +73,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
-On 2025-09-25 at 11:18:48 +0200, Zbigniew Kempczyński wrote:
-> At the moment only 'device:' filter allows to collect all matching
-> cards in the igt_devs.filtered view. Before this filter was introduced
-> we were mostly using 'pci:' which doesn't allow to put 'card=all'
-> and filter out all matching devices. Another limitation was in lsgpu,
+Hi Kamil,
 
-I am not sure but 'filter out' seams a little off, what about s/out//
-or s/filter out/fill in/
+> On 16 Sep 2025, at 14:12, Kamil Konieczny =
+<kamil.konieczny@linux.intel.com> wrote:
+>=20
+> Hi Daniel,
+> On 2025-09-12 at 15:19:29 -0300, Daniel Almeida wrote:
+>> Add the necessary code needed to compile panthor tests as well as the
+>> basic infrastructure that will be used by the Panthor tests =
+themselves.
+>>=20
+>> To make sure everything is in order, add a basic test in
+>> panthor_query.c.
+>>=20
+>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> ---
+>> lib/igt_panthor.c             | 41 =
++++++++++++++++++++++++++++++++++++
+>> lib/igt_panthor.h             | 12 ++++++++++
+>> lib/meson.build               |  1 +
+>> meson.build                   |  8 +++++++
+>> tests/meson.build             |  2 ++
+>> tests/panthor/meson.build     | 12 ++++++++++
+>> tests/panthor/panthor_query.c | 25 +++++++++++++++++++++
+>> 7 files changed, 101 insertions(+)
+>> create mode 100644 lib/igt_panthor.c
+>> create mode 100644 lib/igt_panthor.h
+>> create mode 100644 tests/panthor/meson.build
+>> create mode 100644 tests/panthor/panthor_query.c
+>>=20
+>> diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
+>> new file mode 100644
+>> index 000000000..0b690f796
+>> --- /dev/null
+>> +++ b/lib/igt_panthor.c
+>> @@ -0,0 +1,41 @@
+>> +// SPDX-License-Identifier: MIT
+>> +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
+>=20
+> We use SPD for licence because they are long texts. I do not
+> see any benefit of SPDX for copyright lines, it makes it even
+> longer than needed. It could stay if you want.
+>=20
+> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>=20
+> Regards,
+> Kamil
+>=20
 
-> which allows to display only single matching device.
-> 
-> Add loop around all matching cards and try to open them in lsgpu.
-> This allows testing filters which supports 'card=all' argument.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+I=E2=80=99d rather keep it. I tend to favor standardization and having a =
+standard
+way to declare copyrights seems beneficial to me. What are the next =
+steps here?
+Should I send a new version to pickup the tags, or can this be merged =
+already?
 
-I got strange results with 'Cannot open' prints, is this intended?
+Same for the other patch.
 
--------------------------------------------
-Device detail:
-subsystem   : drm
-drm card    : 
-drm render  : /dev/dri/renderD128
-Cannot open card device, empty name
-Device /dev/dri/renderD128 successfully opened
--------------------------------------------
-Device detail:
-subsystem   : drm
-drm card    : /dev/dri/card1
-drm render  : 
-Device /dev/dri/card1 successfully opened
-Cannot open render device, empty name
--------------------------------------------
+=E2=80=94 Daniel
 
-imho this should be combined:
--------------------------------------------
-Device detail:
-subsystem   : drm
-drm card    : /dev/dri/card1
-drm render  : /dev/dri/renderD128
--------------------------------------------
 
-btw do we need info about un/successfull open?
-
-Regards,
-Kamil
-
-> ---
->  tools/lsgpu.c | 24 ++++++++++++++----------
->  1 file changed, 14 insertions(+), 10 deletions(-)
-> 
-> diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-> index 6cfbf31420..935371dea5 100644
-> --- a/tools/lsgpu.c
-> +++ b/tools/lsgpu.c
-> @@ -369,28 +369,32 @@ int main(int argc, char *argv[])
->  	igt_devices_scan_all_attrs();
->  
->  	if (igt_device != NULL) {
-> -		struct igt_device_card card;
-> +		struct igt_device_card *cards;
-> +		int matched;
->  
->  		printf("=== Device filter ===\n");
->  		printf("%s\n\n", igt_device);
->  
->  		printf("=== Testing device open ===\n");
->  
-> -		if (!igt_device_card_match(igt_device, &card)) {
-> +		matched = igt_device_card_match_all(igt_device, &cards);
-> +		if (!matched) {
->  			printf("No device found for the filter\n\n");
->  			ret = -1;
->  			goto out;
->  		}
->  
-> -		printf("Device detail:\n");
-> -		print_card(&card);
-> -		test_device_open(&card);
-> -		if (fmt.type == IGT_PRINT_DETAIL) {
-> -			printf("\n");
-> -			igt_devices_print(&fmt);
-> +		for (int i = 0; i < matched; i++) {
-> +			printf("Device detail:\n");
-> +			print_card(&cards[i]);
-> +			test_device_open(&cards[i]);
-> +			if (fmt.type == IGT_PRINT_DETAIL) {
-> +				printf("\n");
-> +				igt_devices_print(&fmt);
-> +			}
-> +			printf("-------------------------------------------\n");
->  		}
-> -		printf("-------------------------------------------\n");
-> -
-> +		free(cards);
->  	} else {
->  		igt_devices_print(&fmt);
->  	}
-> -- 
-> 2.43.0
-> 
