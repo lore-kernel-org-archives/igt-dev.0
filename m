@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16844CAC5A5
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Sep 2025 07:33:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64E19CAC5A5
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Sep 2025 07:33:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C708E10E860;
-	Thu, 25 Sep 2025 07:33:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 17E4210E85A;
+	Thu, 25 Sep 2025 07:33:47 +0000 (UTC)
 Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 612DE10E860;
- Thu, 25 Sep 2025 07:33:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79B2D10E85A;
+ Thu, 25 Sep 2025 07:33:45 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0293839093106206835=="
+ boundary="===============0007979623610580060=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tools/lsgpu=3A_iterate_ov?=
  =?utf-8?q?er_all_matching_devices?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 25 Sep 2025 07:33:35 -0000
-Message-ID: <175878561536.365350.16195000800999668999@1538d3639d33>
+Date: Thu, 25 Sep 2025 07:33:45 -0000
+Message-ID: <175878562536.365349.2110934014024440237@1538d3639d33>
 X-Patchwork-Hint: ignore
 References: <20250925061301.77009-2-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20250925061301.77009-2-zbigniew.kempczynski@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0293839093106206835==
+--===============0007979623610580060==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -179,7 +179,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13819/index.html
 
---===============0293839093106206835==
+--===============0007979623610580060==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -310,4 +310,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============0293839093106206835==--
+--===============0007979623610580060==--
