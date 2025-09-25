@@ -4,68 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 742E7CAC5A7
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Sep 2025 17:47:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDFADCAC5A7
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Sep 2025 17:58:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F13DA10E00B;
-	Thu, 25 Sep 2025 17:47:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8EB2510E99A;
+	Thu, 25 Sep 2025 17:58:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aSD2/Mgb";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="C7gtL84G";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0989310E00B;
- Thu, 25 Sep 2025 17:47:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758822426; x=1790358426;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=a2G4qyoniP9ulaXALRSUSrsDIbDfUQSDEOaTOuBVYQE=;
- b=aSD2/MgbxRhdBo74r3E01Wrkxy1soLe/IwIE1qoYokx8bWs36t+KBnJs
- KE/3vpmpzsIXjDRaEUXLU+c1XzNlapTgq99FHSXd5XrC+2S1qSVaQJK55
- q0o+X6n6loauf2bpDxzcQXbBcY9ldIutgeyelZRf5y+wZdowmshtKOM1h
- pkydmCPEIpYDhm1nG2SBbORUF8EjPoqoLEf7kMr2mKA6OEWYleP0fdfti
- U5HbytyDqlA/K+ZGqrV3PABY+Mdigj7/pKPwl/R5HgommFt0zowRAayUh
- P3TWo/siUv0IfSpUSE79+Uhrm/Jc0g1dBhlY/v84wJhkAKZkhroBGlBPI g==;
-X-CSE-ConnectionGUID: OlWUQfMtTmm1GiQDB1oSYQ==
-X-CSE-MsgGUID: 6WM0UMPJSd23ueShpC54eg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="78586696"
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; d="scan'208";a="78586696"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2025 10:47:06 -0700
-X-CSE-ConnectionGUID: ncrM+PzyQm+vAkKDLm7FWw==
-X-CSE-MsgGUID: XiOc6nwWTp+Ue38AaXXRvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; d="scan'208";a="208124087"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 10:47:01 -0700
-Date: Thu, 25 Sep 2025 19:46:45 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: adrinael@adrinael.net, arek@hiler.eu, juhapekka.heikkila@gmail.com,
- bhanuprakash.modem@gmail.com, ashutosh.dixit@intel.com,
- karthik.b.s@intel.com, boris.brezillon@collabora.com,
- liviu.dudau@arm.com, steven.price@arm.com, aliceryhl@google.com,
- jeffv@google.com, intel-gfx@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2 3/3] tests/panthor: add panthor tests
-Message-ID: <20250925174645.lnx2tok2hwi5qf3e@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- adrinael@adrinael.net, arek@hiler.eu, juhapekka.heikkila@gmail.com,
- bhanuprakash.modem@gmail.com, ashutosh.dixit@intel.com,
- karthik.b.s@intel.com, boris.brezillon@collabora.com,
- liviu.dudau@arm.com, steven.price@arm.com, aliceryhl@google.com,
- jeffv@google.com, intel-gfx@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-References: <20250912181931.3738444-1-daniel.almeida@collabora.com>
- <20250912181931.3738444-4-daniel.almeida@collabora.com>
+Received: from BN8PR05CU002.outbound.protection.outlook.com
+ (mail-eastus2azon11011026.outbound.protection.outlook.com [52.101.57.26])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4204310E99A
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Sep 2025 17:58:42 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D7gp5Ldb7ny8ZaN7WhOrB4eNUkZc69UNn1RmhwRjqavpCzQw7fiHE22TxfCL2mvFxmgh1DjFMxN7YchQhV2fmNIhz3AES7hnUAL8gLpcuKYikpyaMd9wJfnLns7iqrhICEyXTQHr4I6w0348OMzj7cGpb7Lh0rxCZMjDCDHRAs6IlJZpePG6g/uedo1NOLEd9phdHTKmtqBVHvK6aGW+GqL2vEWZoxe26P5PzSkcOABab5TWsDc3koBvuyLjVprQsqWgXQqUjlspiOocur3VkYQWPpmAxuIo1XOKdIS3vQ348Gw7+8skOQ61ePZ/4USdm2k1BgiSaRN+DPyDbqamBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ekTCpibTC38pNehIFr2AX0b9Vx6Nz0g4KPt52pycz7A=;
+ b=t3jtysreMKXcAf1yDf/1xaBG4t/6LIHdrsBkHtXQZOzo4GEtAaMsTkP7pJ6yU0cIGnoGnA12k/7DklwWuU49uWxsb69IICaM/XyXcoSXHgjNDXuM9S6Qyidmqjkrs1Fs6aOg/kvJBFd6DFrJtbyKB6iTBjSTbYW3VlyjbwtpmPI0K/QhcyEtnQcGbiMo6hWKU+J3+YJbB/OlXFj/WxznXgHZT2XGGEMGOw1y1yxZG7iPcag7xaVgqVks64/1/ZIMJMFdGUQOyZpaYG6XlNBt3zHja0fc97EpzL8B3BRxjTq37LtdWst/z8eqP9gWsv97MgMIHKfPabj2/1vNd0g4Pg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ekTCpibTC38pNehIFr2AX0b9Vx6Nz0g4KPt52pycz7A=;
+ b=C7gtL84GBniHKYV1+QtXgpZZKwvZuqjXs++6bTQf8IgAknv0i3oNgc834CCea/IZ2sXqGnARbmKV1bvtrZQbtBW0BLyXUaILts+rmWlIHnytJhf8pXwvYZdg7pILqdJPgKUs/mUxyvouVblRxRWe26+4yvt1SbEtb3R811qrNsk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
+ by DS0PR12MB7584.namprd12.prod.outlook.com (2603:10b6:8:13b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Thu, 25 Sep
+ 2025 17:58:39 +0000
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::e0e7:bd76:e99:43af%5]) with mapi id 15.20.9137.018; Thu, 25 Sep 2025
+ 17:58:39 +0000
+Message-ID: <3812db92-d714-45b1-9f27-96d7dfbc3732@amd.com>
+Date: Thu, 25 Sep 2025 13:58:29 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] tests/amdgpu: fix vcn encode test on VCN5
+To: Yinjie Yao <yinjie.yao@amd.com>, igt-dev@lists.freedesktop.org
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+References: <20250925170405.145614-1-yinjie.yao@amd.com>
+ <20250925170405.145614-2-yinjie.yao@amd.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20250925170405.145614-2-yinjie.yao@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YQZPR01CA0181.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:8b::11) To PH7PR12MB6420.namprd12.prod.outlook.com
+ (2603:10b6:510:1fc::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250912181931.3738444-4-daniel.almeida@collabora.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|DS0PR12MB7584:EE_
+X-MS-Office365-Filtering-Correlation-Id: 13da8d21-b032-4a12-ecae-08ddfc5d27f0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NWhja0wycE13SXFmVW40RkNjM01Ndm1QTGdOSU5tbVVYenpqV0pHRUVseWlD?=
+ =?utf-8?B?SGxkdURsbDdTekdxZnFHTGJTR0dBOHhOZkV4VUhzY1liVXFlNk8wc00vRlVT?=
+ =?utf-8?B?ZEdKU1RydEFRTGd0ZkxUcmUzRWVZODFVaTFCcDNXZHpXTFVOUDlGN1YyRkRy?=
+ =?utf-8?B?NkNqb2hMVENlaE9HMjIxZEdaMUF0a3loSXdibjhLcTVjV094SnFwd09rOVg2?=
+ =?utf-8?B?WDdMeUpEYklOZFFwaVVreGIxM2ZqOS9NaW5kVzVUOHMxd24yMGpBY21KUkto?=
+ =?utf-8?B?MzUzSmlTdTQrUzdIcjFnbHR1aWNmWTgycE5MZm1ZVnQvU3dSSEZjckd5bFYy?=
+ =?utf-8?B?azZJb3ZqYU50UlJLbjAvTWpCNnRvY1FQMndtRDQvSVpRN29nMUFxZmREZnhE?=
+ =?utf-8?B?NVUwVFIvSnVYVmRYMk90REFGQW56UFdmSDZudFpFbk5DK2l0Q2YvUU9odE43?=
+ =?utf-8?B?L1VOaU90d1ErUjBPcjFuMjdQS3kzTm5UQnhwMndoQUZIVXJRSG91RkNOWUhH?=
+ =?utf-8?B?cTBaNEFJNWNHYWw1NzBiWEUxQlNldDBFMS80VUg5VUxlSjZoM1MzMGlRZXlB?=
+ =?utf-8?B?TE5mSllVNjhYaEQ1eHlxd1piYWdQV0JLd1JmdnVPVXNXS0pXaVFtdFQrbVow?=
+ =?utf-8?B?bnVKd0ZobitNM1ZEMHJ1bFI4V0xzU0pndzFVQ2hSU20xQ29FTTY2MW1yL2x6?=
+ =?utf-8?B?aWpTNk1mejVEcGJ1RWZxVW1OK2Nuc245ZnExNnk3OWJsZFYySmJPQk5pZkNl?=
+ =?utf-8?B?aWNVVDRvUzNVdDY3bEpPNmthc29IZS9Cb3M1VXJ1U1dpMFNSU3RHTkJXSDRh?=
+ =?utf-8?B?Z05RZmJKRkVMNVhXMmtwRkM5cDJJck9kZmF4YXZtYWhWUjcyUi8vM2tNdXNI?=
+ =?utf-8?B?U215bWdselFWd1o4RU8yQXRwdjA1anF0NWNvN0QxSVc0N0p6NzAxcmZVZko1?=
+ =?utf-8?B?VTBaWUJGQVNTYzd4dnBLTTJjcEJEazlBazErV2ptU3hQY0RVUnRydG50aVI5?=
+ =?utf-8?B?M0RwRk85Sk1rRE9HdWlQVW9wUWlUM3dXYjMxdjMzQXZUR0hNb014SG4rZFRi?=
+ =?utf-8?B?U2pDVUZzM1lMV3MxTXh1UnV1Z2tzWXZpNzltK0FZNEpRZ29iZkI2Smt6UUNQ?=
+ =?utf-8?B?SjY2cE5Pcy85WURlNndCd21ZN0xXanJPMVFYOVZIUXFSd1ZyUkZMd3ZXK2E4?=
+ =?utf-8?B?cDkzOFd1Ym1RcmVhWGpHM3Y1M05iU2dwd01sMFhXRE5tMmVvV0g0dUdMSUJu?=
+ =?utf-8?B?TWtuZEEvNmpPdnhPUFV3L29vSDNFR3ltblRYZjcyNDlydTVTK0JxUDk0ZjFG?=
+ =?utf-8?B?emdaMVl0L1Z0Y2kzK0pJNVFCT2I2TFBUNU5tYVJVU2pvbm5wVk9hVGxTQklq?=
+ =?utf-8?B?MVdhVnZUclhOZ0ViSEVBZlA0aEd1ZnNUK29IOXZoU3BDV2hiNFlQWnQ4MVNR?=
+ =?utf-8?B?WFVkN0NWSTRTdlRVNGRLbENBUXM5T3ZpMmQvdTkvT2VxMUxSbFhZWjY1RXpY?=
+ =?utf-8?B?eUdjZllNeDd0ZE9DNit2N082cGhCNnFmb1duRzhkcnM2NWc4WVFVM09Oc0dx?=
+ =?utf-8?B?c1I2Wmt2ZlZqOVVTZ3VEdEZqZ1o1ZjhoNmdKV29VL1g4R3BoQUxESitrRktC?=
+ =?utf-8?B?WUFPaytKWnhueFFEcnAvKzJWMmRoOUdEaUdjODhhRWx5T05uUEhvRTh0RFlL?=
+ =?utf-8?B?RVRmS0ZwVlRzNVNuYWVDbkxLdTF4MmdtTWppNmtMdUEvWWd6V0cxY1lySmxp?=
+ =?utf-8?B?MXgrTi9seGVjaVkySld4cmU4QTI1NlV5dHptM1hKbmdyTU4wMlJ3SWJGQ0Vu?=
+ =?utf-8?B?NnovS2F5TjRpWEtma1UzNWNDSHA0OWUyTS91RVNBL25GVHJaK0FSckdLT2E2?=
+ =?utf-8?B?NGY3cHh4YTU5N2ZaNlRGbVIrRjBoNzRoRUJtV0VxUXhhZXFxdHZsZHNFaVdT?=
+ =?utf-8?Q?xtNTd3kJm00=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VTZsaStNbDRhbnllVG8vUnpwYmU3cVhYU0FTYXMyR2hrVVhWZ1c1SkxIcEJ0?=
+ =?utf-8?B?R0RkcnVidzRrMlJ3VTV4V0FhaDZjK2Nia0FzRGtrZGFsWDczZGRZd1VNNStw?=
+ =?utf-8?B?bllQM0xNZVZTb1hHL0hzNWRUNHJieWNVOVl1ZnhtRytlb09iejB2dHJzRTJR?=
+ =?utf-8?B?YmdQQ3lSVGlYYXNGRWJxMWlVa0Y0aDJCN2tnaUlKMkZ6SGZMbTVQN0ZNR3Zl?=
+ =?utf-8?B?M3RvZnlYK0ZKa1pqc1RQdUcxZlAxcjNGcENvWElkZ2lqa05GRlZKN0FUY3V2?=
+ =?utf-8?B?WUVUL0x1em1nd2FOQk10eDMwci9sL0dVZ3JVdDVZUFlZcmlOaXJuVDErenFi?=
+ =?utf-8?B?ejQ3cWFOVWJGK2R0TE1KbFZKSG01aTZpSG1kRlFrVjlDc1RjR2tBOG9BOVBq?=
+ =?utf-8?B?aE0yVVRHMmZVUGEwV3ovZFlBUzZqeW5KVjRTR0tvcHpxMmpKUUM4eURweTdW?=
+ =?utf-8?B?M3FubEZPb01ObVBCRkRhY1dyanFFRFdkeDRBTmJVcEEyNkpkUmkvTExidFFT?=
+ =?utf-8?B?cmdEQVVTQnJ3YWNINFJMNDREVFQ4MnZoUWM0aDBxUHJ1dE1rMGNBRUdCVW4v?=
+ =?utf-8?B?d0ZyK2FwNHJSZ1ZaZCsvcFRwRGw4UlcrcHRhUnJHQ0QrUkZuN1I2M1lvU1JO?=
+ =?utf-8?B?L2tZYkMwR0NWOGFpNFlFVmZ1WkwwZWlLWm9nVlJad3duUVlTVzRoNVBKUEcz?=
+ =?utf-8?B?S1I3YXNOanAyT1VDajFYV0xZck4xRUN1NG10dkVxS0JnYzUrczFEeHorNS9B?=
+ =?utf-8?B?cDZRSXZBUHVldkN0VGxPWXNuNEVjcExSVzNNVWIvVjZwdjFHVUlvUzFTSXZl?=
+ =?utf-8?B?MU1VSU1ubEx3ZS9VQ1BHNlRSVzkreTVjeTVxMHR6VGtyNzJHTERiSzJ1VWFM?=
+ =?utf-8?B?WFZpOERsN3hDdE1TTittTEFSMmYvKzJRbE9pcWk1cFBnTGlPWUg1d2lBODYz?=
+ =?utf-8?B?aTFXMmVTY0ZTdmc1T2JwZzBNYjg0RVREU2R1NW9nQXlOSFNmaHRtVm9SSXNh?=
+ =?utf-8?B?dUZjQUxxNHQ4YW53TXlJeGZtS05aeUUrVnQ5V1pLUGhDKzQ1dWRrUTdrWTM0?=
+ =?utf-8?B?aG8xR09BZTR0U0pvL1pzTU8rMG1pOUo5TEVSNllqNW9Bbzg3QkFwdFd6NXZP?=
+ =?utf-8?B?ZExKYm9HZS9RN2ZKVkpFYTRZRXNVWTJMRWZUT2Q1NnY4amVlMzV1b1FDOHpw?=
+ =?utf-8?B?c3I4UHNYalJnS0hpczVVOWVqMmJGSDZvU1dBZU1oOFpjWktYd2tFVmhTWmhr?=
+ =?utf-8?B?T1BRUUVxYzZtR2RlY0ZIcC84WEFUa00wazNYVUh4N3pkbW9xd0ZDcHcydjQw?=
+ =?utf-8?B?VEpaTFpkUzJtYlNUZFlBZDY3c0g1QnBlbDVtL3VUY0xLZnVNbGhvVS85amZB?=
+ =?utf-8?B?SkYza1JsQVVLa3VpZVFBb2huVm5nU2N1L2xnZGYvUFEwTkNIUkkrQ2lNRXcw?=
+ =?utf-8?B?Ly9od2Zhb2VHdVkzTmdPaDNxVkFUTWsrbCtvbUpaSC8yTGF1MitnNXpHMTdL?=
+ =?utf-8?B?dDBzc0UycUFSRGVTVkFsc1BVY3JCNHZmM3NheGRLVUcrcVhxSDg5SlZoRjJj?=
+ =?utf-8?B?Y3d0WHQyNTVUVWFTZ3RIRVovM084TG5kdm1FMS9FUm9MRFl1VWswR1dPZ3la?=
+ =?utf-8?B?RjVNQXljRHlTMnphVThTVlNNd0x2T1JRSythOEQvdENOTmtQd3lvbkFCdUxm?=
+ =?utf-8?B?WHNlMDNIbFNYbmFCa0UvQnZaWlVFMDliTi9pY1dURndFallpSHA4MmZqQmZB?=
+ =?utf-8?B?MEtBN2g4WGZHVC83OUoxNFRBNUZqeHpwYnUzcG5UNUJvaExQSzBQYmNseFRD?=
+ =?utf-8?B?QUdnUWtOTHhicHBsem1MRGFoSkxLSzJ2VjlwelFoa0NsdWp1UmRtazgyczNN?=
+ =?utf-8?B?bzI5Nmw0ditqNk1uZGtKYzJ3dnNKUVAwZFRwRzYyYjROR1hrdXF1WkdtSnRJ?=
+ =?utf-8?B?QnYrK0poa3VaTlI4R0VBZ0dDbllvZjQwVU9mSzhldzhMRzJYRy9MR01vVmNh?=
+ =?utf-8?B?b2tMZmRnTE5iTVQ3SUhHUnJ4clVPM0lQam5PRStsMGxMMG02NzRmR21kQTZT?=
+ =?utf-8?B?c1NSYXpIS2xNR3JZazB4TURQVFlsOW41aHBHalJLNlQrNEFldlJWcWFRZFNE?=
+ =?utf-8?Q?qDKrqK+FrIvPVDmeKGldQIFF/?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13da8d21-b032-4a12-ecae-08ddfc5d27f0
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2025 17:58:39.0835 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YLRn3DnoA50gi4Ji8gMJYFTMyPh7VV/XiyuZA9xGL+1feixmcdYs5L0JbbXPYGI0fgqYl8Li2YviJ9Acq1tAAg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7584
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,720 +162,276 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Daniel,
-On 2025-09-12 at 15:19:30 -0300, Daniel Almeida wrote:
-> Add an initial test suit covering query device properties, allocating
-> memory, binding and unbinding VA ranges through VM_BIND and submitting a
-> simple piece of work through GROUP_SUBMIT.
+Hi Yinjie,
 
-One more nit on top of Daniel Stone review, see below.
+Thanks for sending these patches. The commit message could benefit from a bit more detail about what’s being changed and why. Based on the diff, here’s what the patch is doing:
+Removes the temporary workaround that skipped VCN tests on GFX12 (RX9000). With this change, VCN tests will now run on that family. Please split this into a separate patch — you can use git reset to help with that.
 
-> 
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+Updates the IB (Indirect Buffer) programming for VCN5:
+Adds support for new fields such as transform_8x8_mode_flag.
+Introduces a new meta_buf buffer for VCN5, allocated, mapped/unmapped, and added to the resource list.
+Updates the encoding path to handle VCN5-specific picture and reference list programming, including input picture structure, reference picture lists, and reconstructed picture handling.
+Adds new commands for ENCODE_CONTEXT_BUFFER_OVERRIDE and META_DATA sections, which are required in VCN5.
+
+Maintains backward compatibility with earlier VCN versions (<5) by guarding the new logic with if (shared_context->vcn_ip_version_major >= 5) and leaving the legacy paths unchanged.
+In short, this patch enables proper VCN5 IB programming in IGT tests, replacing the previous skip with full support. It aligns the test code with the requirements of newer hardware while keeping existing ASICs working as before.
+I’d also suggest updating the commit message to reflect these details — this will make it clearer for reviewers and for anyone later bisecting why the skip was removed and what was added for VCN5.
+
+A couple of coding style / robustness suggestions:
+Please replace raw 64-bit address handling with the standard helpers everywhere:
+        
+from
+context->ib_cpu[len++] = v_context->cpb_buf.addr >> 32;
+context->ib_cpu[len++] = v_context->cpb_buf.addr;
+to  
+context->ib_cpu[len++] = upper_32_bits(v_context->cpb_buf.addr);
+context->ib_cpu[len++] = lower_32_bits(v_context->cpb_buf.addr);
+instead of directly shifting and writing the address. This improves readability and consistency and started to do this everywhere in new code.
+
+For calls like:
+r = amdgpu_bo_cpu_map(meta_buf.handle, (void **)&meta_buf.ptr);
+memset(meta_buf.ptr, 0, 1024);
+please check the return code, for example:
+
+igt_assert_eq(r, 0);
+This ensures that a failed map is properly logged as a test failure instead of leading to a segmentation fault on the next line.
+
+Please do for all the lines that you have added.
+Other than these points, your changes look good to me.
+
+
+Thanks,  Vitaly
+
+On 2025-09-25 13:03, Yinjie Yao wrote:
+> Update ib interfaces for VCN5
+> Remove previous workaround to skip VCN tests on GFX12 family
+>
+> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
 > ---
->  lib/igt_panthor.c             | 188 +++++++++++++++++++++++
->  lib/igt_panthor.h             |  18 +++
->  tests/panthor/meson.build     |   5 +-
->  tests/panthor/panthor_gem.c   |  66 ++++++++
->  tests/panthor/panthor_group.c | 276 ++++++++++++++++++++++++++++++++++
->  tests/panthor/panthor_vm.c    |  80 ++++++++++
->  6 files changed, 632 insertions(+), 1 deletion(-)
->  create mode 100644 tests/panthor/panthor_gem.c
->  create mode 100644 tests/panthor/panthor_group.c
->  create mode 100644 tests/panthor/panthor_vm.c
-> 
-> diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
-> index 0b690f796..5d3b572b4 100644
-> --- a/lib/igt_panthor.c
-> +++ b/lib/igt_panthor.c
-> @@ -39,3 +39,191 @@ void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err)
->  	else
->  		do_ioctl(fd, DRM_IOCTL_PANTHOR_DEV_QUERY, &query);
+>  lib/amdgpu/amd_vcn_shared.c |   7 ---
+>  tests/amdgpu/amd_vcn.c      | 111 ++++++++++++++++++++++++++++++------
+>  2 files changed, 93 insertions(+), 25 deletions(-)
+>
+> diff --git a/lib/amdgpu/amd_vcn_shared.c b/lib/amdgpu/amd_vcn_shared.c
+> index 32766c0b4..bcc0971a3 100644
+> --- a/lib/amdgpu/amd_vcn_shared.c
+> +++ b/lib/amdgpu/amd_vcn_shared.c
+> @@ -59,13 +59,6 @@ is_vcn_tests_enable(amdgpu_device_handle device_handle, struct mmd_shared_contex
+>  		context->vcn_reg_index = 2;
+>  	}
+>
+> -	/* Skip VCN tests on Radeon RX9000  (GFX12, family_id = 152) */
+> -	if (context->family_id == AMDGPU_FAMILY_GC_12_0_0 ) {
+> -		igt_info("Skipping VCN tests on GFX12 RX9000 (family_id = 152)\n");
+> -		return false;
+> -	}
+> -
+> -
+>  	return true;
 >  }
+>
+> diff --git a/tests/amdgpu/amd_vcn.c b/tests/amdgpu/amd_vcn.c
+> index 03c864c0e..20a642f45 100644
+> --- a/tests/amdgpu/amd_vcn.c
+> +++ b/tests/amdgpu/amd_vcn.c
+> @@ -316,6 +316,8 @@ amdgpu_cs_vcn_enc_create(amdgpu_device_handle device_handle,
+>  	context->ib_cpu[len++] = 0;	/* constrained intra pred flag */
+>  	context->ib_cpu[len++] = 0;	/* cabac enable */
+>  	context->ib_cpu[len++] = 0;	/* cabac init idc */
+> +	if (shared_context->vcn_ip_version_major >= 5)
+> +		context->ib_cpu[len++] = 0;	/* transform_8x8_mode_flag */
+>  	context->ib_cpu[len++] = 1;	/* half pel enabled */
+>  	context->ib_cpu[len++] = 1;	/* quarter pel enabled */
+>  	context->ib_cpu[len++] = 100;	/* BASELINE profile */
+> @@ -777,9 +779,9 @@ amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
+>  			struct mmd_context *context, struct vcn_context *v_context,
+>  			int frame_type)
+>  {
+> -	struct amdgpu_mmd_bo bs_buf, fb_buf, input_buf;
+> +	struct amdgpu_mmd_bo bs_buf, fb_buf, input_buf, meta_buf;
+>  	int len, r, i;
+> -	unsigned	int width = 160, height = 128, buf_size;
+> +	unsigned	int width = 160, height = 128, buf_size, luma_size;
+>  	uint32_t *p_task_size = NULL;
+>  	uint32_t task_offset = 0, st_offset;
+>  	uint32_t *st_size = NULL;
+> @@ -794,16 +796,19 @@ amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
+>  	}
+>  	v_context->gSliceType = frame_type;
+>  	buf_size = ALIGN(width, 256) * ALIGN(height, 32) * 3 / 2;
+> +	luma_size = ALIGN(width, 256) * ALIGN(height, 32);
+>
+>  	context->num_resources = 0;
+>  	alloc_resource(device_handle, &bs_buf, 4096, AMDGPU_GEM_DOMAIN_GTT);
+>  	alloc_resource(device_handle, &fb_buf, 4096, AMDGPU_GEM_DOMAIN_GTT);
+>  	alloc_resource(device_handle, &input_buf, buf_size, AMDGPU_GEM_DOMAIN_GTT);
+> +	alloc_resource(device_handle, &meta_buf, 1024, AMDGPU_GEM_DOMAIN_GTT);
+>  	context->resources[context->num_resources++] = v_context->enc_buf.handle;
+>  	context->resources[context->num_resources++] = v_context->cpb_buf.handle;
+>  	context->resources[context->num_resources++] = bs_buf.handle;
+>  	context->resources[context->num_resources++] = fb_buf.handle;
+>  	context->resources[context->num_resources++] = input_buf.handle;
+> +	context->resources[context->num_resources++] = meta_buf.handle;
+>  	context->resources[context->num_resources++] = context->ib_handle;
+>
+>
+> @@ -815,6 +820,10 @@ amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
+>  	memset(fb_buf.ptr, 0, 4096);
+>  	r = amdgpu_bo_cpu_unmap(fb_buf.handle);
+>
+> +	r = amdgpu_bo_cpu_map(meta_buf.handle, (void **)&meta_buf.ptr);
+> +	memset(meta_buf.ptr, 0, 1024);
+> +	r = amdgpu_bo_cpu_unmap(meta_buf.handle);
 > +
-> +/**
-> + * igt_panthor_vm_create:
-> + * @fd: device file descriptor
-> + * @vm_id: pointer to store the created VM ID
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Creates a VM.
-> + */
-> +void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err)
-> +{
-> +	struct drm_panthor_vm_create vm_create = {};
-> +
-> +	if (err) {
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create, err);
+>  	r = amdgpu_bo_cpu_map(input_buf.handle, (void **)&input_buf.ptr);
+>  	igt_assert_eq(r, 0);
+>
+> @@ -922,12 +931,13 @@ amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
+>  	context->ib_cpu[len++] = 0x0001f000;
+>  	context->ib_cpu[len++] = input_buf.addr >> 32;
+>  	context->ib_cpu[len++] = input_buf.addr;
+> -	context->ib_cpu[len++] = (input_buf.addr + ALIGN(width, 256) * ALIGN(height, 32)) >> 32;
+> -	context->ib_cpu[len++] = input_buf.addr + ALIGN(width, 256) * ALIGN(height, 32);
+> +	context->ib_cpu[len++] = (input_buf.addr + luma_size) >> 32;
+> +	context->ib_cpu[len++] = input_buf.addr + luma_size;
+>  	context->ib_cpu[len++] = 0x00000100;
+>  	context->ib_cpu[len++] = 0x00000080;
+>  	context->ib_cpu[len++] = 0x00000000;
+> -	context->ib_cpu[len++] = 0xffffffff;
+> +	if (shared_context->vcn_ip_version_major < 5)
+> +		context->ib_cpu[len++] = 0xffffffff;
+>  	context->ib_cpu[len++] = 0x00000000;
+>  	*st_size = (len - st_offset) * 4;
+>
+> @@ -940,7 +950,7 @@ amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
+>  		context->ib_cpu[len++] = 0x00000000;
+>  		context->ib_cpu[len++] = 0x00000000;
+>  		context->ib_cpu[len++] = 0xffffffff;
+> -	} else {
+> +	} else if (shared_context->vcn_ip_version_major < 5) {
+>  		context->ib_cpu[len++] = 0x00000000;
+>  		context->ib_cpu[len++] = 0x00000000;
+>  		context->ib_cpu[len++] = 0x00000000;
+> @@ -959,6 +969,23 @@ amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
+>  		context->ib_cpu[len++] = 0x00000000;
+>  		context->ib_cpu[len++] = 0x00000000;
+>  		context->ib_cpu[len++] = 0x00000001;
 > +	} else {
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create);
-> +		*vm_id = vm_create.id;
+> +		context->ib_cpu[len++] = 0x00000000;	/* input_picture_structure */
+> +		context->ib_cpu[len++] = 0x00000000;	/* input_pic_order_cnt */
+> +		context->ib_cpu[len++] = 0x00000001;	/* is_reference */
+> +		context->ib_cpu[len++] = 0x00000000;	/* is_long_term */
+> +		context->ib_cpu[len++] = 0x00000000;	/* interlaced_mode */
+> +		context->ib_cpu[len++] = 0xffffffff;
+> +		for (i = 1; i < 32; i++)
+> +			context->ib_cpu[len++] = 0x00000000;	/* ref_list0 */
+> +		context->ib_cpu[len++] = 0x00000000;	/* num_ref_idx_l0_active */
+> +		for (i = 0; i < 32; i++)
+> +			context->ib_cpu[len++] = 0x00000000;	/* ref_list1 */
+> +		context->ib_cpu[len++] = 0x00000000;	/* num_ref_idx_l1_active */
+> +		context->ib_cpu[len++] = 0x00000000;	/* lsm_reference_pictures[0].list */
+> +		context->ib_cpu[len++] = 0xffffffff;	/* lsm_reference_pictures[0].list_index */
+> +		context->ib_cpu[len++] = 0x00000000;	/* lsm_reference_pictures[1].list */
+> +		context->ib_cpu[len++] = 0xffffffff;	/* lsm_reference_pictures[1].list_index */
+>  	}
+>  	*st_size = (len - st_offset) * 4;
+>
+> @@ -971,20 +998,66 @@ amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
+>  		context->ib_cpu[len++] = 0x00000011;	/* ENCODE_CONTEXT_BUFFER  other vcn*/
+>  	context->ib_cpu[len++] = v_context->cpb_buf.addr >> 32;
+>  	context->ib_cpu[len++] = v_context->cpb_buf.addr;
+> -	context->ib_cpu[len++] = 0x00000000;	/* swizzle mode */
+> -	context->ib_cpu[len++] = 0x00000100;	/* luma pitch */
+> -	context->ib_cpu[len++] = 0x00000100;	/* chroma pitch */
+> -	context->ib_cpu[len++] = 0x00000002; /* no reconstructed picture */
+> -	context->ib_cpu[len++] = 0x00000000;	/* reconstructed pic 1 luma offset */
+> -	context->ib_cpu[len++] = ALIGN(width, 256) * ALIGN(height, 32);	/* pic1 chroma offset */
+> -	if (shared_context->vcn_ip_version_major == 4)
+> -		amdgpu_cs_vcn_ib_zero_count(context, &len, 2);
+> -	context->ib_cpu[len++] = ALIGN(width, 256) * ALIGN(height, 32) * 3 / 2;	/* pic2 luma offset */
+> -	context->ib_cpu[len++] = ALIGN(width, 256) * ALIGN(height, 32) * 5 / 2;	/* pic2 chroma offset */
+> -
+> -	amdgpu_cs_vcn_ib_zero_count(context, &len, 280);
+> +	if (shared_context->vcn_ip_version_major < 5) {
+> +		context->ib_cpu[len++] = 0x00000000;	/* swizzle mode */
+> +		context->ib_cpu[len++] = 0x00000100;	/* luma pitch */
+> +		context->ib_cpu[len++] = 0x00000100;	/* chroma pitch */
+> +		context->ib_cpu[len++] = 0x00000002;	/* no reconstructed picture */
+> +		context->ib_cpu[len++] = 0x00000000;	/* reconstructed pic 1 luma offset */
+> +		context->ib_cpu[len++] = luma_size;	/* pic1 chroma offset */
+> +		if (shared_context->vcn_ip_version_major == 4)
+> +			amdgpu_cs_vcn_ib_zero_count(context, &len, 2);
+> +		context->ib_cpu[len++] = luma_size * 3 / 2;	/* pic2 luma offset */
+> +		context->ib_cpu[len++] = luma_size * 5 / 2;	/* pic2 chroma offset */
+> +
+> +		amdgpu_cs_vcn_ib_zero_count(context, &len, 280);
+> +	} else {	/* VCN5 */
+> +		context->ib_cpu[len++] = 0x00000002;	/* num_reconstructed_pictures */
+> +		for (i = 0; i < 2; i++) {
+> +			context->ib_cpu[len++] = v_context->cpb_buf.addr >> 32;
+> +			context->ib_cpu[len++] = v_context->cpb_buf.addr;
+> +			context->ib_cpu[len++] = 0x00000100;	/* rec luma pitch */
+> +			context->ib_cpu[len++] = v_context->cpb_buf.addr >> 32;
+> +			context->ib_cpu[len++] = v_context->cpb_buf.addr;
+> +			context->ib_cpu[len++] = 0x00000100;	/* rec chroma pitch */
+> +			context->ib_cpu[len++] = v_context->cpb_buf.addr >> 32;
+> +			context->ib_cpu[len++] = v_context->cpb_buf.addr;
+> +			context->ib_cpu[len++] = 0x00000000;	/* chroma v pitch */
+> +			context->ib_cpu[len++] = 0x00000001;	/* swizzle mode*/
+> +			context->ib_cpu[len++] = meta_buf.addr >> 32;
+> +			context->ib_cpu[len++] = meta_buf.addr;
+> +			context->ib_cpu[len++] = 0xffffffff;	/* h264 colloc buffer offset */
+> +			context->ib_cpu[len++] = 0x00000000;
+> +			context->ib_cpu[len++] = 0x00000000;	/* meta_data_offset */
+> +		}
+> +		amdgpu_cs_vcn_ib_zero_count(context, &len, 15 * (32 + 34) + 6);
 > +	}
-> +}
+>  	*st_size = (len - st_offset) * 4;
+>
+> +	if (shared_context->vcn_ip_version_major >= 5) {
+> +		/* encode context overrider */
+> +		st_offset = len;
+> +		st_size = &context->ib_cpu[len++];	/* size */
+> +		context->ib_cpu[len++] = 0x0000001d;	/* ENCODE_CONTEXT_BUFFER_OVERRIDE */
+> +		context->ib_cpu[len++] = 0;	/* luma offset */
+> +		context->ib_cpu[len++] = luma_size;	/* chroma offset */
+> +		context->ib_cpu[len++] = 0;	/* chroma v offset */
+> +		context->ib_cpu[len++] = luma_size * 3 / 2;	/* luma offset */
+> +		context->ib_cpu[len++] = luma_size * 5 / 2;	/* chroma offset */
+> +		context->ib_cpu[len++] = 0;	/* chroma v offset */
+> +		amdgpu_cs_vcn_ib_zero_count(context, &len, (34 + 32) * 3);
+> +		*st_size = (len - st_offset) * 4;
 > +
-> +/**
-> + * igt_panthor_vm_destroy:
-> + * @fd: device file descriptor
-> + * @vm_id: VM ID to destroy
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Destroys a VM.
-> + */
-> +void igt_panthor_vm_destroy(int fd, uint32_t vm_id, int err)
-> +{
-> +	struct drm_panthor_vm_destroy vm_destroy = {
-> +		.id = vm_id,
-> +	};
-> +
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy);
-> +}
-> +
-> +/**
-> + * igt_panthor_vm_bind:
-> + * @fd: device file descriptor
-> + * @vm_id: VM ID to bind the buffer to
-> + * @bo_handle: buffer object handle to bind
-> + * @va: virtual address to bind at
-> + * @size: size of the binding
-> + * @flags: binding flags
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Bind a buffer object to a virtual address in the specified VM.
-> + */
-> +void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle,
-> +			 uint64_t va, uint64_t size, uint32_t flags, int err)
-> +{
-> +	struct drm_panthor_vm_bind_op bind_op = {
-> +		.flags = flags,
-> +		.bo_handle = bo_handle,
-> +		.va = va,
-> +		.size = size,
-> +	};
-> +
-> +	struct drm_panthor_vm_bind vm_bind = {
-> +		.vm_id = vm_id,
-> +		.flags = 0,
-> +		.ops = DRM_PANTHOR_OBJ_ARRAY(1, &bind_op),
-> +	};
-> +
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_VM_BIND, &vm_bind, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_BIND, &vm_bind);
-> +}
-> +
-> +/**
-> + * igt_panthor_bo_create:
-> + * @fd: device file descriptor
-> + * @bo: pointer to panthor_bo structure to initialize
-> + * @size: requested buffer size in bytes
-> + * @flags: buffer object creation flags
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Creates a new buffer object
-> + */
-> +void igt_panthor_bo_create(int fd, struct panthor_bo *bo,
-> +			   uint64_t size, uint32_t flags, int err)
-> +{
-> +	struct drm_panthor_bo_create bo_create = {
-> +		.size = size,
-> +		.flags = flags,
-> +	};
-> +
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_BO_CREATE, &bo_create, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_BO_CREATE, &bo_create);
-> +
-> +	bo->handle = bo_create.handle;
-> +	bo->size = bo_create.size;
-> +	bo->offset = 0;
-> +	bo->map = NULL;
-> +}
-> +
-> +/**
-> + * igt_panthor_bo_mmap_offset:
-> + * @fd: device file descriptor
-> + * @handle: buffer object handle
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Get the mmap offset for a buffer object.
-> + *
-> + * Returns: the mmap offset for the buffer object
-> + */
-> +uint64_t igt_panthor_bo_mmap_offset(int fd, uint32_t handle, int err)
-> +{
-> +	struct drm_panthor_bo_mmap_offset bo_mmap_offset = {
-> +		.handle = handle,
-> +	};
-> +
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET, &bo_mmap_offset, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET, &bo_mmap_offset);
-> +
-> +	return bo_mmap_offset.offset;
-> +}
-> +
-> +/**
-> + * igt_panthor_mmap_bo:
-> + * @fd: device file descriptor
-> + * @handle: buffer object handle
-> + * @size: size of the buffer to map
-> + * @prot: memory protection flags (e.g., PROT_READ | PROT_WRITE)
-> + * @offset: mmap offset for the buffer object
-> + *
-> + * Map a buffer object into the process address space.
-> + *
-> + * Returns: pointer to the mapped memory, or NULL on failure
-> + */
-> +void *igt_panthor_mmap_bo(int fd, uint32_t handle, uint64_t size,
-> +			  unsigned int prot, uint64_t offset)
-> +{
-> +	void *ptr;
-> +
-> +	ptr = mmap(0, size, prot, MAP_SHARED, fd, offset);
-> +	if (ptr == MAP_FAILED)
-> +		return NULL;
-> +	return ptr;
-> +}
-> +
-> +/**
-> + * igt_panthor_bo_create_mapped:
-> + * @fd: device file descriptor
-> + * @bo: pointer to panthor_bo structure to initialize
-> + * @size: requested buffer size in bytes
-> + * @flags: buffer object creation flags
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Create a new buffer object on the panthor device and map it into
-> + * the process address space.
-> + */
-> +void igt_panthor_bo_create_mapped(int fd, struct panthor_bo *bo, uint64_t size,
-> +				  uint32_t flags, int err)
-> +{
-> +	igt_panthor_bo_create(fd, bo, size, flags, err);
-> +	bo->offset = igt_panthor_bo_mmap_offset(fd, bo->handle, err);
-> +	bo->map = igt_panthor_mmap_bo(fd, bo->handle, bo->size,
-> +				      PROT_READ | PROT_WRITE, bo->offset);
-> +}
-> +
-> +/**
-> + * igt_panthor_free_bo:
-> + * @fd: panthor device file descriptor
-> + * @bo: pointer to panthor_bo structure to free
-> + *
-> + * Free a buffer object and unmap it if it was mapped.
-> + */
-> +void igt_panthor_free_bo(int fd, struct panthor_bo *bo)
-> +{
-> +	if (!bo)
-> +		return;
-> +
-> +	if (bo->map)
-> +		munmap(bo->map, bo->size);
-> +
-> +	gem_close(fd, bo->handle);
-> +}
-> diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
-> index a99b7102d..275ad54d6 100644
-> --- a/lib/igt_panthor.h
-> +++ b/lib/igt_panthor.h
-> @@ -7,6 +7,24 @@
->  #include <stddef.h>
->  #include <stdint.h>
->  
-> +struct panthor_bo {
-> +	int handle;
-> +	uint64_t offset;
-> +	uint64_t size;
-> +	void *map;
-> +};
-> +
->  void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err);
-> +void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err);
-> +void igt_panthor_vm_destroy(int fd, uint32_t vm_id, int err);
-> +void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle,
-> +			  uint64_t va, uint64_t size, uint32_t flags, int err);
-> +void igt_panthor_bo_create(int fd, struct panthor_bo *bo, uint64_t size, uint32_t flags, int err);
-> +uint64_t igt_panthor_bo_mmap_offset(int fd, uint32_t handle, int err);
-> +void igt_panthor_free_bo(int fd, struct panthor_bo *bo);
-> +void igt_panthor_bo_create_mapped(int fd, struct panthor_bo *bo, uint64_t size,
-> +				  uint32_t flags, int err);
-> +void *igt_panthor_mmap_bo(int fd, uint32_t handle, uint64_t size,
-> +			  unsigned int prot, uint64_t offset);
->  
->  #endif /* IGT_PANTHOR_H */
-> diff --git a/tests/panthor/meson.build b/tests/panthor/meson.build
-> index ce13aebaa..42a46e993 100644
-> --- a/tests/panthor/meson.build
-> +++ b/tests/panthor/meson.build
-> @@ -1,5 +1,8 @@
->  panthor_progs = [
-> -	'panthor_query'
-> +	'panthor_gem',
-> +	'panthor_group',
-> +	'panthor_query',
-> +	'panthor_vm',
->  ]
->  
->  foreach prog : panthor_progs
-> diff --git a/tests/panthor/panthor_gem.c b/tests/panthor/panthor_gem.c
-> new file mode 100644
-> index 000000000..7e8e2084d
-> --- /dev/null
-> +++ b/tests/panthor/panthor_gem.c
-> @@ -0,0 +1,66 @@
-> +// SPDX-License-Identifier: MIT
-> +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
-> +
-> +#include "igt.h"
-> +#include "igt_core.h"
-> +#include "igt_panthor.h"
-> +
-> +igt_main {
-> +	int fd;
-> +
-> +	igt_fixture { fd = drm_open_driver(DRIVER_PANTHOR); }
-> +
-> +	igt_describe("Create a buffer object");
-> +	igt_subtest("bo_create") {
-> +		struct panthor_bo bo;
-> +
-> +		igt_panthor_bo_create(fd, &bo, 4096, 0, 0);
-> +		igt_assert(bo.handle != 0);
-> +
-> +		igt_panthor_free_bo(fd, &bo);
+> +		/* meta_data */
+> +		st_offset = len;
+> +		st_size = &context->ib_cpu[len++];	/* size */
+> +		context->ib_cpu[len++] = 0x0000001c;	/* META_DATA */
+> +		context->ib_cpu[len++] = meta_buf.addr >> 32;
+> +		context->ib_cpu[len++] = meta_buf.addr;
+> +		context->ib_cpu[len++] = 0x00000000;
+> +		*st_size = (len - st_offset) * 4;
 > +	}
 > +
-> +	igt_describe("Create a fake mmap offset for a buffer object");
-> +	igt_subtest("bo_mmap_offset") {
-> +		struct panthor_bo bo;
-> +		uint64_t mmap_offset;
-> +
-> +		igt_panthor_bo_create(fd, &bo, 4096, 0, 0);
-> +		igt_assert(bo.handle != 0);
-> +
-> +		mmap_offset = igt_panthor_bo_mmap_offset(fd, bo.handle, 0);
-> +		igt_assert(mmap_offset != 0);
-> +
-> +		igt_panthor_free_bo(fd, &bo);
-> +	}
-> +
-> +	igt_describe("Same as bo_mmap_offset but with an invalid handle");
-> +	igt_subtest("bo_mmap_offset_invalid_handle") {
-> +		struct panthor_bo bo;
-> +		uint64_t mmap_offset;
-> +
-> +		igt_panthor_bo_create(fd, &bo, 4096, 0, 0);
-> +		igt_assert(bo.handle != 0);
-> +
-> +		mmap_offset = igt_panthor_bo_mmap_offset(fd, 0xdeadbeef, ENOENT);
-> +		igt_assert(mmap_offset == 0);
-> +
-> +		igt_panthor_free_bo(fd, &bo);
-> +	}
-> +
-> +	igt_describe_f("Create a buffer object whose size is not page-aligned, and check "
-> +		"that the allocated size is rounded up to the next page size %lu.",
-> +		8192UL);
-> +	igt_subtest("bo_create_round_size") {
-> +		struct panthor_bo bo;
-> +		uint64_t expected_size = 8192;
-> +
-> +		igt_panthor_bo_create(fd, &bo, 5000, 0, 0);
-> +		igt_assert(bo.handle != 0);
-> +		igt_assert(bo.size == expected_size);
-> +
-> +		igt_panthor_free_bo(fd, &bo);
-> +	}
-> +
-> +	igt_fixture { drm_close_driver(fd); }
-> +}
-> diff --git a/tests/panthor/panthor_group.c b/tests/panthor/panthor_group.c
-> new file mode 100644
-> index 000000000..0a3b746d8
-> --- /dev/null
-> +++ b/tests/panthor/panthor_group.c
-> @@ -0,0 +1,276 @@
-> +// SPDX-License-Identifier: MIT
-> +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
-> +
-> +#include <stdint.h>
-> +#include <sys/mman.h>
-> +#include <endian.h> // For htole64
-> +#include <unistd.h>
-> +
-> +#include "drm.h"
-> +#include "igt.h"
-> +#include "igt_core.h"
-> +#include "igt_panthor.h"
-> +#include "panthor_drm.h"
-> +
-> +static void
-> +issue_store_multiple(u8 *command_stream, uint64_t kernel_va, uint32_t constant)
-> +{
-> +		uint64_t opcode, reg_num, mov48, store_multiple, flush;
-
-Why two tabs here?
-
-> +		uint64_t sr, src0, register_bitmap, offset;
-> +
-> +		// MOV48: Load the source register ([r68; r69]) with the kernel address
-> +		opcode = 0x1;
-> +		reg_num = 68;
-> +		mov48 = (opcode << 56) | (reg_num << 48) | kernel_va;
-> +		mov48 = htole64(mov48);
-> +		memcpy(&command_stream[0], &mov48, sizeof(mov48));
-> +
-> +		// MOV48: Load a known constant into r70
-> +		opcode = 0x1;
-> +		reg_num = 70;
-> +		mov48 = (opcode << 56) | (reg_num << 48) | constant;
-> +		mov48 = htole64(mov48);
-> +		memcpy(&command_stream[8], &mov48, sizeof(mov48));
-> +
-> +		// STORE_MULTIPLE: Store the first register to the address pointed to by [r68; r69]
-> +		opcode = 0x15; // STORE_MULTIPLE
-> +		sr = 70; // Starting from register r70
-> +		src0 = 68; // Address pointed to by [r68; r69]
-> +		register_bitmap = 1; // Store the first register
-> +		offset = 0; // Offset
-> +		store_multiple = (opcode << 56) | (sr << 48) | (src0 << 40) |
-> +										 (register_bitmap << 16) | offset;
-
-Please align or make it one long line, so either
-	store_multiple = (opcode << 56) | (sr << 48) | (src0 << 40) |
-			 (register_bitmap << 16) | offset;
-or
-	store_multiple = (opcode << 56) | (sr << 48) | (src0 << 40) | (register_bitmap << 16) | offset;
-
-Regards,
-Kamil
-
-> +		store_multiple = htole64(store_multiple);
-> +		memcpy(&command_stream[16], &store_multiple, sizeof(store_multiple));
-> +
-> +		opcode = 0x1;
-> +		reg_num = 68;
-> +		mov48 = (opcode << 56) | (reg_num << 48) | 0;
-> +		mov48 = htole64(mov48);
-> +		memcpy(&command_stream[24], &mov48, sizeof(mov48));
-> +
-> +		opcode = 36;
-> +		flush = opcode << 56 | 0ull << 48 | reg_num << 40 | 0ull << 16 | 0x233;
-> +		flush = htole64(flush);
-> +		memcpy(&command_stream[32], &flush, sizeof(flush));
-> +}
-> +
-> +igt_main {
-> +	int fd;
-> +
-> +	igt_fixture { fd = drm_open_driver(DRIVER_PANTHOR); }
-> +
-> +	igt_describe("Create and destroy a CSF group.");
-> +	igt_subtest("group_create") {
-> +		struct drm_panthor_gpu_info gpu_info = {};
-> +		struct drm_panthor_vm_create vm_create = {};
-> +		struct drm_panthor_group_create group_create = {};
-> +		struct drm_panthor_queue_create queue = {};
-> +		struct drm_panthor_obj_array queues = {};
-> +		struct drm_panthor_group_destroy group_destroy = {};
-> +		struct drm_panthor_vm_destroy vm_destroy = {};
-> +
-> +		igt_panthor_query(fd, DRM_PANTHOR_DEV_QUERY_GPU_INFO,
-> +				  &gpu_info, sizeof(gpu_info), 0);
-> +		igt_assert(gpu_info.gpu_id != 0);
-> +
-> +		vm_create.flags = 0;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create), 0);
-> +		igt_assert(vm_create.id != 0);
-> +
-> +		queue.priority = 0; // Low priority
-> +		queue.ringbuf_size = 4096; // Example size
-> +		queues = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &queue);
-> +
-> +		group_create.queues = queues;
-> +		group_create.max_compute_cores = 1;
-> +		group_create.max_fragment_cores = 1;
-> +		group_create.max_tiler_cores = 1;
-> +		group_create.priority = PANTHOR_GROUP_PRIORITY_MEDIUM;
-> +		group_create.compute_core_mask = gpu_info.shader_present & 0x1; // Use first core
-> +		group_create.fragment_core_mask = gpu_info.shader_present & 0x1; // Use first core
-> +		group_create.tiler_core_mask = gpu_info.tiler_present & 0x1; // Use first tiler
-> +		group_create.vm_id = vm_create.id;
-> +
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, &group_create), 0);
-> +		igt_assert(group_create.group_handle != 0);
-> +
-> +		// Cleanup: Destroy the group and VM
-> +		group_destroy = (struct drm_panthor_group_destroy){
-> +			.group_handle = group_create.group_handle
-> +		};
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_DESTROY, &group_destroy), 0);
-> +
-> +		vm_destroy = (struct drm_panthor_vm_destroy) { .id = vm_create.id };
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy), 0);
-> +	}
-> +
-> +	igt_describe("Submit a job to a group and wait for completion. "
-> +							 "The job writes a known value to a buffer object that is then "
-> +							 "mmaped and checked.");
-> +	igt_subtest("group_submit") {
-> +		struct drm_panthor_gpu_info gpu_info = {};
-> +		struct drm_panthor_vm_create vm_create = {};
-> +		struct drm_panthor_group_create group_create = {};
-> +		struct drm_panthor_queue_create queue = {};
-> +		struct drm_panthor_obj_array queues = {};
-> +		struct drm_panthor_group_submit group_submit = {};
-> +		struct drm_panthor_queue_submit queue_submit = {};
-> +		struct drm_panthor_group_destroy group_destroy = {};
-> +		struct drm_panthor_obj_array queue_submits = {};
-> +		struct drm_panthor_vm_destroy vm_destroy = {};
-> +		struct drm_panthor_bo_create bo_create = {};
-> +		struct drm_panthor_vm_bind vm_bind = {};
-> +		struct drm_panthor_vm_bind_op vm_bind_op = {};
-> +		struct drm_syncobj_wait wait = {};
-> +		struct drm_syncobj_create syncobj_create = {};
-> +		struct drm_panthor_sync_op sync_op = {};
-> +		struct drm_gem_close gem_close = {};
-> +		struct drm_syncobj_destroy syncobj_destroy = {};
-> +		uint64_t command_stream_gpu_addr;
-> +		uint32_t command_stream_size;
-> +		uint64_t result_gpu_addr;
-> +		uint32_t cmd_buf_bo_handle;
-> +		uint32_t result_bo_handle;
-> +		uint32_t syncobj_handle;
-> +		uint8_t command_stream[64] = {0};
-> +		uint8_t *bo_cpu_addr;
-> +		uint8_t *result_cpu_addr;
-> +		const int INITIAL_VA = 0x1000000;
-> +		uint64_t bo_mmap_offset;
-> +
-> +		igt_panthor_query(fd, DRM_PANTHOR_DEV_QUERY_GPU_INFO,
-> +				  &gpu_info, sizeof(gpu_info), 0);
-> +		igt_assert(gpu_info.gpu_id != 0);
-> +
-> +		vm_create.flags = 0;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create), 0);
-> +		igt_assert(vm_create.id != 0);
-> +
-> +		bo_create.size = 4096;
-> +		bo_create.flags = 0;
-> +		bo_create.exclusive_vm_id = vm_create.id;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_BO_CREATE, &bo_create), 0);
-> +		igt_assert(bo_create.handle != 0);
-> +		cmd_buf_bo_handle = bo_create.handle;
-> +
-> +		vm_bind_op.flags = DRM_PANTHOR_VM_BIND_OP_TYPE_MAP;
-> +		vm_bind_op.bo_handle = cmd_buf_bo_handle;
-> +		vm_bind_op.bo_offset = 0;
-> +		vm_bind_op.va = INITIAL_VA;
-> +		vm_bind_op.size = bo_create.size;
-> +		vm_bind.ops = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &vm_bind_op);
-> +		vm_bind.vm_id = vm_create.id;
-> +		vm_bind.flags = 0;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_VM_BIND, &vm_bind), 0);
-> +
-> +		command_stream_gpu_addr = vm_bind_op.va;
-> +		command_stream_size = sizeof(command_stream);
-> +
-> +		bo_mmap_offset = igt_panthor_bo_mmap_offset(fd, cmd_buf_bo_handle, 0);
-> +		bo_cpu_addr = igt_panthor_mmap_bo(fd, cmd_buf_bo_handle,
-> +						  bo_create.size, PROT_READ | PROT_WRITE,
-> +							bo_mmap_offset);
-> +		igt_assert(bo_cpu_addr);
-> +
-> +		// Create the BO to receive the result of the store.
-> +		memset(&bo_create, 0, sizeof(bo_create));
-> +		bo_create.size = 4096;
-> +		bo_create.flags = 0;
-> +		bo_create.exclusive_vm_id = vm_create.id;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_BO_CREATE, &bo_create), 0);
-> +		igt_assert(bo_create.handle != 0);
-> +		result_bo_handle = bo_create.handle;
-> +
-> +		// Also bind the result BO.
-> +		vm_bind_op.flags = DRM_PANTHOR_VM_BIND_OP_TYPE_MAP;
-> +		vm_bind_op.bo_handle = result_bo_handle;
-> +		vm_bind_op.bo_offset = 0;
-> +		vm_bind_op.va = INITIAL_VA + 4096;
-> +		vm_bind_op.size = bo_create.size;
-> +		vm_bind.ops = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &vm_bind_op);
-> +		vm_bind.vm_id = vm_create.id;
-> +		vm_bind.flags = 0;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_VM_BIND, &vm_bind), 0);
-> +		result_gpu_addr = vm_bind_op.va;
-> +
-> +		issue_store_multiple(command_stream, result_gpu_addr, 0xdeadbeef);
-> +		memcpy(bo_cpu_addr, command_stream, command_stream_size);
-> +		munmap(bo_cpu_addr, bo_create.size);
-> +
-> +		queue.priority = 0;
-> +		queue.ringbuf_size = 4096;
-> +		queues = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &queue);
-> +
-> +		group_create.queues = queues;
-> +		group_create.max_compute_cores = 1;
-> +		group_create.max_fragment_cores = 1;
-> +		group_create.max_tiler_cores = 1;
-> +		group_create.priority = PANTHOR_GROUP_PRIORITY_MEDIUM;
-> +		group_create.compute_core_mask = gpu_info.shader_present & 0x1;
-> +		group_create.fragment_core_mask = gpu_info.shader_present & 0x1;
-> +		group_create.tiler_core_mask = gpu_info.tiler_present & 0x1;
-> +		group_create.vm_id = vm_create.id;
-> +
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, &group_create), 0);
-> +		igt_assert(group_create.group_handle != 0);
-> +
-> +		syncobj_create = (struct drm_syncobj_create){
-> +				.flags = 0,
-> +		};
-> +
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_CREATE, &syncobj_create), 0);
-> +		syncobj_handle = syncobj_create.handle;
-> +
-> +		sync_op = (struct drm_panthor_sync_op) {
-> +				.handle = syncobj_handle,
-> +				.flags = DRM_PANTHOR_SYNC_OP_SIGNAL,
-> +		};
-> +
-> +		queue_submit.syncs = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &sync_op);
-> +
-> +		queue_submit.queue_index = 0;
-> +		queue_submit.stream_size = command_stream_size;
-> +		queue_submit.stream_addr = command_stream_gpu_addr;
-> +		queue_submit.latest_flush = 0;
-> +		queue_submits = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &queue_submit);
-> +
-> +		group_submit.group_handle = group_create.group_handle;
-> +		group_submit.queue_submits = queue_submits;
-> +
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_SUBMIT, &group_submit), 0);
-> +
-> +		wait = (struct drm_syncobj_wait) {
-> +			.handles = (uint64_t)&syncobj_handle,
-> +			.count_handles = 1,
-> +			.timeout_nsec = INT64_MAX,
-> +			.flags = 0,
-> +		};
-> +
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_WAIT, &wait), 0);
-> +
-> +		bo_mmap_offset = igt_panthor_bo_mmap_offset(fd, result_bo_handle, 0);
-> +		result_cpu_addr = igt_panthor_mmap_bo(fd, result_bo_handle,
-> +						      bo_create.size, PROT_READ | PROT_WRITE, bo_mmap_offset);
-> +
-> +		igt_assert(*(uint32_t *)result_cpu_addr == 0xdeadbeef);
-> +		munmap(result_cpu_addr, bo_create.size);
-> +
-> +		syncobj_destroy.handle = syncobj_handle;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_SYNCOBJ_DESTROY, &syncobj_destroy), 0);
-> +
-> +		group_destroy.group_handle = group_create.group_handle;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_DESTROY, &group_destroy), 0);
-> +
-> +		vm_destroy.id = vm_create.id;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy), 0);
-> +
-> +		gem_close.handle = cmd_buf_bo_handle;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &gem_close), 0);
-> +
-> +		gem_close.handle = result_bo_handle;
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &gem_close), 0);
-> +}
-> +
-> +	igt_fixture { drm_close_driver(fd); }
-> +}
-> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
-> new file mode 100644
-> index 000000000..1b641b601
-> --- /dev/null
-> +++ b/tests/panthor/panthor_vm.c
-> @@ -0,0 +1,80 @@
-> +// SPDX-License-Identifier: MIT
-> +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
-> +
-> +#include "igt.h"
-> +#include "igt_core.h"
-> +#include "igt_panthor.h"
-> +#include "panthor_drm.h"
-> +
-> +igt_main {
-> +	int fd;
-> +
-> +	igt_fixture { fd = drm_open_driver(DRIVER_PANTHOR); }
-> +
-> +	igt_describe("Create and destroy a VM");
-> +	igt_subtest("vm_create_destroy") {
-> +		uint32_t vm_id;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_subtest("vm_destroy_invalid") {
-> +		igt_panthor_vm_destroy(fd, 0xdeadbeef, EINVAL);
-> +	}
-> +
-> +	igt_describe("Test the VM_BIND API synchronously");
-> +	igt_subtest("vm_bind") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = 0x1000;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle,
-> +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Test unbinding a previously bound range");
-> +	igt_subtest("vm_unbind") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = 0x1000;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle,
-> +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0,
-> +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Test unbinding an address range that was not previously bound");
-> +	igt_subtest("vm_unbind_invalid_address") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = 0x1000;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +
-> +		/* This was not bound previously*/
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle,
-> +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, EINVAL);
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_fixture { drm_close_driver(fd); }
-> +}
-> -- 
-> 2.51.0
-> 
+>  	/* bitstream buffer */
+>  	st_offset = len;
+>  	st_size = &context->ib_cpu[len++];	/* size */
+> @@ -1049,6 +1122,7 @@ amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
+>  		context->ib_cpu[len++] = 0x00000000;	/* RENCODE_COLOR_BIT_DEPTH_8_BIT */
+>  		*st_size = (len - st_offset) * 4;
+>  	}
+> +
+>  	/* op_speed */
+>  	st_offset = len;
+>  	st_size = &context->ib_cpu[len++];
+> @@ -1075,6 +1149,7 @@ amdgpu_cs_vcn_enc_encode_frame(amdgpu_device_handle device_handle,
+>  	free_resource(&fb_buf);
+>  	free_resource(&bs_buf);
+>  	free_resource(&input_buf);
+> +	free_resource(&meta_buf);
+>  }
+>
+>  static void
+> --
+> 2.43.0
+>
