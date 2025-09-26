@@ -4,60 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE1DCAC5AE
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Sep 2025 18:03:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7FAFCAC5AE
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Sep 2025 18:10:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B39F10EAC4;
-	Fri, 26 Sep 2025 18:03:15 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BKrTSOEF";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1872710EAC1
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Sep 2025 18:03:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758909794; x=1790445794;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=vEbbW3oDcxlyet7uo9iBxMiYXZpf7XzKtUMWDtYG9G8=;
- b=BKrTSOEFumTYItTb6rgbWVLJdMWaKuOvb+dkYjKoj0cmN9I7ZkeT89VC
- zQWP0XDsFQbFuk7TbAL/NBxooQS7idn8YA+k3bxkuG/67F/J5yU0/h6ln
- tFZL/iUovXsIj0P5w+Q7UY5IJ6k7ChQgTwqMfzPcNLl9Bt/KL7yEagBuA
- g8vQS31L9UZevhq470f+GcQvJWHRtxFfbk2X866EG1EsbDRfDjD+BZm1l
- nDALRZ8pi9rQSOsXFhTmMX/mqvelDYXzaVh4XVek3/h3pWobGH44+Fs8Q
- x5JYj0u/GcNUCsiCDWgb3Y0gEKXan3LcsY8FpunIaOPU8d9grHi1ZpWg8 A==;
-X-CSE-ConnectionGUID: 7wC5FK6eS9iKGIK+rvXVaw==
-X-CSE-MsgGUID: K0R7ubpDRxKLMC/mfRTxDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11565"; a="60458915"
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; d="scan'208";a="60458915"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Sep 2025 11:03:14 -0700
-X-CSE-ConnectionGUID: FGnDGM45TC22f00cyAVClg==
-X-CSE-MsgGUID: euO92vn1RpCr832nUSi6qA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; d="scan'208";a="178086031"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
- ([10.245.245.31])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Sep 2025 11:03:10 -0700
-From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH v2 i-g-t] tests/intel/gem_exec_schedule: Improve
- synchronization in pi-ringfull
-Date: Fri, 26 Sep 2025 20:03:03 +0200
-Message-ID: <20250926180302.61612-2-krzysztof.niemiec@intel.com>
-X-Mailer: git-send-email 2.45.2
+	by gabe.freedesktop.org (Postfix) with ESMTP id 578F610EACE;
+	Fri, 26 Sep 2025 18:10:42 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2E5010EACC;
+ Fri, 26 Sep 2025 18:10:41 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2753619283652181672=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Fix_xe=5Feudebug=5Fonline?=
+ =?utf-8?q?=40set-breakpoint-sigint-debugger_=28rev7=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 26 Sep 2025 18:10:41 -0000
+Message-ID: <175891024165.371381.4435124552297535682@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250926074801.9031-1-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20250926074801.9031-1-dominik.karol.piatkowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,94 +38,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Move the interrupt timer from the parent thread to the child thread as
-an explicit signal raise, and make sure the order of execution between
-them is always the same. This reduces nondeterminism in the test, fixing
-bugs like [1], where the child is starved out of CPU time up until the
-parent gets signalled and monopolizes the CPU before the child could
-submit its own execbuf, failing the test.
+--===============2753619283652181672==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[1] https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14898
+== Series Details ==
 
-v2: make the sync variable actually work (Zbigniew)
+Series: Fix xe_eudebug_online@set-breakpoint-sigint-debugger (rev7)
+URL   : https://patchwork.freedesktop.org/series/153868/
+State : success
 
-Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
----
- tests/intel/gem_exec_schedule.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+== Summary ==
 
-diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
-index 84219b4cf..2f3958723 100644
---- a/tests/intel/gem_exec_schedule.c
-+++ b/tests/intel/gem_exec_schedule.c
-@@ -2447,6 +2447,7 @@ static void test_pi_ringfull(int fd, const intel_ctx_cfg_t *cfg,
- 	struct itimerval itv;
- 	IGT_CORK_HANDLE(c);
- 	bool *result;
-+	bool *sync;
- 
- 	/*
- 	 * We start simple. A low priority client should never prevent a high
-@@ -2469,6 +2470,8 @@ static void test_pi_ringfull(int fd, const intel_ctx_cfg_t *cfg,
- 	result = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
- 	igt_assert(result != MAP_FAILED);
- 
-+	sync = result + 0x100;
-+
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	memset(&obj, 0, sizeof(obj));
- 
-@@ -2528,10 +2531,15 @@ static void test_pi_ringfull(int fd, const intel_ctx_cfg_t *cfg,
- 
- 	/* both parent + child on the same cpu, only parent is RT */
- 	bind_to_cpu(0);
-+	*sync = 0;
- 
- 	igt_fork(child, 1) {
- 		int err;
- 
-+		/* We want the parent to always go first */
-+		while (!*sync)
-+			sched_yield();
-+
- 		/* Replace our batch to avoid conflicts over shared resources? */
- 		if (!(flags & SHARED)) {
- 			obj[1].handle = gem_create(fd, 4096);
-@@ -2542,7 +2550,6 @@ static void test_pi_ringfull(int fd, const intel_ctx_cfg_t *cfg,
- 
- 		igt_debug("Waking parent\n");
- 		kill(getppid(), SIGALRM);
--		sched_yield();
- 		result[1] = true;
- 
- 		sigaction(SIGALRM, &sa, NULL);
-@@ -2566,17 +2573,19 @@ static void test_pi_ringfull(int fd, const intel_ctx_cfg_t *cfg,
- 
- 		if (!(flags & SHARED))
- 			gem_close(fd, obj[1].handle);
-+
-+		/* Interrupt parent's execbuf now that the child is done */
-+		kill(getppid(), SIGALRM);
- 	}
- 
-+	*sync = 1;
-+
- 	/* Relinquish CPU just to allow child to create a context */
--	sleep(1);
-+	pause();
- 	igt_assert_f(result[0], "HP context (child) not created\n");
- 	igt_assert_f(!result[1], "Child released too early!\n");
- 
- 	/* Parent sleeps waiting for ringspace, releasing child */
--	itv.it_value.tv_sec = 0;
--	itv.it_value.tv_usec = 50000;
--	setitimer(ITIMER_REAL, &itv, NULL);
- 	igt_debug("LP parent executing\n");
- 	igt_assert_eq(__execbuf(fd, &execbuf), -EINTR);
- 	igt_assert_f(result[1], "Child was not released!\n");
--- 
-2.45.2
+CI Bug Log - changes from XEIGT_8555_BAT -> XEIGTPW_13833_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8555 -> IGTPW_13833
+
+  IGTPW_13833: 13833
+  IGT_8555: 8555
+  xe-3835-3008c5c8e2fade05918e6d8c456572c91f30d412: 3008c5c8e2fade05918e6d8c456572c91f30d412
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13833/index.html
+
+--===============2753619283652181672==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix xe_eudebug_online@set-breakpoint-sigint-debugger (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153868/">https://patchwork.freedesktop.org/series/153868/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13833/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13833/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8555_BAT -&gt; XEIGTPW_13833_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8555 -&gt; IGTPW_13833</li>
+</ul>
+<p>IGTPW_13833: 13833<br />
+  IGT_8555: 8555<br />
+  xe-3835-3008c5c8e2fade05918e6d8c456572c91f30d412: 3008c5c8e2fade05918e6d8c456572c91f30d412</p>
+
+</body>
+</html>
+
+--===============2753619283652181672==--
