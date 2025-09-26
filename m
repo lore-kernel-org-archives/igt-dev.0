@@ -4,56 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32EC6CAC5AE
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Sep 2025 12:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22239CAC5AE
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Sep 2025 12:29:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B99910E375;
-	Fri, 26 Sep 2025 12:28:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C8FE710E375;
+	Fri, 26 Sep 2025 12:29:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kq86GSC8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MhqdgTdF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 753E510E375
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Sep 2025 12:28:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D220A10E375
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Sep 2025 12:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1758889727; x=1790425727;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+39IpysMYwEpHdIqEIrmhXg4g5dYV0sVpsqwUVBTP88=;
- b=kq86GSC8xcoK7JT5PxyPSl0LbDEm04vLOH48XvJ/vVJyVqf9XwVn7U30
- 7kzuf+x2UyjKLnGfc3KCpqOhmP0bh6oHu4OVd6QnEXTJGSRb1w1coXMym
- Xt54AY8S2hjKBYtwQjczxy6bJV4KKmB7cJZ9MFQq2JLU14QmVNUDwPB/E
- bnqkxjpfIp69BFKpsT9Uu+1JJoL9C9ILPH8BQcMrXbAl6v3tabQlkBjPJ
- Jq3uNoO4UnTBYcRFBQcLzlEGq0mBoUAjzs9bN4UY1kpvsLDQPN2U5R0lT
- w2F53N4D0p8arIJQwkdSQcZXCGDjJs9UL17WciEte8vLJMqnOJfuF8EBu Q==;
-X-CSE-ConnectionGUID: 2UdI3J8LRACFUeJAlqXV7w==
-X-CSE-MsgGUID: 2xk2vzIoQTuqPG/Nc6KRZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="86664140"
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; d="scan'208";a="86664140"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Sep 2025 05:28:47 -0700
-X-CSE-ConnectionGUID: NuANe/+cRdCt2v3kHl14Gw==
-X-CSE-MsgGUID: ZlcLs0l9Tbujk/8NunVgiQ==
+ t=1758889778; x=1790425778;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=CMXC3n2xobZ7utpEm7FGBqHg8kIX/oR2aXfry+cPqPk=;
+ b=MhqdgTdF1NllcHxrtOr/Ybt3IdBLQQhzfkGkyTYEzCAA9i0RU15znbIr
+ gNmT6OCMM8w2HmL/UBBArwY2EM0I2dsROS0UN+seFq4iXpBNg/4cAHTEs
+ jhzj0gqnt1MtvKefJdQfNQydH84f/Hjo3PS5UkH+qCE2+xljj+zn0o+DL
+ rclnOc2p79Il7fBS84Jk1dLYy5t0N990r4AK5C5750DWTSmVUHof671y8
+ l6r+6irXS7us/O2Y/QO8qd1ZuufqVf/OGMRx1TlWy+TifDcOCka0zIJ8y
+ +kuaA940AWi2GyIzAMUKHwgIB/zDU9OwtPcIBTi2mcLFEbQL1b8y8Ibrz g==;
+X-CSE-ConnectionGUID: e1KhkPsGQk+jfhLJHPvfNw==
+X-CSE-MsgGUID: TsvuB/IuSVuBcffb6so9Zw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="72583551"
+X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; d="scan'208";a="72583551"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Sep 2025 05:29:37 -0700
+X-CSE-ConnectionGUID: lvQ+zkdYRMunwDKbEMrGFQ==
+X-CSE-MsgGUID: NrI6UT4/T+CkUnkV9VUnCQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; d="scan'208";a="214734348"
-Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Sep 2025 05:28:45 -0700
-From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Matt Roper <matthew.d.roper@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Subject: [PATCH v2] lib/intel_blt: Fix MEM_COPY instruction for xe2+ platforms
-Date: Fri, 26 Sep 2025 18:00:59 +0530
-Message-Id: <20250926123059.2173950-1-balasubramani.vivekanandan@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; d="scan'208";a="177444460"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 05:29:34 -0700
+Date: Fri, 26 Sep 2025 14:29:15 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jouni =?utf-8?B?SMO2Z2FuZGVy?= <jouni.hogander@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jeevan.b@intel.com
+Subject: Re: [PATCH i-g-t v3] lib/igt_psr: Use 10x timeouts in simulation
+ environment
+Message-ID: <20250926122915.cl22kxj3gyqssnyq@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jouni =?utf-8?B?SMO2Z2FuZGVy?= <jouni.hogander@intel.com>,
+ igt-dev@lists.freedesktop.org, jeevan.b@intel.com
+References: <20250926045950.3929343-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250926045950.3929343-1-jouni.hogander@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,213 +72,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There is a difference in the MEM_COPY instruction structure starting
-with xe2 based platforms. Fixed it.
+Hi Jouni,
+On 2025-09-26 at 07:59:50 +0300, Jouni Högander wrote:
+> PSR tests are timeouting in simulation environment. Use 10 as a multiplier
+> for timeouts in simulation environment.
+> 
+> v3: add missing change
+> v2: fix operator precedence problem
+> 
+> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+> ---
+>  lib/igt_psr.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+> index d5b4198c3..7e50c3dc6 100644
+> --- a/lib/igt_psr.c
+> +++ b/lib/igt_psr.c
+> @@ -136,12 +136,14 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
+>  	return active;
+>  }
+>  
+> +#define PSR_TIMEOUT(timeout)	((igt_run_in_simulation() ? 10 : 1) * (timeout))
 
-Bspec: 57561
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/intel_blt.c | 126 +++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 93 insertions(+), 33 deletions(-)
+Now it is correct,
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 71ed891c3..7f7f5485e 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1800,17 +1800,32 @@ int blt_fast_copy(int fd,
- 
- struct xe_mem_copy_data {
- 	struct {
--		uint32_t length:			BITRANGE(0, 7);
--		uint32_t compression_format:	BITRANGE(8, 12);
--		uint32_t compression_enable:	BITRANGE(13, 13);
--		uint32_t rsvd0:			BITRANGE(14, 14);
--		uint32_t dst_compressible:	BITRANGE(15, 15);
--		uint32_t src_compressible:	BITRANGE(16, 16);
--		uint32_t copy_type:		BITRANGE(17, 18);
--		uint32_t mode:			BITRANGE(19, 19);
--		uint32_t rsvd1:			BITRANGE(20, 21);
--		uint32_t opcode:			BITRANGE(22, 28);
--		uint32_t client:			BITRANGE(29, 31);
-+		union {
-+			struct {
-+				uint32_t length:		BITRANGE(0, 7);
-+				uint32_t rsvd0:			BITRANGE(8, 8);
-+				uint32_t compression_format:	BITRANGE(9, 12);
-+				uint32_t rsvd1:			BITRANGE(13, 16);
-+				uint32_t copy_type:		BITRANGE(17, 18);
-+				uint32_t mode:			BITRANGE(19, 19);
-+				uint32_t rsvd2:			BITRANGE(20, 21);
-+				uint32_t opcode:		BITRANGE(22, 28);
-+				uint32_t client:		BITRANGE(29, 31);
-+			} xe2;
-+			struct {
-+				uint32_t length:		BITRANGE(0, 7);
-+				uint32_t compression_format:	BITRANGE(8, 12);
-+				uint32_t compression_enable:	BITRANGE(13, 13);
-+				uint32_t rsvd0:			BITRANGE(14, 14);
-+				uint32_t dst_compressible:	BITRANGE(15, 15);
-+				uint32_t src_compressible:	BITRANGE(16, 16);
-+				uint32_t copy_type:		BITRANGE(17, 18);
-+				uint32_t mode:			BITRANGE(19, 19);
-+				uint32_t rsvd1:			BITRANGE(20, 21);
-+				uint32_t opcode:		BITRANGE(22, 28);
-+				uint32_t client:		BITRANGE(29, 31);
-+			} gen12;
-+		};
- 	} dw00;
- 
- 	struct {
-@@ -1859,9 +1874,22 @@ struct xe_mem_copy_data {
- 	} dw08;
- 
- 	struct {
--		uint32_t dst_mocs:		BITRANGE(0, 6);
--		uint32_t rsvd0:			BITRANGE(7, 24);
--		uint32_t src_mocs:		BITRANGE(25, 31);
-+		union {
-+			struct {
-+				uint32_t dst_encrypt:		BITRANGE(0, 0);
-+				uint32_t rsvd0:			BITRANGE(1, 2);
-+				uint32_t dst_mocs:		BITRANGE(3, 6);
-+				uint32_t rsvd1:			BITRANGE(7, 24);
-+				uint32_t src_encrypt:		BITRANGE(25, 25);
-+				uint32_t rsvd2:			BITRANGE(26, 27);
-+				uint32_t src_mocs:		BITRANGE(28, 31);
-+			} xe2;
-+			struct {
-+				uint32_t dst_mocs:		BITRANGE(0, 6);
-+				uint32_t rsvd0:			BITRANGE(7, 24);
-+				uint32_t src_mocs:		BITRANGE(25, 31);
-+			} gen12;
-+		};
- 	} dw09;
- };
- 
-@@ -1887,18 +1915,32 @@ void blt_mem_copy_init(int fd, struct blt_mem_copy_data *mem,
- 	mem->copy_type = copy_type;
- }
- 
--static void dump_bb_mem_copy_cmd(struct xe_mem_copy_data *data)
-+static void dump_bb_mem_copy_cmd(int fd, struct xe_mem_copy_data *data)
- {
- 	uint32_t *cmd = (uint32_t *) data;
-+	uint32_t devid = intel_get_drm_devid(fd);
- 
- 	igt_info("BB details:\n");
--	igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, length: %d> "
--		 "[copy type: %d, mode: %d]\n",
--		 cmd[0], data->dw00.client, data->dw00.opcode, data->dw00.length,
--		 data->dw00.copy_type, data->dw00.mode);
--	igt_info(" dw01: [%08x] width: %u\n", cmd[1],
--		 data->dw00.mode == MODE_BYTE ? data->dw01.byte_copy.width :
--						data->dw01.page_copy.width);
-+
-+	if (intel_graphics_ver(devid) >= IP_VER(20, 0)) {
-+		igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, length: %d> "
-+			 "[copy type: %d, mode: %d]\n",
-+			 cmd[0], data->dw00.xe2.client, data->dw00.xe2.opcode,
-+			 data->dw00.xe2.length, data->dw00.xe2.copy_type,
-+			 data->dw00.xe2.mode);
-+		igt_info(" dw01: [%08x] width: %u\n", cmd[1],
-+			 data->dw00.xe2.mode == MODE_BYTE ? data->dw01.byte_copy.width :
-+							data->dw01.page_copy.width);
-+	} else {
-+		igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, length: %d> "
-+			 "[copy type: %d, mode: %d]\n",
-+			 cmd[0], data->dw00.gen12.client,
-+			 data->dw00.gen12.opcode, data->dw00.gen12.length,
-+			 data->dw00.gen12.copy_type, data->dw00.gen12.mode);
-+		igt_info(" dw01: [%08x] width: %u\n", cmd[1],
-+			 data->dw00.gen12.mode == MODE_BYTE ? data->dw01.byte_copy.width :
-+							data->dw01.page_copy.width);
-+	}
- 	igt_info(" dw02: [%08x] height: %u\n", cmd[2], data->dw02.height);
- 	igt_info(" dw03: [%08x] src pitch: %u\n", cmd[3], data->dw03.src_pitch);
- 	igt_info(" dw04: [%08x] dst pitch: %u\n", cmd[4], data->dw04.dst_pitch);
-@@ -1910,8 +1952,15 @@ static void dump_bb_mem_copy_cmd(struct xe_mem_copy_data *data)
- 		 cmd[7], data->dw07.dst_address_lo);
- 	igt_info(" dw08: [%08x] dst offset hi (0x%x)\n",
- 		 cmd[8], data->dw08.dst_address_hi);
--	igt_info(" dw09: [%08x] mocs <dst: 0x%x, src: 0x%x>\n",
--		 cmd[8], data->dw09.dst_mocs, data->dw09.src_mocs);
-+	if (intel_graphics_ver(devid) >= IP_VER(20, 0)) {
-+		igt_info(" dw09: [%08x] mocs <dst: 0x%x, src: 0x%x>\n",
-+			 cmd[9], data->dw09.xe2.dst_mocs,
-+			 data->dw09.xe2.src_mocs);
-+	} else {
-+		igt_info(" dw09: [%08x] mocs <dst: 0x%x, src: 0x%x>\n",
-+			 cmd[9], data->dw09.gen12.dst_mocs,
-+			 data->dw09.gen12.src_mocs);
-+	}
- }
- 
- static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
-@@ -1923,6 +1972,7 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
- 	uint32_t width, height, width_max, height_max, remain;
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t *bb;
-+	uint32_t devid = intel_get_drm_devid(fd);
- 
- 	if (mem->mode == MODE_BYTE) {
- 		data.dw01.byte_copy.width = -1;
-@@ -1945,19 +1995,29 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
- 	width = mem->src.width;
- 	height = mem->dst.height;
- 
--	data.dw00.client = 0x2;
--	data.dw00.opcode = 0x5a;
--	data.dw00.length = 8;
--	data.dw00.mode = mem->mode;
--	data.dw00.copy_type = mem->copy_type;
-+	if (intel_graphics_ver(devid) >= IP_VER(20, 0)) {
-+		data.dw00.xe2.client = 0x2;
-+		data.dw00.xe2.opcode = 0x5a;
-+		data.dw00.xe2.length = 8;
-+		data.dw00.xe2.mode = mem->mode;
-+		data.dw00.xe2.copy_type = mem->copy_type;
-+		data.dw09.xe2.src_mocs = mem->src.mocs_index;
-+		data.dw09.xe2.dst_mocs = mem->dst.mocs_index;
-+	} else {
-+		data.dw00.gen12.client = 0x2;
-+		data.dw00.gen12.opcode = 0x5a;
-+		data.dw00.gen12.length = 8;
-+		data.dw00.gen12.mode = mem->mode;
-+		data.dw00.gen12.copy_type = mem->copy_type;
-+		data.dw09.gen12.src_mocs = mem->src.mocs_index;
-+		data.dw09.gen12.dst_mocs = mem->dst.mocs_index;
-+	}
- 
- 	data.dw02.height = height - 1;
- 	data.dw05.src_address_lo = src_offset;
- 	data.dw06.src_address_hi = src_offset >> 32;
- 	data.dw07.dst_address_lo = dst_offset;
- 	data.dw08.dst_address_hi = dst_offset >> 32;
--	data.dw09.src_mocs = mem->src.mocs_index;
--	data.dw09.dst_mocs = mem->dst.mocs_index;
- 
- 	/* For matrix we don't iterate */
- 	if (mem->copy_type == TYPE_MATRIX) {
-@@ -1983,7 +2043,7 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
- 
- 		if (mem->print_bb) {
- 			igt_info("[MEM COPY]\n");
--			dump_bb_mem_copy_cmd(&data);
-+			dump_bb_mem_copy_cmd(fd, &data);
- 		}
- 	} else {
- 		remain = mem->src.width;
-@@ -2017,7 +2077,7 @@ static uint64_t emit_blt_mem_copy(int fd, uint64_t ahnd,
- 
- 			if (mem->print_bb) {
- 				igt_info("[MEM COPY]\n");
--				dump_bb_mem_copy_cmd(&data);
-+				dump_bb_mem_copy_cmd(fd, &data);
- 			}
- 		}
- 	}
--- 
-2.34.1
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+> +
+>  /*
+>   * For PSR1, we wait until PSR is active. We wait until DEEP_SLEEP for PSR2.
+>   */
+>  bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+>  {
+> -	return igt_wait(psr_active_check(debugfs_fd, mode, output), 500, 20);
+> +	return igt_wait(psr_active_check(debugfs_fd, mode, output), PSR_TIMEOUT(500), 20);
+>  }
+>  
+>  bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+> @@ -153,9 +155,9 @@ bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+>  	 */
+>  	if (output != NULL &&
+>  	    output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
+> -		return igt_wait(psr_active_check(debugfs_fd, mode, output), 40, 1);
+> +		return igt_wait(psr_active_check(debugfs_fd, mode, output), PSR_TIMEOUT(40), 1);
+>  	else
+> -		return igt_wait(!psr_active_check(debugfs_fd, mode, output), 40, 1);
+> +		return igt_wait(!psr_active_check(debugfs_fd, mode, output), PSR_TIMEOUT(40), 1);
+>  }
+>  
+>  bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+> @@ -167,9 +169,9 @@ bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *outp
+>  	 */
+>  	if (output != NULL &&
+>  	    output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
+> -		return igt_wait(psr_active_check(debugfs_fd, mode, output), 500, 1);
+> +		return igt_wait(psr_active_check(debugfs_fd, mode, output), PSR_TIMEOUT(500), 1);
+>  	else
+> -		return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 1);
+> +		return igt_wait(!psr_active_check(debugfs_fd, mode, output), PSR_TIMEOUT(500), 1);
+>  }
+>  
+>  static ssize_t psr_write(int debugfs_fd, const char *buf, igt_output_t *output)
+> -- 
+> 2.43.0
+> 
