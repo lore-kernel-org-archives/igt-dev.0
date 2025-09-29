@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89E2CCAC5B9
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 19:21:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84DE2CAC5B9
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 19:21:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3FA2510E4A2;
-	Mon, 29 Sep 2025 19:21:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3EFC810E48F;
+	Mon, 29 Sep 2025 19:21:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iOolpN9l";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ORf/ILy6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DAAA10E492
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 19:21:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 085B510E499
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 19:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759173698; x=1790709698;
+ t=1759173701; x=1790709701;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=lXb1enMoy8a6N+yqGPGEXcsZ+nA3Gu2J5Jx2CHMFErE=;
- b=iOolpN9lcAw4zPE0qdD7+z1U4nIu7jzwJsB6WJEX2LXnQhvkNb4raoHq
- GQ2Ps9x0T6JMpSor9bRkXlDe9wPmNacxFsPmgoekPrMrinNl9A1nnZ35R
- KsQsTjWYA1BacGKxyrCrT2BwUBS+2Q1oAPtwPm5cls8fKVaJ4m5dO68+q
- VCiQ6zzvSiqjI1ftFvBk4TdI1EKp5BoDsvjI/1XwL++xgBIBsH1BQ/ih3
- 5ZNlG9VtoDt8phlkoVhJIIL8A/ypd2FbiDvrSRUNwk4lcNKdQ9rn4dUYX
- XTm0vJ6PE+eGi44KZIHSjyJn/G97pBQOusYX41PkamEBvSZ/lYcD3jXW2 A==;
-X-CSE-ConnectionGUID: 9L400S7qR7eZoKa8PfNLlQ==
-X-CSE-MsgGUID: N9uHSmwaS1mpExGqmDdHTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61589840"
-X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="61589840"
+ bh=tuyNZQIV2hprlaUqRveEvzNVuZiBJOmHtx0pdMTho7o=;
+ b=ORf/ILy6rY7UUMJUrRd0D+VXRmvCoVvUXZJnKzUTKbif30CI/tqhFbTc
+ W5f59wt62PUZZHOKZV2cTmzMwDAT15SC0WWgbxI4YMwCwLdQCv7iAiyCd
+ ENFGPdm7NfaC3SK5IIJfiHlm0mw6NdW7yWuxFyTIc+ubXtSGC8EzmCM/L
+ mwu0ESznwmIYhoryAvd2h+UJBVO4YlswAytdKjk6n6sSUu+wOF7wwLe4I
+ IlCewd+0F1GcQr09qphG4IlfiRiZ/DjTfMY9rmXOXLlIab64lLsPODgX1
+ oSgzD7fNtA+AbDLjrEQVMGKO3cbsf0MC6yB5gvz/eTidv2s22KAdfZuQY w==;
+X-CSE-ConnectionGUID: V+eog+SoQAq9eM7K+OhVZQ==
+X-CSE-MsgGUID: XX+EeQxUSTexXb8NL/Agug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61589842"
+X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="61589842"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 12:21:37 -0700
-X-CSE-ConnectionGUID: Mc0RbtKCRAiaaLSEb/dovw==
-X-CSE-MsgGUID: Jkyzi0eVSSq+RuGaqjc5NA==
+ 29 Sep 2025 12:21:41 -0700
+X-CSE-ConnectionGUID: P7aHzT12RMmqSJZF11+kjg==
+X-CSE-MsgGUID: EoYADzRoSL6Th88fEMPbZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="178250167"
+X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="178250187"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.245.198])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 12:21:36 -0700
+ 29 Sep 2025 12:21:40 -0700
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/6] tools/intel_vbt_decode: Use to_str() more
-Date: Mon, 29 Sep 2025 22:21:22 +0300
-Message-ID: <20250929192127.5865-3-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 3/6] tools/intel_vbt_decode: Convert eDP deocding to use
+ to_str()
+Date: Mon, 29 Sep 2025 22:21:23 +0300
+Message-ID: <20250929192127.5865-4-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250929192127.5865-1-ville.syrjala@linux.intel.com>
 References: <20250929192127.5865-1-ville.syrjala@linux.intel.com>
@@ -71,150 +72,111 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Convert all the naked string array dereferences to to_str()
-instead. Not strictly necessary in these cases (since the
-VBT bitfields doen't have unused values) but it seems better
-to stick to the same formula for all decoding.
+Use to_str() when decoding a bunch of eDP related fields.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ tools/intel_vbt_decode.c | 68 +++++++++++++++-------------------------
+ 1 file changed, 25 insertions(+), 43 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index dbcba3b9cd3b..2f228fcd14b7 100644
+index 2f228fcd14b7..9fece741840b 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -655,7 +655,7 @@ static int decode_ssc_freq(struct context *context, bool alternate)
- 	}
+@@ -2347,6 +2347,23 @@ static void dump_tv_options(struct context *context,
+ 	       to_str(underscan_overscan_str, tv->underscan_overscan_hdtv_component));
  }
  
--static const char * const panel_fitting[] = {
-+static const char * const panel_fitting_str[] = {
- 	[0] = "disabled",
- 	[1] = "text only",
- 	[2] = "graphics only",
-@@ -668,7 +668,7 @@ static void dump_general_features(struct context *context,
- 	const struct bdb_general_features *features = block_data(block);
- 
- 	printf("\tPanel fitting: %s (0x%x)\n",
--	       panel_fitting[features->panel_fitting], features->panel_fitting);
-+	       to_str(panel_fitting_str, features->panel_fitting), features->panel_fitting);
- 	printf("\tFlexaim: %s\n", YESNO(features->flexaim));
- 	printf("\tMessage: %s\n", YESNO(features->msg_enable));
- 	printf("\tClear screen: %d\n", features->clear_screen);
-@@ -1504,28 +1504,28 @@ static void dump_legacy_child_devices(struct context *context,
- 			   child_dev_num, defs->child_dev_size);
- }
- 
--static const char * const channel_type[] = {
-+static const char * const channel_type_str[] = {
- 	[0] = "automatic",
- 	[1] = "single",
- 	[2] = "dual",
- 	[3] = "reserved",
- };
- 
--static const char * const dps_type[] = {
-+static const char * const dps_type_str[] = {
- 	[0] = "static DRRS",
- 	[1] = "D2PO",
- 	[2] = "seamless DRRS",
- 	[3] = "reserved",
- };
- 
--static const char * const blt_type[] = {
-+static const char * const blt_type_str[] = {
- 	[0] = "default",
- 	[1] = "CCFL",
- 	[2] = "LED",
- 	[3] = "reserved",
- };
- 
--static const char * const pos_type[] = {
-+static const char * const pos_type_str[] = {
- 	[0] = "inside shell",
- 	[1] = "outside shell",
- 	[2] = "reserved",
-@@ -1562,7 +1562,7 @@ static void dump_lfp_options(struct context *context,
- 
- 		val = panel_bits(options->lvds_panel_channel_bits, i, 2);
- 		printf("\t\tChannel type: %s (0x%x)\n",
--		       channel_type[val], val);
-+		       to_str(channel_type_str, val), val);
- 
- 		printf("\t\tSSC: %s\n",
- 		       YESNO(panel_bool(options->ssc_bits, i)));
-@@ -1586,11 +1586,11 @@ static void dump_lfp_options(struct context *context,
- 
- 		val = panel_bits(options->dps_panel_type_bits, i, 2);
- 		printf("\t\tDPS type: %s (0x%x)\n",
--		       dps_type[val], val);
-+		       to_str(dps_type_str, val), val);
- 
- 		val = panel_bits(options->blt_control_type_bits, i, 2);
- 		printf("\t\tBacklight type: %s (0x%x)\n",
--		       blt_type[val], val);
-+		       to_str(blt_type_str, val), val);
- 
- 		if (context->bdb->version < 200)
- 			continue;
-@@ -1610,7 +1610,7 @@ static void dump_lfp_options(struct context *context,
- 
- 		val = panel_bits((options->position), i, 2);
- 		printf("\t\tPanel position: %s (0x%x)\n",
--		       pos_type[val], val);
-+		       to_str(pos_type_str, val), val);
- 	}
- }
- 
-@@ -1807,7 +1807,7 @@ static void dump_lfp_data(struct context *context,
- 	free(ptrs_block);
- }
- 
--static const char * const lvds_config[] = {
-+static const char * const lvds_config_str[] = {
- 	[BDB_DRIVER_FEATURE_NO_LVDS] = "No LVDS",
- 	[BDB_DRIVER_FEATURE_INT_LVDS] = "Integrated LVDS",
- 	[BDB_DRIVER_FEATURE_SDVO_LVDS] = "SDVO LVDS",
-@@ -1869,7 +1869,7 @@ static void dump_driver_feature(struct context *context,
- 	printf("\tCRT hotplug: %s\n", YESNO(feature->crt_hotplug));
- 
- 	printf("\tLVDS config: %s (0x%x)\n",
--	       lvds_config[feature->lvds_config], feature->lvds_config);
-+	       to_str(lvds_config_str, feature->lvds_config), feature->lvds_config);
- 	printf("\tTV hotplug: %s\n",
- 	       YESNO(feature->tv_hotplug));
- 
-@@ -2325,11 +2325,11 @@ static void dump_efp_list(struct context *context,
- 	}
- }
- 
--static const char * const underscan_overscan[] = {
--	"Neither",
--	"Underscan/Overscan",
--	"Overscan only",
--	"Underscan only",
-+static const char * const underscan_overscan_str[] = {
-+	[0] = "Neither",
-+	[1] = "Underscan/Overscan",
-+	[2] = "Overscan only",
-+	[3] = "Underscan only",
- };
- 
- static void dump_tv_options(struct context *context,
-@@ -2342,9 +2342,9 @@ static void dump_tv_options(struct context *context,
- 	printf("\tAdd modes to avoid overscan issue: %s\n",
- 	       YESNO(tv->add_modes_to_avoid_overscan_issue));
- 	printf("\tUndescan/Overscan for HDTV via DVI: %s\n",
--	       underscan_overscan[tv->underscan_overscan_hdtv_dvi]);
-+	       to_str(underscan_overscan_str, tv->underscan_overscan_hdtv_dvi));
- 	printf("\tUndescan/Overscan for HDTV via component: %s\n",
--	       underscan_overscan[tv->underscan_overscan_hdtv_component]);
-+	       to_str(underscan_overscan_str, tv->underscan_overscan_hdtv_component));
- }
- 
++static const char * const edp_bpp_str[] = {
++	[EDP_18BPP] = "18 bpp",
++	[EDP_24BPP] = "24 bpp",
++	[EDP_30BPP] = "30 bpp",
++};
++
++static const char * const edp_rate_str[] = {
++	[EDP_RATE_1_62] = "1.62Gbps",
++	[EDP_RATE_2_7] = "2.7Gbps",
++	[EDP_RATE_5_4] = "5.4Gbps",
++};
++
++static const char * const edp_preemph_str[] = {
++	[0] = "Low power (200 mV)",
++	[1] = "Default (400 mV)",
++};
++
  static void dump_edp(struct context *context,
+ 		     const struct bdb_block *block)
+ {
+@@ -2369,42 +2386,17 @@ static void dump_edp(struct context *context,
+ 
+ 		bpp = panel_bits(edp->color_depth, i, 2);
+ 
+-		printf("\t\tPanel color depth: ");
+-		switch (bpp) {
+-		case EDP_18BPP:
+-			printf("18 bpp\n");
+-			break;
+-		case EDP_24BPP:
+-			printf("24 bpp\n");
+-			break;
+-		case EDP_30BPP:
+-			printf("30 bpp\n");
+-			break;
+-		default:
+-			printf("(unknown value %d)\n", bpp);
+-			break;
+-		}
++		printf("\t\tPanel color depth: %s (0x%x)\n",
++		       to_str(edp_bpp_str, bpp), bpp);
+ 
+ 		msa = panel_bits(edp->sdrrs_msa_timing_delay, i, 2);
+ 		printf("\t\teDP sDRRS MSA Delay: Lane %d\n", msa + 1);
+ 
+ 		printf("\t\tFast link params:\n");
+-		printf("\t\t\trate: ");
+-		switch (edp->fast_link_params[i].rate) {
+-		case EDP_RATE_1_62:
+-			printf("1.62Gbps\n");
+-			break;
+-		case EDP_RATE_2_7:
+-			printf("2.7Gbpc\n");
+-			break;
+-		case EDP_RATE_5_4:
+-			printf("5.4Gbps\n");
+-			break;
+-		default:
+-			printf("(unknonn value %d)\n",
+-			       edp->fast_link_params[i].rate);
+-			break;
+-		}
++		printf("\t\t\trate: %s (0x%x)\n",
++		       to_str(edp_rate_str, edp->fast_link_params[i].rate),
++		       edp->fast_link_params[i].rate);
++
+ 		printf("\t\t\tlanes: X%d\n",
+ 		       edp->fast_link_params[i].lanes + 1);
+ 		printf("\t\t\tpre-emphasis: %s (0x%x)\n",
+@@ -2425,18 +2417,8 @@ static void dump_edp(struct context *context,
+ 		if (context->bdb->version >= 173) {
+ 			int val = (edp->edp_vswing_preemph >> (i * 4)) & 0xf;
+ 
+-			printf("\t\tVswing/preemphasis table selection: ");
+-			switch (val) {
+-			case 0:
+-				printf("Low power (200 mV)\n");
+-				break;
+-			case 1:
+-				printf("Default (400 mV)\n");
+-				break;
+-			default:
+-				printf("(unknown value %d)\n", val);
+-				break;
+-			}
++			printf("\t\tVswing/preemphasis table selection: %s (0x%x)\n",
++			       to_str(edp_preemph_str, val), val);
+ 		}
+ 
+ 		if (context->bdb->version >= 182)
 -- 
 2.49.1
 
