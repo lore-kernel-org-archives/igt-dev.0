@@ -4,59 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24CA2CAC5B5
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 14:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFA9ECAC5B0
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 16:51:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C811010E448;
-	Mon, 29 Sep 2025 14:58:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eSThgcXs";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C05E210E448
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 14:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759157924; x=1790693924;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=bZdKA1Gbm09dtKEX1mj2MiXMnUQyL6OMtBEcQ6qZjX8=;
- b=eSThgcXsh3IDXNmSVeGuBzjx1VcJ9KJ8vxA6P1mbXr5TNbEkYxxDNn+/
- u+9y1Bteirhr17Uzr2uS1IZpnyOXj9gwg9ghUVvnHNIwGGUN5oqxWDK+0
- aaVk75YCz3wrkr/sE2o1dliH/Qzj4hcRBdwdnc+15lXX85hRLthILPDT0
- Bc0mu/A/ssfkkv0cFF1Jl6aPp7v5NqNMEMoABn/fg+ne5hqTVR27F3Bji
- a5Y65TD+Z2f1Ghxw+xO76Y4Yiw2BEBMYMjWtxgbhtKIb4P1BVdreh7KV8
- zgZkSWCGjidy+O+UUZ4WlOA/tHC+dtJZQ1PRjmqoVqmo5JG0FKFr0IFbU Q==;
-X-CSE-ConnectionGUID: GADTws7KTZSAUQBn44EvUg==
-X-CSE-MsgGUID: mkoErZxCQPuqSRW4PGbhPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="60612042"
-X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; d="scan'208";a="60612042"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 07:58:43 -0700
-X-CSE-ConnectionGUID: c1XQ+aShTqWzjM/wLh6ulw==
-X-CSE-MsgGUID: HnPb0V3LRJWYzG8+FfUhOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; d="scan'208";a="177380570"
-Received: from agladkov-desk.ger.corp.intel.com (HELO [10.245.245.231])
- ([10.245.245.231])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 07:58:41 -0700
-Message-ID: <478b0f10-0e1e-4b4e-bb94-554c0ff08493@intel.com>
-Date: Mon, 29 Sep 2025 15:58:39 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 16D8610E244;
+	Mon, 29 Sep 2025 16:51:15 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3D8410E140;
+ Mon, 29 Sep 2025 16:51:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6455575201054785451=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/xe_mmap: Fix truncation of visible VRAM
- size
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-References: <20250929142523.525117-1-marcin.bernatowicz@linux.intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20250929142523.525117-1-marcin.bernatowicz@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5BV2?=
+ =?utf-8?q?=2Ci-g-t=2C1/2=5D_lib/amdgpu=3A_Add_dynamic_DRI_path_detection_fo?=
+ =?utf-8?q?r_debugfs_access?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse.Zhang" <jesse.zhang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 29 Sep 2025 16:51:13 -0000
+Message-ID: <175916467384.375758.4136138375240008771@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250929083523.3181081-1-Jesse.Zhang@amd.com>
+In-Reply-To: <20250929083523.3181081-1-Jesse.Zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,40 +38,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 29/09/2025 15:25, Marcin Bernatowicz wrote:
-> xe_visible_vram_size() returns a 64-bit value. Storing it in 32-bit
-> truncated sizes above 4 GiB and led to false positives.
-> 
-> Fixes: c93b4e6ff2f3 ("tests/xe/mmap: sanity check small-bar")
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> ---
->   tests/intel/xe_mmap.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_mmap.c b/tests/intel/xe_mmap.c
-> index 9b87a9534..79c611f52 100644
-> --- a/tests/intel/xe_mmap.c
-> +++ b/tests/intel/xe_mmap.c
-> @@ -291,7 +291,7 @@ static void trap_sigbus(uint32_t *ptr)
->   static void test_small_bar(int fd)
->   {
->   	size_t page_size = xe_get_default_alignment(fd);
-> -	uint32_t visible_size = xe_visible_vram_size(fd, 0);
-> +	uint64_t visible_size = xe_visible_vram_size(fd, 0);
+--===============6455575201054785451==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Out of curiosity, did you actually hit this issue on some real config? 
-Typically you get 256M, if you ever see small-bar. I think you can get 
-larger values, but I don't think I have ever seen anything as large as > 4G.
+== Series Details ==
 
-Anyway,
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Series: series starting with [V2,i-g-t,1/2] lib/amdgpu: Add dynamic DRI path detection for debugfs access
+URL   : https://patchwork.freedesktop.org/series/155157/
+State : success
 
->   	uint32_t bo;
->   	uint64_t mmo;
->   	uint32_t *map;
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8556_BAT -> XEIGTPW_13838_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13838_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-bmg-2:          [FAIL][1] ([Intel XE#5507]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8556/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13838/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
+
+  
+  [Intel XE#5507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8556 -> IGTPW_13838
+  * Linux: xe-3836-e2a896e95ea5f65aa137dcf117bfd0d61176c8ce -> xe-3839-cf30ff531bfd0e8ac184b81b410b0c1dda703f74
+
+  IGTPW_13838: 13838
+  IGT_8556: e5eda2a187432a54f5e6fada18e4187e5175a10c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3836-e2a896e95ea5f65aa137dcf117bfd0d61176c8ce: e2a896e95ea5f65aa137dcf117bfd0d61176c8ce
+  xe-3839-cf30ff531bfd0e8ac184b81b410b0c1dda703f74: cf30ff531bfd0e8ac184b81b410b0c1dda703f74
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13838/index.html
+
+--===============6455575201054785451==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [V2,i-g-t,1/2] lib/amdgpu: Add dynamic DRI path detection for debugfs access</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/155157/">https://patchwork.freedesktop.org/series/155157/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13838/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13838/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8556_BAT -&gt; XEIGTPW_13838_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13838_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xe2@render:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8556/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507">Intel XE#5507</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13838/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8556 -&gt; IGTPW_13838</li>
+<li>Linux: xe-3836-e2a896e95ea5f65aa137dcf117bfd0d61176c8ce -&gt; xe-3839-cf30ff531bfd0e8ac184b81b410b0c1dda703f74</li>
+</ul>
+<p>IGTPW_13838: 13838<br />
+  IGT_8556: e5eda2a187432a54f5e6fada18e4187e5175a10c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3836-e2a896e95ea5f65aa137dcf117bfd0d61176c8ce: e2a896e95ea5f65aa137dcf117bfd0d61176c8ce<br />
+  xe-3839-cf30ff531bfd0e8ac184b81b410b0c1dda703f74: cf30ff531bfd0e8ac184b81b410b0c1dda703f74</p>
+
+</body>
+</html>
+
+--===============6455575201054785451==--
