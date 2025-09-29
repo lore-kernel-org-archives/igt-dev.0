@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54F0DCAC5B0
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 17:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E33CCAC5B0
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 17:54:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F014F10E250;
-	Mon, 29 Sep 2025 17:49:53 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5D6210E250;
- Mon, 29 Sep 2025 17:49:52 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5962947256515268277=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 080BF10E475;
+	Mon, 29 Sep 2025 17:54:51 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CNGR/bwh";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BC5B10E475
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 17:54:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759168490; x=1790704490;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=16dEEVYsLFe+gl6j+y4XmwcgnW4Ph+FJx6hwPQasfII=;
+ b=CNGR/bwh7miK9Ey1sg8nOXfYv+bz/GBcCjNbNrnKUzW6LF3n9IZUSE7T
+ p0wnX4W2rxjInnpGs9Yl7do1ATGSh1pC8vw7WdYBV3iLYKEfCuRw3838Q
+ YntpA41+wMBqMBWZRQRc/dslkO/PDthfOJxX3FnSd2gy4saeluBdyKgrp
+ ueaGkeAqXojkWumqUxaBlfW1eP/dnUWGzdQYkoPOkHoIf1ITZu/6TZ5Dc
+ mxziuqC2ZRy4p5FnwZzie8GP4orpt6bWuAnjoEbUuSYpQnLb5rf6Ium1d
+ QhfJs3Mx3GIyVt0D3qPOv6SEpCLY9t/qDDBb0joukDQGevm2XkB4aYVEY g==;
+X-CSE-ConnectionGUID: HctxcGAmTemImff0vmFGFg==
+X-CSE-MsgGUID: Lq0s6dokSEKgIB2tBpxXIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="61330323"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="61330323"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2025 10:54:49 -0700
+X-CSE-ConnectionGUID: ldoq4g42Rje9U1lpzT+bNA==
+X-CSE-MsgGUID: I5XOij6GSUSrS1YXf53ZfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="177868349"
+Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2025 10:54:46 -0700
+From: Sk Anirban <sk.anirban@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
+Subject: [PATCH v5 0/3] tests/intel/xe_survivability: Add xe_survivability test
+Date: Mon, 29 Sep 2025 23:22:28 +0530
+Message-ID: <20250929175230.753899-5-sk.anirban@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fmmap=3A_Fi?=
- =?utf-8?q?x_truncation_of_visible_VRAM_size?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 29 Sep 2025 17:49:52 -0000
-Message-ID: <175916819286.375758.2846737368225834559@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250929142523.525117-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250929142523.525117-1-marcin.bernatowicz@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +64,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5962947256515268277==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series creates a new xe_survivability.c test file with two subtests.
+i2c-functionality validates i2c adapter preservation in survivability
+mode for AMC firmware updates, and runtime-survivability tests CSC error
+injection, device wedged state recovery, and post-recovery GPU
+functionality validation.
 
-== Series Details ==
+Sk Anirban (3):
+  tests/intel/xe_survivability: Add new xe_survivability test for i2c
+    adapter
+  tests/intel/xe_survivability: Add new test runtime survivability
+  HAX: Add xe_survivability tests to fast feedback list
 
-Series: tests/intel/xe_mmap: Fix truncation of visible VRAM size
-URL   : https://patchwork.freedesktop.org/series/155172/
-State : success
+ tests/intel-ci/xe-fast-feedback.testlist |   2 +
+ tests/intel/xe_survivability.c           | 260 +++++++++++++++++++++++
+ tests/meson.build                        |   1 +
+ 3 files changed, 263 insertions(+)
+ create mode 100644 tests/intel/xe_survivability.c
 
-== Summary ==
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8556_BAT -> XEIGTPW_13839_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13839_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_pat@pat-index-xe2@render:
-    - bat-bmg-2:          [FAIL][1] ([Intel XE#5507]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8556/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13839/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html
-
-  
-  [Intel XE#5507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507
-
-
-Build changes
--------------
-
-  * IGT: IGT_8556 -> IGTPW_13839
-  * Linux: xe-3836-e2a896e95ea5f65aa137dcf117bfd0d61176c8ce -> xe-3839-cf30ff531bfd0e8ac184b81b410b0c1dda703f74
-
-  IGTPW_13839: b057b09b082c7b4f17b84035d9991c67bd476782 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8556: e5eda2a187432a54f5e6fada18e4187e5175a10c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3836-e2a896e95ea5f65aa137dcf117bfd0d61176c8ce: e2a896e95ea5f65aa137dcf117bfd0d61176c8ce
-  xe-3839-cf30ff531bfd0e8ac184b81b410b0c1dda703f74: cf30ff531bfd0e8ac184b81b410b0c1dda703f74
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13839/index.html
-
---===============5962947256515268277==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_mmap: Fix truncation of visible VRAM size</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/155172/">https://patchwork.freedesktop.org/series/155172/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13839/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13839/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8556_BAT -&gt; XEIGTPW_13839_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13839_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_pat@pat-index-xe2@render:<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8556/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5507">Intel XE#5507</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13839/bat-bmg-2/igt@xe_pat@pat-index-xe2@render.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8556 -&gt; IGTPW_13839</li>
-<li>Linux: xe-3836-e2a896e95ea5f65aa137dcf117bfd0d61176c8ce -&gt; xe-3839-cf30ff531bfd0e8ac184b81b410b0c1dda703f74</li>
-</ul>
-<p>IGTPW_13839: b057b09b082c7b4f17b84035d9991c67bd476782 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8556: e5eda2a187432a54f5e6fada18e4187e5175a10c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3836-e2a896e95ea5f65aa137dcf117bfd0d61176c8ce: e2a896e95ea5f65aa137dcf117bfd0d61176c8ce<br />
-  xe-3839-cf30ff531bfd0e8ac184b81b410b0c1dda703f74: cf30ff531bfd0e8ac184b81b410b0c1dda703f74</p>
-
-</body>
-</html>
-
---===============5962947256515268277==--
