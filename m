@@ -4,58 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E377CAC5B9
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 19:20:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC65CAC5B9
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 19:20:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 572F110E485;
-	Mon, 29 Sep 2025 19:20:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C68FA10E48A;
+	Mon, 29 Sep 2025 19:20:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fpc5AbVK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kLLoQ106";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 710F910E485
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 19:20:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A216E10E48A
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 19:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759173626; x=1790709626;
- h=date:from:to:subject:message-id:references:mime-version:
- content-transfer-encoding:in-reply-to;
- bh=zIuWcBS8AgL7foEhU3Z8sokMM3hkCatlL2cMi+w3NiQ=;
- b=Fpc5AbVKQJTSAvP/TAyJuK5eS9ElOpJmtlPZpRMTXGxlvbBfKpc2sPAI
- vxeFMMbqSiIpfUJGYRTqR/k48z10cnk0XMWhQirnFFeKjUSKsK+7jz8CE
- tdWua7wUaY4OftXmJNkmZIpCfZ2ICRHaWY2XFcqYG+GBjQqEZIU+P0uJJ
- wcBNNed+brbFTDhmjqNVfKi/Drc501iFr65/zkR/cFjUasOYVNlZMRMb2
- 4fB6K3O9Sw6ucOWX/uy8lpwI1pHMUiIN7+TwCQX4gmHQBJI7fTZQtdvV6
- cAkeraK+p5hAdf5wOnwbxGCfDOwMMC1pmh2hhD4Mcs48kzoBCb4PrMzPh g==;
-X-CSE-ConnectionGUID: 17XPtXxwRbKx0Q0zh8ABtg==
-X-CSE-MsgGUID: 91RvdtmNS02vgsIUHPtg6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61589748"
-X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="61589748"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 12:20:23 -0700
-X-CSE-ConnectionGUID: m0WjC0YNQsuCMNDGq4CtFQ==
-X-CSE-MsgGUID: 44/PbTXaSxyUdmAsGUWsqg==
+ t=1759173657; x=1790709657;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=XpOj9NNqPvACu5GmtpC1W2HNs2A20gLffU/vldUxTSk=;
+ b=kLLoQ106SI+/qBxEH+/EYYbruCgUHWWG95H5J8TSJM1wupwLTF+eh1W2
+ GZ5FdV/E/x40BTaIgAEDUe0PDF9MGu69hLGT18WSFGDaDDEE85VT/AwvB
+ /jb3Wjo0vagGYwf7P1SoYPllJTG0G+F0UvVxpr4l0/Ej+FOypUR1GqgwZ
+ ko6wLxUCyB8S7UuxXqwgWxVhcdWxnyW1lsdActBVh9+hIZ8eV8HZ1Xfk0
+ f8Xc5g4x6KvPwVsAXmBJ8qKq6XScjNEd7+VyKDP3eqdN34JSpCMmyndHK
+ E+4MhIIEaHGFYtuLHDA/TbJZO9imTEZgpRb7Rmq5F3JjcFlLsk64wVAtQ g==;
+X-CSE-ConnectionGUID: vJkfYrSeS1WjnNP791hTKg==
+X-CSE-MsgGUID: +M5p0c7RRbOYgwnJ1y5WSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="65059774"
+X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="65059774"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2025 12:20:57 -0700
+X-CSE-ConnectionGUID: 325VAY/9Qa+BRkUTZnRaOQ==
+X-CSE-MsgGUID: GUNMAyJJQhCbvnChl4HzVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="178249850"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.245.198])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 12:20:22 -0700
-Date: Mon, 29 Sep 2025 22:20:19 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 0/6] tools/intel_vbt_decode: Improve decoding to
- strings
-Message-ID: <aNrb3WxoneGD6RIW@intel.com>
-References: <20250929190721.29997-1-ville.syrjala@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="177436249"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.168])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2025 12:20:54 -0700
+Date: Mon, 29 Sep 2025 21:20:51 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org, 
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>
+Subject: Re: [PATCH v7 i-g-t 9/9] tests/xe_eudebug_online: Issue SIGTERM in
+ set-breakpoint-sigint-debugger
+Message-ID: <qwxmgstkghwhe7ourrr4vzjg3nwxxn6s3jlenou3m7ybekafkr@fy3vbnn7apzx>
+References: <20250926074801.9031-1-dominik.karol.piatkowski@intel.com>
+ <20250926074801.9031-10-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250929190721.29997-1-ville.syrjala@linux.intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250926074801.9031-10-dominik.karol.piatkowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,32 +74,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Sep 29, 2025 at 10:07:15PM +0300, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> Make it easier/safer to decode VBT values into a string representation.
-> 
-> Also decode a couple of new (or rather old) things.
+On Fri, Sep 26, 2025 at 09:48:01AM +0200, Dominik Karol PiÄ…tkowski wrote:
+> Issue some SIGTERM signals in quick succession before SIGINT to raise
+> the odds of hitting the ioctl.
 
-Please ignore. Incomplete series because gnome-keyring barfed yet again
-in the middle of the series :/ I'll try to cook up some kind of a retry
-kludge to make it more realiable...
+LGTM,
+
+Reviewed-by: Zbigniew KempczyÅ„ski <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
 
 > 
-> Ville Syrjälä (6):
->   tools/intel_vbt_decode: Introduce to_str()
->   tools/intel_vbt_decode: Use to_str() more
->   tools/intel_vbt_decode: Convert eDP deocding to use to_str()
->   tools/intel_vbt_decode: Use panel_bits()
->   tools/intel_vbt_decode: Decode display refclk mode
->   tools/intel_vbt_decode: Decode the backlight control method type
+> Signed-off-by: Dominik Karol PiÄ…tkowski <dominik.karol.piatkowski@intel.com>
+> ---
+>  tests/intel/xe_eudebug_online.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
->  tools/intel_vbt_decode.c | 264 ++++++++++++++++++---------------------
->  1 file changed, 123 insertions(+), 141 deletions(-)
-> 
+> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+> index e388ea888..4c6c31da3 100644
+> --- a/tests/intel/xe_eudebug_online.c
+> +++ b/tests/intel/xe_eudebug_online.c
+> @@ -65,6 +65,8 @@
+>  #define CACHING_POISON_VALUE	0xcafedead
+>  #define CACHING_VALUE(n)	(CACHING_INIT_VALUE + (n))
+>  
+> +#define SIGTERM_COUNT		50
+> +
+>  #define SHADER_CANARY 0x01010101
+>  #define BAD_CANARY 0xf1f1f1f
+>  #define BAD_OFFSET (0x12345678ull << 12)
+> @@ -1600,6 +1602,14 @@ static void test_set_breakpoint_online_sigint_debugger(int fd,
+>  		else if (event_count > 0 && event_count < events_max)
+>  			sigints_during_test++;
+>  
+> +		/*
+> +		 * Issue some SIGTERM signals in quick succession before SIGINT
+> +		 * to raise the odds of hitting the ioctl
+> +		 */
+> +		for (int i = 0; i < SIGTERM_COUNT; i++) {
+> +			xe_eudebug_debugger_kill(s->debugger, SIGTERM);
+> +			usleep(rand() % 1000);
+> +		}
+>  		xe_eudebug_debugger_kill(s->debugger, SIGINT);
+>  		/* Don't close debugger fd before it dies */
+>  		while (!s->debugger->handled_sigint)
 > -- 
-> 2.49.1
-
--- 
-Ville Syrjälä
-Intel
+> 2.34.1
+> 
