@@ -4,60 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BFA1CAC5B9
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 19:20:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E377CAC5B9
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 19:20:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F76910E48A;
-	Mon, 29 Sep 2025 19:20:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 572F110E485;
+	Mon, 29 Sep 2025 19:20:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WdEO9J9G";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fpc5AbVK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BDA110E48C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 19:20:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 710F910E485
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 19:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759173601; x=1790709601;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=wqvvzSroEtIwK/6GG05K3pSg/2mhi7r3XQX62xOG+FI=;
- b=WdEO9J9GF7mirM5OD8Z71hJ/qrHI4qERTVxgie8VLKHRqMmEF7c9/vLs
- CB6OdIK9yvgaD70ypTxbvO4XJHSs+3/czORLQ80MLT59y8j4e0zMlhyRn
- YPJMRO0J3fa699ze6pXwAd51XK5z3fNdN4Z4zcbFJi7KmYoRiK46IDWwp
- iC5omO1BY1TMLvudd5kOVCAbVtJa9nlvSFQDzFg/7UJhZqS4l2ttcQ45g
- epKg1Uis3nBv8KEklzoXViuZ0PJN9AK1vO3Ws2gIgc+z5IpRrRNfnPguW
- mJYI6K8djlGrvFiBHn4xjBbcEYuD9nUGbT2AKkLlUAYp5fPJL4eaSLzmF g==;
-X-CSE-ConnectionGUID: +eFByy6rSvmJ5CClKMO87A==
-X-CSE-MsgGUID: jQQQBGASSoCCNXpwfOaaQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61589710"
-X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="61589710"
+ t=1759173626; x=1790709626;
+ h=date:from:to:subject:message-id:references:mime-version:
+ content-transfer-encoding:in-reply-to;
+ bh=zIuWcBS8AgL7foEhU3Z8sokMM3hkCatlL2cMi+w3NiQ=;
+ b=Fpc5AbVKQJTSAvP/TAyJuK5eS9ElOpJmtlPZpRMTXGxlvbBfKpc2sPAI
+ vxeFMMbqSiIpfUJGYRTqR/k48z10cnk0XMWhQirnFFeKjUSKsK+7jz8CE
+ tdWua7wUaY4OftXmJNkmZIpCfZ2ICRHaWY2XFcqYG+GBjQqEZIU+P0uJJ
+ wcBNNed+brbFTDhmjqNVfKi/Drc501iFr65/zkR/cFjUasOYVNlZMRMb2
+ 4fB6K3O9Sw6ucOWX/uy8lpwI1pHMUiIN7+TwCQX4gmHQBJI7fTZQtdvV6
+ cAkeraK+p5hAdf5wOnwbxGCfDOwMMC1pmh2hhD4Mcs48kzoBCb4PrMzPh g==;
+X-CSE-ConnectionGUID: 17XPtXxwRbKx0Q0zh8ABtg==
+X-CSE-MsgGUID: 91RvdtmNS02vgsIUHPtg6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61589748"
+X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="61589748"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 12:20:00 -0700
-X-CSE-ConnectionGUID: W6zAQgY8Q+ON421ZV0Lxgw==
-X-CSE-MsgGUID: JWOb8HgKReCx6ONBsNy8aQ==
+ 29 Sep 2025 12:20:23 -0700
+X-CSE-ConnectionGUID: m0WjC0YNQsuCMNDGq4CtFQ==
+X-CSE-MsgGUID: 44/PbTXaSxyUdmAsGUWsqg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="178249719"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
- ([10.245.245.168])
+X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="178249850"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.198])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 12:19:58 -0700
-Date: Mon, 29 Sep 2025 21:19:55 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Mika Kuoppala <mika.kuoppala@linux.intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: Re: [PATCH v7 i-g-t 8/9] lib/xe_eudebug: Introduce SIGTERM handling
-Message-ID: <2l7n2y34xjhebffwumnjoe5o3texzeumkhgpsrbjl4dy5he7l6@u4l7oqynw7u6>
-References: <20250926074801.9031-1-dominik.karol.piatkowski@intel.com>
- <20250926074801.9031-9-dominik.karol.piatkowski@intel.com>
+ 29 Sep 2025 12:20:22 -0700
+Date: Mon, 29 Sep 2025 22:20:19 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 0/6] tools/intel_vbt_decode: Improve decoding to
+ strings
+Message-ID: <aNrb3WxoneGD6RIW@intel.com>
+References: <20250929190721.29997-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250926074801.9031-9-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20250929190721.29997-1-ville.syrjala@linux.intel.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,83 +71,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Sep 26, 2025 at 09:48:00AM +0200, Dominik Karol PiÄ…tkowski wrote:
-> Add SIGTERM to signals that are handled by debugger_signal_handler.
-> Don't kill debugger thread on SIGTERM signal. Don't break on poll
-> failure if signal was received and errno is set to EINTR.
+On Mon, Sep 29, 2025 at 10:07:15PM +0300, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Signed-off-by: Dominik Karol PiÄ…tkowski <dominik.karol.piatkowski@intel.com>
-> ---
->  lib/xe/xe_eudebug.c | 15 +++++++++++++++
->  lib/xe/xe_eudebug.h |  1 +
->  2 files changed, 16 insertions(+)
+> Make it easier/safer to decode VBT values into a string representation.
 > 
-> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-> index 8276a6dab..e8b046f48 100644
-> --- a/lib/xe/xe_eudebug.c
-> +++ b/lib/xe/xe_eudebug.c
-> @@ -1080,6 +1080,8 @@ static void debugger_signal_handler(int sig, siginfo_t *info, void *context)
->  
->  	igt_assert(d);
->  
-> +	d->received_signal = true;
-> +
->  	if (sig == SIGINT)
->  		d->received_sigint = true;
->  }
-> @@ -1103,6 +1105,11 @@ static void *debugger_worker_loop(void *data)
->  	sa.sa_flags |= SA_SIGINFO;
->  	igt_assert_eq(sigaction(SIGINT, &sa, NULL), 0);
->  
-> +	igt_assert_eq(sigaction(SIGTERM, NULL, &sa), 0);
-> +	sa.sa_sigaction = debugger_signal_handler;
-> +	sa.sa_flags |= SA_SIGINFO;
-> +	igt_assert_eq(sigaction(SIGTERM, &sa, NULL), 0);
-> +
->  	do {
->  		p.fd = d->fd;
->  		ret = poll(&p, 1, timeout_ms);
-> @@ -1112,6 +1119,13 @@ static void *debugger_worker_loop(void *data)
->  		}
->  
->  		if (ret == -1) {
-> +			if (d->received_signal) {
-> +				d->received_signal = false;
-> +
-> +				if (errno == EINTR)
-> +					continue;
+> Also decode a couple of new (or rather old) things.
 
-According to patch 1/9 review above should land there.
+Please ignore. Incomplete series because gnome-keyring barfed yet again
+in the middle of the series :/ I'll try to cook up some kind of a retry
+kludge to make it more realiable...
 
---
-Zbigniew
-
-
-> +			}
-> +
->  			igt_info("poll failed with errno %d\n", errno);
->  			break;
->  		}
-> @@ -1182,6 +1196,7 @@ xe_eudebug_debugger_create(int master_fd, uint64_t flags, void *data)
->  	d->ptr = data;
->  	d->received_sigint = false;
->  	d->handled_sigint = false;
-> +	d->received_signal = false;
->  
->  	return d;
->  }
-> diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
-> index 7c7a01471..d2f64fe4c 100644
-> --- a/lib/xe/xe_eudebug.h
-> +++ b/lib/xe/xe_eudebug.h
-> @@ -46,6 +46,7 @@ struct xe_eudebug_debugger {
->  
->  	bool received_sigint;
->  	bool handled_sigint;
-> +	bool received_signal;
->  
->  	int p_client[2];
->  };
+> 
+> Ville Syrjälä (6):
+>   tools/intel_vbt_decode: Introduce to_str()
+>   tools/intel_vbt_decode: Use to_str() more
+>   tools/intel_vbt_decode: Convert eDP deocding to use to_str()
+>   tools/intel_vbt_decode: Use panel_bits()
+>   tools/intel_vbt_decode: Decode display refclk mode
+>   tools/intel_vbt_decode: Decode the backlight control method type
+> 
+>  tools/intel_vbt_decode.c | 264 ++++++++++++++++++---------------------
+>  1 file changed, 123 insertions(+), 141 deletions(-)
+> 
 > -- 
-> 2.34.1
-> 
+> 2.49.1
+
+-- 
+Ville Syrjälä
+Intel
