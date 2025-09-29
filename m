@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C3D1CAC5B9
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 19:21:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89E2CCAC5B9
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Sep 2025 19:21:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3418710E48D;
-	Mon, 29 Sep 2025 19:21:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3FA2510E4A2;
+	Mon, 29 Sep 2025 19:21:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WNptaCAd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iOolpN9l";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15F6910E48D
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 19:21:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7DAAA10E492
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Sep 2025 19:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759173694; x=1790709694;
+ t=1759173698; x=1790709698;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=Y3K8pR7H27v9PPC8njdGvAiAVllE245+ZoQ19tSbJus=;
- b=WNptaCAdh1GAqqjgks3V7qRcfrPXhQJxkp1Ol6ogKcUaHTHNlguzXkPs
- al1Bk/FMipQuO/j8Ev7FK2csFD+zDZ6u1BS0SdW0DfB0wN/I53tYJ036K
- bo/fVtFb8aQWcddNl1jDlCshSLjhF1c3WLcvpDGnrDiEVBnV5s4yGlRBa
- vkWJu9qblDxeR4yb9cksPTKHQcwWo0PRVwO9wMqnfepQdyGSErJ3LDU9q
- SwTAWf59ja/QaikRgcePYN8qa3SUt4bpDTqnlZlZ1u+EB7+9I3HO62ipB
- DOX4tTfBKasTJpyVi3Oyt8KMX4/Gy6Ht5tUWjnBLSdfkJrGGn0P0bTuDc Q==;
-X-CSE-ConnectionGUID: gguPcumgTT6Q8hkzcocakQ==
-X-CSE-MsgGUID: Ca0H12hVQh+h+8VbEyN4qw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61589833"
-X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="61589833"
+ bh=lXb1enMoy8a6N+yqGPGEXcsZ+nA3Gu2J5Jx2CHMFErE=;
+ b=iOolpN9lcAw4zPE0qdD7+z1U4nIu7jzwJsB6WJEX2LXnQhvkNb4raoHq
+ GQ2Ps9x0T6JMpSor9bRkXlDe9wPmNacxFsPmgoekPrMrinNl9A1nnZ35R
+ KsQsTjWYA1BacGKxyrCrT2BwUBS+2Q1oAPtwPm5cls8fKVaJ4m5dO68+q
+ VCiQ6zzvSiqjI1ftFvBk4TdI1EKp5BoDsvjI/1XwL++xgBIBsH1BQ/ih3
+ 5ZNlG9VtoDt8phlkoVhJIIL8A/ypd2FbiDvrSRUNwk4lcNKdQ9rn4dUYX
+ XTm0vJ6PE+eGi44KZIHSjyJn/G97pBQOusYX41PkamEBvSZ/lYcD3jXW2 A==;
+X-CSE-ConnectionGUID: 9L400S7qR7eZoKa8PfNLlQ==
+X-CSE-MsgGUID: N9uHSmwaS1mpExGqmDdHTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61589840"
+X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="61589840"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 12:21:34 -0700
-X-CSE-ConnectionGUID: 2eVGz3HyTN2OxQL0CriPgQ==
-X-CSE-MsgGUID: ypmMgqAIT/WJsoVNytGpCg==
+ 29 Sep 2025 12:21:37 -0700
+X-CSE-ConnectionGUID: Mc0RbtKCRAiaaLSEb/dovw==
+X-CSE-MsgGUID: Jkyzi0eVSSq+RuGaqjc5NA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="178250137"
+X-IronPort-AV: E=Sophos;i="6.18,302,1751266800"; d="scan'208";a="178250167"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.245.198])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2025 12:21:33 -0700
+ 29 Sep 2025 12:21:36 -0700
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/6] tools/intel_vbt_decode: Introduce to_str()
-Date: Mon, 29 Sep 2025 22:21:21 +0300
-Message-ID: <20250929192127.5865-2-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 2/6] tools/intel_vbt_decode: Use to_str() more
+Date: Mon, 29 Sep 2025 22:21:22 +0300
+Message-ID: <20250929192127.5865-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250929192127.5865-1-ville.syrjala@linux.intel.com>
 References: <20250929192127.5865-1-ville.syrjala@linux.intel.com>
@@ -71,260 +71,150 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Introduce a to_str() macro that gives us a standard way
-to decode a value we got from the VBT into a string.
-
-All the cases converted here were implemented as a custom
-function to deal with out of bounds/sparse values. All of
-that is now taken care of by to_str(), so the strings can
-just be defined as an array.
+Convert all the naked string array dereferences to to_str()
+instead. Not strictly necessary in these cases (since the
+VBT bitfields doen't have unused values) but it seems better
+to stick to the same formula for all decoding.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 137 +++++++++++++++++----------------------
- 1 file changed, 60 insertions(+), 77 deletions(-)
+ tools/intel_vbt_decode.c | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index a4e76b7559d2..dbcba3b9cd3b 100644
+index dbcba3b9cd3b..2f228fcd14b7 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -631,6 +631,17 @@ static bool panel_bool(unsigned int value, int panel_type)
- 	return panel_bits(value, panel_type, 1);
- }
- 
-+static const char *_to_str(const char * const strings[],
-+			   int num_strings, int value)
-+{
-+	if (value >= num_strings || strings[value] == NULL)
-+		return "<unknown>";
-+
-+	return strings[value];
-+}
-+
-+#define to_str(strings, value) _to_str((strings), ARRAY_SIZE(strings), (value))
-+
- static int decode_ssc_freq(struct context *context, bool alternate)
- {
- 	switch (intel_gen(context->devid)) {
-@@ -705,26 +716,18 @@ static void dump_general_features(struct context *context,
- 	printf("\tDP SSC dongle supported: %s\n", YESNO(features->dp_ssc_dongle_supported));
- }
- 
--static const char *inverter_type(u8 type)
--{
--	switch (type) {
--	case 0: return "none/external";
--	case 1: return "I2C";
--	case 2: return "PWM";
--	default: return "<reserved>";
--	}
--}
-+static const char * const inverter_type_str[] = {
-+	[0] = "none/external",
-+	[1] = "I2C",
-+	[2] = "PWM",
-+};
- 
--static const char *i2c_speed(u8 i2c_speed)
--{
--	switch (i2c_speed) {
--	case 0: return "100 kHz";
--	case 1: return "50 kHz";
--	case 2: return "400 kHz";
--	case 3: return "1 MHz";
--	default: return "<unknown>";
--	}
--}
-+static const char * const i2c_speed_str[] = {
-+	[0] = "100 kHz",
-+	[1] = "50 kHz",
-+	[2] = "400 kHz",
-+	[3] = "1 MHz",
-+};
- 
- static void dump_backlight_info(struct context *context,
- 				const struct bdb_block *block)
-@@ -751,7 +754,7 @@ static void dump_backlight_info(struct context *context,
- 		blc = &backlight->data[i];
- 
- 		printf("\t\tInverter type: %s (%u)\n",
--		       inverter_type(blc->type), blc->type);
-+		       to_str(inverter_type_str, blc->type), blc->type);
- 		printf("\t\tActive low: %s\n", YESNO(blc->active_low_pwm));
- 		printf("\t\tPWM freq: %u\n", blc->pwm_freq_hz);
- 		printf("\t\tMinimum brightness: %u\n", blc->min_brightness);
-@@ -759,7 +762,7 @@ static void dump_backlight_info(struct context *context,
- 		if (blc->type == 1) {
- 			printf("\t\tI2C pin: 0x%02x\n", blc->i2c_pin);
- 			printf("\t\tI2C speed: %s (0x%02x)\n",
--			       i2c_speed(blc->i2c_speed), blc->i2c_speed);
-+			       to_str(i2c_speed_str, blc->i2c_speed), blc->i2c_speed);
- 			printf("\t\tI2C address: 0x%02x\n", blc->i2c_address);
- 			printf("\t\tI2C command: 0x%02x\n", blc->i2c_command);
- 		}
-@@ -1008,19 +1011,11 @@ static const char *aux_ch(uint8_t aux_ch)
- 		return "unknown";
- }
- 
--static const char *mipi_bridge_type(uint8_t type)
--{
--	switch (type) {
--	case 1:
--		return "ASUS";
--	case 2:
--		return "Toshiba";
--	case 3:
--		return "Renesas";
--	default:
--		return "unknown";
--	}
--}
-+static const char * const mipi_bridge_type_str[] = {
-+	[1] = "ASUS",
-+	[2] = "Toshiba",
-+	[3] = "Renesas",
-+};
- 
- static void dump_hmdi_max_data_rate(uint8_t hdmi_max_data_rate)
- {
-@@ -1090,40 +1085,28 @@ static void dump_dp_max_link_rate(uint16_t version, uint8_t dp_max_link_rate)
- 		       link_rate / 100.0f, dp_max_link_rate);
- }
- 
--static const char *dp_vswing(u8 vswing)
--{
--	switch (vswing) {
--	case 0: return "0.4V";
--	case 1: return "0.6V";
--	case 2: return "0.8V";
--	case 3: return "1.2V";
--	default: return "<unknown>";
--	}
--}
-+static const char * const dp_vswing_str[] = {
-+	[0] = "0.4V",
-+	[1] = "0.6V",
-+	[2] = "0.8V",
-+	[3] = "1.2V",
-+};
- 
--static const char *dp_preemph(u8 preemph)
--{
--	switch (preemph) {
--	case 0: return "0dB";
--	case 1: return "3.5dB";
--	case 2: return "6dB";
--	case 3: return "9.5dB";
--	default: return "<unknown>";
--	}
--}
-+static const char * const dp_preemph_str[] = {
-+	[0] = "0dB",
-+	[1] = "3.5dB",
-+	[2] = "6dB",
-+	[3] = "9.5dB",
-+};
- 
--static const char *hdmi_frl_rate(u8 frl_rate)
--{
--	switch (frl_rate) {
--	case 0: return "FRL not supported";
--	case 1: return "3 GT/s";
--	case 2: return "6 GT/s";
--	case 3: return "8 GT/s";
--	case 4: return "10 GT/s";
--	case 5: return "12 GT/s";
--	default: return "<unknown>";
--	}
--}
-+static const char * const hdmi_frl_rate_str[] = {
-+	[0] = "FRL not supported",
-+	[1] = "3 GT/s",
-+	[2] = "6 GT/s",
-+	[3] = "8 GT/s",
-+	[4] = "10 GT/s",
-+	[5] = "12 GT/s",
-+};
- 
- static void dump_child_device(struct context *context,
- 			      const struct child_device_config *child)
-@@ -1142,27 +1125,27 @@ static void dump_child_device(struct context *context,
- 		printf("\t\tSignature: %.*s\n", (int)sizeof(child->device_id), child->device_id);
- 	} else {
- 		printf("\t\tI2C speed: %s (0x%02x)\n",
--		       i2c_speed(child->i2c_speed), child->i2c_speed);
-+		       to_str(i2c_speed_str, child->i2c_speed), child->i2c_speed);
- 
- 		if (context->bdb->version >= 158) {
- 			printf("\t\tDP onboard redriver:\n");
- 			printf("\t\t\tpresent: %s\n",
- 			       YESNO((child->dp_onboard_redriver_present)));
- 			printf("\t\t\tvswing: %s (0x%x)\n",
--			       dp_vswing(child->dp_onboard_redriver_vswing),
-+			       to_str(dp_vswing_str, child->dp_onboard_redriver_vswing),
- 			       child->dp_onboard_redriver_vswing);
- 			printf("\t\t\tpre-emphasis: %s (0x%x)\n",
--			       dp_preemph(child->dp_onboard_redriver_preemph),
-+			       to_str(dp_preemph_str, child->dp_onboard_redriver_preemph),
- 			       child->dp_onboard_redriver_preemph);
- 
- 			printf("\t\tDP ondock redriver:\n");
- 			printf("\t\t\tpresent: %s\n",
- 			       YESNO((child->dp_ondock_redriver_present)));
- 			printf("\t\t\tvswing: %s (0x%x)\n",
--			       dp_vswing(child->dp_ondock_redriver_vswing),
-+			       to_str(dp_vswing_str, child->dp_ondock_redriver_vswing),
- 			       child->dp_ondock_redriver_vswing);
- 			printf("\t\t\tpre-emphasis: %s (0x%x)\n",
--			       dp_preemph(child->dp_ondock_redriver_preemph),
-+			       to_str(dp_preemph_str, child->dp_ondock_redriver_preemph),
- 			       child->dp_ondock_redriver_preemph);
- 		}
- 
-@@ -1196,7 +1179,7 @@ static void dump_child_device(struct context *context,
- 			printf("\t\tHDMI Max FRL rate valid: %s\n",
- 			       YESNO(child->hdmi_max_frl_rate_valid));
- 			printf("\t\tHDMI Max FRL rate: %s (0x%x)\n",
--			       hdmi_frl_rate(child->hdmi_max_frl_rate),
-+			       to_str(hdmi_frl_rate_str, child->hdmi_max_frl_rate),
- 			       child->hdmi_max_frl_rate);
- 		}
+@@ -655,7 +655,7 @@ static int decode_ssc_freq(struct context *context, bool alternate)
  	}
-@@ -1255,7 +1238,7 @@ static void dump_child_device(struct context *context,
- 		printf("\t\tDVO2 wiring: 0x%02x\n", child->dvo2_wiring);
- 	} else {
- 		printf("\t\tMIPI bridge type: %02x (%s)\n", child->mipi_bridge_type,
--		       mipi_bridge_type(child->mipi_bridge_type));
-+		       to_str(mipi_bridge_type_str, child->mipi_bridge_type));
+ }
+ 
+-static const char * const panel_fitting[] = {
++static const char * const panel_fitting_str[] = {
+ 	[0] = "disabled",
+ 	[1] = "text only",
+ 	[2] = "graphics only",
+@@ -668,7 +668,7 @@ static void dump_general_features(struct context *context,
+ 	const struct bdb_general_features *features = block_data(block);
+ 
+ 	printf("\tPanel fitting: %s (0x%x)\n",
+-	       panel_fitting[features->panel_fitting], features->panel_fitting);
++	       to_str(panel_fitting_str, features->panel_fitting), features->panel_fitting);
+ 	printf("\tFlexaim: %s\n", YESNO(features->flexaim));
+ 	printf("\tMessage: %s\n", YESNO(features->msg_enable));
+ 	printf("\tClear screen: %d\n", features->clear_screen);
+@@ -1504,28 +1504,28 @@ static void dump_legacy_child_devices(struct context *context,
+ 			   child_dev_num, defs->child_dev_size);
+ }
+ 
+-static const char * const channel_type[] = {
++static const char * const channel_type_str[] = {
+ 	[0] = "automatic",
+ 	[1] = "single",
+ 	[2] = "dual",
+ 	[3] = "reserved",
+ };
+ 
+-static const char * const dps_type[] = {
++static const char * const dps_type_str[] = {
+ 	[0] = "static DRRS",
+ 	[1] = "D2PO",
+ 	[2] = "seamless DRRS",
+ 	[3] = "reserved",
+ };
+ 
+-static const char * const blt_type[] = {
++static const char * const blt_type_str[] = {
+ 	[0] = "default",
+ 	[1] = "CCFL",
+ 	[2] = "LED",
+ 	[3] = "reserved",
+ };
+ 
+-static const char * const pos_type[] = {
++static const char * const pos_type_str[] = {
+ 	[0] = "inside shell",
+ 	[1] = "outside shell",
+ 	[2] = "reserved",
+@@ -1562,7 +1562,7 @@ static void dump_lfp_options(struct context *context,
+ 
+ 		val = panel_bits(options->lvds_panel_channel_bits, i, 2);
+ 		printf("\t\tChannel type: %s (0x%x)\n",
+-		       channel_type[val], val);
++		       to_str(channel_type_str, val), val);
+ 
+ 		printf("\t\tSSC: %s\n",
+ 		       YESNO(panel_bool(options->ssc_bits, i)));
+@@ -1586,11 +1586,11 @@ static void dump_lfp_options(struct context *context,
+ 
+ 		val = panel_bits(options->dps_panel_type_bits, i, 2);
+ 		printf("\t\tDPS type: %s (0x%x)\n",
+-		       dps_type[val], val);
++		       to_str(dps_type_str, val), val);
+ 
+ 		val = panel_bits(options->blt_control_type_bits, i, 2);
+ 		printf("\t\tBacklight type: %s (0x%x)\n",
+-		       blt_type[val], val);
++		       to_str(blt_type_str, val), val);
+ 
+ 		if (context->bdb->version < 200)
+ 			continue;
+@@ -1610,7 +1610,7 @@ static void dump_lfp_options(struct context *context,
+ 
+ 		val = panel_bits((options->position), i, 2);
+ 		printf("\t\tPanel position: %s (0x%x)\n",
+-		       pos_type[val], val);
++		       to_str(pos_type_str, val), val);
  	}
+ }
  
- 	printf("\t\tDevice class extension: 0x%02x\n", child->extended_type);
-@@ -2425,10 +2408,10 @@ static void dump_edp(struct context *context,
- 		printf("\t\t\tlanes: X%d\n",
- 		       edp->fast_link_params[i].lanes + 1);
- 		printf("\t\t\tpre-emphasis: %s (0x%x)\n",
--		       dp_preemph(edp->fast_link_params[i].preemphasis),
-+		       to_str(dp_preemph_str, edp->fast_link_params[i].preemphasis),
- 		       edp->fast_link_params[i].preemphasis);
- 		printf("\t\t\tvswing: %s (0x%x)\n",
--		       dp_vswing(edp->fast_link_params[i].vswing),
-+		       to_str(dp_vswing_str, edp->fast_link_params[i].vswing),
- 		       edp->fast_link_params[i].vswing);
+@@ -1807,7 +1807,7 @@ static void dump_lfp_data(struct context *context,
+ 	free(ptrs_block);
+ }
  
- 		if (context->bdb->version >= 162)
-@@ -2477,10 +2460,10 @@ static void dump_edp(struct context *context,
+-static const char * const lvds_config[] = {
++static const char * const lvds_config_str[] = {
+ 	[BDB_DRIVER_FEATURE_NO_LVDS] = "No LVDS",
+ 	[BDB_DRIVER_FEATURE_INT_LVDS] = "Integrated LVDS",
+ 	[BDB_DRIVER_FEATURE_SDVO_LVDS] = "SDVO LVDS",
+@@ -1869,7 +1869,7 @@ static void dump_driver_feature(struct context *context,
+ 	printf("\tCRT hotplug: %s\n", YESNO(feature->crt_hotplug));
  
- 			printf("\t\tFull link params:\n");
- 			printf("\t\t\tpre-emphasis: %s (0x%x)\n",
--			       dp_preemph(edp->full_link_params[i].preemphasis),
-+			       to_str(dp_preemph_str, edp->full_link_params[i].preemphasis),
- 			       edp->full_link_params[i].preemphasis);
- 			printf("\t\t\tvswing: %s (0x%x)\n",
--			       dp_vswing(edp->full_link_params[i].vswing),
-+			       to_str(dp_vswing_str, edp->full_link_params[i].vswing),
- 			       edp->full_link_params[i].vswing);
- 		}
+ 	printf("\tLVDS config: %s (0x%x)\n",
+-	       lvds_config[feature->lvds_config], feature->lvds_config);
++	       to_str(lvds_config_str, feature->lvds_config), feature->lvds_config);
+ 	printf("\tTV hotplug: %s\n",
+ 	       YESNO(feature->tv_hotplug));
  
+@@ -2325,11 +2325,11 @@ static void dump_efp_list(struct context *context,
+ 	}
+ }
+ 
+-static const char * const underscan_overscan[] = {
+-	"Neither",
+-	"Underscan/Overscan",
+-	"Overscan only",
+-	"Underscan only",
++static const char * const underscan_overscan_str[] = {
++	[0] = "Neither",
++	[1] = "Underscan/Overscan",
++	[2] = "Overscan only",
++	[3] = "Underscan only",
+ };
+ 
+ static void dump_tv_options(struct context *context,
+@@ -2342,9 +2342,9 @@ static void dump_tv_options(struct context *context,
+ 	printf("\tAdd modes to avoid overscan issue: %s\n",
+ 	       YESNO(tv->add_modes_to_avoid_overscan_issue));
+ 	printf("\tUndescan/Overscan for HDTV via DVI: %s\n",
+-	       underscan_overscan[tv->underscan_overscan_hdtv_dvi]);
++	       to_str(underscan_overscan_str, tv->underscan_overscan_hdtv_dvi));
+ 	printf("\tUndescan/Overscan for HDTV via component: %s\n",
+-	       underscan_overscan[tv->underscan_overscan_hdtv_component]);
++	       to_str(underscan_overscan_str, tv->underscan_overscan_hdtv_component));
+ }
+ 
+ static void dump_edp(struct context *context,
 -- 
 2.49.1
 
