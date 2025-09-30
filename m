@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E625DCCA476
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:42:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20CC9CCA470
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:42:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8BADD10E566;
-	Tue, 30 Sep 2025 10:42:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CE81910E568;
+	Tue, 30 Sep 2025 10:42:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cbGDRc4m";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DhugRf2K";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B025210E560
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:42:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4171910E567
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759228948; x=1790764948;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ggahsWnCtJr96UyJ4VwG/3M5ubTBNlAO+HQCvW7d1ng=;
- b=cbGDRc4mUoorfrjpM2SBOnwdXkHywjlWDzQsxYPIofzW77IpuXYqd6ln
- jAnb45UpMLQjVNYu6sRPrIyCzfEhHSyK88f5UtFUpAEE55dIQ/cvjjzVj
- Qb3HWiubnMmi77PZyzEWb9EYm1O2Ff8fe4eD9sRBZk2H9nGU125cyOete
- Kid9i0799vebXXa5IZwGXZ4hMq6jXTxDgBoIx8e7cALps+qyzlQRKh9eS
- 6sAC917f7BAQvLK/c/+aJ2K3wbsK5spZgqdJ0/kNhndhEH9KL8rQa9rZK
- FBmhAHIt8dGEwpsZladgkm3D8G9Ra37stSzKSRA3e5hPrUrHbpbfeaeMF g==;
-X-CSE-ConnectionGUID: /h2itJYdRgSE4RfHtbxvTg==
-X-CSE-MsgGUID: uluNT15bTBSvuO50VHyPNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61371467"
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="61371467"
+ t=1759228955; x=1790764955;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=MUxoYnfEAJHuPWcgb79cwuAKZc+Dw8rFJIg4KKpzKiI=;
+ b=DhugRf2KhBFRRMIMxVeRt0YFf4o+0cVYvSUwO9/VwV7VI5FLeWyjv0PP
+ OrqudPADrA28zRjAqLJXfg71nQTQdCnooix8xjyLFShnq7f5wxQ2Fku6d
+ v0Ubg0hlIqifOPcDogB1syxP2LayHR06rTbXJv8giKjhIUlb0g455LTgN
+ w4TAsYizZUsQlcHy2qA8nUsEyi5Flri1Kl31cRmf7ArB48n9dHAanFtWt
+ 8MkFRcY2ek71Yw6Z8I1lQu2LQWTWiwSu+mK6ENpM8p4UbjZTZKq/Vo9PJ
+ eDinV/l8L3IbJyqILzQsBQGENUPfv3MpK1m/C9Eb4XNYIgvnPrL0fsErw Q==;
+X-CSE-ConnectionGUID: 9m7TcmtwTnS76OwhWF+oIA==
+X-CSE-MsgGUID: uQ9thdbcREGKiFwzeHsJIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61371504"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="61371504"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 03:42:22 -0700
-X-CSE-ConnectionGUID: 97qFc5mOTB6YSnxehHzu2Q==
-X-CSE-MsgGUID: s2n0EDeISdqxz1pHiRkorw==
+ 30 Sep 2025 03:42:35 -0700
+X-CSE-ConnectionGUID: EdsqocvATwyIvO3r6vUT1w==
+X-CSE-MsgGUID: 8je2BNq/TWeOi/+NCjDK+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="178446571"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="178446609"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO
  dpiatkow-mobl1.mshome.net) ([10.245.244.115])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 03:42:21 -0700
+ 30 Sep 2025 03:42:34 -0700
 From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -50,11 +50,12 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>,
  =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH v8 i-g-t 0/9] Fix
- xe_eudebug_online@set-breakpoint-sigint-debugger
-Date: Tue, 30 Sep 2025 12:42:00 +0200
-Message-Id: <20250930104209.22462-1-dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v8 i-g-t 8/9] lib/xe_eudebug: Introduce SIGTERM handling
+Date: Tue, 30 Sep 2025 12:42:08 +0200
+Message-Id: <20250930104209.22462-9-dominik.karol.piatkowski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250930104209.22462-1-dominik.karol.piatkowski@intel.com>
+References: <20250930104209.22462-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -73,53 +74,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The thought behind xe_eudebug_online@set-breakpoint-sigint-debugger test
-is to check if SIGINT during EUdebug ioctls will not break the kernel.
-It is done by looping set-breakpoint test equivalent for a minute while
-sending SIGINT to debugger thread with random timing, hoping to hit the
-ioctl given enough repetitions.
-
-Sporadically, the test deadlocks - it is caused by random timing of
-pthread_exit calls that can land in a critical section, leaving held
-resources; next entry attempt into that critical section will cause
-deadlock.
-
-Rewrite SIGINT signal handler to toggle a variable instead of calling
-pthread_exit instantly and exit in main debugger loop if said variable
-is set. To utilize the new SIGINT handler, use pthread_sigqueue instead
-of pthread_kill in order to be able to pass debugger to signal handler.
-Put the pthread_sigqueue call into library function helper. Rename
-terminate_debugger to debugger_signal_handler to describe its new
-function better. Add SIGTERM to signals that are handled by
-debugger_signal_handler. Don't kill debugger thread on SIGTERM signal.
-
-Harden xe_eudebug library code and xe_eudebug_online test code in the
-set-breakpoint-sigint-debugger path that can produce unwanted igt_assert
-fails due to unfortunate timing. Issue some SIGTERM signals in quick
-succession before SIGINT to raise the odds of hitting the ioctl.
+Add SIGTERM to signals that are handled by debugger_signal_handler.
+Don't kill debugger thread on SIGTERM signal.
 
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+---
+ lib/xe/xe_eudebug.c | 16 ++++++++++++++--
+ lib/xe/xe_eudebug.h |  1 +
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-Dominik Karol Piątkowski (9):
-  lib/xe_eudebug: Fix safe_pipe_read
-  lib/xe_eudebug: Don't fail in __wait_token if pipe was broken
-  tests/xe_eudebug_online: Allow dead client in
-    set-breakpoint-sigint-debugger
-  lib/xe_eudebug: Introduce xe_eudebug_debugger_kill
-  tests/xe_eudebug_online: Improve issuing SIGINT in
-    set-breakpoint-sigint-debugger
-  lib/xe_eudebug: Improve SIGINT handling
-  tests/xe_eudebug_online: Introduce proper sync for closing debugger fd
-    in set-breakpoint-sigint-debugger
-  lib/xe_eudebug: Introduce SIGTERM handling
-  tests/xe_eudebug_online: Issue SIGTERM in
-    set-breakpoint-sigint-debugger
-
- lib/xe/xe_eudebug.c             | 87 ++++++++++++++++++++++++++++-----
- lib/xe/xe_eudebug.h             |  7 +++
- tests/intel/xe_eudebug_online.c | 16 +++++-
- 3 files changed, 98 insertions(+), 12 deletions(-)
-
+diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+index 1282e2918..811a0e14a 100644
+--- a/lib/xe/xe_eudebug.c
++++ b/lib/xe/xe_eudebug.c
+@@ -1080,6 +1080,8 @@ static void debugger_signal_handler(int sig, siginfo_t *info, void *context)
+ 
+ 	igt_assert(d);
+ 
++	d->received_signal = true;
++
+ 	if (sig == SIGINT)
+ 		d->received_sigint = true;
+ }
+@@ -1103,6 +1105,11 @@ static void *debugger_worker_loop(void *data)
+ 	sa.sa_flags |= SA_SIGINFO;
+ 	igt_assert_eq(sigaction(SIGINT, &sa, NULL), 0);
+ 
++	igt_assert_eq(sigaction(SIGTERM, NULL, &sa), 0);
++	sa.sa_sigaction = debugger_signal_handler;
++	sa.sa_flags |= SA_SIGINFO;
++	igt_assert_eq(sigaction(SIGTERM, &sa, NULL), 0);
++
+ 	do {
+ 		p.fd = d->fd;
+ 		ret = poll(&p, 1, timeout_ms);
+@@ -1112,8 +1119,12 @@ static void *debugger_worker_loop(void *data)
+ 		}
+ 
+ 		if (ret == -1) {
+-			if (errno == EINTR)
+-				continue;
++			if (d->received_signal) {
++				d->received_signal = false;
++
++				if (errno == EINTR)
++					continue;
++			}
+ 
+ 			igt_info("poll failed with errno %d\n", errno);
+ 			break;
+@@ -1185,6 +1196,7 @@ xe_eudebug_debugger_create(int master_fd, uint64_t flags, void *data)
+ 	d->ptr = data;
+ 	d->received_sigint = false;
+ 	d->handled_sigint = false;
++	d->received_signal = false;
+ 
+ 	return d;
+ }
+diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
+index 7c7a01471..d2f64fe4c 100644
+--- a/lib/xe/xe_eudebug.h
++++ b/lib/xe/xe_eudebug.h
+@@ -46,6 +46,7 @@ struct xe_eudebug_debugger {
+ 
+ 	bool received_sigint;
+ 	bool handled_sigint;
++	bool received_signal;
+ 
+ 	int p_client[2];
+ };
 -- 
 2.34.1
 
