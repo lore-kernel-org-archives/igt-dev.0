@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20CC9CCA470
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 966D3CCA468
 	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:42:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE81910E568;
-	Tue, 30 Sep 2025 10:42:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 49B2A10E56A;
+	Tue, 30 Sep 2025 10:42:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DhugRf2K";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g4rqaRM6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4171910E567
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:42:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11A2910E566
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759228955; x=1790764955;
+ t=1759228952; x=1790764952;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MUxoYnfEAJHuPWcgb79cwuAKZc+Dw8rFJIg4KKpzKiI=;
- b=DhugRf2KhBFRRMIMxVeRt0YFf4o+0cVYvSUwO9/VwV7VI5FLeWyjv0PP
- OrqudPADrA28zRjAqLJXfg71nQTQdCnooix8xjyLFShnq7f5wxQ2Fku6d
- v0Ubg0hlIqifOPcDogB1syxP2LayHR06rTbXJv8giKjhIUlb0g455LTgN
- w4TAsYizZUsQlcHy2qA8nUsEyi5Flri1Kl31cRmf7ArB48n9dHAanFtWt
- 8MkFRcY2ek71Yw6Z8I1lQu2LQWTWiwSu+mK6ENpM8p4UbjZTZKq/Vo9PJ
- eDinV/l8L3IbJyqILzQsBQGENUPfv3MpK1m/C9Eb4XNYIgvnPrL0fsErw Q==;
-X-CSE-ConnectionGUID: 9m7TcmtwTnS76OwhWF+oIA==
-X-CSE-MsgGUID: uQ9thdbcREGKiFwzeHsJIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61371504"
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="61371504"
+ bh=z8lDB5d40skMfomslzc1ubxbm1Nx02ByzC+RwKuQAXc=;
+ b=g4rqaRM6R0s/uRh7RjEpjpzxyODGq2vRIAQwXwmRa4PPUSYX0xhgG4RI
+ 03yTgOtVgSLSV6VOMbm+2wcH41EoOmDsHIAbcCBKeaAO002XF/Zo2ASyA
+ KCNbu3RP3d6itFJsTuOwNX5Z99qdLzBsNb8forNahKChS2Yx+HyYXNGNq
+ Xf8x2W0TiyGCdAZ8CHVMm3m1+WugQekNMThBNeTlaV1f9fkBBvsjmhI3f
+ DJfjuqaepOTcOhyyQCqhijBcNZX9kqIoC38O3M0b6ZNKcbt7mRArr6tto
+ K5pIjSGQ4ToN+XNmdCfOtBjQHdXLDcQR6ELWkR9FGYa1zpFSF51aAw8Ot w==;
+X-CSE-ConnectionGUID: AsuwfGgRTV2d5mIPp7PeWw==
+X-CSE-MsgGUID: ukhyv2gTQDKvZfo7fI5GDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61371497"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="61371497"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 03:42:35 -0700
-X-CSE-ConnectionGUID: EdsqocvATwyIvO3r6vUT1w==
-X-CSE-MsgGUID: 8je2BNq/TWeOi/+NCjDK+A==
+ 30 Sep 2025 03:42:32 -0700
+X-CSE-ConnectionGUID: 3WO7qGVcRU2a/wQGSakDpw==
+X-CSE-MsgGUID: fod0lVvwTZOJP75ptr7M2w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="178446609"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="178446599"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO
  dpiatkow-mobl1.mshome.net) ([10.245.244.115])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 03:42:34 -0700
+ 30 Sep 2025 03:42:30 -0700
 From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -50,9 +50,9 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>,
  =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH v8 i-g-t 8/9] lib/xe_eudebug: Introduce SIGTERM handling
-Date: Tue, 30 Sep 2025 12:42:08 +0200
-Message-Id: <20250930104209.22462-9-dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v8 i-g-t 6/9] lib/xe_eudebug: Improve SIGINT handling
+Date: Tue, 30 Sep 2025 12:42:06 +0200
+Message-Id: <20250930104209.22462-7-dominik.karol.piatkowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250930104209.22462-1-dominik.karol.piatkowski@intel.com>
 References: <20250930104209.22462-1-dominik.karol.piatkowski@intel.com>
@@ -74,75 +74,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add SIGTERM to signals that are handled by debugger_signal_handler.
-Don't kill debugger thread on SIGTERM signal.
+Rewrite SIGINT signal handler to toggle a variable instead of calling
+pthread_exit instantly, as the thread could be in critical section,
+causing a deadlock on the attempt of next entry into that critical
+section.
+
+Use the received_sigint variable in debugger_worker_loop to safely kill
+the thread.
+
+Rename terminate_debugger to debugger_signal_handler to describe its
+new function better.
 
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 ---
- lib/xe/xe_eudebug.c | 16 ++++++++++++++--
- lib/xe/xe_eudebug.h |  1 +
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ lib/xe/xe_eudebug.c | 15 ++++++++++++---
+ lib/xe/xe_eudebug.h |  2 ++
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
 diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index 1282e2918..811a0e14a 100644
+index 18119c32e..0db9eaaeb 100644
 --- a/lib/xe/xe_eudebug.c
 +++ b/lib/xe/xe_eudebug.c
-@@ -1080,6 +1080,8 @@ static void debugger_signal_handler(int sig, siginfo_t *info, void *context)
- 
- 	igt_assert(d);
- 
-+	d->received_signal = true;
-+
- 	if (sig == SIGINT)
- 		d->received_sigint = true;
+@@ -1074,9 +1074,14 @@ xe_eudebug_read_event(int fd, struct drm_xe_eudebug_event *event)
+ 	return ret;
  }
-@@ -1103,6 +1105,11 @@ static void *debugger_worker_loop(void *data)
- 	sa.sa_flags |= SA_SIGINFO;
- 	igt_assert_eq(sigaction(SIGINT, &sa, NULL), 0);
  
-+	igt_assert_eq(sigaction(SIGTERM, NULL, &sa), 0);
+-static void terminate_debugger(int sig)
++static void debugger_signal_handler(int sig, siginfo_t *info, void *context)
+ {
+-	pthread_exit(NULL);
++	struct xe_eudebug_debugger *d = info->si_ptr;
++
++	igt_assert(d);
++
++	if (sig == SIGINT)
++		d->received_sigint = true;
+ }
+ 
+ static void *debugger_worker_loop(void *data)
+@@ -1094,12 +1099,15 @@ static void *debugger_worker_loop(void *data)
+ 	igt_assert(d->master_fd >= 0);
+ 
+ 	igt_assert_eq(sigaction(SIGINT, NULL, &sa), 0);
+-	sa.sa_handler = terminate_debugger;
 +	sa.sa_sigaction = debugger_signal_handler;
 +	sa.sa_flags |= SA_SIGINFO;
-+	igt_assert_eq(sigaction(SIGTERM, &sa, NULL), 0);
-+
+ 	igt_assert_eq(sigaction(SIGINT, &sa, NULL), 0);
+ 
  	do {
  		p.fd = d->fd;
  		ret = poll(&p, 1, timeout_ms);
-@@ -1112,8 +1119,12 @@ static void *debugger_worker_loop(void *data)
- 		}
++		if (d->received_sigint)
++			pthread_exit(NULL);
  
  		if (ret == -1) {
--			if (errno == EINTR)
--				continue;
-+			if (d->received_signal) {
-+				d->received_signal = false;
-+
-+				if (errno == EINTR)
-+					continue;
-+			}
- 
- 			igt_info("poll failed with errno %d\n", errno);
- 			break;
-@@ -1185,6 +1196,7 @@ xe_eudebug_debugger_create(int master_fd, uint64_t flags, void *data)
+ 			if (errno == EINTR)
+@@ -1173,6 +1181,7 @@ xe_eudebug_debugger_create(int master_fd, uint64_t flags, void *data)
+ 	d->fd = -1;
+ 	d->master_fd = master_fd;
  	d->ptr = data;
- 	d->received_sigint = false;
- 	d->handled_sigint = false;
-+	d->received_signal = false;
++	d->received_sigint = false;
  
  	return d;
  }
 diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
-index 7c7a01471..d2f64fe4c 100644
+index 389572ed0..dd5c5e20a 100644
 --- a/lib/xe/xe_eudebug.h
 +++ b/lib/xe/xe_eudebug.h
-@@ -46,6 +46,7 @@ struct xe_eudebug_debugger {
+@@ -44,6 +44,8 @@ struct xe_eudebug_debugger {
+ 	pthread_t worker_thread;
+ 	enum xe_eudebug_debugger_worker_state worker_state;
  
- 	bool received_sigint;
- 	bool handled_sigint;
-+	bool received_signal;
- 
++	bool received_sigint;
++
  	int p_client[2];
  };
+ 
 -- 
 2.34.1
 
