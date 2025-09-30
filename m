@@ -4,55 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E792CAC5B8
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 19:25:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AA93CAC5B8
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 20:15:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4800810E09D;
-	Tue, 30 Sep 2025 19:25:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9093F10E2D5;
+	Tue, 30 Sep 2025 20:15:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k+iDhXxA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TbKh1+Gv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 934EC10E09D
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 19:25:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 113C010E2D5
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 20:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759260329; x=1790796329;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=b9dGbjbAB+VglrIU8R7ZqbOwO/ibNWCOoymAfkfBk6g=;
- b=k+iDhXxAz+1SX8bqe7HGNhASCfYXz3CxLTijRGHqwmDYkOtfmcTloRCN
- gxQIVXBbvU5ogsX+SdEX+tMk7c1y/yl8W7i5IbUAYZi6GGOHZaVVPzYMF
- iav+30mV2MphdUbUctRpMn4MMaLM8FzV84OmBQxNR2f0XSMVCAIeDKTLR
- B7zTtquUUR5p+ZjObYoKx+IsVV3GlyDAkIAXjQgzX+HwdwKGbBFnnmMLX
- 80FtH8teZ0vGAUba201Hw+tbH2S0l+On+z9WAD8KHexriEgNPDawMvZfx
- l+7GAbD+jpwzkr0GkcXdM69vvb4iEqhhd5CcpoOuevAlcX2GjB+tF3zps Q==;
-X-CSE-ConnectionGUID: 9xEHP8NQT3mo6NxZEWkDkw==
-X-CSE-MsgGUID: Sc2+gWieQVibR3k6dMmhog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="60562990"
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="60562990"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 12:25:29 -0700
-X-CSE-ConnectionGUID: kp0ZvywFSlKlfLgPZUwvlw==
-X-CSE-MsgGUID: IN6/1njkRkexe0PbLzE+2A==
+ t=1759263301; x=1790799301;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=pd0FphXIA3/vBWnQnmzV5bKpVejEB14HIpqspxOuJ/Y=;
+ b=TbKh1+GvSZ1Fh0cNd7RzmAqjENSfJlAF24u+qc26zzeKAKOjerWBY4GS
+ sSitIob8LGzvEn9NOQvAofG1VTy/alkHVY/Nw3AKNC6etSGkQeMa6r4Zg
+ F8lIx7plCMfrLFcCNSLHgo1w2L86YxZbOdNJLjIF+5tepKBWnSxm4bmrE
+ VEhmRF6JO3Wzq2hzKQvSO72vvmTFrs4x/aaMIyyryX/rkOfkeoGe3y9cR
+ 6RSQMSRbtxCC7UDaPGidOX9JVXVTyPC0216llXI/+e1WKjB03dWikhzXO
+ 8ZwgiplVJ7HTHP8kCzDU+Lo/prprYwni4m3RqaRHDdoqbumdZ8sesKLWr Q==;
+X-CSE-ConnectionGUID: PFaTbhoTQKqh9v9/pSHz7A==
+X-CSE-MsgGUID: YLdE5G7uTBCA4zLLoAq1/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="86979191"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="86979191"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2025 13:15:00 -0700
+X-CSE-ConnectionGUID: HRx6O2f4Rlm8pFlZM8OGDw==
+X-CSE-MsgGUID: U4iCIclVRRWZ3hq96tQ04g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="178646514"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.163])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 12:25:27 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t] intel-ci: Fix Xe blocklists for xe_noexec_ping_pong test
-Date: Tue, 30 Sep 2025 21:25:21 +0200
-Message-ID: <20250930192522.247775-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.51.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="202299992"
+Received: from unknown (HELO adixit-MOBL3.intel.com) ([10.241.243.219])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2025 13:15:00 -0700
+Date: Tue, 30 Sep 2025 13:14:59 -0700
+Message-ID: <873483snng.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: <igt-dev@lists.freedesktop.org>,
+	Karthik B S <karthik.b.s@intel.com>
+Subject: Re: [PATCH i-g-t] intel-ci: Fix Xe blocklists for xe_noexec_ping_pong
+ test
+In-Reply-To: <20250930192522.247775-1-kamil.konieczny@linux.intel.com>
+References: <20250930192522.247775-1-kamil.konieczny@linux.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,43 +71,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test xe_noexec_ping_pong was converted to contain one proper
-subtest so both LNL and PTL blocklists need a fix.
+On Tue, 30 Sep 2025 12:25:21 -0700, Kamil Konieczny wrote:
+>
+> Test xe_noexec_ping_pong was converted to contain one proper
+> subtest so both LNL and PTL blocklists need a fix.
+>
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/intel-ci/xe.lnl.core.blocklist.txt | 2 +-
- tests/intel-ci/xe.ptl.core.blocklist.txt | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-diff --git a/tests/intel-ci/xe.lnl.core.blocklist.txt b/tests/intel-ci/xe.lnl.core.blocklist.txt
-index a3cd52935..56b3ef088 100644
---- a/tests/intel-ci/xe.lnl.core.blocklist.txt
-+++ b/tests/intel-ci/xe.lnl.core.blocklist.txt
-@@ -18,7 +18,7 @@ igt@xe_evict@.*
- igt@xe_evict_ccs@.*
- igt@xe_mmap@small-bar
- igt@xe_mmap@vram$
--igt@xe_noexec_ping_pong
-+igt@xe_noexec_ping_pong@.*
- igt@xe_pm@d3-mmap-vram
- igt@xe_pm@d3hot-mmap-vram
- igt@xe_sysfs_tile@physical_vram_size_bytes
-diff --git a/tests/intel-ci/xe.ptl.core.blocklist.txt b/tests/intel-ci/xe.ptl.core.blocklist.txt
-index 3ca03a89d..811062449 100644
---- a/tests/intel-ci/xe.ptl.core.blocklist.txt
-+++ b/tests/intel-ci/xe.ptl.core.blocklist.txt
-@@ -12,7 +12,7 @@ igt@fbdev@.*
- igt@xe_mmap@vram$
- igt@xe_mmap@small-bar
- igt@xe_sysfs_tile@physical_vram_size_bytes
--igt@xe_noexec_ping_pong
-+igt@xe_noexec_ping_pong@.*
- igt@xe_create@create-big-vram
- igt@xe_pm@d3hot-mmap-vram
- igt@xe_compute_preempt@.*vram.*
--- 
-2.51.0
-
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/intel-ci/xe.lnl.core.blocklist.txt | 2 +-
+>  tests/intel-ci/xe.ptl.core.blocklist.txt | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/intel-ci/xe.lnl.core.blocklist.txt b/tests/intel-ci/xe.lnl.core.blocklist.txt
+> index a3cd52935..56b3ef088 100644
+> --- a/tests/intel-ci/xe.lnl.core.blocklist.txt
+> +++ b/tests/intel-ci/xe.lnl.core.blocklist.txt
+> @@ -18,7 +18,7 @@ igt@xe_evict@.*
+>  igt@xe_evict_ccs@.*
+>  igt@xe_mmap@small-bar
+>  igt@xe_mmap@vram$
+> -igt@xe_noexec_ping_pong
+> +igt@xe_noexec_ping_pong@.*
+>  igt@xe_pm@d3-mmap-vram
+>  igt@xe_pm@d3hot-mmap-vram
+>  igt@xe_sysfs_tile@physical_vram_size_bytes
+> diff --git a/tests/intel-ci/xe.ptl.core.blocklist.txt b/tests/intel-ci/xe.ptl.core.blocklist.txt
+> index 3ca03a89d..811062449 100644
+> --- a/tests/intel-ci/xe.ptl.core.blocklist.txt
+> +++ b/tests/intel-ci/xe.ptl.core.blocklist.txt
+> @@ -12,7 +12,7 @@ igt@fbdev@.*
+>  igt@xe_mmap@vram$
+>  igt@xe_mmap@small-bar
+>  igt@xe_sysfs_tile@physical_vram_size_bytes
+> -igt@xe_noexec_ping_pong
+> +igt@xe_noexec_ping_pong@.*
+>  igt@xe_create@create-big-vram
+>  igt@xe_pm@d3hot-mmap-vram
+>  igt@xe_compute_preempt@.*vram.*
+> --
+> 2.51.0
+>
