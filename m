@@ -4,60 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4B28CCA471
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 12:54:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CFAECCA468
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 13:03:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8D3D510E5B0;
-	Tue, 30 Sep 2025 12:54:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A09610E2BF;
+	Tue, 30 Sep 2025 13:03:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WVv/2Whf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MgH55J6K";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA8B910E5B2;
- Tue, 30 Sep 2025 12:54:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C611410E2BF;
+ Tue, 30 Sep 2025 13:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759236895; x=1790772895;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=kn3G+qgMh4TPEaWr/z89w7sCtrDsNfN3lTrUgH3LsAI=;
- b=WVv/2Whfc2Vg6EzdlXaWwdWxnbckz44vCyyEmVW7+MdQAQh7Qzhn4Ros
- Lluc3iGne074cYDSfcyNdhS401PykpUOz+6Fvhi3CfTYSHDGwHs7IUG9c
- QiCaggVdYrpk5e2UUadwk2jO9W1J4nZsCkZ1rPD9mNFG1NEybceneNy/p
- 1eJfPpJRSv7Zi0Ns3sDOCW+72mzq9QrU4eN7a0D4XnN0v3TyF2gAXHFuT
- XBbQkxWOqRRfW5YNXUnp8FqjqjjRw6Uk2//8xA8637TyEnr+ttMwywGzR
- 2tEalRJD/Oumt5cZPWaAEIMOyVMAvq9/9Hz7NbKvz5f38SrJ1FM0XccbP Q==;
-X-CSE-ConnectionGUID: UzRpA5zZS1q8HGg6if9cew==
-X-CSE-MsgGUID: ECJ3vrUbRIyJqwGF86ZfUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="86934588"
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="86934588"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 05:54:55 -0700
-X-CSE-ConnectionGUID: k61IelMvSwOBSMyyc78Ogw==
-X-CSE-MsgGUID: TOi5D/mBTrynDLO7zDnoVg==
+ t=1759237391; x=1790773391;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=PA6sC06N62+VQ3UtKweyiDTpjgUgOj+0Tcg8fddfzag=;
+ b=MgH55J6KyFL0e8FND7h1mhld3vwDrbx8wPmhcC4xt9/X4XHUYTMlr/0F
+ cwwpysmeI64dwIEGQyjXxFqvE6W1R0LfTcfFjmROhHFybgeHm53QYZw7i
+ bHa+0V+3kgnRGcFCnOwFwrhsyKvM3x9yrglPfV+rRyUWx4FcKVEMqYgbE
+ mtXjwj1CG4HVg7PjSSaGU5+Tp3Oqolal/AhkbS8HVjWvatNbpiEQXRsMv
+ 32LgaAEV5WFhLvvAoBLQOtsuyYlJjYf3fkZGPV1NSriOG4hl/qxWzJiYA
+ bcfNXqeMEbCuk9EHcruJ1KqnivSv8ZbVSq664bZWD3+504tiJHJRiWeL2 Q==;
+X-CSE-ConnectionGUID: 5bljr9Y3TEqMnuZAdUURNg==
+X-CSE-MsgGUID: ihfcgr+kS+WVWBOd1X0J9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61657410"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="61657410"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2025 06:03:11 -0700
+X-CSE-ConnectionGUID: jpA3vxWpTlqASIWCG6gZCQ==
+X-CSE-MsgGUID: wWclOncxQl6sEFC53MrNcg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="209466895"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
- jkrzyszt-mobl2.intranet) ([10.245.244.151])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 05:54:53 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="178922632"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 06:03:10 -0700
+Date: Tue, 30 Sep 2025 15:03:08 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t 3/3] tests/gem_eio: Iterate over physical rings in
- stress subtests
-Date: Tue, 30 Sep 2025 14:49:03 +0200
-Message-ID: <20250930125430.2323555-8-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
-References: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
+ intel-ci: Fix typo in Xe LNL display blocklist
+Message-ID: <20250930130308.otavjl4adzldskuq@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20250923113718.78290-1-kamil.konieczny@linux.intel.com>
+ <175868420091.360576.2112325790495380609@1538d3639d33>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <175868420091.360576.2112325790495380609@1538d3639d33>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,27 +71,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To avoid igt_runner timing out stress subtests, limit the number of
-exercised rings by iterating over physical rings and skipping other.
+Hi igt-dev,
+On 2025-09-24 at 03:23:20 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: intel-ci: Fix typo in Xe LNL display blocklist
+> URL   : https://patchwork.freedesktop.org/series/154899/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_8550_FULL -> XEIGTPW_13801_FULL
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_13801_FULL absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_13801_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 3)
+> ------------------------------
+> 
+>   Missing    (1): shard-adlp 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_13801_FULL:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@xe_render_copy@render-stress-1-copies:
+>     - shard-bmg:          NOTRUN -> [FAIL][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13801/shard-bmg-6/igt@xe_render_copy@render-stress-1-copies.html
+> 
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- tests/intel/gem_eio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is unrelated.
 
-diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
-index 5b0925a8c6..cbfed99b61 100644
---- a/tests/intel/gem_eio.c
-+++ b/tests/intel/gem_eio.c
-@@ -997,7 +997,7 @@ static void test_reset_stress(int fd, unsigned int flags)
- 	const intel_ctx_t *ctx0 = context_create_safe(fd);
- 	uint64_t ahnd = get_reloc_ahnd(fd, ctx0->id);
- 
--	for_each_ring(e, fd) {
-+	for_each_physical_ring(e, fd) {
- 		struct intel_execution_engine2 engine;
- 
- 		engine = gem_eb_flags_to_engine(eb_ring(e));
--- 
-2.51.0
+Regards,
+Kamil
 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_13801_FULL that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
