@@ -4,104 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB550CCA470
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:37:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AF29CCA468
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:42:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A4CFC10E562;
-	Tue, 30 Sep 2025 10:37:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0179510E560;
+	Tue, 30 Sep 2025 10:42:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="B+hYLC09";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KI+Vu2py";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E86310E565
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:49 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 14A464E40DF4;
- Tue, 30 Sep 2025 10:37:48 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id DEC79606E4;
- Tue, 30 Sep 2025 10:37:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id BE27E102F17DA; 
- Tue, 30 Sep 2025 12:37:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1759228667; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:content-language:in-reply-to:references:autocrypt;
- bh=+PxorAHytWUykvEXMsAjwsajky3jWxFZOPZ0vfvlBC8=;
- b=B+hYLC094HjGcgDhowQzWNI7XLu/Nh90mbqjttVJNCsjENot7V+RXqW2+os+QBhwNNRpOA
- KXFdbwsnoc9Is60Rtiy/BxoRoKi3eycE3MJiwpAxr6408drWJQt93Kk/jw4jMCCyvmUN0r
- 1sQV+Zc2/WFQYK/VQ3LPXSRYg5RgGbORCyWXDoMq2PxQLbM9XPLd0eUtZFNTLhksFfH+7Z
- bIjapuKVuB/bXF5gLB9gav5xx/CZ6RWOBlK9ObXrlFfrDcb24eBjiOWP1keOvNZhnIZqfl
- 6pWBN3nBkiUaWIjn4QKSKSIJ0bT9+1nYPDIIssmMRgdZqMGEbcav5/JBotudfg==
-Message-ID: <72e586be-91e1-4eba-b340-33e750807307@bootlin.com>
-Date: Tue, 30 Sep 2025 12:37:46 +0200
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64C7610E560
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:42:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759228949; x=1790764949;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=bW4TUGnVWApB4PeymJyYh8JjCF7Q09EQPM7BIHTtSHo=;
+ b=KI+Vu2pyPrsW2UaQIMO3npHtq/00+h+zC/fAW5qK80i3azyfaxXjsZyu
+ H61SWwfPukZmBiWbZW549zhFznKXHfer7IGXzsT28dfraRIiUerrz4odh
+ lZyDq9vWJZVmEKEEIzYOd6WjijoJSd3o7cM6n05+b2TXCsnABY2GKvfWS
+ ydap1fO7pnXppPS3zdqAtIrA9a8VhwdilguhktsOrtqrDMr5CJm7ME4A3
+ qC2qRwWHlhebTpb1D0X+WXuRXv3rAaY0jst6IZACb3KDiSr12q7P9M9ij
+ KMRkRh5RrYfnIFTOKTOFHH0Vt+GS9OyGAKEzPiEvXg2LNHMQJTMVxgrZH g==;
+X-CSE-ConnectionGUID: cdArVkp/RIagZKv6iEAOtw==
+X-CSE-MsgGUID: KAfZOihcT7apbGy+M4CIBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="61371470"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="61371470"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2025 03:42:23 -0700
+X-CSE-ConnectionGUID: fdn6uodjTgmvOAjFu2qUcg==
+X-CSE-MsgGUID: yJIErp4+QMGxH//5uyQ4CQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="178446577"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO
+ dpiatkow-mobl1.mshome.net) ([10.245.244.115])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2025 03:42:22 -0700
+From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v8 i-g-t 1/9] lib/xe_eudebug: Fix safe_pipe_read
+Date: Tue, 30 Sep 2025 12:42:01 +0200
+Message-Id: <20250930104209.22462-2-dominik.karol.piatkowski@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250930104209.22462-1-dominik.karol.piatkowski@intel.com>
+References: <20250930104209.22462-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH V10 01/30] tests/kms_writeback: Fix kms_writeback for VKMS
-To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
-Cc: harry.wentland@amd.com, leo.liu@amd.com
-References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-2-alex.hung@amd.com>
-Content-Language: en-US, fr
-Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
- 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
-In-Reply-To: <20250815040659.3321102-2-alex.hung@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,74 +74,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+In case of poll() failure, safe_pipe_read returns -ETIMEDOUT that can be
+misleading, as the underlying error may be different. Do an early return
+with -errno if the poll fails.
 
+Don't break on poll failure in debugger_worker_loop if errno was EINTR
+and continue instead to repeat the poll.
 
-Le 15/08/2025 à 06:06, Alex Hung a écrit :
-> From: Harry Wentland <harry.wentland@amd.com>
-> 
-> VKMS doesn't like us to add buffers with unknown fourcc
-> type. Other drivers might behave similarly. Make sure
-> we avoid creating 10bpc buffers if they are not supported.
-> 
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-> ---
->   tests/kms_writeback.c | 19 ++++++++++++-------
->   1 file changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-> index 1b81088d7..511d2630b 100644
-> --- a/tests/kms_writeback.c
-> +++ b/tests/kms_writeback.c
-> @@ -112,6 +112,10 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
->   	height = override_mode.vdisplay;
->   
->   	for (i = 0; i < sizeof(fourcc) / sizeof(uint32_t); i++) {
-> +		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +		if (!igt_plane_has_format_mod(plane, fourcc[i], DRM_FORMAT_MOD_LINEAR))
-> +			continue;
->   
->   		ret = igt_create_fb(display->drm_fd, width, height,
->   				    fourcc[i], modifier, &input_fb);
-> @@ -121,7 +125,6 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
->   				    fourcc[i], modifier, &output_fb);
->   		igt_assert_lte(0, ret);
->   
-> -		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->   		igt_plane_set_fb(plane, &input_fb);
->   		igt_output_set_writeback_fb(output, &output_fb);
->   
-> @@ -571,12 +574,14 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
->   				      &input_fb);
->   		igt_assert(fb_id >= 0);
->   
-> -		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
-> -				      mode.vdisplay,
-> -				      DRM_FORMAT_XRGB2101010,
-> -				      DRM_FORMAT_MOD_LINEAR,
-> -				      &input_fb_10bit);
-> -		igt_assert(fb_id >= 0);
-> +		if (data.supported_colors & XRGB2101010) {
-> +			fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
-> +					      mode.vdisplay,
-> +					      DRM_FORMAT_XRGB2101010,
-> +					      DRM_FORMAT_MOD_LINEAR,
-> +					      &input_fb_10bit);
-> +			igt_assert(fb_id >= 0);
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+---
+ lib/xe/xe_eudebug.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-If the input_fb_10bit is not always created, I think you also need to 
-fix the last igt_fixture (igt_remove_fb(display.drm_fd, &input_fb_10bit);)
-
-> +		}
->   
->   		igt_plane_set_fb(plane, &input_fb);
->   
-
+diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+index 667c31c6e..65297d623 100644
+--- a/lib/xe/xe_eudebug.c
++++ b/lib/xe/xe_eudebug.c
+@@ -271,6 +271,8 @@ static int safe_pipe_read(int pipe[2], void *buf, int nbytes, int timeout_ms)
+ 		if (!ret) {
+ 			catch_child_failure();
+ 			t += interval_ms;
++		} else if (ret == -1) {
++			return -errno;
+ 		}
+ 	} while (!ret && t < timeout_ms);
+ 
+@@ -1078,6 +1080,9 @@ static void *debugger_worker_loop(void *data)
+ 		ret = poll(&p, 1, timeout_ms);
+ 
+ 		if (ret == -1) {
++			if (errno == EINTR)
++				continue;
++
+ 			igt_info("poll failed with errno %d\n", errno);
+ 			break;
+ 		}
 -- 
---
-Louis Chauvet, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+2.34.1
 
