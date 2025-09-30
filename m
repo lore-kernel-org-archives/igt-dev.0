@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFD58CCA470
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 12:54:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DD06CCA468
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 12:54:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F9A610E5A4;
-	Tue, 30 Sep 2025 12:54:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C6D8C10E40E;
+	Tue, 30 Sep 2025 12:54:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WCc2VBaw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GxjdkuYD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A36B10E5A7;
- Tue, 30 Sep 2025 12:54:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFA3B10E5A8;
+ Tue, 30 Sep 2025 12:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759236890; x=1790772890;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=iATA6gn2kyrgou2sJ7QaEfEKoN5vVOzKhYZryPPYZP4=;
- b=WCc2VBawH35/oiShYVJr6y/Hdq5eiqXw+IHbiay41Q2/6zE1UVJY6/ll
- nezGnIhNL9Hc98Ml189MrN0PbifEZvJB0G8KJF0sKUExEjX11h2TWicIm
- L1SGpTKeMytpysOzO4b86fMzvD46gIkSwyHLgES6sGDBN5sVyzfdk3XLM
- 8hsZl7mWximDcUNQx+ugGJgTdnd7wQL2k04W+Disqf591lEcafjIL2bEp
- wP6gN1ewlEjn1CFHEhu5wRb5CVyhsEmwnAsXonrAWjireVB5p08t0pKy7
- 5/cYmVQwl4AXRX3+f+PZE+JyahEd9wA3lwmgvLRKIvD3XlFZCPVddPoCF g==;
-X-CSE-ConnectionGUID: XNrp+gW2Qt6lHmSTmxvyMw==
-X-CSE-MsgGUID: 9HDpTCQZRT6shvoF1KPLJg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="86934574"
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="86934574"
+ t=1759236893; x=1790772893;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=e5tZZKulJisyASpkmf23mVILGYplF94tRcB7c/Z89TE=;
+ b=GxjdkuYDM1jMGL2+ulJJs9eR+LuA23kGRAyW2LJ/i2lAB/7s73lg2xSn
+ nno8gn910eNFosSQu0hPMxKBoAoL/MQjbU1/pMKs+W4Xn4jU1hD4kJsmr
+ iAEagxwrF+kTbFTHao8qnLKaUXoYC7hTPP7qwFdkfsytqW/49DEH9b3Oo
+ xO+rX7t8igtNj/KYizQvRuLQrfxzFGn+Q2lNRfGrFGvUIgtUx8RTc0TDC
+ uGGaWbwjmlLZBQBSwDCeM2bXT508W8gf9CKPz+h8e6nyVLEDd/h7417if
+ McIhCJoIaXIlrdDquS+xGN2hD1/VS5Lp9hC1Q8msGnmNM2Vav47mTT/kW w==;
+X-CSE-ConnectionGUID: iFbeC2wJT3O6p4+Wj8jMUA==
+X-CSE-MsgGUID: v7mglGUTSB+quVQocMcyZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="86934586"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="86934586"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 05:54:49 -0700
-X-CSE-ConnectionGUID: zA7m1fZGS1ilMpmIuYQu/w==
-X-CSE-MsgGUID: r24qQInDRoWbnq4GY2lq7A==
+ 30 Sep 2025 05:54:53 -0700
+X-CSE-ConnectionGUID: 4PYDrDTHQAuxfU5FF3koiA==
+X-CSE-MsgGUID: FCa2QAI3QOSZTtiB8IZhvg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="209466888"
+X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="209466893"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
  jkrzyszt-mobl2.intranet) ([10.245.244.151])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 05:54:46 -0700
+ 30 Sep 2025 05:54:50 -0700
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org,
@@ -49,10 +49,13 @@ Cc: intel-gfx@lists.freedesktop.org,
  Chris Wilson <chris.p.wilson@linux.intel.com>,
  Tvrtko Ursulin <tursulin@ursulin.net>,
  Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t 0/3] Resolve timing issues in gem_eio stress subtests
-Date: Tue, 30 Sep 2025 14:49:00 +0200
-Message-ID: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t 2/3] tests/gem_eio: Adjust for slow resume after reset
+ on Gen12+
+Date: Tue, 30 Sep 2025 14:49:02 +0200
+Message-ID: <20250930125430.2323555-7-janusz.krzysztofik@linux.intel.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
+References: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,26 +73,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Subtests that measure time of resume after engine reset require results
-from at least 9 reset-resume cycles for reasonable calculation of a median
-value to be compared against presumed limits.  On most of Gen12+
-platforms, the limit of 5 seconds for collecting those results occurs too
-short for executing 9 reset-resum cycles.  Moreover, upstream CI results
-from kms, reset-stress and unwedge-stress subtests of igt@gem_eio show GPU
-resume after reset noticeably slower when running on some Gen12+
-platforms.
+Upstream CI results from kms, reset-stress and unwedge-stress subtests of
+igt@gem_eio show GPU resume after reset noticeably slower when running on
+some Gen12+ platforms.  Since we think that's hardware specific and there
+is nothing we can do about that at the i915 driver level, relax the test
+expectations for Gen12+, similar to Gen5-.
 
-Adjust timings for Gen12+.  Also, take care of not exceeding per test
-timeout values used by CI.
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5784
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/intel/gem_eio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Janusz Krzysztofik (3):
-  tests/gem_eio: Adjust for long reset-resume cycle on Gen12+
-  tests/gem_eio: Adjust for slow resume after reset on Gen12+
-  tests/gem_eio: Iterate over physical rings in stress subtests
-
- tests/intel/gem_eio.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
-
+diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+index b6155c7fc4..5b0925a8c6 100644
+--- a/tests/intel/gem_eio.c
++++ b/tests/intel/gem_eio.c
+@@ -419,7 +419,7 @@ static void check_wait_elapsed(const char *prefix, int fd, igt_stats_t *st)
+ 	 * modeset back on) around resets, so may take a lot longer.
+ 	 */
+ 	limit = 250e6;
+-	if (intel_gen(intel_get_drm_devid(fd)) < 5)
++	if (intel_gen(intel_get_drm_devid(fd)) < 5 || intel_gen(intel_get_drm_devid(fd)) > 11)
+ 		limit += 300e6; /* guestimate for 2x worstcase modeset */
+ 
+ 	med = igt_stats_get_median(st);
 -- 
 2.51.0
 
