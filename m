@@ -4,45 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C5A9CCA468
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB550CCA470
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:37:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B192A10E560;
-	Tue, 30 Sep 2025 10:37:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A4CFC10E562;
+	Tue, 30 Sep 2025 10:37:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="qfvsLzCU";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="B+hYLC09";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4E3110E562
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E86310E565
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:49 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id C7DA54E40DF4
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:43 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 14A464E40DF4;
+ Tue, 30 Sep 2025 10:37:48 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 9D4CC606E4;
- Tue, 30 Sep 2025 10:37:43 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id DEC79606E4;
+ Tue, 30 Sep 2025 10:37:47 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 4BCD0102F17D5; 
- Tue, 30 Sep 2025 12:37:42 +0200 (CEST)
+ with ESMTPSA id BE27E102F17DA; 
+ Tue, 30 Sep 2025 12:37:46 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1759228662; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1759228667; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:content-language:in-reply-to:references:autocrypt;
- bh=rRVrSPiMO4v3mvNeQfLoy80eSANWzWCWH+I8YsF1hYE=;
- b=qfvsLzCU//UmlpES2ppvqBJdbCeZzpqnCZLR2WuFHAQOnzzWVCQ1BkX42qJwsT4JGgciJI
- zCuLBvWxLPgajgwyAzMr2E1p3pQQ9iiabUa61/VNApNFxslkou66nRBfmEw5c3+O3mn8SY
- 89NMK7pILOsrU1SzvZh3iWrQFQMeNt0QDmLBYNtfQeZI2ZBc646Ubnxv83zBFGQQUrYVi0
- i3BnnnqZN8digsmx7trL3rPJ/SQwhJMnnClxaGPl2AWKVy/0+0XhaYWqugevP4WmguCxff
- 97i/e0edjh70yDugVB+jQh/uX1HD+1HSz/6ByyP26KUmFjvMyyXroBZKC8shyA==
-Message-ID: <43b1953e-44a6-4964-8fd5-02743f55587a@bootlin.com>
-Date: Tue, 30 Sep 2025 12:37:41 +0200
+ bh=+PxorAHytWUykvEXMsAjwsajky3jWxFZOPZ0vfvlBC8=;
+ b=B+hYLC094HjGcgDhowQzWNI7XLu/Nh90mbqjttVJNCsjENot7V+RXqW2+os+QBhwNNRpOA
+ KXFdbwsnoc9Is60Rtiy/BxoRoKi3eycE3MJiwpAxr6408drWJQt93Kk/jw4jMCCyvmUN0r
+ 1sQV+Zc2/WFQYK/VQ3LPXSRYg5RgGbORCyWXDoMq2PxQLbM9XPLd0eUtZFNTLhksFfH+7Z
+ bIjapuKVuB/bXF5gLB9gav5xx/CZ6RWOBlK9ObXrlFfrDcb24eBjiOWP1keOvNZhnIZqfl
+ 6pWBN3nBkiUaWIjn4QKSKSIJ0bT9+1nYPDIIssmMRgdZqMGEbcav5/JBotudfg==
+Message-ID: <72e586be-91e1-4eba-b340-33e750807307@bootlin.com>
+Date: Tue, 30 Sep 2025 12:37:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH V10 03/30] drm-uapi: Add COLOROP object
+Subject: Re: [PATCH V10 01/30] tests/kms_writeback: Fix kms_writeback for VKMS
 To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
 Cc: harry.wentland@amd.com, leo.liu@amd.com
 References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-4-alex.hung@amd.com>
+ <20250815040659.3321102-2-alex.hung@amd.com>
 Content-Language: en-US, fr
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -98,7 +98,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  wDN7ORknPndzxrq3CyB7b/Tk1e8Qx+6HU/pnMb4ZqwwMwZAMk24TZpsgg28o9MQiUNzad0h2
  gIszbeej9ryrtLHxMzyK8yKhHoI2i2ovxy5O+hsWeAoCPE9xwbqnAjLjOn4Jzd/pPovizrq/
  kUoX66YgvCuHfQMC/aBPLnVunZSP23J2CrkTrnsUzw==
-In-Reply-To: <20250815040659.3321102-4-alex.hung@amd.com>
+In-Reply-To: <20250815040659.3321102-2-alex.hung@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -122,407 +122,63 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Le 15/08/2025 à 06:06, Alex Hung a écrit :
 > From: Harry Wentland <harry.wentland@amd.com>
 > 
-> DRM is introducing a new DRM core obejct, a drm_colorop. This
-> object will represent one color operation in a color pipeline.
-> 
-> Introduce the object type in the drm-uapi, including the
-> following types:
-> - DRM_COLOROP_1D_CURVE,
-> - DRM_COLOROP_1D_LUT,
-> - DRM_COLOROP_CTM_3X4,
+> VKMS doesn't like us to add buffers with unknown fourcc
+> type. Other drivers might behave similarly. Make sure
+> we avoid creating 10bpc buffers if they are not supported.
 > 
 > Signed-off-by: Alex Hung <alex.hung@amd.com>
 > Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 > ---
->   include/drm-uapi/amdgpu_drm.h |   9 --
->   include/drm-uapi/drm_mode.h   |  23 +++
-
-Same as 01/30, I think this could be a separate patch "update headers".
-I don't know what maintainers want, but I think all the update could be 
-done in only one commit "update drm uapi headers to match color_op patches"
-
->   lib/igt_kms.c                 | 272 +++++++++++++++++++++++++++++++++-
->   lib/igt_kms.h                 |  89 +++++++++++
->   tests/kms_properties.c        |   3 +
->   5 files changed, 381 insertions(+), 15 deletions(-)
+>   tests/kms_writeback.c | 19 ++++++++++++-------
+>   1 file changed, 12 insertions(+), 7 deletions(-)
 > 
-> diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-> index b38f27d69..ca24519c7 100644
-> --- a/include/drm-uapi/amdgpu_drm.h
-> +++ b/include/drm-uapi/amdgpu_drm.h
-> @@ -1590,15 +1590,6 @@ struct drm_amdgpu_info_uq_metadata {
->   #define AMDGPU_FAMILY_GC_11_5_0			150 /* GC 11.5.0 */
->   #define AMDGPU_FAMILY_GC_12_0_0			152 /* GC 12.0.0 */
+> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+> index 1b81088d7..511d2630b 100644
+> --- a/tests/kms_writeback.c
+> +++ b/tests/kms_writeback.c
+> @@ -112,6 +112,10 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
+>   	height = override_mode.vdisplay;
 >   
-> -/* FIXME wrong namespace! */
-> -struct drm_color_ctm_3x4 {
-> -	/*
-> -	 * Conversion matrix with 3x4 dimensions in S31.32 sign-magnitude
-> -	 * (not two's complement!) format.
-> -	 */
-> -	__u64 matrix[12];
-> -};
-> -
->   #if defined(__cplusplus)
->   }
->   #endif
-> diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-> index c082810c0..fce45b5cf 100644
-> --- a/include/drm-uapi/drm_mode.h
-> +++ b/include/drm-uapi/drm_mode.h
-> @@ -629,6 +629,7 @@ struct drm_mode_connector_set_property {
->   #define DRM_MODE_OBJECT_FB 0xfbfbfbfb
->   #define DRM_MODE_OBJECT_BLOB 0xbbbbbbbb
->   #define DRM_MODE_OBJECT_PLANE 0xeeeeeeee
-> +#define DRM_MODE_OBJECT_COLOROP 0xfafafafa
->   #define DRM_MODE_OBJECT_ANY 0
+>   	for (i = 0; i < sizeof(fourcc) / sizeof(uint32_t); i++) {
+> +		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +
+> +		if (!igt_plane_has_format_mod(plane, fourcc[i], DRM_FORMAT_MOD_LINEAR))
+> +			continue;
 >   
->   struct drm_mode_obj_get_properties {
-> @@ -846,6 +847,22 @@ struct drm_color_ctm {
->   	__u64 matrix[9];
->   };
+>   		ret = igt_create_fb(display->drm_fd, width, height,
+>   				    fourcc[i], modifier, &input_fb);
+> @@ -121,7 +125,6 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
+>   				    fourcc[i], modifier, &output_fb);
+>   		igt_assert_lte(0, ret);
 >   
-> +struct drm_color_ctm_3x4 {
-> +	/*
-> +	 * Conversion matrix with 3x4 dimensions in S31.32 sign-magnitude
-> +	 * (not two's complement!) format.
-> +	 *
-> +	 * TODO what's the format?
-> +	 *
-> +	 * out   matrix          in
-> +	 * |R|   |0  1  2  3 |   | R |
-> +	 * |G| = |4  5  6  7 | x | G |
-> +	 * |B|   |8  9  10 12|   | B |
-> +	 *                       |1.0|
-> +	 */
-> +	__u64 matrix[12];
-> +};
-> +
->   struct drm_color_lut {
->   	/*
->   	 * Values are mapped linearly to 0.0 - 1.0 range, with 0x0 == 0.0 and
-> @@ -857,6 +874,12 @@ struct drm_color_lut {
->   	__u16 reserved;
->   };
+> -		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   		igt_plane_set_fb(plane, &input_fb);
+>   		igt_output_set_writeback_fb(output, &output_fb);
 >   
-> +enum drm_colorop_type {
-> +	DRM_COLOROP_1D_CURVE,
-> +	DRM_COLOROP_1D_LUT,
-> +	DRM_COLOROP_CTM_3X4,
-> +};
-> +
->   /**
->    * struct drm_plane_size_hint - Plane size hints
->    * @width: The width of the plane in pixel
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index a9641eba4..69beb523f 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -92,6 +92,7 @@
->   #define MAX_CONNECTORS 32
->   #define MAX_EDID 2
->   #define DISPLAY_TILE_BLOCK 0x12
-> +#define MAX_NUM_COLOROPS 128
+> @@ -571,12 +574,14 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+>   				      &input_fb);
+>   		igt_assert(fb_id >= 0);
 >   
->   typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
->   
-> @@ -702,6 +703,14 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
->   	[IGT_PLANE_SCALING_FILTER] = "SCALING_FILTER",
->   	[IGT_PLANE_SIZE_HINTS] = "SIZE_HINTS",
->   	[IGT_PLANE_IN_FORMATS_ASYNC] = "IN_FORMATS_ASYNC",
-> +	[IGT_PLANE_COLOR_PIPELINE] = "COLOR_PIPELINE",
-> +};
-> +
-> +const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
-> +	[IGT_COLOROP_TYPE] = "TYPE",
-> +	[IGT_COLOROP_BYPASS] = "BYPASS",
-> +	[IGT_COLOROP_CURVE_1D_TYPE] = "CURVE_1D_TYPE",
-> +	[IGT_COLOROP_NEXT] = "NEXT",
->   };
->   
->   const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
-> @@ -769,6 +778,108 @@ igt_plane_rotations(igt_display_t *display, igt_plane_t *plane,
->   	return rotations;
->   }
->   
-> +/**
-> + * igt_find_colorop:
-> + * @display: display on which to look for colorop.
-> + * @id: DRM object id of the colorop.
-> + *
-> + * Returns: An igt_colorop_t if found, or NULL otherwise.
-> + */
-> +igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id)
-> +{
-> +	int i;
-> +
-> +	/* find corresponding igt_colorop */
-> +	for (i = 0; i < display->n_colorops; ++i) {
-> +		igt_colorop_t *colorop = &display->colorops[i];
-> +
-> +		if (colorop->id == id)
-> +			return colorop;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +/*
-> + * Retrieve all the properies specified in props_name and store them into
-> + * colorop->props.
-> + */
-> +static void
-> +igt_fill_colorop_props(igt_display_t *display, igt_colorop_t *colorop,
-> +		       int num_props, const char * const prop_names[])
-> +{
-> +	drmModeObjectPropertiesPtr props;
-> +	int i, j, fd;
-> +
-> +	fd = display->drm_fd;
-> +
-> +	props = drmModeObjectGetProperties(fd, colorop->id, DRM_MODE_OBJECT_COLOROP);
-> +	igt_assert(props);
-> +
-> +	for (i = 0; i < props->count_props; i++) {
-> +		drmModePropertyPtr prop =
-> +			drmModeGetProperty(fd, props->props[i]);
-> +
-> +		for (j = 0; j < num_props; j++) {
-> +			if (strcmp(prop->name, prop_names[j]) != 0)
-> +				continue;
-> +
-> +			colorop->props[j] = props->props[i];
-> +			break;
+> -		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
+> -				      mode.vdisplay,
+> -				      DRM_FORMAT_XRGB2101010,
+> -				      DRM_FORMAT_MOD_LINEAR,
+> -				      &input_fb_10bit);
+> -		igt_assert(fb_id >= 0);
+> +		if (data.supported_colors & XRGB2101010) {
+> +			fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
+> +					      mode.vdisplay,
+> +					      DRM_FORMAT_XRGB2101010,
+> +					      DRM_FORMAT_MOD_LINEAR,
+> +					      &input_fb_10bit);
+> +			igt_assert(fb_id >= 0);
+
+If the input_fb_10bit is not always created, I think you also need to 
+fix the last igt_fixture (igt_remove_fb(display.drm_fd, &input_fb_10bit);)
+
 > +		}
-> +
-> +		drmModeFreeProperty(prop);
-> +	}
-> +	drmModeFreeObjectProperties(props);
-> +}
-> +
-> +static void igt_fill_colorop(igt_display_t *display, igt_plane_t *plane,
-> +			     igt_colorop_t *colorop, uint32_t id,
-> +			     char *name)
-> +{
-> +	colorop->id = id;
-> +	colorop->plane = plane;
-> +
-> +	if (name)
-> +		memcpy(colorop->name, name, sizeof(colorop->name));
-
-Maybe use strncpy to avoid issue if name is smaller than colorop->name.
-
-> +	igt_fill_colorop_props(display, colorop, IGT_NUM_COLOROP_PROPS, igt_colorop_prop_names);
-> +}
-> +
-> +static void
-> +igt_fill_plane_color_pipelines(igt_display_t *display, igt_plane_t *plane,
-> +			       drmModePropertyPtr prop)
-> +{
-> +	int i;
-> +	uint32_t colorop_id;
-> +
-> +	plane->num_color_pipelines = 0;
-> +
-> +	for (i = 0; i < prop->count_enums; i++) {
-> +		if (prop->enums[i].value) {
-> +			igt_colorop_t *colorop = &display->colorops[display->n_colorops++];
-> +
-> +			igt_assert(display->n_colorops < MAX_NUM_COLOROPS);
-> +
-> +			igt_fill_colorop(display, plane, colorop, prop->enums[i].value, prop->enums[i].name);
-> +			plane->color_pipelines[plane->num_color_pipelines++] = colorop;
-> +
-> +			/* get all NEXT colorops */
-> +			colorop_id = igt_colorop_get_prop(display, colorop,
-> +							IGT_COLOROP_NEXT);
-> +			while (colorop_id) {
-> +				colorop = &display->colorops[display->n_colorops++];
-
-I think you also need to check the n_colorops value:
-
-	igt_assert(display->n_colorops < MAX_NUM_COLOROPS);
-
-> +				igt_fill_colorop(display, plane, colorop, colorop_id, NULL);
-> +				colorop_id = igt_colorop_get_prop(display, colorop,
-> +								IGT_COLOROP_NEXT);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_assert(plane->num_color_pipelines < IGT_NUM_PLANE_COLOR_PIPELINES);
-> +
-> +}
-> +
-
-[...]
-
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 8ec39fa85..dc2a2d9e0 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -366,9 +366,18 @@ enum igt_atomic_plane_properties {
->          IGT_PLANE_HOTSPOT_Y,
->          IGT_PLANE_SIZE_HINTS,
->          IGT_PLANE_IN_FORMATS_ASYNC,
-> +       IGT_PLANE_COLOR_PIPELINE,
->          IGT_NUM_PLANE_PROPS,
->   };
 >   
-> +enum igt_atomic_colorop_properties {
-> +	IGT_COLOROP_TYPE,
-> +	IGT_COLOROP_BYPASS,
-> +	IGT_COLOROP_CURVE_1D_TYPE,
-> +	IGT_COLOROP_NEXT,
-> +	IGT_NUM_COLOROP_PROPS
-> +};
-> +
->   /**
->    * igt_plane_prop_names
->    *
-> @@ -377,10 +386,20 @@ enum igt_atomic_plane_properties {
->    */
->   extern const char * const igt_plane_prop_names[];
->   
-> +/**
-> + * igt_colorop_prop_names
-> + *
-> + * igt_colorop_prop_names contains a list of colorop property names,
-> + * as indexed by the igt_atomic_colorop_properties enum.
-> + */
-> +extern const char * const igt_colorop_prop_names[];
-> +
->   typedef struct igt_display igt_display_t;
->   typedef struct igt_pipe igt_pipe_t;
->   typedef uint32_t igt_fixed_t;			/* 16.16 fixed point */
->   
-> +#define IGT_NUM_PLANE_COLOR_PIPELINES 4
-> +
->   typedef enum {
->   	/* this maps to the kernel API */
->   	IGT_ROTATION_0   = 1 << 0,
-> @@ -406,6 +425,20 @@ static inline bool igt_rotation_90_or_270(igt_rotation_t rotation)
->   	return rotation & (IGT_ROTATION_90 | IGT_ROTATION_270);
->   }
->   
-> +typedef struct igt_plane igt_plane_t;
-> +
-> +typedef struct igt_colorop {
-> +	uint32_t id;
-> +	igt_plane_t *plane;
-> +
-> +	char name[DRM_PROP_NAME_LEN];
-> +
-> +	uint64_t changed;
-> +	uint32_t props[IGT_NUM_COLOROP_PROPS];
-> +	uint64_t values[IGT_NUM_COLOROP_PROPS];
-> +
-> +} igt_colorop_t;
-> +
->   typedef struct igt_plane {
->   	/*< private >*/
->   	igt_pipe_t *pipe;
-> @@ -443,6 +476,11 @@ typedef struct igt_plane {
->   	uint64_t *async_modifiers;
->   	uint32_t *async_formats;
->   	int async_format_mod_count;
-> +
-> +	igt_colorop_t *color_pipelines[IGT_NUM_PLANE_COLOR_PIPELINES];
-> +	int num_color_pipelines;
-> +
-> +	igt_colorop_t *assigned_color_pipeline;
->   } igt_plane_t;
->   
->   /*
-> @@ -501,9 +539,11 @@ struct igt_display {
->   	int log_shift;
->   	int n_pipes;
->   	int n_planes;
-> +	int n_colorops;
->   	int n_outputs;
->   	igt_output_t *outputs;
->   	igt_plane_t *planes;
-> +	igt_colorop_t *colorops;
->   	igt_pipe_t *pipes;
->   	bool has_cursor_plane;
->   	bool is_atomic;
-> @@ -846,6 +886,53 @@ extern void igt_plane_set_prop_enum(igt_plane_t *plane,
->   				    enum igt_atomic_plane_properties prop,
->   				    const char *val);
->   
-> +
-> +
-> +extern bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop);
-> +
-> +extern void igt_plane_set_color_pipeline(igt_plane_t *plane, igt_colorop_t *colorop);
->
-
-(maybe a dumb question) why those fonctions are extern?
-
-> +/**
-> + * igt_colorop_has_prop:
-> + * @colorop: colorop to check.
-> + * @prop: Property to check.
-> + *
-> + * Check whether colorop supports a given property.
-> + *
-> + * Returns: True if the property is supported, otherwise false.
-> + */
-> +static inline bool
-> +igt_colorop_has_prop(igt_colorop_t *colorop, enum igt_atomic_colorop_properties prop)
-> +{
-> +	return colorop->props[prop];
-> +}
-> +
-> +uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, enum igt_atomic_colorop_properties prop);
-> +
-> +#define igt_colorop_is_prop_changed(colorop, prop) \
-> +	(!!((colorop)->changed & (1 << (prop))))
-> +
-> +#define igt_colorop_set_prop_changed(colorop, prop) \
-> +	((colorop)->changed |= 1 << (prop))
-> +
-> +#define igt_colorop_clear_prop_changed(colorop, prop) \
-> +	((colorop)->changed &= ~(1 << (prop)))
-> +
-> +#define igt_colorop_set_prop_value(colorop, prop, value) \
-> +	do { \
-> +		colorop->values[prop] = value; \
-> +		igt_colorop_set_prop_changed(colorop, prop); \
-> +	} while (0)
-> +
-> +
-> +extern bool igt_colorop_try_prop_enum(igt_colorop_t *colorop,
-> +				      enum igt_atomic_colorop_properties prop,
-> +				      const char *val);
-> +
-> +extern void igt_colorop_set_prop_enum(igt_colorop_t *colorop,
-> +				      enum igt_atomic_colorop_properties prop,
-> +				      const char *val);
-> +
->   extern void igt_plane_replace_prop_blob(igt_plane_t *plane,
->   					enum igt_atomic_plane_properties prop,
->   					const void *ptr, size_t length);
-> @@ -1289,4 +1376,6 @@ int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *c
->   
->   drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output);
->   
-> +igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
-> +
->   #endif /* __IGT_KMS_H__ */
-> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-> index e646b8184..3bdf23aad 100644
-> --- a/tests/kms_properties.c
-> +++ b/tests/kms_properties.c
-> @@ -112,6 +112,9 @@ static bool ignore_property(uint32_t obj_type, uint32_t prop_flags,
->   			return true;
->   		break;
->   	case DRM_MODE_OBJECT_PLANE:
-> +		if (!has_color_pipeline && !strcmp(name, "COLOR_PIPELINE"))
-> +			return true;
-> +
->   		if (has_color_pipeline && !strcmp(name, "COLOR_RANGE"))
->   			return true;
+>   		igt_plane_set_fb(plane, &input_fb);
 >   
 
 -- 
