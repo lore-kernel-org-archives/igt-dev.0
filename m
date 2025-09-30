@@ -4,45 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B51D1CCA468
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:36:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D4E2CCA471
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:37:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 677E110E55D;
-	Tue, 30 Sep 2025 10:36:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0F7EC10E560;
+	Tue, 30 Sep 2025 10:37:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="NnUrszux";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="d/1tLjp3";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3924810E55D
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:36:56 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F7CE10E55F
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:01 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 06F7D1A1045;
- Tue, 30 Sep 2025 10:36:55 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 064DF4E40DF4;
+ Tue, 30 Sep 2025 10:37:00 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id D10FC606E4;
- Tue, 30 Sep 2025 10:36:54 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id D1304606E4;
+ Tue, 30 Sep 2025 10:36:59 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 3C904102F17DB; 
- Tue, 30 Sep 2025 12:36:53 +0200 (CEST)
+ with ESMTPSA id B3B0C102F17D5; 
+ Tue, 30 Sep 2025 12:36:58 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1759228614; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1759228619; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:content-language:in-reply-to:references:autocrypt;
- bh=B9/hafi5Ej/jz+gBqswVAxBGTjZL5uUitprLDwo1gYc=;
- b=NnUrszuxMLZIdb3ojvr7eZFE3yEsmSvbRkP3QBsDCcf/zgN3faPyDbwKnavkuqWlWnzS+1
- ebXG4DpHHHDkBavE1FPhIjq4EosOqm4mPpGMR6opzsk4q2x+H+64TdsZ30a4Bz3FMc+2zV
- CzgaP8mF5MKipuKPdPMyZobmk3RiYn1aT0Wwgy16s/g7X4je6wuYiCNis0ZuFrpC15E0+Y
- QCKAnKpNM2Zoa2er8HwlFxDm67g54JSxTdNX5y1VBYNnXA6tecgn1bZmSrA63MVwun1v45
- 1q53JqAFa0HFek9icsItkDZU9m/QnmTKaOXfH21whO013srVSsrR9Tli78FfMg==
-Message-ID: <f99348d5-85f4-4294-b624-52039d67c428@bootlin.com>
-Date: Tue, 30 Sep 2025 12:36:52 +0200
+ bh=vzX8q0GgLE4KRMk8yCXV6ouBJ80rbW/lbfsqrM7FD8E=;
+ b=d/1tLjp3Buf4Re4xY3pRMzhc4lvWAJ01vz4PQjAa7ufG4ZxJdF0/NG7Rg39tjXK8HUyWmN
+ TpeD8ScSJeXaMoRulvlU5m/9T6Cy1r6ZbHcEyHfaJ9SdFucjpweRDOKrFIrR6aDSX7csK0
+ NQHjBQRCNQUXbimkgokhx2fuEwDiKgS5vJBS1BJtzl+oZTrCenaBlNgR+AEIrKSU/O++aI
+ MzETI1XFmDN8U8sXHeK5nqotD9zLdxPERBPKOxE+oESt8GHSF28hqDJ/gN9ltpqZzr7YKt
+ h0/VfTkEYSR8p4l5eHXtnyTzKHXIwUY3G5O+FhdzYI9ZNbc6z9AJ5Sh+Nz6BoA==
+Message-ID: <9e9c017d-aae9-4af7-8941-254edee40e6c@bootlin.com>
+Date: Tue, 30 Sep 2025 12:36:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH V10 08/30] lib/drmtest: Add is_vkms_device()
+Subject: Re: [PATCH V10 05/30] tests/kms_properties: Add colorop properties
+ test
 To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
 Cc: harry.wentland@amd.com, leo.liu@amd.com
 References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-9-alex.hung@amd.com>
+ <20250815040659.3321102-6-alex.hung@amd.com>
 Content-Language: en-US, fr
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -98,7 +99,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  wDN7ORknPndzxrq3CyB7b/Tk1e8Qx+6HU/pnMb4ZqwwMwZAMk24TZpsgg28o9MQiUNzad0h2
  gIszbeej9ryrtLHxMzyK8yKhHoI2i2ovxy5O+hsWeAoCPE9xwbqnAjLjOn4Jzd/pPovizrq/
  kUoX66YgvCuHfQMC/aBPLnVunZSP23J2CrkTrnsUzw==
-In-Reply-To: <20250815040659.3321102-9-alex.hung@amd.com>
+In-Reply-To: <20250815040659.3321102-6-alex.hung@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -122,46 +123,124 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Le 15/08/2025 à 06:06, Alex Hung a écrit :
 > From: Harry Wentland <harry.wentland@amd.com>
 > 
-> Add a function to check vkms device.
+> We've introduced the concept of a new DRM core object, the
+> drm_colorop, to represent a color operation as part of a
+> color pipeline.
+> 
+> Add new tests to kms_properties to test the properties of
+> a drm_colorop object.
 > 
 > Signed-off-by: Alex Hung <alex.hung@amd.com>
 > Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-
 > ---
->   lib/drmtest.c | 5 +++++
->   lib/drmtest.h | 1 +
->   2 files changed, 6 insertions(+)
+>   tests/kms_properties.c | 69 ++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 69 insertions(+)
 > 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 436b6de78..a3904083f 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -118,6 +118,11 @@ static bool __is_device(int fd, const char *expect)
->   	return strcmp(expect, name) == 0;
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+> index 3bdf23aad..a4d73fe1b 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -47,6 +47,7 @@
+>    * @crtc:            CRTC
+>    * @plane:           Plane
+>    * @invalid:         Invalid (connector/crtc/plane)
+> + * @colorop:         Colorop
+>    *
+>    * arg[2]:
+>    *
+> @@ -230,6 +231,39 @@ static void test_properties(int fd, uint32_t type, uint32_t id, bool atomic, boo
+>   	}
 >   }
 >   
-> +bool is_vkms_device(int fd)
+> +static void run_colorop_property_tests(igt_display_t *display, enum pipe pipe, igt_output_t *output, bool atomic)
 > +{
-> +	return __is_device(fd, "vkms");
+> +	struct igt_fb fb;
+> +	igt_plane_t *plane;
+> +	igt_colorop_t *colorop;
+> +	int i;
+> +	int colorop_id = 0;
+> +
+> +	prepare_pipe(display, pipe, output, &fb);
+> +
+> +	for_each_plane_on_pipe(display, pipe, plane) {
+> +		igt_info("Testing colorop properties on plane %s.#%d-%s (output: %s)\n",
+> +			 kmstest_pipe_name(pipe), plane->index, kmstest_plane_type_name(plane->type), output->name);
+> +
+> +		/* iterate over all color pipelines on plane */
+> +		for (i = 0; i < plane->num_color_pipelines; ++i) {
+> +			/* iterate over all colorops in pipeline*/
+> +			colorop = plane->color_pipelines[i];
+> +			while (colorop) {
+> +				igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
+> +					kmstest_pipe_name(pipe), plane->index, colorop->id, kmstest_plane_type_name(plane->type), output->name);
+> +				test_properties(display->drm_fd, DRM_MODE_OBJECT_COLOROP, colorop->id, atomic, false);
+
+Same as a previous patch, why do you pass false and not 
+display->has_plane_color_pipeline?
+
+> +
+> +				colorop_id = igt_colorop_get_prop(display, colorop,
+> +								IGT_COLOROP_NEXT);
+> +				colorop = igt_find_colorop(display, colorop_id);
+> +			}
+> +		}
+> +	}
+> +
+> +	cleanup_pipe(display, pipe, output, &fb);
 > +}
 > +
->   bool is_amdgpu_device(int fd)
+>   static void run_plane_property_tests(igt_display_t *display, enum pipe pipe, igt_output_t *output, bool atomic)
 >   {
->   	return __is_device(fd, "amdgpu");
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 27e5a18e2..b3d53f252 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -136,6 +136,7 @@ void igt_require_nouveau(int fd);
->   void igt_require_vc4(int fd);
->   void igt_require_xe(int fd);
+>   	struct igt_fb fb;
+> @@ -275,6 +309,37 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
+>   		cleanup_pipe(display, pipe, output, &fb);
+>   }
 >   
-> +bool is_vkms_device(int fd);
->   bool is_amdgpu_device(int fd);
->   bool is_i915_device(int fd);
->   bool is_mtk_device(int fd);
+> +static void colorop_properties(igt_display_t *display, bool atomic)
+> +{
+> +	bool found_any = false, found;
+> +	igt_output_t *output;
+> +	enum pipe pipe;
+> +
+> +	/* colorops are only available with atomic */
+> +	igt_skip_on(!display->is_atomic);
+> +
+> +	for_each_pipe(display, pipe) {
+> +		found = false;
+> +
+> +		for_each_valid_output_on_pipe(display, pipe, output) {
+> +			igt_display_reset(display);
+> +
+> +			igt_output_set_pipe(output, pipe);
+> +			if (!intel_pipe_output_combo_valid(display))
+> +				continue;
+> +
+> +			found_any = found = true;
+> +
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +				igt_output_name(output)) {
+> +				run_colorop_property_tests(display, pipe, output, atomic);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_skip_on(!found_any);
+> +}
+> +
+>   static void plane_properties(igt_display_t *display, bool atomic)
+>   {
+>   	igt_output_t *output;
+> @@ -853,6 +918,10 @@ igt_main
+>   		  "Tests connector properties with legacy commit" },
+>   		{ "connector-properties-atomic", connector_properties, true,
+>   		  "Tests connector properties with atomic commit" },
+> +		{ "colorop-properties-legacy", colorop_properties, false,
+> +		  "Tests colorop properties with legacy commit" },
+> +		{ "colorop-properties-atomic", colorop_properties, true,
+> +		  "Tests colorop properties with atomic commit" },
+>   	};
+>   
+>   	igt_fixture {
 
 -- 
 --
