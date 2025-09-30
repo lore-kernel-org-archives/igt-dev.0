@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69DFDCCA470
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:37:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DB1DCCA470
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:37:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 26C3610E55C;
-	Tue, 30 Sep 2025 10:37:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 186F110E55D;
+	Tue, 30 Sep 2025 10:37:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fH2lmLTz";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="28PpKZfM";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE78710E568
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:11 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF4F110E55D
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:22 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id A8DFF4E40DF4
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:10 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 0A642C02462;
+ Tue, 30 Sep 2025 10:37:03 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7F129606E4;
- Tue, 30 Sep 2025 10:37:10 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id AA06D606E4;
+ Tue, 30 Sep 2025 10:37:20 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id B47B9102F17D5; 
- Tue, 30 Sep 2025 12:37:04 +0200 (CEST)
+ with ESMTPSA id 0207D102F17DA; 
+ Tue, 30 Sep 2025 12:37:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1759228630; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1759228640; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:content-language:in-reply-to:references:autocrypt;
- bh=WY0/e7w2RY1rRfgDu85Rdf3CzUwlE3wZHUyI/0ttRa0=;
- b=fH2lmLTzin0w/2hRKNUPR9ayO3Ddb1bJ/XT8QZWiWHJm4aQAwEvS36A14lGqL68E58pItr
- Y6O6lbLjDD4fiW31gpshICG6ZpV3CIZBBtmyFDt6rNSXCHgJPxlMewBXtu5tyz0zFHPfrx
- HqKoKOVTXmbQkAJhPrU2ZEIjqIFhKbduLf5UGpsh/j5JB6dZo/8lNc5e5AM09oFA8giohH
- 33f8YSWUpMegticeGz6eMbDmZrhoYFzOGmScWqx0A+cbb5qTe0nLD3nWxELb+wrVLSx+rv
- iyBWuqpRnNHfYh2eZOmBNO57Ns9qV/hkwJ4bfDfO7KWhVNOIK7ONIsJmov0hQg==
-Message-ID: <79518ab4-3184-4626-9a2b-b0f3783256a2@bootlin.com>
-Date: Tue, 30 Sep 2025 12:37:04 +0200
+ bh=oar9d1HhCpCyfQUZzE4BAVBT1R2ai0N3lj8iF544xrY=;
+ b=28PpKZfMNP+eIRNCaGiurndkMsLJqI6ymNArXN1B6khQCKSFQi8+EqZ2qZsBG/rvthfAEw
+ kB3aggszAwuDpcdllr9edZozJWBhYXboSCXgQ2NznctA/J1jJNGRtdc/yW0ogdH1Yb4i+c
+ A7z8fZ/9NMgfDpXj9h2FKOhK2Bxg8eW802NNNWdffWu7/PGZgmqpnJU10n3kNe/NS8NFBu
+ WOxg7Jhx4xytcIgXTV/050M3IwclvTHMttwvyjP+Vq1G8yILlfCqcUiR77BLcA39H4XW4B
+ TJ6pkhljSKz8EdQLKjqHCCzNrLJVVI+OH27Vkg8RPln2FD2sCb9resrEZuvyog==
+Message-ID: <5efb9dc9-6007-4d0b-bf84-950cbf208362@bootlin.com>
+Date: Tue, 30 Sep 2025 12:37:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH V10 04/30] lib/igt_kms: Destroy colorops on exit
+Subject: Re: [PATCH V10 02/30] lib/igt_kms: Introduce
+ DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
 To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
-Cc: harry.wentland@amd.com, leo.liu@amd.com,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: harry.wentland@amd.com, leo.liu@amd.com
 References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-5-alex.hung@amd.com>
+ <20250815040659.3321102-3-alex.hung@amd.com>
 Content-Language: en-US, fr
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -99,7 +99,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  wDN7ORknPndzxrq3CyB7b/Tk1e8Qx+6HU/pnMb4ZqwwMwZAMk24TZpsgg28o9MQiUNzad0h2
  gIszbeej9ryrtLHxMzyK8yKhHoI2i2ovxy5O+hsWeAoCPE9xwbqnAjLjOn4Jzd/pPovizrq/
  kUoX66YgvCuHfQMC/aBPLnVunZSP23J2CrkTrnsUzw==
-In-Reply-To: <20250815040659.3321102-5-alex.hung@amd.com>
+In-Reply-To: <20250815040659.3321102-3-alex.hung@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -121,55 +121,260 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/08/2025 à 06:06, Alex Hung a écrit :
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> From: Harry Wentland <harry.wentland@amd.com>
 > 
-> - Free the memory allocated for colorops on igt_display_fini()
-
-I think this should be done in the previous patch.
-
-> - Disable COLOR_PIPELINE on igt_display_reset()
->
+> Setting the COLOR_PIPELINE plane prop is only allowed when the
+> DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE is set.
+> 
+> Setting COLOR_RANGE and COLOR_ENCODING is only allowed when the
+> DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE is NOT set.
+> 
 > Signed-off-by: Alex Hung <alex.hung@amd.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 > ---
->   lib/igt_kms.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+>   include/drm-uapi/drm.h | 15 ++++++++++
+>   lib/igt_kms.c          | 63 ++++++++++++++++++++++++++++++++++--------
+>   lib/igt_kms.h          |  1 +
+>   tests/kms_properties.c | 20 ++++++++++----
+>   4 files changed, 81 insertions(+), 18 deletions(-)
 > 
+> diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
+> index 4e4f7c2c3..6b9af3348 100644
+> --- a/include/drm-uapi/drm.h
+> +++ b/include/drm-uapi/drm.h
+> @@ -869,6 +869,21 @@ struct drm_get_cap {
+>    */
+>   #define DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT	6
+>   
+> +/**
+> + * DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
+> + *
+> + * If set to 1, the DRM core will
+> + * - expose plane COLOR_PIPELINE properties for pre-blending color management.
+> + * - reject setting of these plane properties:
+> + *   - COLOR_ENCODING
+> + *   - COLOR_RANGE
+> + *
+> + * The client must enable &DRM_CLIENT_CAP_ATOMIC first.
+> + *
+> + * This capability is currently in development.
+> + */
+> +#define DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE	7
+> +
+
+I think this should go in a separate commit ("inclde/drm-uapi: sync with 
+color pipeline series")
+
+>   /* DRM_IOCTL_SET_CLIENT_CAP ioctl argument type */
+>   struct drm_set_client_cap {
+>   	__u64 capability;
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 69beb523f..67be5240f 100644
+> index 7191bf92e..a9641eba4 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -2708,6 +2708,9 @@ static void igt_plane_reset(igt_plane_t *plane)
->   	if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_Y))
->   		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_Y, 0);
+> @@ -2545,6 +2545,8 @@ static int get_drm_plane_type(int drm_fd, uint32_t plane_id)
 >   
-> +	if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
-> +		igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
+>   static void igt_plane_reset(igt_plane_t *plane)
+>   {
+> +	igt_display_t *display = plane->pipe->display;
 > +
->   	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
->   	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
->   	plane->gem_handle = 0;
-> @@ -3436,12 +3439,15 @@ void igt_display_fini(igt_display_t *display)
+>   	/* Reset src coordinates. */
+>   	igt_plane_set_prop_value(plane, IGT_PLANE_SRC_X, 0);
+>   	igt_plane_set_prop_value(plane, IGT_PLANE_SRC_Y, 0);
+> @@ -2561,13 +2563,15 @@ static void igt_plane_reset(igt_plane_t *plane)
+>   	igt_plane_set_prop_value(plane, IGT_PLANE_FB_ID, 0);
+>   	igt_plane_set_prop_value(plane, IGT_PLANE_CRTC_ID, 0);
 >   
->   	for (i = 0; i < display->n_outputs; i++)
->   		igt_output_fini(&display->outputs[i]);
+> -	if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_ENCODING))
+> -		igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_ENCODING,
+> -			igt_color_encoding_to_str(IGT_COLOR_YCBCR_BT601));
+> +	if (!display->has_plane_color_pipeline) {
+> +		if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_ENCODING))
+> +			igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_ENCODING,
+> +				igt_color_encoding_to_str(IGT_COLOR_YCBCR_BT601));
+>   
+> -	if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_RANGE))
+> -		igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_RANGE,
+> -			igt_color_range_to_str(IGT_COLOR_YCBCR_LIMITED_RANGE));
+> +		if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_RANGE))
+> +			igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_RANGE,
+> +				igt_color_range_to_str(IGT_COLOR_YCBCR_LIMITED_RANGE));
+> +	}
+>   
+>   	/* Use default rotation */
+>   	if (igt_plane_has_prop(plane, IGT_PLANE_ROTATION))
+> @@ -2982,6 +2986,9 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>   	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
+>   		display->has_virt_cursor_plane = 1;
+>   
+> +	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+> +		display->has_plane_color_pipeline = 1;
 > +
->   	free(display->outputs);
->   	display->outputs = NULL;
->   	free(display->pipes);
->   	display->pipes = NULL;
->   	free(display->planes);
->   	display->planes = NULL;
-> +	free(display->colorops);
-> +	display->colorops = NULL;
+>   	plane_resources = drmModeGetPlaneResources(display->drm_fd);
+>   	igt_assert(plane_resources);
+>   
+> @@ -3609,6 +3616,29 @@ static uint32_t igt_plane_get_fb_id(igt_plane_t *plane)
+>   	igt_assert_eq(r, 0);	\
 >   }
 >   
->   static void igt_display_refresh(igt_display_t *display)
+> +static bool
+> +igt_atomic_ignore_plane_prop(igt_pipe_t *pipe, uint32_t prop)
+> +{
+> +	igt_display_t *display = pipe->display;
+> +
+> +	if (display->has_plane_color_pipeline) {
+> +		switch (prop) {
+> +		case IGT_PLANE_COLOR_ENCODING:
+> +		case IGT_PLANE_COLOR_RANGE:
+> +			return true;
+> +		default:
+> +			return false;
+> +		}
+> +	} else {
+> +		switch (prop) {
+> +		default:
+> +			return false;
+> +		}
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>   /*
+>    * Add position and fb changes of a plane to the atomic property set
+>    */
+> @@ -3628,6 +3658,12 @@ igt_atomic_prepare_plane_commit(igt_plane_t *plane, igt_pipe_t *pipe,
+>   	    igt_plane_get_fb_id(plane));
+>   
+>   	for (i = 0; i < IGT_NUM_PLANE_PROPS; i++) {
+> +		if (igt_atomic_ignore_plane_prop(pipe, i)) {
+> +			igt_debug("plane %s.%d: Ignoring property \"%s\" to 0x%"PRIx64"/%"PRIi64"\n",
+> +				kmstest_pipe_name(pipe->pipe), plane->index, igt_plane_prop_names[i],
+> +			plane->values[i], plane->values[i]);			continue;
+> +		}
+> +
+>   		if (!igt_plane_is_prop_changed(plane, i))
+>   			continue;
+>   
+> @@ -5222,12 +5258,15 @@ void igt_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb)
+>   		igt_fb_set_position(fb, plane, 0, 0);
+>   		igt_fb_set_size(fb, plane, fb->width, fb->height);
+>   
+> -		if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_ENCODING))
+> -			igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_ENCODING,
+> -				igt_color_encoding_to_str(fb->color_encoding));
+> -		if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_RANGE))
+> -			igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_RANGE,
+> -				igt_color_range_to_str(fb->color_range));
+> +		if (!display->has_plane_color_pipeline) {
+> +			if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_ENCODING))
+> +				igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_ENCODING,
+> +					igt_color_encoding_to_str(fb->color_encoding));
+> +
+> +			if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_RANGE))
+> +				igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_RANGE,
+> +					igt_color_range_to_str(fb->color_range));
+> +		}
+>   
+>   		/* Hack to prioritize the plane on the pipe that last set fb */
+>   		igt_plane_set_pipe(plane, pipe);
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index f140ad91a..8ec39fa85 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -508,6 +508,7 @@ struct igt_display {
+>   	bool has_cursor_plane;
+>   	bool is_atomic;
+>   	bool has_virt_cursor_plane;
+> +	bool has_plane_color_pipeline;
+>   	bool first_commit;
+>   
+>   	uint64_t *modifiers;
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+> index b30387888..e646b8184 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -101,7 +101,7 @@ static void cleanup_pipe(igt_display_t *display, enum pipe pipe, igt_output_t *o
+>   }
+>   
+>   static bool ignore_property(uint32_t obj_type, uint32_t prop_flags,
+> -			    const char *name, bool atomic)
+> +			    const char *name, bool atomic, bool has_color_pipeline)
+>   {
+>   	if (prop_flags & DRM_MODE_PROP_IMMUTABLE)
+>   		return true;
+> @@ -111,6 +111,14 @@ static bool ignore_property(uint32_t obj_type, uint32_t prop_flags,
+>   		if (atomic && !strcmp(name, "DPMS"))
+>   			return true;
+>   		break;
+> +	case DRM_MODE_OBJECT_PLANE:
+> +		if (has_color_pipeline && !strcmp(name, "COLOR_RANGE"))
+> +			return true;
+> +
+> +		if (has_color_pipeline && !strcmp(name, "COLOR_ENCODING"))
+> +			return true;
+> +
+> +		break;
+>   	default:
+>   		break;
+>   	}
+> @@ -164,7 +172,7 @@ static bool has_additional_test_lookup(uint32_t obj_type, const char *name,
+>   
+>   	return false;
+>   }
+> -static void test_properties(int fd, uint32_t type, uint32_t id, bool atomic)
+> +static void test_properties(int fd, uint32_t type, uint32_t id, bool atomic, bool has_color_pipeline)
+>   {
+>   	drmModeObjectPropertiesPtr props =
+>   		drmModeObjectGetProperties(fd, id, type);
+> @@ -183,7 +191,7 @@ static void test_properties(int fd, uint32_t type, uint32_t id, bool atomic)
+>   
+>   		igt_assert(prop);
+>   
+> -		if (ignore_property(type, prop->flags, prop->name, atomic)) {
+> +		if (ignore_property(type, prop->flags, prop->name, atomic, has_color_pipeline)) {
+>   			igt_debug("Ignoring property \"%s\"\n", prop->name);
+>   
+>   			continue;
+> @@ -230,7 +238,7 @@ static void run_plane_property_tests(igt_display_t *display, enum pipe pipe, igt
+>   		igt_info("Testing plane properties on %s.#%d-%s (output: %s)\n",
+>   			 kmstest_pipe_name(pipe), plane->index, kmstest_plane_type_name(plane->type), output->name);
+>   
+> -		test_properties(display->drm_fd, DRM_MODE_OBJECT_PLANE, plane->drm_plane->plane_id, atomic);
+> +		test_properties(display->drm_fd, DRM_MODE_OBJECT_PLANE, plane->drm_plane->plane_id, atomic, display->has_plane_color_pipeline);
+>   	}
+>   
+>   	cleanup_pipe(display, pipe, output, &fb);
+> @@ -244,7 +252,7 @@ static void run_crtc_property_tests(igt_display_t *display, enum pipe pipe, igt_
+>   
+>   	igt_info("Testing crtc properties on %s (output: %s)\n", kmstest_pipe_name(pipe), output->name);
+>   
+> -	test_properties(display->drm_fd, DRM_MODE_OBJECT_CRTC, display->pipes[pipe].crtc_id, atomic);
+> +	test_properties(display->drm_fd, DRM_MODE_OBJECT_CRTC, display->pipes[pipe].crtc_id, atomic, false);
+
+Is there a reason to not use display->has_plane_color_pipeline here?
+
+>   
+>   	cleanup_pipe(display, pipe, output, &fb);
+>   }
+> @@ -258,7 +266,7 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
+>   
+>   	igt_info("Testing connector properties on output %s (pipe: %s)\n", output->name, kmstest_pipe_name(pipe));
+>   
+> -	test_properties(display->drm_fd, DRM_MODE_OBJECT_CONNECTOR, output->id, atomic);
+> +	test_properties(display->drm_fd, DRM_MODE_OBJECT_CONNECTOR, output->id, atomic, false);
+
+Ditto
+
+>   
+>   	if (pipe != PIPE_NONE)
+>   		cleanup_pipe(display, pipe, output, &fb);
 
 -- 
 --
 Louis Chauvet, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
+
 
 
