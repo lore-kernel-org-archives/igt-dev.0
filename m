@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D4E2CCA471
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:37:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69DFDCCA470
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 10:37:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F7EC10E560;
-	Tue, 30 Sep 2025 10:37:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 26C3610E55C;
+	Tue, 30 Sep 2025 10:37:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="d/1tLjp3";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fH2lmLTz";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F7CE10E55F
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE78710E568
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:11 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 064DF4E40DF4;
- Tue, 30 Sep 2025 10:37:00 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id A8DFF4E40DF4
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 10:37:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id D1304606E4;
- Tue, 30 Sep 2025 10:36:59 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 7F129606E4;
+ Tue, 30 Sep 2025 10:37:10 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id B3B0C102F17D5; 
- Tue, 30 Sep 2025 12:36:58 +0200 (CEST)
+ with ESMTPSA id B47B9102F17D5; 
+ Tue, 30 Sep 2025 12:37:04 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1759228619; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1759228630; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:content-language:in-reply-to:references:autocrypt;
- bh=vzX8q0GgLE4KRMk8yCXV6ouBJ80rbW/lbfsqrM7FD8E=;
- b=d/1tLjp3Buf4Re4xY3pRMzhc4lvWAJ01vz4PQjAa7ufG4ZxJdF0/NG7Rg39tjXK8HUyWmN
- TpeD8ScSJeXaMoRulvlU5m/9T6Cy1r6ZbHcEyHfaJ9SdFucjpweRDOKrFIrR6aDSX7csK0
- NQHjBQRCNQUXbimkgokhx2fuEwDiKgS5vJBS1BJtzl+oZTrCenaBlNgR+AEIrKSU/O++aI
- MzETI1XFmDN8U8sXHeK5nqotD9zLdxPERBPKOxE+oESt8GHSF28hqDJ/gN9ltpqZzr7YKt
- h0/VfTkEYSR8p4l5eHXtnyTzKHXIwUY3G5O+FhdzYI9ZNbc6z9AJ5Sh+Nz6BoA==
-Message-ID: <9e9c017d-aae9-4af7-8941-254edee40e6c@bootlin.com>
-Date: Tue, 30 Sep 2025 12:36:58 +0200
+ bh=WY0/e7w2RY1rRfgDu85Rdf3CzUwlE3wZHUyI/0ttRa0=;
+ b=fH2lmLTzin0w/2hRKNUPR9ayO3Ddb1bJ/XT8QZWiWHJm4aQAwEvS36A14lGqL68E58pItr
+ Y6O6lbLjDD4fiW31gpshICG6ZpV3CIZBBtmyFDt6rNSXCHgJPxlMewBXtu5tyz0zFHPfrx
+ HqKoKOVTXmbQkAJhPrU2ZEIjqIFhKbduLf5UGpsh/j5JB6dZo/8lNc5e5AM09oFA8giohH
+ 33f8YSWUpMegticeGz6eMbDmZrhoYFzOGmScWqx0A+cbb5qTe0nLD3nWxELb+wrVLSx+rv
+ iyBWuqpRnNHfYh2eZOmBNO57Ns9qV/hkwJ4bfDfO7KWhVNOIK7ONIsJmov0hQg==
+Message-ID: <79518ab4-3184-4626-9a2b-b0f3783256a2@bootlin.com>
+Date: Tue, 30 Sep 2025 12:37:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH V10 05/30] tests/kms_properties: Add colorop properties
- test
+Subject: Re: [PATCH V10 04/30] lib/igt_kms: Destroy colorops on exit
 To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
-Cc: harry.wentland@amd.com, leo.liu@amd.com
+Cc: harry.wentland@amd.com, leo.liu@amd.com,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-6-alex.hung@amd.com>
+ <20250815040659.3321102-5-alex.hung@amd.com>
 Content-Language: en-US, fr
 Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
@@ -99,7 +99,7 @@ Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
  wDN7ORknPndzxrq3CyB7b/Tk1e8Qx+6HU/pnMb4ZqwwMwZAMk24TZpsgg28o9MQiUNzad0h2
  gIszbeej9ryrtLHxMzyK8yKhHoI2i2ovxy5O+hsWeAoCPE9xwbqnAjLjOn4Jzd/pPovizrq/
  kUoX66YgvCuHfQMC/aBPLnVunZSP23J2CrkTrnsUzw==
-In-Reply-To: <20250815040659.3321102-6-alex.hung@amd.com>
+In-Reply-To: <20250815040659.3321102-5-alex.hung@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -121,126 +121,50 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 Le 15/08/2025 à 06:06, Alex Hung a écrit :
-> From: Harry Wentland <harry.wentland@amd.com>
+> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > 
-> We've introduced the concept of a new DRM core object, the
-> drm_colorop, to represent a color operation as part of a
-> color pipeline.
-> 
-> Add new tests to kms_properties to test the properties of
-> a drm_colorop object.
-> 
+> - Free the memory allocated for colorops on igt_display_fini()
+
+I think this should be done in the previous patch.
+
+> - Disable COLOR_PIPELINE on igt_display_reset()
+>
 > Signed-off-by: Alex Hung <alex.hung@amd.com>
-> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/kms_properties.c | 69 ++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 69 insertions(+)
+>   lib/igt_kms.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-> index 3bdf23aad..a4d73fe1b 100644
-> --- a/tests/kms_properties.c
-> +++ b/tests/kms_properties.c
-> @@ -47,6 +47,7 @@
->    * @crtc:            CRTC
->    * @plane:           Plane
->    * @invalid:         Invalid (connector/crtc/plane)
-> + * @colorop:         Colorop
->    *
->    * arg[2]:
->    *
-> @@ -230,6 +231,39 @@ static void test_properties(int fd, uint32_t type, uint32_t id, bool atomic, boo
->   	}
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 69beb523f..67be5240f 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -2708,6 +2708,9 @@ static void igt_plane_reset(igt_plane_t *plane)
+>   	if (igt_plane_has_prop(plane, IGT_PLANE_HOTSPOT_Y))
+>   		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_Y, 0);
+>   
+> +	if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+> +		igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
+> +
+>   	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
+>   	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
+>   	plane->gem_handle = 0;
+> @@ -3436,12 +3439,15 @@ void igt_display_fini(igt_display_t *display)
+>   
+>   	for (i = 0; i < display->n_outputs; i++)
+>   		igt_output_fini(&display->outputs[i]);
+> +
+>   	free(display->outputs);
+>   	display->outputs = NULL;
+>   	free(display->pipes);
+>   	display->pipes = NULL;
+>   	free(display->planes);
+>   	display->planes = NULL;
+> +	free(display->colorops);
+> +	display->colorops = NULL;
 >   }
 >   
-> +static void run_colorop_property_tests(igt_display_t *display, enum pipe pipe, igt_output_t *output, bool atomic)
-> +{
-> +	struct igt_fb fb;
-> +	igt_plane_t *plane;
-> +	igt_colorop_t *colorop;
-> +	int i;
-> +	int colorop_id = 0;
-> +
-> +	prepare_pipe(display, pipe, output, &fb);
-> +
-> +	for_each_plane_on_pipe(display, pipe, plane) {
-> +		igt_info("Testing colorop properties on plane %s.#%d-%s (output: %s)\n",
-> +			 kmstest_pipe_name(pipe), plane->index, kmstest_plane_type_name(plane->type), output->name);
-> +
-> +		/* iterate over all color pipelines on plane */
-> +		for (i = 0; i < plane->num_color_pipelines; ++i) {
-> +			/* iterate over all colorops in pipeline*/
-> +			colorop = plane->color_pipelines[i];
-> +			while (colorop) {
-> +				igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
-> +					kmstest_pipe_name(pipe), plane->index, colorop->id, kmstest_plane_type_name(plane->type), output->name);
-> +				test_properties(display->drm_fd, DRM_MODE_OBJECT_COLOROP, colorop->id, atomic, false);
-
-Same as a previous patch, why do you pass false and not 
-display->has_plane_color_pipeline?
-
-> +
-> +				colorop_id = igt_colorop_get_prop(display, colorop,
-> +								IGT_COLOROP_NEXT);
-> +				colorop = igt_find_colorop(display, colorop_id);
-> +			}
-> +		}
-> +	}
-> +
-> +	cleanup_pipe(display, pipe, output, &fb);
-> +}
-> +
->   static void run_plane_property_tests(igt_display_t *display, enum pipe pipe, igt_output_t *output, bool atomic)
->   {
->   	struct igt_fb fb;
-> @@ -275,6 +309,37 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
->   		cleanup_pipe(display, pipe, output, &fb);
->   }
->   
-> +static void colorop_properties(igt_display_t *display, bool atomic)
-> +{
-> +	bool found_any = false, found;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
-> +
-> +	/* colorops are only available with atomic */
-> +	igt_skip_on(!display->is_atomic);
-> +
-> +	for_each_pipe(display, pipe) {
-> +		found = false;
-> +
-> +		for_each_valid_output_on_pipe(display, pipe, output) {
-> +			igt_display_reset(display);
-> +
-> +			igt_output_set_pipe(output, pipe);
-> +			if (!intel_pipe_output_combo_valid(display))
-> +				continue;
-> +
-> +			found_any = found = true;
-> +
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-> +				igt_output_name(output)) {
-> +				run_colorop_property_tests(display, pipe, output, atomic);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_skip_on(!found_any);
-> +}
-> +
->   static void plane_properties(igt_display_t *display, bool atomic)
->   {
->   	igt_output_t *output;
-> @@ -853,6 +918,10 @@ igt_main
->   		  "Tests connector properties with legacy commit" },
->   		{ "connector-properties-atomic", connector_properties, true,
->   		  "Tests connector properties with atomic commit" },
-> +		{ "colorop-properties-legacy", colorop_properties, false,
-> +		  "Tests colorop properties with legacy commit" },
-> +		{ "colorop-properties-atomic", colorop_properties, true,
-> +		  "Tests colorop properties with atomic commit" },
->   	};
->   
->   	igt_fixture {
+>   static void igt_display_refresh(igt_display_t *display)
 
 -- 
 --
