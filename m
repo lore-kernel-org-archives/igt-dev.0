@@ -4,59 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C154CCA471
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 12:48:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DC07CCA468
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Sep 2025 12:53:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1474F10E33A;
-	Tue, 30 Sep 2025 12:48:08 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bt7gdN7/";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF8A010E2B3
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Sep 2025 12:48:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759236487; x=1790772487;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=y6suhwtrC0sy8d0nT78GkWYGw8tkkb1kUEYmDRNnZfA=;
- b=bt7gdN7/35X+ewSrV3NzsuhMdQ2u2WQUmWgY870QsvtfM72QHJdeRc+j
- XffZQQkwwbsRB54xQxe/gRHddZqth7Kaw++QUa7DKQ4Qett3n1s8zsa2c
- iYeSMUdMBoU3KVZbkkJR0LZjQh3sOVnihqARFUO1bF2jF5v1O5w7BnTio
- aDUZrIy1jrEJpOr2h6r/7FICV4ufeAcmPSNMcdnAdlweVcyVIOvvZ1LaX
- qzDEpfgW67NTt371NoTwe1gowmg7WSvvyQ4rgb3CKDbBR5rrxZ6wD4d8f
- S9MfO/6N1FMwbwC7IvgSxOCxdduDE4KHPUPasbgaAV+RjN40Fjc15q0Nq g==;
-X-CSE-ConnectionGUID: dth+aiv+Se+a20JYvLcjFA==
-X-CSE-MsgGUID: rX2vNMXBRG6KNfQ4Mjs5xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="64110742"
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="64110742"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 05:48:07 -0700
-X-CSE-ConnectionGUID: Jmtdn6SkRL+zXQShpYikYQ==
-X-CSE-MsgGUID: Br9W2rw1S16BAQplV/vFBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; d="scan'208";a="182934885"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 05:48:06 -0700
-Date: Tue, 30 Sep 2025 14:47:48 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/6] tools/intel_vbt_decode: Introduce to_str()
-Message-ID: <20250930124748.cycggtmrp62vatsv@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20250929192127.5865-1-ville.syrjala@linux.intel.com>
- <20250929192127.5865-2-ville.syrjala@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B57E910E5A3;
+	Tue, 30 Sep 2025 12:53:18 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 879FD10E40E;
+ Tue, 30 Sep 2025 12:53:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3729347373046607462=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250929192127.5865-2-ville.syrjala@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2C1/2=5D_tests/intel/kms=5Fpm=5Frpm=3A_Refactor_system_suspe?=
+ =?utf-8?q?nd_test_function_parameters_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 30 Sep 2025 12:53:17 -0000
+Message-ID: <175923679754.377883.291102742589035674@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20250918105709.25093-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250918105709.25093-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,274 +38,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ville,
-On 2025-09-29 at 22:21:21 +0300, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> Introduce a to_str() macro that gives us a standard way
-> to decode a value we got from the VBT into a string.
-> 
-> All the cases converted here were implemented as a custom
-> function to deal with out of bounds/sparse values. All of
-> that is now taken care of by to_str(), so the strings can
-> just be defined as an array.
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->  tools/intel_vbt_decode.c | 137 +++++++++++++++++----------------------
->  1 file changed, 60 insertions(+), 77 deletions(-)
-> 
-> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-> index a4e76b7559d2..dbcba3b9cd3b 100644
-> --- a/tools/intel_vbt_decode.c
-> +++ b/tools/intel_vbt_decode.c
-> @@ -631,6 +631,17 @@ static bool panel_bool(unsigned int value, int panel_type)
->  	return panel_bits(value, panel_type, 1);
->  }
->  
-> +static const char *_to_str(const char * const strings[],
-> +			   int num_strings, int value)
-> +{
-> +	if (value >= num_strings || strings[value] == NULL)
+--===============3729347373046607462==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Small nit: to be sure here you could also check negative index:
-	if (value >= num_strings || value < 0 || strings[value] == NULL)
+== Series Details ==
 
-Regards,
-Kamil
+Series: series starting with [i-g-t,1/2] tests/intel/kms_pm_rpm: Refactor system suspend test function parameters (rev4)
+URL   : https://patchwork.freedesktop.org/series/154694/
+State : success
 
-> +		return "<unknown>";
-> +
-> +	return strings[value];
-> +}
-> +
-> +#define to_str(strings, value) _to_str((strings), ARRAY_SIZE(strings), (value))
-> +
->  static int decode_ssc_freq(struct context *context, bool alternate)
->  {
->  	switch (intel_gen(context->devid)) {
-> @@ -705,26 +716,18 @@ static void dump_general_features(struct context *context,
->  	printf("\tDP SSC dongle supported: %s\n", YESNO(features->dp_ssc_dongle_supported));
->  }
->  
-> -static const char *inverter_type(u8 type)
-> -{
-> -	switch (type) {
-> -	case 0: return "none/external";
-> -	case 1: return "I2C";
-> -	case 2: return "PWM";
-> -	default: return "<reserved>";
-> -	}
-> -}
-> +static const char * const inverter_type_str[] = {
-> +	[0] = "none/external",
-> +	[1] = "I2C",
-> +	[2] = "PWM",
-> +};
->  
-> -static const char *i2c_speed(u8 i2c_speed)
-> -{
-> -	switch (i2c_speed) {
-> -	case 0: return "100 kHz";
-> -	case 1: return "50 kHz";
-> -	case 2: return "400 kHz";
-> -	case 3: return "1 MHz";
-> -	default: return "<unknown>";
-> -	}
-> -}
-> +static const char * const i2c_speed_str[] = {
-> +	[0] = "100 kHz",
-> +	[1] = "50 kHz",
-> +	[2] = "400 kHz",
-> +	[3] = "1 MHz",
-> +};
->  
->  static void dump_backlight_info(struct context *context,
->  				const struct bdb_block *block)
-> @@ -751,7 +754,7 @@ static void dump_backlight_info(struct context *context,
->  		blc = &backlight->data[i];
->  
->  		printf("\t\tInverter type: %s (%u)\n",
-> -		       inverter_type(blc->type), blc->type);
-> +		       to_str(inverter_type_str, blc->type), blc->type);
->  		printf("\t\tActive low: %s\n", YESNO(blc->active_low_pwm));
->  		printf("\t\tPWM freq: %u\n", blc->pwm_freq_hz);
->  		printf("\t\tMinimum brightness: %u\n", blc->min_brightness);
-> @@ -759,7 +762,7 @@ static void dump_backlight_info(struct context *context,
->  		if (blc->type == 1) {
->  			printf("\t\tI2C pin: 0x%02x\n", blc->i2c_pin);
->  			printf("\t\tI2C speed: %s (0x%02x)\n",
-> -			       i2c_speed(blc->i2c_speed), blc->i2c_speed);
-> +			       to_str(i2c_speed_str, blc->i2c_speed), blc->i2c_speed);
->  			printf("\t\tI2C address: 0x%02x\n", blc->i2c_address);
->  			printf("\t\tI2C command: 0x%02x\n", blc->i2c_command);
->  		}
-> @@ -1008,19 +1011,11 @@ static const char *aux_ch(uint8_t aux_ch)
->  		return "unknown";
->  }
->  
-> -static const char *mipi_bridge_type(uint8_t type)
-> -{
-> -	switch (type) {
-> -	case 1:
-> -		return "ASUS";
-> -	case 2:
-> -		return "Toshiba";
-> -	case 3:
-> -		return "Renesas";
-> -	default:
-> -		return "unknown";
-> -	}
-> -}
-> +static const char * const mipi_bridge_type_str[] = {
-> +	[1] = "ASUS",
-> +	[2] = "Toshiba",
-> +	[3] = "Renesas",
-> +};
->  
->  static void dump_hmdi_max_data_rate(uint8_t hdmi_max_data_rate)
->  {
-> @@ -1090,40 +1085,28 @@ static void dump_dp_max_link_rate(uint16_t version, uint8_t dp_max_link_rate)
->  		       link_rate / 100.0f, dp_max_link_rate);
->  }
->  
-> -static const char *dp_vswing(u8 vswing)
-> -{
-> -	switch (vswing) {
-> -	case 0: return "0.4V";
-> -	case 1: return "0.6V";
-> -	case 2: return "0.8V";
-> -	case 3: return "1.2V";
-> -	default: return "<unknown>";
-> -	}
-> -}
-> +static const char * const dp_vswing_str[] = {
-> +	[0] = "0.4V",
-> +	[1] = "0.6V",
-> +	[2] = "0.8V",
-> +	[3] = "1.2V",
-> +};
->  
-> -static const char *dp_preemph(u8 preemph)
-> -{
-> -	switch (preemph) {
-> -	case 0: return "0dB";
-> -	case 1: return "3.5dB";
-> -	case 2: return "6dB";
-> -	case 3: return "9.5dB";
-> -	default: return "<unknown>";
-> -	}
-> -}
-> +static const char * const dp_preemph_str[] = {
-> +	[0] = "0dB",
-> +	[1] = "3.5dB",
-> +	[2] = "6dB",
-> +	[3] = "9.5dB",
-> +};
->  
-> -static const char *hdmi_frl_rate(u8 frl_rate)
-> -{
-> -	switch (frl_rate) {
-> -	case 0: return "FRL not supported";
-> -	case 1: return "3 GT/s";
-> -	case 2: return "6 GT/s";
-> -	case 3: return "8 GT/s";
-> -	case 4: return "10 GT/s";
-> -	case 5: return "12 GT/s";
-> -	default: return "<unknown>";
-> -	}
-> -}
-> +static const char * const hdmi_frl_rate_str[] = {
-> +	[0] = "FRL not supported",
-> +	[1] = "3 GT/s",
-> +	[2] = "6 GT/s",
-> +	[3] = "8 GT/s",
-> +	[4] = "10 GT/s",
-> +	[5] = "12 GT/s",
-> +};
->  
->  static void dump_child_device(struct context *context,
->  			      const struct child_device_config *child)
-> @@ -1142,27 +1125,27 @@ static void dump_child_device(struct context *context,
->  		printf("\t\tSignature: %.*s\n", (int)sizeof(child->device_id), child->device_id);
->  	} else {
->  		printf("\t\tI2C speed: %s (0x%02x)\n",
-> -		       i2c_speed(child->i2c_speed), child->i2c_speed);
-> +		       to_str(i2c_speed_str, child->i2c_speed), child->i2c_speed);
->  
->  		if (context->bdb->version >= 158) {
->  			printf("\t\tDP onboard redriver:\n");
->  			printf("\t\t\tpresent: %s\n",
->  			       YESNO((child->dp_onboard_redriver_present)));
->  			printf("\t\t\tvswing: %s (0x%x)\n",
-> -			       dp_vswing(child->dp_onboard_redriver_vswing),
-> +			       to_str(dp_vswing_str, child->dp_onboard_redriver_vswing),
->  			       child->dp_onboard_redriver_vswing);
->  			printf("\t\t\tpre-emphasis: %s (0x%x)\n",
-> -			       dp_preemph(child->dp_onboard_redriver_preemph),
-> +			       to_str(dp_preemph_str, child->dp_onboard_redriver_preemph),
->  			       child->dp_onboard_redriver_preemph);
->  
->  			printf("\t\tDP ondock redriver:\n");
->  			printf("\t\t\tpresent: %s\n",
->  			       YESNO((child->dp_ondock_redriver_present)));
->  			printf("\t\t\tvswing: %s (0x%x)\n",
-> -			       dp_vswing(child->dp_ondock_redriver_vswing),
-> +			       to_str(dp_vswing_str, child->dp_ondock_redriver_vswing),
->  			       child->dp_ondock_redriver_vswing);
->  			printf("\t\t\tpre-emphasis: %s (0x%x)\n",
-> -			       dp_preemph(child->dp_ondock_redriver_preemph),
-> +			       to_str(dp_preemph_str, child->dp_ondock_redriver_preemph),
->  			       child->dp_ondock_redriver_preemph);
->  		}
->  
-> @@ -1196,7 +1179,7 @@ static void dump_child_device(struct context *context,
->  			printf("\t\tHDMI Max FRL rate valid: %s\n",
->  			       YESNO(child->hdmi_max_frl_rate_valid));
->  			printf("\t\tHDMI Max FRL rate: %s (0x%x)\n",
-> -			       hdmi_frl_rate(child->hdmi_max_frl_rate),
-> +			       to_str(hdmi_frl_rate_str, child->hdmi_max_frl_rate),
->  			       child->hdmi_max_frl_rate);
->  		}
->  	}
-> @@ -1255,7 +1238,7 @@ static void dump_child_device(struct context *context,
->  		printf("\t\tDVO2 wiring: 0x%02x\n", child->dvo2_wiring);
->  	} else {
->  		printf("\t\tMIPI bridge type: %02x (%s)\n", child->mipi_bridge_type,
-> -		       mipi_bridge_type(child->mipi_bridge_type));
-> +		       to_str(mipi_bridge_type_str, child->mipi_bridge_type));
->  	}
->  
->  	printf("\t\tDevice class extension: 0x%02x\n", child->extended_type);
-> @@ -2425,10 +2408,10 @@ static void dump_edp(struct context *context,
->  		printf("\t\t\tlanes: X%d\n",
->  		       edp->fast_link_params[i].lanes + 1);
->  		printf("\t\t\tpre-emphasis: %s (0x%x)\n",
-> -		       dp_preemph(edp->fast_link_params[i].preemphasis),
-> +		       to_str(dp_preemph_str, edp->fast_link_params[i].preemphasis),
->  		       edp->fast_link_params[i].preemphasis);
->  		printf("\t\t\tvswing: %s (0x%x)\n",
-> -		       dp_vswing(edp->fast_link_params[i].vswing),
-> +		       to_str(dp_vswing_str, edp->fast_link_params[i].vswing),
->  		       edp->fast_link_params[i].vswing);
->  
->  		if (context->bdb->version >= 162)
-> @@ -2477,10 +2460,10 @@ static void dump_edp(struct context *context,
->  
->  			printf("\t\tFull link params:\n");
->  			printf("\t\t\tpre-emphasis: %s (0x%x)\n",
-> -			       dp_preemph(edp->full_link_params[i].preemphasis),
-> +			       to_str(dp_preemph_str, edp->full_link_params[i].preemphasis),
->  			       edp->full_link_params[i].preemphasis);
->  			printf("\t\t\tvswing: %s (0x%x)\n",
-> -			       dp_vswing(edp->full_link_params[i].vswing),
-> +			       to_str(dp_vswing_str, edp->full_link_params[i].vswing),
->  			       edp->full_link_params[i].vswing);
->  		}
->  
-> -- 
-> 2.49.1
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_8558 -> IGTPW_13842
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/index.html
+
+Participating hosts (44 -> 43)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_13842 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-arls-5:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@load:
+    - bat-mtlp-9:         [DMESG-WARN][5] ([i915#13494]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-mtlp-9/igt@i915_module_load@load.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-mtlp-9/igt@i915_module_load@load.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][7] ([i915#12061] / [i915#13929]) -> [DMESG-FAIL][8] ([i915#12061] / [i915#14204])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-atsm-1/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-atsm-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-atsm-1:         [DMESG-FAIL][9] ([i915#13929]) -> [DMESG-FAIL][10] ([i915#14204])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-atsm-1/igt@i915_selftest@live@mman.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-atsm-1/igt@i915_selftest@live@mman.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
+  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
+  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8558 -> IGTPW_13842
+  * Linux: CI_DRM_17284 -> CI_DRM_17285
+
+  CI-20190529: 20190529
+  CI_DRM_17284: 85a5199d1e7b009e10b7c2cad0c43d28f0540085 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17285: 956b15498affbcc2a5b61b3f75fb130cfd9a3dcc @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13842: 13842
+  IGT_8558: 8d523a5eb4860834ed1ba97dd08d591d9272f837 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/index.html
+
+--===============3729347373046607462==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/intel/kms_pm_rpm: Refactor system suspend test function parameters (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154694/">https://patchwork.freedesktop.org/series/154694/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8558 -&gt; IGTPW_13842</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13842 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_module_load@load:<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8558/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13842/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8558 -&gt; IGTPW_13842</li>
+<li>Linux: CI_DRM_17284 -&gt; CI_DRM_17285</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17284: 85a5199d1e7b009e10b7c2cad0c43d28f0540085 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17285: 956b15498affbcc2a5b61b3f75fb130cfd9a3dcc @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13842: 13842<br />
+  IGT_8558: 8d523a5eb4860834ed1ba97dd08d591d9272f837 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3729347373046607462==--
