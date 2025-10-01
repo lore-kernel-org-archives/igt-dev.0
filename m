@@ -4,66 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45A2ACAC5BB
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 18:34:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1EC2CCA470
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 18:40:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E44B510E15B;
-	Wed,  1 Oct 2025 18:34:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8FC6F10E0E1;
+	Wed,  1 Oct 2025 18:40:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JFZUDSqP";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="ahE7fihD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2E3210E15B;
- Wed,  1 Oct 2025 18:34:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759343655; x=1790879655;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=h0HUbtUdtX1Li4YnzOJi0M8GTKG+nBgoACKfuefx1mM=;
- b=JFZUDSqPnkJ+d70W/SxetXbeQOrKhYngVtJb6keJXruV4sDRaAFWNIcC
- 5RPdU3chO1GO4pQ6O4X/OI+XhFFAYI1egWhcH/jn6VLfcndXWlb8B6eNJ
- y+DUXxgSeWKEfyAGHaOJKkz12DhBZ8h2cX/+mSCrCqXWbrXKzkFaSvuyq
- qythcngnR15LYGx58EAhEWIiNKZjsg44fozsGZ2qzp6dkBFQ8S0Jz9lkj
- TWrb7CIibWvGAzIBRpbC7t5ZyWSEYdbWMT0/SwtFl0qIBW0nqxdJNqY6z
- r54N90t/nHUgTSNBSFpg2COVL5xvdEIMJyVIye8m7zwiUYYOsp+uAj0S1 A==;
-X-CSE-ConnectionGUID: AodQerKoQlC5wPTXiNbElg==
-X-CSE-MsgGUID: l8WBj1snTtmkDCrMfafHlg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61730199"
-X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; d="scan'208";a="61730199"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2025 11:34:14 -0700
-X-CSE-ConnectionGUID: ZHqLAFYuTfesjs1pbGfLQQ==
-X-CSE-MsgGUID: x6srVE6DToi9uECfNdULJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; d="scan'208";a="178808613"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 11:34:13 -0700
-Date: Wed, 1 Oct 2025 20:34:10 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: Re: [PATCH i-g-t 1/3] tests/gem_eio: Adjust for long reset-resume
- cycle on Gen12+
-Message-ID: <20251001183410.emqpwidf2hpbmtf3@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>
-References: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
- <20250930125430.2323555-6-janusz.krzysztofik@linux.intel.com>
- <20251001133600.cfkspqz3mc4wggvx@kamilkon-DESK.igk.intel.com>
- <1813705.X513TT2pbd@jkrzyszt-mobl2.ger.corp.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1813705.X513TT2pbd@jkrzyszt-mobl2.ger.corp.intel.com>
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com
+ [209.85.160.201])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9BF310E0E1
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 18:40:02 +0000 (UTC)
+Received: by mail-qt1-f201.google.com with SMTP id
+ d75a77b69052e-4dec9293c62so4710771cf.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 01 Oct 2025 11:40:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1759344002; x=1759948802;
+ darn=lists.freedesktop.org; 
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=fsYro2W9Th7X9PekCYYDMLXelifU3wBAiFvetBkV6ME=;
+ b=ahE7fihD/SJz0rmNeCNX2MLUo6MzykGtOgrKr4c2p8OBeAsyiweZf2jmWFN6zsydf5
+ 4PpiBI0OiLAyTrfohScy4ZpP1D45nVgq341p+Q76pDJabKniSZ0qIc0jLJANWCSRw0GA
+ 94r3Kg1DvRdNKE8MJ9vZVH2vBOQ928V24+QYulY1lxJUn3d3Te5fwrOglsf9eoAW/Yes
+ +RaNJOD5/nlSPB7iK5qmANXSx/8RS0ye7AXJGmHjtkBnhf4GYMXtPAx+g6rbq0VQIDsz
+ czjGpdy48cTDeQWdn59rkx//NChDJu14hqsZ87sQQx+r2Q1kEsxWv1qz1ScX488BYNkt
+ h9AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759344002; x=1759948802;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fsYro2W9Th7X9PekCYYDMLXelifU3wBAiFvetBkV6ME=;
+ b=QVRWEO2c6tmjf7oR7n2nBVBtpK2auXZBf4LUuD9CcxDNSe80W6HZkfpFjXEVypjVOy
+ tpDvieauHipaRL1wI2UU57xPWhqL44duRpRjmdm6I9c7a41sU+MtOeiF74Ls6nLgZ4Mr
+ TyuFOpEr4CgWYh5Q3BOnAZVlLLNDRfgyrrbHUW8H+YYztFZk4U2Awzh7XuujwBB+Rki/
+ z1surKjCP42XbdEyxEa1yProEtcV29jRbz7pVhYVoD3PuXbu8HO6cvVmmt414+rVxkCe
+ qVEl1SFhFXuceFSyd/v6BR+DeUOePO+qMXT6y8sNr1LfhbU3u4Qq6iTYTNljHfDXRPBI
+ 8Dvw==
+X-Gm-Message-State: AOJu0Yxjqn/F4Ns5D9PVg0IqI3416ufJZOK+Wc6/A82ipIUXKfjK55/9
+ vSn7K8mMEqpjjH5xYpKmzhtV5Q3wwykrASHNu5X94HNgTX6BcpcuWuKbL+aSvPKIJTQvlxtxNBT
+ fB0ON2ix1LtvwvQfd2yqduKPnH4TE6covHcXPKmsJYkF0JzzwFN2pnQmaZ0vHFLns3BeJCdmkF3
+ +1k8lBXiOD9RwcQO3h6A1I2UVhtKnGfVy3xx0Zyc1j38HC45VRzj3nBxwJqx9223aze0w=
+X-Google-Smtp-Source: AGHT+IGjsLYKpe6GVYlMAiXiU2QMOC1i1L3Ea+PFhwcB20yNvdlJsSqiocaQ99mbNocas6fBbTASRb0IoSRE7Kkl
+X-Received: from qtxi16.prod.google.com ([2002:ac8:5e50:0:b0:4cf:1eba:f313])
+ (user=markyacoub job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:1a84:b0:4cc:9fa2:f3a3 with SMTP id
+ d75a77b69052e-4e41eef6492mr57662931cf.60.1759344001501; 
+ Wed, 01 Oct 2025 11:40:01 -0700 (PDT)
+Date: Wed,  1 Oct 2025 14:39:58 -0400
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.618.g983fd99d29-goog
+Message-ID: <20251001183958.3383532-1-markyacoub@google.com>
+Subject: [PATCH i-g-t] tests/kms_content_protection: Check for HDCP before
+ setting displays.
+From: Mark Yacoub <markyacoub@google.com>
+To: igt-dev@lists.freedesktop.org
+Cc: louis.chauvet@bootlin.com, Mark Yacoub <markyacoub@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,118 +77,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2025-10-01 at 17:15:13 +0200, Janusz Krzysztofik wrote:
-> Hi Kamil,
-> 
-> Thanks for looking at this.
-> 
-> On Wednesday, 1 October 2025 15:36:00 CEST Kamil Konieczny wrote:
-> > Hi Janusz,
-> > On 2025-09-30 at 14:49:01 +0200, Janusz Krzysztofik wrote:
-> > 
-> > could you improve subject? Now it is a little confusing why
-> > there are two, very similar changes needed, see first and
-> > second subjects:
-> > 
-> > [i-g-t,1/3] tests/gem_eio: Adjust for long reset-resume cycle on Gen12+
-> > 
-> > [i-g-t,2/3] tests/gem_eio: Adjust for slow resume after reset on Gen12+
-> > 
-> > At first I do not know why two very similar changes are made with
-> > two different commits.
-> 
-> In my opinion these two patches address two separate issues.  The first issue 
-> -- not enough measurements for median calculation -- prevents the exercise 
-> from calculating and reporting results.  The second issue in turn sometimes 
-> applies not quite realistic expectations to those results.  In order to learn 
-> which platforms suffer from the second issue, you have to resolve the first 
-> one to see those results.  To avoid confusion, I can try to reword those 
-> commit messages so they don't look so similar.
-> 
-> > 
-> > See also below.
-> > 
-> > > Subtests that measure time of resume after engine reset require results
-> > > from at least 9 reset-resume cycles for reasonable calculation of a median
-> > > value to be compared against presumed limits.  On most of Gen12+
-> > > platforms, the limit of 5 seconds for collecting those results occurs too
-> > > short for executing 9 reset-resum cycles.
-> > > 
-> > > Raise the limit to 20 seconds, and break the loop as soon as 9 results are
-> > > collected.  Also, warn if less than 9 resets have been completed within
-> > > the limit instead of silently succeeding despite the check being skipped.
-> > > 
-> > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > > ---
-> > >  tests/intel/gem_eio.c | 11 ++++++++---
-> > >  1 file changed, 8 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
-> > > index b65b914faf..b6155c7fc4 100644
-> > > --- a/tests/intel/gem_eio.c
-> > > +++ b/tests/intel/gem_eio.c
-> > > @@ -409,8 +409,10 @@ static void check_wait_elapsed(const char *prefix, int fd, igt_stats_t *st)
-> > >  		 igt_stats_get_median(st)*1e-6,
-> > >  		 igt_stats_get_max(st)*1e-6);
-> > >  
-> > > -	if (st->n_values < 9)
-> > > -		return; /* too few for stable median */
-> > > +	if (igt_warn_on_f(st->n_values < 9,
-> > > +	    "%d resets completed -- less than 9, too few for stable median\n",
-> > > +	    st->n_values))
-> > > +		return;
-> > 
-> > imho this could be a separate change, as there was silence before.
-> 
-> OK, unless I kill that warning, taking into account the comment from Krzysztof 
-> Karaś.
-> 
-> > 
-> > >  
-> > >  	/*
-> > >  	 * Older platforms need to reset the display (incl. modeset to off,
-> > > @@ -928,7 +930,7 @@ static void reset_stress(int fd, uint64_t ahnd, const intel_ctx_t *ctx0,
-> > >  	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
-> > >  
-> > >  	igt_stats_init(&stats);
-> > > -	igt_until_timeout(5) {
-> > > +	igt_until_timeout(20) {
-> > 
-> > Could you increase it only when needed?
-> 
-> Taking into account the other part of this change that breaks this loop as 
-> soon as enough measurements are collected, I don't think such complication is 
-> worth of effort, can you please explain why you think it is?
+[Why]
+Drivers such as VKMS do not support HDCP, so the test fails on
+`modeset_with_fb`:
+Test assertion failure function do_display_commit, file external/igt-gpu-tools/lib/igt_kms.c:4632
+errno: 34, Math result not representable
 
-You need it for gen12+ so why 20 for all gens?
+[How]
+Move the HDCP check before any modesets.
 
-Regards,
-Kamil
+Test: kms_content_protection on AVD with VKMS
+Signed-off-by: Mark Yacoub <markyacoub@google.com>
+---
+ tests/kms_content_protection.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-> 
-> Thanks,
-> Janusz
-> 
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > >  		const intel_ctx_t *ctx = context_create_safe(fd);
-> > >  		igt_spin_t *hang;
-> > >  		unsigned int i;
-> > > @@ -977,6 +979,9 @@ static void reset_stress(int fd, uint64_t ahnd, const intel_ctx_t *ctx0,
-> > >  		gem_sync(fd, obj.handle);
-> > >  		igt_spin_free(fd, hang);
-> > >  		intel_ctx_destroy(fd, ctx);
-> > > +
-> > > +		if (stats.n_values > 8)
-> > > +			break;
-> > >  	}
-> > >  	check_wait_elapsed(name, fd, &stats);
-> > >  	igt_stats_fini(&stats);
-> > 
-> 
-> 
-> 
-> 
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 51fc1d3be..effeb66dc 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -638,22 +638,20 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ 
+ 	for_each_connected_output(display, output) {
+ 		for_each_pipe(display, pipe) {
+-			igt_display_reset(display);
+-
+-			igt_output_set_pipe(output, pipe);
+-			if (!intel_pipe_output_combo_valid(display))
+-				continue;
+-
+-			modeset_with_fb(pipe, output, commit_style);
+-
+ 			if (!output_hdcp_capable(output, content_type))
+ 				continue;
+-
+ 			if (is_output_hdcp_test_exempt(output)) {
+ 				igt_info("Skipping HDCP test on %s, as the panel is blocklisted\n",
+ 					  output->name);
+ 				continue;
+ 			}
++			
++			igt_display_reset(display);
++			igt_output_set_pipe(output, pipe);
++			if (!intel_pipe_output_combo_valid(display))
++				continue;
++
++			modeset_with_fb(pipe, output, commit_style);
+ 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_content_protection_on_output(output, pipe, commit_style, content_type);
+-- 
+2.51.0.618.g983fd99d29-goog
+
