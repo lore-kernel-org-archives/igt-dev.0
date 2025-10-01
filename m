@@ -4,54 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5EB9CAC5BB
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 15:06:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53376CAC5BB
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 15:15:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 652A410E243;
-	Wed,  1 Oct 2025 15:06:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DEFD510E319;
+	Wed,  1 Oct 2025 15:15:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IMnC5q6+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oFXlYxKS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FEE210E243
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 15:06:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D24710E243;
+ Wed,  1 Oct 2025 15:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759331205; x=1790867205;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=Q1bRJTsiY3SPSaANeCungiUb7eOQ5tB7fZ9Sk1rX8Qw=;
- b=IMnC5q6++S/QgKUuVCbdiYWyxfTo0J7AFzgsKEwHUiDRjXcZ8igC6mW0
- 9RJm/K7Ca/ItQqczD80qE15OF7rs/bCeTK3eA7jiE3ODXSFGfWq9raXHU
- DAtkFaWpPUHpj+C97J2DW/D4bSOtdLC5jUtwqH6NNWw1FUPznL4wHeP6J
- +ZqNlY4TNKBLfOghBEuA9gBdwvK8f4y08BqVFWQhtb41RUU/psTknrOwA
- Jcp3Idoav2nhmNddLEMzf49ngWXdSJfQATnzZS5/Ts8mrIhUDppo37taG
- 7hjBs0R08MPmgKvzGL2pZPi0R4C1IhH5jOdgmsZJCik4Icde/8x/PUbTz g==;
-X-CSE-ConnectionGUID: CaHzviEUSm6CJIFjEGm0KQ==
-X-CSE-MsgGUID: XYBlOSjkTrqf7zPkFiIXGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61771543"
-X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="61771543"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2025 08:06:45 -0700
-X-CSE-ConnectionGUID: sOf7IF0MSTuQbd+QPLag8w==
-X-CSE-MsgGUID: CNyRHcBXTpKKVRN4AprbmQ==
+ t=1759331719; x=1790867719;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=9QVgN2zvz6nU5aAN7aaXH3o/91v8h0BpIgIyCHw8HGw=;
+ b=oFXlYxKS2GlMDC6zBGAn/7jTGyLaNQt5GZEY3CD8ccoCVgnNTJMIUgCU
+ oLPSIQxzcwoDXcLHqGrCPbXk8Vdzcn+rJxdPTrAZibRaVNahXJ9iQcic3
+ KvfEaP2VHY36B2+Kkcbrt/yWKujtMeRYiaAVSBxCc0/1U/B04TcgmSDDq
+ bmEgnwIl0uGqSmQIxXioEU2CIwUEpT4c7DKdwhXozvvL2OA5A+q4P0H58
+ upMiZYmiQJGB1yIhYsnxsDILVeqmkWvK/TA+MFsT4R342+OwoQOxfUoNp
+ aCCl46Y0XMU+jUfKwlUshZAzyVTJU+HbWva4xdkVMIQZn1juWcooT4tYn Q==;
+X-CSE-ConnectionGUID: a4yOhVINQH2m+65ydY6tmw==
+X-CSE-MsgGUID: SYblxb2tQ6KgpV85hEIRAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="72708025"
+X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; d="scan'208";a="72708025"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2025 08:15:18 -0700
+X-CSE-ConnectionGUID: ZRlqclfDTnWLApQyDuT1rg==
+X-CSE-MsgGUID: aX06NeGgSjyKcWbF0kuzRg==
 X-ExtLoop1: 1
-Received: from unknown (HELO [172.28.180.163]) ([172.28.180.163])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2025 08:06:44 -0700
-Message-ID: <91b8a7a5-6123-4092-ac70-cd1891ddd7ca@linux.intel.com>
-Date: Wed, 1 Oct 2025 17:06:42 +0200
+X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; d="scan'208";a="209755661"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.245.78])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2025 08:15:16 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH i-g-t 1/3] tests/gem_eio: Adjust for long reset-resume
+ cycle on Gen12+
+Date: Wed, 01 Oct 2025 17:15:13 +0200
+Message-ID: <1813705.X513TT2pbd@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20251001133600.cfkspqz3mc4wggvx@kamilkon-DESK.igk.intel.com>
+References: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
+ <20250930125430.2323555-6-janusz.krzysztofik@linux.intel.com>
+ <20251001133600.cfkspqz3mc4wggvx@kamilkon-DESK.igk.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/intel/xe_exec_threads: Add many queues section
-To: Matthew Brost <matthew.brost@intel.com>, igt-dev@lists.freedesktop.org
-References: <20250923234439.813972-1-matthew.brost@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20250923234439.813972-1-matthew.brost@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,75 +75,125 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Kamil,
+
+Thanks for looking at this.
+
+On Wednesday, 1 October 2025 15:36:00 CEST Kamil Konieczny wrote:
+> Hi Janusz,
+> On 2025-09-30 at 14:49:01 +0200, Janusz Krzysztofik wrote:
+>=20
+> could you improve subject? Now it is a little confusing why
+> there are two, very similar changes needed, see first and
+> second subjects:
+>=20
+> [i-g-t,1/3] tests/gem_eio: Adjust for long reset-resume cycle on Gen12+
+>=20
+> [i-g-t,2/3] tests/gem_eio: Adjust for slow resume after reset on Gen12+
+>=20
+> At first I do not know why two very similar changes are made with
+> two different commits.
+
+In my opinion these two patches address two separate issues.  The first iss=
+ue=20
+=2D- not enough measurements for median calculation -- prevents the exercis=
+e=20
+from calculating and reporting results.  The second issue in turn sometimes=
+=20
+applies not quite realistic expectations to those results.  In order to lea=
+rn=20
+which platforms suffer from the second issue, you have to resolve the first=
+=20
+one to see those results.  To avoid confusion, I can try to reword those=20
+commit messages so they don't look so similar.
+
+>=20
+> See also below.
+>=20
+> > Subtests that measure time of resume after engine reset require results
+> > from at least 9 reset-resume cycles for reasonable calculation of a med=
+ian
+> > value to be compared against presumed limits.  On most of Gen12+
+> > platforms, the limit of 5 seconds for collecting those results occurs t=
+oo
+> > short for executing 9 reset-resum cycles.
+> >=20
+> > Raise the limit to 20 seconds, and break the loop as soon as 9 results =
+are
+> > collected.  Also, warn if less than 9 resets have been completed within
+> > the limit instead of silently succeeding despite the check being skippe=
+d.
+> >=20
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > ---
+> >  tests/intel/gem_eio.c | 11 ++++++++---
+> >  1 file changed, 8 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+> > index b65b914faf..b6155c7fc4 100644
+> > --- a/tests/intel/gem_eio.c
+> > +++ b/tests/intel/gem_eio.c
+> > @@ -409,8 +409,10 @@ static void check_wait_elapsed(const char *prefix,=
+ int fd, igt_stats_t *st)
+> >  		 igt_stats_get_median(st)*1e-6,
+> >  		 igt_stats_get_max(st)*1e-6);
+> > =20
+> > -	if (st->n_values < 9)
+> > -		return; /* too few for stable median */
+> > +	if (igt_warn_on_f(st->n_values < 9,
+> > +	    "%d resets completed -- less than 9, too few for stable median\n",
+> > +	    st->n_values))
+> > +		return;
+>=20
+> imho this could be a separate change, as there was silence before.
+
+OK, unless I kill that warning, taking into account the comment from Krzysz=
+tof=20
+Kara=C5=9B.
+
+>=20
+> > =20
+> >  	/*
+> >  	 * Older platforms need to reset the display (incl. modeset to off,
+> > @@ -928,7 +930,7 @@ static void reset_stress(int fd, uint64_t ahnd, con=
+st intel_ctx_t *ctx0,
+> >  	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
+> > =20
+> >  	igt_stats_init(&stats);
+> > -	igt_until_timeout(5) {
+> > +	igt_until_timeout(20) {
+>=20
+> Could you increase it only when needed?
+
+Taking into account the other part of this change that breaks this loop as=
+=20
+soon as enough measurements are collected, I don't think such complication =
+is=20
+worth of effort, can you please explain why you think it is?
+
+Thanks,
+Janusz
+
+>=20
+> Regards,
+> Kamil
+>=20
+> >  		const intel_ctx_t *ctx =3D context_create_safe(fd);
+> >  		igt_spin_t *hang;
+> >  		unsigned int i;
+> > @@ -977,6 +979,9 @@ static void reset_stress(int fd, uint64_t ahnd, con=
+st intel_ctx_t *ctx0,
+> >  		gem_sync(fd, obj.handle);
+> >  		igt_spin_free(fd, hang);
+> >  		intel_ctx_destroy(fd, ctx);
+> > +
+> > +		if (stats.n_values > 8)
+> > +			break;
+> >  	}
+> >  	check_wait_elapsed(name, fd, &stats);
+> >  	igt_stats_fini(&stats);
+>=20
 
 
-On 9/24/2025 1:44 AM, Matthew Brost wrote:
-> Add many queues section which creates an exec queue for each submission.
-> Helpful to test VF migration which is rapidly creating / destroying
-> queues.
-> 
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> ---
->   tests/intel/xe_exec_threads.c | 16 +++++++++++++++-
->   1 file changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-> index be5549c84f..bb39eecbe3 100644
-> --- a/tests/intel/xe_exec_threads.c
-> +++ b/tests/intel/xe_exec_threads.c
-> @@ -40,6 +40,7 @@
->   #define HANG		(0x1 << 11)
->   #define REBIND_ERROR	(0x1 << 12)
->   #define BIND_EXEC_QUEUE	(0x1 << 13)
-> +#define MANY_QUEUES	(0x1 << 14)
->   
->   pthread_barrier_t barrier;
->   
-> @@ -539,7 +540,8 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->   
->   	memset(sync_all, 0, sizeof(sync_all));
->   	for (i = 0; i < n_exec_queues; i++) {
-> -		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-> +		if (!(flags & MANY_QUEUES))
-> +			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
->   		if (flags & BIND_EXEC_QUEUE)
->   			bind_exec_queues[i] = xe_bind_exec_queue_create(fd, vm,
->   									0);
-> @@ -570,6 +572,15 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
->   		uint64_t exec_addr;
->   		int e = i % n_exec_queues;
->   
-> +		if (flags & MANY_QUEUES) {
-> +			if (exec_queues[e]) {
-> +				igt_assert(syncobj_wait(fd, &syncobjs[e], 1,
-> +							INT64_MAX, 0, NULL));
-> +				xe_exec_queue_destroy(fd, exec_queues[e]);
-> +			}
-> +			exec_queues[e] = xe_exec_queue_create(fd, vm, eci, 0);
-> +		}
-> +
->   		if (flags & HANG && e == hang_exec_queue && i == e) {
->   			spin_opts.addr = addr + spin_offset;
->   			xe_spin_init(&data[i].spin, &spin_opts);
-> @@ -762,6 +773,8 @@ static void *thread(void *data)
->    * arg[1]:
->    * @basic:
->    *	basic
-> + * @many-queues:
-> + *	many queues
->    * @userptr:
->    *	userptr
->    * @rebind:
-> @@ -1103,6 +1116,7 @@ igt_main
->   		unsigned int flags;
->   	} sections[] = {
->   		{ "basic", 0 },
-> +		{ "many-queues", MANY_QUEUES },
 
-LGTM,
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-
->   		{ "userptr", USERPTR },
->   		{ "rebind", REBIND },
->   		{ "rebind-bindexecqueue", REBIND | BIND_EXEC_QUEUE },
 
