@@ -4,28 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 565A3CCA470
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 12:55:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46994CAC5BB
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 13:36:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EF8DF10E6CE;
-	Wed,  1 Oct 2025 12:55:21 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9718D10E35B;
- Wed,  1 Oct 2025 12:55:20 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0150592160648401072=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C6ACC10E0AC;
+	Wed,  1 Oct 2025 13:36:25 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dhCvuvIi";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3B8A10E0AC;
+ Wed,  1 Oct 2025 13:36:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759325784; x=1790861784;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=oJARZQu6195Hyc/Mn+N3nwXot4MrIgkY/YcYLc0MuRQ=;
+ b=dhCvuvIiG07S2pK1oC7uykftJElA4l4oMPilew/k26IBRgeqWPAuHZ3u
+ UaMN56xTBL0/WetX4AjjrRgQ1TbzDndn1YRIjJaKlgygg3YW9LXYzeVtL
+ EXibFfRVIP/75aRXlmq98xOkh1y8EnChLc9lAPrNBptIEQuS8I6WC4Qdk
+ 5a3ffFcXI6QgXFHIdrpMnktOZy9BZ/jEUL70S1rnzYEM10OEwmICw09pc
+ DVf4kfP72cGVkj2t0RdikfKuM34x5Y17bOeNAOeFHqPtVtzLuZ8HvQKSl
+ RZ8sn5ExmMsYoCtp1SfYHSZ8DukpFrcGUrRzbUsr5+saS5tVcAyzjov9m g==;
+X-CSE-ConnectionGUID: XgbYMTPdRIemA+N2wPip+w==
+X-CSE-MsgGUID: 9vLYpZfmRRmMBveM6zkbPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61702912"
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="61702912"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2025 06:36:23 -0700
+X-CSE-ConnectionGUID: XhgdUYbXS8WkW1U3PepvCA==
+X-CSE-MsgGUID: cfOPdL/8R9uVd0iIz9XjvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="178592767"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 06:36:21 -0700
+Date: Wed, 1 Oct 2025 15:36:00 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH i-g-t 1/3] tests/gem_eio: Adjust for long reset-resume
+ cycle on Gen12+
+Message-ID: <20251001133600.cfkspqz3mc4wggvx@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+References: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
+ <20250930125430.2323555-6-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Fix_xe=5Feudebug=5Fonline?=
- =?utf-8?q?=40set-breakpoint-sigint-debugger_=28rev9=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 01 Oct 2025 12:55:20 -0000
-Message-ID: <175932332061.383746.5231542329812498370@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20251001115447.11843-1-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20251001115447.11843-1-dominik.karol.piatkowski@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250930125430.2323555-6-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,106 +73,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0150592160648401072==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Janusz,
+On 2025-09-30 at 14:49:01 +0200, Janusz Krzysztofik wrote:
 
-== Series Details ==
+could you improve subject? Now it is a little confusing why
+there are two, very similar changes needed, see first and
+second subjects:
 
-Series: Fix xe_eudebug_online@set-breakpoint-sigint-debugger (rev9)
-URL   : https://patchwork.freedesktop.org/series/153868/
-State : success
+[i-g-t,1/3] tests/gem_eio: Adjust for long reset-resume cycle on Gen12+
 
-== Summary ==
+[i-g-t,2/3] tests/gem_eio: Adjust for slow resume after reset on Gen12+
 
-CI Bug Log - changes from XEIGT_8567_BAT -> XEIGTPW_13848_BAT
-====================================================
+At first I do not know why two very similar changes are made with
+two different commits.
 
-Summary
--------
+See also below.
 
-  **SUCCESS**
+> Subtests that measure time of resume after engine reset require results
+> from at least 9 reset-resume cycles for reasonable calculation of a median
+> value to be compared against presumed limits.  On most of Gen12+
+> platforms, the limit of 5 seconds for collecting those results occurs too
+> short for executing 9 reset-resum cycles.
+> 
+> Raise the limit to 20 seconds, and break the loop as soon as 9 results are
+> collected.  Also, warn if less than 9 resets have been completed within
+> the limit instead of silently succeeding despite the check being skipped.
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  tests/intel/gem_eio.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+> index b65b914faf..b6155c7fc4 100644
+> --- a/tests/intel/gem_eio.c
+> +++ b/tests/intel/gem_eio.c
+> @@ -409,8 +409,10 @@ static void check_wait_elapsed(const char *prefix, int fd, igt_stats_t *st)
+>  		 igt_stats_get_median(st)*1e-6,
+>  		 igt_stats_get_max(st)*1e-6);
+>  
+> -	if (st->n_values < 9)
+> -		return; /* too few for stable median */
+> +	if (igt_warn_on_f(st->n_values < 9,
+> +	    "%d resets completed -- less than 9, too few for stable median\n",
+> +	    st->n_values))
+> +		return;
 
-  No regressions found.
+imho this could be a separate change, as there was silence before.
 
-  
+>  
+>  	/*
+>  	 * Older platforms need to reset the display (incl. modeset to off,
+> @@ -928,7 +930,7 @@ static void reset_stress(int fd, uint64_t ahnd, const intel_ctx_t *ctx0,
+>  	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
+>  
+>  	igt_stats_init(&stats);
+> -	igt_until_timeout(5) {
+> +	igt_until_timeout(20) {
 
-Participating hosts (11 -> 11)
-------------------------------
+Could you increase it only when needed?
 
-  No changes in participating hosts
+Regards,
+Kamil
 
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8567 -> IGTPW_13848
-
-  IGTPW_13848: 13848
-  IGT_8567: a2ffc6e3793183e35703c127ca9335d18579fcdf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3852-bb42887c28cd6ede2c83547a9afc852a6aed3569: bb42887c28cd6ede2c83547a9afc852a6aed3569
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13848/index.html
-
---===============0150592160648401072==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Fix xe_eudebug_online@set-breakpoint-sigint-debugger (rev9)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153868/">https://patchwork.freedesktop.org/series/153868/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13848/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13848/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8567_BAT -&gt; XEIGTPW_13848_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8567 -&gt; IGTPW_13848</li>
-</ul>
-<p>IGTPW_13848: 13848<br />
-  IGT_8567: a2ffc6e3793183e35703c127ca9335d18579fcdf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3852-bb42887c28cd6ede2c83547a9afc852a6aed3569: bb42887c28cd6ede2c83547a9afc852a6aed3569</p>
-
-</body>
-</html>
-
---===============0150592160648401072==--
+>  		const intel_ctx_t *ctx = context_create_safe(fd);
+>  		igt_spin_t *hang;
+>  		unsigned int i;
+> @@ -977,6 +979,9 @@ static void reset_stress(int fd, uint64_t ahnd, const intel_ctx_t *ctx0,
+>  		gem_sync(fd, obj.handle);
+>  		igt_spin_free(fd, hang);
+>  		intel_ctx_destroy(fd, ctx);
+> +
+> +		if (stats.n_values > 8)
+> +			break;
+>  	}
+>  	check_wait_elapsed(name, fd, &stats);
+>  	igt_stats_fini(&stats);
+> -- 
+> 2.51.0
+> 
