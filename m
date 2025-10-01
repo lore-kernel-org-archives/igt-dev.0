@@ -4,58 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 867F4CAC5BB
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 18:32:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45A2ACAC5BB
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 18:34:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 331EC10E15B;
-	Wed,  1 Oct 2025 18:32:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E44B510E15B;
+	Wed,  1 Oct 2025 18:34:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RsEryv6s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JFZUDSqP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 795D210E15B
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 18:32:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2E3210E15B;
+ Wed,  1 Oct 2025 18:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759343568; x=1790879568;
+ t=1759343655; x=1790879655;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=/se42tENn9I0jOApRz2z0mLrq1nEhPEytv5QXcHW3J8=;
- b=RsEryv6ssKzNYunyAQQSrw9rBdRI49VhKkA94x7vkFxLVZu/kICZlnfl
- zQYcGfjoAwjvAAqRVtRcGlQ1Z8uNrEESn794vfyXcrC6hzHQFGXzVvL/3
- IkXSOpNso+J0iev+uIyhuYd4OwCQhUGj33olI8e0+FTWIWQebFy4r3euj
- PZ7HgE2SNepkE8XM/cHbCavIQIDo7BHnbzuE4oZhyDTJGfK4jaENn0kJ3
- j1DcfbonQMk+r4P4gBw+mr7ayua4n9TkibAbXNFwkeBsZjfM74Vw79wgG
- zigf0G0XtRxeexNY753GnMKOtFlBmaDjcpcelK/WEHc/HJX945lfbxpIj Q==;
-X-CSE-ConnectionGUID: CRZqYWLKRTu8/6pNJae/9w==
-X-CSE-MsgGUID: z7sIKbQlSCmUbZvhcamW0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="61544476"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="61544476"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2025 11:32:48 -0700
-X-CSE-ConnectionGUID: TMDi9Dr0R8e8lFjGNZxKOw==
-X-CSE-MsgGUID: cEP/+vn/R3qqrw4wYwNFbQ==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=h0HUbtUdtX1Li4YnzOJi0M8GTKG+nBgoACKfuefx1mM=;
+ b=JFZUDSqPnkJ+d70W/SxetXbeQOrKhYngVtJb6keJXruV4sDRaAFWNIcC
+ 5RPdU3chO1GO4pQ6O4X/OI+XhFFAYI1egWhcH/jn6VLfcndXWlb8B6eNJ
+ y+DUXxgSeWKEfyAGHaOJKkz12DhBZ8h2cX/+mSCrCqXWbrXKzkFaSvuyq
+ qythcngnR15LYGx58EAhEWIiNKZjsg44fozsGZ2qzp6dkBFQ8S0Jz9lkj
+ TWrb7CIibWvGAzIBRpbC7t5ZyWSEYdbWMT0/SwtFl0qIBW0nqxdJNqY6z
+ r54N90t/nHUgTSNBSFpg2COVL5xvdEIMJyVIye8m7zwiUYYOsp+uAj0S1 A==;
+X-CSE-ConnectionGUID: AodQerKoQlC5wPTXiNbElg==
+X-CSE-MsgGUID: l8WBj1snTtmkDCrMfafHlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61730199"
+X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; d="scan'208";a="61730199"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2025 11:34:14 -0700
+X-CSE-ConnectionGUID: ZHqLAFYuTfesjs1pbGfLQQ==
+X-CSE-MsgGUID: x6srVE6DToi9uECfNdULJw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; d="scan'208";a="178480255"
+X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; d="scan'208";a="178808613"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 11:32:46 -0700
-Date: Wed, 1 Oct 2025 20:32:23 +0200
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 11:34:13 -0700
+Date: Wed, 1 Oct 2025 20:34:10 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Mark Yacoub <markyacoub@google.com>
-Cc: igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com
-Subject: Re: [PATCH i-g-t] lib/drmtest: Allow DRIVER_ANY tests to run on VKMS
- when supported.
-Message-ID: <20251001183223.dt7rybzbu5bglbeq@kamilkon-DESK.igk.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH i-g-t 1/3] tests/gem_eio: Adjust for long reset-resume
+ cycle on Gen12+
+Message-ID: <20251001183410.emqpwidf2hpbmtf3@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org,
- louis.chauvet@bootlin.com
-References: <20251001163635.3353517-1-markyacoub@google.com>
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+References: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
+ <20250930125430.2323555-6-janusz.krzysztofik@linux.intel.com>
+ <20251001133600.cfkspqz3mc4wggvx@kamilkon-DESK.igk.intel.com>
+ <1813705.X513TT2pbd@jkrzyszt-mobl2.ger.corp.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251001163635.3353517-1-markyacoub@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1813705.X513TT2pbd@jkrzyszt-mobl2.ger.corp.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,91 +79,118 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Mark,
-On 2025-10-01 at 12:36:34 -0400, Mark Yacoub wrote:
-> [Why]
-> Android's VM use virtio-gpu as its default driver, but VKMS can be
-> enabled on top it.
-> VKMS is the preferred driver to run IGT.
+Hi Janusz,
+On 2025-10-01 at 17:15:13 +0200, Janusz Krzysztofik wrote:
+> Hi Kamil,
 > 
-> [How]
-> To maintain the current way to preferring hardware drivers, introduce a
-> "PREFER_VKMS" flag which does not remove DRIVER_VKMS from the list of
-> drivers to be opened. Android will keep this as always true.
+> Thanks for looking at this.
 > 
-> Also, added explicit support for virtio-gpu to be explictly filtered
-> out, making room for VKMS to be the primary driver in use.
+> On Wednesday, 1 October 2025 15:36:00 CEST Kamil Konieczny wrote:
+> > Hi Janusz,
+> > On 2025-09-30 at 14:49:01 +0200, Janusz Krzysztofik wrote:
+> > 
+> > could you improve subject? Now it is a little confusing why
+> > there are two, very similar changes needed, see first and
+> > second subjects:
+> > 
+> > [i-g-t,1/3] tests/gem_eio: Adjust for long reset-resume cycle on Gen12+
+> > 
+> > [i-g-t,2/3] tests/gem_eio: Adjust for slow resume after reset on Gen12+
+> > 
+> > At first I do not know why two very similar changes are made with
+> > two different commits.
 > 
-> Test: kms_bw on AVD
-> Signed-off-by: Mark Yacoub <markyacoub@google.com>
-> ---
->  lib/drmtest.c |  1 +
->  lib/drmtest.h | 18 +++++++++++-------
->  2 files changed, 12 insertions(+), 7 deletions(-)
+> In my opinion these two patches address two separate issues.  The first issue 
+> -- not enough measurements for median calculation -- prevents the exercise 
+> from calculating and reporting results.  The second issue in turn sometimes 
+> applies not quite realistic expectations to those results.  In order to learn 
+> which platforms suffer from the second issue, you have to resolve the first 
+> one to see those results.  To avoid confusion, I can try to reword those 
+> commit messages so they don't look so similar.
 > 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 551385867..a1fb0b5ba 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -223,6 +223,7 @@ static const struct module {
->  	{ DRIVER_V3D, "v3d" },
->  	{ DRIVER_VC4, "vc4" },
->  	{ DRIVER_VGEM, "vgem" },
-> +	{ DRIVER_VIRTIO, "virtio_gpu" },
+> > 
+> > See also below.
+> > 
+> > > Subtests that measure time of resume after engine reset require results
+> > > from at least 9 reset-resume cycles for reasonable calculation of a median
+> > > value to be compared against presumed limits.  On most of Gen12+
+> > > platforms, the limit of 5 seconds for collecting those results occurs too
+> > > short for executing 9 reset-resum cycles.
+> > > 
+> > > Raise the limit to 20 seconds, and break the loop as soon as 9 results are
+> > > collected.  Also, warn if less than 9 resets have been completed within
+> > > the limit instead of silently succeeding despite the check being skipped.
+> > > 
+> > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > > ---
+> > >  tests/intel/gem_eio.c | 11 ++++++++---
+> > >  1 file changed, 8 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+> > > index b65b914faf..b6155c7fc4 100644
+> > > --- a/tests/intel/gem_eio.c
+> > > +++ b/tests/intel/gem_eio.c
+> > > @@ -409,8 +409,10 @@ static void check_wait_elapsed(const char *prefix, int fd, igt_stats_t *st)
+> > >  		 igt_stats_get_median(st)*1e-6,
+> > >  		 igt_stats_get_max(st)*1e-6);
+> > >  
+> > > -	if (st->n_values < 9)
+> > > -		return; /* too few for stable median */
+> > > +	if (igt_warn_on_f(st->n_values < 9,
+> > > +	    "%d resets completed -- less than 9, too few for stable median\n",
+> > > +	    st->n_values))
+> > > +		return;
+> > 
+> > imho this could be a separate change, as there was silence before.
+> 
+> OK, unless I kill that warning, taking into account the comment from Krzysztof 
+> Karaś.
+> 
+> > 
+> > >  
+> > >  	/*
+> > >  	 * Older platforms need to reset the display (incl. modeset to off,
+> > > @@ -928,7 +930,7 @@ static void reset_stress(int fd, uint64_t ahnd, const intel_ctx_t *ctx0,
+> > >  	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
+> > >  
+> > >  	igt_stats_init(&stats);
+> > > -	igt_until_timeout(5) {
+> > > +	igt_until_timeout(20) {
+> > 
+> > Could you increase it only when needed?
+> 
+> Taking into account the other part of this change that breaks this loop as 
+> soon as enough measurements are collected, I don't think such complication is 
+> worth of effort, can you please explain why you think it is?
 
-Please add it properly with a define, like others.
-
->  	{ DRIVER_VKMS, "vkms" },
->  	{ DRIVER_VMWGFX, "vmwgfx" },
->  	{ DRIVER_XE, "xe" },
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index a9542dde2..32fec584a 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -37,6 +37,7 @@
->  #include <xf86drm.h>
->  
->  #include "igt_core.h"
-> +#include "config.h"
->  
->  int __get_drm_device_name(int fd, char *name, int name_size);
->  
-> @@ -58,14 +59,17 @@ int __get_drm_device_name(int fd, char *name, int name_size);
->  #define DRIVER_VKMS	(1 << 9)
->  
->  /*
-> - * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
-> - * with vgem as well as a supported driver, you can end up with a
-> - * near-100% skip rate if you don't explicitly specify the device,
-> - * depending on device-load ordering.
-> - *
-> - * Exclude VKMS to prefer hardware drivers.
-> + * Exclude DRIVER_VGEM and DRIVER_VIRTIO from DRIVER_ANY since if
-> + * you run on a system with vgem or virtio-gpu as well as a supported driver,
-> + * you can end up with a near-100% skip rate if you don't explicitly specify
-> + * the device, depending on device-load ordering.
->   */
-> -#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS)
-> +#ifdef PREFER_VKMS
-
-Please no ifdef's when no needed, if anyone wants that igt test
-uses some other driver, it could have IGT_FORCE_DRIVER=some_gpu_driver
-
-> +#define DRIVER_ANY	~(DRIVER_VGEM  | DRIVER_VIRTIO)
-> +#else
-> +/* Exclude VKMS to prefer hardware drivers if VKMS is not the preferred driver. */
-> +#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS | DRIVER_VIRTIO)
-
-This should be without any conditional.
-Please also send code which compile, see CI report.
+You need it for gen12+ so why 20 for all gens?
 
 Regards,
 Kamil
 
-> +#endif
->  
->  /*
->   * Compile friendly enum for i915/xe.
-> -- 
-> 2.51.0.618.g983fd99d29-goog
+> 
+> Thanks,
+> Janusz
+> 
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > >  		const intel_ctx_t *ctx = context_create_safe(fd);
+> > >  		igt_spin_t *hang;
+> > >  		unsigned int i;
+> > > @@ -977,6 +979,9 @@ static void reset_stress(int fd, uint64_t ahnd, const intel_ctx_t *ctx0,
+> > >  		gem_sync(fd, obj.handle);
+> > >  		igt_spin_free(fd, hang);
+> > >  		intel_ctx_destroy(fd, ctx);
+> > > +
+> > > +		if (stats.n_values > 8)
+> > > +			break;
+> > >  	}
+> > >  	check_wait_elapsed(name, fd, &stats);
+> > >  	igt_stats_fini(&stats);
+> > 
+> 
+> 
+> 
 > 
