@@ -4,28 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2269CAC5BB
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 14:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5EB9CAC5BB
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 15:06:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9974510E6EF;
-	Wed,  1 Oct 2025 14:42:04 +0000 (UTC)
-Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0844610E6EF;
- Wed,  1 Oct 2025 14:42:04 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5071831111412980720=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 652A410E243;
+	Wed,  1 Oct 2025 15:06:46 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IMnC5q6+";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6FEE210E243
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 15:06:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759331205; x=1790867205;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=Q1bRJTsiY3SPSaANeCungiUb7eOQ5tB7fZ9Sk1rX8Qw=;
+ b=IMnC5q6++S/QgKUuVCbdiYWyxfTo0J7AFzgsKEwHUiDRjXcZ8igC6mW0
+ 9RJm/K7Ca/ItQqczD80qE15OF7rs/bCeTK3eA7jiE3ODXSFGfWq9raXHU
+ DAtkFaWpPUHpj+C97J2DW/D4bSOtdLC5jUtwqH6NNWw1FUPznL4wHeP6J
+ +ZqNlY4TNKBLfOghBEuA9gBdwvK8f4y08BqVFWQhtb41RUU/psTknrOwA
+ Jcp3Idoav2nhmNddLEMzf49ngWXdSJfQATnzZS5/Ts8mrIhUDppo37taG
+ 7hjBs0R08MPmgKvzGL2pZPi0R4C1IhH5jOdgmsZJCik4Icde/8x/PUbTz g==;
+X-CSE-ConnectionGUID: CaHzviEUSm6CJIFjEGm0KQ==
+X-CSE-MsgGUID: XYBlOSjkTrqf7zPkFiIXGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61771543"
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="61771543"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2025 08:06:45 -0700
+X-CSE-ConnectionGUID: sOf7IF0MSTuQbd+QPLag8w==
+X-CSE-MsgGUID: CNyRHcBXTpKKVRN4AprbmQ==
+X-ExtLoop1: 1
+Received: from unknown (HELO [172.28.180.163]) ([172.28.180.163])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2025 08:06:44 -0700
+Message-ID: <91b8a7a5-6123-4092-ac70-cd1891ddd7ca@linux.intel.com>
+Date: Wed, 1 Oct 2025 17:06:42 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/2=5D_lib/xe/xe=5Fquery=3A_move_PXP_query_functions_to_comm?=
- =?utf-8?q?on_file_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Daniele Ceraolo Spurio" <daniele.ceraolospurio@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 01 Oct 2025 14:42:04 -0000
-Message-ID: <175932972402.384040.5042540542995729190@1538d3639d33>
-X-Patchwork-Hint: ignore
-References: <20250819005622.2970399-3-daniele.ceraolospurio@intel.com>
-In-Reply-To: <20250819005622.2970399-3-daniele.ceraolospurio@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/intel/xe_exec_threads: Add many queues section
+To: Matthew Brost <matthew.brost@intel.com>, igt-dev@lists.freedesktop.org
+References: <20250923234439.813972-1-matthew.brost@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20250923234439.813972-1-matthew.brost@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,106 +64,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5071831111412980720==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: series starting with [i-g-t,1/2] lib/xe/xe_query: move PXP query functions to common file (rev4)
-URL   : https://patchwork.freedesktop.org/series/153097/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8568_BAT -> XEIGTPW_13849_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
 
 
-Changes
--------
+On 9/24/2025 1:44 AM, Matthew Brost wrote:
+> Add many queues section which creates an exec queue for each submission.
+> Helpful to test VF migration which is rapidly creating / destroying
+> queues.
+> 
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> ---
+>   tests/intel/xe_exec_threads.c | 16 +++++++++++++++-
+>   1 file changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+> index be5549c84f..bb39eecbe3 100644
+> --- a/tests/intel/xe_exec_threads.c
+> +++ b/tests/intel/xe_exec_threads.c
+> @@ -40,6 +40,7 @@
+>   #define HANG		(0x1 << 11)
+>   #define REBIND_ERROR	(0x1 << 12)
+>   #define BIND_EXEC_QUEUE	(0x1 << 13)
+> +#define MANY_QUEUES	(0x1 << 14)
+>   
+>   pthread_barrier_t barrier;
+>   
+> @@ -539,7 +540,8 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>   
+>   	memset(sync_all, 0, sizeof(sync_all));
+>   	for (i = 0; i < n_exec_queues; i++) {
+> -		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+> +		if (!(flags & MANY_QUEUES))
+> +			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+>   		if (flags & BIND_EXEC_QUEUE)
+>   			bind_exec_queues[i] = xe_bind_exec_queue_create(fd, vm,
+>   									0);
+> @@ -570,6 +572,15 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+>   		uint64_t exec_addr;
+>   		int e = i % n_exec_queues;
+>   
+> +		if (flags & MANY_QUEUES) {
+> +			if (exec_queues[e]) {
+> +				igt_assert(syncobj_wait(fd, &syncobjs[e], 1,
+> +							INT64_MAX, 0, NULL));
+> +				xe_exec_queue_destroy(fd, exec_queues[e]);
+> +			}
+> +			exec_queues[e] = xe_exec_queue_create(fd, vm, eci, 0);
+> +		}
+> +
+>   		if (flags & HANG && e == hang_exec_queue && i == e) {
+>   			spin_opts.addr = addr + spin_offset;
+>   			xe_spin_init(&data[i].spin, &spin_opts);
+> @@ -762,6 +773,8 @@ static void *thread(void *data)
+>    * arg[1]:
+>    * @basic:
+>    *	basic
+> + * @many-queues:
+> + *	many queues
+>    * @userptr:
+>    *	userptr
+>    * @rebind:
+> @@ -1103,6 +1116,7 @@ igt_main
+>   		unsigned int flags;
+>   	} sections[] = {
+>   		{ "basic", 0 },
+> +		{ "many-queues", MANY_QUEUES },
 
-  No changes found
+LGTM,
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
+>   		{ "userptr", USERPTR },
+>   		{ "rebind", REBIND },
+>   		{ "rebind-bindexecqueue", REBIND | BIND_EXEC_QUEUE },
 
-Build changes
--------------
-
-  * IGT: IGT_8568 -> IGTPW_13849
-
-  IGTPW_13849: 13849
-  IGT_8568: 8568
-  xe-3852-bb42887c28cd6ede2c83547a9afc852a6aed3569: bb42887c28cd6ede2c83547a9afc852a6aed3569
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13849/index.html
-
---===============5071831111412980720==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib/xe/xe_query: move PXP query functions to common file (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153097/">https://patchwork.freedesktop.org/series/153097/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13849/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13849/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8568_BAT -&gt; XEIGTPW_13849_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8568 -&gt; IGTPW_13849</li>
-</ul>
-<p>IGTPW_13849: 13849<br />
-  IGT_8568: 8568<br />
-  xe-3852-bb42887c28cd6ede2c83547a9afc852a6aed3569: bb42887c28cd6ede2c83547a9afc852a6aed3569</p>
-
-</body>
-</html>
-
---===============5071831111412980720==--
