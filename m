@@ -4,61 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EA10CAC5BB
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 12:06:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F0FCAC5BB
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 12:40:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 50ECA10E6B7;
-	Wed,  1 Oct 2025 12:06:00 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PRfLtHoS";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E74710E6B7
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 12:05:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759320358; x=1790856358;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Cli5gQWY3opBFHt83wO/MkJ8zE+4zY8Dh3kxXQPjEKg=;
- b=PRfLtHoScsj2QI00jCgBoDNBKLn27Uacg54cca1yuEYcvBx5qPmaee1J
- 3+Q0kzwkT5ANtwSMri6zfyUTEwfQmueKyi11B2vNG97vV2AUeb7T7wEdv
- qzzQG4ihGVTc2vpOsBpj4iFPDeP69TAo3/rvlU+Tep8wxwqdjQwmRPygz
- U6TTX2txijRY0BPi3Loqv0Dzn3ux9irRU1hyD2AHgoFT6Y9y8o+6JaP5M
- gEdXbRv75dA1sJJyzlMdByS1rNmfIfLEWDKRhEn6SHlJYx0O9NCMlOBFv
- 7DCdBMjQfHGaQdUlI33fN7d2wShHrqDPFKlRlFOjafPWLCtkxKKsvo9C8 A==;
-X-CSE-ConnectionGUID: abqSFlQKSCOVELOxSg/AKQ==
-X-CSE-MsgGUID: YJX6Ofm3TRqMpO10HRN+Ug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="60805414"
-X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="60805414"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2025 05:05:57 -0700
-X-CSE-ConnectionGUID: RhKtxjLdR06K2/tGdhkvYg==
-X-CSE-MsgGUID: IX5mchYESBaASmrtX6jZEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="178714638"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.37])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2025 05:05:56 -0700
-Date: Wed, 1 Oct 2025 14:05:54 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Mika Kuoppala <mika.kuoppala@linux.intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: Re: [PATCH v9 i-g-t 06/10] lib/xe_eudebug: Repeat poll in
- debugger_worker_loop if interrupted
-Message-ID: <bdlwvoisv5vrhguhl2jrxl5gztdcnpom7q7uiwbhidl3k6myax@ykw7jcr7izwp>
-References: <20251001115447.11843-1-dominik.karol.piatkowski@intel.com>
- <20251001115447.11843-7-dominik.karol.piatkowski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0CD1610E35B;
+	Wed,  1 Oct 2025 12:40:20 +0000 (UTC)
+Received: from 1538d3639d33 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36CF010E35B;
+ Wed,  1 Oct 2025 12:40:19 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2030073892535801061=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251001115447.11843-7-dominik.karol.piatkowski@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Validate_VF_accesses_to_V?=
+ =?utf-8?q?RAM_via_BAR_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lukasz Laguna" <lukasz.laguna@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 01 Oct 2025 12:40:19 -0000
+Message-ID: <175932241921.383746.15890412094115240015@1538d3639d33>
+X-Patchwork-Hint: ignore
+References: <20251001101850.25299-1-lukasz.laguna@intel.com>
+In-Reply-To: <20251001101850.25299-1-lukasz.laguna@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,38 +37,226 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Oct 01, 2025 at 01:54:43PM +0200, Dominik Karol Piątkowski wrote:
-> If poll() fails with errno set to EINTR, repeat the poll by restarting
-> the loop.
+--===============2030073892535801061==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+== Series Details ==
 
---
-Zbigniew
+Series: Validate VF accesses to VRAM via BAR (rev4)
+URL   : https://patchwork.freedesktop.org/series/151749/
+State : success
 
-> 
-> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> ---
->  lib/xe/xe_eudebug.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-> index 614f327ae..3656a20f2 100644
-> --- a/lib/xe/xe_eudebug.c
-> +++ b/lib/xe/xe_eudebug.c
-> @@ -1104,6 +1104,9 @@ static void *debugger_worker_loop(void *data)
->  		ret = poll(&p, 1, timeout_ms);
->  
->  		if (ret == -1) {
-> +			if (errno == EINTR)
-> +				continue;
-> +
->  			igt_info("poll failed with errno %d\n", errno);
->  			break;
->  		}
-> -- 
-> 2.34.1
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_8566 -> IGTPW_13847
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/index.html
+
+Participating hosts (44 -> 43)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_13847 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@load:
+    - bat-mtlp-9:         [PASS][1] -> [DMESG-WARN][2] ([i915#13494])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-mtlp-9/igt@i915_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-mtlp-9/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-atsm-1:         [PASS][3] -> [ABORT][4] ([i915#14201])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-atsm-1/igt@i915_selftest@live@reset.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-atsm-1/igt@i915_selftest@live@reset.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-9:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests:
+    - bat-apl-1:          [ABORT][7] ([i915#12904]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-apl-1/igt@dmabuf@all-tests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-apl-1/igt@dmabuf@all-tests.html
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-n3050:       [ABORT][9] ([i915#12904]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][13] ([i915#12061] / [i915#14204]) -> [ABORT][14] ([i915#14201])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-atsm-1/igt@i915_selftest@live.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-atsm-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-atsm-1:         [DMESG-FAIL][15] ([i915#14204]) -> [DMESG-FAIL][16] ([i915#13929])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-atsm-1/igt@i915_selftest@live@mman.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-atsm-1/igt@i915_selftest@live@mman.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13494]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494
+  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
+  [i915#14201]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201
+  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8566 -> IGTPW_13847
+
+  CI-20190529: 20190529
+  CI_DRM_17293: bb42887c28cd6ede2c83547a9afc852a6aed3569 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13847: 13847
+  IGT_8566: 01ac869811457a642d42d80903a45dc15f3c8a78 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/index.html
+
+--===============2030073892535801061==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Validate VF accesses to VRAM via BAR (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151749/">https://patchwork.freedesktop.org/series/151749/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8566 -&gt; IGTPW_13847</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13847 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-mtlp-9/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-mtlp-9/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13494">i915#13494</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-atsm-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-atsm-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-apl-1/igt@dmabuf@all-tests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/fi-bsw-n3050/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-atsm-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14201">i915#14201</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8566/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13847/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8566 -&gt; IGTPW_13847</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17293: bb42887c28cd6ede2c83547a9afc852a6aed3569 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13847: 13847<br />
+  IGT_8566: 01ac869811457a642d42d80903a45dc15f3c8a78 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2030073892535801061==--
