@@ -4,60 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79754CCA470
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 09:31:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB2B2CCA470
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 10:18:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 24ED910E704;
-	Wed,  1 Oct 2025 09:31:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9763C10E2ED;
+	Wed,  1 Oct 2025 10:18:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B1WKJv2m";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jlZz3hVk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C89D210E6C2
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 09:31:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93E3D10E309
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 10:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759311085; x=1790847085;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=uH8W18M2wm934s4PY8gaty32OTDYvSjCB3fNZ7htgP8=;
- b=B1WKJv2mXcXrH90kVzCu1p4INVLBWN/JlzAvaXmpk+9xb6zeSyoAL3sL
- E3+igGWjVcmfbjeDaBbFV2LQgPYD+0+QrsPOLUkZkFWBh87Dz0sH5A/IQ
- w3RJv0wNa7ov/8qqzpNefFAGkPTFgrW0xRx2Moxf+WthxbvVaVdacNo8t
- gZkn23fQibkpXdLftSeUm65mjxcdRcCElbOSoiO1piufYY7eX2OxwFRDX
- 6tu8bpZ/jCOpGsbS3VD4tTliV29RqowhF3Fgp8OY8F4Aw57w3qHzsq+XX
- 3oSf/8Pkz+qPhhOMVGgad12UsA/XEk6w8vgfcuitNrYLZoGRFvljKeQC+ A==;
-X-CSE-ConnectionGUID: 0M8SUCenTOO/K7LLsoOEWA==
-X-CSE-MsgGUID: AfjyMTd9TVOzZcpKTm+BLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="72939220"
-X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="72939220"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2025 02:31:24 -0700
-X-CSE-ConnectionGUID: EqXBvMgxTOqYcMcsjwvTQg==
-X-CSE-MsgGUID: OrUO2GxDQWWaceZ0VwEbxA==
+ t=1759313938; x=1790849938;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BJEzuYcsXRWnCdDF7E8k9zgZ9GY0PoQwTwh5LbiGwaU=;
+ b=jlZz3hVkmArU0x7shR09DxNq6ROhhNPzTH8iKENIDoI4rqWrCtyi2Px8
+ tJdtd1eQE1/bSasDH9drfaz/kp+VoQRxd32pF3WZUMT23Qx+L98LZO2OH
+ RY7TWrtEBk8hceWVvLX+jfHeVNO1DGiVKbDn+kRaRTM2CLxjXtrBfcp8f
+ K4Xy+m6XELYvJUjB/hBwi2bgbc+mcaNn3N0kk3nl+zfxxi6Aq9JI2fG8j
+ K7+Z98aYim8CCdtugnYIDTiwTlco0h2/ePY1sfhrg0UUkDE4eI2HPDCGP
+ FMJfpl6lpH9EySNHyC9jvm1yvv3jTHnYL3/7YFZhUhiYzHd0fnxJvt499 w==;
+X-CSE-ConnectionGUID: dlgpZH3NRKe3mBN5ndlj9g==
+X-CSE-MsgGUID: ddkGl6BuSFODOthNYmxmZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="60798358"
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="60798358"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2025 03:18:58 -0700
+X-CSE-ConnectionGUID: 9zBZHDYSRAWV03/8fVFHZQ==
+X-CSE-MsgGUID: F7EMoGgxTPWIVIT5bTqCPA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="178547659"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.37])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2025 02:31:21 -0700
-Date: Wed, 1 Oct 2025 11:31:19 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Mika Kuoppala <mika.kuoppala@linux.intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: Re: [PATCH v8 i-g-t 8/9] lib/xe_eudebug: Introduce SIGTERM handling
-Message-ID: <o3zvwhiwe5wq5ldannbmlrx4p3upyjxlucll7glclpcei7guno@tucyufetgnuy>
-References: <20250930104209.22462-1-dominik.karol.piatkowski@intel.com>
- <20250930104209.22462-9-dominik.karol.piatkowski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="178036799"
+Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2025 03:18:56 -0700
+From: Lukasz Laguna <lukasz.laguna@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: marcin.bernatowicz@intel.com, piotr.piorkowski@intel.com,
+ lukasz.laguna@intel.com
+Subject: [PATCH i-g-t v4 0/4] Validate VF accesses to VRAM via BAR
+Date: Wed,  1 Oct 2025 12:18:46 +0200
+Message-Id: <20251001101850.25299-1-lukasz.laguna@intel.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250930104209.22462-9-dominik.karol.piatkowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,82 +67,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Sep 30, 2025 at 12:42:08PM +0200, Dominik Karol Piątkowski wrote:
-> Add SIGTERM to signals that are handled by debugger_signal_handler.
-> Don't kill debugger thread on SIGTERM signal.
+Series includes a test to validate VF access to VRAM via BAR. The
+following scenarios are covered:
+- VF can access all provisioned memory via the VRAM BAR,
+- VF cannot access memory beyond what's provisioned via the VRAM BAR,
+- VF can access memory via the VRAM BAR after reprovisioning.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Additionally, it introduces a library for VRAM accesses and helper to
+iterate over enabled VFs.
 
---
-Zbigniew
+v4:
+- log the failing ranges (Marcin),
+- print detailed debug data when using verbose flag,
+- change subtest name from vf-access-basic to vf-access-provisioned.
 
-> 
-> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> ---
->  lib/xe/xe_eudebug.c | 16 ++++++++++++++--
->  lib/xe/xe_eudebug.h |  1 +
->  2 files changed, 15 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-> index 1282e2918..811a0e14a 100644
-> --- a/lib/xe/xe_eudebug.c
-> +++ b/lib/xe/xe_eudebug.c
-> @@ -1080,6 +1080,8 @@ static void debugger_signal_handler(int sig, siginfo_t *info, void *context)
->  
->  	igt_assert(d);
->  
-> +	d->received_signal = true;
-> +
->  	if (sig == SIGINT)
->  		d->received_sigint = true;
->  }
-> @@ -1103,6 +1105,11 @@ static void *debugger_worker_loop(void *data)
->  	sa.sa_flags |= SA_SIGINFO;
->  	igt_assert_eq(sigaction(SIGINT, &sa, NULL), 0);
->  
-> +	igt_assert_eq(sigaction(SIGTERM, NULL, &sa), 0);
-> +	sa.sa_sigaction = debugger_signal_handler;
-> +	sa.sa_flags |= SA_SIGINFO;
-> +	igt_assert_eq(sigaction(SIGTERM, &sa, NULL), 0);
-> +
->  	do {
->  		p.fd = d->fd;
->  		ret = poll(&p, 1, timeout_ms);
-> @@ -1112,8 +1119,12 @@ static void *debugger_worker_loop(void *data)
->  		}
->  
->  		if (ret == -1) {
-> -			if (errno == EINTR)
-> -				continue;
-> +			if (d->received_signal) {
-> +				d->received_signal = false;
-> +
-> +				if (errno == EINTR)
-> +					continue;
-> +			}
->  
->  			igt_info("poll failed with errno %d\n", errno);
->  			break;
-> @@ -1185,6 +1196,7 @@ xe_eudebug_debugger_create(int master_fd, uint64_t flags, void *data)
->  	d->ptr = data;
->  	d->received_sigint = false;
->  	d->handled_sigint = false;
-> +	d->received_signal = false;
->  
->  	return d;
->  }
-> diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
-> index 7c7a01471..d2f64fe4c 100644
-> --- a/lib/xe/xe_eudebug.h
-> +++ b/lib/xe/xe_eudebug.h
-> @@ -46,6 +46,7 @@ struct xe_eudebug_debugger {
->  
->  	bool received_sigint;
->  	bool handled_sigint;
-> +	bool received_signal;
->  
->  	int p_client[2];
->  };
-> -- 
-> 2.34.1
-> 
+Lukasz Laguna (4):
+  lib/igt_sriov_device: Add helper to iterate over enabled VFs
+  lib/intel_vram: Add library for VRAM accesses
+  tests/intel/xe_sriov_flr: Use VRAM access helpers from intel_vram
+    library
+  tests/intel/xe_sriov_vram: Add test checking VF access to VRAM
+
+ lib/igt_sriov_device.h      |  12 ++
+ lib/intel_vram.c            | 189 ++++++++++++++++++
+ lib/intel_vram.h            |  22 ++
+ lib/meson.build             |   1 +
+ tests/intel/xe_sriov_flr.c  | 104 ++--------
+ tests/intel/xe_sriov_vram.c | 388 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 7 files changed, 631 insertions(+), 86 deletions(-)
+ create mode 100644 lib/intel_vram.c
+ create mode 100644 lib/intel_vram.h
+ create mode 100644 tests/intel/xe_sriov_vram.c
+
+-- 
+2.40.0
+
