@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2979CCCA470
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 06:16:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59DCACCA470
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 06:26:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C895E10E325;
-	Wed,  1 Oct 2025 06:16:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2D2E10E0F4;
+	Wed,  1 Oct 2025 06:26:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WEJ6N64S";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n5jBDn51";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6663710E325
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 06:16:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7D6F10E0F4
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 06:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759299410; x=1790835410;
+ t=1759299967; x=1790835967;
  h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=u4/Q0gIJxz7DdjuxDl7UicExvHBw8W+WCEirjgYh3yw=;
- b=WEJ6N64Szb/ecckTpYL9pPD31fDU4/Q6plu/Pwdg2dsyOjvCy6uzgWfv
- sHlzwyO70emKPsrPwayNGJKkiTTJMQY4EOda0S5LOtwArc70tnkt8z3he
- 4DscNEv4e2yFO9+wuu0BKj35AgTZBENdtzvceEDUadZrXZ+K1T673KfGg
- EvivBRHBsjRFA3puLP4LeTzsCCRGNMoUoa0vf+6+cN1BT5CwjCXFt2Dno
- JdaVorbb9fKhjMI54XrdYz7jSdjsFSkxVQQgR6Nxc4iiqOkz7rRx2Q9DQ
- 30+XpC0qyf3DHJuLE3Tn3Ay+Q8emLs5ax1AieW8Bdl9AMbruV/hvcn3iA A==;
-X-CSE-ConnectionGUID: TqzioabAT2ex1YVAW67DDA==
-X-CSE-MsgGUID: vTOixL6gR2qJmvBYXaCawQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="61613861"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="61613861"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 23:16:50 -0700
-X-CSE-ConnectionGUID: xoR/KeLxRCOa+Ot/s0nJtA==
-X-CSE-MsgGUID: 68dPqsGzREikBhuFT5PmSQ==
+ from:in-reply-to;
+ bh=pE4zonl4Gzf7L5Xy07petJg91D34j8yCt5X4xI26bog=;
+ b=n5jBDn511z6kZe7zFkiE1+IEaaDWTdhaOBhMYb8/8+3iI90/Z2iNWA6q
+ rArnca94Xs68lZTwyicDuBdLnGa46c8n35pCwfHsU5TnxV0MCNJ0pSCCq
+ yjmm5MrjNjmGvnXp5SAHpq58BS/t0RtihaWRAC5/Kb1cm6RIpSWN/yaTL
+ QgQpceS45qrZYpHdp9FSa989DSw5A82r/hMlRgQ0IPPEOKnm2tl7dTWxC
+ xaJWxXR48zLPidjcwH7xIkUI8O60gDEzyDmaKEMSTBIwvDlea7vrOx54e
+ EMNCRQjiorGuWiteua7Uwewo5RGKrRJbMr+xXBAt21xg5ZDbAmGsZeCz2 w==;
+X-CSE-ConnectionGUID: R+e7BBxARWSYcnacGf68zw==
+X-CSE-MsgGUID: u9H9hMTRSzuDEXLPEHt+TQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61274958"
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208,217";a="61274958"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2025 23:26:07 -0700
+X-CSE-ConnectionGUID: MWQxRLEzQVO/aDQWuC1dgQ==
+X-CSE-MsgGUID: bxDyaZJNSh6Ejd5mPVMRhA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; d="scan'208";a="182727804"
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; 
+ d="scan'208,217";a="178755328"
 Received: from mahendir-mobl.gar.corp.intel.com (HELO [10.247.154.187])
  ([10.247.154.187])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2025 23:16:45 -0700
-Message-ID: <79f2a5e8-3c50-42bf-86d2-91552df6c01e@intel.com>
-Date: Wed, 1 Oct 2025 11:46:31 +0530
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2025 23:26:04 -0700
+Content-Type: multipart/alternative;
+ boundary="------------MdPKCDuhTLlebZ27WTdzJ18S"
+Message-ID: <4194c486-ff6d-494a-b76f-2565a1381e50@intel.com>
+Date: Wed, 1 Oct 2025 11:56:02 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,v14,1/2] tests/kms_prime: Add XE support
+Subject: Re: [i-g-t,v14,2/2] tests/kms_prime: Enable basic-modeset for xe
 To: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
  igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, bhanuprakash.modem@gmail.com,
- anshuman.gupta@intel.com, matthew.auld@intel.com, kamil.konieczny@intel.com,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Nidhi Gupta <nidhi1.gupta@intel.com>
-References: <20250918092651.306828-1-santhosh.reddy.guddati@intel.com>
+ anshuman.gupta@intel.com, matthew.auld@intel.com, kamil.konieczny@intel.com
+References: <20250918092651.306828-2-santhosh.reddy.guddati@intel.com>
 Content-Language: en-US
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20250918092651.306828-1-santhosh.reddy.guddati@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20250918092651.306828-2-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,338 +73,166 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+This is a multi-part message in MIME format.
+--------------MdPKCDuhTLlebZ27WTdzJ18S
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
 Hello Santhosh,
 
 On 18-09-2025 14:56, Santhosh Reddy Guddati wrote:
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Add support for basic-modeset subtest for xe driver.
 >
-> Add XE driver support for kms tests.
+> V2: Update commit description to reflect the changes (Kamil)
 >
-> V2: - Use rendercopy method for both i915 & xe
->      - Minor cleanup
-> V3: - New patch for cleanup & rendercopy
-> V4: - Fallback to blitter
-> V5: - Rebase
-> v7: - Rebase and patch cleanup
-> v8: - D3hot subtest is not required for xe
-> v9: - nitpicks (Matthew)
-> v10:- Rebase
-> v11:- Split the commits per subtest and refactor code (Kamil, Kunal)
->        - Enable basic-crc-hybrid subtest for xe.
->        - Added Xe Prime support for hybrid graphics by enabling
->          buffer sharing between integrated and discrete GPUs.
->        - Refactor buffer creation function for Xe discrete buffers.
->        - Introduced helper functions for creating and mapping dumb buffers.
->        	Also, implement fast buffer import for Xe discrete GPUs
-> 	using BLT copy operations.
-> v12: Fix CRC mismatch by using correct color depth constant.
-> v13: Align B0 width to 256 for consitancy with existing logic,
->       cleanup of xe resources after use (Kunal)
->       - Reorder header includes and add missing closing calls (Kamil)
-> v14: Include igt headers in appropriate order (Kamil)
->       - Fix VGEM detection before checking for Intel dGPU
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+> Signed-off-by: Santhosh Reddy Guddati<santhosh.reddy.guddati@intel.com>
 > ---
->   tests/kms_prime.c | 188 ++++++++++++++++++++++++++++++++++++++--------
->   1 file changed, 158 insertions(+), 30 deletions(-)
+>   tests/kms_prime.c | 35 +++++++++++++++++++++++++++++++++++
+>   1 file changed, 35 insertions(+)
 >
 > diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-> index 1d011327c..9082b3e51 100644
+> index 9082b3e51..9ccb85d49 100644
 > --- a/tests/kms_prime.c
 > +++ b/tests/kms_prime.c
-> @@ -29,15 +29,23 @@
->    * Mega feature: General Display Features
->    */
+> @@ -459,6 +459,9 @@ static void test_basic_modeset(int drm_fd)
+>   	enum pipe pipe;
+>   	drmModeModeInfo *mode;
+>   	struct igt_fb fb;
+> +	uint32_t bo;
+> +	int ret;
+> +	uint32_t offsets[4] = { 0 };
 >   
-> +#include <fcntl.h>
-> +#include <limits.h>
-> +#include <poll.h>
-> +#include <sys/ioctl.h>
-> +#include <time.h>
-> +
->   #include "igt.h"
->   #include "igt_device.h"
->   #include "igt_debugfs.h"
->   #include "igt_sysfs.h"
-> -#include <fcntl.h>
+>   	igt_device_set_master(drm_fd);
+>   	igt_display_require(&display, drm_fd);
+> @@ -467,6 +470,38 @@ static void test_basic_modeset(int drm_fd)
+>   	mode = igt_output_get_mode(output);
+>   	igt_assert(mode);
 >   
-> -#include <poll.h>
-> -#include <sys/ioctl.h>
-> -#include <time.h>
-> +#include "lib/intel_blt.h"
-> +#include "lib/intel_common.h"
-> +#include "lib/intel_pat.h"
-> +#include "lib/intel_mocs.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
->   
->   /**
->    * SUBTEST: D3hot
-> @@ -128,24 +136,69 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
->   	return output;
->   }
->   
-> +static uint32_t *create_and_map_dumb_bo(int fd, struct dumb_bo *bo,
-> +					uint32_t width, uint32_t height,
-> +					uint32_t bpp, uint32_t *pitch,
-> +					uint64_t *size)
-> +{
-> +	uint32_t *ptr;
+> +	if (is_xe_device(drm_fd) && xe_has_vram(drm_fd)) {
+> +		uint32_t strides[4] = { ALIGN(mode->hdisplay * 4, 64) };
 > +
-> +	bo->width = ALIGN(width, 256);
-
-Mutates the logical width we use later for the FB
-Don't change bo->width
-
-Instead create new
-const uint32_t alloc_w = ALIGN(width, 256);
-
-> +	bo->height = height;
-> +	bo->bpp = bpp;
+> +		igt_info("Doing modeset on discrete\n");
 > +
-> +	bo->handle = kmstest_dumb_create(fd, bo->width,
-> +					 bo->height, bo->bpp, pitch, size);
+> +		igt_init_fb(&fb, drm_fd, mode->hdisplay, mode->vdisplay,
+> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
+> +			    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
+> +		igt_calc_fb_size(&fb);
 > +
-> +	ptr = kmstest_dumb_map_buffer(fd, bo->handle, *size, PROT_READ | PROT_WRITE);
-> +	igt_assert(ptr != MAP_FAILED);
+> +		bo =  xe_bo_create(drm_fd, 0, fb.size, vram_if_possible(drm_fd, 0), 0);
+> +		igt_require(bo);
 > +
-> +	return ptr;
-> +}
+> +		ret = __kms_addfb(drm_fd, bo,
+> +				  mode->hdisplay, mode->vdisplay,
+> +				  DRM_FORMAT_XRGB8888,
+> +				  DRM_FORMAT_MOD_LINEAR,
+> +				  strides, offsets, 1,
+> +				  DRM_MODE_FB_MODIFIERS, &fb.fb_id);
+igt_init_fb is called with DRM_FORMAT_MOD_NONE  and addfb 
+DRM_FORMAT_MOD_LINEAR
+> +		igt_assert_eq(ret, 0);
 > +
-> +static uint32_t *prepare_xe_dgfx_scratch(int exporter_fd, struct dumb_bo *scratch)
-> +{
-> +	uint32_t *ptr;
-> +	struct blt_copy_data ex_blt = {};
-> +	struct blt_copy_object *src = NULL;
-> +	uint32_t region;
+> +		set_fb(&fb, &display, output);
+> +		gem_close(drm_fd, bo);
 > +
-> +	igt_debug("Preparing scratch buffer for DGfx exporter\n");
+> +		cairo_surface_destroy(fb.cairo_surface);
+> +		do_or_die(drmModeRmFB(drm_fd, fb.fb_id));
 > +
-> +	region = DRM_XE_MEM_REGION_CLASS_VRAM;
-Can we use below methods instead of direct allocation?
-uint32_t region = vram_if_possible(fd, 0);
-> +	blt_copy_init(exporter_fd, &ex_blt);
-> +	src = blt_create_object(&ex_blt, region,
-> +				scratch->width, scratch->height,
-> +				scratch->bpp, 0, T_LINEAR,
-> +				COMPRESSION_DISABLED, 0, true);
-> +	scratch->handle = src->handle;
-> +	scratch->size = src->size;
-> +	scratch->pitch = src->pitch;
-> +	ptr = xe_bo_mmap_ext(exporter_fd, scratch->handle, scratch->size,
-> +			     PROT_READ | PROT_WRITE);
-> +	igt_assert(ptr != MAP_FAILED);
-> +	return ptr;
-> +}
-> +
->   static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
->   			    drmModeModeInfo *mode, uint32_t color)
->   {
->   	uint32_t *ptr;
-> +	bool is_dgfx;
->   
->   	scratch->width = mode->hdisplay;
->   	scratch->height = mode->vdisplay;
->   	scratch->bpp = 32;
->   
-> -	if (!is_i915_device(exporter_fd)) {
-> -		scratch->handle = kmstest_dumb_create(exporter_fd,
-> -						      ALIGN(scratch->width, 256),
-> -						      scratch->height, scratch->bpp,
-> -						      &scratch->pitch, &scratch->size);
-> -
-> -		ptr = kmstest_dumb_map_buffer(exporter_fd, scratch->handle,
-> -					      scratch->size, PROT_WRITE);
-> +	if (drm_get_chipset(exporter_fd) == DRIVER_VGEM) {
-> +		is_dgfx = false;
->   	} else {
-> +		is_dgfx = is_intel_dgfx(exporter_fd);
+> +		igt_display_fini(&display);
+> +		igt_info("Modeset on discrete done\n");
+> +		return;
 > +	}
 > +
-> +	if (is_xe_device(exporter_fd) && is_dgfx) {
-> +		ptr = prepare_xe_dgfx_scratch(exporter_fd, scratch);
-> +	} else if (is_i915_device(exporter_fd)) {
->   		struct igt_fb fb;
+>   	igt_create_pattern_fb(drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+>   			      DRM_FORMAT_MOD_LINEAR, &fb);
 >   
->   		igt_init_fb(&fb, exporter_fd, mode->hdisplay, mode->vdisplay,
-> @@ -165,6 +218,11 @@ static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
->   
->   		ptr = gem_mmap__device_coherent(exporter_fd, scratch->handle, 0, scratch->size,
->   						PROT_WRITE | PROT_READ);
-> +	} else {
-> +		ptr = create_and_map_dumb_bo(exporter_fd, scratch,
-> +					     scratch->width, scratch->height,
-> +					     scratch->bpp, &scratch->pitch,
-> +					     &scratch->size);
->   	}
->   
->   	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
-> @@ -184,40 +242,108 @@ static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *
->   }
->   
->   static void import_fb(int importer_fd, struct igt_fb *fb,
-> -		      int dmabuf_fd, uint32_t pitch)
-> +		      int dmabuf_fd, struct dumb_bo *scratch)
->   {
->   	uint32_t offsets[4] = {}, pitches[4] = {}, handles[4] = {}, temp_buf_handle;
->   	int ret;
->   
-> -	if (is_i915_device(importer_fd)) {
-> -		if (gem_has_lmem(importer_fd)) {
-> -			uint64_t ahnd = get_reloc_ahnd(importer_fd, 0);
-> -			uint64_t fb_size = 0;
-> +	igt_debug("Importing FB: importer_fd=%d, dmabuf_fd=%d, width=%u, height=%u\n",
-> +		  importer_fd, dmabuf_fd, fb->width, fb->height);
-> +
-> +	if (is_intel_dgfx(importer_fd)) {
-> +		uint64_t fb_size = 0;
-> +		uint64_t ahnd = 0;
-> +
-> +		temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-> +		igt_assert(temp_buf_handle > 0);
-> +		fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width,
-> +							       fb->height, fb->drm_format,
-> +							       fb->modifier, scratch->pitch,
-> +							       &fb_size, NULL, NULL);
-> +		igt_assert(fb->gem_handle > 0);
->   
-> -			igt_info("Importer is dGPU\n");
-> -			temp_buf_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-> -			igt_assert(temp_buf_handle > 0);
-> -			fb->gem_handle = igt_create_bo_with_dimensions(importer_fd, fb->width, fb->height,
-> -								       fb->drm_format, fb->modifier, pitch, &fb_size, NULL, NULL);
-> -			igt_assert(fb->gem_handle > 0);
-> +		if (is_i915_device(importer_fd)) {
-> +			ahnd = get_reloc_ahnd(importer_fd, 0);
->   
->   			igt_blitter_src_copy(importer_fd, ahnd, 0, NULL, temp_buf_handle,
-> -					     0, pitch, fb->modifier, 0, 0, fb_size, fb->width,
-> -					     fb->height, 32, fb->gem_handle, 0, pitch, fb->modifier,
-> -					     0, 0, fb_size);
-> +						 0, scratch->pitch, fb->modifier,
-> +						 0, 0, fb_size, fb->width,
-> +						 fb->height, 32, fb->gem_handle,
-> +						 0, scratch->pitch, fb->modifier,
-> +						 0, 0, fb_size);
->   
->   			gem_sync(importer_fd, fb->gem_handle);
->   			gem_close(importer_fd, temp_buf_handle);
->   			put_ahnd(ahnd);
-> -		} else {
-> -			fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-> +		}  else if (is_xe_device(importer_fd)) {
-> +			uint32_t xe_bb;
-> +			struct blt_copy_data blt = {0};
-> +			struct blt_copy_object *src, *dst;
-> +			uint32_t vm, xe_exec;
-> +			intel_ctx_t *xe_ctx;
-> +
-> +			struct drm_xe_engine_class_instance inst = {
-> +				.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-> +			};
-> +
-> +			vm = xe_vm_create(importer_fd, 0, 0);
-> +			xe_exec = xe_exec_queue_create(importer_fd, vm, &inst, 0);
-> +			xe_ctx = intel_ctx_xe(importer_fd, vm, xe_exec, 0, 0, 0);
-> +			ahnd = intel_allocator_open_full(importer_fd, xe_ctx->vm, 0, 0,
-> +							 INTEL_ALLOCATOR_SIMPLE,
-> +							 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-> +
-> +			igt_calc_fb_size(fb);
-> +
-> +			fb->gem_handle = xe_bo_create(importer_fd, 0, fb->size,
-> +						      vram_if_possible(importer_fd, 0), 0);
-> +			igt_require(fb->gem_handle);
-> +
-> +			blt_copy_init(importer_fd, &blt);
-> +
-> +			src = blt_create_object(&blt, vram_if_possible(importer_fd, 0),
-> +						scratch->width, scratch->height, 32, 0,
-> +						T_LINEAR, COMPRESSION_DISABLED, 0, true);
-> +			blt_set_object(src, temp_buf_handle, scratch->size,
-> +				       vram_if_possible(importer_fd, 0), 0,
-> +				       DEFAULT_PAT_INDEX,
-> +				       T_LINEAR, COMPRESSION_DISABLED, 0);
-> +
-> +			dst = blt_create_object(&blt, vram_if_possible(importer_fd, 0),
-> +						scratch->width, scratch->height, 32, 0,
-> +						T_LINEAR, COMPRESSION_DISABLED, 0, true);
-> +			blt_set_object(dst, fb->gem_handle, fb->size,
-> +				       vram_if_possible(importer_fd, 0), 0,
-> +				       DEFAULT_PAT_INDEX,
-> +				       T_LINEAR, COMPRESSION_DISABLED, 0);
-> +
-> +			blt.color_depth = CD_32bit;
-> +			blt_set_copy_object(&blt.src, src);
-> +			blt_set_copy_object(&blt.dst, dst);
-> +
-> +			xe_bb = xe_bo_create(importer_fd, 0, fb->size,
-> +					     vram_if_possible(importer_fd, 0), 0);
-> +
-> +			blt_set_batch(&blt.bb, xe_bb, fb->size, vram_if_possible(importer_fd, 0));
-> +			blt_fast_copy(importer_fd, xe_ctx, NULL, ahnd, &blt);
-> +
-> +			put_offset(ahnd, dst->handle);
-> +			put_offset(ahnd, src->handle);
-> +			put_offset(ahnd, xe_bb);
-> +			intel_allocator_bind(ahnd, 0, 0);
-> +			put_ahnd(ahnd);
-
-Free BLT objects
-blt_destroy_object(src);
-blt_destroy_object(dst);
-
-Close the batch buffer
-gem_close(importer_fd, xe_bb);
-
-Proper allocator teardown
-intel_allocator_close(ahnd);
-
-Destroy the ctx explicitly
-intel_ctx_destroy(importer_fd, xe_ctx);
-
-> +			xe_exec_queue_destroy(importer_fd, xe_exec);
-> +			xe_vm_destroy(importer_fd, vm);
-> +
-> +			gem_close(importer_fd, temp_buf_handle);
->   		}
->   	} else {
->   		fb->gem_handle = prime_fd_to_handle(importer_fd, dmabuf_fd);
-> +		igt_assert(fb->gem_handle > 0);
->   	}
->   
->   	handles[0] = fb->gem_handle;
-> -	pitches[0] = pitch;
-> +	pitches[0] = scratch->pitch;
->   	offsets[0] = 0;
->   
->   	ret = drmModeAddFB2(importer_fd, fb->width, fb->height,
-> @@ -284,7 +410,7 @@ static void test_crc(int exporter_fd, int importer_fd)
->   		gem_close(exporter_fd, scratch.handle);
->   
->   		prepare_fb(importer_fd, &scratch, &fb);
-> -		import_fb(importer_fd, &fb, dmabuf_fd, scratch.pitch);
-> +		import_fb(importer_fd, &fb, dmabuf_fd, &scratch);
->   		close(dmabuf_fd);
->   
->   		colors[i].prime_crc.name = "prime";
-> @@ -475,6 +601,8 @@ igt_main
->   			igt_require(second_fd_vgem >= 0);
->   			if (is_i915_device(first_fd))
->   				igt_require(!gem_has_lmem(first_fd));
-> +			if (is_xe_device(first_fd))
-> +				igt_require(!xe_has_vram(first_fd));
->   		}
->   
->   		igt_describe("Make a dumb color buffer, export to another device and"
-
-
-Also previously author of the patch was different, please check if by 
-mistake.
-
 Thanks and Regards
 Kunal Joshi
+--------------MdPKCDuhTLlebZ27WTdzJ18S
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p>Hello Santhosh,</p>
+    <div class="moz-cite-prefix">On 18-09-2025 14:56, Santhosh Reddy
+      Guddati wrote:<br>
+    </div>
+    <blockquote type="cite">
+      <pre wrap="" class="moz-quote-pre">Add support for basic-modeset subtest for xe driver.
+
+V2: Update commit description to reflect the changes (Kamil)
+
+Signed-off-by: Santhosh Reddy Guddati <a class="moz-txt-link-rfc2396E" href="mailto:santhosh.reddy.guddati@intel.com">&lt;santhosh.reddy.guddati@intel.com&gt;</a>
+---
+ tests/kms_prime.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index 9082b3e51..9ccb85d49 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -459,6 +459,9 @@ static void test_basic_modeset(int drm_fd)
+ 	enum pipe pipe;
+ 	drmModeModeInfo *mode;
+ 	struct igt_fb fb;
++	uint32_t bo;
++	int ret;
++	uint32_t offsets[4] = { 0 };
+ 
+ 	igt_device_set_master(drm_fd);
+ 	igt_display_require(&amp;display, drm_fd);
+@@ -467,6 +470,38 @@ static void test_basic_modeset(int drm_fd)
+ 	mode = igt_output_get_mode(output);
+ 	igt_assert(mode);
+ 
++	if (is_xe_device(drm_fd) &amp;&amp; xe_has_vram(drm_fd)) {
++		uint32_t strides[4] = { ALIGN(mode-&gt;hdisplay * 4, 64) };
++
++		igt_info("Doing modeset on discrete\n");
++
++		igt_init_fb(&amp;fb, drm_fd, mode-&gt;hdisplay, mode-&gt;vdisplay,
++			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_NONE,
++			    IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
++		igt_calc_fb_size(&amp;fb);
++
++		bo =  xe_bo_create(drm_fd, 0, fb.size, vram_if_possible(drm_fd, 0), 0);
++		igt_require(bo);
++
++		ret = __kms_addfb(drm_fd, bo,
++				  mode-&gt;hdisplay, mode-&gt;vdisplay,
++				  DRM_FORMAT_XRGB8888,
++				  DRM_FORMAT_MOD_LINEAR,
++				  strides, offsets, 1,
++				  DRM_MODE_FB_MODIFIERS, &amp;fb.fb_id);</pre>
+    </blockquote>
+    igt_init_fb is called with <span style="white-space: pre-wrap">DRM_FORMAT_MOD_NONE</span> 
+     and addfb <span style="white-space: pre-wrap">DRM_FORMAT_MOD_LINEAR</span>
+    <blockquote type="cite">
+      <pre wrap="" class="moz-quote-pre">
++		igt_assert_eq(ret, 0);
++
++		set_fb(&amp;fb, &amp;display, output);
++		gem_close(drm_fd, bo);
++
++		cairo_surface_destroy(fb.cairo_surface);
++		do_or_die(drmModeRmFB(drm_fd, fb.fb_id));
++
++		igt_display_fini(&amp;display);
++		igt_info("Modeset on discrete done\n");
++		return;
++	}
++
+ 	igt_create_pattern_fb(drm_fd, mode-&gt;hdisplay, mode-&gt;vdisplay, DRM_FORMAT_XRGB8888,
+ 			      DRM_FORMAT_MOD_LINEAR, &amp;fb);
+ </pre>
+    </blockquote>
+    Thanks and Regards<br>
+    Kunal Joshi
+  </body>
+</html>
+
+--------------MdPKCDuhTLlebZ27WTdzJ18S--
