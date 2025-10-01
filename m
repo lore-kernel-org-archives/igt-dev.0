@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1EC2CCA470
-	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 18:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DF77CCA470
+	for <igt-dev@archiver.kernel.org>; Wed,  1 Oct 2025 18:50:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8FC6F10E0E1;
-	Wed,  1 Oct 2025 18:40:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4931310E0E1;
+	Wed,  1 Oct 2025 18:50:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="ahE7fihD";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="LK4yTXN7";
 	dkim-atps=neutral
 Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com
  [209.85.160.201])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9BF310E0E1
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 18:40:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E3FF10E0E1
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Oct 2025 18:50:42 +0000 (UTC)
 Received: by mail-qt1-f201.google.com with SMTP id
- d75a77b69052e-4dec9293c62so4710771cf.1
- for <igt-dev@lists.freedesktop.org>; Wed, 01 Oct 2025 11:40:02 -0700 (PDT)
+ d75a77b69052e-4d6fc3d74a2so5304851cf.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 01 Oct 2025 11:50:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1759344002; x=1759948802;
+ d=google.com; s=20230601; t=1759344642; x=1759949442;
  darn=lists.freedesktop.org; 
  h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
  :date:message-id:reply-to;
- bh=fsYro2W9Th7X9PekCYYDMLXelifU3wBAiFvetBkV6ME=;
- b=ahE7fihD/SJz0rmNeCNX2MLUo6MzykGtOgrKr4c2p8OBeAsyiweZf2jmWFN6zsydf5
- 4PpiBI0OiLAyTrfohScy4ZpP1D45nVgq341p+Q76pDJabKniSZ0qIc0jLJANWCSRw0GA
- 94r3Kg1DvRdNKE8MJ9vZVH2vBOQ928V24+QYulY1lxJUn3d3Te5fwrOglsf9eoAW/Yes
- +RaNJOD5/nlSPB7iK5qmANXSx/8RS0ye7AXJGmHjtkBnhf4GYMXtPAx+g6rbq0VQIDsz
- czjGpdy48cTDeQWdn59rkx//NChDJu14hqsZ87sQQx+r2Q1kEsxWv1qz1ScX488BYNkt
- h9AQ==
+ bh=RjL3NUAafnws9jrQKZKvzdEODpzmUjwVM5jkBbhElXc=;
+ b=LK4yTXN7gQfASkgxseWtXobdh8a/NfWh7OxSCHZJe2QRIrf1T/u2Nl6tMJBKJ3GKNg
+ oo4+aEoei/1T6L5UDYLcZQ8LqDgMkfNxXZNbgNSyHvK5eg6emERtj1X/Txm37UeAJoeT
+ zqD/S75eKHmxkymPH74SwTTqwkJOLsjUJBzRaQecuQxyM6VDUpiVA9BrdCuxNpEi5C8D
+ 1puUJrAKwCPjEpQQNBNLBpVQ8BF4wxgx1GODZpVLwJaEpRoFSltI/IbHWLGVQplhpaVj
+ tfDJMaGbEyF5a6ofLp0d7AvsMe8B+mOw5HcMAlFjJ7+EE/XuYM2tCsiodPF8Kr8X1CDi
+ CZIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759344002; x=1759948802;
+ d=1e100.net; s=20230601; t=1759344642; x=1759949442;
  h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fsYro2W9Th7X9PekCYYDMLXelifU3wBAiFvetBkV6ME=;
- b=QVRWEO2c6tmjf7oR7n2nBVBtpK2auXZBf4LUuD9CcxDNSe80W6HZkfpFjXEVypjVOy
- tpDvieauHipaRL1wI2UU57xPWhqL44duRpRjmdm6I9c7a41sU+MtOeiF74Ls6nLgZ4Mr
- TyuFOpEr4CgWYh5Q3BOnAZVlLLNDRfgyrrbHUW8H+YYztFZk4U2Awzh7XuujwBB+Rki/
- z1surKjCP42XbdEyxEa1yProEtcV29jRbz7pVhYVoD3PuXbu8HO6cvVmmt414+rVxkCe
- qVEl1SFhFXuceFSyd/v6BR+DeUOePO+qMXT6y8sNr1LfhbU3u4Qq6iTYTNljHfDXRPBI
- 8Dvw==
-X-Gm-Message-State: AOJu0Yxjqn/F4Ns5D9PVg0IqI3416ufJZOK+Wc6/A82ipIUXKfjK55/9
- vSn7K8mMEqpjjH5xYpKmzhtV5Q3wwykrASHNu5X94HNgTX6BcpcuWuKbL+aSvPKIJTQvlxtxNBT
- fB0ON2ix1LtvwvQfd2yqduKPnH4TE6covHcXPKmsJYkF0JzzwFN2pnQmaZ0vHFLns3BeJCdmkF3
- +1k8lBXiOD9RwcQO3h6A1I2UVhtKnGfVy3xx0Zyc1j38HC45VRzj3nBxwJqx9223aze0w=
-X-Google-Smtp-Source: AGHT+IGjsLYKpe6GVYlMAiXiU2QMOC1i1L3Ea+PFhwcB20yNvdlJsSqiocaQ99mbNocas6fBbTASRb0IoSRE7Kkl
-X-Received: from qtxi16.prod.google.com ([2002:ac8:5e50:0:b0:4cf:1eba:f313])
+ bh=RjL3NUAafnws9jrQKZKvzdEODpzmUjwVM5jkBbhElXc=;
+ b=HwoH6+wlDiIYiagBpuLvgLdwHz0dzz5xOew2jzwRvrP7QwJNIBTZasMFo3+Dh+1Llq
+ lPjIygloLfbAXoH+U+L99xgO89nRvl19EunyhG42+9AqjU0pKiWUBx5HgpBKySsTwghA
+ v4qMNX1jyuCf6JkhjEpFz+yt5VpOiuncFK6qLAm4QDx0t3ATm9b3Ty9aEkvFtqQf4kj2
+ nkdWeCqxBYJlrhEB8QgyzvwZI4szTJG5dJ+mW5oA4jYGPI20jzW8+eS6j5OJ/owWyyYs
+ dQGnHpc9HFq4FCMHyb9E9dquCzyVNUc3VJm4tdNISkua4Gj4VNL6TmiUh1Jz3pMXxUYt
+ SXrw==
+X-Gm-Message-State: AOJu0YyH16bK3eqbWqebQWBOUw9/Xy3gwaL9qV+pnaIlKBpLjU8fNbfT
+ fqytewvg+VQq6c4o9ZSmtMtLOoOmvpmfSllbRG9MQASG1l2FXDUliRKDsDGpTyw+Ch9gH9qEv5A
+ jTlWX/0pu+UTq5njupswIXMn1QvT018DIaPKQ0zIedl14uPvfZ1xogJp47JCmAjbAkSAbpGZ1UX
+ YfWUcrT/1pG+Bhp/CKLSI/BMk8vwyv42IPrgUY6VGv+N4MIwXfyb+lMiFjfxuZ6wDzjoM=
+X-Google-Smtp-Source: AGHT+IHUpw5fQJh74Qfwx27e2ZEc9avtD6pFmJu1WZn20+HDNll3BXzuk+dqJmvb6z680eZCADorgN++NdNazLiB
+X-Received: from qknqj5.prod.google.com ([2002:a05:620a:8805:b0:814:faa9:8520])
  (user=markyacoub job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:1a84:b0:4cc:9fa2:f3a3 with SMTP id
- d75a77b69052e-4e41eef6492mr57662931cf.60.1759344001501; 
- Wed, 01 Oct 2025 11:40:01 -0700 (PDT)
-Date: Wed,  1 Oct 2025 14:39:58 -0400
+ 2002:a05:622a:1f9b:b0:4df:1196:f570 with SMTP id
+ d75a77b69052e-4e41d8a1430mr58414301cf.53.1759344641599; 
+ Wed, 01 Oct 2025 11:50:41 -0700 (PDT)
+Date: Wed,  1 Oct 2025 14:50:38 -0400
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.51.0.618.g983fd99d29-goog
-Message-ID: <20251001183958.3383532-1-markyacoub@google.com>
-Subject: [PATCH i-g-t] tests/kms_content_protection: Check for HDCP before
- setting displays.
+Message-ID: <20251001185039.3386207-1-markyacoub@google.com>
+Subject: [PATCH i-g-t v2] lib/drmtest: Allow DRIVER_ANY tests to run on VKMS
+ when supported.
 From: Mark Yacoub <markyacoub@google.com>
 To: igt-dev@lists.freedesktop.org
 Cc: louis.chauvet@bootlin.com, Mark Yacoub <markyacoub@google.com>
@@ -78,54 +78,78 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 [Why]
-Drivers such as VKMS do not support HDCP, so the test fails on
-`modeset_with_fb`:
-Test assertion failure function do_display_commit, file external/igt-gpu-tools/lib/igt_kms.c:4632
-errno: 34, Math result not representable
+Android's VM use virtio-gpu as its default driver, but VKMS can be
+enabled on top it.
+VKMS is the preferred driver to run IGT.
 
 [How]
-Move the HDCP check before any modesets.
+To maintain the current way to preferring hardware drivers, introduce a
+"PREFER_VKMS" flag which does not remove DRIVER_VKMS from the list of
+drivers to be opened. Android will keep this as always true.
 
-Test: kms_content_protection on AVD with VKMS
+Also, added explicit support for virtio-gpu to be explictly filtered
+out, making room for VKMS to be the primary driver in use.
+
+Test: kms_bw on AVD
 Signed-off-by: Mark Yacoub <markyacoub@google.com>
 ---
- tests/kms_content_protection.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ lib/drmtest.c |  1 +
+ lib/drmtest.h | 20 +++++++++++++-------
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 51fc1d3be..effeb66dc 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -638,22 +638,20 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 551385867..a1fb0b5ba 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -223,6 +223,7 @@ static const struct module {
+ 	{ DRIVER_V3D, "v3d" },
+ 	{ DRIVER_VC4, "vc4" },
+ 	{ DRIVER_VGEM, "vgem" },
++	{ DRIVER_VIRTIO, "virtio_gpu" },
+ 	{ DRIVER_VKMS, "vkms" },
+ 	{ DRIVER_VMWGFX, "vmwgfx" },
+ 	{ DRIVER_XE, "xe" },
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index a9542dde2..29356041b 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -37,6 +37,7 @@
+ #include <xf86drm.h>
  
- 	for_each_connected_output(display, output) {
- 		for_each_pipe(display, pipe) {
--			igt_display_reset(display);
--
--			igt_output_set_pipe(output, pipe);
--			if (!intel_pipe_output_combo_valid(display))
--				continue;
--
--			modeset_with_fb(pipe, output, commit_style);
--
- 			if (!output_hdcp_capable(output, content_type))
- 				continue;
--
- 			if (is_output_hdcp_test_exempt(output)) {
- 				igt_info("Skipping HDCP test on %s, as the panel is blocklisted\n",
- 					  output->name);
- 				continue;
- 			}
-+			
-+			igt_display_reset(display);
-+			igt_output_set_pipe(output, pipe);
-+			if (!intel_pipe_output_combo_valid(display))
-+				continue;
+ #include "igt_core.h"
++#include "config.h"
+ 
+ int __get_drm_device_name(int fd, char *name, int name_size);
+ 
+@@ -56,16 +57,21 @@ int __get_drm_device_name(int fd, char *name, int name_size);
+ #define DRIVER_XE	(1 << 7)
+ #define DRIVER_VMWGFX   (1 << 8)
+ #define DRIVER_VKMS	(1 << 9)
++#define DRIVER_VIRTIO	(1 << 10)
+ 
+ /*
+- * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+- * with vgem as well as a supported driver, you can end up with a
+- * near-100% skip rate if you don't explicitly specify the device,
+- * depending on device-load ordering.
+- *
+- * Exclude VKMS to prefer hardware drivers.
++ * Exclude DRIVER_VGEM and DRIVER_VIRTIO from DRIVER_ANY since if
++ * you run on a system with vgem or virtio-gpu as well as a supported driver,
++ * you can end up with a near-100% skip rate if you don't explicitly specify
++ * the device, depending on device-load ordering.
+  */
+-#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS)
++/* Exclude VKMS to prefer hardware drivers if VKMS is not the preferred driver. */
++#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS | DRIVER_VIRTIO)
 +
-+			modeset_with_fb(pipe, output, commit_style);
++#ifdef PREFER_VKMS
++#undef DRIVER_ANY
++#define DRIVER_ANY	~(DRIVER_VGEM  | DRIVER_VIRTIO)
++#endif
  
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 				test_content_protection_on_output(output, pipe, commit_style, content_type);
+ /*
+  * Compile friendly enum for i915/xe.
 -- 
 2.51.0.618.g983fd99d29-goog
 
