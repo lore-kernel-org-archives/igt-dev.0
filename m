@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67B6DCAC5B8
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7DABCAC5B0
 	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 10:45:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 156E910E7B8;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5096210E7BB;
 	Thu,  2 Oct 2025 10:45:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SJGhh659";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Isz4nRTo";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 168AF10E7B5
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 10:45:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D58F410E7B8
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 10:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759401901; x=1790937901;
+ t=1759401903; x=1790937903;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IQsyV1+khcLDT+9VDK3ABa/czSF5J+rwUHKj+bM/8eQ=;
- b=SJGhh659GXRIw0HU5bE8i2i1YeQcQjFgw0T/edLm4+6l5hmG9UqWtQro
- /UurGVyPGR4Iq4ODSNdd/AJnnjJviKpxWGZp7HFFspV0/bvkZwnuZa+z5
- /HJkErufkdYnbbKt7/F3oy63z80LvLOjIv+HtXq9+kqA1xh5WlPMLImmM
- 21UWakb4bYlhm3q7q3PfcOUNqTSHmbLUXnkhkywVe7RcDUVwY91dWBpwN
- 3kt1fIVenNtZoNT5QVtnfxIo99Xlu4C68SpQpfZczjVT8a6ttglYJrVnO
- Ceg9NWn5YQ9Z57Il+8RdbPeMxHhKCSaBGN8gO1Bbpt/+ag9LQGmiAtCGl Q==;
-X-CSE-ConnectionGUID: dvbqMqm8RCCE4n5E9Vs0Zg==
-X-CSE-MsgGUID: bcDVHRtEQFa0RaDoHpx57g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="60895237"
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="60895237"
+ bh=WawbjLCClKj81qFGqTSvxtnljVMdahgRARnkl1rvSm4=;
+ b=Isz4nRTo56FY3iYyO7qpZtDVSCoxW9WZMu5f4tu+z3dp/4+KJt8ACwyg
+ cojLRo7cKJ6d5rofvlqjoK45L5WqIaVYv2kpZvlh4CJgo+5QIlaqbw2qi
+ Cc0g/uXaBuFfpP7ElKGmpMnhrjmuhHYvV000Ki+eITFNVGGVsvD5YC7pa
+ JFdehD5hsvFFWsmf/VxakqggqHtKYvi+uthjaR1DLQJX3AYz/QM4WMmtw
+ 0I2MvLSa6xfqfnuGL7fkkhaG1rhhUHYK0yuLgtsEIW/ALqkExbE5sh0e6
+ 1bEhQLGPWW/duU1bfSDwErEDxGo6+faZuvl4gkuaWpVNpstEv7OY+prAJ g==;
+X-CSE-ConnectionGUID: 6hjMhMZmSjGJL7xeCLaJ/Q==
+X-CSE-MsgGUID: AagJ5OAeSaOzul8uul0Sig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="60895241"
+X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="60895241"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 03:45:01 -0700
-X-CSE-ConnectionGUID: QnbcUB0lTx+jUFlsDk/5Xg==
-X-CSE-MsgGUID: QeGc9rn3TW6AqDeoSp1cVQ==
+ 02 Oct 2025 03:45:03 -0700
+X-CSE-ConnectionGUID: YRTyUyHqSGiou4s5OC4sEA==
+X-CSE-MsgGUID: 0IyIv+tnQlCCVUTlQnTGHQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="184213191"
+X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="184213197"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO
  dpiatkow-mobl1.mshome.net) ([10.245.245.176])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 03:44:59 -0700
+ 02 Oct 2025 03:45:01 -0700
 From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -50,10 +50,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>,
  =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH v10 i-g-t 02/10] lib/xe_eudebug: Don't fail in __wait_token if
- pipe was broken
-Date: Thu,  2 Oct 2025 12:44:35 +0200
-Message-Id: <20251002104443.7021-3-dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v10 i-g-t 03/10] tests/xe_eudebug_online: Allow dead client in
+ set-breakpoint-sigint-debugger
+Date: Thu,  2 Oct 2025 12:44:36 +0200
+Message-Id: <20251002104443.7021-4-dominik.karol.piatkowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251002104443.7021-1-dominik.karol.piatkowski@intel.com>
 References: <20251002104443.7021-1-dominik.karol.piatkowski@intel.com>
@@ -75,108 +75,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-If safe_pipe_read returns -errno, print it and let the upper layer
-decide if this is acceptable. This will allow for debugging if something
-goes wrong, while reducing the false tripping of tests in which a dead
-client can occur.
+There is a chance that the client will become dead during
+set-breakpoint-sigint-debugger test - avoid tripping over the assert by
+allowing this situation during this test.
 
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Acked-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/xe/xe_eudebug.c | 39 +++++++++++++++++++++++++++++++--------
- lib/xe/xe_eudebug.h |  2 ++
- 2 files changed, 33 insertions(+), 8 deletions(-)
+ tests/intel/xe_eudebug_online.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index 3587f4cbe..2fb8cf2a0 100644
---- a/lib/xe/xe_eudebug.c
-+++ b/lib/xe/xe_eudebug.c
-@@ -300,34 +300,56 @@ static void pipe_close(int pipe[2])
- 		close(pipe[1]);
- }
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index 535f00818..aa58e5f99 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -1569,6 +1569,7 @@ static void test_set_breakpoint_online_sigint_debugger(int fd,
  
-+#define DEAD_CLIENT 0xccccdead
-+
- static uint64_t __wait_token(int pipe[2], const uint64_t token, int timeout_ms)
- {
- 	uint64_t in;
- 	int ret;
- 
- 	ret = safe_pipe_read(pipe, &in, sizeof(in), timeout_ms);
--	igt_assert_f(ret > 0,
--		     "Pipe read timeout waiting for token '%s:(%" PRId64 ")'\n",
--		     token_to_str(token), token);
-+	if (ret < 0) {
-+		igt_debug("safe_pipe_read failed with error: %d waiting for token '%s:(%" PRId64 ")'\n",
-+			  ret, token_to_str(token), token);
-+		return DEAD_CLIENT;
-+	} else if (ret == 0) {
-+		igt_debug("safe_pipe_read failed: EOF\n");
-+		return DEAD_CLIENT;
-+	}
- 
- 	igt_assert_eq(in, token);
- 
- 	ret = safe_pipe_read(pipe, &in, sizeof(in), timeout_ms);
--	igt_assert_f(ret > 0,
--		     "Pipe read timeout waiting for token value '%s:(%" PRId64 ")'\n",
--		     token_to_str(token), token);
-+	if (ret < 0) {
-+		igt_debug("safe_pipe_read failed with error: %d waiting for token '%s:(%" PRId64 ")'\n",
-+			  ret, token_to_str(token), token);
-+		return DEAD_CLIENT;
-+	} else if (ret == 0) {
-+		igt_debug("safe_pipe_read failed: EOF\n");
-+		return DEAD_CLIENT;
-+	}
- 
- 	return in;
- }
- 
- static uint64_t client_wait_token(struct xe_eudebug_client *c, const uint64_t token)
- {
--	return __wait_token(c->p_in, token, c->timeout_ms);
-+	uint64_t ret = __wait_token(c->p_in, token, c->timeout_ms);
-+
-+	if (ret == DEAD_CLIENT)
-+		igt_assert(c->allow_dead_client);
-+
-+	return ret;
- }
- 
- static uint64_t wait_from_client(struct xe_eudebug_client *c, const uint64_t token)
- {
--	return __wait_token(c->p_out, token, c->timeout_ms);
-+	uint64_t ret = __wait_token(c->p_out, token, c->timeout_ms);
-+
-+	if (ret == DEAD_CLIENT)
-+		igt_assert(c->allow_dead_client);
-+
-+	return ret;
- }
- 
- static void token_signal(int pipe[2], const uint64_t token, const uint64_t value)
-@@ -1406,6 +1428,7 @@ struct xe_eudebug_client *xe_eudebug_client_create(int master_fd, xe_eudebug_cli
- 	c->ptr = data;
- 	c->master_fd = master_fd;
- 	c->timeout_ms = XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * MSEC_PER_SEC;
-+	c->allow_dead_client = false;
- 	pthread_mutex_init(&c->lock, NULL);
- 
- 	igt_fork(child, 1) {
-diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
-index 3adde5f6c..8f7f66220 100644
---- a/lib/xe/xe_eudebug.h
-+++ b/lib/xe/xe_eudebug.h
-@@ -66,6 +66,8 @@ struct xe_eudebug_client {
- 
- 	int timeout_ms;
- 
-+	bool allow_dead_client;
-+
- 	pthread_mutex_t lock;
- };
- 
+ 		data = online_debug_data_create(hwe);
+ 		s = xe_eudebug_session_create(fd, run_online_client, flags, data);
++		s->client->allow_dead_client = true;
+ 		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
+ 						open_trigger);
+ 		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
 -- 
 2.34.1
 
