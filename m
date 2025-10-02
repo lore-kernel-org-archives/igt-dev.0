@@ -4,64 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 127ABCAC5B0
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 15:12:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 431E7CAC5B8
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 15:17:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B766A10E1BE;
-	Thu,  2 Oct 2025 15:12:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DEC7510E1BE;
+	Thu,  2 Oct 2025 15:17:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vg924EY6";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="otfmRh8F";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2CA6910E1BE
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 15:12:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759417931; x=1790953931;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=fnB0oC9QY8HufOCauT7fSt1cNePGhLEM+djzOkUMXrM=;
- b=Vg924EY6XWH64NHY6pr5POJxFetrKBmuCgnB9HV0E86kOQKulvMGyMfd
- i4Jvcxt/WZxUquMCzNoO9dicgofNPZt9ESSEb91anKz4mEif3nnQB4dwA
- hdHI1FYijkp/NJcJphTeL9f602Ngn+YtrVCaJsY5CFA8+TQbxcxJc2T3U
- hHxaTfYcxdAXl8XDXyA27iF02QSFTajp0aqFAf1Sz8cKBJF7MKxkpHRYH
- sp2aFaPyapUSksBRBTfnVQWgAXX59rpMt9dzt1UI0ExDVudm1QblRLA8d
- nwd88A1rJlI0teRLCmC1jo7Xxolhum2+4CROd/FtmilMuOSX79Cn+aYGA g==;
-X-CSE-ConnectionGUID: xsqUAhyxQPCsaHaYI7LIIg==
-X-CSE-MsgGUID: QGYnI4WLRY6VT5WThMeA2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="61413490"
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="61413490"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 08:12:11 -0700
-X-CSE-ConnectionGUID: fmsWalg4Q0OX1U0fatX0kQ==
-X-CSE-MsgGUID: qcvnqtRBRh2Ia8bFvnwlzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="178170386"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 08:12:09 -0700
-Date: Thu, 2 Oct 2025 17:11:52 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com
+ [209.85.219.73])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7257410E1BE
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 15:17:18 +0000 (UTC)
+Received: by mail-qv1-f73.google.com with SMTP id
+ 6a1803df08f44-78e50889f83so33203186d6.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 02 Oct 2025 08:17:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1759418237; x=1760023037;
+ darn=lists.freedesktop.org; 
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=DWuBzH34wx7+JSR6J1VDXOgr3pvOx1+3BLO//xGhmvE=;
+ b=otfmRh8FF1DMMjWTfvtN9yB+TdPakaVfjKIukIIQ29p3iCPxuRqPp2+HRjre9ByWjp
+ MGc9ZCTSdmj2YnUrvAecGW+tBIFh2sPtNdsoZNItROXAzh9vtx+6U2kLVolUu4G0N4yb
+ j0/xNXhngELRL0YpSQviqTubP0Wm7DJPzVgJj6FToy9k+YogH8RaXSvZACa2S1K4AGwH
+ Z7ySq9XbljhcSt1EhfPmyYmLqcPeZBBwwjqo1yob98HQmH3+BgLyTMduI1s345FtuVOg
+ 4N5vauzmlMSVq5JYM91sDDyeN/jzMI+t10DRDwkmC1XHwQkjzwiAVt+PT0fIY4vRqOb9
+ DZ2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759418237; x=1760023037;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DWuBzH34wx7+JSR6J1VDXOgr3pvOx1+3BLO//xGhmvE=;
+ b=vz2cv9KrMik5hnDdEo7+V5muHv5uELhZEoZ4fwIoo5XcwN1jEh+OWVfUViIl/UNDbJ
+ XFM1eQIY4CbpSl4tQok7pXJtcRuPvku0lQt49s4RFEeYBYgQYeh05kdOkSimJijuu6cT
+ oBQxEn0+ctSnu7hl4fijW8ENVnqs3UUp4o+SGSw5DWOF/LipNOqxkiTxQn0YOpKMWmNw
+ DJBGuKM7bvUsdAJM6AJ+agvLVLY/PMkO0KInwP5x2cLlFBvOSySFy/2v44/u7rt+g7OY
+ 9efvsDcHS97WFNRRj7ErMgVG7VwcHba6IOHNGLzGLA9+aKKxvg1sAOaqjY8Tf6lIwU+a
+ KQpg==
+X-Gm-Message-State: AOJu0YyIuigzU1TgQjuJuYUgg/YoXV258WLifa3tCffVr3Vw06XDc0zY
+ wHhfszetnxns7eJVPkVPyp8FSm7xs3rYTI4OSkLi/VOGM7jb7VCunNB2CBTKOSRjIbdjq3mjjTc
+ 1JIsObto1wjlypA5o8O1yLv7WPJyDY0UGpyfyF5bdqNJ1ZsAhaVqhTbLuWLZnc+IX9cWVB3PF6Z
+ JFOGCbhCdi5/51BZKGIMXL1JbE6qs+WlGPN1jT50BE5/iszZLy5+hNBJQGG2HnFM/GKzg=
+X-Google-Smtp-Source: AGHT+IFLFjJSZO9z21H1VBWeAl4KX619vd4ybybwdEIEpK+pwtjvumEP3nDJgtZi08Xdhm7QFNAdtMyo3VuXNHBq
+X-Received: from qvb24.prod.google.com ([2002:a05:6214:6018:b0:82d:33b2:fba0])
+ (user=markyacoub job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6214:2581:b0:856:d1d4:d116 with SMTP id
+ 6a1803df08f44-873a4ae873amr97449736d6.40.1759418237017; 
+ Thu, 02 Oct 2025 08:17:17 -0700 (PDT)
+Date: Thu,  2 Oct 2025 11:17:14 -0400
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.618.g983fd99d29-goog
+Message-ID: <20251002151714.595492-1-markyacoub@google.com>
+Subject: [PATCH i-g-t] lib/drmtest: Add Support for Virtio-GPU
+From: Mark Yacoub <markyacoub@google.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>,
- Alex Hung <alex.hung@amd.com>, harry.wentland@amd.com, leo.liu@amd.com
-Subject: Re: [PATCH V10 02/30] lib/igt_kms: Introduce
- DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
-Message-ID: <20251002151152.24whdoghdyiwpsjv@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Alex Hung <alex.hung@amd.com>, harry.wentland@amd.com,
- leo.liu@amd.com
-References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-3-alex.hung@amd.com>
- <5efb9dc9-6007-4d0b-bf84-950cbf208362@bootlin.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5efb9dc9-6007-4d0b-bf84-950cbf208362@bootlin.com>
+Cc: Mark Yacoub <markyacoub@google.com>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,68 +78,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi all,
-On 2025-09-30 at 12:37:17 +0200, Louis Chauvet wrote:
-> 
-> 
-> Le 15/08/2025 à 06:06, Alex Hung a écrit :
-> > From: Harry Wentland <harry.wentland@amd.com>
-> > 
-> > Setting the COLOR_PIPELINE plane prop is only allowed when the
-> > DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE is set.
-> > 
-> > Setting COLOR_RANGE and COLOR_ENCODING is only allowed when the
-> > DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE is NOT set.
-> > 
-> > Signed-off-by: Alex Hung <alex.hung@amd.com>
-> > Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-> > ---
-> >   include/drm-uapi/drm.h | 15 ++++++++++
-> >   lib/igt_kms.c          | 63 ++++++++++++++++++++++++++++++++++--------
-> >   lib/igt_kms.h          |  1 +
-> >   tests/kms_properties.c | 20 ++++++++++----
-> >   4 files changed, 81 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
-> > index 4e4f7c2c3..6b9af3348 100644
-> > --- a/include/drm-uapi/drm.h
-> > +++ b/include/drm-uapi/drm.h
-> > @@ -869,6 +869,21 @@ struct drm_get_cap {
-> >    */
-> >   #define DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT	6
-> > +/**
-> > + * DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
-> > + *
-> > + * If set to 1, the DRM core will
-> > + * - expose plane COLOR_PIPELINE properties for pre-blending color management.
-> > + * - reject setting of these plane properties:
-> > + *   - COLOR_ENCODING
-> > + *   - COLOR_RANGE
-> > + *
-> > + * The client must enable &DRM_CLIENT_CAP_ATOMIC first.
-> > + *
-> > + * This capability is currently in development.
-> > + */
-> > +#define DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE	7
-> > +
-> 
-> I think this should go in a separate commit ("inclde/drm-uapi: sync with
-> color pipeline series")
-> 
+[Why]
+Android's Virtual Device (AVD) has virtio-gpu has its primary driver. We
+want to be to detect it so we can filter out it through DRIVER_ANY.
 
-O even shorter:
+[How]
+Add DRIVER_VIRTIO to the exclusion list of DRIVER_ANY
 
-drm-uapi/drm: sync with color pipeline commit
+Test: ran kms_bw on AVD.
 
-and in description give a sha1 for drm-next commit which
-introduces COLOROP changes. See log with
+Change-Id: Ie7987c706546bc0fbd437e221f7ecd4c7bc759a9
+Signed-off-by: Mark Yacoub <markyacoub@google.com?
+cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+cc: Louis Chauvet <louis.chauvet@bootlin.com>
+---
+ lib/drmtest.c | 1 +
+ lib/drmtest.h | 9 +++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-git log -- include/drm-uapi/drm.h
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 551385867..a1fb0b5ba 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -223,6 +223,7 @@ static const struct module {
+ 	{ DRIVER_V3D, "v3d" },
+ 	{ DRIVER_VC4, "vc4" },
+ 	{ DRIVER_VGEM, "vgem" },
++	{ DRIVER_VIRTIO, "virtio_gpu" },
+ 	{ DRIVER_VKMS, "vkms" },
+ 	{ DRIVER_VMWGFX, "vmwgfx" },
+ 	{ DRIVER_XE, "xe" },
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index a9542dde2..8416aa491 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -56,16 +56,17 @@ int __get_drm_device_name(int fd, char *name, int name_size);
+ #define DRIVER_XE	(1 << 7)
+ #define DRIVER_VMWGFX   (1 << 8)
+ #define DRIVER_VKMS	(1 << 9)
++#define DRIVER_VIRTIO	(1 << 10)
+ 
+ /*
+- * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+- * with vgem as well as a supported driver, you can end up with a
+- * near-100% skip rate if you don't explicitly specify the device,
++ * Exclude DRIVER_VGEM and DRIVER_VIRTIO from DRIVER_ANY since if you run
++ * on a system with them as well as a supported driver, you can end up
++ * with a near-100% skip rate if you don't explicitly specify the device,
+  * depending on device-load ordering.
+  *
+  * Exclude VKMS to prefer hardware drivers.
+  */
+-#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS)
++#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS | DRIVER_VIRTIO)
+ 
+ /*
+  * Compile friendly enum for i915/xe.
+-- 
+2.51.0.618.g983fd99d29-goog
 
-Please make uapi change in separate patch(es). You
-could also read about it in igt README.md
-
-Regards,
-Kamil
-
-[cut]
