@@ -4,76 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C62FCAC5B8
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 17:02:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83A0ACAC5B8
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 17:36:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 20DCE10E81C;
-	Thu,  2 Oct 2025 17:02:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2F7C510E1CC;
+	Thu,  2 Oct 2025 17:36:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="HUcmKNAE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MJCTUE/R";
 	dkim-atps=neutral
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com
- [209.85.214.175])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21D8E10E81C
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 17:02:54 +0000 (UTC)
-Received: by mail-pl1-f175.google.com with SMTP id
- d9443c01a7336-267facf9b58so7784875ad.2
- for <igt-dev@lists.freedesktop.org>; Thu, 02 Oct 2025 10:02:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1759424574; x=1760029374; darn=lists.freedesktop.org;
- h=content-transfer-encoding:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GgRnLS9U2fGSJJw+Q86izIhncDq72r2z24GDqjmpM68=;
- b=HUcmKNAEGmguGVhGjl02xe5xvnHSy9ypPqvM0SGjClvNJdnwDdWrTS2h73oSXUAYfp
- WueQSOxmKuC2cy2xRZoMBzrNLsBFxih91Twxg8qp+e72fuQ0dCv9sEg9vgXSsZeZEAjk
- DsUJL2cwfQUZHT3wDR+6jWXJhr0Qs+cI79uo8WeLN3N1481YeBsGCX9x/K5oGBYhMQ8J
- 4HqogvPKTnYTyCLsD72YEmj6OtJeiVYbDcEDYVokU+RraGlxL5cIHhgU2bumhGR+/wK3
- Mj1/yIPQcRn50wveZkT74FzSAM83fOiZSBMPM1F/v+cp7oc6JiztsVapIhTP21cQktuq
- P9+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1759424574; x=1760029374;
- h=content-transfer-encoding:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GgRnLS9U2fGSJJw+Q86izIhncDq72r2z24GDqjmpM68=;
- b=CcjvyLd0lH5Nd9abCzc+4mcFHkTsHj96qNEjHXGG5SG/tlVbtynWgZ95HWrd/1tdKE
- F0DVdASL3WHEnFLv6YOFUSwE8rkjHyAur6bmq3l2pAwx2CGJMC/YOe55HrIjB/cFenJI
- +bYNKlRiapf5yHfcRPWjdH82V/gNXHXnXCf1AAsGe3rBOJUk3El2ZPLjFv9xmH9bSPWh
- 9dgu/10wrjHukzeg7GqK10qsiwmnBE6RNOLTvvsDc7wmjwIi3NC30HO4CWYGKAq996wS
- /k53wOPO26ZPIYUf0JOt4fON3GAd8YxETI5WedB/bVspKcV01RelvL9yPDdOocRQFIhU
- nuFg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVnuQOtByEcX9u++uA73u7Z4yi0nr8bvbT02uKiueWwCSI5HQtl24DOiSYzHTbfhX3tsLp7fqXN@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YzGl98ZWff2YuzWzRLiaGGbBshKJAgVcRtAWVJ7Iz3nA+Mc0f9i
- xpJ0PHfU/eQnP985zajstP4lMsBYsmamRvctd8WALVtmspwrEugMh2ukwYV8LgbG/qqHok3nOb9
- djGTEHCgZP6nIHSLQCBdvs5zGst3fudPPsq8wIJDKjw==
-X-Gm-Gg: ASbGncsNRPCOE95Bn9rqKvTm0bI9MjBTp2LKhcXe3QAVN3rGRbUanygnedVi+oPzkn7
- gnmD+PR3f0a32khqmDWg5IWHAz3u877ySNMH2YqJe3D0I3fe+AiXrU7Cr7wiDMUxAKyhKCXBIK3
- q2MOH4dhaSfOHzkOb8llu87BYLR6z5uerzbwZ6h+h/otuK6MTjWT7MJ7gfmmXur+wr49zDQA2+5
- FuZN7OBmIjezKSgHDHguGhv7C2MJe2V3w==
-X-Google-Smtp-Source: AGHT+IGwR+NxrQX7mkry6+6qCiooY8j1Qj8T033DXttDg7za+DGk8KtGPaVJhkwkzhmxv1dyyRldwFQg4bQ+Wkcxids=
-X-Received: by 2002:a17:903:2384:b0:26c:3e5d:43b6 with SMTP id
- d9443c01a7336-28e7f2f4ef0mr93984925ad.32.1759424573013; Thu, 02 Oct 2025
- 10:02:53 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 503FA10E1CC
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 17:36:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759426602; x=1790962602;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=taAoFXqEuasAgXakjAVFps614LkjAiEa672G00zdEtg=;
+ b=MJCTUE/RY60/OiVDmdPB6tobsljvQSSWZaIPqJ6V6aa5O5+CP0jEEz+K
+ AzHlFr6nM/9R9z2HTPed+zYmnwvaKM+ctQHL08RX3pflvYTB0nNxDZccJ
+ Il7eNyzo3SRPLRsj87a0Icus3DsdFFaGesJSTp0M/c1g0gf9FvmgiJtR7
+ ZWbd6v0lBCTAP7Ae897fii0Yr0RccCUnPM2MG6kkh1M9mqELucinrnAJk
+ ZMqgTPCftWBVKye9bnYp9uatgXrc7kIB3IM5qiOIjbvnwawCClG25ahbb
+ IGu4ZDrhpC81NndrjlVi134LchxzOfeMKK0ymLIEo+EkJDJJchKwk7hgf g==;
+X-CSE-ConnectionGUID: ednuKAmVSxSb3mMsW+bLQQ==
+X-CSE-MsgGUID: o1IclFsIQhu3JqXxd6ft/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="61623495"
+X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; d="scan'208";a="61623495"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2025 10:36:42 -0700
+X-CSE-ConnectionGUID: L4X8JwrnTDiPPnZCAln0AA==
+X-CSE-MsgGUID: 7ED7VkIuSeiGgCAods8MMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; d="scan'208";a="216210882"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.228])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2025 10:36:40 -0700
+Date: Thu, 2 Oct 2025 20:36:38 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 0/6] tools/intel_vbt_decode: Improve decoding to
+ strings
+Message-ID: <aN64Jtg7AMoIgkwx@intel.com>
+References: <20250929192127.5865-1-ville.syrjala@linux.intel.com>
+ <3986a14028b4371e7386df917236409b441ef77b@intel.com>
 MIME-Version: 1.0
-References: <20251001183958.3383532-1-markyacoub@google.com>
- <20251002132105.r2jvf5as72pdywdd@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20251002132105.r2jvf5as72pdywdd@kamilkon-DESK.igk.intel.com>
-From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Thu, 2 Oct 2025 20:02:41 +0300
-X-Gm-Features: AS18NWDZQEjJ174nljQWnfOkJJsIDFQyDz6L243hztKziJl-RjZ9SGHA-6YOa0E
-Message-ID: <CAJ=qYWQrEiMbA1hkM-hVVTSgJv8-gec7_b6=0yki9CFfMN-_tw@mail.gmail.com>
-Subject: Re: [PATCH i-g-t] tests/kms_content_protection: Check for HDCP before
- setting displays.
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mark Yacoub <markyacoub@google.com>, 
- igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3986a14028b4371e7386df917236409b441ef77b@intel.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,114 +73,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Oct 2, 2025 at 4:21=E2=80=AFPM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Hi Mark,
-> On 2025-10-01 at 14:39:58 -0400, Mark Yacoub wrote:
->
-> remove dot from subject, so it will be:
->
-> [PATCH i-g-t] tests/kms_content_protection: Check for HDCP before setting=
- displays
->
-> > [Why]
-> > Drivers such as VKMS do not support HDCP, so the test fails on
->
-> Please decipher VKMS here for more clear description, like
->
-> Drivers such as VKMS (Virtual KMS) do not support HDCP, ...rest follows..=
-.
->
-> > `modeset_with_fb`:
-> > Test assertion failure function do_display_commit, file external/igt-gp=
-u-tools/lib/igt_kms.c:4632
-> > errno: 34, Math result not representable
+On Tue, Sep 30, 2025 at 11:27:37AM +0300, Jani Nikula wrote:
+> On Mon, 29 Sep 2025, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > >
-> > [How]
-> > Move the HDCP check before any modesets.
+> > Make it easier/safer to decode VBT values into a string representation.
 > >
-> > Test: kms_content_protection on AVD with VKMS
->
-> Please make it a sentence and add newline before any cc: or s-o-b,
-> like:
->
-> Tested on AVD (please write here what ADV means) with VKMS.
->
-> +cc
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-> Cc: Karthik B S <karthik.b.s@intel.com>
->
-> > Signed-off-by: Mark Yacoub <markyacoub@google.com>
-> > ---
-> >  tests/kms_content_protection.c | 16 +++++++---------
-> >  1 file changed, 7 insertions(+), 9 deletions(-)
+> > Also decode a couple of new (or rather old) things.
+> 
+> I left a couple of comments, but overall
+> 
+> Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+
+Thanks.
+
+I dropepd the CABC nonsense, and added Kamil's value<0 check
+while pushing.
+
+> 
 > >
-> > diff --git a/tests/kms_content_protection.c b/tests/kms_content_protect=
-ion.c
-> > index 51fc1d3be..effeb66dc 100644
-> > --- a/tests/kms_content_protection.c
-> > +++ b/tests/kms_content_protection.c
-> > @@ -638,22 +638,20 @@ test_content_protection(enum igt_commit_style com=
-mit_style, int content_type)
+> > Ville Syrjälä (6):
+> >   tools/intel_vbt_decode: Introduce to_str()
+> >   tools/intel_vbt_decode: Use to_str() more
+> >   tools/intel_vbt_decode: Convert eDP deocding to use to_str()
+> >   tools/intel_vbt_decode: Use panel_bits()
+> >   tools/intel_vbt_decode: Decode display refclk mode
+> >   tools/intel_vbt_decode: Decode the backlight control method type
 > >
-> >       for_each_connected_output(display, output) {
-> >               for_each_pipe(display, pipe) {
-> > -                     igt_display_reset(display);
-> > -
-> > -                     igt_output_set_pipe(output, pipe);
-> > -                     if (!intel_pipe_output_combo_valid(display))
-> > -                             continue;
-> > -
-> > -                     modeset_with_fb(pipe, output, commit_style);
-> > -
-> >                       if (!output_hdcp_capable(output, content_type))
-> >                               continue;
-> > -
-> >                       if (is_output_hdcp_test_exempt(output)) {
-> >                               igt_info("Skipping HDCP test on %s, as th=
-e panel is blocklisted\n",
-> >                                         output->name);
-> >                               continue;
-> >                       }
-> > +
-> > +                     igt_display_reset(display);
-> > +                     igt_output_set_pipe(output, pipe);
-> > +                     if (!intel_pipe_output_combo_valid(display))
-> > +                             continue;
-> > +
-> > +                     modeset_with_fb(pipe, output, commit_style);
->
-> I am not sure if this is correct so I added Karthik and J-P to cc.
-> Karthik or J-P: could you look into CI fails? At least in Xe I see
-> fails in this test.
+> >  tools/intel_vbt_decode.c | 264 ++++++++++++++++++---------------------
+> >  1 file changed, 123 insertions(+), 141 deletions(-)
+> 
+> -- 
+> Jani Nikula, Intel
 
-I'm not super familiar with this test but that change look ok to my
-eye. It look like that is_output_hdcp_test_exempt() just moves up a
-bit as the description stated.
-
-Looking at ci history for this test, getting fail on our ci for this
-test probably doesn't mean so much:
-
-https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13852/shards-all.html?testf=
-ilter=3Dkms_content_protection
-https://intel-gfx-ci.01.org/tree/intel-xe/shards-all.html?testfilter=3Dkms_=
-content_protection
-
-The fail with/without this change look the same.
-
-I'll need to take AR for myself on checking why our own drivers are
-not able to pass this test.
-
-/Juha-Pekka
-
->
-> >
-> >                       igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pip=
-e), output->name)
-> >                               test_content_protection_on_output(output,=
- pipe, commit_style, content_type);
-> > --
-> > 2.51.0.618.g983fd99d29-goog
-> >
+-- 
+Ville Syrjälä
+Intel
