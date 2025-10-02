@@ -4,64 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 828C2CAC5B8
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 08:54:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96396CAC5B0
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 10:44:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 294B210E7A4;
-	Thu,  2 Oct 2025 08:54:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 452FC10E7AD;
+	Thu,  2 Oct 2025 10:44:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RgQHVZMH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oDO8u6Wx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2998110E0E0
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 08:54:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19E0410E7AD
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 10:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759395296; x=1790931296;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=Xu/BdZ3Uj8LZjPO40Xal+eGxyevoIRGM+vfV862v6Tg=;
- b=RgQHVZMHjpOD194lwLYc34+IpZP/AEyMrL/fvxD0j3efeaQs9wpu57iA
- 8onP9hbJj+7iazeIh0MvVkcom4e93z5ShxU2zlcZ2usYU/IeWvf02bu1l
- ksM+RXTc8NsLmEUpxEqSDc/vSxfX788tYmIC8j+hSxwNgbA7M0tZt+Zp4
- 7OIjG6e+8XADOrdXbzJRvBQoWnelgL0e0YOBWzI380VMdgIAFZ1Y1t1ay
- UWoYK2lryUlaanN3rNJz/WwIcoU617gbLYtaPal50jYhEwuFx8LnF91tu
- 7pLy/HMcFjlksclZM4xO/xhtJwcozPb5htrUJl/Q+9EkxZ9whLomQdLGz A==;
-X-CSE-ConnectionGUID: d1lRU9vFShOjNe0rDe6MNQ==
-X-CSE-MsgGUID: VN7pXn0WQr2ZuTa29OfOyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="79100690"
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="79100690"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 01:54:56 -0700
-X-CSE-ConnectionGUID: E9djBtwxSSOTZnYGJ9oHmg==
-X-CSE-MsgGUID: X8BCIvvFRZSy9PaZExiB+A==
+ t=1759401898; x=1790937898;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=vrPnsVZ/MBzLXnP69d2s0IzcFcANXXmHOUFAX5Wglco=;
+ b=oDO8u6WxK2EfZxjNwTorumC/a6yeQ04rQbuVR50vpzMtC0Wd9ijCrHVK
+ 97+dqiYMYSO5A5Lf6aur0/6RPzB7FOadzv0ZVwQjTPi5TeSJKTJqTTZlO
+ +YokciVI4LZGamU8f1Dx3AO3uMy3xgO9y0hJmgOWgWaHFSGNouVfJKi7D
+ SiTZqja1XSANUoE6QWKXritM+RD1HsW+BkO9jgaUjjIDtZfDWns+UIvJF
+ SXdCtmPLkq2HG5WrNKqnTw2iWXEIFCrrImoYRQ86Bs1/7SMUPyxjCSQjc
+ Bq3ZLFKtMp9aG4qaz057Mc5RXwqVBsH8zzcxDu6L7fXRcd+zRmr2G5NDM A==;
+X-CSE-ConnectionGUID: odFywzKbTPuMAFH7KLabvA==
+X-CSE-MsgGUID: pG8zZlL4S0+ZERYMDPU76w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="60895234"
+X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="60895234"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2025 03:44:58 -0700
+X-CSE-ConnectionGUID: Ai0nhbekQ9+upqYb1+uoxg==
+X-CSE-MsgGUID: uhdV6cLMTLuvB50LQSkeqw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="178801700"
-Received: from cmanszew-mobl2.igk.intel.com (HELO [172.28.180.190])
- ([172.28.180.190])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 01:54:54 -0700
-Message-ID: <be919ef6-d565-425c-b94f-da8d4e2b237c@intel.com>
-Date: Thu, 2 Oct 2025 10:54:52 +0200
+X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="184213180"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO
+ dpiatkow-mobl1.mshome.net) ([10.245.245.176])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2025 03:44:56 -0700
+From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v10 i-g-t 00/10] Fix
+ xe_eudebug_online@set-breakpoint-sigint-debugger
+Date: Thu,  2 Oct 2025 12:44:33 +0200
+Message-Id: <20251002104443.7021-1-dominik.karol.piatkowski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 i-g-t 01/10] lib/xe_eudebug: Fix safe_pipe_read
-To: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>,
- "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Mika Kuoppala <mika.kuoppala@linux.intel.com>
-References: <20251001115447.11843-1-dominik.karol.piatkowski@intel.com>
- <20251001115447.11843-2-dominik.karol.piatkowski@intel.com>
- <nfbsoyylux5qyvteu7xcuiwteamx2zjry4x6fiyj4u6ve2ghke@yzttaaj55nc3>
- <ddb7f247-9bc0-485d-9c5f-89bae340eee4@intel.com>
- <DS0PR11MB72647F3EE3DFE97EE0EE3FE4D9E7A@DS0PR11MB7264.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <DS0PR11MB72647F3EE3DFE97EE0EE3FE4D9E7A@DS0PR11MB7264.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -78,116 +73,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Dominik,
+The thought behind xe_eudebug_online@set-breakpoint-sigint-debugger test
+is to check if SIGINT during EUdebug ioctls will not break the kernel.
+It is done by looping set-breakpoint test equivalent for a minute while
+sending SIGINT to debugger thread with random timing, hoping to hit the
+ioctl given enough repetitions.
 
-On 2.10.2025 09:50, Piatkowski, Dominik Karol wrote:
-> Hi Christoph,
-> 
->> -----Original Message-----
->> From: Manszewski, Christoph <christoph.manszewski@intel.com>
->> Sent: Wednesday, October 1, 2025 7:50 PM
->> To: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>; Piatkowski,
->> Dominik Karol <dominik.karol.piatkowski@intel.com>
->> Cc: igt-dev@lists.freedesktop.org; Mika Kuoppala
->> <mika.kuoppala@linux.intel.com>
->> Subject: Re: [PATCH v9 i-g-t 01/10] lib/xe_eudebug: Fix safe_pipe_read
->>
->> Hi,
->>
->> On 1.10.2025 14:04, Zbigniew Kempczyński wrote:
->>> On Wed, Oct 01, 2025 at 01:54:38PM +0200, Dominik Karol Piątkowski
->> wrote:
->>>> In case of poll() failure, safe_pipe_read returns -ETIMEDOUT that can be
->>>> misleading, as the underlying error may be different. Do an early return
->>>> with -errno if the poll fails, unless errno is set to EINTR - repeat the
->>>> poll in this case.
->>
->> That makes sense however...
->>
->>>>
->>>
->>> LGTM, but for being sure let's wait for CI.
->>>
->>> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->>>
->>> --
->>> Zbigniew
->>>
->>>> Signed-off-by: Dominik Karol Piątkowski
->> <dominik.karol.piatkowski@intel.com>
->>>> ---
->>>>    lib/xe/xe_eudebug.c | 4 ++++
->>>>    1 file changed, 4 insertions(+)
->>>>
->>>> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
->>>> index 667c31c6e..840b501c5 100644
->>>> --- a/lib/xe/xe_eudebug.c
->>>> +++ b/lib/xe/xe_eudebug.c
->>>> @@ -271,6 +271,10 @@ static int safe_pipe_read(int pipe[2], void *buf,
->> int nbytes, int timeout_ms)
->>>>    		if (!ret) {
->>>>    			catch_child_failure();
->>>>    			t += interval_ms;
->>>> +		} else if (ret == -1) {
->>>> +			if (errno == EINTR)
->>>> +				continue;
->>
->> ...this won't poll again for EINTR because ret == -1 so !ret is false
->> and we exit the loop.
-> 
->  From poll(2):
-> "On error, -1 is returned, and errno is set to indicate the error."
-> 
-> Receiving signal during poll() will interrupt it and it will return -1 with
-> errno set to EINTR. Indeed !ret is false (it's true only on ret == 0), but
-> we will then enter the else if part, compare errno to EINTR and continue if
-> we actually got EINTR - it will take us to the beginning of the loop,
+Sporadically, the test deadlocks - it is caused by random timing of
+pthread_exit calls that can land in a critical section, leaving held
+resources; next entry attempt into that critical section will cause
+deadlock.
 
-that is the part that is not true I think. According to the bellow 
-snippet from the c standard, it will take us to the end of the loop:
+Rewrite SIGINT signal handler to toggle a variable instead of calling
+pthread_exit instantly and exit in main debugger loop if said variable
+is set. To utilize the new SIGINT handler, use pthread_sigqueue instead
+of pthread_kill in order to be able to pass debugger to signal handler.
+Put the pthread_sigqueue call into library function helper. Rename
+terminate_debugger to debugger_signal_handler to describe its new
+function better. Add SIGTERM to signals that are handled by
+debugger_signal_handler. Don't kill debugger thread on SIGTERM signal.
 
-```
-3.6.6.2 The continue statement
+Harden xe_eudebug library code and xe_eudebug_online test code in the
+set-breakpoint-sigint-debugger path that can produce unwanted igt_assert
+fails due to unfortunate timing. Issue some SIGTERM signals in quick
+succession before SIGINT to raise the odds of hitting the ioctl.
 
-Constraints
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 
-    A continue statement shall appear only in or as a loop body.
+Dominik Karol Piątkowski (10):
+  lib/xe_eudebug: Fix safe_pipe_read
+  lib/xe_eudebug: Don't fail in __wait_token if pipe was broken
+  tests/xe_eudebug_online: Allow dead client in
+    set-breakpoint-sigint-debugger
+  lib/xe_eudebug: Introduce xe_eudebug_debugger_kill
+  tests/xe_eudebug_online: Improve issuing SIGINT in
+    set-breakpoint-sigint-debugger
+  lib/xe_eudebug: Repeat poll in debugger_worker_loop if interrupted
+  lib/xe_eudebug: Improve SIGINT handling
+  tests/xe_eudebug_online: Introduce proper sync for closing debugger fd
+    in set-breakpoint-sigint-debugger
+  lib/xe_eudebug: Introduce SIGTERM handling
+  tests/xe_eudebug_online: Issue SIGTERM in
+    set-breakpoint-sigint-debugger
 
-Semantics
+ lib/xe/xe_eudebug.c             | 91 +++++++++++++++++++++++++++++----
+ lib/xe/xe_eudebug.h             |  7 +++
+ tests/intel/xe_eudebug_online.c | 16 +++++-
+ 3 files changed, 102 insertions(+), 12 deletions(-)
 
-    A continue statement causes a jump to the loop-continuation portion
-of the smallest enclosing iteration statement; that is, to the end of
-the loop body.  More precisely, in each of the statements
-
-          while (/*...*/) {    do {                 for (/*...*/) {
-            /*...*/              /*...*/              /*...*/
-            continue;            continue;            continue;
-            /*...*/              /*...*/              /*...*/
-          contin: ;            contin: ;            contin: ;
-          }                    } while (/*...*/);   }
-
-unless the continue statement shown is in an enclosed iteration
-statement (in which case it is interpreted within that statement), it
-is equivalent to goto contin;
-```
-
-Regards,
-Christoph
-
-> repeating the poll. Am I missing something here?
-> 
-> Thanks,
-> Dominik Karol
-> 
->>
->> Regards,
->> Christoph
->>>> +			return -errno;
->>>>    		}
->>>>    	} while (!ret && t < timeout_ms);
->>>>
->>>> --
->>>> 2.34.1
->>>>
-> 
+-- 
+2.34.1
 
