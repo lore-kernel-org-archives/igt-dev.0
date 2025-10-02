@@ -4,60 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83A0ACAC5B8
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 17:36:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE887CAC5B0
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 19:07:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2F7C510E1CC;
-	Thu,  2 Oct 2025 17:36:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 856D110E043;
+	Thu,  2 Oct 2025 19:07:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MJCTUE/R";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TGlil24o";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 503FA10E1CC
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 17:36:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3685D10E043
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 19:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759426602; x=1790962602;
+ t=1759432037; x=1790968037;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=taAoFXqEuasAgXakjAVFps614LkjAiEa672G00zdEtg=;
- b=MJCTUE/RY60/OiVDmdPB6tobsljvQSSWZaIPqJ6V6aa5O5+CP0jEEz+K
- AzHlFr6nM/9R9z2HTPed+zYmnwvaKM+ctQHL08RX3pflvYTB0nNxDZccJ
- Il7eNyzo3SRPLRsj87a0Icus3DsdFFaGesJSTp0M/c1g0gf9FvmgiJtR7
- ZWbd6v0lBCTAP7Ae897fii0Yr0RccCUnPM2MG6kkh1M9mqELucinrnAJk
- ZMqgTPCftWBVKye9bnYp9uatgXrc7kIB3IM5qiOIjbvnwawCClG25ahbb
- IGu4ZDrhpC81NndrjlVi134LchxzOfeMKK0ymLIEo+EkJDJJchKwk7hgf g==;
-X-CSE-ConnectionGUID: ednuKAmVSxSb3mMsW+bLQQ==
-X-CSE-MsgGUID: o1IclFsIQhu3JqXxd6ft/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="61623495"
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; d="scan'208";a="61623495"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 10:36:42 -0700
-X-CSE-ConnectionGUID: L4X8JwrnTDiPPnZCAln0AA==
-X-CSE-MsgGUID: 7ED7VkIuSeiGgCAods8MMA==
+ mime-version:in-reply-to;
+ bh=qoTnhasbukQrjjqk4DUcsER3BE8+vxK+tQwYeL40jyE=;
+ b=TGlil24o9PisZRNi39q0jrCVH8gC+er4iT/l1LDHaUbIF6fm2rCKMret
+ gftzwkFzS2CeAKogZVKWVjkKCc3OM67dC6dLEG05tyvsopISkT1kkzuYm
+ ZLGRR2oEtJYLzFiPMwiq+Wkt/NdFK7E4rIwM21ZKPI5K7HBaBsN0DKBJQ
+ 4vTNwcbDmGBILZiOD6h0rrZ3TDZWX0YmcdFRbgMdNoPEEHi0qAsCme8yj
+ H13FeLhwiDeMitG3pWnoAw3SrjNQ8IvMUCncZzrgR9UyxQL+KTtmGNl/U
+ YyfhxWo9i9h+ZBJoqKlBhrnSKuUOAk+YimGMfZTVXolwo2FloavrWKYUi Q==;
+X-CSE-ConnectionGUID: P7As1nQETXW6yrWf50mXDA==
+X-CSE-MsgGUID: x6GbbMUNT8+JSMFJJE8zuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="61640162"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="61640162"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2025 12:07:16 -0700
+X-CSE-ConnectionGUID: ow7qAkeVSc+UiLynj1b38w==
+X-CSE-MsgGUID: nn7Yeo05QMWRRwvdiPmoWw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; d="scan'208";a="216210882"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
- ([10.245.245.228])
+X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; d="scan'208";a="210089834"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 10:36:40 -0700
-Date: Thu, 2 Oct 2025 20:36:38 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 0/6] tools/intel_vbt_decode: Improve decoding to
- strings
-Message-ID: <aN64Jtg7AMoIgkwx@intel.com>
-References: <20250929192127.5865-1-ville.syrjala@linux.intel.com>
- <3986a14028b4371e7386df917236409b441ef77b@intel.com>
+ 02 Oct 2025 12:07:14 -0700
+Date: Thu, 2 Oct 2025 21:06:59 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Mark Yacoub <markyacoub@google.com>
+Cc: igt-dev@lists.freedesktop.org,
+	Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: Re: [PATCH i-g-t] lib/drmtest: Add Support for Virtio-GPU
+Message-ID: <20251002190659.ssmba4pobyp7jmw5@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+References: <20251002151714.595492-1-markyacoub@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3986a14028b4371e7386df917236409b441ef77b@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20251002151714.595492-1-markyacoub@google.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,39 +71,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Sep 30, 2025 at 11:27:37AM +0300, Jani Nikula wrote:
-> On Mon, 29 Sep 2025, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> >
-> > Make it easier/safer to decode VBT values into a string representation.
-> >
-> > Also decode a couple of new (or rather old) things.
+Hi Mark,
+On 2025-10-02 at 11:17:14 -0400, Mark Yacoub wrote:
+> [Why]
+> Android's Virtual Device (AVD) has virtio-gpu has its primary driver. We
+> want to be to detect it so we can filter out it through DRIVER_ANY.
 > 
-> I left a couple of comments, but overall
-> 
-> Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+> [How]
+> Add DRIVER_VIRTIO to the exclusion list of DRIVER_ANY
 
-Thanks.
-
-I dropepd the CABC nonsense, and added Kamil's value<0 check
-while pushing.
+s/to the/to known drivers and to/
 
 > 
-> >
-> > Ville Syrjälä (6):
-> >   tools/intel_vbt_decode: Introduce to_str()
-> >   tools/intel_vbt_decode: Use to_str() more
-> >   tools/intel_vbt_decode: Convert eDP deocding to use to_str()
-> >   tools/intel_vbt_decode: Use panel_bits()
-> >   tools/intel_vbt_decode: Decode display refclk mode
-> >   tools/intel_vbt_decode: Decode the backlight control method type
-> >
-> >  tools/intel_vbt_decode.c | 264 ++++++++++++++++++---------------------
-> >  1 file changed, 123 insertions(+), 141 deletions(-)
+> Test: ran kms_bw on AVD.
+
+Tested with kms_bw on AVD.
+
 > 
+> Change-Id: Ie7987c706546bc0fbd437e221f7ecd4c7bc759a9
+> Signed-off-by: Mark Yacoub <markyacoub@google.com?
+
+s/?/>/
+
+No need for resend, it could be fixed at merge.
+
+> cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> cc: Louis Chauvet <louis.chauvet@bootlin.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> ---
+>  lib/drmtest.c | 1 +
+>  lib/drmtest.h | 9 +++++----
+>  2 files changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 551385867..a1fb0b5ba 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -223,6 +223,7 @@ static const struct module {
+>  	{ DRIVER_V3D, "v3d" },
+>  	{ DRIVER_VC4, "vc4" },
+>  	{ DRIVER_VGEM, "vgem" },
+> +	{ DRIVER_VIRTIO, "virtio_gpu" },
+>  	{ DRIVER_VKMS, "vkms" },
+>  	{ DRIVER_VMWGFX, "vmwgfx" },
+>  	{ DRIVER_XE, "xe" },
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index a9542dde2..8416aa491 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -56,16 +56,17 @@ int __get_drm_device_name(int fd, char *name, int name_size);
+>  #define DRIVER_XE	(1 << 7)
+>  #define DRIVER_VMWGFX   (1 << 8)
+>  #define DRIVER_VKMS	(1 << 9)
+> +#define DRIVER_VIRTIO	(1 << 10)
+>  
+>  /*
+> - * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+> - * with vgem as well as a supported driver, you can end up with a
+> - * near-100% skip rate if you don't explicitly specify the device,
+> + * Exclude DRIVER_VGEM and DRIVER_VIRTIO from DRIVER_ANY since if you run
+> + * on a system with them as well as a supported driver, you can end up
+> + * with a near-100% skip rate if you don't explicitly specify the device,
+>   * depending on device-load ordering.
+>   *
+>   * Exclude VKMS to prefer hardware drivers.
+>   */
+> -#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS)
+> +#define DRIVER_ANY	~(DRIVER_VGEM | DRIVER_VKMS | DRIVER_VIRTIO)
+>  
+>  /*
+>   * Compile friendly enum for i915/xe.
 > -- 
-> Jani Nikula, Intel
-
--- 
-Ville Syrjälä
-Intel
+> 2.51.0.618.g983fd99d29-goog
+> 
