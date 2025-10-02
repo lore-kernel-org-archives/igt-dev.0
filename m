@@ -4,65 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16589CAC5B0
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 14:04:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12D9BCAC5B0
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 14:12:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AC25810E7E5;
-	Thu,  2 Oct 2025 14:04:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A069910E7EA;
+	Thu,  2 Oct 2025 14:12:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IAxe3/LV";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="X5JnXBQS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7556C10E7E5
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 14:04:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759413878; x=1790949878;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=ut/c+c5NXbpQsw5sXpRQ3k4vvjFRgwLZk+mMYh8B2Hc=;
- b=IAxe3/LVC7JtPvkKkGL/Sf8c3SIPsEeGJlJXJ2SH1Bc6YW4MlvbKbqA+
- db8ioQD+RyNPUeckX7J5RGSZe/cettZrpqmqbUI3S2wgibWIedBGtIZtC
- FPXzg4gefDFWoCbjE9RRzUkeS9YbIh6t8eVP0qSkd6nUYbIkwQ/okds2F
- 5d1dDuIamiNl2wOnRPb4Yu3+cT/9E5thmuzkHoGuc/N22EgOaP2ZEOvQO
- +P1/C12/gLa1LJlL4aXd4ImCGWlAuftfavaNleF+/ztJp3iSD0bgiOAF3
- 0gbfMp+lOIrACoC6V+3rnRfypRNGTIsK13D/JODgyejg+aMafymtN1qbt Q==;
-X-CSE-ConnectionGUID: wO41/ZmmRPiC5MIqa/PjmA==
-X-CSE-MsgGUID: 5oAksG/7SjW1xKG2S57awA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="61609758"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="61609758"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 07:04:38 -0700
-X-CSE-ConnectionGUID: c91+wmjySMCjZ6WDyer9iw==
-X-CSE-MsgGUID: wzt5JdSySauvutgPTiwSag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="183072608"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 07:04:35 -0700
-Date: Thu, 2 Oct 2025 16:04:32 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Harry Wentland <harry.wentland@amd.com>
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>,
- Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org,
- leo.liu@amd.com
-Subject: Re: [PATCH V10 09/30] tests/kms_colorop: Add kms_colorop tests
-Message-ID: <20251002140432.4nwai4hebw3tbl4x@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Harry Wentland <harry.wentland@amd.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org,
- leo.liu@amd.com
-References: <20250815040659.3321102-1-alex.hung@amd.com>
- <20250815040659.3321102-10-alex.hung@amd.com>
- <782d02dc-3b1c-48ca-a77c-b7f01801c14b@bootlin.com>
- <d214f49a-98cf-4970-9617-372d7a49f9e5@amd.com>
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com
+ [209.85.160.170])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DA7810E7EA
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 14:12:40 +0000 (UTC)
+Received: by mail-qt1-f170.google.com with SMTP id
+ d75a77b69052e-4de659d5a06so6349601cf.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 02 Oct 2025 07:12:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1759414359; x=1760019159;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nVmyVCsvEkwaT33Z+c1pwR160Uvxu5pqMZYkIzRUNJI=;
+ b=X5JnXBQSBSYGSKchlMBx1qIVB2UIX9YBd6VvgNCpwsrwisnhTLtPHbkJJb+ysFwwi3
+ nH7aWx2qLmuGOXhngEkG5TfApJiJENI6ZlNc8g6UgTUaFOPp8G6LubmXF4HWhKp/mhTu
+ 4/wBKZ+AK9gNC0MQHpk19NLnotfgrJjc5cVv17AnY7KS41nRiNBw2Kx8oBbGuwE9R6l9
+ QZSAboLvNTz67aYQi0dSbD5qtZKjgm78PseW37gu3pjqrH6uz22VV2Au3eYUhCnSXotS
+ VVjZCJvI5XDd6ZDeGKSTEx2m8XjKFj4D2ZzZ2CTMFDmmDzlB/D0Ur3+tK2dK5i+KZB+p
+ egsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759414359; x=1760019159;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nVmyVCsvEkwaT33Z+c1pwR160Uvxu5pqMZYkIzRUNJI=;
+ b=vPyFCcNiLVu7KYN1ey9rbq1fOjsjTP3/yNzbd9iO7fj6PmWcL68e0fRCcdbnDyMT/i
+ 8P/DVAwvH1VJjbCjpVfL8frYtClDNtqIGTRgpLhVm3y93crOIHZA98N54OgbuyJc1oGQ
+ VmgZeOt+OBc/bCRElfS63/fLWltb6jFeFMIjfHoKnlqTiKdsJJAPg57kbI+5T80Svqsr
+ N6gC6+oreb+wh7AWsHaPUZou9ZPmGl3a7qkcqDJbXpceOwjAbKCvjeFNmFQ8cN3ZRC1a
+ tHkViqBrR68Jb2EZVDNbTFB9OjKKMqYy4qqExXwEu52uohHi1PfjHPvnT2o8q0Inb3CG
+ Iu7Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW1a8eTmFDHMk9aqixRC6o0Dx95Lw9Vh+65uZ7j3dMDSRoM9h6gU9NqoFL/rv+6Dpbw3FDdeVkf@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YxDo+FzuChmNJksMcwdkCQd++9pN+Y3ELh9FinySarM0/7fl5qR
+ B5i54rYGMuEpEECzb4YYLmgeYAvcJQi0g7pA34UvbpUd64tFOFjW8T/qldwBbJQZ7NBxmhJKTwE
+ z+tzKA4dcYLqekdQ6xiQbNzbWDAtnNlgjSls4XQh4
+X-Gm-Gg: ASbGncsFJO+WEL43BXXjRim+rtyJKCrfmrKKTWZAY2ipo1cXhZDB/nGrlL9IOMfqbiq
+ udnA8LS3yFgB3FEscMM+ShqB+DUC5znm0e/rcE6kVqHA6cLnyqaHax+l7lYo+GSQbFC7XzhYXvn
+ zBTwMR2coUDE4zMz79t6mMlpcbniXtCkVqfHFbrqUcF2DEMwj1aHAauPgmLntYPfM6cJKd/lIRT
+ XJyFH5qBMjlVWBzPsFvZ0w3200+WKTS9bznfgyRZhU1e8/kPr4xFO+rZhXRmwMlGLa+
+X-Google-Smtp-Source: AGHT+IFfWYtJrLWNqjfDwg8DKybX9TBFS5FKKVzyZ7N+5B2xARBIJNu154lFIcXWT7bSOFy2E5+fJM4nbqYx6xABtNA=
+X-Received: by 2002:ac8:5fd3:0:b0:4b7:925b:440a with SMTP id
+ d75a77b69052e-4e41ea177e2mr97990931cf.82.1759414358744; Thu, 02 Oct 2025
+ 07:12:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d214f49a-98cf-4970-9617-372d7a49f9e5@amd.com>
+References: <20251001185039.3386207-1-markyacoub@google.com>
+ <20251002130314.yspo5xmgpc7tie6f@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20251002130314.yspo5xmgpc7tie6f@kamilkon-DESK.igk.intel.com>
+From: Mark Yacoub <markyacoub@google.com>
+Date: Thu, 2 Oct 2025 10:12:27 -0400
+X-Gm-Features: AS18NWAv-5sZuwyCMpthgK0DDg1c14MORxTdK0FptJrD2zfwCYokrrndsJWWRCo
+Message-ID: <CAC0gqY7hFmhOHVCwEq0CwXwe8PpjRUkWMt3G7HRQR7rWGFBx9Q@mail.gmail.com>
+Subject: Re: [PATCH i-g-t v2] lib/drmtest: Allow DRIVER_ANY tests to run on
+ VKMS when supported.
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mark Yacoub <markyacoub@google.com>, 
+ igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com, 
+ Karthik B S <karthik.b.s@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,28 +89,145 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Harry,
-On 2025-09-30 at 10:01:58 -0400, Harry Wentland wrote:
-> > > +static bool compare_with_bracket(igt_fb_t *in, igt_fb_t *out)
-> > > +{
-> > > +    if (is_vkms_device(in->fd))
-> > > +        return igt_cmp_fb_pixels(in, out, 1, 1);
-> > 
-> > Can you add a comment explaining why vkms is an exception and how the
-> > [1,1] bracket was choosen?
-> > 
-> 
-> The idea was that each driver is best served by their own bracket. A later
-> patch adds an even worse bracket for amdgpu.
-> 
-> If I remember right, this bracket was simply chosen experimentally, i.e., by
-> trial and error.
+Hi Kamil, thanks a lot for the review.
+clarification inline.
 
-This looks like worth to put in a comment.
+On Thu, Oct 2, 2025 at 9:03=E2=80=AFAM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
+>
+> Hi Mark,
+> On 2025-10-01 at 14:50:38 -0400, Mark Yacoub wrote:
+>
+> please remove dot from end of subject, also imho this should
+> be splitted into two commits, one for adding VIRTIO to
+> drivers in lib/drmtest, second for your workaround to DRIVER_ANY
+>
+> > [Why]
+> > Android's VM use virtio-gpu as its default driver, but VKMS can be
+> > enabled on top it.
+> > VKMS is the preferred driver to run IGT.
+> >
+> > [How]
+> > To maintain the current way to preferring hardware drivers, introduce a
+> > "PREFER_VKMS" flag which does not remove DRIVER_VKMS from the list of
+> > drivers to be opened. Android will keep this as always true.
+> >
+> > Also, added explicit support for virtio-gpu to be explictly filtered
+> > out, making room for VKMS to be the primary driver in use.
+> >
+> > Test: kms_bw on AVD
+> > Signed-off-by: Mark Yacoub <markyacoub@google.com>
+> > ---
+> >  lib/drmtest.c |  1 +
+> >  lib/drmtest.h | 20 +++++++++++++-------
+> >  2 files changed, 14 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/lib/drmtest.c b/lib/drmtest.c
+> > index 551385867..a1fb0b5ba 100644
+> > --- a/lib/drmtest.c
+> > +++ b/lib/drmtest.c
+> > @@ -223,6 +223,7 @@ static const struct module {
+> >       { DRIVER_V3D, "v3d" },
+> >       { DRIVER_VC4, "vc4" },
+> >       { DRIVER_VGEM, "vgem" },
+> > +     { DRIVER_VIRTIO, "virtio_gpu" },
+> >       { DRIVER_VKMS, "vkms" },
+> >       { DRIVER_VMWGFX, "vmwgfx" },
+> >       { DRIVER_XE, "xe" },
+> > diff --git a/lib/drmtest.h b/lib/drmtest.h
+> > index a9542dde2..29356041b 100644
+> > --- a/lib/drmtest.h
+> > +++ b/lib/drmtest.h
+> > @@ -37,6 +37,7 @@
+> >  #include <xf86drm.h>
+> >
+> >  #include "igt_core.h"
+> > +#include "config.h"
+>
+> This should be before igt_core.h (alphabetical order), also add
+> some comment why you need it, like
+>
+> +#include "config.h" /* for ....reason... */
+>  #include "igt_core.h"
+>
+> Is it needed for a workaround? (see below)
+>
+> >
+> >  int __get_drm_device_name(int fd, char *name, int name_size);
+> >
+> > @@ -56,16 +57,21 @@ int __get_drm_device_name(int fd, char *name, int n=
+ame_size);
+> >  #define DRIVER_XE    (1 << 7)
+> >  #define DRIVER_VMWGFX   (1 << 8)
+> >  #define DRIVER_VKMS  (1 << 9)
+> > +#define DRIVER_VIRTIO        (1 << 10)
+> >
+> >  /*
+> > - * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+> > - * with vgem as well as a supported driver, you can end up with a
+> > - * near-100% skip rate if you don't explicitly specify the device,
+> > - * depending on device-load ordering.
+> > - *
+> > - * Exclude VKMS to prefer hardware drivers.
+> > + * Exclude DRIVER_VGEM and DRIVER_VIRTIO from DRIVER_ANY since if
+> > + * you run on a system with vgem or virtio-gpu as well as a supported =
+driver,
+> > + * you can end up with a near-100% skip rate if you don't explicitly s=
+pecify
+> > + * the device, depending on device-load ordering.
+> >   */
+> > -#define DRIVER_ANY   ~(DRIVER_VGEM | DRIVER_VKMS)
+> > +/* Exclude VKMS to prefer hardware drivers if VKMS is not the preferre=
+d driver. */
+> > +#define DRIVER_ANY   ~(DRIVER_VGEM | DRIVER_VKMS | DRIVER_VIRTIO)
+>
+> Above (adding DRIVER_VIRTIO) should be in separate commit, with
+> subject like:
+>
+> lib/drmtest: Add VIRTIO support
+>
+> and with proper description.
+>
+> > +
+> > +#ifdef PREFER_VKMS
+> > +#undef DRIVER_ANY
+> > +#define DRIVER_ANY   ~(DRIVER_VGEM  | DRIVER_VIRTIO)
+> > +#endif
+>
+> This looks like workaround, did you try running your test(s)
+> with IGT_FORCE_DRIVER? Where is a problem? Do you need two
+the problem is that originally DRIVER_ANY removes DRIVER_VKMS from the
+list, so I'm unable to make IGT use VKMS as the driver.
+A simple solution would be to remove it from the list of ~ and replace
+it with `#define DRIVER_ANY   ~(DRIVER_VGEM  | DRIVER_VIRTIO)` but I'm
+not sure what would it break. Do you have platforms that have VKMS +
+other drivers where VKMS would have been picked up first and it's the
+undesired behavior?
+My virtual machine has both VIRTIO and VKMS, so I want it to pick
+VKMS, while our Intel DUTs do not have any VKMS running on them.
+What do you recommend that I do here?
 
-Regards,
-Kamil
-
-> 
-> Harry
-> 
+> drivers loaded, not just one? imho this should work:
+>
+> sudo IGT_FORCE_DRIVER=3Dvkms build/tests/kms_content_protection --r subte=
+st
+>
+> or try simple test:
+>
+> sudo IGT_FORCE_DRIVER=3Dvkms build/tests/core_getversion --r basic
+>
+> If this do not work drmlib should be fixed, as imho IGT_FORCE_DRIVER
+> should override DRIVER_ANY? +cc Karthik and J-P
+>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>
+> Regards,
+> Kamil
+>
+> >
+> >  /*
+> >   * Compile friendly enum for i915/xe.
+> > --
+> > 2.51.0.618.g983fd99d29-goog
+> >
