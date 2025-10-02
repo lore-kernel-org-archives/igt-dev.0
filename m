@@ -4,71 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F74CAC5B8
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 15:45:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF132CAC5B8
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 15:47:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B792D10E37C;
-	Thu,  2 Oct 2025 15:45:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ASsW344P";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1773810E803
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 15:45:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759419912; x=1790955912;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=mnDAZ2UytOZh/SpDaorBoUW5asBwjlYovg511ObM1G4=;
- b=ASsW344P5TPGY/iSuO4QtGR7l7U3MrvQ3BXVjxWSgFgtmRP0unmwi9hS
- sKTQ4jYNF66aVr+ePRUXbaOEItKMhNacz8kXQLWgMCAMe+86iih966YSS
- E4BoMqB/XULSNnb0IpupfwnhA10Xrv76ypblKJJkBdfrb4QAPDkC7sKSO
- PYqx2X6KTtKetlglIKpC7ECz5l0hyj4/MywECdHTYxGG5kPYp1bhqJ41r
- F0uKH1y4I4glDMG5Ww7jizsZtDe1kmUCUEz6q+hwoSoERCvweE0pp8jgz
- f5lpf7t/lKTJl4HsFAB6sCZ3ygsZ5S1h4NuWfSUU+cPW+0i+bra48zsyb w==;
-X-CSE-ConnectionGUID: EB24WsvgRwCer1oBWzMG6A==
-X-CSE-MsgGUID: fFWzm6q6Rv6FcM3nZQqzCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="72381362"
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="72381362"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 08:45:12 -0700
-X-CSE-ConnectionGUID: XRg+j9wLT/miV2MyYHqMZg==
-X-CSE-MsgGUID: erTY0thwRhe77eD4UBrW3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,309,1751266800"; d="scan'208";a="178675758"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2025 08:45:09 -0700
-Date: Thu, 2 Oct 2025 17:45:06 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Ewelina Musial <ewelina.musial@intel.com>,
- Karol Krol <karol.krol@intel.com>, Petri Latvala <adrinael@adrinael.net>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v7 1/2] runner: Abort if dmesg is flooded
-Message-ID: <20251002154506.wlwb3yguwx7p5n37@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- igt-dev@lists.freedesktop.org,
- Ewelina Musial <ewelina.musial@intel.com>,
- Karol Krol <karol.krol@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20250924195453.92680-1-kamil.konieczny@linux.intel.com>
- <20250924195453.92680-2-kamil.konieczny@linux.intel.com>
- <a3f3b62yflwamvezb3zetpfgmaggmkltlunft5u4ijjv7luloq@ct5xwephsvsm>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 89E9310E801;
+	Thu,  2 Oct 2025 15:47:16 +0000 (UTC)
+Received: from 6aec98b87f92 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2DF4410E801;
+ Thu,  2 Oct 2025 15:47:15 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4201153270523860854=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a3f3b62yflwamvezb3zetpfgmaggmkltlunft5u4ijjv7luloq@ct5xwephsvsm>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Fix_xe=5Feudebug=5Fonline?=
+ =?utf-8?q?=40set-breakpoint-sigint-debugger_=28rev10=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 02 Oct 2025 15:47:15 -0000
+Message-ID: <175942003517.49.5954148594010195024@6aec98b87f92>
+X-Patchwork-Hint: ignore
+References: <20251002104443.7021-1-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20251002104443.7021-1-dominik.karol.piatkowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,227 +38,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
-On 2025-09-25 at 07:42:13 +0000, Krzysztof Karas wrote:
-> Hi Kamil,
-> 
-> [...]
-> > +static double measure_dmesg_bytes_per_sec(int wrfd)
-> > +{
-> > +	struct timespec time_beg, time_now, nsec_sleep;
-> > +	unsigned long long dmsg_read, rnow;
-> > +	double time;
-> > +	int kmsgfd;
-> > +
-> > +	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
-> > +		errf("Warning: Cannot open /dev/kmsg\n");
-> > +
-> > +		return -1.0;
-> > +	}
-> > +
-> > +	lseek(kmsgfd, 0, SEEK_END);
-> > +	nsec_sleep.tv_sec = 0;
-> > +	nsec_sleep.tv_nsec = 10ULL * 1000ULL * 1000ULL; /* 10^7 nanoseconds = 10^-2 sec */
-> > +	runner_gettime(&time_beg);
-> > +	time = 0.0;
-> > +	dmsg_read = 0.0;
-> > +	while (1) {
-> > +		rnow = dump_dmesg(kmsgfd, wrfd, 64 * 4096); /* 64KB max */
-> > +		if (rnow > 0)
-> > +			dmsg_read += rnow;
-> I think you could just skip the `if` here. Adding 0 to dmsg_read
-> should not change its value.
-> 
+--===============4201153270523860854==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-dump_dmesg() could also return -1. I will make it
-other way, just return early with zero on error:
+== Series Details ==
 
-		if (rnow < 0)
-			return 0;
+Series: Fix xe_eudebug_online@set-breakpoint-sigint-debugger (rev10)
+URL   : https://patchwork.freedesktop.org/series/153868/
+State : success
 
-> > +
-> > +		runner_gettime(&time_now);
-> > +		time = igt_time_elapsed(&time_beg, &time_now);
-> > +		if (time <= 0.0) {
-> > +			errf("Warning: Time underflow\n");
-> > +			return -1.0;
-> > +		}
-> > +
-> > +		if (time >= 0.1)
-> > +			break;
-> > +
-> > +		if (rnow == 0)
-> > +			nanosleep(&nsec_sleep, NULL);
-> > +	}
-> > +
-> > +	runner_gettime(&time_now);
-> > +	time = igt_time_elapsed(&time_beg, &time_now);
-> The while loop matches one dmesg measurement with one time
-> measurement, so adding another time measurement will always
-> lower the ratio. Did you intend to do this? If you are worried
-> about time underflows, then you could check igt_time_elapsed()
-> return value directly. Unless, this is all planned, then
-> disregard this comment :)
+== Summary ==
 
-Good point, it will remove some repeated code, also below
-underflow check.
+CI Bug Log - changes from IGT_8569 -> IGTPW_13854
+====================================================
 
-> 
-> > +	if (time <= 0.0) {
-> > +		errf("Warning: Time underflow\n");
-> > +
-> > +		return -1.0;
-> > +	}
-> > +
-> > +	return (double)dmsg_read / time;
-> > +}
-> > +
-> > +/* Returns: true if ratio lower or equal than maxratio */
-> I observed a number of sytles used for commenting function
-> returns in this file, so a cleanup might be due in the near
-> future. However, this is not a topic for this patch.
-> 
+Summary
+-------
 
-Yes, something for later cleanup.
+  **SUCCESS**
 
-> [...]
-> > -				errf("%s", disk);
-> > -			}
-> > +	if (settings->disk_usage_limit && disk_usage > settings->disk_usage_limit) {
-> > +		char disk[1024];
-> > +
-> > +		snprintf(disk, sizeof(disk), "igt_runner: disk limit exceeded %zu > %zu\n", disk_usage, settings->disk_usage_limit);
-> This line is a bit long, could you break it?
-> 
+  No regressions found.
 
-Yes.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html
 
-> > +		if (settings->log_level >= LOG_LEVEL_NORMAL) {
-> > +			outf("%s", disk);
-> > +			fflush(stdout);
-> > +		} else if (killed) {
-> > +			errf("%s", disk);
-> > +		}
-> > +
-> > +		if (!aborting && settings->dmsg_ratio_limit >= 0 &&
-> > +		    !check_dmesg_ratio(settings->dmsg_ratio_limit, settings->log_level,
-> > +				       settings->sync, outputs[_F_DMESG])) {
-> > +			asprintf(abortreason, "Dmesg ratio exceeded after test ends.");
-> > +			aborting = true;
-> >  		}
-> >  	}
-> >  
-> > @@ -1814,7 +1908,7 @@ static int execute_next_entry(struct execute_state *state,
-> >  		goto out_pipe;
-> >  	}
-> >  
-> > -	if ((kmsgfd = open("/dev/kmsg", O_RDONLY | O_CLOEXEC | O_NONBLOCK)) < 0) {
-> > +	if ((kmsgfd = open_kmsg_rdonly()) < 0) {
-> This is not related to the topic of this patch, so mention it in
-> the commit message explicitly.
-> 
+Participating hosts (44 -> 43)
+------------------------------
 
-Hmm, on second reading I will revert back to just calling open()
-Thx for pointing this.
+  Missing    (1): fi-snb-2520m 
 
-> >  		errf("Warning: Cannot open /dev/kmsg\n");
-> >  	} else {
-> >  		/* TODO: Checking of abort conditions in pre-execute dmesg */
-> > @@ -2560,6 +2654,11 @@ bool execute(struct execute_state *state,
-> >  		}
-> >  	}
-> >  
-> > +	if (settings->dmsg_ratio_limit >= 0 &&
-> > +	    settings->log_level >= LOG_LEVEL_NORMAL)
-> > +		outf("Using dmesg ratio limit %zdKB/s\n",
-> > +		     settings->dmsg_ratio_limit / 1024);
-> > +
-> >  	for (; state->next < job_list->size;
-> >  	     state->next++) {
-> >  		char *reason = NULL;
-> > @@ -2651,6 +2750,8 @@ bool execute(struct execute_state *state,
-> >  			break;
-> >  		}
-> >  
-> > +		check_dmesg_ratio(settings->dmsg_ratio_limit, settings->log_level, settings->sync, 0);
-> Could you explain a bit more why you call this without checking the return value?
+Known issues
+------------
 
-I want to have some insight in CI runs here but you are right,
-it needs some comment.
-imho I will change it and it will report only ratios > 0.
+  Here are the changes found in IGTPW_13854 that come from known issues:
 
-> > +
-> >  		if (result > 0) {
-> >  			double time_left = state->time_left;
-> >  
-> > diff --git a/runner/settings.c b/runner/settings.c
-> > index 3ccf71870..7b0f8ad51 100644
-> > --- a/runner/settings.c
-> > +++ b/runner/settings.c
-> > @@ -21,6 +21,7 @@
-> >  enum {
-> >  	OPT_ABORT_ON_ERROR,
-> >  	OPT_DISK_USAGE_LIMIT,
-> > +	OPT_DMSG_RATIO_LIMIT,
-> >  	OPT_TEST_LIST,
-> >  	OPT_IGNORE_MISSING,
-> >  	OPT_PIGLIT_DMESG,
-> > @@ -90,6 +91,8 @@ static const char settings_filename[] = "metadata.txt";
-> >  static const char env_filename[] = "environment.txt";
-> >  static const char hooks_filename[] = "hooks.txt";
-> >  
-> > +static const ssize_t default_opt_dmsg_ratio_limit = -1;
-> > +
-> >  static bool set_log_level(struct settings* settings, const char *level)
-> >  {
-> >  	typeof(*log_levels) *it;
-> > @@ -185,7 +188,7 @@ static size_t char_to_multiplier(char c)
-> >  	return 0;
-> >  }
-> >  
-> > -static bool parse_usage_limit(struct settings *settings, const char *optarg)
-> You are making this function more univeresal, am I correct?
-> Then this should probably be a separate patch before this one.
-> 
+### IGT changes ###
 
-You are right, I will make it, see below.
+#### Issues hit ####
 
-> > +static bool parse_ulong(size_t *dest, const char *optarg)
-> >  {
-> >  	size_t value;
-> >  	char *endptr = NULL;
-> > @@ -193,6 +196,9 @@ static bool parse_usage_limit(struct settings *settings, const char *optarg)
-> >  	if (!optarg)
-> >  		return false;
-> >  
-> > +	if (!dest)
-> > +		return false;
-> > +
-> >  	value = strtoul(optarg, &endptr, 10);
-> >  
-> >  	if (*endptr) {
-> > @@ -204,7 +210,33 @@ static bool parse_usage_limit(struct settings *settings, const char *optarg)
-> >  		value *= multiplier;
-> >  	}
-> >  
-> > -	settings->disk_usage_limit = value;
-> > +	*dest = value;
-> > +	return true;
-> > +}
-> > +
-> > +static bool parse_slong(ssize_t *dest, const char *optarg)
-> Here too - you introduced a new function, which deserves to be a part of a separate patch.
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8569/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
 
-Ok, I will make a separate change for new option and small refactor.
+  
+#### Possible fixes ####
 
-Regards,
-Kamil
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8569/bat-mtlp-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/bat-mtlp-8/igt@i915_selftest@live.html
 
-> 
-> [...]
-> -- 
-> Best Regards,
-> Krzysztof
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8569 -> IGTPW_13854
+
+  CI-20190529: 20190529
+  CI_DRM_17295: 880468a295fb4db7bf44eec3541bfc24d42d9656 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13854: 13854
+  IGT_8569: 8569
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html
+
+--===============4201153270523860854==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix xe_eudebug_online@set-breakpoint-sigint-debugger (rev10)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153868/">https://patchwork.freedesktop.org/series/153868/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8569 -&gt; IGTPW_13854</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13854 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8569/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8569/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8569 -&gt; IGTPW_13854</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17295: 880468a295fb4db7bf44eec3541bfc24d42d9656 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13854: 13854<br />
+  IGT_8569: 8569</p>
+
+</body>
+</html>
+
+--===============4201153270523860854==--
