@@ -4,28 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF132CAC5B8
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 15:47:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C62FCAC5B8
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 17:02:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 89E9310E801;
-	Thu,  2 Oct 2025 15:47:16 +0000 (UTC)
-Received: from 6aec98b87f92 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DF4410E801;
- Thu,  2 Oct 2025 15:47:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4201153270523860854=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 20DCE10E81C;
+	Thu,  2 Oct 2025 17:02:55 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="HUcmKNAE";
+	dkim-atps=neutral
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com
+ [209.85.214.175])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21D8E10E81C
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 17:02:54 +0000 (UTC)
+Received: by mail-pl1-f175.google.com with SMTP id
+ d9443c01a7336-267facf9b58so7784875ad.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 02 Oct 2025 10:02:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1759424574; x=1760029374; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GgRnLS9U2fGSJJw+Q86izIhncDq72r2z24GDqjmpM68=;
+ b=HUcmKNAEGmguGVhGjl02xe5xvnHSy9ypPqvM0SGjClvNJdnwDdWrTS2h73oSXUAYfp
+ WueQSOxmKuC2cy2xRZoMBzrNLsBFxih91Twxg8qp+e72fuQ0dCv9sEg9vgXSsZeZEAjk
+ DsUJL2cwfQUZHT3wDR+6jWXJhr0Qs+cI79uo8WeLN3N1481YeBsGCX9x/K5oGBYhMQ8J
+ 4HqogvPKTnYTyCLsD72YEmj6OtJeiVYbDcEDYVokU+RraGlxL5cIHhgU2bumhGR+/wK3
+ Mj1/yIPQcRn50wveZkT74FzSAM83fOiZSBMPM1F/v+cp7oc6JiztsVapIhTP21cQktuq
+ P9+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759424574; x=1760029374;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GgRnLS9U2fGSJJw+Q86izIhncDq72r2z24GDqjmpM68=;
+ b=CcjvyLd0lH5Nd9abCzc+4mcFHkTsHj96qNEjHXGG5SG/tlVbtynWgZ95HWrd/1tdKE
+ F0DVdASL3WHEnFLv6YOFUSwE8rkjHyAur6bmq3l2pAwx2CGJMC/YOe55HrIjB/cFenJI
+ +bYNKlRiapf5yHfcRPWjdH82V/gNXHXnXCf1AAsGe3rBOJUk3El2ZPLjFv9xmH9bSPWh
+ 9dgu/10wrjHukzeg7GqK10qsiwmnBE6RNOLTvvsDc7wmjwIi3NC30HO4CWYGKAq996wS
+ /k53wOPO26ZPIYUf0JOt4fON3GAd8YxETI5WedB/bVspKcV01RelvL9yPDdOocRQFIhU
+ nuFg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVnuQOtByEcX9u++uA73u7Z4yi0nr8bvbT02uKiueWwCSI5HQtl24DOiSYzHTbfhX3tsLp7fqXN@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YzGl98ZWff2YuzWzRLiaGGbBshKJAgVcRtAWVJ7Iz3nA+Mc0f9i
+ xpJ0PHfU/eQnP985zajstP4lMsBYsmamRvctd8WALVtmspwrEugMh2ukwYV8LgbG/qqHok3nOb9
+ djGTEHCgZP6nIHSLQCBdvs5zGst3fudPPsq8wIJDKjw==
+X-Gm-Gg: ASbGncsNRPCOE95Bn9rqKvTm0bI9MjBTp2LKhcXe3QAVN3rGRbUanygnedVi+oPzkn7
+ gnmD+PR3f0a32khqmDWg5IWHAz3u877ySNMH2YqJe3D0I3fe+AiXrU7Cr7wiDMUxAKyhKCXBIK3
+ q2MOH4dhaSfOHzkOb8llu87BYLR6z5uerzbwZ6h+h/otuK6MTjWT7MJ7gfmmXur+wr49zDQA2+5
+ FuZN7OBmIjezKSgHDHguGhv7C2MJe2V3w==
+X-Google-Smtp-Source: AGHT+IGwR+NxrQX7mkry6+6qCiooY8j1Qj8T033DXttDg7za+DGk8KtGPaVJhkwkzhmxv1dyyRldwFQg4bQ+Wkcxids=
+X-Received: by 2002:a17:903:2384:b0:26c:3e5d:43b6 with SMTP id
+ d9443c01a7336-28e7f2f4ef0mr93984925ad.32.1759424573013; Thu, 02 Oct 2025
+ 10:02:53 -0700 (PDT)
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Fix_xe=5Feudebug=5Fonline?=
- =?utf-8?q?=40set-breakpoint-sigint-debugger_=28rev10=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 02 Oct 2025 15:47:15 -0000
-Message-ID: <175942003517.49.5954148594010195024@6aec98b87f92>
-X-Patchwork-Hint: ignore
-References: <20251002104443.7021-1-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20251002104443.7021-1-dominik.karol.piatkowski@intel.com>
+References: <20251001183958.3383532-1-markyacoub@google.com>
+ <20251002132105.r2jvf5as72pdywdd@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20251002132105.r2jvf5as72pdywdd@kamilkon-DESK.igk.intel.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Thu, 2 Oct 2025 20:02:41 +0300
+X-Gm-Features: AS18NWDZQEjJ174nljQWnfOkJJsIDFQyDz6L243hztKziJl-RjZ9SGHA-6YOa0E
+Message-ID: <CAJ=qYWQrEiMbA1hkM-hVVTSgJv8-gec7_b6=0yki9CFfMN-_tw@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] tests/kms_content_protection: Check for HDCP before
+ setting displays.
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mark Yacoub <markyacoub@google.com>, 
+ igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com, 
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,145 +86,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4201153270523860854==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Oct 2, 2025 at 4:21=E2=80=AFPM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
+>
+> Hi Mark,
+> On 2025-10-01 at 14:39:58 -0400, Mark Yacoub wrote:
+>
+> remove dot from subject, so it will be:
+>
+> [PATCH i-g-t] tests/kms_content_protection: Check for HDCP before setting=
+ displays
+>
+> > [Why]
+> > Drivers such as VKMS do not support HDCP, so the test fails on
+>
+> Please decipher VKMS here for more clear description, like
+>
+> Drivers such as VKMS (Virtual KMS) do not support HDCP, ...rest follows..=
+.
+>
+> > `modeset_with_fb`:
+> > Test assertion failure function do_display_commit, file external/igt-gp=
+u-tools/lib/igt_kms.c:4632
+> > errno: 34, Math result not representable
+> >
+> > [How]
+> > Move the HDCP check before any modesets.
+> >
+> > Test: kms_content_protection on AVD with VKMS
+>
+> Please make it a sentence and add newline before any cc: or s-o-b,
+> like:
+>
+> Tested on AVD (please write here what ADV means) with VKMS.
+>
+> +cc
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+>
+> > Signed-off-by: Mark Yacoub <markyacoub@google.com>
+> > ---
+> >  tests/kms_content_protection.c | 16 +++++++---------
+> >  1 file changed, 7 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/tests/kms_content_protection.c b/tests/kms_content_protect=
+ion.c
+> > index 51fc1d3be..effeb66dc 100644
+> > --- a/tests/kms_content_protection.c
+> > +++ b/tests/kms_content_protection.c
+> > @@ -638,22 +638,20 @@ test_content_protection(enum igt_commit_style com=
+mit_style, int content_type)
+> >
+> >       for_each_connected_output(display, output) {
+> >               for_each_pipe(display, pipe) {
+> > -                     igt_display_reset(display);
+> > -
+> > -                     igt_output_set_pipe(output, pipe);
+> > -                     if (!intel_pipe_output_combo_valid(display))
+> > -                             continue;
+> > -
+> > -                     modeset_with_fb(pipe, output, commit_style);
+> > -
+> >                       if (!output_hdcp_capable(output, content_type))
+> >                               continue;
+> > -
+> >                       if (is_output_hdcp_test_exempt(output)) {
+> >                               igt_info("Skipping HDCP test on %s, as th=
+e panel is blocklisted\n",
+> >                                         output->name);
+> >                               continue;
+> >                       }
+> > +
+> > +                     igt_display_reset(display);
+> > +                     igt_output_set_pipe(output, pipe);
+> > +                     if (!intel_pipe_output_combo_valid(display))
+> > +                             continue;
+> > +
+> > +                     modeset_with_fb(pipe, output, commit_style);
+>
+> I am not sure if this is correct so I added Karthik and J-P to cc.
+> Karthik or J-P: could you look into CI fails? At least in Xe I see
+> fails in this test.
 
-== Series Details ==
+I'm not super familiar with this test but that change look ok to my
+eye. It look like that is_output_hdcp_test_exempt() just moves up a
+bit as the description stated.
 
-Series: Fix xe_eudebug_online@set-breakpoint-sigint-debugger (rev10)
-URL   : https://patchwork.freedesktop.org/series/153868/
-State : success
+Looking at ci history for this test, getting fail on our ci for this
+test probably doesn't mean so much:
 
-== Summary ==
+https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13852/shards-all.html?testf=
+ilter=3Dkms_content_protection
+https://intel-gfx-ci.01.org/tree/intel-xe/shards-all.html?testfilter=3Dkms_=
+content_protection
 
-CI Bug Log - changes from IGT_8569 -> IGTPW_13854
-====================================================
+The fail with/without this change look the same.
 
-Summary
--------
+I'll need to take AR for myself on checking why our own drivers are
+not able to pass this test.
 
-  **SUCCESS**
+/Juha-Pekka
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html
-
-Participating hosts (44 -> 43)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13854 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8569/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8569/bat-mtlp-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/bat-mtlp-8/igt@i915_selftest@live.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8569 -> IGTPW_13854
-
-  CI-20190529: 20190529
-  CI_DRM_17295: 880468a295fb4db7bf44eec3541bfc24d42d9656 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13854: 13854
-  IGT_8569: 8569
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html
-
---===============4201153270523860854==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Fix xe_eudebug_online@set-breakpoint-sigint-debugger (rev10)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153868/">https://patchwork.freedesktop.org/series/153868/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8569 -&gt; IGTPW_13854</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/index.html</p>
-<h2>Participating hosts (44 -&gt; 43)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13854 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8569/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8569/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13854/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8569 -&gt; IGTPW_13854</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17295: 880468a295fb4db7bf44eec3541bfc24d42d9656 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13854: 13854<br />
-  IGT_8569: 8569</p>
-
-</body>
-</html>
-
---===============4201153270523860854==--
+>
+> >
+> >                       igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pip=
+e), output->name)
+> >                               test_content_protection_on_output(output,=
+ pipe, commit_style, content_type);
+> > --
+> > 2.51.0.618.g983fd99d29-goog
+> >
