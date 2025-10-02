@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B08C3CAC5B8
-	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 19:54:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 163E4CAC5B8
+	for <igt-dev@archiver.kernel.org>; Thu,  2 Oct 2025 19:54:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6776410E840;
-	Thu,  2 Oct 2025 19:54:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C027210E845;
+	Thu,  2 Oct 2025 19:54:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XTA8Pe7C";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZrgOfiEZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12B8410E840
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 19:54:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A60FE10E845
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Oct 2025 19:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759434890; x=1790970890;
+ t=1759434897; x=1790970897;
  h=date:from:to:cc:subject:in-reply-to:message-id:
  references:mime-version:content-id;
- bh=DcOp8Pp4nBYl+PTIOIbGHYL8+XOekgsC/UW+mAqc6pc=;
- b=XTA8Pe7COeER5KRGWWqXMU7sIwCUmDS1EgIYZMiOnENfWrGrcE6XtVIa
- ZnAVtPP10Vvy8pkYW/QYf5lMcpZwa8hXjOZsJ2kem2zn0+N0IWqTEEIIn
- m01hzzyuprPIfW5QXQyqLFljGKgyO7AxK0ls4OFwcuAbLN3yHNTUMTE5q
- ezIgZL1Z+GOmJkiJE2mCoNvOYjAnu1y/m/sgCBA+D/7rWvEUe6JV83WdD
- u/lLA9zY/h0eaIG3iE1v+m/EhACLdbUTiz9xIf2M7Dq9qfzUaWUgaY8ml
- dNFV5s30nkTxOd5RoKgtMMK1cu3Lzc5GHBDJyDIs4mqi8G43PRCr914sQ Q==;
-X-CSE-ConnectionGUID: ONT6O8HGQS2/xigGaX3Opg==
-X-CSE-MsgGUID: OSB526wFT7GmNbof8Vby7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="65575773"
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; d="scan'208";a="65575773"
+ bh=rWnWQ41pq8HZGzE+TwZC0SqfyPB6JF9MN0s/6Qf+Z7I=;
+ b=ZrgOfiEZ1/1xvCRaZainybUbloER9uVCq4mkzEU72ZURD5xlVQbNxNLc
+ nhfE4mM0NAl0ypxhzo4GwnJQC3Ay/ZRZh6FyHQwRQJzuUWrCcG4HB/tfR
+ kCRpbHl3HVmY3iyAhLdY+JrPInSiKVXCFDcIEhIHjLrMUJw3Q4Sa+AyAy
+ 8r+HY0tygdrS1lNiFIY54vTsz2FREOp0CVChdUwJDZx/YHi3TnNtCC0Vw
+ 0toRvVwcJ+cFC3eHTqERE7NzdVWU1IAwEqAxP11gZh5/ejhPBT9rfEJRJ
+ JFFGGswpS99cedn18ds84SuM+kO5YGGQoanIpFma8WXQ15TZyzbIUiG7H Q==;
+X-CSE-ConnectionGUID: jY2h40KRRDOHbwtEw0UPuQ==
+X-CSE-MsgGUID: GQYdC0I8RmOGa1IZdC/y5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="65575784"
+X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; d="scan'208";a="65575784"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 12:54:46 -0700
-X-CSE-ConnectionGUID: TFcGJcHnTWKzx7zej+KK+g==
-X-CSE-MsgGUID: BZOJQn0aQ+SFDUMwf8wP6g==
+ 02 Oct 2025 12:54:56 -0700
+X-CSE-ConnectionGUID: 47NlKcKMQsmKUmwsGILWSw==
+X-CSE-MsgGUID: z6Ke+ZwRSOKc6oQDukAuHA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; d="scan'208";a="178721423"
+X-IronPort-AV: E=Sophos;i="6.18,310,1751266800"; d="scan'208";a="178721454"
 Received: from administrator-system-product-name.igk.intel.com
  ([10.91.214.181])
  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 12:54:44 -0700
-Date: Thu, 2 Oct 2025 21:54:41 +0200 (CEST)
+ 02 Oct 2025 12:54:55 -0700
+Date: Thu, 2 Oct 2025 21:54:53 +0200 (CEST)
 From: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>
 cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 4/7] tools/intel_display_poller: Add
- --scanline-offset/-o command line option
-In-Reply-To: <20250922160950.27250-5-ville.syrjala@linux.intel.com>
-Message-ID: <0bb032d9-c6ce-f83b-2b2d-67a8ed0533f7@intel.com>
+Subject: Re: [PATCH i-g-t 5/7] tools/intel_display_poller: Add
+ --auto-scanline-offset/-O comamnd line option
+In-Reply-To: <20250922160950.27250-6-ville.syrjala@linux.intel.com>
+Message-ID: <a9c1d0ae-2ad4-be43-0aa7-230e893d3e99@intel.com>
 References: <20250922160950.27250-1-ville.syrjala@linux.intel.com>
- <20250922160950.27250-5-ville.syrjala@linux.intel.com>
+ <20250922160950.27250-6-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: multipart/mixed;
- BOUNDARY="8323329-1960965985-1759418200=:1357965"
-Content-ID: <cbcbff64-8b25-4f23-f952-86a75f52d37f@intel.com>
+ BOUNDARY="8323329-1980405653-1759433183=:1357965"
+Content-ID: <b0749957-d3eb-2b52-827a-a047c7736cb9@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,34 +74,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-1960965985-1759418200=:1357965
+--8323329-1980405653-1759433183=:1357965
 Content-Type: text/plain; CHARSET=ISO-8859-2; format=flowed
 Content-Transfer-Encoding: 8BIT
-Content-ID: <974f4ec5-4dd2-25f1-1c1e-10d4a39a936e@intel.com>
+Content-ID: <8f8ac963-2d63-f69c-c888-6eb83f90cbef@intel.com>
 
 On Mon, 22 Sep 2025, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 >
-> Our hardware has a slightly warped view of scanline numbers.
-> Eg. on most platforms it reports DSL=vblank_start-1 when the
-> start of vblank actaully occurs.
+> Using the --scanline-offset/-o option to manually specify the scanline
+> offset can be a bit error prone since the appropriate offset depends
+> not only on the hardware generation, but sometimes also on the output
+> type (HDMI vs. not). Add a --auto-scanline-offset/-O option that tries
+> to automagically determin the correct offset by examinign the current
+> hardware state.
 >
-> On the kernel side we have helpers to convert between the hardware
-> and software scanline numbers. Add the same for intel_display_poller
-> in the form of a new --scanline-offset/-o command line option. With
-> this one doesn't constantly have to waste brarin power to convert the
-> hardware numbers into something more sensible.
->
-> Caveat: unlike the kernel side we don't do the appropriate %vtotal
-> on the adjusted values (since figuring out the actual vtotal would take
-> quite a bit of work due to VRR/etc.). So when using --scanline-offset
-> one has to keep in mind that we might see slightly funky scanline
-> numbers. Eg. scanline >= vtotal when the scanline offset of positive,
-> and negative value (due to a negative scanline offset) we just
-> saturate to 0. Howver for most interesting hardware events the
-> scanline tends to be in a range where this issue doesn't matter.
+> Note that DSI outputs aren't really handled properly by
+> hsw_ddi_is_hdmi(), or even by trans_reg() in general. So this
+> might give the wrong answer there.
 >
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
 Reviewed-by: Micha³ Grzelak <michal.grzelak@intel.com>
---8323329-1960965985-1759418200=:1357965--
+--8323329-1980405653-1759433183=:1357965--
