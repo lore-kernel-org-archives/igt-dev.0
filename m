@@ -4,60 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37CE2CCA471
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 14:13:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD4E9CCA471
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 14:48:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1C5010E91E;
-	Fri,  3 Oct 2025 14:13:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6CA0310E934;
+	Fri,  3 Oct 2025 14:48:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f8n2KUM/";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="35T2tM9X";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C693110E91D;
- Fri,  3 Oct 2025 14:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759500815; x=1791036815;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=9YR/mZ5e2WB9jbVEES56uM8YHPwxdPmLvBxDIr10bxk=;
- b=f8n2KUM/GdNLh4z4gJyYmJ7cBIMHamToVezyG0ElNhqKjtawfeJ92rKR
- 28VbHVhbg91D+L/Hw0+krLle0vsiVYB3+2UZviuG7QnXs8Sj+5WanWPOE
- kbzNO5ihJxGIFtPWdUuS7sSOMXUxdto4JplM4LYEyQADgbXehO7M2K+/7
- QeNiD4pkag3g0sAp+0Dbif7wGdLIPeNzh4LVdHKrQcUlseBiEGZ7730Tr
- zzbZG9GTZhIbRyL4i31WGS+BxMk+zoUUxySDSthpl8DkK6pBMX4ZrPGjn
- RYza2Un2WYsZi+XsGikZ+IbdGhuxdPS0lSpAUV3PYln/tRDekIH40m0SY A==;
-X-CSE-ConnectionGUID: QA1Zh+X1QI+pmdlZz4LTrw==
-X-CSE-MsgGUID: FvjKNokPQ6KBE+jbt5PvPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11571"; a="61946238"
-X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="61946238"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Oct 2025 07:13:34 -0700
-X-CSE-ConnectionGUID: oOzL3ThuTZq5ZHZOgKoSKg==
-X-CSE-MsgGUID: KnMq011BRluY9biv5XekqA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="178940759"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 07:13:33 -0700
-Date: Fri, 3 Oct 2025 16:13:16 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mark Yacoub <markyacoub@google.com>,
-	I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
- lib/drmtest: Add Support for Virtio-GPU
-Message-ID: <20251003141316.2ycd7sxit56kt7e3@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Mark Yacoub <markyacoub@google.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20251002151714.595492-1-markyacoub@google.com>
- <175944554238.56.13686855648340266735@6aec98b87f92>
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com
+ [209.85.160.180])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4ECE910E934
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 14:48:26 +0000 (UTC)
+Received: by mail-qt1-f180.google.com with SMTP id
+ d75a77b69052e-4db7e5a653cso23165731cf.1
+ for <igt-dev@lists.freedesktop.org>; Fri, 03 Oct 2025 07:48:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1759502905; x=1760107705;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uxRjqAcQgWh1a8gw/dNSS7oh2keDqbuYCUWAFZD2ZoY=;
+ b=35T2tM9X5nGTYYenA+Ew5RHqpzGGc7GDEj62mWR6nklBszaaMcps/e/Le8hZcmy0Dh
+ 6CS1JUNbPMYayH1FHSfOFRGhL8Ac0OjnFg+NTE5Rh726r+roWB9j88LqAZ8e2d1vYwUU
+ xoWNmm3JG0r/RAyjvxdORIHOihwuyNnOCZ5srUVIa0SDynwU7BDfhxVWira0eFobM36h
+ /bERCcPTViBfA4PlUSHHoJoutvrqcOyS1n6LHi65FTeJItB9XR05+oe+PRnqUnxAUJFI
+ V/niw7zlWtS2j0L4QJM8On8B+mOOnYkds/OT3PNfNo+iXItf+JauXH/indbi0m9rgbPO
+ Kqng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1759502905; x=1760107705;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uxRjqAcQgWh1a8gw/dNSS7oh2keDqbuYCUWAFZD2ZoY=;
+ b=ShiWyjecEd+hoWRK4RMob+yHzs/xg4jbkniMoghq4suhCiGSDHdfGHv/MxtDS4AOZF
+ 0DOOvJMO1Q5WuIWuMqS5SWG5WuKVJ24AUMytku+PLiXRmf0mn6z3LJiVtPiUjRuBGCZm
+ iS6E195TSa+2OPScj5ZF/Sysxjigzn325glpw0xnUGd9ZIYGdxesUVGBWGd8mEsYrWgG
+ ClyuqqBbUTYNYryAOLKlFXCeH4RAPpU5AfQJRlkANOsYdN3HIvI1X6pzcmQAdLkWe2o5
+ fl63bdQsGm24KwvTCfmHDvSiTTp0qHwFoUa0HVzCH3pQwJ0x1NL91SDO2TxjdwqnF0xT
+ /phg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWSKqF0AjGvE6DH6qjKmk3TPSmHHySpbaUKtrxxBHVDw/n+9FUf0TtSbAoeM/FXZBz4yy5L0XXW@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YzgmKdriVF1CIgY/z2zm7idzBEWSOn9MmM8NgTqqPIGjeMWzLWj
+ F0xWn1QpakKLQJWXy6X0fxIH+oQVhylSU5OHJ0UqHelDXLz37GjqSbsrFS9FvIwF7gqVCMeFEMS
+ IbzBz8Ex7eY/akc6zRoyD8pJppL/DsGornGTqavtc
+X-Gm-Gg: ASbGnctZQyFPAPFQrPNUivhkR9Hb690YbevRXQnLDGvelquqfLqWAU8cGlUTJH8kdGV
+ jBnRgXTNTshaHL3XA9cM3d1em5sILOLMg3xDNedsI4sY2SzrGTOQVnsCfbbdK/53jGTkGCsdsoL
+ PXbDoGCUrMmqbcxyftI6TOnIdaweP2hKeKxsotr6sBwIkm2LRgJb+43ow79plA3mz7MbXuAdTYs
+ GE+drZptadrPrkNRiwHZcgeeLh3nG3PuEx3sEf92GH0o7PcONRqwgFfk5pAuOAV31Df
+X-Google-Smtp-Source: AGHT+IHNSXVRqW3GVQwb4x+IH64XIl4HMd3K201/S4J42WukvJt4AMzdoQoF9S0AgZG2gTj/W3ue39QiiPxTHeSAS1U=
+X-Received: by 2002:ac8:5885:0:b0:4b5:fa2e:380f with SMTP id
+ d75a77b69052e-4e576a40192mr51398071cf.27.1759502904404; Fri, 03 Oct 2025
+ 07:48:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <175944554238.56.13686855648340266735@6aec98b87f92>
+References: <20251002151714.595492-1-markyacoub@google.com>
+ <20251002190659.ssmba4pobyp7jmw5@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20251002190659.ssmba4pobyp7jmw5@kamilkon-DESK.igk.intel.com>
+From: Mark Yacoub <markyacoub@google.com>
+Date: Fri, 3 Oct 2025 10:48:13 -0400
+X-Gm-Features: AS18NWDvuoFVoEDtnYc5RuaLIj3w6YwXgdczlYkEK1vbae1OoWlLfwJNxBfTxeQ
+Message-ID: <CAC0gqY4tzJgO=hiTkGmkffL5sUWets-nDMiDEC7FK0_BGzr6PA@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] lib/drmtest: Add Support for Virtio-GPU
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mark Yacoub <markyacoub@google.com>, 
+ igt-dev@lists.freedesktop.org, Louis Chauvet <louis.chauvet@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,59 +86,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-10-02 at 22:52:22 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: lib/drmtest: Add Support for Virtio-GPU
-> URL   : https://patchwork.freedesktop.org/series/155340/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8571_FULL -> XEIGTPW_13855_FULL
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_13855_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_13855_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 3)
-> ------------------------------
-> 
->   Missing    (1): shard-adlp 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_13855_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_cursor_legacy@single-move@pipe-c:
->     - shard-dg2-set2:     [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8571/shard-dg2-433/igt@kms_cursor_legacy@single-move@pipe-c.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13855/shard-dg2-435/igt@kms_cursor_legacy@single-move@pipe-c.html
-> 
+Thank you so much for applying it.
 
-Unrelated.
-
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_13855_FULL that come from known issues:
-> 
-...cut...
+On Thu, Oct 2, 2025 at 3:07=E2=80=AFPM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
+>
+> Hi Mark,
+> On 2025-10-02 at 11:17:14 -0400, Mark Yacoub wrote:
+> > [Why]
+> > Android's Virtual Device (AVD) has virtio-gpu has its primary driver. W=
+e
+> > want to be to detect it so we can filter out it through DRIVER_ANY.
+> >
+> > [How]
+> > Add DRIVER_VIRTIO to the exclusion list of DRIVER_ANY
+>
+> s/to the/to known drivers and to/
+>
+> >
+> > Test: ran kms_bw on AVD.
+>
+> Tested with kms_bw on AVD.
+>
+> >
+> > Change-Id: Ie7987c706546bc0fbd437e221f7ecd4c7bc759a9
+> > Signed-off-by: Mark Yacoub <markyacoub@google.com?
+>
+> s/?/>/
+>
+> No need for resend, it could be fixed at merge.
+>
+> > cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > cc: Louis Chauvet <louis.chauvet@bootlin.com>
+>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>
+> > ---
+> >  lib/drmtest.c | 1 +
+> >  lib/drmtest.h | 9 +++++----
+> >  2 files changed, 6 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/lib/drmtest.c b/lib/drmtest.c
+> > index 551385867..a1fb0b5ba 100644
+> > --- a/lib/drmtest.c
+> > +++ b/lib/drmtest.c
+> > @@ -223,6 +223,7 @@ static const struct module {
+> >       { DRIVER_V3D, "v3d" },
+> >       { DRIVER_VC4, "vc4" },
+> >       { DRIVER_VGEM, "vgem" },
+> > +     { DRIVER_VIRTIO, "virtio_gpu" },
+> >       { DRIVER_VKMS, "vkms" },
+> >       { DRIVER_VMWGFX, "vmwgfx" },
+> >       { DRIVER_XE, "xe" },
+> > diff --git a/lib/drmtest.h b/lib/drmtest.h
+> > index a9542dde2..8416aa491 100644
+> > --- a/lib/drmtest.h
+> > +++ b/lib/drmtest.h
+> > @@ -56,16 +56,17 @@ int __get_drm_device_name(int fd, char *name, int n=
+ame_size);
+> >  #define DRIVER_XE    (1 << 7)
+> >  #define DRIVER_VMWGFX   (1 << 8)
+> >  #define DRIVER_VKMS  (1 << 9)
+> > +#define DRIVER_VIRTIO        (1 << 10)
+> >
+> >  /*
+> > - * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+> > - * with vgem as well as a supported driver, you can end up with a
+> > - * near-100% skip rate if you don't explicitly specify the device,
+> > + * Exclude DRIVER_VGEM and DRIVER_VIRTIO from DRIVER_ANY since if you =
+run
+> > + * on a system with them as well as a supported driver, you can end up
+> > + * with a near-100% skip rate if you don't explicitly specify the devi=
+ce,
+> >   * depending on device-load ordering.
+> >   *
+> >   * Exclude VKMS to prefer hardware drivers.
+> >   */
+> > -#define DRIVER_ANY   ~(DRIVER_VGEM | DRIVER_VKMS)
+> > +#define DRIVER_ANY   ~(DRIVER_VGEM | DRIVER_VKMS | DRIVER_VIRTIO)
+> >
+> >  /*
+> >   * Compile friendly enum for i915/xe.
+> > --
+> > 2.51.0.618.g983fd99d29-goog
+> >
