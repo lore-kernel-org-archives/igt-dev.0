@@ -4,47 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8FE8CCD182
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 13:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 283A2CCA471
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 13:56:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A98710E904;
-	Fri,  3 Oct 2025 13:05:23 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="eiXYR6q/";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D95710E903;
- Fri,  3 Oct 2025 13:05:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
- Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=SteZEROco4qu6m8TyQelkCW+QRDPrkvyrZLZ9Gg7aSo=; b=eiXYR6q/50pixBNp4YL3Bdse5n
- S8LpvnrXXN9HfWDvoABL1+RifbEmIFFJy2ayZRkivX2NTpIamm3tjllmi/OKr2HfFMQJC4/roqPVF
- jH+KeEj1STASG/cZRX2tlTSwAGvesY4k85J6BuQaYmJ4zU6mTlt2mcpiJdolMA8eWMbfDldHAJfGY
- q1KM04nEJXREWS+ExJYgNATK6k/mTxWqRPv6/7DGQqjXbzGeMN9vPiH4RvOqjTw2GPFsKMKVgigHg
- sHE45ZQ2YQq5FKIVbWwCOgOzTljsFkq63gss0tsgFB2Df7kYqOPkUWNYQ1NzCb7DzO8UpwE1PS9ma
- RyiVWHGw==;
-Received: from [84.66.36.92] (helo=localhost)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1v4fTL-003tKL-Uq; Fri, 03 Oct 2025 15:05:20 +0200
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-To: intel-xe@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH i-g-t v2] lib/igt_fb/intel: Use correct MOCS for displayable
- surfaces
-Date: Fri,  3 Oct 2025 14:05:17 +0100
-Message-ID: <20251003130517.40414-1-tvrtko.ursulin@igalia.com>
-X-Mailer: git-send-email 2.48.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id B98B610E90A;
+	Fri,  3 Oct 2025 13:56:07 +0000 (UTC)
+Received: from 6aec98b87f92 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41D8D10E909;
+ Fri,  3 Oct 2025 13:56:06 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7700750798258091327=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Ffb/intel=3A_Use_c?=
+ =?utf-8?q?orrect_MOCS_for_displayable_surfaces_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@igalia.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 03 Oct 2025 13:56:06 -0000
+Message-ID: <175949976620.3102.3365962261744545531@6aec98b87f92>
+X-Patchwork-Hint: ignore
+References: <20251003130517.40414-1-tvrtko.ursulin@igalia.com>
+In-Reply-To: <20251003130517.40414-1-tvrtko.ursulin@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,139 +37,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Using the uncached MOCS for displayable surfaces is not always correct,
-especially when CCS compression is used with which some platforms require
-a special uncached entry, otherwise writes get unexpectedly cached.
+--===============7700750798258091327==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Lets copy the knowledge of what is the correct MOCS for displayable
-surfaces from Mesa and add some new helpers to get it.
+== Series Details ==
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
-v2:
- * Renamed external_index to displayable_index. (Ville)
----
- lib/igt_fb.c       |  2 +-
- lib/intel_bufops.c |  2 ++
- lib/intel_mocs.c   | 21 +++++++++++++++++++--
- lib/intel_mocs.h   |  2 ++
- 4 files changed, 24 insertions(+), 3 deletions(-)
+Series: lib/igt_fb/intel: Use correct MOCS for displayable surfaces (rev2)
+URL   : https://patchwork.freedesktop.org/series/155372/
+State : success
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 03ede3a6fa20..b5a16f9cbe90 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2712,7 +2712,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
- 				    fb->strides[0],
- 				    region,
- 				    intel_get_pat_idx_uc(fd),
--				    DEFAULT_MOCS_INDEX);
-+				    DISPLAYABLE_MOCS_INDEX);
- 	intel_buf_set_name(buf, name);
- 
- 	/* only really needed for proper CCS handling */
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 475b0d1f7b10..1196069a500f 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -1008,6 +1008,8 @@ static void __intel_buf_init(struct buf_ops *bops,
- 	buf->pat_index = pat_index;
- 	if (mocs_index == DEFAULT_MOCS_INDEX)
- 		mocs_index = intel_get_uc_mocs_index(bops->fd);
-+	else if (mocs_index == DISPLAYABLE_MOCS_INDEX)
-+		mocs_index = intel_get_displayable_mocs_index(bops->fd);
- 	buf->mocs_index = mocs_index;
- 	IGT_INIT_LIST_HEAD(&buf->link);
- 
-diff --git a/lib/intel_mocs.c b/lib/intel_mocs.c
-index e0c33c31c088..9809e32113eb 100644
---- a/lib/intel_mocs.c
-+++ b/lib/intel_mocs.c
-@@ -9,12 +9,14 @@
- struct drm_intel_mocs_index {
- 	uint8_t uc_index;
- 	uint8_t wb_index;
-+	uint8_t displayable_index;
- 	uint8_t defer_to_pat_index;
- };
- 
- static void get_mocs_index(int fd, struct drm_intel_mocs_index *mocs)
- {
- 	uint16_t devid = intel_get_drm_devid(fd);
-+	unsigned int ip_ver = intel_graphics_ver(devid);
- 
- 	/*
- 	 * Gen >= 12 onwards don't have a setting for PTE,
-@@ -23,25 +25,31 @@ static void get_mocs_index(int fd, struct drm_intel_mocs_index *mocs)
- 	 * This helper function is providing current UC as well
- 	 * as WB MOCS index based on platform.
- 	 */
--	if (intel_graphics_ver(devid) >= IP_VER(20, 0)) {
-+	if (ip_ver >= IP_VER(20, 0)) {
- 		mocs->uc_index = 3;
- 		mocs->wb_index = 4;
-+		mocs->displayable_index = 1;
- 		mocs->defer_to_pat_index = 0;
- 	} else if (IS_METEORLAKE(devid)) {
- 		mocs->uc_index = 5;
- 		mocs->wb_index = 1;
-+		mocs->displayable_index = 14;
- 	} else if (IS_DG2(devid)) {
- 		mocs->uc_index = 1;
- 		mocs->wb_index = 3;
-+		mocs->displayable_index = 3;
- 	} else if (IS_DG1(devid)) {
- 		mocs->uc_index = 1;
- 		mocs->wb_index = 5;
--	} else if (IS_GEN12(devid)) {
-+		mocs->displayable_index = 5;
-+	} else if (ip_ver >= IP_VER(12, 0)) {
- 		mocs->uc_index = 3;
- 		mocs->wb_index = 2;
-+		mocs->displayable_index = 61;
- 	} else {
- 		mocs->uc_index = I915_MOCS_PTE;
- 		mocs->wb_index = I915_MOCS_CACHED;
-+		mocs->displayable_index = I915_MOCS_PTE;
- 	}
- }
- 
-@@ -63,6 +71,15 @@ uint8_t intel_get_uc_mocs_index(int fd)
- 	return mocs.uc_index;
- }
- 
-+uint8_t intel_get_displayable_mocs_index(int fd)
-+{
-+	struct drm_intel_mocs_index mocs;
-+
-+	get_mocs_index(fd, &mocs);
-+
-+	return mocs.displayable_index;
-+}
-+
- uint8_t intel_get_defer_to_pat_mocs_index(int fd)
- {
- 	struct drm_intel_mocs_index mocs;
-diff --git a/lib/intel_mocs.h b/lib/intel_mocs.h
-index 8597286d259d..394bb41be042 100644
---- a/lib/intel_mocs.h
-+++ b/lib/intel_mocs.h
-@@ -9,9 +9,11 @@
- #include <stdint.h>
- 
- #define DEFAULT_MOCS_INDEX ((uint8_t)-1)
-+#define DISPLAYABLE_MOCS_INDEX ((uint8_t)-2)
- 
- uint8_t intel_get_wb_mocs_index(int fd);
- uint8_t intel_get_uc_mocs_index(int fd);
-+uint8_t intel_get_displayable_mocs_index(int fd);
- uint8_t intel_get_defer_to_pat_mocs_index(int fd);
- 
- #endif /* _INTEL_MOCS_H */
--- 
-2.48.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8573_BAT -> XEIGTPW_13862_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13862_BAT:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@xe_module_load@load:
+    - {bat-ptl-vm}:       [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8573/bat-ptl-vm/igt@xe_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13862/bat-ptl-vm/igt@xe_module_load@load.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8573 -> IGTPW_13862
+
+  IGTPW_13862: 13862
+  IGT_8573: 8573
+  xe-3863-fc2ab5b39b79dce447c0e0a0cc9b808618559a37: fc2ab5b39b79dce447c0e0a0cc9b808618559a37
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13862/index.html
+
+--===============7700750798258091327==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_fb/intel: Use correct MOCS for displayable surfaces (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/155372/">https://patchwork.freedesktop.org/series/155372/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13862/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13862/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8573_BAT -&gt; XEIGTPW_13862_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13862_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@xe_module_load@load:<ul>
+<li>{bat-ptl-vm}:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8573/bat-ptl-vm/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13862/bat-ptl-vm/igt@xe_module_load@load.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8573 -&gt; IGTPW_13862</li>
+</ul>
+<p>IGTPW_13862: 13862<br />
+  IGT_8573: 8573<br />
+  xe-3863-fc2ab5b39b79dce447c0e0a0cc9b808618559a37: fc2ab5b39b79dce447c0e0a0cc9b808618559a37</p>
+
+</body>
+</html>
+
+--===============7700750798258091327==--
