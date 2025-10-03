@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4BD1CCA470
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 07:11:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0BC7CAC5B0
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 07:11:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8FF0C10E8D2;
-	Fri,  3 Oct 2025 07:11:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 928D510E8E6;
+	Fri,  3 Oct 2025 07:11:28 +0000 (UTC)
 Received: from 6aec98b87f92 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC6E210E8D2;
- Fri,  3 Oct 2025 07:11:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4217510E8E6;
+ Fri,  3 Oct 2025 07:11:27 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6932901933427806036=="
+ boundary="===============6487135684534494586=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fcompute=5F?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fcompute=5F?=
  =?utf-8?q?preempt=3A_Compute_preemption_check?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Sobin Thomas" <sobin.thomas@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 03 Oct 2025 07:11:26 -0000
-Message-ID: <175947548659.2172.17424153794028317161@6aec98b87f92>
+Date: Fri, 03 Oct 2025 07:11:27 -0000
+Message-ID: <175947548714.2259.7516252509585536830@6aec98b87f92>
 X-Patchwork-Hint: ignore
 References: <20251003052640.56068-1-sobin.thomas@intel.com>
 In-Reply-To: <20251003052640.56068-1-sobin.thomas@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6932901933427806036==
+--===============6487135684534494586==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,7 +50,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: tests/intel/xe_compute_preempt: Compute preemption check
 URL   : https://patchwork.freedesktop.org/series/155359/
-State : success
+State : failure
 
 == Summary ==
 
@@ -93,7 +93,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13856/index.html
 
---===============6932901933427806036==
+--===============6487135684534494586==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -115,7 +115,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>tests/intel/xe_compute_preempt: Compute preemption check</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/155359/">https://patchwork.freedesktop.org/series/155359/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13856/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13856/index.html</a></td></tr>
 
@@ -143,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============6932901933427806036==--
+--===============6487135684534494586==--
