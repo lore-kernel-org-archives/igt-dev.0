@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90EE5CAC5B0
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 11:31:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81112CAC5B0
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 11:31:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ECB7510E11A;
-	Fri,  3 Oct 2025 11:31:22 +0000 (UTC)
-Received: from 6aec98b87f92 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E487A10E11A;
- Fri,  3 Oct 2025 11:31:21 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6038081563373690049=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 37C7A10E11A;
+	Fri,  3 Oct 2025 11:31:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PbbRzGsC";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7B8610E11A
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 11:31:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759491111; x=1791027111;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=+cyFknZRNGfUBFdS6YXE3B+N9X+RC7mn0u8Bn+gv3zs=;
+ b=PbbRzGsCj7WjPZjvG5e+XZp+Gxta1dkHakBO8uUx8qds/GcX13+X2X4k
+ 8sVTM6r1Lw0SM3ZmgPBWBC4oe2zX6x4qvKsBD8jJxGHZxjllt/uWhaE6b
+ iTfFITh6XMnomJWDGkHKdkyqBdIdYZeCvYSzVOB9aWEMSsXerbUbgX05S
+ 1jTrfItKkB8E7a7GMF6Nuq+jgB06oBbFsH6d2pLlRiYRk+CJFyXeK4UKA
+ IHuzLuuBvtzs60KlnkO3lUCGUHzAWnsjSIjV222/NU5H/RjZEb4bdBWKM
+ EZ9FeLhIs+cdhIwZdpIIe1/f+RSaIWJCyZZ6NU+wKfOgRPXOdJHfG6OGA g==;
+X-CSE-ConnectionGUID: SgUvuOFlRgyddu2jZfjkLg==
+X-CSE-MsgGUID: QoWWkbMTQN+uwg29YabjFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="61874912"
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="61874912"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Oct 2025 04:31:51 -0700
+X-CSE-ConnectionGUID: B2EDOn01Qnu9lhJAAFCHGA==
+X-CSE-MsgGUID: Lt9Civ2vRw+nEt27ROij7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="183677153"
+Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
+ by fmviesa005.fm.intel.com with ESMTP; 03 Oct 2025 04:31:50 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ nishit.sharma@intel.com
+Subject: [PATCH i-g-t v6 0/3] Multi-CCS support in IGT
+Date: Fri,  3 Oct 2025 11:31:46 +0000
+Message-ID: <20251003113149.262620-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fsys?=
- =?utf-8?q?tem=5Fallocator=3A_Fix_memory_leak?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 03 Oct 2025 11:31:21 -0000
-Message-ID: <175949108192.3102.6966139926188661765@6aec98b87f92>
-X-Patchwork-Hint: ignore
-References: <20251003110543.4129362-1-nishit.sharma@intel.com>
-In-Reply-To: <20251003110543.4129362-1-nishit.sharma@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +62,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6038081563373690049==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-== Series Details ==
+Revision 1:
+Added loop_kernel_duration in available pipelines. loop_kernel_duration
+holds sleep duration and during sleep GPU will be workng.
+Patch-1/3: loop_kernel_duration addition in available pipelines in
+lib/intel_compute.c. igt_skip is called in pipeline which doesn't support
+loop_kernel shader.
+Patch-2/3: Added loop-duration-2s subtest in tests/intel/xe_compute to
+test if GPU is executing shader when sleep is called. This is verfied
+using gputop in another terminal. This also tests whether the test
+executed successfully in >= 2seconds of duration set
+Patch-3/3: Added eu-busy-10s test which creates multi threads depending
+on num_slices available and schedules workload on all ccs instances
+available. This also prints engine utlization in percentage while
+workload is executing.
 
-Series: tests/intel/xe_exec_system_allocator: Fix memory leak
-URL   : https://patchwork.freedesktop.org/series/155378/
-State : success
+v2:
+- Addressed review comments from Zbyshek on description in Patch-1.
+- Added execution time check in Patch-2 regarding single iteration of
+  scheduling and executing workload on single instance of CCS engine.
 
-== Summary ==
+v3:
+- Added missing code section in Patch-1.
+- Modified LOOP_DURATIOn macro to LOOP_DURATION_2s to avoid confusion.
+- Used LOOP_DURATION_2s in place of LOOP_DURATION and adjusted sleep
+  durations.
 
-CI Bug Log - changes from XEIGT_8572_BAT -> XEIGTPW_13859_BAT
-====================================================
+v4:
+- Test will skip if sriov is enabled and sriov_numfs > 0.
+- Test will continue runing if sriov_numvfs = 0
 
-Summary
--------
+v5:
+- Incorporated review comments (Zbigniew)
 
-  **SUCCESS**
+v6:
+- Simplified logic to capture EU busyness
+- Removed header which had pmu counter and engine instance logic
+- Moved pthread_data structure to xe_compute file which is used during
+  thread creation
 
-  No regressions found.
+v7:
+- collective counters are set per compute engine available in t->eci
+- fixed few nits
 
-  
-
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8572 -> IGTPW_13859
-  * Linux: xe-3858-591ba5707c230e4a62c634450ce492118fe25948 -> xe-3863-fc2ab5b39b79dce447c0e0a0cc9b808618559a37
-
-  IGTPW_13859: 13859
-  IGT_8572: 8572
-  xe-3858-591ba5707c230e4a62c634450ce492118fe25948: 591ba5707c230e4a62c634450ce492118fe25948
-  xe-3863-fc2ab5b39b79dce447c0e0a0cc9b808618559a37: fc2ab5b39b79dce447c0e0a0cc9b808618559a37
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13859/index.html
-
---===============6038081563373690049==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+v8:
+- Incorporated review comments (Zbigniew)
+- After workload execution set back ccs_mode to default value
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+Nishit Sharma (3):
+  lib/intel_compute: loop_kernel_duration in Pipeline
+  tests/intel/xe_compute: Add loop_duration_2s subtest
+  tests/intel/xe_compute: Add eu-busy-10s test
 
+ lib/intel_compute.c      |  26 ++-
+ lib/intel_compute.h      |   2 +
+ tests/intel/xe_compute.c | 334 ++++++++++++++++++++++++++++++++++++++-
+ tests/meson.build        |   1 +
+ 4 files changed, 361 insertions(+), 2 deletions(-)
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_system_allocator: Fix memory leak</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/155378/">https://patchwork.freedesktop.org/series/155378/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+-- 
+2.43.0
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13859/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13859/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8572_BAT -&gt; XEIGTPW_13859_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8572 -&gt; IGTPW_13859</li>
-<li>Linux: xe-3858-591ba5707c230e4a62c634450ce492118fe25948 -&gt; xe-3863-fc2ab5b39b79dce447c0e0a0cc9b808618559a37</li>
-</ul>
-<p>IGTPW_13859: 13859<br />
-  IGT_8572: 8572<br />
-  xe-3858-591ba5707c230e4a62c634450ce492118fe25948: 591ba5707c230e4a62c634450ce492118fe25948<br />
-  xe-3863-fc2ab5b39b79dce447c0e0a0cc9b808618559a37: fc2ab5b39b79dce447c0e0a0cc9b808618559a37</p>
-
-</body>
-</html>
-
---===============6038081563373690049==--
