@@ -4,53 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF47BCCA470
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 08:05:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6216BCAC5B0
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 08:15:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 64D3110E087;
-	Fri,  3 Oct 2025 08:05:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1960C10E10F;
+	Fri,  3 Oct 2025 08:15:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fXz6ACVI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gX4tka2H";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3992410E087
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 08:05:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9CA7A10E087
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 08:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759478731; x=1791014731;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=oEj/VG5OHSagmENhUcYzUKcdzCSTiQfpaNYzh1gYT70=;
- b=fXz6ACVIqRp+Zn8SbEvysLCJ8kzQ40+wMbR2Qptm82SXZ2X/f17Ikqvc
- BWXN/p/hCfvjE97GR53f2jn6A+UEfu2Aj5JEND3sbzISDin5i+ZbR7t7Q
- tuy2sVwvkHRWLLP185Plv3cvnxNlN8pAGkPp/qST++ZKkXF5yVtHN02S6
- qCSlw959c/g3dMPG1fl4tEc4NLjp9fs1b+EJxnNj4M33mKB9bHIfGgZlS
- hdnnGMels9uWQjeemL5XPHblsUUkrRau3MydvP1loqYTSjZnJcfQpco1/
- qcwxls7J3+G4Xzg0VM/ZfnyZV4c0AGI1l1IMHjUXdlow1sQIpSMjAp6/b w==;
-X-CSE-ConnectionGUID: hPzYdhGSQrOe56i3ac7v7w==
-X-CSE-MsgGUID: C1QPBw3KTSu1wlsbDtLnAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84385709"
-X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="84385709"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Oct 2025 01:05:31 -0700
-X-CSE-ConnectionGUID: N0l0iwVfSHqxFI2FDsZpvg==
-X-CSE-MsgGUID: qf5/eoOLR1Sbn8pHzChqGw==
+ t=1759479341; x=1791015341;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=AeLeUNpakhR9HFkaNYoRQHW2UnzkBWwEBOOpJ92ZAIo=;
+ b=gX4tka2HAWi8A5/i/pXzSqhSgfMS4yR0OCgsigWsMZ46oLEdi10Pi6y9
+ dhnT3gfrtb4WohaloOCdJZySmrcXvTwHrTSorC4VXbCjRjv8HhYVTTXa7
+ cPwpT8xea2Ii84zJYrs6HAdEy1if1bI0ZIKTp2FrqcnZjswAzmHZKFNkZ
+ Rgpe7qdCO1NFciMLoVCQWTRsHH79ZWhYxvum516wQ+k+B2uzPXWiM5M34
+ tjGe2XYNOf7DC8y1681TyE0LHftnQF+nkNcttp2N3nfFakWLxrG3Nhp6S
+ R26+n8Qpz6mb418zLvHcA8tEUIQO1SuM2JnwK8l7OxTTCLi+a050z+zHH A==;
+X-CSE-ConnectionGUID: /fR6FyyzSZSeJy2aRQEVeg==
+X-CSE-MsgGUID: xtim66sNQ0SHNaBET40DuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="61808304"
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="61808304"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Oct 2025 01:15:29 -0700
+X-CSE-ConnectionGUID: byObOvWxSBeddvTaHGboPQ==
+X-CSE-MsgGUID: IsxW0IZuShysyxTz6w7PWw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,311,1751266800"; d="scan'208";a="184442949"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 01:05:29 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com, swati2.sharma@intel.com, vinod.govindapillai@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2] tests/intel/kms_fbcon_fbt: Skip CRC based FBC cursor
- check on simulation
-Date: Fri,  3 Oct 2025 13:32:06 +0530
-Message-Id: <20251003080206.569347-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="178363484"
+Received: from slindbla-desk.ger.corp.intel.com (HELO [10.245.246.92])
+ ([10.245.246.92])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Oct 2025 01:15:27 -0700
+Message-ID: <56dfe7d0-d46c-4a6e-9903-56422bddff20@intel.com>
+Date: Fri, 3 Oct 2025 10:15:24 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 i-g-t 01/10] lib/xe_eudebug: Fix safe_pipe_read
+To: =?UTF-8?Q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>
+References: <20251002104443.7021-1-dominik.karol.piatkowski@intel.com>
+ <20251002104443.7021-2-dominik.karol.piatkowski@intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20251002104443.7021-2-dominik.karol.piatkowski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,34 +75,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Skip fbc_check_cursor_blinking on simulation as it involves CRC operations
-which may cause hangs or false negatives during test execution.
+Hi Dominik,
 
-v2: Move the check to fbc_wait_until_update to early return (Jeevan)
+On 2.10.2025 12:44, Dominik Karol Piątkowski wrote:
+> In case of poll() failure, safe_pipe_read returns -ETIMEDOUT that can be
+> misleading, as the underlying error may be different. Do an early return
+> with -errno if the poll fails, unless errno is set to EINTR - repeat the
+> poll in this case.
+> 
+> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/intel/kms_fbcon_fbt.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
-diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index f3843cdb0..810bc5114 100644
---- a/tests/intel/kms_fbcon_fbt.c
-+++ b/tests/intel/kms_fbcon_fbt.c
-@@ -183,6 +183,13 @@ static bool fbc_wait_until_update(struct drm_info *drm)
- 	if (intel_gen(intel_get_drm_devid(drm->fd)) >= 9) {
- 		if (!fbc_wait_until_enabled(drm->debugfs_fd))
- 			return false;
-+		/*
-+		 * Skip cursor blinking check when running in simulation mode.
-+		 * CRC operations are significantly slower in simulation,
-+		 * so CRC checks are avoided to prevent false negatives.
-+		 */
-+		if (igt_run_in_simulation())
-+			return true;
- 
- 		return fbc_check_cursor_blinking(drm);
- 	} else {
--- 
-2.34.1
+Regards,
+Christoph
+
+> ---
+>   lib/xe/xe_eudebug.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+> index 667c31c6e..3587f4cbe 100644
+> --- a/lib/xe/xe_eudebug.c
+> +++ b/lib/xe/xe_eudebug.c
+> @@ -271,6 +271,12 @@ static int safe_pipe_read(int pipe[2], void *buf, int nbytes, int timeout_ms)
+>   		if (!ret) {
+>   			catch_child_failure();
+>   			t += interval_ms;
+> +		} else if (ret == -1) {
+> +			if (errno == EINTR) {
+> +				ret = 0;
+> +				continue;
+> +			}
+> +			return -errno;
+>   		}
+>   	} while (!ret && t < timeout_ms);
+>   
 
