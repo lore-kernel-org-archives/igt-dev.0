@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20C49CCA470
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 05:26:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F18DCAC5B0
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 05:26:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C450010E1E2;
-	Fri,  3 Oct 2025 05:26:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D444310E86C;
+	Fri,  3 Oct 2025 05:26:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n7NSvheY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VXY10s+c";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C90110E0BB
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 05:26:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C0A3310E86C
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 05:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759469213; x=1791005213;
+ t=1759469216; x=1791005216;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BWnqYCvYSfO/ON4R6wXHlMVzNGV4vK0Vq7OoyDozGiY=;
- b=n7NSvheY64bmrjKhXuMaoCvftYDnCUYrN1A1my1e/xfpkpzUqM+Y7LJ5
- CxgDUiIP+BRT6bhobdg33lchqaEG0YWHPj12cD/IaRliqfX+CXCpqIXRz
- jo2t+wpt9fxzryYbd8Mqpb41qh7GKiaIC+pDeR3wfZvl7z5gpMHVCF7YG
- rGuQeZvV5R0tz0wqKSAp8BsDs3N+oIoqpI1dcc1ZS7B+BOtCWB1rB8vNi
- 3Mncdqf3waUu23gE1YEwHhD/aln27NIgMdcE2op7uiPxIxO2PkKSdEQE6
- s8E2V4m3bsNydMyZi4Oz/MPRimW9yYjONo39JhGFL3FnnPe4CRwroMpdc g==;
-X-CSE-ConnectionGUID: 27BFe7AZTYOcm+uSBox2pg==
-X-CSE-MsgGUID: YtJO3wXAR4+ug1/lEPF99w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="49308080"
-X-IronPort-AV: E=Sophos;i="6.18,311,1751266800"; d="scan'208";a="49308080"
+ bh=3KNjQ5sRNyc1DNoZwLaWrZesvZTR2kPsCBtzyVWNnuI=;
+ b=VXY10s+cQzaxQrkOalVdM0vXOXI5DnEGfXwBP3kENd7JcRi7ZJ4WHR5c
+ A09KOZyb7ydqPzQwCISLhVMPHPttd24iiRaf1DCpnDXqbV2MUD5UN1zFs
+ 2wRfhz8mfZHQkvHvVdvbAXuGFrZ8eEgEJ4JETTjoqOt1L3XujYjdd0HZn
+ L3PDDUI221/nW6+PUvppw+SPlubsW17+qeoL27iYxWim9RkNOCPnLaeeN
+ lBNv5TZO3g+WmPgUH+1R+WVnKydQ/m659v7NB60u9yi15iJthf7ujXxOD
+ tgHnPkagnJjBTcCbWaQlOt3bFAmF6hJxpjxvMWBZ+PjjNRpIrEmnozlFh Q==;
+X-CSE-ConnectionGUID: g0FPhzmUR7W4lbTzlNTDxA==
+X-CSE-MsgGUID: RGAQ7J32TFargwscFyVo7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="49308081"
+X-IronPort-AV: E=Sophos;i="6.18,311,1751266800"; d="scan'208";a="49308081"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 22:26:53 -0700
-X-CSE-ConnectionGUID: auvJE7+3S6GfBhD97D3nbw==
-X-CSE-MsgGUID: Q/rlGDImT0u754ik4/GwfA==
+ 02 Oct 2025 22:26:55 -0700
+X-CSE-ConnectionGUID: N0k+ZvVNTmOuQbMlteS0fA==
+X-CSE-MsgGUID: rB+VAq52RIGm/NmH2OlqTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,311,1751266800"; d="scan'208";a="183233866"
+X-IronPort-AV: E=Sophos;i="6.18,311,1751266800"; d="scan'208";a="183233873"
 Received: from dut6245dg2frd.fm.intel.com ([10.80.55.42])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2025 22:26:53 -0700
+ 02 Oct 2025 22:26:55 -0700
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com,
  priyanka.dandamudi@intel.com, Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v9 1/3] tests/intel/xe_compute_preempt: Compute
- preemption check
-Date: Fri,  3 Oct 2025 05:26:19 +0000
-Message-ID: <20251003052640.56068-2-sobin.thomas@intel.com>
+Subject: [PATCH i-g-t v9 2/3] lib/intel/intel_compute: Add kernel lookup and
+ validation for compute IP versions
+Date: Fri,  3 Oct 2025 05:26:20 +0000
+Message-ID: <20251003052640.56068-3-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251003052640.56068-1-sobin.thomas@intel.com>
 References: <20251003052640.56068-1-sobin.thomas@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,114 +69,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On platforms (like PVC) that do not support walker mid-thread
-preemption, running tests in forked threads can lead to inconsistent
-states due to igt_skip being called mid-execution. Made changes to
-perform kernel preemption check at the beginning of each subtests.
-If the GPU version does not support the required features, the
-test is skipped gracefully, ensuring consistent behavior across
-different platforms.
+Introduce functions to locate compute square kernels based on IP version
+and validate their availability for preemption scenarios.
 
-v2: Fixed review comments to move the compatibility check
-    into the igt_fixture. [Priyanka]
-
-v3: Added check for thread group preemption and WMTP.
-    Added enum flags for preemption type as per review . [Zbigniew]
-
-v4: Added check for preempt inside __run_intel_compute_kernel_preempt
-    Refactored the code.  [priyanka]
-
-v5: Refactor for finding the kernel and out of bound check. [Zbigniew]
-
-v6: Added NULL Check for kernel. [Zbigniew]
-
-v7: Moved TODO inside the code. [kamil]
-    Modified the check condition for kernel [Priyanka]
-
-v8: Additional check for the kernel variants
-
-v9: Refactored in to logically related patches
+- intel_compute_find_kernels() returns the matching kernel entry.
+- validate_kernels() ensures required kernel variants are present
+  for compute and preemption kernels.
 
 Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
 ---
- lib/intel_compute.c              | 78 ++++++++++++++++++++++++++++----
- lib/intel_compute.h              | 11 +++++
- tests/intel/xe_compute_preempt.c |  6 +++
- 3 files changed, 86 insertions(+), 9 deletions(-)
+ lib/intel_compute.c | 90 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 69 insertions(+), 21 deletions(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 147dd2916..ae656a4f6 100644
+index ae656a4f6..ade0b44c1 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: MIT */
- /*
-  * Copyright © 2023 Intel Corporation
-- *
-+ * TODO: Add kernel for PVC for preemption test
-  * Authors:
-  *    Francois Dugast <francois.dugast@intel.com>
-  */
-@@ -2193,40 +2193,72 @@ static const struct {
- 			     bool threadgroup_preemption,
- 			     enum execenv_alloc_prefs alloc_prefs);
- 	uint32_t compat;
-+	enum xe_compute_preempt_type preempt_type;
- } intel_compute_preempt_batches[] = {
- 	{
- 		.ip_ver = IP_VER(20, 01),
- 		.compute_exec = xe2lpg_compute_preempt_exec,
- 		.compat = COMPAT_DRIVER_XE,
-+		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
- 	},
- 	{
- 		.ip_ver = IP_VER(20, 04),
- 		.compute_exec = xe2lpg_compute_preempt_exec,
- 		.compat = COMPAT_DRIVER_XE,
-+		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
- 	},
- 	{
- 		.ip_ver = IP_VER(30, 00),
- 		.compute_exec = xe2lpg_compute_preempt_exec,
- 		.compat = COMPAT_DRIVER_XE,
-+		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
+@@ -1921,23 +1921,80 @@ static const struct {
  	},
  };
  
-+static int find_preempt_batch(unsigned int ip_ver)
++static const struct intel_compute_kernels
++		*intel_compute_find_kernels(const struct intel_compute_kernels *kernels,
++		unsigned int ip_ver)
 +{
-+	for (int batch_idx = 0; batch_idx < ARRAY_SIZE(intel_compute_preempt_batches); batch_idx++)
-+		if (ip_ver == intel_compute_preempt_batches[batch_idx].ip_ver)
-+			return batch_idx;
-+	return -1;
++	if (!kernels) {
++		igt_debug("%s: kernel_list is NULL\n", __func__);
++		return NULL;
++	}
++
++	while (kernels->kernel) {
++		if (ip_ver == kernels->ip_ver)
++			return kernels;
++		kernels++;
++	}
++
++	return NULL;
 +}
 +
-+static bool is_preemptable(int batch, enum xe_compute_preempt_type required_preempt)
++static bool validate_kernels(const struct intel_compute_kernels *kernels,
++			     bool check_preemption, bool threadgroup_preemption,
++			     unsigned int ip_ver)
 +{
-+	if (required_preempt &&
-+	    !(intel_compute_preempt_batches[batch].preempt_type & required_preempt)) {
-+		igt_info("Preemption not supported\n");
++	if (!kernels) {
++		igt_warn("No kernel entry found for IP version 0x%x\n", ip_ver);
 +		return false;
++	}
++
++	if (!kernels->kernel) {
++		igt_warn("Missing compute square kernel for IP version 0x%x\n", ip_ver);
++		return false;
++	}
++
++	if (!check_preemption)
++		return true;
++
++	/* The following checks are only performed if preemption check is enabled. */
++	if (threadgroup_preemption && !kernels->long_kernel) {
++		igt_warn("Missing Long kernel for IP version 0x%x\n", ip_ver);
++		return false;
++	} else if (!threadgroup_preemption) {
++		if (!kernels->sip_kernel) {
++			igt_warn("Missing SIP kernel for IP version 0x%x\n", ip_ver);
++			return false;
++		}
++		if (!kernels->loop_kernel) {
++			igt_warn("Missing Loop kernel for IP version 0x%x\n", ip_ver);
++			return false;
++		}
 +	}
 +	return true;
 +}
 +
-+static const char *xe_preempt_type_to_str(enum xe_compute_preempt_type type)
++static int find_compute_batch(unsigned int ip_ver)
 +{
-+	switch (type) {
-+	case PREEMPT_TGP:
-+		return "PREEMPT_TGP";
-+	case PREEMPT_WMTP:
-+		return "PREEMPT_WMTP";
-+	default:
-+		return "UNKNOWN_PREEMPT_TYPE";
-+	}
++	for (int batch_idx = 0; batch_idx < ARRAY_SIZE(intel_compute_batches); batch_idx++)
++		if (ip_ver == intel_compute_batches[batch_idx].ip_ver)
++			return batch_idx;
++	return -1;
 +}
 +
- static bool __run_intel_compute_kernel_preempt(int fd,
- 		struct drm_xe_engine_class_instance *eci,
- 		bool threadgroup_preemption,
- 		enum execenv_alloc_prefs alloc_prefs)
+ static bool __run_intel_compute_kernel(int fd,
+ 				       struct drm_xe_engine_class_instance *eci,
+ 				       struct user_execenv *user,
+ 				       enum execenv_alloc_prefs alloc_prefs)
  {
  	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
 -	unsigned int batch;
@@ -185,141 +160,56 @@ index 147dd2916..ae656a4f6 100644
 +	int batch;
 +	const struct intel_compute_kernels *kernel_entries = intel_compute_square_kernels, *kernels;
  	enum intel_driver driver = get_intel_driver(fd);
-+	enum xe_compute_preempt_type required_preempt =
-+		threadgroup_preemption ? PREEMPT_TGP : PREEMPT_WMTP;
+ 	const unsigned char *kernel;
+ 	unsigned int kernel_size;
  
--	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
--		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
+-	for (batch = 0; batch < ARRAY_SIZE(intel_compute_batches); batch++) {
+-		if (ip_ver == intel_compute_batches[batch].ip_ver)
 -			break;
--
--
--	if (batch == ARRAY_SIZE(intel_compute_preempt_batches)) {
-+	batch = find_preempt_batch(ip_ver);
+-	}
+-	if (batch == ARRAY_SIZE(intel_compute_batches)) {
++	batch = find_compute_batch(ip_ver);
 +	if (batch < 0) {
  		igt_debug("GPU version 0x%x not supported\n", ip_ver);
  		return false;
  	}
-@@ -2244,6 +2276,9 @@ static bool __run_intel_compute_kernel_preempt(int fd,
- 		kernels++;
+@@ -1954,12 +2011,8 @@ static bool __run_intel_compute_kernel(int fd,
+ 		kernel = user->kernel;
+ 		kernel_size = user->kernel_size;
+ 	} else {
+-		while (kernels->kernel) {
+-			if (ip_ver == kernels->ip_ver)
+-				break;
+-			kernels++;
+-		}
+-		if (!kernels->kernel)
++		kernels = intel_compute_find_kernels(kernel_entries, ip_ver);
++		if (!validate_kernels(kernels, false, false, ip_ver))
+ 			return false;
+ 		kernel = kernels->kernel;
+ 		kernel_size = kernels->size;
+@@ -2270,18 +2323,13 @@ static bool __run_intel_compute_kernel_preempt(int fd,
+ 		return false;
  	}
  
-+	if (!is_preemptable(batch, required_preempt))
+-	while (kernels->kernel) {
+-		if (ip_ver == kernels->ip_ver)
+-			break;
+-		kernels++;
+-	}
+-
+ 	if (!is_preemptable(batch, required_preempt))
+ 		return false;
+ 
+-	if (!kernels->kernel || !kernels->sip_kernel || !kernels->long_kernel)
+-		return 0;
++	kernels = intel_compute_find_kernels(kernel_entries, ip_ver);
+ 
++	if (!validate_kernels(kernels, true, threadgroup_preemption, ip_ver))
 +		return false;
-+
- 	if (!kernels->kernel || !kernels->sip_kernel || !kernels->long_kernel)
- 		return 0;
- 
-@@ -2260,6 +2295,31 @@ static bool __run_intel_compute_kernel_preempt(int fd,
- 
- 	return true;
- }
-+
-+/**
-+ * xe_kernel_preempt_check - Checks IP version to confirm if provided
-+ *			     preempt type is supported.
-+ * @fd: file descriptor of the opened DRM Xe device
-+ * @required_preempt: Preemption type (WMTP/TGP)
-+ *
-+ * Returns true on success, false otherwise.
-+ */
-+bool xe_kernel_preempt_check(int fd, enum xe_compute_preempt_type required_preempt)
-+{
-+	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	int batch = find_preempt_batch(ip_ver);
-+
-+	if (batch < 0) {
-+		igt_debug("Preemption type %s not supported on GPU version 0x%x\n",
-+			  xe_preempt_type_to_str(required_preempt), ip_ver);
-+		return false;
-+	}
-+	if (!is_preemptable(batch, required_preempt))
-+		return false;
-+
-+	return true;
-+}
-+
- /**
-  * run_intel_compute_kernel_preempt - runs compute kernels to
-  * exercise preemption scenario.
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index 412791d07..6e18d93e9 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -71,6 +71,16 @@ enum execenv_alloc_prefs {
- 	EXECENV_PREF_VRAM_IF_POSSIBLE,
- };
- 
-+/**
-+ * enum xe_compute_preempt_type - Types of compute preemption supported.
-+ * PREEMPT_TGP: ThreadGroup Preemption
-+ * PREEMPT_WMTP: Walker Mid Thread Preemption
-+ */
-+enum xe_compute_preempt_type {
-+	PREEMPT_TGP  = 1 << 0,
-+	PREEMPT_WMTP  = 1 << 1,
-+};
-+
- extern const struct intel_compute_kernels intel_compute_square_kernels[];
- 
- bool run_intel_compute_kernel(int fd, struct user_execenv *user,
-@@ -81,4 +91,5 @@ bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_in
- bool run_intel_compute_kernel_preempt(int fd, struct drm_xe_engine_class_instance *eci,
- 				      bool threadgroup_preemption,
- 				      enum execenv_alloc_prefs alloc_prefs);
-+bool xe_kernel_preempt_check(int fd, enum xe_compute_preempt_type required_preempt);
- #endif	/* INTEL_COMPUTE_H */
-diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-index c9b194869..076360f1d 100644
---- a/tests/intel/xe_compute_preempt.c
-+++ b/tests/intel/xe_compute_preempt.c
-@@ -76,6 +76,7 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("compute-preempt") {
-+		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
- 		xe_for_each_engine(xe, hwe) {
- 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
- 				continue;
-@@ -86,6 +87,7 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("compute-preempt-many") {
-+		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
- 		xe_for_each_engine(xe, hwe) {
- 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
- 				continue;
-@@ -112,6 +114,7 @@ igt_main
- 	igt_subtest_with_dynamic("compute-preempt-many-all-ram") {
- 		igt_require(swap_mb > CONTEXT_MB * 10);
- 
-+		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
- 		xe_for_each_engine(xe, hwe) {
- 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
- 				continue;
-@@ -138,6 +141,7 @@ igt_main
- 	igt_subtest_with_dynamic("compute-preempt-many-vram") {
- 		igt_require(xe_has_vram(xe));
- 
-+		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
- 		xe_for_each_engine(xe, hwe) {
- 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
- 				continue;
-@@ -164,6 +168,7 @@ igt_main
- 	igt_subtest_with_dynamic("compute-preempt-many-vram-evict") {
- 		igt_require(xe_has_vram(xe));
- 
-+		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
- 		xe_for_each_engine(xe, hwe) {
- 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
- 				continue;
-@@ -188,6 +193,7 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("compute-threadgroup-preempt") {
-+		igt_require(xe_kernel_preempt_check(xe, PREEMPT_TGP));
- 		xe_for_each_engine(xe, hwe) {
- 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
- 				continue;
+ 	intel_compute_preempt_batches[batch].compute_exec(fd, kernels->long_kernel,
+ 							  kernels->long_kernel_size,
+ 							  kernels->kernel, kernels->size,
 -- 
 2.51.0
 
