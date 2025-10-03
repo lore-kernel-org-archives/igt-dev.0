@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08C0ECCD183
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 12:19:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A065CCD182
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 12:19:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B963310E8FA;
-	Fri,  3 Oct 2025 12:19:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2CADA10E8FB;
+	Fri,  3 Oct 2025 12:19:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lZFn0Ljx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hGEYW4ve";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39C6A10E8EF
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 12:19:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19D0410E8FB
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 12:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759493954; x=1791029954;
+ t=1759493956; x=1791029956;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ISlCJ+4F0HfWXcwRHanVvFi3R0dvk8FLKiYqBqQ3vIE=;
- b=lZFn0LjxdEQxTxoXr3wUFsEUYifU2l8wZ3U6tSCxTBRCRKZOQ9lHH0U8
- mnCPHPBAoRqJWCKl23v9n4dioDUL1WVXu6YcJOztuQ6Vp6JaWB7bsAGzl
- 0QdIQht+xFWE0XWoSW7BI7ysaJpY8fxqyMIbgyCeDUV36N9d1T6A/5INp
- wYqG7rhDaJgyryhJsqI20G2FrrsIQYHmxHf2I9L+eD6rHm/Pucq2tpZVs
- CcZck9rhpBLv37aGMeRGubWES41fs98w3EoHVReyFH7kwHiRrqCWQ6UqZ
- hjTohioCRKsqt+n/PCw2rRF3x2pPqrqrBMS1f+juyCFMLDRI5NrwyKwaQ w==;
-X-CSE-ConnectionGUID: f8PRxYFLQpOdv++V2ulLxA==
-X-CSE-MsgGUID: LciLV4cOR26yIWa4l5GLvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84399229"
-X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="84399229"
+ bh=6ZORPXNAz21jds7uSwE3w40vhJP7J/GrflrEAV3OFEQ=;
+ b=hGEYW4ve68T+8mjo5RKQxI6xapEX1g4Mc1ypYA+xd/fYz0oKRgdyCWr0
+ fXXCd1V03ruZ+Gnrw5KcrgZ0lSZx2zFHXYR034c29HozWzGRXEDlhIJNx
+ DXMoJ643+XIn+/Pap/oIXJSirt6RImdabHyXHtw4fcyGIR4kGZ19SUmh7
+ xoXYdqqBsCwluEL3Lg2IUW2qjpeYspycMKZnyELj/pXEX+y9Nva+bJx5k
+ InH7hQXwmi3Iy/shtWwaNswILTUaIKYHTDqWwa2d230zZggA81iiegAVc
+ Oa13/Dh7CvXVyj8mX6ukXdV4ksptu2D9yYq+YlULxL8FUG4SJioljQJpM w==;
+X-CSE-ConnectionGUID: zNfiIQadRRKJq06p8lThJw==
+X-CSE-MsgGUID: XzLweChKTIew3BPxdmX8AA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84399232"
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="84399232"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Oct 2025 05:19:14 -0700
-X-CSE-ConnectionGUID: xcVaAO8VQge8Md7R3ORFcw==
-X-CSE-MsgGUID: YxV+t3uhR6iMk5+9o3e3JQ==
+ 03 Oct 2025 05:19:16 -0700
+X-CSE-ConnectionGUID: YA6exZWkS96fs/pBMdWwlA==
+X-CSE-MsgGUID: 0DEm2fdPQgyznuVNC1jsdA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="183300139"
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="183300148"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 05:19:13 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 05:19:14 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 5/9] tests/kms_color: Move color pipeline helpers into
- kms_color_helper
-Date: Fri,  3 Oct 2025 17:55:46 +0530
-Message-Id: <20251003122550.729242-6-swati2.sharma@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 6/9] lib/colorops: Add support for 1D LUT multi-segmented
+Date: Fri,  3 Oct 2025 17:55:47 +0530
+Message-Id: <20251003122550.729242-7-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251003122550.729242-1-swati2.sharma@intel.com>
 References: <20251003122550.729242-1-swati2.sharma@intel.com>
@@ -68,853 +68,226 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Refactor kms_color and kms_colorop by moving common color pipeline
-functions into kms_color_helper.[ch]. This consolidates LUT setup,
-matrix configuration, and colorop mapping logic, reducing duplication
-between tests.
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-In addition, LUT and matrix reference data are now defined in lib/
-with extern declarations, avoiding multiple-definition issues.
-The 3DLUT table is marked static const to prevent accidental writes.
+Add helpers to support 1D LUT multi-segmented.
 
-This change prepares the groundwork for adding more color pipeline
-tests while keeping kms_color and kms_colorop focused on test logic.
-
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_color.c          |  52 +++++++++-
- lib/igt_color.h          |  77 ++++++--------
- lib/igt_color_lut.h      |   2 +-
- tests/kms_color_helper.c | 202 ++++++++++++++++++++++++++++++++++++
- tests/kms_color_helper.h |  56 +++++++++-
- tests/kms_colorop.c      | 215 +--------------------------------------
- tests/kms_colorop.h      |  69 -------------
- tests/meson.build        |   1 +
- 8 files changed, 344 insertions(+), 330 deletions(-)
+ lib/igt_color.c          | 13 ++++++
+ lib/igt_color.h          | 16 ++++++++
+ tests/kms_color_helper.c | 87 ++++++++++++++++++++++++++++++++++++++++
+ tests/kms_color_helper.h | 14 +++++++
+ 4 files changed, 130 insertions(+)
 
 diff --git a/lib/igt_color.c b/lib/igt_color.c
-index 6a306bda2..e66d6fe54 100644
+index e66d6fe54..b822993df 100644
 --- a/lib/igt_color.c
 +++ b/lib/igt_color.c
-@@ -16,6 +16,56 @@
- #include "igt_core.h"
- #include "igt_x86.h"
- 
-+const struct igt_color_tf srgb_eotf = {2.4f, (float)(1/1.055), (float)(0.055/1.055), (float)(1/12.92), 0.04045f, 0, 0};
-+const struct igt_color_tf bt2020_inv_oetf = {(float)(1/0.45f), (float)(1/1.0993f), (float)(0.0993f/1.0993f), (float)(1/4.5f), (float)(0.081), 0, 0};
-+const struct igt_color_tf_pq pq_eotf = {-107/128.0f, 1.0f, 32/2523.0f, 2413/128.0f, -2392/128.0f, 8192/1305.0f};
-+
-+const igt_matrix_3x4_t igt_matrix_3x4_50_desat = { {
-+	0.5, 0.25, 0.25, 0.0,
-+	0.25, 0.5, 0.25, 0.0,
-+	0.25, 0.25, 0.5, 0.0
-+} };
-+
-+const igt_matrix_3x4_t igt_matrix_3x4_overdrive = { {
-+	1.5, 0.0, 0.0, 0.0,
-+	0.0, 1.5, 0.0, 0.0,
-+	0.0, 0.0, 1.5, 0.0
-+} };
-+
-+const igt_matrix_3x4_t igt_matrix_3x4_oversaturate = { {
-+	1.5,   -0.25, -0.25, 0.0,
-+	-0.25,  1.5,  -0.25, 0.0,
-+	-0.25, -0.25,  1.5,  0.0
-+} };
-+
-+const igt_matrix_3x4_t igt_matrix_3x4_bt709_enc = { {
-+	 0.2126,   0.7152,   0.0722,  0.0,
-+	-0.09991, -0.33609,  0.436,   0.0,
-+	 0.615,   -0.55861, -0.05639, 0.0
-+} };
-+
-+const igt_matrix_3x4_t igt_matrix_3x4_bt709_dec = { {
-+	1.0,  0.0,      1.28033, 0.0,
-+	1.0, -0.21482, -0.38059, 0.0,
-+	1.0,  2.12798,  0.0,     0.0
-+} };
-+
-+igt_1dlut_t igt_1dlut_srgb_inv_eotf = { {
-+} };
-+
-+igt_1dlut_t igt_1dlut_srgb_eotf = { {
-+} };
-+
-+const char * const kms_colorop_lut1d_tf_names[KMS_COLOROP_LUT1D_NUM_ENUMS] = {
-+	[KMS_COLOROP_LUT1D_SRGB_EOTF] = "sRGB EOTF",
-+	[KMS_COLOROP_LUT1D_SRGB_INV_EOTF] = "sRGB Inverse EOTF",
-+	[KMS_COLOROP_LUT1D_BT2020_INV_OETF] = "BT.2020 Inverse OETF",
-+	[KMS_COLOROP_LUT1D_BT2020_OETF] = "BT.2020 OETF",
-+	[KMS_COLOROP_LUT1D_PQ_EOTF] = "PQ EOTF",
-+	[KMS_COLOROP_LUT1D_PQ_INV_EOTF] = "PQ Inverse EOTF",
-+	[KMS_COLOROP_LUT1D_PQ_125_EOTF] = "PQ 125 EOTF",
-+	[KMS_COLOROP_LUT1D_PQ_125_INV_EOTF] = "PQ 125 Inverse EOTF",
-+};
- 
- static float clamp(float val, float min, float max)
+@@ -682,3 +682,16 @@ void igt_colorop_set_3dlut(igt_display_t *display,
  {
-@@ -220,7 +270,7 @@ igt_get_lut3d_index_blue_fast(int r, int g, int b, long dim, int components)
+ 	igt_colorop_replace_prop_blob(colorop, IGT_COLOROP_DATA, lut3d, lut_size);
  }
- 
- /* algorithm from https://github.com/AcademySoftwareFoundation/OpenColorIO/blob/main/src/OpenColorIO/ops/lut3d/Lut3DOpCPU.cpp#L422 */
--static void igt_color_3dlut_tetrahedral(igt_pixel_t *pixel, igt_3dlut_t *lut3d, long m_dim)
-+static void igt_color_3dlut_tetrahedral(igt_pixel_t *pixel, const igt_3dlut_t *lut3d, long m_dim)
- {
- 	int n000, n100, n010, n001, n110, n101, n011, n111;
- 	float m_step = (float) m_dim - 1.0f;
++
++void igt_colorop_set_multseg_1dlut(igt_display_t *display,
++				   igt_colorop_t *colorop,
++				   const kms_colorop_multseg_lut1d_info_t lut_info)
++{
++	/* set blob property */
++	for (int i = 0; i < lut_info.lut_size; i++)
++		igt_debug("Lut[%d]: 0x%08x 0x%08x 0x%08x\n",
++			 i, lut_info.lut[i].red, lut_info.lut[i].green, lut_info.lut[i].blue);
++
++	igt_colorop_replace_prop_blob(colorop, IGT_COLOROP_DATA,
++			lut_info.lut, sizeof(struct drm_color_lut32) * lut_info.lut_size);
++}
 diff --git a/lib/igt_color.h b/lib/igt_color.h
-index 0e1dc84e2..c88b9838c 100644
+index c88b9838c..3359e011b 100644
 --- a/lib/igt_color.h
 +++ b/lib/igt_color.h
-@@ -28,28 +28,25 @@ struct igt_color_tf_pq {
- 	float A, B, C, D, E, F, G;
- };
+@@ -63,6 +63,18 @@ typedef struct igt_1dlut {
+ 	struct drm_color_lut32 lut[MAX_COLOR_LUT_ENTRIES];
+ } igt_1dlut_t;
  
--
--const struct igt_color_tf srgb_eotf = {2.4f, (float)(1/1.055), (float)(0.055/1.055), (float)(1/12.92), 0.04045f, 0, 0};
--const struct igt_color_tf bt2020_inv_oetf = {(float)(1/0.45f), (float)(1/1.0993f), (float)(0.0993f/1.0993f), (float)(1/4.5f), (float)(0.081), 0, 0};
--
--const struct igt_color_tf_pq pq_eotf = {-107/128.0f, 1.0f, 32/2523.0f, 2413/128.0f, -2392/128.0f, 8192/1305.0f };
--
- typedef struct igt_pixel {
- 	float r;
- 	float g;
- 	float b;
- } igt_pixel_t;
- 
--typedef struct igt_1dlut {
--	struct drm_color_lut32 lut[MAX_COLOR_LUT_ENTRIES];
--} igt_1dlut_t;
--
--igt_1dlut_t igt_1dlut_srgb_inv_eotf = { {
--} };
--
-+typedef enum kms_colorop_lut1d_tf {
-+	KMS_COLOROP_LUT1D_SRGB_EOTF,
-+	KMS_COLOROP_LUT1D_SRGB_INV_EOTF,
-+	KMS_COLOROP_LUT1D_BT2020_INV_OETF,
-+	KMS_COLOROP_LUT1D_BT2020_OETF,
-+	KMS_COLOROP_LUT1D_PQ_EOTF,
-+	KMS_COLOROP_LUT1D_PQ_INV_EOTF,
-+	KMS_COLOROP_LUT1D_PQ_125_EOTF,
-+	KMS_COLOROP_LUT1D_PQ_125_INV_EOTF,
-+	KMS_COLOROP_LUT1D_NUM_ENUMS
-+} kms_colorop_lut1d_tf_t;
- 
--igt_1dlut_t igt_1dlut_srgb_eotf = { {
--} };
-+extern const char * const kms_colorop_lut1d_tf_names[KMS_COLOROP_LUT1D_NUM_ENUMS];
- 
- typedef struct igt_matrix_3x4 {
- 	/*
-@@ -62,35 +59,26 @@ typedef struct igt_matrix_3x4 {
- 	float m[12];
- } igt_matrix_3x4_t;
- 
--const igt_matrix_3x4_t igt_matrix_3x4_50_desat = { {
--	0.5, 0.25, 0.25, 0.0,
--	0.25, 0.5, 0.25, 0.0,
--	0.25, 0.25, 0.5, 0.0
--} };
--
--const igt_matrix_3x4_t igt_matrix_3x4_overdrive = { {
--	1.5, 0.0, 0.0, 0.0,
--	0.0, 1.5, 0.0, 0.0,
--	0.0, 0.0, 1.5, 0.0
--} };
--
--const igt_matrix_3x4_t igt_matrix_3x4_oversaturate = { {
--	1.5,   -0.25, -0.25, 0.0,
--	-0.25,  1.5,  -0.25, 0.0,
--	-0.25, -0.25,  1.5,  0.0
--} };
--
--const igt_matrix_3x4_t igt_matrix_3x4_bt709_enc = { {
--	 0.2126,   0.7152,   0.0722,  0.0,
--	-0.09991, -0.33609,  0.436,   0.0,
--	 0.615,   -0.55861, -0.05639, 0.0
--} };
--
--const igt_matrix_3x4_t igt_matrix_3x4_bt709_dec = { {
--	1.0,  0.0,      1.28033, 0.0,
--	1.0, -0.21482, -0.38059, 0.0,
--	1.0,  2.12798,  0.0,     0.0
--} };
-+typedef struct igt_1dlut {
-+	struct drm_color_lut32 lut[MAX_COLOR_LUT_ENTRIES];
-+} igt_1dlut_t;
++typedef enum kms_colorop_multseg_lut1d_tf {
++       KMS_COLOROP_MULTSEG_LUT1D_ZERO,
++       KMS_COLOROP_MULTSEG_LUT1D_LINEAR,
++       KMS_COLOROP_MULTSEG_LUT1D_MAX,
++} kms_colorop_multseg_lut1d_tf_t;
 +
-+typedef bool (*compare_fb_t)(igt_fb_t *in, igt_fb_t *out);
-+typedef int (*transform_fb)(igt_fb_t *in);
-+typedef int (*transform_pixel)(igt_pixel_t *pixel);
++typedef struct kms_colorop_multseg_lut1d_info {
++	uint32_t lut_size;
++	kms_colorop_multseg_lut1d_tf_t lut_type;
++	struct drm_color_lut32 *lut;
++} kms_colorop_multseg_lut1d_info_t;
 +
-+extern const struct igt_color_tf srgb_eotf;
-+extern const struct igt_color_tf bt2020_inv_oetf;
-+extern const struct igt_color_tf_pq pq_eotf;
-+
-+extern const igt_matrix_3x4_t igt_matrix_3x4_50_desat;
-+extern const igt_matrix_3x4_t igt_matrix_3x4_overdrive;
-+extern const igt_matrix_3x4_t igt_matrix_3x4_oversaturate;
-+extern const igt_matrix_3x4_t igt_matrix_3x4_bt709_enc;
-+extern const igt_matrix_3x4_t igt_matrix_3x4_bt709_dec;
-+
-+extern igt_1dlut_t igt_1dlut_srgb_inv_eotf;
-+extern igt_1dlut_t igt_1dlut_srgb_eotf;
- 
- bool igt_cmp_fb_component(uint16_t comp1, uint16_t comp2, uint8_t up, uint8_t down);
- bool igt_cmp_fb_pixels(igt_fb_t *fb1, igt_fb_t *fb2, uint8_t up, uint8_t down);
-@@ -118,7 +106,6 @@ void igt_colorop_set_3dlut(igt_display_t *display,
+ typedef bool (*compare_fb_t)(igt_fb_t *in, igt_fb_t *out);
+ typedef int (*transform_fb)(igt_fb_t *in);
+ typedef int (*transform_pixel)(igt_pixel_t *pixel);
+@@ -106,6 +118,10 @@ void igt_colorop_set_3dlut(igt_display_t *display,
  			   const igt_3dlut_norm_t *lut3d,
  			   const size_t lut_size);
  
--
++void igt_colorop_set_multseg_1dlut(igt_display_t *display,
++				   igt_colorop_t *colorop,
++				   const kms_colorop_multseg_lut1d_info_t custom_lut1d_info);
++
  /* transformations */
  
  void igt_color_srgb_inv_eotf(igt_pixel_t *pixel);
-diff --git a/lib/igt_color_lut.h b/lib/igt_color_lut.h
-index b5c149c3d..046a28504 100644
---- a/lib/igt_color_lut.h
-+++ b/lib/igt_color_lut.h
-@@ -27,7 +27,7 @@ typedef struct igt_3dlut {
-  * A 3D LUT table with 17x17x17 entries for Traversal order RGB.
-  * It can be generated by scripts/convert_3dlut.py
-  */
--igt_3dlut_t igt_3dlut_17_rgb = { {
-+static const igt_3dlut_t igt_3dlut_17_rgb = { {
- 	{ .red = 0.000000, .green = 0.000000, .blue = 0.000000 },
- 	{ .red = 0.175580, .green = 0.003419, .blue = 0.006838 },
- 	{ .red = 0.338706, .green = 0.015140, .blue = 0.012454 },
 diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 143dff43e..40431a855 100644
+index 40431a855..ebb93f0e2 100644
 --- a/tests/kms_color_helper.c
 +++ b/tests/kms_color_helper.c
-@@ -388,3 +388,205 @@ void invalid_ctm_matrix_sizes(data_t *data, enum pipe p)
- 	free(ptr);
- }
+@@ -24,6 +24,8 @@
  
-+/* Colorops definitions */
-+static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_colorop_t *desired)
-+{
-+	switch (desired->type) {
-+	case KMS_COLOROP_ENUMERATED_LUT1D:
-+		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE &&
-+		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_CURVE_1D_TYPE, kms_colorop_lut1d_tf_names[desired->enumerated_lut1d_info.tf]))
+ #include "kms_color_helper.h"
+ 
++#define MIN(a, b)	((a) < (b) ? (a) : (b))
++
+ bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
+ {
+ 	bool ret = true;
+@@ -403,6 +405,10 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+ 		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_LUT)
+ 			return true;
+ 		return false;
++	case KMS_COLOROP_MULTSEG_LUT1D:
++		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_LUT_MULTSEG)
 +			return true;
 +		return false;
-+	case KMS_COLOROP_CTM_3X4:
-+		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_CTM_3X4);
-+	case KMS_COLOROP_CUSTOM_LUT1D:
-+		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_LUT)
-+			return true;
-+		return false;
-+	case KMS_COLOROP_MULTIPLIER:
-+		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_MULTIPLIER);
-+	case KMS_COLOROP_LUT3D:
-+		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_3D_LUT);
-+	default:
-+		return false;
-+	}
-+}
+ 	case KMS_COLOROP_MULTIPLIER:
+ 		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_MULTIPLIER);
+ 	case KMS_COLOROP_LUT3D:
+@@ -538,6 +544,9 @@ void set_colorop(igt_display_t *display,
+ 		lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
+ 		igt_colorop_set_custom_1dlut(display, colorop->colorop, colorop->lut1d, lut_size * sizeof(struct drm_color_lut32));
+ 		break;
++	case KMS_COLOROP_MULTSEG_LUT1D:
++		igt_colorop_set_multseg_1dlut(display, colorop->colorop, colorop->multseg_lut1d_info);
++		break;
+ 	case KMS_COLOROP_MULTIPLIER:
+ 		mult = colorop->multiplier * (mult << 32);	/* convert double to fixed number */
+ 		igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_MULTIPLIER, mult);
+@@ -590,3 +599,81 @@ void set_color_pipeline_bypass(igt_plane_t *plane)
+ {
+ 	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
+ }
 +
-+/**
-+ * Iterate color pipeline that begins with colorop and try to map
-+ * colorops[] to it.
-+ */
-+static bool map_to_pipeline(igt_display_t *display,
-+			    igt_colorop_t *colorop,
-+			    kms_colorop_t *colorops[])
++void create_zero_lut(segment_data_t *info, struct drm_color_lut32 *lut)
 +{
-+	igt_colorop_t *next = colorop;
-+	kms_colorop_t *current_op;
-+	int i = 0;
-+	int prop_val = 0;
-+
-+	current_op = colorops[i];
-+	i++;
-+	igt_require(current_op);
-+
-+	while (next) {
-+		if (can_use_colorop(display, next, current_op)) {
-+			current_op->colorop = next;
-+			current_op = colorops[i];
-+			i++;
-+			if (!current_op)
-+				break;
-+		}
-+		prop_val = igt_colorop_get_prop(display, next,
-+						IGT_COLOROP_NEXT);
-+		next = igt_find_colorop(display, prop_val);
-+	}
-+
-+	if (current_op) {
-+		/* we failed to map the pipeline */
-+
-+		/* clean up colorops[i].colorop mappings */
-+		for (i = 0, current_op = colorops[0]; current_op; current_op = colorops[i++])
-+			current_op->colorop = NULL;
-+
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+igt_colorop_t *get_color_pipeline(igt_display_t *display,
-+				 igt_plane_t *plane,
-+				 kms_colorop_t *colorops[])
-+{
-+	igt_colorop_t *colorop = NULL;
 +	int i;
 +
-+	/* go through all color pipelines */
-+	for (i = 0; i < plane->num_color_pipelines; ++i) {
-+		if (map_to_pipeline(display, plane->color_pipelines[i], colorops)) {
-+			colorop = plane->color_pipelines[i];
-+			break;
++	for (i = 0; i < info->entries_count; i++)
++		lut[i].red = lut[i].green = lut[i].blue = 0;
++}
++
++void create_unity_lut(segment_data_t *info, struct drm_color_lut32 *lut)
++{
++	uint32_t val, segment, entry, index = 0;
++	uint32_t max_val = 0xffffffff;
++
++	for (segment = 0; segment < info->segment_count; segment++) {
++		uint32_t entry_count = info->segment_data[segment].count;
++		uint32_t start = info->segment_data[segment].start;
++		uint32_t end = info->segment_data[segment].end;
++
++		for (entry = 1; entry <= entry_count; entry++) {
++			val = start + entry * ((end - start) * 1.0 / entry_count);
++			lut[index].red = lut[index].green = lut[index].blue =
++				(index == 0) ? 0 : MIN(val, max_val);
++
++			index++;
 +		}
 +	}
-+
-+	return colorop;
 +}
 +
-+static void fill_custom_1dlut(igt_display_t *display, kms_colorop_t *colorop)
++void create_max_lut(segment_data_t *info, struct drm_color_lut32 *lut)
 +{
-+	uint64_t lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
-+	igt_pixel_t pixel;
-+	float index;
 +	int i;
++	uint32_t max_val = 0xffffffff;
 +
-+	for (i = 0; i < lut_size; i++) {
-+		index = i / (float) lut_size;
-+
-+		pixel.r = index;
-+		pixel.g = index;
-+		pixel.b = index;
-+
-+		colorop->transform(&pixel);
-+
-+		colorop->lut1d->lut[i].red = pixel.r * UINT_MAX;
-+		colorop->lut1d->lut[i].green = pixel.g * UINT_MAX;
-+		colorop->lut1d->lut[i].blue = pixel.b * UINT_MAX;
-+	}
++	for (i = 0; i < info->entries_count; i++)
++		lut[i].red = lut[i].green = lut[i].blue = (i == 0) ? 0 : max_val;
 +}
 +
-+static void configure_3dlut(igt_display_t *display, kms_colorop_t *colorop, uint64_t size)
++void clear_segment_data(segment_data_t *info)
 +{
-+	uint64_t lut_size = 0;
-+	uint64_t i;
-+	igt_3dlut_norm_t *igt_3dlut;
++	if (!info)
++		return;
 +
-+	/* Convert 3DLUT floating points to u16 required by colorop API */
-+	lut_size = size * size * size;
-+	igt_3dlut = (igt_3dlut_norm_t *) malloc(sizeof(struct drm_color_lut32) * lut_size);
-+	for (i = 0; i < lut_size; i++) {
-+		const struct igt_color_lut_float *lut_f = &colorop->lut3d->lut[i];
-+
-+		igt_3dlut->lut[i].red = round((double)lut_f->red * UINT_MAX);
-+		igt_3dlut->lut[i].green = round((double)lut_f->green * UINT_MAX);
-+		igt_3dlut->lut[i].blue = round((double)lut_f->blue * UINT_MAX);
-+	}
-+
-+	igt_colorop_set_3dlut(display, colorop->colorop, igt_3dlut, lut_size * sizeof(struct drm_color_lut32));
-+	free(igt_3dlut);
++	free(info->segment_data);
++	free(info);
 +}
 +
-+void set_colorop(igt_display_t *display,
-+		 kms_colorop_t *colorop)
++segment_data_t *get_segment_data(int drm_fd, uint64_t blob_id)
 +{
-+	enum drm_colorop_lut3d_interpolation_type interpolation;
-+	uint64_t lut_size = 0;
-+	uint64_t mult = 1;
++	drmModePropertyBlobPtr blob;
++	struct drm_color_lut_range *lut_range = NULL;
++	segment_data_t *info = NULL;
++	uint32_t i;
 +
-+	igt_assert(colorop->colorop);
-+	igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_BYPASS, 0);
++	blob = drmModeGetPropertyBlob(drm_fd, blob_id);
++	igt_assert(blob);
++	igt_assert(blob->length);
 +
-+	switch (colorop->type) {
-+	case KMS_COLOROP_ENUMERATED_LUT1D:
-+		igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_CURVE_1D_TYPE, kms_colorop_lut1d_tf_names[colorop->enumerated_lut1d_info.tf]);
-+		break;
-+	case KMS_COLOROP_CTM_3X4:
-+		igt_colorop_set_ctm_3x4(display, colorop->colorop, colorop->matrix_3x4);
-+		break;
-+	case KMS_COLOROP_CUSTOM_LUT1D:
-+		fill_custom_1dlut(display, colorop);
-+		lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
-+		igt_colorop_set_custom_1dlut(display, colorop->colorop, colorop->lut1d, lut_size * sizeof(struct drm_color_lut32));
-+		break;
-+	case KMS_COLOROP_MULTIPLIER:
-+		mult = colorop->multiplier * (mult << 32);	/* convert double to fixed number */
-+		igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_MULTIPLIER, mult);
-+		break;
-+	case KMS_COLOROP_LUT3D:
-+		lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
-+		interpolation = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_LUT3D_INTERPOLATION);
++	info = malloc(sizeof(segment_data_t));
++	igt_assert(info);
 +
-+		/* Check driver's lut size, color depth and interpolation with kms_colorop */
-+		igt_skip_on(colorop->lut3d_info.size != lut_size);
-+		igt_skip_on(colorop->lut3d_info.interpolation != interpolation);
++	lut_range = (struct drm_color_lut_range *) blob->data;
++	info->segment_count = blob->length / sizeof(lut_range[0]);
++	igt_assert(info->segment_count);
 +
-+		configure_3dlut(display, colorop, lut_size);
-+		break;
-+	default:
-+		igt_fail(IGT_EXIT_FAILURE);
++	info->segment_data = malloc(sizeof(struct drm_color_lut_range) * info->segment_count);
++	igt_assert(info->segment_data);
++
++	info->entries_count = 0;
++	for (i = 0; i < info->segment_count; i++) {
++		info->entries_count += lut_range[i].count;
++		info->segment_data[i] = lut_range[i];
 +	}
-+}
 +
-+void set_color_pipeline(igt_display_t *display,
-+		        igt_plane_t *plane,
-+		        kms_colorop_t *colorops[],
-+		        igt_colorop_t *color_pipeline)
-+{
-+	igt_colorop_t *next;
-+	int prop_val = 0;
-+	int i;
++	drmModeFreePropertyBlob(blob);
 +
-+	igt_plane_set_color_pipeline(plane, color_pipeline);
-+
-+	for (i = 0; colorops[i]; i++)
-+		set_colorop(display, colorops[i]);
-+
-+	/* set unused ops in pipeline to bypass */
-+	next = color_pipeline;
-+	i = 0;
-+	while (next) {
-+		if (!colorops[i] || colorops[i]->colorop != next)
-+			igt_colorop_set_prop_value(next, IGT_COLOROP_BYPASS, 1);
-+		else
-+			i++;
-+
-+		prop_val = igt_colorop_get_prop(display, next,
-+						IGT_COLOROP_NEXT);
-+		next = igt_find_colorop(display, prop_val);
-+	}
-+}
-+
-+void set_color_pipeline_bypass(igt_plane_t *plane)
-+{
-+	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
++	return info;
 +}
 diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index 23463b944..eb56c0586 100644
+index eb56c0586..696cb0fb3 100644
 --- a/tests/kms_color_helper.h
 +++ b/tests/kms_color_helper.h
-@@ -36,9 +36,9 @@
- #include "drm.h"
- #include "drmtest.h"
- #include "igt.h"
-+#include "igt_color.h"
- #include "igt_edid.h"
- 
--
- /* Internal */
- typedef struct {
- 	double r, g, b;
-@@ -53,6 +53,12 @@ typedef struct {
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
- 
-+	bool builtin_mode;
-+	bool custom_mode;
-+	bool list_modes;
-+	bool dump_check;
-+	int mode_index;
-+
- 	uint32_t drm_format;
- 	uint32_t color_depth;
- 	uint64_t degamma_lut_size;
-@@ -115,5 +121,53 @@ void invalid_gamma_lut_sizes(data_t *data, enum pipe p);
+@@ -121,10 +121,23 @@ void invalid_gamma_lut_sizes(data_t *data, enum pipe p);
  void invalid_degamma_lut_sizes(data_t *data, enum pipe p);
  void invalid_ctm_matrix_sizes(data_t *data, enum pipe p);
  
-+/* Test version definitions */
-+typedef enum kms_colorop_type {
-+	KMS_COLOROP_ENUMERATED_LUT1D,
-+	KMS_COLOROP_CUSTOM_LUT1D,
-+	KMS_COLOROP_CTM_3X4,
-+	KMS_COLOROP_MULTIPLIER,
-+	KMS_COLOROP_LUT3D
-+} kms_colorop_type_t;
++typedef struct {
++	uint32_t segment_count;
++	struct drm_color_lut_range *segment_data;
++	uint32_t entries_count;
++} segment_data_t;
 +
-+typedef struct kms_colorop_enumerated_lut1d_info {
-+	kms_colorop_lut1d_tf_t tf;
-+} kms_colorop_enumerated_lut1d_info_t;
++void create_zero_lut(segment_data_t *info, struct drm_color_lut32 *lut);
++void create_unity_lut(segment_data_t *info, struct drm_color_lut32 *lut);
++void create_max_lut(segment_data_t *info, struct drm_color_lut32 *lut);
++void clear_segment_data(segment_data_t *info);
++segment_data_t *get_segment_data(int drm_fd, uint64_t blob_id);
 +
-+typedef struct kms_colorop_lut3d_info {
-+	uint32_t size;
-+	enum drm_colorop_lut3d_interpolation_type interpolation;
-+} kms_colorop_lut3d_info_t;
-+
-+typedef struct kms_colorop {
-+	kms_colorop_type_t type;
-+
-+	union {
-+		kms_colorop_enumerated_lut1d_info_t enumerated_lut1d_info;
-+		igt_1dlut_t *lut1d;
-+		const igt_3dlut_t *lut3d;
-+		const igt_matrix_3x4_t *matrix_3x4;
-+		double multiplier;
-+	};
-+
-+	kms_colorop_lut3d_info_t lut3d_info;
-+
-+	const char *name;
-+
-+	igt_pixel_transform transform;
-+
-+	/* Mapped colorop */
-+	igt_colorop_t *colorop;
-+
-+} kms_colorop_t;
-+
-+/* colorop helpers */
-+igt_colorop_t *get_color_pipeline(igt_display_t *display, igt_plane_t *plane,
-+				  kms_colorop_t *colorops[]);
-+void set_colorop(igt_display_t *display, kms_colorop_t *colorop);
-+void set_color_pipeline(igt_display_t *display, igt_plane_t *plane,
-+		        kms_colorop_t *colorops[], igt_colorop_t *color_pipeline);
-+void set_color_pipeline_bypass(igt_plane_t *plane);
-+
- #endif
- 
-diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index 2ae854c5c..91024709a 100644
---- a/tests/kms_colorop.c
-+++ b/tests/kms_colorop.c
-@@ -23,6 +23,7 @@
- 
- #include "igt.h"
- #include "igt_color.h"
-+#include "kms_color_helper.h"
- #include "sw_sync.h"
- #include "kms_colorop.h"
- 
-@@ -135,16 +136,6 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
- 	return !ret;
- }
- 
--/* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
--typedef struct {
--	bool builtin_mode;
--	bool custom_mode;
--	bool list_modes;
--	bool dump_check;
--	int mode_index;
--	drmModeModeInfo user_mode;
--} data_t;
--
- static data_t data;
- 
- /* TODO move to lib for kms_writeback and kms_colorop (and other future) use */
-@@ -180,7 +171,7 @@ static igt_output_t *kms_writeback_get_output(igt_display_t *display, __u32 four
- 			igt_output_set_pipe(output, pipe);
- 
- 			if (data.custom_mode)
--				override_mode = data.user_mode;
-+				override_mode = *data.mode;
- 			if (data.builtin_mode)
- 				override_mode = output->config.connector->modes[data.mode_index];
- 
-@@ -230,208 +221,6 @@ static void get_and_wait_out_fence(igt_output_t *output)
- 	output->writeback_out_fence_fd = -1;
- }
- 
--static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_colorop_t *desired)
--{
--	switch (desired->type) {
--	case KMS_COLOROP_ENUMERATED_LUT1D:
--		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE &&
--		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_CURVE_1D_TYPE, kms_colorop_lut1d_tf_names[desired->enumerated_lut1d_info.tf]))
--			return true;
--		return false;
--	case KMS_COLOROP_CTM_3X4:
--		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_CTM_3X4);
--	case KMS_COLOROP_CUSTOM_LUT1D:
--		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_LUT)
--			return true;
--		return false;
--	case KMS_COLOROP_MULTIPLIER:
--		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_MULTIPLIER);
--	case KMS_COLOROP_LUT3D:
--		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_3D_LUT);
--	default:
--		return false;
--	}
--}
--
--/**
-- * Iterate color pipeline that begins with colorop and try to map
-- * colorops[] to it.
-- */
--static bool map_to_pipeline(igt_display_t *display,
--			    igt_colorop_t *colorop,
--			    kms_colorop_t *colorops[])
--{
--	igt_colorop_t *next = colorop;
--	kms_colorop_t *current_op;
--	int i = 0;
--	int prop_val = 0;
--
--	current_op = colorops[i];
--	i++;
--	igt_require(current_op);
--
--	while (next) {
--		if (can_use_colorop(display, next, current_op)) {
--			current_op->colorop = next;
--			current_op = colorops[i];
--			i++;
--			if (!current_op)
--				break;
--		}
--		prop_val = igt_colorop_get_prop(display, next,
--						IGT_COLOROP_NEXT);
--		next = igt_find_colorop(display, prop_val);
--	}
--
--	if (current_op) {
--		/* we failed to map the pipeline */
--
--		/* clean up colorops[i].colorop mappings */
--		for (i = 0, current_op = colorops[0]; current_op; current_op = colorops[i++])
--			current_op->colorop = NULL;
--
--		return false;
--	}
--
--	return true;
--}
--
--static igt_colorop_t *get_color_pipeline(igt_display_t *display,
--					 igt_plane_t *plane,
--					 kms_colorop_t *colorops[])
--{
--	igt_colorop_t *colorop = NULL;
--	int i;
--
--	/* go through all color pipelines */
--	for (i = 0; i < plane->num_color_pipelines; ++i) {
--		if (map_to_pipeline(display, plane->color_pipelines[i], colorops)) {
--			colorop = plane->color_pipelines[i];
--			break;
--		}
--	}
--
--	return colorop;
--}
--
--static void fill_custom_1dlut(igt_display_t *display, kms_colorop_t *colorop)
--{
--	uint64_t lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
--	igt_pixel_t pixel;
--	float index;
--	int i;
--
--	for (i = 0; i < lut_size; i++) {
--		index = i / (float) lut_size;
--
--		pixel.r = index;
--		pixel.g = index;
--		pixel.b = index;
--
--		colorop->transform(&pixel);
--
--		colorop->lut1d->lut[i].red = pixel.r * UINT_MAX;
--		colorop->lut1d->lut[i].green = pixel.g * UINT_MAX;
--		colorop->lut1d->lut[i].blue = pixel.b * UINT_MAX;
--	}
--}
--
--static void configure_3dlut(igt_display_t *display, kms_colorop_t *colorop, uint64_t size)
--{
--	uint64_t lut_size = 0;
--	uint64_t i;
--	igt_3dlut_norm_t *igt_3dlut;
--
--	/* Convert 3DLUT floating points to u16 required by colorop API */
--	lut_size = size * size * size;
--	igt_3dlut = (igt_3dlut_norm_t *) malloc(sizeof(struct drm_color_lut32) * lut_size);
--	for (i = 0; i < lut_size; i++) {
--		struct igt_color_lut_float *lut_f = &colorop->lut3d->lut[i];
--
--		igt_3dlut->lut[i].red = round((double)lut_f->red * UINT_MAX);
--		igt_3dlut->lut[i].green = round((double)lut_f->green * UINT_MAX);
--		igt_3dlut->lut[i].blue = round((double)lut_f->blue * UINT_MAX);
--	}
--
--	igt_colorop_set_3dlut(display, colorop->colorop, igt_3dlut, lut_size * sizeof(struct drm_color_lut32));
--	free(igt_3dlut);
--}
--
--static void set_colorop(igt_display_t *display,
--			kms_colorop_t *colorop)
--{
--	enum drm_colorop_lut3d_interpolation_type interpolation;
--	uint64_t lut_size = 0;
--	uint64_t mult = 1;
--
--	igt_assert(colorop->colorop);
--	igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_BYPASS, 0);
--
--	switch (colorop->type) {
--	case KMS_COLOROP_ENUMERATED_LUT1D:
--		igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_CURVE_1D_TYPE, kms_colorop_lut1d_tf_names[colorop->enumerated_lut1d_info.tf]);
--		break;
--	case KMS_COLOROP_CTM_3X4:
--		igt_colorop_set_ctm_3x4(display, colorop->colorop, colorop->matrix_3x4);
--		break;
--	case KMS_COLOROP_CUSTOM_LUT1D:
--		fill_custom_1dlut(display, colorop);
--		lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
--		igt_colorop_set_custom_1dlut(display, colorop->colorop, colorop->lut1d, lut_size * sizeof(struct drm_color_lut32));
--		break;
--	case KMS_COLOROP_MULTIPLIER:
--		mult = colorop->multiplier * (mult << 32);	/* convert double to fixed number */
--		igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_MULTIPLIER, mult);
--		break;
--	case KMS_COLOROP_LUT3D:
--		lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
--		interpolation = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_LUT3D_INTERPOLATION);
--
--		/* Check driver's lut size, color depth and interpolation with kms_colorop */
--		igt_skip_on(colorop->lut3d_info.size != lut_size);
--		igt_skip_on(colorop->lut3d_info.interpolation != interpolation);
--
--		configure_3dlut(display, colorop, lut_size);
--		break;
--	default:
--		igt_fail(IGT_EXIT_FAILURE);
--	}
--}
--
--static void set_color_pipeline(igt_display_t *display,
--			       igt_plane_t *plane,
--			       kms_colorop_t *colorops[],
--			       igt_colorop_t *color_pipeline)
--{
--	igt_colorop_t *next;
--	int prop_val = 0;
--	int i;
--
--	igt_plane_set_color_pipeline(plane, color_pipeline);
--
--	for (i = 0; colorops[i]; i++)
--		set_colorop(display, colorops[i]);
--
--	/* set unused ops in pipeline to bypass */
--	next = color_pipeline;
--	i = 0;
--	while (next) {
--		if (!colorops[i] || colorops[i]->colorop != next)
--			igt_colorop_set_prop_value(next, IGT_COLOROP_BYPASS, 1);
--		else
--			i++;
--
--		prop_val = igt_colorop_get_prop(display, next,
--						IGT_COLOROP_NEXT);
--		next = igt_find_colorop(display, prop_val);
--	}
--}
--
--static void set_color_pipeline_bypass(igt_plane_t *plane)
--{
--	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
--}
--
- static bool compare_with_bracket(igt_fb_t *in, igt_fb_t *out)
- {
- 	if (is_vkms_device(in->fd))
-diff --git a/tests/kms_colorop.h b/tests/kms_colorop.h
-index 7fc88d6ca..75f860c40 100644
---- a/tests/kms_colorop.h
-+++ b/tests/kms_colorop.h
-@@ -26,75 +26,6 @@
- 
- #include "igt_color.h"
- 
--typedef bool (*compare_fb_t)(igt_fb_t *in, igt_fb_t *out);
--
--typedef int (*transform_fb)(igt_fb_t *in);
--
--typedef int (*transform_pixel)(igt_pixel_t *pixel);
--
--/* Test version definitions */
--typedef enum kms_colorop_type {
--	KMS_COLOROP_ENUMERATED_LUT1D,
--	KMS_COLOROP_CUSTOM_LUT1D,
--	KMS_COLOROP_CTM_3X4,
--	KMS_COLOROP_MULTIPLIER,
--	KMS_COLOROP_LUT3D
--} kms_colorop_type_t;
--
--typedef enum kms_colorop_lut1d_tf {
--	KMS_COLOROP_LUT1D_SRGB_EOTF,
--	KMS_COLOROP_LUT1D_SRGB_INV_EOTF,
--	KMS_COLOROP_LUT1D_BT2020_INV_OETF,
--	KMS_COLOROP_LUT1D_BT2020_OETF,
--	KMS_COLOROP_LUT1D_PQ_EOTF,
--	KMS_COLOROP_LUT1D_PQ_INV_EOTF,
--	KMS_COLOROP_LUT1D_PQ_125_EOTF,
--	KMS_COLOROP_LUT1D_PQ_125_INV_EOTF,
--	KMS_COLOROP_LUT1D_NUM_ENUMS
--} kms_colorop_lut1d_tf_t;
--
--const char * const kms_colorop_lut1d_tf_names[KMS_COLOROP_LUT1D_NUM_ENUMS] = {
--	[KMS_COLOROP_LUT1D_SRGB_EOTF] = "sRGB EOTF",
--	[KMS_COLOROP_LUT1D_SRGB_INV_EOTF] = "sRGB Inverse EOTF",
--	[KMS_COLOROP_LUT1D_BT2020_INV_OETF] = "BT.2020 Inverse OETF",
--	[KMS_COLOROP_LUT1D_BT2020_OETF] = "BT.2020 OETF",
--	[KMS_COLOROP_LUT1D_PQ_EOTF] = "PQ EOTF",
--	[KMS_COLOROP_LUT1D_PQ_INV_EOTF] = "PQ Inverse EOTF",
--	[KMS_COLOROP_LUT1D_PQ_125_EOTF] = "PQ 125 EOTF",
--	[KMS_COLOROP_LUT1D_PQ_125_INV_EOTF] = "PQ 125 Inverse EOTF",
--};
--
--typedef struct kms_colorop_enumerated_lut1d_info {
--	kms_colorop_lut1d_tf_t tf;
--} kms_colorop_enumerated_lut1d_info_t;
--
--typedef struct kms_colorop_lut3d_info {
--	uint32_t size;
--	enum drm_colorop_lut3d_interpolation_type interpolation;
--} kms_colorop_lut3d_info_t;
--
--typedef struct kms_colorop {
--	kms_colorop_type_t type;
--
--	union {
--		kms_colorop_enumerated_lut1d_info_t enumerated_lut1d_info;
--		igt_1dlut_t *lut1d;
--		igt_3dlut_t *lut3d;
--		const igt_matrix_3x4_t *matrix_3x4;
--		double multiplier;
--	};
--
--	kms_colorop_lut3d_info_t lut3d_info;
--
--	const char *name;
--
--	igt_pixel_transform transform;
--
--	/* Mapped colorop */
--	igt_colorop_t *colorop;
--
--} kms_colorop_t;
--
- kms_colorop_t kms_colorop_srgb_eotf = {
- 	.type = KMS_COLOROP_ENUMERATED_LUT1D,
- 	.enumerated_lut1d_info = {
-diff --git a/tests/meson.build b/tests/meson.build
-index d7e0b951a..d1506eb47 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -374,6 +374,7 @@ extra_sources = {
- 	'dumb_buffer': ['dumb_buffer.c' ],
- 	'testdisplay': [ 'testdisplay_hotplug.c' ],
- 	'kms_color':  [ 'kms_color_helper.c' ],
-+	'kms_colorop':  [ 'kms_color_helper.c' ],
- 	'kms_chamelium_audio': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_color':  [ 'kms_color_helper.c', join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+ /* Test version definitions */
+ typedef enum kms_colorop_type {
+ 	KMS_COLOROP_ENUMERATED_LUT1D,
+ 	KMS_COLOROP_CUSTOM_LUT1D,
++	KMS_COLOROP_MULTSEG_LUT1D,
+ 	KMS_COLOROP_CTM_3X4,
+ 	KMS_COLOROP_MULTIPLIER,
+ 	KMS_COLOROP_LUT3D
+@@ -146,6 +159,7 @@ typedef struct kms_colorop {
+ 		kms_colorop_enumerated_lut1d_info_t enumerated_lut1d_info;
+ 		igt_1dlut_t *lut1d;
+ 		const igt_3dlut_t *lut3d;
++		kms_colorop_multseg_lut1d_info_t multseg_lut1d_info;
+ 		const igt_matrix_3x4_t *matrix_3x4;
+ 		double multiplier;
+ 	};
 -- 
 2.25.1
 
