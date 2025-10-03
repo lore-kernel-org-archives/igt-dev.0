@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A065CCD182
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 12:19:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0F72CCD183
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 12:19:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2CADA10E8FB;
-	Fri,  3 Oct 2025 12:19:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6682010E8FC;
+	Fri,  3 Oct 2025 12:19:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hGEYW4ve";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BmwkNXwk";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19D0410E8FB
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 12:19:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA2BC10E8FC
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 12:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759493956; x=1791029956;
+ t=1759493958; x=1791029958;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6ZORPXNAz21jds7uSwE3w40vhJP7J/GrflrEAV3OFEQ=;
- b=hGEYW4ve68T+8mjo5RKQxI6xapEX1g4Mc1ypYA+xd/fYz0oKRgdyCWr0
- fXXCd1V03ruZ+Gnrw5KcrgZ0lSZx2zFHXYR034c29HozWzGRXEDlhIJNx
- DXMoJ643+XIn+/Pap/oIXJSirt6RImdabHyXHtw4fcyGIR4kGZ19SUmh7
- xoXYdqqBsCwluEL3Lg2IUW2qjpeYspycMKZnyELj/pXEX+y9Nva+bJx5k
- InH7hQXwmi3Iy/shtWwaNswILTUaIKYHTDqWwa2d230zZggA81iiegAVc
- Oa13/Dh7CvXVyj8mX6ukXdV4ksptu2D9yYq+YlULxL8FUG4SJioljQJpM w==;
-X-CSE-ConnectionGUID: zNfiIQadRRKJq06p8lThJw==
-X-CSE-MsgGUID: XzLweChKTIew3BPxdmX8AA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84399232"
-X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="84399232"
+ bh=Xl3yyZtOl8dlYkNaiZUYAGT/m2LMRZA0zfAfH1U5Jgo=;
+ b=BmwkNXwkLcgHbeIC14pXFMivdbCxni+AgHdVGH0sTRcuheIEMGjeI8G6
+ 0ZxDGU7Yvl8riK3CqnF8KFcrZfI5RTv7i+CioqZDMqPANh1mKDl3yA0zo
+ vQ+4pKMDUzn0hgJwZr5TsYySvfybXsE7JkClP5Tr2CgJ/e0wkPj0To8U6
+ j882uYRBDVEE+TGfj0CegyT8tqmELDGd9e8zMLPJe3NK5e4m8pDyua4kS
+ r0mzQrbT/PE2mAJBktHjCJj2g44wMSmu4eabjWpRqEpinw8T3KR1i85h2
+ Pyw+3jbBelMK9rB9Qp7W4CZVY6/beXsq3P4VFAm+64wa8smcS+kphSFn6 g==;
+X-CSE-ConnectionGUID: wQqZFpO2TTqCgiCedVOL4g==
+X-CSE-MsgGUID: hAZPPAXzQq2HWcCyEEeZgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84399233"
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="84399233"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Oct 2025 05:19:16 -0700
-X-CSE-ConnectionGUID: YA6exZWkS96fs/pBMdWwlA==
-X-CSE-MsgGUID: 0DEm2fdPQgyznuVNC1jsdA==
+ 03 Oct 2025 05:19:18 -0700
+X-CSE-ConnectionGUID: NzlrXgq3TfWZXGsqJZCYbg==
+X-CSE-MsgGUID: MXLueXdkSHeYTju33RExxg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="183300148"
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="183300156"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 05:19:14 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 05:19:16 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 6/9] lib/colorops: Add support for 1D LUT multi-segmented
-Date: Fri,  3 Oct 2025 17:55:47 +0530
-Message-Id: <20251003122550.729242-7-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 7/9] tests/kms_color_helper: Add helpers to clear
+ colorops data
+Date: Fri,  3 Oct 2025 17:55:48 +0530
+Message-Id: <20251003122550.729242-8-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251003122550.729242-1-swati2.sharma@intel.com>
 References: <20251003122550.729242-1-swati2.sharma@intel.com>
@@ -70,224 +71,70 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Add helpers to support 1D LUT multi-segmented.
+- Clear the DATA blob
+- Set the BYPASS prop true
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_color.c          | 13 ++++++
- lib/igt_color.h          | 16 ++++++++
- tests/kms_color_helper.c | 87 ++++++++++++++++++++++++++++++++++++++++
- tests/kms_color_helper.h | 14 +++++++
- 4 files changed, 130 insertions(+)
+ tests/kms_color_helper.c | 32 ++++++++++++++++++++++++++++++++
+ tests/kms_color_helper.h |  4 ++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/lib/igt_color.c b/lib/igt_color.c
-index e66d6fe54..b822993df 100644
---- a/lib/igt_color.c
-+++ b/lib/igt_color.c
-@@ -682,3 +682,16 @@ void igt_colorop_set_3dlut(igt_display_t *display,
- {
- 	igt_colorop_replace_prop_blob(colorop, IGT_COLOROP_DATA, lut3d, lut_size);
- }
-+
-+void igt_colorop_set_multseg_1dlut(igt_display_t *display,
-+				   igt_colorop_t *colorop,
-+				   const kms_colorop_multseg_lut1d_info_t lut_info)
-+{
-+	/* set blob property */
-+	for (int i = 0; i < lut_info.lut_size; i++)
-+		igt_debug("Lut[%d]: 0x%08x 0x%08x 0x%08x\n",
-+			 i, lut_info.lut[i].red, lut_info.lut[i].green, lut_info.lut[i].blue);
-+
-+	igt_colorop_replace_prop_blob(colorop, IGT_COLOROP_DATA,
-+			lut_info.lut, sizeof(struct drm_color_lut32) * lut_info.lut_size);
-+}
-diff --git a/lib/igt_color.h b/lib/igt_color.h
-index c88b9838c..3359e011b 100644
---- a/lib/igt_color.h
-+++ b/lib/igt_color.h
-@@ -63,6 +63,18 @@ typedef struct igt_1dlut {
- 	struct drm_color_lut32 lut[MAX_COLOR_LUT_ENTRIES];
- } igt_1dlut_t;
- 
-+typedef enum kms_colorop_multseg_lut1d_tf {
-+       KMS_COLOROP_MULTSEG_LUT1D_ZERO,
-+       KMS_COLOROP_MULTSEG_LUT1D_LINEAR,
-+       KMS_COLOROP_MULTSEG_LUT1D_MAX,
-+} kms_colorop_multseg_lut1d_tf_t;
-+
-+typedef struct kms_colorop_multseg_lut1d_info {
-+	uint32_t lut_size;
-+	kms_colorop_multseg_lut1d_tf_t lut_type;
-+	struct drm_color_lut32 *lut;
-+} kms_colorop_multseg_lut1d_info_t;
-+
- typedef bool (*compare_fb_t)(igt_fb_t *in, igt_fb_t *out);
- typedef int (*transform_fb)(igt_fb_t *in);
- typedef int (*transform_pixel)(igt_pixel_t *pixel);
-@@ -106,6 +118,10 @@ void igt_colorop_set_3dlut(igt_display_t *display,
- 			   const igt_3dlut_norm_t *lut3d,
- 			   const size_t lut_size);
- 
-+void igt_colorop_set_multseg_1dlut(igt_display_t *display,
-+				   igt_colorop_t *colorop,
-+				   const kms_colorop_multseg_lut1d_info_t custom_lut1d_info);
-+
- /* transformations */
- 
- void igt_color_srgb_inv_eotf(igt_pixel_t *pixel);
 diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 40431a855..ebb93f0e2 100644
+index ebb93f0e2..d34e6527f 100644
 --- a/tests/kms_color_helper.c
 +++ b/tests/kms_color_helper.c
-@@ -24,6 +24,8 @@
+@@ -677,3 +677,35 @@ segment_data_t *get_segment_data(int drm_fd, uint64_t blob_id)
  
- #include "kms_color_helper.h"
- 
-+#define MIN(a, b)	((a) < (b) ? (a) : (b))
-+
- bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
- {
- 	bool ret = true;
-@@ -403,6 +405,10 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
- 		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_LUT)
- 			return true;
- 		return false;
-+	case KMS_COLOROP_MULTSEG_LUT1D:
-+		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_LUT_MULTSEG)
-+			return true;
-+		return false;
- 	case KMS_COLOROP_MULTIPLIER:
- 		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_MULTIPLIER);
- 	case KMS_COLOROP_LUT3D:
-@@ -538,6 +544,9 @@ void set_colorop(igt_display_t *display,
- 		lut_size = igt_colorop_get_prop(display, colorop->colorop, IGT_COLOROP_SIZE);
- 		igt_colorop_set_custom_1dlut(display, colorop->colorop, colorop->lut1d, lut_size * sizeof(struct drm_color_lut32));
- 		break;
-+	case KMS_COLOROP_MULTSEG_LUT1D:
-+		igt_colorop_set_multseg_1dlut(display, colorop->colorop, colorop->multseg_lut1d_info);
-+		break;
- 	case KMS_COLOROP_MULTIPLIER:
- 		mult = colorop->multiplier * (mult << 32);	/* convert double to fixed number */
- 		igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_MULTIPLIER, mult);
-@@ -590,3 +599,81 @@ void set_color_pipeline_bypass(igt_plane_t *plane)
- {
- 	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
+ 	return info;
  }
 +
-+void create_zero_lut(segment_data_t *info, struct drm_color_lut32 *lut)
++void clear_colorop(igt_display_t *display, kms_colorop_t *colorop)
 +{
-+	int i;
++	igt_assert(colorop->colorop);
++	igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_BYPASS, 1);
 +
-+	for (i = 0; i < info->entries_count; i++)
-+		lut[i].red = lut[i].green = lut[i].blue = 0;
-+}
-+
-+void create_unity_lut(segment_data_t *info, struct drm_color_lut32 *lut)
-+{
-+	uint32_t val, segment, entry, index = 0;
-+	uint32_t max_val = 0xffffffff;
-+
-+	for (segment = 0; segment < info->segment_count; segment++) {
-+		uint32_t entry_count = info->segment_data[segment].count;
-+		uint32_t start = info->segment_data[segment].start;
-+		uint32_t end = info->segment_data[segment].end;
-+
-+		for (entry = 1; entry <= entry_count; entry++) {
-+			val = start + entry * ((end - start) * 1.0 / entry_count);
-+			lut[index].red = lut[index].green = lut[index].blue =
-+				(index == 0) ? 0 : MIN(val, max_val);
-+
-+			index++;
-+		}
-+	}
-+}
-+
-+void create_max_lut(segment_data_t *info, struct drm_color_lut32 *lut)
-+{
-+	int i;
-+	uint32_t max_val = 0xffffffff;
-+
-+	for (i = 0; i < info->entries_count; i++)
-+		lut[i].red = lut[i].green = lut[i].blue = (i == 0) ? 0 : max_val;
-+}
-+
-+void clear_segment_data(segment_data_t *info)
-+{
-+	if (!info)
++	switch (colorop->type) {
++	case KMS_COLOROP_CTM_3X4:
++	case KMS_COLOROP_CUSTOM_LUT1D:
++	case KMS_COLOROP_MULTSEG_LUT1D:
++		igt_colorop_replace_prop_blob(colorop->colorop, IGT_COLOROP_DATA, NULL, 0);
++		break;
++	case KMS_COLOROP_MULTIPLIER:
++		igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_MULTIPLIER, 1);
++		break;
++	case KMS_COLOROP_ENUMERATED_LUT1D:
++	case KMS_COLOROP_LUT3D:
++	default:
 +		return;
-+
-+	free(info->segment_data);
-+	free(info);
++	}
 +}
 +
-+segment_data_t *get_segment_data(int drm_fd, uint64_t blob_id)
++void clear_color_pipeline(igt_display_t *display,
++			  igt_plane_t *plane,
++			  kms_colorop_t *colorops[],
++			  igt_colorop_t *color_pipeline)
 +{
-+	drmModePropertyBlobPtr blob;
-+	struct drm_color_lut_range *lut_range = NULL;
-+	segment_data_t *info = NULL;
-+	uint32_t i;
++	int i;
 +
-+	blob = drmModeGetPropertyBlob(drm_fd, blob_id);
-+	igt_assert(blob);
-+	igt_assert(blob->length);
-+
-+	info = malloc(sizeof(segment_data_t));
-+	igt_assert(info);
-+
-+	lut_range = (struct drm_color_lut_range *) blob->data;
-+	info->segment_count = blob->length / sizeof(lut_range[0]);
-+	igt_assert(info->segment_count);
-+
-+	info->segment_data = malloc(sizeof(struct drm_color_lut_range) * info->segment_count);
-+	igt_assert(info->segment_data);
-+
-+	info->entries_count = 0;
-+	for (i = 0; i < info->segment_count; i++) {
-+		info->entries_count += lut_range[i].count;
-+		info->segment_data[i] = lut_range[i];
-+	}
-+
-+	drmModeFreePropertyBlob(blob);
-+
-+	return info;
++	for(i = 0; colorops[i]; i++)
++		clear_colorop(display, colorops[i]);
 +}
 diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index eb56c0586..696cb0fb3 100644
+index 696cb0fb3..f4a120894 100644
 --- a/tests/kms_color_helper.h
 +++ b/tests/kms_color_helper.h
-@@ -121,10 +121,23 @@ void invalid_gamma_lut_sizes(data_t *data, enum pipe p);
- void invalid_degamma_lut_sizes(data_t *data, enum pipe p);
- void invalid_ctm_matrix_sizes(data_t *data, enum pipe p);
+@@ -183,5 +183,9 @@ void set_color_pipeline(igt_display_t *display, igt_plane_t *plane,
+ 		        kms_colorop_t *colorops[], igt_colorop_t *color_pipeline);
+ void set_color_pipeline_bypass(igt_plane_t *plane);
  
-+typedef struct {
-+	uint32_t segment_count;
-+	struct drm_color_lut_range *segment_data;
-+	uint32_t entries_count;
-+} segment_data_t;
++void clear_colorop(igt_display_t *display, kms_colorop_t *colorop);
++void clear_color_pipeline(igt_display_t *display, igt_plane_t *plane,
++			  kms_colorop_t *colorops[], igt_colorop_t *color_pipeline);
 +
-+void create_zero_lut(segment_data_t *info, struct drm_color_lut32 *lut);
-+void create_unity_lut(segment_data_t *info, struct drm_color_lut32 *lut);
-+void create_max_lut(segment_data_t *info, struct drm_color_lut32 *lut);
-+void clear_segment_data(segment_data_t *info);
-+segment_data_t *get_segment_data(int drm_fd, uint64_t blob_id);
-+
- /* Test version definitions */
- typedef enum kms_colorop_type {
- 	KMS_COLOROP_ENUMERATED_LUT1D,
- 	KMS_COLOROP_CUSTOM_LUT1D,
-+	KMS_COLOROP_MULTSEG_LUT1D,
- 	KMS_COLOROP_CTM_3X4,
- 	KMS_COLOROP_MULTIPLIER,
- 	KMS_COLOROP_LUT3D
-@@ -146,6 +159,7 @@ typedef struct kms_colorop {
- 		kms_colorop_enumerated_lut1d_info_t enumerated_lut1d_info;
- 		igt_1dlut_t *lut1d;
- 		const igt_3dlut_t *lut3d;
-+		kms_colorop_multseg_lut1d_info_t multseg_lut1d_info;
- 		const igt_matrix_3x4_t *matrix_3x4;
- 		double multiplier;
- 	};
+ #endif
+ 
 -- 
 2.25.1
 
