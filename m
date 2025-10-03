@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCB71CCA471
-	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 12:19:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFCE2CCD182
+	for <igt-dev@archiver.kernel.org>; Fri,  3 Oct 2025 12:19:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C51710E8EC;
-	Fri,  3 Oct 2025 12:19:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8600F10E8EF;
+	Fri,  3 Oct 2025 12:19:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QIH3aRkb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KZLBDr5E";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 16E3610E8E9
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 12:19:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A055610E8EF
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Oct 2025 12:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759493951; x=1791029951;
+ t=1759493953; x=1791029953;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=y7Dv7A4XC5r1R5s64Rp/Eo8v7QGQv70cO0IufAt5B2s=;
- b=QIH3aRkbd78Dcn4V8Bkl8YUROhjw6XvyknANl7Oliq+4DNAybhVviuPn
- Es0TCXtrqdb/o/Lx3OIgH3b4dgx476tEAnZdRSsZsNkSelisPa52Mjsi2
- bXDvs3kyroT7jg6j5WussE1J54tk99Eq2hnvA9niAGDOe2dR1MGEI3NPM
- GV/IHCr0aCAN8LSEYqvWk7GnyYUeVLngD8wmYaR/9KEYwIHIMl/iif4K2
- 4XJnJsXOlmGpKyHcMr5m+8U14zTOpu+dboCv8fkqUkxcXdh44wstxB9Sq
- xpjXD/0Nua2KQ+0InHLbL0seXpmxdNtOyKVo9+QuJKKlpyxnZQXztKo94 g==;
-X-CSE-ConnectionGUID: 0AX5URyLSGqnTTehVmWsgw==
-X-CSE-MsgGUID: T/t1TxCcQfWYBUY+ZY61xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84399226"
-X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="84399226"
+ bh=yMhJGMpcZ5XwZidVGKdih1aBkepsk6iGxqAPMw9Ptds=;
+ b=KZLBDr5E6eC/2Ja6qnYXMenwZH24M/2ZiZ6Umo4oFo1s2HUVehPrHT1b
+ TCdWFG44pmXl7qzmHxtogmzLrJ/Sxd8Cuo9QuQygXNtTSGo8OfjSJqb0C
+ TS1GV4oyX2BQaVkIhQ6xQDus985HcSGzz1m2OWkgsc9jo0impksmmjFJZ
+ PEf6VshW9kpT6KrPAjwEWhMxZ8ALhuBYlPd0fBgjltYdvmplY3+rFttPW
+ RTOzx4hmx+hxzArcn00+ywrMznbeRiTL4gKvtLw6hlaEzgIgwe/5k5tA+
+ 2nnx2dF/icF7Tkpw40RFehcAb90Q6Iebr/dNMqec1QQq/ziVYPhrqI8QB w==;
+X-CSE-ConnectionGUID: LoaXINmKQr+5BooxeXwPdw==
+X-CSE-MsgGUID: 8RCXV4fsQHGe6sWkBMt/zg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11570"; a="84399227"
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="84399227"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Oct 2025 05:19:11 -0700
-X-CSE-ConnectionGUID: dmP98q1PSs63qwlJ08TkMQ==
-X-CSE-MsgGUID: cYt2LcqzTSOvYFurSFvcNg==
+ 03 Oct 2025 05:19:13 -0700
+X-CSE-ConnectionGUID: nVR8Xm0hSY+QzSagRQTHJQ==
+X-CSE-MsgGUID: G91JZc8bTLiX3R1vJSmjoA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="183300120"
+X-IronPort-AV: E=Sophos;i="6.18,312,1751266800"; d="scan'208";a="183300133"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 05:19:10 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 05:19:11 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 3/9] drm-uapi: Add 1D LUT multi-segmented color op
-Date: Fri,  3 Oct 2025 17:55:44 +0530
-Message-Id: <20251003122550.729242-4-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 4/9] lib/kms: Add support for COLOROP_HW_CAPS property
+Date: Fri,  3 Oct 2025 17:55:45 +0530
+Message-Id: <20251003122550.729242-5-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251003122550.729242-1-swati2.sharma@intel.com>
 References: <20251003122550.729242-1-swati2.sharma@intel.com>
@@ -69,30 +69,34 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- include/drm-uapi/drm_mode.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ lib/igt_kms.c | 1 +
+ lib/igt_kms.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index 1298274d9..d354526e8 100644
---- a/include/drm-uapi/drm_mode.h
-+++ b/include/drm-uapi/drm_mode.h
-@@ -912,6 +912,16 @@ enum drm_colorop_type {
- 	 */
- 	DRM_COLOROP_1D_LUT,
- 
-+	/**
-+	 * @DRM_COLOROP_1D_LUT_MULTSEG:
-+	 *
-+	 * A 1D LUT with multiple segments to cover the full color range with non-uniformly
-+	 * distributed &drm_color_lut entries, packed into a blob via the DATA property.
-+	 * The driver's expected LUT size and segmented capabilities are advertised via the
-+	 * HW_CAPS property.
-+	 */
-+	DRM_COLOROP_1D_LUT_MULTSEG,
-+
- 	/**
- 	 * @DRM_COLOROP_CTM_3X4:
- 	 *
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 435e44744..347cbe2a7 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -711,6 +711,7 @@ const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
+ 	[IGT_COLOROP_BYPASS] = "BYPASS",
+ 	[IGT_COLOROP_CURVE_1D_TYPE] = "CURVE_1D_TYPE",
+ 	[IGT_COLOROP_SIZE] = "SIZE",
++	[IGT_COLOROP_HW_CAPS] = "HW_CAPS",
+ 	[IGT_COLOROP_DATA] = "DATA",
+ 	[IGT_COLOROP_MULTIPLIER] = "MULTIPLIER",
+ 	[IGT_COLOROP_COLOR_DEPTH] = "COLOR_DEPTH",
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index beeab4b3c..fc7eccb6c 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -375,6 +375,7 @@ enum igt_atomic_colorop_properties {
+ 	IGT_COLOROP_BYPASS,
+ 	IGT_COLOROP_CURVE_1D_TYPE,
+ 	IGT_COLOROP_SIZE,
++	IGT_COLOROP_HW_CAPS,
+ 	IGT_COLOROP_DATA,
+ 	IGT_COLOROP_MULTIPLIER,
+ 	IGT_COLOROP_COLOR_DEPTH,
 -- 
 2.25.1
 
