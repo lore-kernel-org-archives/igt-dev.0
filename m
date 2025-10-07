@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D58F1CCA476
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Oct 2025 13:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5106ECCD185
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Oct 2025 13:39:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 77B4C10E192;
-	Tue,  7 Oct 2025 13:32:22 +0000 (UTC)
-Received: from 6aec98b87f92 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D536210E18C;
- Tue,  7 Oct 2025 13:32:20 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2913114908576385244=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/intel=5Fdevice=5Finfo?=
- =?utf-8?q?=3A_get_the_xe_=2Egraphics=5Frel_from_GMD=5FID?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Xin Wang" <x.wang@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 07 Oct 2025 13:32:20 -0000
-Message-ID: <175984394086.14049.10685776106051162274@6aec98b87f92>
-X-Patchwork-Hint: ignore
-References: <20251007050554.340485-1-x.wang@intel.com>
-In-Reply-To: <20251007050554.340485-1-x.wang@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD7B410E649;
+	Tue,  7 Oct 2025 13:39:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="FNgSQaNP";
+	dkim-atps=neutral
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com
+ [136.143.188.112])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BA9810E0DC;
+ Tue,  7 Oct 2025 13:39:52 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1759844388; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=aO4iS8pe2+y7ot/lJcOobB7zhBFyFDxXQXg/ADOtfA/GPyVyXJD4u7GSBIpf6YuzRimRZ3aUlxfnahTd8hZrfs9+xhY+3BkbUIODtx5HcrIuGkFkyuCJqBSdvpMiRbAjD+c0F6WY6B8YqrTB8dZaWjvFKN1Wv16cukxvJs6Hl2o=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1759844388;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=P0eWTkK2Mw2N/NR/zUE25jCXPD1K352dYkA50vN4lCQ=; 
+ b=dql/RSeEZyy+z/abYg6ub5lXxvTnn/0F3Mw3toKqhZZiL4hkKAttQCtbU6nYSN9wtrCxulUJwLH3ikck1WDr+RI2p3cXdhZhXIYiKi83hX0A0b5OjJBv8KxMxfrQ7r0GMS7orW3adrahbiIGtrPCjcKWOrUk23iysk1f5QvTyA0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+ dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1759844388; 
+ s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+ h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+ bh=P0eWTkK2Mw2N/NR/zUE25jCXPD1K352dYkA50vN4lCQ=;
+ b=FNgSQaNP6PcetIRwaRvZrdh05KbHODG/Bd8p2VFfY0kTfiLjgzNy4IrV3/RRK/zh
+ 40S2ITdJqkLqbOdQ0u/O4gZiiso52rm1gWKUVZz47SLTl7RBK9yewpYdLmLEiWu3Ip9
+ 0bO0LgOErVchc0FXKlViJqb2bosIjVIE0T9/2n+k=
+Received: by mx.zohomail.com with SMTPS id 1759844386005328.42590731805967;
+ Tue, 7 Oct 2025 06:39:46 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH i-g-t v2 3/3] tests/panthor: add panthor tests
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAPj87rMKex=mBSx9A3JOvwF3DVJRoiwK6oELXr+hoT2GVOq_Rw@mail.gmail.com>
+Date: Tue, 7 Oct 2025 10:39:22 -0300
+Cc: adrinael@adrinael.net, arek@hiler.eu, kamil.konieczny@linux.intel.com,
+ juhapekka.heikkila@gmail.com, bhanuprakash.modem@gmail.com,
+ ashutosh.dixit@intel.com, karthik.b.s@intel.com,
+ boris.brezillon@collabora.com, liviu.dudau@arm.com, steven.price@arm.com,
+ aliceryhl@google.com, jeffv@google.com, intel-gfx@lists.freedesktop.org,
+ igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F9FAAF77-6E67-4430-ADF2-DF847C6C0F33@collabora.com>
+References: <20250912181931.3738444-1-daniel.almeida@collabora.com>
+ <20250912181931.3738444-4-daniel.almeida@collabora.com>
+ <CAPj87rMKex=mBSx9A3JOvwF3DVJRoiwK6oELXr+hoT2GVOq_Rw@mail.gmail.com>
+To: Daniel Stone <daniel@fooishbar.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,187 +70,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2913114908576385244==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Dan, thanks for the review!
 
-== Series Details ==
+[=E2=80=A6]
 
-Series: lib/intel_device_info: get the xe .graphics_rel from GMD_ID
-URL   : https://patchwork.freedesktop.org/series/155527/
-State : success
+>=20
+>> +static void
+>> +issue_store_multiple(u8 *command_stream, uint64_t kernel_va, =
+uint32_t constant)
+>> +{
+>> +               uint64_t opcode, reg_num, mov48, store_multiple, =
+flush;
+>> +               uint64_t sr, src0, register_bitmap, offset;
+>> +
+>> +               // MOV48: Load the source register ([r68; r69]) with =
+the kernel address
+>> +               opcode =3D 0x1;
+>> +               reg_num =3D 68;
+>> +               mov48 =3D (opcode << 56) | (reg_num << 48) | =
+kernel_va;
+>> +               mov48 =3D htole64(mov48);
+>> +               memcpy(&command_stream[0], &mov48, sizeof(mov48));
+>> +
+>> +               // MOV48: Load a known constant into r70
+>> +               opcode =3D 0x1;
+>> +               reg_num =3D 70;
+>> +               mov48 =3D (opcode << 56) | (reg_num << 48) | =
+constant;
+>> +               mov48 =3D htole64(mov48);
+>> +               memcpy(&command_stream[8], &mov48, sizeof(mov48));
+>> +
+>> +               // STORE_MULTIPLE: Store the first register to the =
+address pointed to by [r68; r69]
+>> +               opcode =3D 0x15; // STORE_MULTIPLE
+>> +               sr =3D 70; // Starting from register r70
+>> +               src0 =3D 68; // Address pointed to by [r68; r69]
+>> +               register_bitmap =3D 1; // Store the first register
+>> +               offset =3D 0; // Offset
+>> +               store_multiple =3D (opcode << 56) | (sr << 48) | =
+(src0 << 40) |
+>> +                                                                     =
+           (register_bitmap << 16) | offset;
+>> +               store_multiple =3D htole64(store_multiple);
+>> +               memcpy(&command_stream[16], &store_multiple, =
+sizeof(store_multiple));
+>=20
+> // MOV48 r68, 0 on the below?
 
-== Summary ==
+Wdym? / Why?
 
-CI Bug Log - changes from IGT_8575 -> IGTPW_13865
-====================================================
+I want to clarify what you mean here because it was a bit tricky to get =
+this to
+work, so I am trying to be really mindful about any changes so that it
+doesn=E2=80=99t break.
 
-Summary
--------
+>=20
+>> +               opcode =3D 0x1;
+>> +               reg_num =3D 68;
+>> +               mov48 =3D (opcode << 56) | (reg_num << 48) | 0;
+>> +               mov48 =3D htole64(mov48);
+>> +               memcpy(&command_stream[24], &mov48, sizeof(mov48));
+>=20
+> // FLUSH_PAGES?
 
-  **SUCCESS**
+You want this comment to be present here?
+>=20
+>> +               opcode =3D 36;
+>> +               flush =3D opcode << 56 | 0ull << 48 | reg_num << 40 | =
+0ull << 16 | 0x233;
+>> +               flush =3D htole64(flush);
+>> +               memcpy(&command_stream[32], &flush, sizeof(flush));
+>> +}
+>=20
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/index.html
-
-Participating hosts (44 -> 43)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13865 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-guc:         NOTRUN -> [SKIP][1] ([i915#4613]) +3 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/fi-kbl-guc/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][2] -> [DMESG-FAIL][3] ([i915#12061]) +1 other test dmesg-fail
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8575/bat-mtlp-8/igt@i915_selftest@live.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [PASS][4] -> [DMESG-FAIL][5] ([i915#12061]) +1 other test dmesg-fail
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8575/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [DMESG-FAIL][6] ([i915#12061]) -> [PASS][7] +1 other test pass
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8575/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  * igt@vgem_basic@unload:
-    - fi-kbl-guc:         [INCOMPLETE][8] ([i915#15082]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8575/fi-kbl-guc/igt@vgem_basic@unload.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/fi-kbl-guc/igt@vgem_basic@unload.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#15082]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15082
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8575 -> IGTPW_13865
-  * Linux: CI_DRM_17313 -> CI_DRM_17322
-
-  CI-20190529: 20190529
-  CI_DRM_17313: 5d520fdf951167ca881c7ebf831dedff629e6ccf @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_17322: 7a5ff57e5407d9eb2e746b9031fff58dce7af5f3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13865: 13865
-  IGT_8575: 7efc313da1339df43a1b11bba57fef6c1257e65f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/index.html
-
---===============2913114908576385244==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/intel_device_info: get the xe .graphics_rel from GMD_ID</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/155527/">https://patchwork.freedesktop.org/series/155527/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8575 -&gt; IGTPW_13865</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/index.html</p>
-<h2>Participating hosts (44 -&gt; 43)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13865 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/fi-kbl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8575/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8575/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8575/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@vgem_basic@unload:</p>
-<ul>
-<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8575/fi-kbl-guc/igt@vgem_basic@unload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15082">i915#15082</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13865/fi-kbl-guc/igt@vgem_basic@unload.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8575 -&gt; IGTPW_13865</li>
-<li>Linux: CI_DRM_17313 -&gt; CI_DRM_17322</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17313: 5d520fdf951167ca881c7ebf831dedff629e6ccf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_17322: 7a5ff57e5407d9eb2e746b9031fff58dce7af5f3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13865: 13865<br />
-  IGT_8575: 7efc313da1339df43a1b11bba57fef6c1257e65f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2913114908576385244==--
