@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6EB7CCA476
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Oct 2025 14:29:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76F57CCA470
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Oct 2025 14:57:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C38C10E1A2;
-	Tue,  7 Oct 2025 14:29:00 +0000 (UTC)
-Received: from 6aec98b87f92 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 405A310E69F;
- Tue,  7 Oct 2025 14:28:59 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2979389802087964945=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 309CE10E69F;
+	Tue,  7 Oct 2025 14:57:14 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IdLkxXV9";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 150C510E69F
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Oct 2025 14:57:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759849032; x=1791385032;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Hu3X3EA7Dg/BNqZczLL7tHBXdTGT1u5HfU/21Yd5tJI=;
+ b=IdLkxXV9xXpgTwjzMtrE48qBt7tTZj/V43a5KtD+mxfLY+nBrOYhwFas
+ RUE3h6xZ5giUVpQFTAAqw5AMvqkMJmD89VQlvHAQAoOdYRmLNYIs+7ksf
+ 5wTdbDokpplLc5+l0QX++UVtS+3JEK2CGv+GqFlhv4/hcvrCtKCR8th/a
+ RAIgOQA4TWwrAn6yqK+w1e7MriWR5u6qlMxwV4ZwjKyCH1so8xP+7Ivpf
+ EoNQnwz7e6zGARkW0ofc15jGu+YOkHPww2aPIIZxY91s5Gi8k0poZkPZD
+ 03ltoWEnPP0Zu1Fv1JBJUC/OOv6zQQkpnpgzHIKVGAACOgQ5tGGLojGgf A==;
+X-CSE-ConnectionGUID: h6d08xKmRvubDQE3Bpo2qg==
+X-CSE-MsgGUID: e5bFTqnJRpKEsJuY7Gmg+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11575"; a="65882032"
+X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; d="scan'208";a="65882032"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2025 07:57:11 -0700
+X-CSE-ConnectionGUID: K8FG6RPcTQiYljVWKrE0rw==
+X-CSE-MsgGUID: wpZsUDYTTauT7H1rQq51eA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; d="scan'208";a="180217056"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2025 07:57:10 -0700
+Date: Tue, 7 Oct 2025 16:56:54 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+Subject: Re: [PATCH i-g-t 1/2] benchmarks/gem_wsim: Fail on thread assertions
+Message-ID: <20251007145654.gqbovjgjkg2ca5nl@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+References: <20250924110607.563913-1-marcin.bernatowicz@linux.intel.com>
+ <20250924110607.563913-2-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/gem=5Feio=3A_Resolve_?=
- =?utf-8?q?timing_issues_in_stress_subtests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 07 Oct 2025 14:28:59 -0000
-Message-ID: <175984733925.14049.11676968904312968666@6aec98b87f92>
-X-Patchwork-Hint: ignore
-References: <20251007113910.3336564-7-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20251007113910.3336564-7-janusz.krzysztofik@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250924110607.563913-2-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +72,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2979389802087964945==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Marcin,
+On 2025-09-24 at 13:06:06 +0200, Marcin Bernatowicz wrote:
+> Call igt_thread_assert_no_failures() before returning so thread errors
+> affect the exit status.
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> ---
+>  benchmarks/gem_wsim.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 7a6b10028..098415b53 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -63,6 +63,7 @@
+>  #include "i915/gem_mman.h"
+>  
+>  #include "igt_syncobj.h"
+> +#include "igt_thread.h"
+>  #include "intel_allocator.h"
+>  #include "xe_drm.h"
+>  #include "xe/xe_ioctl.h"
+> @@ -3362,5 +3363,7 @@ err:
+>  	if (is_xe)
+>  		xe_device_put(fd);
+>  
+> +	igt_thread_assert_no_failures();
+> +
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: tests/gem_eio: Resolve timing issues in stress subtests
-URL   : https://patchwork.freedesktop.org/series/155531/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8575_BAT -> XEIGTPW_13866_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8575 -> IGTPW_13866
-  * Linux: xe-3872-5d520fdf951167ca881c7ebf831dedff629e6ccf -> xe-3881-7a5ff57e5407d9eb2e746b9031fff58dce7af5f3
-
-  IGTPW_13866: c78d6b84bca74d29e4ee768aa3d140de9683e61d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8575: 7efc313da1339df43a1b11bba57fef6c1257e65f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-3872-5d520fdf951167ca881c7ebf831dedff629e6ccf: 5d520fdf951167ca881c7ebf831dedff629e6ccf
-  xe-3881-7a5ff57e5407d9eb2e746b9031fff58dce7af5f3: 7a5ff57e5407d9eb2e746b9031fff58dce7af5f3
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13866/index.html
-
---===============2979389802087964945==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/gem_eio: Resolve timing issues in stress subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/155531/">https://patchwork.freedesktop.org/series/155531/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13866/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13866/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8575_BAT -&gt; XEIGTPW_13866_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8575 -&gt; IGTPW_13866</li>
-<li>Linux: xe-3872-5d520fdf951167ca881c7ebf831dedff629e6ccf -&gt; xe-3881-7a5ff57e5407d9eb2e746b9031fff58dce7af5f3</li>
-</ul>
-<p>IGTPW_13866: c78d6b84bca74d29e4ee768aa3d140de9683e61d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8575: 7efc313da1339df43a1b11bba57fef6c1257e65f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-3872-5d520fdf951167ca881c7ebf831dedff629e6ccf: 5d520fdf951167ca881c7ebf831dedff629e6ccf<br />
-  xe-3881-7a5ff57e5407d9eb2e746b9031fff58dce7af5f3: 7a5ff57e5407d9eb2e746b9031fff58dce7af5f3</p>
-
-</body>
-</html>
-
---===============2979389802087964945==--
+>  	return exitcode;
+>  }
+> -- 
+> 2.31.1
+> 
