@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39ED0CCD186
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Oct 2025 23:26:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AF1CCCD187
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Oct 2025 23:26:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6724E10E71A;
-	Tue,  7 Oct 2025 23:26:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5968C10E71E;
+	Tue,  7 Oct 2025 23:26:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FkubJiEF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LAVewiE7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 025AE10E718
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Oct 2025 23:26:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43F0310E718
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Oct 2025 23:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1759879601; x=1791415601;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=79LyaUodEqYCwVatfuchBN5cpBRJ9coqtHztyTd5JPM=;
- b=FkubJiEFwdDu3ak2DFRd6mOLxOikZ6uXzcSBje56HloVa9Xmk66sXXVu
- FhMGKQp+1fe3V1xHQDNW0Xnl2Xia/Njaq1U3ND7AQJn90Cwdxn3nLK0iV
- lbF9qAud/iNwFFvgeaJHSEhwDTL1nsFQEpr5aVYJnUeIF8QhsIPFtvcvE
- raxBjSxKJ1oipIqe6+KF/BWZ7zJBt8qtCKfHFXpBHxglKl0cVEaubDJ+j
- AK/bf89bhXZFzHxpl6Btd1GVQnTBmACBJM28zw2fsM0KHmYHZ/ya72iAn
- tJkYd7GcrG9HuGS5r4qgJlzAHThZ+Q+XsFvCLruymGlfzTFKI8mmA3neW A==;
-X-CSE-ConnectionGUID: /ekNAKu4QomzwG3imUq25g==
-X-CSE-MsgGUID: 3OU9by9+SKK7c2ydX3yDTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11575"; a="79717940"
-X-IronPort-AV: E=Sophos;i="6.18,322,1751266800"; d="scan'208";a="79717940"
+ bh=1M7dkAvWBsU6ueDY8jhkdI4qjiC0vtdknaFlQINaiIs=;
+ b=LAVewiE7rZ8f9zKqtTYGoqAO0HOPG7Sr8rPtwfjpOA3HCznj3OQpuOoe
+ AVLAZDtdocqobL7vsqnoXw7BKzzAVRMnKLUclbsmed4WzRVPjckv074pI
+ ibEcutME+Cv586MW2CyonFIjHrsIEU/EZXI1u5ILuc0EYxOUxyfTc0uN8
+ qRk9dxVJWZ+6Um10rpgXvwKIM2PL6Tck3lPZ//zT5Dch/3i8R1gLY1lM8
+ g7hK3nF1sDEtXtjf7cYSjNdpq3zu57JOZmrkkxvFI6a9ldvWZnDhIQDry
+ 71/GbfyyC8HQ4Ux9c9LzOYNYVvuFCkVanUrFF2YDNayAvbajbaFFy46j7 Q==;
+X-CSE-ConnectionGUID: pDNMc+92SHqOSKSyiOk/LA==
+X-CSE-MsgGUID: qbZ4lcBhQ2WS7UfOZWtFUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11575"; a="79717942"
+X-IronPort-AV: E=Sophos;i="6.18,322,1751266800"; d="scan'208";a="79717942"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Oct 2025 16:26:41 -0700
-X-CSE-ConnectionGUID: 1WEP7KklSJ69Mg6FgGQEgw==
-X-CSE-MsgGUID: 5O1Eq+OnQhW2NPoFaIIVgw==
+X-CSE-ConnectionGUID: 9OmaCydeSDOM6NPknUlxFQ==
+X-CSE-MsgGUID: 1MBETh9/RVq695vTepYpAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,322,1751266800"; d="scan'208";a="179882176"
+X-IronPort-AV: E=Sophos;i="6.18,322,1751266800"; d="scan'208";a="179882180"
 Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.61])
  by orviesa009.jf.intel.com with ESMTP; 07 Oct 2025 16:26:40 -0700
 From: Xin Wang <x.wang@intel.com>
@@ -46,9 +46,10 @@ Cc: kamil.konieczny@linux.intel.com, matthew.d.roper@intel.com,
  shuicheng.lin@intel.com, brian3.nguyen@intel.com, alex.zuo@intel.com,
  nakshtra.goyal@intel.com, dnyaneshwar.bhadane@intel.com,
  gustavo.sousa@intel.com, Xin Wang <x.wang@intel.com>
-Subject: [PATCH v2 5/6] tools: Use new APIs for xe device info queries
-Date: Tue,  7 Oct 2025 23:26:05 +0000
-Message-ID: <20251007232606.363629-6-x.wang@intel.com>
+Subject: [PATCH v2 6/6] lib/intel_device_info: Remove hardcoded .graphics_rel
+ values
+Date: Tue,  7 Oct 2025 23:26:06 +0000
+Message-ID: <20251007232606.363629-7-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251007232606.363629-1-x.wang@intel.com>
 References: <20251007050554.340485-1-x.wang@intel.com>
@@ -70,79 +71,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Update tools to use new runtime query APIs:
-- Replace intel_gen(devid) with intel_query_gen(fd)
-- Replace intel_get_device_info(devid) with intel_query_device_info(fd)
-- Update meson.build dependency from lib_igt_chipset to lib_igt
-
-These changes enable runtime device info queries for xe devices
-instead of relying on static device ID lookups.
+Remove hardcoded .graphics_rel values from device info structures.
+For xe devices, the graphics_rel will be determined at runtime
+via GMD_ID queries instead of static values.
 
 Signed-off-by: Xin Wang <x.wang@intel.com>
 ---
- tools/intel_tiling_detect.c      | 3 +--
- tools/xe-perf/meson.build        | 2 +-
- tools/xe-perf/xe_perf_configs.c  | 2 +-
- tools/xe-perf/xe_perf_recorder.c | 2 +-
- 4 files changed, 4 insertions(+), 5 deletions(-)
+ lib/intel_device_info.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/intel_tiling_detect.c b/tools/intel_tiling_detect.c
-index 951e2eecd..a6aca36f9 100644
---- a/tools/intel_tiling_detect.c
-+++ b/tools/intel_tiling_detect.c
-@@ -217,12 +217,11 @@ static void render(int fd, uint32_t width, uint32_t height, uint32_t tiling)
- 	struct buf_ops *bops;
- 	struct intel_bb *ibb;
- 	struct intel_buf src, dst;
--	uint32_t devid = intel_get_drm_devid(fd);
- 	igt_render_copyfunc_t render_copy = NULL;
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index a853f9ab4..4c35a422f 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -505,7 +505,6 @@ static const struct intel_device_info intel_pontevecchio_info = {
  
- 	bops = buf_ops_create(fd);
+ static const struct intel_device_info intel_lunarlake_info = {
+ 	.graphics_ver = 20,
+-	.graphics_rel = 4,
+ 	.display_ver = 20,
+ 	.has_4tile = true,
+ 	.has_flatccs = true,
+@@ -517,7 +516,6 @@ static const struct intel_device_info intel_lunarlake_info = {
  
--	igt_debug("%s() gen: %d\n", __func__, intel_gen(devid));
-+	igt_debug("%s() gen: %d\n", __func__, intel_query_gen(fd));
+ static const struct intel_device_info intel_battlemage_info = {
+ 	.graphics_ver = 20,
+-	.graphics_rel = 1,
+ 	.display_ver = 14,
+ 	.has_4tile = true,
+ 	.has_flatccs = true,
+@@ -529,7 +527,6 @@ static const struct intel_device_info intel_battlemage_info = {
  
- 	ibb = intel_bb_create(fd, SZ_4K);
- 
-diff --git a/tools/xe-perf/meson.build b/tools/xe-perf/meson.build
-index 8506aa320..575b525e2 100644
---- a/tools/xe-perf/meson.build
-+++ b/tools/xe-perf/meson.build
-@@ -1,7 +1,7 @@
- executable('xe-perf-configs',
-            [ 'xe_perf_configs.c' ],
-            include_directories: inc,
--           dependencies: [lib_igt_chipset, lib_igt_xe_oa],
-+           dependencies: [lib_igt, lib_igt_xe_oa],
-            install: true)
- 
- executable('xe-perf-recorder',
-diff --git a/tools/xe-perf/xe_perf_configs.c b/tools/xe-perf/xe_perf_configs.c
-index bd37fef5c..6ee261f88 100644
---- a/tools/xe-perf/xe_perf_configs.c
-+++ b/tools/xe-perf/xe_perf_configs.c
-@@ -192,7 +192,7 @@ main(int argc, char *argv[])
- 
- 	fprintf(stdout, "Found device id=0x%x\n", devid);
- 
--	devinfo = intel_get_device_info(drm_fd);
-+	devinfo = intel_query_device_info(drm_fd);
- 	if (!devinfo) {
- 		fprintf(stderr, "No device info found.\n");
- 		return EXIT_FAILURE;
-diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
-index f200fe9c9..7ce4a5684 100644
---- a/tools/xe-perf/xe_perf_recorder.c
-+++ b/tools/xe-perf/xe_perf_recorder.c
-@@ -1029,7 +1029,7 @@ main(int argc, char *argv[])
- 
- 	xe_device_get(ctx.drm_fd);
- 
--	ctx.devinfo = intel_get_device_info(ctx.devid);
-+	ctx.devinfo = intel_query_device_info(ctx.drm_fd);
- 	if (!ctx.devinfo) {
- 		fprintf(stderr, "No device info found.\n");
- 		goto fail;
+ static const struct intel_device_info intel_pantherlake_info = {
+ 	.graphics_ver = 30,
+-	.graphics_rel = 0,
+ 	.display_ver = 30,
+ 	.has_4tile = true,
+ 	.has_flatccs = true,
 -- 
 2.43.0
 
