@@ -4,62 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0107ECCA476
-	for <igt-dev@archiver.kernel.org>; Tue,  7 Oct 2025 08:35:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60C6CCA476
+	for <igt-dev@archiver.kernel.org>; Tue,  7 Oct 2025 09:31:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9EA1110E5B7;
-	Tue,  7 Oct 2025 08:35:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B78410E5BF;
+	Tue,  7 Oct 2025 09:31:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cFX7hr5b";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZBVasb6M";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD84F10E5B7
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Oct 2025 08:35:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A2AC10E176;
+ Tue,  7 Oct 2025 09:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759826127; x=1791362127;
+ t=1759829496; x=1791365496;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=x+sLKK1vn2tkijhRZOkYudXnjlinin3kKHun0nZJTPY=;
- b=cFX7hr5bFqDkCioDFqBm5UDzRpsrg4dAeo5U3+szksvfTPuApgPlN8rw
- 4Q/kNM4ByFwEyOpNgGHAq3O4USkl1HmYQj2QxovM6Z9DVA4gVWPMJ4u+7
- WVGI349CuNHEuFyOnUoetG8v6qYijQPX9EwaaAh43PFj8wQ0x1tRqb+yX
- 9HoQLThaIZvBDwEuNMC9+BccMXFhqpS46s6OE+e4zaaePtW0uIBETXAh5
- R8QaBJTcDyT1B8qWBelX+RikmhiI7J07YH0atrdbMnJai+/49NKD7gISu
- Mx4YmXPkAtJzasc5/+uYjJ4TbMC3zmfgQdAKIM2DVogRncllfECjP6f3G A==;
-X-CSE-ConnectionGUID: 7NmC0EZdSHS+qaH9F8I0AA==
-X-CSE-MsgGUID: YcEu8V2ySNafGXrmkJ7UPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11574"; a="62167672"
-X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; d="scan'208";a="62167672"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2025 01:35:27 -0700
-X-CSE-ConnectionGUID: 97+l+OAFRSaxNhs6om6pYw==
-X-CSE-MsgGUID: pB5H3O8xTne2qOPkbBZtHg==
+ mime-version:in-reply-to;
+ bh=TIBirp04rUf/fe7FE8WAlYlXkMScrHzj7hisDEBdLLI=;
+ b=ZBVasb6Mn6ZPbx25vElIuR5jqlgkxlxNjbldYAE1qbEi2MmBUNzn/H/F
+ TjqnE8P3w6wOKJXOKuVCE18mdJDiIwMl5uYf47/sUQcymCVNz8kQZ5fpJ
+ Xcjln/ske5KmTrE2F0zR9nhximtdrfy1g7BSGwDQbO/fd047cOwPQWqDh
+ p7/3jeKZ5jREG1IHfPpuJmz383olRh+qP7uf7CZr3qhLtqusSWtrNCxHd
+ MMrT0kY3KznM5yFz0xJU8b1bmRSs4nTSMgSm0jXPvcGkaYxrNLuSc92jx
+ /mEAROu16l1My/fs8MPgyTvMoBlSDNtHCLkGVmfkrFGvPEX3v5iv31gPU g==;
+X-CSE-ConnectionGUID: osp+r/j3Si6S0RCJIvRV8w==
+X-CSE-MsgGUID: IHEMXr/aTX+2MiwjGWuWIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11574"; a="61716183"
+X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; d="scan'208";a="61716183"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2025 02:31:35 -0700
+X-CSE-ConnectionGUID: 8xcUxAchTUuB5MJ2M/LxEQ==
+X-CSE-MsgGUID: op84YNjRTBSgFqey/5HF2A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; d="scan'208";a="211062263"
+X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; d="scan'208";a="180517953"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2025 01:35:25 -0700
-Date: Tue, 7 Oct 2025 10:35:23 +0200
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2025 02:31:33 -0700
+Date: Tue, 7 Oct 2025 11:31:30 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: S Sebinraj <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v3 1/1] tests/kms_concurrent: Add SYSVIPC support
- check
-Message-ID: <20251007083523.fmnf7vq43saeihxp@kamilkon-DESK.igk.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH i-g-t 3/3] tests/gem_eio: Iterate over physical rings in
+ stress subtests
+Message-ID: <20251007093130.ulr3ok2jxzqzc5c5@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
- jeevaka.badrappan@intel.com,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20250915122923.2274820-1-s.sebinraj@intel.com>
- <20250915122923.2274820-2-s.sebinraj@intel.com>
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+References: <20250930125430.2323555-5-janusz.krzysztofik@linux.intel.com>
+ <20250930125430.2323555-8-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250915122923.2274820-2-s.sebinraj@intel.com>
+In-Reply-To: <20250930125430.2323555-8-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,86 +76,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
-On 2025-09-15 at 17:59:23 +0530, S Sebinraj wrote:
-> Check for System V IPC support in kms_concurrent test to handle
-> targets that don't have SYSVIPC enabled in their kernel. Without this
-> check, the test would fail with assertion errors when trying to use
-> message queues.
+Hi Janusz,
+On 2025-09-30 at 14:49:03 +0200, Janusz Krzysztofik wrote:
+> To avoid igt_runner timing out stress subtests, limit the number of
+> exercised rings by iterating over physical rings and skipping other.
 > 
-> The implementation checks if the target supports IPC,
-> if not found it skips the test.
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  tests/intel/gem_eio.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+> index 5b0925a8c6..cbfed99b61 100644
+> --- a/tests/intel/gem_eio.c
+> +++ b/tests/intel/gem_eio.c
+> @@ -997,7 +997,7 @@ static void test_reset_stress(int fd, unsigned int flags)
+>  	const intel_ctx_t *ctx0 = context_create_safe(fd);
+>  	uint64_t ahnd = get_reloc_ahnd(fd, ctx0->id);
+>  
+> -	for_each_ring(e, fd) {
+> +	for_each_physical_ring(e, fd) {
 
-Also
-
-+cc Zbigniew
-Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+Could you send it as separate change with r-b from Krzysztof?
+imho it could be merged first.
 
 Regards,
 Kamil
 
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> ---
->  lib/igt_core.h         |  8 ++++++++
->  tests/kms_concurrent.c | 18 ++++++++++++++++++
->  2 files changed, 26 insertions(+)
-> 
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index 6f462205f..1da8f21dc 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -49,6 +49,14 @@
->  #include "igt_freebsd.h"
->  #endif
+>  		struct intel_execution_engine2 engine;
 >  
-> +/**
-> + * device_supports_sysvipc:
-> + *
-> + * A function to check if the device supports IPC
-> + * @return: true or false
-> + * */
-> +bool device_supports_sysvipc(void);
-> +
->  #ifndef IGT_LOG_DOMAIN
->  #define IGT_LOG_DOMAIN (NULL)
->  #endif
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-> index 4f16f8b89..80512a140 100644
-> --- a/tests/kms_concurrent.c
-> +++ b/tests/kms_concurrent.c
-> @@ -107,6 +107,22 @@ static void test_fini(data_t *data, enum pipe pipe, int n_planes,
->  	data->fb = NULL;
->  }
->  
-> +/**
-> + * Checks if the current device supports SYSVIPC by verifying the existence and accessibility
-> + * of the /proc/sysvipc directory.
-> + * Returns: true if accessible for read and write, false otherwise.
-> + */
-> +bool device_supports_sysvipc(void)
-> +{
-> +	char path[128] = {'\0'};
-> +
-> +	snprintf(path, sizeof(path), "/proc/sysvipc");
-> +	if (access(path, R_OK | W_OK) == 0)
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->  static void
->  create_fb_for_mode_position(data_t *data, drmModeModeInfo *mode,
->  			    int *rect_x, int *rect_y,
-> @@ -395,6 +411,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  		igt_display_require(&data.display, data.drm_fd);
->  		igt_require(data.display.is_atomic);
->  		igt_display_require_output(&data.display);
-> +		igt_require(device_supports_sysvipc());
-> +
->  		if (is_intel_device(data.drm_fd))
->  			intel_allocator_multiprocess_start();
->  	}
+>  		engine = gem_eb_flags_to_engine(eb_ring(e));
 > -- 
-> 2.34.1
+> 2.51.0
 > 
