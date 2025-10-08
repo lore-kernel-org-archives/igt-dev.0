@@ -4,62 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7FABCCA472
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Oct 2025 14:41:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6EACCCA470
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Oct 2025 14:43:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8AFFC10E837;
-	Wed,  8 Oct 2025 14:41:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 99C9F10E840;
+	Wed,  8 Oct 2025 14:43:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="StKs3UuO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CFmEIn/p";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 645D110E836;
- Wed,  8 Oct 2025 14:41:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9A6410E83D
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Oct 2025 14:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759934498; x=1791470498;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=tw7Fy9CWSF6X+QLLduWxrKP+lHeoPgInmT9dWOJfRZ4=;
- b=StKs3UuO2XBR2B1n29UHgZOhJR8nj53uQnNcviyy1aHb/xLU0Hp9uVbS
- VDjQ9JuTYkQoB6CFDYCddegBH4X3ICYmAaPKbHkGwMqd2eAKbR7IePc/5
- TXgv0HuFNGDf6bnCKGfqMdG7HRgYrqrsAn6LU8gYAEjRO3FcbhFgRv6yb
- 4ftgLiJCMK3CRiSK7CDK0fSwVAVTwMHvOh5C2PbGjCeICRKMLBIyvzBWi
- dSb9ETZrw59GSOsk3Yn66/YopMqy2BlD5w/LiGuRgaivNrcUW8sWz5RqI
- lhmYg77RxEFczXSHQJGQpWQlrUNtp3qBi29TnLs+vYnbQFg/a0RSMz3Mz w==;
-X-CSE-ConnectionGUID: E2Yf6AafTU6NN3dk6d0lZA==
-X-CSE-MsgGUID: t0oFGMDLSCyCIIUvAD3W7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="72392842"
-X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="72392842"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ t=1759934590; x=1791470590;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=9STKSHCKC//vh249J9wcj+T4chWD40J7z1AmfU/IQxA=;
+ b=CFmEIn/p+iRo7AciTWGRcX1oHXLKlIjUfshMzYAJEj4himDzGnEPWm8f
+ 8kY2/6DK9xd73V4aTdg6T8h0YIm78hPHFIJhsTT74aYw4EPstcqLAsajq
+ WKh3RDlvnLsiWm6EjQBJhHL2e3m1Do/iu9cNKbTIv7chjL//r1BuzZYxV
+ D1waO1Z5eGS/6Dn6/m2+L3L9H4nzIzO3jXxumywj5idMYBXTYrDvBxscH
+ nyD7yBE2cbuyIr+X/+5TOu+U86FVS/AeQnqlUPinBti/0kd7IxEHJ3FGt
+ eEO1L4Vg5stHPERb3FBHzdxce1qaBQQDAfzNewPyRzB/+FfKcDSN6+poq Q==;
+X-CSE-ConnectionGUID: Wk1m/SmqQ5GRAtkzEXgglw==
+X-CSE-MsgGUID: +RMqEE4ZSVinIap5Pye99Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="72393111"
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="72393111"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2025 07:41:37 -0700
-X-CSE-ConnectionGUID: RjU/9nSbQiSLn5SsBK8YQw==
-X-CSE-MsgGUID: +1DZpsSQR8izpNmi88O+Vg==
+ 08 Oct 2025 07:43:10 -0700
+X-CSE-ConnectionGUID: D42VpQQdRoSx28MjsJd5sA==
+X-CSE-MsgGUID: kfPmlwsKQMKXXP7NvzamHA==
 X-ExtLoop1: 1
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.244.124])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2025 07:41:35 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/5] tests/gem_eio: Skip on too few reset-resume
- cycles
-Date: Wed, 08 Oct 2025 16:41:32 +0200
-Message-ID: <2425981.BjyWNHgNrj@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20251008140330.zjuxak2udj4p4org@kamilkon-DESK.igk.intel.com>
-References: <20251007113910.3336564-7-janusz.krzysztofik@linux.intel.com>
- <2717763.tIAgqjz4sF@jkrzyszt-mobl2.ger.corp.intel.com>
- <20251008140330.zjuxak2udj4p4org@kamilkon-DESK.igk.intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,213,1754982000"; d="scan'208";a="180868182"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 07:43:08 -0700
+Date: Wed, 8 Oct 2025 16:43:05 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com
+Subject: Re: [PATCH i-g-t] kms_flip_tiling: reduce exec. time for sim env
+Message-ID: <20251008144305.mrox7bkxxunj24hz@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org,
+ swati2.sharma@intel.com
+References: <20251008043107.1536018-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251008043107.1536018-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,96 +70,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
+Hi Jeevan,
+On 2025-10-08 at 10:01:07 +0530, Jeevan B wrote:
 
-On Wednesday, 8 October 2025 16:03:30 CEST Kamil Konieczny wrote:
-> Hi Janusz,
-> On 2025-10-08 at 14:15:28 +0200, Janusz Krzysztofik wrote:
-> > Hi Kamil,
-> > 
-> > Thanks for review.
-> > 
-> > On Wednesday, 8 October 2025 13:59:11 CEST Kamil Konieczny wrote:
-> > > Hi Janusz,
-> > > On 2025-10-07 at 13:38:24 +0200, Janusz Krzysztofik wrote:
-> > > > Subtests that measure time of resume after engine reset compare a median
-> > > > value calculated from the measurements against a presumed limit and fail
-> > > > if the limit has been exceeded.  However, if it occurs not possible to
-> > > > collect enough measurements required for stable median value calculation,
-> > > > that condition is now ignored and success is reported, as if the measured
-> > > > time fit below the limit.
-> > > > 
-> > > > Skip if not able to collect sufficient number of time measurements.  CI
-> > > > results from slow platforms that always skip may be handled as expected
-> > > > skips.
-> > > > 
-> > > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > > > ---
-> > > >  tests/intel/gem_eio.c | 5 +++--
-> > > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
-> > > > index b65b914faf..0a00ef026e 100644
-> > > > --- a/tests/intel/gem_eio.c
-> > > > +++ b/tests/intel/gem_eio.c
-> > > > @@ -409,8 +409,9 @@ static void check_wait_elapsed(const char *prefix, int fd, igt_stats_t *st)
-> > > >  		 igt_stats_get_median(st)*1e-6,
-> > > >  		 igt_stats_get_max(st)*1e-6);
-> > > >  
-> > > > -	if (st->n_values < 9)
-> > > > -		return; /* too few for stable median */
-> > > > +	igt_require_f(st->n_values > 8,
-> > > > +		      "at least 9 resets completed for stable median calculation, %d is too few\n",
-> > > 
-> > > imho add 'Test needs' at begin of sentence:
-> > > 		      "Test needs at least 9 resets completed for stable median calculation, %d is too few\n",
-> > 
-> > It was never clear enough to me if the message should explain the requirement, 
-> > or describe the problem.  I've always been assuming the former, and my stderr 
-> > messages usually looked like this one:
-> > 
-> >     Test requirement: st->n_values > 8
-> >     at least 9 resets completed for stable median calculation, 8 is too few
+remove dot from subject:
+
+[PATCH i-g-t] kms_flip_tiling: reduce exec time for sim env
+
+> For simulation environment, we can reduce execution time
+> by running test only with basic tiling combincations.
 > 
-> Ok, looks reasonable, so up to you, you could keep your code
-> as is with my r-b here, imho this is more readable:
+> v2: Add helper to check basic tiling support.
 > 
->      Test requirement: st->n_values >= 9
->      at least 9 completed resets are needed for stable median calculation, 8 is too few
-
-I like your wording better then mine.
-
-Thanks,
-Janusz
-
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  tests/intel/kms_flip_tiling.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
-> Regards,
-> Kamil
+> diff --git a/tests/intel/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
+> index ff9ad1229..72fe01daf 100644
+> --- a/tests/intel/kms_flip_tiling.c
+> +++ b/tests/intel/kms_flip_tiling.c
+> @@ -84,6 +84,13 @@ static int try_commit(igt_display_t *display)
+>  				       COMMIT_ATOMIC : COMMIT_LEGACY);
+>  }
+>  
+> +static bool is_allowed_modifier(uint64_t mod)
+> +{
+> +	return mod == DRM_FORMAT_MOD_LINEAR ||
+> +	       mod == I915_FORMAT_MOD_4_TILED ||
+> +	       mod == I915_FORMAT_MOD_X_TILED;
+> +}
+> +
+>  static uint64_t pageflip_timeout_us(drmModeModeInfo *mode)
+>  {
+>  	uint64_t timeout_ns;
+> @@ -242,6 +249,15 @@ igt_main
+>  					if (plane->formats[j] != data.testformat)
+>  						continue;
+>  
+> +					if (igt_run_in_simulation() &&
+
+Consider using var for it, preferable at function start,
+for example:
+
+bool run_in_simulation = igt_run_in_simulation();
+
+so later:
+					if (run_in_simulation &&
+
+> +					    !is_allowed_modifier(plane->modifiers[i]))
+> +						continue;
+> +
+> +					if (igt_run_in_simulation() &&
+> +					    !is_allowed_modifier(plane->modifiers[j]))
+> +						continue;
+> +
+> +
+
+Remove one newline (there are two).
+
+Regards,
+Kamil
+
+>  					igt_dynamic_f("pipe-%s-%s-%s-to-%s",
+>  						      kmstest_pipe_name(pipe),
+>  						      igt_output_name(output),
+> -- 
+> 2.43.0
 > 
-> > 
-> > see https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13866/shard-mtlp-8/igt@gem_eio@unwedge-stress.html
-> > 
-> > If you think my understanding is wrong then I'll fix this as you suggest.
-> > 
-> > Thanks,
-> > Janusz
-> > 
-> > 
-> > > 
-> > > With this
-> > > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > 
-> > > > +		      st->n_values);
-> > > >  
-> > > >  	/*
-> > > >  	 * Older platforms need to reset the display (incl. modeset to off,
-> > > 
-> > 
-> > 
-> > 
-> > 
-> 
-
-
-
-
