@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121CACCA470
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Oct 2025 07:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF8DBCCA470
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Oct 2025 08:07:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9843810E090;
-	Wed,  8 Oct 2025 07:30:49 +0000 (UTC)
-Received: from 6aec98b87f92 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98F9910E090;
- Wed,  8 Oct 2025 07:30:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3208661259293892344=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4AA3D10E17A;
+	Wed,  8 Oct 2025 08:07:09 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JXSX1qqi";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C223B10E17A
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Oct 2025 08:07:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1759910828; x=1791446828;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=zJRWU9BNV61zrTq4cEGIv6F/Nrkx7r351mdK1qPQQck=;
+ b=JXSX1qqiNZ5W8nrRtbOcFslgNVpKS4sND+56M9/vXKRmYzn6gSeAtmHc
+ Cc3J+bBHa27eFt7N2+3LcipD8NPDw/gFWIFejUJSwJmgQWJ5Eb2mtIYBo
+ 7aLWB2NlvPpXTIVQW9rN++Ln7p4rH8jcqLHPibeme4I6ZrJKJrZL+P4s6
+ XSvpQjj18MZJ9XKXBEU/cc0zFArF640zgRVTKlTswJtGSVaFoAYl9A1Wh
+ UMyIA5hYZ6WoKF2GYI8V2WDsly/cbVa2I0Tcqtdzp31Q9erJUzeFuAevk
+ YEHeP+eWVuIuhDWHnqCKFVRrvF/xDmOXKUfzzFcOMqXxbm4S6MbTj5cSs Q==;
+X-CSE-ConnectionGUID: vi6MwLMRRlaqvxOtpJR1rg==
+X-CSE-MsgGUID: cSIyg/BWQ/y7wDYmoHbPPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11575"; a="62005495"
+X-IronPort-AV: E=Sophos;i="6.18,323,1751266800"; d="scan'208";a="62005495"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2025 01:07:07 -0700
+X-CSE-ConnectionGUID: HmVIGfOgQ8+0jVokj7EYjw==
+X-CSE-MsgGUID: 5LtacCgjTUyQMLJ0vvHL/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,323,1751266800"; d="scan'208";a="184647804"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.39])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2025 01:07:03 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: Pawel Sikora <pawel.sikora@intel.com>, igt-dev@lists.freedesktop.org,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
+ <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
+ <bhanuprakash.modem@gmail.com>, Karthik B S <karthik.b.s@intel.com>
+Subject: Re: [PATCH i-g-t v10 0/5] Establish MkDocs Documentation Framework
+ for IGT GPU Tools
+In-Reply-To: <87ldlme8oc.wl-ashutosh.dixit@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250909112741.185825-1-pawel.sikora@intel.com>
+ <865f580c0697ef1df5c364841a561475d46aa9ba@intel.com>
+ <87ldlme8oc.wl-ashutosh.dixit@intel.com>
+Date: Wed, 08 Oct 2025 11:07:00 +0300
+Message-ID: <4bf159d87af719a5c820f32e5430ea252ff06e3a@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fconcurrent=3A?=
- =?utf-8?q?_Check_for_SYSVIPC_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "S Sebinraj" <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 08 Oct 2025 07:30:48 -0000
-Message-ID: <175990864861.16449.17461942364922083726@6aec98b87f92>
-X-Patchwork-Hint: ignore
-References: <20251008054812.545177-1-s.sebinraj@intel.com>
-In-Reply-To: <20251008054812.545177-1-s.sebinraj@intel.com>
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,168 +72,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3208661259293892344==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, 07 Oct 2025, "Dixit, Ashutosh" <ashutosh.dixit@intel.com> wrote:
+> On Wed, 10 Sep 2025 01:26:23 -0700, Jani Nikula wrote:
+>>
+>> On Tue, 09 Sep 2025, Pawel Sikora <pawel.sikora@intel.com> wrote:
+>> > Dear Maintainers,
+>> >
+>> > I am submitting a series of patches to introduce a comprehensive
+>> > documentation framework for the IGT GPU Tools project using MkDocs.
+>>
+>> There's been a lot of iterations in fairly quick succession, and I have
+>> yet to see any comment from maintainers wrt my feedback [1].
+>>
+>> I'd rather see a clear statement "yeah let's go with MkDocs" than just
+>> having this gradually happen without a conscious decision.
+>
+> I will take a slightly different approach to this. I think Jani has a valid
+> point and if this effort were starting today, I'd say go with
+> sphinx/rst. But as far as I see, this series has required significant
+> effort to get to this point and is almost ready to merge.
 
-== Series Details ==
+I don't think it had taken a significant effort by the time I first
+brought this up, and I kind of expected to get feedback from the
+maintainers *before* a lot more effort had been put into it.
 
-Series: tests/kms_concurrent: Check for SYSVIPC (rev3)
-URL   : https://patchwork.freedesktop.org/series/154507/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8577 -> IGTPW_13870
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/index.html
-
-Participating hosts (44 -> 42)
-------------------------------
-
-  Missing    (2): fi-snb-2520m fi-skl-6600u 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_13870 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-6:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-11:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live:
-    - bat-atsm-1:         [DMESG-FAIL][7] ([i915#12061] / [i915#14204]) -> [DMESG-FAIL][8] ([i915#12061] / [i915#13929])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-atsm-1/igt@i915_selftest@live.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-atsm-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-atsm-1:         [DMESG-FAIL][9] ([i915#14204]) -> [DMESG-FAIL][10] ([i915#13929])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-atsm-1/igt@i915_selftest@live@mman.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-atsm-1/igt@i915_selftest@live@mman.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
-  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
+And now it looks like what I feared, it just gradually happened and
+nobody stood up and made a decision.
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8577 -> IGTPW_13870
-
-  CI-20190529: 20190529
-  CI_DRM_17325: ceff45305e07bda5e3b4d6e9f7b750eb2c20cf44 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_13870: 13870
-  IGT_8577: 8577
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/index.html
-
---===============3208661259293892344==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+BR,
+Jani.
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+>
+> I don't know how much time/effort it will take for a similar sphinx based
+> solution (Pawel would you know?), but given where we are, it seems we
+> should just merge this (since this would provide some missing documentation
+> immediately). And then if we think we need a sphinx based solution and
+> someone can be found to do that, they can switch the documentation to the
+> sphinx based solution later.
+>
+> I want to elicit Pawel's feedback in particular, since he is the one doing
+> this work.
+>
+> Thanks.
+> --
+> Ashutosh
+>
+>
+>>
+>> Cc: Everyone from MAINTAINERS.
+>>
+>>
+>> BR,
+>> Jani.
+>>
+>>
+>> [1] https://lore.kernel.org/r/3d83d59669d62f004a507a25510b21f9bd273410@intel.com
+>>
+>>
+>> --
+>> Jani Nikula, Intel
 
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_concurrent: Check for SYSVIPC (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154507/">https://patchwork.freedesktop.org/series/154507/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8577 -&gt; IGTPW_13870</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/index.html</p>
-<h2>Participating hosts (44 -&gt; 42)</h2>
-<p>Missing    (2): fi-snb-2520m fi-skl-6600u </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_13870 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8577/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13870/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8577 -&gt; IGTPW_13870</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17325: ceff45305e07bda5e3b4d6e9f7b750eb2c20cf44 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_13870: 13870<br />
-  IGT_8577: 8577</p>
-
-</body>
-</html>
-
---===============3208661259293892344==--
+-- 
+Jani Nikula, Intel
