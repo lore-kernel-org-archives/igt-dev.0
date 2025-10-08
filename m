@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B13CCAC5BB
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67013CCA470
 	for <igt-dev@archiver.kernel.org>; Wed,  8 Oct 2025 21:02:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B00210E8DB;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0A74910E8D9;
 	Wed,  8 Oct 2025 21:02:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hIm/6ry6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hJTzzy3f";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C2D910E8D9
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3EB610E8DB
  for <igt-dev@lists.freedesktop.org>; Wed,  8 Oct 2025 21:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759957360; x=1791493360;
+ t=1759957361; x=1791493361;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0d1dAlHGEHXuRs5ZgpdeBYjgRCurthxibxqHZLjZHYY=;
- b=hIm/6ry6GP2RB4UNWaTjcoVswLmH1d4wj3H8dYQcUzxKay4iUBHt6IxQ
- Bti0QbXTtZ2aUC/HoIabsDUf0mEkZQlL72xzD92POO9gmYwkJhw7X5d55
- Pk3n/gu3ohhsMw/dfYNsTBEHUXAHNxosGT4wS/xy2xbyRfwLu4aqozmzC
- G6GEZVDUTE9vwhWJjx9kx8n20zpGTgXDYbbhAzLn//YrlsCEKTdBzaGph
- bn9D+0I4oKzDCtnsG5Xm4AN+Nd+ZVHjLN408J48Nl35LsdmPVNKX4+oZt
- 4fBCC5U0f2AbIFWqa/SqAVwxprNsfHiSacwnBYP34dwrGoDS8D5fFbBJn g==;
-X-CSE-ConnectionGUID: T+SNKaKJTf2aVMTft9+y1Q==
-X-CSE-MsgGUID: GM4BUlekRtC+yl5pQM67IA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="61867748"
-X-IronPort-AV: E=Sophos;i="6.19,214,1754982000"; d="scan'208";a="61867748"
+ bh=1Ou9X+WuSJomM646baTYIXEqkeNc1s93Cl2r312h03s=;
+ b=hJTzzy3fEfDNu8Q8HNoUB4Xg/27PDjoW8X7/1/Paiw1Yrlxzaq1/AC9y
+ aFmjhnSASFLjFPXpCgSTgvo3lSugZzhwHrXGfa9Gr85T9D11JdSLZBcWy
+ C1tPjssSlDysPOAwAsaIXXwXSAa9zQr+MKCAmrFVlOPDNKl1/MGuQuVq0
+ UMEzqczV0DaBvsEuxP1FuiPeSXu5/+Y+1wTKca3GtZj9S4N1CkTzTvyob
+ zRFpebi1rGFemWeDt4U4BZkutlw6buuF7xKPxDDpJ91ccgljxvg0qQHB6
+ x2Zcu35S7++C9urAskjzFoSN1TxKrGV02mr7A8vZQrxTvyH+8wjWE5luB w==;
+X-CSE-ConnectionGUID: 1nEyeTNyQEKKI6T2rEHt4g==
+X-CSE-MsgGUID: LuUSTDcUQ6C8ZATWp8tJNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="61867749"
+X-IronPort-AV: E=Sophos;i="6.19,214,1754982000"; d="scan'208";a="61867749"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  08 Oct 2025 14:02:40 -0700
-X-CSE-ConnectionGUID: 0BQb+M//SiS/3pqlTsMPHA==
-X-CSE-MsgGUID: pLrbiVGIT+K1Dgt4WabBVA==
+X-CSE-ConnectionGUID: 5SKb0LUoR1ijDUiKOygGmg==
+X-CSE-MsgGUID: GU+2MY8zST20VdYKTH67Dw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,214,1754982000"; d="scan'208";a="184920003"
+X-IronPort-AV: E=Sophos;i="6.19,214,1754982000"; d="scan'208";a="184920007"
 Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.61])
- by fmviesa005.fm.intel.com with ESMTP; 08 Oct 2025 14:02:39 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 08 Oct 2025 14:02:40 -0700
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com, matthew.d.roper@intel.com,
  shuicheng.lin@intel.com, brian3.nguyen@intel.com, alex.zuo@intel.com,
  nakshtra.goyal@intel.com, dnyaneshwar.bhadane@intel.com,
  gustavo.sousa@intel.com, Xin Wang <x.wang@intel.com>
-Subject: [PATCH v3 0/6] lib/intel_device_info: get the xe .graphics_rel from
- GMD_ID
-Date: Wed,  8 Oct 2025 21:02:30 +0000
-Message-ID: <20251008210236.396859-1-x.wang@intel.com>
+Subject: [PATCH v3 1/6] lib: Add runtime device info query APIs for xe devices
+Date: Wed,  8 Oct 2025 21:02:31 +0000
+Message-ID: <20251008210236.396859-2-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251007050554.340485-1-x.wang@intel.com>
+In-Reply-To: <20251008210236.396859-1-x.wang@intel.com>
 References: <20251007050554.340485-1-x.wang@intel.com>
+ <20251008210236.396859-1-x.wang@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,106 +70,173 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patch series introduces runtime device information query APIs for xe devices,
-replacing static device ID lookups with dynamic GMD_ID-based queries.
+Introduce new APIs to query device information at runtime for xe devices:
+- intel_query_gen(int fd): Get graphics generation
+- intel_query_graphics_ver(int fd): Get combined graphics version
+- intel_query_device_info(int fd): Get device info structure
 
-Background:
------------
-Currently, IGT relies on static device ID tables to determine device capabilities
-like graphics generation and version. For xe devices, this approach has limitations:
+For xe devices, graphics versions (both major and minor) can be
+accurately determined by retrieving GMD_ID via IOCTL, rather than
+relying on static intel_device_match table. Different device instances
+of the same type may have different graphics_rel (minor version) values.
 
-1. Different device instances may have different graphics_rel (minor version) values
-2. Adding new device IDs requires updating hardcoded tables
-3. Graphics version information from GMD_ID is more accurate than static lookups
+Implementation details:
+- xe_device struct now includes intel_device_info for compatibility
+- graphics_rel is populated from GMD_ID's ip_ver_minor at runtime
+- For non-GMD_ID platforms (ip_ver_major == 0), hardcoded values are preserved
+- New APIs fall back to traditional devid-based lookup for i915 devices
 
-Solution:
----------
-This series introduces new runtime query APIs:
-- intel_query_gen(fd): Get graphics generation from GMD_ID
-- intel_query_graphics_ver(fd): Get combined graphics version  
-- intel_query_device_info(fd): Get complete device info structure
+This infrastructure enables accurate device capability detection and
+avoids issues when adding new device IDs with varying graphics_rel values.
 
-These APIs enable accurate device version detection by querying GMD_ID at runtime
-rather than relying on static device ID matching.
+Signed-off-by: Xin Wang <x.wang@intel.com>
+---
+ lib/intel_chipset.c | 63 +++++++++++++++++++++++++++++++++++++++++++++
+ lib/intel_chipset.h |  3 +++
+ lib/xe/xe_query.c   | 19 ++++++++++++++
+ lib/xe/xe_query.h   |  3 +++
+ 4 files changed, 88 insertions(+)
 
-Implementation approach:
-------------------------
-The series follows a layered approach to ensure clean integration:
-
-1. Add new API infrastructure (lib/intel_chipset, lib/xe/xe_query)
-2. Update xe-specific library code to use new APIs  
-3. Update core library functions to use new APIs
-4. Update test cases to use new APIs
-5. Update tools to use new APIs
-6. Remove hardcoded graphics_rel values as cleanup
-
-Benefits:
----------
-- Accurate graphics version detection including minor versions
-- Reduced maintenance burden for new device additions
-- Better compatibility with varying device configurations
-- Consistent API across xe and i915 devices (fallback supported)
-
-Testing:
---------
-Tested on xe devices with GMD_ID support. Fallback to traditional devid-based
-lookup verified for i915 devices. All existing tests pass with no functional
-changes to test behavior. 
-
-v2: The caching logic is implemented in intel_query_device_info(), while the
-    other two functions directly call it to retrieve information.
-  - Fixed error in xe_pat.c
-
-Xin Wang (6):
-  lib: Add runtime device info query APIs for xe devices
-  lib/xe: Use new APIs for xe device info queries
-  lib: Use new APIs for xe device info queries
-  tests/intel: Use new APIs for xe device info queries
-  tools: Use new APIs for xe device info queries
-  lib/intel_device_info: Remove hardcoded .graphics_rel values
-
- lib/gpgpu_shader.c                     |  2 +-
- lib/gpu_cmds.c                         | 22 ++++-----
- lib/igt_draw.c                         |  6 +--
- lib/igt_gt.c                           | 10 ++--
- lib/igt_store.c                        |  2 +-
- lib/intel_blt.c                        | 21 ++++-----
- lib/intel_blt.h                        |  2 +-
- lib/intel_bufops.c                     | 13 +++---
- lib/intel_chipset.c                    | 63 ++++++++++++++++++++++++++
- lib/intel_chipset.h                    |  3 ++
- lib/intel_common.c                     |  8 ++--
- lib/intel_compute.c                    |  7 ++-
- lib/intel_device_info.c                |  3 --
- lib/intel_mocs.c                       | 15 +++---
- lib/intel_pat.c                        | 17 ++++---
- lib/ioctl_wrappers.c                   |  2 +-
- lib/rendercopy_gen9.c                  | 22 ++++-----
- lib/xe/xe_legacy.c                     |  2 +-
- lib/xe/xe_oa.c                         |  4 +-
- lib/xe/xe_query.c                      | 19 ++++++++
- lib/xe/xe_query.h                      |  3 ++
- lib/xe/xe_sriov_provisioning.c         |  4 +-
- tests/intel/api_intel_allocator.c      |  2 +-
- tests/intel/kms_ccs.c                  | 13 ++----
- tests/intel/kms_draw_crc.c             |  2 +-
- tests/intel/kms_fbcon_fbt.c            |  2 +-
- tests/intel/kms_frontbuffer_tracking.c | 12 ++---
- tests/intel/kms_pipe_stress.c          |  4 +-
- tests/intel/xe_ccs.c                   | 24 +++++-----
- tests/intel/xe_copy_basic.c            |  6 +--
- tests/intel/xe_debugfs.c               |  3 +-
- tests/intel/xe_eudebug_online.c        |  8 +---
- tests/intel/xe_exec_store.c            | 17 +++----
- tests/intel/xe_fault_injection.c       |  2 +-
- tests/intel/xe_oa.c                    | 38 +++++++++-------
- tests/intel/xe_pat.c                   | 26 +++++------
- tools/intel_tiling_detect.c            |  3 +-
- tools/xe-perf/meson.build              |  2 +-
- tools/xe-perf/xe_perf_configs.c        |  2 +-
- tools/xe-perf/xe_perf_recorder.c       |  2 +-
- 40 files changed, 237 insertions(+), 181 deletions(-)
-
+diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
+index 760faede2..890b1e3fa 100644
+--- a/lib/intel_chipset.c
++++ b/lib/intel_chipset.c
+@@ -189,3 +189,66 @@ intel_check_pch(void)
+ 		return;
+ 	}
+ }
++
++/**
++ * intel_query_device_info:
++ * @fd: open i915/xe drm file descriptor
++ *
++ * Returns device information structure for device @fd. For i915 devices,
++ * falls back to i915 device info lookup. This function caches the result
++ * per file descriptor for performance.
++ */
++const struct intel_device_info *intel_query_device_info(int fd)
++{
++	static __thread int cached_fd = -1;
++	static __thread const struct intel_device_info *cached_info;
++	struct xe_device *xe_dev;
++
++	if (cached_fd == fd)
++		goto out;
++
++	if (is_i915_device(fd)) {
++		cached_info = intel_get_device_info(intel_get_drm_devid(fd));
++	} else {
++		xe_dev = xe_device_get(fd);
++		if (!xe_dev)
++			return NULL;
++		cached_info = &xe_dev->info;
++	}
++
++	cached_fd = fd;
++
++out:
++	return cached_info;
++}
++
++/**
++ * intel_query_gen:
++ * @fd: open i915/xe drm file descriptor
++ *
++ * Returns gen IP version for device @fd. For i915 devices,
++ * falls back to i915 graphics version lookup.
++ */
++unsigned intel_query_gen(int fd)
++{
++	const struct intel_device_info *info = intel_query_device_info(fd);
++
++	return info ? info->graphics_ver : 0;
++}
++
++/**
++ * intel_query_graphics_ver:
++ * @fd: open i915/xe drm file descriptor
++ *
++ * Returns graphics IP version for device @fd. For i915 devices,
++ * falls back to i915 graphics version lookup.
++ */
++unsigned intel_query_graphics_ver(int fd)
++{
++	const struct intel_device_info *info = intel_query_device_info(fd);
++
++	if (!info)
++		return 0;
++
++	return IP_VER(info->graphics_ver, info->graphics_rel);
++}
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 2f6bf788a..8f3ea0ce5 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -104,6 +104,9 @@ const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid) __attribute__(
+ unsigned intel_gen(uint16_t devid) __attribute__((pure));
+ unsigned intel_graphics_ver(uint16_t devid) __attribute__((pure));
+ unsigned intel_display_ver(uint16_t devid) __attribute__((pure));
++const struct intel_device_info *intel_query_device_info(int fd);
++unsigned intel_query_gen(int fd);
++unsigned intel_query_graphics_ver(int fd);
+ 
+ extern enum pch_type intel_pch;
+ 
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index a89e0b980..3caeecf20 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -20,6 +20,7 @@
+ 
+ #include "drmtest.h"
+ #include "ioctl_wrappers.h"
++#include "igt_core.h"
+ #include "igt_map.h"
+ 
+ #include "xe_query.h"
+@@ -375,10 +376,28 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+ 	xe_dev->gt_list = xe_query_gt_list_new(fd);
+ 
++	memcpy(&xe_dev->info, intel_get_device_info(xe_dev->dev_id), sizeof(xe_dev->info));
++
+ 	/* GT IDs may be non-consecutive; keep a mask of valid IDs */
+ 	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
+ 		xe_dev->gt_mask |= (1ull << xe_dev->gt_list->gt_list[gt].gt_id);
+ 
++	/*
++	* Set graphics_rel based on the main GT's ip_ver_minor. We should
++	* use the hardcoded value for the none GMD_ID (ip_ver_major == 0)
++	* platforms (e.g. DG2,ADL,ATSM)
++	*/
++	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
++		if (xe_dev->gt_list->gt_list[gt].type == DRM_XE_QUERY_GT_TYPE_MAIN &&
++		    xe_dev->gt_list->gt_list[gt].ip_ver_major) {
++			igt_debug("Setting graphics_ver to %u and graphics_rel to %u\n",
++				  xe_dev->gt_list->gt_list[gt].ip_ver_major,
++				  xe_dev->gt_list->gt_list[gt].ip_ver_minor);
++			igt_assert(xe_dev->info.graphics_ver == xe_dev->gt_list->gt_list[gt].ip_ver_major);
++			xe_dev->info.graphics_rel = xe_dev->gt_list->gt_list[gt].ip_ver_minor;
++			break;
++		}
++
+ 	/* Tile IDs may be non-consecutive; keep a mask of valid IDs */
+ 	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
+ 		xe_dev->tile_mask |= (1ull << xe_dev->gt_list->gt_list[gt].tile_id);
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 715b64e2f..eefeb47dc 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -74,6 +74,9 @@ struct xe_device {
+ 
+ 	/** @dev_id: Device id of xe device */
+ 	uint16_t dev_id;
++
++	/** @info: Device information for compatibility with i915 */
++	struct intel_device_info info;
+ };
+ 
+ #define xe_for_each_engine(__fd, __hwe) \
 -- 
 2.43.0
 
