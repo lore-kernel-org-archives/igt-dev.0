@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90FB8CCA470
-	for <igt-dev@archiver.kernel.org>; Wed,  8 Oct 2025 11:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8F23CAC5BB
+	for <igt-dev@archiver.kernel.org>; Wed,  8 Oct 2025 11:53:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 29FF510E0EE;
-	Wed,  8 Oct 2025 11:49:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F24B10E11A;
+	Wed,  8 Oct 2025 11:53:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BUhz3QPi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BDNeBqlq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6468B10E0EE
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Oct 2025 11:48:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E16B10E11A
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Oct 2025 11:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1759924140; x=1791460140;
+ t=1759924386; x=1791460386;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=rDTH56VxTktZ3WlBbgqidJPwpJciBkU8ctZRV1ntNyQ=;
- b=BUhz3QPi9mmlYTp+Krxa4rp6IlZHfmtCFQgdd6DfppS+llbptmXfYLxQ
- razTWhb8xMLh80Xln2BANMuXicsRBBd5TWyD9WiWGlHvMWVNIy4kTqxWP
- xlCIzBqXxzh3dxmklIHtCDs0q0YBIgKCVoRMJq+vu3wc2G3fZeaB1j3MB
- OuDt4+f8knskZHwrAaCnZ3mS8UJCyRWrPBQFiskWztXMjAO56qMNmcXiN
- BigSbSoFwDWYAB3jRfRlig84eorzFXkyq+AevWTB8HwPojBuiZQf2mUkw
- P9xY19vbQYlVR2FhZQN1HhjjeQBQH+11F/KkTNHfJAi5DV6h5NJW97iLW A==;
-X-CSE-ConnectionGUID: TkhkU6kcSEacAG2jFiQOfw==
-X-CSE-MsgGUID: wdgPaI1rRMaWII6cwRDijg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11575"; a="49670652"
-X-IronPort-AV: E=Sophos;i="6.19,323,1754982000"; d="scan'208";a="49670652"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2025 04:48:59 -0700
-X-CSE-ConnectionGUID: SQzoo74CRbuoRoJydWxRTA==
-X-CSE-MsgGUID: eHEZAV/ARTOirU+7LDE++A==
+ bh=PxoE1gHw4FS2/AQsDflq7DwQ4Y+rNm4Q9DVdI+i6d8Y=;
+ b=BDNeBqlqsBZLKGgfzd1z4MaXd4t66/Gb+lC2ieP6DuHo7PHhNf841HDq
+ B1kFfLWd0yszhCh5zsevr/nRl2YnWSMygwrq5B5aVKu5l3slg7QMpzkQR
+ rxRrDw1TSKYLCA30FvgkqBSuM0mGbjTeQSex6eTkDmrKv4kF+uZib0ph4
+ Wmer9vmySpMRmgyDglptTLwo0eVcYUgB+a0kVo6tPSoVco9TuthXwtAux
+ vLJgYA1kpGTtMglibIohl7JcwKej7YIi0hQ5j3Tmht9sdyoGC4/nFLVSv
+ 6X8PMWnamTs5T7mCrDq8ETWPU3gkc9qt2P48y2tXfdDnL6iFCJ523EZSV A==;
+X-CSE-ConnectionGUID: 4NE5vPCeReSfv5BLLpGqmg==
+X-CSE-MsgGUID: CiiVGcpOQginiHCW69/rmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11575"; a="61320196"
+X-IronPort-AV: E=Sophos;i="6.19,323,1754982000"; d="scan'208";a="61320196"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2025 04:53:05 -0700
+X-CSE-ConnectionGUID: DUwA3m1eRn+/MSQECgG8vw==
+X-CSE-MsgGUID: WYkCEoqeT2KtFjKQoBaAyQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,323,1754982000"; d="scan'208";a="180832934"
+X-IronPort-AV: E=Sophos;i="6.19,323,1754982000"; d="scan'208";a="184792780"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 04:48:57 -0700
-Date: Wed, 8 Oct 2025 13:48:55 +0200
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 04:53:04 -0700
+Date: Wed, 8 Oct 2025 13:53:01 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: S Sebinraj <s.sebinraj@intel.com>
 Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com,
  zbigniew.kempczynski@intel.com
 Subject: Re: [PATCH i-g-t v4 1/1] tests/kms_concurrent: Add SYSVIPC support
  check
-Message-ID: <20251008114855.v3ymy7acfebz2u4d@kamilkon-DESK.igk.intel.com>
+Message-ID: <20251008115301.avf74fjrfhzw7rnf@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
  jeevaka.badrappan@intel.com, zbigniew.kempczynski@intel.com
@@ -79,6 +79,16 @@ On 2025-10-08 at 11:18:12 +0530, S Sebinraj wrote:
 > targets that don't have SYSVIPC enabled in their kernel. Without this
 > check, the test would fail with assertion errors when trying to use
 > message queues.
+
+One more thing please reply to CI failure with Cc to CI (e-mail
+is given in report), I looked into that and looks like unrelated
+(test was skipped due to no connector). Also cut down your
+reply to have text just up to 'Known failures' (or more if you
+want to comment some other report lines, up to you).
+
+Regards,
+Kamil
+
 > 
 > The implementation checks if the target supports IPC,
 > if not found it skips the test.
@@ -88,10 +98,6 @@ On 2025-10-08 at 11:18:12 +0530, S Sebinraj wrote:
 >  lib/intel_allocator.c  | 25 ++++++++++++++++++++++++-
 >  lib/intel_allocator.h  | 10 +++++++++-
 >  tests/kms_concurrent.c |  4 +++-
-
-Thank you for effort, please split it into lib/intel_allocator:
-and a test change.
-
 >  3 files changed, 36 insertions(+), 3 deletions(-)
 > 
 > diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
@@ -131,10 +137,6 @@ and a test change.
 > + * Returns: true if accessible for read and write, false otherwise.
 > + */
 > +bool device_supports_sysvipc(void)
-
-Please make it static function here and also move up
-before first use.
-
 > +{
 > +	char path[128] = {'\0'};
 > +
@@ -158,9 +160,6 @@ before first use.
 >  void __intel_allocator_multiprocess_start(void);
 > -void intel_allocator_multiprocess_start(void);
 > +bool intel_allocator_multiprocess_start(void);
-
-Remove this change.
-
 >  void intel_allocator_multiprocess_stop(void);
 >  
 > +/**
@@ -187,15 +186,6 @@ Remove this change.
 > -			intel_allocator_multiprocess_start();
 > +			igt_require_f(!intel_allocator_multiprocess_start(),
 > +							"Allocator failure, no SYSV IPC\n");
-
-This looks ok now, please align this:
-
-			igt_require_f(!intel_allocator_multiprocess_start(),
-				      "Allocator failure, no SYSV IPC\n");
-
-Regards,
-Kamil
-
 >  	}
 >  
 >  	run_tests_for_pipe(&data);
