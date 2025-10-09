@@ -4,71 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15C99CCD184
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Oct 2025 16:53:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2372CCD184
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Oct 2025 17:05:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE43A10E159;
-	Thu,  9 Oct 2025 16:53:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E22F10EAC7;
+	Thu,  9 Oct 2025 17:05:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="0tExObya";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TbDnk7W5";
 	dkim-atps=neutral
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com
- [209.85.222.174])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EE6510E159
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Oct 2025 16:53:37 +0000 (UTC)
-Received: by mail-qk1-f174.google.com with SMTP id
- af79cd13be357-87a0801ba1aso154312385a.2
- for <igt-dev@lists.freedesktop.org>; Thu, 09 Oct 2025 09:53:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1760028816; x=1760633616;
- darn=lists.freedesktop.org; 
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oBhHt/G6EtQM2MAV5TjQ2PZQP46PqQyF6dRvhKk+u2A=;
- b=0tExObyauv3sUOv0zidka9AGI3Av/GapmDAy4U/dXSj0cIxDBvk6g6a7Uq3YoCyvQ8
- 9aoBe8S05ykabel7ePshJOf79EPAwv4Hkc7UYziLgFfHmHQ+/nkk56x4TQ31pjCJYJ2G
- 3IuwpZRhD3T2sGy7nPSf20ZM96AQK2ORteuMr+chyniWQEcIgS8rICETCYBybPviQ0uD
- IMukLjoG63bW3xMg3DR+d9UQZvEh7cqBJvgQCKyJ9LZ9G9NNYAX5KW7YEG1ltmNIasP0
- eF2bytQx5tJ96vrywCZzY4Y7DZ0+6kN4+bBFT9m+x8+Ys8A71Lvq1bg8d6N3t4JAznWW
- Eoqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760028816; x=1760633616;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oBhHt/G6EtQM2MAV5TjQ2PZQP46PqQyF6dRvhKk+u2A=;
- b=F36utsbLv28pcPA4DYzqRZhXQZCLDk2npaECBHoYZ9o2XtOlXm4m68ra6DBfpnF7gw
- pvsuCKBkiXEOzDeXomrv0LfpPdSIXrC/Uqkp+lJzEuiqufnA1+d87JdvgRWaFwA5Mo5v
- f3mQLzztbPhMahyMEnitqft6ZPUSZLO4h/zdz6TwEX+B+fUJCykluSLCqJz23e0jdtBH
- hVjaLLKjEQh6uvpfN4Ml64xwSQszw3RnPckq2Dzj9w2+LX82bupjNdK/k4aKYesv6uol
- qsKFtSV/IqLrFD3saGfqH/z/fPGNT/VfxFEZzCZwEIZF7ZS52nh0KfZYDi/V4v/XbtRV
- Wwmw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVD+v93y8g3xFH5MboGmAXv6/LEi7mZQuR7RYQ7UchagjtO0qPs7kFr8ChgNc23qNGcI34ECmfj@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YyRWAU4iSxDb4T02OwI11rQNXe8ab4l3Vl2y317q5tbRuchxlXq
- cAxHQc8Ay2dnFRav5/u67U0gVSs830j7p9Ek9h/vDBO7z8sWhKJvAdRhjklJ04OB0bztqFIdzn1
- h952mtl2MVQptaaeR5VY8jHrd8Afcd4H46z1tf1+p
-X-Gm-Gg: ASbGncuZAMcF/xsa8YOZ19jXhmQ/7b8I3Dt45UIzMfPJ6jGzMrDTjSAOM9J8ej3zPVa
- Yjuvs7s2V/XUVnicr90FqE9XCdUsudKUxBYtlgehLrjCxxKiVNTYdDikNdT4S8sfubNdHGYx4yJ
- L4T7q6BRE06XKhtkPE2/kBqMMzcRRYLCmpxUam/w4qf0n+ZBwSvieHy5OGt3E6s5oAOQQIVfYGA
- D3e5ozptyH7maDn33A3bbnrnyy2LaMRlWCDyFKb8CpSeiQb
-X-Google-Smtp-Source: AGHT+IHnm1kGpXP0WQsM0F5s2yRScbAf0vS2bqt78j+LJts+6fNSNhsSuWMk/Xg2DIqlsd/AkRJZPuv3M4/uKpuMNzY=
-X-Received: by 2002:a05:620a:1711:b0:805:f094:8abf with SMTP id
- af79cd13be357-883504a9cc6mr1179967785a.24.1760028815490; Thu, 09 Oct 2025
- 09:53:35 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5307C10EAC8;
+ Thu,  9 Oct 2025 17:05:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1760029527; x=1791565527;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=IKUZTuaxtYun7/39qvH0LI5oY/wUF+8S4F68FHXCPpY=;
+ b=TbDnk7W5/6NhNs51BbAtYFiwXpaZ2JpcRVjzXnH2plzhnKgmnd/s/FLp
+ sOcrQbit5MMBGZqWc4xjctb9OVY2THtQBR1nGFMhHBt5psFnl94Fud7Zg
+ E+5r8BdsQWasb4PLy7LWFUl0Hoba54b+NSjE7u2uH2pvP2GlAL6sFxN10
+ 1tOyahPgBZHlWGu9sk0mkShkpxo+9VFmG/yT+DtpghUK+5OOF6LkaoHLc
+ 2EhK4yZbATj28MqQj+XGNkUZPPKrhb7ygH1o+i7he7Jtk8OinJp8yn5/M
+ D/tV0m+EG/RbBhn6tfSCXFiX4UXTrE+ZtHXfC7cF1G8Jp528uahMldS3b g==;
+X-CSE-ConnectionGUID: WccOhMLQROOX+6QZmnuQJg==
+X-CSE-MsgGUID: z9u9oa41QQymjkQnjy2XQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="62132324"
+X-IronPort-AV: E=Sophos;i="6.19,217,1754982000"; d="scan'208";a="62132324"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2025 10:05:26 -0700
+X-CSE-ConnectionGUID: vvh53L4pSE63t6oGn7fG8A==
+X-CSE-MsgGUID: s8pl8ExPT0WuiHZEHUk7lw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,217,1754982000"; d="scan'208";a="180705646"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 10:05:24 -0700
+Date: Thu, 9 Oct 2025 19:05:21 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+Subject: Re: [PATCH i-g-t v2 2/5] tests/gem_eio: Try harder to measure median
+ resume time
+Message-ID: <20251009170521.y2ohmz7yxhby2uy7@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+References: <20251007113910.3336564-7-janusz.krzysztofik@linux.intel.com>
+ <2326700.3ZeAukHxDK@jkrzyszt-mobl2.ger.corp.intel.com>
+ <20251008164242.hm7u3f5ujaw457gc@kamilkon-DESK.igk.intel.com>
+ <3173009.ktpJ11cQ8Q@jkrzyszt-mobl2.ger.corp.intel.com>
 MIME-Version: 1.0
-References: <20251008160209.463702-1-markyacoub@google.com>
- <20251009164600.btzj5kiscl5ftdl7@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20251009164600.btzj5kiscl5ftdl7@kamilkon-DESK.igk.intel.com>
-From: Mark Yacoub <markyacoub@google.com>
-Date: Thu, 9 Oct 2025 12:53:24 -0400
-X-Gm-Features: AS18NWBgaetax4Uiv5o2aIbK96hsbzP0-s-jpHMNVgEeHdlkscZ2P5rNb_KW6pA
-Message-ID: <CAC0gqY7ZeCZPP8WHPq8uS-sOZVGpi8Fnzn-uDsWdt4jW72B8RA@mail.gmail.com>
-Subject: Re: [PATCH i-g-t] lib/drmtest: Remove VKMS from Exclusion list
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mark Yacoub <markyacoub@google.com>, 
- igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com, 
- juhapekka.heikkila@gmail.com
-Content-Type: multipart/alternative; boundary="0000000000005860d80640bca41b"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3173009.ktpJ11cQ8Q@jkrzyszt-mobl2.ger.corp.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,167 +80,218 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---0000000000005860d80640bca41b
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Janusz,
+On 2025-10-09 at 12:22:12 +0200, Janusz Krzysztofik wrote:
+> Hi Kamil,
+> 
+> On Wednesday, 8 October 2025 18:42:42 CEST Kamil Konieczny wrote:
+> > Hi Janusz,
+> > On 2025-10-08 at 14:52:44 +0200, Janusz Krzysztofik wrote:
+> > > Hi Kamil,
+> > > 
+> > > On Wednesday, 8 October 2025 14:14:47 CEST Kamil Konieczny wrote:
+> > > > Hi Janusz,
+> > > > On 2025-10-07 at 13:38:25 +0200, Janusz Krzysztofik wrote:
+> > > > > Subtests that measure time of resume after engine reset require results
+> > > > > from at least 9 reset-resume cycles for reasonable calculation of a median
+> > > > > value to be compared against a presumed limit.  On most Gen12+ platforms,
+> > > > > as well as on some older ones like JSL, CHV, ILK or ELK, the current limit
+> > > > > of 5 seconds for collecting those results occurs too short.
+> > > > > 
+> > > > > Raise the limit to an empirically determined value of 20 seconds and break
+> > > > > the loop as soon as 9 results are collected.
+> > > > > 
+> > > > > v2: Split out a change in handling of not enough measurements to a
+> > > > >     separate patch (Kamil),
+> > > > >   - reword commit message to be more distinct from other patches in
+> > > > >     series (Kamil),
+> > > > >   - reword commit message and description so they no longer state the
+> > > > >     scope of the issue is limited to Gen12+, and list other (non-Gen12+)
+> > > > >     platforms found also affected.
+> > > > > 
+> > > > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > > > > ---
+> > > > >  tests/intel/gem_eio.c | 5 ++++-
+> > > > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > > > > 
+> > > > > diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+> > > > > index 0a00ef026e..79dcef8fa6 100644
+> > > > > --- a/tests/intel/gem_eio.c
+> > > > > +++ b/tests/intel/gem_eio.c
+> > > > > @@ -929,7 +929,7 @@ static void reset_stress(int fd, uint64_t ahnd, const 
+> > > intel_ctx_t *ctx0,
+> > > > >  	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
+> > > > >  
+> > > > >  	igt_stats_init(&stats);
+> > > > > -	igt_until_timeout(5) {
+> > > > > +	igt_until_timeout(20) {
+> > > > 
+> > > > What I wanted here was actually (in pseudocode):
+> > > > 
+> > > > mtime = gen < 5 || gen >= 12 ? 20 : 5;
+> > > 
+> > > That's incorrect.  JSL, now mentioned in commit description (see also 
+> > > changelog), is gen11, and it's the only one of that gen that exhibits the 
+> > > problem.  Moreover, some affected CI machines need more time in unwedge-stress 
+> > > and not necessarily in reset-stress, some vice versa, and still some need more 
+> > > time in both.  That may sound strange, but that's how results from my many 
+> > > trybot attempts look like.  Also, not all pre-gen5 machines require a higher 
+> > > limit on resume time, as it is handled now and extended over gen12+ in next 
+> > > patch.  So before I try to fulfil your expectation and use a formula here, not 
+> > > a constant, we have to agree on how much precise that formula should be.  If 
+> > > you don't accept a simplified approach then I have to spend more time on 
+> > > finding out what exactly takes time on kernel side in each of those distinct 
+> > > cases and maybe then I will be able to formulate exact conditions when we 
+> > > should wait longer and when not.
+> > > 
+> > 
+> > One more note - maybe it is related with two GTs: GT0 and GT1?
+> 
+> Maybe, but that's only one of potential factors, not covering cases like DG2 
+> or ILK as an example of two cases completely different, I believe.
+> 
+> > 
+> > It could go with simplified formula here and just use some value,
+> > 20 or 10?
+> 
+> I still don't understand what your goal here is.  What issue do you expect to 
+> be avoided or resolved by replacing the new, higher constant value with a 
+> formula?  If I understood your point than I should be able to propose a 
+> solution.
+> 
+> > 
+> > Btw did you see results for v1? The gem_eio@kms subtests
+> > is failing due to disk limit in CI, and in logs there are
+> > 21 'Forcing GPU reset' messages.
+> > 
+> > https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13866/shard-dg2-5/igt@gem_eio@kms.html
+> > https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13866/shard-tglu-8/igt@gem_eio@kms.html
+> > 
+> > Is it not related to your series?
+> 
+> Yes, that's related, in the sense that before, there was a shorter, 5s limit 
+> for performing resets and measuring resume time, so less noise was accumulated 
+> in dmesg than now when we wait up to 20s for 9 measurements collected in order 
+> to avoid falsely reporting success when we don't evaluate results because less 
+> than 9 have been collected.
+> 
+> > Maybe number of resets should also be lowered?
+> 
+> The kms subtest consist of 3 exercises.  The first one -- inflight -- triggers 
+> 7 resets (1 reset per ring), the remaining two ones are equivalents of reset-
+> stress and unwedge-stress, with 9 resets per each of the 2 scenarios required 
+> as a minimum for stable median calculation, so 25 resets in total.
+> 
+> Are you sure we are free to lower that limit of 9 measurements required for 
+> stable median?
 
-Hi Kamil,
+Not sure.
 
-Thanks for your feedback. I'd like to elaborate on my use case to provide
-more context about the problem I'm trying to solve.
+> 
+> I think we should rather convince CI and display developers to limit the 
+> amount of noise in dmesg generated in CI runs by display debugging.
+> 
+> > Also test took over 20 seconds after it was killed.
+> 
+> I can see "Disk usage limit exceeded" event reported at timestamp 340.998570, 
+> and next subtest scheduled at 342.958470.  Where do you see those 20 seconds?
+> 
+> Thanks,
+> Janusz
+> 
 
-I am building IGT for Android, and the same build system is deployed on
-both physical hardware and virtual machines. On the hardware, the
-appropriate hardware driver is correctly detected, so there are no issues
-there. However, on the VM, VKMS is running, but it's currently excluded
-from `DRIVER_ANY`, which prevents the tests from running against it. I need
-the tests to execute on VKMS in this scenario.
+I did see it in dmesg4.txt, excerpt:
 
-Using `IGT_FORCE_DRIVER` would require me to fork the build processes for
-hardware and VM, which I would prefer to avoid. My goal is to maintain a
-unified build system and allow IGT to run on whatever driver is present. Is
-there a way to achieve this?
+33669:<7>[  494.568318] [IGT] gem_eio: executing
+33835:<7>[  496.717429] [IGT] gem_eio: starting subtest kms
+39187:<7>[  498.714559] [IGT] Forcing GPU reset
+39767:<7>[  498.903888] [IGT] Checking that the GPU recovered
 
-I understand that the current code prioritizes the hardware driver, which
-is a desirable behavior. I'm trying to understand the potential issues that
-might arise if VKMS were not excluded in other contexts.
+and later:
 
-Thank you!
-Mark
+87173:<7>[  516.070903] [IGT] Checking that the GPU recovered
+88860:<7>[  516.628325] [IGT] Forcing GPU reset
+89701:<7>[  518.764372] [IGT] kms_frontbuffer_tracking: executing
 
+so 516 - 496 is 20.
 
-On Thu, Oct 9, 2025 at 12:46=E2=80=AFPM Kamil Konieczny <
-kamil.konieczny@linux.intel.com> wrote:
+Re-checked it:
+grep IGT 25-10-08-gem-eio-dmesg4.txt |grep ': executing'|grep -A5 gem_eio
+<7>[  494.568318] [IGT] gem_eio: executing
+<7>[  518.764372] [IGT] kms_frontbuffer_tracking: executing
 
-> Hi Mark,
-> On 2025-10-08 at 12:02:09 -0400, Mark Yacoub wrote:
-> > [Why]
-> > VKMS (Virtual VKMS) is typically running on a virtual machine where it'=
-s
-> > expected to be without a contention with a hardware driver.
-> > When it's there, we would like to run IGT on it.
-> >
-> > [How]
-> > Delete VKMS from DRIVER_ANY's exclusion list to allow IGT to be picked
-> > up.
-> >
-> > Tested: Ran kms_bw on Android's VM with VKMS enabled.
-> >
-> > Change-Id: Ib13ad9261b8c2617370c02d0ffb5aa878bf3d8f8
-> > Signed-off-by: Mark Yacoub <markyacoub@google.com>
-> > ---
-> >  lib/drmtest.h | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> >
-> > diff --git a/lib/drmtest.h b/lib/drmtest.h
-> > index 8416aa491..ab991da57 100644
-> > --- a/lib/drmtest.h
-> > +++ b/lib/drmtest.h
-> > @@ -63,10 +63,8 @@ int __get_drm_device_name(int fd, char *name, int
-> name_size);
-> >   * on a system with them as well as a supported driver, you can end up
-> >   * with a near-100% skip rate if you don't explicitly specify the
-> device,
-> >   * depending on device-load ordering.
-> > - *
-> > - * Exclude VKMS to prefer hardware drivers.
-> >   */
-> > -#define DRIVER_ANY   ~(DRIVER_VGEM | DRIVER_VKMS | DRIVER_VIRTIO)
-> > +#define DRIVER_ANY   ~(DRIVER_VGEM | DRIVER_VIRTIO)
->
-> Nak, this is bad as there could be vkms module also on host.
->
-> Let me work on improving IGT_FORCE_DRIVER.
->
-> Regards,
-> Kamil
->
-> >
-> >  /*
-> >   * Compile friendly enum for i915/xe.
-> > --
-> > 2.51.0.740.g6adb054d12-goog
-> >
->
+Btw there were some KMS changes which lowered DRM logging
+to not trigger disklimit, maybe it should be also used in
+this subtest for example after first reset.
 
---0000000000005860d80640bca41b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Regards,
+Kamil
 
-<div dir=3D"ltr"><div>Hi Kamil,</div><div><br></div><div>Thanks for your fe=
-edback. I&#39;d like to elaborate on my use case to provide more context ab=
-out the problem I&#39;m trying to solve.</div><div><br></div><div>I am buil=
-ding IGT for Android, and the same build system is deployed on both physica=
-l hardware and virtual machines. On the hardware, the appropriate hardware =
-driver is correctly detected, so there are no issues there. However, on the=
- VM, VKMS is running, but it&#39;s currently excluded from `DRIVER_ANY`, wh=
-ich prevents the tests from running against it. I need the tests to execute=
- on VKMS in this scenario.</div><div><br></div><div>Using `IGT_FORCE_DRIVER=
-` would require me to fork the build processes for hardware and VM, which I=
- would prefer to avoid. My goal is to maintain a unified build system and a=
-llow IGT to run on whatever driver is present. Is there a way to achieve th=
-is?</div><div><br></div><div>I understand that the current code prioritizes=
- the hardware driver, which is a desirable behavior. I&#39;m trying to unde=
-rstand the potential issues that might arise if VKMS were not excluded in o=
-ther contexts.</div><div><br></div><div>Thank you!</div><div>Mark</div></di=
-v><br><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr"=
- class=3D"gmail_attr">On Thu, Oct 9, 2025 at 12:46=E2=80=AFPM Kamil Koniecz=
-ny &lt;<a href=3D"mailto:kamil.konieczny@linux.intel.com">kamil.konieczny@l=
-inux.intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">Hi Mark,<br>
-On 2025-10-08 at 12:02:09 -0400, Mark Yacoub wrote:<br>
-&gt; [Why]<br>
-&gt; VKMS (Virtual VKMS) is typically running on a virtual machine where it=
-&#39;s<br>
-&gt; expected to be without a contention with a hardware driver.<br>
-&gt; When it&#39;s there, we would like to run IGT on it.<br>
-&gt; <br>
-&gt; [How]<br>
-&gt; Delete VKMS from DRIVER_ANY&#39;s exclusion list to allow IGT to be pi=
-cked<br>
-&gt; up.<br>
-&gt; <br>
-&gt; Tested: Ran kms_bw on Android&#39;s VM with VKMS enabled.<br>
-&gt; <br>
-&gt; Change-Id: Ib13ad9261b8c2617370c02d0ffb5aa878bf3d8f8<br>
-&gt; Signed-off-by: Mark Yacoub &lt;<a href=3D"mailto:markyacoub@google.com=
-" target=3D"_blank">markyacoub@google.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 lib/drmtest.h | 4 +---<br>
-&gt;=C2=A0 1 file changed, 1 insertion(+), 3 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/lib/drmtest.h b/lib/drmtest.h<br>
-&gt; index 8416aa491..ab991da57 100644<br>
-&gt; --- a/lib/drmtest.h<br>
-&gt; +++ b/lib/drmtest.h<br>
-&gt; @@ -63,10 +63,8 @@ int __get_drm_device_name(int fd, char *name, int n=
-ame_size);<br>
-&gt;=C2=A0 =C2=A0* on a system with them as well as a supported driver, you=
- can end up<br>
-&gt;=C2=A0 =C2=A0* with a near-100% skip rate if you don&#39;t explicitly s=
-pecify the device,<br>
-&gt;=C2=A0 =C2=A0* depending on device-load ordering.<br>
-&gt; - *<br>
-&gt; - * Exclude VKMS to prefer hardware drivers.<br>
-&gt;=C2=A0 =C2=A0*/<br>
-&gt; -#define DRIVER_ANY=C2=A0 =C2=A0~(DRIVER_VGEM | DRIVER_VKMS | DRIVER_V=
-IRTIO)<br>
-&gt; +#define DRIVER_ANY=C2=A0 =C2=A0~(DRIVER_VGEM | DRIVER_VIRTIO)<br>
-<br>
-Nak, this is bad as there could be vkms module also on host.<br>
-<br>
-Let me work on improving IGT_FORCE_DRIVER.<br>
-<br>
-Regards,<br>
-Kamil<br>
-<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 /*<br>
-&gt;=C2=A0 =C2=A0* Compile friendly enum for i915/xe.<br>
-&gt; -- <br>
-&gt; 2.51.0.740.g6adb054d12-goog<br>
-&gt; <br>
-</blockquote></div>
-
---0000000000005860d80640bca41b--
+> 
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > > > 
+> > > > 	igt_until_timeout(mtime) {
+> > > > 
+> > > > >  		const intel_ctx_t *ctx = context_create_safe(fd);
+> > > > >  		igt_spin_t *hang;
+> > > > >  		unsigned int i;
+> > > > > @@ -978,6 +978,9 @@ static void reset_stress(int fd, uint64_t ahnd, const 
+> > > intel_ctx_t *ctx0,
+> > > > >  		gem_sync(fd, obj.handle);
+> > > > >  		igt_spin_free(fd, hang);
+> > > > >  		intel_ctx_destroy(fd, ctx);
+> > > > > +
+> > > > > +		if (stats.n_values > 8)
+> > > > 
+> > > > Can it be a define as it is used in other places, for example:
+> > > > #define NUMER_OF_MEASURED_CYCLES_NEEDED 9
+> > > > 
+> > > > so you will use it elsewhere, and here it will be:
+> > > > 
+> > > > 		if (stats.n_values >= NUMER_OF_MEASURED_CYCLES_NEEDED)
+> > > > 			break;
+> > > 
+> > > OK.
+> > > 
+> > > > 
+> > > > >  	}
+> > > > >  	check_wait_elapsed(name, fd, &stats);
+> > > > 
+> > > > I did give you r-b for patch 1/5 but I am not sure how
+> > > > reliable are measurements, should it be an assert instead of skip?
+> > > > Maybe function check_wait_elapsed() should return bool to tell if
+> > > > median is ready, and in each place subtests itself decide if it
+> > > > should skip or assert? Up to you.
+> > > 
+> > > check_wait_elapsed() is called only from reset_stress(), which in turn is 
+> > > called only by 3 subtests, all in scope of this series.  Can you suggest some 
+> > > criteria when you think a subtest should skip and when it should fail if not 
+> > > enough results have been collected?  I've chosen skip because we couldn't do 
+> > > much with fail other than blocklisting the failing subtest, while CI can 
+> > > handle skips as expected skips on selected platforms if we really can't find 
+> > > a balance among the loop long enough for collecting enough measurements and 
+> > > short enough for not exceeding per test timeout on platforms with many 
+> > > engines.
+> > > 
+> > > Thanks,
+> > > Janusz
+> > > 
+> > > 
+> > > > 
+> > > > Regards,
+> > > > Kamil
+> > > > 
+> > > > >  	igt_stats_fini(&stats);
+> > > > 
+> > > 
+> > > 
+> > > 
+> > > 
+> > 
+> 
+> 
+> 
+> 
