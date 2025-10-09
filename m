@@ -4,63 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92398CCD187
-	for <igt-dev@archiver.kernel.org>; Thu,  9 Oct 2025 10:22:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6723ECCA470
+	for <igt-dev@archiver.kernel.org>; Thu,  9 Oct 2025 10:45:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4255710E214;
-	Thu,  9 Oct 2025 10:22:20 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n8CCaaPc";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EEAC10E1FE;
- Thu,  9 Oct 2025 10:22:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760005338; x=1791541338;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=2yMPl39cZzRlvcORBiml8WrDorZ+0SCxGQk0IW7gfSs=;
- b=n8CCaaPcD2td72ZT6GWwYhNYG4vRtra2UtnpH7CeeAd2TMuY1kYLo1mw
- g4uS7lU5NVjkO7tG0D+RSq7Iic72XVo03a7w9JHXnwTFwnu+WP8K9CRd1
- O31S1OhEjBM5dY9NE+ZHijp6pIVfytsDL8etj0F2suQl/QPHZsnvnbuPo
- X7hzZMFdzJFKSYIyNzEnC3aQDYR2bPJGof7Ra8zYZzb9HhhWrYbHD+XMf
- JJkpRGXlJ9rX4p5JRoHprpXEcbJ0doCEAIFArL2LaZS21u8Js+CwbflLM
- lcZzVpzI+N9iBje6OI0aEkywn9EralPbzeitbxFDxTo8+1EGw7g1CKbdn g==;
-X-CSE-ConnectionGUID: cVGrgiJ0SOCRrOz4vd6ilQ==
-X-CSE-MsgGUID: FOPHa+BqR3ex+DqePGphsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="87670489"
-X-IronPort-AV: E=Sophos;i="6.19,215,1754982000"; d="scan'208";a="87670489"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2025 03:22:17 -0700
-X-CSE-ConnectionGUID: 3zU1BFfISdekcb2qGuZZTw==
-X-CSE-MsgGUID: NztXUYWRQPCvIP0KRR0YkQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,215,1754982000"; d="scan'208";a="180258264"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.245.14])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2025 03:22:15 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/5] tests/gem_eio: Try harder to measure median
- resume time
-Date: Thu, 09 Oct 2025 12:22:12 +0200
-Message-ID: <3173009.ktpJ11cQ8Q@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20251008164242.hm7u3f5ujaw457gc@kamilkon-DESK.igk.intel.com>
-References: <20251007113910.3336564-7-janusz.krzysztofik@linux.intel.com>
- <2326700.3ZeAukHxDK@jkrzyszt-mobl2.ger.corp.intel.com>
- <20251008164242.hm7u3f5ujaw457gc@kamilkon-DESK.igk.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14ABD10E20C;
+	Thu,  9 Oct 2025 10:45:30 +0000 (UTC)
+Received: from 6aec98b87f92 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F93710E20C;
+ Thu,  9 Oct 2025 10:45:28 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8450018541739013444=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2Cv15=2C1/2=5D_tests/kms=5Fprime=3A_Add_XE_support?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 09 Oct 2025 10:45:28 -0000
+Message-ID: <176000672844.22768.16744874496136317273@6aec98b87f92>
+X-Patchwork-Hint: ignore
+References: <20251009062243.617475-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20251009062243.617475-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,188 +37,276 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
+--===============8450018541739013444==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Wednesday, 8 October 2025 18:42:42 CEST Kamil Konieczny wrote:
-> Hi Janusz,
-> On 2025-10-08 at 14:52:44 +0200, Janusz Krzysztofik wrote:
-> > Hi Kamil,
-> > 
-> > On Wednesday, 8 October 2025 14:14:47 CEST Kamil Konieczny wrote:
-> > > Hi Janusz,
-> > > On 2025-10-07 at 13:38:25 +0200, Janusz Krzysztofik wrote:
-> > > > Subtests that measure time of resume after engine reset require results
-> > > > from at least 9 reset-resume cycles for reasonable calculation of a median
-> > > > value to be compared against a presumed limit.  On most Gen12+ platforms,
-> > > > as well as on some older ones like JSL, CHV, ILK or ELK, the current limit
-> > > > of 5 seconds for collecting those results occurs too short.
-> > > > 
-> > > > Raise the limit to an empirically determined value of 20 seconds and break
-> > > > the loop as soon as 9 results are collected.
-> > > > 
-> > > > v2: Split out a change in handling of not enough measurements to a
-> > > >     separate patch (Kamil),
-> > > >   - reword commit message to be more distinct from other patches in
-> > > >     series (Kamil),
-> > > >   - reword commit message and description so they no longer state the
-> > > >     scope of the issue is limited to Gen12+, and list other (non-Gen12+)
-> > > >     platforms found also affected.
-> > > > 
-> > > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > > > ---
-> > > >  tests/intel/gem_eio.c | 5 ++++-
-> > > >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
-> > > > index 0a00ef026e..79dcef8fa6 100644
-> > > > --- a/tests/intel/gem_eio.c
-> > > > +++ b/tests/intel/gem_eio.c
-> > > > @@ -929,7 +929,7 @@ static void reset_stress(int fd, uint64_t ahnd, const 
-> > intel_ctx_t *ctx0,
-> > > >  	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
-> > > >  
-> > > >  	igt_stats_init(&stats);
-> > > > -	igt_until_timeout(5) {
-> > > > +	igt_until_timeout(20) {
-> > > 
-> > > What I wanted here was actually (in pseudocode):
-> > > 
-> > > mtime = gen < 5 || gen >= 12 ? 20 : 5;
-> > 
-> > That's incorrect.  JSL, now mentioned in commit description (see also 
-> > changelog), is gen11, and it's the only one of that gen that exhibits the 
-> > problem.  Moreover, some affected CI machines need more time in unwedge-stress 
-> > and not necessarily in reset-stress, some vice versa, and still some need more 
-> > time in both.  That may sound strange, but that's how results from my many 
-> > trybot attempts look like.  Also, not all pre-gen5 machines require a higher 
-> > limit on resume time, as it is handled now and extended over gen12+ in next 
-> > patch.  So before I try to fulfil your expectation and use a formula here, not 
-> > a constant, we have to agree on how much precise that formula should be.  If 
-> > you don't accept a simplified approach then I have to spend more time on 
-> > finding out what exactly takes time on kernel side in each of those distinct 
-> > cases and maybe then I will be able to formulate exact conditions when we 
-> > should wait longer and when not.
-> > 
-> 
-> One more note - maybe it is related with two GTs: GT0 and GT1?
+== Series Details ==
 
-Maybe, but that's only one of potential factors, not covering cases like DG2 
-or ILK as an example of two cases completely different, I believe.
+Series: series starting with [i-g-t,v15,1/2] tests/kms_prime: Add XE support
+URL   : https://patchwork.freedesktop.org/series/155653/
+State : success
 
-> 
-> It could go with simplified formula here and just use some value,
-> 20 or 10?
+== Summary ==
 
-I still don't understand what your goal here is.  What issue do you expect to 
-be avoided or resolved by replacing the new, higher constant value with a 
-formula?  If I understood your point than I should be able to propose a 
-solution.
+CI Bug Log - changes from IGT_8580 -> IGTPW_13881
+====================================================
 
-> 
-> Btw did you see results for v1? The gem_eio@kms subtests
-> is failing due to disk limit in CI, and in logs there are
-> 21 'Forcing GPU reset' messages.
-> 
-> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13866/shard-dg2-5/igt@gem_eio@kms.html
-> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13866/shard-tglu-8/igt@gem_eio@kms.html
-> 
-> Is it not related to your series?
+Summary
+-------
 
-Yes, that's related, in the sense that before, there was a shorter, 5s limit 
-for performing resets and measuring resume time, so less noise was accumulated 
-in dmesg than now when we wait up to 20s for 9 measurements collected in order 
-to avoid falsely reporting success when we don't evaluate results because less 
-than 9 have been collected.
+  **SUCCESS**
 
-> Maybe number of resets should also be lowered?
+  No regressions found.
 
-The kms subtest consist of 3 exercises.  The first one -- inflight -- triggers 
-7 resets (1 reset per ring), the remaining two ones are equivalents of reset-
-stress and unwedge-stress, with 9 resets per each of the 2 scenarios required 
-as a minimum for stable median calculation, so 25 resets in total.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/index.html
 
-Are you sure we are free to lower that limit of 9 measurements required for 
-stable median?
+Participating hosts (43 -> 43)
+------------------------------
 
-I think we should rather convince CI and display developers to limit the 
-amount of noise in dmesg generated in CI runs by display debugging.
+  Additional (1): fi-kbl-8809g 
+  Missing    (1): fi-snb-2520m 
 
-> Also test took over 20 seconds after it was killed.
+Known issues
+------------
 
-I can see "Disk usage limit exceeded" event reported at timestamp 340.998570, 
-and next subtest scheduled at 342.958470.  Where do you see those 20 seconds?
+  Here are the changes found in IGTPW_13881 that come from known issues:
 
-Thanks,
-Janusz
+### IGT changes ###
 
+#### Issues hit ####
 
-> 
-> Regards,
-> Kamil
-> 
-> > > 
-> > > 	igt_until_timeout(mtime) {
-> > > 
-> > > >  		const intel_ctx_t *ctx = context_create_safe(fd);
-> > > >  		igt_spin_t *hang;
-> > > >  		unsigned int i;
-> > > > @@ -978,6 +978,9 @@ static void reset_stress(int fd, uint64_t ahnd, const 
-> > intel_ctx_t *ctx0,
-> > > >  		gem_sync(fd, obj.handle);
-> > > >  		igt_spin_free(fd, hang);
-> > > >  		intel_ctx_destroy(fd, ctx);
-> > > > +
-> > > > +		if (stats.n_values > 8)
-> > > 
-> > > Can it be a define as it is used in other places, for example:
-> > > #define NUMER_OF_MEASURED_CYCLES_NEEDED 9
-> > > 
-> > > so you will use it elsewhere, and here it will be:
-> > > 
-> > > 		if (stats.n_values >= NUMER_OF_MEASURED_CYCLES_NEEDED)
-> > > 			break;
-> > 
-> > OK.
-> > 
-> > > 
-> > > >  	}
-> > > >  	check_wait_elapsed(name, fd, &stats);
-> > > 
-> > > I did give you r-b for patch 1/5 but I am not sure how
-> > > reliable are measurements, should it be an assert instead of skip?
-> > > Maybe function check_wait_elapsed() should return bool to tell if
-> > > median is ready, and in each place subtests itself decide if it
-> > > should skip or assert? Up to you.
-> > 
-> > check_wait_elapsed() is called only from reset_stress(), which in turn is 
-> > called only by 3 subtests, all in scope of this series.  Can you suggest some 
-> > criteria when you think a subtest should skip and when it should fail if not 
-> > enough results have been collected?  I've chosen skip because we couldn't do 
-> > much with fail other than blocklisting the failing subtest, while CI can 
-> > handle skips as expected skips on selected platforms if we really can't find 
-> > a balance among the loop long enough for collecting enough measurements and 
-> > short enough for not exceeding per test timeout on platforms with many 
-> > engines.
-> > 
-> > Thanks,
-> > Janusz
-> > 
-> > 
-> > > 
-> > > Regards,
-> > > Kamil
-> > > 
-> > > >  	igt_stats_fini(&stats);
-> > > 
-> > 
-> > 
-> > 
-> > 
-> 
+  * igt@dmabuf@all-tests:
+    - bat-apl-1:          [PASS][1] -> [ABORT][2] ([i915#12904]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-apl-1/igt@dmabuf@all-tests.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-apl-1/igt@dmabuf@all-tests.html
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - fi-bsw-nick:        [PASS][3] -> [ABORT][4] ([i915#12904]) +1 other test abort
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@fbdev@info:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][5] ([i915#1849])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@fbdev@info.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][6] ([i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][7] ([i915#4613]) +3 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@i915_selftest@live:
+    - bat-jsl-1:          [PASS][8] -> [DMESG-FAIL][9] ([i915#14910]) +1 other test dmesg-fail
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-jsl-1/igt@i915_selftest@live.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-jsl-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][10] -> [DMESG-FAIL][11] ([i915#12061]) +1 other test dmesg-fail
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][12] ([i915#11190]) +16 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][13] +18 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [DMESG-FAIL][14] ([i915#12061]) -> [PASS][15] +1 other test pass
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [DMESG-FAIL][16] ([i915#12061]) -> [PASS][17] +1 other test pass
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][18] ([i915#12061] / [i915#14204]) -> [DMESG-FAIL][19] ([i915#12061] / [i915#13929])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-atsm-1/igt@i915_selftest@live.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-atsm-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-atsm-1:         [DMESG-FAIL][20] ([i915#14204]) -> [DMESG-FAIL][21] ([i915#13929])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-atsm-1/igt@i915_selftest@live@mman.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-atsm-1/igt@i915_selftest@live@mman.html
+
+  
+  [i915#11190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11190
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12904]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904
+  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
+  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
+  [i915#14910]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14910
+  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
 
 
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8580 -> IGTPW_13881
+  * Linux: CI_DRM_17328 -> CI_DRM_17329
+
+  CI-20190529: 20190529
+  CI_DRM_17328: a7101e35f29e03562f24ce1220f08350260fc0fc @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17329: e4621fd776939016f32f5585b188429d68e5ae5b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13881: 13881
+  IGT_8580: 8580
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/index.html
+
+--===============8450018541739013444==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v15,1/2] tests/kms_prime: Add XE support</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/155653/">https://patchwork.freedesktop.org/series/155653/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8580 -&gt; IGTPW_13881</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/index.html</p>
+<h2>Participating hosts (43 -&gt; 43)</h2>
+<p>Additional (1): fi-kbl-8809g <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13881 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-apl-1/igt@dmabuf@all-tests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-apl-1/igt@dmabuf@all-tests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-bsw-nick/igt@dmabuf@all-tests@dma_fence_chain.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12904">i915#12904</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-jsl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-jsl-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14910">i915#14910</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11190">i915#11190</a>) +16 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/fi-kbl-8809g/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> +18 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8580/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13881/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8580 -&gt; IGTPW_13881</li>
+<li>Linux: CI_DRM_17328 -&gt; CI_DRM_17329</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17328: a7101e35f29e03562f24ce1220f08350260fc0fc @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17329: e4621fd776939016f32f5585b188429d68e5ae5b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13881: 13881<br />
+  IGT_8580: 8580</p>
+
+</body>
+</html>
+
+--===============8450018541739013444==--
