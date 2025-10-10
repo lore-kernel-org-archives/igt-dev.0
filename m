@@ -4,59 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7862FCCA476
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Oct 2025 09:09:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1851CCA476
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Oct 2025 09:11:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2313510EB71;
-	Fri, 10 Oct 2025 09:09:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 72FBF10EB82;
+	Fri, 10 Oct 2025 09:11:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BoRqtYDB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SY7jT6uZ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BC6310EB71
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Oct 2025 09:09:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C89810EB82
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Oct 2025 09:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760087358; x=1791623358;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=cZAgR+EnHfd93IZmJoJRYYhHvR6FwuaWF5x28ggtRK8=;
- b=BoRqtYDBsT5NvkWGaiiHkJJdnWBrqyOD7F0/f4ntjvL5pJCEeB0HI9+W
- n0USYBeBU1S7IpKVDgi+GrGjBwtCGxNbaDgYiShDJLIuFkHnRc9yeaeqy
- W4wzelmo+1W5yeK1N3hBwe6qoUMe4y1SKb6D23e4boB4DaVbN9r32Cjkl
- /Xu6O+ei97KoO6fynsb408JHBOBo0FTTsD4d339yvIDVEmF4dVjdbw7CO
- 8CW3KgfsY0VMoy3auBhk0KkYvqRNXMe2qnp9/C/tadGuwVHKgaDaLO9eL
- hCK4VHmqQ3Uw/qli+Wr/veAh2q5tcqvKi01TwvYB84D+DnQxl+Rj0ay61 A==;
-X-CSE-ConnectionGUID: N6k18YdySaWKxrkyV1svoA==
-X-CSE-MsgGUID: tgj6UK+IQnG1742V0FyiKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="79948193"
-X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; d="scan'208";a="79948193"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Oct 2025 02:09:18 -0700
-X-CSE-ConnectionGUID: ebncGjhbQ520zcD00RMnlg==
-X-CSE-MsgGUID: 7R6Bm4JcSfaoX6UMg9ivdg==
+ t=1760087468; x=1791623468;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=T91Z/2fWpWj+vV6kMvWTZiuZrXo0Yfp9dmFjYfViWTY=;
+ b=SY7jT6uZWQy1djP2iMXPzpVUqa0X/u8F6Oc80gJO5Ckd1/Zt5B0w4B3V
+ f3qDaDfNeGBPDPEysj2EEFUwIu6orCKBx3MQ7+I3u4WduwxT5ADcm68V9
+ P9qxmOON0kLVzKB4TgFx7yTbU1LFnqLdFyP6yoH1cHTdyIb1YKSQWLWpw
+ CGBnbqThGRbTizkipFLqWLZE4+OLj/DeLMQPI9A1M5D64cVcsrFT7HpGg
+ 5uTbOf3VcBUcinLfw/z0MbauRlSEmQeOmbO8yw7sabA2oZJDzkomf+Zwh
+ 38cv1hnqo6weBz29PcBHM9g0kZN10CKbQSKl8ySYpEpXJBw4w3ow+Lwdo Q==;
+X-CSE-ConnectionGUID: 0X9FCZ63SI+cjLZlVg+0xg==
+X-CSE-MsgGUID: +wE9yCmgS6u0njKK6S4/AA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62247472"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62247472"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Oct 2025 02:11:07 -0700
+X-CSE-ConnectionGUID: tivK5wvHRQWd1iAxdFAVJA==
+X-CSE-MsgGUID: XUBXnXFjRe+sZTk6BD32XA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; d="scan'208";a="180619897"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.245.136])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Oct 2025 02:09:17 -0700
-Date: Fri, 10 Oct 2025 11:09:14 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Sobin Thomas <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com, 
- priyanka.dandamudi@intel.com
-Subject: Re: [PATCH i-g-t v9 1/3] tests/intel/xe_compute_preempt: Compute
- preemption check
-Message-ID: <7lzgzvg3ysa6md33tov5ovqf4bqh56amb264jwrtc4x3urjx5b@tpnvvnul2zqc>
-References: <20251003052640.56068-1-sobin.thomas@intel.com>
- <20251003052640.56068-2-sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; d="scan'208";a="180183512"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Oct 2025 02:11:07 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 10 Oct 2025 02:11:06 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Fri, 10 Oct 2025 02:11:06 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.4) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 10 Oct 2025 02:11:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iMJepliO3Az1uDYKOqltfP1vZW5lKVy0y4OVOLC+rgy3qiq+GMTrwvwFZzzX8hCsvBJsxMLEReeJvgXkON1VLODJ6bxFGgHyvTBB4pjePBsIK4xIol+x4gbsxdp1yv+Etc6aEPKC6yC29/L67fNgkkjyjh8GX6ejDwKZAKkPWOFzhaiscjvAvGzkAkpZWNpxS75fqya8NKoSGXxDsrEpbBcEpF4OcN4lBtGGkpgb6gOc5FYPOJFWBNTgaLdzTsti/Ir2yaWJb5WB4MnXzncsVgXUpv2QBcibBFsPezaO403nRazNVG7sQtJkhnVZNmpko0545bJ8L3g4rwOqvdZHJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U8uvvHEb2/cRNi81r3yIGovcCn/NugF1bv4k5k9ckpc=;
+ b=vy5uCZGNyYQVPPTDvB3J+wg0AfgEw7HQ8En80LUZrXfit2//dJkCPFcmG2FXL171yuL5juazoLGqDzJQjv/Ryl8MSCDQxJcbfs85rkqnmC73KEuvYx0ohGDu/uzr4VTVGRETfit5zj3c67qCC2BHCoTv852JIkyzGpjWc8nFO8gEQbbFFB77fJH+0HoSuKyTLSTc95+WqH92uZbwLPg2BqaKh7Yz3ckNzMgkr4U/wwYAtowsAJmGEXdaQ9/kTCD+C6icZIA1L+CcxoT6WdAeG0YSjwnTr0ngmwvF5BoDed0zDuQiAKhFvXjixvd8c4Jilg/zUPdhs567UB/hKvT3LQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
+ SJ0PR11MB4976.namprd11.prod.outlook.com (2603:10b6:a03:2d7::5) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9203.10; Fri, 10 Oct 2025 09:11:04 +0000
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::faad:f9ae:2b45:e9ba]) by DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::faad:f9ae:2b45:e9ba%4]) with mapi id 15.20.9182.017; Fri, 10 Oct 2025
+ 09:11:04 +0000
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "Manna, Animesh"
+ <animesh.manna@intel.com>, "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
+ "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>
+Subject: RE: [PATCH i-g-t v1] tests/kms_vrr: Dynamically verify LOBF across
+ vrefresh steps
+Thread-Topic: [PATCH i-g-t v1] tests/kms_vrr: Dynamically verify LOBF across
+ vrefresh steps
+Thread-Index: AQHcOcPoPnxifGcnJUalAI2Ayx9edrS7F28w
+Date: Fri, 10 Oct 2025 09:11:04 +0000
+Message-ID: <DM4PR11MB63127575796ED6F3FF30455490EFA@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20251010085708.273552-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20251010085708.273552-1-ramanaidu.naladala@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|SJ0PR11MB4976:EE_
+x-ms-office365-filtering-correlation-id: 9814a3fa-42d7-449e-b622-08de07dcf0c1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|376014|366016|7053199007|38070700021; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?6PsU52q/tcCJcExiG+4wX0v6QqW+Bn1G9/uBurLziCRO7UV1p9Al7/aPAc8r?=
+ =?us-ascii?Q?Kehxa0C4Tze1IBBsXsvT0F+JlsLSqkgkANnietn+TIr1mPMo/R7dBO+ssPCm?=
+ =?us-ascii?Q?Ru/JEp46M3CCG6WEzbvd4U+baHdoagk2sziC7h6+2ju3AjBc4/XojCQ4fq9+?=
+ =?us-ascii?Q?9LZND5m7LPt6G6gF0o3Xa3VxkFLnyzpubdAq1LAwGqEmjv684nDlzK6SDP4N?=
+ =?us-ascii?Q?3GnmjDMrLyChs3fDVRLZeq2g6Hxu/ZIjEbGwSh3LD2tlqr9U7sbkvNld06MQ?=
+ =?us-ascii?Q?xyEi5JIU6VAaGpZ7NZU80tTSm14EVrmgJnyRabE+q/BH3PzkK4aD3c6iqUsq?=
+ =?us-ascii?Q?fgQFRXtLQCvMkceJg3k9pgOs1RKHu5z0LSlvLJCr0XLTcs3vhnVU1NzpGgEz?=
+ =?us-ascii?Q?rirPUyW4qSUEAD6ETFGNltRVwL1uMl6Hg9R/RjosVxfG+r6cRbfC0ONLQj9a?=
+ =?us-ascii?Q?ISnRrF6asc+/BL0r0hYcMhmNW9EG2LtxS6kP91U+YJOIQmfzCNSD7jxLP7Qj?=
+ =?us-ascii?Q?ovJ1vPzIcxhe0MNOURYfZe3dTCbQBpKrTXcXS3W+fN1JgdOv6uP9phPj+CGC?=
+ =?us-ascii?Q?baOC7B4yTPPF+R51Y3EPbDJqjvGkkADlCKKjlrR8x2CmQpaBVBNfRRQxt0MT?=
+ =?us-ascii?Q?4WxnbSJcImC4qPN9ZebEB6LSjhsXvT6doYC2gt9RAG90cnBqjzv5bEQrzM5n?=
+ =?us-ascii?Q?hsWYXp4dEmwYijM+qKyvZ2Mxza1OmYnQ78J3ew8RSn12ry36MEjxd3cZujSy?=
+ =?us-ascii?Q?OC4jI4eYhL0Zaka7BYzIaIK9nnHwbLHpwgB37CiIG3QaHnG8GXfx2+UHZ3Cc?=
+ =?us-ascii?Q?Qy3VGG6msf6Ru/H2eeIbjWj+n+vLibT4r34AxGh+pZdVNs7cDUDh2u3plBLO?=
+ =?us-ascii?Q?wQ3pNmqwBuN5RS+gVHeTDbK51MEYFUl2bbY0LWSY2Pb8pKH25U43Z2O+4L8P?=
+ =?us-ascii?Q?9uaIkBD6snl7hHVZ6K6/e9bmUngKVWLJsc9zm9jivuaFFl5Rd41vvTl1l0Bd?=
+ =?us-ascii?Q?uGpQ58BViU/1K5emaTowCrPRaBwnkDXLc9X/4hQCYQ20w7CEnzrSin6hTAhi?=
+ =?us-ascii?Q?EjunWrRiK+ieJt56Zmdmp30rj6jVa5RkB4UY/V2hyXs3HjBawXbQOKPivVqQ?=
+ =?us-ascii?Q?PZtZwW1wb2AvIevlO8SjHWfJ07GZzZX+W82SLCDFGRz1/p7x95LGhg5cWsqp?=
+ =?us-ascii?Q?8usjglA7OOGKBqvklwUlabjyD1k9rGPJrVJwFqmsBpO1KXMp3nmKqhJYs0nD?=
+ =?us-ascii?Q?i8P+aBsiEhsPLIWqotv291isYyvqRIV6l0OhLd+EXLxABpanSwNcM6CKjqg1?=
+ =?us-ascii?Q?Ue74afG5dLWxywuwKe/hdSkIjtvxkJsXGFJ5bOsmIu34rshfS+3wolVRyDUL?=
+ =?us-ascii?Q?X7mDeUDWbcPrIrOFOgT5sOfH07o76AqKmYsqobit6INcWgtcKz9sL3F9WhTo?=
+ =?us-ascii?Q?m6KH7Ig0WUeoza6hKbv2xy4lcQNgEjKBNYi2HQGeCo7DmbkuIJtv2I6A+P8/?=
+ =?us-ascii?Q?rbrp/LIFh6Hdd591+0OzRvzIWmVSPYnQsISR?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(38070700021); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?CayTQcKqVEZlYI+qmMjaMNUmQNZBIqEKc8CovA9uK3y+P3z8RNB5mFxZwAqX?=
+ =?us-ascii?Q?9iwiHT4Nw/1P1nLbnku8PAhge51vMVWddxdIHFeN1Nq8PQqhf7q8R7PM4Gnm?=
+ =?us-ascii?Q?aXBd9Q7PXk6b6SDQGGFJ7nvOZh9OSmBKkJBs0VdpFPhYWV7auo1jWaiPycqZ?=
+ =?us-ascii?Q?SZIEkxcUncEIdrFTMQf7GBxa8PVw3e174jux6a9BEHCl148nQS8571Oo8fLj?=
+ =?us-ascii?Q?+AHrCTfz2u0PlPzvo41a4uaIpH69odSxNlHkvf+pBSdUv40+zzSFZvD0jT7E?=
+ =?us-ascii?Q?/YgMUsH34jrMTuPfGmWILdH0RAS+GAQrgNnKUIPrYOWkO0Ax0EPs+nyOQAta?=
+ =?us-ascii?Q?QOXusYAhN45Hi/+vI1DmJ4U1+IMd02REdipuRF+urOL0M08owc15SJ2R32J+?=
+ =?us-ascii?Q?+ujkRM5O9uPIdYKh/eTxZ+SHnFR2k6PmOfTSk+nDPZ2+ST4NQF9yanIkpdr9?=
+ =?us-ascii?Q?2Gy/GCbXgwAqhr+RRldTzHEW7mWxn22WVYCwDYAEJot2AOsmYIGBNv5sC6su?=
+ =?us-ascii?Q?yL6whrTK6fUd9aKfv78CybZYA8TkXuiAfdgYv/ZF6akl6z13m4j4cgPb0OUH?=
+ =?us-ascii?Q?tYmDUOHRCBqS3FujcOukj8ynjYqqxPNCSvaULD9kw6O10HnPO5qpdBsVDtnI?=
+ =?us-ascii?Q?zPfs85iywVxgabnyC+RFCidWNqD8Z+MHIW4f8kwYnS9zj4iTy+WmsrEB9hkK?=
+ =?us-ascii?Q?Z3kaZ3bAls2EwncyRa6H4fsFBYW9w4d9jyoKak09t3sg+OUz5qPmZSrjdWUJ?=
+ =?us-ascii?Q?fTH9JdLKo2EoBCEamByBuKG+ZCsbJFSMVo118oqPsqlwHrRL6uLzDLHA4PPl?=
+ =?us-ascii?Q?jYjL+DcUQK3FXYrDE2KVHktJgpbEFRjde6BUMJhnxAfpvDVoo0YOJDoK0azR?=
+ =?us-ascii?Q?2dTF5Q/kyxO87nLNuV5W4tnZQA4Z/I9DwhB45H01wSvTNfbhdZrReTmfZtUG?=
+ =?us-ascii?Q?FJ2i/4YyzBgFC9XA8pMfrAPZH9NFTB0ltnQOh0kMq5L7vYNxSzk/3TOrM4jS?=
+ =?us-ascii?Q?1BHqRLvrP5p9lx7N4/SmjJP/Y9dn7ynQgO5VY884eEurkI1R417vtu8pCKfk?=
+ =?us-ascii?Q?xiS3T1OHXbVECWPgugMXHq/bA2X+5b2qf7UwuuQtBli1mYm07BGYx1JO9AZ1?=
+ =?us-ascii?Q?VqXJ1hjSp526iSFunL/Of+TMJUHV9H+M4+rajceh9WQgcGsdLS9+0mhN95Up?=
+ =?us-ascii?Q?nwMEDtyLuwpbZb/PHiwl0Tqh8+38QiF5pFPlyIKmeP6RHXtn1MEA2QyZ0wtZ?=
+ =?us-ascii?Q?Q4op4usIgx/zlSGHnMEurf1e/DFGMvHF9+7FCwFbNGoMsa621zZrNHruD3YB?=
+ =?us-ascii?Q?hihFffVphFLWc5T5fDx+1Z7zCI1qbm6yjMCbpgCDYsMM47uz+xDWM6AOKUgU?=
+ =?us-ascii?Q?s3qwekuNYSe+Eg8hU3iNQ+MAwGVxFPvVKDXm4mbsojvZFk2sapsoGN0aGHv6?=
+ =?us-ascii?Q?YLJLz11QQwwsc9kKByn6oWGxyEuq55nFSwkwy3fNfxH2A6G35E6wAZIERhrD?=
+ =?us-ascii?Q?4aRXDUvnBkgkv/X2yuI/qvjk5c93LWrdOX2qZwadurKYg361hJcHj9o9SkGx?=
+ =?us-ascii?Q?R7nqxahr44kkaSRlI78=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251003052640.56068-2-sobin.thomas@intel.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9814a3fa-42d7-449e-b622-08de07dcf0c1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Oct 2025 09:11:04.6252 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kVRKZ3ZwFEaF0I88+wKPs0QgpKTkwistBJRRGKhDHhfJzliKnIW5sVNli10Ak/V5RaiTkmRbcl1ZL0Sq3jetXA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4976
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,267 +186,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Oct 03, 2025 at 05:26:19AM +0000, Sobin Thomas wrote:
-> On platforms (like PVC) that do not support walker mid-thread
-> preemption, running tests in forked threads can lead to inconsistent
-> states due to igt_skip being called mid-execution. Made changes to
-> perform kernel preemption check at the beginning of each subtests.
-> If the GPU version does not support the required features, the
-> test is skipped gracefully, ensuring consistent behavior across
-> different platforms.
-> 
-> v2: Fixed review comments to move the compatibility check
->     into the igt_fixture. [Priyanka]
-> 
-> v3: Added check for thread group preemption and WMTP.
->     Added enum flags for preemption type as per review . [Zbigniew]
-> 
-> v4: Added check for preempt inside __run_intel_compute_kernel_preempt
->     Refactored the code.  [priyanka]
-> 
-> v5: Refactor for finding the kernel and out of bound check. [Zbigniew]
-> 
-> v6: Added NULL Check for kernel. [Zbigniew]
-> 
-> v7: Moved TODO inside the code. [kamil]
->     Modified the check condition for kernel [Priyanka]
-> 
-> v8: Additional check for the kernel variants
-> 
-> v9: Refactored in to logically related patches
-> 
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+> -----Original Message-----
+> From: Naladala, Ramanaidu <ramanaidu.naladala@intel.com>
+> Sent: Friday, October 10, 2025 2:27 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>; B, Jeevan <jeevan.b@intel.com=
+>;
+> Manna, Animesh <animesh.manna@intel.com>; Nautiyal, Ankit K
+> <ankit.k.nautiyal@intel.com>; Golani, Mitulkumar Ajitkumar
+> <mitulkumar.ajitkumar.golani@intel.com>; Naladala, Ramanaidu
+> <ramanaidu.naladala@intel.com>
+> Subject: [PATCH i-g-t v1] tests/kms_vrr: Dynamically verify LOBF across v=
+refresh
+> steps
+>=20
+> Replace the static LOBF check with iterative vrefresh stepping to detect =
+LOBF
+> enablement.
+>=20
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 > ---
->  lib/intel_compute.c              | 78 ++++++++++++++++++++++++++++----
->  lib/intel_compute.h              | 11 +++++
->  tests/intel/xe_compute_preempt.c |  6 +++
->  3 files changed, 86 insertions(+), 9 deletions(-)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 147dd2916..ae656a4f6 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -1,7 +1,7 @@
->  /* SPDX-License-Identifier: MIT */
->  /*
->   * Copyright © 2023 Intel Corporation
-> - *
-> + * TODO: Add kernel for PVC for preemption test
->   * Authors:
->   *    Francois Dugast <francois.dugast@intel.com>
->   */
-> @@ -2193,40 +2193,72 @@ static const struct {
->  			     bool threadgroup_preemption,
->  			     enum execenv_alloc_prefs alloc_prefs);
->  	uint32_t compat;
-> +	enum xe_compute_preempt_type preempt_type;
->  } intel_compute_preempt_batches[] = {
->  	{
->  		.ip_ver = IP_VER(20, 01),
->  		.compute_exec = xe2lpg_compute_preempt_exec,
->  		.compat = COMPAT_DRIVER_XE,
-> +		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
->  	},
->  	{
->  		.ip_ver = IP_VER(20, 04),
->  		.compute_exec = xe2lpg_compute_preempt_exec,
->  		.compat = COMPAT_DRIVER_XE,
-> +		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
->  	},
->  	{
->  		.ip_ver = IP_VER(30, 00),
->  		.compute_exec = xe2lpg_compute_preempt_exec,
->  		.compat = COMPAT_DRIVER_XE,
-> +		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
->  	},
->  };
->  
-> +static int find_preempt_batch(unsigned int ip_ver)
-> +{
-> +	for (int batch_idx = 0; batch_idx < ARRAY_SIZE(intel_compute_preempt_batches); batch_idx++)
-> +		if (ip_ver == intel_compute_preempt_batches[batch_idx].ip_ver)
-> +			return batch_idx;
-> +	return -1;
-> +}
+>  tests/kms_vrr.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index ee0f057d5..5bb3a2835
+> 100644
+> --- a/tests/kms_vrr.c
+> +++ b/tests/kms_vrr.c
+> @@ -870,6 +870,8 @@ static void
+>  test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t f=
+lags)  {
+>  	uint64_t rate[] =3D {0};
+> +	uint32_t step_size, vrefresh;
+> +	bool lobf_enabled =3D false;
+>=20
+>  	rate[0] =3D igt_kms_frame_time_from_vrefresh(data-
+> >switch_modes[HIGH_RR_MODE].vrefresh);
+>  	prepare_test(data, output, pipe);
+> @@ -879,11 +881,21 @@ test_lobf(data_t *data, enum pipe pipe, igt_output_=
+t
+> *output, uint32_t flags)
+>=20
+>  	igt_output_override_mode(output, &data-
+> >switch_modes[HIGH_RR_MODE]);
+>  	flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
+> -	igt_output_override_mode(output, &data-
+> >switch_modes[LOW_RR_MODE]);
+> -	rate[0] =3D igt_kms_frame_time_from_vrefresh(data-
+> >switch_modes[LOW_RR_MODE].vrefresh);
+> -	flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
+> -	igt_assert_f(igt_get_i915_edp_lobf_status(data->drm_fd, output-
+> >name),
+> -		     "LOBF not enabled\n");
 > +
-> +static bool is_preemptable(int batch, enum xe_compute_preempt_type required_preempt)
-> +{
-> +	if (required_preempt &&
-> +	    !(intel_compute_preempt_batches[batch].preempt_type & required_preempt)) {
-> +		igt_info("Preemption not supported\n");
-
-I would also remove this igt_info() here allowing caller to decide how
-to inform that this preemption is not supported.
-
-> +		return false;
+> +	step_size =3D (data->range.max - data->range.min) / 5;
+> +
+> +	for (vrefresh =3D data->range.max - step_size;
+> +	     vrefresh >=3D data->range.min; vrefresh -=3D step_size) {
+Can we mention at what rate the iteration is being performed ?=20
+> +		rate[0] =3D igt_kms_frame_time_from_vrefresh(vrefresh);
+> +		flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
+> +
+> +		if (igt_get_i915_edp_lobf_status(data->drm_fd, output->name)) {
+When it passes can we print info at what rate It passed.=20
+> +			lobf_enabled =3D true;
+> +			break;
+> +		}
 > +	}
-> +	return true;
-> +}
 > +
-> +static const char *xe_preempt_type_to_str(enum xe_compute_preempt_type type)
-> +{
-> +	switch (type) {
-> +	case PREEMPT_TGP:
-> +		return "PREEMPT_TGP";
-> +	case PREEMPT_WMTP:
-> +		return "PREEMPT_WMTP";
-> +	default:
-> +		return "UNKNOWN_PREEMPT_TYPE";
-> +	}
-> +}
-> +
->  static bool __run_intel_compute_kernel_preempt(int fd,
->  		struct drm_xe_engine_class_instance *eci,
->  		bool threadgroup_preemption,
->  		enum execenv_alloc_prefs alloc_prefs)
->  {
->  	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-> -	unsigned int batch;
-> -	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
-> +	int batch;
-> +	const struct intel_compute_kernels *kernel_entries = intel_compute_square_kernels, *kernels;
->  	enum intel_driver driver = get_intel_driver(fd);
-> +	enum xe_compute_preempt_type required_preempt =
-> +		threadgroup_preemption ? PREEMPT_TGP : PREEMPT_WMTP;
->  
-> -	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
-> -		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
-> -			break;
-> -
-> -
-> -	if (batch == ARRAY_SIZE(intel_compute_preempt_batches)) {
-> +	batch = find_preempt_batch(ip_ver);
-> +	if (batch < 0) {
->  		igt_debug("GPU version 0x%x not supported\n", ip_ver);
->  		return false;
->  	}
-> @@ -2244,6 +2276,9 @@ static bool __run_intel_compute_kernel_preempt(int fd,
->  		kernels++;
->  	}
->  
-> +	if (!is_preemptable(batch, required_preempt))
-
-I mean here, similar to if (batch < 0) conditional.
-
---
-Zbigniew
-
-> +		return false;
-> +
->  	if (!kernels->kernel || !kernels->sip_kernel || !kernels->long_kernel)
->  		return 0;
->  
-> @@ -2260,6 +2295,31 @@ static bool __run_intel_compute_kernel_preempt(int fd,
->  
->  	return true;
+> +	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
 >  }
-> +
-> +/**
-> + * xe_kernel_preempt_check - Checks IP version to confirm if provided
-> + *			     preempt type is supported.
-> + * @fd: file descriptor of the opened DRM Xe device
-> + * @required_preempt: Preemption type (WMTP/TGP)
-> + *
-> + * Returns true on success, false otherwise.
-> + */
-> +bool xe_kernel_preempt_check(int fd, enum xe_compute_preempt_type required_preempt)
-> +{
-> +	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-> +	int batch = find_preempt_batch(ip_ver);
-> +
-> +	if (batch < 0) {
-> +		igt_debug("Preemption type %s not supported on GPU version 0x%x\n",
-> +			  xe_preempt_type_to_str(required_preempt), ip_ver);
-> +		return false;
-> +	}
-> +	if (!is_preemptable(batch, required_preempt))
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
->  /**
->   * run_intel_compute_kernel_preempt - runs compute kernels to
->   * exercise preemption scenario.
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index 412791d07..6e18d93e9 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -71,6 +71,16 @@ enum execenv_alloc_prefs {
->  	EXECENV_PREF_VRAM_IF_POSSIBLE,
->  };
->  
-> +/**
-> + * enum xe_compute_preempt_type - Types of compute preemption supported.
-> + * PREEMPT_TGP: ThreadGroup Preemption
-> + * PREEMPT_WMTP: Walker Mid Thread Preemption
-> + */
-> +enum xe_compute_preempt_type {
-> +	PREEMPT_TGP  = 1 << 0,
-> +	PREEMPT_WMTP  = 1 << 1,
-> +};
-> +
->  extern const struct intel_compute_kernels intel_compute_square_kernels[];
->  
->  bool run_intel_compute_kernel(int fd, struct user_execenv *user,
-> @@ -81,4 +91,5 @@ bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_in
->  bool run_intel_compute_kernel_preempt(int fd, struct drm_xe_engine_class_instance *eci,
->  				      bool threadgroup_preemption,
->  				      enum execenv_alloc_prefs alloc_prefs);
-> +bool xe_kernel_preempt_check(int fd, enum xe_compute_preempt_type required_preempt);
->  #endif	/* INTEL_COMPUTE_H */
-> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-> index c9b194869..076360f1d 100644
-> --- a/tests/intel/xe_compute_preempt.c
-> +++ b/tests/intel/xe_compute_preempt.c
-> @@ -76,6 +76,7 @@ igt_main
->  	}
->  
->  	igt_subtest_with_dynamic("compute-preempt") {
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -86,6 +87,7 @@ igt_main
->  	}
->  
->  	igt_subtest_with_dynamic("compute-preempt-many") {
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -112,6 +114,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-all-ram") {
->  		igt_require(swap_mb > CONTEXT_MB * 10);
->  
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -138,6 +141,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-vram") {
->  		igt_require(xe_has_vram(xe));
->  
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -164,6 +168,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-vram-evict") {
->  		igt_require(xe_has_vram(xe));
->  
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -188,6 +193,7 @@ igt_main
->  	}
->  
->  	igt_subtest_with_dynamic("compute-threadgroup-preempt") {
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_TGP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> -- 
-> 2.51.0
-> 
+>=20
+>  static void
+> --
+> 2.43.0
+
