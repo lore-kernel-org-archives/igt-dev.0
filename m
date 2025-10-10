@@ -4,59 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA8A1CCA476
-	for <igt-dev@archiver.kernel.org>; Fri, 10 Oct 2025 08:57:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD1F2CAC5BB
+	for <igt-dev@archiver.kernel.org>; Fri, 10 Oct 2025 08:57:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 60B8F10EB85;
-	Fri, 10 Oct 2025 08:57:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 713C610EB82;
+	Fri, 10 Oct 2025 08:57:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hjATAz/8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iF0aXosG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA9A610EB85
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Oct 2025 08:57:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7033510EB82
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Oct 2025 08:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760086639; x=1791622639;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=4lGiDk9FEv2UnSo/pDTkVZyvkuWcc5En8SI9rG+hpjc=;
- b=hjATAz/8xEsqlvzZoGJigSNa7jCoeTDtxa+Eg4PQL/UFxjstglRWUvPW
- pnS/oCG0nhGoEYgKnVeD8iakNhLJ/2A3IBjAZsxjRN5AUlBUQw2g8vHTt
- 3go3Xf0Q3ppHD8XuCZhvCI6cOlRKJF+vlEYyrV5k8xdSfnB+tbl8X2v55
- /oM8CYtutTV57GmOsVFBowR+MgQxqgTieJdiaUqqeF+/PHQ0rn4hm4j0D
- EneHLUejyYvZj3xPBXi/0pE1U0EZo6jLrRFM+wKwBmljDisB+U7l9EN2F
- kp+NWAo4SsX74NR/KCc2Gsny1afn9uh0P24sd/YmbkI26QNIXvS3N9dU2 A==;
-X-CSE-ConnectionGUID: 8MXoxGBqSqq4KFkvcN98XA==
-X-CSE-MsgGUID: AzVHvTJVQkCUNmceKu25lg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62223580"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62223580"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Oct 2025 01:57:17 -0700
-X-CSE-ConnectionGUID: J44hDWOVRDOZm+1JgKWrrA==
-X-CSE-MsgGUID: oGUNNfPxTia0h+Sp0Jtd5Q==
+ t=1760086644; x=1791622644;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=pZidxy2RSwuLZCA5ewXrbXYGMf6Btx12DnU8JyRoIWg=;
+ b=iF0aXosG64TIzKR+Oo8Z8BxhZV15ILymcVe6g31g9IW+9Hlcl/xyYIhq
+ u5GRhsQnbKNwaqTBrTo4MD+3hB/tjUbHYbWwPZ+C09HkSN46fvCd8jx4y
+ klq4uGoFKuJKkggdc9yC1VN7y3MDAQkC/4pO4jyFKzplSKwHKwI+yZ2sl
+ k83ycsPT8PbPVUwyvAz5m4CkJEnaTEkodLSE2XvwKeZIgp7ld3UWNfylr
+ HvluD7PeF3z2fgcS5oqWYUZkHAZUU9nCg7k7hUKZIH+CaBhtLdkzHeO4r
+ C5YqRMtyit96L34UILNl/etkFnmqnjdsbEyzvtZy+eDXXlur4kFltI4HL Q==;
+X-CSE-ConnectionGUID: rXnF2lkqTcSqKw2a+40Bcw==
+X-CSE-MsgGUID: WDLP6IrUTBW05/vvAvNlHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="87763909"
+X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; d="scan'208";a="87763909"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Oct 2025 01:57:24 -0700
+X-CSE-ConnectionGUID: z1m5zl0cTMqkwVbgW6furQ==
+X-CSE-MsgGUID: +VCD3zLZQQee2Y0LSKBUSg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; d="scan'208";a="180879006"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.245.136])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Oct 2025 01:57:15 -0700
-Date: Fri, 10 Oct 2025 10:57:13 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Sobin Thomas <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com, 
- priyanka.dandamudi@intel.com
-Subject: Re: [PATCH i-g-t v9 1/3] tests/intel/xe_compute_preempt: Compute
- preemption check
-Message-ID: <g6l4j42lzl4auxfxfbb2jo75db4wz37lt6nhdzgi7vod2n7d5p@3oerce5j6jnl>
-References: <20251003052640.56068-1-sobin.thomas@intel.com>
- <20251003052640.56068-2-sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; d="scan'208";a="181362410"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 01:57:22 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com, jeevan.b@intel.com, animesh.manna@intel.com,
+ ankit.k.nautiyal@intel.com, mitulkumar.ajitkumar.golani@intel.com,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1] tests/kms_vrr: Dynamically verify LOBF across
+ vrefresh steps
+Date: Fri, 10 Oct 2025 14:27:07 +0530
+Message-ID: <20251010085708.273552-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251003052640.56068-2-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,260 +68,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Oct 03, 2025 at 05:26:19AM +0000, Sobin Thomas wrote:
-> On platforms (like PVC) that do not support walker mid-thread
-> preemption, running tests in forked threads can lead to inconsistent
-> states due to igt_skip being called mid-execution. Made changes to
-> perform kernel preemption check at the beginning of each subtests.
-> If the GPU version does not support the required features, the
-> test is skipped gracefully, ensuring consistent behavior across
-> different platforms.
-> 
-> v2: Fixed review comments to move the compatibility check
->     into the igt_fixture. [Priyanka]
-> 
-> v3: Added check for thread group preemption and WMTP.
->     Added enum flags for preemption type as per review . [Zbigniew]
-> 
-> v4: Added check for preempt inside __run_intel_compute_kernel_preempt
->     Refactored the code.  [priyanka]
-> 
-> v5: Refactor for finding the kernel and out of bound check. [Zbigniew]
-> 
-> v6: Added NULL Check for kernel. [Zbigniew]
-> 
-> v7: Moved TODO inside the code. [kamil]
->     Modified the check condition for kernel [Priyanka]
-> 
-> v8: Additional check for the kernel variants
-> 
-> v9: Refactored in to logically related patches
-> 
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-> ---
->  lib/intel_compute.c              | 78 ++++++++++++++++++++++++++++----
->  lib/intel_compute.h              | 11 +++++
->  tests/intel/xe_compute_preempt.c |  6 +++
->  3 files changed, 86 insertions(+), 9 deletions(-)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 147dd2916..ae656a4f6 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -1,7 +1,7 @@
->  /* SPDX-License-Identifier: MIT */
->  /*
->   * Copyright © 2023 Intel Corporation
-> - *
-> + * TODO: Add kernel for PVC for preemption test
->   * Authors:
->   *    Francois Dugast <francois.dugast@intel.com>
->   */
-> @@ -2193,40 +2193,72 @@ static const struct {
->  			     bool threadgroup_preemption,
->  			     enum execenv_alloc_prefs alloc_prefs);
->  	uint32_t compat;
-> +	enum xe_compute_preempt_type preempt_type;
->  } intel_compute_preempt_batches[] = {
->  	{
->  		.ip_ver = IP_VER(20, 01),
->  		.compute_exec = xe2lpg_compute_preempt_exec,
->  		.compat = COMPAT_DRIVER_XE,
-> +		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
->  	},
->  	{
->  		.ip_ver = IP_VER(20, 04),
->  		.compute_exec = xe2lpg_compute_preempt_exec,
->  		.compat = COMPAT_DRIVER_XE,
-> +		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
->  	},
->  	{
->  		.ip_ver = IP_VER(30, 00),
->  		.compute_exec = xe2lpg_compute_preempt_exec,
->  		.compat = COMPAT_DRIVER_XE,
-> +		.preempt_type = PREEMPT_TGP | PREEMPT_WMTP,
->  	},
->  };
->  
-> +static int find_preempt_batch(unsigned int ip_ver)
-> +{
-> +	for (int batch_idx = 0; batch_idx < ARRAY_SIZE(intel_compute_preempt_batches); batch_idx++)
-> +		if (ip_ver == intel_compute_preempt_batches[batch_idx].ip_ver)
-> +			return batch_idx;
-> +	return -1;
-> +}
-> +
-> +static bool is_preemptable(int batch, enum xe_compute_preempt_type required_preempt)
-> +{
-> +	if (required_preempt &&
-> +	    !(intel_compute_preempt_batches[batch].preempt_type & required_preempt)) {
-> +		igt_info("Preemption not supported\n");
-> +		return false;
-> +	}
-> +	return true;
-> +}
-> +
-> +static const char *xe_preempt_type_to_str(enum xe_compute_preempt_type type)
-> +{
-> +	switch (type) {
-> +	case PREEMPT_TGP:
-> +		return "PREEMPT_TGP";
-> +	case PREEMPT_WMTP:
-> +		return "PREEMPT_WMTP";
-> +	default:
-> +		return "UNKNOWN_PREEMPT_TYPE";
-> +	}
-> +}
-> +
->  static bool __run_intel_compute_kernel_preempt(int fd,
->  		struct drm_xe_engine_class_instance *eci,
->  		bool threadgroup_preemption,
->  		enum execenv_alloc_prefs alloc_prefs)
->  {
->  	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-> -	unsigned int batch;
-> -	const struct intel_compute_kernels *kernels = intel_compute_square_kernels;
-> +	int batch;
-> +	const struct intel_compute_kernels *kernel_entries = intel_compute_square_kernels, *kernels;
+Replace the static LOBF check with iterative vrefresh stepping
+to detect LOBF enablement.
 
-Unused, produces compilation warning.
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+---
+ tests/kms_vrr.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
->  	enum intel_driver driver = get_intel_driver(fd);
-> +	enum xe_compute_preempt_type required_preempt =
-> +		threadgroup_preemption ? PREEMPT_TGP : PREEMPT_WMTP;
->  
-> -	for (batch = 0; batch < ARRAY_SIZE(intel_compute_preempt_batches); batch++)
-> -		if (ip_ver == intel_compute_preempt_batches[batch].ip_ver)
-> -			break;
-> -
-> -
-> -	if (batch == ARRAY_SIZE(intel_compute_preempt_batches)) {
-> +	batch = find_preempt_batch(ip_ver);
-> +	if (batch < 0) {
->  		igt_debug("GPU version 0x%x not supported\n", ip_ver);
->  		return false;
->  	}
-> @@ -2244,6 +2276,9 @@ static bool __run_intel_compute_kernel_preempt(int fd,
->  		kernels++;
->  	}
->  
-> +	if (!is_preemptable(batch, required_preempt))
-> +		return false;
-> +
->  	if (!kernels->kernel || !kernels->sip_kernel || !kernels->long_kernel)
->  		return 0;
->  
-> @@ -2260,6 +2295,31 @@ static bool __run_intel_compute_kernel_preempt(int fd,
->  
->  	return true;
->  }
-> +
-> +/**
-> + * xe_kernel_preempt_check - Checks IP version to confirm if provided
-> + *			     preempt type is supported.
-> + * @fd: file descriptor of the opened DRM Xe device
-> + * @required_preempt: Preemption type (WMTP/TGP)
-> + *
-> + * Returns true on success, false otherwise.
-> + */
-> +bool xe_kernel_preempt_check(int fd, enum xe_compute_preempt_type required_preempt)
-> +{
-> +	unsigned int ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-> +	int batch = find_preempt_batch(ip_ver);
-> +
-> +	if (batch < 0) {
-> +		igt_debug("Preemption type %s not supported on GPU version 0x%x\n",
-> +			  xe_preempt_type_to_str(required_preempt), ip_ver);
-> +		return false;
-> +	}
-> +	if (!is_preemptable(batch, required_preempt))
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
->  /**
->   * run_intel_compute_kernel_preempt - runs compute kernels to
->   * exercise preemption scenario.
-> diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-> index 412791d07..6e18d93e9 100644
-> --- a/lib/intel_compute.h
-> +++ b/lib/intel_compute.h
-> @@ -71,6 +71,16 @@ enum execenv_alloc_prefs {
->  	EXECENV_PREF_VRAM_IF_POSSIBLE,
->  };
->  
-> +/**
-> + * enum xe_compute_preempt_type - Types of compute preemption supported.
-> + * PREEMPT_TGP: ThreadGroup Preemption
-> + * PREEMPT_WMTP: Walker Mid Thread Preemption
-> + */
-> +enum xe_compute_preempt_type {
-> +	PREEMPT_TGP  = 1 << 0,
-> +	PREEMPT_WMTP  = 1 << 1,
-> +};
-> +
->  extern const struct intel_compute_kernels intel_compute_square_kernels[];
->  
->  bool run_intel_compute_kernel(int fd, struct user_execenv *user,
-> @@ -81,4 +91,5 @@ bool xe_run_intel_compute_kernel_on_engine(int fd, struct drm_xe_engine_class_in
->  bool run_intel_compute_kernel_preempt(int fd, struct drm_xe_engine_class_instance *eci,
->  				      bool threadgroup_preemption,
->  				      enum execenv_alloc_prefs alloc_prefs);
-> +bool xe_kernel_preempt_check(int fd, enum xe_compute_preempt_type required_preempt);
->  #endif	/* INTEL_COMPUTE_H */
-> diff --git a/tests/intel/xe_compute_preempt.c b/tests/intel/xe_compute_preempt.c
-> index c9b194869..076360f1d 100644
-> --- a/tests/intel/xe_compute_preempt.c
-> +++ b/tests/intel/xe_compute_preempt.c
-> @@ -76,6 +76,7 @@ igt_main
->  	}
->  
->  	igt_subtest_with_dynamic("compute-preempt") {
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -86,6 +87,7 @@ igt_main
->  	}
->  
->  	igt_subtest_with_dynamic("compute-preempt-many") {
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -112,6 +114,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-all-ram") {
->  		igt_require(swap_mb > CONTEXT_MB * 10);
->  
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -138,6 +141,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-vram") {
->  		igt_require(xe_has_vram(xe));
->  
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -164,6 +168,7 @@ igt_main
->  	igt_subtest_with_dynamic("compute-preempt-many-vram-evict") {
->  		igt_require(xe_has_vram(xe));
->  
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_WMTP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> @@ -188,6 +193,7 @@ igt_main
->  	}
->  
->  	igt_subtest_with_dynamic("compute-threadgroup-preempt") {
-> +		igt_require(xe_kernel_preempt_check(xe, PREEMPT_TGP));
->  		xe_for_each_engine(xe, hwe) {
->  			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
->  				continue;
-> -- 
-> 2.51.0
-> 
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index ee0f057d5..5bb3a2835 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -870,6 +870,8 @@ static void
+ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ {
+ 	uint64_t rate[] = {0};
++	uint32_t step_size, vrefresh;
++	bool lobf_enabled = false;
+ 
+ 	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
+ 	prepare_test(data, output, pipe);
+@@ -879,11 +881,21 @@ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 
+ 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
+ 	flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
+-	igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
+-	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[LOW_RR_MODE].vrefresh);
+-	flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
+-	igt_assert_f(igt_get_i915_edp_lobf_status(data->drm_fd, output->name),
+-		     "LOBF not enabled\n");
++
++	step_size = (data->range.max - data->range.min) / 5;
++
++	for (vrefresh = data->range.max - step_size;
++	     vrefresh >= data->range.min; vrefresh -= step_size) {
++		rate[0] = igt_kms_frame_time_from_vrefresh(vrefresh);
++		flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
++
++		if (igt_get_i915_edp_lobf_status(data->drm_fd, output->name)) {
++			lobf_enabled = true;
++			break;
++		}
++	}
++
++	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
+ }
+ 
+ static void
+-- 
+2.43.0
+
