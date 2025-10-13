@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80D16CCD185
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8DDECCD192
 	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 20:30:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FA0410E537;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 290A210E539;
 	Mon, 13 Oct 2025 20:30:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CzSZlnX2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a6Uv7WqZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C2F010E153
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 20:30:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D95CA10E153
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 20:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760387449; x=1791923449;
+ t=1760387448; x=1791923448;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=eUTXg6QkulkUyxIoDY9fD9u07kdCzGmqrTBo7NKXHLo=;
- b=CzSZlnX2R/emGP2cvS3OFkKa8LUknh35pPNqhBUsVyTxHpYo1TzGC6RB
- BEQJz8dFlQ+Y9HohCR7V5AZIicPi4+VIz81RQYULLIkaM+SxApbbIfB4q
- WcfwGAW4VCyPMyzBU3Dl+J+K74ihCPBMxjk8rhxdwjdpZuqeEhfkzNMOy
- FzG6shq1AXj813haKZ4D14yyCQ4xcTImT0DUwJIwuZAcHzV9hxwbx8RNi
- iz+9tUMjGx50tVy5KZdN8IkQMESHBI5Ss/45hOM+YGSsVHgj+hO0bg9ho
- 480FFw7lzis9z3N8go/7MGcbjeMDBJjWoGFqMchk7YpHFPfaStcEKeecP g==;
-X-CSE-ConnectionGUID: 07VFtUiuT4KbINxp4OO16A==
-X-CSE-MsgGUID: grr7EKwsSlmu/UsfKRsYtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641935"
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641935"
+ bh=/gkebJPzgtTooqNNgH0YfXXvQaZ4eOZukxxPXfH1FIQ=;
+ b=a6Uv7WqZTL3hwhiKxrz2Vf+ebVM+QOpnxmEtoIhJEw8+mE5cMWXrt6G+
+ j5ZCZXw6MT1jZUaMtvk1DDbI+sk+azmTDPmoRT91lm0vAcbpAwlFqOdXD
+ YI37WbwBdHbxZVfrTolFigqjoDlr6j3ohbHUlVfqRP3f+7UXM0eADFR3d
+ 8azFuF/5/qsEEq+TIvZypNO449HvFrLbOdx1LifVUKUhsBTrVkjn5EQgF
+ n/hX2D4qB5YMKYlULWCqB2dmBlZCfRT2bP6/CfUxO4Ud4nSBdNEasyKpd
+ tkny3Bc9EVN9z5TkHuFqt1inIcYNNnQ3+ABibmnAbl7JMzikqIz/XvYG0 w==;
+X-CSE-ConnectionGUID: y3Qq4gZfQhiGur2CG8kLDA==
+X-CSE-MsgGUID: q0O+aLcISr678pBwrLd7Ng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641929"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641929"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Oct 2025 13:30:48 -0700
-X-CSE-ConnectionGUID: UUXEgMtjQ0KjwYgKI97y1Q==
-X-CSE-MsgGUID: GoTHF480QACrIwUnLE9S0Q==
+X-CSE-ConnectionGUID: SW2P2YPwTgic1qgpFNxejA==
+X-CSE-MsgGUID: AiWGh1E0RSi3OcupdJPklQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924029"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924011"
 Received: from orsosgc001.jf.intel.com ([10.88.27.185])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2025 13:30:48 -0700
+ 13 Oct 2025 13:30:47 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t 08/18] tests/intel/xe_oa: Convert several more tests to
- take OA unit arguments
-Date: Mon, 13 Oct 2025 13:30:31 -0700
-Message-ID: <20251013203042.925115-9-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 02/18] tests/intel/xe_oa: Get rid of unnecessary
+ DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE
+Date: Mon, 13 Oct 2025 13:30:25 -0700
+Message-ID: <20251013203042.925115-3-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251013203042.925115-1-ashutosh.dixit@intel.com>
 References: <20251013203042.925115-1-ashutosh.dixit@intel.com>
@@ -68,198 +68,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Convert the following tests to take 'struct drm_xe_oa_unit *'
-arguments (instead of hwe), to enable these to be run on all OA units:
-
-- test_oa_exponents
-- test_buffer_fill
-- test_enable_disable
-- test_oa_tlb_invalidate
-- test_stress_open_close
-- test_tail_address_wrap
+DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE is needed only when input OA
+properties include an exec queue. In other cases the kernel does not use
+DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE. Stop providing the unnecessary
+DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE property for these cases. This is
+needed to use OA units which don't have an associated hwe.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 60 ++++++++++++++++++++++-----------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+ tests/intel/xe_oa.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 22cc4e8b9b..7c87dfc5f4 100644
+index 0a00105bd4..a028823e51 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -1906,9 +1906,9 @@ static bool expected_report_timing_delta(uint32_t delta, uint32_t expected_delta
-  * SUBTEST: oa-exponents
-  * Description: Test that oa exponent values behave as expected
-  */
--static void test_oa_exponents(const struct drm_xe_engine_class_instance *hwe)
-+static void test_oa_exponents(struct drm_xe_oa_unit *oau)
- {
--	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
- 	uint64_t fmt = test_set->perf_oa_format;
- 
- 	load_helper_init();
-@@ -1920,7 +1920,7 @@ static void test_oa_exponents(const struct drm_xe_engine_class_instance *hwe)
- 	 */
- 	for (int exponent = min_oa_exponent; exponent < max_oa_exponent; exponent++) {
- 		uint64_t properties[] = {
--			DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+			DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
- 
- 			/* Include OA reports in samples */
- 			DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-@@ -2536,11 +2536,11 @@ num_valid_reports_captured(struct intel_xe_oa_open_prop *param,
-  * Description: Open OA stream twice to verify OA TLB invalidation
-  */
- static void
--test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
-+test_oa_tlb_invalidate(struct drm_xe_oa_unit *oau)
- {
--	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
- 	uint64_t properties[] = {
--		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
- 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
- 
+@@ -1559,8 +1559,6 @@ open_and_read_2_oa_reports(int format_id,
  		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-@@ -2594,15 +2594,15 @@ wait_for_oa_buffer_overflow(int fd, int poll_period_us)
-  * Description: Test filling and overflow of OA buffer
-  */
- static void
--test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
-+test_buffer_fill(struct drm_xe_oa_unit *oau)
- {
- 	/* ~5 micro second period */
- 	int oa_exponent = max_oa_exponent_for_period_lte(5000);
- 	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
--	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
- 	uint64_t fmt = test_set->perf_oa_format;
- 	uint64_t properties[] = {
--		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(format_id),
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, exponent,
+-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+-
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+ 		.num_properties = ARRAY_SIZE(properties) / 2,
+@@ -1877,7 +1875,6 @@ static void test_oa_exponents(const struct drm_xe_engine_class_instance *hwe)
+ 			DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+ 			DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+ 			DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, exponent,
+-			DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 		};
+ 		struct intel_xe_oa_open_prop param = {
+ 			.num_properties = ARRAY_SIZE(properties) / 2,
+@@ -2096,7 +2093,6 @@ static void test_blocking(uint64_t requested_oa_period,
+ 	ADD_PROPS(props, idx, OA_PERIOD_EXPONENT, oa_exponent);
+ 	ADD_PROPS(props, idx, OA_DISABLED, true);
+ 	ADD_PROPS(props, idx, OA_UNIT_ID, 0);
+-	ADD_PROPS(props, idx, OA_ENGINE_INSTANCE, hwe->engine_instance);
  
- 		/* Include OA reports in samples */
- 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-@@ -2734,13 +2734,13 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
-  * Description: Test that OA stream enable/disable works as expected
-  */
- static void
--test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
-+test_enable_disable(struct drm_xe_oa_unit *oau)
- {
- 	uint32_t num_reports = 5;
--	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
- 	uint64_t fmt = test_set->perf_oa_format;
- 	uint64_t properties[] = {
--		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
- 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+ 	param.num_properties = (idx - props) / 2;
+ 	param.properties_ptr = to_user_pointer(props);
+@@ -2241,7 +2237,6 @@ static void test_polling(uint64_t requested_oa_period,
+ 	ADD_PROPS(props, idx, OA_PERIOD_EXPONENT, oa_exponent);
+ 	ADD_PROPS(props, idx, OA_DISABLED, true);
+ 	ADD_PROPS(props, idx, OA_UNIT_ID, 0);
+-	ADD_PROPS(props, idx, OA_ENGINE_INSTANCE, hwe->engine_instance);
+ 
+ 	param.num_properties = (idx - props) / 2;
+ 	param.properties_ptr = to_user_pointer(props);
+@@ -2498,7 +2493,6 @@ test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+ 		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+ 		.num_properties = ARRAY_SIZE(properties) / 2,
+@@ -2563,7 +2557,6 @@ test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
  		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
  		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-@@ -3515,16 +3515,16 @@ test_rc6_disable(void)
-  * Description: Open/close OA streams in a tight loop
-  */
- static void
--test_stress_open_close(const struct drm_xe_engine_class_instance *hwe)
-+test_stress_open_close(struct drm_xe_oa_unit *oau)
- {
--	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
- 
- 	load_helper_init();
- 	load_helper_run(HIGH);
- 
- 	igt_until_timeout(2) {
- 		uint64_t properties[] = {
--			DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+			DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
- 
- 			/* XXX: even without periodic sampling we have to
- 			 * specify at least one sample layout property...
-@@ -4623,14 +4623,14 @@ static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_insta
-  * has zeroes in it.
-  */
- static void
--test_tail_address_wrap(const struct drm_xe_engine_class_instance *hwe, size_t oa_buffer_size)
-+test_tail_address_wrap(struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
- {
--	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
- 	u64 exponent = max_oa_exponent_for_period_lte(20000);
- 	u64 buffer_size = oa_buffer_size ?: buffer_fill_size;
- 	u64 fmt = test_set->perf_oa_format;
- 	u64 properties[] = {
--		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
- 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
+-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, buffer_fill_size,
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+@@ -2611,7 +2604,6 @@ test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe, size_t oa_b
  		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
  		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-@@ -5124,13 +5124,13 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
- 		test_invalid_oa_exponent();
- 
- 	igt_subtest_with_dynamic("oa-exponents")
--		__for_one_hwe_in_oag(hwe)
--			test_oa_exponents(hwe);
-+		__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
-+			test_oa_exponents(oau);
- 
- 	igt_subtest_with_dynamic("buffer-fill") {
- 		igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_BUFFER_SIZE);
--		__for_one_hwe_in_oag(hwe)
--			test_buffer_fill(hwe);
-+		__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
-+			test_buffer_fill(oau);
- 	}
- 
- 	/**
-@@ -5158,8 +5158,8 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
- 		test_non_sampling_read_error();
- 
- 	igt_subtest_with_dynamic("enable-disable")
--		__for_one_hwe_in_oag(hwe)
--			test_enable_disable(hwe);
-+		__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
-+			test_enable_disable(oau);
- 
- 	igt_subtest_with_dynamic("blocking") {
- 		igt_require(!igt_run_in_simulation());
-@@ -5193,8 +5193,8 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
- 		igt_subtest_with_dynamic("oa-tlb-invalidate") {
- 			igt_require(intel_graphics_ver(devid) <= IP_VER(12, 70) &&
- 				    intel_graphics_ver(devid) != IP_VER(12, 60));
--			__for_one_hwe_in_oag(hwe)
--				test_oa_tlb_invalidate(hwe);
-+			__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
-+				test_oa_tlb_invalidate(oau);
- 		}
- 
- 		igt_subtest_with_dynamic("unprivileged-single-ctx-counters") {
-@@ -5223,8 +5223,8 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_subtest_with_dynamic("stress-open-close") {
--		__for_one_hwe_in_oag(hwe)
--			test_stress_open_close(hwe);
-+		__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
-+			test_stress_open_close(oau);
- 	}
- 
- 	igt_subtest("invalid-create-userspace-config")
-@@ -5269,8 +5269,8 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
- 		long k = random() % num_buf_sizes;
- 
- 		igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_BUFFER_SIZE);
--		__for_one_hwe_in_oag_w_arg(hwe, buf_sizes[k].name)
--			test_tail_address_wrap(hwe, buf_sizes[k].size);
-+		__for_oa_unit_by_type_w_arg(DRM_XE_OA_UNIT_TYPE_OAG, buf_sizes[k].name)
-+			test_tail_address_wrap(oau, buf_sizes[k].size);
- 	}
- 
- 	igt_subtest_group {
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
+-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, oa_buffer_size ?: buffer_fill_size
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+@@ -2700,7 +2692,6 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+ 		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 		DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS, num_reports,
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+@@ -3491,7 +3482,6 @@ test_stress_open_close(const struct drm_xe_engine_class_instance *hwe)
+ 			DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+ 			DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+ 			DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+-			DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 		};
+ 		struct intel_xe_oa_open_prop param = {
+ 			.num_properties = ARRAY_SIZE(properties) / 2,
+@@ -4008,7 +3998,6 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+ 		.num_properties = sizeof(properties) / 16,
+@@ -4114,7 +4103,6 @@ __test_mmio_triggered_reports_read(struct drm_xe_engine_class_instance *hwe)
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+ 		.num_properties = sizeof(properties) / 16,
+@@ -4593,7 +4581,6 @@ test_tail_address_wrap(const struct drm_xe_engine_class_instance *hwe, size_t oa
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, exponent,
+-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, buffer_size,
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+@@ -4653,7 +4640,6 @@ static void test_mapped_oa_buffer(map_oa_buffer_test_t test_with_fd_open,
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
+-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+ 		.num_properties = ARRAY_SIZE(properties) / 2,
 -- 
 2.48.1
 
