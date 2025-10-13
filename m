@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1239CCD18D
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 13:35:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51B19CCD18D
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 13:41:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1FCD10E399;
-	Mon, 13 Oct 2025 13:35:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0130410E380;
+	Mon, 13 Oct 2025 13:41:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ER48YnWt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YZQcVOdK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 30EA610E399
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 13:35:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2554710E380
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 13:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760362548; x=1791898548;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Cgs+R/ezuR7/df65N+jNePbXItRo0FE3NnE3KMu8Yp0=;
- b=ER48YnWt6XZkGBEFUar5FXdyR+duSQSTUru2ER72hXLL+Hu9LfNok8zp
- 7dyFdMep0sNyQMTWFSN6LHV2XOt6ONIsrbFLdraeRfyiwwvZmMP5YHIBx
- ExZlv3IgKRWTjDjRKbOjLTmVlt2uosTOt26CeCQ3oId9rZ/b0t8rynkcm
- jIjNKNZwSyRro1fm2ed7FrLcZ8NRs/TyM719GHmlFR7xS5gNbDIG19Cm+
- 38KW0dXGB2QRzrBa9Veu61sh4VoXBwdR7MgolMvpCGB9jzPXBwHD2EAZs
- WeqikXffz3EfM9dN2ild98irSvKb1M+Lini7dft1TuEkETXjpIJCC789X Q==;
-X-CSE-ConnectionGUID: JgCdvD52ReWjOM89GIDWnQ==
-X-CSE-MsgGUID: mYnv4D7PQUOLdhL747kW1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73106031"
-X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; d="scan'208";a="73106031"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2025 06:35:48 -0700
-X-CSE-ConnectionGUID: L0G1uo2SQZGUwqSo1SAohw==
-X-CSE-MsgGUID: 1v1YqDVRQKu3hEvuBgVSmA==
+ t=1760362878; x=1791898878;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=9oZhA0GAOvrkxCJZQsU9TFdsfPErXCpOTSlSjggYC4U=;
+ b=YZQcVOdKYD7fjCK4AvsjLMU2lGKex5U/5t6RJ21Zb/zj/076vncR0F9n
+ a7Mf3HdyvLenA5J7jcdSQnpx0yXVzV1ZcttzUhfFPWDxxu6G+N6tEQ8cW
+ ZeHKESCpf+OBp/cGv6li5rv4UHyx2JbRtotc+MkBnG0SJG4OQdhPuMNiG
+ i6dU6hY+O4CeJYro8jkDWO4P7L8MDEjApjjgAOjhhS/TwK3hMHjGmjOB5
+ kIy2ym8BBODcVKIdH/1EMzP0QGztUZSUF7oYtKxBg8zbKbUblHXNo8mez
+ 7vMrkmZNByyaR9r2G4hjqJ2EO0YsvM2Q/s+9AU+EJ4H2WrR5px8p+dq4x Q==;
+X-CSE-ConnectionGUID: LtLypkFbSCy5rLoJu6+7vQ==
+X-CSE-MsgGUID: VGDlbIzjR/2t/ccIiV/QMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="66155495"
+X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; d="scan'208";a="66155495"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2025 06:41:17 -0700
+X-CSE-ConnectionGUID: CYtesG7gRP+GFLLJThwhAg==
+X-CSE-MsgGUID: y3SMwdQ2QxyWz5K0L+oVug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; d="scan'208";a="180844535"
-Received: from dut6245dg2frd.fm.intel.com ([10.80.55.42])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2025 06:35:48 -0700
-From: Sobin Thomas <sobin.thomas@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,225,1754982000"; d="scan'208";a="180742543"
+Received: from art-dev-395.igk.intel.com ([10.211.135.233])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2025 06:41:15 -0700
+From: Jan Maslak <jan.maslak@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com,
- priyanka.dandamudi@intel.com, Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v10 3/3] lib/intel_compute: Adjust long kernel usage for
- WMTP
-Date: Mon, 13 Oct 2025 13:34:35 +0000
-Message-ID: <20251013133439.543393-4-sobin.thomas@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013133439.543393-1-sobin.thomas@intel.com>
-References: <20251013133439.543393-1-sobin.thomas@intel.com>
+Cc: gwan-gyeong.mun@intel.com, zbigniew.kempczynski@intel.com,
+ Jan Maslak <jan.maslak@intel.com>
+Subject: [PATCH 0/4] tests/intel/xe_eudebug_online: Introduce pagefault stress
+ tests
+Date: Mon, 13 Oct 2025 13:40:39 +0000
+Message-Id: <20251013134043.1676308-1-jan.maslak@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -70,37 +68,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-WMTP uses different shaders SIP and loop kernel and does not
-require a separate long_kernel; Removed unused definition and
-variable initialization.
+This patch series introduces stress variants of already existing
+pagefault-(read|write) tests in the `xe_eudebug_online` test suite.
+These tests use the maximum number of threads in thread group and
+maximum number of threads in the shader.
 
-Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/intel_compute.c | 3 ---
- 1 file changed, 3 deletions(-)
+v2: Compute `maximum number of threads in shader` and
+`maximum number of threads per thread group` values based on
+hardware capabilities instead of using hardcoded values.
+v3: Added `num_threads_in_tg` to gpgpu_shader struct, as opposed
+to passing it through function arguments. Add xe_query helper
+function for retrieving u32 hwconfig values.
+v4: Addressed review comments for computing max number of threads
+per tg.
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 4f0e86fd4..592dcdce8 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -72,7 +72,6 @@
-  * WMTP - Walker Mid Thread Preemption
-  */
- #define TGP_long_kernel_loop_count		10
--#define WMTP_long_kernel_loop_count		1000000
- #define XE2_THREADGROUP_PREEMPT_XDIM		0x4000
- 
- struct bo_dict_entry {
-@@ -2135,8 +2134,6 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 
- 	if (threadgroup_preemption)
- 		long_kernel_loop_count = TGP_long_kernel_loop_count;
--	else
--		long_kernel_loop_count = WMTP_long_kernel_loop_count;
- 
- 	for (int i = 0; i < entries; ++i)
- 		bo_dict_short[i] = bo_dict_long[i];
+Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+
+Jan Maslak (4):
+  lib/gpgpu_shader: Add num_threads_in_tg to shader struct
+  lib/gpgpu_shader: add function for computing max number of threads per
+    tg
+  lib/xe/xe_query: add function to retrieve uint32_t value from hwconfig
+  tests/intel/xe_eudebug_online: add pagefault stress tests
+
+ lib/gpgpu_shader.c              | 136 ++++++++++++++++++++++++++++++++
+ lib/gpgpu_shader.h              |  12 +++
+ lib/xe/xe_query.c               |  17 ++++
+ lib/xe/xe_query.h               |   1 +
+ tests/intel/xe_eudebug_online.c |  61 +++++++++++---
+ 5 files changed, 217 insertions(+), 10 deletions(-)
+
 -- 
-2.51.0
+2.34.1
 
