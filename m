@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFD08CCD18F
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 20:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83CE9CCD196
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 20:30:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 47FB810E53B;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7491110E53F;
 	Mon, 13 Oct 2025 20:30:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZQYC5p0B";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e26pMw0/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9EF110E534
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 20:30:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E03410E534
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 20:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760387449; x=1791923449;
+ t=1760387450; x=1791923450;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=mMNy7f5w6UFsa9Vy/y0ElblGJVHrACJvwRy4ewHX/WM=;
- b=ZQYC5p0BnMI4CbI/AhcwHjpzdHKqrQWv5xcK87YeZxpDnDD2EqNmD0vf
- 5ZdkmSvZpsf8jurV9YoZ0Hw+u6Thk4Vc6A3QQbzKHEGv73btuIeGqQICc
- Luhr6N0c2aYXfyuN5SGu/zFTqo/Me/s6lF/ElzoqE012Zgtsq/7k206Sw
- Dto+cBiDay8bPMKOlkkcCfeFegicObRLY0rItDU0NsQfZwBHEBGTEUkPO
- 01vL0zqwS/g1WdpOZyGDL15o39gRC+RHg/h3x6G0NsshlMvgPOSI796FX
- 6UjAYn/4fbkauRF9goY+/fl9CMglmYzkdlHW8GdGBVt+qEyP5z2frVeBI g==;
-X-CSE-ConnectionGUID: j5jNODvQRAOaIiFE+YL0MQ==
-X-CSE-MsgGUID: bubm+p8TSBuBOu+P2At+Kg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641934"
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641934"
+ bh=ub0Tse+mKu7d2HtmHkzrUd6pzXw6sgsMJe75k8prLNI=;
+ b=e26pMw0/wo7RtEEFjD/8Ow1t3mVCEh+Zbam3gFkVjYR71nf3aKva82De
+ 7yE4Yq97TL4Zg8FJffQy6k8RoUXsUS4Zy+4f0N9ByG2X7UB+SBjHLI8OC
+ QPm3vnL70XYw8OvJ9cEzj5A9FpXFNV5a+JSBEymnOyjSie6Ykhs20DMQp
+ /U8vLjFA0+8nD5THjUTHasaRN9dyM47RjA9a0p3B2PHC05PB8g2L2FE6e
+ KkOHx4EhkcWAPBGGAwiVuIsyUY4MpW17c4aqY6xav6rwd8nAtmKfYcKJ9
+ 85F8G69/fSEofHCQ8RuJlQdjIn4DhpBzrUUdoJHztjexJ7Alro/bNocey Q==;
+X-CSE-ConnectionGUID: K5WCa7csRKGNuw5n99RTmQ==
+X-CSE-MsgGUID: YT3xp44ASf6CtZRlSXNcYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641941"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641941"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Oct 2025 13:30:48 -0700
-X-CSE-ConnectionGUID: TMy9DJsDT1iwZckgoe1+NA==
-X-CSE-MsgGUID: dzIk6kkoSUit+D6qn1h6AQ==
+X-CSE-ConnectionGUID: g9XoTkGuQr+CoIpZ10LzMg==
+X-CSE-MsgGUID: kJmZWTEfQ2G4cTX0WXspdw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924026"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924047"
 Received: from orsosgc001.jf.intel.com ([10.88.27.185])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Oct 2025 13:30:48 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t 07/18] tests/intel/xe_oa: Convert test_oa_formats to
- take an OA unit argument
-Date: Mon, 13 Oct 2025 13:30:30 -0700
-Message-ID: <20251013203042.925115-8-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 14/18] tests/intel/xe_oa: Convert MMIO trigger tests to
+ take OA unit arguments
+Date: Mon, 13 Oct 2025 13:30:37 -0700
+Message-ID: <20251013203042.925115-15-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251013203042.925115-1-ashutosh.dixit@intel.com>
 References: <20251013203042.925115-1-ashutosh.dixit@intel.com>
@@ -68,203 +68,123 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To enable OA IGT's to run on all OA units, OA unit tests are converted to
-take a 'struct drm_xe_oa_unit *' argument (instead of hwe). This patch
-converts the first unit test (test_oa_formats), so it introduces this new
-infrastructure.
-
-OA units are now identified via a name (corresponding to OA unit type) and
-id. OA units are longer identified by hwe, because some OA units have no
-associated hwe's.
+Convert MMIO trigger tests to take 'struct drm_xe_oa_unit *' arguments, to
+enable them to be run on all OA units.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 92 ++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 71 insertions(+), 21 deletions(-)
+ tests/intel/xe_oa.c | 41 ++++++++++++++++++++++-------------------
+ 1 file changed, 22 insertions(+), 19 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 8e73182700..22cc4e8b9b 100644
+index 50bcb48f0f..ba4d3ddfb7 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -327,8 +327,6 @@ static int pm_fd = -1;
- static int stream_fd = -1;
- static uint32_t devid;
- 
--static struct drm_xe_engine_class_instance default_hwe;
--
- static struct intel_xe_perf *intel_xe_perf;
- static uint64_t oa_exponent_default;
- static size_t default_oa_buffer_size;
-@@ -340,6 +338,54 @@ static uint32_t min_oa_exponent;
- static uint32_t buffer_fill_size;
- static uint32_t num_buf_sizes;
- 
-+/* OA unit names */
-+static const char *oa_unit_name[] = {
-+	[DRM_XE_OA_UNIT_TYPE_OAG] = "oag",
-+	[DRM_XE_OA_UNIT_TYPE_OAM] = "oam",
-+	[DRM_XE_OA_UNIT_TYPE_OAM_SAG] = "sag",
-+};
-+
-+static struct intel_xe_perf_metric_set *oa_unit_metric_set(struct drm_xe_oa_unit *oau)
-+{
-+	const char *test_set_name = NULL;
-+	struct intel_xe_perf_metric_set *metric_set_iter;
-+	struct intel_xe_perf_metric_set *test_set = NULL;
-+
-+	if (oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAG)
-+		test_set_name = "TestOa";
-+	else if (HAS_OAM(devid) &&
-+		 (oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAM ||
-+		  oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAM_SAG))
-+		test_set_name = "MediaSet1";
-+	else
-+		igt_assert(!"reached");
-+
-+	igt_list_for_each_entry(metric_set_iter, &intel_xe_perf->metric_sets, link) {
-+		if (strcmp(metric_set_iter->symbol_name, test_set_name) == 0) {
-+			test_set = metric_set_iter;
-+			break;
-+		}
-+	}
-+
-+	igt_assert(test_set);
-+
-+	/*
-+	 * configuration was loaded in init_sys_info() ->
-+	 * intel_xe_perf_load_perf_configs(), and test_set->perf_oa_metrics_set
-+	 * should point to metric id returned by the config add ioctl. 0 is
-+	 * invalid.
-+	 */
-+	igt_assert_neq_u64(test_set->perf_oa_metrics_set, 0);
-+
-+	igt_debug("oa_unit %d:%d - %s metric set UUID = %s\n",
-+		  oau->oa_unit_id,
-+		  oau->oa_unit_type,
-+		  test_set->symbol_name,
-+		  test_set->hw_config_guid);
-+
-+	return test_set;
-+}
-+
- static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
- {
- 	const char *test_set_name = NULL;
-@@ -381,7 +427,7 @@ static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_cl
- 
- 	return test_set;
- }
--#define default_test_set metric_set(&default_hwe)
-+#define default_test_set oa_unit_metric_set(oa_unit_by_type(drm_fd, DRM_XE_OA_UNIT_TYPE_OAG))
- 
- static void set_fd_flags(int fd, int flags)
- {
-@@ -1558,11 +1604,11 @@ open_and_read_2_oa_reports(int format_id,
- 			   uint32_t *oa_report0,
- 			   uint32_t *oa_report1,
- 			   bool timer_only,
--			   const struct drm_xe_engine_class_instance *hwe)
-+			   struct drm_xe_oa_unit *oau)
+@@ -4002,11 +4002,12 @@ static u32 oa_get_mmio_base(const struct drm_xe_engine_class_instance *hwe)
+  * SUBTEST: oa-regs-whitelisted
+  * Description: Verify that OA registers are whitelisted
+  */
+-static void test_oa_regs_whitelist(const struct drm_xe_engine_class_instance *hwe)
++static void test_oa_regs_whitelist(struct drm_xe_oa_unit *oau)
  {
 -	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
 +	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
++	struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oau);
  	uint64_t properties[] = {
 -		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
 +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
- 
- 		/* Include OA reports in samples */
  		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-@@ -1682,32 +1728,28 @@ print_reports(uint32_t *oa_report0, uint32_t *oa_report1, int fmt)
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+@@ -4020,8 +4021,7 @@ static void test_oa_regs_whitelist(const struct drm_xe_engine_class_instance *hw
+ 	u32 mmio_base;
+ 
+ 	/* FIXME: Add support for OAM whitelist testing */
+-	if (hwe->engine_class != DRM_XE_ENGINE_CLASS_RENDER &&
+-	    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++	if (oau->oa_unit_type != DRM_XE_OA_UNIT_TYPE_OAG)
+ 		return;
+ 
+ 	mmio_base = oa_get_mmio_base(hwe);
+@@ -4049,10 +4049,12 @@ static void test_oa_regs_whitelist(const struct drm_xe_engine_class_instance *hw
  }
  
- static bool
--hwe_supports_oa_type(int oa_type, const struct drm_xe_engine_class_instance *hwe)
-+oau_supports_oa_type(int oa_type, struct drm_xe_oa_unit *oau)
+ static void
+-__test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
++__test_mmio_triggered_reports(struct drm_xe_oa_unit *oau)
  {
- 	switch (oa_type) {
- 	case DRM_XE_OA_FMT_TYPE_OAM:
- 	case DRM_XE_OA_FMT_TYPE_OAM_MPEC:
--		return hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE ||
--		       hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
-+		return oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAM ||
-+		       oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAM_SAG;
- 	case DRM_XE_OA_FMT_TYPE_OAG:
- 	case DRM_XE_OA_FMT_TYPE_OAR:
--		return hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER;
- 	case DRM_XE_OA_FMT_TYPE_OAC:
--		return hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE;
- 	case DRM_XE_OA_FMT_TYPE_PEC:
--		return hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
--		       hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE;
-+		return oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAG;
- 	default:
- 		return false;
- 	}
--
+-	struct intel_xe_perf_metric_set *test_set = default_test_set;
++	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
++	struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oau);
+ 	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
+ 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+@@ -4154,10 +4156,12 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
  }
  
- /**
-  * SUBTEST: oa-formats
-  * Description: Test that supported OA formats work as expected
+ static void
+-__test_mmio_triggered_reports_read(struct drm_xe_engine_class_instance *hwe)
++__test_mmio_triggered_reports_read(struct drm_xe_oa_unit *oau)
+ {
+-	struct intel_xe_perf_metric_set *test_set = default_test_set;
++	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
++	struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oau);
+ 	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
+ 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+@@ -4250,8 +4254,7 @@ __test_mmio_triggered_reports_read(struct drm_xe_engine_class_instance *hwe)
+  * Description: Test MMIO trigger functionality with read system call
   */
--static void test_oa_formats(const struct drm_xe_engine_class_instance *hwe)
-+static void test_oa_formats(struct drm_xe_oa_unit *oau)
+ static void
+-test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe,
+-			    bool with_read)
++test_mmio_triggered_reports(struct drm_xe_oa_unit *oau, bool with_read)
  {
- 	for (int i = 0; i < XE_OA_FORMAT_MAX; i++) {
- 		struct oa_format format = get_oa_format(i);
-@@ -1717,7 +1759,7 @@ static void test_oa_formats(const struct drm_xe_engine_class_instance *hwe)
- 		if (!format.name) /* sparse, indexed by ID */
- 			continue;
+ 	struct igt_helper_process child = {};
+ 	int ret;
+@@ -4261,9 +4264,9 @@ test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe,
+ 		igt_drop_root();
  
--		if (!hwe_supports_oa_type(format.oa_type, hwe))
-+		if (!oau_supports_oa_type(format.oa_type, oau))
- 			continue;
- 
- 		igt_debug("Checking OA format %s\n", format.name);
-@@ -1727,13 +1769,13 @@ static void test_oa_formats(const struct drm_xe_engine_class_instance *hwe)
- 					   oa_report0,
- 					   oa_report1,
- 					   false, /* timer reports only */
--					   hwe);
-+					   oau);
- 
- 		print_reports(oa_report0, oa_report1, i);
- 		sanity_check_reports(oa_report0, oa_report1, i);
- 
--		if (i == metric_set(hwe)->perf_oa_format)
--			pec_sanity_check_reports(oa_report0, oa_report1, metric_set(hwe));
-+		if (i == oa_unit_metric_set(oau)->perf_oa_format)
-+			pec_sanity_check_reports(oa_report0, oa_report1, oa_unit_metric_set(oau));
+ 		if (with_read)
+-			__test_mmio_triggered_reports_read(hwe);
++			__test_mmio_triggered_reports_read(oau);
+ 		else
+-			__test_mmio_triggered_reports(hwe);
++			__test_mmio_triggered_reports(oau);
  	}
- }
+ 	ret = igt_wait_helper(&child);
+ 	write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
+@@ -5285,19 +5288,19 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
+ 		}
  
-@@ -4956,6 +4998,14 @@ static const char *xe_engine_class_name(uint32_t engine_class)
- 	igt_require_f(hwe, "no render engine\n"); \
- 	igt_dynamic_f("rcs-%d", hwe->engine_instance)
+ 		igt_subtest_with_dynamic("oa-regs-whitelisted")
+-			__for_one_hwe_in_oag(hwe)
+-				test_oa_regs_whitelist(hwe);
++			__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
++				test_oa_regs_whitelist(oau);
  
-+#define __for_oa_unit_by_type(k) \
-+	if ((oau = oa_unit_by_type(drm_fd, k))) \
-+		igt_dynamic_f("%s-%d", oa_unit_name[oau->oa_unit_type], oau->oa_unit_id)
-+
-+#define __for_oa_unit_by_type_w_arg(k, str) \
-+	if ((oau = oa_unit_by_type(drm_fd, k))) \
-+		igt_dynamic_f("%s-%d-%s", oa_unit_name[oau->oa_unit_type], oau->oa_unit_id, str)
-+
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	uint32_t tmp;
-@@ -5067,8 +5117,8 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
- 		test_missing_sample_flags();
+ 		igt_subtest_with_dynamic("mmio-triggered-reports") {
+ 			igt_require(HAS_OA_MMIO_TRIGGER(devid));
+-			__for_one_hwe_in_oag(hwe)
+-				test_mmio_triggered_reports(hwe, false);
++			__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
++				test_mmio_triggered_reports(oau, false);
+ 		}
  
- 	igt_subtest_with_dynamic("oa-formats")
--		__for_one_hwe_in_oag(hwe)
--			test_oa_formats(hwe);
-+		__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
-+			test_oa_formats(oau);
+ 		igt_subtest_with_dynamic("mmio-triggered-reports-read") {
+ 			igt_require(HAS_OA_MMIO_TRIGGER(devid));
+-			__for_one_hwe_in_oag(hwe)
+-				test_mmio_triggered_reports(hwe, true);
++			__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
++				test_mmio_triggered_reports(oau, true);
+ 		}
+ 	}
  
- 	igt_subtest("invalid-oa-exponent")
- 		test_invalid_oa_exponent();
 -- 
 2.48.1
 
