@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D71ACCD183
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAD3FCCD18C
 	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 20:30:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0A70310E153;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D04910E52D;
 	Mon, 13 Oct 2025 20:30:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gVKOyvjy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Db3ioiuV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82A7110E153
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0CF010E526
  for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 20:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1760387449; x=1791923449;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=o3HjziOP5IYETH21u9pAhnTIFguwPIynGjmCmVgj+MI=;
- b=gVKOyvjyZjTmZE2D8Vf7XUCZQfrgsGyTqEZFViznjq56z6HtWt2g9tD4
- 6JT48IJtj5wngln/jxKGzemVQJsMkgDXv6L/3iSxh4h8eDen/MAhGwodc
- GMe2Lylnkc4ZpFqKytX/L4ek96+/e7vN/f+cC84rGwWaI/sppnzSs+ffC
- gSOqu0sRs+I27UZoG0iJcV1G7gmW3Ew6BPPrfXPSu1HUmeODzPZEqLM5q
- 2dc7H5DwpfNo2lg3njHwDfJ+z61fU0n4DOal+3KWCIxiE5hCToakaT20V
- Xbm/eVwnRPsj8iikE4d9CG9i214EgJRlorlWhELdYR1udq6LXrVuc2FQX Q==;
-X-CSE-ConnectionGUID: N/C6GnjmQbeaV31Fr4rOpg==
-X-CSE-MsgGUID: bdwLVRI3RFOPamFmHYJdYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641927"
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641927"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=IRMdsas3fr5Xwjno4EsZP/RdugT0cqTHG68LtnmQy4E=;
+ b=Db3ioiuVEo7v1U+xQjEud0x+TQRfpir/RcJZCODxbjvPa4JLbIFaFnoY
+ HiGNzEYcictnK3zRyodpzenrRLS7fl4zAUPHl38f3BKWqlctnJVCt1i0A
+ QHyzQX41JN0iORf59nRURvEJs6xexx7Fqq1SL9yaGdM42Dil1vXt+Jdy0
+ tp7nzGVixzBh6tazeUxtpg49aHjAnGHJcZ5YjoaRJ7VISg0LDMQgppar7
+ C8uJYT/PEKIAylh076kspATdQKNemd8Qd8+HIQd5TUZtGGOarLLlEGb2F
+ JFCi/xhICf38qArUvAaiNtRx+tds8EF6UKhbvsC6joCoQNpFKnheAkkps Q==;
+X-CSE-ConnectionGUID: ORRGTAB2RkW9U8KVXF+aIw==
+X-CSE-MsgGUID: sq7T8PY9SgWqBr9zNzNINQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641932"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641932"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Oct 2025 13:30:48 -0700
-X-CSE-ConnectionGUID: 4HLzZI1ZS+uKEilpNu0dWw==
-X-CSE-MsgGUID: dsaYR/MWQ9SChBaqyAepqA==
+X-CSE-ConnectionGUID: e7IKiDmqR9ydRc0jDcAvog==
+X-CSE-MsgGUID: 4TVicNtJQkOKXspe8p6pRw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924005"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924020"
 Received: from orsosgc001.jf.intel.com ([10.88.27.185])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2025 13:30:47 -0700
+ 13 Oct 2025 13:30:48 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t v2 00/18] Change OA IGT's to run on all OA units
-Date: Mon, 13 Oct 2025 13:30:23 -0700
-Message-ID: <20251013203042.925115-1-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 05/18] tests/intel/xe_oa: Add oa_unit_by_type
+Date: Mon, 13 Oct 2025 13:30:28 -0700
+Message-ID: <20251013203042.925115-6-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251013203042.925115-1-ashutosh.dixit@intel.com>
+References: <20251013203042.925115-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,58 +67,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Previously OA IGT's were running only on the OAG OA unit. This patchset
-changes the tests so they can be run on any/all OA units. For example, on
-BMG, the non-zero-reason-all test will now result in the following output:
+Add a function which returns an OA unit identified by its type (similar to
+oa_unit_by_id()).
 
-	$ sudo ./build/tests/xe_oa --r non-zero-reason-all
-	IGT-Version: 2.2-g30a56696e (x86_64) (Linux: 6.15.0+ x86_64)
-	Using IGT_SRANDOM=1759524233 for randomisation
-	Opened device: /dev/dri/card0
-	Starting subtest: non-zero-reason-all
-	Starting dynamic subtest: oag-0
-	Dynamic subtest oag-0: SUCCESS (0.055s)
-	Starting dynamic subtest: sag-1
-	Dynamic subtest sag-1: SUCCESS (0.071s)
-	Starting dynamic subtest: oam-2
-	Dynamic subtest oam-2: SUCCESS (0.069s)
-	Starting dynamic subtest: oam-3
-	Dynamic subtest oam-3: SUCCESS (0.068s)
-	Subtest non-zero-reason-all: SUCCESS (0.263s)
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/intel/xe_oa.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-v2: Address code review comments from Umesh
-
-Ashutosh Dixit (18):
-  tests/intel/xe_oa: Add OAM formats to lnl_oa_formats
-  tests/intel/xe_oa: Get rid of unnecessary
-    DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE
-  tests/intel/xe_oa: Rename nth_oa_unit to oa_unit_by_id
-  tests/intel/xe_oa: Change oa_unit_engine to take an oa_unit argument
-  tests/intel/xe_oa: Add oa_unit_by_type
-  tests/intel/xe_oa: Add for_each_oa_unit
-  tests/intel/xe_oa: Convert test_oa_formats to take an OA unit argument
-  tests/intel/xe_oa: Convert several more tests to take OA unit
-    arguments
-  tests/intel/xe_oa: Convert test_non_zero_reason to take an OA unit
-    argument
-  tests/intel/xe_oa: Convert blocking/polling tests to take OA unit
-    arguments
-  tests/intel/xe_oa: Convert test_mi_rpc to take an OA unit argument
-  tests/intel/xe_oa: Convert
-    test_single_ctx_render_target_writes_a_counter
-  tests/intel/xe_oa: Convert OA buffer mmap tests to take OA unit
-    arguments
-  tests/intel/xe_oa: Convert MMIO trigger tests to take OA unit
-    arguments
-  tests/intel/xe_oa: Convert sync tests to take OA unit arguments
-  tests/intel/xe_oa: Run test_oa_unit_exclusive_stream on multiple OA
-    units
-  tests/intel/xe_oa: Add new non-zero-reason-all test
-  tests/intel/xe_oa: Constify arguments to various functions
-
- tests/intel/xe_oa.c | 506 ++++++++++++++++++++++----------------------
- 1 file changed, 256 insertions(+), 250 deletions(-)
-
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index 65b13267fb..a4aeaf2c70 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -494,6 +494,23 @@ static struct drm_xe_oa_unit *oa_unit_by_id(int fd, int id)
+ 	return NULL;
+ }
+ 
++static struct drm_xe_oa_unit *oa_unit_by_type(int fd, int t)
++{
++	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
++	struct drm_xe_oa_unit *oau;
++	u8 *poau;
++
++	poau = (u8 *)&qoa->oa_units[0];
++	for (int i = 0; i < qoa->num_oa_units; i++) {
++		oau = (struct drm_xe_oa_unit *)poau;
++		if (oau->oa_unit_type == t)
++			return oau;
++		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
++	}
++
++	return NULL;
++}
++
+ static char *
+ pretty_print_oa_period(uint64_t oa_period_ns)
+ {
+@@ -4914,12 +4931,12 @@ static const char *xe_engine_class_name(uint32_t engine_class)
+ 
+ /* Only OAG (not OAM) is currently supported */
+ #define __for_one_hwe_in_oag(hwe) \
+-	if ((hwe = oa_unit_engine(oa_unit_by_id(drm_fd, 0)))) \
++	if ((hwe = oa_unit_engine(oa_unit_by_type(drm_fd, DRM_XE_OA_UNIT_TYPE_OAG)))) \
+ 		igt_dynamic_f("%s-%d", xe_engine_class_name(hwe->engine_class), \
+ 			      hwe->engine_instance)
+ 
+ #define __for_one_hwe_in_oag_w_arg(hwe, str) \
+-	if ((hwe = oa_unit_engine(oa_unit_by_id(drm_fd, 0)))) \
++	if ((hwe = oa_unit_engine(oa_unit_by_type(drm_fd, DRM_XE_OA_UNIT_TYPE_OAG)))) \
+ 		igt_dynamic_f("%s-%d-%s", xe_engine_class_name(hwe->engine_class), \
+ 			      hwe->engine_instance, str)
+ 
 -- 
 2.48.1
 
