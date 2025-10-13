@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80935CCD18C
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 20:30:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4638CCD183
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 20:32:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 363B910E545;
-	Mon, 13 Oct 2025 20:30:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9850110E51E;
+	Mon, 13 Oct 2025 20:32:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PHj06YQD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HxFS6X7L";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBDA210E52D
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 20:30:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA08910E51E
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 20:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760387449; x=1791923449;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=kJYCQVZntqv7KMKb61wqXKXNpmXGav/3R6ER/rq6Y+U=;
- b=PHj06YQDyWCVwRYw12Sv6nsh4ru7tITSQEvrbRTWs6RPbETe4oekUB29
- cwvRmcaYjEqGNt3tOmS3d4MXOKBWri4Lc4CPO3m752XxIBhQFIMYMTikr
- 1n1IRTnNo5+7wkUygXSf4ihKrFYrs5aQRUw4z7gD2obQ6i8XBzEItRRdD
- tzJYxvTg4OrX2GLvWgwdl2UIQC06zbD4maIZN772z9QgquVmuZXjOVuDZ
- 9BboKQN/W6PpddyNj0S6mmBRgBGMXXXI5rlw8Jeeg08Qmlgxv7QhGI9Gl
- mPbyP/zO/qTp/fn/THrZdJB2BZuOtCn9x1zINysT2mQnvSXE1rr10bn6h g==;
-X-CSE-ConnectionGUID: j/yEMDQOSkGSfZjeuiK46A==
-X-CSE-MsgGUID: yJyY22N5Q4qCPr74FRp6Dg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641933"
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641933"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2025 13:30:48 -0700
-X-CSE-ConnectionGUID: KX44+HraQCSRn1/2KgEATQ==
-X-CSE-MsgGUID: sxE7BpioSFC2GX199ZCtNQ==
+ t=1760387539; x=1791923539;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=fsPumpxgYdQQNlM+cYV1M5Bx+e14Evs5Cz/Alq4qcH8=;
+ b=HxFS6X7LbN34vJBl/Q/es+zFZ3ldG7NnDxnEGC/HW3m+iYtFHiyH6dSH
+ 77kDD+mk1+HNwn+2JjHGVYcDOzmTg8tzCEKxHaxFNSA0Iwy4oXghi8Bvo
+ 6mR+OgkrpOQpQphdg4YvEyntv8cElGy+ZKkwzYKaDV0aR4lWr+Jx+v77t
+ vrYrU4ohyGiBPf5PiLxpbKBnwewDd/KWGlAGuvhiz1Ttt8JxATEKkLPxT
+ QYeHqSrTeHCEfKiWNge3+kTZYCUJLPNmQg93CFGXTVqCHBmYEIZDIWZeG
+ 36gDwvd4WJMxmtN6VmajhUArJ4c8LlDZ/T+EZHFDSXfdmMiBqia/ixhtG g==;
+X-CSE-ConnectionGUID: Hzv8umUYQhepgX1nxSBPlQ==
+X-CSE-MsgGUID: rtiC4vrfQ72WV+OOVoDU8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73987058"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73987058"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2025 13:32:19 -0700
+X-CSE-ConnectionGUID: Wh2I0PjTRkqg/yrjDmvmtg==
+X-CSE-MsgGUID: wFTo4IDnQTe/dYn/ieHi3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924023"
-Received: from orsosgc001.jf.intel.com ([10.88.27.185])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2025 13:30:48 -0700
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t v2 06/18] tests/intel/xe_oa: Add for_each_oa_unit
-Date: Mon, 13 Oct 2025 13:30:29 -0700
-Message-ID: <20251013203042.925115-7-ashutosh.dixit@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251013203042.925115-1-ashutosh.dixit@intel.com>
-References: <20251013203042.925115-1-ashutosh.dixit@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="205390776"
+Received: from unknown (HELO adixit-MOBL3.intel.com) ([10.241.243.158])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2025 13:32:18 -0700
+Date: Mon, 13 Oct 2025 13:32:11 -0700
+Message-ID: <878qhewnjo.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 06/18] tests/intel/xe_oa: Add for_each_oa_unit
+In-Reply-To: <aOflfRPZBJLT2Eeh@soc-5CG1426VCC.clients.intel.com>
+References: <20251008211806.625154-1-ashutosh.dixit@intel.com>	<20251008211806.625154-7-ashutosh.dixit@intel.com>	<aOb0S1irIDU44xj6@soc-5CG1426VCC.clients.intel.com>	<aOflfRPZBJLT2Eeh@soc-5CG1426VCC.clients.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,79 +69,141 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a for_each_oa_unit iterator, which eliminates code duplication when
-iterating over OA units obtained from OA unit query.
+On Thu, 09 Oct 2025 09:40:29 -0700, Umesh Nerlige Ramappa wrote:
+>
 
-v2: Only retain oau argument for for_each_oa_unit() (Umesh)
+Hi Umesh,
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/intel/xe_oa.c | 35 +++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+> On Wed, Oct 08, 2025 at 04:31:23PM -0700, Umesh Nerlige Ramappa wrote:
+> > On Wed, Oct 08, 2025 at 02:17:53PM -0700, Ashutosh Dixit wrote:
+> >> Add a for_each_oa_unit iterator, which eliminates code duplication when
+> >> iterating over OA units obtained from OA unit query.
+> >>
+> >> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> >> ---
+> >> tests/intel/xe_oa.c | 21 +++++++++++----------
+> >> 1 file changed, 11 insertions(+), 10 deletions(-)
+> >>
+> >> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> >> index 012f5929ce..bc71bfcd30 100644
+> >> --- a/tests/intel/xe_oa.c
+> >> +++ b/tests/intel/xe_oa.c
+> >> @@ -477,18 +477,21 @@ static struct drm_xe_engine_class_instance *oa_unit_engine(struct drm_xe_oa_unit
+> >>	return !oau ? NULL : oau->num_engines ? &oau->eci[random() % oau->num_engines] : NULL;
+> >> }
+> >>
+> >> +#define for_each_oa_unit(qoa, oau, poau, i) \
+> >> +	for (i = 0, qoa = xe_oa_units(drm_fd), poau = (u8 *)&qoa->oa_units[0]; \
+> >> +	     oau = (struct drm_xe_oa_unit *)poau, i < qoa->num_oa_units; \
+> >> +	     poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]), i++)
+> >> +
+> >> static struct drm_xe_oa_unit *oa_unit_by_id(int fd, int n)
+> >> {
+> >> -	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
+> >> +	struct drm_xe_query_oa_units *qoa;
+> >>	struct drm_xe_oa_unit *oau;
+> >>	u8 *poau;
+> >> +	int i;
+> >>
+> >> -	poau = (u8 *)&qoa->oa_units[0];
+> >> -	for (int i = 0; i < qoa->num_oa_units; i++) {
+> >> -		oau = (struct drm_xe_oa_unit *)poau;
+> >> +	for_each_oa_unit(qoa, oau, poau, i) {
+> >>		if (oau->oa_unit_id == n)
+> >>			return oau;
+> >> -		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
+> >>	}
+> >>
+> >>	return NULL;
+> >> @@ -496,16 +499,14 @@ static struct drm_xe_oa_unit *oa_unit_by_id(int fd, int n)
+> >>
+> >> static struct drm_xe_oa_unit *oa_unit_by_type(int fd, int t)
+> >> {
+> >> -	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
+> >> +	struct drm_xe_query_oa_units *qoa;
+> >>	struct drm_xe_oa_unit *oau;
+> >>	u8 *poau;
+> >> +	int i;
+> >>
+> >> -	poau = (u8 *)&qoa->oa_units[0];
+> >> -	for (int i = 0; i < qoa->num_oa_units; i++) {
+> >> -		oau = (struct drm_xe_oa_unit *)poau;
+> >> +	for_each_oa_unit(qoa, oau, poau, i) {
+> >>		if (oau->oa_unit_type == t)
+> >>			return oau;
+> >> -		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
+> >>	}
+> >>
+> >>	return NULL;
+> >
+> > If it's possible to keep the interface for iterators simple, I would go
+> > for that. i, poau can be hidden from the caller. Something like this:
+> >
+> > // NOTE: not compiled/tested
+> >
+> > static u32 xe_oa_first_unit(int fd, struct drm_xe_oa_unit **oau)
+> > {
+> >        struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
+> >        *oau = &qoa->oa_units[0];
+> >
+> >        return qoa->num_oa_units;
+> > }
+> >
+> > static void xe_oa_next_unit(struct drm_xe_oa_unit **oau)
+> > {
+> >	struct drm_xe_oa_unit *poau = *oau;
+> >
+> >        return (u8 *)poau + sizeof(*poau) + poau->num_engines * sizeof(poau->eci[0]);
+>
+> Not return, but update *oau.
+>
+> *oau = (u8 *)poau + sizeof(*poau) + poau->num_engines * sizeof(poau->eci[0]);
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index a4aeaf2c70..8e73182700 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -477,18 +477,34 @@ static struct drm_xe_engine_class_instance *oa_unit_engine(struct drm_xe_oa_unit
- 	return !oau ? NULL : oau->num_engines ? &oau->eci[random() % oau->num_engines] : NULL;
- }
- 
-+static int __first_and_num_oa_units(struct drm_xe_oa_unit **oau)
-+{
-+	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
-+
-+	*oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
-+
-+	return qoa->num_oa_units;
-+}
-+
-+static struct drm_xe_oa_unit *__next_oa_unit(struct drm_xe_oa_unit *oau)
-+{
-+	u8 *poau = (u8 *)oau;
-+
-+	return (struct drm_xe_oa_unit *)(poau + sizeof(*oau) +
-+					 oau->num_engines * sizeof(oau->eci[0]));
-+}
-+
-+#define for_each_oa_unit(oau) \
-+	for (int _i = 0, _num_oa_units = __first_and_num_oa_units(&oau); \
-+	     _i < _num_oa_units; oau = __next_oa_unit(oau), _i++)
-+
- static struct drm_xe_oa_unit *oa_unit_by_id(int fd, int id)
- {
--	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
- 	struct drm_xe_oa_unit *oau;
--	u8 *poau;
- 
--	poau = (u8 *)&qoa->oa_units[0];
--	for (int i = 0; i < qoa->num_oa_units; i++) {
--		oau = (struct drm_xe_oa_unit *)poau;
-+	for_each_oa_unit(oau) {
- 		if (oau->oa_unit_id == id)
- 			return oau;
--		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
- 	}
- 
- 	return NULL;
-@@ -496,16 +512,11 @@ static struct drm_xe_oa_unit *oa_unit_by_id(int fd, int id)
- 
- static struct drm_xe_oa_unit *oa_unit_by_type(int fd, int t)
- {
--	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
- 	struct drm_xe_oa_unit *oau;
--	u8 *poau;
- 
--	poau = (u8 *)&qoa->oa_units[0];
--	for (int i = 0; i < qoa->num_oa_units; i++) {
--		oau = (struct drm_xe_oa_unit *)poau;
-+	for_each_oa_unit(oau) {
- 		if (oau->oa_unit_type == t)
- 			return oau;
--		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
- 	}
- 
- 	return NULL;
--- 
-2.48.1
+In v2, I have implemented something not identical, but very close to
+this. But thanks for this suggestion, it has resulted in some cleaned up
+code.
 
+Ashutosh
+
+
+
+>
+> > }
+> >
+> > #define for_each_oa_unit(fd, oau) \
+> >        for (u32 i = 0, num = xe_oa_first_unit(fd, &oau); \
+> >             oau && i < num; \
+> >             i++, xe_oa_next_unit(&oau))
+> >
+> > static const struct drm_xe_oa_unit *oa_unit_by_id(int fd, int n)
+> > {
+> >        struct drm_xe_oa_unit *oau;
+> >
+> >        for_each_oa_unit(fd, oau) {
+> >                if (oau->oa_unit_id == n)
+> >                        return oau;
+> >        }
+> >
+> >        return NULL;
+> > }
+> >
+> > static const struct drm_xe_oa_unit *oa_unit_by_type(int fd, int t)
+> > {
+> >        struct drm_xe_oa_unit *oau;
+> >
+> >        for_each_oa_unit(fd, oau) {
+> >                if (oau->oa_unit_type == t)
+> >                        return oau;
+> >        }
+> >
+> >        return NULL;
+> > }
+> >
+> > Thanks,
+> > Umesh
+> >
+> >
+> >
+> >> --
+> >> 2.48.1
+> >>
