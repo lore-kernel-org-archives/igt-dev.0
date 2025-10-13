@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD1A5CCD192
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 20:30:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80935CCD18C
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 20:30:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7C6EA10E544;
-	Mon, 13 Oct 2025 20:30:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 363B910E545;
+	Mon, 13 Oct 2025 20:30:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CInrMO7u";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PHj06YQD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1C3310E153
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBDA210E52D
  for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 20:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1760387449; x=1791923449;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=RhBck/Qq/KMv40sqf5AUA1JkK95+SofBkiRuCW7jr6A=;
- b=CInrMO7uJ1KnF4152YUX0dPQhPQgKdXHNH9PfSt4/G4s29YkUHK6TQUY
- U6iNdOecQ1r+m9PK949tY/XvQMAMb20i6Q8KJ4oiFMM3JnhI0BK7o6LSh
- yKb4f/c6Absh2ZdC/gIGiVZ6wdrTB0nS1183X0Ujeu/egjUsYmYiEJIkt
- H8McOhd2BgEFYIW11Tu808ELIus90LzH1wpIHO3HaVcNuOaTPWCXLdCjD
- aMflg0cF3+owp3YgH7+uP8ejamLArVAK3g6BChrqEe5ME3Ucr0nSM+2jT
- i8fduxI9wQNpGmAfupnYyqB4xUGdvlOhJqlnSLxCJFIBEBvapI4a6lWpo A==;
-X-CSE-ConnectionGUID: bU+APfUAQReKT3bB2FUVhw==
-X-CSE-MsgGUID: rfUAAJuoTyWSt6cqyoy1yg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641931"
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641931"
+ bh=kJYCQVZntqv7KMKb61wqXKXNpmXGav/3R6ER/rq6Y+U=;
+ b=PHj06YQDyWCVwRYw12Sv6nsh4ru7tITSQEvrbRTWs6RPbETe4oekUB29
+ cwvRmcaYjEqGNt3tOmS3d4MXOKBWri4Lc4CPO3m752XxIBhQFIMYMTikr
+ 1n1IRTnNo5+7wkUygXSf4ihKrFYrs5aQRUw4z7gD2obQ6i8XBzEItRRdD
+ tzJYxvTg4OrX2GLvWgwdl2UIQC06zbD4maIZN772z9QgquVmuZXjOVuDZ
+ 9BboKQN/W6PpddyNj0S6mmBRgBGMXXXI5rlw8Jeeg08Qmlgxv7QhGI9Gl
+ mPbyP/zO/qTp/fn/THrZdJB2BZuOtCn9x1zINysT2mQnvSXE1rr10bn6h g==;
+X-CSE-ConnectionGUID: j/yEMDQOSkGSfZjeuiK46A==
+X-CSE-MsgGUID: yJyY22N5Q4qCPr74FRp6Dg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641933"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641933"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Oct 2025 13:30:48 -0700
-X-CSE-ConnectionGUID: ktbYMCcqR22kYkJXDw+G9A==
-X-CSE-MsgGUID: wUzYktV7Q+iJzPu3f/8czQ==
+X-CSE-ConnectionGUID: KX44+HraQCSRn1/2KgEATQ==
+X-CSE-MsgGUID: sxE7BpioSFC2GX199ZCtNQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924017"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924023"
 Received: from orsosgc001.jf.intel.com ([10.88.27.185])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Oct 2025 13:30:48 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t 04/18] tests/intel/xe_oa: Change oa_unit_engine to take
- an oa_unit argument
-Date: Mon, 13 Oct 2025 13:30:27 -0700
-Message-ID: <20251013203042.925115-5-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t v2 06/18] tests/intel/xe_oa: Add for_each_oa_unit
+Date: Mon, 13 Oct 2025 13:30:29 -0700
+Message-ID: <20251013203042.925115-7-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251013203042.925115-1-ashutosh.dixit@intel.com>
 References: <20251013203042.925115-1-ashutosh.dixit@intel.com>
@@ -68,96 +67,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To prevent code duplication with oa_unit_by_id(), pass 'struct
-drm_xe_oa_unit *' as argument to oa_unit_engine().
+Add a for_each_oa_unit iterator, which eliminates code duplication when
+iterating over OA units obtained from OA unit query.
+
+v2: Only retain oau argument for for_each_oa_unit() (Umesh)
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 32 ++++++++------------------------
- 1 file changed, 8 insertions(+), 24 deletions(-)
+ tests/intel/xe_oa.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index a7141a4fb0..65b13267fb 100644
+index a4aeaf2c70..8e73182700 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -472,25 +472,9 @@ static u64 oa_format_fields(u64 name)
+@@ -477,18 +477,34 @@ static struct drm_xe_engine_class_instance *oa_unit_engine(struct drm_xe_oa_unit
+ 	return !oau ? NULL : oau->num_engines ? &oau->eci[random() % oau->num_engines] : NULL;
  }
- #define __ff oa_format_fields
  
--static struct drm_xe_engine_class_instance *oa_unit_engine(int fd, int n)
-+static struct drm_xe_engine_class_instance *oa_unit_engine(struct drm_xe_oa_unit *oau)
++static int __first_and_num_oa_units(struct drm_xe_oa_unit **oau)
++{
++	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
++
++	*oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
++
++	return qoa->num_oa_units;
++}
++
++static struct drm_xe_oa_unit *__next_oa_unit(struct drm_xe_oa_unit *oau)
++{
++	u8 *poau = (u8 *)oau;
++
++	return (struct drm_xe_oa_unit *)(poau + sizeof(*oau) +
++					 oau->num_engines * sizeof(oau->eci[0]));
++}
++
++#define for_each_oa_unit(oau) \
++	for (int _i = 0, _num_oa_units = __first_and_num_oa_units(&oau); \
++	     _i < _num_oa_units; oau = __next_oa_unit(oau), _i++)
++
+ static struct drm_xe_oa_unit *oa_unit_by_id(int fd, int id)
  {
 -	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
--	struct drm_xe_engine_class_instance *hwe = NULL;
--	struct drm_xe_oa_unit *oau;
+ 	struct drm_xe_oa_unit *oau;
 -	u8 *poau;
--
+ 
 -	poau = (u8 *)&qoa->oa_units[0];
 -	for (int i = 0; i < qoa->num_oa_units; i++) {
 -		oau = (struct drm_xe_oa_unit *)poau;
--
--		if (i == n) {
--			hwe = oau->num_engines ? &oau->eci[random() % oau->num_engines] : NULL;
--			break;
--		}
++	for_each_oa_unit(oau) {
+ 		if (oau->oa_unit_id == id)
+ 			return oau;
 -		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
--	}
--
--	return hwe;
-+	return !oau ? NULL : oau->num_engines ? &oau->eci[random() % oau->num_engines] : NULL;
- }
+ 	}
  
- static struct drm_xe_oa_unit *oa_unit_by_id(int fd, int id)
-@@ -4263,7 +4247,7 @@ test_oa_unit_exclusive_stream(bool exponent)
+ 	return NULL;
+@@ -496,16 +512,11 @@ static struct drm_xe_oa_unit *oa_unit_by_id(int fd, int id)
  
- 	/* for each oa unit, open one random perf stream with sample OA */
- 	for (i = 0; i < qoa->num_oa_units; i++) {
--		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(drm_fd, i);
-+		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oa_unit_by_id(drm_fd, i));
+ static struct drm_xe_oa_unit *oa_unit_by_type(int fd, int t)
+ {
+-	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
+ 	struct drm_xe_oa_unit *oau;
+-	u8 *poau;
  
- 		oau = (struct drm_xe_oa_unit *)poau;
- 		if (oau->oa_unit_type != DRM_XE_OA_UNIT_TYPE_OAG)
-@@ -4295,7 +4279,7 @@ test_oa_unit_exclusive_stream(bool exponent)
- 	/* for each oa unit make sure no other streams can be opened */
- 	poau = (u8 *)&qoa->oa_units[0];
- 	for (i = 0; i < qoa->num_oa_units; i++) {
--		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(drm_fd, i);
-+		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oa_unit_by_id(drm_fd, i));
- 		int err;
+-	poau = (u8 *)&qoa->oa_units[0];
+-	for (int i = 0; i < qoa->num_oa_units; i++) {
+-		oau = (struct drm_xe_oa_unit *)poau;
++	for_each_oa_unit(oau) {
+ 		if (oau->oa_unit_type == t)
+ 			return oau;
+-		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
+ 	}
  
- 		oau = (struct drm_xe_oa_unit *)poau;
-@@ -4345,7 +4329,7 @@ test_oa_unit_concurrent_oa_buffer_read(void)
- 	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
- 
- 	igt_fork(child, qoa->num_oa_units) {
--		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(drm_fd, child);
-+		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oa_unit_by_id(drm_fd, child));
- 
- 		/* No OAM support yet */
- 		if (oa_unit_by_id(drm_fd, child)->oa_unit_type != DRM_XE_OA_UNIT_TYPE_OAG)
-@@ -4924,18 +4908,18 @@ static const char *xe_engine_class_name(uint32_t engine_class)
- 
- #define __for_one_hwe_in_each_oa_unit(hwe) \
- 	for (int m = 0; !m || hwe; m++) \
--		for_each_if(hwe = oa_unit_engine(drm_fd, m)) \
-+		for_each_if(hwe = oa_unit_engine(oa_unit_by_id(drm_fd, m))) \
- 			igt_dynamic_f("%s-%d", xe_engine_class_name(hwe->engine_class), \
- 				      hwe->engine_instance)
- 
- /* Only OAG (not OAM) is currently supported */
- #define __for_one_hwe_in_oag(hwe) \
--	if ((hwe = oa_unit_engine(drm_fd, 0))) \
-+	if ((hwe = oa_unit_engine(oa_unit_by_id(drm_fd, 0)))) \
- 		igt_dynamic_f("%s-%d", xe_engine_class_name(hwe->engine_class), \
- 			      hwe->engine_instance)
- 
- #define __for_one_hwe_in_oag_w_arg(hwe, str) \
--	if ((hwe = oa_unit_engine(drm_fd, 0))) \
-+	if ((hwe = oa_unit_engine(oa_unit_by_id(drm_fd, 0)))) \
- 		igt_dynamic_f("%s-%d-%s", xe_engine_class_name(hwe->engine_class), \
- 			      hwe->engine_instance, str)
- 
+ 	return NULL;
 -- 
 2.48.1
 
