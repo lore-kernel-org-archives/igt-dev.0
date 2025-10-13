@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F6D1CCD185
-	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 19:52:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E19CCCD185
+	for <igt-dev@archiver.kernel.org>; Mon, 13 Oct 2025 20:30:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 09EE610E502;
-	Mon, 13 Oct 2025 19:52:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 28F1010E526;
+	Mon, 13 Oct 2025 20:30:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M0X63x/T";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E0ud5hV+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA33810E078
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 19:52:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1EE910E526
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Oct 2025 20:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760385156; x=1791921156;
+ t=1760387449; x=1791923449;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=nNKaHZFxJCmZZAfU81TafStUFHeaGayQJk8pCG0iHgA=;
- b=M0X63x/T1RW3TQJM/0kpsvymBosQjYCIcFLq1HSjoida0L+Qgz486kCn
- P6D8XvuDAOXA8kc/oWymf+Lqn0+ZO5Pdz879m0DCsVFb4YeJsLizN0iWA
- rOE/PUz0vGR/NPs/FdAIXcshp/S69s6u5SLLBLs56VMi+WBmN3mZGJyuQ
- efrcL3f+bq7PXrNsMGcN767PAaOtlEHD/RY1pqdfmQ78mroAjsmcTcK9N
- 4nJd896a6bcu/ZXNiBmps577oYuAWdfI5MN/+Qzxb+ffqPMFbib51gJ2p
- sRmWg7jkOSnFt38BH3Hr94e6JT8NtGone+MwC4QDcGGrEAGSBKUDbWe3L g==;
-X-CSE-ConnectionGUID: MFdMq/54SOmIdUBJhMjzuA==
-X-CSE-MsgGUID: /cf3rh5CTeCrb1uamxmr9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="62633587"
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="62633587"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2025 12:52:36 -0700
-X-CSE-ConnectionGUID: g3bNkOXNTay5QWSGKBML/A==
-X-CSE-MsgGUID: aTQim6yYQcKMJfehJ0q5mg==
+ bh=LZpyumDvgBW4ECFr1bYJhMEslspdnXlt12PnF79flIM=;
+ b=E0ud5hV+XyBvw4e+vfbZE7VWfrZFZGsMbnRIEncfHHrgFiE+lP8VN5Xi
+ UwVoyWjg9MVP0bNtnneC4/316l+MydEJqEyS5nz9kiSwr/eDLRT+e6wNu
+ qC/Y1q6TunD40LLKIuOWWfFEcRMl46H223aEYEx2Mdt6ShBCrHxg+x/jX
+ iKe3t7ynZuggH8inlRgTNYlhwcrpSUFeIMRA4DBeOZV8wTrOiykhIv2Vt
+ VUrJnNS7FAlW9KzqMwVjGbchhL1Si272MsStRjOnwYNMpZdCi7v4GD3wW
+ 54HXminXLJxOItMpey5i32TppqcEiMLCQH74iiB/taReUJg6ni4m4o1oQ A==;
+X-CSE-ConnectionGUID: ySCPNs7kTJyUrt/lqKNvkA==
+X-CSE-MsgGUID: sschMgiQQeG2fkQIct7tGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73641930"
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="73641930"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2025 13:30:48 -0700
+X-CSE-ConnectionGUID: hDljknUzRte0Ye1/ZuPd4A==
+X-CSE-MsgGUID: G5trPgagQ5G9i6ScHtL0Bg==
 X-ExtLoop1: 1
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2025 12:52:33 -0700
-From: Sk Anirban <sk.anirban@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; d="scan'208";a="180924014"
+Received: from orsosgc001.jf.intel.com ([10.88.27.185])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2025 13:30:47 -0700
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [i-g-t,v6,3/3] HAX: Add xe_survivability tests to fast feedback list
-Date: Tue, 14 Oct 2025 01:19:05 +0530
-Message-ID: <20251013194910.1065392-8-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251013194910.1065392-5-sk.anirban@intel.com>
-References: <20251013194910.1065392-5-sk.anirban@intel.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t v2 03/18] tests/intel/xe_oa: Rename nth_oa_unit to
+ oa_unit_by_id
+Date: Mon, 13 Oct 2025 13:30:26 -0700
+Message-ID: <20251013203042.925115-4-ashutosh.dixit@intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251013203042.925115-1-ashutosh.dixit@intel.com>
+References: <20251013203042.925115-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,26 +68,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add xe_survivability to xe-fast-feedback
+Rename nth_oa_unit to oa_unit_by_id. We will introduce oa_unit_by_type soon
+and oa_unit_by_id fits that naming scheme.
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+v2: s/n/id/ for oa_unit_by_id function argument (Umesh)
+
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel-ci/xe-fast-feedback.testlist | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/intel/xe_oa.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 5f27baafb..d18a44610 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -187,6 +187,8 @@ igt@xe_sysfs_scheduler@job_timeout_ms-invalid
- igt@xe_sysfs_scheduler@job_timeout_ms-min-max
- igt@xe_survivability@i2c-functionality
- igt@xe_survivability@runtime-survivability
-+igt@xe_survivability@i2c-functionality
-+igt@xe_survivability@runtime-survivability
- #igt@xe_vm@bind-once
- #igt@xe_vm@scratch
- igt@xe_vm@shared-pte-page
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index a028823e51..a7141a4fb0 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -493,7 +493,7 @@ static struct drm_xe_engine_class_instance *oa_unit_engine(int fd, int n)
+ 	return hwe;
+ }
+ 
+-static struct drm_xe_oa_unit *nth_oa_unit(int fd, int n)
++static struct drm_xe_oa_unit *oa_unit_by_id(int fd, int id)
+ {
+ 	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
+ 	struct drm_xe_oa_unit *oau;
+@@ -502,7 +502,7 @@ static struct drm_xe_oa_unit *nth_oa_unit(int fd, int n)
+ 	poau = (u8 *)&qoa->oa_units[0];
+ 	for (int i = 0; i < qoa->num_oa_units; i++) {
+ 		oau = (struct drm_xe_oa_unit *)poau;
+-		if (i == n)
++		if (oau->oa_unit_id == id)
+ 			return oau;
+ 		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
+ 	}
+@@ -4348,7 +4348,7 @@ test_oa_unit_concurrent_oa_buffer_read(void)
+ 		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(drm_fd, child);
+ 
+ 		/* No OAM support yet */
+-		if (nth_oa_unit(drm_fd, child)->oa_unit_type != DRM_XE_OA_UNIT_TYPE_OAG)
++		if (oa_unit_by_id(drm_fd, child)->oa_unit_type != DRM_XE_OA_UNIT_TYPE_OAG)
+ 			exit(0);
+ 
+ 		test_blocking(40 * 1000 * 1000, false, 5 * 1000 * 1000, hwe);
+@@ -5027,7 +5027,7 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
+ 		/* See xe_query_oa_units_new() */
+ 		igt_require(xe_dev->oa_units);
+ 		igt_require(xe_dev->oa_units->num_oa_units);
+-		oau = nth_oa_unit(drm_fd, 0);
++		oau = oa_unit_by_id(drm_fd, 0);
+ 
+ 		devid = intel_get_drm_devid(drm_fd);
+ 		sysfs = igt_sysfs_open(drm_fd);
 -- 
-2.43.0
+2.48.1
 
