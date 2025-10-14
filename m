@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10207CCD18E
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Oct 2025 11:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BB19CCD184
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Oct 2025 12:49:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B983810E5B7;
-	Tue, 14 Oct 2025 11:43:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B6F6910E5F2;
+	Tue, 14 Oct 2025 12:49:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SMilgeaP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KFdFzlDr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F216710E5BD
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Oct 2025 11:43:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B5BE10E5F2
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Oct 2025 12:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760442234; x=1791978234;
+ t=1760446155; x=1791982155;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1hQ1QGclR3awq6WYUcdVOuwTNPGQui0HXvuBoJ4dQkk=;
- b=SMilgeaPF8Y5t7vMEN40xYAB8aANe+Q/DMZPC/RVzuMuyAgXX9USQqnA
- XICjwDpNw3UfiSd8tj1Rd/6PZuRfM4qVG8/5iSzNF5vyyxV0qN6xq14TB
- 4DtrQw2NJrGF0sV8m5QUCfRPtus0W3hJDKGC99QBTuig9ELkDUTBBhI3A
- ez2d/1lFPKkOvos7w4vWn1lNn3c0mjZZ5W1lMUFY9qJ2T1IUEZT8mi51s
- KlgSV1GAlvkeh+4Woi9CNAE68vWmHDLmSZsRdyFn7DwHhH05nBaffQuT+
- LJl4OJvFdubMet5KhIhKqB9iRtDHEfU3uIEJPCYhuGfdseMLFfRAU9t0t g==;
-X-CSE-ConnectionGUID: BMEaU6N4S2aNwO6G6Nk+OQ==
-X-CSE-MsgGUID: Dr4dlKJNRpapPgdSWXsKYQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62509219"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62509219"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2025 04:43:54 -0700
-X-CSE-ConnectionGUID: 6ujArTK/StG3VYyGla1Uhw==
-X-CSE-MsgGUID: TR+Ob/qjRseZVUmF5hqLow==
+ bh=I3SUYyo6HeyM87eQTN/04eaew2i9MBq6WcMyTGAGuKQ=;
+ b=KFdFzlDrec1G0rgfpsM8EL60qsEJmgpP38WJ9+a9jiM7DNQorUtQ+M64
+ Q9dOjwinec2GLvvy4LuifNmFNjCa3xGIZNN56kHrrdEWVlWmErtCgjfjK
+ SlZYcZk831Ui9oVBhin7CCODtudSKVyUdWM83lUqiz4U2/UuNOGNQDU+z
+ S8tOJI4ySeCn+tq3CX+3VTNOQr1zvc30SOgRxo9X7ujsRYVhOgigBLkYz
+ DgEAvxyJ8fdbvF1O/Qi8bhH1RR02zxRY1nZ5f86RzOs+8jAQVXgs9+4gX
+ MNxFZJ5a3HOmRtAX6iDfhg8RRmBIUtYeVqMd1Sr9ZPcaU62VoyFre9EYX Q==;
+X-CSE-ConnectionGUID: n0W32jLyTZOclpmCkxtehQ==
+X-CSE-MsgGUID: ebN45N/RSJCLOO93SHzVpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="62494142"
+X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; d="scan'208";a="62494142"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Oct 2025 05:49:14 -0700
+X-CSE-ConnectionGUID: UO19XP8ATNadNj5eub+YoQ==
+X-CSE-MsgGUID: jQFko/NNTzu3WqN8tNL9jg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; d="scan'208";a="205569303"
-Received: from art-dev-395.igk.intel.com ([10.211.135.233])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2025 04:43:52 -0700
-From: Jan Maslak <jan.maslak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; d="scan'208";a="187173947"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 05:49:13 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: gwan-gyeong.mun@intel.com, zbigniew.kempczynski@intel.com,
- Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH 2/4] lib/gpgpu_shader: add function for computing max number
- of threads per tg
-Date: Tue, 14 Oct 2025 11:43:34 +0000
-Message-Id: <20251014114336.1712360-3-jan.maslak@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251014114336.1712360-1-jan.maslak@intel.com>
-References: <20251014114336.1712360-1-jan.maslak@intel.com>
+Cc: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_vrr: Dynamically verify LOBF across
+ vrefresh steps
+Date: Tue, 14 Oct 2025 18:18:54 +0530
+Message-ID: <20251014124854.425479-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251010085708.273552-1-ramanaidu.naladala@intel.com>
+References: <20251010085708.273552-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,204 +68,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Adds function gpgpu_shader__get_max_threads_in_tg() that computes the
-maximum allowed amount of threads in a thread group based on the provided
-shader and Xe version.
+Replace the static LOBF check with iterative vrefresh stepping
+to detect LOBF enablement. Add a configurable mechanism to
+control test output verbosity, enabling selective suppression
+of detailed logs under specific conditions.
 
-Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+v2: Add info logs.
+
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 ---
- lib/gpgpu_shader.c | 133 +++++++++++++++++++++++++++++++++++++++++++++
- lib/gpgpu_shader.h |  11 ++++
- 2 files changed, 144 insertions(+)
+ tests/kms_vrr.c | 51 ++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 36 insertions(+), 15 deletions(-)
 
-diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index e8600de23..0c777d12d 100644
---- a/lib/gpgpu_shader.c
-+++ b/lib/gpgpu_shader.c
-@@ -282,6 +282,9 @@ struct gpgpu_shader *gpgpu_shader_create(int fd)
- 	shdr->code = malloc(4 * shdr->max_size);
- 	shdr->labels = igt_map_create(igt_map_hash_32, igt_map_equal_32);
- 	shdr->num_threads_in_tg = 1;
-+	shdr->large_grf_mode = false;
-+	shdr->simd_size = 16;  /* Default SIMD size */
-+	shdr->hw_local_id_generation = false;
- 	shdr->vrt = VRT_DISABLED;
- 	igt_assert(shdr->code);
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index ee0f057d5..23722182f 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -154,6 +154,7 @@ typedef struct data {
+ 	vtest_ns_t vtest_ns;
+ 	uint64_t duration_ns;
+ 	bool static_image;
++	uint32_t flag;
+ } data_t;
  
-@@ -333,6 +336,136 @@ void gpgpu_shader_set_vrt(struct gpgpu_shader *shdr, enum gpgpu_shader_vrt_modes
- 	shdr->vrt = vrt;
+ typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
+@@ -512,10 +513,11 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 
+ 		calculate_tolerance(&threshold_hi[i], &threshold_lo[i], exp_rate_ns);
+ 
+-		igt_info("Requested rate[%d]: %" PRIu64 " ns (%.2f Hz), Expected rate between: %" PRIu64 " ns (%.2f Hz) to %" PRIu64 " ns (%.2f Hz)\n",
+-			 i, rates_ns[i], (float)NSECS_PER_SEC / rates_ns[i], threshold_hi[i],
+-			 (float)NSECS_PER_SEC / threshold_hi[i], threshold_lo[i],
+-			 (float)NSECS_PER_SEC / threshold_lo[i]);
++		if (data->flag != TEST_LINK_OFF)
++			igt_info("Requested rate[%d]: %" PRIu64 " ns (%.2f Hz), Expected rate between: %" PRIu64 " ns (%.2f Hz) to %" PRIu64 " ns (%.2f Hz)\n",
++				 i, rates_ns[i], (float)NSECS_PER_SEC / rates_ns[i],
++				 threshold_hi[i], (float)NSECS_PER_SEC / threshold_hi[i],
++				 threshold_lo[i], (float)NSECS_PER_SEC / threshold_lo[i]);
+ 	}
+ 
+ 	/* Align with the flip completion event to speed up convergence. */
+@@ -581,14 +583,18 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		while (get_time_ns() < target_ns - 10);
+ 	}
+ 
+-	igt_info("Completed %u flips, %u were in threshold for [", total_flip, total_pass);
+-	for (int i = 0; i < num_rates; ++i) {
+-		igt_info("(%llu Hz) %"PRIu64"ns%s", (NSECS_PER_SEC/rates_ns[i]), rates_ns[i],
+-			 i < num_rates - 1 ? "," : "");
++	if (data->flag != TEST_LINK_OFF) {
++		igt_info("Completed %u flips, %u were in threshold for [", total_flip, total_pass);
++		for (int i = 0; i < num_rates; ++i) {
++			igt_info("(%llu Hz) %" PRIu64 "ns%s", (NSECS_PER_SEC / rates_ns[i]),
++				 rates_ns[i], i < num_rates - 1 ? "," : "");
++		}
++		igt_info("]\n");
++
++		return total_flip ? ((total_pass * 100) / total_flip) : 0;
+ 	}
+-	igt_info("]\n");
+ 
+-	return total_flip ? ((total_pass * 100) / total_flip) : 0;
++	return 0;
  }
  
-+struct max_threads_config {
-+	bool large_grf_mode;
-+	uint32_t simd_size;
-+	bool hw_local_id_generation;
-+	uint32_t max_threads;
-+};
+ static uint32_t
+@@ -870,20 +876,35 @@ static void
+ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ {
+ 	uint64_t rate[] = {0};
++	uint32_t step_size, vrefresh;
++	bool lobf_enabled = false;
+ 
+ 	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
+ 	prepare_test(data, output, pipe);
++	data->flag = flags;
+ 
+ 	igt_info("LOBF test execution on %s, PIPE %s with VRR range: (%u-%u) Hz\n",
+ 		 output->name, kmstest_pipe_name(pipe), data->range.min, data->range.max);
+ 
+ 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
+ 	flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
+-	igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
+-	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[LOW_RR_MODE].vrefresh);
+-	flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
+-	igt_assert_f(igt_get_i915_edp_lobf_status(data->drm_fd, output->name),
+-		     "LOBF not enabled\n");
 +
-+static uint32_t compute_max_threads_in_tg_xe2(bool large_grf_mode,
-+					      uint32_t simd_size,
-+					      bool hw_local_id_generation)
-+{
-+	/* BSpec: 56590 */
-+	static const struct max_threads_config configs[] = {
-+		/* large_grf_mode, simd_size, hw_local_id_gen, max_threads */
-+		{ true,  16, false, 32 },
-+		{ true,  16, true,  32 },
-+		{ true,  32, false, 32 },
-+		{ true,  32, true,  32 },
-+		{ false, 16, false, 64 },
-+		{ false, 16, true,  64 },
-+		{ false, 32, false, 64 },
-+		{ false, 32, true,  32 },
-+	};
++	step_size = (data->range.max - data->range.min) / 5;
 +
-+	for (int i = 0; i < ARRAY_SIZE(configs); i++) {
-+		if (configs[i].large_grf_mode == large_grf_mode &&
-+		    configs[i].simd_size == simd_size &&
-+		    configs[i].hw_local_id_generation == hw_local_id_generation)
-+			return configs[i].max_threads;
++	for (vrefresh = data->range.max - step_size;
++	     vrefresh >= data->range.min; vrefresh -= step_size) {
++		igt_info("Testing LOBF with a %u hz flip rate on %u hz panel refresh rate\n",
++			 vrefresh, data->switch_modes[HIGH_RR_MODE].vrefresh);
++		rate[0] = igt_kms_frame_time_from_vrefresh(vrefresh);
++		flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
++
++		if (igt_get_i915_edp_lobf_status(data->drm_fd, output->name)) {
++			lobf_enabled = true;
++			break;
++		}
 +	}
 +
-+	igt_warn("Unsupported configuration: large_grf=%d, simd=%d, hw_local_id=%d\n",
-+		 large_grf_mode, simd_size, hw_local_id_generation);
-+	return 1;
-+}
-+
-+struct vrt_max_threads_config {
-+	enum gpgpu_shader_vrt_modes register_size;
-+	uint32_t simd_size;
-+	bool hw_local_id_generation;
-+	uint32_t max_threads;
-+};
-+
-+static uint32_t compute_max_threads_in_tg_xe3(enum gpgpu_shader_vrt_modes register_size,
-+					      uint32_t simd_size,
-+					      bool hw_local_id_generation)
-+{
-+	/* BSpec: 56590 */
-+	static const struct vrt_max_threads_config configs[] = {
-+		/* register_size, simd_size, hw_local_id_gen, max_threads */
-+		/* Reg-size <= 128: SIMD16 always allows 64 threads */
-+		{ VRT_32,  16, false, 64 },
-+		{ VRT_32,  16, true,  64 },
-+		{ VRT_64,  16, false, 64 },
-+		{ VRT_64,  16, true,  64 },
-+		{ VRT_96,  16, false, 64 },
-+		{ VRT_96,  16, true,  64 },
-+		{ VRT_128, 16, false, 64 },
-+		{ VRT_128, 16, true,  64 },
-+		/* Reg-size <= 128: */
-+		{ VRT_32,  32, false, 64 },
-+		{ VRT_32,  32, true,  32 },
-+		{ VRT_64,  32, false, 64 },
-+		{ VRT_64,  32, true,  32 },
-+		{ VRT_96,  32, false, 64 },
-+		{ VRT_96,  32, true,  32 },
-+		{ VRT_128, 32, false, 64 },
-+		{ VRT_128, 32, true,  32 },
-+		/* Reg-size 160 */
-+		{ VRT_160, 16, false, 48 },
-+		{ VRT_160, 16, true,  48 },
-+		{ VRT_160, 32, false, 48 },
-+		{ VRT_160, 32, true,  32 },
-+		/* Reg-size 192 */
-+		{ VRT_192, 16, false, 40 },
-+		{ VRT_192, 16, true,  40 },
-+		{ VRT_192, 32, false, 40 },
-+		{ VRT_192, 32, true,  32 },
-+		/* Reg-size 256 */
-+		{ VRT_256, 16, false, 32 },
-+		{ VRT_256, 16, true,  32 },
-+		{ VRT_256, 32, false, 32 },
-+		{ VRT_256, 32, true,  32 },
-+	};
-+
-+	for (int i = 0; i < ARRAY_SIZE(configs); i++) {
-+		if (configs[i].register_size == register_size &&
-+		    configs[i].simd_size == simd_size &&
-+		    configs[i].hw_local_id_generation == hw_local_id_generation)
-+			return configs[i].max_threads;
-+	}
-+
-+	igt_warn("Unsupported configuration: register_size=%d, simd=%d, hw_local_id=%d\n",
-+		 register_size, simd_size, hw_local_id_generation);
-+	return 1;
-+}
-+
-+/**
-+ * gpgpu__shader_get_max_threads_in_tg:
-+ * @shdr: shader to query
-+ *
-+ * Returns the maximum number of threads in thread group for the given shader
-+ * based on its current configuration (VRT mode, SIMD size, etc.) and Xe version.
-+ *
-+ * Returns: maximum number of threads in thread group
-+ */
-+uint32_t gpgpu_shader__get_max_threads_in_tg(struct gpgpu_shader *shdr)
-+{
-+	enum gpgpu_shader_vrt_modes register_size = shdr->vrt;
-+
-+	/* Not implemented for Xe platforms  */
-+	if (shdr->gen_ver < 2000)
-+		return 1;
-+
-+	/* Xe2 platforms */
-+	if (shdr->gen_ver < 3000) {
-+		return compute_max_threads_in_tg_xe2(shdr->large_grf_mode,
-+						     shdr->simd_size,
-+						     shdr->hw_local_id_generation);
-+	}
-+
-+	/* Xe3 platforms */
-+	if (shdr->vrt == VRT_DISABLED) {
-+		/* BSpec: 60258 */
-+		register_size = shdr->large_grf_mode ? VRT_256 : VRT_128;
-+	}
-+	return compute_max_threads_in_tg_xe3(register_size, shdr->simd_size,
-+					     shdr->hw_local_id_generation);
-+}
-+
- /**
-  * gpgpu_shader__breakpoint_on:
-  * @shdr: shader to create breakpoint in
-diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-index 90ef3eec8..fc931a72b 100644
---- a/lib/gpgpu_shader.h
-+++ b/lib/gpgpu_shader.h
-@@ -14,7 +14,13 @@ struct intel_bb;
- struct intel_buf;
++	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
+ }
  
- enum gpgpu_shader_vrt_modes {
-+	VRT_32 = 0x0,
-+	VRT_64 = 0x1,
- 	VRT_96 = 0x2,
-+	VRT_128 = 0x3,
-+	VRT_160 = 0x4,
-+	VRT_192 = 0x5,
-+	VRT_256 = 0x7,
- 	VRT_DISABLED,
- };
- 
-@@ -29,6 +35,9 @@ struct gpgpu_shader {
- 	struct igt_map *labels;
- 	bool illegal_opcode_exception_enable;
- 	uint32_t num_threads_in_tg;
-+	bool large_grf_mode;
-+	uint32_t simd_size;
-+	bool hw_local_id_generation;
- 	enum gpgpu_shader_vrt_modes vrt;
- };
- 
-@@ -72,6 +81,8 @@ static inline uint32_t gpgpu_shader_last_instr(struct gpgpu_shader *shdr)
- 
- void gpgpu_shader_set_vrt(struct gpgpu_shader *shdr, enum gpgpu_shader_vrt_modes vrt);
- 
-+uint32_t gpgpu_shader__get_max_threads_in_tg(struct gpgpu_shader *shdr);
-+
- void gpgpu_shader__wait(struct gpgpu_shader *shdr);
- void gpgpu_shader__breakpoint_on(struct gpgpu_shader *shdr, uint32_t cmd_no);
- void gpgpu_shader__breakpoint(struct gpgpu_shader *shdr);
+ static void
 -- 
-2.34.1
+2.43.0
 
