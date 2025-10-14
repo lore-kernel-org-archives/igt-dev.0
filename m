@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E158CCD184
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Oct 2025 09:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CB1ECCD190
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Oct 2025 09:39:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD51710E3A5;
-	Tue, 14 Oct 2025 09:39:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B111310E588;
+	Tue, 14 Oct 2025 09:39:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dagBzE+i";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PgpJPrMY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D9EE10E3A5
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Oct 2025 09:39:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 028C710E588
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Oct 2025 09:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760434743; x=1791970743;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=02EjpBCXDDXCtv6DDsUI/fS6i+RJjTI7Z4sm+sJXTh8=;
- b=dagBzE+iiWuoWPx3RLAx1qXSud8nRQfKGPsBSmhDA8JSBIwDZRzP+Z7W
- xQggkJjB0X9GyykeLrdwJ2d+dmKuV6UcoVery3hPoqC++PfCs94+kJlkY
- IuUTrhdjF92ruoL7UBTl7GvtxGqrwJdmLDVtlkyu6EWT+1GsybM/p28Zf
- cHPzhgAvzFr6XiXPgHf/yNEu/n360tY3QCmbzHNmTb8w28p4CswQGgn/D
- PV4B5hhOmmU2Qw1MtyxV4Ii/1rKgBXWY8KPnxWXf7deUknTByqWCFfTcR
- kmFLEXtO/utDHtaXxDSHal9aEb7Wn8qE+5c4Zvf6C2HCEQN1Ijw+nzYFY w==;
-X-CSE-ConnectionGUID: NExUw7rxTxS3wyz4GB0jLA==
-X-CSE-MsgGUID: 027qx+c5TqO3IMRsdzGsMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73192495"
-X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="73192495"
+ t=1760434745; x=1791970745;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=29iZGA+oic7SCkFYStzowpPujVEYrUEH3Yqo2o7eZTs=;
+ b=PgpJPrMYiV//d/0GIRASNRxwAq8u8uAA2rFvVY5SnuviwGtelVQVLRwP
+ /ttW3tywwA34/eHEKL9vX/tAvcbvQqQPNLe0gG1TJ2OLG0/zqMjKlHc8K
+ kuhbxYWg0EskTiz+FjTSuFyMhKreWy/8mNiamYIXGFbjPtxsaRzyEL1bT
+ awQKdJTtj9zEDu8itcNDqFaHufB3XfkcA1xrhesO6b6ebhh4X/DkwsT3K
+ nSM8N8vSbNHEosbbGOgPjBgTFx4yOGf3IIyO5JJwuFAtzUZ9lvdQ4gdH7
+ P6cQDmXowU5igY17FYX1NWWJkBP9MSoAAKNgDZkconHxeToeitAoLnBBC g==;
+X-CSE-ConnectionGUID: jEoulnlqSW+64DjvUt0A0g==
+X-CSE-MsgGUID: n03o9dRQSAS2cG9L5hNhQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73192499"
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="73192499"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2025 02:39:03 -0700
-X-CSE-ConnectionGUID: rJdle3PHRced/ECUXWEy0Q==
-X-CSE-MsgGUID: 2er4JFzBQtidKL7TVuq50g==
+ 14 Oct 2025 02:39:05 -0700
+X-CSE-ConnectionGUID: 2nUOwo9JQ5m/WtWsQAhZsQ==
+X-CSE-MsgGUID: XCJYtSpITzOtDcIE5U7YnA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="181066470"
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="181066476"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO
  mkuoppal-desk.intel.com) ([10.245.244.189])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2025 02:39:01 -0700
+ 14 Oct 2025 02:39:03 -0700
 From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: christoph.manszewski@intel.com, dominik.karol.piatkowski@intel.com,
  maciej.patelczyk@intel.com, jan.maslak@intel.com,
  zbigniew.kempczynski@intel.com,
  Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Subject: [PATCH i-g-t 0/7] lib/xe/xe_eudebug: small fixes and improvements
-Date: Tue, 14 Oct 2025 12:38:41 +0300
-Message-ID: <20251014093848.2394531-1-mika.kuoppala@linux.intel.com>
+Subject: [PATCH i-g-t 1/7] lib/xe/xe_eudebug: fortify xe_eudebug_for_each_event
+Date: Tue, 14 Oct 2025 12:38:42 +0300
+Message-ID: <20251014093848.2394531-2-mika.kuoppala@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251014093848.2394531-1-mika.kuoppala@linux.intel.com>
+References: <20251014093848.2394531-1-mika.kuoppala@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,25 +71,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-While we were doing eudebug-v4 and converting tests to new uapi,
-encountering newly found out errors and shortcomings led these
-small fixups on lib side.
+Add rigorous checking for xe_eudebug_for_each_event so
+that we catch errors early if unitialized data is fed
+into the macro.
 
-Mika Kuoppala (7):
-  lib/xe/xe_eudebug: fortify xe_eudebug_for_each_event
-  lib/xe/xe_eudebug: Fix token to str
-  lib/xe/xe_eudebug: Improve pipe error messages
-  lib/xe/xe_eudebug: Mark client done after log is read
-  lib/xe/xe_eudebug: Assert that there is always client work
-  lib/xe/xe_eudebug: Allow empty event log
-  lib/xe/xe_eudebug: Don't take timeout for debugger stop
+Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+---
+ lib/xe/xe_eudebug.c |  1 -
+ lib/xe/xe_eudebug.h | 45 ++++++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 40 insertions(+), 6 deletions(-)
 
- lib/xe/xe_eudebug.c             | 66 ++++++++++++++++++++++++---------
- lib/xe/xe_eudebug.h             | 51 ++++++++++++++++++++++---
- tests/intel/xe_eudebug.c        | 16 ++++----
- tests/intel/xe_eudebug_online.c | 12 +++---
- 4 files changed, 108 insertions(+), 37 deletions(-)
-
+diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+index 407940e122..4bf697a45e 100644
+--- a/lib/xe/xe_eudebug.c
++++ b/lib/xe/xe_eudebug.c
+@@ -1061,7 +1061,6 @@ static void debugger_run_triggers(struct xe_eudebug_debugger *d,
+ 	}
+ }
+ 
+-#define MAX_EVENT_SIZE (32 * 1024)
+ static int
+ xe_eudebug_read_event(int fd, struct drm_xe_eudebug_event *event)
+ {
+diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
+index d2f64fe4c4..db79726c00 100644
+--- a/lib/xe/xe_eudebug.h
++++ b/lib/xe/xe_eudebug.h
+@@ -8,6 +8,7 @@
+ #include <xe_drm.h>
+ #include <xe_drm_eudebug.h>
+ 
++#include "igt_core.h"
+ #include "igt_list.h"
+ 
+ struct xe_eudebug_event_log {
+@@ -90,11 +91,45 @@ typedef void (*xe_eudebug_trigger_fn)(struct xe_eudebug_debugger *,
+ 		if (hwe__->engine_class == DRM_XE_ENGINE_CLASS_RENDER || \
+ 		    hwe__->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
+ 
+-#define xe_eudebug_for_each_event(_e, _log) \
+-	for ((_e) = (_e) ? (void *)(uint8_t *)(_e) + (_e)->len : \
+-		    (void *)(_log)->log; \
+-	    (uint8_t *)(_e) < (_log)->log + (_log)->head; \
+-	    (_e) = (void *)(uint8_t *)(_e) + (_e)->len)
++#define MAX_EVENT_SIZE (32 * 1024)
++
++static inline struct drm_xe_eudebug_event *
++next_event(struct drm_xe_eudebug_event *e, struct xe_eudebug_event_log *l)
++{
++	uint8_t *start;
++	uint8_t *end;
++
++	igt_assert(l);
++	igt_assert(l->log);
++	igt_assert(l->head <= l->max_size);
++
++	if (!e)
++		return (struct drm_xe_eudebug_event *)l->log;
++
++	start = (uint8_t *)e;
++
++	if (start == l->log + l->head)
++		return NULL;
++
++	igt_assert(start >= l->log);
++	igt_assert(start < l->log + l->head);
++	igt_assert(e->len);
++	igt_assert(e->len <= MAX_EVENT_SIZE);
++
++	end = (uint8_t *)e + e->len;
++
++	if (end == l->log + l->head)
++		return NULL;
++
++	igt_assert(end < l->log + l->head);
++
++	return (struct drm_xe_eudebug_event *)end;
++}
++
++#define xe_eudebug_for_each_event(_e, _log)	\
++    for ((_e) = next_event((_e), (_log)); \
++         (_e); \
++         (_e) = next_event((_e), (_log)))
+ 
+ #define xe_eudebug_assert(d, c)						\
+ 	do {								\
 -- 
 2.43.0
 
