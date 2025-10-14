@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13220CCD190
-	for <igt-dev@archiver.kernel.org>; Tue, 14 Oct 2025 09:39:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F0DBCCD18E
+	for <igt-dev@archiver.kernel.org>; Tue, 14 Oct 2025 09:39:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C07A310E58C;
-	Tue, 14 Oct 2025 09:39:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D9E1B10E58E;
+	Tue, 14 Oct 2025 09:39:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XwkLCTrE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iChHfQYy";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B335F10E58C
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Oct 2025 09:39:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFF1310E58E
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Oct 2025 09:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760434752; x=1791970752;
+ t=1760434754; x=1791970754;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9aRQuXgC1zHQDoYmmkPvRi0h2gSFMa5kkY4ycACCAP0=;
- b=XwkLCTrE56HCmmYlzBFwOqWNqytOxGCiifeq5uz6gz9MHsyiBDuJrcOz
- +/25z9MXNMa0sBaleJa0sJbGAz9Pyjj4VQciBRpU9KiOXxau0bMpEY0tn
- Mx12atjhTqBeR3gDJS9GgNvcx51R3DGYtpA8OWtqbJBH/Tkn5Rq1pUij2
- d0br8+lwGtMrY5EoV/GdTqOBsqUzo69393F3Q2DtdUZkzLnurO/T1LXhx
- HdE7fPyQ0mAL7TLdVOhwrrHYaegY6gTytqNw9NGlFjbs+NIJLmK0eSiQL
- Z0ROymBWlefJN0k3dpYiKnPm+k3nTAJmtfXDfShEh5RI++iD5lr1NgXZP Q==;
-X-CSE-ConnectionGUID: ds1lEFhnSBeBPfBB4/X2kg==
-X-CSE-MsgGUID: Sf4YNu57RoSTd+qW7izPbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73192504"
-X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="73192504"
+ bh=WgO7CJIVeg+6QRF2T5EohWM1Ms8kNC4cmD450nSFmPM=;
+ b=iChHfQYyn1Ssz0O97HPfRBv5J4ZjYgQ4eGyjQweDW+OU6V5zW9z+daum
+ oAPl423B+A3f3iU/6LXLO9b4KuuFGrAmA1ouQRKqkxcUXCo3jSDLjFpvb
+ lpHV7dRZ6kfYhI+zpVQn6CiY2CGoCBj7o2cmUL8b1JF/rQ4oVfTQ2NLKs
+ rBRDYMj45yKdjwg2OhObyYs1eTBWlyMCO+sBniyWFzcACDuBoSOSaHxdE
+ 4XHtX1ElUexRYz0EfLd5H/yy0cr9aALHRAEKeP/k5/T05VHaRF2TVEyjc
+ tpNrC3v+GCDBrAwYAmrJ4dwJe6SYSYkAhYkUd6ZsKoztvwj3pGCFk5xz6 g==;
+X-CSE-ConnectionGUID: Iq4q+RxNR2SsmnU07JhvOA==
+X-CSE-MsgGUID: Lu5bVLxnSeGH/YcA7zAr2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="73192506"
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="73192506"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2025 02:39:11 -0700
-X-CSE-ConnectionGUID: H1M2VeAcQZWVVBDyPXGtzg==
-X-CSE-MsgGUID: W7V9eiHRTWqseTDWWD2TmA==
+ 14 Oct 2025 02:39:14 -0700
+X-CSE-ConnectionGUID: TOFMKJTATe6404qKm4jGzQ==
+X-CSE-MsgGUID: /xLT7FWGRtWycTol2YsEqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="181066494"
+X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; d="scan'208";a="181066500"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO
  mkuoppal-desk.intel.com) ([10.245.244.189])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2025 02:39:10 -0700
+ 14 Oct 2025 02:39:12 -0700
 From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: christoph.manszewski@intel.com, dominik.karol.piatkowski@intel.com,
  maciej.patelczyk@intel.com, jan.maslak@intel.com,
  zbigniew.kempczynski@intel.com,
  Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Subject: [PATCH i-g-t 4/7] lib/xe/xe_eudebug: Mark client done after log is
- read
-Date: Tue, 14 Oct 2025 12:38:45 +0300
-Message-ID: <20251014093848.2394531-5-mika.kuoppala@linux.intel.com>
+Subject: [PATCH i-g-t 5/7] lib/xe/xe_eudebug: Assert that there is always
+ client work
+Date: Tue, 14 Oct 2025 12:38:46 +0300
+Message-ID: <20251014093848.2394531-6-mika.kuoppala@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251014093848.2394531-1-mika.kuoppala@linux.intel.com>
 References: <20251014093848.2394531-1-mika.kuoppala@linux.intel.com>
@@ -72,28 +72,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Dont mark that we are done until the client has send it's
-log to session to avoid teardown too early.
+It makes no sense that we would not have a client work
+to do on setup. So assert it is always there and add
+debugs when the client thread enters and exits on work.
 
 Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 ---
- lib/xe/xe_eudebug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/xe/xe_eudebug.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index 0989330b39..84309043d5 100644
+index 84309043d5..7ea63b22b4 100644
 --- a/lib/xe/xe_eudebug.c
 +++ b/lib/xe/xe_eudebug.c
-@@ -1614,9 +1614,9 @@ void xe_eudebug_client_start(struct xe_eudebug_client *c)
- void xe_eudebug_client_wait_done(struct xe_eudebug_client *c)
- {
- 	if (!c->done) {
--		c->done = 1;
- 		c->seqno = wait_from_client(c, CLIENT_FINI);
- 		event_log_read_from_fd(c->log, c->p_out[0]);
-+		c->done = 1;
- 	}
- }
+@@ -1512,8 +1512,11 @@ struct xe_eudebug_client *xe_eudebug_client_create(int master_fd, xe_eudebug_cli
+ 
+ 		c->pid = client_wait_token(c, CLIENT_RUN);
+ 		igt_assert_eq(c->pid, mypid);
+-		if (work)
+-			work(c);
++		igt_assert(work);
++
++		igt_debug("client: work start\n");
++		work(c);
++		igt_debug("client: work end\n");
+ 
+ 		client_signal(c, CLIENT_FINI, c->seqno);
  
 -- 
 2.43.0
