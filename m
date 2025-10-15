@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED10CCD190
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E8ECCCD185
 	for <igt-dev@archiver.kernel.org>; Wed, 15 Oct 2025 07:35:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E6A910E71E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 49FC210E723;
 	Wed, 15 Oct 2025 07:35:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KjpCBTx6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PhRI1pnJ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1725210E276
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Oct 2025 07:35:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E765710E262
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Oct 2025 07:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1760513734; x=1792049734;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hS5GD+R7R/2obOsw2xwPeik88DButkP+u1qZ0jiFb2w=;
- b=KjpCBTx6n7MRaA/DHjp//62ZVpYfFGnCKGAdyyrYHH23LZyvWrPVwsQe
- bNMszzQfoSWOrAR1nMLZk9/vcVa/VF6gTu5ONOPDBdjDzggeELQH02NFj
- A190EjyEhYQhF5f0VkT8ktJFaqqVVKy5Te2K2c0SIwDFmvn2WbCyukXS4
- ZZLCYAsKstU9DTB7nPeYO2LtteFac2P19G+SkAv3Z+WnmOpRnYMULAdmD
- clYXVhL4N7U8PiAfEpDhhpcPg5+uAH7qwA4JFFjQg/KmpO/ZM8eKvysEN
- 2rAP/hK5P7pAmAbOWDXs3u0KuJ/BIOXyaGKCLQbc1Ec1bx4M0Ja7sxHQ3 g==;
-X-CSE-ConnectionGUID: rMR8W65kSImSWr3naEeyrw==
-X-CSE-MsgGUID: Ep4xCJe0S0mRb1zbzCiZYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="62573603"
-X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; d="scan'208";a="62573603"
+ bh=ycvnvdSIYFdle4lwCedao+c8nLIW6OMVlN85alCclRQ=;
+ b=PhRI1pnJhe70DnudNKcGLlF9YFxzooFwLDZPoLg7mGE5TPLKJwI31tru
+ vH8sYQ31zs1y8AAAZ47QwRJ595jD+34HASXlUFHMmwLS4kA7aF74umU94
+ 1+o+kA0dq4c/vsKNNrsRvts80/eh1kZdhBJubpMH4I7vXK5KOwBZFBy8P
+ /J8BL/Lh8atQcVSqUoeD5ps1syqlvBwSj40o5vKUe49wjPFMPgTkxlVRd
+ X4ANXO56C9bRI48dEg5dIjLJMmGSF+Zaz+Fdty4ToCoRKyTGr4E36AU3G
+ 4pUTSxQ/1oXQ7yiNSZW0T2UJcX3Foldr6sYtTjoVP1D69pHVaj6Ux23Hn Q==;
+X-CSE-ConnectionGUID: Rtp+56kDRAa69Zyo4+/IDQ==
+X-CSE-MsgGUID: mxNUVsPfRC+uRzLIXCP1+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="62573602"
+X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; d="scan'208";a="62573602"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2025 00:35:24 -0700
-X-CSE-ConnectionGUID: dVLzgJP2SOqB5nR30KNnaA==
-X-CSE-MsgGUID: bb9h2j0nQ5ii++cunCIGNw==
+ 15 Oct 2025 00:35:23 -0700
+X-CSE-ConnectionGUID: sOyvcbCsQMi4FxW2zwq/mw==
+X-CSE-MsgGUID: NKGsYArxThqepk+pupuIbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; d="scan'208";a="182882168"
+X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; d="scan'208";a="182882150"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
  by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 00:35:23 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 00:35:22 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevan.b@intel.com,
 	Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v4 2/2] tests/kms_vrr: Reduce unnecessary logging in
- specific test cases
-Date: Wed, 15 Oct 2025 13:05:08 +0530
-Message-ID: <20251015073508.448186-3-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v4 1/2] tests/kms_vrr: Dynamically verify LOBF across
+ vrefresh steps
+Date: Wed, 15 Oct 2025 13:05:07 +0530
+Message-ID: <20251015073508.448186-2-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251015073508.448186-1-ramanaidu.naladala@intel.com>
 References: <20251015073508.448186-1-ramanaidu.naladala@intel.com>
@@ -69,91 +69,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a way to control log output based on the test scenario. This
-helps avoid printing detailed information when it's not needed,
-making the logs cleaner and easier to read.
+Replace the static LOBF check with iterative vrefresh stepping
+to detect LOBF enablement.
 
-v2: Add info logs.
-v3: Split the patch.
+v2: Fix corner case highlighted in review comments.
 
 Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_vrr.c | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ tests/kms_vrr.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 580527c59..1d9e579b0 100644
+index 704620a7d..580527c59 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -154,6 +154,7 @@ typedef struct data {
- 	vtest_ns_t vtest_ns;
- 	uint64_t duration_ns;
- 	bool static_image;
-+	uint32_t flag;
- } data_t;
- 
- typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
-@@ -512,10 +513,11 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 
- 		calculate_tolerance(&threshold_hi[i], &threshold_lo[i], exp_rate_ns);
- 
--		igt_info("Requested rate[%d]: %" PRIu64 " ns (%.2f Hz), Expected rate between: %" PRIu64 " ns (%.2f Hz) to %" PRIu64 " ns (%.2f Hz)\n",
--			 i, rates_ns[i], (float)NSECS_PER_SEC / rates_ns[i], threshold_hi[i],
--			 (float)NSECS_PER_SEC / threshold_hi[i], threshold_lo[i],
--			 (float)NSECS_PER_SEC / threshold_lo[i]);
-+		if (data->flag != TEST_LINK_OFF)
-+			igt_info("Requested rate[%d]: %" PRIu64 " ns (%.2f Hz), Expected rate between: %" PRIu64 " ns (%.2f Hz) to %" PRIu64 " ns (%.2f Hz)\n",
-+				 i, rates_ns[i], (float)NSECS_PER_SEC / rates_ns[i],
-+				 threshold_hi[i], (float)NSECS_PER_SEC / threshold_hi[i],
-+				 threshold_lo[i], (float)NSECS_PER_SEC / threshold_lo[i]);
- 	}
- 
- 	/* Align with the flip completion event to speed up convergence. */
-@@ -581,14 +583,18 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 		while (get_time_ns() < target_ns - 10);
- 	}
- 
--	igt_info("Completed %u flips, %u were in threshold for [", total_flip, total_pass);
--	for (int i = 0; i < num_rates; ++i) {
--		igt_info("(%llu Hz) %"PRIu64"ns%s", (NSECS_PER_SEC/rates_ns[i]), rates_ns[i],
--			 i < num_rates - 1 ? "," : "");
--	}
--	igt_info("]\n");
-+	if (data->flag != TEST_LINK_OFF) {
-+		igt_info("Completed %u flips, %u were in threshold for [", total_flip, total_pass);
- 
--	return total_flip ? ((total_pass * 100) / total_flip) : 0;
-+		for (int i = 0; i < num_rates; ++i) {
-+			igt_info("(%llu Hz) %" PRIu64 "ns%s", (NSECS_PER_SEC / rates_ns[i]),
-+				 rates_ns[i], i < num_rates - 1 ? "," : "");
-+		}
-+		igt_info("]\n");
-+
-+		return total_flip ? ((total_pass * 100) / total_flip) : 0;
-+	}
-+	return 0;
- }
- 
- static uint32_t
-@@ -875,6 +881,7 @@ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+@@ -870,6 +870,8 @@ static void
+ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ {
+ 	uint64_t rate[] = {0};
++	uint32_t step_size, vrefresh;
++	bool lobf_enabled = false;
  
  	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
  	prepare_test(data, output, pipe);
-+	data->flag = flags;
+@@ -879,11 +881,24 @@ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
  
- 	igt_info("LOBF test execution on %s, PIPE %s with VRR range: (%u-%u) Hz\n",
- 		 output->name, kmstest_pipe_name(pipe), data->range.min, data->range.max);
-@@ -886,6 +893,9 @@ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 
- 	for (vrefresh = data->range.max - step_size;
- 	     vrefresh >= data->range.min; vrefresh -= step_size) {
-+		igt_info("Testing LOBF with a %u hz flip rate on %u hz panel refresh rate\n",
-+			 vrefresh, data->switch_modes[HIGH_RR_MODE].vrefresh);
+ 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
+ 	flip_and_measure(data, output, pipe, rate, 1, TEST_DURATION_NS);
+-	igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
+-	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[LOW_RR_MODE].vrefresh);
+-	flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
+-	igt_assert_f(igt_get_i915_edp_lobf_status(data->drm_fd, output->name),
+-		     "LOBF not enabled\n");
 +
- 		rate[0] = igt_kms_frame_time_from_vrefresh(vrefresh);
- 		flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
++	step_size = (data->range.max - data->range.min) / 5;
++
++	for (vrefresh = data->range.max - step_size;
++	     vrefresh >= data->range.min; vrefresh -= step_size) {
++		rate[0] = igt_kms_frame_time_from_vrefresh(vrefresh);
++		flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
++
++		if (igt_get_i915_edp_lobf_status(data->drm_fd, output->name)) {
++			lobf_enabled = true;
++			break;
++		}
++
++		if (vrefresh == data->range.min)
++			break;
++	}
++
++	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
+ }
  
+ static void
 -- 
 2.43.0
 
