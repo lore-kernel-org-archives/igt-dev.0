@@ -4,54 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A655FCCD190
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Oct 2025 06:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED978CCD185
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Oct 2025 06:44:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 47F4C10E299;
-	Wed, 15 Oct 2025 06:29:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9733010E264;
+	Wed, 15 Oct 2025 06:44:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="APmDhdB+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RTRcL/Cx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A18AC10E299
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Oct 2025 06:29:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED65910E264
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Oct 2025 06:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760509783; x=1792045783;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=GJ50bx/FMHIDrWcEyrCVV0WhmmpxFZKPLLtWhjOvbHg=;
- b=APmDhdB+EYPocm0Yx7yEq1Amh5kErSor6rkVcDCzgOIt1KcKQdYducmu
- 1wlSkRGEoQUqjqLsYysXKxgQxvd+xA4qr1CfSs5jalzCwLmB0X2ML6ebc
- //UZDCIJPKyumBhfACw+1Q+fxKdpxTnS2ntSeeNpQRd3XU02swr46YYb6
- uxDHpDvVMHKIGI8t4kHXItYMiN115SDHc4/z2MAFBFqwOYHo1tFZrERWa
- OresA6fTAUzO/dTnNRY0ns0JOYs7X5646F/125fFoWPXSLp7T5aGmZ8PQ
- goUFkPBS24itDTCqqUZ7vMmtJ1v77kaFpHVmtuyTqid7TvzuLCocEc+zI A==;
-X-CSE-ConnectionGUID: O2s8cuGlRoqAa/j8LsXdJQ==
-X-CSE-MsgGUID: BUjFMh0UTryDCrNkpl3ceA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66503640"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="66503640"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2025 23:29:42 -0700
-X-CSE-ConnectionGUID: XZ3wpENoTPymC4ruL0NZ8A==
-X-CSE-MsgGUID: OR4PJRVpRoa7vsgjVWon1A==
+ t=1760510649; x=1792046649;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ruH+4LixTC6UllqF8CNpFgfbS9aqNW3MVkFDDgW1sRw=;
+ b=RTRcL/Cx2QLGdLibkgGAJhWG/WTvPh9FaymblR4zgjhVIp026xLexHz9
+ lMHckwOBfG0vcX2uVwaVH2bW9mFcJsvzZrqZcbpvCAMI7K/jLKUAk/YL1
+ g07ns1E0W/VmjTiJ/55dlcdayKX0m7iMNqY+kP6y6H4is7VmgLu9Zq8iG
+ UKm1sGInvkK9SWbp+8l0r21LLek2PinsoUSdntgmuDF+5rALEv4AlyPm6
+ 9/bEFPrMkZcUL1e83jDlGqQ+IcUr8k72S3t1StS8EtDpypXIWPtbNc7VD
+ vHMW0kK9suIGRvbbZD0wYOIRz9tNgrdUzssdD1vrv6Ur4FeXmBdiMKluS w==;
+X-CSE-ConnectionGUID: 3/gusZE5Sj6cb1ERkN1QZw==
+X-CSE-MsgGUID: ESa2xW8gSvavaP8fSsC0kQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="61710286"
+X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; d="scan'208";a="61710286"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Oct 2025 23:44:09 -0700
+X-CSE-ConnectionGUID: ki9LWnpKT/24Hzb0iJH+sQ==
+X-CSE-MsgGUID: hTMgexC5QniPp3EfgJgfeA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; d="scan'208";a="182559278"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 23:29:41 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; d="scan'208";a="186096439"
+Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
+ by orviesa003.jf.intel.com with ESMTP; 14 Oct 2025 23:44:08 -0700
+From: himanshu.girotra@intel.com
 To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com,
-	Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v3 2/2] tests/kms_vrr: Reduce unnecessary logging in
- specific test cases
-Date: Wed, 15 Oct 2025 11:59:22 +0530
-Message-ID: <20251015062922.447336-3-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251015062922.447336-1-ramanaidu.naladala@intel.com>
-References: <20251015062922.447336-1-ramanaidu.naladala@intel.com>
+Cc: ramadevi.gandi@intel.com
+Subject: [PATCH i-g-t] tests/intel-ci : Add Xe Multigpu blocklist file
+Date: Wed, 15 Oct 2025 12:14:06 +0530
+Message-Id: <20251015064406.4076-1-himanshu.girotra@intel.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,90 +64,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a way to control log output based on the test scenario. This
-helps avoid printing detailed information when it's not needed,
-making the logs cleaner and easier to read.
+From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-v2: Add info logs.
-v3: Split the patch.
+Add Xe Multigpu Blocklist and unblock multigpu tests from core specific
+Blocklist to display the metrics on Grafana.
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
 ---
- tests/kms_vrr.c | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ tests/intel-ci/meson.build               | 1 +
+ tests/intel-ci/xe.bmg.core.blocklist.txt | 7 -------
+ tests/intel-ci/xe.multigpu.blocklist.txt | 5 +++++
+ 3 files changed, 6 insertions(+), 7 deletions(-)
+ create mode 100644 tests/intel-ci/xe.multigpu.blocklist.txt
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 1e4d9cdac..0c439bcd9 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -154,6 +154,7 @@ typedef struct data {
- 	vtest_ns_t vtest_ns;
- 	uint64_t duration_ns;
- 	bool static_image;
-+	uint32_t flag;
- } data_t;
- 
- typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
-@@ -512,10 +513,11 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 
- 		calculate_tolerance(&threshold_hi[i], &threshold_lo[i], exp_rate_ns);
- 
--		igt_info("Requested rate[%d]: %" PRIu64 " ns (%.2f Hz), Expected rate between: %" PRIu64 " ns (%.2f Hz) to %" PRIu64 " ns (%.2f Hz)\n",
--			 i, rates_ns[i], (float)NSECS_PER_SEC / rates_ns[i], threshold_hi[i],
--			 (float)NSECS_PER_SEC / threshold_hi[i], threshold_lo[i],
--			 (float)NSECS_PER_SEC / threshold_lo[i]);
-+		if (data->flag != TEST_LINK_OFF)
-+			igt_info("Requested rate[%d]: %" PRIu64 " ns (%.2f Hz), Expected rate between: %" PRIu64 " ns (%.2f Hz) to %" PRIu64 " ns (%.2f Hz)\n",
-+				 i, rates_ns[i], (float)NSECS_PER_SEC / rates_ns[i],
-+				 threshold_hi[i], (float)NSECS_PER_SEC / threshold_hi[i],
-+				 threshold_lo[i], (float)NSECS_PER_SEC / threshold_lo[i]);
- 	}
- 
- 	/* Align with the flip completion event to speed up convergence. */
-@@ -581,14 +583,18 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 		while (get_time_ns() < target_ns - 10);
- 	}
- 
--	igt_info("Completed %u flips, %u were in threshold for [", total_flip, total_pass);
--	for (int i = 0; i < num_rates; ++i) {
--		igt_info("(%llu Hz) %"PRIu64"ns%s", (NSECS_PER_SEC/rates_ns[i]), rates_ns[i],
--			 i < num_rates - 1 ? "," : "");
--	}
--	igt_info("]\n");
-+	if (data->flag != TEST_LINK_OFF) {
-+		igt_info("Completed %u flips, %u were in threshold for [", total_flip, total_pass);
- 
--	return total_flip ? ((total_pass * 100) / total_flip) : 0;
-+		for (int i = 0; i < num_rates; ++i) {
-+			igt_info("(%llu Hz) %" PRIu64 "ns%s", (NSECS_PER_SEC / rates_ns[i]),
-+				 rates_ns[i], i < num_rates - 1 ? "," : "");
-+		}
-+		igt_info("]\n");
-+
-+		return total_flip ? ((total_pass * 100) / total_flip) : 0;
-+	}
-+	return 0;
- }
- 
- static uint32_t
-@@ -875,6 +881,7 @@ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 
- 	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
- 	prepare_test(data, output, pipe);
-+	data->flag = flags;
- 
- 	igt_info("LOBF test execution on %s, PIPE %s with VRR range: (%u-%u) Hz\n",
- 		 output->name, kmstest_pipe_name(pipe), data->range.min, data->range.max);
-@@ -886,6 +893,9 @@ test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- 
- 	for (vrefresh = data->range.max - step_size;
- 	     vrefresh >= data->range.min; vrefresh -= step_size) {
-+		igt_info("Testing LOBF with a %u hz flip rate on %u hz panel refresh rate\n",
-+			 vrefresh, data->switch_modes[HIGH_RR_MODE].vrefresh);
-+
- 		rate[0] = igt_kms_frame_time_from_vrefresh(vrefresh);
- 		flip_and_measure(data, output, pipe, rate, 1, NSECS_PER_SEC);
- 
+diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+index ca50e93aa..0c3b79d51 100644
+--- a/tests/intel-ci/meson.build
++++ b/tests/intel-ci/meson.build
+@@ -21,6 +21,7 @@ intelci_files = [
+   'xe.lnl.core.blocklist.txt',
+   'xe.lnl.display.blocklist.txt',
+   'xe.lnl.eudebug.blocklist.txt',
++  'xe.multigpu.blocklist.txt',
+   'xe.ptl.core.blocklist.txt',
+   'xe.ptl.display.blocklist.txt',
+   'xe-fast-feedback.testlist',
+diff --git a/tests/intel-ci/xe.bmg.core.blocklist.txt b/tests/intel-ci/xe.bmg.core.blocklist.txt
+index 25da760aa..15dbbf2b8 100644
+--- a/tests/intel-ci/xe.bmg.core.blocklist.txt
++++ b/tests/intel-ci/xe.bmg.core.blocklist.txt
+@@ -18,13 +18,6 @@ igt@xe_media_fill@media-fill
+ ##################################################################
+ igt@xe_pat@pat-index-xe3p-xpc
+ ##################################################################
+-# Expected skip on single card machines
+-##################################################################
+-igt@xe_peer2peer@.*
+-igt@xe_query@multigpu-query-.*
+-igt@xe_create@multigpu-create-massive-size
+-igt@xe_exec_basic@.*multigpu.*
+-##################################################################
+ # Expected skip - small bar not supported
+ ##################################################################
+ igt@xe_mmap@small-bar
+diff --git a/tests/intel-ci/xe.multigpu.blocklist.txt b/tests/intel-ci/xe.multigpu.blocklist.txt
+new file mode 100644
+index 000000000..387c3413e
+--- /dev/null
++++ b/tests/intel-ci/xe.multigpu.blocklist.txt
+@@ -0,0 +1,5 @@
++#####################################################
++# Blocklist for Xe MuitiGPU tests
++#####################################################
++igt@(?!.*xe.*multigpu.*|xe_peer2peer.*).*
++#####################################################
 -- 
-2.43.0
+2.40.0
 
