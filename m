@@ -4,58 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5F37CCD1A1
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 09:40:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 556F7CCD194
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 09:56:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 824FF10E2FE;
-	Thu, 16 Oct 2025 09:40:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 138E110E082;
+	Thu, 16 Oct 2025 09:56:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q0VfOJz6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IGHzQLXX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE30110E2FE;
- Thu, 16 Oct 2025 09:40:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88A8110E082
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 09:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760607622; x=1792143622;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/YIQa/rbrAcEsVCr72Ev9IZNZaudlzToWKfNbH889hw=;
- b=Q0VfOJz6MjUxi/oKoo3oNi8MIyEDiPkZSPyrunZYSCQyBl/kUtaGXkim
- 5CPsjRM3vvmt+e/Rr11nDwhLr+VXll3BFX7qC5BI4FMe7tsI0aS1p30Ut
- m0Q/im2q9ryjHeuAvIQSGUmB6ErjE+R9VjDaZtmsURYYNBgBW8Z013w+Z
- ABbzbbtQms/ytnTe1jxCQJsAAYfnAjIoCpGDumrvwQ/1D8/7HNyn+YJYb
- 3EhytYJRvTkjo7Zli1NCxFbf2NudEA3/rwGl5uHO0pj8Z7OydjD1R65qU
- b5rCuqMngE6BKhLt47mKMuRdMgpi+8yxGvBC6lhRttVW0J9/tYx9avEFg g==;
-X-CSE-ConnectionGUID: vG+RWeqyQRuUXufzHjn1+w==
-X-CSE-MsgGUID: 9l1XiI5cTpCYaMjyYdNtuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="73079341"
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="73079341"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2025 02:40:21 -0700
-X-CSE-ConnectionGUID: KOSN+qB9QUSyC4+TU9WPaw==
-X-CSE-MsgGUID: 9kii1YGBQ52CikQ9whzuXg==
+ t=1760608616; x=1792144616;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=h+gVcDdyxKvOS2gKJHqRI5W+EJ6b3dk3RReXQlHjgdI=;
+ b=IGHzQLXXhoyQ4++GgBmeamz+MLPH+ZHni7Ujq96N8J8oyib4LVD31mIs
+ VrUE8Q42z5tymOGiK+ofVZVobybP0bLOOdHWGrwzZC3sA2/bGTTBFpVqE
+ ahEqVAIyq9SYwT4n6pHH3jAf+KdfdOSchTMHIVyqzZdCeepUOJi1yYlUW
+ G1WJusnCHhOFYXt6WMcscmBm1eNtnbZLy9sleBUfyDuqejhlwhMarCDOB
+ 0G6lafE33obXnaumrUIdxjukQx46fWmlDai3TPpt1U+50cBe6sh9F8OiJ
+ r8bjA2VsezMrI4/1qkdtm+0T89BHC8S0J0EjhYYosGIEColep7eolt4rf w==;
+X-CSE-ConnectionGUID: hAqRT/FwQfGSjdivztImKg==
+X-CSE-MsgGUID: sERCNU8XTbypEzyGPCcX/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="62840008"
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="62840008"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2025 02:56:56 -0700
+X-CSE-ConnectionGUID: eDkb4TgBTiSrnuAoAcLgag==
+X-CSE-MsgGUID: uoF43FavRPC9seT+gXj91A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="182815792"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.245.219])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2025 02:40:20 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: I915-ci-infra@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: =?UTF-8?B?4pyX?= i915.CI.Full: failure for tests/gem_eio: Resolve
- timing issues in stress subtests (rev3)
-Date: Thu, 16 Oct 2025 11:40:17 +0200
-Message-ID: <10737269.nUPlyArG6x@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <176060654705.21516.9677119278424745975@97596180aaec>
-References: <20251015124419.66460-8-janusz.krzysztofik@linux.intel.com>
- <176060654705.21516.9677119278424745975@97596180aaec>
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="182209496"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.225])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2025 02:56:55 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Simon Fairweather <simon.n.fairweather@gmail.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t] tools/intel_gpu_top: Add iteration option -n
+Date: Thu, 16 Oct 2025 11:56:49 +0200
+Message-ID: <20251016095649.31446-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,81 +67,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi I915-ci-infra@lists.freedesktop.org,
+From: Simon Fairweather <simon.n.fairweather@gmail.com>
 
-On Thursday, 16 October 2025 11:22:27 CEST Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/gem_eio: Resolve timing issues in stress subtests (rev3)
-> URL   : https://patchwork.freedesktop.org/series/155531/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_17369_full -> IGTPW_13909_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_13909_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_13909_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13909/index.html
-> 
-> Participating hosts (11 -> 11)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_13909_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_workarounds@suspend-resume-fd:
->     - shard-rkl:          [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17369/shard-rkl-2/igt@gem_workarounds@suspend-resume-fd.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13909/shard-rkl-4/igt@gem_workarounds@suspend-resume-fd.html
-> 
->   * igt@kms_atomic_transition@plane-all-modeset-transition:
->     - shard-rkl:          [PASS][3] -> [FAIL][4] +1 other test fail
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17369/shard-rkl-8/igt@kms_atomic_transition@plane-all-modeset-transition.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13909/shard-rkl-8/igt@kms_atomic_transition@plane-all-modeset-transition.html
-> 
->   * igt@kms_flip@flip-vs-suspend@b-hdmi-a1:
->     - shard-rkl:          NOTRUN -> [ABORT][5]
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13909/shard-rkl-4/igt@kms_flip@flip-vs-suspend@b-hdmi-a1.html
+When using option -J or -c default is looping forever until user
+break process. Lets introduce new option -n <number> and break
+printing after reaching given number of iterations.
 
-None of the above failed tests, only gem_eio, is touched by the change under 
-this pre-merge testing, then none of the above potential regressions is 
-related.  Please update filters and re-report.
+v2: corrected whitespaces, extended description (Kamil)
 
-Thanks,
-Janusz
+Signed-off-by: Simon Fairweather <simon.n.fairweather@gmail.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tools/intel_gpu_top.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-> 
->   
-> #### Warnings ####
-> 
->   * igt@kms_flip@flip-vs-suspend:
->     - shard-rkl:          [SKIP][6] ([i915#14544] / [i915#3637]) -> [ABORT][7]
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17369/shard-rkl-6/igt@kms_flip@flip-vs-suspend.html
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13909/shard-rkl-4/igt@kms_flip@flip-vs-suspend.html
-> 
->   
-> New tests
-> ---------
-...
-
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 54e71e559..4bcac4b47 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -1051,6 +1051,7 @@ usage(const char *appname)
+ 		"\t[-d <device>]   Device filter, please check manual page for more details.\n"
+ 		"\t[-p]            Default to showing physical engines instead of classes.\n"
+ 		"\t[-m]            Default to showing all memory regions.\n"
++		"\t[-n]            Specify number of iterations. Can be used with -J or -c.\n"
+ 		"\n",
+ 		appname, DEFAULT_PERIOD_MS);
+ 	igt_device_print_filter_types();
+@@ -2618,9 +2619,11 @@ int main(int argc, char **argv)
+ 	struct igt_device_card card;
+ 	char *codename = NULL;
+ 	struct timespec ts;
++	int iteration_value, iteration_count = 0;
++	bool iteration_check = false;
+ 
+ 	/* Parse options */
+-	while ((ch = getopt(argc, argv, "o:s:d:mpcJLlh")) != -1) {
++	while ((ch = getopt(argc, argv, "o:s:d:n:mpcJLlh")) != -1) {
+ 		switch (ch) {
+ 		case 'o':
+ 			output_path = optarg;
+@@ -2631,6 +2634,10 @@ int main(int argc, char **argv)
+ 		case 'd':
+ 			opt_device = strdup(optarg);
+ 			break;
++		case 'n':
++			iteration_check = true;
++			iteration_value = atoi(optarg);
++			break;
+ 		case 'p':
+ 			physical_engines = true;
+ 			break;
+@@ -2858,6 +2865,12 @@ int main(int argc, char **argv)
+ 		if (disp_clients != iclients.clients)
+ 			free_display_clients(disp_clients);
+ 
++		if (iteration_check) {
++			iteration_count++;
++			if (iteration_count >= iteration_value)
++				stop_top = true;
++		}
++
+ 		if (stop_top)
+ 			break;
+ 
+-- 
+2.51.0
 
