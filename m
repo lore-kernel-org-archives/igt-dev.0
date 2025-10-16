@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF653CCD195
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 14:37:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 926E2CCD199
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 14:38:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9318010E9F7;
-	Thu, 16 Oct 2025 14:37:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DCAA10E2ED;
+	Thu, 16 Oct 2025 14:38:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T6Z4rTCj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RY6lHA4t";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3370A10E9F7
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 14:37:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8094910E2ED
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 14:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760625462; x=1792161462;
+ t=1760625496; x=1792161496;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=DOoujPRt3/0FxVL+G/b+dmS14etXuTn4PCyEfxXRCDI=;
- b=T6Z4rTCjdx/gzk+rv1tVwMEdTUr6qSIHuWqyPgvjwxSjUN3PEVvFFSqp
- Ay/yjhmCIBwcBDF0vS0S9CQvQoW2ywmacsSQc7MtdFzmChddtPN5XmBoC
- IxDbDJQaet2TrecmGobS4Vc3d9ZYeJNc6+N6p2v28DvBf1jYjpmLJkA6U
- VbUr+zGTg6YJMPPxM1SAbrPh+/aRi0sm39EumVncIuRiVRDs2MjM+Estr
- CjMVQCGDz5QKGYnpqJ97Srarp6TNPAoZYZagWYrgny91scZkWvfdhZhHc
- OnnHvIlSTGUO9VtZzhi1mV7276Wspo87mcRObCCbkPneCTg/QBeJxDVSr A==;
-X-CSE-ConnectionGUID: pEkW12cqQe6vJJwvaQRKzg==
-X-CSE-MsgGUID: +kwbxLmATmKOUCvkTHgKRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62747609"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62747609"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2025 07:37:41 -0700
-X-CSE-ConnectionGUID: VTiVyvcdTfaUizUH1Tqf9w==
-X-CSE-MsgGUID: dWSleT13TOWycluc/47Kvw==
+ bh=BUF24wpaLjNUYIpMaXKiT91JecNwE7z20Oxd796cGvA=;
+ b=RY6lHA4t07XZuB+vH9/73xc8oBs4ah3OcmlIdNq4n7i/yhvuRZ2OJMjN
+ IBoR93pIGJgN37wK9ISZUQ72vJNXrFKE+ZMqhPsLvQeMP/kjBErXsrhnz
+ 1/gHfgiSplCxu4nH/215+NpBZXBxKLHmb0zpKtjEfL7nLTUxxXeITm3A3
+ sjR0C6jvCVxz/8Ybe3g631aNJz/tsWOBddTUd/PSi5OU2+n20ivuBZ209
+ pS21j2zJPvQmYEhikCvLEkty3Vm80XYzwDuBhfYB/mwe/izpi3pVlr2zT
+ ByYwONhZ5HE3QuORUv7aTUBdnbmyJ0fX5HDeFIlAEcmMu9pgGxyeQh7h3 A==;
+X-CSE-ConnectionGUID: oWNUyprgSIKEs7EhwEmhvA==
+X-CSE-MsgGUID: GHQm6BWpQ+KWVxUjrt8vrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="73932145"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="73932145"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2025 07:38:16 -0700
+X-CSE-ConnectionGUID: nwi9pGdqTWiUgXUbSiJxPw==
+X-CSE-MsgGUID: wpJXDvFiR8yzpxGdTGvZ8w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="186485264"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="182031841"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 07:37:40 -0700
-Date: Thu, 16 Oct 2025 16:37:37 +0200
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 07:38:13 -0700
+Date: Thu, 16 Oct 2025 16:38:10 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Jason-JH Lin <jason-jh.lin@mediatek.com>
 Cc: igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>,
@@ -49,9 +49,9 @@ Cc: igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>,
  Paul-PL Chen <paul-pl.chen@mediatek.com>,
  Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
  Project_Global_Chrome_Upstream_Group@mediatek.com
-Subject: Re: [PATCH i-g-t 3/6] tests/kms_pipe_crc_basic: Use
- SUSPEND_TEST_DEVICES for MediaTek devices
-Message-ID: <20251016143737.fw7cflwqqeh2h5b5@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 4/6] lib/igt_kms: Add support for mtk_current_bpc
+ debugfs in bpc-switch test
+Message-ID: <20251016143810.si4ag7sfngsf2cy6@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jason-JH Lin <jason-jh.lin@mediatek.com>,
  igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>,
@@ -60,11 +60,11 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
  Project_Global_Chrome_Upstream_Group@mediatek.com
 References: <20251012171459.3773990-1-jason-jh.lin@mediatek.com>
- <20251012171459.3773990-4-jason-jh.lin@mediatek.com>
+ <20251012171459.3773990-5-jason-jh.lin@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251012171459.3773990-4-jason-jh.lin@mediatek.com>
+In-Reply-To: <20251012171459.3773990-5-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,42 +81,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Jason-JH,
-On 2025-10-13 at 01:13:13 +0800, Jason-JH Lin wrote:
-> Update suspend test logic to use SUSPEND_TEST_DEVICES instead of
-> SUSPEND_TEST_NONE if running on MediaTek devices. This change
-> avoids use of RTC suspend commands that are not supported by MediaTek
-> platforms, improving test compatibility on MediaTek hardware.
+On 2025-10-13 at 01:13:14 +0800, Jason-JH Lin wrote:
+> Add support for the "mtk_current_bpc" debugfs entry when detecting bpc
+> on MediaTek devices. This allows bpc-switch tests to work properly with
+> MTK platforms by reading the correct debugfs property.
 > 
 > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/kms_pipe_crc_basic.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  lib/igt_kms.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index f1760d577d4e..9750d014cbb1 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -428,10 +428,16 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 9ee03e870927..1662e6d61f50 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6261,6 +6261,8 @@ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
+>  		strcpy(debugfs_name, "i915_current_bpc");
+>  	else if (is_amdgpu_device(drmfd))
+>  		strcpy(debugfs_name, "amdgpu_current_bpc");
+> +	else if (is_mtk_device(drmfd))
+> +		strcpy(debugfs_name, "mtk_current_bpc");
 >  
->  				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
->  					if (tests[i].flags & TEST_SUSPEND) {
-> +						enum igt_suspend_test test = SUSPEND_TEST_NONE;
-> +
->  						test_read_crc(&data, pipe, output, 0);
->  
-> +						/* rtcwake cmd is not supported on MTK devices */
-> +						if (is_mtk_device(data.drm_fd))
-> +							test = SUSPEND_TEST_DEVICES;
-> +
->  						igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> -									      SUSPEND_TEST_NONE);
-> +									      test);
->  
->  						test_read_crc(&data, pipe, output, 0);
->  					} else if (tests[i].flags & TEST_HANG) {
+>  	res = igt_debugfs_simple_read(fd, debugfs_name, buf, sizeof(buf));
+>  	igt_require(res > 0);
 > -- 
 > 2.43.0
 > 
