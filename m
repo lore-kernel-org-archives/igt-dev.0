@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03C17CCD194
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 11:50:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8210CCD183
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 11:50:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A5C210E9C5;
-	Thu, 16 Oct 2025 11:50:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A7DE10E9C4;
+	Thu, 16 Oct 2025 11:50:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aAxEm39y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OYhZ6kYc";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E964710E9C4
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 11:50:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69F1410E9C4
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 11:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760615447; x=1792151447;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=GuxXL2D7Iw63ch4FQs4a60GysgDDPopEfmbydpq831M=;
- b=aAxEm39y/mi2ObY1vgIO8R0MfSlokQekBBOXFYvfK2PCCFTTRw51TEsJ
- rIbYojOD5TSAqVqTx18/0UI+I/IPmpS6Aq/4366+91WaU7qJcwc3PwLxA
- yHL/7aXIR+b0CTfznz1Hm96swjSaBxvwX+J0LHttEGMTeFLF7n5RIX+lg
- /TbdxfIFjvzUbkE7mGg2FUITDxJBOKZh9ILpHmZHwRehmrRBzd8NQZc25
- NOefpKKbtYDRByDbe140Yg5/v8wXxgAtVOs9t4IdRzPi8RW8/SWbKmh4u
- 4FMJDfGBPR9eq9c67SPw2aow9Ayeck47bZfFhXmbvnhInQwfhQUwodL7h w==;
-X-CSE-ConnectionGUID: RWhXuZ8wTq+uM+EGeHWcbg==
-X-CSE-MsgGUID: nUut1yVDTl6KkrrbL+g9Iw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66635791"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="66635791"
+ t=1760615449; x=1792151449;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=xJsrbIJzQitmbc5C2CnOfnBi7u3CuQpTkH8IicPBD7w=;
+ b=OYhZ6kYcndbZUWL9LUoDorAXeozlZkp1+dqgmPwl+hK92mv12p3axW5i
+ htmQ8QsWaSF1m4CqvaIodgABF72ZnvDdZMWCgwX10V2VK5m7XBA8O4Dia
+ P6mhEthQmVuhQLuM2F7FtYdCyG2l+U246XXtn6Rwh0DWRgNgTap3yZZdS
+ fzvqM2ltMF2qbpZwSD59Fuv/YdAacX0hck/m+CHrssZBqNuhOsHfIcZuV
+ tt3JS+XjQ4cwdS9h2hxg4L4lixRG7mH+16sNTX7xCq+tGY9wTTYCpxQKm
+ VVoOUa9EyG0wdRA68obBhIMtXbhp2DYaZUrONlIDaZM5htVYzBudt5QBF A==;
+X-CSE-ConnectionGUID: gCvdc3mERLe07hK8N/u2Bw==
+X-CSE-MsgGUID: yXMubKJUQG+0mRCjOMVPSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66635792"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="66635792"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2025 04:50:47 -0700
-X-CSE-ConnectionGUID: 2EqLm3mZSjmRlTtdiJge5A==
-X-CSE-MsgGUID: IKKLsLiOQQiwDE8MkxtPgg==
+ 16 Oct 2025 04:50:49 -0700
+X-CSE-ConnectionGUID: Mc1CwiSuSlughtRPVDyZaw==
+X-CSE-MsgGUID: RDbZIFgMSg+xT6b5Qr+HkQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="181565977"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="181565980"
 Received: from intel-s2600wft.iind.intel.com ([10.223.26.143])
- by orviesa006.jf.intel.com with ESMTP; 16 Oct 2025 04:50:45 -0700
+ by orviesa006.jf.intel.com with ESMTP; 16 Oct 2025 04:50:47 -0700
 From: S Sebinraj <s.sebinraj@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevaka.badrappan@intel.com, zbigniew.kempczynski@intel.com,
  kamil.konieczny@intel.com, S Sebinraj <s.sebinraj@intel.com>
-Subject: [PATCH i-g-t v6 0/2] lib/intel_allocator,
- tests/kms_concurrent: Check for SYSVIPC
-Date: Thu, 16 Oct 2025 17:08:14 +0530
-Message-Id: <20251016113816.3343875-1-s.sebinraj@intel.com>
+Subject: [PATCH i-g-t v6 1/2] lib/intel_allocator: Add SYSVIPC support check
+Date: Thu, 16 Oct 2025 17:08:15 +0530
+Message-Id: <20251016113816.3343875-2-s.sebinraj@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251016113816.3343875-1-s.sebinraj@intel.com>
+References: <20251016113816.3343875-1-s.sebinraj@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,26 +68,77 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Check for System V IPC support in kms_concurrent test to handle
-targets that don't have it enabled in their kernel.
+targets that don't have SYSVIPC enabled in their kernel. Without this
+check, the test would fail with assertion errors when trying to use
+message queues.
 
-Without this the test fails in systems that run Android or the
-ones which doesn't have SYSVIPC support.
+Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+---
+ lib/intel_allocator.c | 23 ++++++++++++++++++++++-
+ lib/intel_allocator.h |  2 +-
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
-Snapshot of the error when tested with Intel Xe GPU, Target (PTL):
-CRITICAL: Test assertion failure function msgqueue_init,
-          file external/igt-gpu-tools/lib/intel_allocator_msgchannel.c:66:
-CRITICAL: Failed assertion: msgctl(queue, IPC_STAT, &qstat) == 0
-CRITICAL: Last errno: 38, Function not implemented
-
-S Sebinraj (2):
-  lib/intel_allocator: Add SYSVIPC support check
-  tests/kms_concurrent: Fix for msg_queue failure
-
- lib/intel_allocator.c  | 23 ++++++++++++++++++++++-
- lib/intel_allocator.h  |  2 +-
- tests/kms_concurrent.c |  3 ++-
- 3 files changed, 25 insertions(+), 3 deletions(-)
-
+diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+index d22c70f1f..7508d1788 100644
+--- a/lib/intel_allocator.c
++++ b/lib/intel_allocator.c
+@@ -250,6 +250,20 @@ static struct allocator *__allocator_find(int fd, uint32_t ctx, uint32_t vm)
+ 	return igt_map_search(map, &al);
+ }
+ 
++/**
++ * Checks if the current system supports SYSVIPC by verifying the existence and accessibility
++ * of the /proc/sysvipc directory.
++ * Returns: true if accessible for read and write, false otherwise.
++ */
++static bool system_supports_sysvipc(void)
++{
++	if (access("/proc/sysvipc", R_OK | W_OK) == 0)
++		return true;
++
++	alloc_debug("SYSVIPC not supported, cannot access /proc/sysvipc\n");
++	return false;
++}
++
+ static struct allocator *__allocator_find_by_handle(uint64_t handle)
+ {
+ 	struct handle_entry *h, he = { .handle = handle };
+@@ -839,14 +853,21 @@ void __intel_allocator_multiprocess_start(void)
+  *
+  * Note. This destroys all previously created allocators and theirs content.
+  */
+-void intel_allocator_multiprocess_start(void)
++bool intel_allocator_multiprocess_start(void)
+ {
+ 	alloc_info("allocator multiprocess start\n");
+ 
++	if (!system_supports_sysvipc()) {
++		igt_warn("System does not support SYSVIPC, multiprocess not supported\n");
++		return false;
++	}
++
+ 	igt_assert_f(child_pid == -1,
+ 		     "Allocator thread can be spawned only in main IGT process\n");
+ 	__intel_allocator_multiprocess_prepare();
+ 	__intel_allocator_multiprocess_start();
++
++	return true;
+ }
+ 
+ /**
+diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+index 4b6292f06..46e3429d9 100644
+--- a/lib/intel_allocator.h
++++ b/lib/intel_allocator.h
+@@ -166,7 +166,7 @@ struct intel_allocator {
+ void intel_allocator_init(void);
+ void __intel_allocator_multiprocess_prepare(void);
+ void __intel_allocator_multiprocess_start(void);
+-void intel_allocator_multiprocess_start(void);
++bool intel_allocator_multiprocess_start(void);
+ void intel_allocator_multiprocess_stop(void);
+ 
+ uint64_t intel_allocator_open(int fd, uint32_t ctx, uint8_t allocator_type);
 -- 
 2.43.0
 
