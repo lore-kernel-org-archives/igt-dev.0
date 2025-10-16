@@ -4,70 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C14ACCD195
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 14:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B254CCD199
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 14:37:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 38AC910E9F7;
-	Thu, 16 Oct 2025 14:35:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CFD1210E2ED;
+	Thu, 16 Oct 2025 14:37:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YfZO3Wg+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Htc1eRBR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67E0210E9F7
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 14:35:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C9EB10E2ED
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 14:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760625335; x=1792161335;
+ t=1760625425; x=1792161425;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=vSbdDoAmDJNLafU10bLNyYCwHtEvs5c9QfgW17UAzPM=;
- b=YfZO3Wg+vaArZMvYxbZSqwFCMax7v8k1LUK+dxeTWJhGCI5/0y2nQ67z
- BgNOLSY7eo8XNPKXa4to5w8hy8JHAdAzmh8QpCcQvkmM3f2H/CZYaAfSb
- FkIB2xISIpxzMmDq3LEj+wpykt5U0b+WKEgfF0K/WOf+H70sGX4wjtKQg
- /DV2UFMsclTDvZ+5QVCHh+Nt2i5xH/W2woyZ+J3m3iu9HvJA/5KPZJSjM
- EvmfudOrQoqz4BV767YjFghzWbnqkwxCNAgRplVJWV/501tdGhoe303Lj
- GD4DcGgBb3pPGDGc4fWRyfLGoFgjL26tVt6WYQYD7zGJho1Dbg1zFzsrB g==;
-X-CSE-ConnectionGUID: 7nqDGg2/TsC1aRj43tQl6A==
-X-CSE-MsgGUID: rhl8Ho47T5GLucVZVF/xLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="62720440"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="62720440"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2025 07:35:35 -0700
-X-CSE-ConnectionGUID: oLFUnASlTXa0RdQ85G6l7g==
-X-CSE-MsgGUID: BJUFsSH/QvOtHbR0dkiz2Q==
+ bh=/TtNDf8f4HAUyabfRs9zihYBTxF8ebkazESuqhl2gg4=;
+ b=Htc1eRBRYfdTpBdVm1l36vpcvCh/5NPf3uNwMaGPpLo0/UP5hsA7QR5M
+ mvJwljbD6oqNQqU+ZpzgEdSkMKIBTVev8I4nDlUWmjt+5yq1C4SfF4Uhn
+ 8lPY1KdTXP52HcM8PjQG9Vt4wHY1SZ2slVmfWpfkxmOUArJnUO9W2JgDp
+ u0LLUmQ0AXMqw/sTR97ulnyOprquhpkEJSB0+pWko0xcZjSvJlQ3Y+tgo
+ 728FJi3AZdEa00zg/adKtSOG0++zdIbUZQUcWEJgXqCmmYjunfr8n9TlV
+ y+9j0AxEMvr9ZVjREd/P5b+AiIltPMTzG0hCEcaik7/IDu00/C/vlc/cR g==;
+X-CSE-ConnectionGUID: lbsKXyJUTM+5mBNYCnFc/Q==
+X-CSE-MsgGUID: qISZcHKESReMPsox38keag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="65434612"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="65434612"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2025 07:37:04 -0700
+X-CSE-ConnectionGUID: lrdvjN1nSPWUjMeZoWV6mw==
+X-CSE-MsgGUID: ssbnEMJ3RoG0G2i56B0/tw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="187557316"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="186743770"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 07:35:32 -0700
-Date: Thu, 16 Oct 2025 16:35:06 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 07:37:02 -0700
+Date: Thu, 16 Oct 2025 16:36:59 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Jason-JH Lin <jason-jh.lin@mediatek.com>
 Cc: igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>,
  Singo Chang <singo.chang@mediatek.com>,
  Paul-PL Chen <paul-pl.chen@mediatek.com>,
  Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com,
- Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
-Subject: Re: [PATCH i-g-t 1/6] tests/kms_hdr: Use original 512x512 fb size on
- devices without scaler
-Message-ID: <20251016143506.vg3ly5raelx5xssl@kamilkon-DESK.igk.intel.com>
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH i-g-t 2/6] tests/kms_plane: Add support for
+ planar-settings on non-Intel devices
+Message-ID: <20251016143659.j2c2mygmodwnvzhc@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jason-JH Lin <jason-jh.lin@mediatek.com>,
  igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>,
  Singo Chang <singo.chang@mediatek.com>,
  Paul-PL Chen <paul-pl.chen@mediatek.com>,
  Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com,
- Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
+ Project_Global_Chrome_Upstream_Group@mediatek.com
 References: <20251012171459.3773990-1-jason-jh.lin@mediatek.com>
- <20251012171459.3773990-2-jason-jh.lin@mediatek.com>
+ <20251012171459.3773990-3-jason-jh.lin@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251012171459.3773990-2-jason-jh.lin@mediatek.com>
+In-Reply-To: <20251012171459.3773990-3-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,44 +81,41 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Jason-JH,
-On 2025-10-13 at 01:13:11 +0800, Jason-JH Lin wrote:
-> Ensure devices without scaler retain the original 512x512 framebuffer
-> size during plane setup. Previously, all outputs were set to display
-> resolution size, which may not be supported on devices lacking scaler.
-> For such hardware, always use 512x512, matching the initial framebuffer
-> creation, to improve test reliability.
+On 2025-10-13 at 01:13:12 +0800, Jason-JH Lin wrote:
+> Add an is_intel_device() check before invoking Intel-specific
+> requirements in the planar-settings test.
+> This allows the test to run on non-Intel devices by skipping
+> Intel-only pixel format settings checks.
 > 
 > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-
-+cc Khartik and Swati
-
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-
-Regards,
-Kamil
-
 > ---
->  tests/kms_hdr.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  tests/kms_plane.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index 33b6c42a65fb..9c2a91f01e71 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -203,7 +203,11 @@ static void test_bpc_switch_on_output(data_t *data, enum pipe pipe,
->  	 * smaller plane size in following tests.
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index f7b672c7a01e..8dac41b24b33 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1256,9 +1256,11 @@ static void test_planar_settings(data_t *data)
+>  	 * changed to if(..)
 >  	 */
->  	igt_plane_set_fb(data->primary, &afb);
-> -	igt_plane_set_size(data->primary, data->w, data->h);
-> +	if (get_num_scalers(display, pipe) >= 1)
-> +		igt_plane_set_size(data->primary, data->w, data->h);
-> +	else
-> +		igt_plane_set_size(data->primary, 512, 512);
-> +
->  	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY, NULL);
->  	if (!ret) {
->  		data->w = afb.width;
+>  	igt_require_f(data->display.is_atomic, "Atomic mode-set not supported\n");
+> -	igt_require_intel(data->drm_fd);
+> -	devid = intel_get_drm_devid(data->drm_fd);
+> -	igt_require(intel_display_ver(devid) >= 9);
+> +	if (is_intel_device(data->drm_fd)) {
+> +		igt_require_intel(data->drm_fd);
+> +		devid = intel_get_drm_devid(data->drm_fd);
+> +		igt_require(intel_display_ver(devid) >= 9);
+> +	}
+
+Good catch, so it was Intel-only... LGTM
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+>  
+>  	output = igt_get_single_output_for_pipe(&data->display, pipe);
+>  	igt_require(output);
 > -- 
 > 2.43.0
 > 
