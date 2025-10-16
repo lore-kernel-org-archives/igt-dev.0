@@ -4,84 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EA78CCD199
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 17:53:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEB30CCD183
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 18:15:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 159D110E239;
-	Thu, 16 Oct 2025 17:53:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 658B510E332;
+	Thu, 16 Oct 2025 18:15:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="BO/A40Qn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TLnZvtJp";
 	dkim-atps=neutral
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
- [209.85.221.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8192B10E239
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 17:53:27 +0000 (UTC)
-Received: by mail-wr1-f50.google.com with SMTP id
- ffacd0b85a97d-3f0ae439bc3so534184f8f.1
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 10:53:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760637206; x=1761242006; darn=lists.freedesktop.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=3AEcpdkKGUzyN2hVXYsg8+JMLU9tts1u2fzYnIfU/B4=;
- b=BO/A40QnBZ9aGFBOcw3FHkh9PKo6w7fUvvdxwG7ikVXI90sTPWsVZXPGlh/LNCQ/VC
- nU4fYQT60aEQbuj5XdoFOgVn9fTioKEksb1zcb7RlyfOwq+CEf7WJFAuN/wrCmN661qA
- UNC88XjejlXgWR977496Wllz1EUaMT9kOUFOXnvYA/uLYCvYsYM9K3q3X6cE/aNJVH4l
- D+ZO4cqKomxv81U5ZNKihXV/TA8QzA2zSdgth6YoZBBBxkDqbj2oeSWB4TGzCowd80rm
- m1Du6CcJh+TnR88aGXYRoulKEOCN0cU4mPYWE5Htz6DCB8hRmbKMfk6iJX3jVSiKVQcm
- q23Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760637206; x=1761242006;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3AEcpdkKGUzyN2hVXYsg8+JMLU9tts1u2fzYnIfU/B4=;
- b=m2PmC2tMSdLSy10m2mbBgwZ+8zvM0sIEaN9xtxxet1e9ymZ4tFSGJEn3SPfv4ZIzvb
- MLNc9fPdXaThbaC6wOGfRazt0PUuX5TpeChnxduwfMHPrCtrI61Ni3pl2jW65BSpJCQd
- 3E9yOaAQYhiYLvxy7MJftD2gIYjyTzQPwsQFLJGRgHznC0X3zuqPOR1WtPB8LMkm9uzm
- UmtBIrHmhOMsQRrY0UNeRCOagxtYOPiH9B1XR6qYmETRZ18ny5ulEw2wGoG3yy4TtA9q
- ragbQW9zzouXVgc5tZiY/XCgPgvXhYYHchmSeLLSZaG5WzOGPHD5G/i+G3bgggNQuvH9
- E1Aw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVn2lEKaY1AmZ0D2wjz8AV1uZWOr8voxhEcN6GIOl3IoZC/B2z/LCclDLUnITv8rv5yYKNX7Zlx@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yy60Ro3AeG5exUKnR4cIbCSxSVf+Odtnpysn0o0FO6Gs3jB/+v+
- 7Gn7r47+mUWlCo2VyQPfALqgO94ASqGKqObVyVLX8KMa+h+nW3lrmRpCQC6AdQ==
-X-Gm-Gg: ASbGncthnLKz7b6YRUAaWReOgx1pRpM6FSdl4ZPeC88uP/FGrkRzUvrT/NiZsKQGMjJ
- RMfWIlM9mgekd9UsQZm70ewh2an4RnunKqvAgxow783zNBX+3PhcYdNC+it74CBvuaLe+7SutO7
- ho5l0DjEjtn9FXKLp2B+JyMucltUc9ie9zU7K7CH+W7WsGoZdTDUa6er8kJ/GB03KufPq44SAyx
- 7DtF6zlfVOFsqtAVfkEz8fyUWsP7lWc+QfDcD6ypFia/WCOxQfw75627gkd5TZvlBi9qKf0YGxu
- t+4kYh3kfv65wedBhs1i/5O8c22AoJMtH+uBAEOZhRQ9W9NObKxlNK540QU5nJKceqP93B+GLml
- iXJBeuOjO4JLW7hR1iW/CsfcXQUWRqsw1Qb3cZQDLgAd2bTqJjIJw/8xHt0Al/bH8GRqt4sMNVW
- 61YHBeo4elbQ==
-X-Google-Smtp-Source: AGHT+IHnKcjhZH4DK3/WZApLQ7jQka7A6IRu0RAgs+3IMpZk1rgYFqymbnSW0SHLCPSb3B8rRh3W6g==
-X-Received: by 2002:a05:6000:2f83:b0:3e4:64b0:a776 with SMTP id
- ffacd0b85a97d-42704e07f1emr746671f8f.52.1760637205718; 
- Thu, 16 Oct 2025 10:53:25 -0700 (PDT)
-Received: from fedora ([94.73.33.104]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-426ce5e0e70sm35436280f8f.40.2025.10.16.10.53.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Oct 2025 10:53:25 -0700 (PDT)
-Date: Thu, 16 Oct 2025 19:53:23 +0200
-From: =?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>
-To: Mark Yacoub <markyacoub@google.com>
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, juhapekka.heikkila@gmail.com
-Subject: Re: [PATCH i-g-t] lib/drmtest: Remove VKMS from Exclusion list
-Message-ID: <aPExE2lX3t-PnqWW@fedora>
-References: <20251008160209.463702-1-markyacoub@google.com>
- <20251009164600.btzj5kiscl5ftdl7@kamilkon-DESK.igk.intel.com>
- <CAC0gqY7ZeCZPP8WHPq8uS-sOZVGpi8Fnzn-uDsWdt4jW72B8RA@mail.gmail.com>
- <20251015181649.ca7psctqj2vj2dt2@kamilkon-DESK.igk.intel.com>
- <d67971d5-8bc5-4a4d-becf-59696631f21d@bootlin.com>
- <aPDQOgFtR0aMo4_C@fedora>
- <CAC0gqY5tYG_3S5P+Xjq2k0=a_4Ktux3sCuQn9ef1Yn7ZPfYqdg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EBA410E332
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 18:15:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1760638552; x=1792174552;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=UON34ZNgPRxoLb0HszuwvTTVQ6oBn1nSLmdLNxsTELo=;
+ b=TLnZvtJp1Ae1iLoY/6TJJKo3yZ7jEDAr7m4k4yTxuWgoP3AjuA8JQ9sD
+ j4c2TMZiGJ/OiuOWYdrSz9+bCN5kD0GxG161bGo8Ez8XH3FOUbIt+PAd+
+ VEEvlU6OsmH0/Eid/gPaZnb1o1qIilApHMrsiOi7P2zTMwMZ5uKB8wBk4
+ kOjZzCCzFLJC0S9IMn4ptHuvVrmcTGLQC52zm6JJRSd5VkDiU4q8WrzqS
+ RjdTeeOnbQzkTnUSpgpxQIFxm0OZCjAw19HzmVhhyaqfuVe/mUsIae0tb
+ osEYKpotLuFd5xj+WUTqy1mF1i5mF8htkeyvTbDXRw+ZadNf/B8yDxMfR Q==;
+X-CSE-ConnectionGUID: M8vncQ9QRYKruN1CpUHqBg==
+X-CSE-MsgGUID: naaTrXaZS8aVat7pB3xiwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="66492005"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="66492005"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2025 11:15:51 -0700
+X-CSE-ConnectionGUID: P/y/rhvAQoCVcIhpMantHQ==
+X-CSE-MsgGUID: DAObm/A4Tbe2Vl1KPxp/OA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; d="scan'208";a="186542192"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2025 11:15:51 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Thu, 16 Oct 2025 11:15:51 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Thu, 16 Oct 2025 11:15:51 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.26) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Thu, 16 Oct 2025 11:15:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D9DZ2vOHM120vu6xllmzVLnEvAFXPWKUafhQc3kXZULq+2npQBZR+PgVYQLinhQcgbe+Rc/O0azsAYy8cQoNrdW0oDelPfEvL08DKU2wb9tAnXeT2qHb6h+4UTlTN4VTBHReemgU24OVX7CboWs/eg6rO4uwlBhoyad3IsH9lVrRj+WWuKcoqkNZnL4CUForsQxtZ2vHNXqUFNUvmUgr5R0bZAP/vWxHyVyi8obNLUK8wECFyGlmTFfj9ruG99wtdKuz534PFi37uGtGiK4myNvoPt/TTpJKo18pEb1Cb4Mm9oOC9iwVRD9UWTjzwz2EG4wQrsVScdugXnK+0TmOHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2GbI2fCeZRi0qrczu60eC2bQUHSgUVyOZn7OsmrgXnA=;
+ b=eZL+HYx4nGNjFlRK4UjBB8qcYRUAhgiytz4bJIkXGFoonV6J3VXmLIdgiQss9HNllf/zqdiHxhNpW5S4dgCmHFYy2/EL4CLm+TWrT0qkEQYi4ljQLwks50sDuUFJjgLNLkjIU3lc5V+SvVKgaEts/MkrjMfj4gRuw9BkCAx7554Obx9NDqQlLBS31Fa3iTbFCZ7yO1ANMbF1ZNKtmZuyTSNScdET4AF9CU/N/wiiRUdz1zJiABa1zOrTPUAOSoKTpuRiaqQxuSW76LUqYsa6SrEa1LpT3yYk9n5sNF9EZV9+KD6n57NRCx++lmodZPC+YhZkmjqiOU8XKT8+IEWZuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by LV1PR11MB8849.namprd11.prod.outlook.com (2603:10b6:408:2b3::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.10; Thu, 16 Oct
+ 2025 18:15:43 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%3]) with mapi id 15.20.9228.009; Thu, 16 Oct 2025
+ 18:15:43 +0000
+Date: Thu, 16 Oct 2025 11:15:41 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: <igt-dev@lists.freedesktop.org>, <saurabhg.gupta@intel.com>,
+ <alex.zuo@intel.com>
+Subject: Re: [PATCH] tests/intel/xe_exec_reset: Fix LR queue not running in
+ cm-gt-reset test
+Message-ID: <aPE2TYKysB9Pao+d@lstrano-desk.jf.intel.com>
+References: <20251016160619.96782-2-jonathan.cavitt@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAC0gqY5tYG_3S5P+Xjq2k0=a_4Ktux3sCuQn9ef1Yn7ZPfYqdg@mail.gmail.com>
+In-Reply-To: <20251016160619.96782-2-jonathan.cavitt@intel.com>
+X-ClientProxiedBy: MW4PR04CA0034.namprd04.prod.outlook.com
+ (2603:10b6:303:6a::9) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|LV1PR11MB8849:EE_
+X-MS-Office365-Filtering-Correlation-Id: 863ceb4b-a422-480f-06eb-08de0ce00549
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?9nTlkafIZWHNFxDqf3Mo+1aJbo7Pnf7zpLHjvjBPDXcCl+wtn7II6ElgjKr3?=
+ =?us-ascii?Q?8CvKbrFqIoYl64S5orEXTLD5qB4LyMcE1lm0G2yCqC6L6dL8cv1RsfmRIKer?=
+ =?us-ascii?Q?+4HpY6P8og5LOYNf5sgaEWptBXCgEXqDqMqWdr4pMiTtOdruhxnMFGFHQO4i?=
+ =?us-ascii?Q?5QBTi1DxpXfrabkL+f/hTzMYJdVaYpKJ76cmP2n3stz8XQ3CxRaGh63t6H9V?=
+ =?us-ascii?Q?2TNCT0kjl9MJgMy8+LrDKDYNGswwof8ux39UnVoZY5G/VZLe/M4iieSxWSF/?=
+ =?us-ascii?Q?7DOafzXx5PSC8ZPa6gLqCLkw4X6C7yM/ctKGdtJhKSGz6bh6GjaGfkW9Tdf9?=
+ =?us-ascii?Q?MJtx6X7rlur6psXzDgUIKcOzfxKbeBJoWcZhjasSRf8vS3yjJliIRL3Yluyk?=
+ =?us-ascii?Q?5VISu9FqrNWBRFYHSM7kdyvgnmjClA7DSZ68ahO2xG4rAUGVzThMeAVYaahN?=
+ =?us-ascii?Q?U0adBkI3y7+cTfImO8zqElu0ZZyYH3vOa9Q4FCbnuRa/683rY24BHybKWoi5?=
+ =?us-ascii?Q?5Zvw9GAA1rsjb4EOyFZMqppAj7Co+GtWv8rxkmYeiqIQ887wtQUt5v4UAH7K?=
+ =?us-ascii?Q?pATkawHjzQQvXL31mycmYC+cPu9tj3ZI3YjWRtzTn3+a9MsSYxdhobG3q4Ab?=
+ =?us-ascii?Q?0DR8Dsy4Sh5jq2YR/zeMkew/8HQPY5yrfEDoOL3R7Y4DBEnGYILhXw//bHFv?=
+ =?us-ascii?Q?NYDUHgBpAQW7ADA9oMaohxcpb47cMUrqJusENq/2hz6Tat5sdxYdrSJylxsw?=
+ =?us-ascii?Q?MVQwbNF0NkPfJ7q6cMgkP6UThw4qh+eY8cNBe3ONI2dY7dnObCOqDNG5q9Bs?=
+ =?us-ascii?Q?9902fauFrU4zcgs0VHnAJfs0eRZ3kZdjgMIqSH6q+NJDkd/s6BG10ppIviNx?=
+ =?us-ascii?Q?JKyIo1G0KMd+btYexAqV9qZ8gdSWaPZ7by7PCyCLVTQYje7QD8LabJsFjqwZ?=
+ =?us-ascii?Q?9Wj2UgE3rqngSbK5WSSZXnVTzGzk5muRrtEEg08DH7Eem5NulyX/M0O0vukR?=
+ =?us-ascii?Q?ZYqC2k5PEliK4LZbKo50qMtQSSg9UHZkz0gDBxgXSER8h1JUjsoYAaGLqpGA?=
+ =?us-ascii?Q?7U4gfu2VNNtK7u6sMQFt+7oPaPsF9pWjkouVYT28eIyIFXfIY1QjfI3TZ5+u?=
+ =?us-ascii?Q?LWRAYxMUS6oAKMW3b62zih84TNeaDMhTy4U/cvhM9V73dF4lTPDwtk/aH1Ed?=
+ =?us-ascii?Q?9RfjJcN7/ApAj0Fns57ylcDiyj6irWnJJjjNmVcKKlph3h/CD8UdMLJT8wOL?=
+ =?us-ascii?Q?b9sc93RajMtfhQNrr3kXQCa9atf3/C7zMIBMWfa4UQ3PXKfQfYTdq3MNe8cp?=
+ =?us-ascii?Q?dgKCpDnS+glcos/xwaFBCXc4quKrzcQo3GLydUUGI+XOIvxLgUAB6mrzYXYt?=
+ =?us-ascii?Q?OMzqmg39CxO/G4ueziLbNsmWCYQWir5Eju102fI9DKVXT6z9Xw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6522.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OAj5GufiZ9hsgWRWPZIEDhQ0wV3ekPt5+/4KFidPQuyhDIK0Dh7yEI5/Ua90?=
+ =?us-ascii?Q?WaMQTSX3WS7VElKapEvTXie1/OOtmXGa9ckAxzRVBXlpzBAmrCsYutMtw4QV?=
+ =?us-ascii?Q?NJoiSwblqujQMhMdlF5sd9CHySVV9tRvwnLF3HoMDTY144CdyD3i8/qjmGEC?=
+ =?us-ascii?Q?nELQB0whOiwC0UXnaVqYxImWmApLGUlTKdnnG3obk49ROYU6ZLG2xEhhJnPW?=
+ =?us-ascii?Q?WFZWa0V8b9qHNv9wZ9Esl+z7gMnDw96GJnfwXQZdSg2ftQKpTRWBL2o0gcle?=
+ =?us-ascii?Q?2tryvwFncSt8MzZOEstoRtog4qk2LspLBO5IAvUk8ZlIXoMdWCcZfDjZQh+1?=
+ =?us-ascii?Q?YopPw6BKBjg21rRH0Hw+1ZfcwQpad7r27NpuG2jElPNyUqD5NFmgF6mHNVYL?=
+ =?us-ascii?Q?wouTG836iV92JCR9A1cYCXCPMGcNFSJK8tlFxHEYVn/DZjqbR+LBbZvQdRPh?=
+ =?us-ascii?Q?8uITrVfLAJvwrS166YWWB/PV5d47jggy9BOB8Oxx+ymHwjoZRuImSVAx7QL6?=
+ =?us-ascii?Q?s2tXVuXGOEMlSCvHdliXHB4A2uuxkhjLcgYyifxE60MCwqcTYwdAutWOYpU1?=
+ =?us-ascii?Q?sLc53yB9Zqc9vn9nagUg2vzNdDlfEjoYngzz9uzfYS2CiKx299B/hUSRChP2?=
+ =?us-ascii?Q?sJ9SA1dZgCEUjJmaI7rpvYYJOnAN0t4bt0WoLfRG1o1rSicgn7czzVQjR4C0?=
+ =?us-ascii?Q?FsUzr27I7tiscm6G2sXqhgxOTBXOwggZbN23XUOi5u3yBdM+ytAmf7RVT2gU?=
+ =?us-ascii?Q?ullyGaLKg4lPvNYkHT6xSTk4sQ+G5gqCJlXvccSdPFb1FC+r3EDzlY2dgBXf?=
+ =?us-ascii?Q?7C2gxi8RNZFolbty5fdwoyLhT3ZmPWqsw8bHxNYAnirLNj3NQVgj96KjsaBL?=
+ =?us-ascii?Q?yj1h38Q2THwanzKk/k/jV0FHu5ojIKIVGsWqcLUm2lDJwt8AFit5TC2dyuDI?=
+ =?us-ascii?Q?Td3uML9EkJpS7zzgJJXvoWW3U4e9UlFSlk4wg+4PHUKVPn1y3AIOsAlNyVGf?=
+ =?us-ascii?Q?eYUqS7s+i1LzhptQcaoVDBD/sqhWZqZknSe4RuUvCYNCDe/1c8dykvxHbkTB?=
+ =?us-ascii?Q?2y5pZPE+JALidDlw8PLyAz6gfj+oA03jkbSxKy93t9PIO/RpxVZ4GJF7St6J?=
+ =?us-ascii?Q?dqhMEfb/oL5yzU/8tpQCwUZ8yNkUNT0VeVSyFL2Wc2pHvWfFZPfgcLpSsLc/?=
+ =?us-ascii?Q?tvX3+O4WVyi5OtWeh8yVpRd70YSfMefiY263FUM9inOQtGtqKFQLOWMxM2l7?=
+ =?us-ascii?Q?dv6QTp8zP2+4EA0UUZKum+wgiDq3P5vS1DeaeqggTf3uE+5PenCOONKfveNX?=
+ =?us-ascii?Q?vp+MfBeDYP207AHcDnRb5iKkEh0uczoyP0MZIUc7Rv/1q7mghwXaO4q+ReQ+?=
+ =?us-ascii?Q?7AyOKyB/SqyKd27XH+lM2pOHb1yRI6f8+L9RGh1dkUjNftxbz21Z7lD3tHGR?=
+ =?us-ascii?Q?pe1VVJI5fxmbdh1y2KdY1AsYq9H2mFFpaUIBd9j5M4KI0WM1hOuBSpoeKGU9?=
+ =?us-ascii?Q?Apm9sa3UgTTQZbS1jBCgL59Alyarjgff3GgcoI71wMGwX40cSEGiwTEnlXpw?=
+ =?us-ascii?Q?lPY31S3JBri0XLEP1Ysnsqp36S7DDSYU+WXFaelzxPHbymYcZTmbCOrgmx3y?=
+ =?us-ascii?Q?Dw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 863ceb4b-a422-480f-06eb-08de0ce00549
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 18:15:43.6422 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mCNc9GBiD6G0Rb9lXM/eYfe2nVXO//B2sGa/HVOaHjK2xJFFA6gBT5zJrMcfD4AfD14YIqrEZsbjxyvoZsnoJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR11MB8849
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,240 +177,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Mark,
+On Thu, Oct 16, 2025 at 04:06:20PM +0000, Jonathan Cavitt wrote:
+> Long-running exec queues don't get properly reset during a GT reset if
+> they haven't started yet, so wait for it to start before performing the
+> GT reset in the cm-gt-reset test.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6325
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
 
-On Thu, Oct 16, 2025 at 10:51:07AM -0400, Mark Yacoub wrote:
-> On Thu, Oct 16, 2025 at 7:00 AM José Expósito <jose.exposito89@gmail.com> wrote:
-> >
-> > Hi everyone,
-> >
-> > Thanks for CCing me Louis.
-> >
-> > On Thu, Oct 16, 2025 at 10:40:32AM +0200, Louis Chauvet wrote:
-> > >
-> > >
-> > > Le 15/10/2025 à 20:16, Kamil Konieczny a écrit :
-> > > > Hi Mark,
-> > > > On 2025-10-09 at 12:53:24 -0400, Mark Yacoub wrote:
-> > > > > Hi Kamil,
-> > > > >
-> > > > > Thanks for your feedback. I'd like to elaborate on my use case to provide
-> > > > > more context about the problem I'm trying to solve.
-> > > > >
-> > > > > I am building IGT for Android, and the same build system is deployed on
-> > > > > both physical hardware and virtual machines. On the hardware, the
-> > > > > appropriate hardware driver is correctly detected, so there are no issues
-> > > > > there. However, on the VM, VKMS is running, but it's currently excluded
-> > > > > from `DRIVER_ANY`, which prevents the tests from running against it. I need
-> > > > > the tests to execute on VKMS in this scenario.
-> > > > >
-> > > > > Using `IGT_FORCE_DRIVER` would require me to fork the build processes for
-> > > > > hardware and VM, which I would prefer to avoid. My goal is to maintain a
-> > > >
-> > > > You do not need to fork it nor recompile, this is env var for
-> > > > CI run with tests, it uses the same igt binaries only makes them
-> > > > using a forced driver when opening card. Now it do not work as
-> > > > no user before needed to force it into vgem or VKMS.
-> > > >
-> > > > In theory you could define it like: export IGT_FORCE_DRIVER=vkms
-> > > > and then all kms tests and core_ ones should honor it.
-> > >
-> > > +CC: José
-> > >
-> > > Hi,
-> > >
-> > > I had the same issue this week, but IGT_FORCE_DRIVER is not enough: all the
-> > > tests using DRIVER_ANY are skipped.
-> > >
-> > > # export IGT_DEVICE=drm:/dev/dri/card0
-> > > # export IGT_FORCE_DRIVER=vkms
-> > > # export IGT_LOG_LEVEL=debug
-> > > # /usr/libexec/igt-gpu-tools/kms_plane
-> > > (kms_plane:125) igt_core-DEBUG: Notice: using IGT_DEVICE env:
-> > > (kms_plane:125) igt_core-DEBUG: [drm:/dev/dri/card0]
-> > > [IGT] kms_plane: executing
-> > > IGT-Version: 2.2-g6d82d231ced6 (x86_64) (Linux:
-> > > 6.17.0-rc6-01217-g1ddd2876eeb9 x86_64)
-> > > Using IGT_SRANDOM=1760602572 for randomisation
-> > > (kms_plane:125) drmtest-DEBUG: Looking for devices to open using filter 0:
-> > > drm:/dev/dri/card0
-> > > (kms_plane:125) drmtest-DEBUG: Filter matched /dev/dri/card0 |
-> > > (kms_plane:125) igt_kmod-DEBUG: Module vkms already inserted
-> > > Test requirement not met in function drm_open_driver, file
-> > > ../igt/lib/drmtest.c:735:
-> > > Test requirement: !(fd<0)
-> > > No known gpu found for chipset flags 0x4294965755 (any)
-> > > Last errno: 2, No such file or directory
-> > > Subtest pixel-format: SKIP (0.000s)
-> > > Subtest pixel-format-source-clamping: SKIP (0.000s)
-> > > Subtest plane-position-covered: SKIP (0.000s)
-> > > Subtest plane-position-hole: SKIP (0.000s)
-> > > Subtest plane-position-hole-dpms: SKIP (0.000s)
-> > > Subtest plane-panning-top-left: SKIP (0.000s)
-> > > Subtest plane-panning-bottom-right: SKIP (0.000s)
-> > > Subtest plane-panning-bottom-right-suspend: SKIP (0.000s)
-> > > Subtest planar-pixel-format-settings: SKIP (0.000s)
-> > > [IGT] kms_plane: exiting, ret=77
-> > > (kms_plane:125) igt_core-DEBUG: Exiting with status code 77
-> > >
-> > > José suggested this fix, it seems to properly use vkms if IGT_FORCE_DRIVER
-> > > is set:
-> > >
-> > > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > > index a1fb0b5ba..f630bc157 100644
-> > > --- a/lib/drmtest.c
-> > > +++ b/lib/drmtest.c
-> > > @@ -350,7 +350,7 @@ int __drm_open_device(const char *name, unsigned int
-> > > chipset)
-> > >
-> > >         modulename_to_chipset(dev_name, &chip);
-> > >
-> > > -       if ((chipset & chip) == chip) {
-> > > +       if ((chipset & chip) == chip || (forced && strcmp(forced, dev_name)
-> > > == 0)) {
-> > >                 log_opened_device_path(name);
-> > >                 return fd;
-> > >         }
-> > >
-> > > @Mark, is it enough for you?
-> > > @José, do you want to send the proper patch?
-> >
-> > Sorry I couldn't send a patch earlier, I have been pretty busy this week.
-> >
-> > The reason why VKMS is excluded from DRIVERS_ANY is that, when a test
-> > selects any driver ("drm_open_driver(DRIVER_ANY)") hardware drivers are
-> > prioritized over virtual drivers (vgem, vkms or virtio) to avoid them
-> > being accidentally selected due to device-load ordering.
-> Hey, so I'm a bit confused here. I have a VM with VKMS, and another
-> hardware DUT with intel, so there is never an accidental use of the
-> wrong driver.
-> Do you have hardware that might carry both drivers?
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
-I have never run into this issue, but looking at the comment in drmtest.h
-this has been an issue in the past.
-
-There is a patch by Kamil addressing this. I have tested it and it worked
-for me:
-https://lore.kernel.org/igt-dev/20251016160544.122657-1-kamil.konieczny@linux.intel.com/T/#t
-
-Jose
-
-> >
-> > There is a nice comment in drmtest.h explaining it with more detail. So, in
-> > my opinion, VKMS is correctly excluded from DRIVERS_ANY.
-> >
-> > However, I'd expect that setting the IGT_FORCE_DRIVER environment variable to
-> > "vkms" would actually use VKMS for testing.
-> > I have refined a bit the initial workaround I discuss with  Louis 2 days ago
-> > and I think this could be an acceptable solution:
-> >
-> > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > index a1fb0b5ba..8f295d436 100644
-> > --- a/lib/drmtest.c
-> > +++ b/lib/drmtest.c
-> > @@ -350,6 +350,14 @@ int __drm_open_device(const char *name, unsigned int chipset)
-> >
-> >         modulename_to_chipset(dev_name, &chip);
-> >
-> > +       /*
-> > +        * Virtual drivers like vgem or vkms are excluded from DRIVER_ANY and
-> > +        * therefore it is not possible to use them in tests using the
-> > +        * IGT_FORCE_DRIVER environment variable. Include them when forced.
-> > +        */
-> > +       if (forced && chipset == DRIVER_ANY)
-> > +               chipset |= chip;
-> > +
-> >         if ((chipset & chip) == chip) {
-> >                 log_opened_device_path(name);
-> >                 return fd;
-> >
-> > I don't know if making that check even more precise would be a better solution.
-> > For example, calling a "is_virtual_driver()" helper:
-> >
-> >   if (forced && chipset == DRIVER_ANY && is_virtual_driver(chip))
-> >           chipset |= chip;
-> >
-> > I can send a patch with that fix, but I'd appreciate as much feedback as possible
-> > as this code is used by every tests and I don't have enough experience with IGT
-> > to make sure it doesn't introduce a bug.
-> >
-> > Best wishes,
-> > Jose
-> >
-> > >
-> > > Hav a nice day,
-> > > Louis Chauvet
-> > >
-> > > > Regards,
-> > > > Kamil
-> > > >
-> > > > > unified build system and allow IGT to run on whatever driver is present. Is
-> > > > > there a way to achieve this?
-> > > > >
-> > > > > I understand that the current code prioritizes the hardware driver, which
-> > > > > is a desirable behavior. I'm trying to understand the potential issues that
-> > > > > might arise if VKMS were not excluded in other contexts.
-> > > > >
-> > > > > Thank you!
-> > > > > Mark
-> > > > >
-> > > > >
-> > > > > On Thu, Oct 9, 2025 at 12:46 PM Kamil Konieczny <
-> > > > > kamil.konieczny@linux.intel.com> wrote:
-> > > > >
-> > > > > > Hi Mark,
-> > > > > > On 2025-10-08 at 12:02:09 -0400, Mark Yacoub wrote:
-> > > > > > > [Why]
-> > > > > > > VKMS (Virtual VKMS) is typically running on a virtual machine where it's
-> > > > > > > expected to be without a contention with a hardware driver.
-> > > > > > > When it's there, we would like to run IGT on it.
-> > > > > > >
-> > > > > > > [How]
-> > > > > > > Delete VKMS from DRIVER_ANY's exclusion list to allow IGT to be picked
-> > > > > > > up.
-> > > > > > >
-> > > > > > > Tested: Ran kms_bw on Android's VM with VKMS enabled.
-> > > > > > >
-> > > > > > > Change-Id: Ib13ad9261b8c2617370c02d0ffb5aa878bf3d8f8
-> > > > > > > Signed-off-by: Mark Yacoub <markyacoub@google.com>
-> > > > > > > ---
-> > > > > > >   lib/drmtest.h | 4 +---
-> > > > > > >   1 file changed, 1 insertion(+), 3 deletions(-)
-> > > > > > >
-> > > > > > > diff --git a/lib/drmtest.h b/lib/drmtest.h
-> > > > > > > index 8416aa491..ab991da57 100644
-> > > > > > > --- a/lib/drmtest.h
-> > > > > > > +++ b/lib/drmtest.h
-> > > > > > > @@ -63,10 +63,8 @@ int __get_drm_device_name(int fd, char *name, int
-> > > > > > name_size);
-> > > > > > >    * on a system with them as well as a supported driver, you can end up
-> > > > > > >    * with a near-100% skip rate if you don't explicitly specify the
-> > > > > > device,
-> > > > > > >    * depending on device-load ordering.
-> > > > > > > - *
-> > > > > > > - * Exclude VKMS to prefer hardware drivers.
-> > > > > > >    */
-> > > > > > > -#define DRIVER_ANY   ~(DRIVER_VGEM | DRIVER_VKMS | DRIVER_VIRTIO)
-> > > > > > > +#define DRIVER_ANY   ~(DRIVER_VGEM | DRIVER_VIRTIO)
-> > > > > >
-> > > > > > Nak, this is bad as there could be vkms module also on host.
-> > > > > >
-> > > > > > Let me work on improving IGT_FORCE_DRIVER.
-> > > > > >
-> > > > > > Regards,
-> > > > > > Kamil
-> > > > > >
-> > > > > > >
-> > > > > > >   /*
-> > > > > > >    * Compile friendly enum for i915/xe.
-> > > > > > > --
-> > > > > > > 2.51.0.740.g6adb054d12-goog
-> > > > > > >
-> > > > > >
-> > >
-> > > --
-> > > --
-> > > Louis Chauvet, Bootlin
-> > > Embedded Linux and Kernel engineering
-> > > https://bootlin.com
-> > >
+> ---
+>  tests/intel/xe_exec_reset.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+> index 9bed79af57..8f5c32389d 100644
+> --- a/tests/intel/xe_exec_reset.c
+> +++ b/tests/intel/xe_exec_reset.c
+> @@ -445,8 +445,10 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>  		xe_exec(fd, &exec);
+>  	}
+>  
+> -	if (flags & GT_RESET)
+> +	if (flags & GT_RESET) {
+> +		xe_spin_wait_started(&data[0].spin);
+>  		xe_force_gt_reset_sync(fd, eci->gt_id);
+> +	}
+>  
+>  	if (flags & CLOSE_FD) {
+>  		if (flags & CLOSE_EXEC_QUEUES) {
+> -- 
+> 2.43.0
+> 
