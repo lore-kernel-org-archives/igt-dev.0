@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26183CCD194
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 10:33:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCB6ECCD183
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 10:33:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D16C010E9A1;
-	Thu, 16 Oct 2025 10:33:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 687D510E9AD;
+	Thu, 16 Oct 2025 10:33:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MLjNSZWR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TSF95uGH";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 562F510E9A1
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 10:33:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A58910E9AB
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 10:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760610788; x=1792146788;
+ t=1760610791; x=1792146791;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=w8CQEIf818FhY6SrehEoyK/JNf25MI+J5SN3B5k1Tj8=;
- b=MLjNSZWR8K6U28PUDZvi0N1I0dR28zF7/JKIGC5pkEYyFb5Y+aRinEyz
- iCD5s9h9cH2tXG4dTidssqZR3CNTBvhc+OtwKv8r9W4BB0d9cw+LRL7IG
- kuJiF0dexRSqyaLhUpf0gEZ1ebza9TbuqocIx6cymmKxwvShOG7esUnm/
- Ep/z/5iaNKv4RcZEjw3yqblFR/j/QO4t1AyXZTxzZAi62x7p3rPa7J1hw
- KzNlAO18cqKBnmkRNqKSC0AG8AVy8lL8AV/bAES7PaDznP4ogy9dqrJiQ
- LDz9ggVkDl94ru+o9xG+odcPkih76+LpinQAcQK68zboGAZKyc3vEhJ4U w==;
-X-CSE-ConnectionGUID: Zlw7WeqDR/SWU7tZ8ht0VA==
-X-CSE-MsgGUID: s94ktM2TTAqWeWXS2aMSvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="62843425"
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="62843425"
+ bh=KbbPjz4Bu7cUc7ijRO70mJKLnmUQfuPCarnLg9urYGM=;
+ b=TSF95uGH4+OsOYBFstSgKjOgY4zCgi6FsEb8SyBUsT+AMVDMU6dktDiR
+ lhgf1JiTu3KMt8y0KJ1Dja6wggg/ZoNGOOtmXzT1oudmwdzqM0Gwd1TNp
+ 0y+TFS2oA9yHASCRisiiKBi5amTOjdDhDEOIimVFJ3jJBH6Xy2CYHoW6O
+ uyZSVJRy0fdgWkj9zl44H9zi/unXbjsTnHj0mds73qYTV7D+GMPoQjGsR
+ YsSVAWOZW9bUBeeYe2ga+JQubB/xwY7WjAkollwI0qI1Vgo4TaHaSuZxg
+ +FSlhuulE1SK7+PKnnc/bRBbIdf3Z1pMFbi0CMq0HswDVcsIXfIKnQrz2 g==;
+X-CSE-ConnectionGUID: gHhtXxwHT8uLQSaGd2BVmw==
+X-CSE-MsgGUID: KOowV1uiSC2WfYhcqSW9wQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="62843427"
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="62843427"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2025 03:33:07 -0700
-X-CSE-ConnectionGUID: mJLltuRmQaKj7DCeNbHYDw==
-X-CSE-MsgGUID: rDwSyy9aSq+Bs8vZOwIdww==
+ 16 Oct 2025 03:33:11 -0700
+X-CSE-ConnectionGUID: +HscDANlRkCUcwIZyMJEoA==
+X-CSE-MsgGUID: cjuwy4uTRG2vl5eVwaFX9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="219584521"
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="219584554"
 Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2025 03:33:05 -0700
+ 16 Oct 2025 03:33:08 -0700
 From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
  karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  mallesh.koujalagi@intel.com, vinay.belgaumkar@intel.com,
  Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH 1/2] tests/intel/xe_pmu: Fix frequency assertion when RPe
- raises min frequency
-Date: Thu, 16 Oct 2025 15:59:37 +0530
-Message-ID: <20251016102935.1935374-5-sk.anirban@intel.com>
+Subject: [PATCH 2/2] HAX: Add gt-frequency test to fast feedback list
+Date: Thu, 16 Oct 2025 15:59:38 +0530
+Message-ID: <20251016102935.1935374-6-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251016102935.1935374-4-sk.anirban@intel.com>
 References: <20251016102935.1935374-4-sk.anirban@intel.com>
@@ -71,42 +70,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When running workloads, RPe may dynamically raise the minimum frequency
-above the original value. To handle this, set the maximum frequency to
-current minimum instead of the original minimum.
+Add gt-frequency test to fast feedback list.
 
 Signed-off-by: Sk Anirban <sk.anirban@intel.com>
 ---
- tests/intel/xe_pmu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tests/intel-ci/xe-fast-feedback.testlist | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index 0e5a7360f..e69d528ea 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -736,7 +736,7 @@ static void test_gt_frequency(int fd, struct drm_xe_engine_class_instance *eci)
- 	uint32_t gt = eci->gt_id;
- 	uint32_t orig_min = xe_gt_get_freq(fd, eci->gt_id, "min");
- 	uint32_t orig_max = xe_gt_get_freq(fd, eci->gt_id, "max");
--	uint32_t current_min;
-+	uint32_t current_min, current_max;
- 	uint32_t orig_rpe;
- 	uint32_t vm;
- 	int pmu_fd[2];
-@@ -755,8 +755,11 @@ static void test_gt_frequency(int fd, struct drm_xe_engine_class_instance *eci)
- 	/*
- 	 * Set GPU to min frequency and read PMU counters.
- 	 */
--	igt_assert(xe_gt_set_freq(fd, gt, "max", orig_min) > 0);
--	igt_assert(xe_gt_get_freq(fd, gt, "max") == orig_min);
-+	current_min = xe_gt_get_freq(fd, gt, "min");
-+	igt_assert(xe_gt_set_freq(fd, gt, "max", current_min) > 0);
-+	current_max = xe_gt_get_freq(fd, gt, "max");
-+	orig_rpe = xe_gt_get_freq(fd, gt, "rpe");
-+	igt_assert(current_max == current_min || current_max == orig_rpe);
- 
- 	pmu_read_multi(pmu_fd[0], 2, start);
- 	usleep(SLEEP_DURATION * USEC_PER_SEC);
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 017e3ba2a..a9a4f105c 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -163,6 +163,7 @@ igt@xe_mmap@system
+ igt@xe_mmap@vram
+ igt@xe_mmap@vram-system
+ igt@xe_pm_residency@gt-c6-on-idle
++igt@xe_pmu@gt-frequency
+ igt@xe_prime_self_import@basic-with_one_bo
+ igt@xe_prime_self_import@basic-with_fd_dup
+ #igt@xe_prime_self_import@basic-llseek-size
 -- 
 2.43.0
 
