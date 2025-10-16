@@ -4,63 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01D24CCD19A
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 08:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0664CCD183
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Oct 2025 09:21:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 93B9A10E2EF;
-	Thu, 16 Oct 2025 08:47:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2345910E2EF;
+	Thu, 16 Oct 2025 09:21:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="kiu3gTCY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I6KS6o9O";
 	dkim-atps=neutral
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com
- [209.85.218.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5536D10E2A1
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Oct 2025 14:15:10 +0000 (UTC)
-Received: by mail-ej1-f49.google.com with SMTP id
- a640c23a62f3a-b48d8deaef9so1201433466b.2
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Oct 2025 07:15:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1760537708; x=1761142508; darn=lists.freedesktop.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=1S5qXanE/VuIqxvbC84/6CXgk/tixS7jomCIV/MIXN4=;
- b=kiu3gTCY7WHd7SIOuUILcf1HblRs2bHlDie7oPB/e+mgWJmmI2P7LKiJgKbaAjivRB
- BuEsBBZThY+5rtfyh4ghyxOdyPmOUS1Jb4xjPMknm9i7JjB1WOueYc2TPXZg9YPDWh2z
- kbcVG0ZWs1nbh3NKF+AQ9OJUabL48+TYQclOM/COLy+kdWmgmyPlzXoIlinPNUOMs0HS
- X2KT5NDGLNiiS6PWQupLEm+SiCPNGYG6MAs+0GP7hzTCp6CAnr7ND1IqvgRASM4gi+uP
- 7HDikFJLet1qAzjGBTjwhxft6kWujzfL0VDtKgxBsHbGDqS/G+GI/4YdJFB8HfXE8qLH
- 3SKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760537708; x=1761142508;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1S5qXanE/VuIqxvbC84/6CXgk/tixS7jomCIV/MIXN4=;
- b=Qw4+nNYGHUHV/o5gd8fEkP4AobcNDNhrY3Cb9yUEsEJ/r5qrh+AmWf0YSHiBUwHvy7
- 3NkzbPhiGzo4EqEw/2WHMfYY/HxHiicy5agu+2QP0WAAzs3fhN9rhlUaR0+RaOUccxaw
- Cf7I7roKqzqNTT/JqU6GV2noVZo+TbxkOqwQAWnOD0KVjF3Bypzh7uDtzNcQbhXvR0p9
- y99sbZG9wDCz+IbuLsaigq6DaGLdX18IZyjHvkSJJOJq9cGlIGahkLz+JVfIQVfRezUh
- jqHDYLXnWox1t04RCUni5cEgUg7BxxrkNvK7hSI53TUrIhsM1EW8r+jtmWaByqCky3f/
- FLYQ==
-X-Gm-Message-State: AOJu0Yznj0pi9RexWn/kHw2nv7ZheIGNCAkdGpSMRf99RiGo8VwVWhbj
- rCVC74leMafU6RRNYknkLebG7ovXkIH9YUHw5gDNbHz0HU5IGzLDxMdZ6c6J9wgFjKwgthW3C4y
- R0+3t7iPqAxvEaZkOVo8GEXt5dffcUeKCBg==
-X-Gm-Gg: ASbGnctY5rQjxDmrI0BMox59f6J4yeSYBdYKP7QeJxFCuAjkUP52BHvuniNiIA7m+vN
- duUnG3oV/efgT5H3E013ziBFtHlfjJM57LTGL+tbr+rC6KWsiRYhOAoWpNYuU4/SZng8/zHqbaa
- iwGevbT2crfQeJtLBAavcNSm1FaqsGgLY4aMwx8PVI1WRRdlD/INzQ4RkKBqS1h4LEtg+4H3tRI
- LGxO8hln/xPuDmsHVin5JSGRXyloUSNNQ==
-X-Google-Smtp-Source: AGHT+IH1aia9E/cXyxbAEH5C+CL8MKfjOzFed0fvRxGTr0B9s2di5DIvai5HmnO/U7aR0A0qIXmU88VejI9/obqX4nI=
-X-Received: by 2002:a17:906:6a1d:b0:b32:2b60:f13 with SMTP id
- a640c23a62f3a-b50ac9f062amr3219319266b.54.1760537708519; Wed, 15 Oct 2025
- 07:15:08 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B168310E2EF
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Oct 2025 09:21:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1760606490; x=1792142490;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=fIKDFJS2bl207k3Jo0qygbfi7EiixN+IQu8e3cZkUG0=;
+ b=I6KS6o9OmgblVWSCFhOa6h38oP9ttYkKwIE/795br5717UEo+EDPNr6J
+ bstUDYLvQMa3wUXhs21Rl9ajeVtzh7X5UaZOy4RU61V3jlYsYh7LGtjDM
+ IoW9jEtD0y8ntBcjDbsT7rHlrBTYsD3Wp28t5/FaT2lOSHXx6pNJC5rvO
+ 0y7SFHTulP1HWglAiWKW58PZMENU/kYv9quwmMJEZcdW2zAlzfTZx1QvZ
+ jnhBIm3fjxjtxViiR0XmX+E1jQn3TBPV4C/H97SNQdwY5FGkPRZZau+r/
+ e7oOiPNhsM+2IGgP7yf1HUAzMqwpCgag8kn8kt5JQR1HXAENGtanIuSea w==;
+X-CSE-ConnectionGUID: t9Sg44B8TMe4UJjRdpqweg==
+X-CSE-MsgGUID: V1Z6N1McRjm91ZboaLu00g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="74138341"
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="74138341"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2025 02:21:29 -0700
+X-CSE-ConnectionGUID: fqpntNTGSsa6nAjNTCoXzw==
+X-CSE-MsgGUID: DNOqRJliSvyrxwdisa80UA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; d="scan'208";a="206112029"
+Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.160])
+ ([172.28.182.160])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2025 02:21:25 -0700
+Message-ID: <4216c4d2-d862-4f38-b263-b10eb01e61b3@linux.intel.com>
+Date: Thu, 16 Oct 2025 11:21:17 +0200
 MIME-Version: 1.0
-From: Simon Fairweather <simon.n.fairweather@gmail.com>
-Date: Wed, 15 Oct 2025 15:14:56 +0100
-X-Gm-Features: AS18NWDWTXqFabgQ9esjSvSFP8XK0tZdWnZE-rP74DXiqK5_Te7Ap23JrD5zOY4
-Message-ID: <CA+9vR5EEW80oVGTzhK18BOMAuX1Jyj2BMkB9mXeiqSxh5M5sKA@mail.gmail.com>
-Subject: [PATCH i-g-t] Feat: add interation for intel_gpu_top
-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="000000000000bb42b8064133207d"
-X-Mailman-Approved-At: Thu, 16 Oct 2025 08:47:25 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/2] benchmarks/gem_wsim: Fail on thread assertions
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+References: <20250924110607.563913-1-marcin.bernatowicz@linux.intel.com>
+ <20250924110607.563913-2-marcin.bernatowicz@linux.intel.com>
+Content-Language: en-US
+From: Adam Miszczak <adam.miszczak@linux.intel.com>
+In-Reply-To: <20250924110607.563913-2-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,50 +73,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---000000000000bb42b8064133207d
-Content-Type: text/plain; charset="UTF-8"
+On 9/24/2025 1:06 PM, Marcin Bernatowicz wrote:
+> Call igt_thread_assert_no_failures() before returning so thread errors
+> affect the exit status.
+>
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> ---
+>   benchmarks/gem_wsim.c | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 7a6b10028..098415b53 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -63,6 +63,7 @@
+>   #include "i915/gem_mman.h"
+>   
+>   #include "igt_syncobj.h"
+> +#include "igt_thread.h"
+>   #include "intel_allocator.h"
+>   #include "xe_drm.h"
+>   #include "xe/xe_ioctl.h"
+> @@ -3362,5 +3363,7 @@ err:
+>   	if (is_xe)
+>   		xe_device_put(fd);
+>   
+> +	igt_thread_assert_no_failures();
+> +
+>   	return exitcode;
+>   }
 
-Patch for add iteration to intel_gpu_top
+LGTM,
+Reviewed-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 
---000000000000bb42b8064133207d
-Content-Type: application/octet-stream; name=patch-1
-Content-Disposition: attachment; filename=patch-1
-Content-Transfer-Encoding: base64
-Content-ID: <f_mgs2npeq0>
-X-Attachment-Id: f_mgs2npeq0
-
-RnJvbSA3ODY4YjAxNTgxMTQyY2M0NzJmMGMxMDk2NGJjMGM2M2I3MjFlODM2IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBTaW1vbiBGYWlyd2VhdGhlciA8c2ltb24ubi5mYWlyd2VhdGhl
-ckBnbWFpbC5jb20+CkRhdGU6IFdlZCwgMTUgT2N0IDIwMjUgMTQ6NTE6NTQgKzAxMDAKU3ViamVj
-dDogW1BBVENIIGktZy10XSBGZWF0OiBhZGQgaW50ZXJhdGlvbiBmb3IgaW50ZWxfZ3B1X3RvcAoK
-U2lnbmVkLW9mZi1ieTogU2ltb24gRmFpcndlYXRoZXIgPHNpbW9uLm4uZmFpcndlYXRoZXJAZ21h
-aWwuY29tPgotLS0KIHRvb2xzL2ludGVsX2dwdV90b3AuYyB8IDE1ICsrKysrKysrKysrKysrLQog
-MSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1n
-aXQgYS90b29scy9pbnRlbF9ncHVfdG9wLmMgYi90b29scy9pbnRlbF9ncHVfdG9wLmMKaW5kZXgg
-NTRlNzFlNTU5Li5kMmNjOGQwMWYgMTAwNjQ0Ci0tLSBhL3Rvb2xzL2ludGVsX2dwdV90b3AuYwor
-KysgYi90b29scy9pbnRlbF9ncHVfdG9wLmMKQEAgLTEwNTEsNiArMTA1MSw3IEBAIHVzYWdlKGNv
-bnN0IGNoYXIgKmFwcG5hbWUpCiAJCSJcdFstZCA8ZGV2aWNlPl0gICBEZXZpY2UgZmlsdGVyLCBw
-bGVhc2UgY2hlY2sgbWFudWFsIHBhZ2UgZm9yIG1vcmUgZGV0YWlscy5cbiIKIAkJIlx0Wy1wXSAg
-ICAgICAgICAgIERlZmF1bHQgdG8gc2hvd2luZyBwaHlzaWNhbCBlbmdpbmVzIGluc3RlYWQgb2Yg
-Y2xhc3Nlcy5cbiIKIAkJIlx0Wy1tXSAgICAgICAgICAgIERlZmF1bHQgdG8gc2hvd2luZyBhbGwg
-bWVtb3J5IHJlZ2lvbnMuXG4iCisJCSJcdFstbl0gICAgICAgICAgICBTcGVjaWZ5IG51bWJlciBv
-ZiBpdGVyYXRpb25zLlxuIgogCQkiXG4iLAogCQlhcHBuYW1lLCBERUZBVUxUX1BFUklPRF9NUyk7
-CiAJaWd0X2RldmljZV9wcmludF9maWx0ZXJfdHlwZXMoKTsKQEAgLTI2MTgsOSArMjYxOSwxMSBA
-QCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJc3RydWN0IGlndF9kZXZpY2VfY2Fy
-ZCBjYXJkOwogCWNoYXIgKmNvZGVuYW1lID0gTlVMTDsKIAlzdHJ1Y3QgdGltZXNwZWMgdHM7CisJ
-aW50IGl0ZXJhdGlvbl92YWx1ZSwgaXRlcmF0aW9uX2NvdW50ID0gMDsKKwlib29sIGl0ZXJhdGlv
-bl9jaGVjayA9IGZhbHNlOwogCiAJLyogUGFyc2Ugb3B0aW9ucyAqLwotCXdoaWxlICgoY2ggPSBn
-ZXRvcHQoYXJnYywgYXJndiwgIm86czpkOm1wY0pMbGgiKSkgIT0gLTEpIHsKKwl3aGlsZSAoKGNo
-ID0gZ2V0b3B0KGFyZ2MsIGFyZ3YsICJvOnM6ZDpuOm1wY0pMbGgiKSkgIT0gLTEpIHsKIAkJc3dp
-dGNoIChjaCkgewogCQljYXNlICdvJzoKIAkJCW91dHB1dF9wYXRoID0gb3B0YXJnOwpAQCAtMjYz
-MSw2ICsyNjM0LDEwIEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKIAkJY2FzZSAn
-ZCc6CiAJCQlvcHRfZGV2aWNlID0gc3RyZHVwKG9wdGFyZyk7CiAJCQlicmVhazsKKwkJY2FzZSAn
-bic6CisJCQlpdGVyYXRpb25fY2hlY2sgPSB0cnVlOworCQkJaXRlcmF0aW9uX3ZhbHVlID0gYXRv
-aShvcHRhcmcpOworCQkJYnJlYWs7CiAJCWNhc2UgJ3AnOgogCQkJcGh5c2ljYWxfZW5naW5lcyA9
-IHRydWU7CiAJCQlicmVhazsKQEAgLTI4NTgsNiArMjg2NSwxMiBAQCBpbnQgbWFpbihpbnQgYXJn
-YywgY2hhciAqKmFyZ3YpCiAJCWlmIChkaXNwX2NsaWVudHMgIT0gaWNsaWVudHMuY2xpZW50cykK
-IAkJCWZyZWVfZGlzcGxheV9jbGllbnRzKGRpc3BfY2xpZW50cyk7CiAKKwkJaWYgKGl0ZXJhdGlv
-bl9jaGVjaykgewkKKwkJCWl0ZXJhdGlvbl9jb3VudCsrOworCQkJaWYgKGl0ZXJhdGlvbl9jb3Vu
-dCA+PSBpdGVyYXRpb25fdmFsdWUpCisJCQkJc3RvcF90b3AgPSB0cnVlOworCQl9CisKIAkJaWYg
-KHN0b3BfdG9wKQogCQkJYnJlYWs7CiAKLS0gCjIuMjkuMi53aW5kb3dzLjEKCg==
---000000000000bb42b8064133207d--
