@@ -4,57 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8FDDCCD195
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Oct 2025 10:22:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95DB8CCD19A
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Oct 2025 11:23:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5CF5B10EBA1;
-	Fri, 17 Oct 2025 10:22:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4D86910EBB9;
+	Fri, 17 Oct 2025 11:23:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QDZ/0dzb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DNfifV8x";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4734C10EBA0;
- Fri, 17 Oct 2025 10:22:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B145010EBBC;
+ Fri, 17 Oct 2025 11:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760696542; x=1792232542;
+ t=1760700235; x=1792236235;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=VLHNkUzST+8QHp6dlrHqL1Fc1Hegy/pN4ozswwvZbDY=;
- b=QDZ/0dzb+l2J9SfotJE4AqJCLVt84Se3fIjPB9JVGyrsUlwk6LUOo0ph
- tBEU4mqlN0hlyd14mJsML38eeI481UZ1FiQV6X5PAh2XTduGnxix6yKZC
- IOG3CoKud8gzVnIRQHoJZi0vbEQDBaolOLfZrYnwzzPl3mOEjVXbHI9QO
- n3ZnUGFCg0oYVcU7KJncWCpwxiWGYxWVjrohLibj2YMS52C4Imaivg9xc
- ueErKWe9KTisGoWc27W6pgFxmJ2IcOH6SKseClExneePoK0CtGH2fd2yi
- 8mxKBHJiEmm9zrnlhVvEutaxoAmwzY7Er6hgQxtlggbyqQk184MI6y63B g==;
-X-CSE-ConnectionGUID: oUYcV6G3QT2aV8yp5ezyQA==
-X-CSE-MsgGUID: xfJA4e7HSyOfioAr58fbcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="66769905"
-X-IronPort-AV: E=Sophos;i="6.19,236,1754982000"; d="scan'208";a="66769905"
+ bh=M11ymQ7JIP1huc2XWwwjf9siCZcAzzk8lsj18zZlXMs=;
+ b=DNfifV8xBYRk8y+1YvHaDB2gGb61EWu5a2pJWrqzS77xQUocKAW7eHLC
+ VGUsbGcHc1KJMvhm51m0thIuqE163JV7Bf84Xvn7Uyk8Wuhj30cRmyZ1F
+ AM2eqDh5Yg4CnO+ScbJXcmmge7ZWy6h5UQmJI4hvAm6/mJrte/4aJ/PRI
+ CM5yd4PS8clJDibxBUzkmj5QVmy6mKBd5igqwREBiW29fXEpUiNOTO81K
+ pjenVibncs/4x1neL0+CrK/fvYY+MJZpqEQQr2EkMbRcpvLdzRSg7GkaK
+ DWI/2P9ybFyr2PE2IsyoBINr6EPPhIebWlHW4FcVdbcfUsqNUlMcKOxjU g==;
+X-CSE-ConnectionGUID: GXEpdcg9QVmgGtHro4nbbw==
+X-CSE-MsgGUID: uOsJ8jo5TGOI9U4XsjSDxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="73580147"
+X-IronPort-AV: E=Sophos;i="6.19,236,1754982000"; d="scan'208";a="73580147"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2025 03:22:22 -0700
-X-CSE-ConnectionGUID: g9/7nzX2TOm49hIj+yQAaA==
-X-CSE-MsgGUID: coWfTPITQPOnkzYwBtzYmA==
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2025 04:23:55 -0700
+X-CSE-ConnectionGUID: pLBBck8sQfaQAvVE3udyKQ==
+X-CSE-MsgGUID: 4pz0iIk/REuj0AyOZF688Q==
 X-ExtLoop1: 1
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 03:22:21 -0700
-Date: Fri, 17 Oct 2025 12:22:18 +0200
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 04:23:53 -0700
+Date: Fri, 17 Oct 2025 13:23:51 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
- tools/intel_gpu_top: Add iteration option -n
-Message-ID: <20251017102218.5vtgfat2bq253xam@kamilkon-DESK.igk.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+Subject: Re: [PATCH i-g-t v3 1/6] tests/gem_eio: Skip on too few reset-resume
+ cycles
+Message-ID: <20251017112351.ikpsr3owrupfcy4e@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20251016095649.31446-1-kamil.konieczny@linux.intel.com>
- <176068140204.24656.2204377044054983822@97596180aaec>
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+References: <20251015124419.66460-8-janusz.krzysztofik@linux.intel.com>
+ <20251015124419.66460-9-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <176068140204.24656.2204377044054983822@97596180aaec>
+In-Reply-To: <20251015124419.66460-9-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,146 +77,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-10-17 at 06:10:02 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Janusz,
+On 2025-10-15 at 14:39:19 +0200, Janusz Krzysztofik wrote:
+> Subtests that measure time of resume after engine reset compare a median
+> value calculated from the measurements against a presumed limit and fail
+> if the limit has been exceeded.  However, if it occurs not possible to
+> collect enough measurements required for stable median value calculation,
+> that condition is now ignored and success is reported, as if the measured
+> time fit below the limit.
 > 
-> Series: tools/intel_gpu_top: Add iteration option -n
-> URL   : https://patchwork.freedesktop.org/series/156053/
-> State : failure
+> Skip if not able to collect sufficient number of time measurements.  CI
+> results from slow platforms that always skip may be handled as expected
+> skips.
 > 
-> == Summary ==
+> v3: Use a symbol for minimum number of measurements (Kamil),
+>   - reword skip message for its better readability (Kamil).
 > 
-> CI Bug Log - changes from XEIGT_8587_FULL -> XEIGTPW_13912_FULL
-> ====================================================
+> Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  tests/intel/gem_eio.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_13912_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_13912_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 3)
-> ------------------------------
-> 
->   Missing    (1): shard-adlp 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_13912_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@xe_pm@s3-d3hot-basic-exec:
->     - shard-bmg:          [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8587/shard-bmg-7/igt@xe_pm@s3-d3hot-basic-exec.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13912/shard-bmg-3/igt@xe_pm@s3-d3hot-basic-exec.html
-> 
+> diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+> index b65b914faf..35291e759d 100644
+> --- a/tests/intel/gem_eio.c
+> +++ b/tests/intel/gem_eio.c
+> @@ -409,8 +409,10 @@ static void check_wait_elapsed(const char *prefix, int fd, igt_stats_t *st)
+>  		 igt_stats_get_median(st)*1e-6,
+>  		 igt_stats_get_max(st)*1e-6);
+>  
+> -	if (st->n_values < 9)
+> -		return; /* too few for stable median */
+> +#define NUMER_OF_MEASURED_CYCLES_NEEDED 9
+> +	igt_require_f(st->n_values >= NUMER_OF_MEASURED_CYCLES_NEEDED,
+> +		      "at least %d completed resets are needed for stable median calculation, %d is too few\n",
+> +		      NUMER_OF_MEASURED_CYCLES_NEEDED, st->n_values);
+>  
 
-Not related to change in tools. Regards,
-Kamil
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
->   
-> New tests
-> ---------
+>  	/*
+>  	 * Older platforms need to reset the display (incl. modeset to off,
+> -- 
+> 2.51.0
 > 
->   New tests have been introduced between XEIGT_8587_FULL and XEIGTPW_13912_FULL:
-> 
-> ### New IGT tests (19) ###
-> 
->   * igt@kms_invalid_mode@bad-hsync-start@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.0] s
-> 
->   * igt@kms_invalid_mode@bad-vtotal@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.00] s
-> 
->   * igt@kms_sequence@get-forked-busy@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.45] s
-> 
->   * igt@kms_vblank@query-forked-busy-hang@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.41] s
-> 
->   * igt@kms_vblank@query-forked-busy@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.42] s
-> 
->   * igt@kms_vblank@ts-continuation-idle-hang@pipe-a-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.24] s
-> 
->   * igt@kms_vblank@ts-continuation-idle-hang@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.23] s
-> 
->   * igt@kms_vblank@ts-continuation-idle@pipe-a-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.25] s
-> 
->   * igt@kms_vblank@ts-continuation-idle@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.24] s
-> 
->   * igt@kms_vblank@ts-continuation-modeset-rpm@pipe-a-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [1.13] s
-> 
->   * igt@kms_vblank@ts-continuation-modeset-rpm@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [1.07] s
-> 
->   * igt@kms_vblank@ts-continuation-modeset@pipe-a-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.40] s
-> 
->   * igt@kms_vblank@ts-continuation-modeset@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.36] s
-> 
->   * igt@kms_vblank@wait-busy-hang@pipe-a-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.45] s
-> 
->   * igt@kms_vblank@wait-busy-hang@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.41] s
-> 
->   * igt@kms_vblank@wait-busy@pipe-a-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.44] s
-> 
->   * igt@kms_vblank@wait-busy@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.41] s
-> 
->   * igt@kms_vblank@wait-forked-hang@pipe-a-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.33] s
-> 
->   * igt@kms_vblank@wait-forked-hang@pipe-d-dp-4:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.30] s
-> 
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_13912_FULL that come from known issues:
-
-...cut...
-
