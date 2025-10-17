@@ -4,52 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74956CCD1A2
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Oct 2025 07:51:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 313DACCD195
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Oct 2025 08:25:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1EF010EB3B;
-	Fri, 17 Oct 2025 07:51:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CD30C10E15B;
+	Fri, 17 Oct 2025 08:25:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="f8+0uFET";
+	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="Kirfhncb";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6069010EB38;
- Fri, 17 Oct 2025 07:51:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
- To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=Ob6yGN7Aa+gUQgQpl07I49pYyGNrtgIWuPzbg8h95oo=; b=f8+0uFETPqXIvSMoLD9mefBot/
- X3mjAJFeUTs9v1Il3HfeSUBW0nXM2E+fvjK/JEeIFIQwPKh0LStA8UNAnLv8uDKgIV6r7WzrR69lK
- B4lrEflyudd1UezYSCb5t0llWbCWTyQWJoECx3M8KJRM3V3tJ8D+jlYp0GO4Oa8JPcIrePz8m22Fw
- 0VRlPCS9tW4UPrMvu4wyhIA1P9XNXnnobYR2h4sog+NeeQIXVVmbkCjZQrTMto5aI6SJfnKdZXgTj
- U9KIUwI6D4SkA84LSTx+aW8e7CoZmlDIFv2AJQuaiwt8jitJAhk4nwWPpehs1sxu+To09YzzLeW8+
- pxPIbzkw==;
-Received: from [90.242.12.242] (helo=[192.168.0.101])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1v9fEx-00Avsk-D1; Fri, 17 Oct 2025 09:51:07 +0200
-Message-ID: <77f52a1d-5491-49a1-9eae-693678392c7f@igalia.com>
-Date: Fri, 17 Oct 2025 08:51:06 +0100
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
+ [209.85.128.54])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B56710E15B
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Oct 2025 08:25:27 +0000 (UTC)
+Received: by mail-wm1-f54.google.com with SMTP id
+ 5b1f17b1804b1-47117e75258so5159225e9.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Oct 2025 01:25:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1760689526; x=1761294326;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Sc/HxaWaYT7AP+1D6X1W5JJNrA8/8wyarfjWmGcT6bw=;
+ b=KirfhncbomVNHbgj1w8bkak8wlzoVkNYwOfRdWJ126fX8OrZmvofgkpb2RfP0+3ZGD
+ pkZB614u2oLa+rODZqLn6utVGZghBR13AjVi/vlbpAxtVXwsdeC40nUp/GhnKkY67VCq
+ /JdaUTX6p7tkpIFia4WonRYB/QIK4NJRYjBUycIrzRusHCWRl+gbvUUK4xalegNep+Ef
+ In2V8VoEWv+LRezA9QebWgUtp/BGicp1cYOxUtY2Lx6nNxWNCH9kf/V5jGUAq+sZKOCf
+ s0ccAr+8HjAybVZ00Rp58uFOLfgLkm1eZDdLorEMq8KPaRenJqKKo14rKmdRdcKCYH1t
+ TZcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1760689526; x=1761294326;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Sc/HxaWaYT7AP+1D6X1W5JJNrA8/8wyarfjWmGcT6bw=;
+ b=j7ak0XWDQ6wyzh0CnvnEzEDmpEaydJnvy5+jzRiSsQ7VsuqcKBlUqRbYKsn++PhZUG
+ dJ7SlWpxrHuFjqYIkavtO63M/NTO9rtc5/LrOCGPbsKw+9+oERMCyrjL/otGU+1EYE87
+ Uq/qqO+Gp0XwoVMqhYdtv7FTRGW2lKqMnwC0s6HXEUxorTXzzwi88zomfmb0oFkWsyxR
+ n093/KyB46iGq3ybG05Frf9qoMwa6ntTMY4ILoA4dsKj8vi7sWj1+pXS6LTZqQDBQ2Cp
+ ntfkeQn2xNRm4/NYf/FaqI3gDfZL1pAiShs1m08mpm03yyrki0vx8gp/Cq4Gdzz/gpUf
+ MN4g==
+X-Gm-Message-State: AOJu0Yz0Pc2u9sfkbyU2hNLJtKC0V/d5vpTa5NCp9kFrRzxqzNCOf2sV
+ VFb1CUAlZ3Ue3fzGASjewyS16Hm65rSreXDKisULAcmkO+WGgLKLcHpDXll+Cg8CR0c=
+X-Gm-Gg: ASbGncuXY2lN6rmBgtQXocV75Amh8IhIxHDu4XhfNKK+k4HeGqfvE4Lwd9KTKTYF1hh
+ P4Duf0yAqJngKv0u7+JVk7c8FcNquy8PYxpE8npe1AmCG3h8CYZqVOs8w81Sar+7AVBUJv/1X+K
+ XExYx+5TIeCz9l5WE+IjQFgsSLY6DahgXF4AUD2/+aXTH6U/pR0b5RnX/ydMft5h3TfbKGUry4O
+ pifsLTsQ9rzqOawBWI30iFCeYJjUl/npRltbBGibdjrLG4E1b/+hAwOQYy6cncwkOGtAOT71w08
+ 1yluP01jdmW/mwRTKM2tBb3W7pRoSqs69SkrkS7KQhbKFVdKxta49olnvAoC6/wrtetVWSlXYfS
+ 9gHuTVRLl1xnhbE4kOEVg5jcrrSrKnpRHoSHa1f6HJlKu47FCk9bkj9d7W4OUxv0ggV30uf2gkW
+ 1My7+HId+L+YDXPZIrYBV/AVkZrQ==
+X-Google-Smtp-Source: AGHT+IE3umqHOmNp6W04z2gX2IjROCvNYm2fy+/5I3e/R/VUPGZ3514vO6i98KK9DDplUfn+kJygbw==
+X-Received: by 2002:a05:600c:548c:b0:468:9e79:bee0 with SMTP id
+ 5b1f17b1804b1-471177bc126mr20661345e9.0.1760689525305; 
+ Fri, 17 Oct 2025 01:25:25 -0700 (PDT)
+Received: from [192.168.0.101] ([90.242.12.242])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-471144c82b8sm67596345e9.15.2025.10.17.01.25.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 17 Oct 2025 01:25:24 -0700 (PDT)
+Message-ID: <90674e7c-c6cf-4fa4-a21f-2808e9835b92@ursulin.net>
+Date: Fri, 17 Oct 2025 09:25:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] lib/igt_fb/intel: Use correct MOCS for
- displayable surfaces
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- intel-xe@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>
-References: <20251003130517.40414-1-tvrtko.ursulin@igalia.com>
- <20251009141233.mun3udwxxv7nptyb@kamilkon-DESK.igk.intel.com>
- <465a28fa-250e-404e-b05f-647e1322f3d7@igalia.com>
+Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: Add iteration option -n
+To: Krzysztof Karas <krzysztof.karas@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Simon Fairweather <simon.n.fairweather@gmail.com>
+References: <20251016095649.31446-1-kamil.konieczny@linux.intel.com>
+ <vf4drxg7dt5etivlwlgvbrxomkodvwrfpjm4jplicb3udecki4@uv5s3zp6t274>
 Content-Language: en-GB
-In-Reply-To: <465a28fa-250e-404e-b05f-647e1322f3d7@igalia.com>
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+In-Reply-To: <vf4drxg7dt5etivlwlgvbrxomkodvwrfpjm4jplicb3udecki4@uv5s3zp6t274>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,165 +94,108 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-Gentle ping on this one - primarily to Ville - do you think we can land 
-this so that we can have some kernel series CI runs against it?
+On 17/10/2025 08:29, Krzysztof Karas wrote:
+> Hi Kamil and Simon,
+> 
+>> When using option -J or -c default is looping forever until user
+>> break process. Lets introduce new option -n <number> and break
+>> printing after reaching given number of iterations.
+>>
+>> v2: corrected whitespaces, extended description (Kamil)
+>>
+>> Signed-off-by: Simon Fairweather <simon.n.fairweather@gmail.com>
+>> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>> ---
+>>   tools/intel_gpu_top.c | 15 ++++++++++++++-
+>>   1 file changed, 14 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+>> index 54e71e559..4bcac4b47 100644
+>> --- a/tools/intel_gpu_top.c
+>> +++ b/tools/intel_gpu_top.c
+>> @@ -1051,6 +1051,7 @@ usage(const char *appname)
+>>   		"\t[-d <device>]   Device filter, please check manual page for more details.\n"
+>>   		"\t[-p]            Default to showing physical engines instead of classes.\n"
+>>   		"\t[-m]            Default to showing all memory regions.\n"
+>> +		"\t[-n]            Specify number of iterations. Can be used with -J or -c.\n"
+> I built this tool with the proposed change and found out that -n
+> applies regardless of -J or -c being added - it gives an overall
+> timeout for the application. If this is what you were aiming
+> for, then I'd rephrase:
+> "Specify number of iterations. Can be used with -J or -c."
+> to something like:
+> "Specify application runtime: n * refresh period (-s option)."
+> or:
+> "Specify application runtime n * refresh period (-s option).
+> Useful with -J and -c options."
+> if you want to hint it's usage.
+> 
+>>   		"\n",
+>>   		appname, DEFAULT_PERIOD_MS);
+>>   	igt_device_print_filter_types();
+>> @@ -2618,9 +2619,11 @@ int main(int argc, char **argv)
+>>   	struct igt_device_card card;
+>>   	char *codename = NULL;
+>>   	struct timespec ts;
+>> +	int iteration_value, iteration_count = 0;
+>> +	bool iteration_check = false;
+> I think iteration_check flag is redundant here, because you
+> could use iteration_value as the indicator:
+>   1) set iteration_value to 0
+>   2) if -n is used overwrite the variable to whatever user wants
+>   3) check later if the variable has value
+>   4) a) if it does then increment iteration_count
+>      b) if not then just spin indefinitely
+> 
+>>   	/* Parse options */
+>> -	while ((ch = getopt(argc, argv, "o:s:d:mpcJLlh")) != -1) {
+>> +	while ((ch = getopt(argc, argv, "o:s:d:n:mpcJLlh")) != -1) {
+>>   		switch (ch) {
+>>   		case 'o':
+>>   			output_path = optarg;
+>> @@ -2631,6 +2634,10 @@ int main(int argc, char **argv)
+>>   		case 'd':
+>>   			opt_device = strdup(optarg);
+>>   			break;
+>> +		case 'n':
+>> +			iteration_check = true;
+>> +			iteration_value = atoi(optarg);
+>> +			break;
+>>   		case 'p':
+>>   			physical_engines = true;
+>>   			break;
+>> @@ -2858,6 +2865,12 @@ int main(int argc, char **argv)
+>>   		if (disp_clients != iclients.clients)
+>>   			free_display_clients(disp_clients);
+>>   
+>> +		if (iteration_check) {
+>> +			iteration_count++;
+>> +			if (iteration_count >= iteration_value)
+>> +				stop_top = true;
+>> +		}
+> As I mentioned above, this is not tied to -c or -J in any way,
+> so it applies a limit in main execution loop regardless of other
+> options.
+> I think the current idea is good, so its usage is not limited to
+> the -c/-J opts, but the explanation in "--help" section should
+> be changed.
+
++1 to all comments from Krzysztof.
+
+Otherwise wanted to say that there is also the man page which needs to 
+be updated.
 
 Regards,
 
 Tvrtko
 
-On 10/10/2025 09:29, Tvrtko Ursulin wrote:
 > 
-> On 09/10/2025 15:12, Kamil Konieczny wrote:
->> Hi Tvrtko,
->> On 2025-10-03 at 14:05:17 +0100, Tvrtko Ursulin wrote:
+>> +
+>>   		if (stop_top)
+>>   			break;
+>>   
+>> -- 
+>> 2.51.0
 >>
->> small nit, as this is touching more than one lib, you could
->> just write it short:
->>
->> [PATCH i-g-t v2] lib: Use correct MOCS for displayable surfaces
->>
->> No need for resend unless you will send v3 or want to retest it
->> again.
-> 
-> I think I started with a smaller patch and forgot to change the tags 
-> when I refactored it.
-> 
-> Anyway, CI looks good AFAICT so we could merge it if everyone agrees?
-> 
-> I would then need to send the rebased xe series to see if it is 
-> completely stable without the clflush patch.
-> 
-> Regards,
-> 
-> Tvrtko
-> 
->>> Using the uncached MOCS for displayable surfaces is not always correct,
->>> especially when CCS compression is used with which some platforms 
->>> require
->>> a special uncached entry, otherwise writes get unexpectedly cached.
->>>
->>> Lets copy the knowledge of what is the correct MOCS for displayable
->>> surfaces from Mesa and add some new helpers to get it.
->>>
->>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>> Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
->>> ---
->>> v2:
->>>   * Renamed external_index to displayable_index. (Ville)
->>> ---
->>>   lib/igt_fb.c       |  2 +-
->>>   lib/intel_bufops.c |  2 ++
->>>   lib/intel_mocs.c   | 21 +++++++++++++++++++--
->>>   lib/intel_mocs.h   |  2 ++
->>>   4 files changed, 24 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->>> index 03ede3a6fa20..b5a16f9cbe90 100644
->>> --- a/lib/igt_fb.c
->>> +++ b/lib/igt_fb.c
->>> @@ -2712,7 +2712,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops 
->>> *bops,
->>>                       fb->strides[0],
->>>                       region,
->>>                       intel_get_pat_idx_uc(fd),
->>> -                    DEFAULT_MOCS_INDEX);
->>> +                    DISPLAYABLE_MOCS_INDEX);
->>>       intel_buf_set_name(buf, name);
->>>       /* only really needed for proper CCS handling */
->>> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
->>> index 475b0d1f7b10..1196069a500f 100644
->>> --- a/lib/intel_bufops.c
->>> +++ b/lib/intel_bufops.c
->>> @@ -1008,6 +1008,8 @@ static void __intel_buf_init(struct buf_ops *bops,
->>>       buf->pat_index = pat_index;
->>>       if (mocs_index == DEFAULT_MOCS_INDEX)
->>>           mocs_index = intel_get_uc_mocs_index(bops->fd);
->>> +    else if (mocs_index == DISPLAYABLE_MOCS_INDEX)
->>> +        mocs_index = intel_get_displayable_mocs_index(bops->fd);
->>>       buf->mocs_index = mocs_index;
->>>       IGT_INIT_LIST_HEAD(&buf->link);
->>> diff --git a/lib/intel_mocs.c b/lib/intel_mocs.c
->>> index e0c33c31c088..9809e32113eb 100644
->>> --- a/lib/intel_mocs.c
->>> +++ b/lib/intel_mocs.c
->>> @@ -9,12 +9,14 @@
->>>   struct drm_intel_mocs_index {
->>>       uint8_t uc_index;
->>>       uint8_t wb_index;
->>> +    uint8_t displayable_index;
->>>       uint8_t defer_to_pat_index;
->>>   };
->>>   static void get_mocs_index(int fd, struct drm_intel_mocs_index *mocs)
->>>   {
->>>       uint16_t devid = intel_get_drm_devid(fd);
->>> +    unsigned int ip_ver = intel_graphics_ver(devid);
->>>       /*
->>>        * Gen >= 12 onwards don't have a setting for PTE,
->>> @@ -23,25 +25,31 @@ static void get_mocs_index(int fd, struct 
->>> drm_intel_mocs_index *mocs)
->>>        * This helper function is providing current UC as well
->>>        * as WB MOCS index based on platform.
->>>        */
->>> -    if (intel_graphics_ver(devid) >= IP_VER(20, 0)) {
->>> +    if (ip_ver >= IP_VER(20, 0)) {
->>>           mocs->uc_index = 3;
->>>           mocs->wb_index = 4;
->>> +        mocs->displayable_index = 1;
->>>           mocs->defer_to_pat_index = 0;
->>>       } else if (IS_METEORLAKE(devid)) {
->>>           mocs->uc_index = 5;
->>>           mocs->wb_index = 1;
->>> +        mocs->displayable_index = 14;
->>>       } else if (IS_DG2(devid)) {
->>>           mocs->uc_index = 1;
->>>           mocs->wb_index = 3;
->>> +        mocs->displayable_index = 3;
->>>       } else if (IS_DG1(devid)) {
->>>           mocs->uc_index = 1;
->>>           mocs->wb_index = 5;
->>> -    } else if (IS_GEN12(devid)) {
->>> +        mocs->displayable_index = 5;
->>> +    } else if (ip_ver >= IP_VER(12, 0)) {
->>>           mocs->uc_index = 3;
->>>           mocs->wb_index = 2;
->>> +        mocs->displayable_index = 61;
->>>       } else {
->>>           mocs->uc_index = I915_MOCS_PTE;
->>>           mocs->wb_index = I915_MOCS_CACHED;
->>> +        mocs->displayable_index = I915_MOCS_PTE;
->>>       }
->>>   }
->>> @@ -63,6 +71,15 @@ uint8_t intel_get_uc_mocs_index(int fd)
->>>       return mocs.uc_index;
->>>   }
->>> +uint8_t intel_get_displayable_mocs_index(int fd)
->>> +{
->>> +    struct drm_intel_mocs_index mocs;
->>> +
->>> +    get_mocs_index(fd, &mocs);
->>> +
->>> +    return mocs.displayable_index;
->>> +}
->>> +
->>>   uint8_t intel_get_defer_to_pat_mocs_index(int fd)
->>>   {
->>>       struct drm_intel_mocs_index mocs;
->>> diff --git a/lib/intel_mocs.h b/lib/intel_mocs.h
->>> index 8597286d259d..394bb41be042 100644
->>> --- a/lib/intel_mocs.h
->>> +++ b/lib/intel_mocs.h
->>> @@ -9,9 +9,11 @@
->>>   #include <stdint.h>
->>>   #define DEFAULT_MOCS_INDEX ((uint8_t)-1)
->>> +#define DISPLAYABLE_MOCS_INDEX ((uint8_t)-2)
->>>   uint8_t intel_get_wb_mocs_index(int fd);
->>>   uint8_t intel_get_uc_mocs_index(int fd);
->>> +uint8_t intel_get_displayable_mocs_index(int fd);
->>>   uint8_t intel_get_defer_to_pat_mocs_index(int fd);
->>>   #endif /* _INTEL_MOCS_H */
->>> -- 
->>> 2.48.0
->>>
 > 
 
