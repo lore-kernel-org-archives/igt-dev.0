@@ -4,80 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 313DACCD195
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Oct 2025 08:25:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A837CCD195
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Oct 2025 10:21:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD30C10E15B;
-	Fri, 17 Oct 2025 08:25:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ACB7710EBA0;
+	Fri, 17 Oct 2025 10:21:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="Kirfhncb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vfs/3rBN";
 	dkim-atps=neutral
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
- [209.85.128.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B56710E15B
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Oct 2025 08:25:27 +0000 (UTC)
-Received: by mail-wm1-f54.google.com with SMTP id
- 5b1f17b1804b1-47117e75258so5159225e9.2
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Oct 2025 01:25:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1760689526; x=1761294326;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Sc/HxaWaYT7AP+1D6X1W5JJNrA8/8wyarfjWmGcT6bw=;
- b=KirfhncbomVNHbgj1w8bkak8wlzoVkNYwOfRdWJ126fX8OrZmvofgkpb2RfP0+3ZGD
- pkZB614u2oLa+rODZqLn6utVGZghBR13AjVi/vlbpAxtVXwsdeC40nUp/GhnKkY67VCq
- /JdaUTX6p7tkpIFia4WonRYB/QIK4NJRYjBUycIrzRusHCWRl+gbvUUK4xalegNep+Ef
- In2V8VoEWv+LRezA9QebWgUtp/BGicp1cYOxUtY2Lx6nNxWNCH9kf/V5jGUAq+sZKOCf
- s0ccAr+8HjAybVZ00Rp58uFOLfgLkm1eZDdLorEMq8KPaRenJqKKo14rKmdRdcKCYH1t
- TZcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760689526; x=1761294326;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Sc/HxaWaYT7AP+1D6X1W5JJNrA8/8wyarfjWmGcT6bw=;
- b=j7ak0XWDQ6wyzh0CnvnEzEDmpEaydJnvy5+jzRiSsQ7VsuqcKBlUqRbYKsn++PhZUG
- dJ7SlWpxrHuFjqYIkavtO63M/NTO9rtc5/LrOCGPbsKw+9+oERMCyrjL/otGU+1EYE87
- Uq/qqO+Gp0XwoVMqhYdtv7FTRGW2lKqMnwC0s6HXEUxorTXzzwi88zomfmb0oFkWsyxR
- n093/KyB46iGq3ybG05Frf9qoMwa6ntTMY4ILoA4dsKj8vi7sWj1+pXS6LTZqQDBQ2Cp
- ntfkeQn2xNRm4/NYf/FaqI3gDfZL1pAiShs1m08mpm03yyrki0vx8gp/Cq4Gdzz/gpUf
- MN4g==
-X-Gm-Message-State: AOJu0Yz0Pc2u9sfkbyU2hNLJtKC0V/d5vpTa5NCp9kFrRzxqzNCOf2sV
- VFb1CUAlZ3Ue3fzGASjewyS16Hm65rSreXDKisULAcmkO+WGgLKLcHpDXll+Cg8CR0c=
-X-Gm-Gg: ASbGncuXY2lN6rmBgtQXocV75Amh8IhIxHDu4XhfNKK+k4HeGqfvE4Lwd9KTKTYF1hh
- P4Duf0yAqJngKv0u7+JVk7c8FcNquy8PYxpE8npe1AmCG3h8CYZqVOs8w81Sar+7AVBUJv/1X+K
- XExYx+5TIeCz9l5WE+IjQFgsSLY6DahgXF4AUD2/+aXTH6U/pR0b5RnX/ydMft5h3TfbKGUry4O
- pifsLTsQ9rzqOawBWI30iFCeYJjUl/npRltbBGibdjrLG4E1b/+hAwOQYy6cncwkOGtAOT71w08
- 1yluP01jdmW/mwRTKM2tBb3W7pRoSqs69SkrkS7KQhbKFVdKxta49olnvAoC6/wrtetVWSlXYfS
- 9gHuTVRLl1xnhbE4kOEVg5jcrrSrKnpRHoSHa1f6HJlKu47FCk9bkj9d7W4OUxv0ggV30uf2gkW
- 1My7+HId+L+YDXPZIrYBV/AVkZrQ==
-X-Google-Smtp-Source: AGHT+IE3umqHOmNp6W04z2gX2IjROCvNYm2fy+/5I3e/R/VUPGZ3514vO6i98KK9DDplUfn+kJygbw==
-X-Received: by 2002:a05:600c:548c:b0:468:9e79:bee0 with SMTP id
- 5b1f17b1804b1-471177bc126mr20661345e9.0.1760689525305; 
- Fri, 17 Oct 2025 01:25:25 -0700 (PDT)
-Received: from [192.168.0.101] ([90.242.12.242])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-471144c82b8sm67596345e9.15.2025.10.17.01.25.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 Oct 2025 01:25:24 -0700 (PDT)
-Message-ID: <90674e7c-c6cf-4fa4-a21f-2808e9835b92@ursulin.net>
-Date: Fri, 17 Oct 2025 09:25:23 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: Add iteration option -n
-To: Krzysztof Karas <krzysztof.karas@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Simon Fairweather <simon.n.fairweather@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAEA510EBA0;
+ Fri, 17 Oct 2025 10:21:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1760696483; x=1792232483;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=f/Wahnq3ekaGKhz516ifw4tXTmqgpjVAOfJiDfWZUJI=;
+ b=Vfs/3rBNOmzakxpos99bB2CoNbK+KD0LZWNpzofDJzCFZnqV52Vz6Lmw
+ rqbP8k+8bFry2IMgCcV6y44+K18Krx5LxHgCre3C7UiPnfTVIDFiaZLSn
+ VzoHh1XzVXX2l0MyEAVGz6M1Pt78/8hGupmYt/O6UWwdWGZhnBqYfVNRh
+ dDNsn1V4h/2mYtdYI6oF3M84bVtKe43kTW8U5pEXaqhEmmISFlK4rUbMU
+ J2pW6eAwyC5Y/nMgTNCY0DindDVYrgCxW0en4yw/Y9dRIU5lI8k1JR1Vz
+ YvG/v+mJ+KAiQA0QOCZpwBjIoGfH/H+tmB0yyrRGRpNYkMuLlmi1kaqq5 g==;
+X-CSE-ConnectionGUID: ZGuMPBTKRcWBq+3AiaApmQ==
+X-CSE-MsgGUID: ZkcvJPrGTVSK5+pGZHzarg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62813994"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62813994"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2025 03:21:23 -0700
+X-CSE-ConnectionGUID: SV4d2g3PRhmZiOOch3NeNQ==
+X-CSE-MsgGUID: yDXWcZS3Rha/KBGP4XdVUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,236,1754982000"; d="scan'208";a="182692379"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 03:21:23 -0700
+Date: Fri, 17 Oct 2025 12:21:10 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
+ tools/intel_gpu_top: Add iteration option -n
+Message-ID: <20251017102110.u6jox2hejfyfdre7@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20251016095649.31446-1-kamil.konieczny@linux.intel.com>
- <vf4drxg7dt5etivlwlgvbrxomkodvwrfpjm4jplicb3udecki4@uv5s3zp6t274>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <vf4drxg7dt5etivlwlgvbrxomkodvwrfpjm4jplicb3udecki4@uv5s3zp6t274>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <176064203726.23601.9559717205120983091@97596180aaec>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <176064203726.23601.9559717205120983091@97596180aaec>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,109 +71,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-On 17/10/2025 08:29, Krzysztof Karas wrote:
-> Hi Kamil and Simon,
+Hi igt-dev,
+On 2025-10-16 at 19:13:57 -0000, Patchwork wrote:
+> == Series Details ==
 > 
->> When using option -J or -c default is looping forever until user
->> break process. Lets introduce new option -n <number> and break
->> printing after reaching given number of iterations.
->>
->> v2: corrected whitespaces, extended description (Kamil)
->>
->> Signed-off-by: Simon Fairweather <simon.n.fairweather@gmail.com>
->> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> ---
->>   tools/intel_gpu_top.c | 15 ++++++++++++++-
->>   1 file changed, 14 insertions(+), 1 deletion(-)
->>
->> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->> index 54e71e559..4bcac4b47 100644
->> --- a/tools/intel_gpu_top.c
->> +++ b/tools/intel_gpu_top.c
->> @@ -1051,6 +1051,7 @@ usage(const char *appname)
->>   		"\t[-d <device>]   Device filter, please check manual page for more details.\n"
->>   		"\t[-p]            Default to showing physical engines instead of classes.\n"
->>   		"\t[-m]            Default to showing all memory regions.\n"
->> +		"\t[-n]            Specify number of iterations. Can be used with -J or -c.\n"
-> I built this tool with the proposed change and found out that -n
-> applies regardless of -J or -c being added - it gives an overall
-> timeout for the application. If this is what you were aiming
-> for, then I'd rephrase:
-> "Specify number of iterations. Can be used with -J or -c."
-> to something like:
-> "Specify application runtime: n * refresh period (-s option)."
-> or:
-> "Specify application runtime n * refresh period (-s option).
-> Useful with -J and -c options."
-> if you want to hint it's usage.
+> Series: tools/intel_gpu_top: Add iteration option -n
+> URL   : https://patchwork.freedesktop.org/series/156053/
+> State : failure
 > 
->>   		"\n",
->>   		appname, DEFAULT_PERIOD_MS);
->>   	igt_device_print_filter_types();
->> @@ -2618,9 +2619,11 @@ int main(int argc, char **argv)
->>   	struct igt_device_card card;
->>   	char *codename = NULL;
->>   	struct timespec ts;
->> +	int iteration_value, iteration_count = 0;
->> +	bool iteration_check = false;
-> I think iteration_check flag is redundant here, because you
-> could use iteration_value as the indicator:
->   1) set iteration_value to 0
->   2) if -n is used overwrite the variable to whatever user wants
->   3) check later if the variable has value
->   4) a) if it does then increment iteration_count
->      b) if not then just spin indefinitely
+> == Summary ==
 > 
->>   	/* Parse options */
->> -	while ((ch = getopt(argc, argv, "o:s:d:mpcJLlh")) != -1) {
->> +	while ((ch = getopt(argc, argv, "o:s:d:n:mpcJLlh")) != -1) {
->>   		switch (ch) {
->>   		case 'o':
->>   			output_path = optarg;
->> @@ -2631,6 +2634,10 @@ int main(int argc, char **argv)
->>   		case 'd':
->>   			opt_device = strdup(optarg);
->>   			break;
->> +		case 'n':
->> +			iteration_check = true;
->> +			iteration_value = atoi(optarg);
->> +			break;
->>   		case 'p':
->>   			physical_engines = true;
->>   			break;
->> @@ -2858,6 +2865,12 @@ int main(int argc, char **argv)
->>   		if (disp_clients != iclients.clients)
->>   			free_display_clients(disp_clients);
->>   
->> +		if (iteration_check) {
->> +			iteration_count++;
->> +			if (iteration_count >= iteration_value)
->> +				stop_top = true;
->> +		}
-> As I mentioned above, this is not tied to -c or -J in any way,
-> so it applies a limit in main execution loop regardless of other
-> options.
-> I think the current idea is good, so its usage is not limited to
-> the -c/-J opts, but the explanation in "--help" section should
-> be changed.
+> CI Bug Log - changes from CI_DRM_17371_full -> IGTPW_13912_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_13912_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_13912_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13912/index.html
+> 
+> Participating hosts (11 -> 11)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_13912_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@fbdev@write:
+>     - shard-glk:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17371/shard-glk5/igt@fbdev@write.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13912/shard-glk6/igt@fbdev@write.html
+>     - shard-dg2:          [PASS][3] -> [FAIL][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17371/shard-dg2-8/igt@fbdev@write.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13912/shard-dg2-3/igt@fbdev@write.html
+> 
+>   * igt@gem_lmem_swapping@smem-oom@lmem0:
+>     - shard-dg1:          [PASS][5] -> [ABORT][6] +1 other test abort
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17371/shard-dg1-17/igt@gem_lmem_swapping@smem-oom@lmem0.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13912/shard-dg1-17/igt@gem_lmem_swapping@smem-oom@lmem0.html
+> 
+>   * igt@i915_suspend@fence-restore-tiled2untiled:
+>     - shard-rkl:          [PASS][7] -> [ABORT][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17371/shard-rkl-6/igt@i915_suspend@fence-restore-tiled2untiled.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13912/shard-rkl-4/igt@i915_suspend@fence-restore-tiled2untiled.html
+> 
+>   * igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b:
+>     - shard-tglu:         NOTRUN -> [INCOMPLETE][9]
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13912/shard-tglu-8/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@kms_selftest@drm_framebuffer@drm_test_framebuffer_create:
+>     - shard-dg1:          [FAIL][10] ([i915#15119]) -> [ABORT][11]
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17371/shard-dg1-12/igt@kms_selftest@drm_framebuffer@drm_test_framebuffer_create.html
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13912/shard-dg1-17/igt@kms_selftest@drm_framebuffer@drm_test_framebuffer_create.html
+> 
 
-+1 to all comments from Krzysztof.
-
-Otherwise wanted to say that there is also the man page which needs to 
-be updated.
+This is not related to change in tools. No need for respin.
 
 Regards,
+Kamil
 
-Tvrtko
+>   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between CI_DRM_17371_full and IGTPW_13912_full:
+> 
+> ### New IGT tests (3) ###
+> 
+>   * igt@kms_vblank@query-busy@pipe-d-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.34] s
+> 
+>   * igt@kms_vblank@query-forked-busy@pipe-d-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.43] s
+> 
+>   * igt@kms_vblank@wait-forked-busy-hang@pipe-d-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [24.99] s
+> 
+>   
+> 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_13912_full that come from known issues:
 
-> 
->> +
->>   		if (stop_top)
->>   			break;
->>   
->> -- 
->> 2.51.0
->>
-> 
+...cut...
 
