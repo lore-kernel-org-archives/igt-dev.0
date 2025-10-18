@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89204CCD195
-	for <igt-dev@archiver.kernel.org>; Sat, 18 Oct 2025 16:16:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC025CCD193
+	for <igt-dev@archiver.kernel.org>; Sat, 18 Oct 2025 17:39:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4123D10E11F;
-	Sat, 18 Oct 2025 16:16:22 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JeiNfkSB";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7C0210E127
- for <igt-dev@lists.freedesktop.org>; Sat, 18 Oct 2025 16:16:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760804180; x=1792340180;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Pbf1ZT+7J/b2jreJvUVHg1gH/AOslafCHa3ANYf5uj0=;
- b=JeiNfkSBV92Cz4m2mTGBQSFDIdJfaKjpdZOWQWFsKcEsuxzvcUbWMBmL
- F8Ifsm00jUSWbH5ufuZlX0U40Gpxow6fWJqn3PQ6slmVWVOl/gA4SoN7v
- vZ94q2FO1ZbzbDHHhLMiv3OkIeX2TI7k1ElVvjoU1t4GqHWLECZgMPmzO
- goqYW7MLfpRxgK/HMis10GPPcREkUi9RPds3vb8w/LBlzTrqeYd8XWLgd
- mkujdV0YSOKkAa66QHs7XhtwV/UaIW5EzhlPC0wUlKDdpBR+vpKOwArUT
- GmjXAECIMcMypaxcrKCAOfa2hsrDqVC/dRcMlrIZ8bGKWo8Rujwy33N7Q Q==;
-X-CSE-ConnectionGUID: vBQuLEyeQHidb2gc8gJ1Iw==
-X-CSE-MsgGUID: acpZhAqERfeDQa3FZYSSaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="85614312"
-X-IronPort-AV: E=Sophos;i="6.19,239,1754982000"; d="scan'208";a="85614312"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2025 09:16:20 -0700
-X-CSE-ConnectionGUID: y1Y/4iJiRWG1UEl5R5UCWg==
-X-CSE-MsgGUID: 7HGOY6Q1Q26DviJllpQQpg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,239,1754982000"; d="scan'208";a="186985954"
-Received: from mfidelix-mobl3.gar.corp.intel.com (HELO localhost)
- ([10.94.248.204])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2025 09:16:18 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/intel: Use
- xe_sriov_disable_vfs_restore_auto_provisioning()
-Date: Sat, 18 Oct 2025 18:15:49 +0200
-Message-ID: <20251018161549.999459-4-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251018161549.999459-1-marcin.bernatowicz@linux.intel.com>
-References: <20251018161549.999459-1-marcin.bernatowicz@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 491E110E0A2;
+	Sat, 18 Oct 2025 17:39:33 +0000 (UTC)
+Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5AD310E0A2;
+ Sat, 18 Oct 2025 17:39:31 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7769762041763734630=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_SR-IOV=3A_PF_restore=5Fauto?=
+ =?utf-8?q?=5Fprovisioning_helpers?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sat, 18 Oct 2025 17:39:31 -0000
+Message-ID: <176080917173.30962.340622332257072989@97596180aaec>
+X-Patchwork-Hint: ignore
+References: <20251018161549.999459-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20251018161549.999459-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,66 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replace igt_sriov_disable_vfs() with the wrapper that also requests PF
-restore_auto_provisioning, ensuring a clean provisioning baseline after
-teardown in xe_pmu and xe_sriov_scheduling.
+--===============7769762041763734630==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
----
- tests/intel/xe_pmu.c              | 2 +-
- tests/intel/xe_sriov_scheduling.c | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index d1050ee11..9525655ba 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -1015,7 +1015,7 @@ static void unprovision_and_disable_vfs(int fd)
- 			xe_sriov_set_exec_quantum_ms(fd, fn, gt, 0);
- 	}
- 
--	igt_sriov_disable_vfs(fd);
-+	xe_sriov_disable_vfs_restore_auto_provisioning(fd);
- 	/* abort to avoid execution of next tests with enabled VFs */
- 	igt_abort_on_f(igt_sriov_get_enabled_vfs(fd) > 0,
- 		       "Failed to disable VF(s)");
-diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
-index f0f2f29e4..5e8c87755 100644
---- a/tests/intel/xe_sriov_scheduling.c
-+++ b/tests/intel/xe_sriov_scheduling.c
-@@ -730,7 +730,7 @@ static void throughput_ratio(int pf_fd, int num_vfs, const struct subm_opts *opt
- 	/* cleanup */
- 	subm_set_fini(set);
- 	set_vfs_scheduling_params(pf_fd, num_vfs, &(struct vf_sched_params){});
--	igt_sriov_disable_vfs(pf_fd);
-+	xe_sriov_disable_vfs_restore_auto_provisioning(pf_fd);
- }
- 
- /**
-@@ -816,7 +816,7 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
- 	/* cleanup */
- 	subm_set_fini(set);
- 	set_vfs_scheduling_params(pf_fd, num_vfs, &(struct vf_sched_params){});
--	igt_sriov_disable_vfs(pf_fd);
-+	xe_sriov_disable_vfs_restore_auto_provisioning(pf_fd);
- }
- 
- static struct subm_opts subm_opts = {
-@@ -925,7 +925,7 @@ igt_main_args("", long_opts, help_str, subm_opts_handler, NULL)
- 	igt_fixture {
- 		set_vfs_scheduling_params(pf_fd, igt_sriov_get_total_vfs(pf_fd),
- 					  &(struct vf_sched_params){});
--		igt_sriov_disable_vfs(pf_fd);
-+		xe_sriov_disable_vfs_restore_auto_provisioning(pf_fd);
- 		/* abort to avoid execution of next tests with enabled VFs */
- 		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0,
- 			       "Failed to disable VF(s)");
--- 
-2.43.0
+Series: SR-IOV: PF restore_auto_provisioning helpers
+URL   : https://patchwork.freedesktop.org/series/156164/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8592_BAT -> XEIGTPW_13919_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8592 -> IGTPW_13919
+  * Linux: xe-3940-c809fdcf60b85e8a261eaa1b49f18b9c5731b18c -> xe-3944-a1a4dce2d02411d8129e94a7c98ab4fcc22336d7
+
+  IGTPW_13919: 13919
+  IGT_8592: b3d809d537febc23792ab8d0eb6d13cf80d626c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3940-c809fdcf60b85e8a261eaa1b49f18b9c5731b18c: c809fdcf60b85e8a261eaa1b49f18b9c5731b18c
+  xe-3944-a1a4dce2d02411d8129e94a7c98ab4fcc22336d7: a1a4dce2d02411d8129e94a7c98ab4fcc22336d7
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13919/index.html
+
+--===============7769762041763734630==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>SR-IOV: PF restore_auto_provisioning helpers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156164/">https://patchwork.freedesktop.org/series/156164/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13919/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13919/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8592_BAT -&gt; XEIGTPW_13919_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8592 -&gt; IGTPW_13919</li>
+<li>Linux: xe-3940-c809fdcf60b85e8a261eaa1b49f18b9c5731b18c -&gt; xe-3944-a1a4dce2d02411d8129e94a7c98ab4fcc22336d7</li>
+</ul>
+<p>IGTPW_13919: 13919<br />
+  IGT_8592: b3d809d537febc23792ab8d0eb6d13cf80d626c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3940-c809fdcf60b85e8a261eaa1b49f18b9c5731b18c: c809fdcf60b85e8a261eaa1b49f18b9c5731b18c<br />
+  xe-3944-a1a4dce2d02411d8129e94a7c98ab4fcc22336d7: a1a4dce2d02411d8129e94a7c98ab4fcc22336d7</p>
+
+</body>
+</html>
+
+--===============7769762041763734630==--
