@@ -4,63 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91799CCD193
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 09:39:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B13FCCD199
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 11:48:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2466A10E35C;
-	Mon, 20 Oct 2025 09:39:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 172B110E29A;
+	Mon, 20 Oct 2025 11:48:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m2BkjAMW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VYAPSSTp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A2D210E35C;
- Mon, 20 Oct 2025 09:39:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 669E510E29A
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 11:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760953196; x=1792489196;
+ t=1760960900; x=1792496900;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=4uFNRmbfzj/LlwIKVRZi06KCzIflJWhoSiV4HbzGidY=;
- b=m2BkjAMW0Kn55rq1Ekc/Z8jxDZ+rw82gGdEdGKXASb0Pf9lDxq2iApPR
- WYKrPji7ti//vfKdEWITwkbswnVSTzxunlMhsC7WWobKhmrCKFNAtYpfa
- 1gLVOBV8z03v9m1JciqGWgAPNOxUG5wxGEkWO10P9bzAf9LW66+G1TdeS
- uIpq22x/XleT5btcH/ikl4mSyd6belM18RzqYL/q+tpoIjL1nC0zIHHTI
- pyzLIoWWyI6VMPK5SjLlQcJ1Jm3ItL+3IZN+G0ElEwvVJnqLJcn3lywMc
- PCkcDOqBou/wzRWbr+6p+8tk+TBZg/KrEtvlbi6/SQYV1s11k0ABWoBMU g==;
-X-CSE-ConnectionGUID: KUHXg59yTlm3+7k0issHPw==
-X-CSE-MsgGUID: o2mg9wv7QX+Gx6IhXFxQkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62984733"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62984733"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2025 02:39:55 -0700
-X-CSE-ConnectionGUID: DgRYBLOjTKedAhxqv4Qgnw==
-X-CSE-MsgGUID: A7xRUrtVSLiAbFRqF4kwng==
+ mime-version:in-reply-to;
+ bh=WMNclGqca5mF3NWEd6Q6KojDFIqItUJkuFoVNydI5/M=;
+ b=VYAPSSTprc+b3aPDE/bXCQIWgSSH11h2yuwowcJ3pcZhAW0uL6G+RuPp
+ ClkroVPIjHR3RN+YnMM1odnf8RLqXRvEZ/n+NIZoUzdCmazGKAwnsBgBB
+ nJLbdaX3lcARhfvY2jkXEjAiblYao5ti8CAhOcdOlg/0UwaK5of6ZbAUp
+ C9w5xoPGNw2PraXKVYNKNtV9Z3mOZkuV1EHR3sQKCqNVJk29BvibT+xzU
+ pGAdc4ne1mVO2ARZXOBp4FmxgMCtJevgWdYQUxiJkjmBw+6iSORVWb1AF
+ 8TCkVxth+1D3JOAW6p2S5F7yrCo+cqPmgTwiLw10jNm1gIACApaHVeedj A==;
+X-CSE-ConnectionGUID: 6WxpTviWT12iWpclUHYamg==
+X-CSE-MsgGUID: Ddr/1oYGTyO4N2ZDhJ4coA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63114744"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="63114744"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2025 04:48:20 -0700
+X-CSE-ConnectionGUID: FjxWXrdyT0O0zaKPw2m+7w==
+X-CSE-MsgGUID: baEq5sCvSIquJM41P0u6Ng==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="183771041"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="183257272"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 02:39:53 -0700
-Date: Mon, 20 Oct 2025 11:39:51 +0200
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 04:48:17 -0700
+Date: Mon, 20 Oct 2025 13:48:02 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: intel-xe@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2] lib/igt_fb/intel: Use correct MOCS for
- displayable surfaces
-Message-ID: <20251020093951.cvxwtsz2ouy3l6dt@kamilkon-DESK.igk.intel.com>
+To: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>,
+ Singo Chang <singo.chang@mediatek.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH i-g-t 2/6] tests/kms_plane: Add support for
+ planar-settings on non-Intel devices
+Message-ID: <20251020114802.ut5syb2tgeukqaod@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- intel-xe@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-References: <20251003130517.40414-1-tvrtko.ursulin@igalia.com>
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>,
+ Singo Chang <singo.chang@mediatek.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+References: <20251012171459.3773990-1-jason-jh.lin@mediatek.com>
+ <20251012171459.3773990-3-jason-jh.lin@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251003130517.40414-1-tvrtko.ursulin@igalia.com>
+In-Reply-To: <20251012171459.3773990-3-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,81 +80,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Tvrtko,
-On 2025-10-03 at 14:05:17 +0100, Tvrtko Ursulin wrote:
-> Using the uncached MOCS for displayable surfaces is not always correct,
-> especially when CCS compression is used with which some platforms require
-> a special uncached entry, otherwise writes get unexpectedly cached.
+Hi Jason-JH,
+On 2025-10-13 at 01:13:12 +0800, Jason-JH Lin wrote:
+> Add an is_intel_device() check before invoking Intel-specific
+> requirements in the planar-settings test.
+> This allows the test to run on non-Intel devices by skipping
+> Intel-only pixel format settings checks.
 > 
-> Lets copy the knowledge of what is the correct MOCS for displayable
-> surfaces from Mesa and add some new helpers to get it.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
-> v2:
->  * Renamed external_index to displayable_index. (Ville)
-> ---
->  lib/igt_fb.c       |  2 +-
->  lib/intel_bufops.c |  2 ++
->  lib/intel_mocs.c   | 21 +++++++++++++++++++--
->  lib/intel_mocs.h   |  2 ++
->  4 files changed, 24 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 03ede3a6fa20..b5a16f9cbe90 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -2712,7 +2712,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
->  				    fb->strides[0],
->  				    region,
->  				    intel_get_pat_idx_uc(fd),
-> -				    DEFAULT_MOCS_INDEX);
-> +				    DISPLAYABLE_MOCS_INDEX);
->  	intel_buf_set_name(buf, name);
->  
-[cut]
+> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-> @@ -63,6 +71,15 @@ uint8_t intel_get_uc_mocs_index(int fd)
->  	return mocs.uc_index;
->  }
->  
-
-All new lib functions needs to be documented. As this was
-already merged maybe someone could document a bunch of
-these similar functions here.
+I merged your patches 2,3,4 so no need for resending them
+in this series.
 
 Regards,
 Kamil
 
-> +uint8_t intel_get_displayable_mocs_index(int fd)
-> +{
-> +	struct drm_intel_mocs_index mocs;
-> +
-> +	get_mocs_index(fd, &mocs);
-> +
-> +	return mocs.displayable_index;
-> +}
-> +
->  uint8_t intel_get_defer_to_pat_mocs_index(int fd)
->  {
->  	struct drm_intel_mocs_index mocs;
-> diff --git a/lib/intel_mocs.h b/lib/intel_mocs.h
-> index 8597286d259d..394bb41be042 100644
-> --- a/lib/intel_mocs.h
-> +++ b/lib/intel_mocs.h
-> @@ -9,9 +9,11 @@
->  #include <stdint.h>
+> ---
+>  tests/kms_plane.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index f7b672c7a01e..8dac41b24b33 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1256,9 +1256,11 @@ static void test_planar_settings(data_t *data)
+>  	 * changed to if(..)
+>  	 */
+>  	igt_require_f(data->display.is_atomic, "Atomic mode-set not supported\n");
+> -	igt_require_intel(data->drm_fd);
+> -	devid = intel_get_drm_devid(data->drm_fd);
+> -	igt_require(intel_display_ver(devid) >= 9);
+> +	if (is_intel_device(data->drm_fd)) {
+> +		igt_require_intel(data->drm_fd);
+> +		devid = intel_get_drm_devid(data->drm_fd);
+> +		igt_require(intel_display_ver(devid) >= 9);
+> +	}
 >  
->  #define DEFAULT_MOCS_INDEX ((uint8_t)-1)
-> +#define DISPLAYABLE_MOCS_INDEX ((uint8_t)-2)
->  
->  uint8_t intel_get_wb_mocs_index(int fd);
->  uint8_t intel_get_uc_mocs_index(int fd);
-> +uint8_t intel_get_displayable_mocs_index(int fd);
->  uint8_t intel_get_defer_to_pat_mocs_index(int fd);
->  
->  #endif /* _INTEL_MOCS_H */
+>  	output = igt_get_single_output_for_pipe(&data->display, pipe);
+>  	igt_require(output);
 > -- 
-> 2.48.0
+> 2.43.0
 > 
