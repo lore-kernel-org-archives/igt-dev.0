@@ -4,67 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B13FCCD199
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 11:48:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D79B9CCD199
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 13:45:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 172B110E29A;
-	Mon, 20 Oct 2025 11:48:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 31B4810E43C;
+	Mon, 20 Oct 2025 13:45:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VYAPSSTp";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="ZQK0HT3W";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 669E510E29A
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 11:48:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760960900; x=1792496900;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=WMNclGqca5mF3NWEd6Q6KojDFIqItUJkuFoVNydI5/M=;
- b=VYAPSSTprc+b3aPDE/bXCQIWgSSH11h2yuwowcJ3pcZhAW0uL6G+RuPp
- ClkroVPIjHR3RN+YnMM1odnf8RLqXRvEZ/n+NIZoUzdCmazGKAwnsBgBB
- nJLbdaX3lcARhfvY2jkXEjAiblYao5ti8CAhOcdOlg/0UwaK5of6ZbAUp
- C9w5xoPGNw2PraXKVYNKNtV9Z3mOZkuV1EHR3sQKCqNVJk29BvibT+xzU
- pGAdc4ne1mVO2ARZXOBp4FmxgMCtJevgWdYQUxiJkjmBw+6iSORVWb1AF
- 8TCkVxth+1D3JOAW6p2S5F7yrCo+cqPmgTwiLw10jNm1gIACApaHVeedj A==;
-X-CSE-ConnectionGUID: 6WxpTviWT12iWpclUHYamg==
-X-CSE-MsgGUID: Ddr/1oYGTyO4N2ZDhJ4coA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63114744"
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="63114744"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2025 04:48:20 -0700
-X-CSE-ConnectionGUID: FjxWXrdyT0O0zaKPw2m+7w==
-X-CSE-MsgGUID: baEq5sCvSIquJM41P0u6Ng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="183257272"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 04:48:17 -0700
-Date: Mon, 20 Oct 2025 13:48:02 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Cc: igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>,
- Singo Chang <singo.chang@mediatek.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>,
- Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com
-Subject: Re: [PATCH i-g-t 2/6] tests/kms_plane: Add support for
- planar-settings on non-Intel devices
-Message-ID: <20251020114802.ut5syb2tgeukqaod@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jason-JH Lin <jason-jh.lin@mediatek.com>,
- igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>,
- Singo Chang <singo.chang@mediatek.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>,
- Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com
-References: <20251012171459.3773990-1-jason-jh.lin@mediatek.com>
- <20251012171459.3773990-3-jason-jh.lin@mediatek.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99A6310E43C
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 13:45:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=dm6DDY1KubW80E0VwQHGIX7sLPxJAU65sPBL4cZQYuM=; b=ZQK0HT3W7ZsoKa+vVbQHhyBld7
+ VFkFIAADG8sxRkq3gPj7ySLMTTDkWASMsGca26bVnf7XvURUe2qpDORhaCYyARGLyM58PyFxF+PZb
+ 57SxAKSVtBHBSeJ/reqPDykpXSzvY0obe9J2seSQtUAkD5T4P0LZtoC7m5R375mlusCOhqAKEjbNP
+ W4Od1wZOcDaKfw2hyRGuwyzP3PKSacGcUjplc8kktaYd6UHfe3FLkGoJdg9fFJOhnGpQldD5ovIXK
+ i+4cft26MRtUZQpi3YaKNmm9cbeJ8otjlRZ88J1DW9vAAVMviXfaPtptPe+5LbAMYIDqtjVjUivQi
+ M5d6reqA==;
+Received: from [90.242.12.242] (helo=localhost)
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1vAqCQ-00C7sM-L1; Mon, 20 Oct 2025 15:45:22 +0200
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t] lib/intel/mocs: Add documentation for MOCS helpers
+Date: Mon, 20 Oct 2025 14:45:17 +0100
+Message-ID: <20251020134517.38780-1-tvrtko.ursulin@igalia.com>
+X-Mailer: git-send-email 2.48.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251012171459.3773990-3-jason-jh.lin@mediatek.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,44 +57,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jason-JH,
-On 2025-10-13 at 01:13:12 +0800, Jason-JH Lin wrote:
-> Add an is_intel_device() check before invoking Intel-specific
-> requirements in the planar-settings test.
-> This allows the test to run on non-Intel devices by skipping
-> Intel-only pixel format settings checks.
-> 
-> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Add some documentation for the MOCS helpers.
 
-I merged your patches 2,3,4 so no need for resending them
-in this series.
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/intel_mocs.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-Regards,
-Kamil
+diff --git a/lib/intel_mocs.c b/lib/intel_mocs.c
+index 9809e32113eb..778fd848ed47 100644
+--- a/lib/intel_mocs.c
++++ b/lib/intel_mocs.c
+@@ -13,6 +13,18 @@ struct drm_intel_mocs_index {
+ 	uint8_t defer_to_pat_index;
+ };
+ 
++/**
++ * SECTION:intel_mocs
++ * @short_description: Intel Memory Object Control State (MOCS) helpers
++ * @title: Intel MOCS helpers
++ * @include: igt.h
++ *
++ * Memory Object Control State (MOCS) defines the behaviour of memory accesses
++ * beyond the graphics core, including encryption, graphics data types that
++ * allow selective flushing of data from outer caches, and controlling
++ * cacheability in the outer caches.
++ */
++
+ static void get_mocs_index(int fd, struct drm_intel_mocs_index *mocs)
+ {
+ 	uint16_t devid = intel_get_drm_devid(fd);
+@@ -53,6 +65,13 @@ static void get_mocs_index(int fd, struct drm_intel_mocs_index *mocs)
+ 	}
+ }
+ 
++/**
++ * intel_get_wb_mocs_index:
++ * @fd: the DRM file descriptor
++ *
++ * Returns: The MOCS index corresponding to the basic write-back behaviour for
++ * the open Intel DRM device.
++ */
+ uint8_t intel_get_wb_mocs_index(int fd)
+ {
+ 	struct drm_intel_mocs_index mocs;
+@@ -62,6 +81,13 @@ uint8_t intel_get_wb_mocs_index(int fd)
+ 	return mocs.wb_index;
+ }
+ 
++/**
++ * intel_get_uc_mocs_index:
++ * @fd: the DRM file descriptor
++ *
++ * Returns: The MOCS index corresponding to the uncached behaviour for the open
++ * Intel DRM device.
++ */
+ uint8_t intel_get_uc_mocs_index(int fd)
+ {
+ 	struct drm_intel_mocs_index mocs;
+@@ -71,6 +97,14 @@ uint8_t intel_get_uc_mocs_index(int fd)
+ 	return mocs.uc_index;
+ }
+ 
++/**
++ * intel_get_displayable_mocs_index:
++ * @fd: the DRM file descriptor
++ *
++ * Returns: The MOCS index corresponding to the uncached displayable behaviour
++ * for the open Intel DRM device. This should be used for buffers which may be
++ * simultaneously displayed and rendered to.
++ */
+ uint8_t intel_get_displayable_mocs_index(int fd)
+ {
+ 	struct drm_intel_mocs_index mocs;
+@@ -80,6 +114,13 @@ uint8_t intel_get_displayable_mocs_index(int fd)
+ 	return mocs.displayable_index;
+ }
+ 
++/**
++ * intel_get_defer_to_pat_mocs_index:
++ * @fd: the DRM file descriptor
++ *
++ * Returns: The MOCS index corresponding to the "defer to PAT" caching
++ * behaviour, or asserts if the platform does not support this mode.
++ */
+ uint8_t intel_get_defer_to_pat_mocs_index(int fd)
+ {
+ 	struct drm_intel_mocs_index mocs;
+-- 
+2.48.0
 
-> ---
->  tests/kms_plane.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index f7b672c7a01e..8dac41b24b33 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -1256,9 +1256,11 @@ static void test_planar_settings(data_t *data)
->  	 * changed to if(..)
->  	 */
->  	igt_require_f(data->display.is_atomic, "Atomic mode-set not supported\n");
-> -	igt_require_intel(data->drm_fd);
-> -	devid = intel_get_drm_devid(data->drm_fd);
-> -	igt_require(intel_display_ver(devid) >= 9);
-> +	if (is_intel_device(data->drm_fd)) {
-> +		igt_require_intel(data->drm_fd);
-> +		devid = intel_get_drm_devid(data->drm_fd);
-> +		igt_require(intel_display_ver(devid) >= 9);
-> +	}
->  
->  	output = igt_get_single_output_for_pipe(&data->display, pipe);
->  	igt_require(output);
-> -- 
-> 2.43.0
-> 
