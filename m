@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33F9DCCD1A5
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 19:20:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1DECCD193
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 20:41:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBAEF10E4CA;
-	Mon, 20 Oct 2025 19:20:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CC2910E507;
+	Mon, 20 Oct 2025 20:41:10 +0000 (UTC)
 Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C21810E4CA;
- Mon, 20 Oct 2025 19:20:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2519810E506;
+ Mon, 20 Oct 2025 20:41:09 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4405756295135809274=="
+ boundary="===============6201134401228760835=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Establish_MkDocs_Documenta?=
- =?utf-8?q?tion_Framework_for_IGT_GPU_Tools_=28rev11=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_lib/intel/mocs=3A_Add_docu?=
+ =?utf-8?q?mentation_for_MOCS_helpers?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pawel Sikora" <pawel.sikora@intel.com>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@igalia.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 20 Oct 2025 19:20:55 -0000
-Message-ID: <176098805510.34199.9546399457598905441@97596180aaec>
+Date: Mon, 20 Oct 2025 20:41:09 -0000
+Message-ID: <176099286914.34688.11127137787716532424@97596180aaec>
 X-Patchwork-Hint: ignore
-References: <20251020064053.1050025-1-pawel.sikora@intel.com>
-In-Reply-To: <20251020064053.1050025-1-pawel.sikora@intel.com>
+References: <20251020134517.38780-1-tvrtko.ursulin@igalia.com>
+In-Reply-To: <20251020134517.38780-1-tvrtko.ursulin@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,26 +41,26 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4405756295135809274==
+--===============6201134401228760835==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Establish MkDocs Documentation Framework for IGT GPU Tools (rev11)
-URL   : https://patchwork.freedesktop.org/series/152268/
+Series: lib/intel/mocs: Add documentation for MOCS helpers
+URL   : https://patchwork.freedesktop.org/series/156206/
 State : failure
 
 == Summary ==
 
-ERROR: The runconfig 'XEIGT_8593_FULL' does not exist in the database
+ERROR: The runconfig 'XEIGTPW_13921_FULL' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13920/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13921/index.html
 
---===============4405756295135809274==
+--===============6201134401228760835==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,18 +80,18 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Establish MkDocs Documentation Framework for IGT GPU Tools (rev11)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152268/">https://patchwork.freedesktop.org/series/152268/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/intel/mocs: Add documentation for MOCS helpers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156206/">https://patchwork.freedesktop.org/series/156206/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13920/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13920/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13921/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13921/index.html</a></td></tr>
 
 </table>
 
 
-    <p>ERROR: The runconfig 'XEIGT_8593_FULL' does not exist in the database</p>
+    <p>ERROR: The runconfig 'XEIGTPW_13921_FULL' does not exist in the database</p>
 
 </body>
 </html>
 
---===============4405756295135809274==--
+--===============6201134401228760835==--
