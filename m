@@ -4,58 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80D7DCCD199
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 08:40:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91799CCD193
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 09:39:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34F8210E328;
-	Mon, 20 Oct 2025 08:40:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2466A10E35C;
+	Mon, 20 Oct 2025 09:39:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PGo1sLyd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m2BkjAMW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58B5B10E280;
- Mon, 20 Oct 2025 08:40:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A2D210E35C;
+ Mon, 20 Oct 2025 09:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760949628; x=1792485628;
+ t=1760953196; x=1792489196;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=onJbvScgOu2PdXVGUES8uK6vjj7xtDYFGiGoJMJQvfg=;
- b=PGo1sLydEDz9cJAsvRLF11/eQwUiD7TEpnc5BAXDWuUWTTVZrZh2bxJf
- ADZGwS+i8/2BhqGaPIiG22J30IOMULgpi7viHdBtwrQfwigCTc4e1e1Om
- av8OCJ4RtRaSC5VZ3dvIGVspFGc9VIIG0HPamSJnkRbBf/1WeZ1tT1pKA
- z3E/idb1Aedoo+Aw/KBu//O5Mz+c15PL9djYVbTmOwg4Myf84ADD/lFiL
- Ctf9TyuyNA78yHG4kkJjDnjUiOTnotjRhYaBe8XjMKFBrw9zQ5PDVnVNy
- B/aGcZRosibjX6fsaWlZHIOpfl+9UC+QfRHb4IpeQt8F7D0RO95VysTlB Q==;
-X-CSE-ConnectionGUID: bik8QcyIQEKpNTdescl6EA==
-X-CSE-MsgGUID: JNzZjhhQTwusJ9Q14yQPHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62981326"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62981326"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=4uFNRmbfzj/LlwIKVRZi06KCzIflJWhoSiV4HbzGidY=;
+ b=m2BkjAMW0Kn55rq1Ekc/Z8jxDZ+rw82gGdEdGKXASb0Pf9lDxq2iApPR
+ WYKrPji7ti//vfKdEWITwkbswnVSTzxunlMhsC7WWobKhmrCKFNAtYpfa
+ 1gLVOBV8z03v9m1JciqGWgAPNOxUG5wxGEkWO10P9bzAf9LW66+G1TdeS
+ uIpq22x/XleT5btcH/ikl4mSyd6belM18RzqYL/q+tpoIjL1nC0zIHHTI
+ pyzLIoWWyI6VMPK5SjLlQcJ1Jm3ItL+3IZN+G0ElEwvVJnqLJcn3lywMc
+ PCkcDOqBou/wzRWbr+6p+8tk+TBZg/KrEtvlbi6/SQYV1s11k0ABWoBMU g==;
+X-CSE-ConnectionGUID: KUHXg59yTlm3+7k0issHPw==
+X-CSE-MsgGUID: o2mg9wv7QX+Gx6IhXFxQkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62984733"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62984733"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2025 01:40:28 -0700
-X-CSE-ConnectionGUID: FRuCoY1wTnCKEv8L7sOqOg==
-X-CSE-MsgGUID: 8oLF+139Tau+Oez/LwnsuQ==
+ 20 Oct 2025 02:39:55 -0700
+X-CSE-ConnectionGUID: DgRYBLOjTKedAhxqv4Qgnw==
+X-CSE-MsgGUID: A7xRUrtVSLiAbFRqF4kwng==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="182418901"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="183771041"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 01:40:27 -0700
-Date: Mon, 20 Oct 2025 10:40:12 +0200
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 02:39:53 -0700
+Date: Mon, 20 Oct 2025 11:39:51 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFUOiBmYWlsdXJlIGZv?= =?utf-8?Q?r?=
- Fix drm_open_driver() with IGT_FORCE_DRIVER and DRIVER_ANY
-Message-ID: <20251020084012.cp7unc5x3zph3kun@kamilkon-DESK.igk.intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: intel-xe@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ igt-dev@lists.freedesktop.org,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t v2] lib/igt_fb/intel: Use correct MOCS for
+ displayable surfaces
+Message-ID: <20251020093951.cvxwtsz2ouy3l6dt@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20251016160544.122657-1-kamil.konieczny@linux.intel.com>
- <176066989854.24656.6336972400901534830@97596180aaec>
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ intel-xe@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ igt-dev@lists.freedesktop.org,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+References: <20251003130517.40414-1-tvrtko.ursulin@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <176066989854.24656.6336972400901534830@97596180aaec>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251003130517.40414-1-tvrtko.ursulin@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,63 +76,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-10-17 at 02:58:18 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Tvrtko,
+On 2025-10-03 at 14:05:17 +0100, Tvrtko Ursulin wrote:
+> Using the uncached MOCS for displayable surfaces is not always correct,
+> especially when CCS compression is used with which some platforms require
+> a special uncached entry, otherwise writes get unexpectedly cached.
 > 
-> Series: Fix drm_open_driver() with IGT_FORCE_DRIVER and DRIVER_ANY
-> URL   : https://patchwork.freedesktop.org/series/156071/
-> State : failure
+> Lets copy the knowledge of what is the correct MOCS for displayable
+> surfaces from Mesa and add some new helpers to get it.
 > 
-> == Summary ==
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ---
+> v2:
+>  * Renamed external_index to displayable_index. (Ville)
+> ---
+>  lib/igt_fb.c       |  2 +-
+>  lib/intel_bufops.c |  2 ++
+>  lib/intel_mocs.c   | 21 +++++++++++++++++++--
+>  lib/intel_mocs.h   |  2 ++
+>  4 files changed, 24 insertions(+), 3 deletions(-)
 > 
-> CI Bug Log - changes from IGT_8589 -> IGTPW_13915
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_13915 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_13915, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13915/index.html
-> 
-> Participating hosts (41 -> 40)
-> ------------------------------
-> 
->   Missing    (1): fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_13915:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live:
->     - fi-hsw-4770:        [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8589/fi-hsw-4770/igt@i915_selftest@live.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13915/fi-hsw-4770/igt@i915_selftest@live.html
-> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 03ede3a6fa20..b5a16f9cbe90 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -2712,7 +2712,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
+>  				    fb->strides[0],
+>  				    region,
+>  				    intel_get_pat_idx_uc(fd),
+> -				    DEFAULT_MOCS_INDEX);
+> +				    DISPLAYABLE_MOCS_INDEX);
+>  	intel_buf_set_name(buf, name);
+>  
+[cut]
 
-This is unrelated, please respin testing for i915.
+> @@ -63,6 +71,15 @@ uint8_t intel_get_uc_mocs_index(int fd)
+>  	return mocs.uc_index;
+>  }
+>  
+
+All new lib functions needs to be documented. As this was
+already merged maybe someone could document a bunch of
+these similar functions here.
 
 Regards,
 Kamil
 
->   
-> Known issues
-> ------------
+> +uint8_t intel_get_displayable_mocs_index(int fd)
+> +{
+> +	struct drm_intel_mocs_index mocs;
+> +
+> +	get_mocs_index(fd, &mocs);
+> +
+> +	return mocs.displayable_index;
+> +}
+> +
+>  uint8_t intel_get_defer_to_pat_mocs_index(int fd)
+>  {
+>  	struct drm_intel_mocs_index mocs;
+> diff --git a/lib/intel_mocs.h b/lib/intel_mocs.h
+> index 8597286d259d..394bb41be042 100644
+> --- a/lib/intel_mocs.h
+> +++ b/lib/intel_mocs.h
+> @@ -9,9 +9,11 @@
+>  #include <stdint.h>
+>  
+>  #define DEFAULT_MOCS_INDEX ((uint8_t)-1)
+> +#define DISPLAYABLE_MOCS_INDEX ((uint8_t)-2)
+>  
+>  uint8_t intel_get_wb_mocs_index(int fd);
+>  uint8_t intel_get_uc_mocs_index(int fd);
+> +uint8_t intel_get_displayable_mocs_index(int fd);
+>  uint8_t intel_get_defer_to_pat_mocs_index(int fd);
+>  
+>  #endif /* _INTEL_MOCS_H */
+> -- 
+> 2.48.0
 > 
->   Here are the changes found in IGTPW_13915 that come from known issues:
-> 
-...cut...
-
