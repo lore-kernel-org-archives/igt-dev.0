@@ -4,58 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC44ACCD193
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 15:18:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B3C3CCD199
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 16:18:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8DE4310E2A0;
-	Mon, 20 Oct 2025 15:18:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EBAB710E2B0;
+	Mon, 20 Oct 2025 16:18:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M498VHFc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DHNUNbkJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4C5010E2A0
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 15:18:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0C0910E47E
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 16:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760973496; x=1792509496;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=obkENEJHwXrVueUJIZbgX+dk5brHZN93+yMGfW83KY4=;
- b=M498VHFcFf4NXUOAdCK+wRPJ+G0TfGKB8Z3HSkcyAbxy59DIbLKVUyZD
- vQUB+lI6kYlndEv5pchTW3GZEU0hfFl0iaZyF+AlksvWCKVTitw3LDyY8
- 58wAAZIKQn2A9YNsFYEQhdRNt1TgeEvGzXWfgqDhBsppEbPHW3OGMDIsc
- aKzYSVfALTXvj1IGzA9Q09GYwTxX6prTSnOc5XWlQITV73WjGR/Cfb5PO
- pQWW83jjsSA97frUFgJ1xlFy13+WtPnAFUENj9hq9Xn8whd8zFZCrwHO4
- T+RaouF3sRAPBuzgjyCmZ0cd142AH6/GUEUbyp3iqSjx9r5P7srkKibFv w==;
-X-CSE-ConnectionGUID: CfX5/uEHSJq80+KB4sRC1A==
-X-CSE-MsgGUID: /g5+lKJzRiK5kqkFBobmOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62994826"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62994826"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2025 08:18:15 -0700
-X-CSE-ConnectionGUID: HXAn9GjzSLKgZNLS4WTrCQ==
-X-CSE-MsgGUID: Y8KA7J7wRnqCHtTpedUXCw==
+ t=1760977134; x=1792513134;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=mHimfZ6X4D1gGYJyYv5p8TfChIKndKvT76HREkmrzqA=;
+ b=DHNUNbkJhRH2fPhCspyjsAiQ4aDgzH9IntZud9iOBDcAeqoPliIMpz/L
+ cqSXOdT0wndzGY/mIAWO3vhPsgkOOpUhPYNtR0Vq0pCnt/ztADvbJHOQA
+ H+B8VZgrc+s/AgsqAU9L6l2lLZ8eT6rdVZCNLCU38o9/rgKi1d29lm6Sq
+ xMekrIa3wCSZsBAqsm447C5P/UGVIghklwQAZUQyBCCkpDIo9AS+Y1/E4
+ eS84xsnOZltr5FDIZB/3Dl6PoPA8L5GP0Vl3hBihGLteaVShTf6EQiq6z
+ pLJdTOalwcNWNeum5Io18TkIb+NUk+PqGOB7+0Tp6Qesz2Lj/7p8gEsB8 Q==;
+X-CSE-ConnectionGUID: 1iaDRjSxRMWZbpX0w1CDyg==
+X-CSE-MsgGUID: ivtL0sDHSMCjOz2PZw2yLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62989623"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="62989623"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2025 09:18:53 -0700
+X-CSE-ConnectionGUID: xvGfEYKcRVCkRm+WB8ueLQ==
+X-CSE-MsgGUID: jIHPuvoLQ4Khg7Er0yTndg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="184120537"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.166])
- ([172.28.182.166])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2025 08:18:14 -0700
-Message-ID: <8161d610-7031-4ab1-b0cb-f24b260c3131@linux.intel.com>
-Date: Mon, 20 Oct 2025 17:18:12 +0200
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="183209605"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.33])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2025 09:18:52 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 0/3] Add renders testing in core_getversion
+Date: Mon, 20 Oct 2025 18:18:43 +0200
+Message-ID: <20251020161846.156952-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?B?UmU6IOKclyBYZS5DSS5GdWxsOiBmYWlsdXJlIGZvciBTUi1JT1Y6IFBG?=
- =?UTF-8?Q?_restore=5Fauto=5Fprovisioning_helpers?=
-To: igt-dev@lists.freedesktop.org, lgci.bug.filing@intel.com
-References: <20251018161549.999459-1-marcin.bernatowicz@linux.intel.com>
- <176082370691.30981.16394640354978802411@97596180aaec>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <176082370691.30981.16394640354978802411@97596180aaec>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,77 +66,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Add a new subtests all-renders similar for all-cards. While at
+it make all-* subtests to not load any drivers, only checks for
+already exiting ones. Refactor also basic subtest so it will
+have old behaviour and only this one will use DRIVER_ANY and
+it will try to load DRM driver from known list.
 
-On 10/18/2025 11:41 PM, Patchwork wrote:
-> == Series Details ==
->
-> Series: SR-IOV: PF restore_auto_provisioning helpers
-> URL   : https://patchwork.freedesktop.org/series/156164/
-> State : failure
->
-> == Summary ==
->
-> CI Bug Log - changes from XEIGT_8592_FULL -> XEIGTPW_13919_FULL
-> ====================================================
->
-> Summary
-> -------
->
->    **FAILURE**
->
->    Serious unknown changes coming with XEIGTPW_13919_FULL absolutely need to be
->    verified manually.
->    
->    If you think the reported changes have nothing to do with the changes
->    introduced in XEIGTPW_13919_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->    to document this new failure mode, which will reduce false positives in CI.
->
->    
->
-> Participating hosts (4 -> 3)
-> ------------------------------
->
->    Missing    (1): shard-adlp
->
-> Possible new issues
-> -------------------
->
->    Here are the unknown changes that may have been introduced in XEIGTPW_13919_FULL:
->
-> ### IGT changes ###
->
-> #### Possible regressions ####
->
->    * igt@xe_pm@s4-basic-exec:
->      - shard-bmg:          [PASS][1] -> [FAIL][2]
->     [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8592/shard-bmg-4/igt@xe_pm@s4-basic-exec.html
->     [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13919/shard-bmg-1/igt@xe_pm@s4-basic-exec.html
->      - shard-dg2-set2:     [PASS][3] -> [FAIL][4]
->     [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8592/shard-dg2-434/igt@xe_pm@s4-basic-exec.html
->     [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13919/shard-dg2-433/igt@xe_pm@s4-basic-exec.html
->      - shard-lnl:          [PASS][5] -> [FAIL][6]
->     [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8592/shard-lnl-5/igt@xe_pm@s4-basic-exec.html
->     [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13919/shard-lnl-8/igt@xe_pm@s4-basic-exec.html
 
-not related
+Kamil Konieczny (3):
+  lib/drmtest: Add raw card|render opening
+  tests/core_getversion: refactor all-cards subtest
+  tests/core_getversion: Add new all-renders subtest
 
---
+ lib/drmtest.c           | 74 +++++++++++++++++++++++++++++++++++++++++
+ lib/drmtest.h           |  2 ++
+ tests/core_getversion.c | 34 ++++++++++++-------
+ 3 files changed, 98 insertions(+), 12 deletions(-)
 
-marcin
+-- 
+2.51.1
 
->
->    
-> Known issues
-> ------------
->
->    Here are the changes found in XEIGTPW_13919_FULL that come from known issues:
->
-> ### IGT changes ###
->
-> #### Issues hit ####
->
->    * igt@kms_big_fb@x-tiled-64bpp-rotate-90:
->      - shard-dg2-set2:     NOTRUN -> [SKIP][7] ([Intel XE#316]) +4 other tests skip
->     [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13919/shard-dg2-434/igt@kms_big_fb@x-tiled-64bpp-rotate-90.html
->
-> [...]
