@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A28EACCD1A7
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 16:31:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18C1CCCD193
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 17:41:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5C99F10E2B0;
-	Mon, 20 Oct 2025 16:31:07 +0000 (UTC)
-Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98C8610E2AF;
- Mon, 20 Oct 2025 16:31:06 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6458548542232501379=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id BD79A10E4A3;
+	Mon, 20 Oct 2025 17:41:36 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fi4Pj7WO";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C00E110E4A3
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 17:41:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1760982095; x=1792518095;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tas9T4aiwdiUDUUqqurFLF5D40H5nZEaiYbbIiBMpYY=;
+ b=Fi4Pj7WO6qsk3im+Kb64x2PBeFERCYuQP1Z5GO2oYQ7gMMHv4ZrBOQXL
+ yi6gSNgHaQsvzZM8o7csGDfX9uO0+Wc4LTf2j5EhUoo/6XV8xII7F8agV
+ 1NaP75vdQRt6MYTIBbjs8HogRWflCSVIliETXrBSfFcz98iISETWPd3B4
+ V4hoSmu6w09Ld0gRp7dUhxGXNJZscrlFq1LvZZpogRs/2AfehO8wUWl5f
+ cq8StTcc7aMCbJL3v6Zfno010wnw7UUw0FtgQ561vVXCeWQSr5N8Y17o9
+ ooy0BWG8suB33fFNfG5s6d3eacv3ZjB+j1/QS37F9Mjq/e8Yj2j6JMeHI g==;
+X-CSE-ConnectionGUID: m3SRpxcMRJuJd0n94i7SqA==
+X-CSE-MsgGUID: 5aVS8gjkR8iilKvj0PFX7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80541026"
+X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; d="scan'208";a="80541026"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2025 10:41:35 -0700
+X-CSE-ConnectionGUID: mgG4leSjQVyp1Zb7Q0MPSg==
+X-CSE-MsgGUID: pPNYrNuNQ+S+jkofRsQcHA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; d="scan'208";a="183399686"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.33])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2025 10:41:32 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ Mark Yacoub <markyacoub@google.com>,
+ =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 0/1] Fix drm_open_driver() with IGT_FORCE_DRIVER and
+ DRIVER_ANY
+Date: Mon, 20 Oct 2025 19:41:26 +0200
+Message-ID: <20251020174127.170084-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Establish_MkDocs_Documentat?=
- =?utf-8?q?ion_Framework_for_IGT_GPU_Tools_=28rev11=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pawel Sikora" <pawel.sikora@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 20 Oct 2025 16:31:06 -0000
-Message-ID: <176097786661.33630.2851400068878025631@97596180aaec>
-X-Patchwork-Hint: ignore
-References: <20251020064053.1050025-1-pawel.sikora@intel.com>
-In-Reply-To: <20251020064053.1050025-1-pawel.sikora@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +72,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6458548542232501379==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+With recent addition of VKMS it was discovered that
+IGT_FORCE_DRIVER didn't help with testing on Virtual Machines.
+Imho when user sets forced driver than DRIVER_ANY should allow
+testing this driver even if it will cause skips or fails.
 
-== Series Details ==
+v2: changed also documentation of function (Zbigniew)
 
-Series: Establish MkDocs Documentation Framework for IGT GPU Tools (rev11)
-URL   : https://patchwork.freedesktop.org/series/152268/
-State : success
+I tested this with the help of vgem driver, normal run without
+any env vars:
 
-== Summary ==
+$ sudo build/tests/core_getversion --r basic
+IGT-Version: 2.2-NO-GIT (x86_64) (Linux: 6.14.0-33-generic x86_64)
+Using IGT_SRANDOM=1760622038 for randomisation
+Opened device: /dev/dri/card0
+Starting subtest: basic
+0: i915 v1.6 0 Intel Graphics
+Subtest basic: SUCCESS (0.000s)
 
-CI Bug Log - changes from XEIGT_8593_BAT -> XEIGTPW_13920_BAT
-====================================================
+Now run with forced driver fails due to no fd opened:
 
-Summary
--------
+$ sudo IGT_FORCE_DRIVER=vgem build/tests/core_getversion --r basic
+...
+(core_getversion:28545) CRITICAL: Test assertion failure function __igt_unique____real_main84, file ../tests/core_getversion.c:91:
+(core_getversion:28545) CRITICAL: Failed assertion: fd >= 0
+(core_getversion:28545) CRITICAL: Last errno: 2, No such file or directory
+(core_getversion:28545) CRITICAL: file descriptor fd failed
+(core_getversion:28545) igt_core-INFO: Stack trace:
+(core_getversion:28545) igt_core-INFO:   #0 ../lib/igt_core.c:2075 __igt_fail_assert()
+(core_getversion:28545) igt_core-INFO:   #1 ../tests/core_getversion.c:106 __igt_unique____real_main84()
+(core_getversion:28545) igt_core-INFO:   #2 ../tests/core_getversion.c:84 main()
+(core_getversion:28545) igt_core-INFO:   #3 ../sysdeps/nptl/libc_start_call_main.h:74 __libc_start_call_main()
+(core_getversion:28545) igt_core-INFO:   #4 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+(core_getversion:28545) igt_core-INFO:   #5 [_start+0x25]
+****  END  ****
+Subtest basic: FAIL (0.000s)
 
-  **SUCCESS**
+After a proposed fix:
 
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 12)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13920_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-plain-flip@a-edp1:
-    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8593/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13920/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-
-
-Build changes
--------------
-
-  * IGT: IGT_8593 -> IGTPW_13920
-
-  IGTPW_13920: 13920
-  IGT_8593: 8593
-  xe-3949-493404f9b32392ed5acc93764cde93a1b790fa5d: 493404f9b32392ed5acc93764cde93a1b790fa5d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13920/index.html
-
---===============6458548542232501379==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+$ sudo IGT_FORCE_DRIVER=vgem build/tests/core_getversion --r basic
+IGT-Version: 2.2-NO-GIT (x86_64) (Linux: 6.14.0-33-generic x86_64)
+Using IGT_SRANDOM=1760622054 for randomisation
+Opened device: /dev/dri/card1
+Starting subtest: basic
+0: vgem v1.0 0 Virtual GEM provider
+Subtest basic: SUCCESS (0.000s)
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: Mark Yacoub <markyacoub@google.com>
+Cc: José Expósito <jose.exposito89@gmail.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
 
+Kamil Konieczny (1):
+  lib/drmtest: Fix device opening with DRIVER_ANY
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Establish MkDocs Documentation Framework for IGT GPU Tools (rev11)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/152268/">https://patchwork.freedesktop.org/series/152268/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+ lib/drmtest.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13920/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13920/index.html</a></td></tr>
+-- 
+2.51.1
 
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8593_BAT -&gt; XEIGTPW_13920_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13920_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8593/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13920/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8593 -&gt; IGTPW_13920</li>
-</ul>
-<p>IGTPW_13920: 13920<br />
-  IGT_8593: 8593<br />
-  xe-3949-493404f9b32392ed5acc93764cde93a1b790fa5d: 493404f9b32392ed5acc93764cde93a1b790fa5d</p>
-
-</body>
-</html>
-
---===============6458548542232501379==--
