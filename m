@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA079CCD184
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2E15CCD1A5
 	for <igt-dev@archiver.kernel.org>; Tue, 21 Oct 2025 08:12:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5404E10E590;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3AFC510E58E;
 	Tue, 21 Oct 2025 08:12:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="IE2htCXQ";
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="KayLC46s";
 	dkim-atps=neutral
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com
- [209.85.222.48])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3CDE10E384
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 09:42:50 +0000 (UTC)
-Received: by mail-ua1-f48.google.com with SMTP id
- a1e0cc1a2514c-9310a7b2668so969064241.3
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 02:42:50 -0700 (PDT)
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com
+ [209.85.222.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2743E10E390
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 09:43:22 +0000 (UTC)
+Received: by mail-ua1-f47.google.com with SMTP id
+ a1e0cc1a2514c-932dfe14b2eso291496241.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 02:43:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1760953369; x=1761558169;
+ d=chromium.org; s=google; t=1760953401; x=1761558201;
  darn=lists.freedesktop.org; 
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bOHsSBEnGT/ith4fOIl12/8ghOD0jOjbpa7zE7t8DW4=;
- b=IE2htCXQylEXU8Xdiz4liXnHTzxfmBt3amTeFN7VxasQLYuItyYogaGqFcITOXRilA
- oGVd6rpGaq3cedwor7/w8yj54i6f2V2YiFD6xE2lOvuzZPpIVG95+DCu2IywmkUbtZn/
- 4ES1mZK9Vl0NOsh8BUoMIB/x9tE2Ffq4pKq98=
+ bh=gLbMwjpX8sx4KDm6CX2MMylnLfRPYCXQQn+J+TZzxPk=;
+ b=KayLC46sFbgwtxxtbrDxgnR2kOghkYy4G0FGjPuWgT/vjjt5MF8qPwhLSdkPLSWnfE
+ 0utiL6BVV52AaHyjZtVGpXDAkQwzXXzAsKwXYua0YbTWtxgD+UZsBzmxpmn3J41RS0DT
+ 8zKEGDS4ZTjxDwyuJgm+53A6ooyfRo0YLpf8o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760953369; x=1761558169;
+ d=1e100.net; s=20230601; t=1760953401; x=1761558201;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bOHsSBEnGT/ith4fOIl12/8ghOD0jOjbpa7zE7t8DW4=;
- b=KwJeGbBW7/pqkmKNjX9Udt/HTo/vbvh2zU+MTaQO3n7P3FIlaqN5pW17hH3AMajkTi
- Zg3Y7Jdz4otH8NOlJVMZ3b13YgZwlnBJSH529QMDFAUHCpy5ZrfPy8mgAhAO+JO6y4KG
- bgBszwCQVpY6z20Ux9edUt9VpZx2PD0mcpKuAOQ5wIT5A4jEe/FFjZ0lS9YfBZ/0QQ0S
- MJVMIP7VGj2qx7F/gIbLokrFe3uh5FTU1ywkNK3lqiyNgIax2jxFAZmNoY9d922JY6X4
- fk9mxHJnZ1Cbx1wxCrMmnPgmJZhzp3QBdB57ALaawmwxqYoaT3K7WVgF01cfkipNd6dM
- OAhg==
-X-Gm-Message-State: AOJu0YzdtJl5+lmDbmzOAtHp8E+zsMQTFmOotmztFPmL7PPrtOLU0KYF
- FPmIuENVQaHIvNQ5whIFX3dm2u58yZ3xFxPzjF5WSbESwC+pqEggQfFSjuP1dHKJcJ2cDpkh+SU
- 3Ct3onR8Oh8h7nYpdXdjoLSxfHBb4+eGrxz481QwW
-X-Gm-Gg: ASbGncuq1MCzwwfHbpCtZbskzxLaaBHQzsbR8HQQEu0zNmWxETmcUe2Nywaoe0ON01j
- Jn4y8ULh49xecIrTzrBMCvugFW5NL9clcQj94gUhq99XKTKbuM23Lv+n2L0t+xJ6VaRaa2LIVIp
- JbGSdfDqEjNzTABW7zIipnNycjW9XPxzQS0IbIaPPpk4JyQPztGAye9x5b/3jdlKKBo6YpGty+Q
- 84YEkVQfhHJ7+pt3lZseViRZbQIlPLa/mN/3eQVk7areBDkvOamJMV19PYXh4HlYvc2rcG1c4Da
- rfly4QT3HTL4Y2p3T5gEzSFL0g==
-X-Google-Smtp-Source: AGHT+IHEgB/43nNRnrjHklXxh4Mzb/BG8KEUk7x8EeYfWvCK4ty5jcAWmoLRJeuwXRUOazKByqAcCqnrH6syuRj32RQ=
-X-Received: by 2002:a05:6102:1613:b0:5d5:f6ae:38d7 with SMTP id
- ada2fe7eead31-5d7dd6f82efmr3524589137.44.1760953369642; Mon, 20 Oct 2025
- 02:42:49 -0700 (PDT)
+ bh=gLbMwjpX8sx4KDm6CX2MMylnLfRPYCXQQn+J+TZzxPk=;
+ b=dQpyKEeD1f3bmjPVFmi9Ys1id33KEz070qyBFgCJxNdAUlf3DMWWa9kiIA4C8XYKVB
+ 7L1TrBBg/LxuAI8oBuxxe1ecLFBKepW1K/P1zd1Pib5qt0TRZOcNXILIJCIu0+ZFrQ3g
+ cuHR6Kj7Jo9DiLcezqPKwkv3fbOpQjzyqi59wKmPSQ7bf3Xlql3ynTKsbRX9P+6HS17+
+ e4Wa4ywz+EQewN+xfCebJ08VzyBm1viJRM4/Gh7iNUDILAeJmgtt0OoSYyPN4p4BHFVU
+ 7Go94Le9Mfkx+p16o/ZWCVk6VdsKZVuwF+tNvPfTDEsJzPkojw8BpkVvfGNbVN0gTMm1
+ w1xQ==
+X-Gm-Message-State: AOJu0YzNYeYDqgbBrfMMZ3582Z2Qcu8dEkhec/T0g8gkUPLVCxG6TT9z
+ Fb+n/hCtSRE6apWkSM1/tJrJIzWzd6RiXjcePSW6JuhzpNLUagpyOjVObSIxsnI4fGXRVAQZ0Gp
+ l87DSpk2ksYU/4eSJCsTFvdwY30htEZ+oKxN+UiRr
+X-Gm-Gg: ASbGncsQLg19NzSohgdC4HxfMK8CxhD/eJti677pF0k1fRaQ+f4LfWnvFzLZArG/GeM
+ n5Gfe/gCwS8s4ZbcMjpUhxthfTJKLmxNU8BPL2xfPv7zPX69rXLmimxr2aAm3fD04L0dDSlea2Q
+ b5YHWJ0VdiQEAJFajqvVKmE1qNjzHWSCckQjTfrzm4V3IoL7WGUjoui9EWbI08h6lpnTy9Ei08v
+ 8WzSZAXiQ/xx4z8d2FFgCU/ycz7WHBX96rh+u0jBuTNRza/etIEfJ74swxvgeOme0rULt4v0eE9
+ GUK7LFciNiRkJ6c=
+X-Google-Smtp-Source: AGHT+IEAvRszxYixjo/IHzjKEiEiycVUW5tl1au3AlMg+EPhLKUQSNkxzMQ3ytGauPmGWwzWQ2Wk9SaAsakXkUwbfFc=
+X-Received: by 2002:a05:6102:41a9:b0:51a:4916:c5f0 with SMTP id
+ ada2fe7eead31-5d7dd6d63e7mr4424031137.32.1760953401241; Mon, 20 Oct 2025
+ 02:43:21 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251012171459.3773990-1-jason-jh.lin@mediatek.com>
- <20251012171459.3773990-2-jason-jh.lin@mediatek.com>
-In-Reply-To: <20251012171459.3773990-2-jason-jh.lin@mediatek.com>
+ <20251012171459.3773990-3-jason-jh.lin@mediatek.com>
+In-Reply-To: <20251012171459.3773990-3-jason-jh.lin@mediatek.com>
 From: Fei Shao <fshao@chromium.org>
-Date: Mon, 20 Oct 2025 17:42:13 +0800
-X-Gm-Features: AS18NWDyt_6Grl2RZ4HZuJQ65000dY9fqc0AArXvFF_Bakkjj-_BEMybvkvtxM0
-Message-ID: <CAJ66y9EPvepu7F6D0k12wbzhhb5o9=j3CRyxLgFbqf-po_3LTg@mail.gmail.com>
-Subject: Re: [PATCH i-g-t 1/6] tests/kms_hdr: Use original 512x512 fb size on
- devices without scaler
+Date: Mon, 20 Oct 2025 17:42:45 +0800
+X-Gm-Features: AS18NWCoIwsUfLLofgxz33ep6QMjYZ2HcZJ6FbiAa-mpOYnKgGR64r9dbsKyQkA
+Message-ID: <CAJ66y9ECaynd_4CZzJgg2r-W+s5rB6R7zgzQtyDdcjsZJwrymA@mail.gmail.com>
+Subject: Re: [PATCH i-g-t 2/6] tests/kms_plane: Add support for
+ planar-settings on non-Intel devices
 To: Jason-JH Lin <jason-jh.lin@mediatek.com>
 Cc: igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>, 
  Singo Chang <singo.chang@mediatek.com>,
@@ -90,15 +90,14 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Mon, Oct 13, 2025 at 1:15=E2=80=AFAM Jason-JH Lin <jason-jh.lin@mediatek=
 .com> wrote:
 >
-> Ensure devices without scaler retain the original 512x512 framebuffer
-> size during plane setup. Previously, all outputs were set to display
-> resolution size, which may not be supported on devices lacking scaler.
-> For such hardware, always use 512x512, matching the initial framebuffer
-> creation, to improve test reliability.
+> Add an is_intel_device() check before invoking Intel-specific
+> requirements in the planar-settings test.
+> This allows the test to run on non-Intel devices by skipping
+> Intel-only pixel format settings checks.
 >
 > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
 > ---
->  tests/kms_hdr.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  tests/kms_plane.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 
 Reviewed-by: Fei Shao <fshao@chromium.org>
