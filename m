@@ -4,59 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18C1CCCD193
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 17:41:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3AA8CCD199
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 17:41:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BD79A10E4A3;
-	Mon, 20 Oct 2025 17:41:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 83BC510E4A5;
+	Mon, 20 Oct 2025 17:41:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fi4Pj7WO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LMWicyN2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C00E110E4A3
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 17:41:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A5EF10E4A5
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 17:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760982095; x=1792518095;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=tas9T4aiwdiUDUUqqurFLF5D40H5nZEaiYbbIiBMpYY=;
- b=Fi4Pj7WO6qsk3im+Kb64x2PBeFERCYuQP1Z5GO2oYQ7gMMHv4ZrBOQXL
- yi6gSNgHaQsvzZM8o7csGDfX9uO0+Wc4LTf2j5EhUoo/6XV8xII7F8agV
- 1NaP75vdQRt6MYTIBbjs8HogRWflCSVIliETXrBSfFcz98iISETWPd3B4
- V4hoSmu6w09Ld0gRp7dUhxGXNJZscrlFq1LvZZpogRs/2AfehO8wUWl5f
- cq8StTcc7aMCbJL3v6Zfno010wnw7UUw0FtgQ561vVXCeWQSr5N8Y17o9
- ooy0BWG8suB33fFNfG5s6d3eacv3ZjB+j1/QS37F9Mjq/e8Yj2j6JMeHI g==;
-X-CSE-ConnectionGUID: m3SRpxcMRJuJd0n94i7SqA==
-X-CSE-MsgGUID: 5aVS8gjkR8iilKvj0PFX7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80541026"
-X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; d="scan'208";a="80541026"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2025 10:41:35 -0700
-X-CSE-ConnectionGUID: mgG4leSjQVyp1Zb7Q0MPSg==
-X-CSE-MsgGUID: pPNYrNuNQ+S+jkofRsQcHA==
+ t=1760982099; x=1792518099;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=uoIfjYrdqxbeEyUlx5gM2bxmki2/nUWkYxWLABHcfc8=;
+ b=LMWicyN2rAA+gJA8VK1/6svx/vl+M8zuwTm5oNnPrXQMWzTgKyk280f9
+ k9YkviuqIaLex+m7oF6JA/38E3g2ZhYszuSNlhU6CbRQVNPj0bF9kjH+p
+ m8oTc9+aSTnoTsX5GNlYE4nnw17S2vQ6KY/oW5oBeNdHbJy9nxPwnV6m/
+ caYjcjaDn3QKupCCGXESFUoSFd17bkfDyQ+X8uS6lUV4zPionsijlaUAP
+ nUCD7rFqJc5xzHHKpaY49mgD3P6D+U6v4uqiPUI9DpI1dfpGsLCg7xlSk
+ USPy9p8i/ag/uKg2/EVn5aCKeUVAkDwkEHz/S8Qu/853+F54TZz2QXIx7 Q==;
+X-CSE-ConnectionGUID: oMc1hFxHTfuPGu8u8XTZ2Q==
+X-CSE-MsgGUID: IpH2jQMfRR2ceYH8GiGlNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74445786"
+X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; d="scan'208";a="74445786"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2025 10:41:39 -0700
+X-CSE-ConnectionGUID: bq8LBhqaTRerD/RpMbjRNw==
+X-CSE-MsgGUID: 06hw3czzS6KKPfE/EcrKuA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; d="scan'208";a="183399686"
+X-IronPort-AV: E=Sophos;i="6.19,243,1754982000"; d="scan'208";a="183227684"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.33])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2025 10:41:32 -0700
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2025 10:41:37 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Louis Chauvet <louis.chauvet@bootlin.com>,
  Mark Yacoub <markyacoub@google.com>,
  =?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Karthik B S <karthik.b.s@intel.com>,
  =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v2 0/1] Fix drm_open_driver() with IGT_FORCE_DRIVER and
- DRIVER_ANY
-Date: Mon, 20 Oct 2025 19:41:26 +0200
-Message-ID: <20251020174127.170084-1-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 1/1] lib/drmtest: Fix device opening with DRIVER_ANY
+Date: Mon, 20 Oct 2025 19:41:27 +0200
+Message-ID: <20251020174127.170084-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251020174127.170084-1-kamil.konieczny@linux.intel.com>
+References: <20251020174127.170084-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -75,67 +73,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With recent addition of VKMS it was discovered that
-IGT_FORCE_DRIVER didn't help with testing on Virtual Machines.
-Imho when user sets forced driver than DRIVER_ANY should allow
-testing this driver even if it will cause skips or fails.
+When using IGT_FORCE_DRIVER with DRIVER_ANY, honor user choice
+when forced driver is excluded in DRIVER_ANY or it is not
+listed in known modules. With this following tests should
+work:
 
-v2: changed also documentation of function (Zbigniew)
+sudo IGT_FORCE_DRIVER=vgem ./core_getversion --r basic
 
-I tested this with the help of vgem driver, normal run without
-any env vars:
+or on Virtual Machine with VKMS driver:
 
-$ sudo build/tests/core_getversion --r basic
-IGT-Version: 2.2-NO-GIT (x86_64) (Linux: 6.14.0-33-generic x86_64)
-Using IGT_SRANDOM=1760622038 for randomisation
-Opened device: /dev/dri/card0
-Starting subtest: basic
-0: i915 v1.6 0 Intel Graphics
-Subtest basic: SUCCESS (0.000s)
+sudo IGT_FORCE_DRIVER=vkms ./kms_plane
 
-Now run with forced driver fails due to no fd opened:
-
-$ sudo IGT_FORCE_DRIVER=vgem build/tests/core_getversion --r basic
-...
-(core_getversion:28545) CRITICAL: Test assertion failure function __igt_unique____real_main84, file ../tests/core_getversion.c:91:
-(core_getversion:28545) CRITICAL: Failed assertion: fd >= 0
-(core_getversion:28545) CRITICAL: Last errno: 2, No such file or directory
-(core_getversion:28545) CRITICAL: file descriptor fd failed
-(core_getversion:28545) igt_core-INFO: Stack trace:
-(core_getversion:28545) igt_core-INFO:   #0 ../lib/igt_core.c:2075 __igt_fail_assert()
-(core_getversion:28545) igt_core-INFO:   #1 ../tests/core_getversion.c:106 __igt_unique____real_main84()
-(core_getversion:28545) igt_core-INFO:   #2 ../tests/core_getversion.c:84 main()
-(core_getversion:28545) igt_core-INFO:   #3 ../sysdeps/nptl/libc_start_call_main.h:74 __libc_start_call_main()
-(core_getversion:28545) igt_core-INFO:   #4 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
-(core_getversion:28545) igt_core-INFO:   #5 [_start+0x25]
-****  END  ****
-Subtest basic: FAIL (0.000s)
-
-After a proposed fix:
-
-$ sudo IGT_FORCE_DRIVER=vgem build/tests/core_getversion --r basic
-IGT-Version: 2.2-NO-GIT (x86_64) (Linux: 6.14.0-33-generic x86_64)
-Using IGT_SRANDOM=1760622054 for randomisation
-Opened device: /dev/dri/card1
-Starting subtest: basic
-0: vgem v1.0 0 Virtual GEM provider
-Subtest basic: SUCCESS (0.000s)
-
+v2: improve also function documentation (Zbigniew)
 
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: Mark Yacoub <markyacoub@google.com>
 Cc: José Expósito <jose.exposito89@gmail.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
 Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-
-Kamil Konieczny (1):
-  lib/drmtest: Fix device opening with DRIVER_ANY
-
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Tested-by: José Expósito <jose.exposito89@gmail.com>
+---
  lib/drmtest.c | 27 ++++++++++++++++++++-------
  1 file changed, 20 insertions(+), 7 deletions(-)
 
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index a1fb0b5ba..590c4671a 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -324,6 +324,8 @@ static void log_opened_device_path(const char *device_path)
+  * A special case is the use of the IGT_FORCE_DRIVER environment variable. In
+  * such case, even if opened device is compatible with given @chipset flag, the
+  * function returns error if forced driver is not compatible with @chipset.
++ * In case of DRIVER_ANY in @chipset, it is treated as compatible with forced
++ * name, even when driver was excluded by ANY or is not listed in known drivers.
+  *
+  * Returns: DRM file descriptor or -1 on error
+  */
+@@ -341,19 +343,30 @@ int __drm_open_device(const char *name, unsigned int chipset)
+ 	if (__get_drm_device_name(fd, dev_name, sizeof(dev_name) - 1) == -1)
+ 		goto err;
+ 
++	/*
++	 * When using forced driver with DRIVER_ANY honor any driver name,
++	 * also those excluded from DRIVER_ANY or those that are not listed
++	 * in known modules.
++	 */
+ 	forced = forced_driver();
+-	if (forced && chipset == DRIVER_ANY && strcmp(forced, dev_name)) {
+-		igt_debug("Expected driver \"%s\" but got \"%s\"\n",
++	if (forced && chipset == DRIVER_ANY) {
++		if (strcmp(forced, dev_name)) {
++			igt_debug("Expected driver \"%s\" but got \"%s\"\n",
+ 				  forced, dev_name);
+-		goto err;
++			goto err;
++		} else {
++			goto opened;
++		}
+ 	}
+ 
+ 	modulename_to_chipset(dev_name, &chip);
+ 
+-	if ((chipset & chip) == chip) {
+-		log_opened_device_path(name);
+-		return fd;
+-	}
++	if ((chipset & chip) != chip)
++		goto err;
++
++opened:
++	log_opened_device_path(name);
++	return fd;
+ 
+ err:
+ 	close(fd);
 -- 
 2.51.1
 
