@@ -4,55 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50635CCD199
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 06:44:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80D7DCCD199
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Oct 2025 08:40:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 051C010E266;
-	Mon, 20 Oct 2025 06:44:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 34F8210E328;
+	Mon, 20 Oct 2025 08:40:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dej6K0rQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PGo1sLyd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5896910E266
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 06:44:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58B5B10E280;
+ Mon, 20 Oct 2025 08:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1760942688; x=1792478688;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=PJ/25t67Ogy05Z0C3Vi9oulqKVTly+FpshJYMP0ZWik=;
- b=dej6K0rQ4KCgBekWF6iRhnslmcZ9f7Slm9SFsEckv+r5GTSZ3THlkbMC
- b/plPfCpKPQbWv3r4tWaWqSxDoEDvTTWZ1z4GREWqyLv+VQNaw8RsdBe/
- tsahiTMiyn2xEXZugnmz/2w+6TOW/CHid2o3Bcm/PzqnZKcDYmGhqzqOI
- 2NWTdUCDVotGIq2W5ZVWQ84/Y6iTD44g/u1wRvvm7GYMxLRtjYiJwofa1
- mXLO6HIu3bXMnBHAJ5zWxtaphBXLm90XoXk3Ju5zftL+X18JqPza0YXiA
- OqZro5GjTXdeK7pLMQDX7UlSj+IEGQrXd/q8RYQKEiNhg7vxCQNan2KIx Q==;
-X-CSE-ConnectionGUID: o8KKXNTpS4u45Y107TwpcQ==
-X-CSE-MsgGUID: VW4kG/gbQDuICrS65NS/7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66889786"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="66889786"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Oct 2025 23:44:48 -0700
-X-CSE-ConnectionGUID: w29T5JTGSwaJoR23xWL6KQ==
-X-CSE-MsgGUID: UKknadiARGKvxRmbx1zNuw==
+ t=1760949628; x=1792485628;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=onJbvScgOu2PdXVGUES8uK6vjj7xtDYFGiGoJMJQvfg=;
+ b=PGo1sLydEDz9cJAsvRLF11/eQwUiD7TEpnc5BAXDWuUWTTVZrZh2bxJf
+ ADZGwS+i8/2BhqGaPIiG22J30IOMULgpi7viHdBtwrQfwigCTc4e1e1Om
+ av8OCJ4RtRaSC5VZ3dvIGVspFGc9VIIG0HPamSJnkRbBf/1WeZ1tT1pKA
+ z3E/idb1Aedoo+Aw/KBu//O5Mz+c15PL9djYVbTmOwg4Myf84ADD/lFiL
+ Ctf9TyuyNA78yHG4kkJjDnjUiOTnotjRhYaBe8XjMKFBrw9zQ5PDVnVNy
+ B/aGcZRosibjX6fsaWlZHIOpfl+9UC+QfRHb4IpeQt8F7D0RO95VysTlB Q==;
+X-CSE-ConnectionGUID: bik8QcyIQEKpNTdescl6EA==
+X-CSE-MsgGUID: JNzZjhhQTwusJ9Q14yQPHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62981326"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="62981326"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2025 01:40:28 -0700
+X-CSE-ConnectionGUID: FRuCoY1wTnCKEv8L7sOqOg==
+X-CSE-MsgGUID: 8oLF+139Tau+Oez/LwnsuQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="213877739"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.244.220])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Oct 2025 23:44:46 -0700
-From: Pawel Sikora <pawel.sikora@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; d="scan'208";a="182418901"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 01:40:27 -0700
+Date: Mon, 20 Oct 2025 10:40:12 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v11 6/6] gitlab-ci: Add MkDocs documentation support
-Date: Mon, 20 Oct 2025 08:40:50 +0200
-Message-ID: <20251020064053.1050025-7-pawel.sikora@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251020064053.1050025-1-pawel.sikora@intel.com>
-References: <20251020064053.1050025-1-pawel.sikora@intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFUOiBmYWlsdXJlIGZv?= =?utf-8?Q?r?=
+ Fix drm_open_driver() with IGT_FORCE_DRIVER and DRIVER_ANY
+Message-ID: <20251020084012.cp7unc5x3zph3kun@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20251016160544.122657-1-kamil.konieczny@linux.intel.com>
+ <176066989854.24656.6336972400901534830@97596180aaec>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <176066989854.24656.6336972400901534830@97596180aaec>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,65 +71,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit ensures two things:
+Hi igt-dev,
+On 2025-10-17 at 02:58:18 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: Fix drm_open_driver() with IGT_FORCE_DRIVER and DRIVER_ANY
+> URL   : https://patchwork.freedesktop.org/series/156071/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_8589 -> IGTPW_13915
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_13915 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_13915, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13915/index.html
+> 
+> Participating hosts (41 -> 40)
+> ------------------------------
+> 
+>   Missing    (1): fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_13915:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live:
+>     - fi-hsw-4770:        [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8589/fi-hsw-4770/igt@i915_selftest@live.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13915/fi-hsw-4770/igt@i915_selftest@live.html
+> 
 
- * The API reference manual is built and copied to
-   the MkDocs documentation directory.
+This is unrelated, please respin testing for i915.
 
- * The MkDocs documentation (from the docs directory)
-   is also built.
+Regards,
+Kamil
 
-As a result, the existing API reference manual will still be
-available via an internal link in the MkDocs documentation.
-(Note: the API reference retains original theme for now)
-
-A relative link to api_reference/index.html is included
-in the MkDocs navigation. This file will be generated
-by the deploy job after the API reference manual is built.
-
-After both builds are complete, all content will be copied
-into the site directory and then manually moved into
-public, for hosting on freedesktop GitLab Pages.
-
-Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
----
- .gitlab-ci.yml | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index fb5713fba..50fff797f 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -75,12 +75,15 @@ build:tests-fedora:
-   stage: build
-   script:
-     - meson setup --prefix=/opt/igt $MESON_OPTIONS build
-+    - pip install -r docs/requirements-docs.txt
-     - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
-     - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
-+    - mkdocs build
-     - DESTDIR="$PWD/installdir" ninja -C build install
-   artifacts:
-     paths:
-       - build
-+      - site
-       - installdir
- 
- build:tests-fedora-no-libunwind:
-@@ -241,8 +244,11 @@ pages:
-     - build:tests-fedora
-   stage: deploy
-   script:
--    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
--    - cp -r build/docs/reference/igt-gpu-tools/html public
-+    - pip install -r docs/requirements-docs.txt
-+    - mkdir -p docs/api_reference
-+    - cp -r build/docs/reference/igt-gpu-tools/html/ docs/api_reference
-+    - mkdocs build
-+    - cp -r site public
-   artifacts:
-     paths:
-       - public
--- 
-2.51.0
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_13915 that come from known issues:
+> 
+...cut...
 
