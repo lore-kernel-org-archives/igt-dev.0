@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECA4DCCD1B0
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Oct 2025 08:12:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F8AFCCD1AF
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Oct 2025 08:12:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3FB9510E58F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id A9E1610E591;
 	Tue, 21 Oct 2025 08:12:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="Fr2Wxvw4";
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="QF3j5WEo";
 	dkim-atps=neutral
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com
- [209.85.221.174])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A6E110E390
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 09:43:46 +0000 (UTC)
-Received: by mail-vk1-f174.google.com with SMTP id
- 71dfb90a1353d-54bbaca0ee5so1498837e0c.3
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 02:43:46 -0700 (PDT)
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com
+ [209.85.221.173])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 559FE10E390
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 09:44:19 +0000 (UTC)
+Received: by mail-vk1-f173.google.com with SMTP id
+ 71dfb90a1353d-554a7e98e19so3184613e0c.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Oct 2025 02:44:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1760953426; x=1761558226;
+ d=chromium.org; s=google; t=1760953458; x=1761558258;
  darn=lists.freedesktop.org; 
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iyLVi+FoD/t/oxfqevd58ZLbWFO4BhZuCjYqGvCmG0Q=;
- b=Fr2Wxvw4s1I1wWe0Hny5nLT5B2mT0AanDn8Ix6PLEuZofGvmbea5l/KXR0UECfKhaR
- pC7QVflxP2bdkhZbgvhhvCfR3jlLxn1wRBqda9qy3yT2D5ZumhXIMYTs/5aYEL99CVxF
- /ndDwM6XLSm0X/gB/nHBdZFTSmGqE7jUSZI1Q=
+ bh=FT0NwrrdR2XLKYovM4CixdOK8iuZnxY2K/H5RA8w9dk=;
+ b=QF3j5WEoZqhYLu8UJDX1HqqrM/nyEsn+vgUXTTVk7hvJfuf2boKyFkZIJ5oDGK5QMB
+ OJNdLibpieK7B1mhaG5mW8mPO9k0VE5mBy1X3Nrm+W0xELh0/m2msqKyZth8yVm/7rH7
+ 1le7zBajKb5OC7aqjbW9tcntKpKkx4rJlcfYY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1760953426; x=1761558226;
+ d=1e100.net; s=20230601; t=1760953458; x=1761558258;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iyLVi+FoD/t/oxfqevd58ZLbWFO4BhZuCjYqGvCmG0Q=;
- b=Kel1uWVpaicR5TDIlP43Zx0miyjWKEziqtFxGdbpQ8XTi+EOtMhe347TsPq2WvRK/b
- f3dQVI3qCTbuQ0ys93DH1EqFUHguHCb+fn37ClUCWwOIcD2G7wZzDJP1P2OQD2qMlke5
- TWJ2CfdZpgZIvd7AHracwBOr2hDiXN/QSbjsTvpa0sTd/m4vNyHB4twNKK2qVUkNzsd2
- HWepMbtXRIwuz6sv8TiOfIg3ZD/ty13bnzQEz+o5+46tCEDrnPKjHG1avA4P126MYvX0
- Yu4HMdOED7g0MQbNytQCnx2nZOHjhtJvaXlCy32Kd6Hw02eRL1EFK7ptOae9OImP9xju
- Jcmw==
-X-Gm-Message-State: AOJu0YwRSAXbRpHyeIs4M/1/Wv4ZrEkicYFr8jMpOjbTK0//fYmUwx4H
- +PeA23t0mZwyEbRxKNAf/vs9cn1/3RhVHSQWH+BIee4x0XL0A+zhxv0IrZCwz30tPDft7TQRktA
- hBppB3wi3Q22s2JAu5RAQAMbUQ/Z1msCdrOx1cyci
-X-Gm-Gg: ASbGncsn15fB6smx/Spw8I7TqhqgK1b72lhqP3KrDuCHK0FRVIQYkAtNs1NmXulMfsl
- gUsM2AMZiRv5ULT+yAVuzAoW2MfiBmRK2BFSbDekbfDPL9z/vIqdMtQA+NJEACuH57Ec67O+zzt
- 8ybKXpDQ/DERiSilRZF/syJG3zqblhcxya/xDQXSh8mZzJDzaV8LNij6KGb1S5i8X88uPJaxF85
- O5a3UlDs96OJp27k7KnqlMn7Icws4xOPQGWXr3phsmbLbHY56cakg7wHvz7nGnHpoArE9FcEe6g
- 0xhsN2ke45X9LWg=
-X-Google-Smtp-Source: AGHT+IEQVL59xonLI4Lp+XcLuAw+dIJCT2XQTJZexjRwIAvu8h4EWYF2z8cwsEl9IDCznWmGt1HqdO5pijIxdEe5IeM=
-X-Received: by 2002:a05:6122:ca2:b0:54b:d7b6:2f34 with SMTP id
- 71dfb90a1353d-5564ecacb02mr3052991e0c.0.1760953425682; Mon, 20 Oct 2025
- 02:43:45 -0700 (PDT)
+ bh=FT0NwrrdR2XLKYovM4CixdOK8iuZnxY2K/H5RA8w9dk=;
+ b=qnj47t5Pd6Khm3nm9uld/zby2knen1dgXo+zAAg0Z/JXCidBcyHOb1HLf5JgFM88SJ
+ KzLaaf/DiBZIQ9vXuMTiU9ekkOcyG82qBQGkpiTQ+2erKVg8wu3Hnhipuo3zmaa5Bmg/
+ vM68SpTQk445MBWqaZyM9cOidy5szNbp/Wkb7cArepBZ4tlHL57KqCIHKonxN74cEAvA
+ UwfRwzlkKQvp+ni9BcVZstWGTQG7KVh0oBtyA5Z2Rj7ABxH4mhHrZKu3nzGGTqjFgP5U
+ ipKGKNL039Hv30tt3B9WQ0WB76sknevUhhYzCmch/d+6nX5ozNz8BKylygmpVATet0cL
+ fQbg==
+X-Gm-Message-State: AOJu0YyqvLeziUHAfZiP67RDiuUXTCos567hNEVzZlegbw2mBt77VnmE
+ DC9BgR+ehvbfs7SUnw5SY+CjXzE4baZ/WbAsqGn8OyKkFzLqJlEeAKQK6JMOcQ7wxb4DMgvnoud
+ P7g/iDcl7XNvJUiFMqhkBTL6V6PC50gLfFQYm16QKmzRvirIvFpZYED5N
+X-Gm-Gg: ASbGncsUJAYhG6bSCeWNEdcjtXIwIDdKf5xArK3PUdPnlG57XJghAkPwo+QLLIh82zi
+ iL4C8QCAzUVWBqblyuTeMNxDubhByNTpbb6HC0a4Uecl7TciA6s7G9twLmkpPeXMv8N2vAqVj0B
+ Zujbd6pJ36jCBFw8THWfu2vQ7h25YZk8ZZS+Ts59rR9BN6DgFAg9xQIt3p6JsifYqIRbkeqwrMC
+ k//nAM+44Ut6DT+07CifVikll2LXEKm8gJAzwqY0JrVpqA2CGHV/ILRunZe4NoWxD6/9cZPkqOp
+ zdbmjSbwqFi6Kio=
+X-Google-Smtp-Source: AGHT+IGfNzS8faNPRpanx/GCK1gBlqeeqXgRfoIxrsYmrGFjUmFt8hciF1GEPtNh3cwxJq7d7tvkwN/aGHsWDaj7TD8=
+X-Received: by 2002:a05:6102:e08:b0:5d5:f6ae:38fb with SMTP id
+ ada2fe7eead31-5d7dd62a439mr4125262137.40.1760953458397; Mon, 20 Oct 2025
+ 02:44:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251012171459.3773990-1-jason-jh.lin@mediatek.com>
- <20251012171459.3773990-4-jason-jh.lin@mediatek.com>
-In-Reply-To: <20251012171459.3773990-4-jason-jh.lin@mediatek.com>
+ <20251012171459.3773990-5-jason-jh.lin@mediatek.com>
+In-Reply-To: <20251012171459.3773990-5-jason-jh.lin@mediatek.com>
 From: Fei Shao <fshao@chromium.org>
-Date: Mon, 20 Oct 2025 17:43:09 +0800
-X-Gm-Features: AS18NWBfCDbPhlpKPUN8EO0zBFffHjLW872s3LqXx6qhFb11SkBUUe7q_eeULdA
-Message-ID: <CAJ66y9GMocS8DubrmUgc3QUM6Qj2KEficJTLOEM67Vk=bawWgg@mail.gmail.com>
-Subject: Re: [PATCH i-g-t 3/6] tests/kms_pipe_crc_basic: Use
- SUSPEND_TEST_DEVICES for MediaTek devices
+Date: Mon, 20 Oct 2025 17:43:42 +0800
+X-Gm-Features: AS18NWB0Nu9jJXzinqFUWNpz-coaAgoP2I0UivbBKirMGvV_vw5rooYH6xN-wvs
+Message-ID: <CAJ66y9E4SE+8ot9w_+MfOY2W2zWDMHRNg-E=aSnGYn0yOghfag@mail.gmail.com>
+Subject: Re: [PATCH i-g-t 4/6] lib/igt_kms: Add support for mtk_current_bpc
+ debugfs in bpc-switch test
 To: Jason-JH Lin <jason-jh.lin@mediatek.com>
 Cc: igt-dev@lists.freedesktop.org, Nancy Lin <nancy.lin@mediatek.com>, 
  Singo Chang <singo.chang@mediatek.com>,
@@ -90,14 +90,13 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Mon, Oct 13, 2025 at 1:15=E2=80=AFAM Jason-JH Lin <jason-jh.lin@mediatek=
 .com> wrote:
 >
-> Update suspend test logic to use SUSPEND_TEST_DEVICES instead of
-> SUSPEND_TEST_NONE if running on MediaTek devices. This change
-> avoids use of RTC suspend commands that are not supported by MediaTek
-> platforms, improving test compatibility on MediaTek hardware.
+> Add support for the "mtk_current_bpc" debugfs entry when detecting bpc
+> on MediaTek devices. This allows bpc-switch tests to work properly with
+> MTK platforms by reading the correct debugfs property.
 >
 > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
 > ---
->  tests/kms_pipe_crc_basic.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  lib/igt_kms.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Reviewed-by: Fei Shao <fshao@chromium.org>
